@@ -1,64 +1,77 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
- by mx.groups.io with SMTP id smtpd.web12.290.1579904674479920407
+Received: from mail-pf1-f195.google.com (mail-pf1-f195.google.com [209.85.210.195])
+ by mx.groups.io with SMTP id smtpd.web12.253.1580321744458744610
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Jan 2020 14:24:34 -0800
+ Wed, 29 Jan 2020 10:15:44 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=YFiEMffX;
- spf=pass (domain: gmail.com, ip: 209.85.222.171, mailfrom: muthushanmugarajan@gmail.com)
-Received: by mail-qk1-f171.google.com with SMTP id w198so2437087qkb.3
-        for <docs@lists.yoctoproject.org>; Fri, 24 Jan 2020 14:24:34 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=X2szET1v;
+ spf=pass (domain: gmail.com, ip: 209.85.210.195, mailfrom: akuster808@gmail.com)
+Received: by mail-pf1-f195.google.com with SMTP id i6so71027pfc.1
+        for <docs@lists.yoctoproject.org>; Wed, 29 Jan 2020 10:15:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=TIqcQTCxNKum3NAU6YlTeGHZbRFwbkDPToXIufDT4yw=;
-        b=YFiEMffX1K0+jmp2+URJuFiyI4Zx71YVem/FIclobqdbd+yWRB/k3QkeyUqUW3KAwD
-         y+I46uTPSqAEY38vLuqB5vSlF4iV/VI4PWJNIWIiVd9rghJkDViDC+YoNZbTD/hcnb+m
-         YofLVx7Aq9o3zpJxqdCHO1/7CPEEbY74wBBQJRtvJNzc29Y8Ux7wn+H2WSEhWBK+awZ6
-         JpeYJWVg6KXBgi4odQg8hjFUsWKOG6PxnJ+myZJm9DVHue39pJO1W4oQ0nKCHOv5cih+
-         cI3DVAn1/V2voaQM4E6wF4Rim459+s0r8M3pfbo9G6IbiKie96bvhPaxqo3snVVzsvsW
-         ShIQ==
+        h=from:to:subject:date:message-id;
+        bh=HNz5BCBqt5QZ4jH9bGIxoHyOAPExOjaRh0d4V6Vm9IU=;
+        b=X2szET1vKddOfcZaP2PQllC/gW4O1A81QkLciLnAyTdtxzL51LauIEmJ4s/AOXPuLv
+         zHivJKowp2bIObdc+Runk0q934RVmXBGkhPEnTnF+0jvl1AW0yXr0spcAfm43dHVsoET
+         RgHYae43ooehccJdZmDhzvqu7X7gE0H3rYrWm7qiLufFPJuhWX0ZoV+31vEnhEAsbrF/
+         uN5MtM87ZHUSHHbEFdHi6/fheLV+laxC1OC8nh+Il2r0XPs5I4xagI05LbTYL5lXAXJn
+         eMtG89oL5yZRRf3NtMcN2rSbzXEQE4+EUdGBLJsJN+dEgOA0bSt9Xj+nb83euEqd2tw9
+         ls9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=TIqcQTCxNKum3NAU6YlTeGHZbRFwbkDPToXIufDT4yw=;
-        b=Ha0kPMhDCZQzUZKZiym9IIvMtHBvxsnAbfxqAUSFlpwh8KQGzhCatHhYoQEQI9HODd
-         A0DcBiLOsGIPKiOi+M94HJwi5+bMpugiYTFXKDNrW9E0ZS1wCu9O5xinAfB0R84w/MnF
-         qAvH0W7ZeYR+b3xmR0ATNSOovOpT4kNf8MHAES6XDQs/4ItPVD+dhNK+p53sQUM1VJo7
-         jIdInjQwbyHwK/cU0q1lxzUZoD66N1lndMTNeuKsG/zDaJfjRxm88P9Z03mJCjJ+3mgD
-         pxxof2e/j/U+zunJCryo4PMlpuSnGIz9TmN53IxSK/TTdF4H1KCAD98eE8mVd7bCwult
-         AxKA==
-X-Gm-Message-State: APjAAAWgImyBjbInVtYr4y9wdb3iPQw5enlXT+NTkQS6TiDKaICKSTEZ
-	CEpMBnR0eRFg05UVSyO8bZZsf4yp1ntbRvkJJXq/GDg+
-X-Google-Smtp-Source: APXvYqxfKBDigGGVoR1A/YsdcS5I+eGfcltV3yhzYRRA8O/WXMKPkWRnYDphSflvAmngGNr+U9faPuoPJh4LSEqlFmE=
-X-Received: by 2002:a05:620a:94f:: with SMTP id w15mr4966817qkw.158.1579904673353;
- Fri, 24 Jan 2020 14:24:33 -0800 (PST)
-MIME-Version: 1.0
-From: muthushanmugarajan@gmail.com
-Date: Fri, 24 Jan 2020 23:24:22 +0100
-Message-ID: <CAPhd4iAVuG1k3YOfEG7b2j54d1p+wzdu=xKFon9LNVBB1TGATQ@mail.gmail.com>
-Subject: Yocto OpenCV support
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=HNz5BCBqt5QZ4jH9bGIxoHyOAPExOjaRh0d4V6Vm9IU=;
+        b=XCPkAsx+7blbHdor0qkhdDunNRf99Jo9J2a6jDWwTLZjrDY2pvHcd+8+0euMjRPFpE
+         ZWnkL/TmG39DTEbbkZhYte8sea7nJTD2jQc5H5gd44PqQrdvPSDyo7ZnBB87fn1eTfmy
+         GqPCRWkKZl9HejGNOn5E0Ue7ScAHefoIXPP98hdLL73iq1P7ceRT2CCR9dhjeyobpbxq
+         RM71UPRtw9GZVAmWLRHMPrTMWAl+mrzRuUn4k0r3Rforb9YyYviior1aB/HlX2tQyTYy
+         OgKg2qf2Pp16tNkSRPVzC0qiwhUtTW7bJRSOI3Pv4y4bPjn6fd12CuHicYz3r3eQxquU
+         WXpA==
+X-Gm-Message-State: APjAAAU1Oc/QdsJ4qj9o0AVE+rdKgcrbAWbCg8IhvPRjYtf3PH7LVFd9
+	aSJ6z0xskWVWe7fosJXqbo8DH5PC
+X-Google-Smtp-Source: APXvYqzuNM+pI+WJMrSn6rMkw1V5mBFnOJTPy2XjbVlJo8/i3pJod47QD2BY9z5Qkxy3Um5daYbGWQ==
+X-Received: by 2002:a62:1b07:: with SMTP id b7mr867035pfb.186.1580321743734;
+        Wed, 29 Jan 2020 10:15:43 -0800 (PST)
+Return-Path: <akuster808@gmail.com>
+Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:9c41:27a8:c371:1cdd])
+        by smtp.gmail.com with ESMTPSA id d4sm3306013pjz.12.2020.01.29.10.15.42
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2020 10:15:43 -0800 (PST)
+From: "akuster" <akuster808@gmail.com>
 To: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000d594ea059cea3885"
+Subject: [yocto-docs][PATCH] README: update to new mailing list
+Date: Wed, 29 Jan 2020 10:15:41 -0800
+Message-Id: <20200129181541.6446-1-akuster808@gmail.com>
+X-Mailer: git-send-email 2.17.1
 
---000000000000d594ea059cea3885
-Content-Type: text/plain; charset="UTF-8"
+Signed-off-by: Armin Kuster <akuster808@gmail.com>
+---
+ README | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-Hello Team,
-I would like to get supporting documents for adding OpenCV to an yocto
-project. Could you please point me towards it?
-
+diff --git a/README b/README
+index d85781109..62c2a3ffb 100644
+--- a/README
++++ b/README
+@@ -10,6 +10,16 @@ An online version of the documentation can be found at:
+ Where to Send Patches
+ =====================
+ 
++When sending single patches, please using something like:
++'git send-email -1 --to docs@lists.yoctoproject.org --subject-prefix=yocto-docs][PATCH'
++
++These values can be set as defaults for this repository:
++
++$ git config sendemail.to docs@lists.yoctoproject.org
++$ git config format.subjectPrefix yocto-docs][PATCH
++
++Now you can just do 'git send-email origin/master' to send all local patches.
++
+ Git repository: http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/
+-Mailing list: yocto@yoctoproject.org
++Mailing list: docs@lists.yoctoproject.org
+ Please cc: Scott Rifenbark <srifenbark@gmail.com> on changes.
 -- 
-Thanks and regards,
-Muthu
+2.17.1
 
---000000000000d594ea059cea3885
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hello Team,<div>I would like to get supporting documents f=
-or adding OpenCV to an yocto project. Could you please point me towards it?=
-<br clear=3D"all"><div><br></div>-- <br><div dir=3D"ltr" class=3D"gmail_sig=
-nature" data-smartmail=3D"gmail_signature">Thanks and regards,<br>Muthu=C2=
-=A0</div></div></div>
-
---000000000000d594ea059cea3885--
