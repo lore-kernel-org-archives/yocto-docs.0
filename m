@@ -1,76 +1,104 @@
-Received: from mail-pl1-f195.google.com (mail-pl1-f195.google.com [209.85.214.195])
- by mx.groups.io with SMTP id smtpd.web10.1118.1580431945845610996
+Received: from gateway23.websitewelcome.com (gateway23.websitewelcome.com [192.185.49.60])
+ by mx.groups.io with SMTP id smtpd.web11.1385.1580432667494367245
  for <docs@lists.yoctoproject.org>;
- Thu, 30 Jan 2020 16:52:25 -0800
+ Thu, 30 Jan 2020 17:04:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=Ogjx/hgx;
- spf=pass (domain: gmail.com, ip: 209.85.214.195, mailfrom: jefro.net@gmail.com)
-Received: by mail-pl1-f195.google.com with SMTP id t6so2020569plj.5
-        for <docs@lists.yoctoproject.org>; Thu, 30 Jan 2020 16:52:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=9x9fff2LHIdeiTL9Sx5zqctVfqfdQmaDidEQ31YdNqY=;
-        b=Ogjx/hgxHQJg3wRSLcr8QNe6SbPf2RhmyEmC8agvxCnH9CSb26L/sWbZ2wvu36f9EJ
-         x7V9xPeacVOM8j9EM9/xmZFIcz9gu1SP7NCggufyp/8L6axySvVgVeyl6+D5MJovNvq+
-         7QB/nntqUl32VULeUXdUNbh1L26THft/53YSDzFfgp1PDdA9nKdBdJp3H3SbJomTzM4a
-         +VjT8de6GKvEa9ZcN1g8fblQ04+RaS4rprR8zFlyYIDSAZMhZulcxsb8RJNHyPQ8u0HJ
-         JOd+vIW0DGypWsSck+IEyoSujRerPDvj9T1s4Ddv2O3a5JU8uo95IJKYveFZK5fnIlZ+
-         K/8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=9x9fff2LHIdeiTL9Sx5zqctVfqfdQmaDidEQ31YdNqY=;
-        b=BMg8bjwkSBANxri//0RjAYJvs82KvOwtKtEkiVlo8d846+TISnHhpY4vdEg2zG6yDb
-         C5/OYRCjZSoIVoWf3sz0glow0fnK4yH01uT0ZZdqK4EQxzC8KEHsPJaE58u5AZPhKVdY
-         MpGyUcJrhZXXxoxY+dupT8GdFpWwoxYW9QB2yCdqgLpdpTw5Kub16rZJ2E2s3avJm57D
-         NCRAi1sNC6Ejgx6Lj0UP17EIQ/VR9v54BCynaU3qULqx/XKNykUCTVsEoK7aCoLF42XT
-         WPpsk/s5wOM5x99jfcxYxqFDnWcupSTaW5OOopSzWE+ALmse4hz06xH4xCwTRua+7h9H
-         A0yg==
-X-Gm-Message-State: APjAAAXJsdyleP+omI9cTNSAblgsj5vmsU/NSzISY72Ox2XUCfI8jFkJ
-	QijkeAddsH+wGjata/8raAv7eZ0OrfI=
-X-Google-Smtp-Source: APXvYqwQVowCZ0xRhXhEJQrHVQ0nEd+CEOxlGlxczhmYTme8cPCC6Og8RWlg8lgjQ4OFJdnrlPzI8w==
-X-Received: by 2002:a17:90a:da03:: with SMTP id e3mr9298544pjv.100.1580431945171;
-        Thu, 30 Jan 2020 16:52:25 -0800 (PST)
-Return-Path: <jefro.net@gmail.com>
-Received: from ganymede.hitronhub.home ([172.92.111.32])
-        by smtp.gmail.com with ESMTPSA id k29sm8490227pfh.77.2020.01.30.16.52.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Jan 2020 16:52:24 -0800 (PST)
-From: "Jeffrey Osier-Mixon" <jefro.net@gmail.com>
+ dkim=fail reason="no key for verify" header.i=@cetola.net header.s=default header.b=MnAgFBzq;
+ spf=permerror, err=parse error for token &{10 18 bluehost.com}: parse error for token &{10 18 _spf.google.com}: parse error for token &{10 18 _netblocks3.google.com}: limit exceeded (domain: cetola.net, ip: 192.185.49.60, mailfrom: stephano@cetola.net)
+Received: from cm12.websitewelcome.com (cm12.websitewelcome.com [100.42.49.8])
+	by gateway23.websitewelcome.com (Postfix) with ESMTP id 0C3B43A02
+	for <docs@lists.yoctoproject.org>; Thu, 30 Jan 2020 19:04:27 -0600 (CST)
+Received: from box2192.bluehost.com ([50.87.253.143])
+	by cmsmtp with SMTP
+	id xKjSisKVOFYZhxKjSiSsrR; Thu, 30 Jan 2020 19:04:27 -0600
+X-Authority-Reason: nr=8
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cetola.net;
+	 s=default; h=To:References:Message-Id:Content-Transfer-Encoding:Cc:Date:
+	In-Reply-To:From:Subject:Mime-Version:Content-Type:Sender:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe
+	:List-Post:List-Owner:List-Archive;
+	bh=r0djzxIRXQmXpxRSFRoEOF8LXK0Q40/+BjTqNG+fUvw=; b=MnAgFBzqdbQ+nojYpRAVLEvdgH
+	e5wnDbKlohfps6LsR9y2ikANd/Q20HJR2+KkOQ50GMWD1h+H7/++i7rPXEcXIUrjD+zr+Y4CSFabs
+	c2i5AApiosamPwT5VnbmrqyAqVjGjg5gVMuse0AsZaTu19+scK3LwidFj0bUy0Wdyzww=;
+Received: from [209.152.44.202] (port=10500 helo=nobuo.wifi.pcc.edu)
+	by box2192.bluehost.com with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(Exim 4.92)
+	(envelope-from <stephano@cetola.net>)
+	id 1ixKjS-002gZ4-Ez; Thu, 30 Jan 2020 18:04:26 -0700
+Mime-Version: 1.0 (Mac OS X Mail 13.0 \(3608.40.2.2.4\))
+Subject: Re: [docs] [yocto-docs][PATCH] Adding memoriam to scottrif
+From: "Stephano Cetola" <stephano@cetola.net>
+In-Reply-To: <20200131005220.1572-1-jefro.net@gmail.com>
+Date: Thu, 30 Jan 2020 17:04:25 -0800
+Cc: Jeffrey Osier-mixon <jefro@jefro.net>
+Message-Id: <69EF8F29-92B3-492A-987A-DA3489FD6A98@cetola.net>
+References: <20200131005220.1572-1-jefro.net@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Jefro <jefro@jefro.net>
-Subject: [yocto-docs][PATCH] Adding memoriam to scottrif
-Date: Thu, 30 Jan 2020 16:52:20 -0800
-Message-Id: <20200131005220.1572-1-jefro.net@gmail.com>
-X-Mailer: git-send-email 2.17.1
+X-Mailer: Apple Mail (2.3608.40.2.2.4)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box2192.bluehost.com
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - cetola.net
+X-BWhitelist: no
+X-Source-IP: 209.152.44.202
+X-Source-L: No
+X-Exim-ID: 1ixKjS-002gZ4-Ez
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: (nobuo.wifi.pcc.edu) [209.152.44.202]:10500
+X-Source-Auth: stephano@cetola.net
+X-Email-Count: 2
+X-Source-Cap: Y2V0b2xhbmU7Y2V0b2xhbmU7Ym94MjE5Mi5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+Content-Type: text/plain;
+	charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
 
-From: Jefro <jefro@jefro.net>
+Acked-by: Stephano Cetola <stephano@cetola.net>
 
-Added a few comment lines in Makefile to commemorate Scott's
-contributions
+This patch really ties the room together.
 
-Signed-off-by: Jefro <jefro@jefro.net>
----
- documentation/Makefile | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/documentation/Makefile b/documentation/Makefile
-index 525a7309a..1a33c771f 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -76,6 +76,11 @@
- # example publishes the 1.2 version of the PDF and HTML YP Development Tasks Manual
- # for the 'denzil' branch.
- #
-+# IN MEMORIAM: This comment is to remember Scott Rifenbark (scottrif), whom we lost
-+# in January, 2020. Scott was the primary technical writer for the Yocto Project for
-+# over 9 years. In that time, he contributed many thousands of patches, built this
-+# documentation tree, and enabled tens of thousands of developers to succeed with
-+# embedded Linux. He ran this Makefile many thousands of times. Godspeed, Dude.
- 
- ifeq ($(DOC),brief-yoctoprojectqs)
- XSLTOPTS = --stringparam html.stylesheet brief-yoctoprojectqs-style.css \
--- 
-2.17.1
+> On Jan 30, 2020, at 4:52 PM, Jeffrey Osier-Mixon <jefro.net@gmail.com> w=
+rote:
+>=20
+> From: Jefro <jefro@jefro.net>
+>=20
+> Added a few comment lines in Makefile to commemorate Scott's
+> contributions
+>=20
+> Signed-off-by: Jefro <jefro@jefro.net>
+> ---
+> documentation/Makefile | 5 +++++
+> 1 file changed, 5 insertions(+)
+>=20
+> diff --git a/documentation/Makefile b/documentation/Makefile
+> index 525a7309a..1a33c771f 100644
+> --- a/documentation/Makefile
+> +++ b/documentation/Makefile
+> @@ -76,6 +76,11 @@
+> # example publishes the 1.2 version of the PDF and HTML YP Development T=
+asks Manual
+> # for the 'denzil' branch.
+> #
+> +# IN MEMORIAM: This comment is to remember Scott Rifenbark (scottrif), =
+whom we lost
+> +# in January, 2020. Scott was the primary technical writer for the Yoct=
+o Project for
+> +# over 9 years. In that time, he contributed many thousands of patches,=
+ built this
+> +# documentation tree, and enabled tens of thousands of developers to su=
+cceed with
+> +# embedded Linux. He ran this Makefile many thousands of times. Godspee=
+d, Dude.
+>=20
+> ifeq ($(DOC),brief-yoctoprojectqs)
+> XSLTOPTS =3D --stringparam html.stylesheet brief-yoctoprojectqs-style.cs=
+s \
+> --=20
+> 2.17.1
+>=20
+>=20
 
