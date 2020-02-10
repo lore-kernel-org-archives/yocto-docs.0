@@ -1,79 +1,96 @@
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
- by mx.groups.io with SMTP id smtpd.web12.16919.1581306078285253951
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web12.22937.1581346287131902450
  for <docs@lists.yoctoproject.org>;
- Sun, 09 Feb 2020 19:41:18 -0800
+ Mon, 10 Feb 2020 06:51:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=ocL/mp2n;
- spf=neutral (domain: iki.fi, ip: 66.111.4.29, mailfrom: tanuk@iki.fi)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 655AC21F57
-	for <docs@lists.yoctoproject.org>; Sun,  9 Feb 2020 22:41:17 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Sun, 09 Feb 2020 22:41:17 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=content-transfer-encoding:date:from
-	:message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=b8yaPgFcP3dOGuUky
-	wWk1JAgBpAC9bKKV4vQMv1TS2k=; b=ocL/mp2nirqRqJpzYEYvnidKWo0uVYij6
-	kJy03HoFvUaWlGrwHrvstDsQSLWdQwN6gQhUocA6gBBpYFpKC7c1iW+KPR4EMVtf
-	zO1tqkVqCRYE4Hfg+WOdQFMl6BkTBo5l+tNlflt+OtqrmNs2ewqVbqi910GvNNLv
-	ivfHx/iBxALtIcMhuwz00fMeY+nqW4/X8oYGEuSEukG6o7X4tt/MsLtlBn/HpxOc
-	W0G3MZ0OuYsfEckc3AIutMbCiUzzD386ilVzocY9uTuHqpOoNhJCYJoDzqJyXOhd
-	5dcFmhnRv8asMk5tixVCq6Y7Vj1Y4t+V8vPssERroAFub8qFTFGNQ==
-X-ME-Sender: <xms:3dBAXjpjur8fSe8QYoxgJFrfjeHmlqE42p2yB2k2NLrr5MtIWvWi7w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedriedtgddvlecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecunecujfgurhephffvufffkffoggfgsedtkeertdertd
-    dtnecuhfhrohhmpefvrghnuhcumfgrshhkihhnvghnuceothgrnhhukhesihhkihdrfhhi
-    qeenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgnecukfhppeduleeird
-    dvgeegrdduledurddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehm
-    rghilhhfrhhomhepthgrnhhukhesihhkihdrfhhi
-X-ME-Proxy: <xmx:3dBAXslgJXGF-x75tjRrRMvSvQpzU-KjxDEOIDoMzHmT22BDug9SJg>
-    <xmx:3dBAXsQ-1XydQQHOWBzo_WMsDEOylkgUZUL_4rQGjCiMsVFb8N58nw>
-    <xmx:3dBAXqZBw_L_w8pP8ZKC0q6_lK1biTRaItM_-c-tdPtY4NqMICo9rg>
-    <xmx:3dBAXpYBNwQav2rfcYj7wp-1fNv_bi0y6tfYXl0SygM1cNxuNKABCA>
-Received: from localhost.localdomain (unknown [196.244.191.106])
-	by mail.messagingengine.com (Postfix) with ESMTPA id ADF8F328005A
-	for <docs@lists.yoctoproject.org>; Sun,  9 Feb 2020 22:41:16 -0500 (EST)
-From: "Tanu Kaskinen" <tanuk@iki.fi>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] README: A couple of updates due to recent changes
-Date: Mon, 10 Feb 2020 05:37:44 +0200
-Message-Id: <20200210033743.24295-1-tanuk@iki.fi>
-X-Mailer: git-send-email 2.20.1
+ dkim=missing; spf=pass (domain: axis.com, ip: 195.60.68.17, mailfrom: peter.kjellerstedt@axis.com)
+IronPort-SDR: LFyxkZwjrnPeEYxDKA39uHcorip02SYjmm0lLw/zhxFEFkp+6x+Cj7FzP6OjOUtBMInEohjrTK
+ oI1qGeItyHH5Bx9h5zX77Hueb8kEh3P0MXfOy3OnS0Glvxa7PrDhoZ/KdZ457aALve/O4Nt3t8
+ Ut9jxRdJbS+dh/UO4we3tZxglveL1rF4Z0nWoMfB+9FT+tduqOewrBX9zMrlP0OSQMwUkmYcpp
+ kTPcyW9GwVZPXMQJzPped5+jxePusxaqtpRdc9mh3RCVERlqYZWXTqbgiPVqP6RmrGWkuh5MOe
+ a/k=
+X-IronPort-AV: E=Sophos;i="5.70,425,1574118000"; 
+   d="scan'208";a="5258082"
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: <docs@lists.yoctoproject.org>
+Subject: [master][zeus][PATCH 3/5] ref-manual: Update the documentation for USERADD_ERROR_DYNAMIC
+Date: Mon, 10 Feb 2020 15:51:19 +0100
+Message-ID: <20200210145121.18307-3-pkj@axis.com>
+X-Mailer: git-send-email 2.21.1
+In-Reply-To: <20200210145121.18307-1-pkj@axis.com>
+References: <20200210145121.18307-1-pkj@axis.com>
 MIME-Version: 1.0
+Return-Path: pkj@axis.com
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Since there's now a separate mailing list for docs, I think the
-yocto-docs tag doesn't need to be added to patches any more.
+* Update USERADD_ERROR_DYNAMIC[doc] and the first paragraph to match
+  the definition in meta/conf/documentation.conf.
+* Add a note explaining the differences in behavior when setting
+  USERADD_ERROR_DYNAMIC to "warn" and "error" respectively.
 
+[YOCTO #12932]
+
+Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
 ---
+ documentation/ref-manual/ref-variables.xml | 33 ++++++++++++++++------
+ 1 file changed, 25 insertions(+), 8 deletions(-)
 
- README | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/README b/README
-index 62c2a3ffb..6a7f3abe6 100644
---- a/README
-+++ b/README
-@@ -11,15 +11,13 @@ Where to Send Patches
- =====================
+diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
+index e6009926be..c8ece0c579 100644
+--- a/documentation/ref-manual/ref-variables.xml
++++ b/documentation/ref-manual/ref-variables.xml
+@@ -16770,18 +16770,21 @@
  
- When sending single patches, please using something like:
--'git send-email -1 --to docs@lists.yoctoproject.org --subject-prefix=yocto-docs][PATCH'
-+'git send-email -1 --to docs@lists.yoctoproject.org
+         <glossentry id='var-USERADD_ERROR_DYNAMIC'><glossterm>USERADD_ERROR_DYNAMIC</glossterm>
+             <info>
+-               USERADD_ERROR_DYNAMIC[doc] = "If set to 'error', forces the OpenEmbedded build system to produce an error if the user identification (uid) and group identification (gid) values are not defined in files/passwd and files/group files. If set to 'warn', a warning will be issued instead."
++               USERADD_ERROR_DYNAMIC[doc] = "If set to 'error', forces the OpenEmbedded build system to produce an error if the user identification (uid) and group identification (gid) values are not defined in any of the files listed in USERADD_UID_TABLES and USERADD_GID_TABLES. If set to 'warn', a warning will be issued instead."
+             </info>
+             <glossdef>
+                 <para role="glossdeffirst">
+ <!--                <para role="glossdeffirst"><imagedata fileref="figures/define-generic.png" /> -->
+-                    If set to "error", forces the OpenEmbedded build system to
+-                    produce an error if the user identification
+-                    (<filename>uid</filename>) and group identification
+-                    (<filename>gid</filename>) values are not defined
+-                    in <filename>files/passwd</filename>
+-                    and <filename>files/group</filename> files.
+-                    If set to "warn", a warning will be issued instead.
++
++                    If set to <filename>error</filename>, forces the
++                    OpenEmbedded build system to produce an error if the user
++                    identification (<filename>uid</filename>) and group
++                    identification (<filename>gid</filename>) values are not
++                    defined in any of the files listed
++                    in <link linkend='var-USERADD_UID_TABLES'><filename>USERADD_UID_TABLES</filename></link>
++                    and <link linkend='var-USERADD_GID_TABLES'><filename>USERADD_GID_TABLES</filename></link>. If
++                    set to <filename>warn</filename>, a warning will be issued
++                    instead.
+                 </para>
  
--These values can be set as defaults for this repository:
-+The To header can be set as default for this repository:
+                 <para>
+@@ -16808,6 +16811,20 @@
+                     <link linkend='var-USERADD_GID_TABLES'><filename>USERADD_GID_TABLES</filename></link>
+                     variables.
+                 </para>
++
++                <note>
++                    There is a difference in behavior between
++                    setting <filename>USERADD_ERROR_DYNAMIC</filename>
++                    to <filename>error</filename> and setting it
++                    to <filename>warn</filename>. When it is set
++                    to <filename>warn</filename>, the build system will report a
++                    warning for every undefined <filename>uid</filename> and
++                    <filename>gid</filename> in any recipe. But when it is set
++                    to <filename>error</filename>, it will only report errors
++                    for recipes that are actually built. This saves you from
++                    having to add static IDs for recipes that you know will
++                    never be built.
++                </note>
+             </glossdef>
+         </glossentry>
  
- $ git config sendemail.to docs@lists.yoctoproject.org
--$ git config format.subjectPrefix yocto-docs][PATCH
- 
- Now you can just do 'git send-email origin/master' to send all local patches.
- 
- Git repository: http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/
- Mailing list: docs@lists.yoctoproject.org
--Please cc: Scott Rifenbark <srifenbark@gmail.com> on changes.
 -- 
-2.20.1
+2.21.1
 
