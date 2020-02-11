@@ -1,86 +1,79 @@
 Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
- by mx.groups.io with SMTP id smtpd.web09.6796.1581405286881321449
+ by mx.groups.io with SMTP id smtpd.web11.6937.1581405370780616617
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Feb 2020 23:14:47 -0800
+ Mon, 10 Feb 2020 23:16:12 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=JFq9z8as;
+ dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=dGRDWIHS;
  spf=neutral (domain: iki.fi, ip: 66.111.4.29, mailfrom: tanuk@iki.fi)
 Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id 4FAA8214CE
-	for <docs@lists.yoctoproject.org>; Tue, 11 Feb 2020 02:14:45 -0500 (EST)
+	by mailout.nyi.internal (Postfix) with ESMTP id C429C214CE
+	for <docs@lists.yoctoproject.org>; Tue, 11 Feb 2020 02:16:09 -0500 (EST)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 11 Feb 2020 02:14:45 -0500
+  by compute5.internal (MEProxy); Tue, 11 Feb 2020 02:16:09 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=content-transfer-encoding:content-type
-	:date:from:in-reply-to:message-id:mime-version:references
-	:subject:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-	:x-sasl-enc; s=fm2; bh=3eoxPOvFuV8kpCqjRORsKgJyls4OA8fynD+Dx4mUu
-	34=; b=JFq9z8asKjrHUvEQTJ/8gR6ze7X8Kz/hcJlpvOtlvCjy+nAydihDNSYKB
-	4/B3iZmj84kkLyBZFD+rLmgMZHYY+mHtfNnvuHKjS969lrFkRHXCzZQl6NF7+aL7
-	jYiKy7a2G6McTCeJwAVRqBYdZviWgqO0B96apQDKOfjZgBus3Adr5YpKT1yiECNt
-	HVfYkZh9mtCON+VSGTC1F9OsZdMt9FJLUdaYxScauH97xi2+V914w+X0EWTTmCQm
-	1VUJKLlOSZPd73v7Mnz1hL6LSaA1QvjfpmwR5O1zNhY0R2ZQPJYHqCEQ0O+ELlI+
-	M0SUTbHEBOFJKTJ4DLCg6A3ketmNw==
-X-ME-Sender: <xms:ZVRCXtuk-Q06uy2RVfZoPFZ2kpy8TEgOtu-njHRDKG28MFgzkkoJow>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedriedvgddutdegucetufdoteggodetrfdotf
+	messagingengine.com; h=content-transfer-encoding:date:from
+	:message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=i0G0BVSNnC1t872At
+	84EyFoGXBBTv4zdDuFt4owf3xM=; b=dGRDWIHS6iNY+aOwCCFj8whGGjpGNFsHQ
+	/NfjGRYwj5s0IHPELbaoDpP5oIdDsegzRpUTulx8HEC149Qi/YVZYCZ0L6yajhNl
+	a+sdYdV8WQr18paQ5TL3usY0cdx/oO80Rk8unmTiHpOd7ACsYcUoZ+fMQFJGjevZ
+	Al9BXHQCfXQRRM+dRwTuced/AlRWWLg0tHXwt3+/MZbvUacn2MXnqrz5EX33RLq6
+	NR5EdC+89YeUtcqVs9xJU4cAmHSMPPqfXiF2AK6lxPfB6PNaPnIYQR8VXktP5fsm
+	b/gaL5ZIpgMPYuMyNz5lU+ErtU/lf/64GD1QKlG7GVj+ae0PGdQDA==
+X-ME-Sender: <xms:uVRCXgYAAEL_whazpD_5NlqGum2h9p-6FfXikW6CEe-hZgo3i1R3hw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedriedvgddutdehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucgovfgvgihtqfhnlhihqddqteefjeefqddtgeculd
-    ehtddmnecujfgurhepkffuhffvffgjfhgtfggggfesthejredttderjeenucfhrhhomhep
-    vfgrnhhuucfmrghskhhinhgvnhcuoehtrghnuhhksehikhhirdhfiheqnecuffhomhgrih
-    hnpehprghtrhgvohhnrdgtohhmpdhlihgsvghrrghprgihrdgtohhmnecukfhppeduleei
-    rddvgeegrdduledurddutdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepthgrnhhukhesihhkihdrfhhi
-X-ME-Proxy: <xmx:ZVRCXqvocMJkW3epbibO4vmgE6tWj5otNwUieandJwpjDeofnaXsTg>
-    <xmx:ZVRCXryfa8SQpdR0g5-l3Tpmu-pubVOUqIJaKD8dAoRy_p8-SoXsKg>
-    <xmx:ZVRCXoj0pKuPrUeIhtVSuXsu0Dg7CeQgsegido24iVWZs5omM_mDhg>
-    <xmx:ZVRCXkZ-qtkQHSLcgZO9dmlw4lYFGn9kr3XIlABHGD9NU6Qf-BBMQw>
-Received: from laptop (unknown [196.244.191.106])
-	by mail.messagingengine.com (Postfix) with ESMTPA id 9AA243280062
-	for <docs@lists.yoctoproject.org>; Tue, 11 Feb 2020 02:14:44 -0500 (EST)
-Message-ID: <21fb56c27c2d205338a89b29246a2fe9edf82f7f.camel@iki.fi>
-Subject: Re: [docs] [PATCH] README: A couple of updates due to recent changes
+    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
+    dttdenucfhrhhomhepvfgrnhhuucfmrghskhhinhgvnhcuoehtrghnuhhksehikhhirdhf
+    iheqnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghenucfkphepudelie
+    drvdeggedrudeluddruddtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
+    mhgrihhlfhhrohhmpehtrghnuhhksehikhhirdhfih
+X-ME-Proxy: <xmx:uVRCXhYGISz3pX__8Ozex8Iff0MXH9e2121iG4i8oYBFYu5CVeZWPQ>
+    <xmx:uVRCXolRGFoc1837nfSxm8yuKSBfyr7FByP0SzH8fJrGkfMJLejkIw>
+    <xmx:uVRCXlwWwlUvmbd3fRKLA2dLm4ALlbmxDkUWIShX8Z-vsG7BEmlPIQ>
+    <xmx:uVRCXkbTJnxdg5XgP15mCkDjs6EIP5WBXFs7LLu3Rtc3NDagEPaovA>
+Received: from localhost.localdomain (unknown [196.244.191.106])
+	by mail.messagingengine.com (Postfix) with ESMTPA id 3D86D328005E
+	for <docs@lists.yoctoproject.org>; Tue, 11 Feb 2020 02:16:09 -0500 (EST)
 From: "Tanu Kaskinen" <tanuk@iki.fi>
 To: docs@lists.yoctoproject.org
-Date: Tue, 11 Feb 2020 09:14:41 +0200
-In-Reply-To: <3e3671e6-02fb-7560-d886-a515122757ac@gmail.com>
-References: <20200210033743.24295-1-tanuk@iki.fi>
-	 <f2b93c68-e11f-0007-f2e9-1cb5403461d0@gmail.com>
-	 <5d6c5c4a1eab46639d88912056a59f13@XBOX03.axis.com>
-	 <425c5b7a-f1a6-0c5f-0e5c-77eef392f681@gmail.com>
-	 <282e466e0097401e86157215fe3fb883@XBOX03.axis.com>
-	 <3e3671e6-02fb-7560-d886-a515122757ac@gmail.com>
-User-Agent: Evolution 3.30.5-1.1 
+Subject: [PATCH v2] README: A couple of updates due to recent changes
+Date: Tue, 11 Feb 2020 09:15:25 +0200
+Message-Id: <20200211071524.40834-1-tanuk@iki.fi>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2020-02-10 at 18:07 -0800, akuster wrote:
-> 
-> On 2/10/20 5:57 PM, Peter Kjellerstedt wrote:
-> > Are you thinking of the layers in meta-openembedded? There it makes
-> > sense since many layers share one mailing list. However, here we are
-> > talking about the docs repository with its own mailing list. There
-> > should be no other patches sent to it than those that are intended for
-> > the docs repository, so there should be no need to add an extra
-> > [yocto-docs] prefix.
-> > 
-> I agree. no need to include [yocto-docs] in the subject line.
-> 
-> I mean "git sent-email -1 -M --subject-prefix=PATCH --to
-> docs@lists.yoctoproject.org"
-> 
-> don't we want a subject? the subject part was removed from the README.
+Signed-off-by: Tanu Kaskinen <tanuk@iki.fi>
+---
 
-If the --subject-prefix option is not set, then git send-email will by
-default generate a subject containing a "[PATCH]" prefix plus the
-commit title. This patch was submitted without the --subject-prefix
-option, and as you can see, the subject is fine.
+v2: Added Signed-off-by.
 
-I forgot to add Signed-off-by to the patch, I'll resend it.
+ README | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
+diff --git a/README b/README
+index 62c2a3ffb..6a7f3abe6 100644
+--- a/README
++++ b/README
+@@ -11,15 +11,13 @@ Where to Send Patches
+ =====================
+ 
+ When sending single patches, please using something like:
+-'git send-email -1 --to docs@lists.yoctoproject.org --subject-prefix=yocto-docs][PATCH'
++'git send-email -1 --to docs@lists.yoctoproject.org
+ 
+-These values can be set as defaults for this repository:
++The To header can be set as default for this repository:
+ 
+ $ git config sendemail.to docs@lists.yoctoproject.org
+-$ git config format.subjectPrefix yocto-docs][PATCH
+ 
+ Now you can just do 'git send-email origin/master' to send all local patches.
+ 
+ Git repository: http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/
+ Mailing list: docs@lists.yoctoproject.org
+-Please cc: Scott Rifenbark <srifenbark@gmail.com> on changes.
 -- 
-Tanu
-
-https://www.patreon.com/tanuk
-https://liberapay.com/tanuk
+2.20.1
 
