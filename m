@@ -1,402 +1,248 @@
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
- by mx.groups.io with SMTP id smtpd.web09.4007.1581384836042603192
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+ by mx.groups.io with SMTP id smtpd.web10.4287.1581386250030878398
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Feb 2020 17:33:56 -0800
+ Mon, 10 Feb 2020 17:57:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=XtiR+GEE;
- spf=pass (domain: gmail.com, ip: 209.85.214.193, mailfrom: akuster808@gmail.com)
-Received: by mail-pl1-f193.google.com with SMTP id d9so3548749plo.11
-        for <docs@lists.yoctoproject.org>; Mon, 10 Feb 2020 17:33:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:autocrypt:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language;
-        bh=sJ5veuePVUfuKq+p2DbLwtfXz2uFsj2lldnpAPMqpTI=;
-        b=XtiR+GEEhIvm9G3qXk83w19+PLiEqzt4xC5gFZn/HQOuKUSGKBRRJab2n3PZJXakfD
-         OHTRb5JW95JIy8fBMrgDdolOuEsD0w0Ci5autaw7maqSVDFC+n+SoxeiPJuD1R/6HIo7
-         HpCXm4rIYctFA+8wsYD8dnk1RigOyOLKkwj+D1AeWgDjeM0sRNJR3uU3ruEESxYVHvk7
-         FUC4TSJnrZpZMXSrx/e69VOVbzW16eD9UMvx2puZSMCgIVUHT64fVhmu75OI4iTpHfDS
-         E4Zy5ML6XUASXxXChzhixPABxcvWq8ZckYlkS00zWo4ZBu+2dj5GUjj7o9HrEs7AYDZL
-         ANGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
-         :date:user-agent:mime-version:in-reply-to:content-language;
-        bh=sJ5veuePVUfuKq+p2DbLwtfXz2uFsj2lldnpAPMqpTI=;
-        b=F2TtmWjhzQdkq4wlWdWWQ4dGWNy4tEKu2OVnfyD5jUl7l8LWdZbQ648uG2/QYUHpl7
-         Bse5lIWnwan2An09WvIb49DODYh+pt3UcamkgvtTsvV/PrVmV9k40dZm6ibX8KAPWMIf
-         L2kYhej8svvsrF9Bw4A6V8xM1Hj9+jKim8vPatsFXTMatDTyK3YneAqYhbLsuQbOTdKw
-         nblpqInpEndUrTu6ccnIao20AVYHFpVIZJkIhVpxQjfWDOxBa3yfHSr/eoFKoTfjBiJb
-         PnrggWPiXPmtJ943paG6glJah6bkP4OA2X2SJ7gR/SE9Ea6z1q0iI6lsgJpzU4T+aJL5
-         zoKw==
-X-Gm-Message-State: APjAAAWrlFs6TNPXqrub2/ayLfIGdVpg1jhfAhVtGAX2WDlgdjsYFWeK
-	hzFfXDxgAm5aKOUAx5eG//RuIPuo
-X-Google-Smtp-Source: APXvYqwKHidZP2ui3mt5MXYsmTZ9yEDa0CSCD+Yyhqc0zSTO8WoF/lLU64qg7Xoa3EwRmfVi4S3mgA==
-X-Received: by 2002:a17:902:a408:: with SMTP id p8mr16157045plq.132.1581384835121;
-        Mon, 10 Feb 2020 17:33:55 -0800 (PST)
-Return-Path: <akuster808@gmail.com>
-Received: from ?IPv6:2601:202:4180:a5c0:58cf:c2e4:7ede:a168? ([2601:202:4180:a5c0:58cf:c2e4:7ede:a168])
-        by smtp.gmail.com with ESMTPSA id b21sm1688011pfp.0.2020.02.10.17.33.54
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Feb 2020 17:33:54 -0800 (PST)
+ dkim=missing; spf=pass (domain: axis.com, ip: 195.60.68.18, mailfrom: peter.kjellerstedt@axis.com)
+IronPort-SDR: ETirdENhuUiNINK0Bs8LRrzZHzzj118G2Tc8iBPOZsyubd1xmiquCWUqYmuJl4iBgsPP2HAb25
+ WdNWhnCz+niPzZIYjrNwExS4wz8J1ifFnl2oG58fumK3U6koResNKZ3yRPNN9LrfGPsUFPxFbN
+ FgKEKtCxXZ/ABPrteWmv96E2ahllalrm8Dlllxs8Eg9e/zhBpsnNIvCYKVWiViWnKs9HwzxnCM
+ PssPPdshD1++2MmQiVDVqpnodak0HVjUWcaOq577MLOE9Mw+4/pngXUPQ23GwcvItxpA6Gv5/G
+ fYM=
+X-IronPort-AV: E=Sophos;i="5.70,427,1574118000"; 
+   d="scan'208,217";a="5133029"
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
 Subject: Re: [docs] [PATCH] README: A couple of updates due to recent changes
-To: docs@lists.yoctoproject.org
+Thread-Topic: [docs] [PATCH] README: A couple of updates due to recent changes
+Thread-Index: AQHV38P31uGbdlAfukSP6eg91uRfoqgUlwQAgACViyD///nHAIAAFOzQ
+Date: Tue, 11 Feb 2020 01:57:27 +0000
+Message-ID: <282e466e0097401e86157215fe3fb883@XBOX03.axis.com>
 References: <20200210033743.24295-1-tanuk@iki.fi>
  <f2b93c68-e11f-0007-f2e9-1cb5403461d0@gmail.com>
  <5d6c5c4a1eab46639d88912056a59f13@XBOX03.axis.com>
-From: "akuster" <akuster808@gmail.com>
-Autocrypt: addr=akuster808@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- 8CS2NxU=
-Message-ID: <425c5b7a-f1a6-0c5f-0e5c-77eef392f681@gmail.com>
-Date: Mon, 10 Feb 2020 17:33:52 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.4.1
+ <425c5b7a-f1a6-0c5f-0e5c-77eef392f681@gmail.com>
+In-Reply-To: <425c5b7a-f1a6-0c5f-0e5c-77eef392f681@gmail.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.0.5.60]
 MIME-Version: 1.0
-In-Reply-To: <5d6c5c4a1eab46639d88912056a59f13@XBOX03.axis.com>
-Content-Type: multipart/alternative;
- boundary="------------3D2516D52A79D4356F7C09F3"
 Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_282e466e0097401e86157215fe3fb883XBOX03axiscom_"
 
---------------3D2516D52A79D4356F7C09F3
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+--_000_282e466e0097401e86157215fe3fb883XBOX03axiscom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
+QXJlIHlvdSB0aGlua2luZyBvZiB0aGUgbGF5ZXJzIGluIG1ldGEtb3BlbmVtYmVkZGVkPyBUaGVy
+ZSBpdCBtYWtlcyBzZW5zZSBzaW5jZSBtYW55IGxheWVycyBzaGFyZSBvbmUgbWFpbGluZyBsaXN0
+LiBIb3dldmVyLCBoZXJlIHdlIGFyZSB0YWxraW5nIGFib3V0IHRoZSBkb2NzIHJlcG9zaXRvcnkg
+d2l0aCBpdHMgb3duIG1haWxpbmcgbGlzdC4gVGhlcmUgc2hvdWxkIGJlIG5vIG90aGVyIHBhdGNo
+ZXMgc2VudCB0byBpdCB0aGFuIHRob3NlIHRoYXQgYXJlIGludGVuZGVkIGZvciB0aGUgZG9jcyBy
+ZXBvc2l0b3J5LCBzbyB0aGVyZSBzaG91bGQgYmUgbm8gbmVlZCB0byBhZGQgYW4gZXh0cmEgW3lv
+Y3RvLWRvY3NdIHByZWZpeC4gQW5kIGZvciB0aGUgcmVjb3JkLCB0aGlzIG1hdGNoZXMgdGhlIGRv
+Y3VtZW50YXRpb24gZm9yIGJpdGJha2UsIHdoaWNoIGFsc28gaGFzIGl0cyBvd24gbWFpbGluZyBs
+aXN0Lg0KDQovL1BldGVyDQoNCkZyb206IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZyA8ZG9j
+c0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPiBPbiBCZWhhbGYgT2YgYWt1c3Rlcg0KU2VudDogZGVu
+IDExIGZlYnJ1YXJpIDIwMjAgMDI6MzQNClRvOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcN
+ClN1YmplY3Q6IFJlOiBbZG9jc10gW1BBVENIXSBSRUFETUU6IEEgY291cGxlIG9mIHVwZGF0ZXMg
+ZHVlIHRvIHJlY2VudCBjaGFuZ2VzDQoNCg0KT24gMi8xMC8yMCA1OjAxIFBNLCBQZXRlciBLamVs
+bGVyc3RlZHQgd3JvdGU6DQpUaGVyZSB3aWxsIGJlIGEgc3ViamVjdCwgYnV0IHRoZXJlIGlzIG5v
+IHJlYXNvbiB0byBwcmVmaXggaXQgd2l0aCDigJxbeW9jdG8tZG9jc13igJ0gYW55bW9yZSwgaXMg
+dGhlcmU/DQpub3BlLiAgQWxsIHRoZSBvdGhlciBsYXllcnMgaGF2ZSAtLXN1YmplY3QtcHJlZml4
+IHNvIGl0IHdvdWxkIGJlIG5pY2UgdG8ga2VlcCBpdCBjb25zaXN0ZW50Lg0KDQotIGFybWluDQoN
+Cg0KLy9QZXRlcg0KDQpGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc8bWFpbHRvOmRv
+Y3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz48
+bWFpbHRvOmRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmIE9mIGFrdXN0ZXIN
+ClNlbnQ6IGRlbiAxMCBmZWJydWFyaSAyMDIwIDE4OjAxDQpUbzogZG9jc0BsaXN0cy55b2N0b3By
+b2plY3Qub3JnPG1haWx0bzpkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc+DQpTdWJqZWN0OiBS
+ZTogW2RvY3NdIFtQQVRDSF0gUkVBRE1FOiBBIGNvdXBsZSBvZiB1cGRhdGVzIGR1ZSB0byByZWNl
+bnQgY2hhbmdlcw0KDQoNCk9uIDIvOS8yMCA3OjM3IFBNLCBUYW51IEthc2tpbmVuIHdyb3RlOg0K
+DQpTaW5jZSB0aGVyZSdzIG5vdyBhIHNlcGFyYXRlIG1haWxpbmcgbGlzdCBmb3IgZG9jcywgSSB0
+aGluayB0aGUNCg0KeW9jdG8tZG9jcyB0YWcgZG9lc24ndCBuZWVkIHRvIGJlIGFkZGVkIHRvIHBh
+dGNoZXMgYW55IG1vcmUuDQoNCg0KDQotLS0NCg0KDQoNCiBSRUFETUUgfCA2ICsrLS0tLQ0KDQog
+MSBmaWxlIGNoYW5nZWQsIDIgaW5zZXJ0aW9ucygrKSwgNCBkZWxldGlvbnMoLSkNCg0KDQoNCmRp
+ZmYgLS1naXQgYS9SRUFETUUgYi9SRUFETUUNCg0KaW5kZXggNjJjMmEzZmZiLi42YTdmM2FiZTYg
+MTAwNjQ0DQoNCi0tLSBhL1JFQURNRQ0KDQorKysgYi9SRUFETUUNCg0KQEAgLTExLDE1ICsxMSwx
+MyBAQCBXaGVyZSB0byBTZW5kIFBhdGNoZXMNCg0KID09PT09PT09PT09PT09PT09PT09PQ0KDQoN
+Cg0KIFdoZW4gc2VuZGluZyBzaW5nbGUgcGF0Y2hlcywgcGxlYXNlIHVzaW5nIHNvbWV0aGluZyBs
+aWtlOg0KDQotJ2dpdCBzZW5kLWVtYWlsIC0xIC0tdG8gZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qu
+b3JnPG1haWx0bzpkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc+IC0tc3ViamVjdC1wcmVmaXg9
+eW9jdG8tZG9jc11bUEFUQ0gnDQoNCisnZ2l0IHNlbmQtZW1haWwgLTEgLS10byBkb2NzQGxpc3Rz
+LnlvY3RvcHJvamVjdC5vcmc8bWFpbHRvOmRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4NCldl
+IHN0aWxsIG5lZWQgYSBzdWJqZWN0DQoNCg0KDQoNCg0KLVRoZXNlIHZhbHVlcyBjYW4gYmUgc2V0
+IGFzIGRlZmF1bHRzIGZvciB0aGlzIHJlcG9zaXRvcnk6DQoNCitUaGUgVG8gaGVhZGVyIGNhbiBi
+ZSBzZXQgYXMgZGVmYXVsdCBmb3IgdGhpcyByZXBvc2l0b3J5Og0KDQoNCg0KICQgZ2l0IGNvbmZp
+ZyBzZW5kZW1haWwudG8gZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPG1haWx0bzpkb2NzQGxp
+c3RzLnlvY3RvcHJvamVjdC5vcmc+DQoNCi0kIGdpdCBjb25maWcgZm9ybWF0LnN1YmplY3RQcmVm
+aXggeW9jdG8tZG9jc11bUEFUQ0gNCldlIHN0aWxsIG5lZWQgYSBzdWJqZWN0DQoNCg0KDQoNCg0K
+DQoNCiBOb3cgeW91IGNhbiBqdXN0IGRvICdnaXQgc2VuZC1lbWFpbCBvcmlnaW4vbWFzdGVyJyB0
+byBzZW5kIGFsbCBsb2NhbCBwYXRjaGVzLg0KDQoNCg0KIEdpdCByZXBvc2l0b3J5OiBodHRwOi8v
+Z2l0LnlvY3RvcHJvamVjdC5vcmcvY2dpdC9jZ2l0LmNnaS95b2N0by1kb2NzLw0KDQogTWFpbGlu
+ZyBsaXN0OiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc8bWFpbHRvOmRvY3NAbGlzdHMueW9j
+dG9wcm9qZWN0Lm9yZz4NCg0KLVBsZWFzZSBjYzogU2NvdHQgUmlmZW5iYXJrIDxzcmlmZW5iYXJr
+QGdtYWlsLmNvbT48bWFpbHRvOnNyaWZlbmJhcmtAZ21haWwuY29tPiBvbiBjaGFuZ2VzLg0KDQoN
+Cg0KDQoNCg0KDQoNCg0KDQoNCg==
 
+--_000_282e466e0097401e86157215fe3fb883XBOX03axiscom_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 2/10/20 5:01 PM, Peter Kjellerstedt wrote:
->
-> There will be a subject, but there is no reason to prefix it with
-> “[yocto-docs]” anymore, is there?
->
-nope.  All the other layers have --subject-prefix so it would be nice to
-keep it consistent.
+PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp2bWwiIHhtbG5zOm89InVy
+bjpzY2hlbWFzLW1pY3Jvc29mdC1jb206b2ZmaWNlOm9mZmljZSIgeG1sbnM6dz0idXJuOnNjaGVt
+YXMtbWljcm9zb2Z0LWNvbTpvZmZpY2U6d29yZCIgeG1sbnM6bT0iaHR0cDovL3NjaGVtYXMubWlj
+cm9zb2Z0LmNvbS9vZmZpY2UvMjAwNC8xMi9vbW1sIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv
+VFIvUkVDLWh0bWw0MCI+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIg
+Y29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRv
+ciIgY29udGVudD0iTWljcm9zb2Z0IFdvcmQgMTUgKGZpbHRlcmVkIG1lZGl1bSkiPg0KPHN0eWxl
+PjwhLS0NCi8qIEZvbnQgRGVmaW5pdGlvbnMgKi8NCkBmb250LWZhY2UNCgl7Zm9udC1mYW1pbHk6
+IkNhbWJyaWEgTWF0aCI7DQoJcGFub3NlLTE6MiA0IDUgMyA1IDQgNiAzIDIgNDt9DQpAZm9udC1m
+YWNlDQoJe2ZvbnQtZmFtaWx5OkNhbGlicmk7DQoJcGFub3NlLTE6MiAxNSA1IDIgMiAyIDQgMyAy
+IDQ7fQ0KQGZvbnQtZmFjZQ0KCXtmb250LWZhbWlseTpDb25zb2xhczsNCglwYW5vc2UtMToyIDEx
+IDYgOSAyIDIgNCAzIDIgNDt9DQovKiBTdHlsZSBEZWZpbml0aW9ucyAqLw0KcC5Nc29Ob3JtYWws
+IGxpLk1zb05vcm1hbCwgZGl2Lk1zb05vcm1hbA0KCXttYXJnaW46MGNtOw0KCW1hcmdpbi1ib3R0
+b206LjAwMDFwdDsNCglmb250LXNpemU6MTEuMHB0Ow0KCWZvbnQtZmFtaWx5OiJDYWxpYnJpIixz
+YW5zLXNlcmlmO30NCmE6bGluaywgc3Bhbi5Nc29IeXBlcmxpbmsNCgl7bXNvLXN0eWxlLXByaW9y
+aXR5Ojk5Ow0KCWNvbG9yOmJsdWU7DQoJdGV4dC1kZWNvcmF0aW9uOnVuZGVybGluZTt9DQphOnZp
+c2l0ZWQsIHNwYW4uTXNvSHlwZXJsaW5rRm9sbG93ZWQNCgl7bXNvLXN0eWxlLXByaW9yaXR5Ojk5
+Ow0KCWNvbG9yOnB1cnBsZTsNCgl0ZXh0LWRlY29yYXRpb246dW5kZXJsaW5lO30NCnByZQ0KCXtt
+c28tc3R5bGUtcHJpb3JpdHk6OTk7DQoJbXNvLXN0eWxlLWxpbms6IkhUTUwgUHJlZm9ybWF0dGVk
+IENoYXIiOw0KCW1hcmdpbjowY207DQoJbWFyZ2luLWJvdHRvbTouMDAwMXB0Ow0KCWZvbnQtc2l6
+ZToxMC4wcHQ7DQoJZm9udC1mYW1pbHk6IkNvdXJpZXIgTmV3Ijt9DQpwLm1zb25vcm1hbDAsIGxp
+Lm1zb25vcm1hbDAsIGRpdi5tc29ub3JtYWwwDQoJe21zby1zdHlsZS1uYW1lOm1zb25vcm1hbDsN
+Cgltc28tbWFyZ2luLXRvcC1hbHQ6YXV0bzsNCgltYXJnaW4tcmlnaHQ6MGNtOw0KCW1zby1tYXJn
+aW4tYm90dG9tLWFsdDphdXRvOw0KCW1hcmdpbi1sZWZ0OjBjbTsNCglmb250LXNpemU6MTEuMHB0
+Ow0KCWZvbnQtZmFtaWx5OiJDYWxpYnJpIixzYW5zLXNlcmlmO30NCnNwYW4uSFRNTFByZWZvcm1h
+dHRlZENoYXINCgl7bXNvLXN0eWxlLW5hbWU6IkhUTUwgUHJlZm9ybWF0dGVkIENoYXIiOw0KCW1z
+by1zdHlsZS1wcmlvcml0eTo5OTsNCgltc28tc3R5bGUtbGluazoiSFRNTCBQcmVmb3JtYXR0ZWQi
+Ow0KCWZvbnQtZmFtaWx5OkNvbnNvbGFzO30NCnNwYW4uRW1haWxTdHlsZTIwDQoJe21zby1zdHls
+ZS10eXBlOnBlcnNvbmFsOw0KCWZvbnQtZmFtaWx5OiJDYWxpYnJpIixzYW5zLXNlcmlmOw0KCWNv
+bG9yOiM5NDM2MzQ7DQoJZm9udC13ZWlnaHQ6bm9ybWFsOw0KCWZvbnQtc3R5bGU6bm9ybWFsO30N
+CnNwYW4uRW1haWxTdHlsZTIxDQoJe21zby1zdHlsZS10eXBlOnBlcnNvbmFsLXJlcGx5Ow0KCWZv
+bnQtZmFtaWx5OiJDYWxpYnJpIixzYW5zLXNlcmlmOw0KCWNvbG9yOiM5NDM2MzQ7DQoJZm9udC13
+ZWlnaHQ6bm9ybWFsOw0KCWZvbnQtc3R5bGU6bm9ybWFsO30NCi5Nc29DaHBEZWZhdWx0DQoJe21z
+by1zdHlsZS10eXBlOmV4cG9ydC1vbmx5Ow0KCWZvbnQtc2l6ZToxMC4wcHQ7fQ0KQHBhZ2UgV29y
+ZFNlY3Rpb24xDQoJe3NpemU6NjEyLjBwdCA3OTIuMHB0Ow0KCW1hcmdpbjo3MC44NXB0IDcwLjg1
+cHQgNzAuODVwdCA3MC44NXB0O30NCmRpdi5Xb3JkU2VjdGlvbjENCgl7cGFnZTpXb3JkU2VjdGlv
+bjE7fQ0KLS0+PC9zdHlsZT48IS0tW2lmIGd0ZSBtc28gOV0+PHhtbD4NCjxvOnNoYXBlZGVmYXVs
+dHMgdjpleHQ9ImVkaXQiIHNwaWRtYXg9IjEwMjYiIC8+DQo8L3htbD48IVtlbmRpZl0tLT48IS0t
+W2lmIGd0ZSBtc28gOV0+PHhtbD4NCjxvOnNoYXBlbGF5b3V0IHY6ZXh0PSJlZGl0Ij4NCjxvOmlk
+bWFwIHY6ZXh0PSJlZGl0IiBkYXRhPSIxIiAvPg0KPC9vOnNoYXBlbGF5b3V0PjwveG1sPjwhW2Vu
+ZGlmXS0tPg0KPC9oZWFkPg0KPGJvZHkgbGFuZz0iU1YiIGxpbms9ImJsdWUiIHZsaW5rPSJwdXJw
+bGUiPg0KPGRpdiBjbGFzcz0iV29yZFNlY3Rpb24xIj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxz
+cGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iY29sb3I6Izk0MzYzNDttc28tZmFyZWFzdC1sYW5ndWFn
+ZTpFTi1VUyI+QXJlIHlvdSB0aGlua2luZyBvZiB0aGUgbGF5ZXJzIGluIG1ldGEtb3BlbmVtYmVk
+ZGVkPyBUaGVyZSBpdCBtYWtlcyBzZW5zZSBzaW5jZSBtYW55IGxheWVycyBzaGFyZSBvbmUgbWFp
+bGluZyBsaXN0LiBIb3dldmVyLCBoZXJlIHdlIGFyZSB0YWxraW5nIGFib3V0IHRoZSBkb2NzIHJl
+cG9zaXRvcnkNCiB3aXRoIGl0cyBvd24gbWFpbGluZyBsaXN0LiBUaGVyZSBzaG91bGQgYmUgbm8g
+b3RoZXIgcGF0Y2hlcyBzZW50IHRvIGl0IHRoYW4gdGhvc2UgdGhhdCBhcmUgaW50ZW5kZWQgZm9y
+IHRoZSBkb2NzIHJlcG9zaXRvcnksIHNvIHRoZXJlIHNob3VsZCBiZSBubyBuZWVkIHRvIGFkZCBh
+biBleHRyYSBbeW9jdG8tZG9jc10gcHJlZml4LiBBbmQgZm9yIHRoZSByZWNvcmQsIHRoaXMgbWF0
+Y2hlcyB0aGUgZG9jdW1lbnRhdGlvbiBmb3IgYml0YmFrZSwgd2hpY2gNCiBhbHNvIGhhcyBpdHMg
+b3duIG1haWxpbmcgbGlzdC48bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9y
+bWFsIj48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9ImNvbG9yOiM5NDM2MzQ7bXNvLWZhcmVhc3Qt
+bGFuZ3VhZ2U6RU4tVVMiPjxvOnA+Jm5ic3A7PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJN
+c29Ob3JtYWwiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iY29sb3I6Izk0MzYzNDttc28tZmFy
+ZWFzdC1sYW5ndWFnZTpFTi1VUyI+Ly9QZXRlcjxvOnA+PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNs
+YXNzPSJNc29Ob3JtYWwiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iY29sb3I6Izk0MzYzNDtt
+c28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+PG86cD4mbmJzcDs8L286cD48L3NwYW4+PC9wPg0K
+PGRpdiBzdHlsZT0iYm9yZGVyOm5vbmU7Ym9yZGVyLWxlZnQ6c29saWQgYmx1ZSAxLjVwdDtwYWRk
+aW5nOjBjbSAwY20gMGNtIDQuMHB0Ij4NCjxkaXY+DQo8ZGl2IHN0eWxlPSJib3JkZXI6bm9uZTti
+b3JkZXItdG9wOnNvbGlkICNFMUUxRTEgMS4wcHQ7cGFkZGluZzozLjBwdCAwY20gMGNtIDBjbSI+
+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj48c3BhbiBsYW5nPSJFTi1VUyI+RnJvbTo8L3NwYW4+
+PC9iPjxzcGFuIGxhbmc9IkVOLVVTIj4gZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnICZsdDtk
+b2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcmZ3Q7DQo8Yj5PbiBCZWhhbGYgT2YgPC9iPmFrdXN0
+ZXI8YnI+DQo8Yj5TZW50OjwvYj4gZGVuIDExIGZlYnJ1YXJpIDIwMjAgMDI6MzQ8YnI+DQo8Yj5U
+bzo8L2I+IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZzxicj4NCjxiPlN1YmplY3Q6PC9iPiBS
+ZTogW2RvY3NdIFtQQVRDSF0gUkVBRE1FOiBBIGNvdXBsZSBvZiB1cGRhdGVzIGR1ZSB0byByZWNl
+bnQgY2hhbmdlczxvOnA+PC9vOnA+PC9zcGFuPjwvcD4NCjwvZGl2Pg0KPC9kaXY+DQo8cCBjbGFz
+cz0iTXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwi
+IHN0eWxlPSJtYXJnaW4tYm90dG9tOjEyLjBwdCI+PG86cD4mbmJzcDs8L286cD48L3A+DQo8ZGl2
+Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+T24gMi8xMC8yMCA1OjAxIFBNLCBQZXRlciBLamVsbGVy
+c3RlZHQgd3JvdGU6PG86cD48L286cD48L3A+DQo8L2Rpdj4NCjxibG9ja3F1b3RlIHN0eWxlPSJt
+YXJnaW4tdG9wOjUuMHB0O21hcmdpbi1ib3R0b206NS4wcHQiPg0KPHAgY2xhc3M9Ik1zb05vcm1h
+bCI+PHNwYW4gbGFuZz0iRU4tVVMiIHN0eWxlPSJjb2xvcjojOTQzNjM0O21zby1mYXJlYXN0LWxh
+bmd1YWdlOkVOLVVTIj5UaGVyZSB3aWxsIGJlIGEgc3ViamVjdCwgYnV0IHRoZXJlIGlzIG5vIHJl
+YXNvbiB0byBwcmVmaXggaXQgd2l0aCDigJxbeW9jdG8tZG9jc13igJ0gYW55bW9yZSwgaXMgdGhl
+cmU/PC9zcGFuPjxvOnA+PC9vOnA+PC9wPg0KPC9ibG9ja3F1b3RlPg0KPHAgY2xhc3M9Ik1zb05v
+cm1hbCI+bm9wZS4mbmJzcDsgQWxsIHRoZSBvdGhlciBsYXllcnMgaGF2ZSAtLXN1YmplY3QtcHJl
+Zml4IHNvIGl0IHdvdWxkIGJlIG5pY2UgdG8ga2VlcCBpdCBjb25zaXN0ZW50Ljxicj4NCjxicj4N
+Ci0gYXJtaW48YnI+DQo8YnI+DQo8bzpwPjwvbzpwPjwvcD4NCjxibG9ja3F1b3RlIHN0eWxlPSJt
+YXJnaW4tdG9wOjUuMHB0O21hcmdpbi1ib3R0b206NS4wcHQiPg0KPHAgY2xhc3M9Ik1zb05vcm1h
+bCI+PHNwYW4gbGFuZz0iRU4tVVMiIHN0eWxlPSJjb2xvcjojOTQzNjM0O21zby1mYXJlYXN0LWxh
+bmd1YWdlOkVOLVVTIj4mbmJzcDs8L3NwYW4+PG86cD48L286cD48L3A+DQo8cCBjbGFzcz0iTXNv
+Tm9ybWFsIj48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9ImNvbG9yOiM5NDM2MzQ7bXNvLWZhcmVh
+c3QtbGFuZ3VhZ2U6RU4tVVMiPi8vUGV0ZXI8L3NwYW4+PG86cD48L286cD48L3A+DQo8cCBjbGFz
+cz0iTXNvTm9ybWFsIj48c3BhbiBsYW5nPSJFTi1VUyIgc3R5bGU9ImNvbG9yOiM5NDM2MzQ7bXNv
+LWZhcmVhc3QtbGFuZ3VhZ2U6RU4tVVMiPiZuYnNwOzwvc3Bhbj48bzpwPjwvbzpwPjwvcD4NCjxk
+aXYgc3R5bGU9ImJvcmRlcjpub25lO2JvcmRlci1sZWZ0OnNvbGlkIGJsdWUgMS41cHQ7cGFkZGlu
+ZzowY20gMGNtIDBjbSA0LjBwdCI+DQo8ZGl2Pg0KPGRpdiBzdHlsZT0iYm9yZGVyOm5vbmU7Ym9y
+ZGVyLXRvcDpzb2xpZCAjRTFFMUUxIDEuMHB0O3BhZGRpbmc6My4wcHQgMGNtIDBjbSAwY20iPg0K
+PHAgY2xhc3M9Ik1zb05vcm1hbCI+PGI+PHNwYW4gbGFuZz0iRU4tVVMiPkZyb206PC9zcGFuPjwv
+Yj48c3BhbiBsYW5nPSJFTi1VUyI+IDxhIGhyZWY9Im1haWx0bzpkb2NzQGxpc3RzLnlvY3RvcHJv
+amVjdC5vcmciPg0KZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPC9hPiA8YSBocmVmPSJtYWls
+dG86ZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnIj4mbHQ7ZG9jc0BsaXN0cy55b2N0b3Byb2pl
+Y3Qub3JnJmd0OzwvYT4NCjxiPk9uIEJlaGFsZiBPZiA8L2I+YWt1c3Rlcjxicj4NCjxiPlNlbnQ6
+PC9iPiBkZW4gMTAgZmVicnVhcmkgMjAyMCAxODowMTxicj4NCjxiPlRvOjwvYj4gPGEgaHJlZj0i
+bWFpbHRvOmRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZyI+ZG9jc0BsaXN0cy55b2N0b3Byb2pl
+Y3Qub3JnPC9hPjxicj4NCjxiPlN1YmplY3Q6PC9iPiBSZTogW2RvY3NdIFtQQVRDSF0gUkVBRE1F
+OiBBIGNvdXBsZSBvZiB1cGRhdGVzIGR1ZSB0byByZWNlbnQgY2hhbmdlczwvc3Bhbj48bzpwPjwv
+bzpwPjwvcD4NCjwvZGl2Pg0KPC9kaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj4mbmJzcDs8bzpw
+PjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiIHN0eWxlPSJtYXJnaW4tYm90dG9tOjEy
+LjBwdCI+Jm5ic3A7PG86cD48L286cD48L3A+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+
+T24gMi85LzIwIDc6MzcgUE0sIFRhbnUgS2Fza2luZW4gd3JvdGU6PG86cD48L286cD48L3A+DQo8
+L2Rpdj4NCjxibG9ja3F1b3RlIHN0eWxlPSJtYXJnaW4tdG9wOjUuMHB0O21hcmdpbi1ib3R0b206
+NS4wcHQiPg0KPHByZT5TaW5jZSB0aGVyZSdzIG5vdyBhIHNlcGFyYXRlIG1haWxpbmcgbGlzdCBm
+b3IgZG9jcywgSSB0aGluayB0aGU8bzpwPjwvbzpwPjwvcHJlPg0KPHByZT55b2N0by1kb2NzIHRh
+ZyBkb2Vzbid0IG5lZWQgdG8gYmUgYWRkZWQgdG8gcGF0Y2hlcyBhbnkgbW9yZS48bzpwPjwvbzpw
+PjwvcHJlPg0KPHByZT4mbmJzcDs8bzpwPjwvbzpwPjwvcHJlPg0KPHByZT4tLS08bzpwPjwvbzpw
+PjwvcHJlPg0KPHByZT4mbmJzcDs8bzpwPjwvbzpwPjwvcHJlPg0KPHByZT4gUkVBRE1FIHwgNiAm
+IzQzOyYjNDM7LS0tLTxvOnA+PC9vOnA+PC9wcmU+DQo8cHJlPiAxIGZpbGUgY2hhbmdlZCwgMiBp
+bnNlcnRpb25zKCYjNDM7KSwgNCBkZWxldGlvbnMoLSk8bzpwPjwvbzpwPjwvcHJlPg0KPHByZT4m
+bmJzcDs8bzpwPjwvbzpwPjwvcHJlPg0KPHByZT5kaWZmIC0tZ2l0IGEvUkVBRE1FIGIvUkVBRE1F
+PG86cD48L286cD48L3ByZT4NCjxwcmU+aW5kZXggNjJjMmEzZmZiLi42YTdmM2FiZTYgMTAwNjQ0
+PG86cD48L286cD48L3ByZT4NCjxwcmU+LS0tIGEvUkVBRE1FPG86cD48L286cD48L3ByZT4NCjxw
+cmU+JiM0MzsmIzQzOyYjNDM7IGIvUkVBRE1FPG86cD48L286cD48L3ByZT4NCjxwcmU+QEAgLTEx
+LDE1ICYjNDM7MTEsMTMgQEAgV2hlcmUgdG8gU2VuZCBQYXRjaGVzPG86cD48L286cD48L3ByZT4N
+CjxwcmU+ID09PT09PT09PT09PT09PT09PT09PTxvOnA+PC9vOnA+PC9wcmU+DQo8cHJlPiA8bzpw
+PjwvbzpwPjwvcHJlPg0KPHByZT4mbmJzcDtXaGVuIHNlbmRpbmcgc2luZ2xlIHBhdGNoZXMsIHBs
+ZWFzZSB1c2luZyBzb21ldGhpbmcgbGlrZTo8bzpwPjwvbzpwPjwvcHJlPg0KPHByZT4tJ2dpdCBz
+ZW5kLWVtYWlsIC0xIC0tdG8gPGEgaHJlZj0ibWFpbHRvOmRvY3NAbGlzdHMueW9jdG9wcm9qZWN0
+Lm9yZyI+ZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPC9hPiAtLXN1YmplY3QtcHJlZml4PXlv
+Y3RvLWRvY3NdW1BBVENIJzxvOnA+PC9vOnA+PC9wcmU+DQo8cHJlPiYjNDM7J2dpdCBzZW5kLWVt
+YWlsIC0xIC0tdG8gPGEgaHJlZj0ibWFpbHRvOmRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZyI+
+ZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPC9hPjxvOnA+PC9vOnA+PC9wcmU+DQo8L2Jsb2Nr
+cXVvdGU+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj5XZSBzdGlsbCBuZWVkIGEgc3ViamVjdDxicj4N
+Cjxicj4NCjxicj4NCjxvOnA+PC9vOnA+PC9wPg0KPGJsb2NrcXVvdGUgc3R5bGU9Im1hcmdpbi10
+b3A6NS4wcHQ7bWFyZ2luLWJvdHRvbTo1LjBwdCI+DQo8cHJlPiA8bzpwPjwvbzpwPjwvcHJlPg0K
+PHByZT4tVGhlc2UgdmFsdWVzIGNhbiBiZSBzZXQgYXMgZGVmYXVsdHMgZm9yIHRoaXMgcmVwb3Np
+dG9yeTo8bzpwPjwvbzpwPjwvcHJlPg0KPHByZT4mIzQzO1RoZSBUbyBoZWFkZXIgY2FuIGJlIHNl
+dCBhcyBkZWZhdWx0IGZvciB0aGlzIHJlcG9zaXRvcnk6PG86cD48L286cD48L3ByZT4NCjxwcmU+
+IDxvOnA+PC9vOnA+PC9wcmU+DQo8cHJlPiZuYnNwOyQgZ2l0IGNvbmZpZyBzZW5kZW1haWwudG8g
+PGEgaHJlZj0ibWFpbHRvOmRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZyI+ZG9jc0BsaXN0cy55
+b2N0b3Byb2plY3Qub3JnPC9hPjxvOnA+PC9vOnA+PC9wcmU+DQo8cHJlPi0kIGdpdCBjb25maWcg
+Zm9ybWF0LnN1YmplY3RQcmVmaXggeW9jdG8tZG9jc11bUEFUQ0g8bzpwPjwvbzpwPjwvcHJlPg0K
+PC9ibG9ja3F1b3RlPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+V2Ugc3RpbGwgbmVlZCBhIHN1Ympl
+Y3Q8YnI+DQo8YnI+DQo8YnI+DQo8bzpwPjwvbzpwPjwvcD4NCjxibG9ja3F1b3RlIHN0eWxlPSJt
+YXJnaW4tdG9wOjUuMHB0O21hcmdpbi1ib3R0b206NS4wcHQiPg0KPHByZT4mbmJzcDs8bzpwPjwv
+bzpwPjwvcHJlPg0KPHByZT4gPG86cD48L286cD48L3ByZT4NCjxwcmU+Jm5ic3A7Tm93IHlvdSBj
+YW4ganVzdCBkbyAnZ2l0IHNlbmQtZW1haWwgb3JpZ2luL21hc3RlcicgdG8gc2VuZCBhbGwgbG9j
+YWwgcGF0Y2hlcy48bzpwPjwvbzpwPjwvcHJlPg0KPHByZT4gPG86cD48L286cD48L3ByZT4NCjxw
+cmU+Jm5ic3A7R2l0IHJlcG9zaXRvcnk6IDxhIGhyZWY9Imh0dHA6Ly9naXQueW9jdG9wcm9qZWN0
+Lm9yZy9jZ2l0L2NnaXQuY2dpL3lvY3RvLWRvY3MvIj5odHRwOi8vZ2l0LnlvY3RvcHJvamVjdC5v
+cmcvY2dpdC9jZ2l0LmNnaS95b2N0by1kb2NzLzwvYT48bzpwPjwvbzpwPjwvcHJlPg0KPHByZT4g
+TWFpbGluZyBsaXN0OiA8YSBocmVmPSJtYWlsdG86ZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3Jn
+Ij5kb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc8L2E+PG86cD48L286cD48L3ByZT4NCjxwcmU+
+LVBsZWFzZSBjYzogU2NvdHQgUmlmZW5iYXJrIDxhIGhyZWY9Im1haWx0bzpzcmlmZW5iYXJrQGdt
+YWlsLmNvbSI+Jmx0O3NyaWZlbmJhcmtAZ21haWwuY29tJmd0OzwvYT4gb24gY2hhbmdlcy48bzpw
+PjwvbzpwPjwvcHJlPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PGJyPg0KPGJyPg0KPGJyPg0KPG86
+cD48L286cD48L3A+DQo8cHJlPiZuYnNwOzxvOnA+PC9vOnA+PC9wcmU+DQo8L2Jsb2NrcXVvdGU+
+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj4mbmJzcDs8bzpwPjwvbzpwPjwvcD4NCjwvZGl2Pg0KPHAg
+Y2xhc3M9Ik1zb05vcm1hbCI+PGJyPg0KPGJyPg0KPG86cD48L286cD48L3A+DQo8cHJlPjxvOnA+
+Jm5ic3A7PC9vOnA+PC9wcmU+DQo8L2Jsb2NrcXVvdGU+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48
+bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjwvZGl2Pg0KPC9kaXY+DQo8L2JvZHk+DQo8L2h0bWw+DQo=
 
-- armin
->
->  
->
-> //Peter
->
->  
->
-> *From:*docs@lists.yoctoproject.org <docs@lists.yoctoproject.org> *On
-> Behalf Of *akuster
-> *Sent:* den 10 februari 2020 18:01
-> *To:* docs@lists.yoctoproject.org
-> *Subject:* Re: [docs] [PATCH] README: A couple of updates due to
-> recent changes
->
->  
->
->  
->
-> On 2/9/20 7:37 PM, Tanu Kaskinen wrote:
->
->     Since there's now a separate mailing list for docs, I think the
->
->     yocto-docs tag doesn't need to be added to patches any more.
->
->      
->
->     ---
->
->      
->
->      README | 6 ++----
->
->      1 file changed, 2 insertions(+), 4 deletions(-)
->
->      
->
->     diff --git a/README b/README
->
->     index 62c2a3ffb..6a7f3abe6 100644
->
->     --- a/README
->
->     +++ b/README
->
->     @@ -11,15 +11,13 @@ Where to Send Patches
->
->      =====================
->
->      
->
->      When sending single patches, please using something like:
->
->     -'git send-email -1 --to docs@lists.yoctoproject.org <mailto:docs@lists.yoctoproject.org> --subject-prefix=yocto-docs][PATCH'
->
->     +'git send-email -1 --to docs@lists.yoctoproject.org <mailto:docs@lists.yoctoproject.org>
->
-> We still need a subject
->
->      
->
->     -These values can be set as defaults for this repository:
->
->     +The To header can be set as default for this repository:
->
->      
->
->      $ git config sendemail.to docs@lists.yoctoproject.org <mailto:docs@lists.yoctoproject.org>
->
->     -$ git config format.subjectPrefix yocto-docs][PATCH
->
-> We still need a subject
->
->      
->
->      
->
->      Now you can just do 'git send-email origin/master' to send all local patches.
->
->      
->
->      Git repository: http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/
->
->      Mailing list: docs@lists.yoctoproject.org <mailto:docs@lists.yoctoproject.org>
->
->     -Please cc: Scott Rifenbark <srifenbark@gmail.com> <mailto:srifenbark@gmail.com> on changes.
->
->
->
->      
->
->  
->
->
-> 
-
-
---------------3D2516D52A79D4356F7C09F3
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <br>
-    <br>
-    <div class="moz-cite-prefix">On 2/10/20 5:01 PM, Peter Kjellerstedt
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:5d6c5c4a1eab46639d88912056a59f13@XBOX03.axis.com">
-      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-      <meta name="Generator" content="Microsoft Word 15 (filtered
-        medium)">
-      <style><!--
-/* Font Definitions */
-@font-face
-	{font-family:"Cambria Math";
-	panose-1:2 4 5 3 5 4 6 3 2 4;}
-@font-face
-	{font-family:Calibri;
-	panose-1:2 15 5 2 2 2 4 3 2 4;}
-@font-face
-	{font-family:Consolas;
-	panose-1:2 11 6 9 2 2 4 3 2 4;}
-/* Style Definitions */
-p.MsoNormal, li.MsoNormal, div.MsoNormal
-	{margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-a:link, span.MsoHyperlink
-	{mso-style-priority:99;
-	color:blue;
-	text-decoration:underline;}
-a:visited, span.MsoHyperlinkFollowed
-	{mso-style-priority:99;
-	color:purple;
-	text-decoration:underline;}
-pre
-	{mso-style-priority:99;
-	mso-style-link:"HTML Preformatted Char";
-	margin:0cm;
-	margin-bottom:.0001pt;
-	font-size:10.0pt;
-	font-family:"Courier New";}
-p.msonormal0, li.msonormal0, div.msonormal0
-	{mso-style-name:msonormal;
-	mso-margin-top-alt:auto;
-	margin-right:0cm;
-	mso-margin-bottom-alt:auto;
-	margin-left:0cm;
-	font-size:11.0pt;
-	font-family:"Calibri",sans-serif;}
-span.HTMLPreformattedChar
-	{mso-style-name:"HTML Preformatted Char";
-	mso-style-priority:99;
-	mso-style-link:"HTML Preformatted";
-	font-family:Consolas;}
-span.EmailStyle20
-	{mso-style-type:personal-reply;
-	font-family:"Calibri",sans-serif;
-	color:#943634;
-	font-weight:normal;
-	font-style:normal;}
-.MsoChpDefault
-	{mso-style-type:export-only;
-	font-size:10.0pt;}
-@page WordSection1
-	{size:612.0pt 792.0pt;
-	margin:70.85pt 70.85pt 70.85pt 70.85pt;}
-div.WordSection1
-	{page:WordSection1;}
---></style><!--[if gte mso 9]><xml>
-<o:shapedefaults v:ext="edit" spidmax="1026" />
-</xml><![endif]--><!--[if gte mso 9]><xml>
-<o:shapelayout v:ext="edit">
-<o:idmap v:ext="edit" data="1" />
-</o:shapelayout></xml><![endif]-->
-      <div class="WordSection1">
-        <p class="MsoNormal"><span
-            style="color:#943634;mso-fareast-language:EN-US"
-            lang="EN-US">There will be a subject, but there is no reason
-            to prefix it with “[yocto-docs]” anymore, is there?</span></p>
-      </div>
-    </blockquote>
-    nope.  All the other layers have --subject-prefix so it would be
-    nice to keep it consistent.<br>
-    <br>
-    - armin<br>
-    <blockquote type="cite"
-      cite="mid:5d6c5c4a1eab46639d88912056a59f13@XBOX03.axis.com">
-      <div class="WordSection1">
-        <p class="MsoNormal"><span
-            style="color:#943634;mso-fareast-language:EN-US"
-            lang="EN-US"><o:p></o:p></span></p>
-        <p class="MsoNormal"><span
-            style="color:#943634;mso-fareast-language:EN-US"
-            lang="EN-US"><o:p> </o:p></span></p>
-        <p class="MsoNormal"><span
-            style="color:#943634;mso-fareast-language:EN-US"
-            lang="EN-US">//Peter<o:p></o:p></span></p>
-        <p class="MsoNormal"><span
-            style="color:#943634;mso-fareast-language:EN-US"
-            lang="EN-US"><o:p> </o:p></span></p>
-        <div style="border:none;border-left:solid blue 1.5pt;padding:0cm
-          0cm 0cm 4.0pt">
-          <div>
-            <div style="border:none;border-top:solid #E1E1E1
-              1.0pt;padding:3.0pt 0cm 0cm 0cm">
-              <p class="MsoNormal"><b><span lang="EN-US">From:</span></b><span
-                  lang="EN-US"> <a class="moz-txt-link-abbreviated" href="mailto:docs@lists.yoctoproject.org">docs@lists.yoctoproject.org</a>
-                  <a class="moz-txt-link-rfc2396E" href="mailto:docs@lists.yoctoproject.org">&lt;docs@lists.yoctoproject.org&gt;</a>
-                  <b>On Behalf Of </b>akuster<br>
-                  <b>Sent:</b> den 10 februari 2020 18:01<br>
-                  <b>To:</b> <a class="moz-txt-link-abbreviated" href="mailto:docs@lists.yoctoproject.org">docs@lists.yoctoproject.org</a><br>
-                  <b>Subject:</b> Re: [docs] [PATCH] README: A couple of
-                  updates due to recent changes<o:p></o:p></span></p>
-            </div>
-          </div>
-          <p class="MsoNormal"><o:p> </o:p></p>
-          <p class="MsoNormal" style="margin-bottom:12.0pt"><o:p> </o:p></p>
-          <div>
-            <p class="MsoNormal">On 2/9/20 7:37 PM, Tanu Kaskinen wrote:<o:p></o:p></p>
-          </div>
-          <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-            <pre>Since there's now a separate mailing list for docs, I think the<o:p></o:p></pre>
-            <pre>yocto-docs tag doesn't need to be added to patches any more.<o:p></o:p></pre>
-            <pre><o:p> </o:p></pre>
-            <pre>---<o:p></o:p></pre>
-            <pre><o:p> </o:p></pre>
-            <pre> README | 6 ++----<o:p></o:p></pre>
-            <pre> 1 file changed, 2 insertions(+), 4 deletions(-)<o:p></o:p></pre>
-            <pre><o:p> </o:p></pre>
-            <pre>diff --git a/README b/README<o:p></o:p></pre>
-            <pre>index 62c2a3ffb..6a7f3abe6 100644<o:p></o:p></pre>
-            <pre>--- a/README<o:p></o:p></pre>
-            <pre>+++ b/README<o:p></o:p></pre>
-            <pre>@@ -11,15 +11,13 @@ Where to Send Patches<o:p></o:p></pre>
-            <pre> =====================<o:p></o:p></pre>
-            <pre> <o:p></o:p></pre>
-            <pre> When sending single patches, please using something like:<o:p></o:p></pre>
-            <pre>-'git send-email -1 --to <a href="mailto:docs@lists.yoctoproject.org" moz-do-not-send="true">docs@lists.yoctoproject.org</a> --subject-prefix=yocto-docs][PATCH'<o:p></o:p></pre>
-            <pre>+'git send-email -1 --to <a href="mailto:docs@lists.yoctoproject.org" moz-do-not-send="true">docs@lists.yoctoproject.org</a><o:p></o:p></pre>
-          </blockquote>
-          <p class="MsoNormal">We still need a subject<br>
-            <br>
-            <o:p></o:p></p>
-          <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-            <pre> <o:p></o:p></pre>
-            <pre>-These values can be set as defaults for this repository:<o:p></o:p></pre>
-            <pre>+The To header can be set as default for this repository:<o:p></o:p></pre>
-            <pre> <o:p></o:p></pre>
-            <pre> $ git config sendemail.to <a href="mailto:docs@lists.yoctoproject.org" moz-do-not-send="true">docs@lists.yoctoproject.org</a><o:p></o:p></pre>
-            <pre>-$ git config format.subjectPrefix yocto-docs][PATCH<o:p></o:p></pre>
-          </blockquote>
-          <p class="MsoNormal">We still need a subject<br>
-            <br>
-            <o:p></o:p></p>
-          <blockquote style="margin-top:5.0pt;margin-bottom:5.0pt">
-            <pre><o:p> </o:p></pre>
-            <pre> <o:p></o:p></pre>
-            <pre> Now you can just do 'git send-email origin/master' to send all local patches.<o:p></o:p></pre>
-            <pre> <o:p></o:p></pre>
-            <pre> Git repository: <a href="http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/" moz-do-not-send="true">http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/</a><o:p></o:p></pre>
-            <pre> Mailing list: <a href="mailto:docs@lists.yoctoproject.org" moz-do-not-send="true">docs@lists.yoctoproject.org</a><o:p></o:p></pre>
-            <pre>-Please cc: Scott Rifenbark <a href="mailto:srifenbark@gmail.com" moz-do-not-send="true">&lt;srifenbark@gmail.com&gt;</a> on changes.<o:p></o:p></pre>
-            <p class="MsoNormal"><br>
-              <br>
-              <o:p></o:p></p>
-            <pre><o:p> </o:p></pre>
-          </blockquote>
-          <p class="MsoNormal"><o:p> </o:p></p>
-        </div>
-      </div>
-      <br>
-      <fieldset class="mimeAttachmentHeader"></fieldset>
-      <pre class="moz-quote-pre" wrap="">
-</pre>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------3D2516D52A79D4356F7C09F3--
+--_000_282e466e0097401e86157215fe3fb883XBOX03axiscom_--
