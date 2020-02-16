@@ -1,79 +1,59 @@
-Received: from out5-smtp.messagingengine.com (out5-smtp.messagingengine.com [66.111.4.29])
- by mx.groups.io with SMTP id smtpd.web11.6937.1581405370780616617
+Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
+ by mx.groups.io with SMTP id smtpd.web10.11463.1581857492134036771
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Feb 2020 23:16:12 -0800
+ Sun, 16 Feb 2020 04:51:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@messagingengine.com header.s=fm2 header.b=dGRDWIHS;
- spf=neutral (domain: iki.fi, ip: 66.111.4.29, mailfrom: tanuk@iki.fi)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailout.nyi.internal (Postfix) with ESMTP id C429C214CE
-	for <docs@lists.yoctoproject.org>; Tue, 11 Feb 2020 02:16:09 -0500 (EST)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 11 Feb 2020 02:16:09 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=content-transfer-encoding:date:from
-	:message-id:mime-version:subject:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=i0G0BVSNnC1t872At
-	84EyFoGXBBTv4zdDuFt4owf3xM=; b=dGRDWIHS6iNY+aOwCCFj8whGGjpGNFsHQ
-	/NfjGRYwj5s0IHPELbaoDpP5oIdDsegzRpUTulx8HEC149Qi/YVZYCZ0L6yajhNl
-	a+sdYdV8WQr18paQ5TL3usY0cdx/oO80Rk8unmTiHpOd7ACsYcUoZ+fMQFJGjevZ
-	Al9BXHQCfXQRRM+dRwTuced/AlRWWLg0tHXwt3+/MZbvUacn2MXnqrz5EX33RLq6
-	NR5EdC+89YeUtcqVs9xJU4cAmHSMPPqfXiF2AK6lxPfB6PNaPnIYQR8VXktP5fsm
-	b/gaL5ZIpgMPYuMyNz5lU+ErtU/lf/64GD1QKlG7GVj+ae0PGdQDA==
-X-ME-Sender: <xms:uVRCXgYAAEL_whazpD_5NlqGum2h9p-6FfXikW6CEe-hZgo3i1R3hw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedugedriedvgddutdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
-    dttdenucfhrhhomhepvfgrnhhuucfmrghskhhinhgvnhcuoehtrghnuhhksehikhhirdhf
-    iheqnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghenucfkphepudelie
-    drvdeggedrudeluddruddtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
-    mhgrihhlfhhrohhmpehtrghnuhhksehikhhirdhfih
-X-ME-Proxy: <xmx:uVRCXhYGISz3pX__8Ozex8Iff0MXH9e2121iG4i8oYBFYu5CVeZWPQ>
-    <xmx:uVRCXolRGFoc1837nfSxm8yuKSBfyr7FByP0SzH8fJrGkfMJLejkIw>
-    <xmx:uVRCXlwWwlUvmbd3fRKLA2dLm4ALlbmxDkUWIShX8Z-vsG7BEmlPIQ>
-    <xmx:uVRCXkbTJnxdg5XgP15mCkDjs6EIP5WBXFs7LLu3Rtc3NDagEPaovA>
-Received: from localhost.localdomain (unknown [196.244.191.106])
-	by mail.messagingengine.com (Postfix) with ESMTPA id 3D86D328005E
-	for <docs@lists.yoctoproject.org>; Tue, 11 Feb 2020 02:16:09 -0500 (EST)
-From: "Tanu Kaskinen" <tanuk@iki.fi>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] README: A couple of updates due to recent changes
-Date: Tue, 11 Feb 2020 09:15:25 +0200
-Message-Id: <20200211071524.40834-1-tanuk@iki.fi>
-X-Mailer: git-send-email 2.20.1
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:60268 helo=localhost.localdomain)
+	by cpanel7.indieserve.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(Exim 4.92)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1j3JOU-001wc1-9t
+	for docs@lists.yoctoproject.org; Sun, 16 Feb 2020 07:51:31 -0500
+Date: Sun, 16 Feb 2020 07:51:27 -0500 (EST)
+From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] dev-manual: phrase should read "inherit packagegroup"
+Message-ID: <alpine.LFD.2.21.2002160750530.2280683@localhost.localdomain>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-Signed-off-by: Tanu Kaskinen <tanuk@iki.fi>
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
 ---
 
-v2: Added Signed-off-by.
+diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
+index 1e6addde4..d230ea90a 100644
+--- a/documentation/dev-manual/dev-manual-common-tasks.xml
++++ b/documentation/dev-manual/dev-manual-common-tasks.xml
+@@ -1397,7 +1397,7 @@
+                 package specified in the <filename>PACKAGES</filename>
+                 statement.
+                 <note>
+-                    The <filename>inherit packages</filename> should be
++                    The <filename>inherit packagegroup</filename> line should be
+                     located near the top of the recipe, certainly before
+                     the <filename>PACKAGES</filename> statement.
+                 </note>
 
- README | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
-
-diff --git a/README b/README
-index 62c2a3ffb..6a7f3abe6 100644
---- a/README
-+++ b/README
-@@ -11,15 +11,13 @@ Where to Send Patches
- =====================
- 
- When sending single patches, please using something like:
--'git send-email -1 --to docs@lists.yoctoproject.org --subject-prefix=yocto-docs][PATCH'
-+'git send-email -1 --to docs@lists.yoctoproject.org
- 
--These values can be set as defaults for this repository:
-+The To header can be set as default for this repository:
- 
- $ git config sendemail.to docs@lists.yoctoproject.org
--$ git config format.subjectPrefix yocto-docs][PATCH
- 
- Now you can just do 'git send-email origin/master' to send all local patches.
- 
- Git repository: http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/
- Mailing list: docs@lists.yoctoproject.org
--Please cc: Scott Rifenbark <srifenbark@gmail.com> on changes.
 -- 
-2.20.1
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
