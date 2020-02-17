@@ -1,302 +1,141 @@
-Received: from mail-pg1-f193.google.com (mail-pg1-f193.google.com [209.85.215.193])
- by mx.groups.io with SMTP id smtpd.web12.10823.1581954942905499174
+Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
+ by mx.groups.io with SMTP id smtpd.web11.14989.1581970891448128319
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Feb 2020 07:55:43 -0800
+ Mon, 17 Feb 2020 12:21:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=NaN3QE4W;
- spf=pass (domain: gmail.com, ip: 209.85.215.193, mailfrom: akuster808@gmail.com)
-Received: by mail-pg1-f193.google.com with SMTP id z7so9392722pgk.7
-        for <docs@lists.yoctoproject.org>; Mon, 17 Feb 2020 07:55:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id;
-        bh=gsCgtb3DvGvZihXsJ/+OWACUXlHQenQwJQLoZq+0okU=;
-        b=NaN3QE4W5BdkTkUdr3TdIk3kNbql7nxO/M9I9Con6em8xXvBYCqkyZN6X855ccGxYm
-         xP8z8BNOAyLAuur2tRIKKib6jTLL0XPUgJkiPUUHWiAN57vPtoJtz5cD4pg7pJiFj5Pm
-         Ah3MYgzE7C4OwEUcQDQc8gjHLPDV5b9rGCm0OvG2Z8gdreEaSvuL+29Jb0Nz33M4sEPW
-         3i63FEeEixmB0Ou3GD/AISu3W6f/JlQml7Zvuii5cpVzhsAeHmLmkcFe0IyBukbenUq6
-         ntWJNUuQ2IWAovOweb3Nr03czT7woyCJ24FnxZ2+1/JQgcbkPAaRxjfACvxv1+t9UlL6
-         g8tQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id;
-        bh=gsCgtb3DvGvZihXsJ/+OWACUXlHQenQwJQLoZq+0okU=;
-        b=Wf4cayBe91VryzgLpa0M1hNEXW13KEFNbgHYluc0uya22F+psYx0F4nGeOMbxZx/at
-         JAZ5QjgNI3FxBNFubvMooepCruta1HPAWquNG6r323HjC4oUkBMDbDhdXkZM8A74JS8i
-         +Y8TbscDmnFmaH0HpZs0O4ReiAGO/itn88YyElgnmdSoQ9Y4B4MV1i76L3NVfvmxKspa
-         k9RdsWBOrfk2ge1fvY8ZhPI+S8UrWStJFJhUv3+AdYQpySdGsS9l63OPUOpnkQ0stkt1
-         qTajULk1zSnqBll0paAysK6HUFhcc15KEf5hy3VE6Shqj9kMdNjuzaiBIBPa4D0d74gy
-         yLLA==
-X-Gm-Message-State: APjAAAXNmE0US6qnkIsO2xPW6hpHoU/kl2RzKmtY+BHGl6vGCzB6LLi7
-	Sbqw0Z8HmRvJV4+hUSRusbWDkr0n
-X-Google-Smtp-Source: APXvYqxzrVPraqZokmRVhjOmeCcXi5uT0rNwe3Glsj8R6Nq5I0KTzcWTxxkRcg5vQDxYLGpcGDQC5w==
-X-Received: by 2002:a63:2a02:: with SMTP id q2mr17829601pgq.198.1581954941959;
-        Mon, 17 Feb 2020 07:55:41 -0800 (PST)
-Return-Path: <akuster808@gmail.com>
-Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:9144:9b3e:b52:fa29])
-        by smtp.gmail.com with ESMTPSA id w25sm890554pfi.106.2020.02.17.07.55.40
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2020 07:55:41 -0800 (PST)
-From: "akuster" <akuster808@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [warrior][PATCH] Documenation: Prepared for the 2.7.3 release
-Date: Mon, 17 Feb 2020 07:55:40 -0800
-Message-Id: <20200217155540.21651-1-akuster808@gmail.com>
-X-Mailer: git-send-email 2.17.1
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:48610 helo=localhost.localdomain)
+	by cpanel7.indieserve.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+	(Exim 4.92)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1j3mtV-004tGS-BA
+	for docs@lists.yoctoproject.org; Mon, 17 Feb 2020 15:21:30 -0500
+Date: Mon, 17 Feb 2020 15:21:25 -0500 (EST)
+From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] bsp-guide: fix minor typos, wording, punctuation
+Message-ID: <alpine.LFD.2.21.2002171519370.2338286@localhost.localdomain>
+MIME-Version: 1.0
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-Signed-off-by: Armin Kuster <akuster808@gmail.com>
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
 ---
- documentation/bsp-guide/bsp-guide.xml         |  8 +++-
- documentation/dev-manual/dev-manual.xml       |  7 ++-
- documentation/kernel-dev/kernel-dev.xml       |  7 ++-
- documentation/mega-manual/mega-manual.xml     |  7 ++-
- documentation/poky.ent                        | 18 ++++----
- .../profile-manual/profile-manual.xml         |  7 ++-
- documentation/sdk-manual/sdk-manual.xml       |  7 ++-
- .../toaster-manual/toaster-manual.xml         |  7 ++-
- documentation/tools/mega-manual.sed           | 46 +++++++++----------
- 9 files changed, 74 insertions(+), 40 deletions(-)
 
-diff --git a/documentation/bsp-guide/bsp-guide.xml b/documentation/bsp-guide/bsp-guide.xml
-index e060a55b9..b6cc61109 100644
---- a/documentation/bsp-guide/bsp-guide.xml
-+++ b/documentation/bsp-guide/bsp-guide.xml
-@@ -138,11 +138,15 @@
-             </revision>
-             <revision>
-                 <revnumber>2.7.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>November 2019</date>
-                 <revremark>Released with the Yocto Project 2.7.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>2.7.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 2.7.3 Release.</revremark>
-+            </revision>
-         </revhistory>
--
-     <copyright>
-       <year>&COPYRIGHT_YEAR;</year>
-       <holder>Linux Foundation</holder>
-diff --git a/documentation/dev-manual/dev-manual.xml b/documentation/dev-manual/dev-manual.xml
-index 3033d7a91..d6f4ebbd7 100644
---- a/documentation/dev-manual/dev-manual.xml
-+++ b/documentation/dev-manual/dev-manual.xml
-@@ -123,9 +123,14 @@
-             </revision>
-             <revision>
-                 <revnumber>2.7.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>November 2019</date>
-                 <revremark>Released with the Yocto Project 2.7.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>2.7.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 2.7.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/kernel-dev/kernel-dev.xml b/documentation/kernel-dev/kernel-dev.xml
-index 90c12e978..3797a3cc4 100644
---- a/documentation/kernel-dev/kernel-dev.xml
-+++ b/documentation/kernel-dev/kernel-dev.xml
-@@ -108,9 +108,14 @@
-             </revision>
-             <revision>
-                 <revnumber>2.7.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>November 2019</date>
-                 <revremark>Released with the Yocto Project 2.7.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>2.7.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 2.7.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/mega-manual/mega-manual.xml b/documentation/mega-manual/mega-manual.xml
-index 535e11ca8..42b1ee6fe 100644
---- a/documentation/mega-manual/mega-manual.xml
-+++ b/documentation/mega-manual/mega-manual.xml
-@@ -94,9 +94,14 @@
-             </revision>
-             <revision>
-                 <revnumber>2.7.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>November 2019</date>
-                 <revremark>Released with the Yocto Project 2.7.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>2.7.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 2.7.3 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/poky.ent b/documentation/poky.ent
-index 5ab067549..cf9dff36a 100644
---- a/documentation/poky.ent
-+++ b/documentation/poky.ent
-@@ -1,19 +1,19 @@
--<!ENTITY DISTRO "2.7.2">
--<!ENTITY DISTRO_COMPRESSED "272">
-+<!ENTITY DISTRO "2.7.3">
-+<!ENTITY DISTRO_COMPRESSED "273">
- <!ENTITY DISTRO_NAME_NO_CAP "warrior">
- <!ENTITY DISTRO_NAME "Warrior">
- <!ENTITY DISTRO_NAME_NO_CAP_MINUS_ONE "thud">
- <!ENTITY DISTRO_NAME_MINUS_ONE "Thud">
--<!ENTITY YOCTO_DOC_VERSION "2.7.2">
--<!ENTITY YOCTO_DOC_VERSION_MINUS_ONE "2.6">
--<!ENTITY DISTRO_REL_TAG "yocto-2.7.2">
-+<!ENTITY YOCTO_DOC_VERSION "2.7.3">
-+<!ENTITY YOCTO_DOC_VERSION_MINUS_ONE "2.6.4">
-+<!ENTITY DISTRO_REL_TAG "yocto-2.7.3">
- <!ENTITY METAINTELVERSION "11.0">
--<!ENTITY REL_MONTH_YEAR "November 2019">
-+<!ENTITY REL_MONTH_YEAR "February 2020">
- <!ENTITY META_INTEL_REL_TAG "&METAINTELVERSION;-&DISTRO_NAME_NO_CAP;-&YOCTO_DOC_VERSION;">
--<!ENTITY POKYVERSION "21.0.0">
--<!ENTITY POKYVERSION_COMPRESSED "2100">
-+<!ENTITY POKYVERSION "21.0.3">
-+<!ENTITY POKYVERSION_COMPRESSED "2103">
- <!ENTITY YOCTO_POKY "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;">
--<!ENTITY COPYRIGHT_YEAR "2010-2019">
-+<!ENTITY COPYRIGHT_YEAR "2010-2020">
- <!ENTITY YOCTO_DL_URL "http://downloads.yoctoproject.org">
- <!ENTITY YOCTO_HOME_URL "http://www.yoctoproject.org">
- <!ENTITY YOCTO_LISTS_URL "http://lists.yoctoproject.org">
-diff --git a/documentation/profile-manual/profile-manual.xml b/documentation/profile-manual/profile-manual.xml
-index 316804118..c0c05e29c 100644
---- a/documentation/profile-manual/profile-manual.xml
-+++ b/documentation/profile-manual/profile-manual.xml
-@@ -108,9 +108,14 @@
-             </revision>
-             <revision>
-                 <revnumber>2.7.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>November 2019</date>
-                 <revremark>Released with the Yocto Project 2.7.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>2.7.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 2.7.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/sdk-manual/sdk-manual.xml b/documentation/sdk-manual/sdk-manual.xml
-index a17d362f4..06118b58d 100644
---- a/documentation/sdk-manual/sdk-manual.xml
-+++ b/documentation/sdk-manual/sdk-manual.xml
-@@ -73,9 +73,14 @@
-             </revision>
-             <revision>
-                 <revnumber>2.7.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>November 2019</date>
-                 <revremark>Released with the Yocto Project 2.7.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>2.7.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 2.7.3 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/toaster-manual/toaster-manual.xml b/documentation/toaster-manual/toaster-manual.xml
-index b3926f3bd..a4e626ff7 100644
---- a/documentation/toaster-manual/toaster-manual.xml
-+++ b/documentation/toaster-manual/toaster-manual.xml
-@@ -83,9 +83,14 @@
-             </revision>
-             <revision>
-                 <revnumber>2.7.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>November 2019</date>
-                 <revremark>Released with the Yocto Project 2.7.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>2.7.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 2.7.3 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/tools/mega-manual.sed b/documentation/tools/mega-manual.sed
-index c37fc3309..1d0cd28a6 100644
---- a/documentation/tools/mega-manual.sed
-+++ b/documentation/tools/mega-manual.sed
-@@ -1,36 +1,36 @@
- # Processes bitbake-user-manual (<word>-<word>-<word> style).
- # This style is for manual three-word folders, which currently is only the BitBake User Manual.
- # We used to have the "yocto-project-qs" and "poky-ref-manual" folders but no longer do.
--# s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/[a-z]*-[a-z]*-[a-z]*/[a-z]*-[a-z]*-[a-z]*.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/bitbake-user-manual/bitbake-user-manual.html#@"link" href="#@g
-+# s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/[a-z]*-[a-z]*-[a-z]*/[a-z]*-[a-z]*-[a-z]*.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/bitbake-user-manual/bitbake-user-manual.html#@"link" href="#@g
- 
- # Processes all other manuals (<word>-<word> style).
- # This style is for manual folders that use two word, which is the standard now (e.g. "ref-manual").
- # Here is the one-liner:
--# s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/[a-z]*-[a-z]*/[a-z]*-[a-z]*.html#@"link" href="#@g
-+# s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/[a-z]*-[a-z]*/[a-z]*-[a-z]*.html#@"link" href="#@g
- 
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/sdk-manual/sdk-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/bsp-guide/bsp-guide.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/dev-manual/dev-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/overview-manual/overview-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/brief-yoctoprojectqs/brief-yoctoprojectqs.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/kernel-dev/kernel-dev.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/profile-manual/profile-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/ref-manual/ref-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/2.7.2/toaster-manual/toaster-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/sdk-manual/sdk-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/bsp-guide/bsp-guide.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/dev-manual/dev-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/overview-manual/overview-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/brief-yoctoprojectqs/brief-yoctoprojectqs.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/kernel-dev/kernel-dev.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/profile-manual/profile-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/ref-manual/ref-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/2.7.3/toaster-manual/toaster-manual.html#@"link" href="#@g
- 
- # Process cases where just an external manual is referenced without an id anchor
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/brief-yoctoprojectqs/brief-yoctoprojectqs.html" target="_top">Yocto Project Quick Build</a>@Yocto Project Quick Build@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/bitbake-user-manual/bitbake-user-manual.html" target="_top">BitBake User Manual</a>@BitBake User Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/dev-manual/dev-manual.html" target="_top">Yocto Project Development Tasks Manual</a>@Yocto Project Development Tasks Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/overview-manual/overview-manual.html" target="_top">Yocto Project Overview and Concepts Manual</a>@Yocto project Overview and Concepts Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/sdk-manual/sdk-manual.html" target="_top">Yocto Project Application Development and the Extensible Software Development Kit (eSDK)</a>@Yocto Project Application Development and the Extensible Software Development Kit (eSDK)@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/bsp-guide/bsp-guide.html" target="_top">Yocto Project Board Support Package (BSP) Developer's Guide</a>@Yocto Project Board Support Package (BSP) Developer's Guide@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/profile-manual/profile-manual.html" target="_top">Yocto Project Profiling and Tracing Manual</a>@Yocto Project Profiling and Tracing Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/kernel-dev/kernel-dev.html" target="_top">Yocto Project Linux Kernel Development Manual</a>@Yocto Project Linux Kernel Development Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/ref-manual/ref-manual.html" target="_top">Yocto Project Reference Manual</a>@Yocto Project Reference Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/toaster-manual/toaster-manual.html" target="_top">Toaster User Manual</a>@Toaster User Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/brief-yoctoprojectqs/brief-yoctoprojectqs.html" target="_top">Yocto Project Quick Build</a>@Yocto Project Quick Build@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/bitbake-user-manual/bitbake-user-manual.html" target="_top">BitBake User Manual</a>@BitBake User Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/dev-manual/dev-manual.html" target="_top">Yocto Project Development Tasks Manual</a>@Yocto Project Development Tasks Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/overview-manual/overview-manual.html" target="_top">Yocto Project Overview and Concepts Manual</a>@Yocto project Overview and Concepts Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/sdk-manual/sdk-manual.html" target="_top">Yocto Project Application Development and the Extensible Software Development Kit (eSDK)</a>@Yocto Project Application Development and the Extensible Software Development Kit (eSDK)@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/bsp-guide/bsp-guide.html" target="_top">Yocto Project Board Support Package (BSP) Developer's Guide</a>@Yocto Project Board Support Package (BSP) Developer's Guide@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/profile-manual/profile-manual.html" target="_top">Yocto Project Profiling and Tracing Manual</a>@Yocto Project Profiling and Tracing Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/kernel-dev/kernel-dev.html" target="_top">Yocto Project Linux Kernel Development Manual</a>@Yocto Project Linux Kernel Development Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/ref-manual/ref-manual.html" target="_top">Yocto Project Reference Manual</a>@Yocto Project Reference Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/toaster-manual/toaster-manual.html" target="_top">Toaster User Manual</a>@Toaster User Manual@g
- 
- # Process a single, rouge occurrence of a linked reference to the Mega-Manual.
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.2/mega-manual/mega-manual.html" target="_top">Yocto Project Mega-Manual</a>@Yocto Project Mega-Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/2.7.3/mega-manual/mega-manual.html" target="_top">Yocto Project Mega-Manual</a>@Yocto Project Mega-Manual@g
- 
+diff --git a/documentation/bsp-guide/bsp.xml b/documentation/bsp-guide/bsp.xml
+index 58f5733f7..3a3186f19 100644
+--- a/documentation/bsp-guide/bsp.xml
++++ b/documentation/bsp-guide/bsp.xml
+@@ -351,7 +351,7 @@
+         layer combined with a build system and other tools.
+         Realize that it is important to maintain the distinction
+         that the BSP layer, a build system, and tools are
+-        separate components that could to be combined in
++        separate components that could be combined in
+         certain end products.
+     </para>
+
+@@ -567,7 +567,7 @@
+             for the BSP.
+             The type or types of files here can vary depending
+             on the licensing requirements.
+-            For example, in the Raspberry Pi BSP all licensing
++            For example, in the Raspberry Pi BSP, all licensing
+             requirements are handled with the
+             <filename>COPYING.MIT</filename> file.
+         </para>
+@@ -717,6 +717,7 @@
+      BBFILE_PRIORITY_<replaceable>bsp</replaceable> = "6"
+
+      LAYERDEPENDS_<replaceable>bsp</replaceable> = "intel"
++     LAYERSERIES_COMPAT_<replaceable>bsp</replaceable> = "zeus dunfell"
+             </literallayout>
+         </para>
+
+@@ -802,7 +803,7 @@
+             <ulink url='&YOCTO_DOCS_REF_URL;#source-directory'>Source Directory</ulink>.
+             For example, many <filename>tune-*</filename> files
+             (e.g. <filename>tune-arm1136jf-s.inc</filename>,
+-            <filename>tun-1586-nlp.inc</filename>, and so forth)
++            <filename>tune-1586-nlp.inc</filename>, and so forth)
+             reside in the
+             <filename>poky/meta/conf/machine/include</filename>
+             directory.
+@@ -834,7 +835,7 @@
+             This optional directory contains miscellaneous recipe
+             files for the BSP.
+             Most notably would be the formfactor files.
+-            For example, in the Raspberry Pi BSP there is the
++            For example, in the Raspberry Pi BSP, there is the
+             <filename>formfactor_0.0.bbappend</filename> file,
+             which is an append file used to augment the recipe
+             that starts the build.
+@@ -1302,7 +1303,7 @@
+                     (<filename>openembedded-core</filename>)
+                     or the Source Directory (<filename>poky</filename>).
+                     In other words, make sure you place related
+-                    files in appropriately related
++                    files in appropriately-related
+                     <filename>recipes-*</filename> subdirectories
+                     specific to the recipe's function, or within
+                     a subdirectory containing a set of closely-related
+@@ -1347,7 +1348,7 @@
+                             </para></listitem>
+                         <listitem><para>
+                             A list of all the dependencies
+-                            on which a BSP layer depends.
++                            of the BSP.
+                             These dependencies are typically a list
+                             of required layers needed to build the
+                             BSP.
+@@ -1744,7 +1745,7 @@
+     <para>
+         The <filename>bitbake-layers create-layer</filename> script
+         automates creating a BSP layer.
+-        What makes a layer a "BSP layer", is the presence of a machine
++        What makes a layer a "BSP layer" is the presence of at least one machine
+         configuration file.
+         Additionally, a BSP layer usually has a kernel recipe
+         or an append file that leverages off an existing kernel recipe.
+@@ -1923,8 +1924,8 @@
+      IMAGE_BOOT_FILES ?= "u-boot.${UBOOT_SUFFIX} MLO zImage am335x-bone.dtb am335x-boneblack.dtb am335x-bonegreen.dtb"
+             </literallayout>
+             The variables used to configure the machine define
+-            machine-specific properties.
+-            For example, machine-dependent packages, machine
++            machine-specific properties;
++            for example, machine-dependent packages, machine
+             tunings, the type of kernel to build, and
+             U-Boot configurations.
+         </para>
+@@ -1935,7 +1936,7 @@
+             machine configuration file for the BeagleBone
+             development boards.
+             Realize that much more can be defined as part of
+-            a machines configuration file.
++            a machine's configuration file.
+             In general, you can learn about related variables
+             that this example does not have by locating the
+             variables in the
+
 -- 
-2.17.1
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
