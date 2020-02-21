@@ -1,155 +1,154 @@
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
- by mx.groups.io with SMTP id smtpd.web09.9038.1582295524555283769
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web11.11717.1582305296216212768
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Feb 2020 06:32:04 -0800
+ Fri, 21 Feb 2020 09:14:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=hbwMz64X;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.66, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f66.google.com with SMTP id n10so2335362wrm.1
-        for <docs@lists.yoctoproject.org>; Fri, 21 Feb 2020 06:32:04 -0800 (PST)
+ dkim=fail reason="signature has expired" header.i=@axis.com header.s=axis-central1 header.b=P0h7lNyb;
+ spf=pass (domain: axis.com, ip: 195.60.68.17, mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=tYOpJuJSrwchs206tPmqAgqnN4UPz8pxSWEMhozUElY=;
-        b=hbwMz64XvOjSXZBO3kaMKQ4RvyJoLdH6cdFzEt0J4vKtj5wfkFPQM7PebVsxNUmG/N
-         eYscr7W/OXUt2Qu1cplmJwy01uNvsFfy9lYrYMhkRoujYamM8sLP6AM+DecbJfQSopWW
-         R16ggqsjfeQ1Yik8CuiO2Gi1rot9b4u7/OnlI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=tYOpJuJSrwchs206tPmqAgqnN4UPz8pxSWEMhozUElY=;
-        b=b9oaWDHB2yWlU5D+ADTwn6BDfdtGib1BvTVCzaOUa5v4Tb1cITSMbVp84o4X/2wezK
-         cpZbJBfB7s82wOeR9RqMoVHJkF91yKMYUgTA28YgL1UkBBREcZWvYG1FYWCi60siz2m8
-         upddSsvIbl1jem6q5JW4mVUCabboq6ISamE99QfKyBH3/Fb2HQVJ0ZFSMc+f1RjfHsun
-         aoPCGVAtWwk3icbta1kDLvUgp06cLibc0i5bXLDBXkt/vGwGtcaz9ZKH+4kFvoaLHebk
-         ONfv9Kn7irkpRWLSmceN6TUtAAM+AwftVINEYqSYSIyltytwhdpI4RdKWtEyCiI1+gNJ
-         ahIg==
-X-Gm-Message-State: APjAAAWEj5oJWlbPF/OaEOtIIKNrOcqLCrB4+4YeYnwwOJJ5l4uW1iOV
-	TvPXJiTFJ32QS454cRl4R8lSZg==
-X-Google-Smtp-Source: APXvYqzc5dwxVY43ro1+nR5g7/CyLDxPlg1WOIuTueSKOg7iQUNbQcSd8ebVGx3x8zLVw0ZcLezzfw==
-X-Received: by 2002:a5d:5221:: with SMTP id i1mr45873865wra.44.1582295522960;
-        Fri, 21 Feb 2020 06:32:02 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from hex (5751f4a1.skybroadband.com. [87.81.244.161])
-        by smtp.gmail.com with ESMTPSA id g17sm4471264wru.13.2020.02.21.06.32.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Feb 2020 06:32:02 -0800 (PST)
-Message-ID: <226adb62a27e36861c83abb7c2a73131e69d1655.camel@linuxfoundation.org>
+  d=axis.com; l=7862; q=dns/txt; s=axis-central1;
+  t=1582305296; x=1613841296;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=kdBRk6dyGhYoAa12XFNsPFX5mBNHXCSzgnktVCG8pVk=;
+  b=P0h7lNybKytWFHOd0gxlA/rPf05eNE2Dz0keqLsyUejbt/NBLxsV76Vj
+   +F9KeDFXWkudZNmXWKUQJtrOSizNehlltzHzCCyqT/Gk+WkSMXm8tF/Yn
+   2UExZLlvlzM5LAxexf5EKjLKe4DipvPWAk57z+JVh8uA0Yi190mGNhEJP
+   U9rlJ5le5zqr2V+VQCb9DFmklGWK9aCACyLZPkHtzCnfcGRvPm4Psi7cr
+   P8sAIfKM9LmXhf4Ah0HLXyEch3YD06aoGJwJv0E10ioZrEVEMvbIKNCXQ
+   KyrY/1qb0HNY6zg7Oj/jn415lf0ym0KB0lnpaCTmS7h/wI3eljDE+RCss
+   w==;
+IronPort-SDR: 8gFKr/8nOqFEe9rFpwrthcYCUYENikcCaMCvaYKuxYOdFvlAZ3CkBNzUqNFMxaxj80w5pc5aDh
+ 9kNQziwGUq2jN/jvKxpuFhlk35izSxC+WyDEIl9fbO3VDSrZMRzH8pMZ2EEAiMo29C7EMIFh9h
+ vjq/hLcPS0xxLyuFsVOYWdI3JWgJ12nt2NbuYS18G6NNU1Np44g4FpzWLt57wgyyHld9NnhbfK
+ OXXtk7D1ogJv9qGaYUNKMHPCpkZxsyi8rQj/iw5tqkVaw92axFFQaMbU/AdrVfvDhbGWg7htv9
+ nPk=
+X-IronPort-AV: E=Sophos;i="5.70,469,1574118000"; 
+   d="scan'208";a="5697405"
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>, Michael Halstead
+	<mhalstead@linuxfoundation.org>
 Subject: Re: [docs] [Resend][PATCH 1/5] ref-manual: The sanity_info file has moved from build/conf to build/cache
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Peter Kjellerstedt <peter.kjellerstedt@axis.com>, 
- "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>, Michael
- Halstead <mhalstead@linuxfoundation.org>
-Date: Fri, 21 Feb 2020 14:32:00 +0000
-In-Reply-To: <e114646f12554c00a661215288fba132@XBOX03.axis.com>
+Thread-Topic: [docs] [Resend][PATCH 1/5] ref-manual: The sanity_info file has
+ moved from build/conf to build/cache
+Thread-Index: AQHV6Cw1PU+E0Wq/xEqYGDg+ewu5magkiWGAgAASkgCAAMQk4IAARicAgAA2n9A=
+Date: Fri, 21 Feb 2020 17:14:54 +0000
+Message-ID: <68758621bf7c491ebc0edf86803c60a8@XBOX03.axis.com>
 References: <15F53638120140E5.26907@lists.yoctoproject.org>
 	 <07b7e95db4ba4fa78b43bd7d143bdd94@XBOX03.axis.com>
 	 <3ff7dc4ed4873535637626f5d1fd890622dd0165.camel@linuxfoundation.org>
 	 <e114646f12554c00a661215288fba132@XBOX03.axis.com>
-User-Agent: Evolution 3.34.1-4 
+ <226adb62a27e36861c83abb7c2a73131e69d1655.camel@linuxfoundation.org>
+In-Reply-To: <226adb62a27e36861c83abb7c2a73131e69d1655.camel@linuxfoundation.org>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.0.5.60]
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On Fri, 2020-02-21 at 09:29 +0000, Peter Kjellerstedt wrote:
-> > -----Original Message-----
-> > From: Richard Purdie <richard.purdie@linuxfoundation.org>
-> > Sent: den 20 februari 2020 23:39
-> > To: docs@lists.yoctoproject.org; Michael Halstead
-> > <mhalstead@linuxfoundation.org>; Peter Kjellerstedt
-> > <peter.kjellerstedt@axis.com>
-> > Subject: Re: [docs] [Resend][PATCH 1/5] ref-manual: The sanity_info
-> > file
-> > has moved from build/conf to build/cache
-> > 
-> > On Thu, 2020-02-20 at 20:42 +0000, Peter Kjellerstedt via
-> > Lists.Yoctoproject.Org wrote:
-> > > > -----Original Message-----
-> > > > From: docs@lists.yoctoproject.org <docs@lists.yoctoproject.org>
-> > > > On Behalf Of Peter Kjellerstedt
-> > > > via Lists.Yoctoproject.Org <
-> > > > peter.kjellerstedt=axis.com@lists.yoctoproject.org>
-> > > 
-> > > ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> > > ^^^^
-> > > ^^^^^^^^^^
-> > > Why did that happen? When I sent the same patches 10 days ago to
-> > > the same destination, my address came out normal without the via
-> > > (I resent the patches because they had not appeared in
-> > > Patchwork).
-> > > 
-> > > The reason I ask is because I expect this gives me a separate
-> > > entry in Patchwork for this address compared to my normal entry,
-> > > which complicates things when I want to search for my open
-> > > patches.
-> > > So if possible I would like to avoid this in the future...
-> > 
-> > It comes down to the rules your company set for the domain you're
-> > sending from. If the mailing list isn't allowed to forward your
-> > message
-> > its forced to rewrite the From address to something which it can
-> > send
-> > from.
-> > 
-> > Did something in your domain's DMARC settings change?
-> > 
-> > Cheers,
-> > 
-> > Richard
-> 
-> Not as far as I know. I am absolutely no expert on mail and DMARC, 
-> so I googled DMARC and found:
-> 
->   https://www.dmarcanalyzer.com/dmarc/dmarc-record-check/
-> 
-> When I check our domain (axis.com) there, I get the following:
-> 
->   v=DMARC1; p=none; sp=none; pct=100; rua=mailto:
-> dmarcreports@axis.com; ruf=mailto:dmarcreports@axis.com
-> 
-> And if I understand that correctly, it should not be a problem 
-> for forwarding mails from me.
-> 
-> Any other ideas?
-
-You can see what the server received:
-
-https://lists.yoctoproject.org/g/docs/original/38
-
-which is interesting to compare to:
-
-https://lists.yoctoproject.org/g/docs/original/10
-
-which looks like dkim was added to your domain and its marked as "fail"
-
- dkim=fail reason="signature has expired" header.i=@axis.com header.s=axis-central1 header.b=PiJ2ZuTp;
-
-I then looked at another message from you:
-
-https://lists.yoctoproject.org/g/docs/original/39
-
-where dkim passes, spf fails.
-
-then
-
-https://lists.yoctoproject.org/g/docs/original/40
-
-which is pass/pass.
-
-https://lists.yoctoproject.org/g/docs/original/41
-
-which is spf fail, dkim pass.
-
-So there is a change in what you're sending and those pass/fails
-changing like that look a little concerning. Quite what it means I'm
-not sure. Did your IT department implement DKIM signatures, possibly
-not quite correctly?
-
-Cheers,
-
-Richard
-
-
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBSaWNoYXJkIFB1cmRpZSA8cmlj
+aGFyZC5wdXJkaWVAbGludXhmb3VuZGF0aW9uLm9yZz4NCj4gU2VudDogZGVuIDIxIGZlYnJ1YXJp
+IDIwMjAgMTU6MzINCj4gVG86IFBldGVyIEtqZWxsZXJzdGVkdCA8cGV0ZXIua2plbGxlcnN0ZWR0
+QGF4aXMuY29tPjsNCj4gZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnOyBNaWNoYWVsIEhhbHN0
+ZWFkDQo+IDxtaGFsc3RlYWRAbGludXhmb3VuZGF0aW9uLm9yZz4NCj4gU3ViamVjdDogUmU6IFtk
+b2NzXSBbUmVzZW5kXVtQQVRDSCAxLzVdIHJlZi1tYW51YWw6IFRoZSBzYW5pdHlfaW5mbyBmaWxl
+DQo+IGhhcyBtb3ZlZCBmcm9tIGJ1aWxkL2NvbmYgdG8gYnVpbGQvY2FjaGUNCj4gDQo+IE9uIEZy
+aSwgMjAyMC0wMi0yMSBhdCAwOToyOSArMDAwMCwgUGV0ZXIgS2plbGxlcnN0ZWR0IHdyb3RlOg0K
+PiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gPiA+IEZyb206IFJpY2hhcmQgUHVy
+ZGllIDxyaWNoYXJkLnB1cmRpZUBsaW51eGZvdW5kYXRpb24ub3JnPg0KPiA+ID4gU2VudDogZGVu
+IDIwIGZlYnJ1YXJpIDIwMjAgMjM6MzkNCj4gPiA+IFRvOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVj
+dC5vcmc7IE1pY2hhZWwgSGFsc3RlYWQNCj4gPiA+IDxtaGFsc3RlYWRAbGludXhmb3VuZGF0aW9u
+Lm9yZz47IFBldGVyIEtqZWxsZXJzdGVkdA0KPiA+ID4gPHBldGVyLmtqZWxsZXJzdGVkdEBheGlz
+LmNvbT4NCj4gPiA+IFN1YmplY3Q6IFJlOiBbZG9jc10gW1Jlc2VuZF1bUEFUQ0ggMS81XSByZWYt
+bWFudWFsOiBUaGUgc2FuaXR5X2luZm8NCj4gPiA+IGZpbGUNCj4gPiA+IGhhcyBtb3ZlZCBmcm9t
+IGJ1aWxkL2NvbmYgdG8gYnVpbGQvY2FjaGUNCj4gPiA+DQo+ID4gPiBPbiBUaHUsIDIwMjAtMDIt
+MjAgYXQgMjA6NDIgKzAwMDAsIFBldGVyIEtqZWxsZXJzdGVkdCB2aWENCj4gPiA+IExpc3RzLllv
+Y3RvcHJvamVjdC5Pcmcgd3JvdGU6DQo+ID4gPiA+ID4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0t
+LS0NCj4gPiA+ID4gPiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcgPGRvY3NAbGlz
+dHMueW9jdG9wcm9qZWN0Lm9yZz4NCj4gPiA+ID4gPiBPbiBCZWhhbGYgT2YgUGV0ZXIgS2plbGxl
+cnN0ZWR0DQo+ID4gPiA+ID4gdmlhIExpc3RzLllvY3RvcHJvamVjdC5PcmcgPA0KPiA+ID4gPiA+
+IHBldGVyLmtqZWxsZXJzdGVkdD1heGlzLmNvbUBsaXN0cy55b2N0b3Byb2plY3Qub3JnPg0KPiA+
+ID4gPg0KPiA+ID4gPiBeXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5e
+Xl5eXl5eXl5eXl5eXl5eXl5eXl5eXg0KPiA+ID4gPiBeXl5eDQo+ID4gPiA+IF5eXl5eXl5eXl4N
+Cj4gPiA+ID4gV2h5IGRpZCB0aGF0IGhhcHBlbj8gV2hlbiBJIHNlbnQgdGhlIHNhbWUgcGF0Y2hl
+cyAxMCBkYXlzIGFnbyB0bw0KPiA+ID4gPiB0aGUgc2FtZSBkZXN0aW5hdGlvbiwgbXkgYWRkcmVz
+cyBjYW1lIG91dCBub3JtYWwgd2l0aG91dCB0aGUgdmlhDQo+ID4gPiA+IChJIHJlc2VudCB0aGUg
+cGF0Y2hlcyBiZWNhdXNlIHRoZXkgaGFkIG5vdCBhcHBlYXJlZCBpbg0KPiA+ID4gPiBQYXRjaHdv
+cmspLg0KPiA+ID4gPg0KPiA+ID4gPiBUaGUgcmVhc29uIEkgYXNrIGlzIGJlY2F1c2UgSSBleHBl
+Y3QgdGhpcyBnaXZlcyBtZSBhIHNlcGFyYXRlDQo+ID4gPiA+IGVudHJ5IGluIFBhdGNod29yayBm
+b3IgdGhpcyBhZGRyZXNzIGNvbXBhcmVkIHRvIG15IG5vcm1hbCBlbnRyeSwNCj4gPiA+ID4gd2hp
+Y2ggY29tcGxpY2F0ZXMgdGhpbmdzIHdoZW4gSSB3YW50IHRvIHNlYXJjaCBmb3IgbXkgb3Blbg0K
+PiA+ID4gPiBwYXRjaGVzLg0KPiA+ID4gPiBTbyBpZiBwb3NzaWJsZSBJIHdvdWxkIGxpa2UgdG8g
+YXZvaWQgdGhpcyBpbiB0aGUgZnV0dXJlLi4uDQo+ID4gPg0KPiA+ID4gSXQgY29tZXMgZG93biB0
+byB0aGUgcnVsZXMgeW91ciBjb21wYW55IHNldCBmb3IgdGhlIGRvbWFpbiB5b3UncmUNCj4gPiA+
+IHNlbmRpbmcgZnJvbS4gSWYgdGhlIG1haWxpbmcgbGlzdCBpc24ndCBhbGxvd2VkIHRvIGZvcndh
+cmQgeW91cg0KPiA+ID4gbWVzc2FnZQ0KPiA+ID4gaXRzIGZvcmNlZCB0byByZXdyaXRlIHRoZSBG
+cm9tIGFkZHJlc3MgdG8gc29tZXRoaW5nIHdoaWNoIGl0IGNhbg0KPiA+ID4gc2VuZA0KPiA+ID4g
+ZnJvbS4NCj4gPiA+DQo+ID4gPiBEaWQgc29tZXRoaW5nIGluIHlvdXIgZG9tYWluJ3MgRE1BUkMg
+c2V0dGluZ3MgY2hhbmdlPw0KPiA+ID4NCj4gPiA+IENoZWVycywNCj4gPiA+DQo+ID4gPiBSaWNo
+YXJkDQo+ID4NCj4gPiBOb3QgYXMgZmFyIGFzIEkga25vdy4gSSBhbSBhYnNvbHV0ZWx5IG5vIGV4
+cGVydCBvbiBtYWlsIGFuZCBETUFSQywNCj4gPiBzbyBJIGdvb2dsZWQgRE1BUkMgYW5kIGZvdW5k
+Og0KPiA+DQo+ID4gICBodHRwczovL3d3dy5kbWFyY2FuYWx5emVyLmNvbS9kbWFyYy9kbWFyYy1y
+ZWNvcmQtY2hlY2svDQo+ID4NCj4gPiBXaGVuIEkgY2hlY2sgb3VyIGRvbWFpbiAoYXhpcy5jb20p
+IHRoZXJlLCBJIGdldCB0aGUgZm9sbG93aW5nOg0KPiA+DQo+ID4gICB2PURNQVJDMTsgcD1ub25l
+OyBzcD1ub25lOyBwY3Q9MTAwOyBydWE9bWFpbHRvOg0KPiA+IGRtYXJjcmVwb3J0c0BheGlzLmNv
+bTsgcnVmPW1haWx0bzpkbWFyY3JlcG9ydHNAYXhpcy5jb20NCj4gPg0KPiA+IEFuZCBpZiBJIHVu
+ZGVyc3RhbmQgdGhhdCBjb3JyZWN0bHksIGl0IHNob3VsZCBub3QgYmUgYSBwcm9ibGVtDQo+ID4g
+Zm9yIGZvcndhcmRpbmcgbWFpbHMgZnJvbSBtZS4NCj4gPg0KPiA+IEFueSBvdGhlciBpZGVhcz8N
+Cj4gDQo+IFlvdSBjYW4gc2VlIHdoYXQgdGhlIHNlcnZlciByZWNlaXZlZDoNCj4gDQo+IGh0dHBz
+Oi8vbGlzdHMueW9jdG9wcm9qZWN0Lm9yZy9nL2RvY3Mvb3JpZ2luYWwvMzgNCj4gDQo+IHdoaWNo
+IGlzIGludGVyZXN0aW5nIHRvIGNvbXBhcmUgdG86DQo+IA0KPiBodHRwczovL2xpc3RzLnlvY3Rv
+cHJvamVjdC5vcmcvZy9kb2NzL29yaWdpbmFsLzEwDQo+IA0KPiB3aGljaCBsb29rcyBsaWtlIGRr
+aW0gd2FzIGFkZGVkIHRvIHlvdXIgZG9tYWluIGFuZCBpdHMgbWFya2VkIGFzICJmYWlsIg0KPiAN
+Cj4gIGRraW09ZmFpbCByZWFzb249InNpZ25hdHVyZSBoYXMgZXhwaXJlZCIgaGVhZGVyLmk9QGF4
+aXMuY29tDQo+IGhlYWRlci5zPWF4aXMtY2VudHJhbDEgaGVhZGVyLmI9UGlKMlp1VHA7DQo+IA0K
+PiBJIHRoZW4gbG9va2VkIGF0IGFub3RoZXIgbWVzc2FnZSBmcm9tIHlvdToNCj4gDQo+IGh0dHBz
+Oi8vbGlzdHMueW9jdG9wcm9qZWN0Lm9yZy9nL2RvY3Mvb3JpZ2luYWwvMzkNCj4gDQo+IHdoZXJl
+IGRraW0gcGFzc2VzLCBzcGYgZmFpbHMuDQo+IA0KPiB0aGVuDQo+IA0KPiBodHRwczovL2xpc3Rz
+LnlvY3RvcHJvamVjdC5vcmcvZy9kb2NzL29yaWdpbmFsLzQwDQo+IA0KPiB3aGljaCBpcyBwYXNz
+L3Bhc3MuDQo+IA0KPiBodHRwczovL2xpc3RzLnlvY3RvcHJvamVjdC5vcmcvZy9kb2NzL29yaWdp
+bmFsLzQxDQo+IA0KPiB3aGljaCBpcyBzcGYgZmFpbCwgZGtpbSBwYXNzLg0KPiANCj4gU28gdGhl
+cmUgaXMgYSBjaGFuZ2UgaW4gd2hhdCB5b3UncmUgc2VuZGluZyBhbmQgdGhvc2UgcGFzcy9mYWls
+cw0KPiBjaGFuZ2luZyBsaWtlIHRoYXQgbG9vayBhIGxpdHRsZSBjb25jZXJuaW5nLiBRdWl0ZSB3
+aGF0IGl0IG1lYW5zIEknbQ0KPiBub3Qgc3VyZS4gRGlkIHlvdXIgSVQgZGVwYXJ0bWVudCBpbXBs
+ZW1lbnQgREtJTSBzaWduYXR1cmVzLCBwb3NzaWJseQ0KPiBub3QgcXVpdGUgY29ycmVjdGx5Pw0K
+PiANCj4gQ2hlZXJzLA0KPiANCj4gUmljaGFyZA0KDQpPaywgdGhhdCBsb29rcyB3ZWlyZCAuIEJ1
+dCB0aGUgcXVlc3Rpb24gaXMgd2hvIGlzIGF0IGZhdWx0IGhlcmUuIA0KSWYgSSBsb29rIGF0IHRo
+ZSBoZWFkZXIgZm9yIA0KaHR0cHM6Ly9saXN0cy55b2N0b3Byb2plY3Qub3JnL2cvZG9jcy9vcmln
+aW5hbC80MywgaXQgc2F5cyB0aGF0IA0KdGhlIERLSU0gc2lnbmF0dXJlIGhhcyBleHBpcmVkOg0K
+DQogIEF1dGhlbnRpY2F0aW9uLVJlc3VsdHM6IG14Lmdyb3Vwcy5pbzsNCiAgIGRraW09ZmFpbCBy
+ZWFzb249InNpZ25hdHVyZSBoYXMgZXhwaXJlZCIgaGVhZGVyLmk9QGF4aXMuY29tIGhlYWRlci5z
+PWF4aXMtY2VudHJhbDEgaGVhZGVyLmI9ZmtMbHhzbW87DQogICBzcGY9cGFzcyAoZG9tYWluOiBh
+eGlzLmNvbSwgaXA6IDE5NS42MC42OC4xOCwgbWFpbGZyb206IHBldGVyLmtqZWxsZXJzdGVkdEBh
+eGlzLmNvbSkNCiAgREtJTS1TaWduYXR1cmU6IHY9MTsgYT1yc2Etc2hhMjU2OyBjPXJlbGF4ZWQv
+cmVsYXhlZDsNCiAgICBkPWF4aXMuY29tOyBsPTc5NDsgcT1kbnMvdHh0OyBzPWF4aXMtY2VudHJh
+bDE7DQogICAgdD0xNTgyMjMxMzYxOyB4PTE2MTM3NjczNjE7DQoNCkhvd2V2ZXIsIHRoZSBleHBp
+cmF0aW9uIHRpbWUgMTYxMzc2NzM2MSBjb3JyZXNwb25kcyB0byBGZWIgMTksIDIwMjEgDQpzbyBp
+dCBzaG91bGQgY2xlYXJseSBub3QgYmUgY29uc2lkZXJlZCBleHBpcmVkIHlldC4uLg0KDQpGb3Ig
+aHR0cHM6Ly9saXN0cy55b2N0b3Byb2plY3Qub3JnL2cvZG9jcy9vcmlnaW5hbC8zOSwgd2hpY2gg
+DQptYXJrcyBzcGYgYXMgZmFpbGVkLCBpdCBzZWVtcyB0aGF0IGdyb3Vwcy5pbyBoYXMgZmFpbGVk
+IHRvIA0KZGV0ZXJtaW5lIHRoZSBJUCBhZGRyZXNzIG9mIHNtdHAyLmF4aXMuY29tOg0KDQogUmVj
+ZWl2ZWQ6IGZyb20gc210cDIuYXhpcy5jb20gKHNtdHAyLmF4aXMuY29tIFtdKQ0KICAgYnkgbXgu
+Z3JvdXBzLmlvIHdpdGggU01UUCBpZCBzbXRwZC53ZWIxMC4xNzQ0LjE1ODIyMzA0NTcyMzcwNjkw
+NDYNCiAgIGZvciA8ZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPjsNCiAgIFRodSwgMjAgRmVi
+IDIwMjAgMTI6Mjc6MzkgLTA4MDANCiAgQXV0aGVudGljYXRpb24tUmVzdWx0czogbXguZ3JvdXBz
+LmlvOw0KICAgZGtpbT1wYXNzIGhlYWRlci5pPUBheGlzLmNvbSBoZWFkZXIucz1heGlzLWNlbnRy
+YWwxIGhlYWRlci5iPUlsSFI2K245Ow0KICAgc3BmPWZhaWwgKGRvbWFpbjogYXhpcy5jb20sIGlw
+OiA8bmlsPiwgbWFpbGZyb206IHBldGVyLmtqZWxsZXJzdGVkdEBheGlzLmNvbSkNCg0KYW5kIHdp
+dGggdGhlICJpcDogPG5pbD4iIGluIHRoZSBzcGYgcmVzdWx0IEkgZ3Vlc3MgdGhhdCBjYW4gYmUg
+DQphc3N1bWVkIHRvIGJlIHRoZSBjYXVzZSBvZiB0aGUgc3BmIGZhaWx1cmUuIFRoZSBvZGQgdGhp
+bmcgaGVyZSANCmlzIHRoYXQgaXQgbWFuYWdlZCB0byBkZXRlcm1pbmUgdGhlIElQIGFkZHJlc3Mg
+Y29ycmVjdGx5IGZvciANCmh0dHBzOi8vbGlzdHMueW9jdG9wcm9qZWN0Lm9yZy9nL2RvY3Mvb3Jp
+Z2luYWwvMzggdGhhdCBpdCANCnJlY2VpdmVkIGp1c3QgYSBzZWNvbmQgZWFybGllci4uLg0KDQpJ
+IGhhdmUgYWxzbyB0cmllZCB0aGUgREtJTSB2YWxpZGF0b3IgYXQgaHR0cHM6Ly90b29scy5zcGFy
+a3Bvc3QuY29tL2RraW0gDQphbmQgYWNjb3JkaW5nIHRvIGl0IHRoZSBtYWlscyBJIHNlbmQgYXJl
+IG9rLi4uDQoNClRoZSBxdWVzdGlvbiBub3cgaXMgaWYgdGhpcyB3YXMgYSB0ZW1wb3JhcnkgZ2xp
+dGNoIG9yIGlmIGl0IHdpbGwgDQpjb250aW51ZS4gQW5kIGlmIGl0IHdhcyBhIGdsaXRjaCwgaGFz
+IGdyb3Vwcy5pbyBtYXJrZWQgbXkgYWRkcmVzcyANCmFzICJwcm9ibGVtYXRpYyIgYW5kIHdpbGwg
+Y29udGludWUgdG8gZm9yd2FyZCBteSBtYWlscyB1c2luZyB0aGUgDQp2aWEgYWRkcmVzcywgb3Ig
+d2lsbCBpdCBnbyBiYWNrIHRvIG5vcm1hbC4uLg0KDQovL1BldGVyDQoNCg==
