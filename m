@@ -1,21 +1,21 @@
 Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web11.1315.1583524557252764192
+ by mx.groups.io with SMTP id smtpd.web10.1546.1583525062754105639
  for <docs@lists.yoctoproject.org>;
- Fri, 06 Mar 2020 11:55:57 -0800
+ Fri, 06 Mar 2020 12:04:22 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:55718 helo=localhost.localdomain)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:55744 helo=localhost.localdomain)
 	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jAJ4d-003LHg-It
-	for docs@lists.yoctoproject.org; Fri, 06 Mar 2020 14:55:56 -0500
-Date: Fri, 6 Mar 2020 14:55:52 -0500 (EST)
+	id 1jAJCn-003MVM-3h
+	for docs@lists.yoctoproject.org; Fri, 06 Mar 2020 15:04:21 -0500
+Date: Fri, 6 Mar 2020 15:04:19 -0500 (EST)
 From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
 X-X-Sender: rpjday@localhost.localdomain
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: minor rewording in chapter 1
-Message-ID: <alpine.LFD.2.21.2003061454550.7587@localhost.localdomain>
+Subject: [PATCH] ref-manual: minor rewording/clarification in chapter 2
+Message-ID: <alpine.LFD.2.21.2003061503290.7885@localhost.localdomain>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=0.3
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -35,36 +35,52 @@ Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-diff --git a/documentation/ref-manual/ref-system-requirements.xml b/documentation/ref-manual/ref-system-requirements.xml
-index 9c2198a76..db74ac848 100644
---- a/documentation/ref-manual/ref-system-requirements.xml
-+++ b/documentation/ref-manual/ref-system-requirements.xml
-@@ -8,12 +8,12 @@
-     <para>
-         Welcome to the Yocto Project Reference Manual!
-         This manual provides reference information for the current release
--        of the Yocto Project.
--        The manual is best used after you have an understanding
-+        of the Yocto Project, and
-+        is most effectively used after you have an understanding
-         of the basics of the Yocto Project.
-         The manual is neither meant to be read as a starting point to the
--        Yocto Project nor read from start to finish.
--        Use this manual to find variable definitions, class
-+        Yocto Project, nor read from start to finish.
-+        Rather, use this manual to find variable definitions, class
-         descriptions, and so forth as needed during the course of using
-         the Yocto Project.
-     </para>
-@@ -117,7 +117,7 @@
-         <para>
-             The list of packages you need on the host development system can
-             be large when covering all build scenarios using the Yocto Project.
--            This section provides required packages according to
-+            This section describes required packages according to
-             Linux distribution and function.
-         </para>
-
+diff --git a/documentation/ref-manual/ref-terms.xml b/documentation/ref-manual/ref-terms.xml
+index f98546826..722fa7ee2 100644
+--- a/documentation/ref-manual/ref-terms.xml
++++ b/documentation/ref-manual/ref-terms.xml
+@@ -41,11 +41,13 @@
+                 That append file would match any
+                 <filename>busybox_1.21.</filename><replaceable>x</replaceable><filename>.bb</filename>
+                 version of the recipe.
+-                So, the append file would match the following recipe names:
++                So, the append file would match any of the following recipe names:
+                 <literallayout class='monospaced'>
+      busybox_1.21.1.bb
+      busybox_1.21.2.bb
+      busybox_1.21.3.bb
++     busybox_1.21.10.bb
++     busybox_1.21.25.bb
+                 </literallayout>
+                 <note><title>Important</title>
+                     The use of the "<filename>%</filename>" character
+@@ -115,7 +117,7 @@
+                         in your home directory within the existing
+                         directory <filename>mybuilds</filename>:
+                         <literallayout class='monospaced'>
+-     $cd $HOME
++     $ cd $HOME
+      $ source $HOME/poky/&OE_INIT_FILE; $HOME/mybuilds/YP-&POKYVERSION;
+                         </literallayout>
+                         </para></listitem>
+@@ -141,7 +143,7 @@
+                 The system used to build images in a Yocto Project
+                 Development environment.
+                 The build system is sometimes referred to as the
+-                development host.
++                <firstterm>development host</firstterm>.
+                 </para></listitem>
+             <listitem><para>
+                 <emphasis>Classes:</emphasis>
+@@ -393,7 +395,7 @@
+                 Poky is not a product level distro.
+                 Rather, it is a good starting point for customization.
+                 <note>
+-                    Poky began an open-source
++                    Poky began as an open-source
+                     project initially developed by OpenedHand.
+                     OpenedHand developed Poky from the existing
+                     OpenEmbedded build system to create a commercially
 
 -- 
 
