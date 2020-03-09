@@ -1,76 +1,236 @@
 Received: from mail-il1-f196.google.com (mail-il1-f196.google.com [209.85.166.196])
- by mx.groups.io with SMTP id smtpd.web12.717.1583771650156350937
+ by mx.groups.io with SMTP id smtpd.web10.756.1583771650207526834
  for <docs@lists.yoctoproject.org>;
  Mon, 09 Mar 2020 09:34:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=JXFwS4h+;
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=kJ1phDQE;
  spf=pass (domain: gmail.com, ip: 209.85.166.196, mailfrom: jpewhacker@gmail.com)
-Received: by mail-il1-f196.google.com with SMTP id b17so9265582iln.3
+Received: by mail-il1-f196.google.com with SMTP id g6so9249292ilc.7
         for <docs@lists.yoctoproject.org>; Mon, 09 Mar 2020 09:34:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=Y1dLSlyWy/MiZgoP6iiF/6QwWYrXPTD2jEbFS7UdqNI=;
-        b=JXFwS4h+eGadAyWcvsKwBus+kITTz4bXLWkQvazsqByJIwlFKGt0D4Kk+xXHvqPGXX
-         brLaRoPUNtr+psSH8vvRbCHv+Wn3c17IehOyCBKdk+Rj64JueBzja3rSQ+pCackH9rmv
-         OmA2x8WnaNJRxk4WtcY9kdpqvj5sNm9tXJb2d//fIdOTy/fW+a1LavylcnT4QtiMGjw+
-         92YBUdFNOddTndLrPc80yF5MizLXZWbEdQ1XY5StUbCRdqNgbN0YsSv3pRHtLcnklKbA
-         qJ6EZs0yQhkaZtaj0KP5x/vy2zGHTCGFOvGDmWQEdgou1uolA+Ji9RmUCVruxsMUWxC/
-         NisA==
+        bh=64HOYy97PAcD3VPqpAMnC5c2zNLwk0P06Zpatec0ElE=;
+        b=kJ1phDQEi6g452/v0p4Uguz8hbaF4KGoMQU8m4zTeCwNAPgx8eOtIkZOcVkMqRBeri
+         pIA0/k7QwWyghlbpTYwNH2Rvw4usIZNxMo+ALl64ne78B86+Y02bKnWlDIwzhSBlXVsZ
+         +5ith/TuW2whg9heOoIm3ixklffKU458skt0jEcbmM9K614DUlD2VFvWXW2IHvARoC4g
+         2rHqyGAZuZVjn18uiynf3Rbewe35oi1JtXk9VH9vCFW7JGT4jcfPWWLDNtNRcL542KAO
+         qaxrEfxXQwX3V17laRmY5kTXEmlhDioWig+xbib0CzutJHxElYPvMjleXgokFsUIFIfB
+         lOww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=Y1dLSlyWy/MiZgoP6iiF/6QwWYrXPTD2jEbFS7UdqNI=;
-        b=pN+/j9/Ztu4wm1AYw3mBqiolGM3kyQhg2nGBIijanLhWGW/k4/i+GpPaGucz1bv6Ks
-         6yyJ7W8jvwM9+Jx/VENfX/E53Al5/mTjzMqGml0uj8/bwRKrH9B3fjbAj0f4tPrhJdqG
-         xWiC08jW3GpRf7zJwiTcGxcpUg9wgkJS2zxyMmCRfbJRE26jqoep6lHgUGoSbVlvjToa
-         Y4YVpv8Penv6TQD5/POY1XovSODTg7ODUTO4MBftkL3uUBxjBaXSnoPQp7sUq5WqgSM/
-         NAXAYO5964PmhW+D2ncTCAsb97VEFN3u+nGNX8gBUe0un234o9vxI51XxLAw1a53R18T
-         yuOw==
-X-Gm-Message-State: ANhLgQ3UG0XXwUVSy6BvLw3wphConl8aKxM/uLz5CpglPItf0V41x5Zo
-	VNwDjVuBAbuyh1mxpMe6373ndJALfdo=
-X-Google-Smtp-Source: ADFU+vvmbgqZCQhouxgczl8/m7BeMRJZq0T4nRdXTHTLWBUn4yZOIt1EsZJQV0jOogtTwdX/0XBM9Q==
-X-Received: by 2002:a92:ce05:: with SMTP id b5mr16143000ilo.303.1583771649588;
-        Mon, 09 Mar 2020 09:34:09 -0700 (PDT)
+        bh=64HOYy97PAcD3VPqpAMnC5c2zNLwk0P06Zpatec0ElE=;
+        b=GE9a31IX6wGLpab245QQQWh213A1uJoU2qmOGXtCi4LwivYuelqaBst3m/K20t6c0Z
+         ylrnMkrlAcSbDTVb4m1fCZ9XAo158aSNSTx3wudfOsRilajP70/WbNBVszy29FrW9ase
+         0HM9jvF1xiLOj0ZLyh6IMmJ4MmGN8FSx91QLVDQZ2x0R+R4g3rJzNHLHuKuqsMbcCBDF
+         35SPgLy1nE7jL7OwJq7DKZDegaKSnLeAs2zoclg198oLTny0anT7Csparywzt+eIpkOt
+         25nUdC3Db9Z1uR78tifLcojYslp0AdXnQixaK8Rx5Eaj0lTE97gWbT9ahg6y/T8TLtb3
+         V60Q==
+X-Gm-Message-State: ANhLgQ1vwVNpWWLo6dOztZfKZPG3zJAeXym+8WxZOvnR1LZycSw065d1
+	Lk0IciHY0CTskJ1Wh/GKlfbr2HCWJfQ=
+X-Google-Smtp-Source: ADFU+vuuJOSQ0JLP/QQ+rRcwNMqaPDZuBYPXx6jDfAJa3YfPJ8iR5ibLkgVUt3AcUv076ZhV7zjnwg==
+X-Received: by 2002:a05:6e02:685:: with SMTP id o5mr4709979ils.86.1583771648648;
+        Mon, 09 Mar 2020 09:34:08 -0700 (PDT)
 Return-Path: <jpewhacker@gmail.com>
 Received: from OLA-8C37N23.ad.garmin.com ([204.77.163.55])
-        by smtp.gmail.com with ESMTPSA id q1sm15049593ile.71.2020.03.09.09.34.08
+        by smtp.gmail.com with ESMTPSA id q1sm15049593ile.71.2020.03.09.09.34.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2020 09:34:09 -0700 (PDT)
+        Mon, 09 Mar 2020 09:34:08 -0700 (PDT)
 From: "Joshua Watt" <JPEWhacker@gmail.com>
 X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: docs@lists.yoctoproject.org,
 	Joshua Watt <JPEWhacker@gmail.com>
-Subject: [bitbake-devel][PATCH 11/15] bitbake: worker: Remove unnecessary addDefaultLogFilter
-Date: Mon,  9 Mar 2020 11:33:49 -0500
-Message-Id: <20200309163353.15362-12-JPEWhacker@gmail.com>
+Subject: [bitbake-devel][PATCH 10/15] bitbake: knotty: Setup logs with config helper
+Date: Mon,  9 Mar 2020 11:33:48 -0500
+Message-Id: <20200309163353.15362-11-JPEWhacker@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200309163353.15362-1-JPEWhacker@gmail.com>
 References: <20200309163353.15362-1-JPEWhacker@gmail.com>
 
-Adding the default log filter here is unnecessary because there are no
-defined logging domains when it is called, which means it does no actual
-filtering.
+Sets up logging in knotty to use python's structured logging config and
+the bb.msg.setLoggingConfig() helper to setup logging. This allows the
+user to specify additional logging mechanism in a config file with
+BB_LOGCONFIG
 
 Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
 ---
- bitbake/bin/bitbake-worker | 1 -
- 1 file changed, 1 deletion(-)
+ bitbake/lib/bb/ui/knotty.py | 134 ++++++++++++++++++++++++++----------
+ 1 file changed, 96 insertions(+), 38 deletions(-)
 
-diff --git a/bitbake/bin/bitbake-worker b/bitbake/bin/bitbake-worker
-index fc28a34d8a..97cc0fd60f 100755
---- a/bitbake/bin/bitbake-worker
-+++ b/bitbake/bin/bitbake-worker
-@@ -65,7 +65,6 @@ if 0:
-     format_str = "%(levelname)s: %(message)s"
-     conlogformat = bb.msg.BBLogFormatter(format_str)
-     consolelog = logging.FileHandler(logfilename)
--    bb.msg.addDefaultlogFilter(consolelog)
-     consolelog.setFormatter(conlogformat)
-     logger.addHandler(consolelog)
+diff --git a/bitbake/lib/bb/ui/knotty.py b/bitbake/lib/bb/ui/knotty.py
+index d5dce7172a..386f27876d 100644
+--- a/bitbake/lib/bb/ui/knotty.py
++++ b/bitbake/lib/bb/ui/knotty.py
+@@ -370,7 +370,11 @@ def _log_settings_from_server(server, observe_only):
+     if error:
+         logger.error("Unable to get the value of BB_CONSOLELOG variable: %s" % error)
+         raise BaseException(error)
+-    return includelogs, loglines, consolelogfile
++    logconfigfile, error = server.runCommand([cmd, "BB_LOGCONFIG"])
++    if error:
++        logger.error("Unable to get the value of BB_LOGCONFIG variable: %s" % error)
++        raise BaseException(error)
++    return includelogs, loglines, consolelogfile, logconfigfile
  
+ _evt_list = [ "bb.runqueue.runQueueExitWait", "bb.event.LogExecTTY", "logging.LogRecord",
+               "bb.build.TaskFailed", "bb.build.TaskBase", "bb.event.ParseStarted",
+@@ -387,7 +391,87 @@ def main(server, eventHandler, params, tf = TerminalFilter):
+     if not params.observe_only:
+         params.updateToServer(server, os.environ.copy())
+ 
+-    includelogs, loglines, consolelogfile = _log_settings_from_server(server, params.observe_only)
++    includelogs, loglines, consolelogfile, logconfigfile = _log_settings_from_server(server, params.observe_only)
++
++    loglevel, _ = bb.msg.constructLogOptions()
++
++    if params.options.quiet == 0:
++        console_loglevel = loglevel
++    elif params.options.quiet > 2:
++        console_loglevel = bb.msg.BBLogFormatter.ERROR
++    else:
++        console_loglevel = bb.msg.BBLogFormatter.WARNING
++
++    logconfig = {
++        "version": 1,
++        "handlers": {
++            "BitBake.console": {
++                "class": "logging.StreamHandler",
++                "formatter": "BitBake.consoleFormatter",
++                "level": console_loglevel,
++                "stream": "ext://sys.stdout",
++                "filters": ["BitBake.stdoutFilter"],
++            },
++            "BitBake.errconsole": {
++                "class": "logging.StreamHandler",
++                "formatter": "BitBake.consoleFormatter",
++                "level": loglevel,
++                "stream": "ext://sys.stderr",
++                "filters": ["BitBake.stderrFilter"],
++            },
++        },
++        "formatters": {
++            # This format instance will get color output enabled by the
++            # terminal
++            "BitBake.consoleFormatter" : {
++                "()": "bb.msg.BBLogFormatter",
++                "format": "%(levelname)s: %(message)s"
++            },
++            # The file log requires a separate instance so that it doesn't get
++            # color enabled
++            "BitBake.logfileFormatter": {
++                "()": "bb.msg.BBLogFormatter",
++                "format": "%(levelname)s: %(message)s"
++            }
++        },
++        "filters": {
++            "BitBake.stdoutFilter": {
++                "()": "bb.msg.LogFilterLTLevel",
++                "level": "ERROR"
++            },
++            "BitBake.stderrFilter": {
++                "()": "bb.msg.LogFilterGEQLevel",
++                "level": "ERROR"
++            }
++        },
++        "loggers": {
++            "BitBake": {
++                "level": loglevel,
++                "handlers": ["BitBake.console", "BitBake.errconsole"],
++            }
++        },
++        "disable_existing_loggers": False
++    }
++
++    # Enable the console log file if enabled
++    if consolelogfile and not params.options.show_environment and not params.options.show_versions:
++        logconfig["handlers"]["BitBake.consolelog"] ={
++            "class": "logging.FileHandler",
++            "formatter": "BitBake.logfileFormatter",
++            "level": "INFO",
++            "filename": consolelogfile,
++        }
++        logconfig["loggers"]["BitBake"]["handlers"].append("BitBake.consolelog")
++
++        bb.utils.mkdirhier(os.path.dirname(consolelogfile))
++        loglink = os.path.join(os.path.dirname(consolelogfile), 'console-latest.log')
++        bb.utils.remove(loglink)
++        try:
++           os.symlink(os.path.basename(consolelogfile), loglink)
++        except OSError:
++           pass
++
++    bb.msg.setLoggingConfig(logconfig, logconfigfile)
+ 
+     if sys.stdin.isatty() and sys.stdout.isatty():
+         log_exec_tty = True
+@@ -396,23 +480,16 @@ def main(server, eventHandler, params, tf = TerminalFilter):
+ 
+     helper = uihelper.BBUIHelper()
+ 
+-    console = logging.StreamHandler(sys.stdout)
+-    errconsole = logging.StreamHandler(sys.stderr)
+-    format_str = "%(levelname)s: %(message)s"
+-    format = bb.msg.BBLogFormatter(format_str)
+-    if params.options.quiet == 0:
+-        forcelevel = None
+-    elif params.options.quiet > 2:
+-        forcelevel = bb.msg.BBLogFormatter.ERROR
+-    else:
+-        forcelevel = bb.msg.BBLogFormatter.WARNING
+-    bb.msg.addDefaultlogFilter(console, bb.msg.BBLogFilterStdOut, forcelevel)
+-    bb.msg.addDefaultlogFilter(errconsole, bb.msg.BBLogFilterStdErr)
+-    console.setFormatter(format)
+-    errconsole.setFormatter(format)
+-    if not bb.msg.has_console_handler(logger):
+-        logger.addHandler(console)
+-        logger.addHandler(errconsole)
++    # Look for the specially designated handlers which need to be passed to the
++    # terminal handler
++    console = None
++    errconsole = None
++    for h in logger.handlers:
++        name = getattr(h, '_name', None)
++        if name == 'BitBake.console':
++            console = h
++        elif name == 'BitBake.errconsole':
++            errconsole = h
+ 
+     bb.utils.set_process_name("KnottyUI")
+ 
+@@ -420,21 +497,6 @@ def main(server, eventHandler, params, tf = TerminalFilter):
+         server.terminateServer()
+         return
+ 
+-    consolelog = None
+-    if consolelogfile and not params.options.show_environment and not params.options.show_versions:
+-        bb.utils.mkdirhier(os.path.dirname(consolelogfile))
+-        conlogformat = bb.msg.BBLogFormatter(format_str)
+-        consolelog = logging.FileHandler(consolelogfile)
+-        bb.msg.addDefaultlogFilter(consolelog)
+-        consolelog.setFormatter(conlogformat)
+-        logger.addHandler(consolelog)
+-        loglink = os.path.join(os.path.dirname(consolelogfile), 'console-latest.log')
+-        bb.utils.remove(loglink)
+-        try:
+-           os.symlink(os.path.basename(consolelogfile), loglink)
+-        except OSError:
+-           pass
+-
+     llevel, debug_domains = bb.msg.constructLogOptions()
+     server.runCommand(["setEventMask", server.getEventHandle(), llevel, debug_domains, _evt_list])
+ 
+@@ -761,8 +823,4 @@ def main(server, eventHandler, params, tf = TerminalFilter):
+         if e.errno == errno.EPIPE:
+             pass
+ 
+-    if consolelog:
+-        logger.removeHandler(consolelog)
+-        consolelog.close()
+-
+     return return_value
 -- 
 2.17.1
 
