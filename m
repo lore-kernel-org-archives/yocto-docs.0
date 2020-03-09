@@ -1,77 +1,80 @@
-Received: from mail-il1-f195.google.com (mail-il1-f195.google.com [209.85.166.195])
- by mx.groups.io with SMTP id smtpd.web11.784.1583771641389525614
+Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
+ by mx.groups.io with SMTP id smtpd.web12.710.1583771642332330952
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Mar 2020 09:34:01 -0700
+ Mon, 09 Mar 2020 09:34:02 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=dTxAt8Fg;
- spf=pass (domain: gmail.com, ip: 209.85.166.195, mailfrom: jpewhacker@gmail.com)
-Received: by mail-il1-f195.google.com with SMTP id p1so5244050ils.12
-        for <docs@lists.yoctoproject.org>; Mon, 09 Mar 2020 09:34:01 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=roTZoxZ9;
+ spf=pass (domain: gmail.com, ip: 209.85.166.169, mailfrom: jpewhacker@gmail.com)
+Received: by mail-il1-f169.google.com with SMTP id f5so9248530ilq.5
+        for <docs@lists.yoctoproject.org>; Mon, 09 Mar 2020 09:34:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=8O7lGO0LmVTJ+Ts7W9DTNCOdKbql7m/OYMhfsPWF8ng=;
-        b=dTxAt8FgBbkhPyaQ13rTUJpmlqf/roRuxDdk7lnyNHWzT7OlzhWSPimb8c1+eU8Ojt
-         MQCgm5UB/ZMSUbsZn2WacWF7q1wlOpl9tlcKZL5DR/EfFW3QPZKmrm+shpo8qdWZQw5+
-         jsFtFsCtblbcPpQwpqsCzG2sNeyVdUL+0yvllTDEIGiW7iQPBUSpZuIww3KQKyJTISB6
-         L767mIBEPIdkmeO2zfxdkimbO2u7EhQKzEdyxPuMO8eSGOrqM9uVWi8Ru+ThvwVQyUe/
-         K2/ePuh+DYR9jLDTUpXm+ZI9WvemxDhdRME5L5n/6336k2dy+R7XrrFyOU6RbNJ6mmfN
-         +Ndg==
+        bh=IUQaYnM7cZ5ZotvAiDXpdTlR0FVB7RzAZvDyS1M6mUU=;
+        b=roTZoxZ9AJaXdnoexwuZtNBAE4OiRSrKQTh+5lFjT8unp1DYSQeQSE4aZ+2doT8PuX
+         TzWd607g8rjgG3oz7+vhgwchSPdhtQqZv6HegGG/I5m4qBekHv64vkoj71X3Ate1ZhTN
+         JiGOSaK/iGoU2FEdr3byjiMcBuohQG51KPTkFIV2RS/Y/YgpR0HK83BTUoqdMrbfOkgJ
+         tcY5oRK1f8yYwU81ZXlVn/2bFEj00/VszsSX/CxPPr5koKFnyhoTJWYZshJWPQpyJfmj
+         6y7Xj1HSaqL2WYzlyxx8huC7Lv2F8mtmKxmuO5tlZvWf78lLrBU6AslU+ANykl78W3wX
+         4feQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=8O7lGO0LmVTJ+Ts7W9DTNCOdKbql7m/OYMhfsPWF8ng=;
-        b=JvMIMW9Kuyd3ITqbdPvu2AWHjQrlWadHbz4faBfecFfWwyqT+IbemXHxqy2bmdzmDf
-         7MlNzl/FqRK92Jw3KaRjmQ/ZKLTk5kg2tjLO+Za1nxxBUJLr0cOJYM/4LNghQTjYvXyK
-         jmL0A/OkZTWpahV+2FcAUccv6U0D//u/h2IxtCwIFEuEYx2cx7Cx10evHX6m9hay8hIq
-         Q7crS6o7YS/MFvu05xRCHZJ850irsDQK3BGcefI62QWDBc9mqXnG2BLjPypZCA9Pc4sG
-         llp91/3SltBcn/Jt/3MAemwIdxYs3kxtkdmN9kSvYhoztLJJS9eaZA4n5z2xBaKn0C9s
-         O+Dg==
-X-Gm-Message-State: ANhLgQ0+EXVcYimZOExCb4618j4jWRebegU+jCjjIlzLN59YlBwAFRAA
-	JBhRMK/qhALMcZCVA+KXSkQ=
-X-Google-Smtp-Source: ADFU+vt7AXMZCExO6aPHpm+yVsQKvvHFk38JT7L2mQiPMtvG+Ed4UjD8xEZWQyNObrh9b9xrveR97g==
-X-Received: by 2002:a92:9114:: with SMTP id t20mr16759978ild.258.1583771640832;
-        Mon, 09 Mar 2020 09:34:00 -0700 (PDT)
+        bh=IUQaYnM7cZ5ZotvAiDXpdTlR0FVB7RzAZvDyS1M6mUU=;
+        b=aeKVjNGhMk4YoLrhVj6JbYT3XMS3KpTjdtz0DT5eTxumZ5yma2NV/n81jVGyhT19zO
+         Y/4yk6brXuj8kOBW1OiGzTKHyt838YQRZvH9SVFDuXdTDs/whIyPmX+qePXjvg9UcTh4
+         VnSWgvQR52AbRdAwq0cjOArUwvA2pNXcUx3zmG0RTOFC8Ndy1KjXr1AiAIzDKgcCVj9m
+         HeiW1F2tym9H8oCtA+w5lXI0WUVsn9+Ww06ONvLMlV+CnwZi8k1LiEz4mOgZhckGwgmO
+         0FuBN87nJwhLLicbUI/jUUXvICMzBFFJ3xkLQkibHLtDork1p8M13Z+JH3305epTeW7U
+         0W4Q==
+X-Gm-Message-State: ANhLgQ2LyUx9hpUDbi8fJVCAGIzJrTd10NDaXePPvE4m872kxBLIPBEe
+	rSq7ynKKcWC0ca5DMpqOw7Q=
+X-Google-Smtp-Source: ADFU+vsDmo1MBWn3Lmf/iO3hw7Ke2VF3nlCe4JrM95JWBy9SkROCbeU/hTUhHGfwmeAEJI1I9suj5A==
+X-Received: by 2002:a92:8151:: with SMTP id e78mr10137402ild.227.1583771641811;
+        Mon, 09 Mar 2020 09:34:01 -0700 (PDT)
 Return-Path: <jpewhacker@gmail.com>
 Received: from OLA-8C37N23.ad.garmin.com ([204.77.163.55])
-        by smtp.gmail.com with ESMTPSA id q1sm15049593ile.71.2020.03.09.09.33.59
+        by smtp.gmail.com with ESMTPSA id q1sm15049593ile.71.2020.03.09.09.34.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2020 09:34:00 -0700 (PDT)
+        Mon, 09 Mar 2020 09:34:01 -0700 (PDT)
 From: "Joshua Watt" <JPEWhacker@gmail.com>
 X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: docs@lists.yoctoproject.org,
 	Joshua Watt <JPEWhacker@gmail.com>
-Subject: [bitbake-devel][PATCH 04/15] bitbake: lib/bb/msg.py: Add repr for BBLogFormatter
-Date: Mon,  9 Mar 2020 11:33:42 -0500
-Message-Id: <20200309163353.15362-5-JPEWhacker@gmail.com>
+Subject: [bitbake-devel][PATCH 05/15] bitbake: knotty: Add commented logging_tree code
+Date: Mon,  9 Mar 2020 11:33:43 -0500
+Message-Id: <20200309163353.15362-6-JPEWhacker@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200309163353.15362-1-JPEWhacker@gmail.com>
 References: <20200309163353.15362-1-JPEWhacker@gmail.com>
 
-Adds a __repr__ function for BBLogFormatter. This allows it to get a
-human readable string when printed using the logging_tree module
+Adds a comment section that can be easily uncommented to enable dumping
+the logging tree. This module is extremely useful for debugging issued
+with logging configuration
 
 Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
 ---
- bitbake/lib/bb/msg.py | 3 +++
- 1 file changed, 3 insertions(+)
+ bitbake/lib/bb/ui/knotty.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/bitbake/lib/bb/msg.py b/bitbake/lib/bb/msg.py
-index ea6a9543f7..c70fd80806 100644
---- a/bitbake/lib/bb/msg.py
-+++ b/bitbake/lib/bb/msg.py
-@@ -98,6 +98,9 @@ class BBLogFormatter(logging.Formatter):
-     def enable_color(self):
-         self.color_enabled = True
+diff --git a/bitbake/lib/bb/ui/knotty.py b/bitbake/lib/bb/ui/knotty.py
+index a6a92b920f..aac12cd479 100644
+--- a/bitbake/lib/bb/ui/knotty.py
++++ b/bitbake/lib/bb/ui/knotty.py
+@@ -430,6 +430,11 @@ def main(server, eventHandler, params, tf = TerminalFilter):
+     llevel, debug_domains = bb.msg.constructLogOptions()
+     server.runCommand(["setEventMask", server.getEventHandle(), llevel, debug_domains, _evt_list])
  
-+    def __repr__(self):
-+        return "%s fmt='%s' color=%s" % (self.__class__.__name__, self._fmt, "True" if self.color_enabled else "False")
++    # The logging_tree module is *extremely* helpful in debugging logging
++    # domains. Uncomment here to dump the logging tree when bitbake starts
++    #import logging_tree
++    #logging_tree.printout()
 +
- class BBLogFilter(object):
-     def __init__(self, handler, level, debug_domains):
-         self.stdlevel = level
+     universe = False
+     if not params.observe_only:
+         params.updateFromServer(server)
 -- 
 2.17.1
 
