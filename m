@@ -1,92 +1,137 @@
-Received: from mail-il1-f169.google.com (mail-il1-f169.google.com [209.85.166.169])
- by mx.groups.io with SMTP id smtpd.web10.747.1583771637528846993
+Received: from mail-il1-f195.google.com (mail-il1-f195.google.com [209.85.166.195])
+ by mx.groups.io with SMTP id smtpd.web10.750.1583771638539695046
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Mar 2020 09:33:57 -0700
+ Mon, 09 Mar 2020 09:33:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=snExztFB;
- spf=pass (domain: gmail.com, ip: 209.85.166.169, mailfrom: jpewhacker@gmail.com)
-Received: by mail-il1-f169.google.com with SMTP id k29so4061195ilg.0
-        for <docs@lists.yoctoproject.org>; Mon, 09 Mar 2020 09:33:57 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=gZUQ9zB4;
+ spf=pass (domain: gmail.com, ip: 209.85.166.195, mailfrom: jpewhacker@gmail.com)
+Received: by mail-il1-f195.google.com with SMTP id k29so4061289ilg.0
+        for <docs@lists.yoctoproject.org>; Mon, 09 Mar 2020 09:33:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id;
-        bh=gT1Mi3jEUdvU6lRbSBYtEGXhMTh8izdAb8Qw+Uo03Ek=;
-        b=snExztFBiB8mJ54+yrrQOzDh1l4YJlSaiqWVZ+dgAVjwdJl602L3WasH0wtNzbLaFN
-         /vtPlP+6db0bZzH2VJ/E/S9MdrCaLyZbNctulxqe0qDebUoEhKnJV2uKluwgyzgorcvV
-         Km86juahdrSJeOFQILT/iD5FTMZtSR1JwNDLLiOm1Bkem+1YceWIW35GZ6qWh5+aXwmz
-         X6RpiQDi1pFNjdfejOn0E/ljuiBR9s4sWO3qqMWYtw8QhDyWeEOMLM62ZLn8dB0sH1PK
-         Pq9b6VVpu3YFFej18lqB6o6OnHEmL4TFDTrRW4/6XxIca6drQvQQ07fNnp5P+sjyLADp
-         C3qQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=mLjSh/smDIFnqbOuzvYns8y//K4ZdwqRVU7Fzta5i70=;
+        b=gZUQ9zB4bXqcvoz88sf4iCIPadzd463AVIxvItpxk9l+gPXEz7t8jOLUmwIY6C3gfW
+         A3uHXd1cCDOdzOzTX91ZnftcqRo2ud60xf3yIMdFjNIelfV1bjgp+E7ZmrvA2+/9lYU1
+         /Ncga+0uVKVoJ4dy6aYgARKXB5r2ncPO/sb1Vs8Miwy4Mp7FOIP8gKKI1sjgUvJCaubd
+         OtpLukUPj6VpGOMX8c/lxMGFnXuKifaA4sqmWoNPCUPy4DBaLEh9nE+vZeFo5yOTmw+s
+         Nm5U2w+gvEG07OK+4Z4ls1NykqrzILN2Ao2CdtDtcAY5bhTLBto7Y473gpBERi8F4Syd
+         D44g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id;
-        bh=gT1Mi3jEUdvU6lRbSBYtEGXhMTh8izdAb8Qw+Uo03Ek=;
-        b=JdH8P8BPvSvVg3vKZNvimudQxnJXHqocc67dTK4MhRLCiY4FvMyazT9tA1OquPbuW+
-         3XkffcAueggx/OqNdCk+yE3Zihf5MsHCg4KQOXQ0GJCg+QcrGiZOZNnliuUj7h2p0npV
-         OsvPQrv6NnH11P+Lqv4WaPIQb4SMAKj7b4t+MM7ngDh/FBmk+275z3pdtIQpcb1wKCaQ
-         dwtGEl42mjEsTHdaXNaqaTGnbDRhSal0j4prfPPcAdomhTlhou42NRWkXGg/Sf2mELuA
-         XpOOw0VfLnMg3rW4OwTk5Vp/PyeaqVNDnrtwf99wt54nWLrHc61qMXRMQCarns7vN/2K
-         GtjA==
-X-Gm-Message-State: ANhLgQ3C6ryFVBPWTb+PFNU5TnyEqHOmQ9Ad66FwxnxYTElH5sFlBDqd
-	bs5rbhIsu2+CiXfnIwpkKF8=
-X-Google-Smtp-Source: ADFU+vs2rnJD/HqRxN1N2yktpz7pk/ySxL17MN9M9iWzoXZIK5Cgx8yDQCHeWKFNCWuJHBkc+drLug==
-X-Received: by 2002:a92:c50e:: with SMTP id r14mr16705676ilg.52.1583771636941;
-        Mon, 09 Mar 2020 09:33:56 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=mLjSh/smDIFnqbOuzvYns8y//K4ZdwqRVU7Fzta5i70=;
+        b=q0M5iRnuU/K7Kx8oyY1cYZyQUxhZU8sUUhFRvYH0fsdRp4x3j16YTQjvLewIGUou/t
+         6D4AVwez0l4+w35Nr7YyQnFZetD8/vp4n1zSxsFDZdDWrzazAoGxNwlWoc1lAJB5hWfO
+         dYLco+Gk/4WvK8hZu+ECxtKXkWdkkxXATPZGrtYsMtQ8fnYNnSIzE27hDbo0L2vLWu6p
+         HxvLy/IVqAbt8p2SwnebVpCOgiltGvH1ZGcm3O8wXeB6KBGeHSDe95XPWpWalk2Ap61F
+         sA4CeqBgy+fJIdEIfkf7D3P5bDCwMOj8VPF9M2BIzoHNM7xjpErymslMhFPr78nKJS+L
+         9AVA==
+X-Gm-Message-State: ANhLgQ1QjwFP56lc0pNXsYnJ6/6s/SWK2Iiqm4HvjckVv1ctAdbjVi8R
+	G/3oHFNuOhh1Ti1h8/eNg0oGHwZNIbc=
+X-Google-Smtp-Source: ADFU+vvMusHFzpH3Wwd0e4y/fVuaL0JCCSOUrSQ9ksz8m3QnBuXwj5Z40jtttOWKpnTwA0M5qxP5jQ==
+X-Received: by 2002:a92:3591:: with SMTP id c17mr19982ilf.270.1583771637929;
+        Mon, 09 Mar 2020 09:33:57 -0700 (PDT)
 Return-Path: <jpewhacker@gmail.com>
 Received: from OLA-8C37N23.ad.garmin.com ([204.77.163.55])
-        by smtp.gmail.com with ESMTPSA id q1sm15049593ile.71.2020.03.09.09.33.56
+        by smtp.gmail.com with ESMTPSA id q1sm15049593ile.71.2020.03.09.09.33.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2020 09:33:56 -0700 (PDT)
+        Mon, 09 Mar 2020 09:33:57 -0700 (PDT)
 From: "Joshua Watt" <JPEWhacker@gmail.com>
 X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: docs@lists.yoctoproject.org,
 	Joshua Watt <JPEWhacker@gmail.com>
-Subject: [bitbake-devel][PATCH 00/15] Add support for python structured logging
-Date: Mon,  9 Mar 2020 11:33:38 -0500
-Message-Id: <20200309163353.15362-1-JPEWhacker@gmail.com>
+Subject: [bitbake-devel][PATCH 01/15] bitbake: lib/bb/msg.py: Convert default domains to a dictionary
+Date: Mon,  9 Mar 2020 11:33:39 -0500
+Message-Id: <20200309163353.15362-2-JPEWhacker@gmail.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20200309163353.15362-1-JPEWhacker@gmail.com>
+References: <20200309163353.15362-1-JPEWhacker@gmail.com>
 
-Adds support for users to provide configuration for Python structured
-logging in bitbake. This gives a high degree of flexibility to the way
-that logs are capture and displayed, so users can generate very targeted
-logging if desired. The initial use case for this is to maintain the
-high level of hash equivalence logging on the Yocto autobuilders, while
-reducing the noise for most other users.
+Converts the default domain variable to a dictionary where the keys are
+the logging domains and the values are the logging level (instead of the
+debug count). This makes it easier to deal with the logging domains and
+the awkward conversion from a list to a dictionary only needs to be done
+once when logging is initialized. Finally, other code has been written
+that already assumes this variable is a dictionary, see:
 
-I've added documentation updates for the new BB_LOGCONFIG variable, but
-it probably needs some grooming.
+f04cd93109 ("bitbake: lib/bb: Optimise out debug messages from cooker")
 
-Joshua Watt (15):
-  bitbake: lib/bb/msg.py: Convert default domains to a dictionary
-  bitbake: knotty: Handle logging messages with specific logger
-  bitbake: lib/bb/msg.py: Use log level instead of debug count
-  bitbake: lib/bb/msg.py: Add repr for BBLogFormatter
-  bitbake: knotty: Add commented logging_tree code
-  bitbake: lib/bb/msg.py: Add filter utilities
-  bitbake: lib/bb/msg.py: Remove unused filters
-  bitbake: lib/bb/msg.py: Add helper to set logging config
-  bitbake: knotty: Remove dependency on format variable
-  bitbake: knotty: Setup logs with config helper
-  bitbake: worker: Remove unnecessary addDefaultLogFilter
-  bitbake: Log hash equivalence with a different logger
-  bitbake: Add autobuilder logging configuration
-  bitbake: Lower hash equivalence logging
-  bitbake: doc: Add documentation for BB_LOGCONFIG
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+---
+ bitbake/lib/bb/__init__.py |  5 +++--
+ bitbake/lib/bb/msg.py      | 17 +++++++----------
+ 2 files changed, 10 insertions(+), 12 deletions(-)
 
- bitbake/bin/bitbake-worker                    |   3 +-
- bitbake/contrib/autobuilderlog.json           |  27 +++
- .../bitbake-user-manual-execution.xml         |  97 ++++++++++
- .../bitbake-user-manual-ref-variables.xml     |  11 ++
- bitbake/lib/bb/__init__.py                    |   7 +-
- bitbake/lib/bb/msg.py                         | 172 +++++++++++++----
- bitbake/lib/bb/runqueue.py                    |  13 +-
- bitbake/lib/bb/siggen.py                      |  17 +-
- bitbake/lib/bb/tinfoil.py                     |   4 +-
- bitbake/lib/bb/ui/knotty.py                   | 173 ++++++++++++------
- 10 files changed, 419 insertions(+), 105 deletions(-)
- create mode 100644 bitbake/contrib/autobuilderlog.json
-
+diff --git a/bitbake/lib/bb/__init__.py b/bitbake/lib/bb/__init__.py
+index 88641e280b..acd4af13a8 100644
+--- a/bitbake/lib/bb/__init__.py
++++ b/bitbake/lib/bb/__init__.py
+@@ -43,12 +43,13 @@ class BBLogger(Logger):
+         Logger.__init__(self, name)
+ 
+     def bbdebug(self, level, msg, *args, **kwargs):
++        loglevel = logging.DEBUG - level + 1
+         if not bb.event.worker_pid:
+-            if self.name in bb.msg.loggerDefaultDomains and level > (bb.msg.loggerDefaultDomains[self.name]):
++            if self.name in bb.msg.loggerDefaultDomains and loglevel > (bb.msg.loggerDefaultDomains[self.name]):
+                 return
+             if level > (bb.msg.loggerDefaultDebugLevel):
+                 return
+-        return self.log(logging.DEBUG - level + 1, msg, *args, **kwargs)
++        return self.log(loglevel, msg, *args, **kwargs)
+ 
+     def plain(self, msg, *args, **kwargs):
+         return self.log(logging.INFO + 1, msg, *args, **kwargs)
+diff --git a/bitbake/lib/bb/msg.py b/bitbake/lib/bb/msg.py
+index 33c0e2fa19..d1b0e929d4 100644
+--- a/bitbake/lib/bb/msg.py
++++ b/bitbake/lib/bb/msg.py
+@@ -138,7 +138,7 @@ class BBLogFilterStdOut(BBLogFilter):
+ loggerDefaultDebugLevel = 0
+ loggerDefaultVerbose = False
+ loggerVerboseLogs = False
+-loggerDefaultDomains = []
++loggerDefaultDomains = {}
+ 
+ def init_msgconfig(verbose, debug, debug_domains=None):
+     """
+@@ -148,15 +148,16 @@ def init_msgconfig(verbose, debug, debug_domains=None):
+     bb.msg.loggerDefaultVerbose = verbose
+     if verbose:
+         bb.msg.loggerVerboseLogs = True
++
++    bb.msg.loggerDefaultDomains = {}
+     if debug_domains:
+-        bb.msg.loggerDefaultDomains = debug_domains
+-    else:
+-        bb.msg.loggerDefaultDomains = []
++        for (domainarg, iterator) in groupby(debug_domains):
++            dlevel = len(tuple(iterator))
++            bb.msg.loggerDefaultDomains["BitBake.%s" % domainarg] = logging.DEBUG - dlevel + 1
+ 
+ def constructLogOptions():
+     debug = loggerDefaultDebugLevel
+     verbose = loggerDefaultVerbose
+-    domains = loggerDefaultDomains
+ 
+     if debug:
+         level = BBLogFormatter.DEBUG - debug + 1
+@@ -165,11 +166,7 @@ def constructLogOptions():
+     else:
+         level = BBLogFormatter.NOTE
+ 
+-    debug_domains = {}
+-    for (domainarg, iterator) in groupby(domains):
+-        dlevel = len(tuple(iterator))
+-        debug_domains["BitBake.%s" % domainarg] = logging.DEBUG - dlevel + 1
+-    return level, debug_domains
++    return level, loggerDefaultDomains
+ 
+ def addDefaultlogFilter(handler, cls = BBLogFilter, forcelevel=None):
+     level, debug_domains = constructLogOptions()
 -- 
 2.17.1
 
