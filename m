@@ -1,192 +1,75 @@
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
- by mx.groups.io with SMTP id smtpd.web11.793.1583771654958724850
+Received: from mail-pj1-f68.google.com (mail-pj1-f68.google.com [209.85.216.68])
+ by mx.groups.io with SMTP id smtpd.web12.6761.1583886914762890910
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Mar 2020 09:34:15 -0700
+ Tue, 10 Mar 2020 17:35:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=qQutinFA;
- spf=pass (domain: gmail.com, ip: 209.85.166.52, mailfrom: jpewhacker@gmail.com)
-Received: by mail-io1-f52.google.com with SMTP id f21so5602489iol.6
-        for <docs@lists.yoctoproject.org>; Mon, 09 Mar 2020 09:34:14 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=kbo6+XWs;
+ spf=pass (domain: gmail.com, ip: 209.85.216.68, mailfrom: raj.khem@gmail.com)
+Received: by mail-pj1-f68.google.com with SMTP id gv19so73249pjb.5
+        for <docs@lists.yoctoproject.org>; Tue, 10 Mar 2020 17:35:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=hr9dryjHTlhNSJ9Ns5uD940C1U8021JNCYHN/HwNR1s=;
-        b=qQutinFAb3qk9paqVGFLi6p+Y5pYaJ2Z5SeZPEHokO7DuHd9bC/URKvDhRY8sF/lkP
-         xbiCqhswblVyQiRaV8raBNGmurhE27Lm2V69fA6asWyaP2sgMwHVLTRHzgpbRkdG8+LI
-         Q59AujP1DjOoTuZSOe4jL+4MQMVT/bdx+LdB1yW9sTT6xqzoe+3rY9rKrrJIzHHgKfqg
-         LLu0+MBj0lM5vGdY8a0SQix34WMbu4QxEoQEoRytp1SsJksJE8oAr4EckOE5t2LQ0an6
-         5ex29vNLdhxDTu4DxS5xZs4/GoROus7V/zJhHuJ0nwy1TAoZt4ze4zxpaMQaki+XDKC0
-         gNrw==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q6hDvqgyk/N2A5rYAQZxtBf2J08yWKD7FebcNTPQ8y4=;
+        b=kbo6+XWsGhnAKg824xYuAstf/6OpxfG8OMvj2hYTIBvlXQl73m6rYsKFIbkxQ5RkLa
+         6m5ffmfziBoErgknmWmEcTkw5M1Zi6RDm5cYeIDqBgIS5hArDlIsBCwY+V4lLhzFjzuw
+         jIBBtFucYcGGvmeF7w8Ugo68E63iu86jzlwFFwWa3xgaxjmKY4H7UTg8EskpLuiYIwjC
+         uRT2Cfv+nyEZsWJMwsGDGPy48Z8cRfhYqO+fL3cajf+LAIkzUmoVzdVGRbKyp7eXRrGf
+         lAY5980q4CgPnYhi+kkqHYFH5yBWY8w/Ueo8Pfx5bDnTiYEwuNrlDJ3iccusyyusLSi2
+         jjZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references;
-        bh=hr9dryjHTlhNSJ9Ns5uD940C1U8021JNCYHN/HwNR1s=;
-        b=Z8fA/z4SKz3vJmpkc2b1mZ+63NGkIrvyzjf7szcQG/bkSyc20K5N+qR96vrCE51b8F
-         A2Yi7ERo37uPsHlTke2G2Fufg1HSQ14DwGCkHf/B53TDVwwHgYlseN2+vII4FDBdsxw4
-         u1e/HSGYwblEeOZ87Fdlf/0vpjsCN9GPlOGC588m9P9aXtHaI2Jv/XlvXW+vTFi8qW2b
-         h0+hJ5dbrrrP2NDqDoAnGalu+2Plj1vznrLPF9tbprtT+nJj1e5tb4ilMDnGgt5oRRbn
-         miR68Jw/QW26/DXaUtYXiwh7Qxq9/oC/mbfkVx39fNBHpKW55XpUBd8l8vNDDa426eXr
-         Ijbg==
-X-Gm-Message-State: ANhLgQ1WpEaBFCmXmoJYxC5K7dfq+/7KMbtB9GT4yOJ07BqJituBKjJT
-	26bTRrC3UCMIsc9b1KgSsns=
-X-Google-Smtp-Source: ADFU+vtAShaCwGCu2lIM7yfk1qAp5Lgl2VJZ7NdpgtsooDJDrd+7TaZa5U+tdnOUA5dOQfGZt/aI+A==
-X-Received: by 2002:a02:a610:: with SMTP id c16mr15754992jam.43.1583771654264;
-        Mon, 09 Mar 2020 09:34:14 -0700 (PDT)
-Return-Path: <jpewhacker@gmail.com>
-Received: from OLA-8C37N23.ad.garmin.com ([204.77.163.55])
-        by smtp.gmail.com with ESMTPSA id q1sm15049593ile.71.2020.03.09.09.34.13
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=Q6hDvqgyk/N2A5rYAQZxtBf2J08yWKD7FebcNTPQ8y4=;
+        b=QW+OO+GsrJn9lftIutQ1OwxP+Z8HuM7Ej7PnU1HEqrzQlryApJgjej0v9145ef7r1j
+         nClsKvoSGqljuQBU5cMuybd59GKfcQTHq64O1iWwfBoFhfR2ZsNlahQH+3DxUZ04AzC7
+         p3ioKM8NzNb1ucgOhn5RbrQDAQvVarrTaFOQG6gYxpzbpqzeTKbE2dSwEsZTMUWU867L
+         GVtJyxMbLYs23QnzTCGVW3uK0BCf4NY4h9/nyiBA2WkJ9QkcdSdWo3nNw2pqplXE0CYs
+         +cbSOC3L8GWlGTAX+XXHYF+xgFe2FGKKAmLkA96HBohuWDINrJSvsicE/D9USz2/INtx
+         hyGw==
+X-Gm-Message-State: ANhLgQ33wtTbBDL8xAq5BjtRHoGOAJaduK7cMdmU09LqjP66kCz26Nfm
+	j+APHdkfKYI2kQZ2GOkMRxtFjKoSAvs=
+X-Google-Smtp-Source: ADFU+vuxn747xN/Q5/swCgA7uMi8NoH/lSzBKznJMYgG6sIZsOs96MODGDrcwCkaf+0t97hPkIMuKw==
+X-Received: by 2002:a17:902:9a42:: with SMTP id x2mr601375plv.194.1583886913863;
+        Tue, 10 Mar 2020 17:35:13 -0700 (PDT)
+Return-Path: <raj.khem@gmail.com>
+Received: from focal.hsd1.ca.comcast.net (c-73-63-224-124.hsd1.ca.comcast.net. [73.63.224.124])
+        by smtp.gmail.com with ESMTPSA id q43sm2226064pjc.40.2020.03.10.17.35.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2020 09:34:13 -0700 (PDT)
-From: "Joshua Watt" <JPEWhacker@gmail.com>
-X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Joshua Watt <JPEWhacker@gmail.com>
-Subject: [bitbake-devel][PATCH 15/15] bitbake-user-manual: Add documentation for BB_LOGCONFIG
-Date: Mon,  9 Mar 2020 11:33:53 -0500
-Message-Id: <20200309163353.15362-16-JPEWhacker@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200309163353.15362-1-JPEWhacker@gmail.com>
-References: <20200309163353.15362-1-JPEWhacker@gmail.com>
+        Tue, 10 Mar 2020 17:35:13 -0700 (PDT)
+From: "Khem Raj" <raj.khem@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Khem Raj <raj.khem@gmail.com>
+Subject: [PATCH] documentation: Remove python from UBUNTU_HOST_PACKAGES_ESSENTIAL
+Date: Tue, 10 Mar 2020 17:35:10 -0700
+Message-Id: <20200311003510.476988-1-raj.khem@gmail.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Adds documentation describing how to use the BB_LOGCONFIG variable to
-enable custom logging.
+Ubuntu 20.04 doesn't have python package and therefore this list fails
+to install, python3 is required anyway so removing python is perhaps ok
 
-Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 ---
- .../bitbake-user-manual-execution.xml         | 97 +++++++++++++++++++
- .../bitbake-user-manual-ref-variables.xml     | 11 +++
- 2 files changed, 108 insertions(+)
+ documentation/poky.ent | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.xml b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.xml
-index 8f606676b4..3b31f748cc 100644
---- a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.xml
-+++ b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.xml
-@@ -929,4 +929,101 @@
-             section.
-         </para>
-     </section>
-+
-+    <section id="logging">
-+        <title>Logging</title>
-+        <para>
-+            In addition to the standard command line option to control how
-+            verbose builds are when execute, bitbake also supports user defined
-+            configuration of the
-+            <ulink url='https://docs.python.org/3/library/logging.html'>Python logging</ulink>
-+            facilities through the
-+            <link linkend="var-bb-BB_LOGCONFIG"><filename>BB_LOGCONFIG</filename></link>
-+            variable. This variable defines a json or yaml
-+            <ulink url='https://docs.python.org/3/library/logging.config.html'>logging configuration</ulink>
-+            that will be intelligently merged into the default configuration.
-+            The logging configuration is merged using the following rules:
-+            <itemizedlist>
-+                <listitem><para>
-+                    The user defined configuration will completely replace the default
-+                    configuration if top level key
-+                    <filename>bitbake_merge</filename> is set to the value
-+                    <filename>False</filename>. In this case, all other rules
-+                    are ignored.
-+                </para></listitem>
-+                <listitem><para>
-+                    The user configuration must have a top level
-+                    <filename>version</filename> which must match the value of
-+                    the default configuration.
-+                </para></listitem>
-+                <listitem><para>
-+                    Any keys defined in the <filename>handlers</filename>,
-+                    <filename>formatters</filename>, or <filename>filters</filename>,
-+                    will be merged into the same section in the default
-+                    configuration, with the user specified keys taking
-+                    replacing a default one if there is a conflict. In
-+                    practice, this means that if both the default configuration
-+                    and user configuration specify a handler named
-+                    <filename>myhandler</filename>, the user defined one will
-+                    replace the default. To prevent the user from inadvertently
-+                    replacing a default handler, formatter, or filter, all of
-+                    the default ones are named with a prefix of
-+                    "<filename>BitBake.</filename>"
-+                </para></listitem>
-+                <listitem><para>
-+                    If a logger is defined by the user with the key
-+                    <filename>bitbake_merge</filename> set to
-+                    <filename>False</filename>, that logger will be completely
-+                    replaced by user configuration. In this case, no other
-+                    rules will apply to that logger.
-+                </listitem></para>
-+                <listitem><para>
-+                    All user defined <filename>filter</filename> and
-+                    <filename>handlers</filename> properties for a given logger
-+                    will be merged with corresponding properties from the
-+                    default logger. For example, if the user configuration adds
-+                    a filter called <filename>myFilter</filename> to the
-+                    <filename>BitBake.SigGen</filename>, and the default
-+                    configuration adds a filter called
-+                    <filename>BitBake.defaultFilter</filename>, both filters
-+                    will be applied to the logger
-+                </listitem></para>
-+            </itemizedlist>
-+        </para>
-+
-+        <para>
-+            As an example, consider the following user logging configuration
-+            file which logs all Hash Equivalence related messages of VERBOSE or
-+            higher to a file called <filename>hashequiv.log</filename>
-+            <literallayout class='monospaced'>
-+    {
-+        "version": 1,
-+        "handlers": {
-+            "autobuilderlog": {
-+                "class": "logging.FileHandler",
-+                "formatter": "logfileFormatter",
-+                "level": "DEBUG",
-+                "filename": "hashequiv.log",
-+                "mode": "w"
-+            }
-+        },
-+        "formatters": {
-+                "logfileFormatter": {
-+                    "format": "%(name)s: %(levelname)s: %(message)s"
-+                }
-+        },
-+        "loggers": {
-+            "BitBake.SigGen.HashEquiv": {
-+                "level": "VERBOSE",
-+                "handlers": ["autobuilderlog"]
-+            },
-+            "BitBake.RunQueue.HashEquiv": {
-+                "level": "VERBOSE",
-+                "handlers": ["autobuilderlog"]
-+            }
-+        }
-+    }
-+            </literallayout>
-+        </para>
-+    </section>
- </chapter>
-diff --git a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.xml b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.xml
-index bae01d90c0..c4bd1f2584 100644
---- a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.xml
-+++ b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.xml
-@@ -539,6 +539,17 @@
-             </glossdef>
-         </glossentry>
- 
-+        <glossentry id='var-bb-BB_LOGCONFIG'><glossterm>BB_LOGCONFIG</glossterm>
-+            <glossdef>
-+                <para>
-+                    Specifies the name of a config file that contains the user
-+                    logging configuration. See
-+                    <link linkend="logging">Logging</link> for additional
-+                    information
-+                </para>
-+            </glossdef>
-+        </glossentry>
-+
-         <glossentry id='var-bb-BB_LOGFMT'><glossterm>BB_LOGFMT</glossterm>
-             <glossdef>
-                 <para>
+diff --git a/documentation/poky.ent b/documentation/poky.ent
+index 59aad95bc..581c87679 100755
+--- a/documentation/poky.ent
++++ b/documentation/poky.ent
+@@ -58,7 +58,7 @@
+ <!ENTITY OE_INIT_PATH "&YOCTO_POKY;/oe-init-build-env">
+ <!ENTITY OE_INIT_FILE "oe-init-build-env">
+ <!ENTITY UBUNTU_HOST_PACKAGES_ESSENTIAL "gawk wget git-core diffstat unzip texinfo gcc-multilib \
+-     build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
++     build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
+      xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+      pylint3 xterm">
+ <!ENTITY FEDORA_HOST_PACKAGES_ESSENTIAL "gawk make wget tar bzip2 gzip python3 unzip perl patch \
 -- 
-2.17.1
+2.25.1
 
