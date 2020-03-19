@@ -1,57 +1,59 @@
-Received: from mail-lf1-f67.google.com (mail-lf1-f67.google.com [209.85.167.67])
- by mx.groups.io with SMTP id smtpd.web12.563.1584660199028405041
+Received: from mail-lf1-f68.google.com (mail-lf1-f68.google.com [209.85.167.68])
+ by mx.groups.io with SMTP id smtpd.web12.398.1584662006152529253
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Mar 2020 16:23:19 -0700
+ Thu, 19 Mar 2020 16:53:26 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=VqRz3gfJ;
- spf=pass (domain: gmail.com, ip: 209.85.167.67, mailfrom: cengic@gmail.com)
-Received: by mail-lf1-f67.google.com with SMTP id n20so3076329lfl.10
-        for <docs@lists.yoctoproject.org>; Thu, 19 Mar 2020 16:23:18 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=ndQELj9h;
+ spf=pass (domain: gmail.com, ip: 209.85.167.68, mailfrom: cengic@gmail.com)
+Received: by mail-lf1-f68.google.com with SMTP id t21so3116002lfe.9
+        for <docs@lists.yoctoproject.org>; Thu, 19 Mar 2020 16:53:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=VMsBLrRUNLV1pIgFv/q+doWcNL3Ow52kamvQPHJU37c=;
-        b=VqRz3gfJumWgZQVpgNGYS5rKcdmK+ir6hea+VFcGmxQ6lRYBGSNURecsu2w0liYSRE
-         eg7Onc/4lTMHCBtC+ng7MNGNDlpKTqtCiFSCgJplf3HGCk8PkmbWovtHVa7k56fyzo6l
-         rXNSpsufqbMSb3mXgtPUqkqe4dgYjb5/3bVN6SP3nUH6Nf60AXfgOyoYiOyJbDJM1rpw
-         MGJshb88B28qaZWHrnR1oLlDzHwWVpupvf4Gn5IVD6G8vvym2D4/JYYXMxrxnBZvK78W
-         pWIlQCTUA6EsKoF64mpCiAZF9ta2nueDd6XX87NtrMjhvMtfxi2NROifkEQZKMTVUFXd
-         GXfQ==
+        bh=T0JNhNZbLESynaF2d49OHrjaRg3GjxbjuHSmWEStXr8=;
+        b=ndQELj9h2ufSGqutdkhq0TqmNwVNR0K3aMqD1TWSj+6clxACC3WFzIJ30PCwjeEDrx
+         HF6+WnL1s87xCsqzbVjnUsxNBIQNYk2/34ApyOL8WNeHJa0PCTGCFiwL0jDPK7RX/mr6
+         vTfMgDPvIwz9SyDZb03DWO5qwWtDuPB9p9fE+MuVrbROO8y1+gVJimakFxAZ1Bf7jhse
+         C8Ef4PTSXm/DLZ5cqd9eTwimR/4cS1T52rX+Q7wUx6Ney4wHcjU4yT+Bl28yWWZWULUd
+         krgvR43XdD60TTAG1K/EoB9LxwwvyiPfG4vCSwf7Kc4R3FUGY4kyEqNuD/J14s8icehz
+         6mOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=VMsBLrRUNLV1pIgFv/q+doWcNL3Ow52kamvQPHJU37c=;
-        b=lq32qOP4bKzh2lzyaRmPpQ4jji5ILH5HKG0nGddVDI1IthTilzm7aSea5FzXFHvSCP
-         q1eV4r+vII+fyw4nwGpY8qKuLTRekYH22FZNQ5b2L3aUhHsK51NVreLBsCvd+uJiuJh9
-         BrvIL5ThWsMhZbwZGQ+rqEOkQpgmeotPmya0DtP+kDBwic+f7v1bA+VsiBv8942o66NN
-         jDFKhgWewVmJVRBwF4RHte08oMH8iwrX2WgJ8/5lT9gnEhOxr4q29qRCTroZqQn/udxu
-         rXMUopk7sDLgRdHiOrfnZJxhS+J8/hOwcLAUs6SEx7+zzo3g63Fx/VgLZCDN52AUGS6H
-         nuyQ==
-X-Gm-Message-State: ANhLgQ0eA7BwRXnpDyUym+a+WMbVb9DZ4EbCO6uclOzqK9NGPgxNZhgs
-	dq9d36aVKN/J4jRvqDaSOC+yUMZASag=
-X-Google-Smtp-Source: ADFU+vv7tfC+p4RkZJ7pDV7KmEyehA0MjaWwy72J/GfkFS+PK1U9BEYN4ilFHd6jo6LkTUPYek1iFQ==
-X-Received: by 2002:ac2:4201:: with SMTP id y1mr3559224lfh.92.1584660197110;
-        Thu, 19 Mar 2020 16:23:17 -0700 (PDT)
+        bh=T0JNhNZbLESynaF2d49OHrjaRg3GjxbjuHSmWEStXr8=;
+        b=h7T8v+q/kuDaKOJQZ/+jJzupCEbh59dZIlB+5EwwWWq4L4esTzsNaxKjXDLOTkDVxP
+         wb2lq6LCooTw7djVE5+p+prWD7V66BYBfkq8ccbtBbsW4gut8dPEXwbLgIts4+QtP2cG
+         nnkEQ/C8LB2YUA0n9QmcO5ueipueFjk9B6MQa+gA+AXNbJTEsA2ZAPR1aXVhJ6dyLbAD
+         m/b2+NPNu/CLWkVY9tLv3EuZFYE22D0wVbimndvbg6dnyh/WUwUpE0ZxT1sR3FRZF72h
+         Pfe6ByNGA9pBFW8nFw+Jd2BNk3cyfRziXK56SrDwCdOwtg1pwGOrN5Rjcth0/b743Dzy
+         ebbw==
+X-Gm-Message-State: ANhLgQ3QFU+wH50heiK0xTiQLA0ccBsi1TdrksJ4h3R/zVJEhX/OmoAH
+	tzrrXg4fvcGgTJKjZeFpbFEEJy+rQ38=
+X-Google-Smtp-Source: ADFU+vsWXdYf82oJsHNs5GxCWwlf/+hb791u1a51P/TTLng5Rlkw2AkUSslbFTGH4kKbWOnJaIhWtA==
+X-Received: by 2002:a05:6512:1109:: with SMTP id l9mr3603549lfg.50.1584662003981;
+        Thu, 19 Mar 2020 16:53:23 -0700 (PDT)
 Return-Path: <cengic@gmail.com>
 Received: from localhost.localdomain (c83-248-75-173.bredband.comhem.se. [83.248.75.173])
-        by smtp.gmail.com with ESMTPSA id p27sm2664472lfo.63.2020.03.19.16.23.16
+        by smtp.gmail.com with ESMTPSA id k63sm2372598lfk.43.2020.03.19.16.53.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Mar 2020 16:23:16 -0700 (PDT)
-From: cengic@gmail.com
+        Thu, 19 Mar 2020 16:53:23 -0700 (PDT)
+From: "Goran Cengic" <cengic@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: Goran Cengic <cengic@gmail.com>
-Subject: [PATCH] documentation: add rpcgen to FEDORA_HOST_PACKAGES_ESSENTIAL
-Date: Fri, 20 Mar 2020 00:23:14 +0100
-Message-Id: <20200319232314.2038-1-cengic@gmail.com>
+Subject: [PATCH v2] documentation: add rpcgen to FEDORA_HOST_PACKAGES_ESSENTIAL
+Date: Fri, 20 Mar 2020 00:53:19 +0100
+Message-Id: <20200319235319.24218-1-cengic@gmail.com>
 X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Fedora 30 and 31 the following error appears without rpcgen package:
-ERROR: The following required tools (as specified by HOSTTOOLS) appear to be unavailable in PATH, please install them in order to proceed:
-  rpcgen
+On recent Fedora the following error appears without rpcgen package:
+  ERROR: The following required tools (as specified by HOSTTOOLS)
+  appear to be unavailable in PATH, please install them in order to
+  proceed:
+    rpcgen
 
 Signed-off-by: Goran Cengic <cengic@gmail.com>
 ---
