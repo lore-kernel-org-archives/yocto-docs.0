@@ -1,84 +1,129 @@
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
- by mx.groups.io with SMTP id smtpd.web10.11333.1584807929753535770
+Received: from mail-pg1-f195.google.com (mail-pg1-f195.google.com [209.85.215.195])
+ by mx.groups.io with SMTP id smtpd.web11.18705.1584828241614236692
  for <docs@lists.yoctoproject.org>;
- Sat, 21 Mar 2020 09:25:30 -0700
+ Sat, 21 Mar 2020 15:04:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=iZ+BIklX;
- spf=pass (domain: gmail.com, ip: 209.85.167.54, mailfrom: cengic@gmail.com)
-Received: by mail-lf1-f54.google.com with SMTP id c5so1437108lfp.5
-        for <docs@lists.yoctoproject.org>; Sat, 21 Mar 2020 09:25:29 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=c4hUoROL;
+ spf=pass (domain: gmail.com, ip: 209.85.215.195, mailfrom: raj.khem@gmail.com)
+Received: by mail-pg1-f195.google.com with SMTP id t24so5020819pgj.7
+        for <docs@lists.yoctoproject.org>; Sat, 21 Mar 2020 15:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=O22ai8S6FhjEYqubrqnmYk8PwDcQwNa5FatxQrL9jOw=;
-        b=iZ+BIklX6+1OxJm0qvK5HMUwIi1Q/k/f90OSVHqXumYraWfEvAnWJOfgdOZZQ2zzRZ
-         wPU5hhl/gRMmSikFrfCBUsL16lYjdVOm7I8Cz1uCciaPKxkbnZlAuHHSasiRZRk/W3yN
-         v7gytmJ0X4eB6WFob9tY7jIpUUuZAOwLaL0+epmKuvn2INsymIettYx2Zo6WgGA4q8AT
-         12c1/CIyipYyaVZbzz0Hplous6Vva0VK3dhlgIldrRa8Gpg8/vDwK2ol6NpOpZsF99gu
-         uTAVjdtGYxStcw210DQM0AbNKLyOkA5fuYuj6pyYvL+kiws0nWYqlJjAP7EF2J2jCngN
-         84MQ==
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=+76wJ1eEC318YGt0qih0jIIu/jaQ/PbuU+KzdctJGsQ=;
+        b=c4hUoROLHeIgqk+8SP695yFg1HKsz/6jcKVVQ0dHaQyykiVVKug8oH2lgnT9ZiDyGm
+         Zw6Za5i99HZAWC2w3/U6948CINXkpsokKOLD/UKQBbvZ+bV02X4y7FzjF9HevB2OihVt
+         j3y1Du2cAqTckPhFgrRpXxB8y9tFn7nWfe2/RpwYbO+HyUIWxcvJFuAVJHnwo7OA1Gki
+         TYqYJd6/QoHaVOsqgFkKpvd9ecFZQ/U+sN0hKSDBSiqzymMa53B8k/M2a95ReCbm74ru
+         g8UQuBPO9VqBofmNH+cA8228hH4O7X5CfNUMPdEIqKrH8wz/jHoDDiN90FcVZNfOBmma
+         CC1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=O22ai8S6FhjEYqubrqnmYk8PwDcQwNa5FatxQrL9jOw=;
-        b=UV+zdM90q0ClUUkqsJtha7nPLDIrxtEN9cRDvbf1T6Wbcd7d40dUNhglbZXHSgKFMR
-         SvcMxuBlxkN4pf3HmrI3n8IT+EuQ2tRw+33/34XuIpqJrPeiQMG3fkmisfzzctPJuao4
-         CNhyJFfkLVAYU8qkubZe+iSnTklzRS/t3ZeZcf+cxxfBTBFcBWKIkfX+1RULKwh7R5gG
-         wypeZ6TxoeqnR4b9lQadRLmSPIG88UQ31qDSz3KqEx6Emf602P0r1osh02V9+AET+bVp
-         4gwMXmkRHXBM7QqK0SzQNqhvxLhS5RPwMYqOrwhav1cy4Rh0VZyPaPKEV6Xa6H6bKiIC
-         b0Ww==
-X-Gm-Message-State: ANhLgQ28jytYoA/3iTFvaWowB8AH3GwZSwmzfB24Fg2ymZFSO8hIozVz
-	uTIraZb6YFqnTMDUws+DQ95I8vj3dIQ=
-X-Google-Smtp-Source: ADFU+vtVC2Rufze/WYBAul8EhdMQO3tB6TZ8xxHnoLRkPIAFcbOpIHXv0Dk9lj8o8u3C+FFnkRqagA==
-X-Received: by 2002:ac2:4476:: with SMTP id y22mr8248341lfl.61.1584807927637;
-        Sat, 21 Mar 2020 09:25:27 -0700 (PDT)
-Return-Path: <cengic@gmail.com>
-Received: from localhost.localdomain (c83-248-75-173.bredband.comhem.se. [83.248.75.173])
-        by smtp.gmail.com with ESMTPSA id o4sm5467428lfl.62.2020.03.21.09.25.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2020 09:25:27 -0700 (PDT)
-From: "Goran Cengic" <cengic@gmail.com>
+        bh=+76wJ1eEC318YGt0qih0jIIu/jaQ/PbuU+KzdctJGsQ=;
+        b=J6X5oQ07lwTVaekqUJw7F6olj22OhE2QO9Dqohd7yxPEnQliaTUyyLyxv5M6V3PWbJ
+         D5dvtYIYw6qcBhXlMI+njaDtpuWrdR0LJGcFZXXuQl0CkqK9pG+8DtMNcU96nbvWMGbW
+         mksZqtDRUehvR5o5+zAgQ8Tiaj8YqZ0gM4xMAxLksdzlMuCsr9jcwA/gkbr5jty5+OGQ
+         OYDF+b1m2GdYF1j0nxI/ProFBBz+0OryVzs7lzzdzDBm4CsTQ54t0wFxCjGAp9OWeOGi
+         ePCxLsoiA2dZTZ52WGdIyQNOpArlqF0S9txSIGe/7etafkY/V2+JereoPzCB8HY7CsIk
+         2AGA==
+X-Gm-Message-State: ANhLgQ2+MZ7bZqhoYDLWn985uUqIOTGgOGiy20Rg1x//UBtOqynuMGma
+	TM7xc0DrftsVvJHxoy6NTcZ5qeHgzjA=
+X-Google-Smtp-Source: ADFU+vsa/cX38o2eWXmrNVp98MP93zApYf+egAh13R9bmy+FfZmGiNb5fmqQA9PbVp2Xwc+FLpOotw==
+X-Received: by 2002:a62:2a8d:: with SMTP id q135mr17844396pfq.220.1584828240535;
+        Sat, 21 Mar 2020 15:04:00 -0700 (PDT)
+Return-Path: <raj.khem@gmail.com>
+Received: from ?IPv6:2601:646:9200:4e0:8981:1b0d:92f0:88? ([2601:646:9200:4e0:8981:1b0d:92f0:88])
+        by smtp.gmail.com with ESMTPSA id v185sm9168213pfv.32.2020.03.21.15.03.59
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Mar 2020 15:04:00 -0700 (PDT)
+Subject: Re: [docs] [PATCH] documentation: add rpcgen to FEDORA_HOST_PACKAGES_ESSENTIAL
 To: docs@lists.yoctoproject.org
-Cc: Goran Cengic <cengic@gmail.com>
-Subject: [PATCH v4] documentation: add rpcgen tool to required packages
-Date: Sat, 21 Mar 2020 17:25:24 +0100
-Message-Id: <20200321162524.5854-1-cengic@gmail.com>
-X-Mailer: git-send-email 2.25.1
+References: <20200319232314.2038-1-cengic@gmail.com>
+ <ac1eb590-1a23-ddbc-346e-568149ffc490@gmail.com>
+ <Groupsio.1.CACT7hbmyCshZ1veuV-X-C7kfjh-wB2KYEykqk7OzmkUiH+q9xg@mail.gmail.com>
+From: "Khem Raj" <raj.khem@gmail.com>
+Message-ID: <7f7d70d9-750c-e49e-ed6c-5589f1d91c95@gmail.com>
+Date: Sat, 21 Mar 2020 15:03:59 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.6.0
 MIME-Version: 1.0
+In-Reply-To: <Groupsio.1.CACT7hbmyCshZ1veuV-X-C7kfjh-wB2KYEykqk7OzmkUiH+q9xg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 
-On recent distros the following error appears without rpcgen host tool:
-  ERROR: The following required tools (as specified by HOSTTOOLS)
-  appear to be unavailable in PATH, please install them in order to
-  proceed:
-    rpcgen
 
-Signed-off-by: Goran Cengic <cengic@gmail.com>
----
- documentation/poky.ent | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/poky.ent b/documentation/poky.ent
-index 581c87679..eb5de9514 100755
---- a/documentation/poky.ent
-+++ b/documentation/poky.ent
-@@ -65,11 +65,11 @@
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
-      python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
--     python3-jinja2 SDL-devel xterm">
-+     python3-jinja2 SDL-devel xterm rpcgen">
- <!ENTITY OPENSUSE_HOST_PACKAGES_ESSENTIAL "python gcc gcc-c++ git chrpath make wget python-xml \
-      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
--     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1
--     $ sudo pip3 install GitPython libSDL-devel xterm">
-+     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen
-+     $ sudo pip3 install GitPython">
- <!ENTITY CENTOS_HOST_PACKAGES_ESSENTIAL "-y epel-release
-      $ sudo yum makecache
-      $ sudo yum install gawk make wget tar bzip2 gzip python unzip perl patch \
--- 
-2.25.1
+On 3/21/20 5:03 AM, Goran Cengic wrote:
+> [Edited Message Follows]
+> 
+> 
+> On Fri, Mar 20, 2020 at 6:55 PM Khem Raj <raj.khem@gmail.com 
+> <mailto:raj.khem@gmail.com>> wrote:
+> 
+> 
+> 
+>     On 3/19/20 4:23 PM, Goran Cengic wrote:
+>      > On Fedora 30 and 31 the following error appears without rpcgen
+>     package:
+>      > ERROR: The following required tools (as specified by HOSTTOOLS)
+>     appear to be unavailable in PATH, please install them in order to
+>     proceed:
+>      >    rpcgen
+>      >
+>      > Signed-off-by: Goran Cengic <cengic@gmail.com
+>     <mailto:cengic@gmail.com>>
+>      > ---
+>      >   documentation/poky.ent | 2 +-
+>      >   1 file changed, 1 insertion(+), 1 deletion(-)
+>      >
+>      > diff --git a/documentation/poky.ent b/documentation/poky.ent
+>      > index 581c87679..fba2a9123 100755
+>      > --- a/documentation/poky.ent
+>      > +++ b/documentation/poky.ent
+>      > @@ -65,7 +65,7 @@
+>      >        diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo
+>     chrpath \
+>      >        ccache perl-Data-Dumper perl-Text-ParseWords
+>     perl-Thread-Queue perl-bignum socat \
+>      >        python3-pexpect findutils which file cpio python
+>     python3-pip xz python3-GitPython \
+>      > -     python3-jinja2 SDL-devel xterm">
+>      > +     python3-jinja2 SDL-devel xterm rpcgen">
+> 
+>     Thats good. We also want to add rpcsvc-proto for suse based distros for
+>     same.
+> 
+> I found that rpcsvc-proto does not require rpcgen so I added the rpcgen 
+> package for the suse based distros as well (see patch v3). I'm not sure 
+> that the rpcsvc-proto headers are required on the host since there is a 
+> recipe providing them in case they are needed for a build.
+> If the headers are also required we can add rpcsvc-proto-devel for 
+> fedora based distros and rpcsvc-proto for suse based distros as well.
+> On Fedora the lib package, libtirpc, is already installed by default.
 
+My suggestion was to use a dependency thats common across many distro 
+e.g. archlinux, gentoo put rpcgen in rpcsvc-proto itself, SuSE creates
+independent RPM for rpcgen even though it comes from rpcsvc-proto, I 
+guess as such this patch is fine.
+
+
+> 
+>      >   <!ENTITY OPENSUSE_HOST_PACKAGES_ESSENTIAL "python gcc gcc-c++
+>     git chrpath make wget python-xml \
+>      >        diffstat makeinfo python-curses patch socat python3
+>     python3-curses tar python3-pip \
+>      >        python3-pexpect xz which python3-Jinja2 Mesa-libEGL1
+>      >
+>      >
+>      >
+>      > 
+> 
+> 
+> 
+> 
