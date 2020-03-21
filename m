@@ -1,50 +1,50 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
- by mx.groups.io with SMTP id smtpd.web12.11156.1584807349554363375
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+ by mx.groups.io with SMTP id smtpd.web10.11333.1584807929753535770
  for <docs@lists.yoctoproject.org>;
- Sat, 21 Mar 2020 09:15:49 -0700
+ Sat, 21 Mar 2020 09:25:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=esbUEBb8;
- spf=pass (domain: gmail.com, ip: 209.85.208.173, mailfrom: cengic@gmail.com)
-Received: by mail-lj1-f173.google.com with SMTP id w4so9784328lji.11
-        for <docs@lists.yoctoproject.org>; Sat, 21 Mar 2020 09:15:49 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=iZ+BIklX;
+ spf=pass (domain: gmail.com, ip: 209.85.167.54, mailfrom: cengic@gmail.com)
+Received: by mail-lf1-f54.google.com with SMTP id c5so1437108lfp.5
+        for <docs@lists.yoctoproject.org>; Sat, 21 Mar 2020 09:25:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=O22ai8S6FhjEYqubrqnmYk8PwDcQwNa5FatxQrL9jOw=;
-        b=esbUEBb8fWEal78SMnLGVOcLQAubGnRT1KHTRt7FUN+8LwLQ4dlNmgQA6eLvsSRBSJ
-         bvyviHc9MJdir+J6yZBmYoINRpfD1kH98asu2BxT6cUtHXjSndX2Bd+2irvFt0OjbR9g
-         6yX5Ldq3erH5H6yL0qh6u5EdH0Bu/E3YsdIMb/dHtaV+cI57jl0SDX27X8VdCWHSifiz
-         CWDj3AqS4kiPTgPJJh7YNSK4KjCAQ78aXlIBWsYaKzBFTfshMrM3FGJXYsVeg4+8sRsk
-         AugG453puIuh0CKr3KyTZm31mVXLktSS7l3kP+leTuVuY41KMSj6KT4Cp+tCj5zbqFD2
-         gIwg==
+        b=iZ+BIklX6+1OxJm0qvK5HMUwIi1Q/k/f90OSVHqXumYraWfEvAnWJOfgdOZZQ2zzRZ
+         wPU5hhl/gRMmSikFrfCBUsL16lYjdVOm7I8Cz1uCciaPKxkbnZlAuHHSasiRZRk/W3yN
+         v7gytmJ0X4eB6WFob9tY7jIpUUuZAOwLaL0+epmKuvn2INsymIettYx2Zo6WgGA4q8AT
+         12c1/CIyipYyaVZbzz0Hplous6Vva0VK3dhlgIldrRa8Gpg8/vDwK2ol6NpOpZsF99gu
+         uTAVjdtGYxStcw210DQM0AbNKLyOkA5fuYuj6pyYvL+kiws0nWYqlJjAP7EF2J2jCngN
+         84MQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
         bh=O22ai8S6FhjEYqubrqnmYk8PwDcQwNa5FatxQrL9jOw=;
-        b=pcbSSRZouJHkcdYysRERWfpxa5lbonfDkEfgQfkS3+++QZyX3Dd+LDdmciGu46mnkG
-         cNCuYQ7DCRZ6TpJGtjRxhE9mL/Fb5JmHo6oFfKbH6b3KipPECHpAQWDcn1uc8VI9lPdW
-         Wl1qByMIeSEmcA4JJEmao+TD6xMKzwhROfLcN8QRsh1RL2KcF5jV3E31ga/UgIvh3OCV
-         oXzKAaaa1RgI+QgJvXHD770t7C3h4tLuvgdmZkT2fkEMYMy3QeSvW+Bf2SYoH7Kxz6LL
-         Tlcbb9y/eu0KwX1XKzMQ6GL+X4dqkWAzeoBUhdqioKF9yWMAqq4wgHfH9oEWrgAqyyoN
-         EQOw==
-X-Gm-Message-State: ANhLgQ2B9kq/BdorXgO2mJZz3sc/VIyAOvLe0oFdbPvEkpYju5+Fe+jW
-	28pVamzdOyZ4vXi75ILAGqyZKqKgLXs=
-X-Google-Smtp-Source: ADFU+vstZjYK9+c/mI/6IGgrIbZrBPjhs7z8hnUeWd03cf4Fljyyz6n1IJfNiMuk4baO+Zuo+seorQ==
-X-Received: by 2002:a2e:b558:: with SMTP id a24mr1021394ljn.56.1584807347450;
-        Sat, 21 Mar 2020 09:15:47 -0700 (PDT)
+        b=UV+zdM90q0ClUUkqsJtha7nPLDIrxtEN9cRDvbf1T6Wbcd7d40dUNhglbZXHSgKFMR
+         SvcMxuBlxkN4pf3HmrI3n8IT+EuQ2tRw+33/34XuIpqJrPeiQMG3fkmisfzzctPJuao4
+         CNhyJFfkLVAYU8qkubZe+iSnTklzRS/t3ZeZcf+cxxfBTBFcBWKIkfX+1RULKwh7R5gG
+         wypeZ6TxoeqnR4b9lQadRLmSPIG88UQ31qDSz3KqEx6Emf602P0r1osh02V9+AET+bVp
+         4gwMXmkRHXBM7QqK0SzQNqhvxLhS5RPwMYqOrwhav1cy4Rh0VZyPaPKEV6Xa6H6bKiIC
+         b0Ww==
+X-Gm-Message-State: ANhLgQ28jytYoA/3iTFvaWowB8AH3GwZSwmzfB24Fg2ymZFSO8hIozVz
+	uTIraZb6YFqnTMDUws+DQ95I8vj3dIQ=
+X-Google-Smtp-Source: ADFU+vtVC2Rufze/WYBAul8EhdMQO3tB6TZ8xxHnoLRkPIAFcbOpIHXv0Dk9lj8o8u3C+FFnkRqagA==
+X-Received: by 2002:ac2:4476:: with SMTP id y22mr8248341lfl.61.1584807927637;
+        Sat, 21 Mar 2020 09:25:27 -0700 (PDT)
 Return-Path: <cengic@gmail.com>
 Received: from localhost.localdomain (c83-248-75-173.bredband.comhem.se. [83.248.75.173])
-        by smtp.gmail.com with ESMTPSA id m14sm1831503lfo.25.2020.03.21.09.15.46
+        by smtp.gmail.com with ESMTPSA id o4sm5467428lfl.62.2020.03.21.09.25.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Mar 2020 09:15:46 -0700 (PDT)
+        Sat, 21 Mar 2020 09:25:27 -0700 (PDT)
 From: "Goran Cengic" <cengic@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: Goran Cengic <cengic@gmail.com>
-Subject: [PATCH v3] documentation: add rpcgen tool to required packages
-Date: Sat, 21 Mar 2020 17:15:42 +0100
-Message-Id: <20200321161542.5198-1-cengic@gmail.com>
+Subject: [PATCH v4] documentation: add rpcgen tool to required packages
+Date: Sat, 21 Mar 2020 17:25:24 +0100
+Message-Id: <20200321162524.5854-1-cengic@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
