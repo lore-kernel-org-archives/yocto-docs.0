@@ -1,21 +1,21 @@
 Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web10.18136.1585158336739646908
+ by mx.groups.io with SMTP id smtpd.web11.18798.1585159170121568248
  for <docs@lists.yoctoproject.org>;
- Wed, 25 Mar 2020 10:45:37 -0700
+ Wed, 25 Mar 2020 10:59:30 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:40516 helo=localhost.localdomain)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:40676 helo=localhost.localdomain)
 	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jHA5v-00E3Ug-1q
-	for docs@lists.yoctoproject.org; Wed, 25 Mar 2020 13:45:35 -0400
-Date: Wed, 25 Mar 2020 13:45:33 -0400 (EDT)
+	id 1jHAJM-00E5XD-L2
+	for docs@lists.yoctoproject.org; Wed, 25 Mar 2020 13:59:29 -0400
+Date: Wed, 25 Mar 2020 13:59:27 -0400 (EDT)
 From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
 X-X-Sender: rpjday@localhost.localdomain
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: bitbake variable glossary versus YP (ref manual) variable glossary?
-Message-ID: <alpine.LFD.2.21.2003251331320.25486@localhost.localdomain>
+Subject: mismatch between anchors in YP ref manual and bitbake user manual?
+Message-ID: <alpine.LFD.2.21.2003251355200.26890@localhost.localdomain>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-0.2
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -31,18 +31,20 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-  was puzzled over a lack of some important BB_* variables in the ref
-manual variable glossary, until i remembered the bitbake user manual,
-where i can find them, but there is an inconsistency between the two
-manuals in that *some* of the BB_* variables are listed in the ref
-manual variable glossary (eg., BB_NUMBER_THREADS) but not others (eg.,
-BB_NO_NETWORK), which could lead to some confusion.
+  perhaps i'm just misreading this, but it seems that the URLs used to
+cross-reference bitbake stuff in the YP ref manual no longer match the
+href names used in the bitbake manual.
 
-  even weirder, some are in the ref manual while *not* in the bitbake
-user manual variable glossary (eg., BB_SERVER_TIMEOUT). is there some
-sort of pattern as to which variables go in which variable glossary?
-as it is, it's definitely inconsistent, requiring one to bounce back
-and forth for a complete coverage.
+  eg. in ref manual, var glossary, under BBSERVER, there is a link to
+the BB_HASHBASE_WHITELIST variable, which does *NOT* take you to the
+bitbake user manual location for that variable as the ref manual uses
+the URL:
+
+http://www.yoctoproject.org/docs/3.1/bitbake-user-manual/bitbake-user-manual.html#var-BB_HASHBASE_WHITELIST
+
+while the bitbake manual uses the form "var-bb-BB_HASHBASE_WHITELIST".
+
+  am i just misunderstanding something?
 
 rday
 
