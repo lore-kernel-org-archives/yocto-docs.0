@@ -1,73 +1,271 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.web11.19201.1585159897521254345
+Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
+ by mx.groups.io with SMTP id smtpd.web10.38827.1585234592929504908
  for <docs@lists.yoctoproject.org>;
- Wed, 25 Mar 2020 11:11:37 -0700
+ Thu, 26 Mar 2020 07:56:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=K4U+6uiQ;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f45.google.com with SMTP id z5so3547235wml.5
-        for <docs@lists.yoctoproject.org>; Wed, 25 Mar 2020 11:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=7V8nmEtbrLg2SRf1LI+/mKWpdaOqU21aHE2HY64u848=;
-        b=K4U+6uiQSNYIm959HO0cKNSaTiCjLS+JSgt2/2HOjQFjP8D6tHcDK35FhbR1g4yQPi
-         uUpHZQOzfo/tUEesh+yXEfWikIB8TawJ6T4zNH89uyqpZkrqx6uAZCW2+nblGJPoIZxS
-         X0wc9OmAyw7yPJBtFx9qvWM/zAtSdPg7XM0ho=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=7V8nmEtbrLg2SRf1LI+/mKWpdaOqU21aHE2HY64u848=;
-        b=ePFrSBObJ3soYJysIq9DroFEN/Y9L+p/6i8MQO6lTYhCl3JfQktOOAusqTZemnczEB
-         ILvRibBdjP7lnmw+N1xU/c8q0dKqlCvFq/EGq1178pNh4myrmMiGtHzoJUtboI/oN+6g
-         lTHbWZRC445OpQivv4K0WUUFNw08C6eYU+rC4oI+4rbUQ5b6hwM7//RwugU8Ag1SPUbS
-         kPD88Bcd6Lx7adJV3c3xLEbQriN+lTKM4PRd4luskxc63W0Gkj7CJUAC/HrX46WVfDl5
-         eAYvPJFx91KikhmWNRJVyU4N/0OkdU2frqt5lwOOFGNYUR4MgY00N7+TWAX7Doyx0Af9
-         6kNg==
-X-Gm-Message-State: ANhLgQ3rrJM67Z5gr1GChA12fTpC/YBOliZWMmOUNhYtZ5/Ar8MvyGXA
-	wI2epjSRM7TwOZAcrxtgX/12RV2HNc4=
-X-Google-Smtp-Source: ADFU+vsD1uvayZ1raKhL1a2jPxI1qG72y8LDj0TuMe/fPEOCx06+/26fFAiKGxX92eSpmnY0kjm12Q==
-X-Received: by 2002:a7b:cc72:: with SMTP id n18mr4731166wmj.71.1585159894374;
-        Wed, 25 Mar 2020 11:11:34 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from hex (5751f4a1.skybroadband.com. [87.81.244.161])
-        by smtp.gmail.com with ESMTPSA id f187sm10323706wme.31.2020.03.25.11.11.32
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Mar 2020 11:11:33 -0700 (PDT)
-Message-ID: <938f27c0948b5a6f3d8c032d97482a01a8c141bd.camel@linuxfoundation.org>
-Subject: Re: [docs] bitbake variable glossary versus YP (ref manual) variable glossary?
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: docs@lists.yoctoproject.org
-Date: Wed, 25 Mar 2020 18:11:32 +0000
-In-Reply-To: <alpine.LFD.2.21.2003251331320.25486@localhost.localdomain>
-References: <alpine.LFD.2.21.2003251331320.25486@localhost.localdomain>
-User-Agent: Evolution 3.35.92-1 
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:53140 helo=localhost.localdomain)
+	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1jHTvq-00HEa4-Hy
+	for docs@lists.yoctoproject.org; Thu, 26 Mar 2020 10:56:32 -0400
+Date: Thu, 26 Mar 2020 10:56:28 -0400 (EDT)
+From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] use defined entity "YOCTO_DOCS_URL", not "YOCTO_HOME_URL"
+Message-ID: <alpine.LFD.2.21.2003261051490.142823@localhost.localdomain>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-On Wed, 2020-03-25 at 13:45 -0400, rpjday@crashcourse.ca wrote:
->   was puzzled over a lack of some important BB_* variables in the ref
-> manual variable glossary, until i remembered the bitbake user manual,
-> where i can find them, but there is an inconsistency between the two
-> manuals in that *some* of the BB_* variables are listed in the ref
-> manual variable glossary (eg., BB_NUMBER_THREADS) but not others
-> (eg.,
-> BB_NO_NETWORK), which could lead to some confusion.
-> 
->   even weirder, some are in the ref manual while *not* in the bitbake
-> user manual variable glossary (eg., BB_SERVER_TIMEOUT). is there some
-> sort of pattern as to which variables go in which variable glossary?
-> as it is, it's definitely inconsistent, requiring one to bounce back
-> and forth for a complete coverage.
 
-I think this is just incorrect. The bitbake manual should define the
-variables implemented in bitbake, particularly the BB* namespace.
+Given the defined DocBook entity:
 
-Cheers,
+  <!ENTITY YOCTO_DOCS_URL "&YOCTO_HOME_URL;/docs">
 
-Richard
+replace numerous instances of the more verbose
+"&YOCTO_HOME_URL;/documentation", which is a redirect, anyway.
 
+rday
+
+---
+
+  i *think* i got them all, there are probably other instances
+involving other entities.
+
+diff --git a/documentation/bsp-guide/bsp-guide.xml b/documentation/bsp-guide/bsp-guide.xml
+index ea4899b70..a7d10a09b 100755
+--- a/documentation/bsp-guide/bsp-guide.xml
++++ b/documentation/bsp-guide/bsp-guide.xml
+@@ -152,7 +152,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -169,7 +169,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/dev-manual/dev-manual.xml b/documentation/dev-manual/dev-manual.xml
+index 2ef7087cd..72a045181 100755
+--- a/documentation/dev-manual/dev-manual.xml
++++ b/documentation/dev-manual/dev-manual.xml
+@@ -144,7 +144,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -161,7 +161,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/kernel-dev/kernel-dev.xml b/documentation/kernel-dev/kernel-dev.xml
+index e0aed297d..f388838e9 100755
+--- a/documentation/kernel-dev/kernel-dev.xml
++++ b/documentation/kernel-dev/kernel-dev.xml
+@@ -127,7 +127,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -144,7 +144,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/mega-manual/mega-manual.xml b/documentation/mega-manual/mega-manual.xml
+index 13ada7c03..8eca04c31 100755
+--- a/documentation/mega-manual/mega-manual.xml
++++ b/documentation/mega-manual/mega-manual.xml
+@@ -118,7 +118,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -135,7 +135,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/overview-manual/overview-manual-yp-intro.xml b/documentation/overview-manual/overview-manual-yp-intro.xml
+index dbf62cc16..1d90aad02 100644
+--- a/documentation/overview-manual/overview-manual-yp-intro.xml
++++ b/documentation/overview-manual/overview-manual-yp-intro.xml
+@@ -225,9 +225,9 @@
+                         For information that helps you transition from
+                         trying out the Yocto Project to using it for your
+                         project, see the
+-                        "<ulink url='&YOCTO_HOME_URL;/docs/what-i-wish-id-known/'>What I wish I'd Known</ulink>"
++                        "<ulink url='&YOCTO_DOCS_URL;/what-i-wish-id-known/'>What I wish I'd Known</ulink>"
+                         and
+-                        "<ulink url='&YOCTO_HOME_URL;/docs/transitioning-to-a-custom-environment/'>Transitioning to a Custom Environment for Systems Development</ulink>"
++                        "<ulink url='&YOCTO_DOCS_URL;/transitioning-to-a-custom-environment/'>Transitioning to a Custom Environment for Systems Development</ulink>"
+                         documents on the Yocto Project website.
+                         </para></listitem>
+                     <listitem><para>
+diff --git a/documentation/overview-manual/overview-manual.xml b/documentation/overview-manual/overview-manual.xml
+index dfdc165a6..516ab2421 100755
+--- a/documentation/overview-manual/overview-manual.xml
++++ b/documentation/overview-manual/overview-manual.xml
+@@ -79,7 +79,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -96,7 +96,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/profile-manual/profile-manual.xml b/documentation/profile-manual/profile-manual.xml
+index 14c508ea1..f51bfae6c 100755
+--- a/documentation/profile-manual/profile-manual.xml
++++ b/documentation/profile-manual/profile-manual.xml
+@@ -129,7 +129,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -146,7 +146,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/ref-manual/ref-manual.xml b/documentation/ref-manual/ref-manual.xml
+index 48358aae5..72f1b1e01 100755
+--- a/documentation/ref-manual/ref-manual.xml
++++ b/documentation/ref-manual/ref-manual.xml
+@@ -153,7 +153,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -170,7 +170,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/sdk-manual/sdk-manual.xml b/documentation/sdk-manual/sdk-manual.xml
+index b00547c1a..1d5b7409a 100755
+--- a/documentation/sdk-manual/sdk-manual.xml
++++ b/documentation/sdk-manual/sdk-manual.xml
+@@ -97,7 +97,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -114,7 +114,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+diff --git a/documentation/toaster-manual/toaster-manual.xml b/documentation/toaster-manual/toaster-manual.xml
+index d38137c8a..59f8d7f9e 100755
+--- a/documentation/toaster-manual/toaster-manual.xml
++++ b/documentation/toaster-manual/toaster-manual.xml
+@@ -107,7 +107,7 @@
+                        Yocto Project.
+                        To be sure you have the latest version of the manual
+                        for this release, go to the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual from that site.
+                        Manuals from the site are more up-to-date than manuals
+                        derived from the Yocto Project released TAR files.
+@@ -124,7 +124,7 @@
+                        page.
+                        If you need a version of this manual for a different
+                        Yocto Project release, visit the
+-                       <ulink url='&YOCTO_HOME_URL;/documentation'>Yocto Project documentation page</ulink>
++                       <ulink url='&YOCTO_DOCS_URL;'>Yocto Project documentation page</ulink>
+                        and select the manual set by using the
+                        "ACTIVE RELEASES DOCUMENTATION" or "DOCUMENTS ARCHIVE"
+                        pull-down menus.
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
