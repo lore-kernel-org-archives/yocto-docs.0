@@ -1,87 +1,197 @@
-Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web11.14886.1585427704801203245
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web12.15694.1585430201978692351
  for <docs@lists.yoctoproject.org>;
- Sat, 28 Mar 2020 13:35:05 -0700
+ Sat, 28 Mar 2020 14:16:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:52124 helo=localhost.localdomain)
-	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jIIAZ-009EYY-8U
-	for docs@lists.yoctoproject.org; Sat, 28 Mar 2020 16:35:03 -0400
-Date: Sat, 28 Mar 2020 16:35:00 -0400 (EDT)
-From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
-X-X-Sender: rpjday@localhost.localdomain
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: use actual machine override demonstration
-Message-ID: <alpine.LFD.2.21.2003281633070.6139@localhost.localdomain>
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=LqzTzqhP;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: alhe@linux.microsoft.com)
+Received: from [100.115.92.199] (unknown [199.58.187.135])
+	by linux.microsoft.com (Postfix) with ESMTPSA id CC07420B4737;
+	Sat, 28 Mar 2020 14:16:40 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com CC07420B4737
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1585430201;
+	bh=CJ8vmRz6ztbEaN5mfIKLOwbQX+mKkaDHCRkhICaB2Ns=;
+	h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+	b=LqzTzqhPiGIFTGqwUoDXzJxnRE13IL/slX3YsRQg6OkQAnN0suNZt1ZTdVevt63aC
+	 hLJQntqG1Xck3qZ6qGR53y1GZHxgx+UHWkrHtX4VSvQL2Va5efPDHyHAR+DjBdU2Ya
+	 GXwuveUcnbFXBPC7B37jBxlQXx+XFyDMybvAN61g=
+Subject: Re: [docs] [PATCH 1/3] dev-manual: Fix CROPS link
+To: docs@lists.yoctoproject.org
+Cc: richard.purdie@linuxfoundation.org
+References: <20200328092106.28231-1-alhe@linux.microsoft.com>
+ <20200328092106.28231-2-alhe@linux.microsoft.com>
+ <3d99e73d-4ece-ab8b-f035-804759097951@gmail.com>
+From: alhe@linux.microsoft.com
+Message-ID: <976dd467-7da7-9219-cbc2-55096f57e162@linux.microsoft.com>
+Date: Sat, 28 Mar 2020 15:16:31 -0600
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-0.2
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <3d99e73d-4ece-ab8b-f035-804759097951@gmail.com>
+Content-Type: multipart/alternative;
+ boundary="------------99136044E120341A978EB421"
+Content-Language: en-US
 
-Given that the section in question is describing how to configure
-dependencies based on the machine type, it seems inappropriate to use
-an example that depends on the choice of C library, so grab a snippet
-from linux-yocto.inc to really drive the point home.
+--------------99136044E120341A978EB421
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+Hey Armin,
 
+On 3/28/20 12:53 PM, akuster wrote:
+>
+>
+> On 3/28/20 2:21 AM, alhe@linux.microsoft.com wrote:
+>> The link used in the documentation points to a file
+>> that no longer exists on the crops repository.
+>>
+>> Use the poky-container repo instead since it is more
+>> accurate and updated
+>>
+>> Signed-off-by: Alejandro Hernandez Samaniego<alejandro@enedino.org>
+>> Signed-off-by: Alejandro Hernandez Samaniego<alhe@linux.microsoft.com>
+>> ---
+>>   documentation/dev-manual/dev-manual-start.xml | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/documentation/dev-manual/dev-manual-start.xml b/documentation/dev-manual/dev-manual-start.xml
+>> index 59ffa49bb6..8d2f316f52 100644
+>> --- a/documentation/dev-manual/dev-manual-start.xml
+>> +++ b/documentation/dev-manual/dev-manual-start.xml
+>> @@ -396,7 +396,7 @@
+>>           for development using the Yocto Project.
+>>           Your build host can be a native Linux machine (recommended) or it can
+>>           be a machine (Linux, Mac, or Windows) that uses
+>> -        <ulink url='https://git.yoctoproject.org/cgit/cgit.cgi/crops/about/'>CROPS</ulink>,
+>> +        <ulink url='https://github.com/crops/poky-container'>CROPS</ulink>,
+>
+> So what is "https://git.yoctoproject.org/git/crops" 
+> <https://git.yoctoproject.org/git/crops>
+>
+> used for then. If its wrong, we should either link it or remove that 
+> repo from YP git.
+>
+> - armin
+
+
+As far as I could tell, its the same as https://github.com/crops/crops 
+which has been archived on github, and it says its deprecated, neither 
+of them have been updated in 4 years.
+
+Alejandro
+
+>>           which leverages
+>>           <ulink url='https://www.docker.com/'>Docker Containers</ulink>.
+>>           <note>
+>> @@ -517,7 +517,7 @@
+>>   
+>>           <para>
+>>               With
+>> -            <ulink url='https://github.com/crops/crops/blob/master/README.md'>CROPS</ulink>,
+>> +            <ulink url='https://github.com/crops/poky-container'>CROPS</ulink>,
+>>               which leverages
+>>               <ulink url='https://www.docker.com/'>Docker Containers</ulink>,
+>>               you can create a Yocto Project development environment that
+>>
+>
+>
+> 
+
+--------------99136044E120341A978EB421
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p>Hey Armin,<br>
+    </p>
+    <div class="moz-cite-prefix">On 3/28/20 12:53 PM, akuster wrote:<br>
+    </div>
+    <blockquote type="cite"
+      cite="mid:3d99e73d-4ece-ab8b-f035-804759097951@gmail.com">
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <br>
+      <br>
+      <div class="moz-cite-prefix">On 3/28/20 2:21 AM, <a
+          class="moz-txt-link-abbreviated"
+          href="mailto:alhe@linux.microsoft.com" moz-do-not-send="true">alhe@linux.microsoft.com</a>
+        wrote:<br>
+      </div>
+      <blockquote type="cite"
+        cite="mid:20200328092106.28231-2-alhe@linux.microsoft.com">
+        <pre class="moz-quote-pre" wrap="">The link used in the documentation points to a file
+that no longer exists on the crops repository.
+
+Use the poky-container repo instead since it is more
+accurate and updated
+
+Signed-off-by: Alejandro Hernandez Samaniego <a class="moz-txt-link-rfc2396E" href="mailto:alejandro@enedino.org" moz-do-not-send="true">&lt;alejandro@enedino.org&gt;</a>
+Signed-off-by: Alejandro Hernandez Samaniego <a class="moz-txt-link-rfc2396E" href="mailto:alhe@linux.microsoft.com" moz-do-not-send="true">&lt;alhe@linux.microsoft.com&gt;</a>
 ---
+ documentation/dev-manual/dev-manual-start.xml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
-index ac761df2a..32da79a89 100644
---- a/documentation/dev-manual/dev-manual-common-tasks.xml
-+++ b/documentation/dev-manual/dev-manual-common-tasks.xml
-@@ -319,12 +319,26 @@
-      DEPENDS_append_one = " foo"
-      DEPENDS_prepend_one = "foo "
-                                 </literallayout>
--                                As an actual example, here's a line from the recipe
--                                for gnutls, which adds dependencies on
--                                "argp-standalone" when building with the musl C
--                                library:
-+                                As an actual example, here's a snippet from the
-+                                generic kernel include file
-+                                <filename>linux-yocto.inc</filename>,
-+                                wherein the kernel compile and link options are
-+                                adjusted in the case of a subset of the supported
-+                                architectures:
-                                 <literallayout class='monospaced'>
--     DEPENDS_append_libc-musl = " argp-standalone"
-+     DEPENDS_append_aarch64 = " libgcc"
-+     KERNEL_CC_append_aarch64 = " ${TOOLCHAIN_OPTIONS}"
-+     KERNEL_LD_append_aarch64 = " ${TOOLCHAIN_OPTIONS}"
-+
-+     DEPENDS_append_nios2 = " libgcc"
-+     KERNEL_CC_append_nios2 = " ${TOOLCHAIN_OPTIONS}"
-+     KERNEL_LD_append_nios2 = " ${TOOLCHAIN_OPTIONS}"
-+
-+     DEPENDS_append_arc = " libgcc"
-+     KERNEL_CC_append_arc = " ${TOOLCHAIN_OPTIONS}"
-+     KERNEL_LD_append_arc = " ${TOOLCHAIN_OPTIONS}"
-+
-+     KERNEL_FEATURES_append_qemuall=" features/debug/printk.scc"
-                                 </literallayout>
-                                 <note>
-                                     Avoiding "+=" and "=+" and using
+diff --git a/documentation/dev-manual/dev-manual-start.xml b/documentation/dev-manual/dev-manual-start.xml
+index 59ffa49bb6..8d2f316f52 100644
+--- a/documentation/dev-manual/dev-manual-start.xml
++++ b/documentation/dev-manual/dev-manual-start.xml
+@@ -396,7 +396,7 @@
+         for development using the Yocto Project.
+         Your build host can be a native Linux machine (recommended) or it can
+         be a machine (Linux, Mac, or Windows) that uses
+-        &lt;ulink url='<a class="moz-txt-link-freetext" href="https://git.yoctoproject.org/cgit/cgit.cgi/crops/about/" moz-do-not-send="true">https://git.yoctoproject.org/cgit/cgit.cgi/crops/about/</a>'&gt;CROPS&lt;/ulink&gt;,
++        &lt;ulink url='<a class="moz-txt-link-freetext" href="https://github.com/crops/poky-container" moz-do-not-send="true">https://github.com/crops/poky-container</a>'&gt;CROPS&lt;/ulink&gt;,</pre>
+      </blockquote>
+      <br>
+      So what is "<a rel="vcs-git"
+        href="https://git.yoctoproject.org/git/crops" title="crops Git
+        repository" moz-do-not-send="true">https://git.yoctoproject.org/git/crops"
+      </a><br>
+      <br>
+      used for then. If its wrong, we should either link it or remove
+      that repo from YP git.<br>
+      <br>
+      - armin<br>
+    </blockquote>
+    <p><br>
+    </p>
+    <p>As far as I could tell, its the same as
+      <a class="moz-txt-link-freetext" href="https://github.com/crops/crops">https://github.com/crops/crops</a> which has been archived on github,
+      and it says its deprecated, neither of them have been updated in 4
+      years.</p>
+    <p>Alejandro<br>
+    </p>
+    <blockquote type="cite"
+      cite="mid:3d99e73d-4ece-ab8b-f035-804759097951@gmail.com">
+      <blockquote type="cite"
+        cite="mid:20200328092106.28231-2-alhe@linux.microsoft.com">
+        <pre class="moz-quote-pre" wrap="">         which leverages
+         &lt;ulink url='<a class="moz-txt-link-freetext" href="https://www.docker.com/" moz-do-not-send="true">https://www.docker.com/</a>'&gt;Docker Containers&lt;/ulink&gt;.
+         &lt;note&gt;
+@@ -517,7 +517,7 @@
+ 
+         &lt;para&gt;
+             With
+-            &lt;ulink url='<a class="moz-txt-link-freetext" href="https://github.com/crops/crops/blob/master/README.md" moz-do-not-send="true">https://github.com/crops/crops/blob/master/README.md</a>'&gt;CROPS&lt;/ulink&gt;,
++            &lt;ulink url='<a class="moz-txt-link-freetext" href="https://github.com/crops/poky-container" moz-do-not-send="true">https://github.com/crops/poky-container</a>'&gt;CROPS&lt;/ulink&gt;,
+             which leverages
+             &lt;ulink url='<a class="moz-txt-link-freetext" href="https://www.docker.com/" moz-do-not-send="true">https://www.docker.com/</a>'&gt;Docker Containers&lt;/ulink&gt;,
+             you can create a Yocto Project development environment that
+</pre>
+        <br>
+        <fieldset class="mimeAttachmentHeader"></fieldset>
+      </blockquote>
+      <br>
+      <br>
+      <fieldset class="mimeAttachmentHeader"></fieldset>
+      <pre class="moz-quote-pre" wrap="">
+</pre>
+    </blockquote>
+  </body>
+</html>
 
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                         http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+--------------99136044E120341A978EB421--
