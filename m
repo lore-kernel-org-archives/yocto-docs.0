@@ -1,91 +1,47 @@
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
- by mx.groups.io with SMTP id smtpd.web10.11063.1585314744763155339
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web11.2271.1585387273453181446
  for <docs@lists.yoctoproject.org>;
- Fri, 27 Mar 2020 06:12:25 -0700
+ Sat, 28 Mar 2020 02:21:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=T0YSOpub;
- spf=pass (domain: gmail.com, ip: 209.85.208.53, mailfrom: bruce.ashfield@gmail.com)
-Received: by mail-ed1-f53.google.com with SMTP id a43so11028794edf.6
-        for <docs@lists.yoctoproject.org>; Fri, 27 Mar 2020 06:12:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=n84b8pC6dry4RVlQ2TgI67IpBjQMYgC8tWWEqxtC6nY=;
-        b=T0YSOpubWZAEITqR4/oCdZt5oeu9GgICNWbSjOnc0KZU4nzvt2FW0ACmdAO6sOQOHs
-         inRppDPXd305La3sDtq+mZGIbYstEUq1Z98zKRGMltDG3onAugYjGFnZln9DavRcgOun
-         baBJVvPfS/bL5uL6aB3KGK20dm9lx9Z+d46EDuwxIOOxVfFHw8MmU2zFOGvQ18A2sHvT
-         TComgvQcfS+CRNKlYuKLH3RudIIo0mB79HU+vw2vdxTRKHtESz1y9b1zBZoX6ynsLfPm
-         /TCRcLSi6Spc+7W1gdn+WAFQzf9CsZCJ9B8eFeguPy0j4uz3tTVq8wvKXsM2ecEkwFPl
-         Vz/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=n84b8pC6dry4RVlQ2TgI67IpBjQMYgC8tWWEqxtC6nY=;
-        b=GchSJsBhtxyQL5vDDz8ba/xLeqvpC3zJu3MslS+zklxL/VMtabPoL1158sXxwE1T5S
-         m0RBe9E7+/Jb7iaDQdNkzE0vXUtDE3EDBe4ydXs3Rt/vhbea+yg919pZXBk+FtE0amQ4
-         9pNufAkTjlnSYaasjnN9wQOY4BV52+Bw0NFJ8aIa1VW/brjUBhAglDvkZQHpbAFtUTV5
-         L2SUtB2dBJCHiPnzkSvoOYjQgVSn2SjiPJ1ECiQChEI/wnYx7tR0y/KMc8T67qWgmV03
-         bjeN/N9U6zTEOyUQ4FrMKEUWF3ah8sNQUcIWXdNV3Mim3G4DCtw1zpVq+kbfsQnUq7sT
-         fxhw==
-X-Gm-Message-State: ANhLgQ0K1+HBjc1dF2Nlo0CrVf7K6x1B1xRQqcBuJRRsFaN7XYNq6Tiv
-	F5T1YdmUCyRLVgIaGPRM5GChOZGQ30FDAzNGsTE4OyJGkeo=
-X-Google-Smtp-Source: ADFU+vv0XiRL0Gx8HHyhY8OZlqFCO0VwQxJablvilrBYsre/1MpWXu9YOjGiPkj5psxxduIj0+kSSPQVvx0ecL1HzYE=
-X-Received: by 2002:a50:85c6:: with SMTP id q6mr12670719edh.347.1585314742920;
- Fri, 27 Mar 2020 06:12:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <alpine.LFD.2.21.2003261745190.13649@localhost.localdomain>
-In-Reply-To: <alpine.LFD.2.21.2003261745190.13649@localhost.localdomain>
-From: "Bruce Ashfield" <bruce.ashfield@gmail.com>
-Date: Fri, 27 Mar 2020 09:12:11 -0400
-Message-ID: <CADkTA4M8h8pwrGcut0uy8PLLpwCnSuY4y2fM6hPwiddCoN8sxQ@mail.gmail.com>
-Subject: Re: [docs] is there an updated/current version of tom zanussi's kernel lab?
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=Kl1FV7so;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: alhe@linux.microsoft.com)
+Received: from AZSP-ALSAMON-01.redmond.corp.microsoft.com (cpe-173-172-201-6.elp.res.rr.com [173.172.201.6])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 4AEBF2010EF4;
+	Sat, 28 Mar 2020 02:21:12 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4AEBF2010EF4
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1585387272;
+	bh=icSzdTTHe6kIxLZtr0senQl5l7OroVjfFZHb7vLCPWU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Kl1FV7soem1itVH9uCt2BgpcVdPV4PxCIT73CqLOnX94kvCvteFPgnLcQEYKkQi81
+	 ERIRmGSJDltih4MOahGhGWLRAffLbiWP5YaoCpSo5zX7wBEzAF8Jg3C8pljCjFJxag
+	 1vAy/bMDTot+JR/E/K1RaDkFH8+vYks6ak2Lyjnk=
+From: alhe@linux.microsoft.com
 To: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Cc: richard.purdie@linuxfoundation.org
+Subject: [PATCH 0/3] Fix CROPS about link
+Date: Sat, 28 Mar 2020 02:21:03 -0700
+Message-Id: <20200328092106.28231-1-alhe@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 
-On Thu, Mar 26, 2020 at 5:47 PM rpjday@crashcourse.ca
-<rpjday@crashcourse.ca> wrote:
->
->
->   for upcoming YP courses, i wanted either an updated version of tom
-> zanussi's and darren hart's YP hands-on kernel lab:
->
-> https://old.yoctoproject.org/sites/default/files/elc2013-kernel-lab.pdf
->
-> or a suitably recent version that i could update myself and contribute
-> back to the cause. anything?
+The CROPS link was outdated in several parts of the
+documentation, there is not a lot to say about this
+other than I updated it to the most reasonable link
+I could find, and Scott seemed to use separate commits
+for each different document, I'd be fine squashing
+this into one commit but I tried keeping up with
+what he was doing.
 
-There's nothing newer than the ones you found (as far as I can
-recall), they were put on the shelf due to not enough cycles to keep
-them updated.
+Alejandro Hernandez Samaniego (3):
+  dev-manual: Fix CROPS link
+  overview-manual-development-environment: Fix CROPS link
+  overview-manual-yp-intro: Fix CROPS link
 
-It might be worth looking into what is done for the kernel during the
-Yocto dev days (or similar events).
-
-As for reviving the labs, I'm sure it is possible, but I'd first make
-sure there weren't better options.
-
-Bruce
-
->
->   related questions coming shortly ...
->
-> rday
->
-> --
->
-> ========================================================================
-> Robert P. J. Day                                 Ottawa, Ontario, CANADA
->                          http://crashcourse.ca
->
-> Twitter:                                       http://twitter.com/rpjday
-> LinkedIn:                               http://ca.linkedin.com/in/rpjday
-> ========================================================================
-> 
-
-
+ documentation/dev-manual/dev-manual-start.xml                 | 4 ++--
+ .../overview-manual-development-environment.xml               | 2 +-
+ documentation/overview-manual/overview-manual-yp-intro.xml    | 4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
 -- 
-- Thou shalt not follow the NULL pointer, for chaos and madness await
-thee at its end
-- "Use the force Harry" - Gandalf, Star Trek II
+2.17.1
+
