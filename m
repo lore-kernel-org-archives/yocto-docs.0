@@ -1,93 +1,61 @@
-Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web10.28483.1585492503624582924
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web10.44387.1585546980886099190
  for <docs@lists.yoctoproject.org>;
- Sun, 29 Mar 2020 07:35:03 -0700
+ Sun, 29 Mar 2020 22:43:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:47496 helo=localhost.localdomain)
-	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jIZ1i-00Bp3X-4o
-	for docs@lists.yoctoproject.org; Sun, 29 Mar 2020 10:35:02 -0400
-Date: Sun, 29 Mar 2020 10:34:59 -0400 (EDT)
-From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
-X-X-Sender: rpjday@localhost.localdomain
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: clarify PN usage in packagegroup files
-Message-ID: <alpine.LFD.2.21.2003291033140.21190@localhost.localdomain>
-MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-0.2
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=ghMEZUVr;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: alhe@linux.microsoft.com)
+Received: from AZSP-ALSAMON-01.redmond.corp.microsoft.com (cpe-173-172-201-6.elp.res.rr.com [173.172.201.6])
+	by linux.microsoft.com (Postfix) with ESMTPSA id B95A020B46F0;
+	Sun, 29 Mar 2020 22:42:59 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B95A020B46F0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1585546980;
+	bh=KXbaPEB+mn/AACTzle/bZdwdTpRphpKj6vnFgPlKPWk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=ghMEZUVr3qFTGuyOIy9gdPvSZWoqSXqP3NIMmxJYhYSguV6C8DFJVOVelC+9z+odb
+	 SzVWTqoeWWGdiF1Ll+Axl1sYb9ZJY1gae362AHmvJUTismFJ0fcAiuTMh1avAggNly
+	 rC7o5394M9NayUs82JJ4NKJrYe6YoS640kANemLA=
+From: alhe@linux.microsoft.com
+To: docs@lists.yoctoproject.org
+Cc: richard.purdie@linuxfoundation.org
+Subject: [PATCH 1/4] ref-manual: Explain the project is not validated against WSL but people may still use it
+Date: Sun, 29 Mar 2020 22:42:48 -0700
+Message-Id: <20200330054251.11134-1-alhe@linux.microsoft.com>
+X-Mailer: git-send-email 2.17.1
 
-Make it clear to the reader that they can use the much shorter form of
-${PN} for the base packagegroup name, rather than typing it out in
-full.
-
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-
+Signed-off-by: Alejandro Hernandez Samaniego <alejandro@enedino.org>
+Signed-off-by: Alejandro Hernandez Samaniego <alhe@linux.microsoft.com>
 ---
+ .../ref-manual/ref-system-requirements.xml        | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
-index dfbc6eeb3..1fdab0eae 100644
---- a/documentation/dev-manual/dev-manual-common-tasks.xml
-+++ b/documentation/dev-manual/dev-manual-common-tasks.xml
-@@ -1417,28 +1417,32 @@
-
-             <para>
-                 Here is a short, fabricated example showing the same basic
--                pieces:
-+                pieces for a hypothetical packagegroup defined in
-+                <filename>packagegroup-custom.bb</filename>, where the
-+                variable <filename>PN</filename> is the standard way to
-+                abbreviate the reference to the full packagegroup name
-+                <filename>packagegroup-custom</filename>:
-                 <literallayout class='monospaced'>
-      DESCRIPTION = "My Custom Package Groups"
-
-      inherit packagegroup
-
-      PACKAGES = "\
--         packagegroup-custom-apps \
--         packagegroup-custom-tools \
-+         ${PN}-apps \
-+         ${PN}-tools \
-          "
-
--     RDEPENDS_packagegroup-custom-apps = "\
-+     RDEPENDS_${PN}-apps = "\
-          dropbear \
-          portmap \
-          psplash"
-
--     RDEPENDS_packagegroup-custom-tools = "\
-+     RDEPENDS_${PN}-tools = "\
-          oprofile \
-          oprofileui-server \
-          lttng-tools"
-
--     RRECOMMENDS_packagegroup-custom-tools = "\
-+     RRECOMMENDS_${PN}-tools = "\
-          kernel-module-oprofile"
-                 </literallayout>
-             </para>
-
+diff --git a/documentation/ref-manual/ref-system-requirements.xml b/documentation/ref-manual/ref-system-requirements.xml
+index 9c2198a769..3bccbc630b 100644
+--- a/documentation/ref-manual/ref-system-requirements.xml
++++ b/documentation/ref-manual/ref-system-requirements.xml
+@@ -66,12 +66,15 @@
+                         below.
+                         </para></listitem>
+                     <listitem><para>
+-                        The Yocto Project is not compatible with the
+-                        <ulink url='https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux'>Windows Subsystem for Linux</ulink>
+-                        (WSL).
+-                        You cannot use a
+-                        <link linkend='hardware-build-system-term'>build host</link>
+-                        that is running WSL.
++                        You may use Windows Subsystem For Linux v2 to set up a build
++                        host using Windows 10, but validation is not performed
++                        against build hosts using WSLv2.
++                        <note>
++                          The Yocto Project is not compatible with WSLv1, it is
++                          compatible but not officially supported nor validated
++                          with WSLv2, if you still decide to use WSL please upgrade
++                          to WSLv2.
++                        </note>
+                         </para></listitem>
+                     <listitem><para>
+                         If you encounter problems, please go to
 -- 
+2.17.1
 
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                         http://crashcourse.ca
-
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
