@@ -1,23 +1,23 @@
 Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web10.9169.1585915267574527991
+ by mx.groups.io with SMTP id smtpd.web12.9671.1585917201494264404
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Apr 2020 05:01:08 -0700
+ Fri, 03 Apr 2020 05:33:21 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:39230 helo=localhost.localdomain)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:39598 helo=localhost.localdomain)
 	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jKL0T-00FxoP-Nb
-	for docs@lists.yoctoproject.org; Fri, 03 Apr 2020 08:01:06 -0400
-Date: Fri, 3 Apr 2020 08:01:03 -0400 (EDT)
+	id 1jKLVf-00G4qN-QK
+	for docs@lists.yoctoproject.org; Fri, 03 Apr 2020 08:33:20 -0400
+Date: Fri, 3 Apr 2020 08:33:17 -0400 (EDT)
 From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
 X-X-Sender: rpjday@localhost.localdomain
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: use "strace" for PV example, not cdrtools
-Message-ID: <alpine.LFD.2.21.2004030757450.11595@localhost.localdomain>
+Subject: [PATCH] dev-manual: use "git", not "apmd", to explain checksum names
+Message-ID: <alpine.LFD.2.21.2004030829490.13758@localhost.localdomain>
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-0.2
+X-OutGoing-Spam-Status: No, score=0.5
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
 X-AntiAbuse: Original Domain - lists.yoctoproject.org
@@ -30,53 +30,41 @@ X-Source-Args:
 X-Source-Dir: 
 Content-Type: text/plain; charset=US-ASCII
 
-Section 3.3.5, "Fetching Code", uses the cdrtools recipe as an example
-for showing the use of PV, but that's a bad example since the current
-cdrtools recipe file contains:
-
-  SRC_URI = " \
-  ${SOURCEFORGE_MIRROR}/project/cdrtools/cdrtools-${REALPV}.tar.bz2 \
-  ...
-
-  PV = "3.01a31+really3.01"
-  REALPV = "3.01"
-
-which is not exactly the point the dev manual is trying to make, so
-replace with simpler strace recipe.
+The apmd recipe is no longer appropriate to demonstrate the use of
+SRC_URI checksum names as it has only a single SRC_URI URL, so pick a
+more illuminating recipe.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
 diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
-index dfbc6eeb3..52eb54012 100644
+index 52eb54012..60de78254 100644
 --- a/documentation/dev-manual/dev-manual-common-tasks.xml
 +++ b/documentation/dev-manual/dev-manual-common-tasks.xml
-@@ -1900,9 +1900,9 @@
-             <para>
-                 The <filename>SRC_URI</filename> variable in your recipe must
-                 define each unique location for your source files.
--                It is good practice to not hard-code pathnames in an URL used
-+                It is good practice to not hard-code version numbers in a URL used
-                 in <filename>SRC_URI</filename>.
--                Rather than hard-code these paths, use
-+                Rather than hard-code these values, use
-                 <filename>${</filename><ulink url='&YOCTO_DOCS_REF_URL;#var-PV'><filename>PV</filename></ulink><filename>}</filename>,
-                 which causes the fetch process to use the version specified in
-                 the recipe filename.
-@@ -1913,13 +1913,13 @@
-
-             <para>
-                 Here is a simple example from the
--                <filename>meta/recipes-devtools/cdrtools/cdrtools-native_3.01a20.bb</filename>
-+                <filename>meta/recipes-devtools/strace/strace_5.5.bb</filename>
-                 recipe where the source comes from a single tarball.
-                 Notice the use of the
-                 <ulink url='&YOCTO_DOCS_REF_URL;#var-PV'><filename>PV</filename></ulink>
-                 variable:
+@@ -1978,16 +1978,17 @@
+                 For these cases, you provide a name for each URL as part of
+                 the <filename>SRC_URI</filename> and then reference that name
+                 in the subsequent checksum statements.
+-                Here is an example:
++                Here is an example combining lines from the files
++                <filename>git.inc</filename> and
++                <filename>git_2.24.1.bb</filename>:
                  <literallayout class='monospaced'>
--     SRC_URI = "ftp://ftp.berlios.de/pub/cdrecord/alpha/cdrtools-${PV}.tar.bz2"
-+     SRC_URI = "https://strace.io/files/${PV}/strace-${PV}.tar.xz \
+-     SRC_URI = "${DEBIAN_MIRROR}/main/a/apmd/apmd_3.2.2.orig.tar.gz;name=tarball \
+-                ${DEBIAN_MIRROR}/main/a/apmd/apmd_${PV}.diff.gz;name=patch"
+-
+-     SRC_URI[tarball.md5sum] = "b1e6309e8331e0f4e6efd311c2d97fa8"
+-     SRC_URI[tarball.sha256sum] = "7f7d9f60b7766b852881d40b8ff91d8e39fccb0d1d913102a5c75a2dbb52332d"
++     SRC_URI = "${KERNELORG_MIRROR}/software/scm/git/git-${PV}.tar.gz;name=tarball \
++                ${KERNELORG_MIRROR}/software/scm/git/git-manpages-${PV}.tar.gz;name=manpages"
+
+-     SRC_URI[patch.md5sum] = "57e1b689264ea80f78353519eece0c92"
+-     SRC_URI[patch.sha256sum] = "7905ff96be93d725544d0040e425c42f9c05580db3c272f11cff75b9aa89d430"
++     SRC_URI[tarball.md5sum] = "166bde96adbbc11c8843d4f8f4f9811b"
++     SRC_URI[tarball.sha256sum] = "ad5334956301c86841eb1e5b1bb20884a6bad89a10a6762c958220c7cf64da02"
++     SRC_URI[manpages.md5sum] = "31c2272a8979022497ba3d4202df145d"
++     SRC_URI[manpages.sha256sum] = "9a7ae3a093bea39770eb96ca3e5b40bff7af0b9f6123f089d7821d0e5b8e1230"
                  </literallayout>
              </para>
 
