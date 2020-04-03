@@ -1,50 +1,55 @@
-Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web12.4852.1585861609645137329
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by mx.groups.io with SMTP id smtpd.web12.2218.1585875365436678347
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Apr 2020 14:06:49 -0700
+ Thu, 02 Apr 2020 17:56:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:43918 helo=localhost.localdomain)
-	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jK732-00D3sG-DS
-	for docs@lists.yoctoproject.org; Thu, 02 Apr 2020 17:06:48 -0400
-Date: Thu, 2 Apr 2020 17:06:45 -0400 (EDT)
-From: "rpjday@crashcourse.ca" <rpjday@crashcourse.ca>
-X-X-Sender: rpjday@localhost.localdomain
+ dkim=missing; spf=none, err=permanent DNS error (domain: linux.intel.com, ip: 134.134.136.20, mailfrom: timothy.t.orling@linux.intel.com)
+IronPort-SDR: 8HDBSYkiyZd0Y6dgUwq1+6zucvTYJJNBus3dhxTZIWjTiY61af/yLlXZhzN/eMFh6I0TMBL+Ta
+ 5DyJAQQd3d5w==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2020 17:56:04 -0700
+IronPort-SDR: UXt+YyKyiZtMSiOOaDXTydsxIUhTO3M8MT+vC1oMfEZ6ZU49ngUsNRkUIHGYp0KN0ZlRhYSVbt
+ WUWnfjh54N/A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.72,337,1580803200"; 
+   d="scan'208";a="451129791"
+Received: from wrath.jf.intel.com ([10.54.31.24])
+  by fmsmga006.fm.intel.com with ESMTP; 02 Apr 2020 17:56:04 -0700
+From: "Tim Orling" <timothy.t.orling@linux.intel.com>
 To: docs@lists.yoctoproject.org
-Subject: Re: [docs] what is the deadline to get docs patches in before next release?
-In-Reply-To: <a66c660c2c932861e23464a31fee0f886cf32b13.camel@linuxfoundation.org>
-Message-ID: <alpine.LFD.2.21.2004021705440.6858@localhost.localdomain>
-References: <alpine.LFD.2.21.2004021701310.6665@localhost.localdomain> <a66c660c2c932861e23464a31fee0f886cf32b13.camel@linuxfoundation.org>
+Cc: Tim Orling <timothy.t.orling@linux.intel.com>
+Subject: [PATCH 1/5] ref-manual: bump tar and python min versions
+Date: Thu,  2 Apr 2020 17:55:53 -0700
+Message-Id: <20200403005557.4708-1-timothy.t.orling@linux.intel.com>
+X-Mailer: git-send-email 2.24.0
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2 Apr 2020, Richard Purdie wrote:
+* tar min version is now 1.28
+* python min version is now 3.5
 
-> On Thu, 2020-04-02 at 17:02 -0400, rpjday@crashcourse.ca wrote:
-> >   i have some time this weekend to do more editing, but only if
-> > there's a good chance that it gets in for the next official release;
-> > otherwise, it's not such a high priority.
->
-> We tend to update the docs on the website fairly late in the
-> process, even after release as things develop on the stable branch
-> so I'd rate the chances of changes being visible as being good. We
-> have some tricky problems left to resolve too :(
+Signed-off-by: Tim Orling <timothy.t.orling@linux.intel.com>
+---
+ documentation/ref-manual/ref-system-requirements.xml | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  thanks, that's useful to know ... working my way through the dev
-manual right now, i'll submit what i can.
+diff --git a/documentation/ref-manual/ref-system-requirements.xml b/documentation/ref-manual/ref-system-requirements.xml
+index e65ef6350..21cd79de0 100644
+--- a/documentation/ref-manual/ref-system-requirements.xml
++++ b/documentation/ref-manual/ref-system-requirements.xml
+@@ -314,8 +314,8 @@
+             Python:
+             <itemizedlist>
+                 <listitem><para>Git 1.8.3.1 or greater</para></listitem>
+-                <listitem><para>tar 1.27 or greater</para></listitem>
+-                <listitem><para>Python 3.4.0 or greater</para></listitem>
++                <listitem><para>tar 1.28 or greater</para></listitem>
++                <listitem><para>Python 3.5.0 or greater</para></listitem>
+             </itemizedlist>
+         </para>
+ 
+-- 
+2.24.0
 
-rday
