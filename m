@@ -1,23 +1,23 @@
 Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web10.10875.1586941500698439028
+ by mx.groups.io with SMTP id smtpd.web10.11192.1586943437887989874
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Apr 2020 02:05:01 -0700
+ Wed, 15 Apr 2020 02:37:18 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:53898 helo=localhost.localdomain)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:54010 helo=localhost.localdomain)
 	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jOdyc-009MAu-VT
-	for docs@lists.yoctoproject.org; Wed, 15 Apr 2020 05:04:59 -0400
-Date: Wed, 15 Apr 2020 05:04:57 -0400 (EDT)
+	id 1jOeTs-009QZk-DP
+	for docs@lists.yoctoproject.org; Wed, 15 Apr 2020 05:37:17 -0400
+Date: Wed, 15 Apr 2020 05:37:14 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 X-X-Sender: rpjday@localhost.localdomain
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] dev-manual: update blktrace example to match master branch
-Message-ID: <alpine.LFD.2.21.2004150503550.6761@localhost.localdomain>
+Subject: currently making a list of doc-wide fixes for after next release
+Message-ID: <alpine.LFD.2.21.2004150523580.7514@localhost.localdomain>
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-0.2
+X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
 X-AntiAbuse: Original Domain - lists.yoctoproject.org
@@ -31,41 +31,42 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+  since i've messed around with documentation (here and elsewhere) for
+a while (and since i've also played with docbook and XSL and
+stylesheets), i figure i might as well start making a list of
+potentially sweeping changes to the YP docs. (all of this is assuming
+that the docs are keeping the same structure, correct?)
 
----
+  first is to use proper docbook tags (semantically speaking), as in
+-- don't tag everything as <filename> just to get monospaced
+rendering. start using tags like <variable> and <command> and
+<firstterm> and so on, and adjust the stylesheets to render
+appropriately. even if the eventual rendering is identical, the
+semantic tagging should properly distinguish between different items.
 
-diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
-index 2b8868b62..06e3068cd 100644
---- a/documentation/dev-manual/dev-manual-common-tasks.xml
-+++ b/documentation/dev-manual/dev-manual-common-tasks.xml
-@@ -1989,13 +1989,15 @@
-                 Here is an example from the recipe
-                 <filename>meta/recipes-kernel/blktrace/blktrace_git.bb</filename>:
-                 <literallayout class='monospaced'>
--     SRCREV = "d6918c8832793b4205ed3bfede78c2f915c23385"
-+     SRCREV = "cca113f2fe0759b91fd6a0e10fdcda2c28f18a7e"
+  adjust stylesheets so that code chunks (tagged with <literallayout>)
+don't need to *literally* have indentation that matches how it's
+rendered; allow arbitrary indentation in the XML files so it looks
+nice, and let the stylesheets take it from there and indent properly.
 
--     PR = "r6"
--     PV = "1.0.5+git${SRCPV}"
-+     PV = "1.2.0+git${SRCPV}"
+  standardize admonitions (<important>, <note>, <tip>, <caution>,
+<warning>) so that they all use <para> even if they contain just a
+single paragraph. this is currently inconsistent, so that some
+admonitions are rendered with different spacing, you can see this
+here:
 
-      SRC_URI = "git://git.kernel.dk/blktrace.git \
--                file://ldflags.patch"
-+                file://ldflags.patch \
-+                file://CVE-2018-10689.patch \
-+                file://make-btt-scripts-python3-ready.patch \
-+     "
-                 </literallayout>
-             </para>
+https://www.yoctoproject.org/docs/current/ref-manual/ref-manual.html#var-PARALLEL_MAKE
 
+where the caution and note for PARALLEL_MAKE has narrower vertical
+spacing than the "Notes and Cautions" for PARALLEL_MAKEINST right
+after it -- that's because the latter uses <para></para> to tag
+paragraphs, and the former does not.
 
--- 
+  and regarding admonitions, use the correct one with a proper title
+-- i've seen <note>s with the title attribute "Caution" ... that's not
+right. :-)
 
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                         http://crashcourse.ca
+  anyway, i've started a list; feel free to toss out other ideas that
+can be added to the list.
 
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+rday
