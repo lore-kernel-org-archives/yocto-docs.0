@@ -1,91 +1,211 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
- by mx.groups.io with SMTP id smtpd.web12.765.1588106852165275940
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (NAM10-DM6-obe.outbound.protection.outlook.com [40.107.93.78])
+ by mx.groups.io with SMTP id smtpd.web12.897.1588107233008106360
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Apr 2020 13:47:32 -0700
+ Tue, 28 Apr 2020 13:53:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=CBPyDaVO;
- spf=pass (domain: linaro.org, ip: 209.85.219.169, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f169.google.com with SMTP id d197so73050ybh.6
-        for <docs@lists.yoctoproject.org>; Tue, 28 Apr 2020 13:47:32 -0700 (PDT)
+ dkim=pass header.i=@windriversystems.onmicrosoft.com header.s=selector2-windriversystems-onmicrosoft-com header.b=Zjwn6l/i;
+ spf=pass (domain: windriver.com, ip: 40.107.93.78, mailfrom: mark.morton@windriver.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=X7hFoBLXoD0WRnjF3JGyrxEhwTTXlf9v81Iv6uuf9K3yVNBa2KKS7h/hPwhPel0CALmIG//qC4IkZ1LdxDEvdm6XNe3WFS4jOoVfyHhvAfLVJhSQgW6Wv9lm9cQaRQi6bwyR8c6DOcxbXRYv1IQ73qFN+69LltZf/ywe3h2kwQuFdJFelNhuor6dDg5ugd+SNjyMHByGa3TsHPvjmR6v7KMDaUoHRHOJeDwip1TdiSztmxHOI6x9NmlveWTOhscKWiVutH0RNUbE6+eZ61Mm98iyQ6l+6ZEV2RVdY0TAwmdpMhbevDvX03+VOE7ZybENsyWCUDrrTRfV09urQ6bEiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LWAvgdLKtEaL/W+aHnVRORjakrodjpRq+5eb0Fm+OTY=;
+ b=cS86SFxtM3MGsj5NdseEm2AKprGz1NS7S9gj/oMZLjdKjQImmqisRjfRLIWFUatl+OGiojzY/hblcXA4Anna8j12YYV5eTcOaiZuF9m3pKBlSP58//b2swZ6FbA2jWIk9WVN5XFpznUdN0Y+3o0omNmYSX6gauFIHmtzNU79X4jxuA4RSSACQR+fftor6X11NFvT+nnnTvJHLg3Ls4HzBjGr0WZkWwY7/xsHSlk7YKp0ZimCCRMkijauX3JfmOULjZpPwrNpZ1whi8bSnQUnBLuDGsp77snNktAFx7TFm3ArGYHvEO05oqDkkzEbfGuC/dBRUq0CJKYczynt0OdpQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=fcu4NjofiK7TuqRIZ0YRnL+EqlAf+hqmyZbTtcPzwB4=;
-        b=CBPyDaVO0CUr0hLJt0GO8SIqYZIDcGFowzVVIv9/NajIJUYjKq6oEXJZNXKQwp5E3C
-         A2PAMsgAd+qXKMFJ7OiPV9UFUSxlKQOhkrv5z5GamyTIVlbi7gs8yfNrmgiNpayLw8cl
-         ReND4Sxs67YZnX5JgWWGGtFQuaXMDDBSlFdQ0lVL2kjoPg/qU+0QiEmG3CyWWzd/xeHJ
-         hCBO9HeB7rSZhnMDenA/rMpSrZsINgPvo9szSdy+jDPfLOkZe7q/jtdvXTfYzLGx5hSa
-         5d2szqOTCfRPk/g16r+bxkhgrjnJAnrDQyHSblqrSHijhs/9xUJG/WQ+wiIRtbB/MmMC
-         Azew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=fcu4NjofiK7TuqRIZ0YRnL+EqlAf+hqmyZbTtcPzwB4=;
-        b=m++wjgDIPcX/ddisiopcU9N/tjuo7tM8F0zYzgAm2cAkqCbG7Cd0tb7xwx87JP2pHY
-         4Hd3RwGphCwHgqzX4IC7JCaCbXyc07cPTGE9SgJZL8I2Z3QAGtQv3W+/ZyfDjFZCkos5
-         VkjXOf+uLW0kFQA8fPbh/ivTt05enUQXwaNwo91bi4TUd3AzpDX30Um5phQ0mPJ6ELjH
-         VDF+L3nZQE5r8mnI7hzQO477V91W24Ogxf4Xor5/sIGljO6JzHrpZ/byKey/G6FDF+7U
-         gIqyl2SXwYDvbEf4yB/Vi2jnHgTZBy66qpSAo0u3e1bMP0+ctkIkvzp6k54E8lt/3IwW
-         LJmw==
-X-Gm-Message-State: AGi0PubzrdJ3S45fOBYUDqYp7v9rQ0MgfaFCyx4x1WbDMVzr1RTpzdJS
-	hLbvKhy/xPkjtZ8tuk7n/UGqKboXQxBiGHeieltJaHaL13DJVw==
-X-Google-Smtp-Source: APiQypINl8OQFCBbnbRgdOwFp8/npVYV3XEDVBbr40JDjSATMfEd4cta/AFtQteJ7H6++5eo6mqECAy2AryaCArYTug=
-X-Received: by 2002:a25:c695:: with SMTP id k143mr37361871ybf.397.1588106850990;
- Tue, 28 Apr 2020 13:47:30 -0700 (PDT)
+ d=windriversystems.onmicrosoft.com;
+ s=selector2-windriversystems-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LWAvgdLKtEaL/W+aHnVRORjakrodjpRq+5eb0Fm+OTY=;
+ b=Zjwn6l/ie1+foiS1GSyh9RyLBxsJPGyt9rx24yb340grFJCPW0pQn73gAQjy1magwWmq/R1S53cnwBjo6RIxcqxRdIgJk7uwhbm/w2Q+fpyPnELfPZoFt4J9Fv6/ksX0MLVUujj6ZydSg2n6hdv+QrGLDNVZX/w2kHW2rhznrlI=
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com (2603:10b6:5:137::26)
+ by DM6PR11MB3209.namprd11.prod.outlook.com (2603:10b6:5:55::29) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.2937.22; Tue, 28 Apr
+ 2020 20:53:51 +0000
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::cd0e:9c28:e6c2:71cc]) by DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::cd0e:9c28:e6c2:71cc%4]) with mapi id 15.20.2937.023; Tue, 28 Apr 2020
+ 20:53:51 +0000
+From: "Mark Morton" <Mark.Morton@windriver.com>
+To: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: Re: [docs] inconsistencies between poky and yocto-docs trees
+Thread-Topic: [docs] inconsistencies between poky and yocto-docs trees
+Thread-Index: AQHWHZ5XMYpFjw9EZUeMcKTx3ZBXaKiPAruA
+Date: Tue, 28 Apr 2020 20:53:51 +0000
+Message-ID: 
+ <DM6PR11MB3676119362F59D037901E1E1E5AC0@DM6PR11MB3676.namprd11.prod.outlook.com>
+References: 
+ <CAP71WjwQiXmHKxjpRtJofo6ekyLOob9oABsYptj2=i9mmiqKoQ@mail.gmail.com>
+In-Reply-To: 
+ <CAP71WjwQiXmHKxjpRtJofo6ekyLOob9oABsYptj2=i9mmiqKoQ@mail.gmail.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: lists.yoctoproject.org; dkim=none (message not signed)
+ header.d=none;lists.yoctoproject.org; dmarc=none action=none
+ header.from=windriver.com;
+x-originating-ip: [147.11.252.42]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: a1833be2-455c-4f7d-9bb2-08d7ebb641aa
+x-ms-traffictypediagnostic: DM6PR11MB3209:
+x-microsoft-antispam-prvs: 
+ <DM6PR11MB32094E3AD869A9E760855CC2E5AC0@DM6PR11MB3209.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:4714;
+x-forefront-prvs: 0387D64A71
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3676.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(346002)(39850400004)(136003)(396003)(376002)(6916009)(71200400001)(7696005)(8936002)(5660300002)(186003)(316002)(8676002)(55016002)(478600001)(53546011)(52536014)(6506007)(76116006)(86362001)(2906002)(66476007)(66556008)(9686003)(66946007)(33656002)(64756008)(66446008)(26005);DIR:OUT;SFP:1101;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ kBYdqkxfz7SBhzH28McYtjB5Pc0ol+71Y4D8b25MBdw54NUFchjrreIzV25m9LQxs9mCrP2gY7VFONIywNiD4mI4x0tFvfDG9BBX3/4W4ALO4p772JeOnUWLMOYtdfshkDRndOxoHeear3iCiD/CTQ0yTXv9FzKAI/JTcIR7pFAfMDYU4Jhp2R2eIjrmmgbPi7jG0IPpsaIy9EJJF3o7nc/yMiNJOPM5K9fBUCnOnrjo6JPiNWTR90/93cKbEG19KUQHSA7qVnf/YEpMnqiRnyLlEIFNhRvG4B6cSkER/oo1EqfY17vsT4jAjHOg2IkpzGHpQzfWE+uNXqrSePe3m+ikKhGMIjXvM2qEbB9NJLpmdIDH36/9OUbPL/mtcXljQ+tstEjiJ+Ia5G8sD5M3FKyk5tSEJE4e2aGtS1D7+XBeBOyR6Cb9eEd6nblhjo+W
+x-ms-exchange-antispam-messagedata: 
+ A3YHoaKwAx0nQe0Bbv6wyKpbx07n5CbNto2dC9/oS8HfWWMA71XNkAC9buVHV6UcLQnPabW4kvxOLHvpOLlgexMMH5NSK5ho/1F5KvYLtL0Atj9Mt4VYAqYd1rws4Eq2dL8GXlOBwMOTQubuUH0SfwMQcsYYQdCJhkSX+LQ0gpArOe5mmOqrNeyPxyzLKCZstsQHYADXJspyXnoAB3EoYF4lEdDpd+3XP780f+pbGoNQ/LHowz0fPOAC/39zqyackM0J65fE8RN7p4FEBEBTHQVtZ7KCTlweC+7FXy2frVF9fPGLQ5o2dtIT6CYtwRraRHq7HkwCU7GAuiGAXAbwWYpFAlAruROkBBzprLskLw6niWjENTnL0hXunKyiHzHzf+PuKM0RtlS3JPXc9aHxedtIqsct+Cx1e8iuyeluDRaO16WjWi/Q2krrwozK7J4dtOusSU4Fe5O841MrTH5IEbhJdo2uLDr59hiO+VlpCI0jWQHMWsJbMhRDCCJnwA1KGI4NX9v6+T2FMupzo+s8NI6WGU9mfztjQOHv6eS7wQmnL2XXCtGa2ytsCr8xSWsjMRBxo3Y/b9fC+AIHutzN9Fm8E3zIX4+zZbUGIzF6RjT74ZuiKGJPZe8XuX2E/OzmzUGvW/DnxmVcl3DWN+L7PgtqBvlrys+vPeXdjTZSa43asl8UyFeu/Rs+A68caacWH2KhwwJ0vSzDl2QXj7PiEdecjSlmDvhw6wP1T3A/uZbCa3fvW3MK21FgUMt8+T8PMhsS8UZLAmMJxz60qN8Na4nGk3f6lXACN+ZPKqLQasY=
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Tue, 28 Apr 2020 22:47:19 +0200
-Message-ID: <CAP71WjwQiXmHKxjpRtJofo6ekyLOob9oABsYptj2=i9mmiqKoQ@mail.gmail.com>
-Subject: inconsistencies between poky and yocto-docs trees
-To: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000b811cd05a45ff0e7"
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1833be2-455c-4f7d-9bb2-08d7ebb641aa
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Apr 2020 20:53:51.3610
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: NNYN7OBq09eP5O7n1drh7MfhidyFHN9uwZ1XWlw9rJf7yyUEF4TzeFb0kkVlm1KlgBTW24vIbBhpkGTyRUJgWGpARCYDx1IPy+J/aPB4gt0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3209
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_DM6PR11MB3676119362F59D037901E1E1E5AC0DM6PR11MB3676namp_"
 
---000000000000b811cd05a45ff0e7
-Content-Type: text/plain; charset="UTF-8"
+--_000_DM6PR11MB3676119362F59D037901E1E1E5AC0DM6PR11MB3676namp_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-hi,
+VGhlIGZvbGxvd2luZyB0d28gYXJlIG1pbmU6DQoNCmY5ZTExMjc2NDMgVXBkYXRlZCBwYXRjaCBm
+b3IgcHVibGlzaGluZw0KY2QyNWFiZjc3NyBBZGRlZCB1c3JtZXJnZSB0byBkaXN0cm8tZmVhdHVy
+ZXMgZm9yIEJ1ZyAxMzQ5NA0KDQpUaGUgcXVlc3Rpb24gaXMsIHdoYXQgaGFwcGVuZWQ/DQoNClRo
+YW5rcywNCi1NYXJrIE0uDQoNCkZyb206IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZyA8ZG9j
+c0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPiBPbiBCZWhhbGYgT2YgTmljb2xhcyBEZWNoZXNuZQ0K
+U2VudDogVHVlc2RheSwgQXByaWwgMjgsIDIwMjAgMTo0NyBQTQ0KVG86IGRvY3NAbGlzdHMueW9j
+dG9wcm9qZWN0Lm9yZw0KU3ViamVjdDogW2RvY3NdIGluY29uc2lzdGVuY2llcyBiZXR3ZWVuIHBv
+a3kgYW5kIHlvY3RvLWRvY3MgdHJlZXMNCg0KaGksDQoNCmkganVzdCBub3RpY2VkIHRoYXQgc29t
+ZSBkb2N1bWVudGF0aW9uIGNvbW1pdHMgaGF2ZSBtYWRlIGl0IHRvIHBva3kgdHJlZSwgYnV0IHRo
+ZXkgYXJlIG5vdCBpbiB5b2N0by1kb2NzIHRyZWUuDQoNClRoZSBsYXN0IDUgY29tbWl0cyBpbiB5
+b2N0by1kb2NzOg0KJCBnaXQgbG9nIC0tb25lbGluZSAtNQ0KNzdlOGE5ZTAzIGRldi1tYW51YWw6
+IHJlbW92ZSBwb3N0aW5zdCBmYWxzZSBzdGF0ZW1lbnQNCmRkYTEzNzYxNyByZWYtbWFudWFsOiBh
+ZGQgbWlncmF0aW9uIHNlY3Rpb24gZm9yIDMuMQ0KYmMwOTIzMzU0IGRldi1tYW51YWw6IGJhc2lj
+IHVwZGF0ZXMgZm9yIG5wbSBmZXRjaGVyIGNoYW5nZXMNCmFmOWJmNjFhNSByZWYtbWFudWFsOiB1
+cGRhdGUgUEFDS0FHRUNPTkZJRyBnbG9zc2FyeSBlbnRyeQ0KZDQwNDg1YTdlIG92ZXJ2aWV3LW1h
+bnVhbDogZml4IG9idmlvdXMgdHlwbyAiT1JITkFNRSINCg0KVGhlIGxhc3QgNSAnZG9jJyBjb21t
+aXRzIGluIHlvY3RvOg0KJCBnaXQgbG9nIC01IC0tb25lbGluZSAgLS0gZG9jdW1lbnRhdGlvbi8N
+CmY5ZTExMjc2NDMgVXBkYXRlZCBwYXRjaCBmb3IgcHVibGlzaGluZw0KY2QyNWFiZjc3NyBBZGRl
+ZCB1c3JtZXJnZSB0byBkaXN0cm8tZmVhdHVyZXMgZm9yIEJ1ZyAxMzQ5NA0KZmUyNWVmOTg3MSBy
+ZWYtbWFudWFsOiBjb3JyZWN0ICJzY3JpcHQiIGRpcm5hbWUgdG8gInNjcmlwdHMiDQphNDRiOGQy
+ODU2IGRldi1tYW51YWw6IHJlbW92ZSBwb3N0aW5zdCBmYWxzZSBzdGF0ZW1lbnQNCmMzMWRkYWJh
+MWYgcmVmLW1hbnVhbDogYWRkIG1pZ3JhdGlvbiBzZWN0aW9uIGZvciAzLjENCg0KVGhlIHRvcCAz
+IHBhdGNoZXMgYXJlIG1pc3NpbmcgaW4geW9jdG8tZG9jcy4uDQoNCmNoZWVycw0K
 
-i just noticed that some documentation commits have made it to poky tree,
-but they are not in yocto-docs tree.
+--_000_DM6PR11MB3676119362F59D037901E1E1E5AC0DM6PR11MB3676namp_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-The last 5 commits in yocto-docs:
-$ git log --oneline -5
-77e8a9e03 dev-manual: remove postinst false statement
-dda137617 ref-manual: add migration section for 3.1
-bc0923354 dev-manual: basic updates for npm fetcher changes
-af9bf61a5 ref-manual: update PACKAGECONFIG glossary entry
-d40485a7e overview-manual: fix obvious typo "ORHNAME"
+PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp2bWwiIHhtbG5zOm89InVy
+bjpzY2hlbWFzLW1pY3Jvc29mdC1jb206b2ZmaWNlOm9mZmljZSIgeG1sbnM6dz0idXJuOnNjaGVt
+YXMtbWljcm9zb2Z0LWNvbTpvZmZpY2U6d29yZCIgeG1sbnM6bT0iaHR0cDovL3NjaGVtYXMubWlj
+cm9zb2Z0LmNvbS9vZmZpY2UvMjAwNC8xMi9vbW1sIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv
+VFIvUkVDLWh0bWw0MCI+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIg
+Y29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRv
+ciIgY29udGVudD0iTWljcm9zb2Z0IFdvcmQgMTUgKGZpbHRlcmVkIG1lZGl1bSkiPg0KPHN0eWxl
+PjwhLS0NCi8qIEZvbnQgRGVmaW5pdGlvbnMgKi8NCkBmb250LWZhY2UNCgl7Zm9udC1mYW1pbHk6
+IkNhbWJyaWEgTWF0aCI7DQoJcGFub3NlLTE6MiA0IDUgMyA1IDQgNiAzIDIgNDt9DQpAZm9udC1m
+YWNlDQoJe2ZvbnQtZmFtaWx5OkNhbGlicmk7DQoJcGFub3NlLTE6MiAxNSA1IDIgMiAyIDQgMyAy
+IDQ7fQ0KLyogU3R5bGUgRGVmaW5pdGlvbnMgKi8NCnAuTXNvTm9ybWFsLCBsaS5Nc29Ob3JtYWws
+IGRpdi5Nc29Ob3JtYWwNCgl7bWFyZ2luOjBpbjsNCgltYXJnaW4tYm90dG9tOi4wMDAxcHQ7DQoJ
+Zm9udC1zaXplOjEyLjBwdDsNCglmb250LWZhbWlseToiVGltZXMgTmV3IFJvbWFuIixzZXJpZjt9
+DQphOmxpbmssIHNwYW4uTXNvSHlwZXJsaW5rDQoJe21zby1zdHlsZS1wcmlvcml0eTo5OTsNCglj
+b2xvcjojMDU2M0MxOw0KCXRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7fQ0KYTp2aXNpdGVkLCBz
+cGFuLk1zb0h5cGVybGlua0ZvbGxvd2VkDQoJe21zby1zdHlsZS1wcmlvcml0eTo5OTsNCgljb2xv
+cjojOTU0RjcyOw0KCXRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7fQ0KcC5tc29ub3JtYWwwLCBs
+aS5tc29ub3JtYWwwLCBkaXYubXNvbm9ybWFsMA0KCXttc28tc3R5bGUtbmFtZTptc29ub3JtYWw7
+DQoJbXNvLW1hcmdpbi10b3AtYWx0OmF1dG87DQoJbWFyZ2luLXJpZ2h0OjBpbjsNCgltc28tbWFy
+Z2luLWJvdHRvbS1hbHQ6YXV0bzsNCgltYXJnaW4tbGVmdDowaW47DQoJZm9udC1zaXplOjEyLjBw
+dDsNCglmb250LWZhbWlseToiVGltZXMgTmV3IFJvbWFuIixzZXJpZjt9DQpzcGFuLkVtYWlsU3R5
+bGUxOA0KCXttc28tc3R5bGUtdHlwZTpwZXJzb25hbC1yZXBseTsNCglmb250LWZhbWlseToiQ2Fs
+aWJyaSIsc2Fucy1zZXJpZjsNCgljb2xvcjojMUY0OTdEO30NCi5Nc29DaHBEZWZhdWx0DQoJe21z
+by1zdHlsZS10eXBlOmV4cG9ydC1vbmx5Ow0KCWZvbnQtZmFtaWx5OiJDYWxpYnJpIixzYW5zLXNl
+cmlmO30NCkBwYWdlIFdvcmRTZWN0aW9uMQ0KCXtzaXplOjguNWluIDExLjBpbjsNCgltYXJnaW46
+MS4waW4gMS4waW4gMS4waW4gMS4waW47fQ0KZGl2LldvcmRTZWN0aW9uMQ0KCXtwYWdlOldvcmRT
+ZWN0aW9uMTt9DQotLT48L3N0eWxlPjwhLS1baWYgZ3RlIG1zbyA5XT48eG1sPg0KPG86c2hhcGVk
+ZWZhdWx0cyB2OmV4dD0iZWRpdCIgc3BpZG1heD0iMTAyNiIgLz4NCjwveG1sPjwhW2VuZGlmXS0t
+PjwhLS1baWYgZ3RlIG1zbyA5XT48eG1sPg0KPG86c2hhcGVsYXlvdXQgdjpleHQ9ImVkaXQiPg0K
+PG86aWRtYXAgdjpleHQ9ImVkaXQiIGRhdGE9IjEiIC8+DQo8L286c2hhcGVsYXlvdXQ+PC94bWw+
+PCFbZW5kaWZdLS0+DQo8L2hlYWQ+DQo8Ym9keSBsYW5nPSJFTi1VUyIgbGluaz0iIzA1NjNDMSIg
+dmxpbms9IiM5NTRGNzIiPg0KPGRpdiBjbGFzcz0iV29yZFNlY3Rpb24xIj4NCjxwIGNsYXNzPSJN
+c29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJmb250LXNpemU6MTEuMHB0O2ZvbnQtZmFtaWx5OiZxdW90
+O0NhbGlicmkmcXVvdDssc2Fucy1zZXJpZjtjb2xvcjojMUY0OTdEIj5UaGUgZm9sbG93aW5nIHR3
+byBhcmUgbWluZTo8YnI+DQo8YnI+DQo8L3NwYW4+ZjllMTEyNzY0MyBVcGRhdGVkIHBhdGNoIGZv
+ciBwdWJsaXNoaW5nPGJyPg0KY2QyNWFiZjc3NyBBZGRlZCB1c3JtZXJnZSB0byBkaXN0cm8tZmVh
+dHVyZXMgZm9yIEJ1ZyAxMzQ5NDxzcGFuIHN0eWxlPSJmb250LXNpemU6MTEuMHB0O2ZvbnQtZmFt
+aWx5OiZxdW90O0NhbGlicmkmcXVvdDssc2Fucy1zZXJpZjtjb2xvcjojMUY0OTdEIj48bzpwPjwv
+bzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0iZm9udC1z
+aXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxpYnJpJnF1b3Q7LHNhbnMtc2VyaWY7Y29s
+b3I6IzFGNDk3RCI+PG86cD4mbmJzcDs8L286cD48L3NwYW4+PC9wPg0KPHAgY2xhc3M9Ik1zb05v
+cm1hbCI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9udC1mYW1pbHk6JnF1b3Q7Q2Fs
+aWJyaSZxdW90OyxzYW5zLXNlcmlmO2NvbG9yOiMxRjQ5N0QiPlRoZSBxdWVzdGlvbiBpcywgd2hh
+dCBoYXBwZW5lZD88bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48
+c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxpYnJpJnF1
+b3Q7LHNhbnMtc2VyaWY7Y29sb3I6IzFGNDk3RCI+PG86cD4mbmJzcDs8L286cD48L3NwYW4+PC9w
+Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9u
+dC1mYW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90OyxzYW5zLXNlcmlmO2NvbG9yOiMxRjQ5N0QiPlRo
+YW5rcyw8bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBz
+dHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxpYnJpJnF1b3Q7LHNh
+bnMtc2VyaWY7Y29sb3I6IzFGNDk3RCI+LU1hcmsgTS48bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8
+cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZh
+bWlseTomcXVvdDtDYWxpYnJpJnF1b3Q7LHNhbnMtc2VyaWY7Y29sb3I6IzFGNDk3RCI+PG86cD4m
+bmJzcDs8L286cD48L3NwYW4+PC9wPg0KPGRpdiBzdHlsZT0iYm9yZGVyOm5vbmU7Ym9yZGVyLWxl
+ZnQ6c29saWQgYmx1ZSAxLjVwdDtwYWRkaW5nOjBpbiAwaW4gMGluIDQuMHB0Ij4NCjxkaXY+DQo8
+ZGl2IHN0eWxlPSJib3JkZXI6bm9uZTtib3JkZXItdG9wOnNvbGlkICNFMUUxRTEgMS4wcHQ7cGFk
+ZGluZzozLjBwdCAwaW4gMGluIDBpbiI+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj48c3BhbiBz
+dHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxpYnJpJnF1b3Q7LHNh
+bnMtc2VyaWYiPkZyb206PC9zcGFuPjwvYj48c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtm
+b250LWZhbWlseTomcXVvdDtDYWxpYnJpJnF1b3Q7LHNhbnMtc2VyaWYiPiBkb2NzQGxpc3RzLnlv
+Y3RvcHJvamVjdC5vcmcgJmx0O2RvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZyZndDsNCjxiPk9u
+IEJlaGFsZiBPZiA8L2I+Tmljb2xhcyBEZWNoZXNuZTxicj4NCjxiPlNlbnQ6PC9iPiBUdWVzZGF5
+LCBBcHJpbCAyOCwgMjAyMCAxOjQ3IFBNPGJyPg0KPGI+VG86PC9iPiBkb2NzQGxpc3RzLnlvY3Rv
+cHJvamVjdC5vcmc8YnI+DQo8Yj5TdWJqZWN0OjwvYj4gW2RvY3NdIGluY29uc2lzdGVuY2llcyBi
+ZXR3ZWVuIHBva3kgYW5kIHlvY3RvLWRvY3MgdHJlZXM8bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8
+L2Rpdj4NCjwvZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PG86cD4mbmJzcDs8L286cD48L3A+
+DQo8ZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPmhpLDxvOnA+PC9vOnA+PC9wPg0K
+PC9kaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PG86cD4mbmJzcDs8L286cD48L3A+
+DQo8L2Rpdj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj5pIGp1c3Qgbm90aWNlZCB0aGF0
+IHNvbWUgZG9jdW1lbnRhdGlvbiBjb21taXRzIGhhdmUgbWFkZSBpdCB0byBwb2t5IHRyZWUsIGJ1
+dCB0aGV5IGFyZSBub3QgaW4geW9jdG8tZG9jcyB0cmVlLg0KPG86cD48L286cD48L3A+DQo8L2Rp
+dj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjwv
+ZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPlRoZSBsYXN0IDUgY29tbWl0cyBpbiB5
+b2N0by1kb2NzOjxvOnA+PC9vOnA+PC9wPg0KPC9kaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05v
+cm1hbCI+JCBnaXQgbG9nIC0tb25lbGluZSAtNTxicj4NCjc3ZThhOWUwMyBkZXYtbWFudWFsOiBy
+ZW1vdmUgcG9zdGluc3QgZmFsc2Ugc3RhdGVtZW50PGJyPg0KZGRhMTM3NjE3IHJlZi1tYW51YWw6
+IGFkZCBtaWdyYXRpb24gc2VjdGlvbiBmb3IgMy4xPGJyPg0KYmMwOTIzMzU0IGRldi1tYW51YWw6
+IGJhc2ljIHVwZGF0ZXMgZm9yIG5wbSBmZXRjaGVyIGNoYW5nZXM8YnI+DQphZjliZjYxYTUgcmVm
+LW1hbnVhbDogdXBkYXRlIFBBQ0tBR0VDT05GSUcgZ2xvc3NhcnkgZW50cnk8YnI+DQpkNDA0ODVh
+N2Ugb3ZlcnZpZXctbWFudWFsOiBmaXggb2J2aW91cyB0eXBvICZxdW90O09SSE5BTUUmcXVvdDs8
+bzpwPjwvbzpwPjwvcD4NCjwvZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxvOnA+
+Jm5ic3A7PC9vOnA+PC9wPg0KPC9kaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+VGhl
+IGxhc3QgNSAnZG9jJyBjb21taXRzIGluIHlvY3RvOjxvOnA+PC9vOnA+PC9wPg0KPC9kaXY+DQo8
+ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+JCBnaXQgbG9nIC01IC0tb25lbGluZSAmbmJzcDst
+LSBkb2N1bWVudGF0aW9uLzxicj4NCmY5ZTExMjc2NDMgVXBkYXRlZCBwYXRjaCBmb3IgcHVibGlz
+aGluZzxicj4NCmNkMjVhYmY3NzcgQWRkZWQgdXNybWVyZ2UgdG8gZGlzdHJvLWZlYXR1cmVzIGZv
+ciBCdWcgMTM0OTQ8YnI+DQpmZTI1ZWY5ODcxIHJlZi1tYW51YWw6IGNvcnJlY3QgJnF1b3Q7c2Ny
+aXB0JnF1b3Q7IGRpcm5hbWUgdG8gJnF1b3Q7c2NyaXB0cyZxdW90Ozxicj4NCmE0NGI4ZDI4NTYg
+ZGV2LW1hbnVhbDogcmVtb3ZlIHBvc3RpbnN0IGZhbHNlIHN0YXRlbWVudDxicj4NCmMzMWRkYWJh
+MWYgcmVmLW1hbnVhbDogYWRkIG1pZ3JhdGlvbiBzZWN0aW9uIGZvciAzLjE8bzpwPjwvbzpwPjwv
+cD4NCjwvZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxvOnA+Jm5ic3A7PC9vOnA+
+PC9wPg0KPC9kaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+VGhlIHRvcCAzIHBhdGNo
+ZXMgYXJlIG1pc3NpbmcgaW4geW9jdG8tZG9jcy4uIDxvOnA+PC9vOnA+PC9wPg0KPC9kaXY+DQo8
+ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PG86cD4mbmJzcDs8L286cD48L3A+DQo8L2Rpdj4N
+CjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj5jaGVlcnM8bzpwPjwvbzpwPjwvcD4NCjwvZGl2
+Pg0KPC9kaXY+DQo8L2Rpdj4NCjwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg0K
 
-The last 5 'doc' commits in yocto:
-$ git log -5 --oneline  -- documentation/
-f9e1127643 Updated patch for publishing
-cd25abf777 Added usrmerge to distro-features for Bug 13494
-fe25ef9871 ref-manual: correct "script" dirname to "scripts"
-a44b8d2856 dev-manual: remove postinst false statement
-c31ddaba1f ref-manual: add migration section for 3.1
-
-The top 3 patches are missing in yocto-docs..
-
-cheers
-
---000000000000b811cd05a45ff0e7
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>hi,</div><div><br></div><div>i just noticed that some=
- documentation commits have made it to poky tree, but they are not in yocto=
--docs tree. <br></div><div><br></div><div>The last 5 commits in yocto-docs:=
-</div><div>$ git log --oneline -5<br>77e8a9e03 dev-manual: remove postinst =
-false statement<br>dda137617 ref-manual: add migration section for 3.1<br>b=
-c0923354 dev-manual: basic updates for npm fetcher changes<br>af9bf61a5 ref=
--manual: update PACKAGECONFIG glossary entry<br>d40485a7e overview-manual: =
-fix obvious typo &quot;ORHNAME&quot;</div><div><br></div><div>The last 5 &#=
-39;doc&#39; commits in yocto:</div><div>$ git log -5 --oneline =C2=A0-- doc=
-umentation/<br>f9e1127643 Updated patch for publishing<br>cd25abf777 Added =
-usrmerge to distro-features for Bug 13494<br>fe25ef9871 ref-manual: correct=
- &quot;script&quot; dirname to &quot;scripts&quot;<br>a44b8d2856 dev-manual=
-: remove postinst false statement<br>c31ddaba1f ref-manual: add migration s=
-ection for 3.1</div><div><br></div><div>The top 3 patches are missing in yo=
-cto-docs.. <br></div><div><br></div><div>cheers<br></div></div>
-
---000000000000b811cd05a45ff0e7--
+--_000_DM6PR11MB3676119362F59D037901E1E1E5AC0DM6PR11MB3676namp_--
