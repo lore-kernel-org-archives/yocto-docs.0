@@ -1,106 +1,91 @@
-Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web12.1525.1588085838259318158
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+ by mx.groups.io with SMTP id smtpd.web12.765.1588106852165275940
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Apr 2020 07:57:18 -0700
+ Tue, 28 Apr 2020 13:47:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:57090 helo=localhost.localdomain)
-	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jTRfg-001xkT-JQ
-	for docs@lists.yoctoproject.org; Tue, 28 Apr 2020 10:57:17 -0400
-Date: Tue, 28 Apr 2020 10:57:14 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-X-X-Sender: rpjday@localhost.localdomain
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: Remove long-dead PACKAGE_GROUP variable
-Message-ID: <alpine.LFD.2.21.2004281055300.926737@localhost.localdomain>
+ dkim=pass header.i=@linaro.org header.s=google header.b=CBPyDaVO;
+ spf=pass (domain: linaro.org, ip: 209.85.219.169, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f169.google.com with SMTP id d197so73050ybh.6
+        for <docs@lists.yoctoproject.org>; Tue, 28 Apr 2020 13:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=fcu4NjofiK7TuqRIZ0YRnL+EqlAf+hqmyZbTtcPzwB4=;
+        b=CBPyDaVO0CUr0hLJt0GO8SIqYZIDcGFowzVVIv9/NajIJUYjKq6oEXJZNXKQwp5E3C
+         A2PAMsgAd+qXKMFJ7OiPV9UFUSxlKQOhkrv5z5GamyTIVlbi7gs8yfNrmgiNpayLw8cl
+         ReND4Sxs67YZnX5JgWWGGtFQuaXMDDBSlFdQ0lVL2kjoPg/qU+0QiEmG3CyWWzd/xeHJ
+         hCBO9HeB7rSZhnMDenA/rMpSrZsINgPvo9szSdy+jDPfLOkZe7q/jtdvXTfYzLGx5hSa
+         5d2szqOTCfRPk/g16r+bxkhgrjnJAnrDQyHSblqrSHijhs/9xUJG/WQ+wiIRtbB/MmMC
+         Azew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=fcu4NjofiK7TuqRIZ0YRnL+EqlAf+hqmyZbTtcPzwB4=;
+        b=m++wjgDIPcX/ddisiopcU9N/tjuo7tM8F0zYzgAm2cAkqCbG7Cd0tb7xwx87JP2pHY
+         4Hd3RwGphCwHgqzX4IC7JCaCbXyc07cPTGE9SgJZL8I2Z3QAGtQv3W+/ZyfDjFZCkos5
+         VkjXOf+uLW0kFQA8fPbh/ivTt05enUQXwaNwo91bi4TUd3AzpDX30Um5phQ0mPJ6ELjH
+         VDF+L3nZQE5r8mnI7hzQO477V91W24Ogxf4Xor5/sIGljO6JzHrpZ/byKey/G6FDF+7U
+         gIqyl2SXwYDvbEf4yB/Vi2jnHgTZBy66qpSAo0u3e1bMP0+ctkIkvzp6k54E8lt/3IwW
+         LJmw==
+X-Gm-Message-State: AGi0PubzrdJ3S45fOBYUDqYp7v9rQ0MgfaFCyx4x1WbDMVzr1RTpzdJS
+	hLbvKhy/xPkjtZ8tuk7n/UGqKboXQxBiGHeieltJaHaL13DJVw==
+X-Google-Smtp-Source: APiQypINl8OQFCBbnbRgdOwFp8/npVYV3XEDVBbr40JDjSATMfEd4cta/AFtQteJ7H6++5eo6mqECAy2AryaCArYTug=
+X-Received: by 2002:a25:c695:: with SMTP id k143mr37361871ybf.397.1588106850990;
+ Tue, 28 Apr 2020 13:47:30 -0700 (PDT)
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-0.2
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Tue, 28 Apr 2020 22:47:19 +0200
+Message-ID: <CAP71WjwQiXmHKxjpRtJofo6ekyLOob9oABsYptj2=i9mmiqKoQ@mail.gmail.com>
+Subject: inconsistencies between poky and yocto-docs trees
+To: docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="000000000000b811cd05a45ff0e7"
 
-This was, years ago, deprecated in favour of FEATURE_PACKAGES, so
-remove all references, other than the entry in the migration section.
+--000000000000b811cd05a45ff0e7
+Content-Type: text/plain; charset="UTF-8"
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+hi,
 
----
+i just noticed that some documentation commits have made it to poky tree,
+but they are not in yocto-docs tree.
 
-diff --git a/documentation/ref-manual/migration.xml b/documentation/ref-manual/migration.xml
-index 9422b5a27..affc8b90a 100644
---- a/documentation/ref-manual/migration.xml
-+++ b/documentation/ref-manual/migration.xml
-@@ -875,8 +875,7 @@
-                     not work.
-                     This change is intended to catch those kinds of situations.
-                     Valid <filename>IMAGE_FEATURES</filename> are drawn from
--                    <link linkend='var-PACKAGE_GROUP'><filename>PACKAGE_GROUP</filename></link>
--                    definitions,
-+                    <filename>PACKAGE_GROUP</filename> definitions,
-                     <link linkend='var-COMPLEMENTARY_GLOB'><filename>COMPLEMENTARY_GLOB</filename></link>
-                     and a new "validitems" varflag on
-                     <filename>IMAGE_FEATURES</filename>.
-@@ -1404,8 +1403,7 @@
+The last 5 commits in yocto-docs:
+$ git log --oneline -5
+77e8a9e03 dev-manual: remove postinst false statement
+dda137617 ref-manual: add migration section for 3.1
+bc0923354 dev-manual: basic updates for npm fetcher changes
+af9bf61a5 ref-manual: update PACKAGECONFIG glossary entry
+d40485a7e overview-manual: fix obvious typo "ORHNAME"
 
-             <para>
-                 The
--                <link linkend='var-PACKAGE_GROUP'><filename>PACKAGE_GROUP</filename></link>
--                variable has been renamed to
-+                <filename>PACKAGE_GROUP</filename> variable has been renamed to
-                 <link linkend='var-FEATURE_PACKAGES'><filename>FEATURE_PACKAGES</filename></link>
-                 to more accurately reflect its purpose.
-                 You can still use <filename>PACKAGE_GROUP</filename> but
-diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
-index b44fdcb73..b733e5e75 100644
---- a/documentation/ref-manual/ref-variables.xml
-+++ b/documentation/ref-manual/ref-variables.xml
-@@ -10292,28 +10292,6 @@
-             </glossdef>
-         </glossentry>
+The last 5 'doc' commits in yocto:
+$ git log -5 --oneline  -- documentation/
+f9e1127643 Updated patch for publishing
+cd25abf777 Added usrmerge to distro-features for Bug 13494
+fe25ef9871 ref-manual: correct "script" dirname to "scripts"
+a44b8d2856 dev-manual: remove postinst false statement
+c31ddaba1f ref-manual: add migration section for 3.1
 
--        <glossentry id='var-PACKAGE_GROUP'><glossterm>PACKAGE_GROUP</glossterm>
--            <info>
--                PACKAGE_GROUP[doc] = "Defines one or more packages to include in an image when a specific item is included in IMAGE_FEATURES."
--            </info>
--            <glossdef>
--                <para role="glossdeffirst">
--<!--                <para role="glossdeffirst"><imagedata fileref="figures/define-generic.png" /> -->
--                    The <filename>PACKAGE_GROUP</filename> variable has been
--                    renamed to
--                    <link linkend='var-FEATURE_PACKAGES'><filename>FEATURE_PACKAGES</filename></link>.
--                    See the variable description for
--                    <filename>FEATURE_PACKAGES</filename> for information.
--                </para>
--
--                <para>
--                    If if you use the <filename>PACKAGE_GROUP</filename>
--                    variable, the OpenEmbedded build system issues a warning
--                    message.
--                </para>
--            </glossdef>
--        </glossentry>
--
-         <glossentry id='var-PACKAGE_INSTALL'><glossterm>PACKAGE_INSTALL</glossterm>
-             <info>
-                 PACKAGE_INSTALL[doc] = "List of the packages to be installed into the image. The variable is generally not user-defined and uses IMAGE_INSTALL as part of the list."
+The top 3 patches are missing in yocto-docs..
 
--- 
+cheers
 
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                         http://crashcourse.ca
+--000000000000b811cd05a45ff0e7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Twitter:                                       http://twitter.com/rpjday
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+<div dir=3D"ltr"><div>hi,</div><div><br></div><div>i just noticed that some=
+ documentation commits have made it to poky tree, but they are not in yocto=
+-docs tree. <br></div><div><br></div><div>The last 5 commits in yocto-docs:=
+</div><div>$ git log --oneline -5<br>77e8a9e03 dev-manual: remove postinst =
+false statement<br>dda137617 ref-manual: add migration section for 3.1<br>b=
+c0923354 dev-manual: basic updates for npm fetcher changes<br>af9bf61a5 ref=
+-manual: update PACKAGECONFIG glossary entry<br>d40485a7e overview-manual: =
+fix obvious typo &quot;ORHNAME&quot;</div><div><br></div><div>The last 5 &#=
+39;doc&#39; commits in yocto:</div><div>$ git log -5 --oneline =C2=A0-- doc=
+umentation/<br>f9e1127643 Updated patch for publishing<br>cd25abf777 Added =
+usrmerge to distro-features for Bug 13494<br>fe25ef9871 ref-manual: correct=
+ &quot;script&quot; dirname to &quot;scripts&quot;<br>a44b8d2856 dev-manual=
+: remove postinst false statement<br>c31ddaba1f ref-manual: add migration s=
+ection for 3.1</div><div><br></div><div>The top 3 patches are missing in yo=
+cto-docs.. <br></div><div><br></div><div>cheers<br></div></div>
+
+--000000000000b811cd05a45ff0e7--
