@@ -1,145 +1,91 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
- by mx.groups.io with SMTP id smtpd.web11.923.1588107415827095216
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+ by mx.groups.io with SMTP id smtpd.web12.2019.1588161074193166064
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Apr 2020 13:56:56 -0700
+ Wed, 29 Apr 2020 04:51:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=dS5hUXsi;
- spf=pass (domain: linaro.org, ip: 209.85.219.179, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f179.google.com with SMTP id p7so65480ybo.12
-        for <docs@lists.yoctoproject.org>; Tue, 28 Apr 2020 13:56:55 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=O0A7tplb;
+ spf=pass (domain: linaro.org, ip: 209.85.219.169, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f169.google.com with SMTP id l84so1125679ybb.1
+        for <docs@lists.yoctoproject.org>; Wed, 29 Apr 2020 04:51:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=sfdQjlmXEHTkYya7Cs0Z52A/6iH0d3+sLN5ZdfeNJFU=;
-        b=dS5hUXsiTLfKM2TLTl9GLw17feGNJeHDmWXikylOGg9Dzo0qGBpoUTQRi3AT8eeHRI
-         P7oEDcNExRSH+vsKEM7Q/Offb5O4glRUEuHaUdLgY0jcX/2e/ICmqri/nn0kFC2qsi24
-         Yq6ZS98bblV/oVMB86tLzAKfRk8zhAU5wJiLydg2IoxycH3Q2fch4efc+w/Xc7XOgAX/
-         +eejyiWuCdI9K+djPpRnZJYyEqCjNlB0ee32rsi/t4PUVQOcwQ7aqzVcjedo7lMjEwVh
-         +zKRs78BG+IUlEdIsVeSebm+GOJdc6kGZBggvwF8/ZS5BnAyRzUwCyQqCzGEqqG5DqPg
-         labA==
+        h=mime-version:from:date:message-id:subject:to;
+        bh=ayXBoo293I2HowaXnozTTvaiXXmEdO91qUktkf1ELok=;
+        b=O0A7tplbI+17KP0WJD6aGSa+u8FcaMUW7muxMGGnX28fmBfuUG+FIF+h815nNovQ/r
+         38b50odLZigEAYGloGNrtVIVPuIj2LF24QxhGp4VzViIDBXxbxQm0Hrjf9XwG4KZcrr2
+         0Rt8cK43g7uHuELJ977AbCCaThcYRH0jinsLS9XTxwibQHK0yxOQXWjBL3+IlFRv/HdC
+         MBymrxVZtTh3Ekxuf9+tcP0sHVETfOikB6G1gJUkLlp9tsYem9JNj2JzT3IWnHAaZOQr
+         fCIqjQks87FI4AD3S1zyeYkavweLTGDsR+ShByiChVkGwYb1MADBJWQ9iN0YtdxiUWi0
+         zErw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=sfdQjlmXEHTkYya7Cs0Z52A/6iH0d3+sLN5ZdfeNJFU=;
-        b=ohdOHMsvPx9dor9AM9G6sCaOjGVMxLKCQ3n3A8cql6VQO4HfzcrF8e39RYwH02X4xv
-         a0htzZo2eQXsnkuUcldSgivXfM2qaOoeK5uCNsoIlh+oMVlBaeQloGe5BQUsPq/K9Zb2
-         lPnsy7+KPiokmLhlNWLYm1wSU8uOTLmUp0iOAzg03nyFkgS64cGN0/xosavNqVUHgOdn
-         CpQ1WStU5BN+OnkqUdvOjqquHKX/cnwU9zicISrm1L6wKHf9F5mrC2M1DJrNq/pEw9HQ
-         t5Gj8iRq+/IeDShTPkEpwwCCHWJ7gox+/6qWcmt6V1xIIBGhH7ethqK4eRs1Uwy9B+W9
-         Ipew==
-X-Gm-Message-State: AGi0PuY+AVHou/keqWfKcTJmGPuFvhvVWsojx8PD+7K0pbo7mWESeNG2
-	G8uKizea5mNmopt7qN4RX+/uS2v7Mauws9clb8Doe52szqo=
-X-Google-Smtp-Source: APiQypKiYmjvkoH5XH3WJWIV+qTbboJp7aiIwrsoPEAYNW25G55cm6q4Ngi/euByqQ5cR4cJqlKCcPxe0z/HjIkS8HY=
-X-Received: by 2002:a5b:48c:: with SMTP id n12mr49687758ybp.133.1588107414735;
- Tue, 28 Apr 2020 13:56:54 -0700 (PDT)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=ayXBoo293I2HowaXnozTTvaiXXmEdO91qUktkf1ELok=;
+        b=J0GHb3ESetL6gX01D9piJV0ETPpQsxtooohP5sWS3GJhVka2wvns3gZD1q09LnuqWl
+         iyn9Dr3bXKTJHkihrAs7czMz6YgS/jW1LFQ5Wce0E6Gl/cNxjBp5HQtseumXCHqNnynB
+         Xcv3YHNP64okLg5EWN2c9kjcxcpGs9E0oHD4gCilG8eCplc8qGj2IaN5ofYWg9cCB+F5
+         u5EnWo/Ksfzj8PGu6PfyW7PB9rpP2zGsIkhd9Yk5zkPy0brMNPjq9KKsFXN/ASuuuKMg
+         mI1hc56cQxiOTNeXVnFs5Dx43mLjnVuBvhIYHGDTAhEZMrwJhH+sCiM3RaXwLHcbQ9cr
+         gvOQ==
+X-Gm-Message-State: AGi0PuY90im4DwdCLmq22nTpzheoNh+7Y5BGoc18efW18nNFnCaSUTih
+	rmXlviZjpiirsVedMxGgpUN7G6uvPEg6u8C2MaarEotPuws1IQ==
+X-Google-Smtp-Source: APiQypIBqH5g3UnaGqY3smfgWxHGLx1vJIU6uHq4D4b56+RHz44aqohazD9r6UZxqfCOmkHsYaG8TFy/KqUd78GrYaM=
+X-Received: by 2002:a25:c695:: with SMTP id k143mr41873000ybf.397.1588161073025;
+ Wed, 29 Apr 2020 04:51:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAP71WjwQiXmHKxjpRtJofo6ekyLOob9oABsYptj2=i9mmiqKoQ@mail.gmail.com>
- <1b306deae4fd33a2284c0a2df9a054bfed9f5ac3.camel@linuxfoundation.org>
-In-Reply-To: <1b306deae4fd33a2284c0a2df9a054bfed9f5ac3.camel@linuxfoundation.org>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Tue, 28 Apr 2020 22:56:42 +0200
-Message-ID: <CAP71WjyKGfMYhai2n_rHEGfvUUgEfUU3h5Z72RdcQkJP7NjxxA@mail.gmail.com>
-Subject: Re: [docs] inconsistencies between poky and yocto-docs trees
-To: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000524f8005a46012bb"
+Date: Wed, 29 Apr 2020 13:51:02 +0200
+Message-ID: <CAP71WjwAtPKx84GAoT7xBusgzhPqth3e-6Ef89pDZDnYeyJyRw@mail.gmail.com>
+Subject: Season of Docs
+To: docs@lists.yoctoproject.org, Trevor Woerner <twoerner@gmail.com>
+Content-Type: multipart/alternative; boundary="0000000000009abced05a46c90b1"
 
---000000000000524f8005a46012bb
+--0000000000009abced05a46c90b1
 Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 28, 2020 at 10:55 PM Richard Purdie <
-richard.purdie@linuxfoundation.org> wrote:
+hi,
 
-> On Tue, 2020-04-28 at 22:47 +0200, Nicolas Dechesne wrote:
-> > hi,
-> >
-> > i just noticed that some documentation commits have made it to poky
-> > tree, but they are not in yocto-docs tree.
-> >
-> > The last 5 commits in yocto-docs:
-> > $ git log --oneline -5
-> > 77e8a9e03 dev-manual: remove postinst false statement
-> > dda137617 ref-manual: add migration section for 3.1
-> > bc0923354 dev-manual: basic updates for npm fetcher changes
-> > af9bf61a5 ref-manual: update PACKAGECONFIG glossary entry
-> > d40485a7e overview-manual: fix obvious typo "ORHNAME"
-> >
-> > The last 5 'doc' commits in yocto:
-> > $ git log -5 --oneline  -- documentation/
-> > f9e1127643 Updated patch for publishing
-> > cd25abf777 Added usrmerge to distro-features for Bug 13494
-> > fe25ef9871 ref-manual: correct "script" dirname to "scripts"
-> > a44b8d2856 dev-manual: remove postinst false statement
-> > c31ddaba1f ref-manual: add migration section for 3.1
-> >
-> > The top 3 patches are missing in yocto-docs..
->
-> I think I'd missed a "push", my workflow is special cased around the
-> way Scott handled things. I've just manually done it and will beat my
-> scripts up a bit more...
->
+The Google Season of Docs program for 2020 has started, and the Yocto
+Project is applying this year. The deadline is next Monday (May 4th), and
+we will know the results one week later. More information on the Season of
+Docs program can be found at:
+https://developers.google.com/season-of-docs
 
-thanks, I can see them now!
+We have created the following wiki page:
+https://wiki.yoctoproject.org/wiki/SeasonOfDocs
 
+We would like to capture a list of ideas for improvements of the Yocto
+Project documentation there. If you want to contribute to the list of
+ideas, please edit this wiki page. If you want to be a mentor for the
+program, please let me know. If you want to understand what mentoring
+implies, please check:
+https://developers.google.com/season-of-docs/docs/mentor-guide
 
-> Cheers,
->
-> Richard
->
-> 
->
+If you have any questions, feel free to ask!
 
---000000000000524f8005a46012bb
+cheers
+nico
+
+--0000000000009abced05a46c90b1
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Apr 28, 2020 at 10:55 PM Rich=
-ard Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfoundation.org">richar=
-d.purdie@linuxfoundation.org</a>&gt; wrote:<br></div><blockquote class=3D"g=
-mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
-,204,204);padding-left:1ex">On Tue, 2020-04-28 at 22:47 +0200, Nicolas Dech=
-esne wrote:<br>
-&gt; hi,<br>
-&gt; <br>
-&gt; i just noticed that some documentation commits have made it to poky<b=
-r>
-&gt; tree, but they are not in yocto-docs tree. <br>
-&gt; <br>
-&gt; The last 5 commits in yocto-docs:<br>
-&gt; $ git log --oneline -5<br>
-&gt; 77e8a9e03 dev-manual: remove postinst false statement<br>
-&gt; dda137617 ref-manual: add migration section for 3.1<br>
-&gt; bc0923354 dev-manual: basic updates for npm fetcher changes<br>
-&gt; af9bf61a5 ref-manual: update PACKAGECONFIG glossary entry<br>
-&gt; d40485a7e overview-manual: fix obvious typo &quot;ORHNAME&quot;<br>
-&gt; <br>
-&gt; The last 5 &#39;doc&#39; commits in yocto:<br>
-&gt; $ git log -5 --oneline=C2=A0 -- documentation/<br>
-&gt; f9e1127643 Updated patch for publishing<br>
-&gt; cd25abf777 Added usrmerge to distro-features for Bug 13494<br>
-&gt; fe25ef9871 ref-manual: correct &quot;script&quot; dirname to &quot;sc=
-ripts&quot;<br>
-&gt; a44b8d2856 dev-manual: remove postinst false statement<br>
-&gt; c31ddaba1f ref-manual: add migration section for 3.1<br>
-&gt; <br>
-&gt; The top 3 patches are missing in yocto-docs.. <br>
-<br>
-I think I&#39;d missed a &quot;push&quot;, my workflow is special cased ar=
-ound the<br>
-way Scott handled things. I&#39;ve just manually done it and will beat my<=
-br>
-scripts up a bit more...<br></blockquote><div><br></div><div>thanks, I can=
- see them now!</div><div> <br></div><blockquote class=3D"gmail_quote" style=
-=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">
-<br>
-Cheers,<br>
-<br>
-Richard<br>
-<br>
-<br>
-</blockquote></div></div>
+<div dir=3D"ltr">hi,<div><br></div><div>The Google Season of Docs program f=
+or 2020 has started, and the Yocto Project is applying this year. The deadl=
+ine is next Monday (May 4th), and we will know the results one week later. =
+More information on the Season of Docs program can be found at:</div><div><=
+a href=3D"https://developers.google.com/season-of-docs">https://developers.=
+google.com/season-of-docs</a><br></div><div><br></div><div>We have created =
+the following wiki page:</div><div><a href=3D"https://wiki.yoctoproject.org=
+/wiki/SeasonOfDocs">https://wiki.yoctoproject.org/wiki/SeasonOfDocs</a><br>=
+</div><div><br></div><div>We would like to capture a list of ideas for impr=
+ovements of the Yocto Project documentation there. If you want to contribut=
+e to the list of ideas, please edit this wiki page. If you want to be a men=
+tor for the program, please let me know. If you want to understand what men=
+toring implies, please check:=C2=A0</div><div><a href=3D"https://developers=
+.google.com/season-of-docs/docs/mentor-guide">https://developers.google.com=
+/season-of-docs/docs/mentor-guide</a><br></div><div><br></div><div>If you h=
+ave any questions, feel free to ask!</div><div><br></div><div>cheers</div><=
+div>nico</div><div><br></div></div>
 
---000000000000524f8005a46012bb--
+--0000000000009abced05a46c90b1--
