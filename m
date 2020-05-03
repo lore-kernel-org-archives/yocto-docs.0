@@ -1,23 +1,21 @@
 Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web10.477.1588165982551353724
+ by mx.groups.io with SMTP id smtpd.web12.26308.1588523793480470043
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Apr 2020 06:13:03 -0700
+ Sun, 03 May 2020 09:36:34 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:47000 helo=localhost.localdomain)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:49690 helo=localhost.localdomain)
 	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jTmWK-005Eej-Vq; Wed, 29 Apr 2020 09:13:01 -0400
-Date: Wed, 29 Apr 2020 09:12:58 -0400 (EDT)
+	id 1jVHbT-00AoGI-Kq
+	for docs@lists.yoctoproject.org; Sun, 03 May 2020 12:36:32 -0400
+Date: Sun, 3 May 2020 12:36:30 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 X-X-Sender: rpjday@localhost.localdomain
-To: docs@lists.yoctoproject.org
-cc: Trevor Woerner <twoerner@gmail.com>
-Subject: Re: [docs] Season of Docs
-In-Reply-To: <CAP71WjwAtPKx84GAoT7xBusgzhPqth3e-6Ef89pDZDnYeyJyRw@mail.gmail.com>
-Message-ID: <alpine.LFD.2.21.2004290912090.15418@localhost.localdomain>
-References: <CAP71WjwAtPKx84GAoT7xBusgzhPqth3e-6Ef89pDZDnYeyJyRw@mail.gmail.com>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: correspondence between HOSTTOOLS and ASSUME_PROVIDED?
+Message-ID: <alpine.LFD.2.21.2005030952320.25550@localhost.localdomain>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -32,27 +30,50 @@ X-Source-Args:
 X-Source-Dir: 
 Content-Type: text/plain; charset=US-ASCII
 
-On Wed, 29 Apr 2020, Nicolas Dechesne wrote:
 
-> hi,
+  (wanting to clarify the precise behaviour involving both HOSTTOOLS
+and ASSUME_PROVIDED.)
 
-> The Google Season of Docs program for 2020 has started, and the
-> Yocto Project is applying this year. The deadline is next Monday
-> (May 4th), and we will know the results one week later. More
-> information on the Season of Docs program can be found at:
-> https://developers.google.com/season-of-docs
->
-> We have created the following wiki page:
-> https://wiki.yoctoproject.org/wiki/SeasonOfDocs
->
-> We would like to capture a list of ideas for improvements of the
-> Yocto Project documentation there. If you want to contribute to the
-> list of ideas, please edit this wiki page. If you want to be a
-> mentor for the program, please let me know. If you want to
-> understand what mentoring implies, please check:
-> https://developers.google.com/season-of-docs/docs/mentor-guide
+  just want to make sure this stuff is explained properly in the docs,
+as it has the potential to be confusing.
 
-  given how i am constantly whining about docs, it would be
-inappropriate for me to not volunteer to do *something* here.
+  first, in the current reference manual in the variables glossary,
+one reads:
+
+"HOSTTOOLS: A space-separated list (filter) of tools on the build host
+that should be allowed to be called from within build tasks..."
+
+  that seems a bit vague ... as i read it, it's not so much that those
+native commands "*should* be allowed to be called" so much as it is
+that those are the native tools that *must* exist on the host and,
+furthermore, they are the ones that *will* be invoked even if the
+corresponding providing native recipe is built that provides the same
+command, is that right?
+
+  and, second, it seems that if one wants to play with those variables
+(admittedly unusual), then one has to make sure they stay in sync in
+the following way.
+
+  HOSTTOOLS represents simply individual *commands* that have to be
+natively available, while ASSUME_PROVIDED identifies entire native
+*recipes* that are being told not to build, which means that if a
+certain native recipe is not built, quite a number of native commands
+might suddenly be unavailable.
+
+  as a simple example, ASSUME_PROVIDED identifies "findutils-native"
+as a recipe that should not be built. as it is, that recipe provides
+two native commands of interest: "find" and "xargs". so given that the
+build process really needs both of those commands, it is not
+surprising that both of those are listed in HOSTTOOLS, which requires
+them to exist natively.
+
+  now, if someone had neglected to mention "xargs" in HOSTTOOLS, as i
+read it, a build would fail if xargs was invoked natively even if such
+a command existed on the build host. that is, once one identifies
+findutils-native to ASSUME_PROVIDED, then one is *required* to have
+the necessary commands on the build host, *and* list them in HOSTTOOLS
+so that they are found.
+
+  do i have this about right?
 
 rday
