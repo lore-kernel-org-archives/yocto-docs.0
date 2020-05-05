@@ -1,21 +1,21 @@
 Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web12.26308.1588523793480470043
+ by mx.groups.io with SMTP id smtpd.web10.4343.1588705949198775038
  for <docs@lists.yoctoproject.org>;
- Sun, 03 May 2020 09:36:34 -0700
+ Tue, 05 May 2020 12:12:29 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:49690 helo=localhost.localdomain)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:60702 helo=localhost.localdomain)
 	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1jVHbT-00AoGI-Kq
-	for docs@lists.yoctoproject.org; Sun, 03 May 2020 12:36:32 -0400
-Date: Sun, 3 May 2020 12:36:30 -0400 (EDT)
+	id 1jW2zT-00HWrx-8T
+	for docs@lists.yoctoproject.org; Tue, 05 May 2020 15:12:27 -0400
+Date: Tue, 5 May 2020 15:12:24 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 X-X-Sender: rpjday@localhost.localdomain
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: correspondence between HOSTTOOLS and ASSUME_PROVIDED?
-Message-ID: <alpine.LFD.2.21.2005030952320.25550@localhost.localdomain>
+Subject: looking for feedback on writeup about class/task inheritance
+Message-ID: <alpine.LFD.2.21.2005051436490.26329@localhost.localdomain>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -31,49 +31,74 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-  (wanting to clarify the precise behaviour involving both HOSTTOOLS
-and ASSUME_PROVIDED.)
+  i wanted to write a tutorial on basic class/task inheritance WRT
+bitbake and OE, and pull some actual examples from the OE code base
+in, so i threw together the following and am interested in feedback as
+to whether it's clear. this is just the first part -- i'm leaving out
+the additional usage of EXPORT_FUNCTIONS for the time being until i
+decide what i want it to say. (and, yes, what follows is incredibly
+basic ... that's the point.)
 
-  just want to make sure this stuff is explained properly in the docs,
-as it has the potential to be confusing.
+  to start with, quick intro to most common tasks one will normally
+inherit (initially from base.bbclass):
 
-  first, in the current reference manual in the variables glossary,
-one reads:
+  do_configure()
+  do_compile()
+  do_install()
+  do_package()
 
-"HOSTTOOLS: A space-separated list (filter) of tools on the build host
-that should be allowed to be called from within build tasks..."
+first thing to mention -- if you inherit these tasks and make
+absolutely no changes to them, then you get them as is. so far, so
+good?
 
-  that seems a bit vague ... as i read it, it's not so much that those
-native commands "*should* be allowed to be called" so much as it is
-that those are the native tools that *must* exist on the host and,
-furthermore, they are the ones that *will* be invoked even if the
-corresponding providing native recipe is built that provides the same
-command, is that right?
+  next observation, you can modify inherited tasks in a couple ways.
+first way is to override it in its entirety -- plenty of examples of
+that:
 
-  and, second, it seems that if one wants to play with those variables
-(admittedly unusual), then one has to make sure they stay in sync in
-the following way.
+meta/recipes-core/newlib/newlib.inc:do_install() {
+meta/recipes-core/musl/musl_git.bb:do_install() {
+meta/recipes-core/musl/bsd-headers.bb:do_install() {
+meta/recipes-core/musl/libucontext_git.bb:do_install() {
+meta/recipes-core/musl/libssp-nonshared.bb:do_install() {
+meta/recipes-core/dropbear/dropbear.inc:do_install() {
+... etc etc ...
 
-  HOSTTOOLS represents simply individual *commands* that have to be
-natively available, while ASSUME_PROVIDED identifies entire native
-*recipes* that are being told not to build, which means that if a
-certain native recipe is not built, quite a number of native commands
-might suddenly be unavailable.
+ on the other hand, you can *adjust* the inherited task with either
+_append or _prepend -- once again, plenty of examples (i'll pick one
+to display):
 
-  as a simple example, ASSUME_PROVIDED identifies "findutils-native"
-as a recipe that should not be built. as it is, that recipe provides
-two native commands of interest: "find" and "xargs". so given that the
-build process really needs both of those commands, it is not
-surprising that both of those are listed in HOSTTOOLS, which requires
-them to exist natively.
+meta/recipes-extended/watchdog/watchdog_5.15.bb:do_install_append() {
+meta/recipes-extended/iptables/iptables_1.8.4.bb:do_install_append() {
+meta/recipes-extended/lighttpd/lighttpd_1.4.55.bb:do_install_append() {
+meta/recipes-extended/libtirpc/libtirpc_1.2.6.bb:do_install_append() {
+meta/recipes-extended/bash/bash.inc:do_install_append () {
 
-  now, if someone had neglected to mention "xargs" in HOSTTOOLS, as i
-read it, a build would fail if xargs was invoked natively even if such
-a command existed on the build host. that is, once one identifies
-findutils-native to ASSUME_PROVIDED, then one is *required* to have
-the necessary commands on the build host, *and* list them in HOSTTOOLS
-so that they are found.
+  and, finally, one can add overrides to any and all of the above,
+either for simple overriding, or combining overriding with appending
+or prepending:
 
-  do i have this about right?
+meta/recipes-core/glibc/glibc-package.inc:do_install_armmultilib () {
+...
+meta/recipes-core/glibc/glibc-package.inc:do_install_append_aarch64 () {
+meta/recipes-core/glibc/glibc-package.inc:do_install_append_arm () {
+meta/recipes-core/glibc/glibc-package.inc:do_install_append_armeb () {
+...
+
+  and, finally, a point i think gets very little attention, and that
+is that all of this applies to non-tasks as well, like this example:
+
+meta-environment.bb:create_sdk_files() {
+meta-environment-extsdk.bb:create_sdk_files_append() {
+
+admittedly, not a lot of those, but still worth being complete in
+mentioning it.
+
+  that's all i'd start with, other than adding one more point -- if
+one chooses to truly override an inherited function, there is no way
+to *also* get access to the underlying inherited function of the same
+name, short of the use of EXPORT_FUNCTIONS, is that correct?
+
+  does the above seem reasonable? am i missing anything important
+before dragging EXPORT_FUNCTIONS into it in part two?
 
 rday
