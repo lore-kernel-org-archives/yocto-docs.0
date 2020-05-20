@@ -1,241 +1,192 @@
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
- by mx.groups.io with SMTP id smtpd.web12.12834.1589981949984950571
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+ by mx.groups.io with SMTP id smtpd.web11.1219.1590011385733656925
  for <docs@lists.yoctoproject.org>;
- Wed, 20 May 2020 06:39:10 -0700
+ Wed, 20 May 2020 14:49:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=hLQ8K3J3;
- spf=pass (domain: gmail.com, ip: 209.85.210.196, mailfrom: akuster808@gmail.com)
-Received: by mail-pf1-f196.google.com with SMTP id y18so1564318pfl.9
-        for <docs@lists.yoctoproject.org>; Wed, 20 May 2020 06:39:09 -0700 (PDT)
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=XMsJwedU;
+ spf=pass (domain: axis.com, ip: 195.60.68.18, mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language;
-        bh=4C0USRYS/lk7DvWG5cG+HZjZgRJ9oI3GtjZOEELiVUA=;
-        b=hLQ8K3J3LL1yqMq0DhtUaKp3LBECZwqn8TO+ukRIyN+W1EWRjwDpl7diEArMY/wpk1
-         vk8CWCZhYbjqGXRrneAgysgZismhKe5gYipaacbh3WvHHNRzR4H22Vzg0yAeCsgzesZG
-         dh2QIvFeWHE2cyxkEDRDR75vZBCH3sRsI/EufOXdoH3tiXIxUdbd3RXfyhQ4Fh6gxe4R
-         zeOSu9RhZGqCgE/4kf6o6J8M0jg8ZIOJOkVVCOhKUBGPWCnMqSPJ15tn5pRd8l21oX5i
-         3K7I+e6VN2pApTE75ziPXOjcjrs4AH0GX4htBlrOV7MNQ0y4hw8F6VEp0Vxeq2qIorpN
-         LL4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language;
-        bh=4C0USRYS/lk7DvWG5cG+HZjZgRJ9oI3GtjZOEELiVUA=;
-        b=lZMHiTtp5lH/og2VlNfV9C42FNQQcOXHFfaLPSuWxzk6qbWO0rEdG+mirheBax1szX
-         VJuB6ipczsqYMdmwbIlHorXWPHAuoRs5dR3yk4lR3Zf384LQsm3tLaNql5337rEY/h0Q
-         GOq7FJ+CJxWZT8gESoZYst/PkkENqgUCNDFUdvNvcUU9dbpopxChadOh1OmHD6Uye5Nc
-         HIhG5xGdFfeQ0OPHqs0RE1WKPfnnsdU4hS4nGvp2RDxIwnSFCePjwBkbqVO79EgLDgw/
-         EMwxmPBeRCcjMdFB1dhhCl9hO4QkHWdZQstJlBmfUSSq4z1MHF6fjVzMlieawqpjAmj6
-         kcqg==
-X-Gm-Message-State: AOAM532fj3UyVXWFYsegOuJkmhrLhyBO/mffTbLfcUKGp2gYy+pfz77J
-	+ju9U3xYdEy66X1BdQGwtAVMal2G
-X-Google-Smtp-Source: ABdhPJxLpz73CTLZ4whey8QFwR3n44yaiNaPWRCdnNRE+9dOHz3U1BzZEDPN9VIx6tUhXlNG0gcX1A==
-X-Received: by 2002:a63:1854:: with SMTP id 20mr4271647pgy.257.1589981949246;
-        Wed, 20 May 2020 06:39:09 -0700 (PDT)
-Return-Path: <akuster808@gmail.com>
-Received: from ?IPv6:2601:202:4180:a5c0:89fe:2720:c4a0:6889? ([2601:202:4180:a5c0:89fe:2720:c4a0:6889])
-        by smtp.gmail.com with ESMTPSA id h7sm1916242pgn.60.2020.05.20.06.39.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 May 2020 06:39:08 -0700 (PDT)
+  d=axis.com; l=10512; q=dns/txt; s=axis-central1;
+  t=1590011386; x=1621547386;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:mime-version;
+  bh=C2yHB9oGp+FVDqIGR7ixli5O7u2XCpwgd7GvG7zmfyc=;
+  b=XMsJwedUWrWrlbLM1wu+JbV6QrKjT/sTRweVBrl0jOivMdu5NTPP1esp
+   JoZntUSt7ZVnbfoxBNcvFYgLpOpPYW1KPv8cFuQNtxpzWnMctoVOJ7HH5
+   79cpyhAkt3avFYKfgduEBL1f/Wc/Xh4i6DUCFNQqZhA9Pq2iugUzeX+YG
+   9doeKu62bMEP5ZKwcl1d45MPZgv32erpc3ZHcDUgLTkK82a2cN9V8pHpa
+   o0qDVjmnf1zraAIXPqCojeb2aSRpTKBvcgXhAzo/O3Ntlqs3zJKa5TxYl
+   RBL4TUYEnzS/HMKpUBx8DmRMsAq19PV7nwKA+20cBQwbEN9NltDbXRrgD
+   Q==;
+IronPort-SDR: nQ81CrqecbDL7Rbyju0axQKIhl/lpNoPZn8JNdD7z8kwCXsadQqw1kixtxry29tP1m5NfTrQKC
+ iw5HTyL52O1HifOXepbohchdjfAnVOVEs6K96kVdOTyVFC2rVCCOEmD8Yw2r9Ba1wGvM36AKig
+ M18CNv7n30d0C0XgnBdQ1BSCEaebEzHH765Fo5TB6bfM/x1RJSjcABm1cMAuFLabN2OrS1TbR+
+ /1BXdHJ9Pu17+f6tdg0MY6GlPof8wKgjzH2bCRK6kCWibuQ5e76s8NKAc5YQOdqqGVXWr2SrQ9
+ Z/8=
+X-IronPort-AV: E=Sophos;i="5.73,415,1583190000"; 
+   d="scan'208,217";a="8694437"
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: akuster <akuster808@gmail.com>, Alexander Kanavin <alex.kanavin@gmail.com>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
 Subject: Re: [docs] [V2][PATCH] poky.ent: Update OPENSUSE_HOST_PACKAGES_ESSENTIAL to include mesa-dri-devel
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-Cc: docs@lists.yoctoproject.org
+Thread-Topic: [docs] [V2][PATCH] poky.ent: Update
+ OPENSUSE_HOST_PACKAGES_ESSENTIAL to include mesa-dri-devel
+Thread-Index: AQHWLl7ga2mXWKFLfkCJz+cbI/FNA6iwfaYAgABcJoCAAKplsA==
+Date: Wed, 20 May 2020 21:49:42 +0000
+Message-ID: <66a2f248501f4a63986a81a85f2c7b9c@XBOX03.axis.com>
 References: <20200520042639.7077-1-akuster808@gmail.com>
  <CANNYZj8Hc0XNj3+xP4nZmoy27MhqSwQ9Of6ziDxVAFyhgLPMmg@mail.gmail.com>
-From: "akuster" <akuster808@gmail.com>
-Autocrypt: addr=akuster808@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- 8CS2NxU=
-Message-ID: <854951c0-a149-f25b-7bc0-4c48a5ba6383@gmail.com>
-Date: Wed, 20 May 2020 06:39:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+ <854951c0-a149-f25b-7bc0-4c48a5ba6383@gmail.com>
+In-Reply-To: <854951c0-a149-f25b-7bc0-4c48a5ba6383@gmail.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.0.5.60]
 MIME-Version: 1.0
-In-Reply-To: <CANNYZj8Hc0XNj3+xP4nZmoy27MhqSwQ9Of6ziDxVAFyhgLPMmg@mail.gmail.com>
-Content-Type: multipart/alternative;
- boundary="------------C5F88D1C07F02E3391AD9386"
 Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_66a2f248501f4a63986a81a85f2c7b9cXBOX03axiscom_"
 
---------------C5F88D1C07F02E3391AD9386
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+--_000_66a2f248501f4a63986a81a85f2c7b9cXBOX03axiscom_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
+QW4gcmVtZW1iZXIgdGhhdCBwYXRjaCB2ZXJzaW9uIGluZm8gc2hvdWxkIGdvIGJlbG93IHRoZSDi
+gJwtLS3igJ0gbGluZS4gOykNCg0KLy9QZXRlcg0KDQpGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
+amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmIE9mIGFrdXN0
+ZXINClNlbnQ6IGRlbiAyMCBtYWogMjAyMCAxNTozOQ0KVG86IEFsZXhhbmRlciBLYW5hdmluIDxh
+bGV4LmthbmF2aW5AZ21haWwuY29tPg0KQ2M6IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZw0K
+U3ViamVjdDogUmU6IFtkb2NzXSBbVjJdW1BBVENIXSBwb2t5LmVudDogVXBkYXRlIE9QRU5TVVNF
+X0hPU1RfUEFDS0FHRVNfRVNTRU5USUFMIHRvIGluY2x1ZGUgbWVzYS1kcmktZGV2ZWwNCg0KDQpP
+biA1LzIwLzIwIDE6MDkgQU0sIEFsZXhhbmRlciBLYW5hdmluIHdyb3RlOg0KVGhpcyBzdGlsbCBp
+cyBtaXNzaW5nIHRoZSBlbnRyaWVzIGZvciBvdGhlciBkaXN0cm9zIHdoaWNoIEkgc2VudD8NCg0K
+c2lnaC4uLiBJIGhhZCB0aGUgdHlwbyBmaXhlZCBxdWV1ZWQgdXAgYnV0IHRoZW4gZ290IGRpc3Ry
+YWN0ZWQgYW5kIG5ldmVyIGxvb2tlZCBpbiBteSBpbmJveCBhZ2FpbiBiZWZvcmUgc2VuZGluZyBp
+dCBtdWNoIGxhdGVyLg0KDQp0aGFua3MgZm9yIHRoZSBpbmZvLiBJIHdpbGwgdXBkYXRlIGFjY29y
+ZGluZ2x5Lg0KDQotYXJtaW4NCg0KDQoNCkFsZXgNCg0KT24gV2VkIDIwLiBNYXkgMjAyMCBhdCA2
+LjI2LCBha3VzdGVyIDxha3VzdGVyODA4QGdtYWlsLmNvbTxtYWlsdG86YWt1c3RlcjgwOEBnbWFp
+bC5jb20+PiB3cm90ZToNClt2Ml0NCkZpeCB0eXBvDQoNClNpZ25lZC1vZmYtYnk6IEFybWluIEt1
+c3RlciA8YWt1c3RlcjgwOEBnbWFpbC5jb208bWFpbHRvOmFrdXN0ZXI4MDhAZ21haWwuY29tPj4N
+Ci0tLQ0KIGRvY3VtZW50YXRpb24vcG9reS5lbnQgfCAyICstDQogMSBmaWxlIGNoYW5nZWQsIDEg
+aW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQoNCmRpZmYgLS1naXQgYS9kb2N1bWVudGF0aW9u
+L3Bva3kuZW50IGIvZG9jdW1lbnRhdGlvbi9wb2t5LmVudA0KaW5kZXggYTU0NzkzOTExYS4uMDdk
+YzFhZjNkNiAxMDA3NTUNCi0tLSBhL2RvY3VtZW50YXRpb24vcG9reS5lbnQNCisrKyBiL2RvY3Vt
+ZW50YXRpb24vcG9reS5lbnQNCkBAIC03MCw3ICs3MCw3IEBADQogICAgICBweXRob24zLWppbmph
+MiBTREwtZGV2ZWwgeHRlcm0gcnBjZ2VuIj4NCiA8IUVOVElUWSBPUEVOU1VTRV9IT1NUX1BBQ0tB
+R0VTX0VTU0VOVElBTCAicHl0aG9uIGdjYyBnY2MtYysrIGdpdCBjaHJwYXRoIG1ha2Ugd2dldCBw
+eXRob24teG1sIFwNCiAgICAgIGRpZmZzdGF0IG1ha2VpbmZvIHB5dGhvbi1jdXJzZXMgcGF0Y2gg
+c29jYXQgcHl0aG9uMyBweXRob24zLWN1cnNlcyB0YXIgcHl0aG9uMy1waXAgXA0KLSAgICAgcHl0
+aG9uMy1wZXhwZWN0IHh6IHdoaWNoIHB5dGhvbjMtSmluamEyIE1lc2EtbGliRUdMMSBsaWJTREwt
+ZGV2ZWwgeHRlcm0gcnBjZ2VuDQorICAgICBweXRob24zLXBleHBlY3QgeHogd2hpY2ggcHl0aG9u
+My1KaW5qYTIgTWVzYS1saWJFR0wxIGxpYlNETC1kZXZlbCB4dGVybSBycGNnZW4gTWVzYS1kcmkt
+ZGV2ZWwNCiAgICAgICQgc3VkbyBwaXAzIGluc3RhbGwgR2l0UHl0aG9uIj4NCiA8IUVOVElUWSBD
+RU5UT1M3X0hPU1RfUEFDS0FHRVNfRVNTRU5USUFMICIteSBlcGVsLXJlbGVhc2UNCiAgICAgICQg
+c3VkbyB5dW0gbWFrZWNhY2hlDQotLQ0KMi4xNy4xDQoNCg0K
 
+--_000_66a2f248501f4a63986a81a85f2c7b9cXBOX03axiscom_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-On 5/20/20 1:09 AM, Alexander Kanavin wrote:
-> This still is missing the entries for other distros which I sent?
+PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp2bWwiIHhtbG5zOm89InVy
+bjpzY2hlbWFzLW1pY3Jvc29mdC1jb206b2ZmaWNlOm9mZmljZSIgeG1sbnM6dz0idXJuOnNjaGVt
+YXMtbWljcm9zb2Z0LWNvbTpvZmZpY2U6d29yZCIgeG1sbnM6bT0iaHR0cDovL3NjaGVtYXMubWlj
+cm9zb2Z0LmNvbS9vZmZpY2UvMjAwNC8xMi9vbW1sIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv
+VFIvUkVDLWh0bWw0MCI+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIg
+Y29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRv
+ciIgY29udGVudD0iTWljcm9zb2Z0IFdvcmQgMTUgKGZpbHRlcmVkIG1lZGl1bSkiPg0KPHN0eWxl
+PjwhLS0NCi8qIEZvbnQgRGVmaW5pdGlvbnMgKi8NCkBmb250LWZhY2UNCgl7Zm9udC1mYW1pbHk6
+IkNhbWJyaWEgTWF0aCI7DQoJcGFub3NlLTE6MiA0IDUgMyA1IDQgNiAzIDIgNDt9DQpAZm9udC1m
+YWNlDQoJe2ZvbnQtZmFtaWx5OkNhbGlicmk7DQoJcGFub3NlLTE6MiAxNSA1IDIgMiAyIDQgMyAy
+IDQ7fQ0KLyogU3R5bGUgRGVmaW5pdGlvbnMgKi8NCnAuTXNvTm9ybWFsLCBsaS5Nc29Ob3JtYWws
+IGRpdi5Nc29Ob3JtYWwNCgl7bWFyZ2luOjBjbTsNCgltYXJnaW4tYm90dG9tOi4wMDAxcHQ7DQoJ
+Zm9udC1zaXplOjExLjBwdDsNCglmb250LWZhbWlseToiQ2FsaWJyaSIsc2Fucy1zZXJpZjt9DQph
+OmxpbmssIHNwYW4uTXNvSHlwZXJsaW5rDQoJe21zby1zdHlsZS1wcmlvcml0eTo5OTsNCgljb2xv
+cjpibHVlOw0KCXRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7fQ0KYTp2aXNpdGVkLCBzcGFuLk1z
+b0h5cGVybGlua0ZvbGxvd2VkDQoJe21zby1zdHlsZS1wcmlvcml0eTo5OTsNCgljb2xvcjpwdXJw
+bGU7DQoJdGV4dC1kZWNvcmF0aW9uOnVuZGVybGluZTt9DQpwLm1zb25vcm1hbDAsIGxpLm1zb25v
+cm1hbDAsIGRpdi5tc29ub3JtYWwwDQoJe21zby1zdHlsZS1uYW1lOm1zb25vcm1hbDsNCgltc28t
+bWFyZ2luLXRvcC1hbHQ6YXV0bzsNCgltYXJnaW4tcmlnaHQ6MGNtOw0KCW1zby1tYXJnaW4tYm90
+dG9tLWFsdDphdXRvOw0KCW1hcmdpbi1sZWZ0OjBjbTsNCglmb250LXNpemU6MTEuMHB0Ow0KCWZv
+bnQtZmFtaWx5OiJDYWxpYnJpIixzYW5zLXNlcmlmO30NCnNwYW4uRW1haWxTdHlsZTE4DQoJe21z
+by1zdHlsZS10eXBlOnBlcnNvbmFsLXJlcGx5Ow0KCWZvbnQtZmFtaWx5OiJDYWxpYnJpIixzYW5z
+LXNlcmlmOw0KCWNvbG9yOiM5NDM2MzQ7DQoJZm9udC13ZWlnaHQ6bm9ybWFsOw0KCWZvbnQtc3R5
+bGU6bm9ybWFsO30NCi5Nc29DaHBEZWZhdWx0DQoJe21zby1zdHlsZS10eXBlOmV4cG9ydC1vbmx5
+Ow0KCWZvbnQtc2l6ZToxMC4wcHQ7fQ0KQHBhZ2UgV29yZFNlY3Rpb24xDQoJe3NpemU6NjEyLjBw
+dCA3OTIuMHB0Ow0KCW1hcmdpbjo3MC44NXB0IDcwLjg1cHQgNzAuODVwdCA3MC44NXB0O30NCmRp
+di5Xb3JkU2VjdGlvbjENCgl7cGFnZTpXb3JkU2VjdGlvbjE7fQ0KLS0+PC9zdHlsZT48IS0tW2lm
+IGd0ZSBtc28gOV0+PHhtbD4NCjxvOnNoYXBlZGVmYXVsdHMgdjpleHQ9ImVkaXQiIHNwaWRtYXg9
+IjEwMjYiIC8+DQo8L3htbD48IVtlbmRpZl0tLT48IS0tW2lmIGd0ZSBtc28gOV0+PHhtbD4NCjxv
+OnNoYXBlbGF5b3V0IHY6ZXh0PSJlZGl0Ij4NCjxvOmlkbWFwIHY6ZXh0PSJlZGl0IiBkYXRhPSIx
+IiAvPg0KPC9vOnNoYXBlbGF5b3V0PjwveG1sPjwhW2VuZGlmXS0tPg0KPC9oZWFkPg0KPGJvZHkg
+bGFuZz0iU1YiIGxpbms9ImJsdWUiIHZsaW5rPSJwdXJwbGUiPg0KPGRpdiBjbGFzcz0iV29yZFNl
+Y3Rpb24xIj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0i
+Y29sb3I6Izk0MzYzNDttc28tZmFyZWFzdC1sYW5ndWFnZTpFTi1VUyI+QW4gcmVtZW1iZXIgdGhh
+dCBwYXRjaCB2ZXJzaW9uIGluZm8gc2hvdWxkIGdvIGJlbG93IHRoZSDigJwtLS3igJ0gbGluZS4g
+Oyk8bzpwPjwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBsYW5n
+PSJFTi1VUyIgc3R5bGU9ImNvbG9yOiM5NDM2MzQ7bXNvLWZhcmVhc3QtbGFuZ3VhZ2U6RU4tVVMi
+PjxvOnA+Jm5ic3A7PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFu
+IGxhbmc9IkVOLVVTIiBzdHlsZT0iY29sb3I6Izk0MzYzNDttc28tZmFyZWFzdC1sYW5ndWFnZTpF
+Ti1VUyI+Ly9QZXRlcjxvOnA+PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwi
+PjxzcGFuIGxhbmc9IkVOLVVTIiBzdHlsZT0iY29sb3I6Izk0MzYzNDttc28tZmFyZWFzdC1sYW5n
+dWFnZTpFTi1VUyI+PG86cD4mbmJzcDs8L286cD48L3NwYW4+PC9wPg0KPGRpdiBzdHlsZT0iYm9y
+ZGVyOm5vbmU7Ym9yZGVyLWxlZnQ6c29saWQgYmx1ZSAxLjVwdDtwYWRkaW5nOjBjbSAwY20gMGNt
+IDQuMHB0Ij4NCjxkaXY+DQo8ZGl2IHN0eWxlPSJib3JkZXI6bm9uZTtib3JkZXItdG9wOnNvbGlk
+ICNFMUUxRTEgMS4wcHQ7cGFkZGluZzozLjBwdCAwY20gMGNtIDBjbSI+DQo8cCBjbGFzcz0iTXNv
+Tm9ybWFsIj48Yj48c3BhbiBsYW5nPSJFTi1VUyI+RnJvbTo8L3NwYW4+PC9iPjxzcGFuIGxhbmc9
+IkVOLVVTIj4gZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnICZsdDtkb2NzQGxpc3RzLnlvY3Rv
+cHJvamVjdC5vcmcmZ3Q7DQo8Yj5PbiBCZWhhbGYgT2YgPC9iPmFrdXN0ZXI8YnI+DQo8Yj5TZW50
+OjwvYj4gZGVuIDIwIG1haiAyMDIwIDE1OjM5PGJyPg0KPGI+VG86PC9iPiBBbGV4YW5kZXIgS2Fu
+YXZpbiAmbHQ7YWxleC5rYW5hdmluQGdtYWlsLmNvbSZndDs8YnI+DQo8Yj5DYzo8L2I+IGRvY3NA
+bGlzdHMueW9jdG9wcm9qZWN0Lm9yZzxicj4NCjxiPlN1YmplY3Q6PC9iPiBSZTogW2RvY3NdIFtW
+Ml1bUEFUQ0hdIHBva3kuZW50OiBVcGRhdGUgT1BFTlNVU0VfSE9TVF9QQUNLQUdFU19FU1NFTlRJ
+QUwgdG8gaW5jbHVkZSBtZXNhLWRyaS1kZXZlbDxvOnA+PC9vOnA+PC9zcGFuPjwvcD4NCjwvZGl2
+Pg0KPC9kaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjxw
+IGNsYXNzPSJNc29Ob3JtYWwiIHN0eWxlPSJtYXJnaW4tYm90dG9tOjEyLjBwdCI+PG86cD4mbmJz
+cDs8L286cD48L3A+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+T24gNS8yMC8yMCAxOjA5
+IEFNLCBBbGV4YW5kZXIgS2FuYXZpbiB3cm90ZTo8bzpwPjwvbzpwPjwvcD4NCjwvZGl2Pg0KPGJs
+b2NrcXVvdGUgc3R5bGU9Im1hcmdpbi10b3A6NS4wcHQ7bWFyZ2luLWJvdHRvbTo1LjBwdCI+DQo8
+ZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPlRoaXMgc3RpbGwgaXMgbWlzc2luZyB0
+aGUgZW50cmllcyBmb3Igb3RoZXIgZGlzdHJvcyB3aGljaCBJIHNlbnQ/PG86cD48L286cD48L3A+
+DQo8L2Rpdj4NCjwvZGl2Pg0KPC9ibG9ja3F1b3RlPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PGJy
+Pg0Kc2lnaC4uLiBJIGhhZCB0aGUgdHlwbyBmaXhlZCBxdWV1ZWQgdXAgYnV0IHRoZW4gZ290IGRp
+c3RyYWN0ZWQgYW5kIG5ldmVyIGxvb2tlZCBpbiBteSBpbmJveCBhZ2FpbiBiZWZvcmUgc2VuZGlu
+ZyBpdCBtdWNoIGxhdGVyLjxicj4NCjxicj4NCnRoYW5rcyBmb3IgdGhlIGluZm8uIEkgd2lsbCB1
+cGRhdGUgYWNjb3JkaW5nbHkuPGJyPg0KPGJyPg0KLWFybWluPGJyPg0KPGJyPg0KPGJyPg0KPG86
+cD48L286cD48L3A+DQo8YmxvY2txdW90ZSBzdHlsZT0ibWFyZ2luLXRvcDo1LjBwdDttYXJnaW4t
+Ym90dG9tOjUuMHB0Ij4NCjxkaXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PG86cD4m
+bmJzcDs8L286cD48L3A+DQo8L2Rpdj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj5BbGV4
+PG86cD48L286cD48L3A+DQo8L2Rpdj4NCjwvZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3Jt
+YWwiPjxvOnA+Jm5ic3A7PC9vOnA+PC9wPg0KPGRpdj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9y
+bWFsIj5PbiBXZWQgMjAuIE1heSAyMDIwIGF0IDYuMjYsIGFrdXN0ZXIgJmx0OzxhIGhyZWY9Im1h
+aWx0bzpha3VzdGVyODA4QGdtYWlsLmNvbSI+YWt1c3RlcjgwOEBnbWFpbC5jb208L2E+Jmd0OyB3
+cm90ZTo8bzpwPjwvbzpwPjwvcD4NCjwvZGl2Pg0KPGJsb2NrcXVvdGUgc3R5bGU9ImJvcmRlcjpu
+b25lO2JvcmRlci1sZWZ0OnNvbGlkICNDQ0NDQ0MgMS4wcHQ7cGFkZGluZzowY20gMGNtIDBjbSA2
+LjBwdDttYXJnaW4tbGVmdDo0LjhwdDttYXJnaW4tcmlnaHQ6MGNtIj4NCjxwIGNsYXNzPSJNc29O
+b3JtYWwiIHN0eWxlPSJtYXJnaW4tYm90dG9tOjEyLjBwdCI+W3YyXTxicj4NCkZpeCB0eXBvPGJy
+Pg0KPGJyPg0KU2lnbmVkLW9mZi1ieTogQXJtaW4gS3VzdGVyICZsdDs8YSBocmVmPSJtYWlsdG86
+YWt1c3RlcjgwOEBnbWFpbC5jb20iIHRhcmdldD0iX2JsYW5rIj5ha3VzdGVyODA4QGdtYWlsLmNv
+bTwvYT4mZ3Q7PGJyPg0KLS0tPGJyPg0KJm5ic3A7ZG9jdW1lbnRhdGlvbi9wb2t5LmVudCB8IDIg
+JiM0MzstPGJyPg0KJm5ic3A7MSBmaWxlIGNoYW5nZWQsIDEgaW5zZXJ0aW9uKCYjNDM7KSwgMSBk
+ZWxldGlvbigtKTxicj4NCjxicj4NCmRpZmYgLS1naXQgYS9kb2N1bWVudGF0aW9uL3Bva3kuZW50
+IGIvZG9jdW1lbnRhdGlvbi9wb2t5LmVudDxicj4NCmluZGV4IGE1NDc5MzkxMWEuLjA3ZGMxYWYz
+ZDYgMTAwNzU1PGJyPg0KLS0tIGEvZG9jdW1lbnRhdGlvbi9wb2t5LmVudDxicj4NCiYjNDM7JiM0
+MzsmIzQzOyBiL2RvY3VtZW50YXRpb24vcG9reS5lbnQ8YnI+DQpAQCAtNzAsNyAmIzQzOzcwLDcg
+QEA8YnI+DQombmJzcDsgJm5ic3A7ICZuYnNwOyBweXRob24zLWppbmphMiBTREwtZGV2ZWwgeHRl
+cm0gcnBjZ2VuJnF1b3Q7Jmd0Ozxicj4NCiZuYnNwOyZsdDshRU5USVRZIE9QRU5TVVNFX0hPU1Rf
+UEFDS0FHRVNfRVNTRU5USUFMICZxdW90O3B5dGhvbiBnY2MgZ2NjLWMmIzQzOyYjNDM7IGdpdCBj
+aHJwYXRoIG1ha2Ugd2dldCBweXRob24teG1sIFw8YnI+DQombmJzcDsgJm5ic3A7ICZuYnNwOyBk
+aWZmc3RhdCBtYWtlaW5mbyBweXRob24tY3Vyc2VzIHBhdGNoIHNvY2F0IHB5dGhvbjMgcHl0aG9u
+My1jdXJzZXMgdGFyIHB5dGhvbjMtcGlwIFw8YnI+DQotJm5ic3A7ICZuYnNwOyAmbmJzcDtweXRo
+b24zLXBleHBlY3QgeHogd2hpY2ggcHl0aG9uMy1KaW5qYTIgTWVzYS1saWJFR0wxIGxpYlNETC1k
+ZXZlbCB4dGVybSBycGNnZW48YnI+DQomIzQzOyZuYnNwOyAmbmJzcDsgJm5ic3A7cHl0aG9uMy1w
+ZXhwZWN0IHh6IHdoaWNoIHB5dGhvbjMtSmluamEyIE1lc2EtbGliRUdMMSBsaWJTREwtZGV2ZWwg
+eHRlcm0gcnBjZ2VuIE1lc2EtZHJpLWRldmVsPGJyPg0KJm5ic3A7ICZuYnNwOyAmbmJzcDsgJCBz
+dWRvIHBpcDMgaW5zdGFsbCBHaXRQeXRob24mcXVvdDsmZ3Q7PGJyPg0KJm5ic3A7Jmx0OyFFTlRJ
+VFkgQ0VOVE9TN19IT1NUX1BBQ0tBR0VTX0VTU0VOVElBTCAmcXVvdDsteSBlcGVsLXJlbGVhc2U8
+YnI+DQombmJzcDsgJm5ic3A7ICZuYnNwOyAkIHN1ZG8geXVtIG1ha2VjYWNoZTxicj4NCi0tIDxi
+cj4NCjIuMTcuMTxicj4NCjxicj4NCjxvOnA+PC9vOnA+PC9wPg0KPC9ibG9ja3F1b3RlPg0KPC9k
+aXY+DQo8L2Rpdj4NCjwvYmxvY2txdW90ZT4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxvOnA+Jm5i
+c3A7PC9vOnA+PC9wPg0KPC9kaXY+DQo8L2Rpdj4NCjwvYm9keT4NCjwvaHRtbD4NCg==
 
-sigh... I had the typo fixed queued up but then got distracted and never
-looked in my inbox again before sending it much later.
-
-thanks for the info. I will update accordingly.
-
--armin
-
->
-> Alex
->
-> On Wed 20. May 2020 at 6.26, akuster <akuster808@gmail.com
-> <mailto:akuster808@gmail.com>> wrote:
->
->     [v2]
->     Fix typo
->
->     Signed-off-by: Armin Kuster <akuster808@gmail.com
->     <mailto:akuster808@gmail.com>>
->     ---
->      documentation/poky.ent | 2 +-
->      1 file changed, 1 insertion(+), 1 deletion(-)
->
->     diff --git a/documentation/poky.ent b/documentation/poky.ent
->     index a54793911a..07dc1af3d6 100755
->     --- a/documentation/poky.ent
->     +++ b/documentation/poky.ent
->     @@ -70,7 +70,7 @@
->           python3-jinja2 SDL-devel xterm rpcgen">
->      <!ENTITY OPENSUSE_HOST_PACKAGES_ESSENTIAL "python gcc gcc-c++ git
->     chrpath make wget python-xml \
->           diffstat makeinfo python-curses patch socat python3
->     python3-curses tar python3-pip \
->     -     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1
->     libSDL-devel xterm rpcgen
->     +     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1
->     libSDL-devel xterm rpcgen Mesa-dri-devel
->           $ sudo pip3 install GitPython">
->      <!ENTITY CENTOS7_HOST_PACKAGES_ESSENTIAL "-y epel-release
->           $ sudo yum makecache
->     -- 
->     2.17.1
->
->     
->
-
-
---------------C5F88D1C07F02E3391AD9386
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: 8bit
-
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <br>
-    <br>
-    <div class="moz-cite-prefix">On 5/20/20 1:09 AM, Alexander Kanavin
-      wrote:<br>
-    </div>
-    <blockquote type="cite"
-cite="mid:CANNYZj8Hc0XNj3+xP4nZmoy27MhqSwQ9Of6ziDxVAFyhgLPMmg@mail.gmail.com">
-      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-      <div>
-        <div dir="auto">This still is missing the entries for other
-          distros which I sent?</div>
-      </div>
-    </blockquote>
-    <br>
-    sigh... I had the typo fixed queued up but then got distracted and
-    never looked in my inbox again before sending it much later.<br>
-    <br>
-    thanks for the info. I will update accordingly.<br>
-    <br>
-    -armin<br>
-    <br>
-    <blockquote type="cite"
-cite="mid:CANNYZj8Hc0XNj3+xP4nZmoy27MhqSwQ9Of6ziDxVAFyhgLPMmg@mail.gmail.com">
-      <div>
-        <div dir="auto"><br>
-        </div>
-        <div dir="auto">Alex</div>
-      </div>
-      <div><br>
-        <div class="gmail_quote">
-          <div dir="ltr" class="gmail_attr">On Wed 20. May 2020 at 6.26,
-            akuster &lt;<a href="mailto:akuster808@gmail.com"
-              moz-do-not-send="true">akuster808@gmail.com</a>&gt; wrote:<br>
-          </div>
-          <blockquote class="gmail_quote" style="margin:0px 0px 0px
-0.8ex;border-left-width:1px;border-left-style:solid;padding-left:1ex;border-left-color:rgb(204,204,204)">[v2]<br>
-            Fix typo<br>
-            <br>
-            Signed-off-by: Armin Kuster &lt;<a
-              href="mailto:akuster808@gmail.com" target="_blank"
-              moz-do-not-send="true">akuster808@gmail.com</a>&gt;<br>
-            ---<br>
-             documentation/poky.ent | 2 +-<br>
-             1 file changed, 1 insertion(+), 1 deletion(-)<br>
-            <br>
-            diff --git a/documentation/poky.ent b/documentation/poky.ent<br>
-            index a54793911a..07dc1af3d6 100755<br>
-            --- a/documentation/poky.ent<br>
-            +++ b/documentation/poky.ent<br>
-            @@ -70,7 +70,7 @@<br>
-                  python3-jinja2 SDL-devel xterm rpcgen"&gt;<br>
-             &lt;!ENTITY OPENSUSE_HOST_PACKAGES_ESSENTIAL "python gcc
-            gcc-c++ git chrpath make wget python-xml \<br>
-                  diffstat makeinfo python-curses patch socat python3
-            python3-curses tar python3-pip \<br>
-            -     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1
-            libSDL-devel xterm rpcgen<br>
-            +     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1
-            libSDL-devel xterm rpcgen Mesa-dri-devel<br>
-                  $ sudo pip3 install GitPython"&gt;<br>
-             &lt;!ENTITY CENTOS7_HOST_PACKAGES_ESSENTIAL "-y
-            epel-release<br>
-                  $ sudo yum makecache<br>
-            -- <br>
-            2.17.1<br>
-            <br>
-            <br>
-          </blockquote>
-        </div>
-      </div>
-    </blockquote>
-    <br>
-  </body>
-</html>
-
---------------C5F88D1C07F02E3391AD9386--
+--_000_66a2f248501f4a63986a81a85f2c7b9cXBOX03axiscom_--
