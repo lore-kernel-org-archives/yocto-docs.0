@@ -1,174 +1,83 @@
-Received: from esa7.bmw.c3s2.iphmx.com (esa7.bmw.c3s2.iphmx.com [68.232.133.109])
- by mx.groups.io with SMTP id smtpd.web10.28258.1590396095038460178
+Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
+ by mx.groups.io with SMTP id smtpd.web11.37188.1590433112951089478
  for <docs@lists.yoctoproject.org>;
- Mon, 25 May 2020 01:41:35 -0700
+ Mon, 25 May 2020 11:58:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bmw.de header.s=mailing1 header.b=TcPmQA7C;
- spf=pass (domain: bmw.de, ip: 68.232.133.109, mailfrom: prvs=40745be84=michael.ho@bmw.de)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=bmw.de; i=@bmw.de; q=dns/txt; s=mailing1;
-  t=1590396095; x=1621932095;
-  h=from:to:cc:subject:date:message-id:mime-version;
-  bh=jD3zME2ploBWmjzrlKVKNXvgA2ZlbC71OxAz/i/cxFE=;
-  b=TcPmQA7CADZPSj2rsdYIaE23Ec5qQEgVPE403VBB6IwchCFNRY2hsq5a
-   5x/jvulaeV4BkA3ZvMezOSaAkfVAyWSTjHY7ce+QPXP9+b7666C7++ndQ
-   SpprumJeQVbIE9UxAdsp3wpXjTpAGun6GvFimxqubaTMcpsXBvbjk7dUx
-   w=;
-Received: from esagw6.bmwgroup.com (HELO esagw6.muc) ([160.46.252.49]) by
- esa7.bmw.c3s2.iphmx.com with ESMTP/TLS; 25 May 2020 10:41:33 +0200
-Received: from esabb3.muc ([160.50.100.30])  by esagw6.muc with ESMTP/TLS;
- 25 May 2020 10:41:33 +0200
-Received: from smucm09k.bmwgroup.net (HELO smucm09k.europe.bmw.corp) ([160.48.96.43])
- by esabb3.muc with ESMTP/TLS; 25 May 2020 10:41:30 +0200
-Received: from michael-pcx.bmw-carit.intra (192.168.221.44) by
- smucm09k.europe.bmw.corp (160.48.96.43) with Microsoft SMTP Server (TLS;
- Mon, 25 May 2020 10:41:30 +0200
-From: "Michael Ho" <Michael.Ho@bmw.de>
-To: <docs@lists.yoctoproject.org>
-CC: Michael Ho <Michael.Ho@bmw.de>
-Subject: [PATCH] ref-manual: add PACKAGE_ADD_METADATA documentation
-Date: Mon, 25 May 2020 10:41:18 +0200
-Message-ID: <1590396078-370023-1-git-send-email-michael.ho@bmw.de>
-X-Mailer: git-send-email 2.7.4
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:34520 helo=localhost.localdomain)
+	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1jdIIw-009YVG-SS
+	for docs@lists.yoctoproject.org; Mon, 25 May 2020 14:58:31 -0400
+Date: Mon, 25 May 2020 14:58:28 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+X-X-Sender: rpjday@localhost.localdomain
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] ref-manual: explain how to un-blacklist a recipe
+Message-ID: <alpine.LFD.2.21.2005251457130.6275@localhost.localdomain>
 MIME-Version: 1.0
-Return-Path: michael.ho@bmw.de
-X-ClientProxiedBy: smucm23m.europe.bmw.corp (160.46.167.14) To
- smucm09k.europe.bmw.corp (160.48.96.43)
-Content-Type: text/plain
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-From: Michael Ho <Michael.Ho@bmw.de>
 
-Add a basic variable definition and a small section to the development
-tasks manual for using PACKAGE_ADD_METADATA to add custom metadata to
-packages.
+Add to explanation of PNBLACKLIST variable how to un-blacklist a
+recipe, and the conditions under which that's allowed.
 
-Signed-off-by: Michael Ho <Michael.Ho@bmw.de>
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+
 ---
- .../dev-manual/dev-manual-common-tasks.xml         | 58 ++++++++++++++++++++++
- documentation/ref-manual/ref-variables.xml         | 34 +++++++++++++
- 2 files changed, 92 insertions(+)
 
-diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
-index e9ce182..605d1ad 100644
---- a/documentation/dev-manual/dev-manual-common-tasks.xml
-+++ b/documentation/dev-manual/dev-manual-common-tasks.xml
-@@ -9057,6 +9057,9 @@
-                 <listitem><para>
-                     <link linkend='creating-node-package-manager-npm-packages'>Creating node package manager (NPM) packages</link>
-                     </para></listitem>
-+                <listitem><para>
-+                    <link linkend='adding-custom-metadata-to-packages'>Adding custom metadata to packages</link>
-+                    </para></listitem>
-             </itemizedlist>
-         </para>
- 
-@@ -10761,6 +10764,61 @@
-                 </para>
-             </section>
-         </section>
-+
-+        <section id='adding-custom-metadata-to-packages'>
-+            <title>Adding custom metadata to packages</title>
-+
-+            <para>
-+                The variable <ulink url='&YOCTO_DOCS_REF_URL;#var-PACKAGE_ADD_METADATA'><filename>PACKAGE_ADD_METADATA</filename></ulink>
-+                can be used to add additional metadata to packages. This is
-+                reflected in the package control/spec file. To take the ipk
-+                format for example, the CONTROL file stored inside would
-+                contain the additional metadata as additional lines.
-+            </para>
-+
-+            <para>
-+                The variable can be used in multiple ways, including using
-+                suffixes to set it for a specific package type and/or package.
-+                Note that the order of precedence is the same as this list:
-+                <itemizedlist>
-+                    <listitem><para>
-+                        <filename>PACKAGE_ADD_METADATA_&lt;PKGTYPE&gt;_&lt;PN&gt;</filename>
-+                    </para></listitem>
-+                    <listitem><para>
-+                        <filename>PACKAGE_ADD_METADATA_&lt;PKGTYPE&gt;</filename>
-+                    </para></listitem>
-+                    <listitem><para>
-+                        <filename>PACKAGE_ADD_METADATA_&lt;PN&gt;</filename>
-+                    </para></listitem>
-+                    <listitem><para>
-+                        <filename>PACKAGE_ADD_METADATA</filename>
-+                    </para></listitem>
-+                </itemizedlist>
-+                &lt;PKGTYPE&gt; is a parameter and expected to be a
-+                distinct name of specific package type:
-+                <itemizedlist>
-+                    <listitem><para>IPK for .ipk packages</para></listitem>
-+                    <listitem><para>DEB for .deb packages</para></listitem>
-+                    <listitem><para>RPM for .rpm packages</para></listitem>
-+                </itemizedlist>
-+                &lt;PN&gt; is a parameter and expected to be a package name.
-+            </para>
-+
-+            <para>
-+                The variable can contain multiple [one-line] metadata fields
-+                separated by the literal sequence '\n'. The separator can be
-+                redefined using the variable flag <filename>separator</filename>.
-+            </para>
-+
-+            <para>
-+                The following is an example that adds two custom fields for
-+                ipk packages:
-+                <literallayout class='monospaced'>
-+    PACKAGE_ADD_METADATA_IPK = "Vendor: CustomIpk\nGroup: Applications/Spreadsheets"
-+                </literallayout>
-+            </para>
-+        </section>
-+
-     </section>
- 
-     <section id='efficiently-fetching-source-files-during-a-build'>
 diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
-index 364cd09..657f6cf 100644
+index 364cd09eb..9b85befed 100644
 --- a/documentation/ref-manual/ref-variables.xml
 +++ b/documentation/ref-manual/ref-variables.xml
-@@ -9539,6 +9539,40 @@
+@@ -10771,11 +10771,27 @@
+                     <filename>PNBLACKLIST</filename> variable in your
+                     <filename>local.conf</filename> file.
+                     Here is an example that prevents
+-                    <filename>myrecipe</filename> from being built:
++                    <filename>myrecipe</filename> from being built,
++                    along with the reason for its blacklisting:
+                     <literallayout class='monospaced'>
+      PNBLACKLIST[myrecipe] = "Not supported by our organization."
+                     </literallayout>
+                 </para>
++
++                <para>
++                    If the blacklisting was done in the recipe file itself,
++                    you can un-blacklist that recipe by setting its blacklist
++                    reason to the empty string in your
++                    <filename>local.conf</filename> file, as in:
++                    <literallayout class='monospaced'>
++     PNBLACKLIST[myrecipe] = ""
++                    </literallayout>
++                    but only if the blacklisting was done with a weak
++                    assignment in the recipe file thusly:
++                    <literallayout class='monospaced'>
++     PNBLACKLIST[myrecipe] ?= "Not supported by our organization."
++                    </literallayout>
++                </para>
              </glossdef>
          </glossentry>
- 
-+        <glossentry id='var-PACKAGE_ADD_METADATA'><glossterm>PACKAGE_ADD_METADATA</glossterm>
-+            <info>
-+                PACKAGE_ADD_METADATA[doc] = "This variable defines additional metadata to add to packages."
-+            </info>
-+            <glossdef>
-+                <para role="glossdeffirst">
-+<!--                <para role="glossdeffirst"><imagedata fileref="figures/define-generic.png" /> -->
-+                    This variable defines additional metdata to add to packages.
-+                </para>
-+
-+                <para>
-+                    You may find you need to inject additional metadata into
-+                    packages. This variable allows you to do that by setting
-+                    the injected data as the value. Multiple fields can be
-+                    added by splitting the content with the literal separator
-+                    "\n".
-+                </para>
-+
-+                <para>
-+                    The suffixes '_IPK', '_DEB', or '_RPM' can be applied to
-+                    the variable to do package type specific settings. It can
-+                    also be made package specific by using the package name as
-+                    a suffix.
-+                </para>
-+
-+                <para>
-+                    You can find out more about applying this variable in
-+                    the
-+                    "<ulink url='&YOCTO_DOCS_DEV_URL;#adding-custom-metadata-to-packages'>Adding custom metadata to packages</ulink>"
-+                    section in the Yocto Project Development Tasks Manual.
-+                </para>
-+            </glossdef>
-+        </glossentry>
-+
-         <glossentry id='var-PACKAGE_ARCH'><glossterm>PACKAGE_ARCH</glossterm>
-             <info>
-                 PACKAGE_ARCH[doc] = "The architecture of the resulting package or packages."
--- 
-2.7.4
 
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
+
+Twitter:                                       http://twitter.com/rpjday
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
