@@ -1,132 +1,94 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
- by mx.groups.io with SMTP id smtpd.web10.8314.1590655633597216097
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
+ by mx.groups.io with SMTP id smtpd.web12.15147.1590681079302616417
  for <docs@lists.yoctoproject.org>;
- Thu, 28 May 2020 01:47:13 -0700
+ Thu, 28 May 2020 08:51:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=XTVO6iB8;
- spf=pass (domain: linaro.org, ip: 209.85.219.177, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f177.google.com with SMTP id b131so11220497ybg.13
-        for <docs@lists.yoctoproject.org>; Thu, 28 May 2020 01:47:13 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=WOof08Df;
+ spf=pass (domain: gmail.com, ip: 209.85.167.171, mailfrom: raj.khem@gmail.com)
+Received: by mail-oi1-f171.google.com with SMTP id y85so402984oie.11
+        for <docs@lists.yoctoproject.org>; Thu, 28 May 2020 08:51:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=3wf11BUcp7dwt/QmCbhPw3NAD0Uy+75eDFbl6N+TMLc=;
-        b=XTVO6iB8WgQWFErEQf8FXbBEDKR9GVUivEhkjaPS1Ybv51G9wXohT8p1LmqmB3eDo/
-         tFvUkdZPeTa2YvgUcJmCWxUFRAyyUnyFywEjglVg42+sG+E3QdEp/iyd905IZuObDGOA
-         +tDNJ/P8TMY45nOd8rIdzqPSV+W82Onfnvhc0NoRuON4H3IIrfVnHTT+DiGgZMC0b6ph
-         Gs+XroRS6k8mNIOl2hFjS8WngqEvoMYwvYEE9o4GTlPTv98h0IglndOCWgfEs1qK08jW
-         0zMBy8mEnK/vt5obUcZW07ZMUaMYQrI6RvyTmIb0iPqp/kQv9zc9rAbZ/LK2O8iHYw2u
-         zuUQ==
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=DHhY00yndd2C0/BQ5qA8SkUAtjQ0XBrkOZwmFamOM6k=;
+        b=WOof08DfVabf6HQFTtFAwjnWSWrzgivWfqetocJtfsmtu10FFv0pBbZMFLrtRPRR3Y
+         1VNruVjrVsxKrdVhuwCijHQrnYsHTZ0PCn7Oxc/w8HvLEwg454Ix9LrHT/ka8W8VFVLf
+         8hu/KpDmnN3HdlrNeMZYzeyk6CHTnb2J3Vg09NBqmqjsFm7N8lPnkiPmQxNBb/911Pr9
+         iy6v4ENNRyjrnc3gyiaEqvHNIKxVyBAHX81RMEiXvWtsYw2hp2N2wGnxiksdlXniZmrA
+         LQdVZ9yM3G4RyhIJnQmh52Tfc2u3XXKGovMoWWOc1Ken1bLjrF9ATZJI2w1XqYvS0s6o
+         LNqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=3wf11BUcp7dwt/QmCbhPw3NAD0Uy+75eDFbl6N+TMLc=;
-        b=MvceX8b4ULFJyPHkbOE19Y0bhdiPcLueAH2tds5PxJ/FafLVOlbHc6AObicP3AYrdZ
-         UAaIDdrxUOsGpv8bApquBIIXLozuSBsH9Q4dGvC0hIMzonMHwdvNPSRvHoT2xAvAtiet
-         BuOCC5DWn0WO5+pei6c18FMujxnMqLDqrTZ+Sqhu/ez187H8txZkGI3X/n2fPs7QfJuj
-         3/OhtBsjU0Fa1PTkfyP6601GCbkV9mAXX6/Rj8DjlMsfPTV/eDkHwQPvc7QAI1r3/Exv
-         NcLVlrUs5D5E4S7Dbt1tAK/n7C7ijMTr1WvI3bAZ5VZYxJnxghDvXZQqmtDotpjulfCT
-         7X5A==
-X-Gm-Message-State: AOAM532idMyw/sjiqD3/qUW20KurrtTe0XxqdCiDrarLtFQESkIQN0wj
-	NOiqRUILb0FuHNtZygY7WlTv8+I58kNHJFgEhwukQA==
-X-Google-Smtp-Source: ABdhPJz9eEA7OgX0hf0BuB+SAId6KaUEjZss1/s8QYk0gbqwJ37wSMNxE26eh27R4U7MeA9BUXHhBpmMm84lgxl2Gu0=
-X-Received: by 2002:a25:ec3:: with SMTP id 186mr3783913ybo.475.1590655632620;
- Thu, 28 May 2020 01:47:12 -0700 (PDT)
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=DHhY00yndd2C0/BQ5qA8SkUAtjQ0XBrkOZwmFamOM6k=;
+        b=KEh/wx3ITSLGDhM1yUVWnU3DeS8yetBOTn8W7AhfYtfSXD57GxMwoMsTjhI85waIuO
+         jCu+aLPP0QZ4q7K3puA8aH59VDtpqQc52c+45fwt6ku0AuspclOtNvrmiUtk9KgD+fmD
+         oF2gear5anMvJVN9sDjXF70uUjV5RVqBnBo0zk/SV6iBZ4Jdo/ZPQgWaIT5F7S3loiXC
+         Xd6w8z8NsH1VbbHONAMqWzypeDnh5j5wy7L+kXccgASFfsOlLpKv5xY52Im4w0kUS8Y8
+         aY50yx+h6JU1BXPsH3yXNq791uve0J0yHpGJoX8WqjwCrp0zdYKHVyVmuQl6hWsidTa0
+         WY/w==
+X-Gm-Message-State: AOAM530Mk5lcsFmo6mBLnc2ZrNmEk+J6p0tcxPLQ32UdyYpWIBzjjEaU
+	Nmt3Jj4BycOUBW+3wHeTeU9ob0KGKC0=
+X-Google-Smtp-Source: ABdhPJzX2v3HyhUXvfJ8yuVNqD7oOlg7a5pumZnJOWUtf9KmYFYZ0fyggsT3TLBnWSwCdpyqCve/hA==
+X-Received: by 2002:aca:c485:: with SMTP id u127mr2627678oif.156.1590681078090;
+        Thu, 28 May 2020 08:51:18 -0700 (PDT)
+Return-Path: <raj.khem@gmail.com>
+Received: from ?IPv6:2601:646:9200:4e0:5cfb:80e2:2942:9b65? ([2601:646:9200:4e0:5cfb:80e2:2942:9b65])
+        by smtp.gmail.com with ESMTPSA id b16sm1824698ooj.17.2020.05.28.08.51.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 28 May 2020 08:51:17 -0700 (PDT)
+Subject: Re: [docs] Documentation Linter
+To: Mark Van De Vyver <mark@taqtiqa.com>, docs@lists.yoctoproject.org
+References: <XszS.1590638412302404292.hla4@lists.yoctoproject.org>
+From: "Khem Raj" <raj.khem@gmail.com>
+Message-ID: <8248cc35-5e90-0222-eedd-b0c2c8ff4f6a@gmail.com>
+Date: Thu, 28 May 2020 08:51:16 -0700
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.8.1
 MIME-Version: 1.0
-References: <CAP71WjzD-AMauxpgbydY2fryU6+JU599UPRPXi_c582WvvfV6w@mail.gmail.com>
- <18306.1590644951892762393@lists.yoctoproject.org> <CAP71WjxpZAVr8VeGv3AiRiGFscTJsRGDT6KJBaP0TEDfzUHzNQ@mail.gmail.com>
- <alpine.LFD.2.21.2005280427160.515316@localhost.localdomain>
-In-Reply-To: <alpine.LFD.2.21.2005280427160.515316@localhost.localdomain>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Thu, 28 May 2020 10:47:00 +0200
-Message-ID: <CAP71WjzDb2kMV1J+t6vRVogqo+dZ=rr==SsAQcXzBoSZt9E5og@mail.gmail.com>
-Subject: Re: [docs] Possible changes to the project docs
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: Mark Van De Vyver <mark@taqtiqa.com>, docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000f1526905a6b15ff5"
-
---000000000000f1526905a6b15ff5
-Content-Type: text/plain; charset="UTF-8"
-
-On Thu, May 28, 2020 at 10:29 AM Robert P. J. Day <rpjday@crashcourse.ca>
-wrote:
-
-> On Thu, 28 May 2020, Nicolas Dechesne wrote:
->
-> > hi Mark,
-> >
-> > thanks a lot for joining the discussion! This is very helpful and much
-> appreciated.
->
->   ... snip ...
->
-> >       Considering AsciiDoc, MkDoc-Materialize, Docusarus, Sphinx and
-> Antora
-> >
-> >       * A switch from DocBook is a net benefit regardless of what you
-> switch too.
->
->   the one aspect of docbook i will miss is actual semantic markup
-> which can then be customized with stylesheets, but that benefit is
-> outweighed by all the downsides of the complexity. and given that i'm
-> poring over the sphinx docs right now and playing with it, yeah,
-> sphinx is my choice. :-)
->
-
-Ah, nice. If you have any patches that are relevant for the sphinx proof of
-concept, please share them. I started a sphinx2 branch here:
-https://git.linaro.org/people/nicolas.dechesne/yocto-docs.git/log/?h=sphinx2
-
-with a 'better' commit log structure. I have also done the pandoc
-conversion for all manuals.
+In-Reply-To: <XszS.1590638412302404292.hla4@lists.yoctoproject.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 8bit
 
 
->
-> rday
->
 
---000000000000f1526905a6b15ff5
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 5/27/20 9:00 PM, Mark Van De Vyver wrote:
+> Hi,
+> As mentioned in my previous message - which hasn't shown up yet - I'm 
+> new to Yocto and thought to try contribute via the docs.
+> I've made my comment on the conversion from DocBook, and this proposal 
+> will be impacted by that effort - hopefully a part of the conversion, 
+> and in a way that does not block or interfere.
+> 
+> The idea I had was to introduce a prose linting tool.  Specifically, 
+> [Vale](https://errata-ai.gitbook.io/vale/).
+> 
+> Before going into the details, lets first establish if any of the 
+> following would be of use/value?
+> 
+> It would allow the project to achieve some consistency across 
+> paragraphs/pages/documents/repositories.
+> This would become more important if the project decided to exploit 
+> [Antora's](https://antora.org) ability to create a document from 
+> different repositories.
+> In such a case a repo could ensure its documentation had a closer 'fit' 
+> within the wider project documentation by ensuring it passed the same 
+> lint settings.
+> After the inital run/port is complete the documentation lint step could 
+> be added to the githooks that verify any new commit is green.
+> 
+> Thoughts?
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, May 28, 2020 at 10:29 AM Robe=
-rt P. J. Day &lt;<a href=3D"mailto:rpjday@crashcourse.ca">rpjday@crashcours=
-e.ca</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex">On Thu, 28 May 2020, Nicolas Dechesne wrote:<br>
-<br>
-&gt; hi Mark,<br>
-&gt;<br>
-&gt; thanks a lot for joining the discussion! This is very helpful and much=
- appreciated.<br>
-<br>
-=C2=A0 ... snip ...<br>
-<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0Considering AsciiDoc, MkDoc-Materialize, Doc=
-usarus, Sphinx and Antora<br>
-&gt;<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0* A switch from DocBook is a net benefit reg=
-ardless of what you switch too.<br>
-<br>
-=C2=A0 the one aspect of docbook i will miss is actual semantic markup<br>
-which can then be customized with stylesheets, but that benefit is<br>
-outweighed by all the downsides of the complexity. and given that i&#39;m<b=
-r>
-poring over the sphinx docs right now and playing with it, yeah,<br>
-sphinx is my choice. :-)<br></blockquote><div><br></div><div>Ah, nice. If y=
-ou have any patches that are relevant for the sphinx proof of concept, plea=
-se share them. I started a sphinx2 branch here:</div><div><a href=3D"https:=
-//git.linaro.org/people/nicolas.dechesne/yocto-docs.git/log/?h=3Dsphinx2">h=
-ttps://git.linaro.org/people/nicolas.dechesne/yocto-docs.git/log/?h=3Dsphin=
-x2</a></div><div><br></div><div>with a &#39;better&#39; commit log structur=
-e. I have also done the pandoc conversion for all manuals.</div><div>=C2=A0=
-<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
-ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-rday<br>
-</blockquote></div></div>
+I really like the idea of linter.
 
---000000000000f1526905a6b15ff5--
+> -- 
+> Kind regards
+> Mark
+> Mark Van de Vyver, B.Bus(Hons), PhD(Dist)
+> 
+> 
+> 
