@@ -1,94 +1,84 @@
-Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
- by mx.groups.io with SMTP id smtpd.web12.15147.1590681079302616417
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+ by mx.groups.io with SMTP id smtpd.web11.10637.1590848691503536160
  for <docs@lists.yoctoproject.org>;
- Thu, 28 May 2020 08:51:19 -0700
+ Sat, 30 May 2020 07:24:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=WOof08Df;
- spf=pass (domain: gmail.com, ip: 209.85.167.171, mailfrom: raj.khem@gmail.com)
-Received: by mail-oi1-f171.google.com with SMTP id y85so402984oie.11
-        for <docs@lists.yoctoproject.org>; Thu, 28 May 2020 08:51:19 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=CEi+CDFj;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.68, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f68.google.com with SMTP id f5so6980443wmh.2
+        for <docs@lists.yoctoproject.org>; Sat, 30 May 2020 07:24:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-language:content-transfer-encoding;
-        bh=DHhY00yndd2C0/BQ5qA8SkUAtjQ0XBrkOZwmFamOM6k=;
-        b=WOof08DfVabf6HQFTtFAwjnWSWrzgivWfqetocJtfsmtu10FFv0pBbZMFLrtRPRR3Y
-         1VNruVjrVsxKrdVhuwCijHQrnYsHTZ0PCn7Oxc/w8HvLEwg454Ix9LrHT/ka8W8VFVLf
-         8hu/KpDmnN3HdlrNeMZYzeyk6CHTnb2J3Vg09NBqmqjsFm7N8lPnkiPmQxNBb/911Pr9
-         iy6v4ENNRyjrnc3gyiaEqvHNIKxVyBAHX81RMEiXvWtsYw2hp2N2wGnxiksdlXniZmrA
-         LQdVZ9yM3G4RyhIJnQmh52Tfc2u3XXKGovMoWWOc1Ken1bLjrF9ATZJI2w1XqYvS0s6o
-         LNqw==
+        d=linuxfoundation.org; s=google;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=HG+7qhVfv9uLpcFES8mzo4NpXmJ8sER3PSBpd4Lc7Rc=;
+        b=CEi+CDFjXPomi8Gm9G7fH57FC3n6R2od1QgESg3+bs51By3j98KZ22CC6IRoXGYNCZ
+         rngRW3r1AK+oA+hK8xHyhhsyMIQcfpTLkjCBvPWzNQRuxrWgpbbe3dTms+Ngio+oJtGe
+         inDZvLi0FWWoEtL9l5dlzW5913R8NKpcobpa0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=DHhY00yndd2C0/BQ5qA8SkUAtjQ0XBrkOZwmFamOM6k=;
-        b=KEh/wx3ITSLGDhM1yUVWnU3DeS8yetBOTn8W7AhfYtfSXD57GxMwoMsTjhI85waIuO
-         jCu+aLPP0QZ4q7K3puA8aH59VDtpqQc52c+45fwt6ku0AuspclOtNvrmiUtk9KgD+fmD
-         oF2gear5anMvJVN9sDjXF70uUjV5RVqBnBo0zk/SV6iBZ4Jdo/ZPQgWaIT5F7S3loiXC
-         Xd6w8z8NsH1VbbHONAMqWzypeDnh5j5wy7L+kXccgASFfsOlLpKv5xY52Im4w0kUS8Y8
-         aY50yx+h6JU1BXPsH3yXNq791uve0J0yHpGJoX8WqjwCrp0zdYKHVyVmuQl6hWsidTa0
-         WY/w==
-X-Gm-Message-State: AOAM530Mk5lcsFmo6mBLnc2ZrNmEk+J6p0tcxPLQ32UdyYpWIBzjjEaU
-	Nmt3Jj4BycOUBW+3wHeTeU9ob0KGKC0=
-X-Google-Smtp-Source: ABdhPJzX2v3HyhUXvfJ8yuVNqD7oOlg7a5pumZnJOWUtf9KmYFYZ0fyggsT3TLBnWSwCdpyqCve/hA==
-X-Received: by 2002:aca:c485:: with SMTP id u127mr2627678oif.156.1590681078090;
-        Thu, 28 May 2020 08:51:18 -0700 (PDT)
-Return-Path: <raj.khem@gmail.com>
-Received: from ?IPv6:2601:646:9200:4e0:5cfb:80e2:2942:9b65? ([2601:646:9200:4e0:5cfb:80e2:2942:9b65])
-        by smtp.gmail.com with ESMTPSA id b16sm1824698ooj.17.2020.05.28.08.51.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 May 2020 08:51:17 -0700 (PDT)
-Subject: Re: [docs] Documentation Linter
-To: Mark Van De Vyver <mark@taqtiqa.com>, docs@lists.yoctoproject.org
-References: <XszS.1590638412302404292.hla4@lists.yoctoproject.org>
-From: "Khem Raj" <raj.khem@gmail.com>
-Message-ID: <8248cc35-5e90-0222-eedd-b0c2c8ff4f6a@gmail.com>
-Date: Thu, 28 May 2020 08:51:16 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
- Gecko/20100101 Thunderbird/68.8.1
+        bh=HG+7qhVfv9uLpcFES8mzo4NpXmJ8sER3PSBpd4Lc7Rc=;
+        b=c++tnbCDq/VemC5gAS+LIagBNYjM8z67a+uNbwfS9vRMX+QnMsWeJHDWg5H/AzJMMK
+         F8f1dGVhLhMKE0tnUSxokbqYPNWvJ/KQ5xqrSI8dmwQf+cWt1Y5Ze3QDgZhnGVmbgznl
+         KRxp74DVDxmxojDhM4+jyTB7DaK6ALRrkoUNIkbaD2JamnHeaLwZOdcUwmq7SAXGMJJ3
+         BhFITFxgTKWx3WljMbJ9h+DCzaobsUlRjEl3VvRR5JWQ2d2eRPZh2BBlvdPourRXOxD+
+         a8NTH4MPYg/iKKZwIHKRDLENBjypqU3jMIZ7oIaXbrhrQmRr4+hFwPFpfq+8B8zPvAAE
+         +lPA==
+X-Gm-Message-State: AOAM530CfG4n2ml+i4JW18aZRUqsI1iNyj2eYbTlfMhTkWFwZTXRt80H
+	QYOmfolFzhKH9C5C9v4S+PoAnIs3CLOvxg==
+X-Google-Smtp-Source: ABdhPJwzM1lV4RCZqK0l6JB44Bfdwn0UFsJLVbrZ0GMn0HfnX+QjGRsp9e20mm+REhTovcpHCLuYRg==
+X-Received: by 2002:a7b:c145:: with SMTP id z5mr14383378wmi.189.1590848689489;
+        Sat, 30 May 2020 07:24:49 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from hex.int.rpsys.net (5751f4a1.skybroadband.com. [87.81.244.161])
+        by smtp.gmail.com with ESMTPSA id u4sm3846834wmb.48.2020.05.30.07.24.48
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 30 May 2020 07:24:48 -0700 (PDT)
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] poky.ent: Update XXX_HOST_PACKAGES_ESSENTIAL to include mesa for other distros
+Date: Sat, 30 May 2020 15:24:47 +0100
+Message-Id: <20200530142447.3013614-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <XszS.1590638412302404292.hla4@lists.yoctoproject.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-GB
 Content-Transfer-Encoding: 8bit
 
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/poky.ent | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/documentation/poky.ent b/documentation/poky.ent
+index 0e8339afd..aec8d455e 100755
+--- a/documentation/poky.ent
++++ b/documentation/poky.ent
+@@ -67,7 +67,7 @@
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
+      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
+      python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
+-     python3-jinja2 SDL-devel xterm rpcgen">
++     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel">
+ <!ENTITY OPENSUSE_HOST_PACKAGES_ESSENTIAL "python gcc gcc-c++ git chrpath make wget python-xml \
+      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
+      python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
+@@ -77,7 +77,7 @@
+      $ sudo yum install gawk make wget tar bzip2 gzip python3 unzip perl patch \
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath socat \
+      perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python36-pip xz \
+-     which SDL-devel xterm
++     which SDL-devel xterm mesa-libGL-devel
+      $ sudo pip3 install GitPython jinja2">
+ <!ENTITY CENTOS8_HOST_PACKAGES_ESSENTIAL "-y epel-release
+      $ sudo dnf config-manager --set-enabled PowerTools
+@@ -86,4 +86,4 @@
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
+      socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
+      python3-GitPython python3-jinja2 python3-pexpect xz which SDL-devel xterm \
+-     rpcgen">
++     rpcgen mesa-libGL-devel">
+-- 
+2.25.1
 
-On 5/27/20 9:00 PM, Mark Van De Vyver wrote:
-> Hi,
-> As mentioned in my previous message - which hasn't shown up yet - I'm 
-> new to Yocto and thought to try contribute via the docs.
-> I've made my comment on the conversion from DocBook, and this proposal 
-> will be impacted by that effort - hopefully a part of the conversion, 
-> and in a way that does not block or interfere.
-> 
-> The idea I had was to introduce a prose linting tool.  Specifically, 
-> [Vale](https://errata-ai.gitbook.io/vale/).
-> 
-> Before going into the details, lets first establish if any of the 
-> following would be of use/value?
-> 
-> It would allow the project to achieve some consistency across 
-> paragraphs/pages/documents/repositories.
-> This would become more important if the project decided to exploit 
-> [Antora's](https://antora.org) ability to create a document from 
-> different repositories.
-> In such a case a repo could ensure its documentation had a closer 'fit' 
-> within the wider project documentation by ensuring it passed the same 
-> lint settings.
-> After the inital run/port is complete the documentation lint step could 
-> be added to the githooks that verify any new commit is green.
-> 
-> Thoughts?
-
-I really like the idea of linter.
-
-> -- 
-> Kind regards
-> Mark
-> Mark Van de Vyver, B.Bus(Hons), PhD(Dist)
-> 
-> 
-> 
