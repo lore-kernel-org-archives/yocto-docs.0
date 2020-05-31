@@ -1,84 +1,139 @@
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
- by mx.groups.io with SMTP id smtpd.web11.10637.1590848691503536160
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+ by mx.groups.io with SMTP id smtpd.web10.23162.1590957591486554176
  for <docs@lists.yoctoproject.org>;
- Sat, 30 May 2020 07:24:51 -0700
+ Sun, 31 May 2020 13:39:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=CEi+CDFj;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.68, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f68.google.com with SMTP id f5so6980443wmh.2
-        for <docs@lists.yoctoproject.org>; Sat, 30 May 2020 07:24:51 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=lUAOqTeW;
+ spf=pass (domain: gmail.com, ip: 209.85.216.52, mailfrom: akuster808@gmail.com)
+Received: by mail-pj1-f52.google.com with SMTP id ga6so918312pjb.1
+        for <docs@lists.yoctoproject.org>; Sun, 31 May 2020 13:39:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HG+7qhVfv9uLpcFES8mzo4NpXmJ8sER3PSBpd4Lc7Rc=;
-        b=CEi+CDFjXPomi8Gm9G7fH57FC3n6R2od1QgESg3+bs51By3j98KZ22CC6IRoXGYNCZ
-         rngRW3r1AK+oA+hK8xHyhhsyMIQcfpTLkjCBvPWzNQRuxrWgpbbe3dTms+Ngio+oJtGe
-         inDZvLi0FWWoEtL9l5dlzW5913R8NKpcobpa0=
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id;
+        bh=S8Ko1/h71IzY8er7Ni61Pmj/hcjUVq2NKsWhSP48rWw=;
+        b=lUAOqTeWYHC5eI+JudieTqVvM13FJckPaKEwmPHFyqnzH1T3GWKpAo5nxaDqhoztHh
+         atEbbUULeLoauCA+8+R0ngPnzKdfr/tTg+Swnudu7XyVlq+woKmASi7dCtuce5I6BPXU
+         kq46Ya3iaxIIqWHhDAQIJ1WxVJk0CnU3zHgKBfk3al7SpDoVZCjXqPwZn2xMp+6nD9eW
+         aZFCRyH/dkut7i0UL6l0PYW3Pk5JXphdnh87WrCZNfCchxNJEqNFZD2pilka2DQST5L1
+         5uFLjw5a1VMgJcnMPizGnuXt5j9vOgo46pSjTB4dbZtU+H9abzkMGoO7gVapxMEheqiq
+         tCrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=HG+7qhVfv9uLpcFES8mzo4NpXmJ8sER3PSBpd4Lc7Rc=;
-        b=c++tnbCDq/VemC5gAS+LIagBNYjM8z67a+uNbwfS9vRMX+QnMsWeJHDWg5H/AzJMMK
-         F8f1dGVhLhMKE0tnUSxokbqYPNWvJ/KQ5xqrSI8dmwQf+cWt1Y5Ze3QDgZhnGVmbgznl
-         KRxp74DVDxmxojDhM4+jyTB7DaK6ALRrkoUNIkbaD2JamnHeaLwZOdcUwmq7SAXGMJJ3
-         BhFITFxgTKWx3WljMbJ9h+DCzaobsUlRjEl3VvRR5JWQ2d2eRPZh2BBlvdPourRXOxD+
-         a8NTH4MPYg/iKKZwIHKRDLENBjypqU3jMIZ7oIaXbrhrQmRr4+hFwPFpfq+8B8zPvAAE
-         +lPA==
-X-Gm-Message-State: AOAM530CfG4n2ml+i4JW18aZRUqsI1iNyj2eYbTlfMhTkWFwZTXRt80H
-	QYOmfolFzhKH9C5C9v4S+PoAnIs3CLOvxg==
-X-Google-Smtp-Source: ABdhPJwzM1lV4RCZqK0l6JB44Bfdwn0UFsJLVbrZ0GMn0HfnX+QjGRsp9e20mm+REhTovcpHCLuYRg==
-X-Received: by 2002:a7b:c145:: with SMTP id z5mr14383378wmi.189.1590848689489;
-        Sat, 30 May 2020 07:24:49 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from hex.int.rpsys.net (5751f4a1.skybroadband.com. [87.81.244.161])
-        by smtp.gmail.com with ESMTPSA id u4sm3846834wmb.48.2020.05.30.07.24.48
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=S8Ko1/h71IzY8er7Ni61Pmj/hcjUVq2NKsWhSP48rWw=;
+        b=h+Rjsv6QSWTNbW8q3aQD4UpJJj2LgIhfcTer/AJRCmdC7CFfnpZlfLHNe9p7PcZg5D
+         BHOrC20ygQZxQginWi4RJrUgjVaDNS9EgLcO+oInbtW2Qi/+x4aCuRB9kfnn2ZVG5AxA
+         dEBZOadkm+tGEalTOBKQQowO3W79G4CBjyjRiwGsOH+0tpSiCEFIsWkw421UbRRzCU7V
+         301E8x5NWgP5mhBCGr5QmloDsoYHp4aI9U6l2C3jo6OcjIt4pr1CeIO/dihbgheCtDJW
+         wFl/yWXDbgG0MdPmSoz7LlqR9XpLKFaZ4Adx67IyVgy8kFpY5vbJeNGy6TfeRjB5Me1T
+         EM2w==
+X-Gm-Message-State: AOAM533VprN6tbCGd6WzEJEqz1bXMIYPhWDnAASDU4fUKneEYh4M+VPw
+	LVAc4lmV44cb4l5v/vVSdrUnVhEY
+X-Google-Smtp-Source: ABdhPJywYdISz9LFA+r6GPTVNwo7hDGg5/5eYOmfAcm3fUs9DWP3iRzKjs24Gw7U+Nag+wdwPMmbMQ==
+X-Received: by 2002:a17:90b:ed5:: with SMTP id gz21mr2864427pjb.214.1590957590672;
+        Sun, 31 May 2020 13:39:50 -0700 (PDT)
+Return-Path: <akuster808@gmail.com>
+Received: from akuster-ThinkPad-T460s.hsd1.ca.comcast.net ([2601:202:4180:a5c0:936:376a:3aad:6139])
+        by smtp.gmail.com with ESMTPSA id t6sm3481636pga.69.2020.05.31.13.39.49
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 May 2020 07:24:48 -0700 (PDT)
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+        Sun, 31 May 2020 13:39:49 -0700 (PDT)
+From: "akuster" <akuster808@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] poky.ent: Update XXX_HOST_PACKAGES_ESSENTIAL to include mesa for other distros
-Date: Sat, 30 May 2020 15:24:47 +0100
-Message-Id: <20200530142447.3013614-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] yocto-docs: Add SPDX headers in scripts and Makefile
+Date: Sun, 31 May 2020 13:39:48 -0700
+Message-Id: <20200531203948.622-1-akuster808@gmail.com>
+X-Mailer: git-send-email 2.17.1
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+[Yocto #13873]
+
+Signed-off-by: Armin Kuster <akuster808@gmail.com>
 ---
- documentation/poky.ent | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ documentation/Makefile                        |  3 +++
+ documentation/tools/eclipse-help.sed          |  3 +++
+ documentation/tools/mega-manual.sed           |  3 +++
+ documentation/tools/poky-docbook-to-pdf       |  5 ++++-
+ documentation/tools/update-documentation-conf | 16 +++-------------
+ 5 files changed, 16 insertions(+), 14 deletions(-)
 
-diff --git a/documentation/poky.ent b/documentation/poky.ent
-index 0e8339afd..aec8d455e 100755
---- a/documentation/poky.ent
-+++ b/documentation/poky.ent
-@@ -67,7 +67,7 @@
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
-      python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
--     python3-jinja2 SDL-devel xterm rpcgen">
-+     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel">
- <!ENTITY OPENSUSE_HOST_PACKAGES_ESSENTIAL "python gcc gcc-c++ git chrpath make wget python-xml \
-      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
-      python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
-@@ -77,7 +77,7 @@
-      $ sudo yum install gawk make wget tar bzip2 gzip python3 unzip perl patch \
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath socat \
-      perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python36-pip xz \
--     which SDL-devel xterm
-+     which SDL-devel xterm mesa-libGL-devel
-      $ sudo pip3 install GitPython jinja2">
- <!ENTITY CENTOS8_HOST_PACKAGES_ESSENTIAL "-y epel-release
-      $ sudo dnf config-manager --set-enabled PowerTools
-@@ -86,4 +86,4 @@
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
-      socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
-      python3-GitPython python3-jinja2 python3-pexpect xz which SDL-devel xterm \
--     rpcgen">
-+     rpcgen mesa-libGL-devel">
+diff --git a/documentation/Makefile b/documentation/Makefile
+index 15644bf92..2f7292214 100644
+--- a/documentation/Makefile
++++ b/documentation/Makefile
+@@ -1,3 +1,6 @@
++#
++# SPDX-License-Identifier: CC-BY-2.0-UK
++#
+ # This is a single Makefile to handle all generated Yocto Project documents,
+ # which includes the BitBake User Manual and the Toaster User Manual.
+ # The Makefile needs to live in the documents directory and all figures used
+diff --git a/documentation/tools/eclipse-help.sed b/documentation/tools/eclipse-help.sed
+index ab5c9affd..9716ea42b 100644
+--- a/documentation/tools/eclipse-help.sed
++++ b/documentation/tools/eclipse-help.sed
+@@ -1,3 +1,6 @@
++#
++# SPDX-License-Identifier: CC-BY-2.0-UK
++#
+ # Process poky-ref-manual and yocto-project-qs manual (<word>-<word>-<word> style)
+ # For example:
+ #   "ulink" href="http://www.yoctoproject.org/docs/1.3/poky-ref-manual/poky-ref-manual.html#faq"
+diff --git a/documentation/tools/mega-manual.sed b/documentation/tools/mega-manual.sed
+index b1ea9edb7..c525ab46a 100644
+--- a/documentation/tools/mega-manual.sed
++++ b/documentation/tools/mega-manual.sed
+@@ -1,3 +1,6 @@
++#
++# SPDX-License-Identifier: CC-BY-2.0-UK
++#
+ # Processes bitbake-user-manual (<word>-<word>-<word> style).
+ # This style is for manual three-word folders, which currently is only the BitBake User Manual.
+ # We used to have the "yocto-project-qs" and "poky-ref-manual" folders but no longer do.
+diff --git a/documentation/tools/poky-docbook-to-pdf b/documentation/tools/poky-docbook-to-pdf
+index f55fd278a..b36e74b6b 100755
+--- a/documentation/tools/poky-docbook-to-pdf
++++ b/documentation/tools/poky-docbook-to-pdf
+@@ -1,5 +1,8 @@
+ #!/bin/sh
+-	
++#
++# SPDX-License-Identifier: CC-BY-2.0-UK
++#
++
+ if [ -z "$1" -o -z "$2" ]; then
+    echo "usage: [-v] $0 <docbook file> <templatedir>"
+    echo
+diff --git a/documentation/tools/update-documentation-conf b/documentation/tools/update-documentation-conf
+index 3f8d28009..adfca3ca5 100644
+--- a/documentation/tools/update-documentation-conf
++++ b/documentation/tools/update-documentation-conf
+@@ -1,23 +1,13 @@
+ #!/usr/bin/env python
+-
++#
++# SPDX-License-Identifier: GPL-2.0-only
++#
+ # documentation.conf update script
+ #
+ # Author: Paul Eggleton <paul.eggleton@linux.intel.com>
+ #
+ # Copyright (C) 2015 Intel Corporation
+ #
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License version 2 as
+-# published by the Free Software Foundation.
+-#
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-#
+-# You should have received a copy of the GNU General Public License along
+-# with this program; if not, write to the Free Software Foundation, Inc.,
+-# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ 
+ 
+ import sys
 -- 
-2.25.1
+2.17.1
 
