@@ -1,57 +1,54 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
- by mx.groups.io with SMTP id smtpd.web10.201.1591057723508146631
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+ by mx.groups.io with SMTP id smtpd.web12.193.1591057725745496494
  for <docs@lists.yoctoproject.org>;
- Mon, 01 Jun 2020 17:28:43 -0700
+ Mon, 01 Jun 2020 17:28:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=j8l2nKoy;
- spf=softfail (domain: sakoman.com, ip: 209.85.214.170, mailfrom: steve@sakoman.com)
-Received: by mail-pl1-f170.google.com with SMTP id n9so616846plk.1
-        for <docs@lists.yoctoproject.org>; Mon, 01 Jun 2020 17:28:43 -0700 (PDT)
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=DMZsp5c2;
+ spf=softfail (domain: sakoman.com, ip: 209.85.210.179, mailfrom: steve@sakoman.com)
+Received: by mail-pf1-f179.google.com with SMTP id w68so3422491pfb.3
+        for <docs@lists.yoctoproject.org>; Mon, 01 Jun 2020 17:28:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sakoman-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:subject:date:message-id:in-reply-to:references;
-        bh=ntXRdirFaZeZje8alExHr6AlDt6rQcsDvmOJV8mKrsI=;
-        b=j8l2nKoy5eyYCNgKDIr5tUrp09eURTh3IzZ8V6Y4NcahGi06Ih40BqGs2NClYIirKE
-         FbyWtz8MNurLIzy7g3oKvdEdp5qKV+jbz4Siv9TL68ZCJHjAAiZRuSJmOsAxmo8KCs3s
-         POBoEqU2ufUtz4ewdby9SrEbIl4dJlaUW5HE0fyNz410Vb99IotILhAEj51aztWV7jit
-         BJmvESB/p2gzRw0VSHsyt9AU3z/+eLgCdnakClqJ/eE9rtDZZ7JyEtiBD66RpmzvDuWT
-         Y+xp0M62ofgIdGeegDQIXvZlcVP5hqHuksWUkNWilnUjoSJIU5LjottvA5yqWfGih7qu
-         l8YQ==
+        bh=IGnIeF+qx9o9Fxna4u0dZlOEn7CHhsF5DscllzNQhPs=;
+        b=DMZsp5c2/cYWu3Mm8GB+pFUn8noZPSn006pGOfMYSv7n/NB6GDaMOLA2cRtiBJym5h
+         XcXck2mHMMa5BhlvL7LlOi+S3dm785yirGb4jYXD3sudtJfr83bJYuGngZy3/4IsfPYX
+         4mEznGUorDAyXi031DL2pA67HFl2DYXiwYp8aHhi+ExH6Fer92bBa1xT0evqIuYDXYa0
+         fju+vqUJyy0TC+eZLw5GoPoORr8U0wBup6wNUWaOAo1Rl9JUcg8EiLZqEPpbsxqLUzaY
+         llZJcvAa6IgRLglluHuq1oBk5QXREF1TdZS/KntKz3rejIUlUsSs7W8gOtg8GwAbwfjY
+         x6yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references;
-        bh=ntXRdirFaZeZje8alExHr6AlDt6rQcsDvmOJV8mKrsI=;
-        b=P9YVdk4iTuKApQzFXpx7ggoz8DGpu0iGO1qlS/w2e9P11bXyTQ9B9Z+/zHGR7XDe3e
-         xnkZUqK5xFQj60bwCdjdh//1rEYw+KAgp5m0utsaHPY97jiqo5s1ZZ8nwK4SN24T9OgD
-         B9IkX33cKVEc2KIoLWTs1AXp+gHts4Hn7q3Y1EL2EWv9dW1TWcFqGiA+PqRcJYp9uB5k
-         08xVMDseBxp1k5ZNvM+QUQj7rvFNIzT5MEyYyrYGArWG6W1bN3CzZHJkz1t1VvPPCyx5
-         HzIrP8C1WxjOMjVNXsW86esaveifbjsdbtpWNxeG5Q0B1srnoQ/3szxzpdqP1+SZIWm5
-         fVXA==
-X-Gm-Message-State: AOAM532gI3v9M2XcaER5K7AsrAMBDYBFZi45JReWGWYryLcHGGYwHn8P
-	lZwpKELFgB331d9HBC66xNw33osjIE0=
-X-Google-Smtp-Source: ABdhPJz5hYTDSGcjdT0TA02HN31/w8N7n1eI5wpA8jEBWfOQB5Y9Fdv1lPiy21CBIsGW4We1cqVVUg==
-X-Received: by 2002:a17:902:9345:: with SMTP id g5mr16464516plp.202.1591057722470;
-        Mon, 01 Jun 2020 17:28:42 -0700 (PDT)
+        bh=IGnIeF+qx9o9Fxna4u0dZlOEn7CHhsF5DscllzNQhPs=;
+        b=oM0lmK5wBuBLX0WxkcGUJFSckgEntVaIEUIvPercSR8ToH8PvqsneoRSij+kK3c5zc
+         m2EpD+2fqEfoA89jFXJpfA5YWwKEngg8UiTFC8YN1u7S51in7VKm7x3rEC/t5ke3njow
+         4zVQgp2xEKe5YiWjydomQ36ncVdwK5guem0LwyyCB2+5N2qb9qMeLCcY8u4jzi5IcJix
+         HkxYRAl72pDZ1oJtmTKdpO17lKOhzvBKySArtbbYiY/9QEGVaUz2Xxd6zcKpDKbPE/v+
+         FtLYdVQX/W3iPwwl6nbOhu4gBZQMUjFxVyiNeK+jMBqGVuQ6EleLvlQWmsIQ2+QBB/hf
+         qb4g==
+X-Gm-Message-State: AOAM530it9NcXJw3wNhKw5QSte+br/XYQ1XIQYzSEBJ3FIutqdQ8YTI1
+	St4eThdeWp4d3PJ76+Br2x4TCpmsDHw=
+X-Google-Smtp-Source: ABdhPJyH/O9aHpysv3k7sjUPD7viIa7WtksCwesDR+fHcmInmK32STdXfnRcvbbSDbwUx+BJzSAjrw==
+X-Received: by 2002:a63:b513:: with SMTP id y19mr20045116pge.29.1591057724812;
+        Mon, 01 Jun 2020 17:28:44 -0700 (PDT)
 Return-Path: <steve@sakoman.com>
 Received: from octo.router0800d9.com (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
-        by smtp.gmail.com with ESMTPSA id p190sm474461pfb.107.2020.06.01.17.28.41
+        by smtp.gmail.com with ESMTPSA id p190sm474461pfb.107.2020.06.01.17.28.43
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2020 17:28:41 -0700 (PDT)
+        Mon, 01 Jun 2020 17:28:44 -0700 (PDT)
 From: "Steve Sakoman" <steve@sakoman.com>
 To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell 2/6] ref-manual: IMAGE_TYPES, add tar.zst, delete elf
-Date: Mon,  1 Jun 2020 14:28:20 -1000
-Message-Id: <5edeb02f5154c17902b74739052e46d4223473b3.1591057623.git.steve@sakoman.com>
+Subject: [yocto-docs][dunfell 3/6] ref-manual: typo "SSTATE_MIRROR" -> "SSTATE_MIRRORS"
+Date: Mon,  1 Jun 2020 14:28:21 -1000
+Message-Id: <7c4d45e50422fa6e6cb607b0df2abdbb41ffd6d1.1591057623.git.steve@sakoman.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1591057623.git.steve@sakoman.com>
 References: <cover.1591057623.git.steve@sakoman.com>
 
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-
-Update list of legal IMAGE_TYPES to match what's in
-image_types.bbclass.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
@@ -61,25 +58,18 @@ Signed-off-by: Steve Sakoman <steve@sakoman.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
-index b44fdcb73..e18f41180 100644
+index e18f41180..c3e3c5015 100644
 --- a/documentation/ref-manual/ref-variables.xml
 +++ b/documentation/ref-manual/ref-variables.xml
-@@ -6638,7 +6638,6 @@
-      cpio.lzma
-      cpio.xz
-      cramfs
--     elf
-      ext2
-      ext2.bz2
-      ext2.gz
-@@ -6662,6 +6661,7 @@
-      tar.gz
-      tar.lz4
-      tar.xz
-+     tar.zst
-      ubi
-      ubifs
-      wic
+@@ -14033,7 +14033,7 @@
+                 <para>
+                     When pointing to sstate build artifacts on another machine
+                     that uses a different GCC version for native builds,
+-                    you must configure <filename>SSTATE_MIRROR</filename>
++                    you must configure <filename>SSTATE_MIRRORS</filename>
+                     with a regular expression that maps local search paths
+                     to server paths.
+                     The paths need to take into account
 -- 
 2.17.1
 
