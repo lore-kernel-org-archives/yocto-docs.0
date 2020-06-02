@@ -1,84 +1,85 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
- by mx.groups.io with SMTP id smtpd.web10.200.1591057721346739099
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+ by mx.groups.io with SMTP id smtpd.web10.201.1591057723508146631
  for <docs@lists.yoctoproject.org>;
- Mon, 01 Jun 2020 17:28:41 -0700
+ Mon, 01 Jun 2020 17:28:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=YWKGPAVx;
- spf=softfail (domain: sakoman.com, ip: 209.85.215.178, mailfrom: steve@sakoman.com)
-Received: by mail-pg1-f178.google.com with SMTP id p21so4238198pgm.13
-        for <docs@lists.yoctoproject.org>; Mon, 01 Jun 2020 17:28:40 -0700 (PDT)
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=j8l2nKoy;
+ spf=softfail (domain: sakoman.com, ip: 209.85.214.170, mailfrom: steve@sakoman.com)
+Received: by mail-pl1-f170.google.com with SMTP id n9so616846plk.1
+        for <docs@lists.yoctoproject.org>; Mon, 01 Jun 2020 17:28:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sakoman-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:subject:date:message-id:in-reply-to:references;
-        bh=ro80lt87UEX+GQO51uNDT3cnB7wkvoq3abzCmH24JDU=;
-        b=YWKGPAVxrO9PtfhDe/169tlmIdYguhLzyxJpL6eiUSHJLw/RzFFSTgmUI5hLeJfU9Y
-         ra3IlaVZsdOGMzePCw8p881R3F20Df7tBH1bMJgqfBemaa6s6a0n+3dlGD9xEmBxxUD7
-         7hPZ6OW12l1QJp4fVaADlPKbcgyYFlVxx+NOevSrt40ka5+ZQcP7DHDu833Iyf+o1+aW
-         1D0ZUWhpPZA9Yo8DBfyW4daaWsn4zOeySjFxeAGEr44eBu4ydn7ZLVkfO1YElP3BYLXv
-         6ZbWc9ybIHw2qXjQTe2khOZ1r3DEyIc9LfMjmnNwqkkR5IPaIlG4/4sih0McI5IFlCTL
-         AQeA==
+        bh=ntXRdirFaZeZje8alExHr6AlDt6rQcsDvmOJV8mKrsI=;
+        b=j8l2nKoy5eyYCNgKDIr5tUrp09eURTh3IzZ8V6Y4NcahGi06Ih40BqGs2NClYIirKE
+         FbyWtz8MNurLIzy7g3oKvdEdp5qKV+jbz4Siv9TL68ZCJHjAAiZRuSJmOsAxmo8KCs3s
+         POBoEqU2ufUtz4ewdby9SrEbIl4dJlaUW5HE0fyNz410Vb99IotILhAEj51aztWV7jit
+         BJmvESB/p2gzRw0VSHsyt9AU3z/+eLgCdnakClqJ/eE9rtDZZ7JyEtiBD66RpmzvDuWT
+         Y+xp0M62ofgIdGeegDQIXvZlcVP5hqHuksWUkNWilnUjoSJIU5LjottvA5yqWfGih7qu
+         l8YQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references;
-        bh=ro80lt87UEX+GQO51uNDT3cnB7wkvoq3abzCmH24JDU=;
-        b=CMFmxvi/E853rEjB961ZuSJztdaiXCpKqkn5eMe90JH9HJQJnrcsUK8ieV36IB+hlj
-         uX9UvuQVO26khCsHDwP5iEqc6T7FCC54g2PAnNOCZLr5a7ZmbFKTTJlFYFbVlyi33oz1
-         OWf19KuW857l0Z7xw4+XyDhahLD8e0sv+rzO5QnfO/HsUwl9fYtU/n7IxPEvoGhZdVBZ
-         bZOzpLiaKi3R0xkzalnx5hNveUNLsRIEQ2CUirb64yLvxiTuhpiK0cR4UEOuvnX3z96A
-         mydgnT//TPJiAF0rvoMsEaC4JTVsOOWwElKM9OZORN1EEaI2d6OIOkDIvZLk+r3yDJVr
-         3ZDA==
-X-Gm-Message-State: AOAM533pSa/HjBYOSfHYqqVKrFRt/t013vCGVZne1YW5ohiWX0J7y5i5
-	eMzLhL4jtyyW9+omm4JBnGwKfOF5sg0=
-X-Google-Smtp-Source: ABdhPJzga5KXELHiyePHgn+3kEG9e+12xk+C9M7AzrJfpsUd3yrHaWnVezVMqVCux/vtD/XPbHmxHw==
-X-Received: by 2002:a63:33c6:: with SMTP id z189mr22205560pgz.426.1591057719975;
-        Mon, 01 Jun 2020 17:28:39 -0700 (PDT)
+        bh=ntXRdirFaZeZje8alExHr6AlDt6rQcsDvmOJV8mKrsI=;
+        b=P9YVdk4iTuKApQzFXpx7ggoz8DGpu0iGO1qlS/w2e9P11bXyTQ9B9Z+/zHGR7XDe3e
+         xnkZUqK5xFQj60bwCdjdh//1rEYw+KAgp5m0utsaHPY97jiqo5s1ZZ8nwK4SN24T9OgD
+         B9IkX33cKVEc2KIoLWTs1AXp+gHts4Hn7q3Y1EL2EWv9dW1TWcFqGiA+PqRcJYp9uB5k
+         08xVMDseBxp1k5ZNvM+QUQj7rvFNIzT5MEyYyrYGArWG6W1bN3CzZHJkz1t1VvPPCyx5
+         HzIrP8C1WxjOMjVNXsW86esaveifbjsdbtpWNxeG5Q0B1srnoQ/3szxzpdqP1+SZIWm5
+         fVXA==
+X-Gm-Message-State: AOAM532gI3v9M2XcaER5K7AsrAMBDYBFZi45JReWGWYryLcHGGYwHn8P
+	lZwpKELFgB331d9HBC66xNw33osjIE0=
+X-Google-Smtp-Source: ABdhPJz5hYTDSGcjdT0TA02HN31/w8N7n1eI5wpA8jEBWfOQB5Y9Fdv1lPiy21CBIsGW4We1cqVVUg==
+X-Received: by 2002:a17:902:9345:: with SMTP id g5mr16464516plp.202.1591057722470;
+        Mon, 01 Jun 2020 17:28:42 -0700 (PDT)
 Return-Path: <steve@sakoman.com>
 Received: from octo.router0800d9.com (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
-        by smtp.gmail.com with ESMTPSA id p190sm474461pfb.107.2020.06.01.17.28.38
+        by smtp.gmail.com with ESMTPSA id p190sm474461pfb.107.2020.06.01.17.28.41
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 01 Jun 2020 17:28:39 -0700 (PDT)
+        Mon, 01 Jun 2020 17:28:41 -0700 (PDT)
 From: "Steve Sakoman" <steve@sakoman.com>
 To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell 1/6] ref-manual: fix excessive command indentation
-Date: Mon,  1 Jun 2020 14:28:19 -1000
-Message-Id: <e3a74639609e99357b23a5702c38a7a943713cdc.1591057623.git.steve@sakoman.com>
+Subject: [yocto-docs][dunfell 2/6] ref-manual: IMAGE_TYPES, add tar.zst, delete elf
+Date: Mon,  1 Jun 2020 14:28:20 -1000
+Message-Id: <5edeb02f5154c17902b74739052e46d4223473b3.1591057623.git.steve@sakoman.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <cover.1591057623.git.steve@sakoman.com>
 References: <cover.1591057623.git.steve@sakoman.com>
 
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 
+Update list of legal IMAGE_TYPES to match what's in
+image_types.bbclass.
+
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 Signed-off-by: Steve Sakoman <steve@sakoman.com>
 ---
- documentation/ref-manual/ref-system-requirements.xml | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ documentation/ref-manual/ref-variables.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/ref-system-requirements.xml b/documentation/ref-manual/ref-system-requirements.xml
-index 7d3c71998..7a11ec2cf 100644
---- a/documentation/ref-manual/ref-system-requirements.xml
-+++ b/documentation/ref-manual/ref-system-requirements.xml
-@@ -503,7 +503,7 @@
-                         </literallayout>
-                         or run the BitBake command to build the extended tarball:
-                         <literallayout class='monospaced'>
--                            $ bitbake buildtools-extended-tarball
-+     $ bitbake buildtools-extended-tarball
-                         </literallayout>
-                         <note>
-                         The
-@@ -535,7 +535,7 @@
-                        </literallayout>
-                        Here is an example for the extended installer:
-                        <literallayout class='monospaced'>
--                           $ sh ~/Downloads/x86_64-buildtools-extended-nativesdk-standalone-&DISTRO;.sh
-+     $ sh ~/Downloads/x86_64-buildtools-extended-nativesdk-standalone-&DISTRO;.sh
-                        </literallayout>
-                        During execution, a prompt appears that allows you to
-                        choose the installation directory.
+diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
+index b44fdcb73..e18f41180 100644
+--- a/documentation/ref-manual/ref-variables.xml
++++ b/documentation/ref-manual/ref-variables.xml
+@@ -6638,7 +6638,6 @@
+      cpio.lzma
+      cpio.xz
+      cramfs
+-     elf
+      ext2
+      ext2.bz2
+      ext2.gz
+@@ -6662,6 +6661,7 @@
+      tar.gz
+      tar.lz4
+      tar.xz
++     tar.zst
+      ubi
+      ubifs
+      wic
 -- 
 2.17.1
 
