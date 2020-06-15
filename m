@@ -1,49 +1,49 @@
-Received: from mail-pj1-f67.google.com (mail-pj1-f67.google.com [209.85.216.67])
- by mx.groups.io with SMTP id smtpd.web10.19390.1592231058056962301
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+ by mx.groups.io with SMTP id smtpd.web11.19264.1592231058940130547
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Jun 2020 07:24:18 -0700
+ Mon, 15 Jun 2020 07:24:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=bX/FgnHc;
- spf=pass (domain: gmail.com, ip: 209.85.216.67, mailfrom: akuster808@gmail.com)
-Received: by mail-pj1-f67.google.com with SMTP id ne5so6895789pjb.5
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=WwL7dw7m;
+ spf=pass (domain: gmail.com, ip: 209.85.216.43, mailfrom: akuster808@gmail.com)
+Received: by mail-pj1-f43.google.com with SMTP id s88so7211870pjb.5
         for <docs@lists.yoctoproject.org>; Mon, 15 Jun 2020 07:24:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=from:to:subject:date:message-id:in-reply-to:references;
-        bh=6SrwcLQ5bzwb7xwD07GtgElJ1Rbj/o5w0M/JLbUd6R8=;
-        b=bX/FgnHc47ZwslGk+20yhh7eEp8PNSMBoFDZ+3Nn7+4WYXBOLXy/KQNwVplKfh1Imk
-         zbf0xMs2UIA0lhQ+vb9udqrjhhnlssq1mOOpEf1Zkj6NdrKsCedherpjZPebrWSI0T4V
-         7uvHjbr368cF7AfYwxPIOzkq5kWuQp9vM8eL4q6lb4MN9Wym6biXodugavikUIuYg2+9
-         pav0c4lXihQogkimybeeDxVPZhN6J2VqB53uz8P+NlPF1XgEPLH7kksNbPemELYo00hw
-         pNxqQc2TfNcwsskRNde0eNOBAc4Fv0MgmS+LktKcWxBxJYVwn1NhH0avYP32z4jODQUR
-         bXyA==
+        bh=xIxBG47zZDMPsdM3E3wx3/SrmUp+f5BO4D/kgE2ZD9o=;
+        b=WwL7dw7mhgAtzrCQANc8IHLVwuza2L+qMB9vXkDz7pq4QGBAQmC+Q5CHNasBt6RL0y
+         gutVjXpU+VOnBLf5GL6mgDGqZcAbluspghok/cxJhB81G0Z67r30073Llk5TGZbgFg18
+         WdBksmwa2OcP78ILhUw/MNvSAMqz6LlEn7sOsA+cvUVgbnH3zSHo4RmOyziTBDZy7KPL
+         2oTSRlkQi/bDpAclninPm5NcKcnjp2XEfu3O9vti1CMyE++3Aeyvt8i5jtahvIODB/9g
+         IIiuegmTo+QwT0A0Ph79LlnzvSblHE+Yh441QuMl/oqDT4dPN+XnrFYmPTQxt+10W3VJ
+         K+Fg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references;
-        bh=6SrwcLQ5bzwb7xwD07GtgElJ1Rbj/o5w0M/JLbUd6R8=;
-        b=k8EU2nKwr3gj2E8XovntwRrxV5Fg6U/aB5UFWwTuY29Jq+R40FjOFMPPkyskm6r/xq
-         iRzPEJHgxrK7TQxlKEUhBZsfFjsOCzBYnwLnR1fYP0PV8Kmi+1E0LGFpLPPRCzvhEPjG
-         s1E1N1boazR2kKjrH+9P+oKan2mTqZSAmgFZdf1TurQwqsg02VqFK8dfWGNzIoj+7vsF
-         vapGhdbCFbjuHmRFYQfUg4RaT/AkHyStTxDc7x3Cz9Tq8uQUuJId6Mn2fsTt93gUA1ck
-         SWAj3IYXqspOItD1ZR5DShgVuJl4Bay7/qeCYCu27EipUpJ6dtM3YTyoQE3txBdI5wyE
-         TOSg==
-X-Gm-Message-State: AOAM530JGzdb7Qook+oxgsiGCLLshom2fs/yfZmnnweCasr90/Oa57uC
-	52uIQEV+bZySIJDpEVxbGVJbderk
-X-Google-Smtp-Source: ABdhPJylDkRdXseGBKpst643hK2DDDZC2nAI9HUKECoyA/NqEMh+vBXeYOAi3RB/6jbEAGfeOPnVDg==
-X-Received: by 2002:a17:90b:238d:: with SMTP id mr13mr12810184pjb.19.1592231057262;
-        Mon, 15 Jun 2020 07:24:17 -0700 (PDT)
+        bh=xIxBG47zZDMPsdM3E3wx3/SrmUp+f5BO4D/kgE2ZD9o=;
+        b=mgEdDP4RMgXy7UIshPv72o6ExX3Am8OqU4BxMXSgzEBW5LkNScV2x4L+Zd3dPiIgxL
+         xaBCsD5poLFXojoqxPtRwgC3Zu8GYozZmH8lyqTCip1JoWKTYEfRV9S1i1YP8sZyzzWs
+         dW+8O7jLm3ubD23aVUoIigykaXZ2SLE0eMvc671pwZ/DASBSA8CqMpgZFudXaFSw5a0F
+         cyEN4hk9xueY9DkWKyy3AwDXT+l2cDrh+t2IUjfDENMlzE7kk+R2JWqn8EXFE9B+F0q7
+         UuNcS3qBos/EFzSIukdmTrX0eCzpQ+apYGMO3QpcKCOiWTx11p213/B4b9xY2EUkf3Ps
+         iMxg==
+X-Gm-Message-State: AOAM533L8AhjZ3Y7ccbh1JJzO8yv6Y8U0n/5YLQpTIlh8sFc5Gtxh3gh
+	Y0xKyGK4yRU+AQmEJgBQXJkxKVRg
+X-Google-Smtp-Source: ABdhPJx8vzGBWH3gcOQNTMlmS3BDawQ7AEgCt43333O15ZkkufA+p0exI1SR6sUJfz3TgbvJa4vVWQ==
+X-Received: by 2002:a17:90a:d18b:: with SMTP id fu11mr12288246pjb.102.1592231058119;
+        Mon, 15 Jun 2020 07:24:18 -0700 (PDT)
 Return-Path: <akuster808@gmail.com>
 Received: from akuster-ThinkPad-T460s.hsd1.ca.comcast.net ([2601:202:4180:a5c0:e920:50fc:4b6a:daf0])
-        by smtp.gmail.com with ESMTPSA id h13sm14177219pfk.25.2020.06.15.07.24.16
+        by smtp.gmail.com with ESMTPSA id h13sm14177219pfk.25.2020.06.15.07.24.17
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 15 Jun 2020 07:24:16 -0700 (PDT)
+        Mon, 15 Jun 2020 07:24:17 -0700 (PDT)
 From: "akuster" <akuster808@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 5/8] kernel-dev: Add SPDX license headers
-Date: Mon, 15 Jun 2020 07:24:09 -0700
-Message-Id: <20200615142412.30882-5-akuster808@gmail.com>
+Subject: [PATCH 6/8] profile-manual: Add SPDX licence headers
+Date: Mon, 15 Jun 2020 07:24:10 -0700
+Message-Id: <20200615142412.30882-6-akuster808@gmail.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20200615142412.30882-1-akuster808@gmail.com>
 References: <20200615142412.30882-1-akuster808@gmail.com>
@@ -52,57 +52,31 @@ References: <20200615142412.30882-1-akuster808@gmail.com>
 
 Signed-off-by: Armin Kuster <akuster808@gmail.com>
 ---
- documentation/kernel-dev/kernel-dev-advanced.xml      | 1 +
- documentation/kernel-dev/kernel-dev-common.xml        | 1 +
- documentation/kernel-dev/kernel-dev-concepts-appx.xml | 1 +
- documentation/kernel-dev/kernel-dev-customization.xsl | 2 ++
- documentation/kernel-dev/kernel-dev-faq.xml           | 1 +
- documentation/kernel-dev/kernel-dev-intro.xml         | 1 +
- documentation/kernel-dev/kernel-dev-maint-appx.xml    | 1 +
- documentation/kernel-dev/kernel-dev-style.css         | 3 +++
- documentation/kernel-dev/kernel-dev.xml               | 1 +
- 9 files changed, 12 insertions(+)
+ documentation/profile-manual/profile-manual-arch.xml          | 1 +
+ documentation/profile-manual/profile-manual-customization.xsl | 2 ++
+ documentation/profile-manual/profile-manual-examples.xml      | 1 +
+ documentation/profile-manual/profile-manual-intro.xml         | 1 +
+ documentation/profile-manual/profile-manual-style.css         | 3 +++
+ documentation/profile-manual/profile-manual-usage.xml         | 1 +
+ documentation/profile-manual/profile-manual.xml               | 1 +
+ 7 files changed, 10 insertions(+)
 
-diff --git a/documentation/kernel-dev/kernel-dev-advanced.xml b/documentation/kernel-dev/kernel-dev-advanced.xml
-index 5c76ed239..37177966b 100644
---- a/documentation/kernel-dev/kernel-dev-advanced.xml
-+++ b/documentation/kernel-dev/kernel-dev-advanced.xml
+diff --git a/documentation/profile-manual/profile-manual-arch.xml b/documentation/profile-manual/profile-manual-arch.xml
+index 19d115522..8eb7bbfab 100644
+--- a/documentation/profile-manual/profile-manual-arch.xml
++++ b/documentation/profile-manual/profile-manual-arch.xml
 @@ -1,6 +1,7 @@
  <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
  [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
 +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
  
- <chapter id='kernel-dev-advanced'>
- <title>Working with Advanced Metadata (<filename>yocto-kernel-cache</filename>)</title>
-diff --git a/documentation/kernel-dev/kernel-dev-common.xml b/documentation/kernel-dev/kernel-dev-common.xml
-index c1c2d6d70..8e8a6dbed 100644
---- a/documentation/kernel-dev/kernel-dev-common.xml
-+++ b/documentation/kernel-dev/kernel-dev-common.xml
-@@ -1,6 +1,7 @@
- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
- "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
- [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
-+<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
+ <chapter id='profile-manual-arch'>
  
- <chapter id='kernel-dev-common'>
- <title>Common Tasks</title>
-diff --git a/documentation/kernel-dev/kernel-dev-concepts-appx.xml b/documentation/kernel-dev/kernel-dev-concepts-appx.xml
-index 62c68527d..0f2df2a62 100644
---- a/documentation/kernel-dev/kernel-dev-concepts-appx.xml
-+++ b/documentation/kernel-dev/kernel-dev-concepts-appx.xml
-@@ -1,6 +1,7 @@
- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
- "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
- [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
-+<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
- 
- <appendix id='kernel-dev-concepts-appx'>
- <title>Advanced Kernel Concepts</title>
-diff --git a/documentation/kernel-dev/kernel-dev-customization.xsl b/documentation/kernel-dev/kernel-dev-customization.xsl
-index 325b738e9..88bf7c678 100644
---- a/documentation/kernel-dev/kernel-dev-customization.xsl
-+++ b/documentation/kernel-dev/kernel-dev-customization.xsl
+diff --git a/documentation/profile-manual/profile-manual-customization.xsl b/documentation/profile-manual/profile-manual-customization.xsl
+index caa57ef34..d995e0b3c 100644
+--- a/documentation/profile-manual/profile-manual-customization.xsl
++++ b/documentation/profile-manual/profile-manual-customization.xsl
 @@ -1,4 +1,6 @@
  <?xml version='1.0'?>
 +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
@@ -110,46 +84,34 @@ index 325b738e9..88bf7c678 100644
  <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="http://www.w3.org/1999/xhtml" xmlns:fo="http://www.w3.org/1999/XSL/Format" version="1.0">
  
    <xsl:import href="http://downloads.yoctoproject.org/mirror/docbook-mirror/docbook-xsl-1.76.1/xhtml/docbook.xsl" />
-diff --git a/documentation/kernel-dev/kernel-dev-faq.xml b/documentation/kernel-dev/kernel-dev-faq.xml
-index c3a20465a..d76f0a4e3 100644
---- a/documentation/kernel-dev/kernel-dev-faq.xml
-+++ b/documentation/kernel-dev/kernel-dev-faq.xml
+diff --git a/documentation/profile-manual/profile-manual-examples.xml b/documentation/profile-manual/profile-manual-examples.xml
+index 9630c6c30..91e06fcd1 100644
+--- a/documentation/profile-manual/profile-manual-examples.xml
++++ b/documentation/profile-manual/profile-manual-examples.xml
 @@ -1,6 +1,7 @@
  <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
  [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
 +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
  
- <appendix id='kernel-dev-faq'>
- <title>Kernel Development FAQ</title>
-diff --git a/documentation/kernel-dev/kernel-dev-intro.xml b/documentation/kernel-dev/kernel-dev-intro.xml
-index 4e4fd282a..7c1ea0e51 100644
---- a/documentation/kernel-dev/kernel-dev-intro.xml
-+++ b/documentation/kernel-dev/kernel-dev-intro.xml
+ <chapter id='profile-manual-examples'>
+ 
+diff --git a/documentation/profile-manual/profile-manual-intro.xml b/documentation/profile-manual/profile-manual-intro.xml
+index f16db3f0f..a2d2f80ec 100644
+--- a/documentation/profile-manual/profile-manual-intro.xml
++++ b/documentation/profile-manual/profile-manual-intro.xml
 @@ -1,6 +1,7 @@
  <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
  [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
 +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
  
- <chapter id='kernel-dev-intro'>
- <title>Introduction</title>
-diff --git a/documentation/kernel-dev/kernel-dev-maint-appx.xml b/documentation/kernel-dev/kernel-dev-maint-appx.xml
-index b825ae7ea..3d9c7c66f 100644
---- a/documentation/kernel-dev/kernel-dev-maint-appx.xml
-+++ b/documentation/kernel-dev/kernel-dev-maint-appx.xml
-@@ -1,6 +1,7 @@
- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
- "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
- [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
-+<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
+ <chapter id='profile-manual-intro'>
  
- <appendix id='kernel-dev-maint-appx'>
- <title>Kernel Maintenance</title>
-diff --git a/documentation/kernel-dev/kernel-dev-style.css b/documentation/kernel-dev/kernel-dev-style.css
-index 9c01aa798..fc6fbb8de 100644
---- a/documentation/kernel-dev/kernel-dev-style.css
-+++ b/documentation/kernel-dev/kernel-dev-style.css
+diff --git a/documentation/profile-manual/profile-manual-style.css b/documentation/profile-manual/profile-manual-style.css
+index f3cca8536..8502c1109 100644
+--- a/documentation/profile-manual/profile-manual-style.css
++++ b/documentation/profile-manual/profile-manual-style.css
 @@ -1,4 +1,7 @@
  /*
 +
@@ -158,17 +120,29 @@ index 9c01aa798..fc6fbb8de 100644
     Generic XHTML / DocBook XHTML CSS Stylesheet.
  
     Browser wrangling and typographic design by
-diff --git a/documentation/kernel-dev/kernel-dev.xml b/documentation/kernel-dev/kernel-dev.xml
-index 998fe4141..887ff836f 100755
---- a/documentation/kernel-dev/kernel-dev.xml
-+++ b/documentation/kernel-dev/kernel-dev.xml
+diff --git a/documentation/profile-manual/profile-manual-usage.xml b/documentation/profile-manual/profile-manual-usage.xml
+index 9a4273a0f..3a7148cbd 100644
+--- a/documentation/profile-manual/profile-manual-usage.xml
++++ b/documentation/profile-manual/profile-manual-usage.xml
+@@ -1,6 +1,7 @@
+ <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+ "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+ [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
++<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
+ 
+ <chapter id='profile-manual-usage'>
+ 
+diff --git a/documentation/profile-manual/profile-manual.xml b/documentation/profile-manual/profile-manual.xml
+index fa1fa8ac8..48bfba5b8 100755
+--- a/documentation/profile-manual/profile-manual.xml
++++ b/documentation/profile-manual/profile-manual.xml
 @@ -1,6 +1,7 @@
  <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
  [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
 +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
  
- <book id='kernel-dev' lang='en'
+ <book id='profile-manual' lang='en'
        xmlns:xi="http://www.w3.org/2003/XInclude"
 -- 
 2.17.1
