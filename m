@@ -1,77 +1,95 @@
-Received: from mail-40140.protonmail.ch (mail-40140.protonmail.ch [185.70.40.140])
- by mx.groups.io with SMTP id smtpd.web11.14265.1593007542748282018
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+ by mx.groups.io with SMTP id smtpd.web11.14642.1593008586016353405
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Jun 2020 07:05:43 -0700
+ Wed, 24 Jun 2020 07:23:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@protonmail.com header.s=protonmail header.b=N0OsFjs8;
- spf=pass (domain: protonmail.com, ip: 185.70.40.140, mailfrom: marius.kriegerowski@protonmail.com)
-Date: Wed, 24 Jun 2020 14:05:28 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail; t=1593007538;
-	bh=YrxDzd5GDIJ7llvLWy6sW3bACZWYk3rIL46QjRDcfgs=;
-	h=Date:To:From:Reply-To:Subject:From;
-	b=N0OsFjs8antKYENNxBB3c8lU9evD/9MnqBswVWsq6v/OL7ONIaCfqredBbzBFNzAM
-	 GUjk2+KV/DqeMDSJCM+ZNdr4n6CmDSDf2OMigRbj93xHgFUoN+uNRyGIhRwPs+hAQ6
-	 dX1UN4uI28Xu51FCOeDe1Tz3u0JLx1iLXD8kwHSI=
-To: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-From: marius.kriegerowski@protonmail.com
-Reply-To: Marius Kriegerowski <marius.kriegerowski@protonmail.com>
-Subject: Modern style documentation
-Message-ID: <brBieKgFlfS0C1xLUD5I5LQ0ZKxNBkhcCwKfuzqZTPTQv9slA-1bH2sneuut6k6lMlCO1n_03w5D65oBcbwU2u9Q3ZdmvT-vUWqrLI2jN5c=@protonmail.com>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=I/2OKo20;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.43, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f43.google.com with SMTP id h15so2476837wrq.8
+        for <docs@lists.yoctoproject.org>; Wed, 24 Jun 2020 07:23:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=xSuDfyRwJQ7SyqLtAUitZ5xSia/g7u4nDn23zeWhQPA=;
+        b=I/2OKo20ViZcn2xJuTNeekPdtrE/ZbLEyufI1P11YPLuPlMIl8+wPKYFgv5OYiqsnG
+         mPZQrzr+CQ3EhaRvjXGTdL1pMxZA/EWkHd94FDWXAt+VzB0Fbj7nmdhBrRfnsWYiMNNT
+         OmQPIpj53oObJFcVrLtFZsA6pNc0BqZHBapSs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=xSuDfyRwJQ7SyqLtAUitZ5xSia/g7u4nDn23zeWhQPA=;
+        b=FTxfKZ/In+XDrkE0Hpo60Ft0IurPlcnnB5SE2uGq8i9p3KxazKYsTrvTH8X/h94MHm
+         xTRhvWYbPbxavdxc4lkUQl9NwheAVgIzJ5jCR4P2Y3cLg96ZVO2pJSD0GnJIEx61YTWe
+         kBm3OhdBsBtW9++dAfrf1g8MzWzhAwAQeSxxGZLE4zWAhDYrun7n9dh74/fCbCnN50l6
+         pqRdbO2+IfVAOz9Hz3qniN13SpZ8DRqXq4FBrK8Q6kYhKgbhYr1694Fgww+VdLAgj4b/
+         wapZmd0xc/HoSgNXUqHh7LG+9pE5ma9aElQp4yQgxh9FntfzBBgY81EIjRiCPdXbhl9W
+         gowQ==
+X-Gm-Message-State: AOAM530srf0KOd/8wKBakhPg7KP+7IZ00qF3JRNA4C+o29HtEkgwLakL
+	i7xmGTPQ0AFR5Lx+ROOSBDZ4gQ==
+X-Google-Smtp-Source: ABdhPJzflyQSDWRpsS4lhKcEfdEE22CZYzcdmdFGIdTb/AuYV9Xc/NT8nZieFAN3hkxCCI8NunDyNg==
+X-Received: by 2002:a5d:55cf:: with SMTP id i15mr20283870wrw.204.1593008584475;
+        Wed, 24 Jun 2020 07:23:04 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from hex (5751f4a1.skybroadband.com. [87.81.244.161])
+        by smtp.gmail.com with ESMTPSA id e5sm25583210wrs.33.2020.06.24.07.23.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Jun 2020 07:23:03 -0700 (PDT)
+Message-ID: <a1ce3e159c94a1826ff718670c8e3bb2195c155c.camel@linuxfoundation.org>
+Subject: Re: [docs] Modern style documentation
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: marius.kriegerowski@protonmail.com, "docs@lists.yoctoproject.org"
+	 <docs@lists.yoctoproject.org>
+Date: Wed, 24 Jun 2020 15:23:02 +0100
+In-Reply-To: <brBieKgFlfS0C1xLUD5I5LQ0ZKxNBkhcCwKfuzqZTPTQv9slA-1bH2sneuut6k6lMlCO1n_03w5D65oBcbwU2u9Q3ZdmvT-vUWqrLI2jN5c=@protonmail.com>
+References: 
+	<brBieKgFlfS0C1xLUD5I5LQ0ZKxNBkhcCwKfuzqZTPTQv9slA-1bH2sneuut6k6lMlCO1n_03w5D65oBcbwU2u9Q3ZdmvT-vUWqrLI2jN5c=@protonmail.com>
+User-Agent: Evolution 3.36.2-0ubuntu1 
 MIME-Version: 1.0
-X-Spam-Status: No, score=-1.2 required=7.0 tests=ALL_TRUSTED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HTML_MESSAGE
-	shortcircuit=no autolearn=disabled version=3.4.4
-X-Spam-Checker-Version: SpamAssassin 3.4.4 (2020-01-24) on mail.protonmail.ch
-Content-Type: multipart/alternative;
- boundary="b1_SyRhB5TCx0NcdimwguucDRLZOiP39ghU6sEqy5ZdaM"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
---b1_SyRhB5TCx0NcdimwguucDRLZOiP39ghU6sEqy5ZdaM
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: base64
+Hi,
 
-RGVhciBDb21tdW5pdHksCkkgd291bGQgbGlrZSB0byBtb3RpdmF0ZSBhIHJlLXN0cnVjdHVyaW5n
-IG9mIHRoZSBkb2N1bWVudGF0aW9uLiBUaGUgc2luZ2xlIHBhZ2UgZG9jdW1lbnRpbmcgbWVnYSBt
-YW51YWwgaXMgZ3JlYXQgYXMgaXQgY2FycmllcyBhbGwgdGhlIGluZm9ybWF0aW9uLiBCdXQgYXQg
-dGhlIHNhbWUgdGltZSBpdCBpcyBoYXJkIHRvIG5hdmlnYXRlLCBvdmVyd2hlbG1pbmcgZm9yIGVh
-cmx5IHN0YWdlIHVzZXJzIGFuZCBoYXJkIHRvIHBpY2sgdXAgd2hlcmUgc3RhcnRlZCBlYXJsaWVy
-IG9uLgpBcmUgdGhlcmUgcGxhbnMgdGhhdCBicmVhayB0aGlzIHNpbmdsZSBwYWdlIGRvY3VtZW50
-YXRpb24/CgpUbyBiZSBtb3JlIGNvbnN0cnVjdGl2ZTogSSBmaW5kIGl0IHZlcnkgY29udmVuaWVu
-dCBhbmQgSSBoaWdobHkgcmVjb21tZW5kIGEgcGVybWFuZW50bHkgc2hvd24gbmF2aWdhdGlvbiBi
-YXIsIGhpZ2hsaWdodGluZyB3aGVyZSB0aGUgY3VycmVudCBjb250ZW50IGlzIGxvY2F0ZWQuIFRo
-aXMgYWxsb3dzIHRvIGZpbmQgaW5mb3JtYXRpb24gYWdhaW4sIGV2ZW4gaWYgYSB1c2VyIG9ubHkg
-aGFzIGEgdmFndWUgaWRlYSB3aGVyZSBhIHBpZWNlIG9mIGluZm9ybWF0aW9uIHdhcyBmb3VuZCBs
-YXN0IHRpbWUsIHNpbXBseSB0aGFua3MgdG8gdGhlIGlpbmhlcmVudCBzdHJ1Y3R1cmFsIHBhdHRl
-cm4sIG5vdCBvbmx5IHRoZSB0ZXh0IGRlc2NyaWJpbmcgdGhlIGNoYXB0ZXJzLiBMZXQncyB0YWtl
-IGFkdmFudGFnZSBvZiB0aGUgaHVtYW5zIGJlaW5nIGJldHRlciBhdCByZW1lbWJlcmluZyBzaGFw
-ZXMgYW5kIHBhdHRlcm5zIHJhdGhlciB0aGFuIHRleHQgYW5kIGNvbnRlbnQuCgpJZiB0aGlzIHVu
-ZGVydGFraW5nIGlzIGFscmVhZHkgb24gaXQncyB3YXkgSSdkIGJlIGhhcHB5IHRvIGpvaW4uCgpC
-ZXN0IHJlZ2FyZHMKCk1hcml1cw==
+On Wed, 2020-06-24 at 14:05 +0000, Marius Kriegerowski via
+lists.yoctoproject.org wrote:
+> 
+> Dear Community,
+> I would like to motivate a re-structuring of the documentation. The
+> single page documenting mega manual is great as it carries all the
+> information. But at the same time it is hard to navigate,
+> overwhelming for early stage users and hard to pick up where started
+> earlier on.
+> Are there plans that break this single page documentation?
+> 
+> To be more constructive: I find it very convenient and I highly
+> recommend a permanently shown navigation bar, highlighting where the
+> current content is located. This allows to find information again,
+> even if a user only has a vague idea where a piece of information was
+> found last time, simply thanks to the iinherent structural pattern,
+> not only the text describing the chapters. Let's take advantage of
+> the humans being better at remembering shapes and patterns rather
+> than text and content.
+> 
+> If this undertaking is already on it's way I'd be happy to join.
 
---b1_SyRhB5TCx0NcdimwguucDRLZOiP39ghU6sEqy5ZdaM
-Content-Type: text/html; charset=utf-8
-Content-Transfer-Encoding: base64
+I did notice the discussion on irc.
 
-PGgzPjxicj48L2gzPjxkaXY+RGVhciBDb21tdW5pdHksPGJyPjwvZGl2PjxkaXY+SSB3b3VsZCBs
-aWtlIHRvIG1vdGl2YXRlIGEgcmUtc3RydWN0dXJpbmcgb2YgdGhlIGRvY3VtZW50YXRpb24uIFRo
-ZSBzaW5nbGUgcGFnZSBkb2N1bWVudGluZyBtZWdhIG1hbnVhbCBpcyBncmVhdCBhcyBpdCBjYXJy
-aWVzIGFsbCB0aGUgaW5mb3JtYXRpb24uIEJ1dCBhdCB0aGUgc2FtZSB0aW1lIGl0IGlzIGhhcmQg
-dG8gbmF2aWdhdGUsIG92ZXJ3aGVsbWluZyBmb3IgZWFybHkgc3RhZ2UgdXNlcnMgYW5kIGhhcmQg
-dG8gcGljayB1cCB3aGVyZSBzdGFydGVkIGVhcmxpZXIgb24uPGJyPjwvZGl2PjxkaXY+QXJlIHRo
-ZXJlIHBsYW5zIHRoYXQgYnJlYWsgdGhpcyBzaW5nbGUgcGFnZSBkb2N1bWVudGF0aW9uPzxicj48
-L2Rpdj48ZGl2Pjxicj48L2Rpdj48ZGl2PlRvIGJlIG1vcmUgY29uc3RydWN0aXZlOiBJIGZpbmQg
-aXQgdmVyeSBjb252ZW5pZW50IGFuZCBJIGhpZ2hseSByZWNvbW1lbmQgYSBwZXJtYW5lbnRseSBz
-aG93biBuYXZpZ2F0aW9uIGJhciwgaGlnaGxpZ2h0aW5nIHdoZXJlIHRoZSBjdXJyZW50IGNvbnRl
-bnQgaXMgbG9jYXRlZC4gVGhpcyBhbGxvd3MgdG8gZmluZCBpbmZvcm1hdGlvbiBhZ2FpbiwgZXZl
-biBpZiBhIHVzZXIgb25seSBoYXMgYSB2YWd1ZSBpZGVhIHdoZXJlIGEgcGllY2Ugb2YgaW5mb3Jt
-YXRpb24gd2FzIGZvdW5kIGxhc3QgdGltZSwgc2ltcGx5IHRoYW5rcyB0byB0aGUgaWluaGVyZW50
-IHN0cnVjdHVyYWwgcGF0dGVybiwgbm90IG9ubHkgdGhlIHRleHQgZGVzY3JpYmluZyB0aGUgY2hh
-cHRlcnMuIExldCdzIHRha2UgYWR2YW50YWdlIG9mIHRoZSBodW1hbnMgYmVpbmcgYmV0dGVyIGF0
-IHJlbWVtYmVyaW5nIHNoYXBlcyBhbmQgcGF0dGVybnMgcmF0aGVyIHRoYW4gdGV4dCBhbmQgY29u
-dGVudC48YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5JZiB0aGlzIHVuZGVydGFraW5nIGlz
-IGFscmVhZHkgb24gaXQncyB3YXkgSSdkIGJlIGhhcHB5IHRvIGpvaW4uPGJyPjwvZGl2PjxkaXY+
-PGJyPjwvZGl2PjxkaXY+QmVzdCByZWdhcmRzPGJyPjwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+
-TWFyaXVzPGJyPjwvZGl2Pg==
+FWIW we're in the middle of planning to migrate the documentation from
+its current format in docbook over to sphinx. I think that should give
+us more options for what you describe with navigation in amongst
+various other advantages.
 
+Help with the migration would be much appreciated and we'll keep this
+need in mind as we work through the details of this.
 
---b1_SyRhB5TCx0NcdimwguucDRLZOiP39ghU6sEqy5ZdaM--
+I do think we'll end up with some kind of combination of both formats
+since some people do need something searchable/scrollable but I realise
+others need the navigation interface more, there is a place/need for
+both.
+
+Cheers,
+
+Richard
+
