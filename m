@@ -1,101 +1,131 @@
-Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
- by mx.groups.io with SMTP id smtpd.web12.14931.1593008843594559561
+Received: from mail-ed1-f68.google.com (mail-ed1-f68.google.com [209.85.208.68])
+ by mx.groups.io with SMTP id smtpd.web12.497.1593027360155825291
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Jun 2020 07:27:23 -0700
+ Wed, 24 Jun 2020 12:36:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=SGxkM6/o;
- spf=pass (domain: linaro.org, ip: 209.85.219.172, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f172.google.com with SMTP id t9so1114267ybk.9
-        for <docs@lists.yoctoproject.org>; Wed, 24 Jun 2020 07:27:23 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=EOlIDUuj;
+ spf=pass (domain: gmail.com, ip: 209.85.208.68, mailfrom: twoerner@gmail.com)
+Received: by mail-ed1-f68.google.com with SMTP id m21so2349008eds.13
+        for <docs@lists.yoctoproject.org>; Wed, 24 Jun 2020 12:35:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=gmail.com; s=20161025;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=B0oObvjWzpzw8hx73c8FFiHnhiBiFXgMkN74G74c0rc=;
-        b=SGxkM6/oHcPcElvKsemmvLlJEbubdJ1c7IRaWsJMkmEx4D1ItyxaqVksPr7ZbY08ra
-         G4BwfVTFOu/ENIvZxxOUVJgh69AMX3WYz2GbzzfCbdeYb28+jiwqcEyawXvvJBV9WrD6
-         5ZPKNmgjQ36j2hgFX/VSPCxR2YrDqU5iqx0+NZTdPNJ2OsAIXVYjlODErwqzYJpOTZkY
-         hzwIWVYMJL7CJemXLRcO//E216OIFO6E6Mtq7Pd19WfUq32g6agdAb5n68I10lFqr9Wz
-         BZclYg0mNMqmPW7iUJQ4xFYrVL9fYJFsJk/Jzvnht+NFHXTQ6iUJ3ACFdJPHrS69Bp4e
-         UFuw==
+        bh=Nwr/dqV6MBk2uH7+axLcEorzwtzsUydZSnstkfJNVo8=;
+        b=EOlIDUujRSqhIX9BxNh8DH7tiA4PvxhzDqEzCcabQ2CiPArJXxbkazlVxKL4MS8XaC
+         O9pxnhgnzLdlHgr8J8O8anpXuFnR7OCtsTrMmlm7HS/qIFtWT5XBst3JYCSEf4I8Eh4/
+         oE14PumyFvgverYzgDDlP2mrL+psQx+DNM94W9DXAETjlMlVSo2eQexywdwt2F/C2+FG
+         zKaKMiv0/vLETApxr2IlCT93QEBpl8sbP7pYXr9hy6G9iw37wWpMTLPRwUZuRZqdJK02
+         huEcszzJ/b2Qy5ry2vNGYecfekk016ygCBAujuXC1FwThIhUNcjv4EQ8ZxGYkaMlkKZ6
+         IIMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=B0oObvjWzpzw8hx73c8FFiHnhiBiFXgMkN74G74c0rc=;
-        b=WphQ+Rmai23Z8kvxWx8M5GmwGFOoJWxp++dyydOmUKMrbwTQiYUOf74Eki3dgdndda
-         Jl+OZotJpsU9ehtI3SqNe1WXQalbl3FnfhwIAxJ5BUk01ch1ql/kTQCVAv8IlyIVorst
-         x9yVCMK38hs3iazpLbpLqJnXod9Nw/EUbEQgEEEud6WqUQXP3ZJlditNdlaLazxnjBbg
-         xwFYoIEEJ8fBryb8Qd7wCBtrpaanRMT9vCk4Z6feVTqW//HPwac926SV41kJkQHPwiMU
-         lFgg7bN6HQ2sOszgqarm/zdyYjbxJpt3tyM1awlF4VPs5Vd3J/R1WE/S3IG4gVkOTw1E
-         /Suw==
-X-Gm-Message-State: AOAM533NehE/t7tvj7QY1l/mhMTfsZwhfV3phExx3v6nDaHwM/uMd/Xr
-	GxqhEERfy4J8FKlfd26eTnX+B4eFFXW2f7lgFefu4A==
-X-Google-Smtp-Source: ABdhPJz6EjvD04PDfYmBKGkC+op1HhMO5cuCa4OgtCb+fQQfbOluU52tN+8Cvn187uhhS3krLk71zwSCurZXpRm0gUk=
-X-Received: by 2002:a25:dacc:: with SMTP id n195mr29132275ybf.475.1593008842620;
- Wed, 24 Jun 2020 07:27:22 -0700 (PDT)
+        bh=Nwr/dqV6MBk2uH7+axLcEorzwtzsUydZSnstkfJNVo8=;
+        b=qfnrgLA4ozsUOz+TdllQe6AvwZd1a+CJgtHrE3EFaRsqTVOLtuBCzizbV0lIl650RO
+         MPhoEntPWF9TKk1ILxDhdtMxmKowv0t9yUoVpF2RI0Q3M7IJHQybDL0hYGW4isDF31N2
+         UUxQIDqfw7dDsEmzHTyfdar8x4E6bZp6GCuoffXDHEnWmkE92aWBcVjvwoRwuJxIGq0i
+         zU5GuqiZivrqt4WVIVxB8aH/s7TZ8oQrNSxR5GbJOx2KBdggNXzNx9hxhTvlQRkbFRXL
+         HaVf7eC+xYhL70sgUybAAU0IPnSY6rskKEK/o0QVwet06RUF4Qq2q7pTonUMMOZ9WcwH
+         cVpQ==
+X-Gm-Message-State: AOAM530V0e74XmwdlmWE3skmFoCN2swNjPd3wtExgj8e+HT5r/9twPbq
+	bWWBuls3QwOtqDo6pgHVqLUkUliGR8RgO5q4L50=
+X-Google-Smtp-Source: ABdhPJxNJFyY5TDmFv5d/vthC+1zpzFCemIsTeF4fnb9/QX3xwqX51AQf8zWHl6a5+aoyFEonu80JNHmXjcIC38SBMg=
+X-Received: by 2002:a05:6402:1558:: with SMTP id p24mr27904885edx.193.1593027358534;
+ Wed, 24 Jun 2020 12:35:58 -0700 (PDT)
 MIME-Version: 1.0
-References: <brBieKgFlfS0C1xLUD5I5LQ0ZKxNBkhcCwKfuzqZTPTQv9slA-1bH2sneuut6k6lMlCO1n_03w5D65oBcbwU2u9Q3ZdmvT-vUWqrLI2jN5c=@protonmail.com>
- <a1ce3e159c94a1826ff718670c8e3bb2195c155c.camel@linuxfoundation.org>
-In-Reply-To: <a1ce3e159c94a1826ff718670c8e3bb2195c155c.camel@linuxfoundation.org>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Wed, 24 Jun 2020 16:27:11 +0200
-Message-ID: <CAP71Wjz3=ugDGyfDirANko1KSXC-3qkfYGsuMAkuQ4QhTamzWA@mail.gmail.com>
-Subject: Re: [docs] Modern style documentation
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: marius.kriegerowski@protonmail.com, 
+References: <20200616211450.8079-1-mark.morton@windriver.com>
+ <4279ef01cf93105bdea2e3d56e8df50db18350d2.camel@linuxfoundation.org> <DM6PR11MB367626B3068F92C3DD31D883E59D0@DM6PR11MB3676.namprd11.prod.outlook.com>
+In-Reply-To: <DM6PR11MB367626B3068F92C3DD31D883E59D0@DM6PR11MB3676.namprd11.prod.outlook.com>
+From: "Trevor Woerner" <twoerner@gmail.com>
+Date: Wed, 24 Jun 2020 15:35:45 -0400
+Message-ID: <CAHUNapR1azgOund7LtARa-N8mAzm-5H7fnv2==gfNS2yGagq8w@mail.gmail.com>
+Subject: Re: [docs] [PATCH] New source files and Makefile update for Test Manual
+To: Mark Morton <Mark.Morton@windriver.com>
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, 
 	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="000000000000d2afdd05a8d995b8"
+
+--000000000000d2afdd05a8d995b8
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Jun 24, 2020 at 4:23 PM Richard Purdie
-<richard.purdie@linuxfoundation.org> wrote:
->
-> Hi,
->
-> On Wed, 2020-06-24 at 14:05 +0000, Marius Kriegerowski via
-> lists.yoctoproject.org wrote:
-> >
-> > Dear Community,
-> > I would like to motivate a re-structuring of the documentation. The
-> > single page documenting mega manual is great as it carries all the
-> > information. But at the same time it is hard to navigate,
-> > overwhelming for early stage users and hard to pick up where started
-> > earlier on.
-> > Are there plans that break this single page documentation?
-> >
-> > To be more constructive: I find it very convenient and I highly
-> > recommend a permanently shown navigation bar, highlighting where the
-> > current content is located. This allows to find information again,
-> > even if a user only has a vague idea where a piece of information was
-> > found last time, simply thanks to the iinherent structural pattern,
-> > not only the text describing the chapters. Let's take advantage of
-> > the humans being better at remembering shapes and patterns rather
-> > than text and content.
-> >
-> > If this undertaking is already on it's way I'd be happy to join.
->
-> I did notice the discussion on irc.
->
-> FWIW we're in the middle of planning to migrate the documentation from
-> its current format in docbook over to sphinx. I think that should give
-> us more options for what you describe with navigation in amongst
-> various other advantages.
->
-> Help with the migration would be much appreciated and we'll keep this
-> need in mind as we work through the details of this.
->
-> I do think we'll end up with some kind of combination of both formats
-> since some people do need something searchable/scrollable but I realise
-> others need the navigation interface more, there is a place/need for
-> both.
+Building the new test-manual for pdf doesn't succeed for me. But that could
+indicate something wrong on my end.
+A relevant snip is below, I'm not sure what the most important parts are.
 
-FWIW. you can check our current work-in-progress thoughts on this topic here:
-https://wiki.yoctoproject.org/wiki/index.php?title=Documentation_Sphinx
+$ cd yocto-docs/documentation
+$ make pdf DOC=test-manual
 
+cd test-manual; ../tools/poky-docbook-to-pdf test-manual.xml ../template;
+cd ..
+Note: namesp. cut : stripped namespace before processing
+            Yocto Project Test Environment Manual
 
->
-> Cheers,
->
-> Richard
->
-> 
+Making portrait pages on A4 paper (210mmx297mm)
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+XLink to nonexistent id:
+...
+SEVERE: javax.xml.transform.TransformerException:
+file:/opt/oe/layers/master/yocto-docs/documentation/test-manual/test-manual.fo:442:178:
+Property ID "test-yocto-project-autobuilder-overview" (found on "fo:block")
+previously used; ID values must be unique within a document! (See position
+442:178)
+Jun 24, 2020 3:32:48 PM FOP startFOP
+SEVERE: Exception
+org.apache.fop.apps.FOPException: org.apache.fop.fo.ValidationException:
+file:/opt/oe/layers/master/yocto-docs/documentation/test-manual/test-manual.fo:442:178:
+Property ID "test-yocto-project-autobuilder-overview" (found on "fo:block")
+previously used; ID values must be unique within a document! (See position
+442:178)
+javax.xml.transform.TransformerException:
+org.apache.fop.fo.ValidationException:
+file:/opt/oe/layers/master/yocto-docs/documentation/test-manual/test-manual.fo:442:178:
+Property ID "test-yocto-project-autobuilder-overview" (found on "fo:block")
+previously used; ID values must be unique within a document! (See position
+442:178)
+
+--000000000000d2afdd05a8d995b8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Building the new test-manual for pdf doesn&#39;t succeed f=
+or me. But that could indicate something wrong on my end.<div>A relevant sn=
+ip is below, I&#39;m not sure what the most important parts are.<br><div><b=
+r></div><div>$ cd yocto-docs/documentation</div><div>$ make pdf DOC=3Dtest-=
+manual</div><div><br></div><div>cd test-manual; ../tools/poky-docbook-to-pd=
+f test-manual.xml ../template; cd ..<br>Note: namesp. cut : stripped namesp=
+ace before processing =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 <br>=C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 Yocto Project Test Environment Manual<br>=C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 <br>Making portrait pages on A4 paper (210mmx297mm)<b=
+r>XLink to nonexistent id: <br>XLink to nonexistent id: <br>XLink to nonexi=
+stent id: <br>XLink to nonexistent id: <br>XLink to nonexistent id: <br>XLi=
+nk to nonexistent id: <br>XLink to nonexistent id: <br>XLink to nonexistent=
+ id: <br>XLink to nonexistent id: <br>XLink to nonexistent id: <br>XLink to=
+ nonexistent id:=C2=A0</div><div>...</div><div>SEVERE: javax.xml.transform.=
+TransformerException: file:/opt/oe/layers/master/yocto-docs/documentation/t=
+est-manual/test-manual.fo:442:178: Property ID &quot;test-yocto-project-aut=
+obuilder-overview&quot; (found on &quot;fo:block&quot;) previously used; ID=
+ values must be unique within a document! (See position 442:178)<br></div><=
+div>Jun 24, 2020 3:32:48 PM FOP startFOP<br>SEVERE: Exception<br>org.apache=
+.fop.apps.FOPException: org.apache.fop.fo.ValidationException: file:/opt/oe=
+/layers/master/yocto-docs/documentation/test-manual/test-manual.fo:442:178:=
+ Property ID &quot;test-yocto-project-autobuilder-overview&quot; (found on =
+&quot;fo:block&quot;) previously used; ID values must be unique within a do=
+cument! (See position 442:178)<br>javax.xml.transform.TransformerException:=
+ org.apache.fop.fo.ValidationException: file:/opt/oe/layers/master/yocto-do=
+cs/documentation/test-manual/test-manual.fo:442:178: Property ID &quot;test=
+-yocto-project-autobuilder-overview&quot; (found on &quot;fo:block&quot;) p=
+reviously used; ID values must be unique within a document! (See position 4=
+42:178)<br></div></div></div>
+
+--000000000000d2afdd05a8d995b8--
