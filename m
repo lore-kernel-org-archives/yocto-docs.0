@@ -1,59 +1,80 @@
-Received: from anavi.org (anavi.org [91.215.217.29])
- by mx.groups.io with SMTP id smtpd.web11.12795.1594114607272724347
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+ by mx.groups.io with SMTP id smtpd.web11.14029.1594120597293785135
  for <docs@lists.yoctoproject.org>;
- Tue, 07 Jul 2020 02:36:47 -0700
+ Tue, 07 Jul 2020 04:16:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=softfail (domain: konsulko.com, ip: 91.215.217.29, mailfrom: leon.anavi@konsulko.com)
-Received: from [78.130.197.211] (port=53850 helo=localhost.localdomain)
-	by voyager.icnhost.net with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
-	(Exim 4.92)
-	(envelope-from <leon.anavi@konsulko.com>)
-	id 1jsk1r-0004xc-Sx; Tue, 07 Jul 2020 12:36:44 +0300
-From: "Leon Anavi" <leon.anavi@konsulko.com>
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=rE7LroCV;
+ spf=pass (domain: gmail.com, ip: 209.85.167.53, mailfrom: jacob.kroon@gmail.com)
+Received: by mail-lf1-f53.google.com with SMTP id c11so24476752lfh.8
+        for <docs@lists.yoctoproject.org>; Tue, 07 Jul 2020 04:16:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xsqq30ntrwJv4d5CPSDKEKjUvzbnUta1qPCih1+344g=;
+        b=rE7LroCVpL90mPxyUcBFrPqjNqRka5PiXV5iRVdO6fK6GmsjomoDpqoVMGyn1sOqkz
+         moCqgflSsqpRL3OmVNjyy6lapfSLVtWb27ON/oPTPRP3tk1cKtuP49zjybTTbgeSzhP0
+         MWhiE3aIG8dDgo6fYEpFZfwAvorDDuSmwLBvaurDppgR1cMIlnw+8oRZwhBEnLK0USFb
+         oGQ8YbWjq9MwX2jFFcUDBAewyEehgz/30Dqz5LmShRqwfNiRp+v17GpkeWnaVe/Hw4mi
+         FBVl4q5StIhiUcxFe0CnCDJP0JJ5yMgW7HSu+8ScrMpMgIsEy2JuBKIkJhYqkFU2QDZx
+         uvIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=xsqq30ntrwJv4d5CPSDKEKjUvzbnUta1qPCih1+344g=;
+        b=fv3bitjxF54O0MJ9VDG+4QSbW4Z+L7LJOGSgrD9f2/Raqa8hgo1dbUJAUUtlHBG1lc
+         GDtBpmCrj5/+BfuOFb7z6mFixxFGs/ZPWwFzlG9hyFplemKaqGwsZqaHUM5k5rYbUcZb
+         ZsN/hhDyY/KIlRkFR0U4+zZovHFPl39uuCUGFT5aEIyRbMYLZq6UvoLRWxW/RBQUp9eF
+         6SiBLEc6VtrI9DBIDKYN4lM2KjsrlkmD9LDPNxFoC6LyWi2J0I2pJqTADfXXzdLWjNJu
+         AzMitaKd8NjvXa/QnIWPrpRQzQparWbRjLLVy9gwfg2IBrtpT2+UNqdUBLGmAX1Ufi7w
+         yqfA==
+X-Gm-Message-State: AOAM533ZeDXsAtTxyONEayJbXtiBhmfAhSMEIDT82QKaPIK53atjZqPP
+	WkalO1J9xY6inBmCxGeDvZtGvOqx
+X-Google-Smtp-Source: ABdhPJzgWcsy3+X64uPPdCX2qY7zCDio71Y3XkSXRquRRK0M3pEPGF1Fh3AxlOCNsW8Ft9kDjszYvw==
+X-Received: by 2002:a19:3f42:: with SMTP id m63mr32792666lfa.104.1594120594795;
+        Tue, 07 Jul 2020 04:16:34 -0700 (PDT)
+Return-Path: <jacob.kroon@gmail.com>
+Received: from localhost.localdomain ([213.185.29.22])
+        by smtp.gmail.com with ESMTPSA id y2sm9518570lfh.1.2020.07.07.04.16.33
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 07 Jul 2020 04:16:34 -0700 (PDT)
+From: "Jacob Kroon" <jacob.kroon@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Leon Anavi <leon.anavi@konsulko.com>
-Subject: [PATCH] documentation/poky.ent: Add screen
-Date: Tue,  7 Jul 2020 12:36:32 +0300
-Message-Id: <20200707093632.17972-1-leon.anavi@konsulko.com>
-X-Mailer: git-send-email 2.17.1
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - voyager.icnhost.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - konsulko.com
-X-Get-Message-Sender-Via: voyager.icnhost.net: authenticated_id: leon@anavi.org
-X-Authenticated-Sender: voyager.icnhost.net: leon@anavi.org
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Subject: [PATCH] ref-manual: Rephrase SRC_URI description
+Date: Tue,  7 Jul 2020 13:16:25 +0200
+Message-Id: <20200707111625.161489-1-jacob.kroon@gmail.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Add screen to the list of packages for Ubuntu. Without screen or
-an alternative terminal, executing -c devshell fails due to the
-following error:
+Specifying multiple sources is done by putting each entry in SRC_URI,
+not by defining multiple instances of SRC_URI, each one containing a single entry.
 
-ERROR: do_devshell: No valid terminal found, unable to open devshell.
-
-Tested on a fresh installation of Ubuntu 18.04.4 LTS.
-
-Signed-off-by: Leon Anavi <leon.anavi@konsulko.com>
+Signed-off-by: Jacob Kroon <jacob.kroon@gmail.com>
 ---
- documentation/poky.ent | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/ref-manual/ref-variables.xml | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/documentation/poky.ent b/documentation/poky.ent
-index aec8d455e..5e3563937 100755
---- a/documentation/poky.ent
-+++ b/documentation/poky.ent
-@@ -62,7 +62,7 @@
- <!ENTITY UBUNTU_HOST_PACKAGES_ESSENTIAL "gawk wget git-core diffstat unzip texinfo gcc-multilib \
-      build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
-      xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
--     pylint3 xterm python3-subunit mesa-common-dev">
-+     pylint3 xterm python3-subunit mesa-common-dev screen">
- <!ENTITY FEDORA_HOST_PACKAGES_ESSENTIAL "gawk make wget tar bzip2 gzip python3 unzip perl patch \
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
--- 
-2.17.1
-
+diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
+index 9fe744aff..5e576ca2c 100644
+--- a/documentation/ref-manual/ref-variables.xml
++++ b/documentation/ref-manual/ref-variables.xml
+@@ -13258,12 +13258,12 @@
+                     to pull in for the build and how to pull them in.
+                     For example, if the recipe or append file only needs to
+                     fetch a tarball from the Internet, the recipe or
+-                    append file uses a single <filename>SRC_URI</filename>
+-                    entry.
++                    append file uses a <filename>SRC_URI</filename>
++                    with a single entry.
+                     On the other hand, if the recipe or append file needs to
+                     fetch a tarball, apply two patches, and include a custom
+-                    file, the recipe or append file would include four
+-                    instances of the variable.
++                    file, the <filename>SRC_URI</filename> would include four
++                    space-separated entries.
+                 </para>
+ 
+                 <para>
