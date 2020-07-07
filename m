@@ -1,80 +1,97 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
- by mx.groups.io with SMTP id smtpd.web11.14029.1594120597293785135
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web12.951.1594160116756096177
  for <docs@lists.yoctoproject.org>;
- Tue, 07 Jul 2020 04:16:37 -0700
+ Tue, 07 Jul 2020 15:15:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=rE7LroCV;
- spf=pass (domain: gmail.com, ip: 209.85.167.53, mailfrom: jacob.kroon@gmail.com)
-Received: by mail-lf1-f53.google.com with SMTP id c11so24476752lfh.8
-        for <docs@lists.yoctoproject.org>; Tue, 07 Jul 2020 04:16:37 -0700 (PDT)
+ dkim=fail reason="signature has expired" header.i=@axis.com header.s=axis-central1 header.b=jXkAhJtp;
+ spf=pass (domain: axis.com, ip: 195.60.68.17, mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xsqq30ntrwJv4d5CPSDKEKjUvzbnUta1qPCih1+344g=;
-        b=rE7LroCVpL90mPxyUcBFrPqjNqRka5PiXV5iRVdO6fK6GmsjomoDpqoVMGyn1sOqkz
-         moCqgflSsqpRL3OmVNjyy6lapfSLVtWb27ON/oPTPRP3tk1cKtuP49zjybTTbgeSzhP0
-         MWhiE3aIG8dDgo6fYEpFZfwAvorDDuSmwLBvaurDppgR1cMIlnw+8oRZwhBEnLK0USFb
-         oGQ8YbWjq9MwX2jFFcUDBAewyEehgz/30Dqz5LmShRqwfNiRp+v17GpkeWnaVe/Hw4mi
-         FBVl4q5StIhiUcxFe0CnCDJP0JJ5yMgW7HSu+8ScrMpMgIsEy2JuBKIkJhYqkFU2QDZx
-         uvIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=xsqq30ntrwJv4d5CPSDKEKjUvzbnUta1qPCih1+344g=;
-        b=fv3bitjxF54O0MJ9VDG+4QSbW4Z+L7LJOGSgrD9f2/Raqa8hgo1dbUJAUUtlHBG1lc
-         GDtBpmCrj5/+BfuOFb7z6mFixxFGs/ZPWwFzlG9hyFplemKaqGwsZqaHUM5k5rYbUcZb
-         ZsN/hhDyY/KIlRkFR0U4+zZovHFPl39uuCUGFT5aEIyRbMYLZq6UvoLRWxW/RBQUp9eF
-         6SiBLEc6VtrI9DBIDKYN4lM2KjsrlkmD9LDPNxFoC6LyWi2J0I2pJqTADfXXzdLWjNJu
-         AzMitaKd8NjvXa/QnIWPrpRQzQparWbRjLLVy9gwfg2IBrtpT2+UNqdUBLGmAX1Ufi7w
-         yqfA==
-X-Gm-Message-State: AOAM533ZeDXsAtTxyONEayJbXtiBhmfAhSMEIDT82QKaPIK53atjZqPP
-	WkalO1J9xY6inBmCxGeDvZtGvOqx
-X-Google-Smtp-Source: ABdhPJzgWcsy3+X64uPPdCX2qY7zCDio71Y3XkSXRquRRK0M3pEPGF1Fh3AxlOCNsW8Ft9kDjszYvw==
-X-Received: by 2002:a19:3f42:: with SMTP id m63mr32792666lfa.104.1594120594795;
-        Tue, 07 Jul 2020 04:16:34 -0700 (PDT)
-Return-Path: <jacob.kroon@gmail.com>
-Received: from localhost.localdomain ([213.185.29.22])
-        by smtp.gmail.com with ESMTPSA id y2sm9518570lfh.1.2020.07.07.04.16.33
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jul 2020 04:16:34 -0700 (PDT)
-From: "Jacob Kroon" <jacob.kroon@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] ref-manual: Rephrase SRC_URI description
-Date: Tue,  7 Jul 2020 13:16:25 +0200
-Message-Id: <20200707111625.161489-1-jacob.kroon@gmail.com>
-X-Mailer: git-send-email 2.26.2
+  d=axis.com; l=1764; q=dns/txt; s=axis-central1;
+  t=1594160117; x=1625696117;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=ENkef2+m8MsJ5qa8+UXh3ZMLuK+txOuqE3MUXehF8IQ=;
+  b=jXkAhJtpBhxlxKw6HGAQ+v5jVMdiwHNf4AUP/rIYF0GUxDJ7RL2oln2O
+   C4gcBk98oqAXfjLUDFy2AvMG1QGhLeaUeGBk56I543CLJz8KbyZyP81LO
+   2djLJqh0QYtqbSWeBFSj8ESU+U2jnBZPHqSn2Wm0pEK6IqT7jAL+3EZcN
+   RQOqv3WQSjghu567b9Ys4zTz9RTLm8qJk0Xej5P1v+JuXWB5NbQ/cJvwH
+   t1tS1HNFpLVpOqnyLXVpxQ0nDGKhokNm1lTuEW0PpOHnDfiFENua2415E
+   LDiE213UcIdDjvedMJPhqezScrAooW9+6Tni7uqPZLl88k0EDiiIyZs1p
+   w==;
+IronPort-SDR: GlPboF2g37vNGTbu/krQNR1BJ1bMAimlV815xF2qtjLHuEyBib7q18Wwwl/qdOZ4vYNZP3ZrYM
+ rbu8+WPOrYCwePnEMA58NiHXoI8kpAHjnYQhjwP3C1eh+hqs/eeu9kpucGProTn2wpAXPYRKDh
+ yBGbTdGd3dri3vX42Rr9SH6GfjlhiQZ/j/bz9DhSjgdbl2XHEc2MZzkkqAhVD2YTvMPNDYggty
+ 4NLCts9257vhwT++0bNd+VzktcNQoIn7xF8zZS00qE54qNht6i/6pa89qJEa4AnJMTQHmyZDls
+ cr0=
+X-IronPort-AV: E=Sophos;i="5.75,325,1589234400"; 
+   d="scan'208";a="10575055"
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: Leon Anavi <leon.anavi@konsulko.com>, "docs@lists.yoctoproject.org"
+	<docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] documentation/poky.ent: Add screen
+Thread-Topic: [docs] [PATCH] documentation/poky.ent: Add screen
+Thread-Index: AQHWVEIkXuHSj51CD0KdWqORobT45Kj8rk9Q
+Date: Tue, 7 Jul 2020 22:15:14 +0000
+Message-ID: <f40b1190a1194109bb8c97bfaef284de@XBOX03.axis.com>
+References: <20200707093632.17972-1-leon.anavi@konsulko.com>
+In-Reply-To: <20200707093632.17972-1-leon.anavi@konsulko.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.20.13.15]
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Return-Path: peter.kjellerstedt@axis.com
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-Specifying multiple sources is done by putting each entry in SRC_URI,
-not by defining multiple instances of SRC_URI, each one containing a single entry.
+> -----Original Message-----
+> From: docs@lists.yoctoproject.org <docs@lists.yoctoproject.org> On Behalf
+> Of Leon Anavi
+> Sent: den 7 juli 2020 11:37
+> To: docs@lists.yoctoproject.org
+> Cc: Leon Anavi <leon.anavi@konsulko.com>
+> Subject: [docs] [PATCH] documentation/poky.ent: Add screen
+>=20
+> Add screen to the list of packages for Ubuntu. Without screen or
+> an alternative terminal, executing -c devshell fails due to the
+> following error:
+>=20
+> ERROR: do_devshell: No valid terminal found, unable to open devshell.
+>=20
+> Tested on a fresh installation of Ubuntu 18.04.4 LTS.
+>=20
+> Signed-off-by: Leon Anavi <leon.anavi@konsulko.com>
+> ---
+>  documentation/poky.ent | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/documentation/poky.ent b/documentation/poky.ent
+> index aec8d455e..5e3563937 100755
+> --- a/documentation/poky.ent
+> +++ b/documentation/poky.ent
+> @@ -62,7 +62,7 @@
+>  <!ENTITY UBUNTU_HOST_PACKAGES_ESSENTIAL "gawk wget git-core diffstat unz=
+ip texinfo gcc-multilib \
+>       build-essential chrpath socat cpio python3 python3-pip python3-pexp=
+ect \
+>       xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl=
+1-mesa libsdl1.2-dev \
+> -     pylint3 xterm python3-subunit mesa-common-dev">
+> +     pylint3 xterm python3-subunit mesa-common-dev screen">
+                ^^^^^
+Doesn't "xterm" fulfill the requirement for a valid terminal?
+It is already specified for all the distros, not only Ubuntu.
 
-Signed-off-by: Jacob Kroon <jacob.kroon@gmail.com>
----
- documentation/ref-manual/ref-variables.xml | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+>  <!ENTITY FEDORA_HOST_PACKAGES_ESSENTIAL "gawk make wget tar bzip2 gzip p=
+ython3 unzip perl patch \
+>       diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath =
+\
+>       ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl=
+-bignum socat \
+> --
+> 2.17.1
 
-diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
-index 9fe744aff..5e576ca2c 100644
---- a/documentation/ref-manual/ref-variables.xml
-+++ b/documentation/ref-manual/ref-variables.xml
-@@ -13258,12 +13258,12 @@
-                     to pull in for the build and how to pull them in.
-                     For example, if the recipe or append file only needs to
-                     fetch a tarball from the Internet, the recipe or
--                    append file uses a single <filename>SRC_URI</filename>
--                    entry.
-+                    append file uses a <filename>SRC_URI</filename>
-+                    with a single entry.
-                     On the other hand, if the recipe or append file needs to
-                     fetch a tarball, apply two patches, and include a custom
--                    file, the recipe or append file would include four
--                    instances of the variable.
-+                    file, the <filename>SRC_URI</filename> would include four
-+                    space-separated entries.
-                 </para>
- 
-                 <para>
+//Peter
+
