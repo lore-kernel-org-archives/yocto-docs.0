@@ -1,148 +1,129 @@
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
- by mx.groups.io with SMTP id smtpd.web11.1341.1594161291257523923
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web12.1813.1594170974565540384
  for <docs@lists.yoctoproject.org>;
- Tue, 07 Jul 2020 15:34:51 -0700
+ Tue, 07 Jul 2020 18:16:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=bp6jjFkz;
- spf=pass (domain: konsulko.com, ip: 209.85.128.65, mailfrom: leon.anavi@konsulko.com)
-Received: by mail-wm1-f65.google.com with SMTP id q15so888766wmj.2
-        for <docs@lists.yoctoproject.org>; Tue, 07 Jul 2020 15:34:51 -0700 (PDT)
+ dkim=fail reason="signature has expired" header.i=@axis.com header.s=axis-central1 header.b=K0XJygOn;
+ spf=pass (domain: axis.com, ip: 195.60.68.17, mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=subject:to:references:from:message-id:date:user-agent:mime-version
-         :in-reply-to:content-transfer-encoding:content-language;
-        bh=mWp0YTaF7KN3zIew6lEp9T8yhg996KImzvtr0MQmDUA=;
-        b=bp6jjFkzONGZlJQoFhF8az194pwYfCr0Af8I56hOIQe3B94bngxfp7f2BIECFgGWWD
-         gTbNGI2UqcpeQeVoEgq88LtmUXlbg/BqGyD+owWydrhlbUcW+6hUpT4eX4PPMQKsp+Fu
-         bbqZ3jT+dl0ygC8//hDJPZepgv8sB6iyZwQSU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-transfer-encoding
-         :content-language;
-        bh=mWp0YTaF7KN3zIew6lEp9T8yhg996KImzvtr0MQmDUA=;
-        b=LEcdi1SJWxM6+80d5IQqXjloynfp6ICW0+Tg1aBq7wSUU2ptyXi7flETEk+Ke6na08
-         EGeU1uar5VlAunz/dsQ53uUwmw/heeJX8RqeNXVz/TpbNPlRvPIIHdRcH3anvIUqK2qf
-         /rfHphFV3y3qjXKVhvnuk45G9XT/WJPPrp0UfneSx3QMcc3vCL3IBhaVI0MMAQsP5DyH
-         HkasmCr/FE3e/j2KgdyLSveeC7SDaUJVuPtp8Jjnd6eGFzvxoXRvDESoW0pLCPjdjYHP
-         nysWccZaSGeqa6/261S/IP0jsff5BJmoDzUNt8fbNQCci3MaWANZkAzl22yHnfySy5Tq
-         DzjA==
-X-Gm-Message-State: AOAM5304mdscoZs+2GVpBr3tqCwJRmxsywGeyGWrqjwiYI9pyMPIicX7
-	YyuVsIOV74uxzOuhLEr9T17I2IW2Cec=
-X-Google-Smtp-Source: ABdhPJye964lGRJz6xm3XqKZcXXOHrmo0+yTgwFUBkdYVRwQhEAjUIjW0AeXHwB42IwNxtxcgaLE+g==
-X-Received: by 2002:a1c:65d5:: with SMTP id z204mr6142291wmb.15.1594161289418;
-        Tue, 07 Jul 2020 15:34:49 -0700 (PDT)
-Return-Path: <leon.anavi@konsulko.com>
-Received: from [192.168.4.166] ([78.130.197.211])
-        by smtp.gmail.com with ESMTPSA id f17sm3286260wme.14.2020.07.07.15.34.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jul 2020 15:34:48 -0700 (PDT)
+  d=axis.com; l=6184; q=dns/txt; s=axis-central1;
+  t=1594170974; x=1625706974;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=aoqlxvvbliexnLzHUbumSHotLtPvbY/SdidzE/cyLZg=;
+  b=K0XJygOnBXNtS6hRRKDNdELg7bAGizkehsYsNBMgy+h1JAErPAxOfmH9
+   xwbOYiovRGT7f6tVh7Nzq2kWz321PlAGG5azc7zhIF4W8AYll7fI1tbRg
+   cT/SHX4oTybwOibeRmVUDrh13ctAofJqDszZBfBSVI3Bn4ngyHxKU9u7f
+   3D5EMsmEOOadBvo5yqq1+HCqMW4ctZCgxIS5Ubd7AWb+yhhj62ekqiaQP
+   PZUNED6tVtfDMw1ZP3L0dzk2gzo2qVBNehryANRPMDRSmCFp8u5EYPzrz
+   1z87AfN4IxLQqTtt8P5a37kajEw6nB7U3T3CGFaF14tDrCrjVGeORBHhG
+   A==;
+IronPort-SDR: tJVytLRFiwktQMNJtbC6O4NpG7iNO1qx+DvlBgcAHOfvrqt8g5P3ptpY0InJJpy+/6HhUov30g
+ gS0NlAAgczyogO9cXzrz+0SQA1YtA6aAkWON04ckexoyLLAW9FcxbMileSGM6C6kAMc0SuIH3m
+ A97H9kSoHx0KkQm03PGcQnzal5/IAh3epjWloO6Ll+NG8JzMQcV1+LAT15vMm6A4fFQj/RiZMK
+ sX70bnvRxZsmJQhsKOtt43qg+zCts2IeT6IFvM774fV7CEJi8jK4o2vaueNPYfx2P3xNDFciZY
+ iZY=
+X-IronPort-AV: E=Sophos;i="5.75,326,1589234400"; 
+   d="scan'208";a="10577856"
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: Leon Anavi <leon.anavi@konsulko.com>, "docs@lists.yoctoproject.org"
+	<docs@lists.yoctoproject.org>
 Subject: Re: [docs] [PATCH] documentation/poky.ent: Add screen
-To: Peter Kjellerstedt <peter.kjellerstedt@axis.com>,
- "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Thread-Topic: [docs] [PATCH] documentation/poky.ent: Add screen
+Thread-Index: AQHWVEIkXuHSj51CD0KdWqORobT45Kj8rk9Q///lSICAAEbGIA==
+Date: Wed, 8 Jul 2020 01:16:11 +0000
+Message-ID: <0029bc0ea5364bd0856711dba9776c2c@XBOX03.axis.com>
 References: <20200707093632.17972-1-leon.anavi@konsulko.com>
  <f40b1190a1194109bb8c97bfaef284de@XBOX03.axis.com>
-From: "Leon Anavi" <leon.anavi@konsulko.com>
-Message-ID: <b8d5a28c-5607-69be-1951-a1c5d0c23706@konsulko.com>
-Date: Wed, 8 Jul 2020 01:34:47 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.8.0
+ <b8d5a28c-5607-69be-1951-a1c5d0c23706@konsulko.com>
+In-Reply-To: <b8d5a28c-5607-69be-1951-a1c5d0c23706@konsulko.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.20.13.15]
 MIME-Version: 1.0
-In-Reply-To: <f40b1190a1194109bb8c97bfaef284de@XBOX03.axis.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
 Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hi Peter,
-
-On 8.07.20 г. 1:15 ч., Peter Kjellerstedt wrote:
->> -----Original Message-----
->> From: docs@lists.yoctoproject.org <docs@lists.yoctoproject.org> On Behalf
->> Of Leon Anavi
->> Sent: den 7 juli 2020 11:37
->> To: docs@lists.yoctoproject.org
->> Cc: Leon Anavi <leon.anavi@konsulko.com>
->> Subject: [docs] [PATCH] documentation/poky.ent: Add screen
->>
->> Add screen to the list of packages for Ubuntu. Without screen or
->> an alternative terminal, executing -c devshell fails due to the
->> following error:
->>
->> ERROR: do_devshell: No valid terminal found, unable to open devshell.
->>
->> Tested on a fresh installation of Ubuntu 18.04.4 LTS.
->>
->> Signed-off-by: Leon Anavi <leon.anavi@konsulko.com>
->> ---
->>   documentation/poky.ent | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/documentation/poky.ent b/documentation/poky.ent
->> index aec8d455e..5e3563937 100755
->> --- a/documentation/poky.ent
->> +++ b/documentation/poky.ent
->> @@ -62,7 +62,7 @@
->>   <!ENTITY UBUNTU_HOST_PACKAGES_ESSENTIAL "gawk wget git-core diffstat unzip texinfo gcc-multilib \
->>        build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
->>        xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
->> -     pylint3 xterm python3-subunit mesa-common-dev">
->> +     pylint3 xterm python3-subunit mesa-common-dev screen">
->                  ^^^^^
-> Doesn't "xterm" fulfill the requirement for a valid terminal?
-
-No, because in my case I am logging remotely to the build machine via 
-SSH. Here are more details (without installed screen):
-
-* I have xterm installed:
-
-$ dpkg -l | grep xterm
-ii  xterm 330-1ubuntu2                                     amd64        
-X terminal emulator
-
-* I am using release Dunfell:
-
-$ git branch
-* dunfell
-
-* devshell fails:
-
-$ bitbake u-boot -c devshell
-
-ERROR: u-boot-1_2020.01-r0 do_devshell: No valid terminal found, unable 
-to open devshell.
-Tried the following commands:
-     tmux split-window -c "{cwd}" "do_terminal"
-     tmux new-window -c "{cwd}" -n "OpenEmbedded Developer Shell" 
-"do_terminal"
-     xfce4-terminal -T "OpenEmbedded Developer Shell" -e "do_terminal"
-     terminology -T="OpenEmbedded Developer Shell" -e do_terminal
-     mate-terminal --disable-factory -t "OpenEmbedded Developer Shell" 
--x do_terminal
-     konsole --separate --workdir . -p tabtitle="OpenEmbedded Developer 
-Shell" -e do_terminal
-     gnome-terminal -t "OpenEmbedded Developer Shell" -- do_terminal
-     xterm -T "OpenEmbedded Developer Shell" -e do_terminal
-     rxvt -T "OpenEmbedded Developer Shell" -e do_terminal
-     tmux new -c "{cwd}" -d -s devshell -n devshell "do_terminal"
-     screen -D -m -t "OpenEmbedded Developer Shell" -S devshell do_terminal
-
-I believe often developer login via SSH to build machines therefore it 
-will be useful to have screen in the list of packages.
-
-Best regards,
-Leon
-
-> It is already specified for all the distros, not only Ubuntu.
->
->>   <!ENTITY FEDORA_HOST_PACKAGES_ESSENTIAL "gawk make wget tar bzip2 gzip python3 unzip perl patch \
->>        diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
->>        ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
->> --
->> 2.17.1
-> //Peter
->
--- 
-Leon Anavi
-Software Engineer
-konsulko.com
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBMZW9uIEFuYXZpIDxsZW9uLmFu
+YXZpQGtvbnN1bGtvLmNvbT4NCj4gU2VudDogZGVuIDgganVsaSAyMDIwIDAwOjM1DQo+IFRvOiBQ
+ZXRlciBLamVsbGVyc3RlZHQgPHBldGVyLmtqZWxsZXJzdGVkdEBheGlzLmNvbT47DQo+IGRvY3NA
+bGlzdHMueW9jdG9wcm9qZWN0Lm9yZw0KPiBTdWJqZWN0OiBSZTogW2RvY3NdIFtQQVRDSF0gZG9j
+dW1lbnRhdGlvbi9wb2t5LmVudDogQWRkIHNjcmVlbg0KPiANCj4gSGkgUGV0ZXIsDQo+IA0KPiBP
+biA4LjA3LjIwINCzLiAxOjE1INGHLiwgUGV0ZXIgS2plbGxlcnN0ZWR0IHdyb3RlOg0KPiA+PiAt
+LS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
+amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24NCj4gQmVoYWxmDQo+ID4+
+IE9mIExlb24gQW5hdmkNCj4gPj4gU2VudDogZGVuIDcganVsaSAyMDIwIDExOjM3DQo+ID4+IFRv
+OiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4gPj4gQ2M6IExlb24gQW5hdmkgPGxlb24u
+YW5hdmlAa29uc3Vsa28uY29tPg0KPiA+PiBTdWJqZWN0OiBbZG9jc10gW1BBVENIXSBkb2N1bWVu
+dGF0aW9uL3Bva3kuZW50OiBBZGQgc2NyZWVuDQo+ID4+DQo+ID4+IEFkZCBzY3JlZW4gdG8gdGhl
+IGxpc3Qgb2YgcGFja2FnZXMgZm9yIFVidW50dS4gV2l0aG91dCBzY3JlZW4gb3INCj4gPj4gYW4g
+YWx0ZXJuYXRpdmUgdGVybWluYWwsIGV4ZWN1dGluZyAtYyBkZXZzaGVsbCBmYWlscyBkdWUgdG8g
+dGhlDQo+ID4+IGZvbGxvd2luZyBlcnJvcjoNCj4gPj4NCj4gPj4gRVJST1I6IGRvX2RldnNoZWxs
+OiBObyB2YWxpZCB0ZXJtaW5hbCBmb3VuZCwgdW5hYmxlIHRvIG9wZW4gZGV2c2hlbGwuDQo+ID4+
+DQo+ID4+IFRlc3RlZCBvbiBhIGZyZXNoIGluc3RhbGxhdGlvbiBvZiBVYnVudHUgMTguMDQuNCBM
+VFMuDQo+ID4+DQo+ID4+IFNpZ25lZC1vZmYtYnk6IExlb24gQW5hdmkgPGxlb24uYW5hdmlAa29u
+c3Vsa28uY29tPg0KPiA+PiAtLS0NCj4gPj4gICBkb2N1bWVudGF0aW9uL3Bva3kuZW50IHwgMiAr
+LQ0KPiA+PiAgIDEgZmlsZSBjaGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0K
+PiA+Pg0KPiA+PiBkaWZmIC0tZ2l0IGEvZG9jdW1lbnRhdGlvbi9wb2t5LmVudCBiL2RvY3VtZW50
+YXRpb24vcG9reS5lbnQNCj4gPj4gaW5kZXggYWVjOGQ0NTVlLi41ZTM1NjM5MzcgMTAwNzU1DQo+
+ID4+IC0tLSBhL2RvY3VtZW50YXRpb24vcG9reS5lbnQNCj4gPj4gKysrIGIvZG9jdW1lbnRhdGlv
+bi9wb2t5LmVudA0KPiA+PiBAQCAtNjIsNyArNjIsNyBAQA0KPiA+PiAgIDwhRU5USVRZIFVCVU5U
+VV9IT1NUX1BBQ0tBR0VTX0VTU0VOVElBTCAiZ2F3ayB3Z2V0IGdpdC1jb3JlIGRpZmZzdGF0DQo+
+IHVuemlwIHRleGluZm8gZ2NjLW11bHRpbGliIFwNCj4gPj4gICAgICAgIGJ1aWxkLWVzc2VudGlh
+bCBjaHJwYXRoIHNvY2F0IGNwaW8gcHl0aG9uMyBweXRob24zLXBpcCBweXRob24zLQ0KPiBwZXhw
+ZWN0IFwNCj4gPj4gICAgICAgIHh6LXV0aWxzIGRlYmlhbnV0aWxzIGlwdXRpbHMtcGluZyBweXRo
+b24zLWdpdCBweXRob24zLWppbmphMg0KPiBsaWJlZ2wxLW1lc2EgbGlic2RsMS4yLWRldiBcDQo+
+ID4+IC0gICAgIHB5bGludDMgeHRlcm0gcHl0aG9uMy1zdWJ1bml0IG1lc2EtY29tbW9uLWRldiI+
+DQo+ID4+ICsgICAgIHB5bGludDMgeHRlcm0gcHl0aG9uMy1zdWJ1bml0IG1lc2EtY29tbW9uLWRl
+diBzY3JlZW4iPg0KPiA+ICAgICAgICAgICAgICAgICAgXl5eXl4NCj4gPiBEb2Vzbid0ICJ4dGVy
+bSIgZnVsZmlsbCB0aGUgcmVxdWlyZW1lbnQgZm9yIGEgdmFsaWQgdGVybWluYWw/DQo+IA0KPiBO
+bywgYmVjYXVzZSBpbiBteSBjYXNlIEkgYW0gbG9nZ2luZyByZW1vdGVseSB0byB0aGUgYnVpbGQg
+bWFjaGluZSB2aWENCj4gU1NILiBIZXJlIGFyZSBtb3JlIGRldGFpbHMgKHdpdGhvdXQgaW5zdGFs
+bGVkIHNjcmVlbik6DQo+IA0KPiAqIEkgaGF2ZSB4dGVybSBpbnN0YWxsZWQ6DQo+IA0KPiAkIGRw
+a2cgLWwgfCBncmVwIHh0ZXJtDQo+IGlpwqAgeHRlcm0gMzMwLTF1YnVudHUywqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIGFtZDY0DQo+IFggdGVybWluYWwgZW11bGF0b3INCj4gDQo+ICogSSBhbSB1c2luZyByZWxl
+YXNlIER1bmZlbGw6DQo+IA0KPiAkIGdpdCBicmFuY2gNCj4gKiBkdW5mZWxsDQo+IA0KPiAqIGRl
+dnNoZWxsIGZhaWxzOg0KPiANCj4gJCBiaXRiYWtlIHUtYm9vdCAtYyBkZXZzaGVsbA0KPiANCj4g
+RVJST1I6IHUtYm9vdC0xXzIwMjAuMDEtcjAgZG9fZGV2c2hlbGw6IE5vIHZhbGlkIHRlcm1pbmFs
+IGZvdW5kLCB1bmFibGUNCj4gdG8gb3BlbiBkZXZzaGVsbC4NCj4gVHJpZWQgdGhlIGZvbGxvd2lu
+ZyBjb21tYW5kczoNCj4gIMKgwqDCoCB0bXV4IHNwbGl0LXdpbmRvdyAtYyAie2N3ZH0iICJkb190
+ZXJtaW5hbCINCj4gIMKgwqDCoCB0bXV4IG5ldy13aW5kb3cgLWMgIntjd2R9IiAtbiAiT3BlbkVt
+YmVkZGVkIERldmVsb3BlciBTaGVsbCIgImRvX3Rlcm1pbmFsIg0KPiAgwqDCoMKgIHhmY2U0LXRl
+cm1pbmFsIC1UICJPcGVuRW1iZWRkZWQgRGV2ZWxvcGVyIFNoZWxsIiAtZSAiZG9fdGVybWluYWwi
+DQo+ICDCoMKgwqAgdGVybWlub2xvZ3kgLVQ9Ik9wZW5FbWJlZGRlZCBEZXZlbG9wZXIgU2hlbGwi
+IC1lIGRvX3Rlcm1pbmFsDQo+ICDCoMKgwqAgbWF0ZS10ZXJtaW5hbCAtLWRpc2FibGUtZmFjdG9y
+eSAtdCAiT3BlbkVtYmVkZGVkIERldmVsb3BlciBTaGVsbCIgLXggZG9fdGVybWluYWwNCj4gIMKg
+wqDCoCBrb25zb2xlIC0tc2VwYXJhdGUgLS13b3JrZGlyIC4gLXAgdGFidGl0bGU9Ik9wZW5FbWJl
+ZGRlZCBEZXZlbG9wZXIgU2hlbGwiIC1lIGRvX3Rlcm1pbmFsDQo+ICDCoMKgwqAgZ25vbWUtdGVy
+bWluYWwgLXQgIk9wZW5FbWJlZGRlZCBEZXZlbG9wZXIgU2hlbGwiIC0tIGRvX3Rlcm1pbmFsDQo+
+ICDCoMKgwqAgeHRlcm0gLVQgIk9wZW5FbWJlZGRlZCBEZXZlbG9wZXIgU2hlbGwiIC1lIGRvX3Rl
+cm1pbmFsDQo+ICDCoMKgwqAgcnh2dCAtVCAiT3BlbkVtYmVkZGVkIERldmVsb3BlciBTaGVsbCIg
+LWUgZG9fdGVybWluYWwNCj4gIMKgwqDCoCB0bXV4IG5ldyAtYyAie2N3ZH0iIC1kIC1zIGRldnNo
+ZWxsIC1uIGRldnNoZWxsICJkb190ZXJtaW5hbCINCj4gIMKgwqDCoCBzY3JlZW4gLUQgLW0gLXQg
+Ik9wZW5FbWJlZGRlZCBEZXZlbG9wZXIgU2hlbGwiIC1TIGRldnNoZWxsIGRvX3Rlcm1pbmFsDQo+
+IA0KPiBJIGJlbGlldmUgb2Z0ZW4gZGV2ZWxvcGVyIGxvZ2luIHZpYSBTU0ggdG8gYnVpbGQgbWFj
+aGluZXMgdGhlcmVmb3JlIGl0DQo+IHdpbGwgYmUgdXNlZnVsIHRvIGhhdmUgc2NyZWVuIGluIHRo
+ZSBsaXN0IG9mIHBhY2thZ2VzLg0KDQpXZWxsLCB5b3UgY2FuIGFyZ3VlIHRoYXQgYW55IG9yIGFs
+bCBvZiB0aGUgYWJvdmUgY29tbWFuZHMgc2hvdWxkIGJlIA0KYWRkZWQgdG8gdGhlIGxpc3QgdGhl
+bi4gV2hpY2ggdGVybWluYWwgb25lIHByZWZlcnMgaXMgdmVyeSBtdWNoIGEgDQpwZXJzb25hbCBj
+aG9pY2UgKEkgZm9yIG9uZSBoYXRlIGJvdGggc2NyZWVuIGFuZCB0bXV4IGFuZCBuZXZlciB1c2Ug
+DQp0aGVtKS4gVGhlICpfSE9TVF9QQUNLQUdFU19FU1NFTlRJQUwgdmFyaWFibGVzIGFyZSBzdXBw
+b3NlZCB0byBsaXN0IA0Kb25seSB0aGUgZXNzZW50aWFsIHBhY2thZ2VzIG5lZWRlZCB0byBidWls
+ZCBhbmQgcnVuIGEgUUVNVSBpbWFnZSANCndpdGggZ3JhcGhpY3Mgc3VwcG9ydCwgYW5kIEkgd2ls
+bCBhcmd1ZSB0aGF0IHNjcmVlbiBkb2VzIG5vdCBmaWxsIA0KdGhhdCByZXF1aXJlbWVudC4gVGhl
+IGVycm9yIG1lc3NhZ2UgYWJvdmUgc2hvdWxkIGJlIG1vcmUgdGhhbiANCmVub3VnaCB0byBoZWxw
+IGFueW9uZSBzZWxlY3QgYSBzdWl0YWJsZSB0ZXJtaW5hbCB0byBpbnN0YWxsIGlmIHRoZXkgDQp3
+YW50IHRvIHVzZSBkZXZzaGVsbC4NCg0KPiBCZXN0IHJlZ2FyZHMsDQo+IExlb24NCj4gDQo+ID4g
+SXQgaXMgYWxyZWFkeSBzcGVjaWZpZWQgZm9yIGFsbCB0aGUgZGlzdHJvcywgbm90IG9ubHkgVWJ1
+bnR1Lg0KPiA+DQo+ID4+ICAgPCFFTlRJVFkgRkVET1JBX0hPU1RfUEFDS0FHRVNfRVNTRU5USUFM
+ICJnYXdrIG1ha2Ugd2dldCB0YXIgYnppcDINCj4gZ3ppcCBweXRob24zIHVuemlwIHBlcmwgcGF0
+Y2ggXA0KPiA+PiAgICAgICAgZGlmZnV0aWxzIGRpZmZzdGF0IGdpdCBjcHAgZ2NjIGdjYy1jKysg
+Z2xpYmMtZGV2ZWwgdGV4aW5mbw0KPiBjaHJwYXRoIFwNCj4gPj4gICAgICAgIGNjYWNoZSBwZXJs
+LURhdGEtRHVtcGVyIHBlcmwtVGV4dC1QYXJzZVdvcmRzIHBlcmwtVGhyZWFkLVF1ZXVlDQo+IHBl
+cmwtYmlnbnVtIHNvY2F0IFwNCj4gPj4gLS0NCj4gPj4gMi4xNy4xDQo+ID4gLy9QZXRlcg0KPiA+
+DQo+IC0tDQo+IExlb24gQW5hdmkNCj4gU29mdHdhcmUgRW5naW5lZXINCj4ga29uc3Vsa28uY29t
+DQoNCi8vUGV0ZXINCg0K
