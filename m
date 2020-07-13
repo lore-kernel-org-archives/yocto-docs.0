@@ -1,158 +1,72 @@
-Received: from heian.cn.fujitsu.com (heian.cn.fujitsu.com [183.91.158.132])
- by mx.groups.io with SMTP id smtpd.web12.13986.1594622470134436470
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+ by mx.groups.io with SMTP id smtpd.web12.14123.1594623214288032001
  for <docs@lists.yoctoproject.org>;
- Sun, 12 Jul 2020 23:41:11 -0700
+ Sun, 12 Jul 2020 23:53:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=SPF record not found (domain: cn.fujitsu.com, ip: 183.91.158.132, mailfrom: leimaohui@cn.fujitsu.com)
-X-IronPort-AV: E=Sophos;i="5.75,346,1589212800"; 
-   d="scan'208,217";a="96220691"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 13 Jul 2020 14:40:46 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
-	by cn.fujitsu.com (Postfix) with ESMTP id 116B54CE4BDE
-	for <docs@lists.yoctoproject.org>; Mon, 13 Jul 2020 14:40:43 +0800 (CST)
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204) by
- G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Mon, 13 Jul 2020 14:40:46 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local ([::1]) by
- G08CNEXMBPEKD05.g08.fujitsu.local ([fe80::4086:9520:5ef9:407d%14]) with mapi
- id 15.00.1497.006; Mon, 13 Jul 2020 14:40:46 +0800
-From: "leimaohui" <leimaohui@cn.fujitsu.com>
-To: "Lei, Maohui" <leimaohui@cn.fujitsu.com>, "docs@lists.yoctoproject.org"
-	<docs@lists.yoctoproject.org>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=AhJV+zDT;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.46, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f46.google.com with SMTP id z15so14328629wrl.8
+        for <docs@lists.yoctoproject.org>; Sun, 12 Jul 2020 23:53:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=iOwviCGv8J3R2KcJzsNRM3SP+N54c26P3NfKA1xIR0Q=;
+        b=AhJV+zDTBYg3XXdg32ZaFTNBwPkjd6/LudEsru4EphFnO7cieMkGdmUNFL6nIB/6xC
+         bJHt/zjIiMQ60o8/ZxnsUS2DP76SyVhE0qs9VJg/yrbhTQCtHYtr068q8xZSlOLqyNyI
+         hHI45odkleYsm5R4YVF708lXzmmn7dcsQBJGM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=iOwviCGv8J3R2KcJzsNRM3SP+N54c26P3NfKA1xIR0Q=;
+        b=HkS1edUV9mHHrlceaRyj6moopKB6jOScuzJyM9ct4yRRy4bQXCpcbcialNXdRrNAXB
+         OcPObQKTTQDn1KtOMwufUH+4mFiaj54E5xM9hbp+uno990cP+Sht6u9wgY5v1XnHRB2Z
+         C2s4QEKC8bu+OjiUmQR4/WwrOmLN1QFwvY9sy+qpPt/2rBvVxa+63KaP/L3EyUWa+IPd
+         GLlzk/w5G9wRjD0BYwEYvgxSauoc4yECJsiCQb5fsesnLL4L4/QsoROarZIahp8bG1A8
+         7M8Te+4lv8mkhxupC7HngWOY22UM9AkFHfwIVhWwMEEhTfTdDGBD8WMZJs8siNnvtW6e
+         66Ww==
+X-Gm-Message-State: AOAM5300cI/OAVXQosdOAPEBhgYYoJj1eWHSMESmGegdhnXvg+Nnt+jI
+	rQ47tSKs07sF/BGMscVE2gDVXg==
+X-Google-Smtp-Source: ABdhPJzRkAzK3MWIYo/nl3Lz8B0r1loY9jPBzy2sP5DjiGrrwUzTgsWafuBgKZVfz6sPIwrpBoGmZA==
+X-Received: by 2002:adf:84e2:: with SMTP id 89mr81568959wrg.139.1594623212651;
+        Sun, 12 Jul 2020 23:53:32 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from hex (5751f4a1.skybroadband.com. [87.81.244.161])
+        by smtp.gmail.com with ESMTPSA id q5sm22726910wrp.60.2020.07.12.23.53.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 12 Jul 2020 23:53:31 -0700 (PDT)
+Message-ID: <8b05a52663dce26300ae56c1ed2a7ba24936f2aa.camel@linuxfoundation.org>
 Subject: Re: [docs] About spdx part in docs
-Thread-Topic: [docs] About spdx part in docs
-Thread-Index: AQHWVBDcW9MILDgjhESZDCgjNWyH36kFGOAg
-Date: Mon, 13 Jul 2020 06:40:45 +0000
-Message-ID: <04f72ead1dd74ae9a29b82d454ee9dac@G08CNEXMBPEKD05.g08.fujitsu.local>
-References: <wvbX.1594093435889989965.leYQ@lists.yoctoproject.org>
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: leimaohui <leimaohui@cn.fujitsu.com>, docs@lists.yoctoproject.org
+Date: Mon, 13 Jul 2020 07:53:30 +0100
 In-Reply-To: <wvbX.1594093435889989965.leYQ@lists.yoctoproject.org>
-Accept-Language: en-AU, zh-CN, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.167.225.227]
+References: <wvbX.1594093435889989965.leYQ@lists.yoctoproject.org>
+User-Agent: Evolution 3.36.2-0ubuntu1 
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 116B54CE4BDE.AEC31
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: leimaohui@cn.fujitsu.com
-X-Spam-Status: No
-Content-Language: zh-CN
-Content-Type: multipart/alternative;
-	boundary="_000_04f72ead1dd74ae9a29b82d454ee9dacG08CNEXMBPEKD05g08fujit_"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
---_000_04f72ead1dd74ae9a29b82d454ee9dacG08CNEXMBPEKD05g08fujit_
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Hi,
 
-cGluZw0KDQpGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcgPGRv
-Y3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmIE9mIGxlaW1h
-b2h1aQ0KU2VudDogVHVlc2RheSwgSnVseSA3LCAyMDIwIDExOjQ0IEFNDQpU
-bzogZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnDQpTdWJqZWN0OiBbZG9j
-c10gQWJvdXQgc3BkeCBwYXJ0IGluIGRvY3MNCg0KDQpIaSwgYWxsDQoNCg0K
-DQpJbiBkb2NzIG9mIFlQLCB0aGUgc2VjdGlvbiBvZiBzcGR4IGlzIHN0aWxs
-IGFib3V0IGhvdyB0byB1c2Ugc3BkeC5iYmNsYXNzLiBCdXQgc3BkeC5iYmNs
-YXNzIGlzIHRvbyBvbGQgdG8gdXNlLg0KDQpOZXcgbGF5ZXIgbWV0YS1zcGR4
-c2Nhbm5lciBoYXMgYmVlbiBhZGRlZCBpbnRvIFlQIHJlcG8uIFNvLCBob3cg
-YWJvdXQgYWRkaW5nIG1ldGEtc3BkeHNjYW5uZXIoaHR0cDovL2dpdC55b2N0
-b3Byb2plY3Qub3JnL2NnaXQvY2dpdC5jZ2kvbWV0YS1zcGR4c2Nhbm5lci8p
-IGludG8gIk1FR0EgTUFOVUFMUyIgYW5kICJSRUZFUkVOQ0UgTUFOVUFMUyI/
-DQoNCg0KDQpCZXN0IHJlZ2FyZHMNCg0KTGVpIE1hb2h1aQ0KCgo=
+On Mon, 2020-07-06 at 20:43 -0700, leimaohui wrote:
+> In docs of YP, the section of spdx is still about how to use
+> spdx.bbclass. But spdx.bbclass is too old to use.
+> 
+> New layer meta-spdxscanner has been added into YP repo. So, how about
+> adding meta-spdxscanner(
+> http://git.yoctoproject.org/cgit/cgit.cgi/meta-spdxscanner/) into
+> "MEGA MANUALS" and "REFERENCE MANUALS"?
 
---_000_04f72ead1dd74ae9a29b82d454ee9dacG08CNEXMBPEKD05g08fujit_
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: base64
+I'd happily see this documented, patches gratefully received!
 
-PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp2bWwi
-IHhtbG5zOm89InVybjpzY2hlbWFzLW1pY3Jvc29mdC1jb206b2ZmaWNlOm9m
-ZmljZSIgeG1sbnM6dz0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTpvZmZp
-Y2U6d29yZCIgeG1sbnM6bT0iaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNv
-bS9vZmZpY2UvMjAwNC8xMi9vbW1sIiB4bWxucz0iaHR0cDovL3d3dy53My5v
-cmcvVFIvUkVDLWh0bWw0MCI+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9
-IkNvbnRlbnQtVHlwZSIgY29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PXV0
-Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRvciIgY29udGVudD0iTWljcm9z
-b2Z0IFdvcmQgMTUgKGZpbHRlcmVkIG1lZGl1bSkiPg0KPHN0eWxlPjwhLS0N
-Ci8qIEZvbnQgRGVmaW5pdGlvbnMgKi8NCkBmb250LWZhY2UNCgl7Zm9udC1m
-YW1pbHk6IkNhbWJyaWEgTWF0aCI7DQoJcGFub3NlLTE6MiA0IDUgMyA1IDQg
-NiAzIDIgNDt9DQpAZm9udC1mYWNlDQoJe2ZvbnQtZmFtaWx5Ouetiee6vzsN
-CglwYW5vc2UtMToyIDEgNiAwIDMgMSAxIDEgMSAxO30NCkBmb250LWZhY2UN
-Cgl7Zm9udC1mYW1pbHk6Q2FsaWJyaTsNCglwYW5vc2UtMToyIDE1IDUgMiAy
-IDIgNCAzIDIgNDt9DQpAZm9udC1mYWNlDQoJe2ZvbnQtZmFtaWx5OkNvbnNv
-bGFzOw0KCXBhbm9zZS0xOjIgMTEgNiA5IDIgMiA0IDMgMiA0O30NCkBmb250
-LWZhY2UNCgl7Zm9udC1mYW1pbHk6IlxA562J57q/IjsNCglwYW5vc2UtMToy
-IDEgNiAwIDMgMSAxIDEgMSAxO30NCi8qIFN0eWxlIERlZmluaXRpb25zICov
-DQpwLk1zb05vcm1hbCwgbGkuTXNvTm9ybWFsLCBkaXYuTXNvTm9ybWFsDQoJ
-e21hcmdpbjowY207DQoJbWFyZ2luLWJvdHRvbTouMDAwMXB0Ow0KCWZvbnQt
-c2l6ZToxMi4wcHQ7DQoJZm9udC1mYW1pbHk6IlRpbWVzIE5ldyBSb21hbiIs
-c2VyaWY7fQ0KYTpsaW5rLCBzcGFuLk1zb0h5cGVybGluaw0KCXttc28tc3R5
-bGUtcHJpb3JpdHk6OTk7DQoJY29sb3I6Ymx1ZTsNCgl0ZXh0LWRlY29yYXRp
-b246dW5kZXJsaW5lO30NCmE6dmlzaXRlZCwgc3Bhbi5Nc29IeXBlcmxpbmtG
-b2xsb3dlZA0KCXttc28tc3R5bGUtcHJpb3JpdHk6OTk7DQoJY29sb3I6cHVy
-cGxlOw0KCXRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7fQ0KcC5Nc29QbGFp
-blRleHQsIGxpLk1zb1BsYWluVGV4dCwgZGl2Lk1zb1BsYWluVGV4dA0KCXtt
-c28tc3R5bGUtcHJpb3JpdHk6OTk7DQoJbXNvLXN0eWxlLWxpbms6Iue6r+aW
-h+acrCDlrZfnrKYiOw0KCW1zby1tYXJnaW4tdG9wLWFsdDphdXRvOw0KCW1h
-cmdpbi1yaWdodDowY207DQoJbXNvLW1hcmdpbi1ib3R0b20tYWx0OmF1dG87
-DQoJbWFyZ2luLWxlZnQ6MGNtOw0KCWZvbnQtc2l6ZToxMi4wcHQ7DQoJZm9u
-dC1mYW1pbHk6IlRpbWVzIE5ldyBSb21hbiIsc2VyaWY7fQ0KcC5tc29ub3Jt
-YWwwLCBsaS5tc29ub3JtYWwwLCBkaXYubXNvbm9ybWFsMA0KCXttc28tc3R5
-bGUtbmFtZTptc29ub3JtYWw7DQoJbXNvLW1hcmdpbi10b3AtYWx0OmF1dG87
-DQoJbWFyZ2luLXJpZ2h0OjBjbTsNCgltc28tbWFyZ2luLWJvdHRvbS1hbHQ6
-YXV0bzsNCgltYXJnaW4tbGVmdDowY207DQoJZm9udC1zaXplOjEyLjBwdDsN
-Cglmb250LWZhbWlseToiVGltZXMgTmV3IFJvbWFuIixzZXJpZjt9DQpzcGFu
-LmENCgl7bXNvLXN0eWxlLW5hbWU6Iue6r+aWh+acrCDlrZfnrKYiOw0KCW1z
-by1zdHlsZS1wcmlvcml0eTo5OTsNCgltc28tc3R5bGUtbGluazrnuq/mlofm
-nKw7DQoJZm9udC1mYW1pbHk6Q29uc29sYXM7fQ0Kc3Bhbi5FbWFpbFN0eWxl
-MjANCgl7bXNvLXN0eWxlLXR5cGU6cGVyc29uYWwtcmVwbHk7DQoJZm9udC1m
-YW1pbHk6562J57q/Ow0KCWNvbG9yOiMxRjQ5N0Q7fQ0KLk1zb0NocERlZmF1
-bHQNCgl7bXNvLXN0eWxlLXR5cGU6ZXhwb3J0LW9ubHk7DQoJZm9udC1zaXpl
-OjEwLjVwdDsNCglmb250LWZhbWlseTrnrYnnur87fQ0KQHBhZ2UgV29yZFNl
-Y3Rpb24xDQoJe3NpemU6NjEyLjBwdCA3OTIuMHB0Ow0KCW1hcmdpbjo3Mi4w
-cHQgOTAuMHB0IDcyLjBwdCA5MC4wcHQ7fQ0KZGl2LldvcmRTZWN0aW9uMQ0K
-CXtwYWdlOldvcmRTZWN0aW9uMTt9DQotLT48L3N0eWxlPjwhLS1baWYgZ3Rl
-IG1zbyA5XT48eG1sPg0KPG86c2hhcGVkZWZhdWx0cyB2OmV4dD0iZWRpdCIg
-c3BpZG1heD0iMTAyNiIgLz4NCjwveG1sPjwhW2VuZGlmXS0tPjwhLS1baWYg
-Z3RlIG1zbyA5XT48eG1sPg0KPG86c2hhcGVsYXlvdXQgdjpleHQ9ImVkaXQi
-Pg0KPG86aWRtYXAgdjpleHQ9ImVkaXQiIGRhdGE9IjEiIC8+DQo8L286c2hh
-cGVsYXlvdXQ+PC94bWw+PCFbZW5kaWZdLS0+DQo8L2hlYWQ+DQo8Ym9keSBs
-YW5nPSJFTi1VUyIgbGluaz0iYmx1ZSIgdmxpbms9InB1cnBsZSI+DQo8ZGl2
-IGNsYXNzPSJXb3JkU2VjdGlvbjEiPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+
-PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9udC1mYW1pbHk6562J
-57q/O2NvbG9yOiMxRjQ5N0QiPnBpbmc8bzpwPjwvbzpwPjwvc3Bhbj48L3A+
-DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48c3BhbiBzdHlsZT0iZm9udC1zaXpl
-OjExLjBwdDtmb250LWZhbWlseTrnrYnnur87Y29sb3I6IzFGNDk3RCI+PG86
-cD4mbmJzcDs8L286cD48L3NwYW4+PC9wPg0KPGRpdiBzdHlsZT0iYm9yZGVy
-Om5vbmU7Ym9yZGVyLWxlZnQ6c29saWQgYmx1ZSAxLjVwdDtwYWRkaW5nOjBj
-bSAwY20gMGNtIDQuMHB0Ij4NCjxkaXY+DQo8ZGl2IHN0eWxlPSJib3JkZXI6
-bm9uZTtib3JkZXItdG9wOnNvbGlkICNFMUUxRTEgMS4wcHQ7cGFkZGluZzoz
-LjBwdCAwY20gMGNtIDBjbSI+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48Yj48
-c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVv
-dDtDYWxpYnJpJnF1b3Q7LHNhbnMtc2VyaWYiPkZyb206PC9zcGFuPjwvYj48
-c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVv
-dDtDYWxpYnJpJnF1b3Q7LHNhbnMtc2VyaWYiPiBkb2NzQGxpc3RzLnlvY3Rv
-cHJvamVjdC5vcmcgJmx0O2RvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZyZn
-dDsNCjxiPk9uIEJlaGFsZiBPZiA8L2I+bGVpbWFvaHVpPGJyPg0KPGI+U2Vu
-dDo8L2I+IFR1ZXNkYXksIEp1bHkgNywgMjAyMCAxMTo0NCBBTTxicj4NCjxi
-PlRvOjwvYj4gZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPGJyPg0KPGI+
-U3ViamVjdDo8L2I+IFtkb2NzXSBBYm91dCBzcGR4IHBhcnQgaW4gZG9jczxv
-OnA+PC9vOnA+PC9zcGFuPjwvcD4NCjwvZGl2Pg0KPC9kaXY+DQo8cCBjbGFz
-cz0iTXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjxwIGNsYXNz
-PSJNc29QbGFpblRleHQiPkhpLCBhbGw8bzpwPjwvbzpwPjwvcD4NCjxwIGNs
-YXNzPSJNc29QbGFpblRleHQiPiZuYnNwOzxvOnA+PC9vOnA+PC9wPg0KPHAg
-Y2xhc3M9Ik1zb1BsYWluVGV4dCI+SW4gZG9jcyBvZiBZUCwgdGhlIHNlY3Rp
-b24gb2Ygc3BkeCBpcyBzdGlsbCBhYm91dCBob3cgdG8gdXNlIHNwZHguYmJj
-bGFzcy4gQnV0IHNwZHguYmJjbGFzcyBpcyB0b28gb2xkIHRvIHVzZS48bzpw
-PjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJNc29QbGFpblRleHQiPk5ldyBsYXll
-ciBtZXRhLXNwZHhzY2FubmVyIGhhcyBiZWVuIGFkZGVkIGludG8gWVAgcmVw
-by4gU28sIGhvdyBhYm91dCBhZGRpbmcgbWV0YS1zcGR4c2Nhbm5lcig8YSBo
-cmVmPSJodHRwOi8vZ2l0LnlvY3RvcHJvamVjdC5vcmcvY2dpdC9jZ2l0LmNn
-aS9tZXRhLXNwZHhzY2FubmVyLyI+aHR0cDovL2dpdC55b2N0b3Byb2plY3Qu
-b3JnL2NnaXQvY2dpdC5jZ2kvbWV0YS1zcGR4c2Nhbm5lci88L2E+KSBpbnRv
-DQogJnF1b3Q7TUVHQSBNQU5VQUxTJnF1b3Q7IGFuZCAmcXVvdDtSRUZFUkVO
-Q0UgTUFOVUFMUyZxdW90Oz88bzpwPjwvbzpwPjwvcD4NCjxwIGNsYXNzPSJN
-c29QbGFpblRleHQiPiZuYnNwOzxvOnA+PC9vOnA+PC9wPg0KPHAgY2xhc3M9
-Ik1zb1BsYWluVGV4dCI+QmVzdCByZWdhcmRzPG86cD48L286cD48L3A+DQo8
-cCBjbGFzcz0iTXNvUGxhaW5UZXh0Ij5MZWkgTWFvaHVpPG86cD48L286cD48
-L3A+DQo8L2Rpdj4NCjwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg0K
+Based on this email, I also removed sdpx.bbclass from OE-Core so we can
+remove mention of that from the manual now too.
 
---_000_04f72ead1dd74ae9a29b82d454ee9dacG08CNEXMBPEKD05g08fujit_--
+Cheers,
+
+Richard
+
+
+
