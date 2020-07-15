@@ -1,67 +1,77 @@
-Received: from heian.cn.fujitsu.com (heian.cn.fujitsu.com [183.91.158.132])
- by mx.groups.io with SMTP id smtpd.web11.15037.1594629346305732427
+Received: from mail-il1-f196.google.com (mail-il1-f196.google.com [209.85.166.196])
+ by mx.groups.io with SMTP id smtpd.web12.2668.1594850017531987577
  for <docs@lists.yoctoproject.org>;
- Mon, 13 Jul 2020 01:35:47 -0700
+ Wed, 15 Jul 2020 14:53:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=SPF record not found (domain: cn.fujitsu.com, ip: 183.91.158.132, mailfrom: leimaohui@cn.fujitsu.com)
-X-IronPort-AV: E=Sophos;i="5.75,346,1589212800"; 
-   d="scan'208";a="96228412"
-Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
-  by heian.cn.fujitsu.com with ESMTP; 13 Jul 2020 16:35:40 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
-	by cn.fujitsu.com (Postfix) with ESMTP id 3DF284CE2808;
-	Mon, 13 Jul 2020 16:35:37 +0800 (CST)
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204) by
- G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204) with Microsoft SMTP Server
- (TLS) id 15.0.1497.2; Mon, 13 Jul 2020 16:35:40 +0800
-Received: from G08CNEXMBPEKD05.g08.fujitsu.local ([::1]) by
- G08CNEXMBPEKD05.g08.fujitsu.local ([fe80::4086:9520:5ef9:407d%14]) with mapi
- id 15.00.1497.006; Mon, 13 Jul 2020 16:35:40 +0800
-From: "leimaohui" <leimaohui@cn.fujitsu.com>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
-	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Subject: Re: [docs] About spdx part in docs
-Thread-Topic: [docs] About spdx part in docs
-Thread-Index: AQHWVBDcW9MILDgjhESZDCgjNWyH36kElmQAgAChtUA=
-Date: Mon, 13 Jul 2020 08:35:40 +0000
-Message-ID: <1ba2d1570a8046668fa4c9f3ac4ef5df@G08CNEXMBPEKD05.g08.fujitsu.local>
-References: <wvbX.1594093435889989965.leYQ@lists.yoctoproject.org>
- <8b05a52663dce26300ae56c1ed2a7ba24936f2aa.camel@linuxfoundation.org>
-In-Reply-To: <8b05a52663dce26300ae56c1ed2a7ba24936f2aa.camel@linuxfoundation.org>
-Accept-Language: en-AU, zh-CN, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.167.225.227]
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=N7ibdp7B;
+ spf=pass (domain: gmail.com, ip: 209.85.166.196, mailfrom: jpewhacker@gmail.com)
+Received: by mail-il1-f196.google.com with SMTP id h16so3324888ilj.11
+        for <docs@lists.yoctoproject.org>; Wed, 15 Jul 2020 14:53:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x/VU8NNek1SOIOmo8eVZt9ZFG6yq4kWJGtA76ijF41Q=;
+        b=N7ibdp7BF3sV23J7LpLAnlQA5b82y4s/aaMx9Z+d7ccd7La+Y8RfEuO11oB+9DEx4o
+         +/BLvrqWepvCyY5/9qT4gaW1NLLImDitM4Y2mqRAnR4isWgCxBLNNmNR93S3QHqwc23i
+         QNuQPIa62CiPmRVAkdLLiN2GkLO4RTbE/6ToyQJ++GIgSiHV6ACgN76P9jvCcykUCyOD
+         W0NKAWHAJADpD1RO3efcYOMv9gQlh0a4hBua1SsrtkDUVm1zBVgwDbVr/At0yFif0D3o
+         Pj7lpaR5NfVYXHeIKQCxVnnNb2/JQP+z0NUK+WKrtE3cH/Rdp+y0MjY2MrVJftSY2TIP
+         w/ww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=x/VU8NNek1SOIOmo8eVZt9ZFG6yq4kWJGtA76ijF41Q=;
+        b=SUQ9JuKvzcU6WA0fz8aSHFbPYtIQvoFWpbaqujdZKHjvIUZ6OcxoB5qvufMlIJLQvi
+         ovWShYpdKBejbe1+ew0n/DnKKho5gBmyMAeI6V1ioas+iEXu/DSVGm+naaemDTl2hWol
+         yqKTivafH8oH/Z1U3R+Jxmv80LxJP9u6qdyFvLrabC7WtQETQyzl1erhrQJAVudB7yef
+         AncYOQckuyI9+gBduSKz7vzp6WgvU5c2jfMqZWIcq8Z2esOs/Ia7qbqniJWlmnPDSG1j
+         SGy/p/ewo+moVw9mFXkTVSq2lQ574UEr+knP4FWjsEB4fp0aCLo0R/urpuA8hStq844c
+         U7Qg==
+X-Gm-Message-State: AOAM533HwXz190KrOVDR4XgAL/ewxOsW7+gZrWTCDjbB2FD1Yv0/lRIL
+	fFLjlmeZfizFPtCYf9mRhGVtIHITXK8=
+X-Google-Smtp-Source: ABdhPJxkNzBq2Bo6q4eZe3FMCHZZj0ak5zKrqhxjdAltQPXkMse7JMFdLitAm53ul4LDr7bhrO6rAw==
+X-Received: by 2002:a92:d6d2:: with SMTP id z18mr1531272ilp.272.1594850016716;
+        Wed, 15 Jul 2020 14:53:36 -0700 (PDT)
+Return-Path: <jpewhacker@gmail.com>
+Received: from localhost.localdomain ([2605:a601:ac3d:c100:a8de:37f6:bed5:6e4c])
+        by smtp.gmail.com with ESMTPSA id a11sm1846983iow.26.2020.07.15.14.53.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Jul 2020 14:53:36 -0700 (PDT)
+From: "Joshua Watt" <JPEWhacker@gmail.com>
+X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Joshua Watt <JPEWhacker@gmail.com>
+Subject: [docs][PATCH] virtual/libgbm is the provider of gbm.pc
+Date: Wed, 15 Jul 2020 16:53:30 -0500
+Message-Id: <20200715215330.16840-1-JPEWhacker@gmail.com>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-X-yoursite-MailScanner-ID: 3DF284CE2808.AB709
-X-yoursite-MailScanner: Found to be clean
-X-yoursite-MailScanner-From: leimaohui@cn.fujitsu.com
-X-Spam-Status: No
-Content-Language: zh-CN
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Content-Transfer-Encoding: 8bit
 
-SGksIFJpY2hhcmQNCg0KVGhhbmsgeW91IGZvciB5b3VyIHJlcGx5LiBJJ2xs
-IHNlbmQgYSBwYXRjaCBsYXRlci4NCg0KQmVzdCByZWdhcmRzDQpMZWkNCg0K
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBSaWNoYXJk
-IFB1cmRpZSA8cmljaGFyZC5wdXJkaWVAbGludXhmb3VuZGF0aW9uLm9yZz4N
-Cj4gU2VudDogTW9uZGF5LCBKdWx5IDEzLCAyMDIwIDI6NTQgUE0NCj4gVG86
-IExlaSwgTWFvaHVpIDxsZWltYW9odWlAY24uZnVqaXRzdS5jb20+Ow0KPiBk
-b2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4gU3ViamVjdDogUmU6IFtk
-b2NzXSBBYm91dCBzcGR4IHBhcnQgaW4gZG9jcw0KPiANCj4gSGksDQo+IA0K
-PiBPbiBNb24sIDIwMjAtMDctMDYgYXQgMjA6NDMgLTA3MDAsIGxlaW1hb2h1
-aSB3cm90ZToNCj4gPiBJbiBkb2NzIG9mIFlQLCB0aGUgc2VjdGlvbiBvZiBz
-cGR4IGlzIHN0aWxsIGFib3V0IGhvdyB0byB1c2UNCj4gPiBzcGR4LmJiY2xh
-c3MuIEJ1dCBzcGR4LmJiY2xhc3MgaXMgdG9vIG9sZCB0byB1c2UuDQo+ID4N
-Cj4gPiBOZXcgbGF5ZXIgbWV0YS1zcGR4c2Nhbm5lciBoYXMgYmVlbiBhZGRl
-ZCBpbnRvIFlQIHJlcG8uIFNvLCBob3cgYWJvdXQNCj4gPiBhZGRpbmcgbWV0
-YS1zcGR4c2Nhbm5lcigNCj4gPiBodHRwOi8vZ2l0LnlvY3RvcHJvamVjdC5v
-cmcvY2dpdC9jZ2l0LmNnaS9tZXRhLXNwZHhzY2FubmVyLykgaW50bw0KPiA+
-ICJNRUdBIE1BTlVBTFMiIGFuZCAiUkVGRVJFTkNFIE1BTlVBTFMiPw0KPiAN
-Cj4gSSdkIGhhcHBpbHkgc2VlIHRoaXMgZG9jdW1lbnRlZCwgcGF0Y2hlcyBn
-cmF0ZWZ1bGx5IHJlY2VpdmVkIQ0KPiANCj4gQmFzZWQgb24gdGhpcyBlbWFp
-bCwgSSBhbHNvIHJlbW92ZWQgc2RweC5iYmNsYXNzIGZyb20gT0UtQ29yZSBz
-byB3ZSBjYW4NCj4gcmVtb3ZlIG1lbnRpb24gb2YgdGhhdCBmcm9tIHRoZSBt
-YW51YWwgbm93IHRvby4NCj4gDQo+IENoZWVycywNCj4gDQo+IFJpY2hhcmQN
-Cj4gDQo+IA0KPiANCj4gDQoNCgoK
+Providers of libgbm (including mesa) have move to the "virtual/libgbm"
+name to provide this functionality. Update the documentation to prevent
+confusion.
+
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+---
+ documentation/dev-manual/dev-manual-common-tasks.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
+index d29fe6262d..1f24c73434 100644
+--- a/documentation/dev-manual/dev-manual-common-tasks.xml
++++ b/documentation/dev-manual/dev-manual-common-tasks.xml
+@@ -3190,7 +3190,7 @@
+                         building an image.
+                         </para></listitem>
+                     <listitem><para>
+-                        <filename>virtual/mesa</filename>:
++                        <filename>virtual/libgbm</filename>:
+                         Provides <filename>gbm.pc</filename>.
+                         </para></listitem>
+                     <listitem><para>
+-- 
+2.27.0
+
