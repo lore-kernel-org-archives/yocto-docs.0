@@ -1,77 +1,78 @@
-Received: from mail-il1-f196.google.com (mail-il1-f196.google.com [209.85.166.196])
- by mx.groups.io with SMTP id smtpd.web12.2668.1594850017531987577
+Received: from mail-oi1-f196.google.com (mail-oi1-f196.google.com [209.85.167.196])
+ by mx.groups.io with SMTP id smtpd.web12.417.1594938428436593973
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Jul 2020 14:53:37 -0700
+ Thu, 16 Jul 2020 15:27:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=N7ibdp7B;
- spf=pass (domain: gmail.com, ip: 209.85.166.196, mailfrom: jpewhacker@gmail.com)
-Received: by mail-il1-f196.google.com with SMTP id h16so3324888ilj.11
-        for <docs@lists.yoctoproject.org>; Wed, 15 Jul 2020 14:53:37 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=PQucTmFY;
+ spf=pass (domain: gmail.com, ip: 209.85.167.196, mailfrom: akuster808@gmail.com)
+Received: by mail-oi1-f196.google.com with SMTP id e4so6425296oib.1
+        for <docs@lists.yoctoproject.org>; Thu, 16 Jul 2020 15:27:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=x/VU8NNek1SOIOmo8eVZt9ZFG6yq4kWJGtA76ijF41Q=;
-        b=N7ibdp7BF3sV23J7LpLAnlQA5b82y4s/aaMx9Z+d7ccd7La+Y8RfEuO11oB+9DEx4o
-         +/BLvrqWepvCyY5/9qT4gaW1NLLImDitM4Y2mqRAnR4isWgCxBLNNmNR93S3QHqwc23i
-         QNuQPIa62CiPmRVAkdLLiN2GkLO4RTbE/6ToyQJ++GIgSiHV6ACgN76P9jvCcykUCyOD
-         W0NKAWHAJADpD1RO3efcYOMv9gQlh0a4hBua1SsrtkDUVm1zBVgwDbVr/At0yFif0D3o
-         Pj7lpaR5NfVYXHeIKQCxVnnNb2/JQP+z0NUK+WKrtE3cH/Rdp+y0MjY2MrVJftSY2TIP
-         w/ww==
+        h=from:to:subject:date:message-id;
+        bh=FS4iNgKvEss0+mH9nSNZL8a7G3NCJrcuzTmcanURUAg=;
+        b=PQucTmFYcacdFCSI7DvAQ3PNRSN1IjPD+1q3hcuzT6VI+ftHhVCvm2wF87xp7pXaur
+         G9gOHQ9EDqQ6xj/9Q4/ZIuZGqpI6c94gGLn7wFaGx/zGeXwPFS+uoEcymIVQFbHen8sO
+         fYyLlHt5ZY4yi3k6VNLtbOTaLfsr87hKYrrDlEIWqedrL8EAp1jnANCHDwIf9fhC/ZxT
+         FXCUB1IoYZAt2Cl4F7ubTp+7v2UQzqWjjU9k2a41xqFdpGK9M0CcHu/VCk42iKIIzr4y
+         +WYXrFAZV00EOx6j0EqAHyCw389D0vvkFxb884Bigt8ct89urnLJpBMfqRYXcbtxEPLX
+         3LBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=x/VU8NNek1SOIOmo8eVZt9ZFG6yq4kWJGtA76ijF41Q=;
-        b=SUQ9JuKvzcU6WA0fz8aSHFbPYtIQvoFWpbaqujdZKHjvIUZ6OcxoB5qvufMlIJLQvi
-         ovWShYpdKBejbe1+ew0n/DnKKho5gBmyMAeI6V1ioas+iEXu/DSVGm+naaemDTl2hWol
-         yqKTivafH8oH/Z1U3R+Jxmv80LxJP9u6qdyFvLrabC7WtQETQyzl1erhrQJAVudB7yef
-         AncYOQckuyI9+gBduSKz7vzp6WgvU5c2jfMqZWIcq8Z2esOs/Ia7qbqniJWlmnPDSG1j
-         SGy/p/ewo+moVw9mFXkTVSq2lQ574UEr+knP4FWjsEB4fp0aCLo0R/urpuA8hStq844c
-         U7Qg==
-X-Gm-Message-State: AOAM533HwXz190KrOVDR4XgAL/ewxOsW7+gZrWTCDjbB2FD1Yv0/lRIL
-	fFLjlmeZfizFPtCYf9mRhGVtIHITXK8=
-X-Google-Smtp-Source: ABdhPJxkNzBq2Bo6q4eZe3FMCHZZj0ak5zKrqhxjdAltQPXkMse7JMFdLitAm53ul4LDr7bhrO6rAw==
-X-Received: by 2002:a92:d6d2:: with SMTP id z18mr1531272ilp.272.1594850016716;
-        Wed, 15 Jul 2020 14:53:36 -0700 (PDT)
-Return-Path: <jpewhacker@gmail.com>
-Received: from localhost.localdomain ([2605:a601:ac3d:c100:a8de:37f6:bed5:6e4c])
-        by smtp.gmail.com with ESMTPSA id a11sm1846983iow.26.2020.07.15.14.53.35
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=FS4iNgKvEss0+mH9nSNZL8a7G3NCJrcuzTmcanURUAg=;
+        b=FP8a+kOkHnWK9mzKFafqko96oJNK6lKOIILbCgaDb6AVeB0E2P4vwgowoHUcaFETKK
+         J3//SvsLkG2Hx0491aI4ARlJFFpIJh2zei/gqobLJjqACYW1BELvq60ETZuHEHn38lQF
+         jC5JGuylZVdVG60cCZDJDZH4TH0LwuTEz8Vuhi4o04kv2tNmH94q2llQI6KBtEcS3Mr3
+         RAA91cKA9hMREfUbdbpZVyVVcF06mno0L6ommu8qr8ncaT5a3+6q3uwVire4TZBi+fr8
+         plHCnbGB4tMGidyvQbDFAyzbGhOCV/X0B/jqxeWt/UsgCd1rwBigbnWfdCCHEwrReNZB
+         qBaQ==
+X-Gm-Message-State: AOAM533EJ3gwuD8twv5jW9KZ5K59B+VokSqNipAEFT5LGssA7VzC6RiF
+	JK/xiiEb7jQV3Kz9KQWTzmTixSk5nuE=
+X-Google-Smtp-Source: ABdhPJycy2D61F+FdtBDfuMte7bXMMejK2AGPSsLVuyfu8GYUy6AzoMpM/xiGuAyTQ73LnbfILWs1g==
+X-Received: by 2002:aca:4c4a:: with SMTP id z71mr5523556oia.17.1594938427518;
+        Thu, 16 Jul 2020 15:27:07 -0700 (PDT)
+Return-Path: <akuster808@gmail.com>
+Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:7df4:7f73:717d:af68])
+        by smtp.gmail.com with ESMTPSA id d10sm1344757oia.18.2020.07.16.15.27.06
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jul 2020 14:53:36 -0700 (PDT)
-From: "Joshua Watt" <JPEWhacker@gmail.com>
-X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
+        Thu, 16 Jul 2020 15:27:07 -0700 (PDT)
+From: "akuster" <akuster808@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Joshua Watt <JPEWhacker@gmail.com>
-Subject: [docs][PATCH] virtual/libgbm is the provider of gbm.pc
-Date: Wed, 15 Jul 2020 16:53:30 -0500
-Message-Id: <20200715215330.16840-1-JPEWhacker@gmail.com>
-X-Mailer: git-send-email 2.27.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] ref-system-requirements: update supported hosts lists
+Date: Thu, 16 Jul 2020 15:27:05 -0700
+Message-Id: <20200716222705.14182-1-akuster808@gmail.com>
+X-Mailer: git-send-email 2.17.1
 
-Providers of libgbm (including mesa) have move to the "virtual/libgbm"
-name to provide this functionality. Update the documentation to prevent
-confusion.
+drop Ubuntu 19, Fedora 28 & 29
+Add: Fedora 31, 32 , Centos 8 and Ubuntu 20
 
-Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
+Signed-off-by: Armin Kuster <akuster808@gmail.com>
 ---
- documentation/dev-manual/dev-manual-common-tasks.xml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/ref-manual/ref-system-requirements.xml | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
-index d29fe6262d..1f24c73434 100644
---- a/documentation/dev-manual/dev-manual-common-tasks.xml
-+++ b/documentation/dev-manual/dev-manual-common-tasks.xml
-@@ -3190,7 +3190,7 @@
-                         building an image.
-                         </para></listitem>
-                     <listitem><para>
--                        <filename>virtual/mesa</filename>:
-+                        <filename>virtual/libgbm</filename>:
-                         Provides <filename>gbm.pc</filename>.
-                         </para></listitem>
-                     <listitem><para>
+diff --git a/documentation/ref-manual/ref-system-requirements.xml b/documentation/ref-manual/ref-system-requirements.xml
+index 43e217c6d..ac8b0032d 100644
+--- a/documentation/ref-manual/ref-system-requirements.xml
++++ b/documentation/ref-manual/ref-system-requirements.xml
+@@ -94,11 +94,12 @@
+             <itemizedlist>
+                 <listitem><para>Ubuntu 16.04 (LTS)</para></listitem>
+                 <listitem><para>Ubuntu 18.04 (LTS)</para></listitem>
+-                <listitem><para>Ubuntu 19.04</para></listitem>
+-                <listitem><para>Fedora 28</para></listitem>
+-                <listitem><para>Fedora 29</para></listitem>
++                <listitem><para>Ubuntu 20.04</para></listitem>
+                 <listitem><para>Fedora 30</para></listitem>
++                <listitem><para>Fedora 31</para></listitem>
++                <listitem><para>Fedora 32</para></listitem>
+                 <listitem><para>CentOS 7.x</para></listitem>
++                <listitem><para>CentOS 8.x</para></listitem>
+                 <listitem><para>Debian GNU/Linux 8.x (Jessie)</para></listitem>
+                 <listitem><para>Debian GNU/Linux 9.x (Stretch)</para></listitem>
+                 <listitem><para>Debian GNU/Linux 10.x (Buster)</para></listitem>
 -- 
-2.27.0
+2.17.1
 
