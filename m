@@ -1,358 +1,144 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
- by mx.groups.io with SMTP id smtpd.web11.614.1595003098351421273
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (NAM12-DM6-obe.outbound.protection.outlook.com [40.107.243.70])
+ by mx.groups.io with SMTP id smtpd.web12.41974.1595263594498165491
  for <docs@lists.yoctoproject.org>;
- Fri, 17 Jul 2020 09:24:58 -0700
+ Mon, 20 Jul 2020 09:46:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=jkp929Eb;
- spf=softfail (domain: sakoman.com, ip: 209.85.210.172, mailfrom: steve@sakoman.com)
-Received: by mail-pf1-f172.google.com with SMTP id m9so5620453pfh.0
-        for <docs@lists.yoctoproject.org>; Fri, 17 Jul 2020 09:24:58 -0700 (PDT)
+ dkim=pass header.i=@windriversystems.onmicrosoft.com header.s=selector2-windriversystems-onmicrosoft-com header.b=NBoD/Ajn;
+ spf=pass (domain: windriver.com, ip: 40.107.243.70, mailfrom: mark.morton@windriver.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ffSBSVLOCnYoNBbKt431YN2N6HD2+nyINQPfNz9nowUchPe0CcohTFk+KBG+JZF9MSR3eluwm8hjfihbVu2h74AffqAIbQMuyxZxeIzL7wz8QWn6v7rrjU0QnubqKITfKFMt6jiSJsY8KtjqjCqv+BT1JrCbgB06EGzBct1E6GVqWC6MYHjHUUOLOxiARaToJft1SRaA6c6LGmMvFSab6OdTAOCIdJmDnjAzY9+Ff7KdBe32LOLEshaN9rT/ZnnozSHgdSbUFVWHdrMdQffoIm+fjoWek2Lu+bhrtr64by57BRlyEHHwXUztksicSanxCzk+lXmJ5ju5q4kmccD8Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9p9/wRcssW/KUbMkivAo7N5a8eon29zQzwFomGiLNP0=;
+ b=GtlAoNLJKIOkBCSMXXIyyTwew3/Pw+QCjq08p3REY8M5x8O4IWiRdpDqEOq9cnAcFRzlkD7wmFSp/qD085NfzQAmYQ9LyqysUbuvPL7v1HalUsitTPALW2rukj4H4QF/oq52HxSWmFBWaXOBRsJY0FRHZN8ygPUc/8RgMtz8agaItvdSoFhqdfK5MDO49mIWmeZ8zu3efJKDBSN5knSHQvo/LOtAfA+LZLPBISLbWV2babOiylquHKS7Uh3P8zdbriQfJ+O7YcLGV9Jo0PkQt65brTQgBAQ1gl6XxqzcRZSbGHp8ijhA//v7RBwhJcgmyGklCuiOB1aXZ1e7i0Sd3w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:date:message-id:in-reply-to:references;
-        bh=LcKJ3Apt/90Q/x5v6E5uPrguwlqAPfsQ6YA8ZxRtlHM=;
-        b=jkp929Eb6Me5OORV7S2o6XHsnh36qp5Khd6Z2hcoLQHhAHnhI11qc5t3WKfHkTD590
-         d1uj0JiNp6L3O/ILASkODHWTpsg5VrxmPTe6bxbrURIgQSVPSwpvdHwpjd18tDNSq9ni
-         9kSaBiXJv0aIXvQae0wtUpi7JEgrgXNW7QvwuB4fnkfKqO+cwh2bE0OyBt5UVaKnDlBK
-         +3fZn/P73X8gPmTb2xpd7EQjPExdTEZOufzNP37OKSrQY5mTUUJqAh1SwpCRmFJKZMNw
-         wZiWG9jojtAas13tchC07KgKrrhEcjMpv2wIJXg4IesDzdh/hS1e0Ed51Yopy+y6Qefu
-         EuyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references;
-        bh=LcKJ3Apt/90Q/x5v6E5uPrguwlqAPfsQ6YA8ZxRtlHM=;
-        b=jrFBVwB/kxqDSr2USUAjlwMo3CuESgIA7YeEbLjxazDvEK1n5Yq52kENYrLdblJzpr
-         eGEsqVLRZhwEP+JLqS6kUh3X7hqHo2K85Jyb/Vkxu95+tMCix3SjEfG0DSoM0XzPIVMf
-         0dm1ocbxkC5ON6Lyep3nNMW7158IHMW8i/bX+IoHxZkdtFQU57ooLj7Fdz6qQ7lq34qO
-         t0I3XWeT5/r/9Bq4B8YGU//Feyn68WOnqubbbCSTujRzqOkzLN0lIK6wcosEdGXKrs2p
-         8TCxnSwy7neyfZpA0zojDNueWKnVsENPWx3z+SsG1QiFO+iWMrjwP35TwSmfwP4cKOzN
-         DWnA==
-X-Gm-Message-State: AOAM5337fNABxhsNL+Tg4abt3+jkzv5oPNyjudSqPuMaMIz4z9OCTJ7b
-	GOUcEtB7rrIzM7T/e2IfdQnjDU+hASc=
-X-Google-Smtp-Source: ABdhPJwSmLvYLTgL7uWk1/clrYpB05a5IrQuaanr0X2UCgBvZuSnGzPX6U8Idy1tZioqrN9Mbt8iVA==
-X-Received: by 2002:a63:c50a:: with SMTP id f10mr9553382pgd.167.1595003096703;
-        Fri, 17 Jul 2020 09:24:56 -0700 (PDT)
-Return-Path: <steve@sakoman.com>
-Received: from octo.router0800d9.com (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
-        by smtp.gmail.com with ESMTPSA id ia13sm3269768pjb.42.2020.07.17.09.24.55
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jul 2020 09:24:56 -0700 (PDT)
-From: "Steve Sakoman" <steve@sakoman.com>
-To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell] Documenation: Prepared for the 3.1.2 release
-Date: Fri, 17 Jul 2020 06:24:40 -1000
-Message-Id: <a442f741d0b4513c3dae30cf98988553a7baa96b.1595002733.git.steve@sakoman.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1595002733.git.steve@sakoman.com>
-References: <cover.1595002733.git.steve@sakoman.com>
+ d=windriversystems.onmicrosoft.com;
+ s=selector2-windriversystems-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=9p9/wRcssW/KUbMkivAo7N5a8eon29zQzwFomGiLNP0=;
+ b=NBoD/AjnoLfQuICnLz/tIU0hOzYTrxGw+MNs/u0f/yrHbAT4T/dkqG8X++1oMhYpFO2EoaBZolOjKqZnHZwra9ac7D2XtowTWaFN/Ym9Omif8qo/wqDwybT/KAEMsx5cLGlu+WjaollSpBXwBG1Q8VPxjToDVjYl8EgRuUkAWvQ=
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com (2603:10b6:5:137::26)
+ by DM6PR11MB2684.namprd11.prod.outlook.com (2603:10b6:5:c7::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.17; Mon, 20 Jul
+ 2020 16:46:32 +0000
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::10e7:da6c:73e4:8ea7]) by DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::10e7:da6c:73e4:8ea7%4]) with mapi id 15.20.3195.025; Mon, 20 Jul 2020
+ 16:46:32 +0000
+From: "Mark Morton" <Mark.Morton@windriver.com>
+To: Khem Raj <raj.khem@gmail.com>, Steve Sakoman <steve@sakoman.com>,
+	akuster808 <akuster808@gmail.com>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] ref-system-requirements: update supported hosts lists
+Thread-Topic: [docs] [PATCH] ref-system-requirements: update supported hosts
+ lists
+Thread-Index: AQHWW8FlDdjPcPKKy0ezoRPpxiDa5akK0N2AgABf7YCABYEw0A==
+Date: Mon, 20 Jul 2020 16:46:32 +0000
+Message-ID: 
+ <DM6PR11MB367693E31C80CF3706473A26E57B0@DM6PR11MB3676.namprd11.prod.outlook.com>
+References: <16225C0CF546C9E0.31624@lists.yoctoproject.org>
+ <776527fe-3306-c772-103d-5632b4475809@gmail.com>
+ <CAOSpxdbi1dZO3ZYBA_51mJrK=Pyw6PL588TSHwn9eVwhQs=gWw@mail.gmail.com>
+ <76646a4d-9e9b-64ee-6bf7-c48217990f4c@gmail.com>
+In-Reply-To: <76646a4d-9e9b-64ee-6bf7-c48217990f4c@gmail.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=windriver.com;
+x-originating-ip: [147.11.252.42]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: f5a653fc-fcc5-49eb-e60d-08d82ccc7581
+x-ms-traffictypediagnostic: DM6PR11MB2684:
+x-microsoft-antispam-prvs: 
+ <DM6PR11MB268408E0B18CD4CB22E1B3D5E57B0@DM6PR11MB2684.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ 7P9lcWb6jtA+ixCN+G1dNolr2LHHMJgH+c5azsQiDx7zdV5nqYi66tEeV4f/m7Mne+am1XysfVoWiae6mnETvsl7DgZ06JVIU+IDh2RlbVHQ5RO1G2CV8Wjk8pbHvJ1EuVDYmca/zDKcz/B4V7eFv4+QDwYEbmObFeQdDSg5cfrU9DoTjOsh4KDeoVAdp2VcOl2GyrvDiD4tz2MxKDHaQOWVEx6LtwZ0+Qn52Zqck57pUUmx3XDc5lIHGwjklDHfKxAZ3/8mZlwjWHp0CVLfMSMcfviBNp8wJNwrX0sAy8cEAkJwrAbOfnoR5bME0BRQoylwtYiE9fLQp2eTnQ98dA==
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3676.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(396003)(366004)(346002)(376002)(136003)(39850400004)(4326008)(83380400001)(7696005)(66556008)(52536014)(64756008)(86362001)(76116006)(66446008)(66946007)(66476007)(2906002)(55016002)(33656002)(9686003)(478600001)(5660300002)(53546011)(6506007)(8676002)(8936002)(186003)(316002)(71200400001)(110136005)(15650500001)(26005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: 
+ NsiMwzya6Ux5BBxeAIR8IEl9pHimNngWWaYZ9e5SNNQybYGCZfFoy1CJsjsRA/u/egH19r60Tb30zx0ZwFobjAwuvJHDBDxy5nKGP5k5YIY8lwlha0+8az8ZK6W401F+ptBxEqo96a980X1LAUKOlasmbuRuqME4Qd/wQcxNo58nluz/LfmVVgoGl1PSyHC0fOcEsa4oF0KujVGA/89BjnTeYZSm7lppt470uARJb3EiycjcayUgzOeyZu3ka2jIoU4oihl6YvgT766eI82AYc8l/GmN/KGEzObuC63MF0bVIDuD360ttv6aOBk0oPCNCYsknU7Q5cjoup+FWHDJh2YhhaAgTrbsPMKHGDiUMTnnMR4pw/h3YCeuiAmEK2i3VDGY75pwFRGDx6tzMBKZSvoFp8yPfhCsgiLa88ANWSRSMoeXqoVhDLbl/KqVikpWZffvTcjRCuAlc+vzUd1nMjadiyLVHqaQZdYT2sC1mnE=
+x-ms-exchange-transport-forked: True
+MIME-Version: 1.0
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3676.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5a653fc-fcc5-49eb-e60d-08d82ccc7581
+X-MS-Exchange-CrossTenant-originalarrivaltime: 20 Jul 2020 16:46:32.8503
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: PS4kg7vmdEM3f1wo3cCWKOsN7HnzhX8i6jjqxrc+EaOgfSX91/j+mqg7QrkVVhQ4beWrZvdLTh/K+vrL1ada9DnCc7UR/gvx0OPb+LzoiuQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB2684
+Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
----
- documentation/bsp-guide/bsp-guide.xml         |  7 ++-
- documentation/dev-manual/dev-manual.xml       |  7 ++-
- documentation/kernel-dev/kernel-dev.xml       |  7 ++-
- documentation/mega-manual/mega-manual.xml     |  7 ++-
- .../overview-manual/overview-manual.xml       |  7 ++-
- documentation/poky.ent                        | 14 +++---
- .../profile-manual/profile-manual.xml         |  7 ++-
- documentation/ref-manual/ref-manual.xml       |  7 ++-
- .../ref-manual/ref-system-requirements.xml    |  3 ++
- documentation/sdk-manual/sdk-manual.xml       |  7 ++-
- .../toaster-manual/toaster-manual.xml         |  7 ++-
- documentation/tools/mega-manual.sed           | 46 +++++++++----------
- 12 files changed, 87 insertions(+), 39 deletions(-)
-
-diff --git a/documentation/bsp-guide/bsp-guide.xml b/documentation/bsp-guide/bsp-guide.xml
-index 6ab89d653..76f40f81d 100755
---- a/documentation/bsp-guide/bsp-guide.xml
-+++ b/documentation/bsp-guide/bsp-guide.xml
-@@ -132,9 +132,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/dev-manual/dev-manual.xml b/documentation/dev-manual/dev-manual.xml
-index 5c6b3457f..381c7e3c3 100755
---- a/documentation/dev-manual/dev-manual.xml
-+++ b/documentation/dev-manual/dev-manual.xml
-@@ -122,9 +122,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/kernel-dev/kernel-dev.xml b/documentation/kernel-dev/kernel-dev.xml
-index fe3687ba7..be613fe40 100755
---- a/documentation/kernel-dev/kernel-dev.xml
-+++ b/documentation/kernel-dev/kernel-dev.xml
-@@ -107,9 +107,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/mega-manual/mega-manual.xml b/documentation/mega-manual/mega-manual.xml
-index a20843fc1..69111a9ca 100755
---- a/documentation/mega-manual/mega-manual.xml
-+++ b/documentation/mega-manual/mega-manual.xml
-@@ -98,9 +98,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/overview-manual/overview-manual.xml b/documentation/overview-manual/overview-manual.xml
-index b6da7517f..771eca07f 100755
---- a/documentation/overview-manual/overview-manual.xml
-+++ b/documentation/overview-manual/overview-manual.xml
-@@ -57,9 +57,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/poky.ent b/documentation/poky.ent
-index 0a0deab8f..1d0aef5f3 100755
---- a/documentation/poky.ent
-+++ b/documentation/poky.ent
-@@ -1,17 +1,17 @@
--<!ENTITY DISTRO "3.1.1">
--<!ENTITY DISTRO_COMPRESSED "311">
-+<!ENTITY DISTRO "3.1.2">
-+<!ENTITY DISTRO_COMPRESSED "312">
- <!ENTITY DISTRO_NAME_NO_CAP "dunfell">
- <!ENTITY DISTRO_NAME "Dunfell">
- <!ENTITY DISTRO_NAME_NO_CAP_MINUS_ONE "zeus">
- <!ENTITY DISTRO_NAME_MINUS_ONE "Zeus">
--<!ENTITY YOCTO_DOC_VERSION "3.1.1">
-+<!ENTITY YOCTO_DOC_VERSION "3.1.2">
- <!ENTITY YOCTO_DOC_VERSION_MINUS_ONE "3.0.2">
--<!ENTITY DISTRO_REL_TAG "yocto-3.1.1">
-+<!ENTITY DISTRO_REL_TAG "yocto-3.1.2">
- <!ENTITY METAINTELVERSION "12.0">
--<!ENTITY REL_MONTH_YEAR "June 2020">
-+<!ENTITY REL_MONTH_YEAR "July 2020">
- <!ENTITY META_INTEL_REL_TAG "&METAINTELVERSION;-&DISTRO_NAME_NO_CAP;-&YOCTO_DOC_VERSION;">
--<!ENTITY POKYVERSION "23.0.1">
--<!ENTITY POKYVERSION_COMPRESSED "2301">
-+<!ENTITY POKYVERSION "23.0.2">
-+<!ENTITY POKYVERSION_COMPRESSED "2302">
- <!ENTITY YOCTO_POKY "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;">
- <!ENTITY COPYRIGHT_YEAR "2010-2020">
- <!ENTITY ORGNAME "The Yocto Project">
-diff --git a/documentation/profile-manual/profile-manual.xml b/documentation/profile-manual/profile-manual.xml
-index 710fb770e..3527850df 100755
---- a/documentation/profile-manual/profile-manual.xml
-+++ b/documentation/profile-manual/profile-manual.xml
-@@ -107,9 +107,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/ref-manual/ref-manual.xml b/documentation/ref-manual/ref-manual.xml
-index 1e970c1d7..d7b82bb5c 100755
---- a/documentation/ref-manual/ref-manual.xml
-+++ b/documentation/ref-manual/ref-manual.xml
-@@ -133,9 +133,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/ref-manual/ref-system-requirements.xml b/documentation/ref-manual/ref-system-requirements.xml
-index 7a11ec2cf..c6e1eb971 100644
---- a/documentation/ref-manual/ref-system-requirements.xml
-+++ b/documentation/ref-manual/ref-system-requirements.xml
-@@ -94,9 +94,12 @@
-                 <listitem><para>Ubuntu 16.04 (LTS)</para></listitem>
-                 <listitem><para>Ubuntu 18.04 (LTS)</para></listitem>
-                 <listitem><para>Ubuntu 19.04</para></listitem>
-+                <listitem><para>Ubuntu 20.04</para></listitem>
-                 <listitem><para>Fedora 28</para></listitem>
-                 <listitem><para>Fedora 29</para></listitem>
-                 <listitem><para>Fedora 30</para></listitem>
-+                <listitem><para>Fedora 31</para></listitem>
-+                <listitem><para>Fedora 32</para></listitem>
-                 <listitem><para>CentOS 7.x</para></listitem>
-                 <listitem><para>Debian GNU/Linux 8.x (Jessie)</para></listitem>
-                 <listitem><para>Debian GNU/Linux 9.x (Stretch)</para></listitem>
-diff --git a/documentation/sdk-manual/sdk-manual.xml b/documentation/sdk-manual/sdk-manual.xml
-index b0408f8b0..a557549ed 100755
---- a/documentation/sdk-manual/sdk-manual.xml
-+++ b/documentation/sdk-manual/sdk-manual.xml
-@@ -77,9 +77,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/toaster-manual/toaster-manual.xml b/documentation/toaster-manual/toaster-manual.xml
-index 53d666446..fbc051200 100755
---- a/documentation/toaster-manual/toaster-manual.xml
-+++ b/documentation/toaster-manual/toaster-manual.xml
-@@ -87,9 +87,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.1</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>June 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.1 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.2</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/tools/mega-manual.sed b/documentation/tools/mega-manual.sed
-index d52f1ebdb..933f23ea8 100644
---- a/documentation/tools/mega-manual.sed
-+++ b/documentation/tools/mega-manual.sed
-@@ -1,36 +1,36 @@
- # Processes bitbake-user-manual (<word>-<word>-<word> style).
- # This style is for manual three-word folders, which currently is only the BitBake User Manual.
- # We used to have the "yocto-project-qs" and "poky-ref-manual" folders but no longer do.
--# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/[a-z]*-[a-z]*-[a-z]*/[a-z]*-[a-z]*-[a-z]*.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/bitbake-user-manual/bitbake-user-manual.html#@"link" href="#@g
-+# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/[a-z]*-[a-z]*-[a-z]*/[a-z]*-[a-z]*-[a-z]*.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/bitbake-user-manual/bitbake-user-manual.html#@"link" href="#@g
- 
- # Processes all other manuals (<word>-<word> style).
- # This style is for manual folders that use two word, which is the standard now (e.g. "ref-manual").
- # Here is the one-liner:
--# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/[a-z]*-[a-z]*/[a-z]*-[a-z]*.html#@"link" href="#@g
-+# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/[a-z]*-[a-z]*/[a-z]*-[a-z]*.html#@"link" href="#@g
- 
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/sdk-manual/sdk-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/bsp-guide/bsp-guide.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/dev-manual/dev-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/overview-manual/overview-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/brief-yoctoprojectqs/brief-yoctoprojectqs.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/kernel-dev/kernel-dev.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/profile-manual/profile-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/ref-manual/ref-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.1/toaster-manual/toaster-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/sdk-manual/sdk-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/bsp-guide/bsp-guide.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/dev-manual/dev-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/overview-manual/overview-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/brief-yoctoprojectqs/brief-yoctoprojectqs.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/kernel-dev/kernel-dev.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/profile-manual/profile-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/ref-manual/ref-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/toaster-manual/toaster-manual.html#@"link" href="#@g
- 
- # Process cases where just an external manual is referenced without an id anchor
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/brief-yoctoprojectqs/brief-yoctoprojectqs.html" target="_top">Yocto Project Quick Build</a>@Yocto Project Quick Build@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/bitbake-user-manual/bitbake-user-manual.html" target="_top">BitBake User Manual</a>@BitBake User Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/dev-manual/dev-manual.html" target="_top">Yocto Project Development Tasks Manual</a>@Yocto Project Development Tasks Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/overview-manual/overview-manual.html" target="_top">Yocto Project Overview and Concepts Manual</a>@Yocto project Overview and Concepts Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/sdk-manual/sdk-manual.html" target="_top">Yocto Project Application Development and the Extensible Software Development Kit (eSDK)</a>@Yocto Project Application Development and the Extensible Software Development Kit (eSDK)@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/bsp-guide/bsp-guide.html" target="_top">Yocto Project Board Support Package (BSP) Developer's Guide</a>@Yocto Project Board Support Package (BSP) Developer's Guide@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/profile-manual/profile-manual.html" target="_top">Yocto Project Profiling and Tracing Manual</a>@Yocto Project Profiling and Tracing Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/kernel-dev/kernel-dev.html" target="_top">Yocto Project Linux Kernel Development Manual</a>@Yocto Project Linux Kernel Development Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/ref-manual/ref-manual.html" target="_top">Yocto Project Reference Manual</a>@Yocto Project Reference Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/toaster-manual/toaster-manual.html" target="_top">Toaster User Manual</a>@Toaster User Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/brief-yoctoprojectqs/brief-yoctoprojectqs.html" target="_top">Yocto Project Quick Build</a>@Yocto Project Quick Build@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/bitbake-user-manual/bitbake-user-manual.html" target="_top">BitBake User Manual</a>@BitBake User Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/dev-manual/dev-manual.html" target="_top">Yocto Project Development Tasks Manual</a>@Yocto Project Development Tasks Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/overview-manual/overview-manual.html" target="_top">Yocto Project Overview and Concepts Manual</a>@Yocto project Overview and Concepts Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/sdk-manual/sdk-manual.html" target="_top">Yocto Project Application Development and the Extensible Software Development Kit (eSDK)</a>@Yocto Project Application Development and the Extensible Software Development Kit (eSDK)@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/bsp-guide/bsp-guide.html" target="_top">Yocto Project Board Support Package (BSP) Developer's Guide</a>@Yocto Project Board Support Package (BSP) Developer's Guide@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/profile-manual/profile-manual.html" target="_top">Yocto Project Profiling and Tracing Manual</a>@Yocto Project Profiling and Tracing Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/kernel-dev/kernel-dev.html" target="_top">Yocto Project Linux Kernel Development Manual</a>@Yocto Project Linux Kernel Development Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/ref-manual/ref-manual.html" target="_top">Yocto Project Reference Manual</a>@Yocto Project Reference Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/toaster-manual/toaster-manual.html" target="_top">Toaster User Manual</a>@Toaster User Manual@g
- 
- # Process a single, rouge occurrence of a linked reference to the Mega-Manual.
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.1/mega-manual/mega-manual.html" target="_top">Yocto Project Mega-Manual</a>@Yocto Project Mega-Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/mega-manual/mega-manual.html" target="_top">Yocto Project Mega-Manual</a>@Yocto Project Mega-Manual@g
- 
--- 
-2.17.1
-
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogZG9jc0BsaXN0cy55b2N0
+b3Byb2plY3Qub3JnIDxkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc+IE9uIEJlaGFsZg0KPiBP
+ZiBLaGVtIFJhag0KPiBTZW50OiBUaHVyc2RheSwgSnVseSAxNiwgMjAyMCA5OjM5IFBNDQo+IFRv
+OiBTdGV2ZSBTYWtvbWFuIDxzdGV2ZUBzYWtvbWFuLmNvbT47IGFrdXN0ZXI4MDgNCj4gPGFrdXN0
+ZXI4MDhAZ21haWwuY29tPg0KPiBDYzogZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnDQo+IFN1
+YmplY3Q6IFJlOiBbZG9jc10gW1BBVENIXSByZWYtc3lzdGVtLXJlcXVpcmVtZW50czogdXBkYXRl
+IHN1cHBvcnRlZCBob3N0cw0KPiBsaXN0cw0KPiANCj4gDQo+IA0KPiBPbiA3LzE2LzIwIDM6NTUg
+UE0sIFN0ZXZlIFNha29tYW4gd3JvdGU6DQo+ID4gT24gVGh1LCBKdWwgMTYsIDIwMjAgYXQgMTI6
+MzUgUE0gYWt1c3RlcjgwOCA8YWt1c3RlcjgwOEBnbWFpbC5jb20+DQo+IHdyb3RlOg0KPiA+Pg0K
+PiA+PiBEdW5mZWxsIG5lZWRzIHVwZGF0aW5nIHRvbyBidXQgSSBhbSBub3Qgc3VyZSBpZiB3ZSBj
+YW4gcmVtb3ZlIGhvc3RzIHRoYXQNCj4gYXJlIG5vIGxvbmdlciBpbiB0aGUgQUIgbGlrZSBVYnVu
+dHUgMTkuMDQgb3IgdGhlIEZlZG9yYSBvbmVzLg0KPiA+DQo+ID4gSSB3YXMganVzdCBhYm91dCB0
+byBzZW5kIGEgc2ltaWxhciBwYXRjaCBmb3IgZHVuZmVsbC4NCj4gPg0KPiA+IE15IGFzc3VtcHRp
+b24gaXMgdGhhdCB3ZSBkb24ndCByZW1vdmUgcHJldmlvdXNseSBzdXBwb3J0ZWQgZGlzdHJvcw0K
+PiA+IGZyb20gTFRTLiAgU29tZW9uZSBjb3JyZWN0IG1lIGlmIEknbSBtaXN0YWtlbiENCj4gPg0K
+PiANCj4gSSB0aGluayBldmVudHVhbGx5IHdlIGhhdmUgdG8gYWRkcmVzcyB0aGlzIHRvIHRoZSBo
+b3N0IGRpc3Ryb3MgdGhhdCB3aWxsIGJlDQo+IHN1cHBvcnRlZCBpbiB0aGUgbGlmZXRpbWUgb2Yg
+TFRTLCBwZXJoYXBzIHdlIHNob3VsZCBjYWxsIG91dCBmb3IgdGVzdGVkIGRpc3Ryb3MNCj4gc2Vw
+YXJhdGVseQ0KDQpPbmUgb3B0aW9uIHdvdWxkIGJlIHRvIHByb3ZpZGUgYSBsaXN0IG9mICJTdXBw
+b3J0ZWQgYW5kIFRlc3RlZCBIb3N0cyIgd2l0aCBhZGRpdGlvbmFsIHN1cHBvcnRpbmcgaW5mbyB0
+aGF0IHN0YXRlcyB3aGF0IGlzIG5lY2Vzc2FyeSB0byBidWlsZCBZUCBvbiBhIExpbnV4IGRpc3Ry
+by4gVGhlbiB3ZSBjb3VsZCBzdGF0ZSB0aGF0IGJ1Z3MgbXVzdCBiZSBkdXBsaWNhdGVkIG9uIG9u
+ZSBvZiB0aGUgdGVzdGVkIGhvc3RzIGZvciBMVFMgc3VwcG9ydCAob3Igd2hhdGV2ZXIgc2ltaWxh
+ciBsYW5ndWFnZSB5b3UgZmVlbCBhcHBsaWVzIGJlc3QpLiBUaGlzIGNvdWxkIGNvdmVyIGFsbCB0
+aGUgcHJpb3IgInJlY29tbWVuZGVkIiBob3N0cyBhbmQgbGV0IHVzIHNpbXBsaWZ5IHRoZSBsaXN0
+IGZvciBjdXJyZW50IHJlbGVhc2VzLg0KDQotTWFyaw0KDQo+IA0KPiA+IFN0ZXZlDQo+ID4+DQo+
+ID4+IC0gYXJtaW4NCj4gPj4NCj4gPj4gT24gNy8xNi8yMCAzOjI3IFBNLCBha3VzdGVyIHZpYSBs
+aXN0cy55b2N0b3Byb2plY3Qub3JnIHdyb3RlOg0KPiA+Pg0KPiA+PiBkcm9wIFVidW50dSAxOSwg
+RmVkb3JhIDI4ICYgMjkNCj4gPj4gQWRkOiBGZWRvcmEgMzEsIDMyICwgQ2VudG9zIDggYW5kIFVi
+dW50dSAyMA0KPiA+Pg0KPiA+PiBTaWduZWQtb2ZmLWJ5OiBBcm1pbiBLdXN0ZXIgPGFrdXN0ZXI4
+MDhAZ21haWwuY29tPg0KPiA+PiAtLS0NCj4gPj4gIGRvY3VtZW50YXRpb24vcmVmLW1hbnVhbC9y
+ZWYtc3lzdGVtLXJlcXVpcmVtZW50cy54bWwgfCA3ICsrKystLS0NCj4gPj4gIDEgZmlsZSBjaGFu
+Z2VkLCA0IGluc2VydGlvbnMoKyksIDMgZGVsZXRpb25zKC0pDQo+ID4+DQo+ID4+IGRpZmYgLS1n
+aXQgYS9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvcmVmLXN5c3RlbS1yZXF1aXJlbWVudHMueG1s
+DQo+ID4+IGIvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3JlZi1zeXN0ZW0tcmVxdWlyZW1lbnRz
+LnhtbA0KPiA+PiBpbmRleCA0M2UyMTdjNmQuLmFjOGIwMDMyZCAxMDA2NDQNCj4gPj4gLS0tIGEv
+ZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3JlZi1zeXN0ZW0tcmVxdWlyZW1lbnRzLnhtbA0KPiA+
+PiArKysgYi9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvcmVmLXN5c3RlbS1yZXF1aXJlbWVudHMu
+eG1sDQo+ID4+IEBAIC05NCwxMSArOTQsMTIgQEANCj4gPj4gICAgICAgICAgICAgIDxpdGVtaXpl
+ZGxpc3Q+DQo+ID4+ICAgICAgICAgICAgICAgICAgPGxpc3RpdGVtPjxwYXJhPlVidW50dSAxNi4w
+NCAoTFRTKTwvcGFyYT48L2xpc3RpdGVtPg0KPiA+PiAgICAgICAgICAgICAgICAgIDxsaXN0aXRl
+bT48cGFyYT5VYnVudHUgMTguMDQgKExUUyk8L3BhcmE+PC9saXN0aXRlbT4NCj4gPj4gLSAgICAg
+ICAgICAgICAgICA8bGlzdGl0ZW0+PHBhcmE+VWJ1bnR1IDE5LjA0PC9wYXJhPjwvbGlzdGl0ZW0+
+DQo+ID4+IC0gICAgICAgICAgICAgICAgPGxpc3RpdGVtPjxwYXJhPkZlZG9yYSAyODwvcGFyYT48
+L2xpc3RpdGVtPg0KPiA+PiAtICAgICAgICAgICAgICAgIDxsaXN0aXRlbT48cGFyYT5GZWRvcmEg
+Mjk8L3BhcmE+PC9saXN0aXRlbT4NCj4gPj4gKyAgICAgICAgICAgICAgICA8bGlzdGl0ZW0+PHBh
+cmE+VWJ1bnR1IDIwLjA0PC9wYXJhPjwvbGlzdGl0ZW0+DQo+ID4+ICAgICAgICAgICAgICAgICAg
+PGxpc3RpdGVtPjxwYXJhPkZlZG9yYSAzMDwvcGFyYT48L2xpc3RpdGVtPg0KPiA+PiArICAgICAg
+ICAgICAgICAgIDxsaXN0aXRlbT48cGFyYT5GZWRvcmEgMzE8L3BhcmE+PC9saXN0aXRlbT4NCj4g
+Pj4gKyAgICAgICAgICAgICAgICA8bGlzdGl0ZW0+PHBhcmE+RmVkb3JhIDMyPC9wYXJhPjwvbGlz
+dGl0ZW0+DQo+ID4+ICAgICAgICAgICAgICAgICAgPGxpc3RpdGVtPjxwYXJhPkNlbnRPUyA3Lng8
+L3BhcmE+PC9saXN0aXRlbT4NCj4gPj4gKyAgICAgICAgICAgICAgICA8bGlzdGl0ZW0+PHBhcmE+
+Q2VudE9TIDgueDwvcGFyYT48L2xpc3RpdGVtPg0KPiA+PiAgICAgICAgICAgICAgICAgIDxsaXN0
+aXRlbT48cGFyYT5EZWJpYW4gR05VL0xpbnV4IDgueCAoSmVzc2llKTwvcGFyYT48L2xpc3RpdGVt
+Pg0KPiA+PiAgICAgICAgICAgICAgICAgIDxsaXN0aXRlbT48cGFyYT5EZWJpYW4gR05VL0xpbnV4
+IDkueA0KPiAoU3RyZXRjaCk8L3BhcmE+PC9saXN0aXRlbT4NCj4gPj4gICAgICAgICAgICAgICAg
+ICA8bGlzdGl0ZW0+PHBhcmE+RGViaWFuIEdOVS9MaW51eCAxMC54DQo+ID4+IChCdXN0ZXIpPC9w
+YXJhPjwvbGlzdGl0ZW0+DQo+ID4+DQo+ID4+DQo+ID4+DQo+ID4+DQo+ID4+DQo+ID4+DQo+ID4+
+DQoNCg==
