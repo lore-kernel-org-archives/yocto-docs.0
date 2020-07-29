@@ -1,176 +1,187 @@
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (EUR04-VI1-obe.outbound.protection.outlook.com [40.107.8.77])
- by mx.groups.io with SMTP id smtpd.web11.8875.1595497950446677686
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+ by mx.groups.io with SMTP id smtpd.web12.1383.1596008215351262805
  for <docs@lists.yoctoproject.org>;
- Thu, 23 Jul 2020 02:52:31 -0700
+ Wed, 29 Jul 2020 00:36:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@armh.onmicrosoft.com header.s=selector2-armh-onmicrosoft-com header.b=Apca/X93;
- spf=pass (domain: arm.com, ip: 40.107.8.77, mailfrom: khasim.mohammed@arm.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zx2+nVw0Blthq4E9CoutOxNwfR0/Bn+ES2Nk/V4bsuM=;
- b=Apca/X93I13LVxaZJRXlOWPLYZ3xau+ex0PTmcDOCkLFSfJQ8BisosdiZId/HM90Y1Y/vnOfuYa/8Yzz+JNdtslUp+ppQ7GolYoepb4nPdKJHvctNEgMrlQIYtn8G2HeBLFibvovSLOwbgyE06e/HaNj07IoCrAmq5gZdq+Hgew=
-Received: from AM5PR0502CA0011.eurprd05.prod.outlook.com
- (2603:10a6:203:91::21) by DB6PR0801MB1654.eurprd08.prod.outlook.com
- (2603:10a6:4:3a::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.23; Thu, 23 Jul
- 2020 09:52:27 +0000
-Received: from AM5EUR03FT032.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:203:91:cafe::73) by AM5PR0502CA0011.outlook.office365.com
- (2603:10a6:203:91::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.21 via Frontend
- Transport; Thu, 23 Jul 2020 09:52:27 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; lists.yoctoproject.org; dkim=pass (signature was
- verified) header.d=armh.onmicrosoft.com;lists.yoctoproject.org;
- dmarc=bestguesspass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- AM5EUR03FT032.mail.protection.outlook.com (10.152.16.84) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3216.10 via Frontend Transport; Thu, 23 Jul 2020 09:52:26 +0000
-Received: ("Tessian outbound 2ae7cfbcc26c:v62"); Thu, 23 Jul 2020 09:52:26 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: 8c53818256cb989d
-X-CR-MTA-TID: 64aa7808
-Received: from 1995c8cb219b.1
-	by 64aa7808-outbound-1.mta.getcheckrecipient.com id D1603F5B-A690-4255-8A7C-B0C25081BDA5.1;
-	Thu, 23 Jul 2020 09:52:21 +0000
-Received: from EUR03-DB5-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 1995c8cb219b.1
-    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Thu, 23 Jul 2020 09:52:21 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n4GlQXIs8HTwQ8lXRSn8U08bn4anTHR8cabO/Tk2JpcmAUOYeg0tEdGOvXEPQHPiiMOPF4PSlRWNC3Z4nW4C6RMqRPt0YmbLadD5zBvICm/QAzE4RQgYHzqWw/+U9uleeWQixNhrEfiTT5kR8Qrr4VsK1RmOVzR4RmDcAKjeNTFqEoG7OGJr4jwwiFHaH67UlhdWDq5+8YILqlgo//tEw+vD/q9REwsCOGvg19GDVOQR/hsJ3cbecH+mBRTVK0czoTSdzZNUA1wMS9rx7u7aQC9/4ET+9Gxkw/bXVUIFDOLhyUBv1bQ6E4RVh2g4sN88NLIGGth8eNuJ5xZWlx3v6Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zx2+nVw0Blthq4E9CoutOxNwfR0/Bn+ES2Nk/V4bsuM=;
- b=gfw4/QE6xahFgLAZhYoPGwTMRO6jM/D8DPeQqnLVadmIIFDIlMZaDawJn+gwv4PgVrWFow3A3NKBwRa8daYl03TV/OEYKSotgKmUIl0ydq2c5i5n816q14NWdV0EEM+RZH8k7Fo1QUUJB9S5zx0cl+K/Z7Eg1fOC9U7nEbbTHear+XJBwP2LCa7/n17oBrSsAVyDIDIZ0IWxFUkx+kpSbL8l5lzXDZwiZqPflUJP2GZxHqpyWYotzy9uERCMbK3Q9gzusd/mwGz0z4emYJob3AWIdwX+7rbeOh33rcfBhDGTn1J9lrsfOFX6Corh2K/+2/rWVjnb7oy9Ta3WzdYZ2A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zx2+nVw0Blthq4E9CoutOxNwfR0/Bn+ES2Nk/V4bsuM=;
- b=Apca/X93I13LVxaZJRXlOWPLYZ3xau+ex0PTmcDOCkLFSfJQ8BisosdiZId/HM90Y1Y/vnOfuYa/8Yzz+JNdtslUp+ppQ7GolYoepb4nPdKJHvctNEgMrlQIYtn8G2HeBLFibvovSLOwbgyE06e/HaNj07IoCrAmq5gZdq+Hgew=
-Authentication-Results-Original: lists.yoctoproject.org; dkim=none (message
- not signed) header.d=none;lists.yoctoproject.org; dmarc=none action=none
- header.from=arm.com;
-Received: from DB8PR08MB4969.eurprd08.prod.outlook.com (2603:10a6:10:e1::18)
- by DB6PR08MB2855.eurprd08.prod.outlook.com (2603:10a6:6:24::26) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.22; Thu, 23 Jul
- 2020 09:52:20 +0000
-Received: from DB8PR08MB4969.eurprd08.prod.outlook.com
- ([fe80::756a:e5c9:72e0:c023]) by DB8PR08MB4969.eurprd08.prod.outlook.com
- ([fe80::756a:e5c9:72e0:c023%4]) with mapi id 15.20.3216.024; Thu, 23 Jul 2020
- 09:52:20 +0000
-From: "Khasim Mohammed" <khasim.mohammed@arm.com>
-To: docs@lists.yoctoproject.org
-Cc: nd@arm.com,
-	Khasim Syed Mohammed <khasim.mohammed@arm.com>
-Subject: [PATCH] wic/bootimg-efi: Update docs for IMAGE_BOOT_FILES support in bootimg-efi
-Date: Thu, 23 Jul 2020 15:22:09 +0530
-Message-Id: <20200723095209.18306-1-khasim.mohammed@arm.com>
-X-Mailer: git-send-email 2.17.1
-X-ClientProxiedBy: LNXP265CA0065.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:5d::29) To DB8PR08MB4969.eurprd08.prod.outlook.com
- (2603:10a6:10:e1::18)
+ dkim=pass header.i=@linaro.org header.s=google header.b=oEtj16sD;
+ spf=pass (domain: linaro.org, ip: 209.85.219.174, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f174.google.com with SMTP id a15so12028612ybs.8
+        for <docs@lists.yoctoproject.org>; Wed, 29 Jul 2020 00:36:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=akx8eJN6SAaD15EZZVmq4MrTw8UH3FHDq5tBQ5gPGZQ=;
+        b=oEtj16sDcoMnsg8O0r+MP7k1cW4tQbaU3iUsp/Qgt7Qw7OQipXreD4eI9OYFBx4ONe
+         5WXQpSrk8DXwBHYrZAv94+C4pZofH9vRJpaTmfxISQmIzmNwptC51Z3wqVqRwJI7Oa8F
+         WUwXJ0p8en8L8zdz1cB/OW/UgalTjCCqTsye/VUn8BWfxZAu5on3y1mHElisvKHwAIF5
+         dk+VOizR5n9a6zBrbGFgJcyhSXYrjpanQXpHg1WRbMOBDPe1LU7HYRNVpEtEF/cew3JG
+         D1TvGR+dbLJw7HSANkWW/On5xiRAd0ga5UqLW/TREC/sRCJ2Dao5YIOMP6u9UcfAVy+X
+         kjYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=akx8eJN6SAaD15EZZVmq4MrTw8UH3FHDq5tBQ5gPGZQ=;
+        b=Clnk8Oo1nWtZ7RTeip9EzHzpRvBITmXWIy3x3U59kWlsQVf55TpF/SINRu5OWkV0pZ
+         mjN7AsxtUJaHdmaGT5r+xkbDlWGvjMj999wG8sldhNJpfnczDXmQZ6iWzH9XdxAdL29Y
+         aDZVKyIFHTrN93CKdLKFv7j9ayHocV2rBQG/6NoXT/2E7yLiZjGB3A/esGdT6BfcFDt5
+         rDNRPcdoKsR3+Idu/4QAo0FTbPfoSTaEWTsLnF2D7PAKYWQGzWnAdySdJw3ysuCu2stP
+         QMFXquCXGztwxx80eiC0LKqjjxYN1nkxfus4wdTgUYrwH2RsAyYkJoYLhY3/cWS4QSlN
+         RTVg==
+X-Gm-Message-State: AOAM533egW6jXzmqJ+WjANuum/Dx/QrbMMMoRzq/qkN8lkaT0AyzDZel
+	6mqDMQD2wPAXuH6fxhnWI8RRzqTDRQWgz0pqyc5tbw==
+X-Google-Smtp-Source: ABdhPJwncWq/6AH2xalPFqahwbixbEeulviAkW/CaTIZDa6Hi6gjQOV8KNp9XsHFZcqAsGIVia7/RbjoYEwcnsgERXU=
+X-Received: by 2002:a25:8392:: with SMTP id t18mr50587375ybk.397.1596008214223;
+ Wed, 29 Jul 2020 00:36:54 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from e116623.arm.com (217.140.96.140) by LNXP265CA0065.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:5d::29) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3195.26 via Frontend Transport; Thu, 23 Jul 2020 09:52:19 +0000
-X-Mailer: git-send-email 2.17.1
-X-Originating-IP: [217.140.96.140]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: 22e7fe49-057b-478b-0fad-08d82eee1b6a
-X-MS-TrafficTypeDiagnostic: DB6PR08MB2855:|DB6PR0801MB1654:
-X-MS-Exchange-Transport-Forked: True
-X-Microsoft-Antispam-PRVS: 
-	<DB6PR0801MB1654269B6F1EDD9ADD714BE3FA760@DB6PR0801MB1654.eurprd08.prod.outlook.com>
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Oob-TLC-OOBClassifiers: OLM:6430;OLM:6430;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: 
- 5fO6cWl+FrDfTIk98Kz5Lvw7zwrl8FKXCimvHywQ/S/13AavYIqNE1/n6wb0v0bmF/c2zSOxU/tETwQ7QuWWJEVVJXm4Y2anj+8GPWKVD+H+J8/h9UfVBMoVJP27OJTKqwYEgxFcuVwj9wY9YmeQhB2na5pkz/QFs/ut1KM3B/DRt7sNJ5ErDmZPqSB2i0vGDMk6Qc1jxfED2TJkbN4qqzNrE1PzyUm0fKzW4VTH2tEShpe9xLX6BPT+9YrpnhJwtK5D82p8jOWZGqsrLF6vHssMVQXijzR0fYJMCaVSaVvKUiVs9IP/csFIFbrHMIIlP1qDBUo0OldhOYlrudT8Iw==
-X-Forefront-Antispam-Report-Untrusted: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB4969.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(376002)(39860400002)(396003)(366004)(136003)(346002)(66946007)(7696005)(15650500001)(6666004)(52116002)(956004)(2616005)(66556008)(66476007)(4326008)(86362001)(36756003)(186003)(6486002)(1076003)(6916009)(16526019)(8676002)(2906002)(8936002)(5660300002)(478600001)(26005)(316002)(83380400001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 
- Gm42Wf2M4Ae7dXukVhPfVtllUqUvamrVrTYN7Qp+aoZs+nb8U97KgaoOQiwwaBWzA8CEy0MUNizBm8CkDHNiRFUjCKK0jkNA65g6DS00BydyT7UM95fJNYWqkwpM0v+OXvNZKzMnTv8gOwmv+w+NF9vp9RB92TE25rDmCmakeaAR+L4FSUTiaYzoy+D2HvTY0CrzFzs0VLi1wm9ByKH8W5A193chnXCm/v6TJ1g5gVu7sXY/EEVAJlXFRHpduY+zbhrkCkQq8iQi7dg9n0GJfXPnBWTYFPQP7eB3Bmdg1ug5VekC3TtlO2C0/2lWOiXUWPM7pwh0tAdcSQD0G9ETYP8U9vLCKISx/d1owwuvRGYs5sQGwJtFPakkPuvtMh3nLo3yt/dqRGAMKQWbWfb7yWKAMv/BuZRcfbz26mWeicgo/+2+dSt3ksA47JoZNNptxM/On/RH7j8Fdh/h8ZmvEwQ4ynAO10EZGvlru19+ezRXgHF3xuruKzOEU69EK1jM
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR08MB2855
-Original-Authentication-Results: lists.yoctoproject.org; dkim=none (message not signed)
- header.d=none;lists.yoctoproject.org; dmarc=none action=none
- header.from=arm.com;
-Return-Path: Khasim.Mohammed@arm.com
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: 
- AM5EUR03FT032.eop-EUR03.prod.protection.outlook.com
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 
-	879d5320-942c-4438-ca15-08d82eee1780
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	+aDfIMWZEUIbTd1CE2hHYBIkiOIyQ0IyTxasf4FvTxfTWpRU0ncyIkj0Eqm+z4z9eIKuBlrk+iOoVLA357vnjDur5cOscF5h/WH2DxsatHlheHGgmPj43s6GYqNT/iAnbXfED0CFqtHHdTEvbub5yd+kOhSSC5ujdUwtDF4cTmCXIria89qAs6sAaDsjPi5kA0DAI8NCnREv5mfG6V61MWMcYvH/1wh1kO6TaPZzgQq90CfohmAF5O7VIOSlQoslAq78uqu/hfMNiHOuCIGqUUQLxqn6hVTM8723Lc7Vpkq7mOzo+0aOeTnj3Yyp31LSrEG6HpFas3s/ofik1CEVA1D3K4WPo/USxCYFUKWwHlTRKrimi07R5OLU6wOzCKTK5+VCz7WchZAOSFbcfJuVFA==
-X-Forefront-Antispam-Report: 
-	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFTY:;SFS:(4636009)(346002)(136003)(39860400002)(376002)(396003)(46966005)(26005)(478600001)(4326008)(6916009)(70586007)(5660300002)(81166007)(1076003)(36756003)(70206006)(15650500001)(956004)(82740400003)(47076004)(2616005)(7696005)(336012)(6486002)(86362001)(36906005)(8936002)(2906002)(316002)(8676002)(83380400001)(82310400002)(186003)(356005)(6666004)(16526019);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2020 09:52:26.9345
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22e7fe49-057b-478b-0fad-08d82eee1b6a
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	AM5EUR03FT032.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB6PR0801MB1654
-Content-Type: text/plain
+References: <20200728224149.GA22506@linux-uys3>
+In-Reply-To: <20200728224149.GA22506@linux-uys3>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Wed, 29 Jul 2020 09:36:43 +0200
+Message-ID: <CAP71WjybyNTcZVFp0KbtvoY2nr5wOBxEvA2HNYPZzobouRn+XQ@mail.gmail.com>
+Subject: Re: [yocto] Yocto Technical Team Minutes, Engineering Sync, for July 28 2020
+To: Trevor Woerner <twoerner@gmail.com>
+Cc: docs@lists.yoctoproject.org, Mark Morton <Mark.Morton@windriver.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-List of files defined using IMAGE_BOOT_FILES are installed into
-the boot partition when preparing an image using the wic tool with
-the bootimg-efi source plugin.
+On Wed, Jul 29, 2020 at 12:42 AM Trevor Woerner <twoerner@gmail.com> wrote:
+>
+> Yocto Technical Team Minutes, Engineering Sync, for July 28 2020
+> archive: https://docs.google.com/document/d/1ly8nyhO14kDNnFcW2QskANXW3ZT=
+7QwKC5wWVDg9dDH4/edit
+>
+> =3D=3D disclaimer =3D=3D
+> Best efforts are made to ensure the below is accurate and valid. However=
+,
+> errors sometimes happen. If any errors or omissions are found, please fe=
+el
+> free to reply to this email with any corrections.
+>
+> =3D=3D attendees =3D=3D
+> Trevor Woerner, Stephen Jolly, Armin Kuster, Josef Holzmayr, Richard
+> Purdie, Trevor Gamblin, Joshua Watt, Mark Morton, Ross Burton, Bruce
+> Ashfield, Steve Sakoman, (phone-in ??), Jon Mason, Randy MacLeod, Scott
+> Murray, Denys Dmytriyenko
+>
+> =3D=3D notes =3D=3D
+> - fixed a race on AB wrt perl
+> - 3.1.2 into QA
+> - 3.2-m2 to QA once they=E2=80=99re done with 3.1.2
+>
+> =3D=3D general =3D=3D
+> RP: load of perl issues over the weekend, believe to have found issue
+> RP: lots of qemumips issues, not sure why, perhaps a timeouts issue? (no=
+ ping
+>     within 30 seconds)
+> RP: some infrastructure issues (one worker has become corrupted)
+>
+> RP: curious to know what people think about 3.1.2: there is a bitbake is=
+sue
+>     with toaster, should we release then fix or wait for fix before rele=
+ase?
+> SS: maybe we should get feedback from people using toaster
+> RP: the fix is simple, maybe release 3.1.2 (with release note) then fix
+>
+> RP: merged re-arrangement of package manager code, this puts more of our=
+ code
+>     into python libraries instead of bbclass files, which is the directi=
+on i
+>     want to take going forward
+> RP: i need to start a conversation on oe-architecture for future directi=
+ons
+> RP: e.g. binary package feeds, we want to capture these use-cases into t=
+he
+>     wiki
+>
+> [NB: done! see https://wiki.yoctoproject.org/wiki/Future_Directions]
+>
+> RP: we also posted the current agreement on =E2=80=9Cinclusive language=
+=E2=80=9D as agreed
+>     on by various groups (oe board, oe-tsc, yp-tsc)
+>
+> TW: what=E2=80=99s the thinking behind moving code to libraries vs bbcla=
+ss?
+> RP: pro: parsing speed con: variable dependency tracking is lost
+> RP: lots of python code gets written to logs etc, which slows it down
+> JPEW: does bitbake automatically detect variable dependencies in library=
+ code?
+> RP: no. maybe we just need to do the scan once?
+> TW: do we lose flexibility? (e.g. it=E2=80=99s easy to copy+paste+modify=
+ a bbclass,
+>     will that be possible?)
+> RP: there will still be all the same entry points, so it should be possi=
+ble
+> RP: i=E2=80=99m worried about the size of the datastore in memory and it=
+ is a
+>     bottleneck
+>
+> RP: i wonder why qemumips is so slow?
+> Randy: i think Cisco are the only ones caring about mips
+> RP: yes, and Comcast too i think
+>
+> MM: have been wrapped up in $WORK stuff, but will be working on docs
+>     conversion soon
+> RP: MH has been putting infrastructure in place and Nico is looking forw=
+ard to
+>     getting this going
+> MM: do we want to try to reproduce our current colours/formatting or try
+>     something new
+> RP: i like what we have, the project does have an existing scheme, but w=
+e can
+>     change if something else makes sense
 
-The corresponding code in bootimg-efi.py is updated to add this feature,
-the documentation is updated to reflect the change.
+I have some updates on Sphinx..
+I recall that the work in progress can be found here:
+https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=3Dsphinx
 
-Change-Id: I0d3ea8831440f4255e9d9bcf9f965c8b14331037
-Signed-off-by: Khasim Syed Mohammed <khasim.mohammed@arm.com>
----
- documentation/bsp-guide/bsp.xml            | 2 +-
- documentation/ref-manual/ref-variables.xml | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+The automated conversion from DocBook to Sphinx is managing 'internal'
+links quite badly, so it results in a significant amount of work to
+fixup links. Also since I wanted to use the Sphinx builtin 'glossary'
+for terms and variables in the reference manual, that also required me
+to update how links work for terms and variables. That's why it's
+taking more time than I would like. I manage to use some
+automation/regexp, and do a bit of manual fix up as well.
 
-diff --git a/documentation/bsp-guide/bsp.xml b/documentation/bsp-guide/bsp.xml
-index 72a077e806..f5c3f31faf 100644
---- a/documentation/bsp-guide/bsp.xml
-+++ b/documentation/bsp-guide/bsp.xml
-@@ -2158,7 +2158,7 @@
-                     <ulink url='&YOCTO_DOCS_REF_URL;#var-IMAGE_BOOT_FILES'><filename>IMAGE_BOOT_FILES</filename></ulink>:
-                     Files installed into the device's boot partition
-                     when preparing the image using the Wic tool
--                    with the <filename>bootimg-partition</filename>
-+                    with the <filename>bootimg-partition</filename> or <filename>bootimg-efi</filename>
-                     source plugin.
-                     </para></listitem>
-             </itemizedlist>
-diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
-index 9fe744aff5..8cc7ef8fc9 100644
---- a/documentation/ref-manual/ref-variables.xml
-+++ b/documentation/ref-manual/ref-variables.xml
-@@ -5703,7 +5703,7 @@
-                 <para role="glossdeffirst">
-                     A space-separated list of files installed into the
-                     boot partition when preparing an image using the Wic tool
--                    with the <filename>bootimg-partition</filename> source
-+                    with the <filename>bootimg-partition</filename> or <filename>bootimg-efi</filename> source
-                     plugin.
-                     By default, the files are installed under the same name as
-                     the source files.
--- 
-2.17.1
+I also started to experiment with customization in the CSS theme, to
+change some color/formatting. It's not done yet, but it has got
+better:
+https://people.linaro.org/~nicolas.dechesne/yp-docs/html/ref-manual/ref-ma=
+nual.html
 
+For now we generate a single large documentation 'website' that
+includes all existing docs, instead of publishing each document
+separately. I think it's an important change compared to how our
+documentation was published so far. I personally like that quite a
+bit, and think it's 'better' this way, but I would really want to hear
+from you and that we agree this is what we want for the project. We
+still need to look at how we want to generate PDF/offline
+documentation though. And we need to decide how to manage the bitbake
+manual which sits in the bitbake git tree, so right now it's published
+separately.
+
+Side note: the VSCode extension for reST is quite good
+(https://docs.restructuredtext.net/index.html)
+
+>
+> TW: i do lots of builds, never seen issues, why are there so many failur=
+es on
+>     AB?
+> RP: do you do oe-selftest or testsdk builds?
+> TW: no
+> RP: do you do mips builds?
+> TW: no
+> RP: so these are the areas where we see these failures, =E2=80=9Cregular=
+=
+=E2=80=9D builds
+>     are okay
+> SS: i don=E2=80=99t see issues on my builds but that=E2=80=99s probably =
+because of working
+>     these issues out on the AB
+> RP: infrastructure issues are low, it=E2=80=99s mostly race issues that =
+come out of
+>     the extreme load of the AB or intermittent architecture issues that =
+are
+>     rarely tested
+>=20
