@@ -1,423 +1,198 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.51])
- by mx.groups.io with SMTP id smtpd.web10.7592.1596033956312444449
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (NAM10-MW2-obe.outbound.protection.outlook.com [40.107.94.65])
+ by mx.groups.io with SMTP id smtpd.web10.3117.1596225979398895914
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Jul 2020 07:45:56 -0700
+ Fri, 31 Jul 2020 13:06:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@armh.onmicrosoft.com header.s=selector2-armh-onmicrosoft-com header.b=BG/ahmA1;
- spf=pass (domain: arm.com, ip: 40.107.21.51, mailfrom: usama.arif@arm.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W5ejfyXtsspLVhkG153LfkGeAHbjMug3DjfdD3f0tVU=;
- b=BG/ahmA1MwnbA1P/V4ikCEbsR6j51uqb53+nUUbwFbtFrqnIP7oGhrQuq11I72+ym1d63kC9bXi/c8Exv6m6lbOxkCjO0WVAmFagGRCIV6RDLNRyzHVv+n0Mhn68gL6euoCWnXuXxW6s1LQ34KXSo0OuZJYvi6iVYR+nM6Hy0l4=
-Received: from AM6PR05CA0010.eurprd05.prod.outlook.com (2603:10a6:20b:2e::23)
- by AM5PR0802MB2531.eurprd08.prod.outlook.com (2603:10a6:203:a0::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.21; Wed, 29 Jul
- 2020 14:45:53 +0000
-Received: from AM5EUR03FT034.eop-EUR03.prod.protection.outlook.com
- (2603:10a6:20b:2e::4) by AM6PR05CA0010.outlook.office365.com
- (2603:10a6:20b:2e::23) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.16 via Frontend
- Transport; Wed, 29 Jul 2020 14:45:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; lists.yoctoproject.org; dkim=pass (signature was
- verified) header.d=armh.onmicrosoft.com;lists.yoctoproject.org;
- dmarc=bestguesspass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- AM5EUR03FT034.mail.protection.outlook.com (10.152.16.81) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.3216.10 via Frontend Transport; Wed, 29 Jul 2020 14:45:53 +0000
-Received: ("Tessian outbound 1dc58800d5dd:v62"); Wed, 29 Jul 2020 14:45:53 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: 0afddee890a1ad67
-X-CR-MTA-TID: 64aa7808
-Received: from 2b2d46d9778f.1
-	by 64aa7808-outbound-1.mta.getcheckrecipient.com id F2D907D4-7606-4183-8325-9554600BE007.1;
-	Wed, 29 Jul 2020 14:45:47 +0000
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 2b2d46d9778f.1
-    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Wed, 29 Jul 2020 14:45:47 +0000
+ dkim=pass header.i=@windriversystems.onmicrosoft.com header.s=selector2-windriversystems-onmicrosoft-com header.b=jA26znKN;
+ spf=pass (domain: windriver.com, ip: 40.107.94.65, mailfrom: mark.morton@windriver.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JC47Q4oqiLBp3ydwIjx/H6UzQsjrP/saXZV+BLtgZ5CKEWqkQlEhNIaglEAunvDTA5KLZlAMlkK0ESVpasBK5BNf/GP6KbTnFfcZUzrdlnB/32/cIrrt/3GAdP7ClJun6UrHmBWPYL5J3ddvvdwruOO09qVLpcWkMZfzQZ5H4Y+fl+/pP8+Jbgyv00dkYbwU8QgimuumQpxolJK3WhKKy1ZDey/p9IKUyvYbhKecWFK89bI2DyluwpqZj4v62cIwdNDxPp4GfmDF6nraIn0toXh7UwkoIgpGXVdwZ7OLcUIVfhoUynqm5XEWgcA3zG54T9uqy3sCXaQtk3bj7QIFJA==
+ b=Al8xulNWOHl1LkgW30zVsmJPi/LOR3kVmc4M7HqiOUyXHVUektQk8QXHckPzEOwHpUUZvcpw4o3S3/unBnwnnyDl81GGQAz/B3jfGJsnFzp6/Fdq8jnaf24/Egb3eSsDwNWUpfMywDcE/k+1upY+mk0/0geiGVtri8nTSILF3/isVFjFYpbnVl2NvhD2SXP/ic3P627BhuIe03x8bUH2JTvbYG6JoOBDtTn9frQYfJGrvC0tIhGrq8q96gXm3JlkKCm+StI2Zp5P2Qb7ErREXHgcKlGAYT5ZgLtCuZbX+5bBrwbmpl4PgZ/VfJerhM/98N82YDPa+J2/BpXGxKRe2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W5ejfyXtsspLVhkG153LfkGeAHbjMug3DjfdD3f0tVU=;
- b=eogoR1khXP1RFxpyKrIozvsCzcq6mP9EnI9D1biqQY3tbvjy1Df8WLTJTgberQNdrdH/8SS1TkVEJfwFoGt2Wv+TdYzR2nrqP9Gv3JJTCz3GCn2R8PU/vumBcsKK7IZdIop8tIARQWXLVYwlE+k2ZBTHwLOQ9fj9O6Qzjd7zeVUx/9UKkon22mE09Oak0Q0trcdAvpA9wn5uA+GRg4NOa9GOSbMoGipUOEMp3EQZsGFJwv6jPQXTGQQGXYIr/Bg8Vwo4xvcTpbLwDF7KcGLn/H9b26evSN1xfSAodsVRqoD0eEAW2wteVDM1JKVtp0LAxfev03zsj8EJbZB96QC8pA==
+ bh=bdL6kZEnOM3yPCW7B81g66IGYWcS+RoN3blweFyvrvU=;
+ b=Vp4bqesrBNNlbt7U+b/KSRmZ6PqfmmCnZo3Tm2PmP0AAD7LabVLZX3cJGW+3cGxnOsIU5aky7w2BsgDBiEvWt6He7Zg+t6xTkzI0/UecZmTX2p/6FNliZi8A5BxF0WUXLFipODpw8GqCBkowBakZ54SlWI+Mi1AML5GtY1ZD9FIHglYid+8fmVXd2YQeJutfDUoFN8BkWG/Nx8hshsxyHTS066VyjngmZn7xm4OTDPiBvPmkrfjAdYaySu7KuWY2KSCIcKrPkig0xJwcCH8BFf2n4pIIp7ZlZ9LHlhRSvAc1eX+wCHHHC2fAcoSheAl57lYv1EXDc7QS/iwVQE0oNg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=windriversystems.onmicrosoft.com;
+ s=selector2-windriversystems-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W5ejfyXtsspLVhkG153LfkGeAHbjMug3DjfdD3f0tVU=;
- b=BG/ahmA1MwnbA1P/V4ikCEbsR6j51uqb53+nUUbwFbtFrqnIP7oGhrQuq11I72+ym1d63kC9bXi/c8Exv6m6lbOxkCjO0WVAmFagGRCIV6RDLNRyzHVv+n0Mhn68gL6euoCWnXuXxW6s1LQ34KXSo0OuZJYvi6iVYR+nM6Hy0l4=
-Authentication-Results-Original: linuxfoundation.org; dkim=none (message not
- signed) header.d=none;linuxfoundation.org; dmarc=none action=none
- header.from=arm.com;
-Received: from DB8PR08MB5481.eurprd08.prod.outlook.com (2603:10a6:10:114::9)
- by DB8PR08MB5388.eurprd08.prod.outlook.com (2603:10a6:10:11c::7) with
+ bh=bdL6kZEnOM3yPCW7B81g66IGYWcS+RoN3blweFyvrvU=;
+ b=jA26znKNLW2FKIYv1cc/ulL0ZdzcrMFdfzRF+RsB+rh/7iSl7c3OFhOwf1ViD/fWjk7To+0eVMJDQyV2t83VaxdWRlJToH2OFkBmF/SPcyoGo1RG+VL5agAPoNzr3ZUKQgKZAaB8sUGqMPk8wK1aLeGTt0QoEJeU32Gv9C3oph8=
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com (2603:10b6:5:137::26)
+ by DM6PR11MB2970.namprd11.prod.outlook.com (2603:10b6:5:65::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3216.24; Wed, 29 Jul
- 2020 14:45:47 +0000
-Received: from DB8PR08MB5481.eurprd08.prod.outlook.com
- ([fe80::6939:c156:de89:adc5]) by DB8PR08MB5481.eurprd08.prod.outlook.com
- ([fe80::6939:c156:de89:adc5%7]) with mapi id 15.20.3239.017; Wed, 29 Jul 2020
- 14:45:47 +0000
-Subject: Re: [PATCH] ref-manual: Add documentation for kernel-fitimage
-To: docs@lists.yoctoproject.org
-Cc: nd@arm.com, Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <20200729143552.16065-1-usama.arif@arm.com>
-From: "Usama Arif" <usama.arif@arm.com>
-Message-ID: <aa55cfd1-49fe-92ff-9431-2cc1d15d015b@arm.com>
-Date: Wed, 29 Jul 2020 15:45:46 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
-In-Reply-To: <20200729143552.16065-1-usama.arif@arm.com>
-X-ClientProxiedBy: LO2P265CA0097.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:c::13) To DB8PR08MB5481.eurprd08.prod.outlook.com
- (2603:10a6:10:114::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.19; Fri, 31 Jul
+ 2020 20:06:16 +0000
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::10e7:da6c:73e4:8ea7]) by DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::10e7:da6c:73e4:8ea7%4]) with mapi id 15.20.3216.033; Fri, 31 Jul 2020
+ 20:06:16 +0000
+From: "Mark Morton" <Mark.Morton@windriver.com>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, Trevor Woerner
+	<twoerner@gmail.com>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [yocto] Yocto Technical Team Minutes, Engineering Sync, for July 28 2020
+Thread-Topic: [docs] [yocto] Yocto Technical Team Minutes, Engineering Sync,
+ for July 28 2020
+Thread-Index: AQHWZXsRHkch5eYpQ0an4mPARoTdpakiH5xQ
+Date: Fri, 31 Jul 2020 20:06:16 +0000
+Message-ID: 
+ <DM6PR11MB36767F98217D328FA7814DA8E54E0@DM6PR11MB3676.namprd11.prod.outlook.com>
+References: <20200728224149.GA22506@linux-uys3>
+ <CAP71WjybyNTcZVFp0KbtvoY2nr5wOBxEvA2HNYPZzobouRn+XQ@mail.gmail.com>
+In-Reply-To: 
+ <CAP71WjybyNTcZVFp0KbtvoY2nr5wOBxEvA2HNYPZzobouRn+XQ@mail.gmail.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: linaro.org; dkim=none (message not signed)
+ header.d=none;linaro.org; dmarc=none action=none header.from=windriver.com;
+x-originating-ip: [147.11.252.42]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 98355517-5d37-4ffa-a127-08d8358d2ef9
+x-ms-traffictypediagnostic: DM6PR11MB2970:
+x-microsoft-antispam-prvs: 
+ <DM6PR11MB29707090E1A9657A4C9FC482E54E0@DM6PR11MB2970.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ VTKAZNSD0t2yUFFnUqdj+juPbGhHMmJYn4HWqUPlji4tXv35n6KrTc5T03EDJxpuRebbKcqDUIBHrTfbpjxiQjyFYhBNF6lAAaCwYzF5fKepjb2ncofYLNuvdjPcuFMGl2WJeu5p+2K/0rWhHj6ZM5Soxy2oZ58tKxapDv+ljiU/jCvPuaFRr5ss0yybaq343emYa5gtXQcte//5xa7exym/Nj5Ocyeo4zQHRIuhZG3rHwcRZRC1JrYqZXmwuB2XNp6pthaSWihlqMVm2e0IbtfwNh4L5KH4OpdkZfTbvJEb66jOzmm4nE7e6KMVxCrlmXsbZAGLp6+YJEitW2PNF/wYkOLIV5XQiByFfFjDE+oJalzyGV5aMs4SoVryLGbu9SUxItNe5JmK7N20ijVyUw==
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3676.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(396003)(136003)(39850400004)(376002)(346002)(186003)(9686003)(53546011)(8676002)(2906002)(33656002)(83380400001)(8936002)(6506007)(7696005)(26005)(55016002)(4326008)(66556008)(64756008)(66446008)(66476007)(66946007)(76116006)(5660300002)(110136005)(52536014)(86362001)(316002)(478600001)(71200400001)(966005);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: 
+ QTTOMj8/Yfc+J6+EU8uiOmUuGKLXVPBNjIG6fi13rpN6pxZYNt+2jeox9vUoF31ITeya+nsGoNfDCfckk2Fq24Phzntk/oC27xwAsGUDCV6SmJFctuz598/oNadvOScX0r7Gqg/BUvq+eUH5Iroph1+eOQUyf0Taa21sl9rQiQYTZrQjAgDQOwoQpDxQ98PuSYlrMJ9vhp2gGGSjj17FGt0ECemrlXzFg8O0vUUYcCNuolPFwbfb64OM9boTuZqwTdMNmcXNkZ0791VjlSijRewyTHaouASrTpyc1AjpxnG8RZ0jHGRMzyj0DHiohWoYI4E0v+osEhV4eOnEWMlUTo3qyccE1eMOnHCGaebkfgRRJDvPGGkLeVNuoy6omsIRjwuQx4wREfznZcvvs4XPa8pM5Fs+bx/Gszge0Y6m2gs9p0EU64AreyMeEEYPl6BYulo/SC4Te8gb/vhSa57+EUc9fnlpUsee6MTcx7Oic/VGbknooceg/JRbYBlmcWNwoDr3hnjvG0oLM827aGhLGNPihJXPB2PV6JDUEBRQgWuI+ZbaHWVBuD1N55wCzXwiPYz3Rd3QiOaeaj+lMWNLDa8+dnTt6YoyKPSQrQlz3I9JTaQt6xbFGSixzFvKtSKQmMnNeALc2HQPskWi0lJcJg==
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from [10.1.198.43] (217.140.106.52) by LO2P265CA0097.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:c::13) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3239.16 via Frontend Transport; Wed, 29 Jul 2020 14:45:46 +0000
-X-Originating-IP: [217.140.106.52]
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-HT: Tenant
-X-MS-Office365-Filtering-Correlation-Id: dd4c00fa-ab56-4124-cd41-08d833ce181a
-X-MS-TrafficTypeDiagnostic: DB8PR08MB5388:|AM5PR0802MB2531:
-X-Microsoft-Antispam-PRVS: 
-	<AM5PR0802MB2531016BC5DCFA6E67DF76DC92700@AM5PR0802MB2531.eurprd08.prod.outlook.com>
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Oob-TLC-OOBClassifiers: OLM:8882;OLM:8882;
-X-MS-Exchange-SenderADCheck: 1
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: 
- Fs7hr2bZ6xKAo+pj+4mrbyQAi8MDLQPRPj6RHY8za/GUhkRuYczv+d43ftjwjRlkNwyOtdl+goU53LGwkLdxokakqJm5FCG97CIl5j+ZirGYeFsUER7P5+nsh0iaPKbJTLjbppx/oecvuBFCtth2LBJ8icrilN0BLYP9gNHAX+P1peCL/9I8JXChPGuKuQAJRArDWkGS1ZVkSHqPKrm42jj9QNQEI9CgdtuV8BJ1D8zo+ntKJbo9CFcHXihxX6yFKn0h+zOBk3XZ8bV4z8er8/j2GSSQQ7+dFbYVx2maj81wpaPN+UX/AIdKexA8+FwdcH0v9/JCIo/ZX0zI4EOa8u0Yn6+THm+pUiwWea4QiRiUyjyYtd3Yd2/Qz8TKkkDe2jpfRfIPWrGhoFmHAocKJw075Lh1x3BTWyPOBcjvZgz2vDFZRZg4lsQbmNjeSIg8sERt3VLQGQlyqcZ+vF+/ew==
-X-Forefront-Antispam-Report-Untrusted: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB8PR08MB5481.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(4636009)(396003)(136003)(39860400002)(376002)(366004)(346002)(31686004)(6486002)(16526019)(478600001)(5660300002)(36756003)(83380400001)(4326008)(2906002)(30864003)(186003)(8936002)(52116002)(44832011)(966005)(16576012)(2616005)(31696002)(86362001)(6916009)(956004)(66946007)(316002)(66556008)(53546011)(66476007)(26005)(8676002)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData: 
- kZBMZrFuS1GN/u7RzDw3adkQ4Md8Q11WI/Im4R6E5gXXtZ1eNPUqNc+5vR0D5lz3ROXF9GBMrrh9C3bMYwcEe5Ag1msUXsPu9DGfQSRYyheovqblN9R3Wv/D1QbLakqhbBLkY98VFXDd1ZoEDb/6CAfxTHkREHpgHiFgiBfuHogl7QICA3k3Z7iOB18pczryAVZQCybOGmMVC0jW9siChq48Mmdz4jStbO60kYwhLynI6FVQtphBU4QezgMj0UWGspSHJUP9irwCu8Z7fKUbOGA85AAYbMtQiHNqEckIg2iSPHmRhooMsdQpzEGZKTIPmPITpaOds23+LJ/Y2q5tpZgtSLi+ois+cQViYRa4vA/ZwTiZS7RdWwtETn7K5OFyf9hFJVhSO0Xfb4opdT8+C2I3tvdaSBoX77r47BzMiG3DI0ucrhrvY+aup5jxRm01i6WUC561Dv/I2z6P5aX9zYnotC3poWJZpmc5boyM2dYBh9zBx2ti+r9+uE8x1gLw
-X-MS-Exchange-Transport-Forked: True
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR08MB5388
-Original-Authentication-Results: linuxfoundation.org; dkim=none (message not signed)
- header.d=none;linuxfoundation.org; dmarc=none action=none
- header.from=arm.com;
-Return-Path: Usama.Arif@arm.com
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: 
- AM5EUR03FT034.eop-EUR03.prod.protection.outlook.com
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 
-	0f9d85e1-9eb2-4e4b-0556-08d833ce1423
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	oKm7okR65uh2MVsStW5CDpVK+xDUgkhRcqJz4ODSqstGSVnALfCm3z3LL4Bk6lhb/hJrKfp69WwXtBiRQeNYJr2ce4tQWn+qDl8lufhvaXdKjgbYOKZO4owXOIeRR3eHmyqsMZO9v0TiK7QqNxKG31shhnXZuTIXgZjh/LkcdZ1TUaP8t/x5w9WGm0ptgfj72+dAOsVj72Yi4Y17MHx7WthuRw3QQwTPvuHhmoBZR9dRkZW14UZ/8EiCdsELnzyDqsHvXdVdg6BPVQGf11bkHWhG90z5pY+Tf9SIJnrSQ5vPTOHSKNkbP4+EYxZodTKjQ5rzdosNKmgYeJKZ8Le+06eNanM4Lxd7w5gWm4JrTLzO09xQxkb3tTqcjlHKVLDspJRCas3G6AUHw8DXdj2bynAInb/2JBf1v/cFCLi+3gua65n59jkUnfZjn5wB8SmXeURaGT7Ku75DNq8opKzEk3YY83DpoaKo5BIDFOV/jHcJFB1nu/NP3+iMQOMZ5I2n
-X-Forefront-Antispam-Report: 
-	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFTY:;SFS:(4636009)(39860400002)(396003)(376002)(346002)(136003)(46966005)(16526019)(966005)(26005)(186003)(16576012)(956004)(53546011)(316002)(2616005)(36906005)(4326008)(478600001)(31696002)(336012)(107886003)(70206006)(356005)(36756003)(81166007)(31686004)(83380400001)(8936002)(2906002)(47076004)(44832011)(86362001)(6916009)(6486002)(82310400002)(30864003)(5660300002)(70586007)(82740400003)(8676002)(43740500002);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jul 2020 14:45:53.2735
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3676.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 98355517-5d37-4ffa-a127-08d8358d2ef9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 31 Jul 2020 20:06:16.5798
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: dd4c00fa-ab56-4124-cd41-08d833ce181a
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	AM5EUR03FT034.eop-EUR03.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR0802MB2531
-Content-Type: text/plain; charset=utf-8; format=flowed
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: vGym4s9mhx1/KraGE4jOY/Wezhk6robmdSeD68Li1e5eZB9SfE9SufelGlznpe6A50D6L2tSxSdscMiQiFq9NIj2fFHp/LqVECsw6ayG7Lo=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB2970
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-
-
-On 29/07/2020 15:35, Usama Arif wrote:
-> This documents kernel-fitimage.bbclass as well as
-> the variables that are required to use the class
-> to create a FIT image.
-> 
-> Signed-off-by: Usama Arif <usama.arif@arm.com>
-> Cc: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
->   documentation/ref-manual/ref-classes.xml   |  76 ++++++++++-
->   documentation/ref-manual/ref-variables.xml | 142 +++++++++++++++++++++
->   2 files changed, 217 insertions(+), 1 deletion(-)
-> 
-> diff --git a/documentation/ref-manual/ref-classes.xml b/documentation/ref-manual/ref-classes.xml
-> index ab12373ae0..1dcd5fdd03 100644
-> --- a/documentation/ref-manual/ref-classes.xml
-> +++ b/documentation/ref-manual/ref-classes.xml
-> @@ -1880,8 +1880,82 @@ This check was removed for YP 2.3 release
->   
->       <para>
->           The <filename>kernel-fitimage</filename> class provides support to
-> -        pack zImages.
-> +        pack a kernel Image, device trees and a RAM disk into a single
-> +        FIT image. In theory, a FIT image can support any number of kernels,
-> +        RAM disks and device-trees.
-> +        However, <filename>kernel-fitimage</filename> currently only supports
-> +        limited usescases: just one kernel image, an optional RAM disk, and
-> +        any number of device tree.
->       </para>
-> +
-> +    <para>
-> +        To create a FIT image, it is required that
-> +        <filename><link linkend='var-KERNEL_CLASSES'>KERNEL_CLASSES</link></filename>
-> +        is set to "kernel-fitimage" and
-> +        <filename><link linkend='var-KERNEL_IMAGETYPE'>KERNEL_IMAGETYPE</link></filename>
-> +        is set to "fitImage".
-> +    </para>
-> +
-> +    <para>
-> +        The options for the device tree compiler passed to mkimage -D feature
-> +        when creating the FIT image are specified using the
-> +        <filename><link linkend='var-UBOOT_MKIMAGE_DTCOPTS'>UBOOT_MKIMAGE_DTCOPTS</link></filename>
-> +        variable.
-> +    </para>
-> +
-> +    <para>
-> +        Only a single kernel can be added to the FIT image created by
-> +        <filename>kernel-fitimage</filename> and the kernel image in FIT is
-> +        mandatory.
-> +        The address where the kernel image is to be loaded by U-boot is
-> +        specified by
-> +        <filename><link linkend='var-UBOOT_LOADADDRESS'>UBOOT_LOADADDRESS</link></filename>
-> +        and the entrypoint by
-> +        <filename><link linkend='var-UBOOT_ENTRYPOINT'>UBOOT_ENTRYPOINT</link></filename>.
-> +    </para>
-> +
-> +    <para>
-> +        Multiple device trees can be added to the FIT image created by
-> +        <filename>kernel-fitimage</filename> and the device tree is optional.
-> +        The address where the device tree is to be loaded by U-boot is
-> +        specified by
-> +        <filename><link linkend='var-UBOOT_DTBO_LOADADDRESS'>UBOOT_DTBO_LOADADDRESS</link></filename>
-> +        for device tree overlays and by
-> +        <filename><link linkend='var-UBOOT_DTB_LOADADDRESS'>UBOOT_DTB_LOADADDRESS</link></filename>
-> +        for device tree binaries.
-> +    </para>
-> +
-> +    <para>
-> +        Only a single RAM disk can be added to the FIT image created by
-> +        <filename>kernel-fitimage</filename> and the RAM disk in FIT is
-> +        optional.
-> +        The address where the RAM disk image is to be loaded by U-boot
-> +        is specified by
-> +        <filename><link linkend='var-UBOOT_RD_LOADADDRESS'>UBOOT_RD_LOADADDRESS</link></filename>
-> +        and the entrypoint by
-> +        <filename><link linkend='var-UBOOT_RD_ENTRYPOINT'>UBOOT_RD_ENTRYPOINT</link></filename>.
-> +        The ramdisk is added to FIT image when
-> +        <filename><link linkend='var-INITRAMFS_IMAGE'>INITRAMFS_IMAGE</link></filename>
-> +        is specified.
-> +    </para>
-> +
-> +    <para>
-> +        The FIT image generated by <filename>kernel-fitimage</filename> class
-> +        is signed when the variables
-> +        <filename><link linkend='var-UBOOT_SIGN_ENABLE'>UBOOT_SIGN_ENABLE</link></filename>,
-> +        <filename><link linkend='var-UBOOT_MKIMAGE_DTCOPTS'>UBOOT_MKIMAGE_DTCOPTS</link></filename>,
-> +        <filename><link linkend='var-UBOOT_SIGN_KEYDIR'>UBOOT_SIGN_KEYDIR</link></filename>
-> +        and
-> +        <filename><link linkend='var-UBOOT_SIGN_KEYNAME'>UBOOT_SIGN_KEYNAME</link></filename>
-> +        are set appropriately.
-> +        The default values used for
-> +        <filename><link linkend='var-FIT_HASH_ALG'>FIT_HASH_ALG</link></filename>
-> +        and
-> +        <filename><link linkend='var-FIT_SIGN_ALG'>FIT_SIGN_ALG</link></filename>
-> +        in <filename>kernel-fitimage</filename> are "sha256" and "rsa2048"
-> +        respectively.
-> +    </para>
-> +
->   </section>
->   
->   <section id='ref-classes-kernel-grub'>
-> diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
-> index 8cc7ef8fc9..a5064807e5 100644
-> --- a/documentation/ref-manual/ref-variables.xml
-> +++ b/documentation/ref-manual/ref-variables.xml
-> @@ -4991,6 +4991,30 @@
->               </glossdef>
->           </glossentry>
->   
-> +        <glossentry id='var-FIT_HASH_ALG'><glossterm>FIT_HASH_ALG</glossterm>
-> +            <info>
-> +               FIT_HASH_ALG[doc] = "Specifies the hash algorithm used in creating the FIT Image."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Specifies the hash algorithm used in creating the FIT Image.
-> +                    For e.g. sha256.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
-> +        <glossentry id='var-FIT_SIGN_ALG'><glossterm>FIT_SIGN_ALG</glossterm>
-> +            <info>
-> +               FIT_SIGN_ALG[doc] = "Specifies the signature algorithm used in creating the FIT Image."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Specifies the signature algorithm used in creating the FIT Image.
-> +                    For e.g. rsa2048.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
->           <glossentry id='var-FONT_EXTRA_RDEPENDS'><glossterm>FONT_EXTRA_RDEPENDS</glossterm>
->               <info>
->                   FONT_EXTRA_RDEPENDS[doc] = "When a recipe inherits the fontcache class, this variable specifies runtime dependencies for font packages. This variable defaults to 'fontconfig-utils'."
-> @@ -15960,6 +15984,38 @@
->               </glossdef>
->           </glossentry>
->   
-> +        <glossentry id='var-UBOOT_DTB_LOADADDRESS'><glossterm>UBOOT_DTB_LOADADDRESS</glossterm>
-> +            <info>
-> +               UBOOT_DTB_LOADADDRESS[doc] = "Specifies the load address for the dtb."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Specifies the load address for the dtb image used by U-boot.
-> +                    During FIT image creation, the
-> +                    <filename>UBOOT_DTB_LOADADDRESS</filename> variable is used
-> +                    in <filename>kernel-fitimage</filename> class to specify the
-> +                    load address to be used in creating the dtb sections of
-> +                    Image Tree Source for the FIT image.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
-> +        <glossentry id='var-UBOOT_DTBO_LOADADDRESS'><glossterm>UBOOT_DTBO_LOADADDRESS</glossterm>
-> +            <info>
-> +               UBOOT_DTBO_LOADADDRESS[doc] = "Specifies the load address for the dtbo."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Specifies the load address for the dtbo image used by U-boot.
-> +                    During FIT image creation, the
-> +                    <filename>UBOOT_DTBO_LOADADDRESS</filename> variable is used
-> +                    in <filename>kernel-fitimage</filename> class to specify the
-> +                    load address to be used in creating the dtbo sections of
-> +                    Image Tree Source for the FIT image.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
->           <glossentry id='var-UBOOT_ENTRYPOINT'><glossterm>UBOOT_ENTRYPOINT</glossterm>
->               <info>
->                  UBOOT_ENTRYPOINT[doc] = "Specifies the entry point for the U-Boot image."
-> @@ -16045,6 +16101,51 @@
->               </glossdef>
->           </glossentry>
->   
-> +        <glossentry id='var-UBOOT_MKIMAGE_DTCOPTS'><glossterm>UBOOT_MKIMAGE_DTCOPTS</glossterm>
-> +            <info>
-> +               UBOOT_MKIMAGE_DTCOPTS[doc] = "Options for the device tree compiler passed to mkimage '-D' feature."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Options for the device tree compiler passed to mkimage '-D'
-> +                    feature while creating FIT image in
-> +                    <filename>kernel-fitimage</filename> class.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
-> +        <glossentry id='var-UBOOT_RD_LOADADDRESS'><glossterm>UBOOT_RD_LOADADDRESS</glossterm>
-> +            <info>
-> +               UBOOT_RD_LOADADDRESS[doc] = "Specifies the load address for the ramdisk image."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Specifies the load address for the RAM disk image.
-> +                    During FIT image creation, the
-> +                    <filename>UBOOT_RD_LOADADDRESS</filename> variable is used
-> +                    in <filename>kernel-fitimage</filename> class to specify the
-> +                    load address to be used in creating the Image Tree Source for
-> +                    the FIT image.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
-> +        <glossentry id='var-UBOOT_RD_ENTRYPOINT'><glossterm>UBOOT_RD_ENTRYPOINT</glossterm>
-> +            <info>
-> +               UBOOT_RD_ENTRYPOINT[doc] = "Specifies the entrypoint for the ramdisk image."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Specifies the entrypoint for the RAM disk image.
-> +                    During FIT image creation, the
-> +                    <filename>UBOOT_RD_ENTRYPOINT</filename> variable is used
-> +                    in <filename>kernel-fitimage</filename> class to specify the
-> +                    entrypoint to be used in creating the Image Tree Source for
-> +                    the FIT image.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
->           <glossentry id='var-UBOOT_SUFFIX'><glossterm>UBOOT_SUFFIX</glossterm>
->               <info>
->                  UBOOT_SUFFIX[doc] = "Points to the generated U-Boot extension."
-> @@ -16063,6 +16164,47 @@
->               </glossdef>
->           </glossentry>
->   
-> +        <glossentry id='var-UBOOT_SIGN_ENABLE'><glossterm>UBOOT_SIGN_ENABLE</glossterm>
-> +            <info>
-> +               UBOOT_SIGN_KEYDIR[doc] = "Enable signing of FIT image."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Enable signing of FIT image. The default value is "0".
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
-> +        <glossentry id='var-UBOOT_SIGN_KEYDIR'><glossterm>UBOOT_SIGN_KEYDIR</glossterm>
-> +            <info>
-> +               UBOOT_SIGN_KEYDIR[doc] = "Location of the directory containing the RSA key and certificate used for signing FIT image."
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    Location of the directory containing the RSA key and
-> +                    certificate used for signing FIT image.
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
-> +        <glossentry id='var-UBOOT_SIGN_KEYNAME'><glossterm>UBOOT_SIGN_KEYNAME</glossterm>
-> +            <info>
-> +               UBOOT_SIGN_KEYNAME[doc] = "The name of keys used for signing U-boot FIT image"
-> +            </info>
-> +            <glossdef>
-> +                <para role="glossdeffirst">
-> +                    The name of keys used for signing U-boot FIT image stored in
-> +                    <filename><link linkend='var-UBOOT_SIGN_KEYDIR'>UBOOT_SIGN_KEYDIR</link></filename>
-> +                    directory. For e.g. dev.key key and dev.crt certificate
-> +                    stored in
-> +                    <filename><link linkend='var-UBOOT_SIGN_KEYDIR'>UBOOT_SIGN_KEYDIR</link></filename>
-> +                    directory will have
-> +                    <filename><link linkend='var-UBOOT_SIGN_KEYNAME'>UBOOT_SIGN_KEYNAME</link></filename>
-> +                    set to "dev".
-> +                </para>
-> +            </glossdef>
-> +        </glossentry>
-> +
->           <glossentry id='var-UBOOT_TARGET'><glossterm>UBOOT_TARGET</glossterm>
->               <info>
->                  UBOOT_TARGET[doc] = "Specifies the target used for building U-Boot."
-> 
-
-Hi
-
-This documentation assumes that the case for a single kernel and single 
-RAM disk with no dtb is supported by kernel-fitimage.bbclass. 
-https://lists.openembedded.org/g/openembedded-core/message/140810 adds 
-support for this combination of usecase.
-
-Thanks,
-Usama
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogZG9jc0BsaXN0cy55b2N0
+b3Byb2plY3Qub3JnIDxkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc+IE9uIEJlaGFsZg0KPiBP
+ZiBOaWNvbGFzIERlY2hlc25lDQo+IFNlbnQ6IFdlZG5lc2RheSwgSnVseSAyOSwgMjAyMCAxMjoz
+NyBBTQ0KPiBUbzogVHJldm9yIFdvZXJuZXIgPHR3b2VybmVyQGdtYWlsLmNvbT4NCj4gQ2M6IGRv
+Y3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZzsgTW9ydG9uLCBNYXJrDQo+IDxNYXJrLk1vcnRvbkB3
+aW5kcml2ZXIuY29tPg0KPiBTdWJqZWN0OiBSZTogW2RvY3NdIFt5b2N0b10gWW9jdG8gVGVjaG5p
+Y2FsIFRlYW0gTWludXRlcywgRW5naW5lZXJpbmcgU3luYywNCj4gZm9yIEp1bHkgMjggMjAyMA0K
+PiANCj4gT24gV2VkLCBKdWwgMjksIDIwMjAgYXQgMTI6NDIgQU0gVHJldm9yIFdvZXJuZXIgPHR3
+b2VybmVyQGdtYWlsLmNvbT4NCj4gd3JvdGU6DQo+ID4NCj4gPiBZb2N0byBUZWNobmljYWwgVGVh
+bSBNaW51dGVzLCBFbmdpbmVlcmluZyBTeW5jLCBmb3IgSnVseSAyOCAyMDIwDQo+ID4gYXJjaGl2
+ZToNCj4gPg0KPiBodHRwczovL2RvY3MuZ29vZ2xlLmNvbS9kb2N1bWVudC9kLzFseThueWhPMTRr
+RE5uRmNXMlFza0FOWFczWlQ3DQo+IFF3S0M1dw0KPiA+IFdWRGc5ZERINC9lZGl0DQo+ID4NCj4g
+PiA9PSBkaXNjbGFpbWVyID09DQo+ID4gQmVzdCBlZmZvcnRzIGFyZSBtYWRlIHRvIGVuc3VyZSB0
+aGUgYmVsb3cgaXMgYWNjdXJhdGUgYW5kIHZhbGlkLg0KPiA+IEhvd2V2ZXIsIGVycm9ycyBzb21l
+dGltZXMgaGFwcGVuLiBJZiBhbnkgZXJyb3JzIG9yIG9taXNzaW9ucyBhcmUNCj4gPiBmb3VuZCwg
+cGxlYXNlIGZlZWwgZnJlZSB0byByZXBseSB0byB0aGlzIGVtYWlsIHdpdGggYW55IGNvcnJlY3Rp
+b25zLg0KPiA+DQo+ID4gPT0gYXR0ZW5kZWVzID09DQo+ID4gVHJldm9yIFdvZXJuZXIsIFN0ZXBo
+ZW4gSm9sbHksIEFybWluIEt1c3RlciwgSm9zZWYgSG9sem1heXIsIFJpY2hhcmQNCj4gPiBQdXJk
+aWUsIFRyZXZvciBHYW1ibGluLCBKb3NodWEgV2F0dCwgTWFyayBNb3J0b24sIFJvc3MgQnVydG9u
+LCBCcnVjZQ0KPiA+IEFzaGZpZWxkLCBTdGV2ZSBTYWtvbWFuLCAocGhvbmUtaW4gPz8pLCBKb24g
+TWFzb24sIFJhbmR5IE1hY0xlb2QsDQo+ID4gU2NvdHQgTXVycmF5LCBEZW55cyBEbXl0cml5ZW5r
+bw0KPiA+DQo+ID4gPT0gbm90ZXMgPT0NCj4gPiAtIGZpeGVkIGEgcmFjZSBvbiBBQiB3cnQgcGVy
+bA0KPiA+IC0gMy4xLjIgaW50byBRQQ0KPiA+IC0gMy4yLW0yIHRvIFFBIG9uY2UgdGhleeKAmXJl
+IGRvbmUgd2l0aCAzLjEuMg0KPiA+DQo+ID4gPT0gZ2VuZXJhbCA9PQ0KPiA+IFJQOiBsb2FkIG9m
+IHBlcmwgaXNzdWVzIG92ZXIgdGhlIHdlZWtlbmQsIGJlbGlldmUgdG8gaGF2ZSBmb3VuZCBpc3N1
+ZQ0KPiA+IFJQOiBsb3RzIG9mIHFlbXVtaXBzIGlzc3Vlcywgbm90IHN1cmUgd2h5LCBwZXJoYXBz
+IGEgdGltZW91dHMgaXNzdWU/IChubw0KPiBwaW5nDQo+ID4gICAgIHdpdGhpbiAzMCBzZWNvbmRz
+KQ0KPiA+IFJQOiBzb21lIGluZnJhc3RydWN0dXJlIGlzc3VlcyAob25lIHdvcmtlciBoYXMgYmVj
+b21lIGNvcnJ1cHRlZCkNCj4gPg0KPiA+IFJQOiBjdXJpb3VzIHRvIGtub3cgd2hhdCBwZW9wbGUg
+dGhpbmsgYWJvdXQgMy4xLjI6IHRoZXJlIGlzIGEgYml0YmFrZSBpc3N1ZQ0KPiA+ICAgICB3aXRo
+IHRvYXN0ZXIsIHNob3VsZCB3ZSByZWxlYXNlIHRoZW4gZml4IG9yIHdhaXQgZm9yIGZpeCBiZWZv
+cmUgcmVsZWFzZT8NCj4gPiBTUzogbWF5YmUgd2Ugc2hvdWxkIGdldCBmZWVkYmFjayBmcm9tIHBl
+b3BsZSB1c2luZyB0b2FzdGVyDQo+ID4gUlA6IHRoZSBmaXggaXMgc2ltcGxlLCBtYXliZSByZWxl
+YXNlIDMuMS4yICh3aXRoIHJlbGVhc2Ugbm90ZSkgdGhlbg0KPiA+IGZpeA0KPiA+DQo+ID4gUlA6
+IG1lcmdlZCByZS1hcnJhbmdlbWVudCBvZiBwYWNrYWdlIG1hbmFnZXIgY29kZSwgdGhpcyBwdXRz
+IG1vcmUgb2YNCj4gb3VyIGNvZGUNCj4gPiAgICAgaW50byBweXRob24gbGlicmFyaWVzIGluc3Rl
+YWQgb2YgYmJjbGFzcyBmaWxlcywgd2hpY2ggaXMgdGhlIGRpcmVjdGlvbiBpDQo+ID4gICAgIHdh
+bnQgdG8gdGFrZSBnb2luZyBmb3J3YXJkDQo+ID4gUlA6IGkgbmVlZCB0byBzdGFydCBhIGNvbnZl
+cnNhdGlvbiBvbiBvZS1hcmNoaXRlY3R1cmUgZm9yIGZ1dHVyZQ0KPiA+IGRpcmVjdGlvbnMNCj4g
+PiBSUDogZS5nLiBiaW5hcnkgcGFja2FnZSBmZWVkcywgd2Ugd2FudCB0byBjYXB0dXJlIHRoZXNl
+IHVzZS1jYXNlcyBpbnRvIHRoZQ0KPiA+ICAgICB3aWtpDQo+ID4NCj4gPiBbTkI6IGRvbmUhIHNl
+ZSBodHRwczovL3dpa2kueW9jdG9wcm9qZWN0Lm9yZy93aWtpL0Z1dHVyZV9EaXJlY3Rpb25zXQ0K
+PiA+DQo+ID4gUlA6IHdlIGFsc28gcG9zdGVkIHRoZSBjdXJyZW50IGFncmVlbWVudCBvbiDigJxp
+bmNsdXNpdmUgbGFuZ3VhZ2XigJ0gYXMgYWdyZWVkDQo+ID4gICAgIG9uIGJ5IHZhcmlvdXMgZ3Jv
+dXBzIChvZSBib2FyZCwgb2UtdHNjLCB5cC10c2MpDQo+ID4NCj4gPiBUVzogd2hhdOKAmXMgdGhl
+IHRoaW5raW5nIGJlaGluZCBtb3ZpbmcgY29kZSB0byBsaWJyYXJpZXMgdnMgYmJjbGFzcz8NCj4g
+PiBSUDogcHJvOiBwYXJzaW5nIHNwZWVkIGNvbjogdmFyaWFibGUgZGVwZW5kZW5jeSB0cmFja2lu
+ZyBpcyBsb3N0DQo+ID4gUlA6IGxvdHMgb2YgcHl0aG9uIGNvZGUgZ2V0cyB3cml0dGVuIHRvIGxv
+Z3MgZXRjLCB3aGljaCBzbG93cyBpdCBkb3duDQo+ID4gSlBFVzogZG9lcyBiaXRiYWtlIGF1dG9t
+YXRpY2FsbHkgZGV0ZWN0IHZhcmlhYmxlIGRlcGVuZGVuY2llcyBpbiBsaWJyYXJ5DQo+IGNvZGU/
+DQo+ID4gUlA6IG5vLiBtYXliZSB3ZSBqdXN0IG5lZWQgdG8gZG8gdGhlIHNjYW4gb25jZT8NCj4g
+PiBUVzogZG8gd2UgbG9zZSBmbGV4aWJpbGl0eT8gKGUuZy4gaXTigJlzIGVhc3kgdG8gY29weStw
+YXN0ZSttb2RpZnkgYSBiYmNsYXNzLA0KPiA+ICAgICB3aWxsIHRoYXQgYmUgcG9zc2libGU/KQ0K
+PiA+IFJQOiB0aGVyZSB3aWxsIHN0aWxsIGJlIGFsbCB0aGUgc2FtZSBlbnRyeSBwb2ludHMsIHNv
+IGl0IHNob3VsZCBiZQ0KPiA+IHBvc3NpYmxlDQo+ID4gUlA6IGnigJltIHdvcnJpZWQgYWJvdXQg
+dGhlIHNpemUgb2YgdGhlIGRhdGFzdG9yZSBpbiBtZW1vcnkgYW5kIGl0IGlzIGENCj4gPiAgICAg
+Ym90dGxlbmVjaw0KPiA+DQo+ID4gUlA6IGkgd29uZGVyIHdoeSBxZW11bWlwcyBpcyBzbyBzbG93
+Pw0KPiA+IFJhbmR5OiBpIHRoaW5rIENpc2NvIGFyZSB0aGUgb25seSBvbmVzIGNhcmluZyBhYm91
+dCBtaXBzDQo+ID4gUlA6IHllcywgYW5kIENvbWNhc3QgdG9vIGkgdGhpbmsNCj4gPg0KPiA+IE1N
+OiBoYXZlIGJlZW4gd3JhcHBlZCB1cCBpbiAkV09SSyBzdHVmZiwgYnV0IHdpbGwgYmUgd29ya2lu
+ZyBvbiBkb2NzDQo+ID4gICAgIGNvbnZlcnNpb24gc29vbg0KPiA+IFJQOiBNSCBoYXMgYmVlbiBw
+dXR0aW5nIGluZnJhc3RydWN0dXJlIGluIHBsYWNlIGFuZCBOaWNvIGlzIGxvb2tpbmcgZm9yd2Fy
+ZA0KPiB0bw0KPiA+ICAgICBnZXR0aW5nIHRoaXMgZ29pbmcNCj4gPiBNTTogZG8gd2Ugd2FudCB0
+byB0cnkgdG8gcmVwcm9kdWNlIG91ciBjdXJyZW50IGNvbG91cnMvZm9ybWF0dGluZyBvciB0cnkN
+Cj4gPiAgICAgc29tZXRoaW5nIG5ldw0KPiA+IFJQOiBpIGxpa2Ugd2hhdCB3ZSBoYXZlLCB0aGUg
+cHJvamVjdCBkb2VzIGhhdmUgYW4gZXhpc3Rpbmcgc2NoZW1lLCBidXQgd2UNCj4gY2FuDQo+ID4g
+ICAgIGNoYW5nZSBpZiBzb21ldGhpbmcgZWxzZSBtYWtlcyBzZW5zZQ0KPiANCj4gSSBoYXZlIHNv
+bWUgdXBkYXRlcyBvbiBTcGhpbnguLg0KPiBJIHJlY2FsbCB0aGF0IHRoZSB3b3JrIGluIHByb2dy
+ZXNzIGNhbiBiZSBmb3VuZCBoZXJlOg0KPiBodHRwczovL2dpdC55b2N0b3Byb2plY3Qub3JnL2Nn
+aXQvY2dpdC5jZ2kveW9jdG8tZG9jcy9sb2cvP2g9c3BoaW54DQo+IA0KPiBUaGUgYXV0b21hdGVk
+IGNvbnZlcnNpb24gZnJvbSBEb2NCb29rIHRvIFNwaGlueCBpcyBtYW5hZ2luZyAnaW50ZXJuYWwn
+DQo+IGxpbmtzIHF1aXRlIGJhZGx5LCBzbyBpdCByZXN1bHRzIGluIGEgc2lnbmlmaWNhbnQgYW1v
+dW50IG9mIHdvcmsgdG8gZml4dXAgbGlua3MuIEFsc28NCj4gc2luY2UgSSB3YW50ZWQgdG8gdXNl
+IHRoZSBTcGhpbnggYnVpbHRpbiAnZ2xvc3NhcnknDQo+IGZvciB0ZXJtcyBhbmQgdmFyaWFibGVz
+IGluIHRoZSByZWZlcmVuY2UgbWFudWFsLCB0aGF0IGFsc28gcmVxdWlyZWQgbWUgdG8NCj4gdXBk
+YXRlIGhvdyBsaW5rcyB3b3JrIGZvciB0ZXJtcyBhbmQgdmFyaWFibGVzLiBUaGF0J3Mgd2h5IGl0
+J3MgdGFraW5nIG1vcmUNCj4gdGltZSB0aGFuIEkgd291bGQgbGlrZS4gSSBtYW5hZ2UgdG8gdXNl
+IHNvbWUgYXV0b21hdGlvbi9yZWdleHAsIGFuZCBkbyBhIGJpdA0KPiBvZiBtYW51YWwgZml4IHVw
+IGFzIHdlbGwuDQo+IA0KPiBJIGFsc28gc3RhcnRlZCB0byBleHBlcmltZW50IHdpdGggY3VzdG9t
+aXphdGlvbiBpbiB0aGUgQ1NTIHRoZW1lLCB0byBjaGFuZ2UNCj4gc29tZSBjb2xvci9mb3JtYXR0
+aW5nLiBJdCdzIG5vdCBkb25lIHlldCwgYnV0IGl0IGhhcyBnb3QNCj4gYmV0dGVyOg0KPiBodHRw
+czovL3Blb3BsZS5saW5hcm8ub3JnL35uaWNvbGFzLmRlY2hlc25lL3lwLWRvY3MvaHRtbC9yZWYt
+bWFudWFsL3JlZi0NCj4gbWFudWFsLmh0bWwNCg0KSSBzZWUgeW91IGdvdCByaWQgb2Ygc29tZSBv
+ZiB0aGUgbW9yZSBvYnZpdXMgImZ1bm55IGNvbG9ycyIgLSB0aGUgTm90ZXMgbG9vayBtdWNoIGJl
+dHRlciwgZm9yIGV4YW1wbGUuDQpJIGNsb25lZCB0aGUgbmV3IHNwaGlueCBicmFuY2ggYW5kIHN0
+YXJ0ZWQgbG9va2luZyBhdCB0aGUgaW1wbGVtZW50YXRpb24gc29tZS4gVG8gbWFrZSB0aGVzZSBj
+aGFuZ2VzLCBhcmUgeW91IHVwZGF0aW5nIHRoZSByZXBvRGlyL2RvY3VtZW50YXRpb24vc3BoaW54
+LXN0YXRpYy90aGVtZV9vdmVycmlkZXMuY3NzIGZpbGUsIG9yIGlzIHRoZXJlIHNvbWV3aGVyZSBl
+bHNlIHlvdSdyZSBtYWtpbmcgdGhlIGNoYW5nZXM/DQoNClRoYW5rcywNCi1NYXJrIE0NCg0KPiAN
+Cj4gRm9yIG5vdyB3ZSBnZW5lcmF0ZSBhIHNpbmdsZSBsYXJnZSBkb2N1bWVudGF0aW9uICd3ZWJz
+aXRlJyB0aGF0IGluY2x1ZGVzIGFsbA0KPiBleGlzdGluZyBkb2NzLCBpbnN0ZWFkIG9mIHB1Ymxp
+c2hpbmcgZWFjaCBkb2N1bWVudCBzZXBhcmF0ZWx5LiBJIHRoaW5rIGl0J3MgYW4NCj4gaW1wb3J0
+YW50IGNoYW5nZSBjb21wYXJlZCB0byBob3cgb3VyIGRvY3VtZW50YXRpb24gd2FzIHB1Ymxpc2hl
+ZCBzbyBmYXIuIEkNCj4gcGVyc29uYWxseSBsaWtlIHRoYXQgcXVpdGUgYSBiaXQsIGFuZCB0aGlu
+ayBpdCdzICdiZXR0ZXInIHRoaXMgd2F5LCBidXQgSSB3b3VsZCByZWFsbHkNCj4gd2FudCB0byBo
+ZWFyIGZyb20geW91IGFuZCB0aGF0IHdlIGFncmVlIHRoaXMgaXMgd2hhdCB3ZSB3YW50IGZvciB0
+aGUgcHJvamVjdC4NCj4gV2Ugc3RpbGwgbmVlZCB0byBsb29rIGF0IGhvdyB3ZSB3YW50IHRvIGdl
+bmVyYXRlIFBERi9vZmZsaW5lIGRvY3VtZW50YXRpb24NCj4gdGhvdWdoLiBBbmQgd2UgbmVlZCB0
+byBkZWNpZGUgaG93IHRvIG1hbmFnZSB0aGUgYml0YmFrZSBtYW51YWwgd2hpY2ggc2l0cw0KPiBp
+biB0aGUgYml0YmFrZSBnaXQgdHJlZSwgc28gcmlnaHQgbm93IGl0J3MgcHVibGlzaGVkIHNlcGFy
+YXRlbHkuDQo+IA0KPiBTaWRlIG5vdGU6IHRoZSBWU0NvZGUgZXh0ZW5zaW9uIGZvciByZVNUIGlz
+IHF1aXRlIGdvb2QNCj4gKGh0dHBzOi8vZG9jcy5yZXN0cnVjdHVyZWR0ZXh0Lm5ldC9pbmRleC5o
+dG1sKQ0KPiANCj4gPg0KPiA+IFRXOiBpIGRvIGxvdHMgb2YgYnVpbGRzLCBuZXZlciBzZWVuIGlz
+c3Vlcywgd2h5IGFyZSB0aGVyZSBzbyBtYW55IGZhaWx1cmVzIG9uDQo+ID4gICAgIEFCPw0KPiA+
+IFJQOiBkbyB5b3UgZG8gb2Utc2VsZnRlc3Qgb3IgdGVzdHNkayBidWlsZHM/DQo+ID4gVFc6IG5v
+DQo+ID4gUlA6IGRvIHlvdSBkbyBtaXBzIGJ1aWxkcz8NCj4gPiBUVzogbm8NCj4gPiBSUDogc28g
+dGhlc2UgYXJlIHRoZSBhcmVhcyB3aGVyZSB3ZSBzZWUgdGhlc2UgZmFpbHVyZXMsIOKAnHJlZ3Vs
+YXLigJ0gYnVpbGRzDQo+ID4gICAgIGFyZSBva2F5DQo+ID4gU1M6IGkgZG9u4oCZdCBzZWUgaXNz
+dWVzIG9uIG15IGJ1aWxkcyBidXQgdGhhdOKAmXMgcHJvYmFibHkgYmVjYXVzZSBvZiB3b3JraW5n
+DQo+ID4gICAgIHRoZXNlIGlzc3VlcyBvdXQgb24gdGhlIEFCDQo+ID4gUlA6IGluZnJhc3RydWN0
+dXJlIGlzc3VlcyBhcmUgbG93LCBpdOKAmXMgbW9zdGx5IHJhY2UgaXNzdWVzIHRoYXQgY29tZSBv
+dXQgb2YNCj4gPiAgICAgdGhlIGV4dHJlbWUgbG9hZCBvZiB0aGUgQUIgb3IgaW50ZXJtaXR0ZW50
+IGFyY2hpdGVjdHVyZSBpc3N1ZXMgdGhhdCBhcmUNCj4gPiAgICAgcmFyZWx5IHRlc3RlZA0KPiA+
+DQo=
