@@ -1,318 +1,379 @@
-Received: from mail-io1-f46.google.com (mail-io1-f46.google.com [209.85.166.46])
- by mx.groups.io with SMTP id smtpd.web11.5372.1596681322839421790
+Received: from NAM04-BN3-obe.outbound.protection.outlook.com (NAM04-BN3-obe.outbound.protection.outlook.com [40.107.68.65])
+ by mx.groups.io with SMTP id smtpd.web12.12874.1596738833034351115
  for <docs@lists.yoctoproject.org>;
- Wed, 05 Aug 2020 19:35:22 -0700
+ Thu, 06 Aug 2020 11:33:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=f15het1M;
- spf=pass (domain: gmail.com, ip: 209.85.166.46, mailfrom: ticotimo@gmail.com)
-Received: by mail-io1-f46.google.com with SMTP id z6so48135518iow.6
-        for <docs@lists.yoctoproject.org>; Wed, 05 Aug 2020 19:35:22 -0700 (PDT)
+ dkim=pass header.i=@windriversystems.onmicrosoft.com header.s=selector2-windriversystems-onmicrosoft-com header.b=k+4ZW7/c;
+ spf=pass (domain: windriver.com, ip: 40.107.68.65, mailfrom: mark.morton@windriver.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=YJh6zZihbYZegmmNMUuIQkeNCtGqRDegcATvM4zFHcgVy3O5ANwpbXbKenhFTVzwKD8WpY1DGGse2/gCa0KBM71xZtSw5OiB1MF74etHBA3+vi1tGzMPJW/L14rWYBC3jNJWmUrVmpktDUsmx8D0X8Gx81+yu+2Cw+WQRmlOJdawG0yeYvPuW/wjXHertL1iWQn0ZPeBKDIWZdLT2Q/sepKiRGEDvbVQLB6ttfVdvG0qnpsjONeYqHETV9dGFqBVgAdRUHfydUbZQdYhv+OiKSrXERN0ICR5D33zUoreggLqJtgR9iEmsqtqYqTSNBEcplcRpdx58n8y02vJRID4yg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zlGiCtNFe8LA000ztjfVl5rEuKBeGA1T1EFEkno+i7I=;
+ b=cpllmfCiTnPzv48WIie5nOxasxDqBYCxTg8x78CeFD6yePKw2kg0BXGwyLiKuW++vUtjmSBpP1PT/ws94Nj8T1QdaXsXKz7G/2gUUgbQiySmzv7cvC0uqVYoIBJdO1lDLWyv21BkPSFS5L0vRT41Khd03bTOUEL5OzCbySjoJj/ziirAJVKksAYUsD6XiM2TkP1sJ5x0j5m4RgprZIMP2rMD7x+tmYd+WTE34yi6rxureFViK18bKElbpAaCQCF9J8nJypZWD7bDbC0Pm9biZQs4TBK/LI0vXMup2bocG0NkOMW+eNRROYFn7qbPGAh3Vve1+YaOwrHe+MHYdQtDJA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ezkNhKfpLex+wp307plyuqiMlxuWCbVTrs7jp0+4HJU=;
-        b=f15het1MpWPoP0cP9PGBuWl0FW2vi3pwwCbPo00vufxYhHzZORQz3HRkpKW5QijhGe
-         Oa4juY8jQgcZlG3mpnVemAuuNg0iO3AeDTqwNmx9+hCdQYBbs+8r3B40NkLOQgB0asIs
-         OT3aX9VZBmqVNbggHCcb2czCWFP8GSikS0WCkNdSeYExbwnPXgYoa6kIZScZLqlc2frD
-         HZ9qsSEJz5n/yCRF3qT2oknH1pjlzoVpne+vk36T8qtn2ZWCKFNbuZuWaq6xcMXfC27H
-         TAWn3MJqTM2okj4xUH5h8Qwlg1eHC95llgksi+rLHKRO+d+yYBu6CT7HOWSebNeSnzcY
-         5oKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ezkNhKfpLex+wp307plyuqiMlxuWCbVTrs7jp0+4HJU=;
-        b=fRsMtdAsf5T/LtHpPeGPH3PUbjj4FLTtDtZo+Bd7GOmnnrdPGzfo/qyVNtA2PYkE5P
-         SfoOafj5b8StQ6+RajOhi2osfmfbbKCaSNDDTWjLhKfMDZXEA3I37tKluyYa5rwCsWVM
-         vcdERWYs+NdmnbaYVtbKMHUy5ORVkyfn0t9KYBfUfXLQoVqfx/WQSk4KSMgburR0AwMA
-         TPSjUpFdQBt+s9ugYkGOp9zOhJRAcU2czgIXxzctsJCuOYLXipcMiQvnJ52Uef75uo4C
-         0EP8Sgf8xOsz3SeCWcz8ia3TmBJieOfk55ZVjmE2dshlrcw7vpsq9Uj3GjEYhuY5LS9W
-         geRw==
-X-Gm-Message-State: AOAM533yo+h0CAJmpQmiMI3KurQqLvcuhXzP4dZ1hSbSJTLw2Vzoy17w
-	CN3Mtje4Fvx9irHCJrvl7WtobmhLaeR5MsofQms=
-X-Google-Smtp-Source: ABdhPJyv1I/ZRqR/6ZNdMh97jO9xf0wSPSv5yivp1l+Q5QPJt5MBN89RnTORLUlJQCUE1cPtgJMKj1cUPEpG6wBGyGE=
-X-Received: by 2002:a05:6602:15d0:: with SMTP id f16mr6957783iow.45.1596681322277;
- Wed, 05 Aug 2020 19:35:22 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
-In-Reply-To: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
-From: "Tim Orling" <ticotimo@gmail.com>
-Date: Wed, 5 Aug 2020 19:35:11 -0700
-Message-ID: <CANx9H-CUsCD5hgg-G1yGC1jhMDUvFjLU2hr+xksmE=3w1WhTAw@mail.gmail.com>
+ d=windriversystems.onmicrosoft.com;
+ s=selector2-windriversystems-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=zlGiCtNFe8LA000ztjfVl5rEuKBeGA1T1EFEkno+i7I=;
+ b=k+4ZW7/cwdkZyRRjzHEq8DNNjWxPuoD5r0T5pCHw5vx4CpoVS6L6ZG1z11+My2CegGFe70XmsBwPsbhbIkW11R85gIe5DznOJ5YExUwBA3rl26ospYqrcS/vZLULTUZoZp1N+llilz42B4HSYoTS7by3LUogVR9KDA51lMeOtOQ=
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com (2603:10b6:5:137::26)
+ by DM6PR11MB3977.namprd11.prod.outlook.com (2603:10b6:5:5::10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3261.15; Thu, 6 Aug 2020 18:33:51 +0000
+Received: from DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::c542:c221:5e39:635e]) by DM6PR11MB3676.namprd11.prod.outlook.com
+ ([fe80::c542:c221:5e39:635e%4]) with mapi id 15.20.3261.018; Thu, 6 Aug 2020
+ 18:33:51 +0000
+From: "Mark Morton" <Mark.Morton@windriver.com>
+To: Tim Orling <ticotimo@gmail.com>, Nicolas Dechesne
+	<nicolas.dechesne@linaro.org>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
 Subject: Re: [docs] [sphinx] updates as of Aug 5th.
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Cc: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="00000000000008af6205ac2c5765"
+Thread-Topic: [docs] [sphinx] updates as of Aug 5th.
+Thread-Index: AQHWa3MGzfJP91Psr0CuKiFHL1vJYqkqXYOAgAELkEA=
+Date: Thu, 6 Aug 2020 18:33:50 +0000
+Message-ID: 
+ <DM6PR11MB367698B5496760F960E57B7AE5480@DM6PR11MB3676.namprd11.prod.outlook.com>
+References: 
+ <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
+ <CANx9H-CUsCD5hgg-G1yGC1jhMDUvFjLU2hr+xksmE=3w1WhTAw@mail.gmail.com>
+In-Reply-To: 
+ <CANx9H-CUsCD5hgg-G1yGC1jhMDUvFjLU2hr+xksmE=3w1WhTAw@mail.gmail.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: gmail.com; dkim=none (message not signed)
+ header.d=none;gmail.com; dmarc=none action=none header.from=windriver.com;
+x-originating-ip: [147.11.252.42]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: d96dcde9-2ad3-4c56-9478-08d83a3743fd
+x-ms-traffictypediagnostic: DM6PR11MB3977:
+x-microsoft-antispam-prvs: 
+ <DM6PR11MB39776408DDE28883964F928BE5480@DM6PR11MB3977.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:10000;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 
+ Q2rhheR7Djm/1CEz72r0tiIrlaBIYrMm4AcOrL65YIeUb2yCAr6LXkwoueE7sVEAeRFhz4d5sUdEG8OgZWhXOGTpykLeBjQXNdNhCl4fA09oDRRGDwqWhFO3emH88v2WwYscSiWWvsWjPNkYSoF9PA5p4w/sHmMPHtY2vqKL6vL68DbhaCTfuGZwmfxEjo90eq/tuA3axfwZUVyN1v1GKlhTf+2FtS7OH78n0zRRAXOrBLAogG2dIlT8yO3e+/vGZ2D8CUayPfwRw+toPZ919Q/uEhLPI68Jy1kQtWxHy1ErTfQFIDqw1wkr7iGU3D8XCFOBOzq2edENz61tQbauG2MCecrtIAdn8S1E3Rf0H6OaKnsH/NsqXahrffokzIBEpnqN8rlvuvWt+U6Z4S/EeQ==
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR11MB3676.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFTY:;SFS:(366004)(376002)(136003)(396003)(39850400004)(346002)(83380400001)(26005)(86362001)(8936002)(166002)(966005)(186003)(110136005)(478600001)(8676002)(2906002)(64756008)(66446008)(7696005)(9686003)(66556008)(5660300002)(53546011)(15650500001)(6506007)(55016002)(52536014)(4326008)(76116006)(316002)(21615005)(33656002)(66476007)(66946007)(71200400001);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata: 
+ 7UdxdOfBg15JiEXIECtmBC7nrbSh6eqF2X0kObA7fBKws2e1589X20Pv1RKAcGZAetobTD3mDAwW2u+f9PvqgJyAPFJ5z7s0v6Umm/Tnq3EvRsqgbImUyBQ8JIVXBP5RECGuNnxGk6lPpyaDGrlbiuJb/t5EOtIPpRrVdV9dJb/AWVE+YIEX7hSZfMNaUkh1lhYy6StbtrjgVcu2RYKq3+4C6E+hZPrObHMHsfN1MKebNjv1/pAfNt8VVqR/bLKAHolSCnosGaFcK9Efu1/rupe/fgSYgbOZ/ODAFYRDBaj8XOz1VipKEh+16RBEeqUL5CMNQxmCTwjfuouE6jqdRar6W08h9rGybwJrcdGRpl2Su274S8eIxtzG66YdGo62JCrQWJ3A7cNDtXF7+m54ABF13M5tMOZ4Or1Jbe/6udFd/0CCw4qgqfTbwHNrpv0hmRwsaSzjJ5fPrh6v17iAl6mJ3amNlk5DS49Ogik+MNnCc9Ekm2awkQsMeUSzpb+IOOQ8kLZeNHXPLZqqdYGd6unknR5qFs1KVf0FN10Z79XXcgXcBQtvPBFsZIYVOeYLaJZKgEmXXO2jfWrKSAgaR0qaeDOB3femrnuH3A9d9xrwhYhXzmFkbQzHVmbAgdvup9rGlvT3JK0jcjVeTirrbQ==
+x-ms-exchange-transport-forked: True
+MIME-Version: 1.0
+X-OriginatorOrg: windriver.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR11MB3676.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d96dcde9-2ad3-4c56-9478-08d83a3743fd
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Aug 2020 18:33:50.9550
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: Bw2H8iEh1LbXnosdXGktcVmyvObtOrUud9i0you5Tx+Z7aI+V6nzPinKRsqbjZVSLMvuWWEgfg0HzROG5gTUQTRjk01hGDrTLh2cyhv62Pw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR11MB3977
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_DM6PR11MB367698B5496760F960E57B7AE5480DM6PR11MB3676namp_"
 
---00000000000008af6205ac2c5765
-Content-Type: text/plain; charset="UTF-8"
+--_000_DM6PR11MB367698B5496760F960E57B7AE5480DM6PR11MB3676namp_
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Nico,
+SGkgVGltIGFuZCBOaWNvOg0KDQpJIGhhdmUgc29tZSBjbG9jayBjeWNsZXMgbXlzZWxmIOKAkyBw
+bGVhc2UgY29vcmRpbmF0ZSB3aXRoIG1lIHNvIHdlIGRvbuKAmXQgZW5kIHVwIGR1cGxpY2F0aW5n
+IGVhY2ggb3RoZXLigJlzIHdvcmsuDQoNClRoYW5rcywNCi1NYXJrIE0uDQoNCkZyb206IGRvY3NA
+bGlzdHMueW9jdG9wcm9qZWN0Lm9yZyA8ZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnPiBPbiBC
+ZWhhbGYgT2YgVGltIE9ybGluZw0KU2VudDogV2VkbmVzZGF5LCBBdWd1c3QgNSwgMjAyMCA3OjM1
+IFBNDQpUbzogTmljb2xhcyBEZWNoZXNuZSA8bmljb2xhcy5kZWNoZXNuZUBsaW5hcm8ub3JnPg0K
+Q2M6IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZw0KU3ViamVjdDogUmU6IFtkb2NzXSBbc3Bo
+aW54XSB1cGRhdGVzIGFzIG9mIEF1ZyA1dGguDQoNCk5pY28sDQoNClRoYW5rIHlvdSBTTyBtdWNo
+IGZvciBhbGwgdGhpcyB3b3JrLiBBbmQgZXNwZWNpYWxseSB0aGFuayB5b3UgZm9yIHRha2luZyB0
+aGUgdGltZSB0byB3cml0ZSB0aGlzIHZlcnkgZXhwbGljaXQgZW1haWwuDQoNCkkgcGxhbiB0byB3
+b3JrIG9uIHRoaXMgY29tZSBoZWxsIG9yIGhpZ2ggd2F0ZXIgZHVyaW5nIHRoZSB0aW1lIHlvdSB3
+aWxsIGJlIGF3YXkuDQoNCk9uIFdlZCwgQXVnIDUsIDIwMjAgYXQgMjo1NCBQTSBOaWNvbGFzIERl
+Y2hlc25lIDxuaWNvbGFzLmRlY2hlc25lQGxpbmFyby5vcmc8bWFpbHRvOm5pY29sYXMuZGVjaGVz
+bmVAbGluYXJvLm9yZz4+IHdyb3RlOg0KaGkgdGhlcmUsDQoNCkkgd2lsbCBiZSBhd2F5IGZyb20g
+dGhlIEludGVyd2ViIHRoZSBuZXh0IHR3byB3ZWVrcy4gU28gSSB3YW50ZWQgdG8NCnNoYXJlIHNv
+bWUgdXBkYXRlcyBhYm91dCBob3cgdGhlIFlQIGRvY3MgbWlncmF0aW9uIHRvIFNwaGlueCBpcyBk
+b2luZy4NCltpdCBpcyBhIGZhaXJseSBsb25nIGVtYWlsXS4NCg0KVG8gYmUgaG9uZXN0LCBJIHdv
+dWxkbid0IG1pbmQgYSBsaXR0bGUgYml0IG9mIGhlbHAsIGFuZCBJIHdpbGwgZ2l2ZQ0Kc29tZSBo
+aW50cyBhYm91dCBob3cgeW91IGNhbiBoZWxwIQ0KDQpXZSBhcmUgc3RpbGwgd29ya2luZyBvbiBw
+dWJsaXNoaW5nIHRoZSBjdXJyZW50IFNwaGlueCBkb2NzIG9uDQp5b2N0b3Byb2plY3Qub3JnPGh0
+dHA6Ly95b2N0b3Byb2plY3Qub3JnPiwgaW4gdGhlIG1lYW50aW1lLCBpdCdzIGhlcmUgZm9yIFlQ
+IGFuZCBCaXRiYWtlDQpkb2N1bWVudGF0aW9uLg0KDQpodHRwczovL3Blb3BsZS5saW5hcm8ub3Jn
+L35uaWNvbGFzLmRlY2hlc25lL3lwLWRvY3MvaHRtbC9pbmRleC5odG1sDQpodHRwczovL3Blb3Bs
+ZS5saW5hcm8ub3JnL35uaWNvbGFzLmRlY2hlc25lL2JpdGJha2UtZG9jcy9odG1sLw0KDQpBbGwg
+Y2hhbmdlcyBhcmUgcHVzaGVkIHRvIHRoZSAnc3BoaW54JyBicmFuY2ggaW4geW9jdG8tZG9jcyBh
+bmQgaW4NCmJpdGJha2UgdHJlZXMuDQoNClN1bW1hcnkgb2YgdGhlIHJlY2VudCBjaGFuZ2VzOg0K
+DQoqIEkgaW1wb3J0ZWQgc29tZSBDU1MgY29uZmlnIGZyb20gdGhlIGN1cnJlbnQgWVAgZG9jdW1l
+bnRhdGlvbiwgYXMgYQ0KcmVzdWx0IHRoZSBsb29rIGFuZCBmZWVsIGlzIG11Y2ggY2xvc2VyIHRv
+IHdoYXQgd2UgY3VycmVudGx5IGhhdmUuDQpUaGVyZSBhcmUgc3RpbGwgdGhpbmdzIHRvIGltcHJv
+dmUsIGJ1dCBpdCdzIGJldHRlciBvbiBteSBleWVzIGF0DQpsZWFzdC4NCiogSSBhZGRlZCBhbGwg
+aW1hZ2VzL2ZpZ3VyZXMsIHNpbmNlIHRoZXkgd2VyZSBtaXNzZWQgYnkgdGhlIGF1dG9tYXRpYw0K
+Y29udmVyc2lvbi4NCiogSSBhZGRlZCBhIGdlbmVyYWwgaW5kZXggKGl0J3MgYSBidWlsdGluIFNw
+aGlueCBmZWF0dXJlKSwgd2hpY2ggdXNlcw0KYWxsIHRlcm1zIGZyb20gdGhlIGdsb3NzYXJ5LiBJ
+dCBpcyBhIG5pY2UgZmVhdHVyZSwgd2hpY2ggbG9va3MNCnByb21pc2luZyAoaXQncyBhIGdlbmVy
+YWwgaW5kZXggYWNyb3NzIGFsbCBkb2N1bWVudHMpDQoqIEkgZml4ZWQgYSBsYXJnZSBhbW91bnQg
+dG8gY3Jvc3MgcmVmZXJlbmNlcyAofjIyMDAgaW5zdGFuY2VzKSB0bw0KDQoyMjAwISEhDQoNCg0K
+dGVybXMgYW5kIHNlY3Rpb25zIHVzaW5nIGEgc2VyaWVzIG9mIFB5dGhvbiByZWdleHAgYW5kIGFs
+c28gYW5vdGhlcg0KNDAwIGluc3RhbmNlcyB3ZXJlIGZpeGVkIG1hbnVhbGx5Li4gd2hlbiBteSBy
+ZWdleHAgZmFpbGVkLg0KNDAwISEhDQoNCg0KKiBJIGFkZGVkIGV4dGxpbmtzIFNwaGlueCBzdXBw
+b3J0IHRvIHJlZmVyIHRvIGV4dGVybmFsIGxpbmtzL3dlYnNpdGUsDQphbmQgZml4ZWQgdGhlbSB1
+cCBpbiB0aGUgc291cmNlIHRyZWUuDQoqIEkgYWRkZWQgaW50ZXJzcGhpbnggc3VwcG9ydCB3aGlj
+aCBhbGxvd3MgYSBTcGhpbnggZG9jdW1lbnRhdGlvbg0KcHJvamVjdCB0byByZWZlciB0byBzZWN0
+aW9uLCB0ZXJtcywgcmVmZXJlbmNlcyBmcm9tIGFub3RoZXIgU3BoaW54DQpkb2N1bWVudGF0aW9u
+IHByb2plY3QuIFRoaXMgaXMgcmVhbGx5IGdvb2QsIHNpbmNlIHdlIGNhbiBjcm9zcw0KcmVmZXJl
+bmNlIGJpdGJha2UgdGVybXMgZGlyZWN0bHkgZnJvbSB0aGUgWVAgZG9jdW1lbnRhdGlvbiwgZWcu
+Lg0KOnRlcm06YGJpdGJha2U6QkJfRk9PYCB3aWxsICdqdXN0IHdvcmsnLg0KDQpUaGUgbmV3IGRv
+Y3VtZW50YXRpb24gc291cmNlIGNvZGUgKC5yc3QgZmlsZXMpIGFyZSByZWFsbHkgZ29vZCB0byB3
+b3JrDQp3aXRoLCBhbmQgaXQncyBtdWNoIGJldHRlciB0byB3b3JrIHdpdGggUmVTVCBmaWxlcyB0
+aGFuIFhNTCwgd2l0aG91dA0KYW55IHN1cnByaXNlLiBUaGUgY29udmVyc2lvbiBpcyBqdXN0IGEg
+bG90IG9mIHdvcmssIGFuZCBJIGFscmVhZHkNCnNwZW50IHNvbWUgc2lnbmlmaWNhbnQgYW1vdW50
+IG9mIHdvcmsgb24gaXQuLiBJIGhvcGUgeW91IHdpbGwgZmluZCBpdA0KdXNlZnVsIGFuZCBJIHJl
+YWxseSBob3BlIGl0IHdpbGwgYWNoaWV2ZSBpdHMgZ29hbCB0byBtYWtlIGl0IG1vcmUNCmF0dHJh
+Y3RpdmUgdG8gY29udHJpYnV0ZSB0byBZb2N0byBQcm9qZWN0IGRvY3VtZW50YXRpb24gcHJvamVj
+dC4NCg0KVGhlIHdheSBTcGhpbnggd29ya3MgaXMgdGhhdCB3ZSBoYXZlIGEgc2luZ2xlIGRvY3Vt
+ZW50YXRpb24gcHJvamVjdA0KdGhhdCBpbmNsdWRlcyBhbGwgdGhlIFlQICdib29rcycuIEl0IGlz
+IGFuIGltcG9ydGFudCBjaGFuZ2UsIHdlIG5vDQpsb25nZXIgaGF2ZSBYIGluZGVwZW5kZW50IGJv
+b2tzLCBidXQgaGF2ZSBvbmUgcHJvamVjdCB3aXRoIGFsbCBvZg0KdGhlbS4gV2UgbmVlZCB0byB3
+b3JrIG9uIGhvdyB3ZSB3YW50IHRvIHB1Ymxpc2ggdGhlIGRvY3VtZW50YXRpb24NCmFmdGVyIHRo
+ZSBTcGhpbnggbWlncmF0aW9uLg0KDQpSaWNoYXJkIGlzIHRyeWluZyB0byBhZGQgc3VwcG9ydCB0
+byBlYXNpbHkgc3dpdGNoIGJldHdlZW4gWVAgdmVyc2lvbg0Kd2l0aGluIHRoZSBkb2MgKGUuZy4g
+bGlrZSB0aGUgUHl0aG9uIGRvYyksIGFuZCB3ZSB3aWxsIGhvc3QgdGhlICdvbGQnDQpkb2N1bWVu
+dGF0aW9uIGFzIHdlbGwuIGUuZy4gd2hlbiBjaG9vc2luZyB0aGUgJ3RodWQnIHZlcnNpb24sIHdl
+IHdhbnQNCnRvIHNob3cgYSBzdGF0aWMgcGFnZSAobm90IGEgU3BoaW54IGRvYykgdGhhdCBwb2lu
+dHMgdG8gdGhlIHRodWQgaHRtbA0KZG9jLg0KDQpBbmQgbm93IGhlcmUgaXMgdGhlIHNlY3Rpb24g
+eW91IGFyZSBhbGwgZXhwZWN0aW5nIHRoZSBtb3N0ISBIb3cgY2FuIHlvdSBoZWxwPw0KDQoxLiBm
+aXJzdCB5b3UgY291bGQgbGVhcm4gYWJvdXQgU3BoaW54IGFuZCBnZXQgZmFtaWxpYXIgd2l0aCB0
+aGUgbmV3DQpzeW50YXguIFlvdSBzaG91bGQgcmV2aWV3IGFsbCB0aGUgcGF0Y2hlcyBvbmUgYnkg
+b25lLCB0byBsZWFybiBmcm9tDQp3aGF0IEkgZGlkISBUaGUgc3BoaW54IGRvY3VtZW50YXRpb24g
+aXMgZ29vZCB0b28uIEJ1dCBsb29raW5nIGF0IGENCnJlYWwgd29ybGQgZXhhbXBsZSBpcyBtdWNo
+IGVhc2llci4NCg0KMi4gdGhlcmUgYXJlIHN0aWxsIHBsZW50eSBvZiBicm9rZW4gbGlua3MuLiBp
+dCdzIG1vc3RseSBjcm9zcw0KcmVmZXJlbmNlcyB0byBzZWN0aW9uIGZyb20gb25lIGRvYyB0byBh
+bm90aGVyLiBEb2NCb29rIHVzZWQgdG8gaGF2ZQ0KJ3ZhcmlhYmxlcycgKHNldCBpbiBwb2t5LmVu
+dCkgZm9yIGVhY2ggZG9jdW1lbnQgKGh0dHAgbGluaykgYW5kIGhhZA0Kc29tZSBtYWNybyB0byBh
+cHBlbmQgYW4gYW5jaG9yIHRvIGNyZWF0ZSBhIGxpbmsuIFRoaXMgd2hvbGUgbWVjaGFuaXNtDQpp
+cyBub3Qgd29ya2luZyB3ZWxsIHdpdGggU3BoaW54LCBhbmQgd2Ugc2hvdWxkIHVzZSBTcGhpbngg
+J3JlZmVyZW5jZXMnDQooZS5nLiA6cmVmOiBzeW50YXgpIGluc3RlYWQuIE1heWJlIHNvbWUgb2Yg
+dGhhdCBjYW4gYmUgYXV0b21hdGVkIHdpdGgNCnJlZ2V4cCwgYnV0IEkgYW0gbm90IHN1cmUgKHZl
+cnkgb2Z0ZW4gaXQncyBtdWx0aSBsaW5lIHRleHQgYW5kIHRoZQ0KcmVwbGFjZW1lbnQgcGF0dGVy
+biBpcyBub3QgYWx3YXlzIG9idmlvdXMpLi4gSnVzdCB0byBnaXZlIGFuIGlkZWENCmFib3V0IGhv
+dyBtdWNoIHdvcmsgdGhlcmUgaXM6DQogJCBnaXQgZ3JlcCBZT0NUT19ET0NTXy4qX1VSTCAqLyou
+cnN0ICB8IHdjIC1sDQo0NzUNCg0KMy4gRHVyaW5nIHRoZSBjb252ZXJzaW9uIGZyb20gRG9jQm9v
+ayB0aGUgJ2NvZGUnIG9yICdzaGVsbCcgc2VjdGlvbnMNCmhhdmUgYmVlbiBtZXNzZWQgdXAsIGFu
+ZCBpcyBsb3N0Li4uIGl0J3MgcXVpdGUgdW5mb3J0dW5hdGUgYXMgdGhpcw0Kd2lsbCByZXF1aXJl
+IHNvbWUgZ29vZCBhbW91bnQgb2Ygd29yayB0byBjb252ZXJ0Li4gSW4gU3BoaW54LCB3ZSB3b3Vs
+ZA0KZG8gdGhpczoNCi4uIGNvZGUtYmxvY2s6OiBzaGVsbA0KICAgJCBjZCAkSE9NRS9wb2t5DQog
+ICAkIHNvdXJjZSBvZS1pbml0LWJ1aWxkLWVudg0KQW5kIGl0IHdvdWxkIHJlbmRlciBhcyB3ZSBl
+eHBlY3QgaXQgdG8gYmUuDQpUaGlzIHRhc2sgaXMgdHlwaWNhbGx5IHNvbWV0aGluZyB0aGF0IHdv
+dWxkIGRpc3RyaWJ1dGUgd2VsbCBhbW9uZyBtYW55DQpkZXZlbG9wZXJzLi4NCg0KNC4gVGhlcmUg
+YXJlIHByb2JhYmx5IHNvbWUgb3RoZXIgY29udmVyc2lvbiBoaWNjdXBzIGF0IHJhbmRvbSBwbGFj
+ZXMNCihjb2xvciwgZm9udCB0eXBlLCB0ZXh0LCAuLi4pLCBzbyBJIHRoaW5rIHdlIHdpbGwgaGF2
+ZSB0byBkbyBhIGNhcmVmdWwNCnJldmlldyBvZiB0aGUgSFRNTCB0byBmaW5kIHN1Y2ggaXNzdWVz
+IGFuZCBmaXggdGhlbS4gVG8gYmUgaG9uZXN0LCBJDQp0aGluayBpdCdzIGEgcmF0aGVyIGdvb2Qg
+dGhpbmcgdG8gZG8gYW55d2F5cw0KDQo1LiBUaGVtZSBvciBDU1MgaW1wcm92ZW1lbnRzLiBXZSBh
+cmUgdXNpbmcgdGhlIHN0YW5kYXJkICdyZWFkIHRoZSBkb2MnDQp0aGVtZS4gSSB3b3VsZCBsaWtl
+IHRvIGdldCBmZWVkYmFjayBhYm91dCB0aGUgdmlzdWFsIHF1YWxpdHkgb2YgdGhlDQpyZXN1bHRp
+bmcgSFRNTCBwcm9qZWN0LiBJZiBhbnlvbmUgaGFzIGlkZWEgdG8gaW1wcm92ZSBpdCwgdGhhdCB3
+b3VsZA0KYmUgbXVjaCBhcHByZWNpYXRlZC4NCg0KdGhhbmtzIQ0Kbmljbw0K
 
-Thank you SO much for all this work. And especially thank you for taking
-the time to write this very explicit email.
+--_000_DM6PR11MB367698B5496760F960E57B7AE5480DM6PR11MB3676namp_
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-I plan to work on this come hell or high water during the time you will be
-away.
+PGh0bWwgeG1sbnM6dj0idXJuOnNjaGVtYXMtbWljcm9zb2Z0LWNvbTp2bWwiIHhtbG5zOm89InVy
+bjpzY2hlbWFzLW1pY3Jvc29mdC1jb206b2ZmaWNlOm9mZmljZSIgeG1sbnM6dz0idXJuOnNjaGVt
+YXMtbWljcm9zb2Z0LWNvbTpvZmZpY2U6d29yZCIgeG1sbnM6bT0iaHR0cDovL3NjaGVtYXMubWlj
+cm9zb2Z0LmNvbS9vZmZpY2UvMjAwNC8xMi9vbW1sIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcv
+VFIvUkVDLWh0bWw0MCI+DQo8aGVhZD4NCjxtZXRhIGh0dHAtZXF1aXY9IkNvbnRlbnQtVHlwZSIg
+Y29udGVudD0idGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04Ij4NCjxtZXRhIG5hbWU9IkdlbmVyYXRv
+ciIgY29udGVudD0iTWljcm9zb2Z0IFdvcmQgMTUgKGZpbHRlcmVkIG1lZGl1bSkiPg0KPHN0eWxl
+PjwhLS0NCi8qIEZvbnQgRGVmaW5pdGlvbnMgKi8NCkBmb250LWZhY2UNCgl7Zm9udC1mYW1pbHk6
+IkNhbWJyaWEgTWF0aCI7DQoJcGFub3NlLTE6MiA0IDUgMyA1IDQgNiAzIDIgNDt9DQpAZm9udC1m
+YWNlDQoJe2ZvbnQtZmFtaWx5OkNhbGlicmk7DQoJcGFub3NlLTE6MiAxNSA1IDIgMiAyIDQgMyAy
+IDQ7fQ0KLyogU3R5bGUgRGVmaW5pdGlvbnMgKi8NCnAuTXNvTm9ybWFsLCBsaS5Nc29Ob3JtYWws
+IGRpdi5Nc29Ob3JtYWwNCgl7bWFyZ2luOjBpbjsNCgltYXJnaW4tYm90dG9tOi4wMDAxcHQ7DQoJ
+Zm9udC1zaXplOjEyLjBwdDsNCglmb250LWZhbWlseToiVGltZXMgTmV3IFJvbWFuIixzZXJpZjt9
+DQphOmxpbmssIHNwYW4uTXNvSHlwZXJsaW5rDQoJe21zby1zdHlsZS1wcmlvcml0eTo5OTsNCglj
+b2xvcjpibHVlOw0KCXRleHQtZGVjb3JhdGlvbjp1bmRlcmxpbmU7fQ0KYTp2aXNpdGVkLCBzcGFu
+Lk1zb0h5cGVybGlua0ZvbGxvd2VkDQoJe21zby1zdHlsZS1wcmlvcml0eTo5OTsNCgljb2xvcjpw
+dXJwbGU7DQoJdGV4dC1kZWNvcmF0aW9uOnVuZGVybGluZTt9DQpwLm1zb25vcm1hbDAsIGxpLm1z
+b25vcm1hbDAsIGRpdi5tc29ub3JtYWwwDQoJe21zby1zdHlsZS1uYW1lOm1zb25vcm1hbDsNCglt
+c28tbWFyZ2luLXRvcC1hbHQ6YXV0bzsNCgltYXJnaW4tcmlnaHQ6MGluOw0KCW1zby1tYXJnaW4t
+Ym90dG9tLWFsdDphdXRvOw0KCW1hcmdpbi1sZWZ0OjBpbjsNCglmb250LXNpemU6MTIuMHB0Ow0K
+CWZvbnQtZmFtaWx5OiJUaW1lcyBOZXcgUm9tYW4iLHNlcmlmO30NCnNwYW4uRW1haWxTdHlsZTE4
+DQoJe21zby1zdHlsZS10eXBlOnBlcnNvbmFsLXJlcGx5Ow0KCWZvbnQtZmFtaWx5OiJDYWxpYnJp
+IixzYW5zLXNlcmlmOw0KCWNvbG9yOiMxRjQ5N0Q7fQ0KLk1zb0NocERlZmF1bHQNCgl7bXNvLXN0
+eWxlLXR5cGU6ZXhwb3J0LW9ubHk7DQoJZm9udC1mYW1pbHk6IkNhbGlicmkiLHNhbnMtc2VyaWY7
+fQ0KQHBhZ2UgV29yZFNlY3Rpb24xDQoJe3NpemU6OC41aW4gMTEuMGluOw0KCW1hcmdpbjoxLjBp
+biAxLjBpbiAxLjBpbiAxLjBpbjt9DQpkaXYuV29yZFNlY3Rpb24xDQoJe3BhZ2U6V29yZFNlY3Rp
+b24xO30NCi0tPjwvc3R5bGU+PCEtLVtpZiBndGUgbXNvIDldPjx4bWw+DQo8bzpzaGFwZWRlZmF1
+bHRzIHY6ZXh0PSJlZGl0IiBzcGlkbWF4PSIxMDI2IiAvPg0KPC94bWw+PCFbZW5kaWZdLS0+PCEt
+LVtpZiBndGUgbXNvIDldPjx4bWw+DQo8bzpzaGFwZWxheW91dCB2OmV4dD0iZWRpdCI+DQo8bzpp
+ZG1hcCB2OmV4dD0iZWRpdCIgZGF0YT0iMSIgLz4NCjwvbzpzaGFwZWxheW91dD48L3htbD48IVtl
+bmRpZl0tLT4NCjwvaGVhZD4NCjxib2R5IGxhbmc9IkVOLVVTIiBsaW5rPSJibHVlIiB2bGluaz0i
+cHVycGxlIj4NCjxkaXYgY2xhc3M9IldvcmRTZWN0aW9uMSI+DQo8cCBjbGFzcz0iTXNvTm9ybWFs
+Ij48c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxpYnJp
+JnF1b3Q7LHNhbnMtc2VyaWY7Y29sb3I6IzFGNDk3RCI+SGkgVGltIGFuZCBOaWNvOjxvOnA+PC9v
+OnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFuIHN0eWxlPSJmb250LXNp
+emU6MTEuMHB0O2ZvbnQtZmFtaWx5OiZxdW90O0NhbGlicmkmcXVvdDssc2Fucy1zZXJpZjtjb2xv
+cjojMUY0OTdEIj48bzpwPiZuYnNwOzwvbzpwPjwvc3Bhbj48L3A+DQo8cCBjbGFzcz0iTXNvTm9y
+bWFsIj48c3BhbiBzdHlsZT0iZm9udC1zaXplOjExLjBwdDtmb250LWZhbWlseTomcXVvdDtDYWxp
+YnJpJnF1b3Q7LHNhbnMtc2VyaWY7Y29sb3I6IzFGNDk3RCI+SSBoYXZlIHNvbWUgY2xvY2sgY3lj
+bGVzIG15c2VsZiDigJMgcGxlYXNlIGNvb3JkaW5hdGUgd2l0aCBtZSBzbyB3ZSBkb27igJl0IGVu
+ZCB1cCBkdXBsaWNhdGluZyBlYWNoIG90aGVy4oCZcyB3b3JrLg0KPG86cD48L286cD48L3NwYW4+
+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7
+Zm9udC1mYW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90OyxzYW5zLXNlcmlmO2NvbG9yOiMxRjQ5N0Qi
+PjxvOnA+Jm5ic3A7PC9vOnA+PC9zcGFuPjwvcD4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxzcGFu
+IHN0eWxlPSJmb250LXNpemU6MTEuMHB0O2ZvbnQtZmFtaWx5OiZxdW90O0NhbGlicmkmcXVvdDss
+c2Fucy1zZXJpZjtjb2xvcjojMUY0OTdEIj5UaGFua3MsPG86cD48L286cD48L3NwYW4+PC9wPg0K
+PHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9udC1m
+YW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90OyxzYW5zLXNlcmlmO2NvbG9yOiMxRjQ5N0QiPi1NYXJr
+IE0uPG86cD48L286cD48L3NwYW4+PC9wPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PHNwYW4gc3R5
+bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9udC1mYW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90OyxzYW5z
+LXNlcmlmO2NvbG9yOiMxRjQ5N0QiPjxvOnA+Jm5ic3A7PC9vOnA+PC9zcGFuPjwvcD4NCjxkaXYg
+c3R5bGU9ImJvcmRlcjpub25lO2JvcmRlci1sZWZ0OnNvbGlkIGJsdWUgMS41cHQ7cGFkZGluZzow
+aW4gMGluIDBpbiA0LjBwdCI+DQo8ZGl2Pg0KPGRpdiBzdHlsZT0iYm9yZGVyOm5vbmU7Ym9yZGVy
+LXRvcDpzb2xpZCAjRTFFMUUxIDEuMHB0O3BhZGRpbmc6My4wcHQgMGluIDBpbiAwaW4iPg0KPHAg
+Y2xhc3M9Ik1zb05vcm1hbCI+PGI+PHNwYW4gc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9udC1m
+YW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90OyxzYW5zLXNlcmlmIj5Gcm9tOjwvc3Bhbj48L2I+PHNw
+YW4gc3R5bGU9ImZvbnQtc2l6ZToxMS4wcHQ7Zm9udC1mYW1pbHk6JnF1b3Q7Q2FsaWJyaSZxdW90
+OyxzYW5zLXNlcmlmIj4gZG9jc0BsaXN0cy55b2N0b3Byb2plY3Qub3JnICZsdDtkb2NzQGxpc3Rz
+LnlvY3RvcHJvamVjdC5vcmcmZ3Q7DQo8Yj5PbiBCZWhhbGYgT2YgPC9iPlRpbSBPcmxpbmc8YnI+
+DQo8Yj5TZW50OjwvYj4gV2VkbmVzZGF5LCBBdWd1c3QgNSwgMjAyMCA3OjM1IFBNPGJyPg0KPGI+
+VG86PC9iPiBOaWNvbGFzIERlY2hlc25lICZsdDtuaWNvbGFzLmRlY2hlc25lQGxpbmFyby5vcmcm
+Z3Q7PGJyPg0KPGI+Q2M6PC9iPiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc8YnI+DQo8Yj5T
+dWJqZWN0OjwvYj4gUmU6IFtkb2NzXSBbc3BoaW54XSB1cGRhdGVzIGFzIG9mIEF1ZyA1dGguPG86
+cD48L286cD48L3NwYW4+PC9wPg0KPC9kaXY+DQo8L2Rpdj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwi
+PjxvOnA+Jm5ic3A7PC9vOnA+PC9wPg0KPGRpdj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFs
+Ij5OaWNvLDxvOnA+PC9vOnA+PC9wPg0KPC9kaXY+DQo8L2Rpdj4NCjxkaXY+DQo8cCBjbGFzcz0i
+TXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjwvZGl2Pg0KPGRpdj4NCjxwIGNsYXNz
+PSJNc29Ob3JtYWwiPlRoYW5rIHlvdSBTTyBtdWNoIGZvciBhbGwgdGhpcyB3b3JrLiBBbmQgZXNw
+ZWNpYWxseSB0aGFuayB5b3UgZm9yIHRha2luZyB0aGUgdGltZSB0byB3cml0ZSB0aGlzIHZlcnkg
+ZXhwbGljaXQgZW1haWwuPG86cD48L286cD48L3A+DQo8L2Rpdj4NCjxkaXY+DQo8cCBjbGFzcz0i
+TXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjwvZGl2Pg0KPGRpdj4NCjxwIGNsYXNz
+PSJNc29Ob3JtYWwiPkkgcGxhbiB0byB3b3JrIG9uIHRoaXMgY29tZSBoZWxsIG9yIGhpZ2ggd2F0
+ZXIgZHVyaW5nIHRoZSB0aW1lIHlvdSB3aWxsIGJlIGF3YXkuPG86cD48L286cD48L3A+DQo8L2Rp
+dj4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjxk
+aXY+DQo8ZGl2Pg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+T24gV2VkLCBBdWcgNSwgMjAyMCBhdCAy
+OjU0IFBNIE5pY29sYXMgRGVjaGVzbmUgJmx0OzxhIGhyZWY9Im1haWx0bzpuaWNvbGFzLmRlY2hl
+c25lQGxpbmFyby5vcmciPm5pY29sYXMuZGVjaGVzbmVAbGluYXJvLm9yZzwvYT4mZ3Q7IHdyb3Rl
+OjxvOnA+PC9vOnA+PC9wPg0KPC9kaXY+DQo8YmxvY2txdW90ZSBzdHlsZT0iYm9yZGVyOm5vbmU7
+Ym9yZGVyLWxlZnQ6c29saWQgI0NDQ0NDQyAxLjBwdDtwYWRkaW5nOjBpbiAwaW4gMGluIDYuMHB0
+O21hcmdpbi1sZWZ0OjQuOHB0O21hcmdpbi1yaWdodDowaW4iPg0KPHAgY2xhc3M9Ik1zb05vcm1h
+bCI+aGkgdGhlcmUsPGJyPg0KPGJyPg0KSSB3aWxsIGJlIGF3YXkgZnJvbSB0aGUgSW50ZXJ3ZWIg
+dGhlIG5leHQgdHdvIHdlZWtzLiBTbyBJIHdhbnRlZCB0bzxicj4NCnNoYXJlIHNvbWUgdXBkYXRl
+cyBhYm91dCBob3cgdGhlIFlQIGRvY3MgbWlncmF0aW9uIHRvIFNwaGlueCBpcyBkb2luZy48YnI+
+DQpbaXQgaXMgYSBmYWlybHkgbG9uZyBlbWFpbF0uPGJyPg0KPGJyPg0KVG8gYmUgaG9uZXN0LCBJ
+IHdvdWxkbid0IG1pbmQgYSBsaXR0bGUgYml0IG9mIGhlbHAsIGFuZCBJIHdpbGwgZ2l2ZTxicj4N
+CnNvbWUgaGludHMgYWJvdXQgaG93IHlvdSBjYW4gaGVscCE8YnI+DQo8YnI+DQpXZSBhcmUgc3Rp
+bGwgd29ya2luZyBvbiBwdWJsaXNoaW5nIHRoZSBjdXJyZW50IFNwaGlueCBkb2NzIG9uPGJyPg0K
+PGEgaHJlZj0iaHR0cDovL3lvY3RvcHJvamVjdC5vcmciIHRhcmdldD0iX2JsYW5rIj55b2N0b3By
+b2plY3Qub3JnPC9hPiwgaW4gdGhlIG1lYW50aW1lLCBpdCdzIGhlcmUgZm9yIFlQIGFuZCBCaXRi
+YWtlPGJyPg0KZG9jdW1lbnRhdGlvbi48YnI+DQo8YnI+DQo8YSBocmVmPSJodHRwczovL3Blb3Bs
+ZS5saW5hcm8ub3JnL35uaWNvbGFzLmRlY2hlc25lL3lwLWRvY3MvaHRtbC9pbmRleC5odG1sIiB0
+YXJnZXQ9Il9ibGFuayI+aHR0cHM6Ly9wZW9wbGUubGluYXJvLm9yZy9+bmljb2xhcy5kZWNoZXNu
+ZS95cC1kb2NzL2h0bWwvaW5kZXguaHRtbDwvYT48YnI+DQo8YSBocmVmPSJodHRwczovL3Blb3Bs
+ZS5saW5hcm8ub3JnL35uaWNvbGFzLmRlY2hlc25lL2JpdGJha2UtZG9jcy9odG1sLyIgdGFyZ2V0
+PSJfYmxhbmsiPmh0dHBzOi8vcGVvcGxlLmxpbmFyby5vcmcvfm5pY29sYXMuZGVjaGVzbmUvYml0
+YmFrZS1kb2NzL2h0bWwvPC9hPjxicj4NCjxicj4NCkFsbCBjaGFuZ2VzIGFyZSBwdXNoZWQgdG8g
+dGhlICdzcGhpbngnIGJyYW5jaCBpbiB5b2N0by1kb2NzIGFuZCBpbjxicj4NCmJpdGJha2UgdHJl
+ZXMuPGJyPg0KPGJyPg0KU3VtbWFyeSBvZiB0aGUgcmVjZW50IGNoYW5nZXM6PGJyPg0KPGJyPg0K
+KiBJIGltcG9ydGVkIHNvbWUgQ1NTIGNvbmZpZyBmcm9tIHRoZSBjdXJyZW50IFlQIGRvY3VtZW50
+YXRpb24sIGFzIGE8YnI+DQpyZXN1bHQgdGhlIGxvb2sgYW5kIGZlZWwgaXMgbXVjaCBjbG9zZXIg
+dG8gd2hhdCB3ZSBjdXJyZW50bHkgaGF2ZS48YnI+DQpUaGVyZSBhcmUgc3RpbGwgdGhpbmdzIHRv
+IGltcHJvdmUsIGJ1dCBpdCdzIGJldHRlciBvbiBteSBleWVzIGF0PGJyPg0KbGVhc3QuPGJyPg0K
+KiBJIGFkZGVkIGFsbCBpbWFnZXMvZmlndXJlcywgc2luY2UgdGhleSB3ZXJlIG1pc3NlZCBieSB0
+aGUgYXV0b21hdGljPGJyPg0KY29udmVyc2lvbi48YnI+DQoqIEkgYWRkZWQgYSBnZW5lcmFsIGlu
+ZGV4IChpdCdzIGEgYnVpbHRpbiBTcGhpbnggZmVhdHVyZSksIHdoaWNoIHVzZXM8YnI+DQphbGwg
+dGVybXMgZnJvbSB0aGUgZ2xvc3NhcnkuIEl0IGlzIGEgbmljZSBmZWF0dXJlLCB3aGljaCBsb29r
+czxicj4NCnByb21pc2luZyAoaXQncyBhIGdlbmVyYWwgaW5kZXggYWNyb3NzIGFsbCBkb2N1bWVu
+dHMpPGJyPg0KKiBJIGZpeGVkIGEgbGFyZ2UgYW1vdW50IHRvIGNyb3NzIHJlZmVyZW5jZXMgKH4y
+MjAwIGluc3RhbmNlcykgdG88bzpwPjwvbzpwPjwvcD4NCjwvYmxvY2txdW90ZT4NCjxkaXY+DQo8
+cCBjbGFzcz0iTXNvTm9ybWFsIj48bzpwPiZuYnNwOzwvbzpwPjwvcD4NCjwvZGl2Pg0KPGRpdj4N
+CjxwIGNsYXNzPSJNc29Ob3JtYWwiPjIyMDAhISE8bzpwPjwvbzpwPjwvcD4NCjwvZGl2Pg0KPGRp
+dj4NCjxwIGNsYXNzPSJNc29Ob3JtYWwiPjxvOnA+Jm5ic3A7PC9vOnA+PC9wPg0KPC9kaXY+DQo8
+YmxvY2txdW90ZSBzdHlsZT0iYm9yZGVyOm5vbmU7Ym9yZGVyLWxlZnQ6c29saWQgI0NDQ0NDQyAx
+LjBwdDtwYWRkaW5nOjBpbiAwaW4gMGluIDYuMHB0O21hcmdpbi1sZWZ0OjQuOHB0O21hcmdpbi1y
+aWdodDowaW4iPg0KPHAgY2xhc3M9Ik1zb05vcm1hbCI+PGJyPg0KdGVybXMgYW5kIHNlY3Rpb25z
+IHVzaW5nIGEgc2VyaWVzIG9mIFB5dGhvbiByZWdleHAgYW5kIGFsc28gYW5vdGhlcjxicj4NCjQw
+MCBpbnN0YW5jZXMgd2VyZSBmaXhlZCBtYW51YWxseS4uIHdoZW4gbXkgcmVnZXhwIGZhaWxlZC48
+bzpwPjwvbzpwPjwvcD4NCjwvYmxvY2txdW90ZT4NCjxkaXY+DQo8cCBjbGFzcz0iTXNvTm9ybWFs
+Ij40MDAhISE8bzpwPjwvbzpwPjwvcD4NCjwvZGl2Pg0KPGRpdj4NCjxwIGNsYXNzPSJNc29Ob3Jt
+YWwiPjxvOnA+Jm5ic3A7PC9vOnA+PC9wPg0KPC9kaXY+DQo8YmxvY2txdW90ZSBzdHlsZT0iYm9y
+ZGVyOm5vbmU7Ym9yZGVyLWxlZnQ6c29saWQgI0NDQ0NDQyAxLjBwdDtwYWRkaW5nOjBpbiAwaW4g
+MGluIDYuMHB0O21hcmdpbi1sZWZ0OjQuOHB0O21hcmdpbi1yaWdodDowaW4iPg0KPHAgY2xhc3M9
+Ik1zb05vcm1hbCIgc3R5bGU9Im1hcmdpbi1ib3R0b206MTIuMHB0Ij48YnI+DQoqIEkgYWRkZWQg
+ZXh0bGlua3MgU3BoaW54IHN1cHBvcnQgdG8gcmVmZXIgdG8gZXh0ZXJuYWwgbGlua3Mvd2Vic2l0
+ZSw8YnI+DQphbmQgZml4ZWQgdGhlbSB1cCBpbiB0aGUgc291cmNlIHRyZWUuPGJyPg0KKiBJIGFk
+ZGVkIGludGVyc3BoaW54IHN1cHBvcnQgd2hpY2ggYWxsb3dzIGEgU3BoaW54IGRvY3VtZW50YXRp
+b248YnI+DQpwcm9qZWN0IHRvIHJlZmVyIHRvIHNlY3Rpb24sIHRlcm1zLCByZWZlcmVuY2VzIGZy
+b20gYW5vdGhlciBTcGhpbng8YnI+DQpkb2N1bWVudGF0aW9uIHByb2plY3QuIFRoaXMgaXMgcmVh
+bGx5IGdvb2QsIHNpbmNlIHdlIGNhbiBjcm9zczxicj4NCnJlZmVyZW5jZSBiaXRiYWtlIHRlcm1z
+IGRpcmVjdGx5IGZyb20gdGhlIFlQIGRvY3VtZW50YXRpb24sIGVnLi48YnI+DQo6dGVybTpgYml0
+YmFrZTpCQl9GT09gIHdpbGwgJ2p1c3Qgd29yaycuPGJyPg0KPGJyPg0KVGhlIG5ldyBkb2N1bWVu
+dGF0aW9uIHNvdXJjZSBjb2RlICgucnN0IGZpbGVzKSBhcmUgcmVhbGx5IGdvb2QgdG8gd29yazxi
+cj4NCndpdGgsIGFuZCBpdCdzIG11Y2ggYmV0dGVyIHRvIHdvcmsgd2l0aCBSZVNUIGZpbGVzIHRo
+YW4gWE1MLCB3aXRob3V0PGJyPg0KYW55IHN1cnByaXNlLiBUaGUgY29udmVyc2lvbiBpcyBqdXN0
+IGEgbG90IG9mIHdvcmssIGFuZCBJIGFscmVhZHk8YnI+DQpzcGVudCBzb21lIHNpZ25pZmljYW50
+IGFtb3VudCBvZiB3b3JrIG9uIGl0Li4gSSBob3BlIHlvdSB3aWxsIGZpbmQgaXQ8YnI+DQp1c2Vm
+dWwgYW5kIEkgcmVhbGx5IGhvcGUgaXQgd2lsbCBhY2hpZXZlIGl0cyBnb2FsIHRvIG1ha2UgaXQg
+bW9yZTxicj4NCmF0dHJhY3RpdmUgdG8gY29udHJpYnV0ZSB0byBZb2N0byBQcm9qZWN0IGRvY3Vt
+ZW50YXRpb24gcHJvamVjdC48YnI+DQo8YnI+DQpUaGUgd2F5IFNwaGlueCB3b3JrcyBpcyB0aGF0
+IHdlIGhhdmUgYSBzaW5nbGUgZG9jdW1lbnRhdGlvbiBwcm9qZWN0PGJyPg0KdGhhdCBpbmNsdWRl
+cyBhbGwgdGhlIFlQICdib29rcycuIEl0IGlzIGFuIGltcG9ydGFudCBjaGFuZ2UsIHdlIG5vPGJy
+Pg0KbG9uZ2VyIGhhdmUgWCBpbmRlcGVuZGVudCBib29rcywgYnV0IGhhdmUgb25lIHByb2plY3Qg
+d2l0aCBhbGwgb2Y8YnI+DQp0aGVtLiBXZSBuZWVkIHRvIHdvcmsgb24gaG93IHdlIHdhbnQgdG8g
+cHVibGlzaCB0aGUgZG9jdW1lbnRhdGlvbjxicj4NCmFmdGVyIHRoZSBTcGhpbnggbWlncmF0aW9u
+Ljxicj4NCjxicj4NClJpY2hhcmQgaXMgdHJ5aW5nIHRvIGFkZCBzdXBwb3J0IHRvIGVhc2lseSBz
+d2l0Y2ggYmV0d2VlbiBZUCB2ZXJzaW9uPGJyPg0Kd2l0aGluIHRoZSBkb2MgKGUuZy4gbGlrZSB0
+aGUgUHl0aG9uIGRvYyksIGFuZCB3ZSB3aWxsIGhvc3QgdGhlICdvbGQnPGJyPg0KZG9jdW1lbnRh
+dGlvbiBhcyB3ZWxsLiBlLmcuIHdoZW4gY2hvb3NpbmcgdGhlICd0aHVkJyB2ZXJzaW9uLCB3ZSB3
+YW50PGJyPg0KdG8gc2hvdyBhIHN0YXRpYyBwYWdlIChub3QgYSBTcGhpbnggZG9jKSB0aGF0IHBv
+aW50cyB0byB0aGUgdGh1ZCBodG1sPGJyPg0KZG9jLjxicj4NCjxicj4NCkFuZCBub3cgaGVyZSBp
+cyB0aGUgc2VjdGlvbiB5b3UgYXJlIGFsbCBleHBlY3RpbmcgdGhlIG1vc3QhIEhvdyBjYW4geW91
+IGhlbHA/PGJyPg0KPGJyPg0KMS4gZmlyc3QgeW91IGNvdWxkIGxlYXJuIGFib3V0IFNwaGlueCBh
+bmQgZ2V0IGZhbWlsaWFyIHdpdGggdGhlIG5ldzxicj4NCnN5bnRheC4gWW91IHNob3VsZCByZXZp
+ZXcgYWxsIHRoZSBwYXRjaGVzIG9uZSBieSBvbmUsIHRvIGxlYXJuIGZyb208YnI+DQp3aGF0IEkg
+ZGlkISBUaGUgc3BoaW54IGRvY3VtZW50YXRpb24gaXMgZ29vZCB0b28uIEJ1dCBsb29raW5nIGF0
+IGE8YnI+DQpyZWFsIHdvcmxkIGV4YW1wbGUgaXMgbXVjaCBlYXNpZXIuPGJyPg0KPGJyPg0KMi4g
+dGhlcmUgYXJlIHN0aWxsIHBsZW50eSBvZiBicm9rZW4gbGlua3MuLiBpdCdzIG1vc3RseSBjcm9z
+czxicj4NCnJlZmVyZW5jZXMgdG8gc2VjdGlvbiBmcm9tIG9uZSBkb2MgdG8gYW5vdGhlci4gRG9j
+Qm9vayB1c2VkIHRvIGhhdmU8YnI+DQondmFyaWFibGVzJyAoc2V0IGluIHBva3kuZW50KSBmb3Ig
+ZWFjaCBkb2N1bWVudCAoaHR0cCBsaW5rKSBhbmQgaGFkPGJyPg0Kc29tZSBtYWNybyB0byBhcHBl
+bmQgYW4gYW5jaG9yIHRvIGNyZWF0ZSBhIGxpbmsuIFRoaXMgd2hvbGUgbWVjaGFuaXNtPGJyPg0K
+aXMgbm90IHdvcmtpbmcgd2VsbCB3aXRoIFNwaGlueCwgYW5kIHdlIHNob3VsZCB1c2UgU3BoaW54
+ICdyZWZlcmVuY2VzJzxicj4NCihlLmcuIDpyZWY6IHN5bnRheCkgaW5zdGVhZC4gTWF5YmUgc29t
+ZSBvZiB0aGF0IGNhbiBiZSBhdXRvbWF0ZWQgd2l0aDxicj4NCnJlZ2V4cCwgYnV0IEkgYW0gbm90
+IHN1cmUgKHZlcnkgb2Z0ZW4gaXQncyBtdWx0aSBsaW5lIHRleHQgYW5kIHRoZTxicj4NCnJlcGxh
+Y2VtZW50IHBhdHRlcm4gaXMgbm90IGFsd2F5cyBvYnZpb3VzKS4uIEp1c3QgdG8gZ2l2ZSBhbiBp
+ZGVhPGJyPg0KYWJvdXQgaG93IG11Y2ggd29yayB0aGVyZSBpczo8YnI+DQombmJzcDskIGdpdCBn
+cmVwIFlPQ1RPX0RPQ1NfLipfVVJMICovKi5yc3QmbmJzcDsgfCB3YyAtbDxicj4NCjQ3NTxicj4N
+Cjxicj4NCjMuIER1cmluZyB0aGUgY29udmVyc2lvbiBmcm9tIERvY0Jvb2sgdGhlICdjb2RlJyBv
+ciAnc2hlbGwnIHNlY3Rpb25zPGJyPg0KaGF2ZSBiZWVuIG1lc3NlZCB1cCwgYW5kIGlzIGxvc3Qu
+Li4gaXQncyBxdWl0ZSB1bmZvcnR1bmF0ZSBhcyB0aGlzPGJyPg0Kd2lsbCByZXF1aXJlIHNvbWUg
+Z29vZCBhbW91bnQgb2Ygd29yayB0byBjb252ZXJ0Li4gSW4gU3BoaW54LCB3ZSB3b3VsZDxicj4N
+CmRvIHRoaXM6PGJyPg0KLi4gY29kZS1ibG9jazo6IHNoZWxsPGJyPg0KJm5ic3A7ICZuYnNwOyQg
+Y2QgJEhPTUUvcG9reTxicj4NCiZuYnNwOyAmbmJzcDskIHNvdXJjZSBvZS1pbml0LWJ1aWxkLWVu
+djxicj4NCkFuZCBpdCB3b3VsZCByZW5kZXIgYXMgd2UgZXhwZWN0IGl0IHRvIGJlLjxicj4NClRo
+aXMgdGFzayBpcyB0eXBpY2FsbHkgc29tZXRoaW5nIHRoYXQgd291bGQgZGlzdHJpYnV0ZSB3ZWxs
+IGFtb25nIG1hbnk8YnI+DQpkZXZlbG9wZXJzLi48YnI+DQo8YnI+DQo0LiBUaGVyZSBhcmUgcHJv
+YmFibHkgc29tZSBvdGhlciBjb252ZXJzaW9uIGhpY2N1cHMgYXQgcmFuZG9tIHBsYWNlczxicj4N
+Cihjb2xvciwgZm9udCB0eXBlLCB0ZXh0LCAuLi4pLCBzbyBJIHRoaW5rIHdlIHdpbGwgaGF2ZSB0
+byBkbyBhIGNhcmVmdWw8YnI+DQpyZXZpZXcgb2YgdGhlIEhUTUwgdG8gZmluZCBzdWNoIGlzc3Vl
+cyBhbmQgZml4IHRoZW0uIFRvIGJlIGhvbmVzdCwgSTxicj4NCnRoaW5rIGl0J3MgYSByYXRoZXIg
+Z29vZCB0aGluZyB0byBkbyBhbnl3YXlzPGJyPg0KPGJyPg0KNS4gVGhlbWUgb3IgQ1NTIGltcHJv
+dmVtZW50cy4gV2UgYXJlIHVzaW5nIHRoZSBzdGFuZGFyZCAncmVhZCB0aGUgZG9jJzxicj4NCnRo
+ZW1lLiBJIHdvdWxkIGxpa2UgdG8gZ2V0IGZlZWRiYWNrIGFib3V0IHRoZSB2aXN1YWwgcXVhbGl0
+eSBvZiB0aGU8YnI+DQpyZXN1bHRpbmcgSFRNTCBwcm9qZWN0LiBJZiBhbnlvbmUgaGFzIGlkZWEg
+dG8gaW1wcm92ZSBpdCwgdGhhdCB3b3VsZDxicj4NCmJlIG11Y2ggYXBwcmVjaWF0ZWQuPGJyPg0K
+PGJyPg0KdGhhbmtzITxicj4NCm5pY288bzpwPjwvbzpwPjwvcD4NCjwvYmxvY2txdW90ZT4NCjwv
+ZGl2Pg0KPC9kaXY+DQo8L2Rpdj4NCjwvZGl2Pg0KPC9ib2R5Pg0KPC9odG1sPg0K
 
-On Wed, Aug 5, 2020 at 2:54 PM Nicolas Dechesne <nicolas.dechesne@linaro.org>
-wrote:
-
-> hi there,
->
-> I will be away from the Interweb the next two weeks. So I wanted to
-> share some updates about how the YP docs migration to Sphinx is doing.
-> [it is a fairly long email].
->
-> To be honest, I wouldn't mind a little bit of help, and I will give
-> some hints about how you can help!
->
-> We are still working on publishing the current Sphinx docs on
-> yoctoproject.org, in the meantime, it's here for YP and Bitbake
-> documentation.
->
-> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/index.html
-> https://people.linaro.org/~nicolas.dechesne/bitbake-docs/html/
->
-> All changes are pushed to the 'sphinx' branch in yocto-docs and in
-> bitbake trees.
->
-> Summary of the recent changes:
->
-> * I imported some CSS config from the current YP documentation, as a
-> result the look and feel is much closer to what we currently have.
-> There are still things to improve, but it's better on my eyes at
-> least.
-> * I added all images/figures, since they were missed by the automatic
-> conversion.
-> * I added a general index (it's a builtin Sphinx feature), which uses
-> all terms from the glossary. It is a nice feature, which looks
-> promising (it's a general index across all documents)
-> * I fixed a large amount to cross references (~2200 instances) to
-
-
-2200!!!
-
-
-> terms and sections using a series of Python regexp and also another
-> 400 instances were fixed manually.. when my regexp failed.
-
-400!!!
-
-
-> * I added extlinks Sphinx support to refer to external links/website,
-> and fixed them up in the source tree.
-> * I added intersphinx support which allows a Sphinx documentation
-> project to refer to section, terms, references from another Sphinx
-> documentation project. This is really good, since we can cross
-> reference bitbake terms directly from the YP documentation, eg..
-> :term:`bitbake:BB_FOO` will 'just work'.
->
-> The new documentation source code (.rst files) are really good to work
-> with, and it's much better to work with ReST files than XML, without
-> any surprise. The conversion is just a lot of work, and I already
-> spent some significant amount of work on it.. I hope you will find it
-> useful and I really hope it will achieve its goal to make it more
-> attractive to contribute to Yocto Project documentation project.
->
-> The way Sphinx works is that we have a single documentation project
-> that includes all the YP 'books'. It is an important change, we no
-> longer have X independent books, but have one project with all of
-> them. We need to work on how we want to publish the documentation
-> after the Sphinx migration.
->
-> Richard is trying to add support to easily switch between YP version
-> within the doc (e.g. like the Python doc), and we will host the 'old'
-> documentation as well. e.g. when choosing the 'thud' version, we want
-> to show a static page (not a Sphinx doc) that points to the thud html
-> doc.
->
-> And now here is the section you are all expecting the most! How can you
-> help?
->
-> 1. first you could learn about Sphinx and get familiar with the new
-> syntax. You should review all the patches one by one, to learn from
-> what I did! The sphinx documentation is good too. But looking at a
-> real world example is much easier.
->
-> 2. there are still plenty of broken links.. it's mostly cross
-> references to section from one doc to another. DocBook used to have
-> 'variables' (set in poky.ent) for each document (http link) and had
-> some macro to append an anchor to create a link. This whole mechanism
-> is not working well with Sphinx, and we should use Sphinx 'references'
-> (e.g. :ref: syntax) instead. Maybe some of that can be automated with
-> regexp, but I am not sure (very often it's multi line text and the
-> replacement pattern is not always obvious).. Just to give an idea
-> about how much work there is:
->  $ git grep YOCTO_DOCS_.*_URL */*.rst  | wc -l
-> 475
->
-> 3. During the conversion from DocBook the 'code' or 'shell' sections
-> have been messed up, and is lost... it's quite unfortunate as this
-> will require some good amount of work to convert.. In Sphinx, we would
-> do this:
-> .. code-block:: shell
->    $ cd $HOME/poky
->    $ source oe-init-build-env
-> And it would render as we expect it to be.
-> This task is typically something that would distribute well among many
-> developers..
->
-> 4. There are probably some other conversion hiccups at random places
-> (color, font type, text, ...), so I think we will have to do a careful
-> review of the HTML to find such issues and fix them. To be honest, I
-> think it's a rather good thing to do anyways
->
-> 5. Theme or CSS improvements. We are using the standard 'read the doc'
-> theme. I would like to get feedback about the visual quality of the
-> resulting HTML project. If anyone has idea to improve it, that would
-> be much appreciated.
->
-> thanks!
-> nico
-> 
->
-
---00000000000008af6205ac2c5765
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div><div dir=3D"auto">Nico,</div></div><div dir=3D"auto"><br></div><div di=
-r=3D"auto">Thank you SO much for all this work. And especially thank you fo=
-r taking the time to write this very explicit email.</div><div dir=3D"auto"=
-><br></div><div dir=3D"auto">I plan to work on this come hell or high water=
- during the time you will be away.</div><div><br><div class=3D"gmail_quote"=
-><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Aug 5, 2020 at 2:54 PM Nicol=
-as Dechesne &lt;<a href=3D"mailto:nicolas.dechesne@linaro.org">nicolas.dech=
-esne@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
-tyle=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">hi t=
-here,<br>
-<br>
-I will be away from the Interweb the next two weeks. So I wanted to<br>
-share some updates about how the YP docs migration to Sphinx is doing.<br>
-[it is a fairly long email].<br>
-<br>
-To be honest, I wouldn&#39;t mind a little bit of help, and I will give<br=
->
-some hints about how you can help!<br>
-<br>
-We are still working on publishing the current Sphinx docs on<br>
-<a href=3D"http://yoctoproject.org" rel=3D"noreferrer" target=3D"_blank">y=
-octoproject.org</a>, in the meantime, it&#39;s here for YP and Bitbake<br>
-documentation.<br>
-<br>
-<a href=3D"https://people.linaro.org/~nicolas.dechesne/yp-docs/html/index.=
-html" rel=3D"noreferrer" target=3D"_blank">https://people.linaro.org/~nicol=
-as.dechesne/yp-docs/html/index.html</a><br>
-<a href=3D"https://people.linaro.org/~nicolas.dechesne/bitbake-docs/html/"=
- rel=3D"noreferrer" target=3D"_blank">https://people.linaro.org/~nicolas.de=
-chesne/bitbake-docs/html/</a><br>
-<br>
-All changes are pushed to the &#39;sphinx&#39; branch in yocto-docs and in=
-<br>
-bitbake trees.<br>
-<br>
-Summary of the recent changes:<br>
-<br>
-* I imported some CSS config from the current YP documentation, as a<br>
-result the look and feel is much closer to what we currently have.<br>
-There are still things to improve, but it&#39;s better on my eyes at<br>
-least.<br>
-* I added all images/figures, since they were missed by the automatic<br>
-conversion.<br>
-* I added a general index (it&#39;s a builtin Sphinx feature), which uses<=
-br>
-all terms from the glossary. It is a nice feature, which looks<br>
-promising (it&#39;s a general index across all documents)<br>
-* I fixed a large amount to cross references (~2200 instances) to</blockqu=
-ote><div dir=3D"auto"><br></div><div dir=3D"auto">2200!!!</div><div dir=3D"=
-auto"><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8e=
-x;border-left:1px #ccc solid;padding-left:1ex"><br>
-terms and sections using a series of Python regexp and also another<br>
-400 instances were fixed manually.. when my regexp failed.</blockquote><di=
-v dir=3D"auto">400!!!</div><div dir=3D"auto"><br></div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding=
--left:1ex"><br>
-* I added extlinks Sphinx support to refer to external links/website,<br>
-and fixed them up in the source tree.<br>
-* I added intersphinx support which allows a Sphinx documentation<br>
-project to refer to section, terms, references from another Sphinx<br>
-documentation project. This is really good, since we can cross<br>
-reference bitbake terms directly from the YP documentation, eg..<br>
-:term:`bitbake:BB_FOO` will &#39;just work&#39;.<br>
-<br>
-The new documentation source code (.rst files) are really good to work<br>
-with, and it&#39;s much better to work with ReST files than XML, without<b=
-r>
-any surprise. The conversion is just a lot of work, and I already<br>
-spent some significant amount of work on it.. I hope you will find it<br>
-useful and I really hope it will achieve its goal to make it more<br>
-attractive to contribute to Yocto Project documentation project.<br>
-<br>
-The way Sphinx works is that we have a single documentation project<br>
-that includes all the YP &#39;books&#39;. It is an important change, we no=
-<br>
-longer have X independent books, but have one project with all of<br>
-them. We need to work on how we want to publish the documentation<br>
-after the Sphinx migration.<br>
-<br>
-Richard is trying to add support to easily switch between YP version<br>
-within the doc (e.g. like the Python doc), and we will host the &#39;old&#=
-39;<br>
-documentation as well. e.g. when choosing the &#39;thud&#39; version, we w=
-ant<br>
-to show a static page (not a Sphinx doc) that points to the thud html<br>
-doc.<br>
-<br>
-And now here is the section you are all expecting the most! How can you he=
-lp?<br>
-<br>
-1. first you could learn about Sphinx and get familiar with the new<br>
-syntax. You should review all the patches one by one, to learn from<br>
-what I did! The sphinx documentation is good too. But looking at a<br>
-real world example is much easier.<br>
-<br>
-2. there are still plenty of broken links.. it&#39;s mostly cross<br>
-references to section from one doc to another. DocBook used to have<br>
-&#39;variables&#39; (set in poky.ent) for each document (http link) and ha=
-d<br>
-some macro to append an anchor to create a link. This whole mechanism<br>
-is not working well with Sphinx, and we should use Sphinx &#39;references&=
-#39;<br>
-(e.g. :ref: syntax) instead. Maybe some of that can be automated with<br>
-regexp, but I am not sure (very often it&#39;s multi line text and the<br>
-replacement pattern is not always obvious).. Just to give an idea<br>
-about how much work there is:<br>
-=C2=A0$ git grep YOCTO_DOCS_.*_URL */*.rst=C2=A0 | wc -l<br>
-475<br>
-<br>
-3. During the conversion from DocBook the &#39;code&#39; or &#39;shell&#39=
-; sections<br>
-have been messed up, and is lost... it&#39;s quite unfortunate as this<br>
-will require some good amount of work to convert.. In Sphinx, we would<br>
-do this:<br>
-.. code-block:: shell<br>
-=C2=A0 =C2=A0$ cd $HOME/poky<br>
-=C2=A0 =C2=A0$ source oe-init-build-env<br>
-And it would render as we expect it to be.<br>
-This task is typically something that would distribute well among many<br>
-developers..<br>
-<br>
-4. There are probably some other conversion hiccups at random places<br>
-(color, font type, text, ...), so I think we will have to do a careful<br>
-review of the HTML to find such issues and fix them. To be honest, I<br>
-think it&#39;s a rather good thing to do anyways<br>
-<br>
-5. Theme or CSS improvements. We are using the standard &#39;read the doc&=
-#39;<br>
-theme. I would like to get feedback about the visual quality of the<br>
-resulting HTML project. If anyone has idea to improve it, that would<br>
-be much appreciated.<br>
-<br>
-thanks!<br>
-nico<br>
-<br>
-</blockquote></div></div>
-
---00000000000008af6205ac2c5765--
+--_000_DM6PR11MB367698B5496760F960E57B7AE5480DM6PR11MB3676namp_--
