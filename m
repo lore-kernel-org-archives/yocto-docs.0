@@ -1,56 +1,112 @@
-Received: from cpanel7.indieserve.net (cpanel7.indieserve.net [199.212.143.8])
- by mx.groups.io with SMTP id smtpd.web12.17704.1596753593692962085
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+ by mx.groups.io with SMTP id smtpd.web12.18454.1597162024526420353
  for <docs@lists.yoctoproject.org>;
- Thu, 06 Aug 2020 15:39:54 -0700
+ Tue, 11 Aug 2020 09:07:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.8, mailfrom: rpjday@crashcourse.ca)
-Received: from localhost ([127.0.0.1]:39674 helo=cpanel7.indieserve.net)
-	by cpanel7.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1k3oYC-00107F-FT
-	for docs@lists.yoctoproject.org; Thu, 06 Aug 2020 18:39:52 -0400
-Received: from [66.129.241.13] ([66.129.241.13]) by crashcourse.ca (Horde
- Framework) with HTTPS; Thu, 06 Aug 2020 18:39:52 -0400
-Date: Thu, 06 Aug 2020 18:39:52 -0400
-Message-ID: <20200806183952.Horde.x4lz5m2GQPmiGvt38jSA_Of@crashcourse.ca>
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: docs@lists.yoctoproject.org
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=cSTQnerR;
+ spf=pass (domain: gmail.com, ip: 209.85.221.42, mailfrom: robert.berger.yocto.user@gmail.com)
+Received: by mail-wr1-f42.google.com with SMTP id c15so11979519wrs.11
+        for <docs@lists.yoctoproject.org>; Tue, 11 Aug 2020 09:07:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:message-id:date:user-agent:mime-version
+         :in-reply-to:content-language:content-transfer-encoding;
+        bh=OIHHItW8Xxo08PPeuShj6pLVrJUXE45h7mj/64tibJU=;
+        b=cSTQnerR11t6yn/nxhTHXLyk82FMJCmPVzyE5k//SrdiEmnZHyFjqHZZe9pVo3IaBq
+         af7IHNnY3qbdbPt7v57+b4ZaTr4Pk8RiH4rrAIiZXLqUdXqcZErXmmduf9DzO9lwOmtp
+         2F6WWbbXqoP5tdtDV/taXtxcIgCxnA+zcQ8oGL2GmJfC8VQSG0+Ha7Lipkg5uhXKXPBm
+         iNk0fwyUB9p3Nuohlrca7yrPYygE0U+jjWvjRtYbKH82NyBLZ2sos4o+w8M5JiPoSuEa
+         M+mefgnUDD5tTthcB3dighVKldSPrwAm/9eyFNqbnP+PUIrPZ9wmuUCK6KA1A4axCNTq
+         czvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=OIHHItW8Xxo08PPeuShj6pLVrJUXE45h7mj/64tibJU=;
+        b=IETZTgDnbbbbKMUOCHlHoitymsSah58arOXPa+jouRPa7v99nS9yUZVhP6t+EbFRP3
+         fJkPHuDm0Db56e5/QACLi6S/e8M1zS9p3JBQRP/G/LStaDsCBQkhVH8kOV9ZzNtcLPy4
+         V4RsN3B5lyJkTdZV0NSzReoBKDe6zsKD2AvK/dghrsLIvLnsbQdGMX2pQvLaYZdfav7c
+         XGoR1+xh3FXh2l6Wjq2twFe3jMAs92IBGcpBXxb9rrbCf1o1RYfr0lj/Zm9mc5SBpLNk
+         RQMJ4/YaNLnzUWbI+sUqPHzYtZeH9IUpZpuY/IOX/ziiTEZBlVGxWKle8R3ZEz7w6I0A
+         SUoQ==
+X-Gm-Message-State: AOAM533ULp6L0z2C5m87HlX9Szquy5iykNlEJy3+wbtmLCe514Xh/CQ2
+	knpEOBEgDf/NdpeiskYYXbRVGpOj
+X-Google-Smtp-Source: ABdhPJwLw+clijUb6M2me/vP45ld5UdOy+MSmSfjf+gjD75+O9hypw+KxBJMIUKt7iijR0AtWjRoKg==
+X-Received: by 2002:a5d:6744:: with SMTP id l4mr32599331wrw.105.1597162022503;
+        Tue, 11 Aug 2020 09:07:02 -0700 (PDT)
+Return-Path: <robert.berger.yocto.user@gmail.com>
+Received: from [192.168.42.52] (ppp-2-86-237-227.home.otenet.gr. [2.86.237.227])
+        by smtp.gmail.com with ESMTPSA id b123sm5920212wme.20.2020.08.11.09.07.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Aug 2020 09:07:01 -0700 (PDT)
 Subject: Re: [docs] [sphinx] updates as of Aug 5th.
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+ docs@lists.yoctoproject.org
 References: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
- <CANx9H-CUsCD5hgg-G1yGC1jhMDUvFjLU2hr+xksmE=3w1WhTAw@mail.gmail.com>
- <DM6PR11MB367698B5496760F960E57B7AE5480@DM6PR11MB3676.namprd11.prod.outlook.com>
-In-Reply-To: <DM6PR11MB367698B5496760F960E57B7AE5480@DM6PR11MB3676.namprd11.prod.outlook.com>
-User-Agent: Horde Application Framework 5
+From: "Robert Berger" <robert.berger.yocto.user@gmail.com>
+Message-ID: <6cb6f3a9-e4c0-960d-0069-09eecc344625@gmail.com>
+Date: Tue, 11 Aug 2020 19:06:59 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel7.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel7.indieserve.net: authenticated_id: rpjday@crashcourse.ca
-X-Authenticated-Sender: cpanel7.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 
+Hi,
 
-Quoting Mark Morton <Mark.Morton@windriver.com>:
+My comments are in-line
 
-> Hi Tim and Nico:
->
-> I have some clock cycles myself – please coordinate with me so we  
-> don’t end up duplicating each other’s work.
+On 06/08/2020 00:54, Nicolas Dechesne wrote:
+> hi there,
+> 
+> I will be away from the Interweb the next two weeks. So I wanted to
+> share some updates about how the YP docs migration to Sphinx is doing.
+> [it is a fairly long email].
+> 
+> To be honest, I wouldn't mind a little bit of help, and I will give
+> some hints about how you can help!
+> 
+> We are still working on publishing the current Sphinx docs on
+> yoctoproject.org, in the meantime, it's here for YP and Bitbake
+> documentation.
+> 
+> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/index.html
+> https://people.linaro.org/~nicolas.dechesne/bitbake-docs/html/
+> 
+> All changes are pushed to the 'sphinx' branch in yocto-docs and in
+> bitbake trees.
 
-... snip ...
+As long as chapters/sub chapters and variables are have some kind of 
+stable links this should work for me.
 
-I feel guilty that I've been AWOL buried in a current (Yocto Project)
-contract, so I'll spend this weekend catching up and promise I'll find
-some time to help out.
+To give you some context:
 
-rday
+I my training I have many links from my slides to the good old doc.
+e.g.
+
+in my latex magic I have something like:
+{\tt \href{\MegaManualVarSearch LAYERSERIES\_COMPAT}{LAYERSERIES\_COMPAT 
+(MM)}}
+
+which ends up into a link pointing to a downloaded version of the good 
+old Mega manual:
+
+file:///xxx/mega-manual/mega-manual.html#var-LAYERSERIES_COMPAT
+
+It looks like I could do the same with your stuff:
+
+https://people.linaro.org/~nicolas.dechesne/yp-docs/html/ref-manual/ref-variables.html#term-LAYERSERIES_COMPAT
+
+and I hope there will be a Mega Manual which contains them all ;)
+
+Regards,
+
+Robert
+
+> 
+> 
+> 
 
