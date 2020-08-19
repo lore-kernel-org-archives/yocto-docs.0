@@ -1,74 +1,121 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
- by mx.groups.io with SMTP id smtpd.web11.72291.1597774429303598332
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+ by mx.groups.io with SMTP id smtpd.web11.99876.1597878000196379456
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Aug 2020 11:13:49 -0700
+ Wed, 19 Aug 2020 16:00:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=RTHZfKTO;
- spf=pass (domain: gmail.com, ip: 209.85.214.181, mailfrom: akuster808@gmail.com)
-Received: by mail-pl1-f181.google.com with SMTP id g15so5696409plj.6
-        for <docs@lists.yoctoproject.org>; Tue, 18 Aug 2020 11:13:49 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=XCiUmEey;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.43, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f43.google.com with SMTP id r15so268745wrp.13
+        for <docs@lists.yoctoproject.org>; Wed, 19 Aug 2020 15:59:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id;
-        bh=6c9lFJS3Z7cDHB/phGD2Arb8wFoz4pkIOSHNJtbQldo=;
-        b=RTHZfKTO2qk06tpyYlUkqG0dDGh3XM20T8y60lVqttwkLG/N+LG6eu42g4bG/qoUKV
-         kARvIXNQDGhtyUg6T3w1buIMtJ2zcnkXzMUY7I7Kl2X+oFtAAI82eggYyK5AUc+CQQxr
-         DBvRWd3R01XMEHQLH7k8nrVomejAc+WDcLK6o4O67QqF7bGUS9oSwyMa69L+PQHUtL3h
-         TOPAYJ/RtgJdFHisUg5m60bF9xVUNlaG/mX+3rFFAd2yMhcGd8QUllx30XJD2dbdir3r
-         23Xmeok56g1msOG5gIYhaU8pEQThJ21KiKPuZux/2e6gamYDJwM6nzIsKk6OehuNtjql
-         FSVg==
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=8A6dFj/olqjzntK5SF4gWAdXc4JaARk74HOxiHs357c=;
+        b=XCiUmEeyrK2rCFoOpKiI6h2TPu60ZkHU2D2iN6BSaPv4szTcW6b0Z/hNl0guG+XlLy
+         eBghkZXeImW5j0LYQ5t1P31R1sdj4bYrGpYlWeqqbiubHvOKTVFrPxSgqro1Ox/qi/qT
+         d4jNXm9et/8poc+X0KtbCw9lfIX+y+8Zy2OYg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id;
-        bh=6c9lFJS3Z7cDHB/phGD2Arb8wFoz4pkIOSHNJtbQldo=;
-        b=kUsflraucZYN9+tfjJ7uTqAJcU/0n/1bPE7rmdgJFtl/2LwT1hg6iwdVJTYophZEbY
-         03kdiFOHFrzs2KblCv30PUOnQZbSOzyA3vZj+5l+sj5cMlR9w1inkG0V061Bp/kB8AGA
-         LwF4Q8sl2iqRyFzDdZiL1AaKWjkL3+T1+e0hP46X4SqmQM9797mzAZ2A96uOvC8aEo2R
-         usxR/eTbWGN4r2pJiRokwjz02AeSsgIOKqManX8zcThyo8WLvXEb/UmFONNksneonm5J
-         GZEwaDoDCpCReNTLugJX2GhUVP8R8ukmYwftEn/Xjm0FPZ+DjFvh729nkE7MYm4/f1nI
-         kc6Q==
-X-Gm-Message-State: AOAM532N960E0P5mrvw3k/+Rf49p9x+7EzKb2rdNHJq55MOBPVSqphpb
-	Rl5kjq4XvsjfPnGaCseJp8f/Gm7vIEE=
-X-Google-Smtp-Source: ABdhPJxX9q6NsT0Fitl60X3bxnHdALM3NFFklRRGTV+l/NwzxoWZ/CEIMiP9l+ojdIfc23uVn3yNRg==
-X-Received: by 2002:a17:90a:d70c:: with SMTP id y12mr962040pju.31.1597774428502;
-        Tue, 18 Aug 2020 11:13:48 -0700 (PDT)
-Return-Path: <akuster808@gmail.com>
-Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:3543:531d:382f:ed2a])
-        by smtp.gmail.com with ESMTPSA id t33sm22795503pga.72.2020.08.18.11.13.46
-        for <docs@lists.yoctoproject.org>
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=8A6dFj/olqjzntK5SF4gWAdXc4JaARk74HOxiHs357c=;
+        b=sKUcmzwErvCoG37G/wHdekct61fGqAVd2C0QwKumhLjAG3zXJicLjnOxj1GsVXcZj+
+         uJodd0W9YEq3wcrDzUY5i/JIXc4jhCYAkZqMmai409K0t8IYybgCFK8zf1iJ5s88dxcx
+         p4RMPkh8tVFfa2q00u9dJlCptVUu/s/aPC2RP5+14ZYDEORR2U+2cqP8PBCiHjjNwveO
+         0KnnoAN5AP4Ss+MBOv0IkcCgtEZO9ZN0q5dez/WKmiAJIvU7wMif35JmP95YxwDm817k
+         /t9mi+1pP7av+Q7SOp6s6uNKZTt2xUfhzA55i0ADzkcxPq7DE/FZDG5vMJ5GAGEC+0ep
+         OaMg==
+X-Gm-Message-State: AOAM533XYX3NYYNktlWIMFnQcaZJqcqggre6/7ha5OBTqA0A2AaQTuUe
+	dG+77pt6AHcPsM1H/qHX0KZ/Iw==
+X-Google-Smtp-Source: ABdhPJwKfh/CvOQTOG/JDV15f9e2O19bjj7sJQXG5uX4663VSlv6C083W6YUUTfR18dGzlbtSd8xTg==
+X-Received: by 2002:a5d:414d:: with SMTP id c13mr284150wrq.78.1597877998560;
+        Wed, 19 Aug 2020 15:59:58 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from d.d.0.9.8.0.3.8.5.d.6.d.5.a.5.4.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (d.d.0.9.8.0.3.8.5.d.6.d.5.a.5.4.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:45a5:d6d5:8308:90dd])
+        by smtp.gmail.com with ESMTPSA id q19sm521819wrf.48.2020.08.19.15.59.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Aug 2020 11:13:47 -0700 (PDT)
-From: "akuster" <akuster808@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [master][dunfell][zeus][PATCH] migration.xml: Use Fixed release ref instead of var
-Date: Tue, 18 Aug 2020 11:13:45 -0700
-Message-Id: <20200818181345.12733-1-akuster808@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Wed, 19 Aug 2020 15:59:58 -0700 (PDT)
+Message-ID: <c05381ddd372bc0e82e6b24ce45df4ae2df90e1a.camel@linuxfoundation.org>
+Subject: Re: [docs] [sphinx] updates as of Aug 5th.
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, 
+	docs@lists.yoctoproject.org
+Date: Wed, 19 Aug 2020 23:59:55 +0100
+In-Reply-To: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
+References: 
+	<CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
+User-Agent: Evolution 3.36.4-0ubuntu1 
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-[Yocto # 13867]
+Hi Nico/All,
 
-Because we use &DISTRO in the corresponding XML, when we
-generate the doc *today* it says 3.0.2, but it should be
-set to 2.3. So we shouldn't be using &DISTRO.
+Thanks for putting that list together, its really useful.
 
-Signed-off-by: Armin Kuster <akuster808@gmail.com>
----
- documentation/ref-manual/migration.xml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 2020-08-05 at 23:54 +0200, Nicolas Dechesne wrote:
+> I will be away from the Interweb the next two weeks. So I wanted to
+> share some updates about how the YP docs migration to Sphinx is
+> doing.
+>
+> [...]
+> 
+> Richard is trying to add support to easily switch between YP version
+> within the doc (e.g. like the Python doc), and we will host the 'old'
+> documentation as well. e.g. when choosing the 'thud' version, we want
+> to show a static page (not a Sphinx doc) that points to the thud html
+> doc.
 
-diff --git a/documentation/ref-manual/migration.xml b/documentation/ref-manual/migration.xml
-index d3d5b16bd..a24452b23 100644
---- a/documentation/ref-manual/migration.xml
-+++ b/documentation/ref-manual/migration.xml
-@@ -4115,7 +4115,7 @@ $ runqemu qemux86-64 tmp/deploy/images/qemux86-64/core-image-minimal-qemux86-64.
-                     </literallayout>
-                     You must now supply a recipe for
-                     <replaceable>recipe</replaceable> as part of the command.
--                    Prior to the Yocto Project &DISTRO; release, it was not
-+                    Prior to the Yocto Project 2.3 release, it was not
-                     necessary to provide the script with the command.
-                     </para></listitem>
-                 <listitem><para>
--- 
-2.17.1
+I hope you're having some good away time! I'm sending this while I have
+the context in my head ready for when you get back. Its taken me a lot
+more work than I thought but I think I have something ready to share in
+this area now. I've published some sample output at:
+
+https://www.rpsys.net/yocto-docs/
+
+Basically this combines the existing docbooks docs into a structure
+with the new sphinx generated manual such that you can select and
+nagivate around and see the different versions/options.
+
+I'd ultimately like to replace what we have at 
+https://www.yoctoproject.org/docs/ with this. I appreciate there are
+four links there we still need to add into the new docs page:
+
+https://www.yoctoproject.org/docs/what-i-wish-id-known/ 
+https://www.yoctoproject.org/docs/transitioning-to-a-custom-environment 
+https://www.yoctoproject.org/software-overview/ 
+https://wiki.yoctoproject.org/wiki/TipsAndTricks
+
+but other than that I think its much more navigable and usable for
+users. Features/changes include:
+
+* Clearly showing which version you've viewing (yes, css needs work)
+* Drop down selection of recent versions
+* Drop down selection of the format you want 
+  (individual web pages or all in one mega manual)
+* Older documents with newer point releases show a warning in red at 
+  the top
+* Obsolete releases show a warning in red at the top
+* All the releases are listed on the main page for search engine 
+  visibility which should improve their indexing and avoid some of the 
+  version issues we've had (I've gone back to sumo at present) and 
+  make it clear to users how 'behind' a given version is
+
+I know the sphinx transition isn't complete so the "dev" manual version
+has all the issues still needing to be resolved with the transition.
+The CSS also needs a little more work to help with the colours/layout.
+
+I'm interested to hear what people think of this...
+
+Code is in the yocto-docs repo on the sphinx-rp branch. "make -f
+Makefile.sphinx" will generate the docs I've shared and the generated
+output in _build/final is designed to overlay the existing docbook docs
+and all fit together correctly.
+
+Cheers,
+
+Richard
+
+
 
