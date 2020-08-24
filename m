@@ -1,121 +1,140 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
- by mx.groups.io with SMTP id smtpd.web11.99876.1597878000196379456
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+ by mx.groups.io with SMTP id smtpd.web11.197611.1598283423113542382
  for <docs@lists.yoctoproject.org>;
- Wed, 19 Aug 2020 16:00:00 -0700
+ Mon, 24 Aug 2020 08:37:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=XCiUmEey;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.43, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f43.google.com with SMTP id r15so268745wrp.13
-        for <docs@lists.yoctoproject.org>; Wed, 19 Aug 2020 15:59:59 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=U3TWkBWD;
+ spf=pass (domain: linaro.org, ip: 209.85.219.178, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f178.google.com with SMTP id q16so5397735ybk.6
+        for <docs@lists.yoctoproject.org>; Mon, 24 Aug 2020 08:37:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=8A6dFj/olqjzntK5SF4gWAdXc4JaARk74HOxiHs357c=;
-        b=XCiUmEeyrK2rCFoOpKiI6h2TPu60ZkHU2D2iN6BSaPv4szTcW6b0Z/hNl0guG+XlLy
-         eBghkZXeImW5j0LYQ5t1P31R1sdj4bYrGpYlWeqqbiubHvOKTVFrPxSgqro1Ox/qi/qT
-         d4jNXm9et/8poc+X0KtbCw9lfIX+y+8Zy2OYg=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=8jXEmRKZVjOEsk2/5Df+y5Dq0BCHkg2xUVa7bLp7Roo=;
+        b=U3TWkBWDDZpe6chTlESIxPW0/EUW0p2lpHkbQx7QbAFSs1cxzxz5M0lozp0bUv2gfs
+         kDLARKYSb+VlYNAPmXw8e1DJaJbOYXLGPTtax6ncXgFHaRuCEuAZdH1cnoR2pkKKGMlP
+         yGf9nD+xkHrlPsWOyMYlMcVQae+KYjCAGhlSwbNTMXbNtSsCeq/cF41ImK8R6ut+YvKd
+         Z/f8PKvAglL3aPBNbmBX0gS4uVw1Ht4aq7JQtTXTgpITPR2KYRR979yyrRby2AqAfIcB
+         WrK6vF1rwPXRfhl3rrtv65p61pgh6rlGEoF3bSNFCNZ9kDc5GL7UYT+H43loYpGSL/SD
+         bErQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=8A6dFj/olqjzntK5SF4gWAdXc4JaARk74HOxiHs357c=;
-        b=sKUcmzwErvCoG37G/wHdekct61fGqAVd2C0QwKumhLjAG3zXJicLjnOxj1GsVXcZj+
-         uJodd0W9YEq3wcrDzUY5i/JIXc4jhCYAkZqMmai409K0t8IYybgCFK8zf1iJ5s88dxcx
-         p4RMPkh8tVFfa2q00u9dJlCptVUu/s/aPC2RP5+14ZYDEORR2U+2cqP8PBCiHjjNwveO
-         0KnnoAN5AP4Ss+MBOv0IkcCgtEZO9ZN0q5dez/WKmiAJIvU7wMif35JmP95YxwDm817k
-         /t9mi+1pP7av+Q7SOp6s6uNKZTt2xUfhzA55i0ADzkcxPq7DE/FZDG5vMJ5GAGEC+0ep
-         OaMg==
-X-Gm-Message-State: AOAM533XYX3NYYNktlWIMFnQcaZJqcqggre6/7ha5OBTqA0A2AaQTuUe
-	dG+77pt6AHcPsM1H/qHX0KZ/Iw==
-X-Google-Smtp-Source: ABdhPJwKfh/CvOQTOG/JDV15f9e2O19bjj7sJQXG5uX4663VSlv6C083W6YUUTfR18dGzlbtSd8xTg==
-X-Received: by 2002:a5d:414d:: with SMTP id c13mr284150wrq.78.1597877998560;
-        Wed, 19 Aug 2020 15:59:58 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from d.d.0.9.8.0.3.8.5.d.6.d.5.a.5.4.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (d.d.0.9.8.0.3.8.5.d.6.d.5.a.5.4.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:45a5:d6d5:8308:90dd])
-        by smtp.gmail.com with ESMTPSA id q19sm521819wrf.48.2020.08.19.15.59.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Aug 2020 15:59:58 -0700 (PDT)
-Message-ID: <c05381ddd372bc0e82e6b24ce45df4ae2df90e1a.camel@linuxfoundation.org>
-Subject: Re: [docs] [sphinx] updates as of Aug 5th.
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, 
-	docs@lists.yoctoproject.org
-Date: Wed, 19 Aug 2020 23:59:55 +0100
-In-Reply-To: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
-References: 
-	<CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=8jXEmRKZVjOEsk2/5Df+y5Dq0BCHkg2xUVa7bLp7Roo=;
+        b=FJO6BxBu59bCwLQW2T/0eJAWRLjnASIsHQwGHIlENhpVgW8ipseMzWPTVOsfVCXP8z
+         80Lu/P52Sj11CwPrLBi4oRbWtkfvQDwBRO2wwNmWB6APbuE+QlIVvTfdsXyyNNg64jME
+         NR+OOfZTb6ZViZvqQqT2vaBkwCxqsdw0Yw5VzKB6ekuoUij6SGl3QTN5zhXukNDh3ZxS
+         6V6HxZKjihBPNsaHC6ssbw3DGtnU7jNgzRONjMjNGXuI1fAoLQRFvb6W9BsjVni0KzwF
+         h0JM4RtHKXZhwULJro013rQ78zyv2B0LqT4+RoaSf7o5PXC1u3OaNG6tHEbGzGhQut0i
+         cTOw==
+X-Gm-Message-State: AOAM530CWorxUbg7E21whfxTE1K4W439hIPXMK/Raj+iVHFE9OTVTcVe
+	FAWZ4OiPC6D2s2rmd2JdXcG+Ixs9b/DgGJLfGfVMtg==
+X-Google-Smtp-Source: ABdhPJywFDO9gLAT0qFYNqTJ3avWa3XlE8UvOeYRZ+KKMlF2seHrNMqfwz2c6ZfYJIt6kjZP9DH40qLLxi1MMCFO2bQ=
+X-Received: by 2002:a5b:904:: with SMTP id a4mr8426938ybq.397.1598283422075;
+ Mon, 24 Aug 2020 08:37:02 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
+ <6cb6f3a9-e4c0-960d-0069-09eecc344625@gmail.com>
+In-Reply-To: <6cb6f3a9-e4c0-960d-0069-09eecc344625@gmail.com>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Mon, 24 Aug 2020 17:36:51 +0200
+Message-ID: <CAP71WjxnVfjaoKRx4-tfko5gcZFG4ACSdW2znjZwHii9rxZT4w@mail.gmail.com>
+Subject: Re: [docs] [sphinx] updates as of Aug 5th.
+To: robert.berger.yocto.user@gmail.com
+Cc: docs@lists.yoctoproject.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
 
-Hi Nico/All,
+hi Robert,
 
-Thanks for putting that list together, its really useful.
+thanks for your time!
 
-On Wed, 2020-08-05 at 23:54 +0200, Nicolas Dechesne wrote:
-> I will be away from the Interweb the next two weeks. So I wanted to
-> share some updates about how the YP docs migration to Sphinx is
-> doing.
+On Tue, Aug 11, 2020 at 6:07 PM Robert Berger@yocto.user
+<robert.berger.yocto.user@gmail.com> wrote:
 >
-> [...]
-> 
-> Richard is trying to add support to easily switch between YP version
-> within the doc (e.g. like the Python doc), and we will host the 'old'
-> documentation as well. e.g. when choosing the 'thud' version, we want
-> to show a static page (not a Sphinx doc) that points to the thud html
-> doc.
+> Hi,
+>
+> My comments are in-line
+>
+> On 06/08/2020 00:54, Nicolas Dechesne wrote:
+> > hi there,
+> >
+> > I will be away from the Interweb the next two weeks. So I wanted to
+> > share some updates about how the YP docs migration to Sphinx is doing.
+> > [it is a fairly long email].
+> >
+> > To be honest, I wouldn't mind a little bit of help, and I will give
+> > some hints about how you can help!
+> >
+> > We are still working on publishing the current Sphinx docs on
+> > yoctoproject.org, in the meantime, it's here for YP and Bitbake
+> > documentation.
+> >
+> > https://people.linaro.org/~nicolas.dechesne/yp-docs/html/index.html
+> > https://people.linaro.org/~nicolas.dechesne/bitbake-docs/html/
+> >
+> > All changes are pushed to the 'sphinx' branch in yocto-docs and in
+> > bitbake trees.
+>
+> As long as chapters/sub chapters and variables are have some kind of
+> stable links this should work for me.
 
-I hope you're having some good away time! I'm sending this while I have
-the context in my head ready for when you get back. Its taken me a lot
-more work than I thought but I think I have something ready to share in
-this area now. I've published some sample output at:
+Chapters/sections links will be stable. There is one difference
+between how it's done with docbook files since the links were "hand
+crafted", with Sphinx, they are generated from the 'section' name, but
+they won't change unless we change the section name. e.g.:
 
-https://www.rpsys.net/yocto-docs/
+https://people.linaro.org/~nicolas.dechesne/yp-docs/html/overview-manual/overview-manual-concepts.html#shared-state
 
-Basically this combines the existing docbooks docs into a structure
-with the new sphinx generated manual such that you can select and
-nagivate around and see the different versions/options.
+I am planning to rename the individual files to avoid the duplication
+in the url (e.g. overview-manual/overview-manual-concepts.rst should
+be overview-manual/concepts.rst).
 
-I'd ultimately like to replace what we have at 
-https://www.yoctoproject.org/docs/ with this. I appreciate there are
-four links there we still need to add into the new docs page:
+>
+> To give you some context:
+>
+> I my training I have many links from my slides to the good old doc.
+> e.g.
+>
+> in my latex magic I have something like:
+> {\tt \href{\MegaManualVarSearch LAYERSERIES\_COMPAT}{LAYERSERIES\_COMPAT
+> (MM)}}
+>
+> which ends up into a link pointing to a downloaded version of the good
+> old Mega manual:
+>
+> file:///xxx/mega-manual/mega-manual.html#var-LAYERSERIES_COMPAT
+>
+> It looks like I could do the same with your stuff:
+>
+> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/ref-manual/ref-variables.html#term-LAYERSERIES_COMPAT
 
-https://www.yoctoproject.org/docs/what-i-wish-id-known/ 
-https://www.yoctoproject.org/docs/transitioning-to-a-custom-environment 
-https://www.yoctoproject.org/software-overview/ 
-https://wiki.yoctoproject.org/wiki/TipsAndTricks
+yes, that's correct.
 
-but other than that I think its much more navigable and usable for
-users. Features/changes include:
+>
+> and I hope there will be a Mega Manual which contains them all ;)
 
-* Clearly showing which version you've viewing (yes, css needs work)
-* Drop down selection of recent versions
-* Drop down selection of the format you want 
-  (individual web pages or all in one mega manual)
-* Older documents with newer point releases show a warning in red at 
-  the top
-* Obsolete releases show a warning in red at the top
-* All the releases are listed on the main page for search engine 
-  visibility which should improve their indexing and avoid some of the 
-  version issues we've had (I've gone back to sumo at present) and 
-  make it clear to users how 'behind' a given version is
+Here again there is a nice feature with Sphinx. We can generate a
+global 'index' table that is automatically generated with all 'terms'
+from all the glossaries, see:
+https://people.linaro.org/~nicolas.dechesne/yp-docs/html/genindex.html
 
-I know the sphinx transition isn't complete so the "dev" manual version
-has all the issues still needing to be resolved with the transition.
-The CSS also needs a little more work to help with the colours/layout.
+e.g. there can be more than 1 glossary. Currently we have 2:
+* the variable glossary from the reference manual:
+https://people.linaro.org/~nicolas.dechesne/yp-docs/html/_sources/ref-manual/ref-variables.rst.txt
+* the terms glossary:
+https://people.linaro.org/~nicolas.dechesne/yp-docs/html/_sources/ref-manual/ref-terms.rst.txt
 
-I'm interested to hear what people think of this...
+We can also add any term from any place within the whole documentation
+set.  I like that a lot.
 
-Code is in the yocto-docs repo on the sphinx-rp branch. "make -f
-Makefile.sphinx" will generate the docs I've shared and the generated
-output in _build/final is designed to overlay the existing docbook docs
-and all fit together correctly.
-
-Cheers,
-
-Richard
-
-
-
+>
+> Regards,
+>
+> Robert
+>
+> >
+> > 
+> >
+>
