@@ -1,163 +1,85 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web11.26463.1598555142661143458
+Received: from mail-io1-f68.google.com (mail-io1-f68.google.com [209.85.166.68])
+ by mx.groups.io with SMTP id smtpd.web11.58257.1598894463459544459
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Aug 2020 12:05:43 -0700
+ Mon, 31 Aug 2020 10:21:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=uDXaZQtW;
- spf=pass (domain: gmail.com, ip: 209.85.221.41, mailfrom: robert.berger.yocto.user@gmail.com)
-Received: by mail-wr1-f41.google.com with SMTP id r15so6347878wrp.13
-        for <docs@lists.yoctoproject.org>; Thu, 27 Aug 2020 12:05:42 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=I4/W1O0F;
+ spf=pass (domain: gmail.com, ip: 209.85.166.68, mailfrom: jpewhacker@gmail.com)
+Received: by mail-io1-f68.google.com with SMTP id j2so6819587ioj.7
+        for <docs@lists.yoctoproject.org>; Mon, 31 Aug 2020 10:21:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=I7tyRMJcX7Jx9/Q/ze2NKLZDvA9fxzRo/AXrhRteYyk=;
-        b=uDXaZQtWKO44eEfB38xGwlvBm4GU7LGWfJn5XPRe2n+swxyOfbXtlJVvpi/o4CSID7
-         eVDNDrbeXDR3l6MsxsuL+A+8v4R/qnEg5D87RbxfOWIt9hV171p78KtnHS5OVbty1kMm
-         OrR8UNYYUyb5SiMxjeGEj8BKOL0KHRgQZp2zv2OlEmlq3iCfyz24Z/f6fBIuWU323zeb
-         vgGfbVnazBNRTpWkG4Lst0XP636CsSGhaJudOwTvj4NUlL6fkNiWMbesLhD2rHx+gQhL
-         55pNF9kq6XPCZUUZJ+VLA9xV41ymJtlzXUgW0ftSAKfouv56MOjF24OVnskUViCjRtPy
-         rpNg==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=isuE8sju8J1Y2wxRa3oYhc5kyKqnCljeTx6fVllmBEo=;
+        b=I4/W1O0FG1uJG3Z0tBShNZU6+xWae/GP8djqYVU47jZAYzYULYLWyHZFDl7+ZhhG9X
+         B+QpC+gIfNGbBPMzMvFH9wngVwMfm+gJKMh7rweQ149vv52/VokrEuG9I/l4eM5wwvn7
+         EEzMWsOBJDnNmlZphf6dtOMJEeiqXvS/4BO73HX6FDSetCDKdscbMLfDePyxpMHFrUsR
+         Q4Hn+hwwJMaN2Obg/67Xb+/QdOrZoFIypbn+VOYn8nKK/mJMzdMCC4bxFOypCvi4ZffL
+         7k40qKBvRccGgTWMMzPXUjgM8MKMKLt0Xa6g1g5nXc12M2PowsxZoSn8pRlg5hGu54qR
+         swqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=I7tyRMJcX7Jx9/Q/ze2NKLZDvA9fxzRo/AXrhRteYyk=;
-        b=d4zX3kiQe2aBv4lN9vJpQhF8rNKzFrISh4JC/UoLUH4TMs06fAMAgN0RzQHSAOrslh
-         xsuEsXHOSj6iW/JMQzEJjW66onzvftjptExkkPC4RxT3xgrP1RB/VX46YK8DujetMgMY
-         rWeNTDlS7qfZ6npQHlEVSsXMgPbUkUcUOdq0AbsrnuzmmJT/ObKlruWNt3Te2uAkmwqX
-         JEAIQ3hSNL73kDefBM3uletHCFkIPKeZ15KyDukyfBb6M5FpFoR0bd0Mfi7xlPADenfE
-         9Kea+RyiYrJ3LiNXv1Huba0sXSFBM98jvytkLyhCVEFxHAeVR4L6nL2v6aNxocZzLHW0
-         GKHA==
-X-Gm-Message-State: AOAM531CYU2gDJUWWeQb0B4aHMVbnjlgJzWsxMRE0BJJQPNxTY5YimyG
-	xXloOJL92/RRDsEYGD5C/kkMTlsI8RI=
-X-Google-Smtp-Source: ABdhPJwMMuDhrt4UJfd3Kv4I9Lh0OqyTq9zcRgZrl5K2jH0eGpK65kwamX83bEVgQI6FWpztaY/kRg==
-X-Received: by 2002:adf:ea0b:: with SMTP id q11mr19387570wrm.285.1598555140712;
-        Thu, 27 Aug 2020 12:05:40 -0700 (PDT)
-Return-Path: <robert.berger.yocto.user@gmail.com>
-Received: from [192.168.42.52] (ppp-2-86-237-227.home.otenet.gr. [2.86.237.227])
-        by smtp.gmail.com with ESMTPSA id f10sm6115278wmj.37.2020.08.27.12.05.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 27 Aug 2020 12:05:40 -0700 (PDT)
-Subject: Re: [docs] [sphinx] updates as of Aug 5th.
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Cc: docs@lists.yoctoproject.org
-References: <CAP71Wjy23FvmvO9joR5epF2t0O5h_fJkG7KDEDaZDddkjN8xUw@mail.gmail.com>
- <6cb6f3a9-e4c0-960d-0069-09eecc344625@gmail.com>
- <CAP71WjxnVfjaoKRx4-tfko5gcZFG4ACSdW2znjZwHii9rxZT4w@mail.gmail.com>
-From: "Robert Berger" <robert.berger.yocto.user@gmail.com>
-Message-ID: <3cdc3f06-6413-55ee-fd2b-2abf1349abc0@gmail.com>
-Date: Thu, 27 Aug 2020 22:05:37 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        bh=isuE8sju8J1Y2wxRa3oYhc5kyKqnCljeTx6fVllmBEo=;
+        b=dVgXAYLytKQNiWdVdeyG9HztEX8unx4zbiHDMbSa3cpPaoj8fdD/oumL7RUTzRrx7W
+         Zw9K15ksfjcR+fJcvfkZi3TJ3X1PUXN+G1QwE5GWAtMgv3J9YdGIG8hRX9FpdVFDuyMD
+         IaD0tmp667OD9GRdvi90DPqbybLNXHYF8IKgXKN1BbpWDi3hMpfkRymqYPQmnZy3Jje+
+         MlnT6mlziY/3yI0sjfIbXJDJfL/y0lQaB+9UASYMCmANjszXwMZ45YzR/7QB2LT0/Whk
+         8kKF160VteR3/CW0xk4VIBcmkBZNMAQIvjiVSv4xqpCqwktdYrUAhkleqyp5Wi+ElJvb
+         e8YA==
+X-Gm-Message-State: AOAM530lFgFhWq7Syj7IZt9Ed0Cz6GC/EGjT4wsMGL/arVIGKTLpl7wm
+	ESIM4G9FqQ9brOpg+kBK5Rlbg6wDffc=
+X-Google-Smtp-Source: ABdhPJzFu7ISJGQxPZBXjZfI/3Ryl30hUK3m7AqaNWV7XVI59ep2cKYBDsg5wlv03V/Ze0i5E/+Wqg==
+X-Received: by 2002:a6b:7c0d:: with SMTP id m13mr1565792iok.57.1598894462538;
+        Mon, 31 Aug 2020 10:21:02 -0700 (PDT)
+Return-Path: <jpewhacker@gmail.com>
+Received: from localhost.localdomain ([2605:a601:ac3d:c100:7282:816:6ef9:8e8c])
+        by smtp.gmail.com with ESMTPSA id h18sm4103122iow.16.2020.08.31.10.21.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2020 10:21:01 -0700 (PDT)
+From: "Joshua Watt" <JPEWhacker@gmail.com>
+X-Google-Original-From: Joshua Watt <JPEWhacker@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Joshua Watt <Joshua.Watt@garmin.com>
+Subject: [docs][PATCH] dev-manual: Clarify that virtual providers do not apply to runtime dependencies
+Date: Mon, 31 Aug 2020 12:20:57 -0500
+Message-Id: <20200831172057.34682-1-JPEWhacker@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <CAP71WjxnVfjaoKRx4-tfko5gcZFG4ACSdW2znjZwHii9rxZT4w@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Nic,
+From: Joshua Watt <Joshua.Watt@garmin.com>
 
-As far as I can see this looks good.
-As soon as the official mega manual and bitbake manual are replaced by 
-Sphinx I'll give it a spin.
+Clarifies that virtual providers are only used for build time
+dependencies specified with PROVIDES and DEPENDS, and do not apply to
+runtime dependencies specified with RPROVIDES and RDEPENDS.
 
-Regards,
+Signed-off-by: Joshua Watt <Joshua.Watt@garmin.com>
+---
+ documentation/dev-manual/dev-manual-common-tasks.xml | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Robert
-
-On 24/08/2020 18:36, Nicolas Dechesne wrote:
-> hi Robert,
-> 
-> thanks for your time!
-> 
-> On Tue, Aug 11, 2020 at 6:07 PM Robert Berger@yocto.user
-> <robert.berger.yocto.user@gmail.com> wrote:
->>
->> Hi,
->>
->> My comments are in-line
->>
->> On 06/08/2020 00:54, Nicolas Dechesne wrote:
->>> hi there,
->>>
->>> I will be away from the Interweb the next two weeks. So I wanted to
->>> share some updates about how the YP docs migration to Sphinx is doing.
->>> [it is a fairly long email].
->>>
->>> To be honest, I wouldn't mind a little bit of help, and I will give
->>> some hints about how you can help!
->>>
->>> We are still working on publishing the current Sphinx docs on
->>> yoctoproject.org, in the meantime, it's here for YP and Bitbake
->>> documentation.
->>>
->>> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/index.html
->>> https://people.linaro.org/~nicolas.dechesne/bitbake-docs/html/
->>>
->>> All changes are pushed to the 'sphinx' branch in yocto-docs and in
->>> bitbake trees.
->>
->> As long as chapters/sub chapters and variables are have some kind of
->> stable links this should work for me.
-> 
-> Chapters/sections links will be stable. There is one difference
-> between how it's done with docbook files since the links were "hand
-> crafted", with Sphinx, they are generated from the 'section' name, but
-> they won't change unless we change the section name. e.g.:
-> 
-> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/overview-manual/overview-manual-concepts.html#shared-state
-> 
-> I am planning to rename the individual files to avoid the duplication
-> in the url (e.g. overview-manual/overview-manual-concepts.rst should
-> be overview-manual/concepts.rst).
-> 
->>
->> To give you some context:
->>
->> I my training I have many links from my slides to the good old doc.
->> e.g.
->>
->> in my latex magic I have something like:
->> {\tt \href{\MegaManualVarSearch LAYERSERIES\_COMPAT}{LAYERSERIES\_COMPAT
->> (MM)}}
->>
->> which ends up into a link pointing to a downloaded version of the good
->> old Mega manual:
->>
->> file:///xxx/mega-manual/mega-manual.html#var-LAYERSERIES_COMPAT
->>
->> It looks like I could do the same with your stuff:
->>
->> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/ref-manual/ref-variables.html#term-LAYERSERIES_COMPAT
-> 
-> yes, that's correct.
-> 
->>
->> and I hope there will be a Mega Manual which contains them all ;)
-> 
-> Here again there is a nice feature with Sphinx. We can generate a
-> global 'index' table that is automatically generated with all 'terms'
-> from all the glossaries, see:
-> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/genindex.html
-> 
-> e.g. there can be more than 1 glossary. Currently we have 2:
-> * the variable glossary from the reference manual:
-> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/_sources/ref-manual/ref-variables.rst.txt
-> * the terms glossary:
-> https://people.linaro.org/~nicolas.dechesne/yp-docs/html/_sources/ref-manual/ref-terms.rst.txt
-> 
-> We can also add any term from any place within the whole documentation
-> set.  I like that a lot.
-> 
->>
->> Regards,
->>
->> Robert
->>
->>>
->>> 
->>>
->>
+diff --git a/documentation/dev-manual/dev-manual-common-tasks.xml b/documentation/dev-manual/dev-manual-common-tasks.xml
+index 1f24c7343..479ca4f20 100644
+--- a/documentation/dev-manual/dev-manual-common-tasks.xml
++++ b/documentation/dev-manual/dev-manual-common-tasks.xml
+@@ -3214,6 +3214,14 @@
+                         </para></listitem>
+                 </itemizedlist>
+             </para>
++            <note>
++                Virtual providers only apply to build time dependencies with
++                <ulink url='&YOCTO_DOCS_REF_URL;#var-PROVIDES'><filename>PROVIDES</filename></ulink>
++                and <ulink url='&YOCTO_DOCS_REF_URL;#var-DEPENDS'><filename>DEPENDS</filename></ulink>.
++                They do not apply to runtime dependencies specified with
++                <ulink url='&YOCTO_DOCS_REF_URL;#var-RPROVIDES'><filename>RPROVIDES</filename></ulink> and
++                <ulink url='&YOCTO_DOCS_REF_URL;#var-RDEPENDS'><filename>RDEPENDS</filename></ulink>.
++            </note>
+         </section>
+ 
+         <section id='properly-versioning-pre-release-recipes'>
+-- 
+2.28.0
 
