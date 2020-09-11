@@ -1,328 +1,267 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
- by mx.groups.io with SMTP id smtpd.web11.2177.1599804153217227552
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+ by mx.groups.io with SMTP id smtpd.web11.3489.1599811489590831145
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Sep 2020 23:02:33 -0700
+ Fri, 11 Sep 2020 01:04:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=n2Jxbd3I;
- spf=pass (domain: linaro.org, ip: 209.85.219.175, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f175.google.com with SMTP id r7so5658627ybl.6
-        for <docs@lists.yoctoproject.org>; Thu, 10 Sep 2020 23:02:33 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=PloT8ivP;
+ spf=pass (domain: linaro.org, ip: 209.85.219.174, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f174.google.com with SMTP id e11so2728078ybk.1
+        for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2020 01:04:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=0DFTt45Sy4FqJUoyBxE8wn+dPp1ysA1S+vJ8BR7OOY0=;
-        b=n2Jxbd3IvcB9gddYq00UCD8lvMKqNKXtWp2Flt2nbqEWPBp6qpRNVezGjttE5LJmLp
-         fSCztUhuzl8oIDDB6e9BdB/3OkU2cbSndtXnP/EdttKD+iSThsILALnZrSEOEyQwM61w
-         w7gxFy2qvYo3aNekbQDPMXZhlG5YGaQlAZqkqi+MOv+dzE2gpnGagysuSxL7rdj9BI/R
-         qYiYtklSqzm88BH3GEf4QmlVSC2QQdEtT2I8sAT+kvx4uWlvfn4WpRb/U87p8eLELjlG
-         YMz0EjP2vQhhLLL6GUXY/SxeMXCQjyjmgNed6tgiu1X/wSzLxQ9fepAKlFowRDOvSAYF
-         uNgw==
+        bh=FyjHldDVg8qakkSFUqkFZa/m8cOlMxv0wX0jRMfTKoQ=;
+        b=PloT8ivPIaCWkbB+UfBWDkoxpeA2eCfMO1hHE8H7PuKWC4PfPGMCh/nHvgOsQnAlQL
+         b3CSxafxhr+gvWF/PseKMrsIYTuMDlKP8+Iw+iAljAjDFCQAP/7KSL3barjgKXFoHw7u
+         NF/JS25JGCH6EYWcoR8zwgD46hYK4iS7828K8Mnz36ulsxUyGhm+4NDorA57lbegLRuv
+         AwORqKAMdSrunAYPJDk9IvRtB47yc2GkSfwOQppAoaZsHRLSDBetTnthULKqfBqC7mhD
+         xkR2XC2y6x5b1XRmj/yBHSEZCzbI3yCF9zcbHeYKBjPWKcpBLiHWCk5RXU/QTZRwgpsB
+         5rqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=0DFTt45Sy4FqJUoyBxE8wn+dPp1ysA1S+vJ8BR7OOY0=;
-        b=Kc+0BTe3fi1JYluDbpWhaifmmc7AfONBvAQiyqgRjU4ka6JjL5uVepWtnzHq5TcFLX
-         T0nfRn05WeNMgSeL3fqs9TPHDmopaftcF/l71+LVWeu4+rjKKUp9MUnVTB7eL9S3Hmv2
-         upyOSNMGUiDvDi3ZynkUU2M/xn6u4aYtfiA39ofDByuoSVjeS+C0lEJqnYkaTkcaXaDd
-         WybhI6Wj4jN7j67H/a5IZhEXewQQZ2OQl4N09rJndDlIMd8X7qYK+7dbBycNtR4VOmgY
-         VeVdpTtmrRkf1txC+LsiXWIUIV7cRajCcOOA17obIj3wPHr3Q2fa7/snCnEJ9xFuhjeB
-         Isxw==
-X-Gm-Message-State: AOAM533qWxuzAZ8M5LtxKH+T8ZRzioKsqtGHKXbiFch24h/eDmFWKHNu
-	a1M8ThBJYWby7YLOw6ksm6O5J2CSXx6GzKGiDV4VDA==
-X-Google-Smtp-Source: ABdhPJwLan77EosLSxorKOP2654e27bUW/IKUa1ZH03i+J26Md3y6jYOhp1L2H5SgCCxglAdABdfwqN0a+EMzmlms8c=
-X-Received: by 2002:a25:d348:: with SMTP id e69mr310836ybf.273.1599804152018;
- Thu, 10 Sep 2020 23:02:32 -0700 (PDT)
+        bh=FyjHldDVg8qakkSFUqkFZa/m8cOlMxv0wX0jRMfTKoQ=;
+        b=OcWMNRkglstqdD8HQ1VlxtYoDMSMr/1mjQ3KOWW7Spx3Wg76kDPbOL1v1jCguFElK8
+         wegSy3IzI9HRbRV1xdyeggA7SH34FkuYdzzrYgG7uk8ZVeQfnOvoidvT+MGyoApOJGpN
+         6HNmTD6YVBIQbLeuBZ31JHlkGoHGd3priwBGYNuJm36s1pbtqp4lnmZAX1fykhsHTUvZ
+         eaD2GDvVkX+sJgrh2UOtInJpk8N8/XWZddLyPh/2BKERrqXTJHozR7jJPPnVbfaPYnDP
+         t4PmVpit93/JHqkd/H/A8FjNq5x0jasPOZMOD2PM4nbEMetN2Kx8CJTIXE9DyVwzerjv
+         SY1A==
+X-Gm-Message-State: AOAM533QfzGx56Emo9X9t5QjgK033IyRWuOnThxWiO4MxhbmhEUGG917
+	qaR5c12qyl0SbYxxQQ2N1WlIwCR3uZYfzZnEqt7wWw==
+X-Google-Smtp-Source: ABdhPJwN0jsW73HrH9UjrR1r3p/7bmQwRi56O99oBYyZzJHhIFby/dDS5o0+Y4qkDmerfFH2SZBxQNj7wCrsWukXPCw=
+X-Received: by 2002:a05:6902:4cf:: with SMTP id v15mr800457ybs.373.1599811488740;
+ Fri, 11 Sep 2020 01:04:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAP71WjyPj_FZP6+c3k4WMUZ7UZYzG_NGoVq=1y1R1VApHxot6A@mail.gmail.com>
- <574a4968-f543-ed18-954a-842acf50851d@gmail.com>
-In-Reply-To: <574a4968-f543-ed18-954a-842acf50851d@gmail.com>
+References: <20200615142412.30882-1-akuster808@gmail.com> <20200615142412.30882-2-akuster808@gmail.com>
+In-Reply-To: <20200615142412.30882-2-akuster808@gmail.com>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Fri, 11 Sep 2020 08:02:20 +0200
-Message-ID: <CAP71Wjyehi0VywUEtZMNmXOs7KZN2mYT2+vZ5Zhmyb+YqHNAYw@mail.gmail.com>
-Subject: Re: [docs] [sphinx] updates as of Sep 10th.
-To: akuster808 <akuster808@gmail.com>
+Date: Fri, 11 Sep 2020 10:04:38 +0200
+Message-ID: <CAP71WjxLR9=7AoCdLUb4u=_YM6cvZN43eJPoPXLjGjt=A9d9fw@mail.gmail.com>
+Subject: Re: [docs] [PATCH 2/8] bsp-guide: Add SPDX license headers
+To: akuster <akuster808@gmail.com>
 Cc: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="00000000000031123d05af036e1d"
+Content-Type: multipart/alternative; boundary="0000000000007e8cbc05af052383"
 
---00000000000031123d05af036e1d
+--0000000000007e8cbc05af052383
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 11, 2020 at 1:39 AM akuster808 <akuster808@gmail.com> wrote:
+hi Armin, RP,
 
+On Mon, Jun 15, 2020 at 4:24 PM akuster <akuster808@gmail.com> wrote:
+
+> [Yocto #13873]
 >
+> Signed-off-by: Armin Kuster <akuster808@gmail.com>
+> ---
+>  documentation/bsp-guide/bsp-guide-customization.xsl | 2 ++
+>  documentation/bsp-guide/bsp-guide.xml               | 1 +
+>  documentation/bsp-guide/bsp-style.css               | 2 ++
+>  documentation/bsp-guide/bsp.xml                     | 1 +
+>  4 files changed, 6 insertions(+)
 >
-> On 9/10/20 3:03 PM, Nicolas Dechesne wrote:
-> > hi there,
-> >
-> > some more updates on our Sphinx migration task. It turned out to be a
-> > rather huge task.. "Never ask engineers to make estimates" applies
-> > quite well here ;)
-> >
-> > I think we are getting close to where we wanted to be. As you should
-> > know by now, we are planning to switch for 3.2, and the sphinx
-> > migration is kind of blocking M3 right now. Richard and I have spent
-> > quite a bit of time on the docs lately to make the final push.
-> >
-> > Any help in this last mile would be much appreciated.. The 'last mile'
-> > is to review each doc and finalize what's left which was not converted
-> > properly by pandoc, nor by any of the regexp find/replace we've done..
-> > Unfortunately this last step is manual and time consuming.
-> >
-> > We are planning to merge the sphinx branch in yocto-docs and bitbake
-> > repo any time now. We haven't removed the docbook files yet, we will
-> > do the removal once we claim to be done.
-> >
-> > In terms of publishing the docs, our plan is to have a brand new YP
-> > docs 'website'. On that website, we will publish docs for each
-> > release/branch, and it will be easy to navigate between versions.
-> >
-> > We have also created 'transition' pages in Sphinx for docs from all YP
-> > releases from 0.9 to 3.1.x. For each release, we have a 'static' page
-> > with links to the DocBook HTML manuals. So that the YP docs website
-> > will be the *only* place to look for our docs moving forward.
-> >
-> > In each of the 2 sphinx branches, we've done the following:
-> > 1. add makefile / sphinx boilerplate
-> > 2. used pandoc to convert all .xml into .rst. it's a gross
-> > conversion.. far from perfect...
-> > 3. added a bunch of commits to fix up what's left from the conversion
-> > (images, links, ..)
-> > 4. Finally we are doing a manual review of each file and fixing the
-> > last things. At this point, what's the most painful is that the
-> > 'code-block' sections are not converted automatically.
-> >
-> > If anybody has any cycle now, we need to finish #4. The current status
-> > is that:
-> > * brief-yoctoprojectqs/* is done.
-> > * bitbake user manual is half done, and I am doing it
-> > * bsp-guide/*: i started it, and will finish
-> > * ref-manual/*: RP is on it.
-> > * there are plenty of warnings when we build, i would like to get rid
-> > of them all!
->
->
-> >
-> > Anything else is work that remains to be done. Before starting
-> > anything, please send a quick email here to let everyone know, to
-> > avoid duplication. If you have any improvement, please share your
-> > patches, I will take them into the sphinx/master branch. And I will
-> > continue to work on the remaining files that no one would pick.
-> >
-> > And since a picture is worth a thousand words...
-> >
-> > The new doc website is here:
-> > https://docs.yoctoproject.org/
-> >
-> > If you want to help, please review the "WIP" patches on
-> > https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=sphinx
-> > And pick one of the manuals which are left! It is not straightforward
-> > to get started, I have to warn you.. don't hesitate to ask me
-> > questions by email or on irc (ndec) if you need any help.
-> Are we leaving the Mega manual for last or are we dropping it?
+> diff --git a/documentation/bsp-guide/bsp-guide-customization.xsl
+> b/documentation/bsp-guide/bsp-guide-customization.xsl
+> index de674a0ae..37fcbcd20 100644
+> --- a/documentation/bsp-guide/bsp-guide-customization.xsl
+> +++ b/documentation/bsp-guide/bsp-guide-customization.xsl
+> @@ -1,4 +1,6 @@
+>  <?xml version='1.0'?>
+> +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
 >
 
-No, it's there. Sphinx can produce both "html" files, e.g. a 'website' with
-all pages and the navigation bar, but it also has a target called
-'singlehtml' which produces a single html page with all the doc. we are
-publishing it as well (see the mega manual link in the left bar, or the
-drop down selector on the top  you can choose between the regular site or
-the mega manual). The mega manuel is:
-https://docs.yoctoproject.org/singleindex.html
+While doing the sphinx conversion, I noticed that the bsp-guide is using a
+slightly different license than the other manuals (e.g. the non commercial
+flavor). There was a commit in 2015 to 'fix' the license statement, but it
+was just a partial change, since the link to the license wasn't changed:
 
-I am thinking about perhaps renaming it..
+https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit/?id=bb1d80c121e9e34090a07feac9d510b2304f058e
 
-There are a few short coming with the Sphinx singlehtml target, the main
-one being that Sphinx removes table of content in the singlehtml output.
-You can move from manual to manual using the left navigation bar, but there
-is no TOC in the HTML.. It's a known issue.. i am hoping we can fix that
-later, but I think it's out of scope for 3.2.. At least the use case of
-"grepping" through the mega manual is still supported.
+When the bsp guide was initially imported in 2010, it was using the NC
+flavor:
+https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit/?id=d630317b6b297ba6567cc2e3914706dda0690245
 
-I believe the new docs website will bring new ways of using the doc as
-well. For example a general index is automatically generated/managed with
-glossary terms, and over time we can include more terms in the index:
-https://docs.yoctoproject.org/genindex.html
+I don't know why the change was done in 2015. But I wanted to flag this as
+a potential 'issue'.
+
+While I am here.. I also wanted to mention that I couldn't find
+CC-BY-2.0-UK SPDX tag in the SPDX licenses list.. only CC-BY-2.0 exists
+(without the -UK tag).
 
 
 
+> +
+>  <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns="
+> http://www.w3.org/1999/xhtml" xmlns:fo="http://www.w3.org/1999/XSL/Format"
+> version="1.0">
 >
-> I will take the "overview-manual" if its not taken.
+>    <xsl:import href="
+> http://downloads.yoctoproject.org/mirror/docbook-mirror/docbook-xsl-1.76.1/xhtml/docbook.xsl"
+> />
+> diff --git a/documentation/bsp-guide/bsp-guide.xml
+> b/documentation/bsp-guide/bsp-guide.xml
+> index a189606ce..93ba1e7fe 100755
+> --- a/documentation/bsp-guide/bsp-guide.xml
+> +++ b/documentation/bsp-guide/bsp-guide.xml
+> @@ -1,6 +1,7 @@
+>  <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+>  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+>  [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
+> +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
+>
+>  <book id='bsp-guide' lang='en'
+>        xmlns:xi="http://www.w3.org/2003/XInclude"
+> diff --git a/documentation/bsp-guide/bsp-style.css
+> b/documentation/bsp-guide/bsp-style.css
+> index 0c8689b96..4ccf5d8ae 100644
+> --- a/documentation/bsp-guide/bsp-style.css
+> +++ b/documentation/bsp-guide/bsp-style.css
+> @@ -1,4 +1,6 @@
+>  /*
+> +   SPDX-License-Identifier: CC-BY-2.0-UK
+> +
+>     Generic XHTML / DocBook XHTML CSS Stylesheet.
+>
+>     Browser wrangling and typographic design by
+> diff --git a/documentation/bsp-guide/bsp.xml
+> b/documentation/bsp-guide/bsp.xml
+> index 96c0455f6..72a077e80 100644
+> --- a/documentation/bsp-guide/bsp.xml
+> +++ b/documentation/bsp-guide/bsp.xml
+> @@ -1,6 +1,7 @@
+>  <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+>  "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd"
+>  [<!ENTITY % poky SYSTEM "../poky.ent"> %poky; ] >
+> +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
+>
+>  <chapter id='bsp'>
+>
+> --
+> 2.17.1
+>
+> 
 >
 
-thank you!
-
-
->
-> - armin
->
-> >
-> > And as a reminder, instructions to build can be found here:
-> > https://wiki.yoctoproject.org/wiki/Documentation_Sphinx
-> >
-> > cheers
-> > nico
-> >
-> >
-> >
-> > 
->
->
->
-
---00000000000031123d05af036e1d
+--0000000000007e8cbc05af052383
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Fri, Sep 11, 2020 at 1:39 AM akust=
-er808 &lt;<a href=3D"mailto:akuster808@gmail.com">akuster808@gmail.com</a>&=
-gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
+<div dir=3D"ltr"><div dir=3D"ltr">hi Armin, RP,</div><br><div class=3D"gmai=
+l_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jun 15, 2020 at 4:24=
+ PM akuster &lt;<a href=3D"mailto:akuster808@gmail.com">akuster808@gmail.co=
+m</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin=
+:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"=
+>[Yocto #13873]<br>
 <br>
-On 9/10/20 3:03 PM, Nicolas Dechesne wrote:<br>
-&gt; hi there,<br>
-&gt;<br>
-&gt; some more updates on our Sphinx migration task. It turned out to be a=
-<br>
-&gt; rather huge task.. &quot;Never ask engineers to make estimates&quot; =
-applies<br>
-&gt; quite well here ;)<br>
-&gt;<br>
-&gt; I think we are getting close to where we wanted to be. As you should<=
-br>
-&gt; know by now, we are planning to switch for 3.2, and the sphinx<br>
-&gt; migration is kind of blocking M3 right now. Richard and I have spent<=
-br>
-&gt; quite a bit of time on the docs lately to make the final push.<br>
-&gt;<br>
-&gt; Any help in this last mile would be much appreciated.. The &#39;last =
-mile&#39;<br>
-&gt; is to review each doc and finalize what&#39;s left which was not conv=
-erted<br>
-&gt; properly by pandoc, nor by any of the=C2=A0regexp find/replace we&#39=
-;ve done..<br>
-&gt; Unfortunately this last step is manual and time consuming.<br>
-&gt;<br>
-&gt; We are planning to merge the sphinx branch in yocto-docs and bitbake<=
-br>
-&gt; repo any time now. We haven&#39;t removed the docbook files yet, we w=
-ill<br>
-&gt; do the removal once we claim to be done.<br>
-&gt;<br>
-&gt; In terms of publishing the docs, our plan is to have a brand new YP<b=
-r>
-&gt; docs &#39;website&#39;. On that website, we will publish docs for eac=
-h<br>
-&gt; release/branch, and it will be easy to navigate between versions.=C2=
-=A0<br>
-&gt;<br>
-&gt; We have also created &#39;transition&#39; pages in Sphinx for docs fr=
-om all YP<br>
-&gt; releases from 0.9 to 3.1.x. For each release, we have a &#39;static&#=
-39; page<br>
-&gt; with links to the DocBook HTML manuals. So that the YP docs website<b=
-r>
-&gt; will be the *only* place to look for our docs moving forward.<br>
-&gt;<br>
-&gt; In each of the 2 sphinx branches, we&#39;ve done the following:<br>
-&gt; 1. add makefile / sphinx boilerplate<br>
-&gt; 2. used pandoc to convert all .xml into .rst. it&#39;s a gross<br>
-&gt; conversion.. far from perfect...<br>
-&gt; 3. added a bunch of commits to fix up what&#39;s left from the conver=
-sion<br>
-&gt; (images, links, ..)<br>
-&gt; 4. Finally we are doing a manual review of each file and fixing the<b=
-r>
-&gt; last things. At this point, what&#39;s the most painful is that the<b=
-r>
-&gt; &#39;code-block&#39; sections are not converted automatically.<br>
-&gt;<br>
-&gt; If anybody has any cycle now, we need to finish #4. The current statu=
-s<br>
-&gt; is that:<br>
-&gt; *=C2=A0brief-yoctoprojectqs/* is done.<br>
-&gt; * bitbake user manual is half done, and I am doing it<br>
-&gt; * bsp-guide/*: i started it, and will finish<br>
-&gt; * ref-manual/*: RP is on it.<br>
-&gt; * there are=C2=A0plenty of warnings when we build, i would like to ge=
-t rid<br>
-&gt; of them all!<br>
-<br>
-<br>
-&gt;<br>
-&gt; Anything else is work that remains to be done. Before starting<br>
-&gt; anything, please send a quick email here to let everyone know, to<br>
-&gt; avoid duplication. If you have any improvement, please share your<br>
-&gt; patches, I will take them into the sphinx/master branch. And I will<b=
-r>
-&gt; continue to work on the remaining files that no one=C2=A0would pick.<=
-br>
-&gt;<br>
-&gt; And since a picture is worth a thousand words...<br>
-&gt;<br>
-&gt; The new doc website is here:<br>
-&gt; <a href=3D"https://docs.yoctoproject.org/" rel=3D"noreferrer" target=
-=3D"_blank">https://docs.yoctoproject.org/</a><br>
-&gt;<br>
-&gt; If you want to help, please review the &quot;WIP&quot; patches on=C2=
-=A0<br>
-&gt; <a href=3D"https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/=
-?h=3Dsphinx" rel=3D"noreferrer" target=3D"_blank">https://git.yoctoproject.=
-org/cgit/cgit.cgi/yocto-docs/log/?h=3Dsphinx</a><br>
-&gt; And pick one of the manuals which are left! It is not straightforward=
-<br>
-&gt; to get started, I have to warn you.. don&#39;t hesitate to ask me<br>
-&gt; questions by email or on irc (ndec) if you need any help.<br>
-Are we leaving the Mega manual for last or are we dropping it?<br></blockq=
-uote><div><br></div><div>No, it&#39;s there. Sphinx can produce both &quot;=
-html&quot; files, e.g. a &#39;website&#39; with all pages and the navigatio=
-n bar, but it also has a target called &#39;singlehtml&#39; which produces =
-a single html page with all the doc. we are publishing it as well (see the =
-mega manual link in the left bar, or the drop down selector on the top=C2=
-=A0 you can choose between the regular site or the mega manual). The mega =
-manuel is:</div><div><a href=3D"https://docs.yoctoproject.org/singleindex.h=
-tml">https://docs.yoctoproject.org/singleindex.html</a><br></div><div><br><=
-/div><div>I am thinking about perhaps renaming it..=C2=A0</div><div><br></d=
-iv><div>There are a few short coming with the Sphinx singlehtml target, the=
- main one being that Sphinx removes table of content in the singlehtml outp=
-ut. You can move from manual to manual using the left navigation bar, but t=
-here is no TOC in the HTML.. It&#39;s a known issue.. i am hoping we can fi=
-x that later, but I think it&#39;s out of scope for 3.2.. At least the use =
-case of &quot;grepping&quot; through the mega manual is still supported.=C2=
+Signed-off-by: Armin Kuster &lt;<a href=3D"mailto:akuster808@gmail.com" ta=
+rget=3D"_blank">akuster808@gmail.com</a>&gt;<br>
+---<br>
+=C2=A0documentation/bsp-guide/bsp-guide-customization.xsl | 2 ++<br>
+=C2=A0documentation/bsp-guide/bsp-guide.xml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
 =
-=A0</div><div><br></div><div>I believe the new docs website will bring new=
- ways of using the doc as well. For example a general index is automaticall=
-y generated/managed with glossary terms, and over time we can include more =
-terms in the index:=C2=A0</div><div><a href=3D"https://docs.yoctoproject.or=
-g/genindex.html">https://docs.yoctoproject.org/genindex.html</a></div><div>=
+=A0 =C2=A0 =C2=A0 =C2=A0| 1 +<br>
+=C2=A0documentation/bsp-guide/bsp-style.css=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
 =
-=C2=A0<br></div><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">
+=A0 =C2=A0 =C2=A0 =C2=A0| 2 ++<br>
+=C2=A0documentation/bsp-guide/bsp.xml=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 1 +<br>
+=C2=A04 files changed, 6 insertions(+)<br>
 <br>
-I will take the &quot;overview-manual&quot; if its not taken.<br></blockqu=
-ote><div><br></div><div>thank you!</div><div>=C2=A0</div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
-gb(204,204,204);padding-left:1ex">
+diff --git a/documentation/bsp-guide/bsp-guide-customization.xsl b/documen=
+tation/bsp-guide/bsp-guide-customization.xsl<br>
+index de674a0ae..37fcbcd20 100644<br>
+--- a/documentation/bsp-guide/bsp-guide-customization.xsl<br>
++++ b/documentation/bsp-guide/bsp-guide-customization.xsl<br>
+@@ -1,4 +1,6 @@<br>
+=C2=A0&lt;?xml version=3D&#39;1.0&#39;?&gt;<br>
++&lt;!--SPDX-License-Identifier: CC-BY-2.0-UK--&gt;<br></blockquote><div><=
+br></div><div>While doing the sphinx conversion, I noticed that the bsp-gui=
+de is using a slightly different license than the other manuals (e.g. the n=
+on commercial flavor). There was a commit in 2015 to &#39;fix&#39; the lice=
+nse statement, but it was just a partial change, since the link to the lice=
+nse wasn&#39;t changed:</div><div><br></div><div><a href=3D"https://git.yoc=
+toproject.org/cgit/cgit.cgi/yocto-docs/commit/?id=3Dbb1d80c121e9e34090a07fe=
+ac9d510b2304f058e">https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/co=
+mmit/?id=3Dbb1d80c121e9e34090a07feac9d510b2304f058e</a></div><div><br></div=
+><div>When the bsp guide was initially imported in 2010, it was using the N=
+C flavor:</div><div><a href=3D"https://git.yoctoproject.org/cgit/cgit.cgi/y=
+octo-docs/commit/?id=3Dd630317b6b297ba6567cc2e3914706dda0690245">https://gi=
+t.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit/?id=3Dd630317b6b297ba656=
+7cc2e3914706dda0690245</a><br></div><div><br></div><div>I don&#39;t know wh=
+y the change was done in 2015. But I wanted to flag this as a potential &#3=
+9;issue&#39;.</div><div><br></div><div>While I am here.. I also wanted to m=
+ention that I couldn&#39;t find CC-BY-2.0-UK SPDX tag in the SPDX licenses =
+list.. only CC-BY-2.0 exists (without the -UK tag).</div><div><br></div><di=
+v>=C2=A0=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
++<br>
+=C2=A0&lt;xsl:stylesheet xmlns:xsl=3D&quot;<a href=3D"http://www.w3.org/19=
+99/XSL/Transform" rel=3D"noreferrer" target=3D"_blank">http://www.w3.org/19=
+99/XSL/Transform</a>&quot; xmlns=3D&quot;<a href=3D"http://www.w3.org/1999/=
+xhtml" rel=3D"noreferrer" target=3D"_blank">http://www.w3.org/1999/xhtml</a=
+>&quot; xmlns:fo=3D&quot;<a href=3D"http://www.w3.org/1999/XSL/Format" rel=
+=3D"noreferrer" target=3D"_blank">http://www.w3.org/1999/XSL/Format</a>&qu=
+ot; version=3D&quot;1.0&quot;&gt;<br>
 <br>
-- armin<br>
+=C2=A0 =C2=A0&lt;xsl:import href=3D&quot;<a href=3D"http://downloads.yocto=
+project.org/mirror/docbook-mirror/docbook-xsl-1.76.1/xhtml/docbook.xsl" rel=
+=
+=3D"noreferrer" target=3D"_blank">http://downloads.yoctoproject.org/mirror=
+/docbook-mirror/docbook-xsl-1.76.1/xhtml/docbook.xsl</a>&quot; /&gt;<br>
+diff --git a/documentation/bsp-guide/bsp-guide.xml b/documentation/bsp-gui=
+de/bsp-guide.xml<br>
+index a189606ce..93ba1e7fe 100755<br>
+--- a/documentation/bsp-guide/bsp-guide.xml<br>
++++ b/documentation/bsp-guide/bsp-guide.xml<br>
+@@ -1,6 +1,7 @@<br>
+=C2=A0&lt;!DOCTYPE book PUBLIC &quot;-//OASIS//DTD DocBook XML V4.2//EN&qu=
+ot;<br>
+=C2=A0&quot;<a href=3D"http://www.oasis-open.org/docbook/xml/4.2/docbookx.=
+dtd" rel=3D"noreferrer" target=3D"_blank">http://www.oasis-open.org/docbook=
+/xml/4.2/docbookx.dtd</a>&quot;<br>
+=C2=A0[&lt;!ENTITY % poky SYSTEM &quot;../poky.ent&quot;&gt; %poky; ] &gt;=
 <br>
-&gt;<br>
-&gt; And as a reminder, instructions to build can be found here:<br>
-&gt; <a href=3D"https://wiki.yoctoproject.org/wiki/Documentation_Sphinx" r=
-el=3D"noreferrer" target=3D"_blank">https://wiki.yoctoproject.org/wiki/Docu=
-mentation_Sphinx</a><br>
-&gt;<br>
-&gt; cheers<br>
-&gt; nico<br>
-&gt;<br>
-&gt; =C2=A0<br>
-&gt;<br>
-&gt; <br>
++&lt;!--SPDX-License-Identifier: CC-BY-2.0-UK--&gt;<br>
+<br>
+=C2=A0&lt;book id=3D&#39;bsp-guide&#39; lang=3D&#39;en&#39;<br>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0xmlns:xi=3D&quot;<a href=3D"http://www.w3.org/2=
+003/XInclude" rel=3D"noreferrer" target=3D"_blank">http://www.w3.org/2003/X=
+Include</a>&quot;<br>
+diff --git a/documentation/bsp-guide/bsp-style.css b/documentation/bsp-gui=
+de/bsp-style.css<br>
+index 0c8689b96..4ccf5d8ae 100644<br>
+--- a/documentation/bsp-guide/bsp-style.css<br>
++++ b/documentation/bsp-guide/bsp-style.css<br>
+@@ -1,4 +1,6 @@<br>
+=C2=A0/*<br>
++=C2=A0 =C2=A0SPDX-License-Identifier: CC-BY-2.0-UK<br>
++<br>
+=C2=A0 =C2=A0 Generic XHTML / DocBook XHTML CSS Stylesheet.<br>
+<br>
+=C2=A0 =C2=A0 Browser wrangling and typographic design by<br>
+diff --git a/documentation/bsp-guide/bsp.xml b/documentation/bsp-guide/bsp=
+.xml<br>
+index 96c0455f6..72a077e80 100644<br>
+--- a/documentation/bsp-guide/bsp.xml<br>
++++ b/documentation/bsp-guide/bsp.xml<br>
+@@ -1,6 +1,7 @@<br>
+=C2=A0&lt;!DOCTYPE chapter PUBLIC &quot;-//OASIS//DTD DocBook XML V4.2//EN=
+&quot;<br>
+=C2=A0&quot;<a href=3D"http://www.oasis-open.org/docbook/xml/4.2/docbookx.=
+dtd" rel=3D"noreferrer" target=3D"_blank">http://www.oasis-open.org/docbook=
+/xml/4.2/docbookx.dtd</a>&quot;<br>
+=C2=A0[&lt;!ENTITY % poky SYSTEM &quot;../poky.ent&quot;&gt; %poky; ] &gt;=
+<br>
++&lt;!--SPDX-License-Identifier: CC-BY-2.0-UK--&gt;<br>
+<br>
+=C2=A0&lt;chapter id=3D&#39;bsp&#39;&gt;<br>
+<br>
+-- <br>
+2.17.1<br>
 <br>
 <br>
 </blockquote></div></div>
 
---00000000000031123d05af036e1d--
+--0000000000007e8cbc05af052383--
