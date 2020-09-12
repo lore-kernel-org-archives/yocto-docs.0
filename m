@@ -1,111 +1,103 @@
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
- by mx.groups.io with SMTP id smtpd.web12.3615.1599812107753155054
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+ by mx.groups.io with SMTP id smtpd.web12.25679.1599943849502463126
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Sep 2020 01:15:08 -0700
+ Sat, 12 Sep 2020 13:50:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Y8XW1AAN;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.67, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f67.google.com with SMTP id b79so3880875wmb.4
-        for <docs@lists.yoctoproject.org>; Fri, 11 Sep 2020 01:15:07 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=ZcbICJcT;
+ spf=pass (domain: gmail.com, ip: 209.85.216.43, mailfrom: akuster808@gmail.com)
+Received: by mail-pj1-f43.google.com with SMTP id jw11so3355602pjb.0
+        for <docs@lists.yoctoproject.org>; Sat, 12 Sep 2020 13:50:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=x8qsgd46i3E+Q3OAyW84jz80RFhvOawmu4j58kIstFU=;
-        b=Y8XW1AANPwz2RgWSuI/GIRqdcsmdz3A2pRzYg+Lm6c/lb09fqdFfN6i1942LKtT4PH
-         iIw3gVMIBoRFun03MDNPaRuG0sK9eQC03QeRPUlMmia6xhAeY+n2vM0PzXTEY9n8cvXV
-         qmFLfXvQ4ysFmNnToJo4Y6ZikdR2ocau+/ZVg=
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id;
+        bh=jRxM/95RMlhWYNNKl/5/FhVnDdVSkWtjt00tz9orkzM=;
+        b=ZcbICJcTxuinGQlRvQJKvTQ6ZoHOtKzCxDUsS5hxSig2YsVt6e+bP0bIVaVzjXbgQq
+         wbOOzIIaWZvsj6IZjlvCuigP11AFkjnxz/nfvVI6xZ6u55XiunvgP2KPvhe/qfScIWB0
+         qhRRMHbirzPWA4Rq9sJiib9Bca1XdqbF/wN0bdaPTejozncI1RvQmrQyMpuG3UCMWs/p
+         ylTiQa6uXW98M0//d9Xc0Z6Lf+b/M/MO6OhJbqOw4yTHGEExZPtuKijFbbdD7LiIlYFY
+         Q96Oobxn3mN7AZByDgqFZjzAUYPBqpjitd8QtC1QUyAR9B0JIYmh1dwOYoYkF8htP6K5
+         AHdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=x8qsgd46i3E+Q3OAyW84jz80RFhvOawmu4j58kIstFU=;
-        b=ZnbHojHzIjomDw1q2VP5oOuA8OGaLSI0gZXS5msc63fDXLi4YuKWSW/xqVIHqeJyyF
-         zi+YO1vQhGL7KyN5dOGUyXMfvRQbGlqg6lB0Qob1RPw0vUj69pDpEBP5IREpU8T/W05n
-         sxJJNTx03yJ4RpcGv6BLMHMb7Hnn60VqWY3soZfAxYPhJjJ9JsMwB0JON/EYbN0+KLhe
-         GT7FPoH978/yches2YrAmhC+j/yF92d1Z/+1ZhdHG71+ckUnLJHRSyj2dfLAv/l5zt/N
-         S8sf2yjSVphaqlc6hVfFiU4xhwbsfZ8TDv3rVSds6DjtS3D/cOSZNGuzocZb7S0xQ4eW
-         YrCg==
-X-Gm-Message-State: AOAM530yMOKSwJBnVOOqtL9faNbwYr0oClY5c0cXl7Mci04Xa49bOzHL
-	d7l4Ab4OMNyZUTNS1/tT477+jw==
-X-Google-Smtp-Source: ABdhPJxV8D7JXmIITQdaIRz5egzydcLeeQqvafFvPmx5fA9QbfItJPyTDP339DHDn59xalG/M2EBDQ==
-X-Received: by 2002:a1c:99c7:: with SMTP id b190mr962187wme.44.1599812106028;
-        Fri, 11 Sep 2020 01:15:06 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from 8.4.6.b.e.8.e.4.6.7.0.3.a.2.d.2.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (8.4.6.b.e.8.e.4.6.7.0.3.a.2.d.2.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:2d2a:3076:4e8e:b648])
-        by smtp.gmail.com with ESMTPSA id q18sm2930883wre.78.2020.09.11.01.15.05
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=jRxM/95RMlhWYNNKl/5/FhVnDdVSkWtjt00tz9orkzM=;
+        b=CO043GvfxCe2PELDTHd2L/K/EnDufC3GdqpUSsV72T5oHXNN6fqPR6iX1CkTbyLWDu
+         4fbgxQGoIYZXaADLesmz/lADfaxFVqrrX9rzZak5ExKQspjPlxe0yB0oOclaMmWUgUAq
+         a6IyMMVpqbZejjA0r1Pk1VhWTTgJEm8w8ftLsFDyOUJwhlyAN2L2LU8YBIaNsEGq6SD/
+         qMTdEufquAv+UPh/HTBzhwmDsX7T/bf6H/kaVcxJ6WmPFKs/gM02goHq0DQ8k6KFYE16
+         vfU/ghqH6AJ7mv4jAJSHiLFDwI64Rk6E5Q2sxsw9CEtYGzmF1VLT227nN9PSlrNUQYQn
+         vKDQ==
+X-Gm-Message-State: AOAM531JH6Jyv+L1Ub1iXIUAN4Fys/30yTZ7av7m7nWqX0DU+DRc9kGY
+	zX5na1To0rLcPulMU3zk/CFVfptmjj0=
+X-Google-Smtp-Source: ABdhPJxx2emOTCL+mKsc1kl/V0lUrZeN8xqvhaLbp9qA3suzAyaEw7hzYQ/G71CGPHd9K1GQQB37VA==
+X-Received: by 2002:a17:902:ff12:: with SMTP id f18mr7506645plj.118.1599943848611;
+        Sat, 12 Sep 2020 13:50:48 -0700 (PDT)
+Return-Path: <akuster808@gmail.com>
+Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:e1aa:69c3:1411:f726])
+        by smtp.gmail.com with ESMTPSA id t15sm6080330pfl.175.2020.09.12.13.50.47
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 11 Sep 2020 01:15:05 -0700 (PDT)
-Message-ID: <640f30438224b7c95aef68cdf7f5c111753b8d89.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 2/8] bsp-guide: Add SPDX license headers
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, akuster
-	 <akuster808@gmail.com>
-Cc: docs@lists.yoctoproject.org
-Date: Fri, 11 Sep 2020 09:15:03 +0100
-In-Reply-To: <CAP71WjxLR9=7AoCdLUb4u=_YM6cvZN43eJPoPXLjGjt=A9d9fw@mail.gmail.com>
-References: <20200615142412.30882-1-akuster808@gmail.com>
-	 <20200615142412.30882-2-akuster808@gmail.com>
-	 <CAP71WjxLR9=7AoCdLUb4u=_YM6cvZN43eJPoPXLjGjt=A9d9fw@mail.gmail.com>
-User-Agent: Evolution 3.36.4-0ubuntu1 
-MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+        Sat, 12 Sep 2020 13:50:48 -0700 (PDT)
+From: "akuster" <akuster808@gmail.com>
+To: docs@lists.yoctoproject.org
+Subject: [sphinx][PATCH] overview-manual: Clean up warnings for sphinx
+Date: Sat, 12 Sep 2020 13:50:47 -0700
+Message-Id: <20200912205047.21516-1-akuster808@gmail.com>
+X-Mailer: git-send-email 2.17.1
 
-On Fri, 2020-09-11 at 10:04 +0200, Nicolas Dechesne wrote:
-> hi Armin, RP,
-> 
-> On Mon, Jun 15, 2020 at 4:24 PM akuster <akuster808@gmail.com> wrote:
-> > [Yocto #13873]
-> > 
-> > Signed-off-by: Armin Kuster <akuster808@gmail.com>
-> > ---
-> >  documentation/bsp-guide/bsp-guide-customization.xsl | 2 ++
-> >  documentation/bsp-guide/bsp-guide.xml               | 1 +
-> >  documentation/bsp-guide/bsp-style.css               | 2 ++
-> >  documentation/bsp-guide/bsp.xml                     | 1 +
-> >  4 files changed, 6 insertions(+)
-> > 
-> > diff --git a/documentation/bsp-guide/bsp-guide-customization.xsl
-> > b/documentation/bsp-guide/bsp-guide-customization.xsl
-> > index de674a0ae..37fcbcd20 100644
-> > --- a/documentation/bsp-guide/bsp-guide-customization.xsl
-> > +++ b/documentation/bsp-guide/bsp-guide-customization.xsl
-> > @@ -1,4 +1,6 @@
-> >  <?xml version='1.0'?>
-> > +<!--SPDX-License-Identifier: CC-BY-2.0-UK-->
-> 
-> While doing the sphinx conversion, I noticed that the bsp-guide is
-> using a slightly different license than the other manuals (e.g. the
-> non commercial flavor). There was a commit in 2015 to 'fix' the
-> license statement, but it was just a partial change, since the link
-> to the license wasn't changed:
-> 
-> https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit/?id=bb1d80c121e9e34090a07feac9d510b2304f058e
-> 
-> When the bsp guide was initially imported in 2010, it was using the
-> NC flavor:
-> https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit/?id=d630317b6b297ba6567cc2e3914706dda0690245
-> 
-> I don't know why the change was done in 2015. But I wanted to flag
-> this as a potential 'issue'.
+Signed-off-by: Armin Kuster <akuster808@gmail.com>
+---
+ .../overview-manual/overview-manual-concepts.rst    | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-I think we take the commit as a sign it was a mistake and was attempted
-to be fixed but didn't quite work out. The docs should be under the
-same license so I think we write up a commit, referencing these and
-stating that we're cleaning it up to match original intent. We're
-fortunate in that the bulk of the work is from Scott so the intent is
-clear.
-
-> While I am here.. I also wanted to mention that I couldn't find CC-
-> BY-2.0-UK SPDX tag in the SPDX licenses list.. only CC-BY-2.0 exists
-> (without the -UK tag).
-
-Right, it used to have geo specific license pages which is what this
-refers to. The license is the same I think we can just drop the UK part
-and have proper SPDX tags.
-
-Cheers,
-
-Richard
+diff --git a/documentation/overview-manual/overview-manual-concepts.rst b/documentation/overview-manual/overview-manual-concepts.rst
+index 7f8f735b3..c7a34f649 100644
+--- a/documentation/overview-manual/overview-manual-concepts.rst
++++ b/documentation/overview-manual/overview-manual-concepts.rst
+@@ -251,7 +251,7 @@ if versions do not already exist in the Build Directory at the time you
+ source the build environment setup script.
+ 
+ Because the Poky repository is fundamentally an aggregation of existing
+-repositories, some users might be familiar with running the ```` script
++repositories, some users might be familiar with running the "script"
+ in the context of separate
+ :term:`OpenEmbedded-Core (OE-Core)` and BitBake
+ repositories rather than a single Poky repository. This discussion
+@@ -382,10 +382,10 @@ In general, three types of layer input exists. You can see them below
+ the "User Configuration" box in the `general workflow
+ figure <#general-workflow-figure>`__:
+ 
+--  *Metadata (``.bb`` + Patches):* Software layers containing
++-  *Metadata (".bb" + Patches):* Software layers containing
+    user-supplied recipe files, patches, and append files. A good example
+    of a software layer might be the
+-   ```meta-qt5`https://github.com/meta-qt5/meta-qt5 layer from
++   `meta-qt5`https://github.com/meta-qt5/meta-qt5 layer from
+    the `OpenEmbedded Layer
+    Index <http://layers.openembedded.org/layerindex/branch/master/layers/>`__.
+    This layer is for version 5.0 of the popular
+@@ -704,8 +704,7 @@ architecture are placed in ``build/tmp/deploy/ipk/qemux86``.
+ 
+ .. _bitbake-dev-environment:
+ 
+-BitBake
+--------
++=, BitBake
+ 
+ The OpenEmbedded build system uses
+ :term:`BitBake` to produce images and
+@@ -1143,9 +1142,9 @@ the extensible SDK (eSDK):
+ 
+ Like image generation, the SDK script process consists of several stages
+ and depends on many variables. The
+-:ref:`ref-tasks-populate_sdk`
++`ref-tasks-populate_sdk`
+ and
+-:ref:`ref-tasks-populate_sdk_ext`
++`ref-tasks-populate_sdk_ext`
+ tasks use these key variables to help create the list of packages to
+ actually install. For information on the variables listed in the figure,
+ see the "`Application Development SDK <#sdk-dev-environment>`__"
+-- 
+2.17.1
 
