@@ -1,103 +1,78 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
- by mx.groups.io with SMTP id smtpd.web12.25679.1599943849502463126
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+ by mx.groups.io with SMTP id smtpd.web10.40462.1600011765562333976
  for <docs@lists.yoctoproject.org>;
- Sat, 12 Sep 2020 13:50:49 -0700
+ Sun, 13 Sep 2020 08:42:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=ZcbICJcT;
- spf=pass (domain: gmail.com, ip: 209.85.216.43, mailfrom: akuster808@gmail.com)
-Received: by mail-pj1-f43.google.com with SMTP id jw11so3355602pjb.0
-        for <docs@lists.yoctoproject.org>; Sat, 12 Sep 2020 13:50:49 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ZsnbNdmU;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.46, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f46.google.com with SMTP id w5so16029993wrp.8
+        for <docs@lists.yoctoproject.org>; Sun, 13 Sep 2020 08:42:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id;
-        bh=jRxM/95RMlhWYNNKl/5/FhVnDdVSkWtjt00tz9orkzM=;
-        b=ZcbICJcTxuinGQlRvQJKvTQ6ZoHOtKzCxDUsS5hxSig2YsVt6e+bP0bIVaVzjXbgQq
-         wbOOzIIaWZvsj6IZjlvCuigP11AFkjnxz/nfvVI6xZ6u55XiunvgP2KPvhe/qfScIWB0
-         qhRRMHbirzPWA4Rq9sJiib9Bca1XdqbF/wN0bdaPTejozncI1RvQmrQyMpuG3UCMWs/p
-         ylTiQa6uXW98M0//d9Xc0Z6Lf+b/M/MO6OhJbqOw4yTHGEExZPtuKijFbbdD7LiIlYFY
-         Q96Oobxn3mN7AZByDgqFZjzAUYPBqpjitd8QtC1QUyAR9B0JIYmh1dwOYoYkF8htP6K5
-         AHdw==
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=MH2DiTt+zv3hypM2VYVd+OCxwRid5/AeGXpBVcPz6Vw=;
+        b=ZsnbNdmUiTwiDjixa3OQh6YX0v9AKkoZDArck/YtgWb/iNMHu6WcCSYcgallMvwBOH
+         AKyEqnEfZENrxiKfanOlwthhjhK9cIXHh0o8z2TaMXzkA4bMMH8+rgB8GSNSNOCpLyxb
+         Ql30Zk2Ay958F0Zxa8iKHRL+YystrFhMmC4ks=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id;
-        bh=jRxM/95RMlhWYNNKl/5/FhVnDdVSkWtjt00tz9orkzM=;
-        b=CO043GvfxCe2PELDTHd2L/K/EnDufC3GdqpUSsV72T5oHXNN6fqPR6iX1CkTbyLWDu
-         4fbgxQGoIYZXaADLesmz/lADfaxFVqrrX9rzZak5ExKQspjPlxe0yB0oOclaMmWUgUAq
-         a6IyMMVpqbZejjA0r1Pk1VhWTTgJEm8w8ftLsFDyOUJwhlyAN2L2LU8YBIaNsEGq6SD/
-         qMTdEufquAv+UPh/HTBzhwmDsX7T/bf6H/kaVcxJ6WmPFKs/gM02goHq0DQ8k6KFYE16
-         vfU/ghqH6AJ7mv4jAJSHiLFDwI64Rk6E5Q2sxsw9CEtYGzmF1VLT227nN9PSlrNUQYQn
-         vKDQ==
-X-Gm-Message-State: AOAM531JH6Jyv+L1Ub1iXIUAN4Fys/30yTZ7av7m7nWqX0DU+DRc9kGY
-	zX5na1To0rLcPulMU3zk/CFVfptmjj0=
-X-Google-Smtp-Source: ABdhPJxx2emOTCL+mKsc1kl/V0lUrZeN8xqvhaLbp9qA3suzAyaEw7hzYQ/G71CGPHd9K1GQQB37VA==
-X-Received: by 2002:a17:902:ff12:: with SMTP id f18mr7506645plj.118.1599943848611;
-        Sat, 12 Sep 2020 13:50:48 -0700 (PDT)
-Return-Path: <akuster808@gmail.com>
-Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:e1aa:69c3:1411:f726])
-        by smtp.gmail.com with ESMTPSA id t15sm6080330pfl.175.2020.09.12.13.50.47
-        for <docs@lists.yoctoproject.org>
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=MH2DiTt+zv3hypM2VYVd+OCxwRid5/AeGXpBVcPz6Vw=;
+        b=UqZ2ABM7YVyLxOi75NY0xyhSKpYnEfMgXSMgSXEIVqjs1KUnC6s4iGvH93T/qM5glO
+         vtCWhYmv+MHBzFxnshZqvzvBNzu07rp8be+ZzZRe1eW+mUD0U26QbIzcJdIwE9Ww+qz7
+         iDVXygOVS1F5aMXZUxmdVzMk8TPZbc8p2lhuhcAyJoRwQVG12oKGbEWTFunmufVYny6G
+         BYgZZ8f62S5veM1gl+QyptXIdQlzyE9X3HNPqhZ1NwxV/ixnncCrtMuQVfIg+JMI0vu/
+         h2aePFFBYhchsgvpVqEfeUAyzRjfLYc2ANHgz6FKrYSVzBIJwYFUvBnFiS17Vt/qf9FT
+         ovnA==
+X-Gm-Message-State: AOAM532VzwnGHDX6hGn7FvQ/rhb2t/W56v7Z28C5JxlWX535jpVWXwjp
+	2QUJUhE8P1ID6gxuKTdR0tyuiw==
+X-Google-Smtp-Source: ABdhPJwM6gRll1ZgJATyhpQEipRvXTrRT+YZC41Qg6ItcLtBaae1eS4JTEQbiFwWx8pHZxQlOKKbsw==
+X-Received: by 2002:adf:9125:: with SMTP id j34mr12690287wrj.157.1600011763808;
+        Sun, 13 Sep 2020 08:42:43 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from c.2.c.8.d.e.a.4.b.8.e.6.4.d.1.8.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (c.2.c.8.d.e.a.4.b.8.e.6.4.d.1.8.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:81d4:6e8b:4aed:8c2c])
+        by smtp.gmail.com with ESMTPSA id b84sm16137779wmd.0.2020.09.13.08.42.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 12 Sep 2020 13:50:48 -0700 (PDT)
-From: "akuster" <akuster808@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [sphinx][PATCH] overview-manual: Clean up warnings for sphinx
-Date: Sat, 12 Sep 2020 13:50:47 -0700
-Message-Id: <20200912205047.21516-1-akuster808@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        Sun, 13 Sep 2020 08:42:43 -0700 (PDT)
+Message-ID: <e903c0503d97918d38d90a86e1aff2bc47f46baf.camel@linuxfoundation.org>
+Subject: Re: [docs] [sphinx] updates as of Sep 10th.
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, 
+	docs@lists.yoctoproject.org
+Date: Sun, 13 Sep 2020 16:42:41 +0100
+In-Reply-To: <CAP71WjyPj_FZP6+c3k4WMUZ7UZYzG_NGoVq=1y1R1VApHxot6A@mail.gmail.com>
+References: 
+	<CAP71WjyPj_FZP6+c3k4WMUZ7UZYzG_NGoVq=1y1R1VApHxot6A@mail.gmail.com>
+User-Agent: Evolution 3.36.4-0ubuntu1 
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Armin Kuster <akuster808@gmail.com>
----
- .../overview-manual/overview-manual-concepts.rst    | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+On Fri, 2020-09-11 at 00:03 +0200, Nicolas Dechesne wrote:
+> If anybody has any cycle now, we need to finish #4. The current
+> status is that:
+> * brief-yoctoprojectqs/* is done.
+> * bitbake user manual is half done, and I am doing it
+> * bsp-guide/*: i started it, and will finish
+> * ref-manual/*: RP is on it.
 
-diff --git a/documentation/overview-manual/overview-manual-concepts.rst b/documentation/overview-manual/overview-manual-concepts.rst
-index 7f8f735b3..c7a34f649 100644
---- a/documentation/overview-manual/overview-manual-concepts.rst
-+++ b/documentation/overview-manual/overview-manual-concepts.rst
-@@ -251,7 +251,7 @@ if versions do not already exist in the Build Directory at the time you
- source the build environment setup script.
- 
- Because the Poky repository is fundamentally an aggregation of existing
--repositories, some users might be familiar with running the ```` script
-+repositories, some users might be familiar with running the "script"
- in the context of separate
- :term:`OpenEmbedded-Core (OE-Core)` and BitBake
- repositories rather than a single Poky repository. This discussion
-@@ -382,10 +382,10 @@ In general, three types of layer input exists. You can see them below
- the "User Configuration" box in the `general workflow
- figure <#general-workflow-figure>`__:
- 
---  *Metadata (``.bb`` + Patches):* Software layers containing
-+-  *Metadata (".bb" + Patches):* Software layers containing
-    user-supplied recipe files, patches, and append files. A good example
-    of a software layer might be the
--   ```meta-qt5`https://github.com/meta-qt5/meta-qt5 layer from
-+   `meta-qt5`https://github.com/meta-qt5/meta-qt5 layer from
-    the `OpenEmbedded Layer
-    Index <http://layers.openembedded.org/layerindex/branch/master/layers/>`__.
-    This layer is for version 5.0 of the popular
-@@ -704,8 +704,7 @@ architecture are placed in ``build/tmp/deploy/ipk/qemux86``.
- 
- .. _bitbake-dev-environment:
- 
--BitBake
---------
-+=, BitBake
- 
- The OpenEmbedded build system uses
- :term:`BitBake` to produce images and
-@@ -1143,9 +1142,9 @@ the extensible SDK (eSDK):
- 
- Like image generation, the SDK script process consists of several stages
- and depends on many variables. The
--:ref:`ref-tasks-populate_sdk`
-+`ref-tasks-populate_sdk`
- and
--:ref:`ref-tasks-populate_sdk_ext`
-+`ref-tasks-populate_sdk_ext`
- tasks use these key variables to help create the list of packages to
- actually install. For information on the variables listed in the figure,
- see the "`Application Development SDK <#sdk-dev-environment>`__"
--- 
-2.17.1
+This is done, at least as a first pass with hopefully the bulk of
+issues fixed.
+
+> * there are plenty of warnings when we build, i would like to get rid
+> of them all!
+> 
+> Anything else is work that remains to be done. Before starting
+> anything, please send a quick email here to let everyone know, to
+> avoid duplication. If you have any improvement, please share your
+> patches, I will take them into the sphinx/master branch. And I will
+> continue to work on the remaining files that no one would pick.
+
+I'll take dev-manual/* next.
+
+Cheers,
+
+Richard
 
