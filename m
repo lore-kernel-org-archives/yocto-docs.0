@@ -1,340 +1,201 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
- by mx.groups.io with SMTP id smtpd.web10.14302.1600179078959431354
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+ by mx.groups.io with SMTP id smtpd.web10.13.1600184689739448972
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Sep 2020 07:11:19 -0700
+ Tue, 15 Sep 2020 08:44:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=lnnOPySV;
- spf=softfail (domain: sakoman.com, ip: 209.85.216.45, mailfrom: steve@sakoman.com)
-Received: by mail-pj1-f45.google.com with SMTP id o16so1837029pjr.2
-        for <docs@lists.yoctoproject.org>; Tue, 15 Sep 2020 07:11:18 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=IH0RWPMf;
+ spf=pass (domain: gmail.com, ip: 209.85.166.47, mailfrom: ticotimo@gmail.com)
+Received: by mail-io1-f47.google.com with SMTP id d190so4600186iof.3
+        for <docs@lists.yoctoproject.org>; Tue, 15 Sep 2020 08:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:date:message-id:in-reply-to:references;
-        bh=ANEzij/Chh5L3TMkQxkDKzxRum1Eo4iQas8qa2Tk60E=;
-        b=lnnOPySVUHEqFjBYb8Dp317Jc5YwzZfLPyTmtx4tgZw+9lHYH4lQlFvCjohe4IHJ/h
-         BbwnxCtR/tbPxDtASmYnGXJUQeeLmJ6U197pQkOb6rGwbVffsqdnheLQprNptfQPoa5G
-         A7AGcaGvb/3cKWE17B8WzMMXq2TK49W1EPc2fIygHQlGUjoxd4CyRD5leKMpog52b57f
-         6/T5d8vtu1ojrSwkNaEnNVR1G1tJclAPEBmtxm+bL8h/kg8wHTsmgeQnHHekIsI2u6sh
-         0enJ8aCXAIAHMjWJtVYuBjziqeg3vjFKKe+wJm9F7RtKUAfRXtDJy9ayjo9uOutHHXU0
-         Bv0g==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=LB+Nmakldk8aFwODV39l6XIEPrALTK81FtE0SZeH8jg=;
+        b=IH0RWPMf9FyhkkUkMGH9UoXrTYp/O5ZPEn5ETMb1xzwq/O5YRnrzauLlekYhqv7DJu
+         GYFnaSTw0frWoi6NFCbqdKxQXJsN4+wZwzU+uhDLlBt+ovh4TUYGa7vfjN8bPZfDwmO6
+         ZKh2RsXAo7eTOHKAoWQxxg8ZoSsiCeurAXzKsN5L+t0ITBWF/0PIKANGh8Zia6mias00
+         vbs7pcx3auGgoG+9fjjhsrt/tC0NDMsMqdx7aMRAoMzBCRvr4a2ca/aaD4eQuIyTGGLZ
+         qvkkCxYRaPdRBIlUc7CYUVIhEvC+/9q3Zve5N2VBCl6p4L0WAaz7Rj+C6+uMqsBWqzfy
+         n8WA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references;
-        bh=ANEzij/Chh5L3TMkQxkDKzxRum1Eo4iQas8qa2Tk60E=;
-        b=LuNr64YoMLWX/qnoZhAMOaigUqf8Evw6cYsWypvIewH3Lh1qkz153BS999c0u65mbe
-         Sf/G+zpMYLuw1BVggibVngWFaim5Ky2+tULmOR0NYv1AKMOMnFNenZVTxf63rOg04jyq
-         Vut6KjwtCWpPtsbOu37nbnbWHH1s3iUHyItQx07Lvtcva7hMufNHfLILXbLLs6nJGmXz
-         JOYq3YFbmQDEn+Xg2Uix36N/HiXKf6ipmA9f+DhQZpV783aFKOtgFSrqbT5JbI95N3gF
-         /JL0+3hEz+xL3RvseeNVR4FF+W/fS8hvkFk96pE1ZfBgEHj2uXAI5uhuLnD/hJQewKTr
-         EZGQ==
-X-Gm-Message-State: AOAM531HGtilZ42U5naqC/tU5r4dwVXAv5eGGNCyCfX9B5ZVnNffFiw0
-	ZyMFIri0chxbAnOXnRqlqzlSrAiXtSQBM480400=
-X-Google-Smtp-Source: ABdhPJw2W/LugrfQ9yO58epdPC1flKM1814bau5xo80DTZGPw7Z6bIY3/ZYDpDqTDqwLmz1IO7IdcQ==
-X-Received: by 2002:a17:90a:fb52:: with SMTP id iq18mr4372976pjb.162.1600179077623;
-        Tue, 15 Sep 2020 07:11:17 -0700 (PDT)
-Return-Path: <steve@sakoman.com>
-Received: from octo.router0800d9.com (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
-        by smtp.gmail.com with ESMTPSA id i126sm9952920pfc.48.2020.09.15.07.11.15
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Sep 2020 07:11:16 -0700 (PDT)
-From: "Steve Sakoman" <steve@sakoman.com>
-To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell] Documenation: Prepared for the 3.1.3 release
-Date: Tue, 15 Sep 2020 04:11:08 -1000
-Message-Id: <95a22279635a8961b2017b7f7ec403c0a897b3a0.1600178934.git.steve@sakoman.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <cover.1600178934.git.steve@sakoman.com>
-References: <cover.1600178934.git.steve@sakoman.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=LB+Nmakldk8aFwODV39l6XIEPrALTK81FtE0SZeH8jg=;
+        b=QKzCFxwL1sEG/IAqHdyGt3IlbeAfIX7bWNbCaVy39XdWFbfywjpI6hQQSEEIIWY9TA
+         M2yuO5EHUEuIRo2+8Lu8LuavrdQ8E7PkQY4OgSnfT7Rl2kmGxL0XZE/Kk1g7c2j6YPPZ
+         fpQzgbtZlW5tNpJ6DHChstNqlPE7dr0SaKt4Ia7RGC8vrcypqZHP59K1hvY7R5zTZBtA
+         DUVKO8uj5HhhaQEMPtTCd7Cz659PwPenPtMSCVk1jJcYDvGUkbCJ7RLFHBFbjdfm2Bja
+         weTYL3ySAu8rYZuS68ghDQGPlbcmTIUwA6CLYaFUgcJlwiuDK6AtI/bVE9V9tWnImEOk
+         bNkQ==
+X-Gm-Message-State: AOAM533ZVVi2X2tgOXiX2y0e2FYzsKhMXx0Qy8PIEdrKJ0FIncL+P+6i
+	M2uT7cG99wxO9lV9FE3GSDd1Tf0NY6ufE59vNZE=
+X-Google-Smtp-Source: ABdhPJzqPp37zFXVVp05uIBwg77wI4ZXt/PGx2l8ngxXgUzyNJxAdpy/3uOWZNB1Vxmf7o1iCJ1oekCj4g1NitTF7mk=
+X-Received: by 2002:a05:6638:69d:: with SMTP id i29mr18349324jab.138.1600184688870;
+ Tue, 15 Sep 2020 08:44:48 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAP71WjyPj_FZP6+c3k4WMUZ7UZYzG_NGoVq=1y1R1VApHxot6A@mail.gmail.com>
+ <16346239585A567B.3515@lists.yoctoproject.org> <16349A56620CF0CB.7642@lists.yoctoproject.org>
+ <16242b3cafddcea9747bbc02bc54fc8e7426bd31.camel@linuxfoundation.org> <CAP71WjzF-Cq9KN1L2p-UPwMtO9yMrxTR5q+7nJSBHeYhxKFY_w@mail.gmail.com>
+In-Reply-To: <CAP71WjzF-Cq9KN1L2p-UPwMtO9yMrxTR5q+7nJSBHeYhxKFY_w@mail.gmail.com>
+From: "Tim Orling" <ticotimo@gmail.com>
+Date: Tue, 15 Sep 2020 08:44:37 -0700
+Message-ID: <CANx9H-D1W=S8Jz=b6_d+D3frcqpZQkhmSHW=ZCjZ4tUMGWWpyQ@mail.gmail.com>
+Subject: Re: [docs] [sphinx] updates as of Sep 10th.
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="000000000000f489a105af5c074f"
 
----
- documentation/bsp-guide/bsp-guide.xml         |  7 ++-
- documentation/dev-manual/dev-manual.xml       |  7 ++-
- documentation/kernel-dev/kernel-dev.xml       |  7 ++-
- documentation/mega-manual/mega-manual.xml     |  7 ++-
- .../overview-manual/overview-manual.xml       |  7 ++-
- documentation/poky.ent                        | 14 +++---
- .../profile-manual/profile-manual.xml         |  7 ++-
- documentation/ref-manual/ref-manual.xml       |  7 ++-
- documentation/sdk-manual/sdk-manual.xml       |  7 ++-
- .../toaster-manual/toaster-manual.xml         |  7 ++-
- documentation/tools/mega-manual.sed           | 46 +++++++++----------
- 11 files changed, 84 insertions(+), 39 deletions(-)
+--000000000000f489a105af5c074f
+Content-Type: text/plain; charset="UTF-8"
 
-diff --git a/documentation/bsp-guide/bsp-guide.xml b/documentation/bsp-guide/bsp-guide.xml
-index 76f40f81d..8b3c4b5d5 100755
---- a/documentation/bsp-guide/bsp-guide.xml
-+++ b/documentation/bsp-guide/bsp-guide.xml
-@@ -137,9 +137,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/dev-manual/dev-manual.xml b/documentation/dev-manual/dev-manual.xml
-index 381c7e3c3..a772550b4 100755
---- a/documentation/dev-manual/dev-manual.xml
-+++ b/documentation/dev-manual/dev-manual.xml
-@@ -127,9 +127,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/kernel-dev/kernel-dev.xml b/documentation/kernel-dev/kernel-dev.xml
-index be613fe40..db47fd1b3 100755
---- a/documentation/kernel-dev/kernel-dev.xml
-+++ b/documentation/kernel-dev/kernel-dev.xml
-@@ -112,9 +112,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/mega-manual/mega-manual.xml b/documentation/mega-manual/mega-manual.xml
-index 69111a9ca..0c2b35608 100755
---- a/documentation/mega-manual/mega-manual.xml
-+++ b/documentation/mega-manual/mega-manual.xml
-@@ -103,9 +103,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/overview-manual/overview-manual.xml b/documentation/overview-manual/overview-manual.xml
-index 771eca07f..1147503c0 100755
---- a/documentation/overview-manual/overview-manual.xml
-+++ b/documentation/overview-manual/overview-manual.xml
-@@ -62,9 +62,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/poky.ent b/documentation/poky.ent
-index 1d0aef5f3..c44fbd7e1 100755
---- a/documentation/poky.ent
-+++ b/documentation/poky.ent
-@@ -1,17 +1,17 @@
--<!ENTITY DISTRO "3.1.2">
--<!ENTITY DISTRO_COMPRESSED "312">
-+<!ENTITY DISTRO "3.1.3">
-+<!ENTITY DISTRO_COMPRESSED "313">
- <!ENTITY DISTRO_NAME_NO_CAP "dunfell">
- <!ENTITY DISTRO_NAME "Dunfell">
- <!ENTITY DISTRO_NAME_NO_CAP_MINUS_ONE "zeus">
- <!ENTITY DISTRO_NAME_MINUS_ONE "Zeus">
--<!ENTITY YOCTO_DOC_VERSION "3.1.2">
-+<!ENTITY YOCTO_DOC_VERSION "3.1.3">
- <!ENTITY YOCTO_DOC_VERSION_MINUS_ONE "3.0.2">
--<!ENTITY DISTRO_REL_TAG "yocto-3.1.2">
-+<!ENTITY DISTRO_REL_TAG "yocto-3.1.3">
- <!ENTITY METAINTELVERSION "12.0">
--<!ENTITY REL_MONTH_YEAR "July 2020">
-+<!ENTITY REL_MONTH_YEAR "September 2020">
- <!ENTITY META_INTEL_REL_TAG "&METAINTELVERSION;-&DISTRO_NAME_NO_CAP;-&YOCTO_DOC_VERSION;">
--<!ENTITY POKYVERSION "23.0.2">
--<!ENTITY POKYVERSION_COMPRESSED "2302">
-+<!ENTITY POKYVERSION "23.0.3">
-+<!ENTITY POKYVERSION_COMPRESSED "2303">
- <!ENTITY YOCTO_POKY "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;">
- <!ENTITY COPYRIGHT_YEAR "2010-2020">
- <!ENTITY ORGNAME "The Yocto Project">
-diff --git a/documentation/profile-manual/profile-manual.xml b/documentation/profile-manual/profile-manual.xml
-index 3527850df..9ae4696d0 100755
---- a/documentation/profile-manual/profile-manual.xml
-+++ b/documentation/profile-manual/profile-manual.xml
-@@ -112,9 +112,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/ref-manual/ref-manual.xml b/documentation/ref-manual/ref-manual.xml
-index d7b82bb5c..4f6fe6e6c 100755
---- a/documentation/ref-manual/ref-manual.xml
-+++ b/documentation/ref-manual/ref-manual.xml
-@@ -138,9 +138,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-         </revhistory>
- 
-     <copyright>
-diff --git a/documentation/sdk-manual/sdk-manual.xml b/documentation/sdk-manual/sdk-manual.xml
-index a557549ed..c66f5f3d7 100755
---- a/documentation/sdk-manual/sdk-manual.xml
-+++ b/documentation/sdk-manual/sdk-manual.xml
-@@ -82,9 +82,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/toaster-manual/toaster-manual.xml b/documentation/toaster-manual/toaster-manual.xml
-index fbc051200..bc25d5ca9 100755
---- a/documentation/toaster-manual/toaster-manual.xml
-+++ b/documentation/toaster-manual/toaster-manual.xml
-@@ -92,9 +92,14 @@
-             </revision>
-             <revision>
-                 <revnumber>3.1.2</revnumber>
--                <date>&REL_MONTH_YEAR;</date>
-+                <date>August 2020</date>
-                 <revremark>Released with the Yocto Project 3.1.2 Release.</revremark>
-             </revision>
-+            <revision>
-+                <revnumber>3.1.3</revnumber>
-+                <date>&REL_MONTH_YEAR;</date>
-+                <revremark>Released with the Yocto Project 3.1.3 Release.</revremark>
-+            </revision>
-        </revhistory>
- 
-     <copyright>
-diff --git a/documentation/tools/mega-manual.sed b/documentation/tools/mega-manual.sed
-index 933f23ea8..c1209c4c1 100644
---- a/documentation/tools/mega-manual.sed
-+++ b/documentation/tools/mega-manual.sed
-@@ -1,36 +1,36 @@
- # Processes bitbake-user-manual (<word>-<word>-<word> style).
- # This style is for manual three-word folders, which currently is only the BitBake User Manual.
- # We used to have the "yocto-project-qs" and "poky-ref-manual" folders but no longer do.
--# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/[a-z]*-[a-z]*-[a-z]*/[a-z]*-[a-z]*-[a-z]*.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/bitbake-user-manual/bitbake-user-manual.html#@"link" href="#@g
-+# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/[a-z]*-[a-z]*-[a-z]*/[a-z]*-[a-z]*-[a-z]*.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/bitbake-user-manual/bitbake-user-manual.html#@"link" href="#@g
- 
- # Processes all other manuals (<word>-<word> style).
- # This style is for manual folders that use two word, which is the standard now (e.g. "ref-manual").
- # Here is the one-liner:
--# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/[a-z]*-[a-z]*/[a-z]*-[a-z]*.html#@"link" href="#@g
-+# s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/[a-z]*-[a-z]*/[a-z]*-[a-z]*.html#@"link" href="#@g
- 
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/sdk-manual/sdk-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/bsp-guide/bsp-guide.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/dev-manual/dev-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/overview-manual/overview-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/brief-yoctoprojectqs/brief-yoctoprojectqs.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/kernel-dev/kernel-dev.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/profile-manual/profile-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/ref-manual/ref-manual.html#@"link" href="#@g
--s@"ulink" href="http://www.yoctoproject.org/docs/3.1.2/toaster-manual/toaster-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/sdk-manual/sdk-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/bsp-guide/bsp-guide.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/dev-manual/dev-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/overview-manual/overview-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/brief-yoctoprojectqs/brief-yoctoprojectqs.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/kernel-dev/kernel-dev.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/profile-manual/profile-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/ref-manual/ref-manual.html#@"link" href="#@g
-+s@"ulink" href="http://www.yoctoproject.org/docs/3.1.3/toaster-manual/toaster-manual.html#@"link" href="#@g
- 
- # Process cases where just an external manual is referenced without an id anchor
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/brief-yoctoprojectqs/brief-yoctoprojectqs.html" target="_top">Yocto Project Quick Build</a>@Yocto Project Quick Build@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/bitbake-user-manual/bitbake-user-manual.html" target="_top">BitBake User Manual</a>@BitBake User Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/dev-manual/dev-manual.html" target="_top">Yocto Project Development Tasks Manual</a>@Yocto Project Development Tasks Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/overview-manual/overview-manual.html" target="_top">Yocto Project Overview and Concepts Manual</a>@Yocto project Overview and Concepts Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/sdk-manual/sdk-manual.html" target="_top">Yocto Project Application Development and the Extensible Software Development Kit (eSDK)</a>@Yocto Project Application Development and the Extensible Software Development Kit (eSDK)@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/bsp-guide/bsp-guide.html" target="_top">Yocto Project Board Support Package (BSP) Developer's Guide</a>@Yocto Project Board Support Package (BSP) Developer's Guide@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/profile-manual/profile-manual.html" target="_top">Yocto Project Profiling and Tracing Manual</a>@Yocto Project Profiling and Tracing Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/kernel-dev/kernel-dev.html" target="_top">Yocto Project Linux Kernel Development Manual</a>@Yocto Project Linux Kernel Development Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/ref-manual/ref-manual.html" target="_top">Yocto Project Reference Manual</a>@Yocto Project Reference Manual@g
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/toaster-manual/toaster-manual.html" target="_top">Toaster User Manual</a>@Toaster User Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/brief-yoctoprojectqs/brief-yoctoprojectqs.html" target="_top">Yocto Project Quick Build</a>@Yocto Project Quick Build@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/bitbake-user-manual/bitbake-user-manual.html" target="_top">BitBake User Manual</a>@BitBake User Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/dev-manual/dev-manual.html" target="_top">Yocto Project Development Tasks Manual</a>@Yocto Project Development Tasks Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/overview-manual/overview-manual.html" target="_top">Yocto Project Overview and Concepts Manual</a>@Yocto project Overview and Concepts Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/sdk-manual/sdk-manual.html" target="_top">Yocto Project Application Development and the Extensible Software Development Kit (eSDK)</a>@Yocto Project Application Development and the Extensible Software Development Kit (eSDK)@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/bsp-guide/bsp-guide.html" target="_top">Yocto Project Board Support Package (BSP) Developer's Guide</a>@Yocto Project Board Support Package (BSP) Developer's Guide@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/profile-manual/profile-manual.html" target="_top">Yocto Project Profiling and Tracing Manual</a>@Yocto Project Profiling and Tracing Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/kernel-dev/kernel-dev.html" target="_top">Yocto Project Linux Kernel Development Manual</a>@Yocto Project Linux Kernel Development Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/ref-manual/ref-manual.html" target="_top">Yocto Project Reference Manual</a>@Yocto Project Reference Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/toaster-manual/toaster-manual.html" target="_top">Toaster User Manual</a>@Toaster User Manual@g
- 
- # Process a single, rouge occurrence of a linked reference to the Mega-Manual.
--s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.2/mega-manual/mega-manual.html" target="_top">Yocto Project Mega-Manual</a>@Yocto Project Mega-Manual@g
-+s@<a class="ulink" href="http://www.yoctoproject.org/docs/3.1.3/mega-manual/mega-manual.html" target="_top">Yocto Project Mega-Manual</a>@Yocto Project Mega-Manual@g
- 
--- 
-2.17.1
+On Mon, Sep 14, 2020 at 3:05 PM Nicolas Dechesne <
+nicolas.dechesne@linaro.org> wrote:
 
+>
+>
+> On Mon, Sep 14, 2020 at 5:26 PM Richard Purdie <
+> richard.purdie@linuxfoundation.org> wrote:
+>
+>> On Mon, 2020-09-14 at 09:50 +0100, Richard Purdie via
+>> lists.yoctoproject.org wrote:
+>> > On Sun, 2020-09-13 at 16:42 +0100, Richard Purdie via
+>> > lists.yoctoproject.org wrote:
+>> > > On Fri, 2020-09-11 at 00:03 +0200, Nicolas Dechesne wrote:
+>> > > > If anybody has any cycle now, we need to finish #4. The current
+>> > > > status is that:
+>> > > > * brief-yoctoprojectqs/* is done.
+>> > > > * bitbake user manual is half done, and I am doing it
+>> > > > * bsp-guide/*: i started it, and will finish
+>> > > > * ref-manual/*: RP is on it.
+>> > >
+>> > > This is done, at least as a first pass with hopefully the bulk of
+>> > > issues fixed.
+>> > >
+>> > > > * there are plenty of warnings when we build, i would like to get
+>> > > > rid
+>> > > > of them all!
+>> > > >
+>> > > > Anything else is work that remains to be done. Before starting
+>> > > > anything, please send a quick email here to let everyone know, to
+>> > > > avoid duplication. If you have any improvement, please share your
+>> > > > patches, I will take them into the sphinx/master branch. And I
+>> > > > will
+>> > > > continue to work on the remaining files that no one would pick.
+>> > >
+>> > > I'll take dev-manual/* next.
+>> >
+>> > dev-manual is on the branch, I'll look at sdk-manual next.
+>>
+>> sdk-manual is on the branch, kernel-dev is my next target.
+>>
+>
+> I am now done with bsp-guide and bitbake.  Based on Richard's last
+> comment, the remaining docs to process are:
+> overview-manual
+> profile-manual
+> test-manual
+> toaster-manual
+>
+> They are rather 'small' books. I believe Armin is looking at
+> overview-manual and Mark at test-manual. I will take profile-manual next.
+>
+
+I'll take a crack at toaster-manual today.
+--Tim
+
+>
+> I've also updated https://docs.yoctoproject.org/ with all the latest
+> changes combined. If you can use the new website and report any issues,
+> please let us know.
+>
+>
+>> Cheers,
+>>
+>> Richard
+>>
+>> 
+>
+
+--000000000000f489a105af5c074f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 14, 2020 at 3:05 PM Nicol=
+as Dechesne &lt;<a href=3D"mailto:nicolas.dechesne@linaro.org">nicolas.dech=
+esne@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
+ding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 14, 202=
+0 at 5:26 PM Richard Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfound=
+ation.org" target=3D"_blank">richard.purdie@linuxfoundation.org</a>&gt; wro=
+te:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
+0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Mon, 2020=
+-09-14 at 09:50 +0100, Richard Purdie via<br>
+<a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_bl=
+ank">lists.yoctoproject.org</a> wrote:<br>
+&gt; On Sun, 2020-09-13 at 16:42 +0100, Richard Purdie via<br>
+&gt; <a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=
+=3D"_blank">lists.yoctoproject.org</a> wrote:<br>
+&gt; &gt; On Fri, 2020-09-11 at 00:03 +0200, Nicolas Dechesne wrote:<br>
+&gt; &gt; &gt; If anybody has any cycle now, we need to finish #4. The cur=
+rent<br>
+&gt; &gt; &gt; status is that:<br>
+&gt; &gt; &gt; * brief-yoctoprojectqs/* is done.<br>
+&gt; &gt; &gt; * bitbake user manual is half done, and I am doing it<br>
+&gt; &gt; &gt; * bsp-guide/*: i started it, and will finish<br>
+&gt; &gt; &gt; * ref-manual/*: RP is on it.<br>
+&gt; &gt; <br>
+&gt; &gt; This is done, at least as a first pass with hopefully the bulk o=
+f<br>
+&gt; &gt; issues fixed.<br>
+&gt; &gt; <br>
+&gt; &gt; &gt; * there are plenty of warnings when we build, i would like =
+to get<br>
+&gt; &gt; &gt; rid<br>
+&gt; &gt; &gt; of them all!<br>
+&gt; &gt; &gt; <br>
+&gt; &gt; &gt; Anything else is work that remains to be done. Before start=
+ing<br>
+&gt; &gt; &gt; anything, please send a quick email here to let everyone kn=
+ow, to<br>
+&gt; &gt; &gt; avoid duplication. If you have any improvement, please shar=
+e your<br>
+&gt; &gt; &gt; patches, I will take them into the sphinx/master branch. An=
+d I<br>
+&gt; &gt; &gt; will<br>
+&gt; &gt; &gt; continue to work on the remaining files that no one would p=
+ick.<br>
+&gt; &gt; <br>
+&gt; &gt; I&#39;ll take dev-manual/* next.<br>
+&gt; <br>
+&gt; dev-manual is on the branch, I&#39;ll look at sdk-manual next.<br>
+<br>
+sdk-manual is on the branch, kernel-dev is my next target.<br></blockquote=
+><div><br></div><div>I am now done with bsp-guide and bitbake.=C2=A0 Based =
+on Richard&#39;s last comment, the remaining docs to process are:</div><div=
+>overview-manual</div><div>profile-manual</div><div>test-manual</div><div>t=
+oaster-manual</div><div><br></div><div>They are rather &#39;small&#39; book=
+s. I believe Armin is looking at overview-manual and Mark at test-manual. I=
+ will take profile-manual next.=C2=A0</div></div></div></blockquote><div><b=
+r></div><div>I&#39;ll take a crack at toaster-manual today.</div><div>--Tim=
+</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
+order-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><d=
+iv class=3D"gmail_quote"><div><br></div><div>I&#39;ve also updated=C2=A0<a =
+href=3D"https://docs.yoctoproject.org/" target=3D"_blank">https://docs.yoct=
+oproject.org/</a> with all the latest changes combined. If you can use the =
+new website and report any issues, please let us know.</div><div><br></div>=
+<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
+left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+Cheers,<br>
+<br>
+Richard<br>
+<br>
+</blockquote></div></div>
+<br>
+</blockquote></div></div>
+
+--000000000000f489a105af5c074f--
