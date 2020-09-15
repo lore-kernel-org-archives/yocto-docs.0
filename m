@@ -1,139 +1,166 @@
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
- by mx.groups.io with SMTP id smtpd.web10.13.1600184689739448972
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
+ by mx.groups.io with SMTP id smtpd.web11.1485.1600188517642352318
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Sep 2020 08:44:49 -0700
+ Tue, 15 Sep 2020 09:48:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=IH0RWPMf;
- spf=pass (domain: gmail.com, ip: 209.85.166.47, mailfrom: ticotimo@gmail.com)
-Received: by mail-io1-f47.google.com with SMTP id d190so4600186iof.3
-        for <docs@lists.yoctoproject.org>; Tue, 15 Sep 2020 08:44:49 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=MRPVOJJr;
+ spf=pass (domain: linaro.org, ip: 209.85.219.171, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f171.google.com with SMTP id c17so3167857ybe.0
+        for <docs@lists.yoctoproject.org>; Tue, 15 Sep 2020 09:48:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=LB+Nmakldk8aFwODV39l6XIEPrALTK81FtE0SZeH8jg=;
-        b=IH0RWPMf9FyhkkUkMGH9UoXrTYp/O5ZPEn5ETMb1xzwq/O5YRnrzauLlekYhqv7DJu
-         GYFnaSTw0frWoi6NFCbqdKxQXJsN4+wZwzU+uhDLlBt+ovh4TUYGa7vfjN8bPZfDwmO6
-         ZKh2RsXAo7eTOHKAoWQxxg8ZoSsiCeurAXzKsN5L+t0ITBWF/0PIKANGh8Zia6mias00
-         vbs7pcx3auGgoG+9fjjhsrt/tC0NDMsMqdx7aMRAoMzBCRvr4a2ca/aaD4eQuIyTGGLZ
-         qvkkCxYRaPdRBIlUc7CYUVIhEvC+/9q3Zve5N2VBCl6p4L0WAaz7Rj+C6+uMqsBWqzfy
-         n8WA==
+        bh=noAPcUV5EdhMJGdVRZOy9D35S8XPPdVbttF/pD2hsjg=;
+        b=MRPVOJJrTqkSkJvVgYpfSAKO7iCov03JvhBjqb+EOVvAAexYd9bMiMcFjMQ5uBKBN4
+         YduptHLvtbaMyajmPQE609uGj/kdb2V4KpUtqldzamH3GmZ5eRxZ+kqxf4Yp3FeFVU3P
+         3aFF3FlcL48Qg2BvjymMXV3cVb8BbEfiTVfHMliU1fac1IaB083KaJAoJEm8SE8nfRAW
+         /ILCPhMau34TqERLosJitdIt0xgoUJDlgD9hLfDpRfInLC8Px8Oc7QvqzPEzKRBTT7DX
+         +czb1nsTwuKVIr+519Sf0TU0AdSuGy9Z2sKCErk9XNKo+pmrFP2zvUe0If4xUQfhTVeI
+         1MVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=LB+Nmakldk8aFwODV39l6XIEPrALTK81FtE0SZeH8jg=;
-        b=QKzCFxwL1sEG/IAqHdyGt3IlbeAfIX7bWNbCaVy39XdWFbfywjpI6hQQSEEIIWY9TA
-         M2yuO5EHUEuIRo2+8Lu8LuavrdQ8E7PkQY4OgSnfT7Rl2kmGxL0XZE/Kk1g7c2j6YPPZ
-         fpQzgbtZlW5tNpJ6DHChstNqlPE7dr0SaKt4Ia7RGC8vrcypqZHP59K1hvY7R5zTZBtA
-         DUVKO8uj5HhhaQEMPtTCd7Cz659PwPenPtMSCVk1jJcYDvGUkbCJ7RLFHBFbjdfm2Bja
-         weTYL3ySAu8rYZuS68ghDQGPlbcmTIUwA6CLYaFUgcJlwiuDK6AtI/bVE9V9tWnImEOk
-         bNkQ==
-X-Gm-Message-State: AOAM533ZVVi2X2tgOXiX2y0e2FYzsKhMXx0Qy8PIEdrKJ0FIncL+P+6i
-	M2uT7cG99wxO9lV9FE3GSDd1Tf0NY6ufE59vNZE=
-X-Google-Smtp-Source: ABdhPJzqPp37zFXVVp05uIBwg77wI4ZXt/PGx2l8ngxXgUzyNJxAdpy/3uOWZNB1Vxmf7o1iCJ1oekCj4g1NitTF7mk=
-X-Received: by 2002:a05:6638:69d:: with SMTP id i29mr18349324jab.138.1600184688870;
- Tue, 15 Sep 2020 08:44:48 -0700 (PDT)
+        bh=noAPcUV5EdhMJGdVRZOy9D35S8XPPdVbttF/pD2hsjg=;
+        b=QOH1qstNO4yP/L1NUd3iWIb59n2kMPoe2f9M12SDn2U+LFHcqwN8RB0i0t1WAuZ8LX
+         oG0aq5cY4liqR+YuaI2ZzAsxXd6ndTOC0BpT9a9yKBnhgpmUSQkArDr3Vt3LyzJHuy8o
+         HMUEFA78pY+21KaLQE5Uf/eRH94tu4LzXmU0QcD5lzoyhbOazNk/P/X3R9S3XtaHwazn
+         7NuzbydkkhF7C7iyYGLlUlkXtAYpiGXVmCuhRSFgvIbVifgXpN6KHaoBICKTbGqmCZaQ
+         uhxUFJ0gCTnkTUFPdVydzElodjThfIuLtwnPztKTzJ6oP7HlJk0WzsOin5PgCgq+dQoZ
+         30lw==
+X-Gm-Message-State: AOAM530N6M7I/n/mN3AtnTNtxV3BY2LdQAcztLOgRrulvEzmVF/EqpeI
+	f+f2fd+SgJTsgnocjf8odlsrEdaP9/+HIueMwyKq6w==
+X-Google-Smtp-Source: ABdhPJzI1OViIo414fhjz2gpK3UcUy304J4POcEZpQ+hRfzALDb+2MbOSCkr94ezfB8u1arVYk4Eav+8cNCC7ZXIZHU=
+X-Received: by 2002:a25:2355:: with SMTP id j82mr16851695ybj.201.1600188516590;
+ Tue, 15 Sep 2020 09:48:36 -0700 (PDT)
 MIME-Version: 1.0
 References: <CAP71WjyPj_FZP6+c3k4WMUZ7UZYzG_NGoVq=1y1R1VApHxot6A@mail.gmail.com>
  <16346239585A567B.3515@lists.yoctoproject.org> <16349A56620CF0CB.7642@lists.yoctoproject.org>
- <16242b3cafddcea9747bbc02bc54fc8e7426bd31.camel@linuxfoundation.org> <CAP71WjzF-Cq9KN1L2p-UPwMtO9yMrxTR5q+7nJSBHeYhxKFY_w@mail.gmail.com>
-In-Reply-To: <CAP71WjzF-Cq9KN1L2p-UPwMtO9yMrxTR5q+7nJSBHeYhxKFY_w@mail.gmail.com>
-From: "Tim Orling" <ticotimo@gmail.com>
-Date: Tue, 15 Sep 2020 08:44:37 -0700
-Message-ID: <CANx9H-D1W=S8Jz=b6_d+D3frcqpZQkhmSHW=ZCjZ4tUMGWWpyQ@mail.gmail.com>
+ <16242b3cafddcea9747bbc02bc54fc8e7426bd31.camel@linuxfoundation.org>
+ <CAP71WjzF-Cq9KN1L2p-UPwMtO9yMrxTR5q+7nJSBHeYhxKFY_w@mail.gmail.com> <CANx9H-D1W=S8Jz=b6_d+D3frcqpZQkhmSHW=ZCjZ4tUMGWWpyQ@mail.gmail.com>
+In-Reply-To: <CANx9H-D1W=S8Jz=b6_d+D3frcqpZQkhmSHW=ZCjZ4tUMGWWpyQ@mail.gmail.com>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Tue, 15 Sep 2020 18:48:24 +0200
+Message-ID: <CAP71WjxQNormFOzCsd5h3MopO4hTdn5ENgU_Wmt+UdwPJ0jQog@mail.gmail.com>
 Subject: Re: [docs] [sphinx] updates as of Sep 10th.
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+To: Tim Orling <ticotimo@gmail.com>
 Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000f489a105af5c074f"
+Content-Type: multipart/alternative; boundary="0000000000001afba705af5cecbf"
 
---000000000000f489a105af5c074f
+--0000000000001afba705af5cecbf
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Sep 14, 2020 at 3:05 PM Nicolas Dechesne <
-nicolas.dechesne@linaro.org> wrote:
+On Tue, Sep 15, 2020 at 5:44 PM Tim Orling <ticotimo@gmail.com> wrote:
 
 >
 >
-> On Mon, Sep 14, 2020 at 5:26 PM Richard Purdie <
-> richard.purdie@linuxfoundation.org> wrote:
+> On Mon, Sep 14, 2020 at 3:05 PM Nicolas Dechesne <
+> nicolas.dechesne@linaro.org> wrote:
 >
->> On Mon, 2020-09-14 at 09:50 +0100, Richard Purdie via
->> lists.yoctoproject.org wrote:
->> > On Sun, 2020-09-13 at 16:42 +0100, Richard Purdie via
->> > lists.yoctoproject.org wrote:
->> > > On Fri, 2020-09-11 at 00:03 +0200, Nicolas Dechesne wrote:
->> > > > If anybody has any cycle now, we need to finish #4. The current
->> > > > status is that:
->> > > > * brief-yoctoprojectqs/* is done.
->> > > > * bitbake user manual is half done, and I am doing it
->> > > > * bsp-guide/*: i started it, and will finish
->> > > > * ref-manual/*: RP is on it.
->> > >
->> > > This is done, at least as a first pass with hopefully the bulk of
->> > > issues fixed.
->> > >
->> > > > * there are plenty of warnings when we build, i would like to get
->> > > > rid
->> > > > of them all!
->> > > >
->> > > > Anything else is work that remains to be done. Before starting
->> > > > anything, please send a quick email here to let everyone know, to
->> > > > avoid duplication. If you have any improvement, please share your
->> > > > patches, I will take them into the sphinx/master branch. And I
->> > > > will
->> > > > continue to work on the remaining files that no one would pick.
->> > >
->> > > I'll take dev-manual/* next.
->> >
->> > dev-manual is on the branch, I'll look at sdk-manual next.
 >>
->> sdk-manual is on the branch, kernel-dev is my next target.
+>>
+>> On Mon, Sep 14, 2020 at 5:26 PM Richard Purdie <
+>> richard.purdie@linuxfoundation.org> wrote:
+>>
+>>> On Mon, 2020-09-14 at 09:50 +0100, Richard Purdie via
+>>> lists.yoctoproject.org wrote:
+>>> > On Sun, 2020-09-13 at 16:42 +0100, Richard Purdie via
+>>> > lists.yoctoproject.org wrote:
+>>> > > On Fri, 2020-09-11 at 00:03 +0200, Nicolas Dechesne wrote:
+>>> > > > If anybody has any cycle now, we need to finish #4. The current
+>>> > > > status is that:
+>>> > > > * brief-yoctoprojectqs/* is done.
+>>> > > > * bitbake user manual is half done, and I am doing it
+>>> > > > * bsp-guide/*: i started it, and will finish
+>>> > > > * ref-manual/*: RP is on it.
+>>> > >
+>>> > > This is done, at least as a first pass with hopefully the bulk of
+>>> > > issues fixed.
+>>> > >
+>>> > > > * there are plenty of warnings when we build, i would like to get
+>>> > > > rid
+>>> > > > of them all!
+>>> > > >
+>>> > > > Anything else is work that remains to be done. Before starting
+>>> > > > anything, please send a quick email here to let everyone know, to
+>>> > > > avoid duplication. If you have any improvement, please share your
+>>> > > > patches, I will take them into the sphinx/master branch. And I
+>>> > > > will
+>>> > > > continue to work on the remaining files that no one would pick.
+>>> > >
+>>> > > I'll take dev-manual/* next.
+>>> >
+>>> > dev-manual is on the branch, I'll look at sdk-manual next.
+>>>
+>>> sdk-manual is on the branch, kernel-dev is my next target.
+>>>
+>>
+>> I am now done with bsp-guide and bitbake.  Based on Richard's last
+>> comment, the remaining docs to process are:
+>> overview-manual
+>> profile-manual
+>> test-manual
+>> toaster-manual
+>>
+>> They are rather 'small' books. I believe Armin is looking at
+>> overview-manual and Mark at test-manual. I will take profile-manual next.
 >>
 >
-> I am now done with bsp-guide and bitbake.  Based on Richard's last
-> comment, the remaining docs to process are:
-> overview-manual
-> profile-manual
-> test-manual
-> toaster-manual
->
-> They are rather 'small' books. I believe Armin is looking at
-> overview-manual and Mark at test-manual. I will take profile-manual next.
+> I'll take a crack at toaster-manual today.
 >
 
-I'll take a crack at toaster-manual today.
---Tim
+thanks!
 
+I've finished profile-manual today. And excluded adt-manual from Sphinx
+(deprecated doc). At this point, we have:
+Richard on kernel-dev
+Mark on test-manual
+Armin on overview-manual
+Tim on toaster-manual
+
+Which means everything is now covered! Please send patches on the list for
+review, and if you have any trouble with Sphinx , let me know!
+
+
+
+> --Tim
 >
-> I've also updated https://docs.yoctoproject.org/ with all the latest
-> changes combined. If you can use the new website and report any issues,
-> please let us know.
->
->
->> Cheers,
 >>
->> Richard
+>> I've also updated https://docs.yoctoproject.org/ with all the latest
+>> changes combined. If you can use the new website and report any issues,
+>> please let us know.
 >>
->> 
+>>
+>>> Cheers,
+>>>
+>>> Richard
+>>>
+>>> 
+>>
 >
 
---000000000000f489a105af5c074f
+--0000000000001afba705af5cecbf
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 14, 2020 at 3:05 PM Nicol=
-as Dechesne &lt;<a href=3D"mailto:nicolas.dechesne@linaro.org">nicolas.dech=
-esne@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
-tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
-ding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep 14, 202=
-0 at 5:26 PM Richard Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfound=
-ation.org" target=3D"_blank">richard.purdie@linuxfoundation.org</a>&gt; wro=
-te:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Mon, 2020=
--09-14 at 09:50 +0100, Richard Purdie via<br>
+<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Sep 15, 2020 at 5:44 PM Tim O=
+rling &lt;<a href=3D"mailto:ticotimo@gmail.com">ticotimo@gmail.com</a>&gt; =
+wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0=
+px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=
+=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote"><div di=
+r=3D"ltr" class=3D"gmail_attr">On Mon, Sep 14, 2020 at 3:05 PM Nicolas Dech=
+esne &lt;<a href=3D"mailto:nicolas.dechesne@linaro.org" target=3D"_blank">n=
+icolas.dechesne@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><=
+div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Sep=
+ 14, 2020 at 5:26 PM Richard Purdie &lt;<a href=3D"mailto:richard.purdie@li=
+nuxfoundation.org" target=3D"_blank">richard.purdie@linuxfoundation.org</a>=
+&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px =
+0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On M=
+on, 2020-09-14 at 09:50 +0100, Richard Purdie via<br>
 <a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_bl=
 ank">lists.yoctoproject.org</a> wrote:<br>
 &gt; On Sun, 2020-09-13 at 16:42 +0100, Richard Purdie via<br>
@@ -180,15 +207,24 @@ on Richard&#39;s last comment, the remaining docs to process are:</div><div=
 oaster-manual</div><div><br></div><div>They are rather &#39;small&#39; book=
 s. I believe Armin is looking at overview-manual and Mark at test-manual. I=
  will take profile-manual next.=C2=A0</div></div></div></blockquote><div><b=
-r></div><div>I&#39;ll take a crack at toaster-manual today.</div><div>--Tim=
-</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;b=
-order-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><d=
-iv class=3D"gmail_quote"><div><br></div><div>I&#39;ve also updated=C2=A0<a =
-href=3D"https://docs.yoctoproject.org/" target=3D"_blank">https://docs.yoct=
-oproject.org/</a> with all the latest changes combined. If you can use the =
-new website and report any issues, please let us know.</div><div><br></div>=
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left:1px solid rgb(204,204,204);padding-left:1ex">
+r></div><div>I&#39;ll take a crack at toaster-manual today.</div></div></di=
+v></blockquote><div><br></div><div>thanks!</div><div><br></div><div>I&#39;v=
+e finished profile-manual today. And excluded adt-manual from Sphinx (depre=
+cated doc). At this point, we have:</div><div>Richard on kernel-dev</div><d=
+iv>Mark on test-manual</div><div>Armin on overview-manual</div><div>Tim on =
+toaster-manual</div><div><br></div><div>Which means everything is now cover=
+ed! Please send patches on the list for review, and if you have any trouble=
+ with Sphinx , let me know!</div><div><br></div><div>=C2=A0</div><blockquot=
+e class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px s=
+olid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div class=3D"gmai=
+l_quote"><div>--Tim</div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
+<div dir=3D"ltr"><div class=3D"gmail_quote"><div><br></div><div>I&#39;ve al=
+so updated=C2=A0<a href=3D"https://docs.yoctoproject.org/" target=3D"_blank=
+">https://docs.yoctoproject.org/</a> with all the latest changes combined. =
+If you can use the new website and report any issues, please let us know.</=
+div><div><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0p=
+x 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
 <br>
 Cheers,<br>
 <br>
@@ -197,5 +233,6 @@ Richard<br>
 </blockquote></div></div>
 <br>
 </blockquote></div></div>
+</blockquote></div></div>
 
---000000000000f489a105af5c074f--
+--0000000000001afba705af5cecbf--
