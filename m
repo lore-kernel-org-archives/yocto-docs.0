@@ -1,1469 +1,272 @@
-Received: from mail-yb1-f195.google.com (mail-yb1-f195.google.com [209.85.219.195])
- by mx.groups.io with SMTP id smtpd.web12.17120.1600240583263655566
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+ by mx.groups.io with SMTP id smtpd.web11.22870.1600264642502225465
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Sep 2020 00:16:23 -0700
+ Wed, 16 Sep 2020 06:57:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=C3OiBbHw;
- spf=pass (domain: linaro.org, ip: 209.85.219.195, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f195.google.com with SMTP id k2so4649433ybp.7
-        for <docs@lists.yoctoproject.org>; Wed, 16 Sep 2020 00:16:23 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=KFL0nB25;
+ spf=pass (domain: linaro.org, ip: 209.85.219.169, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f169.google.com with SMTP id x8so5485420ybm.3
+        for <docs@lists.yoctoproject.org>; Wed, 16 Sep 2020 06:57:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc:content-transfer-encoding;
-        bh=opE59SP9R/xsoppXDgeFIgiptyt9sR///t3rTzsirAM=;
-        b=C3OiBbHwzWPQXQgCMYy4y8HZatIx7rJ+PxI93tZBrlQNTYIhffi27VplnaXuztctYj
-         lxvRjZyADeJYF2QhQd67LGInPFvv2Q2ks7ERhLDAelWTNXWQJx+yC9353q2bUq4JWsee
-         GX+UnjlVBRsNXGmTvSMy4VjLKRlMV3WG4FFeX5ykCMC9iAel9N55MJyIQ96qdRIUlXJK
-         0hXS9v9dY6CKyb7piH9o1aX5lIxFz++5pBcNdTi4X4rmGOFAxV349BgRMIv12qbj/+hS
-         qbViK3LqwnyND2+x88OTEAzkpC/6hOojqAhUTYpshzmOaA35A6LD6LmfwcHu+ixN+7dE
-         lWRg==
+        bh=5JIMFrMERYaXT07SNPZQXtP6Ad6cgyfPtglUSFlzmBg=;
+        b=KFL0nB25aMei2igiR7WnllwTIHohWle34+nGB39EBI1qUfqbjO3VfHV5hyV3L8zp23
+         XGCUsNNShgeWazulB/QqUYHr23Pm2QrkS3OH6mR2LZnRaYP1oxPJLwfWKN2p3UKYF/do
+         IVqtBAe5UpHZ8sZ+64UmESbz7g1DR3o+lqOe2vJoEeCgBsA9JI3yIs1dXchXHJWKLx3N
+         yAP4h5hCq+yyknF9UMZ5k3nfAV9jSzBgRepxz7AlSnzpAD3t4vl8wFFV97O9Wx3lkY0m
+         Y1twk+fC0ZH4cBSQQpvOBF8gUjGWwSBAGNrRIIAhPuT9VCJSLIWz76SgolAYxoO1RKaF
+         coHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc:content-transfer-encoding;
-        bh=opE59SP9R/xsoppXDgeFIgiptyt9sR///t3rTzsirAM=;
-        b=Y8IDRS90uVV0AkWsIMq9tq8cE5k9oIhl8aPjqAuWpC93v/xvODpdvQEPdaiaoyPRNw
-         mHnx/ee4AmMjrpdD0BjqDQDQpMs+jGBfHEjlFuBwXJutZbQfEvr4xx/w6T/DZEFlHZDl
-         ALLeDlCNvGP2kvERWmg0Dpmr/6k5ncWdt2Dd/JoSxI44aX8JilHMVmcEPatvep4EzgQm
-         2jDSUxCjsDDHefdGnHF0JJRG7Vs0FZ4yQaLy9JrwtYSQl2yZ2S4qI7xYwAGGgAXyFqWC
-         sGlnFGBkx+HYYGCXg2jqWQU2tRD8YidjxcZ21BWFPZWh3hgLadg0uD8caaNud5Z9n30S
-         nzTw==
-X-Gm-Message-State: AOAM533rZpIEdDMBsYSn+QyI0OmRmRS7yzAbniRC5KcQxPJvnRw8YQFn
-	FqHyLq4DOqGNDsC465nOs7yS1W2+/V4F9Z2oEmWeXA==
-X-Google-Smtp-Source: ABdhPJz3yisa+xqNFbuvUGh+sbMosLLHZyJ8guLjEMYW/8mebPc2reva6jr4uldqiiypO3XBofoLviadgWIHT+f3SLI=
-X-Received: by 2002:a25:7084:: with SMTP id l126mr31356023ybc.454.1600240581134;
- Wed, 16 Sep 2020 00:16:21 -0700 (PDT)
+        bh=5JIMFrMERYaXT07SNPZQXtP6Ad6cgyfPtglUSFlzmBg=;
+        b=M/TM4VxYcLCik7mg1r5CqpLKcJDK7kFqI+amR5YaucuvHacXfEVyupHWVJOBzbmBtn
+         UpIAgm9qCGZLGqEcyhbo2zJlXayRUUrJKxhRThDwak8w76v5X5Ig0OC9BDCRj6ywMGFo
+         vCRpNr9yIoybqjuxMV4qtH4WrtBbStn27g5aPsbH4gUvIq2B01RnK0f9FwqKtQ+wNr33
+         28QNX9I7fEozFn7Y0Freg+2aV6SP5ST1epW9Cs4EkT5C5XtKXi2U2PGoy/ETnAu0FH6e
+         Fy9sRPqtEk6qzbFOOCujbsAzIMQ4Fs90B/Cf49FLlKoz8LznvjUao8zV0blZdnsz6syP
+         zkhw==
+X-Gm-Message-State: AOAM5305lwudRmNg04eX3IafgGz6aeOEQgNT9p8/HhvalTWXANGolWio
+	Do+mjqBmDAU4+MKWUmtwleJwL7okifyJapYZmFBVzg==
+X-Google-Smtp-Source: ABdhPJy+6p8n7+9zGxFpA6/PAXkipDfoWjk/3/yVS9Q5uKffsL3wpSE8cn48YJQbZQHKpXMOqIbzFj8cl16jcmRlqSc=
+X-Received: by 2002:a25:bfcf:: with SMTP id q15mr5156321ybm.133.1600264641377;
+ Wed, 16 Sep 2020 06:57:21 -0700 (PDT)
 MIME-Version: 1.0
-References: <20200915234226.29210-1-ticotimo@gmail.com>
-In-Reply-To: <20200915234226.29210-1-ticotimo@gmail.com>
+References: <20200915190112.16269-1-mark.morton@windriver.com>
+In-Reply-To: <20200915190112.16269-1-mark.morton@windriver.com>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Wed, 16 Sep 2020 09:16:10 +0200
-Message-ID: <CAP71Wjx9ANpU-sfVZpp0yidcAWmoFuckU5Jx_zX9vJ+ZsSOyaQ@mail.gmail.com>
-Subject: Re: [docs] [PATCH] sphinx: toaster-manual: fix vars, links, code blocks
-To: Tim Orling <ticotimo@gmail.com>
-Cc: docs@lists.yoctoproject.org, Tim Orling <timothy.t.orling@linux.intel.com>
+Date: Wed, 16 Sep 2020 15:57:10 +0200
+Message-ID: <CAP71WjyH16-XhPHSKm2CNUe186oJwZ2rsN1QyrBo2i==UT+ARw@mail.gmail.com>
+Subject: Re: [docs] [PATCH] Updated codeblocks and links part 2 for consistency, minor edits
+To: Mark Morton <Mark.Morton@windriver.com>
+Cc: docs@lists.yoctoproject.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-hi Tim!
+hi Mark,
 
-many thanks for sending this out! it looks pretty good, I have left
-some review comments below.
+On Tue, Sep 15, 2020 at 9:06 PM Mark Morton <Mark.Morton@windriver.com> wr=
+ote:
+>
+> Signed-off-by: Mark Morton <mark.morton@windriver.com>
 
-On Wed, Sep 16, 2020 at 1:42 AM Tim Orling <ticotimo@gmail.com> wrote:
->
-> From: Tim Orling <timothy.t.orling@linux.intel.com>
->
-> Also update Django links to 2.2 LTS release (from 1.11)
-> Replace most references to 'rocko' with variable
->
-> Signed-off-by: Tim Orling <timothy.t.orling@linux.intel.com>
+thanks! I just pushed the test-manual updates in the sphinx branch. I
+squashed both of your commit, and I added a few additional fixup of
+mine as well (also squashed them). There was something weird with many
+URL link, you had many links like this:
+
+`https://docs.python.org/3/library/unittest.html <#>`__
+
+I think they should simply be:
+
+https://docs.python.org/3/library/unittest.html
+
+http links are managed automatically.
+
+there were a couple of indentation issues (when nesting literal blocks
+in lists), and I fixed them.
+
+If you are curious, here is the patch I had on top of your 2 patches,
+before I squashed them all.
+
+https://git.linaro.org/people/nicolas.dechesne/yocto-docs.git/commit/?h=3D=
+review&id=3D718b075634ad827682a3389359b66cf0c0de41b7
+
+If you notice anything wrong, please send a patch on top of 'sphinx' branc=
+h.
+
 > ---
->  .../toaster-manual/toaster-manual-intro.rst   |   5 +-
->  .../toaster-manual-reference.rst              | 388 ++++++++++------
->  .../toaster-manual-setup-and-use.rst          | 413 +++++++++++++-----
->  .../toaster-manual/toaster-manual-start.rst   |  33 +-
->  4 files changed, 576 insertions(+), 263 deletions(-)
+>  .../test-manual/test-manual-intro.rst         | 31 +++++++++----------
+>  .../test-manual-understand-autobuilder.rst    | 18 +++++------
+>  2 files changed, 22 insertions(+), 27 deletions(-)
 >
-> diff --git a/documentation/toaster-manual/toaster-manual-intro.rst b/doc=
-umentation/toaster-manual/toaster-manual-intro.rst
-> index cc972f7c7..70b2ddbb9 100644
-> --- a/documentation/toaster-manual/toaster-manual-intro.rst
-> +++ b/documentation/toaster-manual/toaster-manual-intro.rst
-> @@ -26,8 +26,7 @@ extensive information about the build process.
->     Yocto Project releases 1.8 and beyond. With the Toaster web
->     interface, you can:
+> diff --git a/documentation/test-manual/test-manual-intro.rst b/documenta=
+tion/test-manual/test-manual-intro.rst
+> index d68ab73f4..62e23a297 100644
+> --- a/documentation/test-manual/test-manual-intro.rst
+> +++ b/documentation/test-manual/test-manual-intro.rst
+> @@ -27,14 +27,14 @@ loaded with information from the README files and no=
+tes from key
+>  engineers:
 >
-> -   -  Browse layers listed in the various `layer
-> -      sources <#layer-source>`__ that are available in your project
-> +   -  Browse layers listed in the various :ref:`layer sources <toaster-=
-layer-source>` that are available in your project
-
-in the rest of the docs , we've used the links generated by
-autosectionlabel extension.
-https://www.sphinx-doc.org/en/master/usage/extensions/autosectionlabel.htm=
-l
-
-This extension automatically creates a label for each section, instead
-of requiring us to manually create/manage custom labels. The custom
-labels were created by pandoc because they existed in Docbook (and
-were manually managed).
-
-That said, I can merge as it is. I plan on removing all custom labels
-eventually, but I don't think we need that for 3.2, it can be done
-later globally.
-
->        (e.g. the OpenEmbedded Layer Index at
->        http://layers.openembedded.org/layerindex/).
+>  -  *yocto-autobuilder2:* This
+> -   `README.md <http://git.yoctoproject.org/clean/cgit.cgi/yocto-autobui=
+lder2/tree/README.md>`__
+> +   :yocto-git:`README.md </cgit.cgi/yocto-autobuilder2/tree/README.md>`
+>     is the main README which detials how to set up the Yocto Project
+>     Autobuilder. The ``yocto-autobuilder2`` repository represents the
+>     Yocto Project's console UI plugin to Buildbot and the configuration
+>     necessary to configure Buildbot to perform the testing the project
+>     requires.
 >
-> @@ -78,7 +77,7 @@ extensive information about the build process.
->     -  See performance information such as build time, task time, CPU
->        usage, and disk I/O.
->
-> -For an overview of Toaster shipped with the Yocto Project DISTRO
-> +For an overview of Toaster shipped with the Yocto Project &DISTRO;
->  Release, see the "`Toaster - Yocto Project
->  2.2 <https://youtu.be/BlXdOYLgPxA>`__" video.
->
-> diff --git a/documentation/toaster-manual/toaster-manual-reference.rst b=
-/documentation/toaster-manual/toaster-manual-reference.rst
-> index a628c78cc..f0b561c9a 100644
-> --- a/documentation/toaster-manual/toaster-manual-reference.rst
-> +++ b/documentation/toaster-manual/toaster-manual-reference.rst
-> @@ -13,6 +13,8 @@ Information on ``manage.py`` commands does exist acros=
-s the Web and the
->  information in this manual by no means attempts to provide a command
->  comprehensive reference.
->
-> +.. _toaster-layer-source:
-> +
->  Layer Source
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> @@ -98,7 +100,9 @@ Use the Administration Interface
->  Access the administration interface through a browser by entering the
->  URL of your Toaster instance and adding "``/admin``" to the end of the
->  URL. As an example, if you are running Toaster locally, use the
-> -following URL: http://127.0.0.1:8000/admin
-> +following URL: ::
-
-I just learned from Mark that ": ::" can be replaced by "::", it's
-equivalent. You can keep it like that. I will do a global replacement
-of all occurences. Just mentioning for your next contributions ;)
-
-> +
-> +   http://127.0.0.1:8000/admin
->
->  The administration interface has a "Layer sources" section that include=
-s
->  an "Add layer source" button. Click that button and provide the require=
-d
-> @@ -110,12 +114,17 @@ Use the Fixture Feature
->  The Django fixture feature overrides the default layer server when you
->  use it to specify a custom URL. To use the fixture feature, create (or
->  edit) the file ``bitbake/lib/toaster.orm/fixtures/custom.xml``, and the=
-n
-> -set the following Toaster setting to your custom URL: <?xml
-> -version=3D"1.0" ?> <django-objects version=3D"1.0"> <object
-> -model=3D"orm.toastersetting" pk=3D"100"> <field name=3D"name"
-> -type=3D"CharField">CUSTOM_LAYERINDEX_SERVER</field> <field name=3D"valu=
-e"
-> -type=3D"CharField">https://layers.my_organization.org/layerindex/branch=
-/master/layers/</field>
-> -</object> <django-objects> When you start Toaster for the first time, o=
-r
-> +set the following Toaster setting to your custom URL: ::
-
-for XML wouldn't the rendering be better with
-.. code-block: xml
-Sphinx uses Pygments for code highlights.
-the default hightlight mode is python for each file. If you want to
-globally change the default mode for a given file, you can do:
-
-.. highlight:: shell
-
-after this statement shell will be used for :: blocks.
-
-> +
-> +   <?xml version=3D"1.0" ?>
-> +   <django-objects version=3D"1.0">
-> +      <object model=3D"orm.toastersetting" pk=3D"100">
-> +         <field name=3D"name" type=3D"CharField">CUSTOM_LAYERINDEX_SERV=
-ER</field>
-> +         <field name=3D"value" type=3D"CharField">https://layers.my_org=
-anization.org/layerindex/branch/master/layers/</field>
-> +      </object>
-> +   <django-objects>
-> +
-> +When you start Toaster for the first time, or
->  if you delete the file ``toaster.sqlite`` and restart, the database wil=
-l
->  populate cleanly from this layer index server.
->
-> @@ -125,10 +134,15 @@ is available by using the Toaster web interface. T=
-o do that, visit the
->  your layer source should be listed there.
->
->  If you change the information in your layer index server, refresh the
-> -Toaster database by running the following command: $
-> -bitbake/lib/toaster/manage.py lsupdates If Toaster can reach the API
-> -URL, you should see a message telling you that Toaster is updating the
-> -layer source information.
-> +Toaster database by running the following command:
-> +
-> +.. code-block:: shell
-> +
-> +   $ bitbake/lib/toaster/manage.py lsupdates
-> +
-> +
-> +If Toaster can reach the API URL, you should see a message telling you =
-that
-> +Toaster is updating the layer source information.
->
->  .. _toaster-releases:
->
-> @@ -157,11 +171,11 @@ to build against different revisions of OpenEmbedd=
-ed and BitBake.
->
->  As shipped, Toaster is configured to work with the following releases:
->
-> --  *Yocto Project DISTRO "DISTRO_NAME" or OpenEmbedded "DISTRO_NAME":*
-> +-  *Yocto Project &DISTRO; "&DISTRO_NAME;" or OpenEmbedded "&DISTRO_NAM=
-E;":*
->     This release causes your Toaster projects to build against the head
-> -   of the DISTRO_NAME_NO_CAP branch at
-> -   https://git.yoctoproject.org/cgit/cgit.cgi/poky/log/?h=3Drocko or
-> -   http://git.openembedded.org/openembedded-core/commit/?h=3Drocko.
-> +   of the &DISTRO_NAME_NO_CAP; branch at
-> +   https://git.yoctoproject.org/cgit/cgit.cgi/poky/log/?h=3D&DISTRO_NAM=
-E_NO_CAP; or
-> +   http://git.openembedded.org/openembedded-core/commit/?h=3D&DISTRO_NA=
-ME_NO_CAP;.
-
-good catch!
-
->
->  -  *Yocto Project "Master" or OpenEmbedded "Master":* This release
->     causes your Toaster Projects to build against the head of the master
-> @@ -224,9 +238,12 @@ particularly useful if your custom configuration de=
-fines fewer releases
->  or layers than the default fixture files.
->
->  The following example sets "name" to "CUSTOM_XML_ONLY" and its value to
-> -"True". <object model=3D"orm.toastersetting" pk=3D"99"> <field
-> -type=3D"CharField" name=3D"name">CUSTOM_XML_ONLY</field> <field
-> -type=3D"CharField" name=3D"value">True</field> </object>
-> +"True". ::
-> +
-> +   <object model=3D"orm.toastersetting" pk=3D"99">
-> +      <field type=3D"CharField" name=3D"name">CUSTOM_XML_ONLY</field>
-> +      <field type=3D"CharField" name=3D"value">True</field>
-> +   </object>
->
->  Understanding Fixture File Format
->  ---------------------------------
-> @@ -244,10 +261,15 @@ Defining the Default Distro and Other Values
->  This section defines the default distro value for new projects. By
->  default, it reserves the first Toaster Setting record "1". The followin=
-g
->  demonstrates how to set the project default value for
-> -:term:`DISTRO`: <!-- Set the project
-> -default value for DISTRO --> <object model=3D"orm.toastersetting" pk=3D=
-"1">
-> -<field type=3D"CharField" name=3D"name">DEFCONF_DISTRO</field> <field
-> -type=3D"CharField" name=3D"value">poky</field> </object> You can overri=
-de
-> +:term:`DISTRO`: ::
-> +
-> +   <!-- Set the project default value for DISTRO -->
-> +   <object model=3D"orm.toastersetting" pk=3D"1">
-> +      <field type=3D"CharField" name=3D"name">DEFCONF_DISTRO</field>
-> +      <field type=3D"CharField" name=3D"value">poky</field>
-> +   </object>
-> +
-> +You can override
->  other default project values by adding additional Toaster Setting
->  sections such as any of the settings coming from the ``settings.xml``
->  file. Also, you can add custom values that are included in the BitBake
-> @@ -258,40 +280,47 @@ Defining BitBake Version
->  ~~~~~~~~~~~~~~~~~~~~~~~~
->
->  The following defines which version of BitBake is used for the followin=
-g
-> -release selection: <!-- Bitbake versions which correspond to the
-> -metadata release --> <object model=3D"orm.bitbakeversion" pk=3D"1"> <fi=
-eld
-> -type=3D"CharField" name=3D"name">rocko</field> <field type=3D"CharField=
-"
-> -name=3D"giturl">git://git.yoctoproject.org/poky</field> <field
-> -type=3D"CharField" name=3D"branch">rocko</field> <field type=3D"CharFie=
-ld"
-> -name=3D"dirpath">bitbake</field> </object>
-> +release selection: ::
-> +
-> +   <!-- Bitbake versions which correspond to the metadata release -->
-> +   <object model=3D"orm.bitbakeversion" pk=3D"1">
-> +      <field type=3D"CharField" name=3D"name">&DISTRO_NAME_NO_CAP;</fie=
-ld>
-> +      <field type=3D"CharField" name=3D"giturl">git://git.yoctoproject.=
-org/poky</field>
-> +      <field type=3D"CharField" name=3D"branch">&DISTRO_NAME_NO_CAP;</f=
-ield>
-> +      <field type=3D"CharField" name=3D"dirpath">bitbake</field>
-> +   </object>
->
->  .. _defining-releases:
->
->  Defining Release
->  ~~~~~~~~~~~~~~~~
->
-> -The following defines the releases when you create a new project. <!--
-> -Releases available --> <object model=3D"orm.release" pk=3D"1"> <field
-> -type=3D"CharField" name=3D"name">rocko</field> <field type=3D"CharField=
-"
-> -name=3D"description">Yocto Project 2.4 "Rocko"</field> <field
-> -rel=3D"ManyToOneRel" to=3D"orm.bitbakeversion"
-> -name=3D"bitbake_version">1</field> <field type=3D"CharField"
-> -name=3D"branch_name">rocko</field> <field type=3D"TextField"
-> -name=3D"helptext">Toaster will run your builds using the tip of the <a
-> -href=3D"http://git.yoctoproject.org/cgit/cgit.cgi/poky/log/?h=3Drocko">=
-Yocto
-> -Project Rocko branch</a>.</field> </object> The "pk" value must match
-> -the above respective BitBake version record.
-> +The following defines the releases when you create a new project. ::
-> +
-> +   <!-- Releases available -->
-> +   <object model=3D"orm.release" pk=3D"1">
-> +      <field type=3D"CharField" name=3D"name">&DISTRO_NAME_NO_CAP;</fie=
-ld>
-> +      <field type=3D"CharField" name=3D"description">Yocto Project &DIS=
-TRO; "&DISTRO_NAME;"</field>
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.bitbakeversion" name=3D"bit=
-bake_version">1</field>
-> +      <field type=3D"CharField" name=3D"branch_name">&DISTRO_NAME_NO_CA=
-P;</field>
-> +      <field type=3D"TextField" name=3D"helptext">Toaster will run your=
- builds using the tip of the <a href=3D"http://git.yoctoproject.org/cgit/cg=
-it.cgi/poky/log/?h=3D&DISTRO_NAME_NO_CAP;">Yocto Project &DISTRO_NAME; bran=
-ch</a>.</field>
-> +   </object>
-> +
-> +The "pk" value must match the above respective BitBake version record.
->
->  Defining the Release Default Layer Names
->  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->
-> -The following defines the default layers for each release: <!-- Default
-> -project layers for each release --> <object
-> -model=3D"orm.releasedefaultlayer" pk=3D"1"> <field rel=3D"ManyToOneRel"
-> -to=3D"orm.release" name=3D"release">1</field> <field type=3D"CharField"
-> -name=3D"layer_name">openembedded-core</field> </object> The 'pk' values=
- in
-> -the example above should start at "1" and increment uniquely. You can
-> -use the same layer name in multiple releases.
-> +The following defines the default layers for each release: ::
-> +
-> +   <!-- Default project layers for each release -->
-> +   <object model=3D"orm.releasedefaultlayer" pk=3D"1">
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.release" name=3D"release">1=
-</field>
-> +      <field type=3D"CharField" name=3D"layer_name">openembedded-core</=
-field>
-> +   </object>
-> +
-> +The 'pk' values in the example above should start at "1" and increment
-> +uniquely. You can use the same layer name in multiple releases.
->
->  Defining Layer Definitions
->  ~~~~~~~~~~~~~~~~~~~~~~~~~~
-> @@ -301,36 +330,41 @@ the layers, and then defines the exact layer versi=
-on of the layer used
->  for each respective release. You must have one ``orm.layer`` entry for
->  each layer. Then, with each entry you need a set of
->  ``orm.layer_version`` entries that connects the layer with each release
-> -that includes the layer. In general all releases include the layer.
-> -<object model=3D"orm.layer" pk=3D"1"> <field type=3D"CharField"
-> -name=3D"name">openembedded-core</field> <field type=3D"CharField"
-> -name=3D"layer_index_url"></field> <field type=3D"CharField"
-> -name=3D"vcs_url">git://git.yoctoproject.org/poky</field> <field
-> -type=3D"CharField"
-> -name=3D"vcs_web_url">http://git.yoctoproject.org/cgit/cgit.cgi/poky</fi=
-eld>
-> -<field type=3D"CharField"
-> -name=3D"vcs_web_tree_base_url">http://git.yoctoproject.org/cgit/cgit.cg=
-i/poky/tree/%path%?h=3D%branch%</field>
-> -<field type=3D"CharField"
-> -name=3D"vcs_web_file_base_url">http://git.yoctoproject.org/cgit/cgit.cg=
-i/poky/tree/%path%?h=3D%branch%</field>
-> -</object> <object model=3D"orm.layer_version" pk=3D"1"> <field
-> -rel=3D"ManyToOneRel" to=3D"orm.layer" name=3D"layer">1</field> <field
-> -type=3D"IntegerField" name=3D"layer_source">0</field> <field
-> -rel=3D"ManyToOneRel" to=3D"orm.release" name=3D"release">1</field> <fie=
-ld
-> -type=3D"CharField" name=3D"branch">rocko</field> <field type=3D"CharFie=
-ld"
-> -name=3D"dirpath">meta</field> </object> <object model=3D"orm.layer_vers=
-ion"
-> -pk=3D"2"> <field rel=3D"ManyToOneRel" to=3D"orm.layer" name=3D"layer">1=
-</field>
-> -<field type=3D"IntegerField" name=3D"layer_source">0</field> <field
-> -rel=3D"ManyToOneRel" to=3D"orm.release" name=3D"release">2</field> <fie=
-ld
-> -type=3D"CharField" name=3D"branch">HEAD</field> <field type=3D"CharFiel=
-d"
-> -name=3D"commit">HEAD</field> <field type=3D"CharField"
-> -name=3D"dirpath">meta</field> </object> <object model=3D"orm.layer_vers=
-ion"
-> -pk=3D"3"> <field rel=3D"ManyToOneRel" to=3D"orm.layer" name=3D"layer">1=
-</field>
-> -<field type=3D"IntegerField" name=3D"layer_source">0</field> <field
-> -rel=3D"ManyToOneRel" to=3D"orm.release" name=3D"release">3</field> <fie=
-ld
-> -type=3D"CharField" name=3D"branch">master</field> <field type=3D"CharFi=
-eld"
-> -name=3D"dirpath">meta</field> </object> The layer "pk" values above mus=
-t
-> -be unique, and typically start at "1". The layer version "pk" values
-> -must also be unique across all layers, and typically start at "1".
-> +that includes the layer. In general all releases include the layer. ::
-> +
-> +   <object model=3D"orm.layer" pk=3D"1">
-> +      <field type=3D"CharField" name=3D"name">openembedded-core</field>
-> +      <field type=3D"CharField" name=3D"layer_index_url"></field>
-> +      <field type=3D"CharField" name=3D"vcs_url">git://git.yoctoproject=
-.org/poky</field>
-> +      <field type=3D"CharField" name=3D"vcs_web_url">http://git.yoctopr=
-oject.org/cgit/cgit.cgi/poky</field>
-> +      <field type=3D"CharField" name=3D"vcs_web_tree_base_url">http://g=
-it.yoctoproject.org/cgit/cgit.cgi/poky/tree/%path%?h=3D%branch%</field>
-> +      <field type=3D"CharField" name=3D"vcs_web_file_base_url">http://g=
-it.yoctoproject.org/cgit/cgit.cgi/poky/tree/%path%?h=3D%branch%</field>
-> +   </object>
-> +   <object model=3D"orm.layer_version" pk=3D"1">
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.layer" name=3D"layer">1</fi=
-eld>
-> +      <field type=3D"IntegerField" name=3D"layer_source">0</field>
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.release" name=3D"release">1=
-</field>
-> +      <field type=3D"CharField" name=3D"branch">&DISTRO_NAME_NO_CAP;</f=
-ield>
-> +      <field type=3D"CharField" name=3D"dirpath">meta</field>
-> +   </object> <object model=3D"orm.layer_version" pk=3D"2">
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.layer" name=3D"layer">1</fi=
-eld>
-> +      <field type=3D"IntegerField" name=3D"layer_source">0</field>
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.release" name=3D"release">2=
-</field>
-> +      <field type=3D"CharField" name=3D"branch">HEAD</field>
-> +      <field type=3D"CharField" name=3D"commit">HEAD</field>
-> +      <field type=3D"CharField" name=3D"dirpath">meta</field>
-> +   </object>
-> +   <object model=3D"orm.layer_version" pk=3D"3">
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.layer" name=3D"layer">1</fi=
-eld>
-> +      <field type=3D"IntegerField" name=3D"layer_source">0</field>
-> +      <field rel=3D"ManyToOneRel" to=3D"orm.release" name=3D"release">3=
-</field>
-> +      <field type=3D"CharField" name=3D"branch">master</field>
-> +      <field type=3D"CharField" name=3D"dirpath">meta</field>
-> +   </object>
-> +
-> +The layer "pk" values above must be unique, and typically start at "1".=
- The
-> +layer version "pk" values must also be unique across all layers, and ty=
-pically
-> +start at "1".
->
->  Remote Toaster Monitoring
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D
-> @@ -350,41 +384,83 @@ Checking Health
->
->  Before you use remote Toaster monitoring, you should do a health check.
->  To do this, ping the Toaster server using the following call to see if
-> -it is still alive: http://host:port/health Be sure to provide values fo=
-r
-> -host and port. If the server is alive, you will get the response HTML:
-> -<!DOCTYPE html> <html lang=3D"en"> <head><title>Toaster
-> -Health</title></head> <body>Ok</body> </html>
-> +it is still alive: ::
-> +
-> +   http://host:port/health
-> +
-> +Be sure to provide values for host and port. If the server is alive, yo=
-u will
-> +get the response HTML: ::
-
-html pygment?
-
-> +
-> +   <!DOCTYPE html>
-> +   <html lang=3D"en">
-> +      <head><title>Toaster Health</title></head>
-> +      <body>Ok</body>
-> +   </html>
->
->  Determining Status of Builds in Progress
->  ----------------------------------------
->
->  Sometimes it is useful to determine the status of a build in progress.
-> -To get the status of pending builds, use the following call:
-> -http://host:port/toastergui/api/building Be sure to provide values for
-> -host and port. The output is a JSON file that itemizes all builds in
-> -progress. This file includes the time in seconds since each respective
-> -build started as well as the progress of the cloning, parsing, and task
-> -execution. The following is sample output for a build in progress:
-> -{"count": 1, "building": [ {"machine": "beaglebone", "seconds":
-> -"463.869", "task": "927:2384", "distro": "poky", "clone": "1:1", "id":
-> -2, "start": "2017-09-22T09:31:44.887Z", "name": "20170922093200",
-> -"parse": "818:818", "project": "my_rocko", "target":
-> -"core-image-minimal" }] } The JSON data for this query is returned in a
-> +To get the status of pending builds, use the following call: ::
-> +
-> +   http://host:port/toastergui/api/building
-> +
-> +Be sure to provide values for host and port. The output is a JSON file =
-that
-> +itemizes all builds in progress. This file includes the time in seconds=
- since
-> +each respective build started as well as the progress of the cloning, p=
-arsing,
-> +and task execution. The following is sample output for a build in progr=
-ess: ::
-> +
-> +   {"count": 1,
-> +    "building": [
-> +      {"machine": "beaglebone",
-> +        "seconds": "463.869",
-> +        "task": "927:2384",
-> +        "distro": "poky",
-> +        "clone": "1:1",
-> +        "id": 2,
-> +        "start": "2017-09-22T09:31:44.887Z",
-> +        "name": "20170922093200",
-> +        "parse": "818:818",
-> +        "project": "my_rocko",
-> +        "target": "core-image-minimal"
-> +      }]
-> +   }
-> +
-
-JSON pygment?
-
-> +The JSON data for this query is returned in a
->  single line. In the previous example the line has been artificially
->  split for readability.
->
-> +.. _toaster-checking-status-of-builds-completed:
-> +
->  Checking Status of Builds Completed
->  -----------------------------------
->
->  Once a build is completed, you get the status when you use the followin=
-g
-> -call: http://host:port/toastergui/api/builds Be sure to provide values
-> -for host and port. The output is a JSON file that itemizes all complete
-> -builds, and includes build summary information. The following is sample
-> -output for a completed build: {"count": 1, "builds": [ {"distro":
-> -"poky", "errors": 0, "machine": "beaglebone", "project": "my_rocko",
-> -"stop": "2017-09-22T09:26:36.017Z", "target": "quilt-native", "seconds"=
-:
-> -"78.193", "outcome": "Succeeded", "id": 1, "start":
-> -"2017-09-22T09:25:17.824Z", "warnings": 1, "name": "20170922092618" }] =
-}
-> +call: ::
-> +
-> +   http://host:port/toastergui/api/builds
-> +
-> +Be sure to provide values for host and port. The output is a JSON file =
-that
-> +itemizes all complete builds, and includes build summary information. T=
-he
-> +following is sample output for a completed build: ::
-> +
-> +   {"count": 1,
-> +    "builds": [
-> +      {"distro": "poky",
-> +         "errors": 0,
-> +         "machine": "beaglebone",
-> +         "project": "my_rocko",
-> +         "stop": "2017-09-22T09:26:36.017Z",
-> +         "target": "quilt-native",
-> +         "seconds": "78.193",
-> +         "outcome": "Succeeded",
-> +         "id": 1,
-> +         "start": "2017-09-22T09:25:17.824Z",
-> +         "warnings": 1,
-> +         "name": "20170922092618"
-> +      }]
-> +   }
-> +
->  The JSON data for this query is returned in a single line. In the
->  previous example the line has been artificially split for readability.
->
-> @@ -392,22 +468,37 @@ Determining Status of a Specific Build
->  --------------------------------------
->
->  Sometimes it is useful to determine the status of a specific build. To
-> -get the status of a specific build, use the following call:
-> -http://host:port/toastergui/api/build/ID Be sure to provide values for
-> +get the status of a specific build, use the following call: ::
-> +
-> +   http://host:port/toastergui/api/build/ID
-> +
-> +Be sure to provide values for
->  host, port, and ID. You can find the value for ID from the Builds
-> -Completed query. See the "`Checking Status of Builds
-> -Completed <#checking-status-of-builds-completed>`__" section for more
-> -information.
-> +Completed query. See the ":ref:`toaster-checking-status-of-builds-compl=
-eted`"
-> +section for more information.
->
->  The output is a JSON file that itemizes the specific build and includes
->  build summary information. The following is sample output for a specifi=
-c
-> -build: {"build": {"distro": "poky", "errors": 0, "machine":
-> -"beaglebone", "project": "my_rocko", "stop": "2017-09-22T09:26:36.017Z"=
-,
-> -"target": "quilt-native", "seconds": "78.193", "outcome": "Succeeded",
-> -"id": 1, "start": "2017-09-22T09:25:17.824Z", "warnings": 1, "name":
-> -"20170922092618", "cooker_log":
-> -"/opt/user/poky/build-toaster-2/tmp/log/cooker/beaglebone/build_2017092=
-2_022607.991.log"
-> -} } The JSON data for this query is returned in a single line. In the
-> +build: ::
-> +
-> +   {"build":
-> +      {"distro": "poky",
-> +       "errors": 0,
-> +       "machine": "beaglebone",
-> +       "project": "my_rocko",
-
-my_&DISTRO_NAME_NO_CAP;?
-
-> +       "stop": "2017-09-22T09:26:36.017Z",
-> +       "target": "quilt-native",
-> +       "seconds": "78.193",
-> +       "outcome": "Succeeded",
-> +       "id": 1,
-> +       "start": "2017-09-22T09:25:17.824Z",
-> +       "warnings": 1,
-> +       "name": "20170922092618",
-> +       "cooker_log": "/opt/user/poky/build-toaster-2/tmp/log/cooker/bea=
-glebone/build_20170922_022607.991.log"
-> +      }
-> +   }
-> +
-> +The JSON data for this query is returned in a single line. In the
->  previous example the line has been artificially split for readability.
->
->  .. _toaster-useful-commands:
-> @@ -419,7 +510,7 @@ In addition to the web user interface and the script=
-s that start and
->  stop Toaster, command-line commands exist through the ``manage.py``
->  management script. You can find general documentation on ``manage.py``
->  at the
-> -`Django <https://docs.djangoproject.com/en/1.7/topics/settings/>`__
-> +`Django <https://docs.djangoproject.com/en/2.2/topics/settings/>`__
->  site. However, several ``manage.py`` commands have been created that ar=
-e
->  specific to Toaster and are used to control configuration and back-end
->  tasks. You can locate these commands in the
-> @@ -446,19 +537,30 @@ tasks. You can locate these commands in the
->  --------------
->
->  The ``buildslist`` command lists all builds that Toaster has recorded.
-> -Access the command as follows: $ bitbake/lib/toaster/manage.py
-> -buildslist The command returns a list, which includes numeric
-> +Access the command as follows:
-> +
-> +.. code-block:: shell
-> +
-> +   $ bitbake/lib/toaster/manage.py buildslist
-> +
-> +The command returns a list, which includes numeric
->  identifications, of the builds that Toaster has recorded in the current
->  database.
->
->  You need to run the ``buildslist`` command first to identify existing
->  builds in the database before using the
-> -```builddelete`` <#toaster-command-builddelete>`__ command. Here is an
-> -example that assumes default repository and build directory names: $ cd
-> -~/poky/build $ python ../bitbake/lib/toaster/manage.py buildslist If
-> -your Toaster database had only one build, the above ``buildslist``
-> -command would return something like the following: 1: qemux86 poky
-> -core-image-minimal
-> +:ref:`toaster-command-builddelete` command. Here is an
-> +example that assumes default repository and build directory names:
-> +
-> +.. code-block:: shell
-> +
-> +   $ cd ~/poky/build
-> +   $ python ../bitbake/lib/toaster/manage.py buildslist
-> +
-> +If your Toaster database had only one build, the above ``buildslist``
-> +command would return something like the following: ::
-> +
-> +   1: qemux86 poky core-image-minimal
->
->  .. _toaster-command-builddelete:
->
-> @@ -473,7 +575,7 @@ the database.
->
->  Prior to running the ``builddelete`` command, you need to get the ID
->  associated with builds by using the
-> -```buildslist`` <#toaster-command-buildslist>`__ command.
-> +:ref:`toaster-command-buildslist` command.
->
->  .. _toaster-command-perf:
->
-> @@ -481,9 +583,14 @@ associated with builds by using the
->  --------
->
->  The ``perf`` command measures Toaster performance. Access the command a=
-s
-> -follows: $ bitbake/lib/toaster/manage.py perf The command is a sanity
-> -check that returns page loading times in order to identify performance
-> -problems.
-> +follows:
-> +
-> +.. code-block:: shell
-> +
-> +   $ bitbake/lib/toaster/manage.py perf
-> +
-> +The command is a sanity check that returns page loading times in order =
-to
-> +identify performance problems.
->
->  .. _toaster-command-checksettings:
->
-> @@ -491,7 +598,12 @@ problems.
->  -----------------
->
->  The ``checksettings`` command verifies existing Toaster settings. Acces=
-s
-> -the command as follows: $ bitbake/lib/toaster/manage.py checksettings
-> +the command as follows:
-> +
-> +.. code-block:: shell
-> +
-> +   $ bitbake/lib/toaster/manage.py checksettings
-> +
->  Toaster uses settings that are based on the database to configure the
->  building tasks. The ``checksettings`` command verifies that the databas=
-e
->  settings are valid in the sense that they have the minimal information
-> @@ -499,10 +611,15 @@ needed to start a build.
->
->  In order for the ``checksettings`` command to work, the database must b=
-e
->  correctly set up and not have existing data. To be sure the database is
-> -ready, you can run the following: $ bitbake/lib/toaster/manage.py
-> -syncdb $ bitbake/lib/toaster/manage.py migrate orm $
-> -bitbake/lib/toaster/manage.py migrate bldcontrol After running these
-> -commands, you can run the ``checksettings`` command.
-> +ready, you can run the following:
-> +
-> +.. code-block:: shell
-> +
-> +   $ bitbake/lib/toaster/manage.py syncdb
-> +   $ bitbake/lib/toaster/manage.py migrate orm
-> +   $ bitbake/lib/toaster/manage.py migrate bldcontrol
-> +
-> +After running these commands, you can run the ``checksettings`` command=
+> --  *yocto-autobuilder-helper:* This `README <http://git.yoctoproject.or=
+g/clean/cgit.cgi/yocto-autobuilder-helper/tree/README/>`__
+> +-  *yocto-autobuilder-helper:* This :yocto-git:`README </cgit.cgi/yocto=
+-autobuilder-helper/tree/README/>`
+>     and repository contains Yocto Project Autobuilder Helper scripts and
+>     configuration. The ``yocto-autobuilder-helper`` repository contains
+>     the "glue" logic that defines which tests to run and how to run them=
 .
+> @@ -65,9 +65,9 @@ that the Yocto Project customizes using code from the
+>  resulting UI plug-in allows you to visualize builds in a way suited to
+>  the project's needs.
 >
->  .. _toaster-command-runbuilds:
+> -A helper layer provides configuration and job management through
+> +A ``helper`` layer provides configuration and job management through
+>  scripts found in the ``yocto-autobuilder-helper`` repository. The
+> -helper layer contains the bulk of the build configuration
+> +``helper`` layer contains the bulk of the build configuration
+>  information and is release-specific, which makes it highly customizable
+>  on a per-project basis. The layer is CI system-agnostic and contains a
+>  number of Helper scripts that can generate build configurations from
+> @@ -137,10 +137,8 @@ thefollowing types of tests:
 >
-> @@ -510,8 +627,13 @@ commands, you can run the ``checksettings`` command=
-.
->  -------------
+>     $ bitbake image -c testimage
 >
->  The ``runbuilds`` command launches scheduled builds. Access the command
-> -as follows: $ bitbake/lib/toaster/manage.py runbuilds The ``runbuilds``
-> -command checks if scheduled builds exist in the database and then
-> -launches them per schedule. The command returns after the builds start
-> -but before they complete. The Toaster Logging Interface records and
-> +as follows:
-> +
-> +.. code-block:: shell
-> +
-> +   $ bitbake/lib/toaster/manage.py runbuilds
-> +
-> +The ``runbuilds`` command checks if scheduled builds exist in the datab=
-ase
-> +and then launches them per schedule. The command returns after the buil=
-ds
-> +start but before they complete. The Toaster Logging Interface records a=
-nd
->  updates the database when the builds complete.
-> diff --git a/documentation/toaster-manual/toaster-manual-setup-and-use.r=
-st b/documentation/toaster-manual/toaster-manual-setup-and-use.rst
-> index 1ff28395f..c285d7066 100644
-> --- a/documentation/toaster-manual/toaster-manual-setup-and-use.rst
-> +++ b/documentation/toaster-manual/toaster-manual-setup-and-use.rst
-> @@ -4,32 +4,54 @@
->  Setting Up and Using Toaster
->  ****************************
+> -   The tests utilize the
+> -   :ref:`testimage* <ref-classes-testimage*>`
+> -   classes and the
+> -   :ref:`ref-tasks-testimage` task.
+> +   The tests utilize the :ref:`testimage* <ref-classes-testimage*>`
+> +   classes and the :ref:`ref-tasks-testimage` task.
 >
-> +.. _toaster-starting-toaster-for-local-development:
-> +
->  Starting Toaster for Local Development
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>  -  *Layer Testing:* The Autobuilder has the possibility to test whether
+>     specific layers work with the test of the system. The layers tested
+> @@ -155,9 +153,11 @@ thefollowing types of tests:
+>     ":yocto_wiki:`Ptest </wiki/Ptest>`" Wiki page for more
+>     information on Ptest.
 >
->  Once you have set up the Yocto Project and installed the Toaster system
-> -dependencies as described in the "`Preparing to Use
-> -Toaster <#toaster-manual-start>`__" chapter, you are ready to start
-> +dependencies as described in the ":ref:`toaster-manual/toaster-manual-s=
-tart:Preparing to Use
-> +Toaster`" chapter, you are ready to start
-
-right. here you are using the label created by autosectionlabel!
-
->  Toaster.
->
->  Navigate to the root of your
-> -:term:`Source Directory` (e.g. ``poky``): $
-> -cd poky Once in that directory, source the build environment script: $
-> -source oe-init-build-env Next, from the build directory (e.g.
-> -``poky/build``), start Toaster using this command: $ source toaster
-> -start You can now run your builds from the command line, or with Toaste=
-r
-> -as explained in section "`Using the Toaster Web
-> -Interface <#using-the-toaster-web-interface>`__".
-> +:term:`Source Directory` (e.g. ``poky``):
-> +
-> +.. code-block:: shell
-
-you have plenty of code-block:: shell. You might want to switch to
-shell as default a bit earlier, and use :: operator instead.
-
-> +
-> +   $ cd poky
-> +
-> +Once in that directory, source the build environment script:
-> +
-> +.. code-block:: shell
-> +
-> +   $ source oe-init-build-env
-> +
-> +Next, from the build directory (e.g.
-> +``poky/build``), start Toaster using this command:
-> +
-> +.. code-block:: shell
-> +
-> +   $ source toaster start
-> +
-> +You can now run your builds from the command line, or with Toaster
-> +as explained in section ":ref:`toaster-using-the-toaster-web-interface`=
-".
->
->  To access the Toaster web interface, open your favorite browser and
-> -enter the following: http://127.0.0.1:8000
-> +enter the following: ::
-> +
-> +   http://127.0.0.1:8000
->
->  Setting a Different Port
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
->
->  By default, Toaster starts on port 8000. You can use the ``WEBPORT``
->  parameter to set a different port. For example, the following command
-> -sets the port to "8400": $ source toaster start webport=3D8400
-> +sets the port to "8400":
-> +
-> +.. code-block:: shell
-> +
-> +   $ source toaster start webport=3D8400
->
->  Setting Up Toaster Without a Web Server
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> @@ -54,8 +76,13 @@ Toaster environment. Before closing the environment, =
-however, you should
->  allow a few minutes to ensure the complete transfer of its BitBake buil=
-d
->  statistics to the Toaster database. If you have a separate Toaster web
->  server instance running, you can watch this command-line build=E2=80=99=
-s
-> -progress and examine the results as soon as they are posted: $ source
-> -toaster start noweb $ bitbake target $ source toaster stop
-> +progress and examine the results as soon as they are posted:
-> +
-> +.. code-block:: shell
-> +
-> +   $ source toaster start noweb
-> +   $ bitbake target
-> +   $ source toaster stop
->
->  Setting Up Toaster Without a Build Server
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> @@ -69,23 +96,33 @@ disabled. Doing so is useful for the following:
->  -  Allowing only local command-line builds to be captured into the
->     Toaster database.
->
-> -Use the following command to set up Toaster without a build server: $
-> -source toaster start nobuild webport=3Dport
-> +Use the following command to set up Toaster without a build server:
-> +
-> +.. code-block:: shell
-> +
-> +   $ source toaster start nobuild webport=3Dport
->
->  Setting up External Access
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
->
-> -By default, Toaster binds to the loop back address (i.e. localhost),
-> +By default, Toaster binds to the loop back address (i.e. ``localhost``)=
-,
->  which does not allow access from external hosts. To allow external
->  access, use the ``WEBPORT`` parameter to open an address that connects
->  to the network, specifically the IP address that your NIC uses to
->  connect to the network. You can also bind to all IP addresses the
->  computer supports by using the shortcut "0.0.0.0:port".
->
-> -The following example binds to all IP addresses on the host: $ source
-> -toaster start webport=3D0.0.0.0:8400 This example binds to a specific I=
-P
-> -address on the host's NIC: $ source toaster start
-> -webport=3D192.168.1.1:8400
-> +The following example binds to all IP addresses on the host:
-> +
-> +.. code-block:: shell
-> +
-> +   $ source toaster start webport=3D0.0.0.0:8400
-> +
-> +This example binds to a specific IP address on the host's NIC:
-> +
-> +.. code-block:: shell
-> +
-> +   $ source toaster start webport=3D192.168.1.1:8400
->
->  The Directory for Cloning Layers
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> @@ -129,12 +166,20 @@ superuser by following these steps:
->  1. If you used ``pip3``, which is recommended, to set up the Toaster
->     system dependencies, you need be sure the local user path is in your
->     ``PATH`` list. To append the pip3 local user path, use the following
-> -   command: $ export PATH=3D$PATH:$HOME/.local/bin
-> +   command:
-> +
-> +.. code-block:: shell
-> +
-> +   $ export PATH=3D$PATH:$HOME/.local/bin
->
->  2. From the directory containing the Toaster database, which by default
->     is the :term:`Build Directory`,
-> -   invoke the ``createsuperuser`` command from ``manage.py``: $ cd
-> -   ~/poky/build $ ../bitbake/lib/toaster/manage.py createsuperuser
-> +   invoke the ``createsuperuser`` command from ``manage.py``:
-> +
-> +.. code-block:: shell
-> +
-> +   $ cd ~/poky/build
-> +   $ ../bitbake/lib/toaster/manage.py createsuperuser
->
->  3. Django prompts you for the username, which you need to provide.
->
-> @@ -145,15 +190,20 @@ superuser by following these steps:
->  6. Django prompts you to re-enter your password for verification.
->
->  After completing these steps, the following confirmation message
-> -appears: Superuser created successfully.
-> +appears: ::
-> +
-> +   Superuser created successfully.
->
->  Creating a superuser allows you to access the Django administration
->  interface through a browser. The URL for this interface is the same as
->  the URL used for the Toaster instance with "/admin" on the end. For
-> -example, if you are running Toaster locally, use the following URL:
-> -http://127.0.0.1:8000/admin You can use the Django administration
-> -interface to set Toaster configuration parameters such as the build
-> -directory, layer sources, default variable values, and BitBake versions=
-.
-> +example, if you are running Toaster locally, use the following URL: ::
-> +
-> +   http://127.0.0.1:8000/admin
-> +
-> +You can use the Django administration interface to set Toaster configur=
-ation
-> +parameters such as the build directory, layer sources, default variable
-> +values, and BitBake versions.
->
->  .. _toaster-setting-up-a-production-instance-of-toaster:
->
-> @@ -175,12 +225,10 @@ Be sure you meet the following requirements:
->
->  .. note::
->
-> -   You must comply with all Apache,
-> -   mod-wsgi
-> -   , and Mysql requirements.
-> +   You must comply with all Apache, ``mod-wsgi``, and Mysql requirement=
-s.
->
-> --  Have all the build requirements as described in the "`Preparing to
-> -   Use Toaster <#toaster-manual-start>`__" chapter.
-> +-  Have all the build requirements as described in the ":ref:`toaster-m=
-anual/toaster-manual-start:Preparing to
-> +   Use Toaster`" chapter.
->
->  -  Have an Apache webserver.
->
-> @@ -188,17 +236,24 @@ Be sure you meet the following requirements:
->
->  -  Use the Mysql database server.
->
-> --  If you are using Ubuntu 16.04, run the following: $ sudo apt-get
-> -   install apache2 libapache2-mod-wsgi-py3 mysql-server python3-pip
-> -   libmysqlclient-dev
-> +-  If you are using Ubuntu, run the following:
-> +
-> +.. code-block:: shell
-> +
-> +   $ sudo apt-get install apache2 libapache2-mod-wsgi-py3 mysql-server =
-python3-pip libmysqlclient-dev
-> +
-> +-  If you are using Fedora or a RedHat distribution, run the
-> +   following:
-> +
-> +.. code-block:: shell
-> +
-> +   $ sudo dnf install httpd python3-mod_wsgi python3-pip mariadb-server=
- mariadb-devel python3-devel
-> +
-> +-  If you are using openSUSE, run the following:
->
-> --  If you are using Fedora 24 or a RedHat distribution, run the
-> -   following: $ sudo dnf install httpd python3-mod_wsgi python3-pip
-> -   mariadb-server mariadb-devel python3-devel
-> +.. code-block:: shell
->
-> --  If you are using openSUSE Leap 42.1, run the following: $ sudo zyppe=
-r
-> -   install apache2 apache2-mod_wsgi-python3 python3-pip mariadb
-> -   mariadb-client python3-devel
-> +   $ sudo zypper install apache2 apache2-mod_wsgi-python3 python3-pip m=
-ariadb mariadb-client python3-devel
->
->  .. _toaster-installation-steps:
->
-> @@ -208,18 +263,29 @@ Installation
->  Perform the following steps to install Toaster:
->
->  1.  Create toaster user and set its home directory to
-
-numbered lists can be managed by Sphinx, instead of 1., 2. ... you can
-use #. for each item, it will be numbered by Sphinx.
-
-> -    ``/var/www/toaster``: $ sudo /usr/sbin/useradd toaster -md
-> -    /var/www/toaster -s /bin/false $ sudo su - toaster -s /bin/bash
-> +    ``/var/www/toaster``:
-> +
-> +.. code-block:: shell
-> +
-> +   $ sudo /usr/sbin/useradd toaster -md /var/www/toaster -s /bin/false
-> +   $ sudo su - toaster -s /bin/bash
->
->  2.  Checkout a copy of ``poky`` into the web server directory. You will
-> -    be using ``/var/www/toaster``: $ git clone
-> -    git://git.yoctoproject.org/poky $ git checkout DISTRO_NAME_NO_CAP
-> +    be using ``/var/www/toaster``:
-> +
-> +.. code-block:: shell
-> +
-> +   $ git clone git://git.yoctoproject.org/poky
-> +   $ git checkout &DISTRO_NAME_NO_CAP;
->
->  3.  Install Toaster dependencies using the --user flag which keeps the
-> -    Python packages isolated from your system-provided packages: $ cd
-> -    /var/www/toaster/ $ pip3 install --user -r
-> -    ./poky/bitbake/toaster-requirements.txt $ pip3 install --user
-> -    mysqlclient
-> +    Python packages isolated from your system-provided packages:
-> +
-> +    .. code-block:: shell
-> +
-> +      $ cd /var/www/toaster/
-> +      $ pip3 install --user -r ./poky/bitbake/toaster-requirements.txt
-> +      $ pip3 install --user mysqlclient
->
->      .. note::
->
-> @@ -232,30 +298,59 @@ Perform the following steps to install Toaster:
->      as follows:
->
->      -  Edit the
-> -       `DATABASES <https://docs.djangoproject.com/en/1.11/ref/settings/=
-#databases>`__
-> -       settings: DATABASES =3D { 'default': { 'ENGINE':
-> -       'django.db.backends.mysql', 'NAME': 'toaster_data', 'USER':
-> -       'toaster', 'PASSWORD': 'yourpasswordhere', 'HOST': 'localhost',
-> -       'PORT': '3306', } }
-> +       `DATABASES <https://docs.djangoproject.com/en/2.2/ref/settings/#=
-databases>`__
-> +       settings:
-> +
-> +       .. code-block:: shell
-
-how does it look with python instead of shell?
-
-> +
-> +         DATABASES =3D {
-> +            'default': {
-> +               'ENGINE': 'django.db.backends.mysql',
-> +               'NAME': 'toaster_data',
-> +               'USER': 'toaster',
-> +               'PASSWORD': 'yourpasswordhere',
-> +               'HOST': 'localhost',
-> +               'PORT': '3306',
-> +            }
-> +         }
->
->      -  Edit the
-> -       `SECRET_KEY <https://docs.djangoproject.com/en/1.11/ref/settings=
-/#std:setting-SECRET_KEY>`__:
-> -       SECRET_KEY =3D 'your_secret_key'
-> +       `SECRET_KEY <https://docs.djangoproject.com/en/2.2/ref/settings/=
-#std:setting-SECRET_KEY>`__:
-> +
-> +       .. code-block:: shell
-> +
-> +         SECRET_KEY =3D 'your_secret_key'
->
->      -  Edit the
-> -       `STATIC_ROOT <https://docs.djangoproject.com/en/1.11/ref/setting=
-s/#std:setting-STATIC_ROOT>`__:
-> -       STATIC_ROOT =3D '/var/www/toaster/static_files/'
-> +       `STATIC_ROOT <https://docs.djangoproject.com/en/2.2/ref/settings=
-/#std:setting-STATIC_ROOT>`__:
-> +
-> +      .. code-block:: shell
-> +
-> +         STATIC_ROOT =3D '/var/www/toaster/static_files/'
->
-> -5.  Add the database and user to the ``mysql`` server defined earlier: =
+> --  *SDK Testing:* Image tests initiated through the following command: =
 $
-> -    mysql -u root -p mysql> CREATE DATABASE toaster_data; mysql> CREATE
-> -    USER 'toaster'@'localhost' identified by 'yourpasswordhere'; mysql>
-> -    GRANT all on toaster_data.\* to 'toaster'@'localhost'; mysql> quit
-> +5.  Add the database and user to the ``mysql`` server defined earlier:
+> -   bitbake image -c testsdk The tests utilize the
+> -   :ref:`testsdk <ref-classes-testsdk>` class and
+> +-  *SDK Testing:* Image tests initiated through the following command::
 > +
-> +   .. code-block:: shell
+> +   $ bitbake image -c testsdk
 > +
-> +      $ mysql -u root -p
-> +      mysql> CREATE DATABASE toaster_data;
-> +      mysql> CREATE USER 'toaster'@'localhost' identified by 'yourpassw=
-ordhere';
-> +      mysql> GRANT all on toaster_data.\* to 'toaster'@'localhost';
-> +      mysql> quit
+> +   The tests utilize the :ref:`testsdk <ref-classes-testsdk>` class and
+>     the ``do_testsdk`` task.
 >
->  6.  Get Toaster to create the database schema, default data, and gather
-> -    the statically-served files: $ cd /var/www/toaster/poky/ $
-> -    ./bitbake/lib/toaster/manage.py migrate $ TOASTER_DIR=3D`pwd\`
-> -    TEMPLATECONF=3D'poky' \\ ./bitbake/lib/toaster/manage.py checksetti=
-ngs
-> -    $ ./bitbake/lib/toaster/manage.py collectstatic In the previous
-> +    the statically-served files:
-> +
-> +    .. code-block:: shell
-> +
-> +      $ cd /var/www/toaster/poky/
-> +      $ ./bitbake/lib/toaster/manage.py migrate
-> +      $ TOASTER_DIR=3D`pwd\` TEMPLATECONF=3D'poky' \
-> +         ./bitbake/lib/toaster/manage.py checksettings
-> +      $ ./bitbake/lib/toaster/manage.py collectstatic
-> +
-> +
-> +    In the previous
->      example, from the ``poky`` directory, the ``migrate`` command
->      ensures the database schema changes have propagated correctly (i.e.
->      migrations). The next line sets the Toaster root directory
-> @@ -264,16 +359,21 @@ Perform the following steps to install Toaster:
->      ``TEMPLATECONF`` value reflects the contents of
->      ``poky/.templateconf``, and by default, should include the string
->      "poky". For more information on the Toaster configuration file, see
-> -    the "`Configuring Toaster <#configuring-toaster>`__" section.
-> +    the ":ref:`toaster-manual/toaster-manual-reference:Configuring Toas=
-ter`" section.
+>  -  *Unit Testing:* Unit tests on various components of the system run
+> @@ -253,12 +253,9 @@ Tests map into the codebase as follows:
+>     -  These tests build an image, boot it, and run tests against the
+>        image's content.
 >
->      This line also runs the ``checksettings`` command, which configures
->      the location of the Toaster :term:`Build Directory`.
->      The Toaster
->      root directory ``TOASTER_DIR`` determines where the Toaster build
->      directory is created on the file system. In the example above,
-> -    ``TOASTER_DIR`` is set as follows: /var/www/toaster/poky This
-> -    setting causes the Toaster build directory to be:
-> -    /var/www/toaster/poky/build
-> +    ``TOASTER_DIR`` is set as follows: ::
-> +
-> +       /var/www/toaster/poky
-> +
-> +
-> +    This setting causes the Toaster build directory to be: ::
-> +
-> +       /var/www/toaster/poky/build
+> -   -  The code for these tests resides in
+> -      ``meta/lib/oeqa/runtime/cases/``.
+> +   -  The code for these tests resides in ``meta/lib/oeqa/runtime/cases=
+/``.
 >
->      Finally, the ``collectstatic`` command is a Django framework comman=
-d
->      that collects all the statically served files into a designated
-> @@ -287,61 +387,138 @@ Perform the following steps to install Toaster:
->      from the Layer Index is complete.
+> -   -  You need to set the
+> -      :term:`IMAGE_CLASSES`
+> -      variable as follows::
+> +   -  You need to set the :term:`IMAGE_CLASSES` variable as follows::
 >
->      To start the default Toaster Django web server with the Toaster
-> -    database now in Mysql, use the standard start commands: $ source
-> -    oe-init-build-env $ source toaster start Additionally, if Django is
-> -    sufficient for your requirements, you can use it for your release
-> -    system and migrate later to Apache as your requirements change.
-> +    database now in Mysql, use the standard start commands:
-> +
-> +    .. code-block:: shell
-> +
-> +      $ source oe-init-build-env
-> +      $ source toaster start
-> +
-> +
-> +    Additionally, if Django is sufficient for your requirements, you ca=
-n use
-> +    it for your release system and migrate later to Apache as your
-> +    requirements change.
+>        IMAGE_CLASSES +=3D "testimage"
 >
->  8.  Add an Apache configuration file for Toaster to your Apache web
->      server's configuration directory. If you are using Ubuntu or Debian=
-,
-> -    put the file here: /etc/apache2/conf-available/toaster.conf If you
-> -    are using Fedora or RedHat, put it here:
-> -    /etc/httpd/conf.d/toaster.conf If you are using OpenSUSE, put it
-> -    here: /etc/apache2/conf.d/toaster.conf Following is a sample Apache
-> -    configuration for Toaster you can follow: Alias /static
-> -    /var/www/toaster/static_files <Directory
-> -    /var/www/toaster/static_files> <IfModule mod_access_compat.c> Order
-> -    allow,deny Allow from all </IfModule> <IfModule
-> -    !mod_access_compat.c> Require all granted </IfModule> </Directory>
-> -    <Directory /var/www/toaster/poky/bitbake/lib/toaster/toastermain>
-> -    <Files "wsgi.py"> Require all granted </Files> </Directory>
-> -    WSGIDaemonProcess toaster_wsgi
-> -    python-path=3D/var/www/toaster/poky/bitbake/lib/toaster:/var/www/to=
-aster/.local/lib/python3.4/site-packages
-> -    WSGIScriptAlias /
-> -    "/var/www/toaster/poky/bitbake/lib/toaster/toastermain/wsgi.py"
-> -    <Location /> WSGIProcessGroup toaster_wsgi </Location> If you are
-> -    using Ubuntu or Debian, you will need to enable the config and
-> -    module for Apache: $ sudo a2enmod wsgi $ sudo a2enconf toaster $
-> -    chmod +x bitbake/lib/toaster/toastermain/wsgi.py Finally, restart
-> -    Apache to make sure all new configuration is loaded. For Ubuntu,
-> -    Debian, and OpenSUSE use: $ sudo service apache2 restart For Fedora
-> -    and RedHat use: $ sudo service httpd restart
-> +    put the file here: ::
-> +
-> +      /etc/apache2/conf-available/toaster.conf
-> +
-> +
-> +    If you are using Fedora or RedHat, put it here: ::
-> +
-> +      /etc/httpd/conf.d/toaster.conf
-> +
-> +    If you are using OpenSUSE, put it here: ::
-> +
-> +      /etc/apache2/conf.d/toaster.conf
-> +
-> +    Following is a sample Apache configuration for Toaster you can foll=
-ow:
-> +
-> +    .. code-block:: shell
-> +
-> +      Alias /static /var/www/toaster/static_files
-> +      <Directory /var/www/toaster/static_files>
-> +         <IfModule mod_access_compat.c>
-> +            Order allow,deny
-> +            Allow from all
-> +         </IfModule>
-> +         <IfModule !mod_access_compat.c>
-> +            Require all granted
-> +         </IfModule>
-> +      </Directory>
-> +
-> +      <Directory /var/www/toaster/poky/bitbake/lib/toaster/toastermain>
-> +         <Files "wsgi.py">
-> +            Require all granted
-> +         </Files>
-> +      </Directory>
-> +
-> +      WSGIDaemonProcess toaster_wsgi python-path=3D/var/www/toaster/pok=
-y/bitbake/lib/toaster:/var/www/toaster/.local/lib/python3.4/site-packages
-> +      WSGIScriptAlias / "/var/www/toaster/poky/bitbake/lib/toaster/toas=
-termain/wsgi.py"
-> +      <Location />
-> +         WSGIProcessGroup toaster_wsgi
-> +      </Location>
-> +
-> +
-> +    If you are using Ubuntu or Debian, you will need to enable the conf=
-ig and
-> +    module for Apache:
-> +
-> +    .. code-block:: shell
-> +
-> +      $ sudo a2enmod wsgi
-> +      $ sudo a2enconf toaster
-> +      $ chmod +x bitbake/lib/toaster/toastermain/wsgi.py
-> +
-> +    Finally, restart Apache to make sure all new configuration is loade=
-d. For Ubuntu,
-> +    Debian, and OpenSUSE use:
-> +
-> +    .. code-block:: shell
-> +
-> +      $ sudo service apache2 restart
-> +
-> +    For Fedora and RedHat use:
-> +
-> +    .. code-block:: shell
-> +
-> +      $ sudo service httpd restart
+> @@ -321,7 +318,7 @@ Test Examples
+>  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 >
->  9.  Prepare the systemd service to run Toaster builds. Here is a sample
-> -    configuration file for the service: [Unit] Description=3DToaster
-> -    runbuilds [Service] Type=3Dforking User=3Dtoaster
-> -    ExecStart=3D/usr/bin/screen -d -m -S runbuilds
-> -    /var/www/toaster/poky/bitbake/lib/toaster/runbuilds-service.sh star=
-t
-> -    ExecStop=3D/usr/bin/screen -S runbuilds -X quit
-> -    WorkingDirectory=3D/var/www/toaster/poky [Install]
-> -    WantedBy=3Dmulti-user.target Prepare the ``runbuilds-service.sh``
-> -    script that you need to place in the
-> +    configuration file for the service:
-> +
-> +    .. code-block:: shell
-> +
-> +      [Unit]
-> +      Description=3DToaster runbuilds
-> +
-> +      [Service]
-> +      Type=3Dforking User=3Dtoaster
-> +      ExecStart=3D/usr/bin/screen -d -m -S runbuilds /var/www/toaster/p=
-oky/bitbake/lib/toaster/runbuilds-service.sh start
-> +      ExecStop=3D/usr/bin/screen -S runbuilds -X quit
-> +      WorkingDirectory=3D/var/www/toaster/poky
-> +
-> +      [Install]
-> +      WantedBy=3Dmulti-user.target
-> +
-> +
-> +    Prepare the ``runbuilds-service.sh`` script that you need to place =
-in the
->      ``/var/www/toaster/poky/bitbake/lib/toaster/`` directory by setting
-> -    up executable permissions: #!/bin/bash #export
-> -    http_proxy=3Dhttp://proxy.host.com:8080 #export
-> -    https_proxy=3Dhttp://proxy.host.com:8080 #export
-> -    GIT_PROXY_COMMAND=3D$HOME/bin/gitproxy cd ~/poky/ source
-> -    ./oe-init-build-env build source ../bitbake/bin/toaster $1 noweb [
-> -    "$1" =3D=3D 'start' ] && /bin/bash
-> -
-> -10. Run the service: # service runbuilds start Since the service is
-> -    running in a detached screen session, you can attach to it using
-> -    this command: $ sudo su - toaster $ screen -rS runbuilds You can
-> -    detach from the service again using "Ctrl-a" followed by "d" key
-> +    up executable permissions:
-> +
-> +    .. code-block:: shell
-> +
-> +      #!/bin/bash
-> +
-> +      #export http_proxy=3Dhttp://proxy.host.com:8080
-> +      #export https_proxy=3Dhttp://proxy.host.com:8080
-> +      #export GIT_PROXY_COMMAND=3D$HOME/bin/gitproxy
-> +      cd ~/poky/
-> +      source ./oe-init-build-env build
-> +      source ../bitbake/bin/toaster $1 noweb
-> +      [ "$1" =3D=3D 'start' ] && /bin/bash
-> +
-> +10. Run the service:
-> +
-> +    .. code-block:: shell
-> +
-> +       # service runbuilds start
-
-# -> $?
-
-> +
-> +    Since the service is running in a detached screen session, you can
-> +    attach to it using this command:
-> +
-> +    .. code-block:: shell
-> +
-> +       $ sudo su - toaster
-> +       $ screen -rS runbuilds
-> +
-> +    You can detach from the service again using "Ctrl-a" followed by "d=
-" key
->      combination.
+>  This section provides example tests for each of the tests listed in the
+> -`How Tests Map to Areas of Code <#test-test-mapping>`__ section.
+> +:ref:`test-manual/test-manual-intro:How Tests Map to Areas of Code` sec=
+tion.
 >
->  You can now open up a browser and start using Toaster.
+>  For oeqa tests, testcases for each area reside in the main test
+>  directory at ``meta/lib/oeqa/selftest/cases`` directory.
+> diff --git a/documentation/test-manual/test-manual-understand-autobuilde=
+r.rst b/documentation/test-manual/test-manual-understand-autobuilder.rst
+> index 0d987d245..691e4de39 100644
+> --- a/documentation/test-manual/test-manual-understand-autobuilder.rst
+> +++ b/documentation/test-manual/test-manual-understand-autobuilder.rst
+> @@ -82,11 +82,11 @@ For each given target in a build, the Autobuilder ex=
+ecutes several
+>  steps. These are configured in ``yocto-autobuilder2/builders.py`` and
+>  roughly consist of:
 >
-> +.. _toaster-using-the-toaster-web-interface:
-> +
->  Using the Toaster Web Interface
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D
+> -1. *Run ``clobberdir``*
+> +1. *Run clobberdir*.
 >
-> @@ -432,8 +609,8 @@ Additional Information About the Local Yocto Project=
- Release
->  ------------------------------------------------------------
+>     This cleans out any previous build. Old builds are left around to
+>     allow easier debugging of failed builds. For additional information,
+> -   see :ref:`test-clobberdir`.
+> +   see :ref:`test-manual/test-manual-understand-autobuilder:clobberdir`=
+.
 >
->  This section only applies if you have set up Toaster for local
-> -development, as explained in the "`Starting Toaster for Local
-> -Development <#starting-toaster-for-local-development>`__" section.
-> +development, as explained in the ":ref:`toaster-starting-toaster-for-lo=
-cal-development`"
-> +section.
+>  2. *Obtain yocto-autobuilder-helper*
 >
->  When you create a project in Toaster, you will be asked to provide a
->  name and to select a Yocto Project release. One of the release options
-> diff --git a/documentation/toaster-manual/toaster-manual-start.rst b/doc=
-umentation/toaster-manual/toaster-manual-start.rst
-> index 1114c04ea..40c6e3761 100644
-> --- a/documentation/toaster-manual/toaster-manual-start.rst
-> +++ b/documentation/toaster-manual/toaster-manual-start.rst
-> @@ -14,11 +14,13 @@ Setting Up the Basic System Requirements
+> @@ -110,7 +110,7 @@ roughly consist of:
+>     from the ``layerinfo.json`` file to help understand the
+>     configuration. It will also use a local cache of repositories to
+>     speed up the clone checkouts. For additional information, see
+> -   :ref:`test-autobuilder-clone-cache`.
+> +   :ref:`test-manual/test-manual-understand-autobuilder:Autobuilder Clo=
+ne Cache`.
 >
->  Before you can use Toaster, you need to first set up your build system
->  to run the Yocto Project. To do this, follow the instructions in the
-> -"`Preparing the Build
-> -Host <&YOCTO_DOCS_DEV_URL;#dev-preparing-the-build-host>`__" section of
-> +":ref:`dev-manual/dev-manual-start:preparing the build host`" section o=
-f
->  the Yocto Project Development Tasks Manual. For Ubuntu/Debian, you migh=
-t
-> -also need to do an additional install of pip3. $ sudo apt-get install
-> -python3-pip
-> +also need to do an additional install of pip3.
-> +
-> +.. code-block:: shell
-> +
-> +   $ sudo apt-get install python3-pip
+>     This step has two possible modes of operation. If the build is part
+>     of a parent build, its possible that all the repositories needed may
+> @@ -153,7 +153,7 @@ special script that moves files to a special locatio=
+n, rather than
+>  deleting them. Files in this location are deleted by an ``rm`` command,
+>  which is run under ``ionice -c 3``. For example, the deletion only
+>  happens when there is idle IO capacity on the Worker. The Autobuilder
+> -Worker Janitor runs this deletion. See :ref:`test-autobuilder-worker-ja=
+nitor`.
+> +Worker Janitor runs this deletion. See :ref:`test-manual/test-manual-un=
+derstand-autobuilder:Autobuilder Worker Janitor`.
 >
->  .. _toaster-establishing-toaster-system-dependencies:
+>  .. _test-autobuilder-clone-cache:
 >
-> @@ -39,10 +41,23 @@ Install Toaster Packages
->  ------------------------
+> @@ -165,8 +165,7 @@ on the Autobuilder. We therefore have a stash of com=
+monly used
+>  repositories pre-cloned on the Workers. Data is fetched from these
+>  during clones first, then "topped up" with later revisions from any
+>  upstream when necesary. The cache is maintained by the Autobuilder
+> -Worker Janitor. See :ref:`Autobuilder Worker
+> -Janitor`.
+> +Worker Janitor. See :ref:`test-manual/test-manual-understand-autobuilde=
+r:Autobuilder Worker Janitor`.
 >
->  You need to install the packages that Toaster requires. Use this
-> -command: $ pip3 install --user -r bitbake/toaster-requirements.txt The
-> -previous command installs the necessary Toaster modules into a local
-> +command:
-> +
-> +.. code-block:: shell
-> +
-> +   $ pip3 install --user -r bitbake/toaster-requirements.txt
-> +
-> +The previous command installs the necessary Toaster modules into a loca=
-l
->  python 3 cache in your ``$HOME`` directory. The caches is actually
->  located in ``$HOME/.local``. To see what packages have been installed
-> -into your ``$HOME`` directory, do the following: $ pip3 list installed
-> ---local If you need to remove something, the following works: $ pip3
-> -uninstall PackageNameToUninstall
-> +into your ``$HOME`` directory, do the following:
-> +
-> +.. code-block:: shell
-> +
-> +   $ pip3 list installed --local
-> +
-> +If you need to remove something, the following works:
-> +
-> +.. code-block:: shell
-> +
-> +   $ pip3 uninstall PackageNameToUninstall
+>  .. _test-autobuilder-worker-janitor:
+>
+> @@ -174,8 +173,7 @@ Autobuilder Worker Janitor
+>  --------------------------
+>
+>  This is a process running on each Worker that performs two basic
+> -operations, including background file deletion at IO idle (see Target
+> -Execution: clobberdir :ref:`test-list-tgt-exec-clobberdir`) and
+> +operations, including background file deletion at IO idle (see :ref:`te=
+st-manual/test-manual-understand-autobuilder:Autobuilder Target Execution O=
+verview`: Run clobberdir) and
+>  maintainenance of a cache of cloned repositories to improve the speed
+>  the system can checkout repositories.
+>
+> @@ -196,7 +194,7 @@ Shared SSTATE_DIR
+>
+>  The Workers are all connected over NFS which allows the ``sstate``
+>  directory to be shared between them. This means once a Worker has built
+> -an artefact, all the others can benefit from it. Usage of the directory
+> +an artifact, all the others can benefit from it. Usage of the directory
+>  within the directory is designed for sharing over NFS.
+>
+>  .. _test-resulttool:
+> @@ -263,7 +261,7 @@ of post-build steps, including:
+>     generated to the remote server.
+>
+>  4. Cleanup the build directory using
+> -   :ref:`test-clobberdir` if the build was successful,
+> +   :ref:`test-manual/test-manual-understand-autobuilder:clobberdir` if =
+the build was successful,
+>     else rename it to =E2=80=9Cbuild-renamed=E2=80=9D for potential futu=
+re debugging.
+>
+>  .. _test-deploying-yp-autobuilder:
 > --
-> 2.25.0
+> 2.17.1
+>
 >
 >=20
+>
