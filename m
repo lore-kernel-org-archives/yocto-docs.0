@@ -1,46 +1,108 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web12.3963.1600300779894951391
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by mx.groups.io with SMTP id smtpd.web12.8935.1600320049935756562
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Sep 2020 16:59:40 -0700
+ Wed, 16 Sep 2020 22:20:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.195, mailfrom: foss@0leil.net)
-X-Originating-IP: 80.110.110.137
-Received: from fiqs.lan (80-110-110-137.cgn.dynamic.surfer.at [80.110.110.137])
-	(Authenticated sender: foss@0leil.net)
-	by relay3-d.mail.gandi.net (Postfix) with ESMTPA id 2C88460004;
-	Wed, 16 Sep 2020 23:59:37 +0000 (UTC)
-From: "Quentin Schulz" <foss@0leil.net>
+ dkim=missing; spf=pass (domain: intel.com, ip: 192.55.52.115, mailfrom: khairul.rohaizzat.jamaluddin@intel.com)
+IronPort-SDR: 9ED6DP9FHObQVs7j0qtLh5QfcQWN5AR0H/rEpr/NcPU2YJUmc/Xmd9gIyV+cSkfmZsW8G+Pu12
+ RNcQ5s7GWw2A==
+X-IronPort-AV: E=McAfee;i="6000,8403,9746"; a="158931389"
+X-IronPort-AV: E=Sophos;i="5.76,435,1592895600"; 
+   d="scan'208";a="158931389"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2020 22:20:49 -0700
+IronPort-SDR: /rbMA24S3r8hUByElK4UiVwIX1hMw185w1nw22u3nB5m3SarzIj4btmqR+9/vlrY4FjMHUC6kI
+ YgmVnSKzZS5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,435,1592895600"; 
+   d="scan'208";a="508264066"
+Received: from andromeda02.png.intel.com ([10.221.183.11])
+  by fmsmga005.fm.intel.com with ESMTP; 16 Sep 2020 22:20:48 -0700
+From: "Jamaluddin, Khairul Rohaizzat" <khairul.rohaizzat.jamaluddin@intel.com>
 To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <foss@0leil.net>
-Subject: [PATCH 16/16] ref-manual: examples: libxpm: add relative path to .inc
-Date: Thu, 17 Sep 2020 01:59:06 +0200
-Message-Id: <20200916235906.243174-16-foss@0leil.net>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20200916235906.243174-1-foss@0leil.net>
-References: <20200916235906.243174-1-foss@0leil.net>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH] sphinx: ref-variables: Added entry for IMAGE_EFI_BOOT_FILES
+Date: Thu, 17 Sep 2020 13:20:47 +0800
+Message-Id: <1600320047-25913-1-git-send-email-khairul.rohaizzat.jamaluddin@intel.com>
+X-Mailer: git-send-email 2.7.4
 
-In order to be able to build this example from anywhere, one needs
-to give the relative path from LAYERDIR to the .inc file.
+From: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@intel.com>
 
-The path is the one for the inc file from openembedded-core.
+IMAGE_EFI_BOOT_FILES created to help differentiate files needed between
+bootimg-efi and bootimg-partition when creating the installer/..wic file.
 
-Signed-off-by: Quentin Schulz <foss@0leil.net>
+Signed-off-by: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@intel.com>
 ---
- documentation/ref-manual/examples/libxpm/libxpm_3.5.6.bb | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/ref-manual/ref-variables.xml | 55 ++++++++++++++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-diff --git a/documentation/ref-manual/examples/libxpm/libxpm_3.5.6.bb b/documentation/ref-manual/examples/libxpm/libxpm_3.5.6.bb
-index b58d4d7bd..c0c898640 100644
---- a/documentation/ref-manual/examples/libxpm/libxpm_3.5.6.bb
-+++ b/documentation/ref-manual/examples/libxpm/libxpm_3.5.6.bb
-@@ -1,4 +1,4 @@
--require xorg-lib-common.inc
-+require recipes-graphics/xorg-lib/xorg-lib-common.inc
+diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
+index a506480..6e438e8 100644
+--- a/documentation/ref-manual/ref-variables.xml
++++ b/documentation/ref-manual/ref-variables.xml
+@@ -5719,6 +5719,61 @@
+             </glossdef>
+         </glossentry>
  
- DESCRIPTION = "X11 Pixmap library"
- LICENSE = "X-BSD"
++        <glossentry id='var-IMAGE_EFI_BOOT_FILES'><glossterm>IMAGE_EFI_BOOT_FILES</glossterm>
++            <info>
++                IMAGE_EFI_BOOT_FILES[doc] = "A space-separated list of files from ${DEPLOY_DIR_IMAGE} to place in EFI boot partition."
++            </info>
++            <glossdef>
++                <para role="glossdeffirst">
++                    A space-separated list of files installed into the
++                    EFI boot partition when preparing an image using the Wic tool
++                    with the <filename>bootimg-efi</filename> source
++                    plugin.
++                    By default, the files are installed under the same name as
++                    the source files.
++                    To change the installed name, separate it from the
++                    original name with a semi-colon (;).
++                    Source files need to be located in
++                    <link linkend='var-DEPLOY_DIR_IMAGE'><filename>DEPLOY_DIR_IMAGE</filename></link>.
++                    Here are two examples:
++
++                    <literallayout class="monospaced">
++     IMAGE_EFI_BOOT_FILES = ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img
++                    </literallayout>
++                </para>
++
++                <para>
++                    Alternatively, source files can be picked up using
++                    a glob pattern.
++                    In this case, the destination file must have the same name
++                    as the base name of the source file path.
++                    To install files into a directory within the
++                    target location, pass its name after a semi-colon
++                    (;).
++                    Here are two examples:
++                    <literallayout class="monospaced">
++     IMAGE_BOOT_FILES = "boot/loader/*"
++     IMAGE_BOOT_FILES = "boot/loader/*;boot/"
++                    </literallayout>
++                    The first example installs all files from
++                    <filename>${DEPLOY_DIR_IMAGE}/bcm2835-bootfiles</filename>
++                    into the root of the target partition.
++                    The second example installs the same files into a
++                    <filename>boot</filename> directory within the
++                    target partition.
++                </para>
++
++                <para>
++                    You can find information on how to use the Wic tool in the
++                    "<ulink url='&YOCTO_DOCS_DEV_URL;#creating-partitioned-images-using-wic'>Creating Partitioned Images Using Wic</ulink>"
++                    section of the Yocto Project Development Tasks Manual.
++                    Reference material for Wic is located in the
++                    "<ulink url='&YOCTO_DOCS_REF_URL;#ref-kickstart'>OpenEmbedded Kickstart (.wks) Reference</ulink>"
++                    chapter.
++                </para>
++            </glossdef>
++        </glossentry>
++
+         <glossentry id='var-IMAGE_BOOT_FILES'><glossterm>IMAGE_BOOT_FILES</glossterm>
+             <info>
+                 IMAGE_BOOT_FILES[doc] = "A space-separated list of files from ${DEPLOY_DIR_IMAGE} to place in boot partition."
 -- 
-2.26.2
+2.7.4
 
