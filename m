@@ -1,82 +1,143 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
- by mx.groups.io with SMTP id smtpd.web10.12333.1600338023410941752
+Received: from mail-yb1-f195.google.com (mail-yb1-f195.google.com [209.85.219.195])
+ by mx.groups.io with SMTP id smtpd.web12.12468.1600338270489161279
  for <docs@lists.yoctoproject.org>;
- Thu, 17 Sep 2020 03:20:23 -0700
+ Thu, 17 Sep 2020 03:24:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=UUPj0Ds2;
- spf=pass (domain: linaro.org, ip: 209.85.219.169, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f169.google.com with SMTP id a2so1318218ybj.2
-        for <docs@lists.yoctoproject.org>; Thu, 17 Sep 2020 03:20:23 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=IcmuWGtq;
+ spf=pass (domain: linaro.org, ip: 209.85.219.195, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f195.google.com with SMTP id 8so1315612ybu.4
+        for <docs@lists.yoctoproject.org>; Thu, 17 Sep 2020 03:24:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=dDovjKBnRa8uk2hfJ73iU/o+/2yWAnsd794memSmM5Q=;
-        b=UUPj0Ds2cHgZIItDEtvoynKqNBf0Wn0hZXgtRTEURgtAsn3MI+BD+KBUQQ48YyBSgA
-         +PqCSN/I2vUdVW8Ng4xIx8V2hwwSH0yffASWWgDjg6uerrZbINUnLEwfAVUuAqehL5mB
-         qTjxUW13LfMX5+LST3CG96ZKJ3/WAOpYOWIIywzj/Bhw8sHggkW8ol2XUEtH2ZJngt5W
-         1y+Y50FQC3loRkdEnwZQGqrvuS9R4dI9hsZx4iX4yXDePBJERiuDuCbBriX9aY6CRmlU
-         GA020Vhzz4iKXM02lqAko36aNEIy8IoRZJj+AWMXGluypbk7IsbLwRyplP6lO3USAKAc
-         lkXw==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=w6pAQJzoJK9zU+/95SKjJQCcCnOaOZjuXU7lZu1KO08=;
+        b=IcmuWGtqw4qLYyaB+7cim9n9eqv9aSD4CotCGd9gAvUiWJs5zk71gM3AmxMD7oQO1i
+         MnjBPkWgzc/MFVxjSLf+F6prwnWGEMy3tzpj3tAjYtWoVw/LzbK0ddZKjgBVYfp7Lbq0
+         9OMFTBrroB1jXKQVIE9cKtkJ2rPlH0kKndh5D8ywAbqHuzIPKdwJ+5Hdm6MDj6SEywoq
+         nopZ/O9ysK65y/xQRWmHdWKNo42+1yWaZffeiVSbFx6DEUMOvMW19x9NBFHm/TrxF0jl
+         2QnCST6BqP3Zr9zIyXDBFp+0i2r+68jjYHTEClAXk/KQRJ2EVsPuaNX6kx75/4t4ybZ4
+         0rHg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=dDovjKBnRa8uk2hfJ73iU/o+/2yWAnsd794memSmM5Q=;
-        b=nYW6GCczuCkvbe25hpquN5ZqQyf1VntzDWQr8Lx+faPfg6PsyI9n2ChM0K3aOO9/4y
-         IoOt8zhaBDveGGCmBanRyRI7Z3dtnL/FCgCx+oThbDP5Vgh20kICTScW3jy4PioYiv4O
-         B45Rk4t4epNQ+1CUpyJz4UgqJQCZ5wHuGBH85/R8LMjw6TmZ8LDVrfGr68QW7soHzPIE
-         TVPq0/5iJ1ri+9BTbwFHMMlYhwOlGFpLs21eLgaDeVynplfRjM/6UtUF80cIzxJnrHeD
-         lJw1zeHvqmdk3xki7LhC5NcULJrNtFnTDJDdZDGslXrrd07H4/Co8zQfUo1MjuUJio1x
-         M5Mg==
-X-Gm-Message-State: AOAM531o8pgDd1PP3PvExmaEvxd2+oBQkHJDNXWrS1ffSkHGgbxrs6jx
-	fcIf1hgCgplvKn9dnbPYZPxanlA0AMBAvto+4w6lbQHhaF1GrSGt
-X-Google-Smtp-Source: ABdhPJzfL76YXO0Qar2RKDYi8uvlug6tKYGmXyt4lTTUKI1zDnbRoCwUQB1xzvluUn6qVR322w0AS0czNwm+Eyntyso=
-X-Received: by 2002:a05:6902:4cf:: with SMTP id v15mr40230961ybs.373.1600338022180;
- Thu, 17 Sep 2020 03:20:22 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w6pAQJzoJK9zU+/95SKjJQCcCnOaOZjuXU7lZu1KO08=;
+        b=Zj3/0FtCKkIvcoXyCQbKCFB9NbEOLK51TtmYGxCksYq6oiiIYVI6lq/5dZQMb69TPo
+         Wp8yYdMhImQNRDMyYosRlEAwNZqkrjl2di+Eq/+8ZPkvQODoCyKPP2/zhqn0qAeujCnW
+         79znf0U1x8dGabTVYRn1KKNHo/rrG7OsFL+2Uvlob7AOjKSEaAFQZlBUtFRTlt2mxyHQ
+         1/DiAWEfoxg6mCl0Z/3Ho+fVU59V42ladmwDtRBtFzU2bCkmofsHyIpT9Oa1Hand/HpC
+         ux6w7KqXLAcjpMJMPHkgmVUUj4effGcsFOrKUmebKreBNscrLCv4bbj3yXegkV3EoFsf
+         eHTg==
+X-Gm-Message-State: AOAM531yjwHSPSFYv8rXS2cJ1MmU6fALBaYJfK44GtV/MQQ9/suvYH2T
+	ZuY2JjS2jKzVCPE4y5lNDom91GNmq8UjTiEKfc1fPw==
+X-Google-Smtp-Source: ABdhPJxs1HMci5VPiUMgahXPFCwR9BN3YByXMOX/tbDmxFC/49L4DnZQIM34f9P4AbzAUWLNBthaD1h7SW/MWaNnOLc=
+X-Received: by 2002:a25:bd41:: with SMTP id p1mr9030009ybm.475.1600338269475;
+ Thu, 17 Sep 2020 03:24:29 -0700 (PDT)
 MIME-Version: 1.0
+References: <1600320047-25913-1-git-send-email-khairul.rohaizzat.jamaluddin@intel.com>
+In-Reply-To: <1600320047-25913-1-git-send-email-khairul.rohaizzat.jamaluddin@intel.com>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Thu, 17 Sep 2020 12:20:11 +0200
-Message-ID: <CAP71Wjy2t73ZOHjfHd+z_wH1Y8u=yhP=dENeKs2x2_QkSTTQGg@mail.gmail.com>
-Subject: [sphinx] updates as of Sep 17th.
-To: docs@lists.yoctoproject.org
+Date: Thu, 17 Sep 2020 12:24:18 +0200
+Message-ID: <CAP71WjxftGS19J4fkJACm5oLgG_RjhGey29FaXAfwkJ81+EVKA@mail.gmail.com>
+Subject: Re: [docs] [PATCH] sphinx: ref-variables: Added entry for IMAGE_EFI_BOOT_FILES
+To: "Jamaluddin, Khairul Rohaizzat" <khairul.rohaizzat.jamaluddin@intel.com>
+Cc: docs@lists.yoctoproject.org
 Content-Type: text/plain; charset="UTF-8"
 
-Dear all,
+hi Khairul Rohaizzat,
 
-I am very excited to report that Richard merged the sphinx branches
-today, in both yocto-docs and bitbake. It has been a crazy ride,
-especially the last couple of weeks. It was great to see several of
-you joining us for the last mile! Many thanks!
 
-Note: we will no longer take patches in the DocBook/XML files, in fact
-we might just delete them anytime now.
 
-If I remove the Docbook files locally, I am seeing the following
-shortstat for the migration:
-yocto-docs:
-217 files changed, 56760 insertions(+), 100082 deletions(-)
-bitbake:
-27 files changed, 6500 insertions(+), 10277 deletions(-)
+On Thu, Sep 17, 2020 at 7:20 AM Jamaluddin, Khairul Rohaizzat
+<khairul.rohaizzat.jamaluddin@intel.com> wrote:
+>
+> From: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@intel.com>
+>
+> IMAGE_EFI_BOOT_FILES created to help differentiate files needed between
+> bootimg-efi and bootimg-partition when creating the installer/..wic file.
+>
+> Signed-off-by: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@intel.com>
 
-The Yocto Project documentation website has been updated from the
-content of both master branches, see. https://docs.yoctoproject.org/.
+as you might have seen from the recent emails about 'sphinx
+migration', we will no longer take patches in the XML docbook files.
+Can you please resubmit your change against the new sphinx based
+documentation files? If you face any issue with sphinx, please let us
+know.
 
-The next steps for docs are:
-1. keep incoming fixup patches. we are pretty sure there are various
-issues left in the sphinx files...
-2. document how we 'publish' documentation on the new website (branch,
-tags, ..), and implement git hooks so that the website is
-automatically up-to-date.
-3. merge into dunfell
-4. Look at PDF generation. Sphinx is supposed to do that well, but
-it's something we haven't tried yet.
-5. Carefully review the rendered HTML to see if we are missing any CSS
-config from docbook style (we found a few issues this week, but there
-might be more). Generally speaking, if anyone notices anything wrong
-or weird on the rendered html, please report it as an issue (or better
-as a bug on BZ).
-6. Finalize the 'transition' pages which are Sphinx based pages for
-each existing YP release made so far.
-7. Create a 'README/Doc Style Guide' to facilitate new contributions.
-
-cheers
-nico
+> ---
+>  documentation/ref-manual/ref-variables.xml | 55 ++++++++++++++++++++++++++++++
+>  1 file changed, 55 insertions(+)
+>
+> diff --git a/documentation/ref-manual/ref-variables.xml b/documentation/ref-manual/ref-variables.xml
+> index a506480..6e438e8 100644
+> --- a/documentation/ref-manual/ref-variables.xml
+> +++ b/documentation/ref-manual/ref-variables.xml
+> @@ -5719,6 +5719,61 @@
+>              </glossdef>
+>          </glossentry>
+>
+> +        <glossentry id='var-IMAGE_EFI_BOOT_FILES'><glossterm>IMAGE_EFI_BOOT_FILES</glossterm>
+> +            <info>
+> +                IMAGE_EFI_BOOT_FILES[doc] = "A space-separated list of files from ${DEPLOY_DIR_IMAGE} to place in EFI boot partition."
+> +            </info>
+> +            <glossdef>
+> +                <para role="glossdeffirst">
+> +                    A space-separated list of files installed into the
+> +                    EFI boot partition when preparing an image using the Wic tool
+> +                    with the <filename>bootimg-efi</filename> source
+> +                    plugin.
+> +                    By default, the files are installed under the same name as
+> +                    the source files.
+> +                    To change the installed name, separate it from the
+> +                    original name with a semi-colon (;).
+> +                    Source files need to be located in
+> +                    <link linkend='var-DEPLOY_DIR_IMAGE'><filename>DEPLOY_DIR_IMAGE</filename></link>.
+> +                    Here are two examples:
+> +
+> +                    <literallayout class="monospaced">
+> +     IMAGE_EFI_BOOT_FILES = ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img
+> +                    </literallayout>
+> +                </para>
+> +
+> +                <para>
+> +                    Alternatively, source files can be picked up using
+> +                    a glob pattern.
+> +                    In this case, the destination file must have the same name
+> +                    as the base name of the source file path.
+> +                    To install files into a directory within the
+> +                    target location, pass its name after a semi-colon
+> +                    (;).
+> +                    Here are two examples:
+> +                    <literallayout class="monospaced">
+> +     IMAGE_BOOT_FILES = "boot/loader/*"
+> +     IMAGE_BOOT_FILES = "boot/loader/*;boot/"
+> +                    </literallayout>
+> +                    The first example installs all files from
+> +                    <filename>${DEPLOY_DIR_IMAGE}/bcm2835-bootfiles</filename>
+> +                    into the root of the target partition.
+> +                    The second example installs the same files into a
+> +                    <filename>boot</filename> directory within the
+> +                    target partition.
+> +                </para>
+> +
+> +                <para>
+> +                    You can find information on how to use the Wic tool in the
+> +                    "<ulink url='&YOCTO_DOCS_DEV_URL;#creating-partitioned-images-using-wic'>Creating Partitioned Images Using Wic</ulink>"
+> +                    section of the Yocto Project Development Tasks Manual.
+> +                    Reference material for Wic is located in the
+> +                    "<ulink url='&YOCTO_DOCS_REF_URL;#ref-kickstart'>OpenEmbedded Kickstart (.wks) Reference</ulink>"
+> +                    chapter.
+> +                </para>
+> +            </glossdef>
+> +        </glossentry>
+> +
+>          <glossentry id='var-IMAGE_BOOT_FILES'><glossterm>IMAGE_BOOT_FILES</glossterm>
+>              <info>
+>                  IMAGE_BOOT_FILES[doc] = "A space-separated list of files from ${DEPLOY_DIR_IMAGE} to place in boot partition."
+> --
+> 2.7.4
+>
+>
+> 
+>
