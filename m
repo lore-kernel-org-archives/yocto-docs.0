@@ -1,106 +1,94 @@
-Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
- by mx.groups.io with SMTP id smtpd.web11.8689.1600419607152568718
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+ by mx.groups.io with SMTP id smtpd.web11.8774.1600420011426189014
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Sep 2020 02:00:07 -0700
+ Fri, 18 Sep 2020 02:06:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=HS5UF5Op;
- spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f196.google.com with SMTP id h206so3769868ybc.11
-        for <docs@lists.yoctoproject.org>; Fri, 18 Sep 2020 02:00:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PmpJLP317j/KokP69R8c1aBKvr9Oh6CBBnf8xx7uRpU=;
-        b=HS5UF5OpXVvjlPvoSzXllTRJAu+ubGNMsT3vsMC0UowHfgxUtaUaR/XgsuqHlAx1N6
-         18j+DSJENm5ito6f08dPampdMyRKBk3WHGLZ42usZpjTG1P0X7a0s3jXIcT8MpIGixyK
-         D9Z9xjtN5dP8gMB+F8ru6HgtSoc1y1s1UQy30K5bxk3RkDwoxmff38HLc39wZP+7DGpw
-         8jHlNaXgO+pjE3Bh6a3XKvGt3JN7bxTJKkKh0UIcrGsxzNaKzfKZtvgxJp/txha2OBBU
-         w0xzqv/xwfOkk+4zOoTWO+b2UnLecmYqo3D5bu1lwks3ouSGBzQI3z/btuCZzFYUf10/
-         Qc7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PmpJLP317j/KokP69R8c1aBKvr9Oh6CBBnf8xx7uRpU=;
-        b=aAqy6mjuKmq7kfXOOKSmAerzaJZ7rQraNUybHjB7vCGVw8fjMnbESuPsMMgP/X/a6G
-         nbzOIfQqeIIbiaR8w9L6mm5CHErIs4znc4/mDtapLfGuuLQfpcx8BqMuraLJJJZGWDYc
-         sIc/aFq8rEFrqehpXDGvdG5uldmQkb+T3PN4sUsFotiZ9Hge6U+WGVjIXH3A+SSuUUL3
-         0dwvcdeWmW4dOmv8uPU3VZl75rsakIwdjUEloi0DRxYX7GguJojFWwK3F2HvCXefhPuo
-         Xpe+rfDpq7vg5S3oOtnSvGmyL7OIGnGX8LeOa08jvDNgYn1RoBB55zTy1Al9r5cZkN91
-         YEJw==
-X-Gm-Message-State: AOAM532oImGAP6lyIkM864/kXb3aFhBN4tMxhZI9jNINp4gutj3ATRWD
-	MHQP8gLdtLr3oJ6S4Yp9NXPqSaeXfIpdYH6GIarZKcBBPD83cl8U
-X-Google-Smtp-Source: ABdhPJyyTeIXi2Cs+swtnQ8QMgHjjUmk4ECUOrH/ORZDZPOUws//vx1sTYIoNlC8vXoG4u+sJy+yZLSpvgmyxW498C8=
-X-Received: by 2002:a25:e009:: with SMTP id x9mr2592137ybg.373.1600419606195;
- Fri, 18 Sep 2020 02:00:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200917210947.51974-1-foss@0leil.net> <20200917210947.51974-2-foss@0leil.net>
- <20200918082227.4tmksf2ot5omitg2@qschulz>
-In-Reply-To: <20200918082227.4tmksf2ot5omitg2@qschulz>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Fri, 18 Sep 2020 10:59:55 +0200
-Message-ID: <CAP71Wjy9xJCsc-WWxCONLFUyZZ7kD9Hr3oRoLJWB8iC_arU2sw@mail.gmail.com>
-Subject: Re: [docs] [PATCH 2/2] docs: fix broken links
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-Cc: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+ dkim=missing; spf=pass (domain: intel.com, ip: 192.55.52.43, mailfrom: khairul.rohaizzat.jamaluddin@intel.com)
+IronPort-SDR: FFOi5L0kSejusCh5uCXQW9kC/UBljHImI0Gg9nWQ3+dlhr3uuIrmKFslr4CZSwCliLvv9/+PoX
+ Yitf80HgS78Q==
+X-IronPort-AV: E=McAfee;i="6000,8403,9747"; a="244729717"
+X-IronPort-AV: E=Sophos;i="5.77,274,1596524400"; 
+   d="scan'208";a="244729717"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga007.jf.intel.com ([10.7.209.58])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2020 02:06:50 -0700
+IronPort-SDR: vnFEc7qwHgaKNgiYxBtuy2Og/DGSu0Qx47YiJ1b/j35eUg6PhWay9acisqRWKkRcdRpGZ281j7
+ EJp0oxavx1dQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,274,1596524400"; 
+   d="scan'208";a="346934875"
+Received: from andromeda02.png.intel.com ([10.221.183.11])
+  by orsmga007.jf.intel.com with ESMTP; 18 Sep 2020 02:06:48 -0700
+From: "Jamaluddin, Khairul Rohaizzat" <khairul.rohaizzat.jamaluddin@intel.com>
+To: docs@lists.yoctoproject.org
+Cc: khairul.rohaizzat.jamaluddin@intel.com
+Subject: [PATCH v2] sphinx: ref-variables: Added entry for IMAGE_EFI_BOOT_FILES
+Date: Fri, 18 Sep 2020 17:06:47 +0800
+Message-Id: <1600420007-43045-1-git-send-email-khairul.rohaizzat.jamaluddin@intel.com>
+X-Mailer: git-send-email 2.7.4
 
-On Fri, Sep 18, 2020 at 10:22 AM Quentin Schulz
-<quentin.schulz@streamunlimited.com> wrote:
->
-> On Thu, Sep 17, 2020 at 11:09:47PM +0200, Quentin Schulz wrote:
-> [...]
-> >  1. *Access the Index of Releases:* Open a browser and go to
-> > -   :yocto_dl:`Index of Releases <releases>`. The
-> > +   :yocto_dl:`Index of Releases </releases>`. The
->
-> All those broken links could be mitigated by having:
->
-> extlinks = {
-> -    'yocto_home': ('https://yoctoproject.org%s', None),
-> +    'yocto_home': ('https://yoctoproject.org/%s', None),
-> }
->
-> in documentation/conf.py.
->
-> But then you need to change all links using this "macro") so that they
-> don't have a double slash after the domain name :/
->
-> At least with this patch it's consistent (and working :) ) but still
-> error-prone.
+From: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@intel.com>
 
-Yes, you're right. That's one of the things I didn't like too much. I
-think I mentioned I had 'abused' extlinks a little bit. The main
-reason I didn't put the trailing '/' is because sometimes I needed to
-have the URL in the output, not a 'text' with a link. for example:
+IMAGE_EFI_BOOT_FILES created to help differentiate files needed between
+bootimg-efi and bootimg-partition when creating the installer/.wic file.
 
-kernel-dev/kernel-dev-maint-appx.rst:      Project kernel repositories
-at :yocto_git:`/` is the
+Signed-off-by: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@intel.com>
+---
+ documentation/ref-manual/ref-variables.rst | 37 +++++++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-but i don't like that much.. that said, I did that, before I added
-support for variables subst.. so perhaps we should use extlinks for
-what it's supposed to be, and use variables otherwise, e.g.
-&YOCTO_GIT_URL; when I just need the link..
+diff --git a/documentation/ref-manual/ref-variables.rst b/documentation/ref-manual/ref-variables.rst
+index 625a37c..8483e08 100644
+--- a/documentation/ref-manual/ref-variables.rst
++++ b/documentation/ref-manual/ref-variables.rst
+@@ -2902,10 +2902,45 @@ system and gives an overview of their function and contents.
+       The base name of image output files. This variable defaults to the
+       recipe name (``${``\ :term:`PN`\ ``}``).
+ 
++   IMAGE_EFI_BOOT_FILES
++      A space-separated list of files installed into the boot partition
++      when preparing an image using the Wic tool with the
++      ``bootimg-efi`` source plugin. By default,
++      the files are
++      installed under the same name as the source files. To change the
++      installed name, separate it from the original name with a semi-colon
++      (;). Source files need to be located in
++      :term:`DEPLOY_DIR_IMAGE`. Here are two
++      examples:
++      ::
++
++         IMAGE_EFI_BOOT_FILES = ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img
++
++      Alternatively, source files can be picked up using a glob pattern. In
++      this case, the destination file must have the same name as the base
++      name of the source file path. To install files into a directory
++      within the target location, pass its name after a semi-colon (;).
++      Here are two examples:
++      ::
++
++         IMAGE_EFI_BOOT_FILES = "boot/loader/*"
++         IMAGE_EFI_BOOT_FILES = "boot/loader/*;boot/"
++
++      The first example
++      installs all files from ``${DEPLOY_DIR_IMAGE}/boot/loader/``
++      into the root of the target partition. The second example installs
++      the same files into a ``boot`` directory within the target partition.
++
++      You can find information on how to use the Wic tool in the
++      ":ref:`dev-manual/dev-manual-common-tasks:creating partitioned images using wic`"
++      section of the Yocto Project Development Tasks Manual. Reference
++      material for Wic is located in the
++      ":doc:`../ref-manual/ref-kickstart`" chapter.
++
+    IMAGE_BOOT_FILES
+       A space-separated list of files installed into the boot partition
+       when preparing an image using the Wic tool with the
+-      ``bootimg-partition`` or ``bootimg-efi`` source plugin. By default,
++      ``bootimg-partition`` source plugin. By default,
+       the files are
+       installed under the same name as the source files. To change the
+       installed name, separate it from the original name with a semi-colon
+-- 
+2.7.4
 
-if we do that, then we could have this instead:
-
-'yocto_home': ('https://yoctoproject.org/%s', None),
-'yocto_git': ('https://git.yoctoproject.org/cgit.cgi/%s', None),
-'yocto_lists': ('https://lists.yoctoproject.org/g/%s', None),
-
-and then we would have:
-
-:yocto_dl:`Index of Releases <releases>`
-
-but also:
-:yocto_git:`meta-yocto-bsp <poky>` instead of
-:yocto_git:`meta-yocto-bsp <cgit.cgi/poky>`
-:yocto_lists:`Yocto list <yocto>`
-
-
->
-> Quentin
->
-> 
->
