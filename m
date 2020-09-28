@@ -1,377 +1,195 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
- by mx.groups.io with SMTP id smtpd.web11.9854.1600854854813954219
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by mx.groups.io with SMTP id smtpd.web12.28150.1601260767974634299
  for <docs@lists.yoctoproject.org>;
- Wed, 23 Sep 2020 02:54:15 -0700
+ Sun, 27 Sep 2020 19:39:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=Hgnmpcd5;
- spf=pass (domain: linaro.org, ip: 209.85.128.53, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f53.google.com with SMTP id s13so6436585wmh.4
-        for <docs@lists.yoctoproject.org>; Wed, 23 Sep 2020 02:54:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wayBru7ahyr3lwI7PMDjSHhLCjq6RowsD0iW1d21n5w=;
-        b=Hgnmpcd5c/ztXN7/AFi698m/CvB/AQ3tlbyvbMj4fdnEjm8jt0yX7KvNRrG7KVT6lS
-         fJEjV88sxEHnmOs2XaMP9gQc+4lmC9ENfH3/0YD7JeLMTSUjDJG0ZTplU8mnOSXgXNY/
-         qdP+CMhGuw/Fpb3r0x7SKJe/RD6CL+0HSU/dKKnKlM0xxmpLFK7qLSD6ma2Zs3WreTDY
-         1q91An/+W0AcMNuW6FbfnPE0kdlxPShjoHBn1A8scAwlSvN6YO8Q8eOD7ZQsaTUHjop9
-         lFWXaER8HQ49dq84e+aj53dk+9MygNodc45AcAWa34Rym0WyOVyvdJFifN+5VmvRfBxV
-         nnRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=wayBru7ahyr3lwI7PMDjSHhLCjq6RowsD0iW1d21n5w=;
-        b=qOldzoRNjw4SgfBVf/SStmYU125b0DoB7GPhX79dknKrEx92n1xB0DueKmsz/MNdYr
-         YBWPsvnQy0nOqwUNkZ4NAjkrBWW0LNyv/h9rhMujKBo6bqm7d9m0V2lkz7AN+D+Xct1J
-         o2+p/j1aojKpBllpV70nLsbfXA6FrXz0uyHR/gFRbWM/NWhj2IqntMkUCWmyJpaXW0Sn
-         +f3i1/NwxRArhaIw2x7zYC8SVkLYbknrks45mTIcEkw021tE0F0lJmVfGS8wYjbYXd4C
-         TMZneCrUfIxfIecfSjhoziPH7i5qIeGKlYwcBs0pK09CtstmGMAKB0ERWc/ifn1XJ0LS
-         Z8Wg==
-X-Gm-Message-State: AOAM532PH6unNToX2etbPWMzERrL+V17s0ofWYZmPOtPhaS9GNjlZPbn
-	knORQMilomiyLpJjtueA0GJKN08Oy1Gq+8kd
-X-Google-Smtp-Source: ABdhPJzn/qysnCbb/z1x0Pnw7ay8NOIQZU9ZlX/ihPoUeukzDvcYWimXvE9dcpVT1AYnwzeSQCCOVA==
-X-Received: by 2002:a05:600c:2189:: with SMTP id e9mr5552581wme.8.1600854852441;
-        Wed, 23 Sep 2020 02:54:12 -0700 (PDT)
-Return-Path: <nicolas.dechesne@linaro.org>
-Received: from nikaia.localdomain ([2a01:e0a:1b9:3e10:d6af:c5d9:8b6e:b994])
-        by smtp.gmail.com with ESMTPSA id h204sm7732392wmf.35.2020.09.23.02.54.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Sep 2020 02:54:11 -0700 (PDT)
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-To: docs@lists.yoctoproject.org
-Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH v2] README: include detailed information about sphinx
-Date: Wed, 23 Sep 2020 11:53:53 +0200
-Message-Id: <20200923095353.685946-1-nicolas.dechesne@linaro.org>
-X-Mailer: git-send-email 2.28.0
+ dkim=pass header.i=@intel.onmicrosoft.com header.s=selector2-intel-onmicrosoft-com header.b=YgVOHp2j;
+ spf=pass (domain: intel.com, ip: 134.134.136.126, mailfrom: khairul.rohaizzat.jamaluddin@intel.com)
+IronPort-SDR: mNpFwBVuWZBafdXr0LVmq8AYUSk/6WWShL4VjqUifb4Yj/WEOfWGumF2Az2Uc9+e2rXU4YhnEt
+ HPvPXUD75Jfg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9757"; a="149705557"
+X-IronPort-AV: E=Sophos;i="5.77,312,1596524400"; 
+   d="scan'208";a="149705557"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2020 19:39:26 -0700
+IronPort-SDR: iasrPJAloLAmpF0v5S7Wpcga6zOoc4Zdz5Wg2zBY3TklpEiUIAci6Q/gORU954rw/pZVuX3wpf
+ 9654oISQE+ng==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.77,312,1596524400"; 
+   d="scan'208";a="340275486"
+Received: from orsmsx605.amr.corp.intel.com ([10.22.229.18])
+  by orsmga008.jf.intel.com with ESMTP; 27 Sep 2020 19:39:26 -0700
+Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
+ ORSMSX605.amr.corp.intel.com (10.22.229.18) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Sun, 27 Sep 2020 19:39:26 -0700
+Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
+ orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1713.5
+ via Frontend Transport; Sun, 27 Sep 2020 19:39:26 -0700
+Received: from NAM04-BN3-obe.outbound.protection.outlook.com (104.47.46.51) by
+ edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.1713.5; Sun, 27 Sep 2020 19:39:25 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=KQBYz8LgRqed7txm5ADhR/xHC+eQlQFxm6w1ubgqImsNhQdMWn87Je8dKnE1uW7B37nCs+VK9B4VGZZfNbc0o7aOo9KdUpVsJug93Ep/FCL9REk2wTpvqCt8U3lxiQ41T6UARq+QtDmY7x8fF6kd/LauoURlh7Rrwiv53oO64xgdCN3kb/kyAeN+IJcUHEfQsnbyBztL15EBG7VQf0m5F0XWZagzXFD1ApVFtoXlTs7nR9EyISjOtM/05ArEj0T1cVW+Wo+jGZ/IHo3ueChTV0UVu/7vnjM/PlSfqFNZGjjMtCzYFO7OC5hIz1J0NQt9csPMjzSycvfOAJPoQ+bisQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JIz/PXdFtaLtTixxreCIx6JgSntjq6sZACk8IS7Z+fQ=;
+ b=LQOQWCxoHOJ1++XeY6DA+AI22KIqnlNToHcOQ6wax/tMf2WGDjoIuWTd92bmSlb/00+ihWKADjmkUG0VtamJm5C6K6QI6GWvx6f0wsD7Tx/z2mjsIsdenSN+WFs9L6hvThzmoEoLqst0j2nIJh9HUeE4s7JndPE490v3NBr43R23Sjgl8cyHqX5hqHZL6gYDFEasGJm9g8Fp1aiDua5ZgzDYJMQWse07HyvNqS+FZEfMgMfplHZoW2BxYNC5+QlGMAUAyy/6T6mQEQN36yjdmsBXB1OixeCmEBkGIAuSlGqSXtXKZB0y8kY/FGsph0ThzXVma6Lv2VZvGWpoGj+Ucg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=intel.onmicrosoft.com;
+ s=selector2-intel-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JIz/PXdFtaLtTixxreCIx6JgSntjq6sZACk8IS7Z+fQ=;
+ b=YgVOHp2jdYQuVX8Fok9FeY2ZXeo19zo7GkbneoiP8CeiJGB7DxUfGgsfWW4AnCUTP+0KquPCTELfdqi12ftzVXQSC2vRvzWNancn7bcwSe8/eHLRam8dfrl0rnhBn6088LoBRfZzkvpJ8dnTC0eSPTJ6Kz9SDx8peka3AG8H+SE=
+Received: from DM5PR11MB1993.namprd11.prod.outlook.com (2603:10b6:3:12::18) by
+ DM5PR11MB0026.namprd11.prod.outlook.com (2603:10b6:4:62::35) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3326.23; Mon, 28 Sep 2020 02:39:24 +0000
+Received: from DM5PR11MB1993.namprd11.prod.outlook.com
+ ([fe80::2095:c2b4:79a7:f0d6]) by DM5PR11MB1993.namprd11.prod.outlook.com
+ ([fe80::2095:c2b4:79a7:f0d6%4]) with mapi id 15.20.3412.029; Mon, 28 Sep 2020
+ 02:39:24 +0000
+From: "Jamaluddin, Khairul Rohaizzat" <khairul.rohaizzat.jamaluddin@intel.com>
+To: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: Re: [PATCH v3] sphinx: ref-variables: Added entry for IMAGE_EFI_BOOT_FILES
+Thread-Topic: [PATCH v3] sphinx: ref-variables: Added entry for
+ IMAGE_EFI_BOOT_FILES
+Thread-Index: AQHWkAoiXe5AI+1qwEaNIZEslvO1aKl9YNzw
+Date: Mon, 28 Sep 2020 02:39:23 +0000
+Message-ID: <DM5PR11MB1993C7F06445E9E4E8A8F684DE350@DM5PR11MB1993.namprd11.prod.outlook.com>
+References: <1600687615-18331-1-git-send-email-khairul.rohaizzat.jamaluddin@intel.com>
+In-Reply-To: <1600687615-18331-1-git-send-email-khairul.rohaizzat.jamaluddin@intel.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-version: 11.5.1.3
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+authentication-results: lists.yoctoproject.org; dkim=none (message not signed)
+ header.d=none;lists.yoctoproject.org; dmarc=none action=none
+ header.from=intel.com;
+x-originating-ip: [115.164.216.70]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 7fdd4afb-ce85-4855-3290-08d86357b614
+x-ms-traffictypediagnostic: DM5PR11MB0026:
+x-microsoft-antispam-prvs: <DM5PR11MB0026D01003BA427A512F3892DE350@DM5PR11MB0026.namprd11.prod.outlook.com>
+x-ms-oob-tlc-oobclassifiers: OLM:9508;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: 5Ws54Ub2ZNUy1vV1gQEINdoEr9CmvkPrW2AHGhiP3SAzy2836Ezj+1b21vG0sNlYPerwP048e4xR3otXzCjObGzwi/WO9CrP6FUGtxFnPfYxShyZPUMA5ko61a/wpEc22hU51yBdfLKneywMKyfIwxsiYAQqFdkxxRS3gCZZo+GeKCkKL1Tlkz91Mf+hosBUZibuZZ0pPkNav2Ve6Jmij/TLOvd19QNOpaelan56yBLMpkczjjiLphMvZFMX2jbzFkVMBy4F1ZUztdbk0ZfLwoEXuOhzLJUb97DeotgtBXImgjfVmwhrbac+IU2s0uy2ESbM049wHPfHFDWoJ88eW/T3sfUhhWlPX2hDkc2K5am1bSplfq1OPnDZKoKRBTPt
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM5PR11MB1993.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(39860400002)(396003)(136003)(366004)(346002)(376002)(5660300002)(52536014)(9686003)(55016002)(8936002)(8676002)(478600001)(186003)(6506007)(66446008)(55236004)(53546011)(26005)(66476007)(6916009)(76116006)(86362001)(66556008)(64756008)(71200400001)(83380400001)(66946007)(2906002)(316002)(33656002)(7696005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: ElrfDyrIS+JG0RM7rPPs5lBJE0Pq0bdPgRFcLdweBOmXs3TeXj32MtQI9VY+gSFdQ8yLH0DtrRnfnD+vx8XfepnVnNpDd++faVHc4GTNtRbZp9Wl4ErlUdeneygcXuM4qdCYx631LGVeEUHCPg/8XcTt/1Oc1vbeozrp5/m8Da9v7UE7Bsq+s7uS9YKc2lO5543pw1cToK8TNORuOxbe8MTBJ2vk7QtusJMEafzaEcivn5EY0QyFyq0DTY+VhK+k45gLSSAdrptE3UBhgpjnlFB4Pclf3606HE2wtB4tVyF+1OO2u4f2C6ZI3D1wfK/GupWsQGr3P41gRwRV4uA9boKC3AyqNzY2Wf2euJLHcYH8/huffby4uG+hxAaJ/SOFtdHVOUG8NL+I8lwAA+QuzwiOXLTwSrFkj/gInA8Woz8w8fABIA7bDaiDNPV2AtEFChh5UxdwG2KK4aJGXzZi/5yeJeQzNSCRzPmumNzzo6e4LngsIYuD2+l8BVNBithKUy1HPenZ8ddoIbIFwLis9/jr4943Lpd3zx3wElnKNE2VzrHaAOpTFTGQHTpq4vQJurDz25tvMiOuDKKa8SrhS1cbBZ7bp0yFYjGyET9xM30C19QBQjNnamPlmtvE2evY0S6ekbbZNU7cxAqOWe9/mw==
+x-ms-exchange-transport-forked: True
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DM5PR11MB1993.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7fdd4afb-ce85-4855-3290-08d86357b614
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Sep 2020 02:39:23.8368
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: VAY8Ry1zScTU+TNRFs/YOYBhl/GEh+3q7pGPtnJrN7m+zDUfqp8abzZmWXadHZhPYo0B3f2OeDaGmDNSQHhGgWa6x2VoaJrixkKWhRl57wdLHOxhThMmGwEjaQ9wqRU4
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM5PR11MB0026
+Return-Path: khairul.rohaizzat.jamaluddin@intel.com
+X-OriginatorOrg: intel.com
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-* Updated the README to include instructions to build the doc with
-  sphinx
-* Added design guidelines for new contributors
+Hi,
 
-Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Does anyone have any updates on this patch? Does it pass for merge?
+
+
+Thank you & Kind regards,
+Khairul
+
+-----Original Message-----
+From: Jamaluddin, Khairul Rohaizzat <khairul.rohaizzat.jamaluddin@intel.com=
+>=20
+Sent: Monday, September 21, 2020 7:27 PM
+To: docs@lists.yoctoproject.org
+Cc: Jamaluddin, Khairul Rohaizzat <khairul.rohaizzat.jamaluddin@intel.com>
+Subject: [PATCH v3] sphinx: ref-variables: Added entry for IMAGE_EFI_BOOT_F=
+ILES
+
+From: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@intel.com>
+
+IMAGE_EFI_BOOT_FILES created to help differentiate files needed between boo=
+timg-efi and bootimg-partition when creating the installer/.wic file.
+
+Signed-off-by: Khairul Rohaizzat Jamaluddin <khairul.rohaizzat.jamaluddin@i=
+ntel.com>
 ---
-Changes in v2: 
-- fixed spelling/grammar based on Peter's feedback, thank you so much!
+ documentation/ref-manual/ref-variables.rst | 38 ++++++++++++++++++++++++++=
++++-
+ 1 file changed, 37 insertions(+), 1 deletion(-)
 
- documentation/README | 283 ++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 255 insertions(+), 28 deletions(-)
-
-diff --git a/documentation/README b/documentation/README
-index d64f2fd2f..fce3cfe17 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -40,16 +40,11 @@ Folders exist for individual manuals as follows:
- * kernel-dev       - The Yocto Project Linux Kernel Development Tasks Manual
- * ref-manual       - The Yocto Project Reference Manual
- * yocto-project-qs - The Yocto Project Quick Start
--* mega-manual      - The Yocto Project Mega-Manual, which is an aggregated manual comprised
--                     of all YP manuals and guides
- * profile-manual   - The Yocto Project Profile and Tracing Manual
- * toaster-manual   - The Toaster Manual
-+* test-manual      - The Test Environment Manual
- 
--Each folder is self-contained regarding content and figures.  Note that there
--is a sed file needed to process the links of the mega-manual.  The sed file
--is located in the tools directory.  Also note that the figures folder in the
--mega-manual directory contains duplicates of all the figures in the YP folders
--directories for all YP manuals and guides.
-+Each folder is self-contained regarding content and figures.
- 
- If you want to find HTML versions of the Yocto Project manuals on the web,
- go to http://www.yoctoproject.org and click on the "Documentation" tab.  From
-@@ -60,34 +55,266 @@ currently being developed.
- In general, the Yocto Project site (http://www.yoctoproject.org) is a great
- reference for both information and downloads.
- 
--Makefile
-+poky.yaml
-+=========
+diff --git a/documentation/ref-manual/ref-variables.rst b/documentation/ref=
+-manual/ref-variables.rst
+index 625a37c..c09809e 100644
+--- a/documentation/ref-manual/ref-variables.rst
++++ b/documentation/ref-manual/ref-variables.rst
+@@ -2902,10 +2902,46 @@ system and gives an overview of their function and =
+contents.
+       The base name of image output files. This variable defaults to the
+       recipe name (``${``\ :term:`PN`\ ``}``).
+=20
++   IMAGE_EFI_BOOT_FILES
++      A space-separated list of files installed into the boot partition
++      when preparing an image using the Wic tool with the
++      ``bootimg-efi`` source plugin. By default,
++      the files are
++      installed under the same name as the source files. To change the
++      installed name, separate it from the original name with a semi-colon
++      (;). Source files need to be located in
++      :term:`DEPLOY_DIR_IMAGE`. Here are two
++      examples:
++      ::
 +
-+This file defines variables used for documentation production.  The variables
-+are used to define release pathnames, URLs for the published manuals, etc.
++         IMAGE_EFI_BOOT_FILES =3D "${KERNEL_IMAGETYPE};bz2"
++         IMAGE_EFI_BOOT_FILES =3D "${KERNEL_IMAGETYPE} microcode.cpio"
++=20
++      Alternatively, source files can be picked up using a glob pattern. I=
+n
++      this case, the destination file must have the same name as the base
++      name of the source file path. To install files into a directory
++      within the target location, pass its name after a semi-colon (;).
++      Here are two examples:
++      ::
 +
-+template
- ========
-+Contains various templates, fonts, and some old PNG files.
++         IMAGE_EFI_BOOT_FILES =3D "boot/loader/*"
++         IMAGE_EFI_BOOT_FILES =3D "boot/loader/*;boot/"
 +
-+Sphinx
-+======
++      The first example
++      installs all files from ``${DEPLOY_DIR_IMAGE}/boot/loader/``
++      into the root of the target partition. The second example installs
++      the same files into a ``boot`` directory within the target partition=
+.
 +
-+The Yocto Project documentation was migrated from the original DocBook
-+format to Sphinx based documentation for the Yocto Project 3.2
-+release. This section will provide additional information related to
-+the Sphinx migration, and guidelines for developers willing to
-+contribute to the Yocto Project documentation.
++      You can find information on how to use the Wic tool in the
++      ":ref:`dev-manual/dev-manual-common-tasks:creating partitioned image=
+s using wic`"
++      section of the Yocto Project Development Tasks Manual. Reference
++      material for Wic is located in the
++      ":doc:`../ref-manual/ref-kickstart`" chapter.
 +
-+   Sphinx is a tool that makes it easy to create intelligent and
-+   beautiful documentation, written by Georg Brandl and licensed under
-+   the BSD license. It was originally created for the Python
-+   documentation.
-+
-+Extensive documentation is available on the Sphinx website:
-+https://www.sphinx-doc.org/en/master/. Sphinx is designed to be
-+extensible thanks to the ability to write our own custom extensions,
-+as Python modules, which will be executed during the generation of the
-+documentation.
-+
-+Yocto Project documentation website
-+===================================
-+
-+A new website has been created to host the Yocto Project
-+documentation, it can be found at: https://docs.yoctoproject.org/.
-+
-+The entire Yocto Project documentation, as well as the BitBake manual
-+is published on this website, including all previously released
-+versions. A version switcher was added, as a drop-down menu on the top
-+of the page to switch back and forth between the various versions of
-+the current active Yocto Project releases.
-+
-+Transition pages have been added (as rst file) to show links to old
-+versions of the Yocto Project documentation with links to each manual
-+generated with DocBook.
-+
-+How to build the Yocto Project documentation
-+============================================
-+
-+Sphinx is written in Python. While it might work with Python2, for
-+obvious reasons, we will only support building the Yocto Project
-+documentation with Python3.
-+
-+Sphinx might be available in your Linux distro packages repositories,
-+however it is not recommend using distro packages, as they might be
-+old versions, especially if you are using an LTS version of your
-+distro. The recommended method to install Sphinx and all required
-+dependencies is to use the Python Package Index (pip).
-+
-+To install all required packages run:
- 
--The Makefile processes manual directories to create HTML, PDF,
--tarballs, etc.  Details on how the Makefile work are documented
--inside the Makefile.  See that file for more information.
-+ $ pip3 install sphinx sphinx_rtd_theme pyyaml
- 
--To build a manual, you run the make command and pass it the name
--of the folder containing the manual's contents.
--For example, the following command run from the documentation directory
--creates an HTML version of the SDK manual.
--The DOC variable specifies the manual you are making:
-+To build the documentation locally, run:
- 
--     $ make DOC=sdk-manual
-+ $ cd documentation
-+ $ make -f Makefile.sphinx html
- 
--poky.ent
-+The resulting HTML index page will be _build/html/index.html, and you
-+can browse your own copy of the locally generated documentation with
-+your browser.
-+
-+Sphinx theme and CSS customization
-+==================================
-+
-+The Yocto Project documentation is currently based on the "Read the
-+Docs" Sphinx theme, with a few changes to make sure the look and feel
-+of the project documentation is preserved.
-+
-+Most of the theme changes can be done using the file
-+'sphinx-static/theme_overrides.css'. Most CSS changes in this file
-+were inherited from the DocBook CSS stylesheets.
-+
-+Sphinx design guidelines and principles
-+=======================================
-+
-+The initial Docbook to Sphinx migration was done with an automated
-+tool called Pandoc (https://pandoc.org/). The tool produced some clean
-+output markdown text files. After the initial automated conversion
-+additional changes were done to fix up headings, images and links. In
-+addition Sphinx has built in mechanisms (directives) which were used
-+to replace similar functions implemented in Docbook such as glossary,
-+variables substitutions, notes and references.
-+
-+Headings
- ========
- 
--This file defines variables used for documentation production.  The variables
--are used to define release pathnames, URLs for the published manuals, etc.
-+The layout of the Yocto Project manuals is organized as follows
- 
--template
-+    Book
-+      Chapter
-+        Section
-+          Section
-+            Section
-+
-+The following headings styles are defined in Sphinx:
-+
-+    Book              => overline ===
-+      Chapter         => overline ***
-+        Section       => ====
-+          Section     => ----
-+            Section   => ^^^^
-+              Section => """" or ~~~~
-+
-+With this proposal, we preserve the same TOCs between Sphinx and Docbook.
-+
-+Built-in glossary
-+=================
-+
-+Sphinx has a glossary directive. From
-+https://www.sphinx-doc.org/en/master/usage/restructuredtext/directives.html#glossary:
-+
-+    This directive must contain a reST definition list with terms and
-+    definitions. The definitions will then be referencable with the
-+    [https://www.sphinx-doc.org/en/master/usage/restructuredtext/roles.html#role-term
-+    'term' role].
-+
-+So anywhere in any of the Yocto Project manuals, :term:`VAR` can be
-+used to refer to an item from the glossary, and a link is created
-+automatically. A general index of terms is also generated by Sphinx
-+automatically.
-+
-+Global substitutions
-+====================
-+
-+The Yocto Project documentation makes heavy use of global
-+variables. In Docbook these variables are stored in the file
-+poky.ent. This Docbook feature is not handled automatically with
-+Pandoc. Sphinx has builtin support for substitutions
-+(https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#substitutions),
-+however there are important shortcomings. For example they cannot be
-+used/nested inside code-block sections.
-+
-+A Sphinx extension was implemented to support variable substitutions
-+to mimic the DocBook based documentation behavior. Variabes
-+substitutions are done while reading/parsing the .rst files. The
-+pattern for variables substitutions is the same as with DocBook,
-+e.g. `&VAR;`.
-+
-+The implementation of the extension can be found here in the file
-+documentation/sphinx/yocto-vars.py, this extension is enabled by
-+default when building the Yocto Project documentation.  All variables
-+are set in a file call poky.yaml, which was initially generated from
-+poky.ent. The file was converted into YAML so that it is easier to
-+process by the custom Sphinx extension (which is a Python module).
-+
-+For example, the following .rst content will produce the 'expected'
-+content:
-+
-+  .. code-block::
-+      $ mkdir ~/poky-&DISTRO;
-+      or
-+      $ git clone &YOCTO_GIT_URL;/git/poky -b &DISTRO_NAME_NO_CAP;
-+
-+Variables can be nested, like it was the case for DocBook:
-+
-+  YOCTO_HOME_URL : "http://www.yoctoproject.org"
-+  YOCTO_DOCS_URL : "&YOCTO_HOME_URL;/docs"
-+
-+Note directive
-+==============
-+
-+Sphinx has a builtin 'note' directive that produces clean Note section
-+in the output file. There are various types of directives such as
-+"attention", "caution", "danger", "error", "hint", "important", "tip",
-+"warning", "admonition" that are supported, and additional directive
-+can be added as Sphinx extension if needed.
-+
-+Figures
-+=======
-+
-+The Yocto Project documentation has many figures/images. Sphinx has a
-+'figure' directive which is straight forward to use. To include a
-+figure in the body of the documentation:
-+
-+  .. image:: figures/YP-flow-diagram.png
-+
-+Links and References
-+====================
-+
-+The following types of links can be used: links to other locations in
-+the same document, to locations in other documents and to external
-+websites.
-+
-+More information can be found here:
-+https://sublime-and-sphinx-guide.readthedocs.io/en/latest/references.html.
-+
-+References
-+==========
-+
-+The following extension is enabed by default:
-+sphinx.ext.autosectionlabel
-+(https://www.sphinx-doc.org/en/master/usage/extensions/autosectionlabel.html).
-+
-+This extension allows you to refer sections by their titles. Note that
-+autosectionlabel_prefix_document is enabled by default, so that we can
-+insert references from any document.
-+
-+For example, to insert an HTML link to a section from
-+documentaion/manual/intro.rst, use:
-+
-+  Please check this :ref:`manual/intro:Cross-References to Locations in the Same Document`
-+
-+Alternatively a custom text can be used instead of using the section
-+text:
-+
-+  Please check this :ref:`section <manual/intro:Cross-References to Locations in the Same Document>`
-+
-+TIP: The following command can be used to dump all the references that
-+     are defined in the project documentation:
-+
-+       python -msphinx.ext.intersphinx <path to build folder>/html/objects.inv
-+
-+This dump contains all links and for each link it shows the default
-+"Link Text" that Sphinx would use. If the default link text is not
-+appropriate, a custom link text can be used in the ':ref:' directive.
-+
-+Extlinks
- ========
--Contains various templates, fonts, and some old PNG files.
- 
--tools
--=====
--Contains a tool to convert the DocBook files to PDF format.  This folder also
--contains the mega-manual.sed file, which is used by Makefile to process
--cross-references from within the manual that normally go to an external
--manual.
-+The sphinx.ext.extlinks extension is enabled by default
-+(https://sublime-and-sphinx-guide.readthedocs.io/en/latest/references.html#use-the-external-links-extension),
-+and it is configured with:
-+
-+  'yocto_home': ('https://yoctoproject.org%s', None),
-+  'yocto_wiki': ('https://wiki.yoctoproject.org%s', None),
-+  'yocto_dl': ('https://downloads.yoctoproject.org%s', None),
-+  'yocto_lists': ('https://lists.yoctoproject.org%s', None),
-+  'yocto_bugs': ('https://bugzilla.yoctoproject.org%s', None),
-+  'yocto_ab': ('https://autobuilder.yoctoproject.org%s', None),
-+  'yocto_docs': ('https://docs.yoctoproject.org%s', None),
-+  'yocto_git': ('https://git.yoctoproject.org%s', None),
-+  'oe_home': ('https://www.openembedded.org%s', None),
-+  'oe_lists': ('https://lists.openembedded.org%s', None),
-+
-+It creates convenient shortcuts which can be used throughout the
-+documentation rst files, as:
-+
-+  Please check this :yocto_wiki:`wiki page </Weekly_Status>`
-+
-+Intersphinx links
-+=================
-+
-+The sphinx.ext.intersphinx extension is enabled by default
-+(https://www.sphinx-doc.org/en/master/usage/extensions/intersphinx.html),
-+so that we can cross reference content from other Sphinx based
-+documentation projects, such as the BitBake manual.
-+
-+References to the bitbake manual can be done like this:
-+
-+  See the ":ref:`-D <bitbake:bitbake-user-manual/bitbake-user-manual-intro:usage and syntax>`" option
-+or
-+  :term:`bitbake:BB_NUMBER_PARSE_THREADS`
--- 
-2.28.0
+    IMAGE_BOOT_FILES
+       A space-separated list of files installed into the boot partition
+       when preparing an image using the Wic tool with the
+-      ``bootimg-partition`` or ``bootimg-efi`` source plugin. By default,
++      ``bootimg-partition`` source plugin. By default,
+       the files are
+       installed under the same name as the source files. To change the
+       installed name, separate it from the original name with a semi-colon
+--
+2.7.4
 
