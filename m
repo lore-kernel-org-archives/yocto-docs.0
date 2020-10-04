@@ -1,237 +1,63 @@
 Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web11.7383.1601801884366219437
+ by mx.groups.io with SMTP id smtpd.web12.7376.1601801884682141728
  for <docs@lists.yoctoproject.org>;
  Sun, 04 Oct 2020 01:58:05 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.178.230, mailfrom: foss@0leil.net)
 Received: from fiqs.lan (80-110-110-137.cgn.dynamic.surfer.at [80.110.110.137])
 	(Authenticated sender: foss@0leil.net)
-	by relay10.mail.gandi.net (Postfix) with ESMTPA id 366CA240004;
-	Sun,  4 Oct 2020 08:58:00 +0000 (UTC)
+	by relay10.mail.gandi.net (Postfix) with ESMTPA id E5ECD240005;
+	Sun,  4 Oct 2020 08:58:01 +0000 (UTC)
 From: "Quentin Schulz" <foss@0leil.net>
 To: docs@lists.yoctoproject.org
 Cc: Quentin Schulz <foss@0leil.net>
-Subject: [PATCH 1/8] docs: ref-manual: ref-terms: add links to terms in glossary
-Date: Sun,  4 Oct 2020 10:57:21 +0200
-Message-Id: <20201004085728.8015-1-foss@0leil.net>
+Subject: [PATCH 2/8] docs: poky.yaml: use HTTPS for links
+Date: Sun,  4 Oct 2020 10:57:22 +0200
+Message-Id: <20201004085728.8015-2-foss@0leil.net>
 X-Mailer: git-send-email 2.26.2
+In-Reply-To: <20201004085728.8015-1-foss@0leil.net>
+References: <20201004085728.8015-1-foss@0leil.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Everything declared in a glossary has a "term-" link that is usable as an
-HTML anchor. The link already works, one just cannot get a link from
-within the ref-terms page.
-
-Let's make this possible.
+Manually tested, ran linkcheck on it too.
 
 Signed-off-by: Quentin Schulz <foss@0leil.net>
 ---
- documentation/ref-manual/ref-terms.rst | 48 +++++++++++++-------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ documentation/poky.yaml | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/documentation/ref-manual/ref-terms.rst b/documentation/ref-manual/ref-terms.rst
-index 600cc23c3..48e665fe3 100644
---- a/documentation/ref-manual/ref-terms.rst
-+++ b/documentation/ref-manual/ref-terms.rst
-@@ -10,7 +10,7 @@ universal, the list includes them just in case:
- 
- .. glossary::
- 
--   Append Files
-+   :term:`Append Files`
-       Files that append build information to a recipe file.  Append files are
-       known as BitBake append files and ``.bbappend`` files. The OpenEmbedded
-       build system expects every append file to have a corresponding recipe
-@@ -50,18 +50,18 @@ universal, the list includes them just in case:
-          name. You cannot use the wildcard character in any other location of
-          the name.
- 
--   BitBake
-+   :term:`BitBake`
-       The task executor and scheduler used by the OpenEmbedded build system to
-       build images. For more information on BitBake, see the :doc:`BitBake User
-       Manual <bitbake:index>`.
- 
--   Board Support Package (BSP)
-+   :term:`Board Support Package (BSP)`
-       A group of drivers, definitions, and other components that provide support
-       for a specific hardware configuration. For more information on BSPs, see
-       the :ref:`bsp-guide/bsp-guide:Yocto Project Board Support Package
-       Developer's Guide`.
- 
--   Build Directory
-+   :term:`Build Directory`
-       This term refers to the area used by the OpenEmbedded build system for
-       builds. The area is created when you ``source`` the setup environment
-       script that is found in the Source Directory
-@@ -109,19 +109,19 @@ universal, the list includes them just in case:
-          drive. Doing so effectively separates TMPDIR from TOPDIR , which is the
-          Build Directory.
- 
--   Build Host
-+   :term:`Build Host`
-       The system used to build images in a Yocto Project Development
-       environment. The build system is sometimes referred to as the development
-       host.
- 
--   Classes
-+   :term:`Classes`
-       Files that provide for logic encapsulation and inheritance so that
-       commonly used patterns can be defined once and then easily used in
-       multiple recipes. For reference information on the Yocto Project classes,
-       see the ":ref:`ref-manual/ref-classes:Classes`" chapter. Class files end with the
-       ``.bbclass`` filename extension.
- 
--   Configuration File
-+   :term:`Configuration File`
-       Files that hold global definitions of variables, user-defined variables,
-       and hardware configuration information. These files tell the OpenEmbedded
-       build system what to build and what to put into the image to support a
-@@ -138,13 +138,13 @@ universal, the list includes them just in case:
-       :file:`machine/beaglebone.conf` configuration file defines variables for
-       the Texas Instruments ARM Cortex-A8 development board).
- 
--   Container Layer
-+   :term:`Container Layer`
-       Layers that hold other layers. An example of a container layer is
-       OpenEmbedded's `meta-openembedded
-       <https://github.com/openembedded/meta-openembedded>`_ layer. The
-       ``meta-openembedded`` layer contains many ``meta-*`` layers.
- 
--   Cross-Development Toolchain
-+   :term:`Cross-Development Toolchain`
-       In general, a cross-development toolchain is a collection of software
-       development tools and utilities that run on one architecture and allow you
-       to develop software for a different, or targeted, architecture. These
-@@ -167,7 +167,7 @@ universal, the list includes them just in case:
-       toolchain in the :ref:`sdk-manual/sdk-manual:Yocto Project Application
-       Development and the Extensible Software Development Kit (eSDK)` manual.
- 
--   Extensible Software Development Kit (eSDK)
-+   :term:`Extensible Software Development Kit (eSDK)`
-       A custom SDK for application developers. This eSDK allows developers to
-       incorporate their library and programming changes back into the image to
-       make their code available to other application developers.
-@@ -176,14 +176,14 @@ universal, the list includes them just in case:
-       Project Application Development and the Extensible Software Development
-       Kit (eSDK)` manual.
- 
--   Image
-+   :term:`Image`
-       An image is an artifact of the BitBake build process given a collection of
-       recipes and related Metadata. Images are the binary output that run on
-       specific hardware or QEMU and are used for specific use-cases. For a list
-       of the supported image types that the Yocto Project provides, see the
-       ":ref:`ref-manual/ref-images:Images`" chapter.
- 
--   Layer
-+   :term:`Layer`
-       A collection of related recipes. Layers allow you to consolidate related
-       metadata to customize your build. Layers also isolate information used
-       when building for multiple architectures.  Layers are hierarchical in
-@@ -202,7 +202,7 @@ universal, the list includes them just in case:
-       Layers`" section in the Yocto Project Board Support Packages (BSP)
-       Developer's Guide.
- 
--   Metadata
-+   :term:`Metadata`
-       A key element of the Yocto Project is the Metadata that
-       is used to construct a Linux distribution and is contained in the
-       files that the :term:`OpenEmbedded Build System`
-@@ -221,7 +221,7 @@ universal, the list includes them just in case:
-       :yocto_git:`yocto-kernel-cache </cgit/cgit.cgi/yocto-kernel-cache>`
-       Git repository.
- 
--   OpenEmbedded-Core (OE-Core)
-+   :term:`OpenEmbedded-Core (OE-Core)`
-       OE-Core is metadata comprised of
-       foundational recipes, classes, and associated files that are meant to
-       be common among many different OpenEmbedded-derived systems,
-@@ -234,7 +234,7 @@ universal, the list includes them just in case:
-       You can see the Metadata in the ``meta`` directory of the Yocto
-       Project :yocto_git:`Source Repositories <>`.
- 
--   OpenEmbedded Build System
-+   :term:`OpenEmbedded Build System`
-       The build system specific to the Yocto
-       Project. The OpenEmbedded build system is based on another project
-       known as "Poky", which uses :term:`BitBake` as the task
-@@ -250,7 +250,7 @@ universal, the list includes them just in case:
-          Poky
-          term.
- 
--   Package
-+   :term:`Package`
-       In the context of the Yocto Project, this term refers to a
-       recipe's packaged output produced by BitBake (i.e. a "baked recipe").
-       A package is generally the compiled binaries produced from the
-@@ -269,7 +269,7 @@ universal, the list includes them just in case:
-       :term:`PR`, :term:`PV`, and
-       :term:`PE`).
- 
--   Package Groups
-+   :term:`Package Groups`
-       Arbitrary groups of software Recipes. You use
-       package groups to hold recipes that, when built, usually accomplish a
-       single task. For example, a package group could contain the recipes
-@@ -278,7 +278,7 @@ universal, the list includes them just in case:
-       is really just another recipe. Because package group files are
-       recipes, they end with the ``.bb`` filename extension.
- 
--   Poky
-+   :term:`Poky`
-       Poky, which is pronounced *Pock*-ee, is a reference embedded
-       distribution and a reference test configuration. Poky provides the
-       following:
-@@ -303,7 +303,7 @@ universal, the list includes them just in case:
-          OpenedHand, the poky project became the basis for the Yocto
-          Project's build system.
- 
--   Recipe
-+   :term:`Recipe`
-       A set of instructions for building packages. A recipe
-       describes where you get source code, which patches to apply, how to
-       configure the source, how to compile it and so on. Recipes also
-@@ -311,13 +311,13 @@ universal, the list includes them just in case:
-       represent the logical unit of execution, the software to build, the
-       images to build, and use the ``.bb`` file extension.
- 
--   Reference Kit
-+   :term:`Reference Kit`
-       A working example of a system, which includes a
-       :term:`BSP<Board Support Package (BSP)>` as well as a
-       :term:`build host<Build Host>` and other components, that can
-       work on specific hardware.
- 
--   Source Directory
-+   :term:`Source Directory`
-      This term refers to the directory structure
-      created as a result of creating a local copy of the ``poky`` Git
-      repository ``git://git.yoctoproject.org/poky`` or expanding a
-@@ -376,20 +376,20 @@ universal, the list includes them just in case:
-      ":ref:`overview-manual/overview-manual-development-environment:repositories, tags, and branches`"
-      section in the Yocto Project Overview and Concepts Manual.
- 
--   Task
-+   :term:`Task`
-       A unit of execution for BitBake (e.g.
-       :ref:`ref-tasks-compile`,
-       :ref:`ref-tasks-fetch`,
-       :ref:`ref-tasks-patch`, and so forth).
- 
--   Toaster
-+   :term:`Toaster`
-       A web interface to the Yocto Project's :term:`OpenEmbedded Build System`.
-       The interface enables you to
-       configure and run your builds. Information about builds is collected
-       and stored in a database. For information on Toaster, see the
-       :doc:`../toaster-manual/toaster-manual`.
- 
--   Upstream
-+   :term:`Upstream`
-       A reference to source code or repositories that are not
-       local to the development system but located in a master area that is
-       controlled by the maintainer of the source code. For example, in
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 7d544b41a..ec21271a3 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -16,17 +16,17 @@ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ COPYRIGHT_YEAR : "2010-2020"
+ ORGNAME : "The Yocto Project"
+ ORGEMAIL : "docs@lists.yoctoproject.org"
+-YOCTO_DL_URL : "http://downloads.yoctoproject.org"
+-YOCTO_HOME_URL : "http://www.yoctoproject.org"
+-YOCTO_LISTS_URL : "http://lists.yoctoproject.org"
+-YOCTO_BUGZILLA_URL : "http://bugzilla.yoctoproject.org"
++YOCTO_DL_URL : "https://downloads.yoctoproject.org"
++YOCTO_HOME_URL : "https://www.yoctoproject.org"
++YOCTO_LISTS_URL : "https://lists.yoctoproject.org"
++YOCTO_BUGZILLA_URL : "https://bugzilla.yoctoproject.org"
+ YOCTO_WIKI_URL : "https://wiki.yoctoproject.org"
+-YOCTO_AB_URL : "http://autobuilder.yoctoproject.org"
+-YOCTO_GIT_URL : "http://git.yoctoproject.org"
++YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
++YOCTO_GIT_URL : "https://git.yoctoproject.org"
+ YOCTO_ADTREPO_URL : "http://adtrepo.yoctoproject.org"
+-OE_HOME_URL : "http://www.openembedded.org"
+-OE_LISTS_URL : "http://lists.openembedded.org/mailman"
+-OE_DOCS_URL : "http://docs.openembedded.org"
++OE_HOME_URL : "https://www.openembedded.org"
++OE_LISTS_URL : "https://lists.openembedded.org"
++OE_DOCS_URL : "https://docs.openembedded.org"
+ OH_HOME_URL : "http://o-hand.com"
+ BITBAKE_HOME_URL : "http://developer.berlios.de/projects/bitbake/"
+ YOCTO_DOCS_URL : "&YOCTO_HOME_URL;/docs"
 -- 
 2.26.2
 
