@@ -1,115 +1,114 @@
 Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web11.10483.1601817170637312941
+ by mx.groups.io with SMTP id smtpd.web12.10464.1601817170431411287
  for <docs@lists.yoctoproject.org>;
  Sun, 04 Oct 2020 06:12:51 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.178.232, mailfrom: foss@0leil.net)
 Received: from fiqs.lan (80-110-110-137.cgn.dynamic.surfer.at [80.110.110.137])
 	(Authenticated sender: foss@0leil.net)
-	by relay12.mail.gandi.net (Postfix) with ESMTPA id 95A62200002;
-	Sun,  4 Oct 2020 13:12:48 +0000 (UTC)
+	by relay12.mail.gandi.net (Postfix) with ESMTPA id A247B200006;
+	Sun,  4 Oct 2020 13:12:47 +0000 (UTC)
 From: "Quentin Schulz" <foss@0leil.net>
 To: docs@lists.yoctoproject.org
 Cc: Quentin Schulz <foss@0leil.net>
-Subject: [PATCH 2/3] docs: sphinx: yocto-vars: rebuild files when poky.yaml has changed
-Date: Sun,  4 Oct 2020 15:12:41 +0200
-Message-Id: <20201004131242.61278-2-foss@0leil.net>
+Subject: [PATCH 1/3] docs: ref-manual: ref-system-requirements: update requirements to build Sphinx docs
+Date: Sun,  4 Oct 2020 15:12:40 +0200
+Message-Id: <20201004131242.61278-1-foss@0leil.net>
 X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201004131242.61278-1-foss@0leil.net>
-References: <20201004131242.61278-1-foss@0leil.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-poky.yaml changes aren't detected by Sphinx by default.
+Tested with containers on all supported distributions.
 
-In order to detect changes in poky.yaml, its md5sum is stored in the
-app.outdir (BUILDDIR/html when building html) and checked against the
-md5sum of the poky.yaml under use.
+Debian 8 (Jessie) still has Python3.4 and an old pip3, which makes it
+impossible to build typing module which is a requirement of "new" Sphinx
+python module.
 
-If the md5sum has changed, find all rst files in app.srcdir that have at
-least an occurence of `&.*;` and mark them as requiring a rebuild.
+One cannot update to latest pip3 from within pip in Jessie's version.
+One cannot get a newer pip from upstream because newer pip don't support
+Python3.4 anymore.
+One cannot build with python3-sphinx package from Jessie because the
+package is too old (1.2.3) and does not have sphinx.ext.autosectionlabel
+module which appeared in 1.4 version.
 
 Signed-off-by: Quentin Schulz <foss@0leil.net>
 ---
- documentation/sphinx/yocto-vars.py | 43 ++++++++++++++++++++++++++++--
- 1 file changed, 41 insertions(+), 2 deletions(-)
+ documentation/poky.yaml                       |  1 +
+ .../ref-manual/ref-system-requirements.rst    | 24 ++++++++++++-------
+ 2 files changed, 17 insertions(+), 8 deletions(-)
 
-diff --git a/documentation/sphinx/yocto-vars.py b/documentation/sphinx/yocto-vars.py
-index 8083d7da1..8795eee0a 100644
---- a/documentation/sphinx/yocto-vars.py
-+++ b/documentation/sphinx/yocto-vars.py
-@@ -1,4 +1,6 @@
- #!/usr/bin/env python
-+from hashlib import md5
-+from pathlib import Path
- import re
- import sys
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index ec21271a3..946387795 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -87,3 +87,4 @@ CENTOS8_HOST_PACKAGES_ESSENTIAL : "-y epel-release
+      socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
+      python3-GitPython python3-jinja2 python3-pexpect xz which SDL-devel xterm \
+      rpcgen mesa-libGL-devel"
++PIP3_HOST_PACKAGES_DOC : "$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml"
+diff --git a/documentation/ref-manual/ref-system-requirements.rst b/documentation/ref-manual/ref-system-requirements.rst
+index b03a266ef..e0584fa05 100644
+--- a/documentation/ref-manual/ref-system-requirements.rst
++++ b/documentation/ref-manual/ref-system-requirements.rst
+@@ -141,7 +141,14 @@ supported Ubuntu or Debian Linux distribution:
+    Yocto Project documentation manuals:
+    ::
  
-@@ -20,25 +22,62 @@ __version__  = '1.0'
- # Each .rst file is processed after source-read event (subst_vars_replace runs once per file)
- subst_vars = {}
- 
-+poky_hash = ""
+-      $ sudo apt-get install make xsltproc docbook-utils fop dblatex xmlto
++      $ sudo apt-get install make python3-pip
++      &PIP3_HOST_PACKAGES_DOC;
 +
- def subst_vars_replace(app: Sphinx, docname, source):
-     result = source[0]
-     for k in subst_vars:
-         result = result.replace("&"+k+";", subst_vars[k])
-     source[0] = result
- 
-+def yocto_vars_env_get_outdated(app: Sphinx, env, added, changed, removed):
-+    '''
-+    If poky.yaml changed (BUILDDIR/.poky.yaml.cache does not exist or contains
-+    an md5sum different from poky.yaml's current md5sum), force rebuild of all
-+    *.rst files in SOURCEDIR whose content has at least one occurence of `&.*;`
-+    (see PATTERN global variable).
-+    '''
-+    try:
-+        poky_cache = Path(app.outdir) / ".poky.yaml.cache"
-+        cache_hash = poky_cache.read_text()
-+    except FileNotFoundError:
-+        cache_hash = None
++   .. note::
 +
-+    if poky_hash == cache_hash:
-+        return []
-+
-+    docs = []
-+    for p in Path(app.srcdir).rglob("*.rst"):
-+        if PATTERN.search(p.read_text()):
-+            p_rel_no_ext = p.relative_to(app.srcdir).parent / p.stem
-+            docs.append(str(p_rel_no_ext))
-+    return docs
-+
-+def yocto_vars_build_finished(app: Sphinx, exception):
-+    poky_cache = Path(app.outdir) / ".poky.yaml.cache"
-+    poky_cache.write_text(poky_hash)
-+    return []
-+
- PATTERN = re.compile(r'&(.*?);')
- def expand(val, src):
-     return PATTERN.sub(lambda m: expand(src.get(m.group(1), ''), src), val)
++      It is currently not possible to build out documentation from Debian 8
++      (Jessie) because of outdated ``pip3`` and ``python3``. ``python3-sphinx``
++      is too outdated.
  
- def setup(app: Sphinx):
--    #FIXME: if poky.yaml changes, files are not reprocessed.
-+    global poky_hash
-+
-     with open("poky.yaml") as file:
--        subst_vars.update(yaml.load(file, Loader=yaml.FullLoader))
-+        hasher = md5()
-+        buff = file.read()
-+        hasher.update(buff.encode('utf-8'))
-+        poky_hash = hasher.hexdigest()
-+        subst_vars.update(yaml.safe_load(buff))
+ Fedora Packages
+ ---------------
+@@ -159,8 +166,8 @@ supported Fedora Linux distribution:
+    Yocto Project documentation manuals:
+    ::
  
-     for k in subst_vars:
-         subst_vars[k] = expand(subst_vars[k], subst_vars)
+-      $ sudo dnf install  docbook-style-dsssl docbook-style-xsl \
+-      docbook-dtds docbook-utils fop libxslt dblatex xmlto
++      $ sudo dnf install make python3-pip which
++      &PIP3_HOST_PACKAGES_DOC;
  
-     app.connect('source-read', subst_vars_replace)
-+    app.connect('env-get-outdated', yocto_vars_env_get_outdated)
-+    app.connect('build-finished', yocto_vars_build_finished)
+ openSUSE Packages
+ -----------------
+@@ -178,7 +185,8 @@ supported openSUSE Linux distribution:
+    Yocto Project documentation manuals:
+    ::
  
-     return dict(
-         version = __version__,
+-      $ sudo zypper install dblatex xmlto
++      $ sudo zypper install make python3-pip which
++      &PIP3_HOST_PACKAGES_DOC;
+ 
+ 
+ CentOS-7 Packages
+@@ -207,8 +215,8 @@ supported CentOS-7 Linux distribution:
+    Yocto Project documentation manuals:
+    ::
+ 
+-      $ sudo yum install docbook-style-dsssl docbook-style-xsl \
+-      docbook-dtds docbook-utils fop libxslt dblatex xmlto
++      $ sudo yum install make python3-pip which
++      &PIP3_HOST_PACKAGES_DOC;
+ 
+ CentOS-8 Packages
+ -----------------
+@@ -239,8 +247,8 @@ supported CentOS-8 Linux distribution:
+    Yocto Project documentation manuals:
+    ::
+ 
+-      $ sudo dnf install docbook-style-dsssl docbook-style-xsl \
+-      docbook-dtds docbook-utils fop libxslt dblatex xmlto
++      $ sudo dnf install make python3-pip which
++      &PIP3_HOST_PACKAGES_DOC;
+ 
+ Required Git, tar, Python and gcc Versions
+ ==========================================
 -- 
 2.26.2
 
