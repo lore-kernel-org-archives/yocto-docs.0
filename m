@@ -1,85 +1,100 @@
-Received: from bsmtp2.bon.at (bsmtp2.bon.at [213.33.87.16])
- by mx.groups.io with SMTP id smtpd.web12.30257.1601885746042998962
+Received: from mail-yb1-f194.google.com (mail-yb1-f194.google.com [209.85.219.194])
+ by mx.groups.io with SMTP id smtpd.web10.30754.1601888201876821790
  for <docs@lists.yoctoproject.org>;
- Mon, 05 Oct 2020 01:15:46 -0700
+ Mon, 05 Oct 2020 01:56:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.16, mailfrom: quentin.schulz@streamunlimited.com)
-Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp2.bon.at (Postfix) with ESMTPSA id 4C4YM40rV2z5tlL;
-	Mon,  5 Oct 2020 10:15:43 +0200 (CEST)
-Date: Mon, 5 Oct 2020 10:15:42 +0200
-From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Cc: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 8/8] docs: ref-manual: ref-structure: replace oe-init-build-env by &OE_INIT_FILE;
-Message-ID: <20201005081542.r4rvjnyg3ospwp2p@qschulz>
-References: <20201004085728.8015-1-foss@0leil.net>
- <20201004085728.8015-8-foss@0leil.net>
- <CAP71WjwU71MHWO7XbRsNpCV69ifdMVKjfktbr2-xFWX0Oow_BQ@mail.gmail.com>
- <20201005081055.5zuqh4d7gmibaso5@qschulz>
- <CAP71WjxOAEd5XcbEOhVJeWD7ASSozCb-jbL60oxECkQE1mWYCA@mail.gmail.com>
+ dkim=pass header.i=@linaro.org header.s=google header.b=U4S6WCRO;
+ spf=pass (domain: linaro.org, ip: 209.85.219.194, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f194.google.com with SMTP id h6so6116912ybi.11
+        for <docs@lists.yoctoproject.org>; Mon, 05 Oct 2020 01:56:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=f8HESkRcnmnRSuoPuYDDfz26uR3rRkR3Oct69Pf94ck=;
+        b=U4S6WCROsnwplXV7iZ5k5RfNXu38rYAze+Oib8f+6Rf/lRI5wkQIOCensBRrrBG/fc
+         eOv1t3uNnZxrBFg6arpShix9FJVU4sZ7rPKyCCuEmbjFClXJ83BSrVRdhIZU92cTjj3V
+         1QaQ17RadjOjjasoUgFa51hPUeYc3wYsw8KpCfojk2vvW2zS59JF0OfSSnWEhJYRf0z0
+         tBQ6GaF0pcsad4fdYKJpN951cELBdf/E86h3n8+jHqdZ3B9HPPppuis/qNrP/j16MiyL
+         yQcDnwV6I9AuRFQXjLMz3zBmtCKSbRB+cZugvXu3ZafbAyxefiN4aI5bqG7/0I0kUngU
+         2Kog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=f8HESkRcnmnRSuoPuYDDfz26uR3rRkR3Oct69Pf94ck=;
+        b=nDM9UQ//TSzvdMogyt+WuIuNZty66cb0174ph5UNc2WRsj8LMuSeEPvOXSMauyma69
+         wserbgPe5+i7Xu69XfsSC+0UAdi78skxbuufyAIBzN0EU6cObdRqjHwOgES5OaJrU1lz
+         nmGxdKkiclA2ck5n8X2j6lzmJvgH5ZX4Xd6IhAYyGUL8SP8gCjdoHxVX/W0iIonYzmXq
+         dJ7WD6XI1GJuTR4gvL9P3auw5UVMmqwZRmCd2T6+ePRWQ10wNiVdS1nirxcsdlnoyLH1
+         kRILKoZzVadagQVvy2Y9bhYYeCjWTGLSejIOjZf+91QQ/hcK35kGrz7IaZt5RoZbcUjs
+         wz6g==
+X-Gm-Message-State: AOAM5336fWnAch/uTssklY2DIkF5r4KKkPl8oY9biA7cMueEsNcos29J
+	7OyDrH/ZmngHKyvuZVJaY/07McUqU+6SWIolnCxP6w==
+X-Google-Smtp-Source: ABdhPJymjkuDpFL0EpR9r9qBQmZyuLv5c89mo/54nT5A6ttNuXU5q4AH2/Pwf0DXXmTuvo3y5TMtQUsWsldaHAm/4zA=
+X-Received: by 2002:a25:bfcf:: with SMTP id q15mr17062214ybm.133.1601888200777;
+ Mon, 05 Oct 2020 01:56:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CAP71WjxOAEd5XcbEOhVJeWD7ASSozCb-jbL60oxECkQE1mWYCA@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20201004131242.61278-1-foss@0leil.net> <20201004131242.61278-3-foss@0leil.net>
+In-Reply-To: <20201004131242.61278-3-foss@0leil.net>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Mon, 5 Oct 2020 10:56:29 +0200
+Message-ID: <CAP71Wjze76+Z9Vurh2c3ZMUpvhzuNMH53s7OPEN-L=k=LAm+vQ@mail.gmail.com>
+Subject: Re: [docs] [PATCH 3/3] docs: poky.yaml: fix identation in host packages variables
+To: Quentin Schulz <foss@0leil.net>
+Cc: docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Oct 05, 2020 at 10:13:57AM +0200, Nicolas Dechesne wrote:
-> On Mon, Oct 5, 2020 at 10:10 AM Quentin Schulz
-> <quentin.schulz@streamunlimited.com> wrote:
-> >
-> > Hi Nicolas,
-> >
-> > On Mon, Oct 05, 2020 at 10:01:15AM +0200, Nicolas Dechesne wrote:
-> > > On Sun, Oct 4, 2020 at 10:58 AM Quentin Schulz <foss@0leil.net> wrote:
-> > > >
-> > > > Signed-off-by: Quentin Schulz <foss@0leil.net>
-> > > > ---
-> > > >  documentation/ref-manual/ref-structure.rst | 6 +++---
-> > > >  1 file changed, 3 insertions(+), 3 deletions(-)
-> > > >
-> > > > diff --git a/documentation/ref-manual/ref-structure.rst b/documentation/ref-manual/ref-structure.rst
-> > > > index 32c2dbf23..a5b43259e 100644
-> > > > --- a/documentation/ref-manual/ref-structure.rst
-> > > > +++ b/documentation/ref-manual/ref-structure.rst
-> > > > @@ -139,7 +139,7 @@ back to the Yocto Project, such as ``create-pull-request`` and
-> > > >
-> > > >  .. _structure-core-script:
-> > > >
-> > > > -``oe-init-build-env``
-> > > > +``&OE_INIT_FILE;``
-> > > >  ---------------------
-> > >
-> > > this change is interesting. What happens to links with :ref: here? can
-> >
-> > I've replaced a bunch of broken refs to this section in other files. The ref to
-> > use is actually :ref:`structure-core-script`.
-> >
-> > > we now use &OE_INIT_FILE; in :ref: links? we have several instances
-> > > like this:
-> > > :ref:`ref-manual/ref-structure:\`\`oe-init-build-env\`\``
-> > >
-> >
-> > Those should be converted to use :ref:`structure-core-script` instead.
-> > In the manuals I've reviewed, documentation/ref-manual/ref-terms.rst is
-> > the only one with such a change to make.
-> >
-> > > I remember that I converted all instances of &OE_INIT_FILE; initially,
-> > > then I figured out how to have variables subst with poky.yaml.. so we
-> > > probably have plenty of places where we should use OE_INIT_FILE
-> > > again..
-> > >
-> >
-> > BTW, what's the logic behind replacing oe-init-build-env with
-> > &OE_INIT_FILE; ? There's probably a sed to make tree wide to replace
-> > those :)
+On Sun, Oct 4, 2020 at 3:22 PM Quentin Schulz <foss@0leil.net> wrote:
+>
+> This unfortunately makes the variables probably unusable for proper
+> replacement in other indentation blocks.
+>
+> Signed-off-by: Quentin Schulz <foss@0leil.net>
+
+For the whole series:
+
+Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+
+really good addition to yocto-vars.py..
+
+> ---
+>  documentation/poky.yaml | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+>
+> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+> index 946387795..fc2adb357 100644
+> --- a/documentation/poky.yaml
+> +++ b/documentation/poky.yaml
+> @@ -71,18 +71,18 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
+>  OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
+>       diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
+>       python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
+> -     $ sudo pip3 install GitPython"
+> +     \n\      $ sudo pip3 install GitPython"
+>  CENTOS7_HOST_PACKAGES_ESSENTIAL : "-y epel-release
+> -     $ sudo yum makecache
+> -     $ sudo yum install gawk make wget tar bzip2 gzip python3 unzip perl patch \
+> +     \n\      $ sudo yum makecache
+> +     \n\      $ sudo yum install gawk make wget tar bzip2 gzip python3 unzip perl patch \
+>       diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath socat \
+>       perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python36-pip xz \
+>       which SDL-devel xterm mesa-libGL-devel
+> -     $ sudo pip3 install GitPython jinja2"
+> +     \n\      $ sudo pip3 install GitPython jinja2"
+>  CENTOS8_HOST_PACKAGES_ESSENTIAL : "-y epel-release
+> -     $ sudo dnf config-manager --set-enabled PowerTools
+> -     $ sudo dnf makecache
+> -     $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch \
+> +     \n\      $ sudo dnf config-manager --set-enabled PowerTools
+> +     \n\      $ sudo dnf makecache
+> +     \n\      $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch \
+>       diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
+>       socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
+>       python3-GitPython python3-jinja2 python3-pexpect xz which SDL-devel xterm \
+> --
+> 2.26.2
+>
+>
 > 
-> Just to be consistent.. if we have a variable for it, we should use
-> it.. though I am not convinced we needed a variable in the first
-> place.. i am not sure we plan to change that script name often ;) so
-> we should have OE_INIT_FILE and use it everywhere, or remove it, no?
-> 
-
-Indeed. Soooo? Do we remove it or nah :)?
-
-Quentin
+>
