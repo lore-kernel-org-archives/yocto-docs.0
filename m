@@ -1,120 +1,140 @@
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
- by mx.groups.io with SMTP id smtpd.web11.1225.1602264213839300532
+Received: from mgwym01.jp.fujitsu.com (mgwym01.jp.fujitsu.com [211.128.242.40])
+ by mx.groups.io with SMTP id smtpd.web11.32778.1602474287898734988
  for <docs@lists.yoctoproject.org>;
- Fri, 09 Oct 2020 10:23:34 -0700
+ Sun, 11 Oct 2020 20:44:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=O9lW/Rv1;
- spf=pass (domain: linaro.org, ip: 209.85.221.67, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f67.google.com with SMTP id g12so11078095wrp.10
-        for <docs@lists.yoctoproject.org>; Fri, 09 Oct 2020 10:23:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DaM7bS6+FckrvInkqTrdiDE7sXHllkrcqHzstSH0csE=;
-        b=O9lW/Rv1Bypj9X2+SPVazHkXnQPlrlZES5QrUuerK5HQ2W+dDttJeRWFfQd/7mV3dP
-         OCCW8v2cXy4Qn87mu4gbvnPChkCu0/4bb6lqp8DqJX2Dzp9MEGlSnqq0l9Euzs9uSoeu
-         OXlq23II0Af/P3m78QbQv5z4BncO+SwqQBupm1e7EGwEoFJJwnAJEuBwTFeF/kkWKETY
-         h65/k5IXCWdI1NlrcBciSNvobqPGeQkjN64D0Nm7p7eRyzQ0/IMveCHXXi0QrkC12Y8m
-         nOOq8f+A1Hy9W4G2iVuYzSmYlomRYl8KmH2dqBKY6Dx+enTxQs/A8FahwzY4j+7qsW1N
-         us2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=DaM7bS6+FckrvInkqTrdiDE7sXHllkrcqHzstSH0csE=;
-        b=d5/MbfvtU8p1Z3Za7tluxdnNSKdnZQWlJy/XsiBI4h7DOxCmOdO99TZSE2rKPr/7P7
-         WSyO/Hq93Hm7RTYabSXP0TOZ3A3nQSO77us7aKDWUTPT4+dqALxAVFn/sA12xmzUvOLA
-         9pBiiLknsGj46h4eeOQeqKP+gf7LwVRw4sKv8uEX8/ktFAE++fjWVVC3LxtNFz6J4PEl
-         vfbrHGgEsPYxf7XlTvCTLZaVAGJUbn4rNpDQbOhsbhDqTlA0Fhcm+foRlhQdgO5b6a6f
-         fpEzD6+Lz3hvxriOPj5TXar5vgt7N9s9fA/xcjcoyorFu8CsIwjYnkzwVWzcQ7HsJnmy
-         SdyQ==
-X-Gm-Message-State: AOAM533/WotfP7uedyawzQm0zmrQMVlIzl8kyapy9XF70nrzJBvfjGN5
-	TOQ13SpP1VmKUgvPeDqPTXs3Z9h+PuUbWs5m
-X-Google-Smtp-Source: ABdhPJyaEvfggeUMHzCmVypq6vRavLBo/sa2Tq76Rd+pCtP0qB8Xy1ENDFiXoKtfgMTtsGsm65DsKg==
-X-Received: by 2002:adf:eed1:: with SMTP id a17mr15970311wrp.401.1602264211637;
-        Fri, 09 Oct 2020 10:23:31 -0700 (PDT)
-Return-Path: <nicolas.dechesne@linaro.org>
-Received: from nikaia.localdomain ([2a01:e0a:1b9:3e10:d6af:c5d9:8b6e:b994])
-        by smtp.gmail.com with ESMTPSA id e18sm12904982wrx.50.2020.10.09.10.23.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Oct 2020 10:23:31 -0700 (PDT)
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+ dkim=missing; spf=pass (domain: fujitsu.com, ip: 211.128.242.40, mailfrom: ubinux@fujitsu.com)
+Received: from yt-mxoi2.gw.nic.fujitsu.com (unknown [192.168.229.69]) by mgwym01.jp.fujitsu.com with smtp
+	 id 0ead_0ada_c52f9ea7_a606_4e88_a30a_94f923214c2b;
+	Mon, 12 Oct 2020 12:44:41 +0900
+Received: from pumpkin.openstacklocal (pumpkin.fct.css.fujitsu.com [10.130.70.189])
+	by yt-mxoi2.gw.nic.fujitsu.com (Postfix) with ESMTP id DE69CAC009C
+	for <docs@lists.yoctoproject.org>; Mon, 12 Oct 2020 12:44:40 +0900 (JST)
+Received: by pumpkin.openstacklocal (Postfix, from userid 1001)
+	id 8B51B1305; Mon, 12 Oct 2020 12:42:58 +0900 (JST)
+From: "leimaohui" <leimaohui@cn.fujitsu.com>
 To: docs@lists.yoctoproject.org
-Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH] sdk-manual: use built-in footnotes
-Date: Fri,  9 Oct 2020 19:23:17 +0200
-Message-Id: <20201009172317.216853-1-nicolas.dechesne@linaro.org>
-X-Mailer: git-send-email 2.28.0
+Cc: Lei Maohui <leimaohui@cn.fujitsu.com>
+Subject: [docs] [PATCH] docs: Updated the status of spdx module.
+Date: Mon, 12 Oct 2020 12:42:53 +0900
+Message-Id: <20201012034255.2186713-1-leimaohui@cn.fujitsu.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
+X-TM-AS-GCONF: 00
 Content-Transfer-Encoding: 8bit
 
-The current HTML output is bogus, because we have a fix of * and \.
-Sphinx has built-in footnotes that can be used in this specific
-example. let's use that instead.
+- Deleted content about old spdx.bbclass.
+- Added usage of meta-spdxscanner.
 
-Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Signed-off-by: Lei Maohui <leimaohui@cn.fujitsu.com>
 ---
- documentation/sdk-manual/sdk-intro.rst | 33 ++++++++++----------------
- 1 file changed, 13 insertions(+), 20 deletions(-)
+ .../dev-manual/dev-manual-common-tasks.rst    | 38 +++++++++++++++++++
+ documentation/ref-manual/ref-classes.rst      | 13 -------
+ documentation/ref-manual/ref-tasks.rst        | 14 -------
+ 3 files changed, 38 insertions(+), 27 deletions(-)
 
-diff --git a/documentation/sdk-manual/sdk-intro.rst b/documentation/sdk-manual/sdk-intro.rst
-index 5a346fa6e..acb3f455c 100644
---- a/documentation/sdk-manual/sdk-intro.rst
-+++ b/documentation/sdk-manual/sdk-intro.rst
-@@ -84,9 +84,9 @@ when considering which to build:
- +-----------------------+-----------------------+-----------------------+
- | *Feature*             | *Standard SDK*        | *Extensible SDK*      |
- +=======================+=======================+=======================+
--| Toolchain             | Yes                   | Yes\*                 |
-+| Toolchain             | Yes                   | Yes [1]_              |
- +-----------------------+-----------------------+-----------------------+
--| Debugger              | Yes                   | Yes\*                 |
-+| Debugger              | Yes                   | Yes [1]_              |
- +-----------------------+-----------------------+-----------------------+
- | Size                  | 100+ MBytes           | 1+ GBytes (or 300+    |
- |                       |                       | MBytes for minimal    |
-@@ -98,29 +98,22 @@ when considering which to build:
- +-----------------------+-----------------------+-----------------------+
- | Updateable            | No                    | Yes                   |
- +-----------------------+-----------------------+-----------------------+
--| Managed Sysroot*\*    | No                    | Yes                   |
-+| Managed Sysroot [2]_  | No                    | Yes                   |
- +-----------------------+-----------------------+-----------------------+
--| Installed Packages    | No**\*                | Yes***\*              |
-+| Installed Packages    | No  [3]_              | Yes  [4]_             |
- +-----------------------+-----------------------+-----------------------+
- | Construction          | Packages              | Shared State          |
- +-----------------------+-----------------------+-----------------------+
+diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
+index bef8bf840f..80fd23e960 100644
+--- a/documentation/dev-manual/dev-manual-common-tasks.rst
++++ b/documentation/dev-manual/dev-manual-common-tasks.rst
+@@ -11401,6 +11401,8 @@ to be covered by assuming that three main areas of concern exist:
+ -  Compilation scripts and modifications to the source code must be
+    provided.
  
--\* Extensible SDK contains the toolchain and debugger if
--:term:`SDK_EXT_TYPE` is "full"
--or
--:term:`SDK_INCLUDE_TOOLCHAIN`
--is "1", which is the default.
--
--\*\* Sysroot is managed through the use of
--``devtool``. Thus, it is less likely that you will corrupt your SDK
--sysroot when you try to add additional libraries.
--
--\*\*\* You can add
--runtime package management to the standard SDK but it is not supported
--by default.
--
--\*\*\*\* You must build and make the shared state available to
--extensible SDK users for "packages" you want to enable users to install.
-+.. [1] Extensible SDK contains the toolchain and debugger if :term:`SDK_EXT_TYPE`
-+       is "full" or :term:`SDK_INCLUDE_TOOLCHAIN` is "1", which is the default.
-+.. [2] Sysroot is managed through the use of ``devtool``. Thus, it is less
-+       likely that you will corrupt your SDK sysroot when you try to add
-+       additional libraries.
-+.. [3] You can add runtime package management to the standard SDK but it is not
-+       supported by default.
-+.. [4] You must build and make the shared state available to extensible SDK
-+       users for "packages" you want to enable users to install.
++-  spdx files can be provided.
++
+ There are other requirements beyond the scope of these three and the
+ methods described in this section (e.g. the mechanism through which
+ source code is distributed).
+@@ -11595,6 +11597,42 @@ layers (recipes, configuration files, and so forth) enables you to meet
+ your requirements to include the scripts to control compilation as well
+ as any modifications to the original source.
  
- The Cross-Development Toolchain
- -------------------------------
++Providing spdx files
++~~~~~~~~~~~~~~~~~~~~~~~~~
++
++The spdx module has been integrated to a layer named meta-spdxscanner.
++meta-spdxscanner provides several kinds of scanner. If you want to enable
++this function, you have to do the following steps:
++
++1. Added meta-spdxscanner layer into ``bblayers.conf``. 
++
++2. Reference to README of meta-spdxscanner, setup the environment(e.g, 
++   setup a fossology server) of scanner.
++
++3. Meta-spdxscanner provids several methods(bbclass) to create spdx files.
++   Please choose one that you want to use and enable the spdx task. You have to
++   add some config options in 
++``local.conf`` file in your
++:term:`Build Directory`.
++The following is an example about how to get spdx files during bitbake 
++by fossology-python.bbclass:
++::
++
++   # Selet fossology-python.bbclass.
++   INHERIT += "fossology-python"
++   # For fossology-python.bbclass, TOKEN is necessary, so, after setup a 
++   # Fossology server, you have to create a token.
++   TOKEN = "eyJ0eXAiO..."
++   # The fossology server is necessary for fossology-python.bbclass.
++   FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo" //Optional
++   # If you want to upload the source code to a special folder.
++   FOLDER_NAME = "xxxx" //Optional
++   # If you don't want to put spdx files in tmp/deploy/spdx, you can change.
++   SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
++
++More usage of meta-spdxscanner, which you can find at:
++https://git.yoctoproject.org/cgit/cgit.cgi/meta-spdxscanner/.
++
+ Copying Licenses that Do Not Exist
+ ----------------------------------
+ 
+diff --git a/documentation/ref-manual/ref-classes.rst b/documentation/ref-manual/ref-classes.rst
+index 756df2a60f..7277c6bb9d 100644
+--- a/documentation/ref-manual/ref-classes.rst
++++ b/documentation/ref-manual/ref-classes.rst
+@@ -2380,19 +2380,6 @@ Autotools automatically picks up.
+ The class also provides variables like ``SITEINFO_ENDIANNESS`` and
+ ``SITEINFO_BITS`` that can be used elsewhere in the metadata.
+ 
+-.. _ref-classes-spdx:
+-
+-``spdx.bbclass``
+-================
+-
+-The ``spdx`` class integrates real-time license scanning, generation of
+-SPDX standard output, and verification of license information during the
+-build.
+-
+-.. note::
+-
+-   This class is currently at the prototype stage in the 1.6 release.
+-
+ .. _ref-classes-sstate:
+ 
+ ``sstate.bbclass``
+diff --git a/documentation/ref-manual/ref-tasks.rst b/documentation/ref-manual/ref-tasks.rst
+index 2569306fc5..ea145644f7 100644
+--- a/documentation/ref-manual/ref-tasks.rst
++++ b/documentation/ref-manual/ref-tasks.rst
+@@ -859,17 +859,3 @@ sure that the machine and metadata branches as specified by the
+ branches. If these branches do not exist and
+ :term:`AUTOREV` is not being used, the
+ ``do_validate_branches`` task fails during the build.
+-
+-Miscellaneous Tasks
+-===================
+-
+-The following sections describe miscellaneous tasks.
+-
+-.. _ref-tasks-spdx:
+-
+-``do_spdx``
+------------
+-
+-A build stage that takes the source code and scans it on a remote
+-FOSSOLOGY server in order to produce an SPDX document. This task applies
+-only to the :ref:`spdx <ref-classes-spdx>` class.
 -- 
-2.28.0
+2.25.1
 
