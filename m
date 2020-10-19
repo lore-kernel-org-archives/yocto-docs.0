@@ -1,241 +1,289 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web09.1330.1603127297102162186
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.1342.1603127322103403414
  for <docs@lists.yoctoproject.org>;
- Mon, 19 Oct 2020 10:08:17 -0700
+ Mon, 19 Oct 2020 10:08:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.193, mailfrom: foss@0leil.net)
+ dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.195, mailfrom: foss@0leil.net)
 X-Originating-IP: 80.110.110.8
 Received: from localhost.localdomain (80-110-110-8.cgn.dynamic.surfer.at [80.110.110.8])
 	(Authenticated sender: foss@0leil.net)
-	by relay1-d.mail.gandi.net (Postfix) with ESMTPA id 5D730240006;
-	Mon, 19 Oct 2020 17:08:13 +0000 (UTC)
+	by relay3-d.mail.gandi.net (Postfix) with ESMTPA id 6012B60006;
+	Mon, 19 Oct 2020 17:08:38 +0000 (UTC)
 From: "Quentin Schulz" <foss@0leil.net>
 To: docs@lists.yoctoproject.org
-Cc: richard.purdie@linuxfoundation.com,
-	Quentin Schulz <foss@0leil.net>,
-	Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [RESEND v2] docs: ref-manual: ref-terms: add links to terms in glossary
-Date: Mon, 19 Oct 2020 19:07:01 +0200
-Message-Id: <20201019170701.9605-1-foss@0leil.net>
+Cc: Quentin Schulz <foss@0leil.net>
+Subject: [PATCH] docs: bsp-guide: bsp: fix typos, highlights and links
+Date: Mon, 19 Oct 2020 19:08:33 +0200
+Message-Id: <20201019170833.9991-1-foss@0leil.net>
 X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Everything declared in a glossary has a "term-" link that is usable as an
-HTML anchor. The link already works, one just cannot get a link from
-within the ref-terms page.
-
-Let's make this possible.
-
-Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 Signed-off-by: Quentin Schulz <foss@0leil.net>
 ---
- documentation/ref-manual/ref-terms.rst | 48 +++++++++++++-------------
- 1 file changed, 24 insertions(+), 24 deletions(-)
+ documentation/bsp-guide/bsp.rst | 76 +++++++++++++++++----------------
+ 1 file changed, 40 insertions(+), 36 deletions(-)
 
-diff --git a/documentation/ref-manual/ref-terms.rst b/documentation/ref-manual/ref-terms.rst
-index bd8df149e..b4ceebc0b 100644
---- a/documentation/ref-manual/ref-terms.rst
-+++ b/documentation/ref-manual/ref-terms.rst
-@@ -10,7 +10,7 @@ universal, the list includes them just in case:
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
+index 34206d159..d0275eea9 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -31,14 +31,14 @@ convention: ::
+    meta-bsp_root_name
  
- .. glossary::
+ The string "meta-" is prepended to the
+-machine or platform name, which is bsp_root_name in the above form.
++machine or platform name, which is "bsp_root_name" in the above form.
  
--   Append Files
-+   :term:`Append Files`
-       Files that append build information to a recipe file.  Append files are
-       known as BitBake append files and ``.bbappend`` files. The OpenEmbedded
-       build system expects every append file to have a corresponding recipe
-@@ -50,18 +50,18 @@ universal, the list includes them just in case:
-          name. You cannot use the wildcard character in any other location of
-          the name.
+ .. note::
  
--   BitBake
-+   :term:`BitBake`
-       The task executor and scheduler used by the OpenEmbedded build system to
-       build images. For more information on BitBake, see the :doc:`BitBake User
-       Manual <bitbake:index>`.
+    Because the BSP layer naming convention is well-established, it is
+    advisable to follow it when creating layers. Technically speaking, a
+-   BSP layer name does not need to start with
+-   meta-. However, various scripts and tools in the Yocto Project development
++   BSP layer name does not need to start with ``meta-``.
++   However, various scripts and tools in the Yocto Project development
+    environment assume this convention.
  
--   Board Support Package (BSP)
-+   :term:`Board Support Package (BSP)`
-       A group of drivers, definitions, and other components that provide support
-       for a specific hardware configuration. For more information on BSPs, see
-       the :ref:`bsp-guide/bsp-guide:Yocto Project Board Support Package
-       Developer's Guide`.
+ To help understand the BSP layer concept, consider the BSPs that the
+@@ -81,7 +81,7 @@ directory of that Layer. This directory is what you add to the
+ ``conf/bblayers.conf`` file found in your
+ :term:`Build Directory`, which is
+ established after you run the OpenEmbedded build environment setup
+-script (i.e. :ref:`ref-manual/ref-structure:\`\`oe-init-build-env\`\`` ).
++script (i.e. :ref:`ref-manual/ref-structure:\`\`oe-init-build-env\`\``).
+ Adding the root directory allows the :term:`OpenEmbedded Build System`
+ to recognize the BSP
+ layer and from it build an image. Here is an example: ::
+@@ -95,10 +95,11 @@ layer and from it build an image. Here is an example: ::
  
--   Build Directory
-+   :term:`Build Directory`
-       This term refers to the area used by the OpenEmbedded build system for
-       builds. The area is created when you ``source`` the setup environment
-       script that is found in the Source Directory
-@@ -109,19 +109,19 @@ universal, the list includes them just in case:
-          drive. Doing so effectively separates ``TMPDIR`` from :term:`TOPDIR`, which is the
-          Build Directory.
+ .. note::
  
--   Build Host
-+   :term:`Build Host`
-       The system used to build images in a Yocto Project Development
-       environment. The build system is sometimes referred to as the development
-       host.
+-   Ordering and ``BBFILE_PRIORITY`` for the layers listed in BBLAYERS matter. For
+-   example, if multiple layers define a machine configuration, the OpenEmbedded
+-   build system uses the last layer searched given similar layer priorities. The
+-   build system works from the top-down through the layers listed in ``BBLAYERS``.
++   Ordering and :term:`BBFILE_PRIORITY` for the layers listed in ``BBLAYERS``
++   matter. For example, if multiple layers define a machine configuration, the
++   OpenEmbedded build system uses the last layer searched given similar layer
++   priorities. The build system works from the top-down through the layers
++   listed in ``BBLAYERS``.
  
--   Classes
-+   :term:`Classes`
-       Files that provide for logic encapsulation and inheritance so that
-       commonly used patterns can be defined once and then easily used in
-       multiple recipes. For reference information on the Yocto Project classes,
-       see the ":ref:`ref-manual/ref-classes:Classes`" chapter. Class files end with the
-       ``.bbclass`` filename extension.
+ Some BSPs require or depend on additional layers beyond the BSP's root
+ layer in order to be functional. In this case, you need to specify these
+@@ -107,7 +108,7 @@ Additionally, if any build instructions exist for the BSP, you must add
+ them to the "Dependencies" section.
  
--   Configuration File
-+   :term:`Configuration File`
-       Files that hold global definitions of variables, user-defined variables,
-       and hardware configuration information. These files tell the OpenEmbedded
-       build system what to build and what to put into the image to support a
-@@ -138,13 +138,13 @@ universal, the list includes them just in case:
-       :file:`machine/beaglebone.conf` configuration file defines variables for
-       the Texas Instruments ARM Cortex-A8 development board).
+ Some layers function as a layer to hold other BSP layers. These layers
+-are knows as ":term:`container layers <Container Layer>`". An example of
++are known as ":term:`container layers <Container Layer>`". An example of
+ this type of layer is OpenEmbedded's
+ `meta-openembedded <https://github.com/openembedded/meta-openembedded>`__
+ layer. The ``meta-openembedded`` layer contains many ``meta-*`` layers.
+@@ -141,8 +142,8 @@ section.
  
--   Container Layer
-+   :term:`Container Layer`
-       Layers that hold other layers. An example of a container layer is
-       OpenEmbedded's `meta-openembedded
-       <https://github.com/openembedded/meta-openembedded>`_ layer. The
-       ``meta-openembedded`` layer contains many ``meta-*`` layers.
+ .. note::
  
--   Cross-Development Toolchain
-+   :term:`Cross-Development Toolchain`
-       In general, a cross-development toolchain is a collection of software
-       development tools and utilities that run on one architecture and allow you
-       to develop software for a different, or targeted, architecture. These
-@@ -167,7 +167,7 @@ universal, the list includes them just in case:
-       toolchain in the :ref:`sdk-manual/sdk-manual:Yocto Project Application
-       Development and the Extensible Software Development Kit (eSDK)` manual.
+-   For structural information on BSPs, see the Example Filesystem Layout
+-   section.
++   For structural information on BSPs, see the
++   :ref:`bsp-guide/bsp:example filesystem layout` section.
  
--   Extensible Software Development Kit (eSDK)
-+   :term:`Extensible Software Development Kit (eSDK)`
-       A custom SDK for application developers. This eSDK allows developers to
-       incorporate their library and programming changes back into the image to
-       make their code available to other application developers.
-@@ -176,14 +176,14 @@ universal, the list includes them just in case:
-       Project Application Development and the Extensible Software Development
-       Kit (eSDK)` manual.
+ #. *Set Up the Build Environment:* Be sure you are set up to use BitBake
+    in a shell. See the ":ref:`dev-manual/dev-manual-start:preparing the build host`"
+@@ -150,10 +151,10 @@ section.
+    to get a build host ready that is either a native Linux machine or a machine
+    that uses CROPS.
  
--   Image
-+   :term:`Image`
-       An image is an artifact of the BitBake build process given a collection of
-       recipes and related Metadata. Images are the binary output that run on
-       specific hardware or QEMU and are used for specific use-cases. For a list
-       of the supported image types that the Yocto Project provides, see the
-       ":ref:`ref-manual/ref-images:Images`" chapter.
+-#. *Clone the ``poky`` Repository:* You need to have a local copy of the
++#. *Clone the poky Repository:* You need to have a local copy of the
+    Yocto Project :term:`Source Directory` (i.e. a local
+    ``poky`` repository). See the
+-   "ref:`dev-manual/dev-manual-start:cloning the ``poky`` repository`" and
++   ":ref:`dev-manual/dev-manual-start:cloning the \`\`poky\`\` repository`" and
+    possibly the
+    ":ref:`dev-manual/dev-manual-start:checking out by branch in poky`" or
+    ":ref:`dev-manual/dev-manual-start:checking out by tag in poky`"
+@@ -168,7 +169,7 @@ section.
+    BSP layers, you can look at the `index of
+    machines <&YOCTO_RELEASE_DL_URL;/machines>`__ for the release.
  
--   Layer
-+   :term:`Layer`
-       A collection of related recipes. Layers allow you to consolidate related
-       metadata to customize your build. Layers also isolate information used
-       when building for multiple architectures.  Layers are hierarchical in
-@@ -202,7 +202,7 @@ universal, the list includes them just in case:
-       Layers`" section in the Yocto Project Board Support Packages (BSP)
-       Developer's Guide.
+-#. *Optionally Clone the ``meta-intel`` BSP Layer:* If your hardware is
++#. *Optionally Clone the meta-intel BSP Layer:* If your hardware is
+    based on current Intel CPUs and devices, you can leverage this BSP
+    layer. For details on the ``meta-intel`` BSP layer, see the layer's
+    `README <http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel/tree/README>`__
+@@ -193,7 +194,7 @@ section.
  
--   Metadata
-+   :term:`Metadata`
-       A key element of the Yocto Project is the Metadata that
-       is used to construct a Linux distribution and is contained in the
-       files that the :term:`OpenEmbedded Build System`
-@@ -221,7 +221,7 @@ universal, the list includes them just in case:
-       :yocto_git:`yocto-kernel-cache </cgit/cgit.cgi/yocto-kernel-cache>`
-       Git repository.
+    #. *Check Out the Proper Branch:* The branch you check out for
+       ``meta-intel`` must match the same branch you are using for the
+-      Yocto Project release (e.g. &DISTRO_NAME_NO_CAP;): ::
++      Yocto Project release (e.g. ``&DISTRO_NAME_NO_CAP;``): ::
  
--   OpenEmbedded-Core (OE-Core)
-+   :term:`OpenEmbedded-Core (OE-Core)`
-       OE-Core is metadata comprised of
-       foundational recipes, classes, and associated files that are meant to
-       be common among many different OpenEmbedded-derived systems,
-@@ -234,7 +234,7 @@ universal, the list includes them just in case:
-       You can see the Metadata in the ``meta`` directory of the Yocto
-       Project :yocto_git:`Source Repositories </cgit/cgit.cgi/poky>`.
+          $ cd meta-intel
+          $ git checkout -b &DISTRO_NAME_NO_CAP; remotes/origin/&DISTRO_NAME_NO_CAP;
+@@ -291,7 +292,9 @@ individual BSPs could differ. ::
+    meta-bsp_root_name/recipes-kernel/linux/linux-yocto_kernel_rev.bbappend
  
--   OpenEmbedded Build System
-+   :term:`OpenEmbedded Build System`
-       The build system specific to the Yocto
-       Project. The OpenEmbedded build system is based on another project
-       known as "Poky", which uses :term:`BitBake` as the task
-@@ -248,7 +248,7 @@ universal, the list includes them just in case:
+ Below is an example of the Raspberry Pi BSP layer that is available from
+-the :yocto_git:`Source Respositories <>`: ::
++the :yocto_git:`Source Respositories <>`:
++
++.. code-block:: none
  
-          For some historical information about Poky, see the :term:`Poky` term.
+    meta-raspberrypi/COPYING.MIT
+    meta-raspberrypi/README.md
+@@ -544,13 +547,13 @@ The ``conf/layer.conf`` file identifies the file structure as a layer,
+ identifies the contents of the layer, and contains information about how
+ the build system should use it. Generally, a standard boilerplate file
+ such as the following works. In the following example, you would replace
+-bsp with the actual name of the BSP (i.e. bsp_root_name from the example
++"bsp" with the actual name of the BSP (i.e. "bsp_root_name" from the example
+ template). ::
  
--   Package
-+   :term:`Package`
-       In the context of the Yocto Project, this term refers to a
-       recipe's packaged output produced by BitBake (i.e. a "baked recipe").
-       A package is generally the compiled binaries produced from the
-@@ -266,7 +266,7 @@ universal, the list includes them just in case:
-       :term:`PR`, :term:`PV`, and
-       :term:`PE`).
+    # We have a conf and classes directory, add to BBPATH
+    BBPATH .= ":${LAYERDIR}"
  
--   Package Groups
-+   :term:`Package Groups`
-       Arbitrary groups of software Recipes. You use
-       package groups to hold recipes that, when built, usually accomplish a
-       single task. For example, a package group could contain the recipes
-@@ -275,7 +275,7 @@ universal, the list includes them just in case:
-       is really just another recipe. Because package group files are
-       recipes, they end with the ``.bb`` filename extension.
+-   # We have a recipes directory, add to BBFILES
++   # We have a recipes directory containing .bb and .bbappend files, add to BBFILES
+    BBFILES += "${LAYERDIR}/recipes-*/*/*.bb \
+                ${LAYERDIR}/recipes-*/*/*.bbappend"
  
--   Poky
-+   :term:`Poky`
-       Poky, which is pronounced *Pock*-ee, is a reference embedded
-       distribution and a reference test configuration. Poky provides the
-       following:
-@@ -300,7 +300,7 @@ universal, the list includes them just in case:
-          OpenedHand, the poky project became the basis for the Yocto
-          Project's build system.
+@@ -694,7 +697,7 @@ located in the BSP Layer for your target device (e.g. the
  
--   Recipe
-+   :term:`Recipe`
-       A set of instructions for building packages. A recipe
-       describes where you get source code, which patches to apply, how to
-       configure the source, how to compile it and so on. Recipes also
-@@ -308,13 +308,13 @@ universal, the list includes them just in case:
-       represent the logical unit of execution, the software to build, the
-       images to build, and use the ``.bb`` file extension.
+ Suppose you are using the ``linux-yocto_4.4.bb`` recipe to build the
+ kernel. In other words, you have selected the kernel in your
+-bsp_root_name\ ``.conf`` file by adding
++``"bsp_root_name".conf`` file by adding
+ :term:`PREFERRED_PROVIDER` and :term:`PREFERRED_VERSION`
+ statements as follows: ::
  
--   Reference Kit
-+   :term:`Reference Kit`
-       A working example of a system, which includes a
-       :term:`BSP<Board Support Package (BSP)>` as well as a
-       :term:`build host<Build Host>` and other components, that can
-       work on specific hardware.
+@@ -704,7 +707,7 @@ statements as follows: ::
+ .. note::
  
--   Source Directory
-+   :term:`Source Directory`
-      This term refers to the directory structure
-      created as a result of creating a local copy of the ``poky`` Git
-      repository ``git://git.yoctoproject.org/poky`` or expanding a
-@@ -373,20 +373,20 @@ universal, the list includes them just in case:
-      ":ref:`overview-manual/overview-manual-development-environment:repositories, tags, and branches`"
-      section in the Yocto Project Overview and Concepts Manual.
+    When the preferred provider is assumed by default, the ``PREFERRED_PROVIDER``
+-   statement does not appear in the ``bsp_root_name`` .conf file.
++   statement does not appear in the ``"bsp_root_name".conf`` file.
  
--   Task
-+   :term:`Task`
-       A unit of execution for BitBake (e.g.
-       :ref:`ref-tasks-compile`,
-       :ref:`ref-tasks-fetch`,
-       :ref:`ref-tasks-patch`, and so forth).
+ You would use the ``linux-yocto_4.4.bbappend`` file to append specific
+ BSP settings to the kernel, thus configuring the kernel for your
+@@ -781,7 +784,7 @@ workflow.
  
--   Toaster
-+   :term:`Toaster`
-       A web interface to the Yocto Project's :term:`OpenEmbedded Build System`.
-       The interface enables you to
-       configure and run your builds. Information about builds is collected
-       and stored in a database. For information on Toaster, see the
-       :doc:`../toaster-manual/toaster-manual`.
+    .. note::
  
--   Upstream
-+   :term:`Upstream`
-       A reference to source code or repositories that are not
-       local to the development system but located in a master area that is
-       controlled by the maintainer of the source code. For example, in
+-      -  Five hardware reference BSPs exist that are part of the Yocto
++      -  Four hardware reference BSPs exist that are part of the Yocto
+          Project release and are located in the ``poky/meta-yocto-bsp``
+          BSP layer:
+ 
+@@ -870,8 +873,8 @@ Before looking at BSP requirements, you should consider the following:
+ -  The requirements in this section apply regardless of how you package
+    a BSP. You should consult the packaging and distribution guidelines
+    for your specific release process. For an example of packaging and
+-   distribution requirements, see the "`Third Party BSP Release
+-   Process <https://wiki.yoctoproject.org/wiki/Third_Party_BSP_Release_Process>`__"
++   distribution requirements, see the ":yocto_wiki:`Third Party BSP Release
++   Process </wiki/Third_Party_BSP_Release_Process>`"
+    wiki page.
+ 
+ -  The requirements for the BSP as it is made available to a developer
+@@ -897,7 +900,7 @@ Yocto Project:
+    your BSP layer as listed in the ``recipes.txt`` file, which is found
+    in ``poky/meta`` directory of the :term:`Source Directory`
+    or in the OpenEmbedded-Core Layer (``openembedded-core``) at
+-   http://git.openembedded.org/openembedded-core/tree/meta.
++   https://git.openembedded.org/openembedded-core/tree/meta.
+ 
+    You should place recipes (``*.bb`` files) and recipe modifications
+    (``*.bbappend`` files) into ``recipes-*`` subdirectories by
+@@ -1074,7 +1077,7 @@ also supports several other machines:
+ 
+    .. note::
+ 
+-      If the meta-xyz layer did not support multiple machines, you would place
++      If the ``meta-xyz`` layer did not support multiple machines, you would place
+       the interfaces configuration file in the layer here: ::
+ 
+          meta-xyz/recipes-core/init-ifupdown/files/interfaces
+@@ -1233,7 +1236,7 @@ file. In this example, the ``conf/layer.conf`` is the following: ::
+    # We have a conf and classes directory, add to BBPATH
+    BBPATH .= ":${LAYERDIR}"
+ 
+-   # We have recipes-\* directories, add to BBFILES
++   # We have a recipes directory containing .bb and .bbappend files, add to BBFILES
+    BBFILES += "${LAYERDIR}/recipes-*/*/*.bb \
+                ${LAYERDIR}/recipes-*/*/*.bbappend"
+ 
+@@ -1262,13 +1265,13 @@ general or kernel layer.
+ One or more machine configuration files exist in the
+ ``bsp_layer/conf/machine/`` directory of the layer: ::
+ 
+-   bsp_layer/conf/machine/machine1\.conf``
+-   bsp_layer/conf/machine/machine2\.conf``
+-   bsp_layer/conf/machine/machine3\.conf``
++   bsp_layer/conf/machine/machine1\.conf
++   bsp_layer/conf/machine/machine2\.conf
++   bsp_layer/conf/machine/machine3\.conf
+    ... more ...
+ 
+ For example, the machine configuration file for the `BeagleBone and
+-BeagleBone Black development boards <http://beagleboard.org/bone>`__ is
++BeagleBone Black development boards <https://beagleboard.org/bone>`__ is
+ located in the layer ``poky/meta-yocto-bsp/conf/machine`` and is named
+ ``beaglebone-yocto.conf``: ::
+ 
+@@ -1344,7 +1347,7 @@ Project Reference Manual.
+ 
+    .. tip::
+ 
+-      Many ``MACHINE\*`` variables exist that help you configure a particular piece
++      Many ``MACHINE*`` variables exist that help you configure a particular piece
+       of hardware.
+ 
+ -  :term:`EXTRA_IMAGEDEPENDS`:
+@@ -1359,12 +1362,12 @@ Project Reference Manual.
+    These features, which are collectively known as "tuning features",
+    exist in the :term:`OpenEmbedded-Core (OE-Core)` layer (e.g.
+    ``poky/meta/conf/machine/include``). In this example, the default
+-   tunning file is "cortexa8hf-neon".
++   tuning file is "cortexa8hf-neon".
+ 
+    .. note::
+ 
+       The include statement that pulls in the
+-      conf/machine/include/tune-cortexa8.inc file provides many tuning
++      ``conf/machine/include/tune-cortexa8.inc`` file provides many tuning
+       possibilities.
+ 
+ -  :term:`IMAGE_FSTYPES`: The
+@@ -1389,7 +1392,7 @@ Project Reference Manual.
+ 
+ -  ``do_image_wic[depends]``: A task that is constructed during the
+    build. In this example, the task depends on specific tools in order
+-   to create the sysroot when buiding a Wic image.
++   to create the sysroot when building a Wic image.
+ 
+ -  :term:`SERIAL_CONSOLES`:
+    Defines a serial console (TTY) to enable using getty. In this case,
+@@ -1429,7 +1432,8 @@ Project Reference Manual.
+ 
+    .. note::
+ 
+-      For more information on how the SPL variables are used, see the u-boot.inc
++      For more information on how the SPL variables are used, see the
++      :yocto_git:`u-boot.inc </cgit/cgit.cgi/poky/tree/meta/recipes-bsp/u-boot/u-boot.inc>`
+       include file.
+ 
+ -  :term:`UBOOT_* <UBOOT_ENTRYPOINT>`: Defines
+@@ -1473,7 +1477,7 @@ The ``meta-yocto-bsp/recipes-kernel/linux`` directory in the layer contains
+ metadata used to build the kernel. In this case, a kernel append file
+ (i.e. ``linux-yocto_5.0.bbappend``) is used to override an established
+ kernel recipe (i.e. ``linux-yocto_5.0.bb``), which is located in
+-https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/recipes-kernel/linux.
++:yocto_git:`/cgit/cgit.cgi/poky/tree/meta/recipes-kernel/linux`.
+ 
+ Following is the contents of the append file: ::
+ 
 -- 
 2.26.2
 
