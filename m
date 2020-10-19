@@ -1,106 +1,92 @@
 Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
- by mx.groups.io with SMTP id smtpd.web10.13189.1603114500379857517
+ by mx.groups.io with SMTP id smtpd.web10.13209.1603114567132706153
  for <docs@lists.yoctoproject.org>;
- Mon, 19 Oct 2020 06:35:00 -0700
+ Mon, 19 Oct 2020 06:36:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=WyoiriHl;
+ dkim=pass header.i=@linaro.org header.s=google header.b=oyf2EA/M;
  spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f196.google.com with SMTP id a12so8872645ybg.9
-        for <docs@lists.yoctoproject.org>; Mon, 19 Oct 2020 06:35:00 -0700 (PDT)
+Received: by mail-yb1-f196.google.com with SMTP id o70so8920358ybc.1
+        for <docs@lists.yoctoproject.org>; Mon, 19 Oct 2020 06:36:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=8WdZI4DSiSkEGVud1h7I5tHme9sIA7P67eaBNu/mKys=;
-        b=WyoiriHlA8W71PhG1iEXwVTqG0hbnt02fM8b3WF7ZqouEmIo22VaVMMr8o/8QEmAxL
-         4gBxRtA7TRIbQR++rvonTfdd+T0WDgFaAunXk8M0WyFddZ3DrTYEwe+nv4RC/04lYlRT
-         Pdu7WsT5eimyEC5G5srKdg8nHskWuDFjDa6ihs3+CvBb8eC0SU8qEZzAAInHX+INm9GG
-         ai2VShsYqxJ6wKgMiO+SbItDGdVZ1+fpU24vYOqcI9jTIJfFHN5VYxt9bsBlUMPDw67Y
-         TPy4Lfj0juNFGOvBOSWlq9EJteVgh0cH6B3bYQzO9+C2FT25wYILAGaYczpFLqDWFjf1
-         cxlg==
+        bh=SLxhJsZPSTq2FqE18MMEK7IFbRGSN8CfV/X80Exbozk=;
+        b=oyf2EA/MIBADDu96fAo4vXdINmOy0mxYtbGI2eCuv7qkVVxh2+Qo1H2+bE1NLh2ujy
+         ge47f6BT0tJthBoi5L5y5Bj6usBeCe/IGLjZ4xBIZHkhZH9jDn4LSRo5/LM7ycSLOX1W
+         5qX4zkVzUjekE1o9665grFF/x+7+lJq6iJ9jw1C745vP5rMmLxqF8yl2StjaT2Nt+heU
+         9nX1TgvIGx9dvdk5sFotaA2DQTienDzp4RGPx/q+KBIPvzyMtn+C38z4hPKcqnPfkuuG
+         KBdrj8FfAxSxNFL9OovV0+90nf8TdlV3a5trYdLGDwinVKdIRTKJWheBAgeIt/0Hn7SG
+         Wkyw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=8WdZI4DSiSkEGVud1h7I5tHme9sIA7P67eaBNu/mKys=;
-        b=UOIvdn8DQi1KQ7hXKqDddDxYG7XqQRMrg/HEagNSWyrBS8Cax43snwtMHHSRBaRHhh
-         e0B7Kbfot9S4gJhOchLxj48h6pME3HpMBoy2lSgiaT4Edx9Lay7qTmjC4J4a9OwXJPrA
-         RyYuKrw+T5+xLm/u4eiQa2m5ylAAC176cArr+A1NwleBdb9CFkHcXPv9xLrIb1olV8a4
-         bSFtqCUjmC4DjO5QzRZDqA08EwT8qIzTC4EK+8Y320gO0AoumfYHkLrCV9YCZDdsa50V
-         iK/FCRVOGZwJBApfR44Lh2anQSNZdKnetuAEndy9TL8zVbXihibBk7f33Md/idG/KNu3
-         RzLQ==
-X-Gm-Message-State: AOAM530TjJdwtAlqd2vVwWWqO8XIIU2WmGdLHla4MeyFz1JLK9p1t8W1
-	dRsAf4L5Ik8Bx2upv4DGHqgpOvoqygDknBrHITC7yQ==
-X-Google-Smtp-Source: ABdhPJzaKoaIeGnnx0XwrpDHQhE6xK2c5kwBrdjTy0jzHuFVRsyjiwUxey5Ajo2gkOd9tuyr9+ESSTR14mScehiqlUc=
-X-Received: by 2002:a25:8752:: with SMTP id e18mr21202185ybn.133.1603114499352;
- Mon, 19 Oct 2020 06:34:59 -0700 (PDT)
+        bh=SLxhJsZPSTq2FqE18MMEK7IFbRGSN8CfV/X80Exbozk=;
+        b=TbKbnvD7BKWwU/MLECjFnrYvLlpe75sd/TCwO7puI5j1rBtyy4B3hW8ZYrYGIbnuU1
+         X1t75B/HgZ39I7Qzo994iTWGfXASviKNUBOLxAFRwfnuKTqVLpLUsAZrczI8dNCq4g0K
+         ul65ZwlCVfv6el1FevmLbwqwHw+kcA2JfY1ZOYre+fnwaNof291tnnmo8GRjZHZcLPQT
+         YupUbokPrnkpYFbASIQH2h6R82Ba4VmqQNYRI6xhfwl18kBe76PfqM4bx94qIu42zJ3z
+         U4Aaa48veRzbZ8/IITrEUF6tcRnPEv1kbPKg0gmt2rVaCVH6VUBuwhpxBjErVfogrBHm
+         MmjA==
+X-Gm-Message-State: AOAM5325PwZeUgcFDPIvfPCUl/JG4bL6MD96PIuwVNpTHqujiQAccg40
+	GZ2I52YNHPcBwSbqs0+k+FYVLTcOUQ2ZdXvHtRQTmrzpKck=
+X-Google-Smtp-Source: ABdhPJyBaI7l/jJQegcOpGOhjRI2W9hNiGYls/upPFSlelcwBXLu73MbBuPBVgoPl/xtHhh5yMJBhNPiwW+vo/7GI7g=
+X-Received: by 2002:a25:a521:: with SMTP id h30mr21025817ybi.201.1603114566258;
+ Mon, 19 Oct 2020 06:36:06 -0700 (PDT)
 MIME-Version: 1.0
-References: <20201018175712.23800-1-foss@0leil.net> <20201018175712.23800-2-foss@0leil.net>
-In-Reply-To: <20201018175712.23800-2-foss@0leil.net>
+References: <20201018175712.23800-1-foss@0leil.net> <20201018175712.23800-3-foss@0leil.net>
+In-Reply-To: <20201018175712.23800-3-foss@0leil.net>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Mon, 19 Oct 2020 15:34:48 +0200
-Message-ID: <CAP71WjxKOFDdpkx2KcX2Y4Dd2ELuDiASFyO-twZDY1feLnW-8g@mail.gmail.com>
-Subject: Re: [docs] [PATCH 2/3] docs: dev-manual-common-tasks: remove paragraph about race when missing DEPENDS
+Date: Mon, 19 Oct 2020 15:35:55 +0200
+Message-ID: <CAP71WjzE30zvGOmtL229jDg8M5mPsgyhg10mtoc+VkTE3Vbz3Q@mail.gmail.com>
+Subject: Re: [docs] [PATCH 3/3] docs: dev-manual-common-tasks: update python webserver example to python3
 To: Quentin Schulz <foss@0leil.net>
 Cc: docs@lists.yoctoproject.org
 Content-Type: text/plain; charset="UTF-8"
 
 On Sun, Oct 18, 2020 at 7:58 PM Quentin Schulz <foss@0leil.net> wrote:
 >
-> Missing DEPENDS were an issue before rocko (2.4) because of a shared global
-> sysroot. Since then, every recipe has its own sysroot, it is not possible
-> to build successfully a recipe without all DEPENDS. Therefore, races in
-> tasks possibly triggered by missing DEPENDS are a thing of the past.
+> SimpleHTTPServer is python2 only, the module in python3 is http.server.
 >
-> This paragraph is misleading and can be safely removed.
+> Let's use this one since everything in Yocto Project is using python3
+> nowadays.
 >
 > Signed-off-by: Quentin Schulz <foss@0leil.net>
-> ---
->  .../dev-manual/dev-manual-common-tasks.rst    | 23 ++++++-------------
->  1 file changed, 7 insertions(+), 16 deletions(-)
->
-> diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-> index 0df5e1e4c..75ef5c98c 100644
-> --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> @@ -1612,25 +1612,16 @@ Within a recipe, you specify build-time dependencies using the
->  :term:`DEPENDS` variable. Although
->  nuances exist, items specified in ``DEPENDS`` should be names of other
->  recipes. It is important that you specify all build-time dependencies
-> -explicitly. If you do not, due to the parallel nature of BitBake's
-> -execution, you can end up with a race condition where the dependency is
-> -present for one task of a recipe (e.g.
-> -:ref:`ref-tasks-configure`) and
-> -then gone when the next task runs (e.g.
-> -:ref:`ref-tasks-compile`).
-> +explicitly.
-
-Nice improvement!
 
 Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 
+> ---
+>  documentation/dev-manual/dev-manual-common-tasks.rst | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
->  Another consideration is that configure scripts might automatically
->  check for optional dependencies and enable corresponding functionality
-> -if those dependencies are found. This behavior means that to ensure
-> -deterministic results and thus avoid more race conditions, you need to
-> -either explicitly specify these dependencies as well, or tell the
-> -configure script explicitly to disable the functionality. If you wish to
-> -make a recipe that is more generally useful (e.g. publish the recipe in
-> -a layer for others to use), instead of hard-disabling the functionality,
-> -you can use the
-> -:term:`PACKAGECONFIG` variable
-> -to allow functionality and the corresponding dependencies to be enabled
-> -and disabled easily by other users of the recipe.
-> +if those dependencies are found. If you wish to make a recipe that is
-> +more generally useful (e.g. publish the recipe in a layer for others to
-> +use), instead of hard-disabling the functionality, you can use the
-> +:term:`PACKAGECONFIG` variable to allow functionality and the
-> +corresponding dependencies to be enabled and disabled easily by other
-> +users of the recipe.
+> diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
+> index 75ef5c98c..79595d58a 100644
+> --- a/documentation/dev-manual/dev-manual-common-tasks.rst
+> +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
+> @@ -7164,11 +7164,11 @@ Host or Server Machine Setup
 >
->  Similar to build-time dependencies, you specify runtime dependencies
->  through a variable -
+>  Although other protocols are possible, a server using HTTP typically
+>  serves packages. If you want to use HTTP, then set up and configure a
+> -web server such as Apache 2, lighttpd, or SimpleHTTPServer on the
+> +web server such as Apache 2, lighttpd, or Python web server on the
+>  machine serving the packages.
+>
+>  To keep things simple, this section describes how to set up a
+> -SimpleHTTPServer web server to share package feeds from the developer's
+> +Python web server to share package feeds from the developer's
+>  machine. Although this server might not be the best for a production
+>  environment, the setup is simple and straight forward. Should you want
+>  to use a different server more suited for production (e.g. Apache 2,
+> @@ -7183,7 +7183,7 @@ setting of "package_rpm":
+>  ::
+>
+>     $ cd ~/poky/build/tmp/deploy/rpm
+> -   $ python -m SimpleHTTPServer
+> +   $ python3 -m http.server
+>
+>  .. _runtime-package-management-target:
+>
 > --
 > 2.26.2
 >
