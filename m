@@ -1,121 +1,143 @@
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
- by mx.groups.io with SMTP id smtpd.web11.1387.1603217696557516971
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web12.2043.1603219561286313102
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Oct 2020 11:14:56 -0700
+ Tue, 20 Oct 2020 11:46:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=a4Zvvx1X;
- spf=pass (domain: gmail.com, ip: 209.85.221.68, mailfrom: jpewhacker@gmail.com)
-Received: by mail-wr1-f68.google.com with SMTP id x7so3348271wrl.3
-        for <docs@lists.yoctoproject.org>; Tue, 20 Oct 2020 11:14:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=k+qEArZU/eKwf1+CXLmgce9dwReg+K9ug43uMSShcbU=;
-        b=a4Zvvx1Xzgr2IGpFuckg++6oLAZYO7kf+cMh8Wtm+GvW/ZBEEy7jlTlmntRh2urtSK
-         U7i+TCcqO9t7Ci2O4gp29fM9jrJfMpaCkCAJIpWYurgpByH5Vf22XRd77XCCGooJNxpX
-         15Ytuk/nLmE1sDJ3ZaxV5lOTzUmqqHeYWvB6zr3mS5lcWh4xDrBi/jSRRbbfDh4aQ66B
-         6jtRdVlryggigTwmgWyif1jV05JXaJYZeX+ig0jSaWAvMqzfubR+VG+ZyzqG7DyuMSAa
-         26/0LhEL07lTN/mWEnuGm2fOXsQ5HiPEpIWRPSlG/ZVaTqh9wi7ujjurOcHa897qv/43
-         9QDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=k+qEArZU/eKwf1+CXLmgce9dwReg+K9ug43uMSShcbU=;
-        b=nHocD1q7oQJ0qS1F80pJ4IDIv5moSw9Hg+YEat396eP34nRXrxtzHkkJ44SPtjp2NN
-         Lq1thZgLWzuPqNqIw4AfLEl48Q/LS+5e0GA24fOaVmw1jbMmQylJid/k3LnandWnd1DE
-         j5e0bsiAyNSrr0PzXoGrApswKc5JmMkHgzlt1tlN9aok2LX71uhLhbPOvN6AxZf7k2OV
-         ZDK2rgzfvQ6N8yYSYIyLFNrbqnNsAwtm5AJw38nen14st/3L78nQrRksfBwWP4hFC7Cm
-         4od5zcEqVVqi0nyGMQFuWUsEl2B5OMN3KmSPUzZSwUiU/fxf0tqbhjCRPL8Z3HFKonyA
-         TA4w==
-X-Gm-Message-State: AOAM532XTgxZHZaENhRjpmy940qidHwcujN/bwwbyoYp7j3Z2CWmMNjl
-	iyXqk9HhU1CHgq6wNP1d6ppf4btK8lGTZhix0q5L0Ly3
-X-Google-Smtp-Source: ABdhPJz2Kq6kEnIbmAsdf7aSyjgDdLJbKwvX2G0Vizpi652Fc+40wKRkJq6qN4vVzR4W0D2iJeNEFX/6KThgsSxWXCs=
-X-Received: by 2002:a5d:4ac1:: with SMTP id y1mr4814746wrs.303.1603217694566;
- Tue, 20 Oct 2020 11:14:54 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201020170326.14313-1-JPEWhacker@gmail.com>
+ dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.201, mailfrom: foss@0leil.net)
+X-Originating-IP: 80.110.110.8
+Received: from [192.168.13.190] (80-110-110-8.cgn.dynamic.surfer.at [80.110.110.8])
+	(Authenticated sender: foss@0leil.net)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C34731BF205;
+	Tue, 20 Oct 2020 18:45:58 +0000 (UTC)
+Date: Tue, 20 Oct 2020 20:45:59 +0200
 In-Reply-To: <20201020170326.14313-1-JPEWhacker@gmail.com>
-From: "Joshua Watt" <JPEWhacker@gmail.com>
-Date: Tue, 20 Oct 2020 13:14:43 -0500
-Message-ID: <CAJdd5Gb0L4Yhwmsawp4K+muy92SW+Y3tLYA7sv9CnM108GWwFQ@mail.gmail.com>
+References: <20201020170326.14313-1-JPEWhacker@gmail.com>
+MIME-Version: 1.0
 Subject: Re: [docs][PATCH] kernel-dev: Add FAQ for how to use a vanilla kernel
-To: docs@lists.yoctoproject.org
-Cc: Bruce Ashfield <bruce.ashfield@gmail.com>, Paul Barker <pbarker@konsulko.com>
-Content-Type: text/plain; charset="UTF-8"
+To: docs@lists.yoctoproject.org,Joshua Watt <JPEWhacker@gmail.com>
+CC: bruce.ashfield@gmail.com,pbarker@konsulko.com
+From: "Quentin Schulz" <foss@0leil.net>
+Message-ID: <47371CB3-77B4-4811-8911-2D3A0E03E19D@0leil.net>
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Oct 20, 2020 at 12:03 PM Joshua Watt <jpewhacker@gmail.com> wrote:
->
-> Adds a FAQ with explicit directions about how to build a vanilla kernel
-> for a machine.
->
-> Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
-> ---
->  documentation/kernel-dev/kernel-dev-faq.rst | 49 +++++++++++++++++++++
->  1 file changed, 49 insertions(+)
->
-> diff --git a/documentation/kernel-dev/kernel-dev-faq.rst b/documentation/kernel-dev/kernel-dev-faq.rst
-> index 70bf4a2d4..929cc4aad 100644
-> --- a/documentation/kernel-dev/kernel-dev-faq.rst
-> +++ b/documentation/kernel-dev/kernel-dev-faq.rst
-> @@ -79,3 +79,52 @@ following:
->
->     APPEND += "printk.time=y initcall_debug debug"
->
-> +How do I use a vanilla Linux kernel with my machine?
-> +----------------------------------------------------
-> +
-> +The simplest way to use a vanilla kernel is with the ``linux-yocto`` kernel
-> +maintained by openembedded-core. Using this kernel is as simple as adding the
-> +following to your machine.conf file:
-> +::
-> +
-> +   # Use a defconfig provided by the kernel. If you are going to provide your
-> +   # own defconfig in SRC_URI as show below, you'll need to omit this line
-> +   KBUILD_DEFCONFIG = "multi_v7_defconfig"
-> +
-> +   # Use default value for all symbols. This is usually what you want when
-> +   # providing a defconfig
-> +   KCONFIG_MODE = "alldefconfig"
-> +
-> +   # Make linux-yocto provide the kernel
-> +   PREFERRED_PROVIDER_virtual/kernel = "linux-yocto"
-> +
-> +   # If you want to use a specific version of the upstream kernel, uncomment
-> +   # and set this line, otherwise omit it to use the latest stable kernel
-> +   #PREFERRED_VERSION_linux-yocto = "5.8.%"
-> +
-> +You will also need to add a .bbappend in your BSP layer to amend the
-> +linux-yocto recipe (e.g. recipes-kernel/linux/linux-yocto_%.bbappend):
-> +::
-> +
-> +    FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-> +
-> +    # Uncomment this line to provide your own defconfig file in your BSP layer:
-> +    # SRC_URI_append_my-machine = " file://defconfig"
-> +
-> +    # Marks the recipe as compatible with your machine. Be sure to replace
-> +    # my-machine with the name of your machine
-> +    COMPATIBLE_MACHINE .= "|my-machine"
-> +
-> +You can also apply patches and config fragements in the bbappend if desired,
-> +see :ref:`kernel-dev/kernel-dev-common:applying patches` and
-> +:ref:`kernel-dev/kernel-dev-common:changing the configuration` in the Kernel
-> +dev manual. It is recommended that you use ``_append_my-machine`` to prevent
-> +these changes from inadverently leaking into other machine configurations
-> +
-> +.. note::
-> +    You will notice that this is will still pull the kernel source from `the
-> +    Yocto Kernel git repo
-> +    <https://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto/>`_, however it is
-> +    using the default value for :term:`KBRANCH` (e.g. ``"v5.8/standard/base"``)
-> +    which is an exact mirror of the upstream kernel.
+Hi Joshua,
 
-This is a lie. I thought it was the upstream mirror, but it's not.
-v5.8/base is the mirror and this one has a few extra patches.
 
-> +
-> --
-> 2.28.0
+
+On October 20, 2020 7:03:26 PM GMT+02:00, Joshua Watt <JPEWhacker@gmail=2E=
+com> wrote:
+>Adds a FAQ with explicit directions about how to build a vanilla kernel
+>for a machine=2E
 >
+>Signed-off-by: Joshua Watt <JPEWhacker@gmail=2Ecom>
+>---
+> documentation/kernel-dev/kernel-dev-faq=2Erst | 49 +++++++++++++++++++++
+> 1 file changed, 49 insertions(+)
+>
+>diff --git a/documentation/kernel-dev/kernel-dev-faq=2Erst
+>b/documentation/kernel-dev/kernel-dev-faq=2Erst
+>index 70bf4a2d4=2E=2E929cc4aad 100644
+>--- a/documentation/kernel-dev/kernel-dev-faq=2Erst
+>+++ b/documentation/kernel-dev/kernel-dev-faq=2Erst
+>@@ -79,3 +79,52 @@ following:
+>=20
+>    APPEND +=3D "printk=2Etime=3Dy initcall_debug debug"
+>=20
+>+How do I use a vanilla Linux kernel with my machine?
+>+----------------------------------------------------
+>+
+>+The simplest way to use a vanilla kernel is with the ``linux-yocto``
+>kernel
+>+maintained by openembedded-core=2E Using this kernel is as simple as
+>adding the
+>+following to your machine=2Econf file:
+>+::
+>+
+>+   # Use a defconfig provided by the kernel=2E If you are going to
+>provide your
+>+   # own defconfig in SRC_URI as show below, you'll need to omit this
+
+s/show/shown/
+
+>line
+>+   KBUILD_DEFCONFIG =3D "multi_v7_defconfig"
+>+
+>+   # Use default value for all symbols=2E This is usually what you want
+>when
+>+   # providing a defconfig
+>+   KCONFIG_MODE =3D "alldefconfig"
+>+
+
+KCONFIG_MODE is not explained in the Variables Glossary, could you please =
+fix that?
+
+>+   # Make linux-yocto provide the kernel
+>+   PREFERRED_PROVIDER_virtual/kernel =3D "linux-yocto"
+>+
+>+   # If you want to use a specific version of the upstream kernel,
+>uncomment
+>+   # and set this line, otherwise omit it to use the latest stable
+>kernel
+
+Here's to hoping that no layer with a higher priority provide their own li=
+nux-yocto :)
+
+>+   #PREFERRED_VERSION_linux-yocto =3D "5=2E8=2E%"
+>+
+>+You will also need to add a =2Ebbappend in your BSP layer to amend the
+>+linux-yocto recipe (e=2Eg=2E recipes-kernel/linux/linux-yocto_%=2Ebbappe=
+nd):
+
+``linux-yocto`` and the path in double tick too=2E
+
+>+::
+>+
+>+    FILESEXTRAPATHS_prepend :=3D "${THISDIR}/${PN}:"
+>+
+>+    # Uncomment this line to provide your own defconfig file in your
+>BSP layer:
+>+    # SRC_URI_append_my-machine =3D " file://defconfig"
+>+
+>+    # Marks the recipe as compatible with your machine=2E Be sure to
+>replace
+>+    # my-machine with the name of your machine
+>+    COMPATIBLE_MACHINE =2E=3D "|my-machine"
+>+
+
+I don't think spaces matter in COMPATIBLE_MACHINE but happy to be proven o=
+therwise=2E In that case, probably +=3D would be better as it's usually wha=
+t's used throughout the docs? As to not confuse beginners?
+
+>+You can also apply patches and config fragements in the bbappend if
+s/fragements/fragments/
+>desired,
+>+see :ref:`kernel-dev/kernel-dev-common:applying patches` and
+>+:ref:`kernel-dev/kernel-dev-common:changing the configuration` in the
+>Kernel
+>+dev manual=2E It is recommended that you use ``_append_my-machine`` to
+>prevent
+>+these changes from inadverently leaking into other machine
+>configurations
+
+Missing dot at the end of the sentence=2E
+
+>+
+>+=2E=2E note::
+>+    You will notice that this is will still pull the kernel source
+
+Not a native, but my doubts on "you will notice" being correct?
+
+s/is//
+
+>from `the
+>+    Yocto Kernel git repo
+>+    <https://git=2Eyoctoproject=2Eorg/cgit/cgit=2Ecgi/linux-yocto/>`_,
+
+:yocto_git:`the Yocto Kernel git repo </cgit/cgit=2Ecgi/linux-yocto/>`
+
+Thanks,
+Quentin
+--=20
+Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
