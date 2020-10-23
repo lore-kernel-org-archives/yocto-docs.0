@@ -1,50 +1,50 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
- by mx.groups.io with SMTP id smtpd.web12.10418.1603465048562063108
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+ by mx.groups.io with SMTP id smtpd.web11.10233.1603465070881859423
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Oct 2020 07:57:28 -0700
+ Fri, 23 Oct 2020 07:57:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=lUhUvy5g;
- spf=pass (domain: linaro.org, ip: 209.85.128.47, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f47.google.com with SMTP id e2so1960248wme.1
-        for <docs@lists.yoctoproject.org>; Fri, 23 Oct 2020 07:57:28 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=lB+pOJrk;
+ spf=pass (domain: linaro.org, ip: 209.85.221.51, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f51.google.com with SMTP id h5so2218887wrv.7
+        for <docs@lists.yoctoproject.org>; Fri, 23 Oct 2020 07:57:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=8K8hMyGFUWlUoXytJrpxAFkeQjCm0BMMc9zgyS9zel8=;
-        b=lUhUvy5gfERIJIrQgcd6n5BT/ixDv1B8vuMjiGSTxoC5uO/XM2/tKvX/WbiXPPXOzI
-         +xoUICcApQORuSQhXnCR7dWZUGnf36NZxV5pdv0CncH7J/u/a5i3YXSbBG5O4i/z6OKP
-         49qtVOBT2mvg3sYu8oeEUxE2xsAsKV3Slqne4PVkwkGCSNyR+fi7SlDVnS4SkzsyvEFf
-         ZaTkIkzSomD3RMNZjdRCQ3r4kt5CiOopsJFtjch3M5JHDChbpg0tlc7ZrYvd4vqXQRay
-         /NFoRDNSilHlfksxUpyQq//8YpVBF1iNZv5GkxjL6PTbXnI6iUPj8lT6bxfsqujcOASS
-         DIQg==
+        bh=q+DguBKZ9S7VAIR352F5PX0jDTaLexzwdsRDzV44Tng=;
+        b=lB+pOJrkqDg26bK2+n1cDYD3Gfr06UyEM94gGH9z2CvOUCPfmD4xEnWPlBDwjOh+Mo
+         zrbVCabWylFzKMJ9bOj/Az9l1g+lahvs6KPLUIwGbPmYtt1QCMDB/Lr8rcAwNfXzZvUj
+         Pei9HEQH02mVH4pndYp28gZtiunf1L45vmQ8vbJ7ZdTkvGymyc6FOBhVSsXN3GQ24lek
+         fNvQek8WQVuBiDloRQMyZ32hnR1QcTSfHI8tZLY+Sy5nb4N7Ut1OeedSDqfd/kZTbUs7
+         lclpd58v18omifDmxSG0096ThkVMBRZ5y0ZPzkIVB/EZi3oZ1MbR2aoNaTH3z02oCEun
+         F3Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=8K8hMyGFUWlUoXytJrpxAFkeQjCm0BMMc9zgyS9zel8=;
-        b=sEOSKGOR8E5h5KahxRWM0VKT85mMnn81rIBRiOt8y/11PTK8Kr348G0aoJdhqNHDab
-         jJSaaY2srRbX1kkiKQA5jK5PJUN2WgixIzgg/5oZfQLO6o3sH4yFYtIcY9F+4lecxzU0
-         z+84SS8cZiolOBdJq/X77AhxbWaOU1w16H8Hhb+u4irqJgsoTkkDgU6bP890CUWW5uU8
-         NKjkULTVdxvOXRgM5bwyKJGn3FpjyOdrLFq0nuaSgX+Zr8T+X6naNfXtwBWQfgkOTOJq
-         CgwJsz/inCWPH8ZR6JwnTXWd3vAjSGuyBnuOQ3ccubebsKx/9WQXKtVS78ZLgqNKlkz/
-         8P9A==
-X-Gm-Message-State: AOAM533YgH2CDqbUkI/Wvmj+F2MQ6XCuiWo6DsmG5QyIf4OPABE7XmLK
-	uQU5SOCoMGh3UubupT5r0s1Ggj6EB5rPjsUj
-X-Google-Smtp-Source: ABdhPJzfN+ioj7/JEkoUSg6c72YGk6UJ/9rIimy4Cs43x6JKlZaSaRbk0CpdNsKRbR/9w1KvDgfu9g==
-X-Received: by 2002:a7b:c847:: with SMTP id c7mr2410474wml.41.1603465046654;
-        Fri, 23 Oct 2020 07:57:26 -0700 (PDT)
+        bh=q+DguBKZ9S7VAIR352F5PX0jDTaLexzwdsRDzV44Tng=;
+        b=sG+J8TyLePl33YaYYd21r11g3cnxT33FTU+myGJbJznfppAeDCaqpjLJBTrNeJ7+7p
+         cI/H5tqO5W/aH+mZ7tn7laLIeMm3NQSxRp9sTjat7xHaC8B73Ykbqtzo4eKvjKBIha6o
+         d2DLmK6rCkcZBwbU9AmvZ/D7UumS5rIGys0rVXcIgHi4Pc24xdaQfIwlOT2s2L6CK7uZ
+         JW+ya332uW7CS+o9I+iHuEeo3I3tcpNnbVCrc3eqQYJJ7w8vIU77guGGktaw+8/hUe8Y
+         oyv3uivCLDPRVlsVjeAW4NvBFwfqrccrpo22TA/kioQ+pc02mQyIC0Fwn945cYz6gVuA
+         13lQ==
+X-Gm-Message-State: AOAM531sOexJjb5ZqTi57485P6wnzQPBt8ShVNfqZqnoB24KKUvKDhrP
+	TDm7i6D5CLJlh9SLWUMn8eeBhf+7mPIM4rm6
+X-Google-Smtp-Source: ABdhPJy7ptIm563X2PGtgcbKBC1Y8ps+hDVdcFu/Hpur3HTKruhZxbkOLrvlsi75Ec74nN0JALlHHw==
+X-Received: by 2002:adf:ed45:: with SMTP id u5mr2931250wro.48.1603465069197;
+        Fri, 23 Oct 2020 07:57:49 -0700 (PDT)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from nikaia.localdomain (lmontsouris-655-1-65-40.w80-11.abo.wanadoo.fr. [80.11.58.40])
-        by smtp.gmail.com with ESMTPSA id a15sm3891840wro.3.2020.10.23.07.57.25
+        by smtp.gmail.com with ESMTPSA id p67sm3831202wmp.11.2020.10.23.07.57.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Oct 2020 07:57:26 -0700 (PDT)
+        Fri, 23 Oct 2020 07:57:48 -0700 (PDT)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [transition][PATCH] docbook: add 3.0.4 and 3.1.3 releases
-Date: Fri, 23 Oct 2020 16:57:17 +0200
-Message-Id: <20201023145717.354764-1-nicolas.dechesne@linaro.org>
+Subject: [PATCH] sphinx: add 3.1.3 and 3.0.4 release in the switcher
+Date: Fri, 23 Oct 2020 16:57:42 +0200
+Message-Id: <20201023145742.354902-1-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -52,11 +52,7 @@ Content-Transfer-Encoding: 8bit
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
  documentation/sphinx-static/switchers.js | 4 ++--
- documentation/transition/3.0.4/index.rst | 2 ++
- documentation/transition/3.1.3/index.rst | 2 ++
- 3 files changed, 6 insertions(+), 2 deletions(-)
- create mode 100644 documentation/transition/3.0.4/index.rst
- create mode 100644 documentation/transition/3.1.3/index.rst
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js
 index 32113cfa9..b28d91c08 100644
@@ -73,22 +69,6 @@ index 32113cfa9..b28d91c08 100644
      '2.7.4': '2.7.4',
    };
  
-diff --git a/documentation/transition/3.0.4/index.rst b/documentation/transition/3.0.4/index.rst
-new file mode 100644
-index 000000000..91c9434b1
---- /dev/null
-+++ b/documentation/transition/3.0.4/index.rst
-@@ -0,0 +1,2 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+.. docbook-transition-include:: ../index-2.5.rst
-diff --git a/documentation/transition/3.1.3/index.rst b/documentation/transition/3.1.3/index.rst
-new file mode 100644
-index 000000000..91c9434b1
---- /dev/null
-+++ b/documentation/transition/3.1.3/index.rst
-@@ -0,0 +1,2 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+.. docbook-transition-include:: ../index-2.5.rst
 -- 
 2.28.0
 
