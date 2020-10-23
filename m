@@ -1,153 +1,223 @@
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com [209.85.210.65])
- by mx.groups.io with SMTP id smtpd.web09.2639.1603231764351685507
+Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
+ by mx.groups.io with SMTP id smtpd.web08.10009.1603464249813071996
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Oct 2020 15:09:24 -0700
+ Fri, 23 Oct 2020 07:44:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=inszvNWR;
- spf=pass (domain: gmail.com, ip: 209.85.210.65, mailfrom: akuster808@gmail.com)
-Received: by mail-ot1-f65.google.com with SMTP id l4so61310ota.7
-        for <docs@lists.yoctoproject.org>; Tue, 20 Oct 2020 15:09:24 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=GeNVUy8x;
+ spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f196.google.com with SMTP id h196so1407421ybg.4
+        for <docs@lists.yoctoproject.org>; Fri, 23 Oct 2020 07:44:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:cc:references:from:autocrypt:message-id:date:user-agent
-         :mime-version:in-reply-to:content-transfer-encoding:content-language;
-        bh=7hlbotC7ZvSWeX42QDdsEZhTB6qdc08Ycgd5c0q2Yj4=;
-        b=inszvNWR3cobjD/JZ/l4+Ou1TUiDvncjqQ18nBNhKHpbEsKRlnTfw90jWOQzsqVHF4
-         N9VRYsmLb6KLoIufKGHG5KqZK7aROT5vqV53MRY1IgEp+4V/uU515hz28IHMt1v29/pz
-         19MYgNzrSm6dO/5U34BHQv/yM4FtpB8A57HPLB3oj9Vy9Kf9KiLoJfrN9lHSXe6D6WOY
-         eV7/AkJ/0Y20/krVd9RrWntgkPiHayxN/eKphBoxuT77k1U3LvLiEs6+AFC27Tw/rW1k
-         VPLZ0f417yv3GO5Brlm29niVOhvhOqsSVm0g73Moq0zVsxERM1lHKgIdRCkjCP39nHsa
-         XyVQ==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=urS06oiaBHTNyd7oFm7U34Z4lsIj6fgEidyDZIu7fFo=;
+        b=GeNVUy8xYKGBImxMgwlhkb1RhuRABoy+pT3GuoxeMV9wgNpyLxvB6VHRbT1PM69YBx
+         YPo3yZS2CwppzORQQgfP+d2lRUy8+fIz+iDTHNznQr8fi1MlICEe9xkXM/GGgmNDIMC6
+         qrBUzcYPqgBeBNOZPOfjhMpePUkAudjpGiDdHghaHibpC9s2ttC0Tu4m6hWnd3WuMNxS
+         UXeRs8kRIhxGq9jgMADj/bX2Ogmw7O7HGD6NkdjVRQu4ChCtwQ3yDjbWfgw5Lic4sT4F
+         +vzKjUX2NwW+rUZoTFJjxl077PeVmi7LgKUMG+1mI52k6jv8AbHJP4eOAcpzyOHALQPr
+         JRlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:autocrypt
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-transfer-encoding:content-language;
-        bh=7hlbotC7ZvSWeX42QDdsEZhTB6qdc08Ycgd5c0q2Yj4=;
-        b=Hd4nmYsouRTyuHXuQF6+Nm95tdW0sOs2WuF/RIhJFWIFruVoZzhH1lLv3g+b0rJs6B
-         1rB5PevEtbAZdQZcwO1uSZ9Wen/wtgSTjk3a9sExYUxwvqXYHGen1iejblWZTzSh7yy/
-         dyyvgdnk61Vs2V9KIQU1rRsmzws9RBrrtzPs3U3NkxphEMYuQvq9POKZ1Jr+Wlt10KJY
-         kGVXNjzE0458ewtQHZPRc5ZkCPFnBKn0JK0qmnn770389mQh8umJNHsI4I7hH8W0tHXI
-         CNveglaEZfqN1JrpGAGq8oqCxIi/9IFwkyaWNbXPBIDWAtzZA/3ufQ5EXL8OHmPMRQvp
-         JSPA==
-X-Gm-Message-State: AOAM531s2GpkyGS2rP3YHrRaBuilRopaZLUFHns+S3WZPy/0v4OOi1dB
-	DJC/3Ww3rfTMLx8zZB/EP7o=
-X-Google-Smtp-Source: ABdhPJwUFdElbM70P7HXKt9d4bUxAYbOatrb17hx+V8oeqMMswgfWcX0E8tmL5G3QaXUdextHmwzIA==
-X-Received: by 2002:a05:6830:1694:: with SMTP id k20mr406997otr.100.1603231763643;
-        Tue, 20 Oct 2020 15:09:23 -0700 (PDT)
-Return-Path: <akuster808@gmail.com>
-Received: from ?IPv6:2601:202:4180:a5c0:cd0c:110:b7a5:2c69? ([2601:202:4180:a5c0:cd0c:110:b7a5:2c69])
-        by smtp.gmail.com with ESMTPSA id j7sm95203oie.44.2020.10.20.15.09.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Oct 2020 15:09:23 -0700 (PDT)
-Subject: Re: [docs][PATCH] kernel-dev: Add FAQ for how to use a vanilla kernel
-To: Bruce Ashfield <bruce.ashfield@gmail.com>,
- "Robert Berger@yocto.user" <robert.berger.yocto.user@gmail.com>
-Cc: Joshua Watt <JPEWhacker@gmail.com>, docs@lists.yoctoproject.org,
- Paul Barker <pbarker@konsulko.com>
-References: <20201020170326.14313-1-JPEWhacker@gmail.com>
- <CAJdd5Gb0L4Yhwmsawp4K+muy92SW+Y3tLYA7sv9CnM108GWwFQ@mail.gmail.com>
- <9c52a04c-7184-8dfc-44e6-83a4cb7db2d0@gmail.com>
- <CADkTA4N+dJv_QqtEiJBxdcZXE5SxkDjDJF-+4Sz6n4+wVDYRKw@mail.gmail.com>
-From: "akuster" <akuster808@gmail.com>
-Autocrypt: addr=akuster808@gmail.com; prefer-encrypt=mutual; keydata=
- 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
- 8CS2NxU=
-Message-ID: <a860f167-4f08-a48c-45b2-2de4c617ea00@gmail.com>
-Date: Tue, 20 Oct 2020 15:09:21 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=urS06oiaBHTNyd7oFm7U34Z4lsIj6fgEidyDZIu7fFo=;
+        b=tuDh3Bdt3CgYO8qJRe1uKQat0OF2R22DhNVxtyRcAvQsg6wZSH3FL72VZpWmQc8o7q
+         MU8Iyp9mbcA8PfYbMHLE7hJTn1RVey3GkgAdy30diMsuBIfDB4uvT7u3ADIlY1F6ecDl
+         A0oCo6idQB5enlq1eMZE45SeiIkf+MX3uf954npyVvuseLxS2EDwEehdFwo3Pbktm/JV
+         OAdptbK3jxhpyyohlhdGDjmKGXIjvewPjUx+GcsJ2lPRZYnB/U/XZkqbfDEl9drfgkjx
+         A2jQ0RgUiyMC4aEraSrOaKMFRgu6f46jT8e0xlLSPTaz6lNAgYVBz3kF+JWhofcXzsU0
+         dKbw==
+X-Gm-Message-State: AOAM53246ai2V3rD8uAKnzVBfoqa5p6EyPKRx3+edaofbnL5NHI8kh0D
+	QJ2QWmx4v+Pb1FjMjD1+C6n3/EVhhI/HOJWZR16aPA==
+X-Google-Smtp-Source: ABdhPJy/dHz1DZUMgZcYb4m4w2T1mXUHjI+ob4eZt+teu+tWO2i4mVF52rE43oroX87N12+i3cjcXHZzKnuujqAMLQ4=
+X-Received: by 2002:a25:c204:: with SMTP id s4mr3604484ybf.454.1603464248728;
+ Fri, 23 Oct 2020 07:44:08 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <CADkTA4N+dJv_QqtEiJBxdcZXE5SxkDjDJF-+4Sz6n4+wVDYRKw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+References: <20201012034255.2186713-1-leimaohui@cn.fujitsu.com>
+In-Reply-To: <20201012034255.2186713-1-leimaohui@cn.fujitsu.com>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Fri, 23 Oct 2020 16:43:57 +0200
+Message-ID: <CAP71WjyWn6cPg2rZP0T8-iNDWH4KTaBULh4UgaGf9pyZ7FLg=g@mail.gmail.com>
+Subject: Re: [docs] [PATCH] docs: Updated the status of spdx module.
+To: leimaohui <leimaohui@cn.fujitsu.com>
+Cc: docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
 
+hey Lei,
 
-
-On 10/20/20 2:14 PM, Bruce Ashfield wrote:
-> On Tue, Oct 20, 2020 at 5:05 PM Robert Berger@yocto.user
-> <robert.berger.yocto.user@gmail.com> wrote:
->> Hi,
->>
->> On 20/10/2020 21:14, Joshua Watt wrote:
->>> On Tue, Oct 20, 2020 at 12:03 PM Joshua Watt <jpewhacker@gmail.com> wrote:
->>>> +.. note::
->>>> +    You will notice that this is will still pull the kernel source from `the
->>>> +    Yocto Kernel git repo
->>>> +    <https://git.yoctoproject.org/cgit/cgit.cgi/linux-yocto/>`_, however it is
->>>> +    using the default value for :term:`KBRANCH` (e.g. ``"v5.8/standard/base"``)
->>>> +    which is an exact mirror of the upstream kernel.
->>> This is a lie. I thought it was the upstream mirror, but it's not.
->>> v5.8/base is the mirror and this one has a few extra patches.
->>>
->> And exactly because only Bruce knows (most of the time) what is in all
->> those funny branches why not use upstream (kernel.org) for a vanilla kernel?
->>
-> We are documented how the single linux-yocto repository can be used to
-> track tip (master), or any of the -stable upstream kernels
-> (<version>/base), or the yocto specifics (<version>/standard/base),
-> without needing to create 'x' recipes to do it. It is just a branch
-> switch away.
+On Mon, Oct 12, 2020 at 5:44 AM leimaohui <leimaohui@cn.fujitsu.com> wrote:
 >
-> Someone can always use upstream in their own kernel recipe, we are
-> just using this doc to describe what's in oe-core itself.
-
-this is what I just did for the meta-odroid.
-
-https://gitlab.com/akuster/meta-odroid/-/blob/master/recipes-kernel/linux/linux-yocto_5.8.bbappend
-
-It  you don't have your own kernel fragments, it could be simpler.
-
--armin
-
+> - Deleted content about old spdx.bbclass.
+> - Added usage of meta-spdxscanner.
 >
-> Bruce
+> Signed-off-by: Lei Maohui <leimaohui@cn.fujitsu.com>
+> ---
+>  .../dev-manual/dev-manual-common-tasks.rst    | 38 +++++++++++++++++++
+>  documentation/ref-manual/ref-classes.rst      | 13 -------
+>  documentation/ref-manual/ref-tasks.rst        | 14 -------
+>  3 files changed, 38 insertions(+), 27 deletions(-)
 >
->> Robert
+> diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
+> index bef8bf840f..80fd23e960 100644
+> --- a/documentation/dev-manual/dev-manual-common-tasks.rst
+> +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
+> @@ -11401,6 +11401,8 @@ to be covered by assuming that three main areas of concern exist:
+>  -  Compilation scripts and modifications to the source code must be
+>     provided.
 >
+> +-  spdx files can be provided.
+> +
+>  There are other requirements beyond the scope of these three and the
+>  methods described in this section (e.g. the mechanism through which
+>  source code is distributed).
+> @@ -11595,6 +11597,42 @@ layers (recipes, configuration files, and so forth) enables you to meet
+>  your requirements to include the scripts to control compilation as well
+>  as any modifications to the original source.
+>
+> +Providing spdx files
+> +~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +The spdx module has been integrated to a layer named meta-spdxscanner.
+> +meta-spdxscanner provides several kinds of scanner. If you want to enable
+> +this function, you have to do the following steps:
+> +
+> +1. Added meta-spdxscanner layer into ``bblayers.conf``.
+> +
+> +2. Reference to README of meta-spdxscanner, setup the environment(e.g,
+> +   setup a fossology server) of scanner.
+> +
+> +3. Meta-spdxscanner provids several methods(bbclass) to create spdx files.
+> +   Please choose one that you want to use and enable the spdx task. You have to
+> +   add some config options in
+> +``local.conf`` file in your
+> +:term:`Build Directory`.
+> +The following is an example about how to get spdx files during bitbake
+> +by fossology-python.bbclass:
+> +::
+
+this causes the following new warning:
+WARNING: Enumerated list ends without a blank line; unexpected unindent.
+
+I believe the code-block belongs to the #3 item in the list, in which
+case this patch is needed:
+
+--- a/documentation/dev-manual/dev-manual-common-tasks.rst
++++ b/documentation/dev-manual/dev-manual-common-tasks.rst
+@@ -11487,26 +11487,23 @@ this function, you have to follow the following steps:
+ 2. Refer to the README in meta-spdxscanner to setup the environment (e.g,
+    setup a fossology server) needed for the scanner.
+
+-3. Meta-spdxscanner provids several methods within the bbclass to
+create spdx files.
++3. Meta-spdxscanner provides several methods within the bbclass to
+create spdx files.
+    Please choose one that you want to use and enable the spdx task. You have to
+-   add some config options in
+-``local.conf`` file in your
+-:term:`Build Directory`.
+-The following is an example showing how to generate spdx files during bitbake
+-using the fossology-python.bbclass:
+-::
+-
+-   # Selet fossology-python.bbclass.
+-   INHERIT += "fossology-python"
+-   # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
+-   # Fossology server, you have to create a token.
+-   TOKEN = "eyJ0eXAiO..."
+-   # The fossology server is necessary for fossology-python.bbclass.
+-   FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo"
+-   # If you want to upload the source code to a special folder:
+-   FOLDER_NAME = "xxxx" //Optional
+-   # If you don't want to put spdx files in tmp/deploy/spdx, you can enable:
+-   SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
++   add some config options in ``local.conf`` file in your :term:`Build
++   Directory`. The following is an example showing how to generate spdx files
++   during bitbake using the fossology-python.bbclass::
++
++      # Selet fossology-python.bbclass.
++      INHERIT += "fossology-python"
++      # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
++      # Fossology server, you have to create a token.
++      TOKEN = "eyJ0eXAiO..."
++      # The fossology server is necessary for fossology-python.bbclass.
++      FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo"
++      # If you want to upload the source code to a special folder:
++      FOLDER_NAME = "xxxx" //Optional
++      # If you don't want to put spdx files in tmp/deploy/spdx, you can enable:
++      SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
+
+Note: I fixed a typo as well.
+
+> +
+> +   # Selet fossology-python.bbclass.
+> +   INHERIT += "fossology-python"
+> +   # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
+> +   # Fossology server, you have to create a token.
+> +   TOKEN = "eyJ0eXAiO..."
+> +   # The fossology server is necessary for fossology-python.bbclass.
+> +   FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo" //Optional
+> +   # If you want to upload the source code to a special folder.
+> +   FOLDER_NAME = "xxxx" //Optional
+> +   # If you don't want to put spdx files in tmp/deploy/spdx, you can change.
+> +   SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
+> +
+> +More usage of meta-spdxscanner, which you can find at:
+> +https://git.yoctoproject.org/cgit/cgit.cgi/meta-spdxscanner/.
+> +
+>  Copying Licenses that Do Not Exist
+>  ----------------------------------
+>
+> diff --git a/documentation/ref-manual/ref-classes.rst b/documentation/ref-manual/ref-classes.rst
+> index 756df2a60f..7277c6bb9d 100644
+> --- a/documentation/ref-manual/ref-classes.rst
+> +++ b/documentation/ref-manual/ref-classes.rst
+> @@ -2380,19 +2380,6 @@ Autotools automatically picks up.
+>  The class also provides variables like ``SITEINFO_ENDIANNESS`` and
+>  ``SITEINFO_BITS`` that can be used elsewhere in the metadata.
+>
+> -.. _ref-classes-spdx:
+> -
+> -``spdx.bbclass``
+> -================
+> -
+> -The ``spdx`` class integrates real-time license scanning, generation of
+> -SPDX standard output, and verification of license information during the
+> -build.
+> -
+> -.. note::
+> -
+> -   This class is currently at the prototype stage in the 1.6 release.
+> -
+>  .. _ref-classes-sstate:
+>
+>  ``sstate.bbclass``
+> diff --git a/documentation/ref-manual/ref-tasks.rst b/documentation/ref-manual/ref-tasks.rst
+> index 2569306fc5..ea145644f7 100644
+> --- a/documentation/ref-manual/ref-tasks.rst
+> +++ b/documentation/ref-manual/ref-tasks.rst
+> @@ -859,17 +859,3 @@ sure that the machine and metadata branches as specified by the
+>  branches. If these branches do not exist and
+>  :term:`AUTOREV` is not being used, the
+>  ``do_validate_branches`` task fails during the build.
+> -
+> -Miscellaneous Tasks
+> -===================
+> -
+> -The following sections describe miscellaneous tasks.
+> -
+> -.. _ref-tasks-spdx:
+> -
+> -``do_spdx``
+> ------------
+> -
+> -A build stage that takes the source code and scans it on a remote
+> -FOSSOLOGY server in order to produce an SPDX document. This task applies
+> -only to the :ref:`spdx <ref-classes-spdx>` class.
+> --
+> 2.25.1
 >
 >
 > 
 >
-
