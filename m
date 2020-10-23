@@ -1,223 +1,94 @@
-Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
- by mx.groups.io with SMTP id smtpd.web08.10009.1603464249813071996
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+ by mx.groups.io with SMTP id smtpd.web12.10418.1603465048562063108
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Oct 2020 07:44:10 -0700
+ Fri, 23 Oct 2020 07:57:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=GeNVUy8x;
- spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f196.google.com with SMTP id h196so1407421ybg.4
-        for <docs@lists.yoctoproject.org>; Fri, 23 Oct 2020 07:44:09 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=lUhUvy5g;
+ spf=pass (domain: linaro.org, ip: 209.85.128.47, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wm1-f47.google.com with SMTP id e2so1960248wme.1
+        for <docs@lists.yoctoproject.org>; Fri, 23 Oct 2020 07:57:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=urS06oiaBHTNyd7oFm7U34Z4lsIj6fgEidyDZIu7fFo=;
-        b=GeNVUy8xYKGBImxMgwlhkb1RhuRABoy+pT3GuoxeMV9wgNpyLxvB6VHRbT1PM69YBx
-         YPo3yZS2CwppzORQQgfP+d2lRUy8+fIz+iDTHNznQr8fi1MlICEe9xkXM/GGgmNDIMC6
-         qrBUzcYPqgBeBNOZPOfjhMpePUkAudjpGiDdHghaHibpC9s2ttC0Tu4m6hWnd3WuMNxS
-         UXeRs8kRIhxGq9jgMADj/bX2Ogmw7O7HGD6NkdjVRQu4ChCtwQ3yDjbWfgw5Lic4sT4F
-         +vzKjUX2NwW+rUZoTFJjxl077PeVmi7LgKUMG+1mI52k6jv8AbHJP4eOAcpzyOHALQPr
-         JRlQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8K8hMyGFUWlUoXytJrpxAFkeQjCm0BMMc9zgyS9zel8=;
+        b=lUhUvy5gfERIJIrQgcd6n5BT/ixDv1B8vuMjiGSTxoC5uO/XM2/tKvX/WbiXPPXOzI
+         +xoUICcApQORuSQhXnCR7dWZUGnf36NZxV5pdv0CncH7J/u/a5i3YXSbBG5O4i/z6OKP
+         49qtVOBT2mvg3sYu8oeEUxE2xsAsKV3Slqne4PVkwkGCSNyR+fi7SlDVnS4SkzsyvEFf
+         ZaTkIkzSomD3RMNZjdRCQ3r4kt5CiOopsJFtjch3M5JHDChbpg0tlc7ZrYvd4vqXQRay
+         /NFoRDNSilHlfksxUpyQq//8YpVBF1iNZv5GkxjL6PTbXnI6iUPj8lT6bxfsqujcOASS
+         DIQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=urS06oiaBHTNyd7oFm7U34Z4lsIj6fgEidyDZIu7fFo=;
-        b=tuDh3Bdt3CgYO8qJRe1uKQat0OF2R22DhNVxtyRcAvQsg6wZSH3FL72VZpWmQc8o7q
-         MU8Iyp9mbcA8PfYbMHLE7hJTn1RVey3GkgAdy30diMsuBIfDB4uvT7u3ADIlY1F6ecDl
-         A0oCo6idQB5enlq1eMZE45SeiIkf+MX3uf954npyVvuseLxS2EDwEehdFwo3Pbktm/JV
-         OAdptbK3jxhpyyohlhdGDjmKGXIjvewPjUx+GcsJ2lPRZYnB/U/XZkqbfDEl9drfgkjx
-         A2jQ0RgUiyMC4aEraSrOaKMFRgu6f46jT8e0xlLSPTaz6lNAgYVBz3kF+JWhofcXzsU0
-         dKbw==
-X-Gm-Message-State: AOAM53246ai2V3rD8uAKnzVBfoqa5p6EyPKRx3+edaofbnL5NHI8kh0D
-	QJ2QWmx4v+Pb1FjMjD1+C6n3/EVhhI/HOJWZR16aPA==
-X-Google-Smtp-Source: ABdhPJy/dHz1DZUMgZcYb4m4w2T1mXUHjI+ob4eZt+teu+tWO2i4mVF52rE43oroX87N12+i3cjcXHZzKnuujqAMLQ4=
-X-Received: by 2002:a25:c204:: with SMTP id s4mr3604484ybf.454.1603464248728;
- Fri, 23 Oct 2020 07:44:08 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201012034255.2186713-1-leimaohui@cn.fujitsu.com>
-In-Reply-To: <20201012034255.2186713-1-leimaohui@cn.fujitsu.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8K8hMyGFUWlUoXytJrpxAFkeQjCm0BMMc9zgyS9zel8=;
+        b=sEOSKGOR8E5h5KahxRWM0VKT85mMnn81rIBRiOt8y/11PTK8Kr348G0aoJdhqNHDab
+         jJSaaY2srRbX1kkiKQA5jK5PJUN2WgixIzgg/5oZfQLO6o3sH4yFYtIcY9F+4lecxzU0
+         z+84SS8cZiolOBdJq/X77AhxbWaOU1w16H8Hhb+u4irqJgsoTkkDgU6bP890CUWW5uU8
+         NKjkULTVdxvOXRgM5bwyKJGn3FpjyOdrLFq0nuaSgX+Zr8T+X6naNfXtwBWQfgkOTOJq
+         CgwJsz/inCWPH8ZR6JwnTXWd3vAjSGuyBnuOQ3ccubebsKx/9WQXKtVS78ZLgqNKlkz/
+         8P9A==
+X-Gm-Message-State: AOAM533YgH2CDqbUkI/Wvmj+F2MQ6XCuiWo6DsmG5QyIf4OPABE7XmLK
+	uQU5SOCoMGh3UubupT5r0s1Ggj6EB5rPjsUj
+X-Google-Smtp-Source: ABdhPJzfN+ioj7/JEkoUSg6c72YGk6UJ/9rIimy4Cs43x6JKlZaSaRbk0CpdNsKRbR/9w1KvDgfu9g==
+X-Received: by 2002:a7b:c847:: with SMTP id c7mr2410474wml.41.1603465046654;
+        Fri, 23 Oct 2020 07:57:26 -0700 (PDT)
+Return-Path: <nicolas.dechesne@linaro.org>
+Received: from nikaia.localdomain (lmontsouris-655-1-65-40.w80-11.abo.wanadoo.fr. [80.11.58.40])
+        by smtp.gmail.com with ESMTPSA id a15sm3891840wro.3.2020.10.23.07.57.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Oct 2020 07:57:26 -0700 (PDT)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Fri, 23 Oct 2020 16:43:57 +0200
-Message-ID: <CAP71WjyWn6cPg2rZP0T8-iNDWH4KTaBULh4UgaGf9pyZ7FLg=g@mail.gmail.com>
-Subject: Re: [docs] [PATCH] docs: Updated the status of spdx module.
-To: leimaohui <leimaohui@cn.fujitsu.com>
-Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+To: docs@lists.yoctoproject.org
+Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Subject: [transition][PATCH] docbook: add 3.0.4 and 3.1.3 releases
+Date: Fri, 23 Oct 2020 16:57:17 +0200
+Message-Id: <20201023145717.354764-1-nicolas.dechesne@linaro.org>
+X-Mailer: git-send-email 2.28.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-hey Lei,
+Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+---
+ documentation/sphinx-static/switchers.js | 4 ++--
+ documentation/transition/3.0.4/index.rst | 2 ++
+ documentation/transition/3.1.3/index.rst | 2 ++
+ 3 files changed, 6 insertions(+), 2 deletions(-)
+ create mode 100644 documentation/transition/3.0.4/index.rst
+ create mode 100644 documentation/transition/3.1.3/index.rst
 
-On Mon, Oct 12, 2020 at 5:44 AM leimaohui <leimaohui@cn.fujitsu.com> wrote:
->
-> - Deleted content about old spdx.bbclass.
-> - Added usage of meta-spdxscanner.
->
-> Signed-off-by: Lei Maohui <leimaohui@cn.fujitsu.com>
-> ---
->  .../dev-manual/dev-manual-common-tasks.rst    | 38 +++++++++++++++++++
->  documentation/ref-manual/ref-classes.rst      | 13 -------
->  documentation/ref-manual/ref-tasks.rst        | 14 -------
->  3 files changed, 38 insertions(+), 27 deletions(-)
->
-> diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-> index bef8bf840f..80fd23e960 100644
-> --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> @@ -11401,6 +11401,8 @@ to be covered by assuming that three main areas of concern exist:
->  -  Compilation scripts and modifications to the source code must be
->     provided.
->
-> +-  spdx files can be provided.
-> +
->  There are other requirements beyond the scope of these three and the
->  methods described in this section (e.g. the mechanism through which
->  source code is distributed).
-> @@ -11595,6 +11597,42 @@ layers (recipes, configuration files, and so forth) enables you to meet
->  your requirements to include the scripts to control compilation as well
->  as any modifications to the original source.
->
-> +Providing spdx files
-> +~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +The spdx module has been integrated to a layer named meta-spdxscanner.
-> +meta-spdxscanner provides several kinds of scanner. If you want to enable
-> +this function, you have to do the following steps:
-> +
-> +1. Added meta-spdxscanner layer into ``bblayers.conf``.
-> +
-> +2. Reference to README of meta-spdxscanner, setup the environment(e.g,
-> +   setup a fossology server) of scanner.
-> +
-> +3. Meta-spdxscanner provids several methods(bbclass) to create spdx files.
-> +   Please choose one that you want to use and enable the spdx task. You have to
-> +   add some config options in
-> +``local.conf`` file in your
-> +:term:`Build Directory`.
-> +The following is an example about how to get spdx files during bitbake
-> +by fossology-python.bbclass:
-> +::
+diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js
+index 32113cfa9..b28d91c08 100644
+--- a/documentation/sphinx-static/switchers.js
++++ b/documentation/sphinx-static/switchers.js
+@@ -3,8 +3,8 @@
+ 
+   var all_versions = {
+     'dev': 'dev (3.2)',
+-    '3.1.2': '3.1.2',
+-    '3.0.3': '3.0.3',
++    '3.1.3': '3.1.3',
++    '3.0.4': '3.0.4',
+     '2.7.4': '2.7.4',
+   };
+ 
+diff --git a/documentation/transition/3.0.4/index.rst b/documentation/transition/3.0.4/index.rst
+new file mode 100644
+index 000000000..91c9434b1
+--- /dev/null
++++ b/documentation/transition/3.0.4/index.rst
+@@ -0,0 +1,2 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++.. docbook-transition-include:: ../index-2.5.rst
+diff --git a/documentation/transition/3.1.3/index.rst b/documentation/transition/3.1.3/index.rst
+new file mode 100644
+index 000000000..91c9434b1
+--- /dev/null
++++ b/documentation/transition/3.1.3/index.rst
+@@ -0,0 +1,2 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++.. docbook-transition-include:: ../index-2.5.rst
+-- 
+2.28.0
 
-this causes the following new warning:
-WARNING: Enumerated list ends without a blank line; unexpected unindent.
-
-I believe the code-block belongs to the #3 item in the list, in which
-case this patch is needed:
-
---- a/documentation/dev-manual/dev-manual-common-tasks.rst
-+++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-@@ -11487,26 +11487,23 @@ this function, you have to follow the following steps:
- 2. Refer to the README in meta-spdxscanner to setup the environment (e.g,
-    setup a fossology server) needed for the scanner.
-
--3. Meta-spdxscanner provids several methods within the bbclass to
-create spdx files.
-+3. Meta-spdxscanner provides several methods within the bbclass to
-create spdx files.
-    Please choose one that you want to use and enable the spdx task. You have to
--   add some config options in
--``local.conf`` file in your
--:term:`Build Directory`.
--The following is an example showing how to generate spdx files during bitbake
--using the fossology-python.bbclass:
--::
--
--   # Selet fossology-python.bbclass.
--   INHERIT += "fossology-python"
--   # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
--   # Fossology server, you have to create a token.
--   TOKEN = "eyJ0eXAiO..."
--   # The fossology server is necessary for fossology-python.bbclass.
--   FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo"
--   # If you want to upload the source code to a special folder:
--   FOLDER_NAME = "xxxx" //Optional
--   # If you don't want to put spdx files in tmp/deploy/spdx, you can enable:
--   SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
-+   add some config options in ``local.conf`` file in your :term:`Build
-+   Directory`. The following is an example showing how to generate spdx files
-+   during bitbake using the fossology-python.bbclass::
-+
-+      # Selet fossology-python.bbclass.
-+      INHERIT += "fossology-python"
-+      # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
-+      # Fossology server, you have to create a token.
-+      TOKEN = "eyJ0eXAiO..."
-+      # The fossology server is necessary for fossology-python.bbclass.
-+      FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo"
-+      # If you want to upload the source code to a special folder:
-+      FOLDER_NAME = "xxxx" //Optional
-+      # If you don't want to put spdx files in tmp/deploy/spdx, you can enable:
-+      SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
-
-Note: I fixed a typo as well.
-
-> +
-> +   # Selet fossology-python.bbclass.
-> +   INHERIT += "fossology-python"
-> +   # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
-> +   # Fossology server, you have to create a token.
-> +   TOKEN = "eyJ0eXAiO..."
-> +   # The fossology server is necessary for fossology-python.bbclass.
-> +   FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo" //Optional
-> +   # If you want to upload the source code to a special folder.
-> +   FOLDER_NAME = "xxxx" //Optional
-> +   # If you don't want to put spdx files in tmp/deploy/spdx, you can change.
-> +   SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
-> +
-> +More usage of meta-spdxscanner, which you can find at:
-> +https://git.yoctoproject.org/cgit/cgit.cgi/meta-spdxscanner/.
-> +
->  Copying Licenses that Do Not Exist
->  ----------------------------------
->
-> diff --git a/documentation/ref-manual/ref-classes.rst b/documentation/ref-manual/ref-classes.rst
-> index 756df2a60f..7277c6bb9d 100644
-> --- a/documentation/ref-manual/ref-classes.rst
-> +++ b/documentation/ref-manual/ref-classes.rst
-> @@ -2380,19 +2380,6 @@ Autotools automatically picks up.
->  The class also provides variables like ``SITEINFO_ENDIANNESS`` and
->  ``SITEINFO_BITS`` that can be used elsewhere in the metadata.
->
-> -.. _ref-classes-spdx:
-> -
-> -``spdx.bbclass``
-> -================
-> -
-> -The ``spdx`` class integrates real-time license scanning, generation of
-> -SPDX standard output, and verification of license information during the
-> -build.
-> -
-> -.. note::
-> -
-> -   This class is currently at the prototype stage in the 1.6 release.
-> -
->  .. _ref-classes-sstate:
->
->  ``sstate.bbclass``
-> diff --git a/documentation/ref-manual/ref-tasks.rst b/documentation/ref-manual/ref-tasks.rst
-> index 2569306fc5..ea145644f7 100644
-> --- a/documentation/ref-manual/ref-tasks.rst
-> +++ b/documentation/ref-manual/ref-tasks.rst
-> @@ -859,17 +859,3 @@ sure that the machine and metadata branches as specified by the
->  branches. If these branches do not exist and
->  :term:`AUTOREV` is not being used, the
->  ``do_validate_branches`` task fails during the build.
-> -
-> -Miscellaneous Tasks
-> -===================
-> -
-> -The following sections describe miscellaneous tasks.
-> -
-> -.. _ref-tasks-spdx:
-> -
-> -``do_spdx``
-> ------------
-> -
-> -A build stage that takes the source code and scans it on a remote
-> -FOSSOLOGY server in order to produce an SPDX document. This task applies
-> -only to the :ref:`spdx <ref-classes-spdx>` class.
-> --
-> 2.25.1
->
->
-> 
->
