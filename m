@@ -1,265 +1,224 @@
-Received: from mail-yb1-f195.google.com (mail-yb1-f195.google.com [209.85.219.195])
- by mx.groups.io with SMTP id smtpd.web10.9633.1603696601415566881
+Received: from heian.cn.fujitsu.com (heian.cn.fujitsu.com [183.91.158.132])
+ by mx.groups.io with SMTP id smtpd.web09.9657.1603697179923007225
  for <docs@lists.yoctoproject.org>;
- Mon, 26 Oct 2020 00:16:41 -0700
+ Mon, 26 Oct 2020 00:26:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=iba0Gdhm;
- spf=pass (domain: linaro.org, ip: 209.85.219.195, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f195.google.com with SMTP id c3so6828670ybl.0
-        for <docs@lists.yoctoproject.org>; Mon, 26 Oct 2020 00:16:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZznNnlRkgEdS4F8RGZkHAIgg3CxXY9uQXIi59MXqq7c=;
-        b=iba0GdhmqbulY6OaVDvKPrCCtx3nAt+jrcpVYTWhjRCj2NgcqCgewMUDlr0T8diHvD
-         F314/vAJdbfry3+RUN/G4kdsopN6S6SdEIoxbwyZo158ZDAzU5zAHzrr6ZQqq/LdW4fd
-         EQWFGVmTj3UXpMAyg9d6GA17LtNPN+XHGsp9yY8B9rO5VAzdSZmqbW7W7QnFHzHo03Y3
-         Qvd+/22CVIMWNc9n2Dl8JuJzq3i3BJJDfSUWN9Fic/ds/+NsWKnZ1yKDymuDolauyxoP
-         I9RfCeCuhDU159B+h0y8lh+dT0h2w6/Tv2YNJyZSSe2cotnypsHxMnFvcXvQEjt/Vl3B
-         yp4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZznNnlRkgEdS4F8RGZkHAIgg3CxXY9uQXIi59MXqq7c=;
-        b=RqpuUrGUn3yH4CRMeMSgZFi0BQUhn14t55tewZo0brwTzySNZoQYasz+d0VMIurkG0
-         3Q7B4EuFZUuRLk4tCEzyMozDKhriAVb6od0XM5MlrVop7RLN13udHE4fd6ebXMaPhTcs
-         O8HN/Nk53QtKV/l7FRVNP4mAo0WxKsTWN5kuR0EgI0JmNyBlNrSuAK5xqjLL1t7H3cg2
-         9hfSBhgVFrThpMvg/ZN/sbLqFPJOCX5oZB0i2hGkgHY6uKUw5ONKgG8aBTIp4P7tIoAj
-         hz3Y32dLB8g4oPlK+Zji5OyIRyELN2MyltJ5un8dFOlCCQRjlUFN//+S2ZhPykcll7xd
-         S6jg==
-X-Gm-Message-State: AOAM531E2e6ANbRLEfDmtjRz23dGy4ClZBYLFWw/9VezyXKYsPbmFJgb
-	bgUqzyIL8aGrVcxm1UAaA9sz3rq42oI7RIT4Jg2J5HLUPovh8Q==
-X-Google-Smtp-Source: ABdhPJyz/AJFdmhVaSvSS+FJNYh2l9qAnhHi983xOm2q6Y/pJo2JXicFyEbQtXzv9EzfjXXRVQED5gWRhFJfMhG7ux0=
-X-Received: by 2002:a25:8752:: with SMTP id e18mr18398804ybn.133.1603696600336;
- Mon, 26 Oct 2020 00:16:40 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201012034255.2186713-1-leimaohui@cn.fujitsu.com>
- <CAP71WjyWn6cPg2rZP0T8-iNDWH4KTaBULh4UgaGf9pyZ7FLg=g@mail.gmail.com> <d7d72831ede6498e91563c4ae747f611@G08CNEXMBPEKD05.g08.fujitsu.local>
-In-Reply-To: <d7d72831ede6498e91563c4ae747f611@G08CNEXMBPEKD05.g08.fujitsu.local>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Mon, 26 Oct 2020 08:16:27 +0100
-Message-ID: <CAP71Wjwf+KicWg58QUFcL_75bVsAbFhRp8PzHh0Wdxjw5L4daQ@mail.gmail.com>
+ dkim=missing; spf=none, err=SPF record not found (domain: cn.fujitsu.com, ip: 183.91.158.132, mailfrom: leimaohui@cn.fujitsu.com)
+X-IronPort-AV: E=Sophos;i="5.77,417,1596470400"; 
+   d="scan'208";a="100497098"
+Received: from unknown (HELO cn.fujitsu.com) ([10.167.33.5])
+  by heian.cn.fujitsu.com with ESMTP; 26 Oct 2020 15:26:16 +0800
+Received: from G08CNEXMBPEKD05.g08.fujitsu.local (unknown [10.167.33.204])
+	by cn.fujitsu.com (Postfix) with ESMTP id 2FF77486A854;
+	Mon, 26 Oct 2020 15:26:13 +0800 (CST)
+Received: from G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204) by
+ G08CNEXMBPEKD05.g08.fujitsu.local (10.167.33.204) with Microsoft SMTP Server
+ (TLS) id 15.0.1497.2; Mon, 26 Oct 2020 15:26:14 +0800
+Received: from G08CNEXMBPEKD05.g08.fujitsu.local ([fe80::9e9:bb8f:d60e:bb94])
+ by G08CNEXMBPEKD05.g08.fujitsu.local ([fe80::9e9:bb8f:d60e:bb94%14]) with
+ mapi id 15.00.1497.006; Mon, 26 Oct 2020 15:26:14 +0800
+From: "leimaohui" <leimaohui@cn.fujitsu.com>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
 Subject: Re: [docs] [PATCH] docs: Updated the status of spdx module.
-To: "Lei, Maohui" <leimaohui@cn.fujitsu.com>
-Cc: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+Thread-Topic: [docs] [PATCH] docs: Updated the status of spdx module.
+Thread-Index: AQHWqUr/7fbReu6IRUW3mcawyOVYlKmpctDQ//+EVICAAIfV4A==
+Date: Mon, 26 Oct 2020 07:26:14 +0000
+Message-ID: <b02be5804c9d4d5eb69c4ac721c83c88@G08CNEXMBPEKD05.g08.fujitsu.local>
+References: <20201012034255.2186713-1-leimaohui@cn.fujitsu.com>
+ <CAP71WjyWn6cPg2rZP0T8-iNDWH4KTaBULh4UgaGf9pyZ7FLg=g@mail.gmail.com>
+ <d7d72831ede6498e91563c4ae747f611@G08CNEXMBPEKD05.g08.fujitsu.local>
+ <CAP71Wjwf+KicWg58QUFcL_75bVsAbFhRp8PzHh0Wdxjw5L4daQ@mail.gmail.com>
+In-Reply-To: <CAP71Wjwf+KicWg58QUFcL_75bVsAbFhRp8PzHh0Wdxjw5L4daQ@mail.gmail.com>
+Accept-Language: en-AU, zh-CN, en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.167.225.227]
+MIME-Version: 1.0
+X-yoursite-MailScanner-ID: 2FF77486A854.AD946
+X-yoursite-MailScanner: Found to be clean
+X-yoursite-MailScanner-From: leimaohui@cn.fujitsu.com
+X-Spam-Status: No
+Content-Language: zh-CN
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-hi Lei,
-
-On Mon, Oct 26, 2020 at 7:48 AM Lei, Maohui <leimaohui@cn.fujitsu.com> wrote:
->
-> Hi, nico
->
-> Thanks for your comment, I'm sorry that I'm not  very familiar with syntax  of doc.
-
-Not a problem, we just missed that during the review process!
-
-> So, do I need to submit patch again? Or you have updated this patch?
-
-Your patch was merged, so we need a new patch on top of current branch
-to fix the issue. If you confirm that the patch I put in my previous
-email is good, then I can submit it, otherwise, feel free to submit a
-patch directly.
-
->
->
-> Best regards
-> Lei
->
-> > -----Original Message-----
-> > From: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-> > Sent: Friday, October 23, 2020 10:44 PM
-> > To: Lei, Maohui <leimaohui@cn.fujitsu.com>
-> > Cc: docs@lists.yoctoproject.org
-> > Subject: Re: [docs] [PATCH] docs: Updated the status of spdx module.
-> >
-> > hey Lei,
-> >
-> > On Mon, Oct 12, 2020 at 5:44 AM leimaohui <leimaohui@cn.fujitsu.com>
-> > wrote:
-> > >
-> > > - Deleted content about old spdx.bbclass.
-> > > - Added usage of meta-spdxscanner.
-> > >
-> > > Signed-off-by: Lei Maohui <leimaohui@cn.fujitsu.com>
-> > > ---
-> > >  .../dev-manual/dev-manual-common-tasks.rst    | 38 +++++++++++++++++++
-> > >  documentation/ref-manual/ref-classes.rst      | 13 -------
-> > >  documentation/ref-manual/ref-tasks.rst        | 14 -------
-> > >  3 files changed, 38 insertions(+), 27 deletions(-)
-> > >
-> > > diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst
-> > > b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > > index bef8bf840f..80fd23e960 100644
-> > > --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> > > +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > > @@ -11401,6 +11401,8 @@ to be covered by assuming that three main
-> > areas of concern exist:
-> > >  -  Compilation scripts and modifications to the source code must be
-> > >     provided.
-> > >
-> > > +-  spdx files can be provided.
-> > > +
-> > >  There are other requirements beyond the scope of these three and the
-> > > methods described in this section (e.g. the mechanism through which
-> > > source code is distributed).
-> > > @@ -11595,6 +11597,42 @@ layers (recipes, configuration files, and so
-> > > forth) enables you to meet  your requirements to include the scripts
-> > > to control compilation as well  as any modifications to the original source.
-> > >
-> > > +Providing spdx files
-> > > +~~~~~~~~~~~~~~~~~~~~~~~~~
-> > > +
-> > > +The spdx module has been integrated to a layer named meta-spdxscanner.
-> > > +meta-spdxscanner provides several kinds of scanner. If you want to
-> > > +enable this function, you have to do the following steps:
-> > > +
-> > > +1. Added meta-spdxscanner layer into ``bblayers.conf``.
-> > > +
-> > > +2. Reference to README of meta-spdxscanner, setup the environment(e.g,
-> > > +   setup a fossology server) of scanner.
-> > > +
-> > > +3. Meta-spdxscanner provids several methods(bbclass) to create spdx files.
-> > > +   Please choose one that you want to use and enable the spdx task. You
-> > have to
-> > > +   add some config options in
-> > > +``local.conf`` file in your
-> > > +:term:`Build Directory`.
-> > > +The following is an example about how to get spdx files during
-> > > +bitbake by fossology-python.bbclass:
-> > > +::
-> >
-> > this causes the following new warning:
-> > WARNING: Enumerated list ends without a blank line; unexpected unindent.
-> >
-> > I believe the code-block belongs to the #3 item in the list, in which case this
-> > patch is needed:
-> >
-> > --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> > +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > @@ -11487,26 +11487,23 @@ this function, you have to follow the following
-> > steps:
-> >  2. Refer to the README in meta-spdxscanner to setup the environment (e.g,
-> >     setup a fossology server) needed for the scanner.
-> >
-> > -3. Meta-spdxscanner provids several methods within the bbclass to create
-> > spdx files.
-> > +3. Meta-spdxscanner provides several methods within the bbclass to
-> > create spdx files.
-> >     Please choose one that you want to use and enable the spdx task. You have
-> > to
-> > -   add some config options in
-> > -``local.conf`` file in your
-> > -:term:`Build Directory`.
-> > -The following is an example showing how to generate spdx files during
-> > bitbake -using the fossology-python.bbclass:
-> > -::
-> > -
-> > -   # Selet fossology-python.bbclass.
-> > -   INHERIT += "fossology-python"
-> > -   # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
-> > -   # Fossology server, you have to create a token.
-> > -   TOKEN = "eyJ0eXAiO..."
-> > -   # The fossology server is necessary for fossology-python.bbclass.
-> > -   FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo"
-> > -   # If you want to upload the source code to a special folder:
-> > -   FOLDER_NAME = "xxxx" //Optional
-> > -   # If you don't want to put spdx files in tmp/deploy/spdx, you can enable:
-> > -   SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
-> > +   add some config options in ``local.conf`` file in your :term:`Build
-> > +   Directory`. The following is an example showing how to generate spdx files
-> > +   during bitbake using the fossology-python.bbclass::
-> > +
-> > +      # Selet fossology-python.bbclass.
-> > +      INHERIT += "fossology-python"
-> > +      # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
-> > +      # Fossology server, you have to create a token.
-> > +      TOKEN = "eyJ0eXAiO..."
-> > +      # The fossology server is necessary for fossology-python.bbclass.
-> > +      FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo"
-> > +      # If you want to upload the source code to a special folder:
-> > +      FOLDER_NAME = "xxxx" //Optional
-> > +      # If you don't want to put spdx files in tmp/deploy/spdx, you can enable:
-> > +      SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
-> >
-> > Note: I fixed a typo as well.
-> >
-> > > +
-> > > +   # Selet fossology-python.bbclass.
-> > > +   INHERIT += "fossology-python"
-> > > +   # For fossology-python.bbclass, TOKEN is necessary, so, after setup a
-> > > +   # Fossology server, you have to create a token.
-> > > +   TOKEN = "eyJ0eXAiO..."
-> > > +   # The fossology server is necessary for fossology-python.bbclass.
-> > > +   FOSSOLOGY_SERVER = "http://xx.xx.xx.xx:8081/repo" //Optional
-> > > +   # If you want to upload the source code to a special folder.
-> > > +   FOLDER_NAME = "xxxx" //Optional
-> > > +   # If you don't want to put spdx files in tmp/deploy/spdx, you can change.
-> > > +   SPDX_DEPLOY_DIR = "${DeployDir}" //Optional
-> > > +
-> > > +More usage of meta-spdxscanner, which you can find at:
-> > > +https://git.yoctoproject.org/cgit/cgit.cgi/meta-spdxscanner/.
-> > > +
-> > >  Copying Licenses that Do Not Exist
-> > >  ----------------------------------
-> > >
-> > > diff --git a/documentation/ref-manual/ref-classes.rst
-> > > b/documentation/ref-manual/ref-classes.rst
-> > > index 756df2a60f..7277c6bb9d 100644
-> > > --- a/documentation/ref-manual/ref-classes.rst
-> > > +++ b/documentation/ref-manual/ref-classes.rst
-> > > @@ -2380,19 +2380,6 @@ Autotools automatically picks up.
-> > >  The class also provides variables like ``SITEINFO_ENDIANNESS`` and
-> > > ``SITEINFO_BITS`` that can be used elsewhere in the metadata.
-> > >
-> > > -.. _ref-classes-spdx:
-> > > -
-> > > -``spdx.bbclass``
-> > > -================
-> > > -
-> > > -The ``spdx`` class integrates real-time license scanning, generation
-> > > of -SPDX standard output, and verification of license information
-> > > during the -build.
-> > > -
-> > > -.. note::
-> > > -
-> > > -   This class is currently at the prototype stage in the 1.6 release.
-> > > -
-> > >  .. _ref-classes-sstate:
-> > >
-> > >  ``sstate.bbclass``
-> > > diff --git a/documentation/ref-manual/ref-tasks.rst
-> > > b/documentation/ref-manual/ref-tasks.rst
-> > > index 2569306fc5..ea145644f7 100644
-> > > --- a/documentation/ref-manual/ref-tasks.rst
-> > > +++ b/documentation/ref-manual/ref-tasks.rst
-> > > @@ -859,17 +859,3 @@ sure that the machine and metadata branches as
-> > > specified by the  branches. If these branches do not exist and
-> > > :term:`AUTOREV` is not being used, the  ``do_validate_branches`` task
-> > > fails during the build.
-> > > -
-> > > -Miscellaneous Tasks
-> > > -===================
-> > > -
-> > > -The following sections describe miscellaneous tasks.
-> > > -
-> > > -.. _ref-tasks-spdx:
-> > > -
-> > > -``do_spdx``
-> > > ------------
-> > > -
-> > > -A build stage that takes the source code and scans it on a remote
-> > > -FOSSOLOGY server in order to produce an SPDX document. This task
-> > > applies -only to the :ref:`spdx <ref-classes-spdx>` class.
-> > > --
-> > > 2.25.1
-> > >
-> > >
-> > > 
-> > >
-> >
->
->
->
+SGksIG5pY28NCg0KPiBZb3VyIHBhdGNoIHdhcyBtZXJnZWQsIHNvIHdlIG5lZWQgYSBuZXcgcGF0
+Y2ggb24gdG9wIG9mIGN1cnJlbnQgYnJhbmNoIHRvDQo+IGZpeCB0aGUgaXNzdWUuIElmIHlvdSBj
+b25maXJtIHRoYXQgdGhlIHBhdGNoIEkgcHV0IGluIG15IHByZXZpb3VzIGVtYWlsIGlzIGdvb2Qs
+DQo+IHRoZW4gSSBjYW4gc3VibWl0IGl0LCBvdGhlcndpc2UsIGZlZWwgZnJlZSB0byBzdWJtaXQg
+YSBwYXRjaCBkaXJlY3RseS4NCg0KVGhhbmsgeW91LCBJIGhhdmUgbm8gbW9yZSBxdWVzdGlvbnMg
+YWJvdXQgeW91ciBlbWFpbC4gUGxlYXNlIHN1Ym1pdCBpdCBkaXJlY3RseS4NCg0KQmVzdCByZWdh
+cmRzDQpMZWkNCg0KDQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+IEZyb206IE5pY29s
+YXMgRGVjaGVzbmUgPG5pY29sYXMuZGVjaGVzbmVAbGluYXJvLm9yZz4NCj4gU2VudDogTW9uZGF5
+LCBPY3RvYmVyIDI2LCAyMDIwIDM6MTYgUE0NCj4gVG86IExlaSwgTWFvaHVpIDxsZWltYW9odWlA
+Y24uZnVqaXRzdS5jb20+DQo+IENjOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4gU3Vi
+amVjdDogUmU6IFtkb2NzXSBbUEFUQ0hdIGRvY3M6IFVwZGF0ZWQgdGhlIHN0YXR1cyBvZiBzcGR4
+IG1vZHVsZS4NCj4gDQo+IGhpIExlaSwNCj4gDQo+IE9uIE1vbiwgT2N0IDI2LCAyMDIwIGF0IDc6
+NDggQU0gTGVpLCBNYW9odWkgPGxlaW1hb2h1aUBjbi5mdWppdHN1LmNvbT4NCj4gd3JvdGU6DQo+
+ID4NCj4gPiBIaSwgbmljbw0KPiA+DQo+ID4gVGhhbmtzIGZvciB5b3VyIGNvbW1lbnQsIEknbSBz
+b3JyeSB0aGF0IEknbSBub3QgIHZlcnkgZmFtaWxpYXIgd2l0aCBzeW50YXggIG9mDQo+IGRvYy4N
+Cj4gDQo+IE5vdCBhIHByb2JsZW0sIHdlIGp1c3QgbWlzc2VkIHRoYXQgZHVyaW5nIHRoZSByZXZp
+ZXcgcHJvY2VzcyENCj4gDQo+ID4gU28sIGRvIEkgbmVlZCB0byBzdWJtaXQgcGF0Y2ggYWdhaW4/
+IE9yIHlvdSBoYXZlIHVwZGF0ZWQgdGhpcyBwYXRjaD8NCj4gDQo+IFlvdXIgcGF0Y2ggd2FzIG1l
+cmdlZCwgc28gd2UgbmVlZCBhIG5ldyBwYXRjaCBvbiB0b3Agb2YgY3VycmVudCBicmFuY2ggdG8N
+Cj4gZml4IHRoZSBpc3N1ZS4gSWYgeW91IGNvbmZpcm0gdGhhdCB0aGUgcGF0Y2ggSSBwdXQgaW4g
+bXkgcHJldmlvdXMgZW1haWwgaXMgZ29vZCwNCj4gdGhlbiBJIGNhbiBzdWJtaXQgaXQsIG90aGVy
+d2lzZSwgZmVlbCBmcmVlIHRvIHN1Ym1pdCBhIHBhdGNoIGRpcmVjdGx5Lg0KPiANCj4gPg0KPiA+
+DQo+ID4gQmVzdCByZWdhcmRzDQo+ID4gTGVpDQo+ID4NCj4gPiA+IC0tLS0tT3JpZ2luYWwgTWVz
+c2FnZS0tLS0tDQo+ID4gPiBGcm9tOiBOaWNvbGFzIERlY2hlc25lIDxuaWNvbGFzLmRlY2hlc25l
+QGxpbmFyby5vcmc+DQo+ID4gPiBTZW50OiBGcmlkYXksIE9jdG9iZXIgMjMsIDIwMjAgMTA6NDQg
+UE0NCj4gPiA+IFRvOiBMZWksIE1hb2h1aSA8bGVpbWFvaHVpQGNuLmZ1aml0c3UuY29tPg0KPiA+
+ID4gQ2M6IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZw0KPiA+ID4gU3ViamVjdDogUmU6IFtk
+b2NzXSBbUEFUQ0hdIGRvY3M6IFVwZGF0ZWQgdGhlIHN0YXR1cyBvZiBzcGR4IG1vZHVsZS4NCj4g
+PiA+DQo+ID4gPiBoZXkgTGVpLA0KPiA+ID4NCj4gPiA+IE9uIE1vbiwgT2N0IDEyLCAyMDIwIGF0
+IDU6NDQgQU0gbGVpbWFvaHVpIDxsZWltYW9odWlAY24uZnVqaXRzdS5jb20+DQo+ID4gPiB3cm90
+ZToNCj4gPiA+ID4NCj4gPiA+ID4gLSBEZWxldGVkIGNvbnRlbnQgYWJvdXQgb2xkIHNwZHguYmJj
+bGFzcy4NCj4gPiA+ID4gLSBBZGRlZCB1c2FnZSBvZiBtZXRhLXNwZHhzY2FubmVyLg0KPiA+ID4g
+Pg0KPiA+ID4gPiBTaWduZWQtb2ZmLWJ5OiBMZWkgTWFvaHVpIDxsZWltYW9odWlAY24uZnVqaXRz
+dS5jb20+DQo+ID4gPiA+IC0tLQ0KPiA+ID4gPiAgLi4uL2Rldi1tYW51YWwvZGV2LW1hbnVhbC1j
+b21tb24tdGFza3MucnN0ICAgIHwgMzgNCj4gKysrKysrKysrKysrKysrKysrKw0KPiA+ID4gPiAg
+ZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3JlZi1jbGFzc2VzLnJzdCAgICAgIHwgMTMgLS0tLS0t
+LQ0KPiA+ID4gPiAgZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3JlZi10YXNrcy5yc3QgICAgICAg
+IHwgMTQgLS0tLS0tLQ0KPiA+ID4gPiAgMyBmaWxlcyBjaGFuZ2VkLCAzOCBpbnNlcnRpb25zKCsp
+LCAyNyBkZWxldGlvbnMoLSkNCj4gPiA+ID4NCj4gPiA+ID4gZGlmZiAtLWdpdCBhL2RvY3VtZW50
+YXRpb24vZGV2LW1hbnVhbC9kZXYtbWFudWFsLWNvbW1vbi10YXNrcy5yc3QNCj4gPiA+ID4gYi9k
+b2N1bWVudGF0aW9uL2Rldi1tYW51YWwvZGV2LW1hbnVhbC1jb21tb24tdGFza3MucnN0DQo+ID4g
+PiA+IGluZGV4IGJlZjhiZjg0MGYuLjgwZmQyM2U5NjAgMTAwNjQ0DQo+ID4gPiA+IC0tLSBhL2Rv
+Y3VtZW50YXRpb24vZGV2LW1hbnVhbC9kZXYtbWFudWFsLWNvbW1vbi10YXNrcy5yc3QNCj4gPiA+
+ID4gKysrIGIvZG9jdW1lbnRhdGlvbi9kZXYtbWFudWFsL2Rldi1tYW51YWwtY29tbW9uLXRhc2tz
+LnJzdA0KPiA+ID4gPiBAQCAtMTE0MDEsNiArMTE0MDEsOCBAQCB0byBiZSBjb3ZlcmVkIGJ5IGFz
+c3VtaW5nIHRoYXQgdGhyZWUgbWFpbg0KPiA+ID4gYXJlYXMgb2YgY29uY2VybiBleGlzdDoNCj4g
+PiA+ID4gIC0gIENvbXBpbGF0aW9uIHNjcmlwdHMgYW5kIG1vZGlmaWNhdGlvbnMgdG8gdGhlIHNv
+dXJjZSBjb2RlIG11c3QgYmUNCj4gPiA+ID4gICAgIHByb3ZpZGVkLg0KPiA+ID4gPg0KPiA+ID4g
+PiArLSAgc3BkeCBmaWxlcyBjYW4gYmUgcHJvdmlkZWQuDQo+ID4gPiA+ICsNCj4gPiA+ID4gIFRo
+ZXJlIGFyZSBvdGhlciByZXF1aXJlbWVudHMgYmV5b25kIHRoZSBzY29wZSBvZiB0aGVzZSB0aHJl
+ZSBhbmQNCj4gPiA+ID4gdGhlIG1ldGhvZHMgZGVzY3JpYmVkIGluIHRoaXMgc2VjdGlvbiAoZS5n
+LiB0aGUgbWVjaGFuaXNtIHRocm91Z2gNCj4gPiA+ID4gd2hpY2ggc291cmNlIGNvZGUgaXMgZGlz
+dHJpYnV0ZWQpLg0KPiA+ID4gPiBAQCAtMTE1OTUsNiArMTE1OTcsNDIgQEAgbGF5ZXJzIChyZWNp
+cGVzLCBjb25maWd1cmF0aW9uIGZpbGVzLCBhbmQNCj4gPiA+ID4gc28NCj4gPiA+ID4gZm9ydGgp
+IGVuYWJsZXMgeW91IHRvIG1lZXQgIHlvdXIgcmVxdWlyZW1lbnRzIHRvIGluY2x1ZGUgdGhlDQo+
+ID4gPiA+IHNjcmlwdHMgdG8gY29udHJvbCBjb21waWxhdGlvbiBhcyB3ZWxsICBhcyBhbnkgbW9k
+aWZpY2F0aW9ucyB0byB0aGUgb3JpZ2luYWwNCj4gc291cmNlLg0KPiA+ID4gPg0KPiA+ID4gPiAr
+UHJvdmlkaW5nIHNwZHggZmlsZXMNCj4gPiA+ID4gK35+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4N
+Cj4gPiA+ID4gKw0KPiA+ID4gPiArVGhlIHNwZHggbW9kdWxlIGhhcyBiZWVuIGludGVncmF0ZWQg
+dG8gYSBsYXllciBuYW1lZCBtZXRhLQ0KPiBzcGR4c2Nhbm5lci4NCj4gPiA+ID4gK21ldGEtc3Bk
+eHNjYW5uZXIgcHJvdmlkZXMgc2V2ZXJhbCBraW5kcyBvZiBzY2FubmVyLiBJZiB5b3Ugd2FudA0K
+PiA+ID4gPiArdG8gZW5hYmxlIHRoaXMgZnVuY3Rpb24sIHlvdSBoYXZlIHRvIGRvIHRoZSBmb2xs
+b3dpbmcgc3RlcHM6DQo+ID4gPiA+ICsNCj4gPiA+ID4gKzEuIEFkZGVkIG1ldGEtc3BkeHNjYW5u
+ZXIgbGF5ZXIgaW50byBgYGJibGF5ZXJzLmNvbmZgYC4NCj4gPiA+ID4gKw0KPiA+ID4gPiArMi4g
+UmVmZXJlbmNlIHRvIFJFQURNRSBvZiBtZXRhLXNwZHhzY2FubmVyLCBzZXR1cCB0aGUNCj4gZW52
+aXJvbm1lbnQoZS5nLA0KPiA+ID4gPiArICAgc2V0dXAgYSBmb3Nzb2xvZ3kgc2VydmVyKSBvZiBz
+Y2FubmVyLg0KPiA+ID4gPiArDQo+ID4gPiA+ICszLiBNZXRhLXNwZHhzY2FubmVyIHByb3ZpZHMg
+c2V2ZXJhbCBtZXRob2RzKGJiY2xhc3MpIHRvIGNyZWF0ZSBzcGR4DQo+IGZpbGVzLg0KPiA+ID4g
+PiArICAgUGxlYXNlIGNob29zZSBvbmUgdGhhdCB5b3Ugd2FudCB0byB1c2UgYW5kIGVuYWJsZSB0
+aGUgc3BkeA0KPiA+ID4gPiArdGFzay4gWW91DQo+ID4gPiBoYXZlIHRvDQo+ID4gPiA+ICsgICBh
+ZGQgc29tZSBjb25maWcgb3B0aW9ucyBpbg0KPiA+ID4gPiArYGBsb2NhbC5jb25mYGAgZmlsZSBp
+biB5b3VyDQo+ID4gPiA+ICs6dGVybTpgQnVpbGQgRGlyZWN0b3J5YC4NCj4gPiA+ID4gK1RoZSBm
+b2xsb3dpbmcgaXMgYW4gZXhhbXBsZSBhYm91dCBob3cgdG8gZ2V0IHNwZHggZmlsZXMgZHVyaW5n
+DQo+ID4gPiA+ICtiaXRiYWtlIGJ5IGZvc3NvbG9neS1weXRob24uYmJjbGFzczoNCj4gPiA+ID4g
+Kzo6DQo+ID4gPg0KPiA+ID4gdGhpcyBjYXVzZXMgdGhlIGZvbGxvd2luZyBuZXcgd2FybmluZzoN
+Cj4gPiA+IFdBUk5JTkc6IEVudW1lcmF0ZWQgbGlzdCBlbmRzIHdpdGhvdXQgYSBibGFuayBsaW5l
+OyB1bmV4cGVjdGVkDQo+IHVuaW5kZW50Lg0KPiA+ID4NCj4gPiA+IEkgYmVsaWV2ZSB0aGUgY29k
+ZS1ibG9jayBiZWxvbmdzIHRvIHRoZSAjMyBpdGVtIGluIHRoZSBsaXN0LCBpbg0KPiA+ID4gd2hp
+Y2ggY2FzZSB0aGlzIHBhdGNoIGlzIG5lZWRlZDoNCj4gPiA+DQo+ID4gPiAtLS0gYS9kb2N1bWVu
+dGF0aW9uL2Rldi1tYW51YWwvZGV2LW1hbnVhbC1jb21tb24tdGFza3MucnN0DQo+ID4gPiArKysg
+Yi9kb2N1bWVudGF0aW9uL2Rldi1tYW51YWwvZGV2LW1hbnVhbC1jb21tb24tdGFza3MucnN0DQo+
+ID4gPiBAQCAtMTE0ODcsMjYgKzExNDg3LDIzIEBAIHRoaXMgZnVuY3Rpb24sIHlvdSBoYXZlIHRv
+IGZvbGxvdyB0aGUNCj4gPiA+IGZvbGxvd2luZw0KPiA+ID4gc3RlcHM6DQo+ID4gPiAgMi4gUmVm
+ZXIgdG8gdGhlIFJFQURNRSBpbiBtZXRhLXNwZHhzY2FubmVyIHRvIHNldHVwIHRoZSBlbnZpcm9u
+bWVudA0KPiAoZS5nLA0KPiA+ID4gICAgIHNldHVwIGEgZm9zc29sb2d5IHNlcnZlcikgbmVlZGVk
+IGZvciB0aGUgc2Nhbm5lci4NCj4gPiA+DQo+ID4gPiAtMy4gTWV0YS1zcGR4c2Nhbm5lciBwcm92
+aWRzIHNldmVyYWwgbWV0aG9kcyB3aXRoaW4gdGhlIGJiY2xhc3MgdG8NCj4gPiA+IGNyZWF0ZSBz
+cGR4IGZpbGVzLg0KPiA+ID4gKzMuIE1ldGEtc3BkeHNjYW5uZXIgcHJvdmlkZXMgc2V2ZXJhbCBt
+ZXRob2RzIHdpdGhpbiB0aGUgYmJjbGFzcyB0bw0KPiA+ID4gY3JlYXRlIHNwZHggZmlsZXMuDQo+
+ID4gPiAgICAgUGxlYXNlIGNob29zZSBvbmUgdGhhdCB5b3Ugd2FudCB0byB1c2UgYW5kIGVuYWJs
+ZSB0aGUgc3BkeCB0YXNrLg0KPiA+ID4gWW91IGhhdmUgdG8NCj4gPiA+IC0gICBhZGQgc29tZSBj
+b25maWcgb3B0aW9ucyBpbg0KPiA+ID4gLWBgbG9jYWwuY29uZmBgIGZpbGUgaW4geW91cg0KPiA+
+ID4gLTp0ZXJtOmBCdWlsZCBEaXJlY3RvcnlgLg0KPiA+ID4gLVRoZSBmb2xsb3dpbmcgaXMgYW4g
+ZXhhbXBsZSBzaG93aW5nIGhvdyB0byBnZW5lcmF0ZSBzcGR4IGZpbGVzDQo+ID4gPiBkdXJpbmcg
+Yml0YmFrZSAtdXNpbmcgdGhlIGZvc3NvbG9neS1weXRob24uYmJjbGFzczoNCj4gPiA+IC06Og0K
+PiA+ID4gLQ0KPiA+ID4gLSAgICMgU2VsZXQgZm9zc29sb2d5LXB5dGhvbi5iYmNsYXNzLg0KPiA+
+ID4gLSAgIElOSEVSSVQgKz0gImZvc3NvbG9neS1weXRob24iDQo+ID4gPiAtICAgIyBGb3IgZm9z
+c29sb2d5LXB5dGhvbi5iYmNsYXNzLCBUT0tFTiBpcyBuZWNlc3NhcnksIHNvLCBhZnRlciBzZXR1
+cCBhDQo+ID4gPiAtICAgIyBGb3Nzb2xvZ3kgc2VydmVyLCB5b3UgaGF2ZSB0byBjcmVhdGUgYSB0
+b2tlbi4NCj4gPiA+IC0gICBUT0tFTiA9ICJleUowZVhBaU8uLi4iDQo+ID4gPiAtICAgIyBUaGUg
+Zm9zc29sb2d5IHNlcnZlciBpcyBuZWNlc3NhcnkgZm9yIGZvc3NvbG9neS1weXRob24uYmJjbGFz
+cy4NCj4gPiA+IC0gICBGT1NTT0xPR1lfU0VSVkVSID0gImh0dHA6Ly94eC54eC54eC54eDo4MDgx
+L3JlcG8iDQo+ID4gPiAtICAgIyBJZiB5b3Ugd2FudCB0byB1cGxvYWQgdGhlIHNvdXJjZSBjb2Rl
+IHRvIGEgc3BlY2lhbCBmb2xkZXI6DQo+ID4gPiAtICAgRk9MREVSX05BTUUgPSAieHh4eCIgLy9P
+cHRpb25hbA0KPiA+ID4gLSAgICMgSWYgeW91IGRvbid0IHdhbnQgdG8gcHV0IHNwZHggZmlsZXMg
+aW4gdG1wL2RlcGxveS9zcGR4LCB5b3UgY2FuDQo+IGVuYWJsZToNCj4gPiA+IC0gICBTUERYX0RF
+UExPWV9ESVIgPSAiJHtEZXBsb3lEaXJ9IiAvL09wdGlvbmFsDQo+ID4gPiArICAgYWRkIHNvbWUg
+Y29uZmlnIG9wdGlvbnMgaW4gYGBsb2NhbC5jb25mYGAgZmlsZSBpbiB5b3VyIDp0ZXJtOmBCdWls
+ZA0KPiA+ID4gKyAgIERpcmVjdG9yeWAuIFRoZSBmb2xsb3dpbmcgaXMgYW4gZXhhbXBsZSBzaG93
+aW5nIGhvdyB0byBnZW5lcmF0ZSBzcGR4DQo+IGZpbGVzDQo+ID4gPiArICAgZHVyaW5nIGJpdGJh
+a2UgdXNpbmcgdGhlIGZvc3NvbG9neS1weXRob24uYmJjbGFzczo6DQo+ID4gPiArDQo+ID4gPiAr
+ICAgICAgIyBTZWxldCBmb3Nzb2xvZ3ktcHl0aG9uLmJiY2xhc3MuDQo+ID4gPiArICAgICAgSU5I
+RVJJVCArPSAiZm9zc29sb2d5LXB5dGhvbiINCj4gPiA+ICsgICAgICAjIEZvciBmb3Nzb2xvZ3kt
+cHl0aG9uLmJiY2xhc3MsIFRPS0VOIGlzIG5lY2Vzc2FyeSwgc28sIGFmdGVyIHNldHVwIGENCj4g
+PiA+ICsgICAgICAjIEZvc3NvbG9neSBzZXJ2ZXIsIHlvdSBoYXZlIHRvIGNyZWF0ZSBhIHRva2Vu
+Lg0KPiA+ID4gKyAgICAgIFRPS0VOID0gImV5SjBlWEFpTy4uLiINCj4gPiA+ICsgICAgICAjIFRo
+ZSBmb3Nzb2xvZ3kgc2VydmVyIGlzIG5lY2Vzc2FyeSBmb3IgZm9zc29sb2d5LXB5dGhvbi5iYmNs
+YXNzLg0KPiA+ID4gKyAgICAgIEZPU1NPTE9HWV9TRVJWRVIgPSAiaHR0cDovL3h4Lnh4Lnh4Lnh4
+OjgwODEvcmVwbyINCj4gPiA+ICsgICAgICAjIElmIHlvdSB3YW50IHRvIHVwbG9hZCB0aGUgc291
+cmNlIGNvZGUgdG8gYSBzcGVjaWFsIGZvbGRlcjoNCj4gPiA+ICsgICAgICBGT0xERVJfTkFNRSA9
+ICJ4eHh4IiAvL09wdGlvbmFsDQo+ID4gPiArICAgICAgIyBJZiB5b3UgZG9uJ3Qgd2FudCB0byBw
+dXQgc3BkeCBmaWxlcyBpbiB0bXAvZGVwbG95L3NwZHgsIHlvdSBjYW4NCj4gZW5hYmxlOg0KPiA+
+ID4gKyAgICAgIFNQRFhfREVQTE9ZX0RJUiA9ICIke0RlcGxveURpcn0iIC8vT3B0aW9uYWwNCj4g
+PiA+DQo+ID4gPiBOb3RlOiBJIGZpeGVkIGEgdHlwbyBhcyB3ZWxsLg0KPiA+ID4NCj4gPiA+ID4g
+Kw0KPiA+ID4gPiArICAgIyBTZWxldCBmb3Nzb2xvZ3ktcHl0aG9uLmJiY2xhc3MuDQo+ID4gPiA+
+ICsgICBJTkhFUklUICs9ICJmb3Nzb2xvZ3ktcHl0aG9uIg0KPiA+ID4gPiArICAgIyBGb3IgZm9z
+c29sb2d5LXB5dGhvbi5iYmNsYXNzLCBUT0tFTiBpcyBuZWNlc3NhcnksIHNvLCBhZnRlciBzZXR1
+cCBhDQo+ID4gPiA+ICsgICAjIEZvc3NvbG9neSBzZXJ2ZXIsIHlvdSBoYXZlIHRvIGNyZWF0ZSBh
+IHRva2VuLg0KPiA+ID4gPiArICAgVE9LRU4gPSAiZXlKMGVYQWlPLi4uIg0KPiA+ID4gPiArICAg
+IyBUaGUgZm9zc29sb2d5IHNlcnZlciBpcyBuZWNlc3NhcnkgZm9yIGZvc3NvbG9neS1weXRob24u
+YmJjbGFzcy4NCj4gPiA+ID4gKyAgIEZPU1NPTE9HWV9TRVJWRVIgPSAiaHR0cDovL3h4Lnh4Lnh4
+Lnh4OjgwODEvcmVwbyIgLy9PcHRpb25hbA0KPiA+ID4gPiArICAgIyBJZiB5b3Ugd2FudCB0byB1
+cGxvYWQgdGhlIHNvdXJjZSBjb2RlIHRvIGEgc3BlY2lhbCBmb2xkZXIuDQo+ID4gPiA+ICsgICBG
+T0xERVJfTkFNRSA9ICJ4eHh4IiAvL09wdGlvbmFsDQo+ID4gPiA+ICsgICAjIElmIHlvdSBkb24n
+dCB3YW50IHRvIHB1dCBzcGR4IGZpbGVzIGluIHRtcC9kZXBsb3kvc3BkeCwgeW91IGNhbg0KPiBj
+aGFuZ2UuDQo+ID4gPiA+ICsgICBTUERYX0RFUExPWV9ESVIgPSAiJHtEZXBsb3lEaXJ9IiAvL09w
+dGlvbmFsDQo+ID4gPiA+ICsNCj4gPiA+ID4gK01vcmUgdXNhZ2Ugb2YgbWV0YS1zcGR4c2Nhbm5l
+ciwgd2hpY2ggeW91IGNhbiBmaW5kIGF0Og0KPiA+ID4gPiAraHR0cHM6Ly9naXQueW9jdG9wcm9q
+ZWN0Lm9yZy9jZ2l0L2NnaXQuY2dpL21ldGEtc3BkeHNjYW5uZXIvLg0KPiA+ID4gPiArDQo+ID4g
+PiA+ICBDb3B5aW5nIExpY2Vuc2VzIHRoYXQgRG8gTm90IEV4aXN0DQo+ID4gPiA+ICAtLS0tLS0t
+LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tDQo+ID4gPiA+DQo+ID4gPiA+IGRpZmYgLS1naXQg
+YS9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvcmVmLWNsYXNzZXMucnN0DQo+ID4gPiA+IGIvZG9j
+dW1lbnRhdGlvbi9yZWYtbWFudWFsL3JlZi1jbGFzc2VzLnJzdA0KPiA+ID4gPiBpbmRleCA3NTZk
+ZjJhNjBmLi43Mjc3YzZiYjlkIDEwMDY0NA0KPiA+ID4gPiAtLS0gYS9kb2N1bWVudGF0aW9uL3Jl
+Zi1tYW51YWwvcmVmLWNsYXNzZXMucnN0DQo+ID4gPiA+ICsrKyBiL2RvY3VtZW50YXRpb24vcmVm
+LW1hbnVhbC9yZWYtY2xhc3Nlcy5yc3QNCj4gPiA+ID4gQEAgLTIzODAsMTkgKzIzODAsNiBAQCBB
+dXRvdG9vbHMgYXV0b21hdGljYWxseSBwaWNrcyB1cC4NCj4gPiA+ID4gIFRoZSBjbGFzcyBhbHNv
+IHByb3ZpZGVzIHZhcmlhYmxlcyBsaWtlIGBgU0lURUlORk9fRU5ESUFOTkVTU2BgDQo+ID4gPiA+
+IGFuZCBgYFNJVEVJTkZPX0JJVFNgYCB0aGF0IGNhbiBiZSB1c2VkIGVsc2V3aGVyZSBpbiB0aGUg
+bWV0YWRhdGEuDQo+ID4gPiA+DQo+ID4gPiA+IC0uLiBfcmVmLWNsYXNzZXMtc3BkeDoNCj4gPiA+
+ID4gLQ0KPiA+ID4gPiAtYGBzcGR4LmJiY2xhc3NgYA0KPiA+ID4gPiAtPT09PT09PT09PT09PT09
+PQ0KPiA+ID4gPiAtDQo+ID4gPiA+IC1UaGUgYGBzcGR4YGAgY2xhc3MgaW50ZWdyYXRlcyByZWFs
+LXRpbWUgbGljZW5zZSBzY2FubmluZywNCj4gPiA+ID4gZ2VuZXJhdGlvbiBvZiAtU1BEWCBzdGFu
+ZGFyZCBvdXRwdXQsIGFuZCB2ZXJpZmljYXRpb24gb2YgbGljZW5zZQ0KPiA+ID4gPiBpbmZvcm1h
+dGlvbiBkdXJpbmcgdGhlIC1idWlsZC4NCj4gPiA+ID4gLQ0KPiA+ID4gPiAtLi4gbm90ZTo6DQo+
+ID4gPiA+IC0NCj4gPiA+ID4gLSAgIFRoaXMgY2xhc3MgaXMgY3VycmVudGx5IGF0IHRoZSBwcm90
+b3R5cGUgc3RhZ2UgaW4gdGhlIDEuNiByZWxlYXNlLg0KPiA+ID4gPiAtDQo+ID4gPiA+ICAuLiBf
+cmVmLWNsYXNzZXMtc3N0YXRlOg0KPiA+ID4gPg0KPiA+ID4gPiAgYGBzc3RhdGUuYmJjbGFzc2Bg
+DQo+ID4gPiA+IGRpZmYgLS1naXQgYS9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvcmVmLXRhc2tz
+LnJzdA0KPiA+ID4gPiBiL2RvY3VtZW50YXRpb24vcmVmLW1hbnVhbC9yZWYtdGFza3MucnN0DQo+
+ID4gPiA+IGluZGV4IDI1NjkzMDZmYzUuLmVhMTQ1NjQ0ZjcgMTAwNjQ0DQo+ID4gPiA+IC0tLSBh
+L2RvY3VtZW50YXRpb24vcmVmLW1hbnVhbC9yZWYtdGFza3MucnN0DQo+ID4gPiA+ICsrKyBiL2Rv
+Y3VtZW50YXRpb24vcmVmLW1hbnVhbC9yZWYtdGFza3MucnN0DQo+ID4gPiA+IEBAIC04NTksMTcg
+Kzg1OSwzIEBAIHN1cmUgdGhhdCB0aGUgbWFjaGluZSBhbmQgbWV0YWRhdGEgYnJhbmNoZXMNCj4g
+PiA+ID4gYXMgc3BlY2lmaWVkIGJ5IHRoZSAgYnJhbmNoZXMuIElmIHRoZXNlIGJyYW5jaGVzIGRv
+IG5vdCBleGlzdCBhbmQNCj4gPiA+ID4gOnRlcm06YEFVVE9SRVZgIGlzIG5vdCBiZWluZyB1c2Vk
+LCB0aGUgIGBgZG9fdmFsaWRhdGVfYnJhbmNoZXNgYA0KPiA+ID4gPiB0YXNrIGZhaWxzIGR1cmlu
+ZyB0aGUgYnVpbGQuDQo+ID4gPiA+IC0NCj4gPiA+ID4gLU1pc2NlbGxhbmVvdXMgVGFza3MNCj4g
+PiA+ID4gLT09PT09PT09PT09PT09PT09PT0NCj4gPiA+ID4gLQ0KPiA+ID4gPiAtVGhlIGZvbGxv
+d2luZyBzZWN0aW9ucyBkZXNjcmliZSBtaXNjZWxsYW5lb3VzIHRhc2tzLg0KPiA+ID4gPiAtDQo+
+ID4gPiA+IC0uLiBfcmVmLXRhc2tzLXNwZHg6DQo+ID4gPiA+IC0NCj4gPiA+ID4gLWBgZG9fc3Bk
+eGBgDQo+ID4gPiA+IC0tLS0tLS0tLS0tLQ0KPiA+ID4gPiAtDQo+ID4gPiA+IC1BIGJ1aWxkIHN0
+YWdlIHRoYXQgdGFrZXMgdGhlIHNvdXJjZSBjb2RlIGFuZCBzY2FucyBpdCBvbiBhIHJlbW90ZQ0K
+PiA+ID4gPiAtRk9TU09MT0dZIHNlcnZlciBpbiBvcmRlciB0byBwcm9kdWNlIGFuIFNQRFggZG9j
+dW1lbnQuIFRoaXMgdGFzaw0KPiA+ID4gPiBhcHBsaWVzIC1vbmx5IHRvIHRoZSA6cmVmOmBzcGR4
+IDxyZWYtY2xhc3Nlcy1zcGR4PmAgY2xhc3MuDQo+ID4gPiA+IC0tDQo+ID4gPiA+IDIuMjUuMQ0K
+PiA+ID4gPg0KPiA+ID4gPg0KPiA+ID4gPiANCj4gPiA+ID4NCj4gPiA+DQo+ID4NCj4gPg0KPiA+
+DQo+IA0KDQoKCg==
