@@ -1,75 +1,60 @@
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
- by mx.groups.io with SMTP id smtpd.web11.7361.1603884691804347316
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web11.7417.1603885001960843079
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Oct 2020 04:31:32 -0700
+ Wed, 28 Oct 2020 04:36:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=B/YPd7Xc;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.67, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f67.google.com with SMTP id t9so5256341wrq.11
-        for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2020 04:31:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MZ0rMJwR0Hjwvk5cqbOFBm/bYgxHPVc9Tswa90dbrBk=;
-        b=B/YPd7XcR28lofAkDHBQkry+C48TQDv1aDR7e4zTqUZd6IViiGpAfGQ3XrwOmixpG9
-         b1oFgDFVYUv8xcfRt7utSqqwMv3u72yNYIQqqaX5h30XtrC5uhGe3E4+Je9cM2WufNDN
-         OSWKDC56gou0DmqiLuyT4/WIfxR91/Jy2enVQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=MZ0rMJwR0Hjwvk5cqbOFBm/bYgxHPVc9Tswa90dbrBk=;
-        b=sGO2aPoVru3AJ10Z2Q0m4G4+yMStXugj4bFoDEdQg+AqMz8E0N75O5+o5nNt5vmq8r
-         zRhgjk++5fIHLmlv7xh96PC2C6FDXmbnaAxA4RBLSPZ9WdR681IQF3P/W/BmkmOAw/hk
-         KjeyogVh7pJL/3JW4LGP8gbppWr+aYGq+LnqLo/Xsaxk0x8i04Cq4UBs3M0eHE59Mlh8
-         FbvVppufORDtF+uh4HzEg3ulCu6dZ44vfxpWC4wP0ecUgCA57faXlVXWL6JzOJXYfdoy
-         VS4BEVETdOvzu1oq4a/CXO824zNXeNqKQW2INT3NVoCYougI79/LTv2vKRthWAbrV0nn
-         TOOw==
-X-Gm-Message-State: AOAM530WWkw+I/gtmCJQktMk1I/CWc5QRWBX4/hqYAk2Ef46N/rwftX6
-	i19+7Le/5L6Pfgbstyt1lYH9wWbowH5Y3Q==
-X-Google-Smtp-Source: ABdhPJxiK09XhcfbXnchY7x3Wd89lyaWQd1lpZPw9V47pUtLFrps453TMLBsc/FKKSUj7S5hhBspOg==
-X-Received: by 2002:a05:6000:1109:: with SMTP id z9mr7674484wrw.388.1603884690227;
-        Wed, 28 Oct 2020 04:31:30 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from hex.int.rpsys.net (d.0.2.3.2.a.1.a.7.6.b.c.7.6.8.1.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:1867:cb67:a1a2:320d])
-        by smtp.gmail.com with ESMTPSA id c1sm6583273wru.49.2020.10.28.04.31.29
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 04:31:29 -0700 (PDT)
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=ajoNSCxx;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: pauleg@linux.microsoft.com)
+Received: by linux.microsoft.com (Postfix, from userid 1054)
+	id 3B0F920B4907; Wed, 28 Oct 2020 04:36:37 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3B0F920B4907
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1603884997;
+	bh=yN5kpfU8WMwtH0ARzbwLyGOyHxatjzkxnqilwzXMh/4=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=ajoNSCxxFCRAUPRi/CVqGBHqzuXZ7yEmJiakVhhRoY5AsYWtpLm2UdWwID9QPU4Bz
+	 MVUyGKYvYuPPNQUDUrzgm4dgl+WTjefs8IhHLNJ19ghMowRR9JMgMrjQrCDMS4I+WA
+	 Ehj/Rt93o4NnzvrTm2G9SXB4A3tD+CY4EJIQVUdc=
+From: "Paul Eggleton" <paul.eggleton@linux.microsoft.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] ref-manual/ref: Add entry for why binaries are changed in images
-Date: Wed, 28 Oct 2020 11:31:29 +0000
-Message-Id: <20201028113129.173789-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH 1/3] ref-manual: add IMAGE_LINK_NAME
+Date: Wed, 28 Oct 2020 04:36:23 -0700
+Message-Id: <8c12e9f579cbc0b86ca2fdd09b6b8860b9259585.1603884913.git.paul.eggleton@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <cover.1603884913.git.paul.eggleton@linux.microsoft.com>
+References: <cover.1603884913.git.paul.eggleton@linux.microsoft.com>
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+From: Paul Eggleton <paul.eggleton@microsoft.com>
+
+Add IMAGE_LINK_NAME to the variable glossary.
+
+Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
 ---
- documentation/ref-manual/faq.rst | 11 +++++++++++
+ documentation/ref-manual/ref-variables.rst | 11 +++++++++++
  1 file changed, 11 insertions(+)
 
-diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
-index 7a1614028..c602a137c 100644
---- a/documentation/ref-manual/faq.rst
-+++ b/documentation/ref-manual/faq.rst
-@@ -451,3 +451,14 @@ variant. For another example, permissions errors might be caused by a
- Makefile that ignores ``DESTDIR`` or uses a different name for that
- environment variable. Check the the build system to see if these kinds
- of issues exist.
+diff --git a/documentation/ref-manual/ref-variables.rst b/documentation/ref-manual/ref-variables.rst
+index a7fb777..a69cf6a 100644
+--- a/documentation/ref-manual/ref-variables.rst
++++ b/documentation/ref-manual/ref-variables.rst
+@@ -3098,6 +3098,17 @@ system and gives an overview of their function and contents.
+       See the :term:`GLIBC_GENERATE_LOCALES`
+       variable for information on generating GLIBC locales.
+ 
 +
-+**Q:** I'm adding a binary in a recipe but its different in the image, what is
-+changing it?
++   :term:`IMAGE_LINK_NAME`
++      The name of the output image symlink (which does not include
++      the version part as :term:`IMAGE_NAME` does). The default value
++      is derived using the :term:`IMAGE_BASENAME` and :term:`MACHINE`
++      variables:
++      ::
 +
-+**A:** The first most obvious change is the system stripping debug symbols from
-+it. Setting :term:`INHIBIT_PACKAGE_STRIP` to stop debug symbols being stripped and/or
-+:term:`INHIBIT_PACKAGE_DEBUG_SPLIT` to stop debug symbols being split into a separate
-+file will ensure the binary is unchanged. The other less obvious thing that can
-+happen is prelinking of the image. This is set by default in local.conf via
-+:term:`USER_CLASSES` which can contain 'image-prelink'. If you remove that, the
-+image will not be prelinked meaning the binaries would be unchanged.
++         IMAGE_LINK_NAME ?= "${IMAGE_BASENAME}-${MACHINE}"
++
++
+    :term:`IMAGE_MANIFEST`
+       The manifest file for the image. This file lists all the installed
+       packages that make up the image. The file contains package
 -- 
-2.25.1
+1.8.3.1
 
