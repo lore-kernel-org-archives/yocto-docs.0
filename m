@@ -1,319 +1,75 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by mx.groups.io with SMTP id smtpd.web10.2181.1603847918411853503
+Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
+ by mx.groups.io with SMTP id smtpd.web08.7299.1603884598891978980
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Oct 2020 18:18:38 -0700
+ Wed, 28 Oct 2020 04:29:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linux.microsoft.com header.s=default header.b=NsU4BUSE;
- spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: pauleg@linux.microsoft.com)
-Received: by linux.microsoft.com (Postfix, from userid 1054)
-	id 997FD20C1713; Tue, 27 Oct 2020 18:18:37 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 997FD20C1713
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1603847917;
-	bh=vRN7WBQ0y6vl9Eib7uwIjvDPJhOB9cbo+JFt3pFvdJs=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=NsU4BUSEoB6ASvlmfRx+RwBzwsSI61UgG4Wd5x0TE6nNLFHEWYegmtW6Ajj0YnaBN
-	 JL+Hrwhg/l/hn6JEiDjU6sIV6VKemzUUSCUHdNvcz5cLH0+i3pKvZgj/DvZkp74eLt
-	 G++j/EGPM8IFfEXUpECoWKUgX+FQhR1HuaYXve5U=
-From: "Paul Eggleton" <paul.eggleton@linux.microsoft.com>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=VeFypbxv;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.67, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f67.google.com with SMTP id w23so4204413wmi.4
+        for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2020 04:29:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wxGeRoYbP2bZ6+2DfFZme+oCa59U5LpuRoJR4aQR8mE=;
+        b=VeFypbxvkG39zk/Dk3VBuflCoVvoOsVswZZ7iYOlfaCeBACNY9QZY3au8W9hho+rCV
+         tR4Cjs36eTRGRkrot1R1w3EoM/uRouVsW+qL4iHfdhHoFgg0dFuJWwdMgK5fTu8Ibuc8
+         xtyeprZIDZ1lAFekB6VAIcIrvK+p80/x2OooU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wxGeRoYbP2bZ6+2DfFZme+oCa59U5LpuRoJR4aQR8mE=;
+        b=mVZBJZLJGuRP9PHuk2kc2YBlL/NOo+WzMUv5Jhsv/A/IZXCrmzZwsRSfzYDoaocIkA
+         wniPa+95WeBhkR24smaCtHKwdQrS9DDYq5++iGfX3DkiVZ/FuLX9Z5cn12zpFKM7hP+E
+         rwazpjV6RxTvNGMcyOj/UQ6dBV1Ghzfv9lHhMOPdt+CPcW6WqIbSUvnEoP/ekDCeOwOy
+         0k/xd7goX2ikO6aT/cLj8zu9FSeCQPCfJvV5SdBediqsHfjcY25YlDXXHo4lGQWkW3cj
+         jGl2aC2gcDui15a+sJXjAT6MYJS0+z39+ks0bb/51qpn7dfXTA8TvlYxeXCUrVrVf0nf
+         iZrw==
+X-Gm-Message-State: AOAM532s/j40o6wJR2JTR2/rKJCqdkbJujHBrBpHpztN+b8h/PlTBsCD
+	B3h2LhDqH8hKVx7p/36/MH3WAHtkNXZh/w==
+X-Google-Smtp-Source: ABdhPJz2H2g6yNbkfhD5mzpV22/f/u87YWRsqEm0E7NADnkpiStT6eESWbk0W9aroJe3VRzhQe+Z1A==
+X-Received: by 2002:a05:600c:21d3:: with SMTP id x19mr7648491wmj.170.1603884593983;
+        Wed, 28 Oct 2020 04:29:53 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from hex.int.rpsys.net (d.0.2.3.2.a.1.a.7.6.b.c.7.6.8.1.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:1867:cb67:a1a2:320d])
+        by smtp.gmail.com with ESMTPSA id q2sm6402685wrw.40.2020.10.28.04.29.53
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Oct 2020 04:29:53 -0700 (PDT)
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 7/7] ref-manual: add migration section for 3.2
-Date: Tue, 27 Oct 2020 18:18:35 -0700
-Message-Id: <18956e99fafa0d898c37a785e44015af2eb532d8.1603839557.git.paul.eggleton@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <cover.1603839557.git.paul.eggleton@linux.microsoft.com>
-References: <cover.1603839557.git.paul.eggleton@linux.microsoft.com>
+Subject: [PATCH] ref-manual/ref: Add entry for why binaries are changed in images
+Date: Wed, 28 Oct 2020 11:29:52 +0000
+Message-Id: <20201028112952.172577-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-From: Paul Eggleton <paul.eggleton@microsoft.com>
-
-This covers most of the changes that would require action on the part of
-the user that I was able to see by scouring the commits. Some of the text
-was borrowed from commit messages and edited.
-
-Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 ---
- documentation/ref-manual/migration-3.2.rst | 261 +++++++++++++++++++++++++++++
- documentation/ref-manual/migration.rst     |   1 +
- 2 files changed, 262 insertions(+)
- create mode 100644 documentation/ref-manual/migration-3.2.rst
+ documentation/ref-manual/faq.rst | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/documentation/ref-manual/migration-3.2.rst b/documentation/ref-manual/migration-3.2.rst
-new file mode 100644
-index 0000000..a56c5d4
---- /dev/null
-+++ b/documentation/ref-manual/migration-3.2.rst
-@@ -0,0 +1,261 @@
-+Moving to the Yocto Project 3.2 Release
-+=======================================
-+
-+This section provides migration information for moving to the Yocto
-+Project 3.2 Release from the prior release.
-+
-+.. _migration-3.2-minimum-system-requirements:
-+
-+Minimum system requirements
-+---------------------------
-+
-+``gcc`` version 6.0 is now required at minimum on the build host. For older
-+host distributions where this is not available, you can use the
-+``buildtools-extended-tarball`` (easily installable using
-+``scripts/install-buildtools``).
-+
-+
-+.. _migration-3.2-removed-recipes:
-+
-+Removed recipes
-+---------------
-+
-+The following recipes have been removed:
-+
-+- ``bjam-native``: replaced by ``boost-build-native``
-+- ``avahi-ui``: folded into the main ``avahi`` recipe - the GTK UI can be disabled using :term:`PACKAGECONFIG` for ``avahi``.
-+- ``build-compare``: no longer needed with the removal of the ``packagefeed-stability`` class
-+- ``dhcp``: obsolete, functionally replaced by ``dhcpcd`` and ``kea``
-+- ``libmodulemd-v1``: replaced by ``libmodulemd``
-+- ``packagegroup-core-device-devel``: obsolete
-+
-+
-+.. _migration-3.2-removed-classes:
-+
-+Removed classes
-+---------------
-+
-+The following classes (.bbclass files) have been removed:
-+
-+-  ``spdx``: obsolete - the Yocto Project is a strong supporter of SPDX, but this class was old code using a dated approach and had the potential to be misleading. The ``meta-sdpxscanner`` layer is a much more modern and active approach to handling this and is recommended as a replacement.
-+
-+- ``packagefeed-stability``: this class had become obsolete with the advent of hash equivalence and reproducible builds.
-+
-+
-+pseudo path filtering and mismatch behaviour
-+--------------------------------------------
-+
-+pseudo now operates on a filtered subset of files. This is a significant change
-+to the way pseudo operates within OpenEmbedded - by default, pseudo monitors and
-+logs (adds to its database) any file created or modified whilst in a ``fakeroot``
-+environment. However, there are large numbers of files that we simply don't care
-+about the permissions of whilst in that ``fakeroot`` context, for example ${:term:`S`}, ${:term:`B`}, ${:term:`T`},
-+${:term:`SSTATE_DIR`}, the central sstate control directories, and others.
-+
-+As of this release, new functionality in pseudo is enabled to ignore these
-+directory trees (controlled using a new :term:`PSEUDO_IGNORE_PATHS` variable)
-+resulting in a cleaner database with less chance of "stray" mismatches if files
-+are modified outside pseudo context. It also should reduce some overhead from
-+pseudo as the interprocess round trip to the server is avoided.
-+
-+There is a possible complication where some existing recipe may break, for
-+example, a recipe was found to be writing to ``${B}/install`` for
-+``make install`` in ``do_install`` and since ``${B}`` is listed as not to be tracked,
-+there were errors trying to ``chown root`` for files in this location. Another
-+example was the ``tcl`` recipe where the source directory ``S`` is set to a
-+subdirectory of the source tree but files were written out to the directory
-+structure above that subdirectory. For these types of cases in your own recipes,
-+extend ``PSEUDO_IGNORE_PATHS`` to cover additional paths that pseudo should not
-+be monitoring.
-+
-+In addition, pseudo's behaviour on mismatches has now been changed - rather
-+than doing what turns out to be a rather dangerous "fixup" if it sees a file
-+with a different path but the same inode as another file it has previously seen,
-+pseudo will throw an ``abort()`` and direct you to a `wiki page <https://wiki.yoctoproject.org/wiki/Pseudo_Abort>`
-+that explains how to deal with this.
-+
-+
-+.. _migration-3.2-packagegroup-core-device-devel:
-+
-+packagegroup-core-device-devel no longer included in images built for qemu* machines
-+------------------------------------------------------------------------------------
-+
-+``packagegroup-core-device-devel`` was previously added automatically to
-+images build for ``qemu*`` machines, however the purpose of the group and what
-+it should contain is no longer clear, and in general, adding userspace
-+development items to images is best done at the image/class level; thus this
-+packagegroup was removed.
-+
-+This packagegroup previously pulled in the following:
-+
-+- ``distcc-config``
-+- ``nfs-export-root``
-+- ``bash``
-+- ``binutils-symlinks``
-+
-+If you still need any of these in your image build for a ``qemu*`` machine
-+then you will add them explicitly to :term:`IMAGE_INSTALL` or another
-+appropriate place in the dependency chain for your image (if you have not
-+already done so).
-+
-+
-+.. _migration-3.2-dhcp:
-+
-+DHCP server/client replaced
-+---------------------------
-+
-+The ``dhcp`` software package has become unmaintained and thus has been
-+functionally replaced by ``dhcpcd`` (client) and ``kea`` (server). You will
-+need to replace references to the recipe/package names as appropriate - most
-+commonly, at the package level ``dhcp-client`` should be replaced by
-+``dhcpcd`` and ``dhcp-server`` should be replaced by ``kea``. If you have any
-+custom configuration files for these they will need to be adapted - refer to
-+the upstream documentation for ``dhcpcd`` and ``kea`` for further details.
-+
-+
-+.. _migration-3.2-packaging-changes:
-+
-+Packaging changes
-+-----------------
-+
-+- ``python3``: the ``urllib`` python package has now moved into the core package, as it is used more commonly than just netclient (e.g. email, xml, mimetypes, pydoc). In addition, the ``pathlib`` module is now also part of the core package.
-+
-+- ``iptables``: ``iptables-apply`` and ``ip6tables-apply`` have been split out to their own package to avoid a bash dependency in the main ``iptables`` package
-+
-+
-+.. _migration-3.2-package-qa-checks:
-+
-+Package QA check changes
-+------------------------
-+
-+Previously, the following package QA checks triggered warnings, however they can
-+be indicators of genuine underlying problems and are therefore now treated as
-+errors:
-+
-+- :ref:`already-stripped <qa-check-already-stripped>`
-+- :ref:`compile-host-path <qa-check-compile-host-path>`
-+- :ref:`installed-vs-shipped <qa-check-installed-vs-shipped>`
-+- :ref:`ldflags <qa-check-ldflags>`
-+- :ref:`pn-overrides <qa-check-pn-overrides>`
-+- :ref:`rpaths <qa-check-rpaths>`
-+- :ref:`staticdev <qa-check-staticdev>`
-+- :ref:`unknown-configure-option <qa-check-unknown-configure-option>`
-+- :ref:`useless-rpaths <qa-check-useless-rpaths>`
-+
-+In addition, the following new checks were added and default to triggering an error:
-+
-+- :ref:`shebang-size <qa-check-shebang-size>`: Check for shebang (#!) lines longer than 128 characters, which can give an error at runtime depending on the operating system.
-+
-+- :ref:`unhandled-features-check <qa-check-unhandled-features-check>`: Check if any of the variables supported by the :ref:`features_check <ref-classes-features_check>` class is set while not inheriting the class itself.
-+
-+- :ref:`missing-update-alternatives <qa-check-missing-update-alternatives>`: Check if the recipe sets the :term:`ALTERNATIVE` variable for any of its packages, and does not inherit the :ref:`update-alternatives <ref-classes-update-alternatives>` class.
-+
-+- A trailing slash or duplicated slashes in the value of :term:`S` or :term:`B` will now trigger a warning so that they can be removed and path comparisons can be more reliable - remove any instances of these in your recipes if the warning is displayed.
-+
-+
-+.. _migration-3.2-src-uri-file-globbing:
-+
-+Globbing no longer supported in ``file://`` entries in ``SRC_URI``
-+------------------------------------------------------------------
-+
-+Globbing (``*`` and ``?`` wildcards) in ``file://`` URLs within :term:`SRC_URI`
-+did not properly support file checksums, thus changes to the source files
-+would not always change the do_fetch task checksum, and consequently would
-+not ensure that the changed files would be incorporated in subsequent builds.
-+
-+Unfortunately it is not practical to make globbing work generically here, so
-+the decision was taken to remove support for globs in ``file://`` URLs.
-+If you have any usage of these in your recipes, then you will now need to
-+either add each of the files that you expect to match explicitly, or
-+alternatively if you still need files to be pulled in dynamically, put the
-+files into a subdirectory and reference that instead.
-+
-+
-+.. _migration-3.2-deploydir-clean:
-+
-+deploy class now cleans ``DEPLOYDIR`` before ``do_deploy``
-+----------------------------------------------------------
-+
-+``do_deploy`` as implemented in the :ref:`deploy <ref-classes-deploy>` class now cleans up ${:term:`DEPLOYDIR`} before running, just as ``do_install`` cleans up ${:term:`D`} before running. This reduces the risk of DEPLOYDIR being accidentally contaminated by files from previous runs, possibly even with different config, in case of incremental builds.
-+
-+Most recipes and classes that inherit the ``deploy`` class or interact with ``do_deploy`` are unlikely to be affected by this unless they add ``prefuncs`` to ``do_deploy`` *which also* put files into ``${DEPLOYDIR}`` - these should be refactored to use ``do_deploy_prepend`` instead.
-+
-+
-+.. _migration-3.2-nativesdk-sdk-provides-dummy:
-+
-+Custom SDK / SDK-style recipes need to include ``nativesdk-sdk-provides-dummy``
-+-------------------------------------------------------------------------------
-+
-+All ``nativesdk`` packages require ``/bin/sh`` due to their postinstall scriptlets, thus this package has to be dummy-provided within the SDK and ``nativesdk-sdk-provides-dummy`` now does this. If you have a custom SDK recipe (or your own SDK-style recipe similar to e.g. ``buildtools-tarball``), you will need to ensure ``nativesdk-sdk-provides-dummy`` or an equivalent is included in :term:`TOOLCHAIN_HOST_TASK`.
-+
-+
-+``ld.so.conf`` now moved back to main ``glibc`` package
-+-------------------------------------------------------
-+
-+There are cases where one doesn't want ldconfig on target (e.g. for
-+read-only root filesystems, it's rather pointless), yet one still
-+needs ``/etc/ld.so.conf`` to be present at image build time:
-+
-+When some recipe installs libraries to a non-standard location, and
-+therefore installs in a file in ``/etc/ld.so.conf.d/foo.conf``, we
-+need ``/etc/ld.so.conf`` containing: ::
-+
-+  include /etc/ld.so.conf.d/*.conf
-+
-+in order to get those other locations picked up.
-+
-+Thus ``/etc/ld.so.conf`` is now in the main ``glibc`` package so that
-+there's always an ``ld.so.conf`` present when the build-time ``ldconfig``
-+runs towards the end of image construction.
-+
-+The ``ld.so.conf`` and ``ld.so.conf.d/*.conf`` files do not take up
-+significant space (at least not compared to the ~700kB ``ldconfig`` binary), and they
-+might be needed in case ``ldconfig`` is installable, so they are left
-+in place after the image is built. Technically it would be possible to
-+remove them if desired, though it would not be trivial if you still
-+wanted the build-time ldconfig to function (:term:`ROOTFS_POSTPROCESS_COMMAND`
-+will not work as ``ldconfig`` is run after the functions referred to
-+by that variable).
-+
-+
-+.. _migration-3.2-virgl:
-+
-+Host DRI drivers now used for GL support within ``runqemu``
-+-----------------------------------------------------------
-+
-+``runqemu`` now uses the mesa-native libraries everywhere virgl is used
-+(i.e. when ``gl``, ``gl-es`` or ``egl-headless`` options are specified),
-+but instructs them to load DRI drivers from the host. Unfortunately this
-+may not work well with proprietary graphics drivers such as those from
-+Nvidia; if you are using such drivers then you may need to switch to an
-+alternative (such as Nouveau in the case of Nvidia hardware) or avoid
-+using the GL options.
-+
-+
-+.. _migration-3.2-initramfs-suffix:
-+
-+initramfs images now use a blank suffix
-+---------------------------------------
-+
-+The reference initramfs images (``core-image-minimal-initramfs``,
-+``core-image-tiny-initramfs`` and ``core-image-testmaster-initramfs``) now
-+set an empty string for :term:`IMAGE_NAME_SUFFIX`, which otherwise defaults
-+to ``".rootfs"``. These images aren't root filesystems and thus the rootfs
-+label didn't make sense. If you are looking for the output files generated
-+by these image recipes directly then you will need to adapt to the new
-+naming without the ``.rootfs`` part.
-+
-+
-+.. _migration-3.2-misc:
-+
-+Miscellaneous changes
-+---------------------
-+
-+- Support for the long-deprecated ``PACKAGE_GROUP`` variable has now been removed - replace any remaining instances with :term:`FEATURE_PACKAGES`.
-+- The ``FILESPATHPKG`` variable, having been previously deprecated, has now been removed. Replace any remaining references with appropriate use of :term:`FILESEXTRAPATHS`.
-+- Erroneous use of ``inherit +=`` (instead of ``INHERIT +=``) in a configuration file now triggers an error instead of silently being ignored.
-+- ptest support has been removed from the ``kbd`` recipe, as upstream has moved to autotest which is difficult to work with in a cross-compilation environment.
-+- ``oe.utils.is_machine_specific()`` and ``oe.utils.machine_paths()`` have been removed as their utility was questionable. In the unlikely event that you have references to these in your own code, then the code will need to be reworked.
-+- The ``i2ctransfer`` module is now disabled by default when building ``busybox`` in order to be consistent with disabling the other i2c tools there. If you do wish the i2ctransfer module to be built in busybox then add ``CONFIG_I2CTRANSFER=y`` to your custom busybox configuration.
-+- In the ``Upstream-Status`` header convention for patches, ``Accepted`` has been replaced with ``Backport`` as these almost always mean the same thing i.e. the patch is already upstream and may need to be removed in a future recipe upgrade. If you are adding these headers to your own patches then use ``Backport`` to indicate that the patch has been sent upstream.
-+- The ``tune-supersparc.inc`` tune file has been removed as it does not appear to be widely used and no longer works.
-diff --git a/documentation/ref-manual/migration.rst b/documentation/ref-manual/migration.rst
-index 20288b0..8d64a7d 100644
---- a/documentation/ref-manual/migration.rst
-+++ b/documentation/ref-manual/migration.rst
-@@ -27,4 +27,5 @@ notes for a given release.
-    migration-2.7
-    migration-3.0
-    migration-3.1
-+   migration-3.2
- 
+diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
+index 7a1614028..b79ba0306 100644
+--- a/documentation/ref-manual/faq.rst
++++ b/documentation/ref-manual/faq.rst
+@@ -451,3 +451,14 @@ variant. For another example, permissions errors might be caused by a
+ Makefile that ignores ``DESTDIR`` or uses a different name for that
+ environment variable. Check the the build system to see if these kinds
+ of issues exist.
++
++**Q:** I'm adding a binary in a recipe but its different in the image, what is
++changing it?
++
++**A:** The first most obvious change is the system stripping debug symbols from
++it. Setting ``INHIBIT_PACKAGE_STRIP`` to stop debug symbols being stripped and/or
++``INHIBIT_PACKAGE_DEBUG_SPLIT`` to stop debug symbols being split into a separate
++file will ensure the binary is unchanged. The other less obvious thing that can
++happen is prelinking of the image. This is set by default in local.conf via
++``USER_CLASSES`` which can contain 'image-prelink'. If you remove that, the
++image will not be prelinked meaning the binaries would be unchanged.
 -- 
-1.8.3.1
+2.25.1
 
