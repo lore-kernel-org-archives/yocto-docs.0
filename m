@@ -1,82 +1,103 @@
-Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
- by mx.groups.io with SMTP id smtpd.web11.9337.1603893986000558191
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web10.4799.1603923522937361062
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Oct 2020 07:06:26 -0700
+ Wed, 28 Oct 2020 15:18:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=H+JK75px;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.66, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f66.google.com with SMTP id 13so4685199wmf.0
-        for <docs@lists.yoctoproject.org>; Wed, 28 Oct 2020 07:06:25 -0700 (PDT)
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=kAWgo2cC;
+ spf=pass (domain: axis.com, ip: 195.60.68.17, mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=i2ZfA+2jWmrpGP9LK6I5jVl9R+tlGBFx9BWY5tmuhJM=;
-        b=H+JK75pxYvWmXwbbFF+iFN7BaY4gQmAme1nk8uGV3nE8X7pgfE2NcN2iEqbwOM3Voh
-         O/ZuV/NeYVd3EcH/CDIczWdmzFIF2d98a4piTeh8fY+rgPlSClkt4mfmyN2/F8IhJGuJ
-         qcs8Fb8iMG1JRtou/NcCtSc8ESmk22kRipYC4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=i2ZfA+2jWmrpGP9LK6I5jVl9R+tlGBFx9BWY5tmuhJM=;
-        b=iPO1V4c67Dxd6Nrsm0vVKtEwLdcMuTjM6vFopXfiPQaoNMRpffrnlk2YLVANWwwvlt
-         JJkDvXpLZGMJtjBZQp7YxdfELrz7TeEarl2iOuKAsxagiwuRVr2s69ckxoDwYewcWSfv
-         ykJuXZ3WjfSuPwKVnXSqnQS3/seeDUtbdDkiYZPYdfABxR8FZFsaVwXYksPnXUDnRwuF
-         1E8iE+etNH4D1q9h8Mbh0n6lkY+W2f+Dd8Ga3ybsF/XwnzY98Nu5p7XnE2sI6Hf3MdXr
-         MhWwdTCA49MNf9ugHD7fUj5uv0/Pa9CVY6tWAW3AVzM2eXvkooV9XIZ/fNyOdxG9EsHf
-         5ipg==
-X-Gm-Message-State: AOAM531+NaEcN94998p7OZBFiwcV7qqtoW7IEltbXn0FkGaC+bc47RWT
-	JiGjvMFtGkL5AlXcvBfEtZ+wfw==
-X-Google-Smtp-Source: ABdhPJwYYpn9ERTeYIMzIDWnFza9YrjkEP1M+2nWhoSfq2GI1ucCBlZY0XvCfms8xLYCsY9SVH2KVg==
-X-Received: by 2002:a1c:cc07:: with SMTP id h7mr8857050wmb.55.1603893984376;
-        Wed, 28 Oct 2020 07:06:24 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from d.0.2.3.2.a.1.a.7.6.b.c.7.6.8.1.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (d.0.2.3.2.a.1.a.7.6.b.c.7.6.8.1.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:1867:cb67:a1a2:320d])
-        by smtp.gmail.com with ESMTPSA id 30sm7353565wrr.35.2020.10.28.07.06.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Oct 2020 07:06:23 -0700 (PDT)
-Message-ID: <d10da2f6470fdd3bd37a9fa0203fafbfc4c7340c.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 7/7] ref-manual: add migration section for 3.2
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org, Paul
- Eggleton <paul.eggleton@linux.microsoft.com>
-Date: Wed, 28 Oct 2020 14:06:23 +0000
-In-Reply-To: <7E52934A-D7A4-42D7-8AE8-ED1E6EB60DA6@0leil.net>
+  d=axis.com; l=1798; q=dns/txt; s=axis-central1;
+  t=1603923523; x=1635459523;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=nkd5IqAQGDy4DNPqmm+x1DJL7yPiNVxJqa4aNBsYWgk=;
+  b=kAWgo2cCIbydRNEIuG+/Skpy9hF6JWjOYGfmH9V8PiUxRZWruFMbgsnW
+   ePqvJNTSF+L9GmqXTsz3bEKq0gjyLTRa89aCKotJurH6yTZ0j+ytJfKdt
+   kly+esZdJuItdQLzTUPMddrASMt38ot6jCvBAvpDV0VCKPyBLq4/NZGZp
+   tJR6EijBiASPQePUVtVR+imtTvT1lQlIKlaSEV4vamK/h8vtlKyHnjyvT
+   5/LP3uk/+c9PUOuhaJ5f95NbWg5bx4Jphc4AVE+BpkAZe47BXoS2qJvwR
+   Yctpm8wz1sW7yONF8jdZNTi9G7j7ogVszF/stZsoMc5PP1FEAsW5C1XeJ
+   w==;
+IronPort-SDR: C8KBijb6PZFv/jNBpBG4bGbfw74lw5y5Jjo+x94QwM634y845q7G/fKjGyFbRP3+k7AtPtuksh
+ pCzdevvVBJe4YYA3MpplrBgBnZ49TZUtGyf5mYoxUFse1+xVY2SpxzY4+1ILjUggpoMHOtgBRt
+ 24qhaF4ATyn0rtK/6eMvAnGPIKa91ONv5veN7+EVNqIhR1XsnFJZTrWQug3UeiY/fvsXSgM7IQ
+ j7IriXOOhasG899jsSAVThpM5Vtkr8Sd0C1jzi8fnOao2B7sFYtHtVtT98wt0CK1S8IEF85EDc
+ VkU=
+X-IronPort-AV: E=Sophos;i="5.77,428,1596492000"; 
+   d="scan'208";a="14531236"
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: Paul Eggleton <paul.eggleton@linux.microsoft.com>,
+	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH 4/7] ref-manual: add PSEUDO_IGNORE_PATHS
+Thread-Topic: [docs] [PATCH 4/7] ref-manual: add PSEUDO_IGNORE_PATHS
+Thread-Index: AQHWrMhHeI2+pRlYpUCjgyi5PwTZEamtlPkw
+Date: Wed, 28 Oct 2020 22:18:36 +0000
+Message-ID: <ca8c02ed3f724e49bb6dfb5481f5ebb0@XBOX03.axis.com>
 References: <cover.1603839557.git.paul.eggleton@linux.microsoft.com>
-	 <18956e99fafa0d898c37a785e44015af2eb532d8.1603839557.git.paul.eggleton@linux.microsoft.com>
-	 <7E52934A-D7A4-42D7-8AE8-ED1E6EB60DA6@0leil.net>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+ <c9245b18556164df9e94c07084918116182cbfb3.1603839557.git.paul.eggleton@linux.microsoft.com>
+In-Reply-To: <c9245b18556164df9e94c07084918116182cbfb3.1603839557.git.paul.eggleton@linux.microsoft.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-exchange-transport-fromentityheader: Hosted
+x-originating-ip: [10.20.13.13]
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 
-Hi All,
+> -----Original Message-----
+> From: docs@lists.yoctoproject.org <docs@lists.yoctoproject.org> On Behalf
+> Of Paul Eggleton
+> Sent: den 28 oktober 2020 02:19
+> To: docs@lists.yoctoproject.org
+> Subject: [docs] [PATCH 4/7] ref-manual: add PSEUDO_IGNORE_PATHS
+>=20
+> From: Paul Eggleton <paul.eggleton@microsoft.com>
+>=20
+> Add a brief variable glossary entry for the new PSEUDO_IGNORE_PATHS
+> variable.
+>=20
+> Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+> ---
+>  documentation/ref-manual/ref-variables.rst | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/documentation/ref-manual/ref-variables.rst
+> b/documentation/ref-manual/ref-variables.rst
+> index a7315cf..176c94a 100644
+> --- a/documentation/ref-manual/ref-variables.rst
+> +++ b/documentation/ref-manual/ref-variables.rst
+> @@ -5932,6 +5932,14 @@ system and gives an overview of their function and=
+ contents.
+>        service <dev-manual/dev-manual-common-tasks:working with a pr serv=
+ice>`. You can
+>        set ``PRSERV_HOST`` to other values to use a remote PR service.
+>=20
+> +
+> +   :term:`PSEUDO_IGNORE_PATHS`
+> +      A comma-separated (without spaces) list of files that should be ig=
+nored
 
-On Wed, 2020-10-28 at 14:12 +0100, Quentin Schulz wrote:
-> Hi Paul,
-> 
-> On October 28, 2020 2:18:35 AM GMT+01:00, Paul Eggleton <
-> paul.eggleton@linux.microsoft.com> wrote:
-> > +In addition, pseudo's behaviour on mismatches has now been changed
-> > -
-> > rather
-> > +than doing what turns out to be a rather dangerous "fixup" if it
-> > sees
-> > a file
-> > +with a different path but the same inode as another file it has
-> > previously seen,
-> > +pseudo will throw an ``abort()`` and direct you to a `wiki page
-> > <https://wiki.yoctoproject.org/wiki/Pseudo_Abort>`
-> 
-> :yocto_wiki:`wiki page </wiki/Pseudo_Abort>`
+Based on the default definition of PSEUDO_IGNORE_PATHS in bitbake.conf, say=
+ing=20
+"files" here seems misleading. It seems to support files, directories and e=
+ven=20
+prefixes, e.g., "${WORKDIR}/deploy-".
 
-Thanks for the review! Since time is short and I suspect Paul will be
-fine with the tweaks, I've squashed the tweaks into the patches in
-master-next. I've not make the qa-check changes, those may be easiest
-in a follow up patch if someone wants to send one?
+> +      by pseudo when monitoring and recording file operations, in order =
+to avoid
+> +      problems with files being written to outside of the pseudo context=
+ and
+> +      reduce pseudo's overhead.
+> +
+> +
+>     :term:`PTEST_ENABLED`
+>        Specifies whether or not :ref:`Package
+>        Test <dev-manual/dev-manual-common-tasks:testing packages with pte=
+st>` (ptest)
+> --
+> 1.8.3.1
 
-Cheers,
-
-Richard
+//Peter
 
