@@ -1,103 +1,72 @@
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
- by mx.groups.io with SMTP id smtpd.web10.4799.1603923522937361062
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web10.5596.1603959215600785685
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Oct 2020 15:18:43 -0700
+ Thu, 29 Oct 2020 01:13:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@axis.com header.s=axis-central1 header.b=kAWgo2cC;
- spf=pass (domain: axis.com, ip: 195.60.68.17, mailfrom: peter.kjellerstedt@axis.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; l=1798; q=dns/txt; s=axis-central1;
-  t=1603923523; x=1635459523;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=nkd5IqAQGDy4DNPqmm+x1DJL7yPiNVxJqa4aNBsYWgk=;
-  b=kAWgo2cCIbydRNEIuG+/Skpy9hF6JWjOYGfmH9V8PiUxRZWruFMbgsnW
-   ePqvJNTSF+L9GmqXTsz3bEKq0gjyLTRa89aCKotJurH6yTZ0j+ytJfKdt
-   kly+esZdJuItdQLzTUPMddrASMt38ot6jCvBAvpDV0VCKPyBLq4/NZGZp
-   tJR6EijBiASPQePUVtVR+imtTvT1lQlIKlaSEV4vamK/h8vtlKyHnjyvT
-   5/LP3uk/+c9PUOuhaJ5f95NbWg5bx4Jphc4AVE+BpkAZe47BXoS2qJvwR
-   Yctpm8wz1sW7yONF8jdZNTi9G7j7ogVszF/stZsoMc5PP1FEAsW5C1XeJ
-   w==;
-IronPort-SDR: C8KBijb6PZFv/jNBpBG4bGbfw74lw5y5Jjo+x94QwM634y845q7G/fKjGyFbRP3+k7AtPtuksh
- pCzdevvVBJe4YYA3MpplrBgBnZ49TZUtGyf5mYoxUFse1+xVY2SpxzY4+1ILjUggpoMHOtgBRt
- 24qhaF4ATyn0rtK/6eMvAnGPIKa91ONv5veN7+EVNqIhR1XsnFJZTrWQug3UeiY/fvsXSgM7IQ
- j7IriXOOhasG899jsSAVThpM5Vtkr8Sd0C1jzi8fnOao2B7sFYtHtVtT98wt0CK1S8IEF85EDc
- VkU=
-X-IronPort-AV: E=Sophos;i="5.77,428,1596492000"; 
-   d="scan'208";a="14531236"
-From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
-To: Paul Eggleton <paul.eggleton@linux.microsoft.com>,
-	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH 4/7] ref-manual: add PSEUDO_IGNORE_PATHS
-Thread-Topic: [docs] [PATCH 4/7] ref-manual: add PSEUDO_IGNORE_PATHS
-Thread-Index: AQHWrMhHeI2+pRlYpUCjgyi5PwTZEamtlPkw
-Date: Wed, 28 Oct 2020 22:18:36 +0000
-Message-ID: <ca8c02ed3f724e49bb6dfb5481f5ebb0@XBOX03.axis.com>
-References: <cover.1603839557.git.paul.eggleton@linux.microsoft.com>
- <c9245b18556164df9e94c07084918116182cbfb3.1603839557.git.paul.eggleton@linux.microsoft.com>
-In-Reply-To: <c9245b18556164df9e94c07084918116182cbfb3.1603839557.git.paul.eggleton@linux.microsoft.com>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.20.13.13]
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:60148 helo=localhost.localdomain)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1kY33t-00GpRe-Ux
+	for docs@lists.yoctoproject.org; Thu, 29 Oct 2020 04:13:34 -0400
+Date: Thu, 29 Oct 2020 04:13:31 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: adding more glossary links in the glossary
+Message-ID: <df8f2d4e-30c5-d267-dbae-a67aaf4bcc6@crashcourse.ca>
 MIME-Version: 1.0
-Content-Language: en-US
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: multipart/mixed; boundary="8323328-932371477-1603959213=:5803"
 
-> -----Original Message-----
-> From: docs@lists.yoctoproject.org <docs@lists.yoctoproject.org> On Behalf
-> Of Paul Eggleton
-> Sent: den 28 oktober 2020 02:19
-> To: docs@lists.yoctoproject.org
-> Subject: [docs] [PATCH 4/7] ref-manual: add PSEUDO_IGNORE_PATHS
->=20
-> From: Paul Eggleton <paul.eggleton@microsoft.com>
->=20
-> Add a brief variable glossary entry for the new PSEUDO_IGNORE_PATHS
-> variable.
->=20
-> Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
-> ---
->  documentation/ref-manual/ref-variables.rst | 8 ++++++++
->  1 file changed, 8 insertions(+)
->=20
-> diff --git a/documentation/ref-manual/ref-variables.rst
-> b/documentation/ref-manual/ref-variables.rst
-> index a7315cf..176c94a 100644
-> --- a/documentation/ref-manual/ref-variables.rst
-> +++ b/documentation/ref-manual/ref-variables.rst
-> @@ -5932,6 +5932,14 @@ system and gives an overview of their function and=
- contents.
->        service <dev-manual/dev-manual-common-tasks:working with a pr serv=
-ice>`. You can
->        set ``PRSERV_HOST`` to other values to use a remote PR service.
->=20
-> +
-> +   :term:`PSEUDO_IGNORE_PATHS`
-> +      A comma-separated (without spaces) list of files that should be ig=
-nored
+--8323328-932371477-1603959213=:5803
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
-Based on the default definition of PSEUDO_IGNORE_PATHS in bitbake.conf, say=
-ing=20
-"files" here seems misleading. It seems to support files, directories and e=
-ven=20
-prefixes, e.g., "${WORKDIR}/deploy-".
 
-> +      by pseudo when monitoring and recording file operations, in order =
-to avoid
-> +      problems with files being written to outside of the pseudo context=
- and
-> +      reduce pseudo's overhead.
-> +
-> +
->     :term:`PTEST_ENABLED`
->        Specifies whether or not :ref:`Package
->        Test <dev-manual/dev-manual-common-tasks:testing packages with pte=
-st>` (ptest)
-> --
-> 1.8.3.1
+  finally have time to jump back into docs now that everyone else has
+done all the heavy lifting ... currently perusing glossary and noticed
+the following right near the top. in glossary entry for AUTOREV, there
+is the sentence:
 
-//Peter
+"If you use the previous statement to retrieve the latest version of
+software, you need to be sure PV contains ${SRCPV}."
 
+  that last bit, the "${SRCPV}" part, is set up as a glossary link via
+the .rst content:
+
+  `${``\ :term:`SRCPV`\ ``}``
+
+to get both a glossary link and the appropriate rendering. if that's
+the way to do it, then it seems there's more in the glossary that
+should be so rendered, as in just above that in AUTO_LIBNAME_PKGS, one
+reads:
+
+  "The default value is “${PACKAGES}”, ..."
+
+which has the underlying .rst content as, well, exactly that so there
+is no glossary link.
+
+  is it safe to assume that, over time, things like that should
+eventually be linkified, as in:
+
+  `${``\ :term:`PACKAGES`\ ``}``
+
+is there any reason you *wouldn't* want to use a glossary link if one
+exists?
+
+rday
+
+
+
+--8323328-932371477-1603959213=:5803--
