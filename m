@@ -1,20 +1,22 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web09.3811.1604005303658064316
+ by mx.groups.io with SMTP id smtpd.web11.3825.1604005322371167818
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Oct 2020 14:01:43 -0700
+ Thu, 29 Oct 2020 14:02:02 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:40348 helo=localhost.localdomain)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:40350 helo=localhost.localdomain)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1kYF3G-001sQ0-8e
-	for docs@lists.yoctoproject.org; Thu, 29 Oct 2020 17:01:42 -0400
-Date: Thu, 29 Oct 2020 17:01:38 -0400 (EDT)
+	id 1kYF3Y-001sV9-Ph; Thu, 29 Oct 2020 17:02:01 -0400
+Date: Thu, 29 Oct 2020 17:02:00 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: pedantic observations about README file
-Message-ID: <625da363-37ee-2325-ee68-a860a8f8a857@crashcourse.ca>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] is there a rationale for the numerous "^::$" lines:
+In-Reply-To: <CAP71Wjz3o1imo-WRWt-bX=3SJrqNO73Fyh03P6QefHuQxMBnDQ@mail.gmail.com>
+Message-ID: <bf1c9aa4-a816-6325-79c0-c8dcf7b7ff1d@crashcourse.ca>
+References: <415b35f9-a6-b311-3522-20e76cf6593c@crashcourse.ca> <CAP71Wjxe2w+=vh4L3E5MV03DyLPzt9C+9y17T4U+1ezKY8YL0A@mail.gmail.com> <f8af4db-88ce-a093-595-2bb821c1a9cc@crashcourse.ca> <CAP71Wjz3o1imo-WRWt-bX=3SJrqNO73Fyh03P6QefHuQxMBnDQ@mail.gmail.com>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -29,13 +31,39 @@ X-Source-Args:
 X-Source-Dir: 
 Content-Type: text/plain; charset=US-ASCII
 
+On Thu, 29 Oct 2020, Nicolas Dechesne wrote:
 
-1) refers to folder "yocto-project-qs" when it is, in fact,
-"brief-yoctoprojectqs"; has that update been queued?
+> On Thu, Oct 29, 2020 at 9:53 PM Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+> >
+> > On Thu, 29 Oct 2020, Nicolas Dechesne wrote:
+> >
+> > > On Thu, Oct 29, 2020 at 8:58 PM Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+> > > >
+> > > >
+> > >
+> > > you are correct, they are equivalent. we've been rushing with these
+> > > changes, and it's lack of consistency
+> > >
+> > > >   just noticed the myriad of .rst content of the form:
+> > > >
+> > > >   ... blah blah woof woof:
+> > > >   ::
+> > > >
+> > > >      code snippet
+> > > >
+> > > > if memory serves, that would be equivalent to the simpler:
+> > > >
+> > > >   ... blah blah woof woof::
+> > >
+> > > I tend to prefer this form, and I tried to use this one for the files
+> > > I edited.. We should agree on which one to use, and fix
+> > > inconsistencies.
+> >
+> >   if no one objects, i can probably whip up a perl script this weekend
+> > and transmogrify all of this to the shorter form for consistency.
+>
+> what if I object to doing that with perl ;)
 
-2) no mention of folder "adt-manual" which, of course, has long been
-superseded by SDK docs ... is the adt-manual directory being kept
-around for some reason? (references to that manual also in conf.py and
-poky.yaml.)
+COBOL it is then.
 
 rday
