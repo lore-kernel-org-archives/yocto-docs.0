@@ -1,89 +1,101 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
- by mx.groups.io with SMTP id smtpd.web12.16010.1604073798642858574
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+ by mx.groups.io with SMTP id smtpd.web09.16333.1604074646945358930
  for <docs@lists.yoctoproject.org>;
- Fri, 30 Oct 2020 09:03:18 -0700
+ Fri, 30 Oct 2020 09:17:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=HhU5TDk0;
- spf=pass (domain: linaro.org, ip: 209.85.219.169, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f169.google.com with SMTP id m188so5539761ybf.2
-        for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2020 09:03:18 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=GR5j6CvB;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.41, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f41.google.com with SMTP id i16so1676991wrv.1
+        for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2020 09:17:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ZvmVQJYwAhXdJm8uuUwVkhk2H5hivD17xFzRKOdzcec=;
-        b=HhU5TDk0qygZs7pWYgtkXy1lCLZI6DR4Zwx1z/7hoGV9ybcUMFrJWcPcLCjddfgq+X
-         kl733rPINz6mAGnYKfEkiCaA0hJ21fspYAXPd+wxxBi7TU4ZxFbK8Y47WN/B+FlybPgI
-         ZqoUfNfQJRXMmlMAGnAgTYbLqQZVPnMcf3XqraaGLG011jaVCRpxllRt/ugju2v3lf8a
-         6qBhqvxw4QGhV87wf5EuCxEz+iOewgpKq5zM4a4Qdf2tpdfvuRpKMX8D/QMp7aCYoMJ5
-         OCS+NcAf7jxafs6Y4ZzD0Mtm7KXkhzmzifSRcOx20IO1dtO0l0+ESf7lreA0SAlSvKOv
-         0KkQ==
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=PPMvnl041I6fNzx0oAyIseeEFJCyuQB1he0tFZI/5tE=;
+        b=GR5j6CvBR/1aEzJKGY2ziIMr1rAm1tmuZAVLvAeK5xELYwXb3XmuGu6F4bdz9UzLJS
+         bCg2H7RVCmPu5l5rHHdvXQkMWqYFEyIwEN63VhFl0/BoGJ25Zi5BtAd+gtgWZ3sIhJjf
+         +3ieGX7BOIEgDPyavAKhgXt/pe/IZt+C+lCg4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZvmVQJYwAhXdJm8uuUwVkhk2H5hivD17xFzRKOdzcec=;
-        b=jL991/f5KlcxaWYpFGOXXbwAletPIHeEgWbTKr0mupqoTdHg18pwHaZX8cvEDK4VRn
-         6XRNljeYlAvN31AweEok7AJtz+m1W9nd0qe53QIlLsOu0xA8wRe7301t5ki+7lO65pkp
-         OliNf2hq4KH30qZWz4EUb7uTqj87DA3ZA5unKXq4TE1LLL1fZwi5VX6LcoCwrULD5LTa
-         iHFfJVD0jaDW9USWhG8v2jLYD9YRD9garLa2Vr+Lv68vHRCuxrUQdg2f9AIc9u7cAX7x
-         JJzc7xvIaOGRq2X4yYxLwqjpw1t2f9NaP2iVbxH6xoA1P6qCTk9ScS7iFWxJ16/fIpm2
-         6Ueg==
-X-Gm-Message-State: AOAM531AszvJJo4dMzDJjfOYaEbzpwUUf9dAW33lTj155tnA9sDzCkFU
-	G9+Fj+7wIPCdxLNj5PS739sEgrPmYayUZMzxZCMXkRr/kFIaXw==
-X-Google-Smtp-Source: ABdhPJz+XctxFBcIcDnmwYFWnyCNqkWtTQhoVPJranQzIjZyW1frKiNfV1oLxTYd7+b5rueBCGDQkewBNUTlR6MSUFM=
-X-Received: by 2002:a25:8407:: with SMTP id u7mr4642576ybk.397.1604073797685;
- Fri, 30 Oct 2020 09:03:17 -0700 (PDT)
-MIME-Version: 1.0
-References: <d39d9b0-512a-d035-cd5-f6313bf41d@crashcourse.ca>
-In-Reply-To: <d39d9b0-512a-d035-cd5-f6313bf41d@crashcourse.ca>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Fri, 30 Oct 2020 17:03:06 +0100
-Message-ID: <CAP71Wjy0uvFbN4+yQHOteCVef0Jb9d98U_1jM05D2pc9Bx-iDQ@mail.gmail.com>
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=PPMvnl041I6fNzx0oAyIseeEFJCyuQB1he0tFZI/5tE=;
+        b=oa26qK67R2hVK0MGzjbzY2fyAcXeFP0T0nsw4Evcs2imuXC0OPYDUUBFVnoBl0WNnW
+         ilFoKqgZ3aNNjoHQTYBgDeZx2L88Av9dzRbpchvSOCRNqPVGJVn76u28bileS1b2gbeH
+         NuaO6XspmnB11UQJZDZFVJCZoL/TOJmZFTZx1xaai8n6yNGRw2uuuAeWZ2MKib3R1n3u
+         K7R9EJDK4TbQHKo/a1fB8qL1GoV4iH/bEGu72qvB+6TPha5pQU5/D/VDq5mF9mJ9QzfA
+         W6aJ//jrQTcgChOZum0KeOyP+04Z7w0fk7ERLHpbGYz4LEIrzLj4bi1OKnGtp0OsTJFj
+         yjUg==
+X-Gm-Message-State: AOAM530HAICH8FSVhxQVcz/XVD0ixLXplX8AGDZ1SEWMKaGt9ICRcXfE
+	dlZz6/zy/ckejPBlTwDPN13xeQ==
+X-Google-Smtp-Source: ABdhPJwdHUngIOHql7wTbLzhtnVFidgcdlOB4m8qHhKUQZme9aYj6yzKCmVT6G6gb5fUHYd5aWHEGg==
+X-Received: by 2002:a5d:4083:: with SMTP id o3mr3889529wrp.44.1604074645440;
+        Fri, 30 Oct 2020 09:17:25 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from 4.f.b.1.1.e.8.3.0.4.2.f.2.4.4.d.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (4.f.b.1.1.e.8.3.0.4.2.f.2.4.4.d.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:d442:f240:38e1:1bf4])
+        by smtp.gmail.com with ESMTPSA id o7sm11229399wrp.23.2020.10.30.09.17.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Oct 2020 09:17:24 -0700 (PDT)
+Message-ID: <bd954407f7c1237bbc1c1f74328e8cfcfe65a2f7.camel@linuxfoundation.org>
 Subject: Re: [docs] possible marker cleanup: ": ::$" -> "::"
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, "Robert P. J. Day"
+	 <rpjday@crashcourse.ca>
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Date: Fri, 30 Oct 2020 16:17:22 +0000
+In-Reply-To: <CAP71Wjy0uvFbN4+yQHOteCVef0Jb9d98U_1jM05D2pc9Bx-iDQ@mail.gmail.com>
+References: <d39d9b0-512a-d035-cd5-f6313bf41d@crashcourse.ca>
+	 <CAP71Wjy0uvFbN4+yQHOteCVef0Jb9d98U_1jM05D2pc9Bx-iDQ@mail.gmail.com>
+User-Agent: Evolution 3.36.4-0ubuntu1 
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-On Fri, Oct 30, 2020 at 4:07 PM Robert P. J. Day <rpjday@crashcourse.ca> wrote:
->
->
->   in the midst of messing with "::" markers, i just noticed that there
-> is a *ton* of literal code block markers of the form:
->
->   ... blah blah: ::
->
->      code stuff
->
-> this seems clearly overkill as the trailing "::" obviously starts a
-> literal block, while the definition of the marker includes the
-> explanation:
->
->   If it is preceded by whitespace, the marker is removed.
->
-> in short, this appears to be *exactly* equivalent as if you had simply
-> written:
->
->   ... blah blah::
->
->      code stuff
->
-> the apparent effect in the original being to start a literal block
-> while leaving the preceding colon there -- just what ending with "::"
-> provides. does that seem about right? one suspects there is a pile of
-> marker simplification could be done.
-
-You are correct. all instances of ": ::" can be replaced with "::". If
-you make the change, you will notice that the generated HTML is not
-changing.
-So it's a style question. I would prefer the short "::" form, let's
-check with RP and Quentin first as they have been the main
-contributors so far!
-
->
-> rday
->
->
->
+On Fri, 2020-10-30 at 17:03 +0100, Nicolas Dechesne wrote:
+> On Fri, Oct 30, 2020 at 4:07 PM Robert P. J. Day <
+> rpjday@crashcourse.ca> wrote:
+> > 
+> >   in the midst of messing with "::" markers, i just noticed that
+> > there
+> > is a *ton* of literal code block markers of the form:
+> > 
+> >   ... blah blah: ::
+> > 
+> >      code stuff
+> > 
+> > this seems clearly overkill as the trailing "::" obviously starts a
+> > literal block, while the definition of the marker includes the
+> > explanation:
+> > 
+> >   If it is preceded by whitespace, the marker is removed.
+> > 
+> > in short, this appears to be *exactly* equivalent as if you had
+> > simply
+> > written:
+> > 
+> >   ... blah blah::
+> > 
+> >      code stuff
+> > 
+> > the apparent effect in the original being to start a literal block
+> > while leaving the preceding colon there -- just what ending with
+> > "::"
+> > provides. does that seem about right? one suspects there is a pile
+> > of
+> > marker simplification could be done.
 > 
->
+> You are correct. all instances of ": ::" can be replaced with "::".
+> If
+> you make the change, you will notice that the generated HTML is not
+> changing.
+> So it's a style question. I would prefer the short "::" form, let's
+> check with RP and Quentin first as they have been the main
+> contributors so far!
+
+:: is probably neater so I'm fine with that. Its a learning curve for
+us all.
+
+Cheers,
+
+Richard
+
