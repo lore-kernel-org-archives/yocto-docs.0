@@ -1,70 +1,68 @@
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
- by mx.groups.io with SMTP id smtpd.web11.10590.1604046944260082918
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web10.11122.1604049444622829429
  for <docs@lists.yoctoproject.org>;
- Fri, 30 Oct 2020 01:35:44 -0700
+ Fri, 30 Oct 2020 02:17:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=GRkCEOYs;
- spf=pass (domain: linaro.org, ip: 209.85.219.182, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f182.google.com with SMTP id m188so4477793ybf.2
-        for <docs@lists.yoctoproject.org>; Fri, 30 Oct 2020 01:35:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=zb707H/jXciICdG2ojjuB6lfJvoJ/llmliieyVdHuwg=;
-        b=GRkCEOYsu7KMDNxIksLbqhsiO2QA+6LrqBbalPPKCnXvTT07AAwyDcQmz5q0KCWA4f
-         T5m8LQOJYAId6cJ0Kawk5bB7WLpMYBSwPgWa3RcjATZ4hpZ45NWe2W7kDthy2e6zlz8A
-         GG3BiDqmJ5TMnWy4atxaYK0D5vApy0L/p7mTevhJMxDf6ePio89ig81ygwhoJrdn6f43
-         d27nP+XwR29KmJJtCJbG+22YeYvl0Hz3g8FVjjGZ49eYnMJQ4JhFbbPi1jZU1RD3pg1v
-         LdzR0CvTuJuZhK5HRc5ymgcsfpikPnFqz91KZZ/iADDtAFkeXCwFt9Jop8czKz481cqa
-         PYhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=zb707H/jXciICdG2ojjuB6lfJvoJ/llmliieyVdHuwg=;
-        b=T7tbX3Hg1mriDOKBBfe4MH+DXaFHaaxtSJkvKYH1MKLEGjBkxTHkTUz7EM5wRu9HVo
-         G5p8V6J7USyaZ9Z8Ji4ZtfCwM/0yxE7bezQO2o9DgIsAfh3Px+FPtnfPXMokvaN1jf0S
-         /b9MMllXJsFEoFSVzXwWxiZvCo9oMUAYrvRAH6b7OLHuTUmg7KHl4BMYlep1fVmxm1WT
-         uh8m8maDsl+28fTejPeeTZ2k/NsjCcCrAG2pPt3/zadvucJCsbRF5KQ9Nsck4bDc0E+I
-         xjltMC//5dv/iQ0nivHXsS6NaOlIMUgg0p8ocekvLWCwwy2NsD1GD6KBX/19uKWvD2Uf
-         co6A==
-X-Gm-Message-State: AOAM531iBtCjNpoHDkoGFFXvITsTerfgbxsYLPKQItO6npjnLq3o4Xu9
-	DSvWZh3astVH+cj+LlPM/e6qNe2R1xlT3lVyeTuRWQ==
-X-Google-Smtp-Source: ABdhPJycascr58lJjHEX5zKL4PPBaJCANIqvz6gHke67/u9wtRoM2igXi2xJp/YEOxJpQA/bY07GoS2gpe4HkByNIHc=
-X-Received: by 2002:a25:4654:: with SMTP id t81mr2151416yba.475.1604046943352;
- Fri, 30 Oct 2020 01:35:43 -0700 (PDT)
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:57658 helo=localhost.localdomain)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1kYQXC-004GLy-Hg; Fri, 30 Oct 2020 05:17:23 -0400
+Date: Fri, 30 Oct 2020 05:17:20 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+cc: Quentin Schulz <foss@0leil.net>, 
+    YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] normalize use of trailing "::" across docs
+In-Reply-To: <CAP71Wjz4hOBfQj-9xvoO6V9TFX911_9aJ-rSdawK8WYLGb3p3A@mail.gmail.com>
+Message-ID: <b9bb1df6-c11f-db3b-314e-49f92adfb5d8@crashcourse.ca>
+References: <afdb4476-bdb4-3df0-be7-457ebd473db0@crashcourse.ca> <c550db4b55fbc2b77d0a96d87ab5edf1@0leil.net> <9c9a716-3c2a-a663-8fb2-3b9d274cab@crashcourse.ca> <CAP71Wjz4hOBfQj-9xvoO6V9TFX911_9aJ-rSdawK8WYLGb3p3A@mail.gmail.com>
 MIME-Version: 1.0
-References: <625da363-37ee-2325-ee68-a860a8f8a857@crashcourse.ca>
-In-Reply-To: <625da363-37ee-2325-ee68-a860a8f8a857@crashcourse.ca>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Fri, 30 Oct 2020 09:35:32 +0100
-Message-ID: <CAP71WjxZL+4U=RGT-32t08vY5_X6CDE=awCgBxsyhjLMJpxsEg@mail.gmail.com>
-Subject: Re: [docs] pedantic observations about README file
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Oct 29, 2020 at 10:01 PM Robert P. J. Day <rpjday@crashcourse.ca> wrote:
->
->
-> 1) refers to folder "yocto-project-qs" when it is, in fact,
-> "brief-yoctoprojectqs"; has that update been queued?
+On Fri, 30 Oct 2020, Nicolas Dechesne wrote:
 
-no, you can send it!
+> On Fri, Oct 30, 2020 at 7:38 AM Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+> >
+> > On Thu, 29 Oct 2020, Quentin Schulz wrote:
+> >
+> > > Hi Robert,
+> > >
+> > > On 2020-10-29 23:00, Robert P. J. Day wrote:
+> > > > Rather than terminate a line with a single ":" and follow that up with
+> > > > a line of simply "::" to start a code block, we can simply terminate
+> > >
+> > > I think it's actually called a literal block? (was looking for documentation
+> > > on this :) ).
+> > > https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html#literal-blocks
+> >
+> >   before i repair the patch i sent out, it's clearly worth asking if
+> > this normalization is worth it, or would it just be unnecesasry churn
+> > for no significant benefit? i'm fine either way.
+>
+> I think it is good to add consistency, so yes. It might indeed be a
+> little tricky to find the right regexp (or set of). perhaps you can
+> include the snippet you used for the transformation in the commit
+> message, so that we can review that as well.
 
->
-> 2) no mention of folder "adt-manual" which, of course, has long been
-> superseded by SDK docs ... is the adt-manual directory being kept
-> around for some reason? (references to that manual also in conf.py and
-> poky.yaml.)
+  as an admittedly brute force command that catches all the really
+obvious stuff, there's this:
 
-i think we would merge a patch that removes all of it. we added the
-mention in conf.py so that sphinx ignores the files, so that can go
-away too, once you remove the files.
+  $ perl -0777 -pi -e 's/:\n::\n/::\n/g' <file>.rst
 
->
-> rday
->
-> 
->
+that would probably make a good first pass and would catch quite a
+lot.
+
+rday
