@@ -1,94 +1,79 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.web09.11158.1604927420025267720
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+ by mx.groups.io with SMTP id smtpd.web10.12165.1604932460582611859
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Nov 2020 05:10:20 -0800
+ Mon, 09 Nov 2020 06:34:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=QhN0IBY6;
- spf=pass (domain: linaro.org, ip: 209.85.128.49, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f49.google.com with SMTP id p19so5428265wmg.0
-        for <docs@lists.yoctoproject.org>; Mon, 09 Nov 2020 05:10:19 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=X4LjovV7;
+ spf=pass (domain: linaro.org, ip: 209.85.221.42, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f42.google.com with SMTP id p1so8894121wrf.12
+        for <docs@lists.yoctoproject.org>; Mon, 09 Nov 2020 06:34:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=SxiZxeEu9vJFzqj+7U2Yw8T1Jf3Z/5mJ9ruYZjxvqfc=;
-        b=QhN0IBY6Okb96i0KWyedvrIDCXTte5+hKeLquidbmgxDX+wDTjJ7DID40RqD71l1Ed
-         LYnsxZMLlccqU1h/AwhaAywJQbf/v0qir1aUUEgOgsPpwwe1ODAbndwQotu5mcds2S0Q
-         yIhDHtcSRQNYClDkVJaW9F73qOreAYzVUjgDzYaBvXJVLZI14VIqqP++rGM77cRyuAv4
-         4jfj0LGFteUOTZpRxpsjGfZwhq1YfN4DKfnlvyCzCJULwbfzqTRFrezs1EOFZD4gtdhP
-         rCzuK5Kko4FVcFZcC1kAVRpooa+vLFF1XrT1GCOJKNGokr9241JJiH8VmcpuOTX5UIMo
-         S4ng==
+        bh=nWwC2Cnmp7UqXsf17vzZa+L24CizREVZUzfxWcsRLsc=;
+        b=X4LjovV7Mz7A3hHFsAsbugD6+SxLqimYeKpje6ScLizPGcp2qndUcmDk88s6Txy97S
+         83ybnP/xJHUraQZ1AU9ZnB3Y8EuO8AYKhrP3lzfAPK75obc7b++kOhCeQJgFif5EoVws
+         kpuJ3ehZBRxTJsJZ8+4v7c90H9BItN1IbhIlbayz7CWFsmeNjHzUrDMEJ0EX0LADDAuI
+         ICrzEHrZlB6zzI1VRS1voZaT1Wb+IpS/VmxFvdtVLhWi9fxbVW+RBTvuMpBs8jm/PP/b
+         Eq7n3/jMIzFr8DlQX6z/z9FTePe0X4lzy/OTWNcTg+AbSvMChafsdDIAWVqPa6UniPSI
+         m7jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=SxiZxeEu9vJFzqj+7U2Yw8T1Jf3Z/5mJ9ruYZjxvqfc=;
-        b=esEcqxBT3TzRzvIPH09Ys463SuZ0K/nYr2xvQJWpXOTg9moVoxkiIlmWN28jtM+DPq
-         FBzCxqrBLFf+svnOWnePeghagUsh8BQWBNhIC1ibWqCtXAvMHoLB+qo5nFrQx8dWIcxc
-         z+BgF3lNUOA3ORKBmwqki8GoOfPWt/Ac91YqDWg2alSc6cRvXxT1oH2DYBW7sQ8VhDjx
-         YmjqYv1KwKaV4jZ/mQs7S0XHRWViEfhLPq9ea57LpH/XtyCDNPh2acZDvjli+jFn9mNv
-         oJ3MFyN8lSloX00a0yDstOxeyc5LPkJ+SY7kyiwE8fC8wzErND9J52RFJqdVFkTJKQRf
-         uDbg==
-X-Gm-Message-State: AOAM532qTmMLL3i2C6nvc08MEV4oBpjGBG448uFwUAd3lweS0AO5tU++
-	0/eTX8grdbL8uDL/w36MjrxJ0Qg9WFcRhYSC
-X-Google-Smtp-Source: ABdhPJyBvrje8VTfm7RENIX230QFeZG7guFucjgvT+zOiEr41kBrAsE4WROE7sEXbxmmu2HmjDP1jA==
-X-Received: by 2002:a05:600c:d2:: with SMTP id u18mr14649580wmm.102.1604927417929;
-        Mon, 09 Nov 2020 05:10:17 -0800 (PST)
+        bh=nWwC2Cnmp7UqXsf17vzZa+L24CizREVZUzfxWcsRLsc=;
+        b=h9hrCEF/FBIMi27Fx2JDNGXArSXklvGNqWrOX9Yd4S98gnIamRXXNi1XzMQ3TofUWE
+         8Nc6tdHD+3wor1Ctq2inaRLfGtN6squD5By1hNFzbCsv3O1e+cK1JVo+DeRTSVZz629w
+         PZRprSp547JJAPe8HAv9hVIcW1HodfVdldSLyhxZn332EFWVL1VAHMZVGqxuVO1gcjj+
+         37LMmgToy2wbpffA7XDdCKtE9yxUbKwYO9wL6D2RWDKzgrCPsjSOnB34evCMM9BW+GJc
+         uooaku/eLD+ADM8wcce0bAD/ucp+ntsTZBMpF0+wzvqZVBq6Eb2/8yY/qAAfBZfZnnKj
+         ypNQ==
+X-Gm-Message-State: AOAM533S8axO0WVMUQV3RWN4IMvqPsvXkNeRsrVEh+OQOzcMKO9OQGjT
+	oXUR0MlL+Cg78Q/O06S43iJpLYpuZuO97E2z
+X-Google-Smtp-Source: ABdhPJza6m86QuJaWy7p1qpC7UDJDkZbFIHZJ5CpPYWwCMdmQAMTwPaLlCyRDa0/4BlTe9mtWQcYIg==
+X-Received: by 2002:a5d:6310:: with SMTP id i16mr18202621wru.284.1604932458696;
+        Mon, 09 Nov 2020 06:34:18 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from nikaia.localdomain (91-166-228-248.subs.proxad.net. [91.166.228.248])
-        by smtp.gmail.com with ESMTPSA id f2sm14048455wre.63.2020.11.09.05.10.16
+        by smtp.gmail.com with ESMTPSA id o7sm14219611wrp.23.2020.11.09.06.34.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Nov 2020 05:10:17 -0800 (PST)
+        Mon, 09 Nov 2020 06:34:18 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [gatesgarth][PATCH] conf: update for release 3.2
-Date: Mon,  9 Nov 2020 14:08:11 +0100
-Message-Id: <20201109130811.272677-1-nicolas.dechesne@linaro.org>
+Subject: [gatesgarth][PATCH] conf: use bitbake 1.48 branch for intersphinx
+Date: Mon,  9 Nov 2020 15:32:15 +0100
+Message-Id: <20201109143215.277618-1-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-conf.py:
-* set version to 3.2
+We now publish the branch 1.48 of bitbake docs to
+https://docs.yoctoproject.org/bitbake/1.48/
 
-switchers.js
-* add 3.2 release
-* update 'dev' to 3.3
+yocto-docs can refer to bitbake documentation using the intersphinx
+extension. The gatesgarth docs should refer to the 1.48 branch of
+bitbake, not the development branch.
 
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- documentation/conf.py                    | 2 +-
- documentation/sphinx-static/switchers.js | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ documentation/conf.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/documentation/conf.py b/documentation/conf.py
-index 9a0186f35..5d8a7af30 100644
+index 5d8a7af30..ed8c5c033 100644
 --- a/documentation/conf.py
 +++ b/documentation/conf.py
-@@ -16,7 +16,7 @@ import os
- import sys
- import datetime
+@@ -82,7 +82,7 @@ extlinks = {
  
--current_version = "dev"
-+current_version = "3.2"
+ # Intersphinx config to use cross reference with Bitbake user manual
+ intersphinx_mapping = {
+-    'bitbake': ('https://docs.yoctoproject.org/bitbake/', None)
++    'bitbake': ('https://docs.yoctoproject.org/bitbake/1.48', None)
+ }
  
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js
-index b28d91c08..fe9841b10 100644
---- a/documentation/sphinx-static/switchers.js
-+++ b/documentation/sphinx-static/switchers.js
-@@ -2,7 +2,8 @@
-   'use strict';
- 
-   var all_versions = {
--    'dev': 'dev (3.2)',
-+    'dev': 'dev (3.3)',
-+    '3.2': '3.2',
-     '3.1.3': '3.1.3',
-     '3.0.4': '3.0.4',
-     '2.7.4': '2.7.4',
+ # -- Options for HTML output -------------------------------------------------
 -- 
 2.29.2
 
