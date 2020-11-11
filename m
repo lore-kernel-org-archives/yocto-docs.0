@@ -1,100 +1,92 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
- by mx.groups.io with SMTP id smtpd.web12.11315.1605120709774527513
+Received: from mail-oi1-f194.google.com (mail-oi1-f194.google.com [209.85.167.194])
+ by mx.groups.io with SMTP id smtpd.web12.11955.1605123484097014987
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Nov 2020 10:51:50 -0800
+ Wed, 11 Nov 2020 11:38:04 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=DcTXWJb4;
- spf=pass (domain: linaro.org, ip: 209.85.219.177, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f177.google.com with SMTP id g6so1644524ybm.7
-        for <docs@lists.yoctoproject.org>; Wed, 11 Nov 2020 10:51:49 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=XyVZKseg;
+ spf=pass (domain: konsulko.com, ip: 209.85.167.194, mailfrom: paul.barker@konsulko.com)
+Received: by mail-oi1-f194.google.com with SMTP id m13so3472068oih.8
+        for <docs@lists.yoctoproject.org>; Wed, 11 Nov 2020 11:38:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=4MHu3hLiIqc98/q1btTgOGjh665FVNuBoKByuyrP07o=;
-        b=DcTXWJb43PKbcChGjKMf1OW564LElFBh95/8icRGar7Vr5Q63Jn2/2rEkZm63MQ9Dd
-         RZzj46T8H6FngUAzjQdrFsAAxT3UN/r2ZONjUBh+K4JrPBvkwf7KoMmTvZFyRztB/Di4
-         C06CQL3bvP53j+n4yx2tuYFV5MhNb/d8sNBtgISPoKQM71F8B7raUSUQayABj2mVWS9F
-         7Ye0nft4TCkzpaRoYxIAMteqdZYTja7/BXooa6RbRve78NA6k8E5Fuj3MtKWeb+t3+Gs
-         vV7P2vmJ9R71LVhS5SMViFofE2vljY3prwg7FrYDgxjwAuIdA/qb3qsBnSNWIAQMF0zI
-         //Ng==
+         :cc;
+        bh=4/xDkG33O0411IVHtmdAcbvMz0P3hSawkR7ZLjOC85o=;
+        b=XyVZKsegZVDQGfrxbwsOePvEGfcedfT2mq8S08mtrdbNt0hY24v7wetY2R0qRQF5QE
+         qOLnVrt23YiWkGBfwfOo2/6Hgborsw/1KxAVDoDy5+W7DnmoNLq1UiPuwgcgoKdMfofc
+         qUsip9HqILPm23Lovs+RB45Ma41LImMaE8Oow=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=4MHu3hLiIqc98/q1btTgOGjh665FVNuBoKByuyrP07o=;
-        b=BePSA/fulSR9UT177Rq3gf85nZOIdpdhbsxS12KHxsM2m7W/BSYGgYW5RY4/Is6Tbr
-         Vy20FS1nhRQC8DSsK1zYXpTbfHazK1tZoCc9S3WjxqGDEsig7irBl6NL+AJt1h4XiibQ
-         DnrCfF4K2aGLRSQFWNKuZRTI2cB8efC28nYM1ksanxpQ56gOVdxaNG9IPnHVzCVT6/xM
-         JvxB39j38nm1l08ZR2K/mwD/ot2254PCpSVbqh9bCG2xqd4aktFXGeh21Hwz6B6tQn5x
-         iM/zREQWDOP09hwQ4YxohN1LYtFohXAEqNT3HWwbD8fJH2hB4fIm5viK38gKHLqzN4Kr
-         RPEg==
-X-Gm-Message-State: AOAM530KwInPvTqXFFI2PKJ5B2FN6000c4VyZ0hVnZtht69JFG9RqeoI
-	hqJjkNL4RiEA36N4tF9Po8AWYNVOOkSBZpSjIxFDjQ==
-X-Google-Smtp-Source: ABdhPJwsqO+emWXYXeSXvu96t95uQBvYKAAG5ZEbGLhpRzk2p4sPSEAjyJdsnFEdiXJdpMfSVqS7sh3XPJxOc926Zfs=
-X-Received: by 2002:a25:9b04:: with SMTP id y4mr3527452ybn.397.1605120708812;
- Wed, 11 Nov 2020 10:51:48 -0800 (PST)
+         :message-id:subject:to:cc;
+        bh=4/xDkG33O0411IVHtmdAcbvMz0P3hSawkR7ZLjOC85o=;
+        b=hf0vu9wG5B+c3SUUqPKQW3ajnDvufMDIijBNnaoWZh9PRhqX/qeudxjGuxrQNvb8P5
+         ogBqM1tCAwqu3wXm4oUxXpYbuZhRx92xEApwTwCfZgNMvsacJCYn/NI8p7n/I8ko1rgt
+         zMvhgEi8xomw5H3+tiSoaHxJ+ggOP3kpdpH0VWATrfzcCtRMfPZMLnVEz6kEwDsP9QuA
+         FbO9Gwk+YddZ8QgDkpxmb+deHaO7OSqMJVB9HANODs1FWvcVcZUzc4s716y0T1OuGcx9
+         HB46Ur2WDw2OZHYqnci+IQ4jr5AISXRoGawSMdqiSsIm72ZfsWpsmGnGIc6ky6alwxNS
+         Xitw==
+X-Gm-Message-State: AOAM533wrOeiOV8/Ru+v6biAyzyVZTqwKQ5GUBSuP9Fp0YvsO/y9GX9P
+	QWwNrKBpJC2ReWGOT9/ZIoFdamyUkGwBJHCO761daQ==
+X-Google-Smtp-Source: ABdhPJzDHyhQ67Xow6uR0QBJ0WFxNdLP1Z1zOyTUZ/SwSVylXvTgfyfhd1YVQD2tZXvORDZGp5yoLCkLoDrohCp3isI=
+X-Received: by 2002:aca:c6cb:: with SMTP id w194mr3178784oif.27.1605123483428;
+ Wed, 11 Nov 2020 11:38:03 -0800 (PST)
 MIME-Version: 1.0
-References: <6MSa.1605119899931248809.4eHV@lists.yoctoproject.org>
-In-Reply-To: <6MSa.1605119899931248809.4eHV@lists.yoctoproject.org>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Wed, 11 Nov 2020 19:51:37 +0100
-Message-ID: <CAP71WjzH03194HxtTwPEe+ThxAQXCnZ=pwn_KF8meJ=r_gbF9Q@mail.gmail.com>
-Subject: Re: [docs] First Contact + Dedicated Tasks for Documentation
-To: shantanoo.desai@gmail.com
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+References: <20201111184201.104015-1-nicolas.dechesne@linaro.org> <20201111184201.104015-3-nicolas.dechesne@linaro.org>
+In-Reply-To: <20201111184201.104015-3-nicolas.dechesne@linaro.org>
+From: "Paul Barker" <pbarker@konsulko.com>
+Date: Wed, 11 Nov 2020 19:37:53 +0000
+Message-ID: <CAM9ZRVuNr+z0RA2jvOieU9fWOv1q6Xr7wiH07WL8yWYT4MfBXA@mail.gmail.com>
+Subject: Re: [docs] [PATCH 2/2] poky.yaml: updates for 3.2
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: docs@lists.yoctoproject.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-hi Shan!
+On Wed, 11 Nov 2020 at 18:42, Nicolas Dechesne
+<nicolas.dechesne@linaro.org> wrote:
+>
+> Updates global variables for 3.2 / Gategarth release.
+>
+> Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+> ---
+>  documentation/poky.yaml | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+>
+> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+> index 85f42cf07..41f244f1c 100644
+> --- a/documentation/poky.yaml
+> +++ b/documentation/poky.yaml
+> @@ -1,11 +1,11 @@
+> -DISTRO : "3.1"
+> -DISTRO_NAME_NO_CAP : "dunfell"
+> -DISTRO_NAME : "Dunfell"
+> -DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
+> -YOCTO_DOC_VERSION : "3.1"
+> -YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
+> -DISTRO_REL_TAG : "yocto-3.1"
+> -POKYVERSION : "23.0.0"
+> +DISTRO : "3.2"
+> +DISTRO_NAME_NO_CAP : "gatesgarth"
+> +DISTRO_NAME : "Gatesgarth"
+> +DISTRO_NAME_NO_CAP_MINUS_ONE : "Dunfell"
 
-On Wed, Nov 11, 2020 at 7:38 PM <shantanoo.desai@gmail.com> wrote:
+s/D/d/ I guess as it's NO_CAP.
+
+> +YOCTO_DOC_VERSION : "3.2"
+> +YOCTO_DOC_VERSION_MINUS_ONE : "3.1.3"
+> +DISTRO_REL_TAG : "yocto-3.2"
+> +POKYVERSION : "24.0.0"
+>  YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+>  YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+>  YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+> --
+> 2.29.2
 >
-> Hi everybody,
 >
-> I am making an Initial Contact with the docs community after the YP Summ=
-it Europe 2020.
-
-Awesome, thanks for your email!
-
+> 
 >
-> I have started to look into the docs code base and was wondering if ther=
-e are any dedicated tasks/bugs that are open. I looked into the Bugzilla Li=
-st for General Docs and will try to help out if there is something I can co=
-ntribute to, but apart from that is there some other list I should be looki=
-ng into for Docs?
-
-I gave a few hints in my talk at the Summit:
-
-*Automatic conversion was imperfect, many typos or glitches left over:
-here i think there is a lot to do here. Basically, it's taking manuals
-one by one, and finding visual glitches (and fixing them) or finding
-issues in the .rst files.
-* Offline documentation (PDF-like). sphinx can generate pdf, but we
-haven't looked into that yet.
-* Improve main page, nice looking front page example
-(https://projectacrn.github.io/latest/index.html)
-* Improve =E2=80=98search box=E2=80=99, perhaps with DocSearch (see
-https://docsearch.algolia.com/ and http://docs.coala.io/en/latest/)
-* Backport Sphinx docs for YP 3.1 LTS (dunfell): This task was
-discussed on the list a couple of weeks ago. I think we have a plan
-for it. we just need to do it, so perhaps not much to do here for you,
-i suppose it's something Steve and I should look at.
-* Better integration with Yocto Project website, now that
-http://yoctoproject.org/docs redirects to docs.yp.org, the user
-experience is not 'great', since we effectively leave the website. I
-am not sure how to fix that, and I am not sure I will ever know.. so
-if you have any skills in this area that might be useful (our website
-is based on wordpress).
 
 
->
-> Thanks and happy to be on board,
->
-> Regards,
->
-> Shan
->
->
->=20
->
+-- 
+Paul Barker
+Konsulko Group
