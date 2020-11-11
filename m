@@ -1,87 +1,100 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
- by mx.groups.io with SMTP id smtpd.web11.11446.1605120135318618573
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+ by mx.groups.io with SMTP id smtpd.web12.11315.1605120709774527513
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Nov 2020 10:42:15 -0800
+ Wed, 11 Nov 2020 10:51:50 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=PYvgknrZ;
- spf=pass (domain: linaro.org, ip: 209.85.221.54, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f54.google.com with SMTP id p8so3528531wrx.5
-        for <docs@lists.yoctoproject.org>; Wed, 11 Nov 2020 10:42:15 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=DcTXWJb4;
+ spf=pass (domain: linaro.org, ip: 209.85.219.177, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f177.google.com with SMTP id g6so1644524ybm.7
+        for <docs@lists.yoctoproject.org>; Wed, 11 Nov 2020 10:51:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=GsJicZlc50zN07JBqpNA8cuVp7c+cj3f749CoP7nbsU=;
-        b=PYvgknrZ5t5t+L9ykMp10eGggYT7l7KRPOJ7gwL7YigeiJHUAJI0AKsG3wj3FPnonx
-         8KAabhpfDp3tITOCNjLa0k+UvccvpCsOfZdGkUCuVc4Td3CsjDlU8B+B7YcB6t9aXbyE
-         DjM/69VP/ZPp2xioBiHoElpt/5YBy3g0tUCGMbhExeC8bIFwj0McYT+6rDCC8r7BLfvu
-         acKBVY0rC1tLmQhztGFaKSN9O2TchtLo5AU8BdDt7NqAUpLaCWcFPiGIO///53CzYoLh
-         0hPZ4/Yf2887+9I9BdZ7Dc0wr5Y8XLXREKvFWv+6ytTmcADOlujKQxB/3+qiVdKshiFo
-         +Z0w==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=4MHu3hLiIqc98/q1btTgOGjh665FVNuBoKByuyrP07o=;
+        b=DcTXWJb43PKbcChGjKMf1OW564LElFBh95/8icRGar7Vr5Q63Jn2/2rEkZm63MQ9Dd
+         RZzj46T8H6FngUAzjQdrFsAAxT3UN/r2ZONjUBh+K4JrPBvkwf7KoMmTvZFyRztB/Di4
+         C06CQL3bvP53j+n4yx2tuYFV5MhNb/d8sNBtgISPoKQM71F8B7raUSUQayABj2mVWS9F
+         7Ye0nft4TCkzpaRoYxIAMteqdZYTja7/BXooa6RbRve78NA6k8E5Fuj3MtKWeb+t3+Gs
+         vV7P2vmJ9R71LVhS5SMViFofE2vljY3prwg7FrYDgxjwAuIdA/qb3qsBnSNWIAQMF0zI
+         //Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=GsJicZlc50zN07JBqpNA8cuVp7c+cj3f749CoP7nbsU=;
-        b=I+egDqiCDLI87y/zJ/DKUVzaVbFNGfqUC/E4xVGzweazPLWIlDlS+KYxJ1aWH5N+Rv
-         d99SLlq6Bm2qGthnlO0MCxa765XH9m4O0pHYgUCR4DeCF5Q+feZU9kcQq1z5KW5QetWn
-         SRPI2siFxQHOCgoguKsxI/il5WHVlK4bYgxCAW2rYsjVxCtoicLtWIMYW1TRn/8qLzOW
-         kg9/JEqs//iHCU95NBBtI25bbrDatWOJ07dcnYZS3yLA/gecQDBmEN/NDBioKNopr2dh
-         98douzjdgO6M/C+/Cj/LiQLSOo06+HMgG9LiNTcNNSVsL7QXmOCCm+5O+aCHPKWIMdQZ
-         f8cQ==
-X-Gm-Message-State: AOAM531gt1gu0aT0QRc+024jvorkWyEHneJOkhVYXq8oAS8uDRMymRLu
-	Ym7tpWJYYqa6cHoDo837Yk7g3G+L44Vz7xdh
-X-Google-Smtp-Source: ABdhPJwoClxTNgiaalP0csv6cyxOnaWDZMJID6Kn7Jl0/ZEtYJuYtNPWQWT5P2EDCDIbWFbkfoju/g==
-X-Received: by 2002:adf:fe0f:: with SMTP id n15mr32919655wrr.357.1605120133525;
-        Wed, 11 Nov 2020 10:42:13 -0800 (PST)
-Return-Path: <nicolas.dechesne@linaro.org>
-Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id v67sm3673657wma.17.2020.11.11.10.42.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2020 10:42:13 -0800 (PST)
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-To: docs@lists.yoctoproject.org
-Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 2/2] poky.yaml: updates for 3.2
-Date: Wed, 11 Nov 2020 19:42:01 +0100
-Message-Id: <20201111184201.104015-3-nicolas.dechesne@linaro.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201111184201.104015-1-nicolas.dechesne@linaro.org>
-References: <20201111184201.104015-1-nicolas.dechesne@linaro.org>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=4MHu3hLiIqc98/q1btTgOGjh665FVNuBoKByuyrP07o=;
+        b=BePSA/fulSR9UT177Rq3gf85nZOIdpdhbsxS12KHxsM2m7W/BSYGgYW5RY4/Is6Tbr
+         Vy20FS1nhRQC8DSsK1zYXpTbfHazK1tZoCc9S3WjxqGDEsig7irBl6NL+AJt1h4XiibQ
+         DnrCfF4K2aGLRSQFWNKuZRTI2cB8efC28nYM1ksanxpQ56gOVdxaNG9IPnHVzCVT6/xM
+         JvxB39j38nm1l08ZR2K/mwD/ot2254PCpSVbqh9bCG2xqd4aktFXGeh21Hwz6B6tQn5x
+         iM/zREQWDOP09hwQ4YxohN1LYtFohXAEqNT3HWwbD8fJH2hB4fIm5viK38gKHLqzN4Kr
+         RPEg==
+X-Gm-Message-State: AOAM530KwInPvTqXFFI2PKJ5B2FN6000c4VyZ0hVnZtht69JFG9RqeoI
+	hqJjkNL4RiEA36N4tF9Po8AWYNVOOkSBZpSjIxFDjQ==
+X-Google-Smtp-Source: ABdhPJwsqO+emWXYXeSXvu96t95uQBvYKAAG5ZEbGLhpRzk2p4sPSEAjyJdsnFEdiXJdpMfSVqS7sh3XPJxOc926Zfs=
+X-Received: by 2002:a25:9b04:: with SMTP id y4mr3527452ybn.397.1605120708812;
+ Wed, 11 Nov 2020 10:51:48 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <6MSa.1605119899931248809.4eHV@lists.yoctoproject.org>
+In-Reply-To: <6MSa.1605119899931248809.4eHV@lists.yoctoproject.org>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Wed, 11 Nov 2020 19:51:37 +0100
+Message-ID: <CAP71WjzH03194HxtTwPEe+ThxAQXCnZ=pwn_KF8meJ=r_gbF9Q@mail.gmail.com>
+Subject: Re: [docs] First Contact + Dedicated Tasks for Documentation
+To: shantanoo.desai@gmail.com
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Updates global variables for 3.2 / Gategarth release.
+hi Shan!
 
-Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
----
- documentation/poky.yaml | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+On Wed, Nov 11, 2020 at 7:38 PM <shantanoo.desai@gmail.com> wrote:
+>
+> Hi everybody,
+>
+> I am making an Initial Contact with the docs community after the YP Summ=
+it Europe 2020.
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 85f42cf07..41f244f1c 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,11 +1,11 @@
--DISTRO : "3.1"
--DISTRO_NAME_NO_CAP : "dunfell"
--DISTRO_NAME : "Dunfell"
--DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
--YOCTO_DOC_VERSION : "3.1"
--YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
--DISTRO_REL_TAG : "yocto-3.1"
--POKYVERSION : "23.0.0"
-+DISTRO : "3.2"
-+DISTRO_NAME_NO_CAP : "gatesgarth"
-+DISTRO_NAME : "Gatesgarth"
-+DISTRO_NAME_NO_CAP_MINUS_ONE : "Dunfell"
-+YOCTO_DOC_VERSION : "3.2"
-+YOCTO_DOC_VERSION_MINUS_ONE : "3.1.3"
-+DISTRO_REL_TAG : "yocto-3.2"
-+POKYVERSION : "24.0.0"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
--- 
-2.29.2
+Awesome, thanks for your email!
 
+>
+> I have started to look into the docs code base and was wondering if ther=
+e are any dedicated tasks/bugs that are open. I looked into the Bugzilla Li=
+st for General Docs and will try to help out if there is something I can co=
+ntribute to, but apart from that is there some other list I should be looki=
+ng into for Docs?
+
+I gave a few hints in my talk at the Summit:
+
+*Automatic conversion was imperfect, many typos or glitches left over:
+here i think there is a lot to do here. Basically, it's taking manuals
+one by one, and finding visual glitches (and fixing them) or finding
+issues in the .rst files.
+* Offline documentation (PDF-like). sphinx can generate pdf, but we
+haven't looked into that yet.
+* Improve main page, nice looking front page example
+(https://projectacrn.github.io/latest/index.html)
+* Improve =E2=80=98search box=E2=80=99, perhaps with DocSearch (see
+https://docsearch.algolia.com/ and http://docs.coala.io/en/latest/)
+* Backport Sphinx docs for YP 3.1 LTS (dunfell): This task was
+discussed on the list a couple of weeks ago. I think we have a plan
+for it. we just need to do it, so perhaps not much to do here for you,
+i suppose it's something Steve and I should look at.
+* Better integration with Yocto Project website, now that
+http://yoctoproject.org/docs redirects to docs.yp.org, the user
+experience is not 'great', since we effectively leave the website. I
+am not sure how to fix that, and I am not sure I will ever know.. so
+if you have any skills in this area that might be useful (our website
+is based on wordpress).
+
+
+>
+> Thanks and happy to be on board,
+>
+> Regards,
+>
+> Shan
+>
+>
+>=20
+>
