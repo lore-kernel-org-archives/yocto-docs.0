@@ -1,87 +1,64 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
- by mx.groups.io with SMTP id smtpd.web11.1086.1605166184164053693
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+ by mx.groups.io with SMTP id smtpd.web09.1224.1605167541141463458
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Nov 2020 23:29:44 -0800
+ Wed, 11 Nov 2020 23:52:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=ndxbR6RL;
- spf=pass (domain: linaro.org, ip: 209.85.219.173, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f173.google.com with SMTP id 2so4389210ybc.12
-        for <docs@lists.yoctoproject.org>; Wed, 11 Nov 2020 23:29:44 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=BpY4sJJw;
+ spf=pass (domain: linaro.org, ip: 209.85.214.174, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-pl1-f174.google.com with SMTP id d3so2369420plo.4
+        for <docs@lists.yoctoproject.org>; Wed, 11 Nov 2020 23:52:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=BnBvRj9ynRgl65xjiSjFBYdNMtpGN1VraEXhEtEDnw0=;
-        b=ndxbR6RLKbYe7wLiMDlEUxsPXCQkF6LCz9UMTMtGI09ELY8lGssaypGE8UUnsmtiQ+
-         e6wyHjNDZ2IWQt4OjhCFyi331cTFt3eSuYqtuhCflARgK4T6D+xAzcNdLNIB+BjIiei8
-         w06JWTlYgKSaB/LnW/gb37gY656KaDDZWHNs6hQ9zGRDrDjrpbWnUMCR7zT1GRFkT2XS
-         CA2xouDG0Aa8QEICnZ5M+FlwvRHf24mXtSubOwxdYoMVYn+F7YUJ8gEoQH8iSpTYgJbn
-         qFbXS0swspvo22P1mkV45XxIKxXHjKSUukhbYpKAwZP9nNLf40lqa+xwOY8VutT2C6bH
-         sOeQ==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JXCPbQr88Y6L8M/MJ+o/0R1zNyyNVvCuinqT4O+5mEQ=;
+        b=BpY4sJJwI4uWy5l6KJkQ7PniLiBvaEQmjohpYV7k4cL/l8BEL84omhemNZ+l/Hyhfl
+         G3iTmxgK29Q8v/D7fZRrWDeuSt6Ii/dY6nkzsCXsBzZNXVp/5Ceu5DvdOyK4zn8OIzyf
+         ud0FULJ1QcYZe52YP/VyhfMKx6GS0KlfSmlrdlurhge9/SWFY5t0hDHhC5xsbk5asLbf
+         DXOfAcAn3tZvrle7QXljBY3MxpAkXMUEU3ygHAdmUMGZQa5nIl3f9KIWOeiiMijdhQD7
+         4tKfT3UDR4WynuFvGUIk0zXnSD8ou0noQC9CXoQ3Gosu9pgqgOjvJ09zA0MTHo//FLpK
+         r1DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=BnBvRj9ynRgl65xjiSjFBYdNMtpGN1VraEXhEtEDnw0=;
-        b=Agc6e6ua3OMrXoZin9Js9fE/1fWgc4urkyhoH1rOVX2QauCuNXbKfzeaB86r9D/OnW
-         H4tD9RdYWRcBUzZIJ3xX5HoS3mAcfqpvvTtALdZj9I9iHoctiGMjTvyZJAadGwRuREci
-         KVs4qyyCixhjH/fctUgD24rRE4WMJILgBr0yup26Ym3JiSJUtcI4mVjuKPdO3I4Fkstf
-         2y5Nz5VIU+kqcuKYQNl4fYVqLV8Mo4kqn4LXUAdSWf06+OgHkYbZIVdR2SdoKAWBy6I0
-         toRSSK7hmcrIuYo7t5OykcT28iCl0v829AJpNia4p9+A/h8DQ83gsGZ3TM45xDxMpOWl
-         MKGA==
-X-Gm-Message-State: AOAM531JuOM/nhfjSbPZSb+gsKlLdRXrjYWn6MRhBnD5UNLY8VdJVnLr
-	QbIwLnUOdbqSwedJar2JOBtH5r+HUGxTdK9P8yU/ew==
-X-Google-Smtp-Source: ABdhPJwkjZEYlAeioz5YjqlpL7JT08oV+B9tyyh0W3bzX3AwyGUlov063maNjOgRde7OOTXvun2kmB6gdWe40v/qZEY=
-X-Received: by 2002:a25:80cd:: with SMTP id c13mr43788167ybm.371.1605166183159;
- Wed, 11 Nov 2020 23:29:43 -0800 (PST)
-MIME-Version: 1.0
-References: <20201110212917.25172-1-JPEWhacker@gmail.com> <27534.1605130210340595078@lists.yoctoproject.org>
- <f4daa05e-8aa6-c817-fe51-910c0f9d0a69@gmail.com>
-In-Reply-To: <f4daa05e-8aa6-c817-fe51-910c0f9d0a69@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JXCPbQr88Y6L8M/MJ+o/0R1zNyyNVvCuinqT4O+5mEQ=;
+        b=nYs2lwXeYTMynGq6bNphshRFyXI1Q3JH/VfHCgnMM4sINBD7lZfphChmMvy2x5RKl+
+         g9VxToJpF6LBrmlwZInGdwWFXKvrw+wIKxyDw2FIIhICa+AY7sso3k7hixtCZkNFwiOs
+         pk+FPrTye5CKUFJVZu3uwvaYFvGt29fmp7kpom/JeSXdw1XMhxFYGDrzbgzvQuA+G7QO
+         yFfVh1LS27vqKGBheGhfqwtqjogH2VHMlGozpnqHTinMN4JVW3M7DalEtskNPhuGVJYy
+         w507OjK6tVwE7ighTbqzyQhLCnjTAZ5IT+8Vv6CgcHWO7BHwpsViaFSIgnRKPbeQafQX
+         2NHg==
+X-Gm-Message-State: AOAM531DLUX5vgtri50ejGXz65wN2Hqs1B8oBsMJ2P/sqiuTG4Qb4fy6
+	Z/JNof2tz+gtguu8kgUx2QOPksfOAtYq2s6H
+X-Google-Smtp-Source: ABdhPJww2cAquBMGiXxq9EWje1LoDrQlFMTUfFZ1GWqqaMxqjFmEzX6G3W5Lrxytl3mNlL7vU5PhdA==
+X-Received: by 2002:a17:902:7c16:b029:d8:ac5d:3e9c with SMTP id x22-20020a1709027c16b02900d8ac5d3e9cmr11670267pll.68.1605167540227;
+        Wed, 11 Nov 2020 23:52:20 -0800 (PST)
+Return-Path: <nicolas.dechesne@linaro.org>
+Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
+        by smtp.gmail.com with ESMTPSA id c28sm5720323pfj.108.2020.11.11.23.52.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Nov 2020 23:52:19 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Thu, 12 Nov 2020 08:29:34 +0100
-Message-ID: <CAP71WjydMC_00a6YMWo77Pv39C7hwMYoVJt_sOOTsF5U1rxc6g@mail.gmail.com>
-Subject: Re: [docs] [PATCH] documentation: Add Pipenv support
-To: Joshua Watt <JPEWhacker@gmail.com>
-Cc: shantanoo.desai@gmail.com, 
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+To: docs@lists.yoctoproject.org
+Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Subject: [PATCH v2 0/2] Update poky.yaml
+Date: Thu, 12 Nov 2020 08:52:04 +0100
+Message-Id: <20201112075206.113124-1-nicolas.dechesne@linaro.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-hey Shan,
+This file was not updated for 3.2. These 2 changes should go on master
+and gatesgarth. Then we can update poky.yaml for master/3.3 later.
 
-can you please avoid top posting and using html for emails to the
-list? this makes it harder for us to follow.
+Nicolas Dechesne (2):
+  poky.yaml: remove unused variables
+  poky.yaml: updates for 3.2
 
-On Wed, Nov 11, 2020 at 11:05 PM Joshua Watt <JPEWhacker@gmail.com> wrote:
->
->
-> On 11/11/20 3:30 PM, shantanoo.desai@gmail.com wrote:
->
-> Hi Joshua,
->
-> I would suggest adding sphinx-serve as a dev-package to serve the docs during local development/tests.
->
-> I'd be fine with that. We can see if anyone else objects, or we can also merge as is and add that as a separate patch.
+ documentation/poky.yaml | 63 ++++++-----------------------------------
+ 1 file changed, 8 insertions(+), 55 deletions(-)
 
-I never used it, but why not. I just tried it, and it worked. But it's
-definitely another patch on its own.
+-- 
+2.29.2
 
->
-> I was able to serve the Sphinx-RTD on my machine simply by executing sphinx-serve in the documentations/ folder. Maybe mention it in the README too?.
->
-> I think Pipenv might be required since I was digging into the Algolia Search Indexing and there you can use their document scraper with Pipenv as well. (see https://docsearch.algolia.com/docs/run-your-own/)
->
-> Might be worth the effort, since Nico did mention plans to use an indexing search for the new docs.
->
-> Would love your thoughts on this.
->
-> Regards,
->
-> Shan
->
->
->
->
->
-> 
->
