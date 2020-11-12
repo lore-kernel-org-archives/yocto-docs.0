@@ -1,89 +1,113 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
- by mx.groups.io with SMTP id smtpd.web11.1243.1605167548047977320
+Received: from bsmtp3.bon.at (bsmtp3.bon.at [213.33.87.17])
+ by mx.groups.io with SMTP id smtpd.web12.1990.1605173675216366972
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Nov 2020 23:52:28 -0800
+ Thu, 12 Nov 2020 01:34:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=wYmG0Zqy;
- spf=pass (domain: linaro.org, ip: 209.85.210.178, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-pf1-f178.google.com with SMTP id c66so3763397pfa.4
-        for <docs@lists.yoctoproject.org>; Wed, 11 Nov 2020 23:52:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=yFhb7Nl/ctvVkz+YNFGlSocyRz46jYo57RZ9l2MRMwE=;
-        b=wYmG0ZqyNINn/Mjk4DzQE+zaUNz3VY6IkY6v+rgVABisdR4bA+1tPZnupHis/hSiKQ
-         1Vc1KI3VyFJkkkQzEr6/dQ00prcf9Ez4f1vCUAoZTebliAHRnZBC87qOzm1ieXj2EN5X
-         VppwtVnfuGC9IptJd9s/pdA2JQJleZLQVVfaHpJFZpblQ9gIGuv5sH1lTf2fJFH8KwQQ
-         jDawB1zuTnCHl9K389Aqb8gpntfD7QoR3KqD45LTALo+Oqr0G2wT0mPa+2y0inG5sAih
-         sGYq3wLQV1Bluw7p5j8gtSKzg2CUNzmQ572uLpjj6b7ypLZewIDx9lYopTeXTM61Ef0M
-         3htQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=yFhb7Nl/ctvVkz+YNFGlSocyRz46jYo57RZ9l2MRMwE=;
-        b=KTpDvC0RgkVcFC/cQK19SqdUI22KntR2N6FzTlwkipm/pqQHnxZiPBfBRqQOHWs0r7
-         +441bGC4DEK3tdrb7absmfj6hB79Bfn4oLpk8hR9e39z7snL65L6PdtxKvV03F3Nx7KH
-         ZevjWlgziXEqrAYaI9rN/t7+HwzvQrU/yo1E2PWDm9mZhPZS/tSUMQJSIUcxkCMLeLKV
-         /1d4gtbXiwej/MQIVgzbYo0lMyTCbq8QY6UEXJZMeE2sbJPVMuPVsRZdUA4fxvVsNoQF
-         NHkYY+EiggA+DUD3yxUC7Ofk9THkZlKiu++JwtYvMLN5A5zlgo/GoKzmd1R1D/c7xbyL
-         SVVA==
-X-Gm-Message-State: AOAM531zBDbskVtQEkNrtGoiMskDuessT9WtLy2ctFWx73zW2zBkueD1
-	ECitdkEzozhIaAWY6AaKnYYQZyPNXV0rUksc
-X-Google-Smtp-Source: ABdhPJwDG2HTaosv+/JHg8ctBHqpqYfgqJF1pNA9asKCJ8Fq4yaVvqQ9t71934XIZ2UKsS24XW/cBw==
-X-Received: by 2002:a62:32c5:0:b029:158:7361:58d3 with SMTP id y188-20020a6232c50000b0290158736158d3mr26981129pfy.75.1605167547304;
-        Wed, 11 Nov 2020 23:52:27 -0800 (PST)
-Return-Path: <nicolas.dechesne@linaro.org>
-Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id c28sm5720323pfj.108.2020.11.11.23.52.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Nov 2020 23:52:26 -0800 (PST)
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-To: docs@lists.yoctoproject.org
-Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH v2 2/2] poky.yaml: updates for 3.2
-Date: Thu, 12 Nov 2020 08:52:06 +0100
-Message-Id: <20201112075206.113124-3-nicolas.dechesne@linaro.org>
-X-Mailer: git-send-email 2.29.2
-In-Reply-To: <20201112075206.113124-1-nicolas.dechesne@linaro.org>
+ dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.17, mailfrom: quentin.schulz@streamunlimited.com)
+Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
+	by bsmtp3.bon.at (Postfix) with ESMTPSA id 4CWxJT0Vj9z5tlN;
+	Thu, 12 Nov 2020 10:34:32 +0100 (CET)
+Date: Thu, 12 Nov 2020 10:34:31 +0100
+From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v2 1/2] poky.yaml: remove unused variables
+Message-ID: <20201112093431.zjubhoxishftddsd@qschulz>
 References: <20201112075206.113124-1-nicolas.dechesne@linaro.org>
+ <20201112075206.113124-2-nicolas.dechesne@linaro.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20201112075206.113124-2-nicolas.dechesne@linaro.org>
+User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Updates global variables for 3.2 / Gategarth release.
+Hi Nicolas,
 
-Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
----
-v2: fix DISTRO_NAME_NO_CAP_MINUS_ONE
+On Thu, Nov 12, 2020 at 08:52:05AM +0100, Nicolas Dechesne wrote:
+> There are plenty of variables in poky.yaml which are not used anywhere
+> in the docs. So let's remove them. We can always add the one we need
+> later.
+> 
+> Note ORGEMAIL could be used in boilerplate.rst, however this file is
+> not parsed but included, and somehow the yocto-vars.py exenstion does
+> not process this file, so we cannot use a variable there.
+> 
+> Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+> ---
+>  documentation/poky.yaml | 47 -----------------------------------------
+>  1 file changed, 47 deletions(-)
+> 
+> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+> index e39c403fe..85f42cf07 100644
+> --- a/documentation/poky.yaml
+> +++ b/documentation/poky.yaml
+> @@ -1,62 +1,15 @@
+>  DISTRO : "3.1"
+> -DISTRO_COMPRESSED : "31"
+>  DISTRO_NAME_NO_CAP : "dunfell"
+>  DISTRO_NAME : "Dunfell"
+>  DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
+> -DISTRO_NAME_MINUS_ONE : "Zeus"
+>  YOCTO_DOC_VERSION : "3.1"
+>  YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
+>  DISTRO_REL_TAG : "yocto-3.1"
+> -METAINTELVERSION : "12.0"
+> -REL_MONTH_YEAR : "April 2020"
+> -META_INTEL_REL_TAG : "&METAINTELVERSION;-&DISTRO_NAME_NO_CAP;-&YOCTO_DOC_VERSION;"
+>  POKYVERSION : "23.0.0"
+> -POKYVERSION_COMPRESSED : "2300"
+>  YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+> -COPYRIGHT_YEAR : "2010-2020"
+> -ORGNAME : "The Yocto Project"
+> -ORGEMAIL : "docs@lists.yoctoproject.org"
+>  YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+> -YOCTO_HOME_URL : "https://www.yoctoproject.org"
+> -YOCTO_LISTS_URL : "https://lists.yoctoproject.org"
+> -YOCTO_BUGZILLA_URL : "https://bugzilla.yoctoproject.org"
+> -YOCTO_WIKI_URL : "https://wiki.yoctoproject.org"
+>  YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+> -YOCTO_GIT_URL : "https://git.yoctoproject.org"
+> -YOCTO_ADTREPO_URL : "http://adtrepo.yoctoproject.org"
+> -OE_HOME_URL : "https://www.openembedded.org"
+> -OE_LISTS_URL : "https://lists.openembedded.org"
+> -OE_DOCS_URL : "https://docs.openembedded.org"
+> -OH_HOME_URL : "http://o-hand.com"
+> -BITBAKE_HOME_URL : "http://developer.berlios.de/projects/bitbake/"
+> -YOCTO_DOCS_URL : "&YOCTO_HOME_URL;/docs"
+> -YOCTO_SOURCES_URL : "&YOCTO_HOME_URL;/sources/"
+> -YOCTO_AB_PORT_URL : "https://autobuilder.yocto.io/"
+> -YOCTO_AB_NIGHTLY_URL : "&YOCTO_AB_PORT_URL;/pub/nightly/"
+> -YOCTO_POKY_URL : "&YOCTO_DL_URL;/releases/poky/"
+>  YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+> -YOCTO_TOOLCHAIN_DL_URL : "&YOCTO_RELEASE_DL_URL;/toolchain/"
+> -YOCTO_ADTINSTALLER_DL_URL : "&YOCTO_RELEASE_DL_URL;/adt-installer"
+> -YOCTO_POKY_DL_URL : "&YOCTO_RELEASE_DL_URL;/&YOCTO_POKY;.tar.bz2"
+> -YOCTO_MACHINES_DL_URL : "&YOCTO_RELEASE_DL_URL;/machines"
+> -YOCTO_QEMU_DL_URL : "&YOCTO_MACHINES_DL_URL;/qemu"
+> -YOCTO_PYTHON-i686_DL_URL : "&YOCTO_DL_URL;/releases/miscsupport/python-nativesdk-standalone-i686.tar.bz2"
+> -YOCTO_PYTHON-x86_64_DL_URL : "&YOCTO_DL_URL;/releases/miscsupport/python-nativesdk-standalone-x86_64.tar.bz2"
+> -YOCTO_DOCS_QS_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/yocto-project-qs/yocto-project-qs.html"
+> -YOCTO_DOCS_REF_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/ref-manual/ref-manual.html"
+> -YOCTO_DOCS_BSP_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/bsp-guide/bsp-guide.html"
+> -YOCTO_DOCS_DEV_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/dev-manual/dev-manual.html"
+> -YOCTO_DOCS_KERNEL_DEV_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/kernel-dev/kernel-dev.html"
+> -YOCTO_DOCS_PROF_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/profile-manual/profile-manual.html"
+> -YOCTO_DOCS_MM_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/mega-manual/mega-manual.html"
+> -YOCTO_DOCS_BB_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/bitbake-user-manual/bitbake-user-manual.html"
+> -YOCTO_DOCS_TOAST_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/toaster-manual/toaster-manual.html"
+> -YOCTO_DOCS_SDK_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/sdk-manual/sdk-manual.html"
+> -YOCTO_DOCS_OM_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/overview-manual/overview-manual.html"
+> -YOCTO_DOCS_BRIEF_URL : "&YOCTO_DOCS_URL;/&YOCTO_DOC_VERSION;/brief-yoctoprojectqs/brief-yoctoprojectqs.html"
+> -YOCTO_ADTPATH_DIR : "/opt/poky/&DISTRO;"
+> -YOCTO_POKY_TARBALL : "&YOCTO_POKY;.tar.bz2"
+> -OE_INIT_PATH : "&YOCTO_POKY;/oe-init-build-env"
 
- documentation/poky.yaml | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+That's a lot of variables removed... Are you sure they are never used?
+(compile with and without this change, and diff the html).
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 85f42cf07..e184fa829 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,11 +1,11 @@
--DISTRO : "3.1"
--DISTRO_NAME_NO_CAP : "dunfell"
--DISTRO_NAME : "Dunfell"
--DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
--YOCTO_DOC_VERSION : "3.1"
--YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
--DISTRO_REL_TAG : "yocto-3.1"
--POKYVERSION : "23.0.0"
-+DISTRO : "3.2"
-+DISTRO_NAME_NO_CAP : "gatesgarth"
-+DISTRO_NAME : "Gatesgarth"
-+DISTRO_NAME_NO_CAP_MINUS_ONE : "dunfell"
-+YOCTO_DOC_VERSION : "3.2"
-+YOCTO_DOC_VERSION_MINUS_ONE : "3.1.3"
-+DISTRO_REL_TAG : "yocto-3.2"
-+POKYVERSION : "24.0.0"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
--- 
-2.29.2
+Just to be sure I didn't misunderstood the usecase for those variables:
+it is so we can have "dynamic" values in litteral blocks (:: and maybe
+others?), because those in yocto-vars.py don't work IIRC (they are not
+"translated", i.e. :yocto_git:`/` will be put as isin the litteral block).
 
+Quentin
