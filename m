@@ -1,63 +1,53 @@
 Received: from bsmtp3.bon.at (bsmtp3.bon.at [213.33.87.17])
- by mx.groups.io with SMTP id smtpd.web12.2007.1605173818970983655
+ by mx.groups.io with SMTP id smtpd.web08.1978.1605174123963337718
  for <docs@lists.yoctoproject.org>;
- Thu, 12 Nov 2020 01:36:59 -0800
+ Thu, 12 Nov 2020 01:42:04 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.17, mailfrom: quentin.schulz@streamunlimited.com)
 Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp3.bon.at (Postfix) with ESMTPSA id 4CWxMB2yjnz5tlC;
-	Thu, 12 Nov 2020 10:36:54 +0100 (CET)
-Date: Thu, 12 Nov 2020 10:36:53 +0100
+	by bsmtp3.bon.at (Postfix) with ESMTPSA id 4CWxT50PwBz5tlM;
+	Thu, 12 Nov 2020 10:42:01 +0100 (CET)
+Date: Thu, 12 Nov 2020 10:41:59 +0100
 From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
 To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2 2/2] poky.yaml: updates for 3.2
-Message-ID: <20201112093652.el5pz2dw2nkz3ick@qschulz>
-References: <20201112075206.113124-1-nicolas.dechesne@linaro.org>
- <20201112075206.113124-3-nicolas.dechesne@linaro.org>
+Cc: Joshua Watt <JPEWhacker@gmail.com>, shantanoo.desai@gmail.com,
+	YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] documentation: Add Pipenv support
+Message-ID: <20201112094159.zhmmc6vyjwx6k2ri@qschulz>
+References: <20201110212917.25172-1-JPEWhacker@gmail.com>
+ <27534.1605130210340595078@lists.yoctoproject.org>
+ <f4daa05e-8aa6-c817-fe51-910c0f9d0a69@gmail.com>
+ <CAP71WjydMC_00a6YMWo77Pv39C7hwMYoVJt_sOOTsF5U1rxc6g@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <20201112075206.113124-3-nicolas.dechesne@linaro.org>
+In-Reply-To: <CAP71WjydMC_00a6YMWo77Pv39C7hwMYoVJt_sOOTsF5U1rxc6g@mail.gmail.com>
 User-Agent: NeoMutt/20180716
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-Hi Nicolas,
-
-On Thu, Nov 12, 2020 at 08:52:06AM +0100, Nicolas Dechesne wrote:
-> Updates global variables for 3.2 / Gategarth release.
+On Thu, Nov 12, 2020 at 08:29:34AM +0100, Nicolas Dechesne wrote:
+> hey Shan,
 > 
-> Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-> ---
-> v2: fix DISTRO_NAME_NO_CAP_MINUS_ONE
+> can you please avoid top posting and using html for emails to the
+> list? this makes it harder for us to follow.
 > 
->  documentation/poky.yaml | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
+> On Wed, Nov 11, 2020 at 11:05 PM Joshua Watt <JPEWhacker@gmail.com> wrote:
+> >
+> >
+> > On 11/11/20 3:30 PM, shantanoo.desai@gmail.com wrote:
+> >
+> > Hi Joshua,
+> >
+> > I would suggest adding sphinx-serve as a dev-package to serve the docs during local development/tests.
+> >
+> > I'd be fine with that. We can see if anyone else objects, or we can also merge as is and add that as a separate patch.
 > 
-> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-> index 85f42cf07..e184fa829 100644
-> --- a/documentation/poky.yaml
-> +++ b/documentation/poky.yaml
-> @@ -1,11 +1,11 @@
-> -DISTRO : "3.1"
-> -DISTRO_NAME_NO_CAP : "dunfell"
-> -DISTRO_NAME : "Dunfell"
-> -DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
-> -YOCTO_DOC_VERSION : "3.1"
-> -YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
-> -DISTRO_REL_TAG : "yocto-3.1"
-> -POKYVERSION : "23.0.0"
-> +DISTRO : "3.2"
-> +DISTRO_NAME_NO_CAP : "gatesgarth"
-> +DISTRO_NAME : "Gatesgarth"
-> +DISTRO_NAME_NO_CAP_MINUS_ONE : "dunfell"
-> +YOCTO_DOC_VERSION : "3.2"
-> +YOCTO_DOC_VERSION_MINUS_ONE : "3.1.3"
-> +DISTRO_REL_TAG : "yocto-3.2"
+> I never used it, but why not. I just tried it, and it worked. But it's
+> definitely another patch on its own.
+> 
 
-DISTRO_REL_TAG : "yocto-&DISTRO;"
-?
-
-Provided DISTRO is bumped for dot releases too?
+What's the benefit over using `python3 -m http.server` or `python -m
+SimpleHTTPServer`? (since those are part of the python standard library
+AFAICT, no need to install new packages).
 
 Thanks,
 Quentin
