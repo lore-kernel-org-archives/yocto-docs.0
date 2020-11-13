@@ -1,117 +1,82 @@
-Received: from mail-yb1-f173.google.com (mail-yb1-f173.google.com [209.85.219.173])
- by mx.groups.io with SMTP id smtpd.web08.2217.1605261012735632601
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+ by mx.groups.io with SMTP id smtpd.web09.2157.1605261281667682842
  for <docs@lists.yoctoproject.org>;
- Fri, 13 Nov 2020 01:50:12 -0800
+ Fri, 13 Nov 2020 01:54:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=BoOzh3hU;
- spf=pass (domain: linaro.org, ip: 209.85.219.173, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f173.google.com with SMTP id l14so4038242ybq.3
-        for <docs@lists.yoctoproject.org>; Fri, 13 Nov 2020 01:50:12 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=THMxLG5j;
+ spf=pass (domain: konsulko.com, ip: 209.85.221.46, mailfrom: pbarker@konsulko.com)
+Received: by mail-wr1-f46.google.com with SMTP id r17so9115399wrw.1
+        for <docs@lists.yoctoproject.org>; Fri, 13 Nov 2020 01:54:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=paLZLB2YvMwjw3ATYmC6jqWzMts/uF7Tq1uiaOS5FP4=;
-        b=BoOzh3hU0awmrwTZzTbdJO5ajxa+DqLR5IHddCPW0vPI/nvOVTy2NhfZAX+wWpe4f9
-         vuhWO0M5zYIyV5M8wXjMED2Py91ewUB8uQ3Oop918hFHWTMUkK0mvXZD2ZvcI3JF4/mo
-         9H1QFdT9TifPrB99O0SF83MDlkc8R+xxR8z5fr1hj7NFgbmEfAfjbozNEPzPyR6cr06U
-         dfLcxLlky573dTx1OkktWWmVw/WB/72h0hqS319wyaMHSLANbf/UXjV22C/iR+SSe9vh
-         TaO5eTKfnHdPZeLEteBGxHNGs6vvGtbXYN93opWeVmyeZLiQBgDp67PJ0PyO6PBPbeXe
-         YA7A==
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nHqOwNQXItBcGRFl6WGqSx2MvZkpKTLaz1lvnYu6lwk=;
+        b=THMxLG5j5q5KY1BzO4J7UHmSzFXuwzzxP3wfLyhy5Ka2VpsDaMY8wVsoK+y/cjzZlI
+         iXWtzsWLfpqsfYcwDL5jkKL5MELrmebzfzLM2zbSVi3SGxcmq0wibOVGqcPtKjfQR2Nc
+         yguesGyp+ZU82EHb0Y71g0r7k/MS3Qdfs+sqk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=paLZLB2YvMwjw3ATYmC6jqWzMts/uF7Tq1uiaOS5FP4=;
-        b=PEYxN+LvsWxfD5B021hR58OWkIs/3cf8N/m2tqBLmgwChHSb9c/iMEKOeBrdZ63+FI
-         Tk9ORASHkLkU42NQIj7vb7g07uWBGS5oA49uoSpog5yq9E9XyIlZ1FZQuvFYc+k4V+o8
-         hIaTEsiyh1rY/6muxPkhl+bIG7pJOxeS+mfVXpGrko/+O+D/6JwMj6XQs+iVJCXEbqcd
-         HC1gU78IGzTEndNzrKKuLytMr4X2OCcD9g8DUvJF/4u5TOWGOsWUSqSDMyq/mANQ1S/f
-         KPr1PUIWE7GGGcWsGVKBAkEhd65orvrTy6WCYKhL5qNYSD1YB1GdLgMAcxKc0fvCHq5x
-         crDw==
-X-Gm-Message-State: AOAM5326umAQttYIoH0LQE+0cQAu9RRFCghna+s/a+MXDhid99UJIQVg
-	CxFvS+BTaCnfCuUQRd7S1PwomuhnTWK9dN27QFDN+Q==
-X-Google-Smtp-Source: ABdhPJw7MhC82it8t4KYC9vwF4tFuwKmR7JHOuTNgEbAEd3Od47C0KonAoENVDmgbqjmxbxfuJ2W1NTQDMI79nG8jik=
-X-Received: by 2002:a25:6e8b:: with SMTP id j133mr1677938ybc.273.1605261011637;
- Fri, 13 Nov 2020 01:50:11 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=nHqOwNQXItBcGRFl6WGqSx2MvZkpKTLaz1lvnYu6lwk=;
+        b=sGS4zAowteuzkAy/up3SGMdl+0TBoSywTfqPyKqKCHAsWmmPZrXnw1ihfEzKsXswp/
+         6GS8XqxuSY7+XkWL/Z9pLdFJFMfuhN09LFc9CLCMyGIit75BiRO3g3z8uALk1AK90IZG
+         /X4ubjm5CeL1ih6XlwOlNnhJ/IvueOKLQ1tpPYb/tJM5Dp6UgRoR5y54rdGZlF5JxR07
+         cowLMdvFTqjJX9typJAuWvwLbLJzIrf7EGYtUyR3fT1Ya4VaRynfQnKcEVz82S2bZq+p
+         HyLzn5hllRC4IFk5Z/5PDHAOq4VKG2+pXK6xMY5tObeyNHttlpa90t0JMVu6jUC2YG1C
+         l+Lw==
+X-Gm-Message-State: AOAM530Tx1gK5lP9DpoF1S/x9X5CShtCca5sI9CZFDivjOzuVseov0Lb
+	VYA7HSpUUe6R/7j5txNi1Uz4uXDTpREdxw==
+X-Google-Smtp-Source: ABdhPJz1o/uS6pCIcA6Xgg7XL/4dHE42TS8W0jL2sXzTY9jBIw8VtVmGBhzvg6VdfYuMk1r87CzvMw==
+X-Received: by 2002:adf:f181:: with SMTP id h1mr2274722wro.267.1605261279933;
+        Fri, 13 Nov 2020 01:54:39 -0800 (PST)
+Return-Path: <pbarker@konsulko.com>
+Received: from deb10.home.b5net.uk (cpc76132-clif11-2-0-cust249.12-4.cable.virginm.net. [80.7.160.250])
+        by smtp.gmail.com with ESMTPSA id f20sm8886036wmc.26.2020.11.13.01.54.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Nov 2020 01:54:39 -0800 (PST)
+From: "Paul Barker" <pbarker@konsulko.com>
+To: docs@lists.yoctoproject.org,
+	Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: Paul Barker <pbarker@konsulko.com>
+Subject: [PATCH] conf.py: Improve TOC and Outline depth in PDF output
+Date: Fri, 13 Nov 2020 09:54:31 +0000
+Message-Id: <20201113095431.7425-1-pbarker@konsulko.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-References: <CAP71Wjy7eBbs3X4PWtXFeFGM3G1cxC7AejE4g+vtDW=jZwF7HA@mail.gmail.com>
- <29331cdb3acac797206206435262c8dd34000c14.camel@linuxfoundation.org>
-In-Reply-To: <29331cdb3acac797206206435262c8dd34000c14.camel@linuxfoundation.org>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Fri, 13 Nov 2020 10:50:00 +0100
-Message-ID: <CAP71Wjw=d6BhDKqNuvFxwoYZgRxCrmw58nWeiOQeESdFqBJj-A@mail.gmail.com>
-Subject: Re: [docs] pdf output for Sphinx
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Fri, Nov 13, 2020 at 10:35 AM Richard Purdie
-<richard.purdie@linuxfoundation.org> wrote:
->
-> On Fri, 2020-11-13 at 09:31 +0100, Nicolas Dechesne wrote:
-> > I just tried for the first time building a PDF from the Sphinx docs..
-> > it's not bad at all.. Of course it's *different* from what we used to
-> > have. In the previous docs system, each 'manual' was its own
-> > standalone 'book' or project, so we had one 'web page' and one 'pdf'
-> > for each manual or book.
-> >
-> > The approach we decided to follow with Sphinx, is that we have one
-> > docs project that includes all our document files (books/manual,...).
-> >
-> > Then, obviously, when we generate a PDF output from Sphinx, we get a
-> > single PDF file with the project's entire documentation, instead of
-> > many PDF files.
-> >
-> > Just running make latexpdf into the docs folder generated this PDF
-> > file:
-> >
-> > https://people.linaro.org/~nicolas.dechesne/theyoctoproject.pdf
-> >
-> > It's a 7MB file, with ~800 pages.. My very first impression is that
-> > it looks really good, and to be honest, having all docs in a single
-> > file might even be better, from a user perspective.. If you open with
-> > a PDF viewer, you should see the 'outline' that looks like our 'left
-> > menu' on the website, you can search any term...
-> >
-> > I have done no customization at all, I am sure we can customize the
-> > header/footer and improve a few things..
-> >
-> > I had a very large number of warnings during the build, which I have
-> > ignored for now ;)
-> >
-> > I also ran "make latexpdf" in the bitbake docs..:
-> > https://people.linaro.org/~nicolas.dechesne/bitbake.pdf
-> >
-> > Feedback?
->
-> I think it looks good, I like it. We should start generating and
-> publishing them.
+The default PDF output shows only chapter headings in the table of
+contents and in the outline (aka PDF bookmarks). We should override
+these defaults to set something more suitable.
 
-We need to play with the pdf theme/option first (a logo on the first page, ...)
+With a depth of 2 for the TOC we see both section and subsection
+headings which is enough to get the list of classes in the reference
+manual and the list of topics under "Common Tasks" in the development
+manual. Going to a deeper level would make the TOC unwieldy but we do
+want to make sure we can navigate more precisely using the outline
+(commonly shown in a left tab in PDF viewers) so we set the depth to 5
+for the outline.
 
->
-> I was thinking we may want to publish pdfs of the individual manuals
-> too. I suspect that may be possible with a little creative juggling of
-> the files but I know how much you love my crazy scripting around things
-> like this! ;-)
->
-> I'm torn on whether need to or not. 7MB for 800 pages is good going.
+Signed-off-by: Paul Barker <pbarker@konsulko.com>
+---
+ documentation/conf.py | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-I think it expects one entry page (e.g. index.rst) per PDF doc. so we
-could tweak that a bit indeed. We would need to override index.rst to
-generate each 'book'. But cross reference between 'book' would become
-HTTP links (to docs.yp.org). With a single book, you can follow cross
-references within the 'big manual'. If you search for Bitbake terms in
-the current PDF, you will see they are links to bitbake html docs.
-That kind of goes against the idea of having the PDF as a local copy.
-In fact I would argue whether we should include the bitbake manual in
-the same PDF :)
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 9a0186f35..a8df6e8f8 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -124,3 +124,8 @@ html_last_updated_fmt = '%b %d, %Y'
+ 
+ # Remove the trailing 'dot' in section numbers
+ html_secnumber_suffix = " "
++
++latex_elements = {
++    'passoptionstopackages': '\PassOptionsToPackage{bookmarksdepth=5}{hyperref}',
++    'preamble': '\setcounter{tocdepth}{2}',
++}
+-- 
+2.20.1
 
->
-> Cheers,
->
-> Richard
->
->
->
