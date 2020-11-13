@@ -1,104 +1,77 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
- by mx.groups.io with SMTP id smtpd.web08.2116.1605260154295372072
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+ by mx.groups.io with SMTP id smtpd.web10.2067.1605260761129839943
  for <docs@lists.yoctoproject.org>;
- Fri, 13 Nov 2020 01:35:54 -0800
+ Fri, 13 Nov 2020 01:46:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=bKcG3NHq;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.47, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f47.google.com with SMTP id s13so7767653wmh.4
-        for <docs@lists.yoctoproject.org>; Fri, 13 Nov 2020 01:35:54 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=gRxNKLTe;
+ spf=pass (domain: konsulko.com, ip: 209.85.210.42, mailfrom: paul.barker@konsulko.com)
+Received: by mail-ot1-f42.google.com with SMTP id a15so8436887otf.5
+        for <docs@lists.yoctoproject.org>; Fri, 13 Nov 2020 01:46:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=Cm6m4fPc5rc0/KgbMUBU0msLiqSfui4JZIHS+awQtEs=;
-        b=bKcG3NHqcRA6+TL92kaWzeUyDWDWQRDc/p91WndIhywkzK0DSqcRkdDAWFLferiShv
-         83dK2FbzOlYJ7W00Lxp6Cp60FbP4S+NO5rxJXRqGlHS03llzW9NpLs1ReoGZY9EPYPfD
-         RXsBmSN1cm/bSCncUkCzGK00mlq+TuJR0I8ec=
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=WOgbUhw63SqwM1YtTOTNNcooiICXC9NT/OpSrJkHNT4=;
+        b=gRxNKLTesmAL11pALTAUUZufPewFANvUNx1ZHjPkwACoyt0bhpDmMjOTeaKKo2L9na
+         YlMaZvPY4Pj1p1yka+EyIrQNILkqkzow3HBrrpuC3htmAhMsV2YBY0zQP30yuu41fKYp
+         xmqg4IvTrlK07J+Qkgz02k4UgM8iUm6iP7ESY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=Cm6m4fPc5rc0/KgbMUBU0msLiqSfui4JZIHS+awQtEs=;
-        b=NO/dt+lFAs1xCTVEaNZxLaBMVKSQSLfjgbr90amfujLKgwaUof7Q6NBlxS2V2QtkvJ
-         Wo6GDZqn9/alfuec8yTg/IGhhl829YsFvRbdLIkodrF1WYoRCaGslNH9vYzPWHIZ/GuG
-         FdG4hPCfNvOBhJIBJ2SBr1kaVRzO6ISwbjmEtesYe/ty+ugglfXz12SamhrWFb9p4Tcn
-         gq+5/8Y9ayKfNJqeW+tCw3TOj/DFePjw5WgK/VRCQfwEXV0SnTGlDbNWVYXlkY8qIPk+
-         GWawIUJbGAnNBo/Tuyy+uwWTEKBTifu7D2IjhJL9PHjyKUuHUIBcAR/q0wT+nt+fLwsy
-         USRA==
-X-Gm-Message-State: AOAM532XvWr4/EIoVoNnIJ14NnnibiVcQzDLd76n3usc1eae9UqJRmw4
-	nqJIivxr53LZHPFn9fK/VBGLbA==
-X-Google-Smtp-Source: ABdhPJwIFWmK8ac4nuUdYnU/qHq3x9tFb1kLiRQg//c3yacn14ghXDZP5AAC6PAOdPQnkBzv73NcjA==
-X-Received: by 2002:a05:600c:2110:: with SMTP id u16mr1601880wml.4.1605260152558;
-        Fri, 13 Nov 2020 01:35:52 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from e.3.a.b.8.4.f.3.4.e.5.7.b.c.8.4.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (e.3.a.b.8.4.f.3.4.e.5.7.b.c.8.4.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:48cb:75e4:3f48:ba3e])
-        by smtp.gmail.com with ESMTPSA id o184sm9493542wmo.37.2020.11.13.01.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Nov 2020 01:35:52 -0800 (PST)
-Message-ID: <29331cdb3acac797206206435262c8dd34000c14.camel@linuxfoundation.org>
-Subject: Re: [docs] pdf output for Sphinx
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, YP docs mailing list
-	 <docs@lists.yoctoproject.org>
-Date: Fri, 13 Nov 2020 09:35:49 +0000
-In-Reply-To: <CAP71Wjy7eBbs3X4PWtXFeFGM3G1cxC7AejE4g+vtDW=jZwF7HA@mail.gmail.com>
-References: 
-	<CAP71Wjy7eBbs3X4PWtXFeFGM3G1cxC7AejE4g+vtDW=jZwF7HA@mail.gmail.com>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=WOgbUhw63SqwM1YtTOTNNcooiICXC9NT/OpSrJkHNT4=;
+        b=ILvTzXlcKOCvv8te+h3cakrqQggw/2BoEMLlAW3IkS0DQXYBstZHJhHrB+x4GrpdAd
+         4IUBeVM+6s6pxpaiIqRtAUzCF6jx7Nt/mGWqD4HfpR6JTBcO8nVfh8PxEMLuzDzIPUnV
+         pD/dvo0BMjhddIIhDvO2MPn2u/hnz1EVN24KnFtJ+dq7vnK+G7oWUlmOVz2LUsG8p/w5
+         ub0os2UPMPJWsI7S6XjQEHdv+zTwzjtGvSte6AMO773bLRTYN8CICj7j97WJjAylusLC
+         NEHEk1YwqXEYRnniym1O6ScVaAf78BUZTtnb5NDT3wdk2t2gTRLxpEdtBh2cqN4hvMc7
+         5LSA==
+X-Gm-Message-State: AOAM5305yPN61+i9PeCEWDh5R55NezCVnwTi7oNbZdC6iayAjkCNn3+1
+	PquFukpiJDYR6AilK3zRHEIpJsURcMTlTgzPyIBhZg==
+X-Google-Smtp-Source: ABdhPJxLG5ZAowwzGs3npELMm848nqt6WlinQI9+ZL8u3/6Zc6GO7tzu/CP39zRwMEAQ8L7GQbXdoLvQtOi68Ir7IlA=
+X-Received: by 2002:a05:6830:1b66:: with SMTP id d6mr960369ote.258.1605260760434;
+ Fri, 13 Nov 2020 01:46:00 -0800 (PST)
 MIME-Version: 1.0
+References: <CAP71Wjy7eBbs3X4PWtXFeFGM3G1cxC7AejE4g+vtDW=jZwF7HA@mail.gmail.com>
+In-Reply-To: <CAP71Wjy7eBbs3X4PWtXFeFGM3G1cxC7AejE4g+vtDW=jZwF7HA@mail.gmail.com>
+From: "Paul Barker" <pbarker@konsulko.com>
+Date: Fri, 13 Nov 2020 09:45:51 +0000
+Message-ID: <CAM9ZRVu+ko3WhKNSvkanqXWbdWfVLn_g4X9Nk65NAW5MRGzVZw@mail.gmail.com>
+Subject: Re: [docs] pdf output for Sphinx
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
 
-On Fri, 2020-11-13 at 09:31 +0100, Nicolas Dechesne wrote:
+On Fri, 13 Nov 2020 at 08:32, Nicolas Dechesne
+<nicolas.dechesne@linaro.org> wrote:
+>
+> hi there,
+>
 > I just tried for the first time building a PDF from the Sphinx docs..
 > it's not bad at all.. Of course it's *different* from what we used to
 > have. In the previous docs system, each 'manual' was its own
 > standalone 'book' or project, so we had one 'web page' and one 'pdf'
 > for each manual or book.
-> 
+>
 > The approach we decided to follow with Sphinx, is that we have one
 > docs project that includes all our document files (books/manual,...).
-> 
+>
 > Then, obviously, when we generate a PDF output from Sphinx, we get a
 > single PDF file with the project's entire documentation, instead of
 > many PDF files.
-> 
-> Just running make latexpdf into the docs folder generated this PDF
-> file:
-> 
+>
+> Just running make latexpdf into the docs folder generated this PDF file:
+>
 > https://people.linaro.org/~nicolas.dechesne/theyoctoproject.pdf
-> 
-> It's a 7MB file, with ~800 pages.. My very first impression is that
-> it looks really good, and to be honest, having all docs in a single
-> file might even be better, from a user perspective.. If you open with
-> a PDF viewer, you should see the 'outline' that looks like our 'left
-> menu' on the website, you can search any term...
-> 
-> I have done no customization at all, I am sure we can customize the
-> header/footer and improve a few things..
-> 
-> I had a very large number of warnings during the build, which I have
-> ignored for now ;)
-> 
-> I also ran "make latexpdf" in the bitbake docs..:
-> https://people.linaro.org/~nicolas.dechesne/bitbake.pdf
-> 
-> Feedback?
+>
+> It's a 7MB file, with ~800 pages.. My very first impression is that it
+> looks really good, and to be honest, having all docs in a single file
+> might even be better, from a user perspective.. If you open with a PDF
+> viewer, you should see the 'outline' that looks like our 'left menu'
+> on the website, you can search any term...
 
-I think it looks good, I like it. We should start generating and
-publishing them.
+Looks good, patch incoming to fix the TOC and outline depths....
 
-I was thinking we may want to publish pdfs of the individual manuals
-too. I suspect that may be possible with a little creative juggling of
-the files but I know how much you love my crazy scripting around things
-like this! ;-) 
-
-I'm torn on whether need to or not. 7MB for 800 pages is good going.
-
-Cheers,
-
-Richard
-
-
-
+-- 
+Paul Barker
+Konsulko Group
