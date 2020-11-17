@@ -1,20 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web11.10777.1605631435372957265
+ by mx.groups.io with SMTP id smtpd.web09.11498.1605634580230931967
  for <docs@lists.yoctoproject.org>;
- Tue, 17 Nov 2020 08:43:55 -0800
+ Tue, 17 Nov 2020 09:36:20 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:33252 helo=localhost.localdomain)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:33412 helo=localhost.localdomain)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.93)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1kf45B-0003JE-KP
-	for docs@lists.yoctoproject.org; Tue, 17 Nov 2020 11:43:54 -0500
-Date: Tue, 17 Nov 2020 11:43:51 -0500 (EST)
+	id 1kf4tu-0004xb-O9
+	for docs@lists.yoctoproject.org; Tue, 17 Nov 2020 12:36:19 -0500
+Date: Tue, 17 Nov 2020 12:36:16 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: clarifying the variations of BBMASK
-Message-ID: <8eb9ab43-974b-3fa2-4335-e13e2044bb61@crashcourse.ca>
+Subject: couple more observations about bbappend and BBMASKing
+Message-ID: <7db04884-5aad-bb6f-e169-d4aa276cb3e@crashcourse.ca>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -30,46 +30,47 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-  as i've rarely needed to BBMASK stuff, i learned a couple things
-today when a colleague brought me some masking that could use some
-highlighting in the docs, methinks.
+  i'll throw this out there as possible enhancements to the docs as
+i've run across this on an occasional basis.
 
-  first, all of his BBMASKing was of the form:
+  consider, say, an OE recipe "fubar" that, among other things,
+defines SRC_URI to include a couple standard files that it installs in
+the normal places:
 
-  BBMASK += "|layer stuff ..."
+  SRC_URI = "... \
+		fubar.service \
+		fubar.conf \
+		... "
 
-that is, every value prefixed with "|". since the bitbake user manual
-does state that BBMASK supports Python REs, i guess it takes only a
-few seconds to realize that you *can* do that, or just leave spaces
-between patterns with:
+  first observation is that it is, of course, reasonable to define a
+file "fubar_%.bbappend" file to override those two files but, on
+occasion, i've seen a bbappend file of the form
 
-  BBMASK += "layer stuff ..."
+fubar_%.bbappend
 
-a more obvious observation would be for the BB manual to actually show
-some examples that use "|" in a practical way, as none of the examples
-there do that.
+  FILESEXTRAPATHS_prepend := "${THISDIR}/files:"
+  SRC_URI += "fubar.conf fubar.service"
 
-  what i did find surprising was that (apparently, and feel free to
-correct me) wildcarding was automatically applied to the end of a
-string. i noticed this as my colleague was trying to BBMASK a
-directory named "protobuf", and specified:
+  do_install_append() {
+	... whatever ...
+  }
 
-  BBMASK += "|.../protobuf"
+it is, of course, unnecessary to append those two files to SRC_URI as
+they are *already* part of SRC_URI from the original recipe, but it is
+surprising how many people i've run into who don't know that, and
+assume they *always* need to append to SRC_URI whatever files they're
+supplying with their bbappend processing. (doesn't hurt, of course,
+but it does demonstrate a misunderstanding of how SRC_URI works.)
 
-not realizing that it would also mask the sibling directory
-"protobuf-rpc". the BB manual does indirectly hint at that issue,
-writing, "When specifying a directory name, use the trailing slash
-character to ensure you match just that directory name," but a good
-example of that would be, i think, straight out of oe-core, showing
-that:
+  also, with respect to BBMASKing, i have on occasion seen someone
+who, when starting a project, decides they don't need the
+do_install_append() from fubar.bbappend but *do* still want the custom
+files, and proceed to BBMASK that fubar.bbappend file, not realizing
+that by BBMASKing the bbappend file, they're taking out the
+FILESEXTRAPATHS... line, thereby de-activating the custom files and
+reverting to the original ones.
 
-  BBMASK += ".../recipes-support/libcap"
-
-would unfortunately also BBMASK libcap-ng (hence the caution to use a
-trailing slash to lock it to the directory name).
-
-  so as long as i've understood all this, that explanation in the BB
-manual seems like it could use a couple more examples. or have i
-misread?
+  thoughts? is any of the above worth adding a bit more about?
 
 rday
+
