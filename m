@@ -1,94 +1,75 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
- by mx.groups.io with SMTP id smtpd.web11.33689.1605527600329596550
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web11.10777.1605631435372957265
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Nov 2020 03:53:20 -0800
+ Tue, 17 Nov 2020 08:43:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Dgmcs8+Y;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.47, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f47.google.com with SMTP id o15so18373903wru.6
-        for <docs@lists.yoctoproject.org>; Mon, 16 Nov 2020 03:53:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=ALuK3hS/874N6I0Ma5lmVVMUdgoTOgTBFZ+wxJV///U=;
-        b=Dgmcs8+YfHhB7OhK1dF/y5/VpH4e0h8LXAQ9uK4yGa7s52EvRuMUy3D0Aisl5RtPrd
-         XmiDnLazmPWQa+kKFbHPmBJ0om7j8jjNpTBTuoreUkA9Imv3Hy0yDkf5x55wF6ZocGSm
-         +UazW650SpnZFJeNBH2Enz+9pxJarCH8CqGMI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=ALuK3hS/874N6I0Ma5lmVVMUdgoTOgTBFZ+wxJV///U=;
-        b=HsjHtIlmno9fXVj140NZ42OZgyX4xTqDEE+uKNGtBmPfX/lR2LIWV18wdUHtH9+ara
-         1oj9400xwKJYxO+36a3halkEr4xptZkgmLDE6F4lHXGpbRlJvVVHfCP77TVkJ7+d3vkm
-         Iat1derG+A89VxvACLk6CFxN6VbMtRot+rAj275XSc/FONnqWxZ1NQI9Er6meA4v/9Go
-         qXTxtZ19LI2hLKZpn7TTKs6s2fISeC5GmvdeYCeXU0PrBgXXZGnLhb8bV6pRr0haAD4v
-         EfFudO9V8gpSeudXlBXbGyY8N/xjiS7gtbZOpCFEqIV3IZGbFxF4zFYyn8ED/X3R3tC5
-         stVA==
-X-Gm-Message-State: AOAM530z4P8cmREgE0gMC3eYLelaPiplHUQtoz9lAZPurqevGs0hafL/
-	35KaGoSp8UiKi7kbrk4PwzS4QA==
-X-Google-Smtp-Source: ABdhPJz9aJX5XfGO94+TggYiYV5+q4+mBr8ABWYAqrUBrneZcqOto9vXiRw9PI8UtyYGfE9OITxtRA==
-X-Received: by 2002:adf:fd0e:: with SMTP id e14mr18543838wrr.119.1605527598600;
-        Mon, 16 Nov 2020 03:53:18 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from 2.2.2.0.7.3.f.1.3.6.f.f.7.9.4.9.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (2.2.2.0.7.3.f.1.3.6.f.f.7.9.4.9.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:9497:ff63:1f37:222])
-        by smtp.gmail.com with ESMTPSA id n23sm19533370wmk.24.2020.11.16.03.53.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Nov 2020 03:53:18 -0800 (PST)
-Message-ID: <7b59797dab498496b313e5443397d649bb4196a8.camel@linuxfoundation.org>
-Subject: Re: [docs] Docs website dropdown menu
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, YP docs mailing list
-	 <docs@lists.yoctoproject.org>
-Date: Mon, 16 Nov 2020 11:53:15 +0000
-In-Reply-To: <CAP71Wjy=BnM6bpSGE+WzW4LiUfHRQrpQCCt4=4_hd3+d0CHFOg@mail.gmail.com>
-References: 
-	<CAP71Wjy=BnM6bpSGE+WzW4LiUfHRQrpQCCt4=4_hd3+d0CHFOg@mail.gmail.com>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.100.179]:33252 helo=localhost.localdomain)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1kf45B-0003JE-KP
+	for docs@lists.yoctoproject.org; Tue, 17 Nov 2020 11:43:54 -0500
+Date: Tue, 17 Nov 2020 11:43:51 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: clarifying the variations of BBMASK
+Message-ID: <8eb9ab43-974b-3fa2-4335-e13e2044bb61@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-On Mon, 2020-11-16 at 09:33 +0100, Nicolas Dechesne wrote:
-> on the new website, we have the dropdown menu that allows us to
-> switch
-> back and forth between the 'individual pages' vs 'mega manual' and
-> between docs versions.
-> 
-> It's implemented in a piece of javascript , in file switchers.js.
-> That file has a list of docs version to 'show', and it's slightly
-> painful (and wrong?) to maintain the list of 'active' versions to
-> show
-> on the website in docs sources.
-> 
-> I've been trying to decorelate the list of 'versions' from the
-> implementation. Here is something that more or less works (it's not
-> fully tested yet), but I wanted to get feedback first to see if it's
-> going in the right direction.
-> 
-> So all_versions becomes a 'table' that includes all information about
-> our releases. For each release, we can set attributes:
-> * version is the actual version
-> * name is an alternate name to show (we use version if name is not
-> defined)
-> * show is set to 'yes' when we want that version to appear in the
-> dropdown menu
-> * docbook is set to 'yes' for docs built before sphinx (it's used
-> when
-> we switch to mega-manual page)
-> * state can be 'outdated' or 'obsolete' to display the respective
-> warning.
-> 
-> Then in the .js file, we simply read data from all_versions. The next
-> step would be to put the definition of all_versions in another file,
-> outside of git. And the release manager would update this file as
-> needed.
 
-Seems reasonable to me at a quick glance, I didn't check it in detail
-as my js is limited but if it works...
+  as i've rarely needed to BBMASK stuff, i learned a couple things
+today when a colleague brought me some masking that could use some
+highlighting in the docs, methinks.
 
-Cheers,
+  first, all of his BBMASKing was of the form:
 
-Richard
+  BBMASK += "|layer stuff ..."
 
+that is, every value prefixed with "|". since the bitbake user manual
+does state that BBMASK supports Python REs, i guess it takes only a
+few seconds to realize that you *can* do that, or just leave spaces
+between patterns with:
+
+  BBMASK += "layer stuff ..."
+
+a more obvious observation would be for the BB manual to actually show
+some examples that use "|" in a practical way, as none of the examples
+there do that.
+
+  what i did find surprising was that (apparently, and feel free to
+correct me) wildcarding was automatically applied to the end of a
+string. i noticed this as my colleague was trying to BBMASK a
+directory named "protobuf", and specified:
+
+  BBMASK += "|.../protobuf"
+
+not realizing that it would also mask the sibling directory
+"protobuf-rpc". the BB manual does indirectly hint at that issue,
+writing, "When specifying a directory name, use the trailing slash
+character to ensure you match just that directory name," but a good
+example of that would be, i think, straight out of oe-core, showing
+that:
+
+  BBMASK += ".../recipes-support/libcap"
+
+would unfortunately also BBMASK libcap-ng (hence the caution to use a
+trailing slash to lock it to the directory name).
+
+  so as long as i've understood all this, that explanation in the BB
+manual seems like it could use a couple more examples. or have i
+misread?
+
+rday
