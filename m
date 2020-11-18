@@ -1,136 +1,78 @@
-Received: from mail-yb1-f195.google.com (mail-yb1-f195.google.com [209.85.219.195])
- by mx.groups.io with SMTP id smtpd.web08.22785.1605699563018053172
+Received: from mail-yb1-f194.google.com (mail-yb1-f194.google.com [209.85.219.194])
+ by mx.groups.io with SMTP id smtpd.web08.22812.1605699752428264524
  for <docs@lists.yoctoproject.org>;
- Wed, 18 Nov 2020 03:39:23 -0800
+ Wed, 18 Nov 2020 03:42:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=ffToI1Yc;
- spf=pass (domain: linaro.org, ip: 209.85.219.195, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f195.google.com with SMTP id o144so1369308ybg.7
-        for <docs@lists.yoctoproject.org>; Wed, 18 Nov 2020 03:39:22 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=gc2FX/9G;
+ spf=pass (domain: linaro.org, ip: 209.85.219.194, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f194.google.com with SMTP id l14so1397769ybq.3
+        for <docs@lists.yoctoproject.org>; Wed, 18 Nov 2020 03:42:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=fUJ3G04vzn7YBtEu7n96ErVfXKslStqOSXTcX77P/S0=;
-        b=ffToI1Ycv0SEH0TmQQfDeWaG058yqbDl/+3uDONyUy9qoU9MaLDRPGongcjAfF1DwN
-         Mjnbr0pe+n3J3RrWm132TqOfdLWHvkuNwofzhkFvpbXh9urmdNWcVOMhCex7qMa+FC5Y
-         9dGuPZ/K2TtQILlDqoBXUrw8oTiqpedkhO+l9WcWjquONS3zfZjxjPjD7VxUrAHeUWH0
-         Rmx/3H2D7VNjTJI6dm3lmOx0d38B9NArkrH+8RssYxYD5LeY/rjn/rP+/NcqY13g0Gam
-         03npYQfPy56byQnRQwT7/JwJmoar7eM9yblI807V6bi7w7k1dsobc3KoB3ijy++AX/fj
-         btWA==
+        bh=FgM8En/5CdzZOkf8JaqqsFMDztmCSlf8wq9Bpcs/7gg=;
+        b=gc2FX/9GQiZQtkZ3PKUSfvFXfmSdKkjrXsZSV2krUdJTAhPvm4GbUvX69vh8myWVTz
+         B6TVOLjGHOQGzoJTI0i3uGAojcfsZ8SvrURzcBjDGxoHiS9916myHOS4hS7NT1VV3z5c
+         3YE/miNbgzFGd+AFjR1SinEMuU43hWzD+na4rKZVuh1RIhQp7AKVuYFRQdCgfKVxlSjT
+         HQ2+Ko1BPZsKDtEidNWCyFgQLxIPY8YNXkjcrDDB8VHGvd4dDcQvt/IJE6gAfQWDZoYZ
+         efrqUCmMxKAz/s2IeqnCQV6iHfFm9vKYU7C7xDW8KKxc1zTqi+LeWAkPtIf0MgIScE59
+         aA5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=fUJ3G04vzn7YBtEu7n96ErVfXKslStqOSXTcX77P/S0=;
-        b=TTbFZPC1NtZsDJT7xwt7Rlv3vQ9kyCVELfPqbbebZP0dK/aHEsMsUpFSeR4iiK1SOF
-         9cEtrgrpWX6q/4E0Qx0Elo8RAi0GMhZXALK3lLPjs/PjBJT7tJ/brI4sQWdpgbo8wbkG
-         KlMvpK3hTzbu4GLGmmKIkPIaD9pW8MvcJFg8jvTIp0SYw6jxAhW2BeTiK1KtZmmO+zXh
-         9y0LQ1ScRJglw2dMUVsQA1ngNXiDpFsSFAIPU+noUnRNHne5VYXYxbEDnPiUPC9mEhMm
-         sysXzHYV0r7+g6vVDizwuyEvdKQnwmBMOYbJFMiX5BZ4UjG0v4e8ylI8185ZhEiF3rAm
-         Fmgw==
-X-Gm-Message-State: AOAM533jfOSTNGBYBnPzexS0TReBhJA7RMWrd4tAWejeXcY0BKPXw2KN
-	srVrkstT5CVViuSaEi2U3USkP4a07ywFbuOubN27Bw==
-X-Google-Smtp-Source: ABdhPJwh9436YSbkkr2hCWNM70cjcQCJUnFEmV7ynYpnhEkfHA8tZ9opRjJExbKfwKV5+4kr/Mc70U2td3oPd7ljJZY=
-X-Received: by 2002:a25:bcc6:: with SMTP id l6mr877009ybm.475.1605699561966;
- Wed, 18 Nov 2020 03:39:21 -0800 (PST)
+        bh=FgM8En/5CdzZOkf8JaqqsFMDztmCSlf8wq9Bpcs/7gg=;
+        b=p5N5rF8qM9EE/s1mIDBJ5cyn39EpxsLCK/gnjmXseYOOiJC9wBRX4i1WmYSsErx/gZ
+         PL9zWerM+jwXxn/+LisO0cdxd1rMXLZxl++0X58lAfA9bwgF9mwoIQwqXPm7Lj74W6Xz
+         RxA10QmaUy4mCfQfu2O3oIUq5fdj4x1ZsdX2jEa+jEzOvdgeFgdJMlXMBVTjCNlx5us4
+         e2kvMuRIBQFZ+6jOQzkpx9aSEDQSziijQHvGx2zvGosE2jUwzjOqNofRnfQX0x/edpfH
+         BiFyBI+YqWxPAvGgFJMpfO+bWzq22Io70CyYyicCx/UF4Da9fUb+as+39XelydSAVPZR
+         rXzw==
+X-Gm-Message-State: AOAM5300ek3OICyH2zssaKRy+Y1tXoPgfK2Q+hzhbbbp0FQYuqUiGpKE
+	XdZB0Dp2Gbd1+KHJqNuc9kfvafGgBcpGIr2gful21GdKPLZHPg==
+X-Google-Smtp-Source: ABdhPJwi8o7v5tg1nGQv5xwgtQZeF8xNHrhPPBpvPTYcskVibfzq3U/LuknIKiTMzf13d3SVgs20DEoj7jTBJuQs/fw=
+X-Received: by 2002:a25:318b:: with SMTP id x133mr7314449ybx.201.1605699751587;
+ Wed, 18 Nov 2020 03:42:31 -0800 (PST)
 MIME-Version: 1.0
-References: <20201118100705.3656-1-pbarker@konsulko.com> <20201118100705.3656-7-pbarker@konsulko.com>
-In-Reply-To: <20201118100705.3656-7-pbarker@konsulko.com>
+References: <20201118100705.3656-1-pbarker@konsulko.com>
+In-Reply-To: <20201118100705.3656-1-pbarker@konsulko.com>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Wed, 18 Nov 2020 12:39:11 +0100
-Message-ID: <CAP71WjwC1C2W7SyCZc5R=5Kr-7wn=GQWJGkdp+fn7kvNn0Fubw@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2 7/9] dev-manual-common-tasks: Describe how to propose changes to stable branches
+Date: Wed, 18 Nov 2020 12:42:21 +0100
+Message-ID: <CAP71Wjy0zX_vExgmWcV_6fA3RcOghRfBr1zvxt9dyphyrdFBOA@mail.gmail.com>
+Subject: Re: [docs] [PATCH v2 1/9] conf.py: Add oe_git directive
 To: Paul Barker <pbarker@konsulko.com>
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
 
 On Wed, Nov 18, 2020 at 11:07 AM Paul Barker <pbarker@konsulko.com> wrote:
 >
-> The documentation on submitting changes to the project should cover the
-> ways in which the process differs for stable branches. These changes add
-> a brief description of the typical policy for handling changes to stable
-> branches and give some steps to follow when proposing changes to these
-> branches. The information is based on my personal experience and on the
-> existing content of the "How to submit a patch to OpenEmbedded" page on
-> the OE wiki.
+> This simplifies linking to git repositories on openembedded.org.
 >
 > Signed-off-by: Paul Barker <pbarker@konsulko.com>
+
+Thanks Paul!. I reviewed the whole series. made a suggestion about a
+new variable for the LTS name. It can be done in a v3, or a later
+series as well, i don't mind much.
+For the whole series:
+Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+
 > ---
->  .../dev-manual/dev-manual-common-tasks.rst    | 57 +++++++++++++++++++
->  1 file changed, 57 insertions(+)
+>  documentation/conf.py | 1 +
+>  1 file changed, 1 insertion(+)
 >
-> diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-> index 61e66f464..700c60ab2 100644
-> --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> @@ -11003,6 +11003,63 @@ Lastly please ensure that you also test your revised changes. In particular
->  please don't just edit the patch file written out by ``git format-patch`` and
->  resend it.
+> diff --git a/documentation/conf.py b/documentation/conf.py
+> index a8df6e8f8..96118abec 100644
+> --- a/documentation/conf.py
+> +++ b/documentation/conf.py
+> @@ -78,6 +78,7 @@ extlinks = {
+>      'yocto_git': ('https://git.yoctoproject.org%s', None),
+>      'oe_home': ('https://www.openembedded.org%s', None),
+>      'oe_lists': ('https://lists.openembedded.org%s', None),
+> +    'oe_git': ('https://git.openembedded.org%s', None),
+>  }
 >
-> +Submitting Changes to Stable Release Branches
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +The process for proposing changes to a Yocto Project stable branch differs
-> +from the steps described above. Changes to a stable branch must address
-> +identified bugs or CVEs and should be made carefully in order to avoid the
-> +risk of introducing new bugs or breaking backwards compatibility. Typically
-> +bug fixes must already be accepted into the master branch before they can be
-> +backported to a stable branch unless the bug in question does not affect the
-> +master branch or the fix on the master branch is unsuitable for backporting.
-> +
-> +The list of stable branches along with the status and maintainer for each
-> +branch can be obtained from the
-> +:yocto_wiki:`Releases wiki page </wiki/Releases>`.
-> +
-> +.. note::
-> +
-> +   Changes will not typically be accepted for branches which are marked as
-> +   End-Of-Life (EOL).
-> +
-> +With this in mind, the steps to submit a change for a stable branch are as
-> +follows:
-> +
-> +1. *Identify the bug or CVE to be fixed:* This information should be
-> +   collected so that it can be included in your submission.
-> +
-> +2. *Check if the fix is already present in the master branch:* This will
-> +   result in the most straightforward path into the stable branch for the
-> +   fix.
-> +
-> +   a. *If the fix is present in the master branch - Submit a backport request
-> +      by email:* You should send an email to the relevant stable branch
-> +      maintainer and the mailing list with details of the bug or CVE to be
-> +      fixed, the commit hash on the master branch that fixes the issue and
-> +      the stable branches which you would like this fix to be backported to.
-> +
-> +   b. *If the fix is not present in the master branch - Submit the fix to the
-> +      master branch first:* This will ensure that the fix passes through the
-> +      project's usual patch review and test processes before being accepted.
-> +      It will also ensure that bugs are not left unresolved in the master
-> +      branch itself. Once the fix is accepted in the master branch a backport
-> +      request can be submitted as above.
-> +
-> +   c. *If the fix is unsuitable for the master branch - Submit a patch
-> +      directly for the stable branch:* This method should be considered as a
-> +      last resort. It is typically necessary when the master branch is using
-> +      a newer version of the software which includes an upstream fix for the
-> +      issue or when the issue has been fixed on the master branch in a way
-> +      that introduces backwards incompatible changes. In this case follow the
-> +      steps in :ref:`preparing-changes-for-submissions` and
-> +      :ref:`submitting-a-patch` but modify the subject header of your patch
-> +      email to include the name of the stable branch which you are
-> +      targetting. This can be done using the ``--subject-prefix`` argument to
-> +      ``git format-patch``, for example to submit a patch to the dunfell
-> +      branch use
-> +      ``git format-patch --subject-prefix='&DISTRO_NAME_NO_CAP_MINUS_ONE;][PATCH' ...``.
-
-looks like we really need DISTRO_NAME_NO_CAP_LTS!
-
-> +
->  Working With Licenses
->  =====================
->
+>  # Intersphinx config to use cross reference with Bitbake user manual
 > --
 > 2.20.1
 >
