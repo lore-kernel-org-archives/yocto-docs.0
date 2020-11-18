@@ -1,141 +1,70 @@
-Received: from mail-ot1-f67.google.com (mail-ot1-f67.google.com [209.85.210.67])
- by mx.groups.io with SMTP id smtpd.web09.21482.1605690665862192635
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+ by mx.groups.io with SMTP id smtpd.web08.22013.1605694031589164885
  for <docs@lists.yoctoproject.org>;
- Wed, 18 Nov 2020 01:11:06 -0800
+ Wed, 18 Nov 2020 02:07:11 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=pBYtw5nv;
- spf=pass (domain: konsulko.com, ip: 209.85.210.67, mailfrom: paul.barker@konsulko.com)
-Received: by mail-ot1-f67.google.com with SMTP id a15so1069202otf.5
-        for <docs@lists.yoctoproject.org>; Wed, 18 Nov 2020 01:11:05 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=BeDYxm+H;
+ spf=pass (domain: konsulko.com, ip: 209.85.221.45, mailfrom: pbarker@konsulko.com)
+Received: by mail-wr1-f45.google.com with SMTP id s8so1538777wrw.10
+        for <docs@lists.yoctoproject.org>; Wed, 18 Nov 2020 02:07:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=CO+fbCXWoyylK+J8vxFOGg+wWxFWtOarfAavAPprlN4=;
-        b=pBYtw5nvL/yNwHj/7HvMNyLk4edfBW0X/+iHSRiSDTQ57K3U9ycnHOzwJV4CiOUZy6
-         +YfkJN4Vsd7tpCgxgWv2sWW9BBF62w2BAAaRXTRxvtqRN66SdtbUpyIZli8n8JKSQn49
-         lel3cf6PvpiWP/bie6Q84uCISuUXcSvBD3r34=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VftsvAo892z4h8mmwqzp+nHSnGMJZQxfa3SBlRQw6Uw=;
+        b=BeDYxm+HHrMgk9KeTsi7020oJimlDVvL8wKXOOSUzrj/S15s1/mQ6Z0YnpT0XVlU5+
+         MY5pfffCbWkGCzJGSYVINwrltgvka0QAKTfOJXPWKv9Ccaonl60YBEFoUGc67LTDlAyA
+         nYpWUSQALSd1zlFWVhv3nIJYNyKYlSYIpHU/c=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=CO+fbCXWoyylK+J8vxFOGg+wWxFWtOarfAavAPprlN4=;
-        b=B5ujET56n1JY0BwLq+EPIQPwqAhvg+PxW2/EJ6M8YmKXXCNaiGgmduc4e88fs4hb11
-         6h3XSAN1l3r387Z77cY4Ov8X1Rh+Nnda+lQ4iDKG+ealhAGC6SBGJB5MCUni3KQ8PE34
-         gBvQUawslr3zYuFK5gWGDOXlhWnB+C2wE7n3+2fwu6lGm7kRLN/z1xRwjH2M9+Ne0Shu
-         LHxnPvx5Tm5wqpsVdKB1bFiMt0Cj+2Dk5S4B2Fuy39dTBLTSvlr294As9wtt7pY3aW5s
-         UozwIAyrkM5ZZqcqp/wXGRxGxpG69+FD6zZYGTXQogUgtBD1VgmtY7VWFcGE/b4tivi4
-         e1mw==
-X-Gm-Message-State: AOAM531/TwXIYnp/CS6DzWRIauCZ3Fz1B2jyaMpIITKjLkK5XAkZzXup
-	AYg8hsn7d+uAiszOXPaTIwTT+WwJyQAwyy+bCD4aa9AmgmI=
-X-Google-Smtp-Source: ABdhPJz5fJEh61kJrZCghEbDZ8l1zWhoXf0ZhWwETPkm4d3Swj2BwmqqrFX+TxyQ9emIsBfOkVb7GH8QikowsGDOG38=
-X-Received: by 2002:a05:6830:1b66:: with SMTP id d6mr6132209ote.258.1605690665208;
- Wed, 18 Nov 2020 01:11:05 -0800 (PST)
-MIME-Version: 1.0
-References: <20201111160800.5669-1-pbarker@konsulko.com> <20201111160800.5669-6-pbarker@konsulko.com>
- <20201111163911.3ahilkvwgyib2zs4@qschulz>
-In-Reply-To: <20201111163911.3ahilkvwgyib2zs4@qschulz>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VftsvAo892z4h8mmwqzp+nHSnGMJZQxfa3SBlRQw6Uw=;
+        b=qN59UZN3zDrKH3OeHZXt5pVcpo3eLeL6kDSIRAQzW67kN1PP5nOtO/mSM26EyxtYsa
+         rK+iiqErk0v93XdUB8KVd3BT6ojwuumJ0Q23o3VH1cJdl6IiItkUs+Qu44ij2K8ZAp8g
+         fr3YQI3XMe4U53NZtIlvb5ssyDZsJklrlhwG1ennfE2S70RlZ6Fj6mtCmZ2G/N3REa2z
+         bSYyhdXz1NQXItOt8VQz0zB9pDTnTwHAMjvH7bkHq64fYlFqDSSJtO2olei+YvD4eDM0
+         /cZ2FdMhefkLGFRpluVz8nzp/KX+5P8PHCTq5dV/y79n/CdYZeSdBweWG4Ke2r9Xomrx
+         2L+w==
+X-Gm-Message-State: AOAM533Lwe0QcDAWD4pv/x06C7p17JqNOUBk1JCbXtgmMtSWUU6nS1Ak
+	XF0onrpiT8abm1FkqAiXtooVQxClCa/6Og==
+X-Google-Smtp-Source: ABdhPJzWHAk9arYtMyaW5qdRsNRJn0rkSBwV5NaM0tDQmy19/tSyGQVUAncA36ALqK/NwA8SDyBq5w==
+X-Received: by 2002:adf:82f5:: with SMTP id 108mr4139782wrc.269.1605694029399;
+        Wed, 18 Nov 2020 02:07:09 -0800 (PST)
+Return-Path: <pbarker@konsulko.com>
+Received: from deb10.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
+        by smtp.gmail.com with ESMTPSA id a128sm3013391wmf.5.2020.11.18.02.07.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Nov 2020 02:07:08 -0800 (PST)
 From: "Paul Barker" <pbarker@konsulko.com>
-Date: Wed, 18 Nov 2020 09:10:55 +0000
-Message-ID: <CAM9ZRVs03DriHngnE7oZ0MNuvMAKS9cDn-sWqmwES65LnPswTw@mail.gmail.com>
-Subject: Re: [docs] [PATCH 6/8] dev-manual-common-tasks: Describe how to propose changes to stable branches
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+To: docs@lists.yoctoproject.org
+Cc: Paul Barker <pbarker@konsulko.com>
+Subject: [PATCH v2 1/9] conf.py: Add oe_git directive
+Date: Wed, 18 Nov 2020 10:06:57 +0000
+Message-Id: <20201118100705.3656-1-pbarker@konsulko.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Wed, 11 Nov 2020 at 16:39, Quentin Schulz
-<quentin.schulz@streamunlimited.com> wrote:
->
-> Hi Paul,
->
-> On Wed, Nov 11, 2020 at 04:07:58PM +0000, Paul Barker wrote:
-> > The documentation on submitting changes to the project should cover the
-> > ways in which the process differs for stable branches. These changes add
-> > a brief description of the typical policy for handling changes to stable
-> > branches and give some steps to follow when proposing changes to these
-> > branches. The information is based on my personal experience and on the
-> > existing content of the "How to submit a patch to OpenEmbedded" page on
-> > the OE wiki.
-> >
-> > Signed-off-by: Paul Barker <pbarker@konsulko.com>
-> > ---
-> >  .../dev-manual/dev-manual-common-tasks.rst    | 55 +++++++++++++++++++
-> >  1 file changed, 55 insertions(+)
-> >
-> > diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > index 0a3ab8241..e923ce834 100644
-> > --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> > +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > @@ -11005,6 +11005,61 @@ Lastly please ensure that you also test your revised changes. In particular
-> >  please don't just edit the patch file written out by ``git format-patch`` and
-> >  resend it.
-> >
-> > +Submitting Changes to Stable Release Branches
-> > +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > +
-> > +The process for proposing changes to a Yocto Project stable branch differs
-> > +from the steps described above. Changes to a stable branch must address
-> > +identified bugs or CVEs and should be made carefully in order to avoid the
-> > +risk of introducing new bugs or breaking backwards compatibility. Typically
-> > +bug fixes must already be accepted into the master branch before they can be
-> > +backported to a stable branch unless the bug in question does not affect the
-> > +master branch or the fix on the master branch is unsuitable for backporting.
-> > +
-> > +The list of stable branches along with the status and maintainer for each
-> > +branch can be obtained from the `Releases wiki page <https://wiki.yoctoproject.org/wiki/Releases>`__.
-> > +
->
-> :yocto_wiki:`Releases wiki page </wiki/Releases>`
+This simplifies linking to git repositories on openembedded.org.
 
-That's an easy fix.
+Signed-off-by: Paul Barker <pbarker@konsulko.com>
+---
+ documentation/conf.py | 1 +
+ 1 file changed, 1 insertion(+)
 
->
-> > +.. note::
-> > +
-> > +   Changes will not typically be accepted for branches which are marked as
-> > +   End-Of-Life (EOL).
-> > +
-> > +With this in mind, the steps to submit a change for a stable branch are as
-> > +follows:
-> > +
-> > +1. *Identify the bug or CVE to be fixed:* This information should be
-> > +   collected so that it can be included in your submission.
-> > +
-> > +2. *Check if the fix is already present in the master branch:* This will
-> > +   result in the most straightforward path into the stable branch for the
-> > +   fix.
-> > +
-> > +   a. *If the fix is present in the master branch - Submit a backport request
-> > +      by email:* You should send an email to the relevant stable branch
-> > +      maintainer and the mailing list with details of the bug or CVE to be
-> > +      fixed, the commit hash on the master branch that fixes the issue and
-> > +      the stable branches which you would like this fix to be backported to.
-> > +
-> > +   b. *If the fix is not present in the master branch - Submit the fix to the
-> > +      master branch first:* This will ensure that the fix passes through the
-> > +      project's usual patch review and test processes before being accepted.
-> > +      It will also ensure that bugs are not left unresolved in the master
-> > +      branch itself. Once the fix is accepted in the master branch a backport
-> > +      request can be submitted as above.
-> > +
-> > +   c. *If the fix is unsuitable for the master branch - Submit a patch
-> > +      directly for the stable branch:* This method should be considered as a
-> > +      last resort. It is typically necessary when the master branch is using
-> > +      a newer version of the software which includes an upstream fix for the
-> > +      issue or when the issue has been fixed on the master branch in a way
-> > +      that introduces backwards incompatible changes. In this case follow the
-> > +      steps in :ref:`preparing-changes-for-submissions` and
-> > +      :ref:`submitting-a-patch` but modify the subject header of your patch
-> > +      email to include the name of the stable branch which you are
-> > +      targetting. This can be done using the ``--subject-prefix`` argument to
-> > +      ``git format-patch``, for example to submit a patch to the dunfell
-> > +      branch use ``git format-patch --subject-prefix='dunfell][PATCH' ...``.
->
-> s/dunfell/&DISTRO_NAME_NO_CAP_MINUS_ONE;/g ?
-
-Yes that would be better. I didn't know a lot of these expressions
-existed but they look very helpful.
-
+diff --git a/documentation/conf.py b/documentation/conf.py
+index a8df6e8f8..96118abec 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -78,6 +78,7 @@ extlinks = {
+     'yocto_git': ('https://git.yoctoproject.org%s', None),
+     'oe_home': ('https://www.openembedded.org%s', None),
+     'oe_lists': ('https://lists.openembedded.org%s', None),
++    'oe_git': ('https://git.openembedded.org%s', None),
+ }
+ 
+ # Intersphinx config to use cross reference with Bitbake user manual
 -- 
-Paul Barker
-Konsulko Group
+2.20.1
+
