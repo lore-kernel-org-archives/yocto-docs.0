@@ -1,81 +1,56 @@
-Received: from mail-yb1-f194.google.com (mail-yb1-f194.google.com [209.85.219.194])
- by mx.groups.io with SMTP id smtpd.web08.22812.1605699752428264524
+Received: from bsmtp1.bon.at (bsmtp1.bon.at [213.33.87.15])
+ by mx.groups.io with SMTP id smtpd.web10.25144.1605710380168789934
  for <docs@lists.yoctoproject.org>;
- Wed, 18 Nov 2020 03:42:32 -0800
+ Wed, 18 Nov 2020 06:39:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=gc2FX/9G;
- spf=pass (domain: linaro.org, ip: 209.85.219.194, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f194.google.com with SMTP id l14so1397769ybq.3
-        for <docs@lists.yoctoproject.org>; Wed, 18 Nov 2020 03:42:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=FgM8En/5CdzZOkf8JaqqsFMDztmCSlf8wq9Bpcs/7gg=;
-        b=gc2FX/9GQiZQtkZ3PKUSfvFXfmSdKkjrXsZSV2krUdJTAhPvm4GbUvX69vh8myWVTz
-         B6TVOLjGHOQGzoJTI0i3uGAojcfsZ8SvrURzcBjDGxoHiS9916myHOS4hS7NT1VV3z5c
-         3YE/miNbgzFGd+AFjR1SinEMuU43hWzD+na4rKZVuh1RIhQp7AKVuYFRQdCgfKVxlSjT
-         HQ2+Ko1BPZsKDtEidNWCyFgQLxIPY8YNXkjcrDDB8VHGvd4dDcQvt/IJE6gAfQWDZoYZ
-         efrqUCmMxKAz/s2IeqnCQV6iHfFm9vKYU7C7xDW8KKxc1zTqi+LeWAkPtIf0MgIScE59
-         aA5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=FgM8En/5CdzZOkf8JaqqsFMDztmCSlf8wq9Bpcs/7gg=;
-        b=p5N5rF8qM9EE/s1mIDBJ5cyn39EpxsLCK/gnjmXseYOOiJC9wBRX4i1WmYSsErx/gZ
-         PL9zWerM+jwXxn/+LisO0cdxd1rMXLZxl++0X58lAfA9bwgF9mwoIQwqXPm7Lj74W6Xz
-         RxA10QmaUy4mCfQfu2O3oIUq5fdj4x1ZsdX2jEa+jEzOvdgeFgdJMlXMBVTjCNlx5us4
-         e2kvMuRIBQFZ+6jOQzkpx9aSEDQSziijQHvGx2zvGosE2jUwzjOqNofRnfQX0x/edpfH
-         BiFyBI+YqWxPAvGgFJMpfO+bWzq22Io70CyYyicCx/UF4Da9fUb+as+39XelydSAVPZR
-         rXzw==
-X-Gm-Message-State: AOAM5300ek3OICyH2zssaKRy+Y1tXoPgfK2Q+hzhbbbp0FQYuqUiGpKE
-	XdZB0Dp2Gbd1+KHJqNuc9kfvafGgBcpGIr2gful21GdKPLZHPg==
-X-Google-Smtp-Source: ABdhPJwi8o7v5tg1nGQv5xwgtQZeF8xNHrhPPBpvPTYcskVibfzq3U/LuknIKiTMzf13d3SVgs20DEoj7jTBJuQs/fw=
-X-Received: by 2002:a25:318b:: with SMTP id x133mr7314449ybx.201.1605699751587;
- Wed, 18 Nov 2020 03:42:31 -0800 (PST)
-MIME-Version: 1.0
-References: <20201118100705.3656-1-pbarker@konsulko.com>
-In-Reply-To: <20201118100705.3656-1-pbarker@konsulko.com>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Wed, 18 Nov 2020 12:42:21 +0100
-Message-ID: <CAP71Wjy0zX_vExgmWcV_6fA3RcOghRfBr1zvxt9dyphyrdFBOA@mail.gmail.com>
+ dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.15, mailfrom: quentin.schulz@streamunlimited.com)
+Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
+	by bsmtp1.bon.at (Postfix) with ESMTPSA id 4Cblnh3XLHz5tlF;
+	Wed, 18 Nov 2020 15:39:36 +0100 (CET)
+Date: Wed, 18 Nov 2020 15:39:34 +0100
+From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: Paul Barker <pbarker@konsulko.com>,
+	YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] [PATCH v2 1/9] conf.py: Add oe_git directive
-To: Paul Barker <pbarker@konsulko.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+Message-ID: <20201118143934.ovvg4sb7cte3zk46@qschulz>
+References: <20201118100705.3656-1-pbarker@konsulko.com>
+ <CAP71Wjy0zX_vExgmWcV_6fA3RcOghRfBr1zvxt9dyphyrdFBOA@mail.gmail.com>
+MIME-Version: 1.0
+In-Reply-To: <CAP71Wjy0zX_vExgmWcV_6fA3RcOghRfBr1zvxt9dyphyrdFBOA@mail.gmail.com>
+User-Agent: NeoMutt/20180716
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, Nov 18, 2020 at 11:07 AM Paul Barker <pbarker@konsulko.com> wrote:
->
-> This simplifies linking to git repositories on openembedded.org.
->
-> Signed-off-by: Paul Barker <pbarker@konsulko.com>
+Hi all,
 
-Thanks Paul!. I reviewed the whole series. made a suggestion about a
-new variable for the LTS name. It can be done in a v3, or a later
-series as well, i don't mind much.
-For the whole series:
-Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-
-> ---
->  documentation/conf.py | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/documentation/conf.py b/documentation/conf.py
-> index a8df6e8f8..96118abec 100644
-> --- a/documentation/conf.py
-> +++ b/documentation/conf.py
-> @@ -78,6 +78,7 @@ extlinks = {
->      'yocto_git': ('https://git.yoctoproject.org%s', None),
->      'oe_home': ('https://www.openembedded.org%s', None),
->      'oe_lists': ('https://lists.openembedded.org%s', None),
-> +    'oe_git': ('https://git.openembedded.org%s', None),
->  }
->
->  # Intersphinx config to use cross reference with Bitbake user manual
-> --
-> 2.20.1
->
->
+On Wed, Nov 18, 2020 at 12:42:21PM +0100, Nicolas Dechesne wrote:
+> On Wed, Nov 18, 2020 at 11:07 AM Paul Barker <pbarker@konsulko.com> wrote:
+> >
+> > This simplifies linking to git repositories on openembedded.org.
+> >
+> > Signed-off-by: Paul Barker <pbarker@konsulko.com>
 > 
->
+> Thanks Paul!. I reviewed the whole series. made a suggestion about a
+> new variable for the LTS name. It can be done in a v3, or a later
+> series as well, i don't mind much.
+
++1 for LTS variables in poky.yaml, though maybe we can just replace
+_MINUS_ONE variables with LTS ones? From the quick look I had in the
+docs, it seems to not be that big of a deal to migrate MINUS_ONE
+variables to LTS ones and still keep more or less the same intended
+behavior/explanation.
+
+Also, throwing this out right now, I really don't like:
+:yocto_git:`poky </cgit.cgi/poky>` lines.. Couldn't we just set
+:yocto_git: to https://git.yoctoproject.org/cgit.cgi%s instead? and then
+use it like that: :yocto_git:`/poky`?
+
+Nothing to be changed in this patch series though, just thinking out
+loud.
+
+For the whole series:
+Reviewed-by: Quentin Schulz <quentin.schulz@streamunlimited.com>
+
+Thanks!
+Quentin
