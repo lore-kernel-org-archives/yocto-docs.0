@@ -1,50 +1,50 @@
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
- by mx.groups.io with SMTP id smtpd.web09.7089.1605779939420842356
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+ by mx.groups.io with SMTP id smtpd.web12.6955.1605779940275744073
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Nov 2020 01:58:59 -0800
+ Thu, 19 Nov 2020 01:59:00 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=ZGSd0kZy;
- spf=pass (domain: linaro.org, ip: 209.85.221.66, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f66.google.com with SMTP id c17so5706211wrc.11
-        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:58:59 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=nVdvmafd;
+ spf=pass (domain: linaro.org, ip: 209.85.128.42, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wm1-f42.google.com with SMTP id 10so6561420wml.2
+        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:59:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=zYpOvWjFOa3lRltwy2KhHkjllDGer8yfm/JNthNRMaY=;
-        b=ZGSd0kZyv0DZIN3D/xHf90mkLQQDLgvQNi9UskI915f30dweXcpxFLmYBkWFxYES9m
-         WwvYcDLggJDSVhQRFuspY/Z8J2M5+eW768hQoE4qvoLUFgbA5Fh84dexWiNF11L3SPYl
-         N1WciFEQ/9PUw+OfAun1cLV3mxSTqv+au0hNqp1vVUm+SMz0U6VG9DdUbE2YVkP4foru
-         +4i2RpEO7yEpiHdjGyyWzTJQ88VRi6gBzSKXel2EGmRL+ecBl9YBMduWAW9cmb7LOhvT
-         AGR9k2zBO8x04F46b3xSGdOv544b9lRlhyvZZoYu4qsS+oOuzel/tSS4qam+OSyM3CAe
-         Iy5w==
+        bh=Aeq9uBs8U4/EpjAiiTEhDN5RMEYjtl2xsFbVBqnk8l8=;
+        b=nVdvmafdNNGR8vmdWAZ4xs9ec+kG9jFA+aG4payPffT88QlyH1xOnSvZXGQkqDM5kX
+         Fk1iuNZ9lE6qRy7P5Eor63Yq2eFqL8ucylVuFT2pygohB0WWmIYpTD0v+SaBYdIULEIM
+         FUqqJgYWl8G4PkTQoUUZmCNpiKxsVMPPVXuR9ca6ufKx6+gcEzYVwt9i90k3BtAcNQ5l
+         9EjqxPWqXxoq4Tem5KuBPqJaus92HURjNrl1buehlPCRJbHhtRZDzc84yq1ijbe9+oYr
+         LU4I4ypSC/lj2Mt3tPqd39Yo1dQLi3PjFfh2+QlaX3Zjgakc2ZZT/ycdeWWqIRzKrSGg
+         USpg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=zYpOvWjFOa3lRltwy2KhHkjllDGer8yfm/JNthNRMaY=;
-        b=uOoWSZFW8Hz6Av+5Fw02P5OFq76o8CMcwoSUo9LPdqJzRgAir43IlwWLa/GqZAELaL
-         yO8bdzobaovJeQjXVq59OvVRLWXFWqvHBOwxeIM28xSStUMdRJQeoBKJBavjDeviGbX7
-         UM3seP3ldsIAGfE4PcLVHwJPjPgZICyvt5PVrNOTWgPjz4Cft385fDtLJHaiXN7liEkq
-         BnOFnma5v6wyRIo8GVic9pSaK/pAsfabpHwHpuFkXqfUzWZguef8S2W23dOUHkk0P175
-         fo4Rv1d47enpjcJJ30QxFN5UCk6XWiuDBLnsIvUDNrmr2jEr7xlxUJVhogLslY1yIc42
-         l9RA==
-X-Gm-Message-State: AOAM5333c9aB0O16+sTOwm7sQ0yU/1PvrjBCVN6QPY8cJ4ORhGZrQcib
-	ZPNyETRysjzyEREP0pvv/xtiMZ1yPt5dn9eJ
-X-Google-Smtp-Source: ABdhPJw6KPwtFZ2rz2/s1EMQz3yg2aoQnlODquWEhl9Pp5g2b98CmOqXkL7mE4sSexztjgKElgSdYQ==
-X-Received: by 2002:a5d:4e52:: with SMTP id r18mr2934465wrt.19.1605779937352;
-        Thu, 19 Nov 2020 01:58:57 -0800 (PST)
+        bh=Aeq9uBs8U4/EpjAiiTEhDN5RMEYjtl2xsFbVBqnk8l8=;
+        b=pdpb741Hs+rua0nhV41ejHYHrNQfIpAv7EwwiI0ukSb/EiGEm+D4Cm2PkmkuwMZIZI
+         EDTQEEz7aDHtxJxfbBVtsHP0XH7DNCQHPVHequcRS3OqisEZPKDtJVcG5hNyeO3xnYgw
+         JJ8L65iCH0y0FMpVRIxh9l3g8kLXmtARRv5vTMudlxclYQosGUAnGO3MsPwGMqpqpb02
+         prqX07ZouP07ZoGDoRC9tfoSJ/snC0Eo6n/Akukzo+Sd1dvCnA7RNEXRYerCqeqLqfg+
+         wtQNVfshkyLsmaVL46jDb2cnmcVifk34Qw6gG8OeKtvrUgMf2nz5873H+l1QHB2Y3b9A
+         Xjrw==
+X-Gm-Message-State: AOAM530Qj3tgwu9DE0XxJnh02AK2kBKLHn5TZsgUFmg8IxoRm1dfi4hn
+	u8/y3CBUa6m0Pdk5bhZzL49Opc0ww/4PrcyF
+X-Google-Smtp-Source: ABdhPJyAdk4oSsLWn82Nupvd/MX3GgErKwXSft5xHbG3VIS3++Hi5w7Ok68/4F7mN7iHWXR55psvGA==
+X-Received: by 2002:a7b:c384:: with SMTP id s4mr3665326wmj.77.1605779935260;
+        Thu, 19 Nov 2020 01:58:55 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.56
+        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2020 01:58:56 -0800 (PST)
+        Thu, 19 Nov 2020 01:58:54 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 08/11] kernel-dev: remove unused labels
-Date: Thu, 19 Nov 2020 10:58:31 +0100
-Message-Id: <20201119095834.284864-9-nicolas.dechesne@linaro.org>
+Subject: [PATCH 06/11] test-manual: remove unused labels
+Date: Thu, 19 Nov 2020 10:58:29 +0100
+Message-Id: <20201119095834.284864-7-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
 References: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
@@ -53,104 +53,219 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- documentation/kernel-dev/kernel-dev-advanced.rst      | 8 --------
- documentation/kernel-dev/kernel-dev-common.rst        | 2 --
- documentation/kernel-dev/kernel-dev-concepts-appx.rst | 2 --
- documentation/kernel-dev/kernel-dev-faq.rst           | 2 --
- documentation/kernel-dev/kernel-dev-intro.rst         | 2 --
- 5 files changed, 16 deletions(-)
+ .../test-manual/test-manual-intro.rst         | 22 -------------------
+ .../test-manual/test-manual-test-process.rst  |  2 --
+ .../test-manual-understand-autobuilder.rst    | 20 -----------------
+ 3 files changed, 44 deletions(-)
 
-diff --git a/documentation/kernel-dev/kernel-dev-advanced.rst b/documentation/kernel-dev/kernel-dev-advanced.rst
-index b1537ccbe..ca049316e 100644
---- a/documentation/kernel-dev/kernel-dev-advanced.rst
-+++ b/documentation/kernel-dev/kernel-dev-advanced.rst
+diff --git a/documentation/test-manual/test-manual-intro.rst b/documentation/test-manual/test-manual-intro.rst
+index 25b79f7a0..b6d130591 100644
+--- a/documentation/test-manual/test-manual-intro.rst
++++ b/documentation/test-manual/test-manual-intro.rst
 @@ -4,8 +4,6 @@
- Working with Advanced Metadata (``yocto-kernel-cache``)
- *******************************************************
+ The Yocto Project Test Environment Manual
+ *****************************************
  
--.. _kernel-dev-advanced-overview:
+-.. _test-welcome:
 -
- Overview
- ========
+ Welcome
+ =======
  
-@@ -478,8 +476,6 @@ concepts, and presents a detailed example using a BSP supported by the
- Yocto Project (i.e. BeagleBone Board). For complete information on BSP
- layer file hierarchy, see the :doc:`../bsp-guide/bsp-guide`.
+@@ -45,8 +43,6 @@ engineers:
+    Jenkins, or others. This repository has a branch per release of the
+    project defining the tests to run on a per release basis.
  
--.. _bsp-description-file-overview:
+-.. _test-yocto-project-autobuilder-overview:
 -
- Description Overview
- ~~~~~~~~~~~~~~~~~~~~
+ Yocto Project Autobuilder Overview
+ ==================================
  
-@@ -583,8 +579,6 @@ types of configurations. However, the Malta 32-bit board does
-    include mti-malta32.scc
-    kconf hardware mti-malta32-le.cfg
+@@ -88,8 +84,6 @@ topology that includes a controller and a cluster of workers:
+ .. image:: figures/ab-test-cluster.png
+    :align: center
  
--.. _bsp-description-file-example-minnow:
+-.. _test-project-tests:
 -
- Example
- ~~~~~~~
+ Yocto Project Tests - Types of Testing Overview
+ ===============================================
  
-@@ -925,8 +919,6 @@ after any ``branch`` commands:
+@@ -169,8 +163,6 @@ thefollowing types of tests:
+    those new versions. If so, this target emails the maintainers with a
+    patch to let them know this is possible.
  
-       include mybsp-hw.scc
- 
--.. _scc-reference:
+-.. _test-test-mapping:
 -
- SCC Description File Reference
+ How Tests Map to Areas of Code
  ==============================
  
-diff --git a/documentation/kernel-dev/kernel-dev-common.rst b/documentation/kernel-dev/kernel-dev-common.rst
-index 830b3e88c..72d9d7879 100644
---- a/documentation/kernel-dev/kernel-dev-common.rst
-+++ b/documentation/kernel-dev/kernel-dev-common.rst
-@@ -1301,8 +1301,6 @@ created to hold the configuration changes.
- For more information on configuring the kernel, see the "`Changing the
- Configuration <#changing-the-configuration>`__" section.
+@@ -326,8 +318,6 @@ directory at ``meta/lib/oeqa/selftest/cases`` directory.
+ For oe-selftest. bitbake testcases reside in the ``lib/bb/tests/``
+ directory.
  
--.. _creating-config-fragments:
+-.. _bitbake-selftest-example:
 -
- Creating Configuration Fragments
- --------------------------------
+ ``bitbake-selftest``
+ --------------------
  
-diff --git a/documentation/kernel-dev/kernel-dev-concepts-appx.rst b/documentation/kernel-dev/kernel-dev-concepts-appx.rst
-index 681faee52..470d6ce1c 100644
---- a/documentation/kernel-dev/kernel-dev-concepts-appx.rst
-+++ b/documentation/kernel-dev/kernel-dev-concepts-appx.rst
+@@ -354,8 +344,6 @@ Bitbake selftests are straightforward python unittest. Refer to the
+ Python unittest documentation for additional information on writing
+ these tests at: https://docs.python.org/3/library/unittest.html.
+ 
+-.. _oe-selftest-example:
+-
+ ``oe-selftest``
+ ---------------
+ 
+@@ -399,8 +387,6 @@ builds. There is no data store available for these tests since the tests
+ launch the ``bitbake`` command and exist outside of its context. As a
+ result, common bitbake library functions (bb.\*) are also unavailable.
+ 
+-.. _testimage-example:
+-
+ ``testimage``
+ -------------
+ 
+@@ -429,8 +415,6 @@ To ensure certain test or package dependencies are met, you can use the
+ in this example would only make sense if python3-core is installed in
+ the image.
+ 
+-.. _testsdk_ext-example:
+-
+ ``testsdk_ext``
+ ---------------
+ 
+@@ -463,8 +447,6 @@ In this example, the ``devtool``
+ command is tested to see whether a sample application can be built with
+ the ``devtool build`` command within the eSDK.
+ 
+-.. _testsdk-example:
+-
+ ``testsdk``
+ -----------
+ 
+@@ -488,8 +470,6 @@ In this example, if nativesdk-python3-core has been installed into the SDK, the
+ the python3 interpreter with a basic command to check it is working
+ correctly. The test would only run if python3 is installed in the SDK.
+ 
+-.. _oe-build-perf-test-example:
+-
+ ``oe-build-perf-test``
+ ----------------------
+ 
+@@ -517,8 +497,6 @@ This example shows how three specific parsing timings are
+ measured, with and without various caches, to show how BitBake's parsing
+ performance trends over time.
+ 
+-.. _test-writing-considerations:
+-
+ Considerations When Writing Tests
+ =================================
+ 
+diff --git a/documentation/test-manual/test-manual-test-process.rst b/documentation/test-manual/test-manual-test-process.rst
+index b0817b091..82b9bb441 100644
+--- a/documentation/test-manual/test-manual-test-process.rst
++++ b/documentation/test-manual/test-manual-test-process.rst
 @@ -4,8 +4,6 @@
- Advanced Kernel Concepts
- ************************
+ Project Testing and Release Process
+ ***********************************
  
--.. _kernel-big-picture:
+-.. _test-daily-devel:
 -
- Yocto Project Kernel Development and Maintenance
- ================================================
+ Day to Day Development
+ ======================
  
-diff --git a/documentation/kernel-dev/kernel-dev-faq.rst b/documentation/kernel-dev/kernel-dev-faq.rst
-index d6be98a0a..424e62617 100644
---- a/documentation/kernel-dev/kernel-dev-faq.rst
-+++ b/documentation/kernel-dev/kernel-dev-faq.rst
-@@ -4,8 +4,6 @@
- Kernel Development FAQ
- **********************
+diff --git a/documentation/test-manual/test-manual-understand-autobuilder.rst b/documentation/test-manual/test-manual-understand-autobuilder.rst
+index 244433376..698a266ee 100644
+--- a/documentation/test-manual/test-manual-understand-autobuilder.rst
++++ b/documentation/test-manual/test-manual-understand-autobuilder.rst
+@@ -73,8 +73,6 @@ The ``config.json`` file is processed by the scripts in the Helper
+ repository in the ``scripts`` directory. The following section details
+ how this works.
  
--.. _kernel-dev-faq-section:
+-.. _test-autobuilder-target-exec-overview:
 -
- Common Questions and Solutions
- ==============================
+ Autobuilder Target Execution Overview
+ =====================================
  
-diff --git a/documentation/kernel-dev/kernel-dev-intro.rst b/documentation/kernel-dev/kernel-dev-intro.rst
-index 971420b22..309c65b4d 100644
---- a/documentation/kernel-dev/kernel-dev-intro.rst
-+++ b/documentation/kernel-dev/kernel-dev-intro.rst
-@@ -4,8 +4,6 @@
- Introduction
- ************
+@@ -135,16 +133,12 @@ roughly consist of:
+    This is another call into the Helper scripts where its expected that
+    the main functionality of this target will be executed.
  
--.. _kernel-dev-overview:
+-.. _test-autobuilder-tech:
 -
- Overview
- ========
+ Autobuilder Technology
+ ======================
+ 
+ The Autobuilder has Yocto Project-specific functionality to allow builds
+ to operate with increased efficiency and speed.
+ 
+-.. _test-clobberdir:
+-
+ clobberdir
+ ----------
+ 
+@@ -155,8 +149,6 @@ which is run under ``ionice -c 3``. For example, the deletion only
+ happens when there is idle IO capacity on the Worker. The Autobuilder
+ Worker Janitor runs this deletion. See :ref:`test-manual/test-manual-understand-autobuilder:Autobuilder Worker Janitor`.
+ 
+-.. _test-autobuilder-clone-cache:
+-
+ Autobuilder Clone Cache
+ -----------------------
+ 
+@@ -167,8 +159,6 @@ during clones first, then "topped up" with later revisions from any
+ upstream when necessary. The cache is maintained by the Autobuilder
+ Worker Janitor. See :ref:`test-manual/test-manual-understand-autobuilder:Autobuilder Worker Janitor`.
+ 
+-.. _test-autobuilder-worker-janitor:
+-
+ Autobuilder Worker Janitor
+ --------------------------
+ 
+@@ -177,8 +167,6 @@ operations, including background file deletion at IO idle (see :ref:`test-manual
+ maintainenance of a cache of cloned repositories to improve the speed
+ the system can checkout repositories.
+ 
+-.. _test-shared-dl-dir:
+-
+ Shared DL_DIR
+ -------------
+ 
+@@ -187,8 +175,6 @@ between them. This reduces network accesses from the system and allows
+ the build to be sped up. Usage of the directory within the build system
+ is designed to be able to be shared over NFS.
+ 
+-.. _test-shared-sstate-cache:
+-
+ Shared SSTATE_DIR
+ -----------------
+ 
+@@ -197,8 +183,6 @@ directory to be shared between them. This means once a Worker has built
+ an artifact, all the others can benefit from it. Usage of the directory
+ within the directory is designed for sharing over NFS.
+ 
+-.. _test-resulttool:
+-
+ Resulttool
+ ----------
+ 
+@@ -213,8 +197,6 @@ reports of the test results and compare different result files.
+ 
+ For details, see :yocto_wiki:`/wiki/Resulttool`.
+ 
+-.. _test-run-config-tgt-execution:
+-
+ run-config Target Execution
+ ===========================
+ 
+@@ -264,8 +246,6 @@ of post-build steps, including:
+    :ref:`test-manual/test-manual-understand-autobuilder:clobberdir` if the build was successful,
+    else rename it to "build-renamed" for potential future debugging.
+ 
+-.. _test-deploying-yp-autobuilder:
+-
+ Deploying Yocto Autobuilder
+ ===========================
  
 -- 
 2.29.2
