@@ -1,50 +1,50 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.web12.6955.1605779940275744073
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
+ by mx.groups.io with SMTP id smtpd.web11.7248.1605779940512003687
  for <docs@lists.yoctoproject.org>;
  Thu, 19 Nov 2020 01:59:00 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=nVdvmafd;
- spf=pass (domain: linaro.org, ip: 209.85.128.42, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f42.google.com with SMTP id 10so6561420wml.2
+ dkim=pass header.i=@linaro.org header.s=google header.b=kw425Mc6;
+ spf=pass (domain: linaro.org, ip: 209.85.221.67, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f67.google.com with SMTP id m6so5735049wrg.7
         for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:59:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=Aeq9uBs8U4/EpjAiiTEhDN5RMEYjtl2xsFbVBqnk8l8=;
-        b=nVdvmafdNNGR8vmdWAZ4xs9ec+kG9jFA+aG4payPffT88QlyH1xOnSvZXGQkqDM5kX
-         Fk1iuNZ9lE6qRy7P5Eor63Yq2eFqL8ucylVuFT2pygohB0WWmIYpTD0v+SaBYdIULEIM
-         FUqqJgYWl8G4PkTQoUUZmCNpiKxsVMPPVXuR9ca6ufKx6+gcEzYVwt9i90k3BtAcNQ5l
-         9EjqxPWqXxoq4Tem5KuBPqJaus92HURjNrl1buehlPCRJbHhtRZDzc84yq1ijbe9+oYr
-         LU4I4ypSC/lj2Mt3tPqd39Yo1dQLi3PjFfh2+QlaX3Zjgakc2ZZT/ycdeWWqIRzKrSGg
-         USpg==
+        bh=SQXCwUxZupY6FBAoCjbBcoW/6lRwIo2TUEae0XP+zgk=;
+        b=kw425Mc6R9Uqtn4m4wHMoZ5/EXSzn8v5QRXNLX89JKCBSVNwDI03Plx/Zo6yMHVLB2
+         ZzYcbKEIeX6WyC/n3QS+pa+uyJj11Fi7wQ7Y3hgVAa9zmYzW45+JoxuNMa7fKMArbUdS
+         /Wxrnf6TWxPPcn9Lx4bbNpVUPQ4gOSd0Y/ZnRIeEOLSVS40mPPopEWjOzpJx4gDBXf/I
+         u5BejcE+9ySBCJM2OQuj3JNux4yf3fA59WrrloC3QNSfLIG+zK+jcVw9wp/GedEqzpmh
+         VkMIoJaUtsrs3zA9Sp1d2pjA35hj3uT6HR71oBp+clrzLTuEO3ss+nz5gV6onHwpI7fJ
+         VpOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Aeq9uBs8U4/EpjAiiTEhDN5RMEYjtl2xsFbVBqnk8l8=;
-        b=pdpb741Hs+rua0nhV41ejHYHrNQfIpAv7EwwiI0ukSb/EiGEm+D4Cm2PkmkuwMZIZI
-         EDTQEEz7aDHtxJxfbBVtsHP0XH7DNCQHPVHequcRS3OqisEZPKDtJVcG5hNyeO3xnYgw
-         JJ8L65iCH0y0FMpVRIxh9l3g8kLXmtARRv5vTMudlxclYQosGUAnGO3MsPwGMqpqpb02
-         prqX07ZouP07ZoGDoRC9tfoSJ/snC0Eo6n/Akukzo+Sd1dvCnA7RNEXRYerCqeqLqfg+
-         wtQNVfshkyLsmaVL46jDb2cnmcVifk34Qw6gG8OeKtvrUgMf2nz5873H+l1QHB2Y3b9A
-         Xjrw==
-X-Gm-Message-State: AOAM530Qj3tgwu9DE0XxJnh02AK2kBKLHn5TZsgUFmg8IxoRm1dfi4hn
-	u8/y3CBUa6m0Pdk5bhZzL49Opc0ww/4PrcyF
-X-Google-Smtp-Source: ABdhPJyAdk4oSsLWn82Nupvd/MX3GgErKwXSft5xHbG3VIS3++Hi5w7Ok68/4F7mN7iHWXR55psvGA==
-X-Received: by 2002:a7b:c384:: with SMTP id s4mr3665326wmj.77.1605779935260;
-        Thu, 19 Nov 2020 01:58:55 -0800 (PST)
+        bh=SQXCwUxZupY6FBAoCjbBcoW/6lRwIo2TUEae0XP+zgk=;
+        b=kO0uV5pcp0zNrChnkVbB48CRHg3Vp1J0Ref8XWxqnPg2CRFRrbr8dWv6nR+fS19B/X
+         w9d3l6t9AFXciJ9FIvFEGFZD6fvLi1dW0AHIznHkR2aW3c2fLXsW4NkRgOd06UtSQdT9
+         FsAfEGPexPz/K5UxtJXm6FTX0cihL0/r6TL+9g6VH5Vwr0aR9wiQR2ILRhzgcRUCdmGk
+         cnqoyWW2+IVqrGONNO+a6Vko26i220/FzllhVK9UaAaiV5qgvm/QbhEWdeFbYmrm8Jo0
+         9P4abOyT/XC7tK94yFn5hcnPSkwJIRdiu5nxv/AVaJiyJTEH9rNtXKp1Zx3YurQOKaF+
+         Op2Q==
+X-Gm-Message-State: AOAM533g7pM4UahYnAUhE/aYZ3ycn0eRocnI2ATtGddjioo7ogVENh6Q
+	xpSU6Xf5LqbAP6DxoewaEk4mYxpQzatnIT1r
+X-Google-Smtp-Source: ABdhPJw6O5ZtOFEUASpVm7qyyqiYFAI2l9FGYmGWzw5thBP8K2mb1ZLzyWluq1K8PLSDulBkeieaPA==
+X-Received: by 2002:a5d:6550:: with SMTP id z16mr9269615wrv.266.1605779938605;
+        Thu, 19 Nov 2020 01:58:58 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.54
+        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2020 01:58:54 -0800 (PST)
+        Thu, 19 Nov 2020 01:58:57 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 06/11] test-manual: remove unused labels
-Date: Thu, 19 Nov 2020 10:58:29 +0100
-Message-Id: <20201119095834.284864-7-nicolas.dechesne@linaro.org>
+Subject: [PATCH 09/11] profile-manual: remove unused labels
+Date: Thu, 19 Nov 2020 10:58:32 +0100
+Message-Id: <20201119095834.284864-10-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
 References: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
@@ -53,219 +53,242 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- .../test-manual/test-manual-intro.rst         | 22 -------------------
- .../test-manual/test-manual-test-process.rst  |  2 --
- .../test-manual-understand-autobuilder.rst    | 20 -----------------
- 3 files changed, 44 deletions(-)
+ .../profile-manual/profile-manual-intro.rst   |  4 --
+ .../profile-manual/profile-manual-usage.rst   | 46 -------------------
+ 2 files changed, 50 deletions(-)
 
-diff --git a/documentation/test-manual/test-manual-intro.rst b/documentation/test-manual/test-manual-intro.rst
-index 25b79f7a0..b6d130591 100644
---- a/documentation/test-manual/test-manual-intro.rst
-+++ b/documentation/test-manual/test-manual-intro.rst
+diff --git a/documentation/profile-manual/profile-manual-intro.rst b/documentation/profile-manual/profile-manual-intro.rst
+index 0d435e0c0..4e1008b05 100644
+--- a/documentation/profile-manual/profile-manual-intro.rst
++++ b/documentation/profile-manual/profile-manual-intro.rst
 @@ -4,8 +4,6 @@
- The Yocto Project Test Environment Manual
- *****************************************
+ Yocto Project Profiling and Tracing Manual
+ ******************************************
  
--.. _test-welcome:
+-.. _profile-intro:
 -
- Welcome
- =======
+ Introduction
+ ============
  
-@@ -45,8 +43,6 @@ engineers:
-    Jenkins, or others. This repository has a branch per release of the
-    project defining the tests to run on a per release basis.
+@@ -30,8 +28,6 @@ The final section of this 'HOWTO' is a collection of real-world examples
+ which we'll be continually adding to as we solve more problems using the
+ tools - feel free to add your own examples to the list!
  
--.. _test-yocto-project-autobuilder-overview:
+-.. _profile-manual-general-setup:
 -
- Yocto Project Autobuilder Overview
- ==================================
+ General Setup
+ =============
  
-@@ -88,8 +84,6 @@ topology that includes a controller and a cluster of workers:
- .. image:: figures/ab-test-cluster.png
-    :align: center
+diff --git a/documentation/profile-manual/profile-manual-usage.rst b/documentation/profile-manual/profile-manual-usage.rst
+index d3c020a1c..cc403a554 100644
+--- a/documentation/profile-manual/profile-manual-usage.rst
++++ b/documentation/profile-manual/profile-manual-usage.rst
+@@ -10,8 +10,6 @@ Basic Usage (with examples) for each of the Yocto Tracing Tools
+ This chapter presents basic usage examples for each of the tracing
+ tools.
  
--.. _test-project-tests:
+-.. _profile-manual-perf:
 -
- Yocto Project Tests - Types of Testing Overview
- ===============================================
+ perf
+ ====
  
-@@ -169,8 +163,6 @@ thefollowing types of tests:
-    those new versions. If so, this target emails the maintainers with a
-    patch to let them know this is possible.
+@@ -43,8 +41,6 @@ want to apply the tool; full documentation can be found either within
+ the tool itself or in the man pages at
+ `perf(1) <http://linux.die.net/man/1/perf>`__.
  
--.. _test-test-mapping:
+-.. _perf-setup:
 -
- How Tests Map to Areas of Code
- ==============================
+ Perf Setup
+ ----------
  
-@@ -326,8 +318,6 @@ directory at ``meta/lib/oeqa/selftest/cases`` directory.
- For oe-selftest. bitbake testcases reside in the ``lib/bb/tests/``
- directory.
+@@ -61,8 +57,6 @@ profile data and copy it to the host for analysis, but for the rest of
+ this document we assume you've ssh'ed to the host and will be running
+ the perf commands on the target.
  
--.. _bitbake-selftest-example:
+-.. _perf-basic-usage:
 -
- ``bitbake-selftest``
+ Basic Perf Usage
+ ----------------
+ 
+@@ -950,8 +944,6 @@ We can look at the raw output using 'perf script' with no arguments: ::
+        kworker/1:1    21 [001]  6171.470082: sched_switch: prev_comm=kworker/1:1 prev_pid=21 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=1383 next_prio=120
+               perf  1383 [001]  6171.480035: sched_wakeup: comm=kworker/1:1 pid=21 prio=120 success=1 target_cpu=001
+ 
+-.. _perf-filtering:
+-
+ Filtering
+ ^^^^^^^^^
+ 
+@@ -1138,8 +1130,6 @@ callgraphs from starting a few programs during those 30 seconds:
+    uprobes. kprobes and uprobes are also used by and in fact are the
+    main focus of SystemTap.
+ 
+-.. _perf-documentation:
+-
+ Perf Documentation
+ ------------------
+ 
+@@ -1182,8 +1172,6 @@ There's also a nice perf tutorial on the perf
+ wiki that goes into more detail than we do here in certain areas: `Perf
+ Tutorial <https://perf.wiki.kernel.org/index.php/Tutorial>`__
+ 
+-.. _profile-manual-ftrace:
+-
+ ftrace
+ ======
+ 
+@@ -1191,8 +1179,6 @@ ftrace
+ this encompasses a number of related tracers along with the
+ infrastructure that they all make use of.
+ 
+-.. _ftrace-setup:
+-
+ ftrace Setup
+ ------------
+ 
+@@ -1668,8 +1654,6 @@ trace-cmd and kernelshark in the next section.
+    /sys/kernel/debug/tracing will be removed and replaced with
+    equivalent tracers based on the 'trace events' subsystem.
+ 
+-.. _trace-cmd-kernelshark:
+-
+ trace-cmd/kernelshark
+ ---------------------
+ 
+@@ -1737,8 +1721,6 @@ The tool is pretty self-explanatory, but for more detailed information
+ on navigating through the data, see the `kernelshark
+ website <http://rostedt.homelinux.com/kernelshark/>`__.
+ 
+-.. _ftrace-documentation:
+-
+ ftrace Documentation
  --------------------
  
-@@ -354,8 +344,6 @@ Bitbake selftests are straightforward python unittest. Refer to the
- Python unittest documentation for additional information on writing
- these tests at: https://docs.python.org/3/library/unittest.html.
+@@ -1772,8 +1754,6 @@ There's more detailed documentation kernelshark usage here:
+ An amusing yet useful README (a tracing mini-HOWTO) can be found in
+ ``/sys/kernel/debug/tracing/README``.
  
--.. _oe-selftest-example:
+-.. _profile-manual-systemtap:
 -
- ``oe-selftest``
+ systemtap
+ =========
+ 
+@@ -1835,8 +1815,6 @@ target system and 3) insert the module into the target kernel, which
+ arms it, and 4) collect the data generated by the probe and display it
+ to the user.
+ 
+-.. _systemtap-setup:
+-
+ systemtap Setup
  ---------------
  
-@@ -399,8 +387,6 @@ builds. There is no data store available for these tests since the tests
- launch the ``bitbake`` command and exist outside of its context. As a
- result, common bitbake library functions (bb.\*) are also unavailable.
+@@ -1955,8 +1933,6 @@ no password):
+    matchbox-termin(1036) open ("/tmp/vte3FS2LW", O_RDWR|O_CREAT|O_EXCL|O_LARGEFILE, 0600)
+    matchbox-termin(1036) open ("/tmp/vteJMC7LW", O_RDWR|O_CREAT|O_EXCL|O_LARGEFILE, 0600)
  
--.. _testimage-example:
+-.. _systemtap-documentation:
 -
- ``testimage``
- -------------
- 
-@@ -429,8 +415,6 @@ To ensure certain test or package dependencies are met, you can use the
- in this example would only make sense if python3-core is installed in
- the image.
- 
--.. _testsdk_ext-example:
--
- ``testsdk_ext``
- ---------------
- 
-@@ -463,8 +447,6 @@ In this example, the ``devtool``
- command is tested to see whether a sample application can be built with
- the ``devtool build`` command within the eSDK.
- 
--.. _testsdk-example:
--
- ``testsdk``
- -----------
- 
-@@ -488,8 +470,6 @@ In this example, if nativesdk-python3-core has been installed into the SDK, the
- the python3 interpreter with a basic command to check it is working
- correctly. The test would only run if python3 is installed in the SDK.
- 
--.. _oe-build-perf-test-example:
--
- ``oe-build-perf-test``
- ----------------------
- 
-@@ -517,8 +497,6 @@ This example shows how three specific parsing timings are
- measured, with and without various caches, to show how BitBake's parsing
- performance trends over time.
- 
--.. _test-writing-considerations:
--
- Considerations When Writing Tests
- =================================
- 
-diff --git a/documentation/test-manual/test-manual-test-process.rst b/documentation/test-manual/test-manual-test-process.rst
-index b0817b091..82b9bb441 100644
---- a/documentation/test-manual/test-manual-test-process.rst
-+++ b/documentation/test-manual/test-manual-test-process.rst
-@@ -4,8 +4,6 @@
- Project Testing and Release Process
- ***********************************
- 
--.. _test-daily-devel:
--
- Day to Day Development
- ======================
- 
-diff --git a/documentation/test-manual/test-manual-understand-autobuilder.rst b/documentation/test-manual/test-manual-understand-autobuilder.rst
-index 244433376..698a266ee 100644
---- a/documentation/test-manual/test-manual-understand-autobuilder.rst
-+++ b/documentation/test-manual/test-manual-understand-autobuilder.rst
-@@ -73,8 +73,6 @@ The ``config.json`` file is processed by the scripts in the Helper
- repository in the ``scripts`` directory. The following section details
- how this works.
- 
--.. _test-autobuilder-target-exec-overview:
--
- Autobuilder Target Execution Overview
- =====================================
- 
-@@ -135,16 +133,12 @@ roughly consist of:
-    This is another call into the Helper scripts where its expected that
-    the main functionality of this target will be executed.
- 
--.. _test-autobuilder-tech:
--
- Autobuilder Technology
- ======================
- 
- The Autobuilder has Yocto Project-specific functionality to allow builds
- to operate with increased efficiency and speed.
- 
--.. _test-clobberdir:
--
- clobberdir
- ----------
- 
-@@ -155,8 +149,6 @@ which is run under ``ionice -c 3``. For example, the deletion only
- happens when there is idle IO capacity on the Worker. The Autobuilder
- Worker Janitor runs this deletion. See :ref:`test-manual/test-manual-understand-autobuilder:Autobuilder Worker Janitor`.
- 
--.. _test-autobuilder-clone-cache:
--
- Autobuilder Clone Cache
+ systemtap Documentation
  -----------------------
  
-@@ -167,8 +159,6 @@ during clones first, then "topped up" with later revisions from any
- upstream when necessary. The cache is maintained by the Autobuilder
- Worker Janitor. See :ref:`test-manual/test-manual-understand-autobuilder:Autobuilder Worker Janitor`.
+@@ -1967,8 +1943,6 @@ Links to other SystemTap documents, tutorials, and examples can be found
+ here: `SystemTap documentation
+ page <http://sourceware.org/systemtap/documentation.html>`__
  
--.. _test-autobuilder-worker-janitor:
+-.. _profile-manual-sysprof:
 -
- Autobuilder Worker Janitor
- --------------------------
+ Sysprof
+ =======
  
-@@ -177,8 +167,6 @@ operations, including background file deletion at IO idle (see :ref:`test-manual
- maintainenance of a cache of cloned repositories to improve the speed
- the system can checkout repositories.
+@@ -1976,8 +1950,6 @@ Sysprof is a very easy to use system-wide profiler that consists of a
+ single window with three panes and a few buttons which allow you to
+ start, stop, and view the profile from one place.
  
--.. _test-shared-dl-dir:
+-.. _sysprof-setup:
 -
- Shared DL_DIR
+ Sysprof Setup
  -------------
  
-@@ -187,8 +175,6 @@ between them. This reduces network accesses from the system and allows
- the build to be sped up. Usage of the directory within the build system
- is designed to be able to be shared over NFS.
+@@ -1990,8 +1962,6 @@ be running Sysprof on the target (you can use the '-X' option to ssh and
+ have the Sysprof GUI run on the target but display remotely on the host
+ if you want).
  
--.. _test-shared-sstate-cache:
+-.. _sysprof-basic-usage:
 -
- Shared SSTATE_DIR
- -----------------
+ Basic Sysprof Usage
+ -------------------
  
-@@ -197,8 +183,6 @@ directory to be shared between them. This means once a Worker has built
- an artifact, all the others can benefit from it. Usage of the directory
- within the directory is designed for sharing over NFS.
+@@ -2040,8 +2010,6 @@ to the selected function, and so on.
+    the -g (--call-graph) option that you can experiment with; one of the
+    options is 'caller' for an inverted caller-based callgraph display.
  
--.. _test-resulttool:
+-.. _sysprof-documentation:
 -
- Resulttool
- ----------
+ Sysprof Documentation
+ ---------------------
  
-@@ -213,8 +197,6 @@ reports of the test results and compare different result files.
+@@ -2053,8 +2021,6 @@ Linux <http://sysprof.com/>`__
+ LTTng (Linux Trace Toolkit, next generation)
+ ============================================
  
- For details, see :yocto_wiki:`/wiki/Resulttool`.
- 
--.. _test-run-config-tgt-execution:
+-.. _lttng-setup:
 -
- run-config Target Execution
- ===========================
+ LTTng Setup
+ -----------
  
-@@ -264,8 +246,6 @@ of post-build steps, including:
-    :ref:`test-manual/test-manual-understand-autobuilder:clobberdir` if the build was successful,
-    else rename it to "build-renamed" for potential future debugging.
+@@ -2239,8 +2205,6 @@ trace - it's still there in ~/lttng-traces): ::
+    root@crownbay:~# lttng destroy
+    Session auto-20190303-021943 destroyed at /home/root
  
--.. _test-deploying-yp-autobuilder:
+-.. _lltng-documentation:
 -
- Deploying Yocto Autobuilder
- ===========================
+ LTTng Documentation
+ -------------------
+ 
+@@ -2254,8 +2218,6 @@ For information on LTTng in general, visit the `LTTng
+ Project <http://lttng.org/lttng2.0>`__ site. You can find a "Getting
+ Started" link on this site that takes you to an LTTng Quick Start.
+ 
+-.. _profile-manual-blktrace:
+-
+ blktrace
+ ========
+ 
+@@ -2264,8 +2226,6 @@ blktrace provides the tracing half of the equation; its output can be
+ piped into the blkparse program, which renders the data in a
+ human-readable form and does some basic analysis:
+ 
+-.. _blktrace-setup:
+-
+ blktrace Setup
+ --------------
+ 
+@@ -2281,8 +2241,6 @@ collect and analyze the data on the host (see the
+ below). For the rest of this section we assume you've ssh'ed to the host and
+ will be running blkrace on the target.
+ 
+-.. _blktrace-basic-usage:
+-
+ Basic blktrace Usage
+ --------------------
+ 
+@@ -2411,8 +2369,6 @@ I/O traffic during the run. You can look at the
+ `blkparse <http://linux.die.net/man/1/blkparse>`__ manpage to learn the
+ meaning of each field displayed in the trace listing.
+ 
+-.. _blktrace-live-mode:
+-
+ Live Mode
+ ~~~~~~~~~
+ 
+@@ -2603,8 +2559,6 @@ And this turns off tracing for the specified device: ::
+ 
+    root@crownbay:/sys/kernel/debug/tracing# echo 0 > /sys/block/sdc/trace/enable
+ 
+-.. _blktrace-documentation:
+-
+ blktrace Documentation
+ ----------------------
  
 -- 
 2.29.2
