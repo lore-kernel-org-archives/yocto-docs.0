@@ -1,50 +1,50 @@
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
- by mx.groups.io with SMTP id smtpd.web11.7248.1605779940512003687
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+ by mx.groups.io with SMTP id smtpd.web08.7188.1605779941939155287
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Nov 2020 01:59:00 -0800
+ Thu, 19 Nov 2020 01:59:02 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=kw425Mc6;
- spf=pass (domain: linaro.org, ip: 209.85.221.67, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f67.google.com with SMTP id m6so5735049wrg.7
-        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:59:00 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=zigGoP4f;
+ spf=pass (domain: linaro.org, ip: 209.85.221.47, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f47.google.com with SMTP id m6so5735105wrg.7
+        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:59:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=SQXCwUxZupY6FBAoCjbBcoW/6lRwIo2TUEae0XP+zgk=;
-        b=kw425Mc6R9Uqtn4m4wHMoZ5/EXSzn8v5QRXNLX89JKCBSVNwDI03Plx/Zo6yMHVLB2
-         ZzYcbKEIeX6WyC/n3QS+pa+uyJj11Fi7wQ7Y3hgVAa9zmYzW45+JoxuNMa7fKMArbUdS
-         /Wxrnf6TWxPPcn9Lx4bbNpVUPQ4gOSd0Y/ZnRIeEOLSVS40mPPopEWjOzpJx4gDBXf/I
-         u5BejcE+9ySBCJM2OQuj3JNux4yf3fA59WrrloC3QNSfLIG+zK+jcVw9wp/GedEqzpmh
-         VkMIoJaUtsrs3zA9Sp1d2pjA35hj3uT6HR71oBp+clrzLTuEO3ss+nz5gV6onHwpI7fJ
-         VpOQ==
+        bh=wDQKwi/Wwc6EJm+AW5Uvxxqob86b9apSmYMGo6htO0E=;
+        b=zigGoP4fPu490Wu+o4TDcIK+N/Sx4qyEgJKbq22emZ93cPCsvSjWdJ6IuOyt58sRJd
+         T4NY73MjoiB0Id+dBoggV8sxSZVaB13XJNswHC8DA3yz80jb6I2cJ+0zEWPVTxHXAIsE
+         rAeQ2V3rRzwFOD2tMVfqW8NCme6AYbzP5oro9Ab9/VrHNGQvCweHL9jN9tYxk7WLdShs
+         ZVOArPXGQ1hJU4OECD93W48hzexTu80HPiA82ams2FjnLspfv/IWyyTS+dBCAJ11s4Da
+         gqiK2/7g25MHqu2pY0n5vAQoJQMrthT+zozBDCKoW1/WnAcL9SzO6fh9haq377jMqzXh
+         8slQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=SQXCwUxZupY6FBAoCjbBcoW/6lRwIo2TUEae0XP+zgk=;
-        b=kO0uV5pcp0zNrChnkVbB48CRHg3Vp1J0Ref8XWxqnPg2CRFRrbr8dWv6nR+fS19B/X
-         w9d3l6t9AFXciJ9FIvFEGFZD6fvLi1dW0AHIznHkR2aW3c2fLXsW4NkRgOd06UtSQdT9
-         FsAfEGPexPz/K5UxtJXm6FTX0cihL0/r6TL+9g6VH5Vwr0aR9wiQR2ILRhzgcRUCdmGk
-         cnqoyWW2+IVqrGONNO+a6Vko26i220/FzllhVK9UaAaiV5qgvm/QbhEWdeFbYmrm8Jo0
-         9P4abOyT/XC7tK94yFn5hcnPSkwJIRdiu5nxv/AVaJiyJTEH9rNtXKp1Zx3YurQOKaF+
-         Op2Q==
-X-Gm-Message-State: AOAM533g7pM4UahYnAUhE/aYZ3ycn0eRocnI2ATtGddjioo7ogVENh6Q
-	xpSU6Xf5LqbAP6DxoewaEk4mYxpQzatnIT1r
-X-Google-Smtp-Source: ABdhPJw6O5ZtOFEUASpVm7qyyqiYFAI2l9FGYmGWzw5thBP8K2mb1ZLzyWluq1K8PLSDulBkeieaPA==
-X-Received: by 2002:a5d:6550:: with SMTP id z16mr9269615wrv.266.1605779938605;
-        Thu, 19 Nov 2020 01:58:58 -0800 (PST)
+        bh=wDQKwi/Wwc6EJm+AW5Uvxxqob86b9apSmYMGo6htO0E=;
+        b=QbviwLy1JUHcu62dfpKTNg9K2OCIl8gE80uSSFmo8TRuTepyfi2T6noygo0FpUEz/Q
+         GMkfSnHVyr3Nq+39Ki7Nykrxj9WJyzGCjziUiaVlA2fg/pcnOKbL4LDj3odA9isfLJ9T
+         bXZdyoNMErXohLRiwr0eRpJfmYXn9iJ88vJbyi7KrMqDNiZLIjOndupdwk2ikAuapmA0
+         9HzkSMr5ekGrZPQePOVaHYTz08KXBjhCR7kgi4ss3n1RobyNNIWiLcDP/10p+n/4Y8pH
+         tOvzX1GJ7KO3ksZQ+aK0uDaLhcYM2+RucD3K+/L+WK1AEQre8c9T4m4kWvjkrKrR4uOB
+         Sb5g==
+X-Gm-Message-State: AOAM533DtMsZVaT/sulWUDCb53odwn5p9+/K0ZhlVUty/VqOS7DCBAP2
+	+S/5cJs4MAW/UjiC8APTV0YjYi7Mqy7rG2jO
+X-Google-Smtp-Source: ABdhPJwbgwqsh+doSYKUSkjfcBIQ2+UsaUklSeKyyV5wm4BUMx96W7NBdD7uS/d+eJM4tlD0R2khGg==
+X-Received: by 2002:adf:f5c8:: with SMTP id k8mr9631558wrp.2.1605779939861;
+        Thu, 19 Nov 2020 01:58:59 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.57
+        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2020 01:58:57 -0800 (PST)
+        Thu, 19 Nov 2020 01:58:59 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 09/11] profile-manual: remove unused labels
-Date: Thu, 19 Nov 2020 10:58:32 +0100
-Message-Id: <20201119095834.284864-10-nicolas.dechesne@linaro.org>
+Subject: [PATCH 10/11] sdk-manual: remove unused labels
+Date: Thu, 19 Nov 2020 10:58:33 +0100
+Message-Id: <20201119095834.284864-11-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
 References: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
@@ -53,242 +53,279 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- .../profile-manual/profile-manual-intro.rst   |  4 --
- .../profile-manual/profile-manual-usage.rst   | 46 -------------------
- 2 files changed, 50 deletions(-)
+ .../sdk-manual/sdk-appendix-obtain.rst        |  2 -
+ documentation/sdk-manual/sdk-extensible.rst   | 44 -------------------
+ documentation/sdk-manual/sdk-intro.rst        |  4 --
+ documentation/sdk-manual/sdk-using.rst        |  6 ---
+ 4 files changed, 56 deletions(-)
 
-diff --git a/documentation/profile-manual/profile-manual-intro.rst b/documentation/profile-manual/profile-manual-intro.rst
-index 0d435e0c0..4e1008b05 100644
---- a/documentation/profile-manual/profile-manual-intro.rst
-+++ b/documentation/profile-manual/profile-manual-intro.rst
+diff --git a/documentation/sdk-manual/sdk-appendix-obtain.rst b/documentation/sdk-manual/sdk-appendix-obtain.rst
+index 8b0753969..eef425bdf 100644
+--- a/documentation/sdk-manual/sdk-appendix-obtain.rst
++++ b/documentation/sdk-manual/sdk-appendix-obtain.rst
 @@ -4,8 +4,6 @@
- Yocto Project Profiling and Tracing Manual
- ******************************************
+ Obtaining the SDK
+ *****************
  
--.. _profile-intro:
+-.. _sdk-locating-pre-built-sdk-installers:
 -
- Introduction
- ============
+ Locating Pre-Built SDK Installers
+ =================================
  
-@@ -30,8 +28,6 @@ The final section of this 'HOWTO' is a collection of real-world examples
- which we'll be continually adding to as we solve more problems using the
- tools - feel free to add your own examples to the list!
+diff --git a/documentation/sdk-manual/sdk-extensible.rst b/documentation/sdk-manual/sdk-extensible.rst
+index 5ff75ada2..10e4d2061 100644
+--- a/documentation/sdk-manual/sdk-extensible.rst
++++ b/documentation/sdk-manual/sdk-extensible.rst
+@@ -24,8 +24,6 @@ alternatively make use of the toolchain directly, for example from
+ Makefile and Autotools. See the "`Using the SDK Toolchain
+ Directly <#sdk-working-projects>`__" chapter for more information.
  
--.. _profile-manual-general-setup:
+-.. _sdk-extensible-sdk-intro:
 -
- General Setup
- =============
+ Why use the Extensible SDK and What is in It?
+ =============================================
  
-diff --git a/documentation/profile-manual/profile-manual-usage.rst b/documentation/profile-manual/profile-manual-usage.rst
-index d3c020a1c..cc403a554 100644
---- a/documentation/profile-manual/profile-manual-usage.rst
-+++ b/documentation/profile-manual/profile-manual-usage.rst
-@@ -10,8 +10,6 @@ Basic Usage (with examples) for each of the Yocto Tracing Tools
- This chapter presents basic usage examples for each of the tracing
- tools.
+@@ -40,8 +38,6 @@ Basically, it contains an SDK environment setup script, some
+ configuration files, an internal build system, and the ``devtool``
+ functionality.
  
--.. _profile-manual-perf:
+-.. _sdk-installing-the-extensible-sdk:
 -
- perf
- ====
+ Installing the Extensible SDK
+ =============================
  
-@@ -43,8 +41,6 @@ want to apply the tool; full documentation can be found either within
- the tool itself or in the man pages at
- `perf(1) <http://linux.die.net/man/1/perf>`__.
+@@ -138,8 +134,6 @@ architecture. The example assumes the SDK installer is located in
+    Each time you wish to use the SDK in a new shell session, you need to source the environment setup script e.g.
+     $ . /home/scottrif/poky_sdk/environment-setup-core2-64-poky-linux
  
--.. _perf-setup:
+-.. _sdk-running-the-extensible-sdk-environment-setup-script:
 -
- Perf Setup
- ----------
+ Running the Extensible SDK Environment Setup Script
+ ===================================================
  
-@@ -61,8 +57,6 @@ profile data and copy it to the host for analysis, but for the rest of
- this document we assume you've ssh'ed to the host and will be running
- the perf commands on the target.
+@@ -225,8 +219,6 @@ recipes and the source go into a "workspace" directory under the SDK.
+ The remainder of this section presents the ``devtool add``,
+ ``devtool modify``, and ``devtool upgrade`` workflows.
  
--.. _perf-basic-usage:
+-.. _sdk-use-devtool-to-add-an-application:
 -
- Basic Perf Usage
+ Use ``devtool add`` to Add an Application
+ -----------------------------------------
+ 
+@@ -401,8 +393,6 @@ command:
+       proceed with your work. If you do use this command, realize that
+       the source tree is preserved.
+ 
+-.. _sdk-devtool-use-devtool-modify-to-modify-the-source-of-an-existing-component:
+-
+ Use ``devtool modify`` to Modify the Source of an Existing Component
+ --------------------------------------------------------------------
+ 
+@@ -613,8 +603,6 @@ command:
+       proceed with your work. If you do use this command, realize that
+       the source tree is preserved.
+ 
+-.. _sdk-devtool-use-devtool-upgrade-to-create-a-version-of-the-recipe-that-supports-a-newer-version-of-the-software:
+-
+ Use ``devtool upgrade`` to Create a Version of the Recipe that Supports a Newer Version of the Software
+ -------------------------------------------------------------------------------------------------------
+ 
+@@ -783,8 +771,6 @@ The following diagram shows the common development flow used with the
+       proceed with your work. If you do use this command, realize that
+       the source tree is preserved.
+ 
+-.. _sdk-a-closer-look-at-devtool-add:
+-
+ A Closer Look at ``devtool add``
+ ================================
+ 
+@@ -826,8 +812,6 @@ the source tree is assumed to be using CMake and is treated accordingly.
+ The remainder of this section covers specifics regarding how parts of
+ the recipe are generated.
+ 
+-.. _sdk-name-and-version:
+-
+ Name and Version
  ----------------
  
-@@ -950,8 +944,6 @@ We can look at the raw output using 'perf script' with no arguments: ::
-        kworker/1:1    21 [001]  6171.470082: sched_switch: prev_comm=kworker/1:1 prev_pid=21 prev_prio=120 prev_state=S ==> next_comm=perf next_pid=1383 next_prio=120
-               perf  1383 [001]  6171.480035: sched_wakeup: comm=kworker/1:1 pid=21 prio=120 success=1 target_cpu=001
+@@ -851,8 +835,6 @@ incorrect. For such a case, you must reset the recipe:
+ After running the ``devtool reset`` command, you need to
+ run ``devtool add`` again and provide the name or the version.
  
--.. _perf-filtering:
+-.. _sdk-dependency-detection-and-mapping:
 -
- Filtering
- ^^^^^^^^^
+ Dependency Detection and Mapping
+ --------------------------------
  
-@@ -1138,8 +1130,6 @@ callgraphs from starting a few programs during those 30 seconds:
-    uprobes. kprobes and uprobes are also used by and in fact are the
-    main focus of SystemTap.
+@@ -887,8 +869,6 @@ following to your recipe:
+    dependency with an option that disables the associated functionality
+    passed to the configure script.
  
--.. _perf-documentation:
+-.. _sdk-license-detection:
 -
- Perf Documentation
- ------------------
+ License Detection
+ -----------------
  
-@@ -1182,8 +1172,6 @@ There's also a nice perf tutorial on the perf
- wiki that goes into more detail than we do here in certain areas: `Perf
- Tutorial <https://perf.wiki.kernel.org/index.php/Tutorial>`__
+@@ -920,8 +900,6 @@ with development even though the settings are unlikely to be correct in
+ all cases. You should check the documentation or source files for the
+ software you are building to determine the actual license.
  
--.. _profile-manual-ftrace:
+-.. _sdk-adding-makefile-only-software:
 -
- ftrace
- ======
+ Adding Makefile-Only Software
+ -----------------------------
  
-@@ -1191,8 +1179,6 @@ ftrace
- this encompasses a number of related tracers along with the
- infrastructure that they all make use of.
+@@ -981,8 +959,6 @@ mind:
+    ``ldconfig``. For such cases, you might be able to apply patches that
+    remove these commands from the Makefile.
  
--.. _ftrace-setup:
+-.. _sdk-adding-native-tools:
 -
- ftrace Setup
- ------------
- 
-@@ -1668,8 +1654,6 @@ trace-cmd and kernelshark in the next section.
-    /sys/kernel/debug/tracing will be removed and replaced with
-    equivalent tracers based on the 'trace events' subsystem.
- 
--.. _trace-cmd-kernelshark:
--
- trace-cmd/kernelshark
- ---------------------
- 
-@@ -1737,8 +1721,6 @@ The tool is pretty self-explanatory, but for more detailed information
- on navigating through the data, see the `kernelshark
- website <http://rostedt.homelinux.com/kernelshark/>`__.
- 
--.. _ftrace-documentation:
--
- ftrace Documentation
- --------------------
- 
-@@ -1772,8 +1754,6 @@ There's more detailed documentation kernelshark usage here:
- An amusing yet useful README (a tracing mini-HOWTO) can be found in
- ``/sys/kernel/debug/tracing/README``.
- 
--.. _profile-manual-systemtap:
--
- systemtap
- =========
- 
-@@ -1835,8 +1815,6 @@ target system and 3) insert the module into the target kernel, which
- arms it, and 4) collect the data generated by the probe and display it
- to the user.
- 
--.. _systemtap-setup:
--
- systemtap Setup
- ---------------
- 
-@@ -1955,8 +1933,6 @@ no password):
-    matchbox-termin(1036) open ("/tmp/vte3FS2LW", O_RDWR|O_CREAT|O_EXCL|O_LARGEFILE, 0600)
-    matchbox-termin(1036) open ("/tmp/vteJMC7LW", O_RDWR|O_CREAT|O_EXCL|O_LARGEFILE, 0600)
- 
--.. _systemtap-documentation:
--
- systemtap Documentation
- -----------------------
- 
-@@ -1967,8 +1943,6 @@ Links to other SystemTap documents, tutorials, and examples can be found
- here: `SystemTap documentation
- page <http://sourceware.org/systemtap/documentation.html>`__
- 
--.. _profile-manual-sysprof:
--
- Sysprof
- =======
- 
-@@ -1976,8 +1950,6 @@ Sysprof is a very easy to use system-wide profiler that consists of a
- single window with three panes and a few buttons which allow you to
- start, stop, and view the profile from one place.
- 
--.. _sysprof-setup:
--
- Sysprof Setup
- -------------
- 
-@@ -1990,8 +1962,6 @@ be running Sysprof on the target (you can use the '-X' option to ssh and
- have the Sysprof GUI run on the target but display remotely on the host
- if you want).
- 
--.. _sysprof-basic-usage:
--
- Basic Sysprof Usage
+ Adding Native Tools
  -------------------
  
-@@ -2040,8 +2010,6 @@ to the selected function, and so on.
-    the -g (--call-graph) option that you can experiment with; one of the
-    options is 'caller' for an inverted caller-based callgraph display.
+@@ -1009,8 +985,6 @@ following methods when you run ``devtool add``:
+    "DASHDASHalso-native" option, you can add the tool using just one
+    recipe file.
  
--.. _sysprof-documentation:
+-.. _sdk-adding-node-js-modules:
 -
- Sysprof Documentation
- ---------------------
- 
-@@ -2053,8 +2021,6 @@ Linux <http://sysprof.com/>`__
- LTTng (Linux Trace Toolkit, next generation)
- ============================================
- 
--.. _lttng-setup:
--
- LTTng Setup
- -----------
- 
-@@ -2239,8 +2205,6 @@ trace - it's still there in ~/lttng-traces): ::
-    root@crownbay:~# lttng destroy
-    Session auto-20190303-021943 destroyed at /home/root
- 
--.. _lltng-documentation:
--
- LTTng Documentation
- -------------------
- 
-@@ -2254,8 +2218,6 @@ For information on LTTng in general, visit the `LTTng
- Project <http://lttng.org/lttng2.0>`__ site. You can find a "Getting
- Started" link on this site that takes you to an LTTng Quick Start.
- 
--.. _profile-manual-blktrace:
--
- blktrace
- ========
- 
-@@ -2264,8 +2226,6 @@ blktrace provides the tracing half of the equation; its output can be
- piped into the blkparse program, which renders the data in a
- human-readable form and does some basic analysis:
- 
--.. _blktrace-setup:
--
- blktrace Setup
- --------------
- 
-@@ -2281,8 +2241,6 @@ collect and analyze the data on the host (see the
- below). For the rest of this section we assume you've ssh'ed to the host and
- will be running blkrace on the target.
- 
--.. _blktrace-basic-usage:
--
- Basic blktrace Usage
- --------------------
- 
-@@ -2411,8 +2369,6 @@ I/O traffic during the run. You can look at the
- `blkparse <http://linux.die.net/man/1/blkparse>`__ manpage to learn the
- meaning of each field displayed in the trace listing.
- 
--.. _blktrace-live-mode:
--
- Live Mode
- ~~~~~~~~~
- 
-@@ -2603,8 +2559,6 @@ And this turns off tracing for the specified device: ::
- 
-    root@crownbay:/sys/kernel/debug/tracing# echo 0 > /sys/block/sdc/trace/enable
- 
--.. _blktrace-documentation:
--
- blktrace Documentation
+ Adding Node.js Modules
  ----------------------
+ 
+@@ -1053,8 +1027,6 @@ fetches the specified Git repository, detects the code as Node.js code,
+ fetches dependencies using ``npm``, and sets
+ :term:`SRC_URI` accordingly.
+ 
+-.. _sdk-working-with-recipes:
+-
+ Working With Recipes
+ ====================
+ 
+@@ -1093,8 +1065,6 @@ that most recipes typically need.
+ The remainder of this section presents information useful when working
+ with recipes.
+ 
+-.. _sdk-finding-logs-and-work-files:
+-
+ Finding Logs and Work Files
+ ---------------------------
+ 
+@@ -1127,8 +1097,6 @@ links created within the source tree:
+ You can use these links to get more information on what is happening at
+ each build step.
+ 
+-.. _sdk-setting-configure-arguments:
+-
+ Setting Configure Arguments
+ ---------------------------
+ 
+@@ -1155,8 +1123,6 @@ arguments specified through ``EXTRA_OECONF`` or
+ the output of the configure script's "DASHDASHhelp" option as a
+ reference.
+ 
+-.. _sdk-sharing-files-between-recipes:
+-
+ Sharing Files Between Recipes
+ -----------------------------
+ 
+@@ -1179,8 +1145,6 @@ are cataloged in manifests in order to ensure they can be removed later
+ when a recipe is modified or removed. Thus, the sysroot is able to
+ remain free from stale files.
+ 
+-.. _sdk-packaging:
+-
+ Packaging
+ ---------
+ 
+@@ -1221,8 +1185,6 @@ you do not even need to set these variables in your recipe unless the
+ software the recipe is building installs files into non-standard
+ locations.
+ 
+-.. _sdk-restoring-the-target-device-to-its-original-state:
+-
+ Restoring the Target Device to its Original State
+ =================================================
+ 
+@@ -1263,8 +1225,6 @@ target machine.
+    and package manager operations on the target device. Doing so could
+    result in a conflicting set of files.
+ 
+-.. _sdk-installing-additional-items-into-the-extensible-sdk:
+-
+ Installing Additional Items Into the Extensible SDK
+ ===================================================
+ 
+@@ -1298,8 +1258,6 @@ takes significantly longer than installing the pre-built artifact. Also,
+ if no recipe exists for the item you want to add to the SDK, you must
+ instead add the item using the ``devtool add`` command.
+ 
+-.. _sdk-applying-updates-to-an-installed-extensible-sdk:
+-
+ Applying Updates to an Installed Extensible SDK
+ ===============================================
+ 
+@@ -1327,8 +1285,6 @@ path_to_update_directory
+    The URL needs to point specifically to a published SDK and not to an
+    SDK installer that you would download and install.
+ 
+-.. _sdk-creating-a-derivative-sdk-with-additional-components:
+-
+ Creating a Derivative SDK With Additional Components
+ ====================================================
+ 
+diff --git a/documentation/sdk-manual/sdk-intro.rst b/documentation/sdk-manual/sdk-intro.rst
+index acb3f455c..ca6138cce 100644
+--- a/documentation/sdk-manual/sdk-intro.rst
++++ b/documentation/sdk-manual/sdk-intro.rst
+@@ -4,8 +4,6 @@
+ Introduction
+ ************
+ 
+-.. _sdk-manual-intro:
+-
+ eSDK Introduction
+ =================
+ 
+@@ -127,8 +125,6 @@ script or through a :term:`Build Directory` that is based on
+ your metadata configuration or extension for your targeted device. The
+ cross-toolchain works with a matching target sysroot.
+ 
+-.. _sysroot:
+-
+ Sysroots
+ --------
+ 
+diff --git a/documentation/sdk-manual/sdk-using.rst b/documentation/sdk-manual/sdk-using.rst
+index 4b151e45c..3a1cae773 100644
+--- a/documentation/sdk-manual/sdk-using.rst
++++ b/documentation/sdk-manual/sdk-using.rst
+@@ -19,8 +19,6 @@ You can use a standard SDK to work on Makefile and Autotools-based
+ projects. See the "`Using the SDK Toolchain
+ Directly <#sdk-working-projects>`__" chapter for more information.
+ 
+-.. _sdk-standard-sdk-intro:
+-
+ Why use the Standard SDK and What is in It?
+ ===========================================
+ 
+@@ -37,8 +35,6 @@ usage. You can see the directory structure in the "`Installed Standard
+ SDK Directory
+ Structure <#sdk-installed-standard-sdk-directory-structure>`__" section.
+ 
+-.. _sdk-installing-the-sdk:
+-
+ Installing the SDK
+ ==================
+ 
+@@ -129,8 +125,6 @@ Structure <#sdk-installed-standard-sdk-directory-structure>`__" section
+ for more details on the resulting directory structure of the installed
+ SDK.
+ 
+-.. _sdk-running-the-sdk-environment-setup-script:
+-
+ Running the SDK Environment Setup Script
+ ========================================
  
 -- 
 2.29.2
