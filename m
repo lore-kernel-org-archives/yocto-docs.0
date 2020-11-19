@@ -1,50 +1,50 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
- by mx.groups.io with SMTP id smtpd.web12.6953.1605779936002882750
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+ by mx.groups.io with SMTP id smtpd.web09.7088.1605779938024854622
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Nov 2020 01:58:56 -0800
+ Thu, 19 Nov 2020 01:58:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=JXTl7brb;
- spf=pass (domain: linaro.org, ip: 209.85.128.43, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f43.google.com with SMTP id x13so456771wmj.1
-        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:58:55 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=cTutFf4Q;
+ spf=pass (domain: linaro.org, ip: 209.85.221.51, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f51.google.com with SMTP id m6so5734925wrg.7
+        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:58:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=FPqzuClM6aQxlaS7qKoOK5m74q3wZx7q5c2tbg/nc9k=;
-        b=JXTl7brbqRiXSWFgYUQ2WiEWjnoog0wq+R+jLfTE5rv4eUi2WYLYDt/LupJ/fea0KJ
-         DagieX6/po2Xy/y07y/UVNu3Je8wvrg3zi5MLgLs29VdAjUhGRJh/nTBra46Vzr4g0Se
-         TDqbDOhxz400Bxvd+6Ux+xIvsA5zg/wnl1KwBsJS1yazFYlqIsGap13J1hbn0c8LeReU
-         eay5AVgeC5TgYrnOJ1IdnqnX/pOFoYJFKGaec9tYI7Ul94Iozi6s4rmUVxl4Lj3yPPkU
-         m7SOla2oD0kbf+66HGbZ5d550Qzwa63AyyqQUfh1pTwh6tWv/Tq8Y0GZti/FYfhOMiWx
-         iaBw==
+        bh=GG8hwB8fYq7fxtMnywcMLsumXewzAuYt6Ew5WwtaNSI=;
+        b=cTutFf4QLtOY9iF4zrj297rH8ECr8Z/zL8E2+KvhFbMMsoXdIQcoM+WH4abdxzEYbb
+         yrgbREU70oKj72GYs64Cf/BHhOHLu5ohsAna55qRG1s8WmbS8eLp2vZgA1qw8rIDYYVy
+         Xy8NTZwAmW+79vISTeRV8gGY6en/ayjk7xfcUcsYXolqZhSCk4e+TQko3leh/KAUb3l1
+         aXrmwdOsTFvrbLphp67Q/4tJotsSEt3/F7fbJdVtFxTeKkjR3XrQaKqowO9BsAyYDMSZ
+         s53B4uK4S8DfSVAdy0hhHG9U3Gk8VwB9z2aYrHfTUE0wTlaJLiT4h6jHTby88wVWNupL
+         jDQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=FPqzuClM6aQxlaS7qKoOK5m74q3wZx7q5c2tbg/nc9k=;
-        b=EzpgRNHdH7MRRiansm4MNQ41JewBchdGgtRBNl7CPWcbKtCj+BcD9NsYEQ48oTtTiF
-         VMSmZrUSiLhpX/6oOaXi6FRGEfOZ71n6eai3PC5J2nv5xkZMj3m+yN8QwDd4Uv/h3rcz
-         xgd8FkFnsRWBNa3J4FfhlZUMsYTqPpoS4OwOnMi7LXBRfBVTBqOXO3WT9m2lpZ9sGTd2
-         WW/BVz8dBh+MX/2KE2+jf9PjOUgSeVF3CA+jSxy3wUKBlc9Bp7sUYd8LXolDHyaUihEh
-         2enSVqzw15y9kGmTb5JvO3KLHEnejfe/rh597fvIksq1HisrfLKEI2gjh1Z42eKjGGD1
-         obiQ==
-X-Gm-Message-State: AOAM532DPE3BLMFWZ32o274jSBWGihvDK8p9CfBD8Kah+syoacR0ti1A
-	IcBZBTqLDC7ModVQoEu1n//LQW78uZyKWgZe
-X-Google-Smtp-Source: ABdhPJy1sJBbV+P8J58NDAwNA0bnkTLHVhJ4B3TqRUQZip42FeeHgVHPwfu8vqnw9Wk17i5SEx56hA==
-X-Received: by 2002:a1c:80c3:: with SMTP id b186mr3602517wmd.20.1605779934114;
-        Thu, 19 Nov 2020 01:58:54 -0800 (PST)
+        bh=GG8hwB8fYq7fxtMnywcMLsumXewzAuYt6Ew5WwtaNSI=;
+        b=J+9QbaE3LH3/JXiJaFTVv70pKWZVPft9jzCl01NxvWISZOY3KRpFw5iI9cj67W3e/+
+         2aca530t7TjhNjmtXFEzNvXuLtXPo7mulANo2lROwKMhDgcK87zSyNWoP2q82LePSYjB
+         l8Gt9L4I5tNIC6HpnxdWLqvUBLoYsvpGoMxcKO5ZiXiGLKIXk2k2+GvdrybcOje9Jke1
+         2j326QIpNCf2OPadb0QnBUP2DuaxjmP/Cmx7t7UN1tk4NuIfWHvkWs2NNrqJdq8ZxO/j
+         erXynHgQK4tmJ91Y9W6qtxws6A5R5FDqAhhou6tJxpYAMHm1UJYVaHGxwKZbFOPUw/KV
+         KVdg==
+X-Gm-Message-State: AOAM532EgnJRysSzoUVx33ll5gEPdZB9O8TlLwOtbrxa9xMsQScqVFGK
+	/9WvnDSzdpG2O2g/NR3J8PDchmEeHWpYmEs7
+X-Google-Smtp-Source: ABdhPJwzDuspXUy7PciRQSGNJNh4QoR1bJm9Lg3ggXUH9bql+k8SnzvzlbvBKgbiQxzi7RLRTIfmGQ==
+X-Received: by 2002:adf:efc2:: with SMTP id i2mr8947984wrp.383.1605779936219;
+        Thu, 19 Nov 2020 01:58:56 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.53
+        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2020 01:58:53 -0800 (PST)
+        Thu, 19 Nov 2020 01:58:55 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 05/11] kernel-dev: replace labels with references to section title
-Date: Thu, 19 Nov 2020 10:58:28 +0100
-Message-Id: <20201119095834.284864-6-nicolas.dechesne@linaro.org>
+Subject: [PATCH 07/11] bsp-guide: remove unused labels
+Date: Thu, 19 Nov 2020 10:58:30 +0100
+Message-Id: <20201119095834.284864-8-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
 References: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
@@ -53,65 +53,103 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- documentation/kernel-dev/kernel-dev-advanced.rst | 4 ++--
- documentation/kernel-dev/kernel-dev-intro.rst    | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ documentation/bsp-guide/bsp.rst | 20 --------------------
+ 1 file changed, 20 deletions(-)
 
-diff --git a/documentation/kernel-dev/kernel-dev-advanced.rst b/documentation/kernel-dev/kernel-dev-advanced.rst
-index 444037c3a..b1537ccbe 100644
---- a/documentation/kernel-dev/kernel-dev-advanced.rst
-+++ b/documentation/kernel-dev/kernel-dev-advanced.rst
-@@ -245,7 +245,7 @@ two files: ``smp.scc`` and ``smp.cfg``. You can find these files in the
-       CONFIG_X86_BIGSMP=y
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
+index d0275eea9..408620212 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -241,8 +241,6 @@ section.
+    the script runs, your current working directory is set to the ``build``
+    directory.
  
- You can find general information on configuration
--fragment files in the ":ref:`creating-config-fragments`" section.
-+fragment files in the ":ref:`kernel-dev/kernel-dev-common:creating configuration fragments`" section.
+-.. _bsp-filelayout:
+-
+ Example Filesystem Layout
+ =========================
  
- Within the ``smp.scc`` file, the
- :term:`KFEATURE_DESCRIPTION`
-@@ -559,7 +559,7 @@ You can see that in the BeagleBone example with the following:
-    include beaglebone.scc
+@@ -451,8 +449,6 @@ the :yocto_git:`Source Respositories <>`:
  
- For information on how to break a complete ``.config`` file into the various
--configuration fragments, see the ":ref:`creating-config-fragments`" section.
-+configuration fragments, see the ":ref:`kernel-dev/kernel-dev-common:creating configuration fragments`" section.
+ The following sections describe each part of the proposed BSP format.
  
- Finally, if you have any configurations specific to the hardware that
- are not in a ``*.scc`` file, you can include them as follows:
-diff --git a/documentation/kernel-dev/kernel-dev-intro.rst b/documentation/kernel-dev/kernel-dev-intro.rst
-index 5679a0ab8..971420b22 100644
---- a/documentation/kernel-dev/kernel-dev-intro.rst
-+++ b/documentation/kernel-dev/kernel-dev-intro.rst
-@@ -28,8 +28,8 @@ newly-supported platforms. Previous recipes in the release are refreshed
- and supported for at least one additional Yocto Project release. As they
- align, these previous releases are updated to include the latest from
- the Long Term Support Initiative (LTSI) project. You can learn more
--about Yocto Linux kernels and LTSI in the ":ref:`Yocto Project Kernel
--Development and Maintenance <kernel-big-picture>`" section.
-+about Yocto Linux kernels and LTSI in the
-+":ref:`kernel-dev/kernel-dev-concepts-appx:yocto project kernel development and maintenance`" section.
+-.. _bsp-filelayout-license:
+-
+ License Files
+ -------------
  
- Also included is a Yocto Linux kernel development recipe
- (``linux-yocto-dev.bb``) should you want to work with the very latest in
-@@ -38,7 +38,7 @@ upstream Yocto Linux kernel development and kernel Metadata development.
- .. note::
+@@ -471,8 +467,6 @@ developer. For information on how to maintain license compliance, see
+ the ":ref:`dev-manual/dev-manual-common-tasks:maintaining open source license compliance during your product's lifecycle`"
+ section in the Yocto Project Development Tasks Manual.
  
-    For more on Yocto Linux kernels, see the
--   ":ref:`Yocto Project Kernel Development and Maintenance <kernel-big-picture>`"
-+   ":ref:`kernel-dev/kernel-dev-concepts-appx:yocto project kernel development and maintenance`"
-    section.
+-.. _bsp-filelayout-readme:
+-
+ README File
+ -----------
  
- The Yocto Project also provides a powerful set of kernel tools for
-@@ -167,7 +167,7 @@ general information and references for further information.
-    ``menuconfig`` and you have saved them, you can directly compare the
-    resulting ``.config`` file against an existing original and gather
-    those changes into a
--   :ref:`configuration fragment file <creating-config-fragments>` to be
-+   :ref:`configuration fragment file <kernel-dev/kernel-dev-common:creating configuration fragments>` to be
-    referenced from within the kernel's ``.bbappend`` file.
+@@ -488,8 +482,6 @@ At a minimum, the ``README`` file must contain a list of dependencies,
+ such as the names of any other layers on which the BSP depends and the
+ name of the BSP maintainer with his or her contact information.
  
-    Additionally, if you are working in a BSP layer and need to modify
+-.. _bsp-filelayout-readme-sources:
+-
+ README.sources File
+ -------------------
+ 
+@@ -509,8 +501,6 @@ used to generate the images that ship with the BSP.
+    If the BSP's ``binary`` directory is missing or the directory has no images, an
+    existing ``README.sources`` file is meaningless and usually does not exist.
+ 
+-.. _bsp-filelayout-binary:
+-
+ Pre-built User Binaries
+ -----------------------
+ 
+@@ -534,8 +524,6 @@ hardware. Additionally, the
+ present to locate the sources used to build the images and provide
+ information on the Metadata.
+ 
+-.. _bsp-filelayout-layer:
+-
+ Layer Configuration File
+ ------------------------
+ 
+@@ -586,8 +574,6 @@ This file simply makes :term:`BitBake` aware of the recipes and configuration
+ directories. The file must exist so that the OpenEmbedded build system can
+ recognize the BSP.
+ 
+-.. _bsp-filelayout-machine:
+-
+ Hardware Configuration Options
+ ------------------------------
+ 
+@@ -626,8 +612,6 @@ configuration file. For example, the Raspberry Pi BSP
+ 
+    include conf/machine/include/rpi-base.inc
+ 
+-.. _bsp-filelayout-misc-recipes:
+-
+ Miscellaneous BSP-Specific Recipe Files
+ ---------------------------------------
+ 
+@@ -658,8 +642,6 @@ directory. Here is the ``machconfig`` file for the Raspberry Pi BSP: ::
+    ``meta/recipes-bsp/formfactor/formfactor_0.0.bb``, which is found in
+    the :term:`Source Directory`.
+ 
+-.. _bsp-filelayout-recipes-graphics:
+-
+ Display Support Files
+ ---------------------
+ 
+@@ -671,8 +653,6 @@ This optional directory contains recipes for the BSP if it has special
+ requirements for graphics support. All files that are needed for the BSP
+ to support a display are kept here.
+ 
+-.. _bsp-filelayout-kernel:
+-
+ Linux Kernel Configuration
+ --------------------------
+ 
 -- 
 2.29.2
 
