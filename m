@@ -1,50 +1,50 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
- by mx.groups.io with SMTP id smtpd.web10.6981.1605779934828483638
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+ by mx.groups.io with SMTP id smtpd.web12.6953.1605779936002882750
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Nov 2020 01:58:55 -0800
+ Thu, 19 Nov 2020 01:58:56 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=Siu85ntK;
- spf=pass (domain: linaro.org, ip: 209.85.221.45, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f45.google.com with SMTP id m6so5734741wrg.7
-        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:58:54 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=JXTl7brb;
+ spf=pass (domain: linaro.org, ip: 209.85.128.43, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wm1-f43.google.com with SMTP id x13so456771wmj.1
+        for <docs@lists.yoctoproject.org>; Thu, 19 Nov 2020 01:58:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9eFtRiq7a+T3erRm0NXvGojbDUue5sJJXjRiKa0Mv3w=;
-        b=Siu85ntKgv9iiW8y3t9VsS8eeAIKhzT0ixcC6Bxuaxd+jY3BCUPe28gyg3UN5AlHAv
-         fgqJDTkcDs9d9mfVubvfI/ztzyJKIfd4OUS7SS/qHt8QUkrhwCjbR4EFOA84q08QjzQ6
-         ovYLiFPn34tH0U/xpA64CvSqBWMvi4VlbsqSBGoEl2xiG+hB94uY7IICRSOvZi807E8p
-         ZKVdkhgSITMWCozdNTTF7H221ana2yD+Qj4vDUtDOJbZ13vztL+wqUzeUfzfR2ZpxAcY
-         2YFF/b5jWr9Q2eL9AE8H3oXij0kP5ltay7twFYFAi2J4WeqE2+QtynCOb5uPNLJq7snp
-         wUyw==
+        bh=FPqzuClM6aQxlaS7qKoOK5m74q3wZx7q5c2tbg/nc9k=;
+        b=JXTl7brbqRiXSWFgYUQ2WiEWjnoog0wq+R+jLfTE5rv4eUi2WYLYDt/LupJ/fea0KJ
+         DagieX6/po2Xy/y07y/UVNu3Je8wvrg3zi5MLgLs29VdAjUhGRJh/nTBra46Vzr4g0Se
+         TDqbDOhxz400Bxvd+6Ux+xIvsA5zg/wnl1KwBsJS1yazFYlqIsGap13J1hbn0c8LeReU
+         eay5AVgeC5TgYrnOJ1IdnqnX/pOFoYJFKGaec9tYI7Ul94Iozi6s4rmUVxl4Lj3yPPkU
+         m7SOla2oD0kbf+66HGbZ5d550Qzwa63AyyqQUfh1pTwh6tWv/Tq8Y0GZti/FYfhOMiWx
+         iaBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9eFtRiq7a+T3erRm0NXvGojbDUue5sJJXjRiKa0Mv3w=;
-        b=l5sqoXYooMB4Gt5pILIyRKF8DWeYBGJXWSrLV7rVU2GPmo8L0zbtfGf8i0vgXZbeyt
-         OXZn5AUVgK2rRn7O5SB7cEAorG231j/g9cyok4tf1V4WUwGcroj3gfY6aMV6L38Dy6i/
-         uyjEvgtqheQtxgP9bFEsF62QHMdLo9fu3VceGMVtJrY0iqg34xit5NtocL+JolSRLBoe
-         5caxuBiXcT8zNpQrBl3kU8WZblwKz3pn2xUbgXY/qa8gCewVUaCougW62OWI40OPnPCL
-         Wwf75vPxkzNryW5HugV2uPRGCT4ZLrF9wDNjl7gN2xPfdJlaeqqTzg5q54+FDEToPNNm
-         azkw==
-X-Gm-Message-State: AOAM533+u4VHn+U9VdbCy14EN1oyAMT6LfOjnvJOhuYl7KZMfVsgNSjI
-	EVLJ9SobnZfSZDaeoYKMOkz07NBCWWB3XJIZ
-X-Google-Smtp-Source: ABdhPJyO1444mkhvsm6mSz9LTX4I6Zpw82/SYdO2303T8aCQ/CrHouW55TI7wlTOyAwiMcQQEQfJLg==
-X-Received: by 2002:a5d:4690:: with SMTP id u16mr9612305wrq.263.1605779932917;
-        Thu, 19 Nov 2020 01:58:52 -0800 (PST)
+        bh=FPqzuClM6aQxlaS7qKoOK5m74q3wZx7q5c2tbg/nc9k=;
+        b=EzpgRNHdH7MRRiansm4MNQ41JewBchdGgtRBNl7CPWcbKtCj+BcD9NsYEQ48oTtTiF
+         VMSmZrUSiLhpX/6oOaXi6FRGEfOZ71n6eai3PC5J2nv5xkZMj3m+yN8QwDd4Uv/h3rcz
+         xgd8FkFnsRWBNa3J4FfhlZUMsYTqPpoS4OwOnMi7LXBRfBVTBqOXO3WT9m2lpZ9sGTd2
+         WW/BVz8dBh+MX/2KE2+jf9PjOUgSeVF3CA+jSxy3wUKBlc9Bp7sUYd8LXolDHyaUihEh
+         2enSVqzw15y9kGmTb5JvO3KLHEnejfe/rh597fvIksq1HisrfLKEI2gjh1Z42eKjGGD1
+         obiQ==
+X-Gm-Message-State: AOAM532DPE3BLMFWZ32o274jSBWGihvDK8p9CfBD8Kah+syoacR0ti1A
+	IcBZBTqLDC7ModVQoEu1n//LQW78uZyKWgZe
+X-Google-Smtp-Source: ABdhPJy1sJBbV+P8J58NDAwNA0bnkTLHVhJ4B3TqRUQZip42FeeHgVHPwfu8vqnw9Wk17i5SEx56hA==
+X-Received: by 2002:a1c:80c3:: with SMTP id b186mr3602517wmd.20.1605779934114;
+        Thu, 19 Nov 2020 01:58:54 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.52
+        by smtp.gmail.com with ESMTPSA id o14sm34725288wrw.4.2020.11.19.01.58.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Nov 2020 01:58:52 -0800 (PST)
+        Thu, 19 Nov 2020 01:58:53 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 04/11] dev-manual: replace labels with references to section title
-Date: Thu, 19 Nov 2020 10:58:27 +0100
-Message-Id: <20201119095834.284864-5-nicolas.dechesne@linaro.org>
+Subject: [PATCH 05/11] kernel-dev: replace labels with references to section title
+Date: Thu, 19 Nov 2020 10:58:28 +0100
+Message-Id: <20201119095834.284864-6-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
 References: <20201119095834.284864-1-nicolas.dechesne@linaro.org>
@@ -53,77 +53,65 @@ Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- .../dev-manual/dev-manual-common-tasks.rst        | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ documentation/kernel-dev/kernel-dev-advanced.rst | 4 ++--
+ documentation/kernel-dev/kernel-dev-intro.rst    | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-index 27aacde60..201e187c3 100644
---- a/documentation/dev-manual/dev-manual-common-tasks.rst
-+++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-@@ -1143,7 +1143,7 @@ necessary when adding a recipe to build a new piece of software to be
- included in a build.
+diff --git a/documentation/kernel-dev/kernel-dev-advanced.rst b/documentation/kernel-dev/kernel-dev-advanced.rst
+index 444037c3a..b1537ccbe 100644
+--- a/documentation/kernel-dev/kernel-dev-advanced.rst
++++ b/documentation/kernel-dev/kernel-dev-advanced.rst
+@@ -245,7 +245,7 @@ two files: ``smp.scc`` and ``smp.cfg``. You can find these files in the
+       CONFIG_X86_BIGSMP=y
  
- You can find a complete description of the ``devtool add`` command in
--the ":ref:`sdk-a-closer-look-at-devtool-add`" section
-+the ":ref:`sdk-manual/sdk-extensible:a closer look at \`\`devtool add\`\``" section
- in the Yocto Project Application Development and the Extensible Software
- Development Kit (eSDK) manual.
+ You can find general information on configuration
+-fragment files in the ":ref:`creating-config-fragments`" section.
++fragment files in the ":ref:`kernel-dev/kernel-dev-common:creating configuration fragments`" section.
  
-@@ -1819,7 +1819,7 @@ Here are some common issues that cause failures.
-    For cases where improper paths are detected for configuration files
-    or for when libraries/headers cannot be found, be sure you are using
-    the more robust ``pkg-config``. See the note in section
--   ":ref:`new-recipe-configuring-the-recipe`" for additional information.
-+   ":ref:`dev-manual/dev-manual-common-tasks:Configuring the Recipe`" for additional information.
+ Within the ``smp.scc`` file, the
+ :term:`KFEATURE_DESCRIPTION`
+@@ -559,7 +559,7 @@ You can see that in the BeagleBone example with the following:
+    include beaglebone.scc
  
- -  *Parallel build failures:* These failures manifest themselves as
-    intermittent errors, or errors reporting that a file or directory
-@@ -3048,7 +3048,7 @@ The following steps describe how to set up the AUH utility:
- 1. *Be Sure the Development Host is Set Up:* You need to be sure that
-    your development host is set up to use the Yocto Project. For
-    information on how to set up your host, see the
--   ":ref:`dev-preparing-the-build-host`" section.
-+   ":ref:`dev-manual/dev-manual-start:Preparing the Build Host`" section.
+ For information on how to break a complete ``.config`` file into the various
+-configuration fragments, see the ":ref:`creating-config-fragments`" section.
++configuration fragments, see the ":ref:`kernel-dev/kernel-dev-common:creating configuration fragments`" section.
  
- 2. *Make Sure Git is Configured:* The AUH utility requires Git to be
-    configured because AUH uses Git to save upgrades. Thus, you must have
-@@ -3216,7 +3216,7 @@ As mentioned earlier, an alternative method for upgrading recipes to
- newer versions is to use
- :doc:`devtool upgrade <../ref-manual/ref-devtool-reference>`.
- You can read about ``devtool upgrade`` in general in the
--":ref:`sdk-devtool-use-devtool-upgrade-to-create-a-version-of-the-recipe-that-supports-a-newer-version-of-the-software`"
-+":ref:`sdk-manual/sdk-extensible:use \`\`devtool upgrade\`\` to create a version of the recipe that supports a newer version of the software`"
- section in the Yocto Project Application Development and the Extensible
- Software Development Kit (eSDK) Manual.
+ Finally, if you have any configurations specific to the hardware that
+ are not in a ``*.scc`` file, you can include them as follows:
+diff --git a/documentation/kernel-dev/kernel-dev-intro.rst b/documentation/kernel-dev/kernel-dev-intro.rst
+index 5679a0ab8..971420b22 100644
+--- a/documentation/kernel-dev/kernel-dev-intro.rst
++++ b/documentation/kernel-dev/kernel-dev-intro.rst
+@@ -28,8 +28,8 @@ newly-supported platforms. Previous recipes in the release are refreshed
+ and supported for at least one additional Yocto Project release. As they
+ align, these previous releases are updated to include the latest from
+ the Long Term Support Initiative (LTSI) project. You can learn more
+-about Yocto Linux kernels and LTSI in the ":ref:`Yocto Project Kernel
+-Development and Maintenance <kernel-big-picture>`" section.
++about Yocto Linux kernels and LTSI in the
++":ref:`kernel-dev/kernel-dev-concepts-appx:yocto project kernel development and maintenance`" section.
  
-@@ -3356,7 +3356,8 @@ Manually Upgrading a Recipe
- ---------------------------
- 
- If for some reason you choose not to upgrade recipes using
--:ref:`gs-using-the-auto-upgrade-helper` or by :ref:`gs-using-devtool-upgrade`,
-+:ref:`dev-manual/dev-manual-common-tasks:Using the Auto Upgrade Helper (AUH)` or
-+by :ref:`dev-manual/dev-manual-common-tasks:Using \`\`devtool upgrade\`\``,
- you can manually edit the recipe files to upgrade the versions.
- 
+ Also included is a Yocto Linux kernel development recipe
+ (``linux-yocto-dev.bb``) should you want to work with the very latest in
+@@ -38,7 +38,7 @@ upstream Yocto Linux kernel development and kernel Metadata development.
  .. note::
-@@ -4196,7 +4197,7 @@ view file dependencies in a human-readable form:
-    directory.
  
-    For more information on configuration fragments, see the
--   ":ref:`creating-config-fragments`"
-+   ":ref:`kernel-dev/kernel-dev-common:creating configuration fragments`"
-    section in the Yocto Project Linux Kernel Development Manual.
+    For more on Yocto Linux kernels, see the
+-   ":ref:`Yocto Project Kernel Development and Maintenance <kernel-big-picture>`"
++   ":ref:`kernel-dev/kernel-dev-concepts-appx:yocto project kernel development and maintenance`"
+    section.
  
- -  ``bitbake -u taskexp -g bitbake_target``: Using the BitBake command
-@@ -8143,7 +8144,7 @@ associated ``EXTRA_IMAGE_FEATURES`` variable, as in:
-    EXTRA_IMAGE_FEATURES = "read-only-rootfs"
+ The Yocto Project also provides a powerful set of kernel tools for
+@@ -167,7 +167,7 @@ general information and references for further information.
+    ``menuconfig`` and you have saved them, you can directly compare the
+    resulting ``.config`` file against an existing original and gather
+    those changes into a
+-   :ref:`configuration fragment file <creating-config-fragments>` to be
++   :ref:`configuration fragment file <kernel-dev/kernel-dev-common:creating configuration fragments>` to be
+    referenced from within the kernel's ``.bbappend`` file.
  
- For more information on how to use these variables, see the
--":ref:`usingpoky-extend-customimage-imagefeatures`"
-+":ref:`dev-manual/dev-manual-common-tasks:Customizing Images Using Custom \`\`IMAGE_FEATURES\`\` and \`\`EXTRA_IMAGE_FEATURES\`\``"
- section. For information on the variables, see
- :term:`IMAGE_FEATURES` and
- :term:`EXTRA_IMAGE_FEATURES`.
+    Additionally, if you are working in a BSP layer and need to modify
 -- 
 2.29.2
 
