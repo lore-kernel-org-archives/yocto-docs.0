@@ -1,77 +1,112 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
- by mx.groups.io with SMTP id smtpd.web11.22670.1605860258808588216
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+ by mx.groups.io with SMTP id smtpd.web11.24485.1605874387477446767
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Nov 2020 00:17:39 -0800
+ Fri, 20 Nov 2020 04:13:07 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=M4/zTOMT;
- spf=pass (domain: linaro.org, ip: 209.85.221.43, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f43.google.com with SMTP id k2so9145948wrx.2
-        for <docs@lists.yoctoproject.org>; Fri, 20 Nov 2020 00:17:38 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=mA784wO3;
+ spf=pass (domain: konsulko.com, ip: 209.85.210.66, mailfrom: paul.barker@konsulko.com)
+Received: by mail-ot1-f66.google.com with SMTP id 79so8475358otc.7
+        for <docs@lists.yoctoproject.org>; Fri, 20 Nov 2020 04:13:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hck0DcGXe5IPKvrcpoNQHTOVXvay1YokJ+dgai1DCFo=;
-        b=M4/zTOMTTsTL8B3MKoloCvr8g065zvWaMLqfdph/y+6C4KYM+MSDoIigN1fL2idRkX
-         XaDAhDWi+gen4G+hpB/PMXj6X5ICqGcCqVVEULieH8ou0JCli0p91drVILsRQ69mFWUg
-         3sQpqKvZc2tNiAxXMOSV1fSUwdfg0ovuDYXGm16HlEwBXF+vp54J4oXVaOgMM1ZMcNVa
-         G71CNGCYyWjSJWl5XXRd9g41G2WrUVjQa6OTLsBkmzhHm5pX7a3HXuZTsg+NvM6gYXd+
-         s7OxHifl5bV7GbH7Ff0qw+uxhNEjChtVWcwT2MRpOKyRzjL647UXXJSxBYoJwizvmc2s
-         VyMw==
+        d=konsulko.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=bYNy9lfsRA3ZpHyrFaKYSe37N76S7O0NkiDnIiRHv7Q=;
+        b=mA784wO3S3bBZCRU7F05EZtZFLj3CKqmDMo7QpUddtfEyO+sAPpYKzvkaiKBrYy9Vk
+         LWpGCEPY9Hs3mL0WDcYjKsyh9WFbvZ7YJbO/pmotj7DpRmTTdPfslKVPfOmcAY0B7W0w
+         A1yD6zrgjvSt/j3NN2b1PttwwzZ0tbUnrGkTI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=hck0DcGXe5IPKvrcpoNQHTOVXvay1YokJ+dgai1DCFo=;
-        b=q67f5y/oH8Uh8oohtPgfm0LglRYrcZpiPCpfrsmxW6XQb6RA8fpjIWfVWpLEjahQcS
-         m6jnn9rqyGc2CS9jnO6eFgicz7fo88+pMGPr75iemz4lCmeRWME6Wv2Iik2A5zM5BMiB
-         8VEHO6WTfvk5+2vK8mm8Afra4GR/m3OHOT6Rm4aKv7+YgQ/s6B/ZBT8pYDdcb0zF1E2N
-         semVJ6f7ZuB6UQ4HeGQpO4ORrMpwq47wOsW2VFEPd7kxw9tpY2b908E+ZxYcfKtGFYbN
-         Qu3+rI0rOj89k0lEODZMB66hRCUZg60ZksLiyFyMue8F3VF8gBhXyao5kJQPJzhNNpzv
-         avrA==
-X-Gm-Message-State: AOAM530Vk03mcgNknxvEOHoFB8EPzn7Sg4PerlXs5JGX11sZzZTkd4dN
-	1AYY4rVZOvY5DEoUe9NX7xIcja8Qs1pdzg8PO/g=
-X-Google-Smtp-Source: ABdhPJzJCt2gjl7V/BvdQQaxuS+PHtKI4Ue+uhBR/AqonI5Ot+Uzvi+AzrmGr8sLlisD4RTIJwmppw==
-X-Received: by 2002:adf:f882:: with SMTP id u2mr9301801wrp.271.1605860256989;
-        Fri, 20 Nov 2020 00:17:36 -0800 (PST)
-Return-Path: <nicolas.dechesne@linaro.org>
-Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id b73sm35302849wmb.0.2020.11.20.00.17.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Nov 2020 00:17:36 -0800 (PST)
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-To: docs@lists.yoctoproject.org
-Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH] Makefile: enable parallel build
-Date: Fri, 20 Nov 2020 09:17:23 +0100
-Message-Id: <20201120081723.331706-1-nicolas.dechesne@linaro.org>
-X-Mailer: git-send-email 2.29.2
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=bYNy9lfsRA3ZpHyrFaKYSe37N76S7O0NkiDnIiRHv7Q=;
+        b=aVE/xAE/dhiNtqjqDXphJBfF1CA159tOj+hgi1b4pfibpo8n3ySPqCJseY34L/KnhH
+         1rcjpEolE9ZTK1hpsiQf9M7GzkG4LAKw7AIUX8zFOh36zQYHgOBOvrROVBkbE9rpj4a8
+         FnHQFH3wejWHPGog20Cyx/w+MvzMwkSMofHSPTf24Dbei6F+R1CiNaGhTitijgRzJ/51
+         j9kG2VLiF5oUhD6l4ABXdx1qgPN8u3QMKlqIzjfKwuetfKoyHexJsUbk55Us+NevF8AX
+         smk5i6MH854jRzb1j5vvOS9t4WhmcBNJ0p0t53JMgcx1fOCbh4TjuhG2NEO/DZh47Cq4
+         Iupg==
+X-Gm-Message-State: AOAM532U8yS1lnQ0o9C7WHEuBlj6ZMtR1GP2Ihx+rZerZPAuZTEGrMA8
+	T3il+ybvQs268tha3z9x0Tp+TiwuHFKAdb/FUKbT3w==
+X-Google-Smtp-Source: ABdhPJx3pme60C5UEgrBFIh5lpBu7VpKbP/IIBP0AziN04oBtOxY5L9bAdeld3OfMx1zHl4T3hYMOWmU9Hd2tKT3Ia0=
+X-Received: by 2002:a05:6830:22d2:: with SMTP id q18mr12296140otc.305.1605874386768;
+ Fri, 20 Nov 2020 04:13:06 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20201118100705.3656-1-pbarker@konsulko.com> <20201118100705.3656-2-pbarker@konsulko.com>
+ <CAP71Wjw449WP=VZncMDF5c+GtYYMbAssWMLtYK6E-=3+J8qzaA@mail.gmail.com>
+In-Reply-To: <CAP71Wjw449WP=VZncMDF5c+GtYYMbAssWMLtYK6E-=3+J8qzaA@mail.gmail.com>
+From: "Paul Barker" <pbarker@konsulko.com>
+Date: Fri, 20 Nov 2020 12:12:56 +0000
+Message-ID: <CAM9ZRVswvBwxh+-yf8vYNnypfjsQC+RncoyHvw+Nvh7Wu671vw@mail.gmail.com>
+Subject: Re: [docs] [PATCH v2 2/9] dev-manual-common-tasks: Fix refs to testing branches
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 
-From sphinx-build man page:
+On Wed, 18 Nov 2020 at 11:23, Nicolas Dechesne
+<nicolas.dechesne@linaro.org> wrote:
+>
+> On Wed, Nov 18, 2020 at 11:07 AM Paul Barker <pbarker@konsulko.com> wrote:
+> >
+> > After discussions on IRC with Ross we concluded that the `ross/mut`
+> > branch shouldn't really be listed in the docs as it's more of a personal
+> > test branch. Instead we should list the -next branches for
+> > openembedded-core and poky.
+> >
+> > Signed-off-by: Paul Barker <pbarker@konsulko.com>
+> > ---
+> >  .../dev-manual/dev-manual-common-tasks.rst    | 33 ++++++++++++-------
+> >  1 file changed, 21 insertions(+), 12 deletions(-)
+> >
+> > diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
+> > index 27aacde60..6f526c203 100644
+> > --- a/documentation/dev-manual/dev-manual-common-tasks.rst
+> > +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
+> > @@ -10665,18 +10665,27 @@ to a contribution repository that is upstream. See the ":ref:`gs-git-workflows-a
+> >  section in the Yocto Project Overview and Concepts Manual for additional
+> >  concepts on working in the Yocto Project development environment.
+> >
+> > -Two commonly used testing repositories exist for OpenEmbedded-Core:
+> > -
+> > --  *"ross/mut" branch:* The "mut" (master-under-test) tree exists in the
+> > -   ``poky-contrib`` repository in the
+> > -   :yocto_git:`Yocto Project source repositories <>`.
+> > -
+> > --  *"master-next" branch:* This branch is part of the main "poky"
+> > -   repository in the Yocto Project source repositories.
+> > -
+> > -Maintainers use these branches to test submissions prior to merging
+> > -patches. Thus, you can get an idea of the status of a patch based on
+> > -whether the patch has been merged into one of these branches.
+> > +Maintainers commonly use ``-next`` branches to test submissions prior to
+> > +merging patches. Thus, you can get an idea of the status of a patch based on
+> > +whether the patch has been merged into one of these branches. The commonly
+> > +used testing branches for OpenEmbedded-Core are as follows:
+> > +
+> > +-  *openembedded-core "master-next" branch:* This branch is part of the
+> > +   :oe_git:`openembedded-core </openembedded-core/>` repository contains
 
--j N     build in parallel with N processes where possible
-         (special value "auto" will set N to cpu-count)
+I spotted a missed word here, it should be "and contains".
 
-Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
----
- documentation/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> > +   proposed changes to the core metadata.
+> > +
+> > +-  *poky "master-next" branch:* This branch is part of the
+> > +   :yocto_git:`poky </cgit/cgit.cgi/poky/>` repository and combines proposed
+> > +   changes to bitbake, the core metadata and the poky distro.
+> > +
+> > +Similarly, stable branches maintained by the project may have corresponding
+> > +``-next`` branches which collect proposed changes. For example,
+> > +``dunfell-next`` and ``gatesgarth-next`` branches in both the
+> > +"openembdedded-core" and "poky" repositories.
+>
+> Perhaps using DISTRO_NAME_NO_CAP and DISTRO_NAME_NO_CAP_MINUS_ONE
+> here, so that the documentation stays 'current' over the years?
+> I think it's a good idea to keep 'dunfell-next' though (since it's
+> LTS), so perhaps we can add DISTRO_NAME_NO_CAP_LTS variable which
+> points to latest LTS, and use it and DISTRO_NAME_NO_CAP here.
 
-diff --git a/documentation/Makefile b/documentation/Makefile
-index 4d721d30f..d40f390e2 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -3,7 +3,7 @@
- 
- # You can set these variables from the command line, and also
- # from the environment for the first two.
--SPHINXOPTS    ?=
-+SPHINXOPTS    ?= -j auto
- SPHINXBUILD   ?= sphinx-build
- SOURCEDIR     = .
- BUILDDIR      = _build
+I agree it's worth changing these, I'll send a v3.
+
 -- 
-2.29.2
-
+Paul Barker
+Konsulko Group
