@@ -1,112 +1,77 @@
-Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
- by mx.groups.io with SMTP id smtpd.web11.24485.1605874387477446767
+Received: from mail-yb1-f181.google.com (mail-yb1-f181.google.com [209.85.219.181])
+ by mx.groups.io with SMTP id smtpd.web08.1304.1605910857560957903
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Nov 2020 04:13:07 -0800
+ Fri, 20 Nov 2020 14:20:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=mA784wO3;
- spf=pass (domain: konsulko.com, ip: 209.85.210.66, mailfrom: paul.barker@konsulko.com)
-Received: by mail-ot1-f66.google.com with SMTP id 79so8475358otc.7
-        for <docs@lists.yoctoproject.org>; Fri, 20 Nov 2020 04:13:07 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=JcxnAZMQ;
+ spf=pass (domain: linaro.org, ip: 209.85.219.181, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f181.google.com with SMTP id r127so6219861yba.10
+        for <docs@lists.yoctoproject.org>; Fri, 20 Nov 2020 14:20:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bYNy9lfsRA3ZpHyrFaKYSe37N76S7O0NkiDnIiRHv7Q=;
-        b=mA784wO3S3bBZCRU7F05EZtZFLj3CKqmDMo7QpUddtfEyO+sAPpYKzvkaiKBrYy9Vk
-         LWpGCEPY9Hs3mL0WDcYjKsyh9WFbvZ7YJbO/pmotj7DpRmTTdPfslKVPfOmcAY0B7W0w
-         A1yD6zrgjvSt/j3NN2b1PttwwzZ0tbUnrGkTI=
+        d=linaro.org; s=google;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=UHNpLeOAAfCaHrvrC9wXSIA3xKsPkDe2FflehspltQc=;
+        b=JcxnAZMQGFD0HjQ0bcT6qdCP21Qh5GpVdgOcJlITkXGJv7tWVTuHKWeSfaQFYZ1WSc
+         yjvzduliabywWFe+luRJvG0xfV0BRq9C01OCCHt/qfqo+XqQ7cubAaZnuVJP4RqsYuMr
+         qoNPDtGe2QWQlC2RhdXfNRqVPbMBVKComv33sAJehmwUlJS0rZd91L4h1zXrLEDNaWoQ
+         M0JQoNx/jWOypp9QG//d1UJ+jtSuSQOQ47BGDZkjIv5Be9pDmq4ToX711fXBvuxw4XD0
+         IYdH1rgeWjftBFTituk6gRXJ+e3lKEuXwc5nGI4dRa+TR5/ilBIzWRgaM5cSqmmEnh3o
+         SfIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bYNy9lfsRA3ZpHyrFaKYSe37N76S7O0NkiDnIiRHv7Q=;
-        b=aVE/xAE/dhiNtqjqDXphJBfF1CA159tOj+hgi1b4pfibpo8n3ySPqCJseY34L/KnhH
-         1rcjpEolE9ZTK1hpsiQf9M7GzkG4LAKw7AIUX8zFOh36zQYHgOBOvrROVBkbE9rpj4a8
-         FnHQFH3wejWHPGog20Cyx/w+MvzMwkSMofHSPTf24Dbei6F+R1CiNaGhTitijgRzJ/51
-         j9kG2VLiF5oUhD6l4ABXdx1qgPN8u3QMKlqIzjfKwuetfKoyHexJsUbk55Us+NevF8AX
-         smk5i6MH854jRzb1j5vvOS9t4WhmcBNJ0p0t53JMgcx1fOCbh4TjuhG2NEO/DZh47Cq4
-         Iupg==
-X-Gm-Message-State: AOAM532U8yS1lnQ0o9C7WHEuBlj6ZMtR1GP2Ihx+rZerZPAuZTEGrMA8
-	T3il+ybvQs268tha3z9x0Tp+TiwuHFKAdb/FUKbT3w==
-X-Google-Smtp-Source: ABdhPJx3pme60C5UEgrBFIh5lpBu7VpKbP/IIBP0AziN04oBtOxY5L9bAdeld3OfMx1zHl4T3hYMOWmU9Hd2tKT3Ia0=
-X-Received: by 2002:a05:6830:22d2:: with SMTP id q18mr12296140otc.305.1605874386768;
- Fri, 20 Nov 2020 04:13:06 -0800 (PST)
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=UHNpLeOAAfCaHrvrC9wXSIA3xKsPkDe2FflehspltQc=;
+        b=NT1fvGvZIKXs/FbsqZrPPodT+T0FylmGPG7IBVng8sbr9gQms+RL5Y06Id1IFa5zSL
+         MHjJqoebu8W4ZdBrHmHWFiD0nxLo79xIGaIUk5EK5NPsM5Xon3C8InswN34ERtTMZU0P
+         7J3Bhk8iCn3o3a8txbkgpwyalWY1SqO7l3wUs5MWysWZ4XBV+cYdE3/eb+0I8O5ysvbn
+         PI+Y9tF7lcFcVqyOWx2P0JEiWOfzDcRAZ1g3ZE/u333Fc//C4f8lgIMP2EdbasAYFqgA
+         memzo4aJPs53eJwWXitPCLTSXDvJA01PFvVO/YNtjuFCKe7+dIX2sugDTFgiBlRsIU33
+         +vOw==
+X-Gm-Message-State: AOAM530w2fG7dTVEyUNnk8HXYIOq9p4SFU5sDA3fZDPME2LuAd86bO40
+	chlV75bZeMdcxvyx65CA+t3F2lGG09JNJlI6V5oNtEMD0msCieoAWao=
+X-Google-Smtp-Source: ABdhPJzpFrgV3RFKGaYzBlY2KlbUc/Ozv7h3rPo1ef3vxabMMiMSyU5RwJ4jOBo8DVUlytQhPQkICsbu6Uuuip+wxZ8=
+X-Received: by 2002:a25:318b:: with SMTP id x133mr32636971ybx.201.1605910856436;
+ Fri, 20 Nov 2020 14:20:56 -0800 (PST)
 MIME-Version: 1.0
-References: <20201118100705.3656-1-pbarker@konsulko.com> <20201118100705.3656-2-pbarker@konsulko.com>
- <CAP71Wjw449WP=VZncMDF5c+GtYYMbAssWMLtYK6E-=3+J8qzaA@mail.gmail.com>
-In-Reply-To: <CAP71Wjw449WP=VZncMDF5c+GtYYMbAssWMLtYK6E-=3+J8qzaA@mail.gmail.com>
-From: "Paul Barker" <pbarker@konsulko.com>
-Date: Fri, 20 Nov 2020 12:12:56 +0000
-Message-ID: <CAM9ZRVswvBwxh+-yf8vYNnypfjsQC+RncoyHvw+Nvh7Wu671vw@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2 2/9] dev-manual-common-tasks: Fix refs to testing branches
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Fri, 20 Nov 2020 23:20:45 +0100
+Message-ID: <CAP71WjwM3+3SwN9XRO4Cthur7iwQB0O2bKBSh3VQXkGZbYUYWA@mail.gmail.com>
+Subject: Sphinx 'backport' for Dunfell LTS
+To: YP docs mailing list <docs@lists.yoctoproject.org>, Steve Sakoman <steve@sakoman.com>, 
+	Richard Purdie <richard.purdie@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, 18 Nov 2020 at 11:23, Nicolas Dechesne
-<nicolas.dechesne@linaro.org> wrote:
->
-> On Wed, Nov 18, 2020 at 11:07 AM Paul Barker <pbarker@konsulko.com> wrote:
-> >
-> > After discussions on IRC with Ross we concluded that the `ross/mut`
-> > branch shouldn't really be listed in the docs as it's more of a personal
-> > test branch. Instead we should list the -next branches for
-> > openembedded-core and poky.
-> >
-> > Signed-off-by: Paul Barker <pbarker@konsulko.com>
-> > ---
-> >  .../dev-manual/dev-manual-common-tasks.rst    | 33 ++++++++++++-------
-> >  1 file changed, 21 insertions(+), 12 deletions(-)
-> >
-> > diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > index 27aacde60..6f526c203 100644
-> > --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> > +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > @@ -10665,18 +10665,27 @@ to a contribution repository that is upstream. See the ":ref:`gs-git-workflows-a
-> >  section in the Yocto Project Overview and Concepts Manual for additional
-> >  concepts on working in the Yocto Project development environment.
-> >
-> > -Two commonly used testing repositories exist for OpenEmbedded-Core:
-> > -
-> > --  *"ross/mut" branch:* The "mut" (master-under-test) tree exists in the
-> > -   ``poky-contrib`` repository in the
-> > -   :yocto_git:`Yocto Project source repositories <>`.
-> > -
-> > --  *"master-next" branch:* This branch is part of the main "poky"
-> > -   repository in the Yocto Project source repositories.
-> > -
-> > -Maintainers use these branches to test submissions prior to merging
-> > -patches. Thus, you can get an idea of the status of a patch based on
-> > -whether the patch has been merged into one of these branches.
-> > +Maintainers commonly use ``-next`` branches to test submissions prior to
-> > +merging patches. Thus, you can get an idea of the status of a patch based on
-> > +whether the patch has been merged into one of these branches. The commonly
-> > +used testing branches for OpenEmbedded-Core are as follows:
-> > +
-> > +-  *openembedded-core "master-next" branch:* This branch is part of the
-> > +   :oe_git:`openembedded-core </openembedded-core/>` repository contains
+Steve, RP,
 
-I spotted a missed word here, it should be "and contains".
+I think I am "done" with the 'backport' of Sphinx docs in both
+yocto-docs and bitbake. The backport process isn't straightforward..
+here is what I did in each case:
 
-> > +   proposed changes to the core metadata.
-> > +
-> > +-  *poky "master-next" branch:* This branch is part of the
-> > +   :yocto_git:`poky </cgit/cgit.cgi/poky/>` repository and combines proposed
-> > +   changes to bitbake, the core metadata and the poky distro.
-> > +
-> > +Similarly, stable branches maintained by the project may have corresponding
-> > +``-next`` branches which collect proposed changes. For example,
-> > +``dunfell-next`` and ``gatesgarth-next`` branches in both the
-> > +"openembdedded-core" and "poky" repositories.
->
-> Perhaps using DISTRO_NAME_NO_CAP and DISTRO_NAME_NO_CAP_MINUS_ONE
-> here, so that the documentation stays 'current' over the years?
-> I think it's a good idea to keep 'dunfell-next' though (since it's
-> LTS), so perhaps we can add DISTRO_NAME_NO_CAP_LTS variable which
-> points to latest LTS, and use it and DISTRO_NAME_NO_CAP here.
+1. take all sphinx commits from master branch and squash them into
+dunfell. that's a large commit that brings sphinx and removes docbook.
+2. because of #1 there are changes that we 'imported' which needed to
+be undo'd (e.g. a doc change that was applied to master, but is not
+needed in dunfell). To get the list of such changes, I look at each
+patch in dunfell vs master.
+3. in yocto-docs, I had to 'revert' some patches first before I could
+cherry-pick all the sphinx changes, and I have then 're-applied' the
+changes later in the branch (of course when I say re-apply, i mean i
+did it again in sphinx instead of docbook)
+4. Then I took as many patches as possible from 'master' which apply to dunfell.
 
-I agree it's worth changing these, I'll send a v3.
+I understand this is a complex 'merge', and I must admit I have gone
+back and forth on whether we should do it..  I couldn't find a simpler
+way, but if we merge it and use Sphinx for the next LTS release
+(3.1.5), then all active releases docs would now be based on Sphinx.
 
--- 
-Paul Barker
-Konsulko Group
+I have pushed the branches here:
+http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit/?h=sphinx&id=488a421fea826a2cff27dd009768430769f25ab0
+and
+https://git.openembedded.org/bitbake/commit/?h=sphinx&id=fe9dde75fa55da08fddd0cce778d3eb6303b2124
+
+It's rather inconvenient to review the series by email (the first
+patch is huge), But we can discuss here..
+
+enjoy... or not ;)
+
+nico
