@@ -1,157 +1,73 @@
-Received: from mail-oo1-f66.google.com (mail-oo1-f66.google.com [209.85.161.66])
- by mx.groups.io with SMTP id smtpd.web09.39343.1606153630280952264
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+ by mx.groups.io with SMTP id smtpd.web11.39629.1606154543919915596
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Nov 2020 09:47:10 -0800
+ Mon, 23 Nov 2020 10:02:24 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=mPgYgIkB;
- spf=pass (domain: konsulko.com, ip: 209.85.161.66, mailfrom: paul.barker@konsulko.com)
-Received: by mail-oo1-f66.google.com with SMTP id y3so4144268ooq.2
-        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 09:47:10 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=H3ARVyfg;
+ spf=pass (domain: konsulko.com, ip: 209.85.221.41, mailfrom: pbarker@konsulko.com)
+Received: by mail-wr1-f41.google.com with SMTP id s8so19462596wrw.10
+        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=R6OnFVamgwPFt+JAPDKNFynMduIszT6yGfzjh0KNi/s=;
-        b=mPgYgIkBvxX1tJgTfS124xODkIMWDuVgVRJ564bNEv0Drn1Kx/NZjzilxTHSfTJD8p
-         tLd75KxX/z36PSCbz5i1nwgskSyPLabIE0f5X44v7VDEVSIcQ9/uNIdyTfatgnMrKHKl
-         xbzJPjJvD3MkDwpUr+MsWwPvIzipw3vSADO1o=
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=N+GfTC8f/lYgxiLQuk0m9TECSZq2vaakCNe96S5oYUw=;
+        b=H3ARVyfgpZDICl2Fb26Fi0rPSE09wuKbITwIFbouN6IWHeoONFrKvSVpHWDzGkxFkw
+         0WSL18IpVleBwWeCT1fNnKGWOhozALC2ynQLGj3mru1FUKTTyJF4gIU2GqYh2SJrACWC
+         ccqRbgRGm+dRXLIfsV/gSqQG8yDko7CQr9Bo8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=R6OnFVamgwPFt+JAPDKNFynMduIszT6yGfzjh0KNi/s=;
-        b=pEwWVgvqPamdmwulwhS68uvaEBueDyk4Ww60H1gjxm4FsfgXW4b2gKOXcH2gUzWGB6
-         RCsFu/KFEWc5E3t201A4OAeL+MLrRCHh+SLXjdujdRgoVBW+QFETsYym/CIJ4Uc2PAz7
-         4PmdANulM6OVNyxvaKSWq8KH2brkbDyuCf01Uz8qkBoF7vMqFgqOmwdUHtXqrDVzY4db
-         lRCpq+aNXCpFM1j4IBsDe0aEhYJ57xRktW/EvkMZEcuIhUC2tL05s8wJt6V649NteDF2
-         YDoxV1/srSCF0lpLRFf1/UOE878HcQ/XOZ5MfWCkVHnvJj+NMkmcYO4qUZEoWhMFAMUC
-         xsmg==
-X-Gm-Message-State: AOAM532V1zZM0TtJpSM0EarXX8MkpTdusyfpKZUMQOWnk57fUindTH/V
-	XtI4DcUHvb5g0XvWFaBXu1dF2ycrv9rO+l+jxFZEdg==
-X-Google-Smtp-Source: ABdhPJxVEoHtaadxUEWa++m1ZjEe7b7eXQY7jYHHY4aj8hLS7Zl5yOAc7vlOcFxm1WoZ8ApsUNGRX5spHvwZNun95Jg=
-X-Received: by 2002:a4a:a444:: with SMTP id w4mr353581ool.5.1606153629578;
- Mon, 23 Nov 2020 09:47:09 -0800 (PST)
-MIME-Version: 1.0
-References: <20201118100705.3656-1-pbarker@konsulko.com> <20201118100705.3656-2-pbarker@konsulko.com>
- <CAP71Wjw449WP=VZncMDF5c+GtYYMbAssWMLtYK6E-=3+J8qzaA@mail.gmail.com>
- <CAM9ZRVs8C0uoZOSVEqZ7Es1Az+mbSp-7JfFpKjp7smhcGJaVYg@mail.gmail.com>
- <CAP71WjyJjZGDZZ1_S3iAWrA7ht0snV9XjFU1a2F7Q-uoEdniQA@mail.gmail.com>
- <CAM9ZRVs+-Z4Peu3UTMLcgkcgOF0Ufa072QV8bpU6zixmApZLpw@mail.gmail.com> <CAP71Wjyf+VCiMtnuNFvUi4P1r5mM9FaGh6K__ugsFE5dkVf_Aw@mail.gmail.com>
-In-Reply-To: <CAP71Wjyf+VCiMtnuNFvUi4P1r5mM9FaGh6K__ugsFE5dkVf_Aw@mail.gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=N+GfTC8f/lYgxiLQuk0m9TECSZq2vaakCNe96S5oYUw=;
+        b=Bll1lenYf0wfkxVwFqf+jjFmSmFpXXcZfkyhwmnk4/ALjFry0znzpeVvkn69ppr+Uk
+         68sHNCr52RTbjLtjdM+CYbOP13P46+9nkpQ/IlN3v6y4klWu0KCHMj+G5SUPemcDJXlv
+         v0UC/8xYM8R39x2LqJZ70AcCUuM+Cza8KSzpb081cB9VKJLORa//lyB+Ryte0+FkzLCW
+         makhRM6wFdXqjE6JBViFqGeEuSY6+5eWOrTzoCA5MvtJy+1HJ5uGN5AqjO4dhaKk2alE
+         3Hco8U2i9P5gHyAHRzm5wrY8lNk3hxg21hRt3VtbBY0/682kzg5J9AzjmJjUkHMG1Y0l
+         T1yA==
+X-Gm-Message-State: AOAM5319RwtjsSBGSqnNqklJSI8tO+obX7GmlaYOK334m+uSb/WZfOoI
+	NlmXcWmuDZpUkJo96FgVmTSgbEWpBMNsgQ==
+X-Google-Smtp-Source: ABdhPJxqx/7gLfdSE0nI769L0Vj33uWo1J/9HHYsUC2xUiSExrkvgJ+9ljCP5OPHMONLsbYSP6vjWg==
+X-Received: by 2002:adf:e7d0:: with SMTP id e16mr964235wrn.114.1606154542114;
+        Mon, 23 Nov 2020 10:02:22 -0800 (PST)
+Return-Path: <pbarker@konsulko.com>
+Received: from deb10.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
+        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Nov 2020 10:02:21 -0800 (PST)
 From: "Paul Barker" <pbarker@konsulko.com>
-Date: Mon, 23 Nov 2020 17:46:58 +0000
-Message-ID: <CAM9ZRVszTpZ=k_heNdaFLaWmbp4Cbte=6M5int+jBcqGUKzd0g@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2 2/9] dev-manual-common-tasks: Fix refs to testing branches
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+To: docs@lists.yoctoproject.org
+Cc: Paul Barker <pbarker@konsulko.com>
+Subject: [PATCH v3 0/7] Improve contribution guidelines
+Date: Mon, 23 Nov 2020 18:02:12 +0000
+Message-Id: <20201123180219.1966-1-pbarker@konsulko.com>
+X-Mailer: git-send-email 2.20.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Mon, 23 Nov 2020 at 16:58, Nicolas Dechesne
-<nicolas.dechesne@linaro.org> wrote:
->
-> On Mon, Nov 23, 2020 at 5:08 PM Paul Barker <pbarker@konsulko.com> wrote:
-> >
-> > On Mon, 23 Nov 2020 at 16:00, Nicolas Dechesne
-> > <nicolas.dechesne@linaro.org> wrote:
-> > >
-> > > On Mon, Nov 23, 2020 at 4:40 PM Paul Barker <pbarker@konsulko.com> wrote:
-> > > >
-> > > > On Wed, 18 Nov 2020 at 11:23, Nicolas Dechesne
-> > > > <nicolas.dechesne@linaro.org> wrote:
-> > > > >
-> > > > > On Wed, Nov 18, 2020 at 11:07 AM Paul Barker <pbarker@konsulko.com> wrote:
-> > > > > >
-> > > > > > After discussions on IRC with Ross we concluded that the `ross/mut`
-> > > > > > branch shouldn't really be listed in the docs as it's more of a personal
-> > > > > > test branch. Instead we should list the -next branches for
-> > > > > > openembedded-core and poky.
-> > > > > >
-> > > > > > Signed-off-by: Paul Barker <pbarker@konsulko.com>
-> > > > > > ---
-> > > > > >  .../dev-manual/dev-manual-common-tasks.rst    | 33 ++++++++++++-------
-> > > > > >  1 file changed, 21 insertions(+), 12 deletions(-)
-> > > > > >
-> > > > > > diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > > > > > index 27aacde60..6f526c203 100644
-> > > > > > --- a/documentation/dev-manual/dev-manual-common-tasks.rst
-> > > > > > +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-> > > > > > @@ -10665,18 +10665,27 @@ to a contribution repository that is upstream. See the ":ref:`gs-git-workflows-a
-> > > > > >  section in the Yocto Project Overview and Concepts Manual for additional
-> > > > > >  concepts on working in the Yocto Project development environment.
-> > > > > >
-> > > > > > -Two commonly used testing repositories exist for OpenEmbedded-Core:
-> > > > > > -
-> > > > > > --  *"ross/mut" branch:* The "mut" (master-under-test) tree exists in the
-> > > > > > -   ``poky-contrib`` repository in the
-> > > > > > -   :yocto_git:`Yocto Project source repositories <>`.
-> > > > > > -
-> > > > > > --  *"master-next" branch:* This branch is part of the main "poky"
-> > > > > > -   repository in the Yocto Project source repositories.
-> > > > > > -
-> > > > > > -Maintainers use these branches to test submissions prior to merging
-> > > > > > -patches. Thus, you can get an idea of the status of a patch based on
-> > > > > > -whether the patch has been merged into one of these branches.
-> > > > > > +Maintainers commonly use ``-next`` branches to test submissions prior to
-> > > > > > +merging patches. Thus, you can get an idea of the status of a patch based on
-> > > > > > +whether the patch has been merged into one of these branches. The commonly
-> > > > > > +used testing branches for OpenEmbedded-Core are as follows:
-> > > > > > +
-> > > > > > +-  *openembedded-core "master-next" branch:* This branch is part of the
-> > > > > > +   :oe_git:`openembedded-core </openembedded-core/>` repository contains
-> > > > > > +   proposed changes to the core metadata.
-> > > > > > +
-> > > > > > +-  *poky "master-next" branch:* This branch is part of the
-> > > > > > +   :yocto_git:`poky </cgit/cgit.cgi/poky/>` repository and combines proposed
-> > > > > > +   changes to bitbake, the core metadata and the poky distro.
-> > > > > > +
-> > > > > > +Similarly, stable branches maintained by the project may have corresponding
-> > > > > > +``-next`` branches which collect proposed changes. For example,
-> > > > > > +``dunfell-next`` and ``gatesgarth-next`` branches in both the
-> > > > > > +"openembdedded-core" and "poky" repositories.
-> > > > >
-> > > > > Perhaps using DISTRO_NAME_NO_CAP and DISTRO_NAME_NO_CAP_MINUS_ONE
-> > > > > here, so that the documentation stays 'current' over the years?
-> > > > > I think it's a good idea to keep 'dunfell-next' though (since it's
-> > > > > LTS), so perhaps we can add DISTRO_NAME_NO_CAP_LTS variable which
-> > > > > points to latest LTS, and use it and DISTRO_NAME_NO_CAP here.
-> > > >
-> > > > I'm making the changes today and I realised this may lead to confusion
-> > > > for the next LTS release. How about we define
-> > > > DISTRO_NAME_NO_CAP_PREV_LTS and then we can say that it will never be
-> > > > equal to DISTRO_NAME_NO_CAP?
-> > >
-> > > I think we need:
-> > >
-> > > DISTRO_NAME_NO_CAP : the current release
-> > > DISTRO_NAME_NO_CAP_MINUS_ONE : the previous release
-> > > DISTRO_NAME_NO_CAP_LTS : the current LTS release (and yes, it might be
-> > > DISTRO_NAME_NO_CAP right after an LTS)
-> > >
-> > > Then we should be able to address pretty much anything we need, no?
-> >
-> > My only concern here is using DISTRO_NAME_NO_CAP and
-> > DISTRO_NAME_NO_CAP_LTS in the same sentence as two examples, it'd be
-> > confusing in the future when they may both be the same.
-> >
-> > Maybe the solution is to just reference one other -next branch as an
-> > example here instead of 2.
->
-> I agree we should not use both in the same sentence. To me both have
-> different uses. In fact we never needed the LTS, because there was
-> never an LTS before.. but I suspect we will add more and more snippet
-> or sentences which will want to refer to the LTS, so adding it and
-> using it appropriately makes sense.
->
-> we can keep the 2 regluar one (release and prev release) for now, the
-> MINUS_ONE is used a very few places.. but i think it makes sense to
-> offer the possibility to refer to the previous release.
+Changes since v2:
 
-Ok cool. I'll send v3 using DISTRO_NAME_NO_CAP and
-DISTRO_NAME_NO_CAP_MINUS_ONE here. We can introduce
-DISTRO_NAME_NO_CAP_LTS in a separate follow-up patch.
+    * Drop patches which have been accepted into master already.
 
-Thanks,
+    * Use variables DISTRO_NAME_NO_CAP and DISTRO_NAME_NO_CAP_MINUS_ONE when
+      referring to next branches.
+
+    * Fix minor typo.
+
+Paul Barker (7):
+  dev-manual-common-tasks: Fix refs to testing branches
+  dev-manual-common-tasks: Update & move patchwork reference
+  dev-manual-common-tasks: Tidy up patch submission process
+  dev-manual-common-tasks: Describe git-send-email accurately
+  dev-manual-common-tasks: Describe how to handle patch feedback
+  dev-manual-common-tasks: Describe how to propose changes to stable
+    branches
+  dev-manual-common-tasks: Re-order patch submission instructions
+
+ .../dev-manual/dev-manual-common-tasks.rst    | 340 +++++++++++-------
+ 1 file changed, 210 insertions(+), 130 deletions(-)
 
 -- 
-Paul Barker
-Konsulko Group
+2.20.1
+
