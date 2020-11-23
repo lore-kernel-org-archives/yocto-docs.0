@@ -1,72 +1,96 @@
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
- by mx.groups.io with SMTP id smtpd.web12.39246.1606154548069562964
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+ by mx.groups.io with SMTP id smtpd.web09.39572.1606154549039322652
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Nov 2020 10:02:28 -0800
+ Mon, 23 Nov 2020 10:02:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=OuF9vexb;
- spf=pass (domain: konsulko.com, ip: 209.85.221.65, mailfrom: pbarker@konsulko.com)
-Received: by mail-wr1-f65.google.com with SMTP id g14so4301973wrm.13
-        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:27 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=JaL0QcDd;
+ spf=pass (domain: konsulko.com, ip: 209.85.221.66, mailfrom: pbarker@konsulko.com)
+Received: by mail-wr1-f66.google.com with SMTP id 64so6087375wra.11
+        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=JrLCK2oXgOsju6X9tbnnbZmsZ8rf7UnHl20YiPoBv5Y=;
-        b=OuF9vexbE8B2cy3fFh0//2WGXL62wp9sCwiQwd/ntw58Ajbo83w0n7d4TA3Kv5nqB3
-         OWIVzEp5oo67d4gddBiN1Z4b6INzWg6wPu1GBWsGBmUr6Y9+GY1+WX6NKc5Ql5K4gld2
-         jFFi6gJcCJPY9x82Vwl6MA8XDh7HXVnbM/SY8=
+        bh=mxQ+kL7V+Bxp0PLa8HN3ThsCndq4lXpayAjokVYWfFY=;
+        b=JaL0QcDdSpUy5MFWt7tgDYxJKUkJp2RFxtWkBc9rq7am3ppwVC4+k/lAb7PC4Kf0/8
+         A2J+9QmotgqMrrlvylR3LM8aLVfeJ8lIMESmjkMIT3KzRpMpTMrSG0KzHW60AuvNuRWH
+         FXSFTH+OwQ/D1N4lrSMPFBcq/mRawtmwQuviU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=JrLCK2oXgOsju6X9tbnnbZmsZ8rf7UnHl20YiPoBv5Y=;
-        b=cqjiAX9oRbcM3F5/UCpb4Sy8mFcbs21lQak2nqW7L4eriGCGkDOtGGnELIwTlusjxw
-         EzvfBafKmdHWLiXEHAbYBj2N6FAwNq9xXS4hTAIb6hcgtK6oWRZgPyPwyItzmspSOw1L
-         +5Mzb0WcBnegxuGP+h1RlYlUZ0x4zVh3xfk9hv/B8Ut/CvMxo5hBujjGGYH0RZB/pheP
-         ORsTNlBsWidIHBTqWTtcZJeKRYJ4Dw5Vy8ca2R0tn+PxfngURJKqdkbL6ALfhz49h+GP
-         z/VOrPBXQ6ibclixAEZWdQGDcW9RnsO/TJjnGYV5d1UyQt+iMZ2FMJEyCrBz7HqOwKvK
-         O8TA==
-X-Gm-Message-State: AOAM5325ejaV5QyufJDIMR1ndTBvW+yCCqVnXCBW5oweE4f4zq6HjT23
-	rUkwdKyAWNgYpLMAWpWRGP0lzQdQMtBoKQ==
-X-Google-Smtp-Source: ABdhPJw0uR0+aGnpjOpeYTuRrhKMHpdkkqqXfsGdy8Xg2huzomJ8qHNRiXnm2+JjW00+U9YpFndjew==
-X-Received: by 2002:a5d:534e:: with SMTP id t14mr904474wrv.234.1606154546364;
-        Mon, 23 Nov 2020 10:02:26 -0800 (PST)
+        bh=mxQ+kL7V+Bxp0PLa8HN3ThsCndq4lXpayAjokVYWfFY=;
+        b=WznL2NX4zFwZ9RQTuP9obND0eVIR6Uuat7BrdJaS4VmtjlPbS5iWVZd1YCAokQqr6Z
+         4dYm3ZEWwDo/BefWTNOxc08ciAJ1nALybz/EDV1Z9jyuTNkFVonvJVczJOS732pnmg+F
+         Bx0W63oDxxPkh5PFMoWWGp6wosU5Q/3hjionvQwMt/xsMOhzW3BdBgECKwuv8punPEEE
+         9SCvqydT3LZa2fSEj6rzrEAImG1OAZ+H62qd8Fh4ArgawPMWpwwZhesjKL3E/rs3eabo
+         s6y2bhLDlEmSU31yASRcWhvKXOedOYgoIZjyaJjIcN3gOK94DowpQPJKnSYh0d5YAjgs
+         McBg==
+X-Gm-Message-State: AOAM532+mmyeyr5k1o4SByVp2wsBqK62InYxG2XNJvHOr87+02ouIh4S
+	BREwy76641V7EYFrYJyXLZHI2+3keK2AxQ==
+X-Google-Smtp-Source: ABdhPJwqYYh0iRJoOg7xB2fOyI+K+xveuwYd3We11NgNIyahxYFlIO1Va2Puz8AkiCrNsYxuxeH+7g==
+X-Received: by 2002:a5d:6411:: with SMTP id z17mr939571wru.112.1606154547355;
+        Mon, 23 Nov 2020 10:02:27 -0800 (PST)
 Return-Path: <pbarker@konsulko.com>
 Received: from deb10.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
-        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.25
+        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2020 10:02:25 -0800 (PST)
+        Mon, 23 Nov 2020 10:02:26 -0800 (PST)
 From: "Paul Barker" <pbarker@konsulko.com>
 To: docs@lists.yoctoproject.org
 Cc: Paul Barker <pbarker@konsulko.com>
-Subject: [PATCH v3 4/7] dev-manual-common-tasks: Describe git-send-email accurately
-Date: Mon, 23 Nov 2020 18:02:16 +0000
-Message-Id: <20201123180219.1966-5-pbarker@konsulko.com>
+Subject: [PATCH v3 5/7] dev-manual-common-tasks: Describe how to handle patch feedback
+Date: Mon, 23 Nov 2020 18:02:17 +0000
+Message-Id: <20201123180219.1966-6-pbarker@konsulko.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20201123180219.1966-1-pbarker@konsulko.com>
 References: <20201123180219.1966-1-pbarker@konsulko.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+The contribution guidelines would benefit from a brief section on how to
+address feedback from patch reviewers and how to re-submit amended
+patches. The information here is based on my personal experience and on
+the existing notes on the "How to submit a patch to OpenEmbedded" page
+on the OE wiki.
+
 Signed-off-by: Paul Barker <pbarker@konsulko.com>
 ---
- documentation/dev-manual/dev-manual-common-tasks.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../dev-manual/dev-manual-common-tasks.rst    | 22 +++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
 diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-index 2a521905e..1c6d88a93 100644
+index 1c6d88a93..4b76217ad 100644
 --- a/documentation/dev-manual/dev-manual-common-tasks.rst
 +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-@@ -10939,8 +10939,8 @@ without using the scripts once the steps in
-       or to OpenEmbedded, you might consider requesting a contrib area
-       and the necessary associated rights.
+@@ -10982,6 +10982,28 @@ reduce the burden of patch review on maintainers.
+    Asking about the status of a patch or change is reasonable if the change
+    has been idle for a while with no feedback.
  
--2. *Import the Files Into Your Mail Client:* Import the files into your
--   mail client by using the ``git send-email`` command.
-+2. *Send the patches via email:* Send the patches to the recipients and
-+   relevant mailing lists by using the ``git send-email`` command.
- 
-    .. note::
++Responding to Patch Review
++~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++You may get feedback on your submitted patches from other community members
++or from the automated patchtest service. If issues are identified in your
++patch then it is usually necessary to address these before the patch will be
++accepted into the project. In this case you should amend the patch according
++to the feedback and submit an updated version to the relevant mailing list,
++copying in the reviewers who provided feedback to the previous version of the
++patch.
++
++The patch should be amended using ``git commit --amend`` or perhaps ``git
++rebase`` for more expert git users. You should also modify the ``[PATCH]``
++tag in the email subject line when sending the revised patch to mark the new
++iteration as ``[PATCH v2]``, ``[PATCH v3]``, etc as appropriate. This can be
++done by passing the ``-v`` argument to ``git format-patch`` with a version
++number.
++
++Lastly please ensure that you also test your revised changes. In particular
++please don't just edit the patch file written out by ``git format-patch`` and
++resend it.
++
+ Working With Licenses
+ =====================
  
 -- 
 2.20.1
