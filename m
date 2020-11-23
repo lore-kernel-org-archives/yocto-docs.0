@@ -1,173 +1,104 @@
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
- by mx.groups.io with SMTP id smtpd.web11.39630.1606154547177249260
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+ by mx.groups.io with SMTP id smtpd.web12.39245.1606154547474179496
  for <docs@lists.yoctoproject.org>;
  Mon, 23 Nov 2020 10:02:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=rSHJKJ88;
- spf=pass (domain: konsulko.com, ip: 209.85.221.67, mailfrom: pbarker@konsulko.com)
-Received: by mail-wr1-f67.google.com with SMTP id 23so19467017wrc.8
-        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:26 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=J7ws6kg9;
+ spf=pass (domain: konsulko.com, ip: 209.85.221.51, mailfrom: pbarker@konsulko.com)
+Received: by mail-wr1-f51.google.com with SMTP id p8so19509625wrx.5
+        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=+vLRKAP9+2cotMGuLFBHL/zYpn0zH8VJWKwvuq8M7ZM=;
-        b=rSHJKJ88zDun0XuFPc++zDcEybUZgwkS38xIHkR6Fq7X9nv2zH1uBq9Q5L2/7WdJNS
-         vtZ2qcuWRD1muZ86jbJy4+oCcX3qo7AUW+bb+GRzeL0ybx17GUE5kyBapbFj2I/yRFHb
-         QdgMHZXbGQs3HJc4TJYLM3feub1RqHJW1Z5ro=
+        bh=wLJPULC83/yrKlvCFZVeu6msmigU/0mr9tZcuWOQugQ=;
+        b=J7ws6kg9oXUiHtBgLc6D65JuW27qJwN0C8ehMGo66K3VmEwOS0+UWjMDdkOAN6bo3w
+         wNb6QmZm/trIjR1H7MT3QFDSAQfdy140rODi410X9fHtAMtIjOMcDCeHz0gxHPhNJQIN
+         36pNOezWXbKRjjYPlIAL1CSGnXNxubcd0m8KM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=+vLRKAP9+2cotMGuLFBHL/zYpn0zH8VJWKwvuq8M7ZM=;
-        b=nNVPAgtAbfiJPagodxDznlN193QcKkWuWV8+l6YCV73uDrZzb28uxk1i5ood2B+Zqg
-         arXavUXYob7L0Dnz1Zagz4Ubu4Klv/TYz+U8gTGj5QLXzRaeLMUL4yq47KnuWdeFn31v
-         ZcdAh4c523yLlVTqOJKGRAzMQO86EUdn2UpTgq8H/xuo86MXuDxnuQmhqhkKZJrEPccp
-         aOa0MPt0ruGIUi5ULTUzWaJIJd5GEc4fXy20gAHRGDgrDIzkyhCWksErWEj2hGzArL/y
-         Mi8LNPtjHYSNiwLcAm0ZbyZb5sJqd2rCXhUFj/pMAOczUHjGfjzCo6mY8slI5+25Vklp
-         1PZg==
-X-Gm-Message-State: AOAM533OxdLnmbt0E73J0ibMyi7lTX/nNtyvhgNe2fawcmNQSgphluDd
-	DaFzlQgunzeZoh1QYfap99dgNW3Pa1Or4g==
-X-Google-Smtp-Source: ABdhPJzxM+M75C2cv3un+uNWr+t/454c8lUV+SjLB2X+YyEWXbAeJd4FAZ2wdKtFOoVGxrKxUe2AMA==
-X-Received: by 2002:a5d:6452:: with SMTP id d18mr933130wrw.200.1606154545332;
-        Mon, 23 Nov 2020 10:02:25 -0800 (PST)
+        bh=wLJPULC83/yrKlvCFZVeu6msmigU/0mr9tZcuWOQugQ=;
+        b=dgs4ki4mN8sqoaXIlaGUiFbQcrxskPSexcK4vJZLBrqewARWDnUVy4FKWUWrQDJjak
+         Lp/IMCx1oaYm+cSmR54LfM+eog81mBTbugZGYsr+O74UZvhMCPfZb6Clfl0wDEbKxpIC
+         lDwBlnL378W0q/OC8GrTNDOWdqJAXYLhg2qV7ug4RPswQ03jHLjLIriewW5iQs6fIwbX
+         8hrZI0x00dsIzxcRJh2TEMiElAtQglbREBO3Ua4KhCU+lZSPvsd+tZfEBEfM2cYkwxKZ
+         Hk89GkyWqKAe5LJK6Z3Z9LNa7GJmXpDCbWaxU2NBbBBql0vyOGoGA8x+ETxu1gILB9ih
+         KUPA==
+X-Gm-Message-State: AOAM532lT7EsQys63LIImEwaOe1Y13vkeM+hybf/+CJso0Cn+wlBv/ok
+	Obj/pt8Y3iD7CDc6o0YP3Xs2Djrf0eDmvw==
+X-Google-Smtp-Source: ABdhPJydSR3jWjnF+B6yvoMP52eParOuhDszmkGInzK0QVj46Ojmo6oieuWnRIX+Hntm9K84BpI4Ew==
+X-Received: by 2002:adf:f944:: with SMTP id q4mr932379wrr.120.1606154544185;
+        Mon, 23 Nov 2020 10:02:24 -0800 (PST)
 Return-Path: <pbarker@konsulko.com>
 Received: from deb10.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
-        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.24
+        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2020 10:02:24 -0800 (PST)
+        Mon, 23 Nov 2020 10:02:23 -0800 (PST)
 From: "Paul Barker" <pbarker@konsulko.com>
 To: docs@lists.yoctoproject.org
 Cc: Paul Barker <pbarker@konsulko.com>
-Subject: [PATCH v3 3/7] dev-manual-common-tasks: Tidy up patch submission process
-Date: Mon, 23 Nov 2020 18:02:15 +0000
-Message-Id: <20201123180219.1966-4-pbarker@konsulko.com>
+Subject: [PATCH v3 2/7] dev-manual-common-tasks: Update & move patchwork reference
+Date: Mon, 23 Nov 2020 18:02:14 +0000
+Message-Id: <20201123180219.1966-3-pbarker@konsulko.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20201123180219.1966-1-pbarker@konsulko.com>
 References: <20201123180219.1966-1-pbarker@konsulko.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Reduce duplication by pulling out the common steps of committing changes
-locally from the steps of submitting those changes via the pull request
-scripts or via email.
+Add a link to our patchwork instance and note how submitted patches are
+checked for common mistakes. This note is moved to the section on
+submitting patches via email as that is the place where most users will
+run into patchwork/patchtest.
 
 Signed-off-by: Paul Barker <pbarker@konsulko.com>
 ---
- .../dev-manual/dev-manual-common-tasks.rst    | 63 ++++++++-----------
- 1 file changed, 25 insertions(+), 38 deletions(-)
+ .../dev-manual/dev-manual-common-tasks.rst    | 23 +++++++++++--------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
 diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-index d43205712..2a521905e 100644
+index e2957f479..d43205712 100644
 --- a/documentation/dev-manual/dev-manual-common-tasks.rst
 +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-@@ -10690,19 +10690,10 @@ layers you are contributing to.
- 
- The following sections provide procedures for submitting a change.
- 
--.. _pushing-a-change-upstream:
--
--Using Scripts to Push a Change Upstream and Request a Pull
--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--
--Follow this procedure to push a change to an upstream "contrib" Git
--repository:
-+.. _preparing-changes-for-submissions:
+@@ -10688,16 +10688,6 @@ Other layers may have similar testing branches but there is no formal
+ requirement or standard for these so please check the documentation for the
+ layers you are contributing to.
  
 -.. note::
 -
--   You can find general Git information on how to push a change upstream
--   in the
--   `Git Community Book <https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows>`__.
-+Preparing Changes for Submission
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-   This system is imperfect and changes can sometimes get lost in the
+-   flow. Asking about the status of a patch or change is reasonable if
+-   the change has been idle for a while with no feedback. The Yocto
+-   Project does have plans to use
+-   `Patchwork <https://en.wikipedia.org/wiki/Patchwork_(software)>`__
+-   to track the status of patches and also to automatically preview
+-   patches.
+-
+ The following sections provide procedures for submitting a change.
  
- 1. *Make Your Changes Locally:* Make your changes in your local Git
-    repository. You should make small, controlled, isolated changes.
-@@ -10784,7 +10775,22 @@ repository:
+ .. _pushing-a-change-upstream:
+@@ -10992,6 +10982,19 @@ without using the scripts:
+    command, see ``GIT-SEND-EMAIL(1)`` displayed using the
+    ``man git-send-email`` command.
  
-          detailed description of change
- 
--4. *Push Your Commits to a "Contrib" Upstream:* If you have arranged for
-+.. _pushing-a-change-upstream:
-+
-+Using Scripts to Push a Change Upstream and Request a Pull
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Follow this procedure to push a change to an upstream "contrib" Git
-+repository once the steps in :ref:`preparing-changes-for-submissions` have
-+been followed:
++The Yocto Project uses a `Patchwork instance <https://patchwork.openembedded.org/>`__
++to track the status of patches submitted to the various mailing lists and to
++support automated patch testing. Each submitted patch is checked for common
++mistakes and deviations from the expected patch format and submitters are
++notified by patchtest if such mistakes are found. This process helps to
++reduce the burden of patch review on maintainers.
 +
 +.. note::
 +
-+   You can find general Git information on how to push a change upstream
-+   in the
-+   `Git Community Book <https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows>`__.
++   This system is imperfect and changes can sometimes get lost in the flow.
++   Asking about the status of a patch or change is reasonable if the change
++   has been idle for a while with no feedback.
 +
-+1. *Push Your Commits to a "Contrib" Upstream:* If you have arranged for
-    permissions to push to an upstream contrib repository, push the
-    change to that repository:
-    ::
-@@ -10801,7 +10807,7 @@ repository:
+ Working With Licenses
+ =====================
  
-       $ git push meta-intel-contrib your_name/README
- 
--5. *Determine Who to Notify:* Determine the maintainer or the mailing
-+2. *Determine Who to Notify:* Determine the maintainer or the mailing
-    list that you need to notify for the change.
- 
-    Before submitting any change, you need to be sure who the maintainer
-@@ -10830,7 +10836,7 @@ repository:
-       lists <resources-mailinglist>`" section in
-       the Yocto Project Reference Manual.
- 
--6. *Make a Pull Request:* Notify the maintainer or the mailing list that
-+3. *Make a Pull Request:* Notify the maintainer or the mailing list that
-    you have pushed a change by making a pull request.
- 
-    The Yocto Project provides two scripts that conveniently let you
-@@ -10897,29 +10903,10 @@ mailing lists, see the ":ref:`Mailing Lists <resources-mailinglist>`" section in
- Yocto Project Reference Manual.
- 
- Here is the general procedure on how to submit a patch through email
--without using the scripts:
--
--1. *Make Your Changes Locally:* Make your changes in your local Git
--   repository. You should make small, controlled, isolated changes.
--   Keeping changes small and isolated aids review, makes
--   merging/rebasing easier and keeps the change history clean should
--   anyone need to refer to it in future.
--
--2. *Stage Your Changes:* Stage your changes by using the ``git add``
--   command on each file you changed.
--
--3. *Commit Your Changes:* Commit the change by using the
--   ``git commit --signoff`` command. Using the ``--signoff`` option
--   identifies you as the person making the change and also satisfies the
--   Developer's Certificate of Origin (DCO) shown earlier.
--
--   When you form a commit, you must follow certain standards established
--   by the Yocto Project development team. See :ref:`Step 3
--   <dev-manual/dev-manual-common-tasks:using scripts to push a change upstream and request a pull>`
--   in the previous section for information on how to provide commit information
--   that meets Yocto Project commit message standards.
-+without using the scripts once the steps in
-+:ref:`preparing-changes-for-submissions` have been followed:
- 
--4. *Format the Commit:* Format the commit into an email message. To
-+1. *Format the Commit:* Format the commit into an email message. To
-    format commits, use the ``git format-patch`` command. When you
-    provide the command, you must include a revision list or a number of
-    patches as part of the command. For example, either of these two
-@@ -10952,7 +10939,7 @@ without using the scripts:
-       or to OpenEmbedded, you might consider requesting a contrib area
-       and the necessary associated rights.
- 
--5. *Import the Files Into Your Mail Client:* Import the files into your
-+2. *Import the Files Into Your Mail Client:* Import the files into your
-    mail client by using the ``git send-email`` command.
- 
-    .. note::
 -- 
 2.20.1
 
