@@ -1,103 +1,72 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
- by mx.groups.io with SMTP id smtpd.web12.39245.1606154547474179496
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+ by mx.groups.io with SMTP id smtpd.web12.39246.1606154548069562964
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Nov 2020 10:02:27 -0800
+ Mon, 23 Nov 2020 10:02:28 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=J7ws6kg9;
- spf=pass (domain: konsulko.com, ip: 209.85.221.51, mailfrom: pbarker@konsulko.com)
-Received: by mail-wr1-f51.google.com with SMTP id p8so19509625wrx.5
+ dkim=pass header.i=@konsulko.com header.s=google header.b=OuF9vexb;
+ spf=pass (domain: konsulko.com, ip: 209.85.221.65, mailfrom: pbarker@konsulko.com)
+Received: by mail-wr1-f65.google.com with SMTP id g14so4301973wrm.13
         for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:27 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wLJPULC83/yrKlvCFZVeu6msmigU/0mr9tZcuWOQugQ=;
-        b=J7ws6kg9oXUiHtBgLc6D65JuW27qJwN0C8ehMGo66K3VmEwOS0+UWjMDdkOAN6bo3w
-         wNb6QmZm/trIjR1H7MT3QFDSAQfdy140rODi410X9fHtAMtIjOMcDCeHz0gxHPhNJQIN
-         36pNOezWXbKRjjYPlIAL1CSGnXNxubcd0m8KM=
+        bh=JrLCK2oXgOsju6X9tbnnbZmsZ8rf7UnHl20YiPoBv5Y=;
+        b=OuF9vexbE8B2cy3fFh0//2WGXL62wp9sCwiQwd/ntw58Ajbo83w0n7d4TA3Kv5nqB3
+         OWIVzEp5oo67d4gddBiN1Z4b6INzWg6wPu1GBWsGBmUr6Y9+GY1+WX6NKc5Ql5K4gld2
+         jFFi6gJcCJPY9x82Vwl6MA8XDh7HXVnbM/SY8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wLJPULC83/yrKlvCFZVeu6msmigU/0mr9tZcuWOQugQ=;
-        b=dgs4ki4mN8sqoaXIlaGUiFbQcrxskPSexcK4vJZLBrqewARWDnUVy4FKWUWrQDJjak
-         Lp/IMCx1oaYm+cSmR54LfM+eog81mBTbugZGYsr+O74UZvhMCPfZb6Clfl0wDEbKxpIC
-         lDwBlnL378W0q/OC8GrTNDOWdqJAXYLhg2qV7ug4RPswQ03jHLjLIriewW5iQs6fIwbX
-         8hrZI0x00dsIzxcRJh2TEMiElAtQglbREBO3Ua4KhCU+lZSPvsd+tZfEBEfM2cYkwxKZ
-         Hk89GkyWqKAe5LJK6Z3Z9LNa7GJmXpDCbWaxU2NBbBBql0vyOGoGA8x+ETxu1gILB9ih
-         KUPA==
-X-Gm-Message-State: AOAM532lT7EsQys63LIImEwaOe1Y13vkeM+hybf/+CJso0Cn+wlBv/ok
-	Obj/pt8Y3iD7CDc6o0YP3Xs2Djrf0eDmvw==
-X-Google-Smtp-Source: ABdhPJydSR3jWjnF+B6yvoMP52eParOuhDszmkGInzK0QVj46Ojmo6oieuWnRIX+Hntm9K84BpI4Ew==
-X-Received: by 2002:adf:f944:: with SMTP id q4mr932379wrr.120.1606154544185;
-        Mon, 23 Nov 2020 10:02:24 -0800 (PST)
+        bh=JrLCK2oXgOsju6X9tbnnbZmsZ8rf7UnHl20YiPoBv5Y=;
+        b=cqjiAX9oRbcM3F5/UCpb4Sy8mFcbs21lQak2nqW7L4eriGCGkDOtGGnELIwTlusjxw
+         EzvfBafKmdHWLiXEHAbYBj2N6FAwNq9xXS4hTAIb6hcgtK6oWRZgPyPwyItzmspSOw1L
+         +5Mzb0WcBnegxuGP+h1RlYlUZ0x4zVh3xfk9hv/B8Ut/CvMxo5hBujjGGYH0RZB/pheP
+         ORsTNlBsWidIHBTqWTtcZJeKRYJ4Dw5Vy8ca2R0tn+PxfngURJKqdkbL6ALfhz49h+GP
+         z/VOrPBXQ6ibclixAEZWdQGDcW9RnsO/TJjnGYV5d1UyQt+iMZ2FMJEyCrBz7HqOwKvK
+         O8TA==
+X-Gm-Message-State: AOAM5325ejaV5QyufJDIMR1ndTBvW+yCCqVnXCBW5oweE4f4zq6HjT23
+	rUkwdKyAWNgYpLMAWpWRGP0lzQdQMtBoKQ==
+X-Google-Smtp-Source: ABdhPJw0uR0+aGnpjOpeYTuRrhKMHpdkkqqXfsGdy8Xg2huzomJ8qHNRiXnm2+JjW00+U9YpFndjew==
+X-Received: by 2002:a5d:534e:: with SMTP id t14mr904474wrv.234.1606154546364;
+        Mon, 23 Nov 2020 10:02:26 -0800 (PST)
 Return-Path: <pbarker@konsulko.com>
 Received: from deb10.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
-        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.23
+        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2020 10:02:23 -0800 (PST)
+        Mon, 23 Nov 2020 10:02:25 -0800 (PST)
 From: "Paul Barker" <pbarker@konsulko.com>
 To: docs@lists.yoctoproject.org
 Cc: Paul Barker <pbarker@konsulko.com>
-Subject: [PATCH v3 2/7] dev-manual-common-tasks: Update & move patchwork reference
-Date: Mon, 23 Nov 2020 18:02:14 +0000
-Message-Id: <20201123180219.1966-3-pbarker@konsulko.com>
+Subject: [PATCH v3 4/7] dev-manual-common-tasks: Describe git-send-email accurately
+Date: Mon, 23 Nov 2020 18:02:16 +0000
+Message-Id: <20201123180219.1966-5-pbarker@konsulko.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20201123180219.1966-1-pbarker@konsulko.com>
 References: <20201123180219.1966-1-pbarker@konsulko.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a link to our patchwork instance and note how submitted patches are
-checked for common mistakes. This note is moved to the section on
-submitting patches via email as that is the place where most users will
-run into patchwork/patchtest.
-
 Signed-off-by: Paul Barker <pbarker@konsulko.com>
 ---
- .../dev-manual/dev-manual-common-tasks.rst    | 23 +++++++++++--------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ documentation/dev-manual/dev-manual-common-tasks.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-index e2957f479..d43205712 100644
+index 2a521905e..1c6d88a93 100644
 --- a/documentation/dev-manual/dev-manual-common-tasks.rst
 +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-@@ -10688,16 +10688,6 @@ Other layers may have similar testing branches but there is no formal
- requirement or standard for these so please check the documentation for the
- layers you are contributing to.
+@@ -10939,8 +10939,8 @@ without using the scripts once the steps in
+       or to OpenEmbedded, you might consider requesting a contrib area
+       and the necessary associated rights.
  
--.. note::
--
--   This system is imperfect and changes can sometimes get lost in the
--   flow. Asking about the status of a patch or change is reasonable if
--   the change has been idle for a while with no feedback. The Yocto
--   Project does have plans to use
--   `Patchwork <https://en.wikipedia.org/wiki/Patchwork_(software)>`__
--   to track the status of patches and also to automatically preview
--   patches.
--
- The following sections provide procedures for submitting a change.
+-2. *Import the Files Into Your Mail Client:* Import the files into your
+-   mail client by using the ``git send-email`` command.
++2. *Send the patches via email:* Send the patches to the recipients and
++   relevant mailing lists by using the ``git send-email`` command.
  
- .. _pushing-a-change-upstream:
-@@ -10992,6 +10982,19 @@ without using the scripts:
-    command, see ``GIT-SEND-EMAIL(1)`` displayed using the
-    ``man git-send-email`` command.
- 
-+The Yocto Project uses a `Patchwork instance <https://patchwork.openembedded.org/>`__
-+to track the status of patches submitted to the various mailing lists and to
-+support automated patch testing. Each submitted patch is checked for common
-+mistakes and deviations from the expected patch format and submitters are
-+notified by patchtest if such mistakes are found. This process helps to
-+reduce the burden of patch review on maintainers.
-+
-+.. note::
-+
-+   This system is imperfect and changes can sometimes get lost in the flow.
-+   Asking about the status of a patch or change is reasonable if the change
-+   has been idle for a while with no feedback.
-+
- Working With Licenses
- =====================
+    .. note::
  
 -- 
 2.20.1
