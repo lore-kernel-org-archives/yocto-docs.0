@@ -1,93 +1,130 @@
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
- by mx.groups.io with SMTP id smtpd.web09.39572.1606154549039322652
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+ by mx.groups.io with SMTP id smtpd.web09.39574.1606154550108711979
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Nov 2020 10:02:29 -0800
+ Mon, 23 Nov 2020 10:02:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=JaL0QcDd;
- spf=pass (domain: konsulko.com, ip: 209.85.221.66, mailfrom: pbarker@konsulko.com)
-Received: by mail-wr1-f66.google.com with SMTP id 64so6087375wra.11
-        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:28 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=LM8EIcW+;
+ spf=pass (domain: konsulko.com, ip: 209.85.221.54, mailfrom: pbarker@konsulko.com)
+Received: by mail-wr1-f54.google.com with SMTP id p8so19509773wrx.5
+        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 10:02:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=mxQ+kL7V+Bxp0PLa8HN3ThsCndq4lXpayAjokVYWfFY=;
-        b=JaL0QcDdSpUy5MFWt7tgDYxJKUkJp2RFxtWkBc9rq7am3ppwVC4+k/lAb7PC4Kf0/8
-         A2J+9QmotgqMrrlvylR3LM8aLVfeJ8lIMESmjkMIT3KzRpMpTMrSG0KzHW60AuvNuRWH
-         FXSFTH+OwQ/D1N4lrSMPFBcq/mRawtmwQuviU=
+        bh=TsmFnzEl7VVdyATLQFWLGj+HnO2ETSUgrJ4OWJnRFl8=;
+        b=LM8EIcW+BkgNk7nWiydHw4DAsc2BjH+WEuW1luL3vca7flSltqIx8SnMgxZXYgpRuC
+         pnMxNQb+JgBF+VmjOc8t2LUZws4Jc38GkbWQLl0jXSO9c7t72xjHrgauoFeYmU45t6dF
+         5RRVCFPDri8YIZtWUis+Fv1WjUTvuUNiGN/I4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=mxQ+kL7V+Bxp0PLa8HN3ThsCndq4lXpayAjokVYWfFY=;
-        b=WznL2NX4zFwZ9RQTuP9obND0eVIR6Uuat7BrdJaS4VmtjlPbS5iWVZd1YCAokQqr6Z
-         4dYm3ZEWwDo/BefWTNOxc08ciAJ1nALybz/EDV1Z9jyuTNkFVonvJVczJOS732pnmg+F
-         Bx0W63oDxxPkh5PFMoWWGp6wosU5Q/3hjionvQwMt/xsMOhzW3BdBgECKwuv8punPEEE
-         9SCvqydT3LZa2fSEj6rzrEAImG1OAZ+H62qd8Fh4ArgawPMWpwwZhesjKL3E/rs3eabo
-         s6y2bhLDlEmSU31yASRcWhvKXOedOYgoIZjyaJjIcN3gOK94DowpQPJKnSYh0d5YAjgs
-         McBg==
-X-Gm-Message-State: AOAM532+mmyeyr5k1o4SByVp2wsBqK62InYxG2XNJvHOr87+02ouIh4S
-	BREwy76641V7EYFrYJyXLZHI2+3keK2AxQ==
-X-Google-Smtp-Source: ABdhPJwqYYh0iRJoOg7xB2fOyI+K+xveuwYd3We11NgNIyahxYFlIO1Va2Puz8AkiCrNsYxuxeH+7g==
-X-Received: by 2002:a5d:6411:: with SMTP id z17mr939571wru.112.1606154547355;
-        Mon, 23 Nov 2020 10:02:27 -0800 (PST)
+        bh=TsmFnzEl7VVdyATLQFWLGj+HnO2ETSUgrJ4OWJnRFl8=;
+        b=B3EidTWUT/ucw28FjQMzOgw7c4lthWuymohZbAJCKM/AQWHcUOu/8JcXimsoSf55ft
+         B0SMGeioe4rCiTjkZSzRebN/4S50stT5PaLztucyoMhJnMLCGKxQAT8EWqmOs549Qi/S
+         TONlV+hshreZl6PxxKnbamO1DxIW5h8Hft2wm9GTTFY7sOyX2TD4Zs+wNO3LWItAclz5
+         rs3xPCJNCJAnjdo60TaxlA0lalnZU1SAHv7BbYIc/ne7GmXLSof+LxoRRhkwBEXdMkHs
+         5JvwLRCI1iuMip14W/Qs1VPILb40hJLQUGCwz+n6RUXDQrnUJpAxbNFMetaPpScWQBGZ
+         WJ7g==
+X-Gm-Message-State: AOAM531Csn4m2llu6a/lChtcIXRFbNsb/AQRfHO/PEjkOxhVAGFM3Su5
+	hPl4UZfNJWXprRZi18tf24jNAN9QGprMvA==
+X-Google-Smtp-Source: ABdhPJwJizXi55kL0xjhkq9tfDXEt69Qh8z44rRhXJn9zBesU+PlFhvbIOgykLZTR7Jm7YiF9g/Ubg==
+X-Received: by 2002:adf:f6c7:: with SMTP id y7mr849304wrp.147.1606154548308;
+        Mon, 23 Nov 2020 10:02:28 -0800 (PST)
 Return-Path: <pbarker@konsulko.com>
 Received: from deb10.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
-        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.26
+        by smtp.gmail.com with ESMTPSA id v8sm117315wmg.28.2020.11.23.10.02.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Nov 2020 10:02:26 -0800 (PST)
+        Mon, 23 Nov 2020 10:02:27 -0800 (PST)
 From: "Paul Barker" <pbarker@konsulko.com>
 To: docs@lists.yoctoproject.org
 Cc: Paul Barker <pbarker@konsulko.com>
-Subject: [PATCH v3 5/7] dev-manual-common-tasks: Describe how to handle patch feedback
-Date: Mon, 23 Nov 2020 18:02:17 +0000
-Message-Id: <20201123180219.1966-6-pbarker@konsulko.com>
+Subject: [PATCH v3 6/7] dev-manual-common-tasks: Describe how to propose changes to stable branches
+Date: Mon, 23 Nov 2020 18:02:18 +0000
+Message-Id: <20201123180219.1966-7-pbarker@konsulko.com>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20201123180219.1966-1-pbarker@konsulko.com>
 References: <20201123180219.1966-1-pbarker@konsulko.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The contribution guidelines would benefit from a brief section on how to
-address feedback from patch reviewers and how to re-submit amended
-patches. The information here is based on my personal experience and on
-the existing notes on the "How to submit a patch to OpenEmbedded" page
-on the OE wiki.
+The documentation on submitting changes to the project should cover the
+ways in which the process differs for stable branches. These changes add
+a brief description of the typical policy for handling changes to stable
+branches and give some steps to follow when proposing changes to these
+branches. The information is based on my personal experience and on the
+existing content of the "How to submit a patch to OpenEmbedded" page on
+the OE wiki.
 
 Signed-off-by: Paul Barker <pbarker@konsulko.com>
 ---
- .../dev-manual/dev-manual-common-tasks.rst    | 22 +++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ .../dev-manual/dev-manual-common-tasks.rst    | 57 +++++++++++++++++++
+ 1 file changed, 57 insertions(+)
 
 diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
-index 1c6d88a93..4b76217ad 100644
+index 4b76217ad..09f20a2bc 100644
 --- a/documentation/dev-manual/dev-manual-common-tasks.rst
 +++ b/documentation/dev-manual/dev-manual-common-tasks.rst
-@@ -10982,6 +10982,28 @@ reduce the burden of patch review on maintainers.
-    Asking about the status of a patch or change is reasonable if the change
-    has been idle for a while with no feedback.
+@@ -11004,6 +11004,63 @@ Lastly please ensure that you also test your revised changes. In particular
+ please don't just edit the patch file written out by ``git format-patch`` and
+ resend it.
  
-+Responding to Patch Review
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
++Submitting Changes to Stable Release Branches
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+You may get feedback on your submitted patches from other community members
-+or from the automated patchtest service. If issues are identified in your
-+patch then it is usually necessary to address these before the patch will be
-+accepted into the project. In this case you should amend the patch according
-+to the feedback and submit an updated version to the relevant mailing list,
-+copying in the reviewers who provided feedback to the previous version of the
-+patch.
++The process for proposing changes to a Yocto Project stable branch differs
++from the steps described above. Changes to a stable branch must address
++identified bugs or CVEs and should be made carefully in order to avoid the
++risk of introducing new bugs or breaking backwards compatibility. Typically
++bug fixes must already be accepted into the master branch before they can be
++backported to a stable branch unless the bug in question does not affect the
++master branch or the fix on the master branch is unsuitable for backporting.
 +
-+The patch should be amended using ``git commit --amend`` or perhaps ``git
-+rebase`` for more expert git users. You should also modify the ``[PATCH]``
-+tag in the email subject line when sending the revised patch to mark the new
-+iteration as ``[PATCH v2]``, ``[PATCH v3]``, etc as appropriate. This can be
-+done by passing the ``-v`` argument to ``git format-patch`` with a version
-+number.
++The list of stable branches along with the status and maintainer for each
++branch can be obtained from the
++:yocto_wiki:`Releases wiki page </wiki/Releases>`.
 +
-+Lastly please ensure that you also test your revised changes. In particular
-+please don't just edit the patch file written out by ``git format-patch`` and
-+resend it.
++.. note::
++
++   Changes will not typically be accepted for branches which are marked as
++   End-Of-Life (EOL).
++
++With this in mind, the steps to submit a change for a stable branch are as
++follows:
++
++1. *Identify the bug or CVE to be fixed:* This information should be
++   collected so that it can be included in your submission.
++
++2. *Check if the fix is already present in the master branch:* This will
++   result in the most straightforward path into the stable branch for the
++   fix.
++
++   a. *If the fix is present in the master branch - Submit a backport request
++      by email:* You should send an email to the relevant stable branch
++      maintainer and the mailing list with details of the bug or CVE to be
++      fixed, the commit hash on the master branch that fixes the issue and
++      the stable branches which you would like this fix to be backported to.
++
++   b. *If the fix is not present in the master branch - Submit the fix to the
++      master branch first:* This will ensure that the fix passes through the
++      project's usual patch review and test processes before being accepted.
++      It will also ensure that bugs are not left unresolved in the master
++      branch itself. Once the fix is accepted in the master branch a backport
++      request can be submitted as above.
++
++   c. *If the fix is unsuitable for the master branch - Submit a patch
++      directly for the stable branch:* This method should be considered as a
++      last resort. It is typically necessary when the master branch is using
++      a newer version of the software which includes an upstream fix for the
++      issue or when the issue has been fixed on the master branch in a way
++      that introduces backwards incompatible changes. In this case follow the
++      steps in :ref:`preparing-changes-for-submissions` and
++      :ref:`submitting-a-patch` but modify the subject header of your patch
++      email to include the name of the stable branch which you are
++      targetting. This can be done using the ``--subject-prefix`` argument to
++      ``git format-patch``, for example to submit a patch to the dunfell
++      branch use
++      ``git format-patch --subject-prefix='&DISTRO_NAME_NO_CAP_MINUS_ONE;][PATCH' ...``.
 +
  Working With Licenses
  =====================
