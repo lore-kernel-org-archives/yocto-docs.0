@@ -1,108 +1,78 @@
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
- by mx.groups.io with SMTP id smtpd.web11.49185.1606202693708088758
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+ by mx.groups.io with SMTP id smtpd.web10.49484.1606209941838805446
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Nov 2020 23:24:53 -0800
+ Tue, 24 Nov 2020 01:25:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=n4P2SjBj;
- spf=pass (domain: linaro.org, ip: 209.85.219.177, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f177.google.com with SMTP id s8so18341041yba.13
-        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 23:24:53 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=Ig5sFXMi;
+ spf=pass (domain: konsulko.com, ip: 209.85.210.66, mailfrom: paul.barker@konsulko.com)
+Received: by mail-ot1-f66.google.com with SMTP id h19so6089900otr.1
+        for <docs@lists.yoctoproject.org>; Tue, 24 Nov 2020 01:25:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
+        d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=cfU3YEooyL+4EOERmob/ojP1U02LRqljw4cB8pBdNuY=;
-        b=n4P2SjBjsZIc7WR1sYP/IKvR3uk5M3DIYeKSoZqR7eGpPe79LS/pFEDINRgALBzmkv
-         ZyYxhtPrikxUTAb5zyBLrdhziH2JTSqRUJhYN3Hn0k4pbZ5yj1Ae4G+hJGCyZFHZwGe4
-         OvArDcLAqPxM/fVTv3upKb4oPCNLs0IWwDhtwPjnBkTqJj62fyp8fqCfvAdADWhR82th
-         VIwQjBDrDZlIcKag38mWHQQbh9OMLXBVOOuEHaBA1Y+qlNX2AH9Qv2Z2YLG5Iz8DBxAE
-         AiFYj3gMLMADq3weVymUHZmfQgbkADLPpQ/lVfwh735xxBwkXiMUGvYPVnCN+tYEeJAf
-         yICg==
+        bh=OTxorzG+X9RQfMtck0HjqBpbjg24ZSmSbbPxjKQBZdo=;
+        b=Ig5sFXMik2jY+OexgDSnhOf0q4PYYzxV5Hn2bKh34Srm/68Q/eVxPgyzH/oQFS6+83
+         FypLtoNHWBtnxMGIezdjJLEBSHSvGWsMOoT2NJTu7tSMPidlzBt+zr0yzpcehU4YhcTt
+         LfQPffoLzy/pCHWiGcF570tQypao239jB0/6A=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=cfU3YEooyL+4EOERmob/ojP1U02LRqljw4cB8pBdNuY=;
-        b=JjuyBj1QZfViteDif7+77ldKghnVscWRpSIEtfCdi3KduFIWqbNcHFLmx9aXE5krDY
-         HYru/E90Z++1RsUh43iH8YJg8Je0SRsLApxWyrbayK76Z8rTGe5PvaZt1Sr+wr/ZeHpP
-         vHYRDtHSOreZLdfWQPQbqcxCOeg7tBkGqTTVTv6XtjAjCuA0N2Go8au919BaI8v4QAOw
-         q5rDSFHBcqzaiT3lDz1+JSFf7zTcocMznXKah75ceEMAnUiEInOsiyfCdYmCNW7KiAks
-         VUOgmd7GUop5sv9BudtEx5fD1TV+GjreM6nXeqBwljHYzuHiRLnX9JU0+b4kzvsNm6EF
-         8AVA==
-X-Gm-Message-State: AOAM530PSWEIbSW3+40ItmPU98hvoEryRTQ/gxrYcJSHqWiP1vSRBHxm
-	RjSkIPquIdn/rQKMTJWlPjuztZUlXWp+QdYENsIS2w==
-X-Google-Smtp-Source: ABdhPJzfWz1qLTZtNp4HuJltFFL4W43/hhXlrQtf6aI4Mjoxa7MaH/WwsjxbvX62F3Rm7z/ht7fDWccXVHG9Zm8BYbY=
-X-Received: by 2002:a25:abae:: with SMTP id v43mr4964117ybi.397.1606202692836;
- Mon, 23 Nov 2020 23:24:52 -0800 (PST)
+        bh=OTxorzG+X9RQfMtck0HjqBpbjg24ZSmSbbPxjKQBZdo=;
+        b=lbwjeTlP7BBZ5+LHYD53oYrIlYOEl58nMifJ4l+n7tEEGBnmEY5nEpW/Y2SI943sQf
+         Vu/XBlHtIXFSONvsOtTidLHBBGJHfGFl3Ww3yX1wUgvqMK5ncxFmL3d2Ij04gbadA08K
+         +b7NzwfgI2Ri+kOkWlF/fiTwrgKgkeYed3s8v6+xXvL9dXYxzizb3zkkoTV0FbNTmy3D
+         trN8g/Za+JOVZmXCKbC2VLWnXSnPy7L8xX4csn8Npt1Z+8i14JObIibyEIB6TicAEyu6
+         RHg8k1OyvrG/qP21xUXwwIvZVLiGXieiiKHYhL/3TB5JX8jPMNRuLvB8AnRx6pqSmJtc
+         +6fw==
+X-Gm-Message-State: AOAM533LjH79BHbbaaFsESPEboVoLFkaXQ0I+g1Pao5l4TPnHSgDpjvB
+	KvnkNgE6O5U9DFWAfqJpIzCsBcEzOuuVlGYx787A2A==
+X-Google-Smtp-Source: ABdhPJzXYzVZwDdfs373B0t5tL6JaGe7R8iBWAPhQqOi6f7qmsJHKdu91SV2WhkxR0BtTqSSOAleINu0RNx9xFUJOIs=
+X-Received: by 2002:a05:6830:831:: with SMTP id t17mr2773585ots.92.1606209941188;
+ Tue, 24 Nov 2020 01:25:41 -0800 (PST)
 MIME-Version: 1.0
-References: <CAM9ZRVvsXTvLcT5+0c16Q=zub2wBZhUhdaudE5+qc_Pg8+vBdQ@mail.gmail.com>
- <858f33431e388f324d93bb75d5ac03f9f9c869f2.camel@linuxfoundation.org> <CADfgfoabPkBrKCBVO10_ACVfieExuC0-KQwyqG9pZHDUvWu5UQ@mail.gmail.com>
-In-Reply-To: <CADfgfoabPkBrKCBVO10_ACVfieExuC0-KQwyqG9pZHDUvWu5UQ@mail.gmail.com>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Tue, 24 Nov 2020 08:24:44 +0100
-Message-ID: <CAP71WjwtJhcxV3k+_NrKjbK0KfeCwtTZQukOsiDLV=aS-yM4hw@mail.gmail.com>
-Subject: Re: [docs] Tags in the yocto-docs repository
-To: Michael Halstead <mhalstead@linuxfoundation.org>
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, Paul Barker <pbarker@konsulko.com>, 
-	YP docs mailing list <docs@lists.yoctoproject.org>, 
-	"Tummalapalli, Vineela" <vineela.tummalapalli@intel.com>
+References: <20201123203245.2900-1-pbarker@konsulko.com> <CAP71WjzsEtkxaGprSCc7emQ=aqiNJAWcMzWRMRmQpSxfSc9SYw@mail.gmail.com>
+In-Reply-To: <CAP71WjzsEtkxaGprSCc7emQ=aqiNJAWcMzWRMRmQpSxfSc9SYw@mail.gmail.com>
+From: "Paul Barker" <pbarker@konsulko.com>
+Date: Tue, 24 Nov 2020 09:25:30 +0000
+Message-ID: <CAM9ZRVvg+dijfUxJ1sCDrHnfSCUpTZ8k2hSKx1UZdw-Cd=2u-Q@mail.gmail.com>
+Subject: Re: [docs] [PATCH] Drop old presentations from repository
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 23, 2020 at 9:17 PM Michael Halstead
-<mhalstead@linuxfoundation.org> wrote:
+On Tue, 24 Nov 2020 at 07:20, Nicolas Dechesne
+<nicolas.dechesne@linaro.org> wrote:
 >
-> The most recent tag was 3.0.1 last year. I will add a tag for yocto-3.2/gatesgarth-24.0.0. Shall I add tags for the releases in between as well? I can determine the best commits to tag based on the date in the git log.
-
-ouch.. I would have thought we include the yocto-docs commit in the
-release announcement, but looks like we don't! Perhaps we should add
-it in the future, Vineela?
-
-I think we should add all tags. You can find the exact commit from
-yocto-docs with:
-cd poky
-git log <REL TAG> -1 -- documentation
-
-e.g.
-
-$ git log yocto-3.1.3 -1 -- documentation/
-commit f2ae38a055f54640a968c4a8d5074f044202380e
-Author: Steve Sakoman <steve@sakoman.com>
-Date:   Tue Sep 15 04:11:08 2020 -1000
-
-    Documenation: Prepared for the 3.1.3 release
-
-    (From yocto-docs rev: 1a69e2c029a3cc755734c8c18584141cc3309695)
-
-    Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-
-
+> On Mon, Nov 23, 2020 at 9:32 PM Paul Barker <pbarker@konsulko.com> wrote:
+> >
+> > The `presentations` directory contained two talks which are now over 7
+> > years old and are unlikely to be relevant to current users of the
+> > project. They don't fit in well with the rest of the contents of this
+> > repository and should be dropped. If anyone wants them, they'll still be
+> > stored in the git history :)
+> >
+> > Signed-off-by: Paul Barker <pbarker@konsulko.com>
 >
-> On Mon, Nov 23, 2020 at 11:32 AM Richard Purdie <richard.purdie@linuxfoundation.org> wrote:
->>
->> On Mon, 2020-11-23 at 19:30 +0000, Paul Barker wrote:
->> > Hey folks,
->> >
->> > I've just noticed as I have the web interface open for the yocto-docs
->> > repository (https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/)
->> > that no tags have been created in this repo for recent releases. Is
->> > there any intentional reason for this or has it just fallen by the
->> > wayside in favor of other concerns? Is it something we should
->> > address?
->>
->> Not intentional, we should have them.
->>
->> I've added Vineela and Michael since they usually take care of this.
->>
->> Cheers,
->>
->> Richard
->>
+> Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 >
+> > ---
+> >
+> >     I created this patch with the --no-binary argument to git-format-patch to
+> >     avoid sending megabytes of redundant data to the list. However that means
+> >     the patch doesn't apply as-is. The following steps work for me:
+> >
+> >         git am 0001-Drop-old-presentations-from-repository.patch
+> >         git rm -r presentations
+> >         git am --continue
 >
-> --
-> Michael Halstead
-> Linux Foundation / Yocto Project
-> Systems Operations Engineer
->
-> 
->
+> You might want to post your patch in a branch for us to pull from.
+
+Ah yes, that would have been the obvious solution. I was having a dumb day.
+
+RP has already applied this to master-next so I think we're ok now.
+
+-- 
+Paul Barker
+Konsulko Group
