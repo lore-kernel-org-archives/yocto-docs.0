@@ -1,197 +1,163 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
- by mx.groups.io with SMTP id smtpd.web12.44709.1606175791721562123
+Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
+ by mx.groups.io with SMTP id smtpd.web09.48926.1606202401931639676
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Nov 2020 15:56:32 -0800
+ Mon, 23 Nov 2020 23:20:02 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=EcWzaxgf;
- spf=softfail (domain: sakoman.com, ip: 209.85.218.44, mailfrom: steve@sakoman.com)
-Received: by mail-ej1-f44.google.com with SMTP id bo9so20080997ejb.13
-        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 15:56:31 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=vsqAr48Z;
+ spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f196.google.com with SMTP id o144so18373703ybg.7
+        for <docs@lists.yoctoproject.org>; Mon, 23 Nov 2020 23:20:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=APVlt4vp5FSA6LLc+W7n48/KpHHrr6Uutk59yOQX2zk=;
-        b=EcWzaxgfI+gElopqJFXINmKlbj+dghkxVN+34iVLCV9TWgMDwKYlnzhnIJWNDtYxKw
-         VXDS2eGHdoyFLMwPVgTELikIL7wHM9B5FgOKsFfe3LPF4IlbSVTpVk1MpfFIR86WhX5H
-         IKoqvLyi18kotWakGrlLsl0zZBaCOLZUEDPOlI+bVbLvwqh435lIlzAQ2U8/nzsj49cr
-         mspLlvtOpHgffxgVNzJlF7tj7H/W0mCd9G+ZHydbtGzX2Z+NcsgJ/gnPAxhs8izUeJCa
-         eLhB+aXnZmK3swx7D22SCqoLhN1Q1qhr62aOl66wRDlZp4qhG01pwjI5R6LyhqQ0qKog
-         lU3w==
+        bh=5oF/RpMHC3HfKNI07hRiIp7z/j3LTqJe5nBxvq/+pGY=;
+        b=vsqAr48ZNddTNP39TObnSRyhdGBfTFbQ8DWfYrMpJKipnd96Z5pbcEkxofrilIkPJm
+         vaP2O+jFNJB33hiXKuaNa0WAQ5JWHiXYzDvOmLGLsAxv1qMluljaVAgqkHy4B764XwqJ
+         X1rPDdUb3RbKAldMKiFuxdbRfZs/sZb/Kz9pBNVNYE06Yd7l7gyHYDtZ8WHfqsE3cyN/
+         +2zLJtIMFo0YCDcL9EdIKxlBfdALvlRuxBMiWdytNUfhCjtJTwauF+yyJlnrCQ4JxzfH
+         2ReyQtjfpH0ShiEHyp71wFeHpAEu7m75T840oiiDewFv55W2Q/xLp4glnRVZ3WAA9zFC
+         4eKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=APVlt4vp5FSA6LLc+W7n48/KpHHrr6Uutk59yOQX2zk=;
-        b=DcBXqs3aH1e+pS8t2kZeSqMXlO4U+Pj58LhiQkZEI8B9+bSP1nnTXtII7/8MnJB85a
-         tRprtF6GNu5zvzE7tv8NA1iWHgvzO+Nys6QTxjxv4Q3BkHM1N2AyQqfQJc9dfnZ7c2sG
-         RezXBQqw3iaBgGqkbkaQ+VmKAaETb6v++QZg1OPZYwpKdcZHZcCwgM2MjC1Q9stpdAwA
-         fyu5VNHjncB8yxV+aA/zgdDZZ2D2bJQ0FlnpZm/PhvNptMpbZw9nvkdtr26thhXOvcvE
-         779kejgNdj9XdA80OHlv2JgAftKCaVNDz4wk4qqETQHosGOouYm9QtYlY0v1C8j+ClXj
-         1LlA==
-X-Gm-Message-State: AOAM5317asa3MGVu1UomNd7gLiWm9Efor9D8T1YnM5vvy9kmmgGpl3EU
-	5toNUVIjKOQJ3/WMir7k0/D4RWWFm+XUARGBMtnDow==
-X-Google-Smtp-Source: ABdhPJzWi2k30spn67JuBqURGyckFOewcQJ+L6y/kkybgdSCqneJcUOk1tji27IjhcVq0Wb2Yf0p7fIHExiYTvxSofM=
-X-Received: by 2002:a17:906:1e84:: with SMTP id e4mr1857126ejj.57.1606175790246;
- Mon, 23 Nov 2020 15:56:30 -0800 (PST)
+        bh=5oF/RpMHC3HfKNI07hRiIp7z/j3LTqJe5nBxvq/+pGY=;
+        b=EiB+sDu3jwzweO1R6A+H7VnjTaJ8AA1Xn9QPEbp3ATJlrAN+5Sd9dghU5h8X1wQbJ7
+         mWNsm0bXgmyxgO13Jyg+g94UsSyagPVH17ttOOIOJ+iFEy7QCMTJuUbcDBDKjOldNRdn
+         +3uT/cTYi7TxGdISsbwfQ1gqFOE1bYao9Q6fU9QMwWgVqY12vCOF8lPlZM8qIzo28nKn
+         6Vv7w6MTlMJroZ76deO2yHhlYiYsrn8sH3521nFeAmvcLr/Etf8SnFiATInpVV8xuXuW
+         WDSDIQfdIZ2r4J6yW/AL64nqo94AyY5FQopXWJZyKmTHjTG1cHDnqWJ3by4aEu4n01zo
+         Izkg==
+X-Gm-Message-State: AOAM532xMcM3uKyZjmDK6AY3hcwiVce8ErX9BzN7eoejU4ZOfdPYOB6w
+	6SoIGvXamoGG5IRqTxfSoE+uDRSIyu2uDYvD2x/P2Q==
+X-Google-Smtp-Source: ABdhPJxIAmqhRo45wIyvBIAf8jqydZJiTxoiPMT0yWzTJ7K63n+tT4pFpzgQweTwOigSOtwjqOGBbC7LbKdhK9xPWYM=
+X-Received: by 2002:a25:287:: with SMTP id 129mr4761282ybc.454.1606202400987;
+ Mon, 23 Nov 2020 23:20:00 -0800 (PST)
 MIME-Version: 1.0
-References: <CAP71WjwM3+3SwN9XRO4Cthur7iwQB0O2bKBSh3VQXkGZbYUYWA@mail.gmail.com>
- <3f2097a08c323b05c32013bc0d7f84c1142f0838.camel@linuxfoundation.org>
-In-Reply-To: <3f2097a08c323b05c32013bc0d7f84c1142f0838.camel@linuxfoundation.org>
-From: "Steve Sakoman" <steve@sakoman.com>
-Date: Mon, 23 Nov 2020 13:56:16 -1000
-Message-ID: <CAOSpxdaLCD+5HLLuwpoCCvX_xBSZasNYg4JsOKx7Ys3xqAuySw@mail.gmail.com>
-Subject: Re: Sphinx 'backport' for Dunfell LTS
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>, 
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="0000000000006cc43b05b4cef18e"
-
---0000000000006cc43b05b4cef18e
+References: <20201123203245.2900-1-pbarker@konsulko.com>
+In-Reply-To: <20201123203245.2900-1-pbarker@konsulko.com>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Tue, 24 Nov 2020 08:19:50 +0100
+Message-ID: <CAP71WjzsEtkxaGprSCc7emQ=aqiNJAWcMzWRMRmQpSxfSc9SYw@mail.gmail.com>
+Subject: Re: [docs] [PATCH] Drop old presentations from repository
+To: Paul Barker <pbarker@konsulko.com>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Nov 23, 2020, 12:59 PM Richard Purdie <
-richard.purdie@linuxfoundation.org> wrote:
-
-> On Fri, 2020-11-20 at 23:20 +0100, Nicolas Dechesne wrote:
-> > I think I am "done" with the 'backport' of Sphinx docs in both
-> > yocto-docs and bitbake. The backport process isn't straightforward..
-> > here is what I did in each case:
-> >
-> > 1. take all sphinx commits from master branch and squash them into
-> > dunfell. that's a large commit that brings sphinx and removes
-> > docbook.
-> > 2. because of #1 there are changes that we 'imported' which needed to
-> > be undo'd (e.g. a doc change that was applied to master, but is not
-> > needed in dunfell). To get the list of such changes, I look at each
-> > patch in dunfell vs master.
-> > 3. in yocto-docs, I had to 'revert' some patches first before I could
-> > cherry-pick all the sphinx changes, and I have then 're-applied' the
-> > changes later in the branch (of course when I say re-apply, i mean i
-> > did it again in sphinx instead of docbook)
-> > 4. Then I took as many patches as possible from 'master' which apply
-> > to dunfell.
-> >
-> > I understand this is a complex 'merge', and I must admit I have gone
-> > back and forth on whether we should do it..  I couldn't find a
-> > simpler
-> > way, but if we merge it and use Sphinx for the next LTS release
-> > (3.1.5), then all active releases docs would now be based on Sphinx.
-> >
-> > I have pushed the branches here:
-> >
-> http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit/?h=sphinx&id=488a421fea826a2cff27dd009768430769f25ab0
-> > and
-> >
-> https://git.openembedded.org/bitbake/commit/?h=sphinx&id=fe9dde75fa55da08fddd0cce778d3eb6303b2124
-> >
-> > It's rather inconvenient to review the series by email (the first
-> > patch is huge), But we can discuss here..
-> >
-> > enjoy... or not ;)
+On Mon, Nov 23, 2020 at 9:32 PM Paul Barker <pbarker@konsulko.com> wrote:
 >
-> Thanks for working on this. I'm in favour of merging and then handling
-> any issues we find as they arise...
+> The `presentations` directory contained two talks which are now over 7
+> years old and are unlikely to be relevant to current users of the
+> project. They don't fit in well with the rest of the contents of this
+> repository and should be dropped. If anyone wants them, they'll still be
+> stored in the git history :)
 >
-> Steve: How/when do we want to do this?
+> Signed-off-by: Paul Barker <pbarker@konsulko.com>
+
+Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+
+> ---
 >
-
-Let's do the merge right after the 3.1.4 release.  I'll be sending the
-final pull request for that later today.
-
-Steve
-
-
-
-> Cheers,
+>     I created this patch with the --no-binary argument to git-format-patch to
+>     avoid sending megabytes of redundant data to the list. However that means
+>     the patch doesn't apply as-is. The following steps work for me:
 >
-> Richard
->
->
+>         git am 0001-Drop-old-presentations-from-repository.patch
+>         git rm -r presentations
+>         git am --continue
 
---0000000000006cc43b05b4cef18e
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+You might want to post your patch in a branch for us to pull from.
 
-<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
-class=3D"gmail_attr">On Mon, Nov 23, 2020, 12:59 PM Richard Purdie &lt;<a h=
-ref=3D"mailto:richard.purdie@linuxfoundation.org">richard.purdie@linuxfound=
-ation.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
-=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">On Fri, =
-2020-11-20 at 23:20 +0100, Nicolas Dechesne wrote:<br>
-&gt; I think I am &quot;done&quot; with the &#39;backport&#39; of Sphinx do=
-cs in both<br>
-&gt; yocto-docs and bitbake. The backport process isn&#39;t straightforward=
-..<br>
-&gt; here is what I did in each case:<br>
-&gt; <br>
-&gt; 1. take all sphinx commits from master branch and squash them into<br>
-&gt; dunfell. that&#39;s a large commit that brings sphinx and removes<br>
-&gt; docbook.<br>
-&gt; 2. because of #1 there are changes that we &#39;imported&#39; which ne=
-eded to<br>
-&gt; be undo&#39;d (e.g. a doc change that was applied to master, but is no=
-t<br>
-&gt; needed in dunfell). To get the list of such changes, I look at each<br=
 >
-&gt; patch in dunfell vs master.<br>
-&gt; 3. in yocto-docs, I had to &#39;revert&#39; some patches first before =
-I could<br>
-&gt; cherry-pick all the sphinx changes, and I have then &#39;re-applied&#3=
-9; the<br>
-&gt; changes later in the branch (of course when I say re-apply, i mean i<b=
-r>
-&gt; did it again in sphinx instead of docbook)<br>
-&gt; 4. Then I took as many patches as possible from &#39;master&#39; which=
- apply<br>
-&gt; to dunfell.<br>
-&gt; <br>
-&gt; I understand this is a complex &#39;merge&#39;, and I must admit I hav=
-e gone<br>
-&gt; back and forth on whether we should do it..=C2=A0 I couldn&#39;t find =
-a<br>
-&gt; simpler<br>
-&gt; way, but if we merge it and use Sphinx for the next LTS release<br>
-&gt; (3.1.5), then all active releases docs would now be based on Sphinx.<b=
-r>
-&gt; <br>
-&gt; I have pushed the branches here:<br>
-&gt; <a href=3D"http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/commit=
-/?h=3Dsphinx&amp;id=3D488a421fea826a2cff27dd009768430769f25ab0" rel=3D"nore=
-ferrer noreferrer" target=3D"_blank">http://git.yoctoproject.org/cgit/cgit.=
-cgi/yocto-docs/commit/?h=3Dsphinx&amp;id=3D488a421fea826a2cff27dd0097684307=
-69f25ab0</a><br>
-&gt; and<br>
-&gt; <a href=3D"https://git.openembedded.org/bitbake/commit/?h=3Dsphinx&amp=
-;id=3Dfe9dde75fa55da08fddd0cce778d3eb6303b2124" rel=3D"noreferrer noreferre=
-r" target=3D"_blank">https://git.openembedded.org/bitbake/commit/?h=3Dsphin=
-x&amp;id=3Dfe9dde75fa55da08fddd0cce778d3eb6303b2124</a><br>
-&gt; <br>
-&gt; It&#39;s rather inconvenient to review the series by email (the first<=
-br>
-&gt; patch is huge), But we can discuss here..<br>
-&gt; <br>
-&gt; enjoy... or not ;)<br>
-<br>
-Thanks for working on this. I&#39;m in favour of merging and then handling<=
-br>
-any issues we find as they arise...<br>
-<br>
-Steve: How/when do we want to do this?<br></blockquote></div></div><div dir=
-=3D"auto"><br></div><div dir=3D"auto"><div dir=3D"auto" style=3D"font-famil=
-y:sans-serif">Let&#39;s do the merge right after the 3.1.4 release.=C2=A0 I=
-&#39;ll be sending the final pull request for that later today.</div><div d=
-ir=3D"auto" style=3D"font-family:sans-serif"><br></div><div dir=3D"auto" st=
-yle=3D"font-family:sans-serif">Steve</div><div dir=3D"auto" style=3D"font-f=
-amily:sans-serif"><br></div><div dir=3D"auto" style=3D"font-family:sans-ser=
-if"><br></div></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquot=
-e class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc sol=
-id;padding-left:1ex">
-<br>
-Cheers,<br>
-<br>
-Richard<br>
-<br>
-</blockquote></div></div></div>
-
---0000000000006cc43b05b4cef18e--
+>  .../automotive.pin                            | 369 ------------------
+>  .../blueprint.jpg                             | Bin 693096 -> 0 bytes
+>  .../automotive-linux-summit-2012/cables.jpg   | Bin 293433 -> 0 bytes
+>  .../automotive-linux-summit-2012/cake.jpg     | Bin 445144 -> 0 bytes
+>  .../automotive-linux-summit-2012/cars2.jpg    | Bin 396234 -> 0 bytes
+>  .../automotive-linux-summit-2012/cat.jpg      | Bin 374719 -> 0 bytes
+>  .../automotive-linux-summit-2012/chip.jpg     | Bin 96668 -> 0 bytes
+>  .../automotive-linux-summit-2012/corridor.jpg | Bin 294956 -> 0 bytes
+>  .../automotive-linux-summit-2012/cpus.jpg     | Bin 475614 -> 0 bytes
+>  .../automotive-linux-summit-2012/dash.jpg     | Bin 131336 -> 0 bytes
+>  .../automotive-linux-summit-2012/dolls.jpg    | Bin 237901 -> 0 bytes
+>  .../automotive-linux-summit-2012/engineer.jpg | Bin 310702 -> 0 bytes
+>  .../automotive-linux-summit-2012/group.jpg    | Bin 392570 -> 0 bytes
+>  .../automotive-linux-summit-2012/hob.jpg      | Bin 561538 -> 0 bytes
+>  .../automotive-linux-summit-2012/minifigs.jpg | Bin 497571 -> 0 bytes
+>  .../automotive-linux-summit-2012/none.json    |  50 ---
+>  .../automotive-linux-summit-2012/owl.jpg      | Bin 339288 -> 0 bytes
+>  .../automotive-linux-summit-2012/people.jpg   | Bin 268848 -> 0 bytes
+>  .../automotive-linux-summit-2012/qa.jpg       | Bin 167108 -> 0 bytes
+>  .../automotive-linux-summit-2012/question.jpg | Bin 505072 -> 0 bytes
+>  .../automotive-linux-summit-2012/road.jpg     | Bin 188611 -> 0 bytes
+>  .../automotive-linux-summit-2012/tins.jpg     | Bin 501518 -> 0 bytes
+>  .../automotive-linux-summit-2012/tools.jpg    | Bin 547380 -> 0 bytes
+>  .../automotive-linux-summit-2012/tumble.jpg   | Bin 438564 -> 0 bytes
+>  .../automotive-linux-summit-2012/umbrella.jpg | Bin 311845 -> 0 bytes
+>  .../automotive-linux-summit-2012/xwing.jpg    | Bin 421747 -> 0 bytes
+>  .../automotive-linux-summit-2012/yocto.jpg    | Bin 40098 -> 0 bytes
+>  .../osts-2013-why-use-yocto/advert.jpg        | Bin 649120 -> 0 bytes
+>  .../osts-2013-why-use-yocto/apple.jpg         | Bin 565059 -> 0 bytes
+>  .../osts-2013-why-use-yocto/bike.jpg          | Bin 611684 -> 0 bytes
+>  .../osts-2013-why-use-yocto/bomb.jpg          | Bin 82008 -> 0 bytes
+>  .../osts-2013-why-use-yocto/cables.jpg        | Bin 293433 -> 0 bytes
+>  .../osts-2013-why-use-yocto/clay.jpg          | Bin 66128 -> 0 bytes
+>  .../osts-2013-why-use-yocto/data.jpg          | Bin 432108 -> 0 bytes
+>  .../osts-2013-why-use-yocto/engineer.jpg      | Bin 310702 -> 0 bytes
+>  .../osts-2013-why-use-yocto/labquest.jpg      | Bin 35381 -> 0 bytes
+>  .../osts-2013-why-use-yocto/license.jpg       | Bin 236192 -> 0 bytes
+>  .../osts-2013-why-use-yocto/minifigs.jpg      | Bin 497571 -> 0 bytes
+>  presentations/osts-2013-why-use-yocto/qa.jpg  | Bin 167108 -> 0 bytes
+>  .../osts-2013-why-use-yocto/road.jpg          | Bin 188611 -> 0 bytes
+>  .../osts-2013-why-use-yocto/train.jpg         | Bin 399452 -> 0 bytes
+>  presentations/osts-2013-why-use-yocto/tv.jpg  | Bin 392568 -> 0 bytes
+>  .../osts-2013-why-use-yocto/xeon-phi.jpg      | Bin 158595 -> 0 bytes
+>  .../osts-2013-why-use-yocto/yocto.jpg         | Bin 40098 -> 0 bytes
+>  .../osts-2013-why-use-yocto/yocto.pin         | 254 ------------
+>  45 files changed, 673 deletions(-)
+>  delete mode 100644 presentations/automotive-linux-summit-2012/automotive.pin
+>  delete mode 100644 presentations/automotive-linux-summit-2012/blueprint.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/cables.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/cake.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/cars2.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/cat.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/chip.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/corridor.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/cpus.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/dash.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/dolls.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/engineer.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/group.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/hob.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/minifigs.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/none.json
+>  delete mode 100644 presentations/automotive-linux-summit-2012/owl.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/people.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/qa.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/question.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/road.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/tins.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/tools.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/tumble.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/umbrella.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/xwing.jpg
+>  delete mode 100644 presentations/automotive-linux-summit-2012/yocto.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/advert.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/apple.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/bike.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/bomb.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/cables.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/clay.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/data.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/engineer.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/labquest.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/license.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/minifigs.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/qa.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/road.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/train.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/tv.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/xeon-phi.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/yocto.jpg
+>  delete mode 100644 presentations/osts-2013-why-use-yocto/yocto.pin
