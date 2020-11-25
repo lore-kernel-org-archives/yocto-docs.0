@@ -1,78 +1,185 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
- by mx.groups.io with SMTP id smtpd.web09.5083.1606301069320200852
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+ by mx.groups.io with SMTP id smtpd.web08.5184.1606301732086628733
  for <docs@lists.yoctoproject.org>;
- Wed, 25 Nov 2020 02:44:29 -0800
+ Wed, 25 Nov 2020 02:55:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=D0LcRyNP;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.54, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f54.google.com with SMTP id p8so1417644wrx.5
-        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2020 02:44:29 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=zGIRHQGy;
+ spf=pass (domain: linaro.org, ip: 209.85.222.181, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-qk1-f181.google.com with SMTP id z188so3551643qke.9
+        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2020 02:55:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=3zWHOrpFGKHIfhjCjfDHuGas1dPVffVZV6GJ3V9YOWE=;
-        b=D0LcRyNPTfomM9p1grk6UMEhmo+cjHzt3eq9/xms351mcxq9vPcYJWr89ubC+2RJuI
-         mGMDDr72jLjrG/+cL+lz3JhyNlY0+THLTrJGthtktKJS3rcdujh7sLs1AiXH3XhqKVLi
-         0Qrp4PuXn5OwbxINaMgf2bRkc2LlXR2j4lZ/E=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=T+VYo687fjhRqP+DfNiImM/rBxARQi5QXKkCF5dUG54=;
+        b=zGIRHQGyU/+vlzwAkJ871d2iIt1zo7yzedNsm6t+ILLOvClPeUIbe//dczt503YJ6C
+         r66km+2N/kA3wBBblStfr/7acKfVnLrwy2B6svRePemsEpuCNBjdHHwMPn64DkY8yQPl
+         DbE1Un2fmtNu+fyw50YmvKF7aNCJTyAn/8gksqHbBCxUbOhsjZ/pip5+m/3rwxkasTqy
+         YKuu6h6h+NJpAktW4hPe3LT+v5tXT7Jgn8xOlnYNHP5ogXG4sZMnfmu4I6nCCXTcD1Ge
+         O4XClgeUhH6wXiD1ZuVx1shOCF6+kSw/r7J1wWMBudi77X4HQntvfJFdYPHMm0Di7fok
+         J+rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=3zWHOrpFGKHIfhjCjfDHuGas1dPVffVZV6GJ3V9YOWE=;
-        b=BvQUWWEAT4cPnrY6Q3vKNM1qLd2m4ZIGPO/MnzkvwZnihuv8tD+TA1N23dOR2buIpT
-         RzX3KFkAu2FTPOEbBG2N37bol6zAr9wobWmEue99MyaNJb+CChRSea5YnNeq8LM+vQU4
-         ktQxouGNVhtY/yfXvVyd//KXusrbMqkQgHvWDFS8+3wAdXgGdcttN61SbbaB8B5Bm1bG
-         PjsHQQ9GJYyODNuorxkp9NYHvWpdDJIASyyZqg3Hq0XxuJXp6RBoi4ZPBtG+2Qt8ECfc
-         SJ0/M8FWgDCbm3piUR1PccR1X7K+SutOP58BSkNnYWWpPtymbqLZJvJP39nZwHHnnfpk
-         BddA==
-X-Gm-Message-State: AOAM531mcW6SK3ESdzmcMSWJrEehDB3lxEYwLO1yuIMWPNocS9T/cszD
-	7gRd69cM2kmfIdUGQk6YttLDfg==
-X-Google-Smtp-Source: ABdhPJzjwTs7H9Ymu8qj+wOI4n91unF21o/4J4h8tu0NAuNWMXo7oiAqHMoAVW5M34pMIpy+97uPZg==
-X-Received: by 2002:a5d:4001:: with SMTP id n1mr3363736wrp.176.1606301067775;
-        Wed, 25 Nov 2020 02:44:27 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from 4.3.1.2.4.d.e.0.6.7.2.2.d.6.0.9.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (4.3.1.2.4.d.e.0.6.7.2.2.d.6.0.9.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:906d:2276:ed4:2134])
-        by smtp.gmail.com with ESMTPSA id o5sm3824230wmh.8.2020.11.25.02.44.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2020 02:44:24 -0800 (PST)
-Message-ID: <0a344c6120beffe78e6bcfe1d290923474be4416.camel@linuxfoundation.org>
-Subject: Re: [docs] RFC: remove backquotes in section titles
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>, YP docs mailing list
-	 <docs@lists.yoctoproject.org>
-Date: Wed, 25 Nov 2020 10:44:23 +0000
-In-Reply-To: <CAP71WjycS2eV0FZ0sVADhfRMAoHUdKafaCAgZq0W-nRQ2F-zoA@mail.gmail.com>
-References: 
-	<CAP71WjycS2eV0FZ0sVADhfRMAoHUdKafaCAgZq0W-nRQ2F-zoA@mail.gmail.com>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=T+VYo687fjhRqP+DfNiImM/rBxARQi5QXKkCF5dUG54=;
+        b=DSQbEMiAe4VhvPzFP/wP6mWN3EtQNY6kyl44z32aeW1pJ5QOuOwhj23wJ727V7kaUx
+         jv5jCCttsDLdrnvcJqbELmyFSMQ2VRPfrQvykWYa+T0NGikg7cNMrES2V5z9D21tgbtq
+         hxSmyENsxOeNIDQjAUxishZJDkDUABKcclClfN44rP4QgfqSSSb5H3ZGcdgaAz0ZI3Kr
+         KrwTvSUqen8wl+UPoy2MLeGOJunXp0SuRlQNsxaYMIBGcK257/UXStsLd2f+bZyhjShm
+         /Nk2JgI6L6orraqeTABKp9EG9ca5Rr418LeErxSGP3WdS6Z+0FZPqM2I/ZkDMTqFcc3u
+         JkVA==
+X-Gm-Message-State: AOAM531ZIxoV8Oo6Ehvado/HGfgf1XSmpMu7CV1NVdRwuiuae42wUgiS
+	DSjkPH136V9eUCwqVVYVAXlnnyl5lb+LhSBghtYhhER4r5hoyQ==
+X-Google-Smtp-Source: ABdhPJy/y61fUaH0nnfazWhsSzrjwwPdxwL3grb+6R1vTZdFml1jYwmKBW6HR1HkVGzbyf29PNes1ZD9IQBglU2wzL4=
+X-Received: by 2002:a25:287:: with SMTP id 129mr3491640ybc.454.1606301730898;
+ Wed, 25 Nov 2020 02:55:30 -0800 (PST)
 MIME-Version: 1.0
+References: <20201125091526.46021-1-nicolas.dechesne@linaro.org> <20201125101647.jzde6uprwod3cvpd@qschulz>
+In-Reply-To: <20201125101647.jzde6uprwod3cvpd@qschulz>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Wed, 25 Nov 2020 11:55:20 +0100
+Message-ID: <CAP71WjzvhNnYo5EP+QoN-NprZwyLOqA-cLQ1skkES2hsG53MhA@mail.gmail.com>
+Subject: Re: [docs] [PATCH] {dev,kernel,sdk}-manual: replace hardcoded release version with &DISTRO;
+To: Quentin Schulz <quentin.schulz@streamunlimited.com>
+Cc: docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="000000000000129c6905b4ec4466"
+
+--000000000000129c6905b4ec4466
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2020-11-25 at 09:16 +0100, Nicolas Dechesne wrote:
-> hi,
-> 
-> In several places we use backquotes in section titles, such as here:
-> https://docs.yoctoproject.org/ref-manual/ref-tasks.html
-> 
-> I don't quite like the html output generated, especially the mix of
-> fonts and sizes. Note that the rendering is very close to what we had
-> previously with Docbook docs as well, see
-> https://www.yoctoproject.org/docs/3.1/ref-manual/ref-manual.html#normal-recipe-build-tasks
-> 
-> I am tempted to propose that we remove the backquotes.. this is
-> especially more important with Sphinx now that we tend to rely on
-> section titles for references, and it makes the :ref: more difficult
-> to write and mentally parse...
-> 
-> It's a non trivial change.. so I wanted to get feedback before even
-> trying it (or at least adding on the todo list).
+Le mer. 25 nov. 2020 =C3=A0 11:16, Quentin Schulz <
+quentin.schulz@streamunlimited.com> a =C3=A9crit :
 
-I wondered about that during the conversion. It would seem to make
-sense to me FWIW...
+> Hi Nicolas,
+>
+> On Wed, Nov 25, 2020 at 10:15:26AM +0100, Nicolas Dechesne wrote:
+> > In the Docbook files we had DISTRO, but somehow it was lost during the
+> > migration to Sphinx.
+> >
+> > Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+> > ---
+> >  documentation/dev-manual/dev-manual-qemu.rst   |  2 +-
+> >  documentation/kernel-dev/kernel-dev-common.rst |  4 ++--
+> >  .../sdk-manual/sdk-appendix-obtain.rst         |  8 ++++----
+> >  documentation/sdk-manual/sdk-extensible.rst    |  4 ++--
+> >  documentation/sdk-manual/sdk-intro.rst         |  4 ++--
+> >  documentation/sdk-manual/sdk-using.rst         | 18 +++++++++---------
+> >  .../sdk-manual/sdk-working-projects.rst        | 10 +++++-----
+> >  7 files changed, 25 insertions(+), 25 deletions(-)
+> >
+> > diff --git a/documentation/dev-manual/dev-manual-qemu.rst
+> b/documentation/dev-manual/dev-manual-qemu.rst
+> > index c91e8b538..63640411d 100644
+> > --- a/documentation/dev-manual/dev-manual-qemu.rst
+> > +++ b/documentation/dev-manual/dev-manual-qemu.rst
+> > @@ -81,7 +81,7 @@ available. Follow these general steps to run QEMU:
+> >        your :term:`Build Directory`.
+> >
+> >     -  If you have not built an image, you can go to the
+> > -      :yocto_dl:`machines/qemu
+> </releases/yocto/yocto-3.1.2/machines/qemu/>` area and download a
+> > +      :yocto_dl:`machines/qemu
+> </releases/yocto/yocto-&DISTRO;/machines/qemu/>` area and download a
+>
+> The only remark I have is that DISTRO is 3.2 now. My question is, can
+> all places where 3.1.2 is used have a non-dot version instead (i.e. 3.2
+> instead of 3.2.0)?
+>
+> If yes, we're good. If not, we probably need to add a DISTRO_DOT or
+> something, that is 3.2.0 when DISTRO is 3.2 but then have them equal
+> when 3.2.1 is released.
+>
+> I don't know how the version numbers are picked and how much they are
+> used as is, hence the question :)
 
-Cheers,
 
-Richard
+I think 3.2 is right. This is what we use when we publish on the website,
+not 3.2.0. If we use 3.2.0 in the docs many http links won=E2=80=99t work.
 
+When 3.2.1 is released we will use 3.2.1. So yes, we have something
+asymmetric here..
+
+
+
+>
+> Quentin
+>
+
+--000000000000129c6905b4ec4466
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div><br></div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=
+=3D"gmail_attr">Le=C2=A0mer. 25 nov. 2020 =C3=A0 11:16, Quentin Schulz &lt;=
+<a href=3D"mailto:quentin.schulz@streamunlimited.com">quentin.schulz@stream=
+unlimited.com</a>&gt; a =C3=A9crit=C2=A0:<br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-le=
+ft-style:solid;padding-left:1ex;border-left-color:rgb(204,204,204)">Hi Nico=
+las,<br>
+<br>
+On Wed, Nov 25, 2020 at 10:15:26AM +0100, Nicolas Dechesne wrote:<br>
+&gt; In the Docbook files we had DISTRO, but somehow it was lost during the=
+<br>
+&gt; migration to Sphinx.<br>
+&gt; <br>
+&gt; Signed-off-by: Nicolas Dechesne &lt;<a href=3D"mailto:nicolas.dechesne=
+@linaro.org" target=3D"_blank">nicolas.dechesne@linaro.org</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 documentation/dev-manual/dev-manual-qemu.rst=C2=A0 =C2=A0|=C2=A0=
+ 2 +-<br>
+&gt;=C2=A0 documentation/kernel-dev/kernel-dev-common.rst |=C2=A0 4 ++--<br=
+>
+&gt;=C2=A0 .../sdk-manual/sdk-appendix-obtain.rst=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0|=C2=A0 8 ++++----<br>
+&gt;=C2=A0 documentation/sdk-manual/sdk-extensible.rst=C2=A0 =C2=A0 |=C2=A0=
+ 4 ++--<br>
+&gt;=C2=A0 documentation/sdk-manual/sdk-intro.rst=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0|=C2=A0 4 ++--<br>
+&gt;=C2=A0 documentation/sdk-manual/sdk-using.rst=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0| 18 +++++++++---------<br>
+&gt;=C2=A0 .../sdk-manual/sdk-working-projects.rst=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 | 10 +++++-----<br>
+&gt;=C2=A0 7 files changed, 25 insertions(+), 25 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/documentation/dev-manual/dev-manual-qemu.rst b/documentat=
+ion/dev-manual/dev-manual-qemu.rst<br>
+&gt; index c91e8b538..63640411d 100644<br>
+&gt; --- a/documentation/dev-manual/dev-manual-qemu.rst<br>
+&gt; +++ b/documentation/dev-manual/dev-manual-qemu.rst<br>
+&gt; @@ -81,7 +81,7 @@ available. Follow these general steps to run QEMU:<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 your :term:`Build Directory`.<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 =C2=A0 =C2=A0-=C2=A0 If you have not built an image, you can go =
+to the<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 :yocto_dl:`machines/qemu &lt;/releases/yocto/yoc=
+to-3.1.2/machines/qemu/&gt;` area and download a<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 :yocto_dl:`machines/qemu &lt;/releases/yocto/yoc=
+to-&amp;DISTRO;/machines/qemu/&gt;` area and download a<br>
+<br>
+The only remark I have is that DISTRO is 3.2 now. My question is, can<br>
+all places where 3.1.2 is used have a non-dot version instead (i.e. 3.2<br>
+instead of 3.2.0)?<br>
+<br>
+If yes, we&#39;re good. If not, we probably need to add a DISTRO_DOT or<br>
+something, that is 3.2.0 when DISTRO is 3.2 but then have them equal<br>
+when 3.2.1 is released.<br>
+<br>
+I don&#39;t know how the version numbers are picked and how much they are<b=
+r>
+used as is, hence the question :)</blockquote><div dir=3D"auto"><br></div><=
+div dir=3D"auto">I think 3.2 is right. This is what we use when we publish =
+on the website, not 3.2.0. If we use 3.2.0 in the docs many http links won=
+=E2=80=99t work.=C2=A0</div><div dir=3D"auto"><br></div><div dir=3D"auto">W=
+hen 3.2.1 is released we will use 3.2.1. So yes, we have something asymmetr=
+ic here..</div><div dir=3D"auto"><br></div><div dir=3D"auto"><br></div><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left=
+-width:1px;border-left-style:solid;padding-left:1ex;border-left-color:rgb(2=
+04,204,204)" dir=3D"auto"><br>
+<br>
+Quentin<br>
+</blockquote></div></div>
+
+--000000000000129c6905b4ec4466--
