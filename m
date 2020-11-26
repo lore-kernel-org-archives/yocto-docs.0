@@ -1,98 +1,239 @@
-Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
- by mx.groups.io with SMTP id smtpd.web10.3010.1606384117947933000
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+ by mx.groups.io with SMTP id smtpd.web11.2947.1606384122892055886
  for <docs@lists.yoctoproject.org>;
- Thu, 26 Nov 2020 01:48:38 -0800
+ Thu, 26 Nov 2020 01:48:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=buafFPhZ;
- spf=pass (domain: linaro.org, ip: 209.85.128.68, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f68.google.com with SMTP id g25so199177wmh.1
-        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2020 01:48:37 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=MJmLpmHn;
+ spf=pass (domain: linaro.org, ip: 209.85.128.52, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wm1-f52.google.com with SMTP id a65so1722762wme.1
+        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2020 01:48:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9i6tPFj2OAXL7L21h0ilbFAsdVOWKVVdFmjGvAwmkFw=;
-        b=buafFPhZOgtkER4LFrE8oqN8Oq9DufjBrcnOR0quXLMCg9f6fDmoutfs0XhiXYbpp+
-         DvNe6O4m9F6H58oxdvxpOeAtf0zYb0AoPwK1BuFKp87nZH6o82DDBaN4+vhr8bXamn5G
-         ZMjBNPxRkyyOhkrVH5Z7hGZREpgvbgL7DmFAST0/ThKeETP0KHXLB2ENVgt+CXDPlUpe
-         fzXKn4Q18x3KURl9hciTgc3hGAxDbdXEMYbXUS13wvX4TPsKeTLnDhIU15naFZOgRlgA
-         zxaFRSbCcP2PkQ48QKwojjZsWpsTgoXbhFsl8/DRBSxXzB7041Q4j2Kk7dCbTLLNeixj
-         6rlg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=CPA0VMlefJy1cJoOPC7DpI0BHW8ZzXte1ipjqDkYL30=;
+        b=MJmLpmHnL7VWM1r4vW0bymHopA2+4GcRwK8B6N9kXZaJCDPZ7afcGC25DasXxkPhLQ
+         kMf+xaFLsXwzUp/TDQEFpNDILEP3W1NKVi2gZJAS0B+473zuuiCAp1a400dJ000PT8f5
+         X4v+OXQqEpT0h16OZPuneYLC4c7iuNix1DESjwrcPsdpG3UQEFLP5q42/c1OwsIVMIiy
+         jNxC/mmHGu+WmXJYCjnkH1FWL9997daQ8aQyabluw+Fe/NJfXYMAkV5RryR2w3ldWKyB
+         0V8VJeZLgMIzvmO5sWCHEeis1ZDMx5PN1I1bixZFN55c4NmvlS4nRvxB41mGKNXWprhN
+         +paw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=9i6tPFj2OAXL7L21h0ilbFAsdVOWKVVdFmjGvAwmkFw=;
-        b=dYr8eg4sRR/WPohVM0DsbRCW9vVUxfuxZgAB8UPraEQJe55PDfnGmV9ia1daxcreDy
-         jtyJCuUGAgrR7EMqmT2vsgZTnu8gcnE/bDmxHLsAovpsi8cPhpw9q36EMg+CLLMAbZsl
-         wfuHycF6TkAmSug9eDEe0Eg0pfiWpmN9uxpxfu3XbUgoQYW9C2R2EKrk+v8vTMh744Nc
-         oZmCYSrb+XryYOnMxCtxOhS4evsEt55OKOMnLqhTiDTwDbhtnFJ3D73RvUmzlxzyLflm
-         Ea8KjtjigLsrzSJXkV3xVnl8Sb++2wEDtmUQ7hP1n0uwCcd18qQaT0DSNkmIrEbytsqM
-         zJRw==
-X-Gm-Message-State: AOAM530T7hW3DPgJiKPiwCrBWhSB7f7vMAmuWR0Q7yjVlW7uZUk49jp8
-	HbA5LlUXpi/4G5b8qaezNwvW68/ve1Wqs9TC
-X-Google-Smtp-Source: ABdhPJyFhC7ULAxesy56xMYxWtJSNJVlbwD8tVoHT5vTgkIpJQF8y2e8wevBIHUep9MpeXmjMCwoEw==
-X-Received: by 2002:a1c:4e06:: with SMTP id g6mr2341303wmh.119.1606384116111;
-        Thu, 26 Nov 2020 01:48:36 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=CPA0VMlefJy1cJoOPC7DpI0BHW8ZzXte1ipjqDkYL30=;
+        b=pqa50KuonnhYPFWLFFTlfjbrngu2kNiZU8HEBJ7bWkWi+8fG83sGP01Be35QEYz5SN
+         UEK8w7KPQ3CaNQKeYFL3kUUPc+icGVA1nkTaaKjZg9vvTdijlDKYE3bjwthjZMKkzA7V
+         hOL9MmzTAQPx7UUlj895SCefTZe5p5q7fJrJN6ZOtgWaPo0nnuvqDx3nK5Xy+A3ciex0
+         gu2dx41fa2OkAlcv7johIrpWtSmzxXYOBgQTLUbbRWgTG0OI+GDZMlWHdFsJd77yTUer
+         WJnnvU1mEZt7LJLAV5IPaXTa1YujRMetlccS5f9FG1ov+GRSHxtA1i2tRNH7CrzUOu4U
+         aufw==
+X-Gm-Message-State: AOAM532gyBokhj7Dlg/QQWK8mv2Beiv7KracF3ggAW+BPZd0KysHnGJR
+	a7B8wEzKE5O7jEfcLFR+ah9wWgE3avWmAA/c
+X-Google-Smtp-Source: ABdhPJxhInSP4njeYoMlPPKPtihX1CcldTvrsdryJpJEgjVCGpqtdy9xgvbwCcWIDdCl7qox9fTssg==
+X-Received: by 2002:a1c:1b06:: with SMTP id b6mr2358894wmb.101.1606384119403;
+        Thu, 26 Nov 2020 01:48:39 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id a12sm8759590wrq.58.2020.11.26.01.48.35
+        by smtp.gmail.com with ESMTPSA id a12sm8759590wrq.58.2020.11.26.01.48.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2020 01:48:35 -0800 (PST)
+        Thu, 26 Nov 2020 01:48:38 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 0/7] A second pass at removing labels
-Date: Thu, 26 Nov 2020 10:48:20 +0100
-Message-Id: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
+Subject: [PATCH 1/7] sphinx: replace bitbake labels with references to corresponding title
+Date: Thu, 26 Nov 2020 10:48:21 +0100
+Message-Id: <20201126094827.95641-2-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
+References: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is a followup series similar to:
-https://lists.yoctoproject.org/g/docs/message/659
+In order to remove autogenerated labels in the bibtake docs, let's use
+section titles in all YP docs.
 
-I have now removed all labels from dev-manual and overview-manual. I
-am also preparing the removal of labels in the bitbake manual, I will
-send the patches when this series is merged.
+Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+---
+ documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst | 2 +-
+ documentation/dev-manual/dev-manual-common-tasks.rst        | 4 ++--
+ documentation/kernel-dev/kernel-dev-advanced.rst            | 2 +-
+ documentation/overview-manual/overview-manual-concepts.rst  | 6 +++---
+ documentation/ref-manual/migration-2.3.rst                  | 2 +-
+ documentation/ref-manual/migration-2.6.rst                  | 2 +-
+ documentation/ref-manual/ref-devtool-reference.rst          | 2 +-
+ documentation/ref-manual/ref-tasks.rst                      | 2 +-
+ documentation/ref-manual/ref-variables.rst                  | 4 ++--
+ documentation/sdk-manual/sdk-extensible.rst                 | 2 +-
+ 10 files changed, 14 insertions(+), 14 deletions(-)
 
-The only manual that still has labels is ref-manual, but there the
-labels are heavily used.. and many section titles use backquotes, so I
-will wait to see what we do with that. If we remove them, i think it's
-better to do that first, then remove the labels.
-
-Nicolas Dechesne (7):
-  sphinx: replace bitbake labels with references to corresponding title
-  brief-yoctoprojectqs: replace labels with references to section title
-  dev-manual: replace labels with references to section title
-  ref-manual: replace labels with references to section title
-  sdk-manual: replace labels with references to section title
-  overview-manual: remove unused labels
-  dev-manual: remove unused labels
-
- .../brief-yoctoprojectqs.rst                  |   4 +-
- .../dev-manual/dev-manual-common-tasks.rst    | 245 +-----------------
- documentation/dev-manual/dev-manual-intro.rst |   2 -
- documentation/dev-manual/dev-manual-qemu.rst  |  14 -
- documentation/dev-manual/dev-manual-start.rst |  10 -
- .../kernel-dev/kernel-dev-advanced.rst        |   2 +-
- .../overview-manual-concepts.rst              |  46 +---
- ...verview-manual-development-environment.rst |   6 -
- .../overview-manual/overview-manual-intro.rst |   4 -
- .../overview-manual-yp-intro.rst              |  22 --
- documentation/ref-manual/migration-2.3.rst    |   2 +-
- documentation/ref-manual/migration-2.6.rst    |   2 +-
- documentation/ref-manual/ref-classes.rst      |  16 +-
- .../ref-manual/ref-devtool-reference.rst      |   6 +-
- documentation/ref-manual/ref-features.rst     |   2 +-
- documentation/ref-manual/ref-structure.rst    |   6 +-
- documentation/ref-manual/ref-tasks.rst        |  32 +--
- documentation/ref-manual/ref-variables.rst    |  78 +++---
- documentation/ref-manual/resources.rst        |   2 +-
- .../sdk-manual/sdk-appendix-obtain.rst        |   2 +-
- documentation/sdk-manual/sdk-extensible.rst   |   2 +-
- 21 files changed, 94 insertions(+), 411 deletions(-)
-
+diff --git a/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst b/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
+index c9622d364..f8c3ad974 100644
+--- a/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
++++ b/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
+@@ -246,7 +246,7 @@ an entire Linux distribution, including the toolchain, from source.
+    For information on using the ``bitbake`` command, see the
+    :ref:`usingpoky-components-bitbake` section in the Yocto Project Overview and
+    Concepts Manual, or see the ":ref:`BitBake Command
+-   <bitbake:bitbake-user-manual-command>`" section in the BitBake User Manual.
++   <bitbake:bitbake-user-manual/bitbake-user-manual-intro:the bitbake command>`" section in the BitBake User Manual.
+ 
+ #. **Simulate Your Image Using QEMU:** Once this particular image is
+    built, you can start QEMU, which is a Quick EMUlator that ships with
+diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
+index 683f5557e..1640a884d 100644
+--- a/documentation/dev-manual/dev-manual-common-tasks.rst
++++ b/documentation/dev-manual/dev-manual-common-tasks.rst
+@@ -1369,7 +1369,7 @@ the Yocto Project Overview and Concepts Manual.
+ 
+ The :ref:`ref-tasks-fetch` task uses
+ the prefix of each entry in the ``SRC_URI`` variable value to determine
+-which :ref:`fetcher <bitbake:bb-fetchers>` to use to get your
++which :ref:`fetcher <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>` to use to get your
+ source files. It is the ``SRC_URI`` variable that triggers the fetcher.
+ The :ref:`ref-tasks-patch` task uses
+ the variable after source is fetched to apply patches. The OpenEmbedded
+@@ -7567,7 +7567,7 @@ Creating Node Package Manager (NPM) Packages
+ 
+ `NPM <https://en.wikipedia.org/wiki/Npm_(software)>`__ is a package
+ manager for the JavaScript programming language. The Yocto Project
+-supports the NPM :ref:`fetcher <bitbake:bb-fetchers>`. You can
++supports the NPM :ref:`fetcher <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>`. You can
+ use this fetcher in combination with
+ :doc:`devtool <../ref-manual/ref-devtool-reference>` to create
+ recipes that produce NPM packages.
+diff --git a/documentation/kernel-dev/kernel-dev-advanced.rst b/documentation/kernel-dev/kernel-dev-advanced.rst
+index ca049316e..6999057b8 100644
+--- a/documentation/kernel-dev/kernel-dev-advanced.rst
++++ b/documentation/kernel-dev/kernel-dev-advanced.rst
+@@ -369,7 +369,7 @@ in the "`Features <#features>`__" section. The
+ variable in the kernel recipe selects the kernel type. For example, in
+ the ``linux-yocto_4.12.bb`` kernel recipe found in
+ ``poky/meta/recipes-kernel/linux``, a
+-:ref:`require <bitbake:require-inclusion>` directive
++:ref:`require <bitbake:bitbake-user-manual/bitbake-user-manual-metadata:\`\`require\`\` directive>` directive
+ includes the ``poky/meta/recipes-kernel/linux/linux-yocto.inc`` file,
+ which has the following statement that defines the default kernel type:
+ ::
+diff --git a/documentation/overview-manual/overview-manual-concepts.rst b/documentation/overview-manual/overview-manual-concepts.rst
+index 736fd9591..f1f2b7f35 100644
+--- a/documentation/overview-manual/overview-manual-concepts.rst
++++ b/documentation/overview-manual/overview-manual-concepts.rst
+@@ -78,7 +78,7 @@ versions of ``matchbox-desktop`` might exist. BitBake chooses the one
+ selected by the distribution configuration. You can get more details
+ about how BitBake chooses between different target versions and
+ providers in the
+-":ref:`Preferences <bitbake:bb-bitbake-preferences>`" section
++":ref:`Preferences <bitbake:bitbake-user-manual/bitbake-user-manual-execution:preferences>`" section
+ of the BitBake User Manual.
+ 
+ BitBake also tries to execute any dependent tasks first. So for example,
+@@ -607,7 +607,7 @@ Source Control Managers (Optional)
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ Another place from which the build system can get source files is with
+-:ref:`fetchers <bitbake:bb-fetchers>` employing various Source
++:ref:`fetchers <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>` employing various Source
+ Control Managers (SCMs) such as Git or Subversion. In such cases, a
+ repository is cloned or checked out. The
+ :ref:`ref-tasks-fetch` task inside
+@@ -1949,7 +1949,7 @@ The following list explains the previous example:
+    extra metadata to the `stamp
+    file <#stamp-files-and-the-rerunning-of-tasks>`__. In this case, the
+    metadata makes the task specific to a machine's architecture. See
+-   ":ref:`bitbake:ref-bitbake-tasklist`"
++   ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-execution:the task list`"
+    section in the BitBake User Manual for more information on the
+    ``stamp-extra-info`` flag.
+ 
+diff --git a/documentation/ref-manual/migration-2.3.rst b/documentation/ref-manual/migration-2.3.rst
+index 5bf3e7033..4041ad055 100644
+--- a/documentation/ref-manual/migration-2.3.rst
++++ b/documentation/ref-manual/migration-2.3.rst
+@@ -198,7 +198,7 @@ The following changes took place for BitBake:
+    fetcher passes the new parameter through the ``SVN_SSH`` environment
+    variable during the :ref:`ref-tasks-fetch` task.
+ 
+-   See the ":ref:`bitbake:svn-fetcher`"
++   See the ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-fetching:subversion (svn) fetcher (\`\`svn://\`\`)`"
+    section in the BitBake
+    User Manual for additional information.
+ 
+diff --git a/documentation/ref-manual/migration-2.6.rst b/documentation/ref-manual/migration-2.6.rst
+index 2f0da48ab..cc7c24c5b 100644
+--- a/documentation/ref-manual/migration-2.6.rst
++++ b/documentation/ref-manual/migration-2.6.rst
+@@ -278,7 +278,7 @@ The following changes have occurred:
+    specifying list items to remove, be aware that leading and trailing
+    whitespace resulting from the removal is retained.
+ 
+-   See the ":ref:`bitbake:removing-override-style-syntax`"
++   See the ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:removal (override style syntax)`"
+    section in the BitBake User Manual for a detailed example.
+ 
+ .. _migration-2.6-systemd-configuration-now-split-out-to-system-conf:
+diff --git a/documentation/ref-manual/ref-devtool-reference.rst b/documentation/ref-manual/ref-devtool-reference.rst
+index ad8889ed2..3f95f8d70 100644
+--- a/documentation/ref-manual/ref-devtool-reference.rst
++++ b/documentation/ref-manual/ref-devtool-reference.rst
+@@ -352,7 +352,7 @@ particular recipe.
+       `maintainers.inc <http://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/conf/distro/include/maintainers.inc>`_
+       file.
+ 
+-   -  If the recipe is using the :ref:`bitbake:git-fetcher`
++   -  If the recipe is using the :ref:`bitbake:bitbake-user-manual/bitbake-user-manual-fetching:git fetcher (\`\`git://\`\`)`
+       rather than a
+       tarball, the commit hash points to the commit that matches the
+       recipe's latest version tag.
+diff --git a/documentation/ref-manual/ref-tasks.rst b/documentation/ref-manual/ref-tasks.rst
+index 9ef014139..88b285d76 100644
+--- a/documentation/ref-manual/ref-tasks.rst
++++ b/documentation/ref-manual/ref-tasks.rst
+@@ -122,7 +122,7 @@ If the ``do_deploy`` task re-executes, any previous output is removed
+ 
+ Fetches the source code. This task uses the
+ :term:`SRC_URI` variable and the argument's prefix to
+-determine the correct :ref:`fetcher <bitbake:bb-fetchers>`
++determine the correct :ref:`fetcher <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>`
+ module.
+ 
+ .. _ref-tasks-image:
+diff --git a/documentation/ref-manual/ref-variables.rst b/documentation/ref-manual/ref-variables.rst
+index e552351e3..56aeb583a 100644
+--- a/documentation/ref-manual/ref-variables.rst
++++ b/documentation/ref-manual/ref-variables.rst
+@@ -3062,7 +3062,7 @@ system and gives an overview of their function and contents.
+             section in the Yocto Project Development Tasks Manual.
+ 
+          -  Using ``IMAGE_INSTALL`` with the
+-            :ref:`+= <bitbake:appending-and-prepending>`
++            :ref:`+= <bitbake:bitbake-user-manual/bitbake-user-manual-metadata:appending (+=) and prepending (=+) with spaces>`
+             BitBake operator within the ``/conf/local.conf`` file or from
+             within an image recipe is not recommended. Use of this operator
+             in these ways can cause ordering issues. Since
+@@ -7018,7 +7018,7 @@ system and gives an overview of their function and contents.
+       protocols are highly dependent on particular BitBake Fetcher
+       submodules. Depending on the fetcher BitBake uses, various URL
+       parameters are employed. For specifics on the supported Fetchers, see
+-      the ":ref:`Fetchers <bitbake:bb-fetchers>`" section in the
++      the ":ref:`Fetchers <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>`" section in the
+       BitBake User Manual.
+ 
+       -  ``file://`` - Fetches files, which are usually files shipped
+diff --git a/documentation/sdk-manual/sdk-extensible.rst b/documentation/sdk-manual/sdk-extensible.rst
+index 1a17da4f6..14ad23ba8 100644
+--- a/documentation/sdk-manual/sdk-extensible.rst
++++ b/documentation/sdk-manual/sdk-extensible.rst
+@@ -627,7 +627,7 @@ specify source code revision and versioning schemes, extract code into
+ or out of the ``devtool``
+ :ref:`devtool-the-workspace-layer-structure`,
+ and work with any source file forms that the
+-:ref:`fetchers <bitbake:bb-fetchers>` support.
++:ref:`fetchers <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>` support.
+ 
+ The following diagram shows the common development flow used with the
+ ``devtool upgrade`` command:
 -- 
 2.29.2
 
