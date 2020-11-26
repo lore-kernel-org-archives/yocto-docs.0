@@ -1,74 +1,148 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
- by mx.groups.io with SMTP id smtpd.web10.3013.1606384123732576666
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+ by mx.groups.io with SMTP id smtpd.web12.2999.1606384124779609909
  for <docs@lists.yoctoproject.org>;
- Thu, 26 Nov 2020 01:48:44 -0800
+ Thu, 26 Nov 2020 01:48:45 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=Z3+wIhny;
- spf=pass (domain: linaro.org, ip: 209.85.221.45, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f45.google.com with SMTP id 64so1405443wra.11
-        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2020 01:48:43 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=ZbmOOhhJ;
+ spf=pass (domain: linaro.org, ip: 209.85.221.52, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f52.google.com with SMTP id g14so1397320wrm.13
+        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2020 01:48:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=0sfLXqXtP/RUgGf9x6s95Vbf3l0bYW19f2Phg15mdpc=;
-        b=Z3+wIhnyNddQA1ftGqeJ41dV2mWRKVhtOq5+HWf0th9t+6ACXzGBxkAuIl3x4Xo8tw
-         2vw8NquBdYgz3eMvv9Cwt418t2kl+4ARj+TcUi8k+7Qj0y1zXNhkaPF0Nl7MHFbd4/bd
-         YNm49RH5VDiwahza706ah9ec7B3SAs7Z4v9JwidFqW/FEXQipTeE9ok1GJX/Z++Xhi2x
-         GBKu3i0MIHJyIAOHSXpTQ+iu+ENP9jNRH3mlQ6vvVMeJcm2ibAfy51Lg7veSw6s6l4Mf
-         zQbZ23JkGYToAHGKq8D2z4F06uxAtoMXDW+T6Ert+aLnSWMGJj/fCbkJj3hhtrc92oEW
-         k/ow==
+        bh=Z68JxsmvUnkkKead5FZvUh8pzKXyHKjOKfl1vzoZRYk=;
+        b=ZbmOOhhJFN/iv57Z/yKmtVCC3LzghMgfTP0Kq/WCyIShHKfU5Y1wBDq8blRIhl/4MU
+         dCG2TXu/hL6keQ4kU3zuz+itnizdDfIl3BLlKRSac/6gjH1eJtKlf7+6rgKMfso5s95y
+         tjcH9H8j8CiGRa04/MgXFxfS3CoavgNiUDAXh/x6rv7h4SvGQVweOh4M3rZBCORJagFq
+         KrUmKi1I07TO+5x5PqJQFF0PcrvoR0yrtGIolss6jHlLh+9+cvb4EATDC04WBUSCBldm
+         uGl3R7p+Q/dsPykGSMRX7N5CJTuS2hexCHR6hi2SVppNcCc3TUA9W+OqSsPGNVSEo0Z5
+         WXDg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=0sfLXqXtP/RUgGf9x6s95Vbf3l0bYW19f2Phg15mdpc=;
-        b=d/pvKxcLlrcBIkirionE/4AKf8i2RWNp56fkzjce6MYcun6DvxWJ5LI4Yfh1CmZ4Um
-         0pcnKisfP8EMgmrpX3IuQ1k8qis8MfNfh5BiiGzynj3Bi3TQciRvLbmW0QPsXaFFA0YS
-         ItxKB+NEVXOeQysM59MYAGA+3/GqZLwD32Fqu7u5NtCoF8rfyqZ526ng1cmwoq+rD7Qe
-         +Uitj4vF2hkB+MJFeSTl5ZKrvGsIm+kv95k2EQKK/QLdL+oxm6L9vgafMxBxQXJVNWJy
-         FODHMRlifAIthKEWVrIFzmCpcJGsOrZqqiOtmRkxAjHsOCwr0G5Vt3ki/+w0lnikSCgS
-         uixw==
-X-Gm-Message-State: AOAM530b46cfgfELGSBKH6LKBCvsrhPUx89xcRN0PHXvA5WPd1bDpBmy
-	zC8DFG2gVEwIIZ17GvqK5yDgYN5hzAprzeid
-X-Google-Smtp-Source: ABdhPJyei53GYXbEJc3aOeI1Cyhqe66aGBAfr6CgG3/EOvz25GZBm6S/GYZJ6O/g0B+9Iow+uKXH2Q==
-X-Received: by 2002:a5d:66c3:: with SMTP id k3mr2754422wrw.123.1606384121908;
-        Thu, 26 Nov 2020 01:48:41 -0800 (PST)
+        bh=Z68JxsmvUnkkKead5FZvUh8pzKXyHKjOKfl1vzoZRYk=;
+        b=MixTct8glnzBBbTb0mBDl7pMO7WeaeOs0KIAFvJrMtCtmJnHoArd9pJsngywSEnLZN
+         hiNwuk6y/6u2q8049KhMl0xN565BksSbya4R9TN98nUrGrU4iG4g0Z+d/1F/el95lv2B
+         SGeixOLsrsN4o8RfGggFEFMphZ0UiZctsg9OJsOVwUgVen122rDvIZWQxA5L0Tblgobv
+         P0qWNWp1j/iIZgfvnVmo8qRWYWnhiCteY9RgZk4GVNeTVtqef7vyLrCD7Pty9pxot/fO
+         0EXnC3dEWP8+DVnvLvUdHWl4iiJ1E+SsExUg01lDla9JSu76A1amCkdIt4+/cRpoSF1T
+         6sxQ==
+X-Gm-Message-State: AOAM530YgRK+g9BrhO8FIkad9zmDbdLM8XIJQdkqNnH5FWBo28TonkR6
+	amLmsF8/MngxDXw3+FTpG/1tjKrecsfHWQYk
+X-Google-Smtp-Source: ABdhPJzB03MaYup6D7seSVc7mBm8/ev2bJ8oFaUZPfJ0KDVGxipPbDA56723+jFGZ4JjIqf272oJ9w==
+X-Received: by 2002:adf:f3c7:: with SMTP id g7mr2726575wrp.91.1606384122949;
+        Thu, 26 Nov 2020 01:48:42 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id a12sm8759590wrq.58.2020.11.26.01.48.40
+        by smtp.gmail.com with ESMTPSA id a12sm8759590wrq.58.2020.11.26.01.48.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2020 01:48:40 -0800 (PST)
+        Thu, 26 Nov 2020 01:48:42 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 2/7] brief-yoctoprojectqs: replace labels with references to section title
-Date: Thu, 26 Nov 2020 10:48:22 +0100
-Message-Id: <20201126094827.95641-3-nicolas.dechesne@linaro.org>
+Subject: [PATCH 3/7] dev-manual: replace labels with references to section title
+Date: Thu, 26 Nov 2020 10:48:23 +0100
+Message-Id: <20201126094827.95641-4-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
 References: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dev-manual/dev-manual-common-tasks.rst    | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-diff --git a/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst b/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
-index f8c3ad974..f6d863f5b 100644
---- a/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
-+++ b/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
-@@ -244,7 +244,7 @@ an entire Linux distribution, including the toolchain, from source.
-       $ bitbake core-image-sato
+diff --git a/documentation/dev-manual/dev-manual-common-tasks.rst b/documentation/dev-manual/dev-manual-common-tasks.rst
+index 1640a884d..23c2be4f4 100644
+--- a/documentation/dev-manual/dev-manual-common-tasks.rst
++++ b/documentation/dev-manual/dev-manual-common-tasks.rst
+@@ -1364,7 +1364,7 @@ files. Fetching is controlled mainly through the
+ :term:`SRC_URI` variable. Your recipe
+ must have a ``SRC_URI`` variable that points to where the source is
+ located. For a graphical representation of source locations, see the
+-":ref:`sources-dev-environment`" section in
++":ref:`overview-manual/overview-manual-concepts:sources`" section in
+ the Yocto Project Overview and Concepts Manual.
  
-    For information on using the ``bitbake`` command, see the
--   :ref:`usingpoky-components-bitbake` section in the Yocto Project Overview and
-+   :ref:`overview-manual/overview-manual-concepts:bitbake` section in the Yocto Project Overview and
-    Concepts Manual, or see the ":ref:`BitBake Command
-    <bitbake:bitbake-user-manual/bitbake-user-manual-intro:the bitbake command>`" section in the BitBake User Manual.
+ The :ref:`ref-tasks-fetch` task uses
+@@ -3759,7 +3759,7 @@ build host running Linux.
+ The build process creates an entire Linux distribution from source and
+ places it in your :term:`Build Directory` under
+ ``tmp/deploy/images``. For detailed information on the build process
+-using BitBake, see the ":ref:`images-dev-environment`" section in the
++using BitBake, see the ":ref:`overview-manual/overview-manual-concepts:images`" section in the
+ Yocto Project Overview and Concepts Manual.
  
+ The following figure and list overviews the build process:
+@@ -6663,7 +6663,7 @@ revision, respectively). The values are highly dependent on the policies
+ and procedures of a given distribution and package feed.
+ 
+ Because the OpenEmbedded build system uses
+-":ref:`signatures <overview-checksums>`", which are
++":ref:`signatures <overview-manual/overview-manual-concepts:checksums (signatures)>`", which are
+ unique to a given build, the build system knows when to rebuild
+ packages. All the inputs into a given task are represented by a
+ signature, which can trigger a rebuild when different. Thus, the build
+@@ -6906,7 +6906,7 @@ multiple times if you have more than one set of modules to package.
+ 
+ For more examples that show how to use ``do_split_packages``, see the
+ ``connman.inc`` file in the ``meta/recipes-connectivity/connman/``
+-directory of the ``poky`` :ref:`source repository <yocto-project-repositories>`. You can
++directory of the ``poky`` :ref:`source repository <overview-manual/overview-manual-development-environment:yocto project source repositories>`. You can
+ also find examples in ``meta/classes/kernel.bbclass``.
+ 
+ Following is a reference that shows ``do_split_packages`` mandatory and
+@@ -9661,7 +9661,7 @@ Invalidating Shared State to Force a Task to Run
+ ------------------------------------------------
+ 
+ The OpenEmbedded build system uses
+-:ref:`checksums <overview-checksums>` and
++:ref:`checksums <overview-manual/overview-manual-concepts:checksums (signatures)>` and
+ :ref:`overview-manual/overview-manual-concepts:shared state` cache to avoid unnecessarily
+ rebuilding tasks. Collectively, this scheme is known as "shared state
+ code".
+@@ -10662,7 +10662,8 @@ Yocto general mailing list or on the openembedded-devel mailing list.
+ 
+ You can also push a change upstream and request a maintainer to pull the
+ change into the component's upstream repository. You do this by pushing
+-to a contribution repository that is upstream. See the ":ref:`gs-git-workflows-and-the-yocto-project`"
++to a contribution repository that is upstream. See the
++":ref:`overview-manual/overview-manual-development-environment:git workflows and the yocto project`"
+ section in the Yocto Project Overview and Concepts Manual for additional
+ concepts on working in the Yocto Project development environment.
+ 
+@@ -10789,7 +10790,7 @@ Yocto Project Reference Manual.
+ 
+ Here is the general procedure on how to submit a patch through email
+ without using the scripts once the steps in
+-:ref:`preparing-changes-for-submissions` have been followed:
++:ref:`dev-manual/dev-manual-common-tasks:preparing changes for submission` have been followed:
+ 
+ 1. *Format the Commit:* Format the commit into an email message. To
+    format commits, use the ``git format-patch`` command. When you
+@@ -10880,7 +10881,7 @@ and ``send-pull-request`` scripts from openembedded-core to create and send a
+ patch series with a link to the branch for review.
+ 
+ Follow this procedure to push a change to an upstream "contrib" Git
+-repository once the steps in :ref:`preparing-changes-for-submissions` have
++repository once the steps in :ref:`dev-manual/dev-manual-common-tasks:preparing changes for submission` have
+ been followed:
+ 
+ .. note::
+@@ -11055,8 +11056,8 @@ follows:
+       a newer version of the software which includes an upstream fix for the
+       issue or when the issue has been fixed on the master branch in a way
+       that introduces backwards incompatible changes. In this case follow the
+-      steps in :ref:`preparing-changes-for-submissions` and
+-      :ref:`submitting-a-patch` but modify the subject header of your patch
++      steps in :ref:`dev-manual/dev-manual-common-tasks:preparing changes for submission` and
++      :ref:`dev-manual/dev-manual-common-tasks:using email to submit a patch` but modify the subject header of your patch
+       email to include the name of the stable branch which you are
+       targetting. This can be done using the ``--subject-prefix`` argument to
+       ``git format-patch``, for example to submit a patch to the dunfell
 -- 
 2.29.2
 
