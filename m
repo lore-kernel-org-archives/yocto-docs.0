@@ -1,83 +1,98 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
- by mx.groups.io with SMTP id smtpd.web09.5586.1606304530244220993
+Received: from mail-wm1-f68.google.com (mail-wm1-f68.google.com [209.85.128.68])
+ by mx.groups.io with SMTP id smtpd.web10.3010.1606384117947933000
  for <docs@lists.yoctoproject.org>;
- Wed, 25 Nov 2020 03:42:10 -0800
+ Thu, 26 Nov 2020 01:48:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=VDgrjqkY;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.52, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f52.google.com with SMTP id h21so1859773wmb.2
-        for <docs@lists.yoctoproject.org>; Wed, 25 Nov 2020 03:42:10 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=buafFPhZ;
+ spf=pass (domain: linaro.org, ip: 209.85.128.68, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wm1-f68.google.com with SMTP id g25so199177wmh.1
+        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2020 01:48:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=rdmT7caG9aqB90hcZ86ttTWYASuCuphn3d0OpKcF45w=;
-        b=VDgrjqkYtuzQOnXoGHoDdtZSnAY+PNC5RipOTNV9UtTc33DyNh7o6B2jFhhBn/Dlav
-         bpB36s6ZFieplBTGIfZqBfOQRc+W1dup/KMBMz1DXhbVR4TGUEgdiKK4kq0eC4VFpjaF
-         +PshlBZ5BAZPgpAUTdk1XZ3uZqciOsKcpEXJw=
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9i6tPFj2OAXL7L21h0ilbFAsdVOWKVVdFmjGvAwmkFw=;
+        b=buafFPhZOgtkER4LFrE8oqN8Oq9DufjBrcnOR0quXLMCg9f6fDmoutfs0XhiXYbpp+
+         DvNe6O4m9F6H58oxdvxpOeAtf0zYb0AoPwK1BuFKp87nZH6o82DDBaN4+vhr8bXamn5G
+         ZMjBNPxRkyyOhkrVH5Z7hGZREpgvbgL7DmFAST0/ThKeETP0KHXLB2ENVgt+CXDPlUpe
+         fzXKn4Q18x3KURl9hciTgc3hGAxDbdXEMYbXUS13wvX4TPsKeTLnDhIU15naFZOgRlgA
+         zxaFRSbCcP2PkQ48QKwojjZsWpsTgoXbhFsl8/DRBSxXzB7041Q4j2Kk7dCbTLLNeixj
+         6rlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=rdmT7caG9aqB90hcZ86ttTWYASuCuphn3d0OpKcF45w=;
-        b=rIbM8EcgqfZ5G3TZ0Na0gzCNBEesvbfMwuXfsdnSiwL6P8BrHs5tAFYTHjGza+LecY
-         Z4IvEh0TU7fjkCADfiHZ5YHJQi/n/yJPtm3NUdkvtLTi9k41m+0v4zAjLLKdjE+BtPaG
-         58jkjktNJZdREMzsQz+d8HbDg8suTa8k7pG/Wkyfui/9ZkW4BQkxwBzL1njbcsA24ULZ
-         IqAP3UHFeJEcUguxM+2l+KsWj/wSzoRsecanPsurGuN/UceUix0dx6gaq/IvVidG7H7q
-         EiyOZmWVxeCZD7J3gcSMsamGUvAjzunTqyg7FV980fjmizGEcp0pIY4o23L9QonwUF2y
-         HAfA==
-X-Gm-Message-State: AOAM533AwQLdWHZrR6lfVS96mUNJTQJ+yCr2XjpkE71N5u7NdyG1qI7c
-	mzaPFECmMHscQhIU7AXCQ3vtfQ==
-X-Google-Smtp-Source: ABdhPJwmCR3XzM+6MCFG28KaJhdLQNpvrhoHjan2hNHPTDr0YXmv/VQbmC9r3UHeqejVqfjqfyw99A==
-X-Received: by 2002:a1c:3c04:: with SMTP id j4mr3440043wma.105.1606304528774;
-        Wed, 25 Nov 2020 03:42:08 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from 4.3.1.2.4.d.e.0.6.7.2.2.d.6.0.9.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (4.3.1.2.4.d.e.0.6.7.2.2.d.6.0.9.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:906d:2276:ed4:2134])
-        by smtp.gmail.com with ESMTPSA id h2sm4381709wme.45.2020.11.25.03.42.04
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=9i6tPFj2OAXL7L21h0ilbFAsdVOWKVVdFmjGvAwmkFw=;
+        b=dYr8eg4sRR/WPohVM0DsbRCW9vVUxfuxZgAB8UPraEQJe55PDfnGmV9ia1daxcreDy
+         jtyJCuUGAgrR7EMqmT2vsgZTnu8gcnE/bDmxHLsAovpsi8cPhpw9q36EMg+CLLMAbZsl
+         wfuHycF6TkAmSug9eDEe0Eg0pfiWpmN9uxpxfu3XbUgoQYW9C2R2EKrk+v8vTMh744Nc
+         oZmCYSrb+XryYOnMxCtxOhS4evsEt55OKOMnLqhTiDTwDbhtnFJ3D73RvUmzlxzyLflm
+         Ea8KjtjigLsrzSJXkV3xVnl8Sb++2wEDtmUQ7hP1n0uwCcd18qQaT0DSNkmIrEbytsqM
+         zJRw==
+X-Gm-Message-State: AOAM530T7hW3DPgJiKPiwCrBWhSB7f7vMAmuWR0Q7yjVlW7uZUk49jp8
+	HbA5LlUXpi/4G5b8qaezNwvW68/ve1Wqs9TC
+X-Google-Smtp-Source: ABdhPJyFhC7ULAxesy56xMYxWtJSNJVlbwD8tVoHT5vTgkIpJQF8y2e8wevBIHUep9MpeXmjMCwoEw==
+X-Received: by 2002:a1c:4e06:: with SMTP id g6mr2341303wmh.119.1606384116111;
+        Thu, 26 Nov 2020 01:48:36 -0800 (PST)
+Return-Path: <nicolas.dechesne@linaro.org>
+Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
+        by smtp.gmail.com with ESMTPSA id a12sm8759590wrq.58.2020.11.26.01.48.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Nov 2020 03:42:06 -0800 (PST)
-Message-ID: <45c7be8601c53b826dcd2eff4188e95f86e5f996.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] {dev,kernel,sdk}-manual: replace hardcoded release version with &DISTRO;
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>, Nicolas Dechesne
-	 <nicolas.dechesne@linaro.org>
-Cc: docs@lists.yoctoproject.org
-Date: Wed, 25 Nov 2020 11:42:00 +0000
-In-Reply-To: <20201125110522.4dhp3xddwrbrckn3@qschulz>
-References: <20201125091526.46021-1-nicolas.dechesne@linaro.org>
-	 <20201125101647.jzde6uprwod3cvpd@qschulz>
-	 <CAP71WjzvhNnYo5EP+QoN-NprZwyLOqA-cLQ1skkES2hsG53MhA@mail.gmail.com>
-	 <20201125110522.4dhp3xddwrbrckn3@qschulz>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        Thu, 26 Nov 2020 01:48:35 -0800 (PST)
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+To: docs@lists.yoctoproject.org
+Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Subject: [PATCH 0/7] A second pass at removing labels
+Date: Thu, 26 Nov 2020 10:48:20 +0100
+Message-Id: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 2020-11-25 at 12:05 +0100, Quentin Schulz wrote:
-> It was more about the output of a yocto build, e.g. the SDK, does it
-> have 3.2 in its name or 3.2.0?
-> 
-> I know we tag them with 3.2 only, just wondering if it's 3.2
-> everywhere
-> in code or if we can have a 3.2.0 somewhere for some reason.
-> 
-> Anyway, no biggie, if it's not exact (filename is different), it'll
-> be
-> so close to the actual thing you're doing (filename or whatever) that
-> one can manage to fix it on their own. Links are important though and
-> they use 3.2, so let's stick with 3.2.
-> 
-> Hope it's not too much non-sense :p
-> 
-> All good for me.
+This is a followup series similar to:
+https://lists.yoctoproject.org/g/docs/message/659
 
-Its always 3.2, then 3.2.1 and the only other context for "3.2" is to
-refer to the series.
+I have now removed all labels from dev-manual and overview-manual. I
+am also preparing the removal of labels in the bitbake manual, I will
+send the patches when this series is merged.
 
-I once tried X.Y.0 and I broke lots of things :) I was asked not to do
-that again.
+The only manual that still has labels is ref-manual, but there the
+labels are heavily used.. and many section titles use backquotes, so I
+will wait to see what we do with that. If we remove them, i think it's
+better to do that first, then remove the labels.
 
-Cheers,
+Nicolas Dechesne (7):
+  sphinx: replace bitbake labels with references to corresponding title
+  brief-yoctoprojectqs: replace labels with references to section title
+  dev-manual: replace labels with references to section title
+  ref-manual: replace labels with references to section title
+  sdk-manual: replace labels with references to section title
+  overview-manual: remove unused labels
+  dev-manual: remove unused labels
 
-Richard
+ .../brief-yoctoprojectqs.rst                  |   4 +-
+ .../dev-manual/dev-manual-common-tasks.rst    | 245 +-----------------
+ documentation/dev-manual/dev-manual-intro.rst |   2 -
+ documentation/dev-manual/dev-manual-qemu.rst  |  14 -
+ documentation/dev-manual/dev-manual-start.rst |  10 -
+ .../kernel-dev/kernel-dev-advanced.rst        |   2 +-
+ .../overview-manual-concepts.rst              |  46 +---
+ ...verview-manual-development-environment.rst |   6 -
+ .../overview-manual/overview-manual-intro.rst |   4 -
+ .../overview-manual-yp-intro.rst              |  22 --
+ documentation/ref-manual/migration-2.3.rst    |   2 +-
+ documentation/ref-manual/migration-2.6.rst    |   2 +-
+ documentation/ref-manual/ref-classes.rst      |  16 +-
+ .../ref-manual/ref-devtool-reference.rst      |   6 +-
+ documentation/ref-manual/ref-features.rst     |   2 +-
+ documentation/ref-manual/ref-structure.rst    |   6 +-
+ documentation/ref-manual/ref-tasks.rst        |  32 +--
+ documentation/ref-manual/ref-variables.rst    |  78 +++---
+ documentation/ref-manual/resources.rst        |   2 +-
+ .../sdk-manual/sdk-appendix-obtain.rst        |   2 +-
+ documentation/sdk-manual/sdk-extensible.rst   |   2 +-
+ 21 files changed, 94 insertions(+), 411 deletions(-)
+
+-- 
+2.29.2
 
