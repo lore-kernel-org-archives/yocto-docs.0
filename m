@@ -1,622 +1,404 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
- by mx.groups.io with SMTP id smtpd.web08.2897.1606384127179728028
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+ by mx.groups.io with SMTP id smtpd.web09.3001.1606384128070063017
  for <docs@lists.yoctoproject.org>;
- Thu, 26 Nov 2020 01:48:47 -0800
+ Thu, 26 Nov 2020 01:48:48 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=BuBDOlAR;
- spf=pass (domain: linaro.org, ip: 209.85.128.53, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f53.google.com with SMTP id p19so3286772wmg.0
-        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2020 01:48:46 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=nvPnaAK+;
+ spf=pass (domain: linaro.org, ip: 209.85.128.42, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wm1-f42.google.com with SMTP id a186so1533015wme.1
+        for <docs@lists.yoctoproject.org>; Thu, 26 Nov 2020 01:48:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=NwrO1X92jxrp9rdaeJvmEUFAat7urY1lHMoYznuU2RU=;
-        b=BuBDOlAR1//7YEev5xv8gL8bG6eCxE/vyuy4g/vHCixrYLb0LMeHf6D4WPxjx3qJv0
-         zfaj7ns37D8zD8oBfcqmJPnnvuQmxe5qBDEoKR1BpHyBAmeokQvqQo1LX6ODZ/vw6CD3
-         rxAL5FJmO07drXgaOCaaAXjOegJLhukKIrssezghQi2MjKTLGZPhhv81CmX7oqfFyYkq
-         JlAQvjmXB+h0Jw6DrmRegy8cyosojIeTyqaP9o9f6HWZgogprQTJrDmj3HQtz2L7svDu
-         Qpx3RxBOIzJWx62VGCwgMIJeGsj41mSsniDtc4LpvRV6tS8DdA9GKypvAlzmzcDVYiOb
-         Bnmw==
+        bh=q8A9cZ1+DWAHGVTQpQUYjp3qWea6GJN//LsmTgRxQKo=;
+        b=nvPnaAK+HwFLVlnI7/M5T/cXjkDE60FJdnBb6EcNj7rVltr9GBr9MZUwdrPW4+ek7P
+         VO0/fncixqa4bOuEoqmqpAaWXDG+NULYDJDow0CY3m3kgpjX9jJZtAFIqyN4sOSyxV6j
+         IW7nZMPrxqi2pDYMeZBcmGmCBhZEazHAc6So42S1I79qKvp7nG5IxPnr7aLVNzHiOkAP
+         0Me1WAgLT+nyXusOqnuHik/rlUUX6G64Pnt3xXNya2g3U06wsqBuM+nTo2XC5GTwa0mG
+         AMcEueDa3jr/V6v0Z81u+KaXiZ+3By2BWmkGiue9CfeWBVybYbXHWQo69NoviJT4SE+A
+         3tMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=NwrO1X92jxrp9rdaeJvmEUFAat7urY1lHMoYznuU2RU=;
-        b=YDD3AXnfwtOpHhX94VDRrkLw3AZHXcVMQeP5khX+K5fzMKnzjPTNt1zRA0AgX+nw2V
-         nW89GxINZiewvTn8PT4fbJyvF1w6sQn2vZG5cN5dQQFm6XfI2iO1XRW3FBNb84uUOARD
-         VsKZBLijjtb47j3Te5EqmGMusEZsXGv69U3Mk1wXJYa9y/mlJXfRmULAf7Ve0lyRUsRJ
-         3/NMr0vOjSek8YoXfginFRNSeY4sUQ/ZkILjYmwfHMBx/7YyiW+m/Xt8ovSNxPdMSlLp
-         s95/mwlHt8XV0eL1hmLZcjkTYnykht5pAZrpFP1pNfsgFqOcf6PElQui64n3Mgb8XuMe
-         jl7Q==
-X-Gm-Message-State: AOAM532cFzsWo7CHcxzflvAM+hKBO9F6Ipcl7md6/F00ImPlYBn6DWec
-	Z0+jEo71/m0STni1wHibuvGj4zhE2s+O7v57
-X-Google-Smtp-Source: ABdhPJwj0l4TepN0jqcU7/kExDh7q5yF8JM1t8x11/BkTIljesmZKEvNQ0O22BvOOmKdqdVRoMMnhw==
-X-Received: by 2002:a1c:6184:: with SMTP id v126mr2409707wmb.64.1606384123931;
-        Thu, 26 Nov 2020 01:48:43 -0800 (PST)
+        bh=q8A9cZ1+DWAHGVTQpQUYjp3qWea6GJN//LsmTgRxQKo=;
+        b=ty/IcdxEldnZocuwGV0EXanoeJqHYkvAx0Su92aSI/JO4598fF6BTi/oQ0hNRvKXxK
+         T6bbOWrLU9zQa8OuTU9Nvzp9BoUzTlBY41aXcqjMcbvkkOqAMC6o+1wY8EHYdsLTxam5
+         tbTfOXKV7p5gUzLtHovkXFj544TrvLI+R+31WCrlXVa5zRxrhhxjccbxw6RkU016qWPH
+         WpjqOX/DyF9UkqsJufzmGlU90B1zktH+MoHapJMx367glV05SHFJAOKRFv+pWvZKnz5h
+         l7vsF0Q8Dy3NQ4Xk/kptI5B57dLo1YIAkg+CaHZtAkZPJ+2akmwV0L8E53roSxiimItu
+         Exwg==
+X-Gm-Message-State: AOAM532dAHYHXH6ud5CRzDr1Zt72+fVAAkPsnvaXwO2KFvULu2LSdksm
+	SyveDOwmv2nnHuh5/wGcVs7afCXvDKO3ntCO
+X-Google-Smtp-Source: ABdhPJzKNMKH21QwuzUmVbKCTQrMAJuzIkzKRxx8XPmwbQ5FAPdeaavYtq1VfYohyP+LNAV/w5hdYg==
+X-Received: by 2002:a1c:e287:: with SMTP id z129mr2353059wmg.94.1606384125976;
+        Thu, 26 Nov 2020 01:48:45 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id a12sm8759590wrq.58.2020.11.26.01.48.43
+        by smtp.gmail.com with ESMTPSA id a12sm8759590wrq.58.2020.11.26.01.48.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Nov 2020 01:48:43 -0800 (PST)
+        Thu, 26 Nov 2020 01:48:45 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 4/7] ref-manual: replace labels with references to section title
-Date: Thu, 26 Nov 2020 10:48:24 +0100
-Message-Id: <20201126094827.95641-5-nicolas.dechesne@linaro.org>
+Subject: [PATCH 6/7] overview-manual: remove unused labels
+Date: Thu, 26 Nov 2020 10:48:26 +0100
+Message-Id: <20201126094827.95641-7-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
 References: <20201126094827.95641-1-nicolas.dechesne@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
+Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- documentation/ref-manual/ref-classes.rst      | 16 ++--
- .../ref-manual/ref-devtool-reference.rst      |  4 +-
- documentation/ref-manual/ref-features.rst     |  2 +-
- documentation/ref-manual/ref-structure.rst    |  6 +-
- documentation/ref-manual/ref-tasks.rst        | 30 ++++----
- documentation/ref-manual/ref-variables.rst    | 74 +++++++++----------
- documentation/ref-manual/resources.rst        |  2 +-
- 7 files changed, 67 insertions(+), 67 deletions(-)
+ .../overview-manual-concepts.rst              | 40 -------------------
+ ...verview-manual-development-environment.rst |  6 ---
+ .../overview-manual/overview-manual-intro.rst |  4 --
+ .../overview-manual-yp-intro.rst              | 22 ----------
+ 4 files changed, 72 deletions(-)
 
-diff --git a/documentation/ref-manual/ref-classes.rst b/documentation/ref-manual/ref-classes.rst
-index 249b58e60..62876194d 100644
---- a/documentation/ref-manual/ref-classes.rst
-+++ b/documentation/ref-manual/ref-classes.rst
-@@ -86,7 +86,7 @@ standardization. This class defines a set of tasks (e.g. ``configure``,
- should usually be enough to define a few standard variables and then
- simply ``inherit autotools``. These classes can also work with software
- that emulates Autotools. For more information, see the
--":ref:`new-recipe-autotooled-package`" section
-+":ref:`dev-manual/dev-manual-common-tasks:autotooled package`" section
- in the Yocto Project Development Tasks Manual.
+diff --git a/documentation/overview-manual/overview-manual-concepts.rst b/documentation/overview-manual/overview-manual-concepts.rst
+index f1f2b7f35..353a2f99f 100644
+--- a/documentation/overview-manual/overview-manual-concepts.rst
++++ b/documentation/overview-manual/overview-manual-concepts.rst
+@@ -43,8 +43,6 @@ see the
+ ":ref:`overview-manual/overview-manual-concepts:openembedded build system concepts`"
+ section.
  
- By default, the ``autotools*`` classes use out-of-tree builds (i.e.
-@@ -458,7 +458,7 @@ staging the files from ``DEPLOYDIR`` to ``DEPLOY_DIR_IMAGE``.
- ====================
+-.. _usingpoky-components-bitbake:
+-
+ BitBake
+ -------
  
- The ``devshell`` class adds the ``do_devshell`` task. Distribution
--policy dictates whether to include this class. See the ":ref:`platdev-appdev-devshell`"
-+policy dictates whether to include this class. See the ":ref:`dev-manual/dev-manual-common-tasks:using a development shell`"
- section in the Yocto Project Development Tasks Manual for more
- information about using ``devshell``.
+@@ -92,8 +90,6 @@ occurs, the target that failed and those that depend on it cannot be
+ remade. However, when you use this option other dependencies can still
+ be processed.
  
-@@ -927,10 +927,10 @@ then one or more image files are created.
-    install into the image.
+-.. _overview-components-recipes:
+-
+ Recipes
+ -------
  
- For information on customizing images, see the
--":ref:`usingpoky-extend-customimage`" section
-+":ref:`dev-manual/dev-manual-common-tasks:customizing images`" section
- in the Yocto Project Development Tasks Manual. For information on how
- images are created, see the
--":ref:`images-dev-environment`" section in the
-+":ref:`overview-manual/overview-manual-concepts:images`" section in the
- Yocto Project Overview and Concpets Manual.
+@@ -109,8 +105,6 @@ the word "package" is used for the packaged output from the OpenEmbedded
+ build system (i.e. ``.ipk`` or ``.deb`` files), this document avoids
+ using the term "package" when referring to recipes.
  
- .. _ref-classes-image-buildinfo:
-@@ -1344,7 +1344,7 @@ packages such as ``kernel-vmlinux``.
- The ``kernel`` class contains logic that allows you to embed an initial
- RAM filesystem (initramfs) image when you build the kernel image. For
- information on how to build an initramfs, see the
--":ref:`building-an-initramfs-image`" section in
-+":ref:`dev-manual/dev-manual-common-tasks:building an initial ram filesystem (initramfs) image`" section in
- the Yocto Project Development Tasks Manual.
+-.. _overview-components-classes:
+-
+ Classes
+ -------
  
- Various other classes are used by the ``kernel`` and ``module`` classes
-@@ -1620,7 +1620,7 @@ different target optimizations or target architectures and installing
- them side-by-side in the same image.
+@@ -122,8 +116,6 @@ The ":ref:`ref-manual/ref-classes:Classes`" chapter in the
+ Yocto Project Reference Manual provides details about classes and how to
+ use them.
  
- For more information on using the Multilib feature, see the
--":ref:`combining-multiple-versions-library-files-into-one-image`"
-+":ref:`dev-manual/dev-manual-common-tasks:combining multiple versions of library files into one image`"
- section in the Yocto Project Development Tasks Manual.
+-.. _overview-components-configurations:
+-
+ Configurations
+ --------------
  
- .. _ref-classes-native:
-@@ -1921,7 +1921,7 @@ so forth). It is highly recommended that all package group recipes
- inherit this class.
+@@ -135,8 +127,6 @@ common configuration options, and user configuration options in
+ ``conf/local.conf``, which is found in the :term:`Build Directory`.
  
- For information on how to use this class, see the
--":ref:`usingpoky-extend-customimage-customtasks`"
-+":ref:`dev-manual/dev-manual-common-tasks:customizing images using custom package groups`"
- section in the Yocto Project Development Tasks Manual.
  
- Previously, this class was called the ``task`` class.
-@@ -2268,7 +2268,7 @@ The root filesystem is created from packages using one of the
- :term:`PACKAGE_CLASSES` variable.
+-.. _overview-layers:
+-
+ Layers
+ ======
  
- For information on how root filesystem images are created, see the
--":ref:`image-generation-dev-environment`"
-+":ref:`overview-manual/overview-manual-concepts:image generation`"
- section in the Yocto Project Overview and Concepts Manual.
+@@ -166,8 +156,6 @@ layers suitable for the Yocto Project in the
+ ":ref:`dev-manual/dev-manual-common-tasks:understanding and creating layers`"
+ section of the Yocto Project Development Tasks Manual.
  
- .. _ref-classes-sanity:
-diff --git a/documentation/ref-manual/ref-devtool-reference.rst b/documentation/ref-manual/ref-devtool-reference.rst
-index 3f95f8d70..93fd1465f 100644
---- a/documentation/ref-manual/ref-devtool-reference.rst
-+++ b/documentation/ref-manual/ref-devtool-reference.rst
-@@ -413,7 +413,7 @@ Upgrading a Recipe
- As software matures, upstream recipes are upgraded to newer versions. As
- a developer, you need to keep your local recipes up-to-date with the
- upstream version releases. Several methods exist by which you can
--upgrade recipes. You can read about them in the ":ref:`gs-upgrading-recipes`"
-+upgrade recipes. You can read about them in the ":ref:`dev-manual/dev-manual-common-tasks:upgrading recipes`"
- section of the Yocto Project Development Tasks Manual. This section
- overviews the ``devtool upgrade`` command.
+-.. _openembedded-build-system-build-concepts:
+-
+ OpenEmbedded Build System Concepts
+ ==================================
  
-@@ -441,7 +441,7 @@ You can read more on the ``devtool upgrade`` workflow in the
- ":ref:`sdk-manual/sdk-extensible:use \`\`devtool upgrade\`\` to create a version of the recipe that supports a newer version of the software`"
- section in the Yocto Project Application Development and the Extensible
- Software Development Kit (eSDK) manual. You can also see an example of
--how to use ``devtool upgrade`` in the ":ref:`gs-using-devtool-upgrade`"
-+how to use ``devtool upgrade`` in the ":ref:`dev-manual/dev-manual-common-tasks:using \`\`devtool upgrade\`\``"
- section in the Yocto Project Development Tasks Manual.
+@@ -527,8 +515,6 @@ their respective layers.
+ This layer contains any recipes, append files, and patches, that your
+ project needs.
  
- .. _devtool-resetting-a-recipe:
-diff --git a/documentation/ref-manual/ref-features.rst b/documentation/ref-manual/ref-features.rst
-index f28ad2bb4..a16460e91 100644
---- a/documentation/ref-manual/ref-features.rst
-+++ b/documentation/ref-manual/ref-features.rst
-@@ -273,7 +273,7 @@ these valid features is as follows:
+-.. _sources-dev-environment:
+-
+ Sources
+ -------
  
- -  *tools-debug:* Installs debugging tools such as ``strace`` and
-    ``gdb``. For information on GDB, see the
--   ":ref:`platdev-gdb-remotedebug`" section
-+   ":ref:`dev-manual/dev-manual-common-tasks:debugging with the gnu project debugger (gdb) remotely`" section
-    in the Yocto Project Development Tasks Manual. For information on
-    tracing and profiling, see the :doc:`../profile-manual/profile-manual`.
+@@ -601,8 +587,6 @@ class to include that local project. You use either the ``local.conf``
+ or a recipe's append file to override or set the recipe to point to the
+ local directory on your disk to pull in the whole source tree.
  
-diff --git a/documentation/ref-manual/ref-structure.rst b/documentation/ref-manual/ref-structure.rst
-index db1ea9797..5d17f0e5c 100644
---- a/documentation/ref-manual/ref-structure.rst
-+++ b/documentation/ref-manual/ref-structure.rst
-@@ -399,8 +399,8 @@ This directory contains any "end result" output from the OpenEmbedded
- build process. The :term:`DEPLOY_DIR` variable points
- to this directory. For more detail on the contents of the ``deploy``
- directory, see the
--":ref:`images-dev-environment`" and
--":ref:`sdk-dev-environment`" sections in the Yocto
-+":ref:`overview-manual/overview-manual-concepts:images`" and
-+":ref:`overview-manual/overview-manual-concepts:application development sdk`" sections in the Yocto
- Project Overview and Concepts Manual.
+-.. _scms:
+-
+ Source Control Managers (Optional)
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
- .. _structure-build-tmp-deploy-deb:
-@@ -577,7 +577,7 @@ built within the Yocto Project. For this package, a work directory of
- ``tmp/work/qemux86-poky-linux/linux-yocto/3.0+git1+<.....>``, referred
- to as the ``WORKDIR``, is created. Within this directory, the source is
- unpacked to ``linux-qemux86-standard-build`` and then patched by Quilt.
--(See the ":ref:`using-a-quilt-workflow`" section in
-+(See the ":ref:`dev-manual/dev-manual-common-tasks:using quilt in your workflow`" section in
- the Yocto Project Development Tasks Manual for more information.) Within
- the ``linux-qemux86-standard-build`` directory, standard Quilt
- directories ``linux-3.0/patches`` and ``linux-3.0/.pc`` are created, and
-diff --git a/documentation/ref-manual/ref-tasks.rst b/documentation/ref-manual/ref-tasks.rst
-index 88b285d76..299e8f7d6 100644
---- a/documentation/ref-manual/ref-tasks.rst
-+++ b/documentation/ref-manual/ref-tasks.rst
-@@ -140,7 +140,7 @@ The ``do_image`` task performs pre-processing on the image through the
- :term:`IMAGE_PREPROCESS_COMMAND` and
- dynamically generates supporting ``do_image_*`` tasks as needed.
+@@ -644,8 +628,6 @@ Regular mirrors can be any site across the Internet that is used as an
+ alternative location for source code should the primary site not be
+ functioning for some reason or another.
  
--For more information on image creation, see the ":ref:`image-generation-dev-environment`"
-+For more information on image creation, see the ":ref:`overview-manual/overview-manual-concepts:image generation`"
- section in the Yocto Project Overview and Concepts Manual.
- 
- .. _ref-tasks-image-complete:
-@@ -159,7 +159,7 @@ through the
- :term:`IMAGE_POSTPROCESS_COMMAND`.
- 
- For more information on image creation, see the
--":ref:`image-generation-dev-environment`"
-+":ref:`overview-manual/overview-manual-concepts:image generation`"
- section in the Yocto Project Overview and Concepts Manual.
- 
- .. _ref-tasks-install:
-@@ -237,7 +237,7 @@ see the :ref:`insane <ref-classes-insane>` class.
- Creates Debian packages (i.e. ``*.deb`` files) and places them in the
- ``${``\ :term:`DEPLOY_DIR_DEB`\ ``}`` directory in
- the package feeds area. For more information, see the
--":ref:`package-feeds-dev-environment`" section in
-+":ref:`overview-manual/overview-manual-concepts:package feeds`" section in
- the Yocto Project Overview and Concepts Manual.
- 
- .. _ref-tasks-package_write_ipk:
-@@ -248,7 +248,7 @@ the Yocto Project Overview and Concepts Manual.
- Creates IPK packages (i.e. ``*.ipk`` files) and places them in the
- ``${``\ :term:`DEPLOY_DIR_IPK`\ ``}`` directory in
- the package feeds area. For more information, see the
--":ref:`package-feeds-dev-environment`" section in
-+":ref:`overview-manual/overview-manual-concepts:package feeds`" section in
- the Yocto Project Overview and Concepts Manual.
- 
- .. _ref-tasks-package_write_rpm:
-@@ -259,7 +259,7 @@ the Yocto Project Overview and Concepts Manual.
- Creates RPM packages (i.e. ``*.rpm`` files) and places them in the
- ``${``\ :term:`DEPLOY_DIR_RPM`\ ``}`` directory in
- the package feeds area. For more information, see the
--":ref:`package-feeds-dev-environment`" section in
-+":ref:`overview-manual/overview-manual-concepts:package feeds`" section in
- the Yocto Project Overview and Concepts Manual.
- 
- .. _ref-tasks-package_write_tar:
-@@ -270,7 +270,7 @@ the Yocto Project Overview and Concepts Manual.
- Creates tarballs and places them in the
- ``${``\ :term:`DEPLOY_DIR_TAR`\ ``}`` directory in
- the package feeds area. For more information, see the
--":ref:`package-feeds-dev-environment`" section in
-+":ref:`overview-manual/overview-manual-concepts:package feeds`" section in
- the Yocto Project Overview and Concepts Manual.
- 
- .. _ref-tasks-packagedata:
-@@ -349,9 +349,9 @@ patch files end with either ``.patch`` or ``.diff``, every file would be
- applied as a patch by default except for the ``patch_file5`` patch.
- 
- You can find out more about the patching process in the
--":ref:`patching-dev-environment`" section in
-+":ref:`overview-manual/overview-manual-concepts:patching`" section in
- the Yocto Project Overview and Concepts Manual and the
--":ref:`new-recipe-patching-code`" section in the
-+":ref:`dev-manual/dev-manual-common-tasks:patching code`" section in the
- Yocto Project Development Tasks Manual.
- 
- .. _ref-tasks-populate_lic:
-@@ -368,7 +368,7 @@ the image is constructed.
- -------------------
- 
- Creates the file and directory structure for an installable SDK. See the
--":ref:`sdk-generation-dev-environment`"
-+":ref:`overview-manual/overview-manual-concepts:sdk generation`"
- section in the Yocto Project Overview and Concepts Manual for more
- information.
- 
-@@ -378,7 +378,7 @@ information.
- -----------------------
- 
- Creates the file and directory structure for an installable extensible 
--SDK (eSDK). See the ":ref:`sdk-generation-dev-environment`"
-+SDK (eSDK). See the ":ref:`overview-manual/overview-manual-concepts:sdk generation`"
- section in the Yocto Project Overview and Concepts Manual for more
- information.
- 
-@@ -434,7 +434,7 @@ Unpacks the source code into a working directory pointed to by
- ``${``\ :term:`WORKDIR`\ ``}``. The :term:`S`
- variable also plays a role in where unpacked source files ultimately
- reside. For more information on how source files are unpacked, see the
--":ref:`source-fetching-dev-environment`"
-+":ref:`overview-manual/overview-manual-concepts:source fetching`"
- section in the Yocto Project Overview and Concepts Manual and also see
- the ``WORKDIR`` and ``S`` variable descriptions.
- 
-@@ -567,7 +567,7 @@ scratch is guaranteed.
- Starts a shell in which an interactive Python interpreter allows you to
- interact with the BitBake build environment. From within this shell, you
- can directly examine and set bits from the data store and execute
--functions as if within the BitBake environment. See the ":ref:`platdev-appdev-devpyshell`" section in
-+functions as if within the BitBake environment. See the ":ref:`dev-manual/dev-manual-common-tasks:using a development python shell`" section in
- the Yocto Project Development Tasks Manual for more information about
- using ``devpyshell``.
- 
-@@ -577,7 +577,7 @@ using ``devpyshell``.
- ---------------
- 
- Starts a shell whose environment is set up for development, debugging,
--or both. See the ":ref:`platdev-appdev-devshell`" section in the
-+or both. See the ":ref:`dev-manual/dev-manual-common-tasks:using a development shell`" section in the
- Yocto Project Development Tasks Manual for more information about using
- ``devshell``.
- 
-@@ -593,7 +593,7 @@ Lists all defined tasks for a target.
- ``do_package_index``
- --------------------
- 
--Creates or updates the index in the :ref:`package-feeds-dev-environment` area.
-+Creates or updates the index in the :ref:`overview-manual/overview-manual-concepts:package feeds` area.
- 
- .. note::
- 
-@@ -631,7 +631,7 @@ has some more information about these types of images.
+-.. _package-feeds-dev-environment:
+-
+ Package Feeds
  -------------
  
- Creates the root filesystem (file and directory structure) for an image.
--See the ":ref:`image-generation-dev-environment`"
-+See the ":ref:`overview-manual/overview-manual-concepts:image generation`"
- section in the Yocto Project Overview and Concepts Manual for more
- information on how the root filesystem is created.
+@@ -709,8 +691,6 @@ qemux86 exist. Packages for the i586 architecture are placed in
+ ``build/tmp/deploy/ipk/i586``, while packages for the qemux86
+ architecture are placed in ``build/tmp/deploy/ipk/qemux86``.
  
-diff --git a/documentation/ref-manual/ref-variables.rst b/documentation/ref-manual/ref-variables.rst
-index 56aeb583a..b24e1fa39 100644
---- a/documentation/ref-manual/ref-variables.rst
-+++ b/documentation/ref-manual/ref-variables.rst
-@@ -746,7 +746,7 @@ system and gives an overview of their function and contents.
+-.. _bitbake-dev-environment:
+-
+ BitBake Tool
+ ------------
  
-       For information on how to use ``BBMULTICONFIG`` in an environment
-       that supports building targets with multiple configurations, see the
--      ":ref:`dev-building-images-for-multiple-targets-using-multiple-configurations`"
-+      ":ref:`dev-manual/dev-manual-common-tasks:building images for multiple targets using multiple configurations`"
-       section in the Yocto Project Development Tasks Manual.
+@@ -727,8 +707,6 @@ those areas.
+    BitBake User Manual
+    for reference material on BitBake.
  
-    :term:`BBPATH`
-@@ -1299,7 +1299,7 @@ system and gives an overview of their function and contents.
-       will be the aggregate of all of them.
+-.. _source-fetching-dev-environment:
+-
+ Source Fetching
+ ~~~~~~~~~~~~~~~
  
-       For information on creating an initramfs, see the
--      ":ref:`building-an-initramfs-image`" section
-+      ":ref:`dev-manual/dev-manual-common-tasks:building an initial ram filesystem (initramfs) image`" section
-       in the Yocto Project Development Tasks Manual.
+@@ -819,8 +797,6 @@ Build Directory's hierarchy:
+    what the OpenEmbedded build system is using as a build target (e.g.
+    general architecture, a build host, an SDK, or a specific machine).
  
-    :term:`CONFIG_SITE`
-@@ -1672,9 +1672,9 @@ system and gives an overview of their function and contents.
-       For more information on the structure of the Build Directory, see
-       ":ref:`ref-manual/ref-structure:the build directory - \`\`build/\`\``" section.
-       For more detail on the contents of the ``deploy`` directory, see the
--      ":ref:`Images <images-dev-environment>`", ":ref:`Package
--      Feeds <package-feeds-dev-environment>`", and
--      ":ref:`sdk-dev-environment`" sections all in the
-+      ":ref:`overview-manual/overview-manual-concepts:images`",
-+      ":ref:`overview-manual/overview-manual-concepts:package feeds`", and
-+      ":ref:`overview-manual/overview-manual-concepts:application development sdk`" sections all in the
-       Yocto Project Overview and Concepts Manual.
+-.. _patching-dev-environment:
+-
+ Patching
+ ~~~~~~~~
  
-    :term:`DEPLOY_DIR_DEB`
-@@ -1695,8 +1695,8 @@ system and gives an overview of their function and contents.
-       ``DEPLOY_DIR_DEB`` variable to make sure the
-       :ref:`ref-tasks-package_write_deb` task
-       writes Debian packages into the appropriate folder. For more
--      information on how packaging works, see the ":ref:`Package
--      Feeds <package-feeds-dev-environment>`" section
-+      information on how packaging works, see the
-+      ":ref:`overview-manual/overview-manual-concepts:package feeds`" section
-       in the Yocto Project Overview and Concepts Manual.
+@@ -861,8 +837,6 @@ Software Development Kit (SDK) manual and the
+ ":ref:`kernel-dev/kernel-dev-common:using traditional kernel development to patch the kernel`"
+ section in the Yocto Project Linux Kernel Development Manual.
  
-    :term:`DEPLOY_DIR_IMAGE`
-@@ -1710,8 +1710,8 @@ system and gives an overview of their function and contents.
-       For more information on the structure of the Build Directory, see
-       ":ref:`ref-manual/ref-structure:the build directory - \`\`build/\`\``" section.
-       For more detail on the contents of the ``deploy`` directory, see the
--      ":ref:`Images <images-dev-environment>`" and
--      ":ref:`sdk-dev-environment`" sections both in
-+      ":ref:`overview-manual/overview-manual-concepts:images`" and
-+      ":ref:`overview-manual/overview-manual-concepts:application development sdk`" sections both in
-       the Yocto Project Overview and Concepts Manual.
+-.. _configuration-compilation-and-staging-dev-environment:
+-
+ Configuration, Compilation, and Staging
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
-    :term:`DEPLOY_DIR_IPK`
-@@ -1731,8 +1731,8 @@ system and gives an overview of their function and contents.
-       ``DEPLOY_DIR_IPK`` variable to make sure the
-       :ref:`ref-tasks-package_write_ipk` task
-       writes IPK packages into the appropriate folder. For more information
--      on how packaging works, see the ":ref:`Package
--      Feeds <package-feeds-dev-environment>`" section
-+      on how packaging works, see the
-+      ":ref:`overview-manual/overview-manual-concepts:package feeds`" section
-       in the Yocto Project Overview and Concepts Manual.
+@@ -922,8 +896,6 @@ This step in the build process consists of the following tasks:
+    variable. Packaging occurs later using files from this holding
+    directory.
  
-    :term:`DEPLOY_DIR_RPM`
-@@ -1752,8 +1752,8 @@ system and gives an overview of their function and contents.
-       ``DEPLOY_DIR_RPM`` variable to make sure the
-       :ref:`ref-tasks-package_write_rpm` task
-       writes RPM packages into the appropriate folder. For more information
--      on how packaging works, see the ":ref:`Package
--      Feeds <package-feeds-dev-environment>`" section
-+      on how packaging works, see the
-+      ":ref:`overview-manual/overview-manual-concepts:package feeds`" section
-       in the Yocto Project Overview and Concepts Manual.
+-.. _package-splitting-dev-environment:
+-
+ Package Splitting
+ ~~~~~~~~~~~~~~~~~
  
-    :term:`DEPLOY_DIR_TAR`
-@@ -1773,8 +1773,8 @@ system and gives an overview of their function and contents.
-       ``DEPLOY_DIR_TAR`` variable to make sure the
-       :ref:`ref-tasks-package_write_tar` task
-       writes TAR packages into the appropriate folder. For more information
--      on how packaging works, see the ":ref:`Package
--      Feeds <package-feeds-dev-environment>`" section
-+      on how packaging works, see the
-+      ":ref:`overview-manual/overview-manual-concepts:package feeds`" section
-       in the Yocto Project Overview and Concepts Manual.
+@@ -1004,8 +976,6 @@ that part of the build process.
+    functionality is highly distribution-specific and thus is not
+    provided out of the box.
  
-    :term:`DEPLOYDIR`
-@@ -2194,7 +2194,7 @@ system and gives an overview of their function and contents.
-       Project, see the ":ref:`ref-features-image`" section.
+-.. _image-generation-dev-environment:
+-
+ Image Generation
+ ~~~~~~~~~~~~~~~~
  
-       For an example that shows how to customize your image by using this
--      variable, see the ":ref:`usingpoky-extend-customimage-imagefeatures`"
-+      variable, see the ":ref:`dev-manual/dev-manual-common-tasks:customizing images using custom \`\`image_features\`\` and \`\`extra_image_features\`\``"
-       section in the Yocto Project Development Tasks Manual.
+@@ -1127,8 +1097,6 @@ build system has created the final image output files.
+    Pseudo. Running under Pseudo ensures that the files in the root filesystem
+    have correct ownership.
  
-    :term:`EXTRA_IMAGECMD`
-@@ -2509,9 +2509,9 @@ system and gives an overview of their function and contents.
-       build system uses files from ``files/defconfig``.
+-.. _sdk-generation-dev-environment:
+-
+ SDK Generation
+ ~~~~~~~~~~~~~~
  
-       You can find out more about the patching process in the
--      ":ref:`patching-dev-environment`" section
-+      ":ref:`overview-manual/overview-manual-concepts:patching`" section
-       in the Yocto Project Overview and Concepts Manual and the
--      ":ref:`new-recipe-patching-code`" section in
-+      ":ref:`dev-manual/dev-manual-common-tasks:patching code`" section in
-       the Yocto Project Development Tasks Manual. See the
-       :ref:`ref-tasks-patch` task as well.
+@@ -1303,8 +1271,6 @@ variable is the function that determines whether a given dependency
+ needs to be followed, and whether for any given relationship the
+ function needs to be passed. The function returns a True or False value.
  
-@@ -3000,7 +3000,7 @@ system and gives an overview of their function and contents.
-       the ":ref:`ref-features-image`" section.
+-.. _images-dev-environment:
+-
+ Images
+ ------
  
-       For an example that shows how to customize your image by using this
--      variable, see the ":ref:`usingpoky-extend-customimage-imagefeatures`"
-+      variable, see the ":ref:`dev-manual/dev-manual-common-tasks:customizing images using custom \`\`image_features\`\` and \`\`extra_image_features\`\``"
-       section in the Yocto Project Development Tasks Manual.
+@@ -1363,8 +1329,6 @@ current configuration.
+    These links might be useful for external scripts that need to obtain
+    the latest version of each file.
  
-    :term:`IMAGE_FSTYPES`
-@@ -3058,7 +3058,7 @@ system and gives an overview of their function and contents.
-             allows the initial RAM filesystem (initramfs) recipe to use a
-             fixed set of packages and not be affected by ``IMAGE_INSTALL``.
-             For information on creating an initramfs, see the
--            ":ref:`building-an-initramfs-image`"
-+            ":ref:`dev-manual/dev-manual-common-tasks:building an initial ram filesystem (initramfs) image`"
-             section in the Yocto Project Development Tasks Manual.
+-.. _sdk-dev-environment:
+-
+ Application Development SDK
+ ---------------------------
  
-          -  Using ``IMAGE_INSTALL`` with the
-@@ -3126,7 +3126,7 @@ system and gives an overview of their function and contents.
-       The location is
-       derived using the :term:`DEPLOY_DIR_IMAGE`
-       and :term:`IMAGE_NAME` variables. You can find
--      information on how the image is created in the ":ref:`image-generation-dev-environment`"
-+      information on how the image is created in the ":ref:`overview-manual/overview-manual-concepts:image generation`"
-       section in the Yocto Project Overview and Concepts Manual.
+@@ -1677,8 +1641,6 @@ them if they are deemed to be valid.
+ The rest of this section goes into detail about the overall incremental
+ build architecture, the checksums (signatures), and shared state.
  
-    :term:`IMAGE_NAME`
-@@ -3554,7 +3554,7 @@ system and gives an overview of their function and contents.
-       :term:`INITRAMFS_IMAGE_BUNDLE`
-       variable, which allows the generated image to be bundled inside the
-       kernel image. Additionally, for information on creating an initramfs
--      image, see the ":ref:`building-an-initramfs-image`" section
-+      image, see the ":ref:`dev-manual/dev-manual-common-tasks:building an initial ram filesystem (initramfs) image`" section
-       in the Yocto Project Development Tasks Manual.
+-.. _concepts-overall-architecture:
+-
+ Overall Architecture
+ --------------------
  
-    :term:`INITRAMFS_IMAGE_BUNDLE`
-@@ -3602,7 +3602,7 @@ system and gives an overview of their function and contents.
-       See the
-       :yocto_git:`local.conf.sample.extended </cgit/cgit.cgi/poky/tree/meta-poky/conf/local.conf.sample.extended>`
-       file for additional information. Also, for information on creating an
--      initramfs, see the ":ref:`building-an-initramfs-image`" section
-+      initramfs, see the ":ref:`dev-manual/dev-manual-common-tasks:building an initial ram filesystem (initramfs) image`" section
-       in the Yocto Project Development Tasks Manual.
+@@ -1697,8 +1659,6 @@ specific tasks. This methodology does not scale well and does not allow
+ users to easily add new tasks in layers or as external recipes without
+ touching the packaged-staging core.
  
-    :term:`INITRAMFS_LINK_NAME`
-@@ -4240,7 +4240,7 @@ system and gives an overview of their function and contents.
-       This variable must be defined for all recipes (unless
-       :term:`LICENSE` is set to "CLOSED").
+-.. _overview-checksums:
+-
+ Checksums (Signatures)
+ ----------------------
  
--      For more information, see the ":ref:`usingpoky-configuring-lic_files_chksum`"
-+      For more information, see the ":ref:`dev-manual/dev-manual-common-tasks:tracking license changes`"
-       section in the Yocto Project Development Tasks Manual.
+diff --git a/documentation/overview-manual/overview-manual-development-environment.rst b/documentation/overview-manual/overview-manual-development-environment.rst
+index 4bedd6df6..983e1919e 100644
+--- a/documentation/overview-manual/overview-manual-development-environment.rst
++++ b/documentation/overview-manual/overview-manual-development-environment.rst
+@@ -45,8 +45,6 @@ also find helpful information on how to participate in the Linux
+ Community
+ `here <https://www.kernel.org/doc/html/latest/process/index.html>`__.
  
-    :term:`LICENSE`
-@@ -4890,7 +4890,7 @@ system and gives an overview of their function and contents.
-       Controls how the OpenEmbedded build system spawns interactive
-       terminals on the host development system (e.g. using the BitBake
-       command with the ``-c devshell`` command-line option). For more
--      information, see the ":ref:`platdev-appdev-devshell`" section in
-+      information, see the ":ref:`dev-manual/dev-manual-common-tasks:using a development shell`" section in
-       the Yocto Project Development Tasks Manual.
+-.. _gs-the-development-host:
+-
+ The Development Host
+ ====================
  
-       You can use the following values for the ``OE_TERMINAL`` variable:
-@@ -4959,7 +4959,7 @@ system and gives an overview of their function and contents.
+@@ -134,8 +132,6 @@ methods exist for you to do work in the Yocto Project environment:
+    Toaster and on how to use Toaster in general, see the
+    :doc:`../toaster-manual/toaster-manual`.
  
-          An easy way to see what overrides apply is to search for ``OVERRIDES``
-          in the output of the ``bitbake -e`` command. See the
--         ":ref:`dev-debugging-viewing-variable-values`" section in the Yocto
-+         ":ref:`dev-manual/dev-manual-common-tasks:viewing variable values`" section in the Yocto
-          Project Development Tasks Manual for more information.
+-.. _yocto-project-repositories:
+-
+ Yocto Project Source Repositories
+ =================================
  
-    :term:`P`
-@@ -5079,7 +5079,7 @@ system and gives an overview of their function and contents.
-          separate ``*-src`` pkg. This is the default behavior.
+@@ -214,8 +210,6 @@ development:
+    ":ref:`dev-manual/dev-manual-start:using the downloads page`"
+    section in the Yocto Project Development Tasks Manual.
  
-       You can find out more about debugging using GDB by reading the
--      ":ref:`platdev-gdb-remotedebug`" section
-+      ":ref:`dev-manual/dev-manual-common-tasks:debugging with the gnu project debugger (gdb) remotely`" section
-       in the Yocto Project Development Tasks Manual.
+-.. _gs-git-workflows-and-the-yocto-project:
+-
+ Git Workflows and the Yocto Project
+ ===================================
  
-    :term:`PACKAGE_EXCLUDE_COMPLEMENTARY`
-@@ -5243,7 +5243,7 @@ system and gives an overview of their function and contents.
-       the :ref:`core-image-minimal-initramfs <ref-manual/ref-images:images>`
-       image. When working with an initial RAM filesystem (initramfs) image,
-       use the ``PACKAGE_INSTALL`` variable. For information on creating an
--      initramfs, see the ":ref:`building-an-initramfs-image`" section
-+      initramfs, see the ":ref:`dev-manual/dev-manual-common-tasks:building an initial ram filesystem (initramfs) image`" section
-       in the Yocto Project Development Tasks Manual.
+diff --git a/documentation/overview-manual/overview-manual-intro.rst b/documentation/overview-manual/overview-manual-intro.rst
+index 8885eb89f..f69824da9 100644
+--- a/documentation/overview-manual/overview-manual-intro.rst
++++ b/documentation/overview-manual/overview-manual-intro.rst
+@@ -4,8 +4,6 @@
+ The Yocto Project Overview and Concepts Manual
+ **********************************************
  
-    :term:`PACKAGE_INSTALL_ATTEMPTONLY`
-@@ -5691,7 +5691,7 @@ system and gives an overview of their function and contents.
+-.. _overview-manual-welcome:
+-
+ Welcome
+ =======
  
-          The OpenEmbedded build system does not need the aid of ``PR``
-          to know when to rebuild a recipe. The build system uses the task
--         :ref:`input checksums <overview-checksums>` along with the
-+         :ref:`input checksums <overview-manual/overview-manual-concepts:checksums (signatures)>` along with the
-          :ref:`stamp <structure-build-tmp-stamps>` and
-          :ref:`overview-manual/overview-manual-concepts:shared state cache`
-          mechanisms.
-@@ -5738,7 +5738,7 @@ system and gives an overview of their function and contents.
-          PREFERRED_PROVIDER_virtual/libgl ?= "mesa"
+@@ -57,8 +55,6 @@ This manual does not give you the following:
+    Manager Git is better covered with Internet searches and official Git
+    Documentation than through the Yocto Project documentation.
  
-       For more
--      information, see the ":ref:`metadata-virtual-providers`"
-+      information, see the ":ref:`dev-manual/dev-manual-common-tasks:using virtual providers`"
-       section in the Yocto Project Development Tasks Manual.
+-.. _overview-manual-other-information:
+-
+ Other Information
+ =================
  
-       .. note::
-@@ -7023,7 +7023,7 @@ system and gives an overview of their function and contents.
+diff --git a/documentation/overview-manual/overview-manual-yp-intro.rst b/documentation/overview-manual/overview-manual-yp-intro.rst
+index 9073582ac..83ed18a37 100644
+--- a/documentation/overview-manual/overview-manual-yp-intro.rst
++++ b/documentation/overview-manual/overview-manual-yp-intro.rst
+@@ -35,8 +35,6 @@ by Drew Moseley and in this short introductory
+ The remainder of this section overviews advantages and challenges tied
+ to the Yocto Project.
  
-       -  ``file://`` - Fetches files, which are usually files shipped
-          with the :term:`Metadata`, from the local machine (e.g.
--         :ref:`patch <patching-dev-environment>` files).
-+         :ref:`patch <overview-manual/overview-manual-concepts:patching>` files).
-          The path is relative to the :term:`FILESPATH`
-          variable. Thus, the build system searches, in order, from the
-          following directories, which are assumed to be a subdirectories of
-@@ -7200,7 +7200,7 @@ system and gives an overview of their function and contents.
-          For information on limitations when inheriting the latest revision
-          of software using ``SRCREV``, see the :term:`AUTOREV` variable
-          description and the
--         ":ref:`automatically-incrementing-a-binary-package-revision-number`"
-+         ":ref:`dev-manual/dev-manual-common-tasks:automatically incrementing a package version number`"
-          section, which is in the Yocto Project Development Tasks Manual.
+-.. _gs-features:
+-
+ Features
+ --------
  
-    :term:`SSTATE_DIR`
-@@ -7316,7 +7316,7 @@ system and gives an overview of their function and contents.
-       see the :ref:`ref-tasks-populate_sysroot`
-       task, the ":ref:`sdk-manual/sdk-extensible:sharing files between recipes`"
-       section in the Yocto Project Development Tasks Manual, the
--      ":ref:`configuration-compilation-and-staging-dev-environment`"
-+      ":ref:`overview-manual/overview-manual-concepts:configuration, compilation, and staging`"
-       section in the Yocto Project Overview and Concepts Manual, and the
-       :term:`SYSROOT_DIRS` variable.
+@@ -136,8 +134,6 @@ Project:
+    for review by people who need to track the use of open source
+    licenses (e.g. legal teams).
  
-@@ -8042,7 +8042,7 @@ system and gives an overview of their function and contents.
-       You can provide the following arguments with ``TEST_TARGET``:
+-.. _gs-challenges:
+-
+ Challenges
+ ----------
  
-       -  *"qemu":* Boots a QEMU image and runs the tests. See the
--         ":ref:`qemu-image-enabling-tests`" section
-+         ":ref:`dev-manual/dev-manual-common-tasks:enabling runtime tests on qemu`" section
-          in the Yocto Project Development Tasks Manual for more
-          information.
+@@ -296,8 +292,6 @@ components and tools are downloaded separately.
+ This section provides brief overviews of the components and tools
+ associated with the Yocto Project.
  
-@@ -8058,7 +8058,7 @@ system and gives an overview of their function and contents.
-             ``meta/lib/oeqa/controllers/simpleremote.py``.
+-.. _gs-development-tools:
+-
+ Development Tools
+ -----------------
  
-       For information on running tests on hardware, see the
--      ":ref:`hardware-image-enabling-tests`"
-+      ":ref:`dev-manual/dev-manual-common-tasks:enabling runtime tests on hardware`"
-       section in the Yocto Project Development Tasks Manual.
+@@ -353,8 +347,6 @@ applications using the Yocto Project:
+    view information about builds. For information on Toaster, see the
+    :doc:`../toaster-manual/toaster-manual`.
  
-    :term:`TEST_TARGET_IP`
-@@ -8554,13 +8554,13 @@ system and gives an overview of their function and contents.
-       specifically set. Typically, you would set ``USE_DEVFS`` to "0" for a
-       statically populated ``/dev`` directory.
+-.. _gs-production-tools:
+-
+ Production Tools
+ ----------------
  
--      See the ":ref:`selecting-dev-manager`" section in
-+      See the ":ref:`dev-manual/dev-manual-common-tasks:selecting a device manager`" section in
-       the Yocto Project Development Tasks Manual for information on how to
-       use this variable.
+@@ -450,8 +442,6 @@ activities using the Yocto Project:
+    You can read more about Pseudo in the "`Fakeroot and
+    Pseudo <#fakeroot-and-pseudo>`__" section.
  
-    :term:`USE_VT`
-       When using
--      :ref:`SysVinit <new-recipe-enabling-system-services>`,
-+      :ref:`SysVinit <dev-manual/dev-manual-common-tasks:enabling system services>`,
-       determines whether or not to run a
-       `getty <http://en.wikipedia.org/wiki/Getty_%28Unix%29>`__ on any
-       virtual terminals in order to enable logging in through those
-diff --git a/documentation/ref-manual/resources.rst b/documentation/ref-manual/resources.rst
-index 2ef182fb1..c172aab25 100644
---- a/documentation/ref-manual/resources.rst
-+++ b/documentation/ref-manual/resources.rst
-@@ -23,7 +23,7 @@ The Yocto Project gladly accepts contributions. You can submit changes
- to the project either by creating and sending pull requests, or by
- submitting patches through email. For information on how to do both as
- well as information on how to identify the maintainer for each area of
--code, see the ":ref:`how-to-submit-a-change`" section in the
-+code, see the ":ref:`dev-manual/dev-manual-common-tasks:submitting a change to the yocto project`" section in the
- Yocto Project Development Tasks Manual.
+-.. _gs-openembedded-build-system:
+-
+ Open-Embedded Build System Components
+ -------------------------------------
  
- .. _resources-bugtracker:
+@@ -496,8 +486,6 @@ The following list consists of components associated with the
+    components such as BitBake, OE-Core, script "glue", and documentation
+    for its build system.
+ 
+-.. _gs-reference-distribution-poky:
+-
+ Reference Distribution (Poky)
+ -----------------------------
+ 
+@@ -520,8 +508,6 @@ To use the Yocto Project tools and components, you can download
+ You can read more about Poky in the "`Reference Embedded Distribution
+ (Poky) <#reference-embedded-distribution>`__" section.
+ 
+-.. _gs-packages-for-finished-targets:
+-
+ Packages for Finished Targets
+ -----------------------------
+ 
+@@ -560,8 +546,6 @@ targets:
+    You can find the opkg source in the Yocto Project
+    :yocto_git:`Source Repositories <>`.
+ 
+-.. _gs-archived-components:
+-
+ Archived Components
+ -------------------
+ 
+@@ -588,8 +572,6 @@ Linux.
+    using the Yocto Project on a system not native to Linux is with
+    `CROPS <#gs-crops-overview>`__.
+ 
+-.. _gs-development-methods:
+-
+ Development Methods
+ ===================
+ 
+@@ -671,8 +653,6 @@ Project.
+    For information about and how to use Toaster, see the 
+    :doc:`../toaster-manual/toaster-manual`.
+ 
+-.. _reference-embedded-distribution:
+-
+ Reference Embedded Distribution (Poky)
+ ======================================
+ 
+@@ -776,8 +756,6 @@ operators, see the
+ ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:appending and prepending (override style syntax)`"
+ section in the BitBake User's Manual.
+ 
+-.. _openembedded-build-system-workflow:
+-
+ The OpenEmbedded Build System Workflow
+ ======================================
+ 
 -- 
 2.29.2
 
