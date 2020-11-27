@@ -1,81 +1,116 @@
-Received: from mail-oi1-f195.google.com (mail-oi1-f195.google.com [209.85.167.195])
- by mx.groups.io with SMTP id smtpd.web11.20954.1606493378766318378
+Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
+ by mx.groups.io with SMTP id smtpd.web08.21261.1606495359618462662
  for <docs@lists.yoctoproject.org>;
- Fri, 27 Nov 2020 08:09:38 -0800
+ Fri, 27 Nov 2020 08:42:39 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=BzL3L5hw;
- spf=pass (domain: konsulko.com, ip: 209.85.167.195, mailfrom: paul.barker@konsulko.com)
-Received: by mail-oi1-f195.google.com with SMTP id v202so6335862oia.9
-        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2020 08:09:38 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=xeYJlL9X;
+ spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f196.google.com with SMTP id t33so5054546ybd.0
+        for <docs@lists.yoctoproject.org>; Fri, 27 Nov 2020 08:42:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
+        d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=F8/tPq7brskzynYb53BG6ZUlTabO0Pno7AgcGEEzp3M=;
-        b=BzL3L5hw6sDmVSYowPO8mMop8noL3Ssrpj0xLOjYnOmtJy4XB4zlEYbxQfORveuncO
-         VgFVoO106wA7JAChth6A0YKkomAW64qZA3WEuLw1w4l3E+XirqnAiGlIPlA4l3q7CyJH
-         iIfwP09KzrQXERvRrVZzZr86f8USrQRP2FAs0=
+        bh=AkhkHh7cCTMW3qpIHvUcT6GpYVZlX8XJO/Paknu+Y7U=;
+        b=xeYJlL9XUeYDX28t3rFIjzijIF01lY0SLhICb9MZeDYLGHU3cNia2567vYxfgb6oTO
+         WVs7mmOM7dD1e6qqB0JNJIkc9l7Z82bD6viGXoasF/6L4LDBs2pDVJLpXqBl6Vb9Cxyl
+         nNyX/0yrx4tSrtj6JXQj9Bm4o0rQrTfyR5L2kvQRORS2njcGyJ6TcQn07z1ftlfgEkki
+         z1aYZ9XIUocp/SPcNHBrHYeR9RWq1lZB1EEE7bbvH5o0FJm6C2qaEP3JAv6dMKHI5P/1
+         PStxDuxL7b/9mYGHQZACt7eRRBb0r3GU0+nrWACff3nphDkj7NFQotJGzKiQ1U8jbcBF
+         jFIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=F8/tPq7brskzynYb53BG6ZUlTabO0Pno7AgcGEEzp3M=;
-        b=cMAWwMV6KEHiyKOaEQIOH3nJ3YoQLjB6UfIrKOwZt237BGhGXQi2nxbVqBRMz+HBD2
-         FCAt2Zy8vKvRRykCHPTa2yJblP5hZg64PXS5PmyfYhNV+7S+rD8otOfXih6S6FF1jQ9U
-         kyLFxwR9+juBtKWehwmQAgzqa002S856FtlOZnX+bu8O7ReLksyCDnnpg3e+c1zOFDin
-         moX/hhIhHqAm+C0Vte6DsLB0UsWx0AaICYIoP9xeNZnJ6bocHjcG5iucqQC56bdLOVFA
-         3ZhfvFrrRn8ZaEdMLcd/jay4+/COzhaYUkK66+HYxZ6HJkoIBK+fYQO7cNg0XlhgVPrD
-         vI2A==
-X-Gm-Message-State: AOAM532hVqyYhNWsMvUoOAQIf8YnazEFbHZFxMe6fJtXHgnH7SvTRA2r
-	c4yijxTwLOLYZYX+/TePg6/xnX8fkM9lx8tDnHPF+w==
-X-Google-Smtp-Source: ABdhPJwb1gEj++ibTQkjsujdM6iH8oUkzZrOlcAXR9CZwW0UAlhH9Do9zTzAknej5Ycot0jleTTdCJRJTYNEoQQfUr0=
-X-Received: by 2002:aca:ebce:: with SMTP id j197mr5870361oih.6.1606493378157;
- Fri, 27 Nov 2020 08:09:38 -0800 (PST)
+        bh=AkhkHh7cCTMW3qpIHvUcT6GpYVZlX8XJO/Paknu+Y7U=;
+        b=tRaDiImU6wNtRW+ggxuGaown3Fo0cWNJD2MUrZBzzedOC+XlWJYTJ2UQUu+LnhBT+7
+         DewMQygdauzWkKijldC4TkvZbNuNNt+DDpdAysZRUVSNHK0CO+mVZGndb3nwFvOuLNPy
+         2aFSu4EqqfcwVlaWpmuvgVNKPBZIJc9kiMVNo8battJq2T7EgTAfBGgjYtcByem66cTG
+         o45apJaaIubvZakaT5/w+Ys1lkli1VqWU2K88/jaY4G3l51XhxmVhQ+QNunhzb0/2a8Y
+         eRgOZyCJtIYzgGOY1ulmfGgU1ha2laR2bcDkkK8uP9J57vNSOg0741RIdpuQZ4qsRERb
+         ZFTA==
+X-Gm-Message-State: AOAM530yMp6bETIspII+3qmN+rJcNYodLk5YsbHoF3hEb13AkZyx/mQy
+	ZAO8c1TgqkxXLnTC+39L1wi6Pd+vk2Przuvksw8iMA==
+X-Google-Smtp-Source: ABdhPJy7F+KmcS7IZnKTGaGFMXqBxSAHX2V0omqdDXzkGVy5MCyXgaRzGkSkvLKYnb87qbVty17rdSLv4cJXFajJ54o=
+X-Received: by 2002:a25:1e43:: with SMTP id e64mr13459212ybe.273.1606495358691;
+ Fri, 27 Nov 2020 08:42:38 -0800 (PST)
 MIME-Version: 1.0
 References: <20201127151910.6397-1-pbarker@konsulko.com> <20201127151910.6397-2-pbarker@konsulko.com>
- <CAP71WjwPCqZEFZNb5T1G5hXH=9yp5P0n=gC1U6A4tofYq2P1Aw@mail.gmail.com>
-In-Reply-To: <CAP71WjwPCqZEFZNb5T1G5hXH=9yp5P0n=gC1U6A4tofYq2P1Aw@mail.gmail.com>
-From: "Paul Barker" <pbarker@konsulko.com>
-Date: Fri, 27 Nov 2020 16:09:27 +0000
-Message-ID: <CAM9ZRVsA01Q5AKGYsvAZAX3SKwuqNqYrrXqPmfD-ttEO_cJvkQ@mail.gmail.com>
+ <CAP71Wjz_oOjmQdJobA4bb41WqEMwvoGfVcwB4ACbaBDVxDmPNA@mail.gmail.com> <CAM9ZRVt1Y4Ew83hwRBZ2dgm+TeDXBOm0wMd2Rm5gq99QCnWUOg@mail.gmail.com>
+In-Reply-To: <CAM9ZRVt1Y4Ew83hwRBZ2dgm+TeDXBOm0wMd2Rm5gq99QCnWUOg@mail.gmail.com>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Fri, 27 Nov 2020 17:42:27 +0100
+Message-ID: <CAP71WjzN5xBcFx3dWOFxhgNhYyUocJodB-VBzLsZDED90XMveQ@mail.gmail.com>
 Subject: Re: [docs] [PATCH 1/3] documentation: Simplify yocto_wiki links
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+To: Paul Barker <pbarker@konsulko.com>
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 27 Nov 2020 at 15:43, Nicolas Dechesne
-<nicolas.dechesne@linaro.org> wrote:
+On Fri, Nov 27, 2020 at 5:07 PM Paul Barker <pbarker@konsulko.com> wrote:
 >
-> On Fri, Nov 27, 2020 at 4:19 PM Paul Barker <pbarker@konsulko.com> wrote:
+> On Fri, 27 Nov 2020 at 15:32, Nicolas Dechesne
+> <nicolas.dechesne@linaro.org> wrote:
 > >
-> > The `yocto_wiki` external link directive is modified to include the
-> > `/wiki` element of the URL so that we can simplify the links in the
-> > text.
+> > hi Paul,
 > >
-> > Note that there are still a couple of places where this directive
-> > cannot be used, such as in the table of contents in index.rst.
+> > On Fri, Nov 27, 2020 at 4:19 PM Paul Barker <pbarker@konsulko.com> wrote:
+> > >
+> > > The `yocto_wiki` external link directive is modified to include the
+> > > `/wiki` element of the URL so that we can simplify the links in the
+> > > text.
 > >
-> > Signed-off-by: Paul Barker <pbarker@konsulko.com>
-> > ---
-> >  .../brief-yoctoprojectqs/brief-yoctoprojectqs.rst  |  2 +-
-> >  documentation/bsp-guide/bsp.rst                    |  2 +-
-> >  documentation/conf.py                              |  2 +-
-> >  .../dev-manual/dev-manual-common-tasks.rst         | 14 +++++++-------
-> >  documentation/dev-manual/dev-manual-start.rst      |  2 +-
+> > thanks for sending these patches!
+> >
+> > >
+> > > Note that there are still a couple of places where this directive
+> > > cannot be used, such as in the table of contents in index.rst.
+> > >
+> > > Signed-off-by: Paul Barker <pbarker@konsulko.com>
+> > > ---
+> > >  .../brief-yoctoprojectqs/brief-yoctoprojectqs.rst  |  2 +-
+> > >  documentation/bsp-guide/bsp.rst                    |  2 +-
+> > >  documentation/conf.py                              |  2 +-
+> > >  .../dev-manual/dev-manual-common-tasks.rst         | 14 +++++++-------
+> > >  documentation/dev-manual/dev-manual-start.rst      |  2 +-
+> > >  documentation/kernel-dev/kernel-dev-common.rst     |  4 ++--
+> > >  documentation/ref-manual/faq.rst                   |  4 ++--
+> > >  documentation/ref-manual/migration-3.2.rst         |  2 +-
+> > >  documentation/ref-manual/ref-release-process.rst   |  4 ++--
+> > >  .../ref-manual/ref-system-requirements.rst         |  2 +-
+> > >  documentation/ref-manual/ref-variables.rst         |  4 ++--
+> > >  documentation/ref-manual/resources.rst             |  9 +++++----
+> > >  documentation/test-manual/test-manual-intro.rst    |  2 +-
+> > >  .../test-manual/test-manual-test-process.rst       |  2 +-
+> > >  .../test-manual-understand-autobuilder.rst         |  2 +-
+> > >  15 files changed, 29 insertions(+), 28 deletions(-)
+> > >
+> > > diff --git a/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst b/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
+> > > index f6d863f5b..8772812eb 100644
+> > > --- a/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
+> > > +++ b/documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
+> > > @@ -165,7 +165,7 @@ an entire Linux distribution, including the toolchain, from source.
+> > >        infrastructure resources and get that information. A good starting
+> > >        point could also be to check your web browser settings. Finally,
+> > >        you can find more information on the
+> > > -      ":yocto_wiki:`Working Behind a Network Proxy </wiki/Working_Behind_a_Network_Proxy>`"
+> > > +      ":yocto_wiki:`Working Behind a Network Proxy </Working_Behind_a_Network_Proxy>`"
+> >
+> > Is it possible to get rid of the 'leading' /, so that the links become:
+> > :yocto_wiki:`My Awesome Page <My_Awesome_Page>`
+> >
+> > I remember looking into that initially, but I forgot what's possible..
 >
-> You missed one instance in dev-manual-start.rst:
+> It's probably possible but I think it'd be confusing unless we make
+> the change for every directive in extlinks in conf.py. Changing all
+> the directives would be a huge amount of churn for what I think is
+> limited benefit.
+
+Fair enough. Especially because I think it rings a bell.. and I
+believe I left them for a reason... but I don't remember now.. the
+extlinks role is a bit fragile to be honest.. if I had figured out the
+poky.yaml before extlinks, I think i would not have used extlinks..
+
 >
->       For a "map" of Yocto Project releases to version numbers, see
-> the
->       :yocto_wiki:`Releases </wiki/Releases>` wiki page.
->
-> I found it with make linkcheck
-
-There's always one that gets away!
-
-Also, TIL about `make linkcheck`. I'll add that to the readme as a
-recommendation before sending patches if you've added/modified links.
-
--- 
-Paul Barker
-Konsulko Group
+> --
+> Paul Barker
+> Konsulko Group
