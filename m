@@ -1,84 +1,128 @@
-Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
- by mx.groups.io with SMTP id smtpd.web11.6786.1606808565791035988
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+ by mx.groups.io with SMTP id smtpd.web09.167.1606847521516851888
  for <docs@lists.yoctoproject.org>;
- Mon, 30 Nov 2020 23:42:46 -0800
+ Tue, 01 Dec 2020 10:32:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=ybeMlX2R;
- spf=pass (domain: linaro.org, ip: 209.85.219.176, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f176.google.com with SMTP id t33so994831ybd.0
-        for <docs@lists.yoctoproject.org>; Mon, 30 Nov 2020 23:42:45 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=KFSIWQ6R;
+ spf=pass (domain: gmail.com, ip: 209.85.216.53, mailfrom: akuster808@gmail.com)
+Received: by mail-pj1-f53.google.com with SMTP id r20so1750968pjp.1;
+        Tue, 01 Dec 2020 10:32:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=6uy28Jc55roU6l6lwFolBXJFWGydmnxmpHhr/VQl748=;
-        b=ybeMlX2R+h4Xv3ASRJ8zCjEUPPb96OlqE7HvPVolwjPMowPigUn5v2rOGimYLqzerW
-         pt8hTh8L0fVyMRj5b/rbQmGpMclgifyVGnU0FLBPa/MmP8fH7j9Mb5iEzfawNJd9Vxyc
-         VBporo/ewn8Z1aQJ6KoYHGvu6py560isKKo7PIP/NW5Sj2G44+0+POTANRTyhSGgyROR
-         YUiWJIWEGMhDPsi/y10/cbL4RJwmCawlaCFjGYmw2E+4rh7xNOv9I4MRSHSIF8Dzbcf4
-         JNZCn9kNMMzzMBc3fFBJIHI5tuOjqWhSfjt8AoQDLQgnyVLz4qPsRNfR5E/zoM+IIsHl
-         vwiA==
+        d=gmail.com; s=20161025;
+        h=subject:to:references:from:autocrypt:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=8XrEj/onPaQtOr8v5xENZIrP4qQOt16+qznummH/1Vg=;
+        b=KFSIWQ6R4OWRPgbDBdqEpl1dn4UCcbWgr9BTSXSrVYBBTFYB9CpGF11BknKbPqlgrv
+         LAVdcEQc/7KLNwB70sXe8+/SXGNjPF2AI0lDk0a6gODWygTGB+pSXicnMI0VcPn0v3sB
+         inxOwTLRZXMsCBq4896Cu19iS7+tJhuxSe6vWLWje+qwZaMZvO1RD3BXvT9ecQ4krVqJ
+         IIFSx3XGrae6dNPoDDvRqOWZUzxG/g8USF6VVpv9Vv9IhM3r4RZSkE28lfwdVe1oieAD
+         sJ8CvmioDRinlXfAbvB0F561wiimqI8So8g1vyPgYmCulEhuulcXB+EUOEby0gFAv/VM
+         C2Qg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=6uy28Jc55roU6l6lwFolBXJFWGydmnxmpHhr/VQl748=;
-        b=IylKAofKcZntnhYi5zjDRYWuwYNSgE3AciLC8XjdqrZ+D+vnQ3qjGm2r7c3fnan0PZ
-         psbb2yztwgs6v29ucpGz9RTGPzOgi5OpVhdPDM491fzpm7iFOgAKxGLbVUmOtsY2sMhp
-         rrfvi1luAW4KwVi/Ps6igxMZjEPdk4WJIULKX2yAq3/0Xz8NOsid7mvE/pvgRdHW2lEF
-         ryUddmJ9o1Fa0lKETHFiw2OR0/5frdpeCdwRtHSuSlb/IHD0TkBkT3JXhLWg8LjpSGjj
-         aTH52CXeUWmhrdJVoU37FuHCFXMOysJL0a5GoYUORkgoG9qbLtNfFvLakszCrTXR3LGd
-         RegA==
-X-Gm-Message-State: AOAM530vkEAQR+usCght9L8s70THuOgyx7rPXnQnu1mQWlTB7MIpDO4M
-	oeIG9KmFYpMQcuGbT0IyStrYdwZRX5srbMuti7y0Rw==
-X-Google-Smtp-Source: ABdhPJzCOOVXsDRkIHYC3qPMdY6Wtz3OxGWhYi8MUOjgS+2gTvb2kb+rQnRNaKnxPxGC6nuu7KIvk/WbwY9Ho7WK+Kc=
-X-Received: by 2002:a25:287:: with SMTP id 129mr2078322ybc.454.1606808564818;
- Mon, 30 Nov 2020 23:42:44 -0800 (PST)
+        h=x-gm-message-state:subject:to:references:from:autocrypt:message-id
+         :date:user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=8XrEj/onPaQtOr8v5xENZIrP4qQOt16+qznummH/1Vg=;
+        b=CaFxQW0YWMMCoBgZ4+cB3Y7X//GeKriGl3S+puAHVpSqcd0gtNPl9oIZUaXt8NWILz
+         TJF93CkkzkpDOXQza9HOuQ0xxj5c1lgr6M46u1cmE9OYAkwFCA2PPOGsYj9GC/LOr5Mv
+         WK/lboNZIp0M8xLp2nMdNBISgPQFRo5TR5JzI7MM/EpYqznLIWw2ZsyV86yHt+o1eGtp
+         xJYv4xh4ChnwrmyJaY4QRMH/2N5YTbVBn73cW55GRMVqHs0Mpgom4xGy3w/hyGn/9aeR
+         zj1VyhrzuvVjdEz/3XHcYi9v8QvCllQP2wjVWyK4mbFBehZAfyCgOtDLOyjP0Ly2VHdK
+         EFSQ==
+X-Gm-Message-State: AOAM531SJh9ksTcTm/IJ7jB/dsdyHx/K3YOG3dgeGSCVMQj1VLJZiuTZ
+	r7URutOm++YMxugcOkihqifYWzz2y4GalQ==
+X-Google-Smtp-Source: ABdhPJxPlvtpEuvMeexuKZTh6V6tZS56D0iBzioa6HMZvrTM3bxc7bHLpOHQq+UMAaT79A5tVc11Rg==
+X-Received: by 2002:a17:90b:4a10:: with SMTP id kk16mr4096433pjb.30.1606847520831;
+        Tue, 01 Dec 2020 10:32:00 -0800 (PST)
+Return-Path: <akuster808@gmail.com>
+Received: from ?IPv6:2601:202:4180:a5c0:ac2f:58cb:7e3f:e71a? ([2601:202:4180:a5c0:ac2f:58cb:7e3f:e71a])
+        by smtp.gmail.com with ESMTPSA id l190sm429691pfl.205.2020.12.01.10.31.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Dec 2020 10:32:00 -0800 (PST)
+Subject: Re: [docs] Yocto Project Technical Documentation Request For Quote
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+ yocto@lists.yoctoproject.org,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+References: <CAP71WjwQ=X6OEifmdC-9M_UN=1HTG=ua1_TdGJWCNGY=FtTU2Q@mail.gmail.com>
+From: "akuster" <akuster808@gmail.com>
+Autocrypt: addr=akuster808@gmail.com; prefer-encrypt=mutual; keydata=
+ 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
+ 8CS2NxU=
+Message-ID: <5a3d1442-d910-7cd1-d2b8-eb62df872a95@gmail.com>
+Date: Tue, 1 Dec 2020 10:31:57 -0800
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Tue, 1 Dec 2020 08:42:34 +0100
-Message-ID: <CAP71WjwQ=X6OEifmdC-9M_UN=1HTG=ua1_TdGJWCNGY=FtTU2Q@mail.gmail.com>
-Subject: Yocto Project Technical Documentation Request For Quote
-To: yocto@lists.yoctoproject.org, 
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000ba806305b5624526"
+In-Reply-To: <CAP71WjwQ=X6OEifmdC-9M_UN=1HTG=ua1_TdGJWCNGY=FtTU2Q@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 
---000000000000ba806305b5624526
-Content-Type: text/plain; charset="UTF-8"
 
-hi there,
 
-The Yocto Project is looking to hire a technical writer to develop and
-maintain the many documents the project supplies the greater community,
-including the official Yocto Project documentation website [1].
+On 11/30/20 11:42 PM, Nicolas Dechesne wrote:
+> hi there,
+>
+> The Yocto Project is looking to hire a technical writer to develop and
+> maintain the many documents the project supplies the greater
+> community, including the official Yocto Project documentation website [1].
+>
+> We expect to build a long term relationship with this technical
+> documentation person, and estimate that the workload for this role
+> should be no more than 50%, spread evenly throughout the year.
 
-We expect to build a long term relationship with this technical
-documentation person, and estimate that the workload for this role should
-be no more than 50%, spread evenly throughout the year.
+Should this be posted on the YP Jobs page?
+-armin
+>
+> For more information, please check [2].
+>
+> cheers
+> nico
+>
+> [1] https://docs.yoctoproject.org/
+> [2] https://www.yoctoproject.org/yocto-project-technical-documentation-request-for-quote/
+>
+> 
+>
 
-For more information, please check [2].
-
-cheers
-nico
-
-[1] https://docs.yoctoproject.org/
-[2]
-https://www.yoctoproject.org/yocto-project-technical-documentation-request-for-quote/
-
---000000000000ba806305b5624526
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>hi there,</div><div><br></div>The=C2=A0Yocto Project =
-is=C2=A0looking to hire a technical writer to develop and maintain the many=
- documents the project supplies the greater community, including the offici=
-al Yocto Project documentation website [1].<br><br>We expect to build a lon=
-g term relationship with this technical documentation person, and estimate =
-that the workload for this role should be no more than 50%, spread evenly t=
-hroughout the year.<br><div><br></div><div>For more information, please che=
-ck [2].</div><div><br></div><div>cheers</div><div>nico</div><div><br></div>=
-<div>[1]=C2=A0<a href=3D"https://docs.yoctoproject.org/">https://docs.yocto=
-project.org/</a></div><div>[2]=C2=A0<a href=3D"https://www.yoctoproject.org=
-/yocto-project-technical-documentation-request-for-quote/">https://www.yoct=
-oproject.org/yocto-project-technical-documentation-request-for-quote/</a></=
-div></div>
-
---000000000000ba806305b5624526--
