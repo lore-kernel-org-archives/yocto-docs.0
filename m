@@ -1,85 +1,95 @@
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
- by mx.groups.io with SMTP id smtpd.web12.1605.1606895273127662422
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+ by mx.groups.io with SMTP id smtpd.web11.1746.1606895496219521286
  for <docs@lists.yoctoproject.org>;
- Tue, 01 Dec 2020 23:47:53 -0800
+ Tue, 01 Dec 2020 23:51:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=JM+FOdJ/;
- spf=pass (domain: linaro.org, ip: 209.85.128.67, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f67.google.com with SMTP id e25so4751866wme.0
-        for <docs@lists.yoctoproject.org>; Tue, 01 Dec 2020 23:47:52 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=ZtFLAVwH;
+ spf=pass (domain: linaro.org, ip: 209.85.128.66, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wm1-f66.google.com with SMTP id e25so4796247wme.0
+        for <docs@lists.yoctoproject.org>; Tue, 01 Dec 2020 23:51:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=subject:to:references:from:message-id:date:user-agent:mime-version
          :in-reply-to:content-language:content-transfer-encoding;
-        bh=GgysNiQtOKBx1cxg9g4IC3zY8l7O3KXuznVJIFrfM7E=;
-        b=JM+FOdJ/1hLZ7WDgFyu9/0V7J0n6pODH0wbj9/+dfJaGOfYEz1K7O73QsRwW+ge+q0
-         4au870epxn0wdzL0KGJWM1yKWyThhhS9qQaG+DmzjW9UK22O9qKyESeX2wcmDBE7C517
-         0qkFL2TFMWk/H0yBpSFEM0kuxd+cz04I6gnlQYL9gnMc20tbCZyGIN3wKldyQUw4kTje
-         q3NqeRgdo2OoixuEzQ+9pgG02qWCaCyoHxbrz4or0LqDQjJKQyGBdvRNBwqpme1tPVM0
-         bif3PVcMHd2RIP1F4/Sw9bV3/fuQ4y8WJkcXa1/wSHHsJR7OGaiLjBDJFO4qQglvgNer
-         mvNg==
+        bh=2YnJ1zmqhIPYbEVQOHGSFPgihu5P/6jA4maO7HEvXpI=;
+        b=ZtFLAVwHdWgM4sKcXVKO1C4iIzy/yQy3aMJf46INz3JYY7tBnJDm3RyOBt7bWn1hLe
+         vavIbTfIU5uQFB4uhzg6ZRtKHUZAMhAKXK0IYX6oLLhOGYd6YgDwDmjAC8fWOKdrxVwY
+         srKdkShI3ft48dEp33D+6XEvLXSXMD03Pv/dZaAwvcI7XNMowgNSvNgZJ/tglmX6D6a4
+         d46ALQPEASRAV2A5UmcF8jDwOyMtKGGBFZGLYNv5j2voT7xB95ZHChgvq21CrdnF+khQ
+         Dp63EMxVtCiIVHSMBVKyMc1+pjuaFkh2E+NQ5kKUrHVthyiVHgbRNYZ0/9CG3x77E626
+         /MTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:subject:to:references:from:message-id:date
          :user-agent:mime-version:in-reply-to:content-language
          :content-transfer-encoding;
-        bh=GgysNiQtOKBx1cxg9g4IC3zY8l7O3KXuznVJIFrfM7E=;
-        b=nqlEfmBUNlm3r0EKYzf1XIg6AZeDn4Xn5wS8WLEfNGuL7luxbiV36FtR+Rdl61uN+f
-         DbblwrtwXJAUlOQt07VoYMNjkH/q8wluwKH9bbAhOF0tB0BqyPm0MEBTe9iMnQaTJL5B
-         4gm+qqgabOBZc2Q+DbHusEP7olIGtvQTy1YHJ9AaisIUO2V7Mil+q+DvyaPo+Ny3q+w4
-         6vUl/KB2XKL4U+rDIINOzzmA3qnygfZL0+o3LVdt9PsLqh+YVYee5TBZlT3XFB3OLS0P
-         QLiMZoKfbQECc5AdxzCRuKwu5tC2oxeHjwgWmSWfmGcPfukwB0MTUSr+jlLXFhXp3uKp
-         r9aA==
-X-Gm-Message-State: AOAM532zUn1ZGuIDf/gL6jM3E8gYCiYt1Dvp/LZ5uproKTf+b+s5SLaO
-	Huw6qqMTLkrmdtFdPR+aUt+ZMRBanB1vXbAa
-X-Google-Smtp-Source: ABdhPJz1Me0+GK+59svpc2qiEdo+QXrXthVWwOoJJ32xQUGxN7xL1KqsxKoh+CX2ZNxwoOgA2vyKRQ==
-X-Received: by 2002:a1c:2d84:: with SMTP id t126mr1640626wmt.132.1606895271358;
-        Tue, 01 Dec 2020 23:47:51 -0800 (PST)
+        bh=2YnJ1zmqhIPYbEVQOHGSFPgihu5P/6jA4maO7HEvXpI=;
+        b=Hs76w/QLD59K+4Mn3eIN7y8mnNFpn8bl2prPRhgVEsMsJT09ZLuHtbwy5DI+GryQWj
+         4jsa63a+RSyjwAVdP6pnSigeGSKotPfBYaZ4KNCPrj9yZwZuVb8WAstMYfuSczO6zim/
+         xVQrICybG2yjRTJ5u2XCCTYCT5dza1hLuBblCx7AT3et0NT1fs3HfeDIaoebqg3FC2f5
+         kxPnFru4AC1ixEspWnyg46pvw1p2hNLtNPBxQ473thTdSQsoy9w+EdR5AwzSCYRZePGS
+         /yjeD/sLR/OLGQz94DdM3+XvPPLlhXWITxCwlJ+j9F1cKMAJ2cpWcvvif/DBhWaDriiM
+         yrcg==
+X-Gm-Message-State: AOAM531Ct4wNd0E+LGtkyOYNINrOItz1F3UO7+ctUDa4bTuLNwP4qJNV
+	GrY44ewyybEniPmvI/IKLVsm8epbfI/HDLUu
+X-Google-Smtp-Source: ABdhPJyF1Bq7XJlFKUH/n7q3kfgPNdWG0CM9w2jXON5oF8QYUEwdjLzNjFlyWUlkJyvUxsxKA7hFkA==
+X-Received: by 2002:a1c:9d16:: with SMTP id g22mr1657873wme.140.1606895494120;
+        Tue, 01 Dec 2020 23:51:34 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from ?IPv6:2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3? ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id y18sm1027646wrr.67.2020.12.01.23.47.50
+        by smtp.gmail.com with ESMTPSA id d8sm979033wrp.44.2020.12.01.23.51.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Dec 2020 23:47:50 -0800 (PST)
-Subject: Re: [docs] [PATCH] releases.rst: add gatesgarth to current releases
+        Tue, 01 Dec 2020 23:51:33 -0800 (PST)
+Subject: Re: [docs] [gatesgarth][PATCH 1/2] sphinx: releases: add link to 3.1.3
 To: Anuj Mittal <anuj.mittal@intel.com>, docs@lists.yoctoproject.org
-References: <20201202012158.19944-1-anuj.mittal@intel.com>
+References: <20201202012330.20273-1-anuj.mittal@intel.com>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Message-ID: <8ec7e08d-e8cc-845b-772c-679e8d4c2e00@linaro.org>
-Date: Wed, 2 Dec 2020 08:47:50 +0100
+Message-ID: <021e6971-5283-305f-8a8a-adff65eb53a8@linaro.org>
+Date: Wed, 2 Dec 2020 08:51:32 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.3
 MIME-Version: 1.0
-In-Reply-To: <20201202012158.19944-1-anuj.mittal@intel.com>
+In-Reply-To: <20201202012330.20273-1-anuj.mittal@intel.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 
-On 12/2/20 2:21 AM, Anuj Mittal wrote:
+On 12/2/20 2:23 AM, Anuj Mittal wrote:
+> From: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+> 
+> Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+> (cherry picked from commit bf395d0af044f6e9826a8235b760b2d285602b26)
 > Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
 
 Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 
+However... this clearly shows that we have a problem.. it's not the 
+right thing to do to maintain releases.rst in each branch.. Can you 
+please open a bug so that we can discuss further. I am not sure what's 
+the best solution is here.. We already have a similar issue with the 
+dropdown menu, and we override the file in the AB during the publishing 
+to the website. Perhaps we need something similar, or perhaps not..
+
+e.g. we could have an 'empty' releases.rst file, and generate the 
+content on the AB...
+
 > ---
->   documentation/releases.rst | 6 ++++++
->   1 file changed, 6 insertions(+)
+>   documentation/releases.rst | 1 +
+>   1 file changed, 1 insertion(+)
 > 
 > diff --git a/documentation/releases.rst b/documentation/releases.rst
-> index 9992f97d5..dbdc173a0 100644
+> index 536c3a6d2..9992f97d5 100644
 > --- a/documentation/releases.rst
 > +++ b/documentation/releases.rst
-> @@ -4,6 +4,12 @@
->    Current Release Manuals
->   =========================
+> @@ -11,6 +11,7 @@
+>   - :yocto_docs:`3.1 Documentation </3.1>`
+>   - :yocto_docs:`3.1.1 Documentation </3.1.1>`
+>   - :yocto_docs:`3.1.2 Documentation </3.1.2>`
+> +- :yocto_docs:`3.1.3 Documentation </3.1.3>`
 >   
-> +*******************************
-> +3.2 'gatesgarth' Release Series
-> +*******************************
-> +
-> +- :yocto_docs:`3.2 Documentation </3.2>`
-> +
->   ****************************
->   3.1 'dunfell' Release Series
->   ****************************
+>   ==========================
+>    Previous Release Manuals
 > 
 > 
 > 
