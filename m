@@ -1,50 +1,50 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
- by mx.groups.io with SMTP id smtpd.web12.4191.1607031540714755120
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+ by mx.groups.io with SMTP id smtpd.web08.4140.1607031544295892946
  for <docs@lists.yoctoproject.org>;
- Thu, 03 Dec 2020 13:39:01 -0800
+ Thu, 03 Dec 2020 13:39:04 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=PqQApomB;
- spf=pass (domain: linaro.org, ip: 209.85.221.52, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wr1-f52.google.com with SMTP id e7so3365521wrv.6
-        for <docs@lists.yoctoproject.org>; Thu, 03 Dec 2020 13:39:00 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=OAO7gTl4;
+ spf=pass (domain: linaro.org, ip: 209.85.221.53, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f53.google.com with SMTP id p8so3372453wrx.5
+        for <docs@lists.yoctoproject.org>; Thu, 03 Dec 2020 13:39:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=9qC56RDSBfr5y3Z8lq/bIGaxYm2DT5iifghVC6kIyK0=;
-        b=PqQApomBUm0RfIVw+ldC+mi6vGrG8kDrCobetgXMyErplOgSPZU9LIepM8iK8KWI72
-         eHdY1UownL/8dEzIcDuyZU9siNU7pnuAnoziE03ALkbW4IvLAoSJCqc+RxiRhBe0atqA
-         6uSzhGhviwXQCcaiNlWUqZCuZzCJauvbPeRiU8CGVtRmPu/V5+jc/fkamEHFRzJgfA31
-         w0FAzXEElWKWuf5MG5PdH3TOWVG/E8/2Qh4PA+qL3At70XX7dSNADK06KbUpohSR0M3A
-         7JUS4Mzl9j8fXl4/f75wcXQrS+fMH4nw48OaXKmjb0UbHrJh6MnZ9p99vzgsDS8gJlsD
-         hiHg==
+        bh=0eFYI5D5P89sML7AU1v6tqAkIBRTx85zGJrnmMxF7cs=;
+        b=OAO7gTl4aie3+ZHOuD99MWlFRtJhpIEKZAXBhW1ziWe870tONKISoiOoVCWc4LD2xP
+         7G244ekkGixZw05WJrN/WF52tRhZpYVPGsH6WeKAB08InK5iZNOS3tM/E8nzLbn81xue
+         O0w35nXhRhFTUzTqNXVn5HIA+kDvrD9DZ7x3kxYS/UCjMg2uF0a1WugRdIe5Fq9kgpoe
+         pFqY0KwplRAq9curbCyvBk/njGjp/3qd4O1b7tpW+jqPDju6KO+gl0eto5UjjcGD6Hkb
+         U9NtWyVogfmSaCuMX7GqxCIsgkvwM0P1GyM6+szBWKQgCc7AtdEj9F/3i4mc79saFpv9
+         b1pg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=9qC56RDSBfr5y3Z8lq/bIGaxYm2DT5iifghVC6kIyK0=;
-        b=aQFZRlruXf8VXuDRg4verqek7peF2U8fTO5NQnzQnLXgJdtol7/NEznSeUTpBamfke
-         kl6ElDgMJXVmZI5cX3NOSHqIuojo41TBOVEJrPoQldcj4S5afcGpH7b3t+cZX8fCToHN
-         6BX6av9Ilst72ECF45WoWG0B42dv4bEmsfOfFWQFv1WdnT9SBCvcecuK75mCy42A1KqN
-         t8fRqeRQNvmRk5OWoEq59JyRZUxsybMR37JCmHCaFlTsSinoP0Y18VOXZ+xkYnZMiiLl
-         cJATOBlEFocGLibB9ZbN4vfIflu1tDe9yRsaIa7iOt+S6xYNLsqgEvep7gE5LTdGrRLX
-         Ut+g==
-X-Gm-Message-State: AOAM5303tkDsNHhSBkERakLSzJ/SlVKfPs9bJRzzWaVKo//2s6waENDS
-	aJvVQ2V6ETavPI/7/mXNGqwPGz71f7ZmFCwe
-X-Google-Smtp-Source: ABdhPJyJWNMeUOv4WgAaUey1b/LGaro21lLFuUbIqyfqs88c+LoRjVuI9SIgfuOqruJhRC+7qPilIA==
-X-Received: by 2002:adf:f609:: with SMTP id t9mr1245136wrp.369.1607031538641;
-        Thu, 03 Dec 2020 13:38:58 -0800 (PST)
+        bh=0eFYI5D5P89sML7AU1v6tqAkIBRTx85zGJrnmMxF7cs=;
+        b=Va60iL43Tqo71Ff42aPioC9sjsCNsVu3PK+R5HuZn2/Wa3Uydjm2fFpfscBrfqC80+
+         hGABxCC9SqF0i+PisMQIdny7mG3BRIRrNTTHKiSOWiLCgS1qZ6nBjyOWdo7u2hawSB1e
+         JX82V7g8ZlhXC5Kx8y6wGzVvOaK/R6yXiVt+WMhLNjWO2L7R+wEKOg7Xdz4lfoMF+x9U
+         +8ICPLJf8RsDbzuaPMw0RORh1r+fVk43WGphA/DYptLaPs4o/QtFXp8eymWhT11yLHs/
+         H0yQ5oxwAuW09JzqA7oCGWuigdkRIBXcEKsgubtupJmebel0QW6V2VW/JKfJ4L9LM8ET
+         ytFA==
+X-Gm-Message-State: AOAM533RL42KTZyMZFMkWit3MWggFVqTgG/EcHdZXdflr8Avi8ucvb37
+	vEMzx1IgnxCs2FJ+XheX/B4q3Rd044JeCBKC
+X-Google-Smtp-Source: ABdhPJxfWwUdXdkDKC6eYsvniKLQNp/rjI+B2tECI/SoSczRO5P8KSH2yR2dC/PbLhc9hWBS/juwvg==
+X-Received: by 2002:adf:f1cb:: with SMTP id z11mr1305753wro.363.1607031542288;
+        Thu, 03 Dec 2020 13:39:02 -0800 (PST)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:6883:56ff:2b71:f8a3])
-        by smtp.gmail.com with ESMTPSA id y7sm886214wrp.3.2020.12.03.13.38.57
+        by smtp.gmail.com with ESMTPSA id y7sm886214wrp.3.2020.12.03.13.39.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Dec 2020 13:38:57 -0800 (PST)
+        Thu, 03 Dec 2020 13:39:01 -0800 (PST)
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 04/10] toaster-manual: remove 'toaster-manual' from filenames
-Date: Thu,  3 Dec 2020 22:38:37 +0100
-Message-Id: <20201203213843.347671-5-nicolas.dechesne@linaro.org>
+Subject: [PATCH 07/10] profile-manual: remove 'profile-manual' from filenames
+Date: Thu,  3 Dec 2020 22:38:40 +0100
+Message-Id: <20201203213843.347671-8-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.29.2
 In-Reply-To: <20201203213843.347671-1-nicolas.dechesne@linaro.org>
 References: <20201203213843.347671-1-nicolas.dechesne@linaro.org>
@@ -57,197 +57,135 @@ consise as possible, and fix all references
 
 Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 ---
- documentation/dev-manual/dev-manual-start.rst          |  6 +++---
- documentation/ref-manual/migration-2.1.rst             |  2 +-
- documentation/toaster-manual/index.rst                 |  8 ++++----
- .../{toaster-manual-intro.rst => intro.rst}            |  2 +-
- .../{toaster-manual-reference.rst => reference.rst}    |  8 ++++----
- ...ster-manual-setup-and-use.rst => setup-and-use.rst} | 10 +++++-----
- .../{toaster-manual-start.rst => start.rst}            |  0
- 7 files changed, 18 insertions(+), 18 deletions(-)
- rename documentation/toaster-manual/{toaster-manual-intro.rst => intro.rst} (97%)
- rename documentation/toaster-manual/{toaster-manual-reference.rst => reference.rst} (98%)
- rename documentation/toaster-manual/{toaster-manual-setup-and-use.rst => setup-and-use.rst} (98%)
- rename documentation/toaster-manual/{toaster-manual-start.rst => start.rst} (100%)
+ .../{profile-manual-arch.rst => arch.rst}      |  0
+ ...rofile-manual-examples.rst => examples.rst} |  0
+ documentation/profile-manual/index.rst         |  8 ++++----
+ .../{profile-manual-intro.rst => intro.rst}    |  0
+ .../{profile-manual-usage.rst => usage.rst}    | 18 +++++++++---------
+ 5 files changed, 13 insertions(+), 13 deletions(-)
+ rename documentation/profile-manual/{profile-manual-arch.rst => arch.rst} (100%)
+ rename documentation/profile-manual/{profile-manual-examples.rst => examples.rst} (100%)
+ rename documentation/profile-manual/{profile-manual-intro.rst => intro.rst} (100%)
+ rename documentation/profile-manual/{profile-manual-usage.rst => usage.rst} (99%)
 
-diff --git a/documentation/dev-manual/dev-manual-start.rst b/documentation/dev-manual/dev-manual-start.rst
-index d4727a6f6..75b5d7b5f 100644
---- a/documentation/dev-manual/dev-manual-start.rst
-+++ b/documentation/dev-manual/dev-manual-start.rst
-@@ -345,7 +345,7 @@ section. If you are going
- to use the Extensible SDK, see the ":doc:`/sdk-manual/sdk-extensible`" Chapter in the Yocto
- Project Application Development and the Extensible Software Development
- Kit (eSDK) manual. If you want to work on the kernel, see the :doc:`/kernel-dev/index`. If you are going to use
--Toaster, see the ":doc:`/toaster-manual/toaster-manual-setup-and-use`"
-+Toaster, see the ":doc:`/toaster-manual/setup-and-use`"
- section in the Toaster User Manual.
- 
- Setting Up to Use CROss PlatformS (CROPS)
-@@ -445,7 +445,7 @@ section. If you are going to use the Extensible SDK container, see the
- ":doc:`/sdk-manual/sdk-extensible`" Chapter in the Yocto
- Project Application Development and the Extensible Software Development
- Kit (eSDK) manual. If you are going to use the Toaster container, see
--the ":doc:`/toaster-manual/toaster-manual-setup-and-use`"
-+the ":doc:`/toaster-manual/setup-and-use`"
- section in the Toaster User Manual.
- 
- Setting Up to Use Windows Subsystem For Linux (WSLv2)
-@@ -560,7 +560,7 @@ you were running on a native Linux machine. If you are going to use the
- Extensible SDK container, see the ":doc:`/sdk-manual/sdk-extensible`" Chapter in the Yocto
- Project Application Development and the Extensible Software Development
- Kit (eSDK) manual. If you are going to use the Toaster container, see
--the ":doc:`/toaster-manual/toaster-manual-setup-and-use`"
-+the ":doc:`/toaster-manual/setup-and-use`"
- section in the Toaster User Manual.
- 
- Locating Yocto Project Source Files
-diff --git a/documentation/ref-manual/migration-2.1.rst b/documentation/ref-manual/migration-2.1.rst
-index 25ee21499..ada9d2986 100644
---- a/documentation/ref-manual/migration-2.1.rst
-+++ b/documentation/ref-manual/migration-2.1.rst
-@@ -217,7 +217,7 @@ The following changes have been made to the build system user interface:
- -  *Hob GTK+-based UI*: Removed because it is unmaintained and based on
-    the outdated GTK+ 2 library. The Toaster web-based UI is much more
-    capable and is actively maintained. See the
--   ":ref:`toaster-manual/toaster-manual-setup-and-use:using the toaster web interface`"
-+   ":ref:`toaster-manual/setup-and-use:using the toaster web interface`"
-    section in the Toaster User Manual for more information on this
-    interface.
- 
-diff --git a/documentation/toaster-manual/index.rst b/documentation/toaster-manual/index.rst
-index b003f1cea..f13ba7b8a 100644
---- a/documentation/toaster-manual/index.rst
-+++ b/documentation/toaster-manual/index.rst
-@@ -10,10 +10,10 @@ Toaster User Manual
+diff --git a/documentation/profile-manual/profile-manual-arch.rst b/documentation/profile-manual/arch.rst
+similarity index 100%
+rename from documentation/profile-manual/profile-manual-arch.rst
+rename to documentation/profile-manual/arch.rst
+diff --git a/documentation/profile-manual/profile-manual-examples.rst b/documentation/profile-manual/examples.rst
+similarity index 100%
+rename from documentation/profile-manual/profile-manual-examples.rst
+rename to documentation/profile-manual/examples.rst
+diff --git a/documentation/profile-manual/index.rst b/documentation/profile-manual/index.rst
+index 5ec5b9e75..6e54133e0 100644
+--- a/documentation/profile-manual/index.rst
++++ b/documentation/profile-manual/index.rst
+@@ -10,10 +10,10 @@ Yocto Project Profiling and Tracing Manual
     :caption: Table of Contents
     :numbered:
  
--   toaster-manual-intro
--   toaster-manual-start
--   toaster-manual-setup-and-use
--   toaster-manual-reference
+-   profile-manual-intro
+-   profile-manual-arch
+-   profile-manual-usage
+-   profile-manual-examples
 +   intro
-+   start
-+   setup-and-use
-+   reference
++   arch
++   usage
++   examples
     history
  
  .. include:: /boilerplate.rst
-diff --git a/documentation/toaster-manual/toaster-manual-intro.rst b/documentation/toaster-manual/intro.rst
-similarity index 97%
-rename from documentation/toaster-manual/toaster-manual-intro.rst
-rename to documentation/toaster-manual/intro.rst
-index e34e7bac4..c78b3f53d 100644
---- a/documentation/toaster-manual/toaster-manual-intro.rst
-+++ b/documentation/toaster-manual/intro.rst
-@@ -25,7 +25,7 @@ extensive information about the build process.
-    interface, you can:
+diff --git a/documentation/profile-manual/profile-manual-intro.rst b/documentation/profile-manual/intro.rst
+similarity index 100%
+rename from documentation/profile-manual/profile-manual-intro.rst
+rename to documentation/profile-manual/intro.rst
+diff --git a/documentation/profile-manual/profile-manual-usage.rst b/documentation/profile-manual/usage.rst
+similarity index 99%
+rename from documentation/profile-manual/profile-manual-usage.rst
+rename to documentation/profile-manual/usage.rst
+index cc403a554..418f4e993 100644
+--- a/documentation/profile-manual/profile-manual-usage.rst
++++ b/documentation/profile-manual/usage.rst
+@@ -45,7 +45,7 @@ Perf Setup
+ ----------
  
-    -  Browse layers listed in the various
--      :ref:`layer sources <toaster-manual/toaster-manual-reference:layer source>`
-+      :ref:`layer sources <toaster-manual/reference:layer source>`
-       that are available in your project (e.g. the OpenEmbedded Layer Index at
-       http://layers.openembedded.org/layerindex/).
+ For this section, we'll assume you've already performed the basic setup
+-outlined in the ":ref:`profile-manual/profile-manual-intro:General Setup`" section.
++outlined in the ":ref:`profile-manual/intro:General Setup`" section.
  
-diff --git a/documentation/toaster-manual/toaster-manual-reference.rst b/documentation/toaster-manual/reference.rst
-similarity index 98%
-rename from documentation/toaster-manual/toaster-manual-reference.rst
-rename to documentation/toaster-manual/reference.rst
-index ed0bad11b..c3f0fef0a 100644
---- a/documentation/toaster-manual/toaster-manual-reference.rst
-+++ b/documentation/toaster-manual/reference.rst
-@@ -476,7 +476,7 @@ get the status of a specific build, use the following call::
+ In particular, you'll get the most mileage out of perf if you profile an
+ image built with the following in your ``local.conf`` file: ::
+@@ -1183,7 +1183,7 @@ ftrace Setup
+ ------------
  
- Be sure to provide values for
- host, port, and ID. You can find the value for ID from the Builds
--Completed query. See the ":ref:`toaster-manual/toaster-manual-reference:checking status of builds completed`"
-+Completed query. See the ":ref:`toaster-manual/reference:checking status of builds completed`"
- section for more information.
+ For this section, we'll assume you've already performed the basic setup
+-outlined in the ":ref:`profile-manual/profile-manual-intro:General Setup`" section.
++outlined in the ":ref:`profile-manual/intro:General Setup`" section.
  
- The output is a JSON file that itemizes the specific build and includes
-@@ -549,7 +549,7 @@ database.
+ ftrace, trace-cmd, and kernelshark run on the target system, and are
+ ready to go out-of-the-box - no additional setup is necessary. For the
+@@ -1871,7 +1871,7 @@ having done a build: ::
  
- You need to run the ``buildslist`` command first to identify existing
- builds in the database before using the
--:ref:`toaster-manual/toaster-manual-reference:\`\`builddelete\`\`` command. Here is an
-+:ref:`toaster-manual/reference:\`\`builddelete\`\`` command. Here is an
- example that assumes default repository and build directory names:
+ So essentially what you need to
+ do is build an SDK image or image with 'tools-profile' as detailed in
+-the ":ref:`profile-manual/profile-manual-intro:General Setup`" section of this
++the ":ref:`profile-manual/intro:General Setup`" section of this
+ manual, and boot the resulting target image.
  
- .. code-block:: shell
-@@ -558,7 +558,7 @@ example that assumes default repository and build directory names:
-    $ python ../bitbake/lib/toaster/manage.py buildslist
+ .. note::
+@@ -1954,7 +1954,7 @@ Sysprof Setup
+ -------------
  
- If your Toaster database had only one build, the above
--:ref:`toaster-manual/toaster-manual-reference:\`\`buildslist\`\``
-+:ref:`toaster-manual/reference:\`\`buildslist\`\``
- command would return something like the following::
+ For this section, we'll assume you've already performed the basic setup
+-outlined in the ":ref:`profile-manual/profile-manual-intro:General Setup`" section.
++outlined in the ":ref:`profile-manual/intro:General Setup`" section.
  
-    1: qemux86 poky core-image-minimal
-@@ -579,7 +579,7 @@ the database.
+ Sysprof is a GUI-based application that runs on the target system. For
+ the rest of this document we assume you've ssh'ed to the host and will
+@@ -2025,7 +2025,7 @@ LTTng Setup
+ -----------
  
- Prior to running the ``builddelete`` command, you need to get the ID
- associated with builds by using the
--:ref:`toaster-manual/toaster-manual-reference:\`\`buildslist\`\`` command.
-+:ref:`toaster-manual/reference:\`\`buildslist\`\`` command.
+ For this section, we'll assume you've already performed the basic setup
+-outlined in the ":ref:`profile-manual/profile-manual-intro:General Setup`" section.
++outlined in the ":ref:`profile-manual/intro:General Setup`" section.
+ LTTng is run on the target system by ssh'ing to it.
  
- ``perf``
- --------
-diff --git a/documentation/toaster-manual/toaster-manual-setup-and-use.rst b/documentation/toaster-manual/setup-and-use.rst
-similarity index 98%
-rename from documentation/toaster-manual/toaster-manual-setup-and-use.rst
-rename to documentation/toaster-manual/setup-and-use.rst
-index 6e2ba0253..2cb7884eb 100644
---- a/documentation/toaster-manual/toaster-manual-setup-and-use.rst
-+++ b/documentation/toaster-manual/setup-and-use.rst
-@@ -10,7 +10,7 @@ Starting Toaster for Local Development
- ======================================
+ Collecting and Viewing Traces
+@@ -2033,7 +2033,7 @@ Collecting and Viewing Traces
  
- Once you have set up the Yocto Project and installed the Toaster system
--dependencies as described in the ":ref:`toaster-manual/toaster-manual-start:Preparing to Use
-+dependencies as described in the ":ref:`toaster-manual/start:Preparing to Use
- Toaster`" chapter, you are ready to start
- Toaster.
+ Once you've applied the above commits and built and booted your image
+ (you need to build the core-image-sato-sdk image or use one of the other
+-methods described in the ":ref:`profile-manual/profile-manual-intro:General Setup`" section), you're ready to start
++methods described in the ":ref:`profile-manual/intro:General Setup`" section), you're ready to start
+ tracing.
  
-@@ -30,7 +30,7 @@ Next, from the build directory (e.g.
+ Collecting and viewing a trace on the target (inside a shell)
+@@ -2230,14 +2230,14 @@ blktrace Setup
+ --------------
  
- You can now run your builds from the command line, or with Toaster
- as explained in section
--":ref:`toaster-manual/toaster-manual-setup-and-use:using the toaster web interface`".
-+":ref:`toaster-manual/setup-and-use:using the toaster web interface`".
- 
- To access the Toaster web interface, open your favorite browser and
- enter the following::
-@@ -200,7 +200,7 @@ Be sure you meet the following requirements:
- 
-    You must comply with all Apache, ``mod-wsgi``, and Mysql requirements.
- 
---  Have all the build requirements as described in the ":ref:`toaster-manual/toaster-manual-start:Preparing to
-+-  Have all the build requirements as described in the ":ref:`toaster-manual/start:Preparing to
-    Use Toaster`" chapter.
- 
- -  Have an Apache webserver.
-@@ -314,7 +314,7 @@ Perform the following steps to install Toaster:
-     ``TEMPLATECONF`` value reflects the contents of
-     ``poky/.templateconf``, and by default, should include the string
-     "poky". For more information on the Toaster configuration file, see
--    the ":ref:`toaster-manual/toaster-manual-reference:Configuring Toaster`" section.
-+    the ":ref:`toaster-manual/reference:Configuring Toaster`" section.
- 
-     This line also runs the ``checksettings`` command, which configures
-     the location of the Toaster :term:`Build Directory`.
-@@ -544,7 +544,7 @@ Additional Information About the Local Yocto Project Release
- 
- This section only applies if you have set up Toaster for local
- development, as explained in the
--":ref:`toaster-manual/toaster-manual-setup-and-use:starting toaster for local development`"
-+":ref:`toaster-manual/setup-and-use:starting toaster for local development`"
+ For this section, we'll assume you've already performed the basic setup
+-outlined in the ":ref:`profile-manual/profile-manual-intro:General Setup`"
++outlined in the ":ref:`profile-manual/intro:General Setup`"
  section.
  
- When you create a project in Toaster, you will be asked to provide a
-diff --git a/documentation/toaster-manual/toaster-manual-start.rst b/documentation/toaster-manual/start.rst
-similarity index 100%
-rename from documentation/toaster-manual/toaster-manual-start.rst
-rename to documentation/toaster-manual/start.rst
+ blktrace is an application that runs on the target system. You can run
+ the entire blktrace and blkparse pipeline on the target, or you can run
+ blktrace in 'listen' mode on the target and have blktrace and blkparse
+ collect and analyze the data on the host (see the
+-":ref:`profile-manual/profile-manual-usage:Using blktrace Remotely`" section
++":ref:`profile-manual/usage:Using blktrace Remotely`" section
+ below). For the rest of this section we assume you've ssh'ed to the host and
+ will be running blkrace on the target.
+ 
+@@ -2512,7 +2512,7 @@ Tracing Block I/O via 'ftrace'
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ It's also possible to trace block I/O using only
+-:ref:`profile-manual/profile-manual-usage:The 'trace events' Subsystem`, which
++:ref:`profile-manual/usage:The 'trace events' Subsystem`, which
+ can be useful for casual tracing if you don't want to bother dealing with the
+ userspace tools.
+ 
 -- 
 2.29.2
 
