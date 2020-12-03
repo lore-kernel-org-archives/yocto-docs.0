@@ -1,65 +1,80 @@
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
- by mx.groups.io with SMTP id smtpd.web09.4241.1607031803616550829
+Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
+ by mx.groups.io with SMTP id smtpd.web08.4353.1607032228776261573
  for <docs@lists.yoctoproject.org>;
- Thu, 03 Dec 2020 13:43:23 -0800
+ Thu, 03 Dec 2020 13:50:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=LU8elHqu;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.67, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f67.google.com with SMTP id i2so3385697wrs.4
-        for <docs@lists.yoctoproject.org>; Thu, 03 Dec 2020 13:43:23 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=gLAY9+b/;
+ spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f196.google.com with SMTP id x2so3434192ybt.11
+        for <docs@lists.yoctoproject.org>; Thu, 03 Dec 2020 13:50:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=HEqvxc0G44sbmMgpae2iQO5IkiNYaMIzO7odo6VGj0w=;
-        b=LU8elHquAPI2/1bZ/jutHveDPqByoa4EguHCSo9JTBoKKw7a4DHyC+kJfBJ1dOutzQ
-         1JNnDAwvNcLhsQbCN0R03ycAKWb4TLRYSyrOXQFk0GMyqvsvd10px028Fx378jgwSnUe
-         v1493ciPZZv5vbIxJFOYKk8LUavW7kID8swd4=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=O5bWi54wWeOnfKkn7DyxL6GM4cYb5RfGChRSZv7FMRk=;
+        b=gLAY9+b/7Y/ddwQVDC/7uCStRwWQlYWa94E7Q4INF9cfKWzxtFq/nJT26WPR3oBnZv
+         J8Z2mXZyopXTcNq+z8ca6mKfLaQk45rb7jPYKZGdQQkp5Y4/pLiD9tXqWCqL3iZfG+nx
+         bTh17Z4O6PhpVUbBPZTix0FJTfRnxuZkX2u10yOB6xW+pzlTWaE/GJT1dR//Gpud8jWf
+         g1XNubaOErh7dEcuiPs62WSRwXK85KEaGkNpkmct/a6W+b/smcrnug7JDRXmvOjAxS62
+         hLREAKb1LrNq1Iqj4VWY8h/BbAuW0bS1O+z2VvRGhPyFcXgcWJbfVDG5GVsKJKcYKW6i
+         7t7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=HEqvxc0G44sbmMgpae2iQO5IkiNYaMIzO7odo6VGj0w=;
-        b=Idi0uL0dCGhjjU+UIF5N5WP2ahaTBgOnuWuKe1AC4kXQpAXfuRtIZq5/woE9OyLkHH
-         o8lSYx09oX8xJHPmcRfshk+5mTZa1eTrRH6QyYf8VHPbZcXA8MCtaQnQeIDWThe/ogWR
-         84txiGHWoB5TAAx5/wmZyAlUJYWl8liLn3eU2/StMVqxHbMxwNhMEpmvk7HlhiL/jiA0
-         DQBKj2pfRPZZd/EH5H0UxzwNBmhz+IbglWX3rpqNBruHnYSAu5RvHSQtYibwuzonl15f
-         dqN3XpBIf9aqYgqgiaWtlUQ+6HqeQlvzBUNDT9rUVs1n0PzkkwhjbOLL9dqw/Dm0d6HX
-         Oyfg==
-X-Gm-Message-State: AOAM530EcEBvN2XlK4/AALxSKyRj9S2VUZB8HE4qJScc5jUSNbd0ZKN4
-	UNLWMR84entzC/gckIqfPA5kag==
-X-Google-Smtp-Source: ABdhPJyZkIe95BXV27ICoifZXikTLlghvuAt7F10Ydu2AjKuSC3n1NiOdljxotl5IAvTAs7ugNlFRw==
-X-Received: by 2002:adf:f944:: with SMTP id q4mr1350244wrr.120.1607031802283;
-        Thu, 03 Dec 2020 13:43:22 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from 9.2.d.8.e.2.1.e.1.8.2.c.7.a.4.c.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (9.2.d.8.e.2.1.e.1.8.2.c.7.a.4.c.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:c4a7:c281:e12e:8d29])
-        by smtp.gmail.com with ESMTPSA id b4sm899333wrr.30.2020.12.03.13.43.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 03 Dec 2020 13:43:21 -0800 (PST)
-Message-ID: <d0b92a768d8e231407eb9bd78c0c43baa161f8d8.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] releases: conf: add link to 3.1.4, update to include 3.1.4
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: akuster808 <akuster808@gmail.com>, Michael Halstead
-	 <mhalstead@linuxfoundation.org>, docs@lists.yoctoproject.org
-Cc: rpurdie@linuxfoundation.org, nicolas.dechesne@linaro.org
-Date: Thu, 03 Dec 2020 21:43:19 +0000
-In-Reply-To: <a9242731-e044-c649-ac05-4b18ee33f011@gmail.com>
-References: <20201202220453.33336-1-mhalstead@linuxfoundation.org>
-	 <a9242731-e044-c649-ac05-4b18ee33f011@gmail.com>
-User-Agent: Evolution 3.36.4-0ubuntu1 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=O5bWi54wWeOnfKkn7DyxL6GM4cYb5RfGChRSZv7FMRk=;
+        b=ScYY0fYXf9KdX+WDSkFJbmbp5AveY4cFRok7aP9k4xm6m+llWmsPsgFBA0gwI1dIT/
+         D21Z1FhBDhYXew2Z6E807tZlNVD5y7BYCiJL7IVkFo9rxwyjEtcXCuibCTXcYnaHG11q
+         /a7DvqFDnKbt8eMEHCd595aE03om5Y4d+A7n6Ex9zajkj1jrl0kV2FPXgA8UXbcQZKmF
+         EDTyajqv3RBOY70sl2+YvDNxHLrwMOQz00M+wkkM3nCgUHn33hxbyz7zQOX64I5Hzq5/
+         GfsR/F6yLCdjI53cTkhiRFacjm3k7+UPYIjPvBvgvgyJEXGzai1pdMaRGMp26mHqGUAl
+         rE5w==
+X-Gm-Message-State: AOAM533ux/FeP05ZPiNEJBz7H4HejRvl+FPb0+GgBKi4a+jEKiLdlY63
+	3TLP81rvOxBYQQEAcuwSeitjSmkC+g2YCoCqJ8sudA==
+X-Google-Smtp-Source: ABdhPJwYBZT5Xa6wB4I7n528UyX+E1db4GPCB+6lnu6gQJ1cmsGDq09QBQzO0ovh0cJBv8p8mHBcrH5KKtVyMHtOaww=
+X-Received: by 2002:a25:b804:: with SMTP id v4mr1793842ybj.371.1607032227752;
+ Thu, 03 Dec 2020 13:50:27 -0800 (PST)
 MIME-Version: 1.0
+References: <20201202220453.33336-1-mhalstead@linuxfoundation.org>
+ <a9242731-e044-c649-ac05-4b18ee33f011@gmail.com> <d0b92a768d8e231407eb9bd78c0c43baa161f8d8.camel@linuxfoundation.org>
+In-Reply-To: <d0b92a768d8e231407eb9bd78c0c43baa161f8d8.camel@linuxfoundation.org>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Thu, 3 Dec 2020 22:50:17 +0100
+Message-ID: <CAP71WjzVb9TGccABQ20_5N706Zv2h6nXk30AV4ae3GQetk1BYQ@mail.gmail.com>
+Subject: Re: [docs] [PATCH] releases: conf: add link to 3.1.4, update to include 3.1.4
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+Cc: akuster808 <akuster808@gmail.com>, Michael Halstead <mhalstead@linuxfoundation.org>, 
+	YP docs mailing list <docs@lists.yoctoproject.org>, Richard Purdie <rpurdie@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
 
-On Thu, 2020-12-03 at 13:40 -0800, akuster808 wrote:
-> IMHO, I believe the branch maintainer should take up this task.
-> 
-> Should update process page if not already noted.
+On Thu, Dec 3, 2020 at 10:43 PM Richard Purdie
+<richard.purdie@linuxfoundation.org> wrote:
+>
+> On Thu, 2020-12-03 at 13:40 -0800, akuster808 wrote:
+> > IMHO, I believe the branch maintainer should take up this task.
+> >
+> > Should update process page if not already noted.
+>
+> I'm a little torn on this since the final step is part of the
+> "publication" of the release and the CI system does live deployment...
 
-I'm a little torn on this since the final step is part of the
-"publication" of the release and the CI system does live deployment...
+I thought a bit more about that today.. I have 2 ideas..
 
-Cheers,
+1. we could decide that we don't backport new releases into
+releases.rst from stable releases. That should make the maintenance
+much more reasonable. e.g. in
+http://docs.yoctoproject.org/gatesgarth/releases.html
+we will never show 3.3, 3.4, ...
 
-Richard
+or
 
+2. we could 'hide' the releases.rst page in all stable branches. we
+could check the version in conf.py and skip releases.rst , unless we
+are on 'master' (e.g. on http://docs.yoctoproject.org/releases.html).
+Users can always go back and forth using the drop down menu.
+
+>
+> Cheers,
+>
+> Richard
+>
