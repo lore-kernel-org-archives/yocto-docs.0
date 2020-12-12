@@ -1,76 +1,143 @@
-Received: from mail-yb1-f196.google.com (mail-yb1-f196.google.com [209.85.219.196])
- by mx.groups.io with SMTP id smtpd.web10.4688.1607032799244926182
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+ by mx.groups.io with SMTP id smtpd.web09.9394.1607805431585157763
  for <docs@lists.yoctoproject.org>;
- Thu, 03 Dec 2020 13:59:59 -0800
+ Sat, 12 Dec 2020 12:37:11 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=opU9wS1G;
- spf=pass (domain: linaro.org, ip: 209.85.219.196, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yb1-f196.google.com with SMTP id o71so3503342ybc.2
-        for <docs@lists.yoctoproject.org>; Thu, 03 Dec 2020 13:59:59 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=mJWrJDAb;
+ spf=pass (domain: konsulko.com, ip: 209.85.128.45, mailfrom: pbarker@konsulko.com)
+Received: by mail-wm1-f45.google.com with SMTP id a6so10428318wmc.2
+        for <docs@lists.yoctoproject.org>; Sat, 12 Dec 2020 12:37:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=mrjRGeg7eqQE4J4T0ExHfcPNgi1eTLI1QmRIeoa9QYM=;
-        b=opU9wS1GtG880aO3CsKVp+gu9/QxIfp6CR8WUBEJsnQs/I8bH+IjZVD5ONAaz2l/ho
-         CTMSl0naMDVxqMnzBBX2uySKCf5Y5RkOApncRh8HWz+skLiikUIiFGdpz7errMWqwnfB
-         HMr8vY2gUkUQ53dJ6gONPvPJEg1Jo3/AMs87cd2MFMSIkitwgycn9NiAxL7ZQs3Nxfww
-         UpwCWjOAR+0b3tEhfw+WleLJCLL8btBjLalo+PB6l8Ayw/cJHHcBD/H7t4Cj/I1e6INN
-         D6I5CMkufOobL+YzPm6PePmWnqm4mGfwHEXH3qiJZoHqIoz6d/6+uOdK9g6WV9ryx2Xm
-         SfDg==
+        d=konsulko.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LIcvV57VQZvxU3LrwTAuL7+dihfAzlbqsv3pvl6JZU4=;
+        b=mJWrJDAbt2NhHLX0tTfyVpWeIgZlicm6UZr4IiM5ugyAjpyqedYntdYx+jrNprwPk4
+         NZg/0C9Cw1nVigu2+T1biGL+e4DgZaUhbjwmO3KBn5nokHvCGyI3oTCk6L+ny/I3NZ5O
+         tFB5lMOT/87VkjLCv0Z2Bv7e8BOIqeQMwiw+k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=mrjRGeg7eqQE4J4T0ExHfcPNgi1eTLI1QmRIeoa9QYM=;
-        b=YhvIk3fzpsVaE3KGj9wZmvQjvRiFTbKhcp209c6qAbCXQ5HLslThUIUH5BiPjgMAnf
-         WN5vScKDanQm+g03SnzWGRt9AxY5kZBTeUeDgm/axSVonXPEAXmbXoUbS0SHl/XC+uFs
-         25z3XoTB9GW9Q/LbK/r+WFl62XLg1c1DfkxLGAr2FfX1V1RjwZ16H68qs8Z8jQT/htST
-         m1C4uxP5yzH+K2wyhpxTAqvYcB7/Ub70D175Ifp7kaCsjEjr+27t58IvteHRcu545UYJ
-         /u8KV8toRIoTogwUqhZ5omnJA7BqNlNPYbvI9MoXzndtYiRS8Dv0yICBU57nOOSlIUr0
-         OhTA==
-X-Gm-Message-State: AOAM532XVU43bFLUzACswbjIYFMC7Lw216cT3QI1gfQPSoSQ6SbNwLVg
-	+nb2k3I5qEEBnx//5kd6EwKNQtMuwhUNSkrIi7U6uA==
-X-Google-Smtp-Source: ABdhPJz7q6nps0gfhpCww00USfPl96ju3IDN2qslcwJhkEfdKwxIRpb7obveGT6lNZocwsV5W4S71MU/P/OuC7HYo7k=
-X-Received: by 2002:a25:ab2c:: with SMTP id u41mr1761603ybi.133.1607032798352;
- Thu, 03 Dec 2020 13:59:58 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=LIcvV57VQZvxU3LrwTAuL7+dihfAzlbqsv3pvl6JZU4=;
+        b=uJEzG8d8gIxO6p2yCOyDpbEUMjDXjRl/MXp9xi1H1OyIz3G2FOhSjPZNaXyEJBgK7m
+         1SA+UtYwXsGovE1fpmtEJkbkvsaKgQ5PMB3o/846MsUvlT8SILOAazDi+NjfP3Byl0B3
+         Onf6jOhrOkiLPg+NKsaywztzQgoa/Rt8FwZAmXjSLdJdAKjwe6qf3t+nYg2ipShvzzMK
+         ARIUm0eijYnhU7d1y4s04UEsBI6zwtY5PQ83oedVH/G8VOLCsDbCUE4nZmiQS0BRc2Eh
+         SlXL0zrcC9cJeZX4XRD3lFmM7MI2QKepqbQvqpbXUHylh90DcEHvHcfxd6EHiBVlfplP
+         ++1Q==
+X-Gm-Message-State: AOAM533cRgiDWkgnsEOsb09VbHVeXCKAJhvSt0KYN6wfljGWuHTQMWRq
+	3Q+ECEYa7SYw71ao+Sh2F9cmb3RzEi33Mw==
+X-Google-Smtp-Source: ABdhPJw9IaVtSf77x8BXlpH0CLFAmF6j17rz4q0nRefN/ghwHED7443UEkKUHKQFSxT3d+Ey5Tr5Pw==
+X-Received: by 2002:a1c:7c09:: with SMTP id x9mr20072908wmc.98.1607805429625;
+        Sat, 12 Dec 2020 12:37:09 -0800 (PST)
+Return-Path: <pbarker@konsulko.com>
+Received: from alpha.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
+        by smtp.gmail.com with ESMTPSA id h83sm23065505wmf.9.2020.12.12.12.37.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Dec 2020 12:37:08 -0800 (PST)
+From: "Paul Barker" <pbarker@konsulko.com>
+To: docs@lists.yoctoproject.org
+Cc: Paul Barker <pbarker@konsulko.com>
+Subject: [PATCH 1/4] documentation: Simplify oe_wiki and oe_home links
+Date: Sat, 12 Dec 2020 20:37:04 +0000
+Message-Id: <20201212203707.7428-1-pbarker@konsulko.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20201202220453.33336-1-mhalstead@linuxfoundation.org>
- <a9242731-e044-c649-ac05-4b18ee33f011@gmail.com> <d0b92a768d8e231407eb9bd78c0c43baa161f8d8.camel@linuxfoundation.org>
-In-Reply-To: <d0b92a768d8e231407eb9bd78c0c43baa161f8d8.camel@linuxfoundation.org>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Thu, 3 Dec 2020 22:59:47 +0100
-Message-ID: <CAP71Wjzr7aysstZXD5SbzG0vTsjccoWdFj4HcnRQ6X-q+4O-xA@mail.gmail.com>
-Subject: Re: [docs] [PATCH] releases: conf: add link to 3.1.4, update to include 3.1.4
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: akuster808 <akuster808@gmail.com>, Michael Halstead <mhalstead@linuxfoundation.org>, 
-	YP docs mailing list <docs@lists.yoctoproject.org>, Richard Purdie <rpurdie@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Thu, Dec 3, 2020 at 10:43 PM Richard Purdie
-<richard.purdie@linuxfoundation.org> wrote:
->
-> On Thu, 2020-12-03 at 13:40 -0800, akuster808 wrote:
-> > IMHO, I believe the branch maintainer should take up this task.
-> >
-> > Should update process page if not already noted.
->
-> I'm a little torn on this since the final step is part of the
-> "publication" of the release and the CI system does live deployment...
+Signed-off-by: Paul Barker <pbarker@konsulko.com>
+---
+ documentation/bsp-guide/bsp.rst            | 4 ++--
+ documentation/conf.py                      | 1 +
+ documentation/dev-manual/common-tasks.rst  | 2 +-
+ documentation/kernel-dev/intro.rst         | 3 +--
+ documentation/overview-manual/yp-intro.rst | 3 +--
+ documentation/ref-manual/resources.rst     | 3 +--
+ 6 files changed, 7 insertions(+), 9 deletions(-)
 
-hmm. I think my previous email was a reply to another discussion..
-sorry about that. sorry about this..
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
+index 068ab6c80..93e918249 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -894,8 +894,8 @@ Yocto Project:
+    ``recipes-*`` subdirectories specific to the recipe's function, or
+    within a subdirectory containing a set of closely-related recipes.
+    The recipes themselves should follow the general guidelines for
+-   recipes used in the Yocto Project found in the "`OpenEmbedded Style
+-   Guide <http://openembedded.org/wiki/Styleguide>`__".
++   recipes used in the Yocto Project found in the ":oe_wiki:`OpenEmbedded
++   Style Guide </Styleguide>`".
+ 
+ -  *License File:* You must include a license file in the
+    ``meta-bsp_root_name`` directory. This license covers the BSP
+diff --git a/documentation/conf.py b/documentation/conf.py
+index a626b1f14..b5351599d 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -79,6 +79,7 @@ extlinks = {
+     'oe_home': ('https://www.openembedded.org%s', None),
+     'oe_lists': ('https://lists.openembedded.org%s', None),
+     'oe_git': ('https://git.openembedded.org%s', None),
++    'oe_wiki': ('https://www.openembedded.org/wiki%s', None),
+ }
+ 
+ # Intersphinx config to use cross reference with Bitbake user manual
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index ada3bac7e..39db6563c 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -2540,7 +2540,7 @@ Following Recipe Style Guidelines
+ ---------------------------------
+ 
+ When writing recipes, it is good to conform to existing style
+-guidelines. The :oe_home:`OpenEmbedded Styleguide </wiki/Styleguide>` wiki page
++guidelines. The :oe_wiki:`OpenEmbedded Styleguide </Styleguide>` wiki page
+ provides rough guidelines for preferred recipe style.
+ 
+ It is common for existing recipes to deviate a bit from this style.
+diff --git a/documentation/kernel-dev/intro.rst b/documentation/kernel-dev/intro.rst
+index c95d2f7cb..f6c9b9713 100644
+--- a/documentation/kernel-dev/intro.rst
++++ b/documentation/kernel-dev/intro.rst
+@@ -72,8 +72,7 @@ tools with your own kernel sources.
+ 
+ The remainder of this manual provides instructions for completing
+ specific Linux kernel development tasks. These instructions assume you
+-are comfortable working with
+-`BitBake <https://openembedded.org/wiki/Bitbake>`__ recipes and basic
++are comfortable working with :oe_wiki:`BitBake </Bitbake>` recipes and basic
+ open-source development tools. Understanding these concepts will
+ facilitate the process of working with the kernel recipes. If you find
+ you need some additional background, please be sure to review and
+diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
+index 66a88c952..456bfc549 100644
+--- a/documentation/overview-manual/yp-intro.rst
++++ b/documentation/overview-manual/yp-intro.rst
+@@ -531,8 +531,7 @@ targets:
+    Debian Package (dpkg) in operation.
+ 
+    Opkg is intended for use on embedded Linux devices and is used in
+-   this capacity in the
+-   `OpenEmbedded <http://www.openembedded.org/wiki/Main_Page>`__ and
++   this capacity in the :oe_home:`OpenEmbedded <>` and
+    `OpenWrt <https://openwrt.org/>`__ projects, as well as the Yocto
+    Project.
+ 
+diff --git a/documentation/ref-manual/resources.rst b/documentation/ref-manual/resources.rst
+index 77c367809..2c49c4e87 100644
+--- a/documentation/ref-manual/resources.rst
++++ b/documentation/ref-manual/resources.rst
+@@ -118,8 +118,7 @@ Here is a list of resources you might find helpful:
+    distribution from which the Yocto Project derives its build system
+    (Poky) and to which it contributes.
+ 
+--  :oe_home:`BitBake </wiki/BitBake>`\ *:* The tool
+-   used to process metadata.
++-  :oe_wiki:`BitBake </BitBake>`\ *:* The tool used to process metadata.
+ 
+ -  :doc:`BitBake User Manual <bitbake:index>`\ *:* A comprehensive
+    guide to the BitBake tool. If you want information on BitBake, see
+-- 
+2.26.2
 
-Hopefully this was the last release with Docbook, so we won't need to
-'touch' the transition branch again. That branch hosts a 'wrapper' in
-sphinx for each release done with docbook, so that we have all docs in
-one place. It should have been made along with the release, i agree..
-Next 3.1 release will be based on Sphinx. I don't think we have clear
-instructions to make a docs release with Sphinx though, but that we
-need to properly document for sure!
-
->
-> Cheers,
->
-> Richard
->
