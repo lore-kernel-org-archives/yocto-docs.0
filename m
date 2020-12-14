@@ -1,164 +1,157 @@
-Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com [209.85.167.193])
- by mx.groups.io with SMTP id smtpd.web09.33079.1607943237495221065
+Received: from mail-ot1-f66.google.com (mail-ot1-f66.google.com [209.85.210.66])
+ by mx.groups.io with SMTP id smtpd.web10.32766.1607944195853524969
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Dec 2020 02:53:57 -0800
+ Mon, 14 Dec 2020 03:09:56 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=lmF6BAkw;
- spf=pass (domain: konsulko.com, ip: 209.85.167.193, mailfrom: paul.barker@konsulko.com)
-Received: by mail-oi1-f193.google.com with SMTP id d27so18751551oic.0
-        for <docs@lists.yoctoproject.org>; Mon, 14 Dec 2020 02:53:57 -0800 (PST)
+ dkim=pass header.i=@konsulko.com header.s=google header.b=PLz778FJ;
+ spf=pass (domain: konsulko.com, ip: 209.85.210.66, mailfrom: paul.barker@konsulko.com)
+Received: by mail-ot1-f66.google.com with SMTP id j12so15343577ota.7
+        for <docs@lists.yoctoproject.org>; Mon, 14 Dec 2020 03:09:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=konsulko.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=l2V0Cf2MvaAnBec1hd4ktjORNPwYolb0kQ4scBELIig=;
-        b=lmF6BAkwZasuvftsntBdsvy9aQNTSJHsKFCfyra3ICUdpNdVOcPEmL9GzkAfY5wntP
-         4y9O/Jq+UuheHhw6vlz26MU0SIKO7UvwEcuYdwbJlITOWdbvkEdhrpK3qFw//+p5GhlF
-         KFQqUZpTy6x9QPXcqsEUcJ1TDKQrrGzSyziQc=
+        bh=9zBbjeqOrjsR5zZDwDOL8/2XryywYId3kL3Yio3K4EQ=;
+        b=PLz778FJCnb8t9urSXmlT9Qp9w5Lkl9TExYgwd3wiB2INbcI+T5HtJJx6bgAa2OlOs
+         vruI+8hnjy/k/Z8NKjhI3hIC5J/QKd0wXJMRxBM3P24VRWmgVQy4lO5p1rWObco/SJ35
+         9jl5TBvYcev70s+OXEOnFToe34hBbp++q8m3Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=l2V0Cf2MvaAnBec1hd4ktjORNPwYolb0kQ4scBELIig=;
-        b=U9Mpi/hx7jQtDEJWG6dWWPP4UlM/CxAmuUhFe+ZBYTslxlG9uvCS7S78gE57HrGx/g
-         ckM4S7hHWRDUaeiSyvMqSBM9e/pWKpqUAluFilXYePW67bvsSeRMa+Uye633fX8uY49w
-         BdlGTziTmBT7rsmwMu8cWeekMgJ8mXSTVK+sNavUeTLiX1JJalZVPoyC67HQ06CS3JXp
-         1594In5tJ1lUoD3oFsbOQA3mAMdr0MBBMZ+s75wIkaGVwp1vc03JKLFomZLxfYwObw/3
-         jAdzwzvadCEb9Knf5YyKSy/ExB/N/ZNEHjXRlShh+9Ec8dcOLh+cI+FHN2oLf7+N/6cZ
-         MRLA==
-X-Gm-Message-State: AOAM531Z4TfVUX/ZmoIIH4Kw8dWKEcKBkM7C3TMw/1+/Gfs7bSDyYCM8
-	0ClyqTkHIDbd9X6rYlWTnua3v68uCLtyNpVzzFNoKQ==
-X-Google-Smtp-Source: ABdhPJxITt/efLBkq95i80mcb9oIyWuYzxw9J5aGNzauqKnvtajKm4g4rk1b0/f5dRz8ytVDnFzLp7XZtmKew04DShM=
-X-Received: by 2002:aca:bf0b:: with SMTP id p11mr12810490oif.6.1607943236852;
- Mon, 14 Dec 2020 02:53:56 -0800 (PST)
+        bh=9zBbjeqOrjsR5zZDwDOL8/2XryywYId3kL3Yio3K4EQ=;
+        b=fiQ31FA4vrcdf6tYMSsJpGCSj0HjHhx87KtpQm0lC70zupzR9RbhfxZlw+ackvoKL5
+         eJns3uWwg+xtjCDIhVmstQ2NblC+EPhbaRTbgNlYCJHBnm+lOimlt2qaSL/sHA+x9yim
+         9FQsR6xVgXCZ8NOeQJJngKCkqLMoK8kNgE4YPPJr+Uw472zp3D48AqfGGTaLkTIpNgcj
+         NwZiBOe2iJlpnLjKfmdby3jQA4MC/lDdByLL3GSoUg7bld2I2YNmwNwjkbqV8Z/uJCIH
+         1bcGRivG1N/EC2rN1i20S3jbqNyTnO7bjpG0w9el7GZZ2T2FCKAr+w/AtlcDYc8yLHuM
+         Dpcw==
+X-Gm-Message-State: AOAM532vQzVTQtto+2xIBhFGL+ZrBy4MuFU+aUZ/jaP+bExpoBf98+Se
+	4Dj52B9VrRS7DWFVxD5X3HpbPDeDY+rWTlTeF8DpYQ==
+X-Google-Smtp-Source: ABdhPJxlqK0V9nW+3RSNHr62aEPP3lPgKosZawqbWSc2zoR+JTUUAVYAtoRhC3NnPR9q8aCNBhUUJn+Htp1eQ1ifCgg=
+X-Received: by 2002:a9d:7a4b:: with SMTP id z11mr19133098otm.305.1607944195072;
+ Mon, 14 Dec 2020 03:09:55 -0800 (PST)
 MIME-Version: 1.0
-References: <20201212203707.7428-1-pbarker@konsulko.com> <20201212203707.7428-4-pbarker@konsulko.com>
- <20201214094519.qqfadyj2rf5xmr4k@qschulz>
-In-Reply-To: <20201214094519.qqfadyj2rf5xmr4k@qschulz>
+References: <20201212203707.7428-1-pbarker@konsulko.com> <20201212203707.7428-3-pbarker@konsulko.com>
+ <20201214093557.rtilbhenivneos2s@qschulz>
+In-Reply-To: <20201214093557.rtilbhenivneos2s@qschulz>
 From: "Paul Barker" <pbarker@konsulko.com>
-Date: Mon, 14 Dec 2020 10:53:46 +0000
-Message-ID: <CAM9ZRVv5UOYDAJJWuW7Pdwpb1n2FNMiO9BtPTro+-HYDjaBjhw@mail.gmail.com>
-Subject: Re: [docs] [PATCH 4/4] documentation: Use https links where possible
+Date: Mon, 14 Dec 2020 11:09:44 +0000
+Message-ID: <CAM9ZRVunBWdk26368kWYMEUkPZGpNHV3V3HAq-iYhLRkdqFxZw@mail.gmail.com>
+Subject: Re: [docs] [PATCH 3/4] documentation: Simplify remaining yocto_home links
 To: Quentin Schulz <quentin.schulz@streamunlimited.com>
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 14 Dec 2020 at 09:45, Quentin Schulz
+On Mon, 14 Dec 2020 at 09:36, Quentin Schulz
 <quentin.schulz@streamunlimited.com> wrote:
 >
 > Hi Paul,
 >
-> On Sat, Dec 12, 2020 at 08:37:07PM +0000, Paul Barker wrote:
+> On Sat, Dec 12, 2020 at 08:37:06PM +0000, Paul Barker wrote:
 > > Signed-off-by: Paul Barker <pbarker@konsulko.com>
 > > ---
-> >  documentation/README                          |  8 ++--
-> >  documentation/boilerplate.rst                 |  2 +-
-> >  documentation/brief-yoctoprojectqs/index.rst  |  2 +-
-> >  documentation/dev-manual/common-tasks.rst     |  2 +-
-> >  .../development-environment.rst               | 22 +++++-----
-> >  documentation/overview-manual/yp-intro.rst    |  4 +-
-> >  documentation/profile-manual/usage.rst        | 44 +++++++++----------
-> >  documentation/ref-manual/classes.rst          |  4 +-
-> >  documentation/ref-manual/faq.rst              |  6 +--
-> >  documentation/ref-manual/images.rst           |  4 +-
-> >  documentation/ref-manual/kickstart.rst        |  4 +-
-> >  documentation/ref-manual/migration-2.1.rst    |  2 +-
-> >  documentation/ref-manual/migration-2.2.rst    |  2 +-
-> >  documentation/ref-manual/migration-2.3.rst    |  2 +-
-> >  documentation/ref-manual/migration-2.7.rst    |  2 +-
-> >  documentation/ref-manual/qa-checks.rst        |  2 +-
-> >  documentation/ref-manual/resources.rst        |  4 +-
-> >  documentation/ref-manual/variables.rst        | 20 ++++-----
-> >  documentation/sdk-manual/intro.rst            |  2 +-
-> >  documentation/toaster-manual/reference.rst    |  4 +-
-> >  20 files changed, 71 insertions(+), 71 deletions(-)
+> >  documentation/conf.py                      |  2 +-
+> >  documentation/dev-manual/common-tasks.rst  |  4 ++--
+> >  documentation/overview-manual/concepts.rst | 15 ++++++---------
+> >  documentation/profile-manual/usage.rst     |  5 ++---
+> >  4 files changed, 11 insertions(+), 15 deletions(-)
 > >
-> > diff --git a/documentation/README b/documentation/README
-> > index b0a3cb1dc..be03bb119 100644
-> > --- a/documentation/README
-> > +++ b/documentation/README
-> > @@ -2,7 +2,7 @@ documentation
-> >  =============
+> > diff --git a/documentation/conf.py b/documentation/conf.py
+> > index 57b9b6fd6..3b198cd06 100644
+> > --- a/documentation/conf.py
+> > +++ b/documentation/conf.py
+> > @@ -68,7 +68,7 @@ rst_prolog = """
 > >
-> >  This is the directory that contains the Yocto Project documentation.  The Yocto
-> > -Project source repositories at http://git.yoctoproject.org/cgit.cgi have two
-> > +Project source repositories at https://git.yoctoproject.org/cgit.cgi have two
-> >  instances of the "documentation" directory.  You should understand each of
-> >  these instances.
+> >  # external links and substitutions
+> >  extlinks = {
+> > -    'yocto_home': ('https://yoctoproject.org%s', None),
+> > +    'yocto_home': ('https://www.yoctoproject.org%s', None),
+> >      'yocto_wiki': ('https://wiki.yoctoproject.org/wiki%s', None),
+> >      'yocto_dl': ('https://downloads.yoctoproject.org%s', None),
+> >      'yocto_lists': ('https://lists.yoctoproject.org%s', None),
+> > diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+> > index 79acb8671..30761c3c6 100644
+> > --- a/documentation/dev-manual/common-tasks.rst
+> > +++ b/documentation/dev-manual/common-tasks.rst
+> > @@ -321,7 +321,7 @@ Logo for your layer and application. The process consists of two parts:
+> >     successful compatibility registration.
 > >
-> > @@ -47,12 +47,12 @@ Folders exist for individual manuals as follows:
-> >  Each folder is self-contained regarding content and figures.
+> >  2. Completion of an application acceptance form, which you can find at
+> > -   https://www.yoctoproject.org/webform/yocto-project-compatible-registration.
+> > +   :yocto_home:`/webform/yocto-project-compatible-registration`.
 > >
-> >  If you want to find HTML versions of the Yocto Project manuals on the web,
-> > -go to http://www.yoctoproject.org and click on the "Documentation" tab.  From
-> > +go to https://www.yoctoproject.org and click on the "Documentation" tab.  From
->
-> :yocto_home:`<>`?
-
-This can't be used in the README file as it's not an rst document. It
-also needs to be understandable for someone viewing it in plain text.
-
->
-> >  there you have access to archived documentation from previous releases, current
-> >  documentation for the latest release, and "Docs in Progress" for the release
-> >  currently being developed.
+> >  To be granted permission to use the logo, you need to satisfy the
+> >  following:
+> > @@ -345,7 +345,7 @@ application, you can use the Yocto Project Compatibility Logo with your
+> >  layer and the application that uses your layer.
 > >
-> > -In general, the Yocto Project site (http://www.yoctoproject.org) is a great
-> > +In general, the Yocto Project site (https://www.yoctoproject.org) is a great
->
-> Ditto.
-
-As above.
-
->
-> >  reference for both information and downloads.
+> >  To access the form, use this link:
+> > -https://www.yoctoproject.org/webform/yocto-project-compatible-registration.
+> > +:yocto_home:`/webform/yocto-project-compatible-registration`.
+> >  Follow the instructions on the form to complete your application.
 > >
-> >  poky.yaml
-> > @@ -228,7 +228,7 @@ content:
+> >  The application consists of the following sections:
+> > diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+> > index b51f2a6d1..01c0d5de5 100644
+> > --- a/documentation/overview-manual/concepts.rst
+> > +++ b/documentation/overview-manual/concepts.rst
+> > @@ -141,11 +141,10 @@ hardware-specific configurations allows you to share other metadata by
+> >  using a different layer where that metadata might be common across
+> >  several pieces of hardware.
 > >
-> >  Variables can be nested, like it was the case for DocBook:
+> > -Many layers exist that work in the Yocto Project development
+> > -environment. The `Yocto Project Curated Layer
+> > -Index <https://www.yoctoproject.org/software-overview/layers/>`__
+> > -and :oe_layerindex:`OpenEmbedded Layer Index <>`
+> > -both contain layers from which you can use or leverage.
+> > +Many layers exist that work in the Yocto Project development environment. The
+> > +:yocto_home:`Yocto Project Curated Layer Index </software-overview/layers/>`
+> > +and :oe_layerindex:`OpenEmbedded Layer Index <>` both contain layers from
+> > +which you can use or leverage.
 > >
-> > -  YOCTO_HOME_URL : "http://www.yoctoproject.org"
-> > +  YOCTO_HOME_URL : "https://www.yoctoproject.org"
->
-> Ditto.
-
-As above.
-
->
-> [...]
-> > diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-> > index 4da55a83d..0ec7e2b96 100644
-> > --- a/documentation/overview-manual/yp-intro.rst
-> > +++ b/documentation/overview-manual/yp-intro.rst
-> > @@ -368,7 +368,7 @@ activities using the Yocto Project:
+> >  By convention, layers in the Yocto Project follow a specific form.
+> >  Conforming to a known structure allows BitBake to make assumptions
+> > @@ -2093,10 +2092,8 @@ The capability to run tasks in a fake root environment is known as
+> >  the BitBake keyword/variable flag that requests a fake root environment
+> >  for a task.
 > >
-> >  -  *Patchwork:* `Patchwork <http://jk.ozlabs.org/projects/patchwork/>`__
+> > -In the :term:`OpenEmbedded Build System`,
+> > -the program that
+> > -implements fakeroot is known as
+> > -`Pseudo <https://www.yoctoproject.org/software-item/pseudo/>`__. Pseudo
+> > +In the :term:`OpenEmbedded Build System`, the program that implements
+> > +fakeroot is known as :yocto_home:`Pseudo </software-item/pseudo/>`. Pseudo
+> >  overrides system calls by using the environment variable ``LD_PRELOAD``,
+> >  which results in the illusion of running as root. To keep track of
+> >  "fake" file ownership and permissions resulting from operations that
+> > diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
+> > index 418f4e993..0da408443 100644
+> > --- a/documentation/profile-manual/usage.rst
+> > +++ b/documentation/profile-manual/usage.rst
+> > @@ -1159,9 +1159,8 @@ e.g. 'perf help' or 'perf help record'.
+> >
+> >  However, by default Yocto doesn't install man pages, but perf invokes
+> >  the man pages for most help functionality. This is a bug and is being
+> > -addressed by a Yocto bug: `Bug 3388 - perf: enable man pages for basic
+> > -'help'
+> > -functionality <https://bugzilla.yoctoproject.org/show_bug.cgi?id=3388>`__.
+> > +addressed by a Yocto bug: :yocto_bugs:`Bug 3388 - perf: enable man pages for
+> > +basic 'help' functionality </show_bug.cgi?id=3388>`.
+> >
 >
-> This is a broken link (was wondering why you didn't switch it to https).
-> Might want to contact ozlabs about that since they still point to this
-> link on patchwork.ozlabs.org (footer).
+> Can you send a separate patch for this one file's diff please? It's nothing
+> to do with :yocto_home:.
 
-That's outside the scope of this patch but yes that would be a good follow up.
+Will do.
 
 >
-> [...]
-> > diff --git a/documentation/ref-manual/migration-2.2.rst b/documentation/ref-manual/migration-2.2.rst
-> > index ac247dce4..558a0ad45 100644
-> > --- a/documentation/ref-manual/migration-2.2.rst
-> > +++ b/documentation/ref-manual/migration-2.2.rst
-> > @@ -29,7 +29,7 @@ introduces the new :term:`SYSROOT_DIRS`,
-> >  :term:`SYSROOT_DIRS_NATIVE`, and
-> >  :term:`SYSROOT_DIRS_BLACKLIST`. See the
-> >  `v2 patch series on the OE-Core Mailing
-> > -List <http://lists.openembedded.org/pipermail/openembedded-core/2016-May/121365.html>`__
-> > +List <https://lists.openembedded.org/pipermail/openembedded-core/2016-May/121365.html>`__
->
-> :oe_lists:`/pipermail/openembedded-core/2016-May/121365.html`?
+> Also, have you checked that the :yocto_home: URL change didn't break any
+> URL? (Execute `make linkcheck` IIRC, it takes some time).
 
-I'll fix this one and send a v2.
+Yes, I tested the changes with `make linkcheck`.
 
-Thanks,
+Cheers,
 
 -- 
 Paul Barker
