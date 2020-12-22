@@ -1,89 +1,100 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
- by mx.groups.io with SMTP id smtpd.web11.9702.1608631238541144051
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+ by mx.groups.io with SMTP id smtpd.web08.10284.1608637239691055480
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Dec 2020 02:00:38 -0800
+ Tue, 22 Dec 2020 03:40:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=XR+Ns12q;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f44.google.com with SMTP id r4so1582978wmh.5
-        for <docs@lists.yoctoproject.org>; Tue, 22 Dec 2020 02:00:38 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=HE/XCOJk;
+ spf=pass (domain: linaro.org, ip: 209.85.218.54, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ej1-f54.google.com with SMTP id lt17so17848140ejb.3
+        for <docs@lists.yoctoproject.org>; Tue, 22 Dec 2020 03:40:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=4YlYtdpEMnmIFWXQgDn/pfGncmMu41NkTk0sB8XcMJw=;
-        b=XR+Ns12qub8lkWd4LokuoI8NSIBpIKTV+uah+yrPt/JapzioEpnI9KgaH2+T+zPzNm
-         Rya13YLX5jyHWk+UYzpPSb1CBlAfFLvM70S/qWx8MYBixDHFan2Jy6BXksdtfu1a3rAA
-         RQMunMsvVC1uBbjyjjTylJxHEKl67s8BZDs/4=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=qWZPq10WK302NjZQEVEez/hgeZIqrkjwydIiQrbz11M=;
+        b=HE/XCOJkv64gmsYNO0SsBaJ/4lB2afzmIrFTJb7pwuBf4FYtVdVjtWBMOHFngOO1/q
+         BOOobRqwdfEsZBQzJBRrn01jBle19rx6mpgMd+zczP0MVd6YDQLcrlAT81ma/IR6ioxR
+         di4cL22FExPXmujdArm9lOssJbYEAQYMvZ8WNzFzYB4KGP7lYHh4Rq0MWuNgMvAE2CSb
+         4056OANKDzMh6in/M3IdfjuULsE5ou6ewbCj5bUBe6SeKtRcAYNKYCgoCHq87C7pXiRc
+         7DWPEcISHUm6SnacqIU+5RI2gYnDIg08niE8UbCefZe59lzvZbn39NCgrpRIr7qLz43C
+         n+Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=4YlYtdpEMnmIFWXQgDn/pfGncmMu41NkTk0sB8XcMJw=;
-        b=G0KRmF5lf8GoD2AgU1+6EgmtyKamOZXVasO8rKDRRR7thjDZ/RcZiwDwQu4GpGZej0
-         4XVH44VCeHHk801dd19vtCZZW3x8s/7t/mjeWgKc35XGKtvwu0mQngi9g6y9J3n+8zS9
-         HnegWguisTnpKKlu+FgW1Z/Wi7iflSsNfz0v1TGmVAV63AhhL2q70/Q85tY72GjK7bz6
-         IulvU4N8yL889Yz8u3rSAsQsJaLJRCjEW8Rh/0irttQNaRgyOtGhhvRlXtfA0wHUfpPn
-         pw6h4pAF36d7e3YG7lkjJ3R4EDIURCQefL1deBXY6Om0OybBQ51AJB+WC8cQwCbeSoTV
-         0rVA==
-X-Gm-Message-State: AOAM5337l9bg7gQAcWAmZF+vQh+2BLpz49pf5ai4DnjrxlJJHTDke3Tq
-	zJDWs57YkD6cNktcL8TUDohhbG6/j4ABhQ==
-X-Google-Smtp-Source: ABdhPJybRSWOFYUam3blQaGif7Ta520MO+ecBfKNB1BgtYRjnRW4wxqj4Ibln7X/2NylqBqCbJNQHQ==
-X-Received: by 2002:a7b:c259:: with SMTP id b25mr21221441wmj.40.1608631237200;
-        Tue, 22 Dec 2020 02:00:37 -0800 (PST)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from b.b.4.9.2.e.e.0.9.c.7.7.e.d.7.6.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa (b.b.4.9.2.e.e.0.9.c.7.7.e.d.7.6.c.3.f.5.a.b.a.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:aba:5f3c:67de:77c9:ee2:94bb])
-        by smtp.gmail.com with ESMTPSA id a65sm26064061wmc.35.2020.12.22.02.00.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Dec 2020 02:00:36 -0800 (PST)
-Message-ID: <bfffdf9b9c3a3e4a6695ea4fd8d6eb9ffa7c5e98.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 0/5] fitimage-related changes
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>, Paul Eggleton
-	 <paul.eggleton@linux.microsoft.com>
-Cc: docs@lists.yoctoproject.org
-Date: Tue, 22 Dec 2020 10:00:36 +0000
-In-Reply-To: <20201222094106.rq7hie6oiiudpry4@qschulz>
-References: <cover.1608598606.git.paul.eggleton@linux.microsoft.com>
-	 <20201222094106.rq7hie6oiiudpry4@qschulz>
-User-Agent: Evolution 3.38.1-1 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=qWZPq10WK302NjZQEVEez/hgeZIqrkjwydIiQrbz11M=;
+        b=InL0W2maqloOdJ6+L5MYtPKjuZ1gZYhAtZgDN7wY5S1TKGKwV68iRd4Tn1W3i96roc
+         sKJ1Y8/2LJTDqkJxgrmRZ8k65eaQHFHn2HaAPyov1hJSd8NbUBbb2eIfiEDUP7hA21n6
+         5YdVLviIZe1CeqyIVFazZc91j1q1N49k3UATeS8AcUNdhdjywmWK4qxIaIAyN3q4XtT+
+         HTzqhIT5HCxaiy8pwuHuSid1U9n5jmamHPtK2SxD4EO4CADxKDogOL8X+Oc+SoUdN/es
+         esDVJPwEPXj5dgjV9P975Ozvv7GrgN4izQJ6K/nNxHBZj9Yt+DMTMyuDPfm7KdCmnLWS
+         h+Ew==
+X-Gm-Message-State: AOAM532Z/0OIHGq/MecfP8FmNrmID/rtnjGDE5xIDqpHI7y9i5WHFA85
+	VaIFCO79Jvtn2uJpK+Vu3set8INZwVAy208IZFxAPw==
+X-Google-Smtp-Source: ABdhPJyDNDOPRwzjzv43JCbGWx6xTlLfzLuhhvc0oLs3nYkbvytmiHQOlUYUhcXlreCMb25AbU+/wYgPxwbIjSkUI74=
+X-Received: by 2002:a17:907:4126:: with SMTP id mx6mr19215921ejb.91.1608637237929;
+ Tue, 22 Dec 2020 03:40:37 -0800 (PST)
 MIME-Version: 1.0
+References: <cover.1608598606.git.paul.eggleton@linux.microsoft.com>
+ <2a491bf195731319b9fa3bca15b95f7ce8342af5.1608598606.git.paul.eggleton@linux.microsoft.com>
+ <20201222093924.gdmvccls6xd7bme7@qschulz>
+In-Reply-To: <20201222093924.gdmvccls6xd7bme7@qschulz>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Tue, 22 Dec 2020 12:40:27 +0100
+Message-ID: <CAP71Wjy-yTnQ=02bu_VXfbqSCuwBFSQ2=Y42zZ0LK1hezXv84w@mail.gmail.com>
+Subject: Re: [docs] [PATCH 4/5] variables: Add documentation for new kernel-fitimage vars
+To: Quentin Schulz <quentin.schulz@streamunlimited.com>
+Cc: Paul Eggleton <paul.eggleton@linux.microsoft.com>, 
+	YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
 
-On Tue, 2020-12-22 at 10:41 +0100, Quentin Schulz wrote:
+On Tue, Dec 22, 2020 at 10:39 AM Quentin Schulz
+<quentin.schulz@streamunlimited.com> wrote:
+>
 > Hi Paul,
+>
+> On Mon, Dec 21, 2020 at 05:06:03PM -0800, Paul Eggleton wrote:
+> > From: Paul Eggleton <paul.eggleton@microsoft.com>
+> >
+> > Add documentation for FIT_DESC, FIT_SIGN_INDIVIDUAL, UBOOT_MKIMAGE,
+> > UBOOT_MKIMAGE_SIGN and UBOOT_MKIMAGE_SIGN_ARGS.
+> >
+> > Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+> > ---
+> >  documentation/ref-manual/variables.rst | 33 +++++++++++++++++++++++++++++++++
+> >  1 file changed, 33 insertions(+)
+> >
+> > diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> > index 8f7f86e..607ebfe 100644
+> > --- a/documentation/ref-manual/variables.rst
+> > +++ b/documentation/ref-manual/variables.rst
+> > @@ -2538,6 +2538,14 @@ system and gives an overview of their function and contents.
+> >        For guidance on how to create your own file permissions settings
+> >        table file, examine the existing ``fs-perms.txt``.
+> >
+> > +   :term:`FIT_DESC`
+> > +      Specifies the description string encoded into a fitImage. The default
+> > +      value is set by the :ref:`kernel-fitimage <ref-classes-kernel-fitimage>`
+> > +      class as follows:
+> > +      ::
+>
+> The two lines above have the same outcome as:
+>
+> class as follows::
+>
+> IIRC. I don't remember if a patch was sent by Robert recently nor if it
+> was merged (does not seem so?) but we strive for consistency on this one
+> by having all :\n:: migrated to :: at the end of a paragraph.
+>
+> c.f.: https://lists.yoctoproject.org/g/docs/message/557
+
+We agreed to do it, I haven't seen any updates/response on that
+thread. So as of now, it's not done..
+As such, I don't think it's blocking for new patches.
+
+>
+> Thanks,
+> Quentin
+>
 > 
-> On Mon, Dec 21, 2020 at 05:05:59PM -0800, Paul Eggleton wrote:
-> > Doc changes corresponding to patches for kernel-fitimage class that
-> > were
-> > recently merged to master, as well as some related tweaks.
-> > 
-> > 
-> > The following changes since commit
-> > b268b1b190861cb203fa642e57794acb402280a7:
-> > 
-> >   releases: conf: add link to 3.2.1, update to include 3.2.1 (2020-
-> > 12-15 10:59:41 -0800)
-> > 
-> > are available in the git repository at:
-> > 
-> >   git://git.yoctoproject.org/poky-contrib paule/fitimage-docs
-> >   
-> > http://git.yoctoproject.org/cgit.cgi/poky-contrib/log/?h=paule/fitimage-docs
-> > 
-> > Paul Eggleton (5):
-> >   classes: minor corrections to kernel-fitimage section
-> >   variables: clarify KERNEL_ALT_IMAGETYPE reference
-> >   variables: explicitly state that UBOOT_MKIMAGE_DTCOPTS is
-> > optional
-> >   variables: Add documentation for new kernel-fitimage vars
-> 
-> Except for the small :\n:: issue in this one ^:
-
-I tweaked that as I queued the patches on master-next...
-
-Cheers,
-
-Richard
-
+>
