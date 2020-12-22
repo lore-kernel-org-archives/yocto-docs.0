@@ -1,62 +1,50 @@
 Received: from bsmtp2.bon.at (bsmtp2.bon.at [213.33.87.16])
- by mx.groups.io with SMTP id smtpd.web08.9435.1608629969546938343
+ by mx.groups.io with SMTP id smtpd.web11.9542.1608630069971094912
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Dec 2020 01:39:30 -0800
+ Tue, 22 Dec 2020 01:41:10 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.16, mailfrom: quentin.schulz@streamunlimited.com)
 Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp2.bon.at (Postfix) with ESMTPSA id 4D0WWf28HXz5tlN;
-	Tue, 22 Dec 2020 10:39:26 +0100 (CET)
-Date: Tue, 22 Dec 2020 10:39:24 +0100
+	by bsmtp2.bon.at (Postfix) with ESMTPSA id 4D0WYb6DnPz5tlL;
+	Tue, 22 Dec 2020 10:41:07 +0100 (CET)
+Date: Tue, 22 Dec 2020 10:41:06 +0100
 From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
 To: Paul Eggleton <paul.eggleton@linux.microsoft.com>
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 4/5] variables: Add documentation for new kernel-fitimage vars
-Message-ID: <20201222093924.gdmvccls6xd7bme7@qschulz>
+Subject: Re: [docs] [PATCH 0/5] fitimage-related changes
+Message-ID: <20201222094106.rq7hie6oiiudpry4@qschulz>
 References: <cover.1608598606.git.paul.eggleton@linux.microsoft.com>
- <2a491bf195731319b9fa3bca15b95f7ce8342af5.1608598606.git.paul.eggleton@linux.microsoft.com>
 MIME-Version: 1.0
-In-Reply-To: <2a491bf195731319b9fa3bca15b95f7ce8342af5.1608598606.git.paul.eggleton@linux.microsoft.com>
+In-Reply-To: <cover.1608598606.git.paul.eggleton@linux.microsoft.com>
 User-Agent: NeoMutt/20180716
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Paul,
 
-On Mon, Dec 21, 2020 at 05:06:03PM -0800, Paul Eggleton wrote:
-> From: Paul Eggleton <paul.eggleton@microsoft.com>
+On Mon, Dec 21, 2020 at 05:05:59PM -0800, Paul Eggleton wrote:
+> Doc changes corresponding to patches for kernel-fitimage class that were
+> recently merged to master, as well as some related tweaks.
 > 
-> Add documentation for FIT_DESC, FIT_SIGN_INDIVIDUAL, UBOOT_MKIMAGE,
-> UBOOT_MKIMAGE_SIGN and UBOOT_MKIMAGE_SIGN_ARGS.
 > 
-> Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
-> ---
->  documentation/ref-manual/variables.rst | 33 +++++++++++++++++++++++++++++++++
->  1 file changed, 33 insertions(+)
+> The following changes since commit b268b1b190861cb203fa642e57794acb402280a7:
 > 
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 8f7f86e..607ebfe 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -2538,6 +2538,14 @@ system and gives an overview of their function and contents.
->        For guidance on how to create your own file permissions settings
->        table file, examine the existing ``fs-perms.txt``.
->  
-> +   :term:`FIT_DESC`
-> +      Specifies the description string encoded into a fitImage. The default
-> +      value is set by the :ref:`kernel-fitimage <ref-classes-kernel-fitimage>`
-> +      class as follows:
-> +      ::
+>   releases: conf: add link to 3.2.1, update to include 3.2.1 (2020-12-15 10:59:41 -0800)
+> 
+> are available in the git repository at:
+> 
+>   git://git.yoctoproject.org/poky-contrib paule/fitimage-docs
+>   http://git.yoctoproject.org/cgit.cgi/poky-contrib/log/?h=paule/fitimage-docs
+> 
+> Paul Eggleton (5):
+>   classes: minor corrections to kernel-fitimage section
+>   variables: clarify KERNEL_ALT_IMAGETYPE reference
+>   variables: explicitly state that UBOOT_MKIMAGE_DTCOPTS is optional
+>   variables: Add documentation for new kernel-fitimage vars
 
-The two lines above have the same outcome as:
+Except for the small :\n:: issue in this one ^:
 
-class as follows::
+Reviewed-by: Quentin Schulz <quentin.schulz@streamunlimited.com>
 
-IIRC. I don't remember if a patch was sent by Robert recently nor if it
-was merged (does not seem so?) but we strive for consistency on this one
-by having all :\n:: migrated to :: at the end of a paragraph.
-
-c.f.: https://lists.yoctoproject.org/g/docs/message/557
-
-Thanks,
+Thanks!
 Quentin
