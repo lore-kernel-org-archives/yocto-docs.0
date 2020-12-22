@@ -1,690 +1,741 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
- by mx.groups.io with SMTP id smtpd.web09.12847.1608651042966842388
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+ by mx.groups.io with SMTP id smtpd.web09.14169.1608656333017874350
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Dec 2020 07:30:43 -0800
+ Tue, 22 Dec 2020 08:58:53 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@konsulko.com header.s=google header.b=lxymqpeD;
- spf=pass (domain: konsulko.com, ip: 209.85.128.54, mailfrom: pbarker@konsulko.com)
-Received: by mail-wm1-f54.google.com with SMTP id r4so2541302wmh.5
-        for <docs@lists.yoctoproject.org>; Tue, 22 Dec 2020 07:30:42 -0800 (PST)
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=ZMMAoLYT;
+ spf=softfail (domain: sakoman.com, ip: 209.85.216.51, mailfrom: steve@sakoman.com)
+Received: by mail-pj1-f51.google.com with SMTP id z12so1609639pjn.1
+        for <docs@lists.yoctoproject.org>; Tue, 22 Dec 2020 08:58:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=konsulko.com; s=google;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=I+BszGRzpIph2JzHZhORMKZuyMHuEZgXNJp9KGhNKnU=;
-        b=lxymqpeDNFln0Vjhv0nXlnoCqWbL72uSkYyrzy82r0cTcNxhgtnY9HQ+A0PFixMEJL
-         aCtBzsTHt7Ojx5tJF9f14ENua5m+iRMfXVKUm55PAG8huSzIQrsg8NtgSbtAP9HmBKUi
-         /D1qzeXYhJ6JokVsH3wq7W8aWoAVLihLHxfvA=
+        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id;
+        bh=y3s++O9CgauWKbMD+xcZFsJ8Mb8DFHkYY2g4KraCjpo=;
+        b=ZMMAoLYTbdEWbBgwgUaELN0TwWbLQA7cfQZJowUfj3EkVYQsBDbmjsIqSBPbAp9ALG
+         chAAFrXDhcOMHuQWb3zPnMBJr9AZFWm7/XwrNqnOAu7qK0ASXxx5sQymHAvXZVQyb9dh
+         SIYOVJ1oxzDQ+bXLXU2sZGabES+JCCy+OfQW9GEaM5W9c4FzQjDdn8T7YFIAwsO+0mGP
+         Iyh/xDi79lss4/e00OeQpBgbDAfpSZX4mIy1/pXNXib+5cqErv3kVJPVjv0wpHzijcpV
+         1cGLNEPapY/LSheAXyfMRUZJjKuRvlZulaOrUtsFsZQWmuQo2XmfHdPCB/dymG2Tw0di
+         o0Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=I+BszGRzpIph2JzHZhORMKZuyMHuEZgXNJp9KGhNKnU=;
-        b=eTlG73z1zJTilGoKXd7JTCXzrWif1kf3IEdf4lzYhztRdvBaod4fPaML3ekQ+OLU6g
-         SrAFJBaKgme9hpS+iDeQXeh9usMC53VseJtjihOj5N+rVvTLmtMkmASBgQbNLdMYb5Ww
-         6STRexL48Zkhln9lztRUFCxiahJZtH9XpO5yRlVMVc0AdVrGzS2JL8+rK+zLoDTxVyDK
-         lX086my2PLIwzmKRjKU5IYVZIrzcHJq6h6waQXosQbjrJSWl/rtX9tqeH6Pt+OBJog0H
-         ugYY1QvR6IJNIAxROUwJhJk/Gy+ZTfGl6OH+cjfUc3icQ1xVOtcYbQp5obJiLgSj9Pxm
-         1tPQ==
-X-Gm-Message-State: AOAM530f+LcVEx3/ADRV8G5jElDCG81BWYrBWuENP1jf3dG5q1wBI2ps
-	5uRY32aHRAuX/Bdfdk/sO0II/e+9WpP51g==
-X-Google-Smtp-Source: ABdhPJzX2bmfhFeJJ1sd0FAbpEarkCxDFiLktT743Ca+uU2NOGs73bLUjkQyZRAwPsQb5dgyTah3Pw==
-X-Received: by 2002:a1c:741a:: with SMTP id p26mr23213582wmc.47.1608651040440;
-        Tue, 22 Dec 2020 07:30:40 -0800 (PST)
-Return-Path: <pbarker@konsulko.com>
-Received: from alpha.home.b5net.uk (cpc76148-clif11-2-0-cust524.12-4.cable.virginm.net. [82.1.54.13])
-        by smtp.gmail.com with ESMTPSA id g192sm27808276wme.48.2020.12.22.07.30.39
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=y3s++O9CgauWKbMD+xcZFsJ8Mb8DFHkYY2g4KraCjpo=;
+        b=kAEpMXV+0lhtbmudUHdtOXPYPIVPAC/ISClBoHZZBNXDDR9+x97Sr8Iw3jmxG3Suey
+         s1qYEnw1BsFxeGZoMtiyuYFqE6UQUG6Ghm5mOPqtDC+fZ8NMLQ+MNlCDhsZQmwYEibdy
+         DeaUB4p1CpGtNQJvwpvhq4Z5Ii4loLmASojx8Ps6cVeUYU2pMPCFvTMa5uoZRdNPplaP
+         mfK4gjcfMil+CIHofWMEbs/DkGCW8apPL7Y/BMNIPQw6UuElmGkXsA2l1KHP6wWxSJy+
+         mLAkxp9/Mu+E6rW3b7DUboh4LHUwIMVBZnBiIi/XKEdKdjgmU/PGntvBpOqx1wWOViV4
+         fwiQ==
+X-Gm-Message-State: AOAM532qF6k+j3HB4AVeAJlj6rXwWzp/gKE1MYEC5A5pEuH57t4Nm1U+
+	YZi08vNFQF999YRo1FlacJx4jefrwqmADnR+
+X-Google-Smtp-Source: ABdhPJxsHUjRMdLCOlHBIvRyTd3QRPq1GNCvQVzsXICb3MP6wx5Iq8Xn9Qrw3SV8DK70zjAjQT6aeA==
+X-Received: by 2002:a17:902:7b98:b029:db:fab3:e74b with SMTP id w24-20020a1709027b98b02900dbfab3e74bmr21545111pll.27.1608656331389;
+        Tue, 22 Dec 2020 08:58:51 -0800 (PST)
+Return-Path: <steve@sakoman.com>
+Received: from octo.router0800d9.com (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
+        by smtp.gmail.com with ESMTPSA id m8sm20216716pjr.39.2020.12.22.08.58.49
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Dec 2020 07:30:39 -0800 (PST)
-From: "Paul Barker" <pbarker@konsulko.com>
+        Tue, 22 Dec 2020 08:58:50 -0800 (PST)
+From: "Steve Sakoman" <steve@sakoman.com>
 To: docs@lists.yoctoproject.org
-Cc: Paul Barker <pbarker@konsulko.com>,
-	Richard Purdie <richard.purdie@linuxfoundation.org>
-Subject: [PATCH v3 6/6] documentation: Use https links where possible
-Date: Tue, 22 Dec 2020 15:30:32 +0000
-Message-Id: <20201222153032.6909-7-pbarker@konsulko.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20201222153032.6909-1-pbarker@konsulko.com>
-References: <20201222153032.6909-1-pbarker@konsulko.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: [yocto-docs][dunfell 00/48] Pull request (cover letter only)
+Date: Tue, 22 Dec 2020 06:58:41 -1000
+Message-Id: <cover.1608656278.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.17.1
 
-Signed-off-by: Paul Barker <pbarker@konsulko.com>
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
----
- documentation/README                          |  8 ++--
- documentation/boilerplate.rst                 |  2 +-
- documentation/brief-yoctoprojectqs/index.rst  |  2 +-
- documentation/dev-manual/common-tasks.rst     |  2 +-
- .../development-environment.rst               | 22 +++++-----
- documentation/overview-manual/yp-intro.rst    |  4 +-
- documentation/profile-manual/usage.rst        | 44 +++++++++----------
- documentation/ref-manual/classes.rst          |  4 +-
- documentation/ref-manual/faq.rst              |  6 +--
- documentation/ref-manual/images.rst           |  4 +-
- documentation/ref-manual/kickstart.rst        |  4 +-
- documentation/ref-manual/migration-2.1.rst    |  2 +-
- documentation/ref-manual/migration-2.3.rst    |  2 +-
- documentation/ref-manual/migration-2.7.rst    |  2 +-
- documentation/ref-manual/qa-checks.rst        |  2 +-
- documentation/ref-manual/resources.rst        |  4 +-
- documentation/ref-manual/variables.rst        | 20 ++++-----
- documentation/sdk-manual/intro.rst            |  2 +-
- documentation/toaster-manual/reference.rst    |  4 +-
- 19 files changed, 70 insertions(+), 70 deletions(-)
+The following changes since commit 8910ac1c7425bf6f3e1309571c620960d4456033:
 
-diff --git a/documentation/README b/documentation/README
-index b0a3cb1dc..be03bb119 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -2,7 +2,7 @@ documentation
- =============
- 
- This is the directory that contains the Yocto Project documentation.  The Yocto
--Project source repositories at http://git.yoctoproject.org/cgit.cgi have two
-+Project source repositories at https://git.yoctoproject.org/cgit.cgi have two
- instances of the "documentation" directory.  You should understand each of
- these instances.
- 
-@@ -47,12 +47,12 @@ Folders exist for individual manuals as follows:
- Each folder is self-contained regarding content and figures.
- 
- If you want to find HTML versions of the Yocto Project manuals on the web,
--go to http://www.yoctoproject.org and click on the "Documentation" tab.  From
-+go to https://www.yoctoproject.org and click on the "Documentation" tab.  From
- there you have access to archived documentation from previous releases, current
- documentation for the latest release, and "Docs in Progress" for the release
- currently being developed.
- 
--In general, the Yocto Project site (http://www.yoctoproject.org) is a great
-+In general, the Yocto Project site (https://www.yoctoproject.org) is a great
- reference for both information and downloads.
- 
- poky.yaml
-@@ -228,7 +228,7 @@ content:
- 
- Variables can be nested, like it was the case for DocBook:
- 
--  YOCTO_HOME_URL : "http://www.yoctoproject.org"
-+  YOCTO_HOME_URL : "https://www.yoctoproject.org"
-   YOCTO_DOCS_URL : "&YOCTO_HOME_URL;/docs"
- 
- Note directive
-diff --git a/documentation/boilerplate.rst b/documentation/boilerplate.rst
-index ddffdac24..2ad60eb8b 100644
---- a/documentation/boilerplate.rst
-+++ b/documentation/boilerplate.rst
-@@ -8,7 +8,7 @@
- 
- Permission is granted to copy, distribute and/or modify this document under the
- terms of the `Creative Commons Attribution-Share Alike 2.0 UK: England & Wales
--<http://creativecommons.org/licenses/by-sa/2.0/uk/>`_ as published by Creative
-+<https://creativecommons.org/licenses/by-sa/2.0/uk/>`_ as published by Creative
- Commons.
- 
- To report any inaccuracies or problems with this (or any other Yocto Project)
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index f077ee843..63083cb13 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -397,7 +397,7 @@ information including the website, wiki pages, and user manuals:
-    Development Community into which you can tap.
- 
- -  **Developer Screencast:** The `Getting Started with the Yocto Project -
--   New Developer Screencast Tutorial <http://vimeo.com/36450321>`__
-+   New Developer Screencast Tutorial <https://vimeo.com/36450321>`__
-    provides a 30-minute video created for users unfamiliar with the
-    Yocto Project but familiar with Linux build hosts. While this
-    screencast is somewhat dated, the introductory and fundamental
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 30761c3c6..e1dee8ecd 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -6043,7 +6043,7 @@ the Internet:
-    Botnet
- 
- -  *"*\ `Security Issues for Embedded
--   Devices <http://elinux.org/images/6/6f/Security-issues.pdf>`__\ *"*
-+   Devices <https://elinux.org/images/6/6f/Security-issues.pdf>`__\ *"*
-    by Jake Edge
- 
- When securing your image is of concern, there are steps, tools, and
-diff --git a/documentation/overview-manual/development-environment.rst b/documentation/overview-manual/development-environment.rst
-index 9a2997d9f..011a47957 100644
---- a/documentation/overview-manual/development-environment.rst
-+++ b/documentation/overview-manual/development-environment.rst
-@@ -40,7 +40,7 @@ project is the Windows family of operating systems developed by
- Microsoft Corporation.
- 
- Wikipedia has a good historical description of the Open Source
--Philosophy `here <http://en.wikipedia.org/wiki/Open_source>`__. You can
-+Philosophy `here <https://en.wikipedia.org/wiki/Open_source>`__. You can
- also find helpful information on how to participate in the Linux
- Community
- `here <https://www.kernel.org/doc/html/latest/process/index.html>`__.
-@@ -291,7 +291,7 @@ While each development environment is unique, there are some best
- practices or methods that help development run smoothly. The following
- list describes some of these practices. For more information about Git
- workflows, see the workflow topics in the `Git Community
--Book <http://book.git-scm.com>`__.
-+Book <https://book.git-scm.com>`__.
- 
- -  *Make Small Changes:* It is best to keep the changes you commit small
-    as compared to bundling many disparate changes into a single commit.
-@@ -368,12 +368,12 @@ commands.
- .. note::
- 
-    -  For more information on Git, see
--      http://git-scm.com/documentation.
-+      https://git-scm.com/documentation.
- 
-    -  If you need to download Git, it is recommended that you add Git to
-       your system through your distribution's "software store" (e.g. for
-       Ubuntu, use the Ubuntu Software feature). For the Git download
--      page, see http://git-scm.com/download.
-+      page, see https://git-scm.com/download.
- 
-    -  For information beyond the introductory nature in this section,
-       see the ":ref:`dev-manual/start:locating yocto project source files`"
-@@ -507,7 +507,7 @@ you can manage with a small set of basic operations and workflows once
- you understand the basic philosophy behind Git. You do not have to be an
- expert in Git to be functional. A good place to look for instruction on
- a minimal set of Git commands is
--`here <http://git-scm.com/documentation>`__.
-+`here <https://git-scm.com/documentation>`__.
- 
- The following list of Git commands briefly describes some basic Git
- operations as a way to get started. As with any set of commands, this
-@@ -614,10 +614,10 @@ and Free Software has an interesting history. If you are interested in
- this history, you can find basic information here:
- 
- -  `Open source license
--   history <http://en.wikipedia.org/wiki/Open-source_license>`__
-+   history <https://en.wikipedia.org/wiki/Open-source_license>`__
- 
- -  `Free software license
--   history <http://en.wikipedia.org/wiki/Free_software_license>`__
-+   history <https://en.wikipedia.org/wiki/Free_software_license>`__
- 
- In general, the Yocto Project is broadly licensed under the
- Massachusetts Institute of Technology (MIT) License. MIT licensing
-@@ -626,9 +626,9 @@ license is distributed with that software. MIT is also compatible with
- the GNU General Public License (GPL). Patches to the Yocto Project
- follow the upstream licensing scheme. You can find information on the
- MIT license
--`here <http://www.opensource.org/licenses/mit-license.php>`__. You can
-+`here <https://www.opensource.org/licenses/mit-license.php>`__. You can
- find information on the GNU GPL
--`here <http://www.opensource.org/licenses/LGPL-3.0>`__.
-+`here <https://www.opensource.org/licenses/LGPL-3.0>`__.
- 
- When you build an image using the Yocto Project, the build process uses
- a known list of licenses to ensure compliance. You can find this list in
-@@ -646,11 +646,11 @@ the developer to resolve potential licensing issues.
- 
- The base list of licenses used by the build process is a combination of
- the Software Package Data Exchange (SPDX) list and the Open Source
--Initiative (OSI) projects. `SPDX Group <http://spdx.org>`__ is a working
-+Initiative (OSI) projects. `SPDX Group <https://spdx.org>`__ is a working
- group of the Linux Foundation that maintains a specification for a
- standard format for communicating the components, licenses, and
- copyrights associated with a software package.
--`OSI <http://opensource.org>`__ is a corporation dedicated to the Open
-+`OSI <https://opensource.org>`__ is a corporation dedicated to the Open
- Source Definition and the effort for reviewing and approving licenses
- that conform to the Open Source Definition (OSD).
- 
-diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-index 4da55a83d..0ec7e2b96 100644
---- a/documentation/overview-manual/yp-intro.rst
-+++ b/documentation/overview-manual/yp-intro.rst
-@@ -368,7 +368,7 @@ activities using the Yocto Project:
- 
- -  *Patchwork:* `Patchwork <http://jk.ozlabs.org/projects/patchwork/>`__
-    is a fork of a project originally started by
--   `OzLabs <http://ozlabs.org/>`__. The project is a web-based tracking
-+   `OzLabs <https://ozlabs.org/>`__. The project is a web-based tracking
-    system designed to streamline the process of bringing contributions
-    into a project. The Yocto Project uses Patchwork as an organizational
-    tool to handle patches, which number in the thousands for every
-@@ -400,7 +400,7 @@ activities using the Yocto Project:
- 
-    Historically, cross-prelink is a variant of prelink, which was
-    conceived by `Jakub
--   Jelínek <http://people.redhat.com/jakub/prelink.pdf>`__ a number of
-+   Jelínek <https://people.redhat.com/jakub/prelink.pdf>`__ a number of
-    years ago. Both prelink and cross-prelink are maintained in the same
-    repository albeit on separate branches. By providing an emulated
-    runtime dynamic linker (i.e. ``glibc``-derived ``ld.so`` emulation),
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index 0da408443..b401cf904 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -39,7 +39,7 @@ other tools when it seems useful to do so.
- The coverage below details some of the most common ways you'll likely
- want to apply the tool; full documentation can be found either within
- the tool itself or in the man pages at
--`perf(1) <http://linux.die.net/man/1/perf>`__.
-+`perf(1) <https://linux.die.net/man/1/perf>`__.
- 
- Perf Setup
- ----------
-@@ -860,7 +860,7 @@ the right kind of trace data, higher-level profiling-type summaries can
- be derived from it.
- 
- Documentation on using the `'perf script' python
--binding <http://linux.die.net/man/1/perf-script-python>`__.
-+binding <https://linux.die.net/man/1/perf-script-python>`__.
- 
- System-Wide Tracing and Profiling
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-@@ -1136,23 +1136,23 @@ Perf Documentation
- Online versions of the man pages for the commands discussed in this
- section can be found here:
- 
---  The `'perf stat' manpage <http://linux.die.net/man/1/perf-stat>`__.
-+-  The `'perf stat' manpage <https://linux.die.net/man/1/perf-stat>`__.
- 
- -  The `'perf record'
--   manpage <http://linux.die.net/man/1/perf-record>`__.
-+   manpage <https://linux.die.net/man/1/perf-record>`__.
- 
- -  The `'perf report'
--   manpage <http://linux.die.net/man/1/perf-report>`__.
-+   manpage <https://linux.die.net/man/1/perf-report>`__.
- 
---  The `'perf probe' manpage <http://linux.die.net/man/1/perf-probe>`__.
-+-  The `'perf probe' manpage <https://linux.die.net/man/1/perf-probe>`__.
- 
- -  The `'perf script'
--   manpage <http://linux.die.net/man/1/perf-script>`__.
-+   manpage <https://linux.die.net/man/1/perf-script>`__.
- 
- -  Documentation on using the `'perf script' python
--   binding <http://linux.die.net/man/1/perf-script-python>`__.
-+   binding <https://linux.die.net/man/1/perf-script-python>`__.
- 
---  The top-level `perf(1) manpage <http://linux.die.net/man/1/perf>`__.
-+-  The top-level `perf(1) manpage <https://linux.die.net/man/1/perf>`__.
- 
- Normally, you should be able to invoke the man pages via perf itself
- e.g. 'perf help' or 'perf help record'.
-@@ -1718,7 +1718,7 @@ events':
- 
- The tool is pretty self-explanatory, but for more detailed information
- on navigating through the data, see the `kernelshark
--website <http://rostedt.homelinux.com/kernelshark/>`__.
-+website <https://rostedt.homelinux.com/kernelshark/>`__.
- 
- ftrace Documentation
- --------------------
-@@ -1736,19 +1736,19 @@ Documentation directory: ::
- There is a nice series of articles on using ftrace and trace-cmd at LWN:
- 
- -  `Debugging the kernel using Ftrace - part
--   1 <http://lwn.net/Articles/365835/>`__
-+   1 <https://lwn.net/Articles/365835/>`__
- 
- -  `Debugging the kernel using Ftrace - part
--   2 <http://lwn.net/Articles/366796/>`__
-+   2 <https://lwn.net/Articles/366796/>`__
- 
- -  `Secrets of the Ftrace function
--   tracer <http://lwn.net/Articles/370423/>`__
-+   tracer <https://lwn.net/Articles/370423/>`__
- 
- -  `trace-cmd: A front-end for
-    Ftrace <https://lwn.net/Articles/410200/>`__
- 
- There's more detailed documentation kernelshark usage here:
--`KernelShark <http://rostedt.homelinux.com/kernelshark/>`__
-+`KernelShark <https://rostedt.homelinux.com/kernelshark/>`__
- 
- An amusing yet useful README (a tracing mini-HOWTO) can be found in
- ``/sys/kernel/debug/tracing/README``.
-@@ -1763,7 +1763,7 @@ gather/print/aggregate data extracted from the context they end up being
- invoked under.
- 
- For example, this probe from the `SystemTap
--tutorial <http://sourceware.org/systemtap/tutorial/>`__ simply prints a
-+tutorial <https://sourceware.org/systemtap/tutorial/>`__ simply prints a
- line every time any process on the system open()s a file. For each line,
- it prints the executable name of the program that opened the file, along
- with its PID, and the name of the file it opened (or tried to open),
-@@ -1936,11 +1936,11 @@ systemtap Documentation
- -----------------------
- 
- The SystemTap language reference can be found here: `SystemTap Language
--Reference <http://sourceware.org/systemtap/langref/>`__
-+Reference <https://sourceware.org/systemtap/langref/>`__
- 
- Links to other SystemTap documents, tutorials, and examples can be found
- here: `SystemTap documentation
--page <http://sourceware.org/systemtap/documentation.html>`__
-+page <https://sourceware.org/systemtap/documentation.html>`__
- 
- Sysprof
- =======
-@@ -2214,7 +2214,7 @@ developers who are working in a Linux environment and are interested in
- efficient software tracing.
- 
- For information on LTTng in general, visit the `LTTng
--Project <http://lttng.org/lttng2.0>`__ site. You can find a "Getting
-+Project <https://lttng.org/lttng2.0>`__ site. You can find a "Getting
- Started" link on this site that takes you to an LTTng Quick Start.
- 
- blktrace
-@@ -2365,7 +2365,7 @@ first part of the filenames: ::
- The report shows each event that was
- found in the blktrace data, along with a summary of the overall block
- I/O traffic during the run. You can look at the
--`blkparse <http://linux.die.net/man/1/blkparse>`__ manpage to learn the
-+`blkparse <https://linux.die.net/man/1/blkparse>`__ manpage to learn the
- meaning of each field displayed in the trace listing.
- 
- Live Mode
-@@ -2564,11 +2564,11 @@ blktrace Documentation
- Online versions of the man pages for the commands discussed in this
- section can be found here:
- 
---  http://linux.die.net/man/8/blktrace
-+-  https://linux.die.net/man/8/blktrace
- 
---  http://linux.die.net/man/1/blkparse
-+-  https://linux.die.net/man/1/blkparse
- 
---  http://linux.die.net/man/8/btrace
-+-  https://linux.die.net/man/8/btrace
- 
- The above manpages, along with manpages for the other blktrace utilities
- (btt, blkiomon, etc) can be found in the /doc directory of the blktrace
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 5a30ce379..eb8b62702 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -278,7 +278,7 @@ The ``ccache`` class enables the C/C++ Compiler Cache for the build.
- This class is used to give a minor performance boost during the build.
- However, using the class can lead to unexpected side-effects. Thus, it
- is recommended that you do not use this class. See
--http://ccache.samba.org/ for information on the C/C++ Compiler
-+https://ccache.samba.org/ for information on the C/C++ Compiler
- Cache.
- 
- .. _ref-classes-chrpath:
-@@ -2581,7 +2581,7 @@ the :term:`SYSTEMD_BOOT_CFG`,
- :term:`SYSTEMD_BOOT_TIMEOUT` variables.
- 
- You can also see the `Systemd-boot
--documentation <http://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__
-+documentation <https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__
- for more information.
- 
- .. _ref-classes-terminal:
-diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
-index f67c53824..34b26ee3e 100644
---- a/documentation/ref-manual/faq.rst
-+++ b/documentation/ref-manual/faq.rst
-@@ -55,9 +55,9 @@ Yocto Project is fairly straightforward.
- **Q:** Are there any products built using the OpenEmbedded build system?
- 
- **A:** The software running on the `Vernier
--LabQuest <http://vernier.com/labquest/>`__ is built using the
-+LabQuest <https://vernier.com/labquest/>`__ is built using the
- OpenEmbedded build system. See the `Vernier
--LabQuest <http://www.vernier.com/products/interfaces/labq/>`__ website
-+LabQuest <https://www.vernier.com/products/interfaces/labq/>`__ website
- for more information. There are a number of pre-production devices using
- the OpenEmbedded build system and the Yocto Project team announces them
- as soon as they are released.
-@@ -273,7 +273,7 @@ OpenEmbedded build system to use its internally built toolchain (i.e.
- particular, "external-\*" refers to external toolchains. One example is
- the Sourcery G++ Toolchain. The support for this toolchain resides in
- the separate ``meta-sourcery`` layer at
--http://github.com/MentorEmbedded/meta-sourcery/.
-+https://github.com/MentorEmbedded/meta-sourcery/.
- 
- In addition to the toolchain configuration, you also need a
- corresponding toolchain recipe file. This recipe file needs to package
-diff --git a/documentation/ref-manual/images.rst b/documentation/ref-manual/images.rst
-index 5e9374eae..cf5cc1109 100644
---- a/documentation/ref-manual/images.rst
-+++ b/documentation/ref-manual/images.rst
-@@ -37,9 +37,9 @@ Following is a list of supported recipes:
-    all the pieces required to run builds using the build system as well
-    as the build system itself. You can boot and run the image using
-    either the `VMware
--   Player <http://www.vmware.com/products/player/overview.html>`__ or
-+   Player <https://www.vmware.com/products/player/overview.html>`__ or
-    `VMware
--   Workstation <http://www.vmware.com/products/workstation/overview.html>`__.
-+   Workstation <https://www.vmware.com/products/workstation/overview.html>`__.
-    For more information on this image, see the :yocto_home:`Build
-    Appliance </software-item/build-appliance>` page
-    on the Yocto Project website.
-diff --git a/documentation/ref-manual/kickstart.rst b/documentation/ref-manual/kickstart.rst
-index bb9c0460f..472820f16 100644
---- a/documentation/ref-manual/kickstart.rst
-+++ b/documentation/ref-manual/kickstart.rst
-@@ -24,7 +24,7 @@ The information lists the commands, their syntax, and meanings.
- Kickstart commands are based on the Fedora kickstart versions but with
- modifications to reflect Wic capabilities. You can see the original
- documentation for those commands at the following link:
--http://pykickstart.readthedocs.io/en/latest/kickstart-docs.html
-+https://pykickstart.readthedocs.io/en/latest/kickstart-docs.html
- 
- Command: part or partition
- ==========================
-@@ -164,7 +164,7 @@ the ``part`` and ``partition`` commands:
- -  ``--part-type``: This option is a Wic-specific option that
-    specifies the partition type globally unique identifier (GUID) for
-    GPT partitions. You can find the list of partition type GUIDs at
--   http://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_type_GUIDs.
-+   https://en.wikipedia.org/wiki/GUID_Partition_Table#Partition_type_GUIDs.
- 
- -  ``--use-uuid``: This option is a Wic-specific option that causes
-    Wic to generate a random GUID for the partition. The generated
-diff --git a/documentation/ref-manual/migration-2.1.rst b/documentation/ref-manual/migration-2.1.rst
-index e8b3ada26..861d04861 100644
---- a/documentation/ref-manual/migration-2.1.rst
-+++ b/documentation/ref-manual/migration-2.1.rst
-@@ -89,7 +89,7 @@ package-specific nesting should be done by the package itself. Finally,
- having ``libexecdir`` change between recipes makes it very difficult for
- different recipes to invoke binaries that have been installed into
- ``libexecdir``. The Filesystem Hierarchy Standard (i.e.
--http://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s07.html) now
-+https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch04s07.html) now
- recognizes the use of ``${prefix}/libexec/``, giving distributions the
- choice between ``${prefix}/lib`` or ``${prefix}/libexec`` without
- breaking FHS.
-diff --git a/documentation/ref-manual/migration-2.3.rst b/documentation/ref-manual/migration-2.3.rst
-index a52178b0c..04b11daa7 100644
---- a/documentation/ref-manual/migration-2.3.rst
-+++ b/documentation/ref-manual/migration-2.3.rst
-@@ -274,7 +274,7 @@ The following package management changes took place:
-    fixed.
- 
-    For more information, see the `DNF
--   Documentation <http://dnf.readthedocs.io/en/latest/>`__.
-+   Documentation <https://dnf.readthedocs.io/en/latest/>`__.
- 
- -  Rpm 5.x is replaced with Rpm 4.x. This is done for two major reasons:
- 
-diff --git a/documentation/ref-manual/migration-2.7.rst b/documentation/ref-manual/migration-2.7.rst
-index 7e628fc3e..5af5947ff 100644
---- a/documentation/ref-manual/migration-2.7.rst
-+++ b/documentation/ref-manual/migration-2.7.rst
-@@ -159,7 +159,7 @@ The following miscellaneous changes occurred:
-    from the top-level ``scripts`` directory.
- 
- -  Perl now builds for the target using
--   `perl-cross <http://arsv.github.io/perl-cross/>`_ for better
-+   `perl-cross <https://arsv.github.io/perl-cross/>`_ for better
-    maintainability and improved build performance. This change should
-    not present any problems unless you have heavily customized your Perl
-    recipe.
-diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
-index 54977dcb2..6cb767d93 100644
---- a/documentation/ref-manual/qa-checks.rst
-+++ b/documentation/ref-manual/qa-checks.rst
-@@ -227,7 +227,7 @@ Errors and Warnings
-       CFLAGS_append = " -fPIC "
- 
-    For more information on text relocations at runtime, see
--   http://www.akkadia.org/drepper/textrelocs.html.
-+   https://www.akkadia.org/drepper/textrelocs.html.
- 
-     
- .. _qa-check-ldflags:
-diff --git a/documentation/ref-manual/resources.rst b/documentation/ref-manual/resources.rst
-index 2c49c4e87..7554164d1 100644
---- a/documentation/ref-manual/resources.rst
-+++ b/documentation/ref-manual/resources.rst
-@@ -52,7 +52,7 @@ against the Yocto Project, see the following:
- 
- -  The Yocto Project :yocto_wiki:`Bugzilla wiki page </Bugzilla_Configuration_and_Bug_Tracking>`
- 
--For information on Bugzilla in general, see http://www.bugzilla.org/about/.
-+For information on Bugzilla in general, see https://www.bugzilla.org/about/.
- 
- .. _resources-mailinglist:
- 
-@@ -193,5 +193,5 @@ Here is a list of resources you might find helpful:
-    available for Yocto Project and Poky discussions: ``#yocto`` and
-    ``#poky``, respectively.
- 
---  `Quick EMUlator (QEMU) <http://wiki.qemu.org/Index.html>`__\ *:* An
-+-  `Quick EMUlator (QEMU) <https://wiki.qemu.org/Index.html>`__\ *:* An
-    open-source machine emulator and virtualizer.
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 8c6cc46b6..44e075ca4 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -2648,7 +2648,7 @@ system and gives an overview of their function and contents.
-          GROUPADD_PARAM_${PN} = "-r netdev"
- 
-       For information on the standard Linux shell command
--      ``groupadd``, see http://linux.die.net/man/8/groupadd.
-+      ``groupadd``, see https://linux.die.net/man/8/groupadd.
- 
-    :term:`GROUPMEMS_PARAM`
-       When inheriting the :ref:`useradd <ref-classes-useradd>` class,
-@@ -2657,7 +2657,7 @@ system and gives an overview of their function and contents.
-       of a group when the package is installed.
- 
-       For information on the standard Linux shell command ``groupmems``,
--      see http://linux.die.net/man/8/groupmems.
-+      see https://linux.die.net/man/8/groupmems.
- 
-    :term:`GRUB_GFXSERIAL`
-       Configures the GNU GRand Unified Bootloader (GRUB) to have graphics
-@@ -4679,7 +4679,7 @@ system and gives an overview of their function and contents.
-       See the :term:`KERNEL_MODULE_AUTOLOAD` variable for more information.
- 
-    module_conf
--      Specifies `modprobe.d <http://linux.die.net/man/5/modprobe.d>`_
-+      Specifies `modprobe.d <https://linux.die.net/man/5/modprobe.d>`_
-       syntax lines for inclusion in the ``/etc/modprobe.d/modname.conf``
-       file.
- 
-@@ -7604,7 +7604,7 @@ system and gives an overview of their function and contents.
-          SYSTEMD_BOOT_CFG ?= "${:term:`S`}/loader.conf"
- 
-       For information on Systemd-boot, see the `Systemd-boot
--      documentation <http://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
-+      documentation <https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
- 
-    :term:`SYSTEMD_BOOT_ENTRIES`
-       When :term:`EFI_PROVIDER` is set to
-@@ -7618,7 +7618,7 @@ system and gives an overview of their function and contents.
-           SYSTEMD_BOOT_ENTRIES ?= ""
- 
-       For information on Systemd-boot, see the `Systemd-boot
--      documentation <http://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
-+      documentation <https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
- 
-    :term:`SYSTEMD_BOOT_TIMEOUT`
-       When :term:`EFI_PROVIDER` is set to
-@@ -7631,7 +7631,7 @@ system and gives an overview of their function and contents.
-          SYSTEMD_BOOT_TIMEOUT ?= "10"
- 
-       For information on Systemd-boot, see the `Systemd-boot
--      documentation <http://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
-+      documentation <https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
- 
-    :term:`SYSTEMD_PACKAGES`
-       When inheriting the :ref:`systemd <ref-classes-systemd>` class,
-@@ -7662,7 +7662,7 @@ system and gives an overview of their function and contents.
-       When using
-       :ref:`SysVinit <dev-manual/common-tasks:enabling system services>`,
-       specifies a space-separated list of the virtual terminals that should
--      run a `getty <http://en.wikipedia.org/wiki/Getty_%28Unix%29>`__
-+      run a `getty <https://en.wikipedia.org/wiki/Getty_%28Unix%29>`__
-       (allowing login), assuming :term:`USE_VT` is not set to
-       "0".
- 
-@@ -7886,7 +7886,7 @@ system and gives an overview of their function and contents.
-       toolchain. One example is the Sourcery G++ Toolchain. The support for
-       this toolchain resides in the separate Mentor Graphics
-       ``meta-sourcery`` layer at
--      http://github.com/MentorEmbedded/meta-sourcery/.
-+      https://github.com/MentorEmbedded/meta-sourcery/.
- 
-       The layer's ``README`` file contains information on how to use the
-       Sourcery G++ Toolchain as an external toolchain. In summary, you must
-@@ -8562,7 +8562,7 @@ system and gives an overview of their function and contents.
-       When using
-       :ref:`SysVinit <dev-manual/common-tasks:enabling system services>`,
-       determines whether or not to run a
--      `getty <http://en.wikipedia.org/wiki/Getty_%28Unix%29>`__ on any
-+      `getty <https://en.wikipedia.org/wiki/Getty_%28Unix%29>`__ on any
-       virtual terminals in order to enable logging in through those
-       terminals.
- 
-@@ -8673,7 +8673,7 @@ system and gives an overview of their function and contents.
- 
-       For information on the
-       standard Linux shell command ``useradd``, see
--      http://linux.die.net/man/8/useradd.
-+      https://linux.die.net/man/8/useradd.
- 
-    :term:`USERADD_UID_TABLES`
-       Specifies a password file to use for obtaining static user
-diff --git a/documentation/sdk-manual/intro.rst b/documentation/sdk-manual/intro.rst
-index 66b12cdff..e4b9b05ba 100644
---- a/documentation/sdk-manual/intro.rst
-+++ b/documentation/sdk-manual/intro.rst
-@@ -210,7 +210,7 @@ You just need to follow these general steps:
- 3. *Develop and Test your Application:* At this point, you have the
-    tools to develop your application. If you need to separately install
-    and use the QEMU emulator, you can go to `QEMU Home
--   Page <http://wiki.qemu.org/Main_Page>`__ to download and learn about
-+   Page <https://wiki.qemu.org/Main_Page>`__ to download and learn about
-    the emulator. See the ":doc:`/dev-manual/qemu`" chapter in the
-    Yocto Project Development Tasks Manual for information on using QEMU
-    within the Yocto Project.
-diff --git a/documentation/toaster-manual/reference.rst b/documentation/toaster-manual/reference.rst
-index 34a1f39cf..d2ab14c8e 100644
---- a/documentation/toaster-manual/reference.rst
-+++ b/documentation/toaster-manual/reference.rst
-@@ -29,7 +29,7 @@ layer index's web application at :yocto_git:`/layerindex-web/`.
- 
- When you tie a layer source into Toaster, it can query the layer source
- through a
--`REST <http://en.wikipedia.org/wiki/Representational_state_transfer>`__
-+`REST <https://en.wikipedia.org/wiki/Representational_state_transfer>`__
- API, store the information about the layers in the Toaster database, and
- then show the information to users. Users are then able to view that
- information and build layers from Toaster itself without worrying about
-@@ -370,7 +370,7 @@ Remote Toaster Monitoring
- Toaster has an API that allows remote management applications to
- directly query the state of the Toaster server and its builds in a
- machine-to-machine manner. This API uses the
--`REST <http://en.wikipedia.org/wiki/Representational_state_transfer>`__
-+`REST <https://en.wikipedia.org/wiki/Representational_state_transfer>`__
- interface and the transfer of JSON files. For example, you might monitor
- a build inside a container through well supported known HTTP ports in
- order to easily access a Toaster server inside the container. In this
+  Documenation: Prepared for the 3.1.4 release (2020-11-13 17:02:30 +0000)
+
+are available in the Git repository at:
+
+  git://git.yoctoproject.org/yocto-docs contrib/dunfell-next
+  http://git.yoctoproject.org/cgit.cgi/yocto-docs/log/?h=contrib/dunfell-next
+
+Joshua Watt (3):
+  ref-variables: Given example for naming sources
+  ref-manual: Document wic --offset option
+  documentation: Add Pipenv support
+
+Naoki Hayama (1):
+  dev/test/ref-manual: Fix typos
+
+Nicolas Dechesne (12):
+  sphinx: import docs
+  sphinx: undo (ref-system-requirements: update supported hosts lists)
+  sphinx: reintroduce changes for 3.1.1, 3.1.2, 3.1.3 and 3.1.4
+  sphinx: remove test-manual
+  sphinx: fix up some trademark and branding issues
+  sphinx: remove DocBook files
+  sphinx: rename Makefile.sphinx
+  sdk-manual: use built-in footnotes
+  sphinx: add 3.1.3 and 3.0.4 release in the switcher
+  poky.yaml: remove unused variables
+  Makefile: enable parallel build
+  conf.py: set version to 3.1.4
+
+Paul Barker (1):
+  conf.py: Improve TOC and Outline depth in PDF output
+
+Paul Eggleton (5):
+  ref-manual: add reference anchors for each QA check
+  ref-manual: fix for features_check class change
+  ref-manual: add IMAGE_VERSION_SUFFIX variable
+  ref-manual: add IMAGE_NAME_SUFFIX variable
+  ref-manual: add IMAGE_LINK_NAME
+
+Quentin Schulz (20):
+  docs: ref-manual: ref-variables: fix one-letter pointer links in
+    glossary
+  docs: ref-manual: ref-variables: fix alphabetical order in glossary
+  docs: ref-manual: ref-variables: add links to terms in glossary
+  docs: poky.yaml: use HTTPS for links
+  docs: ref-manual: indentation, links and highlights fixes
+  docs: remove OE_INIT_FILE variable
+  docs: ref-manual: fix typos
+  docs: ref-manual: migration-2.3: specify 2.3 version instead of DISTRO
+  docs: ref-manual: ref-classes: remove dropped tinderclient class
+  docs: ref-manual: ref-system-requirements: update requirements to
+    build Sphinx docs
+  docs: sphinx: yocto-vars: rebuild files when poky.yaml has changed
+  docs: poky.yaml: fix identation in host packages variables
+  docs: dev-manual-common-tasks: remove paragraph about race when
+    missing DEPENDS
+  docs: dev-manual-common-tasks: update python webserver example to
+    python3
+  docs: dev-manual: fix typos, highlights, indentation and links
+  docs: ref-manual: ref-terms: add links to terms in glossary
+  docs: bsp-guide: bsp: fix typos, highlights and links
+  docs: kernel-dev: fix typos, highlights and links
+  docs: kernel-dev-common: add .patch file extension to SRC_URI files
+  docs: kernel-dev-faq: update outdated RDEPENDS_kernel-base
+
+Richard Purdie (3):
+  docs: Fix license CC-BY-2.0-UK -> CC-BY-SA-2.0-UK
+  ref-manual/faq: Add entry for why binaries are changed in images
+  dev-manual: Add a note about prelink changing prebuild binaries
+
+Robert P. J. Day (3):
+  ref-manual/ref-variables: "PACKAGE_FEEDS_ARCHS" ->
+    "PACKAGE_FEED_ARCHS"
+  README: "yocto-project-qs" -> "brief-yoctoprojectqs"
+  adt-manual: delete obsolete ADT manual, and related content
+
+ .gitignore                                    |    52 +-
+ documentation/.gitignore                      |     2 +
+ documentation/Makefile                        |   448 +-
+ documentation/Pipfile                         |    14 +
+ documentation/README                          |   308 +-
+ documentation/_templates/breadcrumbs.html     |    14 +
+ documentation/_templates/footer.html          |    12 +
+ documentation/_templates/layout.html          |     7 +
+ documentation/adt-manual/adt-command.xml      |   265 -
+ documentation/adt-manual/adt-intro.xml        |   180 -
+ .../adt-manual/adt-manual-customization.xsl   |    27 -
+ .../adt-manual-eclipse-customization.xsl      |    35 -
+ documentation/adt-manual/adt-manual-intro.xml |    33 -
+ documentation/adt-manual/adt-manual.xml       |   140 -
+ documentation/adt-manual/adt-package.xml      |   102 -
+ documentation/adt-manual/adt-prepare.xml      |   999 -
+ documentation/adt-manual/adt-style.css        |   984 -
+ .../adt-manual/figures/adt-title.png          |   Bin 13498 -> 0 bytes
+ .../figures/using-a-pre-built-image.png       |   Bin 12733 -> 0 bytes
+ documentation/boilerplate.rst                 |    18 +
+ .../brief-yoctoprojectqs-customization.xsl    |    24 -
+ .../brief-yoctoprojectqs-style.css            |   989 -
+ .../brief-yoctoprojectqs-titlepage.xsl        |  3820 ----
+ .../brief-yoctoprojectqs.rst                  |   430 +
+ .../brief-yoctoprojectqs.xml                  |   576 -
+ .../bsp-guide/bsp-guide-customization.xsl     |    27 -
+ documentation/bsp-guide/bsp-guide.rst         |    16 +
+ documentation/bsp-guide/bsp-guide.xml         |   221 -
+ documentation/bsp-guide/bsp-style.css         |   987 -
+ documentation/bsp-guide/bsp.rst               |  1531 ++
+ documentation/bsp-guide/bsp.xml               |  2258 ---
+ documentation/bsp-guide/history.rst           |    85 +
+ documentation/conf.py                         |   131 +
+ .../dev-manual/dev-manual-common-tasks.rst    | 11687 +++++++++++
+ .../dev-manual/dev-manual-common-tasks.xml    | 16022 ---------------
+ .../dev-manual/dev-manual-customization.xsl   |    27 -
+ documentation/dev-manual/dev-manual-intro.rst |    61 +
+ documentation/dev-manual/dev-manual-intro.xml |   103 -
+ documentation/dev-manual/dev-manual-qemu.rst  |   477 +
+ documentation/dev-manual/dev-manual-qemu.xml  |   690 -
+ documentation/dev-manual/dev-manual-start.rst |   925 +
+ documentation/dev-manual/dev-manual-start.xml |  1287 --
+ documentation/dev-manual/dev-manual.rst       |    19 +
+ documentation/dev-manual/dev-manual.xml       |   214 -
+ documentation/dev-manual/dev-style.css        |   988 -
+ documentation/dev-manual/history.rst          |    79 +
+ .../figures/yp-how-it-works-new-diagram.png   |   Bin 0 -> 249657 bytes
+ documentation/genindex.rst                    |     3 +
+ documentation/index.rst                       |    52 +
+ documentation/kernel-dev/history.rst          |    70 +
+ .../kernel-dev/kernel-dev-advanced.rst        |   957 +
+ .../kernel-dev/kernel-dev-advanced.xml        |  1256 --
+ .../kernel-dev/kernel-dev-common.rst          |  2031 ++
+ .../kernel-dev/kernel-dev-common.xml          |  2729 ---
+ .../kernel-dev/kernel-dev-concepts-appx.rst   |   425 +
+ .../kernel-dev/kernel-dev-concepts-appx.xml   |   621 -
+ .../kernel-dev/kernel-dev-customization.xsl   |    26 -
+ documentation/kernel-dev/kernel-dev-faq.rst   |    80 +
+ documentation/kernel-dev/kernel-dev-faq.xml   |   142 -
+ documentation/kernel-dev/kernel-dev-intro.rst |   182 +
+ documentation/kernel-dev/kernel-dev-intro.xml |   259 -
+ .../kernel-dev/kernel-dev-maint-appx.rst      |   239 +
+ .../kernel-dev/kernel-dev-maint-appx.xml      |   356 -
+ documentation/kernel-dev/kernel-dev-style.css |   988 -
+ documentation/kernel-dev/kernel-dev.rst       |    21 +
+ documentation/kernel-dev/kernel-dev.xml       |   206 -
+ .../mega-manual/figures/YP-flow-diagram.png   |   Bin 185562 -> 0 bytes
+ .../mega-manual/figures/add-variable.png      |   Bin 110712 -> 0 bytes
+ .../analysis-for-package-splitting.png        |   Bin 68434 -> 0 bytes
+ .../mega-manual/figures/bash-oecore.png       |   Bin 138198 -> 0 bytes
+ .../figures/bb_multiconfig_files.png          |   Bin 19991 -> 0 bytes
+ .../figures/bitbake-build-flow.png            |   Bin 49242 -> 0 bytes
+ .../mega-manual/figures/bitbake-title.png     |   Bin 5086 -> 0 bytes
+ .../mega-manual/figures/bsp-dev-flow.png      |   Bin 52657 -> 0 bytes
+ .../mega-manual/figures/bsp-title.png         |   Bin 17388 -> 0 bytes
+ .../figures/build-workspace-directory.png     |   Bin 29627 -> 0 bytes
+ .../mega-manual/figures/buildhistory-web.png  |   Bin 49966 -> 0 bytes
+ .../mega-manual/figures/buildhistory.png      |   Bin 44900 -> 0 bytes
+ .../mega-manual/figures/building-an-image.png |   Bin 14891 -> 0 bytes
+ .../mega-manual/figures/bypqs-title.png       |   Bin 14312 -> 0 bytes
+ .../mega-manual/figures/compatible-layers.png |   Bin 163081 -> 0 bytes
+ .../figures/concepts-manual-title.png         |   Bin 11920 -> 0 bytes
+ .../configuration-compile-autoreconf.png      |   Bin 70877 -> 0 bytes
+ .../figures/cross-development-toolchains.png  |   Bin 82633 -> 0 bytes
+ .../figures/cute-files-npm-example.png        |   Bin 26248 -> 0 bytes
+ .../mega-manual/figures/define-generic.png    |   Bin 623 -> 0 bytes
+ .../mega-manual/figures/dev-title.png         |   Bin 15950 -> 0 bytes
+ .../mega-manual/figures/git-workflow.png      |   Bin 26586 -> 0 bytes
+ .../mega-manual/figures/hosted-service.png    |   Bin 13552 -> 0 bytes
+ .../mega-manual/figures/image-generation.png  |   Bin 123348 -> 0 bytes
+ documentation/mega-manual/figures/images.png  |   Bin 32674 -> 0 bytes
+ .../mega-manual/figures/import-layer.png      |   Bin 139108 -> 0 bytes
+ .../mega-manual/figures/index-downloads.png   |   Bin 18142 -> 0 bytes
+ .../figures/kernel-architecture-overview.png  |   Bin 40748 -> 0 bytes
+ .../mega-manual/figures/kernel-dev-flow.png   |   Bin 53197 -> 0 bytes
+ .../mega-manual/figures/kernel-dev-title.png  |   Bin 13453 -> 0 bytes
+ .../mega-manual/figures/kernel-overview-1.png |   Bin 35839 -> 0 bytes
+ .../figures/kernel-overview-2-generic.png     |   Bin 49230 -> 0 bytes
+ .../mega-manual/figures/kernel-title.png      |   Bin 13970 -> 0 bytes
+ .../mega-manual/figures/kernelshark-all.png   |   Bin 89316 -> 0 bytes
+ .../figures/kernelshark-choose-events.png     |   Bin 57372 -> 0 bytes
+ .../figures/kernelshark-i915-display.png      |   Bin 98765 -> 0 bytes
+ .../figures/kernelshark-output-display.png    |   Bin 204454 -> 0 bytes
+ .../mega-manual/figures/key-dev-elements.png  |   Bin 20424 -> 0 bytes
+ .../mega-manual/figures/layer-input.png       |   Bin 62330 -> 0 bytes
+ .../mega-manual/figures/mega-title.png        |   Bin 10536 -> 0 bytes
+ .../mega-manual/figures/multiconfig_files.png |   Bin 18611 -> 0 bytes
+ .../mega-manual/figures/new-project.png       |   Bin 73760 -> 0 bytes
+ .../figures/oprofileui-busybox.png            |   Bin 98334 -> 0 bytes
+ .../figures/oprofileui-copy-to-user.png       |   Bin 105661 -> 0 bytes
+ .../figures/oprofileui-downloading.png        |   Bin 37301 -> 0 bytes
+ .../figures/oprofileui-processes.png          |   Bin 95741 -> 0 bytes
+ .../figures/overview-manual-title.png         |   Bin 17387 -> 0 bytes
+ .../mega-manual/figures/package-feeds.png     |   Bin 42239 -> 0 bytes
+ .../mega-manual/figures/patching.png          |   Bin 57414 -> 0 bytes
+ .../figures/perf-probe-do_fork-profile.png    |   Bin 59078 -> 0 bytes
+ .../figures/perf-report-cycles-u.png          |   Bin 171368 -> 0 bytes
+ .../figures/perf-systemwide-libc.png          |   Bin 136826 -> 0 bytes
+ .../mega-manual/figures/perf-systemwide.png   |   Bin 140616 -> 0 bytes
+ .../perf-wget-busybox-annotate-menu.png       |   Bin 22364 -> 0 bytes
+ .../perf-wget-busybox-annotate-udhcpc.png     |   Bin 171529 -> 0 bytes
+ .../figures/perf-wget-busybox-debuginfo.png   |   Bin 174971 -> 0 bytes
+ .../perf-wget-busybox-dso-zoom-menu.png       |   Bin 23735 -> 0 bytes
+ .../figures/perf-wget-busybox-dso-zoom.png    |   Bin 101685 -> 0 bytes
+ .../perf-wget-busybox-expanded-stripped.png   |   Bin 95140 -> 0 bytes
+ .../figures/perf-wget-flat-stripped.png       |   Bin 178919 -> 0 bytes
+ ...get-g-copy-from-user-expanded-stripped.png |   Bin 138550 -> 0 bytes
+ ...wget-g-copy-to-user-expanded-debuginfo.png |   Bin 102790 -> 0 bytes
+ ...er-expanded-stripped-unresolved-hidden.png |   Bin 110101 -> 0 bytes
+ ...-wget-g-copy-to-user-expanded-stripped.png |   Bin 102812 -> 0 bytes
+ .../figures/poky-reference-distribution.png   |   Bin 23784 -> 0 bytes
+ .../mega-manual/figures/poky-title.png        |   Bin 11592 -> 0 bytes
+ .../mega-manual/figures/profile-title.png     |   Bin 12799 -> 0 bytes
+ .../figures/pybootchartgui-linux-yocto.png    |   Bin 36366 -> 0 bytes
+ .../pychart-linux-yocto-rpm-nostrip.png       |   Bin 98053 -> 0 bytes
+ .../figures/pychart-linux-yocto-rpm.png       |   Bin 81053 -> 0 bytes
+ .../mega-manual/figures/recipe-workflow.png   |   Bin 48276 -> 0 bytes
+ .../figures/sched-wakeup-profile.png          |   Bin 123810 -> 0 bytes
+ .../figures/sdk-autotools-flow.png            |   Bin 50443 -> 0 bytes
+ .../figures/sdk-devtool-add-flow.png          |   Bin 181699 -> 0 bytes
+ .../figures/sdk-devtool-modify-flow.png       |   Bin 171676 -> 0 bytes
+ .../figures/sdk-devtool-upgrade-flow.png      |   Bin 138917 -> 0 bytes
+ .../mega-manual/figures/sdk-environment.png   |   Bin 42098 -> 0 bytes
+ .../mega-manual/figures/sdk-generation.png    |   Bin 60574 -> 0 bytes
+ ...sdk-installed-extensible-sdk-directory.png |   Bin 66753 -> 0 bytes
+ .../sdk-installed-standard-sdk-directory.png  |   Bin 39099 -> 0 bytes
+ .../mega-manual/figures/sdk-makefile-flow.png |   Bin 47197 -> 0 bytes
+ .../mega-manual/figures/sdk-title.png         |   Bin 31039 -> 0 bytes
+ documentation/mega-manual/figures/sdk.png     |   Bin 49804 -> 0 bytes
+ .../mega-manual/figures/set-variable.png      |   Bin 111430 -> 0 bytes
+ .../figures/simple-configuration.png          |   Bin 10789 -> 0 bytes
+ .../mega-manual/figures/source-fetching.png   |   Bin 46896 -> 0 bytes
+ .../mega-manual/figures/source-input.png      |   Bin 51170 -> 0 bytes
+ .../mega-manual/figures/source-repos.png      |   Bin 167009 -> 0 bytes
+ .../mega-manual/figures/sysprof-callers.png   |   Bin 145043 -> 0 bytes
+ .../figures/sysprof-copy-from-user.png        |   Bin 132976 -> 0 bytes
+ .../figures/sysprof-copy-to-user.png          |   Bin 132074 -> 0 bytes
+ .../mega-manual/figures/toaster-title.png     |   Bin 9277 -> 0 bytes
+ .../figures/user-configuration.png            |   Bin 51171 -> 0 bytes
+ .../figures/using-a-pre-built-image.png       |   Bin 12733 -> 0 bytes
+ .../mega-manual/figures/variable-added.png    |   Bin 112163 -> 0 bytes
+ .../figures/yocto-project-transp.png          |   Bin 8626 -> 0 bytes
+ .../mega-manual/figures/yp-download.png       |   Bin 82939 -> 0 bytes
+ .../mega-manual/mega-manual-customization.xsl |    42 -
+ documentation/mega-manual/mega-manual.xml     |   382 -
+ documentation/mega-manual/mega-style.css      |   989 -
+ documentation/overview-manual/history.rst     |    40 +
+ .../overview-manual-concepts.rst              |  2185 ++
+ .../overview-manual-concepts.xml              |  3234 ---
+ .../overview-manual-customization.xsl         |    27 -
+ ...verview-manual-development-environment.rst |   672 +
+ ...verview-manual-development-environment.xml |   953 -
+ .../overview-manual/overview-manual-intro.rst |    74 +
+ .../overview-manual/overview-manual-intro.xml |   112 -
+ .../overview-manual/overview-manual-style.css |   988 -
+ .../overview-manual-yp-intro.rst              |   941 +
+ .../overview-manual-yp-intro.xml              |  1332 --
+ .../overview-manual/overview-manual.rst       |    19 +
+ .../overview-manual/overview-manual.xml       |   149 -
+ documentation/poky.ent                        |    89 -
+ documentation/poky.yaml                       |    41 +
+ documentation/profile-manual/history.rst      |    70 +
+ .../profile-manual/profile-manual-arch.rst    |    29 +
+ .../profile-manual/profile-manual-arch.xml    |    45 -
+ .../profile-manual-customization.xsl          |    27 -
+ .../profile-manual-examples.rst               |    24 +
+ .../profile-manual-examples.xml               |    39 -
+ .../profile-manual/profile-manual-intro.rst   |    79 +
+ .../profile-manual/profile-manual-intro.xml   |   106 -
+ .../profile-manual/profile-manual-style.css   |   984 -
+ .../profile-manual/profile-manual-usage.rst   |  2624 +++
+ .../profile-manual/profile-manual-usage.xml   |  2985 ---
+ .../profile-manual/profile-manual.rst         |    19 +
+ .../profile-manual/profile-manual.xml         |   199 -
+ .../examples/hello-autotools/hello_2.10.bb    |     9 +
+ .../examples/hello-autotools/hello_2.3.bb     |     8 -
+ .../examples/libxpm/libxpm_3.5.6.bb           |     2 +-
+ documentation/ref-manual/faq.rst              |   464 +
+ documentation/ref-manual/faq.xml              |   835 -
+ documentation/ref-manual/history.rst          |    86 +
+ documentation/ref-manual/migration-1.3.rst    |   195 +
+ documentation/ref-manual/migration-1.4.rst    |   237 +
+ documentation/ref-manual/migration-1.5.rst    |   353 +
+ documentation/ref-manual/migration-1.6.rst    |   416 +
+ documentation/ref-manual/migration-1.7.rst    |   223 +
+ documentation/ref-manual/migration-1.8.rst    |   183 +
+ documentation/ref-manual/migration-2.0.rst    |   281 +
+ documentation/ref-manual/migration-2.1.rst    |   436 +
+ documentation/ref-manual/migration-2.2.rst    |   450 +
+ documentation/ref-manual/migration-2.3.rst    |   523 +
+ documentation/ref-manual/migration-2.4.rst    |   327 +
+ documentation/ref-manual/migration-2.5.rst    |   310 +
+ documentation/ref-manual/migration-2.6.rst    |   457 +
+ documentation/ref-manual/migration-2.7.rst    |   180 +
+ documentation/ref-manual/migration-3.0.rst    |   320 +
+ documentation/ref-manual/migration-3.1.rst    |   276 +
+ .../ref-manual/migration-general.rst          |    54 +
+ documentation/ref-manual/migration.rst        |    30 +
+ documentation/ref-manual/migration.xml        |  7300 -------
+ documentation/ref-manual/ref-classes.rst      |  2909 +++
+ documentation/ref-manual/ref-classes.xml      |  3893 ----
+ .../ref-manual/ref-devtool-reference.rst      |   631 +
+ .../ref-manual/ref-devtool-reference.xml      |   841 -
+ documentation/ref-manual/ref-features.rst     |   350 +
+ documentation/ref-manual/ref-features.xml     |   460 -
+ documentation/ref-manual/ref-images.rst       |   138 +
+ documentation/ref-manual/ref-images.xml       |   169 -
+ documentation/ref-manual/ref-kickstart.rst    |   216 +
+ documentation/ref-manual/ref-kickstart.xml    |   334 -
+ .../ref-manual/ref-manual-customization.xsl   |    29 -
+ documentation/ref-manual/ref-manual.rst       |    31 +
+ documentation/ref-manual/ref-manual.xml       |   252 -
+ documentation/ref-manual/ref-qa-checks.rst    |   568 +
+ documentation/ref-manual/ref-qa-checks.xml    |  1199 --
+ .../ref-manual/ref-release-process.rst        |   191 +
+ .../ref-manual/ref-release-process.xml        |   255 -
+ documentation/ref-manual/ref-structure.rst    |   874 +
+ documentation/ref-manual/ref-structure.xml    |  1122 --
+ documentation/ref-manual/ref-style.css        |  1032 -
+ .../ref-manual/ref-system-requirements.rst    |   446 +
+ .../ref-manual/ref-system-requirements.xml    |   578 -
+ documentation/ref-manual/ref-tasks.rst        |   858 +
+ documentation/ref-manual/ref-tasks.xml        |  1130 --
+ documentation/ref-manual/ref-terms.rst        |   394 +
+ documentation/ref-manual/ref-terms.xml        |   524 -
+ documentation/ref-manual/ref-variables.rst    |  8739 ++++++++
+ documentation/ref-manual/ref-variables.xml    | 16700 ----------------
+ documentation/ref-manual/ref-varlocality.rst  |   166 +
+ documentation/ref-manual/ref-varlocality.xml  |   198 -
+ documentation/ref-manual/resources.rst        |   197 +
+ documentation/ref-manual/resources.xml        |   297 -
+ documentation/releases.rst                    |   188 +
+ documentation/sdk-manual/history.rst          |    52 +
+ .../sdk-appendix-customizing-standard.rst     |    34 +
+ .../sdk-appendix-customizing-standard.xml     |    58 -
+ .../sdk-manual/sdk-appendix-customizing.rst   |   377 +
+ .../sdk-manual/sdk-appendix-customizing.xml   |   514 -
+ .../sdk-manual/sdk-appendix-obtain.rst        |   321 +
+ .../sdk-manual/sdk-appendix-obtain.xml        |   443 -
+ documentation/sdk-manual/sdk-extensible.rst   |  1356 ++
+ documentation/sdk-manual/sdk-extensible.xml   |  1846 --
+ documentation/sdk-manual/sdk-intro.rst        |   224 +
+ documentation/sdk-manual/sdk-intro.xml        |   352 -
+ .../sdk-manual/sdk-manual-customization.xsl   |    26 -
+ documentation/sdk-manual/sdk-manual.rst       |    22 +
+ documentation/sdk-manual/sdk-manual.xml       |   178 -
+ documentation/sdk-manual/sdk-style.css        |   988 -
+ documentation/sdk-manual/sdk-using.rst        |   159 +
+ documentation/sdk-manual/sdk-using.xml        |   200 -
+ .../sdk-manual/sdk-working-projects.rst       |   423 +
+ .../sdk-manual/sdk-working-projects.xml       |   510 -
+ .../sphinx-static/YoctoProject_Logo_RGB.jpg   |   Bin 0 -> 49299 bytes
+ documentation/sphinx-static/switchers.js      |   233 +
+ .../sphinx-static/theme_overrides.css         |   164 +
+ documentation/sphinx/yocto-vars.py            |    86 +
+ documentation/template/Vera.xml               |     1 -
+ documentation/template/VeraMoBd.xml           |     1 -
+ documentation/template/VeraMono.xml           |     1 -
+ documentation/template/component.title.xsl    |    39 -
+ documentation/template/division.title.xsl     |    24 -
+ documentation/template/embedded_video.xsl     |    22 -
+ documentation/template/fop-config.xml         |    58 -
+ .../template/formal.object.heading.xsl        |    21 -
+ documentation/template/gloss-permalinks.xsl   |    14 -
+ documentation/template/permalinks.xsl         |    25 -
+ documentation/template/poky-db-pdf.xsl        |    64 -
+ documentation/template/qa-code-permalinks.xsl |    23 -
+ documentation/template/section.title.xsl      |    55 -
+ .../template/titlepage.templates.xml          |  1227 --
+ documentation/toaster-manual/history.rst      |    58 +
+ .../toaster-manual-customization.xsl          |    28 -
+ .../toaster-manual/toaster-manual-intro.rst   |   105 +
+ .../toaster-manual/toaster-manual-intro.xml   |   164 -
+ .../toaster-manual-reference.rst              |   662 +
+ .../toaster-manual-reference.xml              |   836 -
+ .../toaster-manual-setup-and-use.rst          |   651 +
+ .../toaster-manual-setup-and-use.xml          |   843 -
+ .../toaster-manual/toaster-manual-start.rst   |    57 +
+ .../toaster-manual/toaster-manual-start.xml   |   115 -
+ .../toaster-manual/toaster-manual-style.css   |   984 -
+ .../toaster-manual/toaster-manual.rst         |    19 +
+ .../toaster-manual/toaster-manual.xml         |   178 -
+ documentation/tools/eclipse-help.sed          |    18 -
+ documentation/tools/mega-manual.sed           |    36 -
+ documentation/tools/poky-docbook-to-pdf       |    51 -
+ documentation/tools/update-documentation-conf |    16 +-
+ .../transitioning-to-a-custom-environment.rst |   116 +
+ documentation/what-i-wish-id-known.rst        |   226 +
+ 308 files changed, 54740 insertions(+), 97884 deletions(-)
+ create mode 100644 documentation/.gitignore
+ create mode 100644 documentation/Pipfile
+ create mode 100644 documentation/_templates/breadcrumbs.html
+ create mode 100644 documentation/_templates/footer.html
+ create mode 100644 documentation/_templates/layout.html
+ delete mode 100644 documentation/adt-manual/adt-command.xml
+ delete mode 100644 documentation/adt-manual/adt-intro.xml
+ delete mode 100644 documentation/adt-manual/adt-manual-customization.xsl
+ delete mode 100644 documentation/adt-manual/adt-manual-eclipse-customization.xsl
+ delete mode 100644 documentation/adt-manual/adt-manual-intro.xml
+ delete mode 100644 documentation/adt-manual/adt-manual.xml
+ delete mode 100644 documentation/adt-manual/adt-package.xml
+ delete mode 100644 documentation/adt-manual/adt-prepare.xml
+ delete mode 100644 documentation/adt-manual/adt-style.css
+ delete mode 100644 documentation/adt-manual/figures/adt-title.png
+ delete mode 100644 documentation/adt-manual/figures/using-a-pre-built-image.png
+ create mode 100644 documentation/boilerplate.rst
+ delete mode 100644 documentation/brief-yoctoprojectqs/brief-yoctoprojectqs-customization.xsl
+ delete mode 100644 documentation/brief-yoctoprojectqs/brief-yoctoprojectqs-style.css
+ delete mode 100644 documentation/brief-yoctoprojectqs/brief-yoctoprojectqs-titlepage.xsl
+ create mode 100644 documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.rst
+ delete mode 100644 documentation/brief-yoctoprojectqs/brief-yoctoprojectqs.xml
+ delete mode 100644 documentation/bsp-guide/bsp-guide-customization.xsl
+ create mode 100644 documentation/bsp-guide/bsp-guide.rst
+ delete mode 100755 documentation/bsp-guide/bsp-guide.xml
+ delete mode 100644 documentation/bsp-guide/bsp-style.css
+ create mode 100644 documentation/bsp-guide/bsp.rst
+ delete mode 100644 documentation/bsp-guide/bsp.xml
+ create mode 100644 documentation/bsp-guide/history.rst
+ create mode 100644 documentation/conf.py
+ create mode 100644 documentation/dev-manual/dev-manual-common-tasks.rst
+ delete mode 100644 documentation/dev-manual/dev-manual-common-tasks.xml
+ delete mode 100644 documentation/dev-manual/dev-manual-customization.xsl
+ create mode 100644 documentation/dev-manual/dev-manual-intro.rst
+ delete mode 100644 documentation/dev-manual/dev-manual-intro.xml
+ create mode 100644 documentation/dev-manual/dev-manual-qemu.rst
+ delete mode 100644 documentation/dev-manual/dev-manual-qemu.xml
+ create mode 100644 documentation/dev-manual/dev-manual-start.rst
+ delete mode 100644 documentation/dev-manual/dev-manual-start.xml
+ create mode 100644 documentation/dev-manual/dev-manual.rst
+ delete mode 100755 documentation/dev-manual/dev-manual.xml
+ delete mode 100644 documentation/dev-manual/dev-style.css
+ create mode 100644 documentation/dev-manual/history.rst
+ create mode 100644 documentation/figures/yp-how-it-works-new-diagram.png
+ create mode 100644 documentation/genindex.rst
+ create mode 100644 documentation/index.rst
+ create mode 100644 documentation/kernel-dev/history.rst
+ create mode 100644 documentation/kernel-dev/kernel-dev-advanced.rst
+ delete mode 100644 documentation/kernel-dev/kernel-dev-advanced.xml
+ create mode 100644 documentation/kernel-dev/kernel-dev-common.rst
+ delete mode 100644 documentation/kernel-dev/kernel-dev-common.xml
+ create mode 100644 documentation/kernel-dev/kernel-dev-concepts-appx.rst
+ delete mode 100644 documentation/kernel-dev/kernel-dev-concepts-appx.xml
+ delete mode 100644 documentation/kernel-dev/kernel-dev-customization.xsl
+ create mode 100644 documentation/kernel-dev/kernel-dev-faq.rst
+ delete mode 100644 documentation/kernel-dev/kernel-dev-faq.xml
+ create mode 100644 documentation/kernel-dev/kernel-dev-intro.rst
+ delete mode 100644 documentation/kernel-dev/kernel-dev-intro.xml
+ create mode 100644 documentation/kernel-dev/kernel-dev-maint-appx.rst
+ delete mode 100644 documentation/kernel-dev/kernel-dev-maint-appx.xml
+ delete mode 100644 documentation/kernel-dev/kernel-dev-style.css
+ create mode 100644 documentation/kernel-dev/kernel-dev.rst
+ delete mode 100755 documentation/kernel-dev/kernel-dev.xml
+ delete mode 100644 documentation/mega-manual/figures/YP-flow-diagram.png
+ delete mode 100644 documentation/mega-manual/figures/add-variable.png
+ delete mode 100644 documentation/mega-manual/figures/analysis-for-package-splitting.png
+ delete mode 100644 documentation/mega-manual/figures/bash-oecore.png
+ delete mode 100644 documentation/mega-manual/figures/bb_multiconfig_files.png
+ delete mode 100644 documentation/mega-manual/figures/bitbake-build-flow.png
+ delete mode 100644 documentation/mega-manual/figures/bitbake-title.png
+ delete mode 100644 documentation/mega-manual/figures/bsp-dev-flow.png
+ delete mode 100644 documentation/mega-manual/figures/bsp-title.png
+ delete mode 100644 documentation/mega-manual/figures/build-workspace-directory.png
+ delete mode 100644 documentation/mega-manual/figures/buildhistory-web.png
+ delete mode 100644 documentation/mega-manual/figures/buildhistory.png
+ delete mode 100755 documentation/mega-manual/figures/building-an-image.png
+ delete mode 100644 documentation/mega-manual/figures/bypqs-title.png
+ delete mode 100644 documentation/mega-manual/figures/compatible-layers.png
+ delete mode 100644 documentation/mega-manual/figures/concepts-manual-title.png
+ delete mode 100644 documentation/mega-manual/figures/configuration-compile-autoreconf.png
+ delete mode 100644 documentation/mega-manual/figures/cross-development-toolchains.png
+ delete mode 100644 documentation/mega-manual/figures/cute-files-npm-example.png
+ delete mode 100644 documentation/mega-manual/figures/define-generic.png
+ delete mode 100644 documentation/mega-manual/figures/dev-title.png
+ delete mode 100644 documentation/mega-manual/figures/git-workflow.png
+ delete mode 100644 documentation/mega-manual/figures/hosted-service.png
+ delete mode 100644 documentation/mega-manual/figures/image-generation.png
+ delete mode 100644 documentation/mega-manual/figures/images.png
+ delete mode 100644 documentation/mega-manual/figures/import-layer.png
+ delete mode 100755 documentation/mega-manual/figures/index-downloads.png
+ delete mode 100755 documentation/mega-manual/figures/kernel-architecture-overview.png
+ delete mode 100644 documentation/mega-manual/figures/kernel-dev-flow.png
+ delete mode 100644 documentation/mega-manual/figures/kernel-dev-title.png
+ delete mode 100644 documentation/mega-manual/figures/kernel-overview-1.png
+ delete mode 100644 documentation/mega-manual/figures/kernel-overview-2-generic.png
+ delete mode 100644 documentation/mega-manual/figures/kernel-title.png
+ delete mode 100644 documentation/mega-manual/figures/kernelshark-all.png
+ delete mode 100644 documentation/mega-manual/figures/kernelshark-choose-events.png
+ delete mode 100644 documentation/mega-manual/figures/kernelshark-i915-display.png
+ delete mode 100644 documentation/mega-manual/figures/kernelshark-output-display.png
+ delete mode 100644 documentation/mega-manual/figures/key-dev-elements.png
+ delete mode 100644 documentation/mega-manual/figures/layer-input.png
+ delete mode 100644 documentation/mega-manual/figures/mega-title.png
+ delete mode 100644 documentation/mega-manual/figures/multiconfig_files.png
+ delete mode 100644 documentation/mega-manual/figures/new-project.png
+ delete mode 100644 documentation/mega-manual/figures/oprofileui-busybox.png
+ delete mode 100644 documentation/mega-manual/figures/oprofileui-copy-to-user.png
+ delete mode 100644 documentation/mega-manual/figures/oprofileui-downloading.png
+ delete mode 100644 documentation/mega-manual/figures/oprofileui-processes.png
+ delete mode 100644 documentation/mega-manual/figures/overview-manual-title.png
+ delete mode 100755 documentation/mega-manual/figures/package-feeds.png
+ delete mode 100644 documentation/mega-manual/figures/patching.png
+ delete mode 100644 documentation/mega-manual/figures/perf-probe-do_fork-profile.png
+ delete mode 100644 documentation/mega-manual/figures/perf-report-cycles-u.png
+ delete mode 100644 documentation/mega-manual/figures/perf-systemwide-libc.png
+ delete mode 100644 documentation/mega-manual/figures/perf-systemwide.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-busybox-annotate-menu.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-busybox-annotate-udhcpc.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-busybox-debuginfo.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-busybox-dso-zoom-menu.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-busybox-dso-zoom.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-busybox-expanded-stripped.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-flat-stripped.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-g-copy-from-user-expanded-stripped.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-g-copy-to-user-expanded-debuginfo.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-g-copy-to-user-expanded-stripped-unresolved-hidden.png
+ delete mode 100644 documentation/mega-manual/figures/perf-wget-g-copy-to-user-expanded-stripped.png
+ delete mode 100644 documentation/mega-manual/figures/poky-reference-distribution.png
+ delete mode 100644 documentation/mega-manual/figures/poky-title.png
+ delete mode 100644 documentation/mega-manual/figures/profile-title.png
+ delete mode 100644 documentation/mega-manual/figures/pybootchartgui-linux-yocto.png
+ delete mode 100644 documentation/mega-manual/figures/pychart-linux-yocto-rpm-nostrip.png
+ delete mode 100644 documentation/mega-manual/figures/pychart-linux-yocto-rpm.png
+ delete mode 100644 documentation/mega-manual/figures/recipe-workflow.png
+ delete mode 100644 documentation/mega-manual/figures/sched-wakeup-profile.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-autotools-flow.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-devtool-add-flow.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-devtool-modify-flow.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-devtool-upgrade-flow.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-environment.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-generation.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-installed-extensible-sdk-directory.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-installed-standard-sdk-directory.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-makefile-flow.png
+ delete mode 100644 documentation/mega-manual/figures/sdk-title.png
+ delete mode 100644 documentation/mega-manual/figures/sdk.png
+ delete mode 100644 documentation/mega-manual/figures/set-variable.png
+ delete mode 100644 documentation/mega-manual/figures/simple-configuration.png
+ delete mode 100644 documentation/mega-manual/figures/source-fetching.png
+ delete mode 100644 documentation/mega-manual/figures/source-input.png
+ delete mode 100644 documentation/mega-manual/figures/source-repos.png
+ delete mode 100644 documentation/mega-manual/figures/sysprof-callers.png
+ delete mode 100644 documentation/mega-manual/figures/sysprof-copy-from-user.png
+ delete mode 100644 documentation/mega-manual/figures/sysprof-copy-to-user.png
+ delete mode 100644 documentation/mega-manual/figures/toaster-title.png
+ delete mode 100644 documentation/mega-manual/figures/user-configuration.png
+ delete mode 100644 documentation/mega-manual/figures/using-a-pre-built-image.png
+ delete mode 100644 documentation/mega-manual/figures/variable-added.png
+ delete mode 100755 documentation/mega-manual/figures/yocto-project-transp.png
+ delete mode 100644 documentation/mega-manual/figures/yp-download.png
+ delete mode 100644 documentation/mega-manual/mega-manual-customization.xsl
+ delete mode 100755 documentation/mega-manual/mega-manual.xml
+ delete mode 100644 documentation/mega-manual/mega-style.css
+ create mode 100644 documentation/overview-manual/history.rst
+ create mode 100644 documentation/overview-manual/overview-manual-concepts.rst
+ delete mode 100644 documentation/overview-manual/overview-manual-concepts.xml
+ delete mode 100644 documentation/overview-manual/overview-manual-customization.xsl
+ create mode 100644 documentation/overview-manual/overview-manual-development-environment.rst
+ delete mode 100644 documentation/overview-manual/overview-manual-development-environment.xml
+ create mode 100644 documentation/overview-manual/overview-manual-intro.rst
+ delete mode 100644 documentation/overview-manual/overview-manual-intro.xml
+ delete mode 100644 documentation/overview-manual/overview-manual-style.css
+ create mode 100644 documentation/overview-manual/overview-manual-yp-intro.rst
+ delete mode 100644 documentation/overview-manual/overview-manual-yp-intro.xml
+ create mode 100644 documentation/overview-manual/overview-manual.rst
+ delete mode 100755 documentation/overview-manual/overview-manual.xml
+ delete mode 100755 documentation/poky.ent
+ create mode 100644 documentation/poky.yaml
+ create mode 100644 documentation/profile-manual/history.rst
+ create mode 100644 documentation/profile-manual/profile-manual-arch.rst
+ delete mode 100644 documentation/profile-manual/profile-manual-arch.xml
+ delete mode 100644 documentation/profile-manual/profile-manual-customization.xsl
+ create mode 100644 documentation/profile-manual/profile-manual-examples.rst
+ delete mode 100644 documentation/profile-manual/profile-manual-examples.xml
+ create mode 100644 documentation/profile-manual/profile-manual-intro.rst
+ delete mode 100644 documentation/profile-manual/profile-manual-intro.xml
+ delete mode 100644 documentation/profile-manual/profile-manual-style.css
+ create mode 100644 documentation/profile-manual/profile-manual-usage.rst
+ delete mode 100644 documentation/profile-manual/profile-manual-usage.xml
+ create mode 100644 documentation/profile-manual/profile-manual.rst
+ delete mode 100755 documentation/profile-manual/profile-manual.xml
+ create mode 100644 documentation/ref-manual/examples/hello-autotools/hello_2.10.bb
+ delete mode 100644 documentation/ref-manual/examples/hello-autotools/hello_2.3.bb
+ create mode 100644 documentation/ref-manual/faq.rst
+ delete mode 100644 documentation/ref-manual/faq.xml
+ create mode 100644 documentation/ref-manual/history.rst
+ create mode 100644 documentation/ref-manual/migration-1.3.rst
+ create mode 100644 documentation/ref-manual/migration-1.4.rst
+ create mode 100644 documentation/ref-manual/migration-1.5.rst
+ create mode 100644 documentation/ref-manual/migration-1.6.rst
+ create mode 100644 documentation/ref-manual/migration-1.7.rst
+ create mode 100644 documentation/ref-manual/migration-1.8.rst
+ create mode 100644 documentation/ref-manual/migration-2.0.rst
+ create mode 100644 documentation/ref-manual/migration-2.1.rst
+ create mode 100644 documentation/ref-manual/migration-2.2.rst
+ create mode 100644 documentation/ref-manual/migration-2.3.rst
+ create mode 100644 documentation/ref-manual/migration-2.4.rst
+ create mode 100644 documentation/ref-manual/migration-2.5.rst
+ create mode 100644 documentation/ref-manual/migration-2.6.rst
+ create mode 100644 documentation/ref-manual/migration-2.7.rst
+ create mode 100644 documentation/ref-manual/migration-3.0.rst
+ create mode 100644 documentation/ref-manual/migration-3.1.rst
+ create mode 100644 documentation/ref-manual/migration-general.rst
+ create mode 100644 documentation/ref-manual/migration.rst
+ delete mode 100644 documentation/ref-manual/migration.xml
+ create mode 100644 documentation/ref-manual/ref-classes.rst
+ delete mode 100644 documentation/ref-manual/ref-classes.xml
+ create mode 100644 documentation/ref-manual/ref-devtool-reference.rst
+ delete mode 100644 documentation/ref-manual/ref-devtool-reference.xml
+ create mode 100644 documentation/ref-manual/ref-features.rst
+ delete mode 100644 documentation/ref-manual/ref-features.xml
+ create mode 100644 documentation/ref-manual/ref-images.rst
+ delete mode 100644 documentation/ref-manual/ref-images.xml
+ create mode 100644 documentation/ref-manual/ref-kickstart.rst
+ delete mode 100644 documentation/ref-manual/ref-kickstart.xml
+ delete mode 100644 documentation/ref-manual/ref-manual-customization.xsl
+ create mode 100644 documentation/ref-manual/ref-manual.rst
+ delete mode 100755 documentation/ref-manual/ref-manual.xml
+ create mode 100644 documentation/ref-manual/ref-qa-checks.rst
+ delete mode 100644 documentation/ref-manual/ref-qa-checks.xml
+ create mode 100644 documentation/ref-manual/ref-release-process.rst
+ delete mode 100644 documentation/ref-manual/ref-release-process.xml
+ create mode 100644 documentation/ref-manual/ref-structure.rst
+ delete mode 100644 documentation/ref-manual/ref-structure.xml
+ delete mode 100644 documentation/ref-manual/ref-style.css
+ create mode 100644 documentation/ref-manual/ref-system-requirements.rst
+ delete mode 100644 documentation/ref-manual/ref-system-requirements.xml
+ create mode 100644 documentation/ref-manual/ref-tasks.rst
+ delete mode 100644 documentation/ref-manual/ref-tasks.xml
+ create mode 100644 documentation/ref-manual/ref-terms.rst
+ delete mode 100644 documentation/ref-manual/ref-terms.xml
+ create mode 100644 documentation/ref-manual/ref-variables.rst
+ delete mode 100644 documentation/ref-manual/ref-variables.xml
+ create mode 100644 documentation/ref-manual/ref-varlocality.rst
+ delete mode 100644 documentation/ref-manual/ref-varlocality.xml
+ create mode 100644 documentation/ref-manual/resources.rst
+ delete mode 100644 documentation/ref-manual/resources.xml
+ create mode 100644 documentation/releases.rst
+ create mode 100644 documentation/sdk-manual/history.rst
+ create mode 100644 documentation/sdk-manual/sdk-appendix-customizing-standard.rst
+ delete mode 100644 documentation/sdk-manual/sdk-appendix-customizing-standard.xml
+ create mode 100644 documentation/sdk-manual/sdk-appendix-customizing.rst
+ delete mode 100644 documentation/sdk-manual/sdk-appendix-customizing.xml
+ create mode 100644 documentation/sdk-manual/sdk-appendix-obtain.rst
+ delete mode 100644 documentation/sdk-manual/sdk-appendix-obtain.xml
+ create mode 100644 documentation/sdk-manual/sdk-extensible.rst
+ delete mode 100644 documentation/sdk-manual/sdk-extensible.xml
+ create mode 100644 documentation/sdk-manual/sdk-intro.rst
+ delete mode 100644 documentation/sdk-manual/sdk-intro.xml
+ delete mode 100644 documentation/sdk-manual/sdk-manual-customization.xsl
+ create mode 100644 documentation/sdk-manual/sdk-manual.rst
+ delete mode 100755 documentation/sdk-manual/sdk-manual.xml
+ delete mode 100644 documentation/sdk-manual/sdk-style.css
+ create mode 100644 documentation/sdk-manual/sdk-using.rst
+ delete mode 100644 documentation/sdk-manual/sdk-using.xml
+ create mode 100644 documentation/sdk-manual/sdk-working-projects.rst
+ delete mode 100644 documentation/sdk-manual/sdk-working-projects.xml
+ create mode 100644 documentation/sphinx-static/YoctoProject_Logo_RGB.jpg
+ create mode 100644 documentation/sphinx-static/switchers.js
+ create mode 100644 documentation/sphinx-static/theme_overrides.css
+ create mode 100644 documentation/sphinx/yocto-vars.py
+ delete mode 100644 documentation/template/Vera.xml
+ delete mode 100644 documentation/template/VeraMoBd.xml
+ delete mode 100644 documentation/template/VeraMono.xml
+ delete mode 100644 documentation/template/component.title.xsl
+ delete mode 100644 documentation/template/division.title.xsl
+ delete mode 100644 documentation/template/embedded_video.xsl
+ delete mode 100644 documentation/template/fop-config.xml
+ delete mode 100644 documentation/template/formal.object.heading.xsl
+ delete mode 100644 documentation/template/gloss-permalinks.xsl
+ delete mode 100644 documentation/template/permalinks.xsl
+ delete mode 100644 documentation/template/poky-db-pdf.xsl
+ delete mode 100644 documentation/template/qa-code-permalinks.xsl
+ delete mode 100644 documentation/template/section.title.xsl
+ delete mode 100644 documentation/template/titlepage.templates.xml
+ create mode 100644 documentation/toaster-manual/history.rst
+ delete mode 100644 documentation/toaster-manual/toaster-manual-customization.xsl
+ create mode 100644 documentation/toaster-manual/toaster-manual-intro.rst
+ delete mode 100644 documentation/toaster-manual/toaster-manual-intro.xml
+ create mode 100644 documentation/toaster-manual/toaster-manual-reference.rst
+ delete mode 100644 documentation/toaster-manual/toaster-manual-reference.xml
+ create mode 100644 documentation/toaster-manual/toaster-manual-setup-and-use.rst
+ delete mode 100644 documentation/toaster-manual/toaster-manual-setup-and-use.xml
+ create mode 100644 documentation/toaster-manual/toaster-manual-start.rst
+ delete mode 100644 documentation/toaster-manual/toaster-manual-start.xml
+ delete mode 100644 documentation/toaster-manual/toaster-manual-style.css
+ create mode 100644 documentation/toaster-manual/toaster-manual.rst
+ delete mode 100755 documentation/toaster-manual/toaster-manual.xml
+ delete mode 100644 documentation/tools/eclipse-help.sed
+ delete mode 100644 documentation/tools/mega-manual.sed
+ delete mode 100755 documentation/tools/poky-docbook-to-pdf
+ create mode 100644 documentation/transitioning-to-a-custom-environment.rst
+ create mode 100644 documentation/what-i-wish-id-known.rst
+
 -- 
-2.26.2
+2.17.1
 
