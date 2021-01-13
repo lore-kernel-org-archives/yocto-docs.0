@@ -1,80 +1,151 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
- by mx.groups.io with SMTP id smtpd.web11.11661.1610558634336253667
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+ by mx.groups.io with SMTP id smtpd.web10.11862.1610559583056701310
  for <docs@lists.yoctoproject.org>;
- Wed, 13 Jan 2021 09:23:55 -0800
+ Wed, 13 Jan 2021 09:39:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile-fr.20150623.gappssmtp.com header.s=20150623 header.b=Gv21AIbF;
- spf=pass (domain: smile.fr, ip: 209.85.221.52, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f52.google.com with SMTP id t30so2990216wrb.0
-        for <docs@lists.yoctoproject.org>; Wed, 13 Jan 2021 09:23:54 -0800 (PST)
+ dkim=pass header.i=@linaro.org header.s=google header.b=GwwrBuTA;
+ spf=pass (domain: linaro.org, ip: 209.85.208.50, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ed1-f50.google.com with SMTP id g21so2859180edy.0
+        for <docs@lists.yoctoproject.org>; Wed, 13 Jan 2021 09:39:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20150623.gappssmtp.com; s=20150623;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=B0P2XOsp91D7DAYMHzMYNk4BWv2xRPoGWkbJexy5luM=;
-        b=Gv21AIbFYFDozQaNU97wg57fZDlvvb0PD1WanKDn8KTKj+RzQg59qewgUmhb1A+h2R
-         2qBN+/tDJLBSFkr34XqT8vSkAmMClpGZHRruNOGs13laHXGOjbcSo+7QYYc8+C9Uq7G/
-         zSc/pxeg2VE2sILYTqeX1rF+K1gWM9J3G9K0FtBrJn2rf97FKNC/gzZflyxe46NDqhbm
-         GdQ86La7Lly7FrraE7lD4oqbHhcEU7I2O8eR7g9l9FVqnTTPE+S0VJcuxh29sA9bkLpi
-         gQpPZ5j5BPlhXmvQjQ+gKUsMLMiLxCzBbR2SwD60acDlvYvJgrP0tnQ3eOZgdYeiwVg2
-         DQ6w==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=pOBJRJmbo9F3ND4WG+kiX3dhHCKPI/bOCyx8L6wjnQc=;
+        b=GwwrBuTADoBKv1MKTTYb5UG1KRCnZnshij2P7W9euuhQLtiDUcdjguY3jzCaWEjNZk
+         F5/ZXAawrJbbQNdY1R1Tm+1GVwn5yeXDOFWBHGwqBvQtYzeQddiHuy6Q1myuS7lDlZLU
+         vb6KGVAQfVMTINjYHbxaWmaopHNcIPHArGmX56w01nu9g950ZyAFAtLNTHqEnBrFd2T6
+         TAJvuG5QYUsMHUHOKo0GVUww2sbmXomsIia+zMSMuMnoMRjWf+sB+o5dQkpiBk0g5KcX
+         5W7LGOnHdq7x79jG5jY+d/Xc5Td2RKYe5JZzjj71o9PeljpEudmiipV1voc1ur+8cnhu
+         xuvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=B0P2XOsp91D7DAYMHzMYNk4BWv2xRPoGWkbJexy5luM=;
-        b=iSuFGZHzBbo0RjA3m2sOo42/KaeGtYKgOxFq/mVPEiLlGVkbhcusllmnywdNRY0R2N
-         IOU99XRDIAjLnNyhr8GA/67vcFu+OnLevZ1wJbIlk0qcUB2OwBKAS0lZNOavm8YRjNiR
-         6oWnu/LdVUMr0uzmt3ZUljX1PVOsnVY9GuPBJ//KaHOdx7sbCGo379giePJ66l+rG+gx
-         D6wg8TG+Z9XjNUguEPL25hftasrY00v/abNXlLz+mb08KYiWEJ8T68jo9DMbcyHBipqR
-         MJcrl6xSAcMjxq8K58j1M/7INs3+4jWmbAcx61rPXoStanheQcfXkK46ZjKcm6gKm1BN
-         3B4w==
-X-Gm-Message-State: AOAM531Igcbd6Xcs5u0ZDithA3lebBOcJrDNQs+5gwzrWFMxVOOmrZhz
-	eoutfDJgAFyb/oLg/prxb/y+89ay2zXfMQ==
-X-Google-Smtp-Source: ABdhPJzsw3bufZEaYwzW7GwiXPYIEW0qEweub83OI+8jU3YQPyI0cpHfHZUNhhxOEzlLpmCcnGbvPg==
-X-Received: by 2002:a5d:6cc2:: with SMTP id c2mr3664121wrc.374.1610558632666;
-        Wed, 13 Jan 2021 09:23:52 -0800 (PST)
-Return-Path: <yoann.congal@smile.fr>
-Received: from localhost.localdomain (99.246.204.77.rev.sfr.net. [77.204.246.99])
-        by smtp.gmail.com with ESMTPSA id p15sm4456316wrt.15.2021.01.13.09.23.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Jan 2021 09:23:52 -0800 (PST)
-From: "Yoann Congal" <yoann.congal@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH] toaster-manual: Fix a warning related to the code-block directive
-Date: Wed, 13 Jan 2021 18:23:29 +0100
-Message-Id: <20210113172329.7683-1-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.20.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=pOBJRJmbo9F3ND4WG+kiX3dhHCKPI/bOCyx8L6wjnQc=;
+        b=kQuvocQh9NxIIwB49fzcC8bHcqIfCsrIR/TbM4rt+qd8tJFfEev5CdmCgjOzPw+vPK
+         Tdh8RjUmg1klK45girLWIFSfEIR2P6s8KHVr1HmDAoJBS63u4vMDWCHlkacb+byuOzea
+         uKmxA/tUTw98ZEg/su7KLGv2YfGrFBLFDP421ByqKrbj/hjfxwxt04P/t7xbzbQV9MIW
+         tcR2ZO3qk7XNMr2vaT86BWR+bz2lnB07bsMUtPLBJECF58iIehmkvnywbx7Is5XQm6jr
+         +5Ra3ccXRdLhsW8bweBOgIhsdnekN2GTzzE68QKcCI5zpBcMPSjen9UeTFMQ2ONhDzoW
+         zLVA==
+X-Gm-Message-State: AOAM530z344/O28VOJLPzyotu85+qQMD3GVoanXXLGapXzf2KsRrz5Mb
+	GfxrvEfobE1j1Utfvjr/gDZboIPOl6fp1bqhdGuZnw==
+X-Google-Smtp-Source: ABdhPJzKR7a4T5m/1r3t1OE3vBhdKUxr/weD6gp3j8ymA5c2N4iVOmofx14Am/89DK9PRt1w68tAFWh6msqIzH42gR4=
+X-Received: by 2002:a50:934a:: with SMTP id n10mr2690095eda.26.1610559581366;
+ Wed, 13 Jan 2021 09:39:41 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210113172329.7683-1-yoann.congal@smile.fr>
+In-Reply-To: <20210113172329.7683-1-yoann.congal@smile.fr>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Wed, 13 Jan 2021 18:39:30 +0100
+Message-ID: <CAP71Wjwi92hxX7U_qC7KwKQpND4mD_F_K8RQ8xBApZUw8o+GFQ@mail.gmail.com>
+Subject: Re: [docs] [PATCH] toaster-manual: Fix a warning related to the code-block directive
+To: Yoann Congal <yoann.congal@smile.fr>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="000000000000bcc4e005b8cb9f94"
 
-Fix the following warning by specifying the language (here : shell):
-.../yocto/poky/documentation/toaster-manual/reference.rst:572: WARNING: Error in "code-block" directive:
-1 argument(s) required, 0 supplied.
+--000000000000bcc4e005b8cb9f94
+Content-Type: text/plain; charset="UTF-8"
 
-.. code-block::
+On Wed, Jan 13, 2021 at 6:23 PM Yoann Congal <yoann.congal@smile.fr> wrote:
 
-   $ bitbake/lib/toaster/manage.py builddelete build_id
+> Fix the following warning by specifying the language (here : shell):
+> .../yocto/poky/documentation/toaster-manual/reference.rst:572: WARNING:
+> Error in "code-block" directive:
+> 1 argument(s) required, 0 supplied.
+>
 
-Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
----
- documentation/toaster-manual/reference.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Which version of Sphinx are you using? I suspect an old version, in Sphinx
+2+ (I think) it is no longer an error to omit the language. And I don't see
+any warnings in my builds. In fact, we have 0 warning in the whole doc, and
+we will try to avoid adding new ones!
 
-diff --git a/documentation/toaster-manual/reference.rst b/documentation/toaster-manual/reference.rst
-index d2ab14c8e6..135968d40c 100644
---- a/documentation/toaster-manual/reference.rst
-+++ b/documentation/toaster-manual/reference.rst
-@@ -569,7 +569,7 @@ command would return something like the following::
- The ``builddelete`` command deletes data associated with a build. Access
- the command as follows:
- 
--.. code-block::
-+.. code-block:: shell
- 
-    $ bitbake/lib/toaster/manage.py builddelete build_id
- 
--- 
-2.20.1
 
+>
+> .. code-block::
+>
+>    $ bitbake/lib/toaster/manage.py builddelete build_id
+>
+> Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+> ---
+>  documentation/toaster-manual/reference.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/documentation/toaster-manual/reference.rst
+> b/documentation/toaster-manual/reference.rst
+> index d2ab14c8e6..135968d40c 100644
+> --- a/documentation/toaster-manual/reference.rst
+> +++ b/documentation/toaster-manual/reference.rst
+> @@ -569,7 +569,7 @@ command would return something like the following::
+>  The ``builddelete`` command deletes data associated with a build. Access
+>  the command as follows:
+>
+> -.. code-block::
+> +.. code-block:: shell
+>
+>     $ bitbake/lib/toaster/manage.py builddelete build_id
+>
+> --
+> 2.20.1
+>
+>
+> 
+>
+>
+
+--000000000000bcc4e005b8cb9f94
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Jan 13, 2021 at 6:23 PM Yoann=
+ Congal &lt;<a href=3D"mailto:yoann.congal@smile.fr">yoann.congal@smile.fr<=
+/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
+px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">F=
+ix the following warning by specifying the language (here : shell):<br>
+.../yocto/poky/documentation/toaster-manual/reference.rst:572: WARNING: Er=
+ror in &quot;code-block&quot; directive:<br>
+1 argument(s) required, 0 supplied.<br></blockquote><div><br></div><div>Wh=
+ich version of Sphinx are you using? I suspect an old version, in Sphinx 2+=
+ (I think) it is no longer an error to omit the language. And I don&#39;t s=
+ee any warnings in my builds. In fact, we have 0 warning in the whole doc, =
+and we will try to avoid adding new ones!</div><div>=C2=A0</div><blockquote=
+ class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px so=
+lid rgb(204,204,204);padding-left:1ex">
+<br>
+.. code-block::<br>
+<br>
+=C2=A0 =C2=A0$ bitbake/lib/toaster/manage.py builddelete build_id<br>
+<br>
+Signed-off-by: Yoann Congal &lt;<a href=3D"mailto:yoann.congal@smile.fr" t=
+arget=3D"_blank">yoann.congal@smile.fr</a>&gt;<br>
+---<br>
+=C2=A0documentation/toaster-manual/reference.rst | 2 +-<br>
+=C2=A01 file changed, 1 insertion(+), 1 deletion(-)<br>
+<br>
+diff --git a/documentation/toaster-manual/reference.rst b/documentation/to=
+aster-manual/reference.rst<br>
+index d2ab14c8e6..135968d40c 100644<br>
+--- a/documentation/toaster-manual/reference.rst<br>
++++ b/documentation/toaster-manual/reference.rst<br>
+@@ -569,7 +569,7 @@ command would return something like the following::<br=
+>
+=C2=A0The ``builddelete`` command deletes data associated with a build. Ac=
+cess<br>
+=C2=A0the command as follows:<br>
+<br>
+-.. code-block::<br>
++.. code-block:: shell<br>
+<br>
+=C2=A0 =C2=A0 $ bitbake/lib/toaster/manage.py builddelete build_id<br>
+<br>
+-- <br>
+2.20.1<br>
+<br>
+<br>
+<br>
+<br>
+</blockquote></div></div>
+
+--000000000000bcc4e005b8cb9f94--
