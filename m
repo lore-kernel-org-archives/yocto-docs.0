@@ -1,332 +1,190 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
- by mx.groups.io with SMTP id smtpd.web08.599.1610562390041579430
+Received: from EUR01-HE1-obe.outbound.protection.outlook.com (EUR01-HE1-obe.outbound.protection.outlook.com [40.107.13.43])
+ by mx.groups.io with SMTP id smtpd.web10.5096.1610611650450936044
  for <docs@lists.yoctoproject.org>;
- Wed, 13 Jan 2021 10:26:30 -0800
+ Thu, 14 Jan 2021 00:07:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=d1C57tkr;
- spf=pass (domain: linaro.org, ip: 209.85.218.49, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-ej1-f49.google.com with SMTP id d17so4446704ejy.9
-        for <docs@lists.yoctoproject.org>; Wed, 13 Jan 2021 10:26:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=MtHPSqjM5IvDWZFOgAkkWzKOLJh0R1G/c6+ZJcd4p/0=;
-        b=d1C57tkr8EGwLSXcvyY7DGPA6BW6lakF3o1meYpyUSVex1nSgV8R03jJXjR/unU/Od
-         vElFz4JD0yRyGHG74caCBaHDgEHXUkNb2aUneut7fv3di7ShFFmlPZc5dCi7CDqAAtUu
-         GNJyCkcDou2ra7TEYjdprjNiVltNlk9q+gX4LJ3o4/8sSfQpMiHppk58YeX5z9U7mA8N
-         ZgIqKaugFRMw0HAgHNifO2GKdtSeFyXb6mx3pXtGoU+8xarxg+q7zdgLDRQqpJV9LUQV
-         HoAueaHs2kKUVX789kb24Eix0BdFmOTmZeCpfCWghykRDegeABvzRQFw1/al2nKopakC
-         MXsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=MtHPSqjM5IvDWZFOgAkkWzKOLJh0R1G/c6+ZJcd4p/0=;
-        b=nOtnUx/6tutQsyCKmupJlyyJgl33ur1m8NyVLmawcEIXY+1K5IW/SNqgSlvB3RgFiI
-         A/tJ7QaH1Ed7EsbpSP72viW7AFWAS6OMqOwa0JIKgOE2NqHCGqF95Jwexcw4fYVSVkbm
-         nr3NW0jI7Schj6jc8YFxKqauRM//7EzRGdM3mYEneXtpkYoNtyVp7/aWtBD3zR2dSByF
-         9Sxyayrys8ondtKkL9oI2RUndPaiIVNbl/QVRSldU5is9ftNKs9O/nshNjAHIXa2d3bD
-         S7YjyGpwbWI+q3Q6Cn78Jw60hHUWNH8r8kXIyPxTB7e6wbb1bN+9sohComn+2AafE5Rz
-         RjbA==
-X-Gm-Message-State: AOAM530gEG/U3VOLqwc4/QRHuRJWai3ut8E+reYdRsEFuo14UVMAjXzM
-	a6Yl7nb6jFN6Hr0ONWfzP/xhUrFyT1GyFIiieSzp9A==
-X-Google-Smtp-Source: ABdhPJwuUGx4+1axrMyWe16kaWoCEYdoF9DG5cPXT8TeDH/p2BThuvw12O9CfJQCQ/PSzvM0yky99bKl5OLLtIYNL04=
-X-Received: by 2002:a17:907:41ad:: with SMTP id of21mr2572850ejb.347.1610562388220;
- Wed, 13 Jan 2021 10:26:28 -0800 (PST)
+ dkim=pass header.i=@armh.onmicrosoft.com header.s=selector2-armh-onmicrosoft-com header.b=zFP5cWkJ;
+ spf=pass (domain: arm.com, ip: 40.107.13.43, mailfrom: diego.sueiro@arm.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/aiygNB7dqf5+LQUq2C207lfYIiJG7I7htBH/IjVvQI=;
+ b=zFP5cWkJDOEEoNjtFd3b5XdxdAXj59lHfs1BHQvuValMPqTXepYFCEvpJrYD6bTQq9+y+dnXMHv2dECYMIzQHpObPRtcxsQ0ZfLkqassQD9AuNTujM+t9OyoSbefEtBkw5IpZuGVmLWTqVMZg9+RYUz6S9n3FNpUC48NrjEw+6M=
+Received: from AS8PR04CA0011.eurprd04.prod.outlook.com (2603:10a6:20b:310::16)
+ by HE1PR0802MB2522.eurprd08.prod.outlook.com (2603:10a6:3:dc::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3742.6; Thu, 14 Jan
+ 2021 08:07:27 +0000
+Received: from AM5EUR03FT013.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:20b:310:cafe::5) by AS8PR04CA0011.outlook.office365.com
+ (2603:10a6:20b:310::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.10 via Frontend
+ Transport; Thu, 14 Jan 2021 08:07:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; lists.yoctoproject.org; dkim=pass (signature was
+ verified) header.d=armh.onmicrosoft.com;lists.yoctoproject.org; dmarc=pass
+ action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ AM5EUR03FT013.mail.protection.outlook.com (10.152.16.140) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.3742.6 via Frontend Transport; Thu, 14 Jan 2021 08:07:27 +0000
+Received: ("Tessian outbound 8418c949a3fa:v71"); Thu, 14 Jan 2021 08:07:27 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: e83b020172697b89
+X-CR-MTA-TID: 64aa7808
+Received: from 30599566ad9b.2
+	by 64aa7808-outbound-1.mta.getcheckrecipient.com id 98ECE971-AEC3-41BC-AFAB-C5FB5BD10398.1;
+	Thu, 14 Jan 2021 08:07:21 +0000
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 30599566ad9b.2
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Thu, 14 Jan 2021 08:07:21 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UFr7BfXDh2hjp1FwnVOXq2EwHfOxoBf/DRJVNca9GMololMbt3ykT6HWD0duZ11ByHX3NI0LhB2L+03FxUokYzQ2hE+O/gmGdpSgc0YNOcx70+uOiqXGl5Vb1FB9DrUSo2ERazGUAssPecyTgA/WSu61bhD6r/tw895atwXb87oOETYHZI4DpxLZnSoExYlhf2Szy0hZPYtZwk/tgb/TduCUieREamA1VWCOhySmiTOWGtLQQfsjsdSzohv7JQKUFczOirrKCCTYtMmVDN8Nrwt89jnXs8acqF1LDagJF0eO3mc/4q1FP1XV8RTYVNlElD9iWAYKcSYyA8/SLSGHQA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/aiygNB7dqf5+LQUq2C207lfYIiJG7I7htBH/IjVvQI=;
+ b=ZIoKvK1KMMa/BDTPBxx6PydMQmOuYFa8JgRg1BmSLbpdr28R8tgcmg/8fD8OhHDNy0wdgiGegIW6930176Cez6tAJ+mU1f4iT/4LsIDZ2Ybf/56/nBbaLaG+AN2KWM1C8I4yz0g3LEBu22emzsURbklv66F325CoLTYUQ0db1L9RynEHhLFpOd/bOtgThq3bPrBW0obl8gbh+3rKjBnpztn70FtvMWkfIpUgkNvldds9DC4QyWkI1a6B3QEU28U/UUyiXLLeBLP2SlIUFYp1FcJaN8nJYeRYz48xpddK3q4VjYwxbNzn76zAbq6pGW5oZKRJsPM8sZhxduMQKxkgAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/aiygNB7dqf5+LQUq2C207lfYIiJG7I7htBH/IjVvQI=;
+ b=zFP5cWkJDOEEoNjtFd3b5XdxdAXj59lHfs1BHQvuValMPqTXepYFCEvpJrYD6bTQq9+y+dnXMHv2dECYMIzQHpObPRtcxsQ0ZfLkqassQD9AuNTujM+t9OyoSbefEtBkw5IpZuGVmLWTqVMZg9+RYUz6S9n3FNpUC48NrjEw+6M=
+Authentication-Results-Original: lists.yoctoproject.org; dkim=none (message
+ not signed) header.d=none;lists.yoctoproject.org; dmarc=none action=none
+ header.from=arm.com;
+Received: from AM6PR08MB3461.eurprd08.prod.outlook.com (2603:10a6:20b:47::28)
+ by AM6PR08MB4803.eurprd08.prod.outlook.com (2603:10a6:20b:c4::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.10; Thu, 14 Jan
+ 2021 08:07:21 +0000
+Received: from AM6PR08MB3461.eurprd08.prod.outlook.com
+ ([fe80::f500:d160:ee9e:f578]) by AM6PR08MB3461.eurprd08.prod.outlook.com
+ ([fe80::f500:d160:ee9e:f578%4]) with mapi id 15.20.3763.011; Thu, 14 Jan 2021
+ 08:07:21 +0000
+From: "Diego Sueiro" <diego.sueiro@arm.com>
+To: docs@lists.yoctoproject.org
+Cc: richard.purdie@linuxfoundation.org,
+	Diego Sueiro <diego.sueiro@arm.com>
+Subject: [PATCH] ref-manual: Add intermediate-deploy.bbclass documentation
+Date: Thu, 14 Jan 2021 08:07:10 +0000
+Message-Id: <f9adb84fe3f80421a3e021234c7316836cb5cd93.1610611154.git.diego.sueiro@arm.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <830757c5aad2db5f7524e7a99f3b97e309592517.1610611154.git.diego.sueiro@arm.com>
+References: <830757c5aad2db5f7524e7a99f3b97e309592517.1610611154.git.diego.sueiro@arm.com>
+X-Originating-IP: [217.140.106.51]
+X-ClientProxiedBy: LNXP265CA0092.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:76::32) To AM6PR08MB3461.eurprd08.prod.outlook.com
+ (2603:10a6:20b:47::28)
 MIME-Version: 1.0
-References: <CAP71Wjw3T0XKPxVH59J_fGpBmB+qJ6GyKowOPqa8CGOZ2e8OmQ@mail.gmail.com>
- <20210107165951.aqx4maful2uhopzx@qschulz> <CAP71WjyK679c8hjEE53PVyi-_8vX5TS6umsXk+y2TGio8c30hQ@mail.gmail.com>
-In-Reply-To: <CAP71WjyK679c8hjEE53PVyi-_8vX5TS6umsXk+y2TGio8c30hQ@mail.gmail.com>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Wed, 13 Jan 2021 19:26:17 +0100
-Message-ID: <CAP71WjxBRT6tbpgDroR0bKq2B0Nvr6pxuMe2nG+5MmGwyVo4VQ@mail.gmail.com>
-Subject: Re: [docs] broken links
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>, 
-	Robert Berger <robert.berger@reliableembeddedsystems.com>
-Content-Type: multipart/alternative; boundary="00000000000009f5c805b8cc4784"
-
---00000000000009f5c805b8cc4784
-Content-Type: text/plain; charset="UTF-8"
-
-On Thu, Jan 7, 2021 at 6:08 PM Nicolas Dechesne <nicolas.dechesne@linaro.org>
-wrote:
-
->
->
-> On Thu, Jan 7, 2021 at 5:59 PM Quentin Schulz <
-> quentin.schulz@streamunlimited.com> wrote:
->
->> Hi Nicolas,
->>
->> On Thu, Jan 07, 2021 at 05:52:49PM +0100, Nicolas Dechesne wrote:
->> > hey!
->> >
->> > Robert opened a bug for a broken link in the doc, see
->> > https://bugzilla.yoctoproject.org/show_bug.cgi?id=14168
->> >
->> > This is a valid bug, a regression in
->> > e1bcfe4d8 dev-manual: remove unused labels
->> >
->> > Unfortunately, it opens a can of worms... since it looks like the built
->> in
->> > linkcheck did not detect the broken links, and this is not the only
->> broken
->> > link.
->> >
->> > I ran an online link checker on
->> > https://docs.yoctoproject.org/dev-manual/common-tasks.html, and it
->> reported
->> > the following errors with anchors.. they look like they are regression
->> with
->> > the commit above..
->> >
->>
->> [...]
->>
->> It'd be nice to fix the linkcheck indeed.
->>
->
-> hmm. could it be that linkcheck only checks for 'external' links?
->
-
-in the meantime I was looking for a tool I could run locally, and found [1]
-
-It looks like it gives some good output:
-
-$ pytest --check-links --check-anchors --check-links-cache
-_build/html/dev-manual/
-
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#new-recipe-autotooled-package>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#new-recipe-single-c-file-package-hello-world>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#new-recipe-patching-code>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#new-recipe-fetching-code>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#new-recipe-post-installation-scripts>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#new-recipe-storing-and-naming-the-recipe>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#usingpoky-extend-customimage>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#finding-the-temporary-source-code>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#understand-what-gives-your-image-size>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#combining-multiple-versions-library-files-into-one-image>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#using-a-provided-kickstart-file>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#wic-using-the-wic-plugin-interface>
-FAILED _build/html/dev-manual/common-tasks.html <a href=#wic-requirements>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#best-practices-to-follow-when-creating-layers>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#using-bbappend-files>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#incrementing-a-binary-package-version>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#automatically-incrementing-a-binary-package-revision-number>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#qemu-image-running-tests>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-debugging-viewing-logs-from-failed-tasks>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-debugging-viewing-variable-values>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-viewing-dependencies-between-recipes-and-tasks>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-viewing-task-variable-dependencies>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-debugging-taskrunning>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-debugging-bitbake>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-debugging-buildfile>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#platdev-gdb-remotedebug>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-other-debugging-others>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#dev-viewing-task-variable-dependencies>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#platdev-appdev-devshell>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#using-a-quilt-workflow>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#how-to-submit-a-change>
-FAILED _build/html/dev-manual/common-tasks.html <a
-href=#figuring-out-the-mailing-list-to-use>
-FAILED _build/html/dev-manual/qemu.html <a
-href=#qemu-running-under-a-network-file-system-nfs-server>
-FAILED _build/html/dev-manual/qemu.html <a href=#kvm-cond>
-FAILED _build/html/dev-manual/start.html <a href=
-https://autobuilder.yocto.io//pub/nightly/>
-FAILED _build/html/dev-manual/start.html <a href=
-https://autobuilder.yocto.io//pub/nightly/>
-FAILED _build/html/dev-manual/start.html <a
-href=#checkout-out-by-tag-in-poky>
-
-It's slow, it took 7 minutes to check for the dev-manual.. but it's a first
-step. now we need to fix them!
-
-[1] https://github.com/jupyterlab/pytest-check-links
-
-
->
->>
->> I have on my todolist to remove all anchor links to use refs instead but
->> it's
->> not fun work to do and it's time consuming. I can now probably "automate"
->> all of this with some python regexp and manually fix the ones returned
->> by your online link checker :) (and use the online link checker to
->> validate the changes).
->>
->> I'd then add in the README/CONTRIBUTING that we do not allow such links
->> and we have to be careful to enforce this when receiving patches.
->>
->> All this in the event that we can't find what's wrong with our
->> linkcheck.
->>
->> Cheers,
->> Quentin
->>
->
-
---00000000000009f5c805b8cc4784
-Content-Type: text/html; charset="UTF-8"
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from e120809.cambridge.arm.com (217.140.106.51) by LNXP265CA0092.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:76::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3763.10 via Frontend Transport; Thu, 14 Jan 2021 08:07:20 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-HT: Tenant
+X-MS-Office365-Filtering-Correlation-Id: 18f0e22a-8139-48b8-210f-08d8b8636ef1
+X-MS-TrafficTypeDiagnostic: AM6PR08MB4803:|HE1PR0802MB2522:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: 
+	<HE1PR0802MB25227B971FEF96F9E324ED0092A80@HE1PR0802MB2522.eurprd08.prod.outlook.com>
+x-checkrecipientrouted: true
+NoDisclaimer: true
+X-MS-Oob-TLC-OOBClassifiers: OLM:7219;OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: 
+ Iiuyvn05Bo1c5cNmfDe5kpx7RJ5CnLhilp6iM3zU57LzZE7H1+KjgcRm3yif0wkcHOdR3lz22puswFwSzfFksiibHp8ESIH4QYOFoe9UOJharTJXqjl8yhRze/BisNjCRmHkV6JEcbtc5a39zWPBGzCE7PTvr+o5dRxGO21N1NPAili6UuqOM2wvWLVWGhSMdAyYoug9ymluic8OuUDZxGwCBcw717vPqK/d2tUBrogefvAD0qJsdCntYaJLcxmY4XEyx/n3CGzURx2u8vC6NKRa5DxCw34+QT4B0Xq49k1LwvIjOtrl3P76k8hCwzIE41UVdkKmFNnCYlU2F16qlzOdsuMvBxuWuQwHymqXBQj1yQZvRYNQvnJRW2AFcDdHkgaffkQX/qdSiaPajmvdhQ==
+X-Forefront-Antispam-Report-Untrusted: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM6PR08MB3461.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(4636009)(136003)(396003)(376002)(366004)(39850400004)(346002)(2906002)(6486002)(83380400001)(6916009)(26005)(316002)(8676002)(86362001)(16526019)(4326008)(44832011)(66476007)(66556008)(6666004)(66946007)(36756003)(52116002)(8936002)(956004)(5660300002)(2616005)(186003)(7696005)(478600001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: 
+ =?us-ascii?Q?mmvAWP6LQhduCfJ6nIAXP8czk0h4b2f6O48Q8HEZdCEjJied0YKt0aBAYheC?=
+ =?us-ascii?Q?KWob0n5gSA2A5AsFKDRWtvPtXheCZROUKLR5zDkD5aQHQ16wxTZG33oYFYEt?=
+ =?us-ascii?Q?tByMITSruOkjpa7erDH2pC2mGz0Ljv+yVTjk7ukPm9E48HyItNuScuX8JgkH?=
+ =?us-ascii?Q?RvaSUvgkWpwK9nkf3gZ8ok/eZfJo/Hnu80ETAykH0ghLJZJ6ci56OCDVWW0u?=
+ =?us-ascii?Q?NxUQzLguWaW3Qofpjb/OuqFjkW/qto1Fh+anf1y3gQRQpNZ/O7m5dxo1coBt?=
+ =?us-ascii?Q?rkDfDzap33jY6P5CgIubbQImuULurpPzeEn/Ky9Ol6/6JuiDUP+MXiemMCC0?=
+ =?us-ascii?Q?Igoee14h5vnPdzz4ayJrZv7AvxQuPL8VETTCITxzY0VyALcUb0ipqmaoz9gR?=
+ =?us-ascii?Q?XjvopNPKaEULA7tamcrwvcuBicj8PHYMe+vL+z1HZLdhmkoaz+U5NeO8udg6?=
+ =?us-ascii?Q?9HgulO9xPbiR1rKYI4i155V6jTNxO93xDLhUT3b+DjJTXKBUiLa7y7eljPET?=
+ =?us-ascii?Q?RITwHmNHLy5AVQKSxXb4JGMAHVVa1jo4rtHFfnyBfErg4hCBA/NyeLTMdNlv?=
+ =?us-ascii?Q?6POZqYdnp7Q224+GxtLeRZNjKWwa7DL9Pgl0kr2kYZWg/ZsouQmaU5MbJc07?=
+ =?us-ascii?Q?ClJIjdFolZiipQS6Qlf5icMPOJX8AtikoQx5jSZp8kHbsDWlLR2nabe3TJu8?=
+ =?us-ascii?Q?krkeYZamQCZkLyShTPaAVl5a6HKY57sJxS48dPAI/wDTQ1+dxgPPYlbwiQkI?=
+ =?us-ascii?Q?0eGsqHIaLfZZW79kiWvFHc3i3CJm8JvebqQlnx7fXVllSP2k8puEyVfR/E+B?=
+ =?us-ascii?Q?cDb8ifXqcNbUfqb4o4Q6KGg3lAByUlED8OSz6UN0mclQ7Fk/Uy/oO+egES29?=
+ =?us-ascii?Q?JC9xDJWnm6kK0+cVkispm0RgW5VnokwCCsyzcjicttrhL4v3qbh158eTB0GD?=
+ =?us-ascii?Q?d7p6uF9MnxHyjH+FJg8J77K8cVjDhE17HZUXHdEi9so1gOYuoc4Ixn0YSlgJ?=
+ =?us-ascii?Q?rAyJ?=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR08MB4803
+Original-Authentication-Results: lists.yoctoproject.org; dkim=none (message not signed)
+ header.d=none;lists.yoctoproject.org; dmarc=none action=none
+ header.from=arm.com;
+Return-Path: Diego.Sueiro@arm.com
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: 
+ AM5EUR03FT013.eop-EUR03.prod.protection.outlook.com
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 
+	fbfae6dd-efc4-4752-b86a-08d8b8636b0e
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	VwdwAP6a1GBhtR5Ol1ZSOBxHsdGv8QHnj9CMwiTiGS9P/cKouNiS4fDpq6EXnfjRIr3iq1+SfDaSTI8HdSTH7kDlpsGawH7h0x67M43DlbKfbmAV0WwZkB/rs+H0jbKTeZyUDIm9SN5oAy8RdJ2j8SWglLHn869ydsm11gEWwT7rCm28CP6XBQmz8Xbuo4gZset9ZF3hcTMs94/NtnKvyr2hoDhNGh1xOfLfhDX4wdmnepH+OZQJhKq7AhDFsssyL+UQcatRg3BqfsuVnlOcYOnmsgpQ4HjqP0az8Z/LVUqlICFQSms7pHuUUNWs9CBiv87b5jpJTJcX0tBdl4EHZm8R1OUDSIxfbzgmvS2GBfD2jcRTHb0jd2nim5P+VFVm/scEQ8LoetEj5mGdYpymqqM2+FgpM4tCbbz7vmJug5iSBr07569E8qawjTKBfysL+CdVe0+7BS0nXSrRk44aSXxxcXHAM7vuOsmYEMjqNUQ=
+X-Forefront-Antispam-Report: 
+	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(4636009)(396003)(376002)(136003)(39860400002)(346002)(46966006)(47076005)(6486002)(6666004)(4326008)(83380400001)(34020700004)(70206006)(16526019)(186003)(26005)(86362001)(2616005)(44832011)(8936002)(336012)(82740400003)(36756003)(70586007)(5660300002)(6916009)(7696005)(478600001)(8676002)(356005)(81166007)(82310400003)(2906002)(316002)(956004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2021 08:07:27.4904
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 18f0e22a-8139-48b8-210f-08d8b8636ef1
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource: 
+	AM5EUR03FT013.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: HE1PR0802MB2522
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jan 7, 2021 at 6:08 PM Nicola=
-s Dechesne &lt;<a href=3D"mailto:nicolas.dechesne@linaro.org">nicolas.deche=
-sne@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D=
-"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Jan 7, 2021 at =
-5:59 PM Quentin Schulz &lt;<a href=3D"mailto:quentin.schulz@streamunlimited=
-.com" target=3D"_blank">quentin.schulz@streamunlimited.com</a>&gt; wrote:<b=
-r></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
-;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Nicolas,<br>
-<br>
-On Thu, Jan 07, 2021 at 05:52:49PM +0100, Nicolas Dechesne wrote:<br>
-&gt; hey!<br>
-&gt; <br>
-&gt; Robert opened a bug for a broken link in the doc, see<br>
-&gt; <a href=3D"https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D14168" =
-rel=3D"noreferrer" target=3D"_blank">https://bugzilla.yoctoproject.org/show=
-_bug.cgi?id=3D14168</a><br>
-&gt; <br>
-&gt; This is a valid bug, a regression in<br>
-&gt; e1bcfe4d8 dev-manual: remove unused labels<br>
-&gt; <br>
-&gt; Unfortunately, it opens a can of worms... since it looks like the buil=
-t in<br>
-&gt; linkcheck did not detect the broken links, and this is not the only br=
-oken<br>
-&gt; link.<br>
-&gt; <br>
-&gt; I ran an online link checker on<br>
-&gt; <a href=3D"https://docs.yoctoproject.org/dev-manual/common-tasks.html"=
- rel=3D"noreferrer" target=3D"_blank">https://docs.yoctoproject.org/dev-man=
-ual/common-tasks.html</a>, and it reported<br>
-&gt; the following errors with anchors.. they look like they are regression=
- with<br>
-&gt; the commit above..<br>
-&gt; <br>
-<br>
-[...]<br>
-<br>
-It&#39;d be nice to fix the linkcheck indeed.<br></blockquote><div><br></di=
-v><div>hmm. could it be that linkcheck only checks for &#39;external&#39; l=
-inks?=C2=A0</div></div></div></blockquote><div><br></div><div>in the meanti=
-me I was looking for a tool I could run locally, and found [1]</div><div><b=
-r></div><div>It looks like it gives some good output:</div><div><br></div><=
-div>$ pytest --check-links --check-anchors --check-links-cache _build/html/=
-dev-manual/<br></div><div><br></div><div>FAILED _build/html/dev-manual/comm=
-on-tasks.html &lt;a href=3D#new-recipe-autotooled-package&gt;<br>FAILED _bu=
-ild/html/dev-manual/common-tasks.html &lt;a href=3D#new-recipe-single-c-fil=
-e-package-hello-world&gt;<br>FAILED _build/html/dev-manual/common-tasks.htm=
-l &lt;a href=3D#new-recipe-patching-code&gt;<br>FAILED _build/html/dev-manu=
-al/common-tasks.html &lt;a href=3D#new-recipe-fetching-code&gt;<br>FAILED _=
-build/html/dev-manual/common-tasks.html &lt;a href=3D#new-recipe-post-insta=
-llation-scripts&gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;=
-a href=3D#new-recipe-storing-and-naming-the-recipe&gt;<br>FAILED _build/htm=
-l/dev-manual/common-tasks.html &lt;a href=3D#usingpoky-extend-customimage&g=
-t;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;a href=3D#finding=
--the-temporary-source-code&gt;<br>FAILED _build/html/dev-manual/common-task=
-s.html &lt;a href=3D#understand-what-gives-your-image-size&gt;<br>FAILED _b=
-uild/html/dev-manual/common-tasks.html &lt;a href=3D#combining-multiple-ver=
-sions-library-files-into-one-image&gt;<br>FAILED _build/html/dev-manual/com=
-mon-tasks.html &lt;a href=3D#using-a-provided-kickstart-file&gt;<br>FAILED =
-_build/html/dev-manual/common-tasks.html &lt;a href=3D#wic-using-the-wic-pl=
-ugin-interface&gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;a=
- href=3D#wic-requirements&gt;<br>FAILED _build/html/dev-manual/common-tasks=
-.html &lt;a href=3D#best-practices-to-follow-when-creating-layers&gt;<br>FA=
-ILED _build/html/dev-manual/common-tasks.html &lt;a href=3D#using-bbappend-=
-files&gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;a href=3D#=
-incrementing-a-binary-package-version&gt;<br>FAILED _build/html/dev-manual/=
-common-tasks.html &lt;a href=3D#automatically-incrementing-a-binary-package=
--revision-number&gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt=
-;a href=3D#qemu-image-running-tests&gt;<br>FAILED _build/html/dev-manual/co=
-mmon-tasks.html &lt;a href=3D#dev-debugging-viewing-logs-from-failed-tasks&=
-gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;a href=3D#dev-de=
-bugging-viewing-variable-values&gt;<br>FAILED _build/html/dev-manual/common=
--tasks.html &lt;a href=3D#dev-viewing-dependencies-between-recipes-and-task=
-s&gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;a href=3D#dev-=
-viewing-task-variable-dependencies&gt;<br>FAILED _build/html/dev-manual/com=
-mon-tasks.html &lt;a href=3D#dev-debugging-taskrunning&gt;<br>FAILED _build=
-/html/dev-manual/common-tasks.html &lt;a href=3D#dev-debugging-bitbake&gt;<=
-br>FAILED _build/html/dev-manual/common-tasks.html &lt;a href=3D#dev-debugg=
-ing-buildfile&gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;a =
-href=3D#platdev-gdb-remotedebug&gt;<br>FAILED _build/html/dev-manual/common=
--tasks.html &lt;a href=3D#dev-other-debugging-others&gt;<br>FAILED _build/h=
-tml/dev-manual/common-tasks.html &lt;a href=3D#dev-viewing-task-variable-de=
-pendencies&gt;<br>FAILED _build/html/dev-manual/common-tasks.html &lt;a hre=
-f=3D#platdev-appdev-devshell&gt;<br>FAILED _build/html/dev-manual/common-ta=
-sks.html &lt;a href=3D#using-a-quilt-workflow&gt;<br>FAILED _build/html/dev=
--manual/common-tasks.html &lt;a href=3D#how-to-submit-a-change&gt;<br>FAILE=
-D _build/html/dev-manual/common-tasks.html &lt;a href=3D#figuring-out-the-m=
-ailing-list-to-use&gt;<br>FAILED _build/html/dev-manual/qemu.html &lt;a hre=
-f=3D#qemu-running-under-a-network-file-system-nfs-server&gt;<br>FAILED _bui=
-ld/html/dev-manual/qemu.html &lt;a href=3D#kvm-cond&gt;<br>FAILED _build/ht=
-ml/dev-manual/start.html &lt;a href=3D<a href=3D"https://autobuilder.yocto.=
-io//pub/nightly/">https://autobuilder.yocto.io//pub/nightly/</a>&gt;<br>FAI=
-LED _build/html/dev-manual/start.html &lt;a href=3D<a href=3D"https://autob=
-uilder.yocto.io//pub/nightly/">https://autobuilder.yocto.io//pub/nightly/</=
-a>&gt;<br>FAILED _build/html/dev-manual/start.html &lt;a href=3D#checkout-o=
-ut-by-tag-in-poky&gt;<br></div><div><br></div><div>It&#39;s slow, it took 7=
- minutes to check for the dev-manual.. but it&#39;s a first step. now we ne=
-ed to fix them!</div><div><br></div><div>[1]=C2=A0<a href=3D"https://github=
-.com/jupyterlab/pytest-check-links">https://github.com/jupyterlab/pytest-ch=
-eck-links</a>=C2=A0</div><div><br></div><blockquote class=3D"gmail_quote" s=
-tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
-ding-left:1ex"><div dir=3D"ltr"><div class=3D"gmail_quote"><div>=C2=A0</div=
-><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border=
--left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-I have on my todolist to remove all anchor links to use refs instead but it=
-&#39;s<br>
-not fun work to do and it&#39;s time consuming. I can now probably &quot;au=
-tomate&quot;<br>
-all of this with some python regexp and manually fix the ones returned<br>
-by your online link checker :) (and use the online link checker to<br>
-validate the changes).<br>
-<br>
-I&#39;d then add in the README/CONTRIBUTING that we do not allow such links=
-<br>
-and we have to be careful to enforce this when receiving patches.<br>
-<br>
-All this in the event that we can&#39;t find what&#39;s wrong with our<br>
-linkcheck.<br>
-<br>
-Cheers,<br>
-Quentin<br>
-</blockquote></div></div>
-</blockquote></div></div>
+Signed-off-by: Diego Sueiro <diego.sueiro@arm.com>
+---
+ documentation/ref-manual/classes.rst | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---00000000000009f5c805b8cc4784--
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
+l/classes.rst
+index a152dcac77..e0834a275c 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1325,6 +1325,17 @@ of symbolic links in ``/etc/rc?.d/`` within an image=
+ based on
+ dependencies specified by LSB headers in the ``init.d`` scripts
+ themselves.
+
++.. _ref-classes-intermediate-deploy:
++
++``intermediate-deploy.bbclass``
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
++
++The ``intermediate-deploy`` class is to be inherited by recipes that
++install intermediate artifacts which are not present in the filesystem
++to be further processed by other recipes. The INTERMEDIATE_DEPLOY_DIRS
++variable is a space separated list of dirnames from ${D} which include
++the intermediate artifacts.
++
+ .. _ref-classes-kernel:
+
+ ``kernel.bbclass``
+--
+2.17.1
+
+IMPORTANT NOTICE: The contents of this email and any attachments are confid=
+ential and may also be privileged. If you are not the intended recipient, p=
+lease notify the sender immediately and do not disclose the contents to any=
+ other person, use it for any purpose, or store or copy the information in =
+any medium. Thank you.
