@@ -1,228 +1,111 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web08.2900.1610795777391047399
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+ by mx.groups.io with SMTP id smtpd.web11.31359.1610963389796609368
  for <docs@lists.yoctoproject.org>;
- Sat, 16 Jan 2021 03:16:18 -0800
+ Mon, 18 Jan 2021 01:49:50 -0800
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.197, mailfrom: foss@0leil.net)
-X-Originating-IP: 80.110.100.75
-Received: from localhost.localdomain (80-110-100-75.cgn.dynamic.surfer.at [80.110.100.75])
-	(Authenticated sender: foss@0leil.net)
-	by relay5-d.mail.gandi.net (Postfix) with ESMTPA id EC47B1C0005;
-	Sat, 16 Jan 2021 11:16:14 +0000 (UTC)
-From: "Quentin Schulz" <foss@0leil.net>
+ dkim=pass header.i=@smile-fr.20150623.gappssmtp.com header.s=20150623 header.b=Gbtj4X1M;
+ spf=pass (domain: smile.fr, ip: 209.85.221.47, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wr1-f47.google.com with SMTP id a9so12331519wrt.5
+        for <docs@lists.yoctoproject.org>; Mon, 18 Jan 2021 01:49:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IRqyv2hwLwlOTJSDGf/ILlMwpDeoeC42LKheQO8A4Tw=;
+        b=Gbtj4X1MGjrE2qnrSTvV5TY8D/7eObtjWH3aWMD62ZvbyWmlUMi/+GVjCgtzuLaiQe
+         N6QHTT/ZlF4lfwRH3wyTr0HRSYKuQ5OzY9CzXyy1jmOyMIJfP9gzKqUjqR6AiWJIeMKa
+         Kmp0cC9q5WsvuxZ1J33I0u/8q3ZmX+/VjI9tjJiFpGOhJnbO21eM6+IyGNv8nRhh/jty
+         zWRrub6glUvFo3CbpNx0UVq6KOsdIVckclN4guyo0xPD9LAZIxQFQ85a8z3tOGC5FbxJ
+         x8W3NUJkTWxTwh455B3/srH6hL93mrJZkUKi7u16ALzwE35+nwFyNrMgY9SscrqGUKOF
+         kVLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=IRqyv2hwLwlOTJSDGf/ILlMwpDeoeC42LKheQO8A4Tw=;
+        b=KGMAkzA8yMlroP5YiD1sEdB4nG/TVI1jfrvs1y3g6EgbmW2uqdfgQFQCccrLFrlKp0
+         BMYs+12kzgQKLGXtn5qUka6IadBelHhMnb5OrJgablTDdeZCJrrbCTyW5LfucDGH8Z8z
+         3qdVTX5bBi2YbfI9Px+S0sbcKfkVar8HvzSaQ03pPwYazX8Cok+FvymKJVVsX87OH939
+         iuTg6guHfeBTiaO6Mw0hDV6vHqyu8V0E9GHFgQFzX8l1TtTjMJ5YAFB/yiIsAS5dnLjK
+         iyQtGfyK/3P26/lrdeMnLQCojMyeBqZP1KfHe6tj0uy+ws/qkaCb25+Jlyg6X/aRu2BU
+         fgFA==
+X-Gm-Message-State: AOAM533MCcbpfECjLJ4/I28/hUNYWDR14uDjFUUqWDcq8nZWk0SDSLzn
+	/TLFl2qdzyUbLtNmKYfgunqt+dnj+uk2Uw==
+X-Google-Smtp-Source: ABdhPJzWLoUwS5ueCwWEi1xCV8npMWtuGsUC6uOWQdbfoOhFRMDFru5L7cgRA4htxDhfmYpUzaloTw==
+X-Received: by 2002:adf:b78d:: with SMTP id s13mr25152179wre.344.1610963388203;
+        Mon, 18 Jan 2021 01:49:48 -0800 (PST)
+Return-Path: <yoann.congal@smile.fr>
+Received: from P-ASN-KEVALD.numericable.fr (89-159-1-53.rev.numericable.fr. [89.159.1.53])
+        by smtp.gmail.com with ESMTPSA id g12sm676225wmh.14.2021.01.18.01.49.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Jan 2021 01:49:47 -0800 (PST)
+From: "Yoann Congal" <yoann.congal@smile.fr>
 To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <foss@0leil.net>
-Subject: [PATCH] docs: fix missing & and ; surrounding references from poky.yaml
-Date: Sat, 16 Jan 2021 12:16:03 +0100
-Message-Id: <20210116111603.60983-1-foss@0leil.net>
-X-Mailer: git-send-email 2.29.2
+Cc: Yoann Congal <yoann.congal@smile.fr>
+Subject: [PATCH] documentation: Add a simple Sphinx extension to check its version
+Date: Mon, 18 Jan 2021 10:49:25 +0100
+Message-Id: <20210118094925.12654-1-yoann.congal@smile.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-poky.yaml references are only replaced in files if they are prefixed by
-& and suffixed by ;.
+Following this thread [1], point user to the README if they use an out-dated version of Sphinx.
 
-Let's fix the missing surrounding characters.
+[1]: [PATCH] toaster-manual: Fix a warning related to the code-block directive
+     https://lists.yoctoproject.org/g/docs/topic/patch_toaster_manual_fix_a/79656195
 
-Signed-off-by: Quentin Schulz <foss@0leil.net>
+Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
 ---
- documentation/kernel-dev/common.rst              | 2 +-
- documentation/ref-manual/devtool-reference.rst   | 8 ++++----
- documentation/ref-manual/release-process.rst     | 4 ++--
- documentation/ref-manual/system-requirements.rst | 4 ++--
- documentation/ref-manual/terms.rst               | 4 ++--
- documentation/ref-manual/variables.rst           | 4 ++--
- documentation/sdk-manual/appendix-obtain.rst     | 6 +++---
- documentation/sdk-manual/extensible.rst          | 4 ++--
- documentation/sdk-manual/working-projects.rst    | 4 ++--
- 9 files changed, 20 insertions(+), 20 deletions(-)
+ documentation/conf.py                        |  3 ++-
+ documentation/sphinx/sphinx-version-check.py | 25 ++++++++++++++++++++
+ 2 files changed, 27 insertions(+), 1 deletion(-)
+ create mode 100644 documentation/sphinx/sphinx-version-check.py
 
-diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index 6691da448..58adcc9b7 100644
---- a/documentation/kernel-dev/common.rst
-+++ b/documentation/kernel-dev/common.rst
-@@ -139,7 +139,7 @@ section:
-       ~/poky/build/tmp/deploy/sdk
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 407ea3292f..4376e67ee3 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -43,7 +43,8 @@ extensions = [
+     'sphinx.ext.autosectionlabel',
+     'sphinx.ext.extlinks',
+     'sphinx.ext.intersphinx',
+-    'yocto-vars'
++    'yocto-vars',
++    'sphinx-version-check'
+ ]
+ autosectionlabel_prefix_document = True
  
-    For this example, the installer file is named
--   ``poky-glibc-x86_64-core-image-minimal-i586-toolchain-ext-DISTRO.sh``.
-+   ``poky-glibc-x86_64-core-image-minimal-i586-toolchain-ext-&DISTRO;.sh``.
- 
- 6. *Install the Extensible SDK:* Use the following command to install
-    the SDK. For this example, install the SDK in the default
-diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
-index cc5848fd4..5075f0c22 100644
---- a/documentation/ref-manual/devtool-reference.rst
-+++ b/documentation/ref-manual/devtool-reference.rst
-@@ -204,20 +204,20 @@ specify these options when using the ``devtool add`` command:
- -  To specify a source branch, use the ``--srcbranch`` option:
-    ::
- 
--      $ devtool add --srcbranch DISTRO_NAME_NO_CAP jackson /home/user/sources/jackson
-+      $ devtool add --srcbranch &DISTRO_NAME_NO_CAP; jackson /home/user/sources/jackson
- 
--   In the previous example, you are checking out the DISTRO_NAME_NO_CAP
-+   In the previous example, you are checking out the &DISTRO_NAME_NO_CAP;
-    branch.
- 
- -  To specify a specific tag or commit hash, use the ``--srcrev``
-    option:
-    ::
- 
--      $ devtool add --srcrev DISTRO_REL_TAG jackson /home/user/sources/jackson
-+      $ devtool add --srcrev &DISTRO_REL_TAG; jackson /home/user/sources/jackson
-       $ devtool add --srcrev some_commit_hash /home/user/sources/jackson
- 
-    The previous examples check out the
--   DISTRO_REL_TAG tag and the commit associated with the
-+   &DISTRO_REL_TAG; tag and the commit associated with the
-    some_commit_hash hash.
- 
- .. note::
-diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
-index d8d362282..ed5a09a55 100644
---- a/documentation/ref-manual/release-process.rst
-+++ b/documentation/ref-manual/release-process.rst
-@@ -12,7 +12,7 @@ stability.
- Major and Minor Release Cadence
- ===============================
- 
--The Yocto Project delivers major releases (e.g. DISTRO) using a six
-+The Yocto Project delivers major releases (e.g. &DISTRO;) using a six
- month cadence roughly timed each April and October of the year.
- Following are examples of some major YP releases with their codenames
- also shown. See the "`Major Release
-@@ -57,7 +57,7 @@ codename are likely to be compatible and thus work together.
- .. note::
- 
-    Codenames are associated with major releases because a Yocto Project
--   release number (e.g. DISTRO) could conflict with a given layer or
-+   release number (e.g. &DISTRO;) could conflict with a given layer or
-    company versioning scheme. Codenames are unique, interesting, and
-    easily identifiable.
- 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 66afb0810..c8c1381cb 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -340,12 +340,12 @@ of the two methods by which you can get these tools:
-    traditional installer:
-    ::
- 
--      $ sh ~/Downloads/x86_64-buildtools-nativesdk-standalone-DISTRO.sh
-+      $ sh ~/Downloads/x86_64-buildtools-nativesdk-standalone-&DISTRO;.sh
- 
-    Here is an example for the extended installer:
-    ::
- 
--      $ sh ~/Downloads/x86_64-buildtools-extended-nativesdk-standalone-DISTRO.sh
-+      $ sh ~/Downloads/x86_64-buildtools-extended-nativesdk-standalone-&DISTRO;.sh
- 
-    During execution, a prompt appears that allows you to choose the
-    installation directory. For example, you could choose the following:
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index 966962005..bf4614887 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -90,13 +90,13 @@ universal, the list includes them just in case:
-          -  Provide a directory path and specifically name the Build
-             Directory. Any intermediate folders in the pathname must exist.
-             This next example creates a Build Directory named
--            ``YP-POKYVERSION`` in your home directory within the existing
-+            ``YP-&POKYVERSION;`` in your home directory within the existing
-             directory ``mybuilds``:
- 
-             .. code-block:: shell
- 
-                $ cd $HOME
--               $ source $HOME/poky/oe-init-build-env $HOME/mybuilds/YP-POKYVERSION
-+               $ source $HOME/poky/oe-init-build-env $HOME/mybuilds/YP-&POKYVERSION;
- 
-       .. note::
- 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 4ce264813..5ec19970e 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4202,11 +4202,11 @@ system and gives an overview of their function and contents.
-       this variable in your layer's ``conf/layer.conf`` configuration file.
-       For the list, use the Yocto Project
-       :yocto_wiki:`Release Name </Releases>` (e.g.
--      DISTRO_NAME_NO_CAP). To specify multiple OE-Core versions for the
-+      &DISTRO_NAME_NO_CAP;). To specify multiple OE-Core versions for the
-       layer, use a space-separated list:
-       ::
- 
--         LAYERSERIES_COMPAT_layer_root_name = "DISTRO_NAME_NO_CAP DISTRO_NAME_NO_CAP_MINUS_ONE"
-+         LAYERSERIES_COMPAT_layer_root_name = "&DISTRO_NAME_NO_CAP; &DISTRO_NAME_NO_CAP_MINUS_ONE;"
- 
-       .. note::
- 
-diff --git a/documentation/sdk-manual/appendix-obtain.rst b/documentation/sdk-manual/appendix-obtain.rst
-index cdfe2cc85..f158c244a 100644
---- a/documentation/sdk-manual/appendix-obtain.rst
-+++ b/documentation/sdk-manual/appendix-obtain.rst
-@@ -58,14 +58,14 @@ Follow these steps to locate and hand-install the toolchain:
-    folder and download the following installer:
-    ::
- 
--      poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-DISTRO.sh
-+      poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-&DISTRO;.sh
- 
- 4. *Run the Installer:* Be sure you have execution privileges and run
-    the installer. Following is an example from the ``Downloads``
-    directory:
-    ::
- 
--      $ ~/Downloads/poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-DISTRO.sh
-+      $ ~/Downloads/poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-&DISTRO;.sh
- 
-    During execution of the script, you choose the root location for the
-    toolchain. See the "`Installed Standard SDK Directory
-@@ -174,7 +174,7 @@ build the SDK installer. Follow these steps:
-    ::
- 
-       $ cd ~/poky/build/tmp/deploy/sdk
--      $ ./poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-DISTRO.sh
-+      $ ./poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-&DISTRO;.sh
- 
-    During execution of the script, you choose the root location for the
-    toolchain. See the "`Installed Standard SDK Directory
-diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
-index c94213d6c..5962e9460 100644
---- a/documentation/sdk-manual/extensible.rst
-+++ b/documentation/sdk-manual/extensible.rst
-@@ -82,10 +82,10 @@ is the general form:
- 
- For example, the following SDK installer is for a 64-bit
- development host system and a i586-tuned target architecture based off
--the SDK for ``core-image-sato`` and using the current DISTRO snapshot:
-+the SDK for ``core-image-sato`` and using the current &DISTRO; snapshot:
- ::
- 
--   poky-glibc-x86_64-core-image-sato-i586-toolchain-ext-DISTRO.sh
-+   poky-glibc-x86_64-core-image-sato-i586-toolchain-ext-&DISTRO;.sh
- 
- .. note::
- 
-diff --git a/documentation/sdk-manual/working-projects.rst b/documentation/sdk-manual/working-projects.rst
-index 3e40936ff..bddf00a7d 100644
---- a/documentation/sdk-manual/working-projects.rst
-+++ b/documentation/sdk-manual/working-projects.rst
-@@ -292,11 +292,11 @@ example:
-    the string "environment-setup" and contains the machine architecture,
-    which is followed by the string "poky-linux". For this example, the
-    command sources a script from the default SDK installation directory
--   that uses the 32-bit Intel x86 Architecture and the DISTRO_NAME Yocto
-+   that uses the 32-bit Intel x86 Architecture and the &DISTRO_NAME; Yocto
-    Project release:
-    ::
- 
--      $ source /opt/poky/DISTRO/environment-setup-i586-poky-linux
-+      $ source /opt/poky/&DISTRO;/environment-setup-i586-poky-linux
- 
- 3. *Create the Makefile:* For this example, the Makefile contains
-    two lines that can be used to set the ``CC`` variable. One line is
+diff --git a/documentation/sphinx/sphinx-version-check.py b/documentation/sphinx/sphinx-version-check.py
+new file mode 100644
+index 0000000000..174cdf0cb7
+--- /dev/null
++++ b/documentation/sphinx/sphinx-version-check.py
+@@ -0,0 +1,25 @@
++#!/usr/bin/env python
++
++"""
++Simple Sphinx extension checking if the current version will generate warnings
++"""
++
++import sphinx
++from sphinx.util import logging
++from sphinx.application import Sphinx
++
++__version__ = '1.0'
++
++def setup(app: Sphinx):
++    if sphinx.version_info < (3, 1, 0):
++        logger = logging.getLogger(__name__)
++        logger.warning(
++            "This version of sphinx is known to generate warnings not present "
++            "with an up-to-date version. See documentation/README for "
++            "installation instructions"
++        )
++
++    return dict(
++        version=__version__,
++        parallel_read_safe=True,
++    )
 -- 
-2.29.2
+2.20.1
 
