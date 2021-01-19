@@ -1,88 +1,74 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by mx.groups.io with SMTP id smtpd.web09.9624.1611053698851946285
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+ by mx.groups.io with SMTP id smtpd.web12.12716.1611070034070444889
  for <docs@lists.yoctoproject.org>;
- Tue, 19 Jan 2021 02:54:59 -0800
+ Tue, 19 Jan 2021 07:27:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: abdellatif.elkhlifi@arm.com)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2278B1042;
-	Tue, 19 Jan 2021 02:54:58 -0800 (PST)
-Received: from e121910.arm.com (unknown [10.57.9.194])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D599B3F68F;
-	Tue, 19 Jan 2021 02:54:56 -0800 (PST)
-From: "Abdellatif El Khlifi" <abdellatif.elkhlifi@arm.com>
-To: docs@lists.yoctoproject.org,
-	Lakshmi.Kailasanathan@arm.com,
-	Ross.Burton@arm.com
-Cc: nd@arm.com,
-	Abdellatif El Khlifi <abdellatif.elkhlifi@arm.com>
-Subject: [PATCH] ref-manual/ref-classes: update kernel-fitimage with Initramfs bundle and boot script
-Date: Tue, 19 Jan 2021 10:54:47 +0000
-Message-Id: <20210119105447.21037-1-abdellatif.elkhlifi@arm.com>
-X-Mailer: git-send-email 2.17.1
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=CsOsNHAu;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.50, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f50.google.com with SMTP id c128so124023wme.2
+        for <docs@lists.yoctoproject.org>; Tue, 19 Jan 2021 07:27:13 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:user-agent:mime-version
+         :content-transfer-encoding;
+        bh=SDH5yD+tbLJk0UBHxTg4rrNOmmMQV0qrlmEaB3mZHFg=;
+        b=CsOsNHAusoCGMaDDaAGWN85nriAxJFdaeXwtvbP6qfyTfdew7r5an1Se18NB8oNe64
+         SutOF8Qj5gx/XfqPX1GPE2ZIUewSi186hzadZ4ha5Te7eQeWz6iC7vrY4Q1ptKPa99hL
+         nLPnCDUGlu5cVCtQT2YEBy/rEO8rLKoyp8d5Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:date:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=SDH5yD+tbLJk0UBHxTg4rrNOmmMQV0qrlmEaB3mZHFg=;
+        b=iMnRq6qO+DRH40mx5+k/1VNZ+NUbUrdQ2Q88pjaBnEVURB1j7fUeBYnK3Ms6uSUnhN
+         sWUkDYeTPpXb+0QJ1NelXSiEyJMIoAE+TbGwzYactKdcDtkXxYlrz4bbTkXKW2r76Sgv
+         R73rGjzKRP5jcC0COHViwsrNHtF3CYQVatPRzGJF8QOhrvIv3P2jLI75ZCTz9l5gl7l6
+         Tbolyqk1JaI//aMKeHkYgGWVIKg8xTSGRVJiDh2rjF9lo7hWG471611eHmuJTMW6kwI+
+         Ncj84SO8I3BN/cH4zBww8PjFVloaHldK97ELiMrhQKIRrzpnhIE/Z47BJbO8ddQiYCPG
+         +rlA==
+X-Gm-Message-State: AOAM5319um2YcMBNcBh4qUddYP9Euf0uI58iOWRz6H/x4MLH/akIW/9R
+	cKmmu0v5L2vT98/Ggsop51QXrhv3fs/Zjw==
+X-Google-Smtp-Source: ABdhPJw4OjTgl3n0qtoA6FcZ1wwzgJNwcmqroLcvfISBwbIplcDCKYOVEEsZJOho24F6t6FqpYdCjQ==
+X-Received: by 2002:a05:600c:258:: with SMTP id 24mr130333wmj.161.1611070032560;
+        Tue, 19 Jan 2021 07:27:12 -0800 (PST)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from ?IPv6:2001:8b0:aba:5f3c:f7a4:851a:48d5:440b? ([2001:8b0:aba:5f3c:f7a4:851a:48d5:440b])
+        by smtp.gmail.com with ESMTPSA id s4sm4704067wme.38.2021.01.19.07.27.12
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Jan 2021 07:27:12 -0800 (PST)
+Message-ID: <de6c282b93e701bbd5d8b8bd1da6125c1cb6d38c.camel@linuxfoundation.org>
+Subject: PROVIDES inconsistency
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: docs <docs@lists.yoctoproject.org>
+Date: Tue, 19 Jan 2021 15:27:11 +0000
+User-Agent: Evolution 3.38.1-1 
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
-From: Abdellatif El Khlifi <abdellatif.elkhlifi@arm.com>
+Hi,
 
-This commit adds the description of the Initramfs bundle and boot script
-new features implemented in the kernel-fitimage class.
+On irc it was pointed out we have an inconsistency in the documentation of PROVIDES:
 
-Change-Id: Ifffa6b850308aa7ceadc4f117806cffad0137137
-Signed-off-by: Abdellatif El Khlifi <abdellatif.elkhlifi@arm.com>
----
- documentation/ref-manual/classes.rst | 32 +++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+https://docs.yoctoproject.org/ref-manual/ref-variables.html#term-PROVIDES
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index a152dcac77..75d8722dad 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1375,11 +1375,13 @@ generation.
- ===========================
- 
- The ``kernel-fitimage`` class provides support to pack a kernel image,
--device trees and a RAM disk into a single FIT image. In theory, a FIT
--image can support any number of kernels, RAM disks and device trees.
-+device trees, a U-boot script, a Initramfs bundle and a RAM disk
-+into a single FIT image. In theory, a FIT image can support any number
-+of kernels, U-boot scripts, Initramfs bundles, RAM disks and device-trees.
- However, ``kernel-fitimage`` currently only supports
--limited usescases: just one kernel image, an optional RAM disk, and
--any number of device trees.
-+limited usescases: just one kernel image, an optional U-boot script,
-+an optional Initramfs bundle, an optional RAM disk, and any number of
-+device tree.
- 
- To create a FIT image, it is required that :term:`KERNEL_CLASSES`
- is set to include "kernel-fitimage" and :term:`KERNEL_IMAGETYPE`
-@@ -1406,7 +1408,27 @@ Only a single RAM disk can be added to the FIT image created by
- The address where the RAM disk image is to be loaded by U-Boot
- is specified by :term:`UBOOT_RD_LOADADDRESS` and the entrypoint by
- :term:`UBOOT_RD_ENTRYPOINT`. The ramdisk is added to FIT image when
--:term:`INITRAMFS_IMAGE` is specified.
-+:term:`INITRAMFS_IMAGE` is specified and that :term:`INITRAMFS_IMAGE_BUNDLE`
-+is set to 0.
-+
-+Only a single Initramfs bundle can be added to the FIT image created by
-+``kernel-fitimage`` and the Initramfs bundle in FIT is optional.
-+In case of Initramfs, the kernel is configured to be bundled with the rootfs
-+in the same binary (example: zImage-initramfs-:term:`MACHINE`.bin).
-+When the kernel is copied to RAM and executed, it unpacks the Initramfs rootfs.
-+The Initramfs bundle can be enabled when :term:`INITRAMFS_IMAGE`
-+is specified and that :term:`INITRAMFS_IMAGE_BUNDLE` is set to 1.
-+The address where the Initramfs bundle is to be loaded by U-boot is specified
-+by :term:`UBOOT_LOADADDRESS` and the entrypoint by :term:`UBOOT_ENTRYPOINT`.
-+
-+Only a single U-boot boot script can be added to the FIT image created by
-+``kernel-fitimage`` and the boot script is optional.
-+The boot script is specified in the ITS file as a text file containing
-+U-boot commands. When using a boot script the user should configure the
-+U-boot ``do_install`` task to copy the script to sysroot.
-+So the script can be included in the the FIT image by the ``kernel-fitimage``
-+class. At run-time, U-boot CONFIG_BOOTCOMMAND define can be configured to
-+load the boot script from the FIT image and executes it.
- 
- The FIT image generated by ``kernel-fitimage`` class is signed when the
- variables :term:`UBOOT_SIGN_ENABLE`, :term:`UBOOT_MKIMAGE_DTCOPTS`,
--- 
-2.17.1
+https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-ref-variables.html#term-PROVIDES
+
+One says don't use +=, the other uses it as an example.
+
+We should probably decide on which and clarify the manual.
+
+In many ways I prefer encouraging users to use "+=" rather than setting
+plain "=".
+
+Thoughts/patches from anyone?
+
+Cheers,
+
+Richard
+
+
+
+
 
