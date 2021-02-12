@@ -1,66 +1,83 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
- by mx.groups.io with SMTP id smtpd.web11.13.1613106050152374162
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
+ by mx.groups.io with SMTP id smtpd.web09.7.1613106056001494708
  for <docs@lists.yoctoproject.org>;
- Thu, 11 Feb 2021 21:00:50 -0800
+ Thu, 11 Feb 2021 21:00:56 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=AuwIxGbm;
- spf=pass (domain: gmail.com, ip: 209.85.160.181, mailfrom: champagne.guillaume.c@gmail.com)
-Received: by mail-qt1-f181.google.com with SMTP id e11so5937850qtg.6
-        for <docs@lists.yoctoproject.org>; Thu, 11 Feb 2021 21:00:50 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=M6x2gzNM;
+ spf=pass (domain: gmail.com, ip: 209.85.222.179, mailfrom: champagne.guillaume.c@gmail.com)
+Received: by mail-qk1-f179.google.com with SMTP id t63so7701349qkc.1
+        for <docs@lists.yoctoproject.org>; Thu, 11 Feb 2021 21:00:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=uI3SW582Q/f82H4svYHWwt/Og5If8a5PhicmrG+OR4E=;
-        b=AuwIxGbm2IRXthkUzDHzaEyXF5cbUClelM70X/rRBaphCsR8WnwW/6XIY9LzkllvXA
-         8oCzvpT64mC1IHd2IhVC9NBAykFoynrWBiVrSkPGDjWBFD1sxjePd1ww6EsaVuWKuROI
-         JfIF798jk63PkUWqfGP9caDC83wr0Q2NXI5CDfPFHG7d/1IG/MLG9XDXN9mR+IJs4JTA
-         eirURHSKy+lFOH5Srnwu7FSPpDmXcXJY7L33w7SYKSMNOr+YwQtTkIZ6gYb2VOrxuPg8
-         I+U+RNQts5UUR5ipkzsbQmUbe65FqylY6tGg5acTme62TkE4ZH6LFChUppfNMhf0/HhF
-         482A==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=UQkax3lnmgVICVjXsm9UulJ6oiSkXDRqTQzXmOKOpU0=;
+        b=M6x2gzNMOCQS8ifsm/V267ZvK5U8dy2y8PBWYHomHvgdXpik5kOLV/Kl6AKby9nfTL
+         RQQdoQAjixK7/PoL0UAKnSXCmtYEv7QmoIFzGDZcEX0TNu4t7dE+wuwpLBQvrY0wpoOs
+         lcLBUU6z93JDZ0jiHujpPnsCc2xQAbCx1pMl9HbOVcPNxB0gNvIXCFKk+E0a5Fqz4VMW
+         dR9RgFZPfBr7jpn1W5aEoZZgny7HqU0Iod/zDMkQ9RIJJ1YOZWIeA9UtZt8o6YfAprN1
+         DzE0s0UWsp1CwsXSM+7qPYpPEf+heAqaSVlkKEOUWaiQie1NQ6ACG9WtfnD1yAX9uMvk
+         l2Xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=uI3SW582Q/f82H4svYHWwt/Og5If8a5PhicmrG+OR4E=;
-        b=WziuxOI9vk178Tv7Hq+bwTcVh3U8/5Z/yr0Q1TQm+NwpJqY1a2nbHskY/zGhJ6ZxUf
-         1DPXKOcCojf7Ioat5seGlO73fTTkyb/wMf+dS02jt8F44O2QzsSzQ5TYaT4kC10v4DF8
-         idbVV7Qm0XwC+8Iiy5TxagHCY0/qCFQnUylQ8GLEHhdg7Dd4XPGrSH4hCzqgZgkFteV2
-         buSBWoedp20BRSIwsKzNWFWZvxYLFdOK0p+pCMO2YIZTmw9p4uS+u3uzSxGqy27PJIRA
-         bZaIAI87sYfNGqDbryopLA+SccccWET3BjD/ycE3SK1xDi1+5LcNFWS9qFajo10pGJ3S
-         ukfg==
-X-Gm-Message-State: AOAM531DP6fyaRq4H4uSnXU5PNstrgYE1jFEqXP1Fr03KPx/sO7C+zBh
-	CXtvs18MlMfa2OP27rewdMfCJzuScKU=
-X-Google-Smtp-Source: ABdhPJxgXzGycK04NmTtZ2GipB0A1dFspDLLUMNMZNJR0g6pj6UDbDeQ+zWFZruKwaSUefO1YV2kbg==
-X-Received: by 2002:ac8:738f:: with SMTP id t15mr1037122qtp.106.1613106049097;
-        Thu, 11 Feb 2021 21:00:49 -0800 (PST)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=UQkax3lnmgVICVjXsm9UulJ6oiSkXDRqTQzXmOKOpU0=;
+        b=BwHDWOhfJi4fc61ohC0ni5dLblODUuAH8va3dH7YhZfdDN1ICE6lIAQwIAhRIQDgBp
+         WaSMQHAwFOOXT0Bc1UcsOBD7hoh+i7eh5dbbYSh9It+i+/iObm4lcoZthjNtfj4n0KXM
+         r5oKSyLHTzi3Yv+081zZDavrBLT9CBFiEBr8aZzfti3CoIOyNxXTYLNzV15cwhMe6ipi
+         e79rpNQFSvYIiEU0AqTjoMR5JGihLwDuSV5AMHRNDlaH1twz9SlGOLzQX8HHUeBqm16I
+         MSXotA54IPdt2RgtgeaO7R7nk5TFG1ZDlmznhtoBAolX0JRCanqLrDVhnfiFB7AFwWpj
+         USQw==
+X-Gm-Message-State: AOAM532oB5lg7qHY0GCr9llZ2u/X3y6bFSpp0sHpWmN4CVd3SFMPUL2R
+	8OOco24OhJGaS7cu6novQd6A1AValxg=
+X-Google-Smtp-Source: ABdhPJziHM/h+cpkpBcKGgfyX6IYV+FhKflD6pC50X+WlLeLPSWqLri5P4mGs5ttLWTyHTPWa/fGYg==
+X-Received: by 2002:a37:9d4b:: with SMTP id g72mr1090634qke.71.1613106055043;
+        Thu, 11 Feb 2021 21:00:55 -0800 (PST)
 Return-Path: <champagne.guillaume.c@gmail.com>
 Received: from gchdesk.Sonatest.net (ipagstaticip-d73c7528-4de5-0861-800b-03d8b15e3869.sdsl.bell.ca. [174.94.156.236])
-        by smtp.googlemail.com with ESMTPSA id b16sm4781199qtx.85.2021.02.11.21.00.48
+        by smtp.googlemail.com with ESMTPSA id b16sm4781199qtx.85.2021.02.11.21.00.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Feb 2021 21:00:48 -0800 (PST)
+        Thu, 11 Feb 2021 21:00:54 -0800 (PST)
 From: "Guillaume Champagne" <champagne.guillaume.c@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: Guillaume Champagne <champagne.guillaume.c@gmail.com>
-Subject: [RFC PATCH 0/2] update docs for qemuboot.json
-Date: Thu, 11 Feb 2021 23:59:53 -0500
-Message-Id: <20210212045954.18173-1-champagne.guillaume.c@gmail.com>
+Subject: [RFC PATCH 1/2] dev-manual: change qemuboot.conf for qemuboot.json
+Date: Thu, 11 Feb 2021 23:59:54 -0500
+Message-Id: <20210212045954.18173-2-champagne.guillaume.c@gmail.com>
 X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20210212045954.18173-1-champagne.guillaume.c@gmail.com>
+References: <20210212045954.18173-1-champagne.guillaume.c@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Updates references of qemuboot.conf to qemuboot.json. Should something
-be added to mention that the format was migrated from qemuboot.conf to
-qemuboot.json?
+Signed-off-by: Guillaume Champagne <champagne.guillaume.c@gmail.com>
+---
+ documentation/dev-manual/qemu.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Guillaume Champagne (2):
-  dev-manual: change qemuboot.conf for qemuboot.json
-  ref-manual: change qemuboot.conf for qemuboot.json
-
- documentation/dev-manual/qemu.rst          | 4 ++--
- documentation/ref-manual/migration-2.2.rst | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
-
+diff --git a/documentation/dev-manual/qemu.rst b/documentation/dev-manual/qemu.rst
+index 766691b97..92b234e7b 100644
+--- a/documentation/dev-manual/qemu.rst
++++ b/documentation/dev-manual/qemu.rst
+@@ -252,7 +252,7 @@ be a problem when QEMU is running with KVM enabled. Specifically,
+ software compiled with a certain CPU feature crashes when run on a CPU
+ under KVM that does not support that feature. To work around this
+ problem, you can override QEMU's runtime CPU setting by changing the
+-``QB_CPU_KVM`` variable in ``qemuboot.conf`` in the
++``QB_CPU_KVM`` variable in ``qemuboot.json`` in the
+ :term:`Build Directory` ``deploy/image``
+ directory. This setting specifies a ``-cpu`` option passed into QEMU in
+ the ``runqemu`` script. Running ``qemu -cpu help`` returns a list of
+@@ -355,7 +355,7 @@ Following is the command-line help output for the ``runqemu`` command:
+      runqemu
+      runqemu qemuarm
+      runqemu tmp/deploy/images/qemuarm
+-     runqemu tmp/deploy/images/qemux86/<qemuboot.conf>
++     runqemu tmp/deploy/images/qemux86/<qemuboot.json>
+      runqemu qemux86-64 core-image-sato ext4
+      runqemu qemux86-64 wic-image-minimal wic
+      runqemu path/to/bzImage-qemux86.bin path/to/nfsrootdir/ serial
 -- 
 2.20.1
 
