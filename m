@@ -1,86 +1,71 @@
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
- by mx.groups.io with SMTP id smtpd.web09.8.1613106057118022700
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+ by mx.groups.io with SMTP id smtpd.web08.8976.1613488134187980080
  for <docs@lists.yoctoproject.org>;
- Thu, 11 Feb 2021 21:00:57 -0800
+ Tue, 16 Feb 2021 07:08:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=BE4JJ8Hc;
- spf=pass (domain: gmail.com, ip: 209.85.222.179, mailfrom: champagne.guillaume.c@gmail.com)
-Received: by mail-qk1-f179.google.com with SMTP id f17so4403953qkl.5
-        for <docs@lists.yoctoproject.org>; Thu, 11 Feb 2021 21:00:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=zPVEHCLo2BqNNIYvrAyDgWI1cEymBJ+S8aLvqaOs5dI=;
-        b=BE4JJ8HczSUUJFHFjvTpypSYIN8q6QTZYeLOZ8cGkOu5HOkRwyGtGD4yR95VRThvch
-         PAfAWHZUAvRgcKIYjj7LICo28EDakBc6XEd9868hX0RyN0dmB3AkLFUyWfDt0nrvQWhy
-         DjLundwTzF6njhc0LNb+SWVzLQ2wpkPS+ENYmx9RBqZY0RFVaNYdtmr/pJLMbgxLw12H
-         Co2n3Q0cgT/2H5CwK3vicqmpkQUPNlniNtcwzdkzfiATakYtcNgSYyx1dvGWCk9Ewm1z
-         jZk+tO8WRdeDu2U9WP+2PPXHmoNSjHJZeYP/VkEErEyF6LNu40HqwLc6/d2UY79Y8XPs
-         zirA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zPVEHCLo2BqNNIYvrAyDgWI1cEymBJ+S8aLvqaOs5dI=;
-        b=HGkkEg2F+vZaPDQwTp16LaI0C9xzoTFM08eZXRDxGHB44ewZFVDW6C2pI0ts2IS+DH
-         kuXPdl6+8RMjhKolH2wglX8OwLgNdPrqUzFblpFbY+qibxIKqaCdMNuglDTxLwvRPe9K
-         38cPp5oSTWSDFciPOc3WmyOGuCxfuyVoWvMVZFqXLHwAo1qlTIPbtJ83qtVE/Uk3AyXV
-         5svG5eFuzlVAdxx7onRmE3qNQxKoHe0GxVcgoZAA6ZHicX3XN3JftOFy+gF9EW6VSGBC
-         Q+q8+xY5g7+RxkW7cKYd3sdfxn9urq2iql/XUnvb5QojATnlsMSYdsfJt7M6ZhxizSvy
-         pK4g==
-X-Gm-Message-State: AOAM533H+sR0+dDZget9rU+bR+6TxyvyyTN03p0XrUAK+Ld6wj4UuyW0
-	2u2jo/tZaxI3hiftK0hBhXIMR2tDJq4=
-X-Google-Smtp-Source: ABdhPJwYCL4xLks9MeFC1kTFlC5etKyzFRVho9QwWiPoRpu+2qUXRhrLYF4PMB1CuqOvi/wpGF4fVw==
-X-Received: by 2002:ae9:e715:: with SMTP id m21mr1205395qka.217.1613106056150;
-        Thu, 11 Feb 2021 21:00:56 -0800 (PST)
-Return-Path: <champagne.guillaume.c@gmail.com>
-Received: from gchdesk.Sonatest.net (ipagstaticip-d73c7528-4de5-0861-800b-03d8b15e3869.sdsl.bell.ca. [174.94.156.236])
-        by smtp.googlemail.com with ESMTPSA id b16sm4781199qtx.85.2021.02.11.21.00.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Feb 2021 21:00:55 -0800 (PST)
-From: "Guillaume Champagne" <champagne.guillaume.c@gmail.com>
+ dkim=missing; spf=pass (domain: intel.com, ip: 192.55.52.115, mailfrom: anuj.mittal@intel.com)
+IronPort-SDR: UWkFUP3kYD9XL+lVh9sYNaMV1OXD3fvHa5Ok0NyNRT4ZOYw7dh9N2NMNTAKVw1eT0rtskxa/zq
+ 9lygNjDop6gg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9896"; a="182128144"
+X-IronPort-AV: E=Sophos;i="5.81,183,1610438400"; 
+   d="scan'208";a="182128144"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 07:08:53 -0800
+IronPort-SDR: ezMe5Kuoyb56tZlni1w5p+N1nLrIJpBKGOBfMk3CC5B+75GqDkQeGURnpJ+3RGU7StUY5Df3Tu
+ EBPgTzhrs+qg==
+X-IronPort-AV: E=Sophos;i="5.81,183,1610438400"; 
+   d="scan'208";a="361709161"
+Received: from ykoh-mobl1.gar.corp.intel.com (HELO anmitta2-mobl1.gar.corp.intel.com) ([10.255.185.135])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 07:08:51 -0800
+From: "Anuj Mittal" <anuj.mittal@intel.com>
 To: docs@lists.yoctoproject.org
-Cc: Guillaume Champagne <champagne.guillaume.c@gmail.com>
-Subject: [RFC PATCH 2/2] ref-manual: change qemuboot.conf for qemuboot.json
-Date: Thu, 11 Feb 2021 23:59:55 -0500
-Message-Id: <20210212045954.18173-3-champagne.guillaume.c@gmail.com>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20210212045954.18173-1-champagne.guillaume.c@gmail.com>
-References: <20210212045954.18173-1-champagne.guillaume.c@gmail.com>
+Subject: [gatesgarth][PATCH] documentation: version bumps for 3.2.2 release
+Date: Tue, 16 Feb 2021 23:08:47 +0800
+Message-Id: <20210216150847.11253-1-anuj.mittal@intel.com>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Guillaume Champagne <champagne.guillaume.c@gmail.com>
+Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
 ---
- documentation/ref-manual/migration-2.2.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ documentation/conf.py   |  2 +-
+ documentation/poky.yaml | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/ref-manual/migration-2.2.rst b/documentation/ref-manual/migration-2.2.rst
-index 5c6fecf32..434af5628 100644
---- a/documentation/ref-manual/migration-2.2.rst
-+++ b/documentation/ref-manual/migration-2.2.rst
-@@ -147,17 +147,17 @@ bootable with ``runqemu``. If you use a configuration file, use the
- following form:
- ::
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 44f1e43a8..0a6e330e2 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -16,7 +16,7 @@ import os
+ import sys
+ import datetime
  
--   image-name-machine.qemuboot.conf
-+   image-name-machine.qemuboot.json
+-current_version = "3.2.1"
++current_version = "3.2.2"
  
- The configuration file
- enables fine-grained tuning of options passed to QEMU without the
- ``runqemu`` script hard-coding any knowledge about different machines.
- Using a configuration file is particularly convenient when trying to use
- QEMU with machines other than the ``qemu*`` machines in
--:term:`OpenEmbedded-Core (OE-Core)`. The ``qemuboot.conf`` file is generated by the
-+:term:`OpenEmbedded-Core (OE-Core)`. The ``qemuboot.json`` file is generated by the
- ``qemuboot`` class when the root filesystem is being build (i.e. build
- rootfs). QEMU boot arguments can be set in BSP's configuration file and
--the ``qemuboot`` class will save them to ``qemuboot.conf``.
-+the ``qemuboot`` class will save them to ``qemuboot.json``.
- 
- If you want to use ``runqemu`` without a configuration file, use the
- following command form:
+ # String used in sidebar
+ version = 'Version: ' + current_version
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index ef63d6eb7..1909f0d83 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -1,11 +1,11 @@
+-DISTRO : "3.2.1"
++DISTRO : "3.2.2"
+ DISTRO_NAME_NO_CAP : "gatesgarth"
+ DISTRO_NAME : "Gatesgarth"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "dunfell"
+-YOCTO_DOC_VERSION : "3.2.1"
+-YOCTO_DOC_VERSION_MINUS_ONE : "3.1.3"
+-DISTRO_REL_TAG : "yocto-3.2.1"
+-POKYVERSION : "24.0.1"
++YOCTO_DOC_VERSION : "3.2.2"
++YOCTO_DOC_VERSION_MINUS_ONE : "3.1.5"
++DISTRO_REL_TAG : "yocto-3.2.2"
++POKYVERSION : "24.0.2"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
 -- 
-2.20.1
+2.29.2
 
