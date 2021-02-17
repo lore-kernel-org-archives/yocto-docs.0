@@ -1,71 +1,50 @@
-Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
- by mx.groups.io with SMTP id smtpd.web08.8976.1613488134187980080
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+ by mx.groups.io with SMTP id smtpd.web11.2789.1613531363685650996
  for <docs@lists.yoctoproject.org>;
- Tue, 16 Feb 2021 07:08:54 -0800
+ Tue, 16 Feb 2021 19:09:24 -0800
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: intel.com, ip: 192.55.52.115, mailfrom: anuj.mittal@intel.com)
-IronPort-SDR: UWkFUP3kYD9XL+lVh9sYNaMV1OXD3fvHa5Ok0NyNRT4ZOYw7dh9N2NMNTAKVw1eT0rtskxa/zq
- 9lygNjDop6gg==
-X-IronPort-AV: E=McAfee;i="6000,8403,9896"; a="182128144"
-X-IronPort-AV: E=Sophos;i="5.81,183,1610438400"; 
-   d="scan'208";a="182128144"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 07:08:53 -0800
-IronPort-SDR: ezMe5Kuoyb56tZlni1w5p+N1nLrIJpBKGOBfMk3CC5B+75GqDkQeGURnpJ+3RGU7StUY5Df3Tu
- EBPgTzhrs+qg==
-X-IronPort-AV: E=Sophos;i="5.81,183,1610438400"; 
-   d="scan'208";a="361709161"
-Received: from ykoh-mobl1.gar.corp.intel.com (HELO anmitta2-mobl1.gar.corp.intel.com) ([10.255.185.135])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Feb 2021 07:08:51 -0800
-From: "Anuj Mittal" <anuj.mittal@intel.com>
+ dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: uol@pengutronix.de)
+Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <uol@pengutronix.de>)
+	id 1lCDDO-0002Qv-3G; Wed, 17 Feb 2021 04:09:22 +0100
+Received: from uol by dude.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <uol@pengutronix.de>)
+	id 1lCDDN-0001O8-35; Wed, 17 Feb 2021 04:09:21 +0100
+From: "Ulrich ?lmann" <u.oelmann@pengutronix.de>
 To: docs@lists.yoctoproject.org
-Subject: [gatesgarth][PATCH] documentation: version bumps for 3.2.2 release
-Date: Tue, 16 Feb 2021 23:08:47 +0800
-Message-Id: <20210216150847.11253-1-anuj.mittal@intel.com>
+Cc: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Subject: [PATCH 1/3] README: fix 'git send-email' command
+Date: Wed, 17 Feb 2021 04:09:08 +0100
+Message-Id: <20210217030910.5289-1-u.oelmann@pengutronix.de>
 X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
+X-SA-Exim-Mail-From: uol@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
+Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
 ---
- documentation/conf.py   |  2 +-
- documentation/poky.yaml | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ README | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index 44f1e43a8..0a6e330e2 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -16,7 +16,7 @@ import os
- import sys
- import datetime
+diff --git a/README b/README
+index 6a7f3abe63f9..bab81057fd14 100644
+--- a/README
++++ b/README
+@@ -17,7 +17,7 @@ The To header can be set as default for this repository:
  
--current_version = "3.2.1"
-+current_version = "3.2.2"
+ $ git config sendemail.to docs@lists.yoctoproject.org
  
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index ef63d6eb7..1909f0d83 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,11 +1,11 @@
--DISTRO : "3.2.1"
-+DISTRO : "3.2.2"
- DISTRO_NAME_NO_CAP : "gatesgarth"
- DISTRO_NAME : "Gatesgarth"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "dunfell"
--YOCTO_DOC_VERSION : "3.2.1"
--YOCTO_DOC_VERSION_MINUS_ONE : "3.1.3"
--DISTRO_REL_TAG : "yocto-3.2.1"
--POKYVERSION : "24.0.1"
-+YOCTO_DOC_VERSION : "3.2.2"
-+YOCTO_DOC_VERSION_MINUS_ONE : "3.1.5"
-+DISTRO_REL_TAG : "yocto-3.2.2"
-+POKYVERSION : "24.0.2"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+-Now you can just do 'git send-email origin/master' to send all local patches.
++Now you can just do 'git send-email origin/master..' to send all local patches.
+ 
+ Git repository: http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/
+ Mailing list: docs@lists.yoctoproject.org
 -- 
 2.29.2
 
