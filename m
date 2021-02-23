@@ -1,97 +1,106 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
- by mx.groups.io with SMTP id smtpd.web12.10105.1613579402476869637
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+ by mx.groups.io with SMTP id smtpd.web08.520.1614105103205401732
  for <docs@lists.yoctoproject.org>;
- Wed, 17 Feb 2021 08:30:02 -0800
+ Tue, 23 Feb 2021 10:31:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=bB8O3II5;
- spf=softfail (domain: sakoman.com, ip: 209.85.216.46, mailfrom: steve@sakoman.com)
-Received: by mail-pj1-f46.google.com with SMTP id cl8so1775148pjb.0
-        for <docs@lists.yoctoproject.org>; Wed, 17 Feb 2021 08:30:02 -0800 (PST)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Oya42uiS;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.214.176, mailfrom: mhalstead@linuxfoundation.org)
+Received: by mail-pl1-f176.google.com with SMTP id k22so10356016pll.6
+        for <docs@lists.yoctoproject.org>; Tue, 23 Feb 2021 10:31:43 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+        d=linuxfoundation.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=rbjPp/EOwyvsX1ssKvqK06CIfRjvOSu6VB0nWYOQLoc=;
-        b=bB8O3II5GLguEJeQy0OSHHMXIPUS5IZK3SN+6NaBpMChWvjRjOU3WMZge1yXS5px3f
-         d+lqvwwrddZsNqobOnaqF4mjsQLdG0GAbdF+Q4UvQN7+qLwcrjju8RBkp58eP5GoP/d4
-         D1xvbn0kkdXmsW4+f80Uoqy1Ynz/9yReSKzFVSBBDN8QxGO+DurBxdFXDJgvZmjxJOWa
-         8SZfJVufAz4iuA1QyhgZhTr4ZOLFUP2Wse+b6riCPcCCQW8+GgavSOXopdajcvtnOlGQ
-         jKTRZNIR4eUIgQIXMGJdhs4DJQDQwwxIou/pRgz4bHUHb7ogPXTV09+RoxQIddSoJpZE
-         3Xfw==
+        bh=VitTWdCVuHq/ihg7god8fN4eip8a0GP+XFZ00nSjalM=;
+        b=Oya42uiSgJljQEhhoYZTVwwZhyGTj85Xbng54QTuJGskkKgNh0xpRZFByTdl4S93qe
+         uxh0qIzwVU1wP8TUOLhV+Ukk80XGS/l1lw778NcjMps+YxRXzwukxo7wH5VdX/KISDfD
+         c+szZx/C3WnrO3kjICVXtLaljlMb6ASMbvAkk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=rbjPp/EOwyvsX1ssKvqK06CIfRjvOSu6VB0nWYOQLoc=;
-        b=RhpSz+sGWx0jw8eLEc+noJSpVdeTFcDNnXF1OkRKsZkYiUBxKVwzfcFJOEFKVGjh4a
-         BFDf5xVtTkDovhTZhpqduCoOKc7KeXMvpMhqWdAU3shV0nUzligo9Eq6k0dJezm+LPoi
-         +6Jsys0LD/CiOOSCsZRcwJgfTuKekHNaeMGv1qWoaOHKJJOSNydYYXIIwUpiYqevwzCD
-         L2k8T9Yuo5qkptNOBPilfEvGh5mXRdeoDimET8pg5CpA5J9uw0jSKYHmbO7k60Qav3ca
-         hGAueRDIICx5uBHJo/CtE6P8SZ/AhR5Jk65GL64bduGA1E9L/lWuQvIeW4vSTsedo+xW
-         0uOA==
-X-Gm-Message-State: AOAM530GyK5S6B16K+xX/tQP3sFoRDE9/rCbo0oX6zTGVyF+cj/ON9f0
-	YCY9u2C1u7oYz1y+WnDYk1WOz2OGgb3eyMKPdvo=
-X-Google-Smtp-Source: ABdhPJwE9d9vddUChlAaRrAhFznDOQtHmEebBQU6HKRUwz7vXKPKMBqM2iUPVwb+M5ECphudoyG0Iw==
-X-Received: by 2002:a17:90a:5d87:: with SMTP id t7mr10161135pji.175.1613579401326;
-        Wed, 17 Feb 2021 08:30:01 -0800 (PST)
-Return-Path: <steve@sakoman.com>
-Received: from hexa.router0800d9.com (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
-        by smtp.gmail.com with ESMTPSA id u14sm2888478pfc.39.2021.02.17.08.29.59
-        for <docs@lists.yoctoproject.org>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=VitTWdCVuHq/ihg7god8fN4eip8a0GP+XFZ00nSjalM=;
+        b=JiuvOE1lwtaVx46XHqd4X+GYRjTW5waFCcArKjt7/5kS7P+lcqTjwF4yThOusbxlVW
+         Oh9B9dwqowce06VSWDefz/rX+lri4Tg7KUatCHgwSFtjKG02uFT7UZ3sWaAul8m18uWA
+         AANmDoiVuASXoYdN1zP8rhN0ZuQR3cRb4r1wfnVb4rwuS4UXcn8UPZOnLmFWLtBOOwaY
+         HQ3ngFqpGS2ttm8CkRQE5sRxz/BIxTayZmKvZso7LzRp2RRcf4/rpplGxK07PuJkomwe
+         goS9Icz+SJRjQ6q3jbDstbRjLsVKecQ1QzH7zDXVfKTzsdd6puGian3D0yVoDZgUsRlH
+         6Yaw==
+X-Gm-Message-State: AOAM531AcEGmdognTX8/GOeTn4uSnULQL+ye9cL9kYIWjJ61Ov0UlcUL
+	ftqHIipUagkM8gjVI73mJfK48QVv3SuQFg==
+X-Google-Smtp-Source: ABdhPJxzKQ3G9c/Gcp2a/PQOi1TaDFautJkSgkn7Isb5PL76XlefN9RF67mfCsUetddtqGtuBgVFOQ==
+X-Received: by 2002:a17:902:d48f:b029:e3:fb7d:1fb1 with SMTP id c15-20020a170902d48fb02900e3fb7d1fb1mr3735853plg.83.1614105102167;
+        Tue, 23 Feb 2021 10:31:42 -0800 (PST)
+Return-Path: <mhalstead@linuxfoundation.org>
+Received: from localhost.localdomain.org (c-24-21-216-192.hsd1.or.comcast.net. [24.21.216.192])
+        by smtp.gmail.com with ESMTPSA id v7sm23978310pfv.93.2021.02.23.10.31.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Feb 2021 08:30:00 -0800 (PST)
-From: "Steve Sakoman" <steve@sakoman.com>
+        Tue, 23 Feb 2021 10:31:41 -0800 (PST)
+From: "Michael Halstead" <mhalstead@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell 1/1] documentation: prepare for 3.1.6 release
-Date: Wed, 17 Feb 2021 06:29:46 -1000
-Message-Id: <450fa80f0115751332805b581c24d4903074cdff.1613579284.git.steve@sakoman.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1613579284.git.steve@sakoman.com>
-References: <cover.1613579284.git.steve@sakoman.com>
+Cc: rpurdie@linuxfoundation.org,
+	nicolas.dechesne@linaro.org,
+	Michael Halstead <mhalstead@linuxfoundation.org>
+Subject: [PATCH] releases: update to include 3.2.2
+Date: Tue, 23 Feb 2021 10:31:28 -0800
+Message-Id: <20210223183128.225826-1-mhalstead@linuxfoundation.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Bump the current version to 3.1.6
-
-Signed-off-by: Steve Sakoman <steve@sakoman.com>
+Signed-off-by: Michael Halstead <mhalstead@linuxfoundation.org>
 ---
- documentation/conf.py   | 2 +-
- documentation/poky.yaml | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ documentation/poky.yaml                  | 8 ++++----
+ documentation/releases.rst               | 1 +
+ documentation/sphinx-static/switchers.js | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index 518ebb480..c2e9801fd 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -16,7 +16,7 @@ import os
- import sys
- import datetime
- 
--current_version = "3.1.5"
-+current_version = "3.1.6"
- 
- # String used in sidebar
- version = 'Version: ' + current_version
 diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 71cb29822..ee9b2acbe 100644
+index 697c7b38d..8d189b5da 100644
 --- a/documentation/poky.yaml
 +++ b/documentation/poky.yaml
-@@ -1,11 +1,11 @@
--DISTRO : "3.1.5"
-+DISTRO : "3.1.6"
- DISTRO_NAME_NO_CAP : "dunfell"
- DISTRO_NAME : "Dunfell"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
--YOCTO_DOC_VERSION : "3.1.5"
-+YOCTO_DOC_VERSION : "3.1.6"
- YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
--DISTRO_REL_TAG : "yocto-3.1.5"
--POKYVERSION : "23.0.5"
-+DISTRO_REL_TAG : "yocto-3.1.6"
-+POKYVERSION : "23.0.6"
+@@ -1,12 +1,12 @@
+-DISTRO : "3.2.1"
++DISTRO : "3.2.2"
+ DISTRO_NAME_NO_CAP : "gatesgarth"
+ DISTRO_NAME : "Gatesgarth"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "dunfell"
+ DISTRO_NAME_NO_CAP_LTS : "dunfell"
+-YOCTO_DOC_VERSION : "3.2.1"
++YOCTO_DOC_VERSION : "3.2.2"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.1.5"
+-DISTRO_REL_TAG : "yocto-3.2.1"
+-POKYVERSION : "24.0.1"
++DISTRO_REL_TAG : "yocto-3.2.2"
++POKYVERSION : "24.0.2"
  YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
  YOCTO_DL_URL : "https://downloads.yoctoproject.org"
  YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+diff --git a/documentation/releases.rst b/documentation/releases.rst
+index e2ee3b087..74011d550 100644
+--- a/documentation/releases.rst
++++ b/documentation/releases.rst
+@@ -10,6 +10,7 @@
+ 
+ - :yocto_docs:`3.2 Documentation </3.2>`
+ - :yocto_docs:`3.2.1 Documentation </3.2.1>`
++- :yocto_docs:`3.2.2 Documentation </3.2.2>`
+ 
+ ****************************
+ 3.1 'dunfell' Release Series
+diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js
+index a997489aa..47dee6b04 100644
+--- a/documentation/sphinx-static/switchers.js
++++ b/documentation/sphinx-static/switchers.js
+@@ -3,7 +3,7 @@
+ 
+   var all_versions = {
+     'dev': 'dev (3.3)',
+-    '3.2.1': '3.2.1',
++    '3.2.2': '3.2.2',
+     '3.1.5': '3.1.5',
+     '3.0.4': '3.0.4',
+     '2.7.4': '2.7.4',
 -- 
-2.25.1
+2.29.2
 
