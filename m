@@ -1,106 +1,80 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
- by mx.groups.io with SMTP id smtpd.web08.520.1614105103205401732
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web12.3464.1614206436478947891
  for <docs@lists.yoctoproject.org>;
- Tue, 23 Feb 2021 10:31:43 -0800
+ Wed, 24 Feb 2021 14:40:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Oya42uiS;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.214.176, mailfrom: mhalstead@linuxfoundation.org)
-Received: by mail-pl1-f176.google.com with SMTP id k22so10356016pll.6
-        for <docs@lists.yoctoproject.org>; Tue, 23 Feb 2021 10:31:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=VitTWdCVuHq/ihg7god8fN4eip8a0GP+XFZ00nSjalM=;
-        b=Oya42uiSgJljQEhhoYZTVwwZhyGTj85Xbng54QTuJGskkKgNh0xpRZFByTdl4S93qe
-         uxh0qIzwVU1wP8TUOLhV+Ukk80XGS/l1lw778NcjMps+YxRXzwukxo7wH5VdX/KISDfD
-         c+szZx/C3WnrO3kjICVXtLaljlMb6ASMbvAkk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=VitTWdCVuHq/ihg7god8fN4eip8a0GP+XFZ00nSjalM=;
-        b=JiuvOE1lwtaVx46XHqd4X+GYRjTW5waFCcArKjt7/5kS7P+lcqTjwF4yThOusbxlVW
-         Oh9B9dwqowce06VSWDefz/rX+lri4Tg7KUatCHgwSFtjKG02uFT7UZ3sWaAul8m18uWA
-         AANmDoiVuASXoYdN1zP8rhN0ZuQR3cRb4r1wfnVb4rwuS4UXcn8UPZOnLmFWLtBOOwaY
-         HQ3ngFqpGS2ttm8CkRQE5sRxz/BIxTayZmKvZso7LzRp2RRcf4/rpplGxK07PuJkomwe
-         goS9Icz+SJRjQ6q3jbDstbRjLsVKecQ1QzH7zDXVfKTzsdd6puGian3D0yVoDZgUsRlH
-         6Yaw==
-X-Gm-Message-State: AOAM531AcEGmdognTX8/GOeTn4uSnULQL+ye9cL9kYIWjJ61Ov0UlcUL
-	ftqHIipUagkM8gjVI73mJfK48QVv3SuQFg==
-X-Google-Smtp-Source: ABdhPJxzKQ3G9c/Gcp2a/PQOi1TaDFautJkSgkn7Isb5PL76XlefN9RF67mfCsUetddtqGtuBgVFOQ==
-X-Received: by 2002:a17:902:d48f:b029:e3:fb7d:1fb1 with SMTP id c15-20020a170902d48fb02900e3fb7d1fb1mr3735853plg.83.1614105102167;
-        Tue, 23 Feb 2021 10:31:42 -0800 (PST)
-Return-Path: <mhalstead@linuxfoundation.org>
-Received: from localhost.localdomain.org (c-24-21-216-192.hsd1.or.comcast.net. [24.21.216.192])
-        by smtp.gmail.com with ESMTPSA id v7sm23978310pfv.93.2021.02.23.10.31.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Feb 2021 10:31:41 -0800 (PST)
-From: "Michael Halstead" <mhalstead@linuxfoundation.org>
+ dkim=fail reason="body hash did not verify" header.i=@linux.microsoft.com header.s=default header.b=H921fBoU;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: alhe@linux.microsoft.com)
+Received: from alsamon-xub.lan (cpe-68-201-52-49.elp.res.rr.com [68.201.52.49])
+	by linux.microsoft.com (Postfix) with ESMTPSA id AC58020B6C40;
+	Wed, 24 Feb 2021 14:40:32 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AC58020B6C40
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1614206433;
+	bh=bIOFl+3O1h+jOnKAY5pId2cJjlkSMBhAXPuj92bntAY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H921fBoUB2vaeB5TX+tM4GW00xnu9gzkD5RSEmSvYIC+RoGjcowF7PNlimvMA/EDr
+	 2dodcelhLeWxFOpep4KsBNO3RgwngsyIrqxdfM+fhN/Ii4NCjAj5dhesN/4ZqSA3oK
+	 0e+VUDywVn5VFVRhua4DZAZAGbnXtptNwES4zgPs=
+From: "Alejandro Hernandez Samaniego" <alhe@linux.microsoft.com>
 To: docs@lists.yoctoproject.org
-Cc: rpurdie@linuxfoundation.org,
-	nicolas.dechesne@linaro.org,
-	Michael Halstead <mhalstead@linuxfoundation.org>
-Subject: [PATCH] releases: update to include 3.2.2
-Date: Tue, 23 Feb 2021 10:31:28 -0800
-Message-Id: <20210223183128.225826-1-mhalstead@linuxfoundation.org>
-X-Mailer: git-send-email 2.29.2
+Cc: Alejandro Enedino Hernandez Samaniego <alhe@linux.microsoft.com>
+Subject: [PATCH] ref-manual: Add Az fetcher documentation
+Date: Wed, 24 Feb 2021 15:40:25 -0700
+Message-Id: <20210224224025.2531669-1-alhe@linux.microsoft.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Michael Halstead <mhalstead@linuxfoundation.org>
+Signed-off-by: Alejandro Enedino Hernandez Samaniego <alhe@linux.microsof=
+t.com>
 ---
- documentation/poky.yaml                  | 8 ++++----
- documentation/releases.rst               | 1 +
- documentation/sphinx-static/switchers.js | 2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ documentation/ref-manual/variables.rst | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 697c7b38d..8d189b5da 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,12 +1,12 @@
--DISTRO : "3.2.1"
-+DISTRO : "3.2.2"
- DISTRO_NAME_NO_CAP : "gatesgarth"
- DISTRO_NAME : "Gatesgarth"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "dunfell"
- DISTRO_NAME_NO_CAP_LTS : "dunfell"
--YOCTO_DOC_VERSION : "3.2.1"
-+YOCTO_DOC_VERSION : "3.2.2"
- YOCTO_DOC_VERSION_MINUS_ONE : "3.1.5"
--DISTRO_REL_TAG : "yocto-3.2.1"
--POKYVERSION : "24.0.1"
-+DISTRO_REL_TAG : "yocto-3.2.2"
-+POKYVERSION : "24.0.2"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-diff --git a/documentation/releases.rst b/documentation/releases.rst
-index e2ee3b087..74011d550 100644
---- a/documentation/releases.rst
-+++ b/documentation/releases.rst
-@@ -10,6 +10,7 @@
- 
- - :yocto_docs:`3.2 Documentation </3.2>`
- - :yocto_docs:`3.2.1 Documentation </3.2.1>`
-+- :yocto_docs:`3.2.2 Documentation </3.2.2>`
- 
- ****************************
- 3.1 'dunfell' Release Series
-diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js
-index a997489aa..47dee6b04 100644
---- a/documentation/sphinx-static/switchers.js
-+++ b/documentation/sphinx-static/switchers.js
-@@ -3,7 +3,7 @@
- 
-   var all_versions = {
-     'dev': 'dev (3.3)',
--    '3.2.1': '3.2.1',
-+    '3.2.2': '3.2.2',
-     '3.1.5': '3.1.5',
-     '3.0.4': '3.0.4',
-     '2.7.4': '2.7.4',
--- 
-2.29.2
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+index 2cb37b6a2..7539dec9d 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -270,6 +270,18 @@ system and gives an overview of their function and c=
+ontents.
+       ":ref:`Basic Syntax <bitbake:bitbake-user-manual/bitbake-user-manu=
+al-metadata:basic syntax>`" section in the BitBake
+       User Manual for more information.
+=20
++   :term:`AZ_SAS`
++      Azure Storage Shared Access Signature, when using the
++      :ref:`Azure Storage fetcher (az://) <bitbake:bitbake-user-manual/b=
+itbake-user-manual-fetching:fetchers>`
++      This variable can be defined to be used by the fetcher to authenti=
+cate
++      and gain access to non-public artifacts.
++      ::
++
++         AZ_SAS =3D ""se=3D2021-01-01&sp=3Dr&sv=3D2018-11-09&sr=3Dc&skoi=
+d=3D<skoid>&sig=3D<signature>""
++
++      For more information see Microsoft's Azure Storage documentation a=
+t
++      https://docs.microsoft.com/en-us/azure/storage/common/storage-sas-=
+overview
++
+    :term:`B`
+       The directory within the :term:`Build Directory` in
+       which the OpenEmbedded build system places generated objects durin=
+g a
+@@ -7103,6 +7115,8 @@ system and gives an overview of their function and =
+contents.
+=20
+       -  ``npm://`` - Fetches JavaScript modules from a registry.
+=20
++      -  ``az://`` - Fetches files from an Azure Storage account.
++
+       Standard and recipe-specific options for ``SRC_URI`` exist. Here a=
+re
+       standard options:
+=20
+--=20
+2.25.1
 
