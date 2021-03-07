@@ -1,76 +1,68 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web11.22714.1615131861317646677
+Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
+ by mx.groups.io with SMTP id smtpd.web11.25895.1615144785571995787
  for <docs@lists.yoctoproject.org>;
- Sun, 07 Mar 2021 07:44:21 -0800
+ Sun, 07 Mar 2021 11:19:45 -0800
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:55782 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.93)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lIvZr-0007Un-RH
-	for docs@lists.yoctoproject.org; Sun, 07 Mar 2021 10:44:20 -0500
-Date: Sun, 7 Mar 2021 10:44:16 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] possible better wording to describe bitbake functions?
-In-Reply-To: <166A19276473FD9D.31138@lists.yoctoproject.org>
-Message-ID: <51939c4e-8937-2a23-9230-65db83b3479d@crashcourse.ca>
-References: <166A19276473FD9D.31138@lists.yoctoproject.org>
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=nWM7KSI/;
+ spf=pass (domain: gmail.com, ip: 209.85.222.195, mailfrom: john.kaldas.enpj@gmail.com)
+Received: by mail-qk1-f195.google.com with SMTP id 130so7305057qkh.11
+        for <docs@lists.yoctoproject.org>; Sun, 07 Mar 2021 11:19:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=3Xd9Yh2UvcVf6jN9k3fEyGQthizCdLOp+NGNKrHk/Ok=;
+        b=nWM7KSI/CviPb4Gy6/ExkvhlwAcIGpXgo4TSuTcRBnKrerdgMDIUKF16otvgJb6Itu
+         SBEG6dKRiI1+2yDkwodovdRk5c3czbLNaQedsypHjlNw2L4euQ+6wi4Ko/DbGXyKvVBu
+         yg8LjWSYuKje8GaxqinVbxTFYLfwkzeT5knDSqShQVyjFqbDxNZj7qZiLstcUmGZTdEs
+         IAycMimXa/ubYxPOUIetY1EHojrx0S8YQpGRNMn9JCuaV5SJ5wXzga+tKn62VMMl6JdM
+         xs3rN9XMON5oWPLuO2502gzYCcBhPZ8s1lRS4URa7BV6iNLpDoN9LrJChcM6zjehXirs
+         Pt1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=3Xd9Yh2UvcVf6jN9k3fEyGQthizCdLOp+NGNKrHk/Ok=;
+        b=N4FOq+4ZMBXfXhYggNUOv9hQmg12UZPTkWPywjms59N3p7KWUiUjy85V797gexzlsu
+         2pNiKZgeirqXfYuESl5gvEP9L0cYOJUsJBPcRsA/JoM7F177dCBMKojj95QKHbsN/X1+
+         KbsZkTjJ+8KK7WrEb9nsVcSM8B7fLyuxCOnNz6zNx0IljecMI6xCmiwIaNtSfTZBUQDK
+         35+2vcISrqwEqog0Sp42H9Src2JDijIIvpZe5DsIwZQDcER6FEysrWf+wyHXZzZ/t05n
+         IjjY7/90KQv0NpV7/se9hyrji7C7PjUwIIoodz3KnAqsZfH3Cf9zK2YB4xsxd4O3TwWM
+         G1UA==
+X-Gm-Message-State: AOAM531fIUANCry+1Ji02rx8XS3BkmxjKU/c/DP8CSgbURlOnZolj3+z
+	8km1uX6iwsaaocwruataJncgjwYJdh7vuAQV3Voi4g0anY4=
+X-Google-Smtp-Source: ABdhPJxT929K+qXNB1lWd3E0EuGWCSBxFlHIojkKoRGcFqWVncy5EV5RCFCZZcb7g/5dNXyOnmWfIYwuESDNiK9zpY0=
+X-Received: by 2002:a37:bd7:: with SMTP id 206mr10347807qkl.284.1615144784587;
+ Sun, 07 Mar 2021 11:19:44 -0800 (PST)
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+From: john.kaldas.enpj@gmail.com
+Date: Sun, 7 Mar 2021 20:19:34 +0100
+Message-ID: <CAKPVPVrqWQSFJEsqD3r948MQLw-E2AcuY39yF50oif9=K_+c-A@mail.gmail.com>
+Subject: Workflow for applying documentation changes
+To: docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="000000000000256e6605bcf733fc"
 
-On Sun, 7 Mar 2021, Robert P. J. Day wrote:
+--000000000000256e6605bcf733fc
+Content-Type: text/plain; charset="UTF-8"
 
->
->   perusing bitbake user manual, section 3.5, "Functions", which
-> opens with:
->
-> "As with most languages, functions are the building blocks that are
-> used to build up operations into tasks. BitBake supports these types
-> of functions:
->
->   * Shell Functions: Functions written in shell script and executed
->     either directly as functions, tasks, or both. They can also be
->     called by other shell functions.
->
->   * BitBake-Style Python Functions: Functions written in Python and
->     executed by BitBake or other Python functions using
->     bb.build.exec_func().
->
-> ... snip ...
->
-> however, it's clear that one can also invoke shell functions from
-> python functions via bb.build.exec_func() as well, as with this
-> example from buildhistory.bbclass. here's an obvious shell function:
->
->   buildhistory_commit() {
->         if [ ! -d ${BUILDHISTORY_DIR} ] ; then
->         ... snip ...
->
-> being invoked from a python routine:
->
->   python buildhistory_eventhandler() {
->        ... snip ...
->                 bb.build.exec_func("buildhistory_commit", localdata)
->
->
-> so is there a clearer way to word this to clarify that shell
-> functions are also callable via bb.build.exec_func()? or is that
-> somehow implied by the current wording?
+Hi guys,
 
-  never mind, just noticed that the above is explained further down
-that chapter in a Note.
+I am starting working on a ticket on bugzilla for updating some
+documentation. Since it is my first one to work on in this project, I am
+kinda confused about where to start, first is the workflow(should I branch
+from master and just push the branch), second is what to use to test the
+documentation changes.
 
-rday
+Thanks,
+John Kaldas
+
+--000000000000256e6605bcf733fc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi guys,</div><div><br></div><div>I am starting worki=
+ng on a ticket on bugzilla for updating some documentation. Since it is my =
+first one to work on in this project, I am kinda confused about where to st=
+art, first is the workflow(should I branch from master and just push the br=
+anch), second is what to use to test the documentation changes.<br></div><d=
+iv><br></div><div>Thanks,</div><div>John Kaldas</div></div>
+
+--000000000000256e6605bcf733fc--
