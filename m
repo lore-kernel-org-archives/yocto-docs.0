@@ -1,90 +1,72 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
- by mx.groups.io with SMTP id smtpd.web09.32501.1615185464647018398
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web12.33778.1615196788795477945
  for <docs@lists.yoctoproject.org>;
- Sun, 07 Mar 2021 22:37:45 -0800
+ Mon, 08 Mar 2021 01:46:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=mDRq1LqB;
- spf=pass (domain: linaro.org, ip: 209.85.218.47, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-ej1-f47.google.com with SMTP id c10so17897152ejx.9
-        for <docs@lists.yoctoproject.org>; Sun, 07 Mar 2021 22:37:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=IqRplP6r3wYy7WQcPnhB/0Zl1aVNXdzBPYjDgdSb+Xg=;
-        b=mDRq1LqB6t3VLt8V+OjHKM6HhZYwwOuhY+smiVYFhH1Ypm+Ppu5ycQgk8T/CazSSP+
-         ii4y4H6UxNdsOrDzMtlFr3foA2FlnJwNBaDQ9zIlLCedtIjluHvPf1g2pgxRzGh0/3gC
-         IhxhXqbKx/Vanp+9Nioep/Cuij6YzHi7c5mpYXiGECNm2RJJpETucYnMtMgHy8nzRX7q
-         K90VZG1E6onrQw70wYk7X4k2oKxTCNd2pKdHPAyLfAkFta5AMyRxrjVJTR61mwfAKz3O
-         Z4YNHU6aXu+tolodMkXDorE4aX5GEnnH1P/DewfO1O2SQ4pdA86m+sviRnVRKGFWdRUY
-         gCag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=IqRplP6r3wYy7WQcPnhB/0Zl1aVNXdzBPYjDgdSb+Xg=;
-        b=fFsEpi5tm/VCI/vOZpCtTatsnDCYulxZ5T8DifpwPHfBzfZWEDucbNJlvo85/PV1ZT
-         wBkaT1ZQb9Y2yH/OVjdpatUtfT/GmoKptRRRJv0+jRU/TCQykohu8ceACxrGvHT6quIs
-         eJUJRzEQj8yFaBLdkkbk5aW5PVOFmGG+OMOlV2Vc/id597SnZThUZk75Mc2eAitw+Mu/
-         7o2HjslyUIwWV+7jcebtsfHqQskZ7CXl0imul30Q7Lu+kdks+96cSFEF9bnyqzP8GJ2D
-         EWNvZy4ELUUXWDJClQFf7EHx+OucMHQz1QEEW2hcFY6wCqFGcNVBTy1Kac5Vx8qCVWdx
-         Mzkw==
-X-Gm-Message-State: AOAM530UHnbc5tBefC5tVhpxy5mBkt7X7h1tiwTtnpRv6FyJKHSIlpBY
-	gGsNVa6k1wcH5rbaQeQG+TJghBnHL0E40GTkXT/rAQ==
-X-Google-Smtp-Source: ABdhPJwu04+rmCA8sPQtCzVB8tvCrybZL4m1ihhTZ71CAsa7d5b+2QZ8UAVmzR///Ca6LK78AxJ/H2V0cQIwihJjV9s=
-X-Received: by 2002:a17:906:8147:: with SMTP id z7mr12985026ejw.436.1615185462824;
- Sun, 07 Mar 2021 22:37:42 -0800 (PST)
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from bras-base-otwaon0916w-grc-29-64-229-255-220.dsl.bell.ca ([64.229.255.220]:34040 helo=fedora)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.93)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1lJCT5-0000uc-6l
+	for docs@lists.yoctoproject.org; Mon, 08 Mar 2021 04:46:27 -0500
+Date: Mon, 8 Mar 2021 04:46:25 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: more musings about bitbake user manual
+Message-ID: <821fea94-afb1-e781-eaf-30efb94d2812@crashcourse.ca>
 MIME-Version: 1.0
-References: <CAKPVPVrqWQSFJEsqD3r948MQLw-E2AcuY39yF50oif9=K_+c-A@mail.gmail.com>
-In-Reply-To: <CAKPVPVrqWQSFJEsqD3r948MQLw-E2AcuY39yF50oif9=K_+c-A@mail.gmail.com>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Mon, 8 Mar 2021 07:37:44 +0100
-Message-ID: <CAP71Wjx=aX_v0s=KpURiZsP-D7QMu7e6hWmKnOjJm66=vw+yAA@mail.gmail.com>
-Subject: Re: [docs] Workflow for applying documentation changes
-To: John Kaldas <john.kaldas.enpj@gmail.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-hey John
-
-On Sun, Mar 7, 2021 at 8:19 PM John Kaldas <john.kaldas.enpj@gmail.com> wr=
-ote:
->
-> Hi guys,
->
-> I am starting working on a ticket on bugzilla for updating some document=
-ation. Since it is my first one to work on in this project, I am kinda conf=
-used about where to start, first is the workflow(should I branch from maste=
-r and just push the branch), second is what to use to test the documentatio=
-n changes.
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
 
-The Yocto Project docs are hosted in this git tree:
-http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/
+  curious about others' thoughts on the following. in BB user manual,
+there is an example of overrides (which, ironically, i'm pretty sure i
+added once upon a time) that presents a real-life example of
+overrides:
 
-And you have a top level README file that indicates where/how to send patc=
-hes:
-http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/tree/README
+"The following lines from the recipe file first set the kernel branch
+variable KBRANCH to a default value, then conditionally override that
+value based on the architecture of the build:
 
-We typically review/merge patches by email, there are several relevant
-sections in our documentation manuals:
-https://docs.yoctoproject.org/overview-manual/development-environment.html=
-?highlight=3Dgit%20send%20email#git-workflows-and-the-yocto-project
-https://docs.yoctoproject.org/dev-manual/common-tasks.html#making-changes-=
-to-the-yocto-project
+KBRANCH = "standard/base"
+KBRANCH_qemuarm = "standard/arm-versatile-926ejs"
+KBRANCH_qemumips = "standard/mti-malta32"
+... snip ...
 
-To test your change before sending it by email, you can rebuild the
-whole documentation locally, there are instructions in this file:
-http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/tree/documentation/RE=
-ADME
-Search for "How to build the Yocto Project documentation"
+  it occurs that the wording above might mislead readers to believe
+that the default value of KBRANCH must be set first, and conditional
+overrides are required to *follow* that, when i'm pretty sure that's
+not the case. so assuming i'm right (seems that way from simple
+testing), is it worth adding a note to emphasize that ordering in the
+above is not relevant?
 
+  also, just below that, more annoying pedantry ... an example i think
+i might have added as well way back when:
 
->
->
-> Thanks,
-> John Kaldas
->
->=20
->
+KERNEL_FEATURES_append = " ${KERNEL_EXTRA_FEATURES}"
+KERNEL_FEATURES_append_qemux86=" cfg/sound.scc cfg/paravirt_kvm.scc"
+KERNEL_FEATURES_append_qemux86-64=" cfg/sound.scc cfg/paravirt_kvm.scc"
+
+i recall using this very example in a course, and a student
+immediately noticed that the last two lines were override-style
+assignments with exactly the same value, and was there a way to
+combine them in a single override-style assignment? i said no, it
+doesn't work that way, i just want to make sure there wasn't some
+clever new feature for that. and as long as my understanding is
+correct, perhaps that's also worth another note in case a reader is
+wondering the same thing.
+
+  thoughts?
+
+rday
