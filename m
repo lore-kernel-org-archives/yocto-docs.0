@@ -1,61 +1,88 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web12.9.1615913072803754115
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+ by mx.groups.io with SMTP id smtpd.web10.241.1615914911261194518
  for <docs@lists.yoctoproject.org>;
- Tue, 16 Mar 2021 09:44:33 -0700
+ Tue, 16 Mar 2021 10:15:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:55492 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lMCo3-00GnAr-4L
-	for docs@lists.yoctoproject.org; Tue, 16 Mar 2021 12:44:31 -0400
-Date: Tue, 16 Mar 2021 12:44:28 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: remove erroneous '\*' from variables list
-Message-ID: <4a582ed9-d8ce-c819-ae67-38b935e6359@crashcourse.ca>
+ dkim=pass header.i=@linaro.org header.s=google header.b=sR1s5Zqj;
+ spf=pass (domain: linaro.org, ip: 209.85.218.53, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ej1-f53.google.com with SMTP id p7so62137121eju.6
+        for <docs@lists.yoctoproject.org>; Tue, 16 Mar 2021 10:15:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=9KbokOSs7MNmctKp1+Ezt/W7NHis2ASRUC+nPQRNffw=;
+        b=sR1s5ZqjQKWK9BiQteaavOZ/qYUiEsEK7HgH/a3RN0x4cXp0XS5TlLJ583nj1VXfeX
+         pxeL2Fil9JqhqyhuTJNmawBWfwYUjK7sbW2+VU+1YuHC5RLemlbbRoZISJgVeXzUZ6w4
+         jZv7DKK6KJB9bhTN0XKXEazXuSiIm/8A0KLWLxMZdiuBzvVJL9JkObM1LkQRnKbufkuE
+         PPwdgBBeP5+2Q58G90OBsSiWZ+rmk/d8Mg2hSyn4+ungiSeCyG2SZ+hEKAmQ8Uc8DipB
+         5vnNVlBRhhUcq5dSDJQ3ZKHCMJ7o8FZfah9hsqEhuWQKH0rw+HMkpCXUbpz3+XGrD0wa
+         caAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=9KbokOSs7MNmctKp1+Ezt/W7NHis2ASRUC+nPQRNffw=;
+        b=Ic82pDxd4EIgYCQo2iD4FVGzBBg0YX3iRbOKQ0CegnKINGcUmKiphm3pjI8vpX1oPq
+         f76o2GU7gTo8JJ9XkAnXTo0bAPkcOoQd/yFxGU6HnT5BSrJW9mdUm6GemP1Gavwcg3yj
+         j9YFnRfF1CSTALy+jFiU2l53jX9HK2WdTbiqEXva/XWf4p4jNzDJbYD0MUj1IfkaMlIz
+         NocBrE4QaBRqVpkkJ8pOpbNKdTwh0EFEpg1XOWkxbzlHGR/3aorKPkj5hGS8i2cfp0hr
+         tzI2nN4oaH9rzy7GF3/aeinMVMM0s5YBMIhwwwzbOmUpcuBJv9WpcQhlJXWJJ6LzSntN
+         YsPQ==
+X-Gm-Message-State: AOAM531BzyCeKr89BUrcciQKX1A9uFwWgISzP2KA7lheJ2NPuThmjb2X
+	V1jsjdudliqCMTiA8CoUVzzOT3N8bcqQHs/BQ9J7U1CUrN3QSu/5
+X-Google-Smtp-Source: ABdhPJzv8N0LNOsVU5t2cEtOOa/qvXskY6wOKieOtBJqMjrBOwDCKlCSOc4HlZZBlD4wSx2awFqnHprM332C4Jz9LAk=
+X-Received: by 2002:a17:906:d71:: with SMTP id s17mr31650797ejh.126.1615914909495;
+ Tue, 16 Mar 2021 10:15:09 -0700 (PDT)
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-0.2
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+References: <4a582ed9-d8ce-c819-ae67-38b935e6359@crashcourse.ca>
+In-Reply-To: <4a582ed9-d8ce-c819-ae67-38b935e6359@crashcourse.ca>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Tue, 16 Mar 2021 18:14:58 +0100
+Message-ID: <CAP71Wjy9BWrZFSX-FKKXh3R=+7AE6PSqegsJJCzRoTusCZveUQ@mail.gmail.com>
+Subject: Re: [docs] [PATCH] ref-manual: remove erroneous '\*' from variables list
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 
+On Tue, Mar 16, 2021 at 5:45 PM Robert P. J. Day <rpjday@crashcourse.ca> wrote:
+>
+>
+> Not sure what those leading '\*' are doing, but they're rendered
+> verbatim and mess up creating a linkable item.
 
-Not sure what those leading '\*' are doing, but they're rendered
-verbatim and mess up creating a linkable item.
+thanks for the patch. they are left over from the docbook migration..
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
----
+Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 6808c4947..4f441907b 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -2230,7 +2230,7 @@ system and gives an overview of their function and contents.
-       .. note::
-
-          To add packages to the root filesystem, see the various
--         \*:term:`RDEPENDS` and \*:term:`RRECOMMENDS` variables.
-+         :term:`RDEPENDS` and :term:`RRECOMMENDS` variables.
-
-    :term:`EXTRANATIVEPATH`
-       A list of subdirectories of
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                         http://crashcourse.ca
-
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+>
+> ---
+>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 6808c4947..4f441907b 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -2230,7 +2230,7 @@ system and gives an overview of their function and contents.
+>        .. note::
+>
+>           To add packages to the root filesystem, see the various
+> -         \*:term:`RDEPENDS` and \*:term:`RRECOMMENDS` variables.
+> +         :term:`RDEPENDS` and :term:`RRECOMMENDS` variables.
+>
+>     :term:`EXTRANATIVEPATH`
+>        A list of subdirectories of
+>
+> --
+>
+> ========================================================================
+> Robert P. J. Day                                 Ottawa, Ontario, CANADA
+>                          http://crashcourse.ca
+>
+> LinkedIn:                               http://ca.linkedin.com/in/rpjday
+> ========================================================================
+>
+> 
+>
