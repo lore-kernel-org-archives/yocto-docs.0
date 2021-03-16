@@ -1,22 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web10.9104.1615904691078489829
+ by mx.groups.io with SMTP id smtpd.web10.1732.1615911996267913733
  for <docs@lists.yoctoproject.org>;
- Tue, 16 Mar 2021 07:24:51 -0700
+ Tue, 16 Mar 2021 09:26:36 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:51230 helo=fedora)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:55420 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lMAcq-00GKAE-Fq; Tue, 16 Mar 2021 10:24:49 -0400
-Date: Tue, 16 Mar 2021 10:24:45 -0400 (EDT)
+	id 1lMCWg-00Gjjq-CW
+	for docs@lists.yoctoproject.org; Tue, 16 Mar 2021 12:26:35 -0400
+Date: Tue, 16 Mar 2021 12:26:31 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] wisdom of multiple BBFILE_PATTERN_* example in BB user manual
-In-Reply-To: <6b7688d68105073a9f1dc1718a2f5890d9e089f8.camel@linuxfoundation.org>
-Message-ID: <e4403069-aeb7-abc5-0d7-53f0d53ad360@crashcourse.ca>
-References: <91803038-3794-aef9-af8e-4128f8a52af5@crashcourse.ca> <6b7688d68105073a9f1dc1718a2f5890d9e089f8.camel@linuxfoundation.org>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: any continuing value in BUILDSDK_CC_ARCH?
+Message-ID: <e556c1c5-9b1e-8167-ecac-88793ebb7f1@crashcourse.ca>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -29,53 +27,41 @@ X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-Content-Type: multipart/mixed; boundary="8323328-67620824-1615904688=:20775"
+Content-Type: text/plain; charset=US-ASCII
 
---8323328-67620824-1615904688=:20775
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
 
-On Tue, 16 Mar 2021, Richard Purdie wrote:
+  here in ref manual variables glossary:
 
-> On Tue, 2021-03-16 at 08:59 -0400, Robert P. J. Day wrote:
-> >   not sure why i never noticed this before, but in BB user manual:
-> >
-> > https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-execution.html#locating-and-parsing-recipes
-> >
-> > there's this weird example for layer.conf:
-> >
-> >   BBFILES = "/stuff/openembedded/*/*.bb /stuff/openembedded.modified/*/*.bb"
-> >   BBFILE_COLLECTIONS = "upstream local"
-> >   BBFILE_PATTERN_upstream = "^/stuff/openembedded/"
-> >   BBFILE_PATTERN_local = "^/stuff/openembedded.modified/"
-> >   BBFILE_PRIORITY_upstream = "5" BBFILE_PRIORITY_local = "10"
-> >
-> > rendering issue in the last line aside, is using multiple
-> > BBFILE_PATTERN settings in a single layer definition a good idea? i'm
-> > unaware of that being used in any layer i've ever seen, and it seems
-> > that, if one is writing for newbies, the last thing you want to do is
-> > present something truly obscure like that.
-> >
-> >   thoughts?
->
-> The collections code predates layers and in many ways is separate
-> from the concept. In practise that is how most people use it today.
-> The BitBake manual is intended to document the functionality so
-> showing this is possible seems reasonable to me but maybe not as in
-> that specific example. I'm not sure the manual is specifically
-> targeted at newbies.
+http://docs.yoctoproject.org/ref-manual/variables.html#term-HOST_CC_ARCH
 
-  ok, maybe saying the guide was for newbies was a stretch, but it's
-still weird that the very first example of a layer.conf file presented
-uses a construct that is clearly deprecated. i'll figure something out
-and submit a patch.
+the third variable listed there, BUILDSDK_CC_ARCH, is not set up as a
+link, and i see no current use of it. i do see that, in july of 2019,
+the last(?) use of it was removed:
+
+commit 02b01280c0cc1e426d0cd9210c4bcd1f95977ab2
+Author: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+Date:   Mon Jul 15 13:25:49 2019 +0200
+
+    nativesdk-meson: Remove some unused variables
+
+    Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+    Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+
+diff --git a/meta/recipes-devtools/meson/nativesdk-meson_0.50.1.bb
+b/meta/recipes-devtools/meson/nativesdk-meson_0.50.1.bb
+index 1549357a55..1756f342ce 100644
+--- a/meta/recipes-devtools/meson/nativesdk-meson_0.50.1.bb
++++ b/meta/recipes-devtools/meson/nativesdk-meson_0.50.1.bb
+@@ -16,11 +16,6 @@ def meson_endian(prefix, d):
+     else:
+         bb.fatal("Cannot determine endianism for %s-%s" % (arch, os))
+
+-MESON_TOOLCHAIN_ARGS = "${BUILDSDK_CC_ARCH}${TOOLCHAIN_OPTIONS}"
+-MESON_C_ARGS = "${MESON_TOOLCHAIN_ARGS} ${BUILDSDK_CFLAGS}"
+-MESON_CPP_ARGS = "${MESON_TOOLCHAIN_ARGS} ${BUILDSDK_CXXFLAGS}"
+-MESON_LINK_ARGS = "${MESON_TOOLCHAIN_ARGS} ${BUILDSDK_LDFLAGS}"
+-
+
+  is that variable still hanging around anywhere?
 
 rday
-
-p.s. to go along with the above, it's also confusing that, in that
-whole section about "preferences," there is an explanation about
-"PREFERRED_VERSION" that nowhere mentions the importance of
-BBFILE_PRIORITY in layer.conf. in fact, AFAICT, the only mention of
-BBFILE_PRIORITY in the entire manual is in the variable glossary.
-
---8323328-67620824-1615904688=:20775--
