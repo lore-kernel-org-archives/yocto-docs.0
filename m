@@ -1,69 +1,81 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.web11.8121.1616168070300537247
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+ by mx.groups.io with SMTP id smtpd.web08.8197.1616168305966562709
  for <docs@lists.yoctoproject.org>;
- Fri, 19 Mar 2021 08:34:30 -0700
+ Fri, 19 Mar 2021 08:38:26 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=gc96I4vU;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f45.google.com with SMTP id r15-20020a05600c35cfb029010e639ca09eso7546333wmq.1
-        for <docs@lists.yoctoproject.org>; Fri, 19 Mar 2021 08:34:29 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=RZT8vyvK;
+ spf=pass (domain: linaro.org, ip: 209.85.218.50, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ej1-f50.google.com with SMTP id b7so10437709ejv.1
+        for <docs@lists.yoctoproject.org>; Fri, 19 Mar 2021 08:38:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=tOY9FAOggjpUNccFwF040F6PZu6s/U/DpoY8A7nNfVI=;
-        b=gc96I4vU7qtI3fkv+nvfN6oi+ssWAA7+WRBGmo9u+BCtKuDojfzVtAO2REnXdOwZZ0
-         +js7vtS8G5EJLoXwjHsO4+hZHk4YBXJhZApX876PuwBIgLfYe3S4cXc74HLFtjzaylFq
-         ZfTwIjyLz8KlcI6psBLyYIxBkvL+pUwcgk61Q=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=y/ZepdWRWZkca0OtQufkYYyAjlq/eYrm9Lj3/3LIj4k=;
+        b=RZT8vyvKBlkSVbAtRA7bDER7VMSea/kNtpvcSTQgwn9XFCwoM55rt5bxHR24srmObO
+         0s5LgjwBmKbRapNuLogsmz2hCGoJ8kiHhXk+1rGRKgdggHFymvqV7mYXi4LydGjNEMR0
+         1Yn+X1fx64/U2UWntQpFMjZoLHkEqI5eV9RDt65vrYI3tRnxfNbR91oPojg/OFfJ6Nry
+         14a6EgZxg/xH+A2p8NxcLUQGn+eOpv6gH0xtfpkgw7UTDmfPshIKpewUy5irkud0DLAX
+         79WbcBv8sHnBXZoh+SE8HWj8I1L/M+UXi9mvwLBtmWMWvJuqi0hBUHp52t5JwEzk/nHg
+         okqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=tOY9FAOggjpUNccFwF040F6PZu6s/U/DpoY8A7nNfVI=;
-        b=A/XaI3FjkKOhUnnbtVgYS8dr8tGUScI4HpI88RH9C/S3Z4brgml7OAMqReo1K1hccc
-         dAv7pX5hH9Zg522Y8p5TlB4Dc1ka75AVS9msypEUZeGOLX4Fp7UZ4ZrUZP+RxqCR2lPr
-         mxayO+kUDk15YesbgTDwCgfduThe8yBZvp6ifLupEtPkbz/uGGwEWKO4pnoVO9oxwLbN
-         O56mVKwxcQg5GpHsgNLSDhdrgpFnQsaAY0JfCLq2OajxdyoMXw30IEFsApUvtFrvkVq7
-         WONR0CTHtzomGnm7WT5RtZCZqP22XYYnhoBce/fLwhv+uxJtPMdw3cb3Kd3VWJznRi9U
-         +1Hg==
-X-Gm-Message-State: AOAM530YlZ39h/b2Cy4mpkgcwywop9gGH2MVJApdjKmQIS2PaBJTsfrK
-	VuclJ8KOVAdt9xHqWckKWtHKpQ==
-X-Google-Smtp-Source: ABdhPJzjQkK3HlVgveVVjirOCeaT3ngP8VYDNCtxUgYPzUlAyNcgKr+2WC9gw201AJeCGZzbxEt7Kw==
-X-Received: by 2002:a1c:498b:: with SMTP id w133mr4407690wma.134.1616168068705;
-        Fri, 19 Mar 2021 08:34:28 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:5808:8e52:d330:3893? ([2001:8b0:aba:5f3c:5808:8e52:d330:3893])
-        by smtp.gmail.com with ESMTPSA id l4sm8139358wrt.60.2021.03.19.08.34.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Mar 2021 08:34:28 -0700 (PDT)
-Message-ID: <3d828cd45f59e3a7cf2f8966fd3cefd2bb24bb89.camel@linuxfoundation.org>
-Subject: Re: [docs] Inconsistent use of "cd ~/poky" and "cd poky" in the manuals
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
-	docs@lists.yoctoproject.org
-Date: Fri, 19 Mar 2021 15:34:25 +0000
-In-Reply-To: <9c893145-b926-10ca-35f0-ce4348110d49@bootlin.com>
-References: <9c893145-b926-10ca-35f0-ce4348110d49@bootlin.com>
-User-Agent: Evolution 3.39.2-1 
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=y/ZepdWRWZkca0OtQufkYYyAjlq/eYrm9Lj3/3LIj4k=;
+        b=m+KpRgcu98CD1MWDOXbULr8cljFJldiS1vL9lmp1twE2hcwCeNrkEK08ROhPde38Vg
+         ltzRqOYOKCVeOpSVLoCGNPiYwd8/y8aHQ5dAVJHfGu28zHFZiXoKCr454pa2nobzxpco
+         mhquP/WipN96GQ5PUAYMPmXbPkOi9e86/zZ4KozBX5PKOkteIqe5sJzLB5Jya18WVuj+
+         XELvZgUGb/QDoVrduPWCggEdSymln7qqQXLUO9ZYoBjpSPYTdjIXlfJhJrXa9s/BFpnD
+         otnyBV+dUac1KY/wjwROuMmwZCDECBg2XdGVRPuZ4OqW3kYPw72wVyBTQaICnlVTmIHw
+         3F4g==
+X-Gm-Message-State: AOAM531wiHLkICP1xQPEZT7pfzus3tOnHaodjm+yQlXAqKpKE7MarxSq
+	hhBiiz3p/XPMQUSRJI8xr2oJH5dB8N4XcBogJWFB9Q==
+X-Google-Smtp-Source: ABdhPJxwFpVGVdqhR0oBELj6tqBpm1MAE3digtQGRWRi2+t92kJd+ZOybe3fsJT07GC6gFjiNwc8xCjSwtqEsQUtTkQ=
+X-Received: by 2002:a17:906:71d3:: with SMTP id i19mr5115510ejk.347.1616168304341;
+ Fri, 19 Mar 2021 08:38:24 -0700 (PDT)
 MIME-Version: 1.0
+References: <9c893145-b926-10ca-35f0-ce4348110d49@bootlin.com> <3d828cd45f59e3a7cf2f8966fd3cefd2bb24bb89.camel@linuxfoundation.org>
+In-Reply-To: <3d828cd45f59e3a7cf2f8966fd3cefd2bb24bb89.camel@linuxfoundation.org>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Fri, 19 Mar 2021 16:38:13 +0100
+Message-ID: <CAP71Wjyp=jERgyCfajb-nziCbD=HchJ0hbRte_VaBZwmBTtzPA@mail.gmail.com>
+Subject: Re: [docs] Inconsistent use of "cd ~/poky" and "cd poky" in the manuals
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
+	YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
 
-On Fri, 2021-03-19 at 16:32 +0100, Michael Opdenacker wrote:
-> On the other hand, my second idea was to stop assuming that poky was
-> cloned from the home directory, and propose a patch that replaces
-> "~/poky/" by "poky/" everywhere, assuming that people using the Yocto
-> Project know how to use their brains anyway and understand where they're
-> storing their data ;-)
+On Fri, Mar 19, 2021 at 4:34 PM Richard Purdie
+<richard.purdie@linuxfoundation.org> wrote:
+>
+> On Fri, 2021-03-19 at 16:32 +0100, Michael Opdenacker wrote:
+> > On the other hand, my second idea was to stop assuming that poky was
+> > cloned from the home directory, and propose a patch that replaces
+> > "~/poky/" by "poky/" everywhere, assuming that people using the Yocto
+> > Project know how to use their brains anyway and understand where they're
+> > storing their data ;-)
+> >
+> > What would be your preference? Has this already been discussed?
+>
+> I've never spotted that :)
+>
+> I'd think changing to poky/ would be more consistent, we don't require
+> it to be in ~ but its just an opinion...
+
+Regardless of the solution, consistency is definitely needed!
+
+So let me propose a 3rd way :) We could assume that poky is install in
+$POKY and use that all over the place. If anyone wants to copy/paste
+snippet from the doc, they would just need to define the POKY env var.
+If that's not desire, then I would prefer using cd poky, as per
+Richard's suggestion.
+
+>
+> Cheers,
+>
+> Richard
+>
+>
 > 
-> What would be your preference? Has this already been discussed?
-
-I've never spotted that :)
-
-I'd think changing to poky/ would be more consistent, we don't require
-it to be in ~ but its just an opinion...
-
-Cheers,
-
-Richard
-
+>
