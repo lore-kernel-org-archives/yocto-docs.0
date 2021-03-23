@@ -1,77 +1,121 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web10.44.1616522134360560564
- for <docs@lists.yoctoproject.org>;
- Tue, 23 Mar 2021 10:55:34 -0700
-Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from bras-base-otwaon0916w-grc-67-70-50-7-189.dsl.bell.ca ([70.50.7.189]:54432 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lOlFc-00Gw9U-Dk; Tue, 23 Mar 2021 13:55:32 -0400
-Date: Tue, 23 Mar 2021 13:55:29 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-cc: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
-    Nicolas Dechesne <nicolas.dechesne@linaro.org>, 
-    YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] Spellcheck and capitalization fixes
-In-Reply-To: <20210323174253.snpxrugj2f2hxyue@qschulz>
-Message-ID: <687ecbf-9115-baba-50ad-aa9a927e436@crashcourse.ca>
-References: <20210323170624.112564-1-michael.opdenacker@bootlin.com> <23e95d84-fec2-70b9-65d7-baeaee6df836@linaro.org> <24ff30ac-a70e-a366-aab7-d0abf337df6f@bootlin.com> <20210323174253.snpxrugj2f2hxyue@qschulz>
+Subject: [PATCH] UBUNTU sudo apt git instead of git-core
+To: docs@lists.yoctoproject.org
+From: janne.kiiskila@pelion.com
+X-Originating-Location: GB (217.140.99.251)
+X-Originating-Platform: Windows Chrome 89
+User-Agent: GROUPS.IO Web Poster
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: multipart/mixed; boundary="8323328-965223816-1616522132=:29805"
+Date: Tue, 23 Mar 2021 11:14:22 -0700
+Message-ID: <KkZH.1616523262298523931.IGi7@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="cmCYzXe5u6fnDxtd2g4I"
 
---8323328-965223816-1616522132=:29805
-Content-Type: text/plain; charset=iso-8859-1
-Content-Transfer-Encoding: 8BIT
+--cmCYzXe5u6fnDxtd2g4I
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 23 Mar 2021, Quentin Schulz wrote:
+From 6d672cf6dcb39e20d10ee2da012e372016fa3c38 Mon Sep 17 00:00:00 2001
+From: Janne Kiiskila <janne.kiiskila@arm.com>
+Date: Tue, 23 Mar 2021 11:11:39 -0700
+Subject: [PATCH] UBUNTU sudo apt git instead of git-core
 
-> On Tue, Mar 23, 2021 at 06:38:03PM +0100, Michael Opdenacker wrote:
-> > Hi Nico,
-> >
-> > Thanks for your review!
-> >
-> > On 3/23/21 6:31 PM, Nicolas Dechesne wrote:
-> > > On 3/23/21 6:06 PM, Michael Opdenacker wrote:
-> > >> - Spelling fixes found using Emacs' spelling checker
-> > >>    configured for US English
-> > >> - Fixes for some capitalization issues, especially some
-> > >>    project names (QEMU, openSUSE, BusyBox), that were not
-> > >>    consistently used with the same capitalization anyway.
-> > >> - A few whitespace fixes too
-> > >>
-> > >> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> > >
-> > > Looks good to me. Thanks!
-> >
-> >
-> > I was really impressed by the scarcity of typos and style issues
-> > found so far. Congrats to the authors, contributors and reviewers,
-> > who seem to have done a great job!
-> >
->
-> You'll have a LOT more "fun" if you start working on the Bitbake
-> documentation. I don't think it's been properly reviewed since the
-> migration to Sphinx and the Yocto Project docs were full of style
-> issues. Nicolas, other contributors and myself can attest how
-> painful that was. Your contributions are very welcome, thank you for
-> the ones already sent!
+Ubuntu has changed packing and git-core is not available anymore,
+it is now just plain git.
 
-  don't get me started. :-)
+(pelion-venv) jankii01@ubuntu1804:~/poky/documentation$ sudo apt-get insta=
+ll git-core
+[sudo] password for jankii01:
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Note, selecting 'git' instead of 'git-core'
+git is already the newest version (1:2.17.1-1ubuntu0.8).
+The following package was automatically installed and is no longer require=
+d:
+linux-hwe-5.4-headers-5.4.0-65
+Use 'sudo apt autoremove' to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.
 
-rday
+Documentaiton should match the current package name to avoid confusion/war=
+nings.
+---
+documentation/poky.yaml | 2 +-
+1 file changed, 1 insertion(+), 1 deletion(-)
 
---8323328-965223816-1616522132=:29805--
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 3c30c4430e..2554f1e496 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+-UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip texin=
+fo gcc-multilib \
++UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gc=
+c-multilib \
+build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
+xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa =
+libsdl1.2-dev \
+pylint3 xterm python3-subunit mesa-common-dev"
+--
+2.17.1
+
+--cmCYzXe5u6fnDxtd2g4I
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div>From 6d672cf6dcb39e20d10ee2da012e372016fa3c38 Mon Sep 17 00:00:00 2001=
+</div>
+<div>From: Janne Kiiskila &lt;janne.kiiskila@arm.com&gt;</div>
+<div>Date: Tue, 23 Mar 2021 11:11:39 -0700</div>
+<div>Subject: [PATCH] UBUNTU sudo apt git instead of git-core</div>
+<div>&nbsp;</div>
+<div>Ubuntu has changed packing and git-core is not available anymore,</di=
+v>
+<div>it is now just plain git.</div>
+<div>&nbsp;</div>
+<div>(pelion-venv) jankii01@ubuntu1804:~/poky/documentation$ sudo apt-get =
+install git-core</div>
+<div>[sudo] password for jankii01:</div>
+<div>Reading package lists... Done</div>
+<div>Building dependency tree</div>
+<div>Reading state information... Done</div>
+<div>Note, selecting 'git' instead of 'git-core'</div>
+<div>git is already the newest version (1:2.17.1-1ubuntu0.8).</div>
+<div>The following package was automatically installed and is no longer re=
+quired:</div>
+<div>&nbsp; linux-hwe-5.4-headers-5.4.0-65</div>
+<div>Use 'sudo apt autoremove' to remove it.</div>
+<div>0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.</div>
+<div>&nbsp;</div>
+<div>Documentaiton should match the current package name to avoid confusio=
+n/warnings.</div>
+<div>---</div>
+<div>&nbsp;documentation/poky.yaml | 2 +-</div>
+<div>&nbsp;1 file changed, 1 insertion(+), 1 deletion(-)</div>
+<div>&nbsp;</div>
+<div>diff --git a/documentation/poky.yaml b/documentation/poky.yaml</div>
+<div>index 3c30c4430e..2554f1e496 100644</div>
+<div>--- a/documentation/poky.yaml</div>
+<div>+++ b/documentation/poky.yaml</div>
+<div>@@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&amp;DISTRO_NAME_NO_CAP;-&amp;PO=
+KYVERSION;"</div>
+<div>&nbsp;YOCTO_DL_URL : "https://downloads.yoctoproject.org"</div>
+<div>&nbsp;YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"</div>
+<div>&nbsp;YOCTO_RELEASE_DL_URL : "&amp;YOCTO_DL_URL;/releases/yocto/yocto=
+-&amp;DISTRO;"</div>
+<div>-UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip =
+texinfo gcc-multilib \</div>
+<div>+UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texin=
+fo gcc-multilib \</div>
+<div>&nbsp; &nbsp; &nbsp; build-essential chrpath socat cpio python3 pytho=
+n3-pip python3-pexpect \</div>
+<div>&nbsp; &nbsp; &nbsp; xz-utils debianutils iputils-ping python3-git py=
+thon3-jinja2 libegl1-mesa libsdl1.2-dev \</div>
+<div>&nbsp; &nbsp; &nbsp; pylint3 xterm python3-subunit mesa-common-dev"</=
+div>
+<div>--&nbsp;</div>
+<div>2.17.1</div>
+<div>&nbsp;</div>
+
+--cmCYzXe5u6fnDxtd2g4I--
