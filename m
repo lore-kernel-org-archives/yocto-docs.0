@@ -1,82 +1,63 @@
-Received: from bsmtp1.bon.at (bsmtp1.bon.at [213.33.87.15])
- by mx.groups.io with SMTP id smtpd.web11.6412.1616491674684691823
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web08.9719.1616510371214760764
  for <docs@lists.yoctoproject.org>;
- Tue, 23 Mar 2021 02:27:55 -0700
+ Tue, 23 Mar 2021 07:39:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.15, mailfrom: quentin.schulz@streamunlimited.com)
-Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp1.bon.at (Postfix) with ESMTPSA id 4F4QyH2Y0Xz5tlM;
-	Tue, 23 Mar 2021 10:27:51 +0100 (CET)
-Date: Tue, 23 Mar 2021 10:27:49 +0100
-From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 1/1] Update documentation URL
-Message-ID: <20210323092749.2vuhqkef6ptxhfww@qschulz>
-References: <20210319181321.45758-1-michael.opdenacker@bootlin.com>
- <20210319181321.45758-2-michael.opdenacker@bootlin.com>
- <099D8738-5946-4A6B-8A31-C575E7B77F4E@0leil.net>
- <9aeeb509-7a46-a761-2782-7d28dc0199c0@bootlin.com>
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+X-Originating-IP: 92.150.42.106
+Received: from [10.0.0.8] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
+	(Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 5B1C220006;
+	Tue, 23 Mar 2021 14:39:29 +0000 (UTC)
+Subject: Re: [docs] [PATCH] documentation/README minor improvements
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+ docs@lists.yoctoproject.org
+References: <20210322171725.78677-1-michael.opdenacker@bootlin.com>
+ <5f42e521-1c65-9905-eb56-0b2ad4967d1a@linaro.org>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <3f18c3fe-ba35-1370-5fba-e3c5f42d312f@bootlin.com>
+Date: Tue, 23 Mar 2021 15:39:28 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <9aeeb509-7a46-a761-2782-7d28dc0199c0@bootlin.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <5f42e521-1c65-9905-eb56-0b2ad4967d1a@linaro.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 
-Hi Michael,
+Hi Nicolas,
 
-On Mon, Mar 22, 2021 at 03:46:55PM +0100, Michael Opdenacker wrote:
-> Hi Quentin,
-> 
-> Nice to hear from you again, and thanks for your help!
-> 
+On 3/22/21 7:34 PM, Nicolas Dechesne wrote:
+> On 3/22/21 6:17 PM, Michael Opdenacker wrote:
+>> - Minor style and spelling fixes
+>> - Add some extra details; add missing external link macros
+>>    and explain where they are defined
+>> - Correct where documentation can be found on the
+>>    Yocto Project website: the "Documentation" tab
+>>    has been replaced by "Docs" (and its later
+>>    shown as uppercase ("DOCS") by the current CSS, but this
+>>    may change one day.
+>>
+>> These updates are not critical anyway, as this file is not part
+>> of the project documentation. It's the documentation of the
+>> documentation!
+>
+> This shouldn't really be in commit log. If needed please add in the
+> below section, so that it's stripped when the patch is applied.
+>
+> Other than that, it looks good, thanks for the cleanup.   
 
-Nice to see you contribute to the project :) Here's to many more
-patches.
 
-> > Please use :yocto_docs: extlink here. IIRC, :yocto_docs:`/` should do just fine.
-> 
-> 
-> Oops, actually, this doesn't work here, as we are in a "code-block". The
-> patch didn't give you enough context for you to see this.
-> 
-
-Ah the eternal struggle with literal blocks. We should check if those
-the same links appear often in literal blocks and then maybe have an
-entry in poky.yaml for those for easier maintenance.
-
-Later work anyway :)
-
-> >
-> > You can find the list of our extlinks in documentation/conf.py. They can be used in rST files (so your change in README is fine).
-> 
-> 
-> This is very good to know, thanks!
-> 
-> Apparently, these shortcuts don't work in the toplevel index.rst file
-> though... That was tempting to use them there too. Anyway, I'll use them
-> in normal documentation.
-> 
-
-Indeed, probably related to the use of .. toc-tree directive. The goal
-in the end is to have as few places as possible where manual maintenance
-and monitoring is required. index.html is anyway so critical that I
-doubt it'll stay broken for long if it ever happens to be broken :)
-
-> 
-> >
-> >>       For more information about OpenEmbedded see their website:
-> >>           http://www.openembedded.org
-> > And a free patch here with :oe_home:`/` :)
-> 
-> 
-> Same here, unfortunately.
-> 
-> So, I believe my patch can be taken as is...
-> 
-
-Works for me.
-
-Reviewed-by: Quentin Schulz <foss@0leil.net>
+This definitely make sense. Thanks for the review. I'll send a new
+version version right away.
 
 Cheers,
-Quentin
+
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
