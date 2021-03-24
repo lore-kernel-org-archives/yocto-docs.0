@@ -1,193 +1,97 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
- by mx.groups.io with SMTP id smtpd.web08.646.1616610266986228013
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web12.2291.1616616375484359084
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Mar 2021 11:24:27 -0700
+ Wed, 24 Mar 2021 13:06:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=Tar5GiSp;
- spf=pass (domain: gmail.com, ip: 209.85.210.179, mailfrom: raj.khem@gmail.com)
-Received: by mail-pf1-f179.google.com with SMTP id l3so17949251pfc.7
-        for <docs@lists.yoctoproject.org>; Wed, 24 Mar 2021 11:24:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:organization:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=imX72OWZkj07OBQ4fjP1LdzNmo7HB18kMmjRiBNt3OM=;
-        b=Tar5GiSpEkL3ms1P1sbnKxOoI6tk/RDMmI0ZAclh6RFqp5SVTvNXOQtR7SEsjPEEsY
-         IFZnnfZIc2J0WUouiRMZmUofhji0fb26cKqZfl41k8KueKqXUdgoGoGOORW6l6dJ9jyk
-         v6jAdz8nZ9MAOEYXsGQj8GLMsyBqazyWDMcdlXUsVh4eVw6ICj4HcmBv+FDWbTPzJacs
-         IVnhBzAatarWCojjcOwutNAtHJ58eP9qjMIwGf23e3HWY2ssWC9/14N6pt24zcWS3jBc
-         8N0Fj/oyF9ETEalLyIb50KzkeTaA+BuWuL+2QAZScnyAbbO3A6fZTB0ejRpmDbvj7edA
-         HYlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=imX72OWZkj07OBQ4fjP1LdzNmo7HB18kMmjRiBNt3OM=;
-        b=iTTsD8jSIGuYRLSQA/SL5Hjh+mBvjWBoHkv/OrNsOMKfFuvfiDsMI+vbkkVePhMPzr
-         grD9Xyx6e8sgl8pciHvUmIAB+yVCNZ4X/LiNzk0806G2HPN/XEv7EkQEWDGibKFjVMJZ
-         V6iuNi2Ck3aF6REv1OklsTc8Rt8yseYC5owDPDHjlIfErpfG1Xf7Xklyj38NrZfmG8AD
-         SHUrjZsFDwBDESbpBYUzbWwKRFK+gL+/5LD05H3lgNQ0mEWIPn2I9wr7oxj34L/pITxw
-         6xS/m/8LRi7u77OJxQjOwrGKr897ja93txeOuzBU0wEbcwBZNVLFafneO5wzmGkKUQWQ
-         TKFA==
-X-Gm-Message-State: AOAM533ZuEm6XzZJkWofM9zXvZ4n7kW5BOKMby9IeN6LtRY/R7KVpvif
-	s6xoZ5Mv7dVh72Ey1COBno1hCM6mluhqRw==
-X-Google-Smtp-Source: ABdhPJx0u7d0yQMUpXEc+BE2HvVrZPn7UJgJIKMkeLweulVa0BCJRTdyQn2F397QAhf8QH6AlBdfJQ==
-X-Received: by 2002:a17:902:b7cb:b029:e4:55cd:ddf0 with SMTP id v11-20020a170902b7cbb02900e455cdddf0mr4816198plz.45.1616610266057;
-        Wed, 24 Mar 2021 11:24:26 -0700 (PDT)
-Return-Path: <raj.khem@gmail.com>
-Received: from ?IPv6:2601:646:9200:a0f0:2da1:1afd:1712:ea8b? ([2601:646:9200:a0f0:2da1:1afd:1712:ea8b])
-        by smtp.gmail.com with ESMTPSA id f14sm3481428pfk.92.2021.03.24.11.24.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 24 Mar 2021 11:24:25 -0700 (PDT)
-Subject: Re: [docs] [PATCH v2] UBUNTU sudo apt git instead of git-core
-To: Janne Kiiskila <janne.kiiskila@pelion.com>,
- "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-References: <DBAPR08MB55580B8D8BF0C1EFBB404545F3639@DBAPR08MB5558.eurprd08.prod.outlook.com>
-From: "Khem Raj" <raj.khem@gmail.com>
-Organization: HIMVIS LLC
-Message-ID: <9b3174bf-eb43-c78f-f6ce-abf3c3a9ff4b@gmail.com>
-Date: Wed, 24 Mar 2021 11:24:24 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.16; rv:78.0)
- Gecko/20100101 Thunderbird/78.8.1
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:35914 helo=fedora)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1lP9ld-004pkK-Bz; Wed, 24 Mar 2021 16:06:14 -0400
+Date: Wed, 24 Mar 2021 16:06:08 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] HOSTTOOLS and HOSTTOOLS_NONFATAL and ASSUME_PROVIDED
+In-Reply-To: <abc98a06c805118148fb3dd5539b785d748aa24f.camel@linuxfoundation.org>
+Message-ID: <a8f08050-fcfa-444f-0e7-9074a2e7c430@crashcourse.ca>
+References: <f76e5093-205a-5e1f-6da2-4658dcf23bd@crashcourse.ca>  <fb8b836dd93fe5c3f0074a5a10b6e00ee0127a53.camel@linuxfoundation.org>  <b0edd6d-7221-1f7d-cb6-6068c6963e23@crashcourse.ca> <abc98a06c805118148fb3dd5539b785d748aa24f.camel@linuxfoundation.org>
 MIME-Version: 1.0
-In-Reply-To: <DBAPR08MB55580B8D8BF0C1EFBB404545F3639@DBAPR08MB5558.eurprd08.prod.outlook.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 8bit
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: multipart/mixed; boundary="8323328-672090615-1616616373=:6943"
 
+--8323328-672090615-1616616373=:6943
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
 
+On Wed, 24 Mar 2021, Richard Purdie wrote:
 
-On 3/24/21 5:35 AM, Janne Kiiskila wrote:
->  From d7a40397af511baf3a53d12541ee601849f0ab26 Mon Sep 17 00:00:00 2001
-> 
-> From: Janne Kiiskila janne.kiiskila@pelion.com 
-> <mailto:janne.kiiskila@pelion.com>
-> 
-> Date: Tue, 23 Mar 2021 11:11:39 -0700
-> 
-> Subject: [PATCH v2] UBUNTU sudo apt git instead of git-core
-> 
-> Ubuntu has changed packaging and git-core is not available anymore,
-> 
-> it is now just plain git.
-> 
-> $ sudo apt-get install git-core
-> 
-> [sudo] password for jankii01:
-> 
-> Reading package lists... Done
-> 
-> Building dependency tree
-> 
-> Reading state information... Done
-> 
-> Note, selecting 'git' instead of 'git-core'
-> 
-> git is already the newest version (1:2.17.1-1ubuntu0.8).
-> 
-> The following package was automatically installed and is no longer required:
-> 
->    linux-hwe-5.4-headers-5.4.0-65
-> 
-> Use 'sudo apt autoremove' to remove it.
-> 
-> 0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.
-> 
-> Documentation should match the current package name to avoid 
-> confusion/warnings.
-> 
-> Change can be verified by running the following script
-> 
-> set -ex
-> 
-> distros=("debian:8" "debian:9" "debian:10" "ubuntu:16.04" "ubuntu:18.04" 
-> "ubuntu:20.04")
-> 
-> for i in "${distros[@]}"
-> 
-> do
-> 
->     folder="${i/:/.}"      # change : to .
-> 
->     mkdir -p $folder
-> 
->     cd $folder
-> 
->     echo FROM $i > Dockerfile
-> 
->     echo RUN apt-get update \&\& apt-get install -y git >> Dockerfile
-> 
->     echo
-> 
->     cat Dockerfile
-> 
->     docker build -t test-$folder .
-> 
->     cd ..
-> 
->     rm $folder/Dockerfile
-> 
->     rmdir $folder
-> 
-> done
-> 
+> On Wed, 2021-03-24 at 12:49 -0400, Robert P. J. Day wrote:
+> > On Wed, 24 Mar 2021, Richard Purdie wrote:
+> > > On Wed, 2021-03-24 at 12:06 -0400, Robert P. J. Day wrote:
+> > > > Â yes, i realize the end of that entry gets around to that, but
+> > > > that should be emphasized from the beginning. i might even throw
+> > > > in a link for the reader to here:
+> > > >
+> > > > https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#required-packages-for-the-build-host
+> > > >
+> > > > Â Â also, the required presence of those tools on the host is
+> > > > totally independent of whatever ASSUME_PROVIDED is set to; the
+> > > > setup_hosttools_dir() routine in base.bbclass has no interest in
+> > > > the value of ASSUME_PROVIDED. so even if some of those tools had
+> > > > been built natively by the OE build, they would be ignored
+> > > > entirely.
+> > >
+> > > No, they would not. If they are built natively, they would be injected
+> > > into PATH ahead of HOSTTOOLS and used.
+> >
+> > Â Â really? i was unaware of that, i should have checked more carefully.
+> > i find that confusing -- effectively, this is saying that certain
+> > tools *must* exist on the build host, but even if they do, they might
+> > not be the ones used? that seems counter-intuitive.
+>
+> If you add something into DEPENDS, it is used instead of what is on
+> the host as long as it is not in ASSUME_PROVIDED.
+>
+> Adding something to DEPENDS and it not being used instead replaced
+> by the host's tools would seem worse...
 
+  i was about to say that makes no sense until i think i finally clued
+in, so let me try to summarize what seems logical (i'll eventually
+verify this against the actual code ... someday).
 
-perhaps we should install git-all instead that would be same across 
-debian-like and redhat-like distros across multiple releases.
+  obviously, HOSTTOOLS represents what absolutely has to be on the
+build system -- effectively, minimal host requirements to bootstrap
+the build. so the very early part of the build verifies the existence
+of these tools on the host, then downloads and configures enough to
+start the real part of the build.
 
-> Signed-off-by: Janne Kiiskila janne.kiiskila@pelion.com 
-> <mailto:janne.kiiskila@pelion.com>
-> 
-> ---
-> 
-> documentation/poky.yaml | 2 +-
-> 
-> 1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-> 
-> index 3c30c4430e..2554f1e496 100644
-> 
-> --- a/documentation/poky.yaml
-> 
-> +++ b/documentation/poky.yaml
-> 
-> @@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
-> 
-> YOCTO_DL_URL : https://downloads.yoctoproject.org 
-> <https://downloads.yoctoproject.org>
-> 
-> YOCTO_AB_URL : https://autobuilder.yoctoproject.org 
-> <https://autobuilder.yoctoproject.org>
-> 
-> YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
-> 
-> -UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip 
-> texinfo gcc-multilib \
-> 
-> +UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo 
-> gcc-multilib \
-> 
->        build-essential chrpath socat cpio python3 python3-pip 
-> python3-pexpect \
-> 
->        xz-utils debianutils iputils-ping python3-git python3-jinja2 
-> libegl1-mesa libsdl1.2-dev \
-> 
->        pylint3 xterm python3-subunit mesa-common-dev"
-> 
-> -- 
-> 
-> 2.17.1
-> 
-> IMPORTANT NOTICE: The contents of this email and any attachments are 
-> confidential and may also be privileged. If you are not the intended 
-> recipient, please notify the sender immediately and do not disclose the 
-> contents to any other person, use it for any purpose, or store or copy 
-> the information in any medium. Thank you.
-> 
-> 
-> 
-> 
+  at this point, the search path is extended (prepended) to now start
+using the tools built natively. (if i was explaining this to someone
+else, i'd say something like, "you need the host git executable to
+grab source code, including git itself, but once you build those
+tools natively, you'll switch to the natively-built git.")
+
+  *now* that makes sense since, while the host tools might vary in
+terms of version, tools compiled by the build will be absolutely
+predictable, thereby guaranteeing a stable build environment. in
+short, the stuff specified in HOSTTOOLS is needed only early on, then
+it's superseded by the built native tools.
+
+  except where ASSUME_PROVIDED comes in, but i think that's clear as
+well.
+
+rday
+
+--8323328-672090615-1616616373=:6943--
