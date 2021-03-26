@@ -1,52 +1,62 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web09.2352.1616701228155716940
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web12.9801.1616748970399619270
  for <docs@lists.yoctoproject.org>;
- Thu, 25 Mar 2021 12:40:28 -0700
+ Fri, 26 Mar 2021 01:56:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-X-Originating-IP: 109.210.254.211
-Received: from [192.168.1.18] (amontpellier-552-1-199-211.w109-210.abo.wanadoo.fr [109.210.254.211])
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+X-Originating-IP: 92.150.42.106
+Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
 	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 2A7F8FF806;
-	Thu, 25 Mar 2021 19:40:26 +0000 (UTC)
-Cc: michael.opdenacker@bootlin.com
-Subject: Re: [docs] [PATCH] Quick build: checkout a branch instead of a fixed tag
-To: docs@lists.yoctoproject.org
-References: <166FACE5797F8BE0.19792@lists.yoctoproject.org>
+	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 4B3CC24000A;
+	Fri, 26 Mar 2021 08:56:07 +0000 (UTC)
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 2/2] scripts/run-docs-build: publish docs for 3.1.6 and 3.2.2
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+ yocto@lists.yoctoproject.org, richard.purdie@linuxfoundation.org
+References: <20210325181211.59332-1-nicolas.dechesne@linaro.org>
+ <20210325181211.59332-2-nicolas.dechesne@linaro.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <f61354e9-28ad-ee0b-c14a-dcb76c5c2945@bootlin.com>
-Date: Thu, 25 Mar 2021 20:40:25 +0100
+Message-ID: <ceff9689-ae7b-098c-35d2-01df6b6f03ad@bootlin.com>
+Date: Fri, 26 Mar 2021 09:56:07 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <166FACE5797F8BE0.19792@lists.yoctoproject.org>
+In-Reply-To: <20210325181211.59332-2-nicolas.dechesne@linaro.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 3/25/21 8:34 PM, Michael Opdenacker wrote:
-> - Add guidelines for choosing a release
-> - Check-out a branch instead of a fixed tag
->   This way it's possible to pull release updates later
+(for both patches).
 
+Thanks!
 
-The idea was proposed by rr123 on IRC (don't know her/his e-mail address
-for the "Reported-by" field).
-
-If this makes things easier to review, see a screenshot of the result on
-https://pasteboard.co/JUi4Wtd.png (by the way, if you have a better
-screenshot sharing to propose, which keeps links forever too, don't
-hesitate to make suggestions)
-
-Of course, your comments and suggestions about the proposed changes are
-welcome!
-
-Cheers,
-
-Michael.
-
+On 3/25/21 7:12 PM, Nicolas Dechesne wrote:
+> Fixes: #14308
+>
+> Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+> ---
+>  scripts/run-docs-build | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/scripts/run-docs-build b/scripts/run-docs-build
+> index e8e081c..9c7ec8d 100755
+> --- a/scripts/run-docs-build
+> +++ b/scripts/run-docs-build
+> @@ -77,7 +77,7 @@ for branch in dunfell gatesgarth; do
+>  done
+>  
+>  # Yocto Project releases/tags
+> -for tag in 3.1.5 3.2 3.2.1; do
+> +for tag in 3.1.5 3.1.6 3.2 3.2.1 3.2.2; do
+>      cd $ypdocs
+>      git checkout yocto-$tag
+>      make clean
+>
+> 
+>
 -- 
 Michael Opdenacker, Bootlin
 Embedded Linux and Kernel engineering
