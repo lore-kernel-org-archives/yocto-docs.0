@@ -1,79 +1,169 @@
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web08.24176.1617033809941966943
- for <docs@lists.yoctoproject.org>;
- Mon, 29 Mar 2021 09:03:30 -0700
-Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
-Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
-	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 15CFD24000E;
-	Mon, 29 Mar 2021 16:03:27 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] Fix typos and spacing
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-References: <20210329132302.52046-1-michael.opdenacker@bootlin.com>
- <20210329151903.vvooyzogdn3n7gxb@qschulz>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <ba20eef9-e082-e446-3013-4a15c13347e3@bootlin.com>
-Date: Mon, 29 Mar 2021 18:03:27 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+Subject: Re: [PATCH v2] UBUNTU sudo apt git instead of git-core
+To: docs@lists.yoctoproject.org
+From: "Janne Kiiskila" <janne.kiiskila@pelion.com>
+X-Originating-Location: Oulu, North Ostrobothnia, FI (91.145.126.33)
+X-Originating-Platform: Windows Chrome 89
+User-Agent: GROUPS.IO Web Poster
 MIME-Version: 1.0
-In-Reply-To: <20210329151903.vvooyzogdn3n7gxb@qschulz>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Date: Mon, 29 Mar 2021 10:16:25 -0700
+References: <ce7645b2-602f-a675-3c9d-b17f0a742c87@bootlin.com>
+In-Reply-To: <ce7645b2-602f-a675-3c9d-b17f0a742c87@bootlin.com>
+Message-ID: <5247.1617038185636605896@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="QS9hQz8dJ7rs3BgsWOBp"
 
-Hi Quentin,
+--QS9hQz8dJ7rs3BgsWOBp
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Many thanks for your review!
+From d7a40397af511baf3a53d12541ee601849f0ab26 Mon Sep 17 00:00:00 2001
+From: Janne Kiiskila <janne.kiiskila@pelion.com>
+Date: Tue, 23 Mar 2021 11:11:39 -0700
+Subject: [PATCH v2] UBUNTU sudo apt git instead of git-core
 
-On 3/29/21 5:19 PM, Quentin Schulz wrote:
->> @@ -2111,8 +2111,7 @@ accomplished using fakeroot.
->>     under fakeroot. Otherwise, the task cannot run root-only operations,
->>     and cannot see the fake file ownership and permissions set by the
->>     other task. You need to also add a dependency on
->> -   virtual/fakeroot-native:do_populate_sysroot
->> -   , giving the following:
->> +   virtual/fakeroot-native:do_populate_sysroot, giving the following:
->>     ::
-> This is usually the tell of a bad outcome of the migration tool. I'm
-> pretty sure what was meant here is:
-> other task. You need to also add a dependency on
-> ``virtual/fakeroot-native:do_populate_sysroot``, giving the following:
+Ubuntu has changed packaging and git-core is not available anymore,
+it is now just plain git.
 
-Oops, this definitely makes sense.
+$ sudo apt-get install git-core
+[sudo] password for jankii01:
+Reading package lists... Done
+Building dependency tree
+Reading state information... Done
+Note, selecting 'git' instead of 'git-core'
+git is already the newest version (1:2.17.1-1ubuntu0.8).
+The following package was automatically installed and is no longer require=
+d:
+linux-hwe-5.4-headers-5.4.0-65
+Use 'sudo apt autoremove' to remove it.
+0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.
 
->>  
->>     It is not a requirement that a layer name begin with the prefix
->> -   meta-
->> -   , but it is a commonly accepted standard in the Yocto Project
->> +   meta-, but it is a commonly accepted standard in the Yocto Project
-> Same here, ``meta-``.
->
-> Basically, you just encountered the files we haven't manually reviewed
-> yet :)
->
-> Outside of obvious typos, anything with a weird indentation/syntax
-> usually requires manual inspection. I used to compare with 3.0 docs to
-> check what was intended and then fix it to match whatever was the state
-> before.
->
-> I would say it's better to leave those indentation/syntax issues as is
-> and take the time to fix them properly because they are pretty easy to
-> spot once your brain has picked up the patterns :)
+Documentation should match the current package name to avoid confusion/war=
+nings.
 
+Change can be verified by running the following script
 
-Agreed. I'll drop these in the current patch and will address them
-separately. Indeed, I've seen a few other looking like these ones.
+set -ex
 
-Thanks again!
+distros=3D("debian:8" "debian:9" "debian:10" "ubuntu:16.04" "ubuntu:18.04"=
+ "ubuntu:20.04")
+for i in "${distros[@]}"
+do
+folder=3D"${i/:/.}"=C2=A0 =C2=A0 =C2=A0 # change : to .
+mkdir -p $folder
+cd $folder
+echo FROM $i > Dockerfile
+echo RUN apt-get update \&\& apt-get install -y git >> Dockerfile
+echo
+cat Dockerfile
+docker build -t test-$folder .
+cd ..
+rm $folder/Dockerfile
+rmdir $folder
+done
 
-Michael.
+Signed-off-by: Janne Kiiskila <janne.kiiskila@pelion.com>
+---
+documentation/poky.yaml | 2 +-
+1 file changed, 1 insertion(+), 1 deletion(-)
 
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 3c30c4430e..2554f1e496 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+-UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip texin=
+fo gcc-multilib \
++UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gc=
+c-multilib \
+build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
+xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa =
+libsdl1.2-dev \
+pylint3 xterm python3-subunit mesa-common-dev"
+--
+2.17.1
 
+--QS9hQz8dJ7rs3BgsWOBp
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div>From d7a40397af511baf3a53d12541ee601849f0ab26 Mon Sep 17 00:00:00 2001=
+</div>
+<div>From: Janne Kiiskila &lt;janne.kiiskila@pelion.com&gt;</div>
+<div>Date: Tue, 23 Mar 2021 11:11:39 -0700</div>
+<div>Subject: [PATCH v2] UBUNTU sudo apt git instead of git-core</div>
+<div>&nbsp;</div>
+<div>Ubuntu has changed packaging and git-core is not available anymore,</=
+div>
+<div>it is now just plain git.</div>
+<div>&nbsp;</div>
+<div>$ sudo apt-get install git-core</div>
+<div>[sudo] password for jankii01:</div>
+<div>Reading package lists... Done</div>
+<div>Building dependency tree</div>
+<div>Reading state information... Done</div>
+<div>Note, selecting 'git' instead of 'git-core'</div>
+<div>git is already the newest version (1:2.17.1-1ubuntu0.8).</div>
+<div>The following package was automatically installed and is no longer re=
+quired:</div>
+<div>&nbsp; linux-hwe-5.4-headers-5.4.0-65</div>
+<div>Use 'sudo apt autoremove' to remove it.</div>
+<div>0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.</div>
+<div>&nbsp;</div>
+<div>Documentation should match the current package name to avoid confusio=
+n/warnings.</div>
+<div>&nbsp;</div>
+<div>Change can be verified by running the following script</div>
+<div>&nbsp;</div>
+<div>set -ex</div>
+<div>&nbsp;</div>
+<div>distros=3D("debian:8" "debian:9" "debian:10" "ubuntu:16.04" "ubuntu:1=
+8.04" "ubuntu:20.04")</div>
+<div>for i in "${distros[@]}"</div>
+<div>do</div>
+<div>&nbsp; &nbsp;folder=3D"${i/:/.}"&nbsp; &nbsp; &nbsp; # change : to .<=
+/div>
+<div>&nbsp; &nbsp;mkdir -p $folder</div>
+<div>&nbsp; &nbsp;cd $folder</div>
+<div>&nbsp; &nbsp;echo FROM $i &gt; Dockerfile</div>
+<div>&nbsp; &nbsp;echo RUN apt-get update \&amp;\&amp; apt-get install -y =
+git &gt;&gt; Dockerfile</div>
+<div>&nbsp; &nbsp;echo</div>
+<div>&nbsp; &nbsp;cat Dockerfile</div>
+<div>&nbsp; &nbsp;docker build -t test-$folder .</div>
+<div>&nbsp; &nbsp;cd ..</div>
+<div>&nbsp; &nbsp;rm $folder/Dockerfile</div>
+<div>&nbsp; &nbsp;rmdir $folder</div>
+<div>done</div>
+<div>&nbsp;</div>
+<div>Signed-off-by: Janne Kiiskila &lt;janne.kiiskila@pelion.com&gt;</div>
+<div>---</div>
+<div>&nbsp;documentation/poky.yaml | 2 +-</div>
+<div>&nbsp;1 file changed, 1 insertion(+), 1 deletion(-)</div>
+<div>&nbsp;</div>
+<div>diff --git a/documentation/poky.yaml b/documentation/poky.yaml</div>
+<div>index 3c30c4430e..2554f1e496 100644</div>
+<div>--- a/documentation/poky.yaml</div>
+<div>+++ b/documentation/poky.yaml</div>
+<div>@@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&amp;DISTRO_NAME_NO_CAP;-&amp;PO=
+KYVERSION;"</div>
+<div>&nbsp;YOCTO_DL_URL : "https://downloads.yoctoproject.org"</div>
+<div>&nbsp;YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"</div>
+<div>&nbsp;YOCTO_RELEASE_DL_URL : "&amp;YOCTO_DL_URL;/releases/yocto/yocto=
+-&amp;DISTRO;"</div>
+<div>-UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip =
+texinfo gcc-multilib \</div>
+<div>+UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texin=
+fo gcc-multilib \</div>
+<div>&nbsp; &nbsp; &nbsp; build-essential chrpath socat cpio python3 pytho=
+n3-pip python3-pexpect \</div>
+<div>&nbsp; &nbsp; &nbsp; xz-utils debianutils iputils-ping python3-git py=
+thon3-jinja2 libegl1-mesa libsdl1.2-dev \</div>
+<div>&nbsp; &nbsp; &nbsp; pylint3 xterm python3-subunit mesa-common-dev"</=
+div>
+<div>--&nbsp;</div>
+<div>2.17.1</div>
+<div>&nbsp;</div>
+
+--QS9hQz8dJ7rs3BgsWOBp--
