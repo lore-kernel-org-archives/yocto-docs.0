@@ -1,169 +1,93 @@
-Subject: Re: [PATCH v2] UBUNTU sudo apt git instead of git-core
-To: docs@lists.yoctoproject.org
-From: "Janne Kiiskila" <janne.kiiskila@pelion.com>
-X-Originating-Location: Oulu, North Ostrobothnia, FI (91.145.126.33)
-X-Originating-Platform: Windows Chrome 89
-User-Agent: GROUPS.IO Web Poster
-MIME-Version: 1.0
-Date: Mon, 29 Mar 2021 10:16:25 -0700
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web12.2027.1617045619877399514
+ for <docs@lists.yoctoproject.org>;
+ Mon, 29 Mar 2021 12:20:20 -0700
+Authentication-Results: mx.groups.io;
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+X-Originating-IP: 109.210.254.211
+Received: from [192.168.1.18] (amontpellier-552-1-199-211.w109-210.abo.wanadoo.fr [109.210.254.211])
+	(Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 455B8FF804;
+	Mon, 29 Mar 2021 19:20:16 +0000 (UTC)
+Subject: Re: [docs] [PATCH v2] UBUNTU sudo apt git instead of git-core
+To: Janne Kiiskila <janne.kiiskila@pelion.com>, docs@lists.yoctoproject.org
 References: <ce7645b2-602f-a675-3c9d-b17f0a742c87@bootlin.com>
-In-Reply-To: <ce7645b2-602f-a675-3c9d-b17f0a742c87@bootlin.com>
-Message-ID: <5247.1617038185636605896@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="QS9hQz8dJ7rs3BgsWOBp"
+ <5247.1617038185636605896@lists.yoctoproject.org>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <9c54611d-6e68-623e-220d-2db677c5dba0@bootlin.com>
+Date: Mon, 29 Mar 2021 21:20:15 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
+MIME-Version: 1.0
+In-Reply-To: <5247.1617038185636605896@lists.yoctoproject.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 
---QS9hQz8dJ7rs3BgsWOBp
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Hi Janne,
 
-From d7a40397af511baf3a53d12541ee601849f0ab26 Mon Sep 17 00:00:00 2001
-From: Janne Kiiskila <janne.kiiskila@pelion.com>
-Date: Tue, 23 Mar 2021 11:11:39 -0700
-Subject: [PATCH v2] UBUNTU sudo apt git instead of git-core
+On 3/29/21 7:16 PM, Janne Kiiskila wrote:
+>  
+> Signed-off-by: Janne Kiiskila <janne.kiiskila@pelion.com>
+> ---
+>  documentation/poky.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>  
+> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+> index 3c30c4430e..2554f1e496 100644
+> --- a/documentation/poky.yaml
+> +++ b/documentation/poky.yaml
+> @@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+>  YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+>  YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+>  YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+> -UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip
+> texinfo gcc-multilib \
+> +UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip
+> texinfo gcc-multilib \
+>       build-essential chrpath socat cpio python3 python3-pip
+> python3-pexpect \
+>       xz-utils debianutils iputils-ping python3-git python3-jinja2
+> libegl1-mesa libsdl1.2-dev \
+>       pylint3 xterm python3-subunit mesa-common-dev"
 
-Ubuntu has changed packaging and git-core is not available anymore,
-it is now just plain git.
 
-$ sudo apt-get install git-core
-[sudo] password for jankii01:
-Reading package lists... Done
-Building dependency tree
-Reading state information... Done
-Note, selecting 'git' instead of 'git-core'
-git is already the newest version (1:2.17.1-1ubuntu0.8).
-The following package was automatically installed and is no longer require=
-d:
-linux-hwe-5.4-headers-5.4.0-65
-Use 'sudo apt autoremove' to remove it.
-0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.
+Thanks for trying, but "git am" still doesn't accept the patch in your
+e-mail after I save it:
 
-Documentation should match the current package name to avoid confusion/war=
-nings.
+$ git am ~/\[docs\]\ \[PATCH\ v2\]\ UBUNTU\ sudo\ apt\ git\ instead\ of\ git-core.eml 
+Applying: UBUNTU sudo apt git instead of git-core
+error: corrupt patch at line 10
+Patch failed at 0001 UBUNTU sudo apt git instead of git-core
+hint: Use 'git am --show-current-patch' to see the failed patch
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
 
-Change can be verified by running the following script
+If you could send the e-mail through "git send-email", there would be no
+HTML in your e-mail, and no mangled lines such as:
 
-set -ex
+-UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip texinf=
+o gcc-multilib \
 
-distros=3D("debian:8" "debian:9" "debian:10" "ubuntu:16.04" "ubuntu:18.04"=
- "ubuntu:20.04")
-for i in "${distros[@]}"
-do
-folder=3D"${i/:/.}"=C2=A0 =C2=A0 =C2=A0 # change : to .
-mkdir -p $folder
-cd $folder
-echo FROM $i > Dockerfile
-echo RUN apt-get update \&\& apt-get install -y git >> Dockerfile
-echo
-cat Dockerfile
-docker build -t test-$folder .
-cd ..
-rm $folder/Dockerfile
-rmdir $folder
-done
+See the "=" character at the end of line 10... there should be only one
+line.
 
-Signed-off-by: Janne Kiiskila <janne.kiiskila@pelion.com>
----
-documentation/poky.yaml | 2 +-
-1 file changed, 1 insertion(+), 1 deletion(-)
+As explained on
+https://docs.yoctoproject.org/dev-manual/common-tasks.html#using-email-to-submit-a-patch
+, a good way to test what you're sending is save your own e-mail, and
+try to apply it by yourself in a new branch, using the "git am" command.
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 3c30c4430e..2554f1e496 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
-YOCTO_DL_URL : "https://downloads.yoctoproject.org"
-YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
--UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip texin=
-fo gcc-multilib \
-+UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gc=
-c-multilib \
-build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
-xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa =
-libsdl1.2-dev \
-pylint3 xterm python3-subunit mesa-common-dev"
---
-2.17.1
+Again, if that's too much extra work for this simple patch this time, I
+can create the patch for you and give you credits through "Reported-by:".
 
---QS9hQz8dJ7rs3BgsWOBp
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Cheers,
 
-<div>From d7a40397af511baf3a53d12541ee601849f0ab26 Mon Sep 17 00:00:00 2001=
-</div>
-<div>From: Janne Kiiskila &lt;janne.kiiskila@pelion.com&gt;</div>
-<div>Date: Tue, 23 Mar 2021 11:11:39 -0700</div>
-<div>Subject: [PATCH v2] UBUNTU sudo apt git instead of git-core</div>
-<div>&nbsp;</div>
-<div>Ubuntu has changed packaging and git-core is not available anymore,</=
-div>
-<div>it is now just plain git.</div>
-<div>&nbsp;</div>
-<div>$ sudo apt-get install git-core</div>
-<div>[sudo] password for jankii01:</div>
-<div>Reading package lists... Done</div>
-<div>Building dependency tree</div>
-<div>Reading state information... Done</div>
-<div>Note, selecting 'git' instead of 'git-core'</div>
-<div>git is already the newest version (1:2.17.1-1ubuntu0.8).</div>
-<div>The following package was automatically installed and is no longer re=
-quired:</div>
-<div>&nbsp; linux-hwe-5.4-headers-5.4.0-65</div>
-<div>Use 'sudo apt autoremove' to remove it.</div>
-<div>0 upgraded, 0 newly installed, 0 to remove and 13 not upgraded.</div>
-<div>&nbsp;</div>
-<div>Documentation should match the current package name to avoid confusio=
-n/warnings.</div>
-<div>&nbsp;</div>
-<div>Change can be verified by running the following script</div>
-<div>&nbsp;</div>
-<div>set -ex</div>
-<div>&nbsp;</div>
-<div>distros=3D("debian:8" "debian:9" "debian:10" "ubuntu:16.04" "ubuntu:1=
-8.04" "ubuntu:20.04")</div>
-<div>for i in "${distros[@]}"</div>
-<div>do</div>
-<div>&nbsp; &nbsp;folder=3D"${i/:/.}"&nbsp; &nbsp; &nbsp; # change : to .<=
-/div>
-<div>&nbsp; &nbsp;mkdir -p $folder</div>
-<div>&nbsp; &nbsp;cd $folder</div>
-<div>&nbsp; &nbsp;echo FROM $i &gt; Dockerfile</div>
-<div>&nbsp; &nbsp;echo RUN apt-get update \&amp;\&amp; apt-get install -y =
-git &gt;&gt; Dockerfile</div>
-<div>&nbsp; &nbsp;echo</div>
-<div>&nbsp; &nbsp;cat Dockerfile</div>
-<div>&nbsp; &nbsp;docker build -t test-$folder .</div>
-<div>&nbsp; &nbsp;cd ..</div>
-<div>&nbsp; &nbsp;rm $folder/Dockerfile</div>
-<div>&nbsp; &nbsp;rmdir $folder</div>
-<div>done</div>
-<div>&nbsp;</div>
-<div>Signed-off-by: Janne Kiiskila &lt;janne.kiiskila@pelion.com&gt;</div>
-<div>---</div>
-<div>&nbsp;documentation/poky.yaml | 2 +-</div>
-<div>&nbsp;1 file changed, 1 insertion(+), 1 deletion(-)</div>
-<div>&nbsp;</div>
-<div>diff --git a/documentation/poky.yaml b/documentation/poky.yaml</div>
-<div>index 3c30c4430e..2554f1e496 100644</div>
-<div>--- a/documentation/poky.yaml</div>
-<div>+++ b/documentation/poky.yaml</div>
-<div>@@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&amp;DISTRO_NAME_NO_CAP;-&amp;PO=
-KYVERSION;"</div>
-<div>&nbsp;YOCTO_DL_URL : "https://downloads.yoctoproject.org"</div>
-<div>&nbsp;YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"</div>
-<div>&nbsp;YOCTO_RELEASE_DL_URL : "&amp;YOCTO_DL_URL;/releases/yocto/yocto=
--&amp;DISTRO;"</div>
-<div>-UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip =
-texinfo gcc-multilib \</div>
-<div>+UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texin=
-fo gcc-multilib \</div>
-<div>&nbsp; &nbsp; &nbsp; build-essential chrpath socat cpio python3 pytho=
-n3-pip python3-pexpect \</div>
-<div>&nbsp; &nbsp; &nbsp; xz-utils debianutils iputils-ping python3-git py=
-thon3-jinja2 libegl1-mesa libsdl1.2-dev \</div>
-<div>&nbsp; &nbsp; &nbsp; pylint3 xterm python3-subunit mesa-common-dev"</=
-div>
-<div>--&nbsp;</div>
-<div>2.17.1</div>
-<div>&nbsp;</div>
+Michael.
 
---QS9hQz8dJ7rs3BgsWOBp--
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
