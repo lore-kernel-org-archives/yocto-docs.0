@@ -1,69 +1,61 @@
-Received: from bsmtp1.bon.at (bsmtp1.bon.at [213.33.87.15])
- by mx.groups.io with SMTP id smtpd.web12.10808.1616756381387034685
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web08.18791.1617007016755793689
  for <docs@lists.yoctoproject.org>;
- Fri, 26 Mar 2021 03:59:42 -0700
+ Mon, 29 Mar 2021 01:36:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.15, mailfrom: quentin.schulz@streamunlimited.com)
-Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp1.bon.at (Postfix) with ESMTPSA id 4F6Jrp5XZhz5tlB;
-	Fri, 26 Mar 2021 11:59:38 +0100 (CET)
-Date: Fri, 26 Mar 2021 11:59:37 +0100
-From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
+Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
+	(Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay12.mail.gandi.net (Postfix) with ESMTPSA id 0D24C20000F;
+	Mon, 29 Mar 2021 08:36:54 +0000 (UTC)
 Cc: docs@lists.yoctoproject.org,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
+ Alexandre Belloni <alexandre.belloni@bootlin.com>
 Subject: Re: [docs] [PATCH] SDK manual: fix reference to appendix
-Message-ID: <20210326105937.koufjbc2cokcg5az@qschulz>
+To: Quentin Schulz <quentin.schulz@streamunlimited.com>
 References: <20210326104942.13304-1-michael.opdenacker@bootlin.com>
+ <20210326105937.koufjbc2cokcg5az@qschulz>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <11475a88-e8a7-6939-afae-acdd3430b261@bootlin.com>
+Date: Mon, 29 Mar 2021 10:36:54 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210326104942.13304-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20210326105937.koufjbc2cokcg5az@qschulz>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-Hi Michael,
+Hi Quentin,
 
-On Fri, Mar 26, 2021 at 11:49:42AM +0100, Michael Opdenacker wrote:
-> This fixes https://bugzilla.yoctoproject.org/show_bug.cgi?id=14307
-> 
+On 3/26/21 11:59 AM, Quentin Schulz wrote:
+> Hi Michael,
+>
+> On Fri, Mar 26, 2021 at 11:49:42AM +0100, Michael Opdenacker wrote:
+>> This fixes https://bugzilla.yoctoproject.org/show_bug.cgi?id=14307
+>>
+> Please use [YOCTO #14307] to match the guidelines:
+> https://docs.yoctoproject.org/dev-manual/common-tasks.html#preparing-changes-for-submission
+>
+> (Though, there is a mix of "Fixes [YOCTO #14307]" and just "[YOCTO
+> #14307]").
+>
+> Not sure there's a need for a v2 just for that, up to Nicolas/Richard.
 
-Please use [YOCTO #14307] to match the guidelines:
-https://docs.yoctoproject.org/dev-manual/common-tasks.html#preparing-changes-for-submission
 
-(Though, there is a mix of "Fixes [YOCTO #14307]" and just "[YOCTO
-#14307]").
+Thanks for this advice - much appreciated, I'll keep that in mind!
 
-Not sure there's a need for a v2 just for that, up to Nicolas/Richard.
+For this particular case, since I haven't had any negative review on the
+list, I'll actually update this on the "master-next" branch of the
+"yocto-docs" repository. This way, the commit is clean when it is
+submitted to Richard.
 
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Reported-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-> ---
->  documentation/sdk-manual/extensible.rst | 8 +++-----
->  1 file changed, 3 insertions(+), 5 deletions(-)
-> 
-> diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
-> index d2ed9a9b8..f1a114368 100644
-> --- a/documentation/sdk-manual/extensible.rst
-> +++ b/documentation/sdk-manual/extensible.rst
-> @@ -1271,11 +1271,9 @@ To update your installed SDK, use ``devtool`` as follows:
->     $ devtool sdk-update
->  
->  The previous command assumes your SDK provider has set the
-> -default update URL for you through the
-> -:term:`SDK_UPDATE_URL`
-> -variable as described in the "`Providing Updates to the Extensible SDK
-> -After
-> -Installation <#sdk-providing-updates-to-the-extensible-sdk-after-installation>`__"
-> +default update URL for you through the :term:`SDK_UPDATE_URL`
-> +variable as described in the
-> +":ref:`sdk-manual/appendix-customizing:Providing Updates to the Extensible SDK After Installation`"
+Thanks again,
 
-We have PLENTY of those. We absolutely want to get rid of <#...> links.
-They are bad. If you have time, it'd be great to fix those.
+Michael.
 
-c.f. https://lists.yoctoproject.org/g/docs/topic/79503023#833
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
-We'll need a linter one day to make sure we don't introduce <#..> links
-again (and other stuff, like proper rules).
-
-Anyway, Thanks for the patch :)
-Quentin
