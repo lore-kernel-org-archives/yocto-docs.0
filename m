@@ -1,110 +1,98 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
- by mx.groups.io with SMTP id smtpd.web10.23167.1617031778215112976
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web12.24112.1617033255919062907
  for <docs@lists.yoctoproject.org>;
- Mon, 29 Mar 2021 08:29:38 -0700
+ Mon, 29 Mar 2021 08:54:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=Vaxyl7LV;
- spf=pass (domain: gmail.com, ip: 209.85.210.169, mailfrom: raj.khem@gmail.com)
-Received: by mail-pf1-f169.google.com with SMTP id x126so10050894pfc.13
-        for <docs@lists.yoctoproject.org>; Mon, 29 Mar 2021 08:29:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=subject:to:references:from:organization:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=7WogE9TSRnSrbk0R5ILLnnFDlWjxL6UPL+xi16KRIow=;
-        b=Vaxyl7LVKjTnjIS4P5/iBLpj6d2a6fyR43WiT3u8Pk/TZYIj5BfO1R1/VRH14J1nOp
-         R8czrdP4PIm50tHx50QG35ykKECJmPQCrL1/FSOQyFitv9+plRB2RVpgJZvH8Wl5mPeA
-         fHDrlt0tnnehIYPPgNHmOK35TnUS+m4gUYOTxc6c1iGwLMbfNVs0/Z5Lo0dI5C75rfF1
-         PfGs8uMMU8+0c+bHhm1yic+pKMlWKzo/8gT7g9l8zktBrP+ntKgYgEPYCOp80yuQVQkW
-         Y2PcoPgtwkwndiQIZidGPzsKz1gJLmLFT7UTA7Af0Wc+O3BNOpRZf5rSNBPVn/hNR4KW
-         Yvog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:references:from:organization
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=7WogE9TSRnSrbk0R5ILLnnFDlWjxL6UPL+xi16KRIow=;
-        b=F5mOxILNa6JnIOJVRIUAm3Z/07EUlOSfBB1MJz/t1mW2Ic9DP/1prA91yZwbWEtpt+
-         rqzpFdNSs7suqvDsrdAVGnRL6PinPlUe92dbMeIc5r/5BD7fGB9PSi1OQSqk2JKvq6qx
-         zaIWEvTCehneCi8KAKiFtxhIFWaPbK4S+4zQcBAGVugmT6yogXdoEgibUwm7/H30kNlv
-         YpW/GuHhE0Kn4x/CrXFc+TEk3h6SXUb4gAdsppdFpYXmdCaUJapV0qg+pywBj2cf6VGh
-         PMbmfPyUKKzmXM/wmLlizZzqfzzIKUtJO/+nQj3GN4okwd+pBklSDwOhubfRkwuZ27vl
-         IuOg==
-X-Gm-Message-State: AOAM530KjHcbSx7VStrJZ8Ql6RjRnoA9d98xbFCbq1GQ0b+obW2eIubf
-	pAou9Xn85WgveQ6oYN+qdKUsqLB4FeoASQ==
-X-Google-Smtp-Source: ABdhPJwlPQ0U1yPIXj0W3ln7PDAweXJnTM9tDBdXB8UHiOP28IZHU229N+Uqe6fZVjfHZ2W+UjDF0g==
-X-Received: by 2002:a63:ab05:: with SMTP id p5mr24520492pgf.149.1617031777382;
-        Mon, 29 Mar 2021 08:29:37 -0700 (PDT)
-Return-Path: <raj.khem@gmail.com>
-Received: from ?IPv6:2601:646:9200:a0f0:4986:10f4:29b0:2119? ([2601:646:9200:a0f0:4986:10f4:29b0:2119])
-        by smtp.gmail.com with ESMTPSA id s28sm17791339pfd.155.2021.03.29.08.29.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Mar 2021 08:29:36 -0700 (PDT)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
+	(Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 0965910000A;
+	Mon, 29 Mar 2021 15:54:13 +0000 (UTC)
 Subject: Re: [docs] [PATCH v2] UBUNTU sudo apt git instead of git-core
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
- Janne Kiiskila <janne.kiiskila@pelion.com>,
+To: Janne Kiiskila <janne.kiiskila@pelion.com>,
  "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
 References: <DBAPR08MB55580B8D8BF0C1EFBB404545F3639@DBAPR08MB5558.eurprd08.prod.outlook.com>
- <9b3174bf-eb43-c78f-f6ce-abf3c3a9ff4b@gmail.com>
- <db56367c-76cb-0ad0-384a-24ac2f8bce3a@bootlin.com>
-From: "Khem Raj" <raj.khem@gmail.com>
-Organization: HIMVIS LLC
-Message-ID: <4b1c77f3-dbb9-9f6c-b6f3-e57622194bf1@gmail.com>
-Date: Mon, 29 Mar 2021 08:29:35 -0700
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.9.0
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <ce7645b2-602f-a675-3c9d-b17f0a742c87@bootlin.com>
+Date: Mon, 29 Mar 2021 17:54:13 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <db56367c-76cb-0ad0-384a-24ac2f8bce3a@bootlin.com>
-Content-Type: text/plain; charset=windows-1252; format=flowed
-Content-Language: en-GB
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <DBAPR08MB55580B8D8BF0C1EFBB404545F3639@DBAPR08MB5558.eurprd08.prod.outlook.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 
-Hi Michael
+Hi Janne,
 
-On 3/29/21 8:14 AM, Michael Opdenacker wrote:
-> Khem, Janne,
-> 
-> On 3/24/21 7:24 PM, Khem Raj wrote:
->>
->> perhaps we should install git-all instead that would be same across
->> debian-like and redhat-like distros across multiple releases.
-> 
-> 
-> I'm OK for both changes, but isn't the second one a bit overkill?
+Thanks for this improvement!
 
-yes git-all option is overkill, I replied to this before as well to drop 
-this idea. but I guess only replied to Janne, patch is ok as it is
+On 3/24/21 1:35 PM, Janne Kiiskila wrote:
+>
+>  
+>
+> Signed-off-by: Janne Kiiskila janne.kiiskila@pelion.com
+> <mailto:janne.kiiskila@pelion.com>
+>
+> ---
+>
+> documentation/poky.yaml | 2 +-
+>
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>  
+>
+> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+>
+> index 3c30c4430e..2554f1e496 100644
+>
+> --- a/documentation/poky.yaml
+>
+> +++ b/documentation/poky.yaml
+>
+> @@ -11,7 +11,7 @@ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+>
+> YOCTO_DL_URL : https://downloads.yoctoproject.org
+> <https://downloads.yoctoproject.org>
+>
+> YOCTO_AB_URL : https://autobuilder.yoctoproject.org
+> <https://autobuilder.yoctoproject.org>
+>
+> YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+>
+> -UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git-core diffstat unzip
+> texinfo gcc-multilib \
+>
+> +UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip
+> texinfo gcc-multilib \
+>
+>       build-essential chrpath socat cpio python3 python3-pip
+> python3-pexpect \
+>
+>       xz-utils debianutils iputils-ping python3-git python3-jinja2
+> libegl1-mesa libsdl1.2-dev \
+>
+>       pylint3 xterm python3-subunit mesa-common-dev"
+>
 
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-> 
-> On my Ubuntu 20.04 system, installing "git-all" results in installing
-> many packages:
-> 
-> sudo apt install git-all
-> Reading package lists... Done
-> Building dependency tree
-> Reading state information... Done
-> The following additional packages will be installed:
->    cvsps dh-elpa-helper elpa-dash elpa-ghub elpa-git-commit elpa-let-alist elpa-magit elpa-magit-popup elpa-treepy elpa-with-editor git-cvs git-daemon-run git-doc git-el git-mediawiki git-svn gitweb libclass-inspector-perl
->    libclass-singleton-perl libcommon-sense-perl libdatetime-format-builder-perl libdatetime-format-iso8601-perl libdatetime-format-strptime-perl libdatetime-locale-perl libdatetime-perl libdatetime-timezone-perl
->    libdbd-sqlite3-perl libdbi-perl libfile-sharedir-perl libjson-perl libjson-xs-perl libmediawiki-api-perl libsvn-perl libtypes-serialiser-perl libyaml-perl runit
-> Suggested packages:
->    mediawiki libclone-perl libmldbm-perl libnet-daemon-perl libsql-statement-perl libyaml-shell-perl
-> The following NEW packages will be installed:
->    cvsps dh-elpa-helper elpa-dash elpa-ghub elpa-git-commit elpa-let-alist elpa-magit elpa-magit-popup elpa-treepy elpa-with-editor git-all git-cvs git-daemon-run git-doc git-el git-mediawiki git-svn gitweb
->    libclass-inspector-perl libclass-singleton-perl libcommon-sense-perl libdatetime-format-builder-perl libdatetime-format-iso8601-perl libdatetime-format-strptime-perl libdatetime-locale-perl libdatetime-perl
->    libdatetime-timezone-perl libdbd-sqlite3-perl libdbi-perl libfile-sharedir-perl libjson-perl libjson-xs-perl libmediawiki-api-perl libsvn-perl libtypes-serialiser-perl libyaml-perl runit
-> 0 upgraded, 37 newly installed, 0 to remove and 15 not upgraded.
-> Need to get 6,879 kB of archives.
-> After this operation, 55.9 MB of additional disk space will be used.
-> 
-> IMHO, the drawback of using "git-all" is that we look track of which git
-> components we release need. This would make the documentation more vague
-> in terms of software requirements.
-> 
-> Does this make sense ?
-> 
-> Thanks again,
-> 
-> Michael.
-> 
+Unfortunately, your patch doesn't apply, or rather your Microsoft e-mail
+client or server corrupted it (I see lots of HTML in the message). Could
+you send it again through "git send-email", please? I could re-implement
+the patch by myself, but I'd like to keep your original commit and the
+"Signed-off-by" information that it contains, to give you proper credit.
+
+If that's too complicated for you, let me know and I'll create the patch
+by myself...
+
+Cheers,
+
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
