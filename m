@@ -1,53 +1,53 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web08.36.1617118063998603328
+Received: from bsmtp2.bon.at (bsmtp2.bon.at [213.33.87.16])
+ by mx.groups.io with SMTP id smtpd.web12.135.1617118445468902021
  for <docs@lists.yoctoproject.org>;
- Tue, 30 Mar 2021 08:27:44 -0700
+ Tue, 30 Mar 2021 08:34:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-X-Originating-IP: 92.150.42.106
-Received: from [10.0.0.8] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
-	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 4F62B1BF20C
-	for <docs@lists.yoctoproject.org>; Tue, 30 Mar 2021 15:27:42 +0000 (UTC)
+ dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.16, mailfrom: quentin.schulz@streamunlimited.com)
+Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
+	by bsmtp2.bon.at (Postfix) with ESMTPSA id 4F8tlZ0LGCz5tlH;
+	Tue, 30 Mar 2021 17:34:01 +0200 (CEST)
+Date: Tue, 30 Mar 2021 17:34:00 +0200
+From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: docs@lists.yoctoproject.org
 Subject: Re: [docs] [PATCH 0/1] YP overview manual: style improvements
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
+Message-ID: <20210330153400.tem5ztfbjaptmkl6@qschulz>
 References: <167127D8F46CF10E.18414@lists.yoctoproject.org>
-Organization: Bootlin
-Message-ID: <75714db2-fbb9-eded-0b60-a08fbe346063@bootlin.com>
-Date: Tue, 30 Mar 2021 17:27:41 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ <75714db2-fbb9-eded-0b60-a08fbe346063@bootlin.com>
 MIME-Version: 1.0
-In-Reply-To: <167127D8F46CF10E.18414@lists.yoctoproject.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+In-Reply-To: <75714db2-fbb9-eded-0b60-a08fbe346063@bootlin.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello,
+Hi Michael,
 
-On 3/30/21 5:19 PM, Michael Opdenacker wrote:
-> Thanks in advance for your reviews!
+On Tue, Mar 30, 2021 at 05:27:41PM +0200, Michael Opdenacker wrote:
+> Hello,
+> 
+> On 3/30/21 5:19 PM, Michael Opdenacker wrote:
+> > Thanks in advance for your reviews!
+> 
+> 
+> Sorry, I missed again! When I sent the e-mail to myself, both the cover
+> letter and patch were on the same thread.
+> 
+> But, when I sent to the list, I lost that. Here's the command I used (I
+> referred to "man git-send-email"):
+> 
+> git send-email --compose --thread --no-chain-reply --to docs@lists.yoctoproject.org 0001-YP-overview-manual-style-improvements.patch
+> 
 
+git format-patch --cover-letter <commit-hash>
 
-Sorry, I missed again! When I sent the e-mail to myself, both the cover
-letter and patch were on the same thread.
+(refer to man git-format-patch for the logic behind the <commit-hash>
+ parameter)
 
-But, when I sent to the list, I lost that. Here's the command I used (I
-referred to "man git-send-email"):
+Edit the cover letter manually.
 
-git send-email --compose --thread --no-chain-reply --to docs@lists.yoctoproject.org 0001-YP-overview-manual-style-improvements.patch
+git send-email --to docs@lists.yoctoproject.org *.patch
 
-What would you do to have both messages in the same thread? I mean,
-without having to run "git send-email" twice, the second time with
-"--in-reply-to=".
+From memory, so it might be slightly different in reality.
 
-Apologies again for the noise...
-
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Cheers,
+Quentin
