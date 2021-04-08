@@ -1,87 +1,72 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.5587.1617873428593186136
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
+ by mx.groups.io with SMTP id smtpd.web08.28.1617898963434614783
  for <docs@lists.yoctoproject.org>;
- Thu, 08 Apr 2021 02:17:09 -0700
+ Thu, 08 Apr 2021 09:22:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-X-Originating-IP: 92.150.42.106
-Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
-	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id BD0C81BF209;
-	Thu,  8 Apr 2021 09:17:06 +0000 (UTC)
-Subject: Re: [docs] [PATCH] docs: replace anchor links
-To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-References: <20210407160724.21593-1-foss@0leil.net>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <0af7032c-ddf8-91ef-e8f6-06c0bde8b0ee@bootlin.com>
-Date: Thu, 8 Apr 2021 11:17:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=pEAmG12V;
+ spf=softfail (domain: sakoman.com, ip: 209.85.210.48, mailfrom: steve@sakoman.com)
+Received: by mail-ot1-f48.google.com with SMTP id 91-20020a9d08640000b0290237d9c40382so2804421oty.12
+        for <docs@lists.yoctoproject.org>; Thu, 08 Apr 2021 09:22:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=g7tbMvx7VcEbQ50e5oyFfS19Ia5JmY1KOVXh2Gbbg80=;
+        b=pEAmG12VdoPc9uaM0uLPHJNYWUe1lQl1yywixrT+DNlm0pJpGWZStsVXsSyce7hVh7
+         ZOqBI3Ike78azhPctDXPvmxdcO9QJq2J2rjhkfW+EHtzDmxdENGb1CuQ1/kOfcbTwnRL
+         +YK6I5aqhV/8jZvRI3adP6P5i+/4iYouuex7q7Dz2a5sJw+9H5FmJFCEVarDNjB6n8PS
+         +s1sX3LvjbZ0FdlmlQ8e1kogg6B3xY/K3deO0EUEkh7L0rXxjR0uqfKr3P2fm514N/w2
+         0Zq+erEOPvYJnHTwOlzzSBW8GZdZ9eQxtWZfHvBapm+ddLpywoSSbeXO9BuPuuW8zGpY
+         J7LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=g7tbMvx7VcEbQ50e5oyFfS19Ia5JmY1KOVXh2Gbbg80=;
+        b=ugMyyLAHTGbbwpvridSoy/cpWX4u3utm66CcFkbdxY1EoL4UsArfUl69ntFrURuFW7
+         e8OG1Zh1p/0WtjQnEpfCOOo960UbCKzuJfkJFFXumHYLQ7fYD8gGs+GNSp7M70xzNPzg
+         3BvDtpGc2Wbq0Zd4NRvRBKA3GPT+rq43wRgzs/hJXkQ9PpIIYOQ5w5V3OWGx+W0NT1nX
+         fccZb0Jh/FEHycG5BylWRAkOOac6xNeo5Zz8LQ/tWrun8vRVgB8pei/kQBh7ymzpxLwa
+         NwPANH5mhNBBKninOowi13xuJgxvrKFaQdZscMM2UAAEyGAx3VMOCgHGhmav5FH1dBRU
+         P7qA==
+X-Gm-Message-State: AOAM532MVWfxwR9P5J2ym9kfIM4GkSqvHkRnhdbcB136K76K2gaWqU1n
+	mH2KLp2kRyxDdmNh5P6mR80w6LReMeAzGcyKeKQ=
+X-Google-Smtp-Source: ABdhPJxqA8fBhtg2J970VdcWk4525VILbxLqsEEvWR6m2jHkdGBA5Apm8ZxlITQi4oUdO32lPlv7nQ==
+X-Received: by 2002:a9d:748a:: with SMTP id t10mr8507631otk.198.1617898962342;
+        Thu, 08 Apr 2021 09:22:42 -0700 (PDT)
+Return-Path: <steve@sakoman.com>
+Received: from localhost.localdomain ([72.173.249.164])
+        by smtp.gmail.com with ESMTPSA id k8sm4932022oig.6.2021.04.08.09.22.38
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Apr 2021 09:22:41 -0700 (PDT)
+From: "Steve Sakoman" <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell 0/1] Pull request (cover letter only)
+Date: Thu,  8 Apr 2021 06:22:24 -1000
+Message-Id: <cover.1617898885.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <20210407160724.21593-1-foss@0leil.net>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Hi Quentin
+The following changes since commit 660684b1a1ece4bdedfd63b9fc65d14f05c226d5:
 
-On 4/7/21 6:07 PM, Quentin Schulz wrote:
-> Anchor links are treated by Sphinx as external links and are not checked
-> during build, meaning it is impossible to know if a link becomes broken or
-> not.
->
-> As a matter of fact, most of the anchor links replaced in this commit
-> were actually broken.
->
-> The README now states that anchor links are forbidden so that there's no
-> need to go through such a change later on.
->
-> Signed-off-by: Quentin Schulz <foss@0leil.net>
-> ---
->  documentation/README                          |   3 +
->  documentation/dev-manual/common-tasks.rst     | 241 ++++++++----------
->  documentation/dev-manual/qemu.rst             |   6 +-
->  documentation/dev-manual/start.rst            |  13 +-
->  documentation/kernel-dev/advanced.rst         |  42 +--
->  documentation/kernel-dev/common.rst           |  44 ++--
->  documentation/kernel-dev/intro.rst            |   3 +-
->  documentation/overview-manual/concepts.rst    |  93 +++----
->  .../development-environment.rst               |  15 +-
->  documentation/overview-manual/intro.rst       |  13 +-
->  documentation/overview-manual/yp-intro.rst    |  45 ++--
->  .../ref-manual/devtool-reference.rst          |   4 +-
->  documentation/ref-manual/migration-1.5.rst    |   2 +-
->  documentation/ref-manual/migration-2.1.rst    |   5 +-
->  documentation/ref-manual/migration-2.2.rst    |   8 +-
->  documentation/ref-manual/migration-2.6.rst    |   2 +-
->  documentation/ref-manual/release-process.rst  |   5 +-
->  .../sdk-manual/appendix-customizing.rst       |  25 +-
->  documentation/sdk-manual/appendix-obtain.rst  |  16 +-
->  documentation/sdk-manual/extensible.rst       |  11 +-
->  documentation/sdk-manual/intro.rst            |   4 +-
->  documentation/sdk-manual/using.rst            |  22 +-
->  documentation/test-manual/test-process.rst    |   2 +-
->  23 files changed, 301 insertions(+), 323 deletions(-)
+  documentation: prepare for 3.1.6 release (2021-02-17 17:35:10 +0000)
 
-Wow, thanks a ton for this very useful patch!
+are available in the Git repository at:
 
-... and big amount of work! It took time to review the changes too. That
-allowed me to learn about capitalization in reference text.
+  git://git.yoctoproject.org/yocto-docs contrib/dunfell-next
+  http://git.yoctoproject.org/cgit.cgi/yocto-docs/log/?h=contrib/dunfell-next
 
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Steve Sakoman (1):
+  documentation: prepare for 3.1.7 release
 
-I pushed it on "master-branch". I'll leave a little extra time for extra
-reviews, but then I will quickly send a new PR to Richard, so that this
-is in master and the next patches that we contribute don't interfere
-with this one.
-
-Thanks again!
-
-Michael.
+ documentation/conf.py                    | 2 +-
+ documentation/poky.yaml                  | 8 ++++----
+ documentation/releases.rst               | 6 ++++++
+ documentation/sphinx-static/switchers.js | 4 ++--
+ 4 files changed, 13 insertions(+), 7 deletions(-)
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
