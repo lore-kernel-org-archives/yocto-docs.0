@@ -1,97 +1,67 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web08.5668.1617952665729288798
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web11.7304.1617965635082933936
  for <docs@lists.yoctoproject.org>;
- Fri, 09 Apr 2021 00:17:46 -0700
+ Fri, 09 Apr 2021 03:53:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-X-Originating-IP: 92.150.42.106
-Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
-	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id D022E1C0003;
-	Fri,  9 Apr 2021 07:17:43 +0000 (UTC)
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Subject: [master] pull-request
-Organization: Bootlin
-Message-ID: <89e22992-fcd4-f895-7895-0c437496ce98@bootlin.com>
-Date: Fri, 9 Apr 2021 09:17:43 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.1
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:34944 helo=fedora)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1lUolt-00BLPQ-47
+	for docs@lists.yoctoproject.org; Fri, 09 Apr 2021 06:53:54 -0400
+Date: Fri, 9 Apr 2021 06:53:51 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: what is the purpose of conf/distro/ dir with no distro definitions?
+Message-ID: <4aedf060-309f-3e6e-c894-45b7481d56f2@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+X-OutGoing-Spam-Status: No, score=-1.0
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: multipart/mixed; boundary="8323328-2144299496-1617965633=:10854"
 
-Hi Richard,
+--8323328-2144299496-1617965633=:10854
+Content-Type: text/plain; charset=KOI8-R
+Content-Transfer-Encoding: 8BIT
 
-The following changes since commit 38bae8f6067bc12f3617ed38587737d22dd7b32c:
 
-  manuals: fix suspicious newlines (2021-04-06 22:29:14 +0100)
+  in current ref manual:
 
-are available in the Git repository at:
+http://docs.yoctoproject.org/ref-manual/structure.html#meta-conf-distro
 
-  git://git.yoctoproject.org/yocto-docs master-next
-  http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=master-next
+the definition of meta/conf/distro opens with:
 
-for you to fetch changes up to 4f7f451df266a307b34bf145b29291ca85eb882f:
+  "The contents of this directory controls any distribution-specific
+  configurations..."
 
-  docs: add a top level page for bitbake documentation (2021-04-09
-09:00:53 +0200)
+fair enough, but what is the interpretation of a layer distro/
+directory that does not define any actual distros? example:
+meta-virtualization layer hierarchy contains:
 
-----------------------------------------------------------------
-Nicolas Dechesne (1):
-      docs: add a top level page for bitbake documentation
+  .
+  ��� distro
+  ��� ��� include
+  ���     ��� k8s-versions.inc
+  ���     ��� meta-virt-default-versions.inc
+  ���     ��� meta-virt-xen.inc
+  ���     ��� virt_security_flags.inc
+  ��� layer.conf
 
-Quentin Schulz (1):
-      docs: replace anchor links
+so, sure, those .inc files can be useful, but that layer does not
+contain any actual meta-virt-related <distro>.conf files, so are those
+files really "distribution-specific configurations"?
 
-Ulrich Ölmann (1):
-      sdk-manual: fix typo
+  is there a better way to word that?
 
- documentation/README                                      |   3 ++
- documentation/bitbake.rst                                 |  19
-+++++++++++++
- documentation/dev-manual/common-tasks.rst                 | 241
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------------------------------------------------------
- documentation/dev-manual/qemu.rst                         |   6 ++--
- documentation/dev-manual/start.rst                        |  13 ++++-----
- documentation/index.rst                                   |   2 +-
- documentation/kernel-dev/advanced.rst                     |  42
-++++++++++++++--------------
- documentation/kernel-dev/common.rst                       |  44
-++++++++++++++----------------
- documentation/kernel-dev/intro.rst                        |   3 +-
- documentation/overview-manual/concepts.rst                |  93
-++++++++++++++++++++++++++++++++------------------------------
- documentation/overview-manual/development-environment.rst |  15 +++++-----
- documentation/overview-manual/intro.rst                   |  13 ++++-----
- documentation/overview-manual/yp-intro.rst                |  45
-++++++++++++++++--------------
- documentation/ref-manual/devtool-reference.rst            |   4 +--
- documentation/ref-manual/migration-1.5.rst                |   2 +-
- documentation/ref-manual/migration-2.1.rst                |   5 ++--
- documentation/ref-manual/migration-2.2.rst                |   8 +++---
- documentation/ref-manual/migration-2.6.rst                |   2 +-
- documentation/ref-manual/release-process.rst              |   5 ++--
- documentation/sdk-manual/appendix-customizing.rst         |  25
-++++++++---------
- documentation/sdk-manual/appendix-obtain.rst              |  18
-++++++------
- documentation/sdk-manual/extensible.rst                   |  11 ++++----
- documentation/sdk-manual/intro.rst                        |   4 +--
- documentation/sdk-manual/using.rst                        |  22
-+++++++--------
- documentation/test-manual/test-process.rst                |   2 +-
- 25 files changed, 322 insertions(+), 325 deletions(-)
- create mode 100644 documentation/bitbake.rst
+rday
 
-Thank you in advance
-
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+--8323328-2144299496-1617965633=:10854--
