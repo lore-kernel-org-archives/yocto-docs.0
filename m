@@ -1,96 +1,70 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web09.2304.1618342344421280989
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+ by mx.groups.io with SMTP id smtpd.web10.2472.1618342818820970000
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Apr 2021 12:32:24 -0700
+ Tue, 13 Apr 2021 12:40:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from [::1] (port=33728 helo=cpanel8.indieserve.net)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.94)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lWOlq-008j9r-0C; Tue, 13 Apr 2021 15:32:22 -0400
-Received: from [136.2.16.185] ([136.2.16.185]) by crashcourse.ca (Horde
- Framework) with HTTPS; Tue, 13 Apr 2021 15:32:21 -0400
-Date: Tue, 13 Apr 2021 15:32:21 -0400
-Message-ID: <20210413153221.Horde.Vm23gLYUW3_ZXR1Vyn-DAjC@crashcourse.ca>
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Janne Kiiskila <janne.kiiskila@pelion.com>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH]Variables - WKS_FILE tip finding one used
-References: <DBAPR08MB5558B9EA79319C4C09AC1802F3709@DBAPR08MB5558.eurprd08.prod.outlook.com>
- <266de944-aab4-2e1d-021f-d722d15339e3@bootlin.com>
- <4788fc62-112d-b2cb-2292-e87a6282a214@crashcourse.ca>
- <3b3e763c-7e0b-611d-2b45-2c917aaa0537@bootlin.com>
-In-Reply-To: <3b3e763c-7e0b-611d-2b45-2c917aaa0537@bootlin.com>
-User-Agent: Horde Application Framework 5
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=cTTAoRb6;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.47, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f47.google.com with SMTP id s7so17455387wru.6
+        for <docs@lists.yoctoproject.org>; Tue, 13 Apr 2021 12:40:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=KV7fhQFizHbKsSqF10KnBpeMDZQZ42fNGRT3UlI/R2k=;
+        b=cTTAoRb6fOSfO9kU00ViSMFAuzufR4ytJOu8yzbWrwUaW+sAT8O58S3y/GxQZNMtez
+         SDiS4ifcl388gnQGn3ZJKlZQ0LNzE4yoCjMZ9YJ12FnSnWvd55JHQUYWCloaOIci/q4d
+         96iqggCh5IobOyBrJuR5ymPWq6gjgNgnh+snA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=KV7fhQFizHbKsSqF10KnBpeMDZQZ42fNGRT3UlI/R2k=;
+        b=FnSx6ZFIDImuGqDtwhjbRWM+cw7lPgP4pJidWItD4mzwQCg0v8nbI6cevb3wlSmpB6
+         O4Tpo76uB1iz+7IqYgxLFEwwgD7iqe/WsLscYio26SYURU1Q6hC+qB0v99aCmKTLX3yt
+         UjYD7Xa18KzHOfEMtERpEbTaEpyej5hOIihN7/0ZsYESW5PtsdmT9LBqU2YTlOARU+5I
+         GDz8acnvYSNFGz/3BhRa2h4br+TXgxKcTmGMgA94oHIgieG+njCAz2Nz6+hmAaQOfNaT
+         cgU08P9oPGDqP0sh+eXji52kwftuFDn2Pvz5nrP4faMHcGi2ua+S7iNVIlUz0p6EaOps
+         6IoA==
+X-Gm-Message-State: AOAM532DRoqrOIFozcBI1uAaOoE2dcydM19Nd4ykrWbu1XKmV6LodJKw
+	i9TTxsFMcpYFYGD9tXj6C/2OxA==
+X-Google-Smtp-Source: ABdhPJxDiiOIOCVWLrcrM1zJaEi1rZ6YgW4yJO9qR1VSczHt6OJyqBX8X20Oh7uD4TS70C43cZIjfQ==
+X-Received: by 2002:adf:dfc2:: with SMTP id q2mr2481780wrn.128.1618342817372;
+        Tue, 13 Apr 2021 12:40:17 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from ?IPv6:2001:8b0:aba:5f3c:92c8:89c8:3615:b078? ([2001:8b0:aba:5f3c:92c8:89c8:3615:b078])
+        by smtp.gmail.com with ESMTPSA id b12sm9536398wrn.18.2021.04.13.12.40.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Apr 2021 12:40:17 -0700 (PDT)
+Message-ID: <086834e9b9a79fb30a11d160bb7a02037cd05c29.camel@linuxfoundation.org>
+Subject: Re: [docs] ref-manual: reverse the order of migration guides?
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>, YP docs mailing
+ list <docs@lists.yoctoproject.org>
+Date: Tue, 13 Apr 2021 20:40:16 +0100
+In-Reply-To: <7ff7831f-4539-8e5c-cfc6-d081651374f2@bootlin.com>
+References: <7ff7831f-4539-8e5c-cfc6-d081651374f2@bootlin.com>
+User-Agent: Evolution 3.40.0-1 
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday@crashcourse.ca
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
-Content-Disposition: inline
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 
+On Tue, 2021-04-13 at 20:03 +0200, Michael Opdenacker wrote:
+> Greetings,
+> 
+> Wouldn't it make sense to reverse the order of migration guides in the
+> reference manual
+> (https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#migration)?
+> 
+> I guess it would be easier to start mentioning the migration path from
+> the most recent release, as version 1.3 looks ancient.
+> 
+> Would it make sense? If so, it's easy to propose a patch...
 
-Quoting Michael Opdenacker <michael.opdenacker@bootlin.com>:
+Yes, I think it would. When we made the migration to sphinx, I took the decision
+to split these into their own files. This is a next logical step from that.
 
-> Janne, Robert,
->
-> On 4/13/21 11:32 AM, Robert P. J. Day wrote:
->>
->>   while this is undeniably useful information, the same tip could be
->> added to pretty much every variable in the variable glossary, so i'm
->> not sure we want to start doing that; i think it would be far more
->> useful to make this a general hint somewhere.
->>
->>   i also recall, from years gone by, that chris larson had a cool
->> utility named "bb" that would search in a *proper* way for the values
->> of variables by actually digging into the data dictionary, rather than
->> the clearly hackier way of grep'ing through the output of "bitbake
->> -e".
->
->
-> Thanks for your contribution and review (respectively).
->
-> Do others have opinions about such a change? It would help to make a
-> decision...
->
-> Thanks in advance for jumping in...
+Cheers,
 
-   the other problem (i could have mentioned) is that that particular
-grep incantation has the obvious flaw that it will not find variables
-that are not at the beginning of the line, and that represents all of
-those variables that are prefixed by "export":
-
-export AR="aarch64-wrs-linux-gcc-ar"
-export AS="aarch64-wrs-linux-as "
-export BUILD_AR="ar"
-export BUILD_AS="as "
-export BUILD_CC="gcc "
-export BUILD_CCLD="gcc "
-export  
-BUILD_CFLAGS="-isystem/home/rday51/repos/wrlinux/wrlinux/build/tmp-glibc/work/cortexa53-wrs-linux/defaultpkgname/1.0-r0/recipe-sysroot-native/usr/include -O2  
--pipe"
-export BUILD_CPP="gcc  -E"
-export  
-BUILD_CPPFLAGS="-isystem/home/rday51/repos/wrlinux/wrlinux/build/tmp-glibc/work/cortexa53-wrs-linux/defaultpkgname/1.0-r0/recipe-sysroot-native/usr/include"
-export BUILD_CXX="g++ "
-export  
-BUILD_CXXFLAGS="-isystem/home/rday51/repos/wrlinux/wrlinux/build/tmp-glibc/work/cortexa53-wrs-linux/defaultpkgname/1.0-r0/recipe-sysroot-native/usr/include -O2  
--pipe"
-export BUILD_FC="gfortran "
-export BUILD_LD="ld "
-... and on and on ...
-
-WKS_FILE is fine, of course, but it would be dangerous to
-generalize this trick without the appropriate warning.
-
-rday
+Richard
 
