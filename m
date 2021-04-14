@@ -1,347 +1,186 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by mx.groups.io with SMTP id smtpd.web11.6084.1618359599775714755
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+ by mx.groups.io with SMTP id smtpd.web12.8928.1618378433492006094
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Apr 2021 17:19:59 -0700
+ Tue, 13 Apr 2021 22:33:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linux.microsoft.com header.s=default header.b=FlmzBsTz;
- spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: pauleg@linux.microsoft.com)
-Received: by linux.microsoft.com (Postfix, from userid 1054)
-	id 707F520B8795; Tue, 13 Apr 2021 17:19:57 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 707F520B8795
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1618359597;
-	bh=YEnvhAvmiC0+q3OiWmu0fQXquA7vrMN86OLEhJNk/SU=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=FlmzBsTzDdQv87P+8GyZKGiqURY9n+vxjqifvVch1BmYzTuxw0xpvZumkWg7VpT5L
-	 swI2WfnwFblcqWYhvk4XORIKgyXCG+Y0XY1vvinuetBuEyOE7sxXhXS1rJ6rUHqqsj
-	 Aq2kcpmnKJn4SwR8ROhnIw0EB3hez49qvuanHYCs=
-From: "Paul Eggleton" <paul.eggleton@linux.microsoft.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH 13/13] ref-manual: migration guide: add release codenames
-Date: Tue, 13 Apr 2021 17:19:54 -0700
-Message-Id: <d0f24cbe8ecb69cc048821d13eca82ad49fe6dc3.1618358456.git.paul.eggleton@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <cover.1618358456.git.paul.eggleton@linux.microsoft.com>
-References: <cover.1618358456.git.paul.eggleton@linux.microsoft.com>
+ dkim=pass header.i=@linaro.org header.s=google header.b=nDd3hjHE;
+ spf=pass (domain: linaro.org, ip: 209.85.208.52, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ed1-f52.google.com with SMTP id h10so22096790edt.13
+        for <docs@lists.yoctoproject.org>; Tue, 13 Apr 2021 22:33:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Bo/qkg10kFGnv1I6yhgOXN+3RzQRgyjNM8IHW2URiWw=;
+        b=nDd3hjHEYJFHX/E9Xy3lIvNO8AF15KJjSLcL0kTCqms/4YSVr4NFRVhbJE4sadeBTY
+         3UxcyMFnxmCxRz6c8phs7gWZYbOtUvWQjeE2/5Dm1WXIpYdKilzRQj2cAHQC4kQRq+bu
+         Uio7DS7l/epNTpLxWVTut2oMOfyWTLCYdQtb5Ispw3E1EDxD3hC9MBkeTPATL8MNn25G
+         WF+X8h9MRgRkbTipnSTOOrASfjddP6opaqk3NM+0Qj1bnZLVGDeNxLCo402gHr8+SXpQ
+         u0o5GwfjPGLgpmyalpnK8+mdA0fAAKNj64ncU3TDCOA/du9HmEEm6x3PyAqS8/Em0zGT
+         ltAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Bo/qkg10kFGnv1I6yhgOXN+3RzQRgyjNM8IHW2URiWw=;
+        b=CZ3tSqyBsjH5HoDCIrnujerF2lhubdFyWAS5f6BopazqycFN+O63hcVEsUGG+OaVWB
+         gugyQ8Za1B2w4Z2/RdRwbj1XBBjANwItApDoDuafxrkQtCuLSqe+zG8wBwXG1TjQaHFo
+         AFBZtRbX78jCMjp9eYq4wFLFfS12IOjLrS0SDD3XWRZX6uclVVQdODBfKqpWFBBn8IgO
+         259AiiSJlAp/BYic2JI3GpHRJWy61srBTlCoijRQpTaDsE0dcgF8iJi7PoM1jCMkENDi
+         Q6EFM7HB4wWwe7MLQepOoQ03KSHbygxpAYeXXW95yllPrOsAIiNob1PxVFnP+afnOtqr
+         KtOA==
+X-Gm-Message-State: AOAM533iGOM5DXWP4c58xfuIsRj/7FrJy27eSnPiD7jIAQD4a7jaIzU1
+	O0MPOpSKyvAWKWm4i8UEyzzTrQC84UvcHtYiWVs51A==
+X-Google-Smtp-Source: ABdhPJwmiOeZKnxnbFwmSz3b5ogFMIe61YkDgNEQ8sIUGeSG3JZOSvyvuMn+/zHnojPLHGbuRMjMZYarGPBGAdu9d+U=
+X-Received: by 2002:a05:6402:5203:: with SMTP id s3mr39527723edd.79.1618378431759;
+ Tue, 13 Apr 2021 22:33:51 -0700 (PDT)
+MIME-Version: 1.0
+References: <7ff7831f-4539-8e5c-cfc6-d081651374f2@bootlin.com> <4706379.0VBMTVartN@linc>
+In-Reply-To: <4706379.0VBMTVartN@linc>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Wed, 14 Apr 2021 07:33:41 +0200
+Message-ID: <CAP71WjzS-a9MNtyDeOwDV6oqhp8mNpNWmnoeuUyf2w_Qu+t2gg@mail.gmail.com>
+Subject: Re: [docs] ref-manual: reverse the order of migration guides?
+To: Paul Eggleton <bluelightning@bluelightning.org>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>, 
+	Michael Opdenacker <michael.opdenacker@bootlin.com>, "Robert P. J. Day" <rpjday@crashcourse.ca>, 
+	"Tummalapalli, Vineela" <vineela.tummalapalli@intel.com>, 
+	Richard Purdie <richard.purdie@linuxfoundation.org>
+Content-Type: multipart/alternative; boundary="0000000000008996a505bfe81766"
 
-From: Paul Eggleton <paul.eggleton@microsoft.com>
+--0000000000008996a505bfe81766
+Content-Type: text/plain; charset="UTF-8"
 
-People will see release codenames in other contexts, and thus it is
-useful to mention them explicitly here rather than having to go to the
-Releases wiki page to map version number to release codename.
+On Wed, Apr 14, 2021 at 2:15 AM Paul Eggleton <
+bluelightning@bluelightning.org> wrote:
 
-Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
----
- documentation/ref-manual/migration-1.3.rst | 6 +++---
- documentation/ref-manual/migration-1.4.rst | 6 +++---
- documentation/ref-manual/migration-1.5.rst | 6 +++---
- documentation/ref-manual/migration-1.6.rst | 6 +++---
- documentation/ref-manual/migration-1.7.rst | 6 +++---
- documentation/ref-manual/migration-1.8.rst | 6 +++---
- documentation/ref-manual/migration-2.0.rst | 6 +++---
- documentation/ref-manual/migration-2.1.rst | 6 +++---
- documentation/ref-manual/migration-2.2.rst | 6 +++---
- documentation/ref-manual/migration-2.3.rst | 6 +++---
- documentation/ref-manual/migration-2.4.rst | 6 +++---
- documentation/ref-manual/migration-2.5.rst | 6 +++---
- documentation/ref-manual/migration-2.6.rst | 6 +++---
- documentation/ref-manual/migration-2.7.rst | 6 +++---
- documentation/ref-manual/migration-3.0.rst | 6 +++---
- documentation/ref-manual/migration-3.1.rst | 6 +++---
- documentation/ref-manual/migration-3.2.rst | 6 +++---
- documentation/ref-manual/migration-3.3.rst | 6 +++---
- 18 files changed, 54 insertions(+), 54 deletions(-)
+> Hi Michael
+>
+> On Wednesday, 14 April 2021 06:03:26 NZST Michael Opdenacker wrote:
+> > Wouldn't it make sense to reverse the order of migration guides in the
+> > reference manual
+> > (
+> https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#migration
+> )
+> > ?
+> >
+> > I guess it would be easier to start mentioning the migration path from
+> > the most recent release, as version 1.3 looks ancient.
+> >
+> > Would it make sense? If so, it's easy to propose a patch...
+>
+> I guess the thinking was that you would start at the point in the
+> documentation where you are currently at and then follow it downwards to
+> the
+> current version. Whether that's the most logical I'm not sure, but if
+> we're
+> changing it we should give some thought to how it will be used. People do
+> often go a while between upgrades, but I'll definitely agree 1.3 is much
+> further back than most people would need.
+>
+> Robert suggests moving it out, I'm wondering if it's worth considering
+> going a
+> step further and turning our release notes into a proper document, to
+> which
+> this content would be added - I've often felt that the current text-only
+> format is a bit restrictive. That would mean there would be a separate
+> document per release, which is how many other software packages do it
+> (e.g.
+> Django). However, I'm not sure if that would cause us too much overhead or
+> hassle with the other places where we currently post the release notes
+> e.g.
+> announcements on the mailing list - thoughts? (For clarity I wouldn't
+> propose
+> changing this until the next release.)
+>
 
-diff --git a/documentation/ref-manual/migration-1.3.rst b/documentation/ref-manual/migration-1.3.rst
-index 12e225b..0929f49 100644
---- a/documentation/ref-manual/migration-1.3.rst
-+++ b/documentation/ref-manual/migration-1.3.rst
-@@ -1,10 +1,10 @@
- .. SPDX-License-Identifier: CC-BY-SA-2.0-UK
- 
--Moving to the Yocto Project 1.3 Release
--=======================================
-+Moving to the Yocto Project 1.3 Release (danny)
-+===============================================
- 
- This section provides migration information for moving to the Yocto
--Project 1.3 Release from the prior release.
-+Project 1.3 Release (codename "danny") from the prior release.
- 
- .. _1.3-local-configuration:
- 
-diff --git a/documentation/ref-manual/migration-1.4.rst b/documentation/ref-manual/migration-1.4.rst
-index 0b7e861..f5fac7a 100644
---- a/documentation/ref-manual/migration-1.4.rst
-+++ b/documentation/ref-manual/migration-1.4.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 1.4 Release
--=======================================
-+Moving to the Yocto Project 1.4 Release (dylan)
-+===============================================
- 
- This section provides migration information for moving to the Yocto
--Project 1.4 Release from the prior release.
-+Project 1.4 Release (codename "dylan") from the prior release.
- 
- .. _migration-1.4-bitbake:
- 
-diff --git a/documentation/ref-manual/migration-1.5.rst b/documentation/ref-manual/migration-1.5.rst
-index 2d638f9..c772e51 100644
---- a/documentation/ref-manual/migration-1.5.rst
-+++ b/documentation/ref-manual/migration-1.5.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 1.5 Release
--=======================================
-+Moving to the Yocto Project 1.5 Release (dora)
-+==============================================
- 
- This section provides migration information for moving to the Yocto
--Project 1.5 Release from the prior release.
-+Project 1.5 Release (codename "dora") from the prior release.
- 
- .. _migration-1.5-host-dependency-changes:
- 
-diff --git a/documentation/ref-manual/migration-1.6.rst b/documentation/ref-manual/migration-1.6.rst
-index ed155d0..4c6afab 100644
---- a/documentation/ref-manual/migration-1.6.rst
-+++ b/documentation/ref-manual/migration-1.6.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 1.6 Release
--=======================================
-+Moving to the Yocto Project 1.6 Release (daisy)
-+===============================================
- 
- This section provides migration information for moving to the Yocto
--Project 1.6 Release from the prior release.
-+Project 1.6 Release (codename "daisy") from the prior release.
- 
- .. _migration-1.6-archiver-class:
- 
-diff --git a/documentation/ref-manual/migration-1.7.rst b/documentation/ref-manual/migration-1.7.rst
-index c00768c..9cf467f 100644
---- a/documentation/ref-manual/migration-1.7.rst
-+++ b/documentation/ref-manual/migration-1.7.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 1.7 Release
--=======================================
-+Moving to the Yocto Project 1.7 Release (dizzy)
-+===============================================
- 
- This section provides migration information for moving to the Yocto
--Project 1.7 Release from the prior release.
-+Project 1.7 Release (codename "dizzy") from the prior release.
- 
- .. _migration-1.7-changes-to-setting-qemu-packageconfig-options:
- 
-diff --git a/documentation/ref-manual/migration-1.8.rst b/documentation/ref-manual/migration-1.8.rst
-index 73789bd..ec2b138 100644
---- a/documentation/ref-manual/migration-1.8.rst
-+++ b/documentation/ref-manual/migration-1.8.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 1.8 Release
--=======================================
-+Moving to the Yocto Project 1.8 Release (fido)
-+==============================================
- 
- This section provides migration information for moving to the Yocto
--Project 1.8 Release from the prior release.
-+Project 1.8 Release (codename "fido") from the prior release.
- 
- .. _migration-1.8-removed-recipes:
- 
-diff --git a/documentation/ref-manual/migration-2.0.rst b/documentation/ref-manual/migration-2.0.rst
-index 4eea948..9da60df 100644
---- a/documentation/ref-manual/migration-2.0.rst
-+++ b/documentation/ref-manual/migration-2.0.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.0 Release
--=======================================
-+Moving to the Yocto Project 2.0 Release (jethro)
-+================================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.0 Release from the prior release.
-+Project 2.0 Release (codename "jethro") from the prior release.
- 
- .. _migration-2.0-gcc-5:
- 
-diff --git a/documentation/ref-manual/migration-2.1.rst b/documentation/ref-manual/migration-2.1.rst
-index b7bac0c..1eb9ab5 100644
---- a/documentation/ref-manual/migration-2.1.rst
-+++ b/documentation/ref-manual/migration-2.1.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.1 Release
--=======================================
-+Moving to the Yocto Project 2.1 Release (krogoth)
-+=================================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.1 Release from the prior release.
-+Project 2.1 Release (codename "krogoth") from the prior release.
- 
- .. _migration-2.1-variable-expansion-in-python-functions:
- 
-diff --git a/documentation/ref-manual/migration-2.2.rst b/documentation/ref-manual/migration-2.2.rst
-index 8b3c5d6..198181a 100644
---- a/documentation/ref-manual/migration-2.2.rst
-+++ b/documentation/ref-manual/migration-2.2.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.2 Release
--=======================================
-+Moving to the Yocto Project 2.2 Release (morty)
-+===============================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.2 Release from the prior release.
-+Project 2.2 Release (codename "morty") from the prior release.
- 
- .. _migration-2.2-minimum-kernel-version:
- 
-diff --git a/documentation/ref-manual/migration-2.3.rst b/documentation/ref-manual/migration-2.3.rst
-index 04b11da..0541eb3 100644
---- a/documentation/ref-manual/migration-2.3.rst
-+++ b/documentation/ref-manual/migration-2.3.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.3 Release
--=======================================
-+Moving to the Yocto Project 2.3 Release (pyro)
-+==============================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.3 Release from the prior release.
-+Project 2.3 Release (codename "pyro") from the prior release.
- 
- .. _migration-2.3-recipe-specific-sysroots:
- 
-diff --git a/documentation/ref-manual/migration-2.4.rst b/documentation/ref-manual/migration-2.4.rst
-index 260b320..2ba17e0 100644
---- a/documentation/ref-manual/migration-2.4.rst
-+++ b/documentation/ref-manual/migration-2.4.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.4 Release
--=======================================
-+Moving to the Yocto Project 2.4 Release (rocko)
-+===============================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.4 Release from the prior release.
-+Project 2.4 Release (codename "rocko") from the prior release.
- 
- .. _migration-2.4-memory-resident-mode:
- 
-diff --git a/documentation/ref-manual/migration-2.5.rst b/documentation/ref-manual/migration-2.5.rst
-index 9f45ffc..9ef4b55 100644
---- a/documentation/ref-manual/migration-2.5.rst
-+++ b/documentation/ref-manual/migration-2.5.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.5 Release
--=======================================
-+Moving to the Yocto Project 2.5 Release (sumo)
-+==============================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.5 Release from the prior release.
-+Project 2.5 Release (codename "sumo") from the prior release.
- 
- .. _migration-2.5-packaging-changes:
- 
-diff --git a/documentation/ref-manual/migration-2.6.rst b/documentation/ref-manual/migration-2.6.rst
-index 823d3cb..aeac509 100644
---- a/documentation/ref-manual/migration-2.6.rst
-+++ b/documentation/ref-manual/migration-2.6.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.6 Release
--=======================================
-+Moving to the Yocto Project 2.6 Release (thud)
-+==============================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.6 Release from the prior release.
-+Project 2.6 Release (codename "thud") from the prior release.
- 
- .. _migration-2.6-gcc-changes:
- 
-diff --git a/documentation/ref-manual/migration-2.7.rst b/documentation/ref-manual/migration-2.7.rst
-index 5af5947..1be4d5d 100644
---- a/documentation/ref-manual/migration-2.7.rst
-+++ b/documentation/ref-manual/migration-2.7.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 2.7 Release
--=======================================
-+Moving to the Yocto Project 2.7 Release (warrior)
-+=================================================
- 
- This section provides migration information for moving to the Yocto
--Project 2.7 Release from the prior release.
-+Project 2.7 Release (codename "warrior") from the prior release.
- 
- .. _migration-2.7-bitbake-changes:
- 
-diff --git a/documentation/ref-manual/migration-3.0.rst b/documentation/ref-manual/migration-3.0.rst
-index 7ef2742..f3d20e2 100644
---- a/documentation/ref-manual/migration-3.0.rst
-+++ b/documentation/ref-manual/migration-3.0.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 3.0 Release
--=======================================
-+Moving to the Yocto Project 3.0 Release (zeus)
-+==============================================
- 
- This section provides migration information for moving to the Yocto
--Project 3.0 Release from the prior release.
-+Project 3.0 Release (codename "zeus") from the prior release.
- 
- .. _migration-3.0-init-system-selection:
- 
-diff --git a/documentation/ref-manual/migration-3.1.rst b/documentation/ref-manual/migration-3.1.rst
-index 4fcd249..84d3250 100644
---- a/documentation/ref-manual/migration-3.1.rst
-+++ b/documentation/ref-manual/migration-3.1.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 3.1 Release
--=======================================
-+Moving to the Yocto Project 3.1 Release (dunfell)
-+=================================================
- 
- This section provides migration information for moving to the Yocto
--Project 3.1 Release from the prior release.
-+Project 3.1 Release (codename "dunfell") from the prior release.
- 
- .. _migration-3.1-minimum-system-requirements:
- 
-diff --git a/documentation/ref-manual/migration-3.2.rst b/documentation/ref-manual/migration-3.2.rst
-index cca8124..39743af 100644
---- a/documentation/ref-manual/migration-3.2.rst
-+++ b/documentation/ref-manual/migration-3.2.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 3.2 Release
--=======================================
-+Moving to the Yocto Project 3.2 Release (gatesgarth)
-+====================================================
- 
- This section provides migration information for moving to the Yocto
--Project 3.2 Release from the prior release.
-+Project 3.2 Release (codename "gatesgarth") from the prior release.
- 
- .. _migration-3.2-minimum-system-requirements:
- 
-diff --git a/documentation/ref-manual/migration-3.3.rst b/documentation/ref-manual/migration-3.3.rst
-index 8dfbe7f..ff010fd 100644
---- a/documentation/ref-manual/migration-3.3.rst
-+++ b/documentation/ref-manual/migration-3.3.rst
-@@ -1,8 +1,8 @@
--Moving to the Yocto Project 3.3 Release
--=======================================
-+Moving to the Yocto Project 3.3 Release (hardknott)
-+===================================================
- 
- This section provides migration information for moving to the Yocto
--Project 3.3 Release from the prior release.
-+Project 3.3 Release (codename "hardknott") from the prior release.
- 
- 
- .. _migration-3.3-minimum-system-requirements:
--- 
-1.8.3.1
+I have had this thought already, and like it! Especially now that we have a
+'unified' doc website, having a 'release notes' manual/section in the left
+side navigation bar would be good. Here is an example I have seen with
+another project:
+https://projectacrn.github.io/latest/release_notes/index.html
 
+
+>
+> Cheers
+> Paul
+>
+>
+>
+> 
+>
+>
+
+--0000000000008996a505bfe81766
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Apr 14, 2021 at 2:15 AM Paul =
+Eggleton &lt;<a href=3D"mailto:bluelightning@bluelightning.org">bluelightni=
+ng@bluelightning.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quo=
+te" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204=
+);padding-left:1ex">Hi Michael<br>
+<br>
+On Wednesday, 14 April 2021 06:03:26 NZST Michael Opdenacker wrote:<br>
+&gt; Wouldn&#39;t it make sense to reverse the order of migration guides i=
+n the<br>
+&gt; reference manual<br>
+&gt; (<a href=3D"https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manu=
+al.html#migration" rel=3D"noreferrer" target=3D"_blank">https://www.yoctopr=
+oject.org/docs/3.0/ref-manual/ref-manual.html#migration</a>)<br>
+&gt; ?<br>
+&gt; <br>
+&gt; I guess it would be easier to start mentioning the migration path fro=
+m<br>
+&gt; the most recent release, as version 1.3 looks ancient.<br>
+&gt; <br>
+&gt; Would it make sense? If so, it&#39;s easy to propose a patch...<br>
+<br>
+I guess the thinking was that you would start at the point in the <br>
+documentation where you are currently at and then follow it downwards to t=
+he <br>
+current version. Whether that&#39;s the most logical I&#39;m not sure, but=
+ if we&#39;re <br>
+changing it we should give some thought to how it will be used. People do =
+<br>
+often go a while between upgrades, but I&#39;ll definitely agree 1.3 is mu=
+ch <br>
+further back than most people would need.<br>
+<br>
+Robert suggests moving it out, I&#39;m wondering if it&#39;s worth conside=
+ring going a <br>
+step further and turning our release notes into a proper document, to whic=
+h <br>
+this content would be added - I&#39;ve often felt that the current text-on=
+ly <br>
+format is a bit restrictive. That would mean there would be a separate <br=
+>
+document per release, which is how many other software packages do it (e.g=
+. <br>
+Django). However, I&#39;m not sure if that would cause us too much overhea=
+d or <br>
+hassle with the other places where we currently post the release notes e.g=
+. <br>
+announcements on the mailing list - thoughts? (For clarity I wouldn&#39;t =
+propose <br>
+changing this until the next release.)<br></blockquote><div><br></div><div=
+>I have had this thought already, and like it! Especially now that we have =
+a &#39;unified&#39; doc website, having a &#39;release notes&#39; manual/se=
+ction in the left side navigation bar would be good. Here is an example I h=
+ave seen with another project:</div><div><a href=3D"https://projectacrn.git=
+hub.io/latest/release_notes/index.html">https://projectacrn.github.io/lates=
+t/release_notes/index.html</a></div><div>=C2=A0</div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex">
+<br>
+Cheers<br>
+Paul<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</blockquote></div></div>
+
+--0000000000008996a505bfe81766--
