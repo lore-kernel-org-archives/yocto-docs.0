@@ -1,63 +1,65 @@
-Received: from linuxplesk15.openhost.net.nz (linuxplesk15.openhost.net.nz [119.47.118.83])
- by mx.groups.io with SMTP id smtpd.web11.6028.1618359337706207234
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web11.6080.1618359597469861265
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Apr 2021 17:15:38 -0700
+ Tue, 13 Apr 2021 17:19:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: bluelightning.org, ip: 119.47.118.83, mailfrom: bluelightning@bluelightning.org)
-Received: from linc.localnet (unknown [151.210.226.152])
-	by linuxplesk15.openhost.net.nz (Postfix) with ESMTPSA id 8337DA0B29;
-	Wed, 14 Apr 2021 12:15:33 +1200 (NZST)
-Authentication-Results: linuxplesk15.openhost.net.nz;
-	spf=pass (sender IP is 151.210.226.152) smtp.mailfrom=bluelightning@bluelightning.org smtp.helo=linc.localnet
-Received-SPF: pass (linuxplesk15.openhost.net.nz: connection is authenticated)
-From: "Paul Eggleton" <bluelightning@bluelightning.org>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	"Robert P. J. Day" <rpjday@crashcourse.ca>, "Tummalapalli,
-	Vineela" <vineela.tummalapalli@intel.com>,
-	Richard Purdie <richard.purdie@linuxfoundation.org>
-Subject: Re: [docs] ref-manual: reverse the order of migration guides?
-Date: Wed, 14 Apr 2021 12:15:32 +1200
-Message-ID: <4706379.0VBMTVartN@linc>
-In-Reply-To: <7ff7831f-4539-8e5c-cfc6-d081651374f2@bootlin.com>
-References: <7ff7831f-4539-8e5c-cfc6-d081651374f2@bootlin.com>
-MIME-Version: 1.0
-X-PPP-Message-ID: <20210414001533.482966.22158@localhost6.localdomain6>
-X-PPP-Vhost: softec.co.nz
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=OCsFgXlO;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: pauleg@linux.microsoft.com)
+Received: by linux.microsoft.com (Postfix, from userid 1054)
+	id 02E5420B8004; Tue, 13 Apr 2021 17:19:56 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 02E5420B8004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1618359597;
+	bh=9zRhzlQoFkuTwcwvMSv3TrFPqZFVWaqyZsv3NSPTzXk=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=OCsFgXlOaxSKbr079UfTmW0efSxPJgaJl1CwobQfc17obcoXcqrMK4ouaTfb8wr2y
+	 bLTP9gxTsFCvuiZadPolJBChm8LVRaJ+wgDzgtdd5dZ+LG16FFpkeSYyRJilAxvWAY
+	 6M2wOnGIBR/q1Q3Mm5l/OqUMHsGdnY5D4wAQIohI=
+From: "Paul Eggleton" <paul.eggleton@linux.microsoft.com>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH 03/13] ref-manual: update/fix text for SDK_VERSION
+Date: Tue, 13 Apr 2021 17:19:44 -0700
+Message-Id: <931fbd6c1f0fb27025ce3505effada512d2db93a.1618358456.git.paul.eggleton@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <cover.1618358456.git.paul.eggleton@linux.microsoft.com>
+References: <cover.1618358456.git.paul.eggleton@linux.microsoft.com>
 
-Hi Michael
+From: Paul Eggleton <paul.eggleton@microsoft.com>
 
-On Wednesday, 14 April 2021 06:03:26 NZST Michael Opdenacker wrote:
-> Wouldn't it make sense to reverse the order of migration guides in the
-> reference manual
-> (https://www.yoctoproject.org/docs/3.0/ref-manual/ref-manual.html#migration)
-> ?
-> 
-> I guess it would be easier to start mentioning the migration path from
-> the most recent release, as version 1.3 looks ancient.
-> 
-> Would it make sense? If so, it's easy to propose a patch...
+DISTRO_VERSION snapshot versions use METADATA_REVISION not DATE in
+hardknott and thus the default for SDK_VERSION has been updated, so
+update it here as well. Additionally, fix the text so it makes sense.
 
-I guess the thinking was that you would start at the point in the 
-documentation where you are currently at and then follow it downwards to the 
-current version. Whether that's the most logical I'm not sure, but if we're 
-changing it we should give some thought to how it will be used. People do 
-often go a while between upgrades, but I'll definitely agree 1.3 is much 
-further back than most people would need.
+Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+---
+ documentation/ref-manual/variables.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Robert suggests moving it out, I'm wondering if it's worth considering going a 
-step further and turning our release notes into a proper document, to which 
-this content would be added - I've often felt that the current text-only 
-format is a bit restrictive. That would mean there would be a separate 
-document per release, which is how many other software packages do it (e.g. 
-Django). However, I'm not sure if that would cause us too much overhead or 
-hassle with the other places where we currently post the release notes e.g. 
-announcements on the mailing list - thoughts? (For clarity I wouldn't propose 
-changing this until the next release.)
-
-Cheers
-Paul
-
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index de63046..b9478a3 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -6764,16 +6764,16 @@ system and gives an overview of their function and contents.
+       Specifies the name of the SDK vendor.
+ 
+    :term:`SDK_VERSION`
+-      Specifies the version of the SDK. The distribution configuration file
+-      (e.g. ``/meta-poky/conf/distro/poky.conf``) defines the
++      Specifies the version of the SDK. The Poky distribution configuration file
++      (``/meta-poky/conf/distro/poky.conf``) sets the default
+       ``SDK_VERSION`` as follows:
+       ::
+ 
+-         SDK_VERSION = "${@d.getVar('DISTRO_VERSION').replace('snapshot-${DATE}','snapshot')}"
++         SDK_VERSION = "${@d.getVar('DISTRO_VERSION').replace('snapshot-${METADATA_REVISION}', 'snapshot')}"
+ 
+       For additional information, see the
+       :term:`DISTRO_VERSION` and
+-      :term:`DATE` variables.
++      :term:`METADATA_REVISION` variables.
+ 
+    :term:`SDKEXTPATH`
+       The default installation directory for the Extensible SDK. By
+-- 
+1.8.3.1
 
