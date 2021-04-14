@@ -1,167 +1,177 @@
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
- by mx.groups.io with SMTP id smtpd.web08.9920.1618388355067976043
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+ by mx.groups.io with SMTP id smtpd.web09.9997.1618388484109350472
  for <docs@lists.yoctoproject.org>;
- Wed, 14 Apr 2021 01:19:15 -0700
+ Wed, 14 Apr 2021 01:21:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=sP5Q5M1x;
- spf=pass (domain: linaro.org, ip: 209.85.218.52, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-ej1-f52.google.com with SMTP id w23so14258232ejb.9
-        for <docs@lists.yoctoproject.org>; Wed, 14 Apr 2021 01:19:14 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=uCYs3LJe;
+ spf=pass (domain: linaro.org, ip: 209.85.218.44, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ej1-f44.google.com with SMTP id e14so30037639ejz.11
+        for <docs@lists.yoctoproject.org>; Wed, 14 Apr 2021 01:21:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=Cox97+T1O0S8xSo1VOxy5Z++XJV/I7Z3FWpIUz4kaZM=;
-        b=sP5Q5M1xUkgi73ZSJIEgcjmMtFJWTJm7SGGbZHU0ni8pu7jOKFryOLbmrXSGKuBbms
-         2LhZvN1+3OlYRsxweNScUQg9rbN8mcri74AV9txTcYk5KSTHUPQHP8Zvg1zRF4o3AHK5
-         V2x3MeztdxyaJ18rY8jYRt08WaOgezL2dObI3LYv2JhXM25tNOasqS0nVJao5PuZ0d6U
-         Ti8BAO/DNVj2lJxZzi8s1NnDU2pCyGKHuM5FW48z0aQsZbkDvgvPanYsMFniPLwEUHp3
-         yaWjdZu45SU7ADTH3kPHKaaHMWFUEzkN3zHljmkyHY63dquuaYBXvwwB787G9mz54XFq
-         0ItA==
+        bh=Y3p/DEldggfk0PSGvgsHVobabJ0OYb9D67FgIEJCvi4=;
+        b=uCYs3LJegTS5/vabWDJP/F0+x1L17oR4BGrn6WLliF/bbFIB5FLSBPsZe3s7m5hp95
+         NxlvZQ2RSyVDX+4OqxQ1GX6wGjk7l3+9kL8eEmB50qOP9fM0Pc+jLIVUPDaD7FqCZJOG
+         hDdPLfCzKrz9vtjUdDlYtZHVWceAGvXGJR3dRFdJaXtU8nQqbXP7OUoy+Bn9RiIQXCzR
+         qs9htMkWRdfmIaIDeEM08AkRZs12Nu4KsaI6itDm44Mw404x+sFfZC3OoRZXqULdzRKj
+         fl2ECorI++XHuplAQUiD5BDFBySe1Gto5y4CR7xPt3YmxCIzL/cTpajM2ssiEFz+a//V
+         3/mA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=Cox97+T1O0S8xSo1VOxy5Z++XJV/I7Z3FWpIUz4kaZM=;
-        b=r5c9FDnEzYS+vGHQoJpKtrc5VrfOYDQAyUhqO01jZ9rf5u0FJtrwuM3wYkClh0fW0l
-         xiX8SXntmaBRhWaczuVDjkw/U6phSpCf84pRrnfI5e4nPd7ewPio48c3fg/nVovCaGbP
-         ai3HjtPJNZzkh2OFSVab3USrN72PtkwqvXkO0y3XK5RDJhemYrACsrv+pr8s7lT0Lt4m
-         MUbwiHj2wPSFM0H7reTkQn9ls4DRwP0F+JFW5Udyg9BAMeqEd6oW1uK9yeeY8h8EpoPs
-         SoItS71h1UvDBsfPg9u1ujYvH31c2JMoNu7fndsTnzblKT7Sd5vHnj1OyVWCwzVJkYlC
-         ICOg==
-X-Gm-Message-State: AOAM533QzynBfhxNJJtS5HQviM5lRLAqx6tiClLDYcl/Jt0p1XDPYMh8
-	/i9jZUnVrQbJGANs1uELuSkNpWmqIE6dsigVxT83qA==
-X-Google-Smtp-Source: ABdhPJwJQoKtT78NRwNY+oFqPc53Kro1BtndVz3g4SCJ8J6V1Q6QMlSYtU63Yf110wdAf6YKc+oHmvDhhKREcn7xpAk=
-X-Received: by 2002:a17:906:1d10:: with SMTP id n16mr1267626ejh.445.1618388353572;
- Wed, 14 Apr 2021 01:19:13 -0700 (PDT)
+        bh=Y3p/DEldggfk0PSGvgsHVobabJ0OYb9D67FgIEJCvi4=;
+        b=per3NgPwEoJyfyhO/X+bi03UH7el45VijZIFa3Dtf+G15Q+0GYOmhNzhTotIPkQY5h
+         JRyeTMP81Cjr88LK4zKh8dnVeSkRAoBQXI/JzVgOHZ5vgl/udBMELbRhUQd+sgtySpX5
+         6Va3egUfh6/DlJXREb5Yemsd5x3byfiaFZJElMPUQQ0ELzAODmBYtbR0hA5hIogs8mmz
+         oa1lscsrZv7CO5tjNtrH+Iwe+la3UNR6Ux4BFKqhqEelzeuOeRIoIer6EpnodnSYqXKL
+         p7WfnWAavU0pjjxfVP5KdH+viIhwcavnGChBX1XQUFAvT6+iB8pV9U9lxopKFkNlPrrK
+         Akeg==
+X-Gm-Message-State: AOAM531f2W/9PQDmnuYXicIeKfNy8B72L4qYlZHp/Ufg5HhKKhol6co3
+	oJM6RcgwulcUt2Ivsy3axBxANxk5dj/i2FwKslcZPg==
+X-Google-Smtp-Source: ABdhPJzVLsSNacwJQkZKHO8uTVBKK6XFMuroBlB/abqfV4Mf7tMsprflbxjBEjjDbbRIsAbPOz9pquS3FQZPia6dvSA=
+X-Received: by 2002:a17:906:5906:: with SMTP id h6mr37537437ejq.288.1618388482481;
+ Wed, 14 Apr 2021 01:21:22 -0700 (PDT)
 MIME-Version: 1.0
 References: <cover.1618358456.git.paul.eggleton@linux.microsoft.com>
- <c973665acd8a5259b19ab512b2ae7f6d10848cb5.1618358456.git.paul.eggleton@linux.microsoft.com>
- <20210414081303.kciysuaevt3bhjtg@qschulz>
-In-Reply-To: <20210414081303.kciysuaevt3bhjtg@qschulz>
+ <be9ee46d744c7b2b559819c61cb68ae47898b7c0.1618358456.git.paul.eggleton@linux.microsoft.com>
+ <20210414081756.ydogingjrtmmsv6x@qschulz>
+In-Reply-To: <20210414081756.ydogingjrtmmsv6x@qschulz>
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Wed, 14 Apr 2021 10:19:03 +0200
-Message-ID: <CAP71WjxiU5pfmCkybgaqijUz1LbMoe5_3tJcQDuYWeSsm+hxgg@mail.gmail.com>
-Subject: Re: [docs] [PATCH 08/13] ref-manual: add passwd-expire to EXTRA_USERS_PARAMS
+Date: Wed, 14 Apr 2021 10:21:11 +0200
+Message-ID: <CAP71WjwUsfFTX6TFOXtbwfrRU6C4ehCs3uAc6EodtpTC2nHurg@mail.gmail.com>
+Subject: Re: [docs] [PATCH 10/13] ref-manual: fix reference to build-essential
 To: Quentin Schulz <quentin.schulz@streamunlimited.com>
 Cc: Paul Eggleton <paul.eggleton@linux.microsoft.com>, 
 	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000ec71c305bfea6672"
+Content-Type: multipart/alternative; boundary="0000000000009b71f805bfea6e50"
 
---000000000000ec71c305bfea6672
+--0000000000009b71f805bfea6e50
 Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Apr 14, 2021 at 10:13 AM Quentin Schulz <
+On Wed, Apr 14, 2021 at 10:18 AM Quentin Schulz <
 quentin.schulz@streamunlimited.com> wrote:
 
 > Hi Paul,
 >
-> On Tue, Apr 13, 2021 at 05:19:49PM -0700, Paul Eggleton wrote:
+> On Tue, Apr 13, 2021 at 05:19:51PM -0700, Paul Eggleton wrote:
 > > From: Paul Eggleton <paul.eggleton@microsoft.com>
 > >
-> > Add a reference to the recently added passwd-expire command in
-> > EXTRA_USERS_PARAMS.
+> > This has been here since the text was added to the DocBook version.
 > >
 > > Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
 > > ---
-> >  documentation/ref-manual/variables.rst | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
+> >  documentation/ref-manual/system-requirements.rst | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/documentation/ref-manual/variables.rst
-> b/documentation/ref-manual/variables.rst
-> > index 2e3cc22..3b76dbc 100644
-> > --- a/documentation/ref-manual/variables.rst
-> > +++ b/documentation/ref-manual/variables.rst
-> > @@ -2293,6 +2293,17 @@ system and gives an overview of their function
-> and contents.
-> >           # usermod -s /bin/sh tester; \
-> >           # "
+> > diff --git a/documentation/ref-manual/system-requirements.rst
+> b/documentation/ref-manual/system-requirements.rst
+> > index dc619ce..2e2d0d3 100644
+> > --- a/documentation/ref-manual/system-requirements.rst
+> > +++ b/documentation/ref-manual/system-requirements.rst
+> > @@ -274,7 +274,8 @@ version requirement for gcc:
 > >
-> > +      Additionally there is a special ``passwd-expire`` command that
-> will
-> > +      cause the password for a user to be expired and thus force
-> changing it
-> > +      on first login, for example: ::
-> > +
+> >  If your host development system does not meet this requirement, you can
+> >  resolve this by installing a ``buildtools-extended`` tarball that
+> > -contains additional tools, the equivalent of ``buildtools-essential``.
+> > +contains additional tools, the equivalent of the Debian/Ubuntu
+> ``build-essential``
+> > +package.
+> >
+> >  Installing a Pre-Built ``buildtools`` Tarball with
+> ``install-buildtools`` script
+> >
+> --------------------------------------------------------------------------------
+> > --
+> > 1.8.3.1
+> >
 >
-> IIRC, :: will behave the same as : ::, so please use the former (trying to
-> have consistency across all docs, though we're far from it now :|, but
-> this change is something we want).
->
-> Pinging @Nicolas just for confirmation :)
+> Thanks for the patch. Please send a backport patch once merged for still
+> maintained Sphinx-using releases of the docs. (dunfell and gatesgarth I
+> guess?).
 >
 
-Yes, agreed. There was a patch floating around to convert all instances of
-: :: into ::, not sure if it was merged or dropped..
+Yes, I had this thought when I glanced at the patches too. I am not sure
+how/if the LTS/stable process applies to yocto-docs. Are the LTS and stable
+maintainers doing an active backports, or we do have to send all relevant
+patches to them?
 
 
 >
-> Thanks,
+> Cheers,
 > Quentin
 >
 > 
 >
 >
 
---000000000000ec71c305bfea6672
+--0000000000009b71f805bfea6e50
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 <div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Apr 14, 2021 at 10:13 AM Quen=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Apr 14, 2021 at 10:18 AM Quen=
 tin Schulz &lt;<a href=3D"mailto:quentin.schulz@streamunlimited.com">quenti=
 n.schulz@streamunlimited.com</a>&gt; wrote:<br></div><blockquote class=3D"g=
 mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
 ,204,204);padding-left:1ex">Hi Paul,<br>
 <br>
-On Tue, Apr 13, 2021 at 05:19:49PM -0700, Paul Eggleton wrote:<br>
+On Tue, Apr 13, 2021 at 05:19:51PM -0700, Paul Eggleton wrote:<br>
 &gt; From: Paul Eggleton &lt;<a href=3D"mailto:paul.eggleton@microsoft.com=
 " target=3D"_blank">paul.eggleton@microsoft.com</a>&gt;<br>
 &gt; <br>
-&gt; Add a reference to the recently added passwd-expire command in<br>
-&gt; EXTRA_USERS_PARAMS.<br>
+&gt; This has been here since the text was added to the DocBook version.<b=
+r>
 &gt; <br>
 &gt; Signed-off-by: Paul Eggleton &lt;<a href=3D"mailto:paul.eggleton@micr=
 osoft.com" target=3D"_blank">paul.eggleton@microsoft.com</a>&gt;<br>
 &gt; ---<br>
-&gt;=C2=A0 documentation/ref-manual/variables.rst | 11 +++++++++++<br>
-&gt;=C2=A0 1 file changed, 11 insertions(+)<br>
+&gt;=C2=A0 documentation/ref-manual/system-requirements.rst | 3 ++-<br>
+&gt;=C2=A0 1 file changed, 2 insertions(+), 1 deletion(-)<br>
 &gt; <br>
-&gt; diff --git a/documentation/ref-manual/variables.rst b/documentation/r=
-ef-manual/variables.rst<br>
-&gt; index 2e3cc22..3b76dbc 100644<br>
-&gt; --- a/documentation/ref-manual/variables.rst<br>
-&gt; +++ b/documentation/ref-manual/variables.rst<br>
-&gt; @@ -2293,6 +2293,17 @@ system and gives an overview of their function=
- and contents.<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0# usermod -s /bin/sh tester; =
-\<br>
-&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0# &quot;<br>
+&gt; diff --git a/documentation/ref-manual/system-requirements.rst b/docum=
+entation/ref-manual/system-requirements.rst<br>
+&gt; index dc619ce..2e2d0d3 100644<br>
+&gt; --- a/documentation/ref-manual/system-requirements.rst<br>
+&gt; +++ b/documentation/ref-manual/system-requirements.rst<br>
+&gt; @@ -274,7 +274,8 @@ version requirement for gcc:<br>
 &gt;=C2=A0 <br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 Additionally there is a special ``passwd-expire=
-`` command that will<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 cause the password for a user to be expired and=
- thus force changing it<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 on first login, for example: ::<br>
-&gt; +<br>
+&gt;=C2=A0 If your host development system does not meet this requirement,=
+ you can<br>
+&gt;=C2=A0 resolve this by installing a ``buildtools-extended`` tarball th=
+at<br>
+&gt; -contains additional tools, the equivalent of ``buildtools-essential`=
+`.<br>
+&gt; +contains additional tools, the equivalent of the Debian/Ubuntu ``bui=
+ld-essential``<br>
+&gt; +package.<br>
+&gt;=C2=A0 <br>
+&gt;=C2=A0 Installing a Pre-Built ``buildtools`` Tarball with ``install-bu=
+ildtools`` script<br>
+&gt;=C2=A0 ---------------------------------------------------------------=
+-----------------<br>
+&gt; -- <br>
+&gt; 1.8.3.1<br>
+&gt; <br>
 <br>
-IIRC, :: will behave the same as : ::, so please use the former (trying to=
+Thanks for the patch. Please send a backport patch once merged for still<b=
+r>
+maintained Sphinx-using releases of the docs. (dunfell and gatesgarth I<br=
+>
+guess?).<br></blockquote><div><br></div><div>Yes, I had this thought when =
+I glanced at the patches too. I am not sure how/if the LTS/stable process a=
+pplies to yocto-docs. Are the LTS and stable maintainers doing an active ba=
+ckports, or we do have to send all relevant patches to them?</div><div>=C2=
+=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8=
+ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
 <br>
-have consistency across all docs, though we&#39;re far from it now :|, but=
-<br>
-this change is something we want).<br>
-<br>
-Pinging @Nicolas just for confirmation :)<br></blockquote><div><br></div><=
-div>Yes, agreed. There was a patch floating around to convert all instances=
- of : :: into ::, not sure if it was merged or dropped..=C2=A0</div><div>=
-=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
-0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-Thanks,<br>
+Cheers,<br>
 Quentin<br>
 <br>
 <br>
 <br>
 </blockquote></div></div>
 
---000000000000ec71c305bfea6672--
+--0000000000009b71f805bfea6e50--
