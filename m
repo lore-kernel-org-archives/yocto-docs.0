@@ -1,88 +1,193 @@
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by mx.groups.io with SMTP id smtpd.web10.4820.1618480756694721213
+ by mx.groups.io with SMTP id smtpd.web11.4776.1618480756739298506
  for <docs@lists.yoctoproject.org>;
  Thu, 15 Apr 2021 02:59:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linux.microsoft.com header.s=default header.b=ndOo45BG;
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=S8rZcSxa;
  spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182, mailfrom: pauleg@linux.microsoft.com)
 Received: by linux.microsoft.com (Postfix, from userid 1054)
-	id A4D3A20B83DB; Thu, 15 Apr 2021 02:59:15 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com A4D3A20B83DB
+	id E546F20B8778; Thu, 15 Apr 2021 02:59:15 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E546F20B8778
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1618480755;
-	bh=FVW31fhWlsYVbYX5Wr0asgzsHx+QlSL0qWv75OJGM/E=;
+	bh=W85VRs9zpjLPmGK3XBJU+NnBgL2L/CBj+kv73w2TtnY=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=ndOo45BGDfkezs2j/j2ZBgIbdt8WhxbQbXpwRgEiIZxhJNJPwXJLYOAUwzvCL8BOH
-	 CxzxgwaIucmPpOXu/TXqgbFnTlpJepNfISftFxIuNZOclAOl6zdhoTVHhofrPca7WY
-	 i1llToYxk8pHdfvfkC7hjeSvOTaQ2+Purmrw0bP4=
+	b=S8rZcSxat7aYNDvWhBilqDBq6UU/kxepR28O8aMP0wS1GMt312hTmkExejwB5Eo0N
+	 PKBBSDyfzpV0cxQl7VOZ1Y7Q0bhOpRhn/TszQa3Y3xa81VNYLuHHmQnX6o6qNUSI9V
+	 QYTApATcfR8QDsvL/8WjqC6CkHnzVHyGmh5+CSvQ=
 From: "Paul Eggleton" <paul.eggleton@linux.microsoft.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v2 06/14] ref-manual: add REQUIRED_VERSION and adjust PREFERRED_VERSION entry
-Date: Thu, 15 Apr 2021 02:59:04 -0700
-Message-Id: <64a255e774a61ce0e6a18877f8731cb23259e170.1618480508.git.paul.eggleton@linux.microsoft.com>
+Subject: [PATCH v2 12/14] ref-manual: add migration section for 3.3 release
+Date: Thu, 15 Apr 2021 02:59:10 -0700
+Message-Id: <76a4c97c3865368113cb27dcdc8609a1652ad6ea.1618480508.git.paul.eggleton@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <cover.1618480508.git.paul.eggleton@linux.microsoft.com>
 References: <cover.1618480508.git.paul.eggleton@linux.microsoft.com>
 
 From: Paul Eggleton <paul.eggleton@microsoft.com>
 
-Add REQUIRED_VERSION, add a reference to it in PREFERRED_VERSION and
-adjust the opening statement to read slightly better.
-
 Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
 ---
- documentation/ref-manual/variables.rst | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ documentation/ref-manual/migration-3.3.rst | 139 +++++++++++++++++++++++++++++
+ documentation/ref-manual/migration.rst     |   1 +
+ 2 files changed, 140 insertions(+)
+ create mode 100644 documentation/ref-manual/migration-3.3.rst
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 4632754..e63d07b 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5798,10 +5798,11 @@ system and gives an overview of their function and contents.
-          exclusive alternative providers.
- 
-    :term:`PREFERRED_VERSION`
--      If multiple versions of recipes exist, this variable determines which
--      version is given preference. You must always suffix the variable with
--      the :term:`PN` you want to select, and you should set the
--      :term:`PV` accordingly for precedence.
-+      If there are multiple versions of a recipe available, this variable
-+      determines which version should be given preference. You must always
-+      suffix the variable with the :term:`PN` you want to select (`python` in
-+      the first example below), and you should specify the :term:`PV`
-+      accordingly (`3.4.0` in the example).
- 
-       The ``PREFERRED_VERSION`` variable supports limited wildcard use
-       through the "``%``" character. You can use the character to match any
-@@ -5859,6 +5860,10 @@ system and gives an overview of their function and contents.
-          The ``\_forcevariable`` override is not handled specially. This override
-          only works because the default value of ``OVERRIDES`` includes "forcevariable".
- 
-+      If a recipe with the specified version is not available, a warning
-+      message will be shown. See :term:`REQUIRED_VERSION` if you want this
-+      to be an error instead.
+diff --git a/documentation/ref-manual/migration-3.3.rst b/documentation/ref-manual/migration-3.3.rst
+new file mode 100644
+index 0000000..dcd7b56
+--- /dev/null
++++ b/documentation/ref-manual/migration-3.3.rst
+@@ -0,0 +1,139 @@
++Moving to the Yocto Project 3.3 Release
++=======================================
 +
-    :term:`PREMIRRORS`
-       Specifies additional paths from which the OpenEmbedded build system
-       gets source code. When the build system searches for source code, it
-@@ -6216,6 +6221,17 @@ system and gives an overview of their function and contents.
-       the recipe will be skipped, and if the build system attempts to build
-       the recipe then an error will be triggered.
++This section provides migration information for moving to the Yocto
++Project 3.3 Release from the prior release.
++
++
++.. _migration-3.3-minimum-system-requirements:
++
++Minimum system requirements
++---------------------------
++
++You will now need at least Python 3.6 installed on your build host. Most recent
++distributions provide this, but should you be building on a distribution that
++does not have it, you can use the ``buildtools-tarball`` (easily installable
++using ``scripts/install-buildtools``) - see
++:ref:`ref-manual/system-requirements:required git, tar, python and gcc versions`
++for details.
++
++
++.. _migration-3.3-removed-recipes:
++
++Removed recipes
++---------------
++
++The following recipes have been removed:
++
++- ``go-dep``: obsolete with the advent of go modules
++- ``gst-validate``: replaced by ``gst-devtools``
++- ``linux-yocto``: removed 5.8 version recipes (5.4 / 5.10 still provided)
++- ``vulkan-demos``: replaced by ``vulkan-samples``
++
++
++.. _migration-3.3-common-license-only-versions:
++
++Single version common license file naming
++-----------------------------------------
++
++Some license files in ``meta/files/common-licenses`` have been renamed to match
++current SPDX naming conventions:
++
++- AGPL-3.0 -> AGPL-3.0-only
++- GPL-1.0 -> GPL-1.0-only
++- GPL-2.0 -> GPL-2.0-only
++- GPL-3.0 -> GPL-3.0-only
++- LGPL-2.0 -> LGPL-2.0-only
++- LGPL-2.1 -> LGPL-2.1-only
++- LGPL-3.0 -> LGPL-3.0-only
++
++Additionally, corresponding "-or-later" suffixed files have been added e.g.
++``GPL-2.0-or-later``.
++
++It is not required that you change :term:`LICENSE` values as there are mappings
++from the original names in place; however, in rare cases where you have a recipe
++which sets :term:`LIC_FILES_CHKSUM` to point to file(s) in
++``meta/files/common-licenses`` (which in any case is not recommended) you will
++need to update those.
++
++
++.. _migration-3.3-python3targetconfig:
++
++New ``python3targetconfig`` class
++---------------------------------
++
++A new :ref:`python3targetconfig <ref-classes-python3targetconfig>` class has been
++created for situations where you would previously have inherited the
++``python3native`` class but need access to target configuration data (such as
++correct installation directories). Recipes where this situation applies should
++be changed to inherit ``python3targetconfig`` instead of ``python3native``. This
++also adds a dependency on target ``python3``, so it should only be used where
++appropriate in order to avoid unnecessarily lengthening builds.
++
++Some example recipes where this change has been made: ``gpgme``, ``libcap-ng``,
++``python3-pycairo``.
++
++
++.. _migration-3.3-bitbake:
++
++BitBake changes
++---------------
++
++- BitBake is now configured to use a default ``umask`` of ``022`` for all tasks
++  (specified via a new :term:`BB_DEFAULT_UMASK` variable). If needed, ``umask`` can
++  still be set on a per-task basis via the ``umask`` varflag on the task
++  function, but that is unlikely to be necessary in most cases.
++
++- If a version specified in :term:`PREFERRED_VERSION` is not available this
++  will now trigger a warning instead of just a note, making such issues more
++  visible.
++
++
++.. _migration-3.3-packaging:
++
++Packaging changes
++-----------------
++
++The following packaging changes have been made; in all cases the main package
++still depends upon the split out packages so you should not need to do anything
++unless you want to take advantage of the improved granularity:
++
++- ``dbus``: ``-common`` and ``-tools`` split out
++- ``iproute2``: split ``ip`` binary to its own package
++- ``net-tools``: split ``mii-tool`` into its own package
++- ``procps``: split ``ps`` and ``sysctl`` into their own packages
++- ``rpm``: split build and extra functionality into separate packages
++- ``sudo``: split ``sudo`` binary into ``sudo-sudo`` and libs into ``sudo-lib``
++- ``systemtap``: examples, python scripts and runtime material split out
++- ``util-linux``: ``libuuid`` has been split out to its own
++  ``util-linux-libuuid`` recipe (and corresponding packages) to avoid circular
++  dependencies if ``libgcrypt`` support is enabled in ``util-linux``.
++  (``util-linux`` depends upon ``util-linux-libuuid``.)
++
++
++.. _migration-3.3-misc:
++
++Miscellaneous changes
++---------------------
++
++- The default poky :term:`DISTRO_VERSION` value now uses the core metadata's
++  git hash (i.e. :term:`METADATA_REVISION`) rather than the date (i.e.
++  :term:`DATE`) to reduce one small source of non-reproducibility. You can
++  of course specify your own :term:`DISTRO_VERSION` value as desired
++  (particularly if you create your own custom distro configuration).
++- ``adwaita-icon-theme`` version 3.34.3 has been added back, and is selected
++  as the default via :term:`PREFERRED_VERSION` in
++  ``meta/conf/distro/include/default-versions.inc`` due to newer versions
++  not working well with ``librsvg`` 2.40. ``librsvg`` is not practically
++  upgradeable at the moment as it has been ported to Rust, and Rust is not
++  (yet) in OE-Core, but this will change in a future release.
++- ``ffmpeg`` is now configured to disable GPL-licensed portions by default
++  to make it harder to accidentally violate the GPL. To explicitly enable GPL
++  licensed portions, add ``gpl`` to :term:`PACKAGECONFIG` for ``ffmpeg``
++  using a bbappend (or use ``PACKAGECONFIG_append_pn-ffmpeg = " gpl"`` in
++  your configuration.)
++- ``connman`` is now set to conflict with ``systemd-networkd`` as they
++  overlap functionally and may interfere with each other at runtime.
++- Canonical SPDX license names are now used in image license manifests in
++  order to avoid aliases of the same license from showing up together (e.g.
++  ``GPLv2`` and ``GPL-2.0``)
+diff --git a/documentation/ref-manual/migration.rst b/documentation/ref-manual/migration.rst
+index 8d64a7d..a01d4ee 100644
+--- a/documentation/ref-manual/migration.rst
++++ b/documentation/ref-manual/migration.rst
+@@ -28,4 +28,5 @@ notes for a given release.
+    migration-3.0
+    migration-3.1
+    migration-3.2
++   migration-3.3
  
-+   :term:`REQUIRED_VERSION`
-+      If there are multiple versions of a recipe available, this variable
-+      determines which version should be given preference.
-+      :term:`REQUIRED_VERSION` works in exactly the same manner as
-+      :term:`PREFERRED_VERSION`, except that if the specified version is not
-+      available then an error message is shown and the build fails
-+      immediately.
-+
-+      If both :term:`REQUIRED_VERSION` and :term:`PREFERRED_VERSION` are set
-+      for the same recipe, the :term:`REQUIRED_VERSION` value applies.
-+
-    :term:`RM_WORK_EXCLUDE`
-       With ``rm_work`` enabled, this variable specifies a list of recipes
-       whose work directories should not be removed. See the
 -- 
 1.8.3.1
 
