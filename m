@@ -1,80 +1,73 @@
-Received: from bsmtp.bon.at (bsmtp.bon.at [213.33.87.14])
- by mx.groups.io with SMTP id smtpd.web08.4765.1618480759786706485
+Received: from linuxplesk15.openhost.net.nz (linuxplesk15.openhost.net.nz [119.47.118.83])
+ by mx.groups.io with SMTP id smtpd.web12.4878.1618481258814680205
  for <docs@lists.yoctoproject.org>;
- Thu, 15 Apr 2021 02:59:20 -0700
+ Thu, 15 Apr 2021 03:07:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.14, mailfrom: quentin.schulz@streamunlimited.com)
-Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp.bon.at (Postfix) with ESMTPSA id 4FLZYv5HGsz5tlH;
-	Thu, 15 Apr 2021 11:59:15 +0200 (CEST)
-Date: Thu, 15 Apr 2021 11:59:14 +0200
-From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-To: Paul Eggleton <bluelightning@bluelightning.org>
+ dkim=missing; spf=none, err=permanent DNS error (domain: bluelightning.org, ip: 119.47.118.83, mailfrom: bluelightning@bluelightning.org)
+Received: from linc.localnet (unknown [151.210.226.152])
+	by linuxplesk15.openhost.net.nz (Postfix) with ESMTPSA id 82E83A2F44;
+	Thu, 15 Apr 2021 22:07:36 +1200 (NZST)
+Authentication-Results: linuxplesk15.openhost.net.nz;
+	spf=pass (sender IP is 151.210.226.152) smtp.mailfrom=bluelightning@bluelightning.org smtp.helo=linc.localnet
+Received-SPF: pass (linuxplesk15.openhost.net.nz: connection is authenticated)
+From: "Paul Eggleton" <bluelightning@bluelightning.org>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 12/13] ref-manual: add migration section for 3.3 release
-Message-ID: <20210415095914.eqpunspm2rnpnc4v@qschulz>
+Subject: Re: [docs] [PATCH 09/13] ref-manual: add FIT_KERNEL_COMP_ALG*
+Date: Thu, 15 Apr 2021 22:07:36 +1200
+Message-ID: <6250809.G0QQBjFxQf@linc>
+In-Reply-To: <799bb8cf-ca33-325f-b717-f68db0b7a1ed@crashcourse.ca>
 References: <cover.1618358456.git.paul.eggleton@linux.microsoft.com>
- <d8b43077bf92ad403028cbf37b61c4a6349f9370.1618358456.git.paul.eggleton@linux.microsoft.com>
- <20210414082603.gmkxjpyxwnhwzzor@qschulz>
- <1712714.3VsfAaAtOV@linc>
+	<20210414081605.nkoys2ri63h2d75f@qschulz>
+	<799bb8cf-ca33-325f-b717-f68db0b7a1ed@crashcourse.ca>
 MIME-Version: 1.0
-In-Reply-To: <1712714.3VsfAaAtOV@linc>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+X-PPP-Message-ID: <20210415100736.3903113.35614@localhost6.localdomain6>
+X-PPP-Vhost: softec.co.nz
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-Hi Paul,
+Hi Robert
 
-On Thu, Apr 15, 2021 at 09:52:31PM +1200, Paul Eggleton wrote:
-> Hi Quentin
+On Wednesday, 14 April 2021 20:35:19 NZST Robert P. J. Day wrote:
+> On Wed, 14 Apr 2021, Quentin Schulz wrote:
+> > On Tue, Apr 13, 2021 at 05:19:50PM -0700, Paul Eggleton wrote:
+> > > --- a/documentation/ref-manual/variables.rst
+> > > +++ b/documentation/ref-manual/variables.rst
+> > > @@ -2580,6 +2580,17 @@ system and gives an overview of their function
+> > > and contents.> > 
+> > >     :term:`FIT_HASH_ALG`
+> > >     :
+> > >        Specifies the hash algorithm used in creating the FIT Image. For
+> > >        e.g. sha256.> > 
+> > > +   :term:`FIT_KERNEL_COMP_ALG`
+> > > +      Compression algorithm to use for the kernel image inside the
+> > > fitImage. +      At present, the only supported values are "gzip"
+> > > (default) or "none", +      which allows disabling of compression if it
+> > > would otherwise be enabled.> 
+> > I'm not a native speaker and I'm struggling to understand that last line,
+> > would it be possible for you to rephrase please?
 > 
-> Thanks for the review!
+>   i would just drop the second half of that second sentence -- the
+> first part says all that needs to be said:
 > 
-> On Wednesday, 14 April 2021 20:26:03 NZST Quentin Schulz wrote:
-> > On Tue, Apr 13, 2021 at 05:19:53PM -0700, Paul Eggleton wrote:
-> > > +BitBake changes
-> > > +---------------
-> > > +
-> > > +- BitBake is now configured to use a default ``umask`` of ``022`` for all
-> > > tasks +  (specified via a new ``BB_DEFAULT_UMASK`` variable). If needed,
-> > > ``umask`` can
-> > s/``BB_DEFAULT_UMASK``/:term:`BB_DEFAULT_UMASK`/
-> > 
-> > IIRC, this works fine even for bitbake terms (might need some tweaking
-> > if it does not work but I know we use :term: for some bitbake variables
-> > from bitbake's docs).
-> 
-> Wow, that does work but I didn't imagine that it would. Any idea how it 
-> resolves those references given that doc is not in this tree?
->  
+>   Compression algorithm to use for the kernel image inside the
+>   fitImage; at present, the only supported values are "gzip" (default)
+>   or "none".
 
-How internally it works? No idea :)
+Sounds reasonable, I've done exactly this. I also adjusted the text to remove 
+mention of setting  FIT_KERNEL_COMP_ALG_EXTENSION if FIT_KERNEL_COMP_ALG is 
+set to "none" (upon closer inspection that isn't necessary based on how the 
+code behaves).
 
-But the few lines here are what makes it work:
-https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/tree/documentation/conf.py#n90
+> i would pick nits with the varieties of the phrase "fitImage";
+> regardless of how it's used as a variable, i believe the proper
+> reference is "FIT image", which is how it should appear in the above,
+> methinks.
 
-Nicolas and/or other peoples involved in the migration might be able to
-tell you more, I'm not :/
+Yep I fixed this as well. We're not consistent with this in the existing text, 
+I haven't fixed that so we probably should in future.
 
-"it works for me" is enough to me right now :p
+Thanks,
+Paul
 
-[...]
 
-> > > +  (particularly if you create your own custom distro configuration).
-> > > +- The :ref:`ccache <ref-classes-ccache>` class now uses ``ccache`` from
-> > > the +  build host rather than building ``ccache-native`` (due to circular
-> > > +  dependencies in ccache 4.0 that are impractical to resolve otherwise),
-> > > so +  if you enable it you will now need to have ``ccache`` installed on
-> > > your +  host system.
-> > 
-> > Will a warning be shown if ccache is not installed on the host or does
-> > it silently fail to use ccache?
-> 
-> Good question, but on further digging I found the corresponding code change 
-> actually got reverted and I had missed that in my earlier sweep. Just as well 
-> you asked about it :)
-> 
-
-:)
-
-Cheers,
-Quentin
