@@ -1,45 +1,86 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web12.10144.1618389838312233675
+Received: from linuxplesk15.openhost.net.nz (linuxplesk15.openhost.net.nz [119.47.118.83])
+ by mx.groups.io with SMTP id smtpd.web09.4662.1618480356408091577
  for <docs@lists.yoctoproject.org>;
- Wed, 14 Apr 2021 01:43:58 -0700
+ Thu, 15 Apr 2021 02:52:36 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:44994 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lWb7s-00C1nE-Ru; Wed, 14 Apr 2021 04:43:57 -0400
-Date: Wed, 14 Apr 2021 04:43:54 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+ dkim=missing; spf=none, err=permanent DNS error (domain: bluelightning.org, ip: 119.47.118.83, mailfrom: bluelightning@bluelightning.org)
+Received: from linc.localnet (unknown [151.210.226.152])
+	by linuxplesk15.openhost.net.nz (Postfix) with ESMTPSA id 0820CA2DD1;
+	Thu, 15 Apr 2021 21:52:32 +1200 (NZST)
+Authentication-Results: linuxplesk15.openhost.net.nz;
+	spf=pass (sender IP is 151.210.226.152) smtp.mailfrom=bluelightning@bluelightning.org smtp.helo=linc.localnet
+Received-SPF: pass (linuxplesk15.openhost.net.nz: connection is authenticated)
+From: "Paul Eggleton" <bluelightning@bluelightning.org>
 To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-cc: Paul Eggleton <paul.eggleton@linux.microsoft.com>, 
-    docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 09/13] ref-manual: add FIT_KERNEL_COMP_ALG*
-In-Reply-To: <20210414084130.mkwaaber7rjjycfy@qschulz>
-Message-ID: <3ef1b8c6-5ce-c5b5-6775-aa60f2567150@crashcourse.ca>
-References: <cover.1618358456.git.paul.eggleton@linux.microsoft.com> <fedb9252444ceaaaa6567d381318ca02c119a3da.1618358456.git.paul.eggleton@linux.microsoft.com> <20210414081605.nkoys2ri63h2d75f@qschulz> <799bb8cf-ca33-325f-b717-f68db0b7a1ed@crashcourse.ca>
- <20210414084130.mkwaaber7rjjycfy@qschulz>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 12/13] ref-manual: add migration section for 3.3 release
+Date: Thu, 15 Apr 2021 21:52:31 +1200
+Message-ID: <1712714.3VsfAaAtOV@linc>
+In-Reply-To: <20210414082603.gmkxjpyxwnhwzzor@qschulz>
+References: <cover.1618358456.git.paul.eggleton@linux.microsoft.com>
+	<d8b43077bf92ad403028cbf37b61c4a6349f9370.1618358456.git.paul.eggleton@linux.microsoft.com>
+	<20210414082603.gmkxjpyxwnhwzzor@qschulz>
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+X-PPP-Message-ID: <20210415095232.3882469.64404@localhost6.localdomain6>
+X-PPP-Vhost: softec.co.nz
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, 14 Apr 2021, Quentin Schulz wrote:
+Hi Quentin
 
-... snip ...
+Thanks for the review!
 
-> We're planning to have all variable references to be :term:'ed
-> eventually, so better not add more to change later on :)
+On Wednesday, 14 April 2021 20:26:03 NZST Quentin Schulz wrote:
+> On Tue, Apr 13, 2021 at 05:19:53PM -0700, Paul Eggleton wrote:
+> > +BitBake changes
+> > +---------------
+> > +
+> > +- BitBake is now configured to use a default ``umask`` of ``022`` for all
+> > tasks +  (specified via a new ``BB_DEFAULT_UMASK`` variable). If needed,
+> > ``umask`` can
+> s/``BB_DEFAULT_UMASK``/:term:`BB_DEFAULT_UMASK`/
+> 
+> IIRC, this works fine even for bitbake terms (might need some tweaking
+> if it does not work but I know we use :term: for some bitbake variables
+> from bitbake's docs).
 
-  ah, i was unaware of that. carry on, then.
+Wow, that does work but I didn't imagine that it would. Any idea how it 
+resolves those references given that doc is not in this tree?
+ 
+> > +- ``iproute2``: split ip binary to its own package
+> 
+> s/ip/``ip``/
 
-rday
+Well spotted! Fixed.
+ 
+> > +- The default poky :term:`DISTRO_VERSION` value now uses the core
+> > metadata's +  git hash (i.e. :term:`METADATA_REVISION`) rather than the
+> > date (i.e. +  :term:`DATE`) to reduce one small source of
+> > non-reproducibility. You can +  of course specify your own
+> > ``DISTRO_VERSION`` value as desired
+> 
+> s/``DISTRO_VERSION``/:term:`DISTRO_VERSION`/
+
+Fixed.
+ 
+> > +  (particularly if you create your own custom distro configuration).
+> > +- The :ref:`ccache <ref-classes-ccache>` class now uses ``ccache`` from
+> > the +  build host rather than building ``ccache-native`` (due to circular
+> > +  dependencies in ccache 4.0 that are impractical to resolve otherwise),
+> > so +  if you enable it you will now need to have ``ccache`` installed on
+> > your +  host system.
+> 
+> Will a warning be shown if ccache is not installed on the host or does
+> it silently fail to use ccache?
+
+Good question, but on further digging I found the corresponding code change 
+actually got reverted and I had missed that in my earlier sweep. Just as well 
+you asked about it :)
+
+I've incorporated all of your other feedback and will send a new series 
+imminently.
+
+Cheers
+Paul
+
+
