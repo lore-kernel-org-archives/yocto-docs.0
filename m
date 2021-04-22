@@ -1,57 +1,80 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web10.9043.1618991443509161959
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+ by mx.groups.io with SMTP id smtpd.web10.9256.1619078099809410883
  for <docs@lists.yoctoproject.org>;
- Wed, 21 Apr 2021 00:50:43 -0700
+ Thu, 22 Apr 2021 00:55:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:44600 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lZ7dB-0007yv-29; Wed, 21 Apr 2021 03:50:41 -0400
-Date: Wed, 21 Apr 2021 03:50:37 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] current glossary entry for SPL_BINARY is out of date
-In-Reply-To: <20210420161232.4lekjsojozepgo5v@qschulz>
-Message-ID: <f6746379-f7d0-6c90-19ce-3ba6f3376643@crashcourse.ca>
-References: <eacf923-3eb3-649e-ff25-cddf43a466a@crashcourse.ca> <20210420161232.4lekjsojozepgo5v@qschulz>
+ dkim=pass header.i=@linaro.org header.s=google header.b=PfnLjRq8;
+ spf=pass (domain: linaro.org, ip: 209.85.221.45, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f45.google.com with SMTP id m9so31035805wrx.3
+        for <docs@lists.yoctoproject.org>; Thu, 22 Apr 2021 00:54:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8MnkDn3AILaMJYwbK3C5DhDpiW9eROnK8zfRq9vhelg=;
+        b=PfnLjRq8tTXVXc9PGSYmwqylaBgosqa/kpj1LGTHf70DKxDKUNfvxHrm/r0hIMeo7g
+         7nAz4NORaZQz2Tpoyx7eYVXeizyMD26bAnLKGnsm0Y2yFtNBAKkFIIX8rYZdAmtMlEXb
+         TtxnxJu1nzsP07q3LBPgkkiMVsTGuRyG9WQ78L2kgeR9gpY6tT0j11q5ial/XvtWQKoC
+         XoeO4o5EaYy/D4E8r7+t4hz/rGjYF9z+mKBQmy6xaYts5U9A+8BQGti7neik8Ek5cupj
+         BqO4A94j7426VKW4tSpbGZ76IZIosYkJAstqycnIlf5Zp42bUA1gFHWBXcmw6X4YF0J9
+         3PJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=8MnkDn3AILaMJYwbK3C5DhDpiW9eROnK8zfRq9vhelg=;
+        b=WmqQLh1hbDGb44rSMDIw/wShKZUd2SmizXMogfpYySoGnCdhj6UyK82iA0paVz6kpz
+         XZAyyr8l/lEsdp6MXy4+/ZNi1fiX6PM7bXY6Dja7l0R/FM/OX0SRl11/OoXMgpFCt9Ix
+         O1OmreghcqOcPyGSloJqyAHD1ttXpxnyLjtIrugpFGJjvNK+BcVBuxe0bGa3zEvAQ1tz
+         zeEY0c8pH+5hWcDgD+7kAjiQjIWJi2msUaQCraPkHTgDKDboRvKANT32v5tnkb3OL1rE
+         428M3PDICfc5zGv9Ncc7P8nO5F60ZHMoWIfsKs7zgQljtXnDaQldSBvgGUJEbjbOjM8J
+         5x1A==
+X-Gm-Message-State: AOAM533qqF0jSDlf7GEc0ed48iCcSAyVsDKGQgAw+Hu5Juna2Wel1/ZG
+	v/FdbXFVsJpkW/jSr+2juSVv89dE9I7Cel1s
+X-Google-Smtp-Source: ABdhPJzP5X3Zsj3HHZV++mKMBNcB/6NZQErt4dGEs2wIr2zjAT0qCqvWeAJHIjPyEfBLIEJSpGniEA==
+X-Received: by 2002:a05:6000:1789:: with SMTP id e9mr2561699wrg.110.1619078098140;
+        Thu, 22 Apr 2021 00:54:58 -0700 (PDT)
+Return-Path: <nicolas.dechesne@linaro.org>
+Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:97e3:5361:aa3:23fb])
+        by smtp.gmail.com with ESMTPSA id x17sm2014392wmi.46.2021.04.22.00.54.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Apr 2021 00:54:57 -0700 (PDT)
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+To: docs@lists.yoctoproject.org,
+	bitbake-devel@lists.openembedded.org
+Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+	Michal Piechowski <m.z.piechowski@gmail.com>
+Subject: [PATCH] doc: bitbake-user-manual: fix typo left over from Sphinx migration
+Date: Thu, 22 Apr 2021 09:54:54 +0200
+Message-Id: <20210422075454.258616-1-nicolas.dechesne@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Tue, 20 Apr 2021, Quentin Schulz wrote:
+Fixes d99760cc687c (sphinx: last manual round of fixes/improvements)
 
-> Hi Robert,
->
-> On Tue, Apr 20, 2021 at 07:50:29AM -0400, Robert P. J. Day wrote:
-> >
-> >   here:
-> >
-> > https://www.yoctoproject.org/docs/latest/ref-manual/ref-manual.html#var-SPL_BINARY
-> >
->
-> Please stop looking into those www.yoctoproject.org/docs/latest
-> links, you should use https://docs.yoctoproject.org instead. The
-> link you point to has stopped to be updated since 3.1.5 release
-> IIRC.
->
-> (Not saying your remark does not apply, just that to avoid future
-> alerts and prevent you to do some work that's already been done it
-> might make sense to look at actual latest version of the docs.
+Reported-by: Michal Piechowski <m.z.piechowski@gmail.com>
+Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+---
+ doc/bitbake-user-manual/bitbake-user-manual-hello.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-  yes, my fault, i had followed a link and hadn't noticed the URL was
-not the right one. apologies.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-hello.rst b/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
+index e3fd3215..fab1e8a6 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
+@@ -325,9 +325,9 @@ Following is the complete "Hello World" example.
+     following: ::
+ 
+       BBPATH .= ":${LAYERDIR}"
+-      BBFILES += "${LAYERDIR}/\*.bb"
++      BBFILES += "${LAYERDIR}/*.bb"
+       BBFILE_COLLECTIONS += "mylayer"
+-     `BBFILE_PATTERN_mylayer := "^${LAYERDIR_RE}/"
++      BBFILE_PATTERN_mylayer := "^${LAYERDIR_RE}/"
+ 
+     For information on these variables, click on :term:`BBFILES`,
+     :term:`LAYERDIR`, :term:`BBFILE_COLLECTIONS` or :term:`BBFILE_PATTERN_mylayer <BBFILE_PATTERN>`
+-- 
+2.31.1
 
-rday
