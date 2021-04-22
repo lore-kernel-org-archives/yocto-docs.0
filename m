@@ -1,158 +1,88 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
- by mx.groups.io with SMTP id smtpd.web08.9304.1619078347932049321
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+ by mx.groups.io with SMTP id smtpd.web12.9895.1619082839861754588
  for <docs@lists.yoctoproject.org>;
- Thu, 22 Apr 2021 00:59:08 -0700
+ Thu, 22 Apr 2021 02:14:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=jsGKIRXC;
- spf=pass (domain: linaro.org, ip: 209.85.208.43, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-ed1-f43.google.com with SMTP id i3so26612576edt.1
-        for <docs@lists.yoctoproject.org>; Thu, 22 Apr 2021 00:59:07 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=CIFEtPO9;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.42, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f42.google.com with SMTP id w4so40299963wrt.5
+        for <docs@lists.yoctoproject.org>; Thu, 22 Apr 2021 02:13:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bRpTVfkB7TBfUo1uWR4l+FjF9fdvztrlug0VlVFagS4=;
-        b=jsGKIRXCU+EvNVlKJ5CZ1kt1nbM7B2Mvj/FI7T3osbnXnv56zS0wZ804mNQ4b0aL5o
-         iT2s42FY7OeQUxGHPJsDQ/RboTwqnN+cAj5QItuWg2txxcpY1QpSizjaqh2qYnWxhFKK
-         1FwNGZZgdRq6FR0wmnvoFiZeCgR443fCRsDacizRsd4hwMsE3U95R8iQEewOYo9RdmC7
-         cjwLsUg3SzLg/jLe2PhsroSlww21trtZk2NgTsJwt80PsklViHeTSTVKgQMD9hR5FzE3
-         dIM1XHBltAG79A7333WeIPkJixtB8PI5MagT/LdRaTt1Qp71GfCaH1TkNzO7CXshdnTr
-         /nHA==
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=PWvdQWUBzkX8Ak6aRTUXuDlzJGYjDosyW6LPgqijla4=;
+        b=CIFEtPO9CVAu0rhDrnp/ai1K1Nu3wT5lmeRdl3SYTi1bCIgrnPDxf8fOjUcovkVCSv
+         msQx8NF8VlBfoiBG+0/U//gMm7UgWtweUF7Zb1V2ZVgAqTUa6fpMl8C+Gkik+DyB5Hwa
+         5wM/5igSRq+xIEfb8s89D4ktrCAU85ojC6qHA=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bRpTVfkB7TBfUo1uWR4l+FjF9fdvztrlug0VlVFagS4=;
-        b=t5DcMVEaNEXlQY0R1P4xk5wFwEOP81VTP0A1+wayiLUP4d1kD6TqMy9ynv74nwthen
-         WkM+5XW1JK2ntKSLgc4UOMMi9fhU5C/WwSc6/tLzVlLn4HjQA2Pz+ZbyN4/Mz9GSRm3n
-         pOd3b6tpx7wi8InoJU/xTzgjMOtcu/b2qdZEuEXmOpY/wwZXld7RZHfBWxC3DwuEpFdl
-         YhR7WmPLRS2G/oI/sxZZNk44vbrLDrFjo3xNL3anmTquKpWefWXTvBiP5/0NeFVq10s9
-         s6lhHw3xcVKQsFfk+935ofkqq9AfTl+x+5wcFzSctVOQB1wGarMYd0BgTdhhaJZSyfYC
-         4WlA==
-X-Gm-Message-State: AOAM533mINbjFRpNEu065pjZ287Zq8UPiq8gorlBTb/tY8fk/dr5+wAT
-	Bu4PbzssFb2bnxoeftyUZrt8Kr3H4VVGC9rzJhbSdYh6+HA=
-X-Google-Smtp-Source: ABdhPJxeUDiRDDKl6O5mMjxltFmXp/Xc8XgD81d/9S0/XzXpHb474V62hz9mxB4Q2svhu/VcgOqmvWo1a3rZrX5HIaU=
-X-Received: by 2002:a50:c44f:: with SMTP id w15mr2193550edf.79.1619078346317;
- Thu, 22 Apr 2021 00:59:06 -0700 (PDT)
-MIME-Version: 1.0
-References: <7f2f05a5-7492-ff74-e756-09937f59643f@bootlin.com>
-In-Reply-To: <7f2f05a5-7492-ff74-e756-09937f59643f@bootlin.com>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Thu, 22 Apr 2021 09:58:55 +0200
-Message-ID: <CAP71WjxRhwcrzjKh8gKTiuby1HBtMn0C-ikkHXM2WrRt=Qm75A@mail.gmail.com>
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=PWvdQWUBzkX8Ak6aRTUXuDlzJGYjDosyW6LPgqijla4=;
+        b=IQqPNGObsxAGAmUslnQ4qHf+0rk/gMQzrB+8PgnGaxH+A6106ghPkXdG8oCr6oS7to
+         hQlsvoNo5MBXomexffzvEcxGPEgdwdHDRQpD1VY2HMxsVQgAm4uBzr816aXZr1VWwq1E
+         XjD0AnUAdaiZDRKHr8SFXGsGA92nNtRY+7JNs8zWRx9XWKP8fiWB/ASO7+7lxMqNy1++
+         QWqxsrcAk243OCpNWvpfY31mkqod/DVEha0JKqhT627IF3Ne9d+U/HTW7li/HCJgJkRa
+         TIboL7hnSqp14QYcN+2oN1POrQq7kIvtbTmI6qENodGCgLSKAN9EMCSpd+FFTj5THZMq
+         soZg==
+X-Gm-Message-State: AOAM532YW2kBJAGWxfo0CZZIE+gUJCLpzI4RwuXgZZm929BmyAhW1ffS
+	sWjwf1f68H2Jj4BAqoUE9FnEZw==
+X-Google-Smtp-Source: ABdhPJyR3IaXzDoiP+J9xiFJJ66WoTZcfzV9khLWqz9w7wRqDzKhjbjL+7uovscmLzh9bqbDJsTBLg==
+X-Received: by 2002:a5d:4412:: with SMTP id z18mr2983391wrq.28.1619082838376;
+        Thu, 22 Apr 2021 02:13:58 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from ?IPv6:2001:8b0:aba:5f3c:bd84:c44c:f28b:9534? ([2001:8b0:aba:5f3c:bd84:c44c:f28b:9534])
+        by smtp.gmail.com with ESMTPSA id v189sm6278589wmg.9.2021.04.22.02.13.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Apr 2021 02:13:58 -0700 (PDT)
+Message-ID: <7f0f5f4c9bb5bc35972dc6db560c30247c48099c.camel@linuxfoundation.org>
 Subject: Re: [docs] Vector sources for the manual figures ?
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000b250ca05c08b0d7b"
-
---000000000000b250ca05c08b0d7b
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>, YP docs mailing
+ list <docs@lists.yoctoproject.org>
+Date: Thu, 22 Apr 2021 10:13:54 +0100
+In-Reply-To: <7f2f05a5-7492-ff74-e756-09937f59643f@bootlin.com>
+References: <7f2f05a5-7492-ff74-e756-09937f59643f@bootlin.com>
+User-Agent: Evolution 3.40.0-1 
+MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-hey Michael,
-
-On Tue, Apr 20, 2021 at 6:10 PM Michael Opdenacker <
-michael.opdenacker@bootlin.com> wrote:
-
-> Greetings,
->
+On Tue, 2021-04-20 at 18:10 +0200, Michael Opdenacker wrote:
 > In the YP manual sources, all the figures are in PNG format. Except for
-> screenshots, that's far from ideal for high resolution printing and
-> viewing!
->
+> screenshots, that's far from ideal for high resolution printing and viewing!
+> 
 > Don't we have vector sources of such diagrams anywhere, so that I can
 > export them to SVG? Don't tell me they were lost during the migration to
 > Egypt. I mean the migration to Sphinx ;-P
->
 
-Nothing was lost/destroyed as part of the migration for sure. And we use
-git, so nothing can be lost anyways.
-I've used the .png files since they were used in the docbook docs, and
-available in yocto-docs, but I am not aware if the 'sources' for these PNG
-were some actual SVG.
+Unfortunately I don't think we do have the original sources for most of them.
+There are some source files here:
 
+http://git.yoctoproject.org/cgit.cgi/yocto-docs/tree/diagrams/poky-buildprocess
 
->
+for the architecture diagram, added by me back in 2011 as I wanted to ensure
+we did have the sources but Scott handled most of the others and I don't think 
+Scott did this. Sadly we can't ask him now.
+
 > In particular, I'm asking because I managed to find a way to see the
 > figures in full-width in the epub output (using my KOBO reader to read
 > the manuals when I'm not in front of my computer, but the figures are
 > always too small and therefore unreadable). You just need to add
 > ":width: 100%" to each image insertion, and this doesn't seem to disturb
 > the HTML output which already looks correct.
->
+> 
 > I'll propose a patch soon, but the results would be even better with
 > vector figures :)
->
-> Thanks in advance,
->
-> Michael.
->
-> --
-> Michael Opdenacker, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
->
-> 
->
->
 
---000000000000b250ca05c08b0d7b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Over time we may want to look at rebuilding them but other than the older
+architecture diagram, I think we would have to rebuild.
 
-<div dir=3D"ltr"><div dir=3D"ltr">hey Michael,</div><br><div class=3D"gmail=
-_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Apr 20, 2021 at 6:10 =
-PM Michael Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com"=
->michael.opdenacker@bootlin.com</a>&gt; wrote:<br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
-gb(204,204,204);padding-left:1ex">Greetings,<br>
-<br>
-In the YP manual sources, all the figures are in PNG format. Except for<br=
->
-screenshots, that&#39;s far from ideal for high resolution printing and vi=
-ewing!<br>
-<br>
-Don&#39;t we have vector sources of such diagrams anywhere, so that I can<=
-br>
-export them to SVG? Don&#39;t tell me they were lost during the migration =
-to<br>
-Egypt. I mean the migration to Sphinx ;-P<br></blockquote><div><br></div><=
-div>Nothing was lost/destroyed as part of the migration for sure. And we us=
-e git, so nothing can be lost anyways.=C2=A0</div><div>I&#39;ve used the .p=
-ng files since they were used in the docbook docs, and available in yocto-d=
-ocs, but I am not aware if the &#39;sources&#39; for these PNG were some ac=
-tual SVG.</div><div>=C2=A0<br></div><blockquote class=3D"gmail_quote" style=
-=
-=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);paddin=
-g-left:1ex">
-<br>
-In particular, I&#39;m asking because I managed to find a way to see the<b=
-r>
-figures in full-width in the epub output (using my KOBO reader to read<br>
-the manuals when I&#39;m not in front of my computer, but the figures are<=
-br>
-always too small and therefore unreadable). You just need to add<br>
-&quot;:width: 100%&quot; to each image insertion, and this doesn&#39;t see=
-m to disturb<br>
-the HTML output which already looks correct.<br>
-<br>
-I&#39;ll propose a patch soon, but the results would be even better with<b=
-r>
-vector figures :)<br>
-<br>
-Thanks in advance,<br>
-<br>
-Michael.<br>
-<br>
--- <br>
-Michael Opdenacker, Bootlin<br>
-Embedded Linux and Kernel engineering<br>
-<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https=
-://bootlin.com</a><br>
-<br>
-<br>
-<br>
-<br>
-</blockquote></div></div>
+I know there was an issue reported with a diagram recently and I ended up
+editing a few pixels by hand!
 
---000000000000b250ca05c08b0d7b--
+Cheers,
+
+Richard
+
