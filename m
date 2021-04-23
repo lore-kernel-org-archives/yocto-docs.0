@@ -1,63 +1,49 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web08.2023.1619195478336899667
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web09.2080.1619195936695547409
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Apr 2021 09:31:18 -0700
+ Fri, 23 Apr 2021 09:38:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 X-Originating-IP: 92.150.42.106
-Received: from localhost (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
+Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
 	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 509E7E0009;
-	Fri, 23 Apr 2021 16:31:15 +0000 (UTC)
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id CD2E2C0010;
+	Fri, 23 Apr 2021 16:38:44 +0000 (UTC)
+Cc: michael.opdenacker@bootlin.com, bitbake-devel@lists.openembedded.org,
+ docs@lists.yoctoproject.org
+Subject: Re: [bitbake-devel] [PATCH] README: update/fix contribution guidelines
+To: Martin Jansa <martin.jansa@gmail.com>
+References: <20210423163108.338904-1-michael.opdenacker@bootlin.com>
+ <20210423163441.zyojiy5w3b2kp3ao@jama>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: bitbake-devel@lists.openembedded.org,
-	docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] README: update/fix contribution guidelines
-Date: Fri, 23 Apr 2021 18:31:08 +0200
-Message-Id: <20210423163108.338904-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+Organization: Bootlin
+Message-ID: <45815b7c-debd-edd0-8f7c-9f62a17fb2eb@bootlin.com>
+Date: Fri, 23 Apr 2021 18:38:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210423163441.zyojiy5w3b2kp3ao@jama>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-- Ask to CC the docs@lists.yoctoproject.org mailing list
-- doc/README: fix the command to generate the manual
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- README     | 5 +++++
- doc/README | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+On 4/23/21 6:34 PM, Martin Jansa wrote:
+> On Fri, Apr 23, 2021 at 06:31:08PM +0200, Michael Opdenacker wrote:
+>> - Ask to CC the docs@lists.yoctoproject.org mailing list
+> it adds 2nd --to
+>
+> which is probably fine, just doesn't match with commit message
 
-diff --git a/README b/README
-index 96e6007e..5034a9bf 100644
---- a/README
-+++ b/README
-@@ -26,6 +26,11 @@ branch, type:
- 
-     git send-email -M -1 --to bitbake-devel@lists.openembedded.org
- 
-+If you're sending a patch related to the BitBake manual, make sure you copy
-+the Yocto Project documentation mailing list:
-+
-+    git send-email -M -1 --to bitbake-devel@lists.openembedded.org --to docs@lists.yoctoproject.org
-+
- Mailing list:
- 
-     http://lists.openembedded.org/mailman/listinfo/bitbake-devel
-diff --git a/doc/README b/doc/README
-index cbb5215d..1f8e0f6e 100644
---- a/doc/README
-+++ b/doc/README
-@@ -47,7 +47,7 @@ To install all required packages run:
- 
- To build the documentation locally, run:
- 
-- $ cd documentation
-+ $ cd doc
-  $ make html
- 
- The resulting HTML index page will be _build/html/index.html, and you
+
+Oops, I'll fix this. Good catch!
+
+Thanks
+
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
