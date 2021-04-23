@@ -1,71 +1,55 @@
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web09.1459.1619193548303935261
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web09.1541.1619193846789343028
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Apr 2021 08:59:08 -0700
+ Fri, 23 Apr 2021 09:04:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
 X-Originating-IP: 92.150.42.106
-Received: from localhost (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
+Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
 	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 7BC63E0005;
-	Fri, 23 Apr 2021 15:59:05 +0000 (UTC)
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 2/2] doc: bitbake-user-manual: code insertion simplification over two lines
-Date: Fri, 23 Apr 2021 17:58:59 +0200
-Message-Id: <20210423155859.338408-2-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210423155859.338408-1-michael.opdenacker@bootlin.com>
+	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id C27004000B;
+	Fri, 23 Apr 2021 16:04:04 +0000 (UTC)
+Subject: Re: [docs] [PATCH 2/2] doc: bitbake-user-manual: code insertion simplification over two lines
+To: docs@lists.yoctoproject.org,
+ BitBake developer list <bitbake-devel@lists.openembedded.org>
 References: <20210423155859.338408-1-michael.opdenacker@bootlin.com>
+ <167887F42F1ED7F7.27757@lists.yoctoproject.org>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <abf966ee-0ec9-dad0-b0b6-92321345a5bd@bootlin.com>
+Date: Fri, 23 Apr 2021 18:04:03 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <167887F42F1ED7F7.27757@lists.yoctoproject.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-This simplifies paragraphs ending with a colon and followed
-by code insertion.
 
-Automatically substituted through the command:
-sed -i -z "s/:\n\s*::/::/g" file.rst
+On 4/23/21 5:58 PM, Michael Opdenacker wrote:
+> This simplifies paragraphs ending with a colon and followed
+> by code insertion.
+>
+> Automatically substituted through the command:
+> sed -i -z "s/:\n\s*::/::/g" file.rst
+>
+> This generates identical HTML output.
+>
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-This generates identical HTML output.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- doc/bitbake-user-manual/bitbake-user-manual-fetching.rst | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+Oops, just realized after sending that I forgot to copy
+bitbake-devel@lists.openembedded.org.
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-index 3167ab13..bd1fb4fc 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-@@ -232,15 +232,13 @@ Some example URLs are as follows::
- 
-    Because URL parameters are delimited by semi-colons, this can
-    introduce ambiguity when parsing URLs that also contain semi-colons,
--   for example:
--   ::
-+   for example::
- 
-            SRC_URI = "http://abc123.org/git/?p=gcc/gcc.git;a=snapshot;h=a5dd47"
- 
- 
-    Such URLs should should be modified by replacing semi-colons with '&'
--   characters:
--   ::
-+   characters::
- 
-            SRC_URI = "http://abc123.org/git/?p=gcc/gcc.git&a=snapshot&h=a5dd47"
- 
-@@ -248,8 +246,7 @@ Some example URLs are as follows::
-    In most cases this should work. Treating semi-colons and '&' in
-    queries identically is recommended by the World Wide Web Consortium
-    (W3C). Note that due to the nature of the URL, you may have to
--   specify the name of the downloaded file as well:
--   ::
-+   specify the name of the downloaded file as well::
- 
-            SRC_URI = "http://abc123.org/git/?p=gcc/gcc.git&a=snapshot&h=a5dd47;downloadfilename=myfile.bz2"
- 
+I'm resending to both lists...
+
+Apologies for the noise.
+
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
