@@ -1,32 +1,62 @@
-Received: from bsmtp3.bon.at (bsmtp3.bon.at [213.33.87.17])
- by mx.groups.io with SMTP id smtpd.web12.5145.1619434020659379874
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.8887.1619451530584310254
  for <docs@lists.yoctoproject.org>;
- Mon, 26 Apr 2021 03:47:01 -0700
+ Mon, 26 Apr 2021 08:38:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.17, mailfrom: quentin.schulz@streamunlimited.com)
-Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp3.bon.at (Postfix) with ESMTPSA id 4FTM5t2x4Yz5tlH;
-	Mon, 26 Apr 2021 12:46:58 +0200 (CEST)
-Date: Mon, 26 Apr 2021 12:46:57 +0200
-From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-Cc: openembedded-core@lists.openembedded.org, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] dev-manual/common-tasks.rst: correct the documentation for debuginfod
-Message-ID: <20210426104657.yeyfms3riieplyia@qschulz>
-References: <20210426104210.789444-1-alex.kanavin@gmail.com>
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+X-Originating-IP: 92.150.42.106
+Received: from [10.0.0.12] (lfbn-mar-1-834-106.w92-150.abo.wanadoo.fr [92.150.42.106])
+	(Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 88FB0C000B;
+	Mon, 26 Apr 2021 15:38:38 +0000 (UTC)
+Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
+Subject: Re: [bitbake-devel] [docs] [PATCH v2] README: update/fix contribution guidelines
+To: Quentin Schulz <quentin.schulz@streamunlimited.com>
+References: <16788A2044914AF0.27757@lists.openembedded.org>
+ <20210423175429.340205-1-michael.opdenacker@bootlin.com>
+ <20210426084313.v3ulmf3xk7euu2lm@qschulz>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <ddf7b641-150b-e64c-9297-df5d364a1f16@bootlin.com>
+Date: Mon, 26 Apr 2021 17:38:37 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-In-Reply-To: <20210426104210.789444-1-alex.kanavin@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20210426084313.v3ulmf3xk7euu2lm@qschulz>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-Hi Alex,
+Hi Quentin,
 
-Could you please add the v2/v3/vwhatever in the mail subject next time?
-You can do so by passing `-v 2` to `git format-patch`. This helps us
-keep track of which version of a patch should be merged (well, it helps
-Michael :p) and on which patch series to answer/rewview.
+On 4/26/21 10:43 AM, Quentin Schulz wrote:
+> Hi Michael,
+>
+> On Fri, Apr 23, 2021 at 07:54:29PM +0200, Michael Opdenacker wrote:
+>> - Ask to CC the docs@lists.yoctoproject.org mailing list
+>> - doc/README: fix the command to generate the manual
+>>
+> Usually, when you have to make a list in a commit log of things you did,
+> it's telling you that there should be multiple commits. Here you two
+> changes are not related.
+>
+> Anyway, that's just me picking nits, I wouldn't have replied if it wasn't
+> to give my
+>
+> Reviewed-by: Quentin Schulz <foss@0leil.net>
 
-No need to do it this time :)
 
-Thanks for the patch, LGTM!
-Quentin
+Many thanks for your review and for your kind advice. Indeed, the
+changes were related to documentation, but independent from each other.
+I'll remember that next time
+
+Thanks again, and thanks to Richard for having merged this change into
+"master"!
+
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
