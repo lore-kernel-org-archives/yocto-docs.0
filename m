@@ -1,22 +1,22 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web09.9431.1619777012550500138
+ by mx.groups.io with SMTP id smtpd.web12.10428.1619784679073817727
  for <docs@lists.yoctoproject.org>;
- Fri, 30 Apr 2021 03:03:33 -0700
+ Fri, 30 Apr 2021 05:11:19 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:48356 helo=fedora)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:49594 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lcPzg-00052F-6H
-	for docs@lists.yoctoproject.org; Fri, 30 Apr 2021 06:03:31 -0400
-Date: Fri, 30 Apr 2021 06:03:28 -0400 (EDT)
+	id 1lcRzJ-0002MV-R4
+	for docs@lists.yoctoproject.org; Fri, 30 Apr 2021 08:11:18 -0400
+Date: Fri, 30 Apr 2021 08:11:14 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] sdk-manual: fix broken formatting of sample command
-Message-ID: <53696327-b187-808d-29cb-0d007ef27@crashcourse.ca>
+Subject: trying to keep the variable glossary up to date
+Message-ID: <e1a39395-2a7c-895f-a977-d6baf87fba94@crashcourse.ca>
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-0.2
+X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
 X-AntiAbuse: Original Domain - lists.yoctoproject.org
@@ -30,35 +30,24 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+  unsurprisingly, the list of variables in the variable glossary lags
+noticeably behind all of the recent (and even not so recent) variables
+in use. as one example i'm perusing right now, there are a number of
+BUILDHISTORY-related variables that aren't in the glossary, such as:
 
----
+  BUILDHISTORY_RESET
+  BUILDHISTORY_SDK_FILES
+  BUILDHISTORY_DIR_IMAGE
+  BUILDHISTORY_DIR_PACKAGE
 
-diff --git a/documentation/sdk-manual/appendix-obtain.rst b/documentation/sdk-manual/appendix-obtain.rst
-index 0ce828aa2..0d1422ed4 100644
---- a/documentation/sdk-manual/appendix-obtain.rst
-+++ b/documentation/sdk-manual/appendix-obtain.rst
-@@ -138,9 +138,11 @@ build the SDK installer. Follow these steps:
+there's more but that's enough to make the point, which inspires the
+obvious question -- is it even worth trying to keep up?
 
- 6. *Build the SDK Installer:* To build the SDK installer for a standard
-    SDK and populate the SDK image, use the following command form. Be
--   sure to replace image with an image (e.g. "core-image-sato"): $
--   bitbake image -c populate_sdk You can do the same for the extensible
--   SDK using this command form::
-+   sure to replace image with an image (e.g. "core-image-sato")::
-+
-+      $ bitbake image -c populate_sdk
-+
-+   You can do the same for the extensible SDK using this command form::
+  is there a reasonably methodical way to try to stay on top of this?
+or is that just doomed to failure? certainly, there are variables that
+are totally local to some focused bit of processing and merit no
+explanation, but for any variables that might be of interest to the
+developer, is it the goal for *all* of those variables to be in the
+glossary?
 
-       $ bitbake image -c populate_sdk_ext
-
-
--- 
-
-========================================================================
-Robert P. J. Day                                 Ottawa, Ontario, CANADA
-                         http://crashcourse.ca
-
-LinkedIn:                               http://ca.linkedin.com/in/rpjday
-========================================================================
+rday
