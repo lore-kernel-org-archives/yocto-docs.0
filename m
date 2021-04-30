@@ -1,88 +1,58 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web09.11832.1619616444187625594
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web08.9400.1619776613343514096
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Apr 2021 06:27:24 -0700
+ Fri, 30 Apr 2021 02:56:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-X-Originating-IP: 109.208.196.11
-Received: from localhost (lfbn-mar-1-666-11.w109-208.abo.wanadoo.fr [109.208.196.11])
-	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 6C57A2000C;
-	Wed, 28 Apr 2021 13:27:21 +0000 (UTC)
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] dev-manual: update references to Docker installation instructions
-Date: Wed, 28 Apr 2021 15:27:11 +0200
-Message-Id: <20210428132711.421123-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:48306 helo=fedora)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1lcPtE-0003xD-1F
+	for docs@lists.yoctoproject.org; Fri, 30 Apr 2021 05:56:51 -0400
+Date: Fri, 30 Apr 2021 05:56:48 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] sdk-manual: "beablebone" -> "beaglebone"
+Message-ID: <a792186f-e483-e9d9-88a2-b2cf65a6a66c@crashcourse.ca>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-Update Docker installation URL on various plaforms, replacing
-some URLs by the ones they now redirect to, renaming "Docker CE"
-to "Docker Desktop" on Mac and Windows, and to "Docker Engine"
-on GNU/Linux.
 
-Stop mentioning "Docker Toolbox" which is now deprecated and
-replaced by "Docker Desktop" on Mac and Windows.
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/start.rst | 28 ++++++++++------------------
- 1 file changed, 10 insertions(+), 18 deletions(-)
 
-diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
-index f8c8637d47..18fd8ccf60 100644
---- a/documentation/dev-manual/start.rst
-+++ b/documentation/dev-manual/start.rst
-@@ -387,36 +387,28 @@ as your Yocto Project build host:
-    software. Follow the instructions for your specific machine and the
-    type of the software you need to install:
- 
--   -  Install `Docker CE for
-+   -  Install `Docker Desktop on
-       Windows <https://docs.docker.com/docker-for-windows/install/#install-docker-desktop-on-windows>`__
-       for Windows build hosts that meet requirements.
- 
--   -  Install `Docker CE for
-+   -  Install `Docker Desktop on
-       MacOs <https://docs.docker.com/docker-for-mac/install/#install-and-run-docker-desktop-on-mac>`__
-       for Mac build hosts that meet requirements.
- 
--   -  Install `Docker Toolbox for
--      Windows <https://docs.docker.com/toolbox/toolbox_install_windows/>`__
--      for Windows build hosts that do not meet Docker requirements.
--
--   -  Install `Docker Toolbox for
--      MacOS <https://docs.docker.com/toolbox/toolbox_install_mac/>`__
--      for Mac build hosts that do not meet Docker requirements.
--
--   -  Install `Docker CE for
--      CentOS <https://docs.docker.com/install/linux/docker-ce/centos/>`__
-+   -  Install `Docker Engine on
-+      CentOS <https://docs.docker.com/engine/install/centos/>`__
-       for Linux build hosts running the CentOS distribution.
- 
--   -  Install `Docker CE for
--      Debian <https://docs.docker.com/install/linux/docker-ce/debian/>`__
-+   -  Install `Docker Engine on
-+      Debian <https://docs.docker.com/engine/install/debian/>`__
-       for Linux build hosts running the Debian distribution.
- 
--   -  Install `Docker CE for
--      Fedora <https://docs.docker.com/install/linux/docker-ce/fedora/>`__
-+   -  Install `Docker Engine for
-+      Fedora <https://docs.docker.com/engine/install/fedora/>`__
-       for Linux build hosts running the Fedora distribution.
- 
--   -  Install `Docker CE for
--      Ubuntu <https://docs.docker.com/install/linux/docker-ce/ubuntu/>`__
-+   -  Install `Docker Engine for
-+      Ubuntu <https://docs.docker.com/engine/install/ubuntu/>`__
-       for Linux build hosts running the Ubuntu distribution.
- 
- 5. *Optionally Orient Yourself With Docker:* If you are unfamiliar with
+diff --git a/documentation/sdk-manual/appendix-obtain.rst b/documentation/sdk-manual/appendix-obtain.rst
+index 0ce828aa2..7927dbea1 100644
+--- a/documentation/sdk-manual/appendix-obtain.rst
++++ b/documentation/sdk-manual/appendix-obtain.rst
+@@ -253,7 +253,7 @@ Follow these steps to extract the root filesystem:
+
+       $ runqemu-extract-sdk ~/Downloads/core-image-sato-sdk-beaglebone-yocto.tar.bz2 ~/beaglebone-sato
+
+-   You could now point to the target sysroot at ``beablebone-sato``.
++   You could now point to the target sysroot at ``beaglebone-sato``.
+
+ Installed Standard SDK Directory Structure
+ ==========================================
+
 -- 
-2.25.1
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
+
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
