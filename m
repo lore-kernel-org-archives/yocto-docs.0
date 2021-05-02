@@ -1,20 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web10.18887.1619952011872665143
+ by mx.groups.io with SMTP id smtpd.web08.19655.1619958637793249792
  for <docs@lists.yoctoproject.org>;
- Sun, 02 May 2021 03:40:12 -0700
+ Sun, 02 May 2021 05:30:38 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:35410 helo=fedora)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:36104 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1ld9WD-0004Ga-TI
-	for docs@lists.yoctoproject.org; Sun, 02 May 2021 06:40:10 -0400
-Date: Sun, 2 May 2021 06:40:07 -0400 (EDT)
+	id 1ldBF6-0007xL-BR
+	for docs@lists.yoctoproject.org; Sun, 02 May 2021 08:30:36 -0400
+Date: Sun, 2 May 2021 08:30:33 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: can the docs de-emphasize running oe-init-build-env in source directory?
-Message-ID: <ed5858a2-981b-ead4-71ab-7b4c31fbcb53@crashcourse.ca>
+Subject: confusion in sdk-manual, extracting the root filesystem
+Message-ID: <c356a581-15b7-eb18-1252-30fc248fd4cc@crashcourse.ca>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -30,22 +30,21 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-  currently working on:
+  at the very end of this section:
 
-http://docs.yoctoproject.org/sdk-manual/appendix-obtain.html#building-an-sdk-installer
+http://docs.yoctoproject.org/sdk-manual/appendix-obtain.html#extracting-the-root-filesystem
 
-and i read:
+one reads:
 
-"3. Initialize the Build Environment: While in the root directory of
-the Source Directory (i.e. poky), run the oe-init-build-env
-environment setup script to define the OpenEmbedded build environment
-on your build host..."
+  "This command extracts the root filesystem into the core2-64-sato
+  directory:
 
-  is it worth rewording certain passages to encourage developers to
-create their build directories somewhere other than the source
-directory? i can't remember the last time i initialized my build
-directory in the source directory.
+  $ runqemu-extract-sdk \
+	~/Downloads/core-image-sato-sdk-beaglebone-yocto.tar.bz2 \
+	~/beaglebone-sato
 
-  thoughts?
+
+that doesn't look right, the mismatch between "core6-64-sato" in the
+opening sentence, and "~/beaglebone-sato" in the command. thoughts?
 
 rday
