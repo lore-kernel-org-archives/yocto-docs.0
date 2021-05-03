@@ -1,42 +1,77 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web10.35985.1620057884904677382
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.36289.1620058332054401466
  for <docs@lists.yoctoproject.org>;
- Mon, 03 May 2021 09:04:45 -0700
+ Mon, 03 May 2021 09:12:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:46392 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1ldb3r-0005aG-8T; Mon, 03 May 2021 12:04:43 -0400
-Date: Mon, 3 May 2021 12:04:39 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-cc: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] sdk-manual: various cleanups to intro.rst
-In-Reply-To: <28ac87f4-6a76-8cfa-7528-40d020b97b56@bootlin.com>
-Message-ID: <49aebfce-ec8-b27c-f7ba-ba20d8924f46@crashcourse.ca>
-References: <f8833f4-34ab-98d2-ede1-881bf279ee60@crashcourse.ca> <BB89D528-4B9B-4E2A-808E-F679154865B2@0leil.net> <600b21c7-859d-ae19-4d2d-19e3807a79d9@bootlin.com> <73edbf27-7a4a-b1ab-a674-c89483566336@crashcourse.ca>
- <28ac87f4-6a76-8cfa-7528-40d020b97b56@bootlin.com>
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+X-Originating-IP: 109.208.196.11
+Received: from [10.0.0.19] (lfbn-mar-1-666-11.w109-208.abo.wanadoo.fr [109.208.196.11])
+	(Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 43F1160009;
+	Mon,  3 May 2021 16:12:08 +0000 (UTC)
+Subject: Re: [docs] can all references to "lsb" in docs be removed?
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+References: <321fc26-93d6-c91b-43c4-b3f02458dfd@crashcourse.ca>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <7cd25876-56a9-9c6c-0a31-95b7900c1a3e@bootlin.com>
+Date: Mon, 3 May 2021 18:12:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <321fc26-93d6-c91b-43c4-b3f02458dfd@crashcourse.ca>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+
+Hi again Robert,
+
+On 5/2/21 12:00 AM, Robert P. J. Day wrote:
+>   in this case, i refer to sdk-manual, appendix-obtain.rst, where one
+> reads:
+>
+>    The pre-built root filesystem image files follow these naming
+>    conventions::
+>
+>       core-image-profile-arch.tar.bz2
+>
+>       Where:
+>           profile is the filesystem image's profile:
+>                     lsb, lsb-dev, lsb-sdk, minimal, minimal-dev, minimal-initramfs,
+>                     sato, sato-dev, sato-sdk, sato-sdk-ptest. For information on
+>                     these types of image profiles, see the "Images" chapter in
+>                     the Yocto Project Reference Manual.
+>
+>           arch is a string representing the target architecture:
+>                     beaglebone-yocto, beaglebone-yocto-lsb, edgerouter, edgerouter-lsb,
+>                     genericx86, genericx86-64, genericx86-64-lsb, genericx86-lsb and qemu*.
+>
+>
+> note the numerous references to "lsb"-related downloadable objects,
+> none of which seem to exist anymore. can all those lsb entries be
+> tossed?
 
 
-  for sheer, unadulterated savagery in shredding someone's literary
-talent, i give you mark twain eviscerating american author james
-fenimore cooper:
+Good catch, thanks! Actually, we're missing image types as found in
+meta*/recipes*/images/*.bb. Even ref-manual/images.rst is missing such
+image types.
 
-https://twain.lib.virginia.edu/projects/rissetto/offense.html
+I'll propose an update removing the outdated ones and adding the new
+ones, at least in ref-manual/images.rst.
 
-rday
+By the way, I may not keep the exhaustive list in the above text, to
+keep things simple and easier to maintain. The reference to the YP Ref
+Manual may be enough...
+
+Anyway, you'll be able to review my patch :)
+
+Cheers,
+
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
