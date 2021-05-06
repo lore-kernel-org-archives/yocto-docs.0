@@ -1,109 +1,109 @@
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by mx.groups.io with SMTP id smtpd.web09.2690.1620263535343715151
+Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
+ by mx.groups.io with SMTP id smtpd.web09.5502.1620280002118341224
  for <docs@lists.yoctoproject.org>;
- Wed, 05 May 2021 18:12:16 -0700
+ Wed, 05 May 2021 22:46:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: intel.com, ip: 134.134.136.126, mailfrom: anuj.mittal@intel.com)
-IronPort-SDR: PnSp8tH1zdmoTRofDqqMdtuvrLx0razS78aaWenjD0zTZOVAJjLxVmb/OJqdcxagARIkb1ugm0
- gvb1Z9NX/Yyg==
-X-IronPort-AV: E=McAfee;i="6200,9189,9975"; a="185809680"
-X-IronPort-AV: E=Sophos;i="5.82,276,1613462400"; 
-   d="scan'208";a="185809680"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2021 18:12:14 -0700
-IronPort-SDR: W7KAgMZF0OhFEi6d18U00CZAcv4F7okAd2u8wg8DBibT4/z7q0g9M8/i2QRZZHmI33Yf3qebs3
- TJk/evWAPycg==
-X-IronPort-AV: E=Sophos;i="5.82,276,1613462400"; 
-   d="scan'208";a="434093386"
-Received: from hanpinon-mobl.gar.corp.intel.com (HELO anmitta2-mobl1.gar.corp.intel.com) ([10.213.47.180])
-  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2021 18:12:13 -0700
-From: "Anuj Mittal" <anuj.mittal@intel.com>
-To: docs@lists.yoctoproject.org,
-	richard.purdie@linuxfounation.org
-Subject: [gatesgarth][PATCH] documentation: prepare for 3.2.4 release
-Date: Thu,  6 May 2021 09:12:08 +0800
-Message-Id: <20210506011208.13982-1-anuj.mittal@intel.com>
-X-Mailer: git-send-email 2.30.2
+ dkim=missing; spf=pass (domain: emlix.com, ip: 136.243.223.33, mailfrom: dwagenknecht@emlix.com)
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.emlix.com (Postfix) with ESMTPS id 69BE25FEC9;
+	Thu,  6 May 2021 07:46:40 +0200 (CEST)
+Message-ID: <e651d05fba0a2f9ffb800820d4a762b66eb0f4ca.camel@emlix.com>
+Subject: Re: [docs] [PATCH v2] kernel-dev: document KCONFIG_MODE
+From: "Daniel Wagenknecht" <dwagenknecht@emlix.com>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
+	docs@lists.yoctoproject.org
+Cc: quentin.schulz@streamunlimited.com
+Date: Thu, 06 May 2021 07:46:35 +0200
+In-Reply-To: <8bc762e4-cd03-f305-2635-ce390c4ea40d@bootlin.com>
+References: <20210505085749.753783-1-dwagenknecht@emlix.com>
+	 <8bc762e4-cd03-f305-2635-ce390c4ea40d@bootlin.com>
+User-Agent: Evolution 3.36.4-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Groupsio-MsgNum: 1237
+Content-Type: multipart/signed; micalg="pgp-sha512";
+	protocol="application/pgp-signature"; boundary="=-wPjgQjRwn/mkh4m3bYAf"
 
-Also update documentation to include links to previous releases.
+--=-wPjgQjRwn/mkh4m3bYAf
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
----
- documentation/conf.py      |  2 +-
- documentation/poky.yaml    | 10 +++++-----
- documentation/releases.rst |  9 +++++++++
- 3 files changed, 15 insertions(+), 6 deletions(-)
+Hello Michael, hello Quentin,
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index eb6c04782..1efd63ca1 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -16,7 +16,7 @@ import os
- import sys
- import datetime
- 
--current_version = "3.2.3"
-+current_version = "3.2.4"
- 
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 4df23efe1..189f7bec6 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,11 +1,11 @@
--DISTRO : "3.2.3"
-+DISTRO : "3.2.4"
- DISTRO_NAME_NO_CAP : "gatesgarth"
- DISTRO_NAME : "Gatesgarth"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "dunfell"
--YOCTO_DOC_VERSION : "3.2.3"
--YOCTO_DOC_VERSION_MINUS_ONE : "3.1.6"
--DISTRO_REL_TAG : "yocto-3.2.3"
--POKYVERSION : "24.0.3"
-+YOCTO_DOC_VERSION : "3.2.4"
-+YOCTO_DOC_VERSION_MINUS_ONE : "3.1.7"
-+DISTRO_REL_TAG : "yocto-3.2.4"
-+POKYVERSION : "24.0.4"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-diff --git a/documentation/releases.rst b/documentation/releases.rst
-index dbdc173a0..3e95ab9e2 100644
---- a/documentation/releases.rst
-+++ b/documentation/releases.rst
-@@ -9,6 +9,10 @@
- *******************************
- 
- - :yocto_docs:`3.2 Documentation </3.2>`
-+- :yocto_docs:`3.2.1 Documentation </3.2.1>`
-+- :yocto_docs:`3.2.2 Documentation </3.2.2>`
-+- :yocto_docs:`3.2.3 Documentation </3.2.3>`
-+- :yocto_docs:`3.2.4 Documentation </3.2.4>`
- 
- ****************************
- 3.1 'dunfell' Release Series
-@@ -18,6 +22,10 @@
- - :yocto_docs:`3.1.1 Documentation </3.1.1>`
- - :yocto_docs:`3.1.2 Documentation </3.1.2>`
- - :yocto_docs:`3.1.3 Documentation </3.1.3>`
-+- :yocto_docs:`3.1.4 Documentation </3.1.4>`
-+- :yocto_docs:`3.1.5 Documentation </3.1.5>`
-+- :yocto_docs:`3.1.6 Documentation </3.1.6>`
-+- :yocto_docs:`3.1.7 Documentation </3.1.7>`
- 
- ==========================
-  Previous Release Manuals
-@@ -31,6 +39,7 @@
- - :yocto_docs:`3.0.1 Documentation </3.0.1>`
- - :yocto_docs:`3.0.2 Documentation </3.0.2>`
- - :yocto_docs:`3.0.3 Documentation </3.0.3>`
-+- :yocto_docs:`3.0.4 Documentation </3.0.4>`
- 
- ****************************
- 2.7 'warrior' Release Series
--- 
-2.30.2
+> From an English perspective, I believe that "unset" means "not set", but
+> from a UNIX perspective, it makes me think about corresponding shell
+> command, that unsets an variable that was set previously.
+>=20
+> Could we just say "not set" instead of "unset"?
 
+It reduces ambiguity and I can see no reasons against "not set". Will you =
+do
+this little fixup when merging?
+Thanks!
+
+Cheers
+--=20
+Daniel Wagenknecht
+
+emlix GmbH, http://www.emlix.com
+Fon +49 551 30664-0, Fax +49 551 30664-11
+Gothaer Platz 3, 37083 G=C3=B6ttingen, Germany
+Sitz der Gesellschaft: G=C3=B6ttingen, Amtsgericht G=C3=B6ttingen HR B 316=
+0
+Gesch=C3=A4ftsf=C3=BChrung: Heike Jordan, Dr. Uwe Kracke
+Ust-IdNr.: DE 205 198 055
+
+emlix - smart embedded open source
+
+On Wed, 2021-05-05 at 11:30 +0200, Michael Opdenacker wrote:
+> Hi Daniel,
+>=20
+> Many thanks for the new version.
+>=20
+> On 5/5/21 10:57 AM, Daniel Wagenknecht wrote:
+> > +
+> > +      In case ``KCONFIG_MODE`` is unset the behaviour will depend on =
+where
+>=20
+> From an English perspective, I believe that "unset" means "not set", but
+> from a UNIX perspective, it makes me think about corresponding shell
+> command, that unsets an variable that was set previously.
+>=20
+> Could we just say "not set" instead of "unset"?
+>=20
+> Any thoughts?
+>=20
+> Other than that, happy to merge your patch. I can take care of fixing
+> "explicitely".
+>=20
+> Cheers,
+>=20
+> Michael.
+>=20
+>=20
+>=20
+
+--=-wPjgQjRwn/mkh4m3bYAf
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+Content-Transfer-Encoding: 7bit
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEEkDMJRIopzNTng/jmZ2f8gllWJGkFAmCTgrsACgkQZ2f8gllW
+JGnETg//YPjdUW7Ap88iUhWtrnpTwDOyneyBkVKs0fXIgXj7KuVMFcpqkvyvPj2o
+EPX8GsCB+cP17CcjmorwS4yteQtbuKTSXsqEnJkp8NrUBjnHvy6O0KfJ1U7413I3
+WPPDn8Yi0Bc6FMnJhQitUcVA5XQjXTP13VuBbshjV54l9T3sE10iRCO3Or0O11fK
+uzNUcnN4v0KvS/PDxjM2zcRyK6LOv3qBiOPHZO6ikUO29U3gbI9sgKAiQ6WNMK/s
+JHzcqpBAzHUxTbiqyfEKKQC3sgjBF2AVHsd1TwJevYafjQOHgFgvxUeEaiTm/EBX
+QCqmg6ytp/fLFklbBww06wQpIuPl7p06c+LqJKnmQSmBf9/MjYs5Ut1XB0hcJO/Y
+53b8A9V/kKJKzfzZRpJlkEIQukYPdUaxB9lhKza1bCcSfmcbVdIpkp3Um8TjcyZj
+aQIDbhBNT3a3QvVrRj5W4zfVWf7vA2lGHF3Ex3aNPSTcARF+W9GEG7Zr0Ukwc/0Q
+k6jctl7VgcAU7/nTu7jeFn7nmQ0XjrWUJnbaB7CqoVn66LXgA9B8ttudfMX6rWKD
+n43b48LHTzmtqhZPZTXHDXBFwrKq5l3TIG8dfhQfqgNSK2kZbgaue/uynCKVtlNJ
++rqeLzDtaWLWvfseMFPqZBJpbLtKnKUdsZ6YpQbseX7RiwgNsFw=
+=Exot
+-----END PGP SIGNATURE-----
+
+--=-wPjgQjRwn/mkh4m3bYAf--
