@@ -1,72 +1,52 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web08.722.1620313849377038830
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web08.960.1620314761037885016
  for <docs@lists.yoctoproject.org>;
- Thu, 06 May 2021 08:10:49 -0700
+ Thu, 06 May 2021 08:26:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 X-Originating-IP: 109.208.196.11
 Received: from [10.0.0.10] (lfbn-mar-1-666-11.w109-208.abo.wanadoo.fr [109.208.196.11])
 	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id E83EC240004;
-	Thu,  6 May 2021 15:10:46 +0000 (UTC)
-Cc: alistair.francis@wdc.com, liezhi.yang@windriver.com
-To: YP docs mailing list <docs@lists.yoctoproject.org>
+	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 6500A60016;
+	Thu,  6 May 2021 15:25:58 +0000 (UTC)
+Cc: quentin.schulz@streamunlimited.com
+Subject: Re: [docs] [PATCH v2] kernel-dev: document KCONFIG_MODE
+To: Daniel Wagenknecht <dwagenknecht@emlix.com>, docs@lists.yoctoproject.org
+References: <20210505085749.753783-1-dwagenknecht@emlix.com>
+ <8bc762e4-cd03-f305-2635-ce390c4ea40d@bootlin.com>
+ <e651d05fba0a2f9ffb800820d4a762b66eb0f4ca.camel@emlix.com>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Subject: Questions about runqemu --help, misleading usage string?
 Organization: Bootlin
-Message-ID: <1ec33849-e45e-4202-7a1d-97968d2a0532@bootlin.com>
-Date: Thu, 6 May 2021 17:10:46 +0200
+Message-ID: <4bd4165d-734a-660e-541e-c96579640c81@bootlin.com>
+Date: Thu, 6 May 2021 17:25:57 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <e651d05fba0a2f9ffb800820d4a762b66eb0f4ca.camel@emlix.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Hello,
+Hi Daniel
 
-Following some experiments with the runqemu command, I'm trying to
-update its documentation in the development manual, which looks
-significantly out of date. However, reading the code, I think that the
-usage string is misleading...
+On 5/6/21 7:46 AM, Daniel Wagenknecht wrote:
+> Hello Michael, hello Quentin,
+>
+>> From an English perspective, I believe that "unset" means "not set", but
+>> from a UNIX perspective, it makes me think about corresponding shell
+>> command, that unsets an variable that was set previously.
+>>
+>> Could we just say "not set" instead of "unset"?
+> It reduces ambiguity and I can see no reasons against "not set". Will you do
+> this little fixup when merging?
 
-Here's the current usage:
 
-   Usage: you can run this script with any valid combination
-   of the following environment variables (in any order):
-     KERNEL - the kernel image file to use
-     BIOS - the bios image file to use
-     ROOTFS - the rootfs image file or nfsroot directory to use
-     DEVICE_TREE - the device tree blob to use
-     MACHINE - the machine name (optional, autodetected from KERNEL filename if unspecified)
-     Simplified QEMU command-line options can be passed with:
-       nographic - disable video console
-       ....
+Yes, done!
+Merged in the "master-next" branch of yocto-docs.
 
-I understand that MACHINE can be recognized because of unique valid
-strings corresponding to it (such as "qemuarm64"), KERNEL because its
-filename and extension can be recognized, ROOTFS because it is a file
-with a known extension or is a directory. I also checked that MACHINE,
-KERNEL and ROOTFS can be set as environment variables.
-
-But what about BIOS and DEVICE_TREE? It only seems to be possible to
-pass them as environment variables.
-
-If so, then the usage string is very confusing, because it gives the
-impression that BIOS and DEVICE_TREE are at the same level as KERNEL,
-ROOTFS and MACHINE, but unlike the latter, they cannot be passed as
-command line arguments.
-
-Shouldn't we modify "runqemu --help" so that it lists supported
-environment variables and details that only KERNEL, ROOTFS and MACHINE
-can be set by parsing the command line?
-
-Thank you in advance,
-
-Cheers,
+Thanks again,
 
 Michael.
-
 
 -- 
 Michael Opdenacker, Bootlin
