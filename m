@@ -1,151 +1,74 @@
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.2185.1620763035251434216
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+ by mx.groups.io with SMTP id smtpd.web12.503.1620838464029891126
  for <docs@lists.yoctoproject.org>;
- Tue, 11 May 2021 12:57:15 -0700
+ Wed, 12 May 2021 09:54:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
-Received: from [192.168.1.25] (amontpellier-552-1-199-211.w109-210.abo.wanadoo.fr [109.210.254.211])
-	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay11.mail.gandi.net (Postfix) with ESMTPSA id CAEC4100004;
-	Tue, 11 May 2021 19:57:12 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] manuals: improve SSTATE_MIRRORS documentation
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-References: <20210507155209.147892-1-michael.opdenacker@bootlin.com>
- <20210510093257.ovej5z4h7pcxn74u@qschulz>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <121e1881-070d-9198-77b2-f22c0bed9b76@bootlin.com>
-Date: Tue, 11 May 2021 21:57:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=ZWTNsdiI;
+ spf=softfail (domain: sakoman.com, ip: 209.85.210.181, mailfrom: steve@sakoman.com)
+Received: by mail-pf1-f181.google.com with SMTP id a5so11923419pfa.11
+        for <docs@lists.yoctoproject.org>; Wed, 12 May 2021 09:54:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=JfGDc8kU+2DcrdgOU8yhVsH1wLPqEc7QjFdWd2aMsNU=;
+        b=ZWTNsdiIIj9RIizTAcjKZAxlgPWZUcNbmC2Lzqz/RckBr7rzQeBCqR1Uu3TS6A7ZBl
+         MNDgVTWzoLYdSK0C7e+AKw2m1q19VFg4T5WQ8ys+5RVolved6AT47XsZvw7lNsMSa9V0
+         GCCZdvp3UUfF5T6RfjZLm07WVLeijyAc5pLPPCeSLdouBLVWWxhehyBIZCoLjlQ20Ue5
+         GuedkX1j0rBaer60ucnLBJcDbtehjbqLCmXBfPL06/+CCrW5X263a89V1oINi8s4wm3Y
+         yM67gxES/6b+CeCuFK6+sOiHHBjAl0v6ugvyQx9KaMy5gnYFF4aiY+Ym8ul+nDb56kvS
+         rkFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=JfGDc8kU+2DcrdgOU8yhVsH1wLPqEc7QjFdWd2aMsNU=;
+        b=G54JX+SlvX2Xd+6GEZpER0tRtLpUdKh4FehCsEbLqRpcNL1BXFIFZ4NF7sYD+VrM03
+         /e/MV6sLFyLVoAI286m5q2KqTcphLaecP2cbsoUUyZK9lvmVMxPEE7x4en8oiXKGT1TV
+         P5ZZbPHlB9GrC5CkEGScNjeQrJbKv4gTDzla6f3pp/Ky5kA+5CyrjGvLvsGp25WAkmG8
+         wifhsjHbjUVSSUp7g/ylML1+4HrSWIm/+VdbVxbd7Zy/woAb2cKO3SxfIolub2b9sOHM
+         FI5Xrb6fWfGwevLyr4iWq/D+Rson2qgplY1Hkq2LnGlopH7P95jOkhlffSnDrPa+URg/
+         ZSng==
+X-Gm-Message-State: AOAM531nrFIJWeX40pChNwnGh+ewzCAdrOhdLhAMlQ75+xHCO97XXqZX
+	YQJ7OxGGiQPXxGlxkBvE4NVQs2GuFEA/lB4gLfU=
+X-Google-Smtp-Source: ABdhPJxdXrzxanJpFwYgTCaYHeku1th/NVkZqxunR4hZXwDu3RLRM88hznU1sh/bkAhha+rgjnFTGA==
+X-Received: by 2002:a65:62da:: with SMTP id m26mr23637522pgv.195.1620838462885;
+        Wed, 12 May 2021 09:54:22 -0700 (PDT)
+Return-Path: <steve@sakoman.com>
+Received: from localhost.localdomain (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
+        by smtp.gmail.com with ESMTPSA id q27sm311493pfl.41.2021.05.12.09.54.21
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 May 2021 09:54:22 -0700 (PDT)
+From: "Steve Sakoman" <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell] ref-system-requirements.rst: Add Fedora 33 to list of supported distros
+Date: Wed, 12 May 2021 06:54:12 -1000
+Message-Id: <07669400a5affa6bc19a5bfdea9ebc05db0b07e3.1620838359.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1620838359.git.steve@sakoman.com>
+References: <cover.1620838359.git.steve@sakoman.com>
 MIME-Version: 1.0
-In-Reply-To: <20210510093257.ovej5z4h7pcxn74u@qschulz>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Hi Quentin,
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
+---
+ documentation/ref-manual/ref-system-requirements.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Many thanks for the much needed review and guidance for this patch!
-
-On 5/10/21 11:32 AM, Quentin Schulz wrote:
-> Hi Michael,
->
-> On Fri, May 07, 2021 at 05:52:09PM +0200, Michael Opdenacker wrote:
->> Mention the Yocto Project mirrors
->> Use a more sensible order for such mirrors (dev, latest, latest - 1)
->> Assign the variable through "?=" (for consistency)
->>
-> A list in commit log usually means separate commits should be made.
-
-That's a good guideline to follow. However, in this particular case, all
-items touch the same lines in the files, so I thought it would make
-sense to have only one commit.
-
->
->> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->> ---
->>  documentation/brief-yoctoprojectqs/index.rst      |  7 +++----
->>  documentation/overview-manual/concepts.rst        |  5 +++++
->>  documentation/ref-manual/variables.rst            | 10 ++++++++++
->>  documentation/sdk-manual/appendix-customizing.rst |  7 ++++++-
->>  4 files changed, 24 insertions(+), 5 deletions(-)
->>
->> diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
->> index 6a12b19ca0..ad26ad05ea 100644
->> --- a/documentation/brief-yoctoprojectqs/index.rst
->> +++ b/documentation/brief-yoctoprojectqs/index.rst
->> @@ -240,14 +240,13 @@ an entire Linux distribution, including the toolchain, from source.
->>        failures by using mirrors. To use mirrors, add these lines to your
->>        local.conf file in the Build directory::
->>  
->> -         SSTATE_MIRRORS = "\
->> +         SSTATE_MIRRORS ?= "\
->>           file://.* http://sstate.yoctoproject.org/dev/PATH;downloadfilename=PATH \n \
->> -         file://.* http://sstate.yoctoproject.org/&YOCTO_DOC_VERSION_MINUS_ONE;/PATH;downloadfilename=PATH \n \
->>           file://.* http://sstate.yoctoproject.org/&YOCTO_DOC_VERSION;/PATH;downloadfilename=PATH \n \
->> +         file://.* http://sstate.yoctoproject.org/&YOCTO_DOC_VERSION_MINUS_ONE;/PATH;downloadfilename=PATH \n \
->>           "
->>  
->> -
->> -      The previous examples showed how to add sstate paths for Yocto Project
->> +      The previous examples showed how to add sstate mirrors for Yocto Project
->>        &YOCTO_DOC_VERSION_MINUS_ONE;, &YOCTO_DOC_VERSION;, and a development
->>        area. For a complete index of sstate locations, see http://sstate.yoctoproject.org/.
->>  
->> diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
->> index 2e3f1af442..00aa502855 100644
->> --- a/documentation/overview-manual/concepts.rst
->> +++ b/documentation/overview-manual/concepts.rst
->> @@ -1924,6 +1924,11 @@ shared state files. Here is an example::
->>         file://.\* http://someserver.tld/share/sstate/PATH;downloadfilename=PATH \n \
->>         file://.\* file:///some/local/dir/sstate/PATH"
->>  
->> +It's also possible to directly take advantage of Yocto Project's own mirrors,
->> +for example, for the latest release::
->> +
->> +   SSTATE_MIRRORS ?= "file://.* http://sstate.yoctoproject.org/&YOCTO_DOC_VERSION;/PATH;downloadfilename=PATH"
->> +
-> This is actually not really working right now, only 55% of the
-> sstate-cache is matched because since dunfell (I think?) hashserv is
-> enabled by default and the hashserv data is not shared yet.
->
-> Richard would probably be able to help more with this but here's the
-> quick IRC log from a month ago of our discussion:
-> https://www.yoctoproject.org/irc/%23yocto.2021-04-06.log.html#t2021-04-06T13:56:41
->
-> I'd be against suggesting it until we figure it out, it'll bring more
-> questions than help IMO.
-
-
-Understood, many thanks for the pointers. So, I guess for the moment
-it's better to use your own sstate caches.
-
->>        When pointing to sstate build artifacts on another machine that uses
->>        a different GCC version for native builds, you must configure
->>        ``SSTATE_MIRRORS`` with a regular expression that maps local search
->> diff --git a/documentation/sdk-manual/appendix-customizing.rst b/documentation/sdk-manual/appendix-customizing.rst
->> index fb2d78452b..ddc8850dbf 100644
->> --- a/documentation/sdk-manual/appendix-customizing.rst
->> +++ b/documentation/sdk-manual/appendix-customizing.rst
->> @@ -269,7 +269,12 @@ source, you need to do a number of things:
->>     to find the configuration. The variable you need to set is
->>     :term:`SSTATE_MIRRORS`::
->>  
->> -      SSTATE_MIRRORS = "file://.* http://example.com/some_path/sstate-cache/PATH"
->> +      SSTATE_MIRRORS ?= "file://.* http://example.com/some_path/sstate-cache/PATH"
->> +
-> Wondering if this shouldn't rather be:
-> SSTATE_MIRRORS ?= "file://.* http://example.com/some_path/sstate-cache/PATH;downloadfilename=PATH"
-> like we have in other places in the docs?
->
-> It seems "PATH;downloadfilename=PATH" might not be even needed at all
-> since we set up a sstate mirror and forgot to append this and it seemed
-> to work ok (we added it during review anyway, just to match documentation).
-
-
-I'll make my own tests then.
-
->
->> +   It's even possible to directly take advantage of Yocto Project's own mirrors,
->> +   for example for the current release::
->> +
->> +      SSTATE_MIRRORS ?= "file://.* http://sstate.yoctoproject.org/&YOCTO_DOC_VERSION;/PATH;downloadfilename=PATH"
->>  
-> Not fully working yet. I'd remove it. See comments above.
-
-Yes, understood. I'd check what I can keep and update from the original
-patch. Thanks again!
-
-Anyway, you're helping me to understand the topic better :)
-
-Cheers,
-
-Michael.
-
+diff --git a/documentation/ref-manual/ref-system-requirements.rst b/documentation/ref-manual/ref-system-requirements.rst
+index 65234d072..bb688772f 100644
+--- a/documentation/ref-manual/ref-system-requirements.rst
++++ b/documentation/ref-manual/ref-system-requirements.rst
+@@ -55,6 +55,8 @@ distributions:
+ 
+ -  Fedora 32
+ 
++-  Fedora 33
++
+ -  CentOS 7.x
+ 
+ -  Debian GNU/Linux 8.x (Jessie)
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
