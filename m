@@ -1,353 +1,233 @@
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web11.6089.1620981350636476797
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web08.6101.1620981352949070321
  for <docs@lists.yoctoproject.org>;
- Fri, 14 May 2021 01:35:51 -0700
+ Fri, 14 May 2021 01:35:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
 Received: from localhost (lfbn-mar-1-666-11.w109-208.abo.wanadoo.fr [109.208.196.11])
 	(Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 371E4100002;
-	Fri, 14 May 2021 08:35:49 +0000 (UTC)
+	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 83916240009;
+	Fri, 14 May 2021 08:35:51 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 5/6] overview-manual: simplify style and add missings references
-Date: Fri, 14 May 2021 10:35:26 +0200
-Message-Id: <20210514083527.281767-6-michael.opdenacker@bootlin.com>
+Subject: [PATCH 6/6] manuals: simplify style
+Date: Fri, 14 May 2021 10:35:27 +0200
+Message-Id: <20210514083527.281767-7-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210514083527.281767-1-michael.opdenacker@bootlin.com>
 References: <20210514083527.281767-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/overview-manual/concepts.rst    | 73 +++++++++----------
- .../development-environment.rst               | 12 +--
- documentation/overview-manual/yp-intro.rst    | 14 ++--
- 3 files changed, 46 insertions(+), 53 deletions(-)
+ documentation/README                         |  2 +-
+ documentation/brief-yoctoprojectqs/index.rst | 10 +++---
+ documentation/bsp-guide/bsp.rst              | 36 +++++++++-----------
+ documentation/toaster-manual/reference.rst   |  6 ++--
+ 4 files changed, 26 insertions(+), 28 deletions(-)
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 2e3f1af442..e5bdcdad2a 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -139,7 +139,7 @@ hardware-specific configurations allows you to share other metadata by
- using a different layer where that metadata might be common across
- several pieces of hardware.
+diff --git a/documentation/README b/documentation/README
+index fddf4e706d..3ad23a902d 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -32,7 +32,7 @@ these instances.
+ Manual Organization
+ ===================
  
--Many layers exist that work in the Yocto Project development environment. The
-+There are many layers working in the Yocto Project development environment. The
- :yocto_home:`Yocto Project Curated Layer Index </software-overview/layers/>`
- and :oe_layerindex:`OpenEmbedded Layer Index <>` both contain layers from
- which you can use or leverage.
-@@ -370,7 +370,7 @@ BitBake's global behavior. This section takes a closer look at the
- layers the build system uses to further control the build. These layers
- provide Metadata for the software, machine, and policies.
+-Folders exist for individual manuals as follows:
++Here the folders corresponding to individual manuals:
  
--In general, three types of layer input exists. You can see them below
-+In general, there are three types of layer input. You can see them below
- the "User Configuration" box in the `general workflow
- figure <overview-manual/concepts:openembedded build system concepts>`:
+ * sdk-manual           - The Yocto Project Software Development Kit (SDK) Developer's Guide.
+ * bsp-guide            - The Yocto Project Board Support Package (BSP) Developer's Guide
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index 6a12b19ca0..7ae4526c42 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -297,7 +297,7 @@ modular development and makes it easier to reuse the layer metadata.
  
-@@ -427,8 +427,8 @@ Repositories <>` also shows layers categorized under "Yocto Metadata Layers."
+ Follow these steps to add a hardware layer:
  
- .. note::
+-#. **Find a Layer:** Lots of hardware layers exist. The Yocto Project
++#. **Find a Layer:** Many hardware layers are available. The Yocto Project
+    :yocto_git:`Source Repositories <>` has many hardware layers.
+    This example adds the
+    `meta-altera <https://github.com/kraj/meta-altera>`__ hardware layer.
+@@ -318,8 +318,8 @@ Follow these steps to add a hardware layer:
+       Resolving deltas: 100% (13385/13385), done.
+       Checking connectivity... done.
  
--   Layers exist in the Yocto Project Source Repositories that cannot be
--   found in the OpenEmbedded Layer Index. These layers are either
-+   There are layers in the Yocto Project Source Repositories that cannot be
-+   found in the OpenEmbedded Layer Index. Such layers are either
-    deprecated or experimental in nature.
+-   The hardware layer now exists
+-   with other layers inside the Poky reference repository on your build
++   The hardware layer is now available
++   next to other layers inside the Poky reference repository on your build
+    host as ``meta-altera`` and contains all the metadata needed to
+    support hardware from Altera, which is owned by Intel.
  
- BitBake uses the ``conf/bblayers.conf`` file, which is part of the user
-@@ -489,7 +489,7 @@ the machine (``conf/machine/machine.conf``) and, of course, the layer
+@@ -431,8 +431,8 @@ information including the website, wiki pages, and user manuals:
+    information.
  
- The remainder of the layer is dedicated to specific recipes by function:
- ``recipes-bsp``, ``recipes-core``, ``recipes-graphics``,
--``recipes-kernel``, and so forth. Metadata can exist for multiple
-+``recipes-kernel``, and so forth. There can be metadata for multiple
- formfactors, graphics support systems, and so forth.
+ -  **Yocto Project Mailing Lists:** Related mailing lists provide a forum
+-   for discussion, patch submission and announcements. Several mailing
+-   lists exist and are grouped according to areas of concern. See the
++   for discussion, patch submission and announcements. There are several
++   mailing lists grouped by topic. See the
+    :ref:`ref-manual/resources:mailing lists`
+    section in the Yocto Project Reference Manual for a complete list of
+    Yocto Project mailing lists.
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
+index 0b0b52d904..b46773dedd 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -267,7 +267,7 @@ maintain the distinction that the BSP layer, a build system, and tools
+ are separate components that could be combined in certain end products.
  
- .. note::
-@@ -528,9 +528,7 @@ project that is more dynamic or experimental in nature, a project might
- keep source files in a repository controlled by a Source Control Manager
- (SCM) such as Git. Pulling source from a repository allows you to
- control the point in the repository (the revision) from which you want
--to build software. Finally, a combination of the two might exist, which
--would give the consumer a choice when deciding where to get source
--files.
-+to build software. A combination of the two is also possible.
+ Before looking at the recommended form for the directory structure
+-inside a BSP layer, you should be aware that some requirements do exist
++inside a BSP layer, you should be aware that there are some requirements
+ in order for a BSP layer to be considered compliant with the Yocto
+ Project. For that list of requirements, see the
+ ":ref:`bsp-guide/bsp:released bsp requirements`" section.
+@@ -763,8 +763,8 @@ workflow.
  
- BitBake uses the :term:`SRC_URI`
- variable to point to source files regardless of their location. Each
-@@ -609,7 +607,7 @@ the specific revision from which to build.
- Source Mirror(s)
- ~~~~~~~~~~~~~~~~
+    .. note::
  
--Two kinds of mirrors exist: pre-mirrors and regular mirrors. The
-+There are two kinds of mirrors: pre-mirrors and regular mirrors. The
- :term:`PREMIRRORS` and
- :term:`MIRRORS` variables point to
- these, respectively. BitBake checks pre-mirrors before looking upstream
-@@ -667,8 +665,8 @@ package files are kept:
-    variables are used, respectively.
+-      -  Four hardware reference BSPs exist that are part of the Yocto
+-         Project release and are located in the ``poky/meta-yocto-bsp``
++      -  There are four hardware reference BSPs in the Yocto
++         Project release, located in the ``poky/meta-yocto-bsp``
+          BSP layer:
  
- -  :term:`PACKAGE_ARCH`: Defines
--   architecture-specific sub-folders. For example, packages could exist
--   for the i586 or qemux86 architectures.
-+   architecture-specific sub-folders. For example, packages could be
-+   available for the i586 or qemux86 architectures.
+          -  Texas Instruments Beaglebone (``beaglebone-yocto``)
+@@ -773,8 +773,8 @@ workflow.
  
- BitBake uses the
- :ref:`do_package_write_* <ref-tasks-package_write_deb>`
-@@ -681,8 +679,8 @@ and
- ":ref:`ref-tasks-package_write_tar`"
- sections in the Yocto Project Reference Manual for additional
- information. As an example, consider a scenario where an IPK packaging
--manager is being used and package architecture support for both i586 and
--qemux86 exist. Packages for the i586 architecture are placed in
-+manager is being used and there is package architecture support for both
-+i586 and qemux86. Packages for the i586 architecture are placed in
- ``build/tmp/deploy/ipk/i586``, while packages for the qemux86
- architecture are placed in ``build/tmp/deploy/ipk/qemux86``.
+          -  Two general IA platforms (``genericx86`` and ``genericx86-64``)
  
-@@ -698,7 +696,7 @@ closer look at each of those areas.
+-      -  Three core Intel BSPs exist as part of the Yocto Project
+-         release in the ``meta-intel`` layer:
++      -  There are three core Intel BSPs in the Yocto Project
++         release, in the ``meta-intel`` layer:
  
- .. note::
+          -  ``intel-core2-32``, which is a BSP optimized for the Core2
+             family of CPUs as well as all CPUs prior to the Silvermont
+@@ -832,10 +832,8 @@ workflow.
+ Requirements and Recommendations for Released BSPs
+ ==================================================
  
--   Separate documentation exists for the BitBake tool. See the
-+   Documentation for the BitBake tool is available separately. See the
-    BitBake User Manual
-    for reference material on BitBake.
+-Certain requirements exist for a released BSP to be considered compliant
+-with the Yocto Project. Additionally, recommendations also exist. This
+-section describes the requirements and recommendations for released
+-BSPs.
++This section describes requirements and recommendations for a released
++BSP to be considered compliant with the Yocto Project.
  
-@@ -783,12 +781,10 @@ Build Directory's hierarchy:
+ Released BSP Requirements
+ -------------------------
+@@ -864,7 +862,7 @@ Before looking at BSP requirements, you should consider the following:
  
- .. note::
+ -  It is not required that specific packages or package modifications
+    exist in the BSP layer, beyond the requirements for general
+-   compliance with the Yocto Project. For example, no requirement exists
++   compliance with the Yocto Project. For example, there is no requirement
+    dictating that a specific kernel or kernel version be used in a given
+    BSP.
  
--   In the previous figure, notice that two sample hierarchies exist: one
--   based on package architecture (i.e.
--   PACKAGE_ARCH
--   ) and one based on a machine (i.e.
--   MACHINE
--   ). The underlying structures are identical. The differentiator being
-+   In the previous figure, notice that there are two sample hierarchies:
-+   one based on package architecture (i.e. :term:`PACKAGE_ARCH`)
-+   and one based on a machine (i.e. :term:`MACHINE`).
-+   The underlying structures are identical. The differentiator being
-    what the OpenEmbedded build system is using as a build target (e.g.
-    general architecture, a build host, an SDK, or a specific machine).
+@@ -900,7 +898,7 @@ Yocto Project:
+ -  *License File:* You must include a license file in the
+    ``meta-bsp_root_name`` directory. This license covers the BSP
+    Metadata as a whole. You must specify which license to use since no
+-   default license exists when one is not specified. See the
++   default license exists. See the
+    :yocto_git:`COPYING.MIT </meta-raspberrypi/tree/COPYING.MIT>`
+    file for the Raspberry Pi BSP in the ``meta-raspberrypi`` BSP layer
+    as an example.
+@@ -1107,7 +1105,7 @@ system requirements.
+    unsuitable functionality or quality, you can use an encumbered
+    version.
  
-@@ -963,8 +959,7 @@ that part of the build process.
+-A couple different methods exist within the OpenEmbedded build system to
++There are two different methods within the OpenEmbedded build system to
+ satisfy the licensing requirements for an encumbered BSP. The following
+ list describes them in order of preference:
  
- .. note::
+@@ -1186,11 +1184,11 @@ Use these steps to create a BSP layer:
+ -  *Create a Machine Configuration File:* Create a
+    ``conf/machine/bsp_root_name.conf`` file. See
+    :yocto_git:`meta-yocto-bsp/conf/machine </poky/tree/meta-yocto-bsp/conf/machine>`
+-   for sample ``bsp_root_name.conf`` files. Other samples such as
++   for sample ``bsp_root_name.conf`` files. There are other samples such as
+    :yocto_git:`meta-ti </meta-ti/tree/conf/machine>`
+    and
+    :yocto_git:`meta-freescale </meta-freescale/tree/conf/machine>`
+-   exist from other vendors that have more specific machine and tuning
++   from other vendors that have more specific machine and tuning
+    examples.
  
--   Support for creating feeds directly from the
--   deploy/\*
-+   Support for creating feeds directly from the ``deploy/*``
-    directories does not exist. Creating such feeds usually requires some
-    kind of feed maintenance mechanism that would upload the new packages
-    into an official package feed (e.g. the Ångström distribution). This
-@@ -1156,9 +1151,9 @@ checksum <overview-manual/concepts:checksums (signatures)>`.
-    OpenEmbedded.
+ -  *Create a Kernel Recipe:* Create a kernel recipe in
+@@ -1241,7 +1239,7 @@ As mentioned earlier in this section, the existence of a machine
+ configuration file is what makes a layer a BSP layer as compared to a
+ general or kernel layer.
  
- To determine if a task needs to be rerun, BitBake checks if a stamp file
--with a matching input checksum exists for the task. If such a stamp file
--exists, the task's output is assumed to exist and still be valid. If the
--file does not exist, the task is rerun.
-+with a matching input checksum exists for the task. In this case,
-+the task's output is assumed to exist and still be valid. Otherwise,
-+the task is rerun.
+-One or more machine configuration files exist in the
++There are one or more machine configuration files in the
+ ``bsp_layer/conf/machine/`` directory of the layer::
  
- .. note::
+    bsp_layer/conf/machine/machine1\.conf
+@@ -1311,7 +1309,7 @@ Project Reference Manual.
+ -  :term:`PREFERRED_PROVIDER_virtual/xserver <PREFERRED_PROVIDER>`:
+    The recipe that provides "virtual/xserver" when more than one
+    provider is found. In this case, the recipe that provides
+-   "virtual/xserver" is "xserver-xorg", which exists in
++   "virtual/xserver" is "xserver-xorg", available in
+    ``poky/meta/recipes-graphics/xorg-xserver``.
  
-@@ -1234,14 +1229,14 @@ to run any of the ``do_fetch``, ``do_unpack``, ``do_patch``,
+ -  :term:`XSERVER`: The packages that
+@@ -1326,7 +1324,7 @@ Project Reference Manual.
  
- It becomes more complicated if everything can come from an sstate cache
- because some objects are simply not required at all. For example, you do
--not need a compiler or native tools, such as quilt, if nothing exists to
--compile or patch. If the ``do_package_write_*`` packages are available
-+not need a compiler or native tools, such as quilt, if there isn't anything
-+to compile or patch. If the ``do_package_write_*`` packages are available
- from sstate, BitBake does not need the ``do_package`` task data.
+    .. tip::
  
- To handle all these complexities, BitBake runs in two phases. The first
- is the "setscene" stage. During this stage, BitBake first checks the
- sstate cache for any targets it is planning to build. BitBake does a
--fast check to see if the object exists rather than a complete download.
-+fast check to see if the object exists rather than doing a complete download.
- If nothing exists, the second phase, which is the setscene stage,
- completes and the main build proceeds.
+-      Many ``MACHINE*`` variables exist that help you configure a particular piece
++      There are many ``MACHINE*`` variables that help you configure a particular piece
+       of hardware.
  
-@@ -1366,9 +1361,9 @@ can initialize the environment before using the tools.
+ -  :term:`EXTRA_IMAGEDEPENDS`:
+@@ -1339,9 +1337,9 @@ Project Reference Manual.
+ -  :term:`DEFAULTTUNE`: Machines
+    use tunings to optimize machine, CPU, and application performance.
+    These features, which are collectively known as "tuning features",
+-   exist in the :term:`OpenEmbedded-Core (OE-Core)` layer (e.g.
++   are set in the :term:`OpenEmbedded-Core (OE-Core)` layer (e.g.
+    ``poky/meta/conf/machine/include``). In this example, the default
+-   tuning file is "cortexa8hf-neon".
++   tuning file is ``cortexa8hf-neon``.
  
- All the output files for an SDK are written to the ``deploy/sdk`` folder
- inside the :term:`Build Directory` as
--shown in the previous figure. Depending on the type of SDK, several
--variables exist that help configure these files. The following list
--shows the variables associated with an extensible SDK:
-+shown in the previous figure. Depending on the type of SDK, there are
-+several variables to configure these files. Here are the variables
-+associated with an extensible SDK:
+    .. note::
  
- -  :term:`DEPLOY_DIR`: Points to
-    the ``deploy`` directory.
-@@ -1577,8 +1572,8 @@ Shared State Cache
- By design, the OpenEmbedded build system builds everything from scratch
- unless :term:`BitBake` can determine
- that parts do not need to be rebuilt. Fundamentally, building from
--scratch is attractive as it means all parts are built fresh and no
--possibility of stale data exists that can cause problems. When
-+scratch is attractive as it means all parts are built fresh and there is
-+no possibility of stale data that can cause problems. When
- developers hit problems, they typically default back to building from
- scratch so they have a know state from the start.
+diff --git a/documentation/toaster-manual/reference.rst b/documentation/toaster-manual/reference.rst
+index 988a262188..c0d02ff9ab 100644
+--- a/documentation/toaster-manual/reference.rst
++++ b/documentation/toaster-manual/reference.rst
+@@ -9,8 +9,8 @@ concepts and have some basic command reference material available. This
+ final chapter provides conceptual information on layer sources,
+ releases, and JSON configuration files. Also provided is a quick look at
+ some useful ``manage.py`` commands that are Toaster-specific.
+-Information on ``manage.py`` commands does exist across the Web and the
+-information in this manual by no means attempts to provide a command
++Information on ``manage.py`` commands is available across the Web and
++this manual by no means attempts to provide a command
+ comprehensive reference.
  
-@@ -1617,7 +1612,7 @@ them if they are deemed to be valid.
+ Layer Source
+@@ -508,7 +508,7 @@ Useful Commands
+ ===============
  
-    -  The build system does not maintain
-       :term:`PR` information as part of
--      the shared state packages. Consequently, considerations exist that
-+      the shared state packages. Consequently, there are considerations that
-       affect maintaining shared state feeds. For information on how the
-       build system works with packages and can track incrementing ``PR``
-       information, see the ":ref:`dev-manual/common-tasks:automatically incrementing a package version number`"
-@@ -1687,7 +1682,7 @@ used to prune the "run" scripts down to the minimum set, thereby
- alleviating this problem and making the "run" scripts much more readable
- as a bonus.
- 
--So far, solutions for shell scripts exist. What about Python tasks? The
-+So far, there are solutions for shell scripts. What about Python tasks? The
- same approach applies even though these tasks are more difficult. The
- process needs to figure out what variables a Python function accesses
- and what functions it calls. Again, the incremental build solution
-@@ -1695,7 +1690,7 @@ contains code that first figures out the variable and function
- dependencies, and then creates a checksum for the data used as the input
- to the task.
- 
--Like the ``WORKDIR`` case, situations exist where dependencies should be
-+Like the ``WORKDIR`` case, there can be situations where dependencies should be
- ignored. For these situations, you can instruct the build process to
- ignore a dependency by using a line like the following::
- 
-@@ -1732,7 +1727,7 @@ to add is a policy decision. However, the effect is to generate a master
- checksum that combines the basehash and the hashes of the task's
- dependencies.
- 
--At the code level, a variety of ways exist by which both the basehash
-+At the code level, there are multiple ways by which both the basehash
- and the dependent task hashes can be influenced. Within the BitBake
- configuration file, you can give BitBake some extra information to help
- it construct the basehash. The following statement effectively results
-@@ -1961,8 +1956,8 @@ Automatically Added Runtime Dependencies
- The OpenEmbedded build system automatically adds common types of runtime
- dependencies between packages, which means that you do not need to
- explicitly declare the packages using
--:term:`RDEPENDS`. Three automatic
--mechanisms exist (``shlibdeps``, ``pcdeps``, and ``depchains``) that
-+:term:`RDEPENDS`. There are three automatic
-+mechanisms (``shlibdeps``, ``pcdeps``, and ``depchains``) that
- handle shared libraries, package configuration (pkg-config) modules, and
- ``-dev`` and ``-dbg`` packages, respectively. For other types of runtime
- dependencies, you must manually declare the dependencies.
-diff --git a/documentation/overview-manual/development-environment.rst b/documentation/overview-manual/development-environment.rst
-index 1decf01e43..ab155dc3b0 100644
---- a/documentation/overview-manual/development-environment.rst
-+++ b/documentation/overview-manual/development-environment.rst
-@@ -71,7 +71,7 @@ section in
- the Yocto Project Development Tasks Manual.
- 
- If your development host is going to be a system that runs a Linux
--distribution, steps still exist that you must take to prepare the system
-+distribution, you must still take steps to prepare the system
- for use with the Yocto Project. You need to be sure that the Linux
- distribution on the system is one that supports the Yocto Project. You
- also need to be sure that the correct set of host packages are installed
-@@ -80,8 +80,8 @@ set up a development host that runs Linux, see the
- ":ref:`dev-manual/start:setting up a native linux host`"
- section in the Yocto Project Development Tasks Manual.
- 
--Once your development host is set up to use the Yocto Project, several
--methods exist for you to do work in the Yocto Project environment:
-+Once your development host is set up to use the Yocto Project, there
-+are several ways of working in the Yocto Project environment:
- 
- -  *Command Lines, BitBake, and Shells:* Traditional development in the
-    Yocto Project involves using the :term:`OpenEmbedded Build System`,
-@@ -271,7 +271,7 @@ files that are being worked on simultaneously by more than one person.
- All this work is done locally on the development host before anything is
- pushed to a "contrib" area and examined at the maintainer's level.
- 
--A somewhat formal method exists by which developers commit changes and
-+There is a somewhat formal method by which developers commit changes and
- push them into the "contrib" area and subsequently request that the
- maintainer include them into an upstream branch. This process is called
- "submitting a patch" or "submitting a change." For information on
-@@ -279,9 +279,9 @@ submitting patches and changes, see the
- ":ref:`dev-manual/common-tasks:submitting a change to the yocto project`"
- section in the Yocto Project Development Tasks Manual.
- 
--In summary, a single point of entry exists for changes into a "master"
-+In summary, there is a single point of entry for changes into a "master"
- or development branch of the Git repository, which is controlled by the
--project's maintainer. And, a set of developers exist who independently
-+project's maintainer. A set of developers independently
- develop, test, and submit changes to "contrib" areas for the maintainer
- to examine. The maintainer then chooses which changes are going to
- become a permanent part of the project.
-diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-index 7a01828c5f..28ed07994a 100644
---- a/documentation/overview-manual/yp-intro.rst
-+++ b/documentation/overview-manual/yp-intro.rst
-@@ -140,8 +140,7 @@ Here are challenges you might encounter when developing using the Yocto Project:
- 
- -  *Steep Learning Curve:* The Yocto Project has a steep learning curve
-    and has many different ways to accomplish similar tasks. It can be
--   difficult to choose how to proceed when varying methods exist by
--   which to accomplish a given task.
-+   difficult to choose between such ways.
- 
- -  *Understanding What Changes You Need to Make For Your Design Requires
-    Some Research:* Beyond the simple tutorial stage, understanding what
-@@ -156,7 +155,7 @@ Here are challenges you might encounter when developing using the Yocto Project:
-    workflow <overview-manual/development-environment:the yocto project development environment>`
-    could be confusing if you are used to traditional desktop and server
-    software development.
--   In a desktop development environment, mechanisms exist to easily pull
-+   In a desktop development environment, there are mechanisms to easily pull
-    and install new packages, which are typically pre-compiled binaries
-    from servers accessible over the Internet. Using the Yocto Project,
-    you must modify your configuration and rebuild to add additional
-@@ -430,8 +429,8 @@ Yocto Project:
-    require system administrator privileges. For example, file ownership
-    or permissions might need to be defined. Pseudo is a tool that you
-    can either use directly or through the environment variable
--   ``LD_PRELOAD``. Either method allows these operations to succeed as
--   if system administrator privileges exist even when they do not.
-+   ``LD_PRELOAD``. Either method allows these operations to succeed
-+   even without system administrator privileges.
- 
-    Thanks to Pseudo, the Yocto Project never needs root privileges to
-    build images for your target system.
-@@ -579,8 +578,7 @@ software.
- This section provides an introduction to the choices or development
- methods you have when setting up your Build Host. Depending on your
- particular workflow preference and the type of operating system your
--Build Host runs, several choices exist that allow you to use the Yocto
--Project.
-+Build Host runs, you have several choices.
- 
- .. note::
- 
-@@ -790,7 +788,7 @@ Some Basic Terms
- ================
- 
- It helps to understand some basic fundamental terms when learning the
--Yocto Project. Although a list of terms exists in the ":doc:`Yocto Project
-+Yocto Project. Although there is a list of terms in the ":doc:`Yocto Project
- Terms </ref-manual/terms>`" section of the Yocto Project
- Reference Manual, this section provides the definitions of some terms
- helpful for getting started:
+ In addition to the web user interface and the scripts that start and
+-stop Toaster, command-line commands exist through the ``manage.py``
++stop Toaster, command-line commands are available through the ``manage.py``
+ management script. You can find general documentation on ``manage.py``
+ at the
+ `Django <https://docs.djangoproject.com/en/2.2/topics/settings/>`__
 -- 
 2.25.1
 
