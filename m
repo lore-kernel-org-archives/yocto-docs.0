@@ -1,84 +1,68 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web08.11433.1621010757776677411
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.3378.1621062771705292470
  for <docs@lists.yoctoproject.org>;
- Fri, 14 May 2021 09:45:58 -0700
+ Sat, 15 May 2021 00:12:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id CE64D20005;
-	Fri, 14 May 2021 16:45:55 +0000 (UTC)
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [yocto-docs][dunfell] ref-system-requirements.rst: Add Fedora 33 to list of supported distros
-To: Steve Sakoman <steve@sakoman.com>
-References: <cover.1620838359.git.steve@sakoman.com>
- <07669400a5affa6bc19a5bfdea9ebc05db0b07e3.1620838359.git.steve@sakoman.com>
- <995ed3d0-0f9d-5780-bd69-e7b4a2975239@bootlin.com>
- <CAOSpxdYgWptnMrUR=GTS5tqJ7aJY59gkygq5r0KSeRv7oYi+Jw@mail.gmail.com>
+	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id DE103240002;
+	Sat, 15 May 2021 07:12:49 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <5ba6eed2-1b1a-4fbf-536d-4e91304dfb20@bootlin.com>
-Date: Fri, 14 May 2021 18:45:55 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [RFC 0/3] add support for diagrams generated from SVG sources
+Date: Sat, 15 May 2021 09:12:16 +0200
+Message-Id: <20210515071219.307241-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <CAOSpxdYgWptnMrUR=GTS5tqJ7aJY59gkygq5r0KSeRv7oYi+Jw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Hi Steve,
+This RFC proposes modifications to the Makefile and the Sphinx
+configuration (conf.py file) to support:
 
-On 5/14/21 6:09 PM, Steve Sakoman wrote:
-> On Thu, May 13, 2021 at 11:19 PM Michael Opdenacker
-> <michael.opdenacker@bootlin.com> wrote:
->> Hi Steve,
->>
->> On 5/12/21 6:54 PM, Steve Sakoman wrote:
->>> Signed-off-by: Steve Sakoman <steve@sakoman.com>
->>> ---
->>>  documentation/ref-manual/ref-system-requirements.rst | 2 ++
->>>  1 file changed, 2 insertions(+)
->>>
->>> diff --git a/documentation/ref-manual/ref-system-requirements.rst b/documentation/ref-manual/ref-system-requirements.rst
->>> index 65234d072..bb688772f 100644
->>> --- a/documentation/ref-manual/ref-system-requirements.rst
->>> +++ b/documentation/ref-manual/ref-system-requirements.rst
->>> @@ -55,6 +55,8 @@ distributions:
->>>
->>>  -  Fedora 32
->>>
->>> +-  Fedora 33
->>> +
->>
->> If Fedora 33 is supported in our LTS, shouldn't we support it too in the
->> next release? I could propose the same update to the "master" branch of
->> yocto-docs...
-> I suspect master has more changes than just this one!  Taking a quick look at:
->
-> https://git.yoctoproject.org/cgit/cgit.cgi/meta-yocto/tree/meta-poky/conf/distro/poky.conf
->
-> shows that there are some additions as well as at least one deletion.
+- The generation of PNG diagrams from SVG sources for the generation
+  of the EPUB manual. Directly using SVG in EPUB shows at least
+  font size and alignment issues.
 
+  The conf.py file has been modified to let the EPUB builder know
+  that it should prefer PNG over SVG when both formats are available.
 
-Oops, indeed! Thanks for the reference.
+- The generation of PDF diagrams from SVG sources for the generation
+  of the PDF manual. PDF output cannot use SVG, and needs PDF diagrams
+  instead.
 
->
-> So, yes, master should be updated to reflect the current requirements
-> in poky.conf
->
-> It may well be that gatesgarth/hardknott aren't quite correct either.
+New diagrams are stored in separate "svg" directories so that generated
+.png and .pdf files can be "gitignored" without ignoring the original
+.png files that have no .svg source.
 
+In the source .rst files, new diagrams can now be included as, for example:
+image:: svg/git-workflow.*
 
-Sure, I'll propose updates to both.
+Note that the way the Makefile was modified can most probably be improved,
+as my "make" skills are pretty limited. I'm interested in your suggestions!
 
-Thanks again,
+My goal is to progressively replace PNG diagrams with SVG ones:
+   - To get high quality definition output documents, in all output formats
+   - To Have the ability to update diagrams
+I would indeed do this very progressively, a little bit every week,
+not at the expense of other tasks.
 
-Cheers,
+Michael Opdenacker (3):
+  Makefile: allow epub and latexpdf outputs to use diagrams from SVG
+    sources
+  conf.py: prefer PNG to SVG in EPUB output
+  overview-manual: SVG diagram for the git workflow
 
-Michael.
+ documentation/.gitignore                      |    2 +
+ documentation/Makefile                        |   29 +-
+ documentation/conf.py                         |    4 +
+ .../development-environment.rst               |    4 +-
+ .../overview-manual/figures/git-workflow.png  |  Bin 26586 -> 0 bytes
+ .../overview-manual/svg/git-workflow.svg      | 1205 +++++++++++++++++
+ 6 files changed, 1239 insertions(+), 5 deletions(-)
+ delete mode 100644 documentation/overview-manual/figures/git-workflow.png
+ create mode 100644 documentation/overview-manual/svg/git-workflow.svg
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
