@@ -1,82 +1,82 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web10.4164.1621071786677010997
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+ by mx.groups.io with SMTP id smtpd.web12.6954.1621178159695691611
  for <docs@lists.yoctoproject.org>;
- Sat, 15 May 2021 02:43:07 -0700
+ Sun, 16 May 2021 08:15:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:34400 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lhqp7-00080M-9c
-	for docs@lists.yoctoproject.org; Sat, 15 May 2021 05:43:05 -0400
-Date: Sat, 15 May 2021 05:43:01 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: wanting to clarify "FILES_*" and wildcarding
-Message-ID: <358d7961-9a28-8fce-adb4-54e54021270@crashcourse.ca>
-MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=gHUk8MQd;
+ spf=pass (domain: gmail.com, ip: 209.85.216.43, mailfrom: akuster808@gmail.com)
+Received: by mail-pj1-f43.google.com with SMTP id cu11-20020a17090afa8bb029015d5d5d2175so1516010pjb.3
+        for <docs@lists.yoctoproject.org>; Sun, 16 May 2021 08:15:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:subject:date:message-id;
+        bh=ZM8AnEM5c7exnYbioHGMFMfxlwVZ8mey4vxl3PVy+JE=;
+        b=gHUk8MQdaj554o2MCOA5M/Rrq4mlGjlCFJONwg70kqnw7Mn2MTWVIGKmx10uDGpr0S
+         7ieflKE5XPj2CYQm/NSxRzm7HU0vp40LZVDupkJKMeVUw4wBCm6xCU7W/b7Snt9V6uIb
+         r42kl5O2riiCVEqhwv3PknPZMcI8jB6w/mGJ17eNvhoGyu3oC8URRn9/6SQb852Ayzvb
+         Ezyv4/0Fq4aMs7XIdh1YN0pFLV8y8Zw0N9vlP/jNDmF4VQR6k73/6iFMBXLdLyfeqZTh
+         WUTPfFrU9eBdJFigRpFMdtXaD8xCg4DaEh8rXwRXCrC9auVwl9bD9BFEp1TneGeaBZ6M
+         Yagg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=ZM8AnEM5c7exnYbioHGMFMfxlwVZ8mey4vxl3PVy+JE=;
+        b=XZ4OUR7d/YEK6mWdEEIK+TI+FUiKqsS8etlew03DOAi41+JkQOhlrnoxIMxj8N6r7N
+         9C/o5yfgregbRhntEX/s4mhd9o6MdwZjc+k2S0K9pcqv7LbgIOsJh6QvHimZbNQS+uCI
+         0RxTtAykeOBZIDQohuDvVLRaxxcD1GfoM6tR/8LT1sPBqlvP0KFcnURgYrChE17llZaW
+         ZRhz8E5bdx/hyglte9LplzmL56AyEt6y1WJ6fRVCD2DOmiT7KxjOLDIsZ5V4RGAm8RBh
+         GR5gyCP20YiGwrRaspB15I8K7XX+NZof8m0CKrmgbZbYeQdybAbvBmHHEn9NZUVQolEg
+         7ByQ==
+X-Gm-Message-State: AOAM533LojGM9/HQjZD8Yjcmq253IQ9INEotaN5WxhwGcuK15wq0HjUn
+	FNKojNbwiU5NhoEIdUXv/gaYNY8UJ3I=
+X-Google-Smtp-Source: ABdhPJy//6t1dDfdyA7uNB3GiDHjYWoCxhU2VSl6fU09HukiHLstp9wrd6GU0X67bOJ9X7UUlwuScw==
+X-Received: by 2002:a17:90a:db02:: with SMTP id g2mr16553144pjv.2.1621178159011;
+        Sun, 16 May 2021 08:15:59 -0700 (PDT)
+Return-Path: <akuster808@gmail.com>
+Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:e1a5:920e:5720:62fe])
+        by smtp.gmail.com with ESMTPSA id cv24sm8484827pjb.7.2021.05.16.08.15.58
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 May 2021 08:15:58 -0700 (PDT)
+From: "Armin Kuster" <akuster808@gmail.com>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] Fedora33: add missing pkgs
+Date: Sun, 16 May 2021 08:15:57 -0700
+Message-Id: <20210516151557.21643-1-akuster808@gmail.com>
+X-Mailer: git-send-email 2.17.1
 
+[ Yocto #14188]
 
-  i just got burned by the way someone defined the constitution of
-packages for an internal recipe a while back because of the way they
-claim to have read the documentation, so i want to clarify a couple
-things about what can be assigned to the variations of "FILES_*", and
-i might submit a patch to be emphatic about how things work.
+The following packages where needed to a fresh FC33 install
+perl-FindBin
+perl-File-Compare
+perl-File-Copy
+perl-locale
 
-  so here:
+Error seen:
 
-http://docs.yoctoproject.org/ref-manual/variables.html#term-FILES
+openssl-native-1.1.1g-r0 do_configure: Execution of '/{snipped}/build/tmp-glibc/work/x86_64-linux/openssl-native/1.1.1g-r0/temp/run.do_configure.14627' failed with exit code 2:
+Can't locate FindBin.pm in @INC (you may need to install the FindBin module)
 
-the glossary entry does mention Python's glob syntax for wildcarding,
-but muh colleague wasn't sure how that applied to directory names, and
-arbitrarily switched back and forth between:
+Signed-off-by: Armin Kuster <akuster808@gmail.com>
+---
+ documentation/poky.yaml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-  FILES_${PN} += "/bin"
-  FILES_${PN} += "/bin/*"
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 22706a0fb..9737f876f 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -19,7 +19,8 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
+      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
+      python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
+-     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel"
++     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel perl-FindBin perl-File-Compare \
++     perl-File-Copy perl-locale"
+ OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
+      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
+      python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
+-- 
+2.17.1
 
-thinking those were equivalent, and in a lot of cases, they would be,
-but the second variant would not pick up any hidden objects like
-".debug", correct? which is why the build just exploded when it was
-extended to start adding static libraries -- the first variant was
-being used and all of the static libs were suddenly being added to the
-base package and bad things happened. so is the fundamental difference
-between those two variants the processing of hidden files and nothing
-else?
-
-  second minor observation is that the current assignments use
-hard-coded names -- /bin instead of, say, ${bindir} -- so i'm going to
-note people shouldn't do that.
-
-  last thing that truly caused trouble was someone thinking you needed
-to define the files list one directory level at a time, as in, to
-include the shared libs:
-
-  FILES_${PN} = "/usr"
-  FILES_${PN} += "/usr/lib64"
-  FILES_${PN} += "/usr/lib64/lib*.so*"
-
-i'm not sure where someone got the idea that you needed to do this one
-directory at a time as, since inclusion works recursively, that first
-assignment picks up all of /usr, and that also caused grief as soon as
-static libs were added to the build.
-
-  i see nothing in the current definition of FILES that would inspire
-anyone to do this, but maybe it's worth adding to the "Note" a caution
-against doing that.
-
-  thoughts? then i'll submit a patch.
-
-rday
