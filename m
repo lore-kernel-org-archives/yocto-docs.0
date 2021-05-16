@@ -1,82 +1,219 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
- by mx.groups.io with SMTP id smtpd.web12.6954.1621178159695691611
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+ by mx.groups.io with SMTP id smtpd.web09.11423.1621203122218854946
  for <docs@lists.yoctoproject.org>;
- Sun, 16 May 2021 08:15:59 -0700
+ Sun, 16 May 2021 15:12:02 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=gHUk8MQd;
- spf=pass (domain: gmail.com, ip: 209.85.216.43, mailfrom: akuster808@gmail.com)
-Received: by mail-pj1-f43.google.com with SMTP id cu11-20020a17090afa8bb029015d5d5d2175so1516010pjb.3
-        for <docs@lists.yoctoproject.org>; Sun, 16 May 2021 08:15:59 -0700 (PDT)
+ dkim=pass header.i=@linaro.org header.s=google header.b=wADYNPob;
+ spf=pass (domain: linaro.org, ip: 209.85.218.41, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ej1-f41.google.com with SMTP id s22so6124297ejv.12
+        for <docs@lists.yoctoproject.org>; Sun, 16 May 2021 15:12:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id;
-        bh=ZM8AnEM5c7exnYbioHGMFMfxlwVZ8mey4vxl3PVy+JE=;
-        b=gHUk8MQdaj554o2MCOA5M/Rrq4mlGjlCFJONwg70kqnw7Mn2MTWVIGKmx10uDGpr0S
-         7ieflKE5XPj2CYQm/NSxRzm7HU0vp40LZVDupkJKMeVUw4wBCm6xCU7W/b7Snt9V6uIb
-         r42kl5O2riiCVEqhwv3PknPZMcI8jB6w/mGJ17eNvhoGyu3oC8URRn9/6SQb852Ayzvb
-         Ezyv4/0Fq4aMs7XIdh1YN0pFLV8y8Zw0N9vlP/jNDmF4VQR6k73/6iFMBXLdLyfeqZTh
-         WUTPfFrU9eBdJFigRpFMdtXaD8xCg4DaEh8rXwRXCrC9auVwl9bD9BFEp1TneGeaBZ6M
-         Yagg==
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=EIPBQz1U8Ex9QNP1DW99iq8ainsqlav3ZHDXuavOXcw=;
+        b=wADYNPobuwVjPgMn6e7VSk7l4mDZketH0BXDuCgKcg5uAqO51K4cRVJtJMq2NEJZwQ
+         pMq+B3fTjZ5zyFNUbuMn72WJsb44Qsk84wxHruSAhFck7EAprZ+VUT9k/C6NVrZ8GmWx
+         fctA+FJFPqNNmBBWXWHElW6IGwHJjTKXvFyxgcmD4gj6wSJSdESRs0zpcTpwsqjDXuya
+         iCvEVwGW8MlurvXJgqFXOgq6hD2iJscrSGc50NT1QXijGwZ9NvwwDnYqyJ5/kaQ5gNDw
+         9/+Ur8csAuZoPNpUsdhiwaUE9SUHrAt0tgGeFjUyXxGoD7iOLwXrwYz5PYrCp6/uaTqg
+         QRqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id;
-        bh=ZM8AnEM5c7exnYbioHGMFMfxlwVZ8mey4vxl3PVy+JE=;
-        b=XZ4OUR7d/YEK6mWdEEIK+TI+FUiKqsS8etlew03DOAi41+JkQOhlrnoxIMxj8N6r7N
-         9C/o5yfgregbRhntEX/s4mhd9o6MdwZjc+k2S0K9pcqv7LbgIOsJh6QvHimZbNQS+uCI
-         0RxTtAykeOBZIDQohuDvVLRaxxcD1GfoM6tR/8LT1sPBqlvP0KFcnURgYrChE17llZaW
-         ZRhz8E5bdx/hyglte9LplzmL56AyEt6y1WJ6fRVCD2DOmiT7KxjOLDIsZ5V4RGAm8RBh
-         GR5gyCP20YiGwrRaspB15I8K7XX+NZof8m0CKrmgbZbYeQdybAbvBmHHEn9NZUVQolEg
-         7ByQ==
-X-Gm-Message-State: AOAM533LojGM9/HQjZD8Yjcmq253IQ9INEotaN5WxhwGcuK15wq0HjUn
-	FNKojNbwiU5NhoEIdUXv/gaYNY8UJ3I=
-X-Google-Smtp-Source: ABdhPJy//6t1dDfdyA7uNB3GiDHjYWoCxhU2VSl6fU09HukiHLstp9wrd6GU0X67bOJ9X7UUlwuScw==
-X-Received: by 2002:a17:90a:db02:: with SMTP id g2mr16553144pjv.2.1621178159011;
-        Sun, 16 May 2021 08:15:59 -0700 (PDT)
-Return-Path: <akuster808@gmail.com>
-Received: from akuster-ThinkPad-T460s.mvista.com ([2601:202:4180:a5c0:e1a5:920e:5720:62fe])
-        by smtp.gmail.com with ESMTPSA id cv24sm8484827pjb.7.2021.05.16.08.15.58
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 May 2021 08:15:58 -0700 (PDT)
-From: "Armin Kuster" <akuster808@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] Fedora33: add missing pkgs
-Date: Sun, 16 May 2021 08:15:57 -0700
-Message-Id: <20210516151557.21643-1-akuster808@gmail.com>
-X-Mailer: git-send-email 2.17.1
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=EIPBQz1U8Ex9QNP1DW99iq8ainsqlav3ZHDXuavOXcw=;
+        b=FoYbROT2JYpzGUUVCqSh4JXKsMp64RwIP8oRkDS9qFppgU7wNUEYCS69HqDXueXWFz
+         ASVR9GyGTbfAHenSOc7dUqPS/4yy9dChBIeBWRbMyyb3tWKeLaHFwWuA9aSj7t4nHgo3
+         Rm+J7LzH/QNEPSI1Phy8JXfto87oiV3P4ObiqTAv8i85o6XjCIPs64U3Fe7lpApyTUEF
+         fPGfAi+rWcXr6aeiJ9rZxlcXxDVYCX4rLYS+/DSB6BoJ0uKMLuOCgtwVnHL37ABABtPC
+         8wxyL1RPwVbC95KUanDC2VtZ7qI6XWOFtbVLzoaZC0+47oWetlch+DR0x+1TY2iUE+qA
+         Nu6A==
+X-Gm-Message-State: AOAM532EMJ3uATYuAz2Yq1NUGyCexn7SgSoakJ4phSB+DI56/isyi33r
+	AQ7EhF37DNPXKUCd+imZ6T3WRBE8bDpVmtjjs9kLdw==
+X-Google-Smtp-Source: ABdhPJzqs5EoapM9jFe46KqBJqZPU8xB1yedpn3m/y8D68afGDiFNYM7LyYq0X2m/fCufRxFTp2QCHF9B1JMtZqnYG0=
+X-Received: by 2002:a17:906:591:: with SMTP id 17mr18332063ejn.347.1621203120617;
+ Sun, 16 May 2021 15:12:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210515071219.307241-1-michael.opdenacker@bootlin.com>
+In-Reply-To: <20210515071219.307241-1-michael.opdenacker@bootlin.com>
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
+Date: Mon, 17 May 2021 00:11:50 +0200
+Message-ID: <CAP71WjxpKO1hXb5wEgXeiHVt4EwfeEc08cTz88CG7684Eu-KJw@mail.gmail.com>
+Subject: Re: [docs] [RFC 0/3] add support for diagrams generated from SVG sources
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="0000000000001d287405c279c495"
 
-[ Yocto #14188]
+--0000000000001d287405c279c495
+Content-Type: text/plain; charset="UTF-8"
 
-The following packages where needed to a fresh FC33 install
-perl-FindBin
-perl-File-Compare
-perl-File-Copy
-perl-locale
+On Sat, May 15, 2021 at 9:12 AM Michael Opdenacker <
+michael.opdenacker@bootlin.com> wrote:
 
-Error seen:
+> This RFC proposes modifications to the Makefile and the Sphinx
+> configuration (conf.py file) to support:
+>
+> - The generation of PNG diagrams from SVG sources for the generation
+>   of the EPUB manual. Directly using SVG in EPUB shows at least
+>   font size and alignment issues.
+>
+>   The conf.py file has been modified to let the EPUB builder know
+>   that it should prefer PNG over SVG when both formats are available.
 
-openssl-native-1.1.1g-r0 do_configure: Execution of '/{snipped}/build/tmp-glibc/work/x86_64-linux/openssl-native/1.1.1g-r0/temp/run.do_configure.14627' failed with exit code 2:
-Can't locate FindBin.pm in @INC (you may need to install the FindBin module)
 
-Signed-off-by: Armin Kuster <akuster808@gmail.com>
----
- documentation/poky.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> - The generation of PDF diagrams from SVG sources for the generation
+>   of the PDF manual. PDF output cannot use SVG, and needs PDF diagrams
+>   instead.
+>
+> New diagrams are stored in separate "svg" directories so that generated
+> .png and .pdf files can be "gitignored" without ignoring the original
+> .png files that have no .svg source.
+>
+> In the source .rst files, new diagrams can now be included as, for example:
+> image:: svg/git-workflow.*
+>
+> Note that the way the Makefile was modified can most probably be improved,
+> as my "make" skills are pretty limited. I'm interested in your suggestions!
+>
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 22706a0fb..9737f876f 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -19,7 +19,8 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
-      python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
--     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel"
-+     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel perl-FindBin perl-File-Compare \
-+     perl-File-Copy perl-locale"
- OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
-      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
-      python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
--- 
-2.17.1
+Getting more svg files is definitely the way to go.. thanks for starting
+this. It seems like there are sphinx extensions to convert images as
+needed, e.g.
+https://www.sphinx-doc.org/en/master/usage/extensions/imgconverter.html
+or
+https://github.com/sephalon/sphinxcontrib-svg2pdfconverter
+which seems to support inkscape:
+https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/blob/master/sphinxcontrib/inkscapeconverter.py
 
+
+Have you looked into that or not?
+
+
+> My goal is to progressively replace PNG diagrams with SVG ones:
+>    - To get high quality definition output documents, in all output formats
+>    - To Have the ability to update diagrams
+> I would indeed do this very progressively, a little bit every week,
+> not at the expense of other tasks.
+>
+> Michael Opdenacker (3):
+>   Makefile: allow epub and latexpdf outputs to use diagrams from SVG
+>     sources
+>   conf.py: prefer PNG to SVG in EPUB output
+>   overview-manual: SVG diagram for the git workflow
+>
+>  documentation/.gitignore                      |    2 +
+>  documentation/Makefile                        |   29 +-
+>  documentation/conf.py                         |    4 +
+>  .../development-environment.rst               |    4 +-
+>  .../overview-manual/figures/git-workflow.png  |  Bin 26586 -> 0 bytes
+>  .../overview-manual/svg/git-workflow.svg      | 1205 +++++++++++++++++
+>  6 files changed, 1239 insertions(+), 5 deletions(-)
+>  delete mode 100644 documentation/overview-manual/figures/git-workflow.png
+>  create mode 100644 documentation/overview-manual/svg/git-workflow.svg
+>
+> --
+> 2.25.1
+>
+>
+> 
+>
+>
+
+--0000000000001d287405c279c495
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Sat, May 15, 2021 at 9:12 AM Micha=
+el Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com">michael=
+.opdenacker@bootlin.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_=
+quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,=
+204);padding-left:1ex">This RFC proposes modifications to the Makefile and =
+the Sphinx<br>
+configuration (conf.py file) to support:<br>
+<br>
+- The generation of PNG diagrams from SVG sources for the generation<br>
+=C2=A0 of the EPUB manual. Directly using SVG in EPUB shows at least<br>
+=C2=A0 font size and alignment issues.<br>
+<br>
+=C2=A0 The conf.py file has been modified to let the EPUB builder know<br>
+=C2=A0 that it should prefer PNG over SVG when both formats are available.=
+=
+=C2=A0</blockquote><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
+px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+- The generation of PDF diagrams from SVG sources for the generation<br>
+=C2=A0 of the PDF manual. PDF output cannot use SVG, and needs PDF diagram=
+s<br>
+=C2=A0 instead.<br>
+<br>
+New diagrams are stored in separate &quot;svg&quot; directories so that ge=
+nerated<br>
+.png and .pdf files can be &quot;gitignored&quot; without ignoring the ori=
+ginal<br>
+.png files that have no .svg source.<br>
+<br>
+In the source .rst files, new diagrams can now be included as, for example=
+:<br>
+image:: svg/git-workflow.*<br>
+<br>
+Note that the way the Makefile was modified can most probably be improved,=
+<br>
+as my &quot;make&quot; skills are pretty limited. I&#39;m interested in yo=
+ur suggestions!<br></blockquote><div><br></div><div>Getting more svg files =
+is definitely the way to go.. thanks for starting this. It seems like there=
+ are sphinx extensions to convert images as needed, e.g.</div><div><a href=
+=3D"https://www.sphinx-doc.org/en/master/usage/extensions/imgconverter.htm=
+l">https://www.sphinx-doc.org/en/master/usage/extensions/imgconverter.html<=
+/a><br></div><div>or</div><div><a href=3D"https://github.com/sephalon/sphin=
+xcontrib-svg2pdfconverter">https://github.com/sephalon/sphinxcontrib-svg2pd=
+fconverter</a><br></div><div>which seems to support inkscape:</div><div><a =
+href=3D"https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/blob/mas=
+ter/sphinxcontrib/inkscapeconverter.py">https://github.com/sephalon/sphinxc=
+ontrib-svg2pdfconverter/blob/master/sphinxcontrib/inkscapeconverter.py</a>=
+=C2=A0</div><div><br></div><div>Have you looked into that or not?</div><di=
+v><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+<br>
+My goal is to progressively replace PNG diagrams with SVG ones:<br>
+=C2=A0 =C2=A0- To get high quality definition output documents, in all out=
+put formats<br>
+=C2=A0 =C2=A0- To Have the ability to update diagrams<br>
+I would indeed do this very progressively, a little bit every week,<br>
+not at the expense of other tasks.<br>
+<br>
+Michael Opdenacker (3):<br>
+=C2=A0 Makefile: allow epub and latexpdf outputs to use diagrams from SVG<=
+br>
+=C2=A0 =C2=A0 sources<br>
+=C2=A0 conf.py: prefer PNG to SVG in EPUB output<br>
+=C2=A0 overview-manual: SVG diagram for the git workflow<br>
+<br>
+=C2=A0documentation/.gitignore=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A0 2 +<br>
+=C2=A0documentation/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A029 +-<br>
+=C2=A0documentation/conf.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 4 +<br>
+=C2=A0.../development-environment.rst=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
+=C2=A0 =C2=A0 =C2=A0|=C2=A0 =C2=A0 4 +-<br>
+=C2=A0.../overview-manual/figures/git-workflow.png=C2=A0 |=C2=A0 Bin 26586=
+ -&gt; 0 bytes<br>
+=C2=A0.../overview-manual/svg/git-workflow.svg=C2=A0 =C2=A0 =C2=A0 | 1205 =
++++++++++++++++++<br>
+=C2=A06 files changed, 1239 insertions(+), 5 deletions(-)<br>
+=C2=A0delete mode 100644 documentation/overview-manual/figures/git-workflo=
+w.png<br>
+=C2=A0create mode 100644 documentation/overview-manual/svg/git-workflow.sv=
+g<br>
+<br>
+-- <br>
+2.25.1<br>
+<br>
+<br>
+<br>
+<br>
+</blockquote></div></div>
+
+--0000000000001d287405c279c495--
