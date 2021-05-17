@@ -1,70 +1,74 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web12.16073.1621238011083527976
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web09.16271.1621240627382219885
  for <docs@lists.yoctoproject.org>;
- Mon, 17 May 2021 00:53:31 -0700
+ Mon, 17 May 2021 01:37:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 59FD620003;
-	Mon, 17 May 2021 07:53:29 +0000 (UTC)
-Subject: Re: [docs] [PATCH] Fedora33: add missing pkgs
-To: Armin Kuster <akuster808@gmail.com>, docs@lists.yoctoproject.org
-References: <20210516151557.21643-1-akuster808@gmail.com>
+	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 946A86000B;
+	Mon, 17 May 2021 08:36:55 +0000 (UTC)
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [RFC 2/3] conf.py: prefer PNG to SVG in EPUB output
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+References: <20210515071219.307241-1-michael.opdenacker@bootlin.com>
+ <20210515071219.307241-3-michael.opdenacker@bootlin.com>
+ <CAP71Wjy_i6N=V+aKuZJA4U50QxDdWVg4pp4yLXsG2kDyQaaMkQ@mail.gmail.com>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <22da4caf-7b7a-6c11-de22-278c86dbfeda@bootlin.com>
-Date: Mon, 17 May 2021 09:53:28 +0200
+Message-ID: <a940ba06-4631-6f5b-ad31-ebafa3d9edcd@bootlin.com>
+Date: Mon, 17 May 2021 10:36:55 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210516151557.21643-1-akuster808@gmail.com>
+In-Reply-To: <CAP71Wjy_i6N=V+aKuZJA4U50QxDdWVg4pp4yLXsG2kDyQaaMkQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
-Hi Armin,
+Hi Nicolas,
 
-On 5/16/21 5:15 PM, Armin Kuster wrote:
-> [ Yocto #14188]
+Thanks for the review!
+
+On 5/17/21 12:29 AM, Nicolas Dechesne wrote:
 >
-> The following packages where needed to a fresh FC33 install
-> perl-FindBin
-> perl-File-Compare
-> perl-File-Copy
-> perl-locale
 >
-> Error seen:
+> On Sat, May 15, 2021 at 9:13 AM Michael Opdenacker
+> <michael.opdenacker@bootlin.com
+> <mailto:michael.opdenacker@bootlin.com>> wrote:
 >
-> openssl-native-1.1.1g-r0 do_configure: Execution of '/{snipped}/build/tmp-glibc/work/x86_64-linux/openssl-native/1.1.1g-r0/temp/run.do_configure.14627' failed with exit code 2:
-> Can't locate FindBin.pm in @INC (you may need to install the FindBin module)
+>     SVG directly included in EPUB output has multiple issues,
+>     in particular font size and alignment ones (tested on two
+>     EPUB readers).
 >
-> Signed-off-by: Armin Kuster <akuster808@gmail.com>
-> ---
->  documentation/poky.yaml | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>     Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com
+>     <mailto:michael.opdenacker@bootlin.com>>
+>     ---
+>      documentation/conf.py | 4 ++++
+>      1 file changed, 4 insertions(+)
 >
-> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-> index 22706a0fb..9737f876f 100644
-> --- a/documentation/poky.yaml
-> +++ b/documentation/poky.yaml
-> @@ -19,7 +19,8 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
->       diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
->       ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
->       python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
-> -     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel"
-> +     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel perl-FindBin perl-File-Compare \
-> +     perl-File-Copy perl-locale"
->  OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
->       diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
->       python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
+>     diff --git a/documentation/conf.py b/documentation/conf.py
+>     index 5a2e25f7b2..798a365c7f 100644
+>     --- a/documentation/conf.py
+>     +++ b/documentation/conf.py
+>     @@ -136,3 +136,7 @@ latex_elements = {
+>          'passoptionstopackages':
+>     '\PassOptionsToPackage{bookmarksdepth=5}{hyperref}',
+>          'preamble': '\setcounter{tocdepth}{2}',
+>      }
+>     +
+>     +# Make the EPUB builder prefer PNG to SVG because of issues
+>     rendering Inkscape SVG
+>     +from sphinx.builders.epub3 import Epub3Builder
+>     +Epub3Builder.supported_image_types = ['image/png',
+>     'image/svg+xml', 'image/gif', 'image/jpeg']
+>
+>
+> If you concluded svg has issues, should we remove it from this list
+> instead?
 
 
-Many thanks for the patch!
-I just added "poky.yaml:" to the header line for consistency with prior
-commits, but otherwise:
-
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-I merged your change into the "master-next" branch of yocto-docs.
+This definitely makes sense, indeed. I made this change for the next
+version I submit.
 
 Cheers,
 
