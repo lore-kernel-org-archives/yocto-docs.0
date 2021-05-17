@@ -1,173 +1,78 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
- by mx.groups.io with SMTP id smtpd.web11.18202.1621254795990429268
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+ by mx.groups.io with SMTP id smtpd.web10.19767.1621262545547744636
  for <docs@lists.yoctoproject.org>;
- Mon, 17 May 2021 05:33:16 -0700
+ Mon, 17 May 2021 07:42:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=vW1OOQwi;
- spf=pass (domain: linaro.org, ip: 209.85.208.48, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-ed1-f48.google.com with SMTP id t3so6666922edc.7
-        for <docs@lists.yoctoproject.org>; Mon, 17 May 2021 05:33:15 -0700 (PDT)
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=PYeWldaG;
+ spf=softfail (domain: sakoman.com, ip: 209.85.214.169, mailfrom: steve@sakoman.com)
+Received: by mail-pl1-f169.google.com with SMTP id h7so3269884plt.1
+        for <docs@lists.yoctoproject.org>; Mon, 17 May 2021 07:42:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=COTuNfCLF5qndztTS3jxm2mzqxzgxUs9S+mTYVcL/SU=;
-        b=vW1OOQwie1/UYDx2XU7289bWlSDPfdAj7fpTxkqdjhF5EPJjpMGNw9gOygkedvGbYE
-         mjjq8vpivZGhRNOyTQMpsdhnpVIS2tNujj9aqsXGxIWLTaad3QYHPDwuQStpV0AmU58M
-         9ABcm6SmiTiyQIX6KzDXhJ1DXN0xIEz+WkiEdPs4IDnGQ5x37bw6zNbW7l6VQHFbflWP
-         jJ8Aw64ea3Bp/ImwJq5Okn/gMNHQITv+8CBMonTptRr3/0on5/HjpRbWgDlhpsiNtXwL
-         x9inrD5v9bJbscfcNjNzajO5Ac18sr9c+wMiT/IDXcosXHWZtPq1Vnm2zhcQjHlFVHw/
-         oG9w==
+        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tkcJCDNpeGOUTJDtBkwtizNDha5ixGX3pMxkaitVlfU=;
+        b=PYeWldaGrfYuyo/zc6RjzKItsdnLi6ZkzTa9WlINEZg0V0s4YCstKF86CBmBQ8dYOW
+         x+xWEKNlsMdp1RNRvg/NTcjViXNc9MD/tsqISC+Ge/n/bbYkHXojPAnVlkQ3eVB5MXFs
+         yGOYNpa0vR/qotQdQLiyrRIUDQTfV97T9vy3SpBFlJQ4LZ/DnAiariYhisuDqTE/Vvki
+         OQPpW3F9oDXEwwzYTA8OwJjBc3wB1ZSEvBs9oQk1U59MuDPcQiFFtm8HRTO/vgqCLAeN
+         8MfHhrCrIO4FcbD+cMB7JS4szi8o0C0qFj6qNQPza/z2IpL/NJuRmYWkZOUlH3tfB2kw
+         /bYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=COTuNfCLF5qndztTS3jxm2mzqxzgxUs9S+mTYVcL/SU=;
-        b=HTy5IPnsfH6qt0HNYvTk9a71L9Q1QdrgjjA8PFNZdzAzALQ8c5LDlIemZnQYWVvDRT
-         8g7s8O2WpxowNyAvNN9wFdr3wlJXPacqJngE2YjUInvMFSvn6/Ns/0vyPmDidmVTyJEH
-         KHzm+cQYeiqtx0pwZxWuOVqnEbTRduP3uxtpIbz5riAG95/jIl2tnSqV5q/yDJCvJm68
-         e0kQGakH9RXf1mFNaeSJ4tOCdDgJbPDpqZZPjvxgt/c1mb2SaTkbSgpQ/0OXbCSP0PEX
-         DZD+nrOlr989xT8aicmFm9abKJP+fSptUSF5FENGNA8OMyj5ofeeU77mPsfUcj2omBoS
-         Zl5A==
-X-Gm-Message-State: AOAM5320IvzQX5n1MC5SiN7hDl8mOEFYIDXZb9l6Shl0o7YRbmWuLy/K
-	00+09Pg4J0o6ruGX5lZCI8Q8442qezHy9OXrLuWwSQ==
-X-Google-Smtp-Source: ABdhPJxbztfQhH2GJXOkzrX7OjUMC+Og21MUtfIZT+P9cUjtSbUcUexoGmbc89E/jpJvSOKDXUMfEoFbaAIoMVScy8M=
-X-Received: by 2002:a50:c44f:: with SMTP id w15mr72849841edf.79.1621254794342;
- Mon, 17 May 2021 05:33:14 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tkcJCDNpeGOUTJDtBkwtizNDha5ixGX3pMxkaitVlfU=;
+        b=ikGC44UEb8vtLyPQRgB2jOTm9E44j0WJYXnmZyRO7jWYsc9xbjKAhESUDDUqL0rmfC
+         7+cU3MpaXzBVBsxLzDhBEl0rnIcBts/KQQgGXWveNR/zQFaRcAkEq1hTw56x0GWfU8nC
+         iGrTD+CLVi9biR0svNvuOv21aIvhp+8WwCbyfelTqNU6qk8MDzu9h56ibOYDT4cM2t7H
+         ZE10UZ7ylJS/+spvIGYzPokyB5+R1FteQKuza8T3W5fIHhBuM632oFaVOwwD9u1VMmu5
+         dB15jP+6jBPlwNpOXdjUogGr270+9S2h1sUBICUOA123YdrvxJ0d3qHyjJnOF1H5JEuZ
+         c89g==
+X-Gm-Message-State: AOAM533z4gfd4V2pTJKtu3sY85BDXt4qUZYCHBuJVQ8qu+Kng/0OEPR4
+	H5FQgwg40QTBjROVbHrDJmP+/Y0+SycgSVdm2ik=
+X-Google-Smtp-Source: ABdhPJwXARQbHz8HCRCk0k0wag/nwc9zephmn3Qo91PzdXz5FNhsSLGdjjBILk+ErTKvNS/9kBY3fg==
+X-Received: by 2002:a17:90a:c68f:: with SMTP id n15mr1666380pjt.112.1621262544362;
+        Mon, 17 May 2021 07:42:24 -0700 (PDT)
+Return-Path: <steve@sakoman.com>
+Received: from localhost.localdomain (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
+        by smtp.gmail.com with ESMTPSA id y64sm9908138pfy.204.2021.05.17.07.42.23
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 May 2021 07:42:23 -0700 (PDT)
+From: "Steve Sakoman" <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell 0/2] Patch review
+Date: Mon, 17 May 2021 04:42:10 -1000
+Message-Id: <cover.1621262110.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20210515071219.307241-1-michael.opdenacker@bootlin.com>
- <CAP71WjxpKO1hXb5wEgXeiHVt4EwfeEc08cTz88CG7684Eu-KJw@mail.gmail.com> <c9b30dd5-b153-b966-be59-fb936caedc6d@bootlin.com>
-In-Reply-To: <c9b30dd5-b153-b966-be59-fb936caedc6d@bootlin.com>
-From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
-Date: Mon, 17 May 2021 14:33:05 +0200
-Message-ID: <CAP71WjzhCxdEVafKw9qfhfNaf2u2ZfDe7gQ31sVV3J9BVwFmPQ@mail.gmail.com>
-Subject: Re: [docs] [RFC 0/3] add support for diagrams generated from SVG sources
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="0000000000001b88d105c285cce2"
+Content-Transfer-Encoding: 8bit
 
---0000000000001b88d105c285cce2
-Content-Type: text/plain; charset="UTF-8"
+Please review this set of patches for dunfell and have comments back by
+end of day Wednesday.
 
-On Mon, May 17, 2021 at 10:45 AM Michael Opdenacker <
-michael.opdenacker@bootlin.com> wrote:
+The following changes since commit 5a54200a8702e473ecbbc3dbbdaa24169796c9e8:
 
-> Hi Nicolas,
->
-> On 5/17/21 12:11 AM, Nicolas Dechesne wrote:
-> >
-> >
-> >
-> > Getting more svg files is definitely the way to go.. thanks for
-> > starting this. It seems like there are sphinx extensions to convert
-> > images as needed, e.g.
-> > https://www.sphinx-doc.org/en/master/usage/extensions/imgconverter.html
-> > <https://www.sphinx-doc.org/en/master/usage/extensions/imgconverter.html
-> >
-> > or
-> > https://github.com/sephalon/sphinxcontrib-svg2pdfconverter
-> > <https://github.com/sephalon/sphinxcontrib-svg2pdfconverter>
-> > which seems to support inkscape:
-> >
-> https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/blob/master/sphinxcontrib/inkscapeconverter.py
-> > <
-> https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/blob/master/sphinxcontrib/inkscapeconverter.py
-> >
-> >
-> > Have you looked into that or not?
->
->
-> Not yet, but this sounds like a much better option for converting SVG to
-> PNG and PDF, rather than having to do this manually in the Makefile.
-> I will try to use those.
->
+  documentation: prepare for 3.1.7 release (2021-04-06 08:43:27 -1000)
 
-FWIW, I really like the PDF output.. the whole doc in a single PDF is
-great. We should make it a goal for this release cycle to produce and
-release PDF (I know some prefer epub.. so perhaps we can do both).
+are available in the Git repository at:
 
-We should probably review the PDF output and tweak it a bit, for example, I
-don't think we need the "Current and Previous releases" sections.
+  git://git.yoctoproject.org/yocto-docs contrib/dunfell-next
+  http://git.yoctoproject.org/cgit.cgi/yocto-docs/log/?h=contrib/dunfell-next
 
+Steve Sakoman (2):
+  ref-system-requirements.rst: Add Fedora 33 to list of supported
+    distros
+  documentation: prepare for 3.1.8 release
 
->
-> Thanks for the great suggestion!
-> Michael.
->
-> --
-> Michael Opdenacker, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
->
+ documentation/conf.py                                | 2 +-
+ documentation/poky.yaml                              | 8 ++++----
+ documentation/ref-manual/ref-system-requirements.rst | 2 ++
+ documentation/releases.rst                           | 1 +
+ documentation/sphinx-static/switchers.js             | 2 +-
+ 5 files changed, 9 insertions(+), 6 deletions(-)
 
---0000000000001b88d105c285cce2
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+-- 
+2.25.1
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, May 17, 2021 at 10:45 AM Mich=
-ael Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com">michae=
-l.opdenacker@bootlin.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
-_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
-,204);padding-left:1ex">Hi Nicolas,<br>
-<br>
-On 5/17/21 12:11 AM, Nicolas Dechesne wrote:<br>
-&gt;<br>
-&gt;<br>
-&gt;<br>
-&gt; Getting more svg files is definitely the way to go.. thanks for<br>
-&gt; starting this. It seems like there are sphinx extensions to convert<br=
->
-&gt; images as needed, e.g.<br>
-&gt; <a href=3D"https://www.sphinx-doc.org/en/master/usage/extensions/imgco=
-nverter.html" rel=3D"noreferrer" target=3D"_blank">https://www.sphinx-doc.o=
-rg/en/master/usage/extensions/imgconverter.html</a><br>
-&gt; &lt;<a href=3D"https://www.sphinx-doc.org/en/master/usage/extensions/i=
-mgconverter.html" rel=3D"noreferrer" target=3D"_blank">https://www.sphinx-d=
-oc.org/en/master/usage/extensions/imgconverter.html</a>&gt;<br>
-&gt; or<br>
-&gt; <a href=3D"https://github.com/sephalon/sphinxcontrib-svg2pdfconverter"=
- rel=3D"noreferrer" target=3D"_blank">https://github.com/sephalon/sphinxcon=
-trib-svg2pdfconverter</a><br>
-&gt; &lt;<a href=3D"https://github.com/sephalon/sphinxcontrib-svg2pdfconver=
-ter" rel=3D"noreferrer" target=3D"_blank">https://github.com/sephalon/sphin=
-xcontrib-svg2pdfconverter</a>&gt;<br>
-&gt; which seems to support inkscape:<br>
-&gt; <a href=3D"https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/=
-blob/master/sphinxcontrib/inkscapeconverter.py" rel=3D"noreferrer" target=
-=3D"_blank">https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/blob=
-/master/sphinxcontrib/inkscapeconverter.py</a><br>
-&gt; &lt;<a href=3D"https://github.com/sephalon/sphinxcontrib-svg2pdfconver=
-ter/blob/master/sphinxcontrib/inkscapeconverter.py" rel=3D"noreferrer" targ=
-et=3D"_blank">https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/bl=
-ob/master/sphinxcontrib/inkscapeconverter.py</a>&gt;=C2=A0<br>
-&gt;<br>
-&gt; Have you looked into that or not?<br>
-<br>
-<br>
-Not yet, but this sounds like a much better option for converting SVG to<br=
->
-PNG and PDF, rather than having to do this manually in the Makefile.<br>
-I will try to use those.<br></blockquote><div><br></div><div>FWIW, I really=
- like the PDF output.. the whole doc in a single PDF is great. We should ma=
-ke it a goal for this release cycle to produce and release PDF (I know some=
- prefer epub.. so perhaps we can do both).</div><div><br></div><div>We shou=
-ld probably review the PDF output and tweak it a bit, for example, I don&#3=
-9;t think we need the &quot;Current and Previous releases&quot; sections.</=
-div><div>=C2=A0=C2=A0</div><blockquote class=3D"gmail_quote" style=3D"margi=
-n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
-">
-<br>
-Thanks for the great suggestion!<br>
-Michael.<br>
-<br>
--- <br>
-Michael Opdenacker, Bootlin<br>
-Embedded Linux and Kernel engineering<br>
-<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
-//bootlin.com</a><br>
-<br>
-</blockquote></div></div>
-
---0000000000001b88d105c285cce2--
