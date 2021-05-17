@@ -1,55 +1,51 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web08.16485.1621241131400586631
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.16129.1621241445572581408
  for <docs@lists.yoctoproject.org>;
- Mon, 17 May 2021 01:45:31 -0700
+ Mon, 17 May 2021 01:50:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id A9F536000B;
-	Mon, 17 May 2021 08:45:29 +0000 (UTC)
+	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id B129DFF806;
+	Mon, 17 May 2021 08:50:43 +0000 (UTC)
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [RFC 0/3] add support for diagrams generated from SVG sources
+Subject: Re: [docs] [RFC 1/3] Makefile: allow epub and latexpdf outputs to use diagrams from SVG sources
 To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
 References: <20210515071219.307241-1-michael.opdenacker@bootlin.com>
- <CAP71WjxpKO1hXb5wEgXeiHVt4EwfeEc08cTz88CG7684Eu-KJw@mail.gmail.com>
+ <20210515071219.307241-2-michael.opdenacker@bootlin.com>
+ <CAP71Wjy+5HU9ZHWfiWKNu8wArLP8x4FMFmQURvrqubHZsr1JCQ@mail.gmail.com>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <c9b30dd5-b153-b966-be59-fb936caedc6d@bootlin.com>
-Date: Mon, 17 May 2021 10:45:29 +0200
+Message-ID: <bfc9a5cd-a8c9-a5fe-a060-0025d9bf6f26@bootlin.com>
+Date: Mon, 17 May 2021 10:50:43 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <CAP71WjxpKO1hXb5wEgXeiHVt4EwfeEc08cTz88CG7684Eu-KJw@mail.gmail.com>
+In-Reply-To: <CAP71Wjy+5HU9ZHWfiWKNu8wArLP8x4FMFmQURvrqubHZsr1JCQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
-Hi Nicolas,
+Nicolas,
 
-On 5/17/21 12:11 AM, Nicolas Dechesne wrote:
+On 5/17/21 12:12 AM, Nicolas Dechesne wrote:
+>
+>     +SVG2PNG       = inkscape
+>     +SVG2PDF       = inkscape
 >
 >
->
-> Getting more svg files is definitely the way to go.. thanks for
-> starting this. It seems like there are sphinx extensions to convert
-> images as needed, e.g.
-> https://www.sphinx-doc.org/en/master/usage/extensions/imgconverter.html
-> <https://www.sphinx-doc.org/en/master/usage/extensions/imgconverter.html>
-> or
-> https://github.com/sephalon/sphinxcontrib-svg2pdfconverter
-> <https://github.com/sephalon/sphinxcontrib-svg2pdfconverter>
-> which seems to support inkscape:
-> https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/blob/master/sphinxcontrib/inkscapeconverter.py
-> <https://github.com/sephalon/sphinxcontrib-svg2pdfconverter/blob/master/sphinxcontrib/inkscapeconverter.py> 
->
-> Have you looked into that or not?
+> It is a new host dependency, we need to update the README and have a
+> meaningful error message.
 
+Yes, depending on the solution that is used, I'll update the list of
+package requirements.
 
-Not yet, but this sounds like a much better option for converting SVG to
-PNG and PDF, rather than having to do this manually in the Makefile.
-I will try to use those.
+I guess we will also have to install those on the autobuilder machine(s)
+too, otherwise it will break. Will this be manual, or is there a file we
+need to fill so that the right packages are automatically installed on
+the autobuilder(s)?
 
-Thanks for the great suggestion!
+Thanks
+
 Michael.
 
 -- 
