@@ -1,63 +1,77 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.6145.1621329528085159315
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+ by mx.groups.io with SMTP id smtpd.web12.2262.1621369709066658586
  for <docs@lists.yoctoproject.org>;
- Tue, 18 May 2021 02:18:48 -0700
+ Tue, 18 May 2021 13:28:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 70BD9240003
-	for <docs@lists.yoctoproject.org>; Tue, 18 May 2021 09:18:44 +0000 (UTC)
-Subject: Re: [docs] [PATCH 0/6] Simplify style around the use of the "exist" verb
+ dkim=pass header.i=@linaro.org header.s=google header.b=Nmt5fv9C;
+ spf=pass (domain: linaro.org, ip: 209.85.221.43, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f43.google.com with SMTP id i17so11596630wrq.11
+        for <docs@lists.yoctoproject.org>; Tue, 18 May 2021 13:28:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yV1sQ0JPyA0k2x3NH0thx1Ta08N/Ixd27t2nHrd6qSc=;
+        b=Nmt5fv9CBszxEkwxZ4mQFuT+S4olV3PRAvV09tI5g1+CttyUQAx1Rdeo3oCLwadPZK
+         imJ3fyiGfqSfzIejY2TqycZiVkcTqF90Wr1B24h8fb7/TCPysyqLvn49zZd2sedOCvSs
+         IL4dUGP3oShGZdPRkF7EL7plUI/Te/ImpLCVivWUaMlaUHAgrZEAvoxrzQv/seEXjpeI
+         gTubsPW4tNmj5+Rvsminbdgxz++L6ztb3z9igRf2Ye7irLZd/XvskAV4r2zuAco79DTl
+         2GmDa6yRknHR5UT/3+a5eXMjks/+oP9loqqmEOjjqa0tr2e+7vdxanRWr9fnUS3jRRPY
+         Q1vA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=yV1sQ0JPyA0k2x3NH0thx1Ta08N/Ixd27t2nHrd6qSc=;
+        b=U8xUxpl8EEUPoSgp6mT3t3KUc9VPM3ogC5/5lCgNytQczXBpaSQNbwA8YuPyLN1Ev2
+         nKA4Z9LLTojzqq5nA3864Ko7N+AtHfPK8c7/RQ1pJrJT/ZvCFS/aUQNlFeQRoE54TLf3
+         uOjqh9UFV1PIrLwyJG97TbJbFrKn1oTuFsmyLL1Beo8Fy2Vqn/E6OD34U8FDBdQTe9Dk
+         az7tdXn7VwE03EexKfJg69u2LZfYq7EmJ+nSVD3bmRekmbCXdkCr+eyOo0HhpVbk6hM3
+         UIrgLkz4DPSPDvnBC8U3QOs9l6fMtY09TtSIezoIpAMzShoMxlztkyMjB5K2UlzvfebR
+         Gg0A==
+X-Gm-Message-State: AOAM530DwlEUDJ3S0Uo4iYa4zoUSnvkwSY4pZefO25lLvwLdUBUH7pRv
+	LIt67cd0yL+OCjitrnu/2Yt6b5s8weWafA==
+X-Google-Smtp-Source: ABdhPJwz49mo8rvrrGK2GmRqBWwVeIMknW12iINP4B77MtnA4LhoP8/pAzXm+K+S/CWKAU0CDRzv8g==
+X-Received: by 2002:a5d:4346:: with SMTP id u6mr9409901wrr.304.1621369707292;
+        Tue, 18 May 2021 13:28:27 -0700 (PDT)
+Return-Path: <nicolas.dechesne@linaro.org>
+Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:97e3:5361:aa3:23fb])
+        by smtp.gmail.com with ESMTPSA id w25sm18646911wmk.25.2021.05.18.13.28.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 May 2021 13:28:26 -0700 (PDT)
+From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
-References: <167EE1EFBB61D5C1.24280@lists.yoctoproject.org>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <81376c30-8ec7-b422-3b97-3a2d42ca4ea0@bootlin.com>
-Date: Tue, 18 May 2021 11:18:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Subject: [yocto-autobuilder-helper][PATCH] scripts/run-docs-build: add 'current' link when deploying docs
+Date: Tue, 18 May 2021 22:28:08 +0200
+Message-Id: <20210518202808.2147409-1-nicolas.dechesne@linaro.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <167EE1EFBB61D5C1.24280@lists.yoctoproject.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Hello,
+Make sure that https://docs.yoctoproject.org/current will always link
+to the most recent release documentation.
 
-On 5/14/21 10:35 AM, Michael Opdenacker wrote:
-> This patchset, split by manual (or small group of manuals) to
-> ease the review process, addresses the excess use of the verb
-> "exist", which is either vague at best, or yields expressions
-> which can be replaced by much simpler and natural ones.
->
-> The resulting text is not always shorter, but should at least
-> be easier to read.
->
-> By trying to simplify such expressions, further style simplifications
-> are sometimes implemented on the corresponding text, as well as a few formating
-> fixes, together with missing reference additions.
->
-> Note that many paragraphs modified this way could further be simplified,
-> as well as other ones. However, this will have to be addressed in an
-> iterative and progressive way.
->
-> Michael Opdenacker (6):
->   ref-manual: simplify style
->   kernel-dev manual: simplify style
->   dev-manual: simplify style
->   sdk-manual: simplify style and fix formating
->   overview-manual: simplify style and add missings references
->   manuals: simplify style
+Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+---
+ scripts/run-docs-build | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Merged these changes into the master-next branch of "yocto-docs", and
-will submit a pull request for inclusion in master by the end of the week.
-
-Cheers,
-
-Michael.
-
+diff --git a/scripts/run-docs-build b/scripts/run-docs-build
+index 52bd567..b2828e3 100755
+--- a/scripts/run-docs-build
++++ b/scripts/run-docs-build
+@@ -92,6 +92,10 @@ for tag in $(git tag --list 'yocto-*'); do
+     fi
+ done
+ 
++# get current release (e.g. most recent tag), and add a 'current' link
++tag=$(git tag --list 'yocto-*' | sort --version-sort | tail -1 | cut -c7-)
++ln -s $tag $outputdir/current
++
+ # Update switchers.js with the copy from master ypdocs
+ cd $outputdir
+ find . -name switchers.js -not -path ./_static/switchers.js -exec cp ./_static/switchers.js {} \;
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.31.1
 
