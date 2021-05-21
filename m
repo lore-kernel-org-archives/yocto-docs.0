@@ -1,47 +1,75 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web11.10738.1621610319954253485
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
+ by mx.groups.io with SMTP id smtpd.web12.11507.1621614653143223208
  for <docs@lists.yoctoproject.org>;
- Fri, 21 May 2021 08:18:40 -0700
+ Fri, 21 May 2021 09:30:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:57546 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lk6vA-0006gS-Gt; Fri, 21 May 2021 11:18:38 -0400
-Date: Fri, 21 May 2021 11:18:33 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: add links to some variables in glossary
-In-Reply-To: <904a39a0-1f55-536c-2b4c-fad8763995f9@bootlin.com>
-Message-ID: <daa61ef-232b-7e8d-b76b-e8968666d92@crashcourse.ca>
-References: <1bccf6a-c79-cb46-a04-2fb4a2ed8c6b@crashcourse.ca> <904a39a0-1f55-536c-2b4c-fad8763995f9@bootlin.com>
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=qtYchIJF;
+ spf=softfail (domain: sakoman.com, ip: 209.85.210.44, mailfrom: steve@sakoman.com)
+Received: by mail-ot1-f44.google.com with SMTP id i12-20020a05683033ecb02903346fa0f74dso7891257otu.10
+        for <docs@lists.yoctoproject.org>; Fri, 21 May 2021 09:30:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0NutrPP7uX3ZiAiovWU+lZgXekbFK9g9Oy4kzRhQpYM=;
+        b=qtYchIJFu3/s2Vqu3OIRfDM6OJys6HT50fJW7DO1mVWQ7JJYn86jLSegJA5wrwUm5q
+         GUCskQ2KrS9FpowOeTitG/HnZajdp7e/SAP7fTTc2a6kwtquiH0nqfFW7mfLg9nE0NgX
+         lrwkTy0iFZiec2wdhshvrLrSr6RCTRo8hvDc/y033tb8DV56gIz2M/5EZ8pXA+pRI6p3
+         WpRYCG+dDtXKLKB8I1UY5fAN37pGDjSHOi/Awr1LsupaPhPJykB2a21rzxN+Qd/Me4En
+         v+Rd1NOqXukSTcYvh8s+2Onj4uC5PrC6ZEIC9aXU604mxugb/ClMGVj701eNjZ+ACM7T
+         okhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0NutrPP7uX3ZiAiovWU+lZgXekbFK9g9Oy4kzRhQpYM=;
+        b=Oid/3DXbLoqwm6Iw8YwpJxRQiKDkP0zRrF6cFgJUAnpayWvDWVXIyJ7kB+jh5eN/ya
+         hseQL5Nly/jNnmHhRQGdA5QuBF5myA9EmMdGg6ZzVS265lU3f9uaDIMmelBAqQEI8SOm
+         DdwR42DngBG5iWOdKDnUmM1rA9vmcYvY2VmCu6FhUY6F9TF9XSMviqFDFFuEF3mtLKzm
+         LguaRkgloir0XgeYSalRvLSuv5O/oU1uH+e0AGi+CBt8oGeck2/Rp0hDlXLg5oJLffFS
+         NF8i7c6vbGdDYXBpr7kH8LEaeEa4lLNpDxCcbVtoPg60rU+sqfFTmC868yFPtz+P8vMH
+         qUpg==
+X-Gm-Message-State: AOAM531SeSBH5LvscDBE9GAhlr7CYDhsvs+RQhb4is0QjlSm1TFF4xa+
+	CD6d3dlT/4l2E3L9SsOkTJK0I0SsnEXQJ+dkMK4=
+X-Google-Smtp-Source: ABdhPJx4v2zVXMDP1L228U+fBYfKmBj7vOw3TvExilLJAB53M+peyeklCQiczXLoTL/C+lkDCgCkCA==
+X-Received: by 2002:a9d:63d3:: with SMTP id e19mr8888582otl.64.1621614651909;
+        Fri, 21 May 2021 09:30:51 -0700 (PDT)
+Return-Path: <steve@sakoman.com>
+Received: from localhost.localdomain (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
+        by smtp.gmail.com with ESMTPSA id s17sm1280182oog.31.2021.05.21.09.30.50
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 May 2021 09:30:51 -0700 (PDT)
+From: "Steve Sakoman" <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell 0/2] Pull request (cover letter only)
+Date: Fri, 21 May 2021 06:30:08 -1000
+Message-Id: <cover.1621614507.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-OutGoing-Spam-Status: No, score=-1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
-On Fri, 21 May 2021, Michael Opdenacker wrote:
+The following changes since commit 5a54200a8702e473ecbbc3dbbdaa24169796c9e8:
 
-> Hi Robert,
+  documentation: prepare for 3.1.7 release (2021-04-06 08:43:27 -1000)
 
-...snip ...
+are available in the Git repository at:
 
-> Thanks for the patch. I checked that the corresponding variables
-> didn't already have a nearby reference to the glossary, but that
-> wasn't the case.
+  git://git.yoctoproject.org/yocto-docs contrib/dunfell-next
+  http://git.yoctoproject.org/cgit.cgi/yocto-docs/log/?h=contrib/dunfell-next
 
-  i typically won't add a reference if there is already one in the
-vicinity.
+Steve Sakoman (2):
+  ref-system-requirements.rst: Add Fedora 33 to list of supported
+    distros
+  documentation: prepare for 3.1.8 release
 
-rday
+ documentation/conf.py                                | 2 +-
+ documentation/poky.yaml                              | 8 ++++----
+ documentation/ref-manual/ref-system-requirements.rst | 2 ++
+ documentation/releases.rst                           | 1 +
+ documentation/sphinx-static/switchers.js             | 2 +-
+ 5 files changed, 9 insertions(+), 6 deletions(-)
+
+-- 
+2.25.1
+
