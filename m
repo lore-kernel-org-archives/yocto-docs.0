@@ -1,111 +1,71 @@
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.228.1621617317202523363
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web09.288.1621630372087716517
  for <docs@lists.yoctoproject.org>;
- Fri, 21 May 2021 10:15:17 -0700
+ Fri, 21 May 2021 13:52:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 94B45100004;
-	Fri, 21 May 2021 17:15:14 +0000 (UTC)
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
-Organization: Bootlin
-Message-ID: <80c6484c-bd33-270f-ac1b-b7f4c6d9d130@bootlin.com>
-Date: Fri, 21 May 2021 19:15:13 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpef81d0f814063-cmf81d0f814060.cpe.net.cable.rogers.com ([174.114.57.56]:49474 helo=fedora)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1lkC8a-0004YH-Ky
+	for docs@lists.yoctoproject.org; Fri, 21 May 2021 16:52:50 -0400
+Date: Fri, 21 May 2021 16:52:47 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: [PATCH] ref-manual: add WIC_CREATE_EXTRA_ARGS to var glossary
+Message-ID: <bd62f84-9dbf-19e0-38af-2a36925cd71e@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+X-OutGoing-Spam-Status: No, score=-0.2
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-Hi Richard,
 
-The following changes since commit b24cddff0f1367360441e3f9ff59cbed77da28ad:
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-      releases: update to include 3.2.4 (2021-05-17 14:59:01 -0700)
+---
 
-are available in the Git repository at:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 0b61f77cb..1863fb21d 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -8600,6 +8600,21 @@ system and gives an overview of their function and contents.
+       can control with this variable, see the
+       ":ref:`insane.bbclass <ref-classes-insane>`" section.
 
-  git://git.yoctoproject.org/yocto-docs master-next
-  http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=master-next
-
-for you to fetch changes up to d71d8da78285f2314bfd27a821b26434e39622a8:
-
-  ref-manual: add links to some variables in glossary (2021-05-21
-19:08:37 +0200)
-
-----------------------------------------------------------------
-Armin Kuster (1):
-      poky.yaml: fedora33: add missing pkgs
-
-Michael Opdenacker (6):
-      ref-manual: simplify style
-      kernel-dev manual: simplify style
-      dev-manual: simplify style
-      sdk-manual: simplify style and fix formating
-      overview-manual: simplify style and add missings references
-      manuals: simplify style
-
-Robert P. J. Day (1):
-      ref-manual: add links to some variables in glossary
-
-Ross Burton (1):
-      ref-manual: Ubuntu 20.04 is also LTS
-
- documentation/README                                      |   2 +-
- documentation/brief-yoctoprojectqs/index.rst              |  10 +++++-----
- documentation/bsp-guide/bsp.rst                           |  36
-+++++++++++++++++-------------------
- documentation/dev-manual/common-tasks.rst                 | 139
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------------------------------------------------------------------
- documentation/dev-manual/qemu.rst                         |   4 ++--
- documentation/dev-manual/start.rst                        |  26
-+++++++++-----------------
- documentation/kernel-dev/advanced.rst                     |  12
-++++++------
- documentation/kernel-dev/common.rst                       |  12
-++++++------
- documentation/kernel-dev/concepts-appx.rst                |   2 +-
- documentation/kernel-dev/intro.rst                        |   6 +++---
- documentation/kernel-dev/maint-appx.rst                   |   4 ++--
- documentation/overview-manual/concepts.rst                |  73
-++++++++++++++++++++++++++++++++++---------------------------------------
- documentation/overview-manual/development-environment.rst |  12
-++++++------
- documentation/overview-manual/yp-intro.rst                |  14
-++++++--------
- documentation/poky.yaml                                   |   3 ++-
- documentation/ref-manual/classes.rst                      |  12
-++++++------
- documentation/ref-manual/devtool-reference.rst            |  10 +++++-----
- documentation/ref-manual/faq.rst                          |   2 +-
- documentation/ref-manual/kickstart.rst                    |   2 +-
- documentation/ref-manual/qa-checks.rst                    |   8 ++++----
- documentation/ref-manual/release-process.rst              |   4 ++--
- documentation/ref-manual/resources.rst                    |  12
-+++++-------
- documentation/ref-manual/structure.rst                    |   8 ++++----
- documentation/ref-manual/system-requirements.rst          |  10 ++++------
- documentation/ref-manual/tasks.rst                        |   3 +--
- documentation/ref-manual/variables.rst                    |  88
-+++++++++++++++++++++++++++++++++++++++++++---------------------------------------------
- documentation/sdk-manual/appendix-customizing.rst         |   7 +++----
- documentation/sdk-manual/extensible.rst                   |  45
-+++++++++++++++++++++++----------------------
- documentation/sdk-manual/intro.rst                        |   2 +-
- documentation/toaster-manual/reference.rst                |   6 +++---
- 30 files changed, 274 insertions(+), 300 deletions(-)
-
-Thank you in advance,
-Cheers,
-
-Michael.
++   :term:`WIC_CREATE_EXTRA_ARGS`
++      Extra arguments to be added when running ``wic create``. Possibilities
++      can be seen by running ``wic help create``::
++
++         SYNOPSIS
++          wic create <wks file or image name> [-o <DIRNAME> | --outdir <DIRNAME>]
++           [-e | --image-name] [-s, --skip-build-check] [-D, --debug]
++           [-r, --rootfs-dir] [-b, --bootimg-dir]
++           [-k, --kernel-dir] [-n, --native-sysroot] [-f, --build-rootfs]
++           [-c, --compress-with] [-m, --bmap] [--no-fstab-update]
++
++      As an example, some Freescale configurations include the line::
++
++         WIC_CREATE_EXTRA_ARGS ?= "--no-fstab-update"
++
+    :term:`WKS_FILE`
+       Specifies the location of the Wic kickstart file that is used by the
+       OpenEmbedded build system to create a partitioned image
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
+
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
