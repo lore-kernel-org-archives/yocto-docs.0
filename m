@@ -1,20 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web12.8843.1621767662978600994
+ by mx.groups.io with SMTP id smtpd.web08.9562.1621772575175496460
  for <docs@lists.yoctoproject.org>;
- Sun, 23 May 2021 04:01:03 -0700
+ Sun, 23 May 2021 05:22:55 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:44008 helo=fedora)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:44332 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1lklqu-0006TI-Dy
-	for docs@lists.yoctoproject.org; Sun, 23 May 2021 07:01:01 -0400
-Date: Sun, 23 May 2021 07:00:57 -0400 (EDT)
+	id 1lkn89-0005nU-9E
+	for docs@lists.yoctoproject.org; Sun, 23 May 2021 08:22:54 -0400
+Date: Sun, 23 May 2021 08:22:50 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: add glossary entry for NON_MULTILIB_RECIPES
-Message-ID: <4483651b-7799-71b4-69e1-8ba43b933821@crashcourse.ca>
+Subject: [PATCH] ref-manual: add SRCTREECOVEREDTASKS to variable glossary
+Message-ID: <7a97671f-9ba8-2c0-9a68-3483a57113f@crashcourse.ca>
 MIME-Version: 1.0
 X-OutGoing-Spam-Status: No, score=-0.2
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -35,22 +35,39 @@ Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 ---
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index df6413b68..7f9182a5a 100644
+index df6413b68..b179abf74 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -4803,6 +4803,13 @@ system and gives an overview of their function and contents.
-          FILES_${PN}-dbg = "/usr/src/debug/"
-          FILES_${QT_BASE_NAME}-demos-doc = "${docdir}/${QT_DIR_NAME}/qch/qt.qch"
+@@ -7092,6 +7092,30 @@ system and gives an overview of their function and contents.
+          ":ref:`dev-manual/common-tasks:automatically incrementing a package version number`"
+          section, which is in the Yocto Project Development Tasks Manual.
 
-+   :term:`NON_MULTILIB_RECIPES`
-+      A list of recipes that should not be built for multilib. OE-Core's
-+      ``multilib.conf`` file defines a reasonable starting point for this
-+      list with::
++   :term:`SRCTREECOVEREDTASKS`
++      A list of tasks that are typically not relevant (and therefore skipped)
++      when building using the :ref:`externalsrc <ref-classes-externalsrc>`
++      class. The default value as set in that class file is the set of tasks
++      that are rarely needed when using external source::
 +
-+         NON_MULTILIB_RECIPES = "grub grub-efi make-mod-scripts ovmf u-boot"
++         SRCTREECOVEREDTASKS ?= "do_patch do_unpack do_fetch"
 +
-    :term:`OBJCOPY`
-       The minimal command and arguments to run ``objcopy``.
++      The notable exception is when processing external kernel source as
++      defined in the :ref:`kernel-yocto <ref-classes-kernel-yocto>`
++      class file (formatted for aesthetics)::
++
++         SRCTREECOVEREDTASKS += "\
++           do_validate_branches \
++           do_kernel_configcheck \
++           do_kernel_checkout \
++           do_fetch \
++           do_unpack \
++           do_patch \
++         "
++
++      See the associated :term:`EXTERNALSRC` and :term:`EXTERNALSRC_BUILD`
++      variables for more information.
++
+    :term:`SSTATE_DIR`
+       The directory for the shared state cache.
 
 
 -- 
