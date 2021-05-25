@@ -1,79 +1,80 @@
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web09.4051.1621977441366988498
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+ by mx.groups.io with SMTP id smtpd.web12.4143.1621977758772681780
  for <docs@lists.yoctoproject.org>;
- Tue, 25 May 2021 14:17:21 -0700
+ Tue, 25 May 2021 14:22:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.178.232, mailfrom: foss@0leil.net)
-Received: (Authenticated sender: foss@0leil.net)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id E157D200004;
-	Tue, 25 May 2021 21:17:13 +0000 (UTC)
-Date: Tue, 25 May 2021 21:17:11 +0000
-From: "Quentin Schulz" <foss@0leil.net>
-To: docs@lists.yoctoproject.org, Richard Weinberger <richard@nod.at>,
- openembedded-core@lists.openembedded.org,
- bitbake-devel@lists.openembedded.org
-Subject: Re: [docs] [yocto-docs][PATCH] Document erofs filesystem targets
-In-Reply-To: <20210525110429.738-3-richard@nod.at>
-References: <20210525110429.738-1-richard@nod.at> <20210525110429.738-3-richard@nod.at>
-Message-ID: <749C5928-6F5C-4E97-B643-A939A31B393D@0leil.net>
+ dkim=missing; spf=permerror, err=syntax error for token:  (domain: nod.at, ip: 195.201.40.130, mailfrom: richard@nod.at)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 0BBB3616B582;
+	Tue, 25 May 2021 23:22:37 +0200 (CEST)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id KBdM4SAMNl3n; Tue, 25 May 2021 23:22:36 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 6C2A7606BA3F;
+	Tue, 25 May 2021 23:22:36 +0200 (CEST)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id x355FojlK5TO; Tue, 25 May 2021 23:22:36 +0200 (CEST)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 475BB606BA3A;
+	Tue, 25 May 2021 23:22:36 +0200 (CEST)
+Date: Tue, 25 May 2021 23:22:36 +0200 (CEST)
+From: "Richard Weinberger" <richard@nod.at>
+To: Quentin Schulz <foss@0leil.net>
+Cc: docs <docs@lists.yoctoproject.org>, 
+	openembedded-core <openembedded-core@lists.openembedded.org>, 
+	bitbake-devel <bitbake-devel@lists.openembedded.org>
+Message-ID: <952941855.40427.1621977756153.JavaMail.zimbra@nod.at>
+In-Reply-To: <34B9CE63-084A-48A5-9386-862E48760070@0leil.net>
+References: <20210525110429.738-1-richard@nod.at> <34B9CE63-084A-48A5-9386-862E48760070@0leil.net>
+Subject: Re: [docs] [OE-core][PATCH] Add support for erofs filesystems
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+X-Originating-IP: [195.201.40.130]
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF78 (Linux)/8.8.12_GA_3809)
+Thread-Topic: Add support for erofs filesystems
+Thread-Index: oVZaG82W2Un0V1PKMZ3hp6vJelhsfQ==
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Richard,
+Quentin,
 
-On May 25, 2021 11:04:29 AM UTC, Richard Weinberger <richard@nod=2Eat> wro=
-te:
->Signed-off-by: Richard Weinberger <richard@nod=2Eat>
->---
-> documentation/ref-manual/kickstart=2Erst | 2 ++
-> documentation/ref-manual/variables=2Erst | 3 +++
-> 2 files changed, 5 insertions(+)
->
->diff --git a/documentation/ref-manual/kickstart=2Erst b/documentation/ref=
--manual/kickstart=2Erst
->index 8308ffff5b72=2E=2E2c8b724ff9ac 100644
->--- a/documentation/ref-manual/kickstart=2Erst
->+++ b/documentation/ref-manual/kickstart=2Erst
->@@ -116,6 +116,8 @@ the ``part`` and ``partition`` commands:
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Quentin Schulz" <foss@0leil.net>
+>> IMAGE_TYPES =3D " \
+>>@@ -261,6 +269,7 @@ IMAGE_TYPES =3D " \
+>>     wic wic.gz wic.bz2 wic.lzma wic.zst \
+>>     container \
+>>     f2fs \
+>>+    erofs \
 >=20
->    -  ``squashfs``
+> I think you're supposed to have erofs erofs-lz4 erofs-lz4hc here.
+
+Oh yes. You're right.
+=20
+>> "
+>>=20
+>> # Compression is a special case of conversion. The old variable
+>>diff --git a/meta/recipes-devtools/erofs-utils/erofs-utils_git.bb
+>>b/meta/recipes-devtools/erofs-utils/erofs-utils_git.bb
+>>new file mode 100644
+>>index 000000000000..6d35d3f2fa6d
+>>--- /dev/null
+>>+++ b/meta/recipes-devtools/erofs-utils/erofs-utils_git.bb
 >=20
->+   -  ``erofs``
->+
->    -  ``swap``
+> Any reason for using _git over _1.2.1?
+
+TBH, I used meta/recipes-devtools/squashfs-tools/squashfs-tools_git.bb as t=
+emplate. :-)
+It fetches also via git and sets PV.
+
+>>@@ -0,0 +1,18 @@
+>>+SUMMARY =3D "Tools for erofs filesystems"
+>>+LICENSE =3D "GPLv2"
 >=20
+> GPL-2.0-or-later actually.
 
-Please order alphabetically=2E
+Will fix!
 
-> -  ``--fsoptions``: Specifies a free-form string of options to be used
->diff --git a/documentation/ref-manual/variables=2Erst b/documentation/ref=
--manual/variables=2Erst
->index df6413b68ae9=2E=2Ed4ea4f399921 100644
->--- a/documentation/ref-manual/variables=2Erst
->+++ b/documentation/ref-manual/variables=2Erst
->@@ -3293,6 +3293,9 @@ system and gives an overview of their function and =
-contents=2E
->       - jffs2
->       - jffs2=2Esum
->       - multiubi
->+      - erofs
->+      - erofs-lz4
->+      - erofs-lz4hc
-
-Ditto=2E
-
-Thanks for the patch,
-Cheers,
-Quentin
-
->       - squashfs
->       - squashfs-lz4
->       - squashfs-lzo
->--=20
->2=2E26=2E2
->
-
---=20
-Sent from my Android device with K-9 Mail=2E Please excuse my brevity=2E
+Thanks,
+//richard
