@@ -1,60 +1,52 @@
-Received: from lilium.sigma-star.at (lilium.sigma-star.at [109.75.188.150])
- by mx.groups.io with SMTP id smtpd.web12.8109.1621940703552523161
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+ by mx.groups.io with SMTP id smtpd.web09.8383.1621941904608699833
  for <docs@lists.yoctoproject.org>;
- Tue, 25 May 2021 04:05:04 -0700
+ Tue, 25 May 2021 04:25:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=permerror, err=syntax error for token:  (domain: nod.at, ip: 109.75.188.150, mailfrom: richard@nod.at)
+ dkim=missing; spf=permerror, err=syntax error for token:  (domain: nod.at, ip: 195.201.40.130, mailfrom: richard@nod.at)
 Received: from localhost (localhost [127.0.0.1])
-	by lilium.sigma-star.at (Postfix) with ESMTP id 26B991817A0D2;
-	Tue, 25 May 2021 13:04:57 +0200 (CEST)
-Received: from lilium.sigma-star.at ([127.0.0.1])
-	by localhost (lilium.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id jG9f0FLqAvuw; Tue, 25 May 2021 13:04:56 +0200 (CEST)
-Received: from lilium.sigma-star.at ([127.0.0.1])
-	by localhost (lilium.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id HXQHXUb7qxbn; Tue, 25 May 2021 13:04:56 +0200 (CEST)
+	by lithops.sigma-star.at (Postfix) with ESMTP id 2F4E16083271;
+	Tue, 25 May 2021 13:24:53 +0200 (CEST)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id 5lp8w8pR4sMp; Tue, 25 May 2021 13:24:52 +0200 (CEST)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id CB746616B584;
+	Tue, 25 May 2021 13:24:52 +0200 (CEST)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 5VhBtQHUj15i; Tue, 25 May 2021 13:24:52 +0200 (CEST)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id A363C60A3597;
+	Tue, 25 May 2021 13:24:52 +0200 (CEST)
+Date: Tue, 25 May 2021 13:24:52 +0200 (CEST)
 From: "Richard Weinberger" <richard@nod.at>
-To: openembedded-core@lists.openembedded.org,
-	bitbake-devel@lists.openembedded.org,
-	docs@lists.yoctoproject.org
-Cc: Richard Weinberger <richard@nod.at>
-Subject: [bitbake][PATCH] Add support for erofs image types
-Date: Tue, 25 May 2021 13:04:28 +0200
-Message-Id: <20210525110429.738-2-richard@nod.at>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <20210525110429.738-1-richard@nod.at>
-References: <20210525110429.738-1-richard@nod.at>
+To: Konrad Weihmann <kweihmann@outlook.com>
+Cc: openembedded-core <openembedded-core@lists.openembedded.org>, 
+	bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
+Message-ID: <1307355474.37816.1621941892565.JavaMail.zimbra@nod.at>
+In-Reply-To: <AM9PR09MB46426BCB13C172A8FBB3DF94A8259@AM9PR09MB4642.eurprd09.prod.outlook.com>
+References: <20210525110429.738-1-richard@nod.at> <AM9PR09MB46426BCB13C172A8FBB3DF94A8259@AM9PR09MB4642.eurprd09.prod.outlook.com>
+Subject: Re: [bitbake-devel] [OE-core][PATCH] Add support for erofs filesystems
 MIME-Version: 1.0
+X-Originating-IP: [195.201.40.130]
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF78 (Linux)/8.8.12_GA_3809)
+Thread-Topic: Add support for erofs filesystems
+Thread-Index: RWacFjlA4zutskXbiWxMXbgz/5E9eg==
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Richard Weinberger <richard@nod.at>
----
- lib/toaster/orm/models.py | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+Konrad,
 
-diff --git a/lib/toaster/orm/models.py b/lib/toaster/orm/models.py
-index 7f7e922adecc..517774baa0b1 100644
---- a/lib/toaster/orm/models.py
-+++ b/lib/toaster/orm/models.py
-@@ -968,9 +968,10 @@ class Target_Image_File(models.Model):
-         'btrfs', 'container', 'cpio', 'cpio.gz', 'cpio.lz4', 'cpio.lzma'=
-,
-         'cpio.xz', 'cramfs', 'ext2', 'ext2.bz2', 'ext2.gz', 'ext2.lzma',
-         'ext3', 'ext3.gz', 'ext4', 'ext4.gz', 'f2fs', 'hddimg', 'iso', '=
-jffs2',
--        'jffs2.sum', 'multiubi', 'squashfs', 'squashfs-lz4', 'squashfs-l=
-zo',
--        'squashfs-xz', 'tar', 'tar.bz2', 'tar.gz', 'tar.lz4', 'tar.xz', =
-'ubi',
--        'ubifs', 'wic', 'wic.bz2', 'wic.gz', 'wic.lzma'
-+        'jffs2.sum', 'multiubi', 'erofs', 'erofs-lz4', 'erofs-lz4hc',
-+        'squashfs', 'squashfs-lz4', 'squashfs-lzo', 'squashfs-xz', 'tar'=
-,
-+        'tar.bz2', 'tar.gz', 'tar.lz4', 'tar.xz', 'ubi', 'ubifs', 'wic',
-+        'wic.bz2', 'wic.gz', 'wic.lzma'
-     }
-=20
-     target =3D models.ForeignKey(Target, on_delete=3Dmodels.CASCADE)
---=20
-2.26.2
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Konrad Weihmann" <kweihmann@outlook.com>
+>> +EXTRA_OECONF =3D "--enable-lz4 --disable-fuse"
+>=20
+> In the commit message it's mentioned that compression is optional, still
+> here lz4 is enabled by default - I would rather see these compression
+> switches configurable via PACKAGECONFIG
 
+Good point! Will send a v2 in a jiffy.
+
+Thanks,
+//richard
