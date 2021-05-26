@@ -1,39 +1,39 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.web09.6631.1622031788803675241
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+ by mx.groups.io with SMTP id smtpd.web12.6639.1622031789030189529
  for <docs@lists.yoctoproject.org>;
  Wed, 26 May 2021 05:23:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=puh5ZO9f;
- spf=pass (domain: linaro.org, ip: 209.85.128.45, mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-wm1-f45.google.com with SMTP id n17-20020a7bc5d10000b0290169edfadac9so388984wmk.1
+ dkim=pass header.i=@linaro.org header.s=google header.b=VcgYjSvR;
+ spf=pass (domain: linaro.org, ip: 209.85.221.51, mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-wr1-f51.google.com with SMTP id z17so915175wrq.7
         for <docs@lists.yoctoproject.org>; Wed, 26 May 2021 05:23:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fGpXnNL8X5n1xjrCpfTUCLPcx5NkVDft+BwmT568usU=;
-        b=puh5ZO9fz+QAgJGtks6QU4vSWoEndTjB+C0uKhH917nXRr5PqPhsGNY+PGAL0amk8D
-         LgTWU8FXWRkpddPvC/FBItx3OJjGUr4cHiP9RtZ9vkRU9HN+bX+k/UfVUj1l4PK28HB0
-         /4ZylD84fjIKX3mSxL1n87j+7PBLvyj+w8Je7bu82QnpkXZqfXhm8kmkXMcQeMmCTcaj
-         86wgs2bKX4qPrkDMyhY+2X2K2As+cl6stoLZ3I16YRUcXFLxrcX6sZh3dkSiYPFd2ghC
-         y9CN6LdBDr26A1GmKPoxUFZVJtokZQqzLC18oScGceRSYsaqs8x/+G0idlCZ/WN9spHw
-         D0Xg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Kj+rXg3mvKEzCHbzl4U3naa6cYHZUdVwvbdEI2SGZno=;
+        b=VcgYjSvR8PQdCHB/pcw4U7ARdyYpQYRBUU6K2/qeCMHtAKj2m3ziqZYbb7QESO7/GP
+         zS9YvRDXekKRFTePGkoCvqtYuTkhpQP8RS2UoaiTnntgntURILDZtvt6fxK2HMq6scaY
+         vW5vS3Lh3hFnYuVfMZmd0ZK1lngYAGOcdvnPdHZRLTKR0A9ctJoZqEbACZi51pADkmYa
+         Fxp6RPvfV23QkVfGiY3O4ubswCd9ObnpCyNs4SRlkYtO1QdAdyieqo2YCBMd5+TK3Lm2
+         PM8AZv5PGFcEZ2vh6sxM1GW7zXqlyPlFRMQF95NcTAjXwjFJspt25JxOV57JDY8bTVcI
+         Exrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=fGpXnNL8X5n1xjrCpfTUCLPcx5NkVDft+BwmT568usU=;
-        b=jWH16eUZk4GgJ20aOj3AKg3J4SwFndRQhAOwINte9vXonpUVj7I6islqrfp+wO1Wqr
-         r7VvEsh4jQKyeZQbxaT50GLq+vmBxwtvXWBvLWVmsoXGs0oLk9Vp6aGTbpV47DRTyX4I
-         m/i4ZkuqTtBdSuj4pf+m+oy3j900m2+T/voQ1+itrukt7JmlAGNUQkUEU93K07H4it60
-         cemo1qkZQ4/zFMm10xBfkoMZpnMqrbJPYRmUEBUk9Z/E7pMskbaFCUafTzsQ48LfA3cQ
-         lONQdv+aV5c/kY5FrVYzG2sS+BYy3lAA2N3U9jw4e2QH2Hrh9TkTiivHS+sf+hAysa2a
-         ag3g==
-X-Gm-Message-State: AOAM533KncnNwEziBWmltAQ8y8HkGmCXG3PXTzn81Oe1UB6xjAhoqNkY
-	+RklipksVX4WGtqbvZHhkdHz18kraIgbf94F
-X-Google-Smtp-Source: ABdhPJyFrjbRrQtnaV2p0Lje7FtI1p9wyiKPKfLVnruWraZC0DBJIreiklgbKAefVwV8kxwZP/3GJA==
-X-Received: by 2002:a1c:9a4a:: with SMTP id c71mr3219782wme.136.1622031786776;
-        Wed, 26 May 2021 05:23:06 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Kj+rXg3mvKEzCHbzl4U3naa6cYHZUdVwvbdEI2SGZno=;
+        b=RcjtZ9g5xx9GV0HrazEvh9PmekHO35oiESxiZ8IHLkRYrguZHr4Sok8bZX9YKQanNT
+         u9bsK6yJCrQQn6EiyuAQyKl/0WbWzEXosdvyWiWELWesEm0x7nFTdpg2JBGf9GvI+iOJ
+         KtmQpFtYOTMRuwI+0+7rpTqjlOBVPOyHwux0Mw65nDz9hZ8mIvfsu1voxzndFcWpZtzr
+         7lMNGQzWXHfJi4xTJBzwflxDp9s6l0ObOlidD3mc7ECioACkFti5NTJUboWIZlEwUWOA
+         VsCX/lLxWXAAFFgxmfL6AwrnN9A6N2DA1PPEx+/Jtw5Xeidd5ZGzM0MAmLYmjAcUE/EB
+         MBhg==
+X-Gm-Message-State: AOAM530oKmyzf21M0o4J5nda7s8BGRxGoewVrg1gqv5nnnC7YNmJelf/
+	lCudZHZx7vMbY9s9e0392WU/YPg7ohzD7LnX
+X-Google-Smtp-Source: ABdhPJxnlyhsyE8dJq1e+z7r2x/c7kaMSAl2a7m2RCYDefc4BFNH3rC1rZPMRBhaKs1pEFVSkg6tgw==
+X-Received: by 2002:adf:f50e:: with SMTP id q14mr32683645wro.408.1622031787425;
+        Wed, 26 May 2021 05:23:07 -0700 (PDT)
 Return-Path: <nicolas.dechesne@linaro.org>
 Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:97e3:5361:aa3:23fb])
         by smtp.gmail.com with ESMTPSA id m7sm20817639wrv.35.2021.05.26.05.23.06
@@ -42,27 +42,41 @@ Received: from matterhorn.localdomain ([2a01:e0a:1b9:3e10:97e3:5361:aa3:23fb])
 From: "Nicolas Dechesne" <nicolas.dechesne@linaro.org>
 To: docs@lists.yoctoproject.org
 Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Subject: [PATCH 0/3] A couple of changes on the documentation main page
-Date: Wed, 26 May 2021 14:22:47 +0200
-Message-Id: <20210526122250.2552376-1-nicolas.dechesne@linaro.org>
+Subject: [PATCH 1/3] index: remove the link/section to 'mega manual' from main page
+Date: Wed, 26 May 2021 14:22:48 +0200
+Message-Id: <20210526122250.2552376-2-nicolas.dechesne@linaro.org>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20210526122250.2552376-1-nicolas.dechesne@linaro.org>
+References: <20210526122250.2552376-1-nicolas.dechesne@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A few simple changes to try to improve the content of the main page. I
-am still hoping that we can have a more graphical main page
-eventually. I really like
-https://projectacrn.github.io/latest/index.html for example (also
-managed with Sphinx)
+The 'megamanuel' can be selected using the drop down menu on the
+documentation website. It was reported it is confusing to have it on
+the main page (and in the left side bar) as well. Let's remove it.
 
-Nicolas Dechesne (3):
-  index: remove the link/section to 'mega manual' from main page
-  index: remove links to releases manual and index
-  index: split releases manuals and indexes into two section in the tree
+Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+---
+ documentation/index.rst | 6 ------
+ 1 file changed, 6 deletions(-)
 
- documentation/index.rst | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
-
+diff --git a/documentation/index.rst b/documentation/index.rst
+index 6aeeb2197..7b70ebc02 100644
+--- a/documentation/index.rst
++++ b/documentation/index.rst
+@@ -36,12 +36,6 @@ Welcome to the Yocto Project Documentation
+    Test Environment Manual <test-manual/index>
+    bitbake
+ 
+-.. toctree::
+-   :maxdepth: 1
+-   :caption: 'Mega' Manual
+-
+-   All-in-one 'Mega' Manual <https://docs.yoctoproject.org/singleindex.html>
+-
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals/Variable Index
 -- 
 2.31.1
 
