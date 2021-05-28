@@ -1,39 +1,41 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web08.10286.1622217527204918876
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web11.10665.1622218697928906453
  for <docs@lists.yoctoproject.org>;
- Fri, 28 May 2021 08:58:47 -0700
+ Fri, 28 May 2021 09:18:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 49BE240002;
-	Fri, 28 May 2021 15:58:44 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 0/3] A couple of changes on the documentation main page
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>,
- Nicolas Dechesne <nicolas.dechesne@linaro.org>
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 112B4E0004;
+	Fri, 28 May 2021 16:18:15 +0000 (UTC)
+Subject: Re: [docs] [PATCH 1/3] index: remove the link/section to 'mega manual' from main page
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+ docs@lists.yoctoproject.org
 References: <20210526122250.2552376-1-nicolas.dechesne@linaro.org>
- <20210527125519.5jzemfdb7qu54bh4@qschulz>
+ <20210526122250.2552376-2-nicolas.dechesne@linaro.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <63907d1f-b55d-3e8d-216a-99f8a9763350@bootlin.com>
-Date: Fri, 28 May 2021 17:58:44 +0200
+Message-ID: <fdd9f4ea-7df6-4557-402c-a9eed17f248b@bootlin.com>
+Date: Fri, 28 May 2021 18:18:15 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210527125519.5jzemfdb7qu54bh4@qschulz>
+In-Reply-To: <20210526122250.2552376-2-nicolas.dechesne@linaro.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
+Hi Nicolas,
 
-On 5/27/21 2:55 PM, Quentin Schulz wrote:
-> Reviewed-by: Quentin Schulz <foss@0leil.net>
+On 5/26/21 2:22 PM, Nicolas Dechesne wrote:
+> The 'megamanuel' can be selected using the drop down menu on the
+> documentation website. It was reported it is confusing to have it on
+> the main page (and in the left side bar) as well. Let's remove it.
 
-Tested-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
+I must confess I was a bit confused by this change first. I first
+thought that the presence in the left bar would remain.
 
-Merged into master-next. The changes definitely make sense and look
-great. Thanks Nicolas!
+Habits are sticky. Let's see if people get used to this one.
 
 Cheers,
 
