@@ -1,73 +1,63 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.11164.1622220620190233113
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web09.11208.1622221039176796920
  for <docs@lists.yoctoproject.org>;
- Fri, 28 May 2021 09:50:20 -0700
+ Fri, 28 May 2021 09:57:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 4AAB320007;
-	Fri, 28 May 2021 16:50:17 +0000 (UTC)
-Subject: Re: [docs] [PATCH] docs: replace ``FOO`` by :term:`FOO` where possible
-To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-References: <20210527184117.80067-1-foss@0leil.net>
+	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 5386540004;
+	Fri, 28 May 2021 16:57:16 +0000 (UTC)
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
 Organization: Bootlin
-Message-ID: <891410b6-6708-1f0e-8130-e0e5a8bfbd42@bootlin.com>
-Date: Fri, 28 May 2021 18:50:17 +0200
+Message-ID: <5212e5a5-0f6e-dd04-3c23-855e3ee24190@bootlin.com>
+Date: Fri, 28 May 2021 18:57:16 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210527184117.80067-1-foss@0leil.net>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
-Hi Quentin,
+Hi Richard,
 
-On 5/27/21 8:41 PM, Quentin Schulz wrote:
-> If a variable has a glossary entry and some rST files write about those
-> variables, it's better to point to the glossary entry instead of just
-> highlighting it by surrounding it with two tick quotes.
->
-> This was automated by the following python script:
-> """
-> import re
-> from pathlib import Path
->
-> with open('objects.inv.txt', 'r') as f:
->     objects = f.readlines()
->
-> with open('bitbake-objects.inv.txt', 'r') as f:
->     objects = objects + f.readlines()
->
-> re_term = re.compile(r'variables.html#term-([A-Z_0-9]*)')
-> terms = []
->
-> for obj in objects:
->     match = re_term.search(obj)
->     if match and match.group(1):
->         terms.append(match.group(1))
->
-> for rst in Path('.').rglob('*.rst'):
->     with open(rst, 'r') as f:
->         content = "".joing(f.readlines())
->     for term in terms:
->         content = re.sub(r'``({})``(?!.*\s*[~-]+)'.format(term), r':term:`\1`', content)
->
->     with open(rst, 'w') as f:
->         f.write(content)
-> """
->
-> Signed-off-by: Quentin Schulz <foss@0leil.net>
+The following changes since commit db80bb70d9bea7008cb6b2795c8f617b1486ca03:
 
-Looks nice. By the way, what about making a similar script that would
-find documented variables that are no longer supported in the current
-releases?
+  releases: update to include 3.3.1 (2021-05-24 15:20:32 -0700)
 
-I'm curious about how many obsolete variables we're still documenting...
+are available in the Git repository at:
 
-Just an idea when you have time... Or when I have time ;-)
+  git://git.yoctoproject.org/yocto-docs master-next
+  http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=master-next
 
+for you to fetch changes up to 2bcc29dc7fd0747e65b861b1579a9d2900a622b0:
+
+  ref-manual: add glossary entry for NON_MULTILIB_RECIPES (2021-05-28
+18:42:17 +0200)
+
+----------------------------------------------------------------
+Nicolas Dechesne (3):
+      index: remove the link/section to 'mega manual' from main page
+      index: remove links to releases manual and index
+      index: split releases manuals and indexes into two sections in the
+tree
+
+Richard Weinberger (1):
+      Document erofs filesystem targets
+
+Robert P. J. Day (2):
+      ref-manual: add SRCTREECOVEREDTASKS to variable glossary
+      ref-manual: add glossary entry for NON_MULTILIB_RECIPES
+
+ documentation/index.rst                | 12 +++++-------
+ documentation/ref-manual/kickstart.rst |  8 +++++---
+ documentation/ref-manual/variables.rst | 34
+++++++++++++++++++++++++++++++++++
+ 3 files changed, 44 insertions(+), 10 deletions(-)
+
+Thanks in advance,
 Cheers,
 
 Michael.
