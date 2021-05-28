@@ -1,41 +1,63 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.10665.1622218697928906453
+ by mx.groups.io with SMTP id smtpd.web10.10826.1622219524419935856
  for <docs@lists.yoctoproject.org>;
- Fri, 28 May 2021 09:18:18 -0700
+ Fri, 28 May 2021 09:32:04 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 112B4E0004;
-	Fri, 28 May 2021 16:18:15 +0000 (UTC)
-Subject: Re: [docs] [PATCH 1/3] index: remove the link/section to 'mega manual' from main page
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 790E8E000E;
+	Fri, 28 May 2021 16:32:02 +0000 (UTC)
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] docs: replace ``FOO`` by :term:`FOO` where possible
 To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
- docs@lists.yoctoproject.org
-References: <20210526122250.2552376-1-nicolas.dechesne@linaro.org>
- <20210526122250.2552376-2-nicolas.dechesne@linaro.org>
+ Quentin Schulz <foss@0leil.net>
+References: <20210527184117.80067-1-foss@0leil.net>
+ <CAP71Wjy9rLUs3kF7k9jjK04p8K4qLbqvzKXRtOQiKhOctxffxw@mail.gmail.com>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <fdd9f4ea-7df6-4557-402c-a9eed17f248b@bootlin.com>
-Date: Fri, 28 May 2021 18:18:15 +0200
+Message-ID: <abeceac5-5ab7-c9a4-8a6c-451c9169d597@bootlin.com>
+Date: Fri, 28 May 2021 18:32:01 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210526122250.2552376-2-nicolas.dechesne@linaro.org>
+In-Reply-To: <CAP71Wjy9rLUs3kF7k9jjK04p8K4qLbqvzKXRtOQiKhOctxffxw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
-Hi Nicolas,
+Hi Quentin,
 
-On 5/26/21 2:22 PM, Nicolas Dechesne wrote:
-> The 'megamanuel' can be selected using the drop down menu on the
-> documentation website. It was reported it is confusing to have it on
-> the main page (and in the left side bar) as well. Let's remove it.
+On 5/27/21 9:45 PM, Nicolas Dechesne wrote:
+>
+>
+>
+> Have you checked what happens for the terms from the bitbake manual?
+> Perhaps it would be better to split into 2 patches, and run with
+> bitbake and without. You don't seem to add the bitbake prefix in the
+> term role, right?  So we could potentially have a confusion if/when a
+> term exists in both yp and bitake terms, no?
 
 
-I must confess I was a bit confused by this change first. I first
-thought that the presence in the left bar would remain.
+Good guess, Nico, I found at least one case where a reference to the
+BitBake manual is needed instead... See below.
 
-Habits are sticky. Let's see if people get used to this one.
+>
+>
+>         The ``SOURCE_MIRROR_URL`` and ``own-mirror``
+>         class set up the system to use the downloads directory as your
+>     "own
+>     -   mirror". Using the ``BB_NO_NETWORK`` variable makes sure that
+>     +   mirror". Using the :term:`BB_NO_NETWORK` variable makes sure that
+>         BitBake's fetching process in step 3 stays local, which means
+>     files
+>         from your "own-mirror" are used.
+>
+
+Here, it should be substituted by ":term:`bitbake:BB_NO_NETWORK`" instead.
+
+As far as I am concerned, I like your patch. Before it, the decision to
+make a link to the variable index was a bit fuzzy, depending on how far
+a previous reference to the index was made. That's probably safer this way.
 
 Cheers,
 
