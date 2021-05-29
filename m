@@ -1,136 +1,93 @@
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web09.21372.1622298996645694644
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web08.21389.1622299585152286891
  for <docs@lists.yoctoproject.org>;
- Sat, 29 May 2021 07:36:37 -0700
+ Sat, 29 May 2021 07:46:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.178.232, mailfrom: foss@0leil.net)
+ dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.196, mailfrom: foss@0leil.net)
 Received: (Authenticated sender: foss@0leil.net)
-	by relay12.mail.gandi.net (Postfix) with ESMTPA id 8CB28200005;
-	Sat, 29 May 2021 14:36:34 +0000 (UTC)
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPA id B765FE0002;
+	Sat, 29 May 2021 14:46:22 +0000 (UTC)
 MIME-Version: 1.0
-Date: Sat, 29 May 2021 16:36:34 +0200
+Date: Sat, 29 May 2021 16:46:22 +0200
 From: "Quentin Schulz" <foss@0leil.net>
 To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: docs@lists.yoctoproject.org
+Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>, YP docs mailing list
+ <docs@lists.yoctoproject.org>
 Subject: Re: [docs] [PATCH] docs: replace ``FOO`` by :term:`FOO` where possible
-In-Reply-To: <891410b6-6708-1f0e-8130-e0e5a8bfbd42@bootlin.com>
+In-Reply-To: <abeceac5-5ab7-c9a4-8a6c-451c9169d597@bootlin.com>
 References: <20210527184117.80067-1-foss@0leil.net>
- <891410b6-6708-1f0e-8130-e0e5a8bfbd42@bootlin.com>
+ <CAP71Wjy9rLUs3kF7k9jjK04p8K4qLbqvzKXRtOQiKhOctxffxw@mail.gmail.com>
+ <abeceac5-5ab7-c9a4-8a6c-451c9169d597@bootlin.com>
 User-Agent: Roundcube Webmail/1.4.11
-Message-ID: <545bc8c70c6f596cac20567918db862f@0leil.net>
+Message-ID: <1fe5b4bfee4cfb55a7c3a15b725f2b1f@0leil.net>
 X-Sender: foss@0leil.net
-Content-Type: text/plain; charset=US-ASCII;
+Content-Type: text/plain; charset=UTF-8;
  format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Hi Michael,
+Michael, Nicolas,
 
-On 2021-05-28 18:50, Michael Opdenacker wrote:
+On 2021-05-28 18:32, Michael Opdenacker wrote:
 > Hi Quentin,
 > 
-> On 5/27/21 8:41 PM, Quentin Schulz wrote:
->> If a variable has a glossary entry and some rST files write about 
->> those
->> variables, it's better to point to the glossary entry instead of just
->> highlighting it by surrounding it with two tick quotes.
+> On 5/27/21 9:45 PM, Nicolas Dechesne wrote:
 >> 
->> This was automated by the following python script:
->> """
->> import re
->> from pathlib import Path
 >> 
->> with open('objects.inv.txt', 'r') as f:
->>     objects = f.readlines()
 >> 
->> with open('bitbake-objects.inv.txt', 'r') as f:
->>     objects = objects + f.readlines()
->> 
->> re_term = re.compile(r'variables.html#term-([A-Z_0-9]*)')
->> terms = []
->> 
->> for obj in objects:
->>     match = re_term.search(obj)
->>     if match and match.group(1):
->>         terms.append(match.group(1))
->> 
->> for rst in Path('.').rglob('*.rst'):
->>     with open(rst, 'r') as f:
->>         content = "".joing(f.readlines())
->>     for term in terms:
->>         content = re.sub(r'``({})``(?!.*\s*[~-]+)'.format(term), 
->> r':term:`\1`', content)
->> 
->>     with open(rst, 'w') as f:
->>         f.write(content)
->> """
->> 
->> Signed-off-by: Quentin Schulz <foss@0leil.net>
+>> Have you checked what happens for the terms from the bitbake manual?
+>> Perhaps it would be better to split into 2 patches, and run with
+>> bitbake and without. You don't seem to add the bitbake prefix in the
+>> term role, right?  So we could potentially have a confusion if/when a
+>> term exists in both yp and bitake terms, no?
 > 
-> Looks nice. By the way, what about making a similar script that would
-> find documented variables that are no longer supported in the current
-> releases?
 > 
-> I'm curious about how many obsolete variables we're still 
-> documenting...
-> 
-> Just an idea when you have time... Or when I have time ;-)
+> Good guess, Nico, I found at least one case where a reference to the
+> BitBake manual is needed instead... See below.
 > 
 
- From within poky directory:
+It's actually not needed (I just re-tested and we already talked about 
+it with Nicolas a few months back). If there is an entry in both 
+glossaries, only YP's will be taken. If there's an entry only in 
+Bitbake's, it will point to Bitbake's.
 
-git grep -hoP '^   :term:`\K\w+(?=`)' 
-documentation/ref-manual/variables.rst 
-bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 
-xargs -I{} sh -c "grep -Rq --exclude-dir=documentation --include='*.py' 
---include='*.conf' --include='*.bbclass' --include='*.bb' 
---include='*.bbappend' --include='*.inc' -w -E 
-{}'_*(_[a-z]+[0-9a-z]*[a-z]+)*' || echo {}"
+The nice thing with not explicitly targeting Bitbake's is that in the 
+event it gets a YP-specific or longer/clearer/better explanation in YP, 
+there'll be no change needed. No maintenance on that side which is 
+great. I think this is something we should aim for, thus, no change 
+needed in my opinion.
 
-which looks for all words fulfilling the following criteria:
-  - should start with an entry from the glossary (e.g. :term:`DEPENDS` 
-the word shall start with DEPENDS
-  - may be followed by an underscore only (to match RDEPENDS_${* and 
-d.getVar('RDEPENDS_')
-  - may be followed by _alllowercase-digit (to match overrides, e.g. 
-DEFAULTTUNE_virtclass-multilib-lib32)
+>> 
+>> 
+>>         The ``SOURCE_MIRROR_URL`` and ``own-mirror``
+>>         class set up the system to use the downloads directory as your
+>>     "own
+>>     -   mirror". Using the ``BB_NO_NETWORK`` variable makes sure that
+>>     +   mirror". Using the :term:`BB_NO_NETWORK` variable makes sure 
+>> that
+>>         BitBake's fetching process in step 3 stays local, which means
+>>     files
+>>         from your "own-mirror" are used.
+>> 
+> 
+> Here, it should be substituted by ":term:`bitbake:BB_NO_NETWORK`" 
+> instead.
+> 
 
-The command returns the following:
-BB_SETSCENE_VERIFY_FUNCTION2
-BBVERSIONS
+See above :)
 
-Aaaaaaand I should have checked BBVERSIONS for my slides about OVERRIDES 
-at last YP summit because it indeed does not exist anymore since... 
-November 2016 
-(https://git.openembedded.org/bitbake/commit/?id=0bb188f01e396052b127e170a25246d79a6d6741).
+> As far as I am concerned, I like your patch. Before it, the decision to
+> make a link to the variable index was a bit fuzzy, depending on how far
+> a previous reference to the index was made. That's probably safer this 
+> way.
+> 
 
-BB_SETSCENE_VERIFY_FUNCTION2 has been removed in 3.0 (zeus) release, 
-c.f. 
-https://git.openembedded.org/bitbake/commit/?id=5deaa5df730a8a846f3192b4a639b7a2a72c1b71
-
-I'll send patches to the bitbake and yocto-docs ML ASAP.
-
-I've tested by adding :term:`TEST123TEST` and :term:`MACH` to the 
-variables.rst file.
-
-Then, I added the following to any file matching the include patterns of 
-the grep command above:
-MACH = "plop"
-${MACH}
-d.getVar('MACH')
-MACH_plop
-MACH_${plop}-plep
-IMACH_${plop}-plep
-
-All match when running the grep command only (without the -q option) 
-except the last one in the list (to check that MACH term is not found by 
-grep in e.g. MACHINE).
-
-TEST123TEST is reported as not being used which is correct.
-
-I also had the idea of trying to guess which Bitbake variables are 
-highlighted but not documented yet. This will obviously require 
-cherry-picking because e.g. README is matched but there's definitely 
-nothing to add in the glossary for that :)
+And it makes it super easy 1) to run the script if need be to check if 
+some were forgotten or recently added (while being already highlighted 
+in the doc), 2) a simple consistent rule of "if it is documented, always 
+use :term:`` for variables". This brings me also to the fact that we 
+should start adding rules to a README or CONTRIBUTING to keep track of 
+those, because I'm pretty sure there is already one or two we agreed on 
+and I forgot about :)
 
 Cheers,
 Quentin
