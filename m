@@ -1,93 +1,134 @@
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web08.21389.1622299585152286891
+ by mx.groups.io with SMTP id smtpd.web12.21466.1622300661227128038
  for <docs@lists.yoctoproject.org>;
- Sat, 29 May 2021 07:46:25 -0700
+ Sat, 29 May 2021 08:04:21 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.196, mailfrom: foss@0leil.net)
 Received: (Authenticated sender: foss@0leil.net)
-	by relay4-d.mail.gandi.net (Postfix) with ESMTPA id B765FE0002;
-	Sat, 29 May 2021 14:46:22 +0000 (UTC)
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPA id E6BEAE0003;
+	Sat, 29 May 2021 15:04:18 +0000 (UTC)
 MIME-Version: 1.0
-Date: Sat, 29 May 2021 16:46:22 +0200
+Date: Sat, 29 May 2021 17:04:18 +0200
 From: "Quentin Schulz" <foss@0leil.net>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Nicolas Dechesne <nicolas.dechesne@linaro.org>, YP docs mailing list
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] docs: replace ``FOO`` by :term:`FOO` where possible
-In-Reply-To: <abeceac5-5ab7-c9a4-8a6c-451c9169d597@bootlin.com>
-References: <20210527184117.80067-1-foss@0leil.net>
- <CAP71Wjy9rLUs3kF7k9jjK04p8K4qLbqvzKXRtOQiKhOctxffxw@mail.gmail.com>
- <abeceac5-5ab7-c9a4-8a6c-451c9169d597@bootlin.com>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>, YP docs mailing
+ list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] documentation: Makefile: turn warnings into errors by default
+In-Reply-To: <CAP71Wjw6VH_wrEC+b3ps8CBPhQM=TDRiPtYS3=XyP4Rq1j57uA@mail.gmail.com>
+References: <20210527183150.79497-1-foss@0leil.net>
+ <08b82e87-ec3f-e713-8e0e-cf739b75efdd@bootlin.com>
+ <CAP71Wjw6VH_wrEC+b3ps8CBPhQM=TDRiPtYS3=XyP4Rq1j57uA@mail.gmail.com>
 User-Agent: Roundcube Webmail/1.4.11
-Message-ID: <1fe5b4bfee4cfb55a7c3a15b725f2b1f@0leil.net>
+Message-ID: <e7954a7e45ba15362ddff609ee0cc0d4@0leil.net>
 X-Sender: foss@0leil.net
-Content-Type: text/plain; charset=UTF-8;
+Content-Type: text/plain; charset=US-ASCII;
  format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 Michael, Nicolas,
 
-On 2021-05-28 18:32, Michael Opdenacker wrote:
-> Hi Quentin,
+On 2021-05-28 10:40, Nicolas Dechesne wrote:
+> On Fri, May 28, 2021 at 10:35 AM Michael Opdenacker
+> <michael.opdenacker@bootlin.com> wrote:
 > 
-> On 5/27/21 9:45 PM, Nicolas Dechesne wrote:
+>> Hi Quentin,
 >> 
+>> On 5/27/21 8:31 PM, Quentin Schulz wrote:
+>>> -W is for turning warnings into errors, --keep-going to make sure
+>> the
+>>> whole documentation is built and all warnings will be printed
+>> before
+>>> failing.
+>>> 
+>>> Since there's currently no warning, it's time to introduce it!
+>>> 
+>>> Signed-off-by: Quentin Schulz <foss@0leil.net>
+>>> ---
+>>> documentation/Makefile | 2 +-
+>>> 1 file changed, 1 insertion(+), 1 deletion(-)
+>>> 
+>>> diff --git a/documentation/Makefile b/documentation/Makefile
+>>> index d40f390e2..996f01b7d 100644
+>>> --- a/documentation/Makefile
+>>> +++ b/documentation/Makefile
+>>> @@ -3,7 +3,7 @@
+>>> 
+>>> # You can set these variables from the command line, and also
+>>> # from the environment for the first two.
+>>> -SPHINXOPTS    ?= -j auto
+>>> +SPHINXOPTS    ?= -W --keep-going -j auto
+>>> SPHINXBUILD   ?= sphinx-build
+>>> SOURCEDIR     = .
+>>> BUILDDIR      = _build
 >> 
+>> Thanks for the nice improvement. I tested that it builds the "html"
+>> and
+>> "latexpdf" targets just fine, but it aborts with "epub" as follows:
 >> 
->> Have you checked what happens for the terms from the bitbake manual?
->> Perhaps it would be better to split into 2 patches, and run with
->> bitbake and without. You don't seem to add the bitbake prefix in the
->> term role, right?  So we could potentially have a confusion if/when a
->> term exists in both yp and bitake terms, no?
+>> writing mimetype file...
+>> writing META-INF/container.xml file...
+>> writing content.opf file...
+>> WARNING: unknown mimetype for .poky.yaml.cache, ignoring
+>> writing nav.xhtml file...
+>> writing toc.ncx file...
+>> writing TheYoctoProject.epub file...
+>> build finished with problems, 1 warning.
+>> make: *** [Makefile:35: epub] Error 1
+>> 
+>> If I understood correctly, this happens because the .yaml file is
+>> not
+>> understood by Sphinx, as explained on
+>> https://github.com/sphinx-doc/sphinx/issues/3214. However, I don't
+>> understand why this only happens with "epub" output.
 > 
-> 
-> Good guess, Nico, I found at least one case where a reference to the
-> BitBake manual is needed instead... See below.
+> interesting.. I tested it yesterday, and it worked for me... So I
+> tried again today, and realized i was using Sphinx 3.3.1, I updated to
+> 4.0.2 and now it fails too..
 > 
 
-It's actually not needed (I just re-tested and we already talked about 
-it with Nicolas a few months back). If there is an entry in both 
-glossaries, only YP's will be taken. If there's an entry only in 
-Bitbake's, it will point to Bitbake's.
+FWIW, this happens only for the 2+ builds, the first one works just 
+fine.
 
-The nice thing with not explicitly targeting Bitbake's is that in the 
-event it gets a YP-specific or longer/clearer/better explanation in YP, 
-there'll be no change needed. No maintenance on that side which is 
-great. I think this is something we should aim for, thus, no change 
-needed in my opinion.
+IIRC, I was using Sphinx 3.4.1 or 3.4.3, for sure not 4.x.
 
+Since we're not really supporting epub right now, does it make sense to 
+fix it in this patch (or just before this patch) rather than in 
+Michael's patch series (when it'll come).
+
+No objection to me doing it right now, not sure it makes the most sense 
+that's it :)
+
+>> A workaround is to disable warnings for unknown project files:
 >> 
+>> diff --git a/documentation/conf.py b/documentation/conf.py
+>> index 5a2e25f7b2..6c6458fed7 100644
+>> --- a/documentation/conf.py
+>> +++ b/documentation/conf.py
+>> @@ -92,6 +92,9 @@ intersphinx_mapping = {
+>> 'bitbake': ('https://docs.yoctoproject.org/bitbake/', None)
+>> }
 >> 
->>         The ``SOURCE_MIRROR_URL`` and ``own-mirror``
->>         class set up the system to use the downloads directory as your
->>     "own
->>     -   mirror". Using the ``BB_NO_NETWORK`` variable makes sure that
->>     +   mirror". Using the :term:`BB_NO_NETWORK` variable makes sure 
->> that
->>         BitBake's fetching process in step 3 stays local, which means
->>     files
->>         from your "own-mirror" are used.
+>> +# Suppress "WARNING: unknown mimetype for ..."
+>> +suppress_warnings = ['epub.unknown_project_files']
+>> +
+>> # -- Options for HTML output
+>> -------------------------------------------------
 >> 
-> 
-> Here, it should be substituted by ":term:`bitbake:BB_NO_NETWORK`" 
-> instead.
-> 
+>> # The theme to use for HTML and HTML Help pages.  See the
+>> documentation for
+>> 
+>> Would this be acceptable? I hope so, because I believe having your
+>> changes would be useful.
+>> 
 
-See above :)
+There's actually a better setting for this: 
+https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-epub_exclude_files
 
-> As far as I am concerned, I like your patch. Before it, the decision to
-> make a link to the variable index was a bit fuzzy, depending on how far
-> a previous reference to the index was made. That's probably safer this 
-> way.
-> 
++ epub_exclude_files = ['.poky.yaml.cache']
 
-And it makes it super easy 1) to run the script if need be to check if 
-some were forgotten or recently added (while being already highlighted 
-in the doc), 2) a simple consistent rule of "if it is documented, always 
-use :term:`` for variables". This brings me also to the fact that we 
-should start adding rules to a README or CONTRIBUTING to keep track of 
-those, because I'm pretty sure there is already one or two we agreed on 
-and I forgot about :)
+in conf.py
+
+Just add the files that are problematic in there :)
 
 Cheers,
 Quentin
