@@ -1,19 +1,19 @@
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.2616.1622575157862327055
+ by mx.groups.io with SMTP id smtpd.web09.2642.1622575341223709969
  for <docs@lists.yoctoproject.org>;
- Tue, 01 Jun 2021 12:19:18 -0700
+ Tue, 01 Jun 2021 12:22:21 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.201, mailfrom: foss@0leil.net)
 Received: (Authenticated sender: foss@0leil.net)
-	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 3E53A1BF207;
-	Tue,  1 Jun 2021 19:19:14 +0000 (UTC)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 2F0091BF206;
+	Tue,  1 Jun 2021 19:22:18 +0000 (UTC)
 From: "Quentin Schulz" <foss@0leil.net>
 To: bitbake-devel@lists.openembedded.org
 Cc: docs@lists.yoctoproject.org,
 	Quentin Schulz <foss@0leil.net>
 Subject: [PATCH] doc: user-manual: remove mentions to BBVERSIONS
-Date: Tue,  1 Jun 2021 21:18:59 +0200
-Message-Id: <20210601191859.9046-1-foss@0leil.net>
+Date: Tue,  1 Jun 2021 21:22:06 +0200
+Message-Id: <20210601192206.9251-1-foss@0leil.net>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
