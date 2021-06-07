@@ -1,108 +1,136 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
- by mx.groups.io with SMTP id smtpd.web11.549.1623082608250418270
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+ by mx.groups.io with SMTP id smtpd.web09.361.1623085163312239007
  for <docs@lists.yoctoproject.org>;
- Mon, 07 Jun 2021 09:16:48 -0700
+ Mon, 07 Jun 2021 09:59:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=gdBnVso6;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.53, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f53.google.com with SMTP id e11so8079554wrg.3
-        for <docs@lists.yoctoproject.org>; Mon, 07 Jun 2021 09:16:48 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Huw1cfd3;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.48, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f48.google.com with SMTP id o127so90621wmo.4
+        for <docs@lists.yoctoproject.org>; Mon, 07 Jun 2021 09:59:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=vyun70Y1lWRBaXe70T59Hr6oMc7TqEmiSpCnbgLv0yo=;
-        b=gdBnVso6+NW3kGlTitGs8Jn+EXRndM3lL8esUXOrQrVHh6rkgSXFkmty4H66h5AKcL
-         e2Te+9/NbH9KxSGYDjVLHFrrcRO/zPj2UQbPxUHLI4sYeQgd7Ttr+tTn0jHNpqZ+Fp7/
-         jnyqXp5nIUZ0ibAgadWNtxP5/5KfFVRDShsQw=
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iX4HBwml9iuNkx37JR1qkKLu6QNSKw0WLWoLGTQ5kfk=;
+        b=Huw1cfd3VsDZkz028SuZpdy1eiDYZQXbnpePuQxzUmpK3TzDSZmIhXyLmIyLyy7F/M
+         NmVZlbN/nrkv6N3Nojgr3+rxlGNTK87wRUEZCRNTGK58xLmZJ1oHxSu49ED+klvgdEYf
+         NOS4f9zBpLf5vU9I7QaYlJ8zSsZjO2YFeUcP4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=vyun70Y1lWRBaXe70T59Hr6oMc7TqEmiSpCnbgLv0yo=;
-        b=JPApFPNN3WyiXdFkGetbJ7KIvmDJyr+vD6UW1Ayu29CYzhx2RUndVU71Qxcy88jMkC
-         Z9ipqic/hNMjua0ovtZRHJh5hsaLDxiSdczFL/VqrUGnoAz2j6/dVDiOI++q0F40Yjvr
-         6HQqeDRCcD59uvkx2lPGil5x7OttpVZS+fJobR2r1VBZzr/9zjwo82h9VAXeDdWUqlex
-         VF6UyEefmpagEd23bmc5yOiZx+EdhBoX+9wwGp1d6eIPrtQTizQ+t0HR0j6fsnkI8Ibk
-         E6UrRNEP1kozhTynHJrBJoIxz6Wrv8RqUzZ1RZXQSfpnN6GSw4eWChVwlhyF1NzIUlEF
-         xo0g==
-X-Gm-Message-State: AOAM531D7wkiJXffgaCWVgkm4taBjC1i4Zk6WUPpvkVTvH1hDGJTcXwq
-	B6TafFsHto0HJFMmMHRkC8TnTw==
-X-Google-Smtp-Source: ABdhPJzYwMexjAZFgZN4lOPpSOhTSbM0PfB8CX3t+Nn1EwcLfhVY/f+fgcGHmG+Mn7CLvQCT38aPNQ==
-X-Received: by 2002:a5d:47af:: with SMTP id 15mr8684554wrb.289.1623082606618;
-        Mon, 07 Jun 2021 09:16:46 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=iX4HBwml9iuNkx37JR1qkKLu6QNSKw0WLWoLGTQ5kfk=;
+        b=oxWlYv3NXl31Bh5DOlc4ja4dFBIpXfJvgVnGDsG5/vKlg7iLKBC6/4DHtTUzucZZqi
+         IWESHXw4tNYUaiKPrctJrP+jJ3qgY6e05s5uMouRCjL03PmCI7l+wbd7nekE2GxHZVvn
+         JnMXa7tiMaW/ZiGi/e6CG131qqVmGrYbzFZHS8nmmoiv1dbMN85ZJTG6a/MgkBWi1vcv
+         94pt0JYffgu/DukzzLqI+Ae2++DOET+Bhpww2dUyjQgbEqViuVcnjjT0cB3tLJekaP0x
+         RLTXL9cllDgFw7cQmXxKRu+zDW4ZQhX9sL5D/BHl+IXQ9TYs+TT6BT2vhucX14bD7kx8
+         NXZg==
+X-Gm-Message-State: AOAM530/tqQLNbLYceyVA5XuhcBawZotHy/0i60Sbwtp07xtoY+IdXRP
+	g624BYSnmBkO9zsoRPaiVu99L6T01Txiog==
+X-Google-Smtp-Source: ABdhPJw/dHUZDAgVkapxzNzEaIvdqWiqJfEmtDoYQ73nJbSrDPEKwwtN++x6us/9J6dVZ+iDSbUhkg==
+X-Received: by 2002:a7b:c052:: with SMTP id u18mr59622wmc.105.1623085161688;
+        Mon, 07 Jun 2021 09:59:21 -0700 (PDT)
 Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:bc28:bf5c:88f3:2d27? ([2001:8b0:aba:5f3c:bc28:bf5c:88f3:2d27])
-        by smtp.gmail.com with ESMTPSA id r2sm16838627wrv.39.2021.06.07.09.16.46
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:bc28:bf5c:88f3:2d27])
+        by smtp.gmail.com with ESMTPSA id a16sm14625309wmm.3.2021.06.07.09.59.21
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 07 Jun 2021 09:16:46 -0700 (PDT)
-Message-ID: <d986d79263894ada0e1bf2e5777419ecc6b6f18f.camel@linuxfoundation.org>
-Subject: Re: [docs] [poky] [PATCH] README.poky: Update to switch to markdown format and update
+        Mon, 07 Jun 2021 09:59:21 -0700 (PDT)
 From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-Cc: docs <docs@lists.yoctoproject.org>
-Date: Mon, 07 Jun 2021 17:16:43 +0100
-In-Reply-To: <20210607155906.3hgtcl6fsyedstrh@qschulz>
-References: <16865661A55682C8.7118@lists.yoctoproject.org>
-	 <3c7b1f74d4b989316e24be08db75f34720198e2d.camel@linuxfoundation.org>
-	 <20210607155906.3hgtcl6fsyedstrh@qschulz>
-User-Agent: Evolution 3.40.0-1 
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] test-manual: Add initial reproducibile builds documentation
+Date: Mon,  7 Jun 2021 17:59:20 +0100
+Message-Id: <20210607165920.3075340-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2021-06-07 at 17:59 +0200, Quentin Schulz wrote:
-> Hi Richard,
-> 
-> On Mon, Jun 07, 2021 at 04:36:22PM +0100, Richard Purdie wrote:
-> > Mentioning on the docs list.
-> > 
-> > I a plan is forming to migrate the various READMEs in the repos to markdown
-> > format and display these in the git web interface in the about page. If this
-> 
-> Does it need to be in MarkDown format to be displayed in the About
-> section?
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/test-manual/index.rst           |  1 +
+ .../test-manual/reproducible-builds.rst       | 60 +++++++++++++++++++
+ 2 files changed, 61 insertions(+)
+ create mode 100644 documentation/test-manual/reproducible-builds.rst
 
-No, but it does help a little and see below.
-
-> > merges I'll work with MichaelH to make sure it displays properly on the
-> > about page.
-> > 
-> > I've had a go at improving the poky one which needed a bit of modernisation
-> > anyway. Help with others welcome.
-> > 
-> 
-> Anyway to have those two changes separate so we can properly review each
-> separately?
-
-I can reverse engineer them back apart I guess, I just couldn't bring myself
-to leave it as it was as it needed reformatting and so on anyway.
-
-> > I am a little torn on this as it does make the README harder to read
-> > outside of rendered interfaces.
-> > 
-> 
-> But it'd be displayed correctly in the Github mirror and Gitlab for
-> those using it I guess.
-> 
-> Most projects hosted on Github/Gitlab use MarkDown so I don't think it's
-> such a bad idea, I'm just not sure it has as much benefit on cgit since
-> it's not the landing page of the repo (the summary page is).
-> 
-> If we can display the non-MD version in the about page, I don't think
-> there's a huge benefit of migrating to MD?
-> 
-> If we absolutely need MD for the about page, go for it as it'll cover
-> Github, Gitlab and probably others.
-> 
-> We might want to modify bitbake-layers create-layer to provide a
-> README.md too instead of the current template?
-
-There is the issue of needing to display a best practices badge somewhere
-for the project which only really makes sense in markdown format which
-kind of pushed me into this.
-
-Cheers,
-
-Richard
+diff --git a/documentation/test-manual/index.rst b/documentation/test-manual/index.rst
+index e2198c4c3..d122b5e27 100644
+--- a/documentation/test-manual/index.rst
++++ b/documentation/test-manual/index.rst
+@@ -13,6 +13,7 @@ Yocto Project Test Environment Manual
+    intro
+    test-process
+    understand-autobuilder
++   reproducible-builds
+    history
+ 
+ .. include:: /boilerplate.rst
+diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
+new file mode 100644
+index 000000000..d0384333a
+--- /dev/null
++++ b/documentation/test-manual/reproducible-builds.rst
+@@ -0,0 +1,60 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++*******************
++Reproducible Builds
++*******************
++
++================
++How we define it
++================
++
++The Yocto Project defines reproducibility as where a given input build configuration will give the same binary output regardless of when it is built (now or in 5 years time), regardless of the path on the filesystem the build is run in and regardless of the distro and tools on the underlying host system the build is running on.
++
++==============
++Why it matters
++==============
++
++The project aligns with the Reproducibile Builds project (https://reproducible-builds.org/) and they have information about why it matters. In addition to being able to validate for security issues being introduced which they talk about at length, from a Yocto Project perspective, it is hugely important that our builds are deterministic. We expect that when you build a given input set of metadata, you get consistent output. This has always been a key focus but is now true down to the binary level including timestamps.
++
++For example, if you find at some point in the future life of a product that you need to rebuild to add a security fix, only the components that have changed should change at the binary level leading to much easier and clearer bounds on where validation is needed.
++
++This also gives an additional benefit to the project builds themselves, our hash equivalence for sstate object reuse works much more effecitvely when the binary outputis unchanging.
++
++===================
++How we implement it
++===================
++
++There are many different aspects to build reproducibility but some particular things we do within the build system to ensure reproducibility include:
++
++* Adding mappings to the compiler options to ensure debug filepaths are mapped to consistent target compatible paths. This is done through the ``DEBUG_PREFIX_MAP`` variable which sets the maco-prefix-map and debug-prefix-map compiler options correctly to mape to target paths.
++* Being explict about recipe dependencies and their configuration (no floating configure options or host dependencies creeping in). In particular this means making sure ``PACKAGECONFIG`` coverage covers configure options which may otherwise try and auto-detect host dependencies.
++* Using recipe specific sysroots to isolate recipes so they only see their dependencies. These are visible as "recipe-sysroot" and "recipe-sysroot-native" directories within ``WORKDIR`` of a given recipe and are poulated only with the dependencies a recipe has.
++* Build images from a reduced package set of only packages from recipes the image depends upon.
++* Filtering the tools availble from the host's PATH to only a specific set of tools, set using the ``HOSTTOOLS`` variable.
++
++=========================================
++Can we prove the project is reproducible?
++=========================================
++
++Yes, we can prove it and we now regularlly test this on the autobuilder. At the time of writing, OE-Core is 100% reproducible for all it's recipes (i.e. world builds) apart from go-lang and ruby's docs package. go-lang has some fundamental problems with reproducibility as it currently always depends upon the paths it is build in unfortunately.
++
++To run our automated selftest as we use in our CI on the autobuilder you can run::
++
++ oe-selftest -r reproducible.ReproducibleTests.test_reproducible_builds
++
++This defaults to including a world build so if other layers are added, it would also run the tests for recipes in the additional layers. The first build will be run using sstate if available, the second build expliclty disables sstate and builds on the specific host the build is running on. This means we can test reproduibility builds between different host distributions over time on the autobuilder.
++
++If ``OEQA_DEBUGGING_SAVED_OUTPUT`` is set, any differing packages will be saved here. The test is also able to run diffoscope on the output and generate html files showing the differences between the packages which can aid debugging. On the autobuilder these appear under the url https://autobuilder.yocto.io/pub/repro-fail/ in the form oe-reproducible + <date> + <random ID>, e.g. "oe-reproducible-20200202-1lm8o1th".
++
++The project's current reproducibility status can be seen at: https://www.yoctoproject.org/reproducible-build-results/
++
++===============================
++Can I test my layer or recipes?
++===============================
++
++Yes, see the selftest in oe-selftest at meta/lib/oeqa/selftest/cases/reproducible.py which can be subclassed for specific use cases.
++
++
++
++
++
+-- 
+2.30.2
 
