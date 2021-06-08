@@ -1,76 +1,108 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
- by mx.groups.io with SMTP id smtpd.web11.9978.1623143173222346593
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.10232.1623146347321989024
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Jun 2021 02:06:13 -0700
+ Tue, 08 Jun 2021 02:59:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=HCDFZ1Yy;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.51, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f51.google.com with SMTP id c5so20658144wrq.9
-        for <docs@lists.yoctoproject.org>; Tue, 08 Jun 2021 02:06:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=30myQrc8KW6zG0ZJ047ontnYqtTydSB/3V8B02nTLlY=;
-        b=HCDFZ1YyH1cgz3fZYhNYtB2bAc/94We6pwNoYHsT6MQfwKfFaoATrjQURCjIsl1C9M
-         vEAhy1pxEre9AHd65YF6o43cFpxz2UeKLp4TH+gGr9Elf5nGA3T5Hv5eT7sFrl8Qj4Ec
-         1VNq3ZymbDMNa4qXK8nyTfxq+PzdoVc8wbHZ0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=30myQrc8KW6zG0ZJ047ontnYqtTydSB/3V8B02nTLlY=;
-        b=LGsB8ZgWdE8m0Z4M1CWGyTzCM9cyeMaQypbseenPOQgtjOu7iaE0aEg+EV33E5mCqd
-         mqXSb9Qqa80X9bS6g8wsij2R59+wWk7HN+BdwGdONqddsE5PXRMowCZqH5IvJj/13FIj
-         0uoWbXBKijg7hHRUZDFsNDvqRv6P4OV8g7LjFNCZm4Rkp7SbknmhrVohFSRe8UA/Gk+i
-         FJHYZtohXIsK+mE4/MQjAl5uZm7RUXy5X1NsHn33dgnZ3LVGARdL+Xz2Z7sjot8rm6mb
-         CI8huvkV3Rl03CEwIWga29E93bfUiSJ0N/9OlNo+1TP5nyfd3yP42YNL/BUTfiaIOdI5
-         Z6VA==
-X-Gm-Message-State: AOAM530WQBK8g62tHksSMG5ezSVmepf/13hh0gUdHQYc0dgQ14Vf809s
-	tUZL8xTvM/ANCE4r0N0seIeUlgBag/2D+w==
-X-Google-Smtp-Source: ABdhPJzLBiyvENE91jbEnM2+q8cMC2KxlIzM2AMgJ1QI0ZWm5BQBfqKWTSzpyWJQnw1VqNK2cQ3RXQ==
-X-Received: by 2002:a5d:4c4b:: with SMTP id n11mr21942073wrt.269.1623143171514;
-        Tue, 08 Jun 2021 02:06:11 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:119e:2d1:fea4:6669? ([2001:8b0:aba:5f3c:119e:2d1:fea4:6669])
-        by smtp.gmail.com with ESMTPSA id d15sm8503635wri.58.2021.06.08.02.06.11
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 02:06:11 -0700 (PDT)
-Message-ID: <94804013e19f7f1c7b09f71a63755f0c870a078c.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] test-manual: Add initial YP Compatible documentation
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 1ED2E1BF210;
+	Tue,  8 Jun 2021 09:59:04 +0000 (UTC)
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 To: docs@lists.yoctoproject.org
-Date: Tue, 08 Jun 2021 10:06:10 +0100
-In-Reply-To: <16868FF087903AB7.10003@lists.yoctoproject.org>
-References: <16868FF087903AB7.10003@lists.yoctoproject.org>
-User-Agent: Evolution 3.40.0-1 
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH v2] test-manual: add initial reproducible builds documentation
+Date: Tue,  8 Jun 2021 11:58:53 +0200
+Message-Id: <20210608095853.48522-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <16868CB8BF8EEF84.10003@lists.yoctoproject.org>
+References: <16868CB8BF8EEF84.10003@lists.yoctoproject.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-On Tue, 2021-06-08 at 10:02 +0100, Richard Purdie via lists.yoctoproject.org wrote:
-> We need to document the Yocto Project Compatible badging programme. This
-> adds an initial piece of documentation about it from which we can improve
-> as needed.
-> 
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
->  documentation/test-manual/index.rst           |  1 +
->  .../test-manual/yocto-project-compatible.rst  | 52 +++++++++++++++++++
->  2 files changed, 53 insertions(+)
->  create mode 100644 documentation/test-manual/yocto-project-compatible.rst
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
 
-Again, I've sent this out since I've had it languishing in a branch for too 
-long. I appreciate the text needs wrapping properly and various other cleanups 
-but hopefully it is at a point where Michael can take it as some base text 
-and get it into the manual? 
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/test-manual/index.rst           |  1 +
+ .../test-manual/reproducible-builds.rst       | 55 +++++++++++++++++++
+ 2 files changed, 56 insertions(+)
+ create mode 100644 documentation/test-manual/reproducible-builds.rst
 
-I did try and at least get the content basically complete (there is much 
-more we could add but it is a start).
-
-Cheers,
-
-Richard
-
+diff --git a/documentation/test-manual/index.rst b/documentation/test-manual/index.rst
+index e2198c4c39..d122b5e270 100644
+--- a/documentation/test-manual/index.rst
++++ b/documentation/test-manual/index.rst
+@@ -13,6 +13,7 @@ Yocto Project Test Environment Manual
+    intro
+    test-process
+    understand-autobuilder
++   reproducible-builds
+    history
+ 
+ .. include:: /boilerplate.rst
+diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
+new file mode 100644
+index 0000000000..c2e13d410f
+--- /dev/null
++++ b/documentation/test-manual/reproducible-builds.rst
+@@ -0,0 +1,55 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++*******************
++Reproducible Builds
++*******************
++
++================
++How we define it
++================
++
++The Yocto Project defines reproducibility as where a given input build configuration will give the same binary output regardless of when it is built (now or in 5 years time), regardless of the path on the filesystem the build is run in, and regardless of the distro and tools on the underlying host system the build is running on.
++
++==============
++Why it matters
++==============
++
++The project aligns with the `Reproducible Builds project <https://reproducible-builds.org/>`_, which shares information about why reproducibility matters. The primary focus of the project is the ability to detect security issues being introduced. However, from a Yocto Project perspective, it is also hugely important that our builds are deterministic. When you build a given input set of metadata, we expect you to get consistent output. This has always been a key focus but is now true down to the binary level including timestamps.
++
++For example, at some point in the future life of a product, you find that you need to rebuild to add a security fix. If this happens, only the components that have been modified should change at the binary level. This would lead to much easier and clearer bounds on where validation is needed.
++
++This also gives an additional benefit to the project builds themselves, our hash equivalence for :ref:`Shared State <overview-manual/concepts:Shared State>` object reuse works much more effectively when the binary output remains the same.
++
++===================
++How we implement it
++===================
++
++There are many different aspects to build reproducibility, but some particular things we do within the build system to ensure reproducibility include:
++
++* Adding mappings to the compiler options to ensure debug filepaths are mapped to consistent target compatible paths. This is done through the ``DEBUG_PREFIX_MAP`` variable which sets the ``-fmacro-prefix-map`` and ``-fdebug-prefix-map`` compiler options correctly to map to target paths.
++* Being explicit about recipe dependencies and their configuration (no floating configure options or host dependencies creeping in). In particular this means making sure :term:`PACKAGECONFIG` coverage covers configure options which may otherwise try and auto-detect host dependencies.
++* Using recipe specific sysroots to isolate recipes so they only see their dependencies. These are visible as ``recipe-sysroot`` and ``recipe-sysroot-native`` directories within the :term:`WORKDIR` of a given recipe and are populated only with the dependencies a recipe has.
++* Build images from a reduced package set: only packages from recipes the image depends upon.
++* Filtering the tools available from the host's PATH to only a specific set of tools, set using the :term:`HOSTTOOLS` variable.
++
++=========================================
++Can we prove the project is reproducible?
++=========================================
++
++Yes, we can prove it and we now regularly test this on the Autobuilder. At the time of writing (Hardknott 3.3), OE-Core is 100% reproducible for all its recipes (i.e. world builds) apart from the Go language and Ruby documentation packages. Unfortunately, the current implementation of the Go language has fundamental reproducibility problems as it always depends upon the paths it is build in.
++
++To run our automated selftest, as we use in our CI on the Autobuilder, you can run::
++
++   oe-selftest -r reproducible.ReproducibleTests.test_reproducible_builds
++
++This defaults to including a world build so, if other layers are added, it would also run the tests for recipes in the additional layers. The first build will be run using Shared State if available, the second build explicitly disables Shared State and builds on the specific host the build is running on. This means we can test reproducibility builds between different host distributions over time on the Autobuilder.
++
++If ``OEQA_DEBUGGING_SAVED_OUTPUT`` is set, any differing packages will be saved here. The test is also able to run the ``diffoscope`` command on the output to generate HTML files showing the differences between the packages, to aid debugging. On the Autobuilder, these appear under https://autobuilder.yocto.io/pub/repro-fail/ in the form ``oe-reproducible + <date> + <random ID>``, e.g. ``oe-reproducible-20200202-1lm8o1th``.
++
++The project's current reproducibility status can be seen at https://www.yoctoproject.org/reproducible-build-results/
++
++===============================
++Can I test my layer or recipes?
++===============================
++
++Yes, see the self test in :ref:`oe-selftest <ref-manual/release-process:Testing and Quality Assurance>` at `meta/lib/oeqa/selftest/cases/reproducible.py <https://git.openembedded.org/openembedded-core/tree/meta/lib/oeqa/selftest/cases/reproducible.py>`_ which can be subclassed for specific use cases.
+-- 
+2.25.1
 
