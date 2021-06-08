@@ -1,133 +1,76 @@
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
- by mx.groups.io with SMTP id smtpd.web08.9823.1623142978407022201
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+ by mx.groups.io with SMTP id smtpd.web11.9978.1623143173222346593
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Jun 2021 02:02:58 -0700
+ Tue, 08 Jun 2021 02:06:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=FwIQ8Lw5;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.44, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f44.google.com with SMTP id l2so20718610wrw.6
-        for <docs@lists.yoctoproject.org>; Tue, 08 Jun 2021 02:02:58 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=HCDFZ1Yy;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.51, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f51.google.com with SMTP id c5so20658144wrq.9
+        for <docs@lists.yoctoproject.org>; Tue, 08 Jun 2021 02:06:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+rB/WM4Zo2kMH4icxzn5bFn8zrpOHf8+rnXajn9mGIw=;
-        b=FwIQ8Lw5gw3UG0LonDrevlU6kjRIgOtewvKyknk3oCHCMwdyDpKcWnHMwmWk4JU17m
-         U6abhyO255erZLfqmTwJVb270etjNaYRdF1RmhEyr4F8OwErrgewJghxpRa2exeit6cC
-         p+l7r0JmpSRGee10wmsoXdcQVgKuDYFGVCY9E=
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=30myQrc8KW6zG0ZJ047ontnYqtTydSB/3V8B02nTLlY=;
+        b=HCDFZ1YyH1cgz3fZYhNYtB2bAc/94We6pwNoYHsT6MQfwKfFaoATrjQURCjIsl1C9M
+         vEAhy1pxEre9AHd65YF6o43cFpxz2UeKLp4TH+gGr9Elf5nGA3T5Hv5eT7sFrl8Qj4Ec
+         1VNq3ZymbDMNa4qXK8nyTfxq+PzdoVc8wbHZ0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=+rB/WM4Zo2kMH4icxzn5bFn8zrpOHf8+rnXajn9mGIw=;
-        b=R45STCVkA/Uc3jRrKpTu2XzEKEoPYjgJ20k9fokak8IeAY4GFRnHwH7GKmLbmZcl4v
-         j4Z17s32EEFk1RiyU4cYZhL5mbRoqBkO3g3Qt2aSTOm03Lz8Pj+t2wuuI61Kvsl7e3ZK
-         ilCvqWXtAB8JnwEyIIiiSzILRxWnBIFHbTmBdbmmZzDdT/pD4CYK03v4sX9u6pzA9ufQ
-         XbWLZJ1JwZsczqoeoHj3mg6b8ubFhGsAr9NWy7QvvOmUBG2/C7fTW+JPWDIB6rreVC2J
-         B5IFEcZAjHtw1eO4J06hdTylG8ZR5Os33mFkehWmHsE6BkQnX6sj/nKAG2ztX+asXhtH
-         XxuQ==
-X-Gm-Message-State: AOAM5313OA7paF2NQseFQM3gfWbpCTLjnOd7DP9aNJo6qwiInFlkO3bD
-	hlEMBZrSsK8zW0APO1F0cHfW2ok5F1YLYA==
-X-Google-Smtp-Source: ABdhPJwy3y1cFhmPOPLMUIizjT1cApQvLtkDTswLbLYZ5pI673t5i1RRFiDBZSKw2wMmqSR5WwnHLA==
-X-Received: by 2002:a05:6000:2af:: with SMTP id l15mr5531694wry.213.1623142976540;
-        Tue, 08 Jun 2021 02:02:56 -0700 (PDT)
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=30myQrc8KW6zG0ZJ047ontnYqtTydSB/3V8B02nTLlY=;
+        b=LGsB8ZgWdE8m0Z4M1CWGyTzCM9cyeMaQypbseenPOQgtjOu7iaE0aEg+EV33E5mCqd
+         mqXSb9Qqa80X9bS6g8wsij2R59+wWk7HN+BdwGdONqddsE5PXRMowCZqH5IvJj/13FIj
+         0uoWbXBKijg7hHRUZDFsNDvqRv6P4OV8g7LjFNCZm4Rkp7SbknmhrVohFSRe8UA/Gk+i
+         FJHYZtohXIsK+mE4/MQjAl5uZm7RUXy5X1NsHn33dgnZ3LVGARdL+Xz2Z7sjot8rm6mb
+         CI8huvkV3Rl03CEwIWga29E93bfUiSJ0N/9OlNo+1TP5nyfd3yP42YNL/BUTfiaIOdI5
+         Z6VA==
+X-Gm-Message-State: AOAM530WQBK8g62tHksSMG5ezSVmepf/13hh0gUdHQYc0dgQ14Vf809s
+	tUZL8xTvM/ANCE4r0N0seIeUlgBag/2D+w==
+X-Google-Smtp-Source: ABdhPJzLBiyvENE91jbEnM2+q8cMC2KxlIzM2AMgJ1QI0ZWm5BQBfqKWTSzpyWJQnw1VqNK2cQ3RXQ==
+X-Received: by 2002:a5d:4c4b:: with SMTP id n11mr21942073wrt.269.1623143171514;
+        Tue, 08 Jun 2021 02:06:11 -0700 (PDT)
 Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:119e:2d1:fea4:6669])
-        by smtp.gmail.com with ESMTPSA id n8sm16586373wmi.16.2021.06.08.02.02.56
+Received: from ?IPv6:2001:8b0:aba:5f3c:119e:2d1:fea4:6669? ([2001:8b0:aba:5f3c:119e:2d1:fea4:6669])
+        by smtp.gmail.com with ESMTPSA id d15sm8503635wri.58.2021.06.08.02.06.11
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Jun 2021 02:02:56 -0700 (PDT)
+        Tue, 08 Jun 2021 02:06:11 -0700 (PDT)
+Message-ID: <94804013e19f7f1c7b09f71a63755f0c870a078c.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] test-manual: Add initial YP Compatible documentation
 From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] test-manual: Add initial YP Compatible documentation
-Date: Tue,  8 Jun 2021 10:02:55 +0100
-Message-Id: <20210608090255.3089963-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.30.2
+Date: Tue, 08 Jun 2021 10:06:10 +0100
+In-Reply-To: <16868FF087903AB7.10003@lists.yoctoproject.org>
+References: <16868FF087903AB7.10003@lists.yoctoproject.org>
+User-Agent: Evolution 3.40.0-1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-We need to document the Yocto Project Compatible badging programme. This
-adds an initial piece of documentation about it from which we can improve
-as needed.
+On Tue, 2021-06-08 at 10:02 +0100, Richard Purdie via lists.yoctoproject.org wrote:
+> We need to document the Yocto Project Compatible badging programme. This
+> adds an initial piece of documentation about it from which we can improve
+> as needed.
+> 
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+> ---
+>  documentation/test-manual/index.rst           |  1 +
+>  .../test-manual/yocto-project-compatible.rst  | 52 +++++++++++++++++++
+>  2 files changed, 53 insertions(+)
+>  create mode 100644 documentation/test-manual/yocto-project-compatible.rst
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
----
- documentation/test-manual/index.rst           |  1 +
- .../test-manual/yocto-project-compatible.rst  | 52 +++++++++++++++++++
- 2 files changed, 53 insertions(+)
- create mode 100644 documentation/test-manual/yocto-project-compatible.rst
+Again, I've sent this out since I've had it languishing in a branch for too 
+long. I appreciate the text needs wrapping properly and various other cleanups 
+but hopefully it is at a point where Michael can take it as some base text 
+and get it into the manual? 
 
-diff --git a/documentation/test-manual/index.rst b/documentation/test-manual/index.rst
-index d122b5e27..4c590a6aa 100644
---- a/documentation/test-manual/index.rst
-+++ b/documentation/test-manual/index.rst
-@@ -14,6 +14,7 @@ Yocto Project Test Environment Manual
-    test-process
-    understand-autobuilder
-    reproducible-builds
-+   yocto-project-compatible
-    history
- 
- .. include:: /boilerplate.rst
-diff --git a/documentation/test-manual/yocto-project-compatible.rst b/documentation/test-manual/yocto-project-compatible.rst
-new file mode 100644
-index 000000000..372b701bc
---- /dev/null
-+++ b/documentation/test-manual/yocto-project-compatible.rst
-@@ -0,0 +1,52 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+************************
-+Yocto Project Compatible
-+************************
-+
-+============
-+Introduction
-+============
-+
-+After the introduction of layers to OpenEmbedded, it quickly became clear that some layers were popular and worked well, others developed a reputation for being 'problematic'. Those were layers which didn't inter-operate well with other layers and tended to assume they controlled all the aspects of the end resulting output. This isn't usually intentional but because they're often developed by developers with a particular focus (e.g. a company's BSP) whilst the end users have a different focus (e.g. integrating that BSP into a product).
-+
-+As a result of noticing patterns like this and friction between layers, the project developed the "Yocto Project Compatible" badge programme where layers modelling the best known practises could be marked as being widely compatible with other layers. This takes the form of a set of yes/no binary answer questions where layers can declare if they have met the appropriate criteria. In the second version of the programme, a script was added to make validation easier and clearer, the script is called 'yocto-check-layer' and is available in OpenEmbedded-Core.
-+
-+========
-+Benefits
-+========
-+
-+The OpenEmbedded Layer model is powerful and flexible, it gives users the ultimate power to change pretty much any aspect of the system but as with most things, power comes with responsibility. The Yocto Project would like to see people able to mix and match BSPs with distro configs or software stacks and be able to merge these together such that the result inter-operates well together. Over time, the project has realised that there were things that work well in layers to allow them to operate together. There were also 'anti-patterns' which stopped layers working well together.
-+
-+The intent of the compatibility programme is simple, if the layer passes the compatibility tests, it is considered “well behaved” and should operate and cooperate well with other compatible layers.
-+
-+The benefits of compatibility apply from multiple different user and member perspectives. From a hardware perspective (a BSP layer), compatibility means the hardware can be used in many different products and use cases without impacting the software stacks being run with it. For a company developing a product, compatibility gives you a specification/standard you can require in a contract and then know it will have certain desired characteristics for interoperability. It also puts constraints on how invasive these code bases are into the rest of the system, meaning that multiple different separate hardware support layers can coexist (e.g. for multiple product lines from different manufacturers). This can also influence how easily those system components might be upgraded or maintained for security purposes by one or more parties during the lifecycle of a product through development and widespread use.
-+
-+==================
-+Validating a layer
-+==================
-+
-+The badges are available to members of the project or open source projects run on a non-commercial basis and are tried to the project member level as a member benefit but anyone can answer the questions and run the script.
-+
-+The project encourages all layer maintainers to consider the questions and the output from the script against their layer as there are often unintentional consequences of the way some layers are constructed and the questions and script are designed to highlight commonly known issues which can often easily be solved leading to easier and wider layer use.
-+
-+It is intended that over time, the tests will evolve as best known practices are identified and as new interoperability issues are identified which unnecessarily restrict layer interoperability. If anyone becomes aware of either issue, please do mention it to the project (in our tech calls, on the mailing list or to the TSC). The TSC is holds overall responsibility for the technical criteria used by the programme.
-+
-+Layers are divided into three types:
-+
-+* "BSP" or "hardware support" layers contain support for particular pieces of hardware. This would include kernel and boot loader configuration, any recipes needed for firmware/modules needed for the hardware. They would usually correspond to a MACHINE setting.
-+
-+* "distro" layers defined as layers providing configuration options and settings such as a choice of init system, compiler/optimisation options or configuration and choices of software components. This would usually correspond to a DSITRO setting.
-+
-+* "software" layers are usually recipes. A layer might target a particular graphical UI or software stack component.
-+
-+Key best practises the programme tries to encourage:
-+
-+* A layer should clearly show who maintains it, where change submissions and bug reports should be sent
-+* Where multiple types of functionality are present, the layer be internally subdivided into layers to separate these components as users would likely want to use only one of them and separability is a key best practise.
-+* Adding a layer to a build should not change that build without the user taking some additional step of configuration to active the layer (such as selecting a MACHINE, a DISTRO or a DISTRO_FEATURE)
-+
-+The project does test the compatibility status of the core project layers on the project autobuilder.
-+
-+The official form to submit compatibility requests with is at https://www.yoctoproject.org/ecosystem/branding/compatible-registration/. Successful applicants can display the appropraiate badge which would be provided to them on success of the application.
-+
--- 
-2.30.2
+I did try and at least get the content basically complete (there is much 
+more we could add but it is a start).
+
+Cheers,
+
+Richard
+
 
