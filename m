@@ -1,67 +1,90 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web08.9405.1623139439625414738
+Received: from bsmtp2.bon.at (bsmtp2.bon.at [213.33.87.16])
+ by mx.groups.io with SMTP id smtpd.web09.9637.1623140976151337220
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Jun 2021 01:04:00 -0700
+ Tue, 08 Jun 2021 01:29:36 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id C5F1A20015;
-	Tue,  8 Jun 2021 08:03:57 +0000 (UTC)
-Subject: Re: [docs] [PATCH] test-manual: Add initial reproducibile builds documentation
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- docs@lists.yoctoproject.org
-References: <16865B5B6683D232.21761@lists.yoctoproject.org>
- <56b2b0aa26a20d6e06c1d594feb143b8cfe44c96.camel@linuxfoundation.org>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <936fc639-f040-5e5d-f71b-51f8f82afbc4@bootlin.com>
-Date: Tue, 8 Jun 2021 10:03:57 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.16, mailfrom: quentin.schulz@streamunlimited.com)
+Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
+	by bsmtp2.bon.at (Postfix) with ESMTPSA id 4Fzk1S24MWz5tlK;
+	Tue,  8 Jun 2021 10:29:32 +0200 (CEST)
+Date: Tue, 8 Jun 2021 10:29:31 +0200
+From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+Cc: docs <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [poky] [PATCH] README.poky: Update to switch to markdown format and update
+Message-ID: <20210608082931.a4csftm445kfhzzr@qschulz>
+References: <16865661A55682C8.7118@lists.yoctoproject.org>
+ <3c7b1f74d4b989316e24be08db75f34720198e2d.camel@linuxfoundation.org>
+ <20210607155906.3hgtcl6fsyedstrh@qschulz>
+ <d986d79263894ada0e1bf2e5777419ecc6b6f18f.camel@linuxfoundation.org>
 MIME-Version: 1.0
-In-Reply-To: <56b2b0aa26a20d6e06c1d594feb143b8cfe44c96.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-Content-Language: en-US
+In-Reply-To: <d986d79263894ada0e1bf2e5777419ecc6b6f18f.camel@linuxfoundation.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
 Hi Richard,
 
-On 6/7/21 7:03 PM, Richard Purdie wrote:
-> On Mon, 2021-06-07 at 17:59 +0100, Richard Purdie via lists.yoctoproject.org wrote:
->> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
->> ---
->>  documentation/test-manual/index.rst           |  1 +
->>  .../test-manual/reproducible-builds.rst       | 60 +++++++++++++++++++
->>  2 files changed, 61 insertions(+)
->>  create mode 100644 documentation/test-manual/reproducible-builds.rst
->>
->> diff --git a/documentation/test-manual/index.rst b/documentation/test-manual/index.rst
->> index e2198c4c3..d122b5e27 100644
->> --- a/documentation/test-manual/index.rst
->> +++ b/documentation/test-manual/index.rst
->> @@ -13,6 +13,7 @@ Yocto Project Test Environment Manual
->>     intro
->>     test-process
->>     understand-autobuilder
->> +   reproducible-builds
->>     history
-> As background, I've had this sitting around half finished for a while. I've
-> had a push to at least get the minimal content in and wanted to get something 
-> out which we can improve upon from here. I know some variables aren't quite 
-> right syntax wise and so on but I'm hoping Michael or someone else might be
-> able to help from here?
+On Mon, Jun 07, 2021 at 05:16:43PM +0100, Richard Purdie wrote:
+> On Mon, 2021-06-07 at 17:59 +0200, Quentin Schulz wrote:
+> > Hi Richard,
+> > 
+> > On Mon, Jun 07, 2021 at 04:36:22PM +0100, Richard Purdie wrote:
+> > > Mentioning on the docs list.
+> > > 
+> > > I a plan is forming to migrate the various READMEs in the repos to markdown
+> > > format and display these in the git web interface in the about page. If this
+> > 
+> > Does it need to be in MarkDown format to be displayed in the About
+> > section?
+> 
+> No, but it does help a little and see below.
+> 
+> > > merges I'll work with MichaelH to make sure it displays properly on the
+> > > about page.
+> > > 
+> > > I've had a go at improving the poky one which needed a bit of modernisation
+> > > anyway. Help with others welcome.
+> > > 
+> > 
+> > Anyway to have those two changes separate so we can properly review each
+> > separately?
+> 
+> I can reverse engineer them back apart I guess, I just couldn't bring myself
+> to leave it as it was as it needed reformatting and so on anyway.
+> 
 
+The constant struggle of trying not to fix everything at once in the
+docs :)
 
-Sure, many thanks for the initial documentation on this topic! I'm
-taking care of fixing a few typos and adding proper index references for
-variables, and I'll share a V2 soon.
+> > > I am a little torn on this as it does make the README harder to read
+> > > outside of rendered interfaces.
+> > > 
+> > 
+> > But it'd be displayed correctly in the Github mirror and Gitlab for
+> > those using it I guess.
+> > 
+> > Most projects hosted on Github/Gitlab use MarkDown so I don't think it's
+> > such a bad idea, I'm just not sure it has as much benefit on cgit since
+> > it's not the landing page of the repo (the summary page is).
+> > 
+> > If we can display the non-MD version in the about page, I don't think
+> > there's a huge benefit of migrating to MD?
+> > 
+> > If we absolutely need MD for the about page, go for it as it'll cover
+> > Github, Gitlab and probably others.
+> > 
+> > We might want to modify bitbake-layers create-layer to provide a
+> > README.md too instead of the current template?
+> 
+> There is the issue of needing to display a best practices badge somewhere
+> for the project which only really makes sense in markdown format which
+> kind of pushed me into this.
+> 
 
-Thanks again,
+It's all settled then :)
 
-Michael.
+MarkDown is not that much less readable than plain text anyway, it can easily
+be picked up by anyone, so no objection on my part. LGTM.
 
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Cheers,
+Quentin
