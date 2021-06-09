@@ -1,115 +1,183 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web09.11259.1623259214951710950
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web12.11305.1623259570432371502
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Jun 2021 10:20:15 -0700
+ Wed, 09 Jun 2021 10:26:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id DEF371BF209;
-	Wed,  9 Jun 2021 17:20:12 +0000 (UTC)
-Cc: michael.opdenacker@bootlin.com
-Subject: Re: [docs] [PATCH] test-manual: Add initial YP Compatible documentation
-To: docs@lists.yoctoproject.org
-References: <20210608090255.3089963-1-richard.purdie@linuxfoundation.org>
- <CAP71Wjz00a3yyG30f3s9zMU3yKFHRDQb_DWP5frdG=NabKTx9A@mail.gmail.com>
+	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 78F3860009;
+	Wed,  9 Jun 2021 17:26:08 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <3dadbe55-dcb1-75af-e5af-b3f02f896080@bootlin.com>
-Date: Wed, 9 Jun 2021 19:20:12 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+To: docs@lists.yoctoproject.org
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Subject: [PATCH v2] test-manual: Add initial YP Compatible documentation
+Date: Wed,  9 Jun 2021 19:26:01 +0200
+Message-Id: <20210609172601.106807-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <1686F9A7F9406930.26375@lists.yoctoproject.org>
+References: <1686F9A7F9406930.26375@lists.yoctoproject.org>
 MIME-Version: 1.0
-In-Reply-To: <CAP71Wjz00a3yyG30f3s9zMU3yKFHRDQb_DWP5frdG=NabKTx9A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 
-Hi Nico,
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
 
-Thanks for the review!
+This starts documenting the Yocto Project Compatible badging programme. This
+adds an initial piece of documentation about it from which we can improve
+as needed.
 
-On 6/9/21 12:11 PM, Nicolas Dechesne wrote:
->
->
-> Insert link
-> to https://docs.yoctoproject.org/dev-manual/common-tasks.html?layer#making-sure-your-layer-is-compatible-with-yocto-project
-> <https://docs.yoctoproject.org/dev-manual/common-tasks.html?layer#making-sure-your-layer-is-compatible-with-yocto-project>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+---
+ documentation/test-manual/index.rst           |   1 +
+ .../test-manual/yocto-project-compatible.rst  | 124 ++++++++++++++++++
+ 2 files changed, 125 insertions(+)
+ create mode 100644 documentation/test-manual/yocto-project-compatible.rst
 
-
-Done, in the V2 I'll share soon. However, this feels a bit weird as
-there is some overlap between both documents. Wouldn't it be better to
-add this reference at the end of the document instead?
-
->
->
-> tried -> tied
-
-
-Fixed
-
->  
->
->     +
->     +The project encourages all layer maintainers to consider the
->     questions and the output from the script against their layer as
->     there are often unintentional consequences of the way some layers
->     are constructed and the questions and script are designed to
->     highlight commonly known issues which can often easily be solved
->     leading to easier and wider layer use.
->     +
->     +It is intended that over time, the tests will evolve as best
->     known practices are identified and as new interoperability issues
->     are identified which unnecessarily restrict layer
->     interoperability. If anyone becomes aware of either issue, please
->     do mention it to the project (in our tech calls, on the mailing
->     list or to the TSC). The TSC is holds overall responsibility for
->     the technical criteria used by the programme.
->
->
-> is holds -> holds
-
-Fixed
->  
->
->     +* Where multiple types of functionality are present, the layer be
->     internally subdivided into layers to separate these components as
->     users would likely want to use only one of them and separability
->     is a key best practise.
->
->
-> the layer be -> the layer should be?
-
-
-Fixed
-
->  
->
->     +* Adding a layer to a build should not change that build without
->     the user taking some additional step of configuration to active
->     the layer (such as selecting a MACHINE, a DISTRO or a DISTRO_FEATURE)
->     +
->     +The project does test the compatibility status of the core
->     project layers on the project autobuilder.
->     +
->     +The official form to submit compatibility requests with is at
->     https://www.yoctoproject.org/ecosystem/branding/compatible-registration/
->     <https://www.yoctoproject.org/ecosystem/branding/compatible-registration/>.
->     Successful applicants can display the appropraiate badge which
->     would be provided to them on success of the application.
->
->
-> :yocto_home:` xxx `
-
-Fixed too, thanks!
-
-The V2 for further review is coming next. Thanks in advance :)
-
-Cheers,
-
-Michael.
-
+diff --git a/documentation/test-manual/index.rst b/documentation/test-manual/index.rst
+index d122b5e270..4c590a6aa9 100644
+--- a/documentation/test-manual/index.rst
++++ b/documentation/test-manual/index.rst
+@@ -14,6 +14,7 @@ Yocto Project Test Environment Manual
+    test-process
+    understand-autobuilder
+    reproducible-builds
++   yocto-project-compatible
+    history
+ 
+ .. include:: /boilerplate.rst
+diff --git a/documentation/test-manual/yocto-project-compatible.rst b/documentation/test-manual/yocto-project-compatible.rst
+new file mode 100644
+index 0000000000..a7897469ff
+--- /dev/null
++++ b/documentation/test-manual/yocto-project-compatible.rst
+@@ -0,0 +1,124 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++************************
++Yocto Project Compatible
++************************
++
++============
++Introduction
++============
++
++After the introduction of layers to OpenEmbedded, it quickly became clear
++that while some layers were popular and worked well, others developed a
++reputation for being "problematic". Those were layers which didn't
++interoperate well with others and tended to assume they controlled all
++the aspects of the final output.  This usually isn't intentional but happens
++because such layers are often created by developers with a particular focus
++(e.g. a company's :term:`BSP<Board Support Package (BSP)>`) whilst the end
++users have a different one (e.g. integrating that
++:term:`BSP<Board Support Package (BSP)>` into a product).
++
++As a result of noticing such patterns and friction between layers, the project
++developed the "Yocto Project Compatible" badge program, allowing layers
++following the best known practises to be marked as being widely compatible
++with other ones. This takes the form of a set of "yes/no" binary answer
++questions where layers can declare if they meet the appropriate criteria.
++In the second version of the program, a script was added to make validation
++easier and clearer, the script is called  ``yocto-check-layer`` and is
++available in :term:`OpenEmbedded-Core (OE-Core)`.
++
++See :ref:`dev-manual/common-tasks:making sure your layer is compatible with yocto project`
++for details.
++
++========
++Benefits
++========
++
++:ref:`overview-manual/yp-intro:the yocto project layer model` is powerful
++and flexible: it gives users the ultimate power to change pretty much any
++aspect of the system but as with most things, power comes with responsibility.
++The Yocto Project would like to see people able to mix and match BSPs with
++distro configs or software stacks and be able to merge succesfully.
++Over time, the project identified characteristics in layers that allow them
++to operate well together. "anti-patterns" were also found, preventing layers
++from working well together.
++
++The intent of the compatibility program is simple: if the layer passes the
++compatibility tests, it is considered "well behaved" and should operate
++and cooperate well with other compatible layers.
++
++The benefits of compatibility can be seen from multiple different user and
++member perspectives. From a hardware perspective
++(a :ref:`overview-manual/concepts:bsp layer`), compatibility means the
++hardware can be used in many different products and use cases without
++impacting the software stacks being run with it. For a company developing
++a product, compatibility gives you a specification / standard you can
++require in a contract and then know it will have certain desired
++characteristics for interoperability. It also puts constraints on how invasive
++the code bases are into the rest of the system, meaning that multiple
++different separate hardware support layers can coexist (e.g. for multiple
++product lines from different hardware manufacturers). This can also make it
++easier for one or more parties to upgrade those system components for security
++purposes during the lifecycle of a product.
++
++==================
++Validating a layer
++==================
++
++The badges are available to members of the Yocto Project (as member benefit)
++and to open source projects run on a non-commercial basis. However, anyone can
++answer the questions and run the script.
++
++The project encourages all layer maintainers to review the questions and the
++output from the script against their layer, as the way some layers are
++constructed often has unintended consequences. The questions and the script
++are designed to highlight known issues which are often easy to solve. This
++makes layers easier to use and therefore more popular.
++
++It is intended that over time, the tests will evolve as new best known
++practices are identified, and as new interoperability issues are found,
++unnecessarily restricting layer interoperability. If anyone becomes aware of
++either type, please let the project know through the
++:yocto_home:`technical calls </public-virtual-meetings/>`,
++the :yocto_home:`mailing lists </community/mailing-lists/>`
++or through the :oe_wiki:`Technical Steering Committee (TSC) </TSC>`.
++The TSC is responsible for the technical criteria used by the program.
++
++Layers are divided into three types:
++
++-  :ref:`"BSP" or "hardware support"<overview-manual/concepts:bsp layer>`
++   layers contain support for particular pieces of hardware. This includes
++   kernel and boot loader configuration, and any recipes for firmware or
++   kernel modules needed for the hardware. Such layers usually correspond
++   to a :term:`MACHINE` setting.
++
++-  :ref:`"distro" layers<overview-manual/concepts:distro layer>` defined
++   as layers providing configuration options and settings such as the
++   choice of init system, compiler and optimisation options, and
++   configuration and choices of software components. This would usually
++   correspond to a :term:`DISTRO` setting.
++
++-  "software" layers are usually recipes. A layer might target a
++   particular graphical UI or software stack component.
++
++Here are key best practices the program tries to encourage:
++
++-  A layer should clearly show who maintains it, and who change
++   submissions and bug reports should be sent to.
++
++-  Where multiple types of functionality are present, the layer should
++   be internally divided into sublayers to separate these components.
++   That's because some users may only need one of them and separability
++   is a key best practice.
++
++-  Adding a layer to a build should not modify that build, unless the
++   user changes a configuration setting to activate the layer, by selecting
++   a :term:`MACHINE`, a :term:`DISTRO` or a :term:`DISTRO_FEATURES` setting.
++
++The project does test the compatibility status of the core project layers on
++its :doc:`Autobuilder </test-manual/understand-autobuilder>`.
++
++The official form to submit compatibility requests with is at
++:yocto_home:`/ecosystem/branding/compatible-registration/`.
++Applicants can display the badge they get when their application is successful.
++
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
