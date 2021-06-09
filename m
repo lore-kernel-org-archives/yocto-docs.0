@@ -1,202 +1,45 @@
-Received: from bsmtp3.bon.at (bsmtp3.bon.at [213.33.87.17])
- by mx.groups.io with SMTP id smtpd.web12.10021.1623254156951158513
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web12.10464.1623255854110725306
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Jun 2021 08:55:57 -0700
+ Wed, 09 Jun 2021 09:24:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.17, mailfrom: quentin.schulz@streamunlimited.com)
-Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp3.bon.at (Postfix) with ESMTPSA id 4G0Wt16MtMz5tlC;
-	Wed,  9 Jun 2021 17:55:53 +0200 (CEST)
-Date: Wed, 9 Jun 2021 17:55:52 +0200
-From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: docs@lists.yoctoproject.org,
-	Richard Purdie <richard.purdie@linuxfoundation.org>,
-	Quentin Schulz <foss@0leil.net>
-Subject: Re: [docs] [PATCH v3] test-manual: add initial reproducible builds documentation
-Message-ID: <20210609155552.nwjdirom4lkqi4n7@qschulz>
-References: <1686F0ED5A1183FF.18579@lists.yoctoproject.org>
- <20210609144728.103458-1-michael.opdenacker@bootlin.com>
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 4777220003;
+	Wed,  9 Jun 2021 16:24:11 +0000 (UTC)
+Subject: Re: [docs] [PATCH] test-manual: Add initial YP Compatible documentation
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ docs@lists.yoctoproject.org
+References: <20210608090255.3089963-1-richard.purdie@linuxfoundation.org>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <6d9dc010-a9ec-1f05-803c-f1f5ab662c17@bootlin.com>
+Date: Wed, 9 Jun 2021 18:24:11 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210609144728.103458-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+In-Reply-To: <20210608090255.3089963-1-richard.purdie@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-On Wed, Jun 09, 2021 at 04:47:28PM +0200, Michael Opdenacker wrote:
-> From: Richard Purdie <richard.purdie@linuxfoundation.org>
-> 
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Reviewed-by: Quentin Schulz <foss@0leil.net>
-> ---
->  documentation/test-manual/index.rst           |   1 +
->  .../test-manual/reproducible-builds.rst       | 134 ++++++++++++++++++
->  2 files changed, 135 insertions(+)
->  create mode 100644 documentation/test-manual/reproducible-builds.rst
-> 
-> diff --git a/documentation/test-manual/index.rst b/documentation/test-manual/index.rst
-> index e2198c4c39..d122b5e270 100644
-> --- a/documentation/test-manual/index.rst
-> +++ b/documentation/test-manual/index.rst
-> @@ -13,6 +13,7 @@ Yocto Project Test Environment Manual
->     intro
->     test-process
->     understand-autobuilder
-> +   reproducible-builds
->     history
->  
->  .. include:: /boilerplate.rst
-> diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
-> new file mode 100644
-> index 0000000000..f8140d7890
-> --- /dev/null
-> +++ b/documentation/test-manual/reproducible-builds.rst
-> @@ -0,0 +1,134 @@
-> +.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-> +
-> +*******************
-> +Reproducible Builds
-> +*******************
-> +
-> +================
-> +How we define it
-> +================
-> +
-> +The Yocto Project defines reproducibility as where a given input build
-> +configuration will give the same binary output regardless of when it is built
-> +(now or in 5 years time), regardless of the path on the filesystem the build is
-> +run in, and regardless of the distro and tools on the underlying host system the
-> +build is running on.
-> +
-> +==============
-> +Why it matters
-> +==============
-> +
-> +The project aligns with the `Reproducible Builds project
-> +<https://reproducible-builds.org/>`_, which shares information about why
-> +reproducibility matters. The primary focus of the project is the ability to
-> +detect security issues being introduced. However, from a Yocto Project
-> +perspective, it is also hugely important that our builds are deterministic. When
-> +you build a given input set of metadata, we expect you to get consistent output.
-> +This has always been a key focus but, since release 3.1 ("dunfell"), it is now true
+Hi Richard,
 
-Just picking nits here, but I could see a reference to:
-https://docs.yoctoproject.org/ref-manual/migration-3.1.html#reproducible-builds-now-enabled-by-default
+On 6/8/21 11:02 AM, Richard Purdie wrote:
+> +
+> +It is intended that over time, the tests will evolve as best known practices are identified and as new interoperability issues are identified which unnecessarily restrict layer interoperability. If anyone becomes aware of either issue, please do mention it to the project (in our tech calls, on the mailing list or to the TSC). The TSC is holds overall responsibility for the technical criteria used by the programme.
 
-> +down to the binary level including timestamps.
-> +
-> +For example, at some point in the future life of a product, you find that you
-> +need to rebuild to add a security fix. If this happens, only the components that
-> +have been modified should change at the binary level. This would lead to much
-> +easier and clearer bounds on where validation is needed.
-> +
-> +This also gives an additional benefit to the project builds themselves, our hash
-> +equivalence for :ref:`Shared State <overview-manual/concepts:Shared State>`
-> +object reuse works much more effectively when the binary output remains the
-> +same.
-> +
-> +.. note::
-> +
-> +   We strongly advise you to make sure your project builds reproducibly
-> +   before finalizing your production images. It would be too late if you
-> +   only address this issue when the first updates are required.
-> +
-> +===================
-> +How we implement it
-> +===================
-> +
-> +There are many different aspects to build reproducibility, but some particular
-> +things we do within the build system to ensure reproducibility include:
-> +
-> +-  Adding mappings to the compiler options to ensure debug filepaths are mapped
-> +   to consistent target compatible paths. This is done through the
-> +   ``DEBUG_PREFIX_MAP`` variable which sets the ``-fmacro-prefix-map`` and
-> +   ``-fdebug-prefix-map`` compiler options correctly to map to target paths.
-> +-  Being explicit about recipe dependencies and their configuration (no floating
-> +   configure options or host dependencies creeping in). In particular this means
-> +   making sure :term:`PACKAGECONFIG` coverage covers configure options which may
-> +   otherwise try and auto-detect host dependencies.
-> +-  Using recipe specific sysroots to isolate recipes so they only see their
-> +   dependencies. These are visible as ``recipe-sysroot`` and
-> +   ``recipe-sysroot-native`` directories within the :term:`WORKDIR` of a given
-> +   recipe and are populated only with the dependencies a recipe has.
-> +-  Build images from a reduced package set: only packages from recipes the image
-> +   depends upon.
-> +-  Filtering the tools available from the host's ``PATH`` to only a specific set
-> +   of tools, set using the :term:`HOSTTOOLS` variable.
-> +
-> +=========================================
-> +Can we prove the project is reproducible?
-> +=========================================
-> +
-> +Yes, we can prove it and we regularly test this on the Autobuilder. At the
-> +time of writing (release 3.3, "hardknott"), :term:`OpenEmbedded-Core (OE-Core)`
-> +is 100% reproducible for all its recipes (i.e. world builds) apart from the Go
-> +language and Ruby documentation packages. Unfortunately, the current
-> +implementation of the Go language has fundamental reproducibility problems as
-> +it always depends upon the paths it is built in.
-> +
-> +.. note::
-> +
-> +   Only BitBake and :term:`OpenEmbedded-Core (OE-Core)`, which is the ``meta``
-> +   layer in Poky, guarantee complete reproducibility. The moment you add
-> +   another layer, this warranty is voided, because of additional configuration
-> +   files, ``bbappend`` files, overridden classes, etc.
-> +
-> +To run our automated selftest, as we use in our CI on the Autobuilder, you can
-> +run::
-> +
-> +   oe-selftest -r reproducible.ReproducibleTests.test_reproducible_builds
-> +
-> +This defaults to including a ``world`` build so, if other layers are added, it would
-> +also run the tests for recipes in the additional layers. The first build will be
-> +run using :ref:`Shared State <overview-manual/concepts:Shared State>` if
-> +available, the second build explicitly disables
-> +:ref:`Shared State <overview-manual/concepts:Shared State>` and builds on the
-> +specific host the build is running on. This means we can test reproducibility
-> +builds between different host distributions over time on the Autobuilder.
-> +
-> +If ``OEQA_DEBUGGING_SAVED_OUTPUT`` is set, any differing packages will be saved
-> +here. The test is also able to run the ``diffoscope`` command on the output to
-> +generate HTML files showing the differences between the packages, to aid
-> +debugging. On the Autobuilder, these appear under
-> +https://autobuilder.yocto.io/pub/repro-fail/ in the form ``oe-reproducible +
-> +<date> + <random ID>``, e.g. ``oe-reproducible-20200202-1lm8o1th``.
-> +
-> +The project's current reproducibility status can be seen at
-> +https://www.yoctoproject.org/reproducible-build-results/
-> +
-> +You can also check the reproducibility status on supported host distributions:
-> +
-> +-  CentOS: https://autobuilder.yoctoproject.org/typhoon/#/builders/reproducible-centos
-> +-  Debian: https://autobuilder.yoctoproject.org/typhoon/#/builders/reproducible-debian
-> +-  Fedora: https://autobuilder.yoctoproject.org/typhoon/#/builders/reproducible-fedora
-> +-  Ubuntu: https://autobuilder.yoctoproject.org/typhoon/#/builders/reproducible-ubuntu
-> +
-> +===============================
-> +Can I test my layer or recipes?
-> +===============================
-> +
-> +Once again, you can run a ``world`` test using the
-> +:ref:`oe-selftest <ref-manual/release-process:Testing and Quality Assurance>`
-> +command provided above. This functionality is implemented
-> +in `meta/lib/oeqa/selftest/cases/reproducible.py
-> +<https://git.openembedded.org/openembedded-core/tree/meta/lib/oeqa/selftest/cases/reproducible.py>`_.
-> +
-> +You could subclass the test and change ``targets`` to a different target.
-> +
-> +You may also change ``sstate_targets`` which would allow you to "pre-cache" some
-> +set of recipes before the test, meaning they are excluded from reproducibility
-> +testing. As a practical example, you could set ``sstate_targets`` to
-> +``core-image-sato``, then setting ``targets`` to ``core-image-sato-sdk`` would
-> +run reproducibility tests only on the targets belonging only to ``core-image-sato-sdk``.
-> -- 
 
-I'm not sure this section has its place in our documentation since it
-seems bound to the current implementation and explains modifications of
-the code.
+Would you have a link to contact the TSC, or at least a description of
+it? I couldn't find any, and that would be weird to suggest to contact
+the TSC without such a link.
 
-I'd vote it out.
+Thanks in advance,
 
-Cheers,
-Quentin
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
