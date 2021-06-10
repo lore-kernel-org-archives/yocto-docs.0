@@ -1,146 +1,505 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.web08.7566.1623316458072267791
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web10.7804.1623317726240204063
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Jun 2021 02:14:18 -0700
+ Thu, 10 Jun 2021 02:35:26 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=TPCyLBz6;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.42, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f42.google.com with SMTP id t4-20020a1c77040000b029019d22d84ebdso6050000wmi.3
-        for <docs@lists.yoctoproject.org>; Thu, 10 Jun 2021 02:14:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=q7f/W8nwSK3h15E3OapTI12esu5blkSqf//EZgXkvr4=;
-        b=TPCyLBz6fD/ca6MLNRK43KOB5QHShdXUCG7EFkweJKqo5I1jaWDJJaN/yXD7IqeB6h
-         LjzykrLSW0jdkLsBnqZj+jcSPN8bmJ41zrt36G4UnGGy/DHaKwx62MF+7lLDumPFBVQf
-         9N/N6Ds+rKOvbXVJ9FBHqX79KdMjfIQ2EABU4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=q7f/W8nwSK3h15E3OapTI12esu5blkSqf//EZgXkvr4=;
-        b=Kmvm+9dzok533oQ/HKfkeNvp5MAurv0GmeqhaG5FLEb8pXZhIf+LHTbVpmAJXVIJUd
-         OOeC4M0vUjpP4OZxxXPC0Be83vkBV5aMZW6rwcJwzdZDzz8Si/1TxF4PVXypOpDdYMKV
-         ELhwYY3xUHgdxq8bGbW6Rk5DMQkyEWmJRYdBKg3wHbnczeGqCiMtRFgfI8eQ/0e78AAI
-         ikoX44dq0lw1gNJQJhqr/K+DBWE00nMSNM9DMcpOuEZNMTTEAX+31HD6Pm6EKBOYSNZb
-         zYVx1KJWiYbTwg0ehHt0q2EvZlVdUCNgwooGaDB66nPbzON3TK5CWMPW6v3S6YqQuh0c
-         ppYw==
-X-Gm-Message-State: AOAM533l+/tTO7zG03tIQbxYwKWqN62xo1Rra0g56bqTDlzxxE8xSlWU
-	yPZTvAn+SqxIi5CAVNMII7pMMQ==
-X-Google-Smtp-Source: ABdhPJz1wzB/Zqb6ai1EP7teEXH8i7UPD1EPj80ULk6OKTTHx4DKb2dclzCSerym7sZZD9IUktbKsw==
-X-Received: by 2002:a1c:a516:: with SMTP id o22mr14264409wme.136.1623316456024;
-        Thu, 10 Jun 2021 02:14:16 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:e846:1707:1d31:eae9? ([2001:8b0:aba:5f3c:e846:1707:1d31:eae9])
-        by smtp.gmail.com with ESMTPSA id i15sm2672188wmq.23.2021.06.10.02.14.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Jun 2021 02:14:15 -0700 (PDT)
-Message-ID: <25943cb95fd97a83144e00e7a30917d609b184b2.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH v3] test-manual: add initial reproducible builds documentation
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
-	docs@lists.yoctoproject.org, Quentin Schulz <foss@0leil.net>
-Date: Thu, 10 Jun 2021 10:14:11 +0100
-In-Reply-To: <20210610085412.nepf2mxa2mco5z6a@qschulz>
-References: <1686F0ED5A1183FF.18579@lists.yoctoproject.org>
-	 <20210609144728.103458-1-michael.opdenacker@bootlin.com>
-	 <20210609155552.nwjdirom4lkqi4n7@qschulz>
-	 <6400f2c43fd9d292616cbc5d2f6cd99f98ebc2a3.camel@linuxfoundation.org>
-	 <20210610085412.nepf2mxa2mco5z6a@qschulz>
-User-Agent: Evolution 3.40.0-1 
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 5CE32100008;
+	Thu, 10 Jun 2021 09:35:23 +0000 (UTC)
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: move release notes to separate document
+Date: Thu, 10 Jun 2021 11:35:21 +0200
+Message-Id: <20210610093521.130973-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <1675A932C413C877.8243@lists.yoctoproject.org>
+References: <1675A932C413C877.8243@lists.yoctoproject.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-On Thu, 2021-06-10 at 10:54 +0200, Quentin Schulz wrote:
-> Hi Richard,
-> 
-> On Wed, Jun 09, 2021 at 05:30:56PM +0100, Richard Purdie wrote:
-> > On Wed, 2021-06-09 at 17:55 +0200, Quentin Schulz wrote:
-> > > On Wed, Jun 09, 2021 at 04:47:28PM +0200, Michael Opdenacker wrote:
-> > > 
-> > > > +
-> > > > +You could subclass the test and change ``targets`` to a different target.
-> > > > +
-> > > > +You may also change ``sstate_targets`` which would allow you to "pre-cache" some
-> > > > +set of recipes before the test, meaning they are excluded from reproducibility
-> > > > +testing. As a practical example, you could set ``sstate_targets`` to
-> > > > +``core-image-sato``, then setting ``targets`` to ``core-image-sato-sdk`` would
-> > > > +run reproducibility tests only on the targets belonging only to ``core-image-sato-sdk``.
-> > > > -- 
-> > > 
-> > > I'm not sure this section has its place in our documentation since it
-> > > seems bound to the current implementation and explains modifications of
-> > > the code.
-> > > 
-> > > I'd vote it out.
-> > 
-> > Doesn't most of the manual document the current implementation?
-> > 
-> > When this wasn't here, you wanted an example! I do agree we should give people 
-> > some kind of a hint about how to write their own tests. We're likely going to end 
-> > up adding more example, not less?
-> > 
-> 
-> Because I understood the original section as "it's very simple to do
-> this, look into this file", so I assumed some arguments could be passed
-> to make it easy to re-use. I wasn't expecting changes in a Python
-> script.
+This makes the reference manual much lighter by moving
+the release notes to a separate document.
 
-I think the confusion here is the definition of simple :).
+The release notes are also reordered from last to first,
+and they appear directly in the left bar, making them easier
+to find in the documentation.
 
-At least in theory, you can create your own test case in your own layer
-and in that test, inherit and subclass the original test (standard python). 
-In that subclassed test, you could change those two variables and you 
-should then have your own test case.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/index.rst                       |  1 +
+ documentation/ref-manual/index.rst            |  1 -
+ documentation/ref-manual/release-process.rst  |  6 ++-
+ .../migration.rst => release-notes/index.rst} | 48 ++++++++++---------
+ .../migration-1.3.rst                         |  4 +-
+ .../migration-1.4.rst                         |  6 +--
+ .../migration-1.5.rst                         |  4 +-
+ .../migration-1.6.rst                         |  4 +-
+ .../migration-1.7.rst                         |  4 +-
+ .../migration-1.8.rst                         |  4 +-
+ .../migration-2.0.rst                         |  4 +-
+ .../migration-2.1.rst                         |  6 +--
+ .../migration-2.2.rst                         |  8 ++--
+ .../migration-2.3.rst                         |  4 +-
+ .../migration-2.4.rst                         |  4 +-
+ .../migration-2.5.rst                         |  4 +-
+ .../migration-2.6.rst                         |  6 +--
+ .../migration-2.7.rst                         |  4 +-
+ .../migration-3.0.rst                         |  4 +-
+ .../migration-3.1.rst                         |  4 +-
+ .../migration-3.2.rst                         |  4 +-
+ .../migration-3.3.rst                         |  4 +-
+ .../migration-general.rst                     |  0
+ 23 files changed, 71 insertions(+), 67 deletions(-)
+ rename documentation/{ref-manual/migration.rst => release-notes/index.rst} (56%)
+ rename documentation/{ref-manual => release-notes}/migration-1.3.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-1.4.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-1.5.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-1.6.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-1.7.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-1.8.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-2.0.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-2.1.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-2.2.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-2.3.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-2.4.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-2.5.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-2.6.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-2.7.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-3.0.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-3.1.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-3.2.rst (99%)
+ rename documentation/{ref-manual => release-notes}/migration-3.3.rst (98%)
+ rename documentation/{ref-manual => release-notes}/migration-general.rst (100%)
 
-Would that work? Should do, at least mostly but I will admit I've not tried it.
-Adding a new test in your layer and also subclassing an existing test is 
-something we should document somewhere in the test manual ultimately. That
-is partly why I continued to expand on what I meant here.
-
-> As opposed to classes, variables and/or tasks, which to me seems to be
-> kind of an ABI, so it is maintained and watched for changes and if
-> there's any, usually listed in the migration manual, I would assume the
-> content of Python scripts aren't expected to stay "stable" or their
-> change be documented otherwise?
-> 
-> Here the suggested example is about modifying variables that are used only
-> in a given Python class, which could change over time, including the name
-> of the variables to be changed.
-
-I agree it is a bit risky to have these in the manual, equally, the manual
-does have worked examples and I believe there is a good case for having them
-here as this is something we want to teach people how to do.
-
-FWIW that test was designed to be sub-classed so there is at least some
-intent to allow people to do this. As such we'd probably try to maintain 
-some kind of compatibility if we can.
-
-> This also kind of encourages people to modify code in layers they don't
-> have push access to, which is something that we usually don't want
-> people to do IIRC?
-
-The key missing detail is you can put test code in your own layer. I
-can even point at an example:
-
-http://git.yoctoproject.org/cgit.cgi/poky/tree/meta-yocto-bsp/lib/oeqa/selftest/cases/systemd_boot.py
-
-(which is also how we test this stays working)
-
-> I'm not sure I managed to convey my thoughts better. I just expected a
-> simple command to be able to test my recipes, or via a configuration
-> script.
-> 
-> Anyway, no big deal, I'm happy to see the reproducible test procedure is
-> being documented :)
-
-Thanks for the review, it is helpful to have have a fresher perspective on
-this!
-
-Cheers,
-
-Richard
+diff --git a/documentation/index.rst b/documentation/index.rst
+index ee9fe055ad..d16099c011 100644
+--- a/documentation/index.rst
++++ b/documentation/index.rst
+@@ -41,6 +41,7 @@ Welcome to the Yocto Project Documentation
+    :caption: Releases manual
+    :hidden:
+ 
++   Release Notes <release-notes/index>
+    releases
+ 
+ .. toctree::
+diff --git a/documentation/ref-manual/index.rst b/documentation/ref-manual/index.rst
+index deb0383cfc..5cf10c5c2f 100644
+--- a/documentation/ref-manual/index.rst
++++ b/documentation/ref-manual/index.rst
+@@ -13,7 +13,6 @@ Yocto Project Reference Manual
+    system-requirements
+    terms
+    release-process
+-   migration
+    structure
+    classes
+    tasks
+diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+index 935a2e39bb..1888049b24 100644
+--- a/documentation/ref-manual/release-process.rst
++++ b/documentation/ref-manual/release-process.rst
+@@ -62,8 +62,10 @@ codename are likely to be compatible and thus work together.
+ 
+ Releases are given a nominal release version as well but the codename is
+ used in repositories for this reason. You can find information on Yocto
+-Project releases and codenames at
+-:yocto_wiki:`/Releases`.
++Project releases and codenames at :yocto_wiki:`/Releases`.
++
++Our :doc:`/release-notes/index` detail how to migrate from one release of
++the Yocto Project to the next.
+ 
+ Stable Release Process
+ ======================
+diff --git a/documentation/ref-manual/migration.rst b/documentation/release-notes/index.rst
+similarity index 56%
+rename from documentation/ref-manual/migration.rst
+rename to documentation/release-notes/index.rst
+index a01d4ee143..8c5154184c 100644
+--- a/documentation/ref-manual/migration.rst
++++ b/documentation/release-notes/index.rst
+@@ -1,32 +1,34 @@
+ .. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+ 
+-******************************************
+-Migrating to a Newer Yocto Project Release
+-******************************************
++===============
++ Release Notes
++===============
+ 
+-This chapter provides information you can use to migrate work to a newer
+-Yocto Project release. You can find the same information in the release
+-notes for a given release.
++|
++
++This chapter provides release notes and information about how to move to
++a more recent release of the Yocto Project.
+ 
+ .. toctree::
+ 
+    migration-general
+-   migration-1.3
+-   migration-1.4
+-   migration-1.5
+-   migration-1.6
+-   migration-1.7
+-   migration-1.8
+-   migration-2.0
+-   migration-2.1
+-   migration-2.2
+-   migration-2.3
+-   migration-2.4
+-   migration-2.5
+-   migration-2.6
+-   migration-2.7
+-   migration-3.0
+-   migration-3.1
+-   migration-3.2
+    migration-3.3
++   migration-3.2
++   migration-3.1
++   migration-3.0
++   migration-2.7
++   migration-2.6
++   migration-2.5
++   migration-2.4
++   migration-2.3
++   migration-2.2
++   migration-2.1
++   migration-2.0
++   migration-1.8
++   migration-1.7
++   migration-1.6
++   migration-1.5
++   migration-1.4
++   migration-1.3
+ 
++.. include:: /boilerplate.rst
+diff --git a/documentation/ref-manual/migration-1.3.rst b/documentation/release-notes/migration-1.3.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-1.3.rst
+rename to documentation/release-notes/migration-1.3.rst
+index b90767ff90..db5333ccd7 100644
+--- a/documentation/ref-manual/migration-1.3.rst
++++ b/documentation/release-notes/migration-1.3.rst
+@@ -1,7 +1,7 @@
+ .. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+ 
+-Moving to the Yocto Project 1.3 Release (danny)
+-===============================================
++Release 1.3 (danny)
++===================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 1.3 Release (codename "danny") from the prior release.
+diff --git a/documentation/ref-manual/migration-1.4.rst b/documentation/release-notes/migration-1.4.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-1.4.rst
+rename to documentation/release-notes/migration-1.4.rst
+index deb848749c..c5e2791b75 100644
+--- a/documentation/ref-manual/migration-1.4.rst
++++ b/documentation/release-notes/migration-1.4.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 1.4 Release (dylan)
+-===============================================
++Release 1.4 (dylan)
++===================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 1.4 Release (codename "dylan") from the prior release.
+@@ -60,7 +60,7 @@ Differences include the following:
+    the :term:`MACHINEOVERRIDES` or
+    :term:`DISTROOVERRIDES` variables, as
+    appropriate. For more related changes, see the
+-   ":ref:`ref-manual/migration-1.4:variables`" section.
++   ":ref:`release-notes/migration-1.4:variables`" section.
+ 
+ .. _migration-1.4-proxies-and-fetching-source:
+ 
+diff --git a/documentation/ref-manual/migration-1.5.rst b/documentation/release-notes/migration-1.5.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-1.5.rst
+rename to documentation/release-notes/migration-1.5.rst
+index c772e51b54..f6bd118c9d 100644
+--- a/documentation/ref-manual/migration-1.5.rst
++++ b/documentation/release-notes/migration-1.5.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 1.5 Release (dora)
+-==============================================
++Release 1.5 (dora)
++==================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 1.5 Release (codename "dora") from the prior release.
+diff --git a/documentation/ref-manual/migration-1.6.rst b/documentation/release-notes/migration-1.6.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-1.6.rst
+rename to documentation/release-notes/migration-1.6.rst
+index 5a18d63103..1408e12c23 100644
+--- a/documentation/ref-manual/migration-1.6.rst
++++ b/documentation/release-notes/migration-1.6.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 1.6 Release (daisy)
+-===============================================
++Release 1.6 (daisy)
++===================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 1.6 Release (codename "daisy") from the prior release.
+diff --git a/documentation/ref-manual/migration-1.7.rst b/documentation/release-notes/migration-1.7.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-1.7.rst
+rename to documentation/release-notes/migration-1.7.rst
+index 46bf126583..999f11a12b 100644
+--- a/documentation/ref-manual/migration-1.7.rst
++++ b/documentation/release-notes/migration-1.7.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 1.7 Release (dizzy)
+-===============================================
++Release 1.7 (dizzy)
++===================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 1.7 Release (codename "dizzy") from the prior release.
+diff --git a/documentation/ref-manual/migration-1.8.rst b/documentation/release-notes/migration-1.8.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-1.8.rst
+rename to documentation/release-notes/migration-1.8.rst
+index 68d5dcf859..971bd33f40 100644
+--- a/documentation/ref-manual/migration-1.8.rst
++++ b/documentation/release-notes/migration-1.8.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 1.8 Release (fido)
+-==============================================
++Release 1.8 (fido)
++==================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 1.8 Release (codename "fido") from the prior release.
+diff --git a/documentation/ref-manual/migration-2.0.rst b/documentation/release-notes/migration-2.0.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-2.0.rst
+rename to documentation/release-notes/migration-2.0.rst
+index 8319b0ee36..22d0752226 100644
+--- a/documentation/ref-manual/migration-2.0.rst
++++ b/documentation/release-notes/migration-2.0.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.0 Release (jethro)
+-================================================
++Release 2.0 (jethro)
++====================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.0 Release (codename "jethro") from the prior release.
+diff --git a/documentation/ref-manual/migration-2.1.rst b/documentation/release-notes/migration-2.1.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-2.1.rst
+rename to documentation/release-notes/migration-2.1.rst
+index 32d193f0ff..24342f1192 100644
+--- a/documentation/ref-manual/migration-2.1.rst
++++ b/documentation/release-notes/migration-2.1.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.1 Release (krogoth)
+-=================================================
++Release 2.1 (krogoth)
++=====================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.1 Release (codename "krogoth") from the prior release.
+@@ -179,7 +179,7 @@ The following recipes have been removed in the 2.1 release:
+ -  ``python-pygtk``: Recipe became obsolete.
+ 
+ -  ``adt-installer``: Recipe became obsolete. See the
+-   ":ref:`ref-manual/migration-2.1:adt removed`" section for more information.
++   ":ref:`release-notes/migration-2.1:adt removed`" section for more information.
+ 
+ .. _migration-2.1-class-changes:
+ 
+diff --git a/documentation/ref-manual/migration-2.2.rst b/documentation/release-notes/migration-2.2.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-2.2.rst
+rename to documentation/release-notes/migration-2.2.rst
+index a60ce8d52b..455a78cb3c 100644
+--- a/documentation/ref-manual/migration-2.2.rst
++++ b/documentation/release-notes/migration-2.2.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.2 Release (morty)
+-===============================================
++Release 2.2 (morty)
++===================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.2 Release (codename "morty") from the prior release.
+@@ -364,7 +364,7 @@ The following recipes have been removed:
+ -  ``sato-icon-theme``: Became obsolete.
+ 
+ -  ``swabber-native``: Swabber has been removed. See the :ref:`entry on
+-   Swabber <ref-manual/migration-2.2:swabber has been removed>`.
++   Swabber <release-notes/migration-2.2:swabber has been removed>`.
+ 
+ -  ``tslib``: No longer needed and has been moved to ``meta-oe``.
+ 
+@@ -390,7 +390,7 @@ The following classes have been removed:
+ -  ``sip``: Mostly unused.
+ 
+ -  ``swabber``: See the :ref:`entry on
+-   Swabber <ref-manual/migration-2.2:swabber has been removed>`.
++   Swabber <release-notes/migration-2.2:swabber has been removed>`.
+ 
+ .. _migration-2.2-minor-packaging-changes:
+ 
+diff --git a/documentation/ref-manual/migration-2.3.rst b/documentation/release-notes/migration-2.3.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-2.3.rst
+rename to documentation/release-notes/migration-2.3.rst
+index dfbda612ae..6cdc209e35 100644
+--- a/documentation/ref-manual/migration-2.3.rst
++++ b/documentation/release-notes/migration-2.3.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.3 Release (pyro)
+-==============================================
++Release 2.3 (pyro)
++==================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.3 Release (codename "pyro") from the prior release.
+diff --git a/documentation/ref-manual/migration-2.4.rst b/documentation/release-notes/migration-2.4.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-2.4.rst
+rename to documentation/release-notes/migration-2.4.rst
+index 2ba17e0ed5..44f31dc8a9 100644
+--- a/documentation/ref-manual/migration-2.4.rst
++++ b/documentation/release-notes/migration-2.4.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.4 Release (rocko)
+-===============================================
++Release 2.4 (rocko)
++===================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.4 Release (codename "rocko") from the prior release.
+diff --git a/documentation/ref-manual/migration-2.5.rst b/documentation/release-notes/migration-2.5.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-2.5.rst
+rename to documentation/release-notes/migration-2.5.rst
+index 86a0da9c40..c7e0760463 100644
+--- a/documentation/ref-manual/migration-2.5.rst
++++ b/documentation/release-notes/migration-2.5.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.5 Release (sumo)
+-==============================================
++Release 2.5 (sumo)
++==================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.5 Release (codename "sumo") from the prior release.
+diff --git a/documentation/ref-manual/migration-2.6.rst b/documentation/release-notes/migration-2.6.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-2.6.rst
+rename to documentation/release-notes/migration-2.6.rst
+index d1c6c0c5f5..b29748fcdd 100644
+--- a/documentation/ref-manual/migration-2.6.rst
++++ b/documentation/release-notes/migration-2.6.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.6 Release (thud)
+-==============================================
++Release 2.6 (thud)
++==================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.6 Release (codename "thud") from the prior release.
+@@ -110,7 +110,7 @@ upon the older ``*proto`` recipes need to be changed to depend on the
+ newer ``xorgproto`` recipe instead.
+ 
+ For names of recipes removed because of this repository change, see the
+-:ref:`ref-manual/migration-2.6:removed recipes` section.
++:ref:`release-notes/migration-2.6:removed recipes` section.
+ 
+ .. _migration-2.6-distutils-distutils3-fetching-dependencies:
+ 
+diff --git a/documentation/ref-manual/migration-2.7.rst b/documentation/release-notes/migration-2.7.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-2.7.rst
+rename to documentation/release-notes/migration-2.7.rst
+index 1be4d5d5b9..66cb84584f 100644
+--- a/documentation/ref-manual/migration-2.7.rst
++++ b/documentation/release-notes/migration-2.7.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 2.7 Release (warrior)
+-=================================================
++Release 2.7 (warrior)
++=====================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 2.7 Release (codename "warrior") from the prior release.
+diff --git a/documentation/ref-manual/migration-3.0.rst b/documentation/release-notes/migration-3.0.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-3.0.rst
+rename to documentation/release-notes/migration-3.0.rst
+index a3da850150..163c6201c5 100644
+--- a/documentation/ref-manual/migration-3.0.rst
++++ b/documentation/release-notes/migration-3.0.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 3.0 Release (zeus)
+-==============================================
++Release 3.0 (zeus)
++==================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 3.0 Release (codename "zeus") from the prior release.
+diff --git a/documentation/ref-manual/migration-3.1.rst b/documentation/release-notes/migration-3.1.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-3.1.rst
+rename to documentation/release-notes/migration-3.1.rst
+index 7822285a87..d6a30dc274 100644
+--- a/documentation/ref-manual/migration-3.1.rst
++++ b/documentation/release-notes/migration-3.1.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 3.1 Release (dunfell)
+-=================================================
++Release 3.1 (dunfell)
++=====================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 3.1 Release (codename "dunfell") from the prior release.
+diff --git a/documentation/ref-manual/migration-3.2.rst b/documentation/release-notes/migration-3.2.rst
+similarity index 99%
+rename from documentation/ref-manual/migration-3.2.rst
+rename to documentation/release-notes/migration-3.2.rst
+index 956a56f626..dd316a70ff 100644
+--- a/documentation/ref-manual/migration-3.2.rst
++++ b/documentation/release-notes/migration-3.2.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 3.2 Release (gatesgarth)
+-====================================================
++Release 3.2 (gatesgarth)
++========================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 3.2 Release (codename "gatesgarth") from the prior release.
+diff --git a/documentation/ref-manual/migration-3.3.rst b/documentation/release-notes/migration-3.3.rst
+similarity index 98%
+rename from documentation/ref-manual/migration-3.3.rst
+rename to documentation/release-notes/migration-3.3.rst
+index 4fb51a39dc..28857e820b 100644
+--- a/documentation/ref-manual/migration-3.3.rst
++++ b/documentation/release-notes/migration-3.3.rst
+@@ -1,5 +1,5 @@
+-Moving to the Yocto Project 3.3 Release (hardknott)
+-===================================================
++Release 3.3 (hardknott)
++=======================
+ 
+ This section provides migration information for moving to the Yocto
+ Project 3.3 Release (codename "hardknott") from the prior release.
+diff --git a/documentation/ref-manual/migration-general.rst b/documentation/release-notes/migration-general.rst
+similarity index 100%
+rename from documentation/ref-manual/migration-general.rst
+rename to documentation/release-notes/migration-general.rst
+-- 
+2.25.1
 
