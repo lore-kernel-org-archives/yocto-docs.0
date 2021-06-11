@@ -1,61 +1,74 @@
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web09.10989.1623429459591768216
+Received: from bsmtp3.bon.at (bsmtp3.bon.at [213.33.87.17])
+ by mx.groups.io with SMTP id smtpd.web12.578.1623432045267682197
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Jun 2021 09:37:39 -0700
+ Fri, 11 Jun 2021 10:20:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 11FDC100002;
-	Fri, 11 Jun 2021 16:37:36 +0000 (UTC)
-Cc: "Tummalapalli, Vineela" <vineela.tummalapalli@intel.com>,
- YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: move release notes to separate document
-To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
- Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <1675A932C413C877.8243@lists.yoctoproject.org>
- <16872EDF3FBC0621.15202@lists.yoctoproject.org>
- <9c29810b-b20f-f752-d914-0f27f779ba2d@bootlin.com>
- <CAP71Wjyy=KM+EFt69rMg5vGJwS6xiG8tsFHfZ_eTZLhjg5vhWA@mail.gmail.com>
- <168736F45421387B.20336@lists.yoctoproject.org>
- <63f24dc7-4fbf-6543-6e1d-8eadfe3cd338@bootlin.com>
- <59c947fa6fc26b984a54b9b781367e41360a713b.camel@linuxfoundation.org>
- <CAP71WjyrOwdZOKrEO=g52hLjeCP_QKHarGzrAWSuwXYCymDX2A@mail.gmail.com>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <2b7deb01-bf74-64a1-c068-620660d80034@bootlin.com>
-Date: Fri, 11 Jun 2021 18:37:36 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.17, mailfrom: quentin.schulz@streamunlimited.com)
+Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
+	by bsmtp3.bon.at (Postfix) with ESMTPSA id 4G1nfx2p1Cz5tlF;
+	Fri, 11 Jun 2021 19:20:41 +0200 (CEST)
+Date: Fri, 11 Jun 2021 19:20:40 +0200
+From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
+To: Daniel Wagenknecht <dwagenknecht@emlix.com>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 1/2] ref-manual: variables: update examples refering to DEPLOY_DIR_IMAGE
+Message-ID: <20210611172040.j7p3l6mln2mnfqss@qschulz>
+References: <20210611062613.188300-1-dwagenknecht@emlix.com>
+ <20210611062613.188300-2-dwagenknecht@emlix.com>
 MIME-Version: 1.0
-In-Reply-To: <CAP71WjyrOwdZOKrEO=g52hLjeCP_QKHarGzrAWSuwXYCymDX2A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+In-Reply-To: <20210611062613.188300-2-dwagenknecht@emlix.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Nicolas, Richard,
+Hi Daniel,
 
-On 6/11/21 11:52 AM, Nicolas Dechesne wrote:
->
-> Side question.. should we move the release notes into the docs
-> website? now that it's based on Sphinx, it looks like it would be well
-> suited..
+On Fri, Jun 11, 2021 at 08:26:12AM +0200, Daniel Wagenknecht wrote:
+> DEPLOY_DIR_IMAGE has been replaced by IMGDEPLOYDIR for most use cases
+> since OE-Core rev 6d969bacc718e21a5246d4da9bf9639dcae29b02. Update
+> examples given in the documentation to use IMGDEPLOYDIR and match their
+> implementation.
+> 
+> Signed-off-by: Daniel Wagenknecht <dwagenknecht@emlix.com>
+> ---
+>  documentation/ref-manual/variables.rst | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 8ebc17f24..2e859c718 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -2946,7 +2946,7 @@ system and gives an overview of their function and contents.
+>        an override for the associated type. Here is an example::
+>  
+>           IMAGE_CMD_jffs2 = "mkfs.jffs2 --root=${IMAGE_ROOTFS} \
+> -             --faketime --output=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.jffs2 \
+> +             --faketime --output=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.jffs2 \
+>               ${EXTRA_IMAGECMD}"
+>  
 
+It'd be awesome if you could do a follow-up patch here since this isn't the actual
+content of this variable anymore.
+C.f.: https://cgit.openembedded.org/openembedded-core/tree/meta/classes/image_types.bbclass#n59
 
-Interesting idea, to get a much better looking output. This way we could
-have hyperlinks, typically to each commit.
+>        You typically do not need to set this variable unless you are adding
+> @@ -3095,10 +3095,10 @@ system and gives an overview of their function and contents.
+>        The :ref:`image <ref-classes-image>` class defines the manifest
 
-Anyway, that's a generated file, right? What would be the workflow?
-Generate the release-notes-<version>.rst file and manually add it to the
-yocto-docs directory, even though that's a generated file? What's the
-script generating the current release notes, so that I can prepare a
-version generating .rst instead?
+IMAGE_MANIFEST isn't in this class anymore, it'd be great again if you
+could send a follow-up patch for this.
+c.f. http://cgit.openembedded.org/openembedded-core/tree/meta/classes/rootfs-postcommands.bbclass#n31
+
+Thanks for the patch!
+
+Reviewed-by: Quentin Schulz <foss@0leil.net>
+
+[...]
+>        The location is
+> -      derived using the :term:`DEPLOY_DIR_IMAGE`
+> +      derived using the :term:`IMGDEPLOYDIR`
+
+On a side note: you should have added the term in the glossary (from patch 2)
+first, because technically this commit does not build.
 
 Cheers,
-
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Quentin
