@@ -1,64 +1,63 @@
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web09.5450.1623397695996454010
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web10.5943.1623402809806160571
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Jun 2021 00:48:16 -0700
+ Fri, 11 Jun 2021 02:13:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 09A83240015;
-	Fri, 11 Jun 2021 07:48:13 +0000 (UTC)
+	by relay11.mail.gandi.net (Postfix) with ESMTPSA id C8E03100013;
+	Fri, 11 Jun 2021 09:13:27 +0000 (UTC)
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: move release notes to separate document
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Subject: Re: [docs] [PATCH 2/2] ref-manual: variables: document IMGDEPLOYDIR
 To: Nicolas Dechesne <nicolas.dechesne@linaro.org>,
- "Tummalapalli, Vineela" <vineela.tummalapalli@intel.com>
-References: <1675A932C413C877.8243@lists.yoctoproject.org>
- <16872EDF3FBC0621.15202@lists.yoctoproject.org>
- <9c29810b-b20f-f752-d914-0f27f779ba2d@bootlin.com>
- <CAP71Wjyy=KM+EFt69rMg5vGJwS6xiG8tsFHfZ_eTZLhjg5vhWA@mail.gmail.com>
- <168736F45421387B.20336@lists.yoctoproject.org>
+ Daniel Wagenknecht <dwagenknecht@emlix.com>
+References: <20210611062613.188300-1-dwagenknecht@emlix.com>
+ <20210611062613.188300-3-dwagenknecht@emlix.com>
+ <CAP71WjxGyxR=2tTK8LyVrmPsOX4rd9_NsOTMbEYfr+kTH4UoLw@mail.gmail.com>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <63f24dc7-4fbf-6543-6e1d-8eadfe3cd338@bootlin.com>
-Date: Fri, 11 Jun 2021 09:48:13 +0200
+Message-ID: <de72c018-6ba1-b210-8599-2bd1a142c054@bootlin.com>
+Date: Fri, 11 Jun 2021 11:13:27 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <168736F45421387B.20336@lists.yoctoproject.org>
+In-Reply-To: <CAP71WjxGyxR=2tTK8LyVrmPsOX4rd9_NsOTMbEYfr+kTH4UoLw@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
-Hello,
+Daniel, Nicolas,
 
-On 6/10/21 2:03 PM, Michael Opdenacker wrote:
-> Hi Nicolas,
+Thank you for the patch and review.
+
+On 6/11/21 8:46 AM, Nicolas Dechesne wrote:
 >
-> On 6/10/21 12:04 PM, Nicolas Dechesne wrote:
->> Can you please push to master-next , so that everyone can see what it
->> looks like without having to rebuild
->> (e.g. http://docs.yoctoproject.org/next/
->> <http://docs.yoctoproject.org/next/> will be updated after you push)? 
->>
->> e.g. i am cc'ding Vineela (release manager) , so that she gets a
->> chance to review.
 >
-> Done. I couldn't find this URL any more, so I wasn't sure that the
-> functionality existed.
+>     +      It is usually not used directly in recipes, but filled with
+>     the contents
+>     +      of :term:`DEPLOYDIR` by the :ref:`deploy
+>     <ref-classes-deploy>` class or
+>     +      with the contents of :term:`IMGDEPLOYDIR` by the :ref:`image
+>     +      <ref-classes-image>` class.
 >
-> Thanks in advance for the reviews,
+>
+> The message should be even stronger. It *must* not be used in recipes
+> when deploying files. It can be used only when a recipe need to 'read'
+> a file already deployed by a dependency of course.
 
 
-With these changes visible on http://docs.yoctoproject.org/next/, the
-location of the release notes is changing. How much would this break
-other resources, such as links on our website? I remember Paul's warning
-5 days before Hardknott was released, but I hope we are now far enough
-from the next release.
+I can try to take care of this to save you time, Daniel... Here's what
+I've included in my local branch meant to merge your changes into
+"master-next" of yocto-docs.
 
-Another question is whether "Release notes" is the right title for these
-migration guides, at least in the left menu. Shouldn't we just call them
-"Release migration guides" as they truly are, knowing that the true
-release notes are on
-https://www.yoctoproject.org/software-overview/downloads/?
+      It must not be used directly in recipes when deploying files. Instead,
+      it's only useful when a recipe needs to "read" a file already deployed
+      by a dependency. So, it should be filled with the contents of
+      :term:`DEPLOYDIR` by the :ref:`deploy <ref-classes-deploy>` class or
+      with the contents of :term:`IMGDEPLOYDIR` by the :ref:`image
+      <ref-classes-image>` class.
+
+I'll be happy to rephrase if you have anything better.
 
 Cheers,
 
