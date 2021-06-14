@@ -1,22 +1,22 @@
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web08.29951.1623678756652906190
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.30331.1623680031632378044
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Jun 2021 06:52:37 -0700
+ Mon, 14 Jun 2021 07:13:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 0E230100006;
-	Mon, 14 Jun 2021 13:52:33 +0000 (UTC)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 054A01BF208;
+	Mon, 14 Jun 2021 14:13:48 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Quentin Schulz <foss@0leil.net>
-Subject: [PATCH] manuals: clarify supported and outdated releases
-Date: Mon, 14 Jun 2021 15:52:29 +0200
-Message-Id: <20210614135229.180986-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH 1/2] releases: clarify supported and outdated releases
+Date: Mon, 14 Jun 2021 16:13:41 +0200
+Message-Id: <20210614141342.181491-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <16887684E2AB1F25.10009@lists.yoctoproject.org>
-References: <16887684E2AB1F25.10009@lists.yoctoproject.org>
+In-Reply-To: <1688773A2888DDDA.28580@lists.yoctoproject.org>
+References: <1688773A2888DDDA.28580@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
