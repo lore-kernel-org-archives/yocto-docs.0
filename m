@@ -1,56 +1,63 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.1143.1623434693376168491
+Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
+ by mx.groups.io with SMTP id smtpd.web09.26279.1623648617278441140
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Jun 2021 11:04:53 -0700
+ Sun, 13 Jun 2021 22:30:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 35AC220004;
-	Fri, 11 Jun 2021 18:04:50 +0000 (UTC)
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Nicolas Dechesne <nicolas.dechesne@linaro.org>,
- "Tummalapalli, Vineela" <vineela.tummalapalli@intel.com>,
- YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: move release notes to separate document
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-References: <1675A932C413C877.8243@lists.yoctoproject.org>
- <16872EDF3FBC0621.15202@lists.yoctoproject.org>
- <9c29810b-b20f-f752-d914-0f27f779ba2d@bootlin.com>
- <CAP71Wjyy=KM+EFt69rMg5vGJwS6xiG8tsFHfZ_eTZLhjg5vhWA@mail.gmail.com>
- <168736F45421387B.20336@lists.yoctoproject.org>
- <63f24dc7-4fbf-6543-6e1d-8eadfe3cd338@bootlin.com>
- <59c947fa6fc26b984a54b9b781367e41360a713b.camel@linuxfoundation.org>
- <3cd15f0a-5a79-13e0-d44a-e7d8872cc285@bootlin.com>
- <20210611172430.3ozoucxrbzkdtikd@qschulz>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <33cf1ae5-5fa9-eabf-c2fa-13d3fe2d7284@bootlin.com>
-Date: Fri, 11 Jun 2021 20:04:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ dkim=missing; spf=pass (domain: emlix.com, ip: 136.243.223.33, mailfrom: dwagenknecht@emlix.com)
+Received: from mailer.emlix.com (unknown [81.20.119.6])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.emlix.com (Postfix) with ESMTPS id A24DE5F9C1;
+	Mon, 14 Jun 2021 07:30:14 +0200 (CEST)
+From: "Daniel Wagenknecht" <dwagenknecht@emlix.com>
+To: docs@lists.yoctoproject.org
+Cc: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
+Subject: [PATCH 0/2] Fixups for glossary
+Date: Mon, 14 Jun 2021 07:30:11 +0200
+Message-Id: <20210614053013.68669-1-dwagenknecht@emlix.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: 20210611172040.j7p3l6mln2mnfqss@qschulz
+References: 
 MIME-Version: 1.0
-In-Reply-To: <20210611172430.3ozoucxrbzkdtikd@qschulz>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: quoted-printable
 
-HI Quentin,
+Did some fixups as suggested by Quentin.
 
-On 6/11/21 7:24 PM, Quentin Schulz wrote:
-> I can't. I only have a fileserver webpage on which I can click on ../
-> which redirects me to http://docs.yoctoproject.org/
+On Fri, 2021-06-11 at 19:20 +0200, Quentin Schulz wrote:
+> >           IMAGE_CMD_jffs2 =3D "mkfs.jffs2 --root=3D${IMAGE_ROOTFS} \
+> > -             --faketime --output=3D${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}=
+.rootfs.jffs2 \
+> > +             --faketime --output=3D${IMGDEPLOYDIR}/${IMAGE_NAME}.roo=
+tfs.jffs2 \
+> >               ${EXTRA_IMAGECMD}"
+>=20
+> It'd be awesome if you could do a follow-up patch here since this isn't=
+ the actual
+> content of this variable anymore.
+done
 
-Oops, maybe because my "master-next" branch was broken until 15 minutes
-ago. This is fixed now but the autobuilder may need time to update the
-contents.
+> IMAGE_MANIFEST isn't in this class anymore, it'd be great again if you
+> could send a follow-up patch for this.
+done
 
-Thanks for the notification.
+> On a side note: you should have added the term in the glossary (from pa=
+tch 2)
+> first, because technically this commit does not build.
+will keep in mind next time.
 
-Cheers,
-Michael.
+Thanks for taking a thorough look at the changes and what was still
+missing. Great work you are all doing with the documentation!
 
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Best Wishes
+  Daniel
+
+Daniel Wagenknecht (2):
+  ref-manual: variables: fixup example in IMAGE_CMD
+  ref-manual: variables: fixup class reference in IMAGE_MANIFEST
+
+ documentation/ref-manual/variables.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+--=20
+2.25.1
 
