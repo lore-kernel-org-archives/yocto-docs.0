@@ -1,177 +1,74 @@
-Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
- by mx.groups.io with SMTP id smtpd.web09.29748.1623676684856244250
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web09.30012.1623677977859215602
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Jun 2021 06:18:05 -0700
+ Mon, 14 Jun 2021 06:39:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=HoCkEbCp;
- spf=pass (domain: gmail.com, ip: 209.85.221.177, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-vk1-f177.google.com with SMTP id u66so3474474vkb.4
-        for <docs@lists.yoctoproject.org>; Mon, 14 Jun 2021 06:18:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=52G+N28jDbjM66bZ1HhJhH57XrNp/dhoDqj0Xq/QC0w=;
-        b=HoCkEbCpsy0YiqbVeb79tDGIZxz0nA1SACHjdttwQuObQgxHxT1RijNurBHFd7j4vX
-         zH3tHMwiNsyVxCgFWlh+iEYLMDwkwGn0Hqz69aNpbxlPq0WS+MsEFKQvUHgzlBmQoahg
-         DZM80W7OtYEtK5mdBy5cQNDdmZg94VA5diBlBjkue0+TNxVx26H1UUxurWmnCF4XJxW3
-         TBKja4mf1O+dULbFUmtURp506sgLzIPzdL1bCWor3kqSgFjAZCfPVxnHpEgnYo5tDzfM
-         PWZZKeOU31oLwPHSGxdJ/5y6YmcEC3ruz57M9GR3mBxcA28uu7mYF8AVfGggQrD8pgYn
-         yMtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=52G+N28jDbjM66bZ1HhJhH57XrNp/dhoDqj0Xq/QC0w=;
-        b=otfwwQgMF8ia2x7ZBAoI2yLlLCMBboK8rP3FVYKxLbJIlYvX0/ITzZcLOdfUN5ty+y
-         9SxZsJ+Ov7r8KpjtVf4ekCZACbJINo0PxHti38XH+IYqIAXCLJbgSVjYGeyWdUbkUTge
-         XfYBKB5NkUH9xQ2xn8F6b/1h6YuKLEilSZSHOcv3ItflaSM72F/pBNTzhUnD02iMyMME
-         U6vm3EwebpaD6vv1hgC+c6b4GHE+5Q0PNSTEou+WvaZawtzz5Ps8vh+JivW0Dm4nfjMb
-         5LwLNBxP99EepY9EUMlysyEarSO3EF/djiK0CF7eo8YfkQGOg8lA9LJ8uYlVWBnTRObw
-         NM/w==
-X-Gm-Message-State: AOAM532wshrDjqL56Ay9FJ9paMGydDKdXjr7TMBYU8/aRR0dbxXHqfYT
-	vvQs8Jv8shnYEVz/IRG8Lx8ZbMGr9cKLWfpDwEQ=
-X-Google-Smtp-Source: ABdhPJz+meOQxFbc/D43SDixnI/ZNeNtEOqELJUuK1bbJDf52tizDmQ/bgOuSPLKnsE+uHArU5cCH/qhFsF6haS76/I=
-X-Received: by 2002:a05:6122:43:: with SMTP id q3mr16389444vkn.10.1623676682573;
- Mon, 14 Jun 2021 06:18:02 -0700 (PDT)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 3046C100004;
+	Mon, 14 Jun 2021 13:39:33 +0000 (UTC)
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+ "Tummalapalli, Vineela" <vineela.tummalapalli@intel.com>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] ref-manual: move release notes to separate document
+To: Quentin Schulz <quentin.schulz@streamunlimited.com>
+References: <16872EDF3FBC0621.15202@lists.yoctoproject.org>
+ <9c29810b-b20f-f752-d914-0f27f779ba2d@bootlin.com>
+ <CAP71Wjyy=KM+EFt69rMg5vGJwS6xiG8tsFHfZ_eTZLhjg5vhWA@mail.gmail.com>
+ <168736F45421387B.20336@lists.yoctoproject.org>
+ <63f24dc7-4fbf-6543-6e1d-8eadfe3cd338@bootlin.com>
+ <59c947fa6fc26b984a54b9b781367e41360a713b.camel@linuxfoundation.org>
+ <3cd15f0a-5a79-13e0-d44a-e7d8872cc285@bootlin.com>
+ <20210611172430.3ozoucxrbzkdtikd@qschulz>
+ <16879940C9237AEB.32248@lists.yoctoproject.org>
+ <4f3eab88-a3c2-f386-1cdb-f775785afe5f@bootlin.com>
+ <20210614081021.zoh3ph7mgtjuui5u@qschulz>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <44a668f4-5923-bddc-992f-69c00bfb8f1c@bootlin.com>
+Date: Mon, 14 Jun 2021 15:39:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-References: <20210612221006.2888173-1-raj.khem@gmail.com> <8825b363-ef7b-626c-908b-a2c6405410ff@bootlin.com>
-In-Reply-To: <8825b363-ef7b-626c-908b-a2c6405410ff@bootlin.com>
-From: "Alexander Kanavin" <alex.kanavin@gmail.com>
-Date: Mon, 14 Jun 2021 15:17:51 +0200
-Message-ID: <CANNYZj_3wjJSczi0pNAoHxhGF=TmyH9Tgz0nR3GR1TdY0Qrv2w@mail.gmail.com>
-Subject: Re: [docs] [OE-core] [PATCH] musl: Set UPSTREAM_CHECK_COMMITS
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Khem Raj <raj.khem@gmail.com>, OE-core <openembedded-core@lists.openembedded.org>, 
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000e51b0805c4b9afd3"
+In-Reply-To: <20210614081021.zoh3ph7mgtjuui5u@qschulz>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
---000000000000e51b0805c4b9afd3
-Content-Type: text/plain; charset="UTF-8"
+Hi Quentin,
 
-That would be very useful, but you should check if the entire nomenclature
-of UPSTREAM_CHECK_* variables is documented as well
-(_COMMITS, _REGEX, _URI, _GITTAGREGEX).
+On 6/14/21 10:10 AM, Quentin Schulz wrote:
+> I was wondering if it made more sense to pick more expressive words for
+> "current" and "previous" release manuals. Something like
+> maintained/unmaintained for example? Or... EOL/outdated for the second
+> kind?
 
-Alex
 
-On Mon, 14 Jun 2021 at 15:12, Michael Opdenacker <
-michael.opdenacker@bootlin.com> wrote:
+Very idea. It always sounded strange to me. I could propose "maintained"
+(or supported?) and "outdated" (which is shorter than "unmaintained" for
+use in the left menu).
 
-> Hi Khem
 >
-> On 6/13/21 12:10 AM, Khem Raj wrote:
-> > Signed-off-by: Khem Raj <raj.khem@gmail.com>
-> > ---
-> >  meta/recipes-core/musl/musl_git.bb | 2 ++
-> >  1 file changed, 2 insertions(+)
-> >
-> > diff --git a/meta/recipes-core/musl/musl_git.bb
-> b/meta/recipes-core/musl/musl_git.bb
-> > index 6569d1b37b..bd9d5f1d4b 100644
-> > --- a/meta/recipes-core/musl/musl_git.bb
-> > +++ b/meta/recipes-core/musl/musl_git.bb
-> > @@ -84,3 +84,5 @@ RPROVIDES_${PN} += "ldd libsegfault rtld(GNU_HASH)"
-> >  LEAD_SONAME = "libc.so"
-> >  INSANE_SKIP_${PN}-dev = "staticdev"
-> >  INSANE_SKIP_${PN} = "libdir"
-> > +
-> > +UPSTREAM_CHECK_COMMITS = "1"
->
->
-> Thanks for the patch.
-> Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->
-> I realize that the UPSTREAM_CHECK_COMMITS variable doesn't appear in the
-> documentation, and it's in relatively frequent use.
->
-> Would it make sense to propose to add a description based on the initial
-> commit
-> (
-> https://git.openembedded.org/openembedded-core/commit/?id=591d57877d3d3e659d78c0ed33f4c515e3f6f8fb
-> )?
->
-> Thanks in advance,
-> Michael.
->
-> --
-> Michael Opdenacker, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
->
-> 
->
->
+> Also, I would move the release number after the release name, because
+> it's the place where you usually have section number in e.g. Reference
+> Manual in the navigation panel.
 
---000000000000e51b0805c4b9afd3
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>That would be very useful, but you should check if th=
-e entire nomenclature of UPSTREAM_CHECK_* variables is documented as well</=
-div><div>(_COMMITS, _REGEX, _URI, _GITTAGREGEX).</div><div><br></div><div>A=
-lex<br></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D=
-"gmail_attr">On Mon, 14 Jun 2021 at 15:12, Michael Opdenacker &lt;<a href=
-=3D"mailto:michael.opdenacker@bootlin.com">michael.opdenacker@bootlin.com<=
-/a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0=
-px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">H=
-i Khem<br>
-<br>
-On 6/13/21 12:10 AM, Khem Raj wrote:<br>
-&gt; Signed-off-by: Khem Raj &lt;<a href=3D"mailto:raj.khem@gmail.com" tar=
-get=3D"_blank">raj.khem@gmail.com</a>&gt;<br>
-&gt; ---<br>
-&gt;=C2=A0 meta/recipes-core/musl/<a href=3D"http://musl_git.bb" rel=3D"no=
-referrer" target=3D"_blank">musl_git.bb</a> | 2 ++<br>
-&gt;=C2=A0 1 file changed, 2 insertions(+)<br>
-&gt;<br>
-&gt; diff --git a/meta/recipes-core/musl/<a href=3D"http://musl_git.bb" re=
-l=3D"noreferrer" target=3D"_blank">musl_git.bb</a> b/meta/recipes-core/musl=
-/<a href=3D"http://musl_git.bb" rel=3D"noreferrer" target=3D"_blank">musl_g=
-it.bb</a><br>
-&gt; index 6569d1b37b..bd9d5f1d4b 100644<br>
-&gt; --- a/meta/recipes-core/musl/<a href=3D"http://musl_git.bb" rel=3D"no=
-referrer" target=3D"_blank">musl_git.bb</a><br>
-&gt; +++ b/meta/recipes-core/musl/<a href=3D"http://musl_git.bb" rel=3D"no=
-referrer" target=3D"_blank">musl_git.bb</a><br>
-&gt; @@ -84,3 +84,5 @@ RPROVIDES_${PN} +=3D &quot;ldd libsegfault rtld(GNU=
-_HASH)&quot;<br>
-&gt;=C2=A0 LEAD_SONAME =3D &quot;libc.so&quot;<br>
-&gt;=C2=A0 INSANE_SKIP_${PN}-dev =3D &quot;staticdev&quot;<br>
-&gt;=C2=A0 INSANE_SKIP_${PN} =3D &quot;libdir&quot;<br>
-&gt; +<br>
-&gt; +UPSTREAM_CHECK_COMMITS =3D &quot;1&quot;<br>
-<br>
-<br>
-Thanks for the patch.<br>
-Reviewed-by: Michael Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@b=
-ootlin.com" target=3D"_blank">michael.opdenacker@bootlin.com</a>&gt;<br>
-<br>
-I realize that the UPSTREAM_CHECK_COMMITS variable doesn&#39;t appear in t=
-he<br>
-documentation, and it&#39;s in relatively frequent use.<br>
-<br>
-Would it make sense to propose to add a description based on the initial<b=
-r>
-commit<br>
-(<a href=3D"https://git.openembedded.org/openembedded-core/commit/?id=3D59=
-1d57877d3d3e659d78c0ed33f4c515e3f6f8fb" rel=3D"noreferrer" target=3D"_blank=
-">https://git.openembedded.org/openembedded-core/commit/?id=3D591d57877d3d3=
-e659d78c0ed33f4c515e3f6f8fb</a>)?<br>
-<br>
-Thanks in advance,<br>
-Michael.<br>
-<br>
--- <br>
-Michael Opdenacker, Bootlin<br>
-Embedded Linux and Kernel engineering<br>
-<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https=
-://bootlin.com</a><br>
-<br>
-<br>
-<br>
-<br>
-</blockquote></div>
+Indeed, for the same reason, I had to prefix the title of migration
+guides by "Release" to avoid this confusion.
+A benefit of doing this is that we would be more consistent withe the
+way the migration guides are listed.
 
---000000000000e51b0805c4b9afd3--
+I'll submit the two changes that you proposed.
+
+Thanks again :-)
+
+Michael.
+
+-- 
+
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
