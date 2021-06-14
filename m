@@ -1,49 +1,171 @@
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web09.32562.1623687748285611352
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web12.7.1623688165160237416
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Jun 2021 09:22:28 -0700
+ Mon, 14 Jun 2021 09:29:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 992A4C000F;
-	Mon, 14 Jun 2021 16:22:25 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org,
- Richard Purdie <richard.purdie@linuxfoundation.org>,
- Quentin Schulz <foss@0leil.net>
-Subject: Re: [docs] [PATCH v3] test-manual: add initial reproducible builds documentation
-To: Quentin Schulz <quentin.schulz@streamunlimited.com>
-References: <1686F0ED5A1183FF.18579@lists.yoctoproject.org>
- <20210609144728.103458-1-michael.opdenacker@bootlin.com>
- <20210609155552.nwjdirom4lkqi4n7@qschulz>
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 38B0E1BF205;
+	Mon, 14 Jun 2021 16:29:22 +0000 (UTC)
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
 Organization: Bootlin
-Message-ID: <b8a3b5f8-fe9e-260a-cc2d-c7cee298c435@bootlin.com>
-Date: Mon, 14 Jun 2021 18:22:25 +0200
+Message-ID: <7c786530-7332-8e0e-bdef-13adcea01ca3@bootlin.com>
+Date: Mon, 14 Jun 2021 18:29:22 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210609155552.nwjdirom4lkqi4n7@qschulz>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
-Hello Quentin,
+Hi Richard,
 
-On 6/9/21 5:55 PM, Quentin Schulz wrote:
->> +The project aligns with the `Reproducible Builds project
->> +<https://reproducible-builds.org/>`_, which shares information about why
->> +reproducibility matters. The primary focus of the project is the ability to
->> +detect security issues being introduced. However, from a Yocto Project
->> +perspective, it is also hugely important that our builds are deterministic. When
->> +you build a given input set of metadata, we expect you to get consistent output.
->> +This has always been a key focus but, since release 3.1 ("dunfell"), it is now true
-> Just picking nits here, but I could see a reference to:
-> https://docs.yoctoproject.org/ref-manual/migration-3.1.html#reproducible-builds-now-enabled-by-default
+The following changes since commit adab5d0047354b5a1b11c2ece48abd8f295f69b0:
 
+  Remove Clutter references (2021-06-04 11:00:55 +0200)
 
-Good idea. I implemented it.
+are available in the Git repository at:
 
-Thanks!
+  git://git.yoctoproject.org/yocto-docs master-next
+  http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=master-next
+
+for you to fetch changes up to 92f17a0ac68a64c86fa46ffbcec7acb3de3b23bf:
+
+  releases: put release number after "Release Series" (2021-06-14
+18:20:52 +0200)
+
+----------------------------------------------------------------
+Daniel Wagenknecht (5):
+      ref-manual: variables: update examples refering to DEPLOY_DIR_IMAGE
+      ref-manual: variables: document IMGDEPLOYDIR
+      ref-manual: migration-2.2: add note about IMGDEPLOYDIR
+      ref-manual: variables: fixup example in IMAGE_CMD
+      ref-manual: variables: fixup class reference in IMAGE_MANIFEST
+
+Michael Opdenacker (4):
+      manuals: fix epub export warnings
+      ref-manual: move migration guides to separate document
+      releases: clarify supported and outdated releases
+      releases: put release number after "Release Series"
+
+Quentin Schulz (1):
+      documentation: Makefile: turn warnings into errors by default
+
+Richard Purdie (2):
+      test-manual: add initial reproducible builds documentation
+      test-manual: Add initial YP Compatible documentation
+
+ documentation/Makefile                                                
+|   2 +-
+ documentation/conf.py                                                 
+|   3 ++
+ documentation/index.rst                                               
+|   1 +
+ documentation/{ref-manual/migration.rst => migration-guides/index.rst}
+|  48 ++++++++++++++++---------------
+ documentation/{ref-manual => migration-guides}/migration-1.3.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-1.4.rst      
+|   6 ++--
+ documentation/{ref-manual => migration-guides}/migration-1.5.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-1.6.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-1.7.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-1.8.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-2.0.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-2.1.rst      
+|   6 ++--
+ documentation/{ref-manual => migration-guides}/migration-2.2.rst      
+|  19 ++++++++++---
+ documentation/{ref-manual => migration-guides}/migration-2.3.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-2.4.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-2.5.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-2.6.rst      
+|   6 ++--
+ documentation/{ref-manual => migration-guides}/migration-2.7.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-3.0.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-3.1.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-3.2.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-3.3.rst      
+|   4 +--
+ documentation/{ref-manual => migration-guides}/migration-general.rst  
+|   0
+ documentation/ref-manual/index.rst                                    
+|   1 -
+ documentation/ref-manual/release-process.rst                          
+|   6 ++--
+ documentation/ref-manual/variables.rst                                
+|  29 +++++++++++++++----
+ documentation/releases.rst                                            
+|  62 ++++++++++++++++++++--------------------
+ documentation/test-manual/index.rst                                   
+|   2 ++
+ documentation/test-manual/reproducible-builds.rst                     
+| 135
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ documentation/test-manual/yocto-project-compatible.rst                
+| 124
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 30 files changed, 402 insertions(+), 104 deletions(-)
+ rename documentation/{ref-manual/migration.rst =>
+migration-guides/index.rst} (56%)
+ rename documentation/{ref-manual => migration-guides}/migration-1.3.rst
+(98%)
+ rename documentation/{ref-manual => migration-guides}/migration-1.4.rst
+(98%)
+ rename documentation/{ref-manual => migration-guides}/migration-1.5.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-1.6.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-1.7.rst
+(98%)
+ rename documentation/{ref-manual => migration-guides}/migration-1.8.rst
+(98%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.0.rst
+(98%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.1.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.2.rst
+(95%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.3.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.4.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.5.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.6.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-2.7.rst
+(98%)
+ rename documentation/{ref-manual => migration-guides}/migration-3.0.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-3.1.rst
+(98%)
+ rename documentation/{ref-manual => migration-guides}/migration-3.2.rst
+(99%)
+ rename documentation/{ref-manual => migration-guides}/migration-3.3.rst
+(98%)
+ rename documentation/{ref-manual =>
+migration-guides}/migration-general.rst (100%)
+ create mode 100644 documentation/test-manual/reproducible-builds.rst
+ create mode 100644 documentation/test-manual/yocto-project-compatible.rst
+
+Thank you in advance,
+
 Michael.
 
 -- 
