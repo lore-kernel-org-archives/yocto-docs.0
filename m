@@ -1,39 +1,45 @@
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web08.32030.1623686609932985812
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.32234.1623686782181385100
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Jun 2021 09:03:30 -0700
+ Mon, 14 Jun 2021 09:06:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id BE94A240008;
-	Mon, 14 Jun 2021 16:03:27 +0000 (UTC)
-Cc: michael.opdenacker@bootlin.com
-To: YP docs mailing list <docs@lists.yoctoproject.org>
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 33C922000C;
+	Mon, 14 Jun 2021 16:06:19 +0000 (UTC)
+Cc: Khem Raj <raj.khem@gmail.com>,
+ OE-core <openembedded-core@lists.openembedded.org>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [OE-core] [PATCH] musl: Set UPSTREAM_CHECK_COMMITS
+To: Alexander Kanavin <alex.kanavin@gmail.com>
+References: <20210612221006.2888173-1-raj.khem@gmail.com>
+ <8825b363-ef7b-626c-908b-a2c6405410ff@bootlin.com>
+ <CANNYZj_3wjJSczi0pNAoHxhGF=TmyH9Tgz0nR3GR1TdY0Qrv2w@mail.gmail.com>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Subject: New "Variables Glossary" subcategory under "Documentation" in Bugzilla
 Organization: Bootlin
-Message-ID: <627ef962-ea1b-7756-5b82-8573c30c27e1@bootlin.com>
-Date: Mon, 14 Jun 2021 18:03:27 +0200
+Message-ID: <7dfedf94-c702-0be0-5c65-5e414a14516b@bootlin.com>
+Date: Mon, 14 Jun 2021 18:06:19 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <CANNYZj_3wjJSczi0pNAoHxhGF=TmyH9Tgz0nR3GR1TdY0Qrv2w@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Greetings,
+Hi Alex,
 
-Following a suggestion from Robert P. J. Day [1], Michael Halstead [2]
-has just created a new "Variables Glossary" under "Documentation" in
-Bugzilla (https://bugzilla.yoctoproject.org/).
+On 6/14/21 3:17 PM, Alexander Kanavin wrote:
+> That would be very useful, but you should check if the entire
+> nomenclature of UPSTREAM_CHECK_* variables is documented as well
+> (_COMMITS, _REGEX, _URI, _GITTAGREGEX).
 
-Don't hesitate to use this category to report variables that need
-documenting, either in the Bitbake or YP manuals. Other documentation
-bugs are welcome, of course.
 
-Cheers,
+Great, many thanks for the advise!
+I filed a bug to keep track of this need:
+https://bugzilla.yoctoproject.org/show_bug.cgi?id=14431
 
-[1], [2]: thanks ;-)
+Michael.
 
 -- 
 Michael Opdenacker, Bootlin
