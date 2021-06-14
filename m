@@ -1,70 +1,61 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.27114.1623657102057312148
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web12.27218.1623657935468898071
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Jun 2021 00:51:42 -0700
+ Mon, 14 Jun 2021 01:05:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 2A08520005;
-	Mon, 14 Jun 2021 07:51:39 +0000 (UTC)
-Cc: Quentin Schulz <quentin.schulz@streamunlimited.com>
-Subject: Re: [docs] [PATCH 0/2] Fixups for glossary
-To: Daniel Wagenknecht <dwagenknecht@emlix.com>, docs@lists.yoctoproject.org
-References: <20210614053013.68669-1-dwagenknecht@emlix.com>
+	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 1EAD2100002;
+	Mon, 14 Jun 2021 08:05:31 +0000 (UTC)
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ Nicolas Dechesne <nicolas.dechesne@linaro.org>,
+ "Tummalapalli, Vineela" <vineela.tummalapalli@intel.com>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] ref-manual: move release notes to separate document
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+To: Quentin Schulz <quentin.schulz@streamunlimited.com>
+References: <1675A932C413C877.8243@lists.yoctoproject.org>
+ <16872EDF3FBC0621.15202@lists.yoctoproject.org>
+ <9c29810b-b20f-f752-d914-0f27f779ba2d@bootlin.com>
+ <CAP71Wjyy=KM+EFt69rMg5vGJwS6xiG8tsFHfZ_eTZLhjg5vhWA@mail.gmail.com>
+ <168736F45421387B.20336@lists.yoctoproject.org>
+ <63f24dc7-4fbf-6543-6e1d-8eadfe3cd338@bootlin.com>
+ <59c947fa6fc26b984a54b9b781367e41360a713b.camel@linuxfoundation.org>
+ <3cd15f0a-5a79-13e0-d44a-e7d8872cc285@bootlin.com>
+ <20210611172430.3ozoucxrbzkdtikd@qschulz>
+ <16879940C9237AEB.32248@lists.yoctoproject.org>
 Organization: Bootlin
-Message-ID: <51fef711-fb9c-ce09-0018-9cbd15a9a99b@bootlin.com>
-Date: Mon, 14 Jun 2021 09:51:38 +0200
+Message-ID: <4f3eab88-a3c2-f386-1cdb-f775785afe5f@bootlin.com>
+Date: Mon, 14 Jun 2021 10:05:31 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210614053013.68669-1-dwagenknecht@emlix.com>
+In-Reply-To: <16879940C9237AEB.32248@lists.yoctoproject.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Hi Daniel,
+Hi Quentin,
 
-On 6/14/21 7:30 AM, Daniel Wagenknecht wrote:
-> Did some fixups as suggested by Quentin.
+On 6/11/21 8:04 PM, Michael Opdenacker wrote:
+> HI Quentin,
 >
-> On Fri, 2021-06-11 at 19:20 +0200, Quentin Schulz wrote:
->>>           IMAGE_CMD_jffs2 = "mkfs.jffs2 --root=${IMAGE_ROOTFS} \
->>> -             --faketime --output=${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}.rootfs.jffs2 \
->>> +             --faketime --output=${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.jffs2 \
->>>               ${EXTRA_IMAGECMD}"
->> It'd be awesome if you could do a follow-up patch here since this isn't the actual
->> content of this variable anymore.
-> done
+> On 6/11/21 7:24 PM, Quentin Schulz wrote:
+>> I can't. I only have a fileserver webpage on which I can click on ../
+>> which redirects me to http://docs.yoctoproject.org/
+> Oops, maybe because my "master-next" branch was broken until 15 minutes
+> ago. This is fixed now but the autobuilder may need time to update the
+> contents.
 >
->> IMAGE_MANIFEST isn't in this class anymore, it'd be great again if you
->> could send a follow-up patch for this.
-> done
->
->> On a side note: you should have added the term in the glossary (from patch 2)
->> first, because technically this commit does not build.
-> will keep in mind next time.
->
-> Thanks for taking a thorough look at the changes and what was still
-> missing. Great work you are all doing with the documentation!
->
-> Best Wishes
->   Daniel
->
-> Daniel Wagenknecht (2):
->   ref-manual: variables: fixup example in IMAGE_CMD
->   ref-manual: variables: fixup class reference in IMAGE_MANIFEST
->
->  documentation/ref-manual/variables.rst | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+> Thanks for the notification.
 
 
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Many thanks for these updates! I merged them into the "master-next"
-branch of yocto-docs.
+That's fixed now if you're interested in having a look:
+https://docs.yoctoproject.org/next/
+I guess pushing one update wasn't enough, but that's fixed since the two
+new commits that I've just merged.
 
 Cheers,
-
 Michael.
 
 -- 
