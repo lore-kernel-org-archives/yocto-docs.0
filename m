@@ -1,63 +1,56 @@
 Received: from mx1.emlix.com (mx1.emlix.com [136.243.223.33])
- by mx.groups.io with SMTP id smtpd.web09.26279.1623648617278441140
+ by mx.groups.io with SMTP id smtpd.web12.26308.1623648625308650442
  for <docs@lists.yoctoproject.org>;
- Sun, 13 Jun 2021 22:30:18 -0700
+ Sun, 13 Jun 2021 22:30:25 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: emlix.com, ip: 136.243.223.33, mailfrom: dwagenknecht@emlix.com)
 Received: from mailer.emlix.com (unknown [81.20.119.6])
 	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.emlix.com (Postfix) with ESMTPS id A24DE5F9C1;
-	Mon, 14 Jun 2021 07:30:14 +0200 (CEST)
+	by mx1.emlix.com (Postfix) with ESMTPS id BB7F05FB67
+	for <docs@lists.yoctoproject.org>; Mon, 14 Jun 2021 07:30:14 +0200 (CEST)
 From: "Daniel Wagenknecht" <dwagenknecht@emlix.com>
 To: docs@lists.yoctoproject.org
-Cc: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-Subject: [PATCH 0/2] Fixups for glossary
-Date: Mon, 14 Jun 2021 07:30:11 +0200
-Message-Id: <20210614053013.68669-1-dwagenknecht@emlix.com>
+Subject: [PATCH 1/2] ref-manual: variables: fixup example in IMAGE_CMD
+Date: Mon, 14 Jun 2021 07:30:12 +0200
+Message-Id: <20210614053013.68669-2-dwagenknecht@emlix.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: 20210611172040.j7p3l6mln2mnfqss@qschulz
-References: 
+In-Reply-To: <20210614053013.68669-1-dwagenknecht@emlix.com>
+References: <20210614053013.68669-1-dwagenknecht@emlix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 
-Did some fixups as suggested by Quentin.
+The example for IMAGE_CMD_jffs2 given in the glossary for IMAGE_CMD
+didn't align with the implementation anymore. Update it to match the
+implementation.
 
-On Fri, 2021-06-11 at 19:20 +0200, Quentin Schulz wrote:
-> >           IMAGE_CMD_jffs2 =3D "mkfs.jffs2 --root=3D${IMAGE_ROOTFS} \
-> > -             --faketime --output=3D${DEPLOY_DIR_IMAGE}/${IMAGE_NAME}=
-.rootfs.jffs2 \
-> > +             --faketime --output=3D${IMGDEPLOYDIR}/${IMAGE_NAME}.roo=
-tfs.jffs2 \
-> >               ${EXTRA_IMAGECMD}"
->=20
-> It'd be awesome if you could do a follow-up patch here since this isn't=
- the actual
-> content of this variable anymore.
-done
+Signed-off-by: Daniel Wagenknecht <dwagenknecht@emlix.com>
+---
+ documentation/ref-manual/variables.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> IMAGE_MANIFEST isn't in this class anymore, it'd be great again if you
-> could send a follow-up patch for this.
-done
-
-> On a side note: you should have added the term in the glossary (from pa=
-tch 2)
-> first, because technically this commit does not build.
-will keep in mind next time.
-
-Thanks for taking a thorough look at the changes and what was still
-missing. Great work you are all doing with the documentation!
-
-Best Wishes
-  Daniel
-
-Daniel Wagenknecht (2):
-  ref-manual: variables: fixup example in IMAGE_CMD
-  ref-manual: variables: fixup class reference in IMAGE_MANIFEST
-
- documentation/ref-manual/variables.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+index ee1043108..1be825fab 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -2952,8 +2952,8 @@ system and gives an overview of their function and =
+contents.
+       ``btrfs``, and so forth). When setting this variable, you should u=
+se
+       an override for the associated type. Here is an example::
+=20
+-         IMAGE_CMD_jffs2 =3D "mkfs.jffs2 --root=3D${IMAGE_ROOTFS} \
+-             --faketime --output=3D${IMGDEPLOYDIR}/${IMAGE_NAME}.rootfs.=
+jffs2 \
++         IMAGE_CMD_jffs2 =3D "mkfs.jffs2 --root=3D${IMAGE_ROOTFS} --fake=
+time \
++             --output=3D${IMGDEPLOYDIR}/${IMAGE_NAME}${IMAGE_NAME_SUFFIX=
+}.jffs2 \
+              ${EXTRA_IMAGECMD}"
+=20
+       You typically do not need to set this variable unless you are addi=
+ng
 --=20
 2.25.1
 
