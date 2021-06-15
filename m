@@ -1,88 +1,74 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
- by mx.groups.io with SMTP id smtpd.web08.425.1623776330230886311
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+ by mx.groups.io with SMTP id smtpd.web12.422.1623776336191693171
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Jun 2021 09:58:50 -0700
+ Tue, 15 Jun 2021 09:58:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=qFoGRdvk;
- spf=softfail (domain: sakoman.com, ip: 209.85.210.177, mailfrom: steve@sakoman.com)
-Received: by mail-pf1-f177.google.com with SMTP id k6so2441996pfk.12
-        for <docs@lists.yoctoproject.org>; Tue, 15 Jun 2021 09:58:50 -0700 (PDT)
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=r5/0c83K;
+ spf=softfail (domain: sakoman.com, ip: 209.85.215.172, mailfrom: steve@sakoman.com)
+Received: by mail-pg1-f172.google.com with SMTP id i34so11960538pgl.9
+        for <docs@lists.yoctoproject.org>; Tue, 15 Jun 2021 09:58:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=sakoman-com.20150623.gappssmtp.com; s=20150623;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=Pqmt6i8awRF6J/DTADEYVWw5WYwetd9eLwaoG6vZOt4=;
-        b=qFoGRdvkGKgSAoGKpRJZNQUCNQUj3FUVNPBnBqJbu93eIayHkw0G9pEDGOwJEvTlm/
-         eVnsPVuz3AQevsjQbMdcFvYOBZoghLh/wKAaEB6vcgZolTwW/DHBE1ZIRwraMrUVc/3l
-         YENWM/Gf83js1sAo2AEQZ/+eaHzKosOG2e/em6tlhWvmTBjTmb6fbWY/jCp9c2pkECLJ
-         By/aVpM1IMadjtZ59Ndx6F1jbh7DFMJ5JneQ/jLPEeJwcQ/qlQWuLyctlEE9VBcnoC8Z
-         lGoZyS7Ymo0DsL33UucmXYQQUNzEe8UyjzZqKhdzhBD92YFjkm+Dz8d2K2Whii8VUFrx
-         I6mg==
+        bh=6buqUznsiQeyPHS7n3TVZlBQSzxlkbG/NJoXqratAuI=;
+        b=r5/0c83KjQ1SCipTTdk9wOaMOZVKT4mUkvcrM9xbekZfQN15QJTGhbGHbfTlByZhaP
+         4UNldBXNCOsHM7bI4getYpF+X33jTV7j3COKUHYDHDONHnp35ARQFL9+QvM4FwnFx7Uu
+         GGNchN7z/63Cq4Tfs29SJz4+/I2p1a27CHRD3eJpGvCGJcbNVZfnUvXU5u/OAI8nhP28
+         KLuXB04eWuhdDpusOBIVKomJy9glw/1wkd5Qj8X05vk0s1TCwpDVb7adDimt4UgpDn/w
+         1RWLKkZTqkC2Lu4M9cpua9eb1/rHMSeoPYnSrL/R/209DdSfoTZG4uL74qVg5U1C7gkz
+         F1/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=Pqmt6i8awRF6J/DTADEYVWw5WYwetd9eLwaoG6vZOt4=;
-        b=Ve4dS5IRGNr1pYyqe3uIuXcBNENNMWpqvhKVdeckXqgyPorc7K5ESWBI4tGl9Ie9Ly
-         IBg7G4cSUe4afDSy+4kti+io+Tpx8AAij8FhLZyemj+2sWjyxBtqPqVuTS7BPjo7XCXk
-         6NoHoikjFMjTNietSg5pr9YYUV7clSjwG5vhypHZEDQSSpYAHFFurNG+FZUaQg3KtjzT
-         rv2jZC4Tv3LOoFvilyWeHbNna0juakgBwFjnydc7eTXxw3akV246LNLsCY3Od+wLICYU
-         YsZ4tAOFUBQPHPh5mDbq2Z/Tm+BtpPsDVPcXzERTbYUy2FmlLGNyXaPtGXu3qLaBXYHu
-         qaEg==
-X-Gm-Message-State: AOAM532pAboi2WKrkJvSejYAUTdczaQBNxuVsKNznXmz36eCLf9aS9Mo
-	ODaQeGqXERuN/MKxBAFG4qMVrNEc4rIeF7rg1V4=
-X-Google-Smtp-Source: ABdhPJyAPsNRuW9JlliqIY0J/1MO83ysDIF+xgICnDJLrBk0bXGTlhxgYQmbHwCHH2kjEVF0fbW8wg==
-X-Received: by 2002:a63:5446:: with SMTP id e6mr463396pgm.73.1623776329082;
-        Tue, 15 Jun 2021 09:58:49 -0700 (PDT)
+        bh=6buqUznsiQeyPHS7n3TVZlBQSzxlkbG/NJoXqratAuI=;
+        b=sOTikQ3PKqeDCT5DHs78grW3Qj+tucr6oVTALM5qW/5fIH4BZnKZER6bWdaSYwznvW
+         Afv0MSYLCcF6hkvjLc6nLw6NJD0sCNuzv8ePu1xOSpKqDkGJd4ex0plFi7CcTfPT6vXj
+         F6Y/osASZC9+Tu7JGJooIhdjM6plcRFwkCW6uYpKjIzqg99iwO3PzEirYrDxn8FBIXw3
+         BQ/UpeJ29/hulPFahT+x4+pilTtNmyiSGPehH7aaCqo20em/RbbtqgPcAL2GPK4TcE0a
+         AGWOcGcO66UJw8WPPQJRXyYIhEWuNXyRwOeeRp4klygN524/9o/kRNR/wjJgsZ96ZqvS
+         OJPw==
+X-Gm-Message-State: AOAM5315rc7TpEmsfwsTUflQkDibjTCSyitx/9NrmVwS/CMplsaIKyur
+	uqhK6zFWCdLkLRkKHtE4dIBXqgHJhQOilL01Pew=
+X-Google-Smtp-Source: ABdhPJw+Xz5A3boMVLiYj7wYkd2EsJIT0ysrik0ggTe3UshRbIEn+QTsaKecu/wr1CpLg9CvDpffdQ==
+X-Received: by 2002:a63:5d12:: with SMTP id r18mr431393pgb.327.1623776335146;
+        Tue, 15 Jun 2021 09:58:55 -0700 (PDT)
 Return-Path: <steve@sakoman.com>
 Received: from localhost.localdomain ([172.243.4.16])
-        by smtp.gmail.com with ESMTPSA id z3sm7862741pgl.77.2021.06.15.09.58.45
+        by smtp.gmail.com with ESMTPSA id z3sm7862741pgl.77.2021.06.15.09.58.51
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Jun 2021 09:58:48 -0700 (PDT)
+        Tue, 15 Jun 2021 09:58:54 -0700 (PDT)
 From: "Steve Sakoman" <steve@sakoman.com>
 To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell 1/3] variables: Add documentation for KERNEL_DTC_FLAGS
-Date: Tue, 15 Jun 2021 06:58:11 -1000
-Message-Id: <b3d3149a6fd0704661f8c5d38c92e032567a81d4.1623775736.git.steve@sakoman.com>
+Subject: [yocto-docs][dunfell 2/3] ref-system-requirements.rst: Add openSUSE Leap 15.2 to list of supported distros
+Date: Tue, 15 Jun 2021 06:58:12 -1000
+Message-Id: <a7313e3b1358016fdf1b88e5d845a37ed90773cc.1623775736.git.steve@sakoman.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <cover.1623775736.git.steve@sakoman.com>
 References: <cover.1623775736.git.steve@sakoman.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Ovidiu Panait <ovidiu.panait@windriver.com>
-
-Add documentation for the newly introduced KERNEL_DTC_FLAGS variable.
-
-Signed-off-by: Ovidiu Panait <ovidiu.panait@windriver.com>
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-(cherry picked from commit b2d5bf48fe4e76446a38762839865176294a4a3c)
 Signed-off-by: Steve Sakoman <steve@sakoman.com>
 ---
- documentation/ref-manual/ref-variables.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ documentation/ref-manual/ref-system-requirements.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/documentation/ref-manual/ref-variables.rst b/documentation/ref-manual/ref-variables.rst
-index a8375cd37..db0cc2d66 100644
---- a/documentation/ref-manual/ref-variables.rst
-+++ b/documentation/ref-manual/ref-variables.rst
-@@ -3811,6 +3811,15 @@ system and gives an overview of their function and contents.
+diff --git a/documentation/ref-manual/ref-system-requirements.rst b/documentation/ref-manual/ref-system-requirements.rst
+index bb688772f..d238dc454 100644
+--- a/documentation/ref-manual/ref-system-requirements.rst
++++ b/documentation/ref-manual/ref-system-requirements.rst
+@@ -67,6 +67,8 @@ distributions:
  
-          KERNEL_ARTIFACT_NAME ?= "${PKGE}-${PKGV}-${PKGR}-${MACHINE}${IMAGE_VERSION_SUFFIX}"
+ -  OpenSUSE Leap 15.1
  
-+   :term:`KERNEL_DTC_FLAGS`
-+      Specifies the ``dtc`` flags that are passed to the Linux kernel build
-+      system when generating the device trees (via ``DTC_FLAGS`` environment
-+      variable).
++-  OpenSUSE Leap 15.2
 +
-+      In order to use this variable, the
-+      :ref:`kernel-devicetree <ref-classes-kernel-devicetree>` class must
-+      be inherited.
-+
-    :term:`KERNEL_EXTRA_ARGS`
-       Specifies additional ``make`` command-line arguments the OpenEmbedded
-       build system passes on when compiling the kernel.
+ 
+ .. note::
+ 
 -- 
 2.25.1
 
