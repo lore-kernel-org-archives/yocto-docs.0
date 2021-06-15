@@ -1,120 +1,94 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web08.460.1623776463038485914
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+ by mx.groups.io with SMTP id smtpd.web12.1536.1623793683521094019
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Jun 2021 10:01:03 -0700
+ Tue, 15 Jun 2021 14:48:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 46B1C60005;
-	Tue, 15 Jun 2021 17:01:00 +0000 (UTC)
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] sdk-manual: fix broken references
-Date: Tue, 15 Jun 2021 19:00:56 +0200
-Message-Id: <20210615170056.211711-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=V5Ra9sh7;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.51, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f51.google.com with SMTP id f2so187889wri.11
+        for <docs@lists.yoctoproject.org>; Tue, 15 Jun 2021 14:48:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=hSZdX0AUCMmgwY9Gq4oOeC1LkY/RTWcMYSKcgaZSexM=;
+        b=V5Ra9sh7SeCPRP9/P38wUNb+HsLHUsu1ETMNRPBcYCjQLfAR7/BRbXh2coO76Wv3uk
+         GS1DninTJWK+qaR4Nz4K76Q95bGAloOd4LXzcX493xFI+ZG4rVi0EFZiinK8ufmojeIN
+         opCFnVnLFehTC4SrEnvY/6LXCgm1EyjrEHNQc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=hSZdX0AUCMmgwY9Gq4oOeC1LkY/RTWcMYSKcgaZSexM=;
+        b=io+SlDHk6ru8E5WsGUq3BqmppMQJUiK54vqPBogf1Nu3gq0M3GwD547kwSphKXrzDd
+         OOAVQcF1zmNlFCF2OiAxNG4ZEXDyFBCYkZZ8DNkrD9y5I2mbmRnMBhzMLR8GFHKLTqD4
+         2UW1XANADdUEl2id+cMqxwDf4xVvok2rdr7BYJSnQgOGEexgK2BLWRMs9ukFTAFJmMRL
+         mSv9bOjVKKEWiBOybTXSpkvXuz5WcEBgaB+wUMCwX6K1AYA8yhpNfA9+nW0HL1K96aQa
+         Q4k8uvkCiKBuuhw2u5HTNKpljAqNOGgaV5BHlkvOblPkHNdqBsYecCJyH8iHNz+IMfA/
+         2KNg==
+X-Gm-Message-State: AOAM533zwROFMOAWpu4UMXOtapNQZwCaRVynnPTNkGxING1QVI61KiGe
+	68W/uK9UeZo/MuBvv4G+75U+rg==
+X-Google-Smtp-Source: ABdhPJzqw+QxTNRdbaPPEGhQtiqiB7APqlSD+Zrc+zJSiKIEsekXuBLP/G6rIUk4ok5JaZf7GLJxTg==
+X-Received: by 2002:adf:f68a:: with SMTP id v10mr1383199wrp.58.1623793682023;
+        Tue, 15 Jun 2021 14:48:02 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from ?IPv6:2001:8b0:aba:5f3c:1d6e:bde3:735d:6a7d? ([2001:8b0:aba:5f3c:1d6e:bde3:735d:6a7d])
+        by smtp.gmail.com with ESMTPSA id k16sm119967wrn.96.2021.06.15.14.48.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 15 Jun 2021 14:48:01 -0700 (PDT)
+Message-ID: <cde2333ef0cb1467e01d3e24ee323420abc96853.camel@linuxfoundation.org>
+Subject: Re: [docs] Documentation to install an ESDK out of date?
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>, YP docs mailing
+ list <docs@lists.yoctoproject.org>
+Date: Tue, 15 Jun 2021 22:47:58 +0100
+In-Reply-To: <84681300-15a8-d63e-786c-b0f7d3a8a476@bootlin.com>
+References: <84681300-15a8-d63e-786c-b0f7d3a8a476@bootlin.com>
+User-Agent: Evolution 3.40.0-1 
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-Detected by running:
-git grep "^[\ ]*\" section" | grep -v "\`"
+On Tue, 2021-06-15 at 18:14 +0200, Michael Opdenacker wrote:
+> Hi,
+> 
+> I'm following the documentation to install an ESDK:
+> https://docs.yoctoproject.org/sdk-manual/extensible.html#installing-the-extensible-sdk
+> 
+> Several issues though:
+> 
+>   * The documentation doesn't say where to download ESDKs from, though I
+>     guess it should be
+>     https://www.yoctoproject.org/software-overview/downloads/
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- .../sdk-manual/appendix-customizing.rst         | 12 ++++++------
- documentation/sdk-manual/extensible.rst         | 17 ++++++++---------
- documentation/sdk-manual/working-projects.rst   |  5 ++---
- 3 files changed, 16 insertions(+), 18 deletions(-)
+Yes.
 
-diff --git a/documentation/sdk-manual/appendix-customizing.rst b/documentation/sdk-manual/appendix-customizing.rst
-index 67b49d9f49..c122fb5836 100644
---- a/documentation/sdk-manual/appendix-customizing.rst
-+++ b/documentation/sdk-manual/appendix-customizing.rst
-@@ -74,9 +74,9 @@ adjustments:
-       is set using the "?=" operator. Consequently, you will need to
-       either define the entire list by using the "=" operator, or you
-       will need to append a value using either "_append" or the "+="
--      operator. You can learn more about these operators in the "
--      Basic Syntax
--      " section of the BitBake User Manual.
-+      operator. You can learn more about these operators in the
-+      ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:basic syntax`"
-+      section of the BitBake User Manual.
- 
-    .
- 
-@@ -350,9 +350,9 @@ in most cases.
-    If you set
-    SDK_EXT_TYPE
-    to "minimal", then providing a shared state mirror is mandatory so
--   that items can be installed as needed. See the "
--   Providing Additional Installable Extensible SDK Content
--   " section for more information.
-+   that items can be installed as needed. See the
-+   :ref:`sdk-manual/appendix-customizing:providing additional installable extensible sdk content`
-+   section for more information.
- 
- You can explicitly control whether or not to include the toolchain when
- you build an SDK by setting the
-diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
-index 55bd7f6ebf..d444cad6ea 100644
---- a/documentation/sdk-manual/extensible.rst
-+++ b/documentation/sdk-manual/extensible.rst
-@@ -15,9 +15,8 @@ hardware, and ease integration into the rest of the
- .. note::
- 
-    For a side-by-side comparison of main features supported for an
--   extensible SDK as compared to a standard SDK, see the "
--   Introduction
--   " section.
-+   extensible SDK as compared to a standard SDK, see the
-+   :ref:`sdk-manual/intro:introduction` section.
- 
- In addition to the functionality available through ``devtool``, you can
- alternatively make use of the toolchain directly, for example from
-@@ -89,9 +88,9 @@ the SDK for ``core-image-sato`` and using the current &DISTRO; snapshot::
- .. note::
- 
-    As an alternative to downloading an SDK, you can build the SDK
--   installer. For information on building the installer, see the "
--   Building an SDK Installer
--   " section.
-+   installer. For information on building the installer, see the
-+   :ref:`sdk-manual/appendix-obtain:building an sdk installer`
-+   section.
- 
- The SDK and toolchains are self-contained and by default are installed
- into the ``poky_sdk`` folder in your home directory. You can choose to
-@@ -606,9 +605,9 @@ counterparts.
-    Several methods exist by which you can upgrade recipes -
-    devtool upgrade
-    happens to be one. You can read about all the methods by which you
--   can upgrade recipes in the "
--   Upgrading Recipes
--   " section of the Yocto Project Development Tasks Manual.
-+   can upgrade recipes in the
-+   :ref:`dev-manual/common-tasks:upgrading recipes` section
-+   of the Yocto Project Development Tasks Manual.
- 
- The ``devtool upgrade`` command is flexible enough to allow you to
- specify source code revision and versioning schemes, extract code into
-diff --git a/documentation/sdk-manual/working-projects.rst b/documentation/sdk-manual/working-projects.rst
-index ad84ce2b87..c482c38c70 100644
---- a/documentation/sdk-manual/working-projects.rst
-+++ b/documentation/sdk-manual/working-projects.rst
-@@ -135,9 +135,8 @@ project:
- 
-       To learn about environment variables established when you run the
-       cross-toolchain environment setup script and how they are used or
--      overridden when the Makefile, see the "
--      Makefile-Based Projects
--      " section.
-+      overridden when the Makefile, see the
-+      :ref:`sdk-manual/working-projects:makefile-based projects` section.
- 
-    This next command is a simple way to verify the installation of your
-    project. Running the command prints the architecture on which the
--- 
-2.25.1
+>   * From this URL, I downloaded and ran
+>     http://downloads.yoctoproject.org/releases/yocto/yocto-3.3.1/buildtools/x86_64-buildtools-nativesdk-standalone-3.3.1.sh.
+
+That is a buildtools tarball, not an eSDK.
+
+>     However, I didn't find the "devtool" or "run_qemu" scripts than the
+>     documentation mentions.
+
+An example would be:
+
+http://downloads.yoctoproject.org/releases/yocto/yocto-3.3.1/toolchain/x86_64/poky-glibc-x86_64-core-image-minimal-core2-64-qemux86-64-toolchain-ext-3.3.1.sh
+
+Which is an core-image-sato eSDK that runs on x86_64. There are other images
+and target MACHINEs.
+
+>   * Why don't we release ESDKs for arm or arm64 and other architectures?
+
+eSDK can only be built on the architecture it is intended to run on. We'd therefore
+have to build an aarch64 eSDK on aarch64 hardware. We do now have that but I suspect
+nobody has considered this before now.
+
+> Am I right to suspect that this part of the documentation is out of date?
+
+Sounds like it could at least do with some work!
+
+Cheers,
+
+Richard
 
