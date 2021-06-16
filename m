@@ -1,62 +1,71 @@
-Received: from bsmtp2.bon.at (bsmtp2.bon.at [213.33.87.16])
- by mx.groups.io with SMTP id smtpd.web10.5440.1623837564716581782
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+ by mx.groups.io with SMTP id smtpd.web12.5803.1623841302161925232
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Jun 2021 02:59:25 -0700
+ Wed, 16 Jun 2021 04:01:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: streamunlimited.com, ip: 213.33.87.16, mailfrom: quentin.schulz@streamunlimited.com)
-Received: from qschulz (vpn.streamunlimited.com [91.114.0.140])
-	by bsmtp2.bon.at (Postfix) with ESMTPSA id 4G4gdP1wTXz5tlP;
-	Wed, 16 Jun 2021 11:59:21 +0200 (CEST)
-Date: Wed, 16 Jun 2021 11:59:19 +0200
-From: "Quentin Schulz" <quentin.schulz@streamunlimited.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] sdk-manual: fix broken references
-Message-ID: <20210616095919.du3xmrpe2adlhge7@qschulz>
-References: <20210615170056.211711-1-michael.opdenacker@bootlin.com>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=YDDpZ/Ib;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.45, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f45.google.com with SMTP id y7so2163575wrh.7
+        for <docs@lists.yoctoproject.org>; Wed, 16 Jun 2021 04:01:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ADRIBkSNlYNM5YUbbroPLFBMk0ixbFqQowSfQgUUH50=;
+        b=YDDpZ/IbWGEjIJbvuufZw3UpgcwEY2K8QGvwey4M9jFJ8SpOm7GJT256wNii9hreRc
+         XD3AbRXNrO4WFMHN8w3/MyJrhY6vHS3dBIv2ZOMSaoFmcNNBTwnpkzanXV6B75PsDPpb
+         cgGbeOcj1lGAeWi/peUNXXzrDSPTMVGZlY0FY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ADRIBkSNlYNM5YUbbroPLFBMk0ixbFqQowSfQgUUH50=;
+        b=OsfA0FuA4hfznVsTD8CcszDK2dQQZM+t1g0a6K6oXHA/iSSBSlLZbkxclif7GZo7od
+         Rgd7Em4aSs7AtNiiYp5JZipcxsWAcS/QWj+ious0BDn1FMm0oZz+670gdOFAaogHfmeG
+         jZbilXITQYe/dzQJuE4/XMQiws0w/Or/cBQHbCqkMTgun9PKOLws8keSLa+01kM/tTzU
+         hmlgxyxde2AuEggVHKZbaOL2gnej8sAW95tHB+0m0InCJ/dX2CUiuN+tw0mqeuWeZpr9
+         tpcGkJrgqEFumE6rqWMTRnWM3edGYpDbHsql0LVvZDVKe71TUdeGF6Tq8nfA8Jwu74Ig
+         szpQ==
+X-Gm-Message-State: AOAM531EGemB1EL3A2R3KQ1FtjxVF0u9i+z6oYzwFD1bbKnCO5Bk1tKP
+	4E+BWSGtufCaVs9hxPR2rcnwBgW1KMdiDw==
+X-Google-Smtp-Source: ABdhPJwa1m/q0oomd+jZmzvmBnXEs8lG9ZE10mV5k7zMmumRWkGORGmy+BBr7t88JKUljoz6VLyADg==
+X-Received: by 2002:a5d:4c8f:: with SMTP id z15mr4636505wrs.131.1623841300262;
+        Wed, 16 Jun 2021 04:01:40 -0700 (PDT)
+Return-Path: <richard.purdie@linuxfoundation.org>
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:1d6e:bde3:735d:6a7d])
+        by smtp.gmail.com with ESMTPSA id g186sm1544654wme.6.2021.06.16.04.01.39
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 16 Jun 2021 04:01:40 -0700 (PDT)
+From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] README: Tweak as the website isn't really new now
+Date: Wed, 16 Jun 2021 12:01:39 +0100
+Message-Id: <20210616110139.3337372-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20210615170056.211711-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-Hi Michael,
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/README | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On Tue, Jun 15, 2021 at 07:00:56PM +0200, Michael Opdenacker wrote:
-> Detected by running:
-> git grep "^[\ ]*\" section" | grep -v "\`"
-> 
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  .../sdk-manual/appendix-customizing.rst         | 12 ++++++------
->  documentation/sdk-manual/extensible.rst         | 17 ++++++++---------
->  documentation/sdk-manual/working-projects.rst   |  5 ++---
->  3 files changed, 16 insertions(+), 18 deletions(-)
-> 
-> diff --git a/documentation/sdk-manual/appendix-customizing.rst b/documentation/sdk-manual/appendix-customizing.rst
-> index 67b49d9f49..c122fb5836 100644
-> --- a/documentation/sdk-manual/appendix-customizing.rst
-> +++ b/documentation/sdk-manual/appendix-customizing.rst
-> @@ -74,9 +74,9 @@ adjustments:
->        is set using the "?=" operator. Consequently, you will need to
->        either define the entire list by using the "=" operator, or you
->        will need to append a value using either "_append" or the "+="
-> -      operator. You can learn more about these operators in the "
-> -      Basic Syntax
-> -      " section of the BitBake User Manual.
-> +      operator. You can learn more about these operators in the
-> +      ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:basic syntax`"
-> +      section of the BitBake User Manual.
->  
->     .
->  
+diff --git a/documentation/README b/documentation/README
+index 3ad23a902..f9e803a28 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -88,8 +88,8 @@ documentation.
+ Yocto Project documentation website
+ ===================================
+ 
+-A new website has been created to host the Yocto Project
+-documentation, it can be found at: https://docs.yoctoproject.org/.
++The website hosting the Yocto Project documentation, can be found
++at: https://docs.yoctoproject.org/.
+ 
+ The entire Yocto Project documentation, as well as the BitBake manual,
+ is published on this website, including all previously released
+-- 
+2.30.2
 
-This seems like a spurious dot. (not introduced by your patch, I know :) )
-
-Looks good otherwise, did you check that it's referring to the same page
-we had in earlier docs? I often check by going on
-https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html
-and click on links and check if the reference I'm giving is the expected
-one.
-
-Cheers,
-Quentin
