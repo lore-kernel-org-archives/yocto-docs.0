@@ -1,108 +1,60 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.191.1623936297876722318
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web09.414.1623937285203641939
  for <docs@lists.yoctoproject.org>;
- Thu, 17 Jun 2021 06:24:58 -0700
+ Thu, 17 Jun 2021 06:41:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id E674C2000F;
-	Thu, 17 Jun 2021 13:24:54 +0000 (UTC)
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 3E6EBC0016
+	for <docs@lists.yoctoproject.org>; Thu, 17 Jun 2021 13:41:22 +0000 (UTC)
+Subject: Re: [docs] [PATCH] manuals: fix issues related to trailing dots
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] manuals: fix issues related to trailing dots
-Date: Thu, 17 Jun 2021 15:24:52 +0200
-Message-Id: <20210617132452.251092-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+References: <16896175A22B1467.698@lists.yoctoproject.org>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <ec1267fe-691a-9f0d-db4b-f4ed5d7d053c@bootlin.com>
+Date: Thu, 17 Jun 2021 15:41:22 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <16896175A22B1467.698@lists.yoctoproject.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-Fix missing reference and styling issues found thanks
-to trailing dots (only non black character in a line)
+Hello Michael,
 
-Matches (and multiple false positives) found with the below command:
-git grep "\s\.$"
+Thanks for the patch, but not it's not your best day today ;-)
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/overview-manual/concepts.rst        | 7 ++-----
- documentation/overview-manual/yp-intro.rst        | 3 +--
- documentation/ref-manual/release-process.rst      | 5 ++---
- documentation/sdk-manual/appendix-customizing.rst | 5 +----
- 4 files changed, 6 insertions(+), 14 deletions(-)
+On 6/17/21 3:24 PM, Michael Opdenacker wrote:
+> --- a/documentation/sdk-manual/appendix-customizing.rst
+> +++ b/documentation/sdk-manual/appendix-customizing.rst
+> @@ -78,8 +78,6 @@ adjustments:
+>        ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:basic syntax`"
+>        section of the BitBake User Manual.
+>  
+> -   .
+> -
+>  -  If you have classes or recipes that add additional tasks to the
+>     standard build flow (i.e. the tasks execute as the recipe builds as
+>     opposed to being called explicitly), then you need to do one of the
+> @@ -294,8 +292,7 @@ source, you need to do a number of things:
+>  
+>           This second option is the safest option should you have any
+>           doubts as to which method to use when setting
+> -         SSTATE_MIRRORS
+> -         .
+> +         :term:``SSTATE_MIRRORS``
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index ab882ff778..642ef15fe5 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -1462,12 +1462,9 @@ cross-compiler that is used internally within BitBake only.
- 
- .. note::
- 
--   The extensible SDK does not use
--   gcc-cross-canadian
-+   The extensible SDK does not use ``gcc-cross-canadian``
-    since this SDK ships a copy of the OpenEmbedded build system and the
--   sysroot within it contains
--   gcc-cross
--   .
-+   sysroot within it contains ``gcc-cross``.
- 
- The chain of events that occurs when the standard toolchain is bootstrapped::
- 
-diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-index 28ed07994a..d20a4ab09f 100644
---- a/documentation/overview-manual/yp-intro.rst
-+++ b/documentation/overview-manual/yp-intro.rst
-@@ -248,8 +248,7 @@ accomplish this through a recipe that is a BitBake append
- .. note::
- 
-    For general information on BSP layer structure, see the
--   :doc:`/bsp-guide/index`
--   .
-+   :doc:`/bsp-guide/index`.
- 
- The :term:`Source Directory`
- contains both general layers and BSP layers right out of the box. You
-diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
-index 64adc1e389..ab143f7df0 100644
---- a/documentation/ref-manual/release-process.rst
-+++ b/documentation/ref-manual/release-process.rst
-@@ -166,9 +166,8 @@ repository.
- 
- .. note::
- 
--   You can find all these branches in the Yocto Project
--   Source Repositories
--   .
-+   You can find all these branches in the
-+   :ref:`overview-manual/development-environment:yocto project source repositories`.
- 
- Testing within these public branches ensures in a publicly visible way
- that all of the main supposed architectures and recipes in OE-Core
-diff --git a/documentation/sdk-manual/appendix-customizing.rst b/documentation/sdk-manual/appendix-customizing.rst
-index 8c635d1662..78d668b8bb 100644
---- a/documentation/sdk-manual/appendix-customizing.rst
-+++ b/documentation/sdk-manual/appendix-customizing.rst
-@@ -78,8 +78,6 @@ adjustments:
-       ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:basic syntax`"
-       section of the BitBake User Manual.
- 
--   .
--
- -  If you have classes or recipes that add additional tasks to the
-    standard build flow (i.e. the tasks execute as the recipe builds as
-    opposed to being called explicitly), then you need to do one of the
-@@ -294,8 +292,7 @@ source, you need to do a number of things:
- 
-          This second option is the safest option should you have any
-          doubts as to which method to use when setting
--         SSTATE_MIRRORS
--         .
-+         :term:``SSTATE_MIRRORS``
- 
- Minimizing the Size of the Extensible SDK Installer Download
- ============================================================
+
+Oops, wrong syntax. It should be :term:`SSTATE_MIRRORS`.
+
+Please resubmit...
+
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
