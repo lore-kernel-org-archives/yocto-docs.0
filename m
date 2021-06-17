@@ -1,110 +1,51 @@
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web08.429.1623937363802126629
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web09.514.1623937845258002694
  for <docs@lists.yoctoproject.org>;
- Thu, 17 Jun 2021 06:42:44 -0700
+ Thu, 17 Jun 2021 06:50:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 0569F60004;
-	Thu, 17 Jun 2021 13:42:41 +0000 (UTC)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C9DD81BF207;
+	Thu, 17 Jun 2021 13:50:43 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH v2] manuals: fix issues related to trailing dots
-Date: Thu, 17 Jun 2021 15:42:34 +0200
-Message-Id: <20210617134234.251705-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] sdk-manual: add missing index references
+Date: Thu, 17 Jun 2021 15:50:39 +0200
+Message-Id: <20210617135039.252239-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <1689625B83281616.698@lists.yoctoproject.org>
-References: <1689625B83281616.698@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix missing reference and styling issues found thanks
-to trailing dots (only non black character in a line)
-
-Matches (and multiple false positives) found with the below command:
-git grep "\s\.$"
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/overview-manual/concepts.rst        | 7 ++-----
- documentation/overview-manual/yp-intro.rst        | 3 +--
- documentation/ref-manual/release-process.rst      | 5 ++---
- documentation/sdk-manual/appendix-customizing.rst | 5 +----
- 4 files changed, 6 insertions(+), 14 deletions(-)
+ documentation/sdk-manual/appendix-customizing.rst | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index ab882ff778..642ef15fe5 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -1462,12 +1462,9 @@ cross-compiler that is used internally within BitBake only.
- 
- .. note::
- 
--   The extensible SDK does not use
--   gcc-cross-canadian
-+   The extensible SDK does not use ``gcc-cross-canadian``
-    since this SDK ships a copy of the OpenEmbedded build system and the
--   sysroot within it contains
--   gcc-cross
--   .
-+   sysroot within it contains ``gcc-cross``.
- 
- The chain of events that occurs when the standard toolchain is bootstrapped::
- 
-diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-index 28ed07994a..d20a4ab09f 100644
---- a/documentation/overview-manual/yp-intro.rst
-+++ b/documentation/overview-manual/yp-intro.rst
-@@ -248,8 +248,7 @@ accomplish this through a recipe that is a BitBake append
- .. note::
- 
-    For general information on BSP layer structure, see the
--   :doc:`/bsp-guide/index`
--   .
-+   :doc:`/bsp-guide/index`.
- 
- The :term:`Source Directory`
- contains both general layers and BSP layers right out of the box. You
-diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
-index 64adc1e389..ab143f7df0 100644
---- a/documentation/ref-manual/release-process.rst
-+++ b/documentation/ref-manual/release-process.rst
-@@ -166,9 +166,8 @@ repository.
- 
- .. note::
- 
--   You can find all these branches in the Yocto Project
--   Source Repositories
--   .
-+   You can find all these branches in the
-+   :ref:`overview-manual/development-environment:yocto project source repositories`.
- 
- Testing within these public branches ensures in a publicly visible way
- that all of the main supposed architectures and recipes in OE-Core
 diff --git a/documentation/sdk-manual/appendix-customizing.rst b/documentation/sdk-manual/appendix-customizing.rst
-index 8c635d1662..db7cd412b8 100644
+index 8c635d1662..73ec7c5e8f 100644
 --- a/documentation/sdk-manual/appendix-customizing.rst
 +++ b/documentation/sdk-manual/appendix-customizing.rst
-@@ -78,8 +78,6 @@ adjustments:
-       ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:basic syntax`"
-       section of the BitBake User Manual.
+@@ -128,8 +128,7 @@ adjustments:
+    .. note::
  
--   .
--
- -  If you have classes or recipes that add additional tasks to the
-    standard build flow (i.e. the tasks execute as the recipe builds as
-    opposed to being called explicitly), then you need to do one of the
-@@ -294,8 +292,7 @@ source, you need to do a number of things:
+       You must also reflect this change in the value used for the
+-      COREBASE_FILES
+-      variable as previously described.
++      :term:`COREBASE_FILES` variable as previously described.
  
-          This second option is the safest option should you have any
-          doubts as to which method to use when setting
--         SSTATE_MIRRORS
--         .
-+         :term:`SSTATE_MIRRORS`
+ Changing the Extensible SDK Installer Title
+ ===========================================
+@@ -270,8 +269,7 @@ source, you need to do a number of things:
  
- Minimizing the Size of the Extensible SDK Installer Download
- ============================================================
+       SSTATE_MIRRORS = "file://.* http://example.com/some_path/sstate-cache/PATH"
+ 
+-   You can set the
+-   ``SSTATE_MIRRORS`` variable in two different places:
++   You can set the :term:`SSTATE_MIRRORS` variable in two different places:
+ 
+    -  If the mirror value you are setting is appropriate to be set for
+       both the OpenEmbedded build system that is actually building the
 -- 
 2.25.1
 
