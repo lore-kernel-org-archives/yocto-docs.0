@@ -1,98 +1,97 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.50131.1624294542472665866
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.5569.1624346537036043509
  for <docs@lists.yoctoproject.org>;
- Mon, 21 Jun 2021 09:55:42 -0700
+ Tue, 22 Jun 2021 00:22:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 8C78520005;
-	Mon, 21 Jun 2021 16:55:40 +0000 (UTC)
-Subject: Re: [docs] Yocto Doc Thoughts
-To: Randy Yates <yates@ieee.org>, docs@lists.yoctoproject.org
-References: <CALJBDKjUGx=xWMzypOLCMWRVfW6vCvv3=9fWFnZpeqZ_O7q62w@mail.gmail.com>
+	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 417F5FF80F;
+	Tue, 22 Jun 2021 07:22:14 +0000 (UTC)
+Subject: Re: [docs] [PATCH] docs: replace remaining ``FOO`` by :term:`FOO`
+To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
+References: <20210619070735.3998-1-foss@0leil.net>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <fc73a1a1-e3e0-e5ab-1d0c-ddb668d43ccc@bootlin.com>
-Date: Mon, 21 Jun 2021 18:55:39 +0200
+Message-ID: <77c62c9c-a8a5-1148-5977-d9cc66fac098@bootlin.com>
+Date: Tue, 22 Jun 2021 09:22:14 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <CALJBDKjUGx=xWMzypOLCMWRVfW6vCvv3=9fWFnZpeqZ_O7q62w@mail.gmail.com>
+In-Reply-To: <20210619070735.3998-1-foss@0leil.net>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Hi Randy,
+Hi Quentin,
 
-Many thanks about your feedback about our documentation! See my comments
-below...
+Thanks for the new patch!
 
-On 6/19/21 7:30 AM, Randy Yates wrote:
+On 6/19/21 9:07 AM, Quentin Schulz wrote:
+> A few occurences appeared between the time the original patch was sent
+> and it was applied, this fixes it.
 >
-> Hello All,
+> Also, the original patch didn't take into account lowercase terms, this
+> is now fixed, see module_autoload for example.
 >
-> I was asked to provide my feedback on the Yocto documentation on the
-> #yocto irc channel a few weeks ago, so here goes. Sorry it’s taken me
-> so long to get around to it.
+> Finally, as is often the case with regexp, there was a typo in it that
+> didn't make it match as much as it should have.
 >
-> First I want to say thank you to all who have volunteered their time
-> to create the Yocto documentation. The documentation has improved
-> significantly over the past few years I’ve been using Yocto (since
-> about 2016). The sheer amount and number of documents means this
-> was/is a Herculean task, even for a large group of volunteers such as
-> yourselves.
+> The script that is used to do the replacement of ``FOO`` by :term:`FOO`
+> is the following Python code:
 >
-> Also let me say (as will become obvious) that these ideas are not on
-> specific problems but address general attributes of the documentation
-> that I feel could be improved.
+> import re
+> from pathlib import Path
+> from runpy import run_module
+> import contextlib
+> import io
+> import sys
 >
-> OK, so the feedback:
+> re_term = re.compile(r'variables.html#term-([a-zA-Z_0-9]*)')
+> terms = []
+> new_terms = set()
 >
-> 1.
+> with contextlib.redirect_stdout(io.StringIO()) as f:
+>     run_module('sphinx.ext.intersphinx', run_name='__main__')
 >
->     Be less flowery. Many of the docs seem to be written with more
->     words than are necessary, as if embedding the information in some
->     amount of niceties helps engage the reader. In my opinion, it
->     hurts. The overriding goal of documentation should be to state
->     things as precisely and succinctly as possible so that the reader
->     gets to their information quickly and clearly. The writer should
->     spend x amount of time once writing things well so that 100,000
->     users don’t have to spend 100,000⁢x hours.
+> objects = f.getvalue()
 >
+> match = re_term.search(objects)
+> while match:
+>     if match.group(1):
+>         terms.append(match.group(1))
+>     match = re_term.search(objects, match.end())
+>
+> for rst in Path('.').rglob('*.rst'):
+>     with open(rst, 'r') as f:
+>         content = "".join(f.readlines())
+>     for term in terms:
+>         content = re.sub(r'``({})``(?!.*\s+[~=-]{{{:d},}})'.format(term, len(term)), r':term:`\1`', content)
+>
+>     with open(rst, 'w') as f:
+>         f.write(content)
+>
+> This script takes one argument as input: an objects.inv. Bitbake's can
+> be gotten from https://docs.yoctoproject.org/bitbake/objects.inv. The
+> objetcs.inv from the current git repo can be gotten from
+> documentation/_build/html/objetcs.inv after running `make html`.
+>
+> Note that this excludes from replacement terms that appear in section
+> titles as it requires refs to be changed too. This can be automated too
+> if need be but right now it looks a bit confusing to have an anchor link
+> (for sections) also have a term/reference link in it. I am not sure this
+> is desired today.
+>
+> This is the result of two runs of the aforementioned script, once with
+> Bitbake objects.inv and once with this repo's.
+>
+> Fixes: ba49d9babfcb "docs: replace ``FOO`` by :term:`FOO` where possible"
+>
+> Signed-off-by: Quentin Schulz <foss@0leil.net>
 
-I agree with this. As the new (part-time) maintainer of the
-documentation, I had that impression too and found redundant
-explanations or types of sentences that would be worth factorizing, not
-mentioning the style that is definitely worth simplifying too. I already
-started some "simple" simplifications, but there is a long way to go.
 
-> 1.
->
->     Related to the previous point, factor the information into logical
->     pieces and define things once. It seems that many parts of the
->     Yocto system are described across several documents. This makes it
->     difficult to digest.
->
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Agreed too. The current documentation can definitely be made simpler and
-easier to follow, and therefore less time consuming for readers.
-
-> 1.
->
->     Be less grammatically and/or syntactically ambiguous, and provide
->     sufficient context.
->
-> I should have taken some time to provide specific examples, but this
-> is a start. If it doesn’t irritate folks too much, I can put together
-> a followup with specifics.
->
-I'd definitely be interested in examples, indeed.
-
-All this is only my opinion, and I'm not the only one in charge (the
-community of developers we submit documentation patches to ultimately
-decides), but it's good to know that our views intersect.
-
-Thanks again for your contribution.
+Merged into "master-next". Thanks again,
 
 Michael.
 
