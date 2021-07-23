@@ -1,62 +1,57 @@
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web09.5732.1627029346187140497
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.8029.1627046367997837298
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Jul 2021 01:35:46 -0700
+ Fri, 23 Jul 2021 06:19:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 3064840004;
-	Fri, 23 Jul 2021 08:35:43 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [bitbake-devel] [PATCH] doc: bitbake-user-manual: fix syntax in example and improve description
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- bitbake-devel@lists.openembedded.org
-References: <20210722171021.69225-1-michael.opdenacker@bootlin.com>
- <a7519c3f91a397c4e4259be88c0ccd76c3b2f037.camel@linuxfoundation.org>
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 0097F2000B;
+	Fri, 23 Jul 2021 13:19:25 +0000 (UTC)
+Subject: Re: [docs] [PATCH] test-manual: document LTO related reproducibility bug
+To: docs@lists.yoctoproject.org, tonyb@cybernetics.com
+References: <1692572BA30A3D60.32208@lists.yoctoproject.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <80d7406b-0b12-feaf-7381-56c815062122@bootlin.com>
-Date: Fri, 23 Jul 2021 10:35:43 +0200
+Message-ID: <bb1efba1-7335-fb00-e133-5562eca438f9@bootlin.com>
+Date: Fri, 23 Jul 2021 15:19:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <a7519c3f91a397c4e4259be88c0ccd76c3b2f037.camel@linuxfoundation.org>
+In-Reply-To: <1692572BA30A3D60.32208@lists.yoctoproject.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Hi Richard,
 
-On 7/23/21 12:14 AM, Richard Purdie wrote:
-> I should probably highlight there is a new command, "bitbake-getvar":
+On 7/16/21 7:57 PM, Michael Opdenacker wrote:
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> ---
+>  documentation/test-manual/reproducible-builds.rst | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 >
-> http://git.yoctoproject.org/cgit.cgi/poky/commit/?id=7bbeddeee1992d8c8fb71ba2dd49b03d0ae1ce86
->
-> We probably want to document that.
+> diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
+> index e13583c0bf..1938041b2d 100644
+> --- a/documentation/test-manual/reproducible-builds.rst
+> +++ b/documentation/test-manual/reproducible-builds.rst
+> @@ -68,6 +68,17 @@ things we do within the build system to ensure reproducibility include:
+>  -  Filtering the tools available from the host's ``PATH`` to only a specific set
+>     of tools, set using the :term:`HOSTTOOLS` variable.
+>  
+> +.. note::
+> +
+> +   Because of an open bug in GCC, using ``DISTRO_FEATURES_append = " lto"`` or
+> +   adding ``-flto`` (Link Time Optimization) to a Makefile makes the resulting
+> +   binary non-reproducible, in that it depends on the full absolute build path
+> +   to ``recipe-sysroot-native``, so installing the Yocto Project in a different
+> +   directory results in a different binary.
+> +
+> +   This issue is addressed by
+> +   :yocto_bugs:`bug 14481 -  Programs built with -flto are not reproducible</show_bug.cgi?id=14481>`.
 
+Merged into "master-next" for yocto-docs, after replacing "a Makefile"
+by "CFLAGS", as recommended by Tony (thanks!)
 
-Sure, this sounds like a very good idea indeed. I'll take care of that.
-
->
-> Whilst I'm thinking about it, the override discussions on the architecture list
-> are going to have implications for documentation too.
->
-> http://git.yoctoproject.org/cgit.cgi/poky/commit/?id=75fad23fc06c008a03414a1fc288a8614c6af9ca
-
-
-Of course! I was wondering when we are supposed to start updating the
-documentation. Probably right now, indeed, right?
-
->
-> An example of my scripted conversion run against the manuals is included
-> in this commit:
->
-> http://git.yoctoproject.org/cgit.cgi/poky-contrib/diff/documentation/ref-manual/variables.rst?h=rpurdie/overrides-convert&id=9ac22a64a4c0ac4640552e90674e6459f0fece9a
-
-Where can I find the script (or commands) that you used to modify the
-documentation?
-
-Thanks,
+Cheers
 Michael.
 
 -- 
