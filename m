@@ -1,61 +1,72 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.8029.1627046367997837298
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+ by mx.groups.io with SMTP id smtpd.web11.9100.1627050842909709550
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Jul 2021 06:19:28 -0700
+ Fri, 23 Jul 2021 07:34:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 0097F2000B;
-	Fri, 23 Jul 2021 13:19:25 +0000 (UTC)
-Subject: Re: [docs] [PATCH] test-manual: document LTO related reproducibility bug
-To: docs@lists.yoctoproject.org, tonyb@cybernetics.com
-References: <1692572BA30A3D60.32208@lists.yoctoproject.org>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <bb1efba1-7335-fb00-e133-5562eca438f9@bootlin.com>
-Date: Fri, 23 Jul 2021 15:19:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=j2roJtGN;
+ spf=softfail (domain: sakoman.com, ip: 209.85.214.172, mailfrom: steve@sakoman.com)
+Received: by mail-pl1-f172.google.com with SMTP id u8so3547039plr.1
+        for <docs@lists.yoctoproject.org>; Fri, 23 Jul 2021 07:34:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WdM6Vxye9pCsvGRCxVbnQHF1HyVi40xUKJ0D70fbH+0=;
+        b=j2roJtGNZtUo6Kf53h+RHqWO+qiChy85E9Nr0/Jr5atxEddxNqCAQjVZnAmMUvSE7X
+         dz9tht2LJKecRNivZ6D5EPVX3IQtHiPiAyR/X2cYKwZp8CpC5SDLSU2XujveT9Ktqauh
+         ucETImr/gZoyKESB3EyH2yqNDoVTlsl9H95+aarCbkwe34rXVUqy1wrtNZCmB6oA5k83
+         uiM0G7Vuedah/1ZWQF4CQqFmQg5j2UmmGq7r6PKek5nOl6gR+PZtoZtgK7we7pPMk3IF
+         TNNlwaS8ISO8E1+P2nlMjJZRrwFu8kk1xtGcwJxwCv/Q5H4oWPd3eNOFXDIA8F3Uy1eH
+         Gpqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WdM6Vxye9pCsvGRCxVbnQHF1HyVi40xUKJ0D70fbH+0=;
+        b=oIArj4pZ/aFXOk0s5n458yJxhCga5ybV+B9rTXB2NE0tbbdWHP1BqfyuHn+kjQm5xo
+         V6ZU+z55Y1Zbm6oqOyGMUANQby7qkCcT6fl7JEOpvaog1Q0QGtmfECGBmJZ7Czy6GDsU
+         TlNJbt5Hm5ku0/RqSKmoaYL3Pzm0NVD69CmwQemXOEbCydSg1gjRcvI4HbjOSZLkeJC9
+         cj/AC83Cg1Iynw5rV4X8GAM1MJS74ELU1J4Vro8Drz9e2MXXqFjYoQV7qsMcoa6PWLSV
+         fahdedHGCKlDzWL3fkXm7NsODkw0fKrZzzunhXF7sOLNL8u63nTXApeW+Jc0XIq5xxnh
+         pZMg==
+X-Gm-Message-State: AOAM530qa0HsGFaTh3fd3obXU3/1NeN0uapksyr5Fo4OgnsNU4Og+2vC
+	TY/VnFV/gPLr+eDg/EcdLhhuMMUhuSdQRYrF
+X-Google-Smtp-Source: ABdhPJz2QmNjTsYOuXk3tOa7+JCCMYiK+9IzyEgLWzF6mhQ455UmFq1doVEXmXAD+itDZ/6q9Dhbgw==
+X-Received: by 2002:aa7:9904:0:b029:32d:a034:eaeb with SMTP id z4-20020aa799040000b029032da034eaebmr4688574pff.24.1627050841661;
+        Fri, 23 Jul 2021 07:34:01 -0700 (PDT)
+Return-Path: <steve@sakoman.com>
+Received: from localhost.localdomain (rrcs-66-91-142-162.west.biz.rr.com. [66.91.142.162])
+        by smtp.gmail.com with ESMTPSA id k8sm39706924pgr.91.2021.07.23.07.34.00
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Jul 2021 07:34:01 -0700 (PDT)
+From: "Steve Sakoman" <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell 0/1] Pull request (cover letter only)
+Date: Fri, 23 Jul 2021 04:33:44 -1000
+Message-Id: <cover.1627050758.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <1692572BA30A3D60.32208@lists.yoctoproject.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
+The following changes since commit 0fadb292429b4147408798ed4c806ba6d9dd81b8:
 
-On 7/16/21 7:57 PM, Michael Opdenacker wrote:
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  documentation/test-manual/reproducible-builds.rst | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->
-> diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
-> index e13583c0bf..1938041b2d 100644
-> --- a/documentation/test-manual/reproducible-builds.rst
-> +++ b/documentation/test-manual/reproducible-builds.rst
-> @@ -68,6 +68,17 @@ things we do within the build system to ensure reproducibility include:
->  -  Filtering the tools available from the host's ``PATH`` to only a specific set
->     of tools, set using the :term:`HOSTTOOLS` variable.
->  
-> +.. note::
-> +
-> +   Because of an open bug in GCC, using ``DISTRO_FEATURES_append = " lto"`` or
-> +   adding ``-flto`` (Link Time Optimization) to a Makefile makes the resulting
-> +   binary non-reproducible, in that it depends on the full absolute build path
-> +   to ``recipe-sysroot-native``, so installing the Yocto Project in a different
-> +   directory results in a different binary.
-> +
-> +   This issue is addressed by
-> +   :yocto_bugs:`bug 14481 -  Programs built with -flto are not reproducible</show_bug.cgi?id=14481>`.
+  documentation: prepare for 3.1.9 release (2021-06-16 10:56:49 +0100)
 
-Merged into "master-next" for yocto-docs, after replacing "a Makefile"
-by "CFLAGS", as recommended by Tony (thanks!)
+are available in the Git repository at:
 
-Cheers
-Michael.
+  git://git.yoctoproject.org/yocto-docs contrib/dunfell-next
+  http://git.yoctoproject.org/cgit.cgi/yocto-docs/log/?h=contrib/dunfell-next
+
+Steve Sakoman (1):
+  documentation: prepare for 3.1.10 release
+
+ documentation/conf.py                    | 2 +-
+ documentation/poky.yaml                  | 8 ++++----
+ documentation/releases.rst               | 3 ++-
+ documentation/sphinx-static/switchers.js | 2 +-
+ 4 files changed, 8 insertions(+), 7 deletions(-)
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
