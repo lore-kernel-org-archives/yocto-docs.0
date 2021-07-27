@@ -1,64 +1,51 @@
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web12.520.1627389373371080969
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web11.1722.1627395139262539499
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jul 2021 05:36:13 -0700
+ Tue, 27 Jul 2021 07:12:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 0BDAC240017;
-	Tue, 27 Jul 2021 12:36:10 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org, Quentin Schulz <foss@0leil.net>
-Subject: Re: [docs] [PATCH] ref-manual: remove unused example recipe source files
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>
-References: <16959EEB5BD85597.12821@lists.yoctoproject.org>
- <e17cad88-9b81-68fe-66c3-9305aa494f17@bootlin.com>
- <20210727112302.spzqyqnu3k2sskxi@fedora>
- <4c34e5320bb80e9234ca68c1e110e0581853766e.camel@linuxfoundation.org>
+	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 80A7D240017;
+	Tue, 27 Jul 2021 14:12:17 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <dc7f8298-bf2c-1466-1734-882a192c82d8@bootlin.com>
-Date: Tue, 27 Jul 2021 14:36:10 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH 1/2] documentation/README: improve BitBake manual referencing guidelines
+Date: Tue, 27 Jul 2021 16:11:59 +0200
+Message-Id: <20210727141200.128209-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <4c34e5320bb80e9234ca68c1e110e0581853766e.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Richard, Quentin,
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/README | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Many thanks for your feedback.
-
-On 7/27/21 1:38 PM, Richard Purdie wrote:
-> On Tue, 2021-07-27 at 13:23 +0200, Quentin Schulz wrote:
->> I wouldn't remove them as I find example recipes to be very welcomed as
->> real life examples of what can/needs to be done. It shows also some
->> gotchas and what a minimal recipe should look like.
->>
->> What I have to complain about those files currently is that they are not
->> built and they weren't working for a while, which is a bit of a shame
->> for example recipes :)
->>
->> I don't think keeping them in the yocto-docs is something we want to
->> push for (at least I won't), but I feel like we should keep them
->> somewhere they are built so we maintain them along other recipes.
->>
->> I can see that we have a recipe for an out-of-tree kernel drievr recipe
->> available in poky/meta-skeleton layer (called hello-mod). I guess this
->> is a place we could put the examples you want to remove from yocto-docs?
-> If they were in meta-skeleton we could build/test them...
-
-
-Thanks for the suggestion! I'll propose a patch doing this.
-
-Cheers,
-
-Michael.
-
+diff --git a/documentation/README b/documentation/README
+index f9e803a28b..1d4d213076 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -328,11 +328,15 @@ The sphinx.ext.intersphinx extension is enabled by default
+ so that we can cross reference content from other Sphinx based
+ documentation projects, such as the BitBake manual.
+ 
+-References to the bitbake manual can be done like this:
+-
+-  See the ":ref:`-D <bitbake:bitbake-user-manual/bitbake-user-manual-intro:usage and syntax>`" option
+-or
++References to the BitBake manual can be done:
++ - With a specific description instead of the section name:
++  :ref:`Azure Storage fetcher (az://) <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>`
++ - With the section name:
++  ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-intro:usage and syntax` option
++ - With a BitBake variable name:
+   :term:`bitbake:BB_NUMBER_PARSE_THREADS`
++ - Linking to the entire BitBake manual:
++  :doc:`BitBake User Manual <bitbake:index>`
+ 
+ Submitting documentation changes
+ ================================
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
