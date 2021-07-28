@@ -1,63 +1,63 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.5688.1627483171826429906
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web11.6053.1627484673655019960
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Jul 2021 07:39:32 -0700
+ Wed, 28 Jul 2021 08:04:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 183ADFF802
-	for <docs@lists.yoctoproject.org>; Wed, 28 Jul 2021 14:39:29 +0000 (UTC)
-Subject: Re: [docs] [PATCH] manuals: mention license information in footer
-To: docs@lists.yoctoproject.org
-References: <1695FB134708B5C3.29235@lists.yoctoproject.org>
+	by relay12.mail.gandi.net (Postfix) with ESMTPSA id 12578200008;
+	Wed, 28 Jul 2021 15:04:30 +0000 (UTC)
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [bitbake-devel] [PATCH] doc: bitbake-user-manual: update bitbake option help
+To: bitbake-devel@lists.openembedded.org
+References: <1693DEF4612E3029.18576@lists.openembedded.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <d0ec6411-b44e-d597-2a4b-501d2035df4f@bootlin.com>
-Date: Wed, 28 Jul 2021 16:39:29 +0200
+Message-ID: <6395f36d-e688-9556-565e-95333e525ef0@bootlin.com>
+Date: Wed, 28 Jul 2021 17:04:30 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <1695FB134708B5C3.29235@lists.yoctoproject.org>
+In-Reply-To: <1693DEF4612E3029.18576@lists.openembedded.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Greetings,
 
-On 7/28/21 4:34 PM, Michael Opdenacker wrote:
-> Previously, the license for the manuals was only
-> stated in the SPDX headers at the beginning of source files
->
+On 7/21/21 7:36 PM, Michael Opdenacker wrote:
 > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 > ---
->  documentation/conf.py | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  doc/bitbake-user-manual/bitbake-user-manual-intro.rst | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 >
-> diff --git a/documentation/conf.py b/documentation/conf.py
-> index 6c6458fed7..8e15fdc869 100644
-> --- a/documentation/conf.py
-> +++ b/documentation/conf.py
-> @@ -28,7 +28,7 @@ release = current_version
->  
->  # -- Project information -----------------------------------------------------
->  project = 'The Yocto Project \xae'
-> -copyright = '2010-%s, The Linux Foundation' % datetime.datetime.now().year
-> +copyright = '2010-%s, The Linux Foundation, CC-BY-SA-2.0-UK license' % datetime.datetime.now().year
->  author = 'The Linux Foundation'
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+> index b3cea61f..7c29c8c0 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+> @@ -417,8 +417,8 @@ Following is the usage and syntax for BitBake::
+>       -l DEBUG_DOMAINS, --log-domains=DEBUG_DOMAINS
+>                             Show debug logging for the specified logging domains
+>       -P, --profile         Profile the command and save reports.
+> -     -u UI, --ui=UI        The user interface to use (knotty, ncurses or taskexp
+> -                           - default knotty).
+> +     -u UI, --ui=UI        The user interface to use (knotty, ncurses, taskexp or
+> +                           teamcity - default knotty).
+>       --token=XMLRPCTOKEN   Specify the connection token to be used when
+>                             connecting to a remote server.
+>       --revisions-changed   Set the exit code depending on whether upstream
+> @@ -433,6 +433,9 @@ Following is the usage and syntax for BitBake::
+>                             Environment variable BB_SERVER_TIMEOUT.
+>       --no-setscene         Do not run any setscene tasks. sstate will be ignored
+>                             and everything needed, built.
+> +     --skip-setscene       Skip setscene tasks if they would be executed. Tasks
+> +                           previously restored from sstate will be kept, unlike
+> +                           --no-setscene
+>       --setscene-only       Only run setscene tasks, don't run any real tasks.
+>       --remote-server=REMOTE_SERVER
+>                             Connect to the specified server.
 
 
-I have a few follow-up questions...
-
-  * Shouldn't we have a quick section at the beginning of the
-    documentation mentioning the license information?
-  * Shouldn't the copyright owner be "The Yocto Project and OpenEmbedded
-    community", as in the Linux kernel documentation? Though the
-    contributions funded by the Linux Foundation are very big, there are
-    other contributors and we don't ask them to transfer their copyright
-    to the LF.
-
-Thanks in advance for your advise.
-Cheers
+Ping ;-)
 Michael.
 
 -- 
