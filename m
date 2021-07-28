@@ -1,63 +1,72 @@
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web11.6053.1627484673655019960
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web10.6589.1627486909850983119
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Jul 2021 08:04:34 -0700
+ Wed, 28 Jul 2021 08:41:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id 12578200008;
-	Wed, 28 Jul 2021 15:04:30 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [bitbake-devel] [PATCH] doc: bitbake-user-manual: update bitbake option help
-To: bitbake-devel@lists.openembedded.org
-References: <1693DEF4612E3029.18576@lists.openembedded.org>
+	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 98A7E240005;
+	Wed, 28 Jul 2021 15:41:47 +0000 (UTC)
+Cc: foss@0leil.net, 972931182@qq.com
+Subject: Re: [docs] [PATCH] dev-manual: fix wrong file
+To: Mingrui Ren <jiladahe1997@gmail.com>, docs@lists.yoctoproject.org
+References: <45f034b6-c943-de00-86a7-dfce48cbffa9@gmail.com>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <6395f36d-e688-9556-565e-95333e525ef0@bootlin.com>
-Date: Wed, 28 Jul 2021 17:04:30 +0200
+Message-ID: <40389349-3aab-cd16-3fe1-69b770358c54@bootlin.com>
+Date: Wed, 28 Jul 2021 17:41:47 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <1693DEF4612E3029.18576@lists.openembedded.org>
+In-Reply-To: <45f034b6-c943-de00-86a7-dfce48cbffa9@gmail.com>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
+Greetings,
 
-On 7/21/21 7:36 PM, Michael Opdenacker wrote:
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  doc/bitbake-user-manual/bitbake-user-manual-intro.rst | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
+Apologies for the late reply!
+
+On 6/21/21 4:33 PM, Mingrui Ren wrote:
+> From 43e67b6c7c5e29d608b5459c6041b195ac94e4cc Mon Sep 17 00:00:00 2001
+> From: Mingrui Ren <jiladahe1997@gmail.com>
+> Date: Mon, 21 Jun 2021 21:38:45 +0800
+> Subject: [PATCH] dev-manual: fix wrong file
 >
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> index b3cea61f..7c29c8c0 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> @@ -417,8 +417,8 @@ Following is the usage and syntax for BitBake::
->       -l DEBUG_DOMAINS, --log-domains=DEBUG_DOMAINS
->                             Show debug logging for the specified logging domains
->       -P, --profile         Profile the command and save reports.
-> -     -u UI, --ui=UI        The user interface to use (knotty, ncurses or taskexp
-> -                           - default knotty).
-> +     -u UI, --ui=UI        The user interface to use (knotty, ncurses, taskexp or
-> +                           teamcity - default knotty).
->       --token=XMLRPCTOKEN   Specify the connection token to be used when
->                             connecting to a remote server.
->       --revisions-changed   Set the exit code depending on whether upstream
-> @@ -433,6 +433,9 @@ Following is the usage and syntax for BitBake::
->                             Environment variable BB_SERVER_TIMEOUT.
->       --no-setscene         Do not run any setscene tasks. sstate will be ignored
->                             and everything needed, built.
-> +     --skip-setscene       Skip setscene tasks if they would be executed. Tasks
-> +                           previously restored from sstate will be kept, unlike
-> +                           --no-setscene
->       --setscene-only       Only run setscene tasks, don't run any real tasks.
->       --remote-server=REMOTE_SERVER
->                             Connect to the specified server.
+> The file 'meta/classes/core-image.bbclass' seems have nothing about
+> 'IMAGE_FEATURES' variable, maybe it should be
+> 'meta/classes/image.bbclass'.
+>
+> Signed-off-by: Mingrui Ren <jiladahe1997@gmail.com>
+> ---
+>  documentation/dev-manual/common-tasks.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/documentation/dev-manual/common-tasks.rst
+> b/documentation/dev-manual/common-tasks.rst
+> index 762636a17c..9ff33a4ce8 100644
+> --- a/documentation/dev-manual/common-tasks.rst
+> +++ b/documentation/dev-manual/common-tasks.rst
+> @@ -872,7 +872,7 @@ a recipe and using :term:`EXTRA_IMAGE_FEATURES`
+> from within your
+>  :term:`Build Directory`.
+>
+>  To understand how these features work, the best reference is
+> -``meta/classes/core-image.bbclass``. This class lists out the available
+> +``meta/classes/image.bbclass``. This class lists out the available
+>  :term:`IMAGE_FEATURES` of which most map to package groups while
+> some, such
+>  as ``debug-tweaks`` and ``read-only-rootfs``, resolve as general
+>  configuration settings.
 
+Thanks for reporting this. I agree with your proposal.
 
-Ping ;-)
+I couldn't apply the patch with "git am", but I recreated it manually.
+It's now in the "master-next"  branch of "yocto-docs" and should be in
+"master" (in the public documentation) in the next days.
+
+Thanks again!
+Cheers,
 Michael.
 
 -- 
