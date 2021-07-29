@@ -1,94 +1,148 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
- by mx.groups.io with SMTP id smtpd.web08.16004.1627594265091737346
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+ by mx.groups.io with SMTP id smtpd.web12.16086.1627596588832766788
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Jul 2021 14:31:05 -0700
+ Thu, 29 Jul 2021 15:09:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=RYik5clm;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.52, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f52.google.com with SMTP id m19so4621480wms.0
-        for <docs@lists.yoctoproject.org>; Thu, 29 Jul 2021 14:31:04 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=TzAxeCwq;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f44.google.com with SMTP id u15-20020a05600c19cfb02902501bdb23cdso7810990wmq.0
+        for <docs@lists.yoctoproject.org>; Thu, 29 Jul 2021 15:09:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=bX4nlt2cHCQEs/+PTtSQ7jahAPBukX8yc36/mYFsntc=;
-        b=RYik5clm85YqRsUphtF0PqaOWjmFvA/tudhMUs0p9jpas1fUvrnuUKJzybUQWn2TEj
-         WxndKTumKvrDghLDFNGqX/V8Qu2wzoEjNA9DqtEiDlL6Hisadtwj/TWOuqTJKk2DKrAu
-         niyg7OHLAjdPeUK08MaJPR6rKT2rdWOXBgAz4=
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CEdzgAMdPGH56BEt6j3qO1FVMsIVSJagSp/N6UCEhvU=;
+        b=TzAxeCwq4cFDckuccWM0fgK0hzOxVGV2fLaWjNNvpnXNYSq96pQ0ehjRrO5nZJly4V
+         2caiirUjNwuF7JmtEkBo6qFjT2uyILXUoyNOuBr7ESQecBDzMgnmlyNDCPivIxc9XGr0
+         vO7TmqJzOcguVtXiCjmesZGvWSSCaKzhe4lRE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=bX4nlt2cHCQEs/+PTtSQ7jahAPBukX8yc36/mYFsntc=;
-        b=h4u6IKZRdTaBo579w2h2BG3rpmVENMaAZhb4XNMgme4GoeCDYz3Me5buoDjI/IfJLD
-         Tkv/5Y4OgvOfqZ446qVDGsg1bRzhTYEYV1Pi6O+CLJGTJV+LyE1SYXQBe+vVJMAiM0cg
-         Wo3ctz+H/9hCZG3cwcuMuyHWzGTYiEIC314iNeq2vRPHxclOaa5VcIRnd/a55fy0OzFO
-         MjtrdbWnvspTK/8oPpCC8aGeE0Bf4KeaJcFOxqrqtAn7mXee+RXFnUCmRNNMDKGGqlZ+
-         g3f0o8Dy2LKGHyRFluNmAGmclBsVoKnGBsFQocoKlYzcGfc7bUKwlRkIueb1N0OkxKmt
-         465g==
-X-Gm-Message-State: AOAM5300D08G3prbXhOpi6Gkz0Tnbt/FIi8QkRggfPGfZLO0X9JV5WO7
-	QNcnvA/ue65ZA8XCriMprrdZSg==
-X-Google-Smtp-Source: ABdhPJz7rMnG8vTeLsaQmeYm4oqq82ne1IFtDjzBmaTZH56LRsVfpOwkvkJznz7MuRBUO5PXCxjSTg==
-X-Received: by 2002:a05:600c:4657:: with SMTP id n23mr6792327wmo.46.1627594262991;
-        Thu, 29 Jul 2021 14:31:02 -0700 (PDT)
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=CEdzgAMdPGH56BEt6j3qO1FVMsIVSJagSp/N6UCEhvU=;
+        b=E2/J+K7YYnQPV2wRQtseIK4OPOX1Z3sTv36Ub2SVVIi//HfS/Tvrg3UZm6phj8CBPy
+         Aen4Vm9vyd1ggCEi4/9MEksUmVNEbPgSD2CqRUKCaq+iUsoZkYADCHN+fscijwz2tZVH
+         tpfdNtb+CPl9BE9qKs84TWzph/ynBJ6SNrZ3AsLFxgRByjmDQgoJg7Ro+/bMU08KCir4
+         1t8jXHiqMgVwcW8PWxZ6cL9bTXrNRdvtXQOQxQxn3OWI/7RDLJvXkgkZv3D44eFDz97I
+         yB65tbXdPboo3EyGBx5/FyAMwPzAIOgFAmSokjioJXG7grvqJB/jFqqOLL5VATFA1pG+
+         Xo3A==
+X-Gm-Message-State: AOAM532YYuznyl3XQa/YhImcP3Xggg0GkQXMz5qoq/npz6RjJxKi9o3n
+	cF1XSyibfIJkP24GTqqJwPh5PGlySDkwig==
+X-Google-Smtp-Source: ABdhPJyUsXo//sKoUm7T1i9v2QkQsDKl/dsIPTNd1RZs02QTQrIL7jEjZ91NTmsypblLu+AYtfdXiQ==
+X-Received: by 2002:a1c:7314:: with SMTP id d20mr6726733wmb.167.1627596586773;
+        Thu, 29 Jul 2021 15:09:46 -0700 (PDT)
 Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:89c8:a51f:1301:604b? ([2001:8b0:aba:5f3c:89c8:a51f:1301:604b])
-        by smtp.gmail.com with ESMTPSA id t17sm4630925wru.94.2021.07.29.14.31.02
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:47e7:2d3d:e4c2:218b])
+        by smtp.gmail.com with ESMTPSA id p3sm10876769wmp.25.2021.07.29.15.09.46
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jul 2021 14:31:02 -0700 (PDT)
-Message-ID: <ebf96a35dd0205f17136e1c60860224889006890.camel@linuxfoundation.org>
-Subject: Re: [bitbake-devel] [PATCH] doc: bitbake-user-manual: grammar fix for the number of "metadata"
+        Thu, 29 Jul 2021 15:09:46 -0700 (PDT)
 From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>, Michael
- Opdenacker <michael.opdenacker@bootlin.com>
-Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
-Date: Thu, 29 Jul 2021 22:31:01 +0100
-In-Reply-To: <20210729130521.e5dkww5yktdf3uno@fedora>
-References: 
-	<9aebdc2ca149587d39cd23628c392423148f22ba.camel@linuxfoundation.org>
-	 <20210729130133.163787-1-michael.opdenacker@bootlin.com>
-	 <20210729130521.e5dkww5yktdf3uno@fedora>
-User-Agent: Evolution 3.40.0-1 
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: Add start of 3.4 guide with override migration notes
+Date: Thu, 29 Jul 2021 23:09:45 +0100
+Message-Id: <20210729220945.3333837-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 
-On Thu, 2021-07-29 at 15:05 +0200, Quentin Schulz wrote:
-> Hi Michael,
-> 
-> On Thu, Jul 29, 2021 at 03:01:33PM +0200, Michael Opdenacker wrote:
-> > "metadata" is used both as singular and as plural.
-> > The first change fixes a case in which the verbs have a singular conjugation
-> > but articles that indicate a plural case.
-> > 
-> > The second change is for consistency with the first one inside
-> > the same paragraph.
-> > 
-> > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> > ---
-> >  doc/bitbake-user-manual/bitbake-user-manual-intro.rst | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> > index eb140665..64e7305d 100644
-> > --- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> > +++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> > @@ -27,11 +27,11 @@ Linux software stacks using a task-oriented approach.
-> >  Conceptually, BitBake is similar to GNU Make in some regards but has
-> >  significant differences:
-> >  
-> > 
-> > 
-> > 
-> > --  BitBake executes tasks according to provided metadata that builds up
-> > +-  BitBake executes tasks according to provided metadata that build up
-> >     the tasks. Metadata is stored in recipe (``.bb``) and related recipe
-> 
-> Then "Metadata are" here seems appropriate to me. What do you think?
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/migration-guides/index.rst      |  1 +
+ .../migration-guides/migration-3.4.rst        | 72 +++++++++++++++++++
+ 2 files changed, 73 insertions(+)
+ create mode 100644 documentation/migration-guides/migration-3.4.rst
 
-I'd have said "Metadata is stored in recipes"...
-
-Cheers,
-
-Richard 
+diff --git a/documentation/migration-guides/index.rst b/documentation/migration-guides/index.rst
+index 6304e6318..287b55319 100644
+--- a/documentation/migration-guides/index.rst
++++ b/documentation/migration-guides/index.rst
+@@ -12,6 +12,7 @@ to move to one release of the Yocto Project from the previous one.
+ .. toctree::
+ 
+    migration-general
++   migration-3.4
+    migration-3.3
+    migration-3.2
+    migration-3.1
+diff --git a/documentation/migration-guides/migration-3.4.rst b/documentation/migration-guides/migration-3.4.rst
+new file mode 100644
+index 000000000..45ce38cd6
+--- /dev/null
++++ b/documentation/migration-guides/migration-3.4.rst
+@@ -0,0 +1,72 @@
++Release 3.4 (honister)
++======================
++
++This section provides migration information for moving to the Yocto
++Project 3.4 Release (codename "honister") from the prior release.
++
++Override syntax changes
++-----------------------
++
++This release requires changes to the metadata to indicate where overrides are
++being used in variable key names. This is done with the ":" character replacing
++the use of "_" previously. This means that an entry like::
++
++   SRC_URI_qemux86 = "file://somefile"
++
++becomes::
++
++   SRC_URI:qemux86 = " file://somefile"
++
++since qemux86 is an override. This applies to any use of override syntax so::
++
++   SRC_URI_append = " file://somefile"
++   SRC_URI_append_qemux86 = " file://somefile2"
++   SRC_URI_remove_qemux86-64 = " file://somefile3"
++   SRC_URI_prepend_qemuarm = "file://somefile4 "
++   FILES_${PN}-ptest = "${bindir}/xyz"
++   IMAGE_CMD_tar = "tar"
++   BASE_LIB_tune-coretexa76 = "lib"
++   SRCREV_pn-bash = "abc"
++   BB_TASK_NICE_LEVEL_task-testimage = '0'
++
++becomes::
++
++   SRC_URI:append = " file://somefile"
++   SRC_URI:append:qemux86 = " file://somefile2"
++   SRC_URI:remove:qemux86-64 = " file://somefile3"
++   SRC_URI:prepend:qemuarm = "file://somefile4 "
++   FILES:${PN}-ptest = "${bindir}/xyz"
++   IMAGE_CMD:tar = "tar"
++   BASE_LIB:tune-coretexa76 = "lib"
++   SRCREV:pn-bash = "abc"
++   BB_TASK_NICE_LEVEL:task-testimage = '0'
++
++This also applies to variable queries to the datastore, for example using getVar 
++and similar so d.getVar("RDEPENDS_${PN}") becomes d.getVar("RDEPENDS:${PN}").
++
++Whilst some of these are fairly obvious such as MACHINE and DISTRO overrides, some
++are less obvious, for example the packaging variables such as RDEPENDS, FILES and 
++so on taking package names (e.g. ${PN}, ${PN}-ptest) as overrides. These overrides 
++are not always applies in OVERRIDES but applied conditionally in specific contexts
++such as packaging. The task-<taskname> is another context specific override, the 
++context being specific tasks in that case. Tune overrides are another specialist
++case where some code does use them as overrides but some does not. We plan to try
++and make the tune code use overrides more consistently in the future.
++
++To help with migration of layers there is a script in OE-Core. Once configured
++with the overrides used by a layer, this can be run as::
++
++   <oe-core>/scripts/contrib/convert-overrides.py <layerdir>
++
++Please read the notes in the script as it isn't entirely automatic and it isn't
++expected to handle every case. In particular, it needs to be told which overrides
++the layer uses (usually machine and distro names/overrides) and the result should
++be carefully checked since it can be a little enthusiastic and will convert
++references to "_append", "_remove" and "_prepend" in function and variables names.
++
++For reference, this conversion is important as it allows bitbake to know what is
++an override and what is not. This should allow us to proceed with other syntax
++improvements and simplifications for usability. It also means bitbake no longer
++has to guess and maintain large lookup lists just in case "functionname" in
++"my_functionname" is an override and this should improve efficiency.
++
+-- 
+2.30.2
 
