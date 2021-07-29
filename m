@@ -1,76 +1,55 @@
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web10.6589.1627486909850983119
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.9100.1627563705603518178
  for <docs@lists.yoctoproject.org>;
- Wed, 28 Jul 2021 08:41:50 -0700
+ Thu, 29 Jul 2021 06:01:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 98A7E240005;
-	Wed, 28 Jul 2021 15:41:47 +0000 (UTC)
-Cc: foss@0leil.net, 972931182@qq.com
-Subject: Re: [docs] [PATCH] dev-manual: fix wrong file
-To: Mingrui Ren <jiladahe1997@gmail.com>, docs@lists.yoctoproject.org
-References: <45f034b6-c943-de00-86a7-dfce48cbffa9@gmail.com>
+	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 9F012FF80E;
+	Thu, 29 Jul 2021 13:01:43 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <40389349-3aab-cd16-3fe1-69b770358c54@bootlin.com>
-Date: Wed, 28 Jul 2021 17:41:47 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] doc: bitbake-user-manual: grammar fix for the number of "metadata"
+Date: Thu, 29 Jul 2021 15:01:33 +0200
+Message-Id: <20210729130133.163787-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <9aebdc2ca149587d39cd23628c392423148f22ba.camel@linuxfoundation.org>
+References: <9aebdc2ca149587d39cd23628c392423148f22ba.camel@linuxfoundation.org>
 MIME-Version: 1.0
-In-Reply-To: <45f034b6-c943-de00-86a7-dfce48cbffa9@gmail.com>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 
-Greetings,
+"metadata" is used both as singular and as plural.
+The first change fixes a case in which the verbs have a singular conjugation
+but articles that indicate a plural case.
 
-Apologies for the late reply!
+The second change is for consistency with the first one inside
+the same paragraph.
 
-On 6/21/21 4:33 PM, Mingrui Ren wrote:
-> From 43e67b6c7c5e29d608b5459c6041b195ac94e4cc Mon Sep 17 00:00:00 2001
-> From: Mingrui Ren <jiladahe1997@gmail.com>
-> Date: Mon, 21 Jun 2021 21:38:45 +0800
-> Subject: [PATCH] dev-manual: fix wrong file
->
-> The file 'meta/classes/core-image.bbclass' seems have nothing about
-> 'IMAGE_FEATURES' variable, maybe it should be
-> 'meta/classes/image.bbclass'.
->
-> Signed-off-by: Mingrui Ren <jiladahe1997@gmail.com>
-> ---
->  documentation/dev-manual/common-tasks.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/documentation/dev-manual/common-tasks.rst
-> b/documentation/dev-manual/common-tasks.rst
-> index 762636a17c..9ff33a4ce8 100644
-> --- a/documentation/dev-manual/common-tasks.rst
-> +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -872,7 +872,7 @@ a recipe and using :term:`EXTRA_IMAGE_FEATURES`
-> from within your
->  :term:`Build Directory`.
->
->  To understand how these features work, the best reference is
-> -``meta/classes/core-image.bbclass``. This class lists out the available
-> +``meta/classes/image.bbclass``. This class lists out the available
->  :term:`IMAGE_FEATURES` of which most map to package groups while
-> some, such
->  as ``debug-tweaks`` and ``read-only-rootfs``, resolve as general
->  configuration settings.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ doc/bitbake-user-manual/bitbake-user-manual-intro.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks for reporting this. I agree with your proposal.
-
-I couldn't apply the patch with "git am", but I recreated it manually.
-It's now in the "master-next"  branch of "yocto-docs" and should be in
-"master" (in the public documentation) in the next days.
-
-Thanks again!
-Cheers,
-Michael.
-
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+index eb140665..64e7305d 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+@@ -27,11 +27,11 @@ Linux software stacks using a task-oriented approach.
+ Conceptually, BitBake is similar to GNU Make in some regards but has
+ significant differences:
+ 
+--  BitBake executes tasks according to provided metadata that builds up
++-  BitBake executes tasks according to provided metadata that build up
+    the tasks. Metadata is stored in recipe (``.bb``) and related recipe
+    "append" (``.bbappend``) files, configuration (``.conf``) and
+    underlying include (``.inc``) files, and in class (``.bbclass``)
+-   files. The metadata provides BitBake with instructions on what tasks
++   files. The metadata provide BitBake with instructions on what tasks
+    to run and the dependencies between those tasks.
+ 
+ -  BitBake includes a fetcher library for obtaining source code from
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
