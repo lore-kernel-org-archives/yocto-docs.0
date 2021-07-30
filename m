@@ -1,49 +1,54 @@
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web09.24314.1627654323502150630
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web09.25867.1627661181835216077
  for <docs@lists.yoctoproject.org>;
- Fri, 30 Jul 2021 07:12:03 -0700
+ Fri, 30 Jul 2021 09:06:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id 4AC1520000D;
-	Fri, 30 Jul 2021 14:12:01 +0000 (UTC)
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Quentin Schulz <foss@0leil.net>
-Subject: Re: [docs] [PATCH v3] migration-guides: Add start of 3.4 guide with override migration notes
-To: docs@lists.yoctoproject.org
-References: <169696B02F879A93.7588@lists.yoctoproject.org>
- <169696DEEE299346.20313@lists.yoctoproject.org>
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 1B34AE000A;
+	Fri, 30 Jul 2021 16:06:19 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <895bf466-37d4-e39e-f744-d2b3bffb1f52@bootlin.com>
-Date: Fri, 30 Jul 2021 16:12:00 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] profile-manual: document how to build perf manpages on target
+Date: Fri, 30 Jul 2021 18:06:17 +0200
+Message-Id: <20210730160617.185319-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <169696DEEE299346.20313@lists.yoctoproject.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
+Thanks to closing yocto bug #3388, there is now a simple way
+to build the perf manpages for use on the target
 
-On 7/30/21 4:09 PM, Michael Opdenacker wrote:
-> From: Richard Purdie <richard.purdie@linuxfoundation.org>
->
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> Reviewed-by: Quentin Schulz <foss@0leil.net>
-> Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  documentation/migration-guides/index.rst      |  1 +
->  .../migration-guides/migration-3.4.rst        | 76 +++++++++++++++++++
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/profile-manual/usage.rst | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-
-The latest version can also be reviewed on
-https://docs.yoctoproject.org/next/migration-guides/migration-3.4.html#override-syntax-changes
-Thanks
-Michael.
-
+diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
+index 825290c3f8..ae4efa7f4c 100644
+--- a/documentation/profile-manual/usage.rst
++++ b/documentation/profile-manual/usage.rst
+@@ -1157,13 +1157,14 @@ section can be found here:
+ Normally, you should be able to invoke the man pages via perf itself
+ e.g. 'perf help' or 'perf help record'.
+ 
+-However, by default Yocto doesn't install man pages, but perf invokes
+-the man pages for most help functionality. This is a bug and is being
+-addressed by a Yocto bug: :yocto_bugs:`Bug 3388 - perf: enable man pages for
+-basic 'help' functionality </show_bug.cgi?id=3388>`.
++To have the perf manpages installed on your target, modify your
++configuration as follows::
++
++   IMAGE_INSTALL:append = " perf perf-doc"
++   DISTRO_FEATURES:append = " api-documentation"
+ 
+ The man pages in text form, along with some other files, such as a set
+-of examples, can be found in the 'perf' directory of the kernel tree::
++of examples, can also be found in the 'perf' directory of the kernel tree::
+ 
+    tools/perf/Documentation
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
