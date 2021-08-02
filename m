@@ -1,55 +1,85 @@
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web08.22494.1627921397852632029
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.65.1627921820880170177
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Aug 2021 09:23:18 -0700
+ Mon, 02 Aug 2021 09:30:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id DDD83200004;
-	Mon,  2 Aug 2021 16:23:15 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] profile-manual: document how to build perf manpages on target
+	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 6A714240006;
+	Mon,  2 Aug 2021 16:30:17 +0000 (UTC)
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>
-References: <20210730160617.185319-1-michael.opdenacker@bootlin.com>
- <20210802093816.vndv4fa25mbypjca@fedora>
- <6d8cf5bae1c7ee038342d837b0537d30accec9a2.camel@linuxfoundation.org>
- <16977F8E4C0D2875.17923@lists.yoctoproject.org>
+Subject: [master] Pull request
 Organization: Bootlin
-Message-ID: <55a6e8aa-a959-8bce-abc5-7be14ebb70da@bootlin.com>
-Date: Mon, 2 Aug 2021 18:23:15 +0200
+Message-ID: <937e5ecd-1198-93ba-cd50-c6284c44d5f3@bootlin.com>
+Date: Mon, 2 Aug 2021 18:30:17 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <16977F8E4C0D2875.17923@lists.yoctoproject.org>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Content-Language: en-US
 
+Hi Richard,
 
-On 8/2/21 3:13 PM, Michael Opdenacker wrote:
-> Hi Richard,
->
-> Thank you for the review!
->
-> On 8/2/21 2:43 PM, Richard Purdie wrote:
->> On Mon, 2021-08-02 at 11:38 +0200, Quentin Schulz wrote:\
->>> Should perf-doc not be the only package added to IMAGE_INSTALL? I assume
->>> one wants perf-doc only if they need perf so they would already have it
->>> in their image?
->>>
->>> s/perf // is what I suggest here.
->> Personally, I think it is better to be specific. I did end up just installing
->> the doc package when I first attempted to test this and if I can do that... :/.
-> LOL! We promise we will continue to improve the documentation to make
-> your user life easier!
->
-> Thanks again,
-> Michael
+The following changes since commit a6441aa5765be4a121a45ede94ca6d4c6fedf4ef:
 
-I merged this change in master-next. Thanks again for your reviews!
+  common-tasks: Fix conversion error in npm example (2021-07-30 22:52:05
++0100)
+
+are available in the Git repository at:
+
+  git://git.yoctoproject.org/yocto-docs master-next
+  https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=master-next
+
+for you to fetch changes up to 12dd3ecb054c1668cdccc220ca21b88635531784:
+
+  profile-manual: document how to build perf manpages on target
+(2021-08-02 18:19:45 +0200)
+
+----------------------------------------------------------------
+Michael Opdenacker (3):
+      manuals: initial documentation for CVE management
+      ref-manual: remove example recipe source files
+      profile-manual: document how to build perf manpages on target
+
+Stefan Wiehler (1):
+      dev-manual: fix source release example script
+
+ documentation/dev-manual/common-tasks.rst                         | 47
+++++++++++++++++++++++++++++++++++++++++++++++-
+ documentation/profile-manual/usage.rst                            | 11
+++++++-----
+ documentation/ref-manual/examples/hello-autotools/hello_2.10.bb   |  9
+---------
+ documentation/ref-manual/examples/hello-single/files/helloworld.c |  8
+--------
+ documentation/ref-manual/examples/hello-single/hello.bb           | 17
+-----------------
+ documentation/ref-manual/examples/libxpm/libxpm_3.5.6.bb          | 14
+--------------
+ documentation/ref-manual/examples/mtd-makefile/mtd-utils_1.0.0.bb | 15
+---------------
+ documentation/ref-manual/variables.rst                            | 12
+++++++++++++
+ 8 files changed, 64 insertions(+), 69 deletions(-)
+ delete mode 100644
+documentation/ref-manual/examples/hello-autotools/hello_2.10.bb
+ delete mode 100644
+documentation/ref-manual/examples/hello-single/files/helloworld.c
+ delete mode 100644 documentation/ref-manual/examples/hello-single/hello.bb
+ delete mode 100644 documentation/ref-manual/examples/libxpm/libxpm_3.5.6.bb
+ delete mode 100644
+documentation/ref-manual/examples/mtd-makefile/mtd-utils_1.0.0.bb
+
+
+This would allow me to close a bug, and migrating the repository to the
+new overrides syntax will be easier, as the recipe example files will be
+gone.
+Thank you in advance
 Michael.
+
 
 -- 
 Michael Opdenacker, Bootlin
