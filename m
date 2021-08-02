@@ -1,74 +1,127 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
- by mx.groups.io with SMTP id smtpd.web09.20558.1627915017069415399
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web09.20770.1627915794617575639
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Aug 2021 07:36:57 -0700
+ Mon, 02 Aug 2021 07:49:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=WtSWzPU+;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.51, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f51.google.com with SMTP id l4-20020a05600c1d04b02902506f89ad2dso91889wms.1
-        for <docs@lists.yoctoproject.org>; Mon, 02 Aug 2021 07:36:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=Ngdjhw57TrpWSh83IzzaU6/wRyeNwkl+sJKtNqcbgns=;
-        b=WtSWzPU+pSuylB87VHgKhL0MSbbqoAF25eMWS7ILgcSGte8d6ks4wX6+GXE8G/07L6
-         y2QsTjQtcWqO/rW/bHZiLu7A91ECXiMUcs71YnXHSe0h6/yIFWpSX3Rd7eYy/FSOazx3
-         5slzaHShiYMkFhWoi54UXmszN5+13Hv9cffrc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=Ngdjhw57TrpWSh83IzzaU6/wRyeNwkl+sJKtNqcbgns=;
-        b=ZeTc1hXI/ZIDPn83XllN/geiAsgzn53Tbsq0mYgIVplAH0AG8hAxLKIz39g9UNH0aa
-         KH4jFHIXllNQ5uye1bZp0SXmxCO7KnbgAS+tj1pvLIix+9Tyv+/YqlRTE4sYF6NdkM1G
-         cwCPXij/s1mLz7AzkWYDRq9WEO0P1wlf0/M0CrYeJB0cZX78aqNPaDS9rJaOxrQZe3nz
-         7Sztag1JaIHHoGM90xbBDhjw9VOlg2KdABiFxt5Z41n5yH7lDcCpSVTILDn2xCvoJC4J
-         Qom28TB7iR04q+PWmd3jnecc9q3v3TYLwiKDtForDtkeTCHjZbboe7w4xyJL92o7vIEo
-         9bMg==
-X-Gm-Message-State: AOAM533BnS7UzgSyx/cBEUu1EVyz562lI0Wh02I7MXdWgUuawUIX6xWT
-	U+ad03OEavPtxhicfE0Nms59Gg==
-X-Google-Smtp-Source: ABdhPJzdHlFxivYE9k4oUhVlX/NeUhfoD1o0Q9ml2HtVGcWcHQGrd7duE29fdStO+aE7Ba4JFQnBXQ==
-X-Received: by 2002:a1c:a510:: with SMTP id o16mr16894528wme.176.1627915015594;
-        Mon, 02 Aug 2021 07:36:55 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:9aac:cd42:2ef7:1a7c? ([2001:8b0:aba:5f3c:9aac:cd42:2ef7:1a7c])
-        by smtp.gmail.com with ESMTPSA id n5sm11399943wri.31.2021.08.02.07.36.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Aug 2021 07:36:55 -0700 (PDT)
-Message-ID: <c98abd643937b04a47744a4bdd0270f89eb098b9.camel@linuxfoundation.org>
-Subject: Re: [OE-core] [PATCH] sstate: Fix rebuilds when changing layer config
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
-	openembedded-core@lists.openembedded.org
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Date: Mon, 02 Aug 2021 15:36:54 +0100
-In-Reply-To: <62a315a0-5015-bd1f-3133-560ceaf051ce@bootlin.com>
-References: <20210801124856.3413781-1-richard.purdie@linuxfoundation.org>
-	 <62a315a0-5015-bd1f-3133-560ceaf051ce@bootlin.com>
-User-Agent: Evolution 3.40.0-1 
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 77B4BFF80B;
+	Mon,  2 Aug 2021 14:49:52 +0000 (UTC)
+Cc: docs@lists.yoctoproject.org,
+ Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] manuals: initial documentation for CVE management
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+References: <20210730185433.188851-1-michael.opdenacker@bootlin.com>
+ <20210802093618.npbsjvxyh7x3pbtl@fedora>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <bce5cfa0-9a3e-d5a0-b1e6-ef0482e001db@bootlin.com>
+Date: Mon, 2 Aug 2021 16:49:52 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210802093618.npbsjvxyh7x3pbtl@fedora>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-On Mon, 2021-08-02 at 15:30 +0200, Michael Opdenacker wrote:
-> Hi Richard,
-> 
-> On 8/1/21 2:48 PM, Richard Purdie wrote:
-> > When adding a layer which changed SSTATE_EXCLUDEDEPS_SYSROOT, the state
-> > hashes were changing when they should not. This was caused by wider use
-> > of setscene_depvalid which means the dependency on the variable was seen
-> > when it was previously not.
-> > 
-> > Exclude the variable since this should be be included in the hashes.
-> 
-> I realize that this variable isn't documented in any of the manuals.
-> Should be document it?
-> Thank you in advance for your advice.
+Hi Quentin,
 
-Yes, this should be on the list of things to document.
+Many thanks for reviewing my patch and for all your contributions to
+YP's documentation!
 
-Cheers,
+On 8/2/21 11:36 AM, Quentin Schulz wrote:
+> s/ignore/ignored/
 
-Richard
+
+Oops, fixed, thanks.
+
+>
+>> +   bitbake -c cve_check libarchive -R conf/distro/include/cve-extra-exclusions.inc
+>> +
+>> +Enabling vulnerabily tracking in recipes
+>> +----------------------------------------
+>> +
+>> +The :term:`CVE_PRODUCT` variable defines the name used to match the recipe name
+>> +against the name in the upstream `NIST CVE database <https://urldefense.proofpoint.com/v2/url?u=https-3A__nvd.nist.gov_&d=DwIDAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=hekyLAdEcYu52ifxV5ERIziCTL0mv8hKI_2zFGHfCiY&s=2VyieDwk2kXSn66jsySlUL_eB6CvuUWR-yRh-DMaIv0&e= >`__.
+>> +
+>> +The CVE database is created by a recipe and stored in :term:`DL_DIR`.
+> A bit unclear to me the "created by a recipe" part. I'm not sure it is
+> important information?
+>
+>> +For example, you can look inside the database using the ``sqlite3`` command
+>> +as follows::
+>> +
+>> +   sqlite3 downloads/CVE_CHECK/nvdcve_1.1.db .dump | grep CVE-2021-37462
+>> +
+> What about:
+>
+> The CVE database is stored in :term:`DL_DIR` and can be inspected using
+> ``sqlite3`` command as follows:
+>
+> [...]
+>
+> ?
+
+This sounds good to me. The initial text was written by Richard and I
+admit I didn't pay enough attention to this detail. Richard, would this
+be OK?
+>
+> If the "created by a recipe" part is important maybe it needs to be a
+> bit more explicit what it means?
+
+Yes, in this case, it would be good to know which recipe we are
+referring to.
+>
+>>  Using the Error Reporting Tool
+>>  ==============================
+>>  
+>> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+>> index b61de1993d..72e1c832c6 100644
+>> --- a/documentation/ref-manual/variables.rst
+>> +++ b/documentation/ref-manual/variables.rst
+>> @@ -1471,6 +1471,17 @@ system and gives an overview of their function and contents.
+>>           variable only in certain contexts (e.g. when building for kernel
+>>           and kernel module recipes).
+>>  
+>> +   :term:`CVE_PRODUCT`
+>> +      In a recipe, defines the name used to match the recipe name
+>> +      against the name in the upstream `NIST CVE database <https://urldefense.proofpoint.com/v2/url?u=https-3A__nvd.nist.gov_&d=DwIDAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=hekyLAdEcYu52ifxV5ERIziCTL0mv8hKI_2zFGHfCiY&s=2VyieDwk2kXSn66jsySlUL_eB6CvuUWR-yRh-DMaIv0&e= >`__.
+>> +
+>> +      This is only needed in case of a mitmatch, or if the
+> s/mitmatch/mismatch/
+>
+> Technically, it is needed by all recipes, it's just that the default is
+> ${BPN}.
+>
+> I'd rather say that "
+> The default is ${:term:`BPN`}. If it does not match the name in NIST CVE
+> database or matches with multiple entries in the database, the default
+> value needs to be changed.
+> "
+>
+> What do you think?
+
+It sounds better than my original text. Adopted, thanks!
+
+>> +      Here is an example from the Berkeley DB recipe (``db_${PV}.bb``)::
+>> +
+> ``db_${PV}.bb`` is an invalid name for a recipe name I think, can we
+> just give it the current version (and eventually says from which release
+> it is?). Or maybe we can just not give the full recipe name but just
+> that it's named db and link to its page on the layer index:
+> https://layers.openembedded.org/layerindex/recipe/544/ so that it's
+> always up-to-date?
+
+
+I like this idea, and I'll remember this way of referring to recipes.
+Adopted too. I'll send a V2 very soon.
+
+Many thanks,
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
