@@ -1,105 +1,169 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
- by mx.groups.io with SMTP id smtpd.web11.7034.1628072305125116020
+Received: from EUR02-AM5-obe.outbound.protection.outlook.com (EUR02-AM5-obe.outbound.protection.outlook.com [40.107.0.40])
+ by mx.groups.io with SMTP id smtpd.web11.7117.1628072961780402521
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Aug 2021 03:18:25 -0700
+ Wed, 04 Aug 2021 03:29:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=gVxDqOSQ;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.50, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f50.google.com with SMTP id x17so869815wmc.5
-        for <docs@lists.yoctoproject.org>; Wed, 04 Aug 2021 03:18:24 -0700 (PDT)
+ dkim=pass header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=r8Tac6MA;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.0.40, mailfrom: quentin.schulz@theobroma-systems.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=bnxa6TTgyvjevYsAFXBlZmvyM/WinbKwoN9tju0IxpIUfGRhfGPJAMp2c5PMwRh0wJ/U/MT8LRH1h3jAwwDxGWmMRaVMQ+jmX4pYyAawfHURDjmFPGsoXhPplYZ9b3OYKYJ+XM7s57feRp1IYLziE2DNziLZYyAEZykVLNJpbfdDT75kqxWtdTDZAe8ZIFo4SVPSkwXLwc22kAc3oWdbKr9QgqR1lIQdvvKrSKO22vqeDu7j5WTJ0s1qHLSSuSNsi9LmBaUXdfIeNqYzpfQD4mRgeQNHH1gYdmtk1ogt/OvYwwJfLfy/meEd/2oUpjLo4onU8jSemFmCG3iYgq9KWQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5fCymBuPImKf2S23kG36L9jnvnPiE4iG4+fD/C3xwpU=;
+ b=nUsmWawIeNcJ/OTcthMO3ouB2lEW2Bkwb+V6HVtSx4e5Antx5jrkWWjZbxpIUyHrsAyRINnu/59+N5RyLtTuKKWrWnXJHYz4pg2rP3ZENuVTdCPuYieeaf8QnEBU/bhPTx/kIIkOX8HEjTTxEku3Y0t9GVFSGlFtg1gTOtsjzvPzU64+baxv2N/2sXzWcZVpdz5srvGO/UnuGgZhsLJlpQR2lpLcfGtFIdWeyLT30R0lEBqb0bQYfqd/iwa2AzLpQsJa48NjGfhlXwv69HrpPNimTjdQFHMnvzUAFnNKeLI0TUU+p/FYIOt5xC7E2I2pXdlu2conNEiX1gfL7uWnpg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=S9HdmD0Q+HujMd0ualeVXE+yG+jg4NH7rPoaR7f256Y=;
-        b=gVxDqOSQE9TbhQeca06LgRODLI+ll9Uq4WSceC4PLWjv28pyNGJ+aA1qpDO133UQm2
-         7dCDIkzroZMclwTtvPhuP7hTq4PitQ3u0lkmJ3DKxj3ZRtQqhGQCD3nivYjEO5db4YBU
-         0ReG3gRLSr1spf0LRnjLeKV42OGDSzQRZEHNw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=S9HdmD0Q+HujMd0ualeVXE+yG+jg4NH7rPoaR7f256Y=;
-        b=oJ15yB3AMgXnMqURbkoc5HUkv4/THjmWSRbyqdlj10qkoEFC9KeRB4J2LjfOhbJUYg
-         /tv7rUNoFkiv0yYeCatX36D3Dil9KfRqWrDk6ED9FapCvCG/ZNuW2IjjIlSM1SePvgIZ
-         vz+EeIkhmVXA/DfCRrcYP2o975fXctGVuTABI+MGYDr9UiRp9v3NmdzfzD/+ShAzQHRv
-         BPDypWdTPuMzWhQg+fTt2qvKKBN94ZoxHZMFUqlm1tvSQGJcIoD424rvb8cDbZ4H6R2A
-         VRozTK/Cwha+K0oQGtSnjG1i6kNRmyzX+l0k952yIcTe8uL/YReTQp1gW1VtZGKOQkst
-         CA0A==
-X-Gm-Message-State: AOAM532ZDqLhfQgnhnzHs8a8fpzVRmJCrJGeJr/RhfKx9i91/IdVmWKB
-	QgfT8j3fsv8q8kbGnQ5UlUdBpA==
-X-Google-Smtp-Source: ABdhPJwBuQi66ePhifqwB7IjQHwT0y93wRSoQmdUj7q0LlgvjVOcoZWHRrlPtvZo9BArtASHc068RQ==
-X-Received: by 2002:a1c:7d55:: with SMTP id y82mr8827789wmc.102.1628072303728;
-        Wed, 04 Aug 2021 03:18:23 -0700 (PDT)
-Return-Path: <richard.purdie@linuxfoundation.org>
-Received: from ?IPv6:2001:8b0:aba:5f3c:895b:15d0:6c2e:72fa? ([2001:8b0:aba:5f3c:895b:15d0:6c2e:72fa])
-        by smtp.gmail.com with ESMTPSA id x18sm1958345wrw.19.2021.08.04.03.18.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Aug 2021 03:18:23 -0700 (PDT)
-Message-ID: <366ed6421a045d9fcb622ee7026adb9f053a2f29.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 1/2] test-manual: Add extra detail to YP Compatible section
-From: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>, Michael
- Opdenacker <michael.opdenacker@bootlin.com>
+ d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5fCymBuPImKf2S23kG36L9jnvnPiE4iG4+fD/C3xwpU=;
+ b=r8Tac6MAyyTUZy+n2Z76dha2An6tRXt6d6viPxOpGo938duDblnSWzdV6Otrw11fb5um908YdtACLn4lBahKNNCZSyon3Kn/Z13DjKT6HpDbadPz3vclcDof2s7JlMAzDHM32mkvBhxPW1bNQZfN5Cpwul9+3Oa5uvwgZqZARTw=
+Authentication-Results: linuxfoundation.org; dkim=none (message not signed)
+ header.d=none;linuxfoundation.org; dmarc=none action=none
+ header.from=theobroma-systems.com;
+Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
+ (2603:10a6:208:24::24) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4373.18; Wed, 4 Aug
+ 2021 10:29:18 +0000
+Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
+ ([fe80::459d:3240:1c4e:b920]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
+ ([fe80::459d:3240:1c4e:b920%6]) with mapi id 15.20.4394.016; Wed, 4 Aug 2021
+ 10:29:18 +0000
+Date: Wed, 4 Aug 2021 12:29:16 +0200
+From: "Quentin Schulz" <quentin.schulz@theobroma-systems.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 Cc: docs@lists.yoctoproject.org
-Date: Wed, 04 Aug 2021 11:18:22 +0100
-In-Reply-To: <20210804101326.te67ewqcjk4k6yjp@fedora>
+Subject: Re: [docs] [PATCH 2/2] migration-3.4: Add extra notes to override sytnax changes
+Message-ID: <20210804102916.2k4qgvnyxz326fme@fedora>
 References: <20210804094714.3500323-1-richard.purdie@linuxfoundation.org>
-	 <d982b722-9fd8-035f-878e-62ce7da99e9c@bootlin.com>
-	 <20210804101326.te67ewqcjk4k6yjp@fedora>
-User-Agent: Evolution 3.40.0-1 
+ <20210804094714.3500323-2-richard.purdie@linuxfoundation.org>
+In-Reply-To: <20210804094714.3500323-2-richard.purdie@linuxfoundation.org>
+X-ClientProxiedBy: FR3P281CA0031.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1c::9) To AM0PR0402MB3348.eurprd04.prod.outlook.com
+ (2603:10a6:208:24::24)
+Return-Path: quentin.schulz@theobroma-systems.com
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from fedora (92.42.140.82) by FR3P281CA0031.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:1c::9) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4394.12 via Frontend Transport; Wed, 4 Aug 2021 10:29:18 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: f5dddf61-4568-4321-c077-08d95732b76f
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:
+X-Microsoft-Antispam-PRVS: 
+	<AM0PR04MB70440333DEE17460929F4661C2F19@AM0PR04MB7044.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4941;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	eu5MV5BGimmBX7Jj9OaFUJHBBgMgEar2ajhPnCGzG5bzZefkzs8+cRbMAcx2Ghzq/Hiu6cJ7sIj+aYwSJPvINHwhDDa0IgaJabIiRTNGmTYV0xh4k6O1XleO1xv3q/1Rlpl3lyZFla+46KU/BH03GMx2RfFDl+vXXumaEPBb4xgwGD+Z6rD8jl1qrXVvU1ZPU3HeViBC3MkGM8mPjlsCQo4jRzGExJ7LELfpoXA/Z9Ig7mS6y2VkLtrr39md15tcQG9zs0zn+o3VrEo0g7cff3bmPzERLIwXaTlJtf57cOwl+AA1bj8lWqKiA966oDj/ZjtiBZw6lvyu6oyZQQKqE6k2mwLjXQOeEmO4aPEnUAIT3sS7EELXg/Vru4jSNLkriao9tf6He/aVSxsgWtpCsVOJFt1vx1hsr7dVKW5yVFpDmlQW/oLQvM10Fe17ODDIJH0/8SIl4avGF3BlxYLeauWrDW3fZe6p1opz8TSUENQM+DbmnfSDharArYJtse85cqHmibMXm3zgzJbJoO5AS3eJ1hpSfrRgi5QwAycWprbUjPCVxggqh6KnpI3OyJYDiLhS1P8FB5BG3Tpwx8SjC1ac8brsodwE7fKvHjo4eMypHNWRU8cdIuwddqBK0Tdr6PLYMnq3k2pg+A/AmzEsotSU8dHvQFIY5by5UXvq+EHAQ9UoDvCjUMhfhBwcPApjmAkyN8sHWeBQh7pnOZWE+lRhdhwsu7gHyIYJ6cTYlEs=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(366004)(396003)(39840400004)(346002)(376002)(5660300002)(44832011)(1076003)(38350700002)(55016002)(9686003)(38100700002)(8936002)(956004)(4326008)(6496006)(33716001)(66476007)(83380400001)(6916009)(9576002)(2906002)(66946007)(52116002)(8676002)(86362001)(66556008)(26005)(316002)(186003)(478600001)(21314003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?4mrMNid3GmJUnn4rkAu5iRWsSN7EWapc1LsRvmcBvOw3uFS4AYi4YInA9KVN?=
+ =?us-ascii?Q?DztKW+UCv31I+ucTerqFtIcQj+El7zasHYqyCxPKsuriqNiWsod169idwgwZ?=
+ =?us-ascii?Q?lPYjt6+vRHtNsiTc7+IT4ERuc2eQ6mHg+qL8HH5cWT9Ld/ovdbt7nPNDLnjs?=
+ =?us-ascii?Q?1vaOb4oHvMGkmOkRQN++KpPrBsN+6s+e9122gNNmo7wyse/8D2CMJAojCYnE?=
+ =?us-ascii?Q?c89nw3qng0nwJ4iNaUWWNacpIS2RJFiuGpQnl/EAg0UUc0I0ooUAAAzxIuxl?=
+ =?us-ascii?Q?eMHbVnR6NXWPqCK60nc2SNL46csKuldarKVttM8WX2Swt7FGwuwdaCljEZkT?=
+ =?us-ascii?Q?lmyPWuRgcFcmVYP06VjNQ7X4+tMuGpGGT0y+H6JpqYlDdjot7+dQ6tETo5KP?=
+ =?us-ascii?Q?9QlcvxqlyxmkLnUgS6sEQaAwii/VMUZf4oGpfMYvT2GX4Zuz5WZgdrfcq58V?=
+ =?us-ascii?Q?sjQbbwXqMj4rAOk1eDcDbq3QAR/JQ7Cxvz6p3QzlsZ5DMZF0k7XEG2KWMbiJ?=
+ =?us-ascii?Q?8dzTkv0N3McIV+arPpdFarOB8D0Zj2YEeelMq5mmqgQe6XpRV2TERHisbcZO?=
+ =?us-ascii?Q?IciPSrvgaf+k0kTcs0jeKbUyFD8/q8b2LPIjRgricr/tTlxTyZBXsvmXzGJQ?=
+ =?us-ascii?Q?jAI66noNbvSsniCaK4QnNyf7NrbBw2vZH93e9pa8MygXJi4R1ETwLHH/xQ2J?=
+ =?us-ascii?Q?YEyB5UNpdnoQe9FD5l1rNIRtG54Y2l3Se7aH6piFNQdEMqO8Qzfvm4yiWru1?=
+ =?us-ascii?Q?Vd4pESXwMlYIezZFFqP8ZEdOxzxSbeJGlGWtbkq5tLQsxc1UMZaCWxL74YaO?=
+ =?us-ascii?Q?u7UNSNiLliQ99/UUBZel1DDODDRLFvDpj8UeW76wM711OwdWOIB6fNdTtQW5?=
+ =?us-ascii?Q?8KPNeUdxMSfGBCKWtsevhHYjP+2zyzSsYAewBo01BUeL4YAVkxS+o/PxGjVc?=
+ =?us-ascii?Q?LssChUE5pYoHHXFd5AKjvqTN2Tsi6h3MnTHtTdvscOhWVQodeIIxagARW/8Z?=
+ =?us-ascii?Q?Y3A0MXuzbHMPn7oGNd87SMC9XMv5fDnMR5Aw+/aYbCOuD5Rpm4vGQBJCQWni?=
+ =?us-ascii?Q?ouTYeUbRgY8fyZrxkn3p8M2X0uUlT5Rsn1/g848m3wGT22acEPSmsL724Rji?=
+ =?us-ascii?Q?Goqkvm4CrU9BnrCWcO96IJ5Cat+yJ0iiHhNjlOcuiGWYWQ+OoVfC6VSoYfg9?=
+ =?us-ascii?Q?PM4Vz20/7hvwQ48s15uWmRkxRZXgeW7bf+vlhmBe1X86c3muNC8bLFxQp4JH?=
+ =?us-ascii?Q?njS1joVBsHsxCcDkzeWS5AHowWKGdshj9dY9v8yuIMwUy87S7srf4JdgDnsF?=
+ =?us-ascii?Q?hydX/VTES9FeRa2cM1nsdvxz?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: f5dddf61-4568-4321-c077-08d95732b76f
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3348.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Aug 2021 10:29:18.7880
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4gq1yxz09hxHljY5ass1y0qZu0FNTQkG4+zyGj3G9a6fn/mUC7ISrHeLdeuat3RhcmnGL+x/wzmhL1Si8RVDBPYZtJ8QQ+N5XMeKEPBzPVGzUb0aHc9KVNvRj2nGIftg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7044
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On Wed, 2021-08-04 at 12:13 +0200, Quentin Schulz wrote:
-> Hi Richard,
+Hi Richard,
+
+On Wed, Aug 04, 2021 at 10:47:14AM +0100, Richard Purdie wrote:
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+> ---
+>  documentation/migration-guides/migration-3.4.rst | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
-> On Wed, Aug 04, 2021 at 12:04:34PM +0200, Michael Opdenacker wrote:
-> > Hi Richard,
-> > 
-> > Thanks for the documentation patch!
-> > 
-> > On 8/4/21 11:47 AM, Richard Purdie wrote:
-> > > Add a note about documenting where a layer doesn't support 'core'
-> > > functionality.
-> > > 
-> > > Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> > > ---
-> > >  documentation/test-manual/yocto-project-compatible.rst | 5 +++++
-> > >  1 file changed, 5 insertions(+)
-> > > 
-> > > diff --git a/documentation/test-manual/yocto-project-compatible.rst b/documentation/test-manual/yocto-project-compatible.rst
-> > > index a7897469f..b83a0f12b 100644
-> > > --- a/documentation/test-manual/yocto-project-compatible.rst
-> > > +++ b/documentation/test-manual/yocto-project-compatible.rst
-> > > @@ -115,6 +115,11 @@ Here are key best practices the program tries to encourage:
-> > >     user changes a configuration setting to activate the layer, by selecting
-> > >     a :term:`MACHINE`, a :term:`DISTRO` or a :term:`DISTRO_FEATURES` setting.
-> > >  
-> > > 
-> > > +-  Layers should be documenting where they don’t support normal 'core'
-> > > +   functionality such as where debug symbols are disabled or missing, where
-> > > +   development headers and on-target library usage may not work or where
-> > 
-> 
-> Do we currently have an example layer that is following this suggested
-> best practice? Because I'm struggling to understand exactly what I'm
-> expected to do if I were a layer maintainer.
+> diff --git a/documentation/migration-guides/migration-3.4.rst b/documentation/migration-guides/migration-3.4.rst
+> index 6fa1ab20c..d42ee8851 100644
+> --- a/documentation/migration-guides/migration-3.4.rst
+> +++ b/documentation/migration-guides/migration-3.4.rst
+> @@ -56,6 +56,12 @@ context being specific tasks in that case. Tune overrides are another special
+>  case where some code does use them as overrides but some does not. We plan to try
+>  and make the tune code use overrides more consistently in the future.
+>  
+> +There are some variables which do not use override syntax which include the
+> +suffix to variables in layer.conf files such as BBFILE_PATTERN, :term:`SRCREV`_xxx
 
-I only know of one layer at present where SDKs were broken, -dbg info was dropped etc. 
-and that was a genuine mistake. We (as in the TSC) wanted to make it clear that this 
-was not intended behaviour in a YP Compat layer. So no, we don't have an example.
+s/BBFILE_PATTERN/:term:`BBFILE_PATTERN`/
 
-> Do you want the maintainer to keep a list of recipes/packages provided
-> in their layer(s), in e.g. the README, that are missing debug symbols or
-> "invalid" headers/libraries?
+Styling might be better with :term:`SRCREV```_xxx`` (if that works,
+might need a "\ " before or something to separate the tick quotes?)?
+Maybe worth a try.
 
-I don't think it needs to be a list, just a statement that the layer is not 
-intended to have debug symbols present, or support building an SDK.
+It's the first time I see this SRCREV_xxx variable. It does not seem to
+be documented except in bitbake/lib/bb/fetch2/git.py. I think we should
+document this.
 
-Cheers,
+I'm failing to see exactly what the usecase depicted in the
+"documentation" in git.py is for, but I imagine a plausible scenario
+could be the following?
 
-Richard
+SRC_URI = " \
+	   git://some-git-repo;name=foo \
+	   git://some-other-git-repo;name=bar \
+	   "
 
+SRCREV_foo = "abcdef1234567890"
+SRCREV_bar = "1234567890abcdef"
 
+> +where xxx is a name from :term:`SRC_URI` and PREFERRED_VERSION_xxx. In particular,
+
+s/xxx/``xxx``/ ?
+
+s/PREFERRED_VERSION_xxx/:term:`PREFERRED_VERSION`_xxx/ (if style
+suggestion above is chosen, to be applied to this too).
+
+> +layer.conf suffixes may be the same as a :term:`DISTRO` override causing some
+
+s/layer.conf/``layer.conf``/
+
+> +confusion. We do plan to try and improve consistency as these issues are identified.
+> +
+
+Is there going to be backwards compatibility issues when supporting e.g.
+PREFERRED_VERSION_xxx to PREFERRED_VERSION:xxx?
+
+We can't really afford to break compatibility every time we "fix" those,
+is there any plan for this already?
+
+I also think we should keep in mind to update this section every time we
+encounter one of those "inconsistencies"?
+
+Thanks,
+Quentin
