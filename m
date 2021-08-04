@@ -1,69 +1,76 @@
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.8848.1628083802245109662
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web11.9012.1628084498203306755
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Aug 2021 06:30:02 -0700
+ Wed, 04 Aug 2021 06:41:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 3F9EC2000D;
-	Wed,  4 Aug 2021 13:29:59 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 2/2] migration-3.4: Add extra notes to override sytnax changes
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <20210804094714.3500323-1-richard.purdie@linuxfoundation.org>
- <20210804094714.3500323-2-richard.purdie@linuxfoundation.org>
- <20210804102916.2k4qgvnyxz326fme@fedora>
+	by relay12.mail.gandi.net (Postfix) with ESMTPSA id 83A74200006;
+	Wed,  4 Aug 2021 13:41:35 +0000 (UTC)
+Subject: Re: [docs] [PATCH] manuals: mention license information in footer
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+References: <1695FB134708B5C3.29235@lists.yoctoproject.org>
+ <1695FB528AB59051.5172@lists.yoctoproject.org>
+ <1696A0E01FF4F31A.10446@lists.yoctoproject.org>
+Cc: docs@lists.yoctoproject.org
 Organization: Bootlin
-Message-ID: <2f572b87-3552-382e-ed19-114c92000f23@bootlin.com>
-Date: Wed, 4 Aug 2021 15:29:59 +0200
+Message-ID: <c6225ec3-fe53-8005-093c-c7d7cb16596d@bootlin.com>
+Date: Wed, 4 Aug 2021 15:41:34 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210804102916.2k4qgvnyxz326fme@fedora>
+In-Reply-To: <1696A0E01FF4F31A.10446@lists.yoctoproject.org>
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Hi Quentin,
+Richard, all,
 
-Thanks for the review!
-
-On 8/4/21 12:29 PM, Quentin Schulz wrote:
-> s/BBFILE_PATTERN/:term:`BBFILE_PATTERN`/
+On 7/30/21 7:13 PM, Michael Opdenacker wrote:
+> On 7/28/21 4:39 PM, Michael Opdenacker wrote:
+>> Greetings,
+>>
+>> On 7/28/21 4:34 PM, Michael Opdenacker wrote:
+>>> Previously, the license for the manuals was only
+>>> stated in the SPDX headers at the beginning of source files
+>>>
+>>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>> ---
+>>>  documentation/conf.py | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/documentation/conf.py b/documentation/conf.py
+>>> index 6c6458fed7..8e15fdc869 100644
+>>> --- a/documentation/conf.py
+>>> +++ b/documentation/conf.py
+>>> @@ -28,7 +28,7 @@ release = current_version
+>>>  
+>>>  # -- Project information -----------------------------------------------------
+>>>  project = 'The Yocto Project \xae'
+>>> -copyright = '2010-%s, The Linux Foundation' % datetime.datetime.now().year
+>>> +copyright = '2010-%s, The Linux Foundation, CC-BY-SA-2.0-UK license' % datetime.datetime.now().year
+>>>  author = 'The Linux Foundation'
+>> I have a few follow-up questions...
+>>
+>>   * Shouldn't we have a quick section at the beginning of the
+>>     documentation mentioning the license information?
+>>   * Shouldn't the copyright owner be "The Yocto Project and OpenEmbedded
+>>     community", as in the Linux kernel documentation? Though the
+>>     contributions funded by the Linux Foundation are very big, there are
+>>     other contributors and we don't ask them to transfer their copyright
+>>     to the LF.
+>>
+>> Thanks in advance for your advise.
 >
-> Styling might be better with :term:`SRCREV```_xxx`` (if that works,
-> might need a "\ " before or something to separate the tick quotes?)?
-> Maybe worth a try.
-
-Fixed. Indeed, a "\ " was needed to make it work.
-
-> s/xxx/``xxx``/ ?
->
-> s/PREFERRED_VERSION_xxx/:term:`PREFERRED_VERSION`_xxx/ (if style
-> suggestion above is chosen, to be applied to this too).
+> Any thoughts on this?
+> Thanks in advance,
+> Michael.
 
 
-Done
-
->
->> +layer.conf suffixes may be the same as a :term:`DISTRO` override causing some
-> s/layer.conf/``layer.conf``/
-
-
-Done. 
-
-I also fixed the typo in the title.
-
-I pushed the changes to "master-next". See the built result in
-http://docs.yoctoproject.org/next/migration-guides/migration-3.4.html#override-syntax-changes
-
-Once again, further reviews are still possible. I can also add
-"Reviewed-by" statements ;-)
-
-Thanks again,
-
+Would you have an idea on this? At least, can I merge the change I'm
+proposing?
+Thanks in advance,
 Michael.
 
 -- 
