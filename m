@@ -1,55 +1,60 @@
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web08.9258.1628085774010545485
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web09.13256.1628102072487250384
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Aug 2021 07:02:54 -0700
+ Wed, 04 Aug 2021 11:34:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id B80BC200005;
-	Wed,  4 Aug 2021 14:02:51 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] manuals: mention license information in footer
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <1695FB134708B5C3.29235@lists.yoctoproject.org>
- <1695FB528AB59051.5172@lists.yoctoproject.org>
- <1696A0E01FF4F31A.10446@lists.yoctoproject.org>
- <c6225ec3-fe53-8005-093c-c7d7cb16596d@bootlin.com>
- <f8fb3e4e98014f13bca55a71b2c8fdc28771758d.camel@linuxfoundation.org>
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id A61B6E0003;
+	Wed,  4 Aug 2021 18:34:30 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <0bc5e808-7054-672e-474a-decf74fe2797@bootlin.com>
-Date: Wed, 4 Aug 2021 16:02:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH 0/6] overrides syntax updates
+Date: Wed,  4 Aug 2021 20:34:20 +0200
+Message-Id: <20210804183426.22333-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <f8fb3e4e98014f13bca55a71b2c8fdc28771758d.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 
-Richard,
+This is the result of automatically converting the YP manual
+through the scripts/contrib/convert-overrides.py script
+in oe-core.
 
-On 8/4/21 3:48 PM, Richard Purdie wrote:
-> We probably should have something mentioning the license, yes and this
-> change is ok.
->
-> We can't just say it is community owned because it is not, much of the 
-> docs work was done through the Linux Foundation and they do technically 
-> own that copyright, not the community. If any contributor wants to add
-> their copyright we can do that, or we can probably change it to "Linux
-> Foundation and The Yocto Project and OpenEmbedded community".
+As suggested by Quentin, these changes are also available
+on a dedicated temporary branch:
+http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=contrib/michaelo/overrides-migration
 
+Your reviews are most welcome. There are probably errors,
+that we can either fix manual or through script updates.
 
-Thanks for your feedback. I'll merge the first change and propose a
-quick subsection in the manual detailing the license.
-Unless there are disagreements, I propose to stick to the LF as
-copyright owner.
-
-Cheers,
+Thank you in advance,
 Michael.
--- 
 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+*** BLURB HERE ***
+
+Michael Opdenacker (6):
+  bsp-guide: overrides syntax updates
+  dev-manual: overrides syntax updates
+  kernel-dev manual: overrides syntax updates
+  ref-manual: overrides syntax updates
+  sdk-manual: overrides syntax updates
+  test-manual: overrides syntax updates
+
+ documentation/bsp-guide/bsp.rst               |  52 ++---
+ documentation/dev-manual/common-tasks.rst     | 196 +++++++++---------
+ documentation/kernel-dev/advanced.rst         |   6 +-
+ documentation/kernel-dev/common.rst           |  60 +++---
+ documentation/ref-manual/classes.rst          |  14 +-
+ documentation/ref-manual/faq.rst              |   4 +-
+ documentation/ref-manual/qa-checks.rst        |   4 +-
+ documentation/ref-manual/variables.rst        | 134 ++++++------
+ .../appendix-customizing-standard.rst         |   2 +-
+ documentation/sdk-manual/appendix-obtain.rst  |   2 +-
+ documentation/sdk-manual/extensible.rst       |   2 +-
+ .../test-manual/understand-autobuilder.rst    |   2 +-
+ 12 files changed, 239 insertions(+), 239 deletions(-)
+
+-- 
+2.25.1
 
