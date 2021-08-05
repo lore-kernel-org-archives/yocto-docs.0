@@ -1,44 +1,56 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web12.13379.1628102080792709401
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.5962.1628150881622353468
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Aug 2021 11:34:41 -0700
+ Thu, 05 Aug 2021 01:08:02 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 6201BFF804;
-	Wed,  4 Aug 2021 18:34:39 +0000 (UTC)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id B440F1BF203;
+	Thu,  5 Aug 2021 08:07:49 +0000 (UTC)
+Subject: Re: [docs] [PATCH 1/2] test-manual: Add extra detail to YP Compatible section
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ docs@lists.yoctoproject.org
+References: <20210804094714.3500323-1-richard.purdie@linuxfoundation.org>
+ <d982b722-9fd8-035f-878e-62ce7da99e9c@bootlin.com>
+ <e3e42e73f4b5e84cf3674e5a7448c1b24532561f.camel@linuxfoundation.org>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 6/6] test-manual: overrides syntax updates
-Date: Wed,  4 Aug 2021 20:34:26 +0200
-Message-Id: <20210804183426.22333-7-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20210804183426.22333-1-michael.opdenacker@bootlin.com>
-References: <20210804183426.22333-1-michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <4893870d-be93-87b7-6220-ef6a3bfe4238@bootlin.com>
+Date: Thu, 5 Aug 2021 10:07:48 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 MIME-Version: 1.0
+In-Reply-To: <e3e42e73f4b5e84cf3674e5a7448c1b24532561f.camel@linuxfoundation.org>
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 
-Updated with openembedded-core/scripts/contrib/convert-overrides.py
+Hi Richard,
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/test-manual/understand-autobuilder.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 8/4/21 12:15 PM, Richard Purdie wrote:
+>>> +-  Layers should be documenting where they don’t support normal 'core'
+>>> +   functionality such as where debug symbols are disabled or missing, where
+>>> +   development headers and on-target library usage may not work or where
+>>
+>> Replaced "or" by "and" here, as we are dealing with a list of examples,
+>> rather than with a list of alternatives.
+>> https://forum.oxforddictionaries.com/en/discussion/27/such-as-or-or-and
+> I think it was more correct with "or". From your link, "If you are choosing from 
+> a list of alternatives, then OR precedes the last item." from that link applies 
+> here since you are not choosing a list of items and only one of the list may apply. 
 
-diff --git a/documentation/test-manual/understand-autobuilder.rst b/documentation/test-manual/understand-autobuilder.rst
-index c158d9ce4d..b6809ce7bd 100644
---- a/documentation/test-manual/understand-autobuilder.rst
-+++ b/documentation/test-manual/understand-autobuilder.rst
-@@ -27,7 +27,7 @@ which looks like::
-          "TEMPLATE" : "arch-qemu",
-          "step1" : {
-                "extravars" : [
--                     "IMAGE_FSTYPES_append = ' wic wic.bmap'"
-+                     "IMAGE_FSTYPES:append = ' wic wic.bmap'"
-                     ]
-         }
-    },
+
+Thanks for double checking this. I considered this as a list of examples
+rather than a list of alternatives, but indeed, you need to understand
+the exact meaning to know which case you are in.
+I fixed this in my commit in "master-next".
+
+Thanks again,
+
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
