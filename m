@@ -1,156 +1,143 @@
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.11063.1628180101983046961
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.3092.1628246244970474632
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Aug 2021 09:15:02 -0700
+ Fri, 06 Aug 2021 03:37:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 2E8FC240003;
-	Thu,  5 Aug 2021 16:14:58 +0000 (UTC)
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: Document Yocto config items (was: Configure command shell idle timeout default?)
-To: Joseph Reynolds <jrey@linux.ibm.com>,
- yocto-security@lists.yoctoproject.org,
- Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <1b70ecb4-d1c7-c913-6e84-d70d69baaa7c@linux.ibm.com>
- <3a45d0f8b91c750544e232171c0b8a650ead3889.camel@linuxfoundation.org>
- <298b3fc4-64f7-c70f-4ec6-e9e52ec71a86@kernel.crashing.org>
- <4e7ff3e4-3dca-d140-51b4-340f16fe66a3@linux.ibm.com>
- <7e70596bee4e54bbaf0ab6da36f41957c19a8673.camel@linuxfoundation.org>
- <0acd3699-0c59-79ec-a690-957e6db94ee6@linux.ibm.com>
+	by relay4-d.mail.gandi.net (Postfix) with ESMTPSA id 299B6E0004;
+	Fri,  6 Aug 2021 10:37:22 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <017b5f51-ecd1-fe77-d76a-9a01f909bbb0@bootlin.com>
-Date: Thu, 5 Aug 2021 18:14:58 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] manuals: further documentation for cve-check
+Date: Fri,  6 Aug 2021 12:37:20 +0200
+Message-Id: <20210806103720.50047-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: <0acd3699-0c59-79ec-a690-957e6db94ee6@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
+X-Spam-Flag: yes
+X-Spam-Level: *********
+X-GND-Spam-Score: 144
+X-GND-Status: SPAM
 Content-Transfer-Encoding: 8bit
-Content-Language: en-US
 
-Hi Joseph,
+This adds details about the actual implementation
+of vulnerability checks, about how to fix or ignore
+vulnerabilities in recipes, and documents the
+CVE_CHECK_PN_WHITELIST and CVE_CHECK_WHITELIST variables.
 
-On 8/4/21 10:35 PM, Joseph Reynolds wrote:
-> On 8/4/21 11:00 AM, Richard Purdie wrote:
->
-> ...snip...
->>> I've tried to push
->>> https://github.com/openbmc/openbmc/wiki/Configuration-guide into
->>> https://github.com/openbmc/docs, but there was not enough interest. And
->>> yet questions come up regularly in the project's email list which
->>> can be
->>> answered by providing a link to the configuration guide.  So I know a
->>> configuration guide is useful.
->> Yocto Project has extensive docs:
->>
->> http://docs.yoctoproject.org/
->
->
-> Please note the security configuration guides are generally applicable
-> to everyone, but is focused on the needs of higher-security
-> applications such as those involving human safety, or processing
-> personal or financial information.
->
-> I suggest two new sections: one for the system integrator who build
-> the image, and one for the system admin (or initial user) who uses the
-> system which contains the image.
->
->
-> 1. Bitbake configuration.
->
-> WHERE TO PUT THE INFO: New section under
-> Yocto Project Development Tasks Manual > 3. Common Tasks > 3.2.
-> Customizing Images or 3.18 Making Images More Secure
-> called: "Security Configuration Items"
->
-> DRAFT TEXT: Yocto comes pre-configured with security in mind.  For
-> higher security applications, you should review the following security
-> configuration items, adapt them to meet your needs, and test if they
-> are effective.
->
-> TODO: insert items here...adapt from downstream project
-> https://github.com/openbmc/openbmc/wiki/Configuration-guide#build-configuration
->
->
->
-> 2. Admin user configuration.
->
-> WHERE TO PUT THE INFO: Does Yocto have a configuration guide for the
-> initial user or system admin?  These are often not needed in consumer
-> electronics, but are expected in high-end computers.  I understand
-> this topic is very broad and varies by use case, and I only propose
-> one specific use case: A list of security items the admin can configure.
->
-> I believe this task is for the development team, so it could be added
-> to the
-> Yocto Project Development Tasks Manual > 3. Common Tasks >
->
-> This is akin to the following in that it is something you do with the
-> installed image:
-> - Yocto Project Profiling and Tracing Manual"
-> - Common Tasks > 3.29 Performing Automated Runtime Testing
->
-> New section called "Security Configuration Guide".
->
-> DRAFT TEXT: Consider producing a configuration guide for your users
-> who need to operate the system in a secure manner.  This guide should
-> describe all the controls they can operate which affect the security
-> of the system.  Common items from the default Yocto configuration are
-> given below.  You should customize these according to how you
-> customized your image (see Common Tasks > Customizing Images), make
-> the advice relevant to your users, and ensure your users have access
-> to your guide.
->
-> TODO: insert items here...adapt from downstream project
-> https://github.com/openbmc/openbmc/wiki/Configuration-guide#admin-configuration
->
->> from
->>
->> http://git.yoctoproject.org/cgit.cgi/yocto-docs
->>
->> and I'd love to see a security section added to these where we could
->> start to collect
->> best practises. Would you be interested in sending something for our
->> docs on that
->> subject?
->
-> Yes, I can work with the Yocto writers to get this started.  (Hi
-> Michael!)
->
-> I've proposed two new sections above.  If it seems okay-ish, I can
-> start the list of items.  But please note my previous focus was on the
-> items which the OpenBMC projects adds to Yocto, and I don't have a lot
-> if items here.  I plan to contribute items I know about, but need help
-> here.
->
-> Thank you!
->
-> - Joseph
->
->>
->> Yocto Project does have people helping collate and edit the
->> information if someone
->> is able to write out the "bare bones" information for them (cc'd
->> Michael).
->>
->> Cheers,
->>
->> Richard
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/common-tasks.rst | 67 +++++++++++++++++++++++
+ documentation/ref-manual/variables.rst    | 13 ++++-
+ 2 files changed, 79 insertions(+), 1 deletion(-)
 
-
-Many for your suggestions !
-I'm copying our docs mailing list so that this topic gets tracked
-properly and other people can contribute.
-
-I should be able to get back to you next week.
-
-Thanks again,
-Michael.
-
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 7fa0df4d39..a7eb4642de 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -11131,6 +11131,73 @@ Enabling vulnerabily tracking in recipes
+ The :term:`CVE_PRODUCT` variable defines the name used to match the recipe name
+ against the name in the upstream `NIST CVE database <https://nvd.nist.gov/>`__.
+ 
++Editing recipes to fix vulnerabilities
++--------------------------------------
++
++To fix a given known vulnerability, you need to add a patch file to your recipe. Here's
++an example from the :oe_layerindex:`ffmpeg recipe</layerindex/recipe/47350>`::
++
++   SRC_URI = "https://www.ffmpeg.org/releases/${BP}.tar.xz \
++              file://0001-libavutil-include-assembly-with-full-path-from-sourc.patch \
++              file://fix-CVE-2020-20446.patch \
++              file://fix-CVE-2020-20453.patch \
++              file://fix-CVE-2020-22015.patch \
++              file://fix-CVE-2020-22021.patch \
++              file://fix-CVE-2020-22033-CVE-2020-22019.patch \
++              file://fix-CVE-2021-33815.patch \
++
++``cve-check.bbclass`` defines two ways of supplying a patch for a given CVE. The first
++way is to use a patch file name that matches the below pattern::
++
++   cve_file_name_match = re.compile(".*([Cc][Vv][Ee]\-\d{4}\-\d+)")
++
++As shown in the example above, multiple CVE IDs can appear in a patch file name,
++but the ``cve-check.bbclass`` code will only consider the last CVE ID in the
++file name as patched.
++
++The second way to recognize a patched CVE ID is when a line matching the
++below pattern is found in any patch file provided by the recipe::
++
++  cve_match = re.compile("CVE:( CVE\-\d{4}\-\d+)+")
++
++This allows a single patch file to address multiple CVE IDs at the same time.
++
++Of course, another way to fix vulnerabilities is to upgrade to a version
++of the package which is not impacted, typically a more recent one.
++The NIST database knows which versions are vulnerable and which ones
++are not.
++
++Last but not least, you can choose to ignore vulnerabilities through
++the :term:`CVE_CHECK_PN_WHITELIST` and :term:`CVE_CHECK_WHITELIST`
++variables.
++
++Implementation details
++----------------------
++
++Here's what ``cve-check.bbclass`` does to find unpatched CVE IDs.
++
++First the code goes through each patch file provided by a recipe. If a valid CVE ID
++is found in the name of the file, the corresponding CVE is considered as patched.
++Don't forget that if multiple CVE IDs are found in the file name, only the last
++one is considered. Then, the code looks for ``CVE: CVE-ID`` lines in the patch
++file. The found CVE IDs are also considered as patched.
++
++Then, the code looks-up all the CVE IDs in the NIST database for all the
++products defined in :term:`CVE_PRODUCT`. Then, for each found CVE:
++
++ - If the package name (:term:`PN`) is part of
++   :term:`CVE_CHECK_PN_WHITELIST`, it is considered as patched.
++
++ - If the CVE ID is part of :term:`CVE_CHECK_WHITELIST`, it is
++   considered as patched too.
++
++ - If the CVE ID is part of the patched CVEs for the recipe, it is
++   already considered as patched.
++
++ - Otherwise, the code checks whether the recipe version (:term:`PV`)
++   is within the range of versions impacted by the CVE. If so, the CVE
++   is considered as unpatched.
++
+ The CVE database is stored in :term:`DL_DIR` and can be inspected using
+ ``sqlite3`` command as follows::
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 1150940133..cc7be01fc5 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -1471,11 +1471,22 @@ system and gives an overview of their function and contents.
+          variable only in certain contexts (e.g. when building for kernel
+          and kernel module recipes).
+ 
++   :term:`CVE_CHECK_PN_WHITELIST`
++      The list of package names (:term:`PN`) for which
++      CVE vulnerabilities are ignored.
++
++   :term:`CVE_CHECK_WHITELIST`
++      The list of vulnerability CVE IDs which are ignored. Here is
++      an example from the :oe_layerindex:`Python3 recipe</layerindex/recipe/23823>`::
++
++         # This is windows only issue.
++         CVE_CHECK_WHITELIST += "CVE-2020-15523"
++
+    :term:`CVE_PRODUCT`
+       In a recipe, defines the name used to match the recipe name
+       against the name in the upstream `NIST CVE database <https://nvd.nist.gov/>`__.
+ 
+-      The default is ${:term:`BPN`}. If it does not match the name in NIST CVE
++      The default is ${:term:`BPN`}. If it does not match the name in the NIST CVE
+       database or matches with multiple entries in the database, the default
+       value needs to be changed.
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
