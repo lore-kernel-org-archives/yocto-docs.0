@@ -1,65 +1,65 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web12.115.1628269746523036503
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+ by mx.groups.io with SMTP id smtpd.web11.2841.1628307207707589341
  for <docs@lists.yoctoproject.org>;
- Fri, 06 Aug 2021 10:09:07 -0700
+ Fri, 06 Aug 2021 20:33:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id BAECEFF803;
-	Fri,  6 Aug 2021 17:09:04 +0000 (UTC)
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
-Organization: Bootlin
-Message-ID: <87ed47a8-9fd3-e507-41fc-4e5688c75640@bootlin.com>
-Date: Fri, 6 Aug 2021 19:09:04 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=Em6w2Hkd;
+ spf=pass (domain: axis.com, ip: 195.60.68.18, mailfrom: peter.kjellerstedt@axis.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1628307208;
+  x=1659843208;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=iURbH5LmR++gQo2NczAfX5YhQKiBukHRotS4K6UA5hw=;
+  b=Em6w2HkdbOZhnw1p9C+UzEws0pyWLxGVwEnogkbghNWwI40LORkrdIaC
+   aedRN+9RQ2TCX2q1DTJ/pw0fqwKKXvjNNsKPOf5w18vrRYLhESnjJOKBd
+   Wq4inXmo3lj84Ty1JT85GFqwbkdbbBVIPYbuQA5CJmChPl4qOm8FJj85d
+   sPpTqTcUjfQhF/OhxJHHioaSiI6e6oGDZKoPdgCHtjN/FrG78cOisVBq8
+   M4waaLBKj3v7k1Tk4ioiaZT959zfXSIUXZ+dCJdngzRb0SJKRJePHMCZ8
+   2/L1gXoVyWyI7Ij2bUSjCvu1S4WKAkdnsXLJvBUCCWHI0MjnDg5OBk452
+   g==;
+From: "Peter Kjellerstedt" <peter.kjellerstedt@axis.com>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>, Quentin Schulz
+	<quentin.schulz@theobroma-systems.com>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] manuals: further documentation for cve-check
+Thread-Topic: [docs] [PATCH] manuals: further documentation for cve-check
+Thread-Index: AQHXiq8OhapuQKUorUy16/XrBuW7W6tmOQWAgABY0eKAAM8M4A==
+Date: Sat, 7 Aug 2021 03:33:24 +0000
+Message-ID: <d1d6b6d2e58b47b4a506f305403b5546@axis.com>
+References: <20210806103720.50047-1-michael.opdenacker@bootlin.com>
+ <20210806114113.4453gl435gtde7xy@fedora>
+ <1698BCAA59B53D79.17952@lists.yoctoproject.org>
+ <a822bc10-12fa-8a68-3c22-d81c98b1672f@bootlin.com>
+In-Reply-To: <a822bc10-12fa-8a68-3c22-d81c98b1672f@bootlin.com>
+Accept-Language: en-US, sv-SE
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.5.60]
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+Return-Path: peter.kjellerstedt@axis.com
 Content-Language: en-US
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 
-Hello Richard,
-
-The following changes since commit 3c98afb0fefd889e8036639d9a2c775b73b237c2:
-
-  releases: update to include 3.3.1 (2021-08-03 12:48:32 -0700)
-
-are available in the Git repository at:
-
-  git://git.yoctoproject.org/yocto-docs master-next
-  https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/log/?h=master-next
-
-for you to fetch changes up to a21137ed4bbf53ca2dbaaf1beb0155eac3dbfba5:
-
-  manuals: further documentation for cve-check (2021-08-06 19:05:30 +0200)
-
-----------------------------------------------------------------
-Michael Opdenacker (2):
-      manuals: mention license information in footer
-      manuals: further documentation for cve-check
-
-Richard Purdie (2):
-      test-manual: Add extra detail to YP Compatible section
-      migration-3.4: Add extra notes to override syntax changes
-
- documentation/conf.py                                  |  2 +-
- documentation/dev-manual/common-tasks.rst              | 73
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
- documentation/migration-guides/migration-3.4.rst       |  7 +++++++
- documentation/ref-manual/classes.rst                   | 16
-++++++++++++++++
- documentation/ref-manual/variables.rst                 | 13 ++++++++++++-
- documentation/test-manual/yocto-project-compatible.rst |  5 +++++
- 6 files changed, 112 insertions(+), 4 deletions(-)
-
-Thank you in advance,
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
+amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmDQo+IE9mIE1p
+Y2hhZWwgT3BkZW5hY2tlcg0KPiBTZW50OiBkZW4gNiBhdWd1c3RpIDIwMjEgMTY6NTkNCj4gVG86
+IFF1ZW50aW4gU2NodWx6IDxxdWVudGluLnNjaHVsekB0aGVvYnJvbWEtc3lzdGVtcy5jb20+DQo+
+IENjOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4gU3ViamVjdDogUmU6IFtkb2NzXSBb
+UEFUQ0hdIG1hbnVhbHM6IGZ1cnRoZXIgZG9jdW1lbnRhdGlvbiBmb3IgY3ZlLWNoZWNrDQo+IA0K
+PiBIZWxsbyBRdWVudGluLA0KPiANCj4gUHJlZW1wdGl2ZSBuaXRwaWNraW5nIDstKQ0KPiANCj4g
+T24gOC82LzIxIDQ6MDUgUE0sIE1pY2hhZWwgT3BkZW5hY2tlciB3cm90ZToNCj4gPg0KPiA+PiBT
+aW5jZSBDVkUgc3RhbmRzIGZvciAiQ29tbW9uIFZ1bG5lcmFiaWxpdGllcyBhbmQgRXhwb3N1cmVz
+IiwgaXNuJ3QNCj4gPj4gYWRkaW5nIHZ1bG5lcmFiaWxpdGllcyByZWR1bmRhbnQ/DQoNCk5vdCBt
+dWNoIGRpZmZlcmVudCBmcm9tIHVzaW5nLCBlLmcuLCAiYSBDRCBkaXNjIi4gOykgDQoNCj4gPiBP
+aCB5ZXMsIGFncmVlZCENCj4gDQo+IFdvcnNlLCBDVkUgaXMgYWxyZWFkeSBhIHBsdXJhbCBhY3Jv
+bnltLiBTbywgd2Ugc2hvdWxkIHVzZSAiQ1ZFIiBpbnN0ZWFkDQo+IG9mICJDVkVzIiwgb3RoZXJ3
+aXNlIHdlJ3JlIG1ha2luZyBhIG11bHRpLXBsdXJhbCEgSSdtIHN1cmUgeW91IHdvdWxkDQo+IGhh
+dmUgZW5kZWQgdXAgbm90aWNpbmcgdGhpcy4NCg0KVGhhdCBkb2Vzbid0IG1ha2Ugc2Vuc2UuIEkg
+d291bGQgYXJndWUgdGhhdCAiYSBDVkUiIGlzIHNpbmd1bGFyIGFuZCByZWZlcnMgDQp0byBvbmUg
+ZW50cnkgaW4gdGhlIENWRSBkYXRhYmFzZSwgcmVnYXJkbGVzcyBvZiB3aGF0IHRoZSBhY3Jvbnlt
+IGFjdHVhbGx5IA0Kc3RhbmRzIGZvci4gVGh1cyAiYnVncyBhbmQgQ1ZFcyIgbWFrZSBzZW5zZSwg
+d2hpbGUgImJ1Z3MgYW5kIENWRSIgZG9lcyBub3QuDQoNCj4gRm9ydHVuYXRlbHksIG5vdCBhbGwg
+cmVhZGVycyBhcmUgbGlrZSB5b3UsIGJ1dCB0aG9zZSBhcmUgdGhlIGJlc3Qgb25lcyA6LVANCj4g
+Q2hlZXJzLA0KPiBNaWNoYWVsLg0KDQovL1BldGVyDQoNCg==
