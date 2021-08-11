@@ -1,18 +1,19 @@
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web10.12856.1628712808993695872
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web08.13017.1628713174099669920
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Aug 2021 13:13:29 -0700
+ Wed, 11 Aug 2021 13:19:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.178.232, mailfrom: foss@0leil.net)
+ dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.198, mailfrom: foss@0leil.net)
 Received: (Authenticated sender: foss@0leil.net)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id CB56D200002;
-	Wed, 11 Aug 2021 20:13:26 +0000 (UTC)
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 6C6B3C0003;
+	Wed, 11 Aug 2021 20:19:29 +0000 (UTC)
 From: "Quentin Schulz" <foss@0leil.net>
-To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <foss@0leil.net>
-Subject: [PATCH] docs: overview-manual: concepts: remove long-gone BBHASHDEPS variable
-Date: Wed, 11 Aug 2021 22:13:10 +0200
-Message-Id: <20210811201310.12996-1-foss@0leil.net>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Quentin Schulz <foss@0leil.net>
+Subject: [PATCH] doc: bitbake-user-manual-execution: remove mention to long-gone BBHASHDEPS variable
+Date: Wed, 11 Aug 2021 22:19:12 +0200
+Message-Id: <20210811201912.13648-1-foss@0leil.net>
 X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -25,23 +26,23 @@ so let's remove mentions from the docs.
 
 Signed-off-by: Quentin Schulz <foss@0leil.net>
 ---
- documentation/overview-manual/concepts.rst | 3 ---
+ doc/bitbake-user-manual/bitbake-user-manual-execution.rst | 3 ---
  1 file changed, 3 deletions(-)
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 4f8e6cb04..8667ef6da 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -1774,9 +1774,6 @@ the build. This information includes:
- -  ``BB_BASEHASH_``\ filename\ ``:``\ taskname: The base hashes for each
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
+index a6ef90db12..6153f36a0f 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
+@@ -578,9 +578,6 @@ the build. This information includes:
+ -  ``BB_BASEHASH_``\ *filename:taskname*: The base hashes for each
     dependent task.
  
---  ``BBHASHDEPS_``\ filename\ ``:``\ taskname: The task dependencies for
+--  ``BBHASHDEPS_``\ *filename:taskname*: The task dependencies for
 -   each task.
 -
  -  :term:`BB_TASKHASH`: The hash of the currently running task.
  
- Shared State
+ It is worth noting that BitBake's "-S" option lets you debug BitBake's
 -- 
 2.20.1
 
