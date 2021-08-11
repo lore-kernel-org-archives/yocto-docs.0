@@ -1,57 +1,44 @@
-Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web09.5103.1628672003415158005
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web12.5342.1628674209285096535
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Aug 2021 01:53:23 -0700
+ Wed, 11 Aug 2021 02:30:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:56126 helo=fedora)
-	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1mDjzG-0002Dy-2V
-	for docs@lists.yoctoproject.org; Wed, 11 Aug 2021 04:53:21 -0400
-Date: Wed, 11 Aug 2021 04:53:18 -0400 (EDT)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: WKS_FILE versus WKS_FILES? and more WKS_FILE_* variables
-Message-ID: <77e44126-da4d-5afa-6fa-125b694c6d@crashcourse.ca>
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 7EE2E1C0004;
+	Wed, 11 Aug 2021 09:30:07 +0000 (UTC)
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] dev-manual: fix grammar in post-install script explanations
+Date: Wed, 11 Aug 2021 11:30:05 +0200
+Message-Id: <20210811093005.157190-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/common-tasks.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-  digging into wic and wks files for the first time, and notice that
-variable glossary refers to WKS_FILE but not WKS_FILES:
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 37077d72d4..38c9fbabfb 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -7737,9 +7737,9 @@ It is very important that you make sure all post-Installation
+ (``pkg_postinst``) scripts for packages that are installed into the
+ image can be run at the time when the root filesystem is created during
+ the build on the host system. These scripts cannot attempt to run during
+-first-boot on the target device. With the "read-only-rootfs" feature
+-enabled, the build system checks during root filesystem creation to make
+-sure all post-installation scripts succeed. If any of these scripts
++the first boot on the target device. With the "read-only-rootfs" feature
++enabled, the build system makes sure that all post-installation scripts
++succeed at file system creation time. If any of these scripts
+ still need to be run after the root filesystem is created, the build
+ immediately fails. These build-time checks ensure that the build fails
+ rather than the target device fails later during its initial boot
+-- 
+2.25.1
 
-http://docs.yoctoproject.org/ref-manual/variables.html#term-WKS_FILE
-
-and there seem to be other WKS_FILE* variables not in the VG:
-
-WKS_FILE_CHECKSUM = "${@'${WKS_FULL_PATH}:%s' %
-os.path.exists('${WKS_FULL_PATH}') if '${USING_WIC}' else ''}"
-do_image_wic[file-checksums] += "${WKS_FILE_CHECKSUM}"
-
-WKS_FILE_DEPENDS_DEFAULT = '${@bb.utils.contains_any("BUILD_ARCH", [
-'x86_64', 'i686' ], "syslinux-native", "",d)}'
-WKS_FILE_DEPENDS_DEFAULT += "bmap-tools-native cdrtools-native
-btrfs-tools-native squashfs-tools-native e2fsprogs-native"
-
-WKS_FILE_DEPENDS_BOOTLOADERS = ""
-os.path.exists('${WKS_FULL_PATH}') if '${USING_WIC}' else ''}"
-do_image_wic[file-checksums] += "${WKS_FILE_CHECKSUM}"
-
-and so on.
-
-  as soon as some crippling deadlines are over in the next few days, i
-will try to be useful.
-
-rday
