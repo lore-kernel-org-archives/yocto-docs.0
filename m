@@ -1,69 +1,48 @@
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web08.8112.1628691633890960152
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.9109.1628695391830896416
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Aug 2021 07:20:34 -0700
+ Wed, 11 Aug 2021 08:23:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id E0C7C1C0009;
-	Wed, 11 Aug 2021 14:20:31 +0000 (UTC)
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 965EB20004;
+	Wed, 11 Aug 2021 15:23:09 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] bitbake-user-manual: replace "file name" by "filename"
-Date: Wed, 11 Aug 2021 16:20:23 +0200
-Message-Id: <20210811142023.161649-1-michael.opdenacker@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] sdk-manual: reference obsolete reference to ADT
+Date: Wed, 11 Aug 2021 17:23:06 +0200
+Message-Id: <20210811152306.221199-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-There are many more instances of "filename" or "filenames" than
-of "file name" or "file names".
-
-The winner takes it all!
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- doc/bitbake-user-manual/bitbake-user-manual-metadata.rst      | 2 +-
- doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ documentation/sdk-manual/intro.rst | 10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-index b0494d08..ff60381f 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-@@ -1941,7 +1941,7 @@ Wildcard Support in Variables
- =============================
+diff --git a/documentation/sdk-manual/intro.rst b/documentation/sdk-manual/intro.rst
+index 2f94aaf874..802d3f3d42 100644
+--- a/documentation/sdk-manual/intro.rst
++++ b/documentation/sdk-manual/intro.rst
+@@ -12,16 +12,6 @@ Software Development Kit (eSDK) manual. This manual
+ explains how to use both the Yocto Project extensible and standard
+ SDKs to develop applications and images.
  
- Support for wildcard use in variables varies depending on the context in
--which it is used. For example, some variables and file names allow
-+which it is used. For example, some variables and filenames allow
- limited use of wildcards through the "``%``" and "``*``" characters.
- Other variables or names support Python's
- `glob <https://docs.python.org/3/library/glob.html>`_ syntax,
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index 6283c265..d97bb259 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -335,7 +335,7 @@ overview of their function and contents.
-    :term:`BB_LOGFMT`
-       Specifies the name of the log files saved into
-       ``${``\ :term:`T`\ ``}``. By default, the :term:`BB_LOGFMT`
--      variable is undefined and the log file names get created using the
-+      variable is undefined and the log filenames get created using the
-       following form::
+-.. note::
+-
+-   Prior to the 2.0 Release of the Yocto Project, application
+-   development was primarily accomplished through the use of the
+-   Application Development Toolkit (ADT) and the availability of
+-   stand-alone cross-development toolchains and other tools. With the
+-   2.1 Release of the Yocto Project, application development has
+-   transitioned to within a tool-rich extensible SDK and the more
+-   traditional standard SDK.
+-
+ All SDKs consist of the following:
  
-          log.{task}.{pid}
-@@ -389,7 +389,7 @@ overview of their function and contents.
-    :term:`BB_RUNFMT`
-       Specifies the name of the executable script files (i.e. run files)
-       saved into ``${``\ :term:`T`\ ``}``. By default, the
--      :term:`BB_RUNFMT` variable is undefined and the run file names get
-+      :term:`BB_RUNFMT` variable is undefined and the run filenames get
-       created using the following form::
- 
-          run.{task}.{pid}
+ -  *Cross-Development Toolchain*: This toolchain contains a compiler,
 -- 
 2.25.1
 
