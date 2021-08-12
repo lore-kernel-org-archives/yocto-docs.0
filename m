@@ -1,137 +1,122 @@
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
- by mx.groups.io with SMTP id smtpd.web10.24233.1628784633668208413
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
+ by mx.groups.io with SMTP id smtpd.web08.24371.1628784634812209033
  for <docs@lists.yoctoproject.org>;
- Thu, 12 Aug 2021 09:10:33 -0700
+ Thu, 12 Aug 2021 09:10:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: gmail.com, ip: 209.85.219.50, mailfrom: tom.rini@gmail.com)
-Received: by mail-qv1-f50.google.com with SMTP id bu14so486946qvb.1
-        for <docs@lists.yoctoproject.org>; Thu, 12 Aug 2021 09:10:33 -0700 (PDT)
+ dkim=missing; spf=pass (domain: gmail.com, ip: 209.85.219.44, mailfrom: tom.rini@gmail.com)
+Received: by mail-qv1-f44.google.com with SMTP id dk2so3437718qvb.3
+        for <docs@lists.yoctoproject.org>; Thu, 12 Aug 2021 09:10:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references;
-        bh=VfClDZLt7Ldrrp0QihoOkWlm+sFVMoqoUNmYsVxECPQ=;
-        b=oXFqGd1qniI/axEsGuLRGvfFul2fBAFtbCXw4m7qGH/OZCJLhhIg1InyUDx8Mgsw6/
-         7QPtkNSINZfqC/KBqggpu2EImEwBO5MZcXj1wLohOXVlMX554cCUke3P5d3WIZqQAU4a
-         iImrFY4kyc6LAzXAiiR4WG5uXe5Qd2lpLu+PTmlspD9uHepGy7iwCkVFdvE5JFmcxD3e
-         O4N5XFTOOx4SrQUJqA7Imd6yc5E4Fkd91RgiJ4QgcclyCvtZEFsFMBfAZ3YJj96G1LGa
-         c3BjtdgxIe9peLnGX6NwV9mavOczOfnd5yb6h4RttAxF091FR7axqp9qyMWmm2kbZg3x
-         h/tg==
-X-Gm-Message-State: AOAM532fiIPehzh61CGAvIfuzS3msjc7WPvJ/p9uGBharCyn77cq5Nq2
-	VFBRodB64m+5FF6PH8MS9JUnYC2dng06
-X-Google-Smtp-Source: ABdhPJx0OAMjEgcb5sgdjzI3RYqG0dVf6OLVkCbRHxxqPeNl7VT15HXUVk7zU6kETqO/u9kw0l2oXw==
-X-Received: by 2002:a05:6214:1907:: with SMTP id er7mr4628727qvb.17.1628784632527;
-        Thu, 12 Aug 2021 09:10:32 -0700 (PDT)
+        bh=ZVPjAS8E5gvnn9Z/AsMVv2auSd89VRssVHOSgkvoDFo=;
+        b=b2Q8OdytCfwEA1UYbsVh/EcPsvPLWk2AFEvw+l2gURUSBgi/RqjFEgMl9tE9DVSy5X
+         UWhOs48a3/Thvnpeyb8iE0aonut6asz6QVtT726FNaCqyWwtF9x69S9rG0cyTPTT6K2X
+         V9YUzKAnPIRtRbgM5LFjiSkgYmNq3pxI6kZeoPWDEBErW0t0bhnFMpgssmMUvXrqKCWB
+         wgvSgeX6s0sZv/ctbfbWo1bv3Qd3hQsfkvoFiE1PrpYf5OFpNaphXIL3FHhI48cNcrbb
+         0VpsIR7CMkbtX5eavVRw6V2+5n/1H+qmB1XrNyPrjb6xgSinYRFhLjF2xIB2pvZrmmYA
+         0ItQ==
+X-Gm-Message-State: AOAM532tVRMIgQALG9tXy7E4OC0rOPFn3r9wOJ9A+U7L5wMk5ses45eW
+	h511tN0G7KYEVRaKZFf6pOLLw56rTYfi
+X-Google-Smtp-Source: ABdhPJxS8rSM6D7iPtePDYVfvLD5CkFDPiGet56l+ctdJ3JndYtmoCAg8XLu4XUW2LGoYmuig89nQw==
+X-Received: by 2002:a0c:b450:: with SMTP id e16mr4600469qvf.25.1628784633628;
+        Thu, 12 Aug 2021 09:10:33 -0700 (PDT)
 Return-Path: <tom.rini@gmail.com>
 Received: from bill-the-cat.lan (2603-6081-7b01-cbda-04e3-07fe-0933-9252.res6.spectrum.com. [2603:6081:7b01:cbda:4e3:7fe:933:9252])
-        by smtp.gmail.com with ESMTPSA id h2sm1549773qko.127.2021.08.12.09.10.31
+        by smtp.gmail.com with ESMTPSA id h2sm1549773qko.127.2021.08.12.09.10.32
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Aug 2021 09:10:31 -0700 (PDT)
+        Thu, 12 Aug 2021 09:10:32 -0700 (PDT)
 From: "Tom Rini" <tom.rini@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 2/3] manuals: Rename the "Using .bbappend Files in Your Layer" section
-Date: Thu, 12 Aug 2021 12:10:26 -0400
-Message-Id: <20210812161027.580-2-trini@konsulko.com>
+Subject: [PATCH 3/3] common-tasks: Add an example of using bbappends to add a file
+Date: Thu, 12 Aug 2021 12:10:27 -0400
+Message-Id: <20210812161027.580-3-trini@konsulko.com>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20210812161027.580-1-trini@konsulko.com>
 References: <20210812161027.580-1-trini@konsulko.com>
 
-To prepare to add another example bbappend, rename the current "Using
-.bbappend Files in Your Layer" section to "Appending Other Layers With
-Your Layer".  Name the current example as "Overlaying a File Using Your
-Layer".
+Use the xserver-xf86-config_%.bbappend from meta-raspberrypi to provide
+an example of having a bbappend file add files to an existing recipe.
 
 Signed-off-by: Tom Rini <trini@konsulko.com>
 ---
- documentation/dev-manual/common-tasks.rst        | 9 ++++++---
- documentation/kernel-dev/common.rst              | 4 ++--
- documentation/kernel-dev/faq.rst                 | 2 +-
- documentation/migration-guides/migration-1.4.rst | 2 +-
- 4 files changed, 10 insertions(+), 7 deletions(-)
+ documentation/dev-manual/common-tasks.rst | 61 +++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
 diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 2d8ef96e2600..f15e72887c04 100644
+index f15e72887c04..87abef9ad52f 100644
 --- a/documentation/dev-manual/common-tasks.rst
 +++ b/documentation/dev-manual/common-tasks.rst
-@@ -443,8 +443,8 @@ file. During the processing of each ``conf/layer.conf`` file, BitBake
- adds the recipes, classes and configurations contained within the
- particular layer to the source directory.
+@@ -554,6 +554,67 @@ The end result of this ``.bbappend`` file is that on a Raspberry Pi, where
+ used during ``do_fetch`` and the test for a non-zero file size in
+ ``do_install`` will return true, and the file will be installed.
  
--Using .bbappend Files in Your Layer
-------------------------------------
-+Appending Other Layers With Your Layer
-+--------------------------------------
- 
- A recipe that appends Metadata to another recipe is called a BitBake
- append file. A BitBake append file uses the ``.bbappend`` file type
-@@ -474,6 +474,9 @@ does not have a corresponding recipe with a matching name. See the
- :term:`BB_DANGLINGAPPENDS_WARNONLY`
- variable for information on how to handle this error.
- 
-+Overlaying a File Using Your Layer
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++Installing Additional Files Using Your Layer
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
- As an example, consider the main formfactor recipe and a corresponding
- formfactor append file both from the :term:`Source Directory`.
- Here is the main
-@@ -6091,7 +6094,7 @@ layer. The following steps provide some more detail:
++As another example, consider the main xserver-xf86-config recipe and a corresponding
++xserver-xf86-config append file both from the :term:`Source Directory`.
++Here is the main
++xserver-xf86-config recipe, which is named ``xserver-xf86-config_0.1.bb`` and located in
++the "meta" layer at ``meta/recipes-graphics/xorg-xserver``::
++
++   SUMMARY = "X.Org X server configuration file"
++   HOMEPAGE = "http://www.x.org"
++   SECTION = "x11/base"
++   LICENSE = "MIT-X"
++   LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
++   PR = "r33"
++
++   SRC_URI = "file://xorg.conf"
++
++   S = "${WORKDIR}"
++
++   CONFFILES:${PN} = "${sysconfdir}/X11/xorg.conf"
++
++   PACKAGE_ARCH = "${MACHINE_ARCH}"
++   ALLOW_EMPTY:${PN} = "1"
++
++   do_install () {
++	if test -s ${WORKDIR}/xorg.conf; then
++		install -d ${D}/${sysconfdir}/X11
++		install -m 0644 ${WORKDIR}/xorg.conf ${D}/${sysconfdir}/X11/
++	fi
++   }
++
++Following is the append file, which is named ``xserver-xf86-config_%.bbappend``
++and is from the Raspberry Pi BSP Layer named ``meta-raspberrypi``. The
++file is in the layer at ``recipes-graphics/xorg-xserver``::
++
++   FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
++
++   SRC_URI:append:rpi = " \
++       file://xorg.conf.d/98-pitft.conf \
++       file://xorg.conf.d/99-calibration.conf \
++   "
++   do_install:append:rpi () {
++       PITFT="${@bb.utils.contains("MACHINE_FEATURES", "pitft", "1", "0", d)}"
++       if [ "${PITFT}" = "1" ]; then
++           install -d ${D}/${sysconfdir}/X11/xorg.conf.d/
++           install -m 0644 ${WORKDIR}/xorg.conf.d/98-pitft.conf ${D}/${sysconfdir}/X11/xorg.conf.d/
++           install -m 0644 ${WORKDIR}/xorg.conf.d/99-calibration.conf ${D}/${sysconfdir}/X11/xorg.conf.d/
++       fi
++   }
++
++   FILES:${PN}:rpi += "${sysconfdir}/X11/xorg.conf ${sysconfdir}/X11/xorg.conf.d/*"
++
++Building off of the previous example, we once again are setting the
++:term:`FILESEXTRAPATHS` variable.  In this case we are also usine the
++:term:`SRC_URI` to list additional source files to use when ``rpi`` is found in
++the list of :term:`OVERRIDES`.  The ``do_install`` task will then perform a
++check for an additional :term:`MACHINE_FEATURES` that if set will cause these
++additional files to be installed.  These additional files are listed in
++:term:`FILES` so that they will be packaged.
++
+ Prioritizing Your Layer
+ -----------------------
  
-    -  Add a ``psplash`` append file for a branded splash screen. For
-       information on append files, see the
--      ":ref:`dev-manual/common-tasks:using .bbappend files in your layer`"
-+      ":ref:`dev-manual/common-tasks:appending other layers with your layer`"
-       section.
- 
-    -  Add any other append files to make custom changes that are
-diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index a97140b0b904..e0bc375f8247 100644
---- a/documentation/kernel-dev/common.rst
-+++ b/documentation/kernel-dev/common.rst
-@@ -425,7 +425,7 @@ home directory:
-    The :term:`FILESEXTRAPATHS` and :term:`SRC_URI` statements
-    enable the OpenEmbedded build system to find patch files. For more
-    information on using append files, see the
--   ":ref:`dev-manual/common-tasks:using .bbappend files in your layer`"
-+   ":ref:`dev-manual/common-tasks:appending other layers with your layer`"
-    section in the Yocto Project Development Tasks Manual.
- 
- Modifying an Existing Recipe
-@@ -1070,7 +1070,7 @@ Section.
-    For more information on append files and patches, see the
-    ":ref:`kernel-dev/common:creating the append file`" and
-    ":ref:`kernel-dev/common:applying patches`" sections. You can also see the
--   ":ref:`dev-manual/common-tasks:using .bbappend files in your layer`"
-+   ":ref:`dev-manual/common-tasks:appending other layers with your layer`"
-    section in the Yocto Project Development Tasks Manual.
- 
-    .. note::
-diff --git a/documentation/kernel-dev/faq.rst b/documentation/kernel-dev/faq.rst
-index f0a7af37bb0b..2497145f26aa 100644
---- a/documentation/kernel-dev/faq.rst
-+++ b/documentation/kernel-dev/faq.rst
-@@ -38,7 +38,7 @@ The kernel image (e.g. ``vmlinuz``) is provided by the
- specify whether or not the kernel image is installed in the generated
- root filesystem, override ``RDEPENDS_${KERNEL_PACKAGE_NAME}-base`` to include or not
- include "kernel-image". See the
--":ref:`dev-manual/common-tasks:using .bbappend files in your layer`"
-+":ref:`dev-manual/common-tasks:appending other layers with your layer`"
- section in the
- Yocto Project Development Tasks Manual for information on how to use an
- append file to override metadata.
-diff --git a/documentation/migration-guides/migration-1.4.rst b/documentation/migration-guides/migration-1.4.rst
-index 3f980915cf0c..81e8ccd03ba3 100644
---- a/documentation/migration-guides/migration-1.4.rst
-+++ b/documentation/migration-guides/migration-1.4.rst
-@@ -83,7 +83,7 @@ create an append file for the ``init-ifupdown`` recipe instead, which
- you can find in the :term:`Source Directory` at
- ``meta/recipes-core/init-ifupdown``. For information on how to use
- append files, see the
--":ref:`dev-manual/common-tasks:using .bbappend files in your layer`"
-+":ref:`dev-manual/common-tasks:appending other layers with your layer`"
- section in the Yocto Project Development Tasks Manual.
- 
- .. _migration-1.4-remote-debugging:
 -- 
 2.17.1
 
