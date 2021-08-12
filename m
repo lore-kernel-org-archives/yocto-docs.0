@@ -1,122 +1,77 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
- by mx.groups.io with SMTP id smtpd.web08.24371.1628784634812209033
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+ by mx.groups.io with SMTP id smtpd.web08.26723.1628795067632134781
  for <docs@lists.yoctoproject.org>;
- Thu, 12 Aug 2021 09:10:35 -0700
+ Thu, 12 Aug 2021 12:04:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: gmail.com, ip: 209.85.219.44, mailfrom: tom.rini@gmail.com)
-Received: by mail-qv1-f44.google.com with SMTP id dk2so3437718qvb.3
-        for <docs@lists.yoctoproject.org>; Thu, 12 Aug 2021 09:10:34 -0700 (PDT)
+ dkim=pass header.i=@qtec.com header.s=google header.b=FOx2siOP;
+ spf=pass (domain: qtec.com, ip: 209.85.208.179, mailfrom: daniel@qtec.com)
+Received: by mail-lj1-f179.google.com with SMTP id h9so11988657ljq.8
+        for <docs@lists.yoctoproject.org>; Thu, 12 Aug 2021 12:04:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=qtec.com; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6HFZPHNKpAmpNA5kiKEux97F62y8xhjKypNgJWGKBLM=;
+        b=FOx2siOPnxEm45ECb3oLKNhk5udSdK9a4tGEzKm8HYasWU6h0MYQJsbhtDjS3OyRqo
+         Qup8537erGYZtnpZ/BDYmZABW1nOxXQ7MR+YSsSOugipT0ftmPugM/DudELMkNVK0eyv
+         DIwLJnmJhjE5N5B2MMqYimxltQlfAqtwa9MGVC1ZnrZGFdvSrJcpCJMv4JUEnF1bawQs
+         VQqIVKVQvoVGxrnhwyEYdbbxTR3tmFDBzUITdQiUHaNSArUXKZBtFUJaMIs95o1UyAVj
+         H/CcHyJdVP25QvE0Yo1T+/HJ6rG8gc8VQMqLp3DbB6tdly/n0QWaLWfsBh/LXQb2Uhok
+         QyzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references;
-        bh=ZVPjAS8E5gvnn9Z/AsMVv2auSd89VRssVHOSgkvoDFo=;
-        b=b2Q8OdytCfwEA1UYbsVh/EcPsvPLWk2AFEvw+l2gURUSBgi/RqjFEgMl9tE9DVSy5X
-         UWhOs48a3/Thvnpeyb8iE0aonut6asz6QVtT726FNaCqyWwtF9x69S9rG0cyTPTT6K2X
-         V9YUzKAnPIRtRbgM5LFjiSkgYmNq3pxI6kZeoPWDEBErW0t0bhnFMpgssmMUvXrqKCWB
-         wgvSgeX6s0sZv/ctbfbWo1bv3Qd3hQsfkvoFiE1PrpYf5OFpNaphXIL3FHhI48cNcrbb
-         0VpsIR7CMkbtX5eavVRw6V2+5n/1H+qmB1XrNyPrjb6xgSinYRFhLjF2xIB2pvZrmmYA
-         0ItQ==
-X-Gm-Message-State: AOAM532tVRMIgQALG9tXy7E4OC0rOPFn3r9wOJ9A+U7L5wMk5ses45eW
-	h511tN0G7KYEVRaKZFf6pOLLw56rTYfi
-X-Google-Smtp-Source: ABdhPJxS8rSM6D7iPtePDYVfvLD5CkFDPiGet56l+ctdJ3JndYtmoCAg8XLu4XUW2LGoYmuig89nQw==
-X-Received: by 2002:a0c:b450:: with SMTP id e16mr4600469qvf.25.1628784633628;
-        Thu, 12 Aug 2021 09:10:33 -0700 (PDT)
-Return-Path: <tom.rini@gmail.com>
-Received: from bill-the-cat.lan (2603-6081-7b01-cbda-04e3-07fe-0933-9252.res6.spectrum.com. [2603:6081:7b01:cbda:4e3:7fe:933:9252])
-        by smtp.gmail.com with ESMTPSA id h2sm1549773qko.127.2021.08.12.09.10.32
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Aug 2021 09:10:32 -0700 (PDT)
-From: "Tom Rini" <tom.rini@gmail.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=6HFZPHNKpAmpNA5kiKEux97F62y8xhjKypNgJWGKBLM=;
+        b=hZcJbfqLTiOoRywE7YJBkppzYXofuh8reoFYqAbvlroJdapM0G7IXifWp2y86PN4nI
+         XhxSPXvO8Y2enxY8TCPpbTVpJz2P5j0Q71+07lkfj6Lz4WMuKS660co0P+Ip1i2rwuVM
+         Gb/Cr1P8HzjdKjtt4rIgRwyFdjCC6gzD9v7FGhtV753WKO9dGKjsf1pYZgEGa0pbiEfi
+         e3ELR25fQ3vhO5yax3u2ijdvT2Kx2babJbSMxeW5PY1oTgmjsnGJbJQRRKl0uevmzGAP
+         DvMYGrJ9kv/qV6LACJNfSQ5F+iMweUY0a77dKIPT1tnZgB598ljasPcRyTzx3PQisadc
+         E9mQ==
+X-Gm-Message-State: AOAM532ZLwQVXXH/+IHALGbx8GhtCz2WNOeh3ZjfwIo1udJkGS78WwQw
+	64sJzwhbaGgz6tIE8JpzmN4+BupgmsJOhqzWfEw4u90d5LBKYIg5yIp0zwv2ejq8Z6sgazzRU+m
+	dzwYe6hse67r6FU8h6NvVxYq7i9Al2XhlmfkO4f146IS13RoGAhRIvWyp/SdCwcKCRzPdIcaUbQ
+	==
+X-Google-Smtp-Source: ABdhPJx43Kb5xLRPIp56GnMS7Al09CfBpYnYbhG3eHLTcFarOm9o9wS1RfFG/x5E0IUGJdaBr9ZFIQ==
+X-Received: by 2002:a2e:b17a:: with SMTP id a26mr3921782ljm.342.1628795065283;
+        Thu, 12 Aug 2021 12:04:25 -0700 (PDT)
+Return-Path: <daniel@qtec.com>
+Received: from localhost (87-52-47-7-cable.dk.customer.tdc.net. [87.52.47.7])
+        by smtp.gmail.com with ESMTPSA id q14sm343859lfr.87.2021.08.12.12.04.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Aug 2021 12:04:24 -0700 (PDT)
+From: "Daniel Gomez" <daniel@qtec.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 3/3] common-tasks: Add an example of using bbappends to add a file
-Date: Thu, 12 Aug 2021 12:10:27 -0400
-Message-Id: <20210812161027.580-3-trini@konsulko.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20210812161027.580-1-trini@konsulko.com>
-References: <20210812161027.580-1-trini@konsulko.com>
+Cc: dagmcr@gmail.com,
+	Daniel Gomez <daniel@qtec.com>
+Subject: [PATCH] releases: fix typo
+Date: Thu, 12 Aug 2021 21:03:09 +0200
+Message-Id: <20210812190309.347619-1-daniel@qtec.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Use the xserver-xf86-config_%.bbappend from meta-raspberrypi to provide
-an example of having a bbappend file add files to an existing recipe.
-
-Signed-off-by: Tom Rini <trini@konsulko.com>
+Fix dunfell typo for releases 3.1.9 and 3.1.10.
 ---
- documentation/dev-manual/common-tasks.rst | 61 +++++++++++++++++++++++
- 1 file changed, 61 insertions(+)
+ documentation/releases.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index f15e72887c04..87abef9ad52f 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -554,6 +554,67 @@ The end result of this ``.bbappend`` file is that on a Raspberry Pi, where
- used during ``do_fetch`` and the test for a non-zero file size in
- ``do_install`` will return true, and the file will be installed.
- 
-+Installing Additional Files Using Your Layer
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+As another example, consider the main xserver-xf86-config recipe and a corresponding
-+xserver-xf86-config append file both from the :term:`Source Directory`.
-+Here is the main
-+xserver-xf86-config recipe, which is named ``xserver-xf86-config_0.1.bb`` and located in
-+the "meta" layer at ``meta/recipes-graphics/xorg-xserver``::
-+
-+   SUMMARY = "X.Org X server configuration file"
-+   HOMEPAGE = "http://www.x.org"
-+   SECTION = "x11/base"
-+   LICENSE = "MIT-X"
-+   LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
-+   PR = "r33"
-+
-+   SRC_URI = "file://xorg.conf"
-+
-+   S = "${WORKDIR}"
-+
-+   CONFFILES:${PN} = "${sysconfdir}/X11/xorg.conf"
-+
-+   PACKAGE_ARCH = "${MACHINE_ARCH}"
-+   ALLOW_EMPTY:${PN} = "1"
-+
-+   do_install () {
-+	if test -s ${WORKDIR}/xorg.conf; then
-+		install -d ${D}/${sysconfdir}/X11
-+		install -m 0644 ${WORKDIR}/xorg.conf ${D}/${sysconfdir}/X11/
-+	fi
-+   }
-+
-+Following is the append file, which is named ``xserver-xf86-config_%.bbappend``
-+and is from the Raspberry Pi BSP Layer named ``meta-raspberrypi``. The
-+file is in the layer at ``recipes-graphics/xorg-xserver``::
-+
-+   FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
-+
-+   SRC_URI:append:rpi = " \
-+       file://xorg.conf.d/98-pitft.conf \
-+       file://xorg.conf.d/99-calibration.conf \
-+   "
-+   do_install:append:rpi () {
-+       PITFT="${@bb.utils.contains("MACHINE_FEATURES", "pitft", "1", "0", d)}"
-+       if [ "${PITFT}" = "1" ]; then
-+           install -d ${D}/${sysconfdir}/X11/xorg.conf.d/
-+           install -m 0644 ${WORKDIR}/xorg.conf.d/98-pitft.conf ${D}/${sysconfdir}/X11/xorg.conf.d/
-+           install -m 0644 ${WORKDIR}/xorg.conf.d/99-calibration.conf ${D}/${sysconfdir}/X11/xorg.conf.d/
-+       fi
-+   }
-+
-+   FILES:${PN}:rpi += "${sysconfdir}/X11/xorg.conf ${sysconfdir}/X11/xorg.conf.d/*"
-+
-+Building off of the previous example, we once again are setting the
-+:term:`FILESEXTRAPATHS` variable.  In this case we are also usine the
-+:term:`SRC_URI` to list additional source files to use when ``rpi`` is found in
-+the list of :term:`OVERRIDES`.  The ``do_install`` task will then perform a
-+check for an additional :term:`MACHINE_FEATURES` that if set will cause these
-+additional files to be installed.  These additional files are listed in
-+:term:`FILES` so that they will be packaged.
-+
- Prioritizing Your Layer
- -----------------------
- 
--- 
-2.17.1
+diff --git a/documentation/releases.rst b/documentation/releases.rst
+index 04fbddea3..3f9646407 100644
+--- a/documentation/releases.rst
++++ b/documentation/releases.rst
+@@ -35,8 +35,8 @@ Release Series 3.1 (dunfell)
+ - :yocto_docs:`3.1.6 Documentation </3.1.6>`
+ - :yocto_docs:`3.1.7 Documentation </3.1.7>`
+ - :yocto_docs:`3.1.8 Documentation </3.1.8>`
+-- :yocto_docs:`3.1.8 Documentation </3.1.9>`
+-- :yocto_docs:`3.1.8 Documentation </3.1.10>`
++- :yocto_docs:`3.1.9 Documentation </3.1.9>`
++- :yocto_docs:`3.1.10 Documentation </3.1.10>`
+
+ ==========================
+  Outdated Release Manuals
+--
+2.30.2
 
