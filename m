@@ -1,105 +1,64 @@
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.9])
- by mx.groups.io with SMTP id smtpd.web11.24211.1628784099649786079
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+ by mx.groups.io with SMTP id smtpd.web10.24232.1628784632871926681
  for <docs@lists.yoctoproject.org>;
- Thu, 12 Aug 2021 09:01:40 -0700
+ Thu, 12 Aug 2021 09:10:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: menlosystems.com, ip: 212.18.0.9, mailfrom: o.mandel@menlosystems.com)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-	by mail-out.m-online.net (Postfix) with ESMTP id 4Glrz51Zfvz1qwdP;
-	Thu, 12 Aug 2021 18:01:36 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.70])
-	by mail.m-online.net (Postfix) with ESMTP id 4Glrz46RZGz1qqy4;
-	Thu, 12 Aug 2021 18:01:36 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
-	by localhost (dynscan1.mail.m-online.net [192.168.6.70]) (amavisd-new, port 10024)
-	with ESMTP id vrxNTeKk1qbs; Thu, 12 Aug 2021 18:01:36 +0200 (CEST)
-X-Auth-Info: boUbyR6D3aVAaf/sd/9krKf6UAdDPGhApAr+p6nnNVbqncTYAn+g2UErY8Jdm6tE
-Received: from menlobldserver.menlosystems.local (host-82-135-125-165.customer.m-online.net [82.135.125.165])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mail.mnet-online.de (Postfix) with ESMTPSA;
-	Thu, 12 Aug 2021 18:01:36 +0200 (CEST)
-From: o.mandel@menlosystems.com
+ dkim=missing; spf=pass (domain: gmail.com, ip: 209.85.219.42, mailfrom: tom.rini@gmail.com)
+Received: by mail-qv1-f42.google.com with SMTP id kl2so3404631qvb.11
+        for <docs@lists.yoctoproject.org>; Thu, 12 Aug 2021 09:10:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:subject:date:message-id;
+        bh=FHRZ1ZFfi1NIbZtJURsvJQrf/XD/PaWUrCKYJ/1YYVE=;
+        b=iwt0tAgKZ7IqlSg2ePmH7YV6njZ6kQ5O5YQzJoJvhhvFM1zYuWNlF5Gum9rOQzt5OP
+         Bav8HZq4MPZM0vJr/iplLXZ0vjngvFDcLa6xKbOJebwZSOnbzHUq2YdMiWm0uQc0jQVV
+         4sD03vXT40d6iLWvuXNATKtowcPGaspuN8t4MQDge9h2qAX959T0seR9KwsX67IqYJpk
+         ajGE/V3v7iEHDGJUOjRfzqRkd1nvj6iF9VJPC74oVkl4X97uUilIIjBMPihh9EPoeOvf
+         HPBmAGGAy53lHTtAcmYJy/PRajujVotJSHEOdOkCtyR0RYw5pSmYiZJDmd5M5LAmPhGX
+         El2A==
+X-Gm-Message-State: AOAM530+O6aLWTkWkkmUa+jdr7q10uLTmJ+YwIWl3du3lqn1A0ZyWjTP
+	EvIU7mLgb9+pfY/nPRbKAFGgVa8p4Q5e
+X-Google-Smtp-Source: ABdhPJynQS/iXkjR81TIPH0S4zwL3fjvBX5qK6fSoboDV93TAKoEc+KcBoFjOYPfs3amekHbzl0Ybw==
+X-Received: by 2002:a0c:c441:: with SMTP id t1mr4558341qvi.25.1628784631524;
+        Thu, 12 Aug 2021 09:10:31 -0700 (PDT)
+Return-Path: <tom.rini@gmail.com>
+Received: from bill-the-cat.lan (2603-6081-7b01-cbda-04e3-07fe-0933-9252.res6.spectrum.com. [2603:6081:7b01:cbda:4e3:7fe:933:9252])
+        by smtp.gmail.com with ESMTPSA id h2sm1549773qko.127.2021.08.12.09.10.30
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 12 Aug 2021 09:10:30 -0700 (PDT)
+From: "Tom Rini" <tom.rini@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Olaf Mandel <o.mandel@menlosystems.com>
-Subject: [PATCH] kickstart: document which options accept units
-Date: Thu, 12 Aug 2021 16:01:33 +0000
-Message-Id: <20210812160133.22232-1-o.mandel@menlosystems.com>
-X-Mailer: git-send-email 2.20.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Subject: [PATCH 1/3] common-tasks: Add a summary to the end of the bbappend example
+Date: Thu, 12 Aug 2021 12:10:25 -0400
+Message-Id: <20210812161027.580-1-trini@konsulko.com>
+X-Mailer: git-send-email 2.17.1
 
-Document which units are accepted as parameters for the four options
-that accept units. Also be pedantic about using binary instead of
-decimal prefixes so readers don't have to wonder.
+Try and make it clearer what the final result of this bbappend example
+is.
 
-Signed-off-by: Olaf Mandel <o.mandel@menlosystems.com>
+Signed-off-by: Tom Rini <trini@konsulko.com>
 ---
- documentation/ref-manual/kickstart.rst | 31 +++++++++++++++++---------
- 1 file changed, 21 insertions(+), 10 deletions(-)
+ documentation/dev-manual/common-tasks.rst | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/documentation/ref-manual/kickstart.rst b/documentation/ref-m=
-anual/kickstart.rst
-index fc723ccbe..b5ffb2a4e 100644
---- a/documentation/ref-manual/kickstart.rst
-+++ b/documentation/ref-manual/kickstart.rst
-@@ -65,13 +65,18 @@ Here is an example that uses "/" as the mountpoint. T=
-he command uses
- Here is a list that describes other supported options you can use with
- the ``part`` and ``partition`` commands:
-=20
---  ``--size``: The minimum partition size in MBytes. Specify an
--   integer value such as 500. Do not append the number with "MB". You do
--   not need this option if you use ``--source``.
--
---  ``--fixed-size``: The exact partition size in MBytes. You cannot
--   specify with ``--size``. An error occurs when assembling the disk
--   image if the partition data is larger than ``--fixed-size``.
-+-  ``--size (in MBytes)``: The minimum partition size. Specify as an
-+   integer value optionally followed by one of the units "k" / "K" for
-+   kibibyte, "M" for mebibyte and "G" for gibibyte. The default unit
-+   if none is given is "M". You do not need this option if you use
-+   ``--source``.
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 37077d72d451..2d8ef96e2600 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -545,6 +545,12 @@ important as it ensures that items in the list remain colon-separated.
+    allow to add build options (e.g. ``systemd``). For these cases, your
+    append file would not even use the :term:`FILESEXTRAPATHS` statement.
+ 
++The end result of this ``.bbappend`` file is that on a Raspberry Pi, where
++``rpi`` will exist in the list of :term:`OVERRIDES`, the file
++``meta-raspberrypi/recipes-bsp/formfactor/formfactor/rpi/machconfig`` will be
++used during ``do_fetch`` and the test for a non-zero file size in
++``do_install`` will return true, and the file will be installed.
 +
-+-  ``--fixed-size (in MBytes)``: The exact partition size. Specify as an
-+   integer value optionally followed by one of the units "k" / "K" for
-+   kibibyte, "M" for mebibyte and "G" for gibibyte. The default unit
-+   if none is given is "M".  Cannot be specify together with ``--size``.
-+   An error occurs when assembling the disk image if the partition data
-+   is larger than ``--fixed-size``.
-=20
- -  ``--source``: This option is a Wic-specific option that names the
-    source of the data that populates the partition. The most common
-@@ -137,7 +142,10 @@ the ``part`` and ``partition`` commands:
- -  ``--offset (in KBytes)``: This option is a Wic-specific option that
-    says to place a partition at exactly the specified offset. If the
-    partition cannot be placed at the specified offset, the image build
--   will fail.
-+   will fail. Specify as an integer value optionally followed by one of
-+   the units "s" / "S" for 512Byte sector, "k" / "K" for kibibyte, "M"
-+   for mebibyte and "G" for gibibyte. The default unit if none is given
-+   is "k".
-=20
- -  ``--no-table``: This option is a Wic-specific option. Using the
-    option reserves space for the partition and causes it to become
-@@ -148,10 +156,13 @@ the ``part`` and ``partition`` commands:
-    excludes the given relative path from the resulting image. This
-    option is only effective with the rootfs source plugin.
-=20
---  ``--extra-space``: This option is a Wic-specific option that adds
-+-  ``--extra-space (in MBytes)``: This option is a Wic-specific option t=
-hat adds
-    extra space after the space filled by the content of the partition.
-    The final size can exceed the size specified by the ``--size``
--   option. The default value is 10 Mbytes.
-+   option. The default value is 10 Mbytes. Specify as an integer value
-+   optionally followed by one of the units "k" / "K" for kibibyte, "M"
-+   for mebibyte and "G" for gibibyte. The default unit if none is given
-+   is "M".
-=20
- -  ``--overhead-factor``: This option is a Wic-specific option that
-    multiplies the size of the partition by the option's value. You must
---=20
-2.20.1
+ Prioritizing Your Layer
+ -----------------------
+ 
+-- 
+2.17.1
 
