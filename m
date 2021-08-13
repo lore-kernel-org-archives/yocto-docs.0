@@ -1,53 +1,51 @@
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.34464.1628847728593225934
+ by mx.groups.io with SMTP id smtpd.web09.34539.1628847792648898151
  for <docs@lists.yoctoproject.org>;
- Fri, 13 Aug 2021 02:42:09 -0700
+ Fri, 13 Aug 2021 02:43:13 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 7B6F520003;
-	Fri, 13 Aug 2021 09:42:06 +0000 (UTC)
-Cc: Quentin Schulz <foss@0leil.net>
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 160B120004;
+	Fri, 13 Aug 2021 09:43:10 +0000 (UTC)
+Cc: docs@lists.yoctoproject.org, Quentin Schulz <foss@0leil.net>
 Subject: Re: [docs] [PATCH v3] kickstart: document which options accept units
-To: o.mandel@menlosystems.com, docs@lists.yoctoproject.org
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ o.mandel@menlosystems.com
 References: <20210813083743.g4a2iax2ybxusamc@fedora>
  <20210813084855.9693-1-o.mandel@menlosystems.com>
+ <20210813085223.3ajkjeormkpmhx4e@fedora>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <5d86b0c6-3106-7410-9338-ff33ebe38473@bootlin.com>
-Date: Fri, 13 Aug 2021 11:42:06 +0200
+Message-ID: <eb3d497e-0404-cbad-649a-ec31d213850a@bootlin.com>
+Date: Fri, 13 Aug 2021 11:43:10 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <20210813084855.9693-1-o.mandel@menlosystems.com>
+In-Reply-To: <20210813085223.3ajkjeormkpmhx4e@fedora>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
-Hi Olaf,
 
-Many thanks for the patch, and thanks to Quentin for the review!
+On 8/13/21 10:52 AM, Quentin Schulz wrote:
+> Hi Olaf,
+>
+> On Fri, Aug 13, 2021 at 08:48:55AM +0000, o.mandel@menlosystems.com wrote:
+>> Document which units are accepted as parameters for the four options
+>> that accept units. Also be pedantic about using binary instead of
+>> decimal prefixes so readers don't have to wonder.
+>>
+>> Signed-off-by: Olaf Mandel <o.mandel@menlosystems.com>
+>> Reviewed-by: Quentin Schulz <foss@0leil.net>
+> If the content of the patch is the same as v2, there's no need to send a
+> v3 to add my Reviewed-by, the maintainer will do it when merging the
+> patch :)
 
-On 8/13/21 10:48 AM, o.mandel@menlosystems.com wrote:
->  
-> --  ``--offset (in KBytes)``: This option is a Wic-specific option that
-> +-  ``--offset``: This option is a Wic-specific option that
->     says to place a partition at exactly the specified offset. If the
->     partition cannot be placed at the specified offset, the image build
-> -   will fail.
-> +   will fail. Specify as an integer value optionally followed by one of
-> +   the units "s" / "S" for 512Byte sector, "k" / "K" for kibibyte, "M"
-> +   for mebibyte and "G" for gibibyte. The default unit if none is given
-> +   is "k".
->  
 
-I replaced "512Byte" by "512 byte".
-Don't hesitate to protest if you disagree!
+Indeed. But that's natural to assume this when you begin. I did too :)
+Cheers
 
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-and merged into the "master-next" branch.
-
-Thanks again!
+Michael.
 
 -- 
 Michael Opdenacker, Bootlin
