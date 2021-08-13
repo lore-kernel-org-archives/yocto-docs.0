@@ -1,127 +1,187 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.40])
- by mx.groups.io with SMTP id smtpd.web11.36622.1628861043723421562
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+ by mx.groups.io with SMTP id smtpd.web08.37469.1628865647670230783
  for <docs@lists.yoctoproject.org>;
- Fri, 13 Aug 2021 06:24:05 -0700
+ Fri, 13 Aug 2021 07:40:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=QJDzsUUq;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.7.40, mailfrom: quentin.schulz@theobroma-systems.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hXnIJ/4dVY1/e9ydo9CFke4OMbbyjqzvyDM3V5t2rLK8g5VGT4tTu0izEKdZXn0v0oTBq7FCIDXhQswZWTODHGp7+Z9K8GwUDlP09k/AAzojGnGbNHPey+D58mURhJilktn7fmJLsNYy5ecfjXowTAyoFw4RgtKBsp6/fZwd6E3klZTO+q5CwPpqRcQPSil3DngXjYQIjZY+LkdZPU4PHoOhXxGK2tIw7HLo0+6dswikEuuud4pCtzGZCUBT6gtiemE7k3gmNA9oCvh/LXwfBoXj9Jqy7mhGUeg5W+DboPxNgvN5sq+3x90Sv7hiwU/i8fRK4lSNZUqCDcOdPs1rmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E7p1aMfqOsAJdJrMe/TCeVXd7zIOLySfYqz9dwSqjcw=;
- b=M64/+kJJw6PH13ISsAwI619DcXSvJWY7Mwk2G3Dm9z1cboiJ4PsnZIyoiZ+Dn8wYebP/NSL7mLbq3jzTvXT6Cee2KgnRZHY2hN+m1lfPXCKfbC5Lun7E3ZnNSqIkaHOgNU1urOo2c+iAQTEMY+9VEJF3yq4G99KYrPdvoSELZKtU+Bduz5DH0aXUuEt6wGF9TBR8DTGOOPwiZ8G0za7txyrtKdL8snbc+Is0Ha+2vwRJYe5T6N/uL0EsSfzJ0eFBjbeJzCL8bOm9dpQILvY9rTn+L4TZe9SWwSrhyXMSbvHCfjlN3rQhALQ+v8d5NXJFtYPMELgyQ+8J4UhEauP6IA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
+ dkim=pass header.i=@konsulko.com header.s=google header.b=bm/Da5b8;
+ spf=pass (domain: konsulko.com, ip: 209.85.222.169, mailfrom: trini@konsulko.com)
+Received: by mail-qk1-f169.google.com with SMTP id n11so6151784qkk.1
+        for <docs@lists.yoctoproject.org>; Fri, 13 Aug 2021 07:40:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=E7p1aMfqOsAJdJrMe/TCeVXd7zIOLySfYqz9dwSqjcw=;
- b=QJDzsUUqUcOdln0vgE/m0ftN1XBEBNVstoRf5mVyCva1zHvZgfqfSKlkT9KyMYH1kw0jaaMB+t8n5vkUrelfGIt9rb+VwXcQI/c/xcd7PgaG8W1Hk3pUYxOlxWO7gz489R17vV13RDZJDjUPe4bN63aBJk6V+IC52wdWquj2YVo=
-Authentication-Results: bootlin.com; dkim=none (message not signed)
- header.d=none;bootlin.com; dmarc=none action=none
- header.from=theobroma-systems.com;
-Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24) by AM9PR04MB7489.eurprd04.prod.outlook.com
- (2603:10a6:20b:281::15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.14; Fri, 13 Aug
- 2021 13:23:59 +0000
-Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- ([fe80::cd35:af76:7542:4dd6]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
- ([fe80::cd35:af76:7542:4dd6%7]) with mapi id 15.20.4415.019; Fri, 13 Aug 2021
- 13:23:59 +0000
-Date: Fri, 13 Aug 2021 15:23:57 +0200
-From: "Quentin Schulz" <quentin.schulz@theobroma-systems.com>
+        d=konsulko.com; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=FGtQOcEZY5vAie9eHKow+Fl7sFf5SuhR9jopME387rU=;
+        b=bm/Da5b8KDo7L4UphXUS0mIK5jICF53mJEJ+ym0bgFJA16K6XTMJMui9Za8dBbmx5K
+         b5z581Sv6Nwz1OaglNmhJMK38gG9DCvfrYWeB2hKtWbaFG4uTbgbC4Tr8KnCQBiPKuX6
+         0UV4aRJBhANdkLEq4bJmiSo6vYo82+cQx2LhQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=FGtQOcEZY5vAie9eHKow+Fl7sFf5SuhR9jopME387rU=;
+        b=EjebjGJdGCkBqC/DV3a2JAcc8NNCxLX09JfIZA1cE0aKa/pCgrRjPJavJlp9MH1BAp
+         eYYc4SaO54LdmiOvwnbv4ztkxA58BmBxbIYyFq6Fi3PO2YDO8eZnh5gyEvJE2qjHQ3xf
+         /InO3W+JE6DqQ5aCZnuTO30hG423pSIqshqEEGQn/S6yfAy6K8YhcFL7lTi7Q+kcFGtC
+         hM5bUtgu2QLnMJUGEf0cbB+jfr60eYEggJ+J0OxQMZmkoh7xC2rrazWujycvMJ41yDsA
+         UDqxgTDfJon0q6moqpJoN87qchbe3rxdGEGTDvKAsMtOBFYXGg4m7eXTEJgOdWPHUyfp
+         KSXA==
+X-Gm-Message-State: AOAM531webjeDO6oyNCieimxYPO7cchk6HbEbZYMU/E+NcQwRa+t5ELW
+	kfZ1RLdkHzQMHOJizcWBMxfX3w==
+X-Google-Smtp-Source: ABdhPJxBiKFxJVapDBOcjV+wET5MBknjkbTgWEVhHhFUDX6aO7x7O4B6IjMhyquLTL/So40Z6DEF2Q==
+X-Received: by 2002:a05:620a:11b1:: with SMTP id c17mr2170348qkk.317.1628865646680;
+        Fri, 13 Aug 2021 07:40:46 -0700 (PDT)
+Return-Path: <trini@konsulko.com>
+Received: from bill-the-cat (2603-6081-7b01-cbda-587f-642f-0e55-2e70.res6.spectrum.com. [2603:6081:7b01:cbda:587f:642f:e55:2e70])
+        by smtp.gmail.com with ESMTPSA id m188sm1033861qkc.99.2021.08.13.07.40.45
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 13 Aug 2021 07:40:46 -0700 (PDT)
+Date: Fri, 13 Aug 2021 10:40:44 -0400
+From: "Tom Rini" <trini@konsulko.com>
 To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Daniel Gomez <daniel@qtec.com>, docs@lists.yoctoproject.org,
-	Daniel Gomez <dagmcr@gmail.com>
-Subject: Re: [docs] [PATCH] releases: fix typo
-Message-ID: <20210813132357.z4ju4djdoy3imlpv@fedora>
-References: <20210812190309.347619-1-daniel@qtec.com>
- <CAH1Ww+SS0iaAMChNzEGKrGJf9h=fmv-HAnSPAgk8oPG-FyOj4A@mail.gmail.com>
- <5180c3f8-d798-cc1f-13b0-61c3f0ed9046@bootlin.com>
-In-Reply-To: <5180c3f8-d798-cc1f-13b0-61c3f0ed9046@bootlin.com>
-X-ClientProxiedBy: AM0PR10CA0107.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:208:e6::24) To AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24)
-Return-Path: quentin.schulz@theobroma-systems.com
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 3/3] common-tasks: Add an example of using bbappends to add a file
+Message-ID: <20210813144044.GG858@bill-the-cat>
+References: <20210812161027.580-1-trini@konsulko.com>
+ <20210812161027.580-3-trini@konsulko.com>
+ <20210813082740.ptt5tcfchhapfm67@fedora>
+ <b03398f7-aa8a-469f-4329-c743d4e7592a@bootlin.com>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from fedora (92.42.140.82) by AM0PR10CA0107.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:208:e6::24) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.13 via Frontend Transport; Fri, 13 Aug 2021 13:23:59 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d8881cef-f5c3-445e-f83e-08d95e5d9c03
-X-MS-TrafficTypeDiagnostic: AM9PR04MB7489:
-X-Microsoft-Antispam-PRVS: 
-	<AM9PR04MB74897A70410E5BC5B1225643C2FA9@AM9PR04MB7489.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:449;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	NVDtNzdfzD2hyGAtImd7laddG7aSyvgV5CaSuNziaoO/emzGLO53pKmWfPFmda51l+XWzDeiO8sh6DdUP8JhHisX2pFXpUhMwboDA3Q3cFTKzuqZmzCPjCAGnVjkX7Jcudl6q69Xby0RWNJ97+P24c1mdnOKdGJC0CGXLXdS8brwVnzy0P53AwPYLNtOawSJ9lBr2nZzUMds18vhWvCTFzojHfH182Cn/ddKa7rV4y8v4BhuCoI7HOM1qALx0NP8cxaoHoTrqmbskZUiC5WIGOjKnoNVgZm/dYimtITMtBPdCbyQt1SdcSb1cpuRgP3yLX9MrpozNMMXxLrGBaQmMl8xwUx0+G79T03nssIyRoxL6WDQaYAANviPXygfO7X/IWw7CQd/0nJkqWh/BM6dOZ4Gfr9g/GZMRZv2MwXUDBrjoC1h8fql8zuaLf0e2GEmpWh/wKxb2+Zn/vwAGETo0bCwZtuXS2/JT56bdstudHCkymiDxrtjHlN6mwJAXhd3rGnEDI9I41s2ohB1Iyc8qXDd47KWEZ9RuP7sBWG73GBzwd/TXqPFGerVxNQgxj5YrZwTnKSSl3PZlhe27BpyKFdfA2KC4lm3hnGk6FXPkPEJ1vUWFwZAbbiwrbloM72oWSuN9c1VZi5S7stMBGnxM0QF1wYesmh49o7YRwyXWfDzuFX7rgqT5ELVJ8zqEoVvms2e4tWdXGMDyi2pYNpaTQ==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(346002)(366004)(136003)(39840400004)(376002)(8676002)(6496006)(52116002)(956004)(316002)(83380400001)(4326008)(4744005)(86362001)(1076003)(186003)(8936002)(53546011)(54906003)(26005)(478600001)(5660300002)(38350700002)(55016002)(38100700002)(2906002)(66946007)(33716001)(6916009)(66556008)(9686003)(9576002)(44832011)(66476007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?3wKyENTyj1rWe7deDXOulinO+BIROE7x6ZKLnjmXPhoqGJV3/gk9AF/LDQ0t?=
- =?us-ascii?Q?Hyi1uTObSs0FYDyf7UbU7lphImFu6x3CS9/R9ZYbpktPEy20p54jl51VIYmr?=
- =?us-ascii?Q?Gq1Y+EA0rUDY1rhOV2gc2SnObU8jyfInUwMN1NvKQXh4RgAPe6mxhsssKslz?=
- =?us-ascii?Q?icY3/NaqmxaKjzgqFT+/9VveQZJfTXEzAlRB/1nJNB6CMqd1KJfC/sIbKd9g?=
- =?us-ascii?Q?fBzDHgTDD+jtxv+vgBWa9JeBVI4mVq5tyDVLugYNAPQqe80ULwer49MS3XIf?=
- =?us-ascii?Q?Ai1kiDxfbd7QzOV4l5qFSxtyJCcE0NLYKhG1jE8QELz8MuxZfuD6SwUOUDD0?=
- =?us-ascii?Q?OMXD87b9ZOGjn5FcqAfBDPxtv1THCBZ/50EGqx+G+ja8aR0LQDpWpMdqb9Tz?=
- =?us-ascii?Q?R6FWtiGpOVAPTOxbHAfh0oa+SZQyNnL+1b9o8csFe3LNAcsEing0GiL3Of0y?=
- =?us-ascii?Q?SKBH8hzcKga5ITbJlviahq6YN+D/n63mCnjDAMlOI3DgBl+nWUgMjr4Mj/GW?=
- =?us-ascii?Q?BJEd/1YBQbCiFGO1I9uNbAEVkXgs1z6Esx8oiH/ymHS8basy8+gU7taL7Smx?=
- =?us-ascii?Q?VE5M9FvdCzfT7Rv5IgLCcchy3jz0q91VewE39JYxJbBfx2i9Se+Qcu+g2Rve?=
- =?us-ascii?Q?BVbw+qtHCcCu3AcoxJ1TuyHUQb7IXisNTsK59/nIrXT0E7IR1UY6+cRw0j2Q?=
- =?us-ascii?Q?TjZG7dqVvSiDwETUSILyRybFsHl4XUr1hsFO5V7XAE7PvAgDSwcDKlIxsjl3?=
- =?us-ascii?Q?TScB4MOCqrJQUC4cws8usiF9EDyaC+7Jnb220l0f/RUbsE1HCLBK5Ihd1BXq?=
- =?us-ascii?Q?66aiSsNm3XWXCVF/0+RNkOvSsD7uQ4OwNBEAJUNa0oF8qtITcJ9dTHkKsdC0?=
- =?us-ascii?Q?G64Lcj3mRyTucfTcFMqkdcAdVXeEvIYLSpr0vOORxEtHQmj52PR/Twq7FiXE?=
- =?us-ascii?Q?/giOUSgJPhSFbs1DSx95MCCOw+gdjC+RIMAiy1h+3PKo3KuVfQYwXxV2haJ1?=
- =?us-ascii?Q?HoEEbQ00zl2IIoiorqgc3xo57WmmZcf6o9XpUooYPiL+MBs1Fayd3TbT3Joa?=
- =?us-ascii?Q?gB0MkAeoR6jZmrgJ9nbyje4NGo+5EM9VXOJChURLbIRCOAz0KJpbswCm3pzu?=
- =?us-ascii?Q?njCr4i/ItCgwbU8SSnSKZEyI+HtcTN1NuOTWlXobptVuZ4v3yEL2Gd6aUl23?=
- =?us-ascii?Q?GXCpOu4i9xmu90d3NINySoq1EIuGMEbi1q35Nk1GQ6+HwTVa284IU7dUg9zH?=
- =?us-ascii?Q?/9HFvu79RpME4a02ay5ehANwEjTj0R/RIrOutMpFYIbPG+w2p2x6arNy7C3Y?=
- =?us-ascii?Q?1XKuX0z6mchr1eAnLg/3IDoB?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8881cef-f5c3-445e-f83e-08d95e5d9c03
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3348.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2021 13:23:59.2830
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ueMuOcQiJ9S9mQv8j2nZV8RftgCawLoZjxqRel34+luEys3EiH/0UIwcfvslQwmWQIHkd2k6Or/XTshuhHj7IQT0cRCvRQlorhtpOowNhdzXQZeuwIB0+IlEFKw7KqQE
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7489
+In-Reply-To: <b03398f7-aa8a-469f-4329-c743d4e7592a@bootlin.com>
+X-Clacks-Overhead: GNU Terry Pratchett
+User-Agent: Mutt/1.9.4 (2018-02-28)
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Fri, Aug 13, 2021 at 07:42:51AM +0200, Michael Opdenacker wrote:
-> Hi Daniel,
+On Fri, Aug 13, 2021 at 11:15:13AM +0200, Michael Opdenacker wrote:
+> Tom, thanks for the patch.
+> Quentin, thanks for the review.
 > 
-> On 8/13/21 7:18 AM, Daniel Gomez wrote:
-> > Adding Signed-off-by.
+> On 8/13/21 10:27 AM, Quentin Schulz wrote:
+> > Hi Tom,
 > >
-> > On Thu, 12 Aug 2021 at 21:04, Daniel Gomez <daniel@qtec.com> wrote:
-> >> Fix dunfell typo for releases 3.1.9 and 3.1.10.
-> > Signed-off-by: Daniel Gomez <daniel@qtec.com>
-> 
-> Good catch, thanks!
-> 
-> Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> I merged your fix into "master-next", and I will send a pull-request
-> today for this branch, so that this is fixed quickly, together with
-> other updates.
-> 
+> > On Thu, Aug 12, 2021 at 12:10:27PM -0400, Tom Rini wrote:
+> >> Use the xserver-xf86-config_%.bbappend from meta-raspberrypi to provide
+> >> an example of having a bbappend file add files to an existing recipe.
+> >>
+> >> Signed-off-by: Tom Rini <trini@konsulko.com>
+> >> ---
+> >>  documentation/dev-manual/common-tasks.rst | 61 +++++++++++++++++++++++
+> >>  1 file changed, 61 insertions(+)
+> >>
+> >> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+> >> index f15e72887c04..87abef9ad52f 100644
+> >> --- a/documentation/dev-manual/common-tasks.rst
+> >> +++ b/documentation/dev-manual/common-tasks.rst
+> >> @@ -554,6 +554,67 @@ The end result of this ``.bbappend`` file is that on a Raspberry Pi, where
+> >>  used during ``do_fetch`` and the test for a non-zero file size in
+> >>  ``do_install`` will return true, and the file will be installed.
+> >>  
+> >> +Installing Additional Files Using Your Layer
+> >> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> >> +
+> >> +As another example, consider the main xserver-xf86-config recipe and a corresponding
+> > s/xserver-xf86-config/``xserver-xf86-config``/
+> >
+> >> +xserver-xf86-config append file both from the :term:`Source Directory`.
+> > s/xserver-xf86-config/``xserver-xf86-config``/
+> >
+> >> +Here is the main
+> >> +xserver-xf86-config recipe, which is named ``xserver-xf86-config_0.1.bb`` and located in
+> > s/xserver-xf86-config/``xserver-xf86-config``/
 
-Similar fixes are needed in gatesgarth and dunfell branches.
+Whoops.
 
-Cheers,
-Quentin
+> >> +the "meta" layer at ``meta/recipes-graphics/xorg-xserver``::
+> >> +
+> >> +   SUMMARY = "X.Org X server configuration file"
+> >> +   HOMEPAGE = "https://urldefense.proofpoint.com/v2/url?u=http-3A__www.x.org&d=DwIBAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=XXgYJ9tKXtc_aBqPPa-9XgJe1nXbWkl8dkudu8oFs_Y&s=0zjLRjQF3x_Fv-B-gOPuwnCc_TfOzMJ50SOySYZMbys&e= "
+> >> +   SECTION = "x11/base"
+> >> +   LICENSE = "MIT-X"
+> >> +   LIC_FILES_CHKSUM = "file://${COREBASE}/meta/COPYING.MIT;md5=3da9cfbcb788c80a0384361b4de20420"
+> >> +   PR = "r33"
+> >> +
+> >> +   SRC_URI = "file://xorg.conf"
+> >> +
+> >> +   S = "${WORKDIR}"
+> >> +
+> >> +   CONFFILES:${PN} = "${sysconfdir}/X11/xorg.conf"
+> >> +
+> >> +   PACKAGE_ARCH = "${MACHINE_ARCH}"
+> >> +   ALLOW_EMPTY:${PN} = "1"
+> >> +
+> >> +   do_install () {
+> >> +	if test -s ${WORKDIR}/xorg.conf; then
+> >> +		install -d ${D}/${sysconfdir}/X11
+> >> +		install -m 0644 ${WORKDIR}/xorg.conf ${D}/${sysconfdir}/X11/
+> >> +	fi
+> >> +   }
+> >> +
+> >> +Following is the append file, which is named ``xserver-xf86-config_%.bbappend``
+> >> +and is from the Raspberry Pi BSP Layer named ``meta-raspberrypi``. The
+> >> +file is in the layer at ``recipes-graphics/xorg-xserver``::
+> >> +
+> >> +   FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+> >> +
+> >> +   SRC_URI:append:rpi = " \
+> >> +       file://xorg.conf.d/98-pitft.conf \
+> >> +       file://xorg.conf.d/99-calibration.conf \
+> >> +   "
+> >> +   do_install:append:rpi () {
+> >> +       PITFT="${@bb.utils.contains("MACHINE_FEATURES", "pitft", "1", "0", d)}"
+> >> +       if [ "${PITFT}" = "1" ]; then
+> >> +           install -d ${D}/${sysconfdir}/X11/xorg.conf.d/
+> >> +           install -m 0644 ${WORKDIR}/xorg.conf.d/98-pitft.conf ${D}/${sysconfdir}/X11/xorg.conf.d/
+> >> +           install -m 0644 ${WORKDIR}/xorg.conf.d/99-calibration.conf ${D}/${sysconfdir}/X11/xorg.conf.d/
+> >> +       fi
+> >> +   }
+> >> +
+> >> +   FILES:${PN}:rpi += "${sysconfdir}/X11/xorg.conf ${sysconfdir}/X11/xorg.conf.d/*"
+> >> +
+> > Highly suspect this is wrong. It should be FILES:${PN}:append:rpi
+> > instead, otherwise it's completely overriding FILES:${PN} for rpi (even
+> > if the operator that is following is +=).
+
+Yeah, it does.
+
+> > I guess you took this from the bbappend within meta-raspberrypi so it
+> > would probably  need fixing there.
+
+Yup, copy/paste/indent of the current upstream recipe.
+
+> >> +Building off of the previous example, we once again are setting the
+> >> +:term:`FILESEXTRAPATHS` variable.  In this case we are also usine the
+> > s/usine the/using/
+> >
+> >> +:term:`SRC_URI` to list additional source files to use when ``rpi`` is found in
+> >> +the list of :term:`OVERRIDES`.  The ``do_install`` task will then perform a
+> > s/``do_install``/:ref:`ref-tasks-install`/
+> >
+> >> +check for an additional :term:`MACHINE_FEATURES` that if set will cause these
+> > "The do_install task will be extended, for ``rpi`` only, to perform..." instead?
+> >
+> >> +additional files to be installed.  These additional files are listed in
+> >> +:term:`FILES` so that they will be packaged.
+> >> +
+> > Same, it's rpi-specific here.
+
+What I was trying to convey here is that in the meta-raspberrypi layer,
+all of the machines add "rpi" to the OVERRIDE list, for a common one.
+At the high level, I was trying to find a simple example of using an
+append to add files, but also didn't want to add another example layer
+and it seems like meta-raspberrypi is what's used everywhere else.  I'll
+see about re-wording things a bit more to be clearer / more consistent.
+
+> Tom, it's probably better if you prepare a V2 by yourself.
+> If you can prepare it against "master-next", that will even be easier
+> for me, as the first two patches were merged there.
+
+Agreed.  First up, I'm going to need to go and get meta-raspberrypi
+fixed for this example, or switch to the u-boot example there, which I
+avoided since it's doing two things.
+
+Thanks for the review and feedback.
+
+-- 
+Tom
