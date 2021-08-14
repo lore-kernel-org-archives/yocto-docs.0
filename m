@@ -1,112 +1,116 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
- by mx.groups.io with SMTP id smtpd.web08.42552.1628888248900144315
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+ by mx.groups.io with SMTP id smtpd.web12.46254.1628915323841660356
  for <docs@lists.yoctoproject.org>;
- Fri, 13 Aug 2021 13:57:29 -0700
+ Fri, 13 Aug 2021 21:28:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="body hash did not verify" header.i=@ibm.com header.s=pp1 header.b=XPRWzuQ9;
- spf=pass (domain: linux.ibm.com, ip: 148.163.158.5, mailfrom: jrey@linux.ibm.com)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 17DKYKJ0155514;
-	Fri, 13 Aug 2021 16:57:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
- references : from : message-id : date : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=fmlNbSenK2vnzFYl6KN+KqnoOyjS4fVs7YeCnUUBAtY=;
- b=XPRWzuQ9QdoZh6ThTaA6auBnIii0r6+BUpKYuHCvnQYEf4Ns1HSGvEoDQzOzsT3rg266
- E3ja4RQx1bDm3FO5UkEs893bHGNLarBe2qHK4CMAFnC9DzE0fsCkJeJQxgoqyagKZhhL
- pxyNMjgC6LBbCBvyMEpGbq8ps3VYfvnlMgR69ZAkELhAQHul1lL5t8OxJS6F5qAEVbFm
- 4Fj9RcoMFehDmYFgmNVxN/mENVIIDzlwLyRNQg8VgogOMET6AhcHQAZ/Jr+X8vptejCY
- IqptmRS93dCD4Sxvy/WFEod7IS6xy/uOxJNjO+9JLN5kaUX9T08E8mL8XIAtizleSP3c Vg== 
-Received: from ppma02wdc.us.ibm.com (aa.5b.37a9.ip4.static.sl-reverse.com [169.55.91.170])
-	by mx0a-001b2d01.pphosted.com with ESMTP id 3adu36feub-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Aug 2021 16:57:25 -0400
-Received: from pps.filterd (ppma02wdc.us.ibm.com [127.0.0.1])
-	by ppma02wdc.us.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 17DKlb03011011;
-	Fri, 13 Aug 2021 20:57:25 GMT
-Received: from b03cxnp07029.gho.boulder.ibm.com (b03cxnp07029.gho.boulder.ibm.com [9.17.130.16])
-	by ppma02wdc.us.ibm.com with ESMTP id 3aapje4n64-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Aug 2021 20:57:25 +0000
-Received: from b03ledav001.gho.boulder.ibm.com (b03ledav001.gho.boulder.ibm.com [9.17.130.232])
-	by b03cxnp07029.gho.boulder.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 17DKvOsr44368382
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Aug 2021 20:57:24 GMT
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F7A06E053;
-	Fri, 13 Aug 2021 20:57:24 +0000 (GMT)
-Received: from b03ledav001.gho.boulder.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 992636E056;
-	Fri, 13 Aug 2021 20:57:23 +0000 (GMT)
-Received: from demeter.local (unknown [9.65.123.151])
-	by b03ledav001.gho.boulder.ibm.com (Postfix) with ESMTPS;
-	Fri, 13 Aug 2021 20:57:23 +0000 (GMT)
-Subject: Re: [docs] Document Yocto config items (was: Configure command shell idle timeout default?)
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-        yocto-security@lists.yoctoproject.org,
-        Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-References: <1b70ecb4-d1c7-c913-6e84-d70d69baaa7c@linux.ibm.com>
- <3a45d0f8b91c750544e232171c0b8a650ead3889.camel@linuxfoundation.org>
- <298b3fc4-64f7-c70f-4ec6-e9e52ec71a86@kernel.crashing.org>
- <4e7ff3e4-3dca-d140-51b4-340f16fe66a3@linux.ibm.com>
- <7e70596bee4e54bbaf0ab6da36f41957c19a8673.camel@linuxfoundation.org>
- <0acd3699-0c59-79ec-a690-957e6db94ee6@linux.ibm.com>
- <1698752D53722E14.11152@lists.yoctoproject.org>
- <59a1fefa-98b6-5dc5-2464-c2910fdefd9b@bootlin.com>
-From: "Joseph Reynolds" <jrey@linux.ibm.com>
-Message-ID: <38346ae4-0f79-2162-ff6c-2a74ec639b54@linux.ibm.com>
-Date: Fri, 13 Aug 2021 15:57:22 -0500
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.9.1
-In-Reply-To: <59a1fefa-98b6-5dc5-2464-c2910fdefd9b@bootlin.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ealolIRMJ3aMth3mo8HjqbJh8kvoY3DZ
-X-Proofpoint-GUID: ealolIRMJ3aMth3mo8HjqbJh8kvoY3DZ
-X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=pji21iX7;
+ spf=pass (domain: gmail.com, ip: 209.85.208.170, mailfrom: uvv.mail@gmail.com)
+Received: by mail-lj1-f170.google.com with SMTP id n6so18665046ljp.9
+        for <docs@lists.yoctoproject.org>; Fri, 13 Aug 2021 21:28:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WgTQYSQsVQaJWWT3gs8sBM8Va0cNUup406EKnbJU7pg=;
+        b=pji21iX7K2+ikRB5XhrHJUXw/RsFYdTUTFYLcMYd//WbpjH8I7VsrRs/Hht3AjajUI
+         RCqOT8f3MaGns8icUFwTzvBc/TdfsnHVoUO0J2zophLqyvP28sFOGuis//9RRpKS3Qgq
+         gCsAqWmHtywvVWf9fksAkodKdFL2DctkOqNe44QVV0CQSXKeRTU3/R1OmxbHa7Qvz5tE
+         VzO1xIpthnz80C1KQMNqS+SWN6tfe/MVopb1IAShHLAIObJlhIlsoBxJYSFs4Gc1bI0r
+         VJPv1QDzqJABB45fSN3l7CLkfRXjd9dgq4ZSxBkM4OYPKrkZ9Jaw7a6l1AXD4Je1/iZ2
+         65rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=WgTQYSQsVQaJWWT3gs8sBM8Va0cNUup406EKnbJU7pg=;
+        b=jXFOBD6a0jSww1SuTxCLJhrEFYLDw0s7f39+YejOLnfeful8EIxQp5Z4tkumO6dhab
+         U8bt1+kbnED3sMccEG1Z7A+XUWjm6qIhEQVZO4Leh/b63w60nbN6pRM6AvnPXmZJGjLy
+         9maIo/AfPhlP5TY6wvPiwRPXlh4pju2CVK4J2HOr4TBA3EaEPjWc/mZR3a5ehcKGm9Qi
+         iIu92ku7nqunEQsdE2FEkvCRxuQOfCrfCWBMs5qSRyoR1leyv0OKDho0f8hM3nQMHVoH
+         5caOAThgtHF02iATIQrvufIW/aMC6c+jBH06xPKsOZeXdgcoPkAsduea0Fowfy1rLqmd
+         23Zg==
+X-Gm-Message-State: AOAM532sZGaFKFvFrnnW4CbF2YyCx7reRf8/BItkcNuqPlyQVEGcTEzh
+	gUreylWxjztbrUpBfzmW0Bt1kf+JyEFk/V/irf0=
+X-Google-Smtp-Source: ABdhPJz0VTnwyxC89Dl/goB1JGySZ+geQ+ZyOdxEI9fv/FtCiKB1M1BT/kU/RTCUmMxF7Vfp6fyR9g==
+X-Received: by 2002:a2e:a90b:: with SMTP id j11mr4072019ljq.475.1628915321768;
+        Fri, 13 Aug 2021 21:28:41 -0700 (PDT)
+Return-Path: <uvv.mail@gmail.com>
+Received: from slackware.local ([185.253.97.10])
+        by smtp.gmail.com with ESMTPSA id y20sm383771lji.126.2021.08.13.21.28.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Aug 2021 21:28:41 -0700 (PDT)
+From: "Vyacheslav Yurkov" <uvv.mail@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Vyacheslav Yurkov <uvv.mail@gmail.com>
+Subject: [PATCH] ref-manual: add overlayfs class
+Date: Sat, 14 Aug 2021 06:28:25 +0200
+Message-Id: <20210814042825.124630-1-uvv.mail@gmail.com>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.790
- definitions=2021-08-13_08:2021-08-13,2021-08-13 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- adultscore=0 lowpriorityscore=0 mlxscore=0 impostorscore=0 spamscore=0
- suspectscore=0 malwarescore=0 clxscore=1011 mlxlogscore=999 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2107140000 definitions=main-2108130119
-X-MIME-Autoconverted: from 8bit to quoted-printable by mx0a-001b2d01.pphosted.com id 17DKYKJ0155514
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 8/13/21 5:30 AM, Michael Opdenacker wrote:
-> Hi Joseph,
->
-> On 8/5/21 6:14 PM, Michael Opdenacker wrote:
->>
->> Many for your suggestions !
->> I'm copying our docs mailing list so that this topic gets tracked
->> properly and other people can contribute.
->>
->> I should be able to get back to you next week.
->
-> Unfortunately, the week was busier than expected and I won't be able to
-> work on this before September.
-> I filed a new bug so that we track this task properly:
-> https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D14509
+Signed-off-by: Vyacheslav Yurkov <uvv.mail@gmail.com>
+---
+ documentation/ref-manual/classes.rst | 46 ++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
 
-Thank you.=C2=A0 Getting this started sometime this year would be fantast=
-ic!=C2=A0=20
-Please ping me directly.
-
-I've added a link from the OpenBMC project configuration guide to your=20
-Yocto work item, so we can track progress.
-
-Joseph
-
->
-> Don't hesitate to subscribe to the bug.
-> I'll post updates through this thread anyway.
->
-> Cheers,
-> Michael.
->
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index a98a64c43..5d33e81a1 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1710,6 +1710,52 @@ one such example. However, being aware of this class can reduce the
+ proliferation of different versions of similar classes across multiple
+ layers.
+ 
++.. _ref-classes-overlayfs:
++
++``overlayfs.bbclass``
++=======================
++
++
++It's often desired in Embedded System design to have a read-only rootfs.
++But a lot of different applications might want to have a read-write access to
++some parts of a filesystem. It can be especially useful when your update mechanism
++overwrites the whole rootfs, but you want your application data to be preserved
++between updates. The ``overlayfs`` class provides a way to achieve that by means
++of overlayfs and at the same time keeping the base rootfs read-only.
++
++To use this class, set a mount point for a partition overlayfs is going to use as upper
++layer in your machine configuration. Underlying file system can be anything that
++is supported by overlayfs. This has to be done in your machine configuration::
++
++  OVERLAYFS_MOUNT_POINT[data] = "/data"
++
++.. note::
++
++  QA check fails to catch file existence if you redefine this variable in your recipe!
++
++The class assumes you have a data.mount systemd unit defined elsewhere in your BSP
++(e.g. in systemd-machine-units recipe) and it's installed to the image.
++
++Then you can specify writable directories on a recipe basis::
++
++  OVERLAYFS_WRITABLE_PATHS[data] = "/usr/share/my-custom-application"
++
++To support several mount points you can use a different variable flag. Assume we
++want to have a writable location on the file system, but not interested where the data
++survive a reboot. Then we could have a mnt-overlay.mount unit for a tmpfs file system.
++
++In your machine configuration::
++
++  OVERLAYFS_MOUNT_POINT[mnt-overlay] = "/mnt/overlay"
++
++and then in your recipe::
++
++  OVERLAYFS_WRITABLE_PATHS[mnt-overlay] = "/usr/share/another-application"
++
++.. note::
++
++   The class does not support /etc directory itself, because systemd depends on it
++
+ .. _ref-classes-own-mirrors:
+ 
+ ``own-mirrors.bbclass``
+-- 
+2.28.0
 
