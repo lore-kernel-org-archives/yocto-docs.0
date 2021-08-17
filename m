@@ -1,134 +1,393 @@
-Received: from EUR02-HE1-obe.outbound.protection.outlook.com (EUR02-HE1-obe.outbound.protection.outlook.com [40.107.1.88])
- by mx.groups.io with SMTP id smtpd.web11.23135.1629115987480339146
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+ by mx.groups.io with SMTP id smtpd.web09.34646.1629170989158407489
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Aug 2021 05:13:08 -0700
+ Mon, 16 Aug 2021 20:29:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=XG5YKwp2;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.1.88, mailfrom: quentin.schulz@theobroma-systems.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jOtD0PnHNnQ0+kVi8WnZJNBCtCLQhssMI4rRajIILRgHthoP1j4yAeuQkP4CfBTNbuOpAT6YdyMKRKJ3r832gxN8Lhn7iUpVDOgVcnE931YHWr10ZZ7rAjhUPk2qKMmIGTKvtfkgKjX0tkdzuTUzZFQN6zvTFouhiwPiqhoQ8syjQlT7HoYtQkr5AhVPFPu1UKavBE8k5R7vlTit1OIdentjSsTY108tLHjy/NsCb+J6haWw60A2UDkB8P99ZioUkvfvHWsQk0vTKKjpA14pFP602QWmfUvYNwgzXW3BvJFXBYOUYrs6zAkHbXZtHOb+yegGfKnHFLboTL47q+6P8A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pyjDpeet7T3tRLNyNdq6x7LkTElyD8MWl+SyKGfLDe8=;
- b=HKg4qWv1v2Yt3sVl2uqR/SQZN5A9pGcYKn5NK34n5dC+zEUvm42DMeUUC97Yp/RukfF00wIiW36J6MJQfQSVus0jR+vbyY7EmDYG95OGIrCjAzqE7ZkH7tVshLQzMTkrvXRFrBAzslXYPP9NRq5uW/cS5JC51RU9kdTnxJeJzuNmIWn+cmJXp6py6pwGL7+4MQzRdYynrpatX4n/FIEW4tLxIDNhuZmzgb/0vRO8sJNKg8oaWIoWhc8tcKeZI/+NIb8ozp1oF/X3772o/rLobuuRq5+m5L9rEVG0svZXzUMOndXqf4/DpzC04wzgvKzpmfFoCTjP5DYFmVd+2XRLtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=L0zEpuJy;
+ spf=pass (domain: gmail.com, ip: 209.85.222.175, mailfrom: uvv.mail@gmail.com)
+Received: by mail-qk1-f175.google.com with SMTP id o123so16248900qkf.12
+        for <docs@lists.yoctoproject.org>; Mon, 16 Aug 2021 20:29:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pyjDpeet7T3tRLNyNdq6x7LkTElyD8MWl+SyKGfLDe8=;
- b=XG5YKwp2/xuVNI8HaCbumNErnZPEH1wfF/wQ1liLbPDhHOWJCaXN0ae+0tUiYy+zUYDX0w2cD/18Q9DsOusbA1ZGxr1ib41ykC6OQK/yBfCmmjUpU3Mea3v3+FVRZj4cE6IqSGXaegedkVmQuodAyl6gO8K8BMBZQnAqC+hFEC4=
-Authentication-Results: bootlin.com; dkim=none (message not signed)
- header.d=none;bootlin.com; dmarc=none action=none
- header.from=theobroma-systems.com;
-Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24) by AM0PR04MB6452.eurprd04.prod.outlook.com
- (2603:10a6:208:16d::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.18; Mon, 16 Aug
- 2021 12:13:04 +0000
-Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- ([fe80::cd35:af76:7542:4dd6]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
- ([fe80::cd35:af76:7542:4dd6%7]) with mapi id 15.20.4415.023; Mon, 16 Aug 2021
- 12:13:04 +0000
-Date: Mon, 16 Aug 2021 14:13:02 +0200
-From: "Quentin Schulz" <quentin.schulz@theobroma-systems.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Daniel Gomez <daniel@qtec.com>, docs@lists.yoctoproject.org,
-	Daniel Gomez <dagmcr@gmail.com>
-Subject: Re: [docs] [PATCH] releases: fix typo
-Message-ID: <20210816121302.czbslip3pfsl6qmg@fedora>
-References: <20210812190309.347619-1-daniel@qtec.com>
- <CAH1Ww+SS0iaAMChNzEGKrGJf9h=fmv-HAnSPAgk8oPG-FyOj4A@mail.gmail.com>
- <5180c3f8-d798-cc1f-13b0-61c3f0ed9046@bootlin.com>
- <20210813132357.z4ju4djdoy3imlpv@fedora>
-In-Reply-To: <20210813132357.z4ju4djdoy3imlpv@fedora>
-X-ClientProxiedBy: PR1P264CA0027.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:19f::14) To AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24)
-Return-Path: quentin.schulz@theobroma-systems.com
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=inN48j43mJI6yggZxa1rsq944nSla4LOibek+h2YUNM=;
+        b=L0zEpuJyyFnBVMrDx3xyJLB1szHIQY2qX0G5hbJFIMoX540fTy6AZVhPBzhzKS0tC8
+         ReZVHHk6mCz40NhbLEj7wtSJohmBSs7sZCUQ4jA25bvldGeFZ/rvxZ8brPWILHauQQ+h
+         eTlpCb3iKvl5SGJ5nOmTaCzc7pMmo+ELePT4KE11RP9YXWrXvIW/5CemObArikFCq5O3
+         MRC2MK3BO99QYMQfkdkgL4Wm97ZrBm+YWg/F2K+aGjsy9QIrcSMhQCidnyHUud+e/BYW
+         TD+nSINsKW/YE+RwPaosn/xI0dplnV8Pb92KBMDSb2ow9+5jar7ccp2DuvQFh2B1swSa
+         DPrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=inN48j43mJI6yggZxa1rsq944nSla4LOibek+h2YUNM=;
+        b=ZOFcO9MmLuB5hdfZkOb/2rL5PSkURX+zxgIAwut8JAWdJRv4gs86AtPX95sWo3IR2Y
+         lkJOROpsDU9tmx60aSDzJIvjFjv47fEmvL96QBDe3X5PZiKiQF2K8xawHcEkpdbDDiR+
+         HuTINSb3sWSVdVPh20fG8ScGIAekP6IpXv/jAKaMdFbeXAED0eW5/a08TpYbElwQjLrZ
+         rVX7fO+ImuGuFovoNde7WeiZj8FywM/rnhZ6ediYskXW7Ymb4+Vio7frQQgXVoEm4gkX
+         VyRtWVTt+QOdnryBE6SoKvtHaRVaL0ZDfYDDde4PLOA0u6beWwGhjln+QKX0mWBehdly
+         JFiA==
+X-Gm-Message-State: AOAM531sjrXeWG7Kz3k0kK7GZ930mEMSn7pveDasV1Uh8SpFdtJ7vyxS
+	h77FFiEkmZcyQnHwCd2LjbCMvP7d8Iipg9r8ImGmlJYN
+X-Google-Smtp-Source: ABdhPJzwKUdkCEH3I4gIm5OV+rS3qsNWGnL1DhiGCrTsjYXkX77szIYVGyn8Y/B/6z4W57uptClUCaF0VqJR8qtfRqs=
+X-Received: by 2002:ae9:e915:: with SMTP id x21mr1705497qkf.183.1629170988153;
+ Mon, 16 Aug 2021 20:29:48 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from fedora (92.42.140.82) by PR1P264CA0027.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:19f::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4415.14 via Frontend Transport; Mon, 16 Aug 2021 12:13:03 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 63575e47-0fcd-4637-7347-08d960af3300
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6452:
-X-Microsoft-Antispam-PRVS: 
-	<AM0PR04MB6452EDE189C58D5914904682C2FD9@AM0PR04MB6452.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:962;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	q+OB0CfKJMrlM7FlBYwnHyw5VINqEn1c5UPpOsMnkcTXyfD2b62s8XQmXvlKJeZmAtsRbkUxBN7dXOd4Lh2r4vEa6EojL5JAlZeFCZMEfzQqKUla4dlj1GIr9wCmtWzKD0Ry/8vZ7TE8Tzgg2sw96wX6+/F5CSgHs6VDh35iYIDr5Hdk4VGoQizQYj+hpQtXlb5vtcjzqaBN9lBdVG7KiQ3OJu62DFToZkQ/gBCc6cOJJFPrNak/RaB6Ris1A7b79lAgU6scffSBEXnz6GBIM2E1b8b4W2ZuhcHZzONxg5U/yZEq0erSxAmPaQrTVj1YcJgsKkcoTWYyjEU5XRA8bgnNB35kW7zShEdJVLjRL2ZAKvywpLKyMFhZF3pxRkqgUrgm7q4239w5ES16lD5VzLrcBMy7j0v+9BLIrCJwJzDR52hs6dR8YNExAUoFSe6Y3WoP9zU5ria+W+Gw05S1nYWEASSlmyP0sUT4JUV2/TrI9FXuuX8NEo872VX+EjwooroYcp0XBoPgXM1ZwoMIVA0MlckP7RI7wKFsuPsYIuJU5vibCPh6FgWrl5Evs0hijj3+KoZtWRmwLFmbRsU04brYwBkskcha33HauAWtEVTN/1tT5qsBFSWcv6cq0wycniwXLL01wmosqbOhqbD+rHBDssNSeEW3F6fEWDw42xzXtxh+mRFqCatWSkSzg1h9jlcjtneZZhOAE1r8cw6D6w==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(39840400004)(366004)(346002)(136003)(396003)(376002)(956004)(54906003)(52116002)(55016002)(316002)(26005)(186003)(5660300002)(53546011)(6916009)(44832011)(6496006)(33716001)(9686003)(38100700002)(38350700002)(86362001)(4744005)(66556008)(66476007)(66946007)(4326008)(9576002)(83380400001)(1076003)(2906002)(8936002)(478600001)(8676002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?Qv23+0HGpVaqDIoFdv6gsPbvIFyBwhbLDQsFbagbTR5rfllTidBFRw9bX25H?=
- =?us-ascii?Q?6JMsG/rIB0m4z0BrHckXz24tf0e7PBe/kWEeMykU6jS026UPN6tQA8sTsoM5?=
- =?us-ascii?Q?2s+vOrN0PAyRqy9bvR8N8aSxawyfzehgmzORqTgdvaNISwhGtzZatE8lvJBn?=
- =?us-ascii?Q?LiURwv6SQzbeBQ2Z98HCXRGeiESipV0cYtRYGQ4QYZpQ/jL+aT9IQktWIHvA?=
- =?us-ascii?Q?Sswzx/TmJmwYeD+aGJte+r7VxaPR6DBHqJAgxANDGaYOqyupMNn0M396qVhW?=
- =?us-ascii?Q?JB894RnmE+5P4XcCF80VZKHt3e77p16aYeJmzfqhtqTcruZt/UkP9OnUkj6+?=
- =?us-ascii?Q?goskgrUMB6gHVL1I2Mt2wgH3pn+n/Lqx7o7hQD/KLA2ZluoC4jrvuBtEqtCe?=
- =?us-ascii?Q?4M8sDRNkNUcnmLlg7+erMbTC65p1SGn8Pzs+lZoufo4/k00x+wDr2RdkwZDG?=
- =?us-ascii?Q?/5ph8sIHteMQaShz8p3+FiibIcwFmImgvhV0rp6Fymnyt0t3D+2YqqG/ALGR?=
- =?us-ascii?Q?aiJvmSN/xL5iI5br1dCSZKXWprejcFYpenj1LgkkGCmr919FRX3Doc8QRz2G?=
- =?us-ascii?Q?d9AO9cpqkcOq1WXaMXvb3bhUgkjtm8lkHCPkTU9jXcLxKQNF7ihRygTimCLa?=
- =?us-ascii?Q?49Eb0NoZLYvZSLQMA6y6FHJUejDOOlgFppHdeiOweoXBbvS2Yik9WI6Mhxdg?=
- =?us-ascii?Q?YmEsMczE1COS2eFUohbvjnkQOdL86b7WJxwBtQe/9pswov8eShZayUr9jGn5?=
- =?us-ascii?Q?lZP0biFRNewuswG9ovji3W7muspEingtACRBYrbO0/0u+71fVQu9XaJhHN/z?=
- =?us-ascii?Q?ISxHyl2kaZfLySNkeLGP9ZtyYw9DNt37F8qxsxiNb1rBD02+MhD5NXhmbf9F?=
- =?us-ascii?Q?btlAN1YUXW6RDuH6di58NcDJ+TWmzMqLoGFbC3HjNIimWFEMo3t60nI/5ncC?=
- =?us-ascii?Q?RjHB0uFxGXSl+Z309MbQSruJX56Dnhta94uyw1I/hhY5W6X0+ecfELpctrve?=
- =?us-ascii?Q?T+bymYeWH5IQsZ2K/03PMfUzG+MPkUf3sb0SNmmJ3k8pEMh4GXxgMKf6pNBA?=
- =?us-ascii?Q?vVWQu5wJVCeOrRQ0Qs6OofHcBcBPTa6BnFjOCA0VXnsfX/IIMbqYi5xzvIN7?=
- =?us-ascii?Q?ExgsIXhTa9dHzp/DZ6v903ISsVvpItFuXpDAhYvjTOoUNui9Zv2xsTLj/Cx0?=
- =?us-ascii?Q?PXtscd+56xQVTQ1FiN2WcP+OSmtx9gXkssty+jZvMIhOOJz2dMkmZv2CAi9t?=
- =?us-ascii?Q?Q68RWxZhBtYT0KQer8JlHccquqppHN7X7Gi2S4zx2POlP9mSTFyr6Q/H8mSV?=
- =?us-ascii?Q?xeGQcKlHNNmAtxI1vdv+fSaB?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63575e47-0fcd-4637-7347-08d960af3300
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3348.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Aug 2021 12:13:04.1976
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Ps8mwfqsOJRVROrcoijzFVhXV1buf0no3Rmb2Jvg9hChkkf6sA+jCnBA4Rfn2xjGk09bI5oma/bbd8X9Z0gMQVSg25DjFhf8SHNAruSQcWOwl4Oy47wySCZL3k/Q3Wl0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6452
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20210814042825.124630-1-uvv.mail@gmail.com> <20210816091427.25cqk6kx3mnoyua5@fedora>
+In-Reply-To: <20210816091427.25cqk6kx3mnoyua5@fedora>
+From: "Vyacheslav Yurkov" <uvv.mail@gmail.com>
+Date: Tue, 17 Aug 2021 07:29:35 +0400
+Message-ID: <CAKHfEaj4P2L7g993rqnQsuX5z42tKP6zZm7pznSESY9JtDbXMA@mail.gmail.com>
+Subject: Re: [docs] [PATCH] ref-manual: add overlayfs class
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="00000000000006fecd05c9b8ee7b"
 
-Hi all,
+--00000000000006fecd05c9b8ee7b
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Aug 13, 2021 at 03:23:57PM +0200, Quentin Schulz wrote:
-> On Fri, Aug 13, 2021 at 07:42:51AM +0200, Michael Opdenacker wrote:
-> > Hi Daniel,
-> > 
-> > On 8/13/21 7:18 AM, Daniel Gomez wrote:
-> > > Adding Signed-off-by.
-> > >
-> > > On Thu, 12 Aug 2021 at 21:04, Daniel Gomez <daniel@qtec.com> wrote:
-> > >> Fix dunfell typo for releases 3.1.9 and 3.1.10.
-> > > Signed-off-by: Daniel Gomez <daniel@qtec.com>
-> > 
-> > Good catch, thanks!
-> > 
-> > Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> > I merged your fix into "master-next", and I will send a pull-request
-> > today for this branch, so that this is fixed quickly, together with
-> > other updates.
-> > 
-> 
-> Similar fixes are needed in gatesgarth and dunfell branches.
-> 
+Hi Quentin,
+Thanks for the review! I'll address the notes in v2. A few answers to your
+questions are inlined below.
 
-Don't know where I saw things to fix. Nothing to be done, sorry for the noise.
+On Mon, Aug 16, 2021, 13:14 Quentin Schulz <
+quentin.schulz@theobroma-systems.com> wrote:
 
-Cheers,
-Quentin
+> Hi Vyacheslav,
+>
+> Thanks for the patch!
+>
+> On Sat, Aug 14, 2021 at 06:28:25AM +0200, Vyacheslav Yurkov wrote:
+> > Signed-off-by: Vyacheslav Yurkov <uvv.mail@gmail.com>
+> > ---
+> >  documentation/ref-manual/classes.rst | 46 ++++++++++++++++++++++++++++
+> >  1 file changed, 46 insertions(+)
+> >
+> > diff --git a/documentation/ref-manual/classes.rst
+> b/documentation/ref-manual/classes.rst
+> > index a98a64c43..5d33e81a1 100644
+> > --- a/documentation/ref-manual/classes.rst
+> > +++ b/documentation/ref-manual/classes.rst
+> > @@ -1710,6 +1710,52 @@ one such example. However, being aware of this
+> class can reduce the
+> >  proliferation of different versions of similar classes across multiple
+> >  layers.
+> >
+> > +.. _ref-classes-overlayfs:
+> > +
+> > +``overlayfs.bbclass``
+> > +=======================
+> > +
+> > +
+>
+> One newline is enough :)
+>
+> > +It's often desired in Embedded System design to have a read-only rootfs.
+> > +But a lot of different applications might want to have a read-write
+> access to
+> > +some parts of a filesystem. It can be especially useful when your
+> update mechanism
+> > +overwrites the whole rootfs, but you want your application data to be
+> preserved
+> > +between updates. The ``overlayfs`` class provides a way to achieve that
+> by means
+>
+> s/``overlayfs``/:ref:`overlayfs <ref-classes-overlayfs>`/
+>
+> > +of overlayfs and at the same time keeping the base rootfs read-only.
+> > +
+>
+> I would highlight overlayfs with tick quotes (``overlayfs``).
+>
+> > +To use this class, set a mount point for a partition overlayfs is going
+> to use as upper
+> > +layer in your machine configuration. Underlying file system can be
+> anything that
+> > +is supported by overlayfs. This has to be done in your machine
+> configuration::
+> > +
+>
+> How do I know what's supported by overlayfs? Where can I find this
+> important piece of information?
+>
+> > +  OVERLAYFS_MOUNT_POINT[data] = "/data"
+> > +
+> > +.. note::
+> > +
+> > +  QA check fails to catch file existence if you redefine this variable
+> in your recipe!
+> > +
+>
+> What about:
+> This variable must only be set from a configuration file as QA check will
+> fail
+> to catch file existence if this variable is also set in a recipe.
+>
+> Also, I'm not sure to understand what "catch file existence" means?
+> Could you explain to me please :)
+>
+
+That means I check only that file exists in QA check, I do not check
+whether it's a valid systemd mount unit (to avoid additional dependency on
+systemd-native recipe).
+
+
+> > +The class assumes you have a data.mount systemd unit defined elsewhere
+> in your BSP
+>
+> s/data.mount/``data.mount``/
+>
+> > +(e.g. in systemd-machine-units recipe) and it's installed to the image.
+> > +
+>
+> s/systemd-machine-units/``systemd-machine-units``/
+>
+> > +Then you can specify writable directories on a recipe basis::
+> > +
+>
+> If package recipes are supported, does it actually make sense to have
+> such variable in there instead of in image recipes?
+>
+> Just trying to know if we should highlight whether it's a bad idea for
+> users to do so.
+>
+
+There are actually two pitfalls here.
+
+Semantically directory belongs to a recipe it's used in. If you redefine
+OVERLAYFS_WRITABLE_PATHS in another recipe, do_rootfs would fail when two
+recipes install the same file.
+
+Another trade-off I had to deal with is if you redefine
+OVERLAYFS_MOUNT_POINT in a recipe, then I can't catch it in my QA check.
+This is due to a bitbake limitation, in particular I can't forbid further
+variable overrides. That's why I mentioned above that this variable has to
+be set in machine configuration.
+
+I hope that makes sense :)
+
+Regards,
+Vyacheslav
+
+
+> > +  OVERLAYFS_WRITABLE_PATHS[data] = "/usr/share/my-custom-application"
+> > +
+> > +To support several mount points you can use a different variable flag.
+> Assume we
+>
+> s/Assume/Assuming/ ?
+>
+> > +want to have a writable location on the file system, but not interested
+> where the data
+> > +survive a reboot. Then we could have a mnt-overlay.mount unit for a
+> tmpfs file system.
+> > +
+>
+> s/mnt-overlay.mount/``mnt-overlay.mount``/
+>
+> s/tmpfs/``tmpfs``/ ?
+>
+> > +In your machine configuration::
+> > +
+> > +  OVERLAYFS_MOUNT_POINT[mnt-overlay] = "/mnt/overlay"
+> > +
+> > +and then in your recipe::
+> > +
+> > +  OVERLAYFS_WRITABLE_PATHS[mnt-overlay] =
+> "/usr/share/another-application"
+> > +
+> > +.. note::
+> > +
+> > +   The class does not support /etc directory itself, because systemd
+> depends on it
+> > +
+>
+> s/\/etc/``\/etc``/
+>
+> s/systemd/``systemd``/
+>
+> My nitpicks excluded, looks good :) ~
+>
+> Cheers,
+> Quentin
+
+--00000000000006fecd05c9b8ee7b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div>Hi Quentin,</div><div dir=3D"auto">Thanks for the re=
+view! I&#39;ll address the notes in v2. A few answers to your questions are=
+ inlined below.<br><br><div class=3D"gmail_quote" dir=3D"auto"><div dir=3D"=
+ltr" class=3D"gmail_attr">On Mon, Aug 16, 2021, 13:14 Quentin Schulz &lt;<a=
+ href=3D"mailto:quentin.schulz@theobroma-systems.com" rel=3D"noreferrer nor=
+eferrer" target=3D"_blank">quentin.schulz@theobroma-systems.com</a>&gt; wro=
+te:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;b=
+order-left:1px #ccc solid;padding-left:1ex">Hi Vyacheslav,<br>
+<br>
+Thanks for the patch!<br>
+<br>
+On Sat, Aug 14, 2021 at 06:28:25AM +0200, Vyacheslav Yurkov wrote:<br>
+&gt; Signed-off-by: Vyacheslav Yurkov &lt;<a href=3D"mailto:uvv.mail@gmail.=
+com" rel=3D"noreferrer noreferrer noreferrer" target=3D"_blank">uvv.mail@gm=
+ail.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 documentation/ref-manual/classes.rst | 46 ++++++++++++++++++++++=
+++++++<br>
+&gt;=C2=A0 1 file changed, 46 insertions(+)<br>
+&gt; <br>
+&gt; diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-=
+manual/classes.rst<br>
+&gt; index a98a64c43..5d33e81a1 100644<br>
+&gt; --- a/documentation/ref-manual/classes.rst<br>
+&gt; +++ b/documentation/ref-manual/classes.rst<br>
+&gt; @@ -1710,6 +1710,52 @@ one such example. However, being aware of this =
+class can reduce the<br>
+&gt;=C2=A0 proliferation of different versions of similar classes across mu=
+ltiple<br>
+&gt;=C2=A0 layers.<br>
+&gt;=C2=A0 <br>
+&gt; +.. _ref-classes-overlayfs:<br>
+&gt; +<br>
+&gt; +``overlayfs.bbclass``<br>
+&gt; +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+<br>
+&gt; +<br>
+&gt; +<br>
+<br>
+One newline is enough :)<br>
+<br>
+&gt; +It&#39;s often desired in Embedded System design to have a read-only =
+rootfs.<br>
+&gt; +But a lot of different applications might want to have a read-write a=
+ccess to<br>
+&gt; +some parts of a filesystem. It can be especially useful when your upd=
+ate mechanism<br>
+&gt; +overwrites the whole rootfs, but you want your application data to be=
+ preserved<br>
+&gt; +between updates. The ``overlayfs`` class provides a way to achieve th=
+at by means<br>
+<br>
+s/``overlayfs``/:ref:`overlayfs &lt;ref-classes-overlayfs&gt;`/<br>
+<br>
+&gt; +of overlayfs and at the same time keeping the base rootfs read-only.<=
+br>
+&gt; +<br>
+<br>
+I would highlight overlayfs with tick quotes (``overlayfs``).<br>
+<br>
+&gt; +To use this class, set a mount point for a partition overlayfs is goi=
+ng to use as upper<br>
+&gt; +layer in your machine configuration. Underlying file system can be an=
+ything that<br>
+&gt; +is supported by overlayfs. This has to be done in your machine config=
+uration::<br>
+&gt; +<br>
+<br>
+How do I know what&#39;s supported by overlayfs? Where can I find this<br>
+important piece of information?<br>
+<br>
+&gt; +=C2=A0 OVERLAYFS_MOUNT_POINT[data] =3D &quot;/data&quot;<br>
+&gt; +<br>
+&gt; +.. note::<br>
+&gt; +<br>
+&gt; +=C2=A0 QA check fails to catch file existence if you redefine this va=
+riable in your recipe!<br>
+&gt; +<br>
+<br>
+What about:<br>
+This variable must only be set from a configuration file as QA check will f=
+ail<br>
+to catch file existence if this variable is also set in a recipe.<br>
+<br>
+Also, I&#39;m not sure to understand what &quot;catch file existence&quot; =
+means?<br>
+Could you explain to me please :)<br></blockquote></div></div><div dir=3D"a=
+uto"><br></div><div dir=3D"auto">That means I check only that file exists i=
+n QA check, I do not check whether it&#39;s a valid systemd mount unit (to =
+avoid additional dependency on systemd-native recipe).</div><div dir=3D"aut=
+o"><br></div><div dir=3D"auto"><div class=3D"gmail_quote" dir=3D"auto"><blo=
+ckquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #c=
+cc solid;padding-left:1ex">
+<br>
+&gt; +The class assumes you have a data.mount systemd unit defined elsewher=
+e in your BSP<br>
+<br>
+s/data.mount/``data.mount``/<br>
+<br>
+&gt; +(e.g. in systemd-machine-units recipe) and it&#39;s installed to the =
+image.<br>
+&gt; +<br>
+<br>
+s/systemd-machine-units/``systemd-machine-units``/<br>
+<br>
+&gt; +Then you can specify writable directories on a recipe basis::<br>
+&gt; +<br>
+<br>
+If package recipes are supported, does it actually make sense to have<br>
+such variable in there instead of in image recipes?<br>
+<br>
+Just trying to know if we should highlight whether it&#39;s a bad idea for<=
+br>
+users to do so.<br></blockquote></div></div><div dir=3D"auto"><br></div><di=
+v dir=3D"auto">There are actually two pitfalls here.</div><div dir=3D"auto"=
+><br></div><div dir=3D"auto">Semantically directory belongs to a recipe it&=
+#39;s used in. If you redefine=C2=A0<span style=3D"font-family:sans-serif">=
+OVERLAYFS_WRITABLE_PATHS</span>=C2=A0in another recipe, do_rootfs would fai=
+l when two recipes install the same file.</div><div dir=3D"auto"><br></div>=
+<div dir=3D"auto">Another trade-off I had to deal with is if you redefine O=
+VERLAYFS_MOUNT_POINT in a recipe, then I can&#39;t catch it in my QA check.=
+ This is due to a bitbake limitation, in particular I can&#39;t forbid furt=
+her variable overrides. That&#39;s why I mentioned above that this variable=
+ has to be set in machine configuration.</div><div dir=3D"auto"><br></div><=
+div dir=3D"auto">I hope that makes sense :)</div><div dir=3D"auto"><br></di=
+v><div dir=3D"auto">Regards,</div><div dir=3D"auto">Vyacheslav</div><div di=
+r=3D"auto"><br></div><div dir=3D"auto"><div class=3D"gmail_quote" dir=3D"au=
+to"><blockquote class=3D"gmail_quote" style=3D"margin:0 0 0 .8ex;border-lef=
+t:1px #ccc solid;padding-left:1ex">
+<br>
+&gt; +=C2=A0 OVERLAYFS_WRITABLE_PATHS[data] =3D &quot;/usr/share/my-custom-=
+application&quot;<br>
+&gt; +<br>
+&gt; +To support several mount points you can use a different variable flag=
+. Assume we<br>
+<br>
+s/Assume/Assuming/ ?<br>
+<br>
+&gt; +want to have a writable location on the file system, but not interest=
+ed where the data<br>
+&gt; +survive a reboot. Then we could have a mnt-overlay.mount unit for a t=
+mpfs file system.<br>
+&gt; +<br>
+<br>
+s/mnt-overlay.mount/``mnt-overlay.mount``/<br>
+<br>
+s/tmpfs/``tmpfs``/ ?<br>
+<br>
+&gt; +In your machine configuration::<br>
+&gt; +<br>
+&gt; +=C2=A0 OVERLAYFS_MOUNT_POINT[mnt-overlay] =3D &quot;/mnt/overlay&quot=
+;<br>
+&gt; +<br>
+&gt; +and then in your recipe::<br>
+&gt; +<br>
+&gt; +=C2=A0 OVERLAYFS_WRITABLE_PATHS[mnt-overlay] =3D &quot;/usr/share/ano=
+ther-application&quot;<br>
+&gt; +<br>
+&gt; +.. note::<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0The class does not support /etc directory itself, becaus=
+e systemd depends on it<br>
+&gt; +<br>
+<br>
+s/\/etc/``\/etc``/<br>
+<br>
+s/systemd/``systemd``/<br>
+<br>
+My nitpicks excluded, looks good :) ~<br>
+<br>
+Cheers,<br>
+Quentin</blockquote></div></div></div>
+
+--00000000000006fecd05c9b8ee7b--
