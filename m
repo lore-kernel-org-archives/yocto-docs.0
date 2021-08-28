@@ -1,83 +1,75 @@
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
- by mx.groups.io with SMTP id smtpd.web09.513.1630176349328530654
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+ by mx.groups.io with SMTP id smtpd.web10.541.1630176509535497473
  for <docs@lists.yoctoproject.org>;
- Sat, 28 Aug 2021 11:45:49 -0700
+ Sat, 28 Aug 2021 11:48:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20161025 header.b=qOKMxtrU;
- spf=pass (domain: gmail.com, ip: 209.85.215.181, mailfrom: raj.khem@gmail.com)
-Received: by mail-pg1-f181.google.com with SMTP id n18so9131051pgm.12
-        for <docs@lists.yoctoproject.org>; Sat, 28 Aug 2021 11:45:49 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20161025 header.b=Uexv1HAc;
+ spf=pass (domain: gmail.com, ip: 209.85.210.176, mailfrom: raj.khem@gmail.com)
+Received: by mail-pf1-f176.google.com with SMTP id u6so8107795pfi.0
+        for <docs@lists.yoctoproject.org>; Sat, 28 Aug 2021 11:48:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :references:from:organization:in-reply-to:content-transfer-encoding;
-        bh=rMaxuTLGgTxUF7fc3BplVNijtzc6lZFRfgHGHe4sMi0=;
-        b=qOKMxtrUNRAFKmYK9XmgsNCeC70CId1DZzPGmusWig7z+2L7whgT8MPbMaGS/oMxLZ
-         Sy3X7J4tE0L/paQk/m8OZdi+/RZ9SGj/GWxMYvOdGIa2Tia63KGcmOboPM3sgePzTE9p
-         InEOWVG/enqvtVW47pg7qzelsTE6pfxFUpeC4TYSePIygb6pdS8mxmCpA5tpHIxSa9aW
-         aTZ+cGmfbha9/G6oL2qlpS/m7DrHyubTtbb10B79VXyV/q995DC6z+fs8rL1ic0nxdJw
-         Mp9E3u5df0SQtubbrYXWoMAY8AEpTbDzyz1WvNOiK22m9AKydsilXOH025QWRjJkUPie
-         felw==
+        bh=qjjHnw+NwkwpTikYXhfCwKIx1jy9YjY/0EBv9/UCI0g=;
+        b=Uexv1HAch4VGhkZvodZyjw7jQnbq1k/PHvxI5ovQm856waoiz/wkMoV80Az+MyoKB1
+         S4dwndhiNb4z5ZINywvWZlcX6mlCg4Jc4PBM2qzoKhguXhPIrnOyli7T41Uwh/H9Oa7H
+         UKU9nJYjrzVMX5QXKb1J5/HAX33nS0YRddQ22Hh3m//sxtHh3y8TVmnrIq9IEagW98FX
+         xG924Hoi8CiJy7CiD3ZUcYwhsZShhWNY1r4EihDBT+3LnT/lsdZCjXrMR0TbvvS694GP
+         YvqzHAXO4gvtshlXq4ZHAm8NaMawjR2dwIti4W4ZYl9I6RhjVxuVoBKtxjt+L2qxvjA4
+         v75Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:references:from:organization:in-reply-to
          :content-transfer-encoding;
-        bh=rMaxuTLGgTxUF7fc3BplVNijtzc6lZFRfgHGHe4sMi0=;
-        b=QeC0ycItQBDyox7pDtlmOMLh6veTv7KM4TnKESggeiSIh/G1NegjhQHtc36gM1u+jv
-         FjGAfOXIzA1Er1eQA05AwPJGowVRN8Dwndzd+0da6Ku3z3rlmgL0fo1DTBIRzo3IZCk5
-         FpZ5pz7ZaNNNSILweCQTmvVRxfEZH3oVgCIsl7qPI+L+eEQQB19gNf7Xit4GHU+PatVG
-         dvWrBgP/Nr6JRQf8dXJc/mnUNr5o6GDoMwvCfi5O2IaO5reTH8i7BzQRQvo0iV/AqS5q
-         Mb3CU9ayoRoBLMFvI0E3aiN9vOg5U3iaYCVI8Wk0Cmwv3v4Eskx7hHSPQX7Xqx4ifJkN
-         CfKg==
-X-Gm-Message-State: AOAM5319a/MTDCkO2hrQ1SNckVmFz+nppguR5OXgUHRKkr7Z2WoiDsdY
-	kCHAS1xPNFGkrz3WFDNQxpg=
-X-Google-Smtp-Source: ABdhPJy6+8VKgG5RGWnJcfsXxdptq9kcisuPf9lssd/b0Rqp16InCmJCUsxNCxp5P1kewnzis2T5Aw==
-X-Received: by 2002:a65:63d6:: with SMTP id n22mr13627835pgv.74.1630176348688;
-        Sat, 28 Aug 2021 11:45:48 -0700 (PDT)
+        bh=qjjHnw+NwkwpTikYXhfCwKIx1jy9YjY/0EBv9/UCI0g=;
+        b=lJzLA2U0547+1tRvtjrZLt9vJmuwZWGswJoahSebL8qulteziys21z7CDFQnxRrt/g
+         X+nLEmrCGEU8tPNmROtIplHyELxXI3BQqv0P8V3A935cMW9CCncGbN2gkAj5efWcLy1n
+         VHez2LEui/FxNtjLI/J5QQgFnDWTX3XhMXYmXklGfWsTJioBnohqA5txkiuBh/T8piAq
+         KeU/NYWOGg/zT+QPqEjq0uAj5k//90lbHFpK0KjdothlO9U/UHoPi7RIL5WM90ekpoSm
+         xREcNGQ0q/kiCwHCJzNfzXo5WC1p+R4SDqBahqQ+BpL2wlaj0FOXgAwcXlYMw5PcvNc4
+         Dg7Q==
+X-Gm-Message-State: AOAM532tcAEKxh/w1M45RrDINp0pDxkURgH8XK5Av1dy+z4iZSha455g
+	hkmtfN0sj6Tll5IRw0WgtnQ=
+X-Google-Smtp-Source: ABdhPJzEVyha+tu1XOi/iMPL7RBUDKnt+HxO+JJarH/mnP0RHiV9jeCrVgVqfFbzw+Goh4LOcenPzQ==
+X-Received: by 2002:a63:841:: with SMTP id 62mr2983837pgi.354.1630176509129;
+        Sat, 28 Aug 2021 11:48:29 -0700 (PDT)
 Return-Path: <raj.khem@gmail.com>
 Received: from ?IPV6:2601:646:9200:a0f0:718a:f86b:7e24:3a01? ([2601:646:9200:a0f0:718a:f86b:7e24:3a01])
-        by smtp.gmail.com with ESMTPSA id br3sm14229182pjb.52.2021.08.28.11.45.47
+        by smtp.gmail.com with ESMTPSA id k4sm7666760pga.92.2021.08.28.11.48.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Aug 2021 11:45:48 -0700 (PDT)
-Message-ID: <99485a3c-0d5c-3a76-95cb-57765c797bd8@gmail.com>
-Date: Sat, 28 Aug 2021 11:45:46 -0700
+        Sat, 28 Aug 2021 11:48:28 -0700 (PDT)
+Message-ID: <ab901f8b-57d1-e91b-9ec5-ce030e9c1137@gmail.com>
+Date: Sat, 28 Aug 2021 11:48:27 -0700
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
  Gecko/20100101 Thunderbird/91.0.3
-Subject: Re: [docs] docs "README" file seems a bit out of date
+Subject: Re: [docs] are autobuilder links in dev manual correct?
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>,
  YP docs mailing list <docs@lists.yoctoproject.org>
-References: <1a55fe74-5128-7a1f-5a3d-dd137ecf7bde@crashcourse.ca>
+References: <692113e0-4e26-d978-2d4d-d158ce9d3a@crashcourse.ca>
 From: "Khem Raj" <raj.khem@gmail.com>
 Organization: HIMVIS LLC
-In-Reply-To: <1a55fe74-5128-7a1f-5a3d-dd137ecf7bde@crashcourse.ca>
+In-Reply-To: <692113e0-4e26-d978-2d4d-d158ce9d3a@crashcourse.ca>
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 8/28/21 9:59 AM, Robert P. J. Day wrote:
+On 8/28/21 11:33 AM, Robert P. J. Day wrote:
 > 
->    README file at top of "documentation" directory:
+>    here:
 > 
-> https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/tree/documentation/README?h=master-next
+> file:///home/rpjday/oe/dist/layers/yocto-docs/documentation/_build/html/dev-manual/start.html#accessing-nightly-builds
 > 
-> at lines 49-53:
+> the autobuilder links in that section don't work for me, what should
+> they be?
 > 
-> "If you want to find HTML versions of the Yocto Project manuals on the
-> web, go to https://www.yoctoproject.org and click on the "Docs" tab.
->  From there you have access to archived documentation from previous
-> releases, current documentation for the latest release, and "Docs in
-> Progress" for the release currently being developed."
-> 
->    that's not quite what you find under the "Docs" tab and, anyway, one
-> should direct readers to docs.yoctoproject.org, yes?
 
-I think so.
+https://docs.yoctoproject.org/dev-manual/start.html#accessing-nightly-builds
 
-> 
 > rday
 > 
 > 
