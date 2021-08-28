@@ -1,20 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web10.5215.1630166919661968181
+ by mx.groups.io with SMTP id smtpd.web12.5823.1630169950432958984
  for <docs@lists.yoctoproject.org>;
- Sat, 28 Aug 2021 09:08:40 -0700
+ Sat, 28 Aug 2021 09:59:10 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpe08a7c099a2b1-cm08a7c099a2af.cpe.net.cable.rogers.com ([174.114.56.109]:45260 helo=fedora)
+Received: from cpe08a7c099a2b1-cm08a7c099a2af.cpe.net.cable.rogers.com ([174.114.56.109]:45266 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1mK0sn-0007dp-FB
-	for docs@lists.yoctoproject.org; Sat, 28 Aug 2021 12:08:37 -0400
-Date: Sat, 28 Aug 2021 12:08:34 -0400 (EDT)
+	id 1mK1fg-0001Pk-Fw
+	for docs@lists.yoctoproject.org; Sat, 28 Aug 2021 12:59:09 -0400
+Date: Sat, 28 Aug 2021 12:59:06 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: what's the standard for em dashes in sphinx for YP docs?
-Message-ID: <c81c363-94a9-da8c-4d9f-32ec8415d245@crashcourse.ca>
+Subject: docs "README" file seems a bit out of date
+Message-ID: <1a55fe74-5128-7a1f-5a3d-dd137ecf7bde@crashcourse.ca>
 MIME-Version: 1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
@@ -29,8 +29,19 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-  i want to play with sentence structure, and in some places, the "em"
-dash is clearly appropriate. apparently, a triple "---" renders nicely
-into a long dash. is that the standard?
+  README file at top of "documentation" directory:
+
+https://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/tree/documentation/README?h=master-next
+
+at lines 49-53:
+
+"If you want to find HTML versions of the Yocto Project manuals on the
+web, go to https://www.yoctoproject.org and click on the "Docs" tab.
+From there you have access to archived documentation from previous
+releases, current documentation for the latest release, and "Docs in
+Progress" for the release currently being developed."
+
+  that's not quite what you find under the "Docs" tab and, anyway, one
+should direct readers to docs.yoctoproject.org, yes?
 
 rday
