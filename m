@@ -1,20 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web12.1072.1630220688970758703
+ by mx.groups.io with SMTP id smtpd.web10.1926.1630230156160875981
  for <docs@lists.yoctoproject.org>;
- Sun, 29 Aug 2021 00:04:49 -0700
+ Sun, 29 Aug 2021 02:42:37 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpe08a7c099a2b1-cm08a7c099a2af.cpe.net.cable.rogers.com ([174.114.56.109]:42688 helo=fedora)
+Received: from cpe08a7c099a2b1-cm08a7c099a2af.cpe.net.cable.rogers.com ([174.114.56.109]:42690 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1mKEs2-0006Oq-Vr
-	for docs@lists.yoctoproject.org; Sun, 29 Aug 2021 03:04:47 -0400
-Date: Sun, 29 Aug 2021 03:04:42 -0400 (EDT)
+	id 1mKHKk-0004IC-7N
+	for docs@lists.yoctoproject.org; Sun, 29 Aug 2021 05:42:35 -0400
+Date: Sun, 29 Aug 2021 05:42:31 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [PATCH] README: update manual list and names, online docs URL
-Message-ID: <5ae42459-99a9-c7fc-45a2-3f3cf6345ce@crashcourse.ca>
+Subject: [PATCH] dev-manual: emphasize that new layers live outside of poky
+Message-ID: <e080c70-2cec-7e94-8fe3-ea6e25c3839c@crashcourse.ca>
 MIME-Version: 1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
@@ -28,63 +28,39 @@ X-Source-Args:
 X-Source-Dir: 
 Content-Type: text/plain; charset=US-ASCII
 
-Minor tweaks to top-level README:
-  - add missing line for overview manual
-  - correct manual names to match their *actual* names
-  - point reader at docs.yoctoproject.org for online docs
+Tweak the bblayers.conf example to encourage the reader to appreciate
+that any new layers should not share space with the official Poky
+checkout.
 
 Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
 ---
 
-commit 56ebf7806434d786959d62f18d0daf399b30b78b
-Author: Robert P. J. Day <rpjday@crashcourse.ca>
-Date:   Sun Aug 29 03:01:30 2021 -0400
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 4a5011ea7..c23f8e09c 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -422,8 +422,9 @@ Before the OpenEmbedded build system can use your new layer, you need to
+ enable it. To enable your layer, simply add your layer's path to the
+ :term:`BBLAYERS` variable in your ``conf/bblayers.conf`` file, which is
+ found in the :term:`Build Directory`.
+-The following example shows how to enable a layer named
+-``meta-mylayer``::
++The following example shows how to enable your new
++``meta-mylayer`` layer (note how your new layer exists outside of
++the official ``poky`` repository which you would have checked out earlier)::
 
-    README: update manuals list, pointer to online docs
+    # POKY_BBLAYERS_CONF_VERSION is increased each time build/conf/bblayers.conf
+    # changes incompatibly
+@@ -434,7 +435,7 @@ The following example shows how to enable a layer named
+        /home/user/poky/meta \
+        /home/user/poky/meta-poky \
+        /home/user/poky/meta-yocto-bsp \
+-       /home/user/poky/meta-mylayer \
++       /home/user/mystuff/meta-mylayer \
+        "
 
-diff --git a/documentation/README b/documentation/README
-index fad19683c..1e7b4f0e6 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -34,26 +34,21 @@ Manual Organization
-
- Here the folders corresponding to individual manuals:
-
--* sdk-manual           - The Yocto Project Software Development Kit (SDK) Developer's Guide.
--* bsp-guide            - The Yocto Project Board Support Package (BSP) Developer's Guide
--* dev-manual           - The Yocto Project Development Tasks Manual
--* kernel-dev           - The Yocto Project Linux Kernel Development Tasks Manual
--* ref-manual           - The Yocto Project Reference Manual
--* brief-yoctoprojectqs - The Yocto Project Quick Start
--* profile-manual       - The Yocto Project Profile and Tracing Manual
--* toaster-manual       - The Toaster Manual
--* test-manual          - The Test Environment Manual
-+* overview-manual      - Yocto Project Overview and Concepts Manual
-+* sdk-manual           - Yocto Project Software Development Kit (SDK) Developer's Guide.
-+* bsp-guide            - Yocto Project Board Support Package (BSP) Developer's Guide
-+* dev-manual           - Yocto Project Development Tasks Manual
-+* kernel-dev           - Yocto Project Linux Kernel Development Manual
-+* ref-manual           - Yocto Project Reference Manual
-+* brief-yoctoprojectqs - Yocto Project Quick Start
-+* profile-manual       - Yocto Project Profiling and Tracing Manual
-+* toaster-manual       - Toaster User Manual
-+* test-manual          - Yocto Project Test Environment Manual
-
- Each folder is self-contained regarding content and figures.
-
- If you want to find HTML versions of the Yocto Project manuals on the web,
--go to https://www.yoctoproject.org and click on the "Docs" tab.  From
--there you have access to archived documentation from previous releases, current
--documentation for the latest release, and "Docs in Progress" for the release
--currently being developed.
--
--In general, the Yocto Project site (https://www.yoctoproject.org) is a great
--reference for both information and downloads.
-+the current versions reside at https://docs.yoctoproject.org.
-
- poky.yaml
- =========
+ BitBake parses each ``conf/layer.conf`` file from the top down as
 
 -- 
 
