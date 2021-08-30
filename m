@@ -1,20 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web12.15094.1630319090535157766
+ by mx.groups.io with SMTP id smtpd.web10.16035.1630325136259162198
  for <docs@lists.yoctoproject.org>;
- Mon, 30 Aug 2021 03:24:51 -0700
+ Mon, 30 Aug 2021 05:05:37 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:37226 helo=fedora)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:37230 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1mKeTA-0003Xc-Um
-	for docs@lists.yoctoproject.org; Mon, 30 Aug 2021 06:24:49 -0400
-Date: Mon, 30 Aug 2021 06:24:46 -0400 (EDT)
+	id 1mKg2f-00047y-6r
+	for docs@lists.yoctoproject.org; Mon, 30 Aug 2021 08:05:34 -0400
+Date: Mon, 30 Aug 2021 08:05:30 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: "Both of these options are not seen in the majority of recipes."?
-Message-ID: <fd8e2f61-5a11-9c59-d40-c37c4e84693f@crashcourse.ca>
+Subject: [PATCH] dev-manual: pass False to d.getVar() for devpyshell example
+Message-ID: <fe6cf3af-6c9f-a4c0-9f5b-48beccdb11ae@crashcourse.ca>
 MIME-Version: 1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
@@ -29,18 +29,34 @@ X-Source-Dir:
 Content-Type: text/plain; charset=US-ASCII
 
 
-  in section:
+In the example in section 3.9, the call to d.getVar() needs to have
+the additional arugment of "False" so that the output is not expanded.
 
-https://docs.yoctoproject.org/dev-manual/common-tasks.html#recipe-syntax
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-in Functions section:
+---
 
-"It is also possible to implement new functions that are called
-between existing tasks as long as the new functions are not replacing
-or complementing the default functions. You can implement functions in
-Python instead of shell. Both of these options are not seen in the
-majority of recipes."
+  pretty sure it works this way.
 
-  that last sentence seems ... backwards? how should one read it?
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 4a5011ea7..f3b508443 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -3486,7 +3486,7 @@ functions::
 
-rday
+    pydevshell> d.getVar("STAGING_DIR")
+    '/media/build1/poky/build/tmp/sysroots'
+-   pydevshell> d.getVar("STAGING_DIR")
++   pydevshell> d.getVar("STAGING_DIR", False)
+    '${TMPDIR}/sysroots'
+    pydevshell> d.setVar("FOO", "bar")
+    pydevshell> d.getVar("FOO")
+
+-- 
+
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
+
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
