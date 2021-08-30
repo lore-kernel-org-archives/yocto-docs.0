@@ -1,22 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web08.14811.1630315564837120270
+ by mx.groups.io with SMTP id smtpd.web12.15094.1630319090535157766
  for <docs@lists.yoctoproject.org>;
- Mon, 30 Aug 2021 02:26:05 -0700
+ Mon, 30 Aug 2021 03:24:51 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:37222 helo=fedora)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:37226 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1mKdYJ-0006eC-Bm; Mon, 30 Aug 2021 05:26:03 -0400
-Date: Mon, 30 Aug 2021 05:26:00 -0400 (EDT)
+	id 1mKeTA-0003Xc-Um
+	for docs@lists.yoctoproject.org; Mon, 30 Aug 2021 06:24:49 -0400
+Date: Mon, 30 Aug 2021 06:24:46 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] dev-manual: add line continuations for aesthetics
-In-Reply-To: <20210830091723.ercjocjlom2yond6@fedora>
-Message-ID: <5458d17c-ba98-7e9a-e351-8f91dbbd6912@crashcourse.ca>
-References: <9490f67c-af80-2517-737f-f05591c9a0bb@crashcourse.ca> <20210830091723.ercjocjlom2yond6@fedora>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: "Both of these options are not seen in the majority of recipes."?
+Message-ID: <fd8e2f61-5a11-9c59-d40-c37c4e84693f@crashcourse.ca>
 MIME-Version: 1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
@@ -30,29 +28,19 @@ X-Source-Args:
 X-Source-Dir: 
 Content-Type: text/plain; charset=US-ASCII
 
-On Mon, 30 Aug 2021, Quentin Schulz wrote:
 
-> Hi Robert,
->
-> On Mon, Aug 30, 2021 at 05:00:39AM -0400, Robert P. J. Day wrote:
-> >
-> > Not a fan of lengthy lines that require horizontal scrolling,
-> > so add line continuations.
-> >
-> > Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> >
->
-> It is the content of the recipe afterall, so not sure it's desired?
-> Will let Michael/Nicolas decide.
->
-> In any case, this code is out of sync, e.g. WITHOUT_XATTR is now
-> embedded in a bb.utils.contains check. Since you're sending patch
-> for this already, do you mind sending a patch for this too please?
+  in section:
 
-  in cases like this, it's pretty much a given that any recipe will be
-out of date in a while, but i don't think that's a big deal -- the
-idea is just to present a *concept*, not to guarantee that the recipe
-matches exactly the current version. i am willing to be corrected,
-though.
+https://docs.yoctoproject.org/dev-manual/common-tasks.html#recipe-syntax
+
+in Functions section:
+
+"It is also possible to implement new functions that are called
+between existing tasks as long as the new functions are not replacing
+or complementing the default functions. You can implement functions in
+Python instead of shell. Both of these options are not seen in the
+majority of recipes."
+
+  that last sentence seems ... backwards? how should one read it?
 
 rday
