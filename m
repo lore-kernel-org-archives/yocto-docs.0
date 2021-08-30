@@ -1,17 +1,17 @@
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.72])
- by mx.groups.io with SMTP id smtpd.web09.13986.1630308985849027227
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.45])
+ by mx.groups.io with SMTP id smtpd.web11.13895.1630309311867053120
  for <docs@lists.yoctoproject.org>;
- Mon, 30 Aug 2021 00:36:27 -0700
+ Mon, 30 Aug 2021 00:41:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=O0wPHyFf;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.7.72, mailfrom: quentin.schulz@theobroma-systems.com)
+ dkim=pass header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=al+FJydH;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.22.45, mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=absABwE8TcB0887PL9bfZD2hQiozll9sj7vwdQJl2C6PiNPO4wmzxPjsYutnluJvxrlE6B9bTdThCi9r0OsEx/Mj+EM0Nt3xOV294giL8BGMzQQu3XNZUTNlSnvPhaCfMmJN6UjmNlxGFrhkPV0eTkMyO9cFNfWlp3VDup7nGeN6YvjEM82dKuKElA6E+dZdUj4C4IfZLII5vPAKjDbXjFOiMlbDGCmhAw+eWlc7qFaz+e9kdXWpgGMhNTVtArsHFdZIckumyx37i517bl8dt0Bp57v0ia2jA6rghLR0TJ8WpYGqgi0+lynO/pexJS2lU1gfyffMtILSl3blG0Xblw==
+ b=RuCE5U5B5rf+plJxjLRtIMMnjBlkeKYLQ17XWXWxRXq8BxYO7rxh58mtnHL3Fm736HSrsPmgCHkG0gDhtEj+3aUWnER0gEszimT9VkLp965W0Iorf/LGGWj074vyfdZsq2NWGgD1jCIkfVGVENBEkhWIGe/Mfjq/C/EFTLA9eaMxUFDMPbDPelyjjUVjR7YX6lRM55pxRFxtYzF8loCSU5JDbMhzZSZGE0+4HubXUjyhZ5hsW1ALYHVNjViQfhQfzirxnGOawPw5UUh3msTkdRT5G/4fbNrwMtXitCWGECRrkRT4gUKTGOnb/im9OyoTK40djKdFjeuSh869NtA1aQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/rCgbt30opNAIq9Lg9uCt1luCBWXUGV3p7xSyEEX/Ms=;
- b=MOy9v0K7QhmmjPNHZiOJewSkuAggXYzLHP15baenDfcblugHWefKe71xlabcda6rpRooSo/c3mXbFbCGGR3qL/fZFXMgtVxjFbfONI3H0PyMg0/1U69PyD+3F1QwP308OcDUViJP2leTTlDylQWDjxQQFEeY+TVOqb758g02PNkgD2vmaYv7GPRc55PHAYDgPleQogiOcepyHgD5E36J23o6YcAOQwZYORIMtTEQPzC7z2zwPHpDMVDV4SQ5V+KT2KpBUWnctcqSHd5GP4+9dM0DbOMg10D+DgQzC/wMLhkbI1Gjt/ELWR5+P1ZH+WJG5gS46VQzxyirpJ/G2lRfQA==
+ bh=XLuyCqXqIa6tuQjDDpZqo8wm55D4h755QPDoiJmAOxU=;
+ b=EIXKwxqhtyWwH9ZLMhoezKwwIVKZAohTTe828IvU2zfrimgfMIhEQk3wGVm+f5SYbA5vyr4gTjJRCCaDFAWyNw83pdLMTAI6l9J1ZKIReSBgVABpKSere1qhcxPiCX0Glppl1g1W1PzsoTA6XPeZ3n3cqpT+gqeU983OLpwiPsPdJrk8fIsBQIsgOcHnYPvcbgIfAQdxGGi6CROCMJFUND1BL7fpCNM6fLNw3PxqlOdfD9niG1MO34sUUL7uNRCnaSlJfdoqLaHj+v3hazNMV3bm8h8bnMH1L1TM4I38WP3olK9kW2iLWq1b1pZoqkGYMX4h9SdbZRDTkNeL5+T27Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -19,97 +19,113 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/rCgbt30opNAIq9Lg9uCt1luCBWXUGV3p7xSyEEX/Ms=;
- b=O0wPHyFfgNcsDGK6vnByDQe1vj0GesICupHuvMa9cNOh9YJhBnrRvF8nOk8HZo7WZ1NaxKhtfxPjuYvxZNXbO5QzcRne3irXLy/w1Kj7XmUul+5crho3QfwERNRpUYQ1TUIqftqMRCDqn5TUt/7AZRabFwwWtLviFQSjoyWjpT8=
+ bh=XLuyCqXqIa6tuQjDDpZqo8wm55D4h755QPDoiJmAOxU=;
+ b=al+FJydHwDKxzhqLCCOhhiYDCNzBOHjVBycIwgEgau+vj44Wx3UlvulCDDpofcTj1YrDmIDvYMNp4ZHH8UCRial3FOBcWmVDOICFHsbwqBemZsHoNp+I5Z1gFDtV3RgnEQxycNMCmXzb+ps8MWfonZbBlu5ULwoyFjeocootd+Y=
 Authentication-Results: crashcourse.ca; dkim=none (message not signed)
  header.d=none;crashcourse.ca; dmarc=none action=none
  header.from=theobroma-systems.com;
 Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24) by AM4PR0401MB2273.eurprd04.prod.outlook.com
- (2603:10a6:200:4f::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.19; Mon, 30 Aug
- 2021 07:36:21 +0000
+ (2603:10a6:208:24::24) by AM0PR04MB6692.eurprd04.prod.outlook.com
+ (2603:10a6:208:178::25) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.23; Mon, 30 Aug
+ 2021 07:41:48 +0000
 Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
  ([fe80::706a:b082:742a:7d00]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
  ([fe80::706a:b082:742a:7d00%6]) with mapi id 15.20.4457.024; Mon, 30 Aug 2021
- 07:36:21 +0000
-Date: Mon, 30 Aug 2021 09:36:19 +0200
+ 07:41:48 +0000
+Date: Mon, 30 Aug 2021 09:41:46 +0200
 From: "Quentin Schulz" <quentin.schulz@theobroma-systems.com>
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: update SYSROOT_DIRS_* variable entries
-Message-ID: <20210830073619.afpffceu4pkf7uf2@fedora>
-References: <bf17e3e4-41a2-5558-2375-0faad5eff80@crashcourse.ca>
-In-Reply-To: <bf17e3e4-41a2-5558-2375-0faad5eff80@crashcourse.ca>
-X-ClientProxiedBy: AM4PR0101CA0064.eurprd01.prod.exchangelabs.com
- (2603:10a6:200:41::32) To AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24)
+Subject: Re: [docs] confusing note in dev manual about search order for layers
+Message-ID: <20210830074146.kspdnxugobsuznzn@fedora>
+References: <ae36061-5fc8-6dde-cf3c-f939fcf983c0@crashcourse.ca>
+In-Reply-To: <ae36061-5fc8-6dde-cf3c-f939fcf983c0@crashcourse.ca>
+X-ClientProxiedBy: AM4PR05CA0032.eurprd05.prod.outlook.com (2603:10a6:205::45)
+ To AM0PR0402MB3348.eurprd04.prod.outlook.com (2603:10a6:208:24::24)
 Return-Path: quentin.schulz@theobroma-systems.com
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from fedora (92.42.140.82) by AM4PR0101CA0064.eurprd01.prod.exchangelabs.com (2603:10a6:200:41::32) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.20 via Frontend Transport; Mon, 30 Aug 2021 07:36:20 +0000
+Received: from fedora (92.42.140.82) by AM4PR05CA0032.eurprd05.prod.outlook.com (2603:10a6:205::45) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4457.18 via Frontend Transport; Mon, 30 Aug 2021 07:41:48 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 225d3bfd-8d5f-405e-d653-08d96b88dc98
-X-MS-TrafficTypeDiagnostic: AM4PR0401MB2273:
+X-MS-Office365-Filtering-Correlation-Id: 0a18dff5-39e9-46f1-399a-08d96b899fac
+X-MS-TrafficTypeDiagnostic: AM0PR04MB6692:
 X-Microsoft-Antispam-PRVS: 
-	<AM4PR0401MB22732F3A4A5B361B9DE29855C2CB9@AM4PR0401MB2273.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:820;
+	<AM0PR04MB66926A179823B9D34502957FC2CB9@AM0PR04MB6692.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4502;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	kn7hlz+2YF+ibt8yMZjfUlnlsOeWIREPb2xoaqra3Nt0/luQrvhhZ8mXzO0CZZ+x6u+snJ+q8sfPjoNOqApMwe0aLiF2RQ04V2vyMz9pDVDdfK6gG9+kMU+3ZcEN8+dXg/YugOEFPDp30UWtsbZrjaPIPRUm/LYjWS/iIYlngd8FCKHPn0a4F+v/wVIOHVZhwmXBz+f+uRf6VAAkUzDO5KP8BL1pxJalfArwuhGQOSYRd5OL/9gyj3OpfD2kgY1V0P6MXwqYFSl1SWmeB1CrN5dBpN9VCYh0rFcDwCYQog9LCVb7k33R/i9M9d8vbWgheEiqux2Bkf73BZR/Qc5a4uf16wyEVtoBBKEAsfa2tfHsxePjbq4mUxTaroo3xwmCKC65A8EPHdqjfDKhweZqPXY6jDlHbiDcAAzahM7hX0HEe9T0RYA0dstE4XdzYWlX4Szim7hGoTsZ0fdM7awxb910L4lhcrBJ3eg1PdJyblcvyMyOzGuPiy6i3n+RlBBu0nXLjb5EL2EXtmx6dNjSb0ynH5lHQGFkYVR3HK7etB8dbfx+omaaW2HlDjU/DdHproAeTJl1FqC807qTzvP6/IEjkKrQPifHOlOves3M/F1iC/3D9XUK3zPeh6yB5K0eHJaRot/jPaireZytdLAJGMnPM++ruUCm8Ze1oKqXNaXfSastkQBSa4w+/pI5v6YBg43RnEVa+K99OsrfUrgf0w==
+	MzTtbntKhwJV2y1IfiY70TmMTXRZ0Q3bcY7qAje1yvshgJcDGJ9Y6d04Ruv2gu60NWjkXvro30xvLFdsX/P3kthoWPWhNppz90QqZSdZh3AtYB+IepfwlIPDo1MGrSx2e8EL3gNCo3wf02m6b2zBUa3F1fWw09/Ok+25QQ4C+woMFDdQ6+x3/4pjgPO1E5XfrxTPl6IY2sBY2ChtoczoeYpdVK42blEwNKBTkqUbtYm8bJ+m2Mp6BJmq8J4InVi1wTo1cV004T2nXIC+0U4i9MbcQV4R/tDo6IXFo49V8pgUZ8Cd8V1Ke0/As+YeTMRicrcvTz64p8u2GtIY1RYSD5R7BYdL8JS2vIv8AHRU6bNN2DKNKjR39g/gjvsL7sIhxPh9FZwWy5VFRoSbKv9DOAFZxNXOnEhTThVn5h9P8QiQv2u3/hNl/l9iKD+swn0W0n6FD8RRvyBL0NInZwcqzu/mTYIIZO1c1x3sAGoli/VB4rC/+0rtfPo3cunepDaCMwnV7Ex60VBaprNROnYSWqNHapg62I6cpH6JTbhTL6Iom+b/ZHo+I/aj7FKBOd3yvNftVJbO7Fz+79STtDwpZVYz6A/NBqdW7cFPEi66WrrvqxWc96O8ijKL78EiVHsMwcypG6aws8oh6Yq4kgNU2nhkHyfnubAtbDBulP8byjPs+GEd55Pj7nM4FC1a7I+7PaSimqVMem0G4a3kImS0i/eDO52a8qJq+g1GFlr24z94QIEThqPuPj2XYj28nKZ42fuG9cDuAyhlJ3e2D8AIpxdhHM0KWfEFVGwDvqJDQpg=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(346002)(39840400004)(136003)(376002)(396003)(5660300002)(186003)(9686003)(86362001)(956004)(558084003)(1076003)(6916009)(55016002)(66556008)(66476007)(38350700002)(6496006)(33716001)(2906002)(66946007)(8676002)(9576002)(4326008)(38100700002)(52116002)(316002)(26005)(44832011)(478600001)(8936002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(396003)(39840400004)(346002)(136003)(376002)(8936002)(38100700002)(4326008)(2906002)(3716004)(316002)(966005)(5660300002)(8676002)(66556008)(38350700002)(6496006)(478600001)(9576002)(1076003)(55016002)(33716001)(83380400001)(44832011)(186003)(26005)(86362001)(66946007)(956004)(6916009)(66476007)(52116002)(9686003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?3D5sARH0SVsE5nSzfVuZqqS9HIp4ljmabEKYxvpWx4o+mkSAv10IGTulQ4Qh?=
- =?us-ascii?Q?DaHC5HZhHRwKi5drxBpKEJQ/dY/D6ymM0JvZna7F4PZfV7IItjcAdXt9v9c3?=
- =?us-ascii?Q?5er99HdBAK9NdhBX+ZSnrYLJgRsZQz3qGNgtVVsZzpBPA2WBceDphoZN/6Mn?=
- =?us-ascii?Q?+dWszcI0e+gS6t/9eV6q7qpQ54RJJaNmCUeyyHcfWI+g/bMnTBugigidNZkg?=
- =?us-ascii?Q?h2nEBmngyF7dR/EgQ2hRJo7RAC8zoacEPcGkHb6lHtwXB801NoD15sPJcaaW?=
- =?us-ascii?Q?KyQ6bTporPntIQlO/mTKwLo7UfHcO8kUXBL/nvKWpUDA8stjZ/zOmlAdaLr4?=
- =?us-ascii?Q?Da0wAmffzWJJnZriqy5EG3PVkahLrIoPk7WRfC8iLQf3U0bJMwNSHq6xtjPn?=
- =?us-ascii?Q?aP30Yuv6B5IFqBhBtxej+8nf1TI6Ap1Aatzus1jAOZ6aRZyL7g+AKabqTsvR?=
- =?us-ascii?Q?pd24Pok18e4R/sP3cYKdVFCuuhOG+qeH7mOVHdub0A8GeXh7PPllgAf2wWki?=
- =?us-ascii?Q?yI1/kOMVHOmqmsyz2IfL41GTN7q4bmlEgciIKYPGMkUGdW8XO88TZAuklQyV?=
- =?us-ascii?Q?oOABLJAbslye6CHL2SOoN7macPETC1DlaZabw45tvIhL6fPT1SC28F36hn6V?=
- =?us-ascii?Q?hIWDoPrRAfXCCXoUNllShLR4Dg+kIJgexqmBbJGKMnJzie32QZoBFcAKSQBV?=
- =?us-ascii?Q?BivALrs1D98T7itASxV0zuc5KVFLkB8xm1JU6lQcoDMPo13Ti6sRLTDeOW15?=
- =?us-ascii?Q?HLIHLwDsy6YCljNAi+YZH7onVTkL9sdLjISDNiSlaGQ50uTW3p+JY9XhiVT9?=
- =?us-ascii?Q?iNd9jOCMQUavx43+Qm0XrahcEGThSALSamUee/jwk4YtBe3V6SOAV9BtBjms?=
- =?us-ascii?Q?1LrarE3s7H+3jVrJdocHgMUtQU7jrgxD8rvMgWVmasZIdQs8hxzTV6iHhhik?=
- =?us-ascii?Q?Rcy2fpxGiGCnd8MIICLp0dUSZLl1HN0D7T2+RVvb4K+8Th9kRuA2VRhFkYpl?=
- =?us-ascii?Q?vbMn+T4UfmoVWe5hctoV3CpP+6z9cAmS/+O2gkFUp+fE5Lp380v3y+YzpOVC?=
- =?us-ascii?Q?4ZbEKzkkkBd0JfcdnBM0+/bU7zFPiXqTJU1BqVxS54b7qfS/ylZ/391QJBRb?=
- =?us-ascii?Q?j9OfDUtPCsxVr5fVPDakwEnxhWjaB9y4RpEy57/hgK9dU2eAPCbDD6rR4CCJ?=
- =?us-ascii?Q?h1UR0l+m+519ji5obPlYxonfmg5e82+Zf92Np/8gpOFAEF34oxankgQGHNxK?=
- =?us-ascii?Q?VRkSJ0P8gjO1MCO1hXaE+kqMj/kgVJSlX+3G6XmRHevIPIWuJcqhG1hIBCAb?=
- =?us-ascii?Q?tEHlsRaKts+Xyxd/WeZfhpc1?=
+	=?us-ascii?Q?9dYsgK0oAjvsLyEs/WB2o1c672dWStfZmNPvIymeW0VF5zLjiyYK8gX/OvRq?=
+ =?us-ascii?Q?sZh4frk+CnnoTl9SlM91Nc5rSCaiWXn9Fok/TigrfY6YrAx9ZvF396RzxPa6?=
+ =?us-ascii?Q?5zyLbRxc8CjW6WbRdNuiWz5ZGcMI5KvVmRaMluK5fGEQMBVPXTkkIHdLMi+3?=
+ =?us-ascii?Q?Or2jRSPpl9BR4aT/r93+nNSaZJdy/D2Gw72bamKbYCovv+74V33RnxVZx4mw?=
+ =?us-ascii?Q?Uex4+h1l4hJp2DBgAuq5rb24uka47nT7DGCzaLLGO0cX18Ux+Gy538oyJlR0?=
+ =?us-ascii?Q?L4mzYcR7BRgJy7tUr8lA6DmrGGl8PcfCdPqBjWCg3ANwxDkFotjAsw5s1Ljv?=
+ =?us-ascii?Q?69KVOO4icaar163RBpyeObZxHJrbD+u/MlvDrr8DfX5lyTwtN3WdFPOYyYhX?=
+ =?us-ascii?Q?0BQtmkM166k5zywijdoogvrFxUCOUSHRZ4dZ/KQLOor1Tsv5fksW8r0vxBco?=
+ =?us-ascii?Q?m91PwdnPRqRu0JB9pMEn8XXIONjcbCRVsGm64w+24s3L++7yo+tdtq25zb1t?=
+ =?us-ascii?Q?O1XEKN804ipLA0ZPsxJCmOFVdWraMFVo27vGIS7XHGY3o2GQ4iRo12U5tmrJ?=
+ =?us-ascii?Q?U8uidiWYa+fL2CLVoUgW7lc4a+/ulZ2tAuM4fL6NW7X6mljqX4vOncwCFpRa?=
+ =?us-ascii?Q?5aEPihz/lDVj58FgSX6bH/Xh4/7MwH54QI3ArG77qPKGBE5A93U52Qudzqte?=
+ =?us-ascii?Q?6QOia2tfdquSDdlxV32FvgSt1KjyKjqwOU7GnwbxEBxtOz/X/FWfyHJY4vQQ?=
+ =?us-ascii?Q?T0sUtpz+XeYeTcrNk/+tgj54aGu10J6/+PLbEDe35EzHFcujf5iXdhGCq5DF?=
+ =?us-ascii?Q?R5AO+tkIW34GY5t4pGt//aJ7Uq7Y93mpjUAQYVidgelg1hqjqM5IkXSQNufD?=
+ =?us-ascii?Q?rti2keWk6ppS5K+hsx9Bd9O18Vpq9bttdICWyU5UmBO8Bo0mpe/WRB2Y3qK7?=
+ =?us-ascii?Q?vPUam7uhOjX8XCBQd2TfliHdoiWOPeYVbAqyVE/Btm7g1ca9KGc368CyCAPX?=
+ =?us-ascii?Q?gmwfI57uxJvSRqPfiFIXWsknNqdzaIvwAnHI1S9MboD8EEo86WYmsUSddO5a?=
+ =?us-ascii?Q?hHFUrXqsW4Dz9hP8HUBKc003A4dkxK8XWHX/yd/5pTPb3a7JsLbzK+xWCju3?=
+ =?us-ascii?Q?U+PuWXkHVXYmJWcedMSIgyjP4tmWi6VsAmfSFyzqCaVNCyxXxhl6P98KJlGW?=
+ =?us-ascii?Q?oykPekbPNCr75uzIzA0ldGhaF2VsXZ8N1pwvdfLzO4nc4r/jc53AQfb81wHm?=
+ =?us-ascii?Q?260L33j7Fzcjj1EPYDmS12J0b2N8DRSC5tf9KHFyg1OFvVtre/80l59hnTm/?=
+ =?us-ascii?Q?JfDobozJcv6TG72YWSqKDXOP?=
 X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 225d3bfd-8d5f-405e-d653-08d96b88dc98
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a18dff5-39e9-46f1-399a-08d96b899fac
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3348.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2021 07:36:21.2542
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2021 07:41:48.4630
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: iPXHIdFUdVB2tBltEtQOqjq6PvmITV2PspazUcV8RToRmCdDK0CfzDSNT+l62pM5Nbyd+YA35qpZc2XQeTwy9OKzd8fni3xZm8JhqpFTR8V+VmI4YHpIzrssMkhuxskk
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM4PR0401MB2273
+X-MS-Exchange-CrossTenant-UserPrincipalName: lrwpkP/HGhXIGUJLUchf0JWf9An1zxUHuvb5hLBZvVSmzQMpY0O5wg4cyGsxh/HxEDtXolL9d6sXtpkOeQjhJ/hIDoYibchcNZuDsmMUReMlVyASAUhTE1xpN6cRVFy0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6692
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Robert,
 
-On Sun, Aug 29, 2021 at 01:08:25PM -0400, Robert P. J. Day wrote:
-> Both SYSROOT_DIRS and SYSROOT_DIRS_BLACKLIST have more current
-> values.
+On Sun, Aug 29, 2021 at 08:52:42AM -0400, Robert P. J. Day wrote:
 > 
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>   in section 3.1.9 of dev manual:
+> 
+> https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_dev-2Dmanual_common-2Dtasks.html-23adding-2Da-2Dlayer-2Dusing-2Dthe-2Dbitbake-2Dlayers-2Dscript&d=DwIBAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=mVZiXFV_cVQVdgl1QOxle8X44ftmg_wTdRhHpubvgnI&s=5pEBxWBXxmuUiL2gZv_9GyOl4bi2YEQSOwhj70Kxt9A&e= 
+> 
+> one reads the note:
+> 
+> "During a build, the OpenEmbedded build system looks in the layers
+> from the top of the list down to the bottom in that order."
+> 
+> ok, except it's not at all clear what the consequence of that is.
+> looks for what? what is the significance of that search order to the
+> developer?
 > 
 
-Reviewed-by: Quentin Schulz <foss@0leil.net>
+My guess:
+All layer.conf are parsed in the order specified in bblayers.conf. This
+includes specifically BBPATH, to which layers usually append to with .=.
+This variable defines the layer precedence for classes and conf files (e.g.
+distro, machine, others?) selection when there's name conflict.
+Apparently it is used for require/include with "relative-to-layer-root"
+path (as opposed to "relative-to-recipe-file" path) too from what I read
+on IRC.
 
-Thanks!
+Hope this helps and is not too far from the truth :)
+Cheers,
 Quentin
