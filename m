@@ -1,20 +1,22 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web08.3081.1630401449514590357
+ by mx.groups.io with SMTP id smtpd.web10.3177.1630401675609279333
  for <docs@lists.yoctoproject.org>;
- Tue, 31 Aug 2021 02:17:30 -0700
+ Tue, 31 Aug 2021 02:21:15 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:56252 helo=fedora)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:56254 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1mKztY-0005Nc-Vr
-	for docs@lists.yoctoproject.org; Tue, 31 Aug 2021 05:17:28 -0400
-Date: Tue, 31 Aug 2021 05:17:24 -0400 (EDT)
+	id 1mKzxC-0006IG-SZ; Tue, 31 Aug 2021 05:21:14 -0400
+Date: Tue, 31 Aug 2021 05:21:12 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: is dev manual section on EXTERNAL_TOOLCHAIN out of date?
-Message-ID: <b54339cc-f831-44e5-32d9-33a2b6123d79@crashcourse.ca>
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] how does one search the docs for, say "site.conf"?
+In-Reply-To: <20210831091056.hvcoe47cv3xxhvgd@fedora>
+Message-ID: <74269318-345d-df29-38f-de46c8ab3ef9@crashcourse.ca>
+References: <b793b5cb-48cf-5dbe-dc89-f5ca7d714169@crashcourse.ca> <20210831091056.hvcoe47cv3xxhvgd@fedora>
 MIME-Version: 1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
@@ -28,31 +30,25 @@ X-Source-Args:
 X-Source-Dir: 
 Content-Type: text/plain; charset=US-ASCII
 
+On Tue, 31 Aug 2021, Quentin Schulz wrote:
 
-here:
+> Hi Robert,
+>
+> On Tue, Aug 31, 2021 at 04:36:57AM -0400, Robert P. J. Day wrote:
+> >
+> >   on a whim, i typed "site.conf" into the search box here:
+> >
+> > https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_index.html&d=DwIBAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=1vxuZK0eEqkxMrEamqtZYAZECL495cs1IbPZJSorGVA&s=DnYrRN_mwQLyI8U40I2xvuvbFdozv2d9J6M-3S7FKtM&e=
+> >
+> > and i got a ton of hits matching either "site" OR "conf", and nothing
+> > i did could initiate a search for the literal string "site.conf". am i
+> > doing something wrong, or is this a limitation of the search process?
+> >
+>
+> The search process is extremely bad currently. I actually don't use it
+> at all. We should report it on bugzilla if not already done soo we don't forget
+> about finding better implementations for sphinx searches.
 
-https://docs.yoctoproject.org/dev-manual/common-tasks.html#optionally-using-an-external-toolchain
-
-there is a reference to the EXTERNAL_TOOLCHAIN variable, but
-currently, there's not a lot of usage of that in OE:
-
-
-meta/conf/bitbake.conf:    CCACHE_DIR EXTERNAL_TOOLCHAIN CCACHE
-CCACHE_NOHASHDIR LICENSE_PATH SDKPKGSUFFIX \
-
-meta/classes/cmake.bbclass:set( CMAKE_FIND_ROOT_PATH
-${STAGING_DIR_HOST} ${STAGING_DIR_NATIVE} ${CROSS_DIR}
-${OECMAKE_PERLNATIVE_DIR} ${OECMAKE_EXTRA_ROOT_PATH}
-${EXTERNAL_TOOLCHAIN} ${HOSTTOOLS_DIR})
-
-meta/classes/icecc.bbclass:    external_toolchain_bindir =
-d.expand('${EXTERNAL_TOOLCHAIN}${bindir_cross}')
-
-
-more to the point, while there *might* be some value in a developer
-using an external (vendor-supplied) toolchain, i would think we should
-promote building one's own with "-c populate_sdk" if possible.
-
-  in any event, that section seems out of date, but i could be wrong.
+https://bugzilla.yoctoproject.org/show_bug.cgi?id=14534
 
 rday
