@@ -1,67 +1,46 @@
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web09.8767.1630429764092065224
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web10.9324.1630430649750616353
  for <docs@lists.yoctoproject.org>;
- Tue, 31 Aug 2021 10:09:24 -0700
+ Tue, 31 Aug 2021 10:24:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id 153FD1BF20A;
-	Tue, 31 Aug 2021 17:09:15 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org, "Robert P . J . Day" <rpjday@crashcourse.ca>
-Subject: Re: [docs] [PATCH] dev-manual: correct note about virtual providers
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>
-References: <20210830153720.68398-1-michael.opdenacker@bootlin.com>
- <795cdbf31208231b7ab001464b7247524aa6b459.camel@linuxfoundation.org>
- <20210831094951.syxtrwtk65jziwbk@fedora>
- <c5458825b741ce1fad5737d46a0a5210cabc4548.camel@linuxfoundation.org>
- <d0a37a8d-58d4-1675-90d5-42df39b4d956@bootlin.com>
- <d4b3543f48d2bb3704e8597aee0d1f82d09e9483.camel@linuxfoundation.org>
+	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 00307240004;
+	Tue, 31 Aug 2021 17:24:07 +0000 (UTC)
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] dev-manual: explicit that devpyshell is a task
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+References: <20210830141750.66210-1-michael.opdenacker@bootlin.com>
+ <20210831081245.o5od4ngeoepl2sww@fedora>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <c0a5dea9-d5eb-1e0f-7c95-a27a20390db3@bootlin.com>
-Date: Tue, 31 Aug 2021 19:09:15 +0200
+Message-ID: <62c642bd-1baa-520e-6bb9-9676a3dd56dd@bootlin.com>
+Date: Tue, 31 Aug 2021 19:24:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
-In-Reply-To: <d4b3543f48d2bb3704e8597aee0d1f82d09e9483.camel@linuxfoundation.org>
+In-Reply-To: <20210831081245.o5od4ngeoepl2sww@fedora>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 
+Hi Quentin,
 
-On 8/31/21 6:58 PM, Richard Purdie wrote:
+On 8/31/21 10:12 AM, Quentin Schulz wrote:
+> Hi Michael,
 >
->> Thank you for the clarification. I got confused by the below definitions
->> in recipes:
+> On Mon, Aug 30, 2021 at 04:17:50PM +0200, Michael Opdenacker wrote:
+>> Without this, readers could think that "devpyshell" is a script,
+>> at least until they read the remainder of the section.
 >>
->> poky$ git grep virtual | grep RDEPENDS
->> meta/recipes-bsp/grub/grub-efi_2.06.bb:RDEPENDS:${PN} = "grub-common
->> virtual/grub-bootconf"
->> meta/recipes-core/systemd/systemd-boot_249.3.bb:RDEPENDS:${PN} +=
->> "virtual/systemd-bootconf"
->>
->> poky$ git grep virtual | grep RPROVIDES
->> meta/recipes-bsp/grub/grub-bootconf_1.00.bb:RPROVIDES:${PN} +=
->> "virtual/grub-bootconf"
->> meta/recipes-core/glibc/glibc-package.inc:RPROVIDES:${PN}-dev =
->> "eglibc-dev libc6-dev virtual-libc-dev"
->> meta/recipes-core/musl/musl_git.bb:RPROVIDES:${PN}-dev += "libc-dev
->> virtual-libc-dev"
->> meta/recipes-core/systemd/systemd-bootconf_1.00.bb:RPROVIDES:${PN} +=
->> "virtual/systemd-bootconf"
->>
->> In these cases, if I understand correctly, "virtual/xxx" are just
->> regular strings with no special meaning that the package managers will
->> use, right? Should such packages avoid the use of "virtual/" RPROVIDES?
-> The virtual/xxx should not be there and yes, are just strings.
+>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> Reviewed-by: Quentin Schulz <foss@0leil.net>
 
 
-Thanks for confirming this. What about replacing then "virtual/" by
-"virtual-" as already done in "virtual-libc-dev" above?
+Thanks for the review!
+Merged into master-next.
 
 Cheers
-
 Michael.
 
 -- 
