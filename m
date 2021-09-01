@@ -1,69 +1,90 @@
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web10.9427.1630431129713821480
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+ by mx.groups.io with SMTP id smtpd.web09.4978.1630483500353165001
  for <docs@lists.yoctoproject.org>;
- Tue, 31 Aug 2021 10:32:10 -0700
+ Wed, 01 Sep 2021 01:05:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 9590A240006;
-	Tue, 31 Aug 2021 17:32:07 +0000 (UTC)
-Subject: Re: [docs] virtual providers don't apply to runtime dependencies?
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- "Robert P. J. Day" <rpjday@crashcourse.ca>,
- YP docs mailing list <docs@lists.yoctoproject.org>
-References: <09ae7be-46c4-ab72-542-a450f6132b5b@crashcourse.ca>
- <0af509d5adc926ade1439a011d03e26687773e74.camel@linuxfoundation.org>
-From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <d39a9c39-f618-a02d-f188-87172318f3bc@bootlin.com>
-Date: Tue, 31 Aug 2021 19:32:07 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+ dkim=missing; spf=pass (domain: intel.com, ip: 192.55.52.120, mailfrom: anuj.mittal@intel.com)
+X-IronPort-AV: E=McAfee;i="6200,9189,10093"; a="216825942"
+X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
+   d="scan'208";a="216825942"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 01:04:59 -0700
+X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
+   d="scan'208";a="428510454"
+Received: from unknown (HELO anmitta2-mobl1.gar.corp.intel.com) ([10.215.235.132])
+  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 01:04:57 -0700
+From: "Anuj Mittal" <anuj.mittal@intel.com>
+To: docs@lists.yoctoproject.org
+Subject: [docs][hardknott][PATCH] documentation: prepare for 3.3.3 release
+Date: Wed,  1 Sep 2021 16:04:53 +0800
+Message-Id: <20210901080453.46365-1-anuj.mittal@intel.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <0af509d5adc926ade1439a011d03e26687773e74.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Also add a link for documentation to just release 3.1.10 release.
 
-On 8/30/21 2:20 PM, Richard Purdie wrote:
-> On Mon, 2021-08-30 at 04:44 -0400, Robert P. J. Day wrote:
->>   in this section:
->>
->> https://docs.yoctoproject.org/dev-manual/common-tasks.html#using-virtual-providers
->>
->> one reads the note:
->>
->> "Virtual providers only apply to build time dependencies specified
->> with PROVIDES and DEPENDS. They do not apply to runtime dependencies
->> specified with RPROVIDES and RDEPENDS."
->>
->>   except in current oe-core, there seem to be a couple examples of
->> that:
->>
->> meta/recipes-core/systemd/systemd-bootconf_1.00.bb:RPROVIDES:${PN} +=
->> "virtual/systemd-bootconf"
->>
->> meta/recipes-bsp/grub/grub-bootconf_1.00.bb:RPROVIDES:${PN} +=
->> "virtual/grub-bootconf"
->>
->>   am i misreadimg something?
-> No, the above lines are incorrect and should be fixed. A bug or something to
-> track that would be good.
+Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
+---
+ documentation/conf.py      | 2 +-
+ documentation/poky.yaml    | 8 ++++----
+ documentation/releases.rst | 2 ++
+ 3 files changed, 7 insertions(+), 5 deletions(-)
 
-
-Oops, I now understand that I misunderstood Richard's point. The lines
-in the recipes are wrong, not the documentation text.
-
-So bug https://bugzilla.yoctoproject.org/show_bug.cgi?id=14530 is not a
-documentation bug, but an OE core one. I'll fix this.
-
-Thanks for your patience with us mere mortals, Richard ;-)
-Michael.
-
+diff --git a/documentation/conf.py b/documentation/conf.py
+index ab8d3b94d..d1c08a9c9 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -16,7 +16,7 @@ import os
+ import sys
+ import datetime
+ 
+-current_version = "3.3.2"
++current_version = "3.3.3"
+ 
+ # String used in sidebar
+ version = 'Version: ' + current_version
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index bf211e310..02c9bf3dc 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -1,12 +1,12 @@
+-DISTRO : "3.3.2"
++DISTRO : "3.3.3"
+ DISTRO_NAME_NO_CAP : "hardknott"
+ DISTRO_NAME : "Hardknott"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "gatesgarth"
+ DISTRO_NAME_NO_CAP_LTS : "gatesgarth"
+-YOCTO_DOC_VERSION : "3.3.2"
++YOCTO_DOC_VERSION : "3.3.3"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.2.4"
+-DISTRO_REL_TAG : "yocto-3.3.2"
+-POKYVERSION : "25.0.2"
++DISTRO_REL_TAG : "yocto-3.3.3"
++POKYVERSION : "25.0.3"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+diff --git a/documentation/releases.rst b/documentation/releases.rst
+index 08f949130..2b17cd635 100644
+--- a/documentation/releases.rst
++++ b/documentation/releases.rst
+@@ -11,6 +11,7 @@
+ - :yocto_docs:`3.3 Documentation </3.3>`
+ - :yocto_docs:`3.3.1 Documentation </3.3.1>`
+ - :yocto_docs:`3.3.2 Documentation </3.3.2>`
++- :yocto_docs:`3.3.3 Documentation </3.3.3>`
+ 
+ 
+ *******************************
+@@ -37,6 +38,7 @@
+ - :yocto_docs:`3.1.7 Documentation </3.1.7>`
+ - :yocto_docs:`3.1.8 Documentation </3.1.8>`
+ - :yocto_docs:`3.1.9 Documentation </3.1.9>`
++- :yocto_docs:`3.1.10 Documentation </3.1.10>`
+ 
+ ==========================
+  Previous Release Manuals
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.31.1
 
