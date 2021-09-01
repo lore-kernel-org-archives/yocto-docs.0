@@ -1,90 +1,74 @@
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
- by mx.groups.io with SMTP id smtpd.web09.4978.1630483500353165001
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web08.5015.1630483954530989009
  for <docs@lists.yoctoproject.org>;
- Wed, 01 Sep 2021 01:05:00 -0700
+ Wed, 01 Sep 2021 01:12:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: intel.com, ip: 192.55.52.120, mailfrom: anuj.mittal@intel.com)
-X-IronPort-AV: E=McAfee;i="6200,9189,10093"; a="216825942"
-X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
-   d="scan'208";a="216825942"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 01:04:59 -0700
-X-IronPort-AV: E=Sophos;i="5.84,368,1620716400"; 
-   d="scan'208";a="428510454"
-Received: from unknown (HELO anmitta2-mobl1.gar.corp.intel.com) ([10.215.235.132])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2021 01:04:57 -0700
-From: "Anuj Mittal" <anuj.mittal@intel.com>
-To: docs@lists.yoctoproject.org
-Subject: [docs][hardknott][PATCH] documentation: prepare for 3.3.3 release
-Date: Wed,  1 Sep 2021 16:04:53 +0800
-Message-Id: <20210901080453.46365-1-anuj.mittal@intel.com>
-X-Mailer: git-send-email 2.31.1
+ dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:47332 helo=fedora)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1mLLME-0001jE-DQ; Wed, 01 Sep 2021 04:12:32 -0400
+Date: Wed, 1 Sep 2021 04:12:25 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+cc: Richard Purdie <richard.purdie@linuxfoundation.org>, 
+    YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] virtual providers don't apply to runtime dependencies?
+In-Reply-To: <d39a9c39-f618-a02d-f188-87172318f3bc@bootlin.com>
+Message-ID: <b759d81-504e-3ca9-e07c-55d0d826ffae@crashcourse.ca>
+References: <09ae7be-46c4-ab72-542-a450f6132b5b@crashcourse.ca> <0af509d5adc926ade1439a011d03e26687773e74.camel@linuxfoundation.org> <d39a9c39-f618-a02d-f188-87172318f3bc@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+Content-Type: text/plain; charset=US-ASCII
 
-Also add a link for documentation to just release 3.1.10 release.
+On Tue, 31 Aug 2021, Michael Opdenacker wrote:
 
-Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
----
- documentation/conf.py      | 2 +-
- documentation/poky.yaml    | 8 ++++----
- documentation/releases.rst | 2 ++
- 3 files changed, 7 insertions(+), 5 deletions(-)
+> Hi,
+>
+> On 8/30/21 2:20 PM, Richard Purdie wrote:
+> > On Mon, 2021-08-30 at 04:44 -0400, Robert P. J. Day wrote:
+> >>   in this section:
+> >>
+> >> https://docs.yoctoproject.org/dev-manual/common-tasks.html#using-virtual-providers
+> >>
+> >> one reads the note:
+> >>
+> >> "Virtual providers only apply to build time dependencies specified
+> >> with PROVIDES and DEPENDS. They do not apply to runtime dependencies
+> >> specified with RPROVIDES and RDEPENDS."
+> >>
+> >>   except in current oe-core, there seem to be a couple examples of
+> >> that:
+> >>
+> >> meta/recipes-core/systemd/systemd-bootconf_1.00.bb:RPROVIDES:${PN} +=
+> >> "virtual/systemd-bootconf"
+> >>
+> >> meta/recipes-bsp/grub/grub-bootconf_1.00.bb:RPROVIDES:${PN} +=
+> >> "virtual/grub-bootconf"
+> >>
+> >>   am i misreadimg something?
+> > No, the above lines are incorrect and should be fixed. A bug or something to
+> > track that would be good.
+>
+>
+> Oops, I now understand that I misunderstood Richard's point. The lines
+> in the recipes are wrong, not the documentation text.
+>
+> So bug https://bugzilla.yoctoproject.org/show_bug.cgi?id=14530 is not a
+> documentation bug, but an OE core one. I'll fix this.
+>
+> Thanks for your patience with us mere mortals, Richard ;-)
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index ab8d3b94d..d1c08a9c9 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -16,7 +16,7 @@ import os
- import sys
- import datetime
- 
--current_version = "3.3.2"
-+current_version = "3.3.3"
- 
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index bf211e310..02c9bf3dc 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,12 +1,12 @@
--DISTRO : "3.3.2"
-+DISTRO : "3.3.3"
- DISTRO_NAME_NO_CAP : "hardknott"
- DISTRO_NAME : "Hardknott"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "gatesgarth"
- DISTRO_NAME_NO_CAP_LTS : "gatesgarth"
--YOCTO_DOC_VERSION : "3.3.2"
-+YOCTO_DOC_VERSION : "3.3.3"
- YOCTO_DOC_VERSION_MINUS_ONE : "3.2.4"
--DISTRO_REL_TAG : "yocto-3.3.2"
--POKYVERSION : "25.0.2"
-+DISTRO_REL_TAG : "yocto-3.3.3"
-+POKYVERSION : "25.0.3"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-diff --git a/documentation/releases.rst b/documentation/releases.rst
-index 08f949130..2b17cd635 100644
---- a/documentation/releases.rst
-+++ b/documentation/releases.rst
-@@ -11,6 +11,7 @@
- - :yocto_docs:`3.3 Documentation </3.3>`
- - :yocto_docs:`3.3.1 Documentation </3.3.1>`
- - :yocto_docs:`3.3.2 Documentation </3.3.2>`
-+- :yocto_docs:`3.3.3 Documentation </3.3.3>`
- 
- 
- *******************************
-@@ -37,6 +38,7 @@
- - :yocto_docs:`3.1.7 Documentation </3.1.7>`
- - :yocto_docs:`3.1.8 Documentation </3.1.8>`
- - :yocto_docs:`3.1.9 Documentation </3.1.9>`
-+- :yocto_docs:`3.1.10 Documentation </3.1.10>`
- 
- ==========================
-  Previous Release Manuals
--- 
-2.31.1
+  *sigh* ... i feel responsible for opening yet another can of worms.
 
+rday
