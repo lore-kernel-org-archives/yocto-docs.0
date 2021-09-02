@@ -1,20 +1,20 @@
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web09.2130.1630530224433762556
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web08.5106.1630578413439592294
  for <docs@lists.yoctoproject.org>;
- Wed, 01 Sep 2021 14:03:45 -0700
+ Thu, 02 Sep 2021 03:26:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 9861224000B;
-	Wed,  1 Sep 2021 21:03:41 +0000 (UTC)
+	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 19A4360003;
+	Thu,  2 Sep 2021 10:26:44 +0000 (UTC)
 Subject: Re: [docs] [PATCH] dev-manual: small number of minor aesthetic tweaks
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>,
  YP docs mailing list <docs@lists.yoctoproject.org>
 References: <3d5c2274-c862-de20-34ca-198d33559d2@crashcourse.ca>
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <84bae5b0-3a97-2623-9548-1b26af7819fa@bootlin.com>
-Date: Wed, 1 Sep 2021 23:03:40 +0200
+Message-ID: <9848329a-c482-3048-459f-6002b8cfb5e6@bootlin.com>
+Date: Thu, 2 Sep 2021 12:26:44 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.11.0
 MIME-Version: 1.0
@@ -25,58 +25,12 @@ Content-Language: en-US
 
 Hi Robert,
 
-Thanks for the patch!
-
 On 9/1/21 12:12 PM, Robert P. J. Day wrote:
-> Just a collection of:
->
->   - grammar tweaks
->   - space fixes
->   - font changes
->
-> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
->
-> ---
->
 > diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
 > index 4a5011ea7..ff5305dcb 100644
 > --- a/documentation/dev-manual/common-tasks.rst
 > +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -25,7 +25,7 @@ Creating Your Own Layer
->  -----------------------
->
->  It is very easy to create your own layers to use with the OpenEmbedded
-> -build system. The Yocto Project ships with tools that speed up creating
-> +build system, as the Yocto Project ships with tools that speed up creating
->  layers. This section describes the steps you perform by hand to create
->  layers so that you can better understand them. For information about the
->  layer-creation tools, see the
-> @@ -843,8 +843,8 @@ the :term:`IMAGE_INSTALL` variable with the ``:append`` operator::
->
->     IMAGE_INSTALL:append = " strace"
->
-> -Use of the syntax is important -
-> -specifically, the space between the quote and the package name, which is
-> +Use of the syntax is important; specifically, the leading space
-> +after the opening quote and before the package name, which is
->  ``strace`` in this example. This space is required since the ``:append``
->  operator does not add the space.
->
-> @@ -3517,9 +3517,9 @@ either by using Ctrl+d or closing the terminal window.
->  Building
->  ========
->
-> -This section describes various build procedures. For example, the steps
-> -needed for a simple build, a target that uses multiple configurations,
-> -building an image for more than one machine, and so forth.
-> +This section describes various build procedures, such as the steps
-> +needed for a simple build, building a target for multiple configurations,
-> +generating an image for more than one machine, and so forth.
->
->  Building a Simple Image
->  -----------------------
-> @@ -3575,8 +3575,10 @@ The following figure and list overviews the build process:
->     .. note::
+...
 >
 >        A common practice is to use a different Build Directory for
 > -      different targets. For example, ``~/build/x86`` for a ``qemux86``
@@ -84,7 +38,22 @@ On 9/1/21 12:12 PM, Robert P. J. Day wrote:
 > +      different targets; for example, ``~/build/x86`` for a ``qemux86``
 > +      target, and ``~/build/arm`` for a ``qemuarm`` target. In any
 > +      event, it's typically cleaner to locate the build directory
-> +      somewhere outside of your source directory.
+> +      somewhere outside of your source directory
+
+
+I agree with this advise. Indeed, that's always better to have a clean
+source tree. This reminds me that we probably should update the Quick
+Build guide
+(https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html), to add
+the build directory to the command line sourcing "oe-init-build-env".
+
+I was having the build directory in my sources too. The habits that you
+get from the first time you run Bitbake in years are quite sticky :)
+
+Cheers,
+
+Michael.
+
 >
 >  3. *Make Sure Your* ``local.conf`` *File is Correct*: Ensure the
 >     ``conf/local.conf`` configuration file, which is found in the Build
@@ -133,15 +102,10 @@ On 9/1/21 12:12 PM, Robert P. J. Day wrote:
 >  --------------------------------------------
 >
 >  To use the static method for device population, you need to set the
-
-
-It looks all good to me.
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-
-I will merge it soon if there are no objections.
-Thanks again,
-Michael.
-
+>
+>
+> 
+>
 -- 
 Michael Opdenacker, Bootlin
 Embedded Linux and Kernel engineering
