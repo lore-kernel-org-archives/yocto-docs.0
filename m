@@ -1,20 +1,20 @@
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web11.21354.1630930210094541079
+ by mx.groups.io with SMTP id smtpd.web11.21683.1630932274743639591
  for <docs@lists.yoctoproject.org>;
- Mon, 06 Sep 2021 05:10:10 -0700
+ Mon, 06 Sep 2021 05:44:35 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:49754 helo=fedora)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.107.13]:49758 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1mNDRw-0005Az-Bo
-	for docs@lists.yoctoproject.org; Mon, 06 Sep 2021 08:10:08 -0400
-Date: Mon, 6 Sep 2021 08:10:05 -0400 (EDT)
+	id 1mNDzF-0006Pd-Ex
+	for docs@lists.yoctoproject.org; Mon, 06 Sep 2021 08:44:33 -0400
+Date: Mon, 6 Sep 2021 08:44:30 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: ambiguous definition of "container layer" in ref manual
-Message-ID: <1c15448a-27a0-3b37-b8a5-bec9249c8c8e@crashcourse.ca>
+Subject: [PATCH] ref-manual: add potential of parallelism to defn of "Task"
+Message-ID: <2cf272e-4b96-e1ae-c692-4a1ee6b8736e@crashcourse.ca>
 MIME-Version: 1.0
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
 X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
@@ -26,38 +26,43 @@ X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
 X-Source: 
 X-Source-Args: 
 X-Source-Dir: 
-Content-Type: multipart/mixed; boundary="8323328-887144611-1630930207=:7052"
-
---8323328-887144611-1630930207=:7052
-Content-Type: text/plain; charset=ISO-8859-7
-Content-Transfer-Encoding: 8BIT
+Content-Type: text/plain; charset=US-ASCII
 
 
-  on this page:
+Emphasize that tasks can be done in parallel.
 
-https://docs.yoctoproject.org/ref-manual/terms.html
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
 
-i think the definition of "container layer" is potentially confusing.
-one reads:
+---
 
-"An example of a container layer is OpenEmbedded¢s meta-openembedded
-layer"
+diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
+index 32658051a..1a1f8dbee 100644
+--- a/documentation/ref-manual/terms.rst
++++ b/documentation/ref-manual/terms.rst
+@@ -367,10 +367,16 @@ universal, the list includes them just in case:
+      section in the Yocto Project Overview and Concepts Manual.
 
-  no, it's not -- it is simply a single git checkout containing
-numerous (sub)layers, it is not *itself* a layer, containing neither
-its own conf/ directory and layer.conf file and so on.
+    :term:`Task`
+-      A unit of execution for BitBake (e.g.
++      A per-recipe unit of execution for BitBake (e.g.
+       :ref:`ref-tasks-compile`,
+       :ref:`ref-tasks-fetch`,
+       :ref:`ref-tasks-patch`, and so forth).
++      One of the major benefits of the build system is that, since each
++      recipe will typically spawn the execution of numerous tasks, it is
++      entirely possible that many tasks can execute in parallel, with
++      the fetch task of one recipe being done simultaneously with the
++      build task of another, and so forth, potentially up to the
++      parallelism limit of your build system.
 
-  i submit that an actual container layer would be, say,
-meta-cloud-services:
+    :term:`Toaster`
+       A web interface to the Yocto Project's :term:`OpenEmbedded Build System`.
 
-https://git.yoctoproject.org/cgit/cgit.cgi/meta-cloud-services/tree/
+-- 
 
-or perhaps meta-security:
+========================================================================
+Robert P. J. Day                                 Ottawa, Ontario, CANADA
+                         http://crashcourse.ca
 
-https://git.yoctoproject.org/cgit/cgit.cgi/meta-security/tree/
-
-  thoughts?
-
-rday
-
---8323328-887144611-1630930207=:7052--
+LinkedIn:                               http://ca.linkedin.com/in/rpjday
+========================================================================
