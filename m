@@ -1,122 +1,135 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
- by mx.groups.io with SMTP id smtpd.web10.290.1631026128997645607
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.87])
+ by mx.groups.io with SMTP id smtpd.web12.8923.1631091032466914306
  for <docs@lists.yoctoproject.org>;
- Tue, 07 Sep 2021 07:48:49 -0700
+ Wed, 08 Sep 2021 01:50:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20150623.gappssmtp.com header.s=20150623 header.b=W+NyFVAt;
- spf=softfail (domain: sakoman.com, ip: 209.85.210.52, mailfrom: steve@sakoman.com)
-Received: by mail-ot1-f52.google.com with SMTP id x10-20020a056830408a00b004f26cead745so13045522ott.10
-        for <docs@lists.yoctoproject.org>; Tue, 07 Sep 2021 07:48:48 -0700 (PDT)
+ dkim=fail reason="body hash did not verify" header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=pymBNfXh;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.7.87, mailfrom: quentin.schulz@theobroma-systems.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=InF+eWNs7Kb7BGjGLEd+JchKoJcnpqFMSst39sx3z+153Xzbo9HJnAw1Os3AGS2FGPdDPvSd4cvfR7vI4Pex6bs49ZOmKpQY+JMqmR3hNrJLWe2VtmwzWRTVrAdsSR6zh6rlhbKFwPmK6WvxbqJc/S3WSYqQOAx5s13bylz9KNzIWaawbICps/7FwwD7tkhm+ffwN5f6DytC3pevRL5hN9nPieVBowILeOhaHG8I0mlLDioV4nD5CoKjICSI2kdgGmLWQ2qu99BVfbyfRFvOTLAVvTySzeN8ctYsh+qkjbGFLhoVNKHuj5n3HpfcD8e2LnqOwBZwVO6aegF3fJbkTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
+ bh=chb9X8INg48LUE64OVY9s9m4euvp9F2ljokuyuxFZt4=;
+ b=GVbL8/P1k3cjRVVx22yV9eytW8IKCMpYn0kMU3JDCrs/fStCI6VKqsOYpcIoZMTKsue0tJh33/YIIPNvRBgvm7Z5GrjlD9pu4BdrlBIJCOOyOeCyuaelrbtg+pa7esCa98DUJ9mBvz4eZxiEYBg7bYp0Zri+7JWQ0c+RtFS0vRDckQLk1UWawnKV1ZzAb1M4O+wFQN6wKVU7boQJLVxl9RfuFl2RdFZfLLVN/3VH6hd92JyyvB8lORi+tBCbHFvFAmt/caS0leawznHtwsLCA5jcaOvyfKXNOGCKKi4NTUQp7Le8sedEzNvFMoYrFb7HlJi3to9lm/t+mDB71G8pRg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20150623.gappssmtp.com; s=20150623;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=uRx5YxTYKgs3xTa9PhgRZD5Jn0dnVjPPk2bReqWGDe4=;
-        b=W+NyFVAtW2waotHAVOJyEJkm99SnWyPv4tTwrvo5kyNc4+jRvY9nSIRqhdCpG+gkgO
-         i9nRqlGQmdkMFdVTL/QmNKzmYq/lOpRcwni2XluQ3x+qVYVHZq95pCl1W44VDajJ99uy
-         4XWcwB7+B7e2ZqeMUi2CZp9Dtctx5nRXgY7MsqCB4BCo8tuMt1W7rt0pQN1IODoVZDaA
-         KpG87TEsSGOv11RsetdnjkzCsmQtw9fvAsZj5b2qFxVVKpbzTu2nCJS9kVemktmqbHvd
-         E8N4Vm1kuiDVSeHCcSp/FHN/KrZ8ykcZ5PAmsPtvOsE9HhIlsB4iraZ0Y3r5pRuyIc5c
-         uHow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=uRx5YxTYKgs3xTa9PhgRZD5Jn0dnVjPPk2bReqWGDe4=;
-        b=Ww3ZO/MpDmKtPAiiM2owounMQ/eQdCmbxEyETX1/QKwCmP1QZvXvVBgsSAu2NQSO10
-         B/DILAntY+jQ/oLHWuvqq5Qw2yeAbvQeyX283sEfdTrPU4149L2hBmYgZDzehRhtHjFJ
-         dZBfbTCEC9ZiZtWyNI8WONWo5PkwpXS7JkpNGdQKo5uY+zaKs6i/7WtyA6RnIEW6+t5W
-         q5RCqaxla44/TDStSrf1TiNsmDJ/l1MWkUYi5dM760QnQ2KET45Squq2F1Z1zvYHiscZ
-         d4JOE4wde5M61wrwymmhoramhSYPQHmmmVEEV6RVa5pqYkJ7WwcXuv9QqteijPPhWJ6W
-         zA+g==
-X-Gm-Message-State: AOAM532k11L/WiCCRhjcbX25xYRmaEIws8kuVrcjzYLKpS1nAZ7+7+nD
-	fhzfdwXusekExKLzDIbPTh4uID+O32cYfTWn
-X-Google-Smtp-Source: ABdhPJw7y7lZuDpxclxvWjSlUv2Q5VX2n9zq3ZfwXqso7rU4Py5iWVN1S/F2apwgbSuocRTfItHI1w==
-X-Received: by 2002:a9d:458a:: with SMTP id x10mr5314438ote.267.1631026127793;
-        Tue, 07 Sep 2021 07:48:47 -0700 (PDT)
-Return-Path: <steve@sakoman.com>
-Received: from localhost.localdomain ([172.243.4.16])
-        by smtp.gmail.com with ESMTPSA id t9sm2109421oie.20.2021.09.07.07.48.44
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Sep 2021 07:48:47 -0700 (PDT)
-From: "Steve Sakoman" <steve@sakoman.com>
-To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell] documentation: prepare for 3.1.11 release
-Date: Tue,  7 Sep 2021 04:48:24 -1000
-Message-Id: <bc884189c0c0caeeaf51460c244581aaf8076dcb.1631025999.git.steve@sakoman.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1631025999.git.steve@sakoman.com>
-References: <cover.1631025999.git.steve@sakoman.com>
+ d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=chb9X8INg48LUE64OVY9s9m4euvp9F2ljokuyuxFZt4=;
+ b=pymBNfXhVWFAE8AnWO+y0/78IUrTTd26733TFOE6vU5wMT43H65BF0PkJ1TO5u+efIbpAYjpBSXyJ9NyPyx6tUwUa5O4BHKZgXB7UXRv3byUuZt/fvrJpbF+Y0G95+Km2Me4nTJNLMLT6hONTAULnbZQUFxtUvgMYtTHsXsII+E=
+Authentication-Results: lists.yoctoproject.org; dkim=none (message not signed)
+ header.d=none;lists.yoctoproject.org; dmarc=none action=none
+ header.from=theobroma-systems.com;
+Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
+ (2603:10a6:208:24::24) by AM0PR04MB5939.eurprd04.prod.outlook.com
+ (2603:10a6:208:111::30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4478.21; Wed, 8 Sep
+ 2021 08:50:28 +0000
+Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
+ ([fe80::7987:898f:55bd:ec64]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
+ ([fe80::7987:898f:55bd:ec64%7]) with mapi id 15.20.4500.014; Wed, 8 Sep 2021
+ 08:50:27 +0000
+From: "Quentin Schulz" <quentin.schulz@theobroma-systems.com>
+To: 
+CC: docs@lists.yoctoproject.org,
+	bitbake-devel@lists.openembedded.org,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Subject: [PATCH] doc: bitbake-user-manual-fetching: S should be set to WORKDIR/git for git fetcher
+Date: Wed,  8 Sep 2021 10:50:03 +0200
+Message-ID: <20210908085003.963899-1-quentin.schulz@theobroma-systems.com>
+X-Mailer: git-send-email 2.31.1
+X-ClientProxiedBy: AM0PR02CA0124.eurprd02.prod.outlook.com
+ (2603:10a6:20b:28c::21) To AM0PR0402MB3348.eurprd04.prod.outlook.com
+ (2603:10a6:208:24::24)
+Return-Path: quentin.schulz@theobroma-systems.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from localhost.localdomain (92.42.140.82) by AM0PR02CA0124.eurprd02.prod.outlook.com (2603:10a6:20b:28c::21) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4500.14 via Frontend Transport; Wed, 8 Sep 2021 08:50:27 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 0dd9478f-9770-49ac-e21a-08d972a5b4c9
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5939:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: 
+	<AM0PR04MB593985A36C5461559C968B00C2D49@AM0PR04MB5939.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:7691;
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	iPrt3mmGFpreQ7JhfMNvCTGocm+C6TntfiV0fEEFs1YsvRXKCqP7EHQlCGaWn3WBMiVfNs4Z1atiSiBM7o14Flyy+VpOS4HPPH4v3yBaprkmqzi650pWYpb3ytz04c8KPNgm+fiD5wYZe/0Xwg9/av/jPUAIR42ZxMvmYKoZGdBle/+LS38vYd1PAv3/sOrP9wg4n16+WhEaaPLgjURiy/NlqaaFTLWrxyLUVKjGGxQspndmHol2IXkUQfjLaumKkY2X7XnJ/j/kFWADY80YxiJOqNTxhhWGv2i4mEeEt7WQ3MiL9UtiG81Z12ssN9JQWX4rWFs+6gBVJMzMJTL8227Vk1Sp8lbvwBvmMImK1TtYE8PXnxU3uVY8moQtxckDsHgXRTnXejdcbm8veDrv9iqNAbDozJnWmJZhbUp69Ex2LoiZ1vZQaYd4nIT8Qinp5HuLV8VVx7NvkKpbGV+90/1La54pTX+fbZ8goN14dhEIyOBB5a3OVN17fEBOrMNo4UsfXwQ5VYBlrh7nLAUaGgziqP0ehO12MRV+9/D57BAhS6RwcxoyziorSL/EVZlSrJYrb+qADHq3YH8SY3LsBWfhge4sDWt2q6kntCTNuGSjgbEKaY+RvC81uM9Akvu3D6EIKKBNAZS8noaSvjzZsKxHg0oQBIXgnTQb+n1cPEuOGYzy5Bpg8QNr0G2hMaBleoE8L4sWVDnJ5VHoAgrcaw==
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(39840400004)(346002)(396003)(136003)(376002)(366004)(2906002)(26005)(316002)(6512007)(66556008)(86362001)(6506007)(4326008)(66946007)(36756003)(186003)(44832011)(52116002)(38350700002)(66476007)(5660300002)(38100700002)(2616005)(478600001)(956004)(8936002)(6666004)(6486002)(1076003)(109986005)(107886003)(8676002)(83380400001)(266003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?a853GWb7kQ0xKqMzlYqC322ff70LKIJa2/hcah/wM1pP2Cw+730VsBRDezNx?=
+ =?us-ascii?Q?YJYJDpQagz23gZCZzlLbGbjkJAyVp/mu2VG37SXp5OkAuGDg4g1OpczwbEvT?=
+ =?us-ascii?Q?Hr/OOkSdM6iZsru4eimEnTKCdiuBM5DMyT8xF0KVR3j1ycB27SfX/+7ubu+N?=
+ =?us-ascii?Q?sg18vPpakxsOfNzhlE+v16EpDk1We+VGnHBPiMnCvGCuUIznX0yBBzdmvhZI?=
+ =?us-ascii?Q?6PRtQRoLks4M8BJHBv7TQXnFx195MGcAUjmr1yFA+ZgSjIisQtTkjLYUGDfe?=
+ =?us-ascii?Q?Hg+Rc1t3bjE1XWL/qpyuWyvXx+LLeba5yc5O+ZD4T+RT1yT8PlMuPNFTACwP?=
+ =?us-ascii?Q?no1MNpj9ZhHuD5jz0r5uBob70hdXyQv50sSPoyv3q/55oO9ccDsOqOT3Cr9O?=
+ =?us-ascii?Q?+fhazCDowoCvBfZehm9mLcHX2OLGdSi0eqqId86PtLaxlEiOY1Mc3DqOBBx/?=
+ =?us-ascii?Q?wfAzsSOoIry0CkHyh8Es6o4XNQmNel11yuMP2NLUZv7+rS6N20219ktvScu1?=
+ =?us-ascii?Q?0KDnYlmle12VmKJF+WQYt4GOQ/gKRAdcM0Xh3yA9kfBVLP3/0KiseYIBV9aj?=
+ =?us-ascii?Q?e+gclMp/xiUGnrmZnEhucijiT6sUy7fcbfv1z1/BUDCHl87TXrlIYoA38tU7?=
+ =?us-ascii?Q?+ITRyytBxnvcP6bYEm1KyB/wn7ywro0rgPumqQFpqSA0Q6+ekG9s/749Z9ip?=
+ =?us-ascii?Q?0eHzqQeICRWBbcqJMPWYcXOIZg3tKVPEsCwiOu7fviMg7a4I5WnUGvQilk8u?=
+ =?us-ascii?Q?loSj94dawgrooC8rRY7ZGI9oIGG4r+gbRAazmobtBhK3/4C2h8VnQ/Vrqpnx?=
+ =?us-ascii?Q?qhnV7+yNsxKlCAgbYvWZGfffTgmn0cB3gq5OeFbE/zdTfe8DKfF5xKahe5V7?=
+ =?us-ascii?Q?IFsURxNhr6wYgu1Ur1xAnGJHonjgvS4VWrajeYrZHL3mr4pDwMB+okk1/oCo?=
+ =?us-ascii?Q?iPRP5eRYAgrRo+IB0jasLcfQiHPrJpBT5Ba4AIwyIQUVpdbEf6p4+r8976ur?=
+ =?us-ascii?Q?FCXCTjkhL97GWrYUwFAGTl9jbDouLRQOO08xkeD59Hg+Dumzem4wCVr7qLqQ?=
+ =?us-ascii?Q?FMxHtuiskhNV9LSEP7i2qlXepGWwOJ7q+7T0QbhceD6Uqc8L55EVeE6ki8yJ?=
+ =?us-ascii?Q?fXkYC0/tpUTc8cfSTK4R9pvMYvwFIcFC1bcSuJYB3XpADNzDayLiVxAXuxWa?=
+ =?us-ascii?Q?U0TxUoVySLC/Vl6u7w4RXyGJ6iXD6eQidLiY0LM+9cK/aV/MHVCdsmxdHK/X?=
+ =?us-ascii?Q?kzMF+vRN4Pe75hsEhA88BjZMlu4wAun7Np6jYLdTZq24eytvK3iNC612dL8r?=
+ =?us-ascii?Q?l5SBMe8+5DFLGpNK74keVmFx?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0dd9478f-9770-49ac-e21a-08d972a5b4c9
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3348.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2021 08:50:27.9134
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mp+z0K83QQuoJ8oK19wx/0z19r6X7A2wzqYx+Q6Cu+HdCkiBrdDRyWQ9Ip5xwtJangNI/7Zrt37Xr+jSKwJ8uRGPa1iZxutgApN162/oGILoEqljDl/2SQVVR9mgbFTG
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5939
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Signed-off-by: Steve Sakoman <steve@sakoman.com>
+Document that S has to be set to "${WORKDIR}/git" in order for the
+recipe to work if the git fetcher is fetching the main source of code
+for the recipe.
+
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 ---
- documentation/conf.py                    | 2 +-
- documentation/poky.yaml                  | 8 ++++----
- documentation/releases.rst               | 1 +
- documentation/sphinx-static/switchers.js | 2 +-
- 4 files changed, 7 insertions(+), 6 deletions(-)
+ doc/bitbake-user-manual/bitbake-user-manual-fetching.rst | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index 82fa32554..6f10fc151 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -16,7 +16,7 @@ import os
- import sys
- import datetime
- 
--current_version = "3.1.10"
-+current_version = "3.1.11"
- 
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 590af46eb..17426567a 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,11 +1,11 @@
--DISTRO : "3.1.10"
-+DISTRO : "3.1.11"
- DISTRO_NAME_NO_CAP : "dunfell"
- DISTRO_NAME : "Dunfell"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
--YOCTO_DOC_VERSION : "3.1.10"
-+YOCTO_DOC_VERSION : "3.1.11"
- YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
--DISTRO_REL_TAG : "yocto-3.1.10"
--POKYVERSION : "23.0.10"
-+DISTRO_REL_TAG : "yocto-3.1.11"
-+POKYVERSION : "23.0.11"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-diff --git a/documentation/releases.rst b/documentation/releases.rst
-index 78f604e2a..70393084c 100644
---- a/documentation/releases.rst
-+++ b/documentation/releases.rst
-@@ -19,6 +19,7 @@
- - :yocto_docs:`3.1.8 Documentation </3.1.8>`
- - :yocto_docs:`3.1.9 Documentation </3.1.9>`
- - :yocto_docs:`3.1.10 Documentation </3.1.10>`
-+- :yocto_docs:`3.1.11 Documentation </3.1.11>`
- 
- ==========================
-  Previous Release Manuals
-diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js
-index a6432ae9b..fd5541696 100644
---- a/documentation/sphinx-static/switchers.js
-+++ b/documentation/sphinx-static/switchers.js
-@@ -3,7 +3,7 @@
- 
-   var all_versions = {
-     'dev': 'dev (3.3)',
--    '3.1.10': '3.1.10',
-+    '3.1.11': '3.1.11',
-     '3.0.4': '3.0.4',
-     '2.7.4': '2.7.4',
-   };
--- 
-2.25.1
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc=
+/bitbake-user-manual/bitbake-user-manual-fetching.rst
+index 40b245b6d3..aad0700180 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+@@ -439,6 +439,13 @@ Here are some example URLs::
+    SRC_URI =3D "git://git.oe.handhelds.org/git/vip.git;tag=3Dversion-1"
+    SRC_URI =3D "git://git.oe.handhelds.org/git/vip.git;protocol=3Dhttp"
+=20
++.. note::
++
++   When using ``git`` as the fetcher of the main source code of your softw=
+are,
++   ``S`` should be set accordingly::
++
++       S =3D "${WORKDIR}/git"
++
+ .. note::
+=20
+    Specifying passwords directly in ``git://`` urls is not supported.
+--=20
+2.31.1
 
