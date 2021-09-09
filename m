@@ -1,50 +1,50 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
- by mx.groups.io with SMTP id smtpd.web09.129.1631200124564860725
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+ by mx.groups.io with SMTP id smtpd.web08.162.1631200159826924468
  for <docs@lists.yoctoproject.org>;
- Thu, 09 Sep 2021 08:08:44 -0700
+ Thu, 09 Sep 2021 08:09:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=qrEXjU9P;
- spf=pass (domain: gmail.com, ip: 209.85.216.49, mailfrom: akuster808@gmail.com)
-Received: by mail-pj1-f49.google.com with SMTP id n13-20020a17090a4e0d00b0017946980d8dso1701938pjh.5
-        for <docs@lists.yoctoproject.org>; Thu, 09 Sep 2021 08:08:44 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=BtwUsi4P;
+ spf=pass (domain: gmail.com, ip: 209.85.210.176, mailfrom: akuster808@gmail.com)
+Received: by mail-pf1-f176.google.com with SMTP id m26so2035911pff.3
+        for <docs@lists.yoctoproject.org>; Thu, 09 Sep 2021 08:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=+6T9Zb4V6vstaJeADKMiwXWQbp1Vza4zMiFkGNBo8hQ=;
-        b=qrEXjU9PuDv8AdzK5Bz9pU6zVc7m12lC11Xws/Rrk6BcLioSKU9hdIN2mSCbT6iEVY
-         bFBh2TDPf+NqVG8LOFoXCfUfLu0exZMUJSWBMUH2vqBerH0s7EFXMGePg1OrXq7iCn7j
-         H7V10PxMV40D4g5iZsyRB9BxDPFndHzGggTQA6em9kcht5OvDay4A8soMdl091puNcQm
-         mHoBjsL1ItQv0VEy62b3h0DILeWkfX42zWmrbjoEO3uIUHj2vHNpBTEp9KKL5BeFPbuM
-         hpAGhq2fzLqUEGxk4d7wZromAZRa1wVEie3844lIqqYJGonLiaJjV6LCa3gGSmisMtHs
-         GOkw==
+        bh=8NOIl6FgzpkgaH/OWhMUpqbZPNh9jBdml08PrsioaQ4=;
+        b=BtwUsi4P0gDNl0rPVA7Q8qv/FS4xOfYAdp0s6ZBwUdef6hOdmWaPBK8sgJJGqjIEet
+         CtL+c8XWdav9wFvjRxf6MhSGohTSDtlE9/64RA8mFgEWrfbQRlAjrtwx7FZ5o5M+Jl1f
+         0zoadnvyyKbem9CWn/NSB2TZhMD91u9cHwrKd6reQBYfkwBYATthY8mRTM31w+qJn/ho
+         E1S25tup53v6Wrocpc9BBSA++mdLZioSC40Qv1fIfrndT1r/vE+xUhcvyOhgyd9hkxlY
+         bAtxlizj9yl4NQdkfUJH5vODF0TSwzXIXD5T8mRPZDCtWcAEkigVbhwIb+rBqAEDzlm4
+         6sww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=+6T9Zb4V6vstaJeADKMiwXWQbp1Vza4zMiFkGNBo8hQ=;
-        b=e2pWfZEf5uwVdvjyTJyYaq+2OZpj1gfnjgRZaB8wfqc2MRkcqHeAYY+BeR9svSO/3b
-         +9mXHCtwMjyDbX63NsBDnDr6szlFasrHKyvUqADNF4bVtLOdNNSL853Hq6QKBhgztvo+
-         TTh8jHnUQ12FZyM7/fKqfX48R5TzDptHq7QENGYT6lNjMD6DPtDplAjPv3o2J/u51xxo
-         f6jPqAfnds7gf6l6pT2j2Z/nEL4XpMiEr5qCKw4xXVDqaRlePxxMrl1hSPSABpj7oi2l
-         cBQeqrp7rAMrb6QAErssUINaCgrjniKp8NdasHqtrHLkWIyYe8E02lDr0nBbSPcG7t23
-         V6wQ==
-X-Gm-Message-State: AOAM532bQS8PwA9d2QFyEA9LjZITEjbhGD7TAS2qOC4DLWo/IV/asIsV
-	X04qSYJehiG39cpN5HsizvU8LD2M2nw=
-X-Google-Smtp-Source: ABdhPJwCRnwUZ511B7rPrF+5v2qvAE1C21ngaBsmcjq+A0wAEgXomcWS/o5EJKjuRj0wLxGjjFUKGg==
-X-Received: by 2002:a17:90b:1c10:: with SMTP id oc16mr4210265pjb.1.1631200123770;
-        Thu, 09 Sep 2021 08:08:43 -0700 (PDT)
+        bh=8NOIl6FgzpkgaH/OWhMUpqbZPNh9jBdml08PrsioaQ4=;
+        b=EYiZZQGWUecC1SnvO94IKhkPPkmTTkX1cUeY3i6S9c+/igZx+xUgs/kFvheMXLSwig
+         C37Z16cYYTCw0jiQr6Ukx/A+OBV5bhpwhqEOotfTRUHcRCqGGzfeXHfY0D3O92POICJM
+         bTbq7V6jjsie1v0HCML0E16YWya32SDVXS44VJOWm8xHedaDz1f4e73iI2eUxExQFQsP
+         ViMtue0P6sJ2N56bBOk3QV8Z0zi9rdPUIPYEV4o8dCNCSGlZhEz006EkPsvBv1qocmIL
+         hqyVF3kUUgU2GZapomsVZ21stjz0CCdM3o3P7n4H83uc+9r4qthTrltial34xo6k9zz+
+         TyDw==
+X-Gm-Message-State: AOAM532m1mgroQJTn30ecSIrX1jORxTbKXGP8rCCmQMCqlSIo12HMn79
+	QjUsxmMJqesmP9LCb5JWznrXYumnUeI=
+X-Google-Smtp-Source: ABdhPJxxjXH4+NlT3CIAOpNkCMXcfa5u5y0J+A+aFLmaWGbPM2nDd4iQFR8pNFP32lrQQzFjFqL2zw==
+X-Received: by 2002:a63:f946:: with SMTP id q6mr3113878pgk.42.1631200159096;
+        Thu, 09 Sep 2021 08:09:19 -0700 (PDT)
 Return-Path: <akuster808@gmail.com>
 Received: from keaua.hsd1.ca.comcast.net ([2601:202:4180:a5c0:415a:31fd:220:5773])
-        by smtp.gmail.com with ESMTPSA id n22sm2585702pff.57.2021.09.09.08.08.43
+        by smtp.gmail.com with ESMTPSA id fy2sm2615501pjb.11.2021.09.09.08.09.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Sep 2021 08:08:43 -0700 (PDT)
+        Thu, 09 Sep 2021 08:09:18 -0700 (PDT)
 From: "Armin Kuster" <akuster808@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [hardknott][PATCH] poky.yaml: fedora33: add missing pkgs
-Date: Thu,  9 Sep 2021 08:08:42 -0700
-Message-Id: <20210909150842.3299672-1-akuster808@gmail.com>
+Subject: [dunfell][PATCH] poky.yaml: fedora33: add missing pkgs
+Date: Thu,  9 Sep 2021 08:09:16 -0700
+Message-Id: <20210909150916.3299739-1-akuster808@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -71,10 +71,10 @@ Signed-off-by: Armin Kuster <akuster808@gmail.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 02c9bf3dc..7207df142 100644
+index 17426567a..bda8ff123 100644
 --- a/documentation/poky.yaml
 +++ b/documentation/poky.yaml
-@@ -19,7 +19,8 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
+@@ -18,7 +18,8 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
       diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
       ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
       python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
