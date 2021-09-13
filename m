@@ -1,89 +1,71 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
- by mx.groups.io with SMTP id smtpd.web08.162.1631200159826924468
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.28771.1631536672856372736
  for <docs@lists.yoctoproject.org>;
- Thu, 09 Sep 2021 08:09:19 -0700
+ Mon, 13 Sep 2021 05:37:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=BtwUsi4P;
- spf=pass (domain: gmail.com, ip: 209.85.210.176, mailfrom: akuster808@gmail.com)
-Received: by mail-pf1-f176.google.com with SMTP id m26so2035911pff.3
-        for <docs@lists.yoctoproject.org>; Thu, 09 Sep 2021 08:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8NOIl6FgzpkgaH/OWhMUpqbZPNh9jBdml08PrsioaQ4=;
-        b=BtwUsi4P0gDNl0rPVA7Q8qv/FS4xOfYAdp0s6ZBwUdef6hOdmWaPBK8sgJJGqjIEet
-         CtL+c8XWdav9wFvjRxf6MhSGohTSDtlE9/64RA8mFgEWrfbQRlAjrtwx7FZ5o5M+Jl1f
-         0zoadnvyyKbem9CWn/NSB2TZhMD91u9cHwrKd6reQBYfkwBYATthY8mRTM31w+qJn/ho
-         E1S25tup53v6Wrocpc9BBSA++mdLZioSC40Qv1fIfrndT1r/vE+xUhcvyOhgyd9hkxlY
-         bAtxlizj9yl4NQdkfUJH5vODF0TSwzXIXD5T8mRPZDCtWcAEkigVbhwIb+rBqAEDzlm4
-         6sww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=8NOIl6FgzpkgaH/OWhMUpqbZPNh9jBdml08PrsioaQ4=;
-        b=EYiZZQGWUecC1SnvO94IKhkPPkmTTkX1cUeY3i6S9c+/igZx+xUgs/kFvheMXLSwig
-         C37Z16cYYTCw0jiQr6Ukx/A+OBV5bhpwhqEOotfTRUHcRCqGGzfeXHfY0D3O92POICJM
-         bTbq7V6jjsie1v0HCML0E16YWya32SDVXS44VJOWm8xHedaDz1f4e73iI2eUxExQFQsP
-         ViMtue0P6sJ2N56bBOk3QV8Z0zi9rdPUIPYEV4o8dCNCSGlZhEz006EkPsvBv1qocmIL
-         hqyVF3kUUgU2GZapomsVZ21stjz0CCdM3o3P7n4H83uc+9r4qthTrltial34xo6k9zz+
-         TyDw==
-X-Gm-Message-State: AOAM532m1mgroQJTn30ecSIrX1jORxTbKXGP8rCCmQMCqlSIo12HMn79
-	QjUsxmMJqesmP9LCb5JWznrXYumnUeI=
-X-Google-Smtp-Source: ABdhPJxxjXH4+NlT3CIAOpNkCMXcfa5u5y0J+A+aFLmaWGbPM2nDd4iQFR8pNFP32lrQQzFjFqL2zw==
-X-Received: by 2002:a63:f946:: with SMTP id q6mr3113878pgk.42.1631200159096;
-        Thu, 09 Sep 2021 08:09:19 -0700 (PDT)
-Return-Path: <akuster808@gmail.com>
-Received: from keaua.hsd1.ca.comcast.net ([2601:202:4180:a5c0:415a:31fd:220:5773])
-        by smtp.gmail.com with ESMTPSA id fy2sm2615501pjb.11.2021.09.09.08.09.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Sep 2021 08:09:18 -0700 (PDT)
-From: "Armin Kuster" <akuster808@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [dunfell][PATCH] poky.yaml: fedora33: add missing pkgs
-Date: Thu,  9 Sep 2021 08:09:16 -0700
-Message-Id: <20210909150916.3299739-1-akuster808@gmail.com>
-X-Mailer: git-send-email 2.25.1
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id DFBF3C0018;
+	Mon, 13 Sep 2021 12:37:50 +0000 (UTC)
+Subject: Re: [docs] [PATCH] ref-manual: render options in monospace to show quotes properly
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+References: <5810ee5d-5d1f-3ac4-fff3-479ae5ea4496@crashcourse.ca>
+From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <b8350db9-e706-53b1-d5a2-6323df9ff30a@bootlin.com>
+Date: Mon, 13 Sep 2021 14:37:50 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <5810ee5d-5d1f-3ac4-fff3-479ae5ea4496@crashcourse.ca>
+Content-Type: text/plain; charset=windows-1252
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 
-[ Yocto #14188]
+Hi Robert,
 
-The following packages where needed to a fresh FC33 install
-perl-FindBin
-perl-File-Compare
-perl-File-Copy
-perl-locale
+On 9/6/21 9:22 PM, Robert P. J. Day wrote:
+> It's important (at least for now) to mark up options with monospaced
+> font to highlight the difference between single and double quotes.
+>
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>
+> ---
+>
+> diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
+> index 1862c481d..883f54e39 100644
+> --- a/documentation/ref-manual/devtool-reference.rst
+> +++ b/documentation/ref-manual/devtool-reference.rst
+> @@ -78,7 +78,7 @@ has a number of sub-commands for each function. You can run
+>
+>  As directed in the general help output, you can
+>  get more syntax on a specific command by providing the command name and
+> -using "--help"::
+> +using ``--help``::
+>
+>     $ devtool add --help
+>     NOTE: Starting bitbake server...
+> @@ -471,7 +471,7 @@ Use the ``devtool build`` command to build your recipe. The
+>
+>  When you use the ``devtool build`` command, you must supply the root
+>  name of the recipe (i.e. do not provide versions, paths, or extensions).
+> -You can use either the "-s" or the "--disable-parallel-make" options to
+> +You can use either the ``-s`` or the ``--disable-parallel-make`` options to
+>  disable parallel makes during the build. Here is an example::
+>
+>     $ devtool build recipe
 
-Error seen:
 
-openssl-native-1.1.1g-r0 do_configure: Execution of '/{snipped}/build/tmp-glibc/work/x86_64-linux/openssl-native/1.1.1g-r0/temp/run.do_configure.14627' failed with exit code 2:
-Can't locate FindBin.pm in @INC (you may need to install the FindBin module)
-
-Signed-off-by: Armin Kuster <akuster808@gmail.com>
+Thanks for the patch! Agreeing on the direction to take. I'm sure there
+are many further places to update.
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-(cherry picked from commit 5b4127dd72a465ff8c962c425e78140ca8e536db)
-Signed-off-by: Armin Kuster <akuster808@gmail.com>
----
- documentation/poky.yaml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Applied in master-next.
+Cheers,
+Michael.
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 17426567a..bda8ff123 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -18,7 +18,8 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
-      python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
--     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel"
-+     python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel perl-FindBin perl-File-Compare \
-+     perl-File-Copy perl-locale"
- OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
-      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
-      python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
