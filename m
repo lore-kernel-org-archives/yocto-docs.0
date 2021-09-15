@@ -1,16 +1,16 @@
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.82])
- by mx.groups.io with SMTP id smtpd.web12.6298.1631706011292207313
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.80])
+ by mx.groups.io with SMTP id smtpd.web11.6362.1631706277541086065
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Sep 2021 04:40:12 -0700
+ Wed, 15 Sep 2021 04:44:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=owFnT4cd;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.21.82, mailfrom: quentin.schulz@theobroma-systems.com)
+ dkim=pass header.i=@cherrycloud.onmicrosoft.com header.s=selector2-cherrycloud-onmicrosoft-com header.b=pUe7t7vC;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.22.80, mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gXZa4KbTxI6Ue9EnIahY9mdMCszUWVGDYUQ3Fr1onRWYJksdpXqVu8iFiTGpSoUaRZLu6pu6RaUSFOcxe9nJ+zXVLc/1MmhJF31BhnEXrxXAC6Z3qUyy48MZbB4JCDMGaTfnI1biFud59aKf9x/jt6C4qMb8jIYGQqc/+H+ogW8Mua2YFQ2T5e0j4mDMvHbIiRJxS5PGP8KcnsokwpcABvfS8l6aIfCiNUKH8k6HEIWcrwG0V/xBmOrMocdi/fmdw9W5uUwWEgV85S18Tb4rMofaq/hQlbT5FrhbtJ+YRlEHDVTUXv1GTvCOJtvg8dj9wAgLJpZ1gIs/7vTfoQLVQg==
+ b=haGL8nrasKWxvDLwt6RB/xjrwAfvBxK7bh2mWYK48xnR/qG2zCvo0GjFeYuqmMicvZ362Z2sNLPQJ2hyXcA3+ZJKY3Ni7Mgt5gbwtbm3zUCfuJJh7yNfHFm7MhPFIu1iK/tQbJmJlK5QtGfNr9g+hAFhFyd+OQ51WpyBL+6qHWRJsKzkX3XYj8IT2Y4SnFyQ7dMdtHU5LRiCW606fZiYk9Frz9a5Sho1cvbWJYmJfzsbQ+IjoWNxdJYHeJjgchjs9TrPqZYoaloG1whaaZcaFufshdxghxqWMc92PxRzCCpdPpfrsGSxRcfJcH2gyTQ6/TB5B9rlSFCNPB3ksiGy9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901; h=From:Date:Subject:Message-ID:Content-Type:MIME-Version;
- bh=4ds8H9DjjeJyucPcQB6mU+NSNixg4XMSORt3fmd8cKU=;
- b=Ry/Of8rqJH+Qe00Sy3nmE9uAp+EoXGrDo8pH4+R+i5AQtAzJxGjHJq2tvLFnCn1WxBTX3RtDTrWLlEogWM4Gs+sDu1lM0CzPJH6D6CKfb78wwU5qNy0uAEv+saK8aBqtmofrus539XkgmPJLBYJLEePnr1vf7GhkpWE/FO8YHxcAIYAywzatJH9l6YqWFw0VNCx5eIFXBek8cIGBQz4kP2WT0DGPRd87tyZlffnilV+E0F4NQrZ3RD9hGkCuAA7XJrr4mgNOIIqvH9UiREEceBdCyWmzUHR3P6eWA+QKXQa51kYksvV3ThXLDD9DzPmHikEdz65+fDfhsGtNB4xZOA==
+ bh=aSIwo4ybfeFXUO0FdKv9y3+UMukwICkgkggZCdWp3hc=;
+ b=FX8TcAUSuy267gTn2SQCXHYA46zPEFIfxCm8XQ1nBYmP1HWhDq4m3BXTr9P5Tx0llJYoM9r64IoLQuFQ+M3pruCmhwuf9f9yROVtZf5LAb1zmLGEJul+AhV/2RmXhbfNuJs+DM/kaCvZ7sfd97hvGW/ELGCNRKDv0VBYTUmGZeVr3FL9sl+qoMd1ZXzOzqWVKtOnUJFPWEC1EM5XsoGTOyIOx1XcNImRcv6ShNpou0vsTcMcsNx7QsjsPBv7muQFdACVAq+jgl/dcub5GECZwyxbkPq9CMU5FLlfITDh8PfSFe+q5kS7odk61E1AxfQWVycDmmZ5AlIWxnUmOqkTiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -18,95 +18,143 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4ds8H9DjjeJyucPcQB6mU+NSNixg4XMSORt3fmd8cKU=;
- b=owFnT4cdXmp/h0grpBZhUMNRhJZhzsoHiD6LaJXGA+dhGT0KSn8qW1dlkkmb1aJsLjS4+YKzG0SJUj8U07eONtcdCotaQByITZwYozvjgu/L0UXGcwarCh6qSjj/6jqQfrSPTCaBkPOuLq/7DKDLpczYSDFLAyHwsuANlRmDup4=
+ bh=aSIwo4ybfeFXUO0FdKv9y3+UMukwICkgkggZCdWp3hc=;
+ b=pUe7t7vC91dybDmfG0FVgXTXHZYuTurdpkxW9vRIcIDV61foDFp+bgx6idJuCdGMPZUmRe4b606IhhNog+QfBuaJ7MEraDJKVpCChT97aP/KX6nxfOJ1BdRZhmsNQMyr/myKCQ8QXnNe2aM9hJwG3/nyiaejG7il1nU6HrUYSi8=
 Authentication-Results: bootlin.com; dkim=none (message not signed)
  header.d=none;bootlin.com; dmarc=none action=none
  header.from=theobroma-systems.com;
 Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24) by AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10a6:208:24::24) by AM0PR04MB5458.eurprd04.prod.outlook.com
+ (2603:10a6:208:110::25) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.14; Wed, 15 Sep
- 2021 11:40:08 +0000
+ 2021 11:44:35 +0000
 Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
  ([fe80::7987:898f:55bd:ec64]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
  ([fe80::7987:898f:55bd:ec64%7]) with mapi id 15.20.4500.019; Wed, 15 Sep 2021
- 11:40:08 +0000
-Date: Wed, 15 Sep 2021 13:40:06 +0200
+ 11:44:35 +0000
+Date: Wed, 15 Sep 2021 13:44:33 +0200
 From: "Quentin Schulz" <quentin.schulz@theobroma-systems.com>
 To: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 1/4] ref-manual: remove checkpkg task
-Message-ID: <20210915114006.exqidxs3zykdphp2@fedora>
+Subject: Re: [docs] [PATCH 2/4] ref-manual: improve "devtool check-upgrade-status" details
+Message-ID: <20210915114433.xdynepq2bzxydfwd@fedora>
 References: <20210915101219.2198566-1-michael.opdenacker@bootlin.com>
-In-Reply-To: <20210915101219.2198566-1-michael.opdenacker@bootlin.com>
-X-ClientProxiedBy: PR0P264CA0250.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100::22)
- To AM0PR0402MB3348.eurprd04.prod.outlook.com (2603:10a6:208:24::24)
+ <20210915101219.2198566-2-michael.opdenacker@bootlin.com>
+In-Reply-To: <20210915101219.2198566-2-michael.opdenacker@bootlin.com>
+X-ClientProxiedBy: AM4PR0101CA0048.eurprd01.prod.exchangelabs.com
+ (2603:10a6:200:41::16) To AM0PR0402MB3348.eurprd04.prod.outlook.com
+ (2603:10a6:208:24::24)
 Return-Path: quentin.schulz@theobroma-systems.com
 MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
-Received: from fedora (92.42.140.82) by PR0P264CA0250.FRAP264.PROD.OUTLOOK.COM (2603:10a6:100::22) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.14 via Frontend Transport; Wed, 15 Sep 2021 11:40:08 +0000
+Received: from fedora (92.42.140.82) by AM4PR0101CA0048.eurprd01.prod.exchangelabs.com (2603:10a6:200:41::16) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4523.14 via Frontend Transport; Wed, 15 Sep 2021 11:44:34 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 3aec0538-44bb-41e4-36e6-08d9783d91c0
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:
+X-MS-Office365-Filtering-Correlation-Id: 577d5f43-9385-4475-ad0b-08d9783e30bb
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5458:
 X-Microsoft-Antispam-PRVS: 
-	<AM0PR04MB7044603AA67522F96D7E475DC2DB9@AM0PR04MB7044.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:1091;
+	<AM0PR04MB5458FEB0E754C7B3AAA4C3CEC2DB9@AM0PR04MB5458.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:8273;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	7Gx808uezsIIRIAw7C+BT8sfX/sEE8cKMQBRnZ65PWb3fGit9tjLOhjWtY6gzZMVFv3Wu12q7HSkg16F3QxpQzXeomtE4vQOEk0fVxd8EVtA3iDU2ULepVSBTwz7mo6L3dj2dssUjNgu9srNovdMqmn9uyLFNUYxfFdBt5MVGsvs/mrLxQnaF5+bvUfKV592RTwrTlIch73uByQzOxedp0HdDKESfanc+PDVfiyqy95pNwvC27y6hY1MxQDnrILm5cuKJUGmntZ9Q7Qc0b51ptEoL4KzSa3WJH+saABWqae9jutKy4KZFde0x+MVis/rP7Oeqzh6EJx1HyUGochKydsQ9FGWWCpOhi3eUS69v+CwaAmrFdQA0d//Q5I9J6T8zpkmv/SlNtSPCH6aiPrApj9TTTXd5cFmkscIyJv0WX43tuICPXq4gdgfkzenTqIzmGbkoPwxf9NUvgIkjVSiIs1joanbYWiz4R9UU24wZKTuqV3w3tjPgpVG3EDQPWXK8iTVKzRl0JvC393T8oB+yOxTn6vnxY86s2pItPmGd9JnOIFQAM7QFbPxNxoTwm5Tr0zZvJl3NzI+nyihu3YTea9My3Mryaw/ZM68VIMmmZFhtSRsNdqA4bwkCCDVfo1q7aOvcXAoqaXt0q7ZSXej88ftsJrE81w2UTqtVseyaM1+Gm5nNIZNzHug/aB/QVE8dE3/ck6ACscHBNSkCks+bQ==
+	XOAzvwiZSKWPpCUaKQqwgDj+zmH3GhfqBs6rABPG9acCjVC0GC0xhVsh9nXw+RN935PhGrBGplWRnfdbWukvdHW4Rcctk69/TzQfuLPvrmP5Sk5mqd+3eCqZSrj4cEd1mAVe367Vh+vOkFq+B8xV9uJCdVY9rQ4+x1m8rchmF++w6XfSqd2Hl0l85RcFQNvSonoy1rwTH0JEE3XwCfFOSoq4NTwr/GDH16dE0CuF0ryNTRn5mbAhXOfVrOREpXQ9cJQKSXwapzfOrNzCZs5quAFLJ0wVZ9iFb/XI9xqnAdoGeE9LDTsh4aGv5qlZ4zOLZptVi1ibeHjvcyKi8JjkA6NaWicIc/m3FUSGliVczSpVN0VchDwauUBSP7TGg5ZgqyDEA4q+ScnFHNPTAH01uFKXRFSk4OB25Cs0f9AWN0t98g3VHGJNtcO/CsG3drNmg0i0FHfwNkFfIjbnsOw3MI7+Vf6x5buDy8/4VBe+O8nwyTLPTYdJniqqcASRyyiftKDNmt2+rl8CvHjybpI6mJOLeIOg5AifJLYuN2lNNrnv4qPxMGNNcJ25Ie4wQn6+x7HGWHhftBcLatKAWxp0vyfNxkeqsTSmSHSdpo2b9AMVpnYH368I4NUozHUw+o8vhT4Vz0lMVBkdpHivhnO4+XZhXNYBLYCZtZ8iJEmOcTIrdLRG37M6OwIf9RkHntj8L0LbpFUNVpTopXFaGiZVBw==
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(136003)(39850400004)(346002)(376002)(396003)(366004)(6496006)(8676002)(9686003)(38350700002)(38100700002)(478600001)(52116002)(55016002)(44832011)(6916009)(316002)(1076003)(86362001)(8936002)(9576002)(956004)(83380400001)(33716001)(4326008)(66946007)(66476007)(66556008)(26005)(186003)(5660300002)(2906002)(4744005);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(346002)(39850400004)(396003)(376002)(136003)(366004)(4326008)(8936002)(55016002)(9686003)(83380400001)(33716001)(86362001)(44832011)(478600001)(316002)(2906002)(956004)(9576002)(66556008)(1076003)(26005)(66946007)(66476007)(52116002)(8676002)(186003)(6496006)(38350700002)(5660300002)(38100700002)(6916009);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?Keq+cCDwP2+f6Ei1fB/h/GoxNgQkkUWdaCVSYJaFaO/++HjqdxGGH8QtxjR4?=
- =?us-ascii?Q?gVmG/ad/YKIEyrhcnEeFBiYCmbf8zb5iLm5hHc9CtoHc7XBtNdsGn+Qy7xLX?=
- =?us-ascii?Q?0LuVZdwkAp4VFYFCnCfBBHjZGDPh3DCD3HIWL4XgZ4Uk1bK++/pFGtomEGn+?=
- =?us-ascii?Q?Fr0KD+US1KwV4tYwMlxpCTJeumgmokwFByL1PmSvKWq3HxsF1bmcR++fcNbM?=
- =?us-ascii?Q?SvCO0HLI/dmJ0iX62la973oUVkD0+pMQOJzwvAKj5E8qYP77sM67o/c5HYjO?=
- =?us-ascii?Q?zztFJEMp0xTGR8Eck+cMY0wDRaQPxmo/wuGLKPCJcPY8V7gVyPlFAYkDoT53?=
- =?us-ascii?Q?m5GidMUjInMJ/pC8CIKOr1b2yvT0gzEz/WFweIRkNpYbPChzl/M0vc6VCq2M?=
- =?us-ascii?Q?ehlOCK3rbKPAthwVLWbb7o8Ea9iGpkGYKxxrSaHOlPijdkq8zoeFsIz+O671?=
- =?us-ascii?Q?PRtDmQ1BFMeP1jF+DbdSZojttnURtn15nTCJYqkScs4cPmHKAzKDBcJYN6/D?=
- =?us-ascii?Q?LjT57xbW0bA6GZpQJUx+sbMnp9haraudZkixwCf+OKtzokWKn92+ZLiRseQR?=
- =?us-ascii?Q?X8AlCjgXXwmpYaosNMF1RVtXRPsZzKZ4Qudd9PjMq9ZBsTkSnlkwCTO/Hnyf?=
- =?us-ascii?Q?X0pLRHQUZ0QdCPh77AU/DFkK6hsB0MUv0+2PXheSp9dOnZII3l63ajahpRkH?=
- =?us-ascii?Q?E4c5l4UnD6EwLKGS+89lwrtIhp1NIjySYWEHssTrWOQM4YvYrCQ/AID1jq6D?=
- =?us-ascii?Q?fPH96MjvIs7zGrTPk4Ebt6SdNVw+XBCfIVWfiN+PvijrS8OQ2N3rYy24mkGh?=
- =?us-ascii?Q?wt89HgxiCBIPhlNdCrtCA0p7spIHJ5cJpy0hn3N1KxOEYPfFkbmXJ46H+bEV?=
- =?us-ascii?Q?E2rEwZ2Wz+4P6p4ieiPi1/c8RJ7oBj0NcE2FUj0e37UZBaeNWkw8Yi5LOXw7?=
- =?us-ascii?Q?sso8/Qo0aSqcCCoJcUagPsXleMpGfvSBEAaUNqTWb3FogY5e4PcrgLp9F2Z5?=
- =?us-ascii?Q?FuTi7liJP/JbMJjujZYmhH3GGbjUKkqlVPqGb1EqnEUcXDa9tFXjv1GfjYJF?=
- =?us-ascii?Q?In3zXJ/+QD3zz5roTIWpQuG7196tw7oxpfOPJ5b5JXNfh6Frk1irZyyceUhC?=
- =?us-ascii?Q?7pb4BU378VbxVcIWe8kxe5DpSE8XIgXh5BHGbuQIWZerSu/6fUONySgrCv09?=
- =?us-ascii?Q?keiZ5DPdT18wTkrZBRvFWjQmGbknbK9m0qJmVvttXhhq6hDu81TDjjbnvHB5?=
- =?us-ascii?Q?1xoLpTFYEZOxJRqT1PX5Edbb3xWCleGQtb5D3cRCepcHVnp3wDrac/QAmLKN?=
- =?us-ascii?Q?FnwKw4DH9xB9t5JjrDRqYzT0?=
+	=?us-ascii?Q?6k5PNurMNOpmdCfPqHsXZcAW1JMhQ3iJbcrCR5WreNwmyE6mJhCy2yKNR9OI?=
+ =?us-ascii?Q?suvEwM6v9pMjZIhIrnJT10H/Hx5NPMIDMUVR1d9f9Nv7H4/RYJSQzgq9iu0v?=
+ =?us-ascii?Q?JJf5eWpJHDVn+r6bQ2WX4cLu5oWzYZUEXuYzGs2/08z8TiqOG/BCgJEMdDrc?=
+ =?us-ascii?Q?AoFo7CHj0VqnVcJ/RYvo4JORGldaXuVT5uA/a6CbzLJ3lOcEsNS+LR7Oo4Jx?=
+ =?us-ascii?Q?BY55ze4olR0JOfn9o9SRjpmI+Oo2aZxFP3TEtbGtBIIoyd9OsQM23E+OK4E1?=
+ =?us-ascii?Q?KhKIp0uCP5Xxz+WbYp8+VnkJ25A3+3Okiu3R2y0Ms27yjfKa7o5uQBWVQTml?=
+ =?us-ascii?Q?2k/TPEQDcV+pv7Tg0jyCRtskfCvQAM+qa5hvtqWmm2/FE+8tyJdpc1a5W3on?=
+ =?us-ascii?Q?Zs8uuCZHziYRcNyYUkPBTPJoIaAf2bRHalg2I0WvomPzSsaLYp9/+W1/qbk+?=
+ =?us-ascii?Q?8IjwE0VrBUQxc+oxahRGOAFhBI/QverM87TetLSeVPrPY88g+BNb04K+fZUN?=
+ =?us-ascii?Q?XwJsCjUqDmOYA6HajLxIfs3zvMwsVuZtMK7Yr26H7TEMvRPWNKfAiN9j4JPk?=
+ =?us-ascii?Q?XGmitcwWMOVcy70Osg3JS+/OU6CFrpSwZ5hGuotgGyFXzg0vPJcpmDn0fPRM?=
+ =?us-ascii?Q?Y+sMoAyZdbZwV0dl8OZdCy7w06hxgBMch9cULyTSOZVM7xnlmgem+Cj6opfS?=
+ =?us-ascii?Q?Q5wCBLOHa8fUuBQfOjmw6W4NNBhJjJefMR/Sv76t6CQP/Tqn4oy7477pylQW?=
+ =?us-ascii?Q?PbbTq2HwZPMkTmKYHUr+gRBZ7W5cW8hyiWp8bHefdAuRsXMzyuTBxcNEvBJz?=
+ =?us-ascii?Q?RF7tYBdDMzGGW9sAEAIma4IvjLC7vyEq2mIx97Uytaz3XCsAFHGbm874/ysR?=
+ =?us-ascii?Q?jNp46E16ft0gAPYAF7aY9IASmXujZlxHQudC8DkE3YWs5g4j+ED5pvjO+6sS?=
+ =?us-ascii?Q?iZlQzMK+OgtIpYwXGaJjE/afrJhqame83iwtOWt5WYbTAdnDvg8/zJRaepa7?=
+ =?us-ascii?Q?TH2e/0Xtw4zRNLgEwgpsPhplrc5mFY1JjPZ5ag24zuI85JRfMl9hr6cEKZy8?=
+ =?us-ascii?Q?j4AL5a+2ri9eMHE6YVRgTR/SQRbqsRaXwi3VdQL1/jQM4hqjReZzxNU1HRCn?=
+ =?us-ascii?Q?lWH4avvf5Om7Y2NUFLcQfRbC3/CHgLy38Sfvi+j2C7SDqO7PvULwEpbsucI+?=
+ =?us-ascii?Q?2rnxs7xBrtjDhowb7vJ1bYbDf6cQbnV85VGpEEsap+WtUB8tUu2frOcMr4zH?=
+ =?us-ascii?Q?+Q0RVcKW/UMUVNacnUS/gh/vsSmJiTtsVrHz49MUVuVPYQtq2AWTySrqo7CH?=
+ =?us-ascii?Q?CeQ6dKCdi1v61rVVvvWE5FRB?=
 X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3aec0538-44bb-41e4-36e6-08d9783d91c0
+X-MS-Exchange-CrossTenant-Network-Message-Id: 577d5f43-9385-4475-ad0b-08d9783e30bb
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR0402MB3348.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2021 11:40:08.4066
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2021 11:44:35.1246
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xI5UoZDxqqIyZoM9VSm8aUnR+s/BFSgEbX+f9S1lzUJptD543Gjs0UyM2WtxVBd2/3nFXtKktWAZa9qltIpe7oOOSbrvJUS2NY/6/unTFhwqWFRGWj5AUw4l0XtOW448
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7044
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3RRtC4Dqhkpvu1XCTvaRwqaRi3eWGuny7LxcZEWS/nTGcijuLPKo96iB+NhkTU4N01qcoJX1l5wKCxWyqiISuJdezjcMfTMvniUYMAlj3WP3Ft8RuRELBzA1UR+wV9FX
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5458
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
 Hi Michael,
 
-On Wed, Sep 15, 2021 at 12:12:16PM +0200, Michael Opdenacker wrote:
-> It doesn't exist any more and its functionality is now taken care
-> of by "devtool check-upgrade-status"
+On Wed, Sep 15, 2021 at 12:12:17PM +0200, Michael Opdenacker wrote:
+> - Mention "devtool latest-version recipe" to process a single version
+> - Explain that the mechanism is controlled by the UPSTREAM_CHECK*
+>   variables, which are not referred to anywhere else in the manuals,
+>   except in the variable index.
 > 
 > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> ---
+>  documentation/ref-manual/devtool-reference.rst | 18 ++++++++++++------
+>  1 file changed, 12 insertions(+), 6 deletions(-)
+> 
+> diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
+> index 5fd51569a3..5a0d6c25ae 100644
+> --- a/documentation/ref-manual/devtool-reference.rst
+> +++ b/documentation/ref-manual/devtool-reference.rst
+> @@ -328,12 +328,18 @@ Checking on the Upgrade Status of a Recipe
+>  Upstream recipes change over time. Consequently, you might find that you
+>  need to determine if you can upgrade a recipe to a newer version.
+>  
+> -To check on the upgrade status of a recipe, use the
+> -``devtool check-upgrade-status`` command. The command displays a table
+> -of your current recipe versions, the latest upstream versions, the email
+> -address of the recipe's maintainer, and any additional information such
+> -as commit hash strings and reasons you might not be able to upgrade a
+> -particular recipe.
+> +To check on the upgrade status of a recipe, you can use the
+> +``devtool latest-version recipe`` command, which quickly shows the current
+> +version and the latest version available upstream. To get such information
+> +for all available recipes,  use the ``devtool check-upgrade-status`` command.
 
-Reviewed-by: Quentin Schulz <foss@0leil.net>
+Spurious space before `use` here.
 
-Thanks!
+> +The command displays a table of your current recipe versions, the latest
+> +upstream versions, the email address of the recipe's maintainer, and any
+> +additional information such as commit hash strings and reasons you might
+> +not be able to upgrade a particular recipe.
+> +
+> +This upgrade checking mechanism relies on the :term:`UPSTREAM_CHECK_URI`,
+> +:term:`UPSTREAM_CHECK_REGEX` and :term:`UPSTREAM_CHECK_GITTAGREGEX` variables
+> +which can be defined in each recipe.
+>  
+
+I think the "can be defined in each recipe" might generate confusion and
+tell people it can be defined elsewhere.
+
+What about:
+
+"""
+This upgrade checking mechanism relies on the optional[...] variables
+which are defined in package recipes.
+"""
+
+What do you think?
+
+Cheers,
 Quentin
