@@ -1,18 +1,19 @@
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web11.408.1631728732160600382
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web09.413.1631728737049160287
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Sep 2021 10:58:52 -0700
+ Wed, 15 Sep 2021 10:58:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=missing; spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 5D642100003;
-	Wed, 15 Sep 2021 17:58:49 +0000 (UTC)
+	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 58729FF808;
+	Wed, 15 Sep 2021 17:58:54 +0000 (UTC)
 From: "Michael Opdenacker" <michael.opdenacker@bootlin.com>
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH v3 1/5] ref-manual: document UPSTREAM_CHECK_COMMITS and UPSTREAM_VERSION_UNKNOWN
-Date: Wed, 15 Sep 2021 19:58:38 +0200
-Message-Id: <20210915175842.2998541-2-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <foss@0leil.net>
+Subject: [PATCH v3 2/5] ref-manual: remove checkpkg task
+Date: Wed, 15 Sep 2021 19:58:39 +0200
+Message-Id: <20210915175842.2998541-3-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20210915175842.2998541-1-michael.opdenacker@bootlin.com>
 References: <16A4FF8E231E8D2E.4682@lists.yoctoproject.org>
@@ -20,53 +21,80 @@ References: <16A4FF8E231E8D2E.4682@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/ref-manual/variables.rst | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+It doesn't exist any more and its functionality is now taken care
+of by "devtool check-upgrade-status"
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reviewed-by: Quentin Schulz <foss@0leil.net>
+---
+ documentation/ref-manual/tasks.rst     | 31 --------------------------
+ documentation/ref-manual/variables.rst |  4 ++--
+ 2 files changed, 2 insertions(+), 33 deletions(-)
+
+diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
+index ecc701856c..4edae33392 100644
+--- a/documentation/ref-manual/tasks.rst
++++ b/documentation/ref-manual/tasks.rst
+@@ -438,37 +438,6 @@ Manually Called Tasks
+ These tasks are typically manually triggered (e.g. by using the
+ ``bitbake -c`` command-line option):
+ 
+-.. _ref-tasks-checkpkg:
+-
+-``do_checkpkg``
+----------------
+-
+-Provides information about the recipe including its upstream version and
+-status. The upstream version and status reveals whether or not a version
+-of the recipe exists upstream and a status of not updated, updated, or
+-unknown.
+-
+-To check the upstream version and status of a recipe, use the following
+-devtool commands::
+-
+-   $ devtool latest-version
+-   $ devtool check-upgrade-status
+-
+-See the ":ref:`ref-manual/devtool-reference:\`\`devtool\`\` quick reference`"
+-chapter for more information on
+-``devtool``. See the ":ref:`devtool-checking-on-the-upgrade-status-of-a-recipe`"
+-section for information on checking the upgrade status of a recipe.
+-
+-To build the ``checkpkg`` task, use the ``bitbake`` command with the
+-"-c" option and task name::
+-
+-   $ bitbake core-image-minimal -c checkpkg
+-
+-By default, the results are stored in :term:`$LOG_DIR <LOG_DIR>` (e.g.
+-``$BUILD_DIR/tmp/log``).
+-
+-.. _ref-tasks-checkuri:
+-
+ ``do_checkuri``
+ ---------------
+ 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 5caada6260..d06ef5a632 100644
+index d06ef5a632..2342846dc7 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -8483,6 +8483,18 @@ system and gives an overview of their function and contents.
-       install initscripts package them in the main package for the recipe,
-       you rarely need to set this variable in individual recipes.
+@@ -8497,7 +8497,7 @@ system and gives an overview of their function and contents.
  
-+   :term:`UPSTREAM_CHECK_COMMITS`
-+      You can perform a per-recipe check for what the latest upstream
-+      source code version is by calling ``devtool latest-version recipe``. If
-+      the recipe source code is provided from Git repositories, but
-+      releases are not identified by Git tags, set :term:`UPSTREAM_CHECK_COMMITS`
-+      to ``1`` in the recipe, and the OpenEmbedded build system
-+      will compare the latest commit with the one currently specified
-+      by the recipe (:term:`SRCREV`).
-+      ::
-+
-+         UPSTREAM_CHECK_COMMITS = "1"
-+
     :term:`UPSTREAM_CHECK_GITTAGREGEX`
        You can perform a per-recipe check for what the latest upstream
-       source code version is by calling ``bitbake -c checkpkg`` recipe. If
-@@ -8518,6 +8530,18 @@ system and gives an overview of their function and contents.
+-      source code version is by calling ``bitbake -c checkpkg`` recipe. If
++      source code version is by calling ``devtool latest-version recipe``. If
+       the recipe source code is provided from Git repositories, the
+       OpenEmbedded build system determines the latest upstream version by
+       picking the latest tag from the list of all repository tags.
+@@ -8520,7 +8520,7 @@ system and gives an overview of their function and contents.
  
-          UPSTREAM_CHECK_URI = "recipe_url"
- 
-+   :term:`UPSTREAM_VERSION_UNKNOWN`
-+      You can perform a per-recipe check for what the latest upstream
-+      source code version is by calling ``devtool latest-version recipe``.
-+      If no combination of the :term:`UPSTREAM_CHECK_URI`, :term:`UPSTREAM_CHECK_REGEX`,
-+      `UPSTREAM_CHECK_GITTAGREGEX` and :term:`UPSTREAM_CHECK_COMMITS` variables in
-+      the recipe allows to determine such an latest upstream version,
-+      you can set :term:`UPSTREAM_VERSION_UNKNOWN`` to ``1`` in the recipe
-+      to acknowledge that the check cannot be performed.
-+      ::
-+
-+         UPSTREAM_VERSION_UNKNOWN = "1"
-+
-    :term:`USE_DEVFS`
-       Determines if ``devtmpfs`` is used for ``/dev`` population. The
-       default value used for :term:`USE_DEVFS` is "1" when no value is
+    :term:`UPSTREAM_CHECK_URI`
+       You can perform a per-recipe check for what the latest upstream
+-      source code version is by calling ``bitbake -c checkpkg`` recipe. If
++      source code version is by calling ``devtool latest-version recipe``. If
+       the source code is provided from tarballs, the latest version is
+       determined by fetching the directory listing where the tarball is and
+       attempting to find a later tarball. When this approach does not work,
 -- 
 2.25.1
 
