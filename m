@@ -1,60 +1,57 @@
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
- by mx.groups.io with SMTP id smtpd.web11.450.1631731071409816376
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+ by mx.groups.io with SMTP id smtpd.web12.516.1631731181380210680
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Sep 2021 11:37:51 -0700
+ Wed, 15 Sep 2021 11:39:41 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=oTgPBVgB;
- spf=pass (domain: gmail.com, ip: 209.85.222.52, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-ua1-f52.google.com with SMTP id g16so2282560uam.7
-        for <docs@lists.yoctoproject.org>; Wed, 15 Sep 2021 11:37:51 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=TXqRfIjk;
+ spf=pass (domain: gmail.com, ip: 209.85.222.43, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-ua1-f43.google.com with SMTP id g16so2285578uam.7
+        for <docs@lists.yoctoproject.org>; Wed, 15 Sep 2021 11:39:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=llTs/kSO36HyUNAPEZR/2vxwmCtrWaMykSRCDJB8sGc=;
-        b=oTgPBVgBonQVYrUFgMAZFvapA8upKf8ABL8IktvVwuyn1nsCJD4ZNQAwBxz1m2NLnz
-         4ARRLKAFdaiDXEoDtEpDyotHAgrtB4K7zOvNycJDKBl32bzz4jLpLlF+QuTKqagh6h5m
-         BWglk+ARGu3+e1Wd6lnBItcy/Yqn3CGfqv9HfFcgfpe3GvEIEecEzcqDi4de8u18sKg0
-         fVHbjGx6e0aQMDjXjFH++yFUOEKPIN0df1xlZLRqkUUmnw70JBvHCSjse8V0INpqtzHm
-         dNExzoBrBSNhRxGp4kdy8xZGfUogRzqPJeCO0NW3nXOL1n7BUzqxgTGzTBU+SzSIR1gL
-         salg==
+        bh=XJthBlF5ut8TDV7PyGFAppfBJ95Ep9dcMrICH261swM=;
+        b=TXqRfIjkVUlTWZXaJDkjuzoxpZ4XV53FSJn01kHrHyAGVPrD9fJICxTUO7rLhkgqC1
+         NRvQfMNhiFNOS2pQ9mF6XHFA7nNQsI4UYfbh7s62moUJPAyirEEBAkJn6QVKvimkAXWg
+         fF+/vH5JMA5xEr6sEiF76Ah+6+UQzh9o5Y5xaEH71l6hBRNX8TcU27uFyHmax8TumGhw
+         KywvkH4fi4Sm4QAJh1yoLSAI0OZj29UWgnsoXONQUSMrZR2Q71xUj9a3Gomil8J1J4z2
+         k1yTbkmck18ow+RycXylAS0wfxOdCjTw11h4sPybnbrVSSdr94RE2K80iFnrKNOFvKyM
+         UnNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=llTs/kSO36HyUNAPEZR/2vxwmCtrWaMykSRCDJB8sGc=;
-        b=e7RN6bGzOuu1d6OKD7Xf/qlA6ooEx2SAYLlyBNWfwDnEUoxgl1uLxvvWsWfVBmkpvR
-         HqACVZODShQUsIMZIM3OXA2D79ebijgxjlYUq4Jui5PPZ3cfpxkoOcy3hm2ORQ641m1D
-         /b9sfORkpcgjNy640qjjAG1qx+5cCFLFNEKvcdWg6ZfXPzAZwL6mA0DEytoKvaI4R1LN
-         u0Bx5PomfTqC8rW/TJTwrj2hEmmpIzHQu6YQuAV3qLEF+M/sg+sMnBD64ODctsZeUmxs
-         8BCwdxpAnkj3BR22jPSiIkB8h5Sbydy1YdFv1+4egOWeGtML6p/vFm24UL79wRIFUd1V
-         Gq1Q==
-X-Gm-Message-State: AOAM532B8C5oEgk3HaseDnlF2dkceJ/5WQGpDYrNSkpX42irrEwU/bNs
-	4IyMt+9FfDAe8hSd0Yt9kHZ8BTUyyyblf35HPCk=
-X-Google-Smtp-Source: ABdhPJzUr761R0GV0QxlbUGSYSnWaU1uRBKANoTIBRjVMWLAXCAQMIv6REIqybWqppNJRh5YFhshVaXESFEX91y0dvo=
-X-Received: by 2002:a05:6130:392:: with SMTP id az18mr1577445uab.71.1631731070549;
- Wed, 15 Sep 2021 11:37:50 -0700 (PDT)
+        bh=XJthBlF5ut8TDV7PyGFAppfBJ95Ep9dcMrICH261swM=;
+        b=UKQgU2KW9RhuzM0KKwfcVc12zGFyb90R7P/gSebgkivlChUckceTlSicDdogbpG9lS
+         v1+oS+qMr4Pv3zoGy0bydKsTDobz4Je0FevSXm6tR4Vpfjze38tZf5RWI2Kv3zW0SzxN
+         +ljS+TTHhBmz/tWAq0Dftr++1mO9M9ZylGPNc7RTb/VK6szD7Ki8mClReNOQzFX5WaBh
+         IWt4bTvFTW1Ie2HOStvq9UPQcUzx/7BN7lEZFwYuN3LZAjNnvJjjN8lnWCZltsMkH4/X
+         gBLTu0W3ORBe/GFQb6Lg/oEuoBpaG3E0lSQO8+FMAL21MtbMAHP+2uYOKbI1w689o1Xg
+         4wpA==
+X-Gm-Message-State: AOAM531XOKK3Tv3TKVKEIHalH1WE5+Zshdli0q7Hn9ZtKPjeC8yLoISM
+	+IDtUJb8+m+XOQh5yPha27E59d3dZI23b4ym5ho=
+X-Google-Smtp-Source: ABdhPJw4VMQZqZr/zJO2YAzzd2nXVgbbTTCzQjm+kUth7bDY2gKo48HTPYdtAlKcunAtwGY/PoBAgY3pCi73u2Wihos=
+X-Received: by 2002:ab0:339a:: with SMTP id y26mr1513508uap.93.1631731180585;
+ Wed, 15 Sep 2021 11:39:40 -0700 (PDT)
 MIME-Version: 1.0
 References: <16A4FF8E231E8D2E.4682@lists.yoctoproject.org> <20210915175842.2998541-1-michael.opdenacker@bootlin.com>
  <20210915175842.2998541-4-michael.opdenacker@bootlin.com>
 In-Reply-To: <20210915175842.2998541-4-michael.opdenacker@bootlin.com>
 From: "Alexander Kanavin" <alex.kanavin@gmail.com>
-Date: Wed, 15 Sep 2021 20:37:39 +0200
-Message-ID: <CANNYZj_b4jWAW+MRDhmEMHtL9Cqq7jOONPbRT=zF7fkaZA=fVA@mail.gmail.com>
+Date: Wed, 15 Sep 2021 20:39:29 +0200
+Message-ID: <CANNYZj_Ap3UAr3DJt3FPT1Efu0EHKZy2+9uWfNEynH_HZPM0Qw@mail.gmail.com>
 Subject: Re: [docs] [PATCH v3 3/5] ref-manual: improve "devtool check-upgrade-status" details
 To: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Cc: docs <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000d4431705cc0cfee1"
+Content-Type: multipart/alternative; boundary="00000000000063479805cc0d055e"
 
---000000000000d4431705cc0cfee1
+--00000000000063479805cc0d055e
 Content-Type: text/plain; charset="UTF-8"
 
-The functionality overlaps somewhat. 'devtool latest-version' takes a
-single recipe as an argument, but 'devtool check-upgrade-status' takes a
-list of recipes, or nothing (in which case a check for everything runs),
-and prints only the items where there is a new upstream version available
-in a table format. The former is intended when you want to see a specific
-status of something particular, the latter for an overall picture.
+Another point to mention is that UPSTREAM_* variables do not need to be
+set, most of the time. They are only required when upstream does something
+unusual, and defaults do not work.
 
 Alex
 
@@ -162,23 +159,20 @@ michael.opdenacker@bootlin.com> wrote:
 >
 >
 
---000000000000d4431705cc0cfee1
+--00000000000063479805cc0d055e
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>The functionality overlaps somewhat. &#39;devtool lat=
-est-version&#39; takes a single recipe as an argument, but &#39;devtool che=
-ck-upgrade-status&#39; takes a list of recipes, or nothing (in which case a=
- check for everything runs), and prints only the items where there is a new=
- upstream version available in a table format. The former is intended when =
-you want to see a specific status of something particular, the latter for a=
-n overall picture.</div><div><br></div><div>Alex<br></div></div><br><div cl=
-ass=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, 15 Sept 2=
-021 at 19:58, Michael Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@b=
-ootlin.com">michael.opdenacker@bootlin.com</a>&gt; wrote:<br></div><blockqu=
-ote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px=
- solid rgb(204,204,204);padding-left:1ex">- Mention &quot;devtool latest-ve=
-rsion recipe&quot; to process a single version<br>
+<div dir=3D"ltr"><div>Another point to mention is that UPSTREAM_* variables=
+ do not need to be set, most of the time. They are only required when upstr=
+eam does something unusual, and defaults do not work.</div><div><br></div><=
+div>Alex<br></div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" cla=
+ss=3D"gmail_attr">On Wed, 15 Sept 2021 at 19:58, Michael Opdenacker &lt;<a =
+href=3D"mailto:michael.opdenacker@bootlin.com">michael.opdenacker@bootlin.c=
+om</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margi=
+n:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex=
+">- Mention &quot;devtool latest-version recipe&quot; to process a single v=
+ersion<br>
 - Explain that the mechanism is controlled by the UPSTREAM_CHECK*<br>
 =C2=A0 variables, which are not referred to anywhere else in the manuals,<b=
 r>
@@ -304,4 +298,4 @@ d.<br>
 <br>
 </blockquote></div>
 
---000000000000d4431705cc0cfee1--
+--00000000000063479805cc0d055e--
