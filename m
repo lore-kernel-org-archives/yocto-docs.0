@@ -1,138 +1,94 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
- by mx.groups.io with SMTP id smtpd.web12.529.1631731218486137242
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web08.7706.1631776451585036162
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Sep 2021 11:40:18 -0700
+ Thu, 16 Sep 2021 00:14:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=cWm81B/q;
- spf=pass (domain: gmail.com, ip: 209.85.222.53, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-ua1-f53.google.com with SMTP id c33so2288365uae.9
-        for <docs@lists.yoctoproject.org>; Wed, 15 Sep 2021 11:40:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=wD00x5h/S+du9bcYnNS6gJXK61nE3EUMgulvflDDM+U=;
-        b=cWm81B/qh5MD+/hfp4YX9krw4SgG2M431HNxjZIKndhPsA9XeXgBxse2xi2WD1iUcE
-         nlYzUUxFoBa2gq+zTI286uyztRxk0GorlOzrJRVJ3AmsqdcJknLs69Hc7glI2Tg1XuQL
-         lVfoyr5WmcqHzL9utZFLZcCuqFEE9Vxe50QTcauoPaK6YjMwYakr6A1Ixh+/9oQjJ/Cl
-         4a8JKq6vn2RfwuTpmQTtUjT1zOA8oZwFJAKrvsLrV4VVhcYqjpBBaeV7gDoYRWKZLXcQ
-         ipVTCpy1yqKrKT3HFSTEjxqpJRgfM0L9so4trXRVv26hBx8/C8xaUCcYbBL99zAIEdm+
-         yeBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=wD00x5h/S+du9bcYnNS6gJXK61nE3EUMgulvflDDM+U=;
-        b=jtdqliaWFwXPgEqKnQFQGjiD9WGodm/qTdZO7uwLe/6ZotXtXg00vNR4WXWrvo5QDo
-         sgVc6pNJW5CI6e08jngt7bP+JReKFuhdiXvxl7q4otIqUz8aDY+0kfEab7+aSQMYFwur
-         QeuwXdNIHv3an/dswxqKJ9z+L9JI9ay12VQ9RqYNy4VpcYQZAdhmZv5t9gg5xiEII0dT
-         Tq22+2tgh4xLVILoc2JI8nIXUpAXfwIXZwur4f6BoOhF1dNw3u1QVj/wu4Wd1deLBUfP
-         PHXor0oWBUFBLZToFQlE4FNbsxjY/6HgrF48P3CsFi2QExW0zuhKnNvQMKeHSb6mSgiC
-         vK7g==
-X-Gm-Message-State: AOAM5310WnGCVwHdbhpKg3uhyDKphz//9joSC68ceuPZolYAZt/3lJxM
-	95wT9ZoDNkbxwGPkOqQssRo8hTeBbQ4PlRz1vWY6Arja
-X-Google-Smtp-Source: ABdhPJymQTUE6fDtI34Pqq04qvmIfngBQBbgGzuI4s0KXohwwUid2+VbE9qWlaSS3t8FTG61EcamHWTFt9nDYRoar2c=
-X-Received: by 2002:ab0:3b49:: with SMTP id o9mr1550363uaw.100.1631731217618;
- Wed, 15 Sep 2021 11:40:17 -0700 (PDT)
+ dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.199, mailfrom: foss@0leil.net)
+Received: (Authenticated sender: foss@0leil.net)
+	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 626C5FF80E;
+	Thu, 16 Sep 2021 07:14:09 +0000 (UTC)
+Date: Thu, 16 Sep 2021 09:14:08 +0200
+From: "Quentin Schulz" <foss@0leil.net>
+To: docs@lists.yoctoproject.org,
+ Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: Re: [docs] [PATCH v3 1/5] ref-manual: document UPSTREAM_CHECK_COMMITS and UPSTREAM_VERSION_UNKNOWN
+In-Reply-To: <20210915175842.2998541-2-michael.opdenacker@bootlin.com>
+References: <16A4FF8E231E8D2E.4682@lists.yoctoproject.org> <20210915175842.2998541-1-michael.opdenacker@bootlin.com> <20210915175842.2998541-2-michael.opdenacker@bootlin.com>
+Message-ID: <6D0567BB-0803-4839-83B4-99A9F82C1539@0leil.net>
 MIME-Version: 1.0
-References: <16A4FF8E231E8D2E.4682@lists.yoctoproject.org> <20210915175842.2998541-1-michael.opdenacker@bootlin.com>
-In-Reply-To: <20210915175842.2998541-1-michael.opdenacker@bootlin.com>
-From: "Alexander Kanavin" <alex.kanavin@gmail.com>
-Date: Wed, 15 Sep 2021 20:40:05 +0200
-Message-ID: <CANNYZj8VoJxfUHD5f7vTJO1S7QEEyh86x5yXS7Zn_dYtzEt1Lg@mail.gmail.com>
-Subject: Re: [docs] [PATCH v3 0/5] Complete upstream version check documentation
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: docs <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000985dd305cc0d075a"
-
---000000000000985dd305cc0d075a
-Content-Type: text/plain; charset="UTF-8"
-
-Other than my two comments, lgtm, thanks!
-
-Alex
-
-On Wed, 15 Sept 2021 at 19:58, Michael Opdenacker <
-michael.opdenacker@bootlin.com> wrote:
-
-> This V3 add documentation for the UPSTREAM_CHECK_COMMITS and
-> UPSTREAM_VERSION_UNKNOWN variables, and takes their usage into account
-> in the explanations.
->
-> There is a little bit of extra text to review if you're interested.
->
-> This addresses https://bugzilla.yoctoproject.org/show_bug.cgi?id=14431
->
-> Thanks in advance.
->
-> Michael Opdenacker (5):
->   ref-manual: document UPSTREAM_CHECK_COMMITS and
->     UPSTREAM_VERSION_UNKNOWN
->   ref-manual: remove checkpkg task
->   ref-manual: improve "devtool check-upgrade-status" details
->   ref-manual: improve documentation for RECIPE_NO_UPDATE_REASON
->   ref-manual: update "devtool check-upgrade-status" output
->
->  .../ref-manual/devtool-reference.rst          | 57 ++++++++++---------
->  documentation/ref-manual/tasks.rst            | 31 ----------
->  documentation/ref-manual/variables.rst        | 35 +++++++++++-
->  3 files changed, 63 insertions(+), 60 deletions(-)
->
-> --
-> 2.25.1
->
->
-> 
->
->
-
---000000000000985dd305cc0d075a
-Content-Type: text/html; charset="UTF-8"
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"ltr"><div>Other than my two comments, lgtm, thanks!</div><div><=
-br></div><div>Alex<br></div></div><br><div class=3D"gmail_quote"><div dir=
-=3D"ltr" class=3D"gmail_attr">On Wed, 15 Sept 2021 at 19:58, Michael Opdena=
-cker &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com">michael.opdenack=
-er@bootlin.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" st=
-yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
-ing-left:1ex">This V3 add documentation for the UPSTREAM_CHECK_COMMITS and<=
-br>
-UPSTREAM_VERSION_UNKNOWN variables, and takes their usage into account<br>
-in the explanations.<br>
-<br>
-There is a little bit of extra text to review if you&#39;re interested.<br>
-<br>
-This addresses <a href=3D"https://bugzilla.yoctoproject.org/show_bug.cgi?id=
-=3D14431" rel=3D"noreferrer" target=3D"_blank">https://bugzilla.yoctoprojec=
-t.org/show_bug.cgi?id=3D14431</a><br>
-<br>
-Thanks in advance.<br>
-<br>
-Michael Opdenacker (5):<br>
-=C2=A0 ref-manual: document UPSTREAM_CHECK_COMMITS and<br>
-=C2=A0 =C2=A0 UPSTREAM_VERSION_UNKNOWN<br>
-=C2=A0 ref-manual: remove checkpkg task<br>
-=C2=A0 ref-manual: improve &quot;devtool check-upgrade-status&quot; details=
-<br>
-=C2=A0 ref-manual: improve documentation for RECIPE_NO_UPDATE_REASON<br>
-=C2=A0 ref-manual: update &quot;devtool check-upgrade-status&quot; output<b=
-r>
-<br>
-=C2=A0.../ref-manual/devtool-reference.rst=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 | 57 ++++++++++---------<br>
-=C2=A0documentation/ref-manual/tasks.rst=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 | 31 ----------<br>
-=C2=A0documentation/ref-manual/variables.rst=C2=A0 =C2=A0 =C2=A0 =C2=A0 | 3=
-5 +++++++++++-<br>
-=C2=A03 files changed, 63 insertions(+), 60 deletions(-)<br>
-<br>
--- <br>
-2.25.1<br>
-<br>
-<br>
-<br>
-<br>
-</blockquote></div>
+Hi Michael,
 
---000000000000985dd305cc0d075a--
+On September 15, 2021 7:58:38 PM GMT+02:00, Michael Opdenacker <michael=2E=
+opdenacker@bootlin=2Ecom> wrote:
+>Signed-off-by: Michael Opdenacker <michael=2Eopdenacker@bootlin=2Ecom>
+>---
+> documentation/ref-manual/variables=2Erst | 24 ++++++++++++++++++++++++
+> 1 file changed, 24 insertions(+)
+>
+>diff --git a/documentation/ref-manual/variables=2Erst b/documentation/ref=
+-manual/variables=2Erst
+>index 5caada6260=2E=2Ed06ef5a632 100644
+>--- a/documentation/ref-manual/variables=2Erst
+>+++ b/documentation/ref-manual/variables=2Erst
+>@@ -8483,6 +8483,18 @@ system and gives an overview of their function and=
+ contents=2E
+>       install initscripts package them in the main package for the recip=
+e,
+>       you rarely need to set this variable in individual recipes=2E
+>=20
+>+   :term:`UPSTREAM_CHECK_COMMITS`
+>+      You can perform a per-recipe check for what the latest upstream
+>+      source code version is by calling ``devtool latest-version recipe`=
+`=2E If
+>+      the recipe source code is provided from Git repositories, but
+>+      releases are not identified by Git tags, set :term:`UPSTREAM_CHECK=
+_COMMITS`
+>+      to ``1`` in the recipe, and the OpenEmbedded build system
+>+      will compare the latest commit with the one currently specified
+>+      by the recipe (:term:`SRCREV`)=2E
+>+      ::
+>+
+>+         UPSTREAM_CHECK_COMMITS =3D "1"
+>+
+>    :term:`UPSTREAM_CHECK_GITTAGREGEX`
+>       You can perform a per-recipe check for what the latest upstream
+>       source code version is by calling ``bitbake -c checkpkg`` recipe=
+=2E If
+>@@ -8518,6 +8530,18 @@ system and gives an overview of their function and=
+ contents=2E
+>=20
+>          UPSTREAM_CHECK_URI =3D "recipe_url"
+>=20
+>+   :term:`UPSTREAM_VERSION_UNKNOWN`
+>+      You can perform a per-recipe check for what the latest upstream
+>+      source code version is by calling ``devtool latest-version recipe`=
+`=2E
+>+      If no combination of the :term:`UPSTREAM_CHECK_URI`, :term:`UPSTRE=
+AM_CHECK_REGEX`,
+>+      `UPSTREAM_CHECK_GITTAGREGEX` and :term:`UPSTREAM_CHECK_COMMITS` va=
+riables in
+>+      the recipe allows to determine such an latest upstream version,
+
+"allows to determine what the latest upstream version is,"
+?
+
+>+      you can set :term:`UPSTREAM_VERSION_UNKNOWN`` to ``1`` in the reci=
+pe
+
+Spurious tick quote after the term reference=2E
+
+Looks good otherwise, thanks!
+Quentin
+
+>+      to acknowledge that the check cannot be performed=2E
+>+      ::
+>+
+>+         UPSTREAM_VERSION_UNKNOWN =3D "1"
+>+
+>    :term:`USE_DEVFS`
+>       Determines if ``devtmpfs`` is used for ``/dev`` population=2E The
+>       default value used for :term:`USE_DEVFS` is "1" when no value is
