@@ -1,106 +1,132 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <jdmason@kudzu.us>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 900B0C4332F
-	for <webhook@archiver.kernel.org>; Tue,  5 Oct 2021 17:22:10 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web09.61.1633454529128163772
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDFA6C433EF
+	for <webhook@archiver.kernel.org>; Tue,  5 Oct 2021 22:45:15 +0000 (UTC)
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com
+ [209.85.219.54])
+ by mx.groups.io with SMTP id smtpd.web10.4136.1633473915152377333
  for <docs@lists.yoctoproject.org>;
- Tue, 05 Oct 2021 10:22:09 -0700
+ Tue, 05 Oct 2021 15:45:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id 5D47E60005;
-	Tue,  5 Oct 2021 17:22:06 +0000 (UTC)
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] best practices regarding using WKS_FILES to reference
- multiple .wks files?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>
-References: <409faf0-ab12-33b5-20d0-aa60d678ef6@crashcourse.ca>
- <20211004082421.2rgtcfjxodmkrq5e@fedora>
- <8b867c34-b494-be37-736e-cc1ed3aa0ec@crashcourse.ca>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <51e679b9-48b1-f5b6-2b75-b70f9de206e2@bootlin.com>
-Date: Tue, 5 Oct 2021 19:22:05 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ dkim=pass header.i=@kudzu-us.20210112.gappssmtp.com header.s=20210112
+ header.b=d1VlCKH0;
+ spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.219.54,
+ mailfrom: jdmason@kudzu.us)
+Received: by mail-qv1-f54.google.com with SMTP id o13so699191qvm.4
+        for <docs@lists.yoctoproject.org>;
+ Tue, 05 Oct 2021 15:45:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kudzu-us.20210112.gappssmtp.com; s=20210112;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EuUI96CGHQEpFRJpMni1BmewKt3Hw8SQSaggmgZ0GfI=;
+        b=d1VlCKH0VQqry05g0EFY4IQfgu2m2fPkNmEeugzaYzn59qL+k02xy2RHCczuj36YCV
+         9DgcvJLa7CWnVsNlToDm1ljNF/dd2qpQNTZbT4IqJhMHkjWkRp0qXgoTbSDbCC1X1LrL
+         ZnxWSSICLOUchc5ZFALgasjPpY7VVJaH8+XO/wDY627F3nsexQgeqc63g0rUdsns0tWB
+         kmkrPcYJEBsfU29tj57x28UbeG6nv52MTHA5TSy2Zb9DWjt08467vDobM+0/5ctCno0l
+         cNAj5tH2OMDhyV6P0hEzFw1j3gjPNAo3BdCbhcZp1/Qat/rpRAw3qa744Hw++YNxVeTt
+         bXWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=EuUI96CGHQEpFRJpMni1BmewKt3Hw8SQSaggmgZ0GfI=;
+        b=ysyfLkC0d+KkB8P4hz1N27WfmwASxGFqnoA6UBefd2IvBJN7jEZJXbdnFHFO+GRZCS
+         fLMAdbz+FCau5de3LehPGcM1Pn7Gi2QGfPgOkETuTTotLRT7XIgphWGIM4SN5uzZ6k//
+         YWM5+aTrnCmov5s0HNoVT1YTNYVpNld7Bd7qbwx2WQ+EEzt0hM/7+z1YlE05bPUrWr2V
+         uW7nKdgb9jzGQXr9/nL4N9H4AOtkysXFMcpsQDFOKyC5EU9HjfvFSjsDIaCXjNQjxiMY
+         Jq+7HzF8847a4WTfG3crXPWJOWgq8MG8ZpmODynAACS1Xu6fY7yAiwI17WNs+wjw7xRJ
+         W5nA==
+X-Gm-Message-State: AOAM530wvdGeYU7JFyTMlhzXC0CKOOuYlUjPJYdmJobfi5kWnjWdAn5U
+	S4kl9AofTHhmK4Hr3h8xkwo8lQ61GslJLQ==
+X-Google-Smtp-Source: 
+ ABdhPJxQjdH7WR8MCgky7grTOqtsN6tG/Hx6T6GStkEbH/5/3Ay+DGpkQ4ECTCt2QetJrDmDU2Vk0A==
+X-Received: by 2002:ad4:4622:: with SMTP id x2mr17917896qvv.39.1633473914045;
+        Tue, 05 Oct 2021 15:45:14 -0700 (PDT)
+Received: from localhost ([2605:a601:a650:b700:9878:6bc:c765:2aac])
+        by smtp.gmail.com with ESMTPSA id
+ w23sm2343028qts.89.2021.10.05.15.45.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Oct 2021 15:45:13 -0700 (PDT)
+From: Jon Mason <jdmason@kudzu.us>
+To: docs@lists.yoctoproject.org,
+	bitbake-devel@lists.openembedded.org
+Subject: [PATCH 1/2] documentation: update sources mirror URL
+Date: Tue,  5 Oct 2021 18:45:12 -0400
+Message-Id: <20211005224513.14134-1-jdmason@kudzu.us>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-In-Reply-To: <8b867c34-b494-be37-736e-cc1ed3aa0ec@crashcourse.ca>
-Content-Type: text/plain; charset=windows-1252
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 05 Oct 2021 17:22:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1916
+ <docs@lists.yoctoproject.org>; Tue, 05 Oct 2021 22:45:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1917
 
-Quentin, Robert,
+The URL for the sources mirror no longer works.  Update to the new
+location.
 
-Thank you for the research and for the details about WKS_FILES
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+---
+ documentation/ref-manual/faq.rst       | 15 ++++++++-------
+ documentation/ref-manual/variables.rst |  8 ++++----
+ 2 files changed, 12 insertions(+), 11 deletions(-)
 
-On 10/4/21 11:34 AM, Robert P. J. Day wrote:
-> On Mon, 4 Oct 2021, Quentin Schulz wrote:
->
->> Hi Robert,
->>
->> On Sun, Oct 03, 2021 at 10:53:54AM -0400, Robert P. J. Day wrote:
->>>   quick observation -- variable glossary makes no reference to
->>> WKS_FILES variable (or a few other wic-related variables as i think i
->>> mentioned once, but that's not why we're here).
->>>
->>>   simple practice for wic is to define a single .wks file which
->>> defines all partitioning for the target. however, what i'm running
->>> into in my current project is that that single .wks file defines a
->>> couple dozen partitions, many of which are maintained by a number of
->>> different developers.
->>>
->>>   unsurprisingly, since all this content is in a single file, and
->>> those developers are regularly tweaking their partition attributes,
->>> it's a regular occurrence to have commits step on each other when
->>> merging to master.
->>>
->>>   is it reasonable (or even doable) to define a collection of
->>> reasonably independent .wks files that, collectively, define the final
->>> partitioning, and use WKS_FILES to pull them all in, thus avoiding all
->>> those merge conflicts?
->>>
->> No. WKS_FILES is not doing what you think it is.
->   story of my life. :-)
->
->> WKS_FILES is a list of candidates for the .wks file that will be used by
->> wic. First to be found (left to right) will be used.
->> c.f. https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/classes/image_types_wic.bbclass#n57,
->> https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/meta/classes/image_types_wic.bbclass#n39
->>
->> What I found reading the code is that an include statement should work
->> in the wks file, c.f. https://git.yoctoproject.org/cgit/cgit.cgi/poky/tree/scripts/lib/wic/ksparser.py#n282
->>
->> I don't know if they are supposed to be in the same directory, if
->> the path after the include directive is absolute, relative and if
->> relative, to which directory.
->>
->> If that works, I think this is something that should be documented
->> :)
->   yup, that could very well be what i'm after, having the same effect.
-
-
-Did you manage to try this mechanism? If you have details about how it
-works, I'll be happy to add documentation for setting.
-I created a bug in the meantime, so I cannot forget:
-https://bugzilla.yoctoproject.org/show_bug.cgi?id=14590
-
-Thanks in advance
-Michael.
-
+diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
+index d3a603d4a438..f06abc84ee6f 100644
+--- a/documentation/ref-manual/faq.rst
++++ b/documentation/ref-manual/faq.rst
+@@ -302,10 +302,10 @@ attempt before any others by adding something like the following to the
+ ``local.conf`` configuration file::
+ 
+    PREMIRRORS:prepend = "\
+-       git://.*/.* http://www.yoctoproject.org/sources/ \n \
+-       ftp://.*/.* http://www.yoctoproject.org/sources/ \n \
+-       http://.*/.* http://www.yoctoproject.org/sources/ \n \
+-       https://.*/.* http://www.yoctoproject.org/sources/ \n"
++       git://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++       ftp://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++       http://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++       https://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n"
+ 
+ These changes cause the build system to intercept Git, FTP, HTTP, and
+ HTTPS requests and direct them to the ``http://`` sources mirror. You
+@@ -342,9 +342,10 @@ You could make the following changes to the ``local.conf`` configuration
+ file as long as the :term:`PREMIRRORS` server is current::
+ 
+    PREMIRRORS:prepend = "\
+-       ftp://.*/.* http://www.yoctoproject.org/sources/ \n \
+-       http://.*/.* http://www.yoctoproject.org/sources/ \n \
+-       https://.*/.* http://www.yoctoproject.org/sources/ \n"
++       git://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++       ftp://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++       http://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++       https://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n"
+    BB_FETCH_PREMIRRORONLY = "1"
+ 
+ These changes would cause the build system to successfully fetch source
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 5f6f91146bf0..97782d8ec7ed 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5838,10 +5838,10 @@ system and gives an overview of their function and contents.
+       :term:`Build Directory`::
+ 
+          PREMIRRORS:prepend = "\
+-             git://.*/.* http://www.yoctoproject.org/sources/ \n \
+-             ftp://.*/.* http://www.yoctoproject.org/sources/ \n \
+-             http://.*/.* http://www.yoctoproject.org/sources/ \n \
+-             https://.*/.* http://www.yoctoproject.org/sources/ \n"
++             git://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++             ftp://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++             http://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
++             https://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n"
+ 
+       These changes cause the
+       build system to intercept Git, FTP, HTTP, and HTTPS requests and
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.20.1
 
 
