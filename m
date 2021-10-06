@@ -1,126 +1,130 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <jdmason@kudzu.us>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A612C433EF
-	for <webhook@archiver.kernel.org>; Wed,  6 Oct 2021 19:18:03 +0000 (UTC)
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com
- [209.85.221.44])
- by mx.groups.io with SMTP id smtpd.web10.814.1633547882342797431
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E295C433EF
+	for <webhook@archiver.kernel.org>; Wed,  6 Oct 2021 19:54:08 +0000 (UTC)
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com
+ [209.85.222.177])
+ by mx.groups.io with SMTP id smtpd.web08.1401.1633550046642826741
  for <docs@lists.yoctoproject.org>;
- Wed, 06 Oct 2021 12:18:02 -0700
+ Wed, 06 Oct 2021 12:54:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=YkigA2T1;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.44,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f44.google.com with SMTP id v25so11861194wra.2
+ dkim=pass header.i=@kudzu-us.20210112.gappssmtp.com header.s=20210112
+ header.b=MeqpB5rG;
+ spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.222.177,
+ mailfrom: jdmason@kudzu.us)
+Received: by mail-qk1-f177.google.com with SMTP id g21so3745390qki.11
         for <docs@lists.yoctoproject.org>;
- Wed, 06 Oct 2021 12:18:02 -0700 (PDT)
+ Wed, 06 Oct 2021 12:54:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=evK+zjYrIqjOwgwoi9isOG1lOPCuYQH4MVA+TFeTovg=;
-        b=YkigA2T1wSvZ5DfflnvR9v7S7ZZxjOAyCwzvrnYVUa9RHNuMUDBy30vrt3MOSm2Zvx
-         0vGbSKgoD9RaxhIZ4TMGi7qxV381eda5O17lTg1UFQ/sSxoN2d4UwBL0J+PkREwqNAA7
-         3Me3qp4PZab9RCRroKBkS5pWL7DdRt5DwQPCc=
+        d=kudzu-us.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=g4OQ2b0hr5kupVvH8C77UJa99UYtutc45wpiGG1yff0=;
+        b=MeqpB5rGuMpx1eJIcOXkwvZMBpNAGIOgUPGAePmX9atp6pJ4k5sP8YL60NmB8nH41g
+         ql9XqGYaOFbqaY2mVK3txzODv50F7Ksfsox5bsOZVOBRiRbO8r0zJmQWwz/YMw4L2+oQ
+         t8Ts/AHQDkgu3pvf1oekqXxJbkKRBAI/Pyuh7nsUxpuoLegg3KBMirjBC/7uzpA+YHk+
+         us+cQoRrVT6/nSL7BMXtkmTa4Do3dSNAUIsJC0I58mMo4w6MmCCyKqhX1hUe5QFK9PbT
+         I1BsaWwUmOp+zJgbF6JRUvjS9EqfY7Z6HOjizzU3CZ28k1TS2hp0iN3FQ0D9HOQFX66Q
+         6yGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=evK+zjYrIqjOwgwoi9isOG1lOPCuYQH4MVA+TFeTovg=;
-        b=0s9WeFgGmV17zwEXqpjfgw9BfGVUoZ6ymxL9RyXI4y0GGoayWE80hMQjNd3SvUN5c2
-         DMeAKRDqryBBV6P2NYl1Wlb/iSJqMwtPF26cobvd47Grl0aH9FVumuk570wGH+DmNVbB
-         57QcatNRhXmPpWDvuqUWq8pASUJa4JRgcgZnhB1dEJl9yLuleFk6/59vgv2VLFjbRHDr
-         BNFc2u5MypKlkNb8EIuPZlS+O30+Q5fg4/Ws4DpxOMWDHhMAwEl+OodOkD9OApxxmX+B
-         hVT95UapJH2gS92R8ru4kQwS0E1N6TkNOvalFttTXCHZvP9MtauYyK9l8vVrenzpW0Uv
-         tggg==
-X-Gm-Message-State: AOAM530GOz1J74YkF5vEv5Wkp3TlPoW8xBSCOHiVPiykuoliMxfwGXml
-	oGv9SHZri4lPQJzGemDfi8So5g==
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=g4OQ2b0hr5kupVvH8C77UJa99UYtutc45wpiGG1yff0=;
+        b=4xHAIqU5eW6CGmeAlJWJaqTo2lA+mdGqlVDXvMMgw8kjdf3cWkv/V9fD9a3/GX0a5U
+         ppXoJIeTvmvaxXH8lpFQV//NG+4ZV94DmIM0SN2cYnEk+i+6GUkLU6B2mNrgGdpIH4VO
+         gU8ephPaDFeWOw8yNXyklN2AgWPjq+8V7hhubNH8F9zytAzEYPp1UVj2sKoBuON6Q3gy
+         VLPqprvQThOSgi4B1JxC9k9vjPnnFRW/D4kN9KpKiUH9WROpp5gIQVYYSdAnhG4tz7b5
+         ODmyTBnmhdIyMPcLRAOlePcGH01+T0NhUmMOeYoelXdrORZZQD2IelrHFY7DsJ150eMe
+         j/DA==
+X-Gm-Message-State: AOAM533lzDsdo1WgipJLO5ck9ONu1UsLcwlEb8pzUN+t7gGWVF+FxvnD
+	FB4yd5t2NegMCiRl8v2cGF4oDadUhkgobjBrIkyjjURHIFN/vg==
 X-Google-Smtp-Source: 
- ABdhPJx/TOdpqjbOqFGk8/BIUjx4tfCLexBQFaJ+upZaaS1H5LjSU1GA6l4NJ+NYFpUZjD2pjZqROw==
-X-Received: by 2002:a5d:4212:: with SMTP id
- n18mr30318248wrq.162.1633547880731;
-        Wed, 06 Oct 2021 12:18:00 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:4ef0:3e29:718c:a98a?
- ([2001:8b0:aba:5f3c:4ef0:3e29:718c:a98a])
-        by smtp.gmail.com with ESMTPSA id
- s13sm21001609wrv.97.2021.10.06.12.18.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Oct 2021 12:18:00 -0700 (PDT)
-Message-ID: 
- <341253e1d24e58b01ead644537cbadfb0594d805.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] manuals: replace "apt-get" by "apt"
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	docs@lists.yoctoproject.org
-Date: Wed, 06 Oct 2021 20:17:57 +0100
-In-Reply-To: <20211006190319.963605-1-michael.opdenacker@bootlin.com>
-References: <20211006190319.963605-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1 
+ ABdhPJzutrW3TKAUj8ZRhXZAXZsGlf882VXiN/CMNY4OZ1ykXoamvByKNMLowu4f8i6KJsdO19uw/wktpaz58fsjPig=
+X-Received: by 2002:a37:b7c2:: with SMTP id h185mr19138qkf.311.1633550045610;
+ Wed, 06 Oct 2021 12:54:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20211005224513.14134-1-jdmason@kudzu.us>
+ <35bcdc42-9ed6-5232-c94e-c69f3fd7af94@bootlin.com>
+In-Reply-To: <35bcdc42-9ed6-5232-c94e-c69f3fd7af94@bootlin.com>
+From: Jon Mason <jdmason@kudzu.us>
+Date: Wed, 6 Oct 2021 15:53:32 -0400
+Message-ID: 
+ <CAPoiz9xhmQ+dCEUibDV7_evNhLVb5i83LjU_uo3k1f_4Q3Y-fA@mail.gmail.com>
+Subject: Re: [docs] [PATCH 1/2] documentation: update sources mirror URL
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: docs@lists.yoctoproject.org, bitbake-devel@lists.openembedded.org
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 06 Oct 2021 19:18:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1934
+ <docs@lists.yoctoproject.org>; Wed, 06 Oct 2021 19:54:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1935
 
-On Wed, 2021-10-06 at 21:03 +0200, Michael Opdenacker wrote:
-> Modern Debian based distros (such as Ubuntu) now
-> use "apt" instead of "apt-get"
-> 
-> Also make sure "apt" is invoked with root privileges (mandatory)
-> 
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  documentation/brief-yoctoprojectqs/index.rst     |  2 +-
->  documentation/dev-manual/common-tasks.rst        |  6 +++---
->  documentation/ref-manual/system-requirements.rst | 10 +++++-----
->  documentation/toaster-manual/setup-and-use.rst   |  2 +-
->  documentation/toaster-manual/start.rst           |  2 +-
->  5 files changed, 11 insertions(+), 11 deletions(-)
-> 
-> diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-> index 74167befad..c299df3b6a 100644
-> --- a/documentation/brief-yoctoprojectqs/index.rst
-> +++ b/documentation/brief-yoctoprojectqs/index.rst
-> @@ -80,7 +80,7 @@ distribution:
->  
->  .. code-block:: shell
->  
-> -  $ sudo apt-get install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-> +  $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
->  
->  .. note::
->  
-> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-> index 71e5d6ef57..45834361bf 100644
-> --- a/documentation/dev-manual/common-tasks.rst
-> +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -5874,7 +5874,7 @@ system image files much faster.
->        use the tool without specifying ``PATH`` even from the root
->        account::
->  
-> -         $ sudo apt-get install bmap-tools
-> +         $ sudo apt install bmap-tools
->  
->     -  If you are unable to install the ``bmap-tools`` package, you will
->        need to build Bmaptool before using it. Use the following command::
-> @@ -7066,7 +7066,7 @@ to fetch the repository information:
->  
->  .. code-block:: none
->  
-> -  # apt-get update
-> +  # sudo apt update
->  
+On Wed, Oct 6, 2021 at 10:41 AM Michael Opdenacker
+<michael.opdenacker@bootlin.com> wrote:
+>
+> Hi Jon
+>
+> Thanks for the proposed update !
+>
+> On 10/6/21 12:45 AM, Jon Mason wrote:
+> > The URL for the sources mirror no longer works.  Update to the new
+> > location.
+> >
+> > Signed-off-by: Jon Mason <jdmason@kudzu.us>
+> > ---
+> >  documentation/ref-manual/faq.rst       | 15 ++++++++-------
+> >  documentation/ref-manual/variables.rst |  8 ++++----
+> >  2 files changed, 12 insertions(+), 11 deletions(-)
+> >
+> > diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
+> > index d3a603d4a438..f06abc84ee6f 100644
+> > --- a/documentation/ref-manual/faq.rst
+> > +++ b/documentation/ref-manual/faq.rst
+> > @@ -302,10 +302,10 @@ attempt before any others by adding something like the following to the
+> >  ``local.conf`` configuration file::
+> >
+> >     PREMIRRORS:prepend = "\
+> > -       git://.*/.* http://www.yoctoproject.org/sources/ \n \
+> > -       ftp://.*/.* http://www.yoctoproject.org/sources/ \n \
+> > -       http://.*/.* http://www.yoctoproject.org/sources/ \n \
+> > -       https://.*/.* http://www.yoctoproject.org/sources/ \n"
+> > +       git://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
+> > +       ftp://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
+> > +       http://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
+> > +       https://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n"
+>
+>
+> Hey, doesn't it sound weird to show an example that proposes to use http
+> when https is usually recommended?
+> What about proposing https://downloads.yoctoproject.org/mirror/sources/
+> instead?
+>
+> Or we don't really care because we use source checksums anyway?
+>
+> Just my two cents. I don't mind accepting the patch as is.
 
-I think the prompt there is "#" suggesting you have root privileges. Maybe that
-needs to be $ now?
+A quick and dirty grep of the trees shows many occurrences of
+downloads.yoctoproject.org without https.  Perhaps it would be good to
+correct all of these in a follow-on patch.  I can do a quick patch of
+all of these and get that out in the next day or so.
 
-Cheers,
+Also, looking at documentation/profile-manual/usage.rst (where most of
+the occurrences in the docs are), shouldn't we have a newer kernel
+than 2.6.19.2 as an example?  I mean, it's almost 15 years old.
 
-Richard
+Thanks,
+Jon
 
+> Thanks again,
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
 
