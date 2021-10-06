@@ -1,101 +1,207 @@
-Return-Path: <jdmason@kudzu.us>
+Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BD4AEC43219
-	for <webhook@archiver.kernel.org>; Tue,  5 Oct 2021 22:45:16 +0000 (UTC)
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com
- [209.85.219.45])
- by mx.groups.io with SMTP id smtpd.web08.4122.1633473915647991879
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22E60C433F5
+	for <webhook@archiver.kernel.org>; Wed,  6 Oct 2021 07:41:22 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web11.8777.1633506078719133067
  for <docs@lists.yoctoproject.org>;
- Tue, 05 Oct 2021 15:45:15 -0700
+ Wed, 06 Oct 2021 00:41:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@kudzu-us.20210112.gappssmtp.com header.s=20210112
- header.b=YqqurO14;
- spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.219.45,
- mailfrom: jdmason@kudzu.us)
-Received: by mail-qv1-f45.google.com with SMTP id j12so664503qvk.12
-        for <docs@lists.yoctoproject.org>;
- Tue, 05 Oct 2021 15:45:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kudzu-us.20210112.gappssmtp.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=dRRv61/iuAtAv2hYSlSqDu0qfo2qb4X0oh7LC7lv3+I=;
-        b=YqqurO14b4LQi3X6TjjSgLBPYpsqzIf8kDHVvLaMrnxEJNObB4Aq7rpZnfA0gWB5hF
-         IofMnLOBz0mtSv+dwXOFZCIVASh6mgGnYOEgfv+kKVBhkbkn5KoTeEXL0HbcP3MHOg15
-         Jzl21FkxadbYS0l9job0StAER4g78KlpTpvFvSLpIbjiTBvFpGGunI/TermOG6iV9kDV
-         c3iprZEXeIYJ0Rim6Cd8bclpGF1UNgnmlshQyNAl+GDv/Ckp9s7yZSq3YvVmT+eyAz5O
-         1ga2gsuyNI5nurmMPMtfvvxbgegTfKh8TUs1XB9yeqwNq6Oe7MDq9r4VcZPYnNBysKTT
-         ILbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=dRRv61/iuAtAv2hYSlSqDu0qfo2qb4X0oh7LC7lv3+I=;
-        b=Casgf/+7Hu7xJ/89WIzKB/mxyaAirW1VH48RySTF41uFHz7Y9IYpfJsR6Bw7NtEQR6
-         2CqmdvYHKHMdrD7UOW9KnHtvvhVcFMKAEKFfGVT6Df5O4gA5/6sEiDM929j1272etB2p
-         czNaOF493rQIzWe1v5SFjgQTUG0G8cBsldm3sCUdhJwZFsA1wlW3KtJghc9uVMh9MNuA
-         MuN3A/hElomfcBTuv/ruOZV57uNtPEcsm7bkky9ZZsmoG7IKmzYU8jQjSLQPyDhzodao
-         /soZ+4XB7Ly22w2WRneWw176HC8L7fCQd69RQakwlpcRp1qGRp4CejJk5hxNl3jqKKUu
-         w0Lw==
-X-Gm-Message-State: AOAM5316ZCWatROsSkUpppn1monV/M+3kZWGg2fTBr5WCKhtiw0LUZEA
-	9robFKCOKuIK8d9+tX+xRmVVLVVlaHygiA==
-X-Google-Smtp-Source: 
- ABdhPJzIp0XLqZf71Q6/OnPfVUNo37FfhVdpHK8PTrzg7EVQh2fHdcYi34zCLW9FiU9B43EReEj+HA==
-X-Received: by 2002:a05:6214:42f:: with SMTP id
- a15mr11717640qvy.41.1633473914789;
-        Tue, 05 Oct 2021 15:45:14 -0700 (PDT)
-Received: from localhost ([2605:a601:a650:b700:9878:6bc:c765:2aac])
-        by smtp.gmail.com with ESMTPSA id
- 66sm10397569qke.118.2021.10.05.15.45.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Oct 2021 15:45:14 -0700 (PDT)
-From: Jon Mason <jdmason@kudzu.us>
+ dkim=missing;
+ spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.178.230,
+ mailfrom: foss@0leil.net)
+Received: (Authenticated sender: foss@0leil.net)
+	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 8DAE324000D;
+	Wed,  6 Oct 2021 07:41:15 +0000 (UTC)
+Date: Wed, 06 Oct 2021 09:41:14 +0200
+From: Quentin Schulz <foss@0leil.net>
 To: docs@lists.yoctoproject.org,
-	bitbake-devel@lists.openembedded.org
-Subject: [PATCH 2/2] bitbake: bitbake-user-manual: update sources mirror URL
-Date: Tue,  5 Oct 2021 18:45:13 -0400
-Message-Id: <20211005224513.14134-2-jdmason@kudzu.us>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20211005224513.14134-1-jdmason@kudzu.us>
-References: <20211005224513.14134-1-jdmason@kudzu.us>
+ Michael Opdenacker <michael.opdenacker@bootlin.com>,
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Nicolas Dechesne <nicolas.dechesne@linaro.org>
+CC: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: =?US-ASCII?Q?Re=3A_=5Bdocs=5D_=5BPATCH_2/4=5D_?=
+ =?US-ASCII?Q?docs=3A_sphinx-static=3A_swi?=
+ =?US-ASCII?Q?tchers=2Ejs=3A_correctly_highlight_obsolete_releases?=
+In-Reply-To: <0c6caeec-da66-2bc1-1f6f-6e93c7dd009f@bootlin.com>
+References: <20210928162202.749990-1-quentin.schulz@theobroma-systems.com>
+ <20210928162202.749990-2-quentin.schulz@theobroma-systems.com>
+ <CAP71WjzPeZJQsesFc=uweY9=C_QyDOR3UmX5YE4qnWLEVkdWLA@mail.gmail.com>
+ <20211005141141.xmaltlqoju27rd4h@fedora>
+ <0c6caeec-da66-2bc1-1f6f-6e93c7dd009f@bootlin.com>
+Message-ID: <815A38D5-A8DA-427A-9349-1CFECF22CE14@0leil.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 05 Oct 2021 22:45:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1918
+ <docs@lists.yoctoproject.org>; Wed, 06 Oct 2021 07:41:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1919
 
-The URL for the sources mirror no longer works.  Update to the new
-location.
 
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
----
- .../bitbake-user-manual-ref-variables.rst                 | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index 8862e16b83cb..11f8fdcde003 100644
---- a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -1123,10 +1123,10 @@ overview of their function and contents.
-       your configuration::
- 
-          PREMIRRORS:prepend = "\
--         git://.*/.* http://www.yoctoproject.org/sources/ \n \
--         ftp://.*/.* http://www.yoctoproject.org/sources/ \n \
--         http://.*/.* http://www.yoctoproject.org/sources/ \n \
--         https://.*/.* http://www.yoctoproject.org/sources/ \n"
-+         git://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
-+         ftp://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
-+         http://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
-+         https://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n"
- 
-       These changes cause the build system to intercept Git, FTP, HTTP, and
-       HTTPS requests and direct them to the ``http://`` sources mirror. You can
--- 
-2.20.1
+On October 5, 2021 6:29:11 PM GMT+02:00, Michael Opdenacker <michael=2Eopd=
+enacker@bootlin=2Ecom> wrote:
+>Quentin, Nicolas,
+>
+>Thanks for the proposals!
+>
+>On 10/5/21 4:11 PM, Quentin Schulz wrote:
+>> This is a different topic but yes we should settle on some solution tha=
+t
+>> is better than this=2E We could have a separate git repo somewhere for
+>> that file=2E Then I can think of two solutions:
+>>
+>> 1) git clone this repo as part of the documentation
+>>  publishing/development, which is "nicer" because it's explicit the
+>>  switchers=2Ejs is the same for all releases but it's still just a clea=
+ner
+>>  way to implement the find command above,
+>>
+>> 2) have the web server serve this js in a
+>>  docs=2Eyoctoproject=2Eorg/somepath/switchers=2Ejs and add this path to=
+ the
+>>  sphinx template, though we would need to think of a way to not need
+>>  internet access on local development but I'm sure we can think of some
+>>  hackish way :)
+>
+>
+>I'd vote for 1), which looks cleaner=2E The file served by the webserver
+>would be in a git repository anyway=2E
+>
 
+Absolutely, the difference being `git clone` during development or a <scri=
+pt> in the <head> of the docs=2Eyoctoprpject=2Eorg pointing to a URL=2E
+
+>>
+>> Also, I would very much like we have a similar mechanism for the
+>> theme_override=2Ecss for Sphinx because I've fixed a few things in the
+>> last few months and those aren't shown on old releases=2E
+>>
+>>> I've faced issues when trying to load an 'external' XML file into the
+>>> docs website (something to deal with proxy or permissions=2E=2E)=2E=2E=
+ so I
+>>> tried to have the 'release information' in one structure (in
+>>> switchers=2Ejs as an intermediate step), which looks like that:
+>>>
+>>> +  var all_versions =3D [
+>>> +    {'version' : 'dev', 'name' : 'dev (3=2E3)', 'show' : 'yes'},
+>>> +
+>>> +    {'version' : '3=2E2',   'show' : 'yes'},
+>>> +
+>>> +    {'version' : '3=2E1=2E3', 'show' : 'yes', 'docbook' : 'yes'},
+>>> +    {'version' : '3=2E1=2E2', 'show' : 'yes', 'docbook' : 'yes', 'sta=
+te'
+>>> : 'outdated'},
+>>> +    {'version' : '3=2E1=2E1', 'show' : 'yes', 'docbook' : 'yes', 'sta=
+te'
+>>> : 'outdated'},
+>>> +    {'version' : '3=2E1',   'show' : 'yes', 'docbook' : 'yes', 'state=
+'
+>>> : 'outdated'},
+>>> +
+>>> +    {'version' : '3=2E0=2E4', 'show' : 'yes', 'docbook' : 'yes', 'sta=
+te'
+>>> : 'obsolete'},
+>>> +    {'version' : '3=2E0=2E3', 'show' : 'no', 'docbook' : 'yes', 'stat=
+e' :
+>>> 'obsolete'},
+>>> +    {'version' : '3=2E0=2E2', 'show' : 'no', 'docbook' : 'yes', 'stat=
+e' :
+>>> 'obsolete'},
+>>> +    {'version' : '3=2E0=2E1', 'show' : 'no', 'docbook' : 'yes', 'stat=
+e' :
+>>> 'obsolete'},
+>>> +    {'version' : '3=2E0',   'show' : 'no', 'docbook' : 'yes', 'state'=
+ :
+>>> 'obsolete'},
+>>> +
+>>> +    {'version' : '2=2E7=2E4', 'show' : 'yes', 'docbook' : 'yes', 'sta=
+te'
+>>> : 'obsolete'},
+>>> +    {'version' : '2=2E7=2E3', 'show' : 'no', 'docbook' : 'yes', 'stat=
+e' :
+>>> 'obsolete'},
+>>> +    {'version' : '2=2E7=2E2', 'show' : 'no', 'docbook' : 'yes', 'stat=
+e' :
+>>> 'obsolete'},
+>>> +    {'version' : '2=2E7=2E1', 'show' : 'no', 'docbook' : 'yes', 'stat=
+e' :
+>>> 'obsolete'},
+>>> +    {'version' : '2=2E7',   'show' : 'no', 'docbook' : 'yes', 'state'=
+ :
+>>> 'obsolete'},
+>>> +  ];
+>>>
+>>> At least, it becomes straightforward to insert a new release in the
+>>> table=2E=2E I am not sure I ever showed that=2E=2E so adding more to t=
+he
+>>> discussion=2E=2E I am sure the project would benefit from an overall
+>>> releases information database in a few other places, so that could be
+>>> extended=2E
+>>>
+>>>  [1] https://urldefense=2Eproofpoint=2Ecom/v2/url?u=3Dhttp-3A__git=2Ey=
+octoproject=2Eorg_cgit_cgit=2Ecgi_yocto-2Dautobuilder-2Dhelper_tree_scripts=
+_run-2Ddocs-2Dbuild&d=3DDwIBaQ&c=3D_sEr5x9kUWhuk4_nFwjJtA&r=3DLYjLexDn7rXIz=
+VmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=3DIkqJJb6C5WoayEw2QGU=
+j-ZxPis-lTJKhRZGrreYumxY&s=3DxoOeS1RNOATX4K5WSvEy7WE1VZbB9hXH_f_BWQ_Ea1g&e=
+=3D=20
+>>>
+>> I don't know how far we are from implementing *a* new (hopefully) bette=
+r
+>> solution for this, so shall I just go on with the dictionary suggested
+>> above?
+>>
+>> You probably did and I probably forgot since then :)
+>>
+>> Lastly, you talked about on IRC or in another mail I don't remember tha=
+t
+>> you would very much see this array in a separate file so that it can be
+>> reused in other parts (and why not in some automation
+>> tests/scripts/builds/whatever) so that we only have to maintain one fil=
+e
+>> and everything depending on releases and in which state they are, etc=
+=2E=2E
+>> would be gathered at the same place=2E I guess we could put this info i=
+nto
+>> a json file that is then loaded and parsed by the javascript though we
+>> have to make sure the parsing of the JSON is safe, which is another
+>> topic in itself :)
+>
+>
+>By the way, it would also be nice to include the release date and EOL
+>date (which could be in the past=2E=2E=2E that's another way of marking a
+>release as obsolete)=2E This way, we could have the information of whethe=
+r
+>a release is obsolete or otherwise until when it will supported, in the
+>documentation itself and on the release pages too, and not just on a
+>wiki page=2E
+>
+>This would address https://bugzilla=2Eyoctoproject=2Eorg/show_bug=2Ecgi?i=
+d=3D14503
+>
+
+That's something we could add later also if needed, just need to add prope=
+r keys to the JSON dictionary and not change the current layout so we don't=
+ break anything =E2=98=BA=EF=B8=8F
+
+>Quentin, am I right to assume that we're waiting for further decisions
+>on this thread before merging your commits? Or do you think we could
+>already merge some of them?
+>
+
+Waiting on feedback and decision on what to do next=2E No merge yet=2E
+
+Cheers,
+Quentin
+
+>Thanks again,
+>
+>Michael=2E
+>
 
