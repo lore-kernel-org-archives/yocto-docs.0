@@ -2,152 +2,77 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E44D8C433EF
-	for <webhook@archiver.kernel.org>; Wed,  6 Oct 2021 19:03:26 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.628.1633547005364489933
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1086DC433F5
+	for <webhook@archiver.kernel.org>; Wed,  6 Oct 2021 19:07:38 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web12.623.1633547256621483507
  for <docs@lists.yoctoproject.org>;
- Wed, 06 Oct 2021 12:03:26 -0700
+ Wed, 06 Oct 2021 12:07:37 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 2443640002;
-	Wed,  6 Oct 2021 19:03:22 +0000 (UTC)
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 2DF2BC0004;
+	Wed,  6 Oct 2021 19:07:33 +0000 (UTC)
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH 1/4] Makefile: allow epub and latexpdf outputs to
+ use diagrams from SVG sources
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+References: <16834414503E8A25.21857@lists.yoctoproject.org>
+ <20211006122238.959343-1-michael.opdenacker@bootlin.com>
+ <CAP71WjzQKKf2rOoxFKWqAKemgwO9JZLKykk+kYYQBoRSnsHOuQ@mail.gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] manuals: replace "apt-get" by "apt"
-Date: Wed,  6 Oct 2021 21:03:19 +0200
-Message-Id: <20211006190319.963605-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+Organization: Bootlin
+Message-ID: <d91a81bf-bf66-3279-1fa1-7f8c7d79da67@bootlin.com>
+Date: Wed, 6 Oct 2021 21:07:33 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: 
+ <CAP71WjzQKKf2rOoxFKWqAKemgwO9JZLKykk+kYYQBoRSnsHOuQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 06 Oct 2021 19:03:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1932
+ <docs@lists.yoctoproject.org>; Wed, 06 Oct 2021 19:07:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1933
 
-Modern Debian based distros (such as Ubuntu) now
-use "apt" instead of "apt-get"
+Hi Nico,
 
-Also make sure "apt" is invoked with root privileges (mandatory)
+On 10/6/21 4:48 PM, Nicolas Dechesne wrote:
+>
+> For the entire series:
+> Reviewed-by: Nicolas Dechesne <nicolas.dechesne@linaro.org
+> <mailto:nicolas.dechesne@linaro.org>>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/brief-yoctoprojectqs/index.rst     |  2 +-
- documentation/dev-manual/common-tasks.rst        |  6 +++---
- documentation/ref-manual/system-requirements.rst | 10 +++++-----
- documentation/toaster-manual/setup-and-use.rst   |  2 +-
- documentation/toaster-manual/start.rst           |  2 +-
- 5 files changed, 11 insertions(+), 11 deletions(-)
+Thanks for the review!
+>
+> Thanks for turning the initial RFC into this series. We need to get
+> back at producing and releasing PDF files. It might be a bit too late
+> for this release.. perhaps not.. but definitely something to do for 3.5.
 
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index 74167befad..c299df3b6a 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -80,7 +80,7 @@ distribution:
- 
- .. code-block:: shell
- 
--  $ sudo apt-get install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-+  $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
- 
- .. note::
- 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 71e5d6ef57..45834361bf 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -5874,7 +5874,7 @@ system image files much faster.
-       use the tool without specifying ``PATH`` even from the root
-       account::
- 
--         $ sudo apt-get install bmap-tools
-+         $ sudo apt install bmap-tools
- 
-    -  If you are unable to install the ``bmap-tools`` package, you will
-       need to build Bmaptool before using it. Use the following command::
-@@ -7066,7 +7066,7 @@ to fetch the repository information:
- 
- .. code-block:: none
- 
--  # apt-get update
-+  # sudo apt update
- 
- After this step,
- ``apt`` is able to find, install, and upgrade packages from the
-@@ -8249,7 +8249,7 @@ might be significant in human-readable form. Here is an example::
- 
- 
-    Alternatively, you can install ``python3-git`` using the appropriate
--   distribution package manager (e.g. ``apt-get``, ``dnf``, or ``zipper``).
-+   distribution package manager (e.g. ``apt``, ``dnf``, or ``zipper``).
- 
- To see changes to the build history using a web interface, follow the
- instruction in the ``README`` file
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 5e5c105d62..d12e8dfbe3 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -120,23 +120,23 @@ supported Ubuntu or Debian Linux distribution:
-       its own custom ``/usr/include/linux/soundcard.h`` on the Debian
-       system. If you run into this situation, try either of these solutions::
- 
--         $ sudo apt-get build-dep qemu
--         $ sudo apt-get remove oss4-dev
-+         $ sudo apt build-dep qemu
-+         $ sudo apt remove oss4-dev
- 
-    -  For Debian-8, ``python3-git`` and ``pylint3`` are no longer
--      available via ``apt-get``.
-+      available via ``apt``.
-       ::
- 
-          $ sudo pip3 install GitPython pylint==1.9.5
- 
- -  *Essentials:* Packages needed to build an image on a headless system::
- 
--      $ sudo apt-get install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-+      $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
- 
- -  *Documentation:* Packages needed if you are going to build out the
-    Yocto Project documentation manuals::
- 
--      $ sudo apt-get install make python3-pip
-+      $ sudo apt install make python3-pip
-       &PIP3_HOST_PACKAGES_DOC;
- 
-    .. note::
-diff --git a/documentation/toaster-manual/setup-and-use.rst b/documentation/toaster-manual/setup-and-use.rst
-index 4f71b58418..0da8326926 100644
---- a/documentation/toaster-manual/setup-and-use.rst
-+++ b/documentation/toaster-manual/setup-and-use.rst
-@@ -211,7 +211,7 @@ Be sure you meet the following requirements:
- 
- -  If you are using Ubuntu, run the following::
- 
--      $ sudo apt-get install apache2 libapache2-mod-wsgi-py3 mysql-server python3-pip libmysqlclient-dev
-+      $ sudo apt install apache2 libapache2-mod-wsgi-py3 mysql-server python3-pip libmysqlclient-dev
- 
- -  If you are using Fedora or a RedHat distribution, run the
-    following::
-diff --git a/documentation/toaster-manual/start.rst b/documentation/toaster-manual/start.rst
-index c687a82531..cab5d1f673 100644
---- a/documentation/toaster-manual/start.rst
-+++ b/documentation/toaster-manual/start.rst
-@@ -18,7 +18,7 @@ to run the Yocto Project. To do this, follow the instructions in the
- the Yocto Project Development Tasks Manual. For Ubuntu/Debian, you might
- also need to do an additional install of pip3. ::
- 
--   $ sudo apt-get install python3-pip
-+   $ sudo apt install python3-pip
- 
- Establishing Toaster System Dependencies
- ========================================
+
+Maybe not, if the PDF is considered mature enough.
+
+>
+> Quickly browsing through the PDF I can spot some graphics issues..
+> Would be interesting to do an in-depth review of the PDF!
+
+
+I'll check and try to find solutions.
+
+Thanks again,
+
+Cheers,
+
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
