@@ -2,71 +2,84 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99E4BC433EF
-	for <webhook@archiver.kernel.org>; Wed,  6 Oct 2021 08:45:04 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web12.9036.1633509899915834801
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFA4CC433EF
+	for <webhook@archiver.kernel.org>; Wed,  6 Oct 2021 08:53:45 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web09.9144.1633510424198514955
  for <docs@lists.yoctoproject.org>;
- Wed, 06 Oct 2021 01:45:00 -0700
+ Wed, 06 Oct 2021 01:53:44 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 25193240006;
-	Wed,  6 Oct 2021 08:44:57 +0000 (UTC)
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 31687C001A;
+	Wed,  6 Oct 2021 08:53:40 +0000 (UTC)
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] dev-manual: correct NO_GENERIC_LICENSE section
+ title
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+References: <20211006081525.952523-1-michael.opdenacker@bootlin.com>
+ <20211006082001.rgqhbh6kwpu2ybnk@fedora>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] dev-manual: warn about license compliance issues when static
- libraries are used
-Date: Wed,  6 Oct 2021 10:44:55 +0200
-Message-Id: <20211006084455.953350-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+Organization: Bootlin
+Message-ID: <028e67ca-2712-af16-9feb-632a267e2c1e@bootlin.com>
+Date: Wed, 6 Oct 2021 10:53:40 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20211006082001.rgqhbh6kwpu2ybnk@fedora>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 06 Oct 2021 08:45:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1922
+ <docs@lists.yoctoproject.org>; Wed, 06 Oct 2021 08:53:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1923
 
-This partly addresses [YOCTO #14407]
+Hi Quentin,
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/dev-manual/common-tasks.rst | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+On 10/6/21 10:20 AM, Quentin Schulz wrote:
+> Hi Michael,
+>
+> On Wed, Oct 06, 2021 at 10:15:25AM +0200, Michael Opdenacker wrote:
+>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>> ---
+>>  documentation/dev-manual/common-tasks.rst | 4 ++--
+>>  1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+>> index b81f51bf83..bcc8d056c0 100644
+>> --- a/documentation/dev-manual/common-tasks.rst
+>> +++ b/documentation/dev-manual/common-tasks.rst
+>> @@ -11159,8 +11159,8 @@ For more usage information refer to :yocto_git:`the meta-spdxscanner repository
+>>  </meta-spdxscanner/>`.
+>>  
+>>  
+>> -Copying Licenses that Do Not Exist
+>> -----------------------------------
+>> +Copying Non Standard Licenses
+>> +-----------------------------
+>>  
+> Provided this is not linked to from anywhere else (in which case we need
+> to change the ref link there too),
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index b81f51bf83..2c862dc1be 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -11158,6 +11158,23 @@ this function, you have to follow the following steps:
- For more usage information refer to :yocto_git:`the meta-spdxscanner repository
- </meta-spdxscanner/>`.
- 
-+Compliance Limitations with Executables Built from Static Libraries
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+When package A is added to an image (``RDEPENDS += "A"``), and depends on
-+a static linked library package B (``DEPENDS += "B"``), package B will neither
-+appear in the generated license manifest nor in the source tarballs generated
-+by the archiving class. This occurs as the licensing and archiving classes
-+assume that only packages included via :term:`RDEPENDS` end up in the image.
-+
-+As a result, potential obligations regarding license compliance for package B
-+may not be met.
-+
-+The Yocto Project doesn't enable static libraries by default, in part because
-+of this issue. Before a solution to this limitation is found, you need to
-+keep in mind that if your root filesystem is built from static libraries,
-+you will need to manually ensure that your deliveries are compliant
-+with the licenses of these libraries.
- 
- Copying Licenses that Do Not Exist
- ----------------------------------
+
+Ah right, well thought! Fortunately, the whole manual rebuilds well
+after a "make clean", so it should be all right.
+
+>
+> Reviewed-By: Quentin Schulz <foss@0leil.net>
+
+Thanks for the review!
+
+Cheers,
+Michael
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
