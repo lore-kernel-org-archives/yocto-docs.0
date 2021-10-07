@@ -1,248 +1,119 @@
-Return-Path: <jdmason@kudzu.us>
+Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA583C07CB1
-	for <webhook@archiver.kernel.org>; Thu,  7 Oct 2021 15:06:41 +0000 (UTC)
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com
- [209.85.160.171])
- by mx.groups.io with SMTP id smtpd.web11.13417.1633619200239951411
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52DCDC433EF
+	for <webhook@archiver.kernel.org>; Thu,  7 Oct 2021 16:15:35 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.635.1633623334502967155
  for <docs@lists.yoctoproject.org>;
- Thu, 07 Oct 2021 08:06:40 -0700
+ Thu, 07 Oct 2021 09:15:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@kudzu-us.20210112.gappssmtp.com header.s=20210112
- header.b=gBBazmDJ;
- spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.160.171,
- mailfrom: jdmason@kudzu.us)
-Received: by mail-qt1-f171.google.com with SMTP id m26so6465731qtn.1
-        for <docs@lists.yoctoproject.org>;
- Thu, 07 Oct 2021 08:06:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kudzu-us.20210112.gappssmtp.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=wKaphKhdn0TYy/e+BD3gDkpA8EedPhNO029wS/QANPY=;
-        b=gBBazmDJYLx+DXiaCPf4OEcVbqwQOaW+4zoXfuK133aAyPrdtuk8JkoHo/WGN9L8+g
-         ui3xLBfxFC7Zu7+8vlMLiLYERnYz+mfChMGrpNd3IYWE3tL5Uc0udDE9AL5HxHFfnHQ4
-         KdnZJBlsAWtKgjFt1L4CxCQbbXbI5Hsp7ukIT63ynHv1sBDwC40kc5AUdlEpMD42tdVL
-         oMIcxyzeoJ5QEz4VamHJK4mIs03t0PzePNMqWhiK9Wo3VoiD0RFDXCslMVyOMK/lgPUE
-         Oy/nmgNxeVp5hdxzpEttKhMlTDn1v4UhgrVSRIsYeMpYwoKu3dwEJr6NmtmWg5KakiYO
-         sIkw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=wKaphKhdn0TYy/e+BD3gDkpA8EedPhNO029wS/QANPY=;
-        b=axW+QCbaKE5CxEuExkS8Bj+dY8dLXozRMtkC4jT6CoNksXl3HZdadmt1Dcwsd4dnbP
-         LBB4NUul6dWiDqWrKyBSnwRuWktXTdmZaO7W5MNf/GMET0FXja9PGNAD+R09nAYYyqQc
-         WEp7sNuprGsSi0tS5iXjQGQdQ3ob0XO+RLK2zQPJA2WlprcCs3Ma8PC0FKU2j6x0ebyC
-         EG2WQRwDKalts9g43pXaKlp8UKuzuMtoMUY+aQsRPHWNKLkFGIVM7ardVTdxnqkNXo1a
-         v5lccY37A7JBGPqu0MmKzyHrC5t+QEBCWwQ8qiLOmNqSTT2HCoS2WeXdUKN7i5PzIBiQ
-         OLVw==
-X-Gm-Message-State: AOAM532F/+70MO7UckZ55DFUsZMzD4IdB94xDbzXkGbO70LBBtswR7Ge
-	4MAuGaHmGX49AwW/kDCgoODZpiETUjqqUQ==
-X-Google-Smtp-Source: 
- ABdhPJylOyitp4eox5fXGUO9Boxy8FIlIW/IQrihEQzpp+OOFWLKEcV1BBDyqhnaiICVlfU0YOcfXw==
-X-Received: by 2002:ac8:7319:: with SMTP id x25mr5487352qto.147.1633619199312;
-        Thu, 07 Oct 2021 08:06:39 -0700 (PDT)
-Received: from localhost ([2605:a601:a650:b700:9937:f30b:7d2e:fddf])
-        by smtp.gmail.com with ESMTPSA id
- l20sm17379891qtk.19.2021.10.07.08.06.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Oct 2021 08:06:39 -0700 (PDT)
-From: Jon Mason <jdmason@kudzu.us>
-To: openembedded-core@lists.openembedded.org,
-	docs@lists.yoctoproject.org,
-	bitbake-devel@lists.openembedded.org
-Subject: [PATCH 7/8] documentation: use YOCTO_DL_URL
-Date: Thu,  7 Oct 2021 11:06:29 -0400
-Message-Id: <20211007150630.22138-8-jdmason@kudzu.us>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20211007150630.22138-1-jdmason@kudzu.us>
+ dkim=missing;
+ spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.201,
+ mailfrom: foss@0leil.net)
+Received: (Authenticated sender: foss@0leil.net)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id AAE9D1BF20C;
+	Thu,  7 Oct 2021 16:15:30 +0000 (UTC)
+Date: Thu, 07 Oct 2021 18:15:28 +0200
+From: Quentin Schulz <foss@0leil.net>
+To: docs@lists.yoctoproject.org, Jon Mason <jdmason@kudzu.us>,
+ openembedded-core@lists.openembedded.org,
+ bitbake-devel@lists.openembedded.org
+Subject: Re: [docs] [PATCH 1/8] oeqa/manual: Fix no longer valid URLs
+In-Reply-To: <20211007150630.22138-2-jdmason@kudzu.us>
 References: <20211007150630.22138-1-jdmason@kudzu.us>
+ <20211007150630.22138-2-jdmason@kudzu.us>
+Message-ID: <B0A9ED6D-F661-4C4D-8FA4-C5FF536A915E@0leil.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 07 Oct 2021 15:06:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1959
+ <docs@lists.yoctoproject.org>; Thu, 07 Oct 2021 16:15:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1961
 
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
----
- documentation/profile-manual/usage.rst | 28 +++++++++++++-------------
- documentation/ref-manual/faq.rst       | 16 +++++++--------
- documentation/ref-manual/variables.rst |  8 ++++----
- 3 files changed, 26 insertions(+), 26 deletions(-)
+Hi Jon,
 
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index 0c21ab14dec4..3d2840884f9a 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -105,18 +105,18 @@ can be used in a very similar way to the whole host of supported BusyBox
- applets in Yocto. ::
- 
-    root@crownbay:~# rm linux-2.6.19.2.tar.bz2; \
--                    wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+                    wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
- 
- The quickest and easiest way to get some basic overall data about what's
- going on for a particular workload is to profile it using 'perf stat'.
- 'perf stat' basically profiles using a few default counters and displays
- the summed counts at the end of the run::
- 
--   root@crownbay:~# perf stat wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+   root@crownbay:~# perf stat wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
-    Connecting to downloads.yoctoproject.org (140.211.169.59:80)
-    linux-2.6.19.2.tar.b 100% |***************************************************| 41727k  0:00:00 ETA
- 
--   Performance counter stats for 'wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2':
-+   Performance counter stats for 'wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2':
- 
-          4597.223902 task-clock                #    0.077 CPUs utilized
-                23568 context-switches          #    0.005 M/sec
-@@ -141,11 +141,11 @@ by 'perf stat'. For example, suppose we wanted to see a summary of all
- the events related to kernel memory allocation/freeing along with cache
- hits and misses::
- 
--   root@crownbay:~# perf stat -e kmem:* -e cache-references -e cache-misses wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+   root@crownbay:~# perf stat -e kmem:* -e cache-references -e cache-misses wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
-    Connecting to downloads.yoctoproject.org (140.211.169.59:80)
-    linux-2.6.19.2.tar.b 100% |***************************************************| 41727k  0:00:00 ETA
- 
--   Performance counter stats for 'wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2':
-+   Performance counter stats for 'wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2':
- 
-                 5566 kmem:kmalloc
-               125517 kmem:kmem_cache_alloc
-@@ -181,7 +181,7 @@ executed in a new shell). perf collects samples until the process exits
- and records them in a file named 'perf.data' in the current working
- directory. ::
- 
--   root@crownbay:~# perf record wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+   root@crownbay:~# perf record wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
- 
-    Connecting to downloads.yoctoproject.org (140.211.169.59:80)
-    linux-2.6.19.2.tar.b 100% |************************************************| 41727k  0:00:00 ETA
-@@ -219,7 +219,7 @@ between the new profile and the previous one is that we'll add the -g
- option, which will record not just the address of a sampled function,
- but the entire callchain to the sampled function as well::
- 
--   root@crownbay:~# perf record -g wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+   root@crownbay:~# perf record -g wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
-    Connecting to downloads.yoctoproject.org (140.211.169.59:80)
-    linux-2.6.19.2.tar.b 100% |************************************************| 41727k  0:00:00 ETA
-    [ perf record: Woken up 3 times to write data ]
-@@ -527,8 +527,8 @@ workload, so let's choose the most likely subsystems (identified by the
- string before the colon in the Tracepoint events) and do a 'perf stat'
- run using only those wildcarded subsystems::
- 
--   root@crownbay:~# perf stat -e skb:* -e net:* -e napi:* -e sched:* -e workqueue:* -e irq:* -e syscalls:* wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
--   Performance counter stats for 'wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2':
-+   root@crownbay:~# perf stat -e skb:* -e net:* -e napi:* -e sched:* -e workqueue:* -e irq:* -e syscalls:* wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
-+   Performance counter stats for 'wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2':
- 
-                23323 skb:kfree_skb
-                    0 skb:consume_skb
-@@ -589,7 +589,7 @@ run using only those wildcarded subsystems::
- Let's pick one of these tracepoints
- and tell perf to do a profile using it as the sampling event::
- 
--   root@crownbay:~# perf record -g -e sched:sched_wakeup wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+   root@crownbay:~# perf record -g -e sched:sched_wakeup wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
- 
- .. image:: figures/sched-wakeup-profile.png
-    :align: center
-@@ -648,7 +648,7 @@ applicable to our workload::
- 
-    root@crownbay:~# perf record -g -e skb:* -e net:* -e napi:* -e sched:sched_switch -e sched:sched_wakeup -e irq:*
-     -e syscalls:sys_enter_read -e syscalls:sys_exit_read -e syscalls:sys_enter_write -e syscalls:sys_exit_write
--    wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+    wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
- 
- We can look at the raw trace output using 'perf script' with no
- arguments::
-@@ -885,7 +885,7 @@ To demonstrate this, open up one window and start the profile using the
- 
- In another window, run the wget test::
- 
--   root@crownbay:~# wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2
-+   root@crownbay:~# wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2
-    Connecting to downloads.yoctoproject.org (140.211.169.59:80)
-    linux-2.6.19.2.tar.b 100% \|*******************************\| 41727k 0:00:00 ETA
- 
-@@ -2251,7 +2251,7 @@ of the block device you want to trace activity on::
- 
- In another shell, execute a workload you want to trace. ::
- 
--   root@crownbay:/media/sdc# rm linux-2.6.19.2.tar.bz2; wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2; sync
-+   root@crownbay:/media/sdc# rm linux-2.6.19.2.tar.bz2; wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2; sync
-    Connecting to downloads.yoctoproject.org (140.211.169.59:80)
-    linux-2.6.19.2.tar.b 100% \|*******************************\| 41727k 0:00:00 ETA
- 
-@@ -2420,7 +2420,7 @@ On the target system, you should see this::
- 
- In another shell, execute a workload you want to trace. ::
- 
--   root@crownbay:/media/sdc# rm linux-2.6.19.2.tar.bz2; wget https://downloads.yoctoproject.org/mirror/sources/linux-2.6.19.2.tar.bz2; sync
-+   root@crownbay:/media/sdc# rm linux-2.6.19.2.tar.bz2; wget &YOCTO_DL_URL;/mirror/sources/linux-2.6.19.2.tar.bz2; sync
-    Connecting to downloads.yoctoproject.org (140.211.169.59:80)
-    linux-2.6.19.2.tar.b 100% \|*******************************\| 41727k 0:00:00 ETA
- 
-diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/faq.rst
-index 0d547b2d1bfa..e1b95f183a64 100644
---- a/documentation/ref-manual/faq.rst
-+++ b/documentation/ref-manual/faq.rst
-@@ -302,10 +302,10 @@ attempt before any others by adding something like the following to the
- ``local.conf`` configuration file::
- 
-    PREMIRRORS:prepend = "\
--       git://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--       ftp://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--       http://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--       https://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n"
-+       git://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+       ftp://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+       http://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+       https://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n"
- 
- These changes cause the build system to intercept Git, FTP, HTTP, and
- HTTPS requests and direct them to the ``http://`` sources mirror. You
-@@ -342,10 +342,10 @@ You could make the following changes to the ``local.conf`` configuration
- file as long as the :term:`PREMIRRORS` server is current::
- 
-    PREMIRRORS:prepend = "\
--       git://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--       ftp://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--       http://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--       https://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n"
-+       git://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+       ftp://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+       http://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+       https://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n"
-    BB_FETCH_PREMIRRORONLY = "1"
- 
- These changes would cause the build system to successfully fetch source
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index b0c2c92c1a00..c6776838aedc 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5838,10 +5838,10 @@ system and gives an overview of their function and contents.
-       :term:`Build Directory`::
- 
-          PREMIRRORS:prepend = "\
--             git://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--             ftp://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--             http://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
--             https://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n"
-+             git://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+             ftp://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+             http://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n \
-+             https://.*/.* &YOCTO_DL_URL;/mirror/sources/ \n"
- 
-       These changes cause the
-       build system to intercept Git, FTP, HTTP, and HTTPS requests and
--- 
-2.20.1
+On October 7, 2021 5:06:23 PM GMT+02:00, Jon Mason <jdmason@kudzu=2Eus> wr=
+ote:
+>autobuilder=2Eyoctoproject=2Eorg URLS no longer work=2E  Update them to a
+>working location=2E
+>
+>Signed-off-by: Jon Mason <jdmason@kudzu=2Eus>
+>---
+> meta/lib/oeqa/manual/eclipse-plugin=2Ejson | 6 +++---
 
+We don't support the eclipse plugin anymore, I guess this is a file we for=
+got to remove?
+
+Cheers,
+Quentin
+
+> 1 file changed, 3 insertions(+), 3 deletions(-)
+>
+>diff --git a/meta/lib/oeqa/manual/eclipse-plugin=2Ejson b/meta/lib/oeqa/m=
+anual/eclipse-plugin=2Ejson
+>index d77d0e673b8b=2E=2E6c110d0656ec 100644
+>--- a/meta/lib/oeqa/manual/eclipse-plugin=2Ejson
+>+++ b/meta/lib/oeqa/manual/eclipse-plugin=2Ejson
+>@@ -44,7 +44,7 @@
+>                     "expected_results": ""
+>                 },
+>                 "2": {
+>-                    "action": "wget  autobuilder=2Eyoctoproject=2Eorg/pu=
+b/releases//machines/qemu/qemux86/qemu (ex:core-image-sato-sdk-qemux86-date=
+-rootfs-tar-bz2) \nsource /opt/poky/version/environment-setup-i585-poky-lin=
+ux  \n\nExtract qemu with runqemu-extract-sdk /home/user/file(ex=2Ecore-ima=
+ge-sato-sdk-qemux86=2Ebz2) \n/home/user/qemux86-sato-sdk  \n\n",
+>+                    "action": "wget  https://downloads=2Eyoctoproject=2E=
+org/releases/yocto/yocto-$VERSION/machines/qemu/qemux86/ (ex:core-image-sat=
+o-sdk-qemux86-date-rootfs-tar-bz2) \nsource /opt/poky/version/environment-s=
+etup-i585-poky-linux  \n\nExtract qemu with runqemu-extract-sdk /home/user/=
+file(ex=2Ecore-image-sato-sdk-qemux86=2Ebz2) \n/home/user/qemux86-sato-sdk =
+ \n\n",
+>                     "expected_results": " Qemu can be lauched normally=
+=2E"
+>                 },
+>                 "3": {
+>@@ -60,7 +60,7 @@
+>                     "expected_results": ""
+>                 },
+>                 "6": {
+>-                    "action": "(d) QEMU: \nSelect this option if you wil=
+l be using the QEMU emulator=2E Specify the Kernel matching the QEMU archit=
+ecture you are using=2E \n      wget  autobuilder=2Eyoctoproject=2Eorg/pub/=
+releases//machines/qemu/qemux86/bzImage-qemux86=2Ebin \n      e=2Eg: /home/=
+$USER/yocto/adt-installer/download_image/bzImage-qemux86=2Ebin  \n\n",
+>+                    "action": "(d) QEMU: \nSelect this option if you wil=
+l be using the QEMU emulator=2E Specify the Kernel matching the QEMU archit=
+ecture you are using=2E \n      wget  https://downloads=2Eyoctoproject=2Eor=
+g/releases/yocto/yocto-$VERSION/machines/qemu/qemux86/bzImage-qemux86=2Ebin=
+ \n      e=2Eg: /home/$USER/yocto/adt-installer/download_image/bzImage-qemu=
+x86=2Ebin  \n\n",
+>                     "expected_results": ""
+>                 },=09
+>                 "7": {
+>@@ -247,7 +247,7 @@
+>             "execution": {
+>                 "1": {
+>                     "action": "Clone eclipse-poky source=2E   \n    \n  =
+  - git clone git://git=2Eyoctoproject=2Eorg/eclipse-poky  \n\n",
+>-                    "expected_results": "Eclipse plugin is successfully =
+installed  \n\nDocumentation is there=2E For example if you have release yo=
+cto-2=2E0=2E1 you will found on   http://autobuilder=2Eyoctoproject=2Eorg/p=
+ub/releases/yocto-2=2E0=2E1/eclipse-plugin/mars/  archive with documentatio=
+n like org=2Eyocto=2Edoc-development-$date=2Ezip  \n  \n"
+>+                    "expected_results": "Eclipse plugin is successfully =
+installed  \n\nDocumentation is there=2E For example if you have release yo=
+cto-2=2E0=2E1 you will found on   https://downloads=2Eyoctoproject=2Eorg/re=
+leases/yocto/yocto-2=2E0=2E1/eclipse-plugin/mars/  archive with documentati=
+on like org=2Eyocto=2Edoc-development-$date=2Ezip  \n  \n"
+>                 },
+>                 "2": {
+>                     "action": "Checkout correct tag=2E  \n\n    - git ch=
+eckout <eclipse-version>/<yocto-version> \n\n",
 
