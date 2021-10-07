@@ -1,71 +1,93 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <jdmason@kudzu.us>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DFE4C433EF
-	for <webhook@archiver.kernel.org>; Thu,  7 Oct 2021 13:42:00 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.11882.1633614119838324445
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D078C43219
+	for <webhook@archiver.kernel.org>; Thu,  7 Oct 2021 15:06:34 +0000 (UTC)
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com
+ [209.85.222.180])
+ by mx.groups.io with SMTP id smtpd.web09.13169.1633619193467792936
  for <docs@lists.yoctoproject.org>;
- Thu, 07 Oct 2021 06:42:00 -0700
+ Thu, 07 Oct 2021 08:06:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 6ED811C000D;
-	Thu,  7 Oct 2021 13:41:57 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 3/4] overview-manual: SVG diagram for the git
- workflow
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-References: <16834414503E8A25.21857@lists.yoctoproject.org>
- <20211006122238.959343-1-michael.opdenacker@bootlin.com>
- <20211006122238.959343-3-michael.opdenacker@bootlin.com>
- <20211007124253.jx6pgewhaiwako7q@fedora>
- <20211007133222.5i2oxea6hfgiyji4@fedora>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <e510dbe8-9288-9470-64fa-4aad01b8df79@bootlin.com>
-Date: Thu, 7 Oct 2021 15:41:56 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ dkim=pass header.i=@kudzu-us.20210112.gappssmtp.com header.s=20210112
+ header.b=cOtkVMh/;
+ spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.222.180,
+ mailfrom: jdmason@kudzu.us)
+Received: by mail-qk1-f180.google.com with SMTP id q125so6215489qkd.12
+        for <docs@lists.yoctoproject.org>;
+ Thu, 07 Oct 2021 08:06:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kudzu-us.20210112.gappssmtp.com; s=20210112;
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=SlqRBoUJsvd8ckBHYJ0CxVrjYNLgPLBFLxwRwSJDKos=;
+        b=cOtkVMh/+MGlLaIMwcshiR3DTusvprtBpLSE8GJcnocrewl1aXdBXtpZuCEPs4fX6u
+         ntynSJ0gXgLeE/g/BfRiYbC0xK6dIeDz1q7JTg5EhoCbMC7iR5jB5pwCIkpLZlBbD3ea
+         cmsXn83o71sKUQGogU5vMs4k/CYv/dIvxWDZBxImJH5Yt4L3bZ3m3oG3sPB2J+z+CY67
+         Ei1p2xq/EkPoe1kwsv8kYslDpMhMUw8lSYeFlLzXE2kPdxceSkp2BUK1Mc+HStZoEX31
+         caUh7m6FYZ+hZG7JSkS9G8PstLOkkmveS/vQQlDh6CAOKY/n+dM37Sb5NE3OIUfuYrSf
+         SPJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=SlqRBoUJsvd8ckBHYJ0CxVrjYNLgPLBFLxwRwSJDKos=;
+        b=SMrdfeG1sjEyk/aSJIHOWR6GE4uP9cgtyzh2LpT5jtEB7rcOi8/pqw54Mh4tH8lSvG
+         hZxY6PQza2X9fgltMaA6khIrIDM7fFk6/OzFzk9yFReQVoikculHM9tfE5pQH+Pk1mwu
+         X+SNmXbOHV9DzO79MOqQAn9HNjDVNdzCoioKgEgwvESbnNzqrtFY7NKOeC8R0+b2qP3m
+         EDJLh/WGpF/ihzOeECImXBfuK9KZasXZfLrwn3IPRqE7HzZhBebAdx77O7EKKo5EuyEa
+         Wg+pzY/1pqQBPQyo6G8P4XP6APSGaDS9GVKfKOP8zVnnHw+xmF+XC/elP68vZciuXcsE
+         7J4Q==
+X-Gm-Message-State: AOAM5311rAbnQlMoi/47ZbCDva/wqVNq/2qEqqfaovWq3LNR3MIgn259
+	Dz3Prf3rmKsVzYgIVfOkJNXDM7AtYL/nZg==
+X-Google-Smtp-Source: 
+ ABdhPJwSVPu1uToq6lN9E5DsYA799QJjzo84U4qroIKTMObwbB+Qmt5CKj5oigt6mrkxlA2/+GdkIg==
+X-Received: by 2002:a37:bf81:: with SMTP id
+ p123mr3790869qkf.439.1633619192675;
+        Thu, 07 Oct 2021 08:06:32 -0700 (PDT)
+Received: from localhost ([2605:a601:a650:b700:9937:f30b:7d2e:fddf])
+        by smtp.gmail.com with ESMTPSA id
+ x18sm14001413qkx.94.2021.10.07.08.06.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Oct 2021 08:06:32 -0700 (PDT)
+From: Jon Mason <jdmason@kudzu.us>
+To: openembedded-core@lists.openembedded.org,
+	docs@lists.yoctoproject.org,
+	bitbake-devel@lists.openembedded.org
+Subject: [PATCH 2/8] bitbake:toaster:test: Update SSTATE URL
+Date: Thu,  7 Oct 2021 11:06:24 -0400
+Message-Id: <20211007150630.22138-3-jdmason@kudzu.us>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20211007150630.22138-1-jdmason@kudzu.us>
+References: <20211007150630.22138-1-jdmason@kudzu.us>
 MIME-Version: 1.0
-In-Reply-To: <20211007133222.5i2oxea6hfgiyji4@fedora>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 07 Oct 2021 13:42:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1951
+ <docs@lists.yoctoproject.org>; Thu, 07 Oct 2021 15:06:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1954
 
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+---
+ bitbake/lib/toaster/tests/builds/buildtest.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 10/7/21 3:32 PM, Quentin Schulz wrote:
-> Answering myself:
->
-> https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html?highlight=image#images
->
-> Depends on the Builder and its supported_image_types setting (first
-> match, from left to right).
->
-> For HTML, it is
-> https://www.sphinx-doc.org/en/master/usage/builders/index.html#sphinx.builders.html.StandaloneHTMLBuilder,
-> svg first then png, etc..
-
-Good that you found the defaults there. I didn't read that page
-carefully enough, and I thought it was just an example.
-
-I'm merging this series in master next, after adding the comment about
-Inkscape that you suggested in the README file.
-
-Thanks for the review!
-Michael.
-
+diff --git a/bitbake/lib/toaster/tests/builds/buildtest.py b/bitbake/lib/toaster/tests/builds/buildtest.py
+index 872bbd377510..13b51fb0d8e4 100644
+--- a/bitbake/lib/toaster/tests/builds/buildtest.py
++++ b/bitbake/lib/toaster/tests/builds/buildtest.py
+@@ -119,7 +119,7 @@ class BuildTest(unittest.TestCase):
+         if os.environ.get("TOASTER_TEST_USE_SSTATE_MIRROR"):
+             ProjectVariable.objects.get_or_create(
+                 name="SSTATE_MIRRORS",
+-                value="file://.* http://autobuilder.yoctoproject.org/pub/sstate/PATH;downloadfilename=PATH",
++                value="file://.* http://sstate.yoctoproject.org/PATH;downloadfilename=PATH",
+                 project=project)
+ 
+         ProjectTarget.objects.create(project=project,
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.20.1
 
 
