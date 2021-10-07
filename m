@@ -2,62 +2,62 @@ Return-Path: <jdmason@kudzu.us>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F5D6C07CB1
-	for <webhook@archiver.kernel.org>; Thu,  7 Oct 2021 15:06:36 +0000 (UTC)
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com
- [209.85.222.173])
- by mx.groups.io with SMTP id smtpd.web12.13037.1633619195241435373
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8AB23C4707E
+	for <webhook@archiver.kernel.org>; Thu,  7 Oct 2021 15:06:41 +0000 (UTC)
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com
+ [209.85.160.180])
+ by mx.groups.io with SMTP id smtpd.web09.13174.1633619201027713207
  for <docs@lists.yoctoproject.org>;
- Thu, 07 Oct 2021 08:06:35 -0700
+ Thu, 07 Oct 2021 08:06:41 -0700
 Authentication-Results: mx.groups.io;
  dkim=pass header.i=@kudzu-us.20210112.gappssmtp.com header.s=20210112
- header.b=5eloC8L9;
- spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.222.173,
+ header.b=zxy+n49g;
+ spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.160.180,
  mailfrom: jdmason@kudzu.us)
-Received: by mail-qk1-f173.google.com with SMTP id 138so6225511qko.10
+Received: by mail-qt1-f180.google.com with SMTP id t2so6423869qtx.8
         for <docs@lists.yoctoproject.org>;
- Thu, 07 Oct 2021 08:06:35 -0700 (PDT)
+ Thu, 07 Oct 2021 08:06:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=kudzu-us.20210112.gappssmtp.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=rObJvR4ymwgSKei93s4IlH70kTkicv9n8x0AGSTu6lg=;
-        b=5eloC8L9x3jNrq9gpk6o2/LdtUdaqUsbV1iqrbHzRfXpXcRRO/qlhLwFCsRq/Ql91K
-         4a7ZIg9CeycCsjvC8ae+RindDUMs6I3oVCfk1yEMIZsA72Bac9cIwjNEXHRuqmxKkZcH
-         LrkIV/70A4FWxsiK4nmXtAdVCzUAaOVgJyO4cbIV1gCIrHaIrnPH3TdejM0qo090nM+1
-         CPVVsjGymIGFl9usV8H7epkFxNiHGcqdgVAgacO7dw191UVdttHQQIbxhNngmJXamKCp
-         dGMzHv8ke26zf/8fhShwd+pxEfd4ORcOoj4kZ4fw5EhF6G6roF0/dIgV6A0Xejvml1C9
-         BH9A==
+        bh=YGv9NN1DXxDA4QKEuwU6clyMG4+YMYggtTVhOpyo1Ts=;
+        b=zxy+n49gSRdPluAFUyfLtPAy8cXQ8Hb6fJG7Lc2x1TjqeVKV97qKInXArtKa8p8X0/
+         VWBIbYsmAKO6ToOMuI9fRptUA80j48qpvejsR1Jpy/kgMXD8JmlgSUB23WylAAKc+liX
+         EQLpUEjveRKnBc32yTANArmwWdezmQ5A+0jI1Q3/ZWK/d1dpoBDi4Z4S0hctd8P2xTU2
+         T2Z3Ir10GxXA1/V9MP8Hj+LaqFBo4XYM4YwKCfFv2pC9TCkgJNG/oFGPKyr6WcdZYfd6
+         zkaZ/XS/D5/84hgT0rRO/GOc74Y1ezF/xB1s1Fd9jRNcTzC0luXgZJPb3tmMVn/nGDeA
+         yGjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=rObJvR4ymwgSKei93s4IlH70kTkicv9n8x0AGSTu6lg=;
-        b=6xFZjez3WteM5zKG7suN+9/RD1Njj8HhiKCp/llDL9JC0P2H0IOy7JmPSYcOnAx5Mu
-         lNbNWbOUXe+Z2MMi4LEm2wNjGcPZCBbyurUipeFEIcYJ4SY6I4Vnjwml/LFbItTM7C+8
-         FeadBL5swuFYqHPvPjuHhy/OQUMdTE3L+SpO5RcsvX8JSnEKHQ2CwzbwNkg/XMTHI4ZV
-         nN3wo58zp1Gdcnm8HmrXMyfRHC/CI1+C4LZcBrEzNgEbKBQmnHZJPuktaeSsacLFggws
-         RFOk7UsOaiqvNqdDppPgG9KCcxkQpO8Lq6rT61dVFNeIDS2VrSPy5NzoQXVmAjE2qzed
-         y1Zw==
-X-Gm-Message-State: AOAM531ufGter6JJL18KLb2oy54fJotUa3REpkZ6z3/qrms1/XRYTOrF
-	cLloQXJ3l6Yjz9rBGt92WXy2MQ==
+        bh=YGv9NN1DXxDA4QKEuwU6clyMG4+YMYggtTVhOpyo1Ts=;
+        b=67XPwywSHwIdmfwa7fz7tqIJRkixVAQ8pG3NCqMbYxxp+kSSEBW90qA/issX37lFbP
+         DzO0nFkFeUaPYl5aFBFL3Eh5ZkR5IVi4j7jlyYDeX6qjjmfH14lkNJYClcqNdOTKfAUt
+         4uEO8nN79Vzej+DioJjt8G35QQCFVQqotUZWv3UmLg3lSGi9EgKO0DqPf654g4NPqRSP
+         AJnkx3X07+/TTXsVN95me1ldecYM+9zr9A8Wbl+LleU9Xr3acdpEI5Jxg8Bpb2kzzUK1
+         S36CbvsrSljxooWrr75OlPCfQCosltxFcB6F0oaei2WDxJ5XEydNPnvWwwUJKC1mI6Db
+         1UMA==
+X-Gm-Message-State: AOAM532qAxAFyIfK31InU/mSY2PDCuQHMNozgl0UhR1nZzwf3rcVsse9
+	zlG6U5kosV1rnhR9kOmCK+VQOivKBUpypw==
 X-Google-Smtp-Source: 
- ABdhPJzaOrtEgu7WH3m0oqM/fmrYq8lojHqFx0JMfeMePnWMlf5LLKnPrlJcJAMLUKb9Wwm4jiBmCw==
-X-Received: by 2002:a37:2e87:: with SMTP id
- u129mr3883317qkh.208.1633619194316;
-        Thu, 07 Oct 2021 08:06:34 -0700 (PDT)
+ ABdhPJwlq+RMSfWUI3PX+46vE9cgJVhaj2zNfMOWOnQ5U2abP+Ikz8NmOdX7mROmoMf+Ky6kJcS3Wg==
+X-Received: by 2002:a05:622a:190a:: with SMTP id
+ w10mr5437560qtc.300.1633619200205;
+        Thu, 07 Oct 2021 08:06:40 -0700 (PDT)
 Received: from localhost ([2605:a601:a650:b700:9937:f30b:7d2e:fddf])
         by smtp.gmail.com with ESMTPSA id
- 101sm893381qta.17.2021.10.07.08.06.34
+ c4sm14379851qkf.122.2021.10.07.08.06.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Oct 2021 08:06:34 -0700 (PDT)
+        Thu, 07 Oct 2021 08:06:39 -0700 (PDT)
 From: Jon Mason <jdmason@kudzu.us>
 To: openembedded-core@lists.openembedded.org,
 	docs@lists.yoctoproject.org,
 	bitbake-devel@lists.openembedded.org
-Subject: [PATCH 4/8] yocto-bsp/poky: replace http with https for URLs
-Date: Thu,  7 Oct 2021 11:06:26 -0400
-Message-Id: <20211007150630.22138-5-jdmason@kudzu.us>
+Subject: [PATCH 8/8] dev-manual: remove errant /
+Date: Thu,  7 Oct 2021 11:06:30 -0400
+Message-Id: <20211007150630.22138-9-jdmason@kudzu.us>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20211007150630.22138-1-jdmason@kudzu.us>
 References: <20211007150630.22138-1-jdmason@kudzu.us>
@@ -66,111 +66,36 @@ Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 07 Oct 2021 15:06:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1956
-
-https has been the preferred way to access websites for many years now.
-Change all of the URLs with a _working_ https server/certificate to use
-that URL.
+ <docs@lists.yoctoproject.org>; Thu, 07 Oct 2021 15:06:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1960
 
 Signed-off-by: Jon Mason <jdmason@kudzu.us>
 ---
- meta-poky/README.poky.md          | 12 ++++++------
- meta-poky/conf/distro/poky.conf   | 16 ++++++++--------
- meta-yocto-bsp/README.hardware.md |  2 +-
- 3 files changed, 15 insertions(+), 15 deletions(-)
+ documentation/dev-manual/start.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/meta-poky/README.poky.md b/meta-poky/README.poky.md
-index 289373f94411..a99c75ed5cb8 100644
---- a/meta-poky/README.poky.md
-+++ b/meta-poky/README.poky.md
-@@ -3,7 +3,7 @@ Poky
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index fc1b7c30752e..1ca25318cd53 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -670,7 +670,7 @@ Accessing Nightly Builds
+ ------------------------
  
- Poky is an integration of various components to form a pre-packaged
- build system and development environment which is used as a development and
--validation tool by the [Yocto Project](http://www.yoctoproject.org/). It
-+validation tool by the [Yocto Project](https://www.yoctoproject.org/). It
- features support for building customised embedded style device images
- and custom containers. There are reference demo images ranging from X11/GTK+
-  to Weston, commandline and more. The system supports cross-architecture
-@@ -19,8 +19,8 @@ Many layers are available and can be found through the
- As an integration layer Poky consists of several upstream projects such as 
- [BitBake](https://git.openembedded.org/bitbake/),
- [OpenEmbedded-Core](https://git.openembedded.org/openembedded-core/),
--[Yocto documentation](http://git.yoctoproject.org/cgit.cgi/yocto-docs/),
--the '[meta-yocto](http://git.yoctoproject.org/cgit.cgi/meta-yocto/)' layer
-+[Yocto documentation](https://git.yoctoproject.org/cgit.cgi/yocto-docs/),
-+the '[meta-yocto](https://git.yoctoproject.org/cgit.cgi/meta-yocto/)' layer
- which has configuration and hardware support components. These components
- are all part of the Yocto Project and OpenEmbedded ecosystems.
+ Yocto Project maintains an area for nightly builds that contains tarball
+-releases at https://autobuilder.yocto.io//pub/nightly/. These builds include Yocto
++releases at https://autobuilder.yocto.io/pub/nightly/. These builds include Yocto
+ Project releases ("poky"), toolchains, and builds for supported
+ machines.
  
-@@ -29,7 +29,7 @@ reference manual which can be found at <https://docs.yoctoproject.org/>
+@@ -678,7 +678,7 @@ Should you ever want to access a nightly build of a particular Yocto
+ Project component, use the following procedure:
  
- OpenEmbedded is the build architecture used by Poky and the Yocto project.
- For information about OpenEmbedded, see the 
--[OpenEmbedded website](http://www.openembedded.org/).
-+[OpenEmbedded website](https://www.openembedded.org/).
+ 1. *Locate the Index of Nightly Builds:* Open a browser and go to
+-   https://autobuilder.yocto.io//pub/nightly/ to access the Nightly Builds.
++   https://autobuilder.yocto.io/pub/nightly/ to access the Nightly Builds.
  
- Contribution Guidelines
- -----------------------
-@@ -42,7 +42,7 @@ who the maintainers are and where bugs should be reported.
- 
- A guide to submitting patches to OpenEmbedded is available at:
- 
--<http://www.openembedded.org/wiki/How_to_submit_a_patch_to_OpenEmbedded>
-+<https://www.openembedded.org/wiki/How_to_submit_a_patch_to_OpenEmbedded>
- 
- There is good documentation on how to write/format patches at:
- 
-@@ -72,7 +72,7 @@ Documentation (files in documentation/):
- 
- meta-yocto (files in meta-poky/, meta-yocto-bsp/):
- 
--- Git repository: <http://git.yoctoproject.org/cgit/cgit.cgi/meta-yocto>
-+- Git repository: <https://git.yoctoproject.org/cgit/cgit.cgi/meta-yocto>
- - Mailing list: poky@lists.yoctoproject.org
- 
- If in doubt, check the openembedded-core git repository for the content you
-diff --git a/meta-poky/conf/distro/poky.conf b/meta-poky/conf/distro/poky.conf
-index e161e4943a38..b0793de21cea 100644
---- a/meta-poky/conf/distro/poky.conf
-+++ b/meta-poky/conf/distro/poky.conf
-@@ -31,14 +31,14 @@ DISTRO_EXTRA_RRECOMMENDS += "${POKY_DEFAULT_EXTRA_RRECOMMENDS}"
- TCLIBCAPPEND = ""
- 
- PREMIRRORS ??= "\
--bzr://.*/.*   http://downloads.yoctoproject.org/mirror/sources/ \n \
--cvs://.*/.*   http://downloads.yoctoproject.org/mirror/sources/ \n \
--git://.*/.*   http://downloads.yoctoproject.org/mirror/sources/ \n \
--gitsm://.*/.* http://downloads.yoctoproject.org/mirror/sources/ \n \
--hg://.*/.*    http://downloads.yoctoproject.org/mirror/sources/ \n \
--osc://.*/.*   http://downloads.yoctoproject.org/mirror/sources/ \n \
--p4://.*/.*    http://downloads.yoctoproject.org/mirror/sources/ \n \
--svn://.*/.*   http://downloads.yoctoproject.org/mirror/sources/ \n"
-+bzr://.*/.*   https://downloads.yoctoproject.org/mirror/sources/ \n \
-+cvs://.*/.*   https://downloads.yoctoproject.org/mirror/sources/ \n \
-+git://.*/.*   https://downloads.yoctoproject.org/mirror/sources/ \n \
-+gitsm://.*/.* https://downloads.yoctoproject.org/mirror/sources/ \n \
-+hg://.*/.*    https://downloads.yoctoproject.org/mirror/sources/ \n \
-+osc://.*/.*   https://downloads.yoctoproject.org/mirror/sources/ \n \
-+p4://.*/.*    https://downloads.yoctoproject.org/mirror/sources/ \n \
-+svn://.*/.*   https://downloads.yoctoproject.org/mirror/sources/ \n"
- 
- SANITY_TESTED_DISTROS ?= " \
-             poky-3.2 \n \
-diff --git a/meta-yocto-bsp/README.hardware.md b/meta-yocto-bsp/README.hardware.md
-index f00f167d3ba2..9151d641d5b7 100644
---- a/meta-yocto-bsp/README.hardware.md
-+++ b/meta-yocto-bsp/README.hardware.md
-@@ -15,7 +15,7 @@ configuration. For more information please see the Yocto Board Support Package
- (BSP) Developer's Guide - documentation source is in documentation/bspguide or 
- download the PDF from:
- 
--   http://yoctoproject.org/documentation
-+   https://docs.yoctoproject.org/
- 
- Note that these reference BSPs use the linux-yocto kernel and in general don't
- pull in binary module support for the platforms. This means some device functionality
+ 2. *Select a Date:* Click on the date in which you are interested. If
+    you want the latest builds, use "CURRENT".
 -- 
 2.20.1
 
