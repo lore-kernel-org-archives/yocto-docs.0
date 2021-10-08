@@ -2,65 +2,69 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F412DC433F5
-	for <webhook@archiver.kernel.org>; Fri,  8 Oct 2021 08:10:19 +0000 (UTC)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
- [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web08.6189.1633680616301012658
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86C93C4332F
+	for <webhook@archiver.kernel.org>; Fri,  8 Oct 2021 08:57:09 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web12.6662.1633683428384902220
  for <docs@lists.yoctoproject.org>;
- Fri, 08 Oct 2021 01:10:16 -0700
+ Fri, 08 Oct 2021 01:57:09 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id B34C920000E;
-	Fri,  8 Oct 2021 08:10:13 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] manuals: introduce 'yocto_sstate' extlink
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-References: <20211007094438.989124-1-michael.opdenacker@bootlin.com>
- <20211007105906.feddo47g2sq57ksi@fedora>
+	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 55C181C0003;
+	Fri,  8 Oct 2021 08:57:05 +0000 (UTC)
+Subject: Re: [docs] [PATCH 5/8] bitbake: replace http with https for URLs
+To: Jon Mason <jdmason@kudzu.us>, openembedded-core@lists.openembedded.org,
+ docs@lists.yoctoproject.org, bitbake-devel@lists.openembedded.org
+References: <20211007150630.22138-1-jdmason@kudzu.us>
+ <20211007150630.22138-6-jdmason@kudzu.us>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <7aec8d91-3da2-76e8-a638-05f87d1fa9ab@bootlin.com>
-Date: Fri, 8 Oct 2021 10:10:13 +0200
+Message-ID: <3377b038-93b4-0df5-7f51-e9d9c0f3cf62@bootlin.com>
+Date: Fri, 8 Oct 2021 10:57:04 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.13.0
 MIME-Version: 1.0
-In-Reply-To: <20211007105906.feddo47g2sq57ksi@fedora>
+In-Reply-To: <20211007150630.22138-6-jdmason@kudzu.us>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 08 Oct 2021 08:10:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1964
+ <docs@lists.yoctoproject.org>; Fri, 08 Oct 2021 08:57:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1966
 
-Hi Quentin,
+Hi Jon,
 
-On 10/7/21 12:59 PM, Quentin Schulz wrote:
-> Hi Michael,
->
-> On Thu, Oct 07, 2021 at 11:44:38AM +0200, Michael Opdenacker wrote:
->> ---
-> Does ^^^^ this not break the patch when applied?
+Many thanks for the patches!
+
+On 10/7/21 5:06 PM, Jon Mason wrote:
+> --- a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+> +++ b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+> @@ -60,11 +60,11 @@ member Chris Larson split the project into two distinct pieces:
+>  -  OpenEmbedded, a metadata set utilized by BitBake
+>  
+>  Today, BitBake is the primary basis of the
+> -`OpenEmbedded <http://www.openembedded.org/>`__ project, which is being
+> +`OpenEmbedded <https://www.openembedded.org/>`__ project, which is being
+>  used to build and maintain Linux distributions such as the `Angstrom
+>  Distribution <http://www.angstrom-distribution.org/>`__, and which is
+>  also being used as the build tool for Linux projects such as the `Yocto
+> -Project <http://www.yoctoproject.org>`__.
+> +Project <https://www.yoctoproject.org>`__.
 
 
-Oops, you're right. Thanks!
+Unrelated here, but Angstrom is defunct now and
+http://www.angstrom-distribution.org down. I'll address this through a
+different patch, though.
 
->
-> Otherwise, same thoughts as you, not sure it's really a big improvement
-> :)
->
-> At the same time, we could think of enforcing all yoctoproject URL to
-> have their own extlink?
-
-
-As long as they are used in the documentation. Well, let's see if we
-have similar needs.
-Thanks for the review!
-Michael.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>*
+*Thanks again!
+Michael
+**
 
 -- 
 Michael Opdenacker, Bootlin
