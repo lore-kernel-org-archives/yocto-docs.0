@@ -1,91 +1,95 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <paul.eggleton@linux.microsoft.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AED25C433F5
-	for <webhook@archiver.kernel.org>; Sat,  9 Oct 2021 16:42:09 +0000 (UTC)
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
- by mx.groups.io with SMTP id smtpd.web11.8542.1633797719625513153
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A9EC0C433F5
+	for <webhook@archiver.kernel.org>; Mon, 11 Oct 2021 03:58:04 +0000 (UTC)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web08.7223.1633924683652949920
  for <docs@lists.yoctoproject.org>;
- Sat, 09 Oct 2021 09:42:00 -0700
+ Sun, 10 Oct 2021 20:58:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@axis.com header.s=axis-central1 header.b=ap9zerh9;
- spf=pass (domain: axis.com, ip: 195.60.68.18,
- mailfrom: peter.kjellerstedt@axis.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1633797720;
-  x=1665333720;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=NoYe5AAnapcoY6wZTWaMx2qNCcdZwGfb9XXsSiFPzO0=;
-  b=ap9zerh9Fuf9WrJ1hgIpvgdveYJS1fDUp1Z58syxG/UkHcoQ0cZ9LcPT
-   dvkXtHZBXP5aO9fPKmBZ627SrVrZZ1HslF25GZdwvWVgc61zxNg8VNEpr
-   +cBYWQ9kZ6MSc79VUr3DFV/HBUGlNIRAl4eAmJf8IqqDO2JTts/EcXLDX
-   x5hUuOZHr33G2arWHooNaB/bL/IWYXAyobS2x3rmPz1k4m8UI51RUR0D4
-   YrcrBSct2alH9upLXdjPZJWwpG/2nHR6aWHPkNrktZC6SxlcRv07nFvGi
-   1sQKOxsMueoR2In/VnJb5qTqHkIOw1F/exip3pwHR+fo8LdsPkK8/yTjD
-   g==;
-From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Subject: RE: [docs] [PATCH] manuals: remove obsolete documentation/template/
- directory
-Thread-Topic: [docs] [PATCH] manuals: remove obsolete documentation/template/
- directory
-Thread-Index: AQHXvG9HAOu1odzQZEKfYED98TXZqavK3+gw
-Date: Sat, 9 Oct 2021 16:41:56 +0000
-Message-ID: <1fce9a9001b04fb7b8180750261e77e1@axis.com>
-References: <20211008180640.1031212-1-michael.opdenacker@bootlin.com>
-In-Reply-To: <20211008180640.1031212-1-michael.opdenacker@bootlin.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.5.60]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
-MIME-Version: 1.0
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=Bd8BwdWy;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182,
+ mailfrom: pauleg@linux.microsoft.com)
+Received: by linux.microsoft.com (Postfix, from userid 1054)
+	id E9BA420B861E; Sun, 10 Oct 2021 20:58:02 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E9BA420B861E
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1633924682;
+	bh=RKwBsHqKqykgW5gVnbT18itSajKTkH63+oUGd83lVAQ=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Bd8BwdWy4yDpI7cxzVe9w2NXNbVTruAOeoPYO/Abjd3SfNCsquglL+W37aue0y3jG
+	 Q+r08FWb0owex05LIePFPrS6InnZEPYndRmxq6ww2z8sJSQG+DP1s3rQfTt0T0qwWP
+	 6OjZInbMa+pRA1jl2UO+rxzDWFfw7eGs9ithOb7w=
+From: Paul Eggleton <paul.eggleton@linux.microsoft.com>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH 3/5] poky.yaml: add lz4 and zstd to essential host packages
+Date: Sun, 10 Oct 2021 20:57:55 -0700
+Message-Id: 
+ <d32cb6779a61e7ae8ad5e239e6db8a5cc3f96522.1633924455.git.paul.eggleton@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <cover.1633924455.git.paul.eggleton@linux.microsoft.com>
+References: <cover.1633924455.git.paul.eggleton@linux.microsoft.com>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 09 Oct 2021 16:42:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1978
+ <docs@lists.yoctoproject.org>; Mon, 11 Oct 2021 03:58:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1983
 
-> -----Original Message-----
-> From: docs@lists.yoctoproject.org <docs@lists.yoctoproject.org> On Behalf
-> Of Michael Opdenacker
-> Sent: den 8 oktober 2021 20:07
-> To: docs@lists.yoctoproject.org
-> Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Subject: [docs] [PATCH] manuals: remove obsolete documentation/template/
-> directory
->=20
-> Files in this directly are no longer used to generate
+From: Paul Eggleton <paul.eggleton@microsoft.com>
 
-directly -> directory
+These are now required so update the corresponding distro-specific
+lists used in the system requirements documentation.
 
-> current documentation.
->=20
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  documentation/template/Vera.ttf             | Bin 65932 -> 0 bytes
->  documentation/template/VeraMoBd.ttf         | Bin 49052 -> 0 bytes
->  documentation/template/VeraMono.ttf         | Bin 49224 -> 0 bytes
->  documentation/template/draft.png            | Bin 24847 -> 0 bytes
->  documentation/template/ohand-color.svg      | 150 ------------------
->  documentation/template/poky-ref-manual.png  | Bin 32145 -> 0 bytes
->  documentation/template/poky.svg             | 163 --------------------
->  documentation/template/yocto-project-qs.png | Bin 17829 -> 0 bytes
->  8 files changed, 313 deletions(-)
->  delete mode 100644 documentation/template/Vera.ttf
->  delete mode 100644 documentation/template/VeraMoBd.ttf
->  delete mode 100644 documentation/template/VeraMono.ttf
->  delete mode 100644 documentation/template/draft.png
->  delete mode 100644 documentation/template/ohand-color.svg
->  delete mode 100644 documentation/template/poky-ref-manual.png
->  delete mode 100644 documentation/template/poky.svg
->  delete mode 100644 documentation/template/yocto-project-qs.png
+Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+---
+ documentation/poky.yaml | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-//Peter
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index feb792f..50d1f9c 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -14,23 +14,24 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+ UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
+      build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
+      xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
+-     pylint3 xterm python3-subunit mesa-common-dev"
++     pylint3 xterm python3-subunit mesa-common-dev zstd lz4"
+ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
+      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
+      python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
+      python3-jinja2 SDL-devel xterm rpcgen mesa-libGL-devel perl-FindBin perl-File-Compare \
+-     perl-File-Copy perl-locale"
++     perl-File-Copy perl-locale zstd lz4"
+ OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
+      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
+-     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel
++     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel \
++     zstd lz4
+      \n\      $ sudo pip3 install GitPython"
+ CENTOS7_HOST_PACKAGES_ESSENTIAL : "-y epel-release
+      \n\      $ sudo yum makecache
+      \n\      $ sudo yum install gawk make wget tar bzip2 gzip python3 unzip perl patch \
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath socat \
+      perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python36-pip xz \
+-     which SDL-devel xterm mesa-libGL-devel
++     which SDL-devel xterm mesa-libGL-devel zstd lz4
+      \n\      $ sudo pip3 install GitPython jinja2"
+ CENTOS8_HOST_PACKAGES_ESSENTIAL : "-y epel-release
+      \n\      $ sudo dnf config-manager --set-enabled PowerTools
+@@ -39,7 +40,7 @@ CENTOS8_HOST_PACKAGES_ESSENTIAL : "-y epel-release
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
+      socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
+      python3-GitPython python3-jinja2 python3-pexpect xz which SDL-devel xterm \
+-     rpcgen mesa-libGL-devel"
++     rpcgen mesa-libGL-devel zstd lz4"
+ PIP3_HOST_PACKAGES_DOC : "$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml"
+ MIN_PYTHON_VERSION : "3.6.0"
+ MIN_TAR_VERSION : "1.28"
+-- 
+1.8.3.1
 
 
