@@ -1,97 +1,56 @@
-Return-Path: <jdmason@kudzu.us>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C74AC433EF
-	for <webhook@archiver.kernel.org>; Wed, 13 Oct 2021 14:57:09 +0000 (UTC)
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com
- [209.85.222.174])
- by mx.groups.io with SMTP id smtpd.web08.9371.1634137028078425203
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8048EC433EF
+	for <webhook@archiver.kernel.org>; Mon, 18 Oct 2021 09:29:52 +0000 (UTC)
+Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
+ by mx.groups.io with SMTP id smtpd.web12.34179.1634549391473076409
  for <docs@lists.yoctoproject.org>;
- Wed, 13 Oct 2021 07:57:08 -0700
+ Mon, 18 Oct 2021 02:29:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@kudzu-us.20210112.gappssmtp.com header.s=20210112
- header.b=pT6f0q76;
- spf=none, err=permanent DNS error (domain: kudzu.us, ip: 209.85.222.174,
- mailfrom: jdmason@kudzu.us)
-Received: by mail-qk1-f174.google.com with SMTP id bl14so2451524qkb.4
-        for <docs@lists.yoctoproject.org>;
- Wed, 13 Oct 2021 07:57:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kudzu-us.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=xV6at43Gigk6IgUcjIebQboG4iMYU/aRK4MotZjBaNs=;
-        b=pT6f0q76KOcuHjHR2FUR+HVtWLjmlQvRgtyPbmUc0ZQg5T80QSDvgCwvNhFU3etGQ4
-         0fFrWNZXw4RqyVibMxk1cWEJK+h4DX7xxcDjN8AI8+HXmiSDIvo50w1nXRN14JU0Brb7
-         l1Ya92i9XMWOkkX10QJ0gX+oLhSXUJfYCKGE+Jw/ug+XAlYIcUu9I3f2kCbIEzna2sC0
-         eVQgJ/8usRQaWlZY5QL8dkCc6jYXIV3tYoXQQxfjRoAvmkQlSNhz0uYN/8xxXO1s4jXx
-         uvOL9KWXjI2k2sdARp0GK0cNcnZNZcDTnf4tWiYkWVPVudifMl0xwgkGgj1yKVjYEuk1
-         Iw+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=xV6at43Gigk6IgUcjIebQboG4iMYU/aRK4MotZjBaNs=;
-        b=qbay/8DgQrlfG/65h1caKVkDWWgivVBAdnaHdD+oXI900l4TOSkpfyAG7Yam7hA/jk
-         gRchLDBr1/wOWdVol70VTkQG0Mmt4PVvZr25c/kknQQD766A9VMMQ3NEuVgURCTY6a25
-         qXmYGMDAvmpGyESUf1kIvmOgnoYGdnqw+75IsrAZIaaXHeIofys5Ou/O2CXtPvjGdLP7
-         1xuRb9NbHrWeQbZNfQmcAKmWzXtuczV+bSY/utspbY//2RLd18ijh0UcM6tIkzdZvTzw
-         fZKFd1TLsRT33Llg4+ConeA4ovUPtjKlpwbzfXtTUpsBW8G8MJaXX/LRfG1JUxwuonem
-         TUig==
-X-Gm-Message-State: AOAM532woZKyKV+Pdceu19bYOR+SLtmXnTF38nlllN5K+/52LWgu92y5
-	C1/awYc7+vGgy56LHYI+qreLRbvkmqbWVi5QBle47A==
-X-Google-Smtp-Source: 
- ABdhPJx+Ad3NF6AoyOjMagj2B5kXn7FaqGd4GdD44XMGrPJ72IygmjM4RfGjx6YM5cbj6B+vPvEUFWadpZUf4qIXmKU=
-X-Received: by 2002:a37:b7c2:: with SMTP id
- h185mr26448909qkf.311.1634137027181;
- Wed, 13 Oct 2021 07:57:07 -0700 (PDT)
+ dkim=missing;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com
+ ([174.114.107.13]:56606 helo=fedora)
+	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls
+ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1mcOxp-00011l-CJ
+	for docs@lists.yoctoproject.org; Mon, 18 Oct 2021 05:29:49 -0400
+Date: Mon, 18 Oct 2021 05:29:46 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: is there a tutorial somewhere for using gdb on a qemu image?
+Message-ID: <62ab9fb2-da2e-94d2-e315-f2476f5df5c4@crashcourse.ca>
 MIME-Version: 1.0
-References: <20211013143630.21266-1-jdmason@kudzu.us>
-In-Reply-To: <20211013143630.21266-1-jdmason@kudzu.us>
-From: Jon Mason <jdmason@kudzu.us>
-Date: Wed, 13 Oct 2021 10:56:56 -0400
-Message-ID: 
- <CAPoiz9xr_yixYu1LfdjSbDOD7TSYd+iB4R2QmgiAL22nU2xhdQ@mail.gmail.com>
-Subject: Re: [PATCH] runqemu: add DEPLOY_DIR_IMAGE replacement in
- QB_OPT_APPEND
-To: Patches and discussions about the oe-core layer
- <openembedded-core@lists.openembedded.org>, docs@lists.yoctoproject.org,
-	bitbake-devel@lists.openembedded.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse,
+ please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel8.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel8.indieserve.net: authenticated_id:
+ rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel8.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 13 Oct 2021 14:57:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1994
+ <docs@lists.yoctoproject.org>; Mon, 18 Oct 2021 09:29:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/1995
 
-Apologies to docs and bitbake mailing list for the unnecessary noise
 
-On Wed, Oct 13, 2021 at 10:36 AM Jon Mason <jdmason@kudzu.us> wrote:
->
-> Add the ability to replace DEPLOY_DIR_IMAGE with that path in
-> QB_OPT_APPEND.  This allows for anything present in DEPLOY_DIR_IMAGE to
-> be passed into the qemu parameters.  This is especially useful if you
-> want to run multiple flash images (as -bios only allows for one).
->
-> Signed-off-by: Jon Mason <jdmason@kudzu.us>
-> ---
->  scripts/runqemu | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/scripts/runqemu b/scripts/runqemu
-> index 3268bb18ada6..54f2336ba977 100755
-> --- a/scripts/runqemu
-> +++ b/scripts/runqemu
-> @@ -1412,7 +1412,7 @@ class BaseConfig(object):
->          if not os.access(qemu_bin, os.X_OK):
->              raise OEPathError("No QEMU binary '%s' could be found" % qemu_bin)
->
-> -        self.qemu_opt = "%s %s %s %s %s" % (qemu_bin, self.get('NETWORK_CMD'), self.get('QB_RNG'), self.get('ROOTFS_OPTIONS'), self.get('QB_OPT_APPEND'))
-> +        self.qemu_opt = "%s %s %s %s %s" % (qemu_bin, self.get('NETWORK_CMD'), self.get('QB_RNG'), self.get('ROOTFS_OPTIONS'), self.get('QB_OPT_APPEND').replace('@DEPLOY_DIR_IMAGE@', self.get('DEPLOY_DIR_IMAGE')))
->
->          for ovmf in self.ovmf_bios:
->              format = ovmf.rsplit('.', 1)[-1]
-> --
-> 2.20.1
->
+  colleague wants to know how to get started debugging an aarch64
+target with gdb, so it occurred to me to suggest starting with
+something like a core-image-base QEMU image, and practising on that.
+is there, anywhere, a step-by-step tutorial that walks a beginner
+through something like that? if not, i think that would be a neat
+tutorial.
+
+rday
 
