@@ -1,123 +1,118 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <daiane.angolini@foundries.io>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1745C4321E
-	for <webhook@archiver.kernel.org>; Thu, 21 Oct 2021 16:22:33 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
- [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web09.71.1634833352386458035
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DAF1DC433EF
+	for <webhook@archiver.kernel.org>; Thu, 21 Oct 2021 18:16:19 +0000 (UTC)
+Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com
+ [209.85.222.179])
+ by mx.groups.io with SMTP id smtpd.web12.1789.1634840178993622643
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Oct 2021 09:22:33 -0700
+ Thu, 21 Oct 2021 11:16:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay9-d.mail.gandi.net (Postfix) with ESMTPSA id 15693FF802;
-	Thu, 21 Oct 2021 16:22:29 +0000 (UTC)
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: paul@pbarker.dev,
-	bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Quentin Schulz <foss@0leil.net>
-Subject: [PATCH v2 1/1] doc: bitbake-user-manual: Document BB_GIT_SHALLOW and
- friends
-Date: Thu, 21 Oct 2021 18:22:26 +0200
-Message-Id: <20211021162226.2141234-2-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211021162226.2141234-1-michael.opdenacker@bootlin.com>
-References: <20211021162226.2141234-1-michael.opdenacker@bootlin.com>
+ dkim=pass header.i=@foundries.io header.s=google header.b=f2pij6iH;
+ spf=pass (domain: foundries.io, ip: 209.85.222.179,
+ mailfrom: daiane.angolini@foundries.io)
+Received: by mail-qk1-f179.google.com with SMTP id bl14so2355887qkb.4
+        for <docs@lists.yoctoproject.org>;
+ Thu, 21 Oct 2021 11:16:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=foundries.io; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2qQStVcCgviXNGvGdEVJ34Lqin01cjBVWuaebdGcwP0=;
+        b=f2pij6iH9toGHIJsK+cQFE1yG1HPTL4ztyi19Tw8zrmawKdgoCJFXgxS91PFeJsx1d
+         BbyygFFQ1Ie7/6eiXdyNJCJXCHiBZkfruscxbri9WUhgAAOsHerN8l8Fttzw9Jv+tDc0
+         ReizLbMS6A0lRj3ddISIHmtQvnFl4g205nSDXiFUQ44BDCP1EO1brAo8DJqOHeGrAQRE
+         s87PttRPCDcnnZIBGm6dtQhbOE76VsYiWNosddGo6+BFuBBF6kVF8XwC9yQm4rlPLXVF
+         QuJOjhTnN3OZekT9Q/XkEd2jvxNRsdYCM//rO6HVqEF18q1A6tX3TL1Gep+EtSqkykHV
+         5w0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2qQStVcCgviXNGvGdEVJ34Lqin01cjBVWuaebdGcwP0=;
+        b=Nl5UZviFk0luhTMzst4PIETZ5NTwnYLgMqNLaE64XX84anTmIj/DJ/0clgWTVxYj7e
+         ZPb2cVzUIKZEVVbaE4Cge7ezG8o+wbDqsfoja/CdVe7mVGxykKr3YjcbUjgtDR2gkprP
+         qetvhtlhrcjFXptmQd6Ea2vX/22dyO5eam6EThua5b6RCJUMYiP1/XiIgwedfHuR6BKW
+         vG8b8srYaHbMwsFKz6OZWJPwzLi3ELjmiOIP7pQY6xfOtPn9xtXokFQuXuq09AEmU1T4
+         f7b5qEOZ8839AwoGq2ywUEyKlk1lnN56lRfSn5f1p81yMJDBcwL1hUggEhSyzbmTRgu3
+         LrVg==
+X-Gm-Message-State: AOAM53038uwGvdploO3CWv/BAH+Ib8oLtKH5Oqk05gbDTU8Kdnqt1Ohl
+	wBTFxuQ/gYGdxxBikyVbaTKW7LBQd7oK7A==
+X-Google-Smtp-Source: 
+ ABdhPJyUT6tQId/zkNN0RjS4X9r4nVnic1DiDcvHbqwDMcybJZrrt5wcvXPHOXFqdR2E7R2bMqvdvA==
+X-Received: by 2002:a37:a87:: with SMTP id 129mr5740959qkk.107.1634840177895;
+        Thu, 21 Oct 2021 11:16:17 -0700 (PDT)
+Received: from localhost.localdomain
+ ([2804:14c:3bac:19c0:6b87:7214:310a:48bd])
+        by smtp.gmail.com with ESMTPSA id
+ v21sm3274781qtc.93.2021.10.21.11.16.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 Oct 2021 11:16:17 -0700 (PDT)
+From: Daiane Angolini <daiane.angolini@foundries.io>
+To: docs@lists.yoctoproject.org
+Cc: Daiane Angolini <daiane.angolini@foundries.io>
+Subject: [docs v2] ref-manual: Update how to set a useradd password
+Date: Thu, 21 Oct 2021 15:16:04 -0300
+Message-Id: <20211021181604.4077605-1-daiane.angolini@foundries.io>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 Oct 2021 16:22:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2031
+ <docs@lists.yoctoproject.org>; Thu, 21 Oct 2021 18:16:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2032
 
-From: Paul Barker <paul@pbarker.dev>
+Partial fix for [YOCTO 14605]
 
-Documentation is based on the commit message of bitbake rev 5ed7d85fda
-and mailing list discussion.
-
-[YOCTO #14493]
-
-Signed-off-by: Paul Barker <paul@pbarker.dev>
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Reviewed-by: Quentin Schulz <foss@0leil.net>
+Signed-off-by: Daiane Angolini <daiane.angolini@foundries.io>
 ---
- .../bitbake-user-manual-ref-variables.rst     | 56 +++++++++++++++++++
- 1 file changed, 56 insertions(+)
+changes since v2:
+- changing suggested encrypt algoritm (512->256)
+- resultant -> resulting
+- closing quote around ${PASSW}
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index cbd1e795..e955beb1 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -281,6 +281,62 @@ overview of their function and contents.
+ documentation/ref-manual/classes.rst | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 79af45ada..8747c4b08 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -590,19 +590,25 @@ Here is an example that uses this class in an image recipe::
+        "
  
-          BB_GENERATE_MIRROR_TARBALLS = "1"
+ Here is an example that adds two users named "tester-jim" and "tester-sue" and assigns
+-passwords::
++passwords. First on host, create the password hash::
++
++   mkpasswd -m sha256crypt tester01
++
++The resulting hash is set to a variable and used in ``useradd`` command parameters.
++Remember to escape the character ``$``::
  
-+   :term:`BB_GENERATE_SHALLOW_TARBALLS`
-+      Setting this variable to "1" when :term:`BB_GIT_SHALLOW` is also set to
-+      "1" causes bitbake to generate shallow mirror tarballs when fetching git
-+      repositories. The number of commits included in the shallow mirror
-+      tarballs is controlled by :term:`BB_GIT_SHALLOW_DEPTH`.
-+
-+      If both :term:`BB_GIT_SHALLOW` and :term:`BB_GENERATE_MIRROR_TARBALLS` are
-+      enabled, bitbake will generate shallow mirror tarballs by default for git
-+      repositories. This separate variable exists so that shallow tarball
-+      generation can be enabled without needing to also enable normal mirror
-+      generation if it is not desired.
-+
-+      For example usage, see :term:`BB_GIT_SHALLOW`.
-+
-+   :term:`BB_GIT_SHALLOW`
-+      Setting this variable to "1" enables the support for fetching, using and
-+      generating mirror tarballs of `shallow git repositories <https://riptutorial.com/git/example/4584/shallow-clone>`_.
-+      The external `git-make-shallow <https://git.openembedded.org/bitbake/tree/bin/git-make-shallow>`_
-+      script is used for shallow mirror tarball creation.
-+
-+      When :term:`BB_GIT_SHALLOW` is enabled, bitbake will attempt to fetch a shallow
-+      mirror tarball. If the shallow mirror tarball cannot be fetched, it will
-+      try to fetch the full mirror tarball and use that.
-+
-+      When a mirror tarball is not available, a full git clone will be performed
-+      regardless of whether this variable is set or not. Support for shallow
-+      clones is not currently implemented as git does not directly support
-+      shallow cloning a particular git commit hash (it only supports cloning
-+      from a tag or branch reference).
-+
-+      See also :term:`BB_GIT_SHALLOW_DEPTH` and
-+      :term:`BB_GENERATE_SHALLOW_TARBALLS`.
-+
-+      Example usage::
-+
-+         BB_GIT_SHALLOW ?= "1"
-+
-+         # Keep only the top commit
-+         BB_GIT_SHALLOW_DEPTH ?= "1"
-+
-+         # This defaults to enabled if both BB_GIT_SHALLOW and
-+         # BB_GENERATE_MIRROR_TARBALLS are enabled
-+         BB_GENERATE_SHALLOW_TARBALLS ?= "1"
-+
-+   :term:`BB_GIT_SHALLOW_DEPTH`
-+      When used with :term:`BB_GENERATE_SHALLOW_TARBALLS`, this variable sets
-+      the number of commits to include in generated shallow mirror tarballs.
-+      With a depth of 1, only the commit referenced in :term:`SRCREV` is
-+      included in the shallow mirror tarball. Increasing the depth includes
-+      additional parent commits, working back through the commit history.
-+
-+      If this variable is unset, bitbake will default to a depth of 1 when
-+      generating shallow mirror tarballs.
-+
-+      For example usage, see :term:`BB_GIT_SHALLOW`.
-+
-    :term:`BB_HASHBASE_WHITELIST`
-       Lists variables that are excluded from checksum and dependency data.
-       Variables that are excluded can therefore change without affecting
+    inherit extrausers
++   PASSWD = "\$6\$kt.uxYMp9O9.Yxqd\$SBaJTucixmPm7/WjFL2CjUGMHTqtw8KPK0yxpYw.tGWWHlnOwkUwZ0Pa6vR724Te/E5./V.wua4HT/h0li8Lw/"
+    EXTRA_USERS_PARAMS = "\
+-       useradd -P tester01 tester-jim; \
+-       useradd -P tester01 tester-sue; \
++       useradd -p '${PASSWD}' tester-jim; \
++       useradd -p '${PASSWD}' tester-sue; \
+        "
+ 
+-Finally, here is an example that sets the root password to "1876*18"::
++Finally, here is an example that sets the root password::
+ 
+    inherit extrausers
+    EXTRA_USERS_PARAMS = "\
+-       usermod -P 1876*18 root; \
++       usermod -p '${PASSWD}' root; \
+        "
+ 
+ .. _ref-classes-features_check:
 -- 
-2.25.1
+2.30.2
 
 
