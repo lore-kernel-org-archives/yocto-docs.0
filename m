@@ -1,68 +1,89 @@
-Return-Path: <paul.eggleton@linux.microsoft.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12E61C433EF
-	for <webhook@archiver.kernel.org>; Fri, 22 Oct 2021 03:09:51 +0000 (UTC)
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by mx.groups.io with SMTP id smtpd.web08.3426.1634872189964124158
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 41F15C433F5
+	for <webhook@archiver.kernel.org>; Fri, 22 Oct 2021 07:25:29 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web09.5104.1634887527770371416
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Oct 2021 20:09:50 -0700
+ Fri, 22 Oct 2021 00:25:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linux.microsoft.com header.s=default header.b=DSSVlLeJ;
- spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182,
- mailfrom: pauleg@linux.microsoft.com)
-Received: by linux.microsoft.com (Postfix, from userid 1054)
-	id DAFB320B71D3; Thu, 21 Oct 2021 20:09:48 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DAFB320B71D3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1634872188;
-	bh=5NFq1fq9Gx1UDvEpX03l+ZA70orxjnIbhpZpNg8PH94=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=DSSVlLeJQtnQOgfi5zaQFx2ZUQwkJtMg22h3W4kU8EmjFC3vD1dm6IHkH9C878m07
-	 wc7EhzLhwbHPgHN0qquiZdBQeSwWD3Okioa7W3liVKpcOkPf6Xx1w7rxN9hGg+Hujb
-	 Z+3Y3OXYr0/vuCoI612/66V2dww0VJEdY0Msgilg=
-From: Paul Eggleton <paul.eggleton@linux.microsoft.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH 1/2] poky.yaml: fix lz4 package name for older Ubuntu versions
-Date: Thu, 21 Oct 2021 20:09:28 -0700
-Message-Id: 
- <a9acf608f4887336ac4d0d72b0ff39aedf713d1e.1634872024.git.paul.eggleton@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
-In-Reply-To: <cover.1634872024.git.paul.eggleton@linux.microsoft.com>
-References: <cover.1634872024.git.paul.eggleton@linux.microsoft.com>
+ dkim=missing;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 71DBE1C000D;
+	Fri, 22 Oct 2021 07:25:25 +0000 (UTC)
+Subject: Re: [docs] [docs v2] ref-manual: Update how to set a useradd password
+To: Daiane Angolini <daiane.angolini@foundries.io>,
+ docs@lists.yoctoproject.org
+References: <20211021181604.4077605-1-daiane.angolini@foundries.io>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <a2d5ad1e-9c33-0a03-12fd-0e2f59ce9674@bootlin.com>
+Date: Fri, 22 Oct 2021 09:25:24 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
+MIME-Version: 1.0
+In-Reply-To: <20211021181604.4077605-1-daiane.angolini@foundries.io>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 Oct 2021 03:09:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2033
+ <docs@lists.yoctoproject.org>; Fri, 22 Oct 2021 07:25:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2036
 
-From: Paul Eggleton <paul.eggleton@microsoft.com>
+Hi Daiane,
 
-It turns out that for Ubunut, lz4 is the valid package name for newer
-versions (e.g. 20.04 LTS) but not for older ones (e.g. 18.04 LTS, where
-the correct package is liblz4-tool). In 20.04 the lz4 package includes
-liblz4-tool in its "provides" so it's best to list that one for now.
+Thank you for the patch update!
 
-Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
----
- documentation/poky.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 10/21/21 8:16 PM, Daiane Angolini wrote:
+> Partial fix for [YOCTO 14605]
+>
+> Signed-off-by: Daiane Angolini <daiane.angolini@foundries.io>
+> ---
+> changes since v2:
+> - changing suggested encrypt algoritm (512->256)
+> - resultant -> resulting
+> - closing quote around ${PASSW}
+>
+>  documentation/ref-manual/classes.rst | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> index 79af45ada..8747c4b08 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -590,19 +590,25 @@ Here is an example that uses this class in an image recipe::
+>         "
+>  
+>  Here is an example that adds two users named "tester-jim" and "tester-sue" and assigns
+> -passwords::
+> +passwords. First on host, create the password hash::
+> +
+> +   mkpasswd -m sha256crypt tester01
+> +
+> +The resulting hash is set to a variable and used in ``useradd`` command parameters.
+> +Remember to escape the character ``$``::
+>  
+>     inherit extrausers
+> +   PASSWD = "\$6\$kt.uxYMp9O9.Yxqd\$SBaJTucixmPm7/WjFL2CjUGMHTqtw8KPK0yxpYw.tGWWHlnOwkUwZ0Pa6vR724Te/E5./V.wua4HT/h0li8Lw/"
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 50d1f9c..a3aa40c 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -14,7 +14,7 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
- UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
-      build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
-      xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
--     pylint3 xterm python3-subunit mesa-common-dev zstd lz4"
-+     pylint3 xterm python3-subunit mesa-common-dev zstd liblz4-tool"
- FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
+
+Shouldn't you update the hashed password too? The above is still the
+output of "mkpasswd -m sha512crypt tester01".
+
+All the rest looks good.
+
+Thanks,
+Michael.
+
 -- 
-1.8.3.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
