@@ -1,118 +1,72 @@
-Return-Path: <daiane.angolini@foundries.io>
+Return-Path: <paul.eggleton@linux.microsoft.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DAF1DC433EF
-	for <webhook@archiver.kernel.org>; Thu, 21 Oct 2021 18:16:19 +0000 (UTC)
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com
- [209.85.222.179])
- by mx.groups.io with SMTP id smtpd.web12.1789.1634840178993622643
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05B1DC433FE
+	for <webhook@archiver.kernel.org>; Fri, 22 Oct 2021 03:09:51 +0000 (UTC)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+ by mx.groups.io with SMTP id smtpd.web09.3339.1634872189956901610
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Oct 2021 11:16:19 -0700
+ Thu, 21 Oct 2021 20:09:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@foundries.io header.s=google header.b=f2pij6iH;
- spf=pass (domain: foundries.io, ip: 209.85.222.179,
- mailfrom: daiane.angolini@foundries.io)
-Received: by mail-qk1-f179.google.com with SMTP id bl14so2355887qkb.4
-        for <docs@lists.yoctoproject.org>;
- Thu, 21 Oct 2021 11:16:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=foundries.io; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2qQStVcCgviXNGvGdEVJ34Lqin01cjBVWuaebdGcwP0=;
-        b=f2pij6iH9toGHIJsK+cQFE1yG1HPTL4ztyi19Tw8zrmawKdgoCJFXgxS91PFeJsx1d
-         BbyygFFQ1Ie7/6eiXdyNJCJXCHiBZkfruscxbri9WUhgAAOsHerN8l8Fttzw9Jv+tDc0
-         ReizLbMS6A0lRj3ddISIHmtQvnFl4g205nSDXiFUQ44BDCP1EO1brAo8DJqOHeGrAQRE
-         s87PttRPCDcnnZIBGm6dtQhbOE76VsYiWNosddGo6+BFuBBF6kVF8XwC9yQm4rlPLXVF
-         QuJOjhTnN3OZekT9Q/XkEd2jvxNRsdYCM//rO6HVqEF18q1A6tX3TL1Gep+EtSqkykHV
-         5w0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=2qQStVcCgviXNGvGdEVJ34Lqin01cjBVWuaebdGcwP0=;
-        b=Nl5UZviFk0luhTMzst4PIETZ5NTwnYLgMqNLaE64XX84anTmIj/DJ/0clgWTVxYj7e
-         ZPb2cVzUIKZEVVbaE4Cge7ezG8o+wbDqsfoja/CdVe7mVGxykKr3YjcbUjgtDR2gkprP
-         qetvhtlhrcjFXptmQd6Ea2vX/22dyO5eam6EThua5b6RCJUMYiP1/XiIgwedfHuR6BKW
-         vG8b8srYaHbMwsFKz6OZWJPwzLi3ELjmiOIP7pQY6xfOtPn9xtXokFQuXuq09AEmU1T4
-         f7b5qEOZ8839AwoGq2ywUEyKlk1lnN56lRfSn5f1p81yMJDBcwL1hUggEhSyzbmTRgu3
-         LrVg==
-X-Gm-Message-State: AOAM53038uwGvdploO3CWv/BAH+Ib8oLtKH5Oqk05gbDTU8Kdnqt1Ohl
-	wBTFxuQ/gYGdxxBikyVbaTKW7LBQd7oK7A==
-X-Google-Smtp-Source: 
- ABdhPJyUT6tQId/zkNN0RjS4X9r4nVnic1DiDcvHbqwDMcybJZrrt5wcvXPHOXFqdR2E7R2bMqvdvA==
-X-Received: by 2002:a37:a87:: with SMTP id 129mr5740959qkk.107.1634840177895;
-        Thu, 21 Oct 2021 11:16:17 -0700 (PDT)
-Received: from localhost.localdomain
- ([2804:14c:3bac:19c0:6b87:7214:310a:48bd])
-        by smtp.gmail.com with ESMTPSA id
- v21sm3274781qtc.93.2021.10.21.11.16.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Oct 2021 11:16:17 -0700 (PDT)
-From: Daiane Angolini <daiane.angolini@foundries.io>
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=LS0AsPzX;
+ spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182,
+ mailfrom: pauleg@linux.microsoft.com)
+Received: by linux.microsoft.com (Postfix, from userid 1054)
+	id E604020B6C55; Thu, 21 Oct 2021 20:09:48 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E604020B6C55
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1634872188;
+	bh=JIFLiEb2fJdvnoLENZTNUDo19PPCNvLPw/B3tkjS39c=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=LS0AsPzXNjxOQb+9q630B0kBBxUHoPr6v9dpxrvDnuMwWO1i/FLTjp/iiW9VBdL9h
+	 WTU4HVTIYgzS+33bW/LK4EL7aCUtwjWLYt5OqMUYFwjtMPSYHI6Ax4sk+XL0vqmrUi
+	 lKOCpoQwhVWeKIsPXzg5/gyQ4ASXehBHnsDPjsIA=
+From: Paul Eggleton <paul.eggleton@linux.microsoft.com>
 To: docs@lists.yoctoproject.org
-Cc: Daiane Angolini <daiane.angolini@foundries.io>
-Subject: [docs v2] ref-manual: Update how to set a useradd password
-Date: Thu, 21 Oct 2021 15:16:04 -0300
-Message-Id: <20211021181604.4077605-1-daiane.angolini@foundries.io>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: [PATCH 2/2] migration-3.4: add some extra packaging notes
+Date: Thu, 21 Oct 2021 20:09:29 -0700
+Message-Id: 
+ <8b2fe561955a9ee80e2b419e30237d49f3fe7915.1634872024.git.paul.eggleton@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <cover.1634872024.git.paul.eggleton@linux.microsoft.com>
+References: <cover.1634872024.git.paul.eggleton@linux.microsoft.com>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 Oct 2021 18:16:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2032
+ <docs@lists.yoctoproject.org>; Fri, 22 Oct 2021 03:09:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2034
 
-Partial fix for [YOCTO 14605]
+From: Paul Eggleton <paul.eggleton@microsoft.com>
 
-Signed-off-by: Daiane Angolini <daiane.angolini@foundries.io>
+Add some notes on minor packaging changes that I missed earlier.
+
+Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
 ---
-changes since v2:
-- changing suggested encrypt algoritm (512->256)
-- resultant -> resulting
-- closing quote around ${PASSW}
+ documentation/migration-guides/migration-3.4.rst | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
- documentation/ref-manual/classes.rst | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 79af45ada..8747c4b08 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -590,19 +590,25 @@ Here is an example that uses this class in an image recipe::
-        "
+diff --git a/documentation/migration-guides/migration-3.4.rst b/documentation/migration-guides/migration-3.4.rst
+index 797bfde..e785277 100644
+--- a/documentation/migration-guides/migration-3.4.rst
++++ b/documentation/migration-guides/migration-3.4.rst
+@@ -202,6 +202,15 @@ Package/recipe splitting
+   in its own ``xwayland`` recipe. If you need Xwayland in your image
+   then you may now need to add it explicitly.
  
- Here is an example that adds two users named "tester-jim" and "tester-sue" and assigns
--passwords::
-+passwords. First on host, create the password hash::
++- The ``rpm`` package no longer has ``rpm-build`` in its :term:`RRECOMMENDS`;
++  if by chance  you still need rpm package building functionality in
++  your image and you have not already done so then you should add
++  ``rpm-build`` to your image explicitly.
 +
-+   mkpasswd -m sha256crypt tester01
++- The Python ``statistics`` standard module is now packaged in its own
++  ``python3-statistics`` package instead of ``python3-misc`` as
++  previously.
 +
-+The resulting hash is set to a variable and used in ``useradd`` command parameters.
-+Remember to escape the character ``$``::
  
-    inherit extrausers
-+   PASSWD = "\$6\$kt.uxYMp9O9.Yxqd\$SBaJTucixmPm7/WjFL2CjUGMHTqtw8KPK0yxpYw.tGWWHlnOwkUwZ0Pa6vR724Te/E5./V.wua4HT/h0li8Lw/"
-    EXTRA_USERS_PARAMS = "\
--       useradd -P tester01 tester-jim; \
--       useradd -P tester01 tester-sue; \
-+       useradd -p '${PASSWD}' tester-jim; \
-+       useradd -p '${PASSWD}' tester-sue; \
-        "
- 
--Finally, here is an example that sets the root password to "1876*18"::
-+Finally, here is an example that sets the root password::
- 
-    inherit extrausers
-    EXTRA_USERS_PARAMS = "\
--       usermod -P 1876*18 root; \
-+       usermod -p '${PASSWD}' root; \
-        "
- 
- .. _ref-classes-features_check:
+ Image / SDK generation changes
+ ------------------------------
 -- 
-2.30.2
+1.8.3.1
 
 
