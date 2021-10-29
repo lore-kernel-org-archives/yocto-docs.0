@@ -1,72 +1,83 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FEE0C433EF
-	for <webhook@archiver.kernel.org>; Fri, 29 Oct 2021 16:15:12 +0000 (UTC)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
- [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web12.7497.1635524111033302427
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38FD2C433FE
+	for <webhook@archiver.kernel.org>; Fri, 29 Oct 2021 17:02:32 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web12.8213.1635526950626781710
  for <docs@lists.yoctoproject.org>;
- Fri, 29 Oct 2021 09:15:11 -0700
+ Fri, 29 Oct 2021 10:02:31 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.178.232, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay12.mail.gandi.net (Postfix) with ESMTPSA id 098ED200005;
-	Fri, 29 Oct 2021 16:15:08 +0000 (UTC)
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] [honister] conf: update for release 3.4
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.197,
+ mailfrom: foss@0leil.net)
+Received: (Authenticated sender: foss@0leil.net)
+	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 2D67C1C0004;
+	Fri, 29 Oct 2021 17:02:26 +0000 (UTC)
+Date: Fri, 29 Oct 2021 19:02:25 +0200
+From: Quentin Schulz <foss@0leil.net>
+To: docs@lists.yoctoproject.org,
+ Michael Opdenacker <michael.opdenacker@bootlin.com>,
+ Quentin Schulz <quentin.schulz@theobroma-systems.com>,
  Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] [honister] conf: update for release 3.4
+In-Reply-To: <052ddb4c-0577-e34e-980b-c7ea828c98bc@bootlin.com>
 References: <20211021084332.334075-1-quentin.schulz@theobroma-systems.com>
  <20211027104016.uqi7y5d2aluyvf4x@fedora>
  <b1ceabab92cf6b2b6894c85162d84af74aa4abe5.camel@linuxfoundation.org>
  <20211027105243.7ncoejzfms6rcxyh@fedora>
  <20211027112837.7oaibv2saa4ak2gn@fedora>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <052ddb4c-0577-e34e-980b-c7ea828c98bc@bootlin.com>
-Date: Fri, 29 Oct 2021 18:15:08 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+ <052ddb4c-0577-e34e-980b-c7ea828c98bc@bootlin.com>
+Message-ID: <1C22AE6D-7805-42F0-BB50-D08111E1BB82@0leil.net>
 MIME-Version: 1.0
-In-Reply-To: <20211027112837.7oaibv2saa4ak2gn@fedora>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Type: text/plain;
+ charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 29 Oct 2021 16:15:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2055
+ <docs@lists.yoctoproject.org>; Fri, 29 Oct 2021 17:02:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2056
 
-Hi Quentin,
+Hi Michael,
 
-On 10/27/21 1:28 PM, Quentin Schulz wrote:
-> Hi all,
+On October 29, 2021 6:15:08 PM GMT+02:00, Michael Opdenacker <michael=2Eop=
+denacker@bootlin=2Ecom> wrote:
+>Hi Quentin,
 >
-> Just to make sure the discussion does not get mistaken as an agreement
-> on this patch being dropped, can we still merge this one patch in honister
-> branch please :) ? It still applies even though we missed the release tag.
+>On 10/27/21 1:28 PM, Quentin Schulz wrote:
+>> Hi all,
+>>
+>> Just to make sure the discussion does not get mistaken as an agreement
+>> on this patch being dropped, can we still merge this one patch in honis=
+ter
+>> branch please :) ? It still applies even though we missed the release t=
+ag=2E
+>
+>I can take care of merging it in honister-next so that Richard can take
+>it in honister=2E
+>
+>However, I also see that Hardknott
+>(http://git=2Eyoctoproject=2Eorg/cgit/cgit=2Ecgi/yocto-docs/tree/document=
+ation/sphinx-static/switchers=2Ejs?h=3Dhardknott)
+>and Dunfell
+>(http://git=2Eyoctoproject=2Eorg/cgit/cgit=2Ecgi/yocto-docs/tree/document=
+ation/sphinx-static/switchers=2Ejs?h=3Ddunfell)
+>should be updated too=2E
+>
+>Did I understand correctly?
+>
 
-I can take care of merging it in honister-next so that Richard can take
-it in honister.
+Switchers=2Ejs does not need to be updated as only the one from the master=
+ branch is taken and copied to all other branches and tags by the autobuild=
+er=2E But you just saw why we want to get this file out of the docs so main=
+tainers don't have to care about this (and also, for EOL releases)=2E
 
-However, I also see that Hardknott
-(http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/tree/documentation/sphinx-static/switchers.js?h=hardknott)
-and Dunfell
-(http://git.yoctoproject.org/cgit/cgit.cgi/yocto-docs/tree/documentation/sphinx-static/switchers.js?h=dunfell)
-should be updated too.
+The documentation/conf=2Epy seems up-to-date for those branches so I think=
+ nothing needs to be done aside from this patch in honister=2E
 
-Did I understand correctly?
-
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Cheers,
+Quentin
 
