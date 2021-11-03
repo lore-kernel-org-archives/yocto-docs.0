@@ -1,167 +1,309 @@
-Return-Path: <quentin.schulz@theobroma-systems.com>
+Return-Path: <nicolas.dechesne@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC36DC433EF
-	for <webhook@archiver.kernel.org>; Wed,  3 Nov 2021 09:35:40 +0000 (UTC)
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com
- (EUR04-VI1-obe.outbound.protection.outlook.com [40.107.8.43])
- by mx.groups.io with SMTP id smtpd.web09.5149.1635932139376454672
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8DF5C433EF
+	for <webhook@archiver.kernel.org>; Wed,  3 Nov 2021 11:25:09 +0000 (UTC)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com
+ [209.85.208.48])
+ by mx.groups.io with SMTP id smtpd.web10.6259.1635938708676316400
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Nov 2021 02:35:40 -0700
+ Wed, 03 Nov 2021 04:25:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="body hash did not verify"
- header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=HYLhND0s;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.8.43,
- mailfrom: quentin.schulz@theobroma-systems.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=cao8v84gsGmGjbEy2HKwrWkNeWQynS7hZwd2whHCLZH6UPKGp4rG3/5mvf4DUaBN4gTF30yIO6zxWupkXEJ3GgnPAkfKQ+yIVN4zVNz3Zfog66WVh6VEAabAWZRlvXIazVI1wqCkruJwLUhJPmknaGvTdw44e7bqzSeOlXjxhW1gvJFYQxCQfrrAE+bmWPRfcF2hRU3fy7p83oZzDWbebZ0vpMEoNNACJe0rTwGbeTg6k+CgecPEr3RZ8BQsR7ugyk36KXl9fUc4FPHjNqRIoN7orO2CZv1/Qbqy8HCF8a8LeJFSYnzx7FNkg22PdhnlO0TfWkLESzOtRWfReRkSXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yNQ8GBcFmkcgCO/fHlVTVucaPlphcI2BIWxssCpMQko=;
- b=AGsLgD6D/CydEDuzhHTKSKEfvsceFRxLO1fNVvb9fQR7j+PuR7gBR7hIPiEXW+sQ2MGZJFPozLJo+mEuOOp4VYHueX1X7kCFr2sf3guSdRL6ldxUUpbQ4qNOAl/V4EmW95H7ax1t64pwafFt7QaJu1/u0toAjn/cjgyYs8uB7+3fZHgBMRwWP9bYy//Zgp2eipqij9qKsqT00J4ZHAOUVF2jR5t76hY7HDuuI/e/wTnjhCadNdm4lJjYdznEGF0iVMhkaoLGmnAwxwxS94BpJksKDgJqeYvq3+/eLhEltMzLHPIW1XorBK0MnJZzdz+tlJAFIm6VE1n83zivX1Uaig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
+ dkim=pass header.i=@linaro.org header.s=google header.b=I/p47rdO;
+ spf=pass (domain: linaro.org, ip: 209.85.208.48,
+ mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-ed1-f48.google.com with SMTP id f8so7963671edy.4
+        for <docs@lists.yoctoproject.org>;
+ Wed, 03 Nov 2021 04:25:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yNQ8GBcFmkcgCO/fHlVTVucaPlphcI2BIWxssCpMQko=;
- b=HYLhND0so6J1aM2TXpWVq6OUAeAW2wjL6447sO8nBexrqwwBv1iqnj+NPXStvAmUpVWWDGiKrh2BLL0YmEVLobn4tD3vsNze3zkbMInbLzkyubPzqJ4PXaYm6OB59jF/Hp/Uwmi7mJi7hk7EcsEU7awBgMjwQQsUM03UsLZ1NfE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
-Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24) by AM9PR04MB7587.eurprd04.prod.outlook.com
- (2603:10a6:20b:2d4::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4649.14; Wed, 3 Nov
- 2021 09:35:35 +0000
-Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- ([fe80::d56f:ec59:3bd0:6d7a]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
- ([fe80::d56f:ec59:3bd0:6d7a%5]) with mapi id 15.20.4649.020; Wed, 3 Nov 2021
- 09:35:35 +0000
-Date: Wed, 3 Nov 2021 10:35:33 +0100
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] Variable documentation overlap between Yocto and Bitbake
-Message-ID: <20211103093533.prsusa5rblbmqset@fedora>
-References: <f9c8e642-a6d1-afbe-247c-39ac1db60a0c@bootlin.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <f9c8e642-a6d1-afbe-247c-39ac1db60a0c@bootlin.com>
-X-ClientProxiedBy: AM5PR0502CA0020.eurprd05.prod.outlook.com
- (2603:10a6:203:91::30) To AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24)
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VT8gPuwrd2ddkj1f4PSa5Aszbj/HlakkHw4zHTRYP5Q=;
+        b=I/p47rdOpLWU4caX03ozwZaaYYX1qFlQ5eRnnAfGaGwESnI0Cmi7D00PYdodjAEM8W
+         +h66/Z901B18iSzfKWegErokDOd6irsJSKUVT9K6NdbHjRa4nEDd4wHoaIGeuq/scuA5
+         1Apzs64nZI0PP+OeDxboqvcXt+vbg0Y+m13EsaCUztbnwh90vK8FvhBAavh7PGDAyrt1
+         pZrSQDyGhqn28BuOdwzUh1XQ6wSrjSJBJo3hWliGDzV3qppO1Kk43Camni81TYo99wGs
+         +Z+utsLqi3W0y8Ajl+na9XwTLKJRxf1wnzoZMbtpq0uZcIMHmcj4jx475j8C/H68H7nR
+         tgng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VT8gPuwrd2ddkj1f4PSa5Aszbj/HlakkHw4zHTRYP5Q=;
+        b=dCYChktTYxhlRN68UJhUzE2djGMdUBjEjZUdBIwxaSpLCQ/1glNPv1OANs+6+QQQ2d
+         KXBVjzonWg6oH2IeGfvzjPhcDxTLDnqPTaiCgIQKB2/9zNujJxH9NDrnh8Ptvduf/53Z
+         Rn5idCh9hNs15B0MTfIpyufx6rsBkiqdnw2fit3O5Qeje6lbgBwxCJ5UMeWcvIs0TZq3
+         XoPesGYWOYroChgOdfyRqn14iNT0twDK51VFpFqVyRYFMMbGenG/OkjyOyzDaQGjG0IE
+         bpIBk79jwsextGcUIp12x/R0k2NU9RifAtFWM3UxaQRZYlHv+nBKvKUuJBImQZl5Pskb
+         qCVg==
+X-Gm-Message-State: AOAM530ROXVIZwW4VhLCqXH6ISfMUgHXu/oVayGICpGtlrjhkCK7kAur
+	s2BYwA/NpvuLZCU62bL01WeuF+fHVlqZzQGeBj+DGg==
+X-Google-Smtp-Source: 
+ ABdhPJzyvV1UZx7HqqZOhDKDerE3biF184RKlCsSzAIXl1apFP2ChPlgJ95Y6lAnh4WLiBllltNuQcFRiuPLhb5wGqw=
+X-Received: by 2002:a17:906:d552:: with SMTP id
+ cr18mr54785895ejc.88.1635938706788;
+ Wed, 03 Nov 2021 04:25:06 -0700 (PDT)
 MIME-Version: 1.0
-Received: from fedora (92.42.140.82) by
- AM5PR0502CA0020.eurprd05.prod.outlook.com (2603:10a6:203:91::30) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4669.10 via Frontend
- Transport; Wed, 3 Nov 2021 09:35:35 +0000
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a3bf2072-41a0-4af2-061f-08d99ead49cf
-X-MS-TrafficTypeDiagnostic: AM9PR04MB7587:
-X-Microsoft-Antispam-PRVS: 
-	<AM9PR04MB758723FFAE20BB99D16F323EC28C9@AM9PR04MB7587.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:10000;
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	OpmwBcOilB15a1mr8FJDiF+XUUK491VN/65Tjw3mecJkWsahi9Lo+qXQQ43J+zCCjyw8AJYZNnqly0e+3HtvzrLma413WJWLPAa0yRHbkX5liiONi+k4YoQN+BwF1ps4rVoag4x2u/JKqr5+n/jjYk0oyXaq3qcN4wqH2pP0OP7nOcYXu8zDHt/cpjW7GC9IRKCSV4TT6X8PWs1RJDHjQpXocu3IAL/gIEB6ZAIcRSpggUHwwC6oBJkfWvn/2FBrzy4SCM7UQZ4V+7b8vWUybwaOg4JDpU0SAAtUmRrlsJ6crKoyPY5hHauQywjZ4x6DDewJJUH1pX0wf4H5rv6OuWIF5sSAoO9oLMJO+5belFFtjeGw7tHdTsMi87l9c3cJGuf70RrLyFVRR+oC/zPKEnvYBqzMQsiv8UJJELWgpH34XVJTbVS5VyddOQ5cuuZVu4QTi2wmdBFHbVcabwVavHwRirADvZK0W0Pc9vvsogQrcdIqv4BqJY8SxCGPb1scgEPJHBc6tDq6tj8NUpYQiooSuRnS9YuDWsQ0MSjdST+49zw/v0xJXXAbMwd/KN+8w1d+YICbdq9RKlrzXdd8SZz46jB9EplDi73+7hjFJMCmZDK1fJjkoSxb6PCRDU+JrcV7qxwqts292MmjuAJIOdvNce00Pv9jNdzCHRCbXW/Lrm2/E2NpQjGBVNkCF661w+756q0wq+mh1LG8SjaAqQ==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(6496006)(316002)(33716001)(66946007)(55016002)(9686003)(1076003)(38100700002)(9576002)(44832011)(52116002)(2906002)(66556008)(66476007)(86362001)(956004)(8936002)(508600001)(186003)(5660300002)(38350700002)(8676002)(4326008)(6916009)(26005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?jKrJieVUhzKc2w8GQrDo0e2GdGGIyzia/CYEHqeGRBiVNurD6GmA41SXZN4J?=
- =?us-ascii?Q?NJTLQjYWWAktbww7tLAqvufKL0ni10Bddt+jLePmamiKPP3PARje4bJlnAM7?=
- =?us-ascii?Q?/NkNTlToYsosOYC+eXHZ/R2p57/Adf6A45vusYmRYxPgbdU0gFFKiMHO/zRN?=
- =?us-ascii?Q?G04WybSFa7HFD7FTMLl9ZmdzReh/NiRPr+YrSq/ntCpDeIDNLQ7NsItWZ+JY?=
- =?us-ascii?Q?TK3noviCnSwzXnmpHF8QAES0s8/gXdrawC5i05Y6iLaB4dMSfIjaQAIxMbwB?=
- =?us-ascii?Q?xX6O5i+/YixSA8HhE3IJG/fJ60gmGhSx0LWHMpEB2wEcnvo3yiUC7W5UfcZN?=
- =?us-ascii?Q?D0kGcCwP8l7fPM2EcijjOqcua41FtaQF6pvNcHfSOHmu1oWQeqyVaIHSWxfc?=
- =?us-ascii?Q?PrY7VHkJBHJTZ6Q7M69XoGaTnFcAtI23mfmUwI7HZXIOrkmguIE7tUXnbC7f?=
- =?us-ascii?Q?0+Qo3REqLxlXQJyzz2grxBFtqYgO9VGiPI6+Y/oX/gHhAjgssr0Gk+dVRkz6?=
- =?us-ascii?Q?MmVUEMZCqahne6G0//ByG+x1c8I9rHCUk7xkXYnA7X31qYKwCB/+woeDOqTY?=
- =?us-ascii?Q?IRUx+6qt5HmKJqFqlx9oeHOGkYDUQRFl9+ihHd4yWzxOTecncAHjLsYSc+rl?=
- =?us-ascii?Q?3eB0674Y7wUD3u5UjI3o+LmK18uMhZt7iSQA51Ccz4tWQXFcAZQ60vDxG8N3?=
- =?us-ascii?Q?Sn/RQ1JCwlzJl6wFRLY1YucU8uRIMn2XPyku+wY93Olo4LfFNt16NlDeZyzY?=
- =?us-ascii?Q?iEPJKfDC3V9al3ymycnV7kzXwxx1TpHg+DU9JZmuh3O5hc1OuHJ9GzjXGMlS?=
- =?us-ascii?Q?NdTcvx0O9RsB71mIQDydRihPIpT0IfdITrJ612ir6zn42jfGUN5LI7R5UzEi?=
- =?us-ascii?Q?pbyk6gvZdoa3DHQgoP2CAaO61enS/pQZu2ANUQegAdUIep5ZkguD28uY6tJ6?=
- =?us-ascii?Q?e+dfy4JPoSviMQ4GNHFiv1X3u1MP9SE0Tvi0qqVoAfcCWW1eu/dqAar1aQE1?=
- =?us-ascii?Q?HGFiC/kT01Bt/2RiMjfoI3uPybQG+XL3bR0N07rZlhm/nMFwCdDCEZcBS/Te?=
- =?us-ascii?Q?euQfpv1q0ZICHX98vS/Ztl0tZpjiuwf99J55gMWQHoQ7LvpnugRlJfrB0PFo?=
- =?us-ascii?Q?idf+QaI2HF0I5Pt1SzptFJ0/joZ4IagMBgDbiQz0oxu2+TUD++SwhrlQscD2?=
- =?us-ascii?Q?vnqMPpxKPKMRI4xqKvZkWaBNlO6G40LJaeEAWhOf4OZKBLuMGXe3Pizpn1X0?=
- =?us-ascii?Q?yFzqxiB/TM7vfe0wJXYiSUUuDkq1LvoZgTg1t3xjjfVBgYXsgIiC/Cv/hMzS?=
- =?us-ascii?Q?J3hmn3T7UHsLJ+ALRJv0CRCrlWtgdlab6UvQy7VXf+ujQDVTKM+uqSzY496+?=
- =?us-ascii?Q?mQoPK9o7+GDThnWleJ8ij9ThH/NPGy8DurAqgJ4MZp8Yy9MdI9Pu3YZxxuqF?=
- =?us-ascii?Q?YAaRwglEruP7Dv/AywnJOSf1Jn7wAyT9X37i901IzMTyQfparJMV/eUR52a/?=
- =?us-ascii?Q?bkwyVyPNa/pdPZWW0nJWG2rlUwP3eklXgw9xmws52kHXy5cYE++cynJmw/B0?=
- =?us-ascii?Q?0Ylj2E7AiQGhzUYlu3r/Z+TQTvERkVokmuvH+IxKBf/vwa3JPWP9StdpIu0b?=
- =?us-ascii?Q?BIG5t2J9NG2o2KQ+VeghlPakqAxKLWSuETGj0oGhQN/NyNqWM3g7Jz44UZ70?=
- =?us-ascii?Q?s9BhWQUtG1Tt/DcmHxdaAdtO5GF5g5/zFTSE3/Bs2WR4BZGgrkj4LIPUrX1T?=
- =?us-ascii?Q?Cs75XoIoig=3D=3D?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 
- a3bf2072-41a0-4af2-061f-08d99ead49cf
-X-MS-Exchange-CrossTenant-AuthSource: 
- AM0PR0402MB3348.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2021 09:35:35.6989
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 
- FdyxQclrfVW2Ke+p+KYXS6jgDqZmWPUJSmyFArv1feCNquO3Vh+EhyeyCvWjK8w8pz1CSk9E0jeQO0Uc9aFEP9oyz9irLzKhHCf3dHrabEtQ2dcFqOS3bOp2paKcqY32
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7587
+References: <f9c8e642-a6d1-afbe-247c-39ac1db60a0c@bootlin.com>
+ <20211103093533.prsusa5rblbmqset@fedora>
+ <fb3b31c1-f4a1-961d-292f-db932ef2c787@bootlin.com>
+In-Reply-To: <fb3b31c1-f4a1-961d-292f-db932ef2c787@bootlin.com>
+From: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Date: Wed, 3 Nov 2021 12:24:55 +0100
+Message-ID: 
+ <CAP71Wjy8m+rJbWo2p_RBiLrzOgVoFScSn3XX3yHSeCP8zS0SNw@mail.gmail.com>
+Subject: Re: [docs] Variable documentation overlap between Yocto and Bitbake
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="0000000000007e2e6305cfe0a9d8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 Nov 2021 09:35:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2073
+ <docs@lists.yoctoproject.org>; Wed, 03 Nov 2021 11:25:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2075
 
-Hi Michael,
+--0000000000007e2e6305cfe0a9d8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Nov 02, 2021 at 08:06:21PM +0100, Michael Opdenacker wrote:
-> Greetings,
->=20
-> Following recent discussions, I realize that the "gitsm" fetcher (Git
-> Submodule) is not documented yet in the description of SRC_URI.
->=20
-> However, shall I add this to both Yocto Project and Bitbake
-> documentation, which both describe SRC_URI? There's a lot of overlap
-> between the two, by the way, and this makes me uncomfortable.
->=20
-> Could there be a clean way to document all the common stuff in Bitbake's
-> documentation, and only OE core's specific options in Yocto docs? I'm
-> thinking about options such as "striplevel" that are implemented only in
-> OE core...
->=20
+hey!
 
-What I'd like to see personally is removal of duplicates and have
-entries in the glossary for terms defined in the bitbake docs. Since the
-objects.inv from bitbake docs only does a mapping between references and
-URL... I guess we can only add URLs to YP docs variables glossary.
+On Wed, Nov 3, 2021 at 11:46 AM Michael Opdenacker <
+michael.opdenacker@bootlin.com> wrote:
 
-For how to include common stuff, I guess we could give a link saying:
-Common stuff defined in Bitbake <link>
+> Hi Quentin,
+>
+> Thanks for your suggestions!
+>
+> On 11/3/21 10:35 AM, Quentin Schulz wrote:
+> > Hi Michael,
+> >
+> > On Tue, Nov 02, 2021 at 08:06:21PM +0100, Michael Opdenacker wrote:
+> >> Greetings,
+> >>
+> >> Following recent discussions, I realize that the "gitsm" fetcher (Git
+> >> Submodule) is not documented yet in the description of SRC_URI.
+> >>
+> >> However, shall I add this to both Yocto Project and Bitbake
+> >> documentation, which both describe SRC_URI? There's a lot of overlap
+> >> between the two, by the way, and this makes me uncomfortable.
+>
 
-Here are Yp/OE specific stuff for this thing:
-<specific stuff>
+This is a good catch.
 
-I haven't really looked deeply into Sphinx so maybe there's something
-possible but out of the blue, I'd just say we have links to refs to
-other sphinx docs but nothing else.
 
-Just my 2=A2, not really offering solutions :/
+> >>
+> >> Could there be a clean way to document all the common stuff in Bitbake=
+'s
+> >> documentation, and only OE core's specific options in Yocto docs? I'm
+> >> thinking about options such as "striplevel" that are implemented only =
+in
+> >> OE core...
+> >>
+> > What I'd like to see personally is removal of duplicates and have
+> > entries in the glossary for terms defined in the bitbake docs. Since th=
+e
+> > objects.inv from bitbake docs only does a mapping between references an=
+d
+> > URL... I guess we can only add URLs to YP docs variables glossary.
+>
 
-Quentin
+Since we are at the beginning of the dev cycle (and the next release is an
+LTS..) how about we discuss again how the bitbake manual is integrated into
+yp-docs. I agree that having such duplicate is a bad user experience.
 
+I know we want bitbake and yp-docs to be separate repo, but should we try
+to combine them together when we create/publish the YP docs in a more
+efficient manner. Without going as far as merging the 2 repos, perhaps we
+could use a git submodule in yp-docs, and embed bitbake docs without using
+the intersphinx extension, e.g. directly.
+
+e.g. I've tested this, and it seems to work well:
+
+--- a/documentation/index.rst
++++ b/documentation/index.rst
+@@ -34,7 +34,7 @@ Welcome to the Yocto Project Documentation
+    Application Development and the Extensible SDK (eSDK) <sdk-manual/index=
+>
+    Toaster Manual <toaster-manual/index>
+    Test Environment Manual <test-manual/index>
+-   bitbake
++   bitbake/doc/index
+
+ .. toctree::
+    :maxdepth: 1
+
+after cloning bitbake repo in yp-docs/documentation.
+
+I am well aware that bitbake doc can be standalone too, but we could still
+publish bitbake docs independently like we do today. Btw, looking at the
+new index (using the submodule) I can see 64 duplicate entries ;)
+
+
+>
+> > For how to include common stuff, I guess we could give a link saying:
+> > Common stuff defined in Bitbake <link>
+> >
+> > Here are Yp/OE specific stuff for this thing:
+> > <specific stuff>
+> >
+> > I haven't really looked deeply into Sphinx so maybe there's something
+> > possible but out of the blue, I'd just say we have links to refs to
+> > other sphinx docs but nothing else.
+> >
+> > Just my 2=C2=A2, not really offering solutions :/
+>
+>
+> Definitely agree with the idea. We can make a reference to
+> :term:`bitbake:SRC_URI` in the Yocto docs, and add the OE specific stuff
+> there. I checked that this works, and that's not complicated.
+> I'll propose a patch for SRC_URI soon.
+>
+> Thanks again,
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#2074):
+> https://lists.yoctoproject.org/g/docs/message/2074
+> Mute This Topic: https://lists.yoctoproject.org/mt/86774485/1279857
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
+> nicolas.dechesne@linaro.org]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
+>
+
+--0000000000007e2e6305cfe0a9d8
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>hey!</div><br><div class=3D"gmail_quote"><div dir=3D"=
+ltr" class=3D"gmail_attr">On Wed, Nov 3, 2021 at 11:46 AM Michael Opdenacke=
+r &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com">michael.opdenacker@=
+bootlin.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">Hi Quentin,<br>
+<br>
+Thanks for your suggestions!<br>
+<br>
+On 11/3/21 10:35 AM, Quentin Schulz wrote:<br>
+&gt; Hi Michael,<br>
+&gt;<br>
+&gt; On Tue, Nov 02, 2021 at 08:06:21PM +0100, Michael Opdenacker wrote:<br=
+>
+&gt;&gt; Greetings,<br>
+&gt;&gt;<br>
+&gt;&gt; Following recent discussions, I realize that the &quot;gitsm&quot;=
+ fetcher (Git<br>
+&gt;&gt; Submodule) is not documented yet in the description of SRC_URI.<br=
+>
+&gt;&gt;<br>
+&gt;&gt; However, shall I add this to both Yocto Project and Bitbake<br>
+&gt;&gt; documentation, which both describe SRC_URI? There&#39;s a lot of o=
+verlap<br>
+&gt;&gt; between the two, by the way, and this makes me uncomfortable.<br><=
+/blockquote><div><br></div><div>This is a good catch.=C2=A0</div><div>=C2=
+=A0<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px =
+0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
+&gt;&gt;<br>
+&gt;&gt; Could there be a clean way to document all the common stuff in Bit=
+bake&#39;s<br>
+&gt;&gt; documentation, and only OE core&#39;s specific options in Yocto do=
+cs? I&#39;m<br>
+&gt;&gt; thinking about options such as &quot;striplevel&quot; that are imp=
+lemented only in<br>
+&gt;&gt; OE core...<br>
+&gt;&gt;<br>
+&gt; What I&#39;d like to see personally is removal of duplicates and have<=
+br>
+&gt; entries in the glossary for terms defined in the bitbake docs. Since t=
+he<br>
+&gt; objects.inv from bitbake docs only does a mapping between references a=
+nd<br>
+&gt; URL... I guess we can only add URLs to YP docs variables glossary.<br>=
+</blockquote><div><br></div><div>Since we are at the beginning of the dev c=
+ycle (and the next release is an LTS..) how about we discuss again how the =
+bitbake manual is integrated into yp-docs. I agree that having such duplica=
+te is a bad user experience.=C2=A0</div><div><br></div><div>I know we want =
+bitbake and yp-docs to be separate repo, but should we try to combine them =
+together when we create/publish the YP docs in a more efficient manner. Wit=
+hout going as far as merging the 2 repos, perhaps we could use a git submod=
+ule in yp-docs, and embed bitbake docs without using the intersphinx extens=
+ion, e.g. directly.=C2=A0</div><div><br></div><div>e.g. I&#39;ve tested thi=
+s, and it seems to work well:</div><div><br></div><div>--- a/documentation/=
+index.rst<br>+++ b/documentation/index.rst<br>@@ -34,7 +34,7 @@ Welcome to =
+the Yocto Project Documentation<br>=C2=A0 =C2=A0 Application Development an=
+d the Extensible SDK (eSDK) &lt;sdk-manual/index&gt;<br>=C2=A0 =C2=A0 Toast=
+er Manual &lt;toaster-manual/index&gt;<br>=C2=A0 =C2=A0 Test Environment Ma=
+nual &lt;test-manual/index&gt;<br>- =C2=A0 bitbake<br>+ =C2=A0 bitbake/doc/=
+index<br>=C2=A0<br>=C2=A0.. toctree::<br>=C2=A0 =C2=A0 :maxdepth: 1<br></di=
+v><div>=C2=A0</div><div>after cloning bitbake repo in yp-docs/documentation=
+.</div><div><br></div><div>I am well aware that bitbake doc can be standalo=
+ne too, but we could still publish bitbake docs independently like we do to=
+day. Btw, looking at the new index (using the submodule) I can see 64 dupli=
+cate entries ;)</div><div><br></div><div><br></div><blockquote class=3D"gma=
+il_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,2=
+04,204);padding-left:1ex">
+&gt;<br>
+&gt; For how to include common stuff, I guess we could give a link saying:<=
+br>
+&gt; Common stuff defined in Bitbake &lt;link&gt;<br>
+&gt;<br>
+&gt; Here are Yp/OE specific stuff for this thing:<br>
+&gt; &lt;specific stuff&gt;<br>
+&gt;<br>
+&gt; I haven&#39;t really looked deeply into Sphinx so maybe there&#39;s so=
+mething<br>
+&gt; possible but out of the blue, I&#39;d just say we have links to refs t=
+o<br>
+&gt; other sphinx docs but nothing else.<br>
+&gt;<br>
+&gt; Just my 2=C2=A2, not really offering solutions :/<br>
+<br>
+<br>
+Definitely agree with the idea. We can make a reference to<br>
+:term:`bitbake:SRC_URI` in the Yocto docs, and add the OE specific stuff<br=
+>
+there. I checked that this works, and that&#39;s not complicated.<br>
+I&#39;ll propose a patch for SRC_URI soon.<br>
+<br>
+Thanks again,<br>
+Michael.<br>
+<br>
+-- <br>
+Michael Opdenacker, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
+//bootlin.com</a><br>
+<br>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#2074): <a href=3D"https://lists.yoctoproject.org/g/docs=
+/message/2074" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
+ect.org/g/docs/message/2074</a><br>
+Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/86774485/1279=
+857" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
+/86774485/1279857</a><br>
+Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
+=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
+Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
+"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
+/a> [<a href=3D"mailto:nicolas.dechesne@linaro.org" target=3D"_blank">nicol=
+as.dechesne@linaro.org</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</blockquote></div></div>
+
+--0000000000007e2e6305cfe0a9d8--
 
