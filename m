@@ -1,128 +1,100 @@
-Return-Path: <steve@sakoman.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3876BC433EF
-	for <webhook@archiver.kernel.org>; Thu, 11 Nov 2021 04:11:30 +0000 (UTC)
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
- [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.web12.6215.1636603888814965874
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B0ECC433F5
+	for <webhook@archiver.kernel.org>; Thu, 11 Nov 2021 10:49:34 +0000 (UTC)
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+ [209.85.221.48])
+ by mx.groups.io with SMTP id smtpd.web09.8999.1636627772843138632
  for <docs@lists.yoctoproject.org>;
- Wed, 10 Nov 2021 20:11:29 -0800
+ Thu, 11 Nov 2021 02:49:33 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20210112.gappssmtp.com header.s=20210112
- header.b=iyKmKYBK;
- spf=softfail (domain: sakoman.com, ip: 209.85.128.49,
- mailfrom: steve@sakoman.com)
-Received: by mail-wm1-f49.google.com with SMTP id 133so3971436wme.0
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=OcJMB0Gj;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.48,
+ mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f48.google.com with SMTP id u18so9059788wrg.5
         for <docs@lists.yoctoproject.org>;
- Wed, 10 Nov 2021 20:11:28 -0800 (PST)
+ Thu, 11 Nov 2021 02:49:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20210112.gappssmtp.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6O6jKRaw7+f4cEUQfZdG1kPRnyU+5eb+VTx0T+AbYgk=;
-        b=iyKmKYBKsAlx4uUkNb2UfW0Uw7+kH8SaHg2JD7InIOu72okqijK1T+tiSvPGUfxfYS
-         oeN5J5w/m50DXqqfVTeqxuyhuGTD44gc1hZIbHQ1bgPn81Ji9ELmzYSZzWiZD6w5YNXK
-         5u5ZJUFURgZs0kGx6FCdlBcnyVhx3GNaAaKRMQJycwOFXbJqJhDMB9c9qCbO2+lJVDr/
-         Z2GSdANSNFezx163FuO58skQQ6ZI9cPYDa5KhoXY+31nLCE7kX+cdDorL2dGmy48jvmC
-         6CSP3OA9qSEW0+eG2XtiBKxmrykuLnBK2ovyD9VWUJ1vJzI0i/dNwaBvhhfq+o+oaiyu
-         3QSg==
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=WYVXMUJ2KrB/7+A68LHAmok0BNHsUwWlWXTxTZ1F0V8=;
+        b=OcJMB0GjLYvPW3WxQ/nzKO0X4MXhO+++nl0CkKm9oqF58K21SYMy61NWl0TTgmJ3nQ
+         VGfZB/EeZT2aVp7JBAyg24TpU3RV+XkI7ipVB00AYdnvPA1CNIx92uOcW2O5ElNDs2Af
+         Y1Cfv8lTtxEENgbBqHUx9ygQLelSIDo8fRaB4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6O6jKRaw7+f4cEUQfZdG1kPRnyU+5eb+VTx0T+AbYgk=;
-        b=pjwYmeu5/kwsg+zhrXrG5ohJKWy52cB34hBLG6DC0IGvy846qWnPjR/94Q5IsKytkU
-         emsiswp/ccQnwDzpW3zOyrSID+XP5XPYuDZvaGkXAaYrNrfjcz0U6E8Z5oNwlsjvZ+zX
-         elDkVvC2UXH5z1ziPjUTQ9b+a70RI7RuImoOWMdj/2x2PnY9QFQvDaABLbw10ypdShLD
-         csbhTyJaSfllYTL31LolnbsPhlQ7Qbds4+bQLE0a1wfO7dMUUTRDQ766XOjznluA67QB
-         S6AnN9tYDB+5n0EZN/mqnx0pIQW3ay5jVN7X4AYpGhvzT94QqtVelDOKPZpNXfB60HPQ
-         hIHg==
-X-Gm-Message-State: AOAM53054HdQJKCurxfl1/J8fR0ow4Av5ZlUgPFALqMxB6aI/+JfuLA4
-	zmJGXIN0AfPdJ/iDKZNh14CkGUItuyvde9NQlj/Cew==
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=WYVXMUJ2KrB/7+A68LHAmok0BNHsUwWlWXTxTZ1F0V8=;
+        b=lNw9I8hFrg2goTzxoj9wCvgtAPhY4PEIXaBe7aSh75J+COIJsDwYDZ/0h+ZZy6YgAN
+         Ut6X+wm2l8kP3itotL6E+/j7JgHT8i+1lSw4ZDwxfUdvzXd3QCXDRMeVPN6l+unhdEje
+         Wc/7d2NjRY9EXT6Goi2pXeULb8x8p+/Z0b7wL3Wty3Xfojsa5m0MloXUrlSf6jxJOlTO
+         r8Emo9e4AVJD6qvY1/lAHe1F6yoMZ+oZgjGJykPQq+WUGkpfaqfz4pBj153U8vrG2rOR
+         nyu3bzdP/t8gpbsGCnW6x31/JJ+zzjcmUJgC28mt4nfhL6rKNo+omuIuiq3ReOIRkMSB
+         Xvag==
+X-Gm-Message-State: AOAM5306QUfDkRnXRglqOD/IXUfHxyGi4XoqbFbIR7sQOppvZN4RJUKQ
+	VNL+z56QqDX3eVC57/3fK5myuw==
 X-Google-Smtp-Source: 
- ABdhPJx0X+pNS510tPwAl623kdhSj7GLdvJuvoSvBy08GXYCr4P2fz09FkXvB2etsih7C6bnBbNOGz1QdwIHAGIJlSs=
-X-Received: by 2002:a05:600c:1990:: with SMTP id
- t16mr4992915wmq.48.1636603887042;
- Wed, 10 Nov 2021 20:11:27 -0800 (PST)
-MIME-Version: 1.0
-References: <cover.1636564016.git.steve@sakoman.com>
- <c3b650f759d7983db563500d52ad5b68f18728e7.1636564016.git.steve@sakoman.com>
- <331d6852e3e5bb9afeed9c9be927f72cd0e57a5b.camel@intel.com>
-In-Reply-To: <331d6852e3e5bb9afeed9c9be927f72cd0e57a5b.camel@intel.com>
-From: Steve Sakoman <steve@sakoman.com>
-Date: Wed, 10 Nov 2021 18:11:16 -1000
+ ABdhPJyTHEnWesY/FfwhDTZhGRZ8bvC6PdETrmyax+hMjvhCb25EbXSRQaTvuEu+7FVTQjnyx/APzw==
+X-Received: by 2002:a5d:518d:: with SMTP id k13mr7702119wrv.120.1636627771279;
+        Thu, 11 Nov 2021 02:49:31 -0800 (PST)
+Received: from ?IPv6:2001:8b0:aba:5f3c:b19:11f4:a3d9:cabc?
+ ([2001:8b0:aba:5f3c:b19:11f4:a3d9:cabc])
+        by smtp.gmail.com with ESMTPSA id
+ u2sm2480844wrr.35.2021.11.11.02.49.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Nov 2021 02:49:30 -0800 (PST)
 Message-ID: 
- <CAOSpxdaN29DYxpsnPKop0C0LPPL5FcHtxHMmx=4ySB7DCAuAUw@mail.gmail.com>
-Subject: Re: [docs] [yocto-docs][dunfell 3/3] documentation: prepare for
- 3.1.12 release
-To: "Mittal, Anuj" <anuj.mittal@intel.com>
-Cc: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+ <28e1fd85397766a89160ce5c3705c85145530b92.camel@linuxfoundation.org>
+Subject: Re: Fwd: Re: [bitbake-devel] [oe-core][PATCH 1/2] devtools: Initial
+ recipe for repo 2.17.3
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>, docs
+ <docs@lists.yoctoproject.org>, Michael Halstead
+ <mhalstead@linuxfoundation.org>
+Cc: Jasper Orschulko <Jasper.Orschulko@iris-sensing.com>
+Date: Thu, 11 Nov 2021 10:49:29 +0000
+In-Reply-To: <61ce3cac-70fe-5325-d92e-037d7f365b93@bootlin.com>
+References: 
+	<a82b048c5f9f164696b1dd1e3e6c4997ede4f5ad.camel@iris-sensing.com>
+	 <45438478b288da1880e92bb1ccc246732a24abc9.camel@linuxfoundation.org>
+	 <ab0450c7-8f2f-9822-1ef7-61712cc45f6e@bootlin.com>
+	 <61ce3cac-70fe-5325-d92e-037d7f365b93@bootlin.com>
 Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4-1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 11 Nov 2021 04:11:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2126
+ <docs@lists.yoctoproject.org>; Thu, 11 Nov 2021 10:49:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2127
 
-On Wed, Nov 10, 2021 at 6:08 PM Mittal, Anuj <anuj.mittal@intel.com> wrote:
->
-> On Wed, 2021-11-10 at 07:08 -1000, Steve Sakoman wrote:
-> > Signed-off-by: Steve Sakoman <steve@sakoman.com>
-> > ---
-> >  documentation/conf.py                    | 2 +-
-> >  documentation/poky.yaml                  | 8 ++++----
-> >  documentation/releases.rst               | 1 +
-> >  documentation/sphinx-static/switchers.js | 2 +-
-> >  4 files changed, 7 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/documentation/conf.py b/documentation/conf.py
-> > index 6f10fc151..6eb284e65 100644
-> > --- a/documentation/conf.py
-> > +++ b/documentation/conf.py
-> > @@ -16,7 +16,7 @@ import os
-> >  import sys
-> >  import datetime
-> >
-> > -current_version = "3.1.11"
-> > +current_version = "3.1.12"
-> >
-> >  # String used in sidebar
-> >  version = 'Version: ' + current_version
-> > diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-> > index bda8ff123..af041e373 100644
-> > --- a/documentation/poky.yaml
-> > +++ b/documentation/poky.yaml
-> > @@ -1,11 +1,11 @@
-> > -DISTRO : "3.1.11"
-> > +DISTRO : "3.1.12"
-> >  DISTRO_NAME_NO_CAP : "dunfell"
-> >  DISTRO_NAME : "Dunfell"
-> >  DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
-> > -YOCTO_DOC_VERSION : "3.1.11"
-> > +YOCTO_DOC_VERSION : "3.1.12"
-> >  YOCTO_DOC_VERSION_MINUS_ONE : "3.0.2"
-> > -DISTRO_REL_TAG : "yocto-3.1.11"
-> > -POKYVERSION : "23.0.11"
-> > +DISTRO_REL_TAG : "yocto-3.1.12"
-> > +POKYVERSION : "23.0.12"
-> >  YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
-> >  YOCTO_DL_URL : "https://downloads.yoctoproject.org"
-> >  YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-> > diff --git a/documentation/releases.rst b/documentation/releases.rst
-> > index 70393084c..60872cca2 100644
-> > --- a/documentation/releases.rst
-> > +++ b/documentation/releases.rst
-> > @@ -20,6 +20,7 @@
-> >  - :yocto_docs:`3.1.9 Documentation </3.1.9>`
-> >  - :yocto_docs:`3.1.10 Documentation </3.1.10>`
-> >  - :yocto_docs:`3.1.11 Documentation </3.1.11>`
-> > +- :yocto_docs:`3.1.11 Documentation </3.1.12>`
->
-> Should be 3.1.12 here?
+On Wed, 2021-11-10 at 09:47 +0100, Michael Opdenacker wrote:
+> On 11/9/21 11:40 AM, Michael Opdenacker wrote:
+> > Richard, Jasper,
+> > 
+> > On 11/8/21 1:48 PM, Richard Purdie wrote:
+> > > Hi Michael and Michael,
+> > > 
+> > > This sounds like something we should prioritise fixing?
+> > Good catch, thanks!
+> > 
+> > I agree,
+> > https://www.yoctoproject.org/docs/latest/mega-manual/mega-manual.html
+> > should also redirect to https://docs.yoctoproject.org/singleindex.html
+> > 
+> > I'll ask Michael H. to change this.
+> 
+> Michael H. took care of this.
 
-Yes, indeed! Thanks for catching this.
+Thanks all, that should be a useful fix.
 
-Steve
+Cheers,
+
+Richard
+
 
