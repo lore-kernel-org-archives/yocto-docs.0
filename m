@@ -1,172 +1,87 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E7F0C433EF
-	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 17:01:03 +0000 (UTC)
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com
- [209.85.222.46])
- by mx.groups.io with SMTP id smtpd.web12.18415.1636736462645812102
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CBA1C433EF
+	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 17:17:58 +0000 (UTC)
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
+ [209.85.128.43])
+ by mx.groups.io with SMTP id smtpd.web09.86.1636737477235113453
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Nov 2021 09:01:02 -0800
+ Fri, 12 Nov 2021 09:17:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=e8CfAs8t;
- spf=pass (domain: gmail.com, ip: 209.85.222.46,
- mailfrom: alex.kanavin@gmail.com)
-Received: by mail-ua1-f46.google.com with SMTP id t13so20135549uad.9
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=dm4GFd/l;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.43,
+ mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f43.google.com with SMTP id z200so8334018wmc.1
         for <docs@lists.yoctoproject.org>;
- Fri, 12 Nov 2021 09:01:02 -0800 (PST)
+ Fri, 12 Nov 2021 09:17:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=fqxRFtPwecoOcA7wot28sbbfW7nZGw7xxhUKjK9/fco=;
-        b=e8CfAs8t7JxjPIKxe4XB+yfhcs5UNE4fjdWTr6ClqO3b2wfFe9UKLMeImhxA4ZqosT
-         7A9+tEVzYPrP8gfY4roRZIBXRQ24CbishS0UPOIqjSf6F40x6DRY6FdhOLHQHwdAB8qe
-         x5sIQW0p/wfoTI6JUg9aA9GdmZVeOATpWxv6UDjuUsSDrP4gMji7YWxSRdh9N0E65RYs
-         ERN9alUfVbBqzhypkooaE8BgXmhYh3iNWuKRH2aDsYPKpo6t4IjGDfVmCWKSx0q7HGqS
-         0m80ug3xMYNpsOejYlDcSvBgctEGMDabtzKVzIuR3NriyH66ewPH9KevVZosk1xcwTTz
-         cq8Q==
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=j7zR/N65tQyC6xvkytNSuOBhrOh5q+jzo+9lmCyRed0=;
+        b=dm4GFd/lRI+HHhwQ61QFEyxX7L2e0FK1EcvF6+gGo8LZdtCDce0qa1qyTQzIxzQASq
+         YfxCU3BIqtf99gdXBa9y3hySFLhKFfXN8+CjIyaq/+Oj4eAEa3tJpyRDbdxfxF9nzqnM
+         e21+YLyK7feDpFAKEFylijwmaKQiH43BotZ1I=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=fqxRFtPwecoOcA7wot28sbbfW7nZGw7xxhUKjK9/fco=;
-        b=zB7Ds7Wp2NJgJX9R+npaXh4akQPDQCb21Tc9EI9ekvwhFZYIIgPZMusy/vcmPEwLGE
-         ew/Sd+lqnnWbnrpF7E+zcNz1mGoqdFVHwAMdmluwiyerN5pygzWveZvXnuSVckcfhwtr
-         9xOdeZwF4iycqoJF5eBqWgcvT/1cKbjeiniGCbs6zcdtgm81bcccfO8+abmDctXt9Sgi
-         cn/qVbmV2Vr4mSpn+GsY8U8GXTtftu8p66TWj2Dh8gGyiLY1uX9+BMrLGTCcYObKVOc0
-         gzDkRF9YMbLFLOIzHsfgTLdL3D3bnDwX64/CRKuh0cTtuSMJK7UBmX4R3Z7B6U8zf0+w
-         HqXA==
-X-Gm-Message-State: AOAM53031HXhy1jXDUqGLrh7oNQthaBluhJ8NqAHyKjDWkpfYJomzAvV
-	Foq9URrm7bDEg59ThKqVyQCaeC3CjQwHP7fNSwU39zB7zzQ=
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=j7zR/N65tQyC6xvkytNSuOBhrOh5q+jzo+9lmCyRed0=;
+        b=ykGtL7VnhMwAvZ/vIgSGZ/1p1g5jo7kOdUE5OFdSDD+s83gsBrTWjOqRs+dUT9RpeM
+         EWev3DCofRpsGa9cDpHOrvj3f3CxglHC2N8cqsdxnyYovyizr0lW5G6MLf9XaE42+u0L
+         wieOM+nhhSM8fPE5ntOEyimlA0BFvK8lFnVMNf6rBk0hwpeuqBGbQtPAyDFDbu6TpJ0O
+         LJbZJKEtwLaFKi8vH318SIBC4dF13vPZl6hAHOnc1WyHpmqAQ3052s6trMHfcoPvHTUF
+         yvlgIB1i5I9LCbATmewCoErVXAoLc1Ti1P4JeezJQov5rbxsdo8Y6ZxI9ZzOoXywPT2B
+         gSPA==
+X-Gm-Message-State: AOAM530NvxgpDrtdpvBPc7lCoiICZoceLZ2495o5y721Lbt+I0MMsl8B
+	xd0zGfYcj/BrSONK6jwra/2GWg==
 X-Google-Smtp-Source: 
- ABdhPJz+P4SPnqmenIyTwDzXPunbgSd6tr7oY4nW1NIrzD/e19qNrDx/1inQp0HzBHC6cGfjCHTUAxKAuuzzf7grpbo=
-X-Received: by 2002:a9f:2c98:: with SMTP id w24mr24174640uaj.89.1636736461589;
- Fri, 12 Nov 2021 09:01:01 -0800 (PST)
-MIME-Version: 1.0
-References: <84ac62a4-4e20-5453-47eb-994be2e11511@bootlin.com>
- <8f1064b166e71dc88c99f702041a8f611929b9b5.camel@linuxfoundation.org>
-In-Reply-To: 
- <8f1064b166e71dc88c99f702041a8f611929b9b5.camel@linuxfoundation.org>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Fri, 12 Nov 2021 18:00:50 +0100
+ ABdhPJyvSYdPXSWVbxawEGzH1udEglPCOjkukTPqaWWUbH3b8nl2F1/bP7aodM0H93AKhEvmRf+uqA==
+X-Received: by 2002:a05:600c:34c2:: with SMTP id
+ d2mr19257074wmq.102.1636737475620;
+        Fri, 12 Nov 2021 09:17:55 -0800 (PST)
+Received: from ?IPv6:2001:8b0:aba:5f3c:c0bd:72b4:105a:2914?
+ ([2001:8b0:aba:5f3c:c0bd:72b4:105a:2914])
+        by smtp.gmail.com with ESMTPSA id
+ r8sm8118892wrz.43.2021.11.12.09.17.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Nov 2021 09:17:55 -0800 (PST)
 Message-ID: 
- <CANNYZj-L4jFf_4v2rV0tMkRpr-2_4ZrQzMyPXvU9BkYu_MRXeg@mail.gmail.com>
+ <cb3ddc81dd08eda1e56906902a07e5034bd5a504.camel@linuxfoundation.org>
 Subject: Re: [docs] Why "git send-email -M -1" in our contributing
  instructions?
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="00000000000062525305d09a67ee"
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Alexander Kanavin <alex.kanavin@gmail.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>, YP docs mailing
+ list <docs@lists.yoctoproject.org>
+Date: Fri, 12 Nov 2021 17:17:52 +0000
+In-Reply-To: 
+ <CANNYZj-L4jFf_4v2rV0tMkRpr-2_4ZrQzMyPXvU9BkYu_MRXeg@mail.gmail.com>
+References: <84ac62a4-4e20-5453-47eb-994be2e11511@bootlin.com>
+	 <8f1064b166e71dc88c99f702041a8f611929b9b5.camel@linuxfoundation.org>
+	 <CANNYZj-L4jFf_4v2rV0tMkRpr-2_4ZrQzMyPXvU9BkYu_MRXeg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4-1 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 17:01:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2143
+ <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 17:17:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2145
 
---00000000000062525305d09a67ee
-Content-Type: text/plain; charset="UTF-8"
+On Fri, 2021-11-12 at 18:00 +0100, Alexander Kanavin wrote:
+> There's no confusion. 'format-patch' writes a patch to disk, send-email
+> formats a patch in the same way with the same options and sends it over email.
+> We want rename detection in both.
 
-There's no confusion. 'format-patch' writes a patch to disk, send-email
-formats a patch in the same way with the same options and sends it over
-email. We want rename detection in both.
+I usually write to disk with format-patch, edit and then send. I'd forgotten the
+send-email options are piped to format-patch...
 
-Alex
+Cheers,
 
-On Fri, 12 Nov 2021 at 17:58, Richard Purdie <
-richard.purdie@linuxfoundation.org> wrote:
+Richard
 
-> On Fri, 2021-11-12 at 17:55 +0100, Michael Opdenacker wrote:
-> > Hi,
-> >
-> > I've just sent a patch to the bitbake-devel and docs mailing lists using
-> > "git send-email -M -1", strictly following the contribution instructions.
-> >
-> > However, my e-mail got sent twice. What's this "-M -1" option? I can't
-> > find it in the manual of "git send-email", and I had done without it so
-> far.
-> >
-> > I wonder if we could remove it from our guidelines for sending patches
-> > with "git send-email"...
->
-> It is possible it was confused with git format-patch which we definitely
-> want -M
-> for? I agree we can probably drop it.
->
-> Cheers,
->
-> Richard
->
->
-> -=-=-=-=-=-=-=-=-=-=-=-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#2142):
-> https://lists.yoctoproject.org/g/docs/message/2142
-> Mute This Topic: https://lists.yoctoproject.org/mt/87010850/1686489
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
-> alex.kanavin@gmail.com]
-> -=-=-=-=-=-=-=-=-=-=-=-
->
->
-
---00000000000062525305d09a67ee
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>There&#39;s no confusion. &#39;format-patch&#39; writ=
-es a patch to disk, send-email formats a patch in the same way with the sam=
-e options and sends it over email. We want rename detection in both.<br></d=
-iv><div><br></div><div>Alex<br></div></div><br><div class=3D"gmail_quote"><=
-div dir=3D"ltr" class=3D"gmail_attr">On Fri, 12 Nov 2021 at 17:58, Richard =
-Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfoundation.org">richard.pu=
-rdie@linuxfoundation.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
-_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
-,204);padding-left:1ex">On Fri, 2021-11-12 at 17:55 +0100, Michael Opdenack=
-er wrote:<br>
-&gt; Hi,<br>
-&gt; <br>
-&gt; I&#39;ve just sent a patch to the bitbake-devel and docs mailing lists=
- using<br>
-&gt; &quot;git send-email -M -1&quot;, strictly following the contribution =
-instructions.<br>
-&gt; <br>
-&gt; However, my e-mail got sent twice. What&#39;s this &quot;-M -1&quot; o=
-ption? I can&#39;t<br>
-&gt; find it in the manual of &quot;git send-email&quot;, and I had done wi=
-thout it so far.<br>
-&gt; <br>
-&gt; I wonder if we could remove it from our guidelines for sending patches=
-<br>
-&gt; with &quot;git send-email&quot;...<br>
-<br>
-It is possible it was confused with git format-patch which we definitely wa=
-nt -M<br>
-for? I agree we can probably drop it.<br>
-<br>
-Cheers,<br>
-<br>
-Richard<br>
-<br>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br>
-View/Reply Online (#2142): <a href=3D"https://lists.yoctoproject.org/g/docs=
-/message/2142" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
-ect.org/g/docs/message/2142</a><br>
-Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/87010850/1686=
-489" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
-/87010850/1686489</a><br>
-Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
-"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
-/a> [<a href=3D"mailto:alex.kanavin@gmail.com" target=3D"_blank">alex.kanav=
-in@gmail.com</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</blockquote></div>
-
---00000000000062525305d09a67ee--
 
