@@ -2,51 +2,58 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DAB4DC433EF
-	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 13:39:13 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web12.15627.1636724352149253859
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A2DBC433F5
+	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 13:47:51 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
+ [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web08.15998.1636724870180834372
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Nov 2021 05:39:12 -0800
+ Fri, 12 Nov 2021 05:47:50 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 544F4C0007
-	for <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 13:39:09 +0000 (UTC)
-To: YP docs mailing list <docs@lists.yoctoproject.org>
+	by relay1-d.mail.gandi.net (Postfix) with ESMTPSA id 4E196240010;
+	Fri, 12 Nov 2021 13:47:48 +0000 (UTC)
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: Continue to support Ubuntu 16.04?
-Organization: Bootlin
-Message-ID: <e215954c-7898-a9c5-1df1-0d876ce30a86@bootlin.com>
-Date: Fri, 12 Nov 2021 14:39:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH 0/4] Supported distros update and preparation for 3.1.12
+Date: Fri, 12 Nov 2021 14:47:37 +0100
+Message-Id: <20211112134741.170835-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 13:39:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2129
+ <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 13:47:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2130
 
-Greetings
+These are updates already applied to Dunfell. Note that I added
+both Fedora 33 and 34.
 
-Ubuntu 16.04 is no longer maintained for free by Canonical
-(https://ubuntu.com/16-04)
+Is it OK to assume that openSUSE 15.2 is supported on "master" too?
+I'm finding success builds on this version, but I'm not sure this
+is sufficient, and it's probably not up to me to decide.
 
-I guess our builders don't have a subscription to get updates until
-2026, so can we really keep Ubuntu 16.04 in our list of supported distros?
+Michael Opdenacker (1):
+  documentation: prepare for 3.1.12 release
 
-Thanks in advance
-Michael.
+Steve Sakoman (3):
+  ref-system-requirements.rst: Add Debian 11 to list of supported
+    distros
+  ref-system-requirements.rst: Add Fedora 33 and 34 to list of supported
+    distros
+  ref-system-requirements.rst: Add openSUSE Leap 15.2 to list of
+    supported distros
+
+ documentation/ref-manual/system-requirements.rst | 9 ++++++++-
+ documentation/releases.rst                       | 1 +
+ documentation/sphinx-static/switchers.js         | 2 +-
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
