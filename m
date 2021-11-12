@@ -2,178 +2,54 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA90CC433FE
-	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 16:48:30 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web08.18482.1636735709545335541
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35BA6C433F5
+	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 16:55:53 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web09.18708.1636736152468228099
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Nov 2021 08:48:30 -0800
+ Fri, 12 Nov 2021 08:55:52 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 4F435240008;
-	Fri, 12 Nov 2021 16:48:26 +0000 (UTC)
+	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 9B17EC000F
+	for <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 16:55:50 +0000 (UTC)
+To: YP docs mailing list <docs@lists.yoctoproject.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] doc: bitbake-user-manual: expand SRC_URI description
-Date: Fri, 12 Nov 2021 17:47:48 +0100
-Message-Id: <20211112164748.177526-2-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20211112164748.177526-1-michael.opdenacker@bootlin.com>
-References: <20211112164748.177526-1-michael.opdenacker@bootlin.com>
+Subject: Why "git send-email -M -1" in our contributing instructions?
+Organization: Bootlin
+Message-ID: <84ac62a4-4e20-5453-47eb-994be2e11511@bootlin.com>
+Date: Fri, 12 Nov 2021 17:55:49 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.13.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 16:48:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2139
+ <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 16:55:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2140
 
-From contents from the Yocto Project manual
-Took the opportunity to reorder SRC_URI fetchers and options
-alphabetically.
+Hi,
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- .../bitbake-user-manual-ref-variables.rst     | 85 +++++++++++++------
- 1 file changed, 59 insertions(+), 26 deletions(-)
+I've just sent a patch to the bitbake-devel and docs mailing lists using
+"git send-email -M -1", strictly following the contribution instructions.
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index e955beb1..78fb2826 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -1333,67 +1333,100 @@ overview of their function and contents.
-       The list of source files - local or remote. This variable tells
-       BitBake which bits to pull for the build and how to pull them. For
-       example, if the recipe or append file needs to fetch a single tarball
--      from the Internet, the recipe or append file uses a :term:`SRC_URI` entry
--      that specifies that tarball. On the other hand, if the recipe or
--      append file needs to fetch a tarball and include a custom file, the
--      recipe or append file needs an :term:`SRC_URI` variable that specifies
--      all those sources.
--
--      The following list explains the available URI protocols:
-+      from the Internet, the recipe or append file uses a :term:`SRC_URI`
-+      entry that specifies that tarball. On the other hand, if the recipe or
-+      append file needs to fetch a tarball, apply two patches, and include
-+      a custom file, the recipe or append file needs an :term:`SRC_URI`
-+      variable that specifies all those sources.
-+
-+      The following list explains the available URI protocols. URI
-+      protocols are highly dependent on particular BitBake Fetcher
-+      submodules. Depending on the fetcher BitBake uses, various URL
-+      parameters are employed. For specifics on the supported Fetchers, see
-+      the :ref:`bitbake-user-manual/bitbake-user-manual-fetching:fetchers`
-+      section.
- 
--      -  ``file://`` : Fetches files, which are usually files shipped
--         with the metadata, from the local machine. The path is relative to
--         the :term:`FILESPATH` variable.
-+      -  ``az://`` : Fetches files from an Azure Storage account using HTTPS.
- 
-       -  ``bzr://`` : Fetches files from a Bazaar revision control
-          repository.
- 
--      -  ``git://`` : Fetches files from a Git revision control
-+      -  ``ccrc://`` - Fetches files from a ClearCase repository.
-+
-+      -  ``cvs://`` : Fetches files from a CVS revision control
-          repository.
- 
--      -  ``osc://`` : Fetches files from an OSC (OpenSUSE Build service)
--         revision control repository.
-+      -  ``file://`` - Fetches files, which are usually files shipped
-+         with the Metadata, from the local machine.
-+         The path is relative to the :term:`FILESPATH`
-+         variable. Thus, the build system searches, in order, from the
-+         following directories, which are assumed to be a subdirectories of
-+         the directory in which the recipe file (``.bb``) or append file
-+         (``.bbappend``) resides:
- 
--      -  ``repo://`` : Fetches files from a repo (Git) repository.
-+         -  ``${BPN}`` - The base recipe name without any special suffix
-+            or version numbers.
- 
--      -  ``http://`` : Fetches files from the Internet using HTTP.
-+         -  ``${BP}`` - ``${BPN}-${PV}``. The base recipe name and
-+            version but without any special package name suffix.
- 
--      -  ``https://`` : Fetches files from the Internet using HTTPS.
-+         -  *files -* Files within a directory, which is named ``files``
-+            and is also alongside the recipe or append file.
- 
-       -  ``ftp://`` : Fetches files from the Internet using FTP.
- 
--      -  ``cvs://`` : Fetches files from a CVS revision control
-+      -  ``git://`` : Fetches files from a Git revision control
-          repository.
- 
-       -  ``hg://`` : Fetches files from a Mercurial (``hg``) revision
-          control repository.
- 
-+      -  ``http://`` : Fetches files from the Internet using HTTP.
-+
-+      -  ``https://`` : Fetches files from the Internet using HTTPS.
-+
-+      -  ``npm://`` - Fetches JavaScript modules from a registry.
-+
-+      -  ``osc://`` : Fetches files from an OSC (OpenSUSE Build service)
-+         revision control repository.
-+
-       -  ``p4://`` : Fetches files from a Perforce (``p4``) revision
-          control repository.
- 
-+      -  ``repo://`` : Fetches files from a repo (Git) repository.
-+
-       -  ``ssh://`` : Fetches files from a secure shell.
- 
-       -  ``svn://`` : Fetches files from a Subversion (``svn``) revision
-          control repository.
- 
--      -  ``az://`` : Fetches files from an Azure Storage account using HTTPS.
--
-       Here are some additional options worth mentioning:
- 
--      -  ``unpack`` : Controls whether or not to unpack the file if it is
--         an archive. The default action is to unpack the file.
-+      -  ``downloadfilename`` : Specifies the filename used when storing
-+         the downloaded file.
-+
-+      -  ``name`` - Specifies a name to be used for association with
-+         :term:`SRC_URI` checksums or :term:`SRCREV` when you have more than one
-+         file or git repository specified in :term:`SRC_URI`. For example::
-+
-+            SRC_URI = "git://example.com/foo.git;name=first \
-+                       git://example.com/bar.git;name=second \
-+                       http://example.com/file.tar.gz;name=third"
-+
-+            SRCREV_first = "f1d2d2f924e986ac86fdf7b36c94bcdf32beec15"
-+            SRCREV_second = "e242ed3bffccdf271b7fbaf34ed72d089537b42f"
-+            SRC_URI[third.sha256sum] = "13550350a8681c84c861aac2e5b440161c2b33a3e4f302ac680ca5b686de48de"
- 
-       -  ``subdir`` : Places the file (or extracts its contents) into the
-          specified subdirectory. This option is useful for unusual tarballs
-          or other archives that do not have their files already in a
-          subdirectory within the archive.
- 
--      -  ``name`` : Specifies a name to be used for association with
--         :term:`SRC_URI` checksums when you have more than one file specified
--         in :term:`SRC_URI`.
-+      -  ``subpath`` - Limits the checkout to a specific subpath of the
-+         tree when using the Git fetcher is used.
- 
--      -  ``downloadfilename`` : Specifies the filename used when storing
--         the downloaded file.
-+      -  ``unpack`` : Controls whether or not to unpack the file if it is
-+         an archive. The default action is to unpack the file.
- 
-    :term:`SRCDATE`
-       The date of the source code used to build the package. This variable
+However, my e-mail got sent twice. What's this "-M -1" option? I can't
+find it in the manual of "git send-email", and I had done without it so far.
+
+I wonder if we could remove it from our guidelines for sending patches
+with "git send-email"...
+
+Thanks in advance
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
