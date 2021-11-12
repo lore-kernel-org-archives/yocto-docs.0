@@ -1,87 +1,200 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CBA1C433EF
-	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 17:17:58 +0000 (UTC)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com
- [209.85.128.43])
- by mx.groups.io with SMTP id smtpd.web09.86.1636737477235113453
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 412D9C433EF
+	for <webhook@archiver.kernel.org>; Fri, 12 Nov 2021 17:28:15 +0000 (UTC)
+Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com
+ [209.85.221.175])
+ by mx.groups.io with SMTP id smtpd.web11.223.1636738092999646558
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Nov 2021 09:17:57 -0800
+ Fri, 12 Nov 2021 09:28:13 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=dm4GFd/l;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.43,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f43.google.com with SMTP id z200so8334018wmc.1
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=T92RveXd;
+ spf=pass (domain: gmail.com, ip: 209.85.221.175,
+ mailfrom: alex.kanavin@gmail.com)
+Received: by mail-vk1-f175.google.com with SMTP id m19so733798vko.12
         for <docs@lists.yoctoproject.org>;
- Fri, 12 Nov 2021 09:17:57 -0800 (PST)
+ Fri, 12 Nov 2021 09:28:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=j7zR/N65tQyC6xvkytNSuOBhrOh5q+jzo+9lmCyRed0=;
-        b=dm4GFd/lRI+HHhwQ61QFEyxX7L2e0FK1EcvF6+gGo8LZdtCDce0qa1qyTQzIxzQASq
-         YfxCU3BIqtf99gdXBa9y3hySFLhKFfXN8+CjIyaq/+Oj4eAEa3tJpyRDbdxfxF9nzqnM
-         e21+YLyK7feDpFAKEFylijwmaKQiH43BotZ1I=
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=iTlQk9xNcSFzV19WlamtWLVmBvmhYXC99NocgQ1g5GA=;
+        b=T92RveXdcIoX/9Hmyv+J3BpNZDhSUpHI5YC92EIAG5+9sbvAGbkMHvUhzNlr9gLEMn
+         1BRJ9gTlP14/mofHBXB3opjIOfJ42hUh4JzOfY3YBk/MUpZ4NxGdv8XJADB/QTfvD1HB
+         +VyyDXwkyoJMjSWjjFfN8Fe8jAMzYUVWe2SsdwA2kMTSZqRZTeYfjRXvMKvn/bKd9z5O
+         MXEgUOH6V7XCqJBwlz+gshcNsPBJxKGkBsmVJTRdsz0Xf0kH3GA0cpbWNZfsD7SE9h8c
+         ehrfG/CkwGNvay687tQ9qZkgF5jApxm4V3MR5NJT0in36tEnlmkzJeiKFLSirJ8ZKcG2
+         Qt2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=j7zR/N65tQyC6xvkytNSuOBhrOh5q+jzo+9lmCyRed0=;
-        b=ykGtL7VnhMwAvZ/vIgSGZ/1p1g5jo7kOdUE5OFdSDD+s83gsBrTWjOqRs+dUT9RpeM
-         EWev3DCofRpsGa9cDpHOrvj3f3CxglHC2N8cqsdxnyYovyizr0lW5G6MLf9XaE42+u0L
-         wieOM+nhhSM8fPE5ntOEyimlA0BFvK8lFnVMNf6rBk0hwpeuqBGbQtPAyDFDbu6TpJ0O
-         LJbZJKEtwLaFKi8vH318SIBC4dF13vPZl6hAHOnc1WyHpmqAQ3052s6trMHfcoPvHTUF
-         yvlgIB1i5I9LCbATmewCoErVXAoLc1Ti1P4JeezJQov5rbxsdo8Y6ZxI9ZzOoXywPT2B
-         gSPA==
-X-Gm-Message-State: AOAM530NvxgpDrtdpvBPc7lCoiICZoceLZ2495o5y721Lbt+I0MMsl8B
-	xd0zGfYcj/BrSONK6jwra/2GWg==
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=iTlQk9xNcSFzV19WlamtWLVmBvmhYXC99NocgQ1g5GA=;
+        b=FyOMFvBELuL3+8+QmTW9QhxM3lPrQGIDuGvY3sEwLBI2XK/eqYF7SUe9B0F6z5zPi4
+         g745FIhp0O7OQZtRQzTEWupkSIDO5TqkFlo1tB0c9y53jBa560rRir+RlSCXPP+qDCUa
+         aiHoIuQj3noo/zfrkwJEd1ldESHDYH2IA89hqrKcqkLKVrh7SLb3LVpwfXA/Z14C/Oza
+         P+wzdY+/8BT8jKNH4cZOnkeBePkdT1NrBcxrZ6ZTw6fkF4C3f62YvLmPu1jBh1KVvgHT
+         9dEaedyXTeVWxrQFqcMld50/+gDRpGiPkb5mynbFYI7s2MtxAn7zrvwyiHyC5S2MZZYu
+         ua0A==
+X-Gm-Message-State: AOAM532V344+YncnbDFAqnZl2ewbeHVfE+GFjHlII+iJwR+Mn3Run7JP
+	igbPpeO9EOcmDlrtCpG/FpIV3r6YgNsi7zXPSno=
 X-Google-Smtp-Source: 
- ABdhPJyvSYdPXSWVbxawEGzH1udEglPCOjkukTPqaWWUbH3b8nl2F1/bP7aodM0H93AKhEvmRf+uqA==
-X-Received: by 2002:a05:600c:34c2:: with SMTP id
- d2mr19257074wmq.102.1636737475620;
-        Fri, 12 Nov 2021 09:17:55 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:c0bd:72b4:105a:2914?
- ([2001:8b0:aba:5f3c:c0bd:72b4:105a:2914])
-        by smtp.gmail.com with ESMTPSA id
- r8sm8118892wrz.43.2021.11.12.09.17.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Nov 2021 09:17:55 -0800 (PST)
+ ABdhPJxhpTEb0kOmLYbJZMqt8PmVk2IDh8X0Dsv7A6JqthZPGrWQyMY5a/Pvx78gJjiksDnplr4IFeU2c/N86PJDJek=
+X-Received: by 2002:a05:6122:1803:: with SMTP id
+ ay3mr26077786vkb.24.1636738092188;
+ Fri, 12 Nov 2021 09:28:12 -0800 (PST)
+MIME-Version: 1.0
+References: <84ac62a4-4e20-5453-47eb-994be2e11511@bootlin.com>
+ <CANNYZj9EJ7UsrkCY0zOjYMc0DPYsqq5Z9ogOy68vU_x3GmRxtA@mail.gmail.com>
+ <1d0977eb-4377-a3a7-e194-c0c257d3785e@bootlin.com>
+In-Reply-To: <1d0977eb-4377-a3a7-e194-c0c257d3785e@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Fri, 12 Nov 2021 18:28:01 +0100
 Message-ID: 
- <cb3ddc81dd08eda1e56906902a07e5034bd5a504.camel@linuxfoundation.org>
+ <CANNYZj_zHb2NHPWq+486PvZGATu5ektoWGF-+HBVtEu-r8wNig@mail.gmail.com>
 Subject: Re: [docs] Why "git send-email -M -1" in our contributing
  instructions?
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>, YP docs mailing
- list <docs@lists.yoctoproject.org>
-Date: Fri, 12 Nov 2021 17:17:52 +0000
-In-Reply-To: 
- <CANNYZj-L4jFf_4v2rV0tMkRpr-2_4ZrQzMyPXvU9BkYu_MRXeg@mail.gmail.com>
-References: <84ac62a4-4e20-5453-47eb-994be2e11511@bootlin.com>
-	 <8f1064b166e71dc88c99f702041a8f611929b9b5.camel@linuxfoundation.org>
-	 <CANNYZj-L4jFf_4v2rV0tMkRpr-2_4ZrQzMyPXvU9BkYu_MRXeg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1 
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="000000000000934d4b05d09ac8dc"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 17:17:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2145
+ <docs@lists.yoctoproject.org>; Fri, 12 Nov 2021 17:28:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2146
 
-On Fri, 2021-11-12 at 18:00 +0100, Alexander Kanavin wrote:
-> There's no confusion. 'format-patch' writes a patch to disk, send-email
-> formats a patch in the same way with the same options and sends it over email.
-> We want rename detection in both.
+--000000000000934d4b05d09ac8dc
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I usually write to disk with format-patch, edit and then send. I'd forgotten the
-send-email options are piped to format-patch...
+No. You need to specify what commit(s) you want to sent, '-1' means 'one
+latest commit'. And that in itself won't send things twice, there's
+something else in your local setup.
 
-Cheers,
+Alex
 
-Richard
+On Fri, 12 Nov 2021 at 18:17, Michael Opdenacker <
+michael.opdenacker@bootlin.com> wrote:
 
+> Hi Alex,
+>
+> On 11/12/21 5:57 PM, Alexander Kanavin wrote:
+> > git send-email inherits all options from git format-patch. Yes it's
+> > annoying.
+>
+>
+> Got it, I missed this sentence in git send-email's documentation: "any
+> format accepted by git-format-patch[1]
+> <https://git-scm.com/docs/git-format-patch> can be passed to git
+> send-email."
+>
+> >
+> >        -M[<n>], --find-renames[=3D<n>]
+> >            Detect renames. If n is specified, it is a threshold on the
+> > similarity index (i.e. amount of addition/deletions compared to the
+> > file=E2=80=99s size). For example, -M90% means Git should consider a
+> > delete/add pair to be a rename
+> >            if more than 90% of the file hasn=E2=80=99t changed. Without=
+ a %
+> > sign, the number is to be read as a fraction, with a decimal point
+> > before it. I.e., -M5 becomes 0.5, and is thus the same as -M50%.
+> > Similarly, -M05 is the same as
+> >            -M5%. To limit detection to exact renames, use -M100%. The
+> > default similarity index is 50%.
+>
+>
+> Actually, I found that "-1" alone (with or without "-M" before) was
+> causing the e-mail to be sent twice. So, if "-1" doesn't apply to "-M",
+> then we probably have the default value for the -M option, and
+> therefore, we could do without "-M" entirely, couldn't we?
+>
+> At least, we could drop "-1" from our contributing instructions, right?
+>
+> Thanks for your help!
+>
+> Michael.
+>
+> --
+>
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
+
+--000000000000934d4b05d09ac8dc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>No. You need to specify what commit(s) you want to se=
+nt, &#39;-1&#39; means &#39;one latest commit&#39;. And that in itself won&=
+#39;t send things twice, there&#39;s something else in your local setup.<br=
+></div><div><br></div><div>Alex<br></div></div><br><div class=3D"gmail_quot=
+e"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, 12 Nov 2021 at 18:17, Mich=
+ael Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com">michae=
+l.opdenacker@bootlin.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
+_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204=
+,204);padding-left:1ex">Hi Alex,<br>
+<br>
+On 11/12/21 5:57 PM, Alexander Kanavin wrote:<br>
+&gt; git send-email inherits all options from git format-patch. Yes it&#39;=
+s<br>
+&gt; annoying.<br>
+<br>
+<br>
+Got it, I missed this sentence in git send-email&#39;s documentation: &quot=
+;any<br>
+format accepted by git-format-patch[1]<br>
+&lt;<a href=3D"https://git-scm.com/docs/git-format-patch" rel=3D"noreferrer=
+" target=3D"_blank">https://git-scm.com/docs/git-format-patch</a>&gt; can b=
+e passed to git<br>
+send-email.&quot;<br>
+<br>
+&gt;<br>
+&gt; =C2=A0 =C2=A0 =C2=A0=C2=A0 -M[&lt;n&gt;], --find-renames[=3D&lt;n&gt;]=
+<br>
+&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0Detect renames. If n is speci=
+fied, it is a threshold on the<br>
+&gt; similarity index (i.e. amount of addition/deletions compared to the<br=
+>
+&gt; file=E2=80=99s size). For example, -M90% means Git should consider a<b=
+r>
+&gt; delete/add pair to be a rename<br>
+&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0if more than 90% of the file =
+hasn=E2=80=99t changed. Without a %<br>
+&gt; sign, the number is to be read as a fraction, with a decimal point<br>
+&gt; before it. I.e., -M5 becomes 0.5, and is thus the same as -M50%.<br>
+&gt; Similarly, -M05 is the same as<br>
+&gt; =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0-M5%. To limit detection to e=
+xact renames, use -M100%. The<br>
+&gt; default similarity index is 50%.<br>
+<br>
+<br>
+Actually, I found that &quot;-1&quot; alone (with or without &quot;-M&quot;=
+ before) was<br>
+causing the e-mail to be sent twice. So, if &quot;-1&quot; doesn&#39;t appl=
+y to &quot;-M&quot;,<br>
+then we probably have the default value for the -M option, and<br>
+therefore, we could do without &quot;-M&quot; entirely, couldn&#39;t we?<br=
+>
+<br>
+At least, we could drop &quot;-1&quot; from our contributing instructions, =
+right?<br>
+<br>
+Thanks for your help!<br>
+<br>
+Michael.<br>
+<br>
+-- <br>
+<br>
+Michael Opdenacker, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
+//bootlin.com</a><br>
+<br>
+</blockquote></div>
+
+--000000000000934d4b05d09ac8dc--
 
