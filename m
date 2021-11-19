@@ -2,58 +2,115 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 376DEC433F5
-	for <webhook@archiver.kernel.org>; Fri, 19 Nov 2021 16:29:09 +0000 (UTC)
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
- [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.11227.1637339348194287189
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D1642C433F5
+	for <webhook@archiver.kernel.org>; Fri, 19 Nov 2021 17:06:00 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.11731.1637341558743522521
  for <docs@lists.yoctoproject.org>;
- Fri, 19 Nov 2021 08:29:08 -0800
+ Fri, 19 Nov 2021 09:05:59 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay11.mail.gandi.net (Postfix) with ESMTPSA id AD057100002;
-	Fri, 19 Nov 2021 16:29:05 +0000 (UTC)
+	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C0A911BF209;
+	Fri, 19 Nov 2021 17:05:56 +0000 (UTC)
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] dev-manual: remove warning about += and :append
-Date: Fri, 19 Nov 2021 17:28:55 +0100
-Message-Id: <20211119162855.1970998-1-michael.opdenacker@bootlin.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] bitbake-user-manual: fix backslash issues
+Date: Fri, 19 Nov 2021 18:05:54 +0100
+Message-Id: <20211119170554.1972442-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 19 Nov 2021 16:29:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2167
-
-No longer necessary since a warning was added to BitBake
-(https://git.openembedded.org/bitbake/commit/?id=8c31e75557dc6a8d8f407b5d24d6327889a3e3b1)
+ <docs@lists.yoctoproject.org>; Fri, 19 Nov 2021 17:06:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2168
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/common-tasks.rst | 5 -----
- 1 file changed, 5 deletions(-)
+ .../bitbake-user-manual-fetching.rst          | 20 +++++++++----------
+ .../bitbake-user-manual-metadata.rst          | 10 +++++-----
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 3eead147a3..9611a4f206 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -234,11 +234,6 @@ following list:
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+index 4396830a..260d43ab 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+@@ -84,18 +84,18 @@ fetcher does know how to use HTTP as a transport.
+ Here are some examples that show commonly used mirror definitions::
  
-          KERNEL_FEATURES:append:qemuall=" features/debug/printk.scc"
+    PREMIRRORS ?= "\
+-      bzr://.*/.\*  http://somemirror.org/sources/ \\n \
+-      cvs://.*/.\*  http://somemirror.org/sources/ \\n \
+-      git://.*/.\*  http://somemirror.org/sources/ \\n \
+-      hg://.*/.\*   http://somemirror.org/sources/ \\n \
+-      osc://.*/.\*  http://somemirror.org/sources/ \\n \
+-      p4://.*/.\*   http://somemirror.org/sources/ \\n \
+-     svn://.*/.\*   http://somemirror.org/sources/ \\n"
++      bzr://.*/.\*  http://somemirror.org/sources/ \n \
++      cvs://.*/.\*  http://somemirror.org/sources/ \n \
++      git://.*/.\*  http://somemirror.org/sources/ \n \
++      hg://.*/.\*   http://somemirror.org/sources/ \n \
++      osc://.*/.\*  http://somemirror.org/sources/ \n \
++      p4://.*/.\*   http://somemirror.org/sources/ \n \
++     svn://.*/.\*   http://somemirror.org/sources/ \n"
  
--      .. note::
--
--         Avoiding "+=" and "=+" and using machine-specific ``:append``
--         and ``:prepend`` operations is recommended as well.
--
-    -  *Place Machine-Specific Files in Machine-Specific Locations:* When
-       you have a base recipe, such as ``base-files.bb``, that contains a
-       :term:`SRC_URI` statement to a
+    MIRRORS =+ "\
+-      ftp://.*/.\*   http://somemirror.org/sources/ \\n \
+-      http://.*/.\*  http://somemirror.org/sources/ \\n \
+-      https://.*/.\* http://somemirror.org/sources/ \\n"
++      ftp://.*/.\*   http://somemirror.org/sources/ \n \
++      http://.*/.\*  http://somemirror.org/sources/ \n \
++      https://.*/.\* http://somemirror.org/sources/ \n"
+ 
+ It is useful to note that BitBake
+ supports cross-URLs. It is possible to mirror a Git repository on an
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+index 119720d5..46bcfa60 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+@@ -104,15 +104,15 @@ Line Joining
+ 
+ Outside of :ref:`functions <bitbake-user-manual/bitbake-user-manual-metadata:functions>`,
+ BitBake joins any line ending in
+-a backslash character ("\") with the following line before parsing
+-statements. The most common use for the "\" character is to split
++a backslash character ("\\") with the following line before parsing
++statements. The most common use for the "\\" character is to split
+ variable assignments over multiple lines, as in the following example::
+ 
+    FOO = "bar \
+           baz \
+           qaz"
+ 
+-Both the "\" character and the newline
++Both the "\\" character and the newline
+ character that follow it are removed when joining lines. Thus, no
+ newline characters end up in the value of ``FOO``.
+ 
+@@ -125,7 +125,7 @@ Consider this additional example where the two assignments both assign
+ 
+ .. note::
+ 
+-   BitBake does not interpret escape sequences like "\n" in variable
++   BitBake does not interpret escape sequences like "\\n" in variable
+    values. For these to have an effect, the value must be passed to some
+    utility that interprets escape sequences, such as
+    ``printf`` or ``echo -n``.
+@@ -159,7 +159,7 @@ behavior::
+    C = "qux"
+    *At this point, ${A} equals "qux bar baz"*
+    B = "norf"
+-   *At this point, ${A} equals "norf baz"\*
++   *At this point, ${A} equals "norf baz"*
+ 
+ Contrast this behavior with the
+ :ref:`bitbake-user-manual/bitbake-user-manual-metadata:immediate variable
 -- 
 2.25.1
 
