@@ -2,86 +2,58 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 420F8C433EF
-	for <webhook@archiver.kernel.org>; Fri, 19 Nov 2021 16:06:23 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.10931.1637337982056817327
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 376DEC433F5
+	for <webhook@archiver.kernel.org>; Fri, 19 Nov 2021 16:29:09 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
+ [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web10.11227.1637339348194287189
  for <docs@lists.yoctoproject.org>;
- Fri, 19 Nov 2021 08:06:22 -0800
+ Fri, 19 Nov 2021 08:29:08 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay8-d.mail.gandi.net (Postfix) with ESMTPSA id C88331BF211;
-	Fri, 19 Nov 2021 16:06:19 +0000 (UTC)
+	by relay11.mail.gandi.net (Postfix) with ESMTPSA id AD057100002;
+	Fri, 19 Nov 2021 16:29:05 +0000 (UTC)
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org,
-	openembedded-core@lists.openembedded.org
+To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] dev-manual: how to purge duplicate sstate cache files
-Date: Fri, 19 Nov 2021 17:06:16 +0100
-Message-Id: <20211119160616.1970607-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] dev-manual: remove warning about += and :append
+Date: Fri, 19 Nov 2021 17:28:55 +0100
+Message-Id: <20211119162855.1970998-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <16B8C24F834E3318.24748@lists.openembedded.org>
-References: <16B8C24F834E3318.24748@lists.openembedded.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 19 Nov 2021 16:06:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2166
+ <docs@lists.yoctoproject.org>; Fri, 19 Nov 2021 16:29:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2167
+
+No longer necessary since a warning was added to BitBake
+(https://git.openembedded.org/bitbake/commit/?id=8c31e75557dc6a8d8f407b5d24d6327889a3e3b1)
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/common-tasks.rst | 25 ++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ documentation/dev-manual/common-tasks.rst | 5 -----
+ 1 file changed, 5 deletions(-)
 
 diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 3eead147a3..37612c84b7 100644
+index 3eead147a3..9611a4f206 100644
 --- a/documentation/dev-manual/common-tasks.rst
 +++ b/documentation/dev-manual/common-tasks.rst
-@@ -6242,8 +6242,11 @@ Changing the listed common targets is as easy as editing your version of
- ``conf-notes.txt`` in your custom template configuration directory and
- making sure you have ``TEMPLATECONF`` set to your directory.
+@@ -234,11 +234,6 @@ following list:
  
-+Conserving Disk Space
-+=====================
-+
- Conserving Disk Space During Builds
--===================================
-+-----------------------------------
+          KERNEL_FEATURES:append:qemuall=" features/debug/printk.scc"
  
- To help conserve disk space during builds, you can add the following
- statement to your project's ``local.conf`` configuration file found in
-@@ -6257,6 +6260,26 @@ building a recipe once the recipe is built. For more information on
- :ref:`rm_work <ref-classes-rm-work>` class in the
- Yocto Project Reference Manual.
- 
-+Purging Duplicate Shared State Cache Files
-+-------------------------------------------
-+
-+After multiple build iterations, the Shared State (sstate) cache can contain
-+duplicate cache files for a given package, while only the most recent one
-+is likely to be reusable. The following command purges all but the
-+newest sstate cache file for each package::
-+
-+   sstate-cache-management.sh --remove-duplicated --cache-dir=build/sstate-cache
-+
-+This command will ask you to confirm the deletions it identifies.
-+
-+Note::
-+
-+   The duplicated sstate cache files of one package must have the same
-+   architecture, which means that sstate cache files with multiple
-+   architectures are not considered as duplicate.
-+
-+Run ``sstate-cache-management.sh`` for more details about this script.
-+
- Working with Packages
- =====================
- 
+-      .. note::
+-
+-         Avoiding "+=" and "=+" and using machine-specific ``:append``
+-         and ``:prepend`` operations is recommended as well.
+-
+    -  *Place Machine-Specific Files in Machine-Specific Locations:* When
+       you have a base recipe, such as ``base-files.bb``, that contains a
+       :term:`SRC_URI` statement to a
 -- 
 2.25.1
 
