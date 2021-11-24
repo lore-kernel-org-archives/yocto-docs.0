@@ -2,72 +2,79 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7351CC433F5
-	for <webhook@archiver.kernel.org>; Wed, 24 Nov 2021 18:59:58 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web08.2428.1637780396699371226
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D46BDC433F5
+	for <webhook@archiver.kernel.org>; Wed, 24 Nov 2021 20:41:02 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.3616.1637786461909686270
  for <docs@lists.yoctoproject.org>;
- Wed, 24 Nov 2021 10:59:57 -0800
+ Wed, 24 Nov 2021 12:41:02 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay3-d.mail.gandi.net (Postfix) with ESMTPSA id C891B60006;
-	Wed, 24 Nov 2021 18:59:54 +0000 (UTC)
+	by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 274011C000A;
+	Wed, 24 Nov 2021 20:40:59 +0000 (UTC)
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: yocto@lists.yoctoproject.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH yocto-autobuilder-helper] scripts/run-docs-build: add comments
-Date: Wed, 24 Nov 2021 19:59:52 +0100
-Message-Id: <20211124185952.2091223-1-michael.opdenacker@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] [honister]: updates for release 3.3.4
+Date: Wed, 24 Nov 2021 21:40:36 +0100
+Message-Id: <20211124204036.2093585-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <16BA90194929E9A2.15594@lists.yoctoproject.org>
-References: <16BA90194929E9A2.15594@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 Nov 2021 18:59:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2197
+ <docs@lists.yoctoproject.org>; Wed, 24 Nov 2021 20:41:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2198
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- scripts/run-docs-build | 5 +++++
- 1 file changed, 5 insertions(+)
+ documentation/poky.yaml                  | 2 +-
+ documentation/releases.rst               | 1 +
+ documentation/sphinx-static/switchers.js | 2 +-
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/run-docs-build b/scripts/run-docs-build
-index 3db4a97..4451018 100755
---- a/scripts/run-docs-build
-+++ b/scripts/run-docs-build
-@@ -15,6 +15,7 @@ mkdir buildtools
- $docs_buildtools -y -d $builddir/buildtools
- . $builddir/buildtools/environment-setup*
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index f2d1e8b97f..392e3bd63b 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -4,7 +4,7 @@ DISTRO_NAME : "Honister"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "hardknott"
+ DISTRO_NAME_NO_CAP_LTS : "dunfell"
+ YOCTO_DOC_VERSION : "3.4"
+-YOCTO_DOC_VERSION_MINUS_ONE : "3.3.3"
++YOCTO_DOC_VERSION_MINUS_ONE : "3.3.4"
+ DISTRO_REL_TAG : "yocto-3.4"
+ POKYVERSION : "26.0.0"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+diff --git a/documentation/releases.rst b/documentation/releases.rst
+index d5a2d2aa80..a6c9a47b86 100644
+--- a/documentation/releases.rst
++++ b/documentation/releases.rst
+@@ -12,6 +12,7 @@ Release Series 3.3 (hardknott)
+ - :yocto_docs:`3.3.1 Documentation </3.3.1>`
+ - :yocto_docs:`3.3.2 Documentation </3.3.2>`
+ - :yocto_docs:`3.3.3 Documentation </3.3.3>`
++- :yocto_docs:`3.3.4 Documentation </3.3.4>`
  
-+# Getting the old docbook built docs from an archive. Not rebuilding them.
- #wget https://downloads.yoctoproject.org/mirror/docbook-mirror/docbook-archives-20201105.tar.xz
- docbookarchive=/srv/autobuilder/autobuilder.yoctoproject.org/pub/docbook-mirror/docbook-archives-20201105.tar.xz
- mkdir $outputdir
-@@ -35,6 +36,9 @@ mkdir $outputdir/bitbake/next
- cp -r ./_build/final/* $outputdir/bitbake/next
- 
- # stable branches
-+# A decision was made to keep updating all the Sphinx generated docs for the moment,
-+# even the ones corresponding to no longer supported releases
-+# https://lists.yoctoproject.org/g/docs/message/2193
- for branch in 1.46 1.48 1.50 1.52; do
-     git checkout $branch
-     make clean
-@@ -68,6 +72,7 @@ mkdir $outputdir/next
- cp -r ./_build/final/* $outputdir/next
- 
- # stable branches
-+# Again, keeping even the no longer supported releases (see above comment)
- for branch in dunfell gatesgarth hardknott honister; do
-     cd $ypdocs
-     git checkout $branch
+ ****************************
+ Release Series 3.1 (dunfell)
+diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js
+index 6038dbb5a7..b15f5b3c1b 100644
+--- a/documentation/sphinx-static/switchers.js
++++ b/documentation/sphinx-static/switchers.js
+@@ -4,7 +4,7 @@
+   var all_versions = {
+     'dev': 'dev (3.5)',
+     '3.4': '3.4',
+-    '3.3.3': '3.3.3',
++    '3.3.4': '3.3.4',
+     '3.2.4': '3.2.4',
+     '3.1.11': '3.1.11',
+     '3.0.4': '3.0.4',
 -- 
 2.25.1
 
