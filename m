@@ -2,25 +2,25 @@ Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 583CDC433EF
-	for <webhook@archiver.kernel.org>; Fri,  3 Dec 2021 09:51:53 +0000 (UTC)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com
- (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.67])
- by mx.groups.io with SMTP id smtpd.web08.9788.1638525111928472331
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E05C5C433EF
+	for <webhook@archiver.kernel.org>; Fri,  3 Dec 2021 10:03:06 +0000 (UTC)
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (EUR04-DB3-obe.outbound.protection.outlook.com [40.107.6.40])
+ by mx.groups.io with SMTP id smtpd.web12.10007.1638525784714466691
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Dec 2021 01:51:52 -0800
+ Fri, 03 Dec 2021 02:03:06 -0800
 Authentication-Results: mx.groups.io;
  dkim=pass header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=nAcH/cry;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.21.67,
+ header.s=selector2-cherrycloud-onmicrosoft-com header.b=lcwlaip+;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.6.40,
  mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=d63+FaYazyMXB1JE7975qpeluGRGK63gJshM/6Z7zplJC/seOxH3B/D8y255VNZmJnIPoS47r9X+ZI4FuJtu3WDj0e6Asgq8rLpfnZvB0BEs3crNf3iY+2ZHbRchRHqFngApHXWAPe2Mx4vE6OQ/vGtdg0CNZe+LRrqFhybYht7w0ncoUvqrGbv1FhlM5ymyhAQYTTvBnLb7ecw0htR+3pIxdjlU1a8wdJxdQXseD4W2qWSvbJAIzMjCb0CQea8FAY7uDpcfxUBuvtjxrioFaFKHsbHJdjwND9Afq5TEHPfEDCdBzH/4upDIUFNJmseGEhmvsQNB6rbcmdVA6/ma6A==
+ b=PmB5HfEO52An0aaJb2qWlp8Nq0wlfrdWhOEQHSDi3wgYwSW7JIR7KQmREdIrqtxZqnS2XqtXLPwx6oIaIewKm1M6BbQ0IPl706bmGRsEgkgoSojeCwvUJPFCJzLZAqDRFbfcoB8AB31eHfBa14fyi5rRDmgggt+vxCpFSnNVCtQ5KGEyD7WISfut3NWkeIOnXnq8CXtzJWJPm9EI78YE1y1vxF01+lTP86DfSVAogIF4dN341wg4odKU2v1VgmKk4XK26r6bXiRKa6m5QMyDcXLo7DN+MKJW44RRo6Oo5Ar4L0rpBXWF59U1bmobTtRT092l6Jrht9YSaPu9CBbhsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+wrA7/X9opwAkuEEAU27YKHiwMVAMi1LESGvLdX9Y5w=;
- b=bJ9QLhExuZVgcASNsWuNvetsbKDk0OH0BlVk4+gCrys9Y979aIMvdOPgvFXwqpKHJcgC8X1ZVLTNThAm2yxmNCtXvKMC3gispWT/fsrMH50QYrEFSgpyOATab12X69swCiubDz2kcJPSCXGv3E/SXIO+tRaxT/vZ2Oju/VnEUC+rrTd7QmmcY8aW3irijdJV45S4WF5A4C/jjDXs7JY2OQI9P6gb+pGKmHQoQu3tgKFM1armT2Ress3yJBLNmrS2dPXSBtTlacsLF9NoVK4mZFUQxaX8Ky8JX4ph3sqxtqTK5hJ9/h9FagU8b1Q8pacA9JnmfITKQNw0C4Q+uuZVYg==
+ bh=2Elwol57teuuNozu1hsZE4Jll/nehXLqCSmdMl+VqWw=;
+ b=CTjXCDdJTTvPcVyw8q155u7WPs6D8+PzOl5OUo/QlP+XEoTptNM/r1T4jRYnJ+wcRRec/paJHjmFifihvIDYKLUON8VsmLWSUfVj+yVfIPqxuA+OuNPdPKnBofX89KT0ylB1b0GB/zNSwS+1WlOwOA7LPETDU8fFWr5OcDOye9IkHOsf9Lf5bN46nSWohhAtEEay1xsh9bXuHTO8g39DSIixzNQm+ykuCg5cU/Es+g4B9r+WMdsFD9YBUhoPM/j547t7f1/Pt6yOzayeNo/AUcxZe+ViHkTN+tsajR3srVeLlj7YkvF0gYOgiZVoxGeR+UBL8iN9BiZRGH9LmbjlWg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -28,148 +28,148 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+wrA7/X9opwAkuEEAU27YKHiwMVAMi1LESGvLdX9Y5w=;
- b=nAcH/cryF+HBMW9lExVHfpUAKIn9SfsWVHFOcpVoS6AC9+t2lF4nd6jo0YqQnfw9hnYKVLPAPTXm7gF70gm/ZadJ5UrStUWcA9ILZQksC7rRJn8QIhd6sXIuyYPKxB8y9FOAbfRCDFrlBio3fGu7Azew4wnHP5JkraWiUB2Mrjc=
+ bh=2Elwol57teuuNozu1hsZE4Jll/nehXLqCSmdMl+VqWw=;
+ b=lcwlaip+/lhSAVOgpiBgXiAptOURDxSsOik1rVrFulRkxapm+5oGYftbpV6y2IBVh6/z3Tm0GNx4bdDW2hE5cybHNBoVksuoRQ82kzT3e+PjXHrnO/qizO3WJdllFuPlJgsk5Bj3KSk5Ykm9U8yknPvkLSxyQqNxGdVP9tt+SwA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
 Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
- (2603:10a6:208:24::24) by AM0PR04MB5251.eurprd04.prod.outlook.com
- (2603:10a6:208:ce::26) with Microsoft SMTP Server (version=TLS1_2,
+ (2603:10a6:208:24::24) by AM0PR04MB5460.eurprd04.prod.outlook.com
+ (2603:10a6:208:11c::28) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.11; Fri, 3 Dec
- 2021 09:51:47 +0000
+ 2021 10:03:01 +0000
 Received: from AM0PR0402MB3348.eurprd04.prod.outlook.com
  ([fe80::d56f:ec59:3bd0:6d7a]) by AM0PR0402MB3348.eurprd04.prod.outlook.com
  ([fe80::d56f:ec59:3bd0:6d7a%5]) with mapi id 15.20.4755.016; Fri, 3 Dec 2021
- 09:51:47 +0000
-Date: Fri, 3 Dec 2021 10:51:45 +0100
+ 10:03:01 +0000
+Date: Fri, 3 Dec 2021 11:02:59 +0100
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>,
-	BitBake developer list <bitbake-devel@lists.openembedded.org>
-Subject: Re: [docs] Bitbake's manual only refers to DocBook versions
-Message-ID: <20211203095145.5bpuu3pwmwl3ngy7@fedora>
-References: <4126a709-c4e9-b844-1fca-f72e71d4093a@bootlin.com>
+To: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	yocto@lists.yoctoproject.org, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH yocto-autobuilder-helper] scripts/run-docs-build:
+ stop using the "transition" branch
+Message-ID: <20211203100259.54n7h7ghlqfr5tia@fedora>
+References: <20211201135949.193842-1-michael.opdenacker@bootlin.com>
+ <20211203093452.sk3e6ksnwmsbnjn2@fedora>
+ <CAP71WjwoVHYOvLSKkW+fSSO2T5MupA-vEt1_cDfwdMjy8ZhP0g@mail.gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <4126a709-c4e9-b844-1fca-f72e71d4093a@bootlin.com>
-X-ClientProxiedBy: AM6PR0202CA0049.eurprd02.prod.outlook.com
- (2603:10a6:20b:3a::26) To AM0PR0402MB3348.eurprd04.prod.outlook.com
+In-Reply-To: 
+ <CAP71WjwoVHYOvLSKkW+fSSO2T5MupA-vEt1_cDfwdMjy8ZhP0g@mail.gmail.com>
+X-ClientProxiedBy: AM7PR03CA0002.eurprd03.prod.outlook.com
+ (2603:10a6:20b:130::12) To AM0PR0402MB3348.eurprd04.prod.outlook.com
  (2603:10a6:208:24::24)
 MIME-Version: 1.0
 Received: from fedora (92.42.140.82) by
- AM6PR0202CA0049.eurprd02.prod.outlook.com (2603:10a6:20b:3a::26) with
+ AM7PR03CA0002.eurprd03.prod.outlook.com (2603:10a6:20b:130::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4755.16 via Frontend
- Transport; Fri, 3 Dec 2021 09:51:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.4734.22 via Frontend
+ Transport; Fri, 3 Dec 2021 10:03:01 +0000
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: a7158f6d-5819-4c1c-2dc7-08d9b6428567
-X-MS-TrafficTypeDiagnostic: AM0PR04MB5251:
+X-MS-Office365-Filtering-Correlation-Id: a02d79d7-690c-401e-e05c-08d9b6441741
+X-MS-TrafficTypeDiagnostic: AM0PR04MB5460:
 X-Microsoft-Antispam-PRVS: 
-	<AM0PR04MB5251E4AB6855F8FC383F7013C26A9@AM0PR04MB5251.eurprd04.prod.outlook.com>
-X-MS-Oob-TLC-OOBClassifiers: OLM:2657;
+	<AM0PR04MB54602691796163F48C13B9F7C26A9@AM0PR04MB5460.eurprd04.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:4714;
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	gKt8NnPn9UJ9hMyaIiTu/mmAZa2FUdnzs7YfPfbHXzkmBuSItgMbmAU1xWRWy3rxvFEDrwhKdqkAvNOKrikLRMOlvSrfHh5PokPng1NYF8LIHdSqqLYWfQUx4RJOX5GqKdm5ZMLbeBbd17AeliH7kZ2S3TKG66HA4axxRH8bTFVTUtr/nRsO/09PP1JjL6eMJ5F9uSVglWMYH1+MPVGZaX74VU/gyRdegVrsP5Ruraodnrc01ioqQeJ3NiO/K4lAOradK1VyCCYy+9GYU6jikzEkUj6iPfLSIUux/DPhawv9Sivtr2oV+ynyRcZ9AnBHD52G3oqBR+JwDQgpW9VjcB42gDS7RBp8WjLb31JaIiUkN6LPFaq5tRrZ+XuFct7BWTXBY087AzAfCB9HSWFAHfGDgtQT63/2sA8YaDzLus8NSUzw1WvTUalUu7StZ4ZvQsgmMrlhoXYiawbsuB81gpE5wciGMJ3a+PlVftWEWf1he/tmNdOAFnhTsm7s1QXmH71ajPUYUBaD8Sc0MbTfFhrWkLnlYVWEM0g79H7Omv06oGJ/+rSUOw5pjC1vmfGOnMGu1VwszIPhIefJ20wgUBKkWvlt/KfJIGTazcCUHoFihC3E+Qnf01wecdTGP086nvO56eDWTuMYVpQu+K9H3+O1YI7x5Wzdqpo6Ub0hiwzt5FCqKWF8v8Ef++Y8+4Ewk/WQgTLQ64u9vS4u1E5fKwPCXeJZEUsGsSdldrL97GEUZGcrskczXLerPSayTHfZZAOfEB+CJrQlL02yO99oXCc1eXYcHuLAniTpjSMyTaQ=
+	UqFFNKiKHx62a5R5f8ABwOnfKp0WLPsYGx6WFmcRoS15+GL27XbNgsn2DM5TivH3Ts3syytjbsyVPYGDKJsdSwj+hW0KwRTeopIu8nTciYJAu8u6phu6xT31mpvZKMxv06zw/E+28d5BTVp6cPFOnMA9yurXZaPg0vfEJI2++a/AcDpj2xFvWr8YuDU0FqtBZqIaaFwKHWZ73jMVU2tn6glxcpRcwBuop54vW9sqA5y66UEEDlfZPzT3LgvMCkJNvJK0+w6vgiz6PfaO2nHgftWHwjdsvqFEJFMEYCgiWLay9rtl645wwAjck9Kg9vlLS60dARYUrAkjcWiyTmaKP5NP/CW/rtgF9bhDXhNIMC7ZfFhlZyOF3ZjFMGUPE+1Aby2mi8pwbgNGVUEENNhffs2Fojgo80DRUeWPeCMCKAJ28YOE1i9Djekh6a7CvAh4DQv9afMhyEimlzlPg902K67eGsoOYQD9AVATEu7hS2DlJ8SJGIrOZTVQZVXz5aajg2p6aP4eu7iNK0393HniHExrFT9yWciEzhG5vQU3IKEnTTYKtQ9MGD2qr1PO5k/V1lhGyQn3xRNSO4fq2InjMRicGr7hDX7tZTPjbSaczoFAEV8+UjskEFfHoXRMH45sEQP8uzP9c9Cfmn8S0wM3oy+5m5tk/6GXJ3oAeFLyIn/09aBqpZzyCYRj2mKHZju1/CL0AyJza0LqtplutJku+absdsOWc/PjelIxXrk9qvLSM5XASblzfJpAbLEAEUtLeKjgPYp60NCUGYXAk53xxFzVNAaHsNr4f/T1exLKfEU=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(6496006)(52116002)(9686003)(4326008)(38100700002)(38350700002)(8936002)(6916009)(2906002)(9576002)(54906003)(44832011)(33716001)(316002)(8676002)(5660300002)(66946007)(508600001)(1076003)(66556008)(83380400001)(55016003)(966005)(86362001)(186003)(956004)(26005)(66476007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR0402MB3348.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(366004)(1076003)(956004)(66556008)(186003)(66476007)(966005)(55016003)(33716001)(316002)(66946007)(9576002)(44832011)(86362001)(9686003)(38350700002)(38100700002)(4326008)(5660300002)(26005)(2906002)(52116002)(8936002)(53546011)(6916009)(6496006)(508600001)(8676002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?mWARYv+MOE0z+zJW5P9NKiDlZtD1YUH6D4c2x8Ddv2BlAlHFtzBN+hYGAPlo?=
- =?us-ascii?Q?bpXiRXh3dwh3uEduFsTylpyuVq4nIc7JTDxtLyKw/Zt50EzKg18m+B8EJMWY?=
- =?us-ascii?Q?jtSKfDeSfwxzoRVuyvqhxONI78U4yYWTUvD5GAOAaGoiu3yeeTRmRe+Y5SQS?=
- =?us-ascii?Q?lt+al3jXpoBl/cqkI2B3fvPN/ZfKBYzPjcm0xYAy7zWiUgijfx6Hbt+XweAt?=
- =?us-ascii?Q?Jmh9KfJTMuQx/hEaiMslYGAGoHYB+cPe3YmjifNQQQBsY12zrt7VsX8O4h+N?=
- =?us-ascii?Q?a5GIgLYzRoyR/inLsNEpyK6u8x/ggdbqWvL429fqU4bsrbfduEZ/B4gKAP/4?=
- =?us-ascii?Q?rxPIwmh1PL3QDAVVcoV8+rFtU66FJXeuat4z6uow2YV/UYeT+qfC79CqYjj5?=
- =?us-ascii?Q?IYxnfsqpdWkSKlPHMhPcgQ6nVmsUpZecy66kgeD6LOkrX4bi6/grdOKs0TDW?=
- =?us-ascii?Q?JafnK0mIwhKNm592nMuPl8GvOusvYJfZJ6kjUKb4nW9Plp5gJLXlO8k8tLRJ?=
- =?us-ascii?Q?lhIvqMvCm9HoqTrEG8lTOgdSeSrD178joF9YHkdW2p99EpuAABS3AcZs2Kct?=
- =?us-ascii?Q?QKAiehZWNOIiH9ol6X1dC1XIhMbDVz/uY5OoLUc1UBTd+W3tfrFypUspapzO?=
- =?us-ascii?Q?FGhT99ZcyE+o1uWVXbjgpzjcZ/ZE+biVO8Tp46Y3zAQNTrOLrJS3iqhqSKTo?=
- =?us-ascii?Q?zt+93BDb4LpDCtPp5TjRFjJUY89oM2QRV8jO5mvXSiLMdJdgKZk2Cnha22s4?=
- =?us-ascii?Q?ZFQEmySdp4Xpr0dHh7McA0vpD2RiJs8TOfrNzonsmxIw9IDHbakjBcgKxEbf?=
- =?us-ascii?Q?GJ74Ae49bpwvh30AgNVKJP38PPvMbZt+aB3l+drvJi6XWmiKu4GOvAgg4oQE?=
- =?us-ascii?Q?FkMsqdjIExPNN8g4F2IL80FypLosv3m4bFGSyjjUgeWa0lmXqeP24t/Luqg2?=
- =?us-ascii?Q?T87yNJBDVnQQL11YNw52T4YvjzN9Hkp9Iflz5ip3/opXzwiQ7QZK6fh9RsD1?=
- =?us-ascii?Q?OUgC7YjSzz342pGgWqzOdEsIAWRSvFF34SpE3wAjJTUgBTWq5KT3E8Ec++G8?=
- =?us-ascii?Q?NiYVvoWcwFOnKzqD1OxKFvbTgvh19qauZIUuHmRtddpDUjC1PG1KIfVrN+9o?=
- =?us-ascii?Q?amviQMazZQmEnKSbMbZPakjdbsA39d1tyoKh7Cg8543jd8TvvpuiUA6lHxyT?=
- =?us-ascii?Q?BkJIYJv3lyFEaboC5GxRc3gFenW6HXlBnQaxwRGRPZt+6ygXt2VcEg2gxPMb?=
- =?us-ascii?Q?5K184D0nmIozDRpC+BKMec3zSIoRxaTRZjiv5XKWunaj8EXRWsZZfbLUvuwx?=
- =?us-ascii?Q?8nOvPCzjgDiENPbkRhMHhtZgZuWOvwLcwsdUysfwZfHpoRigGGzIW8MVPo9v?=
- =?us-ascii?Q?0441UuSUxH/n7SzzoGtt16rSoloiIHJhqmyRaFHPnWkuOuekp+/T7HB3xyuZ?=
- =?us-ascii?Q?eP4A8YNDLRlMeU81zhR4u6yLM/ZUVEjHRTwd3A5kHTSnsrJt9/aJGYRuDyBZ?=
- =?us-ascii?Q?1ywter3nz8o2cQPNTbSZLVr6kXpmvkQUXhUb4fuWoxZe/EzfVJw8gK/LCTpR?=
- =?us-ascii?Q?CkoYywrzg1ti/B20tUZFwbq5wG45LM+vZz2eRyFUC9tN1CoAsDfqU7kbWdri?=
- =?us-ascii?Q?yZ6ZIY3dHUJ3nO5iTHJ4mJ8tdSE7xO7kD+/JTc/mVjTi31wLbUjMz71spBSb?=
- =?us-ascii?Q?YQz5Y6qC1XRSURija4tSrBAKl/dXBApf3BGj4/Wf+Hs4nj2BtcYrWf0qBK/C?=
- =?us-ascii?Q?pCdZ3q2HFw=3D=3D?=
+	=?us-ascii?Q?W+X7D6PxXddOIis0toCF3XBmt7SfvAi2nVjXjWN3S6it7RUlN6KB4rNQv3wG?=
+ =?us-ascii?Q?MHe/JiUcEWEez4TW42l4SUc6f3/eSRrcBM9JsRXGpb9y0Hp579ez3BDChbu8?=
+ =?us-ascii?Q?vfVaCfZSYiDudJ81UBAHLn7d+8HYA5AtirgeuT9uRmVE5J5bsr82hfJG4TwG?=
+ =?us-ascii?Q?2/WcIxCTSI/4bNWD7mcVtFhsLNSSNcRozDSCHjP0q8IQ916JPIBZjSJGwZmW?=
+ =?us-ascii?Q?s5XJDr0nriC003d3kpTB5UZd3eNuJR1CKzHa1y3uFuHE1Yeq58jCsKUer5kj?=
+ =?us-ascii?Q?T1Om5Wr2pHkHRyxU4PyJEHXY6vu8pSGXrkTwCBfHXKFukaBOEDQoh8ygIwv3?=
+ =?us-ascii?Q?S53AlmB5zyfmE67I7eUAoji2vgRweAytwz0Hhlf1AYzImeFLEjHThDYgfAMe?=
+ =?us-ascii?Q?ZkSJjcZY3MsWQhm5u+9ooyWOlNcBwZfoM3HzKnR9FHXJSNuLB03ZP0q6Oaum?=
+ =?us-ascii?Q?dgT+ZrDWRAsdeLLmYfDtAimx2ZXxevjEdA7B3U/A0a/SUHD7UIshyB6Sqdej?=
+ =?us-ascii?Q?3wqRziwUF08UG3eG7aTvnM3RSNS3lh6Uf0br6dvIDJU8IOlMZ0MIroa9sLTU?=
+ =?us-ascii?Q?uPZbYG+SKIZ1dTxnNwlsS2VwxQaUGjPwKDT05Je3podpconrAJvcIiYpCsLN?=
+ =?us-ascii?Q?+qq83TyxXnL6JHigE0blx7bQUmj0/xAbz/EMZcXA4QaN9ykjF2fNjtmxZI5J?=
+ =?us-ascii?Q?X9QmtZ4Ac8LXHprk2CnCB7Luj25hGGH8zHDQp115QQaDjL8CiBJeKF4s1TRi?=
+ =?us-ascii?Q?3HvhM24Iw3+pFV9SPXQCJeXQVIotm3mHYab9mUJ+nVfVAL7Trm0i0XZF5yUW?=
+ =?us-ascii?Q?PMN65Eko6v/3ZFTtF5AxQVz8dwbXUI67a6ae61CFM/lsYTSiDdcwX5PAh/1K?=
+ =?us-ascii?Q?sVGdAUAy42uz8TRBl3GZqMPXtZX90MDkZMBW6j+ESWv2AF3UcZ49vBBLH22c?=
+ =?us-ascii?Q?CcYfuxw/5ecDJhoHNip33mtF04KlUcV3Y+5rmJX6NhoI9NkFIhZZfLv5JfUI?=
+ =?us-ascii?Q?P4oX7WsoQW6bjSKGb9BSU71nno/Zuirbm1nehLuUReimIC1rG71qcGbl13+H?=
+ =?us-ascii?Q?XvHdhKCLHw+iO1ZGLgEwSKy2RXGyjPHU9/JJK7EjEtscr3F468gB31nOdAMF?=
+ =?us-ascii?Q?GMHja5Oj1St6ifhvXcS/X3a9fXBmiMzubtH+LgMDT3hS/DIfxIUSNAnYz7oV?=
+ =?us-ascii?Q?W6KKYeHk3jY+mjWAvCXJg3/EdAEcLWEFbdaxVZILp7Qxk/V0ua+ruBgar6YO?=
+ =?us-ascii?Q?qvkLGiRLRasq3r+/juK7ZwlyJxi6QMDoBV7IGXMaX4I0xC8jaiO2HgYZJ0HS?=
+ =?us-ascii?Q?R4rbE76dhSt1oB/bx6270S7qazKAJe3YASGITzqiUrGjuJApZ2Yez9yrTiY4?=
+ =?us-ascii?Q?BaYl/WDbxQlKCt4ulLkYxE8FQCiIkMaMDvWvY0HkKlJqEaoGjpiUQx3ELMfD?=
+ =?us-ascii?Q?EGRhwqZ8tkXjKKBMDllPcLSQeAlxsuKlavPdYeyHZMvBJmzC7kNtjdis3Cw9?=
+ =?us-ascii?Q?/kwmBs6+yAscjxm3FkJG42oqfY4S36ih5h9Yyu9tDp7/CrMqHQUhAt2hWGye?=
+ =?us-ascii?Q?v4spGob4aMmmElddhLucf6qyzyNlGF/XJWHpuEyQ/byz+iO2n+qMgESUIMCA?=
+ =?us-ascii?Q?8EorLvQSPJw3qmiTrMNCItUoNt4PHW+hgHuJNE/WzmeVVwKKMohIDygNDOVw?=
+ =?us-ascii?Q?EjkwkTLPlELN48Xq14kE2MM9MNucfaTpNQu7mIvlGEtfFutI+hGmIJijUFNK?=
+ =?us-ascii?Q?n/Wk462ZRQ=3D=3D?=
 X-OriginatorOrg: theobroma-systems.com
 X-MS-Exchange-CrossTenant-Network-Message-Id: 
- a7158f6d-5819-4c1c-2dc7-08d9b6428567
+ a02d79d7-690c-401e-e05c-08d9b6441741
 X-MS-Exchange-CrossTenant-AuthSource: 
  AM0PR0402MB3348.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2021 09:51:47.2963
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Dec 2021 10:03:01.5259
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
 X-MS-Exchange-CrossTenant-UserPrincipalName: 
- OacMJZ/W6s0JRxw2qHzBTFORy5wvd01Pbkzw2zu8BU4O3+2ze0LT6unhA0hmaRLHEVWAvra8OkGCPyOqSG3qXHbgiO35bzCGfpPos0ms61Ea05dTWSyrg11QlvcLMPB6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5251
+ wq6vm8GWc36dEmehIH8r5VmOR+ylwQH+L9gbJEET7M43RIFhM6Y91zVFpaYZzE8pksHp6waqPg7Oam1q9IZ4LBw4iRc1hzGgZ17NSC1Ft00VR05ACXjnTBTCvx0iH0Qt
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB5460
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Dec 2021 09:51:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2217
+ <docs@lists.yoctoproject.org>; Fri, 03 Dec 2021 10:03:06 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2218
 
-Hi Michael,
+Hi Nicolas,
 
-On Wed, Dec 01, 2021 at 04:13:22PM +0100, Michael Opdenacker wrote:
-> Greetings,
+On Fri, Dec 03, 2021 at 10:49:40AM +0100, Nicolas Dechesne wrote:
+> On Fri, Dec 3, 2021 at 10:34 AM Quentin Schulz <
+> quentin.schulz@theobroma-systems.com> wrote:
 > 
-> If you look at https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_bitbake_releases.html&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=nmz6nRfD45I3bnlvaIJlwgW4wYK5G9nb3gDSkyP74fFUUHF4WlbuD9BkNH-9erYP&s=e4XFpr767d7wz5ZNyrurX3eZsxr37oW4HaNlqf6EHzc&e= , only
-> DocBook manuals are mentioned (for example
-> https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_3.1.2_bitbake-2Duser-2Dmanual_bitbake-2Duser-2Dmanual.html&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=nmz6nRfD45I3bnlvaIJlwgW4wYK5G9nb3gDSkyP74fFUUHF4WlbuD9BkNH-9erYP&s=DnCrJ1SUcsVGumwq8jNF_a5K7LQiyjorQZ0QMzdSwJc&e= ),
-> but not the newer Sphinx versions. For example
-> https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_3.1.12_bitbake-2Duser-2Dmanual_bitbake-2Duser-2Dmanual.html&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=nmz6nRfD45I3bnlvaIJlwgW4wYK5G9nb3gDSkyP74fFUUHF4WlbuD9BkNH-9erYP&s=ncFosfETX9y5ER-IFzjYY2xcN_XsygOFxo-MmpwA9V4&e= 
-> doesn't exist.
+> > On Wed, Dec 01, 2021 at 02:59:49PM +0100, Michael Opdenacker wrote:
+> > > No longer necessary now that the transition from DocBook to Sphinx is
+> > over
+> > >
+> > > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> >
+> > Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
+> >
 > 
-
-We still need to point to the older docs before Sphinx migration but
-indeed it's missing the Sphinx ones.
-
-> Fortunately, at least the latest Sphinx build is available on
-> https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_bitbake-21&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=nmz6nRfD45I3bnlvaIJlwgW4wYK5G9nb3gDSkyP74fFUUHF4WlbuD9BkNH-9erYP&s=WHxtpElE6Ddm7XaOtkShZ44Z_SAtEAADW8Nwui2veRg&e= 
+> I don't understand. With this change, we no longer build the pages we
+> reference here:
+> https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_releases.html-23outdated-2Drelease-2Dmanuals&d=DwIBaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=nyCl21erajBNcx6SkCKI_BEntNgbh6114vcdWp_vB5yDzorVFjmzdqp0WXIIpQyK&s=rw5wG0nk_9KQ8RLvE1-sbSicy4NslWaeMwoyTSUuIyY&e= 
 > 
-> What about modifying this page to refer only to BitBake versions (1.48,
-> 1.50, 1.52... plus past ones), which are the only ones that we generate,
-> instead of Yocto Project ones? It would then make sense to update the
-> switchers.js file to make it specific to BitBake.
+> Or am I missing here?
 > 
 
-Not sure to understand the first question, but in any case yes, we
-should point to bitbake versions on this page, both pre-Sphinx and
-Sphinx. However, I think we need to keep in the text in which Yocto
-Project version this version of bitbake is used to make it explicit and
-easy to find the bitbake doc that is important.
+Indeed. But this should be fixed, because we should handle this the same
+way documentation/releases.html is, with a common one across all
+releases. With the current implementation, only master has a list of all
+outdated releases. e.g.
+https://docs.yoctoproject.org/3.3/releases.html#outdated-release-manuals
+does not exist, but
+https://docs.yoctoproject.org/releases.html#outdated-release-manuals
+does (and weirdly enough 3.4 too).
 
-Not sure how this would help with switchers.js. We could always have a
-check on the base URL in switchers.js. If it starts with
-https://docs.yoctoproject.org/bitbake then the dropdown menu should show
-Bitbake versions, otherwise YP's.
-
-Slightly off-topic but I think we should also modify
-https://git.yoctoproject.org/yocto-docs/tree/documentation/conf.py#n93
-to point to the objects.inv of the bitbake version that is used by that
-release. The point being that old variables may disappear over time,
-breaking older YP releases docs build, which is bad. Also, it links to
-the newer bitbake docs instead of the one for the one related to the YP
-version the user is looking at.
+I assume we want this in all branches. Therefore I think we should move
+documentation/transition from that branch to master and copy the whole
+directory for each non-master branch (with the git checkout master trick
+from an earlier patch from Michael). I think this makes more sense than
+keeping a transition branch? Especially since I assume we want to move
+every 6 months one release from "Supported release manuals" to "Outdated
+releae manuals" ?
 
 Cheers,
 Quentin
+> >
 
