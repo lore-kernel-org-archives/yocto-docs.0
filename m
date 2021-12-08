@@ -2,94 +2,99 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FE6EC433EF
-	for <webhook@archiver.kernel.org>; Wed,  8 Dec 2021 15:19:30 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web08.13449.1638976769224626736
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 913B2C433F5
+	for <webhook@archiver.kernel.org>; Wed,  8 Dec 2021 15:48:01 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.14253.1638978479997235592
  for <docs@lists.yoctoproject.org>;
- Wed, 08 Dec 2021 07:19:29 -0800
+ Wed, 08 Dec 2021 07:48:00 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id 6F21C40012;
-	Wed,  8 Dec 2021 15:19:27 +0000 (UTC)
-Subject: Re: [docs] [PATCH] docs: dev-manual: common-tasks: highlight creating
- your own layer is not required
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id CFDBC20010;
+	Wed,  8 Dec 2021 15:47:57 +0000 (UTC)
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Quentin Schulz <foss+yocto@0leil.net>
+Subject: Re: [docs] [PATCH] documentation: conf.py: add knob for loading
+ appropriate objects.inv
 To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-References: <20211203173955.77512-1-foss@0leil.net>
+References: <20211203103315.57685-1-foss@0leil.net>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Message-ID: <c2972275-66cd-d72a-1912-632e03e3de66@bootlin.com>
-Date: Wed, 8 Dec 2021 16:19:26 +0100
+Message-ID: <913b368e-5cf5-88c0-351f-1338a19a5ce5@bootlin.com>
+Date: Wed, 8 Dec 2021 16:47:57 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <20211203173955.77512-1-foss@0leil.net>
+In-Reply-To: <20211203103315.57685-1-foss@0leil.net>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 08 Dec 2021 15:19:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2232
+ <docs@lists.yoctoproject.org>; Wed, 08 Dec 2021 15:48:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2233
 
 Hi Quentin,
 
-On 12/3/21 6:39 PM, Quentin Schulz wrote:
-> Three's been some feedback saying that people actually missed that
-> paragraph and thought creating the layer by hand was the only way to do
-> it instead of leveraging bitbake-layers create-layer tool.
+On 12/3/21 11:33 AM, Quentin Schulz wrote:
+> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 >
-> Let's try to make it a bit more obvious one does not need to create the
-> layer by hand by putting the paragraph into a note.
+> Yocto Project releases use a specific Bitbake release. Currently the
+> bitbake: mapping is pointing to the current master version of Bitbake
+> documentation. This is an issue if some links disappear over time and
+> someone is still building old documentation (which is the case on the YP
+> autobuilder for example). Also, the documentation at the current master
+> version of Bitbake might not be correct for the Yocto Project version
+> associated with the doc the user is currently looking at, potentially
+> causing confusion.
 >
-> Signed-off-by: Quentin Schulz <foss@0leil.net>
+> In master branch, nothing needs to be done. For release branches, the
+> bitbake_version variable needs to be set accordingly. See
+> https://wiki.yoctoproject.org/wiki/Releases for the mapping.
+>
+> Cc: Quentin Schulz <foss+yocto@0leil.net>
+> Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 > ---
->  documentation/dev-manual/common-tasks.rst | 20 +++++++++++---------
->  1 file changed, 11 insertions(+), 9 deletions(-)
+>  documentation/conf.py | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 >
-> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-> index 3eead147a..2f5a02f4c 100644
-> --- a/documentation/dev-manual/common-tasks.rst
-> +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -24,15 +24,17 @@ section in the Yocto Project Overview and Concepts Manual.
->  Creating Your Own Layer
->  -----------------------
+> diff --git a/documentation/conf.py b/documentation/conf.py
+> index 8e0847938..1bea18032 100644
+> --- a/documentation/conf.py
+> +++ b/documentation/conf.py
+> @@ -17,6 +17,7 @@ import sys
+>  import datetime
 >  
-> -It is very easy to create your own layers to use with the OpenEmbedded
-> -build system, as the Yocto Project ships with tools that speed up creating
-> -layers. This section describes the steps you perform by hand to create
-> -layers so that you can better understand them. For information about the
-> -layer-creation tools, see the
-> -":ref:`bsp-guide/bsp:creating a new bsp layer using the \`\`bitbake-layers\`\` script`"
-> -section in the Yocto Project Board Support Package (BSP) Developer's
-> -Guide and the ":ref:`dev-manual/common-tasks:creating a general layer using the \`\`bitbake-layers\`\` script`"
-> -section further down in this manual.
-> +.. note::
-> +
-> +   It is very easy to create your own layers to use with the OpenEmbedded
-> +   build system, as the Yocto Project ships with tools that speed up creating
-> +   layers. This section describes the steps you perform by hand to create
-> +   layers so that you can better understand them. For information about the
-> +   layer-creation tools, see the
-> +   ":ref:`bsp-guide/bsp:creating a new bsp layer using the \`\`bitbake-layers\`\` script`"
-> +   section in the Yocto Project Board Support Package (BSP) Developer's
-> +   Guide and the ":ref:`dev-manual/common-tasks:creating a general layer using the \`\`bitbake-layers\`\` script`"
-> +   section further down in this manual.
+>  current_version = "dev"
+> +bitbake_version = "" # Leave empty for development branch
 >  
->  Follow these general steps to create your layer without using tools:
+>  # String used in sidebar
+>  version = 'Version: ' + current_version
+> @@ -90,7 +91,7 @@ extlinks = {
+>  
+>  # Intersphinx config to use cross reference with Bitbake user manual
+>  intersphinx_mapping = {
+> -    'bitbake': ('https://docs.yoctoproject.org/bitbake/', None)
+> +    'bitbake': ('https://docs.yoctoproject.org/bitbake/' + bitbake_version, None)
+>  }
+>  
+>  # Suppress "WARNING: unknown mimetype for ..."
 
-
-Thanks for the patch. Good idea.
+Excellent idea ! Thanks for the patch.
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ... and merged into "master-next".
 
+I'll take care of adapting and applying it on the currently supported
+release branches (dunfell, hardknott, honister). I'll do that directly
+in the branches, but let me know if I should submit patches first.
 Thanks again
-Michael.--
+Michael.
 
+-- 
 Michael Opdenacker, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
