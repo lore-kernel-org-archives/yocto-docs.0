@@ -2,61 +2,76 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 227F3C433F5
-	for <webhook@archiver.kernel.org>; Wed, 15 Dec 2021 14:23:34 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.40793.1639578212908853894
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA30AC433EF
+	for <webhook@archiver.kernel.org>; Thu, 16 Dec 2021 01:43:29 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.190.1639584411347552000
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Dec 2021 06:23:33 -0800
+ Wed, 15 Dec 2021 08:06:51 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id E7755C0005;
-	Wed, 15 Dec 2021 14:23:30 +0000 (UTC)
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>,
- BitBake developer list <bitbake-devel@lists.openembedded.org>
-Subject: Re: [bitbake-devel] [docs] Can BB_HASHSERVE still take a 'host:port'
- value?
-To: Joshua Watt <JPEWhacker@gmail.com>
-References: <9234471a-8cb1-429a-0dd9-6820cdf62616@bootlin.com>
- <CAJdd5GbRMTVhm9rZHOEmX3a-14cZsby_RuAX2SRjhv6cvvAq9w@mail.gmail.com>
- <d19f9e73-929f-d32e-ef57-6e48950c1b20@bootlin.com>
- <CAJdd5GY8fcTyseZ6KfcN+WkFG-WjfpDFEyy=F44UUFFj2C70hA@mail.gmail.com>
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 3C4CE20017;
+	Wed, 15 Dec 2021 16:06:48 +0000 (UTC)
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-Message-ID: <cd388fff-1b0c-c089-691b-31375eaa8031@bootlin.com>
-Date: Wed, 15 Dec 2021 15:23:30 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] doc: bitbake-user-manual: expand BB_HASHSERVE and document
+ BB_HASHSERVE_UPSTREAM
+Date: Wed, 15 Dec 2021 17:06:13 +0100
+Message-Id: <20211215160613.2001231-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-In-Reply-To: 
- <CAJdd5GY8fcTyseZ6KfcN+WkFG-WjfpDFEyy=F44UUFFj2C70hA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Dec 2021 14:23:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2271
+ <docs@lists.yoctoproject.org>; Thu, 16 Dec 2021 01:43:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2272
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ .../bitbake-user-manual-ref-variables.rst     | 20 ++++++++++++++++++-
+ 1 file changed, 19 insertions(+), 1 deletion(-)
 
-On 12/15/21 3:05 PM, Joshua Watt wrote:
->
-> "HOST:PORT" and "unix://" are handled by `create_server` in
-> bitbake/lib/hashserv/__init__.py
-
-
-Thanks, that allowed me to find the "parse_address()" that reads these
-settings.
-Cheers
-Michael.
-
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index bb996e84..45ee9dde 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -376,10 +376,28 @@ overview of their function and contents.
+       If set to ``auto``, BitBake automatically starts its own server
+       over a UNIX domain socket.
+ 
+-      If set to ``host:port``, BitBake will use a remote server on the
++      If set to ``unix://path``, BitBake will connect to an existing a
++      hash server available over a UNIX domain socket.
++
++      If set to ``host:port``, BitBake will connect to a remote server on the
+       specified host. This allows multiple clients to share the same
+       hash equivalence data.
+ 
++      This last kind of server can be started manually through
++      the ``bin/bitbake-hashserv`` script provided by BitBake,
++      which supports UNIX domain sockets too.
++
++   :term:`BB_HASHSERVE_UPSTREAM`
++      Specifies an upstream Hash Equivalence server.
++
++      This optional setting is only useful when a local Hash Equivalence
++      server is started (setting :term:`BB_HASHSERVE` to ``auto``),
++      and you wish the local server to query an upstream server for
++      Hash Equivalence data.
++
++      Example usage::
++         BB_HASHSERVE_UPSTREAM = "typhoon.yocto.io:8687"
++
+    :term:`BB_INVALIDCONF`
+       Used in combination with the ``ConfigParsed`` event to trigger
+       re-parsing the base metadata (i.e. all the recipes). The
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
