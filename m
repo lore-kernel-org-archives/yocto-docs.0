@@ -1,128 +1,98 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EF4BC433FE
-	for <webhook@archiver.kernel.org>; Thu, 16 Dec 2021 17:37:30 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web08.13689.1639676249011499161
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37385C43217
+	for <webhook@archiver.kernel.org>; Thu, 16 Dec 2021 18:12:36 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web08.311.1639678354672269503
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Dec 2021 09:37:29 -0800
+ Thu, 16 Dec 2021 10:12:35 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.178.230,
- mailfrom: foss@0leil.net)
-Received: (Authenticated sender: foss@0leil.net)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 7BFE4240008;
-	Thu, 16 Dec 2021 17:37:25 +0000 (UTC)
-Date: Thu, 16 Dec 2021 18:37:23 +0100
-From: Quentin Schulz <foss@0leil.net>
-To: docs@lists.yoctoproject.org, Vyacheslav Yurkov <uvv.mail@gmail.com>
-Subject: Re: [docs] [PATCH 1/2] ref-manual: add overlayfs-etc class
-In-Reply-To: <20211215171138.127272-1-uvv.mail@gmail.com>
-References: <20211215171138.127272-1-uvv.mail@gmail.com>
-Message-ID: <C97BA46D-92DD-4A26-871C-D0991A67E1E8@0leil.net>
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id BE87420005;
+	Thu, 16 Dec 2021 18:12:32 +0000 (UTC)
+Subject: Re: [docs] [PATCH v2] doc: bitbake-user-manual: expand BB_HASHSERVE
+ and document BB_HASHSERVE_UPSTREAM
+To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org,
+ bitbake-devel@lists.openembedded.org
+References: <16C0F955FEA53DE5.26558@lists.yoctoproject.org>
+ <20211216095204.2016867-1-michael.opdenacker@bootlin.com>
+ <4F7DB4A6-D4E6-4849-9DB9-6B24C21E1459@0leil.net>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+Message-ID: <112ec250-6968-7549-be23-3d0c0a7132b3@bootlin.com>
+Date: Thu, 16 Dec 2021 19:12:32 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <4F7DB4A6-D4E6-4849-9DB9-6B24C21E1459@0leil.net>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 16 Dec 2021 17:37:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2294
+ <docs@lists.yoctoproject.org>; Thu, 16 Dec 2021 18:12:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2296
 
-Hi Vyacheslav,
+Hi Quentin,
 
-On December 15, 2021 6:11:37 PM GMT+01:00, Vyacheslav Yurkov <uvv=2Email@g=
-mail=2Ecom> wrote:
->Signed-off-by: Vyacheslav Yurkov <uvv=2Email@gmail=2Ecom>
->---
-> documentation/ref-manual/classes=2Erst | 41 ++++++++++++++++++++++++++++
-> 1 file changed, 41 insertions(+)
+Many thanks for the review!
+
+On 12/16/21 6:32 PM, Quentin Schulz wrote:
 >
->diff --git a/documentation/ref-manual/classes=2Erst b/documentation/ref-m=
-anual/classes=2Erst
->index 2c191f407=2E=2Ea5b01c2cf 100644
->--- a/documentation/ref-manual/classes=2Erst
->+++ b/documentation/ref-manual/classes=2Erst
->@@ -1769,6 +1769,47 @@ to the unit the following::
-> =2E=2E note::
->=20
->    The class does not support the ``/etc`` directory itself, because ``s=
-ystemd`` depends on it=2E
->+   In order to get ``/etc`` in overlayfs see :ref:`overlayfs-etc <ref-cl=
-asses-overlayfs-etc>`=20
->+
+>>
+>> -      If set to ``host:port``, BitBake will use a remote server on the
+>> +      If set to ``unix://path``, BitBake will connect to an existing a
+> s/a//
 
-Missing dot at the end of the sentence=2E
+Fixed.
+>
+>
+>
+> +      This last kind of server can be started manually through
+> s/This last kind of server/The remote server/
 
->+=2E=2E _ref-classes-overlayfs-etc:
->+
->+``overlayfs-etc=2Ebbclass``
->+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D
->+
->+In order to have ``/etc`` directory in overlayfs a special handling at e=
-arly=20
->+boot stage is required=2E  The idea is to supply a custom init script th=
-at mounts
->+``/etc`` before launching actual init program, because the latter alread=
-y
->+requires ``/etc`` to be mounted
->+
 
-Missing dot at the end of the sentence=2E
+Much better, adopted!
 
->+=2E=2E note::
->+
->+   This class must not be inherited directly=2E Use corresponding IMAGE_=
-FEATURE
->+
+>
+>
+> +
+> +      Example usage::
+> Do we not need a newline after the ::?
 
-Missing dot at the end of the sentence=2E
 
->+Your machine configuration should define at least device, mount point, a=
-nd file system type
->+you are going to use for ``overlayfs``::
->+
->+  OVERLAYFS_ETC_MOUNT_POINT =3D "/data"
->+  OVERLAYFS_ETC_DEVICE =3D "/dev/mmcblk0p2"
->+  OVERLAYFS_ETC_FSTYPE ?=3D "ext4"
->+
->+To control more mount options you should consider setting mount options
->+(``defaults`` is used by default)::
->+
->+  OVERLAYFS_ETC_MOUNT_OPTIONS =3D "wsync"
->+
->+The class provides two options for ``/sbin/init`` generation:
->+
->+* Default option is to rename original ``/sbin/init`` to ``/sbin/init=2E=
-orig`` and
->+  place generated init under original name, i=2Ee=2E ``/sbin/init``=2E I=
-t has an advantage
->+  that you won't need to change any kernel parameters in order to make i=
-t work,
->+  but it poses a restriction that package-management can't be used, beca=
-ause updating
->+  init manager would remove generated script
+Oops yes, otherwise the rendering is different.
 
-What is the default value? This needs to be explicit otherwise it cannot b=
-e "undone" in a bbappends for example=2E
+>
+>> +         BB_HASHSERVE_UPSTREAM = "typhoon.yocto.io:8687"
+>> +
+> Is this the address of an actual hashserver? Is this supposed to be used? Is it able to handle many requests? Basically asking if we should have a real hashserver here?
 
-Thanks for the patch,
-Cheers,
-Quentin
 
->+* If you are would like to keep original init as is, you can set::
->+
->+   OVERLAYFS_ETC_USE_ORIG_INIT_NAME =3D "0"
->+
->+  Then generated init will be named ``/sbin/preinit`` and you would need=
- to extend your
->+  kernel parameters manually in your bootloader configuration=2E
->=20
-> =2E=2E _ref-classes-own-mirrors:
->=20
+Yes, that's the server proposed in Poky's
+meta-poky/conf/local.conf.sample file, though it is commented out by
+default.
+We talked about that in a meeting, and if I recall correctly, we agreed
+to document its usage, but not turn it on by default. Effectively, if
+everyone starts using it at the same time, runs could become slower than
+if the corresponding artifacts were built locally.
+
+There's a proper warning in my patch, anyway.
+
+Don't hesitate to disagree, that's not too late!
+
+Thanks again
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
