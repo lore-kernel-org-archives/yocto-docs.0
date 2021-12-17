@@ -2,215 +2,160 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF3C3C433EF
-	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 14:58:22 +0000 (UTC)
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com
- [209.85.222.48])
- by mx.groups.io with SMTP id smtpd.web10.7012.1639753102000821394
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C467CC433EF
+	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 16:32:32 +0000 (UTC)
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com
+ [209.85.222.52])
+ by mx.groups.io with SMTP id smtpd.web09.8386.1639758751561671371
  for <docs@lists.yoctoproject.org>;
- Fri, 17 Dec 2021 06:58:22 -0800
+ Fri, 17 Dec 2021 08:32:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=b7mZ/TWQ;
- spf=pass (domain: gmail.com, ip: 209.85.222.48,
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=WPW97Hjs;
+ spf=pass (domain: gmail.com, ip: 209.85.222.52,
  mailfrom: alex.kanavin@gmail.com)
-Received: by mail-ua1-f48.google.com with SMTP id n7so4757350uaq.12
+Received: by mail-ua1-f52.google.com with SMTP id w23so5392892uao.5
         for <docs@lists.yoctoproject.org>;
- Fri, 17 Dec 2021 06:58:21 -0800 (PST)
+ Fri, 17 Dec 2021 08:32:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=zJ08YWimXKWqO62SxXuEieAajM5HtF/dU4AMuBwOkyY=;
-        b=b7mZ/TWQ4WX8HC2xtReEM38l39vzNK12mCHNNQk/KWDLDhFcDRIly4XQ21WrTUowcZ
-         FlMTry63fh9OtBqSpyDclIjzgOL0pNIWyy/H8KmubjJQG14Me0GOJkzVb3hPsoDbPSjR
-         qUsYIAYTmmMvKZclVObtY9euJ9oknUXnzgWRP+y/l8Ggtgh37V/dXd+Z7Bj3OJpBTnb4
-         VSFsvBnrt9bV7glv4/cBB68aCSenpwIt+x0eDBa5knHG2JpddmzQqLPZjjvnQvLVSl3c
-         T7f4FHZUGfx2Lvp2euavTJl+iBt55hu0N+8nsVWwUjOaky3QOSbpya7L/Aro3lyNukvD
-         9qQw==
+        bh=2ArX+YRtGThvLitdD3g60JFQSuowbEaaYBBqAg+L3OY=;
+        b=WPW97Hjs7FMNGPLbOFWj5cPDP2LUHC5XF7nYSHmJfsevddUM0nKd/MJtdBfHG+ydIv
+         Be6lYhBu23Nd0d1yDUYd4km9mxmh9V33plOawGdU7LNuqZn6tpH6KKt8Zg7p0IX1urrr
+         aFS2k4JXKeY2F5Gb2SyQm3cJ6KIIThXcbshXWEOTRVIN6cS8D4ewdFp+UxhYNqbQ+VIZ
+         np4BwdbPW876JT4ZFLOhkN0l7jbLkmleudsRK0lGasJO57O+63OEzR71xjttHrLapfvU
+         R+ABXnX3NuflTMLDnElxM+u+z/7wNSOYpzP1/EY6T8xmb/iumef2JhVcBxNudzRx8jXi
+         UbLQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=zJ08YWimXKWqO62SxXuEieAajM5HtF/dU4AMuBwOkyY=;
-        b=iFyVsb76surHg70m6c3mkAXMflt5aUFeWtFqK1QehzGPHiU/1ub2o/pZdXWGqQrRQD
-         YFNhBKbDQOcZcu637EjokWZqosAniT/kr2LA5XinQy/RKOxBXa/+BhLt0+Mz5/k0i0UN
-         pFpL3lD59iT8IulGaG9lzj6gxr399KjmHek0TaqxxXDq1bpetYNKqhhYz+CnvGO864mS
-         00Coy712+kQLJRGJf6ocY4CaqcyCoWqEkqNoioSKVujHJyMR+VA2EAYp/68N5eZZLUFC
-         N7ObtSHsBLDM+260l64Ikyfzs5knUsTmk/uf/7JaIMe3UKPSCjx9QvrUbsMskWoUjG4b
-         iAyg==
-X-Gm-Message-State: AOAM532MaJxay6bhJI5j4oZuG6HbfA5lYJ2dKhZNfBVY8gIKmsDxhQi7
-	WNfXgvdersHjjKU7sYMGrz66oe4lPQDY+cm6WVM=
+        bh=2ArX+YRtGThvLitdD3g60JFQSuowbEaaYBBqAg+L3OY=;
+        b=7+aTkpL+c75VCFTHaKN7Iag/YpfYSoPKgi+F9tJmfdPLtzlHXqckgjzFy+L+YfH4xx
+         69XVYz3/BhYAtYDWsENpKLdhtcJYEAjDWwfQR+80mKJZmJHkdsek+jo1jd9bmp3Fdj1N
+         aSpGEj6hLr8dIhq91XD6lJXQTGT/r8kwasW5q3/GpJxw9y+10quiZJuoyjTXGEugXja8
+         GUNoKQy7C6HrVXJ0VwxvTvkNLNVFvyccLPF9xK6Vz+qAQPe4wtij8C2V1LOOi8UDCbYT
+         Nq3FAOJxgBCpDWBWO9v+PVnhgkSqmNayyZKjvuPQvKNBq8bW6N2JKnOiCh/FqGCQFK7E
+         gQOw==
+X-Gm-Message-State: AOAM530uuunN9/QgItVf8SKh79oo3f+9YsignemN+4Q01vCr2/nAvdwr
+	UiSSqanR7m1anN2VbI5YGMYmCM1xG1gXxTGsqjibdpNs
 X-Google-Smtp-Source: 
- ABdhPJzxv3apzZNYZwKFJf6fIOraPP/r0vg5oax0k9KLx6WAgE3zIS3fMljsXtUm4i6zS+l2kF9y0/raY8cXNDnxG5A=
-X-Received: by 2002:a67:7105:: with SMTP id m5mr1234953vsc.81.1639753101063;
- Fri, 17 Dec 2021 06:58:21 -0800 (PST)
+ ABdhPJz9kYTvZpMzNnXhMfj0mbHeGvDb4qYbVYdXd13B8p5ooDIpN6glpqOjviVq+6GnRyN+9L5OTwk5mn7qY21q87M=
+X-Received: by 2002:a05:6102:3708:: with SMTP id
+ s8mr1391163vst.45.1639758750701;
+ Fri, 17 Dec 2021 08:32:30 -0800 (PST)
 MIME-Version: 1.0
 References: <f63931-692c-7af-251c-6f6dfdb0451e@crashcourse.ca>
-In-Reply-To: <f63931-692c-7af-251c-6f6dfdb0451e@crashcourse.ca>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Fri, 17 Dec 2021 17:58:09 +0300
-Message-ID: 
  <CANNYZj_3E3a1xqgMwcHsuWD30uqAk5o++uTuMbqeALoNiT5gZQ@mail.gmail.com>
+ <16C19319C1030E42.10196@lists.yoctoproject.org>
+ <b22aac2c-ee65-c3f6-ebfd-9c51f28a77f5@crashcourse.ca>
+In-Reply-To: <b22aac2c-ee65-c3f6-ebfd-9c51f28a77f5@crashcourse.ca>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Fri, 17 Dec 2021 19:32:18 +0300
+Message-ID: 
+ <CANNYZj-wjG1sOv2cj1cEeP5M87V=bp85O=mKaZ_eE2OCwS_0ww@mail.gmail.com>
 Subject: Re: [docs] trying (again) to clarify pkg_postinst[_ontarget]
 To: "Robert P. J. Day" <rpjday@crashcourse.ca>
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="0000000000001bb9db05d358c5bc"
+Content-Type: multipart/alternative; boundary="000000000000da5bdc05d35a15f4"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 14:58:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2307
+ <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 16:32:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2310
 
---0000000000001bb9db05d358c5bc
+--000000000000da5bdc05d35a15f4
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hey Robert, may I make a suggestion? Rather than ask someone to explain the
-implementation of pkg_postinst to you, why don=E2=80=99t you read the
-implementation and ask questions about specific code where it=E2=80=99s unc=
-lear
-what or why.
+The code is the canonical definition of behavior. If you see recipes or
+docs disagreeing with the code, please show where and how. Note: recipes
+directly using $D or explicitly calling defer to first boot helper are not
+in disagreement, they're just not using the documented syntactic sugar.
 
 Alex
 
-On Fri 17. Dec 2021 at 16.35, Robert P. J. Day <rpjday@crashcourse.ca>
+On Fri, 17 Dec 2021 at 18:08, Robert P. J. Day <rpjday@crashcourse.ca>
 wrote:
 
+> On Fri, 17 Dec 2021, Robert P. J. Day wrote:
 >
->   i know i once asked about this (probably on oe-core list), but i was
-> reading this section in the dev manual,
+> > On Fri, 17 Dec 2021, Alexander Kanavin wrote:
+> >
+> > > Hey Robert, may I make a suggestion? Rather than ask someone to
+> > > explain the implementation of pkg_postinst to you, why don=E2=80=99t =
+you
+> > > read the implementation and ask questions about specific code where
+> > > it=E2=80=99s unclear what or why.
+> >
+> >   i'm actually doing that, but i'm still not a python expert so i
+> > struggle with some of the bbclass files trying to follow the logic.
 >
+>   there's one other complication -- even when i think i follow the
+> code, i like to look at sample recipes to confirm my understanding,
+> but that's when i run across stuff like this in
+> sysvinit-inittab_2.88dsf.bb:
 >
-> http://docs.yoctoproject.org/dev-manual/common-tasks.html#post-installati=
-on-scripts
+>   pkg_postinst:${PN} () {
+>   # run this on host and on target
+>   if [ "${SERIAL_CONSOLES_CHECK}" =3D "" ]; then
+>        exit 0
+>   fi
 >
-> and i think it needs work, or i just have no idea how to read it
-> properly, so let me ask some really dumb, basic questions.
->
->   first, IIRC, once upon a time, such a script had the option of being
-> run at image install time, or on-target install time (depending on i
-> think whether the script exited with 0 or 1 or something like that).
-> those days are gone, and the new design is to use one of:
->
->   pkg_postinst
->   pkg_postinst_ontarget
->
-> fair enough, but in the old days, such a script might check the value
-> of ${D} to see if it was running in the image context, or on-target
-> context, and obviously run differently. given the current setup with
-> those two distinct routines, is there any purpose in such a script
-> *ever* checking the value of ${D} anymore? that is, is it safe to
-> assume that the first version above is run in image context, and the
-> second in on-target context? or is there still some obscure reason to
-> need to check?
->
->   i ask as i see this in base-passwd_3.5.29.bb:
->
->     pkg_postinst:${PN}-update () {
->     #!/bin/sh
->     if [ -n "$D" ]; then
->             exit 0
->     fi
->     ${sbindir}/update-passwd
->     }
->
->   how does one interpret that? or is just a holdover from the old
-> days? certainly that section in the docs is not going to help a reader
-> understand the (still) numerous references to ${D} in some of those
-> scripts.
+> so i have the docs, the code and the sample recipes all seeming to
+> disagree with each other.
 >
 > rday
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#2302):
-> https://lists.yoctoproject.org/g/docs/message/2302
-> Mute This Topic: https://lists.yoctoproject.org/mt/87788937/1686489
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
-> alex.kanavin@gmail.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
->
 
---0000000000001bb9db05d358c5bc
+--000000000000da5bdc05d35a15f4
 Content-Type: text/html; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-<div dir=3D"auto">Hey Robert, may I make a suggestion? Rather than ask some=
-one to explain the implementation of pkg_postinst to you, why don=E2=80=99t=
- you read the implementation and ask questions about specific code where it=
-=E2=80=99s unclear what or why.</div><div dir=3D"auto"><br></div><div dir=
-=3D"auto">Alex</div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" cl=
-ass=3D"gmail_attr">On Fri 17. Dec 2021 at 16.35, Robert P. J. Day &lt;<a hr=
-ef=3D"mailto:rpjday@crashcourse.ca">rpjday@crashcourse.ca</a>&gt; wrote:<br=
-></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;=
-border-left-width:1px;border-left-style:solid;padding-left:1ex;border-left-=
-color:rgb(204,204,204)"><br>
-=C2=A0 i know i once asked about this (probably on oe-core list), but i was=
+<div dir=3D"ltr">The code is the canonical definition of behavior. If you s=
+ee recipes or docs disagreeing with the code, please show where and how. No=
+te: recipes directly using $D or explicitly calling defer to first boot hel=
+per are not in disagreement, they&#39;re just not using the documented synt=
+actic sugar.<div><br></div><div>Alex</div></div><br><div class=3D"gmail_quo=
+te"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, 17 Dec 2021 at 18:08, Rob=
+ert P. J. Day &lt;<a href=3D"mailto:rpjday@crashcourse.ca">rpjday@crashcour=
+se.ca</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"ma=
+rgin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:=
+1ex">On Fri, 17 Dec 2021, Robert P. J. Day wrote:<br>
 <br>
-reading this section in the dev manual,<br>
+&gt; On Fri, 17 Dec 2021, Alexander Kanavin wrote:<br>
+&gt;<br>
+&gt; &gt; Hey Robert, may I make a suggestion? Rather than ask someone to<b=
+r>
+&gt; &gt; explain the implementation of pkg_postinst to you, why don=E2=80=
+=99t you<br>
+&gt; &gt; read the implementation and ask questions about specific code whe=
+re<br>
+&gt; &gt; it=E2=80=99s unclear what or why.<br>
+&gt;<br>
+&gt;=C2=A0 =C2=A0i&#39;m actually doing that, but i&#39;m still not a pytho=
+n expert so i<br>
+&gt; struggle with some of the bbclass files trying to follow the logic.<br=
+>
 <br>
-<a href=3D"http://docs.yoctoproject.org/dev-manual/common-tasks.html#post-i=
-nstallation-scripts" rel=3D"noreferrer" target=3D"_blank">http://docs.yocto=
-project.org/dev-manual/common-tasks.html#post-installation-scripts</a><br>
+=C2=A0 there&#39;s one other complication -- even when i think i follow the=
 <br>
-and i think it needs work, or i just have no idea how to read it<br>
-properly, so let me ask some really dumb, basic questions.<br>
+code, i like to look at sample recipes to confirm my understanding,<br>
+but that&#39;s when i run across stuff like this in<br>
+<a href=3D"http://sysvinit-inittab_2.88dsf.bb" rel=3D"noreferrer" target=3D=
+"_blank">sysvinit-inittab_2.88dsf.bb</a>:<br>
 <br>
-=C2=A0 first, IIRC, once upon a time, such a script had the option of being=
+=C2=A0 pkg_postinst:${PN} () {<br>
+=C2=A0 # run this on host and on target<br>
+=C2=A0 if [ &quot;${SERIAL_CONSOLES_CHECK}&quot; =3D &quot;&quot; ]; then<b=
+r>
+=C2=A0 =C2=A0 =C2=A0 =C2=A0exit 0<br>
+=C2=A0 fi<br>
 <br>
-run at image install time, or on-target install time (depending on i<br>
-think whether the script exited with 0 or 1 or something like that).<br>
-those days are gone, and the new design is to use one of:<br>
+so i have the docs, the code and the sample recipes all seeming to<br>
+disagree with each other.<br>
 <br>
-=C2=A0 pkg_postinst<br>
-=C2=A0 pkg_postinst_ontarget<br>
-<br>
-fair enough, but in the old days, such a script might check the value<br>
-of ${D} to see if it was running in the image context, or on-target<br>
-context, and obviously run differently. given the current setup with<br>
-those two distinct routines, is there any purpose in such a script<br>
-*ever* checking the value of ${D} anymore? that is, is it safe to<br>
-assume that the first version above is run in image context, and the<br>
-second in on-target context? or is there still some obscure reason to<br>
-need to check?<br>
-<br>
-=C2=A0 i ask as i see this in <a href=3D"http://base-passwd_3.5.29.bb" rel=
-=3D"noreferrer" target=3D"_blank">base-passwd_3.5.29.bb</a>:<br>
-<br>
-=C2=A0 =C2=A0 pkg_postinst:${PN}-update () {<br>
-=C2=A0 =C2=A0 #!/bin/sh<br>
-=C2=A0 =C2=A0 if [ -n &quot;$D&quot; ]; then<br>
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 exit 0<br>
-=C2=A0 =C2=A0 fi<br>
-=C2=A0 =C2=A0 ${sbindir}/update-passwd<br>
-=C2=A0 =C2=A0 }<br>
-<br>
-=C2=A0 how does one interpret that? or is just a holdover from the old<br>
-days? certainly that section in the docs is not going to help a reader<br>
-understand the (still) numerous references to ${D} in some of those<br>
-scripts.<br>
-<br>
-rday<br>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br>
-View/Reply Online (#2302): <a href=3D"https://lists.yoctoproject.org/g/docs=
-/message/2302" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
-ect.org/g/docs/message/2302</a><br>
-Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/87788937/1686=
-489" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
-/87788937/1686489</a><br>
-Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
-"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
-/a> [<a href=3D"mailto:alex.kanavin@gmail.com" target=3D"_blank">alex.kanav=
-in@gmail.com</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</blockquote></div></div>
+rday</blockquote></div>
 
---0000000000001bb9db05d358c5bc--
+--000000000000da5bdc05d35a15f4--
 
