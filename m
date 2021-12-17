@@ -2,28 +2,28 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48A88C433EF
-	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 13:36:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7BE0C433FE
+	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 13:48:56 +0000 (UTC)
 Received: from cpanel8.indieserve.net (cpanel8.indieserve.net [199.212.143.3])
- by mx.groups.io with SMTP id smtpd.web12.6183.1639748146314421329
+ by mx.groups.io with SMTP id smtpd.web08.6292.1639748935379166234
  for <docs@lists.yoctoproject.org>;
- Fri, 17 Dec 2021 05:35:46 -0800
+ Fri, 17 Dec 2021 05:48:55 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.3, mailfrom: rpjday@crashcourse.ca)
 Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com
- ([174.114.107.13]:60634 helo=fedora)
+ ([174.114.107.13]:60636 helo=fedora)
 	by cpanel8.indieserve.net with esmtpsa  (TLS1.2) tls
  TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1myDOk-0003dL-FF
-	for docs@lists.yoctoproject.org; Fri, 17 Dec 2021 08:35:45 -0500
-Date: Fri, 17 Dec 2021 08:35:42 -0500 (EST)
+	id 1myDbT-000604-Dn
+	for docs@lists.yoctoproject.org; Fri, 17 Dec 2021 08:48:54 -0500
+Date: Fri, 17 Dec 2021 08:48:51 -0500 (EST)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: trying (again) to clarify pkg_postinst[_ontarget]
-Message-ID: <f63931-692c-7af-251c-6f6dfdb0451e@crashcourse.ca>
+Subject: pkg_postinst() versus pkg_postinst_ontarget() contexts?
+Message-ID: <b67d3d1-2699-e440-44d1-e7968b9f08a@crashcourse.ca>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 X-AntiAbuse: This header was added to track abuse,
@@ -41,49 +41,34 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 13:36:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2302
+ <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 13:48:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2303
 
 
-  i know i once asked about this (probably on oe-core list), but i was
-reading this section in the dev manual,
+  next Q in this thread (rather than posting one all-encompassing
+post, i'd rather a small set of more focused posts):
 
-http://docs.yoctoproject.org/dev-manual/common-tasks.html#post-installation-scripts
+  so there is the basic distinction between a package's:
 
-and i think it needs work, or i just have no idea how to read it
-properly, so let me ask some really dumb, basic questions.
+  pkg_postinst()
+  pkg_postinst_ontarget()
 
-  first, IIRC, once upon a time, such a script had the option of being
-run at image install time, or on-target install time (depending on i
-think whether the script exited with 0 or 1 or something like that).
-those days are gone, and the new design is to use one of:
+but let's be precise.
 
-  pkg_postinst
-  pkg_postinst_ontarget
+  is that first variation ever run *only* during image install
+context? that is, there's no weird magic that lets you defer it to
+on-target time? more precisely, if that package is not installed
+initially in the image, but is subsequently installed using package
+management on the target, is it true that it will not be run at all?
 
-fair enough, but in the old days, such a script might check the value
-of ${D} to see if it was running in the image context, or on-target
-context, and obviously run differently. given the current setup with
-those two distinct routines, is there any purpose in such a script
-*ever* checking the value of ${D} anymore? that is, is it safe to
-assume that the first version above is run in image context, and the
-second in on-target context? or is there still some obscure reason to
-need to check?
+  conversely, is it true that pkg_postinst_ontarget() will be run only
+in on-target install context?
 
-  i ask as i see this in base-passwd_3.5.29.bb:
+  what this means is that a package might conceivably need to define
+both, whose only difference is that the first will make reference to
+${D} for its work, and the second will not.
 
-    pkg_postinst:${PN}-update () {
-    #!/bin/sh
-    if [ -n "$D" ]; then
-            exit 0
-    fi
-    ${sbindir}/update-passwd
-    }
-
-  how does one interpret that? or is just a holdover from the old
-days? certainly that section in the docs is not going to help a reader
-understand the (still) numerous references to ${D} in some of those
-scripts.
+  or am i misreading this?
 
 rday
 
