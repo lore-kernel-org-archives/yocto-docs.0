@@ -2,54 +2,64 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9650FC433F5
-	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 07:07:25 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web12.3546.1639724843806486896
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30D99C433FE
+	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 10:19:48 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web08.4582.1639736387315311840
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Dec 2021 23:07:24 -0800
+ Fri, 17 Dec 2021 02:19:47 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay10.mail.gandi.net (Postfix) with ESMTPSA id 1AE1524000C;
-	Fri, 17 Dec 2021 07:07:20 +0000 (UTC)
-Subject: Re: [docs] [PATCH v2 2/2] ref-manual: document overlayfs-etc image
- feature
-To: Vyacheslav Yurkov <uvv.mail@gmail.com>, docs@lists.yoctoproject.org
-References: <20211216112235.129737-1-uvv.mail@gmail.com>
- <20211216112235.129737-2-uvv.mail@gmail.com>
- <daf0e23e-60f5-6716-5137-c64b4d4442a1@bootlin.com>
- <0f073e9e-8b94-86d3-bdb6-4ab2b25e3249@gmail.com>
+	by relay7-d.mail.gandi.net (Postfix) with ESMTPSA id 14ADE2000F;
+	Fri, 17 Dec 2021 10:19:44 +0000 (UTC)
+Cc: michael.opdenacker@bootlin.com
+To: YP docs mailing list <docs@lists.yoctoproject.org>,
+ OE-core <openembedded-core@lists.openembedded.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: What does OEBasic do?
 Organization: Bootlin
-Message-ID: <15d6f7f1-6eaa-7baf-88b4-d3efc83e1afd@bootlin.com>
-Date: Fri, 17 Dec 2021 08:07:20 +0100
+Message-ID: <01f8e45d-4e08-cbf9-277d-ac09cb3538c2@bootlin.com>
+Date: Fri, 17 Dec 2021 11:19:44 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.14.0
 MIME-Version: 1.0
-In-Reply-To: <0f073e9e-8b94-86d3-bdb6-4ab2b25e3249@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
 Content-Language: en-US
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 07:07:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2300
+ <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 10:19:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2301
 
-Hi Slava
+Greetings,
 
-On 12/17/21 7:07 AM, Vyacheslav Yurkov wrote:
-> Hi Michael,
-> Thanks for the review and updates.
->
-> I assume it might be easier to send an update patch separately if
-> needed. Or you can do fix-ups in master-next? :)
+I'm trying to update the documentation in
+https://docs.yoctoproject.org/overview-manual/concepts.html#checksums-signatures.
+With OEEquivHash, meta/lib/oe/sstatesig.py now implements 3 signature
+handlers instead of 2.
 
+However, I find parts of this document difficult to understand. In
+particular, what's OEBasic supposed to do?
+I could clarify its description if I could understand it better. We just
+know that it doesn't store the task hash into the task stamp, but what else?
 
-I can make fixups in master-next indeed. This way, we just have one commit.
+Sorry, I looked at the code, but it is not explicit enough (at least for
+me) to find the answers by myself.
+
+By the way, this "Checksums (Signatures)" chapter looks like an exact
+duplicate of what is found in BitBake's manual
+(https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-execution.html).
+This is bad because future changes could introduce discrepancies between
+both copies and confuse readers. Shouldn't we have a summary in the
+Yocto docs instead and refer to BitBake's manual instead? Or the
+opposite, as OEBasic, OEBasicHash and OEEquivHash are implemented by
+OE-Core and are a nice illustration of what BitBake allows to do?
+
+Thanks in advance for your help and advice.
 Cheers
 Michael.
 
