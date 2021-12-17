@@ -2,98 +2,102 @@ Return-Path: <uvv.mail@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 24D90C433EF
-	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 06:05:11 +0000 (UTC)
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
- [209.85.221.42])
- by mx.groups.io with SMTP id smtpd.web11.3130.1639721109573100804
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 49AC8C433F5
+	for <webhook@archiver.kernel.org>; Fri, 17 Dec 2021 06:08:04 +0000 (UTC)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+ [209.85.128.45])
+ by mx.groups.io with SMTP id smtpd.web09.3170.1639721283311633849
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Dec 2021 22:05:09 -0800
+ Thu, 16 Dec 2021 22:08:03 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=geIRtfLu;
- spf=pass (domain: gmail.com, ip: 209.85.221.42, mailfrom: uvv.mail@gmail.com)
-Received: by mail-wr1-f42.google.com with SMTP id r17so1641320wrc.3
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=SlIORdJp;
+ spf=pass (domain: gmail.com, ip: 209.85.128.45, mailfrom: uvv.mail@gmail.com)
+Received: by mail-wm1-f45.google.com with SMTP id
+ bg2-20020a05600c3c8200b0034565c2be15so3326333wmb.0
         for <docs@lists.yoctoproject.org>;
- Thu, 16 Dec 2021 22:05:09 -0800 (PST)
+ Thu, 16 Dec 2021 22:08:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=message-id:date:mime-version:user-agent:subject:content-language:to
          :references:from:in-reply-to:content-transfer-encoding;
-        bh=u+ptm4mk2dm5WdoY8YKzJp4QubJJKGebBeGHzXZnaBE=;
-        b=geIRtfLuOw3e2maR1mOem3QitFIIvPRRvd/wo+VA7sVBdzAWgc1CJR9AlZqIAz2rfv
-         nteP7VxjZY9Prm6hwQ6QF0qMKRoHGyxK+VkB+IZNwA4yWF8KIWrA0qgKpzOuTHmBuF/l
-         yaU+zW8wuRB93HlRxVM4v6IxTdRcCg8IlAb2SjJfh56CYF89XUmhd+EmaEVJAoUpDrzU
-         PvmHNKQmCe934YGA90bhaEzxd+0vCU7v89wCcA7EddU8kDvreANpwipVqeRq91SuBC3O
-         A4UhcQLgqzoJpGbKzKphN+3TMr2U70WmgcvVBIHl+g3BKC8PqAu5ZM5A0JgeIbkfdC3o
-         ufqQ==
+        bh=JUsh0D64+wZj1ypHAVAbBaHk2/xSxyr9ea7kqCTGOF4=;
+        b=SlIORdJpUlER4kL9SJRbN6S5sctDnJAUx5FyH2fc8P1aiYpW2xjSjX6gkXaN35NOuZ
+         FYHYUkewXK3fX8y12it2D7yFwJ6J5+4kOtd/mOg1HW/UOXkMxWiOdiBs2fSA/L5vYXDK
+         ZT1U/fDcquN/+pouVxiob4ndlS/E6hwtEiX5QZBTBOU1VGc07Q2FFzv/d8YCP+H+0X6D
+         KrfqGIp83vYwoBbSYSq7Unl+hZ0DvDBywP23DoQ0uBO90SviwpSNpSydDCEqvLg7dktd
+         SX59cA4tpNH+bRauPdZiVMUy2vwvLn2vRv/sa1lCsTSjjM8iivvHXvOFrZIGNVYiIM3V
+         x5Og==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
          :content-language:to:references:from:in-reply-to
          :content-transfer-encoding;
-        bh=u+ptm4mk2dm5WdoY8YKzJp4QubJJKGebBeGHzXZnaBE=;
-        b=ozu+dc9YF89GM3maLAYEdwIsZh0jthFDL0FNjvWppwcCE9VBrvptlGsa0EgPd7nAkR
-         HBP76Rqe8F+RH0FQHt7v6OxzaJfb8nVrBmbEO88zDZ6XDkvzhoqxxoxXd0mRSADre/XY
-         jYuWnrJVCheVm92r8tQYYbPgQZov1NK/1/In+FZfP+K3j3yjaE0wHmlBtOZ0RlYvHgt/
-         GRHnKGEwgFxxnEZNixcDmnj3HYIw9a0DtoOlynnhkGa5qAkqA2iOvAmq2usY2T0jRSZa
-         PQzPyT1mdsY2Co3QkdYmIe/QOvFTJZ09qUZOmhTCxX46sU3xNG47B/NblgRlLyrj0IGx
-         mZqQ==
-X-Gm-Message-State: AOAM533ncOi0jkJxAVHiPJS27a+rKCiKjuI0g/prqHXqn3goC9JNV4bc
-	9nwAAfRoP/Abc58h3ZFYVis=
+        bh=JUsh0D64+wZj1ypHAVAbBaHk2/xSxyr9ea7kqCTGOF4=;
+        b=1CSk/GPXK1ugoB4INjjX/7P1+hDO7pGUH3H/HCXsr50wHCbkKFVjFqfoDaZh8NtVM+
+         9ENHT8llcinYVgvPeGTaIZUQ/vD0fL2iKn9Yw+ej4C9F7XPF8F+vQosRICY8Ya866tqf
+         95zzjz1jUTnvgydS8AdefYq0CVWhA94yg43UpFWjyVMk/8Bf2oHsKWhlJPkituXxu+jh
+         o4ivnveg1tn7fwtcMPguJCSAWDVf7bQj0ThEblAXyRNratuPgKT4KGKlxTgF0Xr9ydp6
+         KjIVN2ZMXFZAV0cq9k9ZmrOOErRltaBoT0eozV0vRFAvyLSlvj+Jb32BHZsS3sG2Hl3D
+         Js8Q==
+X-Gm-Message-State: AOAM532IoEASATTC3Bh23Pfku7V42CQ74wNJx1bJ//1d4iG5LmCwnI2B
+	arlGHRMC9GnQbXnx/dvrH3c=
 X-Google-Smtp-Source: 
- ABdhPJx7tiZHMs/RFxY8xmnxBDNSGQS8CAoR3XEDU/xgYQPTJxg/R7htimmUOzXJbXia5KEGZn5wug==
-X-Received: by 2002:a5d:434f:: with SMTP id u15mr1139281wrr.492.1639721107805;
-        Thu, 16 Dec 2021 22:05:07 -0800 (PST)
+ ABdhPJyAsfHcDqmOLW/UEBrRaihqmtBSTh+uWg8LeHq2sEDJGTAkXUjTqNnAs79PRDsn9ffZy7fRxQ==
+X-Received: by 2002:a05:600c:1993:: with SMTP id
+ t19mr8187227wmq.21.1639721281471;
+        Thu, 16 Dec 2021 22:08:01 -0800 (PST)
 Received: from [10.133.223.13] ([185.253.97.13])
         by smtp.gmail.com with ESMTPSA id
- c8sm7468901wmq.34.2021.12.16.22.05.06
+ r62sm6166963wmr.35.2021.12.16.22.08.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 Dec 2021 22:05:07 -0800 (PST)
-Message-ID: <768e04dc-feb7-89f6-9465-b1ba61753e01@gmail.com>
-Date: Fri, 17 Dec 2021 07:05:04 +0100
+        Thu, 16 Dec 2021 22:08:00 -0800 (PST)
+Message-ID: <0f073e9e-8b94-86d3-bdb6-4ab2b25e3249@gmail.com>
+Date: Fri, 17 Dec 2021 07:07:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:91.0)
  Gecko/20100101 Thunderbird/91.4.0
-Subject: Re: [docs] [PATCH 1/2] ref-manual: add overlayfs-etc class
+Subject: Re: [docs] [PATCH v2 2/2] ref-manual: document overlayfs-etc image
+ feature
 Content-Language: en-US
-To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-References: <20211215171138.127272-1-uvv.mail@gmail.com>
- <C97BA46D-92DD-4A26-871C-D0991A67E1E8@0leil.net>
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+ docs@lists.yoctoproject.org
+References: <20211216112235.129737-1-uvv.mail@gmail.com>
+ <20211216112235.129737-2-uvv.mail@gmail.com>
+ <daf0e23e-60f5-6716-5137-c64b4d4442a1@bootlin.com>
 From: Vyacheslav Yurkov <uvv.mail@gmail.com>
-In-Reply-To: <C97BA46D-92DD-4A26-871C-D0991A67E1E8@0leil.net>
+In-Reply-To: <daf0e23e-60f5-6716-5137-c64b4d4442a1@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 06:05:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2298
+ <docs@lists.yoctoproject.org>; Fri, 17 Dec 2021 06:08:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2299
 
-Hi Quentin,
-Thanks for the review
+Hi Michael,
+Thanks for the review and updates.
 
-On 16.12.2021 18:37, Quentin Schulz wrote:
->
->> +
->> +  OVERLAYFS_ETC_MOUNT_OPTIONS = "wsync"
->> +
->> +The class provides two options for ``/sbin/init`` generation:
->> +
->> +* Default option is to rename original ``/sbin/init`` to ``/sbin/init.orig`` and
->> +  place generated init under original name, i.e. ``/sbin/init``. It has an advantage
->> +  that you won't need to change any kernel parameters in order to make it work,
->> +  but it poses a restriction that package-management can't be used, becaause updating
->> +  init manager would remove generated script
-> What is the default value? This needs to be explicit otherwise it cannot be "undone" in a bbappends for example.
->
-> Thanks for the patch,
-> Cheers,
-> Quentin
-
-Could you please elaborate on default value of what we are talking here? 
-For mandatory variables there are no default values, for two optional 
-variables the default values are set with ??=.
+I assume it might be easier to send an update patch separately if 
+needed. Or you can do fix-ups in master-next? :)
 
 Cheers,
 Slava
+
+On 16.12.2021 17:52, Michael Opdenacker wrote:
+> Hi Slava,
+>
+> Many thanks for the updates!
+>
+> On 12/16/21 12:22 PM, Vyacheslav Yurkov wrote:
+>
+> For both patches: Reviewed-by: Michael Opdenacker
+> <michael.opdenacker@bootlin.com>
+> There were a few remaining punctuation and missing article issues (that
+> I probably failed to report), but I was happy to fix them!
+>
+> Merged in "master-next".
+>
+> Thanks again.
+> Michael.
+
 
