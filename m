@@ -2,93 +2,72 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7807C433F5
-	for <webhook@archiver.kernel.org>; Thu,  6 Jan 2022 16:25:38 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.11047.1641486337513934404
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC06EC433F5
+	for <webhook@archiver.kernel.org>; Thu,  6 Jan 2022 18:52:26 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
+ [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web10.13083.1641495145284388173
  for <docs@lists.yoctoproject.org>;
- Thu, 06 Jan 2022 08:25:38 -0800
+ Thu, 06 Jan 2022 10:52:26 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by relay6-d.mail.gandi.net (Postfix) with ESMTPSA id 845FDC0005;
-	Thu,  6 Jan 2022 16:25:29 +0000 (UTC)
+	by relay11.mail.gandi.net (Postfix) with ESMTPSA id 2BDDD100006;
+	Thu,  6 Jan 2022 18:52:22 +0000 (UTC)
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] manuals: add reference to GIR_EXTRA_LIBS_PATH plus minor
- improvements
-Date: Thu,  6 Jan 2022 17:25:26 +0100
-Message-Id: <20220106162526.2733798-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] dev-manual: update bitbake.conf sample for static libs
+Date: Thu,  6 Jan 2022 19:52:20 +0100
+Message-Id: <20220106185220.2925774-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 06 Jan 2022 16:25:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2350
-
-Fixes [YOCTO #14533]
+ <docs@lists.yoctoproject.org>; Thu, 06 Jan 2022 18:52:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2351
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/common-tasks.rst | 7 +++----
- documentation/ref-manual/variables.rst    | 7 +++++++
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ documentation/dev-manual/common-tasks.rst | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 9d0c8f33d4..e2f74ada9f 100644
+index 9d0c8f33d4..8bd82223f2 100644
 --- a/documentation/dev-manual/common-tasks.rst
 +++ b/documentation/dev-manual/common-tasks.rst
-@@ -4947,8 +4947,7 @@ the x32 psABI. Here is an example::
- Enabling GObject Introspection Support
- ======================================
+@@ -4668,7 +4668,7 @@ Following is part of the BitBake configuration file, where you can see
+ how the static library files are defined::
  
--`GObject
--introspection <https://wiki.gnome.org/Projects/GObjectIntrospection>`__
-+`GObject introspection <https://gi.readthedocs.io/en/latest/>`__
- is the standard mechanism for accessing GObject-based software from
- runtime environments. GObject is a feature of the GLib library that
- provides an object framework for the GNOME desktop and related software.
-@@ -4960,7 +4959,7 @@ introspection is the only way to do it.
+    PACKAGE_BEFORE_PN ?= ""
+-   PACKAGES = "${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale ${PACKAGE_BEFORE_PN} ${PN}"
++   PACKAGES = "${PN}-src ${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale ${PACKAGE_BEFORE_PN} ${PN}"
+    PACKAGES_DYNAMIC = "^${PN}-locale-.*"
+    FILES = ""
  
- This section describes the Yocto Project support for generating and
- packaging GObject introspection data. GObject introspection data is a
--description of the API provided by libraries built on top of GLib
-+description of the API provided by libraries built on top of the GLib
- framework, and, in particular, that framework's GObject mechanism.
- GObject Introspection Repository (GIR) files go to ``-dev`` packages,
- ``typelib`` files go to main packages as they are packaged together with
-@@ -5006,7 +5005,7 @@ library package involves the following:
-    .. note::
- 
-       See recipes in the ``oe-core`` repository that use that
--      ``GIR_EXTRA_LIBS_PATH`` variable as an example.
-+      :term:`GIR_EXTRA_LIBS_PATH` variable as an example.
- 
- 4. Look for any other errors, which probably mean that introspection
-    support in a package is not entirely standard, and thus breaks down
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index e81a12030a..be496161bd 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -2667,6 +2667,13 @@ system and gives an overview of their function and contents.
-    :term:`GDB`
-       The minimal command and arguments to run the GNU Debugger.
- 
-+   :term:`GIR_EXTRA_LIBS_PATH`
-+      Allows to specify an extra search path for ``.so`` files
-+      in GLib related recipes using GObject introspection,
-+      and which do not compile without this setting.
-+      See the ":ref:`dev-manual/common-tasks:enabling gobject introspection support`"
-+      section for details.
-+
-    :term:`GITDIR`
-       The directory in which a local copy of a Git repository is stored
-       when it is cloned.
+@@ -4676,7 +4676,8 @@ how the static library files are defined::
+                ${sysconfdir} ${sharedstatedir} ${localstatedir} \
+                ${base_bindir}/* ${base_sbindir}/* \
+                ${base_libdir}/*${SOLIBS} \
+-               ${base_prefix}/lib/udev/rules.d ${prefix}/lib/udev/rules.d \
++               ${base_prefix}/lib/udev ${prefix}/lib/udev \
++               ${base_libdir}/udev ${libdir}/udev \
+                ${datadir}/${BPN} ${libdir}/${BPN}/* \
+                ${datadir}/pixmaps ${datadir}/applications \
+                ${datadir}/idl ${datadir}/omf ${datadir}/sounds \
+@@ -4692,7 +4693,8 @@ how the static library files are defined::
+    FILES:${PN}-dev = "${includedir} ${FILES_SOLIBSDEV} ${libdir}/*.la \
+                    ${libdir}/*.o ${libdir}/pkgconfig ${datadir}/pkgconfig \
+                    ${datadir}/aclocal ${base_libdir}/*.o \
+-                   ${libdir}/${BPN}/*.la ${base_libdir}/*.la"
++                   ${libdir}/${BPN}/*.la ${base_libdir}/*.la \
++                   ${libdir}/cmake ${datadir}/cmake"
+    SECTION:${PN}-dev = "devel"
+    ALLOW_EMPTY:${PN}-dev = "1"
+    RDEPENDS:${PN}-dev = "${PN} (= ${EXTENDPKGV})"
 -- 
 2.25.1
 
