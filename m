@@ -2,112 +2,70 @@ Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB048C433F5
-	for <webhook@archiver.kernel.org>; Fri,  7 Jan 2022 16:50:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A227C433EF
+	for <webhook@archiver.kernel.org>; Fri,  7 Jan 2022 17:04:39 +0000 (UTC)
 Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
- by mx.groups.io with SMTP id smtpd.web11.9018.1641574250279687011
+ by mx.groups.io with SMTP id smtpd.web08.9340.1641575077453402938
  for <docs@lists.yoctoproject.org>;
- Fri, 07 Jan 2022 08:50:51 -0800
+ Fri, 07 Jan 2022 09:04:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="signature has expired" header.i=@axis.com
- header.s=axis-central1 header.b=o0WhGU+t;
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=lgHk03v/;
  spf=pass (domain: axis.com, ip: 195.60.68.18,
  mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1641574250;
-  x=1673110250;
-  h=from:to:subject:date:message-id:references:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=oV00SDeT9tk4jO3U6967daUpcdK5nVkZLndqu2jh/IE=;
-  b=o0WhGU+tZ9Fvrmo9F5O042V9qsGr9GEw8Tl7HHvFFtZD90wYpId5KK4z
-   7a2bVQGPmQKy90nWjYGTtTJ39hxBddyFOFvzhk05JhwXtCF41UDBjM5Zs
-   +vbofuQJ6sHsh2cuFmJokL9p6claBmJXPUVlRvshfxl0CxVD+ndxBb7KO
-   5cHsleL579hn94+sCYee1FjGj4LrYZAvwoHlB6shR4mI8s3L+9KD/ecMM
-   9k4F17qmsD2Gst85PxRAGmtVWvjHzChLGNtuHgTaiWuOuDhblXQPZ5oyP
-   rI7CL4AMQ4zo8mUspgxiLd9JnYkpt7M6U2+v9wzyrtuLGt2OJf971Lu/y
-   Q==;
-From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Subject: RE: [docs] [PATCHv2] ref-manual: Add documentation of
- PACKAGE_DEBUG_FILE_SUFFIX
-Thread-Topic: [docs] [PATCHv2] ref-manual: Add documentation of
- PACKAGE_DEBUG_FILE_SUFFIX
-Thread-Index: AQHYAJVRMtNW0TVVOkecSlu8ugEzxaxXxdOQ
-Date: Fri, 7 Jan 2022 16:50:41 +0000
-Message-ID: <b188a2c6b0de49ac991e383d03f08de4@axis.com>
-References: <20211223195543.28919-1-pkj@axis.com>
- <855214d5-f8b2-4716-a2be-8ec54909117d@theobroma-systems.com>
-In-Reply-To: <855214d5-f8b2-4716-a2be-8ec54909117d@theobroma-systems.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.5.60]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+  d=axis.com; q=dns/txt; s=axis-central1; t=1641575078;
+  x=1673111078;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HNsi6pcj0GaHL0v/z80quijdQRHKq1QnzRLyqhdbW5o=;
+  b=lgHk03v/OfFRqP0/aax2B9S4RXpxme4G5gtIlO2iuJ/j0C/DOeghwqLs
+   4ka07yL/ABG+jli0tAOV4Qyw+yiy9SoW3oEJJ+GZJ+Ma0L3MqtxnTIp9J
+   EG8qWZl53pOE6H5PqXlSycsweV5zsvHYsYw8iDv4ulJz+EWgb/QOZKeZ+
+   coMO34iq75Sfi7o8NxHRvWYTUakI+S8CquI5hD42fpvhSCIo2ZnpFU7tz
+   6tQiSOxWHStMWS+Db9Nd061xNd8eCoJI0Hf+YW72JokhpaDWgmd4/NA2w
+   ktnlGgklnJSIQ4blmnrvSMMZsY+GPCrLBJRqxRugJsgNofK/KAEs+KYQe
+   A==;
+From: Peter Kjellerstedt <pkj@axis.com>
+To: <docs@lists.yoctoproject.org>
+Subject: [PATCHv3] ref-manual: Add documentation of PACKAGE_DEBUG_FILE_SUFFIX
+Date: Fri, 7 Jan 2022 18:04:33 +0100
+Message-ID: <20220107170433.1958-1-pkj@axis.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Jan 2022 16:50:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2354
+ <docs@lists.yoctoproject.org>; Fri, 07 Jan 2022 17:04:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2355
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
-amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmDQo+IE9mIFF1
-ZW50aW4gU2NodWx6DQo+IFNlbnQ6IGRlbiAzIGphbnVhcmkgMjAyMiAxMjozMA0KPiBUbzogZG9j
-c0BsaXN0cy55b2N0b3Byb2plY3Qub3JnDQo+IFN1YmplY3Q6IFJlOiBbZG9jc10gW1BBVENIdjJd
-IHJlZi1tYW51YWw6IEFkZCBkb2N1bWVudGF0aW9uIG9mDQo+IFBBQ0tBR0VfREVCVUdfRklMRV9T
-VUZGSVgNCj4gDQo+IEhpIFBldGVyLA0KPiANCj4gT24gMTIvMjMvMjEgMjA6NTUsIFBldGVyIEtq
-ZWxsZXJzdGVkdCB3cm90ZToNCj4gPiBTaWduZWQtb2ZmLWJ5OiBQZXRlciBLamVsbGVyc3RlZHQg
-PHBldGVyLmtqZWxsZXJzdGVkdEBheGlzLmNvbT4NCj4gPiAtLS0NCj4gPg0KPiA+IFBBVENIdjI6
-IFJlbW92ZWQgdGhlIHJlZmVyZW5jZSB0byBzcGxpdF9hbmRfc3RyaXBfZmlsZXMoKS4NCj4gPg0K
-PiA+ICAgZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QgfCA4ICsrKysrKysr
-DQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0t
-Z2l0IGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QgYi9kb2N1bWVudGF0
-aW9uL3JlZi1tYW51YWwvdmFyaWFibGVzLnJzdA0KPiA+IGluZGV4IGU1MjE2YjNmMzYuLmM3Yzll
-MzFmMDUgMTAwNjQ0DQo+ID4gLS0tIGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxl
-cy5yc3QNCj4gPiArKysgYi9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvdmFyaWFibGVzLnJzdA0K
-PiA+IEBAIC01MDg1LDYgKzUwODUsMTQgQEAgc3lzdGVtIGFuZCBnaXZlcyBhbiBvdmVydmlldyBv
-ZiB0aGVpciBmdW5jdGlvbg0KPiBhbmQgY29udGVudHMuDQo+ID4gICAgICAgICByZXN1bHQgb2Yg
-dGhlIHBhY2thZ2UgbWFuYWdlciBpbiB1c2UsIHNlZSB0aGUNCj4gPiAgICAgICAgICI6cmVmOmBw
-YWNrYWdlLmJiY2xhc3MgPHJlZi1jbGFzc2VzLXBhY2thZ2U+YCIgc2VjdGlvbi4NCj4gPg0KPiA+
-ICsgICA6dGVybTpgUEFDS0FHRV9ERUJVR19GSUxFX1NVRkZJWGANCj4gPiArICAgICAgVGhpcyBz
-dWZmaXggaXMgYWRkZWQgdG8gdGhlIG5hbWVzIG9mIGFsbCBmaWxlcyB3aXRoIGRlYnVnIHN5bWJv
-bHMgdGhhdCBnbw0KPiA+ICsgICAgICBpbnRvIHRoZSBkYmcgcGFja2FnZS4gSXQgY2FuIGJlIHVz
-ZWQgdG8gbWFrZSB0aGUgZGVidWcgZmlsZXMgcHJvZHVjZWQgYnkNCj4gDQo+IHMvZGJnL2BgLWRi
-Z2BgLyA/DQo+IA0KPiA+ICsgICAgICBvbmUgcmVjaXBlIHVuaXF1ZSB0byBhdm9pZCB0aGVtIGNv
-bmZsaWN0aW5nIHdpdGggaWRlbnRpY2FsbHkgbmFtZWQgZGVidWcNCj4gPiArICAgICAgZmlsZXMg
-cHJvZHVjZWQgYnkgYW5vdGhlciByZWNpcGUuIFRoaXMgbWF5IGJlIG5lZWRlZCBzaW5jZSB3aGls
-ZSB0aGUNCj4gPiArICAgICAgdGFyZ2V0IGZpbGVzIG1heSBiZSBzcGxpdCBpbiBtdWx0aXBsZSBw
-YWNrYWdlcywgdGhlIGRlYnVnIGZpbGVzIGZvciBvbmUNCj4gPiArICAgICAgcmVjaXBlIGFyZSBh
-bGwgaW4gb25lIHBhY2thZ2UuDQo+ID4gKw0KPiANCj4gSSdtIG5vdCBzdXJlIHRoZSBleHBsYW5h
-dGlvbiBpcyBjb3JyZWN0LiBUaGUgZmFjdCB0aGF0IGRlYnVnIGZpbGVzIGFyZQ0KPiBhbGwgaW4g
-YSBwYWNrYWdlIGlzIG5vdCB0aGUgY2F1c2UgZm9yIGNvbmZsaWN0cyBiZXR3ZWVuIHJlY2lwZXMu
-IFdlcmUNCj4gdGhlIGRlYnVnIGZpbGVzIHNwbGl0IGludG8gZGlmZmVyZW50IGRlYnVnIHBhY2th
-Z2VzLCB0aGUgaXNzdWUgd291bGQNCj4gcmVtYWluIHdoZW4gdHJ5aW5nIHRvIGluc3RhbGwgdGhl
-IGRlYnVnIHBhY2thZ2VzIG9mIHR3byByZWNpcGVzIHdpdGgNCj4gY29uZmxpY3RpbmcgZmlsZSBu
-YW1lcy4gV2hhdCBhbSBJIG1pc3Npbmc/DQoNCldpdGggdGhlIGludHJvZHVjdGlvbiBvZiBQQUNL
-QUdFX0RFQlVHX0ZJTEVfU1VGRklYLCB5b3UgYWN0dWFsbHkgY2FuIGluc3RhbGwgDQp0d28gZGVi
-dWcgcGFja2FnZXMgd2l0aCBkZWJ1ZyBmaWxlcyBmb3IgdGFyZ2V0IHBhY2thZ2VzIHRoYXQgd291
-bGQgY29uZmxpY3QuIA0KVGhhdCBpcyB0aGUgd2hvbGUgcG9pbnQgb2YgdGhlIHNvbHV0aW9uLg0K
-DQpJLmUuLCB5b3UgaGF2ZSB0d28gdGFyZ2V0IHBhY2thZ2VzIEEgYW5kIEIxIHdpdGggZmlsZXMg
-dGhhdCBjb25mbGljdC4gWW91IA0Kb2J2aW91c2x5IG9ubHkgaW5zdGFsbCBvbmUgb2YgdGhlbSBp
-bnRvIHlvdXIgaW1hZ2UsIGluIHRoaXMgY2FzZSBwYWNrYWdlIEEuIA0KSG93ZXZlciwgcGFja2Fn
-ZSBCMSBjb21lcyBmcm9tIGEgcmVjaXBlIEIgdGhhdCBwcm9kdWNlcyBtYW55IHBhY2thZ2VzIGFu
-ZCB5b3UgDQppbnN0YWxsIHNvbWUgb2YgdGhvc2Ugb3RoZXIgcGFja2FnZXMgaW4geW91ciBpbWFn
-ZSB0b28uIFRoaXMgaXMgbm8gcHJvYmxlbS4gDQpCdXQsIGlmIHlvdSBub3cgd2FudCB0byBpbnN0
-YWxsIHRoZSBkYmcgcGFja2FnZXMsIHlvdSBnZXQgYSBjb25mbGljdCBiZWNhdXNlIA0KdGhlIGRl
-YnVnIGZpbGVzIGluIEEtZGJnIGNvbmZsaWN0cyB3aXRoIEItZGJnIHNpbmNlIHdlIGRvIG5vdCBz
-cGxpdCB0aGUgZGJnIA0KcGFja2FnZXMgdGhlIHNhbWUgd2F5IHdlIGRvIGZvciB0YXJnZXQgcGFj
-a2FnZXMuIEFkZGluZyBhIHN1ZmZpeCB0byB0aGUgZGVidWcgDQpmaWxlcyBzb2x2ZXMgdGhpcyBi
-ZWNhdXNlIHRoZSBkZWJ1ZyBmaWxlIGZvciBsaWJmb28uc28gaXMgbm93IGNhbGxlZCANCmxpYmZv
-by5zby1BIGluIEEtZGJnIHdoaWxlIGl0IGlzIGNhbGxlZCBsaWJmb28uc28gaW4gQi1kYmcgKGFz
-c3VtaW5nIHJlY2lwZSBBIA0KaGFzIHNldCBQQUNLQUdFX0RFQlVHX0ZJTEVfU1VGRklYID0gIi0k
-e1BOfSIpLg0KDQo+IEFsc28sIGlmIGl0J3MgcmVhbGx5IGEgcGFja2FnZSBpc3N1ZSwgbWF5YmUg
-b25lIGNvdWxkIGp1c3QgdXNlDQo+IE5PQVVUT1BBQ0tBR0VERUJVRyB2YXJpYWJsZSBhbmQgc3Bs
-aXQgdGhlIGZpbGVzIGludG8gZGlmZmVyZW50IGRlYnVnDQo+IHBhY2thZ2VzIHNvIHRoYXQgdGhl
-IGNvbmZsaWN0IGRvZXMgbm90IGhhcHBlbj8NCg0KUmljaGFyZCBzYWlkIGhlIGRpZCBub3Qgd2Fu
-dCBhIHNvbHV0aW9uIHRoYXQgaW52b2x2ZWQgc3BsaXR0aW5nIHRoZSBkYmcgDQpwYWNrYWdlcy4N
-Cg0KPiBDaGVlcnMsDQo+IFF1ZW50aW4NCg0KLy9QZXRlcg0KDQo=
+Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+---
+
+PATCHv2: Removed the reference to split_and_strip_files().
+PATCHv3: Changed "dbg package" to "``-dbg`` package".
+
+ documentation/ref-manual/variables.rst | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index e81a12030a..aaba23dbdf 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5085,6 +5085,14 @@ system and gives an overview of their function and contents.
+       result of the package manager in use, see the
+       ":ref:`package.bbclass <ref-classes-package>`" section.
+ 
++   :term:`PACKAGE_DEBUG_FILE_SUFFIX`
++      This suffix is added to the names of all files with debug symbols that go
++      into the ``-dbg`` package. It can be used to make the debug files produced
++      by one recipe unique to avoid them conflicting with identically named
++      debug files produced by another recipe. This may be needed since while the
++      target files may be split in multiple packages, the debug files for one
++      recipe are all in one package.
++
+    :term:`PACKAGE_DEBUG_SPLIT_STYLE`
+       Determines how to split up and package debug and source information
+       when creating debugging packages to be used with the GNU Project
 
