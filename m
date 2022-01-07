@@ -1,168 +1,113 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1427C433F5
-	for <webhook@archiver.kernel.org>; Fri,  7 Jan 2022 11:11:22 +0000 (UTC)
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
- [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.web10.5303.1641553881593377186
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB048C433F5
+	for <webhook@archiver.kernel.org>; Fri,  7 Jan 2022 16:50:51 +0000 (UTC)
+Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
+ by mx.groups.io with SMTP id smtpd.web11.9018.1641574250279687011
  for <docs@lists.yoctoproject.org>;
- Fri, 07 Jan 2022 03:11:22 -0800
+ Fri, 07 Jan 2022 08:50:51 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=FBmgUQtV;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f45.google.com with SMTP id
- 18-20020a05600c22d200b00347d3a13c7cso213946wmg.0
-        for <docs@lists.yoctoproject.org>;
- Fri, 07 Jan 2022 03:11:21 -0800 (PST)
+ dkim=fail reason="signature has expired" header.i=@axis.com
+ header.s=axis-central1 header.b=o0WhGU+t;
+ spf=pass (domain: axis.com, ip: 195.60.68.18,
+ mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=CnJqBzLM9rd0Jba8hzTOFzY0P1JMRlspSOvjVDn7dVk=;
-        b=FBmgUQtVg5DwzX4InHDb/gBafOzfsmhZrJtTolPWEiJzatOwBI+NQukvneEMt8lODh
-         CIjGT7dLBTYGKcDvAXspWUCTgoH2Ef8HMJnzzIyGuKzezlasZPQcbk5iCI18xAsE9+7t
-         0zIQwXLEUEKOCnRINtodc+waXQ/n6zq321vDg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=CnJqBzLM9rd0Jba8hzTOFzY0P1JMRlspSOvjVDn7dVk=;
-        b=uQqJx0chf/rHDCGaKmnrtFRZFZ8705dBRJGDdY8U0Yr4urEtIVyEEbyl8uGG0/mrz9
-         u0OIjzMtBzGO5kEGzumWCv22ZClohcau2zl8zeGWs6ZSk3IzHtrmtBnl04Y2GmR/lfJK
-         c7xxuXQHYYMTCwZFVrS4s5fdwovox6YPyIjXMayTh4jZxnGESheWbIkYZ9dQRjtYtNjO
-         H7yAZq85P8StVD2FYdyk82aChwV2EQMD9ZOiPyvEpy/vkNvzk+hV8vy++FI/ysdKMNht
-         PtvrAN+PfowhIMmyTdPfbxf/hd0RTwfFhG87Y37loSizu1U2C9IHhlV48oncv3X/xxbW
-         ca9Q==
-X-Gm-Message-State: AOAM533RQV8a+Jpbby0CFpZDCrZjmajDtDyLmkNeltq7KHIBN+ZHvArG
-	9Dk+bG+k4be8Xr1Q1eXB6iVTqw==
-X-Google-Smtp-Source: 
- ABdhPJxdYV9XjajS7iuwYbidEgZtgnOoo7CZ30cs3lxC1rO5ET4uGwtq5GNjL9nESWGPWXGk2lmHJw==
-X-Received: by 2002:a05:600c:4f46:: with SMTP id
- m6mr10605947wmq.19.1641553879936;
-        Fri, 07 Jan 2022 03:11:19 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:df67:6706:4d53:dd6b?
- ([2001:8b0:aba:5f3c:df67:6706:4d53:dd6b])
-        by smtp.gmail.com with ESMTPSA id
- az25sm686531wmb.26.2022.01.07.03.11.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jan 2022 03:11:19 -0800 (PST)
-Message-ID: 
- <0d8e444ff5127484ecde2e04a7ef3b67d4b449c9.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] overview-manual: add details about hash
- equivalence
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	docs@lists.yoctoproject.org
-Date: Fri, 07 Jan 2022 11:11:17 +0000
-In-Reply-To: <20211217171859.54664-1-michael.opdenacker@bootlin.com>
-References: <20211217171859.54664-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1 
+  d=axis.com; q=dns/txt; s=axis-central1; t=1641574250;
+  x=1673110250;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=oV00SDeT9tk4jO3U6967daUpcdK5nVkZLndqu2jh/IE=;
+  b=o0WhGU+tZ9Fvrmo9F5O042V9qsGr9GEw8Tl7HHvFFtZD90wYpId5KK4z
+   7a2bVQGPmQKy90nWjYGTtTJ39hxBddyFOFvzhk05JhwXtCF41UDBjM5Zs
+   +vbofuQJ6sHsh2cuFmJokL9p6claBmJXPUVlRvshfxl0CxVD+ndxBb7KO
+   5cHsleL579hn94+sCYee1FjGj4LrYZAvwoHlB6shR4mI8s3L+9KD/ecMM
+   9k4F17qmsD2Gst85PxRAGmtVWvjHzChLGNtuHgTaiWuOuDhblXQPZ5oyP
+   rI7CL4AMQ4zo8mUspgxiLd9JnYkpt7M6U2+v9wzyrtuLGt2OJf971Lu/y
+   Q==;
+From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: RE: [docs] [PATCHv2] ref-manual: Add documentation of
+ PACKAGE_DEBUG_FILE_SUFFIX
+Thread-Topic: [docs] [PATCHv2] ref-manual: Add documentation of
+ PACKAGE_DEBUG_FILE_SUFFIX
+Thread-Index: AQHYAJVRMtNW0TVVOkecSlu8ugEzxaxXxdOQ
+Date: Fri, 7 Jan 2022 16:50:41 +0000
+Message-ID: <b188a2c6b0de49ac991e383d03f08de4@axis.com>
+References: <20211223195543.28919-1-pkj@axis.com>
+ <855214d5-f8b2-4716-a2be-8ec54909117d@theobroma-systems.com>
+In-Reply-To: <855214d5-f8b2-4716-a2be-8ec54909117d@theobroma-systems.com>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.5.60]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Jan 2022 11:11:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2353
+ <docs@lists.yoctoproject.org>; Fri, 07 Jan 2022 16:50:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2354
 
-On Fri, 2021-12-17 at 18:18 +0100, Michael Opdenacker wrote:
-> In particular, mention the different hashes which are
-> managed in Hash Equivalence mode: task hash, output hash and unihash.
-> 
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  documentation/overview-manual/concepts.rst | 97 +++++++++++++++++-----
->  1 file changed, 76 insertions(+), 21 deletions(-)
-> 
-> diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-> index 2d3d6f8040..2df5011ef6 100644
-> --- a/documentation/overview-manual/concepts.rst
-> +++ b/documentation/overview-manual/concepts.rst
-> @@ -1942,19 +1942,60 @@ Hash Equivalence
->  ----------------
->  
->  The above section explained how BitBake skips the execution of tasks
-> -which output can already be found in the Shared State Cache.
-> +which output can already be found in the Shared State cache.
->  
->  During a build, it may often be the case that the output / result of a task might
->  be unchanged despite changes in the task's input values. An example might be
->  whitespace changes in some input C code. In project terms, this is what we define
-> -as "equivalence". We can create a hash / checksum which represents a task and two
-> -input task hashes are said to be equivalent if the hash of the generated output
-> -(as stored / restored by sstate) is the same.
-> -
-> -Once bitbake knows that two input hashes for a task have equivalent output,
-> -this has important and useful implications for all tasks depending on this task.
-> -
-> -Thanks to this equivalence, a change in one of the tasks in BitBake's run queue
-> +as "equivalence".
-> +
-> +To keep track of such equivalence, BitBake has to manage three hashes
-> +for each task:
-> +
-> +- The *task hash* explained earlier: computed from the recipe metadata,
-> +  the task code and the task hash veported to be different, BitBake will update
-+the task's unihash, causing the task hash of depending tasks to be
-> +modified too, and making such tasks ralues from its dependencies.
-> +  When changes are made, these task hashes are therefore modified,
-> +  causing the task to re-execute. The task hashes of tasks depending on this
-> +  task are therefore modified too, causing the whole dependency
-> +  chain to re-execute.
-> +
-> +- The *output hash*, a new hash computed from the output of Shared State tasks,
-> +  tasks that save their resulting output to a Shared State tarball.
-> +  The mapping between the task hash and its output hash is reported
-> +  to a new *Hash Equivalence* server. This mapping is stored in a database
-> +  by the server for future reference.
-> +
-> +- The *unihash*, a new hash, initially set to the task hash for the task.
-> +  This is used to track the *unicity* of task output, and we will explain
-> +  how its value is maintained.
-> +
-> +When Hash Equivalence is enabled, BitBake computes the task hash
-> +for each task by using the unihash of its dependencies, instead
-> +of their task hash.
-> +
-> +Now, imagine that a Shared State task is modified because of a change in
-> +its code or metadata, or because of a change in its dependencies.
-> +Since this modifies its task hash, this task will need re-executing.
-> +Its output hash will therefore be computed again.
-> +
-> +Then, the new mapping between the new task hash and its output hash
-> +will be reported to the Hash Equivalence server. The server will
-> +let BitBake know whether this output hash is the same as a previously
-> +reported output hash, for a different task hash.
-> +
-> +If the output hash is reported to be different, BitBake will update
-> +the task's unihash, causing the task hash of depending tasks to be
-> +modified too, and making such tasks re-execute. This change is
-> +propagating to the depending tasks.
->
-> +On the contrary, if the output hash is reported to be identical
-> +to the previously recorded output hash, BitBake will keep the
-> +task's unihash unmodified. Thanks to this, the depending tasks
-> +will keep the same task hash, and won't need re-executing. The
-> +change is not propagating to the depending tasks.
-> 
-
-These paragraphs are reversed and this is an important detail to get right. The
-output hash is always computed for a task that runs and the output hash is
-queried on the hash equivalence server.
-
-If the output hash is known, the unihash is updated to match the original input
-hash that generated that output. If the output hash is unknown, a new entry is
-created on the hash equivalence server matching that task hash to that output.
-
-The unihash would therefore be unchanged for a new output hash and would update
-if the output hash matched some other value already there.
-
-Cheers,
-
-Richard
-
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
+amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmDQo+IE9mIFF1
+ZW50aW4gU2NodWx6DQo+IFNlbnQ6IGRlbiAzIGphbnVhcmkgMjAyMiAxMjozMA0KPiBUbzogZG9j
+c0BsaXN0cy55b2N0b3Byb2plY3Qub3JnDQo+IFN1YmplY3Q6IFJlOiBbZG9jc10gW1BBVENIdjJd
+IHJlZi1tYW51YWw6IEFkZCBkb2N1bWVudGF0aW9uIG9mDQo+IFBBQ0tBR0VfREVCVUdfRklMRV9T
+VUZGSVgNCj4gDQo+IEhpIFBldGVyLA0KPiANCj4gT24gMTIvMjMvMjEgMjA6NTUsIFBldGVyIEtq
+ZWxsZXJzdGVkdCB3cm90ZToNCj4gPiBTaWduZWQtb2ZmLWJ5OiBQZXRlciBLamVsbGVyc3RlZHQg
+PHBldGVyLmtqZWxsZXJzdGVkdEBheGlzLmNvbT4NCj4gPiAtLS0NCj4gPg0KPiA+IFBBVENIdjI6
+IFJlbW92ZWQgdGhlIHJlZmVyZW5jZSB0byBzcGxpdF9hbmRfc3RyaXBfZmlsZXMoKS4NCj4gPg0K
+PiA+ICAgZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QgfCA4ICsrKysrKysr
+DQo+ID4gICAxIGZpbGUgY2hhbmdlZCwgOCBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZmIC0t
+Z2l0IGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QgYi9kb2N1bWVudGF0
+aW9uL3JlZi1tYW51YWwvdmFyaWFibGVzLnJzdA0KPiA+IGluZGV4IGU1MjE2YjNmMzYuLmM3Yzll
+MzFmMDUgMTAwNjQ0DQo+ID4gLS0tIGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxl
+cy5yc3QNCj4gPiArKysgYi9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvdmFyaWFibGVzLnJzdA0K
+PiA+IEBAIC01MDg1LDYgKzUwODUsMTQgQEAgc3lzdGVtIGFuZCBnaXZlcyBhbiBvdmVydmlldyBv
+ZiB0aGVpciBmdW5jdGlvbg0KPiBhbmQgY29udGVudHMuDQo+ID4gICAgICAgICByZXN1bHQgb2Yg
+dGhlIHBhY2thZ2UgbWFuYWdlciBpbiB1c2UsIHNlZSB0aGUNCj4gPiAgICAgICAgICI6cmVmOmBw
+YWNrYWdlLmJiY2xhc3MgPHJlZi1jbGFzc2VzLXBhY2thZ2U+YCIgc2VjdGlvbi4NCj4gPg0KPiA+
+ICsgICA6dGVybTpgUEFDS0FHRV9ERUJVR19GSUxFX1NVRkZJWGANCj4gPiArICAgICAgVGhpcyBz
+dWZmaXggaXMgYWRkZWQgdG8gdGhlIG5hbWVzIG9mIGFsbCBmaWxlcyB3aXRoIGRlYnVnIHN5bWJv
+bHMgdGhhdCBnbw0KPiA+ICsgICAgICBpbnRvIHRoZSBkYmcgcGFja2FnZS4gSXQgY2FuIGJlIHVz
+ZWQgdG8gbWFrZSB0aGUgZGVidWcgZmlsZXMgcHJvZHVjZWQgYnkNCj4gDQo+IHMvZGJnL2BgLWRi
+Z2BgLyA/DQo+IA0KPiA+ICsgICAgICBvbmUgcmVjaXBlIHVuaXF1ZSB0byBhdm9pZCB0aGVtIGNv
+bmZsaWN0aW5nIHdpdGggaWRlbnRpY2FsbHkgbmFtZWQgZGVidWcNCj4gPiArICAgICAgZmlsZXMg
+cHJvZHVjZWQgYnkgYW5vdGhlciByZWNpcGUuIFRoaXMgbWF5IGJlIG5lZWRlZCBzaW5jZSB3aGls
+ZSB0aGUNCj4gPiArICAgICAgdGFyZ2V0IGZpbGVzIG1heSBiZSBzcGxpdCBpbiBtdWx0aXBsZSBw
+YWNrYWdlcywgdGhlIGRlYnVnIGZpbGVzIGZvciBvbmUNCj4gPiArICAgICAgcmVjaXBlIGFyZSBh
+bGwgaW4gb25lIHBhY2thZ2UuDQo+ID4gKw0KPiANCj4gSSdtIG5vdCBzdXJlIHRoZSBleHBsYW5h
+dGlvbiBpcyBjb3JyZWN0LiBUaGUgZmFjdCB0aGF0IGRlYnVnIGZpbGVzIGFyZQ0KPiBhbGwgaW4g
+YSBwYWNrYWdlIGlzIG5vdCB0aGUgY2F1c2UgZm9yIGNvbmZsaWN0cyBiZXR3ZWVuIHJlY2lwZXMu
+IFdlcmUNCj4gdGhlIGRlYnVnIGZpbGVzIHNwbGl0IGludG8gZGlmZmVyZW50IGRlYnVnIHBhY2th
+Z2VzLCB0aGUgaXNzdWUgd291bGQNCj4gcmVtYWluIHdoZW4gdHJ5aW5nIHRvIGluc3RhbGwgdGhl
+IGRlYnVnIHBhY2thZ2VzIG9mIHR3byByZWNpcGVzIHdpdGgNCj4gY29uZmxpY3RpbmcgZmlsZSBu
+YW1lcy4gV2hhdCBhbSBJIG1pc3Npbmc/DQoNCldpdGggdGhlIGludHJvZHVjdGlvbiBvZiBQQUNL
+QUdFX0RFQlVHX0ZJTEVfU1VGRklYLCB5b3UgYWN0dWFsbHkgY2FuIGluc3RhbGwgDQp0d28gZGVi
+dWcgcGFja2FnZXMgd2l0aCBkZWJ1ZyBmaWxlcyBmb3IgdGFyZ2V0IHBhY2thZ2VzIHRoYXQgd291
+bGQgY29uZmxpY3QuIA0KVGhhdCBpcyB0aGUgd2hvbGUgcG9pbnQgb2YgdGhlIHNvbHV0aW9uLg0K
+DQpJLmUuLCB5b3UgaGF2ZSB0d28gdGFyZ2V0IHBhY2thZ2VzIEEgYW5kIEIxIHdpdGggZmlsZXMg
+dGhhdCBjb25mbGljdC4gWW91IA0Kb2J2aW91c2x5IG9ubHkgaW5zdGFsbCBvbmUgb2YgdGhlbSBp
+bnRvIHlvdXIgaW1hZ2UsIGluIHRoaXMgY2FzZSBwYWNrYWdlIEEuIA0KSG93ZXZlciwgcGFja2Fn
+ZSBCMSBjb21lcyBmcm9tIGEgcmVjaXBlIEIgdGhhdCBwcm9kdWNlcyBtYW55IHBhY2thZ2VzIGFu
+ZCB5b3UgDQppbnN0YWxsIHNvbWUgb2YgdGhvc2Ugb3RoZXIgcGFja2FnZXMgaW4geW91ciBpbWFn
+ZSB0b28uIFRoaXMgaXMgbm8gcHJvYmxlbS4gDQpCdXQsIGlmIHlvdSBub3cgd2FudCB0byBpbnN0
+YWxsIHRoZSBkYmcgcGFja2FnZXMsIHlvdSBnZXQgYSBjb25mbGljdCBiZWNhdXNlIA0KdGhlIGRl
+YnVnIGZpbGVzIGluIEEtZGJnIGNvbmZsaWN0cyB3aXRoIEItZGJnIHNpbmNlIHdlIGRvIG5vdCBz
+cGxpdCB0aGUgZGJnIA0KcGFja2FnZXMgdGhlIHNhbWUgd2F5IHdlIGRvIGZvciB0YXJnZXQgcGFj
+a2FnZXMuIEFkZGluZyBhIHN1ZmZpeCB0byB0aGUgZGVidWcgDQpmaWxlcyBzb2x2ZXMgdGhpcyBi
+ZWNhdXNlIHRoZSBkZWJ1ZyBmaWxlIGZvciBsaWJmb28uc28gaXMgbm93IGNhbGxlZCANCmxpYmZv
+by5zby1BIGluIEEtZGJnIHdoaWxlIGl0IGlzIGNhbGxlZCBsaWJmb28uc28gaW4gQi1kYmcgKGFz
+c3VtaW5nIHJlY2lwZSBBIA0KaGFzIHNldCBQQUNLQUdFX0RFQlVHX0ZJTEVfU1VGRklYID0gIi0k
+e1BOfSIpLg0KDQo+IEFsc28sIGlmIGl0J3MgcmVhbGx5IGEgcGFja2FnZSBpc3N1ZSwgbWF5YmUg
+b25lIGNvdWxkIGp1c3QgdXNlDQo+IE5PQVVUT1BBQ0tBR0VERUJVRyB2YXJpYWJsZSBhbmQgc3Bs
+aXQgdGhlIGZpbGVzIGludG8gZGlmZmVyZW50IGRlYnVnDQo+IHBhY2thZ2VzIHNvIHRoYXQgdGhl
+IGNvbmZsaWN0IGRvZXMgbm90IGhhcHBlbj8NCg0KUmljaGFyZCBzYWlkIGhlIGRpZCBub3Qgd2Fu
+dCBhIHNvbHV0aW9uIHRoYXQgaW52b2x2ZWQgc3BsaXR0aW5nIHRoZSBkYmcgDQpwYWNrYWdlcy4N
+Cg0KPiBDaGVlcnMsDQo+IFF1ZW50aW4NCg0KLy9QZXRlcg0KDQo=
 
