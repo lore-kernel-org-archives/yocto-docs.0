@@ -2,195 +2,127 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC22EC433EF
-	for <webhook@archiver.kernel.org>; Wed,  2 Feb 2022 10:12:21 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web08.61925.1643796740858102763
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9AF88C433F5
+	for <webhook@archiver.kernel.org>; Wed,  2 Feb 2022 21:44:51 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.582.1643838290274924794
  for <docs@lists.yoctoproject.org>;
- Wed, 02 Feb 2022 02:12:21 -0800
+ Wed, 02 Feb 2022 13:44:50 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RZAFCtwX;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CqIKYHQl;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 7CBA0E0004;
-	Wed,  2 Feb 2022 10:12:18 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id C5D301C0002;
+	Wed,  2 Feb 2022 21:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1643796738;
+	t=1643838288;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ss/Bm07H2N/4MrrJbDa6TSMu52kBndiEJsJq/P+3g7A=;
-	b=RZAFCtwXlWW/h/MXlPF2G/fW0BEhppaMxdqbbqKCYgqFc2p0+X0UVwofrdhcaoXLbP1jLo
-	+urss0E+zUXOJcoLlVwb1gUzJ5RnIn1XG6cq0Q7/SGIYrYixhB3WQ+EkMPggRaK2JkZr1Y
-	sJZthz9YIKoduqZYzcz+YKtwsBpdM96yb30irHgEB6Mv5tnPFMw+6RUU5Q8ah51paPOpXt
-	VlmprjahCo0rCSblv4AGUW/F35wacFYWEKBZiZPOl62InWwv2V9bBmc+BPYpmYpv9jWg3k
-	uFt5j1NqPxivHp0icKnSbTzlrbg3wLkXKDpiHycIAKzSweD55CSn+SwcrzOY7A==
-Message-ID: <21e39886-fe27-f37b-bdb6-fd59d61a0836@bootlin.com>
-Date: Wed, 2 Feb 2022 11:12:17 +0100
+	bh=HffZKA4QiayqS4AJ6vKhGPsinyRVQzHqCBcTWMHxIkE=;
+	b=CqIKYHQlzNq3qhGBeF4bliFHgau9LdblJDjf2oYIOG3fzWCcbejaprtQKUsTeER9LnEp9+
+	r5GTLScOKYhd2O/0b4J0DzYrAjjSw5x38jN9JhuH7K2d5trJOApQ2syipV0bjXPOmNLbLC
+	KOMecplHZom+FZwNaQdJeh/dImxZ1oWLO/7mVmXHcBn7SSz6HgNrJ8hywy744w56SYQenF
+	1dhuvAZUi7X97uPAX6w/0fHkvRar9wAeQhiRtgZx7w2Zpg9XiMqrXtrjb8S2cXVmPryR0O
+	WcNws+h7V0jmtesjamArPVBOkAKv+CniziAi33qb7bJq5S/kYMjX8V7AgKQg9Q==
+Message-ID: <1734a67f-b739-a2b5-c225-d1f61ad22f28@bootlin.com>
+Date: Wed, 2 Feb 2022 22:44:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [docs] [PATCH] documentation: Add multiconfig initramfs
- configuration:
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] manuals: add 3.4 and 3.4.1 release notes after
+ migration information
 Content-Language: en-US
-To: Alejandro Hernandez Samaniego <alhe@linux.microsoft.com>,
- docs@lists.yoctoproject.org
-References: <20220130013135.231200-1-alhe@linux.microsoft.com>
+To: Paul Eggleton <bluelightning@bluelightning.org>
+References: <16CBC19CDCE903A8.406@lists.yoctoproject.org>
+ <e47b6364-408f-eafc-2eb3-0610c060d516@bootlin.com> <1806445.tdWV9SEqCh@linc>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20220130013135.231200-1-alhe@linux.microsoft.com>
+In-Reply-To: <1806445.tdWV9SEqCh@linc>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 02 Feb 2022 10:12:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2459
+ <docs@lists.yoctoproject.org>; Wed, 02 Feb 2022 21:44:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2460
 
-Hi Alejandro
+Hi Paul,
 
-Many thanks for this very nice contribution to our documentation!
+Many thanks for your review and feeback!
 
-On 1/30/22 02:31, Alejandro Hernandez Samaniego wrote:
-> dev-manual/common-tasks.rst: Add section to create an initramfs
-> image from a separate multiconfig.
+On 1/25/22 23:18, Paul Eggleton wrote:
+>  
+>>   * Are the repository links really important? Could we simplify them?
+>>     Could we just have the Poky details and downloads?
+> I think we'd need more than that, but what is included and what isn't is
+> definitely debatable. I know we've asked in the past if the tarballs were
+> useful, I'd be really surprised if anyone needed them now.
+
+
+Good to know. I'd propose to just keep the tarballs for Poky. I guess
+they would be sufficient, right?
+
 >
-> ref-manual/variables.rst: Add new variable definitions for
-> INITRAMFS_DEPLOY_DIR_IMAGE and INITRAMFS_MULTICONFIG
+>>   * Do we really want to have lists of commits? Wouldn't a link to the
+>>     corresponding git tag be enough? 
+> This is what we do for minor releases. I think it might be useful to some, 
+> but you'd probably have to survey our users to really know whether they benefit 
+> from it. One easy alternative would be to just provide a cgit link e.g. for 
+> dunfell-23.0.13 :
 >
-> Signed-off-by: Alejandro Enedino Hernandez Samaniego <alhe@linux.microsoft.com>
-> ---
->  documentation/dev-manual/common-tasks.rst | 42 +++++++++++++++++++++++
->  documentation/ref-manual/variables.rst    | 17 +++++++++
->  2 files changed, 59 insertions(+)
+>   https://git.yoctoproject.org/poky/log/?qt=range&q=dunfell-23.0.12..dunfell-23.0.13
+
+
+This sounds like a good idea, but we'd lose the specific list of fixed
+vulnerabilities.
+
 >
-> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-> index ed6b1446f..f19b55395 100644
-> --- a/documentation/dev-manual/common-tasks.rst
-> +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -3919,6 +3919,48 @@ Follow these steps to create an initramfs image:
->     :term:`INITRAMFS_IMAGE_BUNDLE`
->     variable described earlier.
->  
-> +Bundling an initramfs Image from a separate multiconfig
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>>     If so, we may need to add links to
+>>     them, but that's going to be very verbose in the source code.
+> If we do continue to do this ideally we would be auto-generating the content
+> (prior to check-in I mean), so at least it shouldn't be hard to manage.
 
 
-Actually, a rule in English seems to capitalize important words in a
-title. According to https://titlecaseconverter.com/, this should be:
-"BundlinganInitramfsImageFromaSeparateMulticonfig"
+Right, this will have to be done this way. Do you manually differentiate
+the security fixes from the normal ones for the moment?
 
-> +
-> +There may be a case where we want to build an initramfs image which does not
-> +inherit the same distro policy as our main image, for example, we may want
-> +our main image to use ``TCLIBC="glibc"``, but to use ``TCLIBC="musl"`` in our initramfs
-> +image to keep a smaller footprint. However, by performing the steps mentioned
-> +above the initramfs image will inherit ``TCLIBC="glibc"`` without us being able
-> +to override it.
+>
+>>   * Are these really notes clear enough and are the main points
+>>     highlighted well enough?
+> So we could probably use formatting (e.g. bold) on some of the more key
+> points /sections of the release notes new feature list. Unfortunately our
+> project generally isn't that visual so there's not much chance of including
+> images in the list (unless we go to icons or similar).
+>
+> One of my go-to examples for documentation that I think looks great is Django -
+> for their release notes they tend to break it up more into subsections e.g.
+>  https://docs.djangoproject.com/en/4.0/releases/4.0/
+> It would be nice to do that at least for major features so we can explain the
+> benefits of each one in a bit more detail. 
 
-
-"without allowing us to override it"?
-Just proposing something that sounds more natural to me.
-
-> +
-> +To achieve this, you need to perform some additional steps:
-> +
-> +1. *Create a multiconfig for your initramfs image:* You can perform the steps
-> +   on ":ref:`dev-manual/common-tasks:building images for multiple targets using multiple configurations`" to create a separate multiconfig, for the sake of simplicity lets
-
-s/lets/let's/
-
-I'd also suggest to break the sentence in two: "... multiconfig. For the
-sake..."
-
-> +   assume such multiconfig is called: ``initramfscfg.conf`` and contains the
-> +   variables::
-> +
-> +      TMPDIR="${TOPDIR}/tmp-initramfscfg"
-> +      TCLIBC="musl"
-> +
-> +2. *Set additional initramfs variables on your main configuration:*
-> +   Additionally, on your main configuration (``local.conf``) you need to set the
-> +   variables::
-> +
-> +     INITRAMFS_MULTICONFIG = "initramfscfg"
-> +     INITRAMFS_DEPLOY_DIR_IMAGE = "${TOPDIR}/tmp-initramfscfg/deploy/images/${MACHINE}"
+Well, we already have subsections on
+https://bootlin.com/~mike/pub/yocto-project/docs-2021-01-19/migration-guides/migration-3.4.html#release-3-4-honister,
+corresponding to the main changes we want to highlight. Isn't this what
+you're suggesting?
 
 
-Would it be possible to replace "${TOPDIR}/tmp-initramfscfg" by "${TMPDIR}"?
-
-> +
-> +   The variables :term:`INITRAMFS_MULTICONFIG` and :term:`INITRAMFS_DEPLOY_DIR_IMAGE`
-> +   are used to create a multiconfig dependency from the kernel to the :term:`INITRAMFS_IMAGE`
-> +   to be built coming from the ``initramfscfg`` multiconfig, and to let the
-> +   buildsystem know where the :term:`INITRAMFS_IMAGE` will be located.
-> +
-> +   Building a system with such configuration will build the kernel using the
-> +   main configuration but the task ``do_bundle_initramfs`` will grab the
+>
+> (Honestly though I don't think it's worth spending the effort prettying up
+> the release notes for older releases, it's more something we can think about
+> for upcoming ones.)
 
 
-"but the ``do_bundle_initramfs`` task"?
-> +   selected :term:`INITRAMFS_IMAGE` from :term:`INITRAMFS_DEPLOY_DIR_IMAGE`
-> +   instead, resulting in a musl based initramfs image bundled in the kernel
-> +   but a glibc based main image.
-> +
-> +   The same is applicable to avoid inheriting :term:`DISTRO_FEATURES` on :term:`INITRAMFS_IMAGE`
-> +   or build a different :term:`DISTRO` for it such as ``poky-tiny``.
+Indeed, tt make sense to start with Honister to know what format we
+want, in order to be ready for Kirstone. However, how about the Dunfell
+updates? Would they continue to be released through the old text release
+notes?
 
-
-"or to build"
-
-> +
-> +
->  Building a Tiny System
->  ----------------------
->  
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index b0621168a..9c1da3b5e 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -3556,6 +3556,13 @@ system and gives an overview of their function and contents.
->           even if the toolchain's binaries are strippable, there are other files
->           needed for the build that are not strippable.
->  
-> +   :term:`INITRAMFS_DEPLOY_DIR_IMAGE`
-> +      Indicates the deploy directory used by ``do_bundle_initramfs`` where the
-> +      :term:`INITRAMFS_IMAGE` will be fetched from.
-> +      This variable is set by default to ``${DEPLOY_DIR_IMAGE}`` in the
-> +      :ref:`kernel <ref-classes-kernel>` class and its only meant to be changed
-
-
-s/its/is/
-
-> +      when building an initramfs image from a separate multiconfig via :term:`INITRAMFS_MULTICONFIG`.
-> +
->     :term:`INITRAMFS_FSTYPES`
->        Defines the format for the output image of an initial RAM filesystem
->        (initramfs), which is used during boot. Supported formats are the
-> @@ -3675,6 +3682,16 @@ system and gives an overview of their function and contents.
->        See the :term:`MACHINE` variable for additional
->        information.
->  
-> +   :term:`INITRAMFS_MULTICONFIG`
-> +      Defines the multiconfig to create a multiconfig dependency to by the :ref:`kernel <ref-classes-kernel>` class.
-
-s/to by the/to be used by the/ ?
-> +
-> +      This allows the kernel to bundle an :term:`INITRAMFS_IMAGE` coming from
-> +      a separate multiconfig, this is meant to be used in addition to :term:`INITRAMFS_DEPLOY_DIR_IMAGE`.
-> +
-> +      For more information on how to bundle an initramfs image from a separate
-> +      multiconfig see ":ref:`dev-manual/common-tasks:bundling an initramfs image from a separate multiconfig`"
-> +      section in the Yocto Project Development Tasks Manual.
-
-
-Add "the" before ":ref:" and capitalize the section title there too.
-
-Thanks again, and thanks in advance for these updates!
-Cheers
+Thanks again
 Michael.
 
 -- 
