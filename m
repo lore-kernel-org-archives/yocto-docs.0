@@ -2,135 +2,121 @@ Return-Path: <ticotimo@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EB9FCC433EF
-	for <webhook@archiver.kernel.org>; Tue,  1 Mar 2022 16:36:23 +0000 (UTC)
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com
- [209.85.214.173])
- by mx.groups.io with SMTP id smtpd.web10.10243.1646152583629588984
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6588C433EF
+	for <webhook@archiver.kernel.org>; Tue,  1 Mar 2022 16:36:26 +0000 (UTC)
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com
+ [209.85.214.178])
+ by mx.groups.io with SMTP id smtpd.web09.10439.1646152585809126525
  for <docs@lists.yoctoproject.org>;
- Tue, 01 Mar 2022 08:36:23 -0800
+ Tue, 01 Mar 2022 08:36:25 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=K2HYdmcV;
- spf=pass (domain: gmail.com, ip: 209.85.214.173,
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=hPajw99m;
+ spf=pass (domain: gmail.com, ip: 209.85.214.178,
  mailfrom: ticotimo@gmail.com)
-Received: by mail-pl1-f173.google.com with SMTP id c9so13928331pll.0
+Received: by mail-pl1-f178.google.com with SMTP id s1so13867063plg.12
         for <docs@lists.yoctoproject.org>;
- Tue, 01 Mar 2022 08:36:23 -0800 (PST)
+ Tue, 01 Mar 2022 08:36:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ADTaAUk//mqeZKiSJBzDe19mcROrGAeqJufepJv5Qjw=;
-        b=K2HYdmcVbg6ZiHL2AMJzH2KV1Y/Bwj8vx0XUB3T3VffLyVyDjAjB4KAMV5MVLRWCmT
-         lLxNwLOwyUcaF6Anupw6yqbqb1dxx8+RJzckOhHgpzaQGoZfxtqay+eKx45WTcZwQfbY
-         BhPR328Ry0YCNENXcsaku3Ydh+QuRlqhPzyvu4qOrntfEJ2DYZF/yeyNfUOupdva/8HF
-         n+0nyI8Ka5gznMGHm1HqB6kT1q1cRg9Fznc2mhOZeRRwxCqEpRuVuf2raL83I1KUJ5Nk
-         N5GOxsvMnzSgsGOyG0SEkms+TBgHb4LztVvB67NdhraWjDRQPQUrXsOF+kC3WYme+Xdh
-         1ncA==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=7VAbX3KZRlBKPlkCqojgJp3G+z04ctrI7N9unmPM+E4=;
+        b=hPajw99mcBke7xCq5MQr5FnaOWevd3JjKVk7E5/dXE8opoFqpRCjjoEJzrUuHcWKBY
+         uIMZdqhDDtStTBN5ZolQqh/ibl/2SuGOzhMf5L75PvbgKW3jVith+rgWIwoNqf7SEPDj
+         KYSTvirE9Jk3+YKownHpZ1MrmLRDKLfiW1AdgcbUNYfGS4Dx/uXT5BMU2AiHkFP19b6+
+         6HKQFRdJzgKVKdMikuW7JbT/ZGQV913B3GteyIpMaJQNUbUForfy4wzCQvyBdzIqnpJ1
+         sqQi0JTCpfxguBX+29tGe28FcXO9lSNKeFcsdYad3cihXnZHWWzIBCvrWBmiRcYZMD7P
+         sihQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=ADTaAUk//mqeZKiSJBzDe19mcROrGAeqJufepJv5Qjw=;
-        b=7Ktp3mNHbsF3l7G85Yq6NVD1EKqJtb4slI1q9GBNbQuyTI9wJPnhWhnGoBmfQwdKZf
-         e0/LZkscrqeDTZElSb/6mS88s8XUBRw3ef7xhDY6toufDdc5DZWN/UQ3d/bAqLtJlHBO
-         K8OlEQOPQq9Trn/hMAfCQIWogHSHw9htrBVIKWJtmv5qanT9dPnF6GVJhK6bCDlq7nj5
-         Xto0Veu3M2XCYzVcx4/yelxEyL63AF/3xogO/9og4W7sjapcvDeDa/BHJmi6UHSVIE1F
-         gnesTzchOylhRkOSIEVIloHD6lNTYjMSrk5ROZcOOC0VuEeOp72aL3HbtBSQcvHAArqs
-         bdyA==
-X-Gm-Message-State: AOAM531vwJi90fHB892BnN0ixqWsGPEmG1w8DWT1hRE4OOOqcMWeVM/p
-	eidOcU1tkuyzrzkh93X9DHpmKI4kcBk=
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=7VAbX3KZRlBKPlkCqojgJp3G+z04ctrI7N9unmPM+E4=;
+        b=yociTNTQbYIeLuj3hTHSFrYvUlwls1QEAYSXl3ngUd4/BxEKMgsnJzEZG9bCAma2ff
+         yuZbRmv57aaaGlF00bOx5lggGvkCv4z+LCLtPeUK+CXjXHW3rrbQMNBDAfrCDiNQQqxE
+         bvuPfNJKsp72wETtMvglBDPMH+ISdU7UDe9FgWHKJPgZAnWDEWMDJZcbbrHS8pqQS2vz
+         tiFmt64I97hJkUC9L8Wp9sRz9CrE8VIBfbD9GlMiZBJnQq50WsBDSPc9S3RYJydc1fu1
+         9Fgny/beIiIw6PGKYI9rNGkvIqwIt4pL6dxZXmZheZgB4uSrWjKUAQ485WvMnXyhaLsj
+         yH6w==
+X-Gm-Message-State: AOAM530eIEGu0AhFfg3MU+j0EJffWrJXHW2SEPLSs+RScOvSYFfLGuQK
+	RMx2ckSZ1ydfVdpClPiKL32bDtVWiJI=
 X-Google-Smtp-Source: 
- ABdhPJwZsclijcb3mGTbOK9pMf/xzOxOumlLiqYpL9r5cFnCLxW5wVeH6NRU67kRgRqT18ghW72kiw==
-X-Received: by 2002:a17:902:bb02:b0:151:56a8:f80b with SMTP id
- im2-20020a170902bb0200b0015156a8f80bmr14672981plb.30.1646152582672;
-        Tue, 01 Mar 2022 08:36:22 -0800 (PST)
+ ABdhPJxL8TcpcmB1zqqH4Gdj3kZYH9uJXypXQbjHr8LvJk4YUYXvE9XUQxoN66G+RQ12GBlsbPyhUA==
+X-Received: by 2002:a17:903:240a:b0:14e:dad4:5ce4 with SMTP id
+ e10-20020a170903240a00b0014edad45ce4mr26243964plo.125.1646152584872;
+        Tue, 01 Mar 2022 08:36:24 -0800 (PST)
 Received: from nereus.hsd1.or.comcast.net
  ([2601:1c0:6000:1b20:b4e2:b3d2:f012:52ea])
         by smtp.gmail.com with ESMTPSA id
- j11-20020a63230b000000b00372a08b584asm13450461pgj.47.2022.03.01.08.36.21
+ j11-20020a63230b000000b00372a08b584asm13450461pgj.47.2022.03.01.08.36.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Mar 2022 08:36:22 -0800 (PST)
+        Tue, 01 Mar 2022 08:36:24 -0800 (PST)
 From: Tim Orling <ticotimo@gmail.com>
 X-Google-Original-From: Tim Orling <tim.orling@konsulko.com>
 To: docs@lists.yoctoproject.org
 Cc: Tim Orling <tim.orling@konsulko.com>
-Subject: [PATCH v2 1/5] docs: ref-manual: drop distutils from variables
-Date: Tue,  1 Mar 2022 08:36:13 -0800
-Message-Id: <20220301163617.1543257-1-tim.orling@konsulko.com>
+Subject: [PATCH v2 2/5] docs: ref-manual: remove distutils* from classes
+Date: Tue,  1 Mar 2022 08:36:14 -0800
+Message-Id: <20220301163617.1543257-2-tim.orling@konsulko.com>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220301163617.1543257-1-tim.orling@konsulko.com>
+References: <20220301163617.1543257-1-tim.orling@konsulko.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 01 Mar 2022 16:36:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2517
+ <docs@lists.yoctoproject.org>; Tue, 01 Mar 2022 16:36:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2518
 
-The distutils*.bbclasses have been moved to meta-python, so remove
-mention of them from ref-manual/variables.rst
+The distutils*.bbclasses have been removed from oe-core and moved to
+meta-python, so remove them from ref-manual/classes.rst.
 
 Signed-off-by: Tim Orling <tim.orling@konsulko.com>
 ---
- documentation/ref-manual/variables.rst | 29 ++------------------------
- 1 file changed, 2 insertions(+), 27 deletions(-)
+ documentation/ref-manual/classes.rst | 29 ----------------------------
+ 1 file changed, 29 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index ecb2b60c7..03470cebf 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1982,25 +1982,6 @@ system and gives an overview of their function and contents.
-       is included in the default value of
-       :term:`OVERRIDES`.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 949217bf4..0ad437d90 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -503,35 +503,6 @@ Support for other version control systems such as Subversion is limited
+ due to BitBake's automatic fetch dependencies (e.g.
+ ``subversion-native``).
  
--   :term:`DISTUTILS_SETUP_PATH`
--      When used by recipes that inherit the
--      :ref:`distutils3 <ref-classes-distutils3>` class, this variable should
--      be used to specify the directory in which the ``setup.py`` file is
--      located if it is not at the root of the source tree (as specified by
--      :term:`S`). For example, in a recipe where the sources are fetched from
--      a Git repository and ``setup.py`` is in a ``python/pythonmodule``
--      subdirectory, you would have this::
+-.. _ref-classes-distutils3:
 -
--         S = "${WORKDIR}/git"
--         DISTUTILS_SETUP_PATH = "${S}/python/pythonmodule"
+-``distutils3*.bbclass``
+-=======================
 -
--      .. note::
+-The ``distutils3*`` classes support recipes for Python version 3.x
+-extensions, which are simple. These recipes usually only need to point
+-to the source's archive and then inherit the proper class. Building is
+-split into three methods depending on which method the module authors
+-used.
 -
--         ``distutils`` has been deprecated in Python 3.10 and will be removed
--         in Python 3.12. For this reason, the use of :ref:`distutils3 <ref-classes-distutils3>`
--         is deprecated. Instead use :ref:`setuptools3 <ref-classes-setuptools3>` and the
--         :term:`SETUPTOOLS_SETUP_PATH` variable.
+--  Extensions that use an Autotools-based build system require Autotools
+-   and ``distutils``-based classes in their recipes.
 -
-    :term:`DL_DIR`
-       The central download directory used by the build process to store
-       downloads. By default, :term:`DL_DIR` gets files suitable for mirroring
-@@ -6023,8 +6004,7 @@ system and gives an overview of their function and contents.
+--  Extensions that use ``distutils``-based build systems require the
+-   ``distutils`` class in their recipes.
+-
+-   .. note::
+-
+-      ``distutils`` has been deprecated in Python 3.10 and will be removed
+-      in Python 3.12. For this reason the ``distutils3*`` classes are now
+-      deprecated and will be removed from core in the near future. Instead,
+-      use the ``setuptools3*`` classes.
+-
+-
+--  Extensions that use build systems based on ``setuptools3`` require
+-   the :ref:`setuptools3 <ref-classes-setuptools3>` class in their
+-   recipes.
+-
+ .. _ref-classes-externalsrc:
  
-    :term:`PYTHON_ABI`
-       When used by recipes that inherit the
--      :ref:`distutils3 <ref-classes-distutils3>`,
--      :ref:`setuptools3 <ref-classes-setuptools3>` classes, denotes the
-+      :ref:`setuptools3 <ref-classes-setuptools3>` class, denotes the
-       Application Binary Interface (ABI) currently in use for Python. By
-       default, the ABI is "m". You do not have to set this variable as the
-       OpenEmbedded build system sets it for you.
-@@ -6033,14 +6013,9 @@ system and gives an overview of their function and contents.
-       names used when installing the Python headers and libraries in
-       sysroot (e.g. ``.../python3.3m/...``).
- 
--      Recipes that inherit the :ref:`distutils3 <ref-classes-distutils3>` class during cross-builds also
--      use this variable to locate the headers and libraries of the
--      appropriate Python that the extension is targeting.
--
-    :term:`PYTHON_PN`
-       When used by recipes that inherit the
--      `distutils3 <ref-classes-distutils3>`,
--      :ref:`setuptools3 <ref-classes-setuptools3>` classes, specifies the
-+      :ref:`setuptools3 <ref-classes-setuptools3>` classe, specifies the
-       major Python version being built. For Python 3.x, :term:`PYTHON_PN` would
-       be "python3". You do not have to set this variable as the
-       OpenEmbedded build system automatically sets it for you.
+ ``externalsrc.bbclass``
 -- 
 2.30.2
 
