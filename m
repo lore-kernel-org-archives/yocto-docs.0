@@ -2,25 +2,25 @@ Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69A76C433EF
-	for <webhook@archiver.kernel.org>; Thu, 10 Mar 2022 10:54:09 +0000 (UTC)
-Received: from EUR01-HE1-obe.outbound.protection.outlook.com
- (EUR01-HE1-obe.outbound.protection.outlook.com [40.107.13.75])
- by mx.groups.io with SMTP id smtpd.web10.8132.1646909647474538935
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B9F68C433EF
+	for <webhook@archiver.kernel.org>; Thu, 10 Mar 2022 11:00:27 +0000 (UTC)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com
+ (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.59])
+ by mx.groups.io with SMTP id smtpd.web09.8034.1646910025743841630
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Mar 2022 02:54:08 -0800
+ Thu, 10 Mar 2022 03:00:26 -0800
 Authentication-Results: mx.groups.io;
  dkim=pass header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=U0tdjv4f;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.13.75,
+ header.s=selector2-cherrycloud-onmicrosoft-com header.b=d2aPRyqG;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.20.59,
  mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Ess/CFzV7cvUbl9f9wpnbQBVy6wUrC558GtDGwG3FJnNQipn0xFC+0HQKPlCX+W/CIidh2ta3xzjcij9uiESlqC0yrNBTpzjE+gFKQqaSa0za36yPjcTb7PE8etJzKyRvhS5hcMhqVgXmUcsl+mp0queNtt+ndaFrEktWeQgQc8tHHxNCAXT1/2LAfi6kfpnXpLqnbH5GilULVAnz3pxu+J7SLbAGo7wfm2XcUuhgmBjrTQQ1kwkTfw4WENn6y7e83zZYnB0yX8yPQV6T3dcarQpFYIZ9p/vGDjowYSP3MSBJe0xyg+ofgY7ABliGD8OCjQakeyBSoBjdqU60tZLhw==
+ b=lGWKsmfZgmDa1E15oQ0v/gRsrKQLgsLDke3W1HihiGqnQNeJf/tSMuTPpccW38DAk5p3hKYRudvgslvGXYJ5MwdMg+Wad2lC6lmjMYfj+f1UMwIlMiFG5PMO+TcGC+Yv5PIy4BLL73+MjdOCn8KwXJ00ui2+7eKUksO+fl94FuGG0y2kg0OIsYyL9dFDTopVPS2PizbgNVmq8on/9KXp1QdeaPIJuWbS6YpTWXr1fm5HrYlxQJfBa1EtVBzZr39ku8KplzHiryOp52UQEwEX0T5ZRXROe6JttbEI9cqTG6014uRqQlII3530fMIoDWQ7EeOfyEKTbTHfQnyDL39LIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ab+NYDo1n6WbyW9YP9XN/RC2m5JkAPtN98rbfkGW/aY=;
- b=W95YSYYyFmUk7uGaRhEaqMTDNxdk6YTBgMZxkrh1g8Z/5Q1Q3jfjdZYBHgWTXMflMpP6zneRiVJQWegd9O0Ye4LY9mykkK0D085JDqIj8485aidu4rGHU/3OLmtWxH9g1aFqaDOzdhvmFlb3H0HObJIb79hmZXEUx8aMG1Fnm7kq9S0xjHDwgLqc2yLhvL+ZqCkzzqgCfkXjfDLaCNyfnTyYXPPpACIeuSXgkGAzfVQpzG3ZM3xN867BXzzrzFXSVHQ/J8oF9zKKkV3hSxN27DENeoAPW4JViLJw3kG4GnBxszig/s75rHOFI7jqYhr4R/P6nis3P3rr3hKS2qFQBQ==
+ bh=bE8lDpWktfxCnyU1LIHMhCxwTbNbomwHJfphlw4VL2s=;
+ b=Zc6vze0Jb8vgors/O4CBnqD6+gE35FKstGBwwffxJi1Tt10haFfnSNW0CyAFNGwba5XHiMzOPFgW4rtXXGdUoTC5CI+iE8jIf62AdVP5B2bS4YBIW9PiOcES52P1Id/Pwizb0UOBo82PG7TAqddW6fU0q+eG5KxKA/nQG72jJ9wCGGTR2099HcecVaMAxLvstR/35NzGBHDODSTjyG+djv7Mm6g3qKIJJugn6vSQ/3BjU7vvmNUy+bnCcYb4Dyn8KNFDiYzCDX+fWqoSXVwHIMZ6VrCJXRcfgmCkRcRiyk83lla3QIiJZFH7HmJWY+GWeTYYTi974pArhpEEN+xIkQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -28,138 +28,251 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ab+NYDo1n6WbyW9YP9XN/RC2m5JkAPtN98rbfkGW/aY=;
- b=U0tdjv4fE306uR6QH4yGtVpDApJrkJRGbCHUYzUWnR6g4iQgEeA1JTjOymQGJ4zQQNCrvxZc7RzIi99umQ5U8gFvy+vpqWmwY7YYP+PmU7R3scwj5+23iJma9vxj5N0yTQRX94tchex1z8dPz01tvmbNzj1XTobQtQKrauJWuhs=
+ bh=bE8lDpWktfxCnyU1LIHMhCxwTbNbomwHJfphlw4VL2s=;
+ b=d2aPRyqGOJf3G28gWniGo0nuKa1hlTxyS2KwFCHz58rGHKWhkK8hXhaDUfQikCbuqEEZX+uNAH38Cexc28dPURb5nftiaaMLvKxn2tia6zWmCacFc/yK4s76+wriipcqOS7hbpWqzhDsjVF8sbk6PjmmKyy9bHxK6YelMybYJcQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
- by AS1PR04MB9261.eurprd04.prod.outlook.com (2603:10a6:20b:4c7::13) with
+ by DB8PR04MB5771.eurprd04.prod.outlook.com (2603:10a6:10:af::27) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.16; Thu, 10 Mar
- 2022 10:54:03 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.14; Thu, 10 Mar
+ 2022 11:00:22 +0000
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::ecac:a35b:6947:e7f3]) by PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::ecac:a35b:6947:e7f3%9]) with mapi id 15.20.5038.027; Thu, 10 Mar 2022
- 10:54:03 +0000
-Message-ID: <b1392865-9754-dd70-8278-42a067277380@theobroma-systems.com>
-Date: Thu, 10 Mar 2022 11:54:02 +0100
+ 11:00:22 +0000
+Message-ID: <51c1934a-6ead-c938-ecb6-c40c8b2f0d45@theobroma-systems.com>
+Date: Thu, 10 Mar 2022 12:00:21 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [docs] [PATCH] bitbake-user-manual: add note about the old syntax
- for OVERRIDES
+Subject: Re: [docs] [PATCH] docs: update examples to add branch info to git
+ URIs
 Content-Language: en-US
-To: michael.opdenacker@bootlin.com, bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
- Peter Kjellerstedt <peter.kjellerstedt@axis.com>,
- Richard Purdie <richard.purdie@linuxfoundation.org>
-References: 
- <6035008ce96fb9055547cf0cc2ffa51d2262c9ea.camel@linuxfoundation.org>
- <20220307183803.534661-1-michael.opdenacker@bootlin.com>
+To: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
+References: <20220309141551.612610-1-michael.opdenacker@bootlin.com>
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <20220307183803.534661-1-michael.opdenacker@bootlin.com>
+In-Reply-To: <20220309141551.612610-1-michael.opdenacker@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM6P195CA0025.EURP195.PROD.OUTLOOK.COM
- (2603:10a6:209:81::38) To PA4PR04MB9367.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM7PR02CA0006.eurprd02.prod.outlook.com
+ (2603:10a6:20b:100::16) To PA4PR04MB9367.eurprd04.prod.outlook.com
  (2603:10a6:102:2aa::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 2e0e82c6-c73d-41a3-baff-08da02844a99
-X-MS-TrafficTypeDiagnostic: AS1PR04MB9261:EE_
+X-MS-Office365-Filtering-Correlation-Id: aff7e7c1-9dc0-4070-2f82-08da02852c56
+X-MS-TrafficTypeDiagnostic: DB8PR04MB5771:EE_
 X-Microsoft-Antispam-PRVS: 
-	<AS1PR04MB9261EC15A2376D3B224D61DCC20B9@AS1PR04MB9261.eurprd04.prod.outlook.com>
+	<DB8PR04MB57719428BA7774244C3B2AC0C20B9@DB8PR04MB5771.eurprd04.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	OC72UriM8g+gzlsdDRVP6c+gx4++YOazjIV7uuiyynMYwAPEcQyUhsE76prFAz/DS998GmOw3uFf3/4QhGkeazV8nOQAenRnsWgbCKhJkNR6yIFwuBduMwlaAyfhxk8TpPL5DWW7gXKncIUnt/nqsUdYxwCp6lH1AXx59VNue1t1u9OT8cBTmTveT1OhyPDc1g0HGEd7Kd3d4ODp47dd4MmbhLiXsmAHtmN3lV35J2xm2WT/NidQWPvMp+MT3lNwTr/Z2RPWkPGKiyb9rZJzROLlwC0/dU/bSyYvpbntu1R+SRAkq8prjjd43wCbT4FxtJMDlFzcWRklqA4bfO3Kj21itU05AFYYs5iJ01gT2tzSJK2HkgVKYCLpAkYIkxkNZUlCaH8ZvJ6VMrxnAZbrk4k8xk4KzMFAXdFz6PbAqNWUTgNwZB79cG4TbXo59//P8zhSKsy2C5Y8oU//Obmp31ftsdpGZoNwMvTU1xLJO1wzlYeh/ZhmKeOtaZ6YoRs43gxas0fGjBMmIVwuyfeEniqymVy2QzZafDUHhalr+JC0XyJoUZmEilqzTK70adabuq7aYshxTuGv4XM/zFK9XLb7dUDCaKJ/DFxHgH3xF7wCaDEaytw9pudxCS+oTQ57ApCWsb9g4wMKjdLJTEbAJMbOxTr55ktaOjYGz/tuInoI5WMYj1DNPN+WUWMJU1u2gZNRQHJ6TRYVnqQ337I2nQrm5SiKB10+2SrQ92TUbxA=
+	9NxLTaVN198WObKX4Zrl1KssPWxwJz7K0nDnTTH49CX/nEdl0YXoVoiCNGwRr716VN0l/RAPsj3OAJzaJ7o3d5Ftc216X96ql85pZ+acev6kY5rV8gt3RrfTj66gnT80NilDNQ3WUbOL2zXcAcdNaPg7FR7Fqkudbi6maJBjcI87mhKEuOS0P5dzci6/Dd+q5nQNLNgFcRcxakh9vnSM2moMUJwfCsrKf70r8EpyJg3jXPMHaJgXHdfLljx2+noX45+ToIVyPd9CzibLWE/aE3TmAuryhkWOPSc00vyjZtcmMgzoi8RtwrZnih62nsFJFs96O+LJo07JUQK1gqHU/N+gYowTh20d7DxiOfJGy3Qk3nLC+ep3u5KnGtY3GYAf2zTJuCTYJrOwq+KA49Gy2b9uC73ydnJRyqNFroSkXBl7s3byjHPo+lDmxOSpeVbwgOoNm4spIJvH5ZdgXm7y7/5kVVeInLVQ986fW6WqaiMhF+9CB0mI93GBPFfoH8TbnyBXaS6DddS2PUiT0t/wtYUPUM6VaoEl1473NtkkeigZT02Tqjd8ZgyhrmlXEkm6LMhOpagSV41ASo7x5DZ6NmZJAg/oUl4oJH4pFGq/dY/p5zQO5AMIwsjg2aZRZpz6w6JNj1PfHgItYzvGEpIya2E2bdbo2JzcvyFAUTUtT97Iu5BTncjh2Yf5uicJuFMveg0PdOyQAJUyrsphteUDhMCJDhGmZX1rfdjp5obFNGdGn0kiA36xnTr19ddkYfwRaEcOjJGL8w0OvYDVCgJhBeLcCrfRUtpgQhl7/3o3xUv4UP3jRdBzwlcdSQaj7v76
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(8936002)(31686004)(53546011)(316002)(44832011)(508600001)(5660300002)(38100700002)(6486002)(6512007)(36756003)(186003)(26005)(2616005)(6506007)(2906002)(8676002)(54906003)(86362001)(31696002)(4326008)(66946007)(66476007)(66556008)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(2616005)(6486002)(86362001)(8676002)(38100700002)(83380400001)(508600001)(26005)(186003)(2906002)(31686004)(44832011)(36756003)(53546011)(66476007)(66556008)(6506007)(66946007)(8936002)(31696002)(316002)(6512007)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?UlJtTXFYYW5mRVh4T05DQmV4L0lsWmFSbEZncDRTZ2FCRmtKY1VnRFQ2RFY5?=
- =?utf-8?B?N3RpQU54TzQzQWo1NGgwa09GTFUzWGlJbHhsK3lkbHdGdm5PcmFUaXpaRFdX?=
- =?utf-8?B?bWtodGZvZnd2VzFieUd2ZXBDY0FFSkhsUGpmRTZIQ3JWa00weGZ3eFhFQ2d5?=
- =?utf-8?B?VXRzSWNRYzNlRFJKTnJsSUJweXdTY3QxREZ0TjUvK3pIWXZpRzJjR2ZTekJB?=
- =?utf-8?B?SHI5NTl0cGk2UTlIK0NmOUJJMGhLQ3NCQlY2NWtwTzVhNnZmV1NHeXhnc1Z1?=
- =?utf-8?B?RzdYVzZjZTRnZmVBc0VDdnlWY3kzaThHb2l0WDk4TlJnQUNiaU84OTcwMGNR?=
- =?utf-8?B?Vy9PZlZYOEQxQ1YvVm1nNkpVL3l2TnhxN3ptV282YkR6OXhzYnJobVJCWERl?=
- =?utf-8?B?TVdTN2lIVy9sZ2o3TUlXYUxtQXBKWGsra3VWYkVDbmJ4TGdTUEFHYTZiMnkw?=
- =?utf-8?B?VzhwcURpUUo1alhQNXpvZ0s0RHh3RDI3YTJRL0V6MEY1NEI0NVhIc2NTUG0w?=
- =?utf-8?B?NER4WUlLb2svQUJNNFFtbUY2RSt0RHk3bjY0Snh3NXhpWkc5ajhTZ0k1Y0Nu?=
- =?utf-8?B?RkREVFZsVnljV1NlbnVZRS96WHY1TWY5S0VMOGRkZUkzYS9FQmdXK1R5MlhP?=
- =?utf-8?B?ck5vUW1mOXBRYXRHRnRidEFpT3dmYzQ1dHNhbW1rNXRaSUVJZWhHRDcrdVZr?=
- =?utf-8?B?K2U2ZWRlaGFHeDMwaHJwTWFSdG1rc0tMQkpvL3Q1U3hYY3Y1RG5oSkRzaG1j?=
- =?utf-8?B?aWIzanVEZVNJTVZJQ1I0eG9Oajh0b1ErT2xLamdRYVpSa2UvTCtSMFNZZnZr?=
- =?utf-8?B?RDBDU1lGY0xPSFlmc1FZU254R2J0Z3lXOUhGNU9tQmEyVGtVdGNKN3VFZWs5?=
- =?utf-8?B?TGE4VEdHaU1wZDVOZFNnRlVrZUNpYy8wcHJ3V0tvU2JqMkJZWWx4NE00OHVx?=
- =?utf-8?B?V0lwZUhFalE0c2U4TXRxZlh6Sk5Wd3lkOEpHMStMVXIxUURtYzhTNXlBblBv?=
- =?utf-8?B?SVpoUmFZZU9oNTNOV2FxNjFWSXVkMi9BbHpVVlJXNE9OWTkvR29yQ2h4emV3?=
- =?utf-8?B?c2Y1Ym90VTN5dlVxd1d4LzBpbGlXWnpOazROUDZmL3VMM3U0am9hVGVXMW1O?=
- =?utf-8?B?SVRkNmp1S010b1NFcWt3V0FLeTJRNGJ2QW42dGNubm1uL090T0ZKbU5PQzFQ?=
- =?utf-8?B?aHdVNThQZHpkRG5pSkg1UTNMdTlKTnVOTkQ2dWNrTHNwd0tGSlRzWjh6NUxj?=
- =?utf-8?B?VWhPc2dObjQ4SmhPS2dVazM0UEdIaFpHc1lGNVE4ZjQ0UjAyQStvYSt3NUxp?=
- =?utf-8?B?RWhMVS91eG1wMGE1U0RxUTlOdVJoOXNUYW9WMlhtS0xtdGpIWVUvaFk0aEhI?=
- =?utf-8?B?UWl2QkY1L0JqVDdmNXQ0NTFrelUxRjk5SUxFUGt4SXFUQ2U3dnE4dkN1Z1Mr?=
- =?utf-8?B?bS9vTnBtRzNjaGNTL0w1cTR5Zm01SVVNSXZYcjlObVFpSmZPRldEM2dkQktR?=
- =?utf-8?B?STd5S2I3SExDUnNhSGpzUHNNTUQ5L21PNnZvZFdJRE9CcCtiTGZPaFRNVi9k?=
- =?utf-8?B?YkxjUmUyRFhXeW1XR3JDWGMxRHRPNytmVklCd1JHMi9uSDFtTER2Nnl1MEFV?=
- =?utf-8?B?a3RjMkQ5NDliZFQ0SmZINTNBb3BOS292NjZlNnJDdEV2K2w1bUFoU01COG0w?=
- =?utf-8?B?eHczT1NnNU9uckd3MHFyeWVxcTlNd2ZJOG56bTdqVEVjbW9xS3dvNlJOZzZN?=
- =?utf-8?B?RDhrZUxNZGs4S0xHSHNPWHJ1YTlUenlwalFrT0Z4NlBNbDJWeEg4WTBlQ0Nl?=
- =?utf-8?B?SnNsZ2pLUkx4MkMwT29iVzAvK2Y3Zm50b2FIZU1QTXg5TEtuM1NHTzZuQ1lt?=
- =?utf-8?B?OTdCcktOVzFPcXluUHFWMVphTGhCbENpNkVjTXNmTS9UT25rd1ZacGtWNHdQ?=
- =?utf-8?B?NHdaQVBjV1RBeU90THNCKzNWSllBMTVuQnRkWXdQQnJEUW0zQ1YrUVlmVnNp?=
- =?utf-8?B?cnozblUwbHRlalZqUjY0Y0U0MGppc1BQUGZuRG9IdlFvNFVNN0puWlN0WWZE?=
- =?utf-8?B?c1RVdlRsUm1UeVBzakJRWUpOZVRyL0Ixc2FTM0ptZlVLbW5xeWIrY0FJUENO?=
- =?utf-8?B?anRaMVNBQjVaRDhxWXdvM1RNK3Jtb2dGakdzYlVGTUpVOEk4N1FLZjVPUGxB?=
- =?utf-8?B?R2s0SXZyR1JzY29uQkdSZHpZdXRBcTBQSmJLY1hSMkRKenNCU2Vvd251RmxU?=
- =?utf-8?B?VWM4WENxcGpUNmN1L1Frb2d0dEZPc1NHTXR2a3g2Z1Bhb3lqVnNuMDFMRUM2?=
- =?utf-8?B?SVpTSnZNZkJLMGVOLzZIa0sxT0NXQkpINk1DdHJXaHhWOFE2TSs3Zz09?=
+	=?utf-8?B?eU9MbDIzY2dtRTVTeUs4cmp1VU43cWoyNzRHZGZMUms4MmgwRktsdVZ0Y05p?=
+ =?utf-8?B?V0lSYzc1RE9KYXJISlBMdGhXTHVuUEpzS1FtbXp3RFQ4RTRDdXdkUTI0a3pj?=
+ =?utf-8?B?MlJBc2kvZnNXUE1Eby9NVGMxMEI2ODZZM25GM2llR2xKdERwRTZPOFdWYmtu?=
+ =?utf-8?B?N1FhVW1Jak5UekgwODFhUTFHYW1XYVdrOWY4VU9yU0Y0aFFTNFAzbkEwZXdt?=
+ =?utf-8?B?eUxvVUFkUDlmdENFRXhxeVp6SmlUT0hGMm4wL0tYdnNiVG81MlErSEtSZThn?=
+ =?utf-8?B?SzhIM2R0VURHK1F1Z01pb1ZHODdCYnc0Q3p2b0t5dHdUeXk0NEhRUkFUM3M1?=
+ =?utf-8?B?RjJrUXR2azdLR0RoVi9HSkNRdVhBT3o1RUFPclcwTHZHVUVJVUdJdVZ6N3ZP?=
+ =?utf-8?B?a1NXMlZ1dnR6cXc1U05VcXI0TDVBKzlDZTdxVlZROFRSU05JZnJadTk3eFFa?=
+ =?utf-8?B?RUR5UDZqMzFPRllualduRU4yR2c2aTU1L0tvTEQ4QzVRWUVZYzhxZzBRZS9K?=
+ =?utf-8?B?SHR4K1Y1cjd5bDAyL2FiUVJwS3J6SFJ4QTEzUjdCWWErdXF5ekdWM1FsQTdQ?=
+ =?utf-8?B?NVhGSERSb2tQVDZMdkk5ZkNJM0Fwd3NmMU5LUEpJR0czbTl1aDhLZFIvSEt6?=
+ =?utf-8?B?SjhDZlZ3TlFDTWdPOE5Zc0hoSVBJN3VpdUdMb1phT3lQVHpLY3BBV2FidzhT?=
+ =?utf-8?B?U3k3T2h4eDNyRFQyRFAvTmcwemlqd3pWWFZGTldJS0hDSStYeVRYMFJIZnE2?=
+ =?utf-8?B?VXFqQ1QvNVYrNTkrTmZ6ODc3UjFJanVlS2prcWd1OVVidTI2ZjdYbDJ6K1I5?=
+ =?utf-8?B?K2FMeHBrcEV4Vlp0NDhMUEVoNFQ3eFJ5bGVhNTZtaEljeVRST25tRERCVVgw?=
+ =?utf-8?B?cW84eWpWR3NFOUVUKzRlSGpFNEdJTWc3WVJTYXVWWjZicWhVY1E1emEzcmV0?=
+ =?utf-8?B?dGhieXhnSTNXVHNONjEvSDdCU1c4NlpEdE95bzhCem1HamcvSlB4Nk1ET0Mr?=
+ =?utf-8?B?dm85SG5LYlZ5UXVkbWZRUTNzRXplQ2hYSk1mcDlNb25XQTVmbGhtU0Z0UmpD?=
+ =?utf-8?B?Vzl1aUZrYWp2QlhmL2g2eTE0Ymk3ZTk5T3pSMEc2d0hZd1hwbFMrNlUydTJl?=
+ =?utf-8?B?WVZRTTVkb2lQSjVWdWlyTzhrZjhGMFUvOU1IaVpwOXlxL3BsQ0pWUXR3dXZG?=
+ =?utf-8?B?M3pONEVONHdyTUhwb3lPRy9WN1lkSDR4R3JJSG5xVkdTQitkSUxaazZQQ1pS?=
+ =?utf-8?B?elVlZEV2bzdVa3ovUDVNQ0NTRmlaenNMS3lmVm5PV1YxUVdHVWhFdW83bWl4?=
+ =?utf-8?B?MjE2VGEzZHptMVlsejN6UDVyeEM0VVBKc3FHN0FVK0JRTlRyOWFFdUV6WHU5?=
+ =?utf-8?B?WGxZN2lKWVhLTUNqYlcrYkIrRHFWVXVpenhuYnZlUlZ4YW5hajhudHQySVdS?=
+ =?utf-8?B?YUFuOTlRWWN1Q3gwRWpHd2hIUFVhYWFjRUw0NlN6ZTZDZC94RjM3Kzh3VGJk?=
+ =?utf-8?B?VkxWcTRaZWRKWWJ2SmExeUpneVB3blpEeitNRW1vZ01wN09lQnR6dTM0M2NV?=
+ =?utf-8?B?ZE14NVRnbzIwYkk0cWdGRmFCbEZnUDF6VENlbFJPK2t1dFEzV29PcUoyYXRl?=
+ =?utf-8?B?RHN3aVRhRXlMbTVySlpKd3JQK25NQnpiek15Zk5CbWhESzBMOVdXZ0hLYll4?=
+ =?utf-8?B?MWNVcWUvK0hDQWZiU25saTJHUDhPL05zYkJmVW5ocHBZY3hMSmg0ZmFxUjhO?=
+ =?utf-8?B?WjV3d1BxTDJXeCtFcU9nL2tYQWNPcktjd0RndHZuV0JHOC9zVjJhZVhRa1dS?=
+ =?utf-8?B?ci9WeU9qelBFNHhxa0N4MmZ1MmpaakNhdWREcDIrWVgyaEZndTBXZFNOdGQ1?=
+ =?utf-8?B?eEV3K0hJajdYcHRjTThVcXVCcEc5TlF0QzJXbUhEdWVNRk1CSDJSbjhlTnJk?=
+ =?utf-8?B?TkNhejBKNmk4V052ZGNnTjBBcjRseUxySU5KdDk3MFpqaWJLL2FOYTl2WUFB?=
+ =?utf-8?B?NUtOQktzeEhFYU9nT1ZSR091YzhKcnhVVUxDRDdtNG9aMy91c3RiTWRSRjV2?=
+ =?utf-8?B?a2FNL1NCbExsNFozZlV3TVJ1Z3h2VHZsQ0ZOWTR4bXNSYjU0aDQzYlVYalND?=
+ =?utf-8?B?bUxOYi9QUGUxQ2g4L2FsTlJmZW1CUXFUUUxNNlNFRkxnclZLODdsOFJ4QlNG?=
+ =?utf-8?B?STFEQ3RqdG45NXE2VmVZY2N1TWl2SlNKYmIxNDJndW9uTFFzd1lkNklybmRN?=
+ =?utf-8?B?bUFzYy9KOG5uMkU5OVBTcnFDR3pRNmNNQUJsditncHpiMzNMU28xTG5XQjdL?=
+ =?utf-8?B?Y3lpWXZqUk9CeTRicVBpZ3NGYTFWa3RWMkNtNUtUcTVTWU1DYmttQT09?=
 X-OriginatorOrg: theobroma-systems.com
 X-MS-Exchange-CrossTenant-Network-Message-Id: 
- 2e0e82c6-c73d-41a3-baff-08da02844a99
+ aff7e7c1-9dc0-4070-2f82-08da02852c56
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2022 10:54:03.8123
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2022 11:00:22.6285
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
 X-MS-Exchange-CrossTenant-UserPrincipalName: 
- 1WWNOntoYYJoTd69jH/f30dQIFSa9gk+VQrjqogogF1euRja8V6K33alvfrJm35QZNWx0aLGUz6/37uyeobI8e3XOnxz4jDVbteln9iyU6EemVgm7a57eopRDxYQoapp
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS1PR04MB9261
+ SHBfbZje1pN6PMp+o54EjQyJnvFf0uYwj3bZYGAFRMCuqbStqYsiORAJGjPX9Hp3m8gB6K0BFbp48cO18L2nTStEXbgd8mr5hl1Yep5N7ahW9xc07IwoyNzPRcxpS96o
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR04MB5771
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Mar 2022 10:54:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2574
+ <docs@lists.yoctoproject.org>; Thu, 10 Mar 2022 11:00:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2576
 
 Hi Michael,
 
-On 3/7/22 19:38, Michael Opdenacker via lists.yoctoproject.org wrote:
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Reported-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-> Reported-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
->   .../bitbake-user-manual-metadata.rst                   | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+On 3/9/22 15:15, Michael Opdenacker via lists.yoctoproject.org wrote:
+> Branch information is now mandatory for git:// and gitsm:// URIs
 > 
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> index b90e5cf0..97114ed6 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> @@ -585,6 +585,16 @@ variable.
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> ---
+>   documentation/dev-manual/common-tasks.rst | 56 +++++++++++------------
+>   documentation/ref-manual/classes.rst      |  5 +-
+>   documentation/ref-manual/variables.rst    |  2 +-
+>   3 files changed, 29 insertions(+), 34 deletions(-)
+> 
+> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+> index 1caf953901..34f086bf1f 100644
+> --- a/documentation/dev-manual/common-tasks.rst
+> +++ b/documentation/dev-manual/common-tasks.rst
+> @@ -1402,13 +1402,11 @@ the revision with :term:`SRCPV`. Here
+>   is an example from the recipe
+>   ``meta/recipes-kernel/blktrace/blktrace_git.bb``::
 >   
->         EXTRA_OEMAKE:prepend:task-compile = "${PARALLEL_MAKE} "
+> -   SRCREV = "d6918c8832793b4205ed3bfede78c2f915c23385"
+> +   SRCREV = "366d30b9cdb20345c5d064af850d686da79b89eb"
 >   
-> +.. note::
-> +
-> +   Before BitBake 1.52 (Honister 3.4), the syntax for :term:`OVERRIDES`
-> +   used ``_`` instead of ``:``, so you will still find a lot of documentation
+> -   PR = "r6"
+> -   PV = "1.0.5+git${SRCPV}"
+> +   PV = "1.3.0+git${SRCPV}"
+>   
+> -   SRC_URI = "git://git.kernel.dk/blktrace.git \
+> -              file://ldflags.patch"
+> +   SRC_URI = "git://git.kernel.dk/blktrace.git;branch=master"
+>   
 
-We should mention that we're talking about external/third party 
-documentation/tutorials and not ours :)
+Would be better if we had an example with a non-master branch? I see you 
+rplaced mtd-utils with lz4 below so maybe a similar change can be made here?
+
+>   If your :term:`SRC_URI` statement includes URLs pointing to individual files
+>   fetched from a remote server other than a version control system,
+> @@ -2372,41 +2370,39 @@ following example shows this::
+>   
+>      CFLAGS:prepend = "-I ${S}/include "
+>   
+> -In the following example, ``mtd-utils`` is a makefile-based package::
+> +In the following example, ``lz4`` is a makefile-based package::
+>   
+> -   SUMMARY = "Tools for managing memory technology devices"
+> -   SECTION = "base"
+> -   DEPENDS = "zlib lzo e2fsprogs util-linux"
+> -   HOMEPAGE = "https://urldefense.proofpoint.com/v2/url?u=http-3A__www.linux-2Dmtd.infradead.org_&d=DwIDAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=QMieOh9nbIBS9SSii-FPQIjYKRoWkrrMH0lHC0zUBQjeE5CyvQvLCW2AnhdDjkp6&s=IH9Cg3SGu1_z_nLHAc0T0gK1IVKNgx1qioonvcMd5DY&e= "
+> -   LICENSE = "GPL-2.0-or-later"
+> -   LIC_FILES_CHKSUM = "file://COPYING;md5=0636e73ff0215e8d672dc4c32c317bb3 \
+> -       file://include/common.h;beginline=1;endline=17;md5=ba05b07912a44ea2bf81ce409380049c"
+> +   SUMMARY = "Extremely Fast Compression algorithm"
+> +   DESCRIPTION = "LZ4 is a very fast lossless compression algorithm, providing compression speed at 400 MB/s per core, scalable with multi-cores CPU. It also features an extremely fast decoder, with speed in multiple GB/s per core, typically reaching RAM speed limits on multi-core systems."
+> +   HOMEPAGE = "https://urldefense.proofpoint.com/v2/url?u=https-3A__github.com_lz4_lz4&d=DwIDAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=QMieOh9nbIBS9SSii-FPQIjYKRoWkrrMH0lHC0zUBQjeE5CyvQvLCW2AnhdDjkp6&s=cFqbOb6M8UnVlEYErAMywY0qGo0oMtoZndqi1ZeQwfQ&e= "
+>   
+> -   # Use the latest version at 26 Oct, 2013
+> -   SRCREV = "9f107132a6a073cce37434ca9cda6917dd8d866b"
+> -   SRC_URI = "git://git.infradead.org/mtd-utils.git \
+> -       file://add-exclusion-to-mkfs-jffs2-git-2.patch \
+> -       "
+> +   LICENSE = "BSD-2-Clause | GPL-2.0-only"
+> +   LIC_FILES_CHKSUM = "file://lib/LICENSE;md5=ebc2ea4814a64de7708f1571904b32cc \
+> +                       file://programs/COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263 \
+> +                       file://LICENSE;md5=d57c0d21cb917fb4e0af2454aa48b956 \
+> +                       "
+>   
+> -   PV = "1.5.1+git${SRCPV}"
+> +   PE = "1"
+>   
+> -   S = "${WORKDIR}/git"
+> +   SRCREV = "d44371841a2f1728a3f36839fd4b7e872d0927d3"
+>   
+> -   EXTRA_OEMAKE = "'CC=${CC}' 'RANLIB=${RANLIB}' 'AR=${AR}' 'CFLAGS=${CFLAGS} -I${S}/include -DWITHOUT_XATTR' 'BUILDDIR=${S}'"
+> +   SRC_URI = "git://github.com/lz4/lz4.git;branch=release;protocol=https \
+> +              file://CVE-2021-3520.patch \
+> +              "
+> +   UPSTREAM_CHECK_GITTAGREGEX = "v(?P<pver>.*)"
+>   
+> -   do_install () {
+> -       oe_runmake install DESTDIR=${D} SBINDIR=${sbindir} MANDIR=${mandir} INCLUDEDIR=${includedir}
+> -   }
+> +   S = "${WORKDIR}/git"
+>   
+> -   PACKAGES =+ "mtd-utils-jffs2 mtd-utils-ubifs mtd-utils-misc"
+> +   # Fixed in r118, which is larger than the current version.
+> +   CVE_CHECK_IGNORE += "CVE-2014-4715"
+>   
+> -   FILES:mtd-utils-jffs2 = "${sbindir}/mkfs.jffs2 ${sbindir}/jffs2dump ${sbindir}/jffs2reader ${sbindir}/sumtool"
+> -   FILES:mtd-utils-ubifs = "${sbindir}/mkfs.ubifs ${sbindir}/ubi*"
+> -   FILES:mtd-utils-misc = "${sbindir}/nftl* ${sbindir}/ftl* ${sbindir}/rfd* ${sbindir}/doc* ${sbindir}/serve_image ${sbindir}/recv_image"
+> +   EXTRA_OEMAKE = "PREFIX=${prefix} CC='${CC}' CFLAGS='${CFLAGS}' DESTDIR=${D} LIBDIR=${libdir} INCLUDEDIR=${includedir} BUILD_STATIC=no"
+>   
+> -   PARALLEL_MAKE = ""
+> +   do_install() {
+> +           oe_runmake install
+> +   }
+>   
+> -   BBCLASSEXTEND = "native"
+> +   BBCLASSEXTEND = "native nativesdk"
+>   
+>   Splitting an Application into Multiple Packages
+>   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> index cba9793332..ffb2176e43 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -170,8 +170,7 @@ example use for this class.
+>      are extracted into the subdirectory expected by the default value of
+>      :term:`S`::
+>   
+> -           SRC_URI = "git://example.com/downloads/somepackage.rpm;subpath=${BP}"
+> -
+> +      SRC_URI = "git://example.com/downloads/somepackage.rpm;branch=master;subpath=${BP}"
+>   
+
+s/master/main/ (or devel)
+
+>      See the ":ref:`bitbake-user-manual/bitbake-user-manual-fetching:fetchers`" section in the BitBake User Manual for
+>      more information on supported BitBake Fetchers.
+> @@ -477,7 +476,7 @@ recipe that fetches from an alternative URI (e.g. Git) instead of a
+>   tarball. Following is an example::
+>   
+>      BBCLASSEXTEND = "devupstream:target"
+> -   SRC_URI:class-devupstream = "git://git.example.com/example"
+> +   SRC_URI:class-devupstream = "git://git.example.com/example;branch=master"
+
+s/master/main/ (or devel)
+
+>      SRCREV:class-devupstream = "abcd1234"
+>   
+>   Adding the above statements to your recipe creates a variant that has
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 005456f0c4..efc3fcf8d4 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -6455,7 +6455,7 @@ system and gives an overview of their function and contents.
+>         from the default value of :term:`S`, you must set it specifically so the
+>         source can be located::
+>   
+> -         SRC_URI = "git://path/to/repo.git"
+> +         SRC_URI = "git://path/to/repo.git;branch=master"
+
+s/master/main/ (or devel)
 
 Cheers,
 Quentin
