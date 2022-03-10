@@ -1,100 +1,167 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EAEBC433F5
-	for <webhook@archiver.kernel.org>; Thu, 10 Mar 2022 10:25:50 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web12.8060.1646907949111239483
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F709C433FE
+	for <webhook@archiver.kernel.org>; Thu, 10 Mar 2022 10:27:16 +0000 (UTC)
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (EUR04-DB3-obe.outbound.protection.outlook.com [40.107.6.85])
+ by mx.groups.io with SMTP id smtpd.web12.8067.1646908034529477971
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Mar 2022 02:25:49 -0800
+ Thu, 10 Mar 2022 02:27:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ESHl9mas;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197,
- mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id BDD4D1C0005;
-	Thu, 10 Mar 2022 10:25:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1646907947;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xbYtirqmmaCgIZM95nEvEpcLPwFckANeW3v53oqvPXo=;
-	b=ESHl9masN6v0lYOZDmUG47tr0Vhw0jvSovYYGV921qKt7QaAQh0OlrjSjoiERR/B1AnWfb
-	2c4YerGO9bewsJg/wxYYM10Mo9VSMrmbesfEWa3iELJT1yIm1igLJ2emejVisffIwFBekH
-	v/TOz2bRNRHtI30D9/BIRPTUmLW5aijJlXCkCVUhZFwgZ1g4R+l4K72fSLC6dRfg5s4kE/
-	f5JMf4jRT8/HHEHKvGoG0wGJXCYyoRBi5ei+I1/0DscjFh3lgP3XR6iPotbF8O1x/6lzoj
-	T9MFp/MQ1qG4vdOA73a7cxZlZxuex9b2+ScbRLGc5jDg9R/Ugx5J5wrSj1aAyw==
-Message-ID: <bed867f3-8226-701c-0ee7-ac8f02723edc@bootlin.com>
-Date: Thu, 10 Mar 2022 11:25:46 +0100
-MIME-Version: 1.0
+ dkim=pass header.i=@cherrycloud.onmicrosoft.com
+ header.s=selector2-cherrycloud-onmicrosoft-com header.b=G9N5zZM+;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.6.85,
+ mailfrom: quentin.schulz@theobroma-systems.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Ouz6IMrB5PERu/QU9vTQeJjyBzx7BOcMK9KuUzvHkifvxSJWNQgKdhsF0jRtY30gYTIpV1oyyWohn2IDTSFjkQ0bpNNZduw7lxvbsAMpm0bTwPLHFQHQVEHxcQK4mETQVf615pfngYTQlN2RTxq9RxlD79igXJvc7hBFvATUVqRdFM4iVvWnTE3m48MWne8Tpe/4ReJlaATC/h58u5D4MsZm7oKEF1jZbHGDJLBXK8It7hwmOGjUu2fNY6YB59+UpRJl5ixUOmir5TuZSyh1CylrGWxv7BnJT8qUQo8rTlvYyAO+N/7sTwE1iX+ichaLItswOM4V23GSIIsAc+0OzA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Hevc5mQ+IXpCENek4Jc7e91nKupjDmNnqWV5Tn3IrWU=;
+ b=QZdOOVqxqimZt7N0etdkhm5WJ2yK7UPh+e9vjilTYk9++W50S05mbGI2EFCTNsG/EUu+NdamQkl7lrwLXy9zj1sbfx4deri0FWFHFkVAtuPG/TJJFwBZUHG7TWGZhXfMIbtUqJSSRfLXN61zHVD37LphIs4aW1bel0HjBkv9VDClub8aABxE12gOzThLaW0TtFlcNP10RY+ex+RFMbSOnH7kmwshiM/gfn4+qI99PG7nXSvun285RKlWQsUJIMyIBpLoguGD5AYOlWXzPjBDTEPfksGte6go1jtwlGpRpraFx/TApntxppYD3t3NpwcMFiIHtlvhDH/jxt0X95aWNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Hevc5mQ+IXpCENek4Jc7e91nKupjDmNnqWV5Tn3IrWU=;
+ b=G9N5zZM+rAMXICERh4t8YfKP0xUfieE0W/tHQ2s01GEQAuSaE1ALgMs6oyc+T3CTq6JZirJfRQDYeG99ajo3pxOPGz5RnXy1EbnLX160w32nRn6Vq222/aOwck+dsGUsYcRu46ri88M9GfHrIrot3kOHy0wd//A2aRp5GEwF48A=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
+Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
+ by AM6PR0402MB3622.eurprd04.prod.outlook.com (2603:10a6:209:7::33) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5038.26; Thu, 10 Mar
+ 2022 10:27:11 +0000
+Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
+ ([fe80::ecac:a35b:6947:e7f3]) by PA4PR04MB9367.eurprd04.prod.outlook.com
+ ([fe80::ecac:a35b:6947:e7f3%9]) with mapi id 15.20.5038.027; Thu, 10 Mar 2022
+ 10:27:11 +0000
+Message-ID: <87a8b082-21ac-6e15-e5b5-4bd114e25679@theobroma-systems.com>
+Date: Thu, 10 Mar 2022 11:27:09 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [bitbake-devel] [PATCH] bitbake-user-manual: update allowed
+ characters in overrides
 Content-Language: en-US
-To: OE-core <openembedded-core@lists.openembedded.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: List of changes for Kirkstone migration notes
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8
+To: michael.opdenacker@bootlin.com, bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org
+References: <16DA1113B58DA516.28939@lists.openembedded.org>
+ <20220307163354.531374-1-michael.opdenacker@bootlin.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+In-Reply-To: <20220307163354.531374-1-michael.opdenacker@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS8PR04CA0094.eurprd04.prod.outlook.com
+ (2603:10a6:20b:31e::9) To PA4PR04MB9367.eurprd04.prod.outlook.com
+ (2603:10a6:102:2aa::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 795e73b6-f173-4aa5-bb14-08da02808948
+X-MS-TrafficTypeDiagnostic: AM6PR0402MB3622:EE_
+X-Microsoft-Antispam-PRVS: 
+	<AM6PR0402MB3622903D57F51BAB2946B8C9C20B9@AM6PR0402MB3622.eurprd04.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	O8aPFJx+RpbOq13eK3ZHZnGGgcaIyVoow4y/FLLtTgTC4Zz54lIszEamNHgV4IgodI3DuC8acCOlAg8OswcWj4ryJlap3v7gAap+LqW9wDegrBFbCI9onaWSXv8GHcwjjqG4wsF2ioaaTCBpM9F3zoUmADmLCsJKoP1m/oWVvrHzfRs1FNY52TEyo2w+UPi23WriOud0xZ7oQzhSy6v+fAr0phij6zVTraIk48dmIGgZb37DDJiBCdc3LYPnEPX13tRjmUMIrnCBg2l7KfRD05WQPQbPhwhaYjZUygUEXy4z9IEgcVVwazMq9DUb1zFoCIjKEP5XrH5clPxGeY/zJGBUr69AZAgzUqkSUuuQge3zsml4Dw3sXnqMejXcG5w3vjKC5M5+djkz/2mIGBU4/jiHxBrJi6l0I7o27ujxWiypFPmjZjdF9EQt1+b13gVt73IseR9MjTO9wl2FBvXWt92jAqueD5xX3L8AEiordB4bgGY8BXsksLeAjHPqWIDcGpIJ4Lh00vNZbz2DjBd+FFv9KcE6lqzR73ZfTcJ2FvNQ/jngD7xGAma826aLPh6kLcQb32DACTIPYxM0Aposu9HvVJ93zQDzjIkhLtEd1KKtKo0MQB0qquow3xK3ahe93btYz5FfJUUNC0fGw3BQbNii7hxJBLkfrqRXw9M5G5SZ7uf+2Z+ydJoBQNlH5thMX54+qeMhoxt6N2bdDLUgEHYfrcFl7AEx+IlI00JRW2A=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(66946007)(36756003)(8676002)(31686004)(44832011)(66556008)(5660300002)(66476007)(4326008)(38100700002)(8936002)(2906002)(316002)(53546011)(6486002)(31696002)(86362001)(508600001)(2616005)(83380400001)(26005)(6512007)(186003)(6506007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?V21lK295RXoyMUdIOW8yQk43aWpTV3BsbFRnWG1NNDdtRkJqSHVjM3lVMlVv?=
+ =?utf-8?B?RFREK1l6SGNZS2pOY2MvbHMzQWVzRThvM3lCdk1jNmFXZ3dVM01jbUN1RzVO?=
+ =?utf-8?B?OTYyZzVUWDNWOS9SczhRU3pjTXZjZHNJYW54dXl4emM3S0oyWHJVN2xreHFy?=
+ =?utf-8?B?bUxaT3N6SjBGSDJvZnhSZjhPWmNkYUcrZFBGSFlqZzNvRDB1TU1odHZsOC9k?=
+ =?utf-8?B?aktWTmZSMXM5WVJ2cU5udEVxbFpPalNNWDlKejhvb1l6S0Z0clVWY2ZOQ0pj?=
+ =?utf-8?B?UVErajloblhvc0VJZldqT3FKWnROMEdjQWpZWi9scWRkamR4UERoSVFFNjdD?=
+ =?utf-8?B?eGR5OFFZUFg0djU2MldDYmd4UHlORDNiS0RjbXNZOTh5NU9VdGEveGNPdm5F?=
+ =?utf-8?B?MXMvR002TUpndmYvaXgwSThVOGQ3TG5xK1Z2N1EydnNiUVVpaFRBZ0UweTMr?=
+ =?utf-8?B?MmhTZW9adDFmc0FxbmZuUGk0eHJ5N0wwOUVqOTd3MVRIdHhyS1NJK0JTTUg4?=
+ =?utf-8?B?aS9TTUF4Y3BMSEtpVG90WlQ3S0RJYS92VzNIaGdWeFdIZnZjZ1RJR0dicnBu?=
+ =?utf-8?B?YnFEQWZzVGY0RFVva1VBZkRYSTI1alZXYnhycjkvRFhPUVlER0p1TTh5NWRS?=
+ =?utf-8?B?VXd0ZHgzeXAzaVpENEZuOWRXaXJOUkcrd2hJaHVPVm1qMmwzaU55bFIwTjVV?=
+ =?utf-8?B?bzV5MWtGK21HK3hkR0htNnR1eG82VlZJazkvRnltczlZS3AwdGVudFFOQTdX?=
+ =?utf-8?B?ZkhFbVY5TVVRL2JGcE1jZlAyMThhcktMREk3YVlPdzBCRWh1bEZrRDFIRG1y?=
+ =?utf-8?B?SlhFUGVvYlBseVZaTGlHRVFxWUhGallTYy92K1h1QVBaQ1N1Mjl3VmU5Z2p3?=
+ =?utf-8?B?NFZtcGFWMW12OVVHRTAxVitXcExaMThySzkyRUlVUlBlQXdQMi90SEFWc3Y3?=
+ =?utf-8?B?MFpPcC9tTHJ0Q25uclpjOFYrTWdlV09mUldPNDByMjRwTUNVMm9pNFpvME9z?=
+ =?utf-8?B?T1dvdUZkMkFoMjhlbmVLN01ydTRjZ2JRMngrWmlyaWJZZDgxcCtlQjhPTHFm?=
+ =?utf-8?B?RFd2cWVuTUdrdzVRYkMwWGVLMWM3YnlYNXkxNk1YS1VmRk9zUjJQNXZZbGR3?=
+ =?utf-8?B?UzRYeXo4MjlySllHMUlHbTBPVnVSaFFrSEd0L3F0dzY2anR0aXNSVjZLcTFk?=
+ =?utf-8?B?cmV6clEwbFluTmRLa1B3aUNPWUgzRmFNampkV1dxVFdFT0l6TUhzRWR6a3Fk?=
+ =?utf-8?B?Tk5EaWlsclB5Q0s4UFprVHlQUUlKOHNLSHI3Z3RGeWp4TEpGeWlTb2ZFb2lW?=
+ =?utf-8?B?SXdXV3ZVUXE5Y1djUnlRczlyWHIxRVkxT3dFR2NpM011aTVNZ0pzd2EvamY2?=
+ =?utf-8?B?azNKSGRZWlBVNGpzSm5hY01RdGp4SXJZcm54OWN4NU5QTDhrSXMxbkV4U3ll?=
+ =?utf-8?B?aVZCajNsb0ZMMFhKd3U3MDl0RTBkMk9KMDhPVnlZZ0VZOUhodndvcGVGVmhq?=
+ =?utf-8?B?N01za2l4dmZHVnlqMm1icmZ6YmcwTVArK2xnYjU1RjVwOTRWS3pyL0JJQ3FP?=
+ =?utf-8?B?ZS94c1JpSGpsSW5iWm5CUWlXU0J2WCtFamcrLzhjK3FWRk5uWm1aUEZqL2Mr?=
+ =?utf-8?B?T1pjNjFrYjdsdzRWODAxZmpOSWdNWFVyakQxeEZ3bHhqRENRRGpmMFRhakZK?=
+ =?utf-8?B?Vy9KWTBVU3BhUjB5ME9PbW1jM0REa0tkRlI3ZGx4MTg0WnE4WXVyeHBXKzla?=
+ =?utf-8?B?L29WdGRYOEJKelBRQ2VlbHNpQTQrYXNXN0VCdGVHSjVpRXpGSmpsSWc0a1Zo?=
+ =?utf-8?B?bEptMW5oNFUwMGp0WFN2ckExd1NuSjI0YjNmUEhNWktoT1BzOTdvNHBtMGt5?=
+ =?utf-8?B?RnplTTBOOHp0RVd6eEZmNi9sSXlSUFVsWW1nUmdmeVg1Z1Y1WERWR3NZRkFq?=
+ =?utf-8?B?WXlEK2lpbzMwVE5ML29QRDExbzVhc2dhTi90bTNaOGM3dzJJdnVLUGxVNnB4?=
+ =?utf-8?B?MVFlQVZ6alN4UjJodUdrbWE0ZWxuSjFEdjdlTUU3Y0xUS0dnaThUWE1maWVQ?=
+ =?utf-8?B?MDRDYVpZSXVpS0RjVjRNWFpReHRLWVFMbUlDdEErVk1CRTVhWmc1em5KRnZy?=
+ =?utf-8?B?eXJTVHpaWXFLNWtURFF3Ump0MDJoVnI0OWtVSTVpRTBLYWFJTkhMSWhkSW1B?=
+ =?utf-8?B?SFUrRzZFWTJoN3gwc1Y2NjJZdUJkYjAvMFRFT0RHaE56UE5URmszdDdhK05o?=
+ =?utf-8?B?SVJBbkRMRlZta1liY1FIdU1HaVgxclpJOVRFS1RwYkR3Y1BCQzRWSURWeERO?=
+ =?utf-8?B?eElYN3NCOHBkaE96cUhEdzUwMEg4VXZISE52azVBNHU3NGZuTjluUT09?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 
+ 795e73b6-f173-4aa5-bb14-08da02808948
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Mar 2022 10:27:11.0066
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 
+ WNrCRB0EXWGYiB8V0rumw0UTYYmk3ypirBqutxCXxQrFL3btpcm5I06QgI0dlamVcKftnH+pl0l/Bv2+amSTjTscUZGbW9ssip6f7UIgftqxXxkEKqKZkSrgBWqYN9Ef
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR0402MB3622
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Mar 2022 10:25:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2569
+ <docs@lists.yoctoproject.org>; Thu, 10 Mar 2022 10:27:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2570
 
-Greetings
+Hi Michael,
 
-We need to prepare the final migration notes for Kirkstone and need your
-help. Here is a quick list of already documented changes (see
-https://git.yoctoproject.org/yocto-docs/tree/documentation/migration-guides/migration-3.5.rst),
-and changes that haven't been documented yet:
+On 3/7/22 17:33, Michael Opdenacker via lists.openembedded.org wrote:
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> ---
+> 
+>   An open question is whether digits and/or hashes are
 
-Already documented
-- Branch name required in git:// and gitsm:// SRC_URI entries
-- ";protocol=https" required at the end of GitHub URLs
-- Network access disabled for tasks
-- TOPDIR and current directory no longer modified while parsing recipes
-- ``append``, ``prepend`` and ``remove`` only working with "=" and ":="
-- allarch packagegroups can no longer depend on packages using PKG renaming
-- distutils* classes moved to meta-python
-- `blacklist.bbclass`` removed and introduction of SKIP_RECIPE
+I assume the question is about dashes (same question for underscores BTW).
 
+>   allowed at the begining of an override keyword.
+>   Will be happy to send a V2 to explicit this if needed.
+> 
+>   doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> index b90e5cf0..104dcb6c 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> @@ -510,8 +510,8 @@ variable.
+>   
+>   .. note::
+>   
+> -   Overrides can only use lower-case characters. Additionally,
+> -   colons are not permitted in override names as they are used to
+> +   Overrides can only use lower-case characters, digits and dashes.
 
-Not documented yet
-- Shared State reuse from the autobuilder, speeding up builds if the
-network is fast enough
-- License fields now using SPDX identifiers
-- Inclusive language updates, conversion script available
-- Python build process based on wheels. New python packaging classes:
-setuptools_build_meta.bbclass, pip_install_wheel.bbclass,
-flit_core.bbclass;
-- prelink support dropped
-- New overlayfs and overlayfs-etc classes
-- Support for AlmaLinux replacing CentOS, dropped CentOS 8, Ubuntu
-16.04, Fedora 30-32...
-- State cache: use ZStandard (zstd) instead of Gzip compression
-- Fixed the reproducibility issues with rust-llvm and golang. Full
-reprocibility in OE-Core
-- BitBake: improve setscene task display
-- New "crate" fetcher for Rust
+and underscores too!
 
-Any noteworthy changes we should add to the list? I also realize that
-some of the changes probably shouldn't make it to the migration notes,
-just to the release notes. If so, let us know.
-
-Don't hesitate to amend the above list by replying to this e-mail.
-Documentation patches are also welcome, of course.
-
-Thanks in advance,
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Cheers,
+Quentin
 
