@@ -2,85 +2,74 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 676F1C433F5
-	for <webhook@archiver.kernel.org>; Thu, 10 Mar 2022 11:39:20 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web12.8494.1646912359516856014
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 72273C433F5
+	for <webhook@archiver.kernel.org>; Thu, 10 Mar 2022 14:43:27 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.10199.1646923405636089884
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Mar 2022 03:39:20 -0800
+ Thu, 10 Mar 2022 06:43:26 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=m+OJ1Rs5;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=azzbysl/;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id A49DA1C000A;
-	Thu, 10 Mar 2022 11:39:17 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 89D0140007;
+	Thu, 10 Mar 2022 14:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1646912357;
+	t=1646923403;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lfSIzcDta7t6+qkTjMwzKsLEe/ItE9T6crsen4l6gPQ=;
-	b=m+OJ1Rs50dfm7sAzCe9d2D2kV4wPc664r0wciJMgnKIDxeaXULTH9uOIhnsIuQiJ6Cs7Ms
-	LquSfUzNQihjbMTRpgPuSxvuqgFD+j/As5O1KN5UuMsrtPYmzNi47RW21MLQJ+eepDK6S3
-	GDw39w9yAGkZICXa4CgkYV+lv/fCNLnE6IKf2k9mUSSg6i+sTPGZL+9J2LQl3Mzt6/ugaQ
-	LnJmzfyMA/WWsW1CLSE8jeea0WvwueNi9oXeNzW0ocReSkAduaZsaXf257eAQitnxNXo2K
-	b08f2RuWsG186Jg0AwjoAEFGhqlgkrSTNRNQBQUOVfxaVsdsb4DB2ywxz+XaIw==
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH V2] dev-manual: details about using firewalls and limiting
- fetch threads
-Date: Thu, 10 Mar 2022 12:39:05 +0100
-Message-Id: <20220310113905.12144-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <16DB01F0D7379E48.32226@lists.yoctoproject.org>
-References: <16DB01F0D7379E48.32226@lists.yoctoproject.org>
+	bh=vOzc20Gwfx+rzq9ycv1VQdekvWvutaPa/OrQxSjnR8k=;
+	b=azzbysl/YRyTzA3/qoSSUkAfwuE97sY75z/51Ww3sBQ471kIe+jJNJ2Z6o6M4D/IVcgk7o
+	SDiwLyBS6ypwywQqc89VmaX+/+1+UaESxDzovOpxfwjFTItSoDTP46CIEB2psHJzBAnv2P
+	R2TLFz0wXEWvQ/ZMqHBbAczaQBwyBdwFc1H4nQISyRMq+Qk7Bo/cjRzYqoVruxxIBPkR8i
+	OwzKSSfYNbBm1hikOG9/Qst9BxIDEWclqpP7eEv7bH2Pl9WjDuN82pqKgpPSZuVC3w/ieO
+	1HLbi0JzJodEShvOfrULwA5nnM8/SJLuvqgORU9gobMha9m7aCNbsatbyTYHzg==
+Message-ID: <37bfb570-9a47-c78c-e4ac-f7e87e613865@bootlin.com>
+Date: Thu, 10 Mar 2022 15:43:22 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [docs] [PATCH] docs: update examples to add branch info to git
+ URIs
+Content-Language: en-US
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ docs@lists.yoctoproject.org
+References: <20220309141551.612610-1-michael.opdenacker@bootlin.com>
+ <51c1934a-6ead-c938-ecb6-c40c8b2f0d45@theobroma-systems.com>
+ <16DB0B75A9F968CB.20222@lists.yoctoproject.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <16DB0B75A9F968CB.20222@lists.yoctoproject.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Mar 2022 11:39:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2580
+ <docs@lists.yoctoproject.org>; Thu, 10 Mar 2022 14:43:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2582
 
-Fixes [YOCTO #13235]
+Hi again Quentin,
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/dev-manual/common-tasks.rst | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+On 3/10/22 15:31, Michael Opdenacker via lists.yoctoproject.org wrote:
+> I agree this is an issue. We never know when this upstream will change.
+>
+> The challenge though is to find a suitable example which also includes
+> an EXTRA_OEMAKE, because that's what the corresponding paragraph is about.
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 1caf953901..72a07a7cff 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -1481,6 +1481,22 @@ compressed suffixes such as ``diff.gz`` and ``patch.bz2``, for example.
- The build system automatically applies patches as described in the
- ":ref:`dev-manual/common-tasks:patching code`" section.
- 
-+Fetching Code Through Firewalls
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Some users are behind firewalls and need to fetch code through a proxy.
-+See the ":doc:`/ref-manual/faq`" chapter for advice.
-+
-+Limiting the Number of Parallel Connections
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Some users are behind firewalls or use servers where the number of parallel
-+connections is limited. In such cases, you can limit the number of fetch
-+tasks being run in parallel by adding the following to your ``local.conf``
-+file::
-+
-+   do_fetch[number_threads] = "4"
-+
- Unpacking Code
- --------------
- 
+
+Oops, I was actually talking about the lz4 package, which is just fine
+here as it doesn't use the "master" branch.
+I'll do my best to remove "branch=master" from the patch.
+
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
