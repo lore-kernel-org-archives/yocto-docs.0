@@ -1,231 +1,228 @@
-Return-Path: <raj.khem@gmail.com>
+Return-Path: <ross@burtonini.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3485FC433F5
-	for <webhook@archiver.kernel.org>; Fri, 11 Mar 2022 20:15:15 +0000 (UTC)
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com
- [209.85.222.172])
- by mx.groups.io with SMTP id smtpd.web10.10057.1647029713881409896
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BB8DC433F5
+	for <webhook@archiver.kernel.org>; Mon, 14 Mar 2022 17:07:55 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by mx.groups.io with SMTP id smtpd.web08.28663.1647277674040672140
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Mar 2022 12:15:14 -0800
+ Mon, 14 Mar 2022 10:07:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=Xie7et6G;
- spf=pass (domain: gmail.com, ip: 209.85.222.172,
- mailfrom: raj.khem@gmail.com)
-Received: by mail-qk1-f172.google.com with SMTP id c7so7906920qka.7
-        for <docs@lists.yoctoproject.org>;
- Fri, 11 Mar 2022 12:15:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Xev/W8j2bZkh0mdNBu+fFgd0HrIuljCmio1MnlBLWoM=;
-        b=Xie7et6GynyTM0MdcBkYIA/+Nz73qHNYeXQWpiGq7yywg00cJRr3Fx8p9ErfDYaC9s
-         FrkJZTMxHEU49e7JdvSeVwapS+WJ59pCmZmu8+2+qWptxlaCsmFfk2xi0wjhBelE6Lt1
-         LMWOjJBn3g7zIARz+2HVhrsNuZZqAnfKTHGz/6hhyhT47eHurCx7X1ZKN/Bw43/Yw40U
-         99tYJIDKNgHI2foNgFag6gg+ELLtd7CiXK4IXNVwcQJukTSOBcoJ0aOaiJO+p6IY/h2k
-         V4dZBPbf7vad+SwkHhpnj4pu5+vsY4bmXBNNnY4C/c3GVOmWTgwiD4e0w6vhqDzU5zhm
-         F0Iw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Xev/W8j2bZkh0mdNBu+fFgd0HrIuljCmio1MnlBLWoM=;
-        b=2U0iZHCXfk4niY2IzgVGCKu0QnV+B92ynFqoB1scJsJHIHvK9J03yOQZNHe0VoXk2c
-         a/yHm+VPieiQy+RG63s7QHPBVwKipmSBySu7SoGO9ZaDmDWACHACxPjZa7+AQ4c8EUB2
-         t0QtvxtiCEGx7YuoH/CnLOqjCezdSOhPMq8F5CDm7o0XoMUHX81mbS551hKwbb3YJHaV
-         +qwfyMmQxd7TqSovfRsIFoL46wluE4rnj+wmOwpZvcC71JBp9gctLvg4WjXitciRV6tA
-         aG0OtSHT5mWaltyd/w20yJQ2IsVX2CGBbae1np6vozp3x2U0RjyKCNSuBjRHjsqaANJU
-         KmwA==
-X-Gm-Message-State: AOAM5332dfD8oOdfuIuaIfKaRLWp/7LpnImDH04PH44+9Z9ldtUYbqUE
-	KI5YbQPz7PNM+mSkC8b/SdulmD2VWygKN8cfUAo=
-X-Google-Smtp-Source: 
- ABdhPJw5aKs48Tbisas8V1Dg02sN1I9rlm2GSe/4iB7WQQio6e0uzejD++NDaeNKEEZajcc83WkwCaD7uf6dc+n+TM0=
-X-Received: by 2002:a05:620a:2993:b0:67d:7116:a642 with SMTP id
- r19-20020a05620a299300b0067d7116a642mr4391569qkp.180.1647029712923; Fri, 11
- Mar 2022 12:15:12 -0800 (PST)
+ dkim=missing;
+ spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A78AFD6E
+	for <docs@lists.yoctoproject.org>; Mon, 14 Mar 2022 10:07:53 -0700 (PDT)
+Received: from oss-tx204.lab.cambridge.arm.com
+ (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 572813F66F
+	for <docs@lists.yoctoproject.org>; Mon, 14 Mar 2022 10:07:53 -0700 (PDT)
+From: Ross Burton <ross.burton@arm.com>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] Update documentation for Python packaging changes
+Date: Mon, 14 Mar 2022 17:07:50 +0000
+Message-Id: <20220314170750.1858689-1-ross.burton@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <16DB63DD72FFB73C.30380@lists.yoctoproject.org>
- <20220311173546.69090-1-michael.opdenacker@bootlin.com>
-In-Reply-To: <20220311173546.69090-1-michael.opdenacker@bootlin.com>
-From: Khem Raj <raj.khem@gmail.com>
-Date: Fri, 11 Mar 2022 12:15:02 -0800
-Message-ID: 
- <CAMKF1sqc73Gje_MtdFnHV9bqKbsafL2pp91NE1SAbawXY5v2UQ@mail.gmail.com>
-Subject: Re: [docs] [PATCH] docs: ref-system-requirements.rst: update list of
- supported distros
-To: michael.opdenacker@bootlin.com
-Cc: Christian Eggers <ceggers@arri.de>, Steve Sakoman <steve@sakoman.com>,
- docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000f930bb05d9f6fc65"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 11 Mar 2022 20:15:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2602
+ <docs@lists.yoctoproject.org>; Mon, 14 Mar 2022 17:07:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2603
 
---000000000000f930bb05d9f6fc65
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+A number of classes and variables have been renamed, so update the
+documentation as needed.
 
-When will we drop centos7 ? I think given it=E2=80=99s LTS it might be ok b=
-ut then
-centos 7 is supported till 2024 so it may be fine
+Signed-off-by: Ross Burton <ross.burton@arm.com>
+---
+ documentation/ref-manual/classes.rst   | 45 ++++++++++++++++----------
+ documentation/ref-manual/variables.rst | 28 ++++------------
+ 2 files changed, 35 insertions(+), 38 deletions(-)
 
-On Fri, Mar 11, 2022 at 9:35 AM Michael Opdenacker via
-lists.yoctoproject.org <michael.opdenacker=3D
-bootlin.com@lists.yoctoproject.org> wrote:
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+index cba9793332..ef869e4cc1 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -634,7 +634,7 @@ Python modules built with ``flit_core.buildapi`` are =
+pure Python (no
+ ``C`` or ``Rust`` extensions).
+=20
+ The resulting ``wheel`` (See `PEP-427 <https://www.python.org/dev/peps/p=
+ep-0427/>`__)
+-is installed with the :ref:`pip_install_wheel <ref-classes-pip_install_w=
+heel>` class.
++is installed with the :ref:`python_pep517 <ref-classes-python_pep517>` c=
+lass.
+=20
+ .. _ref-classes-fontcache:
+=20
+@@ -1996,25 +1996,20 @@ When inherited by a recipe, the ``perlnative`` cl=
+ass supports using the
+ native version of Perl built by the build system rather than using the
+ version provided by the build host.
+=20
+-.. _ref-classes-pip_install_wheel:
++.. _ref-classes-python_pep517:
+=20
+-``pip_install_wheel.bbclass``
++``python_pep517.bbclass``
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+=20
+-The ``pip_install_wheel`` class uses ``pip`` to install a Python ``wheel=
+``
+-binary archive format (See `PEP-427 <https://www.python.org/dev/peps/pep=
+-0427/>`__)
++The ``python_pep517`` class installs a Python ``wheel`` binary archive (=
+see
++`PEP-517 <https://peps.python.org/pep-0517/>`__).
+=20
+ The Python ``wheel`` can be built with several classes, including :ref:`=
+flit_core <ref-classes-flit_core>`,
+ :ref:`setuptools_build_meta <ref-classes-setuptools_build_meta>`, and :r=
+ef:`setuptools3 <ref-classes-setuptools3>`.
+=20
+-The absolute path to the built ``wheel`` to be installed is defined by :=
+term:`PYPA_WHEEL` which can be
+-overriden for recipes where the filename or version number of the wheel =
+are not easily
+-determined by the defaults. Other variables which can be used to customi=
+ze the behavior
+-of the ``pip_install_wheel`` class include:
+-
+-- :term:`PIP_INSTALL_ARGS`
+-- :term:`PIP_INSTALL_PACKAGE`
+-- :term:`PIP_INSTALL_DIST_PATH`
++The path to the wheel to be installed is defined by :term:`PEP517_WHEEL_=
+PATH`.
++This defaults to ``${D}/dist`` and should be respected by the builder cl=
+ass
++(such as :ref:`flit_core <ref-classes-flit_core>`).
+=20
+ .. _ref-classes-pixbufcache:
+=20
+@@ -2386,7 +2381,7 @@ Python modules built with ``setuptools.build_meta``=
+ can be pure Python or
+ include ``C`` or ``Rust`` extensions).
+=20
+ The resulting ``wheel`` (See `PEP-427 <https://www.python.org/dev/peps/p=
+ep-0427/>`__)
+-is installed with the :ref:`pip_install_wheel <ref-classes-pip_install_w=
+heel>` class.
++is installed with the :ref:`python_pep517 <ref-classes-python_pep517>` c=
+lass.
+=20
+ .. _ref-classes-setuptools3:
+=20
+@@ -2411,9 +2406,25 @@ uses these build systems, the recipe needs to inhe=
+rit the ``setuptools3`` class.
+=20
+    .. note::
+=20
+-     The ``setuptools3`` class ``do_install()`` task now calls ``pip ins=
+tall``
+-     to install the ``wheel`` binary archive. In current versions of
+-     ``setuptools`` the legacy ``setup.py install`` method is deprecated=
+.
++     The ``setuptools3`` class ``do_install()`` task now installs the ``=
+wheel``
++     binary archive. In current versions of ``setuptools`` the legacy ``=
+setup.py
++     install`` method is deprecated. If the ``setup.py`` cannot be used =
+with
++     wheels, for example it creates files outside of the Python module o=
+r
++     standard entry points, then :ref:`setuptools3_legacy
++     <ref-classes-setuptools3_legacy>` should be used.
++
++.. _ref-classes-setuptools3_legacy:
++
++``setuptools3_legacy.bbclass``
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D
++
++The ``setuptools3_legacy`` class supports Python version 3.x extensions =
+that use
++build systems based on ``setuptools`` (e.g. only have a ``setup.py`` and=
+ have
++not migrated to the official ``pyproject.toml`` format). Unlike
++``setuptools3.bbclass``, this uses the traditional ``setup.py`` ``build`=
+` and
++``install`` commands and not wheels. This use of ``setuptools`` like thi=
+s is
++`deprecated <https://github.com/pypa/setuptools/blob/main/CHANGES.rst#v5=
+830>`_
++but still relatively common.
+=20
+ .. _ref-classes-setuptools3-base:
+=20
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+index 005456f0c4..d08e6cf0ec 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5569,6 +5569,12 @@ system and gives an overview of their function and=
+ contents.
+=20
+       :term:`PE` is the default value of the :term:`PKGE` variable.
+=20
++   :term:`PEP517_WHEEL_PATH`
++      When used by recipes that inherit the
++      :ref:`python_pep517 <ref-classes-python_pep517>` class,
++      denotes the path to ``dist/`` (short for distribution) where the
++      binary archive ``wheel`` is built.
++
+    :term:`PF`
+       Specifies the recipe or package name and includes all version and
+       revision numbers (i.e. ``glibc-2.13-r20+svnr15508/`` and
+@@ -5577,23 +5583,10 @@ system and gives an overview of their function an=
+d contents.
+=20
+    :term:`PIP_INSTALL_ARGS`
+       When used by recipes that inherit the
+-      :ref:`pip_install_wheel <ref-classes-pip_install_wheel>` class,
++      :ref:`python_pep517 <ref-classes-python_pep517>` class,
+       denotes the arguments passed to ``pip install`` to adjust the
+       behavior of how the ``wheel`` is installed.
+=20
+-   :term:`PIP_INSTALL_DIST_PATH`
+-      When used by recipes that inherit the
+-      :ref:`pip_install_wheel <ref-classes-pip_install_wheel>` class,
+-      denotes the path to ``dist/`` (short for distribution) where the
+-      binary archive ``wheel`` is built. This is used in part to create
+-      the :term:`PYPA_WHEEL` variable.
+-
+-   :term:`PIP_INSTALL_PACKAGE`
+-      When used by recipes that inherit the
+-      :ref:`pip_install_wheel <ref-classes-pip_install_wheel>` class,
+-      denotes the name of the package portion of the ``wheel`` filename.
+-      This is used in part to create the :term:`PYPA_WHEEL` variable.
+-
+    :term:`PIXBUF_PACKAGES`
+       When inheriting the :ref:`pixbufcache <ref-classes-pixbufcache>`
+       class, this variable identifies packages that contain the pixbuf
+@@ -6021,13 +6014,6 @@ system and gives an overview of their function and=
+ contents.
+=20
+       :term:`PV` is the default value of the :term:`PKGV` variable.
+=20
+-   :term:`PYPA_WHEEL`
+-      When used by recipes that inherit the
+-      :ref:`pip_install_wheel <ref-classes-pip_install_wheel>` class, de=
+notes
+-      the absolute path to the built ``wheel`` to be installed. Normally=
+ the
+-      defaults which use :term:`PIP_INSTALL_PACKAGE` and :term:`PIP_INST=
+ALL_DIST_PATH`
+-      to build the path to the ``wheel`` should be sufficient.
+-
+    :term:`PYTHON_ABI`
+       When used by recipes that inherit the
+       :ref:`setuptools3 <ref-classes-setuptools3>` class, denotes the
+--=20
+2.25.1
 
-> Add AlmaLinux 8.5, Fedora 35, and OpenSUSE Leap 15.3
-> Remove Fedora 33, Debian 8, OpenSUSE Leap 15.1 and 15.2
->
-> Removing distros that were recently removed from SANITY_TESTED_DISTROS
-> in meta-poky/conf/distro/poky.conf
->
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Reported-by: Steve Sakoman <steve@sakoman.com>
-> Reported-by: Christian Eggers <ceggers@arri.de>
-> ---
->  documentation/ref-manual/system-requirements.rst | 10 ++++------
->  1 file changed, 4 insertions(+), 6 deletions(-)
->
-> diff --git a/documentation/ref-manual/system-requirements.rst
-> b/documentation/ref-manual/system-requirements.rst
-> index 30294cb27a..04f9efaa23 100644
-> --- a/documentation/ref-manual/system-requirements.rst
-> +++ b/documentation/ref-manual/system-requirements.rst
-> @@ -41,15 +41,15 @@ distributions:
->
->  -  Ubuntu 20.04 (LTS)
->
-> --  Fedora 33
-> -
->  -  Fedora 34
->
-> +-  Fedora 35
-> +
->  -  CentOS 7.x
->
->  -  CentOS 8.x
->
-> --  Debian GNU/Linux 8.x (Jessie)
-> +-  AlmaLinux 8.5
->
->  -  Debian GNU/Linux 9.x (Stretch)
->
-> @@ -57,9 +57,7 @@ distributions:
->
->  -  Debian GNU/Linux 11.x (Bullseye)
->
-> --  OpenSUSE Leap 15.1
-> -
-> --  OpenSUSE Leap 15.2
-> +-  OpenSUSE Leap 15.3
->
->  .. note::
->
-> --
-> 2.25.1
->
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#2599):
-> https://lists.yoctoproject.org/g/docs/message/2599
-> Mute This Topic: https://lists.yoctoproject.org/mt/89715890/1997914
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
-> raj.khem@gmail.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
->
-
---000000000000f930bb05d9f6fc65
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">When will we drop centos7 ? I think given it=E2=80=99s LT=
-S it might be ok but then centos 7 is supported till 2024 so it may be fine=
-</div><div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_a=
-ttr">On Fri, Mar 11, 2022 at 9:35 AM Michael Opdenacker via <a href=3D"http=
-://lists.yoctoproject.org">lists.yoctoproject.org</a> &lt;michael.opdenacke=
-r=3D<a href=3D"mailto:bootlin.com@lists.yoctoproject.org">bootlin.com@lists=
-.yoctoproject.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote"=
- style=3D"margin:0px 0px 0px 0.8ex;border-left-width:1px;border-left-style:=
-solid;padding-left:1ex;border-left-color:rgb(204,204,204)">Add AlmaLinux 8.=
-5, Fedora 35, and OpenSUSE Leap 15.3<br>
-Remove Fedora 33, Debian 8, OpenSUSE Leap 15.1 and 15.2<br>
-<br>
-Removing distros that were recently removed from SANITY_TESTED_DISTROS<br>
-in meta-poky/conf/distro/poky.conf<br>
-<br>
-Signed-off-by: Michael Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@=
-bootlin.com" target=3D"_blank">michael.opdenacker@bootlin.com</a>&gt;<br>
-Reported-by: Steve Sakoman &lt;<a href=3D"mailto:steve@sakoman.com" target=
-=3D"_blank">steve@sakoman.com</a>&gt;<br>
-Reported-by: Christian Eggers &lt;<a href=3D"mailto:ceggers@arri.de" target=
-=3D"_blank">ceggers@arri.de</a>&gt;<br>
----<br>
-=C2=A0documentation/ref-manual/system-requirements.rst | 10 ++++------<br>
-=C2=A01 file changed, 4 insertions(+), 6 deletions(-)<br>
-<br>
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentati=
-on/ref-manual/system-requirements.rst<br>
-index 30294cb27a..04f9efaa23 100644<br>
---- a/documentation/ref-manual/system-requirements.rst<br>
-+++ b/documentation/ref-manual/system-requirements.rst<br>
-@@ -41,15 +41,15 @@ distributions:<br>
-<br>
-=C2=A0-=C2=A0 Ubuntu 20.04 (LTS)<br>
-<br>
---=C2=A0 Fedora 33<br>
--<br>
-=C2=A0-=C2=A0 Fedora 34<br>
-<br>
-+-=C2=A0 Fedora 35<br>
-+<br>
-=C2=A0-=C2=A0 CentOS 7.x<br>
-<br>
-=C2=A0-=C2=A0 CentOS 8.x<br>
-<br>
---=C2=A0 Debian GNU/Linux 8.x (Jessie)<br>
-+-=C2=A0 AlmaLinux 8.5<br>
-<br>
-=C2=A0-=C2=A0 Debian GNU/Linux 9.x (Stretch)<br>
-<br>
-@@ -57,9 +57,7 @@ distributions:<br>
-<br>
-=C2=A0-=C2=A0 Debian GNU/Linux 11.x (Bullseye)<br>
-<br>
---=C2=A0 OpenSUSE Leap 15.1<br>
--<br>
---=C2=A0 OpenSUSE Leap 15.2<br>
-+-=C2=A0 OpenSUSE Leap 15.3<br>
-<br>
-=C2=A0.. note::<br>
-<br>
--- <br>
-2.25.1<br>
-<br>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br>
-View/Reply Online (#2599): <a href=3D"https://lists.yoctoproject.org/g/docs=
-/message/2599" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
-ect.org/g/docs/message/2599</a><br>
-Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/89715890/1997=
-914" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
-/89715890/1997914</a><br>
-Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
-"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
-/a> [<a href=3D"mailto:raj.khem@gmail.com" target=3D"_blank">raj.khem@gmail=
-.com</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</blockquote></div></div>
-
---000000000000f930bb05d9f6fc65--
 
