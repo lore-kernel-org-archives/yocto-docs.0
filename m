@@ -2,48 +2,46 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74888C433F5
-	for <webhook@archiver.kernel.org>; Tue, 15 Mar 2022 13:55:31 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.11202.1647352529430712645
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEDA8C4332F
+	for <webhook@archiver.kernel.org>; Tue, 15 Mar 2022 14:21:35 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web09.11456.1647354094251472568
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Mar 2022 06:55:30 -0700
+ Tue, 15 Mar 2022 07:21:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DlY6b3J3;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iK/4tpfN;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id E610C1C0004;
-	Tue, 15 Mar 2022 13:55:26 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 426711BF207;
+	Tue, 15 Mar 2022 14:21:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1647352527;
+	t=1647354092;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uMAycFLXWUuZ2haFdNbaIQ2leBLGj3a3sUe7L+ygPf4=;
-	b=DlY6b3J3uGLgRW4qtUK0OmoeFVhyQDpYNRz0qDQnTx7GU2A3b/gSN1p16/xpKkqP2kWDgK
-	k6s50lU2MzBfGCDNfJFsOzn1kQ2+Dpxf5XhGAowIEj0Hrw+K6WWF2V99DJ8d97ZRA81+IT
-	7vECfQuV/TiNtqUwHxvaym+PKoFGV6mCqr8m9J5jSL9fIry319VZgiNKJ8ThWH9H2EzcA2
-	MKe3sAwk+xLZj7f1cchEtbLe6STyTVF7q+cFQvCQ2G4Mtlp6CYXaVfigKMDKS6+6bCdl3p
-	JNeQ7cfGCUU1kUeKMMiGWQMmqQZB+Lj5ZaBOVIwhgKlX6IJ6qE23zOFC2Vfxeg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=x2mmp6xOhSIlpBe4sP0JwYvmATOYgaMtje5kqguznRQ=;
+	b=iK/4tpfNkM27LsMOkTS0hUGGVLVhJ+0dcp7WvMtSRRKJ05Kt8tksH8tO7IQZMojwHBoRjN
+	SLLl4qKWNLoAeqr+ZNXPDM68DhgC2h1RMygu7Xy0OlJ9hYlBl6xtu86EouWTBjnnPnQqO6
+	+S1YQkofibhi73gevIRCXyKZLYS7c6OEqHJxegZUnYJbM+F2ooxBbT37cq4uel7N66PT2M
+	vHEFwGjdIlX74LvvnLWiia64SB8S5yKF5Z7LdXnJnWDbA03NVHJE15UH14WCpACugPX/dq
+	u5qPaPdaG1tlm9p3LwNH24Go0TAr76IZ4H0IewgbfW1ovZEz8JMiGyOq9UiJOQ==
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 2/2] ref-manual: reorder variable definitions
-Date: Tue, 15 Mar 2022 14:55:14 +0100
-Message-Id: <20220315135514.128300-2-michael.opdenacker@bootlin.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] doc: bitbake-user-manual: reorder variable definitions
+Date: Tue, 15 Mar 2022 15:21:22 +0100
+Message-Id: <20220315142122.130520-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220315135514.128300-1-michael.opdenacker@bootlin.com>
-References: <20220315135514.128300-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 15 Mar 2022 13:55:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2606
+ <docs@lists.yoctoproject.org>; Tue, 15 Mar 2022 14:21:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2607
 
 By alphabetical order, to get the same order as in the HTML
 output, sorted thanks to the ":sorted:" directive.
@@ -53,557 +51,120 @@ Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 The change was made manually, but the source order was compared automatically
 with the generated one thanks to these quick and dirty commands...
-
-To extract the unsorted list of variable definitions from the sources:
-> git grep "   :term:" documentation/ref-manual/variables.rst | grep -v "    " | cut -d ":" -f4  | cut -d "\`" -f2 > ~/tmp/unsorted
-
-To extract the sorted list of variables from the generated HTML output:
-> cd documentation
-> make html
-> egrep -o "^<dt id=\"term-([0-9A-Za-z\-_])*" _build/html/ref-manual/variables.html | cut -c 14- ~/tmp/sorted
-
-You'll most probably have better and simpler ideas for generating such lists!
+egrep -o "^<dt id=\"term-([0-9A-Za-z\-_])*" _build/html/bitbake-user-manual/bitbake-user-manual-ref-variables.html | cut -c 14- > ~/tmp/sorted
+cd doc; make html; git grep "   :term:" bitbake-user-manual/bitbake-user-manual-ref-variables.rst | grep -v "    " | cut -d ":" -f4  | cut -d "\`" -f2 > ~/tmp/unsorted
 ---
- documentation/ref-manual/variables.rst | 386 ++++++++++++-------------
- 1 file changed, 193 insertions(+), 193 deletions(-)
+ .../bitbake-user-manual-ref-variables.rst     | 62 +++++++++----------
+ 1 file changed, 31 insertions(+), 31 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 90842010c9..634f19a673 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -207,11 +207,6 @@ system and gives an overview of their function and contents.
-       The default value is "${PACKAGES}", which causes the debian class to
-       act on all packages that are explicitly generated by the recipe.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 59a9de2f..25af563d 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -93,6 +93,13 @@ overview of their function and contents.
+       fetcher does not attempt to use the host listed in :term:`SRC_URI` after
+       a successful fetch from the :term:`PREMIRRORS` occurs.
  
--   :term:`AUTO_SYSLINUXMENU`
--      Enables creating an automatic menu for the syslinux bootloader. You
--      must set this variable in your recipe. The
--      :ref:`syslinux <ref-classes-syslinux>` class checks this variable.
--
-    :term:`AUTOREV`
-       When :term:`SRCREV` is set to the value of this variable, it specifies to
-       use the latest source revision in the repository. Here is an example::
-@@ -231,6 +226,11 @@ system and gives an overview of their function and contents.
-       ":ref:`dev-manual/common-tasks:automatically incrementing a package version number`"
-       section in the Yocto Project Development Tasks Manual.
++   :term:`BB_BASEHASH_IGNORE_VARS`
++      Lists variables that are excluded from checksum and dependency data.
++      Variables that are excluded can therefore change without affecting
++      the checksum mechanism. A common example would be the variable for
++      the path of the build. BitBake's output should not (and usually does
++      not) depend on the directory in which it was built.
++
+    :term:`BB_CHECK_SSL_CERTS`
+       Specifies if SSL certificates should be checked when fetching. The default
+       value is ``1`` and certificates are not checked if the value is set to ``0``.
+@@ -236,17 +243,6 @@ overview of their function and contents.
+       based on the interval occur each time a respective interval is
+       reached beyond the initial warning (i.e. 1 Gbytes and 100 Kbytes).
  
-+   :term:`AUTO_SYSLINUXMENU`
-+      Enables creating an automatic menu for the syslinux bootloader. You
-+      must set this variable in your recipe. The
-+      :ref:`syslinux <ref-classes-syslinux>` class checks this variable.
-+
-    :term:`AVAILABLE_LICENSES`
-       List of licenses found in the directories specified by
-       :term:`COMMON_LICENSE_DIR` and
-@@ -1307,6 +1307,40 @@ system and gives an overview of their function and contents.
-       the recipe will be skipped, and if the build system attempts to build
-       the recipe then an error will be triggered.
- 
-+   :term:`COPY_LIC_DIRS`
-+      If set to "1" along with the
-+      :term:`COPY_LIC_MANIFEST` variable, the
-+      OpenEmbedded build system copies into the image the license files,
-+      which are located in ``/usr/share/common-licenses``, for each
-+      package. The license files are placed in directories within the image
-+      itself during build time.
-+
-+      .. note::
-+
-+         The :term:`COPY_LIC_DIRS` does not offer a path for adding licenses for
-+         newly installed packages to an image, which might be most suitable for
-+         read-only filesystems that cannot be upgraded. See the
-+         :term:`LICENSE_CREATE_PACKAGE` variable for additional information.
-+         You can also reference the ":ref:`dev-manual/common-tasks:providing license text`"
-+         section in the Yocto Project Development Tasks Manual for
-+         information on providing license text.
-+
-+   :term:`COPY_LIC_MANIFEST`
-+      If set to "1", the OpenEmbedded build system copies the license
-+      manifest for the image to
-+      ``/usr/share/common-licenses/license.manifest`` within the image
-+      itself during build time.
-+
-+      .. note::
-+
-+         The :term:`COPY_LIC_MANIFEST` does not offer a path for adding licenses for
-+         newly installed packages to an image, which might be most suitable for
-+         read-only filesystems that cannot be upgraded. See the
-+         :term:`LICENSE_CREATE_PACKAGE` variable for additional information.
-+         You can also reference the ":ref:`dev-manual/common-tasks:providing license text`"
-+         section in the Yocto Project Development Tasks Manual for
-+         information on providing license text.
-+
-    :term:`COPYLEFT_LICENSE_EXCLUDE`
-       A space-separated list of licenses to exclude from the source
-       archived by the :ref:`archiver <ref-classes-archiver>` class. In
-@@ -1375,40 +1409,6 @@ system and gives an overview of their function and contents.
-       is set by the :ref:`copyleft_filter <ref-classes-copyleft_filter>`
-       class, which is inherited by the :ref:`archiver <ref-classes-archiver>` class.
- 
--   :term:`COPY_LIC_DIRS`
--      If set to "1" along with the
--      :term:`COPY_LIC_MANIFEST` variable, the
--      OpenEmbedded build system copies into the image the license files,
--      which are located in ``/usr/share/common-licenses``, for each
--      package. The license files are placed in directories within the image
--      itself during build time.
+-   :term:`BB_ENV_PASSTHROUGH_ADDITIONS`
+-      Specifies an additional set of variables to allow through from the
+-      external environment into BitBake's datastore. This list of variables
+-      are on top of the internal list set in
+-      :term:`BB_ENV_PASSTHROUGH`.
 -
 -      .. note::
 -
--         The :term:`COPY_LIC_DIRS` does not offer a path for adding licenses for
--         newly installed packages to an image, which might be most suitable for
--         read-only filesystems that cannot be upgraded. See the
--         :term:`LICENSE_CREATE_PACKAGE` variable for additional information.
--         You can also reference the ":ref:`dev-manual/common-tasks:providing license text`"
--         section in the Yocto Project Development Tasks Manual for
--         information on providing license text.
+-         You must set this variable in the external environment in order
+-         for it to work.
 -
--   :term:`COPY_LIC_MANIFEST`
--      If set to "1", the OpenEmbedded build system copies the license
--      manifest for the image to
--      ``/usr/share/common-licenses/license.manifest`` within the image
--      itself during build time.
--
--      .. note::
--
--         The :term:`COPY_LIC_MANIFEST` does not offer a path for adding licenses for
--         newly installed packages to an image, which might be most suitable for
--         read-only filesystems that cannot be upgraded. See the
--         :term:`LICENSE_CREATE_PACKAGE` variable for additional information.
--         You can also reference the ":ref:`dev-manual/common-tasks:providing license text`"
--         section in the Yocto Project Development Tasks Manual for
--         information on providing license text.
--
-    :term:`CORE_IMAGE_EXTRA_INSTALL`
-       Specifies the list of packages to be added to the image. You should
-       only set this variable in the ``local.conf`` configuration file found
-@@ -1473,10 +1473,6 @@ system and gives an overview of their function and contents.
-          variable only in certain contexts (e.g. when building for kernel
-          and kernel module recipes).
+    :term:`BB_ENV_PASSTHROUGH`
+       Specifies the internal list of variables to allow through from
+       the external environment into BitBake's datastore. If the value of
+@@ -259,6 +255,17 @@ overview of their function and contents.
+          You must set this variable in the external environment in order
+          for it to work.
  
--   :term:`CVE_CHECK_SKIP_RECIPE`
--      The list of package names (:term:`PN`) for which
--      CVEs (Common Vulnerabilities and Exposures) are ignored.
--
-    :term:`CVE_CHECK_IGNORE`
-       The list of CVE IDs which are ignored. Here is
-       an example from the :oe_layerindex:`Python3 recipe</layerindex/recipe/23823>`::
-@@ -1484,6 +1480,10 @@ system and gives an overview of their function and contents.
-          # This is windows only issue.
-          CVE_CHECK_IGNORE += "CVE-2020-15523"
- 
-+   :term:`CVE_CHECK_SKIP_RECIPE`
-+      The list of package names (:term:`PN`) for which
-+      CVEs (Common Vulnerabilities and Exposures) are ignored.
-+
-    :term:`CVE_PRODUCT`
-       In a recipe, defines the name used to match the recipe name
-       against the name in the upstream `NIST CVE database <https://nvd.nist.gov/>`__.
-@@ -1569,21 +1569,6 @@ system and gives an overview of their function and contents.
-       compiling a system for debugging. This variable defaults to "-O
-       -fno-omit-frame-pointer ${DEBUG_FLAGS} -pipe".
- 
--   :term:`DEFAULT_PREFERENCE`
--      Specifies a weak bias for recipe selection priority.
--
--      The most common usage of this is variable is to set it to "-1" within
--      a recipe for a development version of a piece of software. Using the
--      variable in this way causes the stable version of the recipe to build
--      by default in the absence of :term:`PREFERRED_VERSION` being used to
--      build the development version.
--
--      .. note::
--
--         The bias provided by :term:`DEFAULT_PREFERENCE` is weak and is overridden
--         by :term:`BBFILE_PRIORITY` if that variable is different between two
--         layers that contain different versions of the same recipe.
--
-    :term:`DEBUG_PREFIX_MAP`
-       Allows to set C compiler options, such as ``-fdebug-prefix-map``,
-       ``-fmacro-prefix-map``, and ``-ffile-prefix-map``, which allow to
-@@ -1601,6 +1586,21 @@ system and gives an overview of their function and contents.
-       This variable is set in the ``meta/conf/bitbake.conf`` file. It is
-       not intended to be user-configurable.
- 
-+   :term:`DEFAULT_PREFERENCE`
-+      Specifies a weak bias for recipe selection priority.
-+
-+      The most common usage of this is variable is to set it to "-1" within
-+      a recipe for a development version of a piece of software. Using the
-+      variable in this way causes the stable version of the recipe to build
-+      by default in the absence of :term:`PREFERRED_VERSION` being used to
-+      build the development version.
++   :term:`BB_ENV_PASSTHROUGH_ADDITIONS`
++      Specifies an additional set of variables to allow through from the
++      external environment into BitBake's datastore. This list of variables
++      are on top of the internal list set in
++      :term:`BB_ENV_PASSTHROUGH`.
 +
 +      .. note::
 +
-+         The bias provided by :term:`DEFAULT_PREFERENCE` is weak and is overridden
-+         by :term:`BBFILE_PRIORITY` if that variable is different between two
-+         layers that contain different versions of the same recipe.
++         You must set this variable in the external environment in order
++         for it to work.
 +
-    :term:`DEFAULTTUNE`
-       The default CPU and Application Binary Interface (ABI) tunings (i.e.
-       the "tune") used by the OpenEmbedded build system. The
-@@ -2068,6 +2068,68 @@ system and gives an overview of their function and contents.
-       can control with this variable, see the
-       ":ref:`ref-classes-insane`" section.
+    :term:`BB_FETCH_PREMIRRORONLY`
+       When set to "1", causes BitBake's fetcher module to only search
+       :term:`PREMIRRORS` for files. BitBake will not
+@@ -337,13 +344,6 @@ overview of their function and contents.
  
-+   :term:`ESDK_CLASS_INHERIT_DISABLE`
-+      A list of classes to remove from the :term:`INHERIT`
-+      value globally within the extensible SDK configuration. The
-+      :ref:`populate-sdk-ext <ref-classes-populate-sdk-*>` class sets the
-+      default value::
-+
-+         ESDK_CLASS_INHERIT_DISABLE ?= "buildhistory icecc"
-+
-+      Some classes are not generally applicable within the extensible SDK
-+      context. You can use this variable to disable those classes.
-+
-+      For additional information on how to customize the extensible SDK's
-+      configuration, see the
-+      ":ref:`sdk-manual/appendix-customizing:configuring the extensible sdk`"
-+      section in the Yocto Project Application Development and the
-+      Extensible Software Development Kit (eSDK) manual.
-+
-+   :term:`ESDK_LOCALCONF_ALLOW`
-+      A list of variables allowed through from the OpenEmbedded build
-+      system configuration into the extensible SDK configuration. By
-+      default, the list of variables is empty and is set in the
-+      :ref:`populate-sdk-ext <ref-classes-populate-sdk-*>` class.
-+
-+      This list overrides the variables specified using the
-+      :term:`ESDK_LOCALCONF_REMOVE` variable as well as
-+      other variables automatically added due to the "/" character
-+      being found at the start of the
-+      value, which is usually indicative of being a path and thus might not
-+      be valid on the system where the SDK is installed.
-+
-+      For additional information on how to customize the extensible SDK's
-+      configuration, see the
-+      ":ref:`sdk-manual/appendix-customizing:configuring the extensible sdk`"
-+      section in the Yocto Project Application Development and the
-+      Extensible Software Development Kit (eSDK) manual.
-+
-+   :term:`ESDK_LOCALCONF_REMOVE`
-+      A list of variables not allowed through from the OpenEmbedded build
-+      system configuration into the extensible SDK configuration. Usually,
-+      these are variables that are specific to the machine on which the
-+      build system is running and thus would be potentially problematic
-+      within the extensible SDK.
-+
-+      By default, :term:`ESDK_LOCALCONF_REMOVE` is set in the
-+      :ref:`populate-sdk-ext <ref-classes-populate-sdk-*>` class and
-+      excludes the following variables:
-+
-+      - :term:`CONF_VERSION`
-+      - :term:`BB_NUMBER_THREADS`
-+      - :term:`BB_NUMBER_PARSE_THREADS`
-+      - :term:`PARALLEL_MAKE`
-+      - :term:`PRSERV_HOST`
-+      - :term:`SSTATE_MIRRORS` :term:`DL_DIR`
-+      - :term:`SSTATE_DIR` :term:`TMPDIR`
-+      - :term:`BB_SERVER_TIMEOUT`
-+
-+      For additional information on how to customize the extensible SDK's
-+      configuration, see the
-+      ":ref:`sdk-manual/appendix-customizing:configuring the extensible sdk`"
-+      section in the Yocto Project Application Development and the
-+      Extensible Software Development Kit (eSDK) manual.
-+
-    :term:`EXCLUDE_FROM_SHLIBS`
-       Triggers the OpenEmbedded build system's shared libraries resolver to
-       exclude an entire package when scanning for shared libraries.
-@@ -2235,16 +2297,6 @@ system and gives an overview of their function and contents.
-          To add packages to the root filesystem, see the various
-          :term:`RDEPENDS` and :term:`RRECOMMENDS` variables.
+       For example usage, see :term:`BB_GIT_SHALLOW`.
  
--   :term:`EXTRANATIVEPATH`
--      A list of subdirectories of
--      ``${``\ :term:`STAGING_BINDIR_NATIVE`\ ``}``
--      added to the beginning of the environment variable ``PATH``. As an
--      example, the following prepends
--      "${STAGING_BINDIR_NATIVE}/foo:${STAGING_BINDIR_NATIVE}/bar:" to
--      ``PATH``::
+-   :term:`BB_BASEHASH_IGNORE_VARS`
+-      Lists variables that are excluded from checksum and dependency data.
+-      Variables that are excluded can therefore change without affecting
+-      the checksum mechanism. A common example would be the variable for
+-      the path of the build. BitBake's output should not (and usually does
+-      not) depend on the directory in which it was built.
 -
--         EXTRANATIVEPATH = "foo bar"
--
-    :term:`EXTRA_OECMAKE`
-       Additional `CMake <https://cmake.org/overview/>`__ options. See the
-       :ref:`cmake <ref-classes-cmake>` class for additional information.
-@@ -2301,6 +2353,16 @@ system and gives an overview of their function and contents.
-          At present, ``passwd-expire`` may only work for remote logins when
-          using OpenSSH and not dropbear as an SSH server.
+    :term:`BB_HASHCHECK_FUNCTION`
+       Specifies the name of the function to call during the "setscene" part
+       of the task's execution in order to validate the list of task hashes.
+@@ -426,6 +426,19 @@ overview of their function and contents.
+       If you want to force log files to take a specific name, you can set this
+       variable in a configuration file.
  
-+   :term:`EXTRANATIVEPATH`
-+      A list of subdirectories of
-+      ``${``\ :term:`STAGING_BINDIR_NATIVE`\ ``}``
-+      added to the beginning of the environment variable ``PATH``. As an
-+      example, the following prepends
-+      "${STAGING_BINDIR_NATIVE}/foo:${STAGING_BINDIR_NATIVE}/bar:" to
-+      ``PATH``::
++   :term:`BB_MULTI_PROVIDER_ALLOWED`
++      Allows you to suppress BitBake warnings caused when building two
++      separate recipes that provide the same output.
 +
-+         EXTRANATIVEPATH = "foo bar"
++      BitBake normally issues a warning when building two different recipes
++      where each provides the same output. This scenario is usually
++      something the user does not want. However, cases do exist where it
++      makes sense, particularly in the ``virtual/*`` namespace. You can use
++      this variable to suppress BitBake's warnings.
 +
-    :term:`FEATURE_PACKAGES`
-       Defines one or more packages to include in an image when a specific
-       item is included in :term:`IMAGE_FEATURES`.
-@@ -2594,10 +2656,6 @@ system and gives an overview of their function and contents.
-       Specifies the signature algorithm used in creating the FIT Image.
-       For e.g. rsa2048.
++      To use the variable, list provider names (e.g. recipe names,
++      ``virtual/kernel``, and so forth).
++
+    :term:`BB_NICE_LEVEL`
+       Allows BitBake to run at a specific priority (i.e. nice level).
+       System permissions usually mean that BitBake can reduce its priority
+@@ -1054,19 +1067,6 @@ overview of their function and contents.
+       upstream source, and then locations specified by :term:`MIRRORS` in that
+       order.
  
--   :term:`FIT_SIGN_NUMBITS`
--      Size of private key in number of bits used in fitImage. The default
--      value is "2048".
+-   :term:`BB_MULTI_PROVIDER_ALLOWED`
+-      Allows you to suppress BitBake warnings caused when building two
+-      separate recipes that provide the same output.
 -
-    :term:`FIT_SIGN_INDIVIDUAL`
-       If set to "1", then the :ref:`kernel-fitimage <ref-classes-kernel-fitimage>`
-       class will sign the kernel, dtb and ramdisk images individually in addition
-@@ -2605,6 +2663,10 @@ system and gives an overview of their function and contents.
-       intending to verify signatures in another context than booting via
-       U-Boot.
- 
-+   :term:`FIT_SIGN_NUMBITS`
-+      Size of private key in number of bits used in fitImage. The default
-+      value is "2048".
-+
-    :term:`FONT_EXTRA_RDEPENDS`
-       When inheriting the :ref:`fontcache <ref-classes-fontcache>` class,
-       this variable specifies the runtime dependencies for font packages.
-@@ -2801,6 +2863,10 @@ system and gives an overview of their function and contents.
-       -  Given a recipe being built for a little-endian MIPS target running
-          Linux, the value might be "mipsel-linux".
- 
-+   :term:`HOST_VENDOR`
-+      Specifies the name of the vendor. :term:`HOST_VENDOR` is normally the
-+      same as :term:`TARGET_VENDOR`.
-+
-    :term:`HOSTTOOLS`
-       A space-separated list (filter) of tools on the build host that
-       should be allowed to be called from within build tasks. Using this
-@@ -2821,9 +2887,15 @@ system and gives an overview of their function and contents.
-       :term:`HOSTTOOLS_NONFATAL` is not found on the build host. Thus, you can
-       use :term:`HOSTTOOLS_NONFATAL` to filter optional host tools.
- 
--   :term:`HOST_VENDOR`
--      Specifies the name of the vendor. :term:`HOST_VENDOR` is normally the
--      same as :term:`TARGET_VENDOR`.
-+   :term:`ICECC_CLASS_DISABLE`
-+      Identifies user classes that you do not want the Icecream distributed
-+      compile support to consider. This variable is used by the
-+      :ref:`icecc <ref-classes-icecc>` class. You set this variable in
-+      your ``local.conf`` file.
-+
-+      When you list classes using this variable, the recipes inheriting
-+      those classes will not benefit from distributed compilation across
-+      remote hosts. Instead they will be built locally.
- 
-    :term:`ICECC_DISABLED`
-       Disables or enables the ``icecc`` (Icecream) function. For more
-@@ -2880,16 +2952,6 @@ system and gives an overview of their function and contents.
-       this variable, the :ref:`icecc <ref-classes-icecc>` class attempts
-       to define it by locating ``icecc`` using ``which``.
- 
--   :term:`ICECC_CLASS_DISABLE`
--      Identifies user classes that you do not want the Icecream distributed
--      compile support to consider. This variable is used by the
--      :ref:`icecc <ref-classes-icecc>` class. You set this variable in
--      your ``local.conf`` file.
+-      BitBake normally issues a warning when building two different recipes
+-      where each provides the same output. This scenario is usually
+-      something the user does not want. However, cases do exist where it
+-      makes sense, particularly in the ``virtual/*`` namespace. You can use
+-      this variable to suppress BitBake's warnings.
 -
--      When you list classes using this variable, the recipes inheriting
--      those classes will not benefit from distributed compilation across
--      remote hosts. Instead they will be built locally.
+-      To use the variable, list provider names (e.g. recipe names,
+-      ``virtual/kernel``, and so forth).
 -
-    :term:`ICECC_RECIPE_DISABLE`
-       Identifies user recipes that you do not want the Icecream distributed
-       compile support to consider. This variable is used by the
-@@ -2912,40 +2974,6 @@ system and gives an overview of their function and contents.
-       The base name of image output files. This variable defaults to the
-       recipe name (``${``\ :term:`PN`\ ``}``).
- 
--   :term:`IMAGE_EFI_BOOT_FILES`
--      A space-separated list of files installed into the boot partition
--      when preparing an image using the Wic tool with the
--      ``bootimg-efi`` source plugin. By default,
--      the files are
--      installed under the same name as the source files. To change the
--      installed name, separate it from the original name with a semi-colon
--      (;). Source files need to be located in
--      :term:`DEPLOY_DIR_IMAGE`. Here are two
--      examples::
--
--         IMAGE_EFI_BOOT_FILES = "${KERNEL_IMAGETYPE};bz2"
--         IMAGE_EFI_BOOT_FILES = "${KERNEL_IMAGETYPE} microcode.cpio"
-- 
--      Alternatively, source files can be picked up using a glob pattern. In
--      this case, the destination file must have the same name as the base
--      name of the source file path. To install files into a directory
--      within the target location, pass its name after a semi-colon (;).
--      Here are two examples::
--
--         IMAGE_EFI_BOOT_FILES = "boot/loader/*"
--         IMAGE_EFI_BOOT_FILES = "boot/loader/*;boot/"
--
--      The first example
--      installs all files from ``${DEPLOY_DIR_IMAGE}/boot/loader/``
--      into the root of the target partition. The second example installs
--      the same files into a ``boot`` directory within the target partition.
--
--      You can find information on how to use the Wic tool in the
--      ":ref:`dev-manual/common-tasks:creating partitioned images using wic`"
--      section of the Yocto Project Development Tasks Manual. Reference
--      material for Wic is located in the
--      ":doc:`/ref-manual/kickstart`" chapter.
--
-    :term:`IMAGE_BOOT_FILES`
-       A space-separated list of files installed into the boot partition
-       when preparing an image using the Wic tool with the
-@@ -3018,6 +3046,40 @@ system and gives an overview of their function and contents.
-       device table files, see ``meta/files/device_table-minimal.txt`` as an
-       example.
- 
-+   :term:`IMAGE_EFI_BOOT_FILES`
-+      A space-separated list of files installed into the boot partition
-+      when preparing an image using the Wic tool with the
-+      ``bootimg-efi`` source plugin. By default,
-+      the files are
-+      installed under the same name as the source files. To change the
-+      installed name, separate it from the original name with a semi-colon
-+      (;). Source files need to be located in
-+      :term:`DEPLOY_DIR_IMAGE`. Here are two
-+      examples::
-+
-+         IMAGE_EFI_BOOT_FILES = "${KERNEL_IMAGETYPE};bz2"
-+         IMAGE_EFI_BOOT_FILES = "${KERNEL_IMAGETYPE} microcode.cpio"
-+
-+      Alternatively, source files can be picked up using a glob pattern. In
-+      this case, the destination file must have the same name as the base
-+      name of the source file path. To install files into a directory
-+      within the target location, pass its name after a semi-colon (;).
-+      Here are two examples::
-+
-+         IMAGE_EFI_BOOT_FILES = "boot/loader/*"
-+         IMAGE_EFI_BOOT_FILES = "boot/loader/*;boot/"
-+
-+      The first example
-+      installs all files from ``${DEPLOY_DIR_IMAGE}/boot/loader/``
-+      into the root of the target partition. The second example installs
-+      the same files into a ``boot`` directory within the target partition.
-+
-+      You can find information on how to use the Wic tool in the
-+      ":ref:`dev-manual/common-tasks:creating partitioned images using wic`"
-+      section of the Yocto Project Development Tasks Manual. Reference
-+      material for Wic is located in the
-+      ":doc:`/ref-manual/kickstart`" chapter.
-+
-    :term:`IMAGE_FEATURES`
-       The primary list of features to include in an image. Typically, you
-       configure this variable in an image recipe. Although you can use this
-@@ -5138,18 +5200,6 @@ system and gives an overview of their function and contents.
-       ":ref:`dev-manual/common-tasks:debugging with the gnu project debugger (gdb) remotely`" section
-       in the Yocto Project Development Tasks Manual.
- 
--   :term:`PACKAGE_EXCLUDE_COMPLEMENTARY`
--      Prevents specific packages from being installed when you are
--      installing complementary packages.
--
--      You might find that you want to prevent installing certain packages
--      when you are installing complementary packages. For example, if you
--      are using :term:`IMAGE_FEATURES` to install
--      ``dev-pkgs``, you might not want to install all packages from a
--      particular multilib. If you find yourself in this situation, you can
--      use the :term:`PACKAGE_EXCLUDE_COMPLEMENTARY` variable to specify regular
--      expressions to match the packages you want to exclude.
--
-    :term:`PACKAGE_EXCLUDE`
-       Lists packages that should not be installed into an image. For
-       example::
-@@ -5177,6 +5227,18 @@ system and gives an overview of their function and contents.
-       :term:`BAD_RECOMMENDATIONS` variables for
-       related information.
- 
-+   :term:`PACKAGE_EXCLUDE_COMPLEMENTARY`
-+      Prevents specific packages from being installed when you are
-+      installing complementary packages.
-+
-+      You might find that you want to prevent installing certain packages
-+      when you are installing complementary packages. For example, if you
-+      are using :term:`IMAGE_FEATURES` to install
-+      ``dev-pkgs``, you might not want to install all packages from a
-+      particular multilib. If you find yourself in this situation, you can
-+      use the :term:`PACKAGE_EXCLUDE_COMPLEMENTARY` variable to specify regular
-+      expressions to match the packages you want to exclude.
-+
-    :term:`PACKAGE_EXTRA_ARCHS`
-       Specifies the list of architectures compatible with the device CPU.
-       This variable is useful when you build for several different devices
-@@ -6535,68 +6597,6 @@ system and gives an overview of their function and contents.
-       :term:`SDK_EXT_TYPE` is set to "minimal", and defaults to "1" if
-       :term:`SDK_EXT_TYPE` is set to "full".
- 
--   :term:`ESDK_CLASS_INHERIT_DISABLE`
--      A list of classes to remove from the :term:`INHERIT`
--      value globally within the extensible SDK configuration. The
--      :ref:`populate-sdk-ext <ref-classes-populate-sdk-*>` class sets the
--      default value::
--
--         ESDK_CLASS_INHERIT_DISABLE ?= "buildhistory icecc"
--
--      Some classes are not generally applicable within the extensible SDK
--      context. You can use this variable to disable those classes.
--
--      For additional information on how to customize the extensible SDK's
--      configuration, see the
--      ":ref:`sdk-manual/appendix-customizing:configuring the extensible sdk`"
--      section in the Yocto Project Application Development and the
--      Extensible Software Development Kit (eSDK) manual.
--
--   :term:`ESDK_LOCALCONF_REMOVE`
--      A list of variables not allowed through from the OpenEmbedded build
--      system configuration into the extensible SDK configuration. Usually,
--      these are variables that are specific to the machine on which the
--      build system is running and thus would be potentially problematic
--      within the extensible SDK.
--
--      By default, :term:`ESDK_LOCALCONF_REMOVE` is set in the
--      :ref:`populate-sdk-ext <ref-classes-populate-sdk-*>` class and
--      excludes the following variables:
--
--      - :term:`CONF_VERSION`
--      - :term:`BB_NUMBER_THREADS`
--      - :term:`BB_NUMBER_PARSE_THREADS`
--      - :term:`PARALLEL_MAKE`
--      - :term:`PRSERV_HOST`
--      - :term:`SSTATE_MIRRORS` :term:`DL_DIR`
--      - :term:`SSTATE_DIR` :term:`TMPDIR`
--      - :term:`BB_SERVER_TIMEOUT`
--
--      For additional information on how to customize the extensible SDK's
--      configuration, see the
--      ":ref:`sdk-manual/appendix-customizing:configuring the extensible sdk`"
--      section in the Yocto Project Application Development and the
--      Extensible Software Development Kit (eSDK) manual.
--
--   :term:`ESDK_LOCALCONF_ALLOW`
--      A list of variables allowed through from the OpenEmbedded build
--      system configuration into the extensible SDK configuration. By
--      default, the list of variables is empty and is set in the
--      :ref:`populate-sdk-ext <ref-classes-populate-sdk-*>` class.
--
--      This list overrides the variables specified using the
--      :term:`ESDK_LOCALCONF_REMOVE` variable as well as
--      other variables automatically added due to the "/" character
--      being found at the start of the
--      value, which is usually indicative of being a path and thus might not
--      be valid on the system where the SDK is installed.
--
--      For additional information on how to customize the extensible SDK's
--      configuration, see the
--      ":ref:`sdk-manual/appendix-customizing:configuring the extensible sdk`"
--      section in the Yocto Project Application Development and the
--      Extensible Software Development Kit (eSDK) manual.
--
-    :term:`SDK_NAME`
-       The base name for SDK output files. The name is derived from the
-       :term:`DISTRO`, :term:`TCLIBC`,
+    :term:`OVERRIDES`
+       BitBake uses :term:`OVERRIDES` to control what variables are overridden
+       after BitBake parses recipes and configuration files.
 -- 
 2.25.1
 
