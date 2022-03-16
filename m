@@ -1,121 +1,161 @@
-Return-Path: <yocto@opensource.nslick.com>
+Return-Path: <ross@burtonini.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 692A5C433EF
-	for <webhook@archiver.kernel.org>; Wed, 16 Mar 2022 16:29:02 +0000 (UTC)
-Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com
- [66.111.4.230])
- by mx.groups.io with SMTP id smtpd.web09.27562.1647448140839735880
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DBFFC433F5
+	for <webhook@archiver.kernel.org>; Wed, 16 Mar 2022 18:33:09 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by mx.groups.io with SMTP id smtpd.web12.381.1647455588420418452
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Mar 2022 09:29:01 -0700
+ Wed, 16 Mar 2022 11:33:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@nslick.com header.s=fm1 header.b=hJS5+BWX;
- spf=none, err=permanent DNS error (domain: opensource.nslick.com,
- ip: 66.111.4.230, mailfrom: yocto@opensource.nslick.com)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailnew.nyi.internal (Postfix) with ESMTP id 00E33580241;
-	Wed, 16 Mar 2022 12:29:00 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute5.internal (MEProxy); Wed, 16 Mar 2022 12:29:00 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nslick.com; h=cc
-	:cc:content-transfer-encoding:date:date:from:from:in-reply-to
-	:message-id:mime-version:reply-to:sender:subject:subject:to:to;
-	 s=fm1; bh=Kg1SQGoAUNKt5NEzHvN8cCuJrsNxmRCwnpXGGFN7SA4=; b=hJS5+
-	BWXw9YaYgBiwVOMAGyo3FgE1fkIWCtvEclPY2jD2eBrdO7LeRSHoLv4UK1Ap2+94
-	ZIMjlDOWkdkW93Ly/PlxcRrNGNUnF0ALZDyFPjBrdUbc8ix7Zq+C+Y8yuNhtO0Q1
-	wkMjInWcwMJpZtg+27rVrCinWbudq4pbf5RqnhfPXpfjCZ8rmRvXurJGMpXcSFox
-	HkjQZDWuMlZd7qXzq/xNisGMzwrXbcFZXF0qYmlWeDoIyVFB8yjLh8jOWsz8Rbtu
-	9yKUpeJHQrtTZbYN1ULTSvwKW/tn1C9z0OHr+Fpi9Ac6FzM970iiD/jo40TdF6t5
-	qaUHO5bNu/FV4jgiQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding:date:date
-	:from:from:in-reply-to:message-id:mime-version:reply-to:sender
-	:subject:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; bh=Kg1SQGoAUNKt5NEzHvN8cCuJrsNxm
-	RCwnpXGGFN7SA4=; b=db7wTRQYE1UEt6/eB5x2lsFle/yTIM/6+uwNuXZbvkt1s
-	di9qJ/qJYKieeMritJBJXHi0G34G9ElTWYovDLAhAO1PuWkfHk1wuHYaXQZP/bL8
-	i+vYxN7yL7/yuazEREZx+E9d5ABbB3ZV+Hm5Y/BK5aecrPQGgk/8dQ14KExp81Uc
-	v+Z6dDL45oDd36LbuOdZC41kC6gF+k+sNomXlRh73FsmU9cqhzr2E9vDiXpFjy9w
-	HnkQFhn0/3fBXf/r+uM0cD+Ckk1ZyTPw65n4TQlbiHaS8xO7yAK3XZ5t4AOlSXUB
-	P7OhMvaGiq/cL8nLkJzGqfX0Hpg1yCjPpPocwtcZQ==
-X-ME-Sender: <xms:SxAyYlwIW0YFFTBU7GXIDRexDoMqhDRR5_ZCUORprvJ6SBLIVnMdew>
-    <xme:SxAyYlRTC4OmB_BRG1zN6MtbMti0bmh-anjv9YrG0thoQN2W3yT6ADvuQ2GfPy29K
-    tUC-Yht_SaHXBl8dMs>
-X-ME-Received: 
- <xmr:SxAyYvVKgJlJrd53V-xjyxtUY0gAOTbsfS8h1rmaFxlILp5e4Mlvu3DRpiw>
-X-ME-Proxy-Cause: 
- gggruggvucftvghtrhhoucdtuddrgedvvddrudefvddgkeeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucenucfjughrpefhvffufffkofgggfestdekredtre
-    dttdenucfhrhhomheppfhitghhohhlrghsucfuihgvlhhitghkihcuoeihohgtthhoseho
-    phgvnhhsohhurhgtvgdrnhhslhhitghkrdgtohhmqeenucggtffrrghtthgvrhhnpeffte
-    dtieduffdtfeeiveekteefleetjeelteejiefhffelleffudevjeegieduhfenucffohhm
-    rghinhepshhtrggtkhhovhgvrhhflhhofidrtghomhdphihotghtohhprhhojhgvtghtrd
-    horhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhep
-    hihotghtohesohhpvghnshhouhhrtggvrdhnshhlihgtkhdrtghomh
-X-ME-Proxy: <xmx:SxAyYnh0t3P1MxqdIed3FvnUdSUBPQMoBFDcZZUqy9klbgefWHKITw>
-    <xmx:SxAyYnArpMIDCqZqAY-1b4Iql_3CstllamEPbxtde4_NiF470Af0Gw>
-    <xmx:SxAyYgK7EwvhOi2Iv2G6QnthGRktU2gnVSejPtIFBTvMOacqNxOS6A>
-    <xmx:SxAyYq8cH5Tye9fTFLJIrAfVNIu8y0XB9QNtQG4D6k_sJGgSHFLdrg>
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 16 Mar 2022 12:28:59 -0400 (EDT)
-From: Nicholas Sielicki <yocto@opensource.nslick.com>
+ dkim=missing;
+ spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F403D1476
+	for <docs@lists.yoctoproject.org>; Wed, 16 Mar 2022 11:33:07 -0700 (PDT)
+Received: from oss-tx204.lab.cambridge.arm.com
+ (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A46B83F766
+	for <docs@lists.yoctoproject.org>; Wed, 16 Mar 2022 11:33:07 -0700 (PDT)
+From: Ross Burton <ross.burton@arm.com>
 To: docs@lists.yoctoproject.org
-Cc: Nicholas Sielicki <nicholas.sielicki@legrand.com>
-Subject: [PATCH 1/1] dev-manual: note on using journald without syslog
-Date: Wed, 16 Mar 2022 11:28:57 -0500
-Message-Id: <20220316162857.1226591-1-yocto@opensource.nslick.com>
+Subject: [PATCH] classes: update Python class documentation
+Date: Wed, 16 Mar 2022 18:33:05 +0000
+Message-Id: <20220316183305.885500-1-ross.burton@arm.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Mar 2022 16:29:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2612
+ <docs@lists.yoctoproject.org>; Wed, 16 Mar 2022 18:33:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2614
 
-From: Nicholas Sielicki <nicholas.sielicki@legrand.com>
-
-journald is not a syslog provider, so using journald exclusively amounts
-to just preventing a syslog provider from being specified on a system
-where journald is active.
-
-Various spots where this has popped up:
-* https://stackoverflow.com/q/48746397
-* https://lists.yoctoproject.org/g/yocto/topic/82883035#53548
-
-Signed-off-by: Nicholas Sielicki <nicholas.sielicki@legrand.com>
+Signed-off-by: Ross Burton <ross.burton@arm.com>
 ---
- documentation/dev-manual/common-tasks.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ documentation/ref-manual/classes.rst | 61 ++++++++++++++++------------
+ 1 file changed, 36 insertions(+), 25 deletions(-)
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index ca3fbc856..4e9c2c04e 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -7910,6 +7910,20 @@ image cannot use this package group. However, it can install SysVinit
- and the appropriate packages will have support for both systemd and
- SysVinit.
- 
-+Using systemd-journald without a traditional syslog daemon
-+------------------------------------------------------------------------
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+index 4dd0901623..60fcd98928 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -602,22 +602,6 @@ variables are not met, the recipe will be skipped, a=
+nd if the
+ build system attempts to build the recipe then an error will be
+ triggered.
+=20
+-.. _ref-classes-flit_core:
+-
+-``flit_core.bbclass``
+-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+-
+-The ``flit_core`` class enables building Python modules which declare
+-the  `PEP-517 <https://www.python.org/dev/peps/pep-0517/>`__ compliant
+-``flit_core.buildapi`` ``build-backend`` in the ``[build-system]``
+-section of ``pyproject.toml`` (See `PEP-518 <https://www.python.org/dev/=
+peps/pep-0518/>`__).
+-
+-Python modules built with ``flit_core.buildapi`` are pure Python (no
+-``C`` or ``Rust`` extensions).
+-
+-The resulting ``wheel`` (See `PEP-427 <https://www.python.org/dev/peps/p=
+ep-0427/>`__)
+-is installed with the :ref:`python_pep517 <ref-classes-python_pep517>` c=
+lass.
+-
+ .. _ref-classes-fontcache:
+=20
+ ``fontcache.bbclass``
+@@ -1978,20 +1962,48 @@ When inherited by a recipe, the ``perlnative`` cl=
+ass supports using the
+ native version of Perl built by the build system rather than using the
+ version provided by the build host.
+=20
++.. _ref-classes-python_flit_core:
 +
-+Counter-intuitively, ``systemd-journald`` is not a syslog runtime or provider,
-+and the proper way to use systemd-journald as your sole logging mechanism is to
-+effectively disable syslog entirely by set these variables in your distribution
-+configuration file::
++``python_flit_core.bbclass``
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +
-+   VIRTUAL-RUNTIME_syslog = ""
-+   VIRTUAL-RUNTIME_base-utils-syslog = ""
++The ``python_flit_core`` class enables building Python modules which dec=
+lare
++the  `PEP-517 <https://www.python.org/dev/peps/pep-0517/>`__ compliant
++``flit_core.buildapi`` ``build-backend`` in the ``[build-system]``
++section of ``pyproject.toml`` (See `PEP-518 <https://www.python.org/dev/=
+peps/pep-0518/>`__).
 +
-+Doing so will prevent ``rsyslog`` / ``busybox-syslog`` from being pulled in by
-+default, leaving only ``journald``.
++Python modules built with ``flit_core.buildapi`` are pure Python (no
++``C`` or ``Rust`` extensions).
 +
- Selecting a Device Manager
- ==========================
- 
--- 
++Internally this uses the :ref:`python_pep517 <ref-classes-python_pep517>=
+` class.
++
+ .. _ref-classes-python_pep517:
+=20
+ ``python_pep517.bbclass``
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+=20
+-The ``python_pep517`` class installs a Python ``wheel`` binary archive (=
+see
+-`PEP-517 <https://peps.python.org/pep-0517/>`__).
++The ``python_pep517`` class builds and installs a Python ``wheel`` binar=
+y
++archive (see `PEP-517 <https://peps.python.org/pep-0517/>`__).
++
++Recipes wouldn't inherit this directly, instead typically another class =
+will
++inherit this, add the relevant native dependencies, and set
++:term:`PEP517_BUILD_API` to the Python class which implements the PEP-51=
+7 build
++API.
++
++Examples of classes which do this are :ref:`python_flit_core
++<ref-classes-python_flit_core>`, :ref:`setuptools_build_meta
++<ref-classes-setuptools_build_meta>`, and :ref:`python_poetry_core
++<ref-classes-python_poetry_core>`.
++
++.. _ref-classes-python_poetry_core:
++
++``python_poetry_core.bbclass``
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+=20
+-The Python ``wheel`` can be built with several classes, including :ref:`=
+flit_core <ref-classes-flit_core>`,
+-:ref:`setuptools_build_meta <ref-classes-setuptools_build_meta>`, and :r=
+ef:`setuptools3 <ref-classes-setuptools3>`.
++The ``python_poetry_core`` class enables building Python modules which u=
+se the
++`Poetry Core <https://python-poetry.org>`__ build system.
+=20
+-The path to the wheel to be installed is defined by :term:`PEP517_WHEEL_=
+PATH`.
+-This defaults to ``${D}/dist`` and should be respected by the builder cl=
+ass
+-(such as :ref:`flit_core <ref-classes-flit_core>`).
++Internally this uses the :ref:`python_pep517 <ref-classes-python_pep517>=
+` class.
+=20
+ .. _ref-classes-pixbufcache:
+=20
+@@ -2362,8 +2374,7 @@ section of ``pyproject.toml`` (See `PEP-518 <https:=
+//www.python.org/dev/peps/pep
+ Python modules built with ``setuptools.build_meta`` can be pure Python o=
+r
+ include ``C`` or ``Rust`` extensions).
+=20
+-The resulting ``wheel`` (See `PEP-427 <https://www.python.org/dev/peps/p=
+ep-0427/>`__)
+-is installed with the :ref:`python_pep517 <ref-classes-python_pep517>` c=
+lass.
++Internally this uses the :ref:`python_pep517 <ref-classes-python_pep517>=
+` class.
+=20
+ .. _ref-classes-setuptools3:
+=20
+--=20
 2.25.1
 
 
