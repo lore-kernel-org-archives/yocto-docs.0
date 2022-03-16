@@ -2,191 +2,107 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51D94C433EF
-	for <webhook@archiver.kernel.org>; Wed, 16 Mar 2022 20:48:56 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.2102.1647463731005577252
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C29FC433F5
+	for <webhook@archiver.kernel.org>; Wed, 16 Mar 2022 21:10:58 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web08.2323.1647465056538281288
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Mar 2022 13:48:52 -0700
+ Wed, 16 Mar 2022 14:10:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HqPiWeiG;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Hog/YMIc;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id F1BC140009;
-	Wed, 16 Mar 2022 20:48:47 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 29925240008;
+	Wed, 16 Mar 2022 21:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1647463728;
+	t=1647465054;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=QpbIzZG6zMNFwPTVsrpir1vENyW0SlrzMJrc4+inEeA=;
-	b=HqPiWeiGmVDoCo3zbADtoy4x9yY9F9x/4wrG0Enlfuyqz/f+OTk54wnA/2bdfWR5HujOMn
-	7+JeQvIh49YqesBDi4MtqmNERShFOHPQKAQBVStC/g9mrKK4UerH1ZJdCBxUEOHg2zn4tq
-	Yt9zwPeBTG6ht5rIOxcHpyE2zKa7u82wCvSccR+PtwUZUdt/p6WJSlWj+4E0LfJxjKx1Jm
-	JjZg+k5TFNFIgYepspPHfnSUYNc3jDqzUGSR654nKpYsi9PUQMwk4m4HZJKXgGiNYEhG+1
-	0GSvnz8kEVMxfaEh22PJjA7GZbFUUuLnzHOF3tkKfg17FVHh+GsohFlUAg3SMA==
-Message-ID: <09f89f08-b6f5-2217-29e1-447cd5e1a8b0@bootlin.com>
-Date: Wed, 16 Mar 2022 21:48:47 +0100
+	bh=beBKxkc04wwRL4NDu2irCKO0sOfCwrIjmow1A/zh984=;
+	b=Hog/YMIc6cSzB3HdzYHw2iynO8hUIHlTWUJztQDdApv7spI4/hMIVEzr4+f8BUTUxDp7Mp
+	lNyla/NsP8FPGVnT/dukUrigbKQZRMxVuj0LPDBuwIxPKdpNwdsmb2RSO6cfciw13X8w9N
+	O5DRuiCWjJplY67Mwp2FEU3PI0RrPArvrRJhgVzsNkSqbMeUSkFOMyky/RJMYHj1Krt8F2
+	jccWVJs3V4peg4fxMIUcaTrUgtvWYjjZUcJmkVmedMjw7OSD/73+rfglx4r7Dz6TJU9i24
+	8RGGzpzwbK4iFkRBUIFCyWribaW7HqUag7M4fPgl5+BHRDH7Y4HzRw4yhapgyQ==
+Message-ID: <fd8b8e1e-16ba-a634-0849-bf97aec44f67@bootlin.com>
+Date: Wed, 16 Mar 2022 22:10:53 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] classes: update Python class documentation
+Cc: Nicholas Sielicki <nicholas.sielicki@legrand.com>
+Subject: Re: [docs] [PATCH 1/1] dev-manual: note on using journald without
+ syslog
 Content-Language: en-US
-To: Ross Burton <ross@burtonini.com>
-References: <20220316183305.885500-1-ross.burton@arm.com>
+To: Nicholas Sielicki <yocto@opensource.nslick.com>,
+ docs@lists.yoctoproject.org
+References: <20220316162857.1226591-1-yocto@opensource.nslick.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20220316183305.885500-1-ross.burton@arm.com>
+In-Reply-To: <20220316162857.1226591-1-yocto@opensource.nslick.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Mar 2022 20:48:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2615
+ <docs@lists.yoctoproject.org>; Wed, 16 Mar 2022 21:10:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2616
 
-Hi Ross,
+Hi Nicolas,
 
-Thanks for the patch!
+Many thanks for the patch!
 
-On 3/16/22 19:33, Ross Burton wrote:
-> Signed-off-by: Ross Burton <ross.burton@arm.com>
-> ---
->  documentation/ref-manual/classes.rst | 61 ++++++++++++++++------------
->  1 file changed, 36 insertions(+), 25 deletions(-)
+See my comments below...
+
+On 3/16/22 17:28, Nicholas Sielicki wrote:
+> From: Nicholas Sielicki <nicholas.sielicki@legrand.com>
 >
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-> index 4dd0901623..60fcd98928 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -602,22 +602,6 @@ variables are not met, the recipe will be skipped, and if the
->  build system attempts to build the recipe then an error will be
->  triggered.
+> journald is not a syslog provider, so using journald exclusively amounts
+> to just preventing a syslog provider from being specified on a system
+> where journald is active.
+>
+> Various spots where this has popped up:
+> * https://stackoverflow.com/q/48746397
+> * https://lists.yoctoproject.org/g/yocto/topic/82883035#53548
+>
+> Signed-off-by: Nicholas Sielicki <nicholas.sielicki@legrand.com>
+> ---
+>  documentation/dev-manual/common-tasks.rst | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+> index ca3fbc856..4e9c2c04e 100644
+> --- a/documentation/dev-manual/common-tasks.rst
+> +++ b/documentation/dev-manual/common-tasks.rst
+> @@ -7910,6 +7910,20 @@ image cannot use this package group. However, it can install SysVinit
+>  and the appropriate packages will have support for both systemd and
+>  SysVinit.
 >  
-> -.. _ref-classes-flit_core:
-> -
-> -``flit_core.bbclass``
-> -=====================
-> -
-> -The ``flit_core`` class enables building Python modules which declare
-> -the  `PEP-517 <https://www.python.org/dev/peps/pep-0517/>`__ compliant
-> -``flit_core.buildapi`` ``build-backend`` in the ``[build-system]``
-> -section of ``pyproject.toml`` (See `PEP-518 <https://www.python.org/dev/peps/pep-0518/>`__).
-> -
-> -Python modules built with ``flit_core.buildapi`` are pure Python (no
-> -``C`` or ``Rust`` extensions).
-> -
-> -The resulting ``wheel`` (See `PEP-427 <https://www.python.org/dev/peps/pep-0427/>`__)
-> -is installed with the :ref:`python_pep517 <ref-classes-python_pep517>` class.
-> -
->  .. _ref-classes-fontcache:
->  
->  ``fontcache.bbclass``
-> @@ -1978,20 +1962,48 @@ When inherited by a recipe, the ``perlnative`` class supports using the
->  native version of Perl built by the build system rather than using the
->  version provided by the build host.
->  
-> +.. _ref-classes-python_flit_core:
+> +Using systemd-journald without a traditional syslog daemon
+> +------------------------------------------------------------------------
+>
+
+FYI, here, your underlining is unnecessary longer than the text. There
+is no warning though, but that's a convention we seem to follow. I fixed
+this by myself.
 > +
-> +``python_flit_core.bbclass``
-> +=====================
-> +
-> +The ``python_flit_core`` class enables building Python modules which declare
-> +the  `PEP-517 <https://www.python.org/dev/peps/pep-0517/>`__ compliant
-> +``flit_core.buildapi`` ``build-backend`` in the ``[build-system]``
-> +section of ``pyproject.toml`` (See `PEP-518 <https://www.python.org/dev/peps/pep-0518/>`__).
-> +
-> +Python modules built with ``flit_core.buildapi`` are pure Python (no
-> +``C`` or ``Rust`` extensions).
-> +
-> +Internally this uses the :ref:`python_pep517 <ref-classes-python_pep517>` class.
-> +
->  .. _ref-classes-python_pep517:
->  
->  ``python_pep517.bbclass``
->  =============================
->  
-> -The ``python_pep517`` class installs a Python ``wheel`` binary archive (see
-> -`PEP-517 <https://peps.python.org/pep-0517/>`__).
-> +The ``python_pep517`` class builds and installs a Python ``wheel`` binary
-> +archive (see `PEP-517 <https://peps.python.org/pep-0517/>`__).
-> +
-> +Recipes wouldn't inherit this directly, instead typically another class will
-> +inherit this, add the relevant native dependencies, and set
-> +:term:`PEP517_BUILD_API` to the Python class which implements the PEP-517 build
-> +API.
-> +
-> +Examples of classes which do this are :ref:`python_flit_core
-> +<ref-classes-python_flit_core>`, :ref:`setuptools_build_meta
-> +<ref-classes-setuptools_build_meta>`, and :ref:`python_poetry_core
-> +<ref-classes-python_poetry_core>`.
-> +
-> +.. _ref-classes-python_poetry_core:
-> +
-> +``python_poetry_core.bbclass``
-> +=====================
->  
-> -The Python ``wheel`` can be built with several classes, including :ref:`flit_core <ref-classes-flit_core>`,
-> -:ref:`setuptools_build_meta <ref-classes-setuptools_build_meta>`, and :ref:`setuptools3 <ref-classes-setuptools3>`.
-> +The ``python_poetry_core`` class enables building Python modules which use the
-> +`Poetry Core <https://python-poetry.org>`__ build system.
->  
-> -The path to the wheel to be installed is defined by :term:`PEP517_WHEEL_PATH`.
-> -This defaults to ``${D}/dist`` and should be respected by the builder class
-> -(such as :ref:`flit_core <ref-classes-flit_core>`).
-> +Internally this uses the :ref:`python_pep517 <ref-classes-python_pep517>` class.
->  
->  .. _ref-classes-pixbufcache:
->  
-> @@ -2362,8 +2374,7 @@ section of ``pyproject.toml`` (See `PEP-518 <https://www.python.org/dev/peps/pep
->  Python modules built with ``setuptools.build_meta`` can be pure Python or
->  include ``C`` or ``Rust`` extensions).
->  
-> -The resulting ``wheel`` (See `PEP-427 <https://www.python.org/dev/peps/pep-0427/>`__)
-> -is installed with the :ref:`python_pep517 <ref-classes-python_pep517>` class.
-> +Internally this uses the :ref:`python_pep517 <ref-classes-python_pep517>` class.
->  
->  .. _ref-classes-setuptools3:
+> +Counter-intuitively, ``systemd-journald`` is not a syslog runtime or provider,
+> +and the proper way to use systemd-journald as your sole logging mechanism is to
+> +effectively disable syslog entirely by set these variables in your distribution
+> +configuration file::
 
 
-The contents look good, but I've got issues at compile time (using
-Sphinx 4.4):
+s/by set/by setting/
 
-/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1968:
-WARNING: Title underline too short.
+I fixed that by myself. No need to resubmit, unless other people have
+comments.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-``python_flit_core.bbclass``
-=====================
-/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1968:
-WARNING: Title underline too short.
-
-``python_flit_core.bbclass``
-=====================
-/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:2001:
-WARNING: Title underline too short.
-
-``python_poetry_core.bbclass``
-=====================
-/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:2001:
-WARNING: Title underline too short.
-
-``python_poetry_core.bbclass``
-=====================
-looking for now-outdated files... none found
-pickling environment... done
-checking consistency... done
-preparing documents... done
-/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1988:
-WARNING: term not in glossary: PEP517_BUILD_API
-
-Could you add a description for PEP517_BUILD_API?
-Thanks again
+Thanks again!
 Michael.
-
 
 -- 
 Michael Opdenacker, Bootlin
