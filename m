@@ -2,66 +2,66 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 716F5C433F5
-	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 14:17:28 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com
- [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web09.10265.1647613047271875951
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D15AC433F5
+	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 14:20:57 +0000 (UTC)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+ [209.85.221.42])
+ by mx.groups.io with SMTP id smtpd.web09.10312.1647613255983232228
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 07:17:27 -0700
+ Fri, 18 Mar 2022 07:20:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=K9LqjkHn;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.41,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=bfriNP0V;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.42,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f41.google.com with SMTP id b19so11912003wrh.11
+Received: by mail-wr1-f42.google.com with SMTP id r10so11973243wrp.3
         for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 07:17:27 -0700 (PDT)
+ Fri, 18 Mar 2022 07:20:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=from:to:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=kAyfiCCWABce3nrwvE9Uvsopj7S+nI5/olFvPdWWaIc=;
-        b=K9LqjkHn5QH7v3f+Q5SKrAPZDF3hq8waLkOU4KKn/OMeRSEsnlEPXFg98hWAhrzvhp
-         Yfia6dOTb/Rk+s36DRKXzqvzcpUx7U+ugKE5lQflzbv98VntJunswNP1Uwl1cNSIo1QA
-         nXelwqCufll3vEqpr5GgkenLbtYN+ggJCDJs8=
+        bh=zhFVuiLsADND0eBMMN3JNkOHlOPbgL872sr8tRn9V5Y=;
+        b=bfriNP0VcQyNlko4ETN7Q4r1e4E0cc4FQUOu9W/NaVC2e0JQL4kokVKTfErvjz4bsa
+         NnfBMCPwUfA5mTgLUgDe3JB5fLiUqjqyPEZiGdk6DDtUpw7SegyGO5X6QPHQW8kP8W2C
+         9If19KYe7R6AOrCyTMM7Ye+udgmp/tMAwf7Wc=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=kAyfiCCWABce3nrwvE9Uvsopj7S+nI5/olFvPdWWaIc=;
-        b=V0EiHO7Ivla6co+xTf3BXWaDOTHohJKm8SlZwXsI4xnlVBv3Mq8tcd0D5LubXN58SM
-         wUZmQ5zmSwsvpn9r990/AzqxnFHgYcvicV8iiZumbaXbfaKCnmHuyJOew6bEV633UcXT
-         vvdtRCI1SC48Lv8tMEmCD/LGsrzUIxQFV6JsPglWETdfiumtkqIxYlxuIsCfrM6aJ6cV
-         1UhEQKnsEZeTgZ6vQa23ItYYz263wdeseVeZLvXDWoYxVGwD2H8T4xbN08dVDehyaamL
-         E0VQO2bsR5VwG4+UzS8XyVixjRRtC+Ne53pG/xDlgWmtRhoyK5RfC7Rtg6NzV5J15ufA
-         am4Q==
-X-Gm-Message-State: AOAM532t8MvX9zCF+JVoC+wkDkmScz81jejvIsn2HiHwoLZB9hnGqXwn
-	9feRgMouQ7C263gszlZvtVqEmwngHINzLos9
+        bh=zhFVuiLsADND0eBMMN3JNkOHlOPbgL872sr8tRn9V5Y=;
+        b=Iy2EEfY9W1OqpH6VvofryUD21ziHQmXQlBcYXNh/zozWyYrNHhFiCq/7ScNtejIfpQ
+         fhC473zTlbCsahNrSrZQZJ2TuA7Xkfq6nW3L0W14XL+qv6WeEqSSkAJY5YgDOqCEjxuV
+         9qnaLZz3jjitU6CGMZcXelwTjV6taX1kYSHRzobp+E26n9/Txizvd4zHpoNScXCzke0G
+         8ghXG3leuc5BomnKrT6RIos1X5nU1KKqXsXAkdoZgRiJmZlQtEiZAdXDBRY4MyyMaef5
+         DmXm6V24dW79iH9od9/MKXafZK7W4cLwNwKNh0Bh8rlqna97lZ9cgEZCyghj+cgRl+Vo
+         JeHw==
+X-Gm-Message-State: AOAM532P6mnkWEgQ+iFsMEVcgO/PqkAefUY8OP3b3XzO92KoDoD9z6q/
+	5kXHwrLiq0nT5YSMr70IKdBegRCIe5MN/p02
 X-Google-Smtp-Source: 
- ABdhPJyLI4/TmL0EzZPxW44x2R7fGCWqnQULWvrJZr6FlUA+LKJTzF21yBl25tGDNutLUrIrXWriiQ==
-X-Received: by 2002:a05:6000:1a88:b0:203:8de9:47cc with SMTP id
- f8-20020a0560001a8800b002038de947ccmr8076681wry.182.1647613045298;
-        Fri, 18 Mar 2022 07:17:25 -0700 (PDT)
+ ABdhPJykwAKiDOpwPtdf1eKK2mnvivRZ9RcloWryk4wVyD2UqXRdRSTgIH5R7e7/2FbSRRshTyMyaQ==
+X-Received: by 2002:adf:f8c8:0:b0:203:ea89:12ec with SMTP id
+ f8-20020adff8c8000000b00203ea8912ecmr6517847wrq.505.1647613254206;
+        Fri, 18 Mar 2022 07:20:54 -0700 (PDT)
 Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
         by smtp.gmail.com with ESMTPSA id
- u7-20020a5d6da7000000b00203d9d1875bsm7213873wrs.73.2022.03.18.07.17.24
+ o2-20020a05600c4fc200b0038c90f61942sm180462wmq.28.2022.03.18.07.20.53
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 07:17:24 -0700 (PDT)
+        Fri, 18 Mar 2022 07:20:53 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] conf.py/set_versions/poky.yaml: Set version in conf.py from
- poky.yaml
-Date: Fri, 18 Mar 2022 14:17:19 +0000
-Message-Id: <20220318141719.1068821-1-richard.purdie@linuxfoundation.org>
+Subject: [PATCH v2] conf.py/set_versions/poky.yaml: Set version in conf.py
+ from poky.yaml
+Date: Fri, 18 Mar 2022 14:20:52 +0000
+Message-Id: <20220318142052.1068988-1-richard.purdie@linuxfoundation.org>
 X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 14:17:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2629
+ <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 14:20:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2630
 
 Allow conf.py to read the versions it needs from poky.yaml and have
 set_versions.py write this out. This means we don't have to change as
@@ -73,6 +73,8 @@ Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
  documentation/poky.yaml.in    |  2 ++
  documentation/set_versions.py | 22 +++++++++++++++++++++-
  3 files changed, 32 insertions(+), 3 deletions(-)
+
+v2 - fix typo of BITBAKE_VERSION -> BITBAKE_SERIES
 
 diff --git a/documentation/conf.py b/documentation/conf.py
 index 3015892d2..4bbe9b574 100644
@@ -110,7 +112,7 @@ index 89a059ef1..a346b7623 100644
  YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
  YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
 diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index cdcfd6bb0..a8c0980a7 100755
+index cdcfd6bb0..26705469d 100755
 --- a/documentation/set_versions.py
 +++ b/documentation/set_versions.py
 @@ -25,9 +25,20 @@ release_series["hardknott"] = "3.3"
@@ -173,7 +175,7 @@ index cdcfd6bb0..a8c0980a7 100755
      "YOCTO_DOC_VERSION" : ourversion,
      "DISTRO_REL_TAG" : "yocto-" + ourversion,
 +    "DOCCONF_VERSION" : docconfver,
-+    "BITBAKE_VERSION" : bitbakeversion,
++    "BITBAKE_SERIES" : bitbakeversion,
  }
  
  with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
