@@ -2,106 +2,153 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED4FEC433F5
-	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 16:27:02 +0000 (UTC)
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
- [209.85.221.42])
- by mx.groups.io with SMTP id smtpd.web08.11623.1647620821615556323
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B139C433FE
+	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 16:29:50 +0000 (UTC)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+ [209.85.221.47])
+ by mx.groups.io with SMTP id smtpd.web09.11940.1647620988795506299
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 09:27:02 -0700
+ Fri, 18 Mar 2022 09:29:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=BUScRvjT;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.42,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=fHEGR68L;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.47,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f42.google.com with SMTP id r10so12437103wrp.3
+Received: by mail-wr1-f47.google.com with SMTP id p9so12386772wra.12
         for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 09:27:01 -0700 (PDT)
+ Fri, 18 Mar 2022 09:29:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=bTv0/V4NlCFUBNCBoCNd1H9sBwVho0RxI3BnJ2f+lGM=;
-        b=BUScRvjTJANqwM4UET38HLGPamJzItFkz0gf1cG6F0EsGNuY4pODHVHYoq+9A1ALoT
-         k26l6wkeqYILMZAelneFXrC8M+cFTf6vicdYqAf1IF/yhkrvX9W+Q3b1b8OwCgaBbRif
-         aQP2PNKkF37ydLQJEeTsculsbj8QVd2VzQg4A=
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ArRqbk6U6aqonlXeCEco18TIAgXPMlMO0jj2hfKhMiU=;
+        b=fHEGR68L+I5Am7IAFyUTBRlxfjuQMFhadGOknBAn0ZVO27SMkYZYbA6FnbV0f392B9
+         BkGjiXNIiEzAUzFI4Ttljh7x6kd/M0pNe0CVsynYb+U0NljwXjnBDuOB5S4TtnEwe5kn
+         bSmPL/n+IS/2UzpuvtxbUBgj3LVg3b/2FXvyk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=bTv0/V4NlCFUBNCBoCNd1H9sBwVho0RxI3BnJ2f+lGM=;
-        b=KqHuNVbyxawAu//rsBVblCAJdQvHko+OFyx7b90blbeNHfSkljkcVtQA/UWMX9JyBu
-         oAtgMOHQnFWrrqOU5D/aXLdnZ/afIke5GlO4/xbuD6e38GhTR84LqnDI/kZOYitgf6n2
-         ypU4T/5yt4sytlXfbxHXAFcxjnj/QPbyDq/V9pveKv/nasJM9vCxL/BMqNw3rhYAHBWs
-         1oeVr5Co1rBJm8k4XJyDK1uz4w2001vPukCLXKAiSUspV7aFCZf9L7s9aj0iM+kc1NrA
-         G7iHUQ2pDCoPSCT9HaalzQYNsn0Nd+6ueXvdGye+y8THQkhQYuc2zvC/dL/gyQFIrc/r
-         xwwg==
-X-Gm-Message-State: AOAM5335MWJrPA/PU80YEsUeXN0fTqH9BuCCPNhmdb+kTk1TNIZ4rgnB
-	zvKkYB7ethTPI9vJPWZ6BQOgTIi/6g6+FISQ
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=ArRqbk6U6aqonlXeCEco18TIAgXPMlMO0jj2hfKhMiU=;
+        b=KlNKvwdzy/vCok9H5sMUTX2JlMvkjKrk/qKnHZgA+uNM/LBk2aUViK9HMoFHwl5d39
+         Y/ZKg4qzXlNapaRTlX8v0P4poOgiwbF0VqyukZP5P0Pij/5plCN8Xm+EMXD71t3pDRNA
+         mxEA3NCAXB0JJzaeKQnY8WWRfX/LbcRcW19Z27UVA3dAApCMlXiw/kiblUk07wwrniyC
+         B4OAcmHczmHAscLVt0A+pu1TyISnIFRpSBO+Ej8AE39InMvDyEa2txzAONQX0Tjfyp9s
+         Sgy3HZkG7dvkEaCcsc49iUpclvje1FWl5tQAMnz0KK4S4hhyNZIiIprYmaxNdbFEcQ10
+         uLjQ==
+X-Gm-Message-State: AOAM5321eD7t8RxCVck5wd6CIlW4gw8UfuQ6HoOvKMc+yVxQgCrRiLZT
+	PO6McChW43JMj0Wuvzts0ho4cnHNOMCH7kK9
 X-Google-Smtp-Source: 
- ABdhPJwuU/3U156Jpqb3GF+Eb60cdi1BJHdPAxRZ7rA8BTly/V07SY2YmAABWakIuHBQuAEKDlS7YA==
-X-Received: by 2002:adf:d235:0:b0:203:e45b:bef5 with SMTP id
- k21-20020adfd235000000b00203e45bbef5mr8218922wrh.431.1647620819787;
-        Fri, 18 Mar 2022 09:26:59 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37?
- ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
+ ABdhPJzTsHf/eKH8207l0n/v0S8LlsVfCw/jfogeOdXmRzrStWpBALPX2GmclKbneBhDK5oA65Tckw==
+X-Received: by 2002:a05:6000:1083:b0:203:fbd3:937e with SMTP id
+ y3-20020a056000108300b00203fbd3937emr1289119wrw.139.1647620986718;
+        Fri, 18 Mar 2022 09:29:46 -0700 (PDT)
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
         by smtp.gmail.com with ESMTPSA id
- l12-20020a056000022c00b00203ee262d12sm3547316wrz.116.2022.03.18.09.26.59
+ v2-20020adf8b42000000b001edc38024c9sm7397469wra.65.2022.03.18.09.29.46
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 09:26:59 -0700 (PDT)
-Message-ID: 
- <5411924015c8a723fde5bd473832b0d0cbf8f68f.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] set_versions/switchers.js: Allow switchers.js
- version information to be autogenerated
+        Fri, 18 Mar 2022 09:29:46 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Date: Fri, 18 Mar 2022 16:26:56 +0000
-In-Reply-To: <16DD8635B8B3D2FB.17931@lists.yoctoproject.org>
-References: <16DD8635B8B3D2FB.17931@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+Subject: [PATCH 1/2] set_versions/switchers.js: Allow switchers.js version
+ information to be autogenerated
+Date: Fri, 18 Mar 2022 16:29:44 +0000
+Message-Id: <20220318162945.1072835-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 16:27:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2640
+ <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 16:29:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2641
 
-On Fri, 2022-03-18 at 16:23 +0000, Richard Purdie via lists.yoctoproject.org
-wrote:
-> A horrible blunt hammer approach to updating the version information in
-> switchers.js based on the available tag information.
-> 
-> To merge and work correctly, this will need a change to the autobuilder-helper
-> docs generation code to pull the swicthers.js and script from master, then
-> to run the script. That should hopefully remove the need for other patching
-> even on old docs branches though.
-> 
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
->  documentation/.gitignore                      |  1 +
->  documentation/set_versions.py                 | 21 +++++++++++++++++++
->  .../{switchers.js => switchers.js.in}         |  8 +------
->  3 files changed, 23 insertions(+), 7 deletions(-)
->  rename documentation/sphinx-static/{switchers.js => switchers.js.in} (97%)
+A horrible blunt hammer approach to updating the version information in
+switchers.js based on the available tag information.
 
-This patch goes a step further and automates the version information inside
-switchers.js, making set_versions in master definitive for version info.
+To merge and work correctly, this will need a change to the autobuilder-helper
+docs generation code to pull the swicthers.js and script from master, then
+to run the script. That should hopefully remove the need for other patching
+even on old docs branches though.
 
-The actively displayed releases on the website are then simply controlled by the
-activereleases line at the top of the script.
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/.gitignore                      |  1 +
+ documentation/set_versions.py                 | 20 +++++++++++++++++++
+ .../{switchers.js => switchers.js.in}         |  8 +-------
+ 3 files changed, 22 insertions(+), 7 deletions(-)
+ rename documentation/sphinx-static/{switchers.js => switchers.js.in} (97%)
 
-Updating autobuilder-helper to use this shouldn't be too hard, it should just be
-a case of pulling the script and switchers.js from master, then running the
-script. This has not yet been tested with older versions so we need to compare
-the results before and after to double check all the values/magic is correct.
-
-I did just think of a bug where a release not in switchers.js wouldn't be added
-and should be (as in older releases). I'll add something for that.
-
-Cheers,
-
-Richard
+diff --git a/documentation/.gitignore b/documentation/.gitignore
+index e5e2c1708..096b97ec2 100644
+--- a/documentation/.gitignore
++++ b/documentation/.gitignore
+@@ -1,6 +1,7 @@
+ _build/
+ Pipfile.lock
+ poky.yaml
++sphinx-static/switchers.js
+ .vscode/
+ */svg/*.png
+ */svg/*.pdf
+diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+index 6452aeb14..d9f57112b 100755
+--- a/documentation/set_versions.py
++++ b/documentation/set_versions.py
+@@ -13,6 +13,7 @@ import subprocess
+ import collections
+ import sys
+ 
++activereleases = ["honister", "hardknott", "dunfell"]
+ devbranch = "kirkstone"
+ #devbranch = "langdale"
+ ltsseries = ["kirkstone", "dunfell"]
+@@ -144,3 +145,22 @@ with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
+ 
+ print("poky.yaml generated from poky.yaml.in")
+ 
++with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-static/switchers.js", "w") as w:
++    lines = r.readlines()
++    for line in lines:
++        if "VERSIONS_PLACEHOLDER" in line:
++            w.write("    'dev': 'dev (%s)',\n" % release_series[devbranch])
++            for branch in activereleases:
++                if branch == devbranch:
++                    continue
++                versions = subprocess.run('git tag --list yocto-%s*' % (release_series[branch]), shell=True, capture_output=True, text=True).stdout.split()
++                versions = sorted([v.replace("yocto-" +  release_series[branch] + ".", "").replace("yocto-" +  release_series[branch], "0") for v in versions], key=int)
++                version = release_series[branch]
++                if versions[-1] != "0":
++                    version = version + "." + versions[-1]
++                w.write("    '%s': '%s',\n" % (version, version))
++        else:
++            w.write(line)
++
++print("switchers.js generated from switchers.js.in")
++
+diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js.in
+similarity index 97%
+rename from documentation/sphinx-static/switchers.js
+rename to documentation/sphinx-static/switchers.js.in
+index 3ea8927d7..5d3a4d793 100644
+--- a/documentation/sphinx-static/switchers.js
++++ b/documentation/sphinx-static/switchers.js.in
+@@ -10,13 +10,7 @@ by https://git.yoctoproject.org/yocto-autobuilder-helper/tree/scripts/run-docs-b
+   'use strict';
+ 
+   var all_versions = {
+-    'dev': 'dev (3.5)',
+-    '3.4.2': '3.4.2',
+-    '3.3.5': '3.3.5',
+-    '3.2.4': '3.2.4',
+-    '3.1.14': '3.1.14',
+-    '3.0.4': '3.0.4',
+-    '2.7.4': '2.7.4',
++    VERSIONS_PLACEHOLDER
+   };
+ 
+   var all_doctypes = {
+-- 
+2.32.0
 
 
