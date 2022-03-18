@@ -2,158 +2,159 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 217F4C433F5
-	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 11:32:56 +0000 (UTC)
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com
- [209.85.128.47])
- by mx.groups.io with SMTP id smtpd.web10.8653.1647603173460410314
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CCFDC433F5
+	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 12:00:13 +0000 (UTC)
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
+ [209.85.221.50])
+ by mx.groups.io with SMTP id smtpd.web08.8636.1647604812301205944
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 04:32:53 -0700
+ Fri, 18 Mar 2022 05:00:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=fJHWiJVB;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.47,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=bWtd3Jdy;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.50,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f47.google.com with SMTP id
- o7-20020a05600c4fc700b0038c87edc21eso786320wmq.0
+Received: by mail-wr1-f50.google.com with SMTP id d7so11424110wrb.7
         for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 04:32:53 -0700 (PDT)
+ Fri, 18 Mar 2022 05:00:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=xcyZBjdLUlOn2sDYGmYlru5wml5Su4ubXxZPqtTf+tI=;
-        b=fJHWiJVBpmQBgqzhEBiRyHoP89eq2RBn/yS9JF1lmyW9JRmKAepXT69wp6wTTyT1j0
-         fQwQTsVmBQ38poAuiNS2109cwhgbCut3M/ug6pps1OmjhuJng/NLAlDcE+bvojofTn/l
-         YYF0V6j+sd8bB5oYjnGsTKVDkfSNlqngGZSzc=
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sZIvazBRF1NHDVabkORpb8HgCQUXCYnfsy1h2bNpnfg=;
+        b=bWtd3JdyuXr1pCm+mEHwZ7ZEtRnZA2nq7nSF2V7aICImO/FEGsLCm1LzQzZO1XaA+s
+         nadrPZJ02Sr3cJof4NOsm0LlSmr8QfSmE3IU819mKFXlIY+7+/funbFEqP9KM1fKepM5
+         jKs++UJo0EmWBx4baydQGMvN4PvpiQfZVuwaI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=xcyZBjdLUlOn2sDYGmYlru5wml5Su4ubXxZPqtTf+tI=;
-        b=aa1jINuNxoqdsg/wSuhH77oEAzqay81wxPKmJJYKW5zyX8n478A/2aiA6Ge55s1gcu
-         Z3zQ1oyv/AsvqlZQUExelPwSxH8gw8ydSiH9uZcPEOAmIYLkgaqjaNViFbNdxjxcIEoF
-         kjNQk9lUCICG2kZkM8CkyGrIfRVs5fijgzgqcbim8uZRky6wOBIpXxYHUUJu60ZXfRdc
-         uko/e4unaEMX5J01CG66Y1oKC2URaFAWX+gVz9unWVT3Y29Do4agGsc77bClHkcLafgM
-         lDf1ZztF+CuYhhf8bDPPKtGAAbdSLP27wjsdtnLFBV1THRtfpS0LJK1AfeJoMNRYVh3m
-         bNtA==
-X-Gm-Message-State: AOAM533G7Ag2hy2l8Mc037BqqzmyM6dH0Eq9os8gWBIgG+8/ZUbnOmbb
-	l08Fbc0u9wyutM0WwaO0Sy2H/g==
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=sZIvazBRF1NHDVabkORpb8HgCQUXCYnfsy1h2bNpnfg=;
+        b=a3eIri704GZP9XP0eROOC6DOsikGw0+4TVR62IavuZC057MrkfYbKxYOJZBYGEHwX5
+         f+OgZLB800D1TKa5Krrpk5b8aObnVYnmkFQGwPEQbI9PXzZndYHxEX20gJUtXehJ0N44
+         I2oGxMr6tnpIEFTpyp+Hcd7ywVMzSibv+aPPARvU7CUcepVMNNoQbKMElpzKk0lQFwJB
+         FHN/XrP2+22kVo2DsWN7Nzt4c+XGOM6zxFUGjZqUqfnkqEiXslmy4KhByajl/lhk+OP5
+         tfIoLBSAjI2IHClp1zR//cM6M67OexAUksRVM0+GMPzXDIdlGyZI2Hd9OV0dPKejXPZI
+         e6sg==
+X-Gm-Message-State: AOAM532EfXn7fp1dYpbxmmi8OZZUr0ZagA5Coc0it8jEQhxEPOjs0ymR
+	tIrHCvQumBqOvhdJqV2xRelIwLhOQWUAuS0r
 X-Google-Smtp-Source: 
- ABdhPJwUlABCdeErsgod6CPke/954HcadizTeFeJ4CXLS57tf6iT1Boa70tDNA3vRXOqZQFoFnW3Fg==
-X-Received: by 2002:a05:600c:1c87:b0:389:9dda:af17 with SMTP id
- k7-20020a05600c1c8700b003899ddaaf17mr15384011wms.27.1647603171885;
-        Fri, 18 Mar 2022 04:32:51 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37?
- ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
+ ABdhPJwtCWcvNtvIoIp2E+PYOMPaPWCH2J+bQmZDXR+bbmDh+v2P/QDqC5UtB6BxnzO/wpMgzb9sww==
+X-Received: by 2002:a05:6000:1d82:b0:203:e5cc:c19b with SMTP id
+ bk2-20020a0560001d8200b00203e5ccc19bmr7624811wrb.553.1647604810145;
+        Fri, 18 Mar 2022 05:00:10 -0700 (PDT)
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
         by smtp.gmail.com with ESMTPSA id
- f17-20020a05600c155100b0038c83236f92sm3113771wmg.10.2022.03.18.04.32.50
+ c11-20020a05600c0a4b00b0037c91e085ddsm11759729wmq.40.2022.03.18.05.00.09
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 04:32:51 -0700 (PDT)
-Message-ID: 
- <b2460d816ec5543f094fdf183dcbd889d8861502.camel@linuxfoundation.org>
-Subject: Re: [docs] Version bump before release
+        Fri, 18 Mar 2022 05:00:09 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- michael.opdenacker@bootlin.com, Quentin Schulz <foss+yocto@0leil.net>,
- docs@lists.yoctoproject.org, Michael Halstead
- <mhalstead@linuxfoundation.org>
-Date: Fri, 18 Mar 2022 11:32:49 +0000
-In-Reply-To: <a94451a0-8a13-930b-655a-8e3b34324cd4@theobroma-systems.com>
-References: 
-	<CADfgfobCTXyBYSSjekdKJp4ekrmHWH+imjpARMrCMLp2gwTr5w@mail.gmail.com>
-	 <14D40357-15CC-46D2-B63A-66AED89F291F@0leil.net>
-	 <6342c148-7e51-df83-2166-e2745b9f61e0@bootlin.com>
-	 <a94451a0-8a13-930b-655a-8e3b34324cd4@theobroma-systems.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] poky.yaml: Drop POKYVERSION and YOCTO_POKY references
+Date: Fri, 18 Mar 2022 12:00:08 +0000
+Message-Id: <20220318120008.1061207-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 11:32:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2625
+ <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 12:00:13 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2626
 
-I know I've been a bit against having magic versions as the tag information may
-not always be present in a git checkout of the docs. That said, I was curious to
-see how close we could get the information with and without tag information.
-I've included a script below which tries to use any branch/tag information
-available to guess the correct release series and version to use.
+We don't publish tarballs using this version any more, it has been
+removed everywhere. Remove the obsolete references in the docs,
+adapting references accordingly. The tarballs now are just created
+with their sha256 checksum which we don't want or need to reference
+in the docs.
 
-We can make sure the tag information is there for docs builds on our
-infrastructure so that bit is easy. The question is therefore whether this does
-generate good enough information for people with local checkouts?
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/dev-manual/start.rst                 |  4 +---
+ .../overview-manual/development-environment.rst    |  2 +-
+ documentation/poky.yaml                            |  2 --
+ documentation/ref-manual/terms.rst                 | 14 +++++++-------
+ 4 files changed, 9 insertions(+), 13 deletions(-)
 
-The objective here would be to automate generation of the version information in
-the docs so we don't have to manually update it other than adding new release
-series mappings to master.
-
-See what you think of the script/idea.
-
-I've just realised we could detect the missing tags and tell the user to fetch
-them before building too. That would solve most of my worries I think?
-
-Cheers,
-
-Richard
-
-
-
-#!/usr/bin/env python3
-
-import subprocess
-import collections
-import sys
-
-devbranch = "langdale"
-
-release_series = collections.OrderedDict()
-release_series["langdale"] = "4.1"
-release_series["kirkstone"] = "4.0"
-release_series["honister"] = "3.4"
-release_series["hardknott"] = "3.3"
-release_series["gatesgarth"] = "3.2"
-release_series["dunfell"] = "3.1"
-
-ourversion = None
-ourseries = None
-ourbranch = None
-
-# Try and figure out what we are
-tags = subprocess.run(["git", "tag", "--points-at", "HEAD"], capture_output=True, text=True).stdout
-for t in tags.split():
-    if t.startswith("yocto-"):
-        ourversion = t[6:]
-
-if ourversion:
-    components = ourversion.split(".")
-    baseversion = components[0] + "." + components[1]
-    for i in release_series:
-        if release_series[i] == baseversion:
-            ourseries = i
-            ourbranch = i
-else:
-    branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
-    ourbranch = branch
-    if branch == "master":
-        ourseries = devbranch
-    elif branch in release_series:
-        ourseries = branch
-    else:
-        sys.exit("Unknown series for branch %s" % branch)
-
-    previoustags = subprocess.run(["git", "tag", "--merged", "HEAD"], capture_output=True, text=True).stdout
-    previoustags = [t[6:] for t in previoustags.split() if t.startswith("yocto-" + release_series[ourseries])]
-    futuretags = subprocess.run(["git", "tag", "--merged", ourbranch], capture_output=True, text=True).stdout
-    futuretags = [t[6:] for t in futuretags.split() if t.startswith("yocto-" + release_series[ourseries])]
-
-    if len(previoustags) != len(futuretags):
-        ourversion = previoustags[-1] + ".999"
-    else:
-        ourversion = release_series[ourseries] + ".999"
-
-print("Version calculated to be %s" % ourversion)
-print("Release series calculated to be %s" % ourseries)
-
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index 701d3cf4d..96fabac1a 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -647,9 +647,7 @@ Follow these steps to locate and download a particular tarball:
+ 
+ 3. *Find the Tarball:* Drill down to find the associated tarball. For
+    example, click on ``yocto-&DISTRO;`` to view files associated with the
+-   Yocto Project &DISTRO; release (e.g.
+-   ``&YOCTO_POKY;.tar.bz2``, which is the
+-   released Poky tarball).
++   Yocto Project &DISTRO; release.
+ 
+ 4. *Download the Tarball:* Click the tarball to download and save a
+    snapshot of the given component.
+diff --git a/documentation/overview-manual/development-environment.rst b/documentation/overview-manual/development-environment.rst
+index fc193f313..9c9c8e87a 100644
+--- a/documentation/overview-manual/development-environment.rst
++++ b/documentation/overview-manual/development-environment.rst
+@@ -461,7 +461,7 @@ and clicking on the ``[...]`` link beneath the "Tag" heading.
+ 
+ Some key tags for the ``poky`` repository are ``jethro-14.0.3``,
+ ``morty-16.0.1``, ``pyro-17.0.0``, and
+-``&DISTRO_NAME_NO_CAP;-&POKYVERSION;``. These tags represent Yocto Project
++``&DISTRO_NAME_NO_CAP;-&DISTRO;``. These tags represent Yocto Project
+ releases.
+ 
+ When you create a local copy of the Git repository, you also have access
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 4f4f3e3a9..c8a890c40 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -6,8 +6,6 @@ DISTRO_NAME_NO_CAP_LTS : "dunfell"
+ YOCTO_DOC_VERSION : "3.4.2"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.3.5"
+ DISTRO_REL_TAG : "yocto-3.4.2"
+-POKYVERSION : "26.0.2"
+-YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
+index 3f18d3404..cba514c34 100644
+--- a/documentation/ref-manual/terms.rst
++++ b/documentation/ref-manual/terms.rst
+@@ -88,11 +88,11 @@ universal, the list includes them just in case:
+          -  Provide a directory path and specifically name the Build
+             Directory. Any intermediate folders in the pathname must exist.
+             This next example creates a Build Directory named
+-            ``YP-&POKYVERSION;`` within the existing directory ``mybuilds``:
++            ``YP-&DISTRO;`` within the existing directory ``mybuilds``:
+ 
+             .. code-block:: shell
+ 
+-               $ source poky/oe-init-build-env mybuilds/YP-&POKYVERSION;
++               $ source poky/oe-init-build-env mybuilds/YP-&DISTRO;
+ 
+       .. note::
+ 
+@@ -357,13 +357,13 @@ universal, the list includes them just in case:
+      repository results in a local Git repository whose top-level folder
+      is also named "poky".
+ 
+-     While it is not recommended that you use tarball expansion to set up
++     While it is not recommended that you use tarball extraction to set up
+      the Source Directory, if you do, the top-level directory name of the
+      Source Directory is derived from the Yocto Project release tarball.
+-     For example, downloading and unpacking
+-     :yocto_dl:`/releases/yocto/&DISTRO_REL_TAG;/&YOCTO_POKY;.tar.bz2`
+-     results in a Source Directory whose root folder is named
+-     ``&YOCTO_POKY;``.
++     For example, downloading and unpacking poky tarballs from
++     :yocto_dl:`/releases/yocto/&DISTRO_REL_TAG;/`
++     results in a Source Directory whose root folder is named poky.
++
+ 
+      It is important to understand the differences between the Source
+      Directory created by unpacking a released tarball as compared to
+-- 
+2.32.0
 
 
