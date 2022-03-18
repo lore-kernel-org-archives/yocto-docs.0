@@ -1,185 +1,75 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D15AC433F5
-	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 14:20:57 +0000 (UTC)
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
- [209.85.221.42])
- by mx.groups.io with SMTP id smtpd.web09.10312.1647613255983232228
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEEA7C433EF
+	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 14:24:26 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.10344.1647613450781911829
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 07:20:56 -0700
+ Fri, 18 Mar 2022 07:24:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=bfriNP0V;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.42,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f42.google.com with SMTP id r10so11973243wrp.3
-        for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 07:20:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zhFVuiLsADND0eBMMN3JNkOHlOPbgL872sr8tRn9V5Y=;
-        b=bfriNP0VcQyNlko4ETN7Q4r1e4E0cc4FQUOu9W/NaVC2e0JQL4kokVKTfErvjz4bsa
-         NnfBMCPwUfA5mTgLUgDe3JB5fLiUqjqyPEZiGdk6DDtUpw7SegyGO5X6QPHQW8kP8W2C
-         9If19KYe7R6AOrCyTMM7Ye+udgmp/tMAwf7Wc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=zhFVuiLsADND0eBMMN3JNkOHlOPbgL872sr8tRn9V5Y=;
-        b=Iy2EEfY9W1OqpH6VvofryUD21ziHQmXQlBcYXNh/zozWyYrNHhFiCq/7ScNtejIfpQ
-         fhC473zTlbCsahNrSrZQZJ2TuA7Xkfq6nW3L0W14XL+qv6WeEqSSkAJY5YgDOqCEjxuV
-         9qnaLZz3jjitU6CGMZcXelwTjV6taX1kYSHRzobp+E26n9/Txizvd4zHpoNScXCzke0G
-         8ghXG3leuc5BomnKrT6RIos1X5nU1KKqXsXAkdoZgRiJmZlQtEiZAdXDBRY4MyyMaef5
-         DmXm6V24dW79iH9od9/MKXafZK7W4cLwNwKNh0Bh8rlqna97lZ9cgEZCyghj+cgRl+Vo
-         JeHw==
-X-Gm-Message-State: AOAM532P6mnkWEgQ+iFsMEVcgO/PqkAefUY8OP3b3XzO92KoDoD9z6q/
-	5kXHwrLiq0nT5YSMr70IKdBegRCIe5MN/p02
-X-Google-Smtp-Source: 
- ABdhPJykwAKiDOpwPtdf1eKK2mnvivRZ9RcloWryk4wVyD2UqXRdRSTgIH5R7e7/2FbSRRshTyMyaQ==
-X-Received: by 2002:adf:f8c8:0:b0:203:ea89:12ec with SMTP id
- f8-20020adff8c8000000b00203ea8912ecmr6517847wrq.505.1647613254206;
-        Fri, 18 Mar 2022 07:20:54 -0700 (PDT)
-Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
-        by smtp.gmail.com with ESMTPSA id
- o2-20020a05600c4fc200b0038c90f61942sm180462wmq.28.2022.03.18.07.20.53
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 07:20:53 -0700 (PDT)
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] conf.py/set_versions/poky.yaml: Set version in conf.py
- from poky.yaml
-Date: Fri, 18 Mar 2022 14:20:52 +0000
-Message-Id: <20220318142052.1068988-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.32.0
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=asdZ+I6D;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id A9DF640004;
+	Fri, 18 Mar 2022 14:24:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1647613449;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v3jyZNDhUI01jcGuas8Spefvf3BSgW9qPkaC8l1Cngg=;
+	b=asdZ+I6D10jK+N/8yVPh0CRSUHmzffhsD5vZiHkiTuCdQxOkIgrDmvnbtPs0aNiDu1i/p7
+	o5qSKoA4OLCg5mZpQglCmqyLeywOmcNApNl9Walt+Ki7p+NR0f5ucucYk2k93RAgEqGbEF
+	TJhNgT7yxAeiS5cOKAGgAaAHv3v2CdRIw5uLR/bowcehpoQP5xE8xJY8iQ+N/TAup983ks
+	NFr35EfhluLjTvovnOOhaxWHCKAjaQMJ1kZwd20uz9PELRq6vFxjtuMfuWv2Q3yUhuAFa4
+	ajEF/DlXpGsprxzOBrEl6b55/2W+bElSmhmQWmeuElyBgi8GWaGj/U9Vo1wXeQ==
+Message-ID: <e4a525ea-5e2f-08f9-3f7e-5d7eb92faa05@bootlin.com>
+Date: Fri, 18 Mar 2022 15:24:07 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [docs] [PATCH] poky.yaml: Drop POKYVERSION and YOCTO_POKY
+ references
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ docs@lists.yoctoproject.org
+References: <20220318120008.1061207-1-richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20220318120008.1061207-1-richard.purdie@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 14:20:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2630
+ <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 14:24:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2631
 
-Allow conf.py to read the versions it needs from poky.yaml and have
-set_versions.py write this out. This means we don't have to change as
-many files when making new releases.
+Hi Richard,
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
----
- documentation/conf.py         | 11 +++++++++--
- documentation/poky.yaml.in    |  2 ++
- documentation/set_versions.py | 22 +++++++++++++++++++++-
- 3 files changed, 32 insertions(+), 3 deletions(-)
+On 3/18/22 13:00, Richard Purdie wrote:
+> We don't publish tarballs using this version any more, it has been
+> removed everywhere. Remove the obsolete references in the docs,
+> adapting references accordingly. The tarballs now are just created
+> with their sha256 checksum which we don't want or need to reference
+> in the docs.
 
-v2 - fix typo of BITBAKE_VERSION -> BITBAKE_SERIES
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index 3015892d2..4bbe9b574 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -16,8 +16,15 @@ import os
- import sys
- import datetime
- 
--current_version = "dev"
--bitbake_version = "" # Leave empty for development branch
-+# current_version = "dev"
-+# bitbake_version = "" # Leave empty for development branch
-+# Obtain versions from poky.yaml instead
-+with open("poky.yaml") as data:
-+    for line in data.readlines():
-+        if line.startswith("DOCCONF_VERSION"):
-+            current_version = line.split(":")[1].strip().replace('"', '')
-+        if line.startswith("BITBAKE_SERIES"):
-+            bitbake_version = line.split(":")[1].strip().replace('"', '')
- 
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 89a059ef1..a346b7623 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -5,6 +5,8 @@ DISTRO_NAME_NO_CAP_MINUS_ONE : "hardknott"
- DISTRO_NAME_NO_CAP_LTS : "dunfell"
- YOCTO_DOC_VERSION : "3.4.2"
- DISTRO_REL_TAG : "yocto-3.4.2"
-+DOCCONF_VERSION : "dev"
-+BITBAKE_SERIES : ""
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
- YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
-diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index cdcfd6bb0..26705469d 100755
---- a/documentation/set_versions.py
-+++ b/documentation/set_versions.py
-@@ -25,9 +25,20 @@ release_series["hardknott"] = "3.3"
- release_series["gatesgarth"] = "3.2"
- release_series["dunfell"] = "3.1"
- 
-+bitbake_mapping = {
-+    "langdale" : "2.2",
-+    "kirkstone" : "2.0",
-+    "honister" : "1.52",
-+    "hardknott" : "1.50",
-+    "gatesgarth" : "1.48",
-+    "dunfell" : "1.46",
-+}
-+
- ourversion = None
- ourseries = None
- ourbranch = None
-+bitbakeversion = None
-+docconfver = None
- 
- # Test tags exist and inform the user to fetch if not
- try:
-@@ -45,18 +56,23 @@ if ourversion:
-     # We're a tagged release
-     components = ourversion.split(".")
-     baseversion = components[0] + "." + components[1]
-+    docconfver = ourversion
-     for i in release_series:
-         if release_series[i] == baseversion:
-             ourseries = i
-             ourbranch = i
-+            bitbakeversion = bitbake_mapping[i]
- else:
-     # We're floating on a branch
-     branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
-     ourbranch = branch
--    if branch == "master":
-+    if branch == "master" or branch == "master-next":
-         ourseries = devbranch
-+        docconfver = "dev"
-+        bitbakeversion = ""
-     elif branch in release_series:
-         ourseries = branch
-+        bitbakeversion = bitbake_mapping[branch]
-     else:
-         sys.exit("Unknown series for branch %s" % branch)
- 
-@@ -70,6 +86,8 @@ else:
-         ourversion = previoustags[-1] + ".999"
-     else:
-         ourversion = release_series[ourseries] + ".999"
-+    if not docconfver:
-+        docconfver = ourversion
- 
- series = [k for k in release_series]
- previousseries = series[series.index(ourseries)+1:]
-@@ -86,6 +104,8 @@ replacements = {
-     "DISTRO_NAME_NO_CAP_LTS" : lastlts[0],
-     "YOCTO_DOC_VERSION" : ourversion,
-     "DISTRO_REL_TAG" : "yocto-" + ourversion,
-+    "DOCCONF_VERSION" : docconfver,
-+    "BITBAKE_SERIES" : bitbakeversion,
- }
- 
- with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
+Thanks for the welcome simplification!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+... and merged into master-next.
+
+Cheers
+Michael.
+
 -- 
-2.32.0
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
