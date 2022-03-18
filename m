@@ -2,58 +2,58 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E7D7C433FE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CF3CC433EF
 	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 15:42:34 +0000 (UTC)
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
- [209.85.128.48])
- by mx.groups.io with SMTP id smtpd.web12.11102.1647618153396295205
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com
+ [209.85.221.48])
+ by mx.groups.io with SMTP id smtpd.web09.11342.1647618152650065582
  for <docs@lists.yoctoproject.org>;
  Fri, 18 Mar 2022 08:42:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Vc4RESej;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.48,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=hhOwkNaa;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.48,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f48.google.com with SMTP id h16so4509946wmd.0
+Received: by mail-wr1-f48.google.com with SMTP id x15so12224828wru.13
         for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 08:42:33 -0700 (PDT)
+ Fri, 18 Mar 2022 08:42:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=mkCfDSJEtfeKrMpQGuibsN3gnarO1qj3nzkg5vu5/aU=;
-        b=Vc4RESejlSsVNwUlmOkd7PlT75b80s+APJiZwn5iJ13UjRRyztFMjiKderOW9u75Xj
-         0tc+v60r8KCeqAhzB6Hkb8bUeAupHDeWQIr+3Q2ODfNT2EXBk6vdIH2ApuUxkDTozzz1
-         FK+jHMFsvCDDRCoTrN09GX09/bUN0Ga406Yk4=
+        bh=xmaeduspeXwkNqqKI81x12Lu8G+DJKJeRTRsyGzPk/c=;
+        b=hhOwkNaa0dcKDdubIVPrZiTKlC87hc8zclDpNWBVu79+0CdGhFkezrNqXnHGm7M21r
+         P9eZkoxnJJZiiBUp28EyBDE6LUYbI620D5tB/Qt1vVY5PCj9luUfHDYUXn8LWqEFaI/G
+         4NngedfpPzVlUraYExy5WGhGWt9Yvz0MccI6Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=mkCfDSJEtfeKrMpQGuibsN3gnarO1qj3nzkg5vu5/aU=;
-        b=cpSo2xh6RoajcReDLzVI4iB9CAVduPbs+unaOjFNfClkB7wo5I/sJ0Wxf2x/Oj2mdP
-         jz6liux2bDAhT4BtLRPmWinKq/HDczRG1QV5GXSZQRgkAT+jMQa9eVSwx98mTM40n+pu
-         OLVqR5T2ZszAhLfSe/IcpX8Q5Yodx3CTN8Jt88coHgsCB1py7Jc8Y+NRODCvRBF73cEY
-         ND4hjtDG+oImu3InKi0T/kMuglmcUl3Da2TwAwpV77UaHkG6A29InWzs+08ZsdDjFn5b
-         909yDSXz1GTsX5MiNNNcKV2gahAXTa4qVR4bU9rUavNmRsoT9KMlJfT6Mcha/KgDCQh3
-         4sfA==
-X-Gm-Message-State: AOAM532XFPzCF4h3M5OhpsuyoYz3yZKYwTBEBo1iE82leGDijf6utMUh
-	Bujn4lFiaP+hg5AHdEGpAHkD/YlBGWcEbB8R
+        bh=xmaeduspeXwkNqqKI81x12Lu8G+DJKJeRTRsyGzPk/c=;
+        b=li3D3iVgDaOHbhOKLAZn9hUZNJ3RwARr86JJUPG69s/8/CZ0TSKt8ChqdJU2qeiqWM
+         b6CrNSSCLiDKJN+0q/MDL/nGv26en5dGOG9ZcnAiGaexqolvlMLfg3sH4Jabk8/+5svG
+         B4WjDlfidOKussH5oOHGHJfDheB/WVRqU2xuDneZt/szMQX+rDZ/Sa0Ylw4+QeZMGmsI
+         R/XocAOW9503xiomN9Agd5CGsNRC/GwHCbgR8GHdyrFkZZDlp/D7ZkeCCr2uG0gkCXpS
+         +QA7V1rIkZQS2cPdjYo8AVA+O+JRZM+U22pZXipYQox2UR0tE5ZsfvXLWePPFliQtFLO
+         gNiQ==
+X-Gm-Message-State: AOAM532XLqz1vCDMDV6kxBiqrD5GXGsTjcV8+XD7F2ewuIEMeJJJ+JK/
+	XZOSjtgbrBRQoqVNplQkEAiqGZyv/qVsc6T+
 X-Google-Smtp-Source: 
- ABdhPJyz3v428cb9MJHLSbKUSh99PI02tVInk0AmCgwXzB/XOUXYFH18hUM8inpzSeIkVck4UnsILg==
-X-Received: by 2002:a05:600c:3d8d:b0:38c:6f6e:e61a with SMTP id
- bi13-20020a05600c3d8d00b0038c6f6ee61amr11102008wmb.101.1647618151672;
-        Fri, 18 Mar 2022 08:42:31 -0700 (PDT)
+ ABdhPJwLJEspTm9DmEfcBTtNA9ufYXNiO0PCUhlPyd2AVNb2dLE9axaw1alWpwJTded87PulDkj1Ig==
+X-Received: by 2002:a5d:64e3:0:b0:203:85ed:49a2 with SMTP id
+ g3-20020a5d64e3000000b0020385ed49a2mr8456442wri.483.1647618150865;
+        Fri, 18 Mar 2022 08:42:30 -0700 (PDT)
 Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
         by smtp.gmail.com with ESMTPSA id
  l1-20020a05600c4f0100b00387369f380bsm11443624wmq.41.2022.03.18.08.42.30
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 08:42:31 -0700 (PDT)
+        Fri, 18 Mar 2022 08:42:30 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 3/3] set_versions: Add support for setting POKYVERSION found
- in older releases
-Date: Fri, 18 Mar 2022 15:42:28 +0000
-Message-Id: <20220318154228.1071136-3-richard.purdie@linuxfoundation.org>
+Subject: [PATCH 2/3] conf.py/set_versions/poky.yaml: Set version in conf.py
+ from poky.yaml
+Date: Fri, 18 Mar 2022 15:42:27 +0000
+Message-Id: <20220318154228.1071136-2-richard.purdie@linuxfoundation.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220318154228.1071136-1-richard.purdie@linuxfoundation.org>
 References: <20220318154228.1071136-1-richard.purdie@linuxfoundation.org>
@@ -63,42 +63,122 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 15:42:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2638
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2637
+
+Allow conf.py to read the versions it needs from poky.yaml and have
+set_versions.py write this out. This means we don't have to change as
+many files when making new releases.
 
 Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 ---
- documentation/set_versions.py | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ documentation/conf.py         | 11 +++++++++--
+ documentation/poky.yaml.in    |  2 ++
+ documentation/set_versions.py | 20 ++++++++++++++++++++
+ 3 files changed, 31 insertions(+), 2 deletions(-)
 
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 3015892d2..4bbe9b574 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -16,8 +16,15 @@ import os
+ import sys
+ import datetime
+ 
+-current_version = "dev"
+-bitbake_version = "" # Leave empty for development branch
++# current_version = "dev"
++# bitbake_version = "" # Leave empty for development branch
++# Obtain versions from poky.yaml instead
++with open("poky.yaml") as data:
++    for line in data.readlines():
++        if line.startswith("DOCCONF_VERSION"):
++            current_version = line.split(":")[1].strip().replace('"', '')
++        if line.startswith("BITBAKE_SERIES"):
++            bitbake_version = line.split(":")[1].strip().replace('"', '')
+ 
+ # String used in sidebar
+ version = 'Version: ' + current_version
+diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+index 89a059ef1..a346b7623 100644
+--- a/documentation/poky.yaml.in
++++ b/documentation/poky.yaml.in
+@@ -5,6 +5,8 @@ DISTRO_NAME_NO_CAP_MINUS_ONE : "hardknott"
+ DISTRO_NAME_NO_CAP_LTS : "dunfell"
+ YOCTO_DOC_VERSION : "3.4.2"
+ DISTRO_REL_TAG : "yocto-3.4.2"
++DOCCONF_VERSION : "dev"
++BITBAKE_SERIES : ""
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
 diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index 32259238e..6452aeb14 100755
+index 266ccf464..32259238e 100755
 --- a/documentation/set_versions.py
 +++ b/documentation/set_versions.py
-@@ -34,6 +34,13 @@ bitbake_mapping = {
-     "dunfell" : "1.46",
- }
+@@ -25,9 +25,20 @@ release_series["hardknott"] = "3.3"
+ release_series["gatesgarth"] = "3.2"
+ release_series["dunfell"] = "3.1"
  
-+# 3.4 onwards doesn't have poky version
-+poky_mapping = {
-+    "3.3" : "25.0",
-+    "3.2" : "24.0",
-+    "3.1" : "23.0",
++bitbake_mapping = {
++    "langdale" : "2.2",
++    "kirkstone" : "2.0",
++    "honister" : "1.52",
++    "hardknott" : "1.50",
++    "gatesgarth" : "1.48",
++    "dunfell" : "1.46",
 +}
 +
  ourversion = None
  ourseries = None
  ourbranch = None
-@@ -121,6 +128,10 @@ replacements = {
-     "BITBAKE_SERIES" : bitbakeversion,
++bitbakeversion = None
++docconfver = None
+ 
+ # Test tags exist and inform the user to fetch if not
+ try:
+@@ -45,10 +56,12 @@ if ourversion:
+     # We're a tagged release
+     components = ourversion.split(".")
+     baseversion = components[0] + "." + components[1]
++    docconfver = ourversion
+     for i in release_series:
+         if release_series[i] == baseversion:
+             ourseries = i
+             ourbranch = i
++            bitbakeversion = bitbake_mapping[i]
+ else:
+     # We're floating on a branch
+     branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+@@ -68,8 +81,11 @@ else:
+         print("Nearest release branch esimtated to be %s" % branch)
+     if branch == "master":
+         ourseries = devbranch
++        docconfver = "dev"
++        bitbakeversion = ""
+     elif branch in release_series:
+         ourseries = branch
++        bitbakeversion = bitbake_mapping[branch]
+     else:
+         sys.exit("Unknown series for branch %s" % branch)
+ 
+@@ -83,6 +99,8 @@ else:
+         ourversion = previoustags[-1] + ".999"
+     else:
+         ourversion = release_series[ourseries] + ".999"
++    if not docconfver:
++        docconfver = ourversion
+ 
+ series = [k for k in release_series]
+ previousseries = series[series.index(ourseries)+1:]
+@@ -99,6 +117,8 @@ replacements = {
+     "DISTRO_NAME_NO_CAP_LTS" : lastlts[0],
+     "YOCTO_DOC_VERSION" : ourversion,
+     "DISTRO_REL_TAG" : "yocto-" + ourversion,
++    "DOCCONF_VERSION" : docconfver,
++    "BITBAKE_SERIES" : bitbakeversion,
  }
  
-+if release_series[ourseries] in poky_mapping:
-+    pokyversion = poky_mapping[release_series[ourseries]] + "." + ourversion.rsplit(".", 1)[1]
-+    replacements["POKYVERSION"] = pokyversion
-+
  with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
-     lines = r.readlines()
-     for line in lines:
 -- 
 2.32.0
 
