@@ -2,186 +2,104 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E219C433F5
-	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 15:04:37 +0000 (UTC)
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com
- [209.85.128.46])
- by mx.groups.io with SMTP id smtpd.web10.10943.1647615876113230003
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E7D7C433FE
+	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 15:42:34 +0000 (UTC)
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com
+ [209.85.128.48])
+ by mx.groups.io with SMTP id smtpd.web12.11102.1647618153396295205
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 08:04:36 -0700
+ Fri, 18 Mar 2022 08:42:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=drGkVLVB;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.46,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Vc4RESej;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.48,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f46.google.com with SMTP id r7so5008264wmq.2
+Received: by mail-wm1-f48.google.com with SMTP id h16so4509946wmd.0
         for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 08:04:35 -0700 (PDT)
+ Fri, 18 Mar 2022 08:42:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=GSYVoZ1zJhYbZ7ygDPv3rPj8yWDA806weDfMsbQcgY0=;
-        b=drGkVLVBbFqPALldTVLVeiHiX5K/Z/cE80guTouS+QcaJrSFTJ0Sw9bv7JdFeJfipA
-         IX1JLBAHki+0PSRDQxUXPhkHoI5A2qQAxCFLSgl3rjr64p75/qqNB8Z9Cc1L+jeWaDos
-         /h5p1Q1oa7GuT4V3BLN0FY2E2lKjo4YcDPiNg=
+        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
+         :content-transfer-encoding;
+        bh=mkCfDSJEtfeKrMpQGuibsN3gnarO1qj3nzkg5vu5/aU=;
+        b=Vc4RESejlSsVNwUlmOkd7PlT75b80s+APJiZwn5iJ13UjRRyztFMjiKderOW9u75Xj
+         0tc+v60r8KCeqAhzB6Hkb8bUeAupHDeWQIr+3Q2ODfNT2EXBk6vdIH2ApuUxkDTozzz1
+         FK+jHMFsvCDDRCoTrN09GX09/bUN0Ga406Yk4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=GSYVoZ1zJhYbZ7ygDPv3rPj8yWDA806weDfMsbQcgY0=;
-        b=qwHBzYnDdaqKPIHynQWc79tjdnYnR3FD+awRMEOMe7xdhaHusxzaSJeE4ju/7PwM5O
-         t6cirP6kJ4aLeSZgwt2fQXMxt1VrbTKRvlZ2/qPZvAS0gce7lAjjkJ6SqPGH2hpkDjNU
-         Pc39sqjbCKpBrKfgxIGlMmxSr9vuAbjv0pDIbneYyccBxzSA3tQRF3WUAlDde1fCW7c5
-         ybBIhgaVgDvO/ZVeqcfIo7QQ2AoNXDqBFVoDsJJBxw2lTNV6ytx6GagguzQ5cbfMIleW
-         1NisUWIdhWBatRdJpo9JCf9b7foZZ8Rcii4/8xRbOkU1vZ7k1qiGwhEPOmd1LG24rhP2
-         EBjQ==
-X-Gm-Message-State: AOAM530pYBsz4TQCUOuRKc7zoGj5SsXLCyN5g9pp77r+CucQtyrOmM/S
-	2mCJ33Q8/SESv2Itm7GlbkxFNg==
+        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=mkCfDSJEtfeKrMpQGuibsN3gnarO1qj3nzkg5vu5/aU=;
+        b=cpSo2xh6RoajcReDLzVI4iB9CAVduPbs+unaOjFNfClkB7wo5I/sJ0Wxf2x/Oj2mdP
+         jz6liux2bDAhT4BtLRPmWinKq/HDczRG1QV5GXSZQRgkAT+jMQa9eVSwx98mTM40n+pu
+         OLVqR5T2ZszAhLfSe/IcpX8Q5Yodx3CTN8Jt88coHgsCB1py7Jc8Y+NRODCvRBF73cEY
+         ND4hjtDG+oImu3InKi0T/kMuglmcUl3Da2TwAwpV77UaHkG6A29InWzs+08ZsdDjFn5b
+         909yDSXz1GTsX5MiNNNcKV2gahAXTa4qVR4bU9rUavNmRsoT9KMlJfT6Mcha/KgDCQh3
+         4sfA==
+X-Gm-Message-State: AOAM532XFPzCF4h3M5OhpsuyoYz3yZKYwTBEBo1iE82leGDijf6utMUh
+	Bujn4lFiaP+hg5AHdEGpAHkD/YlBGWcEbB8R
 X-Google-Smtp-Source: 
- ABdhPJxnk94kR7czWGzu9MibPVT9ZGfPAeQFh2mbvA9v4TzXqZcdiA41NF8aSiIZ4N3q+lAYcZo9dw==
-X-Received: by 2002:a05:600c:284b:b0:38b:5133:bba2 with SMTP id
- r11-20020a05600c284b00b0038b5133bba2mr8530452wmb.11.1647615874449;
-        Fri, 18 Mar 2022 08:04:34 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37?
- ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
+ ABdhPJyz3v428cb9MJHLSbKUSh99PI02tVInk0AmCgwXzB/XOUXYFH18hUM8inpzSeIkVck4UnsILg==
+X-Received: by 2002:a05:600c:3d8d:b0:38c:6f6e:e61a with SMTP id
+ bi13-20020a05600c3d8d00b0038c6f6ee61amr11102008wmb.101.1647618151672;
+        Fri, 18 Mar 2022 08:42:31 -0700 (PDT)
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
         by smtp.gmail.com with ESMTPSA id
- 20-20020a05600c22d400b0038c8dbdc1a3sm1183040wmg.38.2022.03.18.08.04.33
+ l1-20020a05600c4f0100b00387369f380bsm11443624wmq.41.2022.03.18.08.42.30
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 08:04:34 -0700 (PDT)
-Message-ID: 
- <4683f0f9a77e9dd4a5da022534966a757e6f52da.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] Makefile/set_versions: Allow poky.yaml to be
- autogenerated
+        Fri, 18 Mar 2022 08:42:31 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	docs@lists.yoctoproject.org
-Date: Fri, 18 Mar 2022 15:04:30 +0000
-In-Reply-To: <41cdb432-2e07-81bf-956c-228c33230a10@bootlin.com>
-References: <20220318130859.1063094-1-richard.purdie@linuxfoundation.org>
-	 <41cdb432-2e07-81bf-956c-228c33230a10@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+To: docs@lists.yoctoproject.org
+Subject: [PATCH 3/3] set_versions: Add support for setting POKYVERSION found
+ in older releases
+Date: Fri, 18 Mar 2022 15:42:28 +0000
+Message-Id: <20220318154228.1071136-3-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.32.0
+In-Reply-To: <20220318154228.1071136-1-richard.purdie@linuxfoundation.org>
+References: <20220318154228.1071136-1-richard.purdie@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 15:04:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2635
+ <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 15:42:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2638
 
-On Fri, 2022-03-18 at 15:46 +0100, Michael Opdenacker wrote:
-> Hi Richard,
-> 
-> Thanks for this good idea... A few issues though... See my comments below.
-> 
-> On 3/18/22 14:08, Richard Purdie wrote:
-> > 
-> > diff --git a/documentation/Makefile b/documentation/Makefile
-> > index f04f381bd..bec53399c 100644
-> > --- a/documentation/Makefile
-> > +++ b/documentation/Makefile
-> > @@ -57,4 +57,5 @@ all: html epub latexpdf
-> >  # Catch-all target: route all unknown targets to Sphinx using the new
-> >  # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
-> >  %:
-> > +	$(SOURCEDIR)/set_versions.py
-> >  	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-> > diff --git a/documentation/poky.yaml b/documentation/poky.yaml.in
-> > similarity index 100%
-> > rename from documentation/poky.yaml
-> > rename to documentation/poky.yaml.in
-> > diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-> > new file mode 100755
-> > index 000000000..cdcfd6bb0
-> > --- /dev/null
-> > +++ b/documentation/set_versions.py
-> > @@ -0,0 +1,102 @@
-> > +#!/usr/bin/env python3
-> > +#
-> > +# Add version information to poky.yaml based upon current git branch/tags
-> > +#
-> > +# Copyright Linux Foundation
-> > +# Author: Richard Purdie <richard.purdie@linuxfoundation.org>
-> > +#
-> > +# SPDX-License-Identifier: MIT
-> > +#
-> > +
-> > +
-> > +import subprocess
-> > +import collections
-> > +import sys
-> > +
-> > +devbranch = "kirkstone"
-> > +#devbranch = "langdale"
-> > +ltsseries = ["kirkstone", "dunfell"]
-> > +
-> > +release_series = collections.OrderedDict()
-> > +#release_series["langdale"] = "4.1"
-> > +release_series["kirkstone"] = "4.0"
-> > +release_series["honister"] = "3.4"
-> > +release_series["hardknott"] = "3.3"
-> > +release_series["gatesgarth"] = "3.2"
-> > +release_series["dunfell"] = "3.1"
-> > +
-> > +ourversion = None
-> > +ourseries = None
-> > +ourbranch = None
-> > +
-> > +# Test tags exist and inform the user to fetch if not
-> > +try:
-> > +    subprocess.run(["git", "show", "yocto-3.4.2"], capture_output=True, check=True)
-> > +except subprocess.CalledProcessError:
-> > +    sys.exit("Please run 'git fetch --tags' before building the documentation")
-> > +
-> > +# Try and figure out what we are
-> > +tags = subprocess.run(["git", "tag", "--points-at", "HEAD"], capture_output=True, text=True).stdout
-> > +for t in tags.split():
-> > +    if t.startswith("yocto-"):
-> > +        ourversion = t[6:]
-> > +
-> > +if ourversion:
-> > +    # We're a tagged release
-> > +    components = ourversion.split(".")
-> > +    baseversion = components[0] + "." + components[1]
-> > +    for i in release_series:
-> > +        if release_series[i] == baseversion:
-> > +            ourseries = i
-> > +            ourbranch = i
-> > +else:
-> > +    # We're floating on a branch
-> > +    branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
-> > +    ourbranch = branch
-> > +    if branch == "master":
-> > +        ourseries = devbranch
-> > +    elif branch in release_series:
-> > +        ourseries = branch
-> > +    else:
-> > +        sys.exit("Unknown series for branch %s" % branch)
-> 
-> 
-> This last message is problematic when you create an arbitrary branch to
-> develop new changes, or test changes from others.
-> Could you just set
-> 
-> ourseries = devbranch
-> 
-> instead of exiting with an error.
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/set_versions.py | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-If only it were that simple. It needs to resolve this back to a valid parent
-branch, i.e. one in release_series.
-
-I think we can do that with (deep breath):
-
-git show-branch <release_series list> | grep '*' | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1 | sed 's/.*\[\(.*\)\].*/\1/' | sed 's/[\^~].*//'
-
-so perhaps we update it to do that?
-
-> Didn't you forget to add "documentation/poky.yaml" to the .gitignore file?
-
-True. That is easier to fix.
-
-Cheers,
-
-Richard
+diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+index 32259238e..6452aeb14 100755
+--- a/documentation/set_versions.py
++++ b/documentation/set_versions.py
+@@ -34,6 +34,13 @@ bitbake_mapping = {
+     "dunfell" : "1.46",
+ }
+ 
++# 3.4 onwards doesn't have poky version
++poky_mapping = {
++    "3.3" : "25.0",
++    "3.2" : "24.0",
++    "3.1" : "23.0",
++}
++
+ ourversion = None
+ ourseries = None
+ ourbranch = None
+@@ -121,6 +128,10 @@ replacements = {
+     "BITBAKE_SERIES" : bitbakeversion,
+ }
+ 
++if release_series[ourseries] in poky_mapping:
++    pokyversion = poky_mapping[release_series[ourseries]] + "." + ourversion.rsplit(".", 1)[1]
++    replacements["POKYVERSION"] = pokyversion
++
+ with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
+     lines = r.readlines()
+     for line in lines:
+-- 
+2.32.0
 
 
