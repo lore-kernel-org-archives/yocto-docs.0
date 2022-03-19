@@ -1,93 +1,72 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A5A0C433F5
-	for <webhook@archiver.kernel.org>; Fri, 18 Mar 2022 16:29:50 +0000 (UTC)
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
- [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.web12.11749.1647620989397787956
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D9CBC433FE
+	for <webhook@archiver.kernel.org>; Sat, 19 Mar 2022 08:23:05 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.5124.1647678183618077056
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 09:29:49 -0700
+ Sat, 19 Mar 2022 01:23:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=h8Fxtuw5;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.49,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f49.google.com with SMTP id
- 123-20020a1c1981000000b0038b3616a71aso5052652wmz.4
-        for <docs@lists.yoctoproject.org>;
- Fri, 18 Mar 2022 09:29:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=iC8y2v90POU5hqjTjO9t/J6kIzuXbNvXKLNUkrCbXOI=;
-        b=h8Fxtuw5Gq61NeVnneJtrzLGKcK8bbmwE81s7KbjJqizDmsZaVrd2QyeCxgKzP5A50
-         DGFwTsx/JwYku9+EtMZyuo+eeDVVka0UJbeXubbJpMPz72v+PXQPiZvdy9i4rQLejupb
-         PJYeS/+Xe9uxfdA48Gml39QyBMc3agdQdLvLw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=iC8y2v90POU5hqjTjO9t/J6kIzuXbNvXKLNUkrCbXOI=;
-        b=ex+SZFDyzF9fJ5CCTctMjJP5fOJBAbGJylNp1arCaw7Z6RYqx2a58TA8yn6ybvVLhb
-         7oBkjPEjgRqtMn4x4uBYDv5R1Xk1N/owEQMv/gPF47I8WGRIW4AMWgJDZnh1/ilJ4ygh
-         r1vHjs7VDiCA8hHhrBh9ZqMsqDzLTbkOJEbNWBoATBLbbaNgJx8wRDlbGcagrANlH8FC
-         AzcZnvRHNBcEWqCtVFPSV5DZbK/q6x+qOM4aIbFzE8J7kRTeZodIifMoI9vAhm+9tDbD
-         s372NWTN80t6UzJuw852+n+jmhrHc9Nzn19EZRNdSt6kjM1rfGdJ7QPJnhD0qshf1dqT
-         M3Bw==
-X-Gm-Message-State: AOAM53036bjHbai++74SI7986V8TCtMUvOzrkMhM46XVCvo1oSRwYMnk
-	k70kZibpr1p0ga+RkvNUU6aEAe7upAuSBEa2
-X-Google-Smtp-Source: 
- ABdhPJxMvPFj5iOEkS2VoyOsXq6gHnCJUDmQzJdVJEg/qYfhFLdpNgkOv7dppCJkgtIsTUkQ4HzeGA==
-X-Received: by 2002:a05:600c:4b83:b0:38c:49b5:5bfc with SMTP id
- e3-20020a05600c4b8300b0038c49b55bfcmr13952128wmp.33.1647620987451;
-        Fri, 18 Mar 2022 09:29:47 -0700 (PDT)
-Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:ac92:797e:3dcd:ed37])
-        by smtp.gmail.com with ESMTPSA id
- v2-20020adf8b42000000b001edc38024c9sm7397469wra.65.2022.03.18.09.29.46
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 18 Mar 2022 09:29:47 -0700 (PDT)
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH 2/2] set_versions: Handle older non-active releases
-Date: Fri, 18 Mar 2022 16:29:45 +0000
-Message-Id: <20220318162945.1072835-2-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220318162945.1072835-1-richard.purdie@linuxfoundation.org>
-References: <20220318162945.1072835-1-richard.purdie@linuxfoundation.org>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Amb/Ieaz;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 686311BF206;
+	Sat, 19 Mar 2022 08:23:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1647678181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KIC3BWb5glupB5+dn2V2bFr9v1ybgIWJ0v13t89+DGE=;
+	b=Amb/IeazGfLYVs+hkOV4E4q+lWda5jmngx15ufDAyECTSGcoSjFxzXqAVNntGf5jgdHH39
+	lB8ztoHROKsZ4b6e7f2XaiWMHtT4lEg4VVwcT7OAT6gnTVsh2/fBZBgA+4rImO2cHASOMT
+	CB6BNgo3OFGInAU34PKJ+OLilquatWVFdCgss10yT3zV2ly9J0oCf0hysK6Z/hpx/ckIVS
+	OdASHnSpguNTgbqAokxDQC0Pfen81SpVCylEduu4SqP7he/O11UHRSy5o80VMxC6A1LTMc
+	46ZXyWymqdXRfiWYpQsRJV/8j7kdUTggAUQSFDmBPdN+crakKbi6L52z/RRZnQ==
+Message-ID: <6f1440e0-548b-0d17-7c52-e3ae7b22a67c@bootlin.com>
+Date: Sat, 19 Mar 2022 09:23:00 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [docs] [PATCH 3/3] set_versions: Add support for setting
+ POKYVERSION found in older releases
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ docs@lists.yoctoproject.org
+References: <20220318154228.1071136-1-richard.purdie@linuxfoundation.org>
+ <20220318154228.1071136-3-richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20220318154228.1071136-3-richard.purdie@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Mar 2022 16:29:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2642
+ <docs@lists.yoctoproject.org>; Sat, 19 Mar 2022 08:23:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2643
 
-Ensure older non-active releases are shown in the switchers.js
-release list.
+Hi Richard,
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
----
- documentation/set_versions.py | 3 +++
- 1 file changed, 3 insertions(+)
+On 3/18/22 16:42, Richard Purdie wrote:
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 
-diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index d9f57112b..394e3f7e4 100755
---- a/documentation/set_versions.py
-+++ b/documentation/set_versions.py
-@@ -145,6 +145,9 @@ with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
- 
- print("poky.yaml generated from poky.yaml.in")
- 
-+if ourseries not in activereleases:
-+    activereleases.append(ourseries)
-+
- with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-static/switchers.js", "w") as w:
-     lines = r.readlines()
-     for line in lines:
+
+For all 3 patches in this series:
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+... and merged into master-next.
+
+Many thanks!
+Michael.
+
 -- 
-2.32.0
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
