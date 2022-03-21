@@ -2,96 +2,95 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E1D9EC433EF
-	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 17:33:27 +0000 (UTC)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
- [209.85.128.44])
- by mx.groups.io with SMTP id smtpd.web08.233.1647884007003755713
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71529C433FE
+	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 17:45:00 +0000 (UTC)
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com
+ [209.85.128.41])
+ by mx.groups.io with SMTP id smtpd.web09.379.1647884698858427725
  for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 10:33:27 -0700
+ Mon, 21 Mar 2022 10:44:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=SZ4teFZk;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=aWilC5st;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.41,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f44.google.com with SMTP id i187so25511wma.3
+Received: by mail-wm1-f41.google.com with SMTP id
+ o30-20020a05600c511e00b0038c9cfb79cbso127524wms.1
         for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 10:33:26 -0700 (PDT)
+ Mon, 21 Mar 2022 10:44:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=vj63pWuR9SxviFWx7tMaCx+5l9CMrtoTOvH0BeLOUjg=;
-        b=SZ4teFZkvHfax9VLdY/ulsoO3Axvl/U3EfK793i7TukiSTsGgumviOxUikc6wSYWe3
-         awrNK+o4EiARDwn3dNnbDPp2WgvJv1qmHKMsuHZJ7bSgokaFDlqBXQopyj5NgAgdQNcL
-         OK5inAyO4aY1bLfb3zeOi3mVfwb+rwcgQcrp8=
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3FgxbRnnEPGA+Mmcc8cWASWGdC7nXVWtwyk/Py0CR+I=;
+        b=aWilC5stM+vVUT59vJecCDy2rI4XsItxmWP9k/sicuwPUW+0HWz7ghWBHQdXvQWIua
+         oNaeyNNTX4XdAx0IhpF5jvm1aGlO4PVa+YHtsLFUWtq7Z3loaD2T1gcrH9gATzKrv9aX
+         lBzNRTIOeqLBWlx/tMMyPe3EvYdKAuI6Aq4ic=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=vj63pWuR9SxviFWx7tMaCx+5l9CMrtoTOvH0BeLOUjg=;
-        b=vGubFINAEPSUZ55WDd3bzAFgA68YcqbNa0otuaicV/hIYuJVP2DJr/J8qXVguEOkvP
-         hu9jiRgWiUTNjk9sUXB5ku1xdwC1/2LHPhIk9qQTFPTnin/gVZSqqgfjHif00rQCSNl0
-         g+CZI4be9stUC9v284KjMvsvLBXR4Zphg97DGfQ9d+Iml1hc6toqSNyhP9eO9Wz90S9T
-         ihEZLck3kv4KYfg2lzXGZHFFcDeg21FnEA4MP2vBO3eg0k8qXK4BOb/Wr/7CLlmufjr3
-         bEgxpnha7PuYXlOB06GWC2VZEbBgYbCEFVCJVCLq4W38Z2UlSiA68gBXJMdRZynMtU6N
-         ByAg==
-X-Gm-Message-State: AOAM533ZQtIHLY/Mh0VOjcIUC4Zi9T1VDG0rlJs8f9hRDRiCr2qDXvZc
-	jPtpYUZ2BUD9pyasd+gM6olVVQ==
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=3FgxbRnnEPGA+Mmcc8cWASWGdC7nXVWtwyk/Py0CR+I=;
+        b=eivCWQxgOF8wgKIBfDTDyNOSJ9C8dQXSPhgbAK7DH5eu04cI87Jhn/vwFKC2hkRLV8
+         j9kI2nfL9jWcsNtxv1B3RriGbbcYIb2cR/2zC2w68gSfW9XvUYRqoNp/ZSmCMhLUYhYj
+         MgekAZ+JKdBGdMelbTOw0GTCE/1Q/M3TqWXuMFzcLbkXMUPBxGycD5V2A/bxbWTKerTW
+         MdxL/CiAq9ULE3dsRpMveYefYz2gMr6dwFhWyny/M5DvXMWWco/kMXqRYdqNjOxHTZtv
+         M5Vug0c0oELz4klsxXBG9AqmOcKb947lhJTFE+IX81MOU01YxQqTdDL9pUvZP5ucs5Ed
+         vRjQ==
+X-Gm-Message-State: AOAM530iUsVELjDKJBQ1L52XY2nBLZJfwstpvb0epgyigXQ4EbMN3mWW
+	S8gNt8d66znGPnJxsgoWCpXxj+/HEdud13VY
 X-Google-Smtp-Source: 
- ABdhPJzA1P3L7Wecs7D0m6Mvy32bQ9M34+xuZ/2syFoOuX3zMmn6p35n45+oRGKzuZ+tj2qNBCGKrA==
-X-Received: by 2002:a05:600c:1d88:b0:38c:b121:c669 with SMTP id
- p8-20020a05600c1d8800b0038cb121c669mr167230wms.150.1647884005404;
-        Mon, 21 Mar 2022 10:33:25 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:7422:13d5:6a39:d39?
- ([2001:8b0:aba:5f3c:7422:13d5:6a39:d39])
+ ABdhPJxPifAbAfTOHZtNYleqbFDit1I+ai88zNNmCuY+r9xpDmXK4um3S66fqTJnbd34I/rj+CnuzA==
+X-Received: by 2002:a05:600c:1913:b0:389:f643:28a5 with SMTP id
+ j19-20020a05600c191300b00389f64328a5mr202530wmq.182.1647884696919;
+        Mon, 21 Mar 2022 10:44:56 -0700 (PDT)
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:7422:13d5:6a39:d39])
         by smtp.gmail.com with ESMTPSA id
- e12-20020a5d6d0c000000b001a65e479d20sm5136957wrq.83.2022.03.21.10.33.24
+ n22-20020a05600c4f9600b0038c6ec42c38sm151849wmq.6.2022.03.21.10.44.55
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Mar 2022 10:33:25 -0700 (PDT)
-Message-ID: 
- <6157cab4302631ca624837e94ac98181f81a2dd3.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 1/1][transition] Makefile: Use switchers
- generated from master
+        Mon, 21 Mar 2022 10:44:56 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	docs@lists.yoctoproject.org
-Cc: Quentin Schulz <foss+yocto@0leil.net>, Nicolas Dechesne
-	 <nicolas.dechesne@linaro.org>, Michael Opdenacker
-	 <michael.opdenacker@bootlin.com>
-Date: Mon, 21 Mar 2022 17:33:23 +0000
-In-Reply-To: <b23f24f6-29b9-320b-b949-48b7bbebd375@theobroma-systems.com>
-References: <20220319152803.1110539-1-richard.purdie@linuxfoundation.org>
-	 <b23f24f6-29b9-320b-b949-48b7bbebd375@theobroma-systems.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+To: docs@lists.yoctoproject.org
+Subject: [PATCH 0/5 v2] Proposed docs version changes
+Date: Mon, 21 Mar 2022 17:44:50 +0000
+Message-Id: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 17:33:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2661
+ <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 17:45:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2663
 
-On Mon, 2022-03-21 at 18:28 +0100, Quentin Schulz wrote:
-> Hi Richard,
-> 
-> On 3/19/22 16:28, Richard Purdie wrote:
-> > This allows an improved and custmomised switcher for each release
-> > showing the current doc version, the latest in that series and the
-> > latest releases for the project overall.
-> > 
-> 
-> Not sure to understand the reason for this patch?
+I've tweaked my patchset with some review feedback from Quentin. The v2:
 
-For every other docs branch we can run set_versions.py once and have the correct
-information in switchers.js. For transitions, we have multiple runs of the
-documentation generation and we want to customise switchers.js in each case.
-This is so we can show the current version, and the current release series
-latest version which allows the switcher to work properly.  To do that, it is
-easiest just to fix the transitions branch to handle that.
+* uses yaml to load the variables in conf.py
+* fixes a bitbake_mapping[i] -> branch
+* fixes a comment typo in set_versions.py
+* comments the bitbake langdale version mapping
 
-Cheers,
+Richard Purdie (5):
+  Makefile/set_versions: Allow poky.yaml to be autogenerated
+  conf.py/set_versions/poky.yaml: Set version in conf.py from poky.yaml
+  set_versions: Add support for setting POKYVERSION found in older
+    releases
+  set_versions/switchers.js: Allow switchers.js version information to
+    be autogenerated
+  set_versions: Various improvements
 
-Richard
+ documentation/.gitignore                      |   2 +
+ documentation/Makefile                        |   1 +
+ documentation/conf.py                         |  22 +-
+ documentation/{poky.yaml => poky.yaml.in}     |   2 +
+ documentation/set_versions.py                 | 225 ++++++++++++++++++
+ .../{switchers.js => switchers.js.in}         |   8 +-
+ 6 files changed, 251 insertions(+), 9 deletions(-)
+ rename documentation/{poky.yaml => poky.yaml.in} (98%)
+ create mode 100755 documentation/set_versions.py
+ rename documentation/sphinx-static/{switchers.js => switchers.js.in} (97%)
+
+-- 
+2.32.0
 
 
