@@ -1,207 +1,215 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <nicolas.dechesne@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DCA3C433F5
-	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 18:09:13 +0000 (UTC)
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
- [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.web12.711.1647886152258609198
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22372C433F5
+	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 21:57:09 +0000 (UTC)
+Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com
+ [209.85.128.174])
+ by mx.groups.io with SMTP id smtpd.web08.2093.1647899828163089167
  for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 11:09:12 -0700
+ Mon, 21 Mar 2022 14:57:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=LLR9aeDw;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f45.google.com with SMTP id
- bi13-20020a05600c3d8d00b0038c2c33d8f3so4261wmb.4
+ dkim=pass header.i=@linaro.org header.s=google header.b=tB7+M152;
+ spf=pass (domain: linaro.org, ip: 209.85.128.174,
+ mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yw1-f174.google.com with SMTP id
+ 00721157ae682-2e62c790cbdso45777337b3.0
         for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 11:09:12 -0700 (PDT)
+ Mon, 21 Mar 2022 14:57:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
-         :mime-version:content-transfer-encoding;
-        bh=felM1rbsSLaGSEvOcSsEA0e0hFd48dCGEQu7oQr/uiM=;
-        b=LLR9aeDw+FtZXVnSXE2o6PQSToXlPwrkgsbQPB3myvjLmQi26SSmlDPCXPS1rTqLCN
-         77aaqR7RpB1SYVw8cjspE2RG52yf+o+3V65H3oNDLPtcx4W/sOADBgsrOaSsjCDd3OUG
-         ewyDGegBZQgjikFtDRw6Ntj65vhaEbnjIsNoI=
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=Jt/g63sibzhie+gA5MqnsCY+Y60NbaRGrLc3IM933Qg=;
+        b=tB7+M1524za9/LPLHwfSUO2s2ipmMMIfgFhX72O1ywh/+YItNqGldn8Kw01fJS2PSl
+         W6p2FYvIIFrh0Ql9tOdX5tTmz4A0inJrtBMZaAXsnfvGhkqKh0vO/4UXQ1TNjqDjR53k
+         URnkq+8FbU+8ZkBenu9S8+oKFKAL4OHxBfs6TKH72bsOGqmEfNzGL/CToSg3+sFAca+o
+         nDwXp14Mvm0e6OLMVtoutLQFi0Qcjc+N8z9MvimAgmyTbSKuf8fsXF3hvPnlJdeXNWmm
+         V2bgI+BrWPcuMejkJWBFlYcjZdzT6S1JK6GPjiK53afD7vM+FtOZBJQ777xOEj3Fu7VX
+         q9+Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=felM1rbsSLaGSEvOcSsEA0e0hFd48dCGEQu7oQr/uiM=;
-        b=ceCY0o5QjUa47hmWrAbnO5bbscgYUGxTV6Rv6skDbCd+2IIwkL0rxcJavGdXp3UBLW
-         uvOutLc43hf1Lzb9mmd+M5S2MCYn4Q0heKwz9994YChDLaGYj8M7JcUvXIFmB0knwgVX
-         smtz1AdB6YL9MTpUEQc+I09iE+lTNRLo7Ujbn6Apl3VNmaiIoqE8/vfFZFEVatnk2UhZ
-         cCEpdUBiOpiudWdwk8a0/VjxIagdzJ+z2kbCi7jQ8ZWm5SEKlSlUFXUowEcWXpRjWdty
-         ytyKq7wpWBFPZdbAAYUyEJaVtZtN/xUUQHYrozRqwoGl/tDnQdhHeF3dj/JLpzE6dNZH
-         xr/Q==
-X-Gm-Message-State: AOAM530HUG1EyBwqYnKMn8Z7OKQVJHm5w1frDzm0Brtmdr6m9452dcUm
-	R/BLVhY2bWhlthu1yqLlZvC36g==
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Jt/g63sibzhie+gA5MqnsCY+Y60NbaRGrLc3IM933Qg=;
+        b=JRtzZRCJsa6rK1m+lWN2hH7wSMpyAG4G5xEq0blbzgS9TFKaAb8/RyyJjaUPsailym
+         sIZAUyLhLx8ypfB3wC3Etc3wiJHaBEN9Szg59kDqQEOJC25Sw5U901M7NhpekjXW56Uj
+         1aduR8f80a0NbnWYxaJ3zH5JQs0bjaO8+DabpMA/1SA2ghyR4tKlFkeYmCc3NJZruu7a
+         jvIO31EWzjgzTAOaJphE8wI9mxeY2SJ8xv4/T66toW6KJbGQ6Ly3oQI/YT0c91xnFJBl
+         im9wVX90oUocJblDqHaDE0SOBE3/+OzsCS4VRJ8+DzJrkX1+9kE+Aq6mhPgfN/svsavA
+         Kwig==
+X-Gm-Message-State: AOAM532Vgi+oUHos/Sx2ZUAPcieX6onJLewI0hTIEs/lssMqg01jMMgV
+	fqNMp7cN6qCUHLn8TTXRby2dl6Een51wuIKu4fPTUw==
 X-Google-Smtp-Source: 
- ABdhPJxewVN+8oG/lUeU5d1PisEEJfH9gqL3CJh/xBDlTd1VMBuIa+mmvu8kN0Uh+O+N5Aip96uXYA==
-X-Received: by 2002:a05:600c:19ca:b0:38c:a190:99ce with SMTP id
- u10-20020a05600c19ca00b0038ca19099cemr281979wmq.23.1647886150405;
-        Mon, 21 Mar 2022 11:09:10 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:7422:13d5:6a39:d39?
- ([2001:8b0:aba:5f3c:7422:13d5:6a39:d39])
-        by smtp.gmail.com with ESMTPSA id
- s17-20020adfdb11000000b001f02d5fea43sm14946955wri.98.2022.03.21.11.09.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Mar 2022 11:09:09 -0700 (PDT)
-Message-ID: 
- <3f62397c5c27147d1f5f6fd0949c01b496af415c.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] set_versions/switchers.js: Allow switchers.js
- version information to be autogenerated
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	docs@lists.yoctoproject.org
-Date: Mon, 21 Mar 2022 18:09:07 +0000
-In-Reply-To: <90ea3db5-bf96-a925-c2d7-10fff18ede13@theobroma-systems.com>
-References: <20220318162320.1072462-1-richard.purdie@linuxfoundation.org>
-	 <90ea3db5-bf96-a925-c2d7-10fff18ede13@theobroma-systems.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+ ABdhPJyHeOoRLS8TcaR8dfJV8YqEy3KVFGsL3s/PnRi0M7ev8VbZ/cZK9Pu7gZz8Ry+o3eb7IAJIRJ7oL7mlLVd9qPU=
+X-Received: by 2002:a81:250d:0:b0:2db:9e17:ad00 with SMTP id
+ l13-20020a81250d000000b002db9e17ad00mr26015438ywl.95.1647899827158; Mon, 21
+ Mar 2022 14:57:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+References: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
+In-Reply-To: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
+From: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Date: Mon, 21 Mar 2022 22:56:56 +0100
+Message-ID: 
+ <CAP71WjxAtVJO2YvM3p4UM1TEYuqmM7TLpDo5kRytp+G=kQhSgA@mail.gmail.com>
+Subject: Re: [docs] [PATCH 0/5 v2] Proposed docs version changes
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+Cc: docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="000000000000d2d9d905dac1934d"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 18:09:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2669
+ <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 21:57:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2670
 
-On Mon, 2022-03-21 at 18:08 +0100, Quentin Schulz wrote:
-> Hi Richard,
-> 
-> On 3/18/22 17:23, Richard Purdie wrote:
-> > A horrible blunt hammer approach to updating the version information in
-> > switchers.js based on the available tag information.
-> > 
-> > To merge and work correctly, this will need a change to the autobuilder-
-> > helper
-> > docs generation code to pull the swicthers.js and script from master, then
-> > to run the script. That should hopefully remove the need for other patching
-> > even on old docs branches though.
-> > 
-> > Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> > ---
-> >   documentation/.gitignore                      |  1 +
-> >   documentation/set_versions.py                 | 21 +++++++++++++++++++
-> >   .../{switchers.js => switchers.js.in}         |  8 +------
-> >   3 files changed, 23 insertions(+), 7 deletions(-)
-> >   rename documentation/sphinx-static/{switchers.js => switchers.js.in} (97%)
-> > 
-> > diff --git a/documentation/.gitignore b/documentation/.gitignore
-> > index e5e2c1708..096b97ec2 100644
-> > --- a/documentation/.gitignore
-> > +++ b/documentation/.gitignore
-> > @@ -1,6 +1,7 @@
-> >   _build/
-> >   Pipfile.lock
-> >   poky.yaml
-> > +sphinx-static/switchers.js
-> >   .vscode/
-> >   */svg/*.png
-> >   */svg/*.pdf
-> > diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-> > index 6452aeb14..9cd0de46c 100755
-> > --- a/documentation/set_versions.py
-> > +++ b/documentation/set_versions.py
-> > @@ -13,6 +13,7 @@ import subprocess
-> >   import collections
-> >   import sys
-> >   
-> > +activereleases = ["honister", "hardknott", "dunfell"]
-> >   devbranch = "kirkstone"
-> >   #devbranch = "langdale"
-> >   ltsseries = ["kirkstone", "dunfell"]
-> > @@ -144,3 +145,23 @@ with open("poky.yaml.in", "r") as r, open("poky.yaml",
-> > "w") as w:
-> >   
-> >   print("poky.yaml generated from poky.yaml.in")
-> >   
-> > +with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-
-> > static/switchers.js", "w") as w:
-> > +    lines = r.readlines()
-> > +    for line in lines:
-> > +        if "VERSIONS_PLACEHOLDER" in line:
-> > +            w.write("    'dev': 'dev (%s)',\n" % release_series[devbranch])
-> > +            for branch in activereleases:
-> 
-> Until now we always had the last version of all sphinx supported doc 
-> releases (+ zeus and thud for some reason).
+--000000000000d2d9d905dac1934d
+Content-Type: text/plain; charset="UTF-8"
 
-As I understood it, the intent was to have the current active releases (which is
-why zeus was there). We've just continued to add new ones and not removed any.
-I've tried to add some "policy" around this as part of the changes in this
-series.
+On Mon, Mar 21, 2022 at 6:45 PM Richard Purdie <
+richard.purdie@linuxfoundation.org> wrote:
 
-It would be trivial to change the active releases to include zeus and
-gatesgarth, then it would be equivalent to how it is now but that doesn't match
-what I thought it was supposed to be doing. It is clear we have different ideas
-on what we think it should be doing though :/.
+> I've tweaked my patchset with some review feedback from Quentin. The v2:
+>
+> * uses yaml to load the variables in conf.py
+> * fixes a bitbake_mapping[i] -> branch
+> * fixes a comment typo in set_versions.py
+> * comments the bitbake langdale version mapping
+>
+> Richard Purdie (5):
+>   Makefile/set_versions: Allow poky.yaml to be autogenerated
+>   conf.py/set_versions/poky.yaml: Set version in conf.py from poky.yaml
+>   set_versions: Add support for setting POKYVERSION found in older
+>     releases
+>   set_versions/switchers.js: Allow switchers.js version information to
+>     be autogenerated
+>   set_versions: Various improvements
+>
+>  documentation/.gitignore                      |   2 +
+>  documentation/Makefile                        |   1 +
+>  documentation/conf.py                         |  22 +-
+>  documentation/{poky.yaml => poky.yaml.in}     |   2 +
+>  documentation/set_versions.py                 | 225 ++++++++++++++++++
+>
 
-> This patch is doing a bit more than just automating the whole thing, it 
-> actually changes the behavior/result.
+Would it make sense to implement what you have in set_versions.py directly
+in Sphinx 'native' code ? e.g. directly in conf.py, or in a module loaded
+from conf.py (see how kernel does it at [1]) or yocto-vars extension, or as
+its own Sphinx extension?
 
-Yes, for example in the 1.4.4 release, it would show that release in the docs
-switcher now. I guess further pieces of that are in later patches or changes in
-the transition branch. 
+poky.yaml only purpose is to be loaded by yocto-vars.py which is a local
+Sphinx extension we created.
 
-If you want I can change it to add zeus and gatesgarth to the active releases,
-then it is equivalent (apart from adding new options in old releases) but I will
-then propose a patch to remove them!
-
-> Python docs still have 3.5 listed for example. I think it would be a 
-> mistake to remove the option to select an outdated version in the drop 
-> down menu. What happens if I'm stuck on that version and want its docs?
-
-Then you can access it through the URL, or the older releases list.
-
-Python doesn't list 3.3 or 2.6. For us, our active releases are dunfell,
-hardknott (right now), honister and kirkstone.
-
-> 
-> > +                if branch == devbranch:
-> > +                    continue
-> > +                versions = subprocess.run('git tag --list yocto-%s*' %
-> > (release_series[branch]), shell=True, capture_output=True,
-> > text=True).stdout.split()
-> 
-> I think it'd make sense to do the git tag --list outside of the loop and 
-> catch all tags starting with yocto- and then operate on that list from 
-> within the loop.
-> 
-> Also, git tag --sorted="version:refname" should sort correctly, then you 
-> just need to iterate over the list and take the last one before a minor 
-> version change (e.g. 3.1.14 and the next is 3.2.0, take 3.1.14 because 
-> change from 1 to 2).
-
-Perhaps we can look at that as a later incremental change?
-
-> 
-> > +                versions = sorted([v.replace("yocto-" +  release_series[branch] + ".", "").replace("yocto-" +  release_series[branch], "0") for v in versions], key=int)
-> > +                version = release_series[branch]
-> > +                if versions[-1] != "0": > +                    version = version + "." + versions[-1]
-> 
-> I don't understand what this is supposed to do? Can't you just take 
-> X,Y,Z from the yocto-X.Y.Z tag and write it? Which corner case did I miss?
-
-We're trying to get the latest version for each release series. This means
-taking
-
-yocto-3.1  as "0"
-yocto-3.1.1 as "1"
-yocto-3.1.15 as "15"
-
-and sorting as an int. The issue is that it is 3.1, not 3.1.0.
-
-There are probably better ways to do it...
-
-Cheers,
-
-Richard
+[1]
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/conf.py#n26
 
 
+>  .../{switchers.js => switchers.js.in}         |   8 +-
+>  6 files changed, 251 insertions(+), 9 deletions(-)
+>  rename documentation/{poky.yaml => poky.yaml.in} (98%)
+>  create mode 100755 documentation/set_versions.py
+>  rename documentation/sphinx-static/{switchers.js => switchers.js.in}
+> (97%)
+>
+> --
+> 2.32.0
+>
+>
+> -=-=-=-=-=-=-=-=-=-=-=-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#2663):
+> https://lists.yoctoproject.org/g/docs/message/2663
+> Mute This Topic: https://lists.yoctoproject.org/mt/89934133/1279857
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
+> nicolas.dechesne@linaro.org]
+> -=-=-=-=-=-=-=-=-=-=-=-
+>
+>
 
+--000000000000d2d9d905dac1934d
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Mar 21, 2022 at 6:45 PM Richa=
+rd Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfoundation.org">richard=
+.purdie@linuxfoundation.org</a>&gt; wrote:<br></div><blockquote class=3D"gm=
+ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
+204,204);padding-left:1ex">I&#39;ve tweaked my patchset with some review fe=
+edback from Quentin. The v2:<br>
+<br>
+* uses yaml to load the variables in conf.py<br>
+* fixes a bitbake_mapping[i] -&gt; branch<br>
+* fixes a comment typo in set_versions.py<br>
+* comments the bitbake langdale version mapping<br>
+<br>
+Richard Purdie (5):<br>
+=C2=A0 Makefile/set_versions: Allow poky.yaml to be autogenerated<br>
+=C2=A0 <a href=3D"http://conf.py/set_versions/poky.yaml" rel=3D"noreferrer"=
+ target=3D"_blank">conf.py/set_versions/poky.yaml</a>: Set version in conf.=
+py from poky.yaml<br>
+=C2=A0 set_versions: Add support for setting POKYVERSION found in older<br>
+=C2=A0 =C2=A0 releases<br>
+=C2=A0 set_versions/switchers.js: Allow switchers.js version information to=
+<br>
+=C2=A0 =C2=A0 be autogenerated<br>
+=C2=A0 set_versions: Various improvements<br>
+<br>
+=C2=A0documentation/.gitignore=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A02 +<br>
+=C2=A0documentation/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A01 +<br>
+=C2=A0documentation/conf.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
+ =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 22 +-<br>
+=C2=A0documentation/{poky.yaml =3D&gt; <a href=3D"http://poky.yaml.in" rel=
+=3D"noreferrer" target=3D"_blank">poky.yaml.in</a>}=C2=A0 =C2=A0 =C2=A0|=C2=
+=A0 =C2=A02 +<br>
+=C2=A0documentation/set_versions.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0 =C2=A0 =C2=A0| 225 ++++++++++++++++++<br></blockquote><div><br><=
+/div><div>Would it make sense to implement what you have in set_versions.py=
+ directly in Sphinx &#39;native&#39; code ? e.g. directly in conf.py, or in=
+ a module loaded from conf.py (see how kernel does it at [1]) or yocto-vars=
+ extension, or as its own Sphinx extension?=C2=A0</div><div><br></div><div>=
+poky.yaml only purpose is to be loaded by yocto-vars.py which is a local Sp=
+hinx extension we created.=C2=A0</div><div><br></div><div>[1]=C2=A0<a href=
+=3D"https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
+/Documentation/conf.py#n26">https://git.kernel.org/pub/scm/linux/kernel/git=
+/torvalds/linux.git/tree/Documentation/conf.py#n26</a></div><div>=C2=A0</di=
+v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
+r-left:1px solid rgb(204,204,204);padding-left:1ex">
+=C2=A0.../{switchers.js =3D&gt; <a href=3D"http://switchers.js.in" rel=3D"n=
+oreferrer" target=3D"_blank">switchers.js.in</a>}=C2=A0 =C2=A0 =C2=A0 =C2=
+=A0 =C2=A0|=C2=A0 =C2=A08 +-<br>
+=C2=A06 files changed, 251 insertions(+), 9 deletions(-)<br>
+=C2=A0rename documentation/{poky.yaml =3D&gt; <a href=3D"http://poky.yaml.i=
+n" rel=3D"noreferrer" target=3D"_blank">poky.yaml.in</a>} (98%)<br>
+=C2=A0create mode 100755 documentation/set_versions.py<br>
+=C2=A0rename documentation/sphinx-static/{switchers.js =3D&gt; <a href=3D"h=
+ttp://switchers.js.in" rel=3D"noreferrer" target=3D"_blank">switchers.js.in=
+</a>} (97%)<br>
+<br>
+-- <br>
+2.32.0<br>
+<br>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#2663): <a href=3D"https://lists.yoctoproject.org/g/docs=
+/message/2663" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
+ect.org/g/docs/message/2663</a><br>
+Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/89934133/1279=
+857" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
+/89934133/1279857</a><br>
+Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
+=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
+Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
+"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
+/a> [<a href=3D"mailto:nicolas.dechesne@linaro.org" target=3D"_blank">nicol=
+as.dechesne@linaro.org</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</blockquote></div></div>
+
+--000000000000d2d9d905dac1934d--
 
