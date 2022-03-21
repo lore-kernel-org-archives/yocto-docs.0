@@ -2,58 +2,58 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76CBEC4332F
-	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 17:45:02 +0000 (UTC)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com
- [209.85.128.44])
- by mx.groups.io with SMTP id smtpd.web10.392.1647884700762098847
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A0A2C433F5
+	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 17:45:03 +0000 (UTC)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
+ [209.85.221.54])
+ by mx.groups.io with SMTP id smtpd.web10.395.1647884702490773533
  for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 10:45:01 -0700
+ Mon, 21 Mar 2022 10:45:02 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ijFHNMPY;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=FdOnu6bY;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.54,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f44.google.com with SMTP id n35so7407352wms.5
+Received: by mail-wr1-f54.google.com with SMTP id u16so20743750wru.4
         for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 10:45:00 -0700 (PDT)
+ Mon, 21 Mar 2022 10:45:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=KRomAwlh6xdoIh3onIO8IVhFAVhcKPFuxZcPXW0CFT4=;
-        b=ijFHNMPYi/DbckPrUULhTOZPzpomvgtymK3SI1UcFyKNRYrzqbM7xQCY1im8sAPD5g
-         sHo2DXR7sMMwFi9wuIZICc4cnTxVTndoywyL7TxgbV+y2RiKo12pss0Vqgw4FC09QDx1
-         5CrFnQOWKOuLEEyTF99b7XxWGy1ygezY82oRo=
+        bh=LK/IUj7fxvv1hYPFt01bMGWm2IC7by3uxUu0Z99kW+0=;
+        b=FdOnu6bYgvutz8PyPWk8Aipj7RGtc6vSXG/bMztfv16F1DvGxEQVMmIhJyt5R8VvCb
+         8bZoo0CjX03hVfXWR/4kJ+4jFd5QQLhDBrmhDbIaLEzJZghvDYUiZfJmOEjsQcXaUD/q
+         qDJK4XUYjFZMyRuKOWXWcJOmKPg2mRyMjc2o4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=KRomAwlh6xdoIh3onIO8IVhFAVhcKPFuxZcPXW0CFT4=;
-        b=uXhpuj2vxMQxjzIUslzUzGb9VdyAs1c7rautTAPv6pVjLKpAG+bm8JrbVT90YaNTF5
-         kpnxRe1kG8iZgoajsjrRuc+2efG23Ti6aRNsYtvKdxGBvMyo1Z9wx8zS7U2NCVAOkevi
-         tnWYs7A5LSUhihaa3yacHDgjIHXZC9Hn2F6oOvF8r20xD1AHG9Ku8x8SH/EaBnr6UWlt
-         6oYFgo6d8Ac+/X/Z4mKiC7ou4I/ucDPCuhzZD9x8Gp2kFyKxQxWvQMkfmiNpIg+kqXxa
-         ONHKXGnBXZrEm3Q8dAsCmYAepzqYEuKQ/BBsgPk7InfCk1OQ5wRhp9CRLzUG/bV3FWCL
-         0VQg==
-X-Gm-Message-State: AOAM531ty32pnQmFeuX7tSS0dCkXeERnotOEYjYUPm7HCqkcoyw9rmJt
-	8oo8Qn2CPDbSRvHCHQuQyzp1kwAUMz3pW8xF
+        bh=LK/IUj7fxvv1hYPFt01bMGWm2IC7by3uxUu0Z99kW+0=;
+        b=yBQQ0T1doAVIt2V5lNevViZ18huhodIcL9ZVrgWTBOHW4EV4W25801J7105sOZ8iX7
+         gM8wCMXrdpcvyP2bQBRTlWCcaACBLcl0yO4CqKxah/JlMvjYx/OWDoTScVTYU0UAZyWO
+         /mEzD0+2ciZEHP6Tqt9NH2a3KmhMI+KbojvpizogEL4DldfJhnI7WpiHAqW3wZ0HlwdJ
+         C0JtD/Q/BtmaPmGBMSWZ+XtdRJsopPT3Qu8Ax29zdzSL/wQ/7bmQP4jtNsVqYHmn3rGW
+         jygw0csmsWNsM+/N30TMA3TFckJMZKsyqawu79bbsoSYYuevg8WgOSVAE5AIkCTvr7Zi
+         0TSA==
+X-Gm-Message-State: AOAM530SUD3GFiSGufSoXM7sRVwPJ9JJhwDJPVg3jGY40IY3HSHmXmpd
+	PN+pseTbFbEYBgIP6xIybI8hq19Q85Bc6eJY
 X-Google-Smtp-Source: 
- ABdhPJxKPW0H/Hi2AM3EUy7L5aiD5sp7trqBrXmf8tr3EnkFFCd2FXqLdFN1sl1oo5eTGTtzLvtVzg==
-X-Received: by 2002:a05:600c:1f17:b0:38b:b2b3:9faa with SMTP id
- bd23-20020a05600c1f1700b0038bb2b39faamr206158wmb.190.1647884698941;
-        Mon, 21 Mar 2022 10:44:58 -0700 (PDT)
+ ABdhPJwsuiJ3Ed48GxJWyEHVdvqFh/p6ZJ+qNw7FvLiUSZSTY5JeSmXPiPm7q3ydd9XfiFTosAeEsg==
+X-Received: by 2002:a5d:6da8:0:b0:1f1:fa31:e7f7 with SMTP id
+ u8-20020a5d6da8000000b001f1fa31e7f7mr19450474wrs.389.1647884700626;
+        Mon, 21 Mar 2022 10:45:00 -0700 (PDT)
 Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:7422:13d5:6a39:d39])
         by smtp.gmail.com with ESMTPSA id
- n22-20020a05600c4f9600b0038c6ec42c38sm151849wmq.6.2022.03.21.10.44.57
+ n22-20020a05600c4f9600b0038c6ec42c38sm151849wmq.6.2022.03.21.10.44.59
         for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 21 Mar 2022 10:44:58 -0700 (PDT)
+        Mon, 21 Mar 2022 10:45:00 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 2/5] conf.py/set_versions/poky.yaml: Set version in conf.py
- from poky.yaml
-Date: Mon, 21 Mar 2022 17:44:52 +0000
-Message-Id: <20220321174455.1189669-3-richard.purdie@linuxfoundation.org>
+Subject: [PATCH 4/5] set_versions/switchers.js: Allow switchers.js version
+ information to be autogenerated
+Date: Mon, 21 Mar 2022 17:44:54 +0000
+Message-Id: <20220321174455.1189669-5-richard.purdie@linuxfoundation.org>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
 References: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
@@ -62,135 +62,94 @@ Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 17:45:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2665
+ <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 17:45:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2667
 
-Allow conf.py to read the versions it needs from poky.yaml and have
-set_versions.py write this out. This means we don't have to change as
-many files when making new releases.
+A horrible blunt hammer approach to updating the version information in
+switchers.js based on the available tag information.
+
+To merge and work correctly, this will need a change to the autobuilder-helper
+docs generation code to pull the swicthers.js and script from master, then
+to run the script. That should hopefully remove the need for other patching
+even on old docs branches though.
 
 Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 ---
- documentation/conf.py         | 22 ++++++++++++++++++++--
- documentation/poky.yaml.in    |  2 ++
- documentation/set_versions.py | 20 ++++++++++++++++++++
- 3 files changed, 42 insertions(+), 2 deletions(-)
+ documentation/.gitignore                      |  1 +
+ documentation/set_versions.py                 | 20 +++++++++++++++++++
+ .../{switchers.js => switchers.js.in}         |  8 +-------
+ 3 files changed, 22 insertions(+), 7 deletions(-)
+ rename documentation/sphinx-static/{switchers.js => switchers.js.in} (97%)
 
-diff --git a/documentation/conf.py b/documentation/conf.py
-index 3015892d2..a5d7c0cd8 100644
---- a/documentation/conf.py
-+++ b/documentation/conf.py
-@@ -15,9 +15,27 @@
- import os
- import sys
- import datetime
-+try:
-+    import yaml
-+except ImportError:
-+    sys.stderr.write("The Yocto Project Sphinx documentation requires PyYAML.\
-+    \nPlease make sure to install pyyaml python package.\n")
-+    sys.exit(1)
- 
--current_version = "dev"
--bitbake_version = "" # Leave empty for development branch
-+# current_version = "dev"
-+# bitbake_version = "" # Leave empty for development branch
-+# Obtain versions from poky.yaml instead
-+with open("poky.yaml") as data:
-+    buff = data.read()
-+    subst_vars = yaml.safe_load(buff)
-+    if "DOCCONF_VERSION" not in subst_vars:
-+        sys.stderr.write("Please set DOCCONF_VERSION in poky.yaml")
-+        sys.exit(1)
-+    current_version = subst_vars["DOCCONF_VERSION"]
-+    if "BITBAKE_SERIES" not in subst_vars:
-+        sys.stderr.write("Please set BITBAKE_SERIES in poky.yaml")
-+        sys.exit(1)
-+    bitbake_version = subst_vars["BITBAKE_SERIES"]
- 
- # String used in sidebar
- version = 'Version: ' + current_version
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 89a059ef1..a346b7623 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -5,6 +5,8 @@ DISTRO_NAME_NO_CAP_MINUS_ONE : "hardknott"
- DISTRO_NAME_NO_CAP_LTS : "dunfell"
- YOCTO_DOC_VERSION : "3.4.2"
- DISTRO_REL_TAG : "yocto-3.4.2"
-+DOCCONF_VERSION : "dev"
-+BITBAKE_SERIES : ""
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
- YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+diff --git a/documentation/.gitignore b/documentation/.gitignore
+index e5e2c1708..096b97ec2 100644
+--- a/documentation/.gitignore
++++ b/documentation/.gitignore
+@@ -1,6 +1,7 @@
+ _build/
+ Pipfile.lock
+ poky.yaml
++sphinx-static/switchers.js
+ .vscode/
+ */svg/*.png
+ */svg/*.pdf
 diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index 266ccf464..a4bfaf1bf 100755
+index a121125ac..668c42e30 100755
 --- a/documentation/set_versions.py
 +++ b/documentation/set_versions.py
-@@ -25,9 +25,20 @@ release_series["hardknott"] = "3.3"
- release_series["gatesgarth"] = "3.2"
- release_series["dunfell"] = "3.1"
+@@ -13,6 +13,7 @@ import subprocess
+ import collections
+ import sys
  
-+#    "langdale" : "2.2",
-+bitbake_mapping = {
-+    "kirkstone" : "2.0",
-+    "honister" : "1.52",
-+    "hardknott" : "1.50",
-+    "gatesgarth" : "1.48",
-+    "dunfell" : "1.46",
-+}
++activereleases = ["honister", "hardknott", "dunfell"]
+ devbranch = "kirkstone"
+ #devbranch = "langdale"
+ ltsseries = ["kirkstone", "dunfell"]
+@@ -144,3 +145,22 @@ with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
+ 
+ print("poky.yaml generated from poky.yaml.in")
+ 
++with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-static/switchers.js", "w") as w:
++    lines = r.readlines()
++    for line in lines:
++        if "VERSIONS_PLACEHOLDER" in line:
++            w.write("    'dev': 'dev (%s)',\n" % release_series[devbranch])
++            for branch in activereleases:
++                if branch == devbranch:
++                    continue
++                versions = subprocess.run('git tag --list yocto-%s*' % (release_series[branch]), shell=True, capture_output=True, text=True).stdout.split()
++                versions = sorted([v.replace("yocto-" +  release_series[branch] + ".", "").replace("yocto-" +  release_series[branch], "0") for v in versions], key=int)
++                version = release_series[branch]
++                if versions[-1] != "0":
++                    version = version + "." + versions[-1]
++                w.write("    '%s': '%s',\n" % (version, version))
++        else:
++            w.write(line)
 +
- ourversion = None
- ourseries = None
- ourbranch = None
-+bitbakeversion = None
-+docconfver = None
++print("switchers.js generated from switchers.js.in")
++
+diff --git a/documentation/sphinx-static/switchers.js b/documentation/sphinx-static/switchers.js.in
+similarity index 97%
+rename from documentation/sphinx-static/switchers.js
+rename to documentation/sphinx-static/switchers.js.in
+index 3ea8927d7..5d3a4d793 100644
+--- a/documentation/sphinx-static/switchers.js
++++ b/documentation/sphinx-static/switchers.js.in
+@@ -10,13 +10,7 @@ by https://git.yoctoproject.org/yocto-autobuilder-helper/tree/scripts/run-docs-b
+   'use strict';
  
- # Test tags exist and inform the user to fetch if not
- try:
-@@ -45,10 +56,12 @@ if ourversion:
-     # We're a tagged release
-     components = ourversion.split(".")
-     baseversion = components[0] + "." + components[1]
-+    docconfver = ourversion
-     for i in release_series:
-         if release_series[i] == baseversion:
-             ourseries = i
-             ourbranch = i
-+            bitbakeversion = bitbake_mapping[i]
- else:
-     # We're floating on a branch
-     branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
-@@ -68,8 +81,11 @@ else:
-         print("Nearest release branch esimtated to be %s" % branch)
-     if branch == "master":
-         ourseries = devbranch
-+        docconfver = "dev"
-+        bitbakeversion = ""
-     elif branch in release_series:
-         ourseries = branch
-+        bitbakeversion = bitbake_mapping[branch]
-     else:
-         sys.exit("Unknown series for branch %s" % branch)
+   var all_versions = {
+-    'dev': 'dev (3.5)',
+-    '3.4.2': '3.4.2',
+-    '3.3.5': '3.3.5',
+-    '3.2.4': '3.2.4',
+-    '3.1.14': '3.1.14',
+-    '3.0.4': '3.0.4',
+-    '2.7.4': '2.7.4',
++    VERSIONS_PLACEHOLDER
+   };
  
-@@ -83,6 +99,8 @@ else:
-         ourversion = previoustags[-1] + ".999"
-     else:
-         ourversion = release_series[ourseries] + ".999"
-+    if not docconfver:
-+        docconfver = ourversion
- 
- series = [k for k in release_series]
- previousseries = series[series.index(ourseries)+1:]
-@@ -99,6 +117,8 @@ replacements = {
-     "DISTRO_NAME_NO_CAP_LTS" : lastlts[0],
-     "YOCTO_DOC_VERSION" : ourversion,
-     "DISTRO_REL_TAG" : "yocto-" + ourversion,
-+    "DOCCONF_VERSION" : docconfver,
-+    "BITBAKE_SERIES" : bitbakeversion,
- }
- 
- with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
+   var all_doctypes = {
 -- 
 2.32.0
 
