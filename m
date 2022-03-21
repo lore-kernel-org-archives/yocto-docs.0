@@ -2,25 +2,25 @@ Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25871C433EF
-	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 15:50:05 +0000 (UTC)
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com
- (EUR01-VE1-obe.outbound.protection.outlook.com [40.107.14.40])
- by mx.groups.io with SMTP id smtpd.web12.32236.1647877802840449328
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3DB9C433EF
+	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 15:55:50 +0000 (UTC)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com
+ (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.87])
+ by mx.groups.io with SMTP id smtpd.web08.37.1647878148856712759
  for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 08:50:03 -0700
+ Mon, 21 Mar 2022 08:55:49 -0700
 Authentication-Results: mx.groups.io;
  dkim=pass header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=a1+UZJKm;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.14.40,
+ header.s=selector2-cherrycloud-onmicrosoft-com header.b=YJgdUpwv;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.22.87,
  mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=byS9mNrlkJw9VWDT1zpIyz0U0wztg5lboNQgScFYqaE0Qv4AySSKqfpiaxowyDSFVO63KlUHTw0n+mok2Fb7eXniyUrUxWglFBp8PdC2qLMPyqd+1gLU+i5urNaWLYi+xnT04UMMSTyn0pTINn7iURw7vxUqCHkFeSVWSyVn4hMs7diVouZMuZL307ZI6g19hZB+bS8LScmgjDhIjUzC45tPhEBXuIWD2gBd8PP7hl0iOe9eSc3Qp18MqdhtB4f++82uMAeyvSgtPGBqIigxYR6mcnwrViguQ+i8LU1Wb/yhpCnVFr5pl6rzxCYXbRemGzsZDU88kdoYtv9NbUXbNQ==
+ b=dQDvp1/6db96DVDseaABVu/TnD87eJDnT/drwOg9IVEERmjlTp6mUSoTe29CbdcA+T4pXMxMnq88DEbDnVvUUD6eP5uZdckJoAMe3ZYNolIT9+8GoWFpOBJL98SOjKb9k2x6EQ2/kMFjPyB8/FrnkNyLkq7QVy87C+QgCod6vCZHpJbzLVXEP85td6Q6pZ4psBFb/+1Yt03VHig7si0HExEA34N4qeecXnkydnDZFAIEATDQXJnPfLezAvfU6J/h92PrLJD/2skcm0I1LmdlokhnXZKNgjv+AQfvWn/4DpsqJXGZnPJnKmqLw/tMC0raze9UueV2H/jpY2sV8auklQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=uOpZFhKx2EiyRufQShywbwTpoI04sVJaln7mkU+UbS8=;
- b=RvJIBb66Yw+BBwfkx/9lTbicBUC2Cq3rfiNKzeBTVsHCiy30zc1ngBmmAJ7CxwuNWTPZaQYSSybP5ZK0FxFUp/hM/sckyc/SaJpY/Pni6oZGSTZ7VW+q+8jdZ098TbF7jsO0T0N4F5n3Y+yd0Ei841zHd89MIkOqPGTO/TzPkkrQmLPYwoAv7G4RPJ85/Lj7BpP9R+Sv8o8b9Y4bw8v3oIEeMV08gbbDmULYdOCRMC/GLnv1n1fmuSKHdc4GGxF671tMTipiF75dkkXLRykCpLubUbYi51GZq/8EqzoQz9Bx+FpVN//dzDiSsm2NPdClxDJXzBmYirnftrXqbjdPzQ==
+ bh=vtod9blNfKLQkGUZ6Logn9z1woo+DGIQT5Omj5DCDqs=;
+ b=eQUac08M87feIJh7t0JJUiDbLFautHgpbxo6HP8yRADwuo6bb2bE0uQw7m4W81Yp6x9R27CX6NXoHEquBubejxQB5Cajp9f5r+OD8Y3TZbmMXs4Ayu9IJE5axZ7xWZr5502N8GWwdaHf2/DbfnyigvJc0xdhFauUI3TDYr6j/Or0ib6vBjnYj3O9NBZ+u0q8e55QdcAy1qD5pzm71k2FgRgOPRpfZY/TneAx+Mop2oZI3p10LLPmOIDColIe/jQJlWvgmUTkVAw85aAlSdDOy7lPIh1XOYD7Lv0Hf0Of3ISIAwsBUELf9+52YGm3VJ0EOGwUJFoF+gc28KYXqMVe1g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -28,326 +28,174 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=uOpZFhKx2EiyRufQShywbwTpoI04sVJaln7mkU+UbS8=;
- b=a1+UZJKmwIuiKPFto16Ydg2iVSLyrBKRMlCBQEbNpFt7hcCNelpgimm6r0pIeAmTFejxV0cVh6tf4qpAtOH9Ed7HFj5dEf7GbfoyLyKn8aGucRTR1Wlf9eshMS+nug3O1v6f47aalFu+h0wULAatCytDArqKlOcF4R+vqOqQF8E=
+ bh=vtod9blNfKLQkGUZ6Logn9z1woo+DGIQT5Omj5DCDqs=;
+ b=YJgdUpwvIT+vGsZQrIlnfs8ww71gEg5E6Bn7InvbTsv9J9i4oN4WjIgTTLaikTLTpVTz66OPYHtEm/znHX1sEyXcFklP8nWK3LG88tzAn3foAOjh1w1n8PyTKqGIGv6ikjBMWLOeRlcfghq7Q3xhw8YiVc8YO92owcLe29eO5S4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
  by VI1PR04MB4143.eurprd04.prod.outlook.com (2603:10a6:803:46::18) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.22; Mon, 21 Mar
- 2022 15:49:58 +0000
+ 2022 15:55:45 +0000
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::1d2b:fd77:d076:a391]) by PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::1d2b:fd77:d076:a391%7]) with mapi id 15.20.5081.022; Mon, 21 Mar 2022
- 15:49:57 +0000
-Message-ID: <9b38f9ea-1bd5-6dcd-a61e-4498ad33d90f@theobroma-systems.com>
-Date: Mon, 21 Mar 2022 16:49:56 +0100
+ 15:55:45 +0000
+Message-ID: <3140add6-343e-28fd-3d29-d3754bbd33b9@theobroma-systems.com>
+Date: Mon, 21 Mar 2022 16:55:44 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [docs] [PATCH 1/3] Makefile/set_versions: Allow poky.yaml to be
- autogenerated
+Subject: Re: [docs] [PATCH 2/3] conf.py/set_versions/poky.yaml: Set version in
+ conf.py from poky.yaml
 Content-Language: en-US
 To: Richard Purdie <richard.purdie@linuxfoundation.org>,
  docs@lists.yoctoproject.org
 References: <20220318154228.1071136-1-richard.purdie@linuxfoundation.org>
+ <20220318154228.1071136-2-richard.purdie@linuxfoundation.org>
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <20220318154228.1071136-1-richard.purdie@linuxfoundation.org>
+In-Reply-To: <20220318154228.1071136-2-richard.purdie@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AS8PR07CA0023.eurprd07.prod.outlook.com
- (2603:10a6:20b:451::23) To PA4PR04MB9367.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AM6PR01CA0049.eurprd01.prod.exchangelabs.com
+ (2603:10a6:20b:e0::26) To PA4PR04MB9367.eurprd04.prod.outlook.com
  (2603:10a6:102:2aa::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: ce7b85c7-ad96-484e-5482-08da0b52734b
+X-MS-Office365-Filtering-Correlation-Id: 8afc9b9a-41df-4ed0-1ffe-08da0b534299
 X-MS-TrafficTypeDiagnostic: VI1PR04MB4143:EE_
 X-Microsoft-Antispam-PRVS: 
-	<VI1PR04MB41433FDEC58E0F78E1ABC6DBC2169@VI1PR04MB4143.eurprd04.prod.outlook.com>
+	<VI1PR04MB4143A4F332F18077D9644E7EC2169@VI1PR04MB4143.eurprd04.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	KQtlItdHwJC5A7vtQh/seH+U9h7kJz49c6qgdE9dcvqTLo2F0A/GVLi2P+M/noiWwmGt3VDSDICDLU1ZhJ+wmzrWCvPdhkrZmVB2UqZ9yM8B/nLOrD4vSRfVQIHBJNl4UQsCuLTfJid9mpvTMuf4yVHPjgE/PYQdl+65ci18tMaqRnxNO6/hyYF7S116MsosHCoJirq6VeR7nrxL3UTLIAcIG0qRZ6w6WJAPX1r6KDOeLDarjUb83rTHSGrsp1GAqPhemArRaVWlZ8SHT5J3F3iUK/qzV/mvk+y3WIp+HX5KYt1V96xH0aXL7L3EcWiEpTpMnzBNvORY9K8gsoHusVgqHtd5hU0VSVAl7zszYsxSzmtw8hsG8RqxRo3ybd8Cg86l5Mg7t+zB/JFcpodkOZwFH+7bB/vHxYVhw/WsTQTo905pHmJcSVoiNcu64RProg11jd7t3Opx68V15oAZ9joGdd2nsuEOGvUgwCQEFWuvUnlAL6CyrfxCTcadDau0uS3z5slMW0WXHeXF1UWt01Sf8SwjJtp5KEH0zAvJCVy7qjIQ2CRAB2DWMRg2S9vRRJjQQwT/e3cGTPLLZqYiPDqahXjstfMuGB0ja1KK4ntXYM9orjVYQWxDynLA6J12inuUw12UJMrRTIS8BcCx+8Vs6hSsNFZPXaTl/hn61dxhbtfUCCFXY/R6Xfrb6Xc2aud8xem5e7tZVLPlaQPNdN1m1jZeLv0t7Gq5mghOuLA=
+	GyCs6tLXk6lw/z7FGAEqBhRKuGS7MD84jhcMwYzB2NIzpBgIsK6vEVAWKkV02qS4XP53dW63hJjddHLosxD5flmK0h+pCiOmqHyJmRcZ7BZsizyAv6RWMc8OXO6fNMe58OHMsMNDpc+X7uJc/RvKMAzumOiICbQgt1/JlepspZCfgVXY7NIeclJfhejpMMQvNgXHSkBBLe7P5AmaLia3PR/Zih5YOXSOENQR2FAlvpmVxka3jq2T4QEa6Ywg9PRhO0oVNs1b+iHMKAEl113H0RSYAsrGEWve1Xnyo+FXz5Nn8yhM9BpOL81pcipYrBxSNEkAgt80xub6azgIKt2GcTFuYt2yRJsYgmWJlZEUkZgNXjGgtg8ccKzrWmR2Asg7zouS6QAJnkp0naH2DXv60XI/yXCe1Gz5B0nixyWL4gmuaC84nT5zEsU/GtTgi5awu9fH73mvj5vTtcLgVyEOBopFArZT05DYslrC1QLslQXV70te057T6kGPwOxNTyK6RbhjLGUB8H5cYXeCleairEq0SUXbJHweXCvDHIPr66FQIj1NLUs9k/mumRF6/u3ZBkKJVggMKb8e8n1PPQGxHaFz4thmfdBctt0r3B6G9o4+ZDajtrCq7zpfFWLj770ywe1qujO2lWAttdhfhLg4UkUutsbUKsV9xT6fB6+rktYTg7CKtiERbA8mTwzUVQGk3lSnolOCBFQ9RmjHBrH0JKn6kniXiREcx9B0lIGX2OlZ98oknqpTrRrw+TtVoRSefg8EYHiUdKFF7qElzTJXINKegqR4/iiTdta14kCgLqOjK4TF96XUzTP3KbEHwhhp
 X-Forefront-Antispam-Report: 
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(8936002)(508600001)(2616005)(31686004)(6486002)(36756003)(5660300002)(44832011)(316002)(31696002)(86362001)(66946007)(8676002)(66476007)(66556008)(53546011)(6512007)(2906002)(38100700002)(83380400001)(26005)(186003)(6506007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?c2lDN2ZpMnV3WmU1R3pkTmkweE13Qmx5MThtMmFRaC9XbjFHTng4RWxUdkUx?=
- =?utf-8?B?RjFma1ZmUUpOZ3hOYmJ0dTdOUVVDamUwM3BjNmkydHB2NVdiWkpKdndVYTVF?=
- =?utf-8?B?Sk9XZ0xOUkloQmJzVlo3aG9GRG45bmIvdGVMTnduTzRjRWVZWTZVWXNLVGRB?=
- =?utf-8?B?cmxsd1VGUW9hNy9tY2NxQ1k3REdCSW9XYnhQbHdZT3pkWmNzWll6dW5qL0dh?=
- =?utf-8?B?eExWS2JwbWZxVUdUcFNQek5QNE9YYUxrTWVxL2QzK3lXNVh6N1JlUXBGdmhx?=
- =?utf-8?B?MHQxcDA3QmxwdzJ3MFhlL3N2NVRtZ1NLYzM0Y3hPWGpVd2c3Y2dtdmR2R21N?=
- =?utf-8?B?TWRtRFIrRDVYRGVNV0htUHkyOHYxOEp4UkFxNEdtWWI4c1g1RGZ2b0VLbUNO?=
- =?utf-8?B?OUpvSU5vQU5Da2NLRHRJeDF2K3lESms5NEJscVhkMEJDRTV3SWtTUW0vdS9i?=
- =?utf-8?B?WnUwVE0wZTdNR2M1UWgySzVVa25pRHRjd2ZGSHpldHBaaWk5WGJUSklGOXdy?=
- =?utf-8?B?Umw0czFqNzVOdjlPQVpZMzFZamxlZE05SUxaamZiQi9ucEg5UUliTEtiejgx?=
- =?utf-8?B?UDBrY0plN3d0aHo1REU5VTZ6S1Y3azVPU1FRT2dJaVFHbytvMzR6RisyR1FC?=
- =?utf-8?B?bEc3V3JMelREOW45SG5STlMxYVllWnMvZEtoaDlPUkRNWC9iblhLSVlVMGtY?=
- =?utf-8?B?MEhSN2FvYjdvZFFOSERKTG5EUnJ2V1pxZEtsRk5yS2hLVU9BK2M2bkJ5bjR6?=
- =?utf-8?B?NE9OeGlJUVZDOXlCYXZEcFZGVmdvejhmMGlzdTB4MzdNOW5Dckc1MEo5QWN6?=
- =?utf-8?B?aVZRV2lzZDlodjZ4NFovNHZ0RjIrUnozc0hHR3NZaDBjaWwyT1RUdUdYTlBi?=
- =?utf-8?B?OHo3N1ZxNUdhRlgxVmFod29GQ2JTUkFteEEwaXg0eDJ3NmdlaWRvSkN0ckpy?=
- =?utf-8?B?Y0ZhSlFVbWtaNVZ1Z3hqYkhBUmtSWDh3dTJUbmYwVnhWWHNIakpRU0FWMUN3?=
- =?utf-8?B?UnUvQ2ZkK3NHQkhUSzhnb2VRSUh3YUtjbHNGcXg2QmM2b2RPcDJnMmhjWERa?=
- =?utf-8?B?YW0xQjV4MW5CNmFub2dxaUJKN1NZQklubEpoMnlIc3grNXYydDRpWlpya2sz?=
- =?utf-8?B?dVBOamhpZlRuV0twUGFKa0Y5VG5VaWt1WHBZejdVOTBadVZIZno5RUdNTHJk?=
- =?utf-8?B?a3h2eUhhTjlpb2JzeFlObVJzb3lGdTkxSWxMZzhoK0oyR2psMDB2NEtjTWNB?=
- =?utf-8?B?Mmp0aWZNUGpPdUJydUVZcHdlblVPOUFVdjVzbXVKUmhhdEd4dzFyK3lTV2dj?=
- =?utf-8?B?R0drMXpDTEhDSUZmeXpEREdoK2ZNMnlLM1ZMbTRRamhmdWo3WmlqYm1nUGcy?=
- =?utf-8?B?UnNwMlZtVmw5R3VZenJYaC82RDJlemgrcUFwcmNKemxDWHVZKzIwdHB2UUFs?=
- =?utf-8?B?dkZjaGNyRlV6dEFTSkR3TGVIdi9vdVpCRTNLRjk3Q083ankzZWN3QmNtYllW?=
- =?utf-8?B?R1VITlFqMVE5TVpmTWQ4akN4MDI4TnNjVWZOMU5oaVByTHZEaWp2dktmTDdP?=
- =?utf-8?B?bFYxOUM4QTY5Z2dES29MejRxN0N1NjZVcU5PMkNWWU4wWGJEQU01SVA4emI0?=
- =?utf-8?B?TlVLZHMrWE8zY3NwRFQ0TUdnNGppVDd2UDVTUVRyQ0RhL3FwNjNvMzM5ZDRw?=
- =?utf-8?B?NHFIcWN2V0JOTE5sMVJQemlDbVkyMzE0UktJMldnV0RmaGlSNmI5RUVlNDZR?=
- =?utf-8?B?RjI1OXJIMHBhWkJhTGtXNm03eU4zWXRvamw3WE4vSG9ESURrZ0w4cVRhc2Fh?=
- =?utf-8?B?UW5MWlNMMXlHK0pxNFluQjBaMHo1TXFSZGRqOWtmbElkSDVSM1ExTmpEMW9Y?=
- =?utf-8?B?RklPUmRUNUFxU0VpbzlSVUpRRHErN3FxVlpySzZINDgwZkpHNllWMmR3SGQw?=
- =?utf-8?B?TkhURjQ1b0hSRER4SGtXL2JtSW80ZlV5UjVXN3RnNm9CbE5PMXdlcWNKbjg0?=
- =?utf-8?Q?Q2AKslcZARAQ5BMvs3fWPALiz6p5GU=3D?=
+	=?utf-8?B?bWZpbmw4Qnc5Ymg5UTVBemltWXN1emhNVW94NHVFQ1JqbDVXUUtpSkM1Rkdw?=
+ =?utf-8?B?cEk4L0hndlo5cENQemZmNndCU3E5eXdMN1VRWC9jOE9yalRDNHNYaW45d3lx?=
+ =?utf-8?B?SlRvTkIwdlVadFJDS3Y2UStTKzVpYlNiQ2lkSmM4NEtURGFna09ZQWtlZW41?=
+ =?utf-8?B?OUhMVHFEMk5pdGk4L1ZUZVlIZWZRb3l2TVhBV3RpcWFHT3k3alQ4UzNxa09F?=
+ =?utf-8?B?c2hIZVN6c3B2dzlNVTNYaUpia1ptcVVDVGMvdkllRG1HY3doTkVueWZLSVl0?=
+ =?utf-8?B?MTVmUndUNGR1cjdEcWxVaUxpQXNmTmRBenlnQldyQU4yVm9wSU5GTkpmUHdo?=
+ =?utf-8?B?VG5sY21pSmd2bmZ5TEhCcUpUeXM4dk9aRi92d3RpOTM5VGgzVFpVMkRiWjQ3?=
+ =?utf-8?B?KzkwelpuVGNIL3U4VjY0ZjNyb3daQlo1bTNwNUtZbkcvUUllQWtVcTlMWU9D?=
+ =?utf-8?B?aEdFOVRlN3V3c1RaUVVEVFhTU0hzVkVha3Fyb2p4dVdrdm0wYThwandKSkZJ?=
+ =?utf-8?B?djRDSlNFNjVUb1NwSE1mcGEzQ2ZtYkFTa21mcUlOYXh3eUlSNFZlMW8zTXp5?=
+ =?utf-8?B?U2ZZN0ZxbGJaTU8zV0FTMWVjYnV5eXNVY3hTaEVpSk9ZaEc0Znp4ZThuRmN1?=
+ =?utf-8?B?a01vNE1xanlqNVRSUEpkVE0zQWRlZkl4YWVmRlNmaVloRmlQc21GT1E4TkJR?=
+ =?utf-8?B?aWtuNlpGeUJ2NUtIRnJRc1FyWHowWWt0a0htc05Xd1FDSm96NkMvanRLRUlv?=
+ =?utf-8?B?aU9oYkdMS3ZzamNLUkJkWGJrTFJtTk9WUWkwdk9HZE5nZk5pV0VLcGRpbGhG?=
+ =?utf-8?B?UWRVeFBBRHdmTjQ2Q3JKOEVVazAxek5uOVFFWWFoNS9BNG9HRFF5blJtaE1I?=
+ =?utf-8?B?cis4UHdnS1M2dUFrMDVvVkJMek81ZlBRTmNzVmwxQi9mSVU4ZUFZRk5QUk9l?=
+ =?utf-8?B?TktIVVh0alRFYVFWUjNsK3hiSEFDU0xsdGtsR1QxMDVQcllhNWhVVkFFVEZs?=
+ =?utf-8?B?TGk3cU9lcVNYTUEzc0tTU2ZMeXdRaE9FL2lJYlc5bHBUcHJGdS9WUGQraHRi?=
+ =?utf-8?B?eTBWMjV4YkduNjYwMUhxY2QvekQvZE5QOFVQazRBdHppQ3pUQWwrVC80Zyth?=
+ =?utf-8?B?QkJKWUQwN1dBV0dTMXJwZm5FMXFISGZ2TUlkY05xNkVOKy9sZVhOc3Rta0J5?=
+ =?utf-8?B?L1JDRC9IY3Q4U3QwV01DNWQzcFo1eCttdHdIc2tsaEJIWmdsSk9VUDlTQ0gw?=
+ =?utf-8?B?a2hMK2YwVGhyL2o1RGNUMHV1dlh1R3gvenowQ3F6MTBjaDIrN1M3aVBiRXlu?=
+ =?utf-8?B?K0hmT1QzUGtvcndXWG5hc1cyM3VHU1NsaWlEMWZnNnorcWNsWStsQjNlU1lT?=
+ =?utf-8?B?OUN0bXA0anFXSGVhdW5GZ3JHQzNjRzhLbXU0ejNwUTg0VjlEN2RDSEk1b0Mx?=
+ =?utf-8?B?a0g1SGRkWlA0c2pJRnJIZWd1L29jenc5SzlBVVpvdHFkdHg0d0kyN1ZyQVdQ?=
+ =?utf-8?B?M3hvR2pEVVRUVFpsNXB3WUdjZVBSQmhXVVdDSXJoNFM3UmlQQXByL1pBYnJF?=
+ =?utf-8?B?ZS9wVnFsNW4yZmtCVUFqaUVOZEwydVpVUFFaWkVwdzFHRnBkZ1BRSVF1ZmFC?=
+ =?utf-8?B?bmxCTU51aTJ6NHRsSnpEWUtQZE96V2JnUFhVUCt0WHNsbncrcG5vL3BhSWU4?=
+ =?utf-8?B?UjJUS2xnRHRoSktJam80ZC8rOU5uaURNem83VjdyZnJxbkpPYlVMVzFjellq?=
+ =?utf-8?B?UnYzL0t4YUV0YVNUODFvVkR2YnFYMGNnQUQxNVNOMVpUUUlsQXZmcmZmU0Fq?=
+ =?utf-8?B?WVgyNGRPVDJBMjVVL3pmL0gyM2VoOElsOWFCdlNDbXBPYXl1WGdodHJ0R1p5?=
+ =?utf-8?B?SVdJWmI0eWRVVWZqUE5oWVEranMvdTFTNmF3M2dITTZBcDB0NjZxV0R1TW5q?=
+ =?utf-8?B?ZzZiUkM0dTgzUFNSRHQyemtjTHppbElzcDdpa1ZWdlVFT1VsUDU2Wm5vaE9w?=
+ =?utf-8?Q?46+bZ8i1oh3Qvzj8r/aerb5VjEyY44=3D?=
 X-OriginatorOrg: theobroma-systems.com
 X-MS-Exchange-CrossTenant-Network-Message-Id: 
- ce7b85c7-ad96-484e-5482-08da0b52734b
+ 8afc9b9a-41df-4ed0-1ffe-08da0b534299
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2022 15:49:57.7126
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Mar 2022 15:55:45.4806
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
 X-MS-Exchange-CrossTenant-UserPrincipalName: 
- vgHSstYQcSL5mUSbrEyN5T7OUfEIEnfwVIQS1nm85mxz8EpPUnkVlYPP+sACbTOTyIr7v7cpdqwnEZ0m2ejLKaq+gozOJ/pHgZVJap/u8nhZ52nrd1H6d5D04qzAM0xg
+ uny3mhdPJFzFNNkqqM++CuaJHFDnhpdWM6xFNbrBG/E5ibYDeGhjjjJiQIQRlKSil0clkWkTSI2hpZ/iloOGgW7LuDcm2mROJxXEelscJMIhL0qz/WAQR0rX/8sLhceD
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB4143
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 15:50:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2652
+ <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 15:55:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2653
 
 Hi Richard,
 
 On 3/18/22 16:42, Richard Purdie wrote:
-> Use a script to generate the branch/tag information inside poky.yaml.
-> 
-> If the branch isn't a known release branch, include git magic to find
-> the closest matching release branch we know about.
+> Allow conf.py to read the versions it needs from poky.yaml and have
+> set_versions.py write this out. This means we don't have to change as
+> many files when making new releases.
 > 
 > Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 > ---
->   documentation/.gitignore                  |   1 +
->   documentation/Makefile                    |   1 +
->   documentation/{poky.yaml => poky.yaml.in} |   0
->   documentation/set_versions.py             | 115 ++++++++++++++++++++++
->   4 files changed, 117 insertions(+)
->   rename documentation/{poky.yaml => poky.yaml.in} (100%)
->   create mode 100755 documentation/set_versions.py
+>   documentation/conf.py         | 11 +++++++++--
+>   documentation/poky.yaml.in    |  2 ++
+>   documentation/set_versions.py | 20 ++++++++++++++++++++
+>   3 files changed, 31 insertions(+), 2 deletions(-)
 > 
-> diff --git a/documentation/.gitignore b/documentation/.gitignore
-> index 35ead8af6..e5e2c1708 100644
-> --- a/documentation/.gitignore
-> +++ b/documentation/.gitignore
-> @@ -1,5 +1,6 @@
->   _build/
->   Pipfile.lock
-> +poky.yaml
->   .vscode/
->   */svg/*.png
->   */svg/*.pdf
-> diff --git a/documentation/Makefile b/documentation/Makefile
-> index f04f381bd..bec53399c 100644
-> --- a/documentation/Makefile
-> +++ b/documentation/Makefile
-> @@ -57,4 +57,5 @@ all: html epub latexpdf
->   # Catch-all target: route all unknown targets to Sphinx using the new
->   # "make mode" option.  $(O) is meant as a shortcut for $(SPHINXOPTS).
->   %:
-> +	$(SOURCEDIR)/set_versions.py
->   	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-> diff --git a/documentation/poky.yaml b/documentation/poky.yaml.in
-> similarity index 100%
-> rename from documentation/poky.yaml
-> rename to documentation/poky.yaml.in
+> diff --git a/documentation/conf.py b/documentation/conf.py
+> index 3015892d2..4bbe9b574 100644
+> --- a/documentation/conf.py
+> +++ b/documentation/conf.py
+> @@ -16,8 +16,15 @@ import os
+>   import sys
+>   import datetime
+>   
+> -current_version = "dev"
+> -bitbake_version = "" # Leave empty for development branch
+> +# current_version = "dev"
+> +# bitbake_version = "" # Leave empty for development branch
+> +# Obtain versions from poky.yaml instead
+> +with open("poky.yaml") as data:
+> +    for line in data.readlines():
+> +        if line.startswith("DOCCONF_VERSION"):
+> +            current_version = line.split(":")[1].strip().replace('"', '')
+> +        if line.startswith("BITBAKE_SERIES"):
+> +            bitbake_version = line.split(":")[1].strip().replace('"', '')
+>   
+
+Please use yaml loading here.
+
+>   # String used in sidebar
+>   version = 'Version: ' + current_version
+> diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+> index 89a059ef1..a346b7623 100644
+> --- a/documentation/poky.yaml.in
+> +++ b/documentation/poky.yaml.in
+> @@ -5,6 +5,8 @@ DISTRO_NAME_NO_CAP_MINUS_ONE : "hardknott"
+>   DISTRO_NAME_NO_CAP_LTS : "dunfell"
+>   YOCTO_DOC_VERSION : "3.4.2"
+>   DISTRO_REL_TAG : "yocto-3.4.2"
+> +DOCCONF_VERSION : "dev"
+> +BITBAKE_SERIES : ""
+>   YOCTO_DL_URL : "https://urldefense.proofpoint.com/v2/url?u=https-3A__downloads.yoctoproject.org&d=DwIDAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=5bOZnDEv39WIAA9f1qL5vv-kisLv98s5Xz7QWJFkX3FdBZ_HIDjlbL1LB-0BWVp5&s=j5LkQTKxO-b4aoleGDRBUWLKGNHceTefO7vyV_X0MTg&e= "
+>   YOCTO_AB_URL : "https://urldefense.proofpoint.com/v2/url?u=https-3A__autobuilder.yoctoproject.org&d=DwIDAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=5bOZnDEv39WIAA9f1qL5vv-kisLv98s5Xz7QWJFkX3FdBZ_HIDjlbL1LB-0BWVp5&s=bzAojsSaFdTWXYcTSVQ2Y2HNf4yAdaUPfAkLFgQvF2s&e= "
+>   YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
 > diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-> new file mode 100755
-> index 000000000..266ccf464
-> --- /dev/null
+> index 266ccf464..32259238e 100755
+> --- a/documentation/set_versions.py
 > +++ b/documentation/set_versions.py
-> @@ -0,0 +1,115 @@
-> +#!/usr/bin/env python3
-> +#
-> +# Add version information to poky.yaml based upon current git branch/tags
-> +#
-> +# Copyright Linux Foundation
-> +# Author: Richard Purdie <richard.purdie@linuxfoundation.org>
-> +#
-> +# SPDX-License-Identifier: MIT
-> +#
-> +
-> +
-> +import subprocess
-> +import collections
-> +import sys
-> +
-> +devbranch = "kirkstone"
-> +#devbranch = "langdale"
-> +ltsseries = ["kirkstone", "dunfell"]
-> +
-> +release_series = collections.OrderedDict()
-> +#release_series["langdale"] = "4.1"
-> +release_series["kirkstone"] = "4.0"
-> +release_series["honister"] = "3.4"
-> +release_series["hardknott"] = "3.3"
-> +release_series["gatesgarth"] = "3.2"
-> +release_series["dunfell"] = "3.1"
-> +
-> +ourversion = None
-> +ourseries = None
-> +ourbranch = None
-> +
-> +# Test tags exist and inform the user to fetch if not
-> +try:
-> +    subprocess.run(["git", "show", "yocto-3.4.2"], capture_output=True, check=True)
-> +except subprocess.CalledProcessError:
-> +    sys.exit("Please run 'git fetch --tags' before building the documentation")
-> +
-> +# Try and figure out what we are
-> +tags = subprocess.run(["git", "tag", "--points-at", "HEAD"], capture_output=True, text=True).stdout
-> +for t in tags.split():
-> +    if t.startswith("yocto-"):
-> +        ourversion = t[6:]
-> +
-> +if ourversion:
-> +    # We're a tagged release
-> +    components = ourversion.split(".")
-> +    baseversion = components[0] + "." + components[1]
-> +    for i in release_series:
-> +        if release_series[i] == baseversion:
-> +            ourseries = i
-> +            ourbranch = i
-> +else:
-> +    # We're floating on a branch
-> +    branch = subprocess.run(["git", "branch", "--show-current"], capture_output=True, text=True).stdout.strip()
+> @@ -25,9 +25,20 @@ release_series["hardknott"] = "3.3"
+>   release_series["gatesgarth"] = "3.2"
+>   release_series["dunfell"] = "3.1"
+>   
+> +bitbake_mapping = {
+> +    "langdale" : "2.2",
 
-Are we safe here if we're not on a branch? e.g. a specific commit?
+This needs to be commented out otherwise the indices are wrong since 
+based on release_series index (c.f. i variable below).
 
-> +    ourbranch = branch
-> +    if branch != "master" and branch not in release_series:
-> +        possible_branches = []
-> +        for b in release_series.keys():
-> +            result = subprocess.run(["git", "show-ref", "heads/" + b], capture_output=True, text=True)
-> +            if result.returncode == 0:
-> +                possible_branches.append(b)
-> +                continue
-> +            result = subprocess.run(["git", "show-ref", "origin/" + b], capture_output=True, text=True)
-
-Not everybody has the upstream remote named origin (I don't :) ).
-
-What about using [git ,branch ,--remote, --list, '*/' + b] ? Note that 
-the return code is always 0 even if nothing's found.
-
-Just need to add all matches if one is found.
-
-Also, could use:
-
-git branch --all --list b --list '*/'+b
-
-to replace the two subprocesses since it returns both local and remote 
-branches.
-
-> +            if result.returncode == 0:
-> +                possible_branches.append("origin/" + b)
-> +        nearestbranch = subprocess.run('git show-branch master ' + ' '.join(possible_branches) + ' | grep "*" | grep -v "$(git rev-parse --abbrev-ref HEAD)" | head -n1', shell=True, capture_output=True, text=True).stdout
-
-Since yuou're using shell=True, I would at least pass the possible 
-branch names each through shlex.quote.
-
-I also find this command very complex. What I could suggest instead 
-would be to iterate over git rev-list --count master..branch and find 
-the one that is the closest this way?
-
-Also not sure about the grep "*", are you really looking for lines with 
-a * character in it?
-
-> +        branch = nearestbranch.split('[')[1].split('~')[0]
-> +        print("Nearest release branch esimtated to be %s" % branch)
-> +    if branch == "master":
-> +        ourseries = devbranch
-
-This is a risky assumption if the user hasn't pulled upstream in a long 
-time, but I guess there isn't really anything to do about it :)
-
-> +    elif branch in release_series:
-> +        ourseries = branch
-> +    else:
-> +        sys.exit("Unknown series for branch %s" % branch)
-> +
-> +    previoustags = subprocess.run(["git", "tag", "--merged", "HEAD"], capture_output=True, text=True).stdout
-> +    previoustags = [t[6:] for t in previoustags.split() if t.startswith("yocto-" + release_series[ourseries])]
-> +    futuretags = subprocess.run(["git", "tag", "--merged", ourbranch], capture_output=True, text=True).stdout
-> +    futuretags = [t[6:] for t in futuretags.split() if t.startswith("yocto-" + release_series[ourseries])]
-> +
-
-I don't understand why "ourbranch" is used here, isn't it technically 
-the same as HEAD since it's the result of git branch --show-current of HEAD?
-
-Did you mean "branch" instead since it could be either the returned 
-value of git branch --show-current OR nearestbranch?
-
-> +    # Append .999 against the last known version
-> +    if len(previoustags) != len(futuretags):
-> +        ourversion = previoustags[-1] + ".999"
-> +    else:
-> +        ourversion = release_series[ourseries] + ".999"
-> +
-> +series = [k for k in release_series]
-
-dict(release_series.keys()) ? but works either way I guess
-
-> +previousseries = series[series.index(ourseries)+1:]
-> +lastlts = [k for k in previousseries if k in ltsseries]
-> +
-> +print("Version calculated to be %s" % ourversion)
-> +print("Release series calculated to be %s" % ourseries)
-> +
-> +replacements = {
-> +    "DISTRO" : ourversion,
-> +    "DISTRO_NAME_NO_CAP" : ourseries,
-> +    "DISTRO_NAME" : ourseries.capitalize(),
-> +    "DISTRO_NAME_NO_CAP_MINUS_ONE" : previousseries[0],
-> +    "DISTRO_NAME_NO_CAP_LTS" : lastlts[0],
-> +    "YOCTO_DOC_VERSION" : ourversion,
-> +    "DISTRO_REL_TAG" : "yocto-" + ourversion,
-> +}
-> +
-> +with open("poky.yaml.in", "r") as r, open("poky.yaml", "w") as w:
-> +    lines = r.readlines()
-> +    for line in lines:
-> +        data = line.split(":")
-> +        k = data[0].strip()
-> +        if k in replacements:
-> +            w.write("%s : \"%s\"\n" % (k, replacements[k]))
-> +        else:
-> +            w.write(line)
-> +
-
-We could just do a yaml.safe_load(poky.yaml.in) and update the dict 
-returned by the function and then do a yaml.dump() to poky.yaml. At 
-least we'd be sure that it's valid YAML syntax and that the manual 
-replacement logic hasn't missed a corner case.
-
-Now, I said on IRC that I'd initially thought about having this put into 
-yocto-vars.py to modify the poky.yaml right before it's used by Sphinx.
-
-Two issues:
-- slower sphinx builds
-- opaque values before use by Sphinx
-
-One benefit:
-- automatically done
-
-But I'd say it's just me nitpicking :)
+I'm starting to think a dictionary would be a much better data structure 
+for release name, version, lts status, and bitbake version than trying 
+to maintain multiple lists or dicts and aaccessing them via the same index.
 
 Cheers,
 Quentin
