@@ -2,68 +2,92 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15E46C433EF
-	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 14:39:05 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
- [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.10771.1647959943462539401
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EC962C433F5
+	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 14:58:40 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web09.10915.1647961119255225441
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Mar 2022 07:39:04 -0700
+ Tue, 22 Mar 2022 07:58:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=B/82hZMK;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=M9AzVCEL;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id C6D67240002;
-	Tue, 22 Mar 2022 14:39:00 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id D5E9A40006;
+	Tue, 22 Mar 2022 14:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1647959941;
+	t=1647961117;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HJ1DHlrBZ+0kqJKf737C+Rl02g08mhex8PTnl4WuFks=;
-	b=B/82hZMKa1FYh4hTm9a78nDPqGJc1o9dpMSfHno6KYXMGhluHsYMjH0MsI1XwYEpmjjVIi
-	AYXPp3ZYy9PjEKxyh5kspDoqLDgO7GmtIslEEOQafAUgT1vyjX6svMTvn0BFpxC1G31kbi
-	TzVql7uX7KUpq+HPHCfzI+pG5v8i+6lE4a8E72mmrveLGBkJNlGlJMAx+bGPTVoB1fFeMi
-	1PueHIi15P03T3cK8RsFWBIPWdQAlw5Dj1MGu2OP5wCM7mLSQ8HBHrRjbTGDrt4m8v/3vo
-	aFP8RKNLHA8xpIxBgsMcP+9OJUi5KGn4cprY8xgKJh2G/mnwyaCukI/1mAKg0Q==
-Message-ID: <f0676b02-a32e-3826-12aa-ce6e78aacfc8@bootlin.com>
-Date: Tue, 22 Mar 2022 15:38:59 +0100
+	bh=BFptvwtTekFnlq9xbw00IBzlYmz7o+E6wcYFLCX0UyQ=;
+	b=M9AzVCELhz+GYpxP2c4qbd21m2taqtHUeKlp9hr1wmEmtVEsfOxODuTTV2NwvQQaNFPcqI
+	T9+6LZxNK4FrcgszGGRaJsO3FesES3h87s3FER+waWpoYIlzVHq0BdAQkm69w8gHL1bLeK
+	xl45jmFasdHuKuDjb08k4ldAzEPr/bjoTbfhvjtzv2zApAdZN0l+T74rYKpyb6BnGY/xny
+	ttSlLV7GZEgTnfyThIRpSeGeI9NIRnEb3D0vY1kH+uzZrmKdhfEAMokL7sPdf8z8SuYmjy
+	gLt3N2m3zoYl3Y3Y+9xB5FQumwJKSMo346GqRGf4DFcyAW43Xea8bAvEWi+iuQ==
+Message-ID: <8f843dd4-6d50-4c67-8d2a-388c6a051798@bootlin.com>
+Date: Tue, 22 Mar 2022 15:58:35 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2] ref-manual: update Python class documentation
+Cc: Quentin Schulz <foss+yocto@0leil.net>, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] [honister] docs: fix hardcoded link warning
+ messages
 Content-Language: en-US
-To: Ross Burton <ross@burtonini.com>
-References: <20220321150927.3355757-1-ross.burton@arm.com>
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+References: <20220322142502.550191-1-michael.opdenacker@bootlin.com>
+ <f25caea4-29da-e9ed-f941-68615d737f3e@theobroma-systems.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20220321150927.3355757-1-ross.burton@arm.com>
+In-Reply-To: <f25caea4-29da-e9ed-f941-68615d737f3e@theobroma-systems.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 14:39:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2685
+ <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 14:58:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2687
 
-Hi Ross,
+Hi Quentin,
 
-On 3/21/22 16:09, Ross Burton wrote:
-> Add new PEP517_* variables, remove obsolete variables, and update for
-> renamed classes.
+On 3/22/22 15:35, Quentin Schulz wrote:
+> Hi Michael,
 >
-> Signed-off-by: Ross Burton <ross.burton@arm.com>
+> On 3/22/22 15:25, Michael Opdenacker via lists.yoctoproject.org wrote:
+>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>
+>> Sphinx complains about hardcoded links which can be replaced by an
+>> extlink.
+>>
+>> So let's apply its recommendations.
+>>
+>
+> If Sphinx is now happy,. I'm happy :)
 
 
-Thanks for the update.
+You were actually the first one to have a recent version of Sphinx and
+propose such a patch for master.
 
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-and merged into "master-next".
+>
+> BTW, you might want to send patches for honister tags to
+> yocto-autobuilder-helper too otherwise we'll have build failures once
+> we update sphinx package in the doc toolchain.
 
-Thanks again
+
+... and for dunfell and hardknott tags too.
+This sounds like a lot on not productive work, I'd prefer to contribute
+to "master" instead :-|
+
+I saw your latest patch
+(https://git.yoctoproject.org/yocto-autobuilder-helper/commit/scripts/run-docs-build?id=8273124feb9da2ffe93fcee7c4529d5597e1684a)
+and I understand that we don't break docs anymore when there is a
+failure. But what about just ignoring warnings? At least these ones
+don't have any impact on the generated docs.
+
+Cheers
 Michael.
 
 -- 
