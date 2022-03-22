@@ -1,215 +1,111 @@
-Return-Path: <nicolas.dechesne@linaro.org>
+Return-Path: <anuj.mittal@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22372C433F5
-	for <webhook@archiver.kernel.org>; Mon, 21 Mar 2022 21:57:09 +0000 (UTC)
-Received: from mail-yw1-f174.google.com (mail-yw1-f174.google.com
- [209.85.128.174])
- by mx.groups.io with SMTP id smtpd.web08.2093.1647899828163089167
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A3E9C433EF
+	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 00:58:26 +0000 (UTC)
+Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
+ by mx.groups.io with SMTP id smtpd.web11.4232.1647910705491957258
  for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 14:57:08 -0700
+ Mon, 21 Mar 2022 17:58:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=tB7+M152;
- spf=pass (domain: linaro.org, ip: 209.85.128.174,
- mailfrom: nicolas.dechesne@linaro.org)
-Received: by mail-yw1-f174.google.com with SMTP id
- 00721157ae682-2e62c790cbdso45777337b3.0
-        for <docs@lists.yoctoproject.org>;
- Mon, 21 Mar 2022 14:57:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Jt/g63sibzhie+gA5MqnsCY+Y60NbaRGrLc3IM933Qg=;
-        b=tB7+M1524za9/LPLHwfSUO2s2ipmMMIfgFhX72O1ywh/+YItNqGldn8Kw01fJS2PSl
-         W6p2FYvIIFrh0Ql9tOdX5tTmz4A0inJrtBMZaAXsnfvGhkqKh0vO/4UXQ1TNjqDjR53k
-         URnkq+8FbU+8ZkBenu9S8+oKFKAL4OHxBfs6TKH72bsOGqmEfNzGL/CToSg3+sFAca+o
-         nDwXp14Mvm0e6OLMVtoutLQFi0Qcjc+N8z9MvimAgmyTbSKuf8fsXF3hvPnlJdeXNWmm
-         V2bgI+BrWPcuMejkJWBFlYcjZdzT6S1JK6GPjiK53afD7vM+FtOZBJQ777xOEj3Fu7VX
-         q9+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Jt/g63sibzhie+gA5MqnsCY+Y60NbaRGrLc3IM933Qg=;
-        b=JRtzZRCJsa6rK1m+lWN2hH7wSMpyAG4G5xEq0blbzgS9TFKaAb8/RyyJjaUPsailym
-         sIZAUyLhLx8ypfB3wC3Etc3wiJHaBEN9Szg59kDqQEOJC25Sw5U901M7NhpekjXW56Uj
-         1aduR8f80a0NbnWYxaJ3zH5JQs0bjaO8+DabpMA/1SA2ghyR4tKlFkeYmCc3NJZruu7a
-         jvIO31EWzjgzTAOaJphE8wI9mxeY2SJ8xv4/T66toW6KJbGQ6Ly3oQI/YT0c91xnFJBl
-         im9wVX90oUocJblDqHaDE0SOBE3/+OzsCS4VRJ8+DzJrkX1+9kE+Aq6mhPgfN/svsavA
-         Kwig==
-X-Gm-Message-State: AOAM532Vgi+oUHos/Sx2ZUAPcieX6onJLewI0hTIEs/lssMqg01jMMgV
-	fqNMp7cN6qCUHLn8TTXRby2dl6Een51wuIKu4fPTUw==
-X-Google-Smtp-Source: 
- ABdhPJyHeOoRLS8TcaR8dfJV8YqEy3KVFGsL3s/PnRi0M7ev8VbZ/cZK9Pu7gZz8Ry+o3eb7IAJIRJ7oL7mlLVd9qPU=
-X-Received: by 2002:a81:250d:0:b0:2db:9e17:ad00 with SMTP id
- l13-20020a81250d000000b002db9e17ad00mr26015438ywl.95.1647899827158; Mon, 21
- Mar 2022 14:57:07 -0700 (PDT)
+ dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel
+ header.b=mEN9q591;
+ spf=pass (domain: intel.com, ip: 192.55.52.93,
+ mailfrom: anuj.mittal@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1647910705; x=1679446705;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2VgbNQKwuVxBPz+2wCgBrKC3ibi3EXbQ6YrbaDqueqQ=;
+  b=mEN9q5912RjHkAD9rpp9bZF1Jzd30/3qI+VfFMs9mqqvlYLcVHp1ifa+
+   ZPjybIkLxPsusWAZ2QbqJ7w0CzL3xAMT30IVItrvIKfnUTC84DvIFaM+T
+   3llF2wCViLjT84pIOSOgtWMoTDpLcG6iUwUlSfr8j6UsHI+tRjoNQf3Gs
+   bZF5qN7Dw4lHJbT6dqSqwsi/pfjlqAnh5tW4pT4JzrShNAibKljbpvt9r
+   ob9jYxK6t1hPf2SVyHRCcb2oAOc+3JP0x0chBkUI9kuZo2Ek4z/MAqNxT
+   QuzTzjC8awG8RtRKizUSxWmmhzo34RCKsVXmJaNntbCAMGlUUI9/Cscsl
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10293"; a="255250592"
+X-IronPort-AV: E=Sophos;i="5.90,200,1643702400";
+   d="scan'208";a="255250592"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2022 17:58:24 -0700
+X-IronPort-AV: E=Sophos;i="5.90,200,1643702400";
+   d="scan'208";a="518657212"
+Received: from mchong5-mobl1.gar.corp.intel.com (HELO
+ anmitta2-mobl3.intel.com) ([10.213.138.6])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384;
+ 21 Mar 2022 17:58:23 -0700
+From: Anuj Mittal <anuj.mittal@intel.com>
+To: docs@lists.yoctoproject.org
+Subject: [honister][PATCH] documentation: prepare for 3.4.3 release
+Date: Tue, 22 Mar 2022 08:58:11 +0800
+Message-Id: <20220322005811.10112-1-anuj.mittal@intel.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-References: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
-In-Reply-To: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
-From: Nicolas Dechesne <nicolas.dechesne@linaro.org>
-Date: Mon, 21 Mar 2022 22:56:56 +0100
-Message-ID: 
- <CAP71WjxAtVJO2YvM3p4UM1TEYuqmM7TLpDo5kRytp+G=kQhSgA@mail.gmail.com>
-Subject: Re: [docs] [PATCH 0/5 v2] Proposed docs version changes
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000d2d9d905dac1934d"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 21 Mar 2022 21:57:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2670
+ <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 00:58:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2672
 
---000000000000d2d9d905dac1934d
-Content-Type: text/plain; charset="UTF-8"
+Signed-off-by: Anuj Mittal <anuj.mittal@intel.com>
+---
+ documentation/conf.py      | 2 +-
+ documentation/poky.yaml    | 8 ++++----
+ documentation/releases.rst | 1 +
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
-On Mon, Mar 21, 2022 at 6:45 PM Richard Purdie <
-richard.purdie@linuxfoundation.org> wrote:
+diff --git a/documentation/conf.py b/documentation/conf.py
+index 213912f37..bef6fbfa4 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -16,7 +16,7 @@ import os
+ import sys
+ import datetime
+ 
+-current_version = "3.4.2"
++current_version = "3.4.3"
+ bitbake_version = "1.52"
+ 
+ # String used in sidebar
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 1d29906a3..9398fd5cb 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -1,12 +1,12 @@
+-DISTRO : "3.4.2"
++DISTRO : "3.4.3"
+ DISTRO_NAME_NO_CAP : "honister"
+ DISTRO_NAME : "Honister"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "hardknott"
+ DISTRO_NAME_NO_CAP_LTS : "dunfell"
+-YOCTO_DOC_VERSION : "3.4.2"
++YOCTO_DOC_VERSION : "3.4.3"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.3.5"
+-DISTRO_REL_TAG : "yocto-3.4.2"
+-POKYVERSION : "26.0.2"
++DISTRO_REL_TAG : "yocto-3.4.3"
++POKYVERSION : "26.0.3"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+diff --git a/documentation/releases.rst b/documentation/releases.rst
+index f19fcaf47..7a71ac408 100644
+--- a/documentation/releases.rst
++++ b/documentation/releases.rst
+@@ -11,6 +11,7 @@ Release Series 3.4 (honister)
+ - :yocto_docs:`3.4 Documentation </3.4>`
+ - :yocto_docs:`3.4.1 Documentation </3.4.1>`
+ - :yocto_docs:`3.4.2 Documentation </3.4.2>`
++- :yocto_docs:`3.4.3 Documentation </3.4.3>`
+ 
+ ******************************
+ Release Series 3.3 (hardknott)
+-- 
+2.35.1
 
-> I've tweaked my patchset with some review feedback from Quentin. The v2:
->
-> * uses yaml to load the variables in conf.py
-> * fixes a bitbake_mapping[i] -> branch
-> * fixes a comment typo in set_versions.py
-> * comments the bitbake langdale version mapping
->
-> Richard Purdie (5):
->   Makefile/set_versions: Allow poky.yaml to be autogenerated
->   conf.py/set_versions/poky.yaml: Set version in conf.py from poky.yaml
->   set_versions: Add support for setting POKYVERSION found in older
->     releases
->   set_versions/switchers.js: Allow switchers.js version information to
->     be autogenerated
->   set_versions: Various improvements
->
->  documentation/.gitignore                      |   2 +
->  documentation/Makefile                        |   1 +
->  documentation/conf.py                         |  22 +-
->  documentation/{poky.yaml => poky.yaml.in}     |   2 +
->  documentation/set_versions.py                 | 225 ++++++++++++++++++
->
-
-Would it make sense to implement what you have in set_versions.py directly
-in Sphinx 'native' code ? e.g. directly in conf.py, or in a module loaded
-from conf.py (see how kernel does it at [1]) or yocto-vars extension, or as
-its own Sphinx extension?
-
-poky.yaml only purpose is to be loaded by yocto-vars.py which is a local
-Sphinx extension we created.
-
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/conf.py#n26
-
-
->  .../{switchers.js => switchers.js.in}         |   8 +-
->  6 files changed, 251 insertions(+), 9 deletions(-)
->  rename documentation/{poky.yaml => poky.yaml.in} (98%)
->  create mode 100755 documentation/set_versions.py
->  rename documentation/sphinx-static/{switchers.js => switchers.js.in}
-> (97%)
->
-> --
-> 2.32.0
->
->
-> -=-=-=-=-=-=-=-=-=-=-=-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#2663):
-> https://lists.yoctoproject.org/g/docs/message/2663
-> Mute This Topic: https://lists.yoctoproject.org/mt/89934133/1279857
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
-> nicolas.dechesne@linaro.org]
-> -=-=-=-=-=-=-=-=-=-=-=-
->
->
-
---000000000000d2d9d905dac1934d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Mon, Mar 21, 2022 at 6:45 PM Richa=
-rd Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfoundation.org">richard=
-.purdie@linuxfoundation.org</a>&gt; wrote:<br></div><blockquote class=3D"gm=
-ail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,=
-204,204);padding-left:1ex">I&#39;ve tweaked my patchset with some review fe=
-edback from Quentin. The v2:<br>
-<br>
-* uses yaml to load the variables in conf.py<br>
-* fixes a bitbake_mapping[i] -&gt; branch<br>
-* fixes a comment typo in set_versions.py<br>
-* comments the bitbake langdale version mapping<br>
-<br>
-Richard Purdie (5):<br>
-=C2=A0 Makefile/set_versions: Allow poky.yaml to be autogenerated<br>
-=C2=A0 <a href=3D"http://conf.py/set_versions/poky.yaml" rel=3D"noreferrer"=
- target=3D"_blank">conf.py/set_versions/poky.yaml</a>: Set version in conf.=
-py from poky.yaml<br>
-=C2=A0 set_versions: Add support for setting POKYVERSION found in older<br>
-=C2=A0 =C2=A0 releases<br>
-=C2=A0 set_versions/switchers.js: Allow switchers.js version information to=
-<br>
-=C2=A0 =C2=A0 be autogenerated<br>
-=C2=A0 set_versions: Various improvements<br>
-<br>
-=C2=A0documentation/.gitignore=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A02 +<br>
-=C2=A0documentation/Makefile=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 |=C2=A0 =C2=A01 +<br>
-=C2=A0documentation/conf.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0=
- =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0|=C2=A0 22 +-<br>
-=C2=A0documentation/{poky.yaml =3D&gt; <a href=3D"http://poky.yaml.in" rel=
-=3D"noreferrer" target=3D"_blank">poky.yaml.in</a>}=C2=A0 =C2=A0 =C2=A0|=C2=
-=A0 =C2=A02 +<br>
-=C2=A0documentation/set_versions.py=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0 =C2=A0 =C2=A0| 225 ++++++++++++++++++<br></blockquote><div><br><=
-/div><div>Would it make sense to implement what you have in set_versions.py=
- directly in Sphinx &#39;native&#39; code ? e.g. directly in conf.py, or in=
- a module loaded from conf.py (see how kernel does it at [1]) or yocto-vars=
- extension, or as its own Sphinx extension?=C2=A0</div><div><br></div><div>=
-poky.yaml only purpose is to be loaded by yocto-vars.py which is a local Sp=
-hinx extension we created.=C2=A0</div><div><br></div><div>[1]=C2=A0<a href=
-=3D"https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/conf.py#n26">https://git.kernel.org/pub/scm/linux/kernel/git=
-/torvalds/linux.git/tree/Documentation/conf.py#n26</a></div><div>=C2=A0</di=
-v><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;borde=
-r-left:1px solid rgb(204,204,204);padding-left:1ex">
-=C2=A0.../{switchers.js =3D&gt; <a href=3D"http://switchers.js.in" rel=3D"n=
-oreferrer" target=3D"_blank">switchers.js.in</a>}=C2=A0 =C2=A0 =C2=A0 =C2=
-=A0 =C2=A0|=C2=A0 =C2=A08 +-<br>
-=C2=A06 files changed, 251 insertions(+), 9 deletions(-)<br>
-=C2=A0rename documentation/{poky.yaml =3D&gt; <a href=3D"http://poky.yaml.i=
-n" rel=3D"noreferrer" target=3D"_blank">poky.yaml.in</a>} (98%)<br>
-=C2=A0create mode 100755 documentation/set_versions.py<br>
-=C2=A0rename documentation/sphinx-static/{switchers.js =3D&gt; <a href=3D"h=
-ttp://switchers.js.in" rel=3D"noreferrer" target=3D"_blank">switchers.js.in=
-</a>} (97%)<br>
-<br>
--- <br>
-2.32.0<br>
-<br>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br>
-View/Reply Online (#2663): <a href=3D"https://lists.yoctoproject.org/g/docs=
-/message/2663" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
-ect.org/g/docs/message/2663</a><br>
-Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/89934133/1279=
-857" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
-/89934133/1279857</a><br>
-Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
-"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
-/a> [<a href=3D"mailto:nicolas.dechesne@linaro.org" target=3D"_blank">nicol=
-as.dechesne@linaro.org</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</blockquote></div></div>
-
---000000000000d2d9d905dac1934d--
 
