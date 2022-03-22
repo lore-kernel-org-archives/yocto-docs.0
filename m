@@ -2,25 +2,25 @@ Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05B89C433EF
-	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 13:34:20 +0000 (UTC)
-Received: from EUR03-VE1-obe.outbound.protection.outlook.com
- (EUR03-VE1-obe.outbound.protection.outlook.com [40.107.5.80])
- by mx.groups.io with SMTP id smtpd.web09.9877.1647956056587634200
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7770EC433EF
+	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 13:48:09 +0000 (UTC)
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.78])
+ by mx.groups.io with SMTP id smtpd.web12.9969.1647956887643625478
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Mar 2022 06:34:18 -0700
+ Tue, 22 Mar 2022 06:48:08 -0700
 Authentication-Results: mx.groups.io;
  dkim=pass header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=AmxTFtTx;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.5.80,
+ header.s=selector2-cherrycloud-onmicrosoft-com header.b=q1yYdeJt;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.7.78,
  mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=c61sv2R0+eKrN1+c4BCvg1civy/JC/zR4WXpB6fSEsf5iRSUpWdQqlX0NZJNe7BM6I76uaf7B+g608RaF4yHJcyN8Om6sWPmc2R7xnhwzeBTizvKDnZTgkCKqbq0zDHDZ7y827bp6c1Pa811nx7sF7YrPnQCBIlJs2wbBmLeq4Fa6sXjygvdrpXaAcJ4uBQfnO1so8XkaZh3fJU+u3UXDIdAx4al+eADMsET+upirNEB0zzMjv78as1Yrz+Gocq8fccwB4skuBE5poMWcDvRvgmyoDAojHASk39t55Yd4ZchpPETIbLILrXKEFT05gYXPltBDQAmR0pHnab/wD79pw==
+ b=CFYtQrnauO/oBzgGNPBdmrGbiWVJiwkjUam4vCMZX37Uee3++WvQ/nXDmkoDVit5Byi23C3ASqkLP8R3pj3gdTMPImTKn4M+FTLu1q+ky/WK9DFlyS3zUYDG5G2wWSmjT8OjryILTdaZWTJCN16Cyjwll/zrOL06oqumr3e/hpPqF4NQgcCA7KoR/EwhJK+H0c6hyEAgXZeDJVQV+C7cNb+acilod0Tl3H4IBIwYTD4ePEJQsKqSqmvGPLDUl8B0DiZh7wMQQkjizI7rqd9A4Bwyn3eHVdcOGkhxBwV40lzxmHJJOe2gXrcyNUNvfvpMydC+B2jC6HkCR22lMSDUhA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=avPVpECkT1jCi45tetmLBL79WZcqjt4WKxt0q2+Q7js=;
- b=gbL3F9t+S6C3qP+oj1Y9XV+fqS1EQiT0eb1I17RwBpGQquKyRWiTtlMqtxEwnRFFluzdfwwNjWGZrQvF1AW/pvIduaFXelgGpttae0yjM9V/mCouT+U0EfpgxSasxRcEP8pD6mBqEQDvTmXvLFCy6raxaTQmBpI7HkEiAJqIXQaDt9oypIOOBg5KIZt23smEEqQb61OwURaLD/qjum9s0lktsciU4qOHEmGtvt5vlaNdpcyNxgv9zcFaLuacr1ce7lHl/XlqNWsTjM9yykgkb1dqq6QLOM3cIksiDfwLCpKZxPghDPRjmetLT0wuEvnFxKf0g1YEm9hd6UzFBEpwQw==
+ bh=7MsUqmSqeb6y97ZMzHkwTRlM0cuWPzX4mgBt7Ax7NH4=;
+ b=QTOtQwjOUkuDq5winnGOenKLuGQrdH7LUg2d7xQd8wnDpIz5Y8eX8yJTyZtGDcVtSW5ylifSDyKVX5UECdGE+4pYF/jxPIaIDqi5ffgIaxQuhu2oOAUcjK65gHjBP/2thrgDavQ5Zu+kV+YfCVIP9jgFYWXzyVCQIlVUPbk43f3ttfpA0+SQsXHN+U7Yjy9lhOKevz4gr1YUaSfAmF6NUmwTS1uIngSx+lbNd7v6+AiQYvf37rQ4UCHalFsb6rOzNuJpgZs41oNI4gFGwifJRrV7VfoO3FtulMzqNG52ocG1xfFy9il9RRUVznhYlsYRX5/VHwI0ZuRH5EvfLwPrQw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -28,136 +28,251 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=avPVpECkT1jCi45tetmLBL79WZcqjt4WKxt0q2+Q7js=;
- b=AmxTFtTxoEmSGLEbWtV6sxhHPGexRhtUUsNvNXnaULym2gJUd14IG9ld/pRFog7T0bifrspWQv8v/pteae05kxSb4PxetVOx+YZDJ7P0WKemwz50qQcEw1pSUknbjkWD6SWr6y9xRzcYszYLyxaBoVfdCgFE0Yi4ZjmLU6I7Z04=
+ bh=7MsUqmSqeb6y97ZMzHkwTRlM0cuWPzX4mgBt7Ax7NH4=;
+ b=q1yYdeJtlF+wIJkTT/jP+9EO8bnAjX4OxmxP0sw/HGj2G4P3Y9FxhG0HOcMuGuEnVt84FHkB393WTeQY5vnpWSg0LGWIvnbiwM5Z31tGkhert4CSgugk8R5zmp7xYDwGetZYYqL4Slou3JvfpsRWTkzoHCy4yqkDb5KL0+las+Q=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
- by AS4PR04MB9340.eurprd04.prod.outlook.com (2603:10a6:20b:4e8::19) with
+ by AM5PR04MB3043.eurprd04.prod.outlook.com (2603:10a6:206:b::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5102.16; Tue, 22 Mar
- 2022 13:34:12 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.23; Tue, 22 Mar
+ 2022 13:48:02 +0000
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::1d2b:fd77:d076:a391]) by PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::1d2b:fd77:d076:a391%7]) with mapi id 15.20.5081.022; Tue, 22 Mar 2022
- 13:34:12 +0000
-Message-ID: <a890c15d-a92a-cc01-a9c5-c4d89d31de6e@theobroma-systems.com>
-Date: Tue, 22 Mar 2022 14:34:10 +0100
+ 13:48:02 +0000
+Message-ID: <de5df90f-3c20-a126-6f04-68eeb23041db@theobroma-systems.com>
+Date: Tue, 22 Mar 2022 14:48:01 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [docs] [PATCH 1/1][transition] Makefile: Use switchers generated
- from master
+Subject: Re: [docs] [PATCH] set_versions/switchers.js: Allow switchers.js
+ version information to be autogenerated
 Content-Language: en-US
 To: Richard Purdie <richard.purdie@linuxfoundation.org>,
  docs@lists.yoctoproject.org
-Cc: Quentin Schulz <foss+yocto@0leil.net>,
- Nicolas Dechesne <nicolas.dechesne@linaro.org>,
- Michael Opdenacker <michael.opdenacker@bootlin.com>
-References: <20220319152803.1110539-1-richard.purdie@linuxfoundation.org>
- <b23f24f6-29b9-320b-b949-48b7bbebd375@theobroma-systems.com>
- <6157cab4302631ca624837e94ac98181f81a2dd3.camel@linuxfoundation.org>
+References: <20220318162320.1072462-1-richard.purdie@linuxfoundation.org>
+ <90ea3db5-bf96-a925-c2d7-10fff18ede13@theobroma-systems.com>
+ <3f62397c5c27147d1f5f6fd0949c01b496af415c.camel@linuxfoundation.org>
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 In-Reply-To: 
- <6157cab4302631ca624837e94ac98181f81a2dd3.camel@linuxfoundation.org>
+ <3f62397c5c27147d1f5f6fd0949c01b496af415c.camel@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM6P191CA0076.EURP191.PROD.OUTLOOK.COM
- (2603:10a6:209:8a::17) To PA4PR04MB9367.eurprd04.prod.outlook.com
+X-ClientProxiedBy: AS8PR07CA0045.eurprd07.prod.outlook.com
+ (2603:10a6:20b:459::16) To PA4PR04MB9367.eurprd04.prod.outlook.com
  (2603:10a6:102:2aa::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: d48a782d-ae05-44e0-dbfd-08da0c08a699
-X-MS-TrafficTypeDiagnostic: AS4PR04MB9340:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b34d960-917d-4e8c-ea67-08da0c0a95ad
+X-MS-TrafficTypeDiagnostic: AM5PR04MB3043:EE_
 X-Microsoft-Antispam-PRVS: 
-	<AS4PR04MB9340D35DDD5A64870AFDF42DC2179@AS4PR04MB9340.eurprd04.prod.outlook.com>
+	<AM5PR04MB30438A3DD4E0202009F95A57C2179@AM5PR04MB3043.eurprd04.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	Dyje2As7Xcb2M3eN6utG9k/gkAeYWinffQpIXvgMs6ULLWpgH9bLKUMYmK0yYbgxt4oga1zQaku3CppmmbMD77y3tu5zLsTQQGqBY208W17L3yfSdFzaxzJrMIoeLtJ6/kedp5g2ye/1RVxT0zJVEK2EsHbfOCu3/pNOS0v0O9sNztnGopNh+mpa+hl05j+OEgWTa0ql6CV6npOYvrkIZIdJl5+ZZQdhoGmVbNOyVrsNSMVoo0JeOiKK7f/ZmRRl8UPugogwLn7+Q5GmETvQha8W5NzCz5QRM1y9DAIurq1xyyZlbtPB8zVQpjlh122DN+9kJWaXZX56R2dxadExDjGyyORScoKG2g24oL1BcxskXaEbiWWRbttE4j6duzfPgOPWsfxBffptzwJbOflOGpKXHqD4AOZFts1+2C57Dq1GRr+6TWeZAdPa+bnTFuMcjCVtzdcQHZikEaufl5oJv0n8bGl8PUc51PjDmP5yuU6g2MYFuwxRqHnexlxIsVWj3x/1a5OpGRv93cFCCOH4qPSoBA+dDbfmueTTHGjfIv5YvTaF8ecpLBzf+r5zI3oj9Sk5mwR7N1jcT9bqMkfXeOgzk3rXKoKO5fqt6fKmEu+vLhLwYxDflSJaQnlWlLqmAGcwvaUwhWxhO4sriBZmOOrymQ7lkGJWth9+9mpQ+Ha32SRvadgENT+APkjWhQKKZsaF5BJfAeL9u8XbMUi+OJa3WZ8TfvgfolOhXlGeWME=
+	EgcRGgJUwk1FICSIQcaUEnZVsWZMOQSpWj4Ui4ctTak88uHqWq1k0ONSgU9zHgPhRC8+QXKWs/ESYDzDEBQgj1n9qmir6IYK5HlsAEiIDwMZQXGND3fSJTP52xDrCWgfAYZkhvrJH1eONywQQicDa8C56FJQyNq65BkNNGXCoYFAAUxIzOe9iIUMQ+uTNxwpf7Hm+rw81+LjErJNP25lnvyYT0tTvZKHqxBQprNBSlhpNyNwZYEXYp2itWAL51tUcnn5YB1r0BRuLVXqpSe5gCSgwzmolNtQPt43zErQV38mqNObCy4KUHvkgwGlQCFyGSFWcc6yLBqSDZzByXbIdy8ymfzG6iIl8dFJYmwWF+n/l85ine2cAAae1NAcr0cVCOyB0La4ydC5ZwtigEQQk4tJib0928nt4cs0PJl5UMo2DUeG9YZRo4xL+1xQZRr0MsE4n+HV5ZwU+UI156BWVqMBR1QM6f/Ux/hGmSkbsaWcSPdVvX2XFCi6aX8DClGmiyvLjLNwtZwwqAqZyCEbZNK0P8x+E95VrpQQNkxISiycgufTbsIArqrQH7jW/1qPVaHlUKlnI9BPR4qM94Hjt7h6J9hvOlFUUK+BE4kf8ib3VAcsFv6VUXRKPvRdBT3b1ynMHWcKbyKTebX05AlqM63FfdodAQ8lruhr0/IRrSgdwG2BcYLiHvTjzFQ5yzCUXbdoIFeEGxPKUg9viX3MopUs5N1jDyMrlC3rcWMZRWVveQEyHJJM8SKXIwU2dHNh
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(38100700002)(53546011)(508600001)(36756003)(6512007)(6506007)(316002)(31696002)(86362001)(31686004)(6486002)(54906003)(66946007)(66556008)(26005)(186003)(66476007)(2906002)(8676002)(4326008)(5660300002)(2616005)(44832011)(8936002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(83380400001)(86362001)(31696002)(38100700002)(6512007)(53546011)(6506007)(31686004)(8676002)(66946007)(316002)(508600001)(6486002)(2616005)(66476007)(66556008)(186003)(26005)(2906002)(8936002)(44832011)(36756003)(5660300002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?Y2tpWk1PN3JZRldHZjdSbDcwVUtSTTFLanpBTVNSd3k4SjZnaFNVeG55bnZj?=
- =?utf-8?B?RHVtUGZ6ZVBLKzVmYmJoVWVwdmJidVova3dGRWgwb0l1Z0Zib1ZRUXI0aWlj?=
- =?utf-8?B?NTBkclVZV1RQQU5SRytRMXlBUUtSK3NkNVc2SU1vSklleUUvdkI5R3lwdWYx?=
- =?utf-8?B?bFlpK0R5U0RTNW1mYzNEaW1mZ2M5Ym55MVVkdnZlY2RpMFJTb1hZS25sN2tT?=
- =?utf-8?B?a0ZUY3pBM2pNN2ROY3ErbkpTNThiUVVUbzlrRHhKcXBtek41T3YwT2hQMlB0?=
- =?utf-8?B?RXk1TWtqbTdnMXI3N1VMcXpsbWJFSjM0QUpaWUYyek52M0hzK2pXWWRYNGky?=
- =?utf-8?B?T3ZWOVExZjFlMEY5RWZiN1JvTGxudUhMQ3liUGJVT3NaT2RTeDRqZjhjRmZX?=
- =?utf-8?B?MXhzZFR0cXIwYmRadlAzU3FkOXU3Y3duUmhHQklXSEF2cnVPZTlkYVVibU80?=
- =?utf-8?B?TEZTbzVpQXYvNTNpMElRQmpIcllaTmpHdTFhSHgrS2RVRTdYUDhxaDlNWEZN?=
- =?utf-8?B?WG1Ub2R5b2xuNHp2R3hiUUV6TUk2MUp6S1NMWVVnVHQzaEUrUmR2QUozRkFD?=
- =?utf-8?B?TTY0Njd6bUd6TGxOdEgydk14eDJKZ00wUWpkM1lvRjd5aXhtMytCTDR5NmhO?=
- =?utf-8?B?ck5TSldVZGo3VUVRbzZjcTQ4U0ZUSFRvTjhhNDZZR3A1UkJlYzBQQm5uQksr?=
- =?utf-8?B?NjdMNW5KUDZXSDBhaDRodlVpRFM2R01icFJaV2hLUWNickNEZmNnRUh6Z1pU?=
- =?utf-8?B?TmhhMjU2Q1hGOFRaTVhFOEtqMmZnTXFDaWdid2VTaXZCQ2x4TUhTTWk0ZjFi?=
- =?utf-8?B?YU9aZTFZYlRFVmRvQWVGUDFhNGMxQ2RUNERoWGxZVjlvdXRsZkRCTmY5RWZT?=
- =?utf-8?B?RkRDQzFZZHVkMzR0ODBaSVVOdW1qTzBkYXJnMG5vNWRuVnFLMUhLblR6Q04w?=
- =?utf-8?B?U2M2bWN0R1RVczN3alRCTkwvaG9uTGI5MWI5L0E5QVVIRmduekhuai9KSVBx?=
- =?utf-8?B?TVN2Z0t3WjY3cUNPWTcxaE16L1BaeURlWEZnOFFsMzdXRVFEM1hzeWt6dzdS?=
- =?utf-8?B?dlJ5VFRLYVNQZWNUQU0vWGhnZU1FdVJFUSt3RnRKd0ViWi9ySW12ajFRZWtR?=
- =?utf-8?B?ZWY1K3RRTlJ3NWNSMDJ4T0c1bVV2ZVlkSE95Y0E5S2lBdjdMTHFzWm5oL2Fu?=
- =?utf-8?B?TEVDRG1jUjZYMzFZNGM5VGdmaEtYcU9GenNkYzNzYWFnVWN4NUEwMlRkc1hk?=
- =?utf-8?B?dURaWllUNFhXZnRjeFJSVForMkdqc2tBVjE5OWp2dUxLZG96RzVjRGJlNkxK?=
- =?utf-8?B?ZUZCL3pFTTNRQmpLQXU0ZytYNWk4T1A0TUtGV1RiZzk5OCsxV1dtUm1ndVZW?=
- =?utf-8?B?SGpLU08vaHFkUjdhb0xZMEpTYjZMZDdRcnZNeUFHRldoWTFlejVVbFZ2UEx6?=
- =?utf-8?B?anBkNWdXSjl6UVpGc3B2NS9vMExJREhzQTVoZksySnFaSUxvR21nTUV2dzd3?=
- =?utf-8?B?anNmOTR6a2dBNjFMQ1h6ZjNQUXFxOHFqM0xhSTA3TGYwRGdLb1d4NnpMUENY?=
- =?utf-8?B?SjdvT3hPUitGR2F2K05CZzJPWVhxSFF2ZnRqWThtMGN4cVpabnNGcnpmWXBp?=
- =?utf-8?B?Rks2Q0NuQ0xOZ1kyMG5kOVJCVE9wZUdERTVTQ2RRdVVid3FSNVovcTYyVDU2?=
- =?utf-8?B?YXppQVRnZWRhRCt5clhDWTVTM3lScmpucVRpUzIvTHkrSzh3b0tZWGhacDlC?=
- =?utf-8?B?N2NDOC9hVUxUbzZveWdKdFordnhNU0QwZW1oYjR5WmRMS2NpejVPc1hSNjR3?=
- =?utf-8?B?dlUxSDNaV1BEMjZ6OEQwNHNFZ3lyMXkyeVZnYzZxS0g1KzVMSmcxNWU0bmZG?=
- =?utf-8?B?NjdLZURWM1NKZVBHUm5iMkdSd1gwUjh3K3pBekNjZWEvbVlrK0M5WmQwWGh5?=
- =?utf-8?B?amRuNzVWWjJ1SFBhMGZ4ODVEaFVJZTQ1a09tVXk5VHBlSUdwUlZhT09uSTR3?=
- =?utf-8?Q?OEB5pX2VL0IxqFHWVTF52mCT2csraM=3D?=
+	=?utf-8?B?UU12TkVxcXNFTXM4Sll6ejZZbzc1bExCS21ITkhBOElMdmZhQ3Z4S3lrcDFO?=
+ =?utf-8?B?WjI4bGRKYXFoOWNUUzBuaFhOeXZ0cFJ0ZHZ3S1pjd004dHRjRExwZmM4NzYz?=
+ =?utf-8?B?MUYrTGVyM3BoZkE4ZUZwRXVWc2ZZMVB1YzJ1ZFZIdTZ1Y0ZuN3dIZFpxUXNX?=
+ =?utf-8?B?Q3h3THlpMmlIL1NJcE9LNEVKSXpSa0QxbG5BNkxJNkFXNDc1YmowUlhmTS9D?=
+ =?utf-8?B?RHNqdGpLdnRKR0JRN2FyUWF5RUxDOHMvYk9LeVMzT2pYc1pCNWt3Q0ppd3RY?=
+ =?utf-8?B?RTJuNHVHcnBDOFBacUlCK1UxZ25MVWRKbm54LzNiMEhwSlpQUzNKVUpkTE5C?=
+ =?utf-8?B?bUpDaTdSazNaNUxwbEIycWhKUG1wa3Bna3hEdWV0TUZYQnhFdnhaN29YZ1Nm?=
+ =?utf-8?B?VzlmQXJxcmtPZjNIVDRRNWd1cGtTSi92SzJkQkNCRjB3OTRYeks0RVFiQ1pN?=
+ =?utf-8?B?c3R4cVZRSEMwb0hBZ3hiU3Y3ZERtaS9GNGFKZjhVMUlrYWs5YjR2VG5LZE0y?=
+ =?utf-8?B?NWwzTmRQbXFZbEI3cWw1cnp6dHV0cXlEVC9BMloyZ1NBVmRtUytNQVNPRmRT?=
+ =?utf-8?B?WlJqQUZKanNhRHJ0ZTJncjlUWWt6elBJUFljbFJnZ2l0SVpJM2FWK2ZyQXVH?=
+ =?utf-8?B?UmwraUN5TUJjSEJLSHRyem1sS1Qvam4xeWgvKzR1ZVg5SDd5b0xXVVdOdlBI?=
+ =?utf-8?B?SGVGYVNWcytIR3dGMGNuZU04NTZqclBseEY5dmRhVlJ6WExDN0lNTHBTNzV0?=
+ =?utf-8?B?Q3ZKeGRvS0FCcmlRUFZoWjdXdU9PcHBzd2hOeUhkbFJEYlgvRmw1MHhYTklM?=
+ =?utf-8?B?dzMzY25pMEsrYWdJeU55VnFEejJRZHAwS2lsVnh5dFQwamFRKzA5ZFRrY1Bh?=
+ =?utf-8?B?RTFyOUM5N1VjQlBiVERYQ0Z5TFdtTUkwM1Y5eUlhL3F4UUlyM0FxRWtvaGk1?=
+ =?utf-8?B?dVVXUllCei9Td0szeVJQeEJnZWU2Vzl6b1dNSXNGdXpkRWZrWVd5dHhVNHdJ?=
+ =?utf-8?B?NlF5ZHE1cUk4YisrZWxIbFoxQkxicEc0V3ZGc2J2SEp0Z1hBVDVFTy9kZG5B?=
+ =?utf-8?B?dllMY1dScGRSYjFkMk5SaU4zT20xbnNxS09HMXQvMWFjRmlVNGVIQ2V3anJv?=
+ =?utf-8?B?dUlCOWFDYTlMTld1THZuZ0hhWmFGV1hHc2xPcjVEcndBQlp4cFNPdU43Uit3?=
+ =?utf-8?B?V2dFT3hDZ0dVZ1A3NzYxVXNpdlh3eXNtMnorTFRLMGRXRUt6a3c0Rm5jc0NV?=
+ =?utf-8?B?TWdpclZDcHVPbVBIK3dEeVpESC9JaDhNbmp0Zms4MzVaNUFGcjdKc2lpRTlW?=
+ =?utf-8?B?d1U0RGphV29ETVp0SmFnbEsyYUJLSnBLclFncngybjlqS2xGbzZjakxtSFdz?=
+ =?utf-8?B?WXk1ZE9MMWlZbmZGSGRwWEh3a1MzVWdpY1dmaFhpVmF0emNNVDdUaHdySEtT?=
+ =?utf-8?B?bDJ2bmZGMjNzZ25uamR4aDZrdThJcjU0YjZDQjQ1WG5oaENzc3RaKzJVOVNU?=
+ =?utf-8?B?TkNMZXlWV3Y4dGR4Q3YrTjRXenBBZUJGdmQwMktFUWdkVUE2NEZ1THJKckJV?=
+ =?utf-8?B?dE90TE1QMnJleE1rekJUakFPL1BsVVc1UWY1QStHRDhOVXEzQUs5WFplWjF0?=
+ =?utf-8?B?RDNqOG14MUxxbXh3eHNIenlML2wyZ1NJSEJVK0w1R3lLbitrRFFjMGxHZTAy?=
+ =?utf-8?B?Tno0T29aSkMyZE9ubGgzbWU1amNqNkpKRzJUK3JPYlVFUkpVY25pb2IwYTN0?=
+ =?utf-8?B?VzlYSXdoVlp4aXh2TG14NW83K1Y0WFRGQ1VoRXg5MjBBTjl5RjNzdWFOYlpX?=
+ =?utf-8?B?RUVNcE1xaFFlQml0V2hHNDM0Q1Q5ZCs5bXpacThHWW1nRVg4aG5pTXhqeWdi?=
+ =?utf-8?B?eVpHVUtHSGZLMTJUbWd3M3ZIbGVHd2QvdW41Wm1rdDFTbWZGVzNiYmJ2OE1j?=
+ =?utf-8?B?aUptVE9tODA2cTYxdVlEL055ZEQrU0htM1A0cVZJaTIrOWNDYUljN2JLNStz?=
+ =?utf-8?Q?KgYKrtE6QUQu4Co7yZeh4g/dxTp9yM=3D?=
 X-OriginatorOrg: theobroma-systems.com
 X-MS-Exchange-CrossTenant-Network-Message-Id: 
- d48a782d-ae05-44e0-dbfd-08da0c08a699
+ 5b34d960-917d-4e8c-ea67-08da0c0a95ad
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2022 13:34:12.2282
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Mar 2022 13:48:02.7862
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
 X-MS-Exchange-CrossTenant-UserPrincipalName: 
- 5oEvkT1cw5ni8gPqR6Xbgu48UbMHUx2HTyGc9WP2/cgUj1ZBj+r2h7N1Sa/WII+etR5WS8XX7ozcpIVxmgC8E+/6bcKkBP4tQzliF4ZrbJfBixnWFjbwi46gNJflJL9h
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9340
+ YOsv6ZJ/1Blti8zagcmw1BE9TdOz32d4WeCNAyzjqq5tHnIlETJrBKexeLcr1BoiEZtKLv+GS45HEMIhPQfFe1xI+0FH5SX2qx8cseOKFQhidau97kM/gCP6V0LN5YRh
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR04MB3043
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 13:34:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2676
+ <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 13:48:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2677
 
 Hi Richard,
 
-On 3/21/22 18:33, Richard Purdie wrote:
-> On Mon, 2022-03-21 at 18:28 +0100, Quentin Schulz wrote:
+On 3/21/22 19:09, Richard Purdie wrote:
+> On Mon, 2022-03-21 at 18:08 +0100, Quentin Schulz wrote:
 >> Hi Richard,
 >>
->> On 3/19/22 16:28, Richard Purdie wrote:
->>> This allows an improved and custmomised switcher for each release
->>> showing the current doc version, the latest in that series and the
->>> latest releases for the project overall.
+>> On 3/18/22 17:23, Richard Purdie wrote:
+>>> A horrible blunt hammer approach to updating the version information in
+>>> switchers.js based on the available tag information.
 >>>
+>>> To merge and work correctly, this will need a change to the autobuilder-
+>>> helper
+>>> docs generation code to pull the swicthers.js and script from master, then
+>>> to run the script. That should hopefully remove the need for other patching
+>>> even on old docs branches though.
+>>>
+>>> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+>>> ---
+>>>    documentation/.gitignore                      |  1 +
+>>>    documentation/set_versions.py                 | 21 +++++++++++++++++++
+>>>    .../{switchers.js => switchers.js.in}         |  8 +------
+>>>    3 files changed, 23 insertions(+), 7 deletions(-)
+>>>    rename documentation/sphinx-static/{switchers.js => switchers.js.in} (97%)
+>>>
+>>> diff --git a/documentation/.gitignore b/documentation/.gitignore
+>>> index e5e2c1708..096b97ec2 100644
+>>> --- a/documentation/.gitignore
+>>> +++ b/documentation/.gitignore
+>>> @@ -1,6 +1,7 @@
+>>>    _build/
+>>>    Pipfile.lock
+>>>    poky.yaml
+>>> +sphinx-static/switchers.js
+>>>    .vscode/
+>>>    */svg/*.png
+>>>    */svg/*.pdf
+>>> diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+>>> index 6452aeb14..9cd0de46c 100755
+>>> --- a/documentation/set_versions.py
+>>> +++ b/documentation/set_versions.py
+>>> @@ -13,6 +13,7 @@ import subprocess
+>>>    import collections
+>>>    import sys
+>>>    
+>>> +activereleases = ["honister", "hardknott", "dunfell"]
+>>>    devbranch = "kirkstone"
+>>>    #devbranch = "langdale"
+>>>    ltsseries = ["kirkstone", "dunfell"]
+>>> @@ -144,3 +145,23 @@ with open("poky.yaml.in", "r") as r, open("poky.yaml",
+>>> "w") as w:
+>>>    
+>>>    print("poky.yaml generated from poky.yaml.in")
+>>>    
+>>> +with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-
+>>> static/switchers.js", "w") as w:
+>>> +    lines = r.readlines()
+>>> +    for line in lines:
+>>> +        if "VERSIONS_PLACEHOLDER" in line:
+>>> +            w.write("    'dev': 'dev (%s)',\n" % release_series[devbranch])
+>>> +            for branch in activereleases:
 >>
->> Not sure to understand the reason for this patch?
+>> Until now we always had the last version of all sphinx supported doc
+>> releases (+ zeus and thud for some reason).
 > 
-> For every other docs branch we can run set_versions.py once and have the correct
-> information in switchers.js. For transitions, we have multiple runs of the
-> documentation generation and we want to customise switchers.js in each case.
-> This is so we can show the current version, and the current release series
-> latest version which allows the switcher to work properly.  To do that, it is
-> easiest just to fix the transitions branch to handle that.
+> As I understood it, the intent was to have the current active releases (which is
+> why zeus was there). We've just continued to add new ones and not removed any.
+> I've tried to add some "policy" around this as part of the changes in this
+> series.
+> 
+> It would be trivial to change the active releases to include zeus and
+> gatesgarth, then it would be equivalent to how it is now but that doesn't match
+> what I thought it was supposed to be doing. It is clear we have different ideas
+> on what we think it should be doing though :/.
+> 
+>> This patch is doing a bit more than just automating the whole thing, it
+>> actually changes the behavior/result.
+> 
+> Yes, for example in the 1.4.4 release, it would show that release in the docs
+> switcher now. I guess further pieces of that are in later patches or changes in
+> the transition branch.
+> 
+> If you want I can change it to add zeus and gatesgarth to the active releases,
+> then it is equivalent (apart from adding new options in old releases) but I will
+> then propose a patch to remove them!
 > 
 
-Makes perfect sense, would have loved to have this in the commit log :)
+Yes please. So the change is not hidden away and if merged, very 
+explicit as to what the policy should be (since we "disagree" on the 
+current policy or its enforcing (or lack thereof :) )).
 
-Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
+>> Python docs still have 3.5 listed for example. I think it would be a
+>> mistake to remove the option to select an outdated version in the drop
+>> down menu. What happens if I'm stuck on that version and want its docs?
+> 
+> Then you can access it through the URL, or the older releases list.
+> 
 
-Thanks!
+Indeed, I had forgotten about the older releases list!
+
+> Python doesn't list 3.3 or 2.6. For us, our active releases are dunfell,
+> hardknott (right now), honister and kirkstone.
+> 
+>>
+>>> +                if branch == devbranch:
+>>> +                    continue
+>>> +                versions = subprocess.run('git tag --list yocto-%s*' %
+>>> (release_series[branch]), shell=True, capture_output=True,
+>>> text=True).stdout.split()
+>>
+>> I think it'd make sense to do the git tag --list outside of the loop and
+>> catch all tags starting with yocto- and then operate on that list from
+>> within the loop.
+>>
+>> Also, git tag --sorted="version:refname" should sort correctly, then you
+>> just need to iterate over the list and take the last one before a minor
+>> version change (e.g. 3.1.14 and the next is 3.2.0, take 3.1.14 because
+>> change from 1 to 2).
+> 
+> Perhaps we can look at that as a later incremental change?
+> 
+>>
+>>> +                versions = sorted([v.replace("yocto-" +  release_series[branch] + ".", "").replace("yocto-" +  release_series[branch], "0") for v in versions], key=int)
+>>> +                version = release_series[branch]
+>>> +                if versions[-1] != "0": > +                    version = version + "." + versions[-1]
+>>
+>> I don't understand what this is supposed to do? Can't you just take
+>> X,Y,Z from the yocto-X.Y.Z tag and write it? Which corner case did I miss?
+> 
+> We're trying to get the latest version for each release series. This means
+> taking
+> 
+> yocto-3.1  as "0"
+> yocto-3.1.1 as "1"
+> yocto-3.1.15 as "15"
+> 
+> and sorting as an int. The issue is that it is 3.1, not 3.1.0.
+> 
+
+git tag --list --sort="version:refname" 'yocto-*' order them correctly 
+already. But can be improved in later patches.
+
+Could even do a git tag --list --sort="version:refname" 'yocto-3.1*' | 
+tail -1 (provided we never have a X.Y.Z version with Y >= 10 :).
+
+Cheers,
 Quentin
 
