@@ -2,66 +2,68 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B201C433F5
-	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 14:25:23 +0000 (UTC)
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
- [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.web09.10461.1647959122910788631
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDA1CC433EF
+	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 14:29:17 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
+ [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web12.10453.1647959356499748239
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Mar 2022 07:25:23 -0700
+ Tue, 22 Mar 2022 07:29:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=FbSv5lBG;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.49,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=IfpNZ8kR;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.53,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f49.google.com with SMTP id
- v2-20020a7bcb42000000b0037b9d960079so2944844wmj.0
+Received: by mail-wm1-f53.google.com with SMTP id i186so1865191wma.3
         for <docs@lists.yoctoproject.org>;
- Tue, 22 Mar 2022 07:25:22 -0700 (PDT)
+ Tue, 22 Mar 2022 07:29:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=message-id:subject:from:to:cc:date:in-reply-to:references
          :user-agent:mime-version:content-transfer-encoding;
-        bh=5c0tQjxjyAxZlJuaCQKF1HaIqDnIc9D9bbNXmsUJWJo=;
-        b=FbSv5lBG8LH4CJxMCi107Lxh9IDZGaYn/czz58yN9CKAr3CrCQWhKVWtQZyTAo+S5w
-         xKY41+htSNroiezPW9Z+2wz755WcQXZPO5ojapyibJ/OFuMhICRoj8UsabgKQ8LNx5aE
-         Xx8qIJqxss7YZif2KmuqpVrlDHB+0X91oVk2Y=
+        bh=xMou7BrYVMb0I5EqwmVrL+R/9YzyvrnFyOl2/L1Ffr4=;
+        b=IfpNZ8kRffbYiOh+1Lsnz7mf7BEfYi5b7kzeg54AK/hcrgn18UwEEah8cCwZ2Udi+Q
+         7Tx9fyFHfFUbLss6Gq74Odqn6+cakbD5i5clEAWKr3e3P1xJlUOGg+AN7D/91sMeJUXO
+         gSp2kaIzy8ciVtUxyD+P/Ghu/HCszrGFes5Bo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=5c0tQjxjyAxZlJuaCQKF1HaIqDnIc9D9bbNXmsUJWJo=;
-        b=vuuawOzBZP96kf6URTw9yUQWP439D7eaJkHiuHkEuFjI7rHZDOnUF/9dfvdDlwnggR
-         E5q5NHF9uFwDjeW15gPje+Pe2MJqjoqOqga979uUOXietw1ZwCSlkgW/YmGR7FhCgCKK
-         /s1B1GHEmch7m+cfgTLoajfiXzoOwWZi1G5oTkYwS8E1IeyJnJTQBKK1s/97LMU4MiyT
-         95Dd+tb5zAK77cJ8qqCbPuiiVNa6Jn+37Wa117AQ42ihedzg5uQhLu2tYNCefFydG8QY
-         wp+P/SQTTY5TABmKpu3jlvWLhd/fJhkEBZcCLDb+FthniV6y2FGeJYMJIzwES0LJknQa
-         9dnQ==
-X-Gm-Message-State: AOAM532w/MPFRQ4Yzm1oFiwzUtQXQ24atYFe8nVYiDjvtlz2e0V91ymw
-	UMZXtwlcjlhcL8xMlnwSdPEqaA==
+        bh=xMou7BrYVMb0I5EqwmVrL+R/9YzyvrnFyOl2/L1Ffr4=;
+        b=ayqEhs4LvE8AMDgTLTG0iZO1Ho2VDmXOYU/VfUvpznv0pQYSf0k/dao6U+uIxqTcty
+         qJTi8dE/f0sMuxYPlcnQcyqRGvpHzCWlLIjh1JvJq6Fg3uD7gv+5pUjetP25r+GcBzmj
+         +4YI6VQ0Zg679l54NK2p+s+5aLo5TzO99Py7dhigG2o4lZVmHsez65nB2tYx+RCqbz/e
+         YpB4sObxdFPBKtxjSHx6xQYOd46HBFRYSZfbjyy/FXAXjHNiDDLMU24q4jGSMkvoMDkY
+         I2571351FGZ3CbT/xXvdCdJGb5iUc6Wzw/FzAeSj7W8LHX8QdyaYci4L6cvOSBewfNWE
+         +1wg==
+X-Gm-Message-State: AOAM531Yai6n7oGulBSCe1+tC2BNS/QU7i4P9gIuJ4SIaxwLpbtiMCJE
+	LSUIOww1IeJt6abhIc2bo6wIqQ==
 X-Google-Smtp-Source: 
- ABdhPJzOT0a2hicB/Tj3WuWICYRTPA58zIvy3jIRxGNhnf0Vz7V9fV9mbDWUrZattqsfTvr07OpN0g==
-X-Received: by 2002:a05:600c:4e93:b0:38c:92d9:c7bc with SMTP id
- f19-20020a05600c4e9300b0038c92d9c7bcmr4006444wmq.173.1647959121202;
-        Tue, 22 Mar 2022 07:25:21 -0700 (PDT)
+ ABdhPJxsdvFX+AHK2HbRcTQL86LowFVWJihWPQgNnBIdtdXaFinJ51FF9bwg8O2YfMu/9vCGYTM4EA==
+X-Received: by 2002:a05:6000:15cb:b0:203:d94c:d764 with SMTP id
+ y11-20020a05600015cb00b00203d94cd764mr22444024wry.210.1647959354947;
+        Tue, 22 Mar 2022 07:29:14 -0700 (PDT)
 Received: from ?IPv6:2001:8b0:aba:5f3c:4096:7441:f015:a6fe?
  ([2001:8b0:aba:5f3c:4096:7441:f015:a6fe])
         by smtp.gmail.com with ESMTPSA id
- p8-20020a5d59a8000000b00204178688d3sm4898151wrr.100.2022.03.22.07.25.20
+ r12-20020a5d6c6c000000b00203ec2b1255sm15521828wrz.60.2022.03.22.07.29.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Mar 2022 07:25:20 -0700 (PDT)
+        Tue, 22 Mar 2022 07:29:14 -0700 (PDT)
 Message-ID: 
- <9a19dcfedb95816a40a967bc87fa54f3da62fef3.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 0/5 v2] Proposed docs version changes
+ <1f6b8d1b12be2053fc0e3306a9bbc66b6fdc3434.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH 1/1][transition] Makefile: Use switchers
+ generated from master
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>, Nicolas Dechesne
-	 <nicolas.dechesne@linaro.org>
-Cc: docs@lists.yoctoproject.org
-Date: Tue, 22 Mar 2022 14:25:17 +0000
-In-Reply-To: <bc6e6ce9-2287-cfd8-a3c7-6d9f54ecc1f9@theobroma-systems.com>
-References: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
-	 <CAP71WjxAtVJO2YvM3p4UM1TEYuqmM7TLpDo5kRytp+G=kQhSgA@mail.gmail.com>
-	 <ea41470f551f80509c947bf074eee5b29777953e.camel@linuxfoundation.org>
-	 <bc6e6ce9-2287-cfd8-a3c7-6d9f54ecc1f9@theobroma-systems.com>
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	docs@lists.yoctoproject.org
+Cc: Quentin Schulz <foss+yocto@0leil.net>, Nicolas Dechesne
+	 <nicolas.dechesne@linaro.org>, Michael Opdenacker
+	 <michael.opdenacker@bootlin.com>
+Date: Tue, 22 Mar 2022 14:29:13 +0000
+In-Reply-To: <a890c15d-a92a-cc01-a9c5-c4d89d31de6e@theobroma-systems.com>
+References: <20220319152803.1110539-1-richard.purdie@linuxfoundation.org>
+	 <b23f24f6-29b9-320b-b949-48b7bbebd375@theobroma-systems.com>
+	 <6157cab4302631ca624837e94ac98181f81a2dd3.camel@linuxfoundation.org>
+	 <a890c15d-a92a-cc01-a9c5-c4d89d31de6e@theobroma-systems.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
@@ -69,53 +71,39 @@ Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 14:25:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2681
+ <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 14:29:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2682
 
-On Tue, 2022-03-22 at 14:58 +0100, Quentin Schulz wrote:
-> Hi all,
+On Tue, 2022-03-22 at 14:34 +0100, Quentin Schulz wrote:
+> Hi Richard,
 > 
-> On 3/21/22 23:06, Richard Purdie wrote:
-> > On Mon, 2022-03-21 at 22:56 +0100, Nicolas Dechesne wrote:
+> On 3/21/22 18:33, Richard Purdie wrote:
+> > On Mon, 2022-03-21 at 18:28 +0100, Quentin Schulz wrote:
+> > > Hi Richard,
 > > > 
-> > > Would it make sense to implement what you have in set_versions.py directly in
-> > > Sphinx 'native' code ? e.g. directly in conf.py, or in a module loaded from
-> > > conf.py (see how kernel does it at [1]) or yocto-vars extension, or as its own
-> > > Sphinx extension?
+> > > On 3/19/22 16:28, Richard Purdie wrote:
+> > > > This allows an improved and custmomised switcher for each release
+> > > > showing the current doc version, the latest in that series and the
+> > > > latest releases for the project overall.
+> > > > 
 > > > 
-> > > poky.yaml only purpose is to be loaded by yocto-vars.py which is a local
-> > > Sphinx extension we created.
-> >  > Possibly, yes. I've done it like this as it was easier to validate it 
-> was doing
-> > the right things and also easier to apply in retrospect to previous docs
-> > releases. What we want to do going forward is an open question and it does feel
-> > like that script would be better off as a module that at least for master, the
-> > docs code called into.
+> > > Not sure to understand the reason for this patch?
 > > 
-> > I think that would make most sense as a follow on to this series if/as/when
-> > people have the time to work on it and test it accordingly. As it stands the
-> > series was already quite painful to develop (I got hooked on Friday and had to
-> > fix it on Saturday whilst I still had the pieces all in cache).
+> > For every other docs branch we can run set_versions.py once and have the correct
+> > information in switchers.js. For transitions, we have multiple runs of the
+> > documentation generation and we want to customise switchers.js in each case.
+> > This is so we can show the current version, and the current release series
+> > latest version which allows the switcher to work properly.  To do that, it is
+> > easiest just to fix the transitions branch to handle that.
 > > 
 > 
-> Agreed. I don't think this patch series makes the doc building situation 
-> worse than it currently is so there's no reason to hold it off. Makes it 
-> even easier on stable release maintainers so it's good :)
-> 
-> I just would like the behavior to be unchanged wrt versions listed in 
-> the switchers.js, the rest is fine and can be modified later on.
+> Makes perfect sense, would have loved to have this in the commit log :)
 
-Just to be clear, you mean adding gatesgarth and zeus back?
-Or adding the current version and the current version series?
-
-I'm going to assume we're talking about the first and I'll redo things to try
-and do that. I've decided I'd better retest everything having done that with the
-side be side comparison so it may take a while :/.
-
+I did try and say that, just not very clearly. I've added to the commit log as
+it hasn't merged yet.
 
 Cheers,
 
 Richard
-
 
 
