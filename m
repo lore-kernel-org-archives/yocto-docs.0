@@ -1,131 +1,121 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9DB47C433EF
-	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 14:25:07 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web08.10496.1647959106802221164
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B201C433F5
+	for <webhook@archiver.kernel.org>; Tue, 22 Mar 2022 14:25:23 +0000 (UTC)
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
+ [209.85.128.49])
+ by mx.groups.io with SMTP id smtpd.web09.10461.1647959122910788631
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Mar 2022 07:25:07 -0700
+ Tue, 22 Mar 2022 07:25:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RG72TrpQ;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194,
- mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 4D3A640014;
-	Tue, 22 Mar 2022 14:25:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1647959104;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vQnMZRzc1CXamlxVTIKdgjmZ3JhJje1aDX6hnFFaCNY=;
-	b=RG72TrpQueOND/pLfyFM+3iRgFyeum6fOMSJD6jxQi6PLo0Z2OBJUynvHVWB4YmU+V38IL
-	c6uHVCFQeGx2bspXnItgvQPYEqMtg42V/jDKgSCfwBhqGD+hhJWNGymmw2HNENqu8uGtZ2
-	TL9TS227D9XVttjhlMsEvLoMrQEl3fCE5eVvbVts+FwOH1v8uC097qbp6/yHNosGnDZ3Sd
-	9I0dtppqLwizVF1SDfiDXcDP6mHMz2zB1gj1g54k78KATU4Kec0Wdbmq94q7xZpvr8Lr99
-	JA4U5Hv3PoC010rBhI5aZhifaBg5V7JLp16fvOv4ZZPMZ3M9WQGZcONfbC5TeA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Quentin Schulz <foss+yocto@0leil.net>
-Subject: [PATCH] [honister] docs: fix hardcoded link warning messages
-Date: Tue, 22 Mar 2022 15:25:02 +0100
-Message-Id: <20220322142502.550191-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=FbSv5lBG;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.49,
+ mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f49.google.com with SMTP id
+ v2-20020a7bcb42000000b0037b9d960079so2944844wmj.0
+        for <docs@lists.yoctoproject.org>;
+ Tue, 22 Mar 2022 07:25:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :user-agent:mime-version:content-transfer-encoding;
+        bh=5c0tQjxjyAxZlJuaCQKF1HaIqDnIc9D9bbNXmsUJWJo=;
+        b=FbSv5lBG8LH4CJxMCi107Lxh9IDZGaYn/czz58yN9CKAr3CrCQWhKVWtQZyTAo+S5w
+         xKY41+htSNroiezPW9Z+2wz755WcQXZPO5ojapyibJ/OFuMhICRoj8UsabgKQ8LNx5aE
+         Xx8qIJqxss7YZif2KmuqpVrlDHB+0X91oVk2Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=5c0tQjxjyAxZlJuaCQKF1HaIqDnIc9D9bbNXmsUJWJo=;
+        b=vuuawOzBZP96kf6URTw9yUQWP439D7eaJkHiuHkEuFjI7rHZDOnUF/9dfvdDlwnggR
+         E5q5NHF9uFwDjeW15gPje+Pe2MJqjoqOqga979uUOXietw1ZwCSlkgW/YmGR7FhCgCKK
+         /s1B1GHEmch7m+cfgTLoajfiXzoOwWZi1G5oTkYwS8E1IeyJnJTQBKK1s/97LMU4MiyT
+         95Dd+tb5zAK77cJ8qqCbPuiiVNa6Jn+37Wa117AQ42ihedzg5uQhLu2tYNCefFydG8QY
+         wp+P/SQTTY5TABmKpu3jlvWLhd/fJhkEBZcCLDb+FthniV6y2FGeJYMJIzwES0LJknQa
+         9dnQ==
+X-Gm-Message-State: AOAM532w/MPFRQ4Yzm1oFiwzUtQXQ24atYFe8nVYiDjvtlz2e0V91ymw
+	UMZXtwlcjlhcL8xMlnwSdPEqaA==
+X-Google-Smtp-Source: 
+ ABdhPJzOT0a2hicB/Tj3WuWICYRTPA58zIvy3jIRxGNhnf0Vz7V9fV9mbDWUrZattqsfTvr07OpN0g==
+X-Received: by 2002:a05:600c:4e93:b0:38c:92d9:c7bc with SMTP id
+ f19-20020a05600c4e9300b0038c92d9c7bcmr4006444wmq.173.1647959121202;
+        Tue, 22 Mar 2022 07:25:21 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:4096:7441:f015:a6fe?
+ ([2001:8b0:aba:5f3c:4096:7441:f015:a6fe])
+        by smtp.gmail.com with ESMTPSA id
+ p8-20020a5d59a8000000b00204178688d3sm4898151wrr.100.2022.03.22.07.25.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Mar 2022 07:25:20 -0700 (PDT)
+Message-ID: 
+ <9a19dcfedb95816a40a967bc87fa54f3da62fef3.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH 0/5 v2] Proposed docs version changes
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>, Nicolas Dechesne
+	 <nicolas.dechesne@linaro.org>
+Cc: docs@lists.yoctoproject.org
+Date: Tue, 22 Mar 2022 14:25:17 +0000
+In-Reply-To: <bc6e6ce9-2287-cfd8-a3c7-6d9f54ecc1f9@theobroma-systems.com>
+References: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
+	 <CAP71WjxAtVJO2YvM3p4UM1TEYuqmM7TLpDo5kRytp+G=kQhSgA@mail.gmail.com>
+	 <ea41470f551f80509c947bf074eee5b29777953e.camel@linuxfoundation.org>
+	 <bc6e6ce9-2287-cfd8-a3c7-6d9f54ecc1f9@theobroma-systems.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 14:25:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2680
+ <docs@lists.yoctoproject.org>; Tue, 22 Mar 2022 14:25:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2681
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+On Tue, 2022-03-22 at 14:58 +0100, Quentin Schulz wrote:
+> Hi all,
+> 
+> On 3/21/22 23:06, Richard Purdie wrote:
+> > On Mon, 2022-03-21 at 22:56 +0100, Nicolas Dechesne wrote:
+> > > 
+> > > Would it make sense to implement what you have in set_versions.py directly in
+> > > Sphinx 'native' code ? e.g. directly in conf.py, or in a module loaded from
+> > > conf.py (see how kernel does it at [1]) or yocto-vars extension, or as its own
+> > > Sphinx extension?
+> > > 
+> > > poky.yaml only purpose is to be loaded by yocto-vars.py which is a local
+> > > Sphinx extension we created.
+> >  > Possibly, yes. I've done it like this as it was easier to validate it 
+> was doing
+> > the right things and also easier to apply in retrospect to previous docs
+> > releases. What we want to do going forward is an open question and it does feel
+> > like that script would be better off as a module that at least for master, the
+> > docs code called into.
+> > 
+> > I think that would make most sense as a follow on to this series if/as/when
+> > people have the time to work on it and test it accordingly. As it stands the
+> > series was already quite painful to develop (I got hooked on Friday and had to
+> > fix it on Saturday whilst I still had the pieces all in cache).
+> > 
+> 
+> Agreed. I don't think this patch series makes the doc building situation 
+> worse than it currently is so there's no reason to hold it off. Makes it 
+> even easier on stable release maintainers so it's good :)
+> 
+> I just would like the behavior to be unchanged wrt versions listed in 
+> the switchers.js, the rest is fine and can be modified later on.
 
-Sphinx complains about hardcoded links which can be replaced by an
-extlink.
+Just to be clear, you mean adding gatesgarth and zeus back?
+Or adding the current version and the current version series?
 
-So let's apply its recommendations.
+I'm going to assume we're talking about the first and I'll redo things to try
+and do that. I've decided I'd better retest everything having done that with the
+side be side comparison so it may take a while :/.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Reported-by: Quentin Schulz <foss+yocto@0leil.net>
----
- documentation/bsp-guide/bsp.rst                  | 7 ++++---
- documentation/migration-guides/migration-3.4.rst | 2 +-
- documentation/overview-manual/yp-intro.rst       | 4 ++--
- documentation/ref-manual/system-requirements.rst | 2 +-
- 4 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index 65652ff898..1cc92d721d 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -166,8 +166,9 @@ section.
- #. *Determine the BSP Layer You Want:* The Yocto Project supports many
-    BSPs, which are maintained in their own layers or in layers designed
-    to contain several BSPs. To get an idea of machine support through
--   BSP layers, you can look at the `index of
--   machines <&YOCTO_RELEASE_DL_URL;/machines>`__ for the release.
-+   BSP layers, you can look at the
-+   :yocto_dl:`index of machines </releases/yocto/yocto-&DISTRO;/machines>`
-+   for the release.
- 
- #. *Optionally Clone the meta-intel BSP Layer:* If your hardware is
-    based on current Intel CPUs and devices, you can leverage this BSP
-@@ -877,7 +878,7 @@ Yocto Project:
-    your BSP layer as listed in the ``recipes.txt`` file, which is found
-    in ``poky/meta`` directory of the :term:`Source Directory`
-    or in the OpenEmbedded-Core Layer (``openembedded-core``) at
--   https://git.openembedded.org/openembedded-core/tree/meta.
-+   :oe_git:`/openembedded-core/tree/meta`.
- 
-    You should place recipes (``*.bb`` files) and recipe modifications
-    (``*.bbappend`` files) into ``recipes-*`` subdirectories by
-diff --git a/documentation/migration-guides/migration-3.4.rst b/documentation/migration-guides/migration-3.4.rst
-index 6105015a24..8143cd4813 100644
---- a/documentation/migration-guides/migration-3.4.rst
-+++ b/documentation/migration-guides/migration-3.4.rst
-@@ -140,7 +140,7 @@ configuration provided and tested by the Yocto Project, there is
- simply no sense in continuing to enable prelink.
- 
- There's also a concern that no one is maintaining the code, and there
--are open bugs (including `this serious one <https://bugzilla.yoctoproject.org/show_bug.cgi?id=14429>`__).
-+are open bugs (including :yocto_bugs:`this serious one </show_bug.cgi?id=14429>`).
- Given that prelink does intricate address arithmetic and rewriting
- of binaries the best option is to disable the feature. It is recommended
- that you consider disabling this feature in your own configuration if
-diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-index 7aee9db04f..3ca81428cf 100644
---- a/documentation/overview-manual/yp-intro.rst
-+++ b/documentation/overview-manual/yp-intro.rst
-@@ -217,8 +217,8 @@ your Metadata, the easier it is to cope with future changes.
-    -  Use Board Support Package (BSP) layers from silicon vendors when
-       possible.
- 
--   -  Familiarize yourself with the `Yocto Project curated layer
--      index <https://www.yoctoproject.org/software-overview/layers/>`__
-+   -  Familiarize yourself with the
-+      :yocto_home:`Yocto Project curated layer index</software-overview/layers/>`
-       or the :oe_layerindex:`OpenEmbedded layer index <>`.
-       The latter contains more layers but they are less universally
-       validated.
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 5c15b6de56..6df59a1745 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -320,7 +320,7 @@ If you would prefer not to use the ``install-buildtools`` script, you can instea
- download and run a pre-built buildtools installer yourself with the following
- steps:
- 
--1. Locate and download the ``*.sh`` at &YOCTO_RELEASE_DL_URL;/buildtools/
-+1. Locate and download the ``*.sh`` at :yocto_dl:`/releases/yocto/yocto-&DISTRO;/buildtools/`
- 
- 2. Execute the installation script. Here is an example for the
-    traditional installer::
--- 
-2.25.1
+Cheers,
+
+Richard
+
 
 
