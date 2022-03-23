@@ -1,290 +1,168 @@
-Return-Path: <mhalstead@linuxfoundation.org>
+Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B7F8C433F5
-	for <webhook@archiver.kernel.org>; Wed, 23 Mar 2022 00:47:48 +0000 (UTC)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com
- [209.85.167.41])
- by mx.groups.io with SMTP id smtpd.web12.3505.1647996466893615632
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BEBF2C433EF
+	for <webhook@archiver.kernel.org>; Wed, 23 Mar 2022 09:59:34 +0000 (UTC)
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+ (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.49])
+ by mx.groups.io with SMTP id smtpd.web11.7303.1648029572728453944
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Mar 2022 17:47:47 -0700
+ Wed, 23 Mar 2022 02:59:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Jfhf03vn;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.167.41,
- mailfrom: mhalstead@linuxfoundation.org)
-Received: by mail-lf1-f41.google.com with SMTP id w27so185740lfa.5
-        for <docs@lists.yoctoproject.org>;
- Tue, 22 Mar 2022 17:47:46 -0700 (PDT)
+ dkim=fail reason="body hash did not verify"
+ header.i=@cherrycloud.onmicrosoft.com
+ header.s=selector2-cherrycloud-onmicrosoft-com header.b=QgaUfKGz;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.7.49,
+ mailfrom: quentin.schulz@theobroma-systems.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=m3XkCTS7pjONxM95fbsA7nCuPkJeMFpRUCLwhanNTPddskEGNSq3bgo/7/1Ju0merwE7hcLr8Iw4b9biTUbjm8lIZo3gf99YhIDbPlw1MmOnMWiW994AFvrPwy4UGaRnXMb7kE09HS4ygS/NZ+DnFB4Gq4BtDHGo1RBpzl3nlt+zN1AkUJlJ7qSfuygyDVFSSwfnbJoalf6POgOs2pni9H560G4AWLvXUKxOWEBcsgw74CO0GiHGx4V/CEUU8g2agbNc9weCg4ueioFMdhKk4ipmMYG02lfu+T4f3LDLXfRLeftafkBL40UrIfotNBWK221ndz6dEO+bzRuqhsBB2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CdpDX1h0PTHO5RPR75tiOPexUJqLUSX5hxFjQPfwuAs=;
+ b=j9XSG4kiB0bRj1nAFL9+rIzFAfpxy/FO6z7HypB/v+vqT+8pgOAZHynQqq33G/Zqzl8gyN0vgsxgEWiduB6WsGvFUuDsEIfl+noG0eqIFK3j4FZToaJs76fmO07vduCMgEXgHzssoSdf7wLPAI5Jo7EVTiRA2/RXciBxJG8TfYWriq27kghlQRKslu+hOyQ/FcuQsYmG50czw/0lVr4LPl2MBJ3cOmd0DwGvZnpvZ6VDR2EaY4rnMT8OQvaUr6hPnFaXjR8u7+XRlf7eYmZTwC9UlgU/1Y6LVnADf2hgvBLqbR2V7g+TerPs5Pn5csq4M2oNPfbZiHU5r4f2P417Iw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=jE14UGyiNPGPa00GSddOzeLaLNg+0AzzO8Xi9I9Rz3Q=;
-        b=Jfhf03vnbNjg4+W4aF6NGBrS5SoV2xGyzlLfg3b828ULpHbuWtW+lkOAA8vXHK/dYX
-         0MTpn88HW66T+g67QTMrhe1r43459Z2QQaJBBbIqG8uAtGPUNRYtzKv1aHjqM0AAptDd
-         6cQGy4O5+xvIO36pOdrVGtIckSLAGBoRKJaCY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=jE14UGyiNPGPa00GSddOzeLaLNg+0AzzO8Xi9I9Rz3Q=;
-        b=U4d/AXC3Fo4TtsX4+1uyBgxKDjdJON02tnCatYlOPSPxoC7JGH4yps8DyIxq8R9AF1
-         lYginpDvDO48VSUEghtMZoyCmBxkGBOY1kJXNhjX3LD0aSH9dERm5Dn/w9RRtcTTqE+K
-         qJxG7Qw0bEIwCIHcv/KgkmQFOOsWzDZKBDcldZKgqj4xxMW3Y6m4utjJhGatcy+ora9H
-         O5dN+Mi/8Jnb/fHGAuOqWnYP5dhZBYLmhKxyYmWRwzsJ8Ptrr8gQIrNYOqXRoBXk2gK4
-         Qc4Lx1PEBtlKLHI+beODegdnH//oOA2jwWz4FJ1V33xeJZPt3Z1/jUkNrmQkHqydJteO
-         d4tg==
-X-Gm-Message-State: AOAM532dMVsWtkHKvN8OiWBK8Ryyj5SHy9XDgutuYYHm2A4gjtnQG9iw
-	w3fYHaq3XZ0bs8MUVPWKBK2Edi5hiln+fbVXudndXw==
-X-Google-Smtp-Source: 
- ABdhPJytUm6BACC1Ux8x+gKxgiOE33iL7UrB0OEYI4haVnMbdOQdaa2pu6oU/F4tw4wJuAcGxGudCnwKaY5nubWHZTs=
-X-Received: by 2002:a05:6512:3f1b:b0:448:92d7:8952 with SMTP id
- y27-20020a0565123f1b00b0044892d78952mr19649527lfa.183.1647996465057; Tue, 22
- Mar 2022 17:47:45 -0700 (PDT)
-MIME-Version: 1.0
+ d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CdpDX1h0PTHO5RPR75tiOPexUJqLUSX5hxFjQPfwuAs=;
+ b=QgaUfKGziJwtGvii6ZkMpB8uMh5o9BDv1x87kTNiJFiDXrBhTbNsSrhScu5B0hXWcyVfNXgfuDAMzLS0EupJwDgGr0Itv7Qg1UpSRfkvyX1uzY4Wk6TPEnc4fpPmCBuxHFLBqLfbUeVIE/4OoJNiQYD80CwIZdx046P7yOY7dW0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
+Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
+ by AS8PR04MB7701.eurprd04.prod.outlook.com (2603:10a6:20b:293::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.23; Wed, 23 Mar
+ 2022 09:59:28 +0000
+Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
+ ([fe80::1d2b:fd77:d076:a391]) by PA4PR04MB9367.eurprd04.prod.outlook.com
+ ([fe80::1d2b:fd77:d076:a391%7]) with mapi id 15.20.5081.022; Wed, 23 Mar 2022
+ 09:59:28 +0000
+Message-ID: <95295713-e0e3-66e3-cc86-ea0844c06e32@theobroma-systems.com>
+Date: Wed, 23 Mar 2022 10:59:23 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [docs] [PATCH 1/5] Makefile/set_versions: Allow poky.yaml to be
+ autogenerated
+Content-Language: en-US
+To: michael.opdenacker@bootlin.com,
+ Richard Purdie <richard.purdie@linuxfoundation.org>,
+ docs@lists.yoctoproject.org
 References: <20220321174455.1189669-1-richard.purdie@linuxfoundation.org>
- <CAP71WjxAtVJO2YvM3p4UM1TEYuqmM7TLpDo5kRytp+G=kQhSgA@mail.gmail.com>
- <ea41470f551f80509c947bf074eee5b29777953e.camel@linuxfoundation.org>
- <bc6e6ce9-2287-cfd8-a3c7-6d9f54ecc1f9@theobroma-systems.com>
- <9a19dcfedb95816a40a967bc87fa54f3da62fef3.camel@linuxfoundation.org>
- <a7308598-4d69-ec6a-4edf-df198055ee93@theobroma-systems.com>
- <16DEBBB55476AD52.11857@lists.yoctoproject.org>
- <7b263ab8905bc5fe6d2fe6c8cf65bf2583f9ac49.camel@linuxfoundation.org>
-In-Reply-To: 
- <7b263ab8905bc5fe6d2fe6c8cf65bf2583f9ac49.camel@linuxfoundation.org>
-From: Michael Halstead <mhalstead@linuxfoundation.org>
-Date: Tue, 22 Mar 2022 17:47:34 -0700
-Message-ID: 
- <CADfgfoYfeR8D+PzJhefNZRhnD6tJZZd0c6WOkSLNgRwso16Brw@mail.gmail.com>
-Subject: Re: [docs] [PATCH 0/5 v2] Proposed docs version changes
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Nicolas Dechesne <nicolas.dechesne@linaro.org>,
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000e4271205dad8131b"
+ <20220321174455.1189669-2-richard.purdie@linuxfoundation.org>
+ <86e1ecf9-09da-9cd7-347f-637628cbbba4@bootlin.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+In-Reply-To: <86e1ecf9-09da-9cd7-347f-637628cbbba4@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: VI1PR0701CA0030.eurprd07.prod.outlook.com
+ (2603:10a6:800:90::16) To PA4PR04MB9367.eurprd04.prod.outlook.com
+ (2603:10a6:102:2aa::7)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 25478c49-3e78-486e-4ae4-08da0cb3d17d
+X-MS-TrafficTypeDiagnostic: AS8PR04MB7701:EE_
+X-Microsoft-Antispam-PRVS: 
+	<AS8PR04MB7701E2DD4F90D7AB9B184CACC2189@AS8PR04MB7701.eurprd04.prod.outlook.com>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	R1DJPd/+QNIUjLeZTB9JfTSwOH6eglUfSNDnDCdFR0F37zy/LMJaWx3L7CR70ugRLTLEYykFx52zsCceTobkxqhzZIATf1uIbranEVyfi9ZR8ZRNpdzn9q19kXiF0L/952u82fpfmU6LfXw9trsvZyPYPD3NLKt6HTmlave+eKDMRcLExDiY1AZrAmQDjY4oorpj7DOfEUG7aBYIYjnHZ+m1AXpeDIqC0Nw2XOLaho62uQ8CT5a7YnsBrg3DWZ5DmXu5UEoxYaLjxPu7nfuAlLHCtSvDf2hgUXCuv1TebVVLnJ80ZY6nQWxZBSxcC2yHEziA5/IYDNQ2vsb29PQEFwNM0ZaZFYoIJtzNBp+rNZbACiKGkjCBHeco2wd9vQzjroO0tqzsVS1zV5ldLXaTa6l4kDmG0zhKGaFtgNZAlmCBgMITbgv4IHrpOkZq4QHlCJAbLXwOBT/C3muOXpArA1gWeoOkSek9eCwUh2l6ZoyOWsErXmEUEpIKQIIon/DVdEUzYZvLAZM748zrnkJmCyaasbh2Qxd48R4SCCRfDH2KkrjWEZez0TR2VRyl2H4lAABC+DjbeZXFWvFnkuFufqYAxE0sbx9t7KB7rQ26U7XUY3px5MntDgNv+yqyF4C0w3w8DVxd2OZ9GGMOywIUfHBXYNQ5yWGtAYwoQpLEn91q0P/ER33K+r1OL42QV4aiOgnqpoOJiK7yxtntSNGVI/xOG3gg7MuSp1OVZBv8ohY=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(6512007)(86362001)(186003)(316002)(2616005)(31696002)(83380400001)(44832011)(5660300002)(6486002)(36756003)(508600001)(6506007)(53546011)(8936002)(2906002)(38100700002)(31686004)(66946007)(66556008)(66476007)(6666004)(8676002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?eV6iS5zuFcClC3Klgiuu4qtzC1mMCm16uRcP4RIzQbZsR3Ai3XAy1FF463oY?=
+ =?us-ascii?Q?Lb6Xx6PPP6GRlQTM/P+fVVJ57uDbc8jQ2t0OB5VdELrHmdJFJWbATeuW+v9K?=
+ =?us-ascii?Q?1s3pctbf0DYHYsAxQVf3h+33FcUV0MJw9gC158wUOz0b6yZtN1YEeRR6yRUe?=
+ =?us-ascii?Q?AmL17crD+FERJOiQYk63TaTQp9EC0jitP5JYdI94DWCOemoH3MO+8I+6Yp6v?=
+ =?us-ascii?Q?VWak+JJxOhikSgi4uwdw3KeCspl6RzcUp8lVERvne2BHKOrq3ZpOiTHNupdM?=
+ =?us-ascii?Q?am+tBgQFKghayGrXHmBBMB130zB7HlnG4EWf5NKWPvI+6VruSpKGPdo+1+M6?=
+ =?us-ascii?Q?mMAjw9n377P469N1NgCvvb1Kek10ZbaWAvBqOzmVFhcbqSL28H+JbDVEX9+G?=
+ =?us-ascii?Q?4xudbmnuuVVDWO7yRZmAgR4oLWdfzBPsu3GBHI/m/dqMgxvId4ynCnBP6/St?=
+ =?us-ascii?Q?A+GwrzbGhqwtyOUFqkYDjzwOSQCfftc3++YwzPf/MwuHlaZXBUE+wB1jZK6m?=
+ =?us-ascii?Q?MYft2al9+o9sxsPHjh672mkdiZfrswJWmZSErnitKNmtiLL+fDy2n7CfW+Eu?=
+ =?us-ascii?Q?BoYE9vmcYG1ylCWWB4FaKlyMPkoRTdHUSDnrVjXADafc/8/sWi8kGFxer66X?=
+ =?us-ascii?Q?3QJ21Rnl8y5Q3Jkh76kTZCotSN7o6AVqukGqnGRo9KpZYsTpXQoytcumf+Cu?=
+ =?us-ascii?Q?ijLP1Z2o/QthK0e8+Ye6rPSJFdO7VLomon4piK0IepkHGOGL+j3R/CX2qDxm?=
+ =?us-ascii?Q?E9r82cNHpZp/HWB8C+B3lp3iE2SNnTaszsvN3hvDw2ejHcAlzEfouvcXXyXI?=
+ =?us-ascii?Q?TmHyfUP0/H7c9H9DY/EELF1pTCDSkmTI0r1nffZd/8nhJAY99oElKX5xLfa/?=
+ =?us-ascii?Q?kpln37nhSUjBgXzm4XWQdd9NR2abbCqIwkYjd+KqhTkZZw8WCz2hffPKLkmF?=
+ =?us-ascii?Q?69nVsT4WZsnn1b11JdV6/tL0NAnAPsidWRgcA+G+42eNSP59SgRsm1o2BTjq?=
+ =?us-ascii?Q?c0Io/etpB1vVFafHBdiYZQc2k7SSx+Qx4PFrdskKJoagRw3A1OnNPouZk7Sl?=
+ =?us-ascii?Q?BoHLliUCdFlX5PMZBUd2iP4SxIQkcxvSqhWC4fmfJIWEnBcIbZZJCpGRMucc?=
+ =?us-ascii?Q?9u59bumev/KVqrhghffNJFuQyYMZZVUgLjmvw04k8zyfOR0HIj/ROOxThj16?=
+ =?us-ascii?Q?Hgh31lkTaIsnk7p1QXToKchEAPmTJgiuwoGh0fcwmRuadiBEUelr38tFb4FD?=
+ =?us-ascii?Q?NYZwF+T2P309bMpRIgWp6xcPtt4rDBUUa80Gft3DsldccsHyNkf4WpZP4zK2?=
+ =?us-ascii?Q?Lca7hDI48LxLWKQORIuLTE9b8v9XzwncQcWii6vhcPm10kN9on0wHf2vu0iN?=
+ =?us-ascii?Q?WvqcrSsmNr5DQuxgWUyPv2AcF8/lZZDvI4lP0UuqrL8dlkGLpu/cm4MegRNU?=
+ =?us-ascii?Q?X9ebzgJ0dFnMsNwdDRc7n8T2eCi6BqGJhKgD3Mu1xiVFZK93LUfIBq4iFPCP?=
+ =?us-ascii?Q?xV2XK9ZwYCl4VspuM/Y8OJft/ZCKyKstOYA+6dBY8k/6p8CK/yv5iapgbg?=
+ =?us-ascii?Q?=3D=3D?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 
+ 25478c49-3e78-486e-4ae4-08da0cb3d17d
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Mar 2022 09:59:28.1081
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 
+ Mi/CvDt4K9Wg0NExjczTiJyBP/5vPlJiajZdn3Gx3UDyIJqhQkWIqZ7lO6D8UNS/ulqutjLk9iKQ7AQJ9ppqlgAYwWwCHXZojmHoYd+LwCm/Fb2rKdOOw0JF2NTH82Cg
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7701
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 23 Mar 2022 00:47:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2691
+ <docs@lists.yoctoproject.org>; Wed, 23 Mar 2022 09:59:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2693
 
---000000000000e4271205dad8131b
-Content-Type: text/plain; charset="UTF-8"
+Hi Michael,
 
-These tags are in place. I back-dated them to the release day but I put
-them in my name since I've added these without a release engineer involved.
+On 3/23/22 10:46, Michael Opdenacker via lists.yoctoproject.org wrote:
+> Hi Richard,
+>=20
+> On 3/21/22 18:44, Richard Purdie wrote:
+>> Use a script to generate the branch/tag information inside poky.yaml.
+>>
+>> If the branch isn't a known release branch, include git magic to find
+>> the closest matching release branch we know about.
+>>
+>> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+>> ---
+>>   documentation/.gitignore                  |   1 +
+>>   documentation/Makefile                    |   1 +
+>>   documentation/{poky.yaml =3D> poky.yaml.in} |   0
+>>   documentation/set_versions.py             | 115 ++++++++++++++++++++++
+>>   4 files changed, 117 insertions(+)
+>>   rename documentation/{poky.yaml =3D> poky.yaml.in} (100%)
+>>   create mode 100755 documentation/set_versions.py
+>=20
+> A minor issue here: "make clean"=C2=A0 doesn't remove "documentation/poky=
+.yaml" .
+>=20
 
+This is technically not an issue because open("poky.yaml", "w")=20
+overwrites the file if it already exists.
 
+Though, we should make sure the run-docs-build script in=20
+yocto-autobuilder-helper repo actually runs git clean -ffdx before=20
+checking out another branch otherwise there can be a conflict because=20
+poky.yaml exists locally and would be overridden/overwritten by=20
+poky.yaml from an earlier release and fail the checkout. IIRC Richard=20
+had that in his patch so we should be good.
 
-On Tue, Mar 22, 2022 at 8:00 AM Richard Purdie <
-richard.purdie@linuxfoundation.org> wrote:
+> What do you prefer? I submit a fix later and we can merge the branch, or
+> you propose an update, at least for this patch?
 
-> On Tue, 2022-03-22 at 14:54 +0000, Richard Purdie via
-> lists.yoctoproject.org
-> wrote:
-> > On Tue, 2022-03-22 at 15:33 +0100, Quentin Schulz wrote:
-> > > On 3/22/22 15:25, Richard Purdie wrote:
-> > > > On Tue, 2022-03-22 at 14:58 +0100, Quentin Schulz wrote:
-> > > > > Hi all,
-> > > > >
-> > > > > On 3/21/22 23:06, Richard Purdie wrote:
-> > > > > > On Mon, 2022-03-21 at 22:56 +0100, Nicolas Dechesne wrote:
-> > > > > > >
-> > > > > > > Would it make sense to implement what you have in
-> set_versions.py directly in
-> > > > > > > Sphinx 'native' code ? e.g. directly in conf.py, or in a
-> module loaded from
-> > > > > > > conf.py (see how kernel does it at [1]) or yocto-vars
-> extension, or as its own
-> > > > > > > Sphinx extension?
-> > > > > > >
-> > > > > > > poky.yaml only purpose is to be loaded by yocto-vars.py which
-> is a local
-> > > > > > > Sphinx extension we created.
-> > > > > >   > Possibly, yes. I've done it like this as it was easier to
-> validate it
-> > > > > was doing
-> > > > > > the right things and also easier to apply in retrospect to
-> previous docs
-> > > > > > releases. What we want to do going forward is an open question
-> and it does feel
-> > > > > > like that script would be better off as a module that at least
-> for master, the
-> > > > > > docs code called into.
-> > > > > >
-> > > > > > I think that would make most sense as a follow on to this series
-> if/as/when
-> > > > > > people have the time to work on it and test it accordingly. As
-> it stands the
-> > > > > > series was already quite painful to develop (I got hooked on
-> Friday and had to
-> > > > > > fix it on Saturday whilst I still had the pieces all in cache).
-> > > > > >
-> > > > >
-> > > > > Agreed. I don't think this patch series makes the doc building
-> situation
-> > > > > worse than it currently is so there's no reason to hold it off.
-> Makes it
-> > > > > even easier on stable release maintainers so it's good :)
-> > > > >
-> > > > > I just would like the behavior to be unchanged wrt versions listed
-> in
-> > > > > the switchers.js, the rest is fine and can be modified later on.
-> > > >
-> > > > Just to be clear, you mean adding gatesgarth and zeus back?
-> > >
-> > > Keeping the current behavior which is the latest dot version of all
-> > > releases up to Warrior.
-> > >
-> > > dev
-> > > 3.4.2
-> > > 3.3.5
-> > > 3.2.4
-> > > 3.1.14
-> > > 3.0.4
-> > > 2.7.4
-> > >
-> > > is what I currently have.
-> >
-> > Sadly I can't make this work easily since there are no tags for 2.7.2,
-> 2.7.3
-> > ,2.7.4, 3.0.2, 3.0.3 or 3.0.4. There are a bunch of older releases
-> missing
-> > too :(
->
-> Michael(H), would you be able to add some tags:
->
-> yocto-2.7.4 3fd1432890f04fd659952c0f20f5750fb8c3a909
-> yocto-2.7.3 a06e6bdf1d8f133dfaf6dad9c49be24f688799c4
-> yocto-2.7.2 ee29f61b92c5ca7dd56393cef5fcd3ff3fe243aa
-> yocto-3.0.2 ac75b463b23ae6258c1e6f3bbdefc398f3a03d43
-> yocto-3.0.3 9d522e747d2715aa0b2fe4c81cacc34bfad3e1a3
-> yocto-3.0.4 9f51be3a11b7422aba3617a90a98336c3c75f71e
->
-> please?
->
-> Cheers,
->
-> Richard
->
->
+I feel like a fixup patch is just fine, does not seem to be a blocker?
 
--- 
-Michael Halstead
-Linux Foundation / Yocto Project
-Systems Operations Engineer
-
---000000000000e4271205dad8131b
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">These tags are in place. I back-dated them to the release =
-day but I put them in my name since I&#39;ve added these without a release =
-engineer involved.<div><br></div><div><br></div></div><br><div class=3D"gma=
-il_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Mar 22, 2022 at 8:0=
-0 AM Richard Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfoundation.or=
-g">richard.purdie@linuxfoundation.org</a>&gt; wrote:<br></div><blockquote c=
-lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
-d rgb(204,204,204);padding-left:1ex">On Tue, 2022-03-22 at 14:54 +0000, Ric=
-hard Purdie via <a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer=
-" target=3D"_blank">lists.yoctoproject.org</a><br>
-wrote:<br>
-&gt; On Tue, 2022-03-22 at 15:33 +0100, Quentin Schulz wrote:<br>
-&gt; &gt; On 3/22/22 15:25, Richard Purdie wrote:<br>
-&gt; &gt; &gt; On Tue, 2022-03-22 at 14:58 +0100, Quentin Schulz wrote:<br>
-&gt; &gt; &gt; &gt; Hi all,<br>
-&gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; On 3/21/22 23:06, Richard Purdie wrote:<br>
-&gt; &gt; &gt; &gt; &gt; On Mon, 2022-03-21 at 22:56 +0100, Nicolas Dechesn=
-e wrote:<br>
-&gt; &gt; &gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; &gt; &gt; Would it make sense to implement what you hav=
-e in set_versions.py directly in<br>
-&gt; &gt; &gt; &gt; &gt; &gt; Sphinx &#39;native&#39; code ? e.g. directly =
-in conf.py, or in a module loaded from<br>
-&gt; &gt; &gt; &gt; &gt; &gt; conf.py (see how kernel does it at [1]) or yo=
-cto-vars extension, or as its own<br>
-&gt; &gt; &gt; &gt; &gt; &gt; Sphinx extension?<br>
-&gt; &gt; &gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; &gt; &gt; poky.yaml only purpose is to be loaded by yoc=
-to-vars.py which is a local<br>
-&gt; &gt; &gt; &gt; &gt; &gt; Sphinx extension we created.<br>
-&gt; &gt; &gt; &gt; &gt;=C2=A0 =C2=A0&gt; Possibly, yes. I&#39;ve done it l=
-ike this as it was easier to validate it<br>
-&gt; &gt; &gt; &gt; was doing<br>
-&gt; &gt; &gt; &gt; &gt; the right things and also easier to apply in retro=
-spect to previous docs<br>
-&gt; &gt; &gt; &gt; &gt; releases. What we want to do going forward is an o=
-pen question and it does feel<br>
-&gt; &gt; &gt; &gt; &gt; like that script would be better off as a module t=
-hat at least for master, the<br>
-&gt; &gt; &gt; &gt; &gt; docs code called into.<br>
-&gt; &gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; &gt; I think that would make most sense as a follow on =
-to this series if/as/when<br>
-&gt; &gt; &gt; &gt; &gt; people have the time to work on it and test it acc=
-ordingly. As it stands the<br>
-&gt; &gt; &gt; &gt; &gt; series was already quite painful to develop (I got=
- hooked on Friday and had to<br>
-&gt; &gt; &gt; &gt; &gt; fix it on Saturday whilst I still had the pieces a=
-ll in cache).<br>
-&gt; &gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; Agreed. I don&#39;t think this patch series makes the d=
-oc building situation<br>
-&gt; &gt; &gt; &gt; worse than it currently is so there&#39;s no reason to =
-hold it off. Makes it<br>
-&gt; &gt; &gt; &gt; even easier on stable release maintainers so it&#39;s g=
-ood :)<br>
-&gt; &gt; &gt; &gt; <br>
-&gt; &gt; &gt; &gt; I just would like the behavior to be unchanged wrt vers=
-ions listed in<br>
-&gt; &gt; &gt; &gt; the switchers.js, the rest is fine and can be modified =
-later on.<br>
-&gt; &gt; &gt; <br>
-&gt; &gt; &gt; Just to be clear, you mean adding gatesgarth and zeus back?<=
-br>
-&gt; &gt; <br>
-&gt; &gt; Keeping the current behavior which is the latest dot version of a=
-ll <br>
-&gt; &gt; releases up to Warrior.<br>
-&gt; &gt; <br>
-&gt; &gt; dev<br>
-&gt; &gt; 3.4.2<br>
-&gt; &gt; 3.3.5<br>
-&gt; &gt; 3.2.4<br>
-&gt; &gt; 3.1.14<br>
-&gt; &gt; 3.0.4<br>
-&gt; &gt; 2.7.4<br>
-&gt; &gt; <br>
-&gt; &gt; is what I currently have.<br>
-&gt; <br>
-&gt; Sadly I can&#39;t make this work easily since there are no tags for 2.=
-7.2, 2.7.3<br>
-&gt; ,2.7.4, 3.0.2, 3.0.3 or 3.0.4. There are a bunch of older releases mis=
-sing=C2=A0<br>
-&gt; too :(<br>
-<br>
-Michael(H), would you be able to add some tags:<br>
-<br>
-yocto-2.7.4 3fd1432890f04fd659952c0f20f5750fb8c3a909<br>
-yocto-2.7.3 a06e6bdf1d8f133dfaf6dad9c49be24f688799c4<br>
-yocto-2.7.2 ee29f61b92c5ca7dd56393cef5fcd3ff3fe243aa<br>
-yocto-3.0.2 ac75b463b23ae6258c1e6f3bbdefc398f3a03d43<br>
-yocto-3.0.3 9d522e747d2715aa0b2fe4c81cacc34bfad3e1a3<br>
-yocto-3.0.4 9f51be3a11b7422aba3617a90a98336c3c75f71e<br>
-<br>
-please?<br>
-<br>
-Cheers,<br>
-<br>
-Richard<br>
-<br>
-</blockquote></div><br clear=3D"all"><div><br></div>-- <br><div dir=3D"ltr"=
- class=3D"gmail_signature"><div dir=3D"ltr">Michael Halstead<div>Linux Foun=
-dation / Yocto Project</div><div>Systems Operations Engineer</div></div></d=
-iv>
-
---000000000000e4271205dad8131b--
+Cheers,
+Quentin
 
