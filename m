@@ -1,270 +1,94 @@
-Return-Path: <simon.eu@gmail.com>
+Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4B5BC433FE
-	for <webhook@archiver.kernel.org>; Wed, 23 Mar 2022 12:24:41 +0000 (UTC)
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com
- [209.85.215.177])
- by mx.groups.io with SMTP id smtpd.web09.8409.1648038278489331017
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC577C433EF
+	for <webhook@archiver.kernel.org>; Wed, 23 Mar 2022 16:09:17 +0000 (UTC)
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web10.45.1648051755962929614
  for <docs@lists.yoctoproject.org>;
- Wed, 23 Mar 2022 05:24:38 -0700
+ Wed, 23 Mar 2022 09:09:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=qqcQvryt;
- spf=pass (domain: gmail.com, ip: 209.85.215.177,
- mailfrom: simon.eu@gmail.com)
-Received: by mail-pg1-f177.google.com with SMTP id w21so972395pgm.7
-        for <docs@lists.yoctoproject.org>;
- Wed, 23 Mar 2022 05:24:38 -0700 (PDT)
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=bdHgsqkm;
+ spf=pass (domain: axis.com, ip: 195.60.68.17,
+ mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6kFukV90qqZVT75iqd0VrhAvSOjTPEUdDnBuaaXZRac=;
-        b=qqcQvryt8RE0HYJgXq09bQJbG0lXKKxAd2ldX7KbWG35b/CqUxtVMLcvMt1R9LT3SO
-         8XB/BHY1c9NM8DivfDd2qJFaRC27rYzRj0YAEJED+AIjmrc8lJBifDqgogDswSNlJt6+
-         u5dG/eSsvsqJ56yoFQRGWBavUxEeFHCfbvZz/IWwdooTswvdKPKylKXqP4c0x3kLkHQc
-         qAHuot52uYZDe7m7RBilcBx9VOCEOhMc0Gdp3MDBdigbgozl7BjQTwf1GbwBtrop9cmC
-         na7wAt+FKwSD0M2CQGC6veGJtcXQ0zo3cxcDeNJMbpO6hr1dYEpS6fxozTY8kjR2Eput
-         P9XA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6kFukV90qqZVT75iqd0VrhAvSOjTPEUdDnBuaaXZRac=;
-        b=biU8krt0bcxJ7BoK4E7fe5s5a8KDtscNP0YLDkPOGOxiuQZeX3FXF2r4NgKK+LlT1B
-         H+80JV6KSa5FVSetllLNv4qRjIFkuPmqfoNSTyFuJsmmXpYIX6wUO+E01BdgR6SdTIAz
-         qeesrqsb3LIyNRCVqYsFEO/9htcqH0gq0ly4tnRxY8C2M33PcPRdTswH4QARO12XXFBa
-         oXjqNfCYbMq98D20liW9VC+dWOALcZS/liNMKdehWY/oOdvjaLg6YLxq+Fzmr0GPUM1H
-         CXjj+vBVndfdnsfIF8OtpWAu0Lojt9SpQ+pS7YoVh5115cDluMxRezuNUNdk6rO7oIry
-         dabQ==
-X-Gm-Message-State: AOAM533Ju3oXRIjWBQMu1SXgdloZer1WWx3D0innykL4UkRXMLFEqcyr
-	u/dmwY/f7DbFL5JDxDnYNPTOSjv3P4zuXz9C2JU=
-X-Google-Smtp-Source: 
- ABdhPJwIanNXKjOYJKOJANRWIiH9ViStiWQ4bdzqr1E56ejhW2cmi695OToSeT3zOoKHwdOIRg4G445oY7Pb94xRy64=
-X-Received: by 2002:a05:6a02:182:b0:374:5a57:cbf9 with SMTP id
- bj2-20020a056a02018200b003745a57cbf9mr25271780pgb.616.1648038278000; Wed, 23
- Mar 2022 05:24:38 -0700 (PDT)
+  d=axis.com; q=dns/txt; s=axis-central1; t=1648051756;
+  x=1679587756;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=qGHtfJtVBXFhC2riq3c21hvpdLe9AV7czoXWBQvVies=;
+  b=bdHgsqkmXUP85neywUHKzwJROlpdOguBl4YtFYVD3Hmn7XpK3cfgXOBm
+   1QDNdH8Mpbj9rjAMK6xXkalZWCmHKyuPN+FPYKG1OV/qwXOR5iCMLoe5V
+   1Y4tntAaaaDWDY8MmJv6f9cB7WmomkIz/pYOSR9M2DzqmwJI0BQHFjA5R
+   YsYPN2+Tie3QUvkk8wLuCM3+Doh+YIXP51pJqxtoFQ1sey7A8zVl+JOgP
+   W7OQ56n3r5SixpkrqHbQn8LftKbVG/ZkMfJfT8nHh7+d72A6nUszV5pHa
+   mYEoPrezRnrV8LiGXhtPDVGTPUNBTXNK3lBnYDfP8ZHC6YVGZg57/8dSi
+   Q==;
+From: Peter Kjellerstedt <pkj@axis.com>
+To: <docs@lists.yoctoproject.org>
+Subject: [PATCH] ref-manual: Remove references to AVAILABLE_LICENSES
+Date: Wed, 23 Mar 2022 17:09:11 +0100
+Message-ID: <20220323160911.6259-1-pkj@axis.com>
+X-Mailer: git-send-email 2.21.3
 MIME-Version: 1.0
-References: <20211215092509.60979-1-simon.eu@gmail.com>
- <42d3ff93-33a1-e751-b0ff-974c8ecb4858@bootlin.com>
- <CAO8d5BY0R2d4Ufvk9cWwx=t95sOcQXs-5NGquP-3AAH8xG-RAg@mail.gmail.com>
- <9e458156-8a40-ce06-986a-8ce39b546712@bootlin.com>
- <CAO8d5BYN7g0oEoPG=CrTt99pQ1-fYkx5bq-RiB_j9E3OBu4K2w@mail.gmail.com>
- <ca5a3aed-e04c-b2b5-65eb-6bb424d0c379@bootlin.com>
- <6035008ce96fb9055547cf0cc2ffa51d2262c9ea.camel@linuxfoundation.org>
-In-Reply-To: 
- <6035008ce96fb9055547cf0cc2ffa51d2262c9ea.camel@linuxfoundation.org>
-From: Simon Eugster <simon.eu@gmail.com>
-Date: Wed, 23 Mar 2022 13:24:26 +0100
-Message-ID: 
- <CAO8d5BYO1z76mtrYiXt5P-gg0VZFRgL_b0DcBteuP6WxHpkhnQ@mail.gmail.com>
-Subject: Re: [bitbake-devel] [docs] [PATCH] bitbake: doc: bitbake-user-manual:
- Add more explanations to OVERRIDES
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
- bitbake-devel@lists.openembedded.org,
-	docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="00000000000022f2d805dae1d053"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 23 Mar 2022 12:24:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2704
+ <docs@lists.yoctoproject.org>; Wed, 23 Mar 2022 16:09:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2705
 
---00000000000022f2d805dae1d053
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+The AVAILABLE_LICENSES variable has been removed from OE-Core.
 
-I submitted a patch for only the OVERRIDE part now. (The in-reply-to did
-not seem to have an effect =E2=80=93 sorry for that!)
+Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+---
+ documentation/ref-manual/variables.rst | 26 --------------------------
+ 1 file changed, 26 deletions(-)
 
-I can submit that part as separate patch and I'm happy to re-phrase or
-change it in other ways.
-
-+.. note::
-+
-+   Before Honister (3.4), override style used ``_`` instead of ``:``, so
-you will
-+   still find a lot of documentation using =E2=80=9C_append=E2=80=9D, =E2=
-=80=9C_prepend=E2=80=9D, and
-+   =E2=80=9C_remove=E2=80=9D.
-
-Simon
-
-On Tue, Mar 1, 2022 at 2:33 PM Richard Purdie <
-richard.purdie@linuxfoundation.org> wrote:
-
-> On Tue, 2022-03-01 at 09:33 +0100, Michael Opdenacker via
-> lists.openembedded.org
-> wrote:
-> > Hi Simon,
-> >
-> > On 2/28/22 10:31, Simon A. Eugster wrote:
-> > >
-> > > On Wed, Jan 5, 2022 at 5:02 PM Michael Opdenacker
-> > > <michael.opdenacker@bootlin.com> wrote:
-> > >
-> > >     Hi Simon,
-> > >
-> > >     Thanks for your answers...
-> > >
-> > >     On 1/5/22 11:11 AM, Simon Eugster wrote:
-> > >     > Hi Michael,
-> > >     >
-> > >     >     >
-> > >     >     > +.. note::
-> > >     >     > +
-> > >     >     > +   Before Honister (3.4), override style used ``_``
-> > >     instead of
-> > >     >     ``:``, so you will
-> > >     >     > +   still find a lot of documentation using =E2=80=9C_app=
-end=E2=80=9D,
-> > >     >     =E2=80=9C_prepend=E2=80=9D, and
-> > >     >     > +   =E2=80=9C_remove=E2=80=9D.
-> > >     >     > +
-> > >     >
-> > >     >
-> > >     >     I don't have anything about this text, but I wonder whether
-> > >     we should
-> > >     >     mention the old syntax in the current docs.
-> > >     >     Thoughts anyone?
-> > >     >
-> > >     >
-> > >     > I added this because I (as a new user) found it very confusing
-> > >     to find
-> > >     > all the _ style syntax in guides online and no mention of it in
-> the
-> > >     > docs. I would have expected such a note.
-> > >
-> > >
-> > >     This makes sense, but so far we just mentioned the old syntax in
-> the
-> > >     migration guides. That's why I was asking for other opinions...
-> > >
-> > >
-> > > Looks like there are no other opinions on that topic.
-> > > In that case, do you want me to continue with the MR and apply your
-> > > suggestions, or discard the MR?
-> >
-> >
-> > Well, I'd rather drop the note about the overrides syntax change, but
-> > I'm still interested in the rest of the patch.
->
-> Since you asked for opinions, I think some mention of this in the overrid=
-es
-> section of the bitbake manual would be a good idea since it was such a
-> fundamental change?
->
-> Cheers,
->
-> Richard
->
->
->
->
->
->
-
---00000000000022f2d805dae1d053
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div>I submitted a patch for only the OVERRIDE part now. (=
-The in-reply-to did not seem to have an effect =E2=80=93 sorry for that!)</=
-div><div><br></div><div>I can submit that part as separate patch and I&#39;=
-m happy to re-phrase or change it in other ways.<br></div><div><br></div><d=
-iv>+.. note::<br>+<br>+ =C2=A0 Before Honister (3.4), override style used `=
-`_`` instead of ``:``, so you will<br>+ =C2=A0 still find a lot of document=
-ation using =E2=80=9C_append=E2=80=9D, =E2=80=9C_prepend=E2=80=9D, and<br>+=
- =C2=A0 =E2=80=9C_remove=E2=80=9D.<br></div><div><br></div><div>Simon<br></=
-div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_at=
-tr">On Tue, Mar 1, 2022 at 2:33 PM Richard Purdie &lt;<a href=3D"mailto:ric=
-hard.purdie@linuxfoundation.org">richard.purdie@linuxfoundation.org</a>&gt;=
- wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
-0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Tue, =
-2022-03-01 at 09:33 +0100, Michael Opdenacker via <a href=3D"http://lists.o=
-penembedded.org" rel=3D"noreferrer" target=3D"_blank">lists.openembedded.or=
-g</a><br>
-wrote:<br>
-&gt; Hi Simon,<br>
-&gt; <br>
-&gt; On 2/28/22 10:31, Simon A. Eugster wrote:<br>
-&gt; &gt; <br>
-&gt; &gt; On Wed, Jan 5, 2022 at 5:02 PM Michael Opdenacker<br>
-&gt; &gt; &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com" target=3D"_=
-blank">michael.opdenacker@bootlin.com</a>&gt; wrote:<br>
-&gt; &gt; <br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0Hi Simon,<br>
-&gt; &gt; <br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0Thanks for your answers...<br>
-&gt; &gt; <br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0On 1/5/22 11:11 AM, Simon Eugster wrote:<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; Hi Michael,<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +.. note::<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0Bef=
-ore Honister (3.4), override style used ``_``<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0instead of<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0``:``, so you will<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0sti=
-ll find a lot of documentation using =E2=80=9C_append=E2=80=9D,<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0=E2=80=9C_prepend=E2=
-=80=9D, and<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0=E2=
-=80=9C_remove=E2=80=9D.<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0I don&#39;t have anyth=
-ing about this text, but I wonder whether<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0we should<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0mention the old syntax=
- in the current docs.<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0Thoughts anyone?<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; I added this because I (as a new user) fo=
-und it very confusing<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0to find<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; all the _ style syntax in guides online a=
-nd no mention of it in the<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; docs. I would have expected such a note.<=
-br>
-&gt; &gt; <br>
-&gt; &gt; <br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0This makes sense, but so far we just mentioned=
- the old syntax in the<br>
-&gt; &gt;=C2=A0 =C2=A0 =C2=A0migration guides. That&#39;s why I was asking =
-for other opinions...<br>
-&gt; &gt; <br>
-&gt; &gt; <br>
-&gt; &gt; Looks like there are no other opinions on that topic.<br>
-&gt; &gt; In that case, do you want me to continue with the MR and apply yo=
-ur<br>
-&gt; &gt; suggestions, or discard the MR?<br>
-&gt; <br>
-&gt; <br>
-&gt; Well, I&#39;d rather drop the note about the overrides syntax change, =
-but<br>
-&gt; I&#39;m still interested in the rest of the patch.<br>
-<br>
-Since you asked for opinions, I think some mention of this in the overrides=
-<br>
-section of the bitbake manual would be a good idea since it was such a<br>
-fundamental change?<br>
-<br>
-Cheers,<br>
-<br>
-Richard<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-</blockquote></div>
-
---00000000000022f2d805dae1d053--
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 634f19a673..b5cfc335fb 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -231,17 +231,6 @@ system and gives an overview of their function and contents.
+       must set this variable in your recipe. The
+       :ref:`syslinux <ref-classes-syslinux>` class checks this variable.
+ 
+-   :term:`AVAILABLE_LICENSES`
+-      List of licenses found in the directories specified by
+-      :term:`COMMON_LICENSE_DIR` and
+-      :term:`LICENSE_PATH`.
+-
+-      .. note::
+-
+-         It is assumed that all changes to :term:`COMMON_LICENSE_DIR` and
+-         :term:`LICENSE_PATH` have been done before :term:`AVAILABLE_LICENSES`
+-         is defined (in :ref:`ref-classes-license`).
+-
+    :term:`AVAILTUNES`
+       The list of defined CPU and Application Binary Interface (ABI)
+       tunings (i.e. "tunes") available for use by the OpenEmbedded build
+@@ -3508,21 +3497,6 @@ system and gives an overview of their function and contents.
+          remove dependencies on or provide alternatives to components that
+          are required to produce a functional system image.
+ 
+-      .. note::
+-
+-         It is possible to define a list of licenses that are allowed to be
+-         used instead of the licenses that are excluded. To do this, define
+-         a variable ``COMPATIBLE_LICENSES`` with the names of the licenses
+-         that are allowed. Then define :term:`INCOMPATIBLE_LICENSE` as::
+-
+-                 INCOMPATIBLE_LICENSE = "${@' '.join(sorted(set(d.getVar('AVAILABLE_LICENSES').split()) - set(d.getVar('COMPATIBLE_LICENSES').split())))}"
+-
+-
+-         This will result in :term:`INCOMPATIBLE_LICENSE` containing the names of
+-         all licenses from :term:`AVAILABLE_LICENSES` except the ones specified
+-         in ``COMPATIBLE_LICENSES``, thus only allowing the latter licenses to
+-         be used.
+-
+    :term:`INHERIT`
+       Causes the named class or classes to be inherited globally. Anonymous
+       functions in the class or classes are not executed for the base
 
