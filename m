@@ -1,89 +1,270 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <simon.eu@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 12F3AC433EF
-	for <webhook@archiver.kernel.org>; Wed, 23 Mar 2022 11:17:50 +0000 (UTC)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
- [209.85.221.49])
- by mx.groups.io with SMTP id smtpd.web11.7869.1648034269124795353
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4B5BC433FE
+	for <webhook@archiver.kernel.org>; Wed, 23 Mar 2022 12:24:41 +0000 (UTC)
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com
+ [209.85.215.177])
+ by mx.groups.io with SMTP id smtpd.web09.8409.1648038278489331017
  for <docs@lists.yoctoproject.org>;
- Wed, 23 Mar 2022 04:17:49 -0700
+ Wed, 23 Mar 2022 05:24:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=XRuvQc8c;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.49,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f49.google.com with SMTP id u16so1627119wru.4
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=qqcQvryt;
+ spf=pass (domain: gmail.com, ip: 209.85.215.177,
+ mailfrom: simon.eu@gmail.com)
+Received: by mail-pg1-f177.google.com with SMTP id w21so972395pgm.7
         for <docs@lists.yoctoproject.org>;
- Wed, 23 Mar 2022 04:17:48 -0700 (PDT)
+ Wed, 23 Mar 2022 05:24:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RmZDeLdbr/pCalfJKUtMqAnDxoK3sa8j64tP+ovTgQU=;
-        b=XRuvQc8cwJ7YRl8tuLRYvcWyFKp6wzLVqpXLtN/2iegz2LFurE2/NOUkee4nGfx9IJ
-         EpxhijTT40nnvcfuUNrxKktIRagAPWhxukCAHs36wxmKbSl0k+Tqqk4GmHG7V70PZWCq
-         HLzSD8iquE9tzt5SvNK0KOC08M7qIRwT6poAw=
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6kFukV90qqZVT75iqd0VrhAvSOjTPEUdDnBuaaXZRac=;
+        b=qqcQvryt8RE0HYJgXq09bQJbG0lXKKxAd2ldX7KbWG35b/CqUxtVMLcvMt1R9LT3SO
+         8XB/BHY1c9NM8DivfDd2qJFaRC27rYzRj0YAEJED+AIjmrc8lJBifDqgogDswSNlJt6+
+         u5dG/eSsvsqJ56yoFQRGWBavUxEeFHCfbvZz/IWwdooTswvdKPKylKXqP4c0x3kLkHQc
+         qAHuot52uYZDe7m7RBilcBx9VOCEOhMc0Gdp3MDBdigbgozl7BjQTwf1GbwBtrop9cmC
+         na7wAt+FKwSD0M2CQGC6veGJtcXQ0zo3cxcDeNJMbpO6hr1dYEpS6fxozTY8kjR2Eput
+         P9XA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=RmZDeLdbr/pCalfJKUtMqAnDxoK3sa8j64tP+ovTgQU=;
-        b=xIJE5mXPCuQoR8gJ8Puwgr54cvKfIoQWcxQmvI3RSUEOqtJX92ICB7xsqoBKCIeNPr
-         U1uNaSkr3QFlQ+WbtJ2lknlCsSMrkhw4AJX02hi/YR2F3J5SPmrasQ/zLEind6WzCEgA
-         s1favlt/iXdShjimDgflaZBR7VAoqoD5Ux76vnqTUGm7wgmnmGGPSvmECDAtOdqWRdQK
-         SBaGVrdTo4iVaxY+4UnaulHtj91EEOmHbVWQELn0D5V4ZUOrhNzFzd0qaFyfEHDWLDDX
-         U6iH80EFMdgA6WsDcMUWvQrzAJlQn4oE6EM6Ll19ssSGOU/ehJWooQaY436+SLV0DOxj
-         G2PQ==
-X-Gm-Message-State: AOAM532UrbFjW7dY/pvtKN0NWaG5+qewhfT8KtLV3MOpdvm6/xY+hN0i
-	xuCPlc7XzN4H/n7tKkVs2nd7lCLZDN3fEMym
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6kFukV90qqZVT75iqd0VrhAvSOjTPEUdDnBuaaXZRac=;
+        b=biU8krt0bcxJ7BoK4E7fe5s5a8KDtscNP0YLDkPOGOxiuQZeX3FXF2r4NgKK+LlT1B
+         H+80JV6KSa5FVSetllLNv4qRjIFkuPmqfoNSTyFuJsmmXpYIX6wUO+E01BdgR6SdTIAz
+         qeesrqsb3LIyNRCVqYsFEO/9htcqH0gq0ly4tnRxY8C2M33PcPRdTswH4QARO12XXFBa
+         oXjqNfCYbMq98D20liW9VC+dWOALcZS/liNMKdehWY/oOdvjaLg6YLxq+Fzmr0GPUM1H
+         CXjj+vBVndfdnsfIF8OtpWAu0Lojt9SpQ+pS7YoVh5115cDluMxRezuNUNdk6rO7oIry
+         dabQ==
+X-Gm-Message-State: AOAM533Ju3oXRIjWBQMu1SXgdloZer1WWx3D0innykL4UkRXMLFEqcyr
+	u/dmwY/f7DbFL5JDxDnYNPTOSjv3P4zuXz9C2JU=
 X-Google-Smtp-Source: 
- ABdhPJxKo2KnZMGbmt7rONiAIURhKSIkIDMKuN2W0iZ1yA5EceNuO3TeK7LCme8bd949XANaUOpOJQ==
-X-Received: by 2002:a5d:5846:0:b0:204:1a79:f1ab with SMTP id
- i6-20020a5d5846000000b002041a79f1abmr10085378wrf.520.1648034266938;
-        Wed, 23 Mar 2022 04:17:46 -0700 (PDT)
-Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:aaba:716e:9c38:ad87])
-        by smtp.gmail.com with ESMTPSA id
- u12-20020a5d6dac000000b00204119d37d0sm7503182wrs.26.2022.03.23.04.17.46
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Mar 2022 04:17:46 -0700 (PDT)
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] set_versions: Handle dev branch in switchers correctly
-Date: Wed, 23 Mar 2022 11:17:45 +0000
-Message-Id: <20220323111745.1266678-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.32.0
+ ABdhPJwIanNXKjOYJKOJANRWIiH9ViStiWQ4bdzqr1E56ejhW2cmi695OToSeT3zOoKHwdOIRg4G445oY7Pb94xRy64=
+X-Received: by 2002:a05:6a02:182:b0:374:5a57:cbf9 with SMTP id
+ bj2-20020a056a02018200b003745a57cbf9mr25271780pgb.616.1648038278000; Wed, 23
+ Mar 2022 05:24:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20211215092509.60979-1-simon.eu@gmail.com>
+ <42d3ff93-33a1-e751-b0ff-974c8ecb4858@bootlin.com>
+ <CAO8d5BY0R2d4Ufvk9cWwx=t95sOcQXs-5NGquP-3AAH8xG-RAg@mail.gmail.com>
+ <9e458156-8a40-ce06-986a-8ce39b546712@bootlin.com>
+ <CAO8d5BYN7g0oEoPG=CrTt99pQ1-fYkx5bq-RiB_j9E3OBu4K2w@mail.gmail.com>
+ <ca5a3aed-e04c-b2b5-65eb-6bb424d0c379@bootlin.com>
+ <6035008ce96fb9055547cf0cc2ffa51d2262c9ea.camel@linuxfoundation.org>
+In-Reply-To: 
+ <6035008ce96fb9055547cf0cc2ffa51d2262c9ea.camel@linuxfoundation.org>
+From: Simon Eugster <simon.eu@gmail.com>
+Date: Wed, 23 Mar 2022 13:24:26 +0100
+Message-ID: 
+ <CAO8d5BYO1z76mtrYiXt5P-gg0VZFRgL_b0DcBteuP6WxHpkhnQ@mail.gmail.com>
+Subject: Re: [bitbake-devel] [docs] [PATCH] bitbake: doc: bitbake-user-manual:
+ Add more explanations to OVERRIDES
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+ bitbake-devel@lists.openembedded.org,
+	docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="00000000000022f2d805dae1d053"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 23 Mar 2022 11:17:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2702
+ <docs@lists.yoctoproject.org>; Wed, 23 Mar 2022 12:24:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2704
 
-The dev branch is being displayed in switchers under two different
-headings, 4.0.999 and dev (4.0). Add an additional conditional to fix that.
+--00000000000022f2d805dae1d053
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
----
- documentation/set_versions.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I submitted a patch for only the OVERRIDE part now. (The in-reply-to did
+not seem to have an effect =E2=80=93 sorry for that!)
 
-diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index af237f29e..b2859381e 100755
---- a/documentation/set_versions.py
-+++ b/documentation/set_versions.py
-@@ -220,7 +220,7 @@ with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-static/switch
-                     version = version + "." + versions[-1]
-                 versions.append(version)
-                 w.write("    '%s': '%s',\n" % (version, version))
--            if ourversion not in versions:
-+            if ourversion not in versions and ourbranch != devbranch:
-                 w.write("    '%s': '%s',\n" % (ourversion, ourversion))
-         else:
-             w.write(line)
--- 
-2.32.0
+I can submit that part as separate patch and I'm happy to re-phrase or
+change it in other ways.
 
++.. note::
++
++   Before Honister (3.4), override style used ``_`` instead of ``:``, so
+you will
++   still find a lot of documentation using =E2=80=9C_append=E2=80=9D, =E2=
+=80=9C_prepend=E2=80=9D, and
++   =E2=80=9C_remove=E2=80=9D.
+
+Simon
+
+On Tue, Mar 1, 2022 at 2:33 PM Richard Purdie <
+richard.purdie@linuxfoundation.org> wrote:
+
+> On Tue, 2022-03-01 at 09:33 +0100, Michael Opdenacker via
+> lists.openembedded.org
+> wrote:
+> > Hi Simon,
+> >
+> > On 2/28/22 10:31, Simon A. Eugster wrote:
+> > >
+> > > On Wed, Jan 5, 2022 at 5:02 PM Michael Opdenacker
+> > > <michael.opdenacker@bootlin.com> wrote:
+> > >
+> > >     Hi Simon,
+> > >
+> > >     Thanks for your answers...
+> > >
+> > >     On 1/5/22 11:11 AM, Simon Eugster wrote:
+> > >     > Hi Michael,
+> > >     >
+> > >     >     >
+> > >     >     > +.. note::
+> > >     >     > +
+> > >     >     > +   Before Honister (3.4), override style used ``_``
+> > >     instead of
+> > >     >     ``:``, so you will
+> > >     >     > +   still find a lot of documentation using =E2=80=9C_app=
+end=E2=80=9D,
+> > >     >     =E2=80=9C_prepend=E2=80=9D, and
+> > >     >     > +   =E2=80=9C_remove=E2=80=9D.
+> > >     >     > +
+> > >     >
+> > >     >
+> > >     >     I don't have anything about this text, but I wonder whether
+> > >     we should
+> > >     >     mention the old syntax in the current docs.
+> > >     >     Thoughts anyone?
+> > >     >
+> > >     >
+> > >     > I added this because I (as a new user) found it very confusing
+> > >     to find
+> > >     > all the _ style syntax in guides online and no mention of it in
+> the
+> > >     > docs. I would have expected such a note.
+> > >
+> > >
+> > >     This makes sense, but so far we just mentioned the old syntax in
+> the
+> > >     migration guides. That's why I was asking for other opinions...
+> > >
+> > >
+> > > Looks like there are no other opinions on that topic.
+> > > In that case, do you want me to continue with the MR and apply your
+> > > suggestions, or discard the MR?
+> >
+> >
+> > Well, I'd rather drop the note about the overrides syntax change, but
+> > I'm still interested in the rest of the patch.
+>
+> Since you asked for opinions, I think some mention of this in the overrid=
+es
+> section of the bitbake manual would be a good idea since it was such a
+> fundamental change?
+>
+> Cheers,
+>
+> Richard
+>
+>
+>
+>
+>
+>
+
+--00000000000022f2d805dae1d053
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>I submitted a patch for only the OVERRIDE part now. (=
+The in-reply-to did not seem to have an effect =E2=80=93 sorry for that!)</=
+div><div><br></div><div>I can submit that part as separate patch and I&#39;=
+m happy to re-phrase or change it in other ways.<br></div><div><br></div><d=
+iv>+.. note::<br>+<br>+ =C2=A0 Before Honister (3.4), override style used `=
+`_`` instead of ``:``, so you will<br>+ =C2=A0 still find a lot of document=
+ation using =E2=80=9C_append=E2=80=9D, =E2=80=9C_prepend=E2=80=9D, and<br>+=
+ =C2=A0 =E2=80=9C_remove=E2=80=9D.<br></div><div><br></div><div>Simon<br></=
+div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_at=
+tr">On Tue, Mar 1, 2022 at 2:33 PM Richard Purdie &lt;<a href=3D"mailto:ric=
+hard.purdie@linuxfoundation.org">richard.purdie@linuxfoundation.org</a>&gt;=
+ wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px =
+0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">On Tue, =
+2022-03-01 at 09:33 +0100, Michael Opdenacker via <a href=3D"http://lists.o=
+penembedded.org" rel=3D"noreferrer" target=3D"_blank">lists.openembedded.or=
+g</a><br>
+wrote:<br>
+&gt; Hi Simon,<br>
+&gt; <br>
+&gt; On 2/28/22 10:31, Simon A. Eugster wrote:<br>
+&gt; &gt; <br>
+&gt; &gt; On Wed, Jan 5, 2022 at 5:02 PM Michael Opdenacker<br>
+&gt; &gt; &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com" target=3D"_=
+blank">michael.opdenacker@bootlin.com</a>&gt; wrote:<br>
+&gt; &gt; <br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0Hi Simon,<br>
+&gt; &gt; <br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0Thanks for your answers...<br>
+&gt; &gt; <br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0On 1/5/22 11:11 AM, Simon Eugster wrote:<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; Hi Michael,<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +.. note::<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0Bef=
+ore Honister (3.4), override style used ``_``<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0instead of<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0``:``, so you will<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0sti=
+ll find a lot of documentation using =E2=80=9C_append=E2=80=9D,<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0=E2=80=9C_prepend=E2=
+=80=9D, and<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +=C2=A0 =C2=A0=E2=
+=80=9C_remove=E2=80=9D.<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0&gt; +<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0I don&#39;t have anyth=
+ing about this text, but I wonder whether<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0we should<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0mention the old syntax=
+ in the current docs.<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;=C2=A0 =C2=A0 =C2=A0Thoughts anyone?<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt;<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; I added this because I (as a new user) fo=
+und it very confusing<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0to find<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; all the _ style syntax in guides online a=
+nd no mention of it in the<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0&gt; docs. I would have expected such a note.<=
+br>
+&gt; &gt; <br>
+&gt; &gt; <br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0This makes sense, but so far we just mentioned=
+ the old syntax in the<br>
+&gt; &gt;=C2=A0 =C2=A0 =C2=A0migration guides. That&#39;s why I was asking =
+for other opinions...<br>
+&gt; &gt; <br>
+&gt; &gt; <br>
+&gt; &gt; Looks like there are no other opinions on that topic.<br>
+&gt; &gt; In that case, do you want me to continue with the MR and apply yo=
+ur<br>
+&gt; &gt; suggestions, or discard the MR?<br>
+&gt; <br>
+&gt; <br>
+&gt; Well, I&#39;d rather drop the note about the overrides syntax change, =
+but<br>
+&gt; I&#39;m still interested in the rest of the patch.<br>
+<br>
+Since you asked for opinions, I think some mention of this in the overrides=
+<br>
+section of the bitbake manual would be a good idea since it was such a<br>
+fundamental change?<br>
+<br>
+Cheers,<br>
+<br>
+Richard<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+</blockquote></div>
+
+--00000000000022f2d805dae1d053--
 
