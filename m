@@ -2,100 +2,79 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8486CC433FE
-	for <webhook@archiver.kernel.org>; Fri, 25 Mar 2022 14:57:55 +0000 (UTC)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
- [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web11.6455.1648220273717837271
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5458EC433EF
+	for <webhook@archiver.kernel.org>; Mon, 28 Mar 2022 15:30:26 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web08.12495.1648481424849132981
  for <docs@lists.yoctoproject.org>;
- Fri, 25 Mar 2022 07:57:54 -0700
+ Mon, 28 Mar 2022 08:30:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OIy5wd5w;
- spf=pass (domain: bootlin.com, ip: 217.70.178.232,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=e8S8xJvr;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 83D15200012;
-	Fri, 25 Mar 2022 14:57:51 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id BA92924000D;
+	Mon, 28 Mar 2022 15:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1648220272;
+	t=1648481423;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=/LREZ4KpYSKluBm5Xd9xM/k5DkolipTXr9D94MtxHGM=;
-	b=OIy5wd5wyqubGutv/rL+FdOXGBEwuZHWNkoJj6KJf+IHsWLQZt7Zvs3OHRYO05Y1q6mLYH
-	bLelCfo7M5GBr11E3jp4N6/dOCD1pk1MW/cRNPUKzCoBtCojHqd2cA7x71g8wO/DhtfeY7
-	n3AMaOgK3K4LYW25jiyldNnhi70uJe5v5z5oAJnHMgr3wkwO8YRPQswJCiped89Kofcvo4
-	kKBD95DSCY2Gt/sylXCAGmbt91inTEtTMd6mCr64AX7mO1eQBgEwlJp4xADXdiWJFrQpA6
-	XtFBnfzdteythENICZK6D0ZLmm1j8CxbnX4iLgSGJrnUT/4piLCrtCrWKpML3Q==
-Message-ID: <bb55d51b-1563-07b3-b21c-ba982e811615@bootlin.com>
-Date: Fri, 25 Mar 2022 15:57:51 +0100
+	bh=UwlyaZ9LBVvFA3aS4qW/3dE6WcWC1zRhhuhfQsPWkl8=;
+	b=e8S8xJvrqgdcnGszMkhEzAQ7IUY+5Cl3lKF8fP+N7D4nRMmnZTF02tjsKMLoQm9qdIEJdZ
+	jk1ZrYArUqow0GS6CEhLj/G4mReKxPRJE4eIEzUjCG4yOuQHMiAekkYfEqsoN/VfrlqF7B
+	9F9GRTUH2KakC92FSbAoA3UVq7iLASdg7Cx0o57iSFsXZskSiYPrA7fsirpe7DVvuI6fQP
+	MywmHm431ZR3bsyhhh+m4JPI6Ae9m+L0W5QSUmluMOBRf68JIvPATSX0J1VFa9r4Mp9T0G
+	68CW9dXU2pOVht86IxdQrEsu7Uzvr25UgKpQ4VVU+qlOdEER2uZHyAmYCMV2LQ==
+Message-ID: <2c8e51a2-fd18-9781-7686-21d7a5376443@bootlin.com>
+Date: Mon, 28 Mar 2022 17:30:21 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] bitbake: doc: bitbake-user-manual: Improve
- OVERRIDES docs
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [OE-core] [PATCH 2/2] mount-copybind: add
+ MOUNT_COPYBIND_AVOID_OVERLAYFS env var to skip OverlayFS
 Content-Language: en-US
-To: "Simon A. Eugster" <simon.eu@gmail.com>,
- bitbake-devel@lists.openembedded.org
-References: <ca5a3aed-e04c-b2b5-65eb-6bb424d0c379@bootlin.com>
- <20220323121605.144257-1-simon.eu@gmail.com>
+To: Luca Bocassi <luca.boccassi@gmail.com>,
+ openembedded-core@lists.openembedded.org
+References: <20220325184032.1880706-1-luca.boccassi@gmail.com>
+ <20220325184032.1880706-2-luca.boccassi@gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20220323121605.144257-1-simon.eu@gmail.com>
+In-Reply-To: <20220325184032.1880706-2-luca.boccassi@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 25 Mar 2022 14:57:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2710
+ <docs@lists.yoctoproject.org>; Mon, 28 Mar 2022 15:30:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2711
 
-Hi Simon
+Hi Luca,
 
-On 3/23/22 13:16, Simon A. Eugster wrote:
-> Improve the explanation about OVERRIDES to clarify how variable
-> overrides are chosen based on OVERRIDES.
+On 3/25/22 19:40, Luca Bocassi wrote:
+> From: Luca Boccassi <luca.boccassi@microsoft.com>
 >
-> Signed-off-by: Simon A. Eugster <simon.eu@gmail.com>
-> ---
->  .../bitbake-user-manual-metadata.rst          | 20 ++++++++++---------
->  1 file changed, 11 insertions(+), 9 deletions(-)
+> In some cases we don't want to even attempt to set up OverlayFS, for
+> example because SELinux in enforcing mode would kill the process
+> attempting to use the mount. See:
 >
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> index ea42d77c..a78f9048 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> @@ -517,20 +517,22 @@ variable.
->  -  *Selecting a Variable:* The :term:`OVERRIDES` variable is a
->     colon-character-separated list that contains items for which you want
->     to satisfy conditions. Thus, if you have a variable that is
-> -   conditional on "arm", and "arm" is in :term:`OVERRIDES`, then the
-> +   conditional on "arm", and "arm" is listed in :term:`OVERRIDES`, then the
->     "arm"-specific version of the variable is used rather than the
->     non-conditional version. Here is an example::
->  
-> -      OVERRIDES = "architecture:os:machine"
-> +      # Typically, OVERRIDES contains something like architecture:os:machine
-> +      OVERRIDES = "arm:linux:beaglebone"
->        TEST = "default"
-> -      TEST:os = "osspecific"
-> +      TEST:arm = "armspecific"
->        TEST:nooverride = "othercondvalue"
->  
-> -   In this example, the :term:`OVERRIDES`
-> -   variable lists three overrides: "architecture", "os", and "machine".
-> -   The variable ``TEST`` by itself has a default value of "default". You
-> -   select the os-specific version of the ``TEST`` variable by appending
-> -   the "os" override to the variable (i.e. ``TEST:os``).
-> +   In this example, the :term:`OVERRIDES` variable lists three
-> +   overrides: "foo", "linux", and "arm". The variable ``TEST`` by itself
+> https://lore.kernel.org/all/CA+FmFJBDwt52Z-dVGfuUcnRMiMtGPhK4cCQJ=J_fg0r3x-b6ng@mail.gmail.com/T/#mef98aa406324096d1889d3d467251f30456f403c
+>
+> If MOUNT_COPYBIND_AVOID_OVERLAYFS=1 is set, skip directly to copy and
+> bind mount.
+>
+> Signed-off-by: Luca Boccassi <luca.boccassi@microsoft.com>
 
 
-Shouldn't the three overrides be "beaglebone", "linux" and "arm" from
-the code above?
-Thanks
+Thanks for the patch!
+Now that the patch is merged, would you mind proposing a patch to add a
+description of it to the documentation? You'll probably do it better
+than I would.
+
+Thanks in advance
 Michael.
 
 -- 
