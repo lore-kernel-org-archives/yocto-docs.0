@@ -2,90 +2,67 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA2EAC4332F
-	for <webhook@archiver.kernel.org>; Mon, 28 Mar 2022 16:08:22 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web10.12991.1648483701218509614
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16D5AC433F5
+	for <webhook@archiver.kernel.org>; Mon, 28 Mar 2022 16:13:17 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.13007.1648483995420715898
  for <docs@lists.yoctoproject.org>;
- Mon, 28 Mar 2022 09:08:21 -0700
+ Mon, 28 Mar 2022 09:13:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jRMir8Cj;
- spf=pass (domain: bootlin.com, ip: 217.70.178.230,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jdF/MC0U;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 10A40240005;
-	Mon, 28 Mar 2022 16:08:18 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 0385740005;
+	Mon, 28 Mar 2022 16:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1648483699;
+	t=1648483994;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Hr5BTJwjBgYd0uRVa7AvSOMjRuDjxdbUpFd68gTei+A=;
-	b=jRMir8CjrLk7/CfGGKgbwCxHfx6VosHxmfut0MKWXccj6bdb8YWGKsumjwxEtvnwLgZ3Aj
-	+zZG4IX1zkkedmjqlKXRRDXP02YdYatl9l+cLbhzJc+2tphX00adwUi7V/t57Jslco7I5r
-	fxKCh51zOINcZBJuTDWEbdA5siFlu8Z1pwJIiZ8LbAuOtZGwz4MHHGTnhvjRkEAeHJ3WBi
-	F38kLVLMpgh4XJ8G78oDhP+BsMTp+x0NW6FbxChdig43RfLrv5bEwQXAuieChCx+Kr4gR4
-	KkUTmHpCEkTSy+BTdDRax3BKhHdQKo9qhWVb53ibaTt8mte7yktxVfjvG9Z81A==
-Message-ID: <1f6c9456-2896-2e60-7dfe-b88420cf97c3@bootlin.com>
-Date: Mon, 28 Mar 2022 18:08:18 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WY5n3K4n1gzMZaUisGtwCtquMhRiIbYhsyTG1Umuu0s=;
+	b=jdF/MC0UXNz0QDL/fopHgrUYLf8N84kGx4SM9OkJL5KgUl0KB9TdFgoyCrx6XuM04aDjAZ
+	9+NKjEHm0WoU8pTEgTE9806QPP5yP1dBpj2HPRVdK1rW8gVy45NniEnZ8r3kvENa24WLFP
+	yKNPrf5SawgSJdyRViNXq/CXGoL7MU9dhzvu7KgX1Yu9gIQBsze/TrpcezjMIHXPeAMBcY
+	lw151cgAdyuyLwdVja5D+/Ds/2MDTc85zDVgcdoArAuz7Np7oU7EpRPOfw56BHSRDXvMoA
+	dUZRiQ1hNDoKF9bSZR/V1UgPUSXJ8t/zMkYtOhWCj/y04dACzL16Mr9PBQ34+w==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] docs: add poky.yaml to "make clean"
+Date: Mon, 28 Mar 2022 18:13:11 +0200
+Message-Id: <20220328161311.325248-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [OE-core] [PATCH 2/2] mount-copybind: add
- MOUNT_COPYBIND_AVOID_OVERLAYFS env var to skip OverlayFS
-Content-Language: en-US
-To: Luca Bocassi <luca.boccassi@gmail.com>,
- openembedded-core@lists.openembedded.org
-References: <20220325184032.1880706-1-luca.boccassi@gmail.com>
- <20220325184032.1880706-2-luca.boccassi@gmail.com>
- <2c8e51a2-fd18-9781-7686-21d7a5376443@bootlin.com>
- <0b46c32fb91e47f1e561a29d323f231bc59684c1.camel@debian.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <0b46c32fb91e47f1e561a29d323f231bc59684c1.camel@debian.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 28 Mar 2022 16:08:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2714
+ <docs@lists.yoctoproject.org>; Mon, 28 Mar 2022 16:13:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2715
 
-Hi Luca,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 3/28/22 17:32, Luca Bocassi wrote:
->
->> Thanks for the patch!
->> Now that the patch is merged, would you mind proposing a patch to add a
->> description of it to the documentation? You'll probably do it better
->> than I would.
->>
->> Thanks in advance
->> Michael.
-> Sure I can do that, where should it be listed exactly?
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-Great!
-Well, I was thinking about adding an entry to
-https://git.yoctoproject.org/yocto-docs/tree/documentation/ref-manual/variables.rst
-corresponding to https://docs.yoctoproject.org/ref-manual/variables.html
-
-However, I'm starting to have doubts as "volatile-binds" are not even
-documented. Is this new variable meant to be used in the configuration
-file? If so, it probably needs documenting, but it's nice when a
-variable is either attached to a bbclass or is introduced in one of the
-manuals too.
-
-Ideas anyone?
-Thanks again
-Michael.
-
+diff --git a/documentation/Makefile b/documentation/Makefile
+index bec53399c0..267e6d7d04 100644
+--- a/documentation/Makefile
++++ b/documentation/Makefile
+@@ -44,7 +44,7 @@ PNGs := $(foreach dir, $(IMAGEDIRS), $(patsubst %.svg,%.png,$(wildcard $(SOURCED
+ 	$(SVG2PNG) --export-filename=$@ $<
+ 
+ clean:
+-	@rm -rf $(BUILDDIR) $(PNGs) $(PDFs)
++	@rm -rf $(BUILDDIR) $(PNGs) $(PDFs) poky.yaml
+ 
+ epub: $(PNGs)
+ 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
