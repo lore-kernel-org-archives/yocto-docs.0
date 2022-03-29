@@ -2,82 +2,80 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 674C8C433EF
-	for <webhook@archiver.kernel.org>; Tue, 29 Mar 2022 16:33:56 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web08.8995.1648571634740680166
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B06DC433EF
+	for <webhook@archiver.kernel.org>; Tue, 29 Mar 2022 16:47:59 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.9261.1648572477711522327
  for <docs@lists.yoctoproject.org>;
- Tue, 29 Mar 2022 09:33:55 -0700
+ Tue, 29 Mar 2022 09:47:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BWZ/vIxf;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kMq79LIt;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 7ED14E000B;
-	Tue, 29 Mar 2022 16:33:52 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 0E37AC0003;
+	Tue, 29 Mar 2022 16:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1648571633;
+	t=1648572475;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BRj6exUvF9d/scDMrlcKlV79sftYzVNIcKqatf1Gm1Q=;
-	b=BWZ/vIxfntiLTueuUiXCH20yNKxcw34VornAvId2Y30O0QnVzmHsTOAjeH+kpM7BQnIfg2
-	Ia/G9R6QUNPV/+NpJ8Idaj4GXbaOUar6s1QoEAdlxJ8aFphwHvLmQuJd0Ifiw+Nefb9Fyo
-	T5/JA7TtePYSfyd+Q292mhIlAF0txlH9G+IR5bjidqNXIAUArtBar9Mxr+tn1CFkrox2V3
-	AoMN9sqgl2S6Y4IJe/CsyNF3NTmKG9VzNPXqjqhvvb72Ntszjt3k/sBVBCYG4Azwjcjc3c
-	1Nv7VNJjVZ/idUjsZhYXUvV13W3VTC9Tn2tisrC+B1g9WwFeeecduQAZkZbifQ==
-Message-ID: <119c048f-010d-f9d2-2e74-da470b1d043d@bootlin.com>
-Date: Tue, 29 Mar 2022 18:33:51 +0200
+	bh=oRTsATHaa6WT6aPs7zPtiCbzFPbXbjSZ+ERlXHISL9c=;
+	b=kMq79LItZwtl15XdsvqYSqOvstdz8CAkJOFd0hFBBs+9+yl/+jFYeouZqONqOUqWLIFDVy
+	sGxtw6cs2NHuIprjmgvQzzbUsKh8UYWKnRkOrJptsmB7CADcdFo8lRGbZr/beye+aRbng4
+	gUBv3X1EDKVsP+WavUwZ1ILJDxhW3bWpoHFuUoI/sdPTcIain4sVmXeAGJ99elP+puFpDp
+	OcJeqz2JInD+7GuNro/8mRyXtOP3QSOhypqicEgZRXg2laWxeip9cnMF8xHBPxEJK/3Ny9
+	cl3DM2hBkvVoNi3ylOfPm5qz8TOtyCFpQ5xIvcjDSU/hB1cM08GkdOMwjbDVWA==
+Message-ID: <96d820e8-55e0-c9fd-7cb5-287b59732a76@bootlin.com>
+Date: Tue, 29 Mar 2022 18:47:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] bitbake-user-manual: punctuation fixes
+Subject: Re: [docs] [PATCH] overview-manual: Fix reference
 Content-Language: en-US
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- bitbake-devel@lists.openembedded.org
-References: <20220329130747.364485-1-michael.opdenacker@bootlin.com>
- <5205d592-db48-f554-5c64-221dbcb7b774@theobroma-systems.com>
+To: Daniel Ammann <daniel.ammann@bytesatwork.ch>, docs@lists.yoctoproject.org
+References: <20220329103657.52364-1-daniel.ammann@bytesatwork.ch>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <5205d592-db48-f554-5c64-221dbcb7b774@theobroma-systems.com>
+In-Reply-To: <20220329103657.52364-1-daniel.ammann@bytesatwork.ch>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 29 Mar 2022 16:33:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2731
+ <docs@lists.yoctoproject.org>; Tue, 29 Mar 2022 16:47:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2732
 
-Hi Quentin,
+Hi Daniel,
 
-Thanks for the review!
-
-On 3/29/22 15:13, Quentin Schulz wrote:
-> Hi Michael,
+On 3/29/22 12:36, Daniel Ammann wrote:
+> Signed-off-by: Daniel Ammann <daniel.ammann@bytesatwork.ch>
+> ---
+>  documentation/overview-manual/yp-intro.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> On 3/29/22 14:07, Michael Opdenacker via lists.yoctoproject.org wrote:
->> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>
->> - Replace hyphens by em dashes when necessary
->
-> I seem to recall we ultimately decided to not go for em dashes because
-> it wouldn't be matched by a search in the browser or in the sources?
+> diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
+> index a863a7d16..86a8bf2b0 100644
+> --- a/documentation/overview-manual/yp-intro.rst
+> +++ b/documentation/overview-manual/yp-intro.rst
+> @@ -151,7 +151,7 @@ Here are challenges you might encounter when developing using the Yocto Project:
+>     ":ref:`transitioning-to-a-custom-environment:transitioning to a custom environment for systems development`"
+>     documents on the Yocto Project website.
+>  
+> --  *Project Workflow Could Be Confusing:* The `Yocto Project
+> +-  *Project Workflow Could Be Confusing:* The :ref:`Yocto Project
+>     workflow <overview-manual/development-environment:the yocto project development environment>`
+>     could be confusing if you are used to traditional desktop and server
+>     software development.
 
 
-Ouch, this is frustrating. I'd rather not deviate from English writing
-rules, so that we don't have to keep a list of exceptions to them, or
-worse keep them in the back of our heads.
+Good catch!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+... and merged into master-next.
 
-And why would one need to look for an em dash in the browser or in the
-sources? As a reader, I'd avoid special characters in my searches, and
-as a developer, I would do the same, but if I really want to look for a
-specific em dash, I'll quickly find what the corresponding characters
-are in the sources, thanks to the surrounding context.
-
-Would it be possible to vote again on this?
+Don't hesitate to send us more!
 Cheers
 Michael.
 
