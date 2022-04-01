@@ -1,132 +1,89 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <abongwabonalais@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BE1DC4167B
-	for <webhook@archiver.kernel.org>; Fri,  1 Apr 2022 14:52:21 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web12.11671.1648824739209246671
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91573C43217
+	for <webhook@archiver.kernel.org>; Mon,  4 Apr 2022 14:43:47 +0000 (UTC)
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
+ [209.85.221.47])
+ by mx.groups.io with SMTP id smtpd.web12.1173.1648831050059559973
  for <docs@lists.yoctoproject.org>;
- Fri, 01 Apr 2022 07:52:19 -0700
+ Fri, 01 Apr 2022 09:37:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Vpral7mt;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196,
- mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 7AB92E0004;
-	Fri,  1 Apr 2022 14:52:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1648824737;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1b0DvqqMRaaD+6bVEABmwrD5DpETPPF5c6Dd/4A1Xew=;
-	b=Vpral7mtZH9DdedvYlxEC5+7bZJanIrO+8dOcy2VDQttB3Fx32wL4C3sCZy+f1At33Sas3
-	oS0z65bI4jAX9NgNeNROAm0iZmZWoKvCcd7mWSYPuaUnnzAv8jCiFx+DE6ZaaifrUmnlC9
-	ev9B+8z1IL1JaG7iV2xmh7MDS9gXdyIs8D7lDYbJQMof4RZVfBhD/mfODjw4rGJe1bmBwg
-	aragm6Fx0w3g24B/vhF52mIoJ0zv/WGsnHAoyXRX6T+uA9FvmKfR/3pcHSJeLC0EvpzaoO
-	+iaqREfBq46Dfn/qQ1ESD978Evjkm0PG6QcVe+rAQ8qFlkwXSLMpLlzajj0o/Q==
-Message-ID: <f209acbf-3df1-f646-14e6-2d483c81e8a3@bootlin.com>
-Date: Fri, 1 Apr 2022 16:52:14 +0200
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=auEEUGb0;
+ spf=pass (domain: gmail.com, ip: 209.85.221.47,
+ mailfrom: abongwabonalais@gmail.com)
+Received: by mail-wr1-f47.google.com with SMTP id h23so5022318wrb.8
+        for <docs@lists.yoctoproject.org>;
+ Fri, 01 Apr 2022 09:37:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TMraniO6+pZGE5s61OsC049OU4uSdlYhTXZb8e9v630=;
+        b=auEEUGb0vR5tmKmwdAhTIBxRk2iSpGyueuXi3223OwKOJM/2jzoz9mOViF6P/91D+e
+         Rz0TW7VMs3PVwNh6uIcylaMMemouO0QSjkcJ5kY/Xz95wuNZEhNrw6qm3o0NQz69FAlh
+         gfzvOdyTQsaSWAHtcq6WaSc8I8Bwo+AWatTZmVQkxA0RpYGW05iid6bguF/kvudnlNQq
+         e2EIzroZKm2JH5xrSdb3Zr5mZmb7tsJ6AXIunLz3ObH0qB68TNpwnTJe6jhl74FS9K35
+         iHVZrB7vDD7UDdbieBjmAJU2FO7ExH3LnMPuvZQgdNtasBjadCoGCtjJJrs7SH4iFxS8
+         4qeg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=TMraniO6+pZGE5s61OsC049OU4uSdlYhTXZb8e9v630=;
+        b=Ey7bZazlwb2B5H2GXkKSokJSMQ8DHZeQ1EqPAv3uERJtUqSDQVzpnMV4XZbSyx8JvY
+         +K8ZV8roCYVAqjhUeu4F/pfhwso4YYZmmWodQ8U/eyTD1lwVIYbtZ+Pu//tphSACLVh5
+         wjApqldNdnMVP+h81UP2X2WehVi8yzw343pPFzJ818vjw5rx+Jvx6/yE9cLU6NOL/Fan
+         YHbXwbMSPgxROSwWYgqG+aAsio30ogZMLjdKWdyiw5worbqWFtIZpz3bmEUa3vblbe2I
+         qJErHi+ZuU5Du99PhOttshDvHC6Ei3HPk/EhY5IozTmwHp1J4nV0nJm347ZlR2xuHF6O
+         Hm8Q==
+X-Gm-Message-State: AOAM532sgoLmmPbag1BDRaCVFZldrIjugu9uARcW8RuDa6SI2qjzARAm
+	gX6SJOkYSDtkWQ3zjCCNAm57p4NhMRo=
+X-Google-Smtp-Source: 
+ ABdhPJxxeQ9vOtn4lQi/YYPgb5h8r6y93FezNeTFADYX/CU29MhMnukWlE0PZtR/qrAMoPAL8b+iRA==
+X-Received: by 2002:a05:6000:15c3:b0:204:1185:7033 with SMTP id
+ y3-20020a05600015c300b0020411857033mr8174042wry.625.1648831048037;
+        Fri, 01 Apr 2022 09:37:28 -0700 (PDT)
+Received: from localhost.localdomain ([154.72.153.145])
+        by smtp.gmail.com with ESMTPSA id
+ ba23-20020a0560001c1700b00205ec84327dsm2698514wrb.116.2022.04.01.09.37.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Apr 2022 09:37:27 -0700 (PDT)
+From: Abongwa Amahnui Bonalais <abongwabonalais@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Abongwa Amahnui Bonalais <abongwabonalais@gmail.com>
+Subject: [PATCH] added precise directory for local.conf,
+ changing it from local.conf to conf/local.conf
+Date: Fri,  1 Apr 2022 17:36:49 +0100
+Message-Id: <20220401163649.20625-1-abongwabonalais@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Cc: docs@lists.yoctoproject.org, "Robert P. J. Day" <rpjday@crashcourse.ca>,
- Nicolas Dechesne <nicolas.dechesne@linaro.org>,
- Richard Purdie <richard.purdie@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] bitbake-user-manual: punctuation fixes
-Content-Language: en-US
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- bitbake-devel@lists.openembedded.org
-References: <20220329130747.364485-1-michael.opdenacker@bootlin.com>
- <5205d592-db48-f554-5c64-221dbcb7b774@theobroma-systems.com>
- <119c048f-010d-f9d2-2e74-da470b1d043d@bootlin.com>
- <6a58f3eb-7140-b6aa-6b9f-a0372b7311fa@theobroma-systems.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <6a58f3eb-7140-b6aa-6b9f-a0372b7311fa@theobroma-systems.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 01 Apr 2022 14:52:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2746
+ <docs@lists.yoctoproject.org>; Mon, 04 Apr 2022 14:43:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2747
 
-Hi Quentin,
+---
+ documentation/brief-yoctoprojectqs/index.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 3/31/22 10:24, Quentin Schulz wrote:
-> Hi Michael,
->
-> On 3/29/22 18:33, Michael Opdenacker wrote:
->> Hi Quentin,
->>
->> Thanks for the review!
->>
->> On 3/29/22 15:13, Quentin Schulz wrote:
->>> Hi Michael,
->>>
->>> On 3/29/22 14:07, Michael Opdenacker via lists.yoctoproject.org wrote:
->>>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>>>
->>>> - Replace hyphens by em dashes when necessary
->>>
->>> I seem to recall we ultimately decided to not go for em dashes because
->>> it wouldn't be matched by a search in the browser or in the sources?
->>
->
-> c.f. https://lists.yoctoproject.org/g/docs/topic/85211078#1731
->
-> for the original discussion around em dashes. Didn't decide anything
-> at that time though but you have all the arguments there.
->
->>
->> Ouch, this is frustrating. I'd rather not deviate from English writing
->> rules, so that we don't have to keep a list of exceptions to them, or
->> worse keep them in the back of our heads.
->>
->> And why would one need to look for an em dash in the browser or in the
->> sources? As a reader, I'd avoid special characters in my searches, and
->> as a developer, I would do the same, but if I really want to look for a
->> specific em dash, I'll quickly find what the corresponding characters
->> are in the sources, thanks to the surrounding context.
->>
->
-> You just gave the example as to why I think we shouldn't use em
-> dashes: to "avoid special characters in my searches".
->
-> No more arguments since the discussion Robert started last August,
-> so... up to you.
-
-
-Thanks for the reminder about the original discussion. You have a better
-memory than I do ;-)
-
-Could others (at least Richard, Nico ?) share their opinion here?
-Otherwise it's hard to find a majority opinion...
-
-The question is whether we should use em dashes
-(https://www.thepunctuationguide.com/em-dash.html), described as "---"
-in Restructed Text. This respects the English punctuation rules, but is
-harder to grep in the sources.
-
-If we prefer to use hyphens instead of em dashes in the documentation,
-we will have to document the exception, but the risk remains to get
-questions from time to time.
-
-My vote goes to using em dashes, and I submitted patches for the YP and
-Bitbake docs, but of course, I can accept the opposite choice if there's
-a majority for it.
-
-Thanks in advance
-Cheers
-Michael.
-
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index ad5d8a950..12cab1db7 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -250,7 +250,7 @@ an entire Linux distribution, including the toolchain, from source.
+       This is relevant only when your network and the server that you use
+       can download these artifacts faster than you would be able to build them.
+ 
+-      To use such mirrors, uncomment the below lines in your ``local.conf``
++      To use such mirrors, uncomment the below lines in your ``conf/local.conf``
+       file in the :term:`Build Directory`::
+ 
+          BB_SIGNATURE_HANDLER = "OEEquivHash"
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
