@@ -2,70 +2,71 @@ Return-Path: <abongwabonalais@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91573C43217
-	for <webhook@archiver.kernel.org>; Mon,  4 Apr 2022 14:43:47 +0000 (UTC)
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
- [209.85.221.47])
- by mx.groups.io with SMTP id smtpd.web12.1173.1648831050059559973
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 51519C4708C
+	for <webhook@archiver.kernel.org>; Mon,  4 Apr 2022 18:46:42 +0000 (UTC)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
+ [209.85.221.42])
+ by mx.groups.io with SMTP id smtpd.web11.33969.1649073526401189106
  for <docs@lists.yoctoproject.org>;
- Fri, 01 Apr 2022 09:37:30 -0700
+ Mon, 04 Apr 2022 04:58:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=auEEUGb0;
- spf=pass (domain: gmail.com, ip: 209.85.221.47,
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=LZMFUYAt;
+ spf=pass (domain: gmail.com, ip: 209.85.221.42,
  mailfrom: abongwabonalais@gmail.com)
-Received: by mail-wr1-f47.google.com with SMTP id h23so5022318wrb.8
+Received: by mail-wr1-f42.google.com with SMTP id r13so14097347wrr.9
         for <docs@lists.yoctoproject.org>;
- Fri, 01 Apr 2022 09:37:29 -0700 (PDT)
+ Mon, 04 Apr 2022 04:58:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=TMraniO6+pZGE5s61OsC049OU4uSdlYhTXZb8e9v630=;
-        b=auEEUGb0vR5tmKmwdAhTIBxRk2iSpGyueuXi3223OwKOJM/2jzoz9mOViF6P/91D+e
-         Rz0TW7VMs3PVwNh6uIcylaMMemouO0QSjkcJ5kY/Xz95wuNZEhNrw6qm3o0NQz69FAlh
-         gfzvOdyTQsaSWAHtcq6WaSc8I8Bwo+AWatTZmVQkxA0RpYGW05iid6bguF/kvudnlNQq
-         e2EIzroZKm2JH5xrSdb3Zr5mZmb7tsJ6AXIunLz3ObH0qB68TNpwnTJe6jhl74FS9K35
-         iHVZrB7vDD7UDdbieBjmAJU2FO7ExH3LnMPuvZQgdNtasBjadCoGCtjJJrs7SH4iFxS8
-         4qeg==
+        bh=ZpPH8sF90Mg6UoOT9RucJpILAB966pwDrLTX6JXO3sw=;
+        b=LZMFUYAtRkyCMl/BaJxu2byHFtCj/7rK1rEAZ58zViW/r7pBWzdalHOHFfSc4JXiy2
+         q9bmxKuJSLjcAPgnUh7yYcPXxgUmRfP9SLiL7emJ1PGpvd+z636/9dpXL6YiFXmj8VvA
+         E6KSQX4qf5DLkRG/pbNLQdA3JpS5Xm7tECROEgPQUU492ZgYiCb/WVxT31fhAP8PRAa7
+         faokpScZaDZ3BExe0t93AU3HEYA0Psg6cHhoPiSBVzI2luwiS7VLVtAtfFldz/jQRyUX
+         +Q1rSvR3bUVVc/KiX1iC+I7pVfHRs6VbuH0KTKi1YD49lVpdp3zRMz6gd81Lyx87ZUgx
+         4kZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
          :content-transfer-encoding;
-        bh=TMraniO6+pZGE5s61OsC049OU4uSdlYhTXZb8e9v630=;
-        b=Ey7bZazlwb2B5H2GXkKSokJSMQ8DHZeQ1EqPAv3uERJtUqSDQVzpnMV4XZbSyx8JvY
-         +K8ZV8roCYVAqjhUeu4F/pfhwso4YYZmmWodQ8U/eyTD1lwVIYbtZ+Pu//tphSACLVh5
-         wjApqldNdnMVP+h81UP2X2WehVi8yzw343pPFzJ818vjw5rx+Jvx6/yE9cLU6NOL/Fan
-         YHbXwbMSPgxROSwWYgqG+aAsio30ogZMLjdKWdyiw5worbqWFtIZpz3bmEUa3vblbe2I
-         qJErHi+ZuU5Du99PhOttshDvHC6Ei3HPk/EhY5IozTmwHp1J4nV0nJm347ZlR2xuHF6O
-         Hm8Q==
-X-Gm-Message-State: AOAM532sgoLmmPbag1BDRaCVFZldrIjugu9uARcW8RuDa6SI2qjzARAm
-	gX6SJOkYSDtkWQ3zjCCNAm57p4NhMRo=
+        bh=ZpPH8sF90Mg6UoOT9RucJpILAB966pwDrLTX6JXO3sw=;
+        b=5yxse+8Z7pel7KCUnKl0fvBSCE7TaQZ2aikmxPSVG2FRPnmibbYcPFzYnMQEfElzUR
+         nEbyYmiNQFgJP7EWN1qjDaWyCx40zWREY/WQasAri2Qnvbf1Kc4x17KVyKP0un4Q4D+v
+         cxoke+knfWxeY6kviP8eHpMRacrjFTQaKdSQeFX7id5b0grvSln9Rg2uAx6z4GGAQFye
+         g+g+cwWSUbHqTjxXmYbXmiUpr0sZ7iFr0VEDhwke+2o/gf2xfLr/pPrsPk1QzbnO59C2
+         dGR7qFTDL2by65o1Ie6FN4zIll36/2fYy5AUGowX4CYkkRWKnKJFPYmYDn3kVf7sJ7G8
+         e+8A==
+X-Gm-Message-State: AOAM530MGeaM4Pl7tRjMYC2a1Xu2ukeAYtjouaPDVYZExYBYCjpbJSjC
+	8FX7D1tXMc/h0EC+vco6fbgsdrFYEj90jAlw
 X-Google-Smtp-Source: 
- ABdhPJxxeQ9vOtn4lQi/YYPgb5h8r6y93FezNeTFADYX/CU29MhMnukWlE0PZtR/qrAMoPAL8b+iRA==
-X-Received: by 2002:a05:6000:15c3:b0:204:1185:7033 with SMTP id
- y3-20020a05600015c300b0020411857033mr8174042wry.625.1648831048037;
-        Fri, 01 Apr 2022 09:37:28 -0700 (PDT)
-Received: from localhost.localdomain ([154.72.153.145])
+ ABdhPJxeEwSdWatHwvrWNo+C2E77Fxm5J0MerRQSWyHSTAn1X4NJXornB8CMr6diFs6VvhQmKfmLrA==
+X-Received: by 2002:a05:6000:144e:b0:205:9a80:b4c3 with SMTP id
+ v14-20020a056000144e00b002059a80b4c3mr16716590wrx.179.1649073524633;
+        Mon, 04 Apr 2022 04:58:44 -0700 (PDT)
+Received: from localhost.localdomain ([154.72.153.150])
         by smtp.gmail.com with ESMTPSA id
- ba23-20020a0560001c1700b00205ec84327dsm2698514wrb.116.2022.04.01.09.37.26
+ p19-20020a05600c359300b0038c7d1086a7sm17056781wmq.1.2022.04.04.04.58.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Apr 2022 09:37:27 -0700 (PDT)
-From: Abongwa Amahnui Bonalais <abongwabonalais@gmail.com>
+        Mon, 04 Apr 2022 04:58:44 -0700 (PDT)
+From: Abongwa Bonalais Amahnui <abongwabonalais@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Abongwa Amahnui Bonalais <abongwabonalais@gmail.com>
-Subject: [PATCH] added precise directory for local.conf,
+Cc: Abongwa Bonalais Amahnui <abongwabonalais@gmail.com>
+Subject: [PATCH] Add more precise directory for local.conf,
  changing it from local.conf to conf/local.conf
-Date: Fri,  1 Apr 2022 17:36:49 +0100
-Message-Id: <20220401163649.20625-1-abongwabonalais@gmail.com>
+Date: Mon,  4 Apr 2022 12:58:12 +0100
+Message-Id: <20220404115812.5145-1-abongwabonalais@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 04 Apr 2022 14:43:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2747
+ <docs@lists.yoctoproject.org>; Mon, 04 Apr 2022 18:46:42 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2750
 
+Signed-off-by: Abongwa Bonalais Amahnui <abongwabonalais@gmail.com>
 ---
  documentation/brief-yoctoprojectqs/index.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
