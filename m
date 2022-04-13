@@ -1,156 +1,404 @@
-Return-Path: <raj.khem@gmail.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77D9FC4332F
-	for <webhook@archiver.kernel.org>; Tue, 12 Apr 2022 19:40:49 +0000 (UTC)
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com
- [209.85.222.175])
- by mx.groups.io with SMTP id smtpd.web10.655.1649786022228321989
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A2E9C47082
+	for <webhook@archiver.kernel.org>; Thu, 14 Apr 2022 16:03:53 +0000 (UTC)
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com
+ [209.85.221.51])
+ by mx.groups.io with SMTP id smtpd.web08.1697.1649872414257802110
  for <docs@lists.yoctoproject.org>;
- Tue, 12 Apr 2022 10:53:42 -0700
+ Wed, 13 Apr 2022 10:53:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=XNA6VDK4;
- spf=pass (domain: gmail.com, ip: 209.85.222.175,
- mailfrom: raj.khem@gmail.com)
-Received: by mail-qk1-f175.google.com with SMTP id s4so14345912qkh.0
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Q1xAIbQU;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.51,
+ mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f51.google.com with SMTP id i20so3684615wrb.13
         for <docs@lists.yoctoproject.org>;
- Tue, 12 Apr 2022 10:53:42 -0700 (PDT)
+ Wed, 13 Apr 2022 10:53:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=w6IfTk16oCFYMY0xWYbp01OSn4fRAuDfFiOmR3Zm0nA=;
-        b=XNA6VDK40ySJepiK4cgZ/DmKfI8iZ0LNA5NMFODkp7UE0qr/TSRiwuHyNcV8FD19GT
-         8arotEEudKrI048rwzSQOrCQL+BYJFLUtVLxRo4nrAKbnPqozk0pTvOnPgp6Ou7cObsL
-         Fg0mx6LD/SOKqePCZgcAQ1c95z7h0eItokfenA0Xi2w3/g3Qcx1B91blSSwIiLNYvi9n
-         KjuT9oPTdaTOj1M5V0wvrI2N0KOekkhM5JMv+wkD7INh4yfYU+0udD15wTf8qeauoz0R
-         r+PlRpU0yvjhiSYO7DXhn27FFngsZcoYtA+03tMDOc24jSw4ak/sX7gvsCIgYvF975H7
-         aGVQ==
+        d=linuxfoundation.org; s=google;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XPWK76BS2Ngwj54IrJ9VFf2HziMD1lpyuZwuHovpV4s=;
+        b=Q1xAIbQU0trU1Opw3fMvcJao7k8N8C005sr8HBo6TpI9wJVlHZAA8+4tqpulOcoxWo
+         9Ly81SuAJv+g3pg6CkyA27a8nDKKN7ku1fUfuPbl3uStGURYl4pDPa37qES8lZwkPHEL
+         fbTwAoE8HoX49J5AW38tCKfOTzZeeQAXLkOkQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=w6IfTk16oCFYMY0xWYbp01OSn4fRAuDfFiOmR3Zm0nA=;
-        b=r+bImDvp+rTP193mYuq0AdhKqURZ5TbaKOkF5RPE3JwAKVEpdv6J/wuW9kTulyIr6T
-         J0Ndluh+hquIEe08tPEEP/e7BzH9ORkj6+vL5UPRl/PgXqvV9vCmM5XdBsNy/YiY1DPI
-         QilhX67zkQ9fK/zx0sWfPWmfwcWYfjRD3hFI0e573EPgC8Wt7ifveHh3hJhn4gsHfcB6
-         lUtQkVbKJXJTLEPEzpGu4Upyh0A6OqovBMdmN52wTVoa6GQnPCgKCjPaKdxULdL3ZOVL
-         AaGRbyPkWYvDtB/8t5T2HCkmhC9Obp8XFsDz3I01uGO3gj2J9Th0YveMC1SqS85c34O+
-         4WXw==
-X-Gm-Message-State: AOAM532dlmfdFGMmpNqrW4Enm7RxhZURXtSdzfx+y7s5VcN2uAdCZig3
-	M7Bs2/F315Mc8MFyLMh/MYT3stQuzqZry4RzDT4JBP0briLK6w==
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=XPWK76BS2Ngwj54IrJ9VFf2HziMD1lpyuZwuHovpV4s=;
+        b=AfE3+UIfMFkwIUL5/3BEsIUdzrtSVVU9JUq23PfD7cb7WbwNqyStee9LJABUElooC6
+         0E0+QeFP79lCXHZXGF5TXCbzoaUpSX/JDpDO7Px/TzRzuIvQjkmgPa/ey48ZTRGiZmRk
+         v7TOzw3ZEyoYyHoKOGZgFF/WmkkqdFV6gxybB+tJP1vkB3+I6uQATlECWbu+y+8VT1ah
+         T/QrgIoDaKDJn4hqbUMrUidzQ+Dq/ixN9iwseOFJanf4v+RFk4P+EvCOTsrtFl+LNyWb
+         TNYJHT93cqHbgDGiE8ez1tfPqWRLUUBTg6NMzTRqoxIHLMlI1eiSG421Y0Nin2oEfKf6
+         urcA==
+X-Gm-Message-State: AOAM5301F9HICZ5yN4LaAEljLGJlyBUl7CTubRSPuxZuNP/UhzKL1UyA
+	17kQHK7gYLSvkDqehDVHlMJKoHRc+24LgA==
 X-Google-Smtp-Source: 
- ABdhPJygmfYY2HFZcJPpuPclDhpdRNSy0FTO29SpS3hCfL6Qu5ZskYmj26+k81mIdMD0C+Ur+bIQXWV1iB6xhHIDzME=
-X-Received: by 2002:a05:620a:460a:b0:69b:f4ce:e764 with SMTP id
- br10-20020a05620a460a00b0069bf4cee764mr3974351qkb.227.1649786021184; Tue, 12
- Apr 2022 10:53:41 -0700 (PDT)
+ ABdhPJyTLnhqm7SGvKgzMokkaH2ly2S3gTyYyfdBZEP/TfeBEuZuR7jAxPcwiur01bpFY3k1KUEdNw==
+X-Received: by 2002:a5d:47a1:0:b0:204:9a7:22cd with SMTP id
+ 1-20020a5d47a1000000b0020409a722cdmr69015wrb.186.1649872412072;
+        Wed, 13 Apr 2022 10:53:32 -0700 (PDT)
+Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:5cc2:b4ab:4d4b:907d])
+        by smtp.gmail.com with ESMTPSA id
+ j9-20020a5d4529000000b00207a5b7f613sm8938394wra.69.2022.04.13.10.53.30
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Apr 2022 10:53:31 -0700 (PDT)
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH][transition] transition: Update urls to
+ https://docs.yoctoproject.org/
+Date: Wed, 13 Apr 2022 18:53:30 +0100
+Message-Id: <20220413175330.2187450-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-References: <2fd29235-6c93-a911-944a-f78dd7a27904@windriver.com>
-In-Reply-To: <2fd29235-6c93-a911-944a-f78dd7a27904@windriver.com>
-From: Khem Raj <raj.khem@gmail.com>
-Date: Tue, 12 Apr 2022 10:53:15 -0700
-Message-ID: 
- <CAMKF1srKX8PovgRGw9jjJM+X2+dADFcRav0RuxVLka7_m1NozQ@mail.gmail.com>
-Subject: Re: [docs] YP Quick Build: errors/annoyances: ubu-22.04 docker
- container
-To: Randy MacLeod <randy.macleod@windriver.com>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 12 Apr 2022 19:40:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2762
+ <docs@lists.yoctoproject.org>; Thu, 14 Apr 2022 16:03:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2764
 
-On Tue, Apr 12, 2022 at 9:05 AM Randy MacLeod
-<randy.macleod@windriver.com> wrote:
->
->
-> Some things I noticed when using:
->
-> https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html
->
-> to setup a docker container running ubu-22.04-beta .
-> $
->
-> $ sudo apt install gawk wget git diffstat unzip texinfo gcc build-essenti=
-al chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianut=
-ils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pyli=
-nt3 xterm python3-subunit mesa-common-dev zstd liblz4-tool
->
-> should be:
->
-> $ sudo apt install gawk wget git diffstat unzip texinfo gcc build-essenti=
-al chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianut=
-ils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pyli=
-nt xterm python3-subunit mesa-common-dev zstd liblz4-tool
->
-> i.e. s/pylint3/pylint/
->
+We now use docs.yoctoproject.org so update the urls to point there
+instead of at a redirect.
 
-perhaps good to update the pre-requisites section in docs.
+grep https://www.yoctoproject.org/docs/ * -lrZ | xargs -0 -l sed -i -e 's#https://www.yoctoproject.org/docs/#https://docs.yoctoproject.org/#g'
 
->
-> and I also see:
->
-> $ bitbake libarchive-native
-> ERROR: The following required tools (as specified by HOSTTOOLS) appear to=
- be unavailable in PATH, please install them in order to proceed:
->   file
->
-> and
-> $ sudo apt install file
->
-> fixes that.
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/transition/index-0.9.rst   |  4 ++--
+ documentation/transition/index-1.0.1.rst | 10 +++++-----
+ documentation/transition/index-1.0.rst   | 10 +++++-----
+ documentation/transition/index-1.1.rst   | 12 ++++++------
+ documentation/transition/index-1.3.rst   | 14 +++++++-------
+ documentation/transition/index-1.4.rst   | 16 ++++++++--------
+ documentation/transition/index-1.6.rst   | 18 +++++++++---------
+ documentation/transition/index-1.8.rst   | 20 ++++++++++----------
+ documentation/transition/index-2.1.rst   | 20 ++++++++++----------
+ documentation/transition/index-2.5.rst   | 22 +++++++++++-----------
+ 10 files changed, 73 insertions(+), 73 deletions(-)
 
-This perhaps needs to be added to pre-requisites too. Just ensure that
-it works with older debian-like distros too.
+diff --git a/documentation/transition/index-0.9.rst b/documentation/transition/index-0.9.rst
+index 5a107e480..a58b0748c 100644
+--- a/documentation/transition/index-0.9.rst
++++ b/documentation/transition/index-0.9.rst
+@@ -9,11 +9,11 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-quick-start/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-quick-start/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/poky-ref-manual/poky-ref-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/poky-ref-manual/poky-ref-manual.html>
+ 
+diff --git a/documentation/transition/index-1.0.1.rst b/documentation/transition/index-1.0.1.rst
+index f21ed1511..bd5882ed5 100644
+--- a/documentation/transition/index-1.0.1.rst
++++ b/documentation/transition/index-1.0.1.rst
+@@ -9,14 +9,14 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-project-qs/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-project-qs/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/poky-ref-manual/poky-ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Application Development Toolkit <https://www.yoctoproject.org/docs/@VER@/adt-manual/adt-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/poky-ref-manual/poky-ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Application Development Toolkit <https://docs.yoctoproject.org/@VER@/adt-manual/adt-manual.html>
+ 
+diff --git a/documentation/transition/index-1.0.rst b/documentation/transition/index-1.0.rst
+index 99dfae6b5..a94388d55 100644
+--- a/documentation/transition/index-1.0.rst
++++ b/documentation/transition/index-1.0.rst
+@@ -9,14 +9,14 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-quick-start/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-quick-start/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/poky-ref-manual/poky-ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Application Development Toolkit <https://www.yoctoproject.org/docs/@VER@/adt-manual/adt-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/poky-ref-manual/poky-ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Application Development Toolkit <https://docs.yoctoproject.org/@VER@/adt-manual/adt-manual.html>
+ 
+diff --git a/documentation/transition/index-1.1.rst b/documentation/transition/index-1.1.rst
+index 730343628..4b5cd62e7 100644
+--- a/documentation/transition/index-1.1.rst
++++ b/documentation/transition/index-1.1.rst
+@@ -9,15 +9,15 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-project-qs/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-project-qs/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/poky-ref-manual/poky-ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Development Tasks Manual <https://www.yoctoproject.org/docs/@VER@/dev-manual/dev-manual.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Application Development Toolkit <https://www.yoctoproject.org/docs/@VER@/adt-manual/adt-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/poky-ref-manual/poky-ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Development Tasks Manual <https://docs.yoctoproject.org/@VER@/dev-manual/dev-manual.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Application Development Toolkit <https://docs.yoctoproject.org/@VER@/adt-manual/adt-manual.html>
+ 
+diff --git a/documentation/transition/index-1.3.rst b/documentation/transition/index-1.3.rst
+index 36b6ff2ab..7c9afa178 100644
+--- a/documentation/transition/index-1.3.rst
++++ b/documentation/transition/index-1.3.rst
+@@ -9,21 +9,21 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-project-qs/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-project-qs/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/poky-ref-manual/poky-ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Development Tasks Manual <https://www.yoctoproject.org/docs/@VER@/dev-manual/dev-manual.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Application Development Toolkit <https://www.yoctoproject.org/docs/@VER@/adt-manual/adt-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/poky-ref-manual/poky-ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Development Tasks Manual <https://docs.yoctoproject.org/@VER@/dev-manual/dev-manual.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Application Development Toolkit <https://docs.yoctoproject.org/@VER@/adt-manual/adt-manual.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: 'Mega' Manual
+ 
+-   All-in-one 'Mega' Manual <https://www.yoctoproject.org/docs/@VER@/mega-manual/mega-manual.html>
++   All-in-one 'Mega' Manual <https://docs.yoctoproject.org/@VER@/mega-manual/mega-manual.html>
+ 
+diff --git a/documentation/transition/index-1.4.rst b/documentation/transition/index-1.4.rst
+index 00680dbb8..9176ed2d7 100644
+--- a/documentation/transition/index-1.4.rst
++++ b/documentation/transition/index-1.4.rst
+@@ -9,22 +9,22 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-project-qs/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-project-qs/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/ref-manual/ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Development Tasks Manual <https://www.yoctoproject.org/docs/@VER@/dev-manual/dev-manual.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Profile and Tracing Manual <https://www.yoctoproject.org/docs/@VER@/profile-manual/profile-manual.html>
+-   Application Development Toolkit <https://www.yoctoproject.org/docs/@VER@/adt-manual/adt-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/ref-manual/ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Development Tasks Manual <https://docs.yoctoproject.org/@VER@/dev-manual/dev-manual.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Profile and Tracing Manual <https://docs.yoctoproject.org/@VER@/profile-manual/profile-manual.html>
++   Application Development Toolkit <https://docs.yoctoproject.org/@VER@/adt-manual/adt-manual.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: 'Mega' Manual
+ 
+-   All-in-one 'Mega' Manual <https://www.yoctoproject.org/docs/@VER@/mega-manual/mega-manual.html>
++   All-in-one 'Mega' Manual <https://docs.yoctoproject.org/@VER@/mega-manual/mega-manual.html>
+ 
+diff --git a/documentation/transition/index-1.6.rst b/documentation/transition/index-1.6.rst
+index a93f25f42..020d60659 100644
+--- a/documentation/transition/index-1.6.rst
++++ b/documentation/transition/index-1.6.rst
+@@ -9,23 +9,23 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-project-qs/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-project-qs/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/ref-manual/ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Development Tasks Manual <https://www.yoctoproject.org/docs/@VER@/dev-manual/dev-manual.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Profile and Tracing Manual <https://www.yoctoproject.org/docs/@VER@/profile-manual/profile-manual.html>
+-   Application Development Toolkit <https://www.yoctoproject.org/docs/@VER@/adt-manual/adt-manual.html>
+-   Bitbake User Manual <https://www.yoctoproject.org/docs/@VER@/bitbake-user-manual/bitbake-user-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/ref-manual/ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Development Tasks Manual <https://docs.yoctoproject.org/@VER@/dev-manual/dev-manual.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Profile and Tracing Manual <https://docs.yoctoproject.org/@VER@/profile-manual/profile-manual.html>
++   Application Development Toolkit <https://docs.yoctoproject.org/@VER@/adt-manual/adt-manual.html>
++   Bitbake User Manual <https://docs.yoctoproject.org/@VER@/bitbake-user-manual/bitbake-user-manual.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: 'Mega' Manual
+ 
+-   All-in-one 'Mega' Manual <https://www.yoctoproject.org/docs/@VER@/mega-manual/mega-manual.html>
++   All-in-one 'Mega' Manual <https://docs.yoctoproject.org/@VER@/mega-manual/mega-manual.html>
+ 
+diff --git a/documentation/transition/index-1.8.rst b/documentation/transition/index-1.8.rst
+index 703374cfc..52e771b4b 100644
+--- a/documentation/transition/index-1.8.rst
++++ b/documentation/transition/index-1.8.rst
+@@ -9,24 +9,24 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-project-qs/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-project-qs/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/ref-manual/ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Development Tasks Manual <https://www.yoctoproject.org/docs/@VER@/dev-manual/dev-manual.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Profile and Tracing Manual <https://www.yoctoproject.org/docs/@VER@/profile-manual/profile-manual.html>
+-   Application Development Toolkit <https://www.yoctoproject.org/docs/@VER@/adt-manual/adt-manual.html>
+-   Toaster Manual <https://www.yoctoproject.org/docs/@VER@/toaster-manual/toaster-manual.html>
+-   Bitbake User Manual <https://www.yoctoproject.org/docs/@VER@/bitbake-user-manual/bitbake-user-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/ref-manual/ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Development Tasks Manual <https://docs.yoctoproject.org/@VER@/dev-manual/dev-manual.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Profile and Tracing Manual <https://docs.yoctoproject.org/@VER@/profile-manual/profile-manual.html>
++   Application Development Toolkit <https://docs.yoctoproject.org/@VER@/adt-manual/adt-manual.html>
++   Toaster Manual <https://docs.yoctoproject.org/@VER@/toaster-manual/toaster-manual.html>
++   Bitbake User Manual <https://docs.yoctoproject.org/@VER@/bitbake-user-manual/bitbake-user-manual.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: 'Mega' Manual
+ 
+-   All-in-one 'Mega' Manual <https://www.yoctoproject.org/docs/@VER@/mega-manual/mega-manual.html>
++   All-in-one 'Mega' Manual <https://docs.yoctoproject.org/@VER@/mega-manual/mega-manual.html>
+ 
+diff --git a/documentation/transition/index-2.1.rst b/documentation/transition/index-2.1.rst
+index 67460aa5f..e594455ef 100644
+--- a/documentation/transition/index-2.1.rst
++++ b/documentation/transition/index-2.1.rst
+@@ -9,24 +9,24 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Start Guide <https://www.yoctoproject.org/docs/@VER@/yocto-project-qs/yocto-project-qs.html>
++   Quick Start Guide <https://docs.yoctoproject.org/@VER@/yocto-project-qs/yocto-project-qs.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/ref-manual/ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Development Tasks Manual <https://www.yoctoproject.org/docs/@VER@/dev-manual/dev-manual.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Profile and Tracing Manual <https://www.yoctoproject.org/docs/@VER@/profile-manual/profile-manual.html>
+-   Application Development and the Extensible SDK (eSDK) <https://www.yoctoproject.org/docs/@VER@/sdk-manual/sdk-manual.html>
+-   Toaster Manual <https://www.yoctoproject.org/docs/@VER@/toaster-manual/toaster-manual.html>
+-   Bitbake User Manual <https://www.yoctoproject.org/docs/@VER@/bitbake-user-manual/bitbake-user-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/ref-manual/ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Development Tasks Manual <https://docs.yoctoproject.org/@VER@/dev-manual/dev-manual.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Profile and Tracing Manual <https://docs.yoctoproject.org/@VER@/profile-manual/profile-manual.html>
++   Application Development and the Extensible SDK (eSDK) <https://docs.yoctoproject.org/@VER@/sdk-manual/sdk-manual.html>
++   Toaster Manual <https://docs.yoctoproject.org/@VER@/toaster-manual/toaster-manual.html>
++   Bitbake User Manual <https://docs.yoctoproject.org/@VER@/bitbake-user-manual/bitbake-user-manual.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: 'Mega' Manual
+ 
+-   All-in-one 'Mega' Manual <https://www.yoctoproject.org/docs/@VER@/mega-manual/mega-manual.html>
++   All-in-one 'Mega' Manual <https://docs.yoctoproject.org/@VER@/mega-manual/mega-manual.html>
+ 
+diff --git a/documentation/transition/index-2.5.rst b/documentation/transition/index-2.5.rst
+index 316545a9c..c38a5b485 100644
+--- a/documentation/transition/index-2.5.rst
++++ b/documentation/transition/index-2.5.rst
+@@ -9,25 +9,25 @@ Yocto Project @VER@ Documentation
+    :maxdepth: 1
+    :caption: Introduction and Overview
+ 
+-   Quick Build <https://www.yoctoproject.org/docs/@VER@/brief-yoctoprojectqs/brief-yoctoprojectqs.html>
+-   Overview and Concepts <https://www.yoctoproject.org/docs/@VER@/overview-manual/overview-manual.html>
++   Quick Build <https://docs.yoctoproject.org/@VER@/brief-yoctoprojectqs/brief-yoctoprojectqs.html>
++   Overview and Concepts <https://docs.yoctoproject.org/@VER@/overview-manual/overview-manual.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: Manuals
+ 
+-   Reference Manual <https://www.yoctoproject.org/docs/@VER@/ref-manual/ref-manual.html>
+-   Board Support Package (BSP) Developer's guide <https://www.yoctoproject.org/docs/@VER@/bsp-guide/bsp-guide.html>
+-   Development Tasks Manual <https://www.yoctoproject.org/docs/@VER@/dev-manual/dev-manual.html>
+-   Linux Kernel Development Manual <https://www.yoctoproject.org/docs/@VER@/kernel-dev/kernel-dev.html>
+-   Profile and Tracing Manual <https://www.yoctoproject.org/docs/@VER@/profile-manual/profile-manual.html>
+-   Application Development and the Extensible SDK (eSDK) <https://www.yoctoproject.org/docs/@VER@/sdk-manual/sdk-manual.html>
+-   Toaster Manual <https://www.yoctoproject.org/docs/@VER@/toaster-manual/toaster-manual.html>
+-   Bitbake User Manual <https://www.yoctoproject.org/docs/@VER@/bitbake-user-manual/bitbake-user-manual.html>
++   Reference Manual <https://docs.yoctoproject.org/@VER@/ref-manual/ref-manual.html>
++   Board Support Package (BSP) Developer's guide <https://docs.yoctoproject.org/@VER@/bsp-guide/bsp-guide.html>
++   Development Tasks Manual <https://docs.yoctoproject.org/@VER@/dev-manual/dev-manual.html>
++   Linux Kernel Development Manual <https://docs.yoctoproject.org/@VER@/kernel-dev/kernel-dev.html>
++   Profile and Tracing Manual <https://docs.yoctoproject.org/@VER@/profile-manual/profile-manual.html>
++   Application Development and the Extensible SDK (eSDK) <https://docs.yoctoproject.org/@VER@/sdk-manual/sdk-manual.html>
++   Toaster Manual <https://docs.yoctoproject.org/@VER@/toaster-manual/toaster-manual.html>
++   Bitbake User Manual <https://docs.yoctoproject.org/@VER@/bitbake-user-manual/bitbake-user-manual.html>
+ 
+ .. toctree::
+    :maxdepth: 1
+    :caption: 'Mega' Manual
+ 
+-   All-in-one 'Mega' Manual <https://www.yoctoproject.org/docs/@VER@/mega-manual/mega-manual.html>
++   All-in-one 'Mega' Manual <https://docs.yoctoproject.org/@VER@/mega-manual/mega-manual.html>
+ 
+-- 
+2.32.0
 
->
->
-> Finally, there's no explanation of how to deal with:
-> $ bitbake libarchive-native
-> ERROR:  OE-core's config sanity checker detected a potential misconfigura=
-tion.
->     Either fix the cause of this error or at your own risk disable the ch=
-ecker (see sanity.conf).
->     Following is the list of potential problems / advisories:
->
->     Your system needs to support the en_US.UTF-8 locale.
->
-> Should that be part of the quick start or is there a section of the docs =
-that
-> already covers it for supported distros? Likely many desktop installs alr=
-eady
-> configure a variety of locales.
->
->
-> Should I create a bug for any of these issues?
-
-yeah perhaps something like this in setting up the container might help
-
-locale-gen en_US.UTF-8
-update-locale LANG=3Den_US.UTF-8
-
-
->
->
-> --
-> # Randy MacLeod
-> # Wind River Linux
->
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#2761): https://lists.yoctoproject.org/g/docs/message/=
-2761
-> Mute This Topic: https://lists.yoctoproject.org/mt/90421420/1997914
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [raj.khem@gmail.=
-com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
 
