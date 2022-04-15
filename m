@@ -2,80 +2,92 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64A6EC4167D
-	for <webhook@archiver.kernel.org>; Mon, 18 Apr 2022 14:25:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0060AC7114C
+	for <webhook@archiver.kernel.org>; Mon, 18 Apr 2022 14:26:04 +0000 (UTC)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
  [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.11521.1650051982379888970
+ by mx.groups.io with SMTP id smtpd.web08.7392.1650029861606964058
  for <docs@lists.yoctoproject.org>;
- Fri, 15 Apr 2022 12:46:23 -0700
+ Fri, 15 Apr 2022 06:37:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KEbtgSp6;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ivIn3kBk;
  spf=pass (domain: bootlin.com, ip: 217.70.183.199,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 40716FF802;
-	Fri, 15 Apr 2022 19:46:19 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 527DBFF808;
+	Fri, 15 Apr 2022 13:37:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1650051980;
+	t=1650029859;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jqf1AkGfnqYnjCdPDpqTognplVSjU17xr7emhkgISwI=;
-	b=KEbtgSp6t/uxtTvw76DM0DdE0d2b5v8/vtuYhaul/VbHUGNCiedg1kwaGdGBiXib7cXlDN
-	F9TnNTqdpc+buBlRiMAu7A8b3gqI9Ltmcl5VyO4aAzytddxZnr+R0r0tJ+jxNCL/ZcEKWx
-	3VsXDPtKxkm/DK6UtKp+ObjgOVxkWmxObWFOslFOehJvcGXmoVxuDQRVf2YX/raLKBjBvk
-	47jh5Mi2Oea9riRRP32FFkr7a5zPkvsAcGCsznqkXMNQ0JQQdsDfA3VT2pnJvH6RUdB4Wt
-	RrMS/TdxqcX7uZQ7gp7iltkp2xUzZ+78ixbzZh9JILglZHmQfarV53N/q5c8yw==
-Message-ID: <3171dd9f-ad7c-025b-2edf-cb2b419adf75@bootlin.com>
-Date: Fri, 15 Apr 2022 21:46:19 +0200
+	bh=xKFq04Bkj1pCKXkWhce/DYh5otbDi5aqjOzBVoFfLZI=;
+	b=ivIn3kBkB7Qk5HOEG3RsLRp/NgJxGxd7z6pFosrRLdLwLHJB3jpLGCf2ERPvSpX+Taqbep
+	LxAWXTLu7eKbifKvv/uQwook7AI6mrj0Jzf9NN019moO6hk/eF7gn5vCqg1S8hLuHUUxFO
+	1bjNb2e3RzQ/mL4sZebE1qRYNPyuUNmHzEYPmJfZX5uPdrOG5S5Wxwr8dfmQJkh9p/vzhF
+	OfMFo78gm3ABhd72Hx0asMrf+sFGbgp1d2acZe0/2vxxJ5t5R+7sgZeSjVLs7S5pLwKLHJ
+	4EO99+ysCsHShhpzd3pHJjkEtHlXulDTSjOoSBzvTUjk41ZtVrRAjFaNKVvh/w==
+Message-ID: <1d4f565f-c85a-db77-53e0-3b253b122e6b@bootlin.com>
+Date: Fri, 15 Apr 2022 15:37:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.7.0
-Subject: Re: [docs] YP Quick Build: errors/annoyances: ubu-22.04 docker
- container
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ Quentin Schulz <foss+yocto@0leil.net>
+Subject: Re: [docs] [PATCH 3/3] docs: sphinx-static: switchers.js.in: improve
+ obsolete version detection
 Content-Language: en-US
-To: Randy MacLeod <randy.macleod@windriver.com>
-References: <2fd29235-6c93-a911-944a-f78dd7a27904@windriver.com>
- <c756a98b-b38a-115a-6e17-0d9d9a883727@bootlin.com>
- <6bf3c70e-7531-36db-93ad-c1648a8aaf42@windriver.com>
+To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
+References: <20220414113327.176534-1-foss+yocto@0leil.net>
+ <20220414113327.176534-3-foss+yocto@0leil.net>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-In-Reply-To: <6bf3c70e-7531-36db-93ad-c1648a8aaf42@windriver.com>
+In-Reply-To: <20220414113327.176534-3-foss+yocto@0leil.net>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 18 Apr 2022 14:25:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2782
+ <docs@lists.yoctoproject.org>; Mon, 18 Apr 2022 14:26:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2775
 
+Hi Quentin,
 
-On 4/13/22 23:45, Randy MacLeod wrote:
-> On 2022-04-13 13:08, Michael Opdenacker wrote:
-> ...
->>>
->>
->> No, I'll process your comments one by one. I'll take care of opening a
->> bug if necessary.
->> Thanks again
->> Michael.
->>
+On 4/14/22 13:33, Quentin Schulz wrote:
+> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 >
-> Just what I wanted to hear...
+> Based on additional information per release, specifically with the
+> obsolescence status of a release, the obsolescence detection can now be
+> much smarter than just checking if the release is older than dunfell.
 >
-> Thanks Michael!
+> This is required because with LTS (dunfell for example) releases, it is
+> now possible to have LTS releases that are older than obsolete releases.
+>
+> This means obsolete releases need to be tracked and only the release
+> version cannot be used as an indicator of obsolescence.
+>
+> Let's use the obsolete field of the per-release data in the all_versions
+> dictionary to display correct warning messages.
+>
+> The warning message is first about outdated version if there's a newer
+> one available (*even* if it is for an obsolete release, e.g. 3.0.1 will
+> say it's outdated and should select 3.0.4 version instead), then if the
+> version is the last of the release, show a warning message if the
+> release is obsolete.
+>
+> Cc: Quentin Schulz <foss+yocto@0leil.net>
+> Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+> ---
+>  documentation/sphinx-static/switchers.js.in | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
 
 
-I don't forget you, but I need to get familiar with using Docker, to
-test the prerequisites not only on Ubuntu, but on other supported distros.
-So, I could send updates just for Ubuntu, but something more generic
-would probably be better.
+Thanks for the whole patch series.
+The changes seem to make sense.
+I merged them into master-next.
 
-I'll be on holiday next week, but I won't forget.
-Cheers
+Thanks again
 Michael.
 
 -- 
