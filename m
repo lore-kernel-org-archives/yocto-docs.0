@@ -1,110 +1,94 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06898C63707
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 81B37C43219
 	for <webhook@archiver.kernel.org>; Thu, 21 Apr 2022 16:46:09 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.8955.1650467103994483937
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com
+ [209.85.128.45])
+ by mx.groups.io with SMTP id smtpd.web10.9849.1650472244452640603
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Apr 2022 08:05:04 -0700
+ Wed, 20 Apr 2022 09:30:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing;
- spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.195,
- mailfrom: foss+yocto@0leil.net)
-Received: (Authenticated sender: foss@0leil.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id B110F6000B;
-	Wed, 20 Apr 2022 15:05:01 +0000 (UTC)
-From: Quentin Schulz <foss+yocto@0leil.net>
-To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	Quentin Schulz <foss+yocto@0leil.net>
-Subject: [PATCH v2 3/4] docs: sphinx-static: switchers.js.in: fix broken
- switcher for branches
-Date: Wed, 20 Apr 2022 17:04:43 +0200
-Message-Id: <20220420150444.174380-3-foss+yocto@0leil.net>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220420150444.174380-1-foss+yocto@0leil.net>
-References: <20220420150444.174380-1-foss+yocto@0leil.net>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Nuodd70J;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45,
+ mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f45.google.com with SMTP id
+ r187-20020a1c44c4000000b0038ccb70e239so4070506wma.3
+        for <docs@lists.yoctoproject.org>;
+ Wed, 20 Apr 2022 09:30:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:date:in-reply-to:references:user-agent
+         :mime-version:content-transfer-encoding;
+        bh=eS9Vw5EtigHulJ9xlB6K68TwMHA1gNdo833QldycL2o=;
+        b=Nuodd70JdbN4M9Bz4cNzsWpY+flhflqjag+Qoxri7GUlKF695veSNCNveOpc7oFhHj
+         kqiEj5IYlXtvVox+l8fkaJIX/iOyFO3ZYry5wXQ/SbKPiI+HrNc8u/B24Ud/GERLIgpw
+         p4JfzNVhq35mv8BGanJzutFEwpNjg4EL+pGdM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
+         :references:user-agent:mime-version:content-transfer-encoding;
+        bh=eS9Vw5EtigHulJ9xlB6K68TwMHA1gNdo833QldycL2o=;
+        b=6+jJbbNlPdzRHIa5Vp5D8do0P4Vs9smCO1bmv4OQJRQbNuZ+Vg9VkUPYgWBMF3XH1Q
+         Nz81Bas8wmKI65Qq5IFNqtDriSNyNZW+rGIm5XhKz9HEq4beswXB2whAJ/iECGMnxCIW
+         BWqWpHmD+gnlHGDdq6vQEtjsKaPS6aP9z6SewC1+nqftpAbieKqNr2/T8fi7xK4OTSod
+         tOP7mG7uy/RHMSqh9jLhiInSXx1wC519izW+dWLHL4aZeypoQalx/PRIBIA9PBXARJZT
+         /gTfZZoyCiqhprwjbD/QTWA22ndX77ZCVhYtXeAcJbnJxa2cMV5F8d2S2OZiaLnO6Q+L
+         hyjw==
+X-Gm-Message-State: AOAM530vFS/kTH0SruYjCDV+fOO0zZI+xXYM0Suia9JOdNX6l7eErK4U
+	mdBnTYeS51SnblA3qUlWu7Qrng==
+X-Google-Smtp-Source: 
+ ABdhPJzYC+1o+UqrwkAK05VUHUku9gvzC5obVyywh3cSqbjT3plloRanwbf1vA10Fmi6Noz4H4gyMQ==
+X-Received: by 2002:a05:600c:4146:b0:38e:bd41:39a2 with SMTP id
+ h6-20020a05600c414600b0038ebd4139a2mr4542237wmm.18.1650472242936;
+        Wed, 20 Apr 2022 09:30:42 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:9745:8b8f:81da:af07?
+ ([2001:8b0:aba:5f3c:9745:8b8f:81da:af07])
+        by smtp.gmail.com with ESMTPSA id
+ f16-20020a05600c155000b0039288e17458sm366215wmg.19.2022.04.20.09.30.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Apr 2022 09:30:42 -0700 (PDT)
+Message-ID: 
+ <2c0bea8f5ddd703f644f18ad09dc265bef04e3ff.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH][dunfell] conf.py/poky.yaml: Move version
+ information to poky.yaml and read in conf.py
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	docs@lists.yoctoproject.org
+Date: Wed, 20 Apr 2022 17:30:40 +0100
+In-Reply-To: <fac6ec38-a689-9bda-3e4f-90528300d974@theobroma-systems.com>
+References: <20220420112936.2523983-1-richard.purdie@linuxfoundation.org>
+	 <fac6ec38-a689-9bda-3e4f-90528300d974@theobroma-systems.com>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 21 Apr 2022 16:46:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2810
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2812
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+On Wed, 2022-04-20 at 16:33 +0200, Quentin Schulz wrote:
+> I was wondering if this was not the opportunity to explicit that after 
+> this commit nothing needs to be updated by maintainers for version 
+> bumping except git tagging the docs git repo?
+> 
+> e.g. DOCCONF_VERSION : 
+> "autogenerated-from-set_versions.py-from-master-branch"
+> or something like that.
+> Or a comment at the top of the file explaining which variables are now 
+> auto-generated by set_versions.py?
+> 
+> Otherwise, I tested this on all branches listed in this patch series 
+> with the autobuilder script and it does what I'd expect them to :)
 
-The switcher expects URL subpath to match the "release" used by sphinx
-to build the documentation. Branches, however, are put in a subpath
-after their name (e.g. dunfell) while sphinx sets the "release" to
-X.Y.999. This means the switcher cannot replace correctly the path to
-switch between releases/versions.
+We discussed on irc and agreed we could do that with a follow up patch if anyone
+wants to.
 
-Let set_versions.py inject the list of release names into the
-switchers.js.in file so it can check whether the subpath is one of the
-release names in which case it needs to be stripped.
+Cheers,
 
-Cc: Quentin Schulz <foss+yocto@0leil.net>
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
----
-
-v2:
- - renamed all_versions to all_releases
- - renamed ALL_VERSIONS_PLACEHOLDER to ALL_RELEASES_PLACEHOLDER
- - renamed name local variable to release
-
- documentation/set_versions.py               |  3 +++
- documentation/sphinx-static/switchers.js.in | 12 ++++++++++++
- 2 files changed, 15 insertions(+)
-
-diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index fc179ee19..261c1eeb3 100755
---- a/documentation/set_versions.py
-+++ b/documentation/set_versions.py
-@@ -203,6 +203,9 @@ versions = []
- with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-static/switchers.js", "w") as w:
-     lines = r.readlines()
-     for line in lines:
-+        if "ALL_RELEASES_PLACEHOLDER" in line:
-+            w.write(str(list(release_series.keys())))
-+            continue
-         if "VERSIONS_PLACEHOLDER" in line:
-             w.write("    'dev': { 'title': 'dev (%s)', 'obsolete': false,},\n" % release_series[devbranch])
-             for branch in activereleases + ([ourseries] if ourseries not in activereleases else []):
-diff --git a/documentation/sphinx-static/switchers.js.in b/documentation/sphinx-static/switchers.js.in
-index 7eb0c2ff3..1e523a188 100644
---- a/documentation/sphinx-static/switchers.js.in
-+++ b/documentation/sphinx-static/switchers.js.in
-@@ -9,6 +9,10 @@ by https://git.yoctoproject.org/yocto-autobuilder-helper/tree/scripts/run-docs-b
- (function() {
-   'use strict';
- 
-+  var all_releases =
-+	ALL_RELEASES_PLACEHOLDER
-+  ;
-+
-   var switcher_versions = {
-     VERSIONS_PLACEHOLDER
-   };
-@@ -155,6 +159,14 @@ by https://git.yoctoproject.org/yocto-autobuilder-helper/tree/scripts/run-docs-b
-         var new_url = docroot + new_versionpath + url.replace(docroot, "");
-         var fallback_url = docroot + new_versionpath;
-     } else {
-+	// check for named releases (e.g. dunfell) in the subpath
-+        $.each(all_releases, function(idx, release) {
-+		if (docroot.endsWith('/' + release + '/')) {
-+			current_version = release;
-+			return false;
-+		}
-+	});
-+
-         var new_url = url.replace('/' + current_version + '/', '/' + new_versionpath);
-         var fallback_url = new_url.replace(url.replace(docroot, ""), "");
-     }
--- 
-2.35.1
+Richard
 
 
