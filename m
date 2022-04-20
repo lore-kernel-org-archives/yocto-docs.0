@@ -2,25 +2,25 @@ Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C775FC636FD
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4F01C63703
 	for <webhook@archiver.kernel.org>; Thu, 21 Apr 2022 16:46:08 +0000 (UTC)
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
- (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.55])
- by mx.groups.io with SMTP id smtpd.web11.8495.1650465239239153451
+Received: from EUR04-DB3-obe.outbound.protection.outlook.com
+ (EUR04-DB3-obe.outbound.protection.outlook.com [40.107.6.49])
+ by mx.groups.io with SMTP id smtpd.web10.8638.1650466621846767358
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Apr 2022 07:34:01 -0700
+ Wed, 20 Apr 2022 07:57:04 -0700
 Authentication-Results: mx.groups.io;
  dkim=pass header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=B899phzv;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.7.55,
+ header.s=selector2-cherrycloud-onmicrosoft-com header.b=lHRiUWom;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.6.49,
  mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=SBGgpz7Bpqb/wmKCQ91I8Wr+zOd3Z/HZ57ddVr180M1RGBApwASIEEVLbgLec+H/0n8vhsXczVLq/VggSn4NFZ1xH6X74jPostSPQi1glajbkiqzgAd+T81KfIueGLn6D9yAg/EaYH63jm9OtmHJs9nkvs7lGPJssMR6AF5x8RSXIscHb5g3pI3LmAJMXCfIgzKE1uZB0hUMDulKuzdkzEHXC6HzWd89NTW49ZbO1quqWwC953zhJFk9NZdBC78N0DvN3JMDfLT6Ce9L/0kD7oXi9o4b41MiKeXWZog35J5ZLqllqbqzf/0+baqS0nxCWagtemzm0xYMcnwNcjzaOQ==
+ b=cqIc3jA7v10l53MLas7qPEs8q3w71ZlB37DFLwJwzcK1Z+HEQrmCy6nMeaBE4Dk1S9kmlVNLnWJvn2cZwkDGsLyHWvTeSG82ruM6Qf/WkFoa/LIU4b407F726BWY0RbCeSJcn9yJ00j3uumvfQzcI9hjelw6lF2RDVD+ritrVR0Qgvz9xheFzy23t/IFS8YYIzgANWZhGtOdf3kbUEvg2oEqO28FMA8XKJ5yVpBNKcmMusDoAKMmKY6JwizYrSKeDSy3HfIBUM5ibuPRGeuEmIhqDtjCIcSjdv42Ut2bQZN8Pz8Lcw4LPYNRmH/rKXegDX/aF37kEe+6y6IyFPJIew==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FLxNhuZsh1yAXWPTW+vf1lycGIYvyZKCWdg8H4zveYQ=;
- b=IJegkhpqIZNDnfiQaJ1+mKoeK3nLYZX8gBIybqfMSIApPSxmQ/FL4MVu87EwLE1kKrBxPZ72h6gSPs7BOxgPmmITdDsrkhhlQC8z9dCLM70YeZQYaajo30ozfCazHdgvyB2b3y6anupDA/a1fuRL10HJK1PQrw0JjykKFxsVM5x0los6aPjAmRDDzHqXUlmOQ01o/i3brfiGQxHb8YQXpurUZww12fvNbWS648mUFwYyUljYZYHmn0bSok4htPaasW6klLgrsf3SPipXQ+7weqRvafqXpJD3iYykrs5ktgGz8ktrHYN3rs3i3fRYvnW0EvdQFiYwry1c8Mrt1Y0Eog==
+ bh=Zf0NA4vVC4fIOSCSZkjXGUDdTr5wNXt3QLyKdobwKt0=;
+ b=JHktwOettewiIw1msrwTPCCyWDBe4kGGph5/rvyd1z3EOtEvh2c15igsbskyTsUQwrJFffxTp1dkn87yvnWjiKYSYuJVKRUJXjp9AlH8AVAsYQnGrNmZTfo1irTKVHDi0aHr4UuUtBreiqyB5X+fWquN3YtJoyIzvVI0p1mJ8fNxgh6ivUbSwcIJ2SP4e3xrKnMlHy60TE9pWtTjYtRU7+OhFlJZG5ayxc6CdwDiidQt7hu1aTGliRK8TfXXTfQuv0mYcvTBi7SF20N41bgdfu/9FEXBvrbKzJajnLi0Nss/3+m1hXg/kgOqHfHzySrKFWlzGFGZvqN060RDcFVW8w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -28,184 +28,192 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FLxNhuZsh1yAXWPTW+vf1lycGIYvyZKCWdg8H4zveYQ=;
- b=B899phzvn5XIJ/M0tLdqdipq14X5MhkpnTfzX5Y/GHUnsLQMhpXLDV8VYBLpbxIOrMa7K9om3+IrzYefuOd+Db1xeA3yPrkzwM/ObPJW7FyijbHNfrkVK/jun2i3AK8Hc8/cvL/o3NWbJ50vPHEnjaqCr4wOgUG23dhGxLOLJpc=
+ bh=Zf0NA4vVC4fIOSCSZkjXGUDdTr5wNXt3QLyKdobwKt0=;
+ b=lHRiUWomr6kqkb4OafdmmIX2Xj0jlc+9JVkaTq6IH5PlU7D7ziPrNRdfoDGJfiPCgkYUcNqALBKc9VTU2X8vYsR5onTBNNmXaDTKFXxQJ0xmD/I6noTVZFAiLAfQd7TYoQGvMqIezKmikygJI7hZIl+JQCYlozrFlay6mLGax2E=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
- by VI1PR04MB5600.eurprd04.prod.outlook.com (2603:10a6:803:e7::16) with
+ by AM5PR0402MB2705.eurprd04.prod.outlook.com (2603:10a6:203:96::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5164.20; Wed, 20 Apr
- 2022 14:33:54 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5186.13; Wed, 20 Apr
+ 2022 14:56:57 +0000
 Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::e448:c9d3:fa5b:2979]) by PA4PR04MB9367.eurprd04.prod.outlook.com
  ([fe80::e448:c9d3:fa5b:2979%4]) with mapi id 15.20.5186.014; Wed, 20 Apr 2022
- 14:33:53 +0000
-Message-ID: <fac6ec38-a689-9bda-3e4f-90528300d974@theobroma-systems.com>
-Date: Wed, 20 Apr 2022 16:33:50 +0200
+ 14:56:57 +0000
+Message-ID: <8b6ef4a8-3872-2151-cb98-c50b3b75bac4@theobroma-systems.com>
+Date: Wed, 20 Apr 2022 16:56:53 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
-Subject: Re: [docs] [PATCH][dunfell] conf.py/poky.yaml: Move version
- information to poky.yaml and read in conf.py
+Subject: Re: [docs] [PATCH 3/3] docs: sphinx-static: switchers.js.in: fix
+ broken switcher for branches
 Content-Language: en-US
 To: Richard Purdie <richard.purdie@linuxfoundation.org>,
  docs@lists.yoctoproject.org
-References: <20220420112936.2523983-1-richard.purdie@linuxfoundation.org>
+Cc: Quentin Schulz <foss+yocto@0leil.net>
+References: <20220420112402.151968-1-foss+yocto@0leil.net>
+ <20220420112402.151968-3-foss+yocto@0leil.net>
+ <1fe08f0546054257ab5849c316eebf25ac918e84.camel@linuxfoundation.org>
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <20220420112936.2523983-1-richard.purdie@linuxfoundation.org>
+In-Reply-To: 
+ <1fe08f0546054257ab5849c316eebf25ac918e84.camel@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR08CA0213.eurprd08.prod.outlook.com
- (2603:10a6:802:15::22) To PA4PR04MB9367.eurprd04.prod.outlook.com
+X-ClientProxiedBy: VI1PR06CA0120.eurprd06.prod.outlook.com
+ (2603:10a6:803:8c::49) To PA4PR04MB9367.eurprd04.prod.outlook.com
  (2603:10a6:102:2aa::7)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: bdfafe63-3a02-4109-4ba9-08da22dacb72
-X-MS-TrafficTypeDiagnostic: VI1PR04MB5600:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3cc40f6e-b738-4e9c-b9bd-08da22de0404
+X-MS-TrafficTypeDiagnostic: AM5PR0402MB2705:EE_
 X-Microsoft-Antispam-PRVS: 
-	<VI1PR04MB56003E5F2FE43A64CF850372C2F59@VI1PR04MB5600.eurprd04.prod.outlook.com>
+	<AM5PR0402MB2705AA958C2B694FD0F0547FC2F59@AM5PR0402MB2705.eurprd04.prod.outlook.com>
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	uUeOy0xmZvo2X+HrmqCWA+1VsNp2aencPdhDusUIIo+kaNTvCgG6kNb9YwJzBEwWgHXZK6U5/KfFl2SWINrPfYtADNZVRp3Su/yiifQeZtuxtbleLyd2FqQ7pgGqWR2pR2oba9jYzOyUjWstu0UOjKc22Qy0uWem2Jowlqz4uFbcmtAd7ZSt3sZ79OsR/a1u0AOWTmrjV3aBO39HoLRS7xLQ+Kr+aVPpo8oDUqpJK6rNUh7mSjCpvyLZW6jkrzys4g0BkhkZKno0t4g/vJM986u3bCCIqE3YoLkW/AZsV4MSIV2BelipDi1bYlQT37OzFpyRCK8o5tgZb5migseDwBFcdsN0lorly6nPJapFm+wvbhWKmT60CzA8HTFVJjIDg0bRscPCbYiwdybsYvbnSDHppcMGXteThwhRWYNUBPv35P7a0OYzWsta9w2/4+agFfGAWdAacfVz/Zud1SM1mXezc/dESjHlzAZcpMwnzNG+ApOHAPWiSL7IdpyKFfRFGRSOnJLdm8YF+W4uvaB4mzA0ZufagN43W5rR+LioRsKEveYK9rjxdjXs9kIQIkgsaifFS+rohZJOB/y/qCQrBUOayUEwxKODse7TqMLs5D33GBh9hTyDKSJEOpQdVhzbfsOd2dqr/3+qQ3lavTDWAxOjXM1dMLA4A4ElifD61J4P9PbyQKgY4BGWE62Zww0YsFJ0Ry9PWXMIzTFBbikzdYeOaZ6qU9WVQi7vXyRVW86/aKW6O7+7HYV4FkI6Z7xW5Zus+giBWbONHEfMWQgkrSd7TZZ0IlpGxlmx6YY0dhkr5WUk/Rd/FKwT7DWEuhbQ
+	2+jowZtwWgxCSGVss+JzhpWr30MQMHevYHjnLNrepvGAj5jVV1BTUhVyDsmE56r60oEaFV5cE1PF7zkIf3J/5em5LysTroVArGq3mMh9rWvi1kDq8BSMhYnU0rXUDuW8dzox36lw223YbKC9HDoTywYY8LMopMNDZIuzfXE8h7beWqvW3gB8GmCr0G0NddIhT+S4ofE1GGiI5Ylfu4tYbKNSzwxnl64dSPGPAi4Gb0+7vuWPTdno972IA7SBtnbVfWJ36W+KvhNwlt2mFSz1coCiKmQJFXI8mWQY+ke1cMT/ML7DWbU7E5kgdJQAmadZEtfO6TrRJxgDC0ighxa3i8EnEX5B0ZOzEYJmSfg0ZOnemQtIa+yndZN2dJ7AYTcuTIb7yDamRjl1RxIgTZjC6JogMCbsBb1Ptuc4TKPnemP1wPmuuemNN5+Fhc4U12BPnpeWErYfB8gscwKSibO21qO0TFD8Thh5efe/T8scIgCMpRMr0GQAN23mqgPZImfbqIwKQWI0WSX8q7vGMyGcPnVhw/0XyWp6OTgFdSWT3n7EDmQTa5ar8RPB3a7Cw02L2q54Gl3wjqQ0X+fIlQQ2711jHFvW+VdFHYP1OUkMFo4MrKnL1GgBI5iieMMIBXoclT208aNVSGCrmqyPNW+4G0xwlyHK+u7MfhwD0DR50aNuC2mI2GR+4uyVcO11X1hNNtGAzckfZEZppFQTwTriICuHscUel1H4uVlwo8DPFiw8k0Yr06LB3jr4HG4UQBO2BVdUQWPz8e7eGeLcKoxJKAxhYwAhWkLLsNG48L2w+CGfqWS51cyZYA2nZQo2iXpP
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(86362001)(2616005)(66556008)(316002)(66476007)(66946007)(38100700002)(31686004)(8936002)(186003)(31696002)(6506007)(2906002)(44832011)(508600001)(36756003)(53546011)(8676002)(6512007)(5660300002)(83380400001)(6486002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(53546011)(5660300002)(6512007)(316002)(6666004)(4326008)(508600001)(6506007)(8676002)(44832011)(966005)(6486002)(8936002)(36756003)(38100700002)(2906002)(186003)(2616005)(86362001)(31696002)(66476007)(66556008)(31686004)(66946007)(43740500002)(45980500001);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?SDF3Mm4xWFlZclJzSzg1UlFSZUMyN3FuY1Y1RHh1bFUzS0JDSGw0YXYwcUU4?=
- =?utf-8?B?a3ZyZjNsKzlaL2hUNFpRTVNxU2VMMUZvYUh2ZnBMM25oTU1qV1RCZGplaW5w?=
- =?utf-8?B?ZVJlYkx5V3NIMnFrUGJMOGplUmZDU0hKa3lySTdCSTYreXdKelFHUjhweHpB?=
- =?utf-8?B?eVhqSWxZVW1nTE4rK0VYWCt1RVNteGRhSGY5ZFRwRXdOQUg2ajFZZ3Y2Sitt?=
- =?utf-8?B?LzM1MmRHaUZDaG83Z1lLQmpydXIxdzNpeUlKVXRCTHBwcjFqOFBqRWVnUjFj?=
- =?utf-8?B?a1JHNlVUd0VnZEhTOHZOOGpjOWJ3d0RVeVRvTlUyTUpxNjhXSWNURjl2NUV0?=
- =?utf-8?B?c0tSaXBuZ2FKTk9vZk45bFpJRVlxNGl1K2xkOVkvNnV6YXF2bFFhVFA3UmFW?=
- =?utf-8?B?SStweTR0eUcvM1NoLytFWGhpZFBtRFFyVHZGcDMrdWRKYlNjVTdkVmgvQW5L?=
- =?utf-8?B?VVR2Z2M2b1BycVFEVHU2a28yS3UzQVRMYjhKcy8wNmwrNzl0akxJMUZlanI4?=
- =?utf-8?B?WDZBTU4yM0VUTDh5ckprMTBTNWNObjJPaEpiWGRMYXhQM1pTaTRhVURWeUo1?=
- =?utf-8?B?UWtBL01xOUJ0ZDU2SVJsT2pHZUl5a25zSUxGZlk1NGxQcXdOY1RkR3JxeWJW?=
- =?utf-8?B?Q1pxZlM0TTMvemdQQnNmdTVWaFZZYWkrK0diejBEZERJa3o5QXFLUTJMOXc2?=
- =?utf-8?B?cldMUE91Z285bVJEVGxTRlRzQjBBcTg1dnF3Uk1SbVJXTXpTU01RdDZWLzdl?=
- =?utf-8?B?STdJbTNRZm9LM05uUmhpd0hhNFpKdXROUENIQ09ndmNQNmY0TVlyNnBydXRD?=
- =?utf-8?B?R0MvZ1lSTHNQNCtHWmlXaFdUdDVJcHdBYzlpRHZXVU1Pbk5pbjY1VXlvNkRz?=
- =?utf-8?B?Q2dYa2tDTDdZSmxpQ09hLzdKQ29qTXFQdjViRUQ0bSsreVV5U3pZTDlwa01K?=
- =?utf-8?B?YXJqL1pzMHM0QzFHN3cyM1JHcDBXQytpeXFiYWthV3dkWGxzaGNwbkxmUmg2?=
- =?utf-8?B?M1lZZ1JWQllyWXFaSlN0eC9venArRHJrNUVkSzdSeitrVUJ3ZzBDVEdsM1pY?=
- =?utf-8?B?NDhEU1ZaZWdFZSsvSUdmd3htalZId1pRZ2VVanpzUWRzWXoxc2pSOVJvajlr?=
- =?utf-8?B?dVNaamVZRFpMQUtUeW83U3hRRUtsQUdUbEppQi9nVG54Yi9XYTFBcnAyM2wr?=
- =?utf-8?B?bUJpWjUxcG5VOWN6SzkxN29yU0JuRUtHV0M1YXdjTmJVOE9RVkRHdnNTeEg1?=
- =?utf-8?B?MjY2UTVrbkNwNHJrd0xjNlY4dTlKc2RNQmMrZnhYbzU0ZG04YVVTMEMyRk1Y?=
- =?utf-8?B?bysydlI5dlBFTzBxZWtTRlBlTGFjZlZLWnZXcFdCTVB3aSsreCszYzBrWEpn?=
- =?utf-8?B?U0xldjRkbnNpWEozYnNRT3hrTlVVKzhXS1lFU2JPa1VqaVBORlJNc01MKzUr?=
- =?utf-8?B?R2dTQWR2VHZoUk5nUG1NWjFaTzJnaHl4YUhBR3ViTmorRmZGNDQ5RHZpejhL?=
- =?utf-8?B?ai9DZ3V1ZFJPT0VHN29nTlVOdVBzbkhhTEswSktBL2pXTFM0bXlZalhNMGdY?=
- =?utf-8?B?cVljR08wQnpQTTI1aDlYalBrVkRsdDg0TmM5UmVsNGpPOEJmMTdzZ29LUHBT?=
- =?utf-8?B?UkRBdE84bUNIT3VEN2VHRFVPWXF5Z3RNWWdhRnRBNFhlNTIxSnE3NHc2UGor?=
- =?utf-8?B?RVRQWDh6c3E0eXdFSEFuWnZ0S1VKMStlMnlZRlpOZGQwVEpBeEVNNnNNYllu?=
- =?utf-8?B?d2JQU2pORVo0YnFqVUZXYiswTjlPQi9SaFp2aGdpQ2E1dkROd3dyU0ppUUhB?=
- =?utf-8?B?cnJoUkxCbWV0TytDT055d2NpR3ZWNmVOOXNHT1R1V0wxL2VLZmpJQmRuZ3NL?=
- =?utf-8?B?S2xyUnoxU1NDSmNkSGZYT3Z3aW9YWndGRG5CdHJTc1prMERlNkRENmw1dS84?=
- =?utf-8?B?ZUZ4NzhnVzNhWE1UMHNXajlHMXVGVCtNU1lFanV0K1BrNnk1YlpPNTMvTHpU?=
- =?utf-8?B?QjBiNzFzQnpjOFBZS05SWGwydERNaEpUL0hObkx2WnhNVC8zcFJqaWlzTnBy?=
- =?utf-8?B?elFiNG41bkMwc0JXd2NXWjdGNEpFT1MvUG43dVVZaVI4OXFwYlRwVExhcjNm?=
- =?utf-8?B?NlVrR2ViV0VBejQ2bGxNN2ovN3U0R3AybVFOenhhS0g3L2Q5b2wzZUk2U1k1?=
- =?utf-8?B?RnljdDFWeFlkeDZLdFZqeU9EU1lweFk5azVqTHZIUm5hZkllUWNlSHlGb3FX?=
- =?utf-8?B?ZU4waUJlTFZmRTdRVG9IQzBNL3I5RXk5VGwzT2l5MWgyVjRWSU5zWWVCZGx5?=
- =?utf-8?B?K2xpZEdtNjE1T0d6VkZWbzAramtsaGhJWDFsV244NmdLTHBRdlRZdkttMmRM?=
- =?utf-8?Q?w8qnXccqJqPtLdMcfDKvQRhwu2IwSim4irfqECVpS1OU0?=
-X-MS-Exchange-AntiSpam-MessageData-1: MHRFx8SoaMWSfjlRADQX3w2llWO6EgQJsNo=
+	=?utf-8?B?NlBIODFrM0RRdjFxdWJRUWVHQ0Rna3piT05FaXlTcWlPbUJBSStORng1eHdJ?=
+ =?utf-8?B?U0RpZnFuWnYySEs0UTlwWGZxaEdjVnRVL3paNXVFckYzQUVFYkVPNWxOc3Ew?=
+ =?utf-8?B?UWhsdkhyUW0rZzNRWjF4THh3Q1JoczIrOU9FdFovNzZEckgwMC9vYVpheGRN?=
+ =?utf-8?B?cVpjbllPb0YrRVBxWktTWGxFRzMydkJIaGpWQ2dqejdybTJxUnIya0psV3hW?=
+ =?utf-8?B?Q2lnTytjS0hjcjNVVmVJOWFLaTZDMlV2MlJ2ODBzblNYRDhiNTNDMlVUVTQy?=
+ =?utf-8?B?d1U0Wkp0bEVuM2greUhleGZseGNtUjVubGx2V3FQdkY0NWhaWHJOUFBOZzF1?=
+ =?utf-8?B?WURiMVJBTEIxd2hZYlF3TDduNTAyazJhQStpVlFtZ1l2RUdTZ0NoMy93TUFq?=
+ =?utf-8?B?L1VFK3k5czFVTmFocXpxbEgvMlhtTHRmQkRDRjhSOCtjZUt6V3F3NWRDRTJ5?=
+ =?utf-8?B?Q21JUmlPNk5HYTQ5L2VWRjJBYTlOb2xiMlJ1WDE2N3dXaHZlbWNYNCtpOFFT?=
+ =?utf-8?B?bmdhQk1CQ2IvTXBnM1RPN0hrd21BMnZQZmt0Uk8wNnNWYTgySGtnd2o1Qlho?=
+ =?utf-8?B?QW1LZjFtalFGUlpuOGd3TnRaNk1nNkYxUVRyOWhOUXFvMGtwNHp2STI2cmQz?=
+ =?utf-8?B?Y3hlK214UFhOdG9nOXRxdjc4VklmQmRER1JjK05RWVdPL3VyNStQUmxYbFhI?=
+ =?utf-8?B?MmhTUytTUG9EMlduTzY0dGF1WjN3eVpBSGlFU0IrbDJRalJTdmg2cXp4dlJ5?=
+ =?utf-8?B?dVNQZno1WTJjU0s1dTZwek1iYWVMWWtTM2VOaWxPMXk2ZGg1ZzAwMkt0RUwv?=
+ =?utf-8?B?TFQ2V1dabVFUSTd3YmpsSjd1c3ZVSy9WdktMSk5tU3lGRzY1T1U1bUdSU0Nr?=
+ =?utf-8?B?Y1dhSGNYbU9iTCtoK3hFS2w3QXJiY0NhUUw2ZjZ1NzdYMW9KMG5xb2NlMkV3?=
+ =?utf-8?B?Ymx3RUlETHQrKzlpay9NVjdvZExJZnZMSk4za0I4TGR4SnNLYk5JVXFCY20y?=
+ =?utf-8?B?eTRYMlNaQlR1M0xsVzArcVZ5MmRObVpXRjd2RzFFRWM3anlUVjJxL2pUblVN?=
+ =?utf-8?B?c2s5Um96MVNPdkFqbHJkYnJPV01FMWF3RS9WTnZZRmZpYzFSWWVuazFuYmts?=
+ =?utf-8?B?WVdlTmcxbGpnNmxiZWh1RnMxSnVJQjBjVVFZd0RybnovUGV0c2UwZzgrNXNq?=
+ =?utf-8?B?Y3VRcnRFUU5UNm5YLzZBald0MlVBUkpJQjRycjhIK0JLL3ArQnFWT0VodjZY?=
+ =?utf-8?B?NlhYTllha0Y4RlQ2bmdQTmFNSWJDWmJjeHJFRVlYY1REbXFmSENyRE45NHNv?=
+ =?utf-8?B?ODlkR2Z6R0Y4aU0wOU9oNk81UHRPTWFCWUUxT0dvTXRzc0YvZytYWWdqRkVK?=
+ =?utf-8?B?UmUvMFhzbDVPNGlBT0prc2Y5dUttaU5pZ2piczBFQWJOZ241ZnNod3FyZmF3?=
+ =?utf-8?B?ZE1LbzYwZzM3MmtMRTFxc3YrWXRpMm96L09LWDdYODJqKzBoMExXWmpjYjI0?=
+ =?utf-8?B?T2lDZ3FVN01SdGdSVDJZbnZrTVM4ZE1XZEJqZi93enVVaTZFNGVHZ1FoblZU?=
+ =?utf-8?B?WEhOWXJLemlYbURQT29NbmJxOFZmdFpPUmJkc3MxRVRtaHo0dGI3c1A3YU11?=
+ =?utf-8?B?eE9ZWXo4TzJMczFKMVpTZUp5azVxL1Z5OThQZmE4Z0tHZDVXU2k2TWFFRm1U?=
+ =?utf-8?B?UTdwWFVXb1FlNElCSUd0ek5GeXUwVWl0YkFTRllQMk5zYUlzalZDQ0tMOGhC?=
+ =?utf-8?B?MVVFbHN2c0s1T0pldGVqbVI1Wm44MDd2cjd3dEdRSS9HbFl5V3hyK3dpbDds?=
+ =?utf-8?B?cjd3UXRVMEN1ZHhyMDBqVHdhb1ZYVTAvV2VUMzhHMlZmUU9tbldtdDhYTjBW?=
+ =?utf-8?B?YmxBb05XTzg2VVRWR0pybm8zQzZpRzgwZlBZSi83Um9GZXJpMkVEQlh3ZHI0?=
+ =?utf-8?B?c25QV2VleDIyNEVHenZtbmFKZnRYQXdvWTFNT2Q0elcwZTByRnRSdG5COGU0?=
+ =?utf-8?B?eXIvRjVjUGpRdkMvL1UySTJ1OXhoRnczbnJ3cks5Z3lCZk1PTXZNVUlueWhM?=
+ =?utf-8?B?OHdOL256REFxSG9SeWRGQ3dpREp2TUtwMnByYkNlNE95Tm9GY09XSWQzcTgw?=
+ =?utf-8?B?akV1bGlFRkdpYmNxMmtaaDdFTFMzakk1YWtrSWtzNytjS2dwUFBOSXIrYVh5?=
+ =?utf-8?B?STMrMkdzTUJuY0paQ1RPTitqQWpYRFlyZ1VvZGdTVWVybXY4ZVBnZVh6bTR3?=
+ =?utf-8?B?MWpEcitvZUJWcm9sRkk1ekVlSVZmUExaQ2hrM2l3RDcwNHJ4VWRyckorcDJT?=
+ =?utf-8?B?Z0VZUk9RcFV6ZTBiUmhVUHNYbkw4d0RhbmwxK1JMOUVad3hkR2ZiOTNHdWs2?=
+ =?utf-8?Q?dTxOEMOk6rDLDMrM5H4RgWn0ruBH1AVXAnZiovKGZJz43?=
+X-MS-Exchange-AntiSpam-MessageData-1: pKg+IZ3fSOs2ROO1NusEha8RiIM5Om0VH6E=
 X-OriginatorOrg: theobroma-systems.com
 X-MS-Exchange-CrossTenant-Network-Message-Id: 
- bdfafe63-3a02-4109-4ba9-08da22dacb72
+ 3cc40f6e-b738-4e9c-b9bd-08da22de0404
 X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2022 14:33:53.8919
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Apr 2022 14:56:57.6547
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
 X-MS-Exchange-CrossTenant-UserPrincipalName: 
- 1+6yIxGJI8iTVJeeCbujkAkLyFjT06MNHfoFN3hi1GPxBft9zgQP3hyd0E4bygPJMzHehMGbAY1y4lW8fNT/yssWq7vR3wbjNcLfig1mdNrcAYi8+10QIbJ4ftF55ofn
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB5600
+ Xp3YsTtL3FwDe6m2spNrEsZrgYHYa/NvI4Elzlm5+EPVNvN3uPno5eTwyXTe4+kvZw4/T+fompF6ABkaaoylUS8fr8FvCkcZBdAd/LsO2MZIZXNyZAug8Jq2bVfCk0U0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM5PR0402MB2705
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 21 Apr 2022 16:46:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2806
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2807
 
 Hi Richard,
 
-Thanks for helping me with this!
-
-On 4/20/22 13:29, Richard Purdie wrote:
-> Merge in the changes from master allowing conf.py to use information from
-> poky.yaml. This allows the head version mapped to X.999 on the website to
-> have the version information displayed clearly and correctly.
+On 4/20/22 13:44, Richard Purdie wrote:
+> On Wed, 2022-04-20 at 13:24 +0200, Quentin Schulz wrote:
+>> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+>>
+>> The switcher expects URL subpath to match the "release" used by sphinx
+>> to build the documentation. Branches, however, are put in a subpath
+>> after their name (e.g. dunfell) while sphinx sets the "release" to
+>> X.Y.999. This means the switcher cannot replace correctly the path to
+>> switch between releases/versions.
+>>
+>> Let set_versions.py inject the list of release names into the
+>> switchers.js.in file so it can check whether the subpath is one of the
+>> release names in which case it needs to be stripped.
+>>
+>> Cc: Quentin Schulz <foss+yocto@0leil.net>
+>> Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+>> ---
+>>   documentation/set_versions.py               |  3 +++
+>>   documentation/sphinx-static/switchers.js.in | 12 ++++++++++++
+>>   2 files changed, 15 insertions(+)
+>>
+>> diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+>> index dfa2dc269..386cff366 100755
+>> --- a/documentation/set_versions.py
+>> +++ b/documentation/set_versions.py
+>> @@ -203,6 +203,9 @@ versions = []
+>>   with open("sphinx-static/switchers.js.in", "r") as r, open("sphinx-static/switchers.js", "w") as w:
+>>       lines = r.readlines()
+>>       for line in lines:
+>> +        if "ALL_VERSIONS_PLACEHOLDER" in line:
+>> +            w.write(str(list(release_series.keys())))
+>> +            continue
+>>           if "VERSIONS_PLACEHOLDER" in line:
+>>               w.write("    'dev': { 'title': 'dev (%s)', 'obsolete': false,},\n" % release_series[devbranch])
+>>               for branch in activereleases + ([ourseries] if ourseries not in activereleases else []):
+>> diff --git a/documentation/sphinx-static/switchers.js.in b/documentation/sphinx-static/switchers.js.in
+>> index a44edbcab..2bc18160d 100644
+>> --- a/documentation/sphinx-static/switchers.js.in
+>> +++ b/documentation/sphinx-static/switchers.js.in
+>> @@ -9,6 +9,10 @@ by https://urldefense.proofpoint.com/v2/url?u=https-3A__git.yoctoproject.org_yocto-2Dautobuilder-2Dhelper_tree_scripts_run-2Ddocs-2Db&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=g-IQJeaTqTJrY4BEqvN3SYYzip0oERxzLTCgmnPAx_ep3sLUM64WVRzszk1jAmS4&s=R2xrm2Qom6YqGo2VA3kFxq5WbFofQq4MQ4QnDuOiuIQ&e=
+>>   (function() {
+>>     'use strict';
+>>   
+>> +  var all_versions =
+>> +	ALL_VERSIONS_PLACEHOLDER
+>> +  ;
+>> +
+>>     var switcher_versions = {
+>>       VERSIONS_PLACEHOLDER
+>>     };
+>> @@ -157,6 +161,14 @@ by https://urldefense.proofpoint.com/v2/url?u=https-3A__git.yoctoproject.org_yocto-2Dautobuilder-2Dhelper_tree_scripts_run-2Ddocs-2Db&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=g-IQJeaTqTJrY4BEqvN3SYYzip0oERxzLTCgmnPAx_ep3sLUM64WVRzszk1jAmS4&s=R2xrm2Qom6YqGo2VA3kFxq5WbFofQq4MQ4QnDuOiuIQ&e=
+>>           var new_url = docroot + new_versionpath + url.replace(docroot, "");
+>>           var fallback_url = docroot + new_versionpath;
+>>       } else {
+>> +	// check for named releases (e.g. dunfell) in the subpath
+>> +        $.each(all_versions, function(idx, name) {
+>> +		if (docroot.endsWith('/' + name + '/')) {
+>> +			current_version = name;
+>> +			return false;
+>> +		}
+>> +	});
+>> +
+>>           var new_url = url.replace('/' + current_version + '/', '/' + new_versionpath);
+>>           var fallback_url = new_url.replace(url.replace(docroot, ""), "");
+>>       }
 > 
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
->   documentation/conf.py   | 22 ++++++++++++++++++++--
->   documentation/poky.yaml |  2 ++
->   2 files changed, 22 insertions(+), 2 deletions(-)
+> Should this be called "all_releases" or "release_series" instead? It isn't
+> really a version list?
 > 
-> diff --git a/documentation/conf.py b/documentation/conf.py
-> index 4df8f55d1..df67a5cdf 100644
-> --- a/documentation/conf.py
-> +++ b/documentation/conf.py
-> @@ -15,9 +15,27 @@
->   import os
->   import sys
->   import datetime
-> +try:
-> +    import yaml
-> +except ImportError:
-> +    sys.stderr.write("The Yocto Project Sphinx documentation requires PyYAML.\
-> +    \nPlease make sure to install pyyaml python package.\n")
-> +    sys.exit(1)
->   
-> -current_version = "3.1.15"
-> -bitbake_version = "1.46"
-> +# current_version = "dev"
-> +# bitbake_version = "" # Leave empty for development branch
-> +# Obtain versions from poky.yaml instead
-> +with open("poky.yaml") as data:
-> +    buff = data.read()
-> +    subst_vars = yaml.safe_load(buff)
-> +    if "DOCCONF_VERSION" not in subst_vars:
-> +        sys.stderr.write("Please set DOCCONF_VERSION in poky.yaml")
-> +        sys.exit(1)
-> +    current_version = subst_vars["DOCCONF_VERSION"]
-> +    if "BITBAKE_SERIES" not in subst_vars:
-> +        sys.stderr.write("Please set BITBAKE_SERIES in poky.yaml")
-> +        sys.exit(1)
-> +    bitbake_version = subst_vars["BITBAKE_SERIES"]
->   
->   # String used in sidebar
->   version = 'Version: ' + current_version
-> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-> index e0f8166f7..edc23f8aa 100644
-> --- a/documentation/poky.yaml
-> +++ b/documentation/poky.yaml
-> @@ -5,6 +5,8 @@ DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
->   YOCTO_DOC_VERSION : "3.1.15"
->   YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
->   DISTRO_REL_TAG : "yocto-3.1.15"
-> +DOCCONF_VERSION : "3.1.15"
-> +BITBAKE_SERIES : "1.46"
 
-I was wondering if this was not the opportunity to explicit that after 
-this commit nothing needs to be updated by maintainers for version 
-bumping except git tagging the docs git repo?
+It is a list of release names only, of all releases ever published. I 
+named it this way in anticipation that we'll need to make this a 
+dictionary to store more info later on. all_releases works for me, 
+thanks for the suggestion.
 
-e.g. DOCCONF_VERSION : 
-"autogenerated-from-set_versions.py-from-master-branch"
-or something like that.
-Or a comment at the top of the file explaining which variables are now 
-auto-generated by set_versions.py?
-
-Otherwise, I tested this on all branches listed in this patch series 
-with the autobuilder script and it does what I'd expect them to :)
-
-Thanks!
+Cheers,
 Quentin
 
