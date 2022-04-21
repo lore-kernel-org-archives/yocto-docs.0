@@ -1,64 +1,44 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <abongwabonalais@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B2440C71129
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CFBCAC71137
 	for <webhook@archiver.kernel.org>; Thu, 21 Apr 2022 16:46:11 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.17782.1650518458719467518
- for <docs@lists.yoctoproject.org>;
- Wed, 20 Apr 2022 22:20:59 -0700
-Authentication-Results: mx.groups.io;
- dkim=missing;
- spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.196,
- mailfrom: foss@0leil.net)
-Received: (Authenticated sender: foss@0leil.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id AF74CE0007;
-	Thu, 21 Apr 2022 05:20:56 +0000 (UTC)
-Date: Thu, 21 Apr 2022 07:20:55 +0200
-From: Quentin Schulz <foss@0leil.net>
-To: docs@lists.yoctoproject.org,
- Abongwa Amahnui Bonalais <abongwabonalais@gmail.com>
-Subject: =?US-ASCII?Q?Re=3A_=5Bdocs=5D_=5BPATCH=5D_yocto-docs=3A_?=
- =?US-ASCII?Q?profile_manual=2C_added_banner_at?=
- =?US-ASCII?Q?_the_top_for_direction_to_most_?=
- =?US-ASCII?Q?recent_website_for_version_3=2E1=2E3?=
-In-Reply-To: <25117.1650489487021571960@lists.yoctoproject.org>
-References: <845c45a9-35d2-cb3b-b978-eb5c12b2911b@theobroma-systems.com>
- <25117.1650489487021571960@lists.yoctoproject.org>
-Message-ID: <79E26F48-13C2-458F-8018-AA9F79C37039@0leil.net>
+Subject: Re: [PATCH] yocto-docs: profile manual,
+ added banner at the top for direction to most recent website for version
+ 3.1.3
+To: docs@lists.yoctoproject.org
+From: "Abongwa Amahnui Bonalais" <abongwabonalais@gmail.com>
+X-Originating-Location: CM (154.72.153.148)
+X-Originating-Platform: Linux Chrome 100
+User-Agent: GROUPS.IO Web Poster
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Date: Thu, 21 Apr 2022 00:19:13 -0700
+References: <845c45a9-35d2-cb3b-b978-eb5c12b2911b@theobroma-systems.com>
+In-Reply-To: <845c45a9-35d2-cb3b-b978-eb5c12b2911b@theobroma-systems.com>
+Message-ID: <2605.1650525553827869573@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="IhtQX7yNPnLidekkBc5r"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 21 Apr 2022 16:46:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2819
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2820
 
-Hi Amahnui,
+--IhtQX7yNPnLidekkBc5r
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On April 20, 2022 11:18:07 PM GMT+02:00, Abongwa Amahnui Bonalais <abongwa=
-bonalais@gmail=2Ecom> wrote:
->Hello Quentin, when I run =2E/run-docs-build "$PWD/build" "$PWD/yocto-doc=
-s" "$PWD/bitbake", I get the error below
->In an attempt to generate the docs using auto-builder-helper tool
->
->tar (child): /home/abongwa/Pictures/docbook-archives-20201105: Cannot rea=
-d: Is a directory
->tar (child): At beginning of tape, quitting now
->tar (child): Error is not recoverable: exiting now
->xz: (stdin): File format not recognized
->tar: Child returned status 2
->tar: Error is not recoverable: exiting now
+Hello Quentin,
+I wish to ask if I there is a way in which I can make a script in yocto-aut=
+obuilder-helper/scripts run last.
 
-You need to give the path to the compressed archive (also called tarball) =
-and not the path to the directory where it is extracted=2E
+--IhtQX7yNPnLidekkBc5r
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-The script will extract it for you=2E
+<div>Hello Quentin,</div>
+<div>I wish to ask if I there is a way in which I can make a script in yoct=
+o-autobuilder-helper/scripts run last.</div>
 
-Cheers,
-Quentin
+--IhtQX7yNPnLidekkBc5r--
 
