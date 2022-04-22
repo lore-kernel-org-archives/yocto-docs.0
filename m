@@ -2,67 +2,90 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CACD0C54F46
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7F60C54F3E
 	for <webhook@archiver.kernel.org>; Fri, 22 Apr 2022 16:52:01 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
- [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web09.8287.1650633259330910055
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.8451.1650633214477880380
  for <docs@lists.yoctoproject.org>;
- Fri, 22 Apr 2022 06:14:19 -0700
+ Fri, 22 Apr 2022 06:13:34 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing;
- spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.200,
+ spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.201,
  mailfrom: foss+yocto@0leil.net)
 Received: (Authenticated sender: foss@0leil.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id 2897F20012;
-	Fri, 22 Apr 2022 13:14:16 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id DCC621BF218;
+	Fri, 22 Apr 2022 13:13:31 +0000 (UTC)
 From: Quentin Schulz <foss+yocto@0leil.net>
 To: docs@lists.yoctoproject.org
 Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
 	Quentin Schulz <foss+yocto@0leil.net>
-Subject: [PATCH 2/2] docs: migration-guides: release-notes-4.0: replace kernel
- placeholder with correct recipe name
-Date: Fri, 22 Apr 2022 15:14:04 +0200
-Message-Id: <20220422131404.283476-2-foss+yocto@0leil.net>
+Subject: [PATCH 1/2] docs: ref-manual: variables: add hashed password example
+ in EXTRA_USERS_PARAMS
+Date: Fri, 22 Apr 2022 15:13:15 +0200
+Message-Id: <20220422131316.283346-1-foss+yocto@0leil.net>
 X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20220422131404.283476-1-foss+yocto@0leil.net>
-References: <20220422131404.283476-1-foss+yocto@0leil.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 22 Apr 2022 16:52:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2854
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2851
 
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-If I am not mistaken, the only kernel recipe to have a new PACKAGECONFIG
-option is linux-yocto-dev, in commit 1bac831fbaafb
-"linux-yocto-dev: introduce dt-validation PACKAGECONFIG".
-
-Therefore, let's replace (kernel) by the one kernel recipe that has this
-change.
+Add examples for hashed hardcoded passwords from extrausers.bbclass so
+that this feature is not hidden away.
 
 Cc: Quentin Schulz <foss+yocto@0leil.net>
 Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 ---
- documentation/migration-guides/release-notes-4.0.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/ref-manual/variables.rst | 31 ++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/documentation/migration-guides/release-notes-4.0.rst b/documentation/migration-guides/release-notes-4.0.rst
-index c8885cadd..7a41a926c 100644
---- a/documentation/migration-guides/release-notes-4.0.rst
-+++ b/documentation/migration-guides/release-notes-4.0.rst
-@@ -184,7 +184,7 @@ New Features / Enhancements in 4.0
-    - New ``FIT_CONF_PREFIX`` variable to allow overriding FIT configuration prefix
-    - Use 'bbnote' for better logging
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 1bfa66778..f8808cc05 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -2338,6 +2338,37 @@ system and gives an overview of their function and contents.
+          # usermod -s /bin/sh tester; \
+          # "
  
--- New :term:`PACKAGECONFIG` options in ``curl``, ``dtc``, ``epiphany``, ``git``, ``git``, ``gstreamer1.0-plugins-bad``, (kernel), ``kmod``, ``mesa``, ``piglit``, ``qemu``, ``rpm``, ``systemd``, ``webkitgtk``, ``weston-init``
-+- New :term:`PACKAGECONFIG` options in ``curl``, ``dtc``, ``epiphany``, ``git``, ``git``, ``gstreamer1.0-plugins-bad``, ``linux-yocto-dev``, ``kmod``, ``mesa``, ``piglit``, ``qemu``, ``rpm``, ``systemd``, ``webkitgtk``, ``weston-init``
- - ptest enhancements in ``findutils``, ``lttng-tools``, ``openssl``, ``gawk``, ``strace``, ``lttng-tools``, ``valgrind``, ``perl``, ``libxml-parser-perl``, ``openssh``, ``python3-cryptography``, ``popt``
- 
- - Sysroot dependencies have been further optimised
++      Hardcoded passwords are supported via the ``-p`` parameters for
++      ``useradd`` or ``usermod``, but only hashed.
++
++      Here is an example that adds two users named "tester-jim" and "tester-sue" and assigns
++      passwords. First on host, create the (escaped) password hash::
++
++         printf "%q" $(mkpasswd -m sha256crypt tester01)
++
++      The resulting hash is set to a variable and used in ``useradd`` command parameters::
++
++         inherit extrausers
++         PASSWD = "\$X\$ABC123\$A-Long-Hash"
++         EXTRA_USERS_PARAMS = "\
++             useradd -p '${PASSWD}' tester-jim; \
++             useradd -p '${PASSWD}' tester-sue; \
++             "
++
++      Finally, here is an example that sets the root password::
++
++         inherit extrausers
++         EXTRA_USERS_PARAMS = "\
++             usermod -p '${PASSWD}' root; \
++             "
++
++      .. note::
++
++         From a security perspective, hardcoding a default password is not
++         generally a good idea or even legal in some jurisdictions. It is 
++         recommended that you do not do this if you are building a production 
++         image.
++
+       Additionally there is a special ``passwd-expire`` command that will
+       cause the password for a user to be expired and thus force changing it
+       on first login, for example::
 -- 
 2.35.1
 
