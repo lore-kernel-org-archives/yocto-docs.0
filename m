@@ -2,63 +2,64 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B5C4C49EA5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8ED41C54EC4
 	for <webhook@archiver.kernel.org>; Fri, 22 Apr 2022 16:52:01 +0000 (UTC)
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com
- [209.85.221.50])
- by mx.groups.io with SMTP id smtpd.web09.7344.1650628024411983582
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com
+ [209.85.221.54])
+ by mx.groups.io with SMTP id smtpd.web08.7576.1650629386205602551
  for <docs@lists.yoctoproject.org>;
- Fri, 22 Apr 2022 04:47:04 -0700
+ Fri, 22 Apr 2022 05:09:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ZSSqQlLX;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.50,
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=VpXuKguM;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.54,
  mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f50.google.com with SMTP id t6so7249381wra.4
+Received: by mail-wr1-f54.google.com with SMTP id c10so10790135wrb.1
         for <docs@lists.yoctoproject.org>;
- Fri, 22 Apr 2022 04:47:04 -0700 (PDT)
+ Fri, 22 Apr 2022 05:09:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=message-id:subject:from:to:date:in-reply-to:references:user-agent
          :mime-version:content-transfer-encoding;
-        bh=L439noBzi9E1vi0wnuZNTHuSq9NBynkiAPs6o7zsTGI=;
-        b=ZSSqQlLXRvbw61HhDIlRUfV6wGBmasSAxgiRctQqAzdXrDS8f9Ry5nd78rMASspLe9
-         JVJPyht5/d7VzstyYSlpw4BtjwjHDv2T+zb7E+YCpEBpqDA75KiFyKMeOO1T6mlhCwJy
-         4TIb7GsXg9WjUwyr78l8NwkzZQJ+ZjgwdkE5k=
+        bh=64x3FrZrlMEOFecLcW+cb+F/SOjqvTBzIWjzhmqkT98=;
+        b=VpXuKguMP1kwVDPiywxhNxjt2k/73Nqqe2FO1awwcV3eZtn7PlgYB/d61TCwi8KSoF
+         dNZmSrwc5ZhkxKSe4d/b8pWmFSDupyXIwdO/prRYPBs+Z9Y18VJ1cTj0/+JM4VFNLGHW
+         E+bDvOj1Nyr9u/s+wqPoPjK2JPvczC7Rzgx1w=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
          :references:user-agent:mime-version:content-transfer-encoding;
-        bh=L439noBzi9E1vi0wnuZNTHuSq9NBynkiAPs6o7zsTGI=;
-        b=B904UCqnqLz0UfUnXyDT0BknwtGmRgpfOngA8buFOfpKooQVgTLme8nCyoSrhgJvsY
-         P/7+Y65/y5BNXTOupj4yecizh4TXRzxe1bt2DsBlBTXj1WecBDM0McXS9/dX2+lDxPxc
-         N+N+2D5e6BnB5+dKWiqJw3Cnx7pYWeuH2vAVlo7SkH9ICulLE/5WbwWy4UeesGwGiwps
-         1PbauZE7JOPDOB4uuxQiXnPhyedPfGXQOEN3l5hRX3iC40G+n1k+tiLdDhxtCEVb9YIb
-         Xh4bnha97RjogAywKvXjB7HROqL5YHPtDcdboiU9AjWxwUfk2uWXiVa8NjX7H/BpR8Gq
-         5I5w==
-X-Gm-Message-State: AOAM5301Tlxmb6xdkZDnq9Nami922+PasKOK1EHFaGvgh9avZsq1rNTl
-	ccWR3zk+VM/ZImCrn02qdeqNaoxraQ6uDg==
+        bh=64x3FrZrlMEOFecLcW+cb+F/SOjqvTBzIWjzhmqkT98=;
+        b=4KdxbbZmvdrFitANwshgmJlqMH0KaqEsT+7NpewOd5MeYowTfJGzMj5xGiNyAsMzl3
+         ZgwTZf/OhViwSjY7DedJiaFrCD+qmsNAKNoDz3d0c3qHrTjblRKTZuGBZXbkDDGD2bWH
+         yeNr+hAFQLV0NYAA72trL9I2++yM44rLEEFtzqGYlIEsCaBLHjgHcavCOJeJ0CisqmBl
+         F4qXqfIsk9woNsMFLiy/EW7XK3qVzvNLj9ISyexCKV9qK8B2qgwWEHB4Ccz+2l2J8Nxm
+         H+bRRheeMu0b2gDgPJtS5NeWOYGcCyChqr9IaI5kBcZiwz9U1vDM8dEec4aMJWVuQEtF
+         EITQ==
+X-Gm-Message-State: AOAM530NKf5zZSE607JsZEfZDyDi0ZxqYMlvIqiSq6jdvGo54An6HzVL
+	JU/RQtBjsNV2ylLNFWaI8bp5YA==
 X-Google-Smtp-Source: 
- ABdhPJzXWO3A4Y6nzWUX54hHReymh5JJ1M9vESveZcB5R3Q1Q/ySppo546qHItobSF5yHvktobmbyQ==
-X-Received: by 2002:a5d:4747:0:b0:20a:c40b:1189 with SMTP id
- o7-20020a5d4747000000b0020ac40b1189mr3339972wrs.509.1650628022962;
-        Fri, 22 Apr 2022 04:47:02 -0700 (PDT)
+ ABdhPJxXnOls9W0iiLCkFWzWs7eLcz65cXRTu1nuaKUHH7YFATmwqpwUCLQeMbjSEq4+QBPmH5e9kw==
+X-Received: by 2002:a05:6000:1a44:b0:20a:ccde:c139 with SMTP id
+ t4-20020a0560001a4400b0020accdec139mr1329420wry.320.1650629384518;
+        Fri, 22 Apr 2022 05:09:44 -0700 (PDT)
 Received: from ?IPv6:2001:8b0:aba:5f3c:9788:6d00:bfe8:c84e?
  ([2001:8b0:aba:5f3c:9788:6d00:bfe8:c84e])
         by smtp.gmail.com with ESMTPSA id
- t2-20020a1c4602000000b003917d43d339sm4488672wma.4.2022.04.22.04.46.59
+ w17-20020a5d6091000000b00207a89b952asm1590768wrt.77.2022.04.22.05.09.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Apr 2022 04:47:01 -0700 (PDT)
+        Fri, 22 Apr 2022 05:09:43 -0700 (PDT)
 Message-ID: 
- <9e8203a32b436c8c279727658bef00ec626f1da9.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 6/9] ref-manual: add XZ_THREADS and ZSTD_THREADS
+ <f4db4ede3dfa2619d094f9b1dacf9dc03c000ec1.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH 8/9] migration-guides: complete migration guide
+ for 4.0
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
 To: Quentin Schulz <quentin.schulz@theobroma-systems.com>, Paul Eggleton
 	 <paul.eggleton@linux.microsoft.com>, docs@lists.yoctoproject.org
-Date: Fri, 22 Apr 2022 12:46:57 +0100
-In-Reply-To: <e843b4b7-3a45-d44a-c423-c004151a32c9@theobroma-systems.com>
+Date: Fri, 22 Apr 2022 13:09:36 +0100
+In-Reply-To: <d435d26f-63f0-d92a-bfde-d51a71001f51@theobroma-systems.com>
 References: <cover.1650591341.git.paul.eggleton@linux.microsoft.com>
-	 <fde984bfa988c26cf7ef4cacf4ac830d974129b0.1650591341.git.paul.eggleton@linux.microsoft.com>
-	 <e843b4b7-3a45-d44a-c423-c004151a32c9@theobroma-systems.com>
+	 <f0106e362d6b4b4e827c1aa8533511a3684df927.1650591341.git.paul.eggleton@linux.microsoft.com>
+	 <d435d26f-63f0-d92a-bfde-d51a71001f51@theobroma-systems.com>
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.40.4-1ubuntu2 
 MIME-Version: 1.0
@@ -67,68 +68,30 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 22 Apr 2022 16:52:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2843
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2846
 
-On Fri, 2022-04-22 at 12:40 +0200, Quentin Schulz wrote:
-> Hi Paul,
-> 
+On Fri, 2022-04-22 at 13:10 +0200, Quentin Schulz wrote:
 > On 4/22/22 03:40, Paul Eggleton wrote:
-> > ZSTD_THREADS is new for kirkstone, XZ_THREADS was introduced in dunfell.
-> > 
-> 
-> Separate patch please so XZ_THREADS can be backported to all branches up 
-> to dunfell.
-> 
-> > Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
-> > ---
-> >   documentation/ref-manual/variables.rst | 13 ++++++++++++-
-> >   1 file changed, 12 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> > index b9448b8..4803578 100644
-> > --- a/documentation/ref-manual/variables.rst
-> > +++ b/documentation/ref-manual/variables.rst
-> > @@ -8737,4 +8737,15 @@ system and gives an overview of their function and contents.
-> >   
-> >         The default value of :term:`XSERVER`, if not specified in the machine
-> >         configuration, is "xserver-xorg xf86-video-fbdev xf86-input-evdev".
+> > -Changes for release notes
+> > --------------------------
 > > -
+> > -- Share State cache: now using `ZStandard (zstd) <https://urldefense.proofpoint.com/v2/url?u=https-3A__en.wikipedia.org_wiki_Zstd&d=DwIBAg&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=NFWUBU2SJa-7sMMP9YjjqDqnazkKmPYZmWozo_Fi3AGUKfgRkBmXN4PM3mfOkZO5&s=V_Vs2jVTKsmqXE6NV545ZU65Zx8CQJeXVIaQKEnPj2w&e= >`__
+> > -  instead of Gzip compression, for better performance.
+> > -
+> > -- BitBake has an improved ``setscene`` task display.
+> > +- ``gcc`` version 7.5 is now required at minimum on the build host. For older
+> > +  host distributions where this is not available, you can use the
+> > +  ``buildtools-extended-tarball`` (easily installable using
+> > +  ``scripts/install-buildtools``).
 > > +
-> > +   :term:`XZ_THREADS`
-> > +      Specifies the number of parallel threads that should be used when
-> > +      using xz compression. By default this scales with core count, but
-> > +      is never set less than 2 to ensure that multi-threaded mode is
-> > +      always used (so that the output file contents are deterministic).
-> > +
+> > +_append/_prepend in combination with other operators
 > 
-> I don't see how having it set to 1 breaks deterministic builds, do you 
-> mind explaining?
-> 
-> Also, this feels like explanation of the implementation more than what 
-> the user should do with this variable.
+> s/_/:/
 
-I think having a cautionary note here about reproducible builds is important.
-
-> If the variable should never be <2, then it needs to be explicitly 
-> stated here (and eventually the reason).
-
-You can set it, you just won't have reproducible builds.
-
-> Maybe it'd make sense to explain why would anyone want to modify this 
-> variable (which IIRC, is for when you have a nproc/ram too high and it 
-> OOMs when creating packages).
-
-That would be nice, yes.
-
-I've gone ahead and tried a new version of this patch split into two and adding
-XZ_MEMLIMIT too (ZSTD doesn't have that).
+Tweaked in master-next, well spotted, thanks.
 
 Cheers,
 
 Richard
-
-
-
-
 
 
