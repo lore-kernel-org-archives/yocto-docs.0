@@ -1,90 +1,85 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <ticotimo@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A82FC3527B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4063C46467
 	for <webhook@archiver.kernel.org>; Mon, 25 Apr 2022 19:26:11 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.30643.1650898850509598701
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com
+ [209.85.214.169])
+ by mx.groups.io with SMTP id smtpd.web08.13402.1650764298750676834
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Apr 2022 08:00:51 -0700
+ Sat, 23 Apr 2022 18:38:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kA0ix3Ex;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197,
- mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 07E311C000A;
-	Mon, 25 Apr 2022 15:00:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1650898847;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bpasL/er7HHuruQc6ftgDF7l5Z+Q/rbaFd1nFLFDZdY=;
-	b=kA0ix3ExQkHFlyCgnMWpzIeheMJr0/+PL2FVUbSzk3Mye+r5brMd6T8AADQQOgqiJU6EQe
-	+hz+k2tDzOjbk9PX2gl/9Z00u0o7YDnCxXVEEw+FNf0Ole/6hVvxy0ah3jclVcth2b3VNv
-	8HifbQjjw6MAHW8FvzkFx2CxWd0XOYMeFHuM9ltXy/tvWN7Dd27IzH1cNrsvMhxNIZGrVv
-	dobcUPOWgNZDWjuCU7oHytYnYwue2ECnl+RHQyPyt5dwEPSEs4rOec2YLEraeS8j+bhGiI
-	ZlI8RHFNT7jLXgExtZ1xF9MpXz4eoIz1vckYVQWT4iJ5IkCKH3qChqbPnRucTQ==
-Message-ID: <f2c79713-d6e6-37a2-7f67-575cf935111a@bootlin.com>
-Date: Mon, 25 Apr 2022 17:00:46 +0200
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=ea68rMak;
+ spf=pass (domain: gmail.com, ip: 209.85.214.169,
+ mailfrom: ticotimo@gmail.com)
+Received: by mail-pl1-f169.google.com with SMTP id n18so19324147plg.5
+        for <docs@lists.yoctoproject.org>;
+ Sat, 23 Apr 2022 18:38:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:from:date:message-id:subject:to;
+        bh=PZyD/YVNc8ESDjYrgl9xfDGAl5OeEUb2ePCt+zaIHDE=;
+        b=ea68rMakH3MmbT16Lx9E4yBSTJ7UXENXOC4Jcy9nWUDSfVi4YYO414rmRAzDfUGPBL
+         05QxCufdH5LXO/eihRpN12x8EAmZXiTCR+kp8ORJPeTAU4z9pNzxDn8j+KGotnx/z4l1
+         4tiQeOlY+T4ZiyxoOeX9RCRz7SsuJyTreY2XfyyiYHo+tyZd6QYcfCe6naqGwFD9hAn/
+         YdmOBvxPgsE0zq3pntWNI3QgnXEycKzHU2HFMWp3I0qx9CnD0oJYwPAVZLdpzVPVZV4a
+         ONOS/ETZuU8EnQMp+2loOX+ILJ33giO8QiNjRoB+ubtGQPGUuS8xzyxwVsVLvM5Sd5OH
+         lKKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
+        bh=PZyD/YVNc8ESDjYrgl9xfDGAl5OeEUb2ePCt+zaIHDE=;
+        b=WFpKUER4WogCgJwPH7BZ+A2lYfzQTtkxMdkPFa9Rob/2Q7Pll8J1LntwULhQaVpyD8
+         E1arei5F8xYrDh03RtoVpUv+KEyNLBBt/UGVMB5x6tIl5m0VJF3q/TKzBqwm8byzgCOC
+         Ltsnns9L59r2/bXX/Wf7SnBoP3OM9NHfd7wEGIdYMWM5Xgxzvk/u3hNYPGl9qw4zXoMw
+         GwIHMiKrbx4OrCEAvPYxmjEy2ZQVLLLDK9JEW56RmycyZ3TX4M5fyV/3u1uK48Rj2q8g
+         4+KzpAs7wZUVAngyr5TzqngyjEwWSC/ABPdIoAxcXma7rk9pmXIRw4eJSd86FqrRugQ/
+         Vm6g==
+X-Gm-Message-State: AOAM532IAG/ED5m059PBcdaJpi6AVE6L5dqIevx2SjSPfbfguoKV8vlD
+	CdAYXix41jVqzZj+FpJ5Cj7gTviIIWfUbV2bK5CQ5/qFpFc=
+X-Google-Smtp-Source: 
+ ABdhPJxHiVA+YVAg62Lff1cI8035YSwFFyrJ4GbNYo1yxKJ1J7YnS78RZqipYYLXF2dgKijFLjB0FMPpHBBHaMhm0lI=
+X-Received: by 2002:a17:902:8f86:b0:15b:4dfa:ba7b with SMTP id
+ z6-20020a1709028f8600b0015b4dfaba7bmr11576805plo.43.1650764297673; Sat, 23
+ Apr 2022 18:38:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Cc: rwmacleod@gmail.com, umesh.kalappa0@gmail.com, pgowda.cve@gmail.com,
- shivams@gmail.com, john.kaldas.enpj@gmail.com
-Subject: Re: [docs][PATCH V3] Improvements for gdbserver configuration
-Content-Language: en-US
-To: Sundeep KOKKONDA <sundeep.kokkonda@gmail.com>, docs@lists.yoctoproject.org
-References: <20220419114548.12921-1-sundeep.kokkonda@gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20220419114548.12921-1-sundeep.kokkonda@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Tim Orling <ticotimo@gmail.com>
+Date: Sat, 23 Apr 2022 18:38:06 -0700
+Message-ID: 
+ <CANx9H-Ai+s8euDAX4nf1kt16DC5Jya6a0ygQO=6Ryv48Z1de3Q@mail.gmail.com>
+Subject: Alphabetize the Required Packages for Build Host?
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="0000000000009221ab05dd5c8341"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 25 Apr 2022 19:26:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2858
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2856
 
-Hi Sundeep,
+--0000000000009221ab05dd5c8341
+Content-Type: text/plain; charset="UTF-8"
 
-Many thanks for the patch and the updates!
+Historically, new requirements have just been added to the end of the lists
+in:
+http://docs.yoctoproject.org/ref-manual/system-requirements.html#required-packages-for-the-build-host
 
-On 4/19/22 13:45, Sundeep KOKKONDA wrote:
-> [Yocto #13722]
-> The Yocto bug reports a few improvements in the gdbserver configuration which improves the configuration of gdb more easier for novice users.
->
-> Signed-off-by: Sundeep KOKKONDA <sundeep.kokkonda@gmail.com>
-> ---
->  documentation/dev-manual/common-tasks.rst | 7 ++++---
->  1 file changed, 4 insertions(+), 3 deletions(-)
->
-> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-> index 9d4aaa5a6..5c4f0028a 100644
-> --- a/documentation/dev-manual/common-tasks.rst
-> +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -10181,6 +10181,7 @@ debugger.
->     an image recipe::
->  
->        IMAGE_INSTALL:append = " gdbserver"
-> +      EXTRA_IMAGE_FEATURES:append = " tools-debug"
+This makes it tricky to see if you have the correct packages installed,
+e.g. in a Docker container.
 
+Thoughts?
 
-Isn't the EXTRA_IMAGE_FEATURES setting sufficient here? If I understand
-correctly, you should remove the "IMAGE_INSTALL" setting and then remove
-the "or in an image recipe:" text, because EXTRA_IMAGE_FEATURES is meant
-to be used in a configuration file.
+--0000000000009221ab05dd5c8341
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Cheers
-Michael.
+<div dir=3D"ltr">Historically, new requirements have just been added to the=
+ end of the lists in:<div><a href=3D"http://docs.yoctoproject.org/ref-manua=
+l/system-requirements.html#required-packages-for-the-build-host">http://doc=
+s.yoctoproject.org/ref-manual/system-requirements.html#required-packages-fo=
+r-the-build-host</a><br></div><div><br></div><div>This makes it tricky to s=
+ee if you have the correct packages installed, e.g. in a Docker container.<=
+/div><div><br></div><div>Thoughts?</div></div>
 
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+--0000000000009221ab05dd5c8341--
 
