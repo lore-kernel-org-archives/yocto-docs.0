@@ -1,95 +1,97 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7DE27C433FE
-	for <webhook@archiver.kernel.org>; Tue, 26 Apr 2022 10:37:15 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com
- [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web09.4644.1650969430806851603
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6667DC433EF
+	for <webhook@archiver.kernel.org>; Tue, 26 Apr 2022 20:45:38 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
+ [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web09.220.1651005930933663363
  for <docs@lists.yoctoproject.org>;
- Tue, 26 Apr 2022 03:37:11 -0700
+ Tue, 26 Apr 2022 13:45:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=HAD8q33A;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.41,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f41.google.com with SMTP id i5so5767158wrc.13
-        for <docs@lists.yoctoproject.org>;
- Tue, 26 Apr 2022 03:37:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5UmoxXBu/Hrq7vGze259g1KmPpZ5RsiGoO2jDOdnlR8=;
-        b=HAD8q33AldgYKcTVW18hK0hPaVi9U57NkYi4vuSuLK46F7vY9/7yzO6/RvqQ6FCjBW
-         K0TwlEcN1M5uFSJrKoKomDuzXAM4xIRFSbs/57HcW92fKayuwC4yl/JIbXoB+COd29Bo
-         igRnTWkSnfkD7d/p0MfyrIvQeqsDXK/1h/PFc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5UmoxXBu/Hrq7vGze259g1KmPpZ5RsiGoO2jDOdnlR8=;
-        b=kpH2K3JEajILq00o67l2DWyaehgTmwfTIrS5Q2rS+jzLTPqpo7QrUXJ0YIg8WkzDkG
-         +ckjgSVlnRTqpJplzTNAmXG+O3w29x/hx5jDyqjNQxUFliz14DkcRX9cIhF95Lw7Ekyf
-         SdeUOn01BzwUN8Sx3xNZ5G8++ohPlZyFjNX52y9QgEUEcL3EB+jWjBqPtvrdUWV5bkBk
-         csWMaJmGpWDxC3+UNry/Zpu7zRHVP6jwmajVDts7K+cUHeHFvekfnDoNwJWl4xF47aem
-         M5DFDZsaUm8M+PqJ8q3e5/xnfyN/9m8UlqXtrWO3R+VE6ZG5GVFoJlxfBe2gS0/Osnc2
-         Sdkw==
-X-Gm-Message-State: AOAM533pc8h2imn9t26vrhcMJtgndf0D1SDZDE0+NH86AC8UgKTnaS1e
-	QPUtCOFqs33GoBw5WPvbhRnyXpTcSNTn3w==
-X-Google-Smtp-Source: 
- ABdhPJzLc1vqiLzNfJcB7MmoECwdoFCeeesQZ5vkh2EYQqVlK9uzT6SXlACnatxfzpH5wB+mLFY3ew==
-X-Received: by 2002:a05:6000:1786:b0:20a:873b:24e5 with SMTP id
- e6-20020a056000178600b0020a873b24e5mr17971619wrg.427.1650969428895;
-        Tue, 26 Apr 2022 03:37:08 -0700 (PDT)
-Received: from hex.int.rpsys.net ([2001:8b0:aba:5f3c:8d4:bce8:ef63:7bc2])
-        by smtp.gmail.com with ESMTPSA id
- i6-20020a05600c354600b00393eee339a8sm3270969wmq.29.2022.04.26.03.37.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 Apr 2022 03:37:08 -0700 (PDT)
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: yocto@lists.yoctoproject.org
-Cc: docs@lists.yoctoproject.org
-Subject: [yocto-autobuilder-helper] [PATCH] scripts/run-docs-build: Use
- set-versions.py to get the latest release branch name
-Date: Tue, 26 Apr 2022 11:37:07 +0100
-Message-Id: <20220426103707.2776172-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.32.0
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LMl55jiF;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id E56F6100005;
+	Tue, 26 Apr 2022 20:45:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1651005929;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=4AGEQ04v54c395z+1rhxR400ZLXkfUmN7uJnxdqpUyw=;
+	b=LMl55jiFD+lg3OrFQIfgBl43d+1QiX9DhmTuQU0DX22Taa5XxgSpr8Y/lNw6OWv9ylYr2p
+	7S+YNM2xyDi3oyo6eUsvYTSQEliN5C6Ft8QgMMZcd0LQVejPQz1D9DFxih/KFC29jYNDtQ
+	rp+kKw7aItVk1kcceVwXQjIa8n+ZLgmTjMUzCudiqM4Z8Spl1Y7ErEmAvuFZaxPJZf1khV
+	4IptmuJFqQzNr+2eKj1G+ZoKSKZ0k8xYjtER8m3yV4m9udTn8ns8EDvMzY4WahsnGpAgQl
+	bgHJsHQs3GjMRMp8n6Hfld1vTYT/MuD9LjBn/TRJqtJnNye4fUqn7ZJVqaVBcQ==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] overview-manual: remove confusing and unnecessary paragraph
+ about site.conf
+Date: Tue, 26 Apr 2022 22:45:26 +0200
+Message-Id: <20220426204526.191666-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 26 Apr 2022 10:37:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2867
+ <docs@lists.yoctoproject.org>; Tue, 26 Apr 2022 20:45:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2868
 
-The intent here is to use the latest release branch name instead of a tagged version.
-For the 4.0 case, this means the full migration guide will be shown instead of
-the reduced information in the 4.0 tag.
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+The explanations which precede and follow are sufficient.
+
+The removed text seemed to suggest to use conf/site.conf to specify
+the location of another conf/site.conf file.
+
+Another issue was that the way to override conf/site.conf settings
+through conf/local.conf was described before explaining that
+conf/site.conf is processed before conf/local.conf.
+
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- scripts/run-docs-build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ documentation/overview-manual/concepts.rst | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-diff --git a/scripts/run-docs-build b/scripts/run-docs-build
-index ecc5332..f6b8ac4 100755
---- a/scripts/run-docs-build
-+++ b/scripts/run-docs-build
-@@ -92,7 +92,11 @@ cd $ypdocs
- first_sphinx_commit=01dd5af7954e24552aca022917669b27bb0541ed
- first_dunfell_sphinx_commit=c25fe058b88b893b0d146f3ed27320b47cdec236
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 065d9586c6..441cd13bc3 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -313,7 +313,7 @@ section in the Yocto Project Development Tasks Manual.
  
--latest_tag=$(git tag --contains "$first_sphinx_commit" --contains "$first_dunfell_sphinx_commit" --sort="version:refname" 'yocto-*' | tail -1 | sed 's/yocto-//')
-+git checkout set_versions.py
-+#latest_tag=$(git tag --contains "$first_sphinx_commit" --contains "$first_dunfell_sphinx_commit" --sort="version:refname" 'yocto-*' | tail -1 | sed 's/yocto-//')
-+latest_tag=$(./set_versions.py getlatest)
-+git reset --hard
-+git clean -f
+ The files ``site.conf`` and ``auto.conf`` are not created by the
+ environment initialization script. If you want the ``site.conf`` file,
+-you need to create that yourself. The ``auto.conf`` file is typically
++you need to create it yourself. The ``auto.conf`` file is typically
+ created by an autobuilder:
  
- for branch in dunfell $(git branch --remote --contains "$first_sphinx_commit" --format '%(refname:lstrip=3)') $(git tag --contains "$first_sphinx_commit" --contains "$first_dunfell_sphinx_commit" 'yocto-*') transition; do
-     if [ "$branch" = "HEAD" ]; then
+ -  *site.conf:* You can use the ``conf/site.conf`` configuration
+@@ -321,17 +321,7 @@ created by an autobuilder:
+    you had several build environments and they shared some common
+    features. You can set these default build properties here. A good
+    example is perhaps the packaging format to use through the
+-   :term:`PACKAGE_CLASSES`
+-   variable.
+-
+-   One useful scenario for using the ``conf/site.conf`` file is to
+-   extend your :term:`BBPATH` variable
+-   to include the path to a ``conf/site.conf``. Then, when BitBake looks
+-   for Metadata using :term:`BBPATH`, it finds the ``conf/site.conf`` file
+-   and applies your common configurations found in the file. To override
+-   configurations in a particular build directory, alter the similar
+-   configurations within that build directory's ``conf/local.conf``
+-   file.
++   :term:`PACKAGE_CLASSES` variable.
+ 
+ -  *auto.conf:* The file is usually created and written to by an
+    autobuilder. The settings put into the file are typically the same as
 -- 
-2.32.0
+2.25.1
 
 
