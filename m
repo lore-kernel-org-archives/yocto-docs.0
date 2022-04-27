@@ -2,78 +2,67 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BBCFC433EF
-	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 07:52:36 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web08.5627.1651045946439151160
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77172C433EF
+	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 09:11:07 +0000 (UTC)
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
+ [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web10.5969.1651050659337235470
  for <docs@lists.yoctoproject.org>;
- Wed, 27 Apr 2022 00:52:27 -0700
+ Wed, 27 Apr 2022 02:10:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=VxMrMlgS;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kVJH2SZB;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.232,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 4BF4D1BF206;
-	Wed, 27 Apr 2022 07:52:24 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 4F1C4200003;
+	Wed, 27 Apr 2022 09:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1651045944;
+	t=1651050656;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J7Td20kXqJKsugU9JLSNpT38qgxy+AwpUvcx7bnhB3A=;
-	b=VxMrMlgSPoUvaHZ02TC5SpWnyro/KybpB58Rv4YmEnnrWAwK08YKoRnHPDipSG06RWy4Rn
-	aSeMOcDDa5ydBPAD1kurie27gM7/6KrrhKTxq7DsEa2bSU5zYagHoqnLX0AAgz3MRBkTo+
-	daE8ssER+z9LXW1Dw4qNV39bgSY+gbzKGv1Ss+h4hfCUB25iG2X8zNh0KVl2h5vu92SQAQ
-	I/nvqfMSsir/63KJ2n81Bqyxy1Twoi0vZHJb9ShG6WPVzIRVAQep+VfjZdINKUwfsJ9JU5
-	ygKP/99glhC86reLgKlpDw/vXeb8X3TgnbUTo3rH6Z142zFaxwMAhLx4Mu3zLQ==
-Message-ID: <e9fa06f7-e9a0-3357-dfc4-e8b9611a88a7@bootlin.com>
-Date: Wed, 27 Apr 2022 09:52:23 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=NNpHK5LT9bkQZ+H/r9LvJTdUDZo+QeBjABvfF6hbrHw=;
+	b=kVJH2SZBYhrHskCOM2IPoSH9OFT4CDrSyLoEkMyBh7SSNyquDpuee0MeUXX/1sSApruZHJ
+	zADcd/xk+Ek4rlgxeTTOoRQrBqk/295KMXtiYswUTMPj/XDcdlkANL49XpZ0L/Us5bEisk
+	jDM+kZGy+IQJtCgActralP5KxmTsh/NJLTIIgrVCTNUbuQh4UAcmQ3uHdSAwvSkowSMp1F
+	y6KOZA23UKdLwhMza7fT73iaCucQ2rsNXFn4TypHt0bo7vDIxcj8Cvmu9UDGjN8swwb1FR
+	7kBwyC44en94PpNv2haQHC48PSTsex9hN6VZRkCXoAq6XN/QKIjwbJHJW4yibQ==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] migration-guides: release-notes-4.0: mention LTS release
+Date: Wed, 27 Apr 2022 11:10:51 +0200
+Message-Id: <20220427091051.212104-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [yocto] [ANNOUNCEMENT] Yocto Project 4.0 is Released
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Lee Chee Yang <chee.yang.lee@intel.com>
-References: 
- <DM5PR1101MB236176E376BD554365050E72B9FA9@DM5PR1101MB2361.namprd11.prod.outlook.com>
- <9d339a31-a732-3de3-53ee-45a1054d5c92@bootlin.com>
- <02ba4e468b4f2438a8ed6d59e824a0ffcc8ab619.camel@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: 
- <02ba4e468b4f2438a8ed6d59e824a0ffcc8ab619.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 07:52:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2875
+ <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 09:11:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2877
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 4/27/22 09:51, Richard Purdie wrote:
-> On Wed, 2022-04-27 at 09:41 +0200, Michael Opdenacker via lists.yoctoproject.org
-> wrote:
->> Thanks for the great news!
->> Shouldn't we highlight in the documentation
->> (https://docs.yoctoproject.org/migration-guides/migration-4.0.html#release-notes-for-4-0-kirkstone)
->> that this is our new Long Term Support release?
->>
->> This would help to spread the news.
-> Please. Perhaps you could help us there? :)
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/migration-guides/release-notes-4.0.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-
-Sure, I'll post a patch :)
-Thanks
-Michael.
-
+diff --git a/documentation/migration-guides/release-notes-4.0.rst b/documentation/migration-guides/release-notes-4.0.rst
+index 799a819147..eaa40f9317 100644
+--- a/documentation/migration-guides/release-notes-4.0.rst
++++ b/documentation/migration-guides/release-notes-4.0.rst
+@@ -1,6 +1,8 @@
+ Release notes for 4.0 (kirkstone)
+ ---------------------------------
+ 
++This is a Long Term Support release, published in April 2022, and supported at least for two years (April 2024).
++
+ New Features / Enhancements in 4.0
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
