@@ -2,67 +2,65 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77172C433EF
-	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 09:11:07 +0000 (UTC)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
- [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web10.5969.1651050659337235470
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B0E06C433F5
+	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 09:34:17 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web09.6133.1651052049510198787
  for <docs@lists.yoctoproject.org>;
- Wed, 27 Apr 2022 02:10:59 -0700
+ Wed, 27 Apr 2022 02:34:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kVJH2SZB;
- spf=pass (domain: bootlin.com, ip: 217.70.178.232,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TufQA69M;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 4F1C4200003;
-	Wed, 27 Apr 2022 09:10:56 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id B794220013
+	for <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 09:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1651050656;
+	t=1651052047;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=NNpHK5LT9bkQZ+H/r9LvJTdUDZo+QeBjABvfF6hbrHw=;
-	b=kVJH2SZBYhrHskCOM2IPoSH9OFT4CDrSyLoEkMyBh7SSNyquDpuee0MeUXX/1sSApruZHJ
-	zADcd/xk+Ek4rlgxeTTOoRQrBqk/295KMXtiYswUTMPj/XDcdlkANL49XpZ0L/Us5bEisk
-	jDM+kZGy+IQJtCgActralP5KxmTsh/NJLTIIgrVCTNUbuQh4UAcmQ3uHdSAwvSkowSMp1F
-	y6KOZA23UKdLwhMza7fT73iaCucQ2rsNXFn4TypHt0bo7vDIxcj8Cvmu9UDGjN8swwb1FR
-	7kBwyC44en94PpNv2haQHC48PSTsex9hN6VZRkCXoAq6XN/QKIjwbJHJW4yibQ==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] migration-guides: release-notes-4.0: mention LTS release
-Date: Wed, 27 Apr 2022 11:10:51 +0200
-Message-Id: <20220427091051.212104-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+	bh=rFbHBbDy+6O0BsFx2mvFMNrqh7Khm4VNLxvM3sHpjjI=;
+	b=TufQA69MPDVw10s23gxuzTLJ+ePXxsaBG73NmAn/ZofVwXyGrojplKIhkrQvuyedqU/DD6
+	DrTRpCLz6cEyLQfXpQFo63JVXY+ERbiOiUCeUOMW2nVHDnBPs5KGAxRr4gAMUcESjdnBiz
+	c0EAhvkPWd8+w9whSe0sGFcKAevVX6LsdJ0MEgydMaxI+sYQzSFiKCODXH9C9SClUSyvQI
+	Kx9kdHpsveTxRoqfhw0egmaKVRVBFsiW3yuxyxL9gfq6hUd2HMIZg+d2S8UcpDUZ3DQI1m
+	7pXMiQCOYje7GVok/30Onk188gkltM5iUKiNjOE8w9OfQ8fxxQlf/Nbk8guMbQ==
+Message-ID: <6c3311c1-801b-b17a-44a1-ca76017e9e94@bootlin.com>
+Date: Wed, 27 Apr 2022 11:34:06 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Content-Language: en-US
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: Sstate cache for version 4.0.999?
+Organization: Bootlin
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 09:11:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2877
+ <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 09:34:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2878
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Greetings,
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/migration-guides/release-notes-4.0.rst | 2 ++
- 1 file changed, 2 insertions(+)
+In https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html, we
+suggest to use:
 
-diff --git a/documentation/migration-guides/release-notes-4.0.rst b/documentation/migration-guides/release-notes-4.0.rst
-index 799a819147..eaa40f9317 100644
---- a/documentation/migration-guides/release-notes-4.0.rst
-+++ b/documentation/migration-guides/release-notes-4.0.rst
-@@ -1,6 +1,8 @@
- Release notes for 4.0 (kirkstone)
- ---------------------------------
- 
-+This is a Long Term Support release, published in April 2022, and supported at least for two years (April 2024).
-+
- New Features / Enhancements in 4.0
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
+SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/4.0.999/PATH;downloadfilename=PATH"
+
+However, https://sstate.yoctoproject.org/4.0.999/ doesn't seem to exist.
+Could we create it?
+
+Thanks in advance
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
