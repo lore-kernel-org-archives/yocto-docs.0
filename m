@@ -1,84 +1,83 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DC48C433EF
-	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 15:16:11 +0000 (UTC)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
- [209.85.221.49])
- by mx.groups.io with SMTP id smtpd.web08.9727.1651072565346500151
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E81DC433FE
+	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 16:07:53 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
+ [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web12.10326.1651075664174501836
  for <docs@lists.yoctoproject.org>;
- Wed, 27 Apr 2022 08:16:06 -0700
+ Wed, 27 Apr 2022 09:07:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Bsckdfr5;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.49,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f49.google.com with SMTP id k2so2971482wrd.5
-        for <docs@lists.yoctoproject.org>;
- Wed, 27 Apr 2022 08:16:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :user-agent:mime-version:content-transfer-encoding;
-        bh=bo2dp6v0ZmHhcyw1pn0MevjscnyTF7CJw96aQp2ECTg=;
-        b=Bsckdfr5S4PBHUzKiWgObUZ2fcKrs6jVgJL5MweXnEGCiHB623Q7sicrpablGdmwqU
-         q5N5Ybxt76XIuXRLsE96tkbmxGrgm8jZPNtaJT+4Jn4tUD0NszOMA5tXIpyxbDndbpAz
-         NrEiJWdkZjpLimjtAJDIxRguJWluwsNqXRXxY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:user-agent:mime-version:content-transfer-encoding;
-        bh=bo2dp6v0ZmHhcyw1pn0MevjscnyTF7CJw96aQp2ECTg=;
-        b=54miTVEXUHZOZEzTMvwKMu8DEiF5joZeVV06mkxSVJZ5NFUbmn61hgTtA5AtoaK1hr
-         2FhnppDh2DnrzOb6Q/0sdJo7iFuNqpyJktpJlmUAbnK2CaDCtT25zqK0I9IwnsGk+7Ic
-         JNFowEBiZdF7DrfdKw05SakeNfbYD4ZpYSFp9z3nHpZT1NLtNRVCrNLjvqj/W3029g4J
-         fmDOCKYBy4ujFCjrU2UmXO0CvgEQ11DIUq0PC2RSgueJp4uF+mpuKPoLZiMJK8msdVLC
-         6wTN96IxbnET4iGzDltYKs7jIECIuM2HXV2VMAvjS0AOeN2WKeSUlvkk2a0eh1oeeBqj
-         ENdQ==
-X-Gm-Message-State: AOAM531umVtZgfvC5YkUJtLuqq7juhfuTN6zm8VJ08kUWpjbtzVLvSOj
-	wlyBMnfJ3fQ6QHXBonwv8lffbQ==
-X-Google-Smtp-Source: 
- ABdhPJwPR30Bn77BKgJImmUVEttA7IrLne0dpQKumbT8AgYSnfGibg0fxnx2+bCD0eQE/pmWQ38X1w==
-X-Received: by 2002:a5d:638b:0:b0:20a:f2ea:f8ef with SMTP id
- p11-20020a5d638b000000b0020af2eaf8efmr1247740wru.186.1651072563695;
-        Wed, 27 Apr 2022 08:16:03 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:aee4:ace8:5bdc:9ee3?
- ([2001:8b0:aba:5f3c:aee4:ace8:5bdc:9ee3])
-        by smtp.gmail.com with ESMTPSA id
- p1-20020a1c7401000000b0038ed3bb00c9sm1743288wmc.6.2022.04.27.08.16.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 Apr 2022 08:16:03 -0700 (PDT)
-Message-ID: 
- <ab884d90b13eaf3a7572b964607b549bbca7bccd.camel@linuxfoundation.org>
-Subject: Re: [master] Pull request
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Date: Wed, 27 Apr 2022 16:16:00 +0100
-In-Reply-To: <86dbe301-cb69-466c-8428-bb9edc5dd26b@bootlin.com>
-References: <86dbe301-cb69-466c-8428-bb9edc5dd26b@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.40.4-1ubuntu2 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=guwcQo98;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 2777FFF808;
+	Wed, 27 Apr 2022 16:07:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1651075662;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gRvgHqj7oNAOqzmWGDorUY/ONf89htvCmJImUO0BvQY=;
+	b=guwcQo9871zaAZcsG6EwtHh3ptCrRtjuHW4VMMaxt0DIpm6n448Fbzn/aSWh8TTvGhQexJ
+	+jjAHN/rqbXrEwH6eA6UxenVKAy6gWIGxhkCulZCHGyA+Ejw/NfAT2ps8nN5ath06u+kN4
+	G4LIUXYS5/EifKR03Aq8Mm8UpDH9HdQdyqhGDIF0A6bo4zSa2nKIl3ufgM9uMDMwP1U/Nq
+	jynQTTsLAd62NfJLDX0yrG5ERtoUVzBHKNtddHcEAIGfJBkTrmqfz7+zMW/BBNBAIy1JGX
+	6tPXQwojgLAWFIFsXm6dwzc7+UrOrbSlGm81Fn3EtglACzmJ6p7MCy4QrXehcg==
+Message-ID: <8e983999-b237-3881-b5af-e7934193b089@bootlin.com>
+Date: Wed, 27 Apr 2022 18:07:41 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.7.0
+Subject: Re: [docs] Sstate cache for version 4.0.999?
+Content-Language: en-US
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+References: <6c3311c1-801b-b17a-44a1-ca76017e9e94@bootlin.com>
+ <f413500a-5a0e-a17c-5dc4-c702fd2ff1aa@theobroma-systems.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <f413500a-5a0e-a17c-5dc4-c702fd2ff1aa@theobroma-systems.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 15:16:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2896
+ <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 16:07:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2897
 
-On Wed, 2022-04-27 at 16:04 +0200, Michael Opdenacker wrote:
-> Hi Richard
-> 
-> I'm submitting this pull request to include 2 fixes for the
-> documentation after the release. Since Nico's fix changes the URL of the
-> release notes in the documentation, I'd like to have this merged before
-> further spreading the news.
-> 
-> I'll take care of the kirkstone branch separately.
+Hi Quentin,
 
-Merged, thanks.
+On 4/27/22 11:59, Quentin Schulz wrote:
+> As a side note, the current default docs being the kirkstone (4.0.999)
+> branch is something I deem temporary. The issue is that the migration
+> manuals and release notes of kirkstone 4.0 *tag* are not up-to-date.
+> The ones in kirkstone branch are up-to-date.
 
-Richard
+
+I guess that is what causes the 4.0 documentation to be out of date. For
+example, in
+https://docs.yoctoproject.org/4.0/migration-guides/migration-4.0.html#release-notes-for-4-0-kirkstone,
+there is still the temporary section called "Changes for release notes"
+(https://docs.yoctoproject.org/4.0/migration-guides/migration-4.0.html#changes-for-release-notes).
+
+>
+> I need to write something on the wiki to explain the issue and
+> requirements so we can work on fixing this sooner than later.
+
+
+Do we need a 4.0 patch for run-docs-build?
+Sorry, got lost with all the recent changes.
+Cheers
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
