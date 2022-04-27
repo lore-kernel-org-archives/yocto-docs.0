@@ -1,180 +1,377 @@
-Return-Path: <quentin.schulz@theobroma-systems.com>
+Return-Path: <nicolas.dechesne@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D944CC433EF
-	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 11:39:09 +0000 (UTC)
-Received: from EUR01-VE1-obe.outbound.protection.outlook.com
- (EUR01-VE1-obe.outbound.protection.outlook.com [40.107.14.45])
- by mx.groups.io with SMTP id smtpd.web12.7031.1651059540907352133
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1312FC433FE
+	for <webhook@archiver.kernel.org>; Wed, 27 Apr 2022 11:56:50 +0000 (UTC)
+Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com
+ [209.85.219.182])
+ by mx.groups.io with SMTP id smtpd.web11.7226.1651060608622474450
  for <docs@lists.yoctoproject.org>;
- Wed, 27 Apr 2022 04:39:02 -0700
+ Wed, 27 Apr 2022 04:56:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=k2t9meof;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.14.45,
- mailfrom: quentin.schulz@theobroma-systems.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Rq/8elFt29dThGAXwFAEl5ofq4Zpvg+PDTESNKeTRmexcZ95xaYqKKbdy1s2f7LTmj6Fdbj+o0V3Y1ZadaN2p3+tinMRWVoXTU0GkvT3mp9m1CVWBKxbE81luoJvUptMkZ3epL36WmMMDdOU+p6+qr/9xKVFZl++4ctXOs1SbZJGkawxGwFluSLL0z042iUePHgGGevAlSof4HfCl5HjVFKy/vqXl+kcDpM1tugFCycJF+WxGqPmzGYlzSDIUKKTsaZFdvUUva3ADCdTKXr4K1oRVKSVnCEykat7YgnrGmAgvLuPWCaUN7yBgMyIR++Y0svUM9eE6bRGq6opEE35pw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=exDvGk4pj1lyLfVWXR5pt5fojNSpS+OskumztS4I52Q=;
- b=ljMUVVfryJNHOOUMURWrRRs9/x4SLx47F2SGkVHxQ1iMbdwPic/LYCZc83RXkk+/wXbR1kwmqSPQxaAlJvArT2b7IAJ9Q8ZsVhcB8duElWVWIWrqv8s0T1kH+QcybjDFO+nXyVSdsovEt5l+7a77tLb7Z3qKNqZEQ1egy6JbzvTKIHDMkoRihd8f58+ahPiBITlQ5dn4KB2QXxU4QoEDp35Ej8f62K+SMYK0mGJGdzMePydiZNn8DVKqOTMb3WZiXu7zfNzhMFQI2KOkWd+cnqSja3E9ORYdemMHYr0FiL1bc/b1fscnLsINHOK87ywPlpiP5kdxQ9zLjuxrUhS/aQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
+ dkim=pass header.i=@linaro.org header.s=google header.b=iS+5rOas;
+ spf=pass (domain: linaro.org, ip: 209.85.219.182,
+ mailfrom: nicolas.dechesne@linaro.org)
+Received: by mail-yb1-f182.google.com with SMTP id f38so2931032ybi.3
+        for <docs@lists.yoctoproject.org>;
+ Wed, 27 Apr 2022 04:56:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=exDvGk4pj1lyLfVWXR5pt5fojNSpS+OskumztS4I52Q=;
- b=k2t9meofuqq98dDlaDOHr5MtFvVPelVTPuw0iY0fXQxfTb8flUTK2B+s5sun+UVrEUO3NveRUib7JwBBxU7iimGQQkpDpNiyDWklw06t0mmQNi3PG2eErNE0TGZENb5mUQ8PlIraVZNScxmBXd5zrhaR08ejM6LgFrV3WkwoTho=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
-Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
- by VI1PR0402MB2783.eurprd04.prod.outlook.com (2603:10a6:800:ae::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5206.13; Wed, 27 Apr
- 2022 11:38:56 +0000
-Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
- ([fe80::e448:c9d3:fa5b:2979]) by PA4PR04MB9367.eurprd04.prod.outlook.com
- ([fe80::e448:c9d3:fa5b:2979%4]) with mapi id 15.20.5186.014; Wed, 27 Apr 2022
- 11:38:55 +0000
-Message-ID: <683a9036-f436-66fc-f093-57234546844a@theobroma-systems.com>
-Date: Wed, 27 Apr 2022 13:38:50 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [docs] Sstate cache for version 4.0.999?
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Michael Opdenacker <michael.opdenacker@bootlin.com>,
- YP docs mailing list <docs@lists.yoctoproject.org>
-References: <6c3311c1-801b-b17a-44a1-ca76017e9e94@bootlin.com>
- <5e8a23044f0a0284fb12e6dde5a37331160c4b6a.camel@linuxfoundation.org>
- <d6938cec-65a0-b2de-619d-a21bbf1d7bd5@bootlin.com>
- <7fd8456b6a72c1990a0f1008d88335276de5d808.camel@linuxfoundation.org>
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: 
- <7fd8456b6a72c1990a0f1008d88335276de5d808.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0020.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1c::21) To PA4PR04MB9367.eurprd04.prod.outlook.com
- (2603:10a6:102:2aa::7)
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=73Zb3quinPpZTXV8XXrbohzDO0VA4kdaeVJYzA5UCvE=;
+        b=iS+5rOas7bWG2JYrBS6OS6pP1rWZCOp6kFoVhckVWCfKofk84Puu09y+FSY7WULYrM
+         X1QO43kwwDvrJdeCYn+3QOowWMQ4sFODSMOZQFXfj88x/VTI+RzHy1wxkLIv94r2seFi
+         QVNB49zFSHCJPwUpmPvSQaFBp/G1nO4Ux5/yyjcMxg/VJeeYXsKP/zF3szoPeeN+sOg2
+         j1ptW9KvBQ/jYQ9pDe9cribosbw8xEmsVQs3oaMu6c6ZuQ04q8i917ZVSV2FWtnQNZSy
+         GWWaOl9Jfu8lPm+GOKiCd4tpGe0qBHlwGkT4/Lt613uVXMfTflQjSCzEuPi3RCuJ47ch
+         hNAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=73Zb3quinPpZTXV8XXrbohzDO0VA4kdaeVJYzA5UCvE=;
+        b=6N2Q2qRNsDN7UhxLQ0yMyiVetl+BOnd/PiNepnkTmjazknE+6bh1YGrkq6KrZqCiEg
+         2Qr6YrCEhyoOkkunPmRIyWCaqduaNucab3ntUmOLhtjJdyjcJcgAmegFwSsOfpDkwge/
+         C+TbCa5aNC2fEF2Go1bbMRNMI2KJBbt65f/vzmHsxrAO3WbvvpyDdnybz4SUEkYUWGih
+         sgOwHpUq+qwenuBsDzoxwacFNpLC+x4gV9iMhBexsXoB7WsR1bz/pOwfShmZGbUT4OMZ
+         x+YVT3/9V1ClLzbbETGhijscKN8HuCjdWdD4BClRMGeB4C2+gXdI0JXvJ5BMmIC13zMJ
+         Q1Bg==
+X-Gm-Message-State: AOAM531DdotgswAtnXa/qR/uzISuHfQXUaMPeRJoUHW2vQXkq4FzbnbP
+	7loRHb9LaVS3gmJkOxSVb8y0FrtTZHGqADIgH+dZ7g==
+X-Google-Smtp-Source: 
+ ABdhPJzubi+zpEKd/GrS96ueATVdoat0Vud/IybtJLNaIQJ96CY+pLZeqtzZNZDmjx1UrBq0E+vRo74KbAGvbyqGVLk=
+X-Received: by 2002:a25:d3cf:0:b0:645:d937:747b with SMTP id
+ e198-20020a25d3cf000000b00645d937747bmr21564305ybf.383.1651060607695; Wed, 27
+ Apr 2022 04:56:47 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 1aa3c6f0-eb9b-4fea-3e7f-08da28428109
-X-MS-TrafficTypeDiagnostic: VI1PR0402MB2783:EE_
-X-Microsoft-Antispam-PRVS: 
-	<VI1PR0402MB2783A0F840A00B5AB75382C3C2FA9@VI1PR0402MB2783.eurprd04.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	cORuUAVqAuw+p7+Y2ioa4/nshjLqlyey9n9dXT6FuDTspuX3BGYfcIecxFzb1nK694/Mkywe9b1ea1GmiKhv4FvhP1QS8zRdKE34WUHrF5z1k93QmY30M0sl0Mdqq8bDggzOIEzWzZpnWoNGr7o3gtYCJ5y59Q9gl3bcF4TFKAIfydJlmfbIBFvq04G9op6ydKAEfRJBAd9IQLqejIo3R1RoFI/5Nftmmh+WgMpLTaolt99hje4VJWlYZbcCGaaoMsfrXVnrs/C+eAlOklkGm7L0fr+oyz3rKoO/cqL2PYxx1WzfmRh+UweZzwoG9xKcXMlVMqI83XfTexIVx+iE0/eq2oF/Zbu3WXKNYStfC/1BwVM/T+hGjpVQU5Su8ckbx5ai8n8mdrOcGfmfni2BV4X+TgYQ2f2W1i2dGR4FQ1tgwKkXwIhlt6gha4Xy/yZ2Al3emx7TRdcY7UwvSKVAKUmwOlf2DMokqPsCA7KwIqxGPVNTaUsNMUfaLm+YUP3WGIpTeYNZKRjUIcspVqPlEoyBk6HyjWFV+MEqY046LXHNU/SyuqJhUIiiHBdANJTKu7xM/kq0R/Wy4pkpxzUOH6aAEKUYELO28h1XXolLVgMLFtxZ+hyYh2hc3RJ7l/dZiSZ9hpgX5E8NE6MSVTfZbI/0fLPhQq+fMSGGEPKDZO9FfFi3ZyBORBg4dXFSQszGzpLjyFSSEZ4jhqEg9Et7WnH2yAMVcIx8SlPc83mlAlok/19Qh6ubV6iyPbt7gi5HF97ryQGGZ9dULWvZ5GtMSo2rYPEY7LFesJTJZJCb3U7bB8kxA2eJGEZYKECeWvns
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(186003)(2616005)(86362001)(83380400001)(38100700002)(31696002)(316002)(36756003)(5660300002)(110136005)(8936002)(44832011)(8676002)(66476007)(66946007)(66556008)(2906002)(6506007)(508600001)(26005)(31686004)(6512007)(53546011)(6666004)(966005)(6486002)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?WmxSQ29TREUyN3hUekNYcHJMUVJHdkxvVndISFJBeHg0dkNmL1JzRmUyd3hn?=
- =?utf-8?B?emd2dDFYT2tMS1Rmbm5xSnlIdUQ5dDRILzlubEZtL1lBeE5aRldTaVp4aWpv?=
- =?utf-8?B?UGFvNWhMM09hckNraUJ6QmgreGNGRFdLWjJ3bWcrY0IyU3dQbG5ZZXByYis5?=
- =?utf-8?B?Q2lQYmYvbFJPL0l1bEVINDIyU0VOQzFnL2h4bzdqb3VDdzZxME9DdU5FQjh0?=
- =?utf-8?B?TUJ6eDg1ejBxVGYvMjV1ckc2WndSdUFUOFZvNEJiREkzNnRLWEYwOWtVZDhq?=
- =?utf-8?B?VU0rSXVGREM2ei83RjhFdkVsTjlsZE82V00ydmlmb1J2RFR3MGpyRnJOblVt?=
- =?utf-8?B?YUgwN1kzNmxBT3lEU3pqdnNQVnRxSThNcXd3U1pzby81cmQwelVjQ29jcGtM?=
- =?utf-8?B?Wkd6V0JneHorYzE2dmVqMGV1ejZzSjNJeEhuVU9KSkQ3SW9UNWpibm0zcEYz?=
- =?utf-8?B?WHNUS3liSFdhdnJuTE5YV3dSd29iYWUrbk1ScFhwN2RZdWgzMlRiVUdjQStY?=
- =?utf-8?B?SVQ2cSs1Y29YYnZyNytVNjdHRXZJaHREU0w0SHIrMlJBZldQWkRNQmpNRmVZ?=
- =?utf-8?B?d0F2bWJIYzltVGV6Zzdndjg0YWZSWXJDdWUxUnExYm01eUFDWTBRVXVDOGZ2?=
- =?utf-8?B?NlVDZXJ1R2ZCOXJHOXYxVnZTSXBlV3MybUVnZEVVMDBXcFY4bkRyZ2VxK2dY?=
- =?utf-8?B?d2xkK24vZmV1Mk05TEg2SHhaUlJZSFlpc1oxanhvVXJjcVAzNHZRRXM4enV2?=
- =?utf-8?B?SVhDdG84UUNhZSt2RVlOM1VteHZjVnpyVXMzREI3QzFLRHpNTmxIQ3M3OTRJ?=
- =?utf-8?B?NXJJOUxoZElBZUJ5WS9qM0pNa0RMUit4eE54ZVR2cWtCVTFnMm9WVXp1dUJm?=
- =?utf-8?B?SU9RT0ZhUmF5dWJkb1Bpckp3MVVTd09zN3RtQmpXa3oyZTkzcFZFeE8yRkZ5?=
- =?utf-8?B?N0dGdHBwTlQvKzJYNG9SWi9qUHFIaDJIOW1YK1cxemk5MDd2enRvK2REWnlY?=
- =?utf-8?B?K2hubi9GSDFsZXozUVgyYm1Ja2pNR1o1YmdwQVhTalVRSDNkYUpxQXY3NVAz?=
- =?utf-8?B?V3RpWXNvOERSdDNtLzRSdlo4cHBFd1lYTmlwZUNLOUJxNFdIR0d0bjVlMUU0?=
- =?utf-8?B?ODhuQVdtS2JIVy9IREJYbmhPVGxPQml6REJlVlh2UXhCK2tlV3RHSjRGcys0?=
- =?utf-8?B?VjNpTjZ4Q0xBU3YwaktWd1grdzRJa3pCbFl1TVdRTUVWUkEwaUhTSWRvQm43?=
- =?utf-8?B?enA2d28zR0o5ZVB2aHhydlpWTGIyTExSMFB6MXlReEUzWDFaenp3b29wbGNm?=
- =?utf-8?B?Yy9kRjJpVzRHeWlyMml4dFVXTkg3bk1WUlNiMHpmaDZpaXk5cWx0VUdDZ2lI?=
- =?utf-8?B?RDQxUFg3QVgwSXEvbmYzZnY5d1QyVDUxU0lZazF6bWwxMlZxUjZWU0l4Z3Fq?=
- =?utf-8?B?MU95YnlTM2Vtdnc3b0NDNnJ4M0UwMWwvRVk2ajhKZUJNdGlqbnhXQWVPRTBV?=
- =?utf-8?B?YUt1RWJZTmxJeEdBY2JTL3NnNnBTc1ZYaWl0RE1tQ2s2bWJtTEVnU0daVnl2?=
- =?utf-8?B?T2VxTVJGTXp2aFd6KzdHQUJRamIwSFlkRTRjUjJ6VGJDVWlVMmVmUWZuczFT?=
- =?utf-8?B?UHgwYVpEWktRMTVwcWt2RERvaFVuMHloMXkwWk81OG5kcXlvQXJqUlFGeWQ4?=
- =?utf-8?B?bGNsTXlST3lHbjNweGI3cTlBWUhvRUtCZFZ6VldCQ25BWUZyaVJJdmZEMkhx?=
- =?utf-8?B?VG5aakR6VE82blB2VWhCbXhJL2VhQ2lKSnJqZjB3Tko0bkJnTHRjWVVNMzZT?=
- =?utf-8?B?ejdzOTlMdG0wdHI4enZSZ05ibXZBVE92dUJjQWttMkkzTEx5Q3lGQ01SaVcv?=
- =?utf-8?B?cjdubUtQWUtaUWV3MW11bldCNDZHNnArU1krRlRsR0xuaW5ReG00aG0vYXdt?=
- =?utf-8?B?TkdzZHZ5NGg5cVJ0SHpWREVUd05XRW5FbmtMUjFNaXU1TkV6Wnk2MkZkZVhC?=
- =?utf-8?B?MTYrOXJqTmtEaXhHRm1pRmd1MjdGVmV3emFxUk9kek1XTFJnZitOZ2ZxeHBr?=
- =?utf-8?B?YUZQOStVYlErTkhCOW5HUnlKd21ZMWp5SURjSXJ1cFNXN2psSml4TGQ3UUdU?=
- =?utf-8?B?eFRMcGpKMzJnWGViWHM3VHBMQTlja1N1dnYrSVhmUFJBMFNSckl0eFpoZmxT?=
- =?utf-8?B?T2lRYjR0TzJyNDFTVCtKajVBK25HZHBDakV0MjZrVzdFZDF0YmJPUzVTbVVq?=
- =?utf-8?B?RnNFQmZRd1pRODVaRC9pa1A1d0E0cUhsM2xOdmVmdFRwSVJlV0VvdWlvYVQz?=
- =?utf-8?B?U0wybXBHbCsvMlRHdzJSYlo2dkJjMXp0ODV0bTRCRk1pekJ5S3YrWVJGdFQx?=
- =?utf-8?Q?bU8b4Yrmemzy6Y53dpVliWrF9WWyZpGEGMVl/?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 
- 1aa3c6f0-eb9b-4fea-3e7f-08da28428109
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Apr 2022 11:38:55.2926
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 
- RyjTUiBdnvAFxTlrCs42XdIZ5NoPhZ+C1k/xjsuITpOotamd+NV5xySLgfrSSEEB9w6/A0pAkfrpsKlQcjTUvogQF6t38qCzwJU4BPOuBTwmGHqmSyuNZyVjosNrqNXV
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR0402MB2783
+References: 
+ <DM5PR1101MB236176E376BD554365050E72B9FA9@DM5PR1101MB2361.namprd11.prod.outlook.com>
+ <90b05148-5215-584e-0080-24cd411b2ba8@sancloud.com>
+ <CANPvuR=Sp+tuOAmFRzw207e_1+jNzOyR1AST9J=jh7_KgsOS2Q@mail.gmail.com>
+ <9790963d-0e8d-c713-cc97-ab6f8ca4fef3@bootlin.com>
+ <CAP71Wjw=OL8e=EqgPaLfPbQisTeFuVE2FkXq7+M9nWKckK4Y_Q@mail.gmail.com>
+ <CAP71WjwG2PCT=ceuZpBmeF-Xzn9yVQi1PG2+d6+wRjouoAZ0Aw@mail.gmail.com>
+In-Reply-To: 
+ <CAP71WjwG2PCT=ceuZpBmeF-Xzn9yVQi1PG2+d6+wRjouoAZ0Aw@mail.gmail.com>
+From: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Date: Wed, 27 Apr 2022 13:56:36 +0200
+Message-ID: 
+ <CAP71WjzkiGLiJk7PPz0jkd1gfo9Ru36+zHxk6xRUp1Hch-Zi8g@mail.gmail.com>
+Subject: Re: [docs] [yocto] [ANNOUNCEMENT] Yocto Project 4.0 is Released
+To: michael.opdenacker@bootlin.com
+Cc: Jose Quaresma <quaresma.jose@gmail.com>,
+ Paul Barker <paul.barker@sancloud.com>,
+	"Lee, Chee Yang" <chee.yang.lee@intel.com>,
+	"yocto@lists.yoctoproject.org" <yocto@lists.yoctoproject.org>,
+	YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="00000000000006507705dda181cc"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 11:39:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2885
+ <docs@lists.yoctoproject.org>; Wed, 27 Apr 2022 11:56:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2886
 
-Hi all,
+--00000000000006507705dda181cc
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/27/22 12:24, Richard Purdie wrote:
-> On Wed, 2022-04-27 at 12:23 +0200, Michael Opdenacker wrote:
->> Hi Richard,
+On Wed, Apr 27, 2022 at 1:27 PM Nicolas Dechesne <
+nicolas.dechesne@linaro.org> wrote:
+
+>
+>
+> On Wed, Apr 27, 2022 at 1:17 PM Nicolas Dechesne <
+> nicolas.dechesne@linaro.org> wrote:
+>
 >>
->> On 4/27/22 12:07, Richard Purdie wrote:
->>> On Wed, 2022-04-27 at 11:34 +0200, Michael Opdenacker via lists.yoctoproject.org
->>> wrote:
->>>> Greetings,
->>>>
->>>> In https://urldefense.proofpoint.com/v2/url?u=https-3A__docs.yoctoproject.org_brief-2Dyoctoprojectqs_index.html&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=MjQeHR9DHOQsVFvva-_ZotfsR7POIz1TJygkVPGsEn2-goaA86V8vUdPTZ332Qpa&s=CODaCOFarKzmVKW6oZ6KXyqtBSKtrUnzsHftrVzOvuo&e= , we
->>>> suggest to use:
->>>>
->>>> SSTATE_MIRRORS ?= "file://.* https://urldefense.proofpoint.com/v2/url?u=https-3A__sstate.yoctoproject.org_4.0.999_PATH-3Bdownloadfilename-3DPATH&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=MjQeHR9DHOQsVFvva-_ZotfsR7POIz1TJygkVPGsEn2-goaA86V8vUdPTZ332Qpa&s=l8IYvM7AWJwXbzc2csFiERnsApA-RPSvBI9onBSHdXU&e= "
->>>>
->>>> However, https://urldefense.proofpoint.com/v2/url?u=https-3A__sstate.yoctoproject.org_4.0.999_&d=DwICaQ&c=_sEr5x9kUWhuk4_nFwjJtA&r=LYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172IIy1t&m=MjQeHR9DHOQsVFvva-_ZotfsR7POIz1TJygkVPGsEn2-goaA86V8vUdPTZ332Qpa&s=OJMppY4I4Tdj_tKNPvS5Tzq52W-bscW1iuxv4y3hpfc&e=  doesn't seem to exist.
->>>> Could we create it?
->>> It needs to be 4.0 for all releases in the kirkstone series.
 >>
-
-Mmm.. we do have 3.1.x directories on sstate.yoctoproject.org so I 
-assume we should just point to the latest tag (3.1.15, 4.0 until 4.0.1 
-is released) of a given series instead of the original tag (3.1, 4.0).
-
+>> On Wed, Apr 27, 2022 at 10:59 AM Michael Opdenacker via
+>> lists.yoctoproject.org <michael.opdenacker=
+>> bootlin.com@lists.yoctoproject.org> wrote:
 >>
->> Unfortunately, I see no variable in poky.yaml.in for this. Could we have
->> something like a "DISTRO_SERIES" variable which would be "DISTRO" but
->> without the point release number?
-> 
-> Or a specific PUBLIC_SSTATE_VERSION variable or similar?
-> 
+>>>
+>>> On 4/27/22 10:18, Jose Quaresma wrote:
+>>> >
+>>> >
+>>> > In the HTML page it is fine, the &YOCTO_DOC_VERSION is 4.0
+>>> >
+>>> https://docs.yoctoproject.org/4.0/migration-guides/migration-4.0.html#release-notes-for-4-0-kirkstone
+>>> >
+>>> > In the dev version the &YOCTO_DOC_VERSION is not replaced by dev
+>>> >
+>>> https://docs.yoctoproject.org/dev/migration-guides/migration-4.0.html#release-notes-for-4-0-kirkstone
+>>>
+>>>
+>>> That's *very weird* because the substitution happened in
+>>> https://docs.yoctoproject.org/dev/brief-yoctoprojectqs/index.html but
+>>> not in
+>>>
+>>> https://docs.yoctoproject.org/dev/migration-guides/migration-4.0.html#release-notes-for-4-0-kirkstone
+>>> (same version).
+>>>
+>>> When I build the docs locally things look fine. Any ideas what could
+>>> cause this?
+>>>
+>>
+>> I can reproduce the issue when building locally. I am using Sphinx==4.4.0
+>>
+>
+> oh... It's because the file release-notes-4.0.rst is included with a
+> ..include statement. The variable mapping is done with a custom Sphinx
+> extension (yocto-vars.py) which is triggered for the 'source-read' event.
+> So perhaps this event is not triggered when using an include statement..
+> let me check more on that..
+>
 
-I think we actually should have DISTRO set to the latest tag available 
-in the series and not have the YOCTO_DOC_VERSION used in sphinx files 
-(it's necessary for conf.py though).
+yes, that seems correct. I don't think we should continue to use the
+include directive here. Since you try to make one section (for 3.4 and 4.0)
+with the migration and the release notes, I think something along these
+lines would work, maybe there is simpler..
 
-What do you think?
 
-Cheers,
-Quentin
+diff --git a/documentation/migration-guides/index.rst
+b/documentation/migration-guides/index.rst
+index 20c6ab9d4..4597506d0 100644
+--- a/documentation/migration-guides/index.rst
++++ b/documentation/migration-guides/index.rst
+@@ -12,8 +12,8 @@ to move to one release of the Yocto Project from the
+previous one.
+ .. toctree::
+
+    migration-general
+-   migration-4.0
+-   migration-3.4
++   release-4.0
++   release-3.4
+    migration-3.3
+    migration-3.2
+    migration-3.1
+diff --git a/documentation/migration-guides/migration-3.4.rst
+b/documentation/migration-guides/migration-3.4.rst
+index c22ea814d..d57c955eb 100644
+--- a/documentation/migration-guides/migration-3.4.rst
++++ b/documentation/migration-guides/migration-3.4.rst
+@@ -1,6 +1,3 @@
+-Release 3.4 (honister)
+-======================
+-
+ Migration notes for 3.4 (honister)
+ ----------------------------------
+
+@@ -274,6 +271,3 @@ Miscellaneous
+   examples in :term:`EXTRA_USERS_PARAMS`.
+
+
+-.. include:: release-notes-3.4.rst
+-.. include:: release-notes-3.4.1.rst
+-.. include:: release-notes-3.4.2.rst
+diff --git a/documentation/migration-guides/migration-4.0.rst
+b/documentation/migration-guides/migration-4.0.rst
+index d737b9d43..a8e6b4c33 100644
+--- a/documentation/migration-guides/migration-4.0.rst
++++ b/documentation/migration-guides/migration-4.0.rst
+@@ -265,5 +265,3 @@ Miscellaneous changes
+   when parsing recipes. Any code depending on the previous behaviour will
+no longer
+   work - change any such code to explicitly use appropriate path variables
+instead.
+
+-
+-.. include:: release-notes-4.0.rst
+diff --git a/documentation/migration-guides/release-3.4.rst
+b/documentation/migration-guides/release-3.4.rst
+new file mode 100644
+index 000000000..81476c4ad
+--- /dev/null
++++ b/documentation/migration-guides/release-3.4.rst
+@@ -0,0 +1,10 @@
++Release 3.4 (honister)
++======================
++
++.. toctree::
++
++   migration-3.4
++   release-notes-3.4
++   release-notes-3.4.1
++   release-notes-3.4.2
++
+diff --git a/documentation/migration-guides/release-4.0.rst
+b/documentation/migration-guides/release-4.0.rst
+new file mode 100644
+index 000000000..7062f9d24
+--- /dev/null
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -0,0 +1,7 @@
++Release 4.0 (kirkstone)
++=======================
++
++.. toctree::
++
++   migration-4.0
++   release-notes-4.0
+
+
+>
+>>
+>>>
+>>> Michael.
+>>>
+>>> --
+>>> Michael Opdenacker, Bootlin
+>>> Embedded Linux and Kernel engineering
+>>> https://bootlin.com
+>>>
+>>>
+>>> -=-=-=-=-=-=-=-=-=-=-=-
+>>> Links: You receive all messages sent to this group.
+>>> View/Reply Online (#2876):
+>>> https://lists.yoctoproject.org/g/docs/message/2876
+>>> Mute This Topic: https://lists.yoctoproject.org/mt/90726109/1279857
+>>> Group Owner: docs+owner@lists.yoctoproject.org
+>>> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
+>>> nicolas.dechesne@linaro.org]
+>>> -=-=-=-=-=-=-=-=-=-=-=-
+>>>
+>>>
+
+--00000000000006507705dda181cc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Wed, Apr 27, 2022 at 1:27 PM Nicol=
+as Dechesne &lt;<a href=3D"mailto:nicolas.dechesne@linaro.org">nicolas.dech=
+esne@linaro.org</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" s=
+tyle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pad=
+ding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Apr 27, 2022=
+ at 1:17 PM Nicolas Dechesne &lt;<a href=3D"mailto:nicolas.dechesne@linaro.=
+org" target=3D"_blank">nicolas.dechesne@linaro.org</a>&gt; wrote:<br></div>=
+<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
+left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div dir=
+=3D"ltr"><br></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D=
+"gmail_attr">On Wed, Apr 27, 2022 at 10:59 AM Michael Opdenacker via <a hre=
+f=3D"http://lists.yoctoproject.org" target=3D"_blank">lists.yoctoproject.or=
+g</a> &lt;michael.opdenacker=3D<a href=3D"mailto:bootlin.com@lists.yoctopro=
+ject.org" target=3D"_blank">bootlin.com@lists.yoctoproject.org</a>&gt; wrot=
+e:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
+.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex"><br>
+On 4/27/22 10:18, Jose Quaresma wrote:<br>
+&gt;<br>
+&gt; =C2=A0<br>
+&gt; In the HTML page it is fine, the &amp;YOCTO_DOC_VERSION is 4.0<br>
+&gt; <a href=3D"https://docs.yoctoproject.org/4.0/migration-guides/migratio=
+n-4.0.html#release-notes-for-4-0-kirkstone" rel=3D"noreferrer" target=3D"_b=
+lank">https://docs.yoctoproject.org/4.0/migration-guides/migration-4.0.html=
+#release-notes-for-4-0-kirkstone</a><br>
+&gt;<br>
+&gt; In the dev version the &amp;YOCTO_DOC_VERSION is not replaced by dev<b=
+r>
+&gt; <a href=3D"https://docs.yoctoproject.org/dev/migration-guides/migratio=
+n-4.0.html#release-notes-for-4-0-kirkstone" rel=3D"noreferrer" target=3D"_b=
+lank">https://docs.yoctoproject.org/dev/migration-guides/migration-4.0.html=
+#release-notes-for-4-0-kirkstone</a><br>
+<br>
+<br>
+That&#39;s *very weird* because the substitution happened in<br>
+<a href=3D"https://docs.yoctoproject.org/dev/brief-yoctoprojectqs/index.htm=
+l" rel=3D"noreferrer" target=3D"_blank">https://docs.yoctoproject.org/dev/b=
+rief-yoctoprojectqs/index.html</a> but<br>
+not in<br>
+<a href=3D"https://docs.yoctoproject.org/dev/migration-guides/migration-4.0=
+.html#release-notes-for-4-0-kirkstone" rel=3D"noreferrer" target=3D"_blank"=
+>https://docs.yoctoproject.org/dev/migration-guides/migration-4.0.html#rele=
+ase-notes-for-4-0-kirkstone</a><br>
+(same version).<br>
+<br>
+When I build the docs locally things look fine. Any ideas what could<br>
+cause this?<br></blockquote><div><br></div><div>I can reproduce the issue w=
+hen building locally. I am using Sphinx=3D=3D4.4.0</div></div></div></block=
+quote><div><br></div><div>oh... It&#39;s because the file release-notes-4.0=
+.rst is included with a ..include statement. The variable mapping is done w=
+ith a custom Sphinx extension (yocto-vars.py) which is triggered for the &#=
+39;source-read&#39; event. So perhaps this event is not triggered when usin=
+g an include statement.. let me check more on that..=C2=A0=C2=A0</div></div=
+></div></blockquote><div><br></div><div>yes, that seems correct. I don&#39;=
+t think we should continue to use the include directive here. Since you try=
+ to make one section (for 3.4 and 4.0) with the migration and the release n=
+otes, I think something along these lines would work, maybe there is simple=
+r..=C2=A0</div><div><br></div><div><br></div><div>diff --git a/documentatio=
+n/migration-guides/index.rst b/documentation/migration-guides/index.rst<br>=
+index 20c6ab9d4..4597506d0 100644<br>--- a/documentation/migration-guides/i=
+ndex.rst<br>+++ b/documentation/migration-guides/index.rst<br>@@ -12,8 +12,=
+8 @@ to move to one release of the Yocto Project from the previous one.<br>=
+=C2=A0.. toctree::<br>=C2=A0<br>=C2=A0 =C2=A0 migration-general<br>- =C2=A0=
+ migration-4.0<br>- =C2=A0 migration-3.4<br>+ =C2=A0 release-4.0<br>+ =C2=
+=A0 release-3.4<br>=C2=A0 =C2=A0 migration-3.3<br>=C2=A0 =C2=A0 migration-3=
+.2<br>=C2=A0 =C2=A0 migration-3.1<br>diff --git a/documentation/migration-g=
+uides/migration-3.4.rst b/documentation/migration-guides/migration-3.4.rst<=
+br>index c22ea814d..d57c955eb 100644<br>--- a/documentation/migration-guide=
+s/migration-3.4.rst<br>+++ b/documentation/migration-guides/migration-3.4.r=
+st<br>@@ -1,6 +1,3 @@<br>-Release 3.4 (honister)<br>-=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>-<br>=C2=A0Migration notes=
+ for 3.4 (honister)<br>=C2=A0----------------------------------<br>=C2=A0<b=
+r>@@ -274,6 +271,3 @@ Miscellaneous<br>=C2=A0 =C2=A0examples in :term:`EXTR=
+A_USERS_PARAMS`.<br>=C2=A0<br>=C2=A0<br>-.. include:: release-notes-3.4.rst=
+<br>-.. include:: release-notes-3.4.1.rst<br>-.. include:: release-notes-3.=
+4.2.rst<br>diff --git a/documentation/migration-guides/migration-4.0.rst b/=
+documentation/migration-guides/migration-4.0.rst<br>index d737b9d43..a8e6b4=
+c33 100644<br>--- a/documentation/migration-guides/migration-4.0.rst<br>+++=
+ b/documentation/migration-guides/migration-4.0.rst<br>@@ -265,5 +265,3 @@ =
+Miscellaneous changes<br>=C2=A0 =C2=A0when parsing recipes. Any code depend=
+ing on the previous behaviour will no longer<br>=C2=A0 =C2=A0work - change =
+any such code to explicitly use appropriate path variables instead.<br>=C2=
+=A0<br>-<br>-.. include:: release-notes-4.0.rst<br>diff --git a/documentati=
+on/migration-guides/release-3.4.rst b/documentation/migration-guides/releas=
+e-3.4.rst<br>new file mode 100644<br>index 000000000..81476c4ad<br>--- /dev=
+/null<br>+++ b/documentation/migration-guides/release-3.4.rst<br>@@ -0,0 +1=
+,10 @@<br>+Release 3.4 (honister)<br>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>+<br>+.. toctree::<br>+<br>+ =C2=A0 migra=
+tion-3.4<br>+ =C2=A0 release-notes-3.4<br>+ =C2=A0 release-notes-3.4.1<br>+=
+ =C2=A0 release-notes-3.4.2<br>+<br>diff --git a/documentation/migration-gu=
+ides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst<br>ne=
+w file mode 100644<br>index 000000000..7062f9d24<br>--- /dev/null<br>+++ b/=
+documentation/migration-guides/release-4.0.rst<br>@@ -0,0 +1,7 @@<br>+Relea=
+se 4.0 (kirkstone)<br>+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D<br>+<br>+.. toctree::<br>+<br>+ =C2=A0 migration-4.0<br>=
++ =C2=A0 release-notes-4.0<br></div><div>=C2=A0</div><blockquote class=3D"g=
+mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
+,204,204);padding-left:1ex"><div dir=3D"ltr"><div class=3D"gmail_quote"><bl=
+ockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-lef=
+t:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div class=
+=3D"gmail_quote"><div>=C2=A0</div><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+<br>
+Michael.<br>
+<br>
+-- <br>
+Michael Opdenacker, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
+//bootlin.com</a><br>
+<br>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#2876): <a href=3D"https://lists.yoctoproject.org/g/docs=
+/message/2876" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
+ect.org/g/docs/message/2876</a><br>
+Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/90726109/1279=
+857" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
+/90726109/1279857</a><br>
+Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
+=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
+Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
+"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
+/a> [<a href=3D"mailto:nicolas.dechesne@linaro.org" target=3D"_blank">nicol=
+as.dechesne@linaro.org</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</blockquote></div></div>
+</blockquote></div></div>
+</blockquote></div></div>
+
+--00000000000006507705dda181cc--
 
