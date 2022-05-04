@@ -1,104 +1,90 @@
-Return-Path: <sundeep.kokkonda@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id ED71DC433F5
-	for <webhook@archiver.kernel.org>; Wed,  4 May 2022 15:00:28 +0000 (UTC)
-Subject: Re: [PATCH V3] Improvements for gdbserver configuration
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36B07C433F5
+	for <webhook@archiver.kernel.org>; Wed,  4 May 2022 15:28:39 +0000 (UTC)
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
+ [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web08.941.1651678113754453032
+ for <docs@lists.yoctoproject.org>;
+ Wed, 04 May 2022 08:28:34 -0700
+Authentication-Results: mx.groups.io;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OW+5n+lG;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.232,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id CFF62200003;
+	Wed,  4 May 2022 15:28:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1651678112;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=yvj2cGeZp9m8UcHt11RKXv7G+RaWTNCZWfbkrizLHYo=;
+	b=OW+5n+lGqdxE5KvKYyXXfjgt1X8ZFXX5It5lFc/qbO9Tzr6HdbR8AKSpyQbMjxvAx0Av0k
+	KPvthZ4w70E1vC7Zwh3bsMPs5XkGWTc3WfSR9Bxsns0bg4+XaCcy3jnpJyo7Ae/yZ8CMDc
+	XdOFlD3xH8cuoioPj0juS3P5W4LwcLoLLI8J9dDK9/Xps1umwcEhsCtGkDycla6uk0VvsB
+	EYKHeeF175k0N0EWqU0kZHh84E35ARxid3GU+kwKTyC7TbBw9vfW5H79RPoaNUnfO+yUvc
+	HDa14/UhN6I6d7DnRXRAqwUQw4zrEeBTPHH0+fgUboWQ/sQ3BvMP/2/Lf3i1EQ==
+From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-From: "Sundeep KOKKONDA" <sundeep.kokkonda@gmail.com>
-X-Originating-Location: Belgaum, Karnataka, IN (103.197.112.41)
-X-Originating-Platform: Windows Chrome 100
-User-Agent: GROUPS.IO Web Poster
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] doc: standards for project and file names
+Date: Wed,  4 May 2022 17:28:29 +0200
+Message-Id: <20220504152829.689363-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Date: Wed, 04 May 2022 08:00:19 -0700
-References: <f2c79713-d6e6-37a2-7f67-575cf935111a@bootlin.com>
-In-Reply-To: <f2c79713-d6e6-37a2-7f67-575cf935111a@bootlin.com>
-Message-ID: <11597.1651676419349976877@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="lMpI1Zu15AVUn59QNNEH"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 04 May 2022 15:00:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2912
+ <docs@lists.yoctoproject.org>; Wed, 04 May 2022 15:28:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2913
 
---lMpI1Zu15AVUn59QNNEH
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Hello Michael,
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/standards.md | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-The current doc says,
-IMAGE_INSTALL:append =3D " gdbserver" to be added in local.conf file or in =
-an image recipe. According to yocto doc, the IMAGE_INSTALL should be used w=
-ith image recipe and the EXTRA_IMAGE_FEATURES should be used by conf file.
+diff --git a/documentation/standards.md b/documentation/standards.md
+index a2274f6d6e..d288376828 100644
+--- a/documentation/standards.md
++++ b/documentation/standards.md
+@@ -7,7 +7,29 @@ It is currently a work in progress.
+ 
+ ## Text standards
+ 
+-This section has not been filled yet
++### Project names
++
++Project names should be capitalized in the same
++way they are on Wikipedia, in particular:
++
++* BitBake
++* OpenEmbedded
++
++There are exceptions in which such names can be used
++in lower case:
++
++* When referring to a package name
++* When referring to the corresponding command name
++* When used in a cross-reference title. Such
++  titles are usually in lower case.
++
++### File names
++
++File names should be quoted as in the below example:
++
++     ``conf/local.conf``
++
++Using "conf/local/conf" would be wrong.
+ 
+ ## ReStructured Text Syntax standards
+ 
+-- 
+2.25.1
 
-So, the let me know below correction should be OK?
-
-Make the following addition in=C2=A0an image recipe:
-
-IMAGE_INSTALL : append =3D " gdbserver"
-
-The change makes sure the gdbserver package is included.
-
-And, make following addition in local.conf.
-EXTRA_IMAGE_FEATURES:append =3D " tools-debug"
-
-Thanks,
-Sundeep K.
-
---lMpI1Zu15AVUn59QNNEH
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-
-Hello&nbsp;<span style=3D"white-space: pre-wrap;">Michael,</span><br /><br =
-/><span style=3D"white-space: pre-wrap;">The current doc says,</span><br />=
-<span style=3D"white-space: pre-wrap;">IMAGE_INSTALL:append =3D " gdbserver=
-" to be added in </span><code class=3D"docutils literal notranslate" style=
-=3D"font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono'=
-, 'Courier New', Courier, monospace; font-size: 13.6px; white-space: nowrap=
-; max-width: 100%; background-image: inherit; background-position: inherit;=
- background-size: inherit; background-repeat: inherit; background-attachmen=
-t: inherit; background-origin: inherit; background-clip: inherit; backgroun=
-d-color: #fcfcfc; border: none; padding: unset; color: #333333; overflow-x:=
- auto;"><span class=3D"pre" style=3D"font-size: medium; font-family: Courie=
-r, monospace;">local.conf</span></code><span style=3D"font-family: Verdana,=
- Sans, sans-serif; font-size: 16px; background-color: #fcfcfc;">&nbsp;file =
-or in an image recipe. According to yocto doc, the&nbsp;</span><span style=
-=3D"white-space: pre-wrap;">IMAGE_INSTALL should be used with image recipe =
-and the </span><span style=3D"white-space: pre-wrap;">EXTRA_IMAGE_FEATURES =
-should be used by conf file.<br /><br /></span>So, the let me know below co=
-rrection should be OK?<br /><br />
-<p style=3D"line-height: 24px; font-size: 16px; margin-top: 12px; margin-bo=
-ttom: 12px; font-family: Verdana, Sans, sans-serif; background-color: #fcfc=
-fc;">Make the following addition in&nbsp;an image recipe:</p>
-<div class=3D"highlight-default notranslate" style=3D"border: 1px solid #e1=
-e4e5; overflow-x: auto; margin: 12px 0px; font-family: Verdana, Sans, sans-=
-serif; font-size: 16px; background-color: #fcfcfc;">
-<div class=3D"highlight" style=3D"background: #f8f8f8; border: none; overfl=
-ow-x: auto; margin: 0px; padding: 0px;">
-<pre style=3D"font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Libera=
-tion Mono', 'Courier New', Courier, monospace; font-size: 12px; line-height=
-: 1.4; margin-bottom: 0px; padding: 12px;"><span class=3D"n">IMAGE_INSTALL<=
-/span><span class=3D"p">:</span><span class=3D"n">append</span> <span class=
-=3D"o" style=3D"color: #666666;">=3D</span> <span class=3D"s2" style=3D"col=
-or: #ba2121;">" gdbserver"</span>
-</pre>
-</div>
-</div>
-<p style=3D"line-height: 24px; font-size: 16px; margin-top: 12px; margin-bo=
-ttom: 12px; font-family: Verdana, Sans, sans-serif; background-color: #fcfc=
-fc;">The change makes sure the&nbsp;<code class=3D"docutils literal notrans=
-late" style=3D"font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liber=
-ation Mono', 'Courier New', Courier, monospace; font-size: 13.6px; white-sp=
-ace: nowrap; max-width: 100%; background: inherit; border: none; padding: u=
-nset; color: inherit; overflow-x: auto;"><span class=3D"pre" style=3D"font-=
-size: medium; font-family: Courier, monospace;">gdbserver</span></code>&nbs=
-p;package is included.<br /><br />And, make following addition in local.con=
-f.<br /><span style=3D"font-family: 'Helvetica Neue', Helvetica, Arial, san=
-s-serif; font-size: 14px; white-space: pre-wrap; background-color: #ffffff;=
-">EXTRA_IMAGE_FEATURES:append =3D " tools-debug"<br /><br /><br />Thanks,<b=
-r />Sundeep K.<br /></span></p>
-
---lMpI1Zu15AVUn59QNNEH--
 
