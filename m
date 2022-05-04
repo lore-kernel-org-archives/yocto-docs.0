@@ -2,113 +2,90 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3ADDCC433EF
-	for <webhook@archiver.kernel.org>; Wed,  4 May 2022 17:48:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80096C433F5
+	for <webhook@archiver.kernel.org>; Wed,  4 May 2022 18:24:08 +0000 (UTC)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
  [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web09.509.1651686487206979021
+ by mx.groups.io with SMTP id smtpd.web10.1012.1651688644781998709
  for <docs@lists.yoctoproject.org>;
- Wed, 04 May 2022 10:48:08 -0700
+ Wed, 04 May 2022 11:24:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Hz9mNmAA;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gAJsHXPp;
  spf=pass (domain: bootlin.com, ip: 217.70.183.199,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id D0059FF803;
-	Wed,  4 May 2022 17:48:04 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 12B11FF807;
+	Wed,  4 May 2022 18:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1651686485;
+	t=1651688642;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uKZkdDOnOl01kcfdWBf8AG0GDDle0aMPbX7JqzzngSE=;
-	b=Hz9mNmAAImrO3cfim3TdK1aP6UBWMQpTHxltDtvEdaJGORkk1xUN6gnqHXXuhs8qdKtnwc
-	PyXtGFAihX8dFrCkxph1dYxBJqGxRBiYkI+WKwk90kepUihDuW0N4E9V+A+zYtzjfFi7qa
-	ap5PTgSmex6nXBI7ISaeyJ7NN68nDzdIBiA/A01E5XrLisEVGXAV532VViQbJmBSV1loJk
-	faCj7DP0eCnsO6II/hakDwdtPooiKQxKS96EOwVCJBO2onlWzL4nZI5T6+ljNummpEK5OA
-	JEoin2ckDKg81yxy0ZlEDuyAts2htY+529+Eoe+mQC5inScGqF5R+4EXoU0jcA==
-Message-ID: <a1557d16-cbef-a06d-3490-77f551416341@bootlin.com>
-Date: Wed, 4 May 2022 19:48:04 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XjaZJD3qwqEe0bO3UnBX3uBn60em9kYu4uJJ8XTRBzU=;
+	b=gAJsHXPpgz3ov3OWY5Kxl3TUDpPxbWRx84EJXS2ni2G89tUWBHe2cjQQC7G0d+vbav6GNP
+	eH6NGuGoom4mVVIdwS1p66TAFl/OMPBcUsdAc5Rpx5yLhKd1+LYoGTqFH51DAehtiT0Ahf
+	u9+PBQAUqFQLp6+1Xtsn53LH3VjiPJ7QlqTEK7pGPYF0M0SNcdrRfYkZAXpowZ51DGLoYN
+	bQb7Alruy2G5S18eebqS1spbWc9zlNQv85du2OlGCgvG8u1bBruzXtjMUofleOlnqKHxPr
+	el4CcrvQjtX0qbjz3ExsDgROlCC2HhrdlONmFtwdvhjLbyCVioDHkk7G+kZL3Q==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] dev-manual: further gdb usage simplifications
+Date: Wed,  4 May 2022 20:24:00 +0200
+Message-Id: <20220504182400.702300-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Cc: rwmacleod@gmail.com, john.kaldas.enpj@gmail.com,
- umesh.kalappa0@gmail.com, pgowda.cve@gmail.com, shivams@gmail.com
-Subject: Re: [docs][PATCH V4] Improvements for gdbserver configuration
-Content-Language: en-US
-To: Sundeep KOKKONDA <sundeep.kokkonda@gmail.com>, docs@lists.yoctoproject.org
-References: <20220504173421.41167-1-sundeep.kokkonda@gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20220504173421.41167-1-sundeep.kokkonda@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 04 May 2022 17:48:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2919
+ <docs@lists.yoctoproject.org>; Wed, 04 May 2022 18:24:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2920
 
-Hi Sundeep,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 5/4/22 19:34, Sundeep KOKKONDA wrote:
-> [Yocto #13722]
-> The Yocto bug reports a few improvements in the gdbserver configuration which improves the configuration of gdb more easier for novice users.
->
-> Signed-off-by: Sundeep KOKKONDA <sundeep.kokkonda@gmail.com>
-> ---
->  documentation/dev-manual/common-tasks.rst | 11 +++++------
->  1 file changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-> index b228c75aa..c9fc585a0 100644
-> --- a/documentation/dev-manual/common-tasks.rst
-> +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -10177,10 +10177,9 @@ debugger.
->  
->  2. *Configure the system to include gdbserver in the target filesystem:*
->  
-> -   Make the following addition in either your ``local.conf`` file or in
-> -   an image recipe::
-> +   Make the following addition in your ``local.conf`` file::
->  
-> -      IMAGE_INSTALL:append = " gdbserver"
-> +      EXTRA_IMAGE_FEATURES:append = " tools-debug"
->  
->     The change makes
->     sure the ``gdbserver`` package is included.
-> @@ -10227,14 +10226,14 @@ debugger.
->  
->        $ mkdir debugfs
->        $ cd debugfs
-> -      $ tar xvfj build-dir/tmp-glibc/deploy/images/machine/image.rootfs.tar.bz2
-> -      $ tar xvfj build-dir/tmp-glibc/deploy/images/machine/image-dbg.rootfs.tar.bz2
-> +      $ tar xvfj build-dir/tmp/deploy/images/machine/image.rootfs.tar.bz2
-> +      $ tar xvfj build-dir/tmp/deploy/images/machine/image-dbg.rootfs.tar.bz2
->  
->  5. *Set up GDB:*
->  
->     Install the SDK (if you built one) and then source the correct
->     environment file. Sourcing the environment file puts the SDK in your
-> -   ``PATH`` environment variable.
-> +   ``PATH`` environment variable and sets ``$GDB`` to the SDK's debugger.
->  
->     If you are using the build system, Gdb is located in
->     `build-dir`\ ``/tmp/sysroots/``\ `host`\ ``/usr/bin/``\ `architecture`\ ``/``\ `architecture`\ ``-gdb``
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/common-tasks.rst | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-Everything looks good now.
-
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-... and merged into "master-next". This should be in "master" in a few days.
-
-Many thanks for your patience!
-Cheers
-Michael.
-
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index c9fc585a05..8a2bfc3bb7 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -10312,24 +10312,21 @@ debug on the target hardware.
+ 
+ To support this kind of debugging, you need do the following:
+ 
+--  Ensure that GDB is on the target. You can do this by adding "gdb" to
+-   :term:`IMAGE_INSTALL`::
++-  Ensure that GDB is on the target. You can do this by making
++   the following addition to your ``local.conf`` file::
+ 
+-      IMAGE_INSTALL:append = " gdb"
+-
+-   Alternatively, you can add "tools-debug" to :term:`IMAGE_FEATURES`::
+-
+-      IMAGE_FEATURES:append = " tools-debug"
++      EXTRA_IMAGE_FEATURES:append = " tools-debug"
+ 
+ -  Ensure that debug symbols are present. You can make sure these
+-   symbols are present by installing ``-dbg``::
++   symbols are present by adding the corresponding ``-dbg`` package
++   to :term:`IMAGE_INSTALL`::
+ 
+       IMAGE_INSTALL:append = "packagename-dbg"
+ 
+-   Alternatively, you can do the following to include
++   Alternatively, you can add the following to ``local.conf`` to include
+    all the debug symbols::
+ 
+-      IMAGE_FEATURES:append = " dbg-pkgs"
++      EXTRA_IMAGE_FEATURES:append = " dbg-pkgs"
+ 
+ .. note::
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
