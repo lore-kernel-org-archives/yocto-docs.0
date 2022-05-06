@@ -2,93 +2,111 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21C63C433F5
-	for <webhook@archiver.kernel.org>; Fri,  6 May 2022 13:18:28 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
- [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.9219.1651843104104658592
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 656A3C433EF
+	for <webhook@archiver.kernel.org>; Fri,  6 May 2022 13:54:18 +0000 (UTC)
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
+ [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web10.9651.1651845257096612080
  for <docs@lists.yoctoproject.org>;
- Fri, 06 May 2022 06:18:24 -0700
+ Fri, 06 May 2022 06:54:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Rx/qeW5Q;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HA0ek7HL;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.232,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 3B5AB1C000F;
-	Fri,  6 May 2022 13:18:21 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id E71CE20000C;
+	Fri,  6 May 2022 13:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1651843102;
+	t=1651845255;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gMqSgQDPt7gvtXw4zJdlgOMIla3nUuVLLIiEglcNyFs=;
-	b=Rx/qeW5QuWighJqR6MRHCPMfh0gjUEz58/IfSF5GihSfkS3eT9QkddzTkGhNSIfbNIv5hz
-	mnNKEphmVo60uX7tFMUe6aLc+seZeXRDhJ8Ztc/mRUGUWIQb9zEoZE8i3tt/hOMDmHzlCQ
-	vXcXj6Pxcm1c9/Wt73jqNBXIPyXwZ3naxeC9B3G33k1FstsEpBnZXq8PcH9+RP0Ti+lzaS
-	0mb/fVdfHWZhpA0FekrNfsxSjmDwCR52yBmO9IKvhhokCDMK8sLgBlkd7mvZTnZwbzWrp9
-	s1PKVTZNSZuGH2WyaciAdmuDVgI9I359U5HEcE1LwFZ/Lnkti9UuPwvexsU6ew==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s6NJfm6oHgNXYzBn0NyKBtDAPn6JMn9QW9XItZ3YBrc=;
+	b=HA0ek7HLuoDpZ4vtLW00s91AsQp4c0c5W1p0mWjxdkCjLROm8cdovYd1zQ28XFcDIQK1Jn
+	0sJVQ3VoMRvR5/qSILTi9gldTx2v3GgUyToacen9TIJ1QmTCiXlL5uO/W7GS6l8ECGCzHq
+	TlZwxHT79v15Xoq2Kw5D3gFT97IYcPbB90EqPR9xcDsxSzBJUeVTpRZqriY00SCX6sQM0p
+	3D+qeziZl9E+TBaaWJUUhkK9BkcLpaNvJexz6uf3AYNM2n4E/5lItnhkBRVjarrTmu0ulj
+	bMCYBfL8q9IjtCECgF43BPwek5E2QVt5Ta43dRXLFG1J9cRJhqS2E23oNmHx7w==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH v2] dev-manual: further gdb usage simplifications
-Date: Fri,  6 May 2022 15:18:17 +0200
-Message-Id: <20220506131817.814730-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <foss@0leil.net>
+Subject: [PATCH] manuals: add missing space in appends
+Date: Fri,  6 May 2022 15:53:54 +0200
+Message-Id: <20220506135354.816882-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <16EC867B7C44633B.7620@lists.yoctoproject.org>
-References: <16EC867B7C44633B.7620@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 06 May 2022 13:18:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2925
+ <docs@lists.yoctoproject.org>; Fri, 06 May 2022 13:54:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2926
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Quentin Schulz <foss@0leil.net>
 ---
- documentation/dev-manual/common-tasks.rst | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ documentation/dev-manual/common-tasks.rst |  2 +-
+ documentation/kernel-dev/common.rst       |  2 +-
+ documentation/ref-manual/variables.rst    | 10 +++++-----
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
 diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index c9fc585a05..1da19b8d65 100644
+index f7632a5735..0528d482e5 100644
 --- a/documentation/dev-manual/common-tasks.rst
 +++ b/documentation/dev-manual/common-tasks.rst
-@@ -10312,24 +10312,20 @@ debug on the target hardware.
+@@ -4828,7 +4828,7 @@ configuration would be as follows::
+    require conf/multilib.conf
+    MULTILIBS = "multilib:lib32"
+    DEFAULTTUNE:virtclass-multilib-lib32 = "x86"
+-   IMAGE_INSTALL:append = "lib32-glib-2.0"
++   IMAGE_INSTALL:append = " lib32-glib-2.0"
  
- To support this kind of debugging, you need do the following:
+ This example enables an additional library named
+ ``lib32`` alongside the normal target packages. When combining these
+diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
+index 547da8a178..dc3345a520 100644
+--- a/documentation/kernel-dev/common.rst
++++ b/documentation/kernel-dev/common.rst
+@@ -1062,7 +1062,7 @@ Section.
+    contents::
  
---  Ensure that GDB is on the target. You can do this by adding "gdb" to
--   :term:`IMAGE_INSTALL`::
-+-  Ensure that GDB is on the target. You can do this by making
-+   the following addition to your ``local.conf`` file::
+       FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+-      SRC_URI:append = "file://0001-calibrate.c-Added-some-printk-statements.patch"
++      SRC_URI:append = " file://0001-calibrate.c-Added-some-printk-statements.patch"
  
--      IMAGE_INSTALL:append = " gdb"
--
--   Alternatively, you can add "tools-debug" to :term:`IMAGE_FEATURES`::
--
--      IMAGE_FEATURES:append = " tools-debug"
-+      EXTRA_IMAGE_FEATURES:append = " tools-debug"
+    The :term:`FILESEXTRAPATHS` and :term:`SRC_URI` statements
+    enable the OpenEmbedded build system to find the patch file.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index f164b7317a..0d01317405 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -4064,10 +4064,10 @@ system and gives an overview of their function and contents.
+       statements add specific configurations to targeted machine types::
  
---  Ensure that debug symbols are present. You can make sure these
--   symbols are present by installing ``-dbg``::
-+-  Ensure that debug symbols are present. You can do so by adding the
-+   corresponding ``-dbg`` package to :term:`IMAGE_INSTALL`::
+          KERNEL_EXTRA_FEATURES ?= "features/netfilter/netfilter.scc features/taskstats/taskstats.scc"
+-         KERNEL_FEATURES:append = "${KERNEL_EXTRA_FEATURES}"
+-         KERNEL_FEATURES:append:qemuall = "cfg/virtio.scc"
+-         KERNEL_FEATURES:append:qemux86 = " cfg/sound.scc cfg/paravirt_kvm.scc"
+-         KERNEL_FEATURES:append:qemux86-64 = "cfg/sound.scc"
++         KERNEL_FEATURES:append = " ${KERNEL_EXTRA_FEATURES}"
++         KERNEL_FEATURES:append:qemuall = " cfg/virtio.scc"
++         KERNEL_FEATURES:append:qemux86 = "  cfg/sound.scc cfg/paravirt_kvm.scc"
++         KERNEL_FEATURES:append:qemux86-64 = " cfg/sound.scc"
  
--      IMAGE_INSTALL:append = "packagename-dbg"
-+      IMAGE_INSTALL:append = " packagename-dbg"
+    :term:`KERNEL_FIT_LINK_NAME`
+       The link name of the kernel flattened image tree (FIT) image. This
+@@ -4255,7 +4255,7 @@ system and gives an overview of their function and contents.
+          SRCREV_machine:core2-32-intel-common = "43b9eced9ba8a57add36af07736344dcc383f711"
+          KMACHINE:core2-32-intel-common = "intel-core2-32"
+          KBRANCH:core2-32-intel-common = "standard/base"
+-         KERNEL_FEATURES:append:core2-32-intel-common = "${KERNEL_FEATURES_INTEL_COMMON}"
++         KERNEL_FEATURES:append:core2-32-intel-common = " ${KERNEL_FEATURES_INTEL_COMMON}"
  
--   Alternatively, you can do the following to include
-+   Alternatively, you can add the following to ``local.conf`` to include
-    all the debug symbols::
- 
--      IMAGE_FEATURES:append = " dbg-pkgs"
-+      EXTRA_IMAGE_FEATURES:append = " dbg-pkgs"
- 
- .. note::
- 
+       The :term:`KMACHINE` statement says
+       that the kernel understands the machine name as "intel-core2-32".
 -- 
 2.25.1
 
