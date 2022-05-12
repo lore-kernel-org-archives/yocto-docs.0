@@ -1,179 +1,179 @@
-Return-Path: <raj.khem@gmail.com>
+Return-Path: <ticotimo@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 55D87C433F5
-	for <webhook@archiver.kernel.org>; Wed, 11 May 2022 15:28:08 +0000 (UTC)
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com
- [209.85.219.177])
- by mx.groups.io with SMTP id smtpd.web09.839.1652282878799164355
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E543C433F5
+	for <webhook@archiver.kernel.org>; Thu, 12 May 2022 18:22:19 +0000 (UTC)
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com
+ [209.85.210.173])
+ by mx.groups.io with SMTP id smtpd.web08.912.1652379734820511864
  for <docs@lists.yoctoproject.org>;
- Wed, 11 May 2022 08:27:59 -0700
+ Thu, 12 May 2022 11:22:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=HcUBCPuy;
- spf=pass (domain: gmail.com, ip: 209.85.219.177,
- mailfrom: raj.khem@gmail.com)
-Received: by mail-yb1-f177.google.com with SMTP id v59so4642632ybi.12
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=VOMVM68j;
+ spf=pass (domain: gmail.com, ip: 209.85.210.173,
+ mailfrom: ticotimo@gmail.com)
+Received: by mail-pf1-f173.google.com with SMTP id i24so5548970pfa.7
         for <docs@lists.yoctoproject.org>;
- Wed, 11 May 2022 08:27:58 -0700 (PDT)
+ Thu, 12 May 2022 11:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc:content-transfer-encoding;
-        bh=ZvBLi2Ga2SIethlvj5CHAbnuP7kCtDRCgK+1vpK75D4=;
-        b=HcUBCPuyTvEjDgXX5f75tem3YzoWYI1VRS0y7n3UC1Puxkm403jW+n2Ty3LsENCF2i
-         CeBxXGVjZFuZjkc1s89OVxpBeXkmexTWhnPjDkWWuZ/WxTWkPwqby5I5U1YYPx+vObn3
-         OCArRvuof5ZoOGPDDbZy1tVSbMBVPcrlEtnTQtx4FHxQ+/2ACi/ZvtXM0i+OIVedtR/Y
-         f6Kxvjo82epcPMX5YCO1vJBJ6H6CyiLQoLcHFqbtx8l+v8LZ4zy6t8kACN60OkwEb+pM
-         XLzilokxS8dt1+2hXJf32mXIZVx1hGsSNEBsn7RVFrk4zzZsobqCFJO4MkRF0//dlTqB
-         MfMg==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
+        bh=WbriWWpRwu718Hj/pzBNIjD0gmHKqSYKnGxFaa4ifI4=;
+        b=VOMVM68jefiqBA7L7eeQ4aNfiS2Dz4XwAK5b14yI8Op2mFhydSFLi2r9WLP+/qFB+7
+         TciJjjQMY/QW7IEpvXMi8EAPOw8QhZfNLCpsrds+fTcefV7nh3eCjHc5fDOorN2MBoCI
+         TQwbJ6cArxbw70chqpvk5SKK5fO0EZ9TthOxgcosEM8bFH58udAbwF/8scXb7d5va/X/
+         RhTVs3kssvOyOY4609hn6nJVPtmxNf4Ci1Iwvz6S13ksTQHZKxb6i5+Sv3kJcfsI66zl
+         Snlz6gnnCx6EqNAJrSsVAFSR/Ya/LczRFqQoUdgJXFNyrZGuU3x4ggiOXbf5UjCMeN1E
+         REIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=ZvBLi2Ga2SIethlvj5CHAbnuP7kCtDRCgK+1vpK75D4=;
-        b=kkSyYhhN4IYLe1ry9EPG+nylsjbsaF3yIfmvlzsfLpAAtcQexpM9LrmJLuuNKWtdYS
-         6x66AWwrv9Y3LVUonpEka6MgZoStVcegeTMYiAj4mTyhxOgJuaa+oqJXTad6nwChqYNi
-         +9u/jrSv9H1qsxDeceRFesfdbHH5oB5CjRa6kMrEiGzWlb+5UqMUAXS9G4WcJ6owtXH9
-         AuHv4SvhpPSh/AQ5XRVgI7usTNf6nMbIGvIjA20pBGk36i7GT1Wb5QMHNbgtKg2ss1eh
-         CCAmGwzhFlzrN6tlsGzZkwj+Wl0jkB1OYf+hiSu6hIfalFVyTF9C6vtqe/VrzmTlD85C
-         rgaw==
-X-Gm-Message-State: AOAM531nwGKN7L+Ptk56Gs6UhzwjGl73TYoYmvolBxE8hWYVQ1sykoR0
-	redFIM0M8PeqMBAV5KqVf+GvmAvQLVN5EMAI1ec=
+         :message-id:subject:to;
+        bh=WbriWWpRwu718Hj/pzBNIjD0gmHKqSYKnGxFaa4ifI4=;
+        b=XDsdKP5AzCpkrJmAp73RfnCiDUYpxoEUPMyu6y3Mi6OTBPvi5k5GqZ4pMK5+q+83HY
+         eRpGUcsfk8dB+gWdsohW9UdofP6EAjelaZ24jjcInw7MlajFOHkRfb6gPN0dJgJWepnu
+         sBYhJLvPzOde1GdxptvS7iPD4bH4Iz+IDomTptvfINUMEOG6B4IDfmtRXT11bhYwrLyf
+         gTCNcBfS7y8MIo3c0W2r4aK1IIc7MuHkrWy+T7MvVSNNGpaH8n5wnP3JrUdo3pmbDewL
+         OpRy1+L4bNkwmEUC+p9vHuWFUFRT5AYvHKZozX96pCLaM9Bl3yR9VG+4TjE2kjkpspQF
+         c6AA==
+X-Gm-Message-State: AOAM5339UkX5gYrl0AzeSkkuE6nLfd7gQPYZ1E2FomZHwuFfNKNPVTCB
+	HxDXZH5oB5wRWdGq9Ni1GknQhR83Ngk9FoVQXxXFBvOm
 X-Google-Smtp-Source: 
- ABdhPJzkWcvtDmnBGPIwGywMUY4Rqe+uGz1ohAJQjkK6rQuOr27BLlqy3xFajf7W4qJ7X8LsJqBHQMlml51Uzv7YOlQ=
-X-Received: by 2002:a25:34ca:0:b0:645:716c:8cd1 with SMTP id
- b193-20020a2534ca000000b00645716c8cd1mr24673341yba.83.1652282877803; Wed, 11
- May 2022 08:27:57 -0700 (PDT)
+ ABdhPJxhhBD8B3Ysjz+SO55UPZjUzigAysc/ui8MdfgVsFnSfiAFwjNI9fdT59puRrEj2vJDvAzG7ugpeoyUZ4UylGg=
+X-Received: by 2002:a05:6a00:179f:b0:50d:e311:7d5 with SMTP id
+ s31-20020a056a00179f00b0050de31107d5mr997925pfg.64.1652379733675; Thu, 12 May
+ 2022 11:22:13 -0700 (PDT)
 MIME-Version: 1.0
-References: <e9ed828b-e775-66e9-5d28-b1e7499adc6e@crashcourse.ca>
- <731ed051-1887-c9a3-f09e-1003113d2e89@theobroma-systems.com>
- <e14d577f-fe71-d71e-6eaf-2e87214a593f@crashcourse.ca>
- <36a536ea-b77e-6e9e-e9c4-00a3790fb32d@theobroma-systems.com>
- <e1d5fe50-d15f-b54f-929a-dd7eda8ff4f4@crashcourse.ca>
-In-Reply-To: <e1d5fe50-d15f-b54f-929a-dd7eda8ff4f4@crashcourse.ca>
-From: Khem Raj <raj.khem@gmail.com>
-Date: Wed, 11 May 2022 08:27:31 -0700
+References: <16EE6DF9D0155936.24517@lists.yoctoproject.org>
+In-Reply-To: <16EE6DF9D0155936.24517@lists.yoctoproject.org>
+From: Tim Orling <ticotimo@gmail.com>
+Date: Thu, 12 May 2022 11:22:01 -0700
 Message-ID: 
- <CAMKF1sp10xB2Do5H_8oqT3xwBiqYpLCyvsjLTY+Fzibo5BzzPA@mail.gmail.com>
-Subject: Re: [docs] is there an actual "Getting Started" guide?
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+ <CANx9H-AeaY7qMFYhJdL57fisv6_6dzsV7JDKA0Afyi9xOWMyGw@mail.gmail.com>
+Subject: Fwd: [yocto] [RFC][WIP]{honister] kernel-lab manual
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="0000000000000f557205ded4a3cc"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 11 May 2022 15:28:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2933
+ <docs@lists.yoctoproject.org>; Thu, 12 May 2022 18:22:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2934
 
-On Wed, May 11, 2022 at 4:11 AM Robert P. J. Day <rpjday@crashcourse.ca> wr=
-ote:
->
-> On Wed, 11 May 2022, Quentin Schulz wrote:
->
-> >
-> >
-> > On 5/11/22 12:41, Robert P. J. Day wrote:
-> > > On Wed, 11 May 2022, Quentin Schulz wrote:
-> > >
-> > >> Hi Robert,
-> > >>
-> > >> On 5/11/22 12:28, Robert P. J. Day wrote:
-> > >>>
-> > >>>     was building a fresh ubuntu 22.04 build machine for OE/YP, star=
-ting
-> > >>> with minimal install to see how much more i would have to add, and
-> > >>> got (via sanity.bbclass) a missing module message based on:
-> > >>>
-> > >>> status.addresult('Your Python 3 is not a full install. Please insta=
-ll
-> > >>> the module %s (see the Getting Started guide for further
-> > >>> information).\n' % e.name)
-> > >>>
-> > >>>     note the reference to the "Getting Started guide", which does n=
-ot
-> > >>> seem to exist (anymore?). where *would* one go to resolve an error =
-of
-> > >>> the form "missing distutils.sysconfig" absent a Getting Started gui=
-de?
-> > >>>
-> > >>
-> > >> I think this is what you're after?
-> > >> https://urldefense.proofpoint.com/v2/url?u=3Dhttps-3A__docs.yoctopro=
-ject.org_ref-2Dmanual_system-2Drequirements.html&d=3DDwIBAg&c=3D_sEr5x9kUWh=
-uk4_nFwjJtA&r=3DLYjLexDn7rXIzVmkNPvw5ymA1XTSqHGq8yBP6m6qZZ4njZguQhZhkI_-172=
-IIy1t&m=3DyPuNzagIy_whkBE_pem1x9YQx7w5lvQlVIoLNlaMimJyeWKCJdIPq9TjDyYGWrjs&=
-s=3D24h3qNQNp2mMdaiqx5o7n3youEbYKRITx0hwOnd9Mdo&e=3D
-> > >>
-> > >> If so, please send a patch to update the error code to point to this
-> > >> piece of documentation :)
-> > >
-> > >    i *suspected* it was something like that, just wanted to make sure
-> > > there was no "getting started" guide i'd managed to miss all this
-> > > time.  will send patch to OE list.
-> > >
-> >
-> > I think it *might* actually be
-> > https://docs.yoctoproject.org/dev-manual/start.html.
-> >
-> > c.f.
-> > https://git.yoctoproject.org/yocto-docs/commit/?id=3D028f8f7a1b93a023a9=
-9ffadb01b0da699b4081c2
-> >
-> > Either way, it needs to be fixed :)
->
->   actually, backing up a bit, i think there's a slightly larger
-> problem. consider again the snippet from sanity.bbclass:
->
->   # Check the python install is complete. Examples that are often removed=
- in
->   # minimal installations: glib-2.0-natives requries xml.parsers.expat an=
-d icu
->   # requires distutils.sysconfig.
->     try:
->         import xml.parsers.expat
->         import distutils.sysconfig
->     except ImportError as e:
->         status.addresult('Your Python 3 is not a full install. Please
->         install the module %s (see the Getting Started guide for
->         further information).\n' % e.name)
->
-> seems to me that, regardless of where that snippet sends the reader,
-> how to resolve that issue should be explained there, no?
->
->   so one gets "hey, you need to install the module
-> distutils.sysconfig'. great. how? if the reader is not a python
-> expert, they may not realize the solution on ubuntu 22.04 is:
->
->   $ sudo apt install python3-distutils
->
-> how are they supposed to know that? should whatever page they're sent
-> to address this? is it simply a matter of adding that package to the
-> list of required packages for the various distros?
+--0000000000000f557205ded4a3cc
+Content-Type: text/plain; charset="UTF-8"
 
-We have a list of prerequisites and each one is there for a reason,
-ideally we should
-cite the reason for it to be there but we have not. We could document
-it as well although
-folks may not be interested in the innards of the problem as you say,
-they may be looking for
-a solution. So suggesting them to install all prerequisites is a good
-first step and list this
-under there.
+OOPS.
 
->
-> rday
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#2932): https://lists.yoctoproject.org/g/docs/message/=
-2932
-> Mute This Topic: https://lists.yoctoproject.org/mt/91032448/1997914
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [raj.khem@gmail.=
-com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
+---------- Forwarded message ---------
+From: Tim Orling via lists.yoctoproject.org <ticotimo=
+gmail.com@lists.yoctoproject.org>
+Date: Thu, May 12, 2022 at 11:10 AM
+Subject: [yocto] [RFC][WIP]{honister] kernel-lab manual
+To: Yocto (yocto@lists.yoctoproject.org) <yocto@lists.yoctoproject.org>
+
+
+I have the restructured text conversion far enough along for the
+'kernel-lab' to share it now. Because I was last working on this for Yocto
+Project Summit 2021.11, the current qemux86 base is on 'honister' (although
+I am upgrading it to honister-3.4.4 tag).
+
+Please realize there is a lot of history to this material and some of it
+was done by folks that have left this mortal coil and some respect for that
+posterity is included in this work. We can change and morph in the future,
+once it has been captured close to what it is here.
+
+I also have a separate workflow going for the Yocto Project Summit 2022.05
+which is in Google Slides and is qemuarm64 based ('kirkstone'). Eventually
+I will find the time to update the kernel-lab manual to follow suit, but
+our collective discussion may impact that.
+
+You can take a look at YP Summit 2021.11 to see a preview of what is coming
+for YP Summit 2022.05 (once I figure out the pesky printk/pr_info issue):
+https://elinux.org/images/b/be/Yps2021.11-handson-kernel.pdf
+
+Current working branch of kernel-lab manual:
+https://github.com/moto-timo/yocto-docs/tree/timo/honister/kernel-lab
+
+And the accompanying metadata training materials:
+https://github.com/moto-timo/kernel-lab-layers/tree/wip-honister
+
+The intent is that for a given release of the docs, we would have exercises
+for  LTS, Stable and Mainline (really this means current-stable, not -dev).
+Currently, LTS would be 5.10, Stable would be 5.15 and Mainline would be
+5.17.
+
+--Tim
+
+-=-=-=-=-=-=-=-=-=-=-=-
+Links: You receive all messages sent to this group.
+View/Reply Online (#57084):
+https://lists.yoctoproject.org/g/yocto/message/57084
+Mute This Topic: https://lists.yoctoproject.org/mt/91064347/924729
+Group Owner: yocto+owner@lists.yoctoproject.org
+Unsubscribe: https://lists.yoctoproject.org/g/yocto/unsub [
+ticotimo@gmail.com]
+-=-=-=-=-=-=-=-=-=-=-=-
+
+--0000000000000f557205ded4a3cc
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">OOPS.<br><br><div class=3D"gmail_quote"><div dir=3D"ltr" c=
+lass=3D"gmail_attr">---------- Forwarded message ---------<br>From: <strong=
+ class=3D"gmail_sendername" dir=3D"auto">Tim Orling via <a href=3D"http://l=
+ists.yoctoproject.org">lists.yoctoproject.org</a></strong> <span dir=3D"aut=
+o">&lt;ticotimo=3D<a href=3D"mailto:gmail.com@lists.yoctoproject.org">gmail=
+.com@lists.yoctoproject.org</a>&gt;</span><br>Date: Thu, May 12, 2022 at 11=
+:10 AM<br>Subject: [yocto] [RFC][WIP]{honister] kernel-lab manual<br>To: Yo=
+cto (<a href=3D"mailto:yocto@lists.yoctoproject.org">yocto@lists.yoctoproje=
+ct.org</a>) &lt;<a href=3D"mailto:yocto@lists.yoctoproject.org">yocto@lists=
+.yoctoproject.org</a>&gt;<br></div><br><br><div dir=3D"ltr">I have the rest=
+ructured text conversion far enough along for the &#39;kernel-lab&#39; to s=
+hare it now. Because I was last working on this for Yocto Project Summit 20=
+21.11, the current qemux86 base is on &#39;honister&#39; (although I am upg=
+rading it to honister-3.4.4 tag).<div><br></div><div>Please realize there i=
+s a lot of history to this material and some of it was done by folks that h=
+ave left this mortal coil and some respect for that posterity is included i=
+n this work. We can change and morph in the future, once it has been captur=
+ed close to what it is here.<br><div><br></div><div>I also have a separate=
+=C2=A0workflow going for the Yocto Project Summit 2022.05 which is in Googl=
+e Slides and is qemuarm64 based (&#39;kirkstone&#39;). Eventually I will fi=
+nd the time to update the kernel-lab manual to follow suit, but our collect=
+ive discussion may impact that.</div><div><br></div><div><div>You can take =
+a look at YP Summit 2021.11 to see a preview of what is coming for YP Summi=
+t 2022.05 (once I figure out the pesky printk/pr_info issue):</div><div><a =
+href=3D"https://elinux.org/images/b/be/Yps2021.11-handson-kernel.pdf" targe=
+t=3D"_blank">https://elinux.org/images/b/be/Yps2021.11-handson-kernel.pdf</=
+a></div></div><div><br></div><div>Current working branch of kernel-lab manu=
+al:<br><a href=3D"https://github.com/moto-timo/yocto-docs/tree/timo/honiste=
+r/kernel-lab" target=3D"_blank">https://github.com/moto-timo/yocto-docs/tre=
+e/timo/honister/kernel-lab</a><br></div><div><br></div><div>And the accompa=
+nying metadata training materials:</div><div><a href=3D"https://github.com/=
+moto-timo/kernel-lab-layers/tree/wip-honister" target=3D"_blank">https://gi=
+thub.com/moto-timo/kernel-lab-layers/tree/wip-honister</a><br></div><div><b=
+r></div><div>The intent is that for a given release of the docs, we would h=
+ave exercises for=C2=A0 LTS, Stable and Mainline (really this means current=
+-stable, not -dev). Currently, LTS would be 5.10, Stable would be 5.15 and =
+Mainline would be 5.17.</div><div><br></div><div>--Tim</div></div></div>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#57084): <a href=3D"https://lists.yoctoproject.org/g/yoc=
+to/message/57084" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctop=
+roject.org/g/yocto/message/57084</a><br>
+Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/91064347/9247=
+29" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt/=
+91064347/924729</a><br>
+Group Owner: <a href=3D"mailto:yocto%2Bowner@lists.yoctoproject.org" target=
+=3D"_blank">yocto+owner@lists.yoctoproject.org</a><br>
+Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/yocto/unsub" rel=
+=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/yocto/un=
+sub</a> [<a href=3D"mailto:ticotimo@gmail.com" target=3D"_blank">ticotimo@g=
+mail.com</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</div></div>
+
+--0000000000000f557205ded4a3cc--
 
