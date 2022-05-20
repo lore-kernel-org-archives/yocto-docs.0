@@ -1,179 +1,112 @@
-Return-Path: <ticotimo@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E543C433F5
-	for <webhook@archiver.kernel.org>; Thu, 12 May 2022 18:22:19 +0000 (UTC)
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com
- [209.85.210.173])
- by mx.groups.io with SMTP id smtpd.web08.912.1652379734820511864
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8417FC433EF
+	for <webhook@archiver.kernel.org>; Fri, 20 May 2022 12:45:32 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
+ [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web11.8159.1653050722617377514
  for <docs@lists.yoctoproject.org>;
- Thu, 12 May 2022 11:22:14 -0700
+ Fri, 20 May 2022 05:45:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=VOMVM68j;
- spf=pass (domain: gmail.com, ip: 209.85.210.173,
- mailfrom: ticotimo@gmail.com)
-Received: by mail-pf1-f173.google.com with SMTP id i24so5548970pfa.7
-        for <docs@lists.yoctoproject.org>;
- Thu, 12 May 2022 11:22:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=WbriWWpRwu718Hj/pzBNIjD0gmHKqSYKnGxFaa4ifI4=;
-        b=VOMVM68jefiqBA7L7eeQ4aNfiS2Dz4XwAK5b14yI8Op2mFhydSFLi2r9WLP+/qFB+7
-         TciJjjQMY/QW7IEpvXMi8EAPOw8QhZfNLCpsrds+fTcefV7nh3eCjHc5fDOorN2MBoCI
-         TQwbJ6cArxbw70chqpvk5SKK5fO0EZ9TthOxgcosEM8bFH58udAbwF/8scXb7d5va/X/
-         RhTVs3kssvOyOY4609hn6nJVPtmxNf4Ci1Iwvz6S13ksTQHZKxb6i5+Sv3kJcfsI66zl
-         Snlz6gnnCx6EqNAJrSsVAFSR/Ya/LczRFqQoUdgJXFNyrZGuU3x4ggiOXbf5UjCMeN1E
-         REIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=WbriWWpRwu718Hj/pzBNIjD0gmHKqSYKnGxFaa4ifI4=;
-        b=XDsdKP5AzCpkrJmAp73RfnCiDUYpxoEUPMyu6y3Mi6OTBPvi5k5GqZ4pMK5+q+83HY
-         eRpGUcsfk8dB+gWdsohW9UdofP6EAjelaZ24jjcInw7MlajFOHkRfb6gPN0dJgJWepnu
-         sBYhJLvPzOde1GdxptvS7iPD4bH4Iz+IDomTptvfINUMEOG6B4IDfmtRXT11bhYwrLyf
-         gTCNcBfS7y8MIo3c0W2r4aK1IIc7MuHkrWy+T7MvVSNNGpaH8n5wnP3JrUdo3pmbDewL
-         OpRy1+L4bNkwmEUC+p9vHuWFUFRT5AYvHKZozX96pCLaM9Bl3yR9VG+4TjE2kjkpspQF
-         c6AA==
-X-Gm-Message-State: AOAM5339UkX5gYrl0AzeSkkuE6nLfd7gQPYZ1E2FomZHwuFfNKNPVTCB
-	HxDXZH5oB5wRWdGq9Ni1GknQhR83Ngk9FoVQXxXFBvOm
-X-Google-Smtp-Source: 
- ABdhPJxhhBD8B3Ysjz+SO55UPZjUzigAysc/ui8MdfgVsFnSfiAFwjNI9fdT59puRrEj2vJDvAzG7ugpeoyUZ4UylGg=
-X-Received: by 2002:a05:6a00:179f:b0:50d:e311:7d5 with SMTP id
- s31-20020a056a00179f00b0050de31107d5mr997925pfg.64.1652379733675; Thu, 12 May
- 2022 11:22:13 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=W7DK8BNF;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 373AA100008;
+	Fri, 20 May 2022 12:45:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1653050720;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Vtjp9zFmNzEXfCXb7fZ7QwotWFANC9XUPHpjpyOSE+0=;
+	b=W7DK8BNFAqiLvmSCZDQG8SwjkCXgZSON3zcuxuKfZFxPqNz3FVSi2zAzepwRnq6cuiqU5+
+	8FYkOmm+hFTA9kbp/TvPfb7OzuuEhI4CiTzDE2p5EBJ8JXz50G/A31yfVcwDjnZ4lh/3kk
+	X53cWkHgScrE3QEHymFEgIcgvOHsiwbo7+ihQrdOHlMga6TJBsyQubLZv1KbbQNjdIJ+OA
+	HvkMnmToD3UvUSLt+nkdzddZ51FX5EsFSy3eQgpoZTXQ6QFxTnKpYXriMgXBxfcPGDWlJe
+	gg8A7f/qNFCscnFdUClKmWl8qzra8LffGtfHi7faOKmp3+xCt3dwdgq6NRZAHA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <foss@0leil.net>
+Subject: [PATCH] [honister] adding missing space in appends
+Date: Fri, 20 May 2022 14:44:51 +0200
+Message-Id: <20220520124451.103030-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <16EE6DF9D0155936.24517@lists.yoctoproject.org>
-In-Reply-To: <16EE6DF9D0155936.24517@lists.yoctoproject.org>
-From: Tim Orling <ticotimo@gmail.com>
-Date: Thu, 12 May 2022 11:22:01 -0700
-Message-ID: 
- <CANx9H-AeaY7qMFYhJdL57fisv6_6dzsV7JDKA0Afyi9xOWMyGw@mail.gmail.com>
-Subject: Fwd: [yocto] [RFC][WIP]{honister] kernel-lab manual
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="0000000000000f557205ded4a3cc"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 12 May 2022 18:22:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2934
+ <docs@lists.yoctoproject.org>; Fri, 20 May 2022 12:45:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2935
 
---0000000000000f557205ded4a3cc
-Content-Type: text/plain; charset="UTF-8"
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-OOPS.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Quentin Schulz <foss@0leil.net>
+---
+ documentation/dev-manual/common-tasks.rst | 2 +-
+ documentation/kernel-dev/common.rst       | 2 +-
+ documentation/ref-manual/variables.rst    | 8 ++++----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
----------- Forwarded message ---------
-From: Tim Orling via lists.yoctoproject.org <ticotimo=
-gmail.com@lists.yoctoproject.org>
-Date: Thu, May 12, 2022 at 11:10 AM
-Subject: [yocto] [RFC][WIP]{honister] kernel-lab manual
-To: Yocto (yocto@lists.yoctoproject.org) <yocto@lists.yoctoproject.org>
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 4683b1c045..fa9cd58b37 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -4781,7 +4781,7 @@ configuration would be as follows::
+    require conf/multilib.conf
+    MULTILIBS = "multilib:lib32"
+    DEFAULTTUNE:virtclass-multilib-lib32 = "x86"
+-   IMAGE_INSTALL:append = "lib32-glib-2.0"
++   IMAGE_INSTALL:append = " lib32-glib-2.0"
+ 
+ This example enables an additional library named
+ ``lib32`` alongside the normal target packages. When combining these
+diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
+index d42ca5f99a..631c46631e 100644
+--- a/documentation/kernel-dev/common.rst
++++ b/documentation/kernel-dev/common.rst
+@@ -1062,7 +1062,7 @@ Section.
+    contents::
+ 
+       FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+-      SRC_URI:append = "file://0001-calibrate.c-Added-some-printk-statements.patch"
++      SRC_URI:append = " file://0001-calibrate.c-Added-some-printk-statements.patch"
+ 
+    The :term:`FILESEXTRAPATHS` and :term:`SRC_URI` statements
+    enable the OpenEmbedded build system to find the patch file.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index fd796fddf7..7aef27337e 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3979,10 +3979,10 @@ system and gives an overview of their function and contents.
+       statements add specific configurations to targeted machine types::
+ 
+          KERNEL_EXTRA_FEATURES ?= "features/netfilter/netfilter.scc features/taskstats/taskstats.scc"
+-         KERNEL_FEATURES:append = "${KERNEL_EXTRA_FEATURES}"
+-         KERNEL_FEATURES:append:qemuall = "cfg/virtio.scc"
++         KERNEL_FEATURES:append = " ${KERNEL_EXTRA_FEATURES}"
++         KERNEL_FEATURES:append:qemuall = " cfg/virtio.scc"
+          KERNEL_FEATURES:append:qemux86 = " cfg/sound.scc cfg/paravirt_kvm.scc"
+-         KERNEL_FEATURES:append:qemux86-64 = "cfg/sound.scc"
++         KERNEL_FEATURES:append:qemux86-64 = " cfg/sound.scc"
+ 
+    :term:`KERNEL_FIT_LINK_NAME`
+       The link name of the kernel flattened image tree (FIT) image. This
+@@ -4170,7 +4170,7 @@ system and gives an overview of their function and contents.
+          SRCREV_machine:core2-32-intel-common = "43b9eced9ba8a57add36af07736344dcc383f711"
+          KMACHINE:core2-32-intel-common = "intel-core2-32"
+          KBRANCH:core2-32-intel-common = "standard/base"
+-         KERNEL_FEATURES:append:core2-32-intel-common = "${KERNEL_FEATURES_INTEL_COMMON}"
++         KERNEL_FEATURES:append:core2-32-intel-common = " ${KERNEL_FEATURES_INTEL_COMMON}"
+ 
+       The :term:`KMACHINE` statement says
+       that the kernel understands the machine name as "intel-core2-32".
+-- 
+2.25.1
 
-
-I have the restructured text conversion far enough along for the
-'kernel-lab' to share it now. Because I was last working on this for Yocto
-Project Summit 2021.11, the current qemux86 base is on 'honister' (although
-I am upgrading it to honister-3.4.4 tag).
-
-Please realize there is a lot of history to this material and some of it
-was done by folks that have left this mortal coil and some respect for that
-posterity is included in this work. We can change and morph in the future,
-once it has been captured close to what it is here.
-
-I also have a separate workflow going for the Yocto Project Summit 2022.05
-which is in Google Slides and is qemuarm64 based ('kirkstone'). Eventually
-I will find the time to update the kernel-lab manual to follow suit, but
-our collective discussion may impact that.
-
-You can take a look at YP Summit 2021.11 to see a preview of what is coming
-for YP Summit 2022.05 (once I figure out the pesky printk/pr_info issue):
-https://elinux.org/images/b/be/Yps2021.11-handson-kernel.pdf
-
-Current working branch of kernel-lab manual:
-https://github.com/moto-timo/yocto-docs/tree/timo/honister/kernel-lab
-
-And the accompanying metadata training materials:
-https://github.com/moto-timo/kernel-lab-layers/tree/wip-honister
-
-The intent is that for a given release of the docs, we would have exercises
-for  LTS, Stable and Mainline (really this means current-stable, not -dev).
-Currently, LTS would be 5.10, Stable would be 5.15 and Mainline would be
-5.17.
-
---Tim
-
--=-=-=-=-=-=-=-=-=-=-=-
-Links: You receive all messages sent to this group.
-View/Reply Online (#57084):
-https://lists.yoctoproject.org/g/yocto/message/57084
-Mute This Topic: https://lists.yoctoproject.org/mt/91064347/924729
-Group Owner: yocto+owner@lists.yoctoproject.org
-Unsubscribe: https://lists.yoctoproject.org/g/yocto/unsub [
-ticotimo@gmail.com]
--=-=-=-=-=-=-=-=-=-=-=-
-
---0000000000000f557205ded4a3cc
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">OOPS.<br><br><div class=3D"gmail_quote"><div dir=3D"ltr" c=
-lass=3D"gmail_attr">---------- Forwarded message ---------<br>From: <strong=
- class=3D"gmail_sendername" dir=3D"auto">Tim Orling via <a href=3D"http://l=
-ists.yoctoproject.org">lists.yoctoproject.org</a></strong> <span dir=3D"aut=
-o">&lt;ticotimo=3D<a href=3D"mailto:gmail.com@lists.yoctoproject.org">gmail=
-.com@lists.yoctoproject.org</a>&gt;</span><br>Date: Thu, May 12, 2022 at 11=
-:10 AM<br>Subject: [yocto] [RFC][WIP]{honister] kernel-lab manual<br>To: Yo=
-cto (<a href=3D"mailto:yocto@lists.yoctoproject.org">yocto@lists.yoctoproje=
-ct.org</a>) &lt;<a href=3D"mailto:yocto@lists.yoctoproject.org">yocto@lists=
-.yoctoproject.org</a>&gt;<br></div><br><br><div dir=3D"ltr">I have the rest=
-ructured text conversion far enough along for the &#39;kernel-lab&#39; to s=
-hare it now. Because I was last working on this for Yocto Project Summit 20=
-21.11, the current qemux86 base is on &#39;honister&#39; (although I am upg=
-rading it to honister-3.4.4 tag).<div><br></div><div>Please realize there i=
-s a lot of history to this material and some of it was done by folks that h=
-ave left this mortal coil and some respect for that posterity is included i=
-n this work. We can change and morph in the future, once it has been captur=
-ed close to what it is here.<br><div><br></div><div>I also have a separate=
-=C2=A0workflow going for the Yocto Project Summit 2022.05 which is in Googl=
-e Slides and is qemuarm64 based (&#39;kirkstone&#39;). Eventually I will fi=
-nd the time to update the kernel-lab manual to follow suit, but our collect=
-ive discussion may impact that.</div><div><br></div><div><div>You can take =
-a look at YP Summit 2021.11 to see a preview of what is coming for YP Summi=
-t 2022.05 (once I figure out the pesky printk/pr_info issue):</div><div><a =
-href=3D"https://elinux.org/images/b/be/Yps2021.11-handson-kernel.pdf" targe=
-t=3D"_blank">https://elinux.org/images/b/be/Yps2021.11-handson-kernel.pdf</=
-a></div></div><div><br></div><div>Current working branch of kernel-lab manu=
-al:<br><a href=3D"https://github.com/moto-timo/yocto-docs/tree/timo/honiste=
-r/kernel-lab" target=3D"_blank">https://github.com/moto-timo/yocto-docs/tre=
-e/timo/honister/kernel-lab</a><br></div><div><br></div><div>And the accompa=
-nying metadata training materials:</div><div><a href=3D"https://github.com/=
-moto-timo/kernel-lab-layers/tree/wip-honister" target=3D"_blank">https://gi=
-thub.com/moto-timo/kernel-lab-layers/tree/wip-honister</a><br></div><div><b=
-r></div><div>The intent is that for a given release of the docs, we would h=
-ave exercises for=C2=A0 LTS, Stable and Mainline (really this means current=
--stable, not -dev). Currently, LTS would be 5.10, Stable would be 5.15 and =
-Mainline would be 5.17.</div><div><br></div><div>--Tim</div></div></div>
-<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-Links: You receive all messages sent to this group.<br>
-View/Reply Online (#57084): <a href=3D"https://lists.yoctoproject.org/g/yoc=
-to/message/57084" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctop=
-roject.org/g/yocto/message/57084</a><br>
-Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/91064347/9247=
-29" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt/=
-91064347/924729</a><br>
-Group Owner: <a href=3D"mailto:yocto%2Bowner@lists.yoctoproject.org" target=
-=3D"_blank">yocto+owner@lists.yoctoproject.org</a><br>
-Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/yocto/unsub" rel=
-=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/yocto/un=
-sub</a> [<a href=3D"mailto:ticotimo@gmail.com" target=3D"_blank">ticotimo@g=
-mail.com</a>]<br>
--=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-<br>
-</div></div>
-
---0000000000000f557205ded4a3cc--
 
