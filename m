@@ -2,75 +2,90 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 501BBC433EF
-	for <webhook@archiver.kernel.org>; Fri, 20 May 2022 16:13:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BE8CC433EF
+	for <webhook@archiver.kernel.org>; Fri, 20 May 2022 16:35:45 +0000 (UTC)
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
  [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web12.811.1653063185240084046
+ by mx.groups.io with SMTP id smtpd.web08.1079.1653064538752683536
  for <docs@lists.yoctoproject.org>;
- Fri, 20 May 2022 09:13:05 -0700
+ Fri, 20 May 2022 09:35:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=K6UQzoFG;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jUeqViBr;
  spf=pass (domain: bootlin.com, ip: 217.70.183.196,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id D4019E0006;
-	Fri, 20 May 2022 16:13:02 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 6AC20E0002;
+	Fri, 20 May 2022 16:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1653063183;
+	t=1653064536;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Blp3VhRO7VkiPIGh6pRZc5uTSCWBxV3tU10VQOQLhHE=;
-	b=K6UQzoFGipAmYuCVXld1AI7kyNuCLr47nvMjfreSleT4swLfRgULhflsztXYlDsnon5sVc
-	H3yhHeyzMwLbKzxTMCTSccrN7jX76qaqY3dE8n+V80PX6vyAn+XtGU8k/IoaGvZcIXqiq3
-	ACM1QbdjtSGFQ/rRmPl8kkrQJnpFFMsS/ipv6NaIqwzxdmwCmrHPwdq5xixsJw7rDctEmE
-	nZ8w/x54arapYgrgdA48QdUcMVTBcYn9ow1m0oWodpV6EWg8IyKiG80OS42rr+Jz0QWSWq
-	ZUM17mmwsD10RvTL70F2ZSO2K0VlxvjQXyzCgG4FNY0Cr9u7SW1nw7TbLSd6GA==
-Message-ID: <0d3dc5e6-78fd-037b-8805-d689cdf70dd8@bootlin.com>
-Date: Fri, 20 May 2022 18:13:01 +0200
+	bh=rwIv1Y6NF8jxTGKt9SehIO2J9BM6C9vcVimK4L8aIeI=;
+	b=jUeqViBrFZfKMw5q7TM9bOMxrL4bL2wtZej4/9MV3PG86Th/1de78nRJkZiBvh6VNAXnoM
+	hSHU3sZ9f2kzqrTRQpAoui7fcOcobWs5Qefg3BDXgZLnWEvufwfAaRD7A1nHsBjuc690uy
+	tbqn6s5kV0uXTb8wSsLCK99N41Dnh22sOP0WWwp1k+Kz1ir14W/6JGrnoQPt1oOg16RJz3
+	945T8fafTwp45kEWVFnqxQFhzctcyZiZwaRGgo975jkkXRYIf/FERGp3Y/blFZ+uz7IqQh
+	VyvDCsOul+iV+qZvitKO/Gykk87/+535AGi38f5NW3Smc3/6a6Uts4i6ID9l8A==
+Message-ID: <52b4ff74-7281-52c3-6e4b-002b5b8c3b25@bootlin.com>
+Date: Fri, 20 May 2022 18:35:35 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.1
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] PATCH for bmaptool examples
 Content-Language: en-US
-To: tepperson@briskheat.com, docs@lists.yoctoproject.org
+To: Thomas Epperson <tepperson@briskheat.com>
 References: <6jIv.1653060874347710359.h4zY@lists.yoctoproject.org>
+ <0d3dc5e6-78fd-037b-8805-d689cdf70dd8@bootlin.com>
+ <DB9PR07MB8404AC6DC4A667C638EC55D2B8D39@DB9PR07MB8404.eurprd07.prod.outlook.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <6jIv.1653060874347710359.h4zY@lists.yoctoproject.org>
+In-Reply-To: 
+ <DB9PR07MB8404AC6DC4A667C638EC55D2B8D39@DB9PR07MB8404.eurprd07.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 May 2022 16:13:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2939
+ <docs@lists.yoctoproject.org>; Fri, 20 May 2022 16:35:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2940
 
 Hi Thomas,
 
-Thank you for your contribution!
+On 5/20/22 18:23, Thomas Epperson wrote:
+> It looks like I don't have git send-email on my system. Yes, I made a typo in my patch, I have corrected it.
+>
+> From b6bf34d26e49ef637d73085e5fde27bbbefc2ee4 Mon Sep 17 00:00:00 2001
+> From: Thomas Epperson <tepperson@briskheat.com>
+> Date: Fri, 20 May 2022 11:28:15 -0400
+> Subject: [PATCH] Update documentation for bmaptool usage
+>
+> Signed-off-by: Thomas Epperson <tepperson@briskheat.com>
+> ---
+>  documentation/dev-manual/common-tasks.rst | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+> index b228c75aa..04df750ef 100644
+> --- a/documentation/dev-manual/common-tasks.rst
+> +++ b/documentation/dev-manual/common-tasks.rst
+> @@ -5880,7 +5880,7 @@ Directory onto a USB stick, or whatever media for which you built your
+>  image, and boot from the media. You can write the image by using
+>  ``bmaptool`` or ``dd``::
+>  
+> -   $ oe-run-native bmaptool copy mkefidisk-201804191017-sda.direct /dev/sdX
+> +   $ oe-run-native bmap-tools-native bmaptool copy mkefidisk-201804191017-sda.direct /dev/sdX
+>  
+>  or ::
+>  
 
-On 5/20/22 17:34, tepperson@briskheat.com wrote:
-> This patch updates one of the examples for calling bmaptool to the
-> newer bmaptools-native command.
 
-Good catch!
+Thanks for the update. I just slightly modified the patch summary and
+merged it into the "master-next" branch.
 
-It would actually be better if you send the patch through git
-send-email. This makes it easier to review patches because we can reply
-to specific lines in our e-mail client.
-
-I believe there's a typo in your patch though. You should replace
-"oe-run-native bmaptools-native bmaptool" by "oe-run-native
-bmap-tools-native bmaptool".
-
-Another thing, we needed your "Signed-off-by" on your patch. You get it
-by adding "-s" to git commit.
-
-Thanks in advance for the new submission.
-Cheers,
+Thanks again!
 Michael.
 
 -- 
