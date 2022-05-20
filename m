@@ -2,95 +2,96 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BE8CC433EF
-	for <webhook@archiver.kernel.org>; Fri, 20 May 2022 16:35:45 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
- [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web08.1079.1653064538752683536
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29B57C433F5
+	for <webhook@archiver.kernel.org>; Fri, 20 May 2022 18:35:29 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web12.1074.1653071720976617996
  for <docs@lists.yoctoproject.org>;
- Fri, 20 May 2022 09:35:39 -0700
+ Fri, 20 May 2022 11:35:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jUeqViBr;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=c6CSpB5E;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 6AC20E0002;
-	Fri, 20 May 2022 16:35:36 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 0C653240004;
+	Fri, 20 May 2022 18:35:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1653064536;
+	t=1653071719;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rwIv1Y6NF8jxTGKt9SehIO2J9BM6C9vcVimK4L8aIeI=;
-	b=jUeqViBrFZfKMw5q7TM9bOMxrL4bL2wtZej4/9MV3PG86Th/1de78nRJkZiBvh6VNAXnoM
-	hSHU3sZ9f2kzqrTRQpAoui7fcOcobWs5Qefg3BDXgZLnWEvufwfAaRD7A1nHsBjuc690uy
-	tbqn6s5kV0uXTb8wSsLCK99N41Dnh22sOP0WWwp1k+Kz1ir14W/6JGrnoQPt1oOg16RJz3
-	945T8fafTwp45kEWVFnqxQFhzctcyZiZwaRGgo975jkkXRYIf/FERGp3Y/blFZ+uz7IqQh
-	VyvDCsOul+iV+qZvitKO/Gykk87/+535AGi38f5NW3Smc3/6a6Uts4i6ID9l8A==
-Message-ID: <52b4ff74-7281-52c3-6e4b-002b5b8c3b25@bootlin.com>
-Date: Fri, 20 May 2022 18:35:35 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=M1fXn1J0g4rYl715YuT6uaqRwg0SSD+WLhhQ4uePlKM=;
+	b=c6CSpB5E1q6nlvLCdUwhL1mRQEUFBznRGcmydH/OOdPmXSONBCrX4omzBQnmw93mP+kTS+
+	GgnY18Sq3HL0jO2T3JPmirxnqWSw6MFkQq28LLdNil+pirDUBjQLFBb/Rd9nQcyS/lptWY
+	4mgdvem5sij+vU3791RENk7d2YaKvvNUmV0LfBkxOTAbdxrPyTDNnzowgWJ1XDqs5pnvCk
+	Ty5KxwkNs9rFRxDLtwHD/xdZsuJDtZNgK0ebwo1OIZe16meEetyg5CJ1KGtPoUwUr9O08k
+	53KzLFwk1Ax5LLCWcQBYntqI6+fWVWju0cQQY9w6voeUANmIVuAn2FPk0emXiA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] manuals: add documentation for WKS_FILES
+Date: Fri, 20 May 2022 20:35:17 +0200
+Message-Id: <20220520183517.141145-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] PATCH for bmaptool examples
-Content-Language: en-US
-To: Thomas Epperson <tepperson@briskheat.com>
-References: <6jIv.1653060874347710359.h4zY@lists.yoctoproject.org>
- <0d3dc5e6-78fd-037b-8805-d689cdf70dd8@bootlin.com>
- <DB9PR07MB8404AC6DC4A667C638EC55D2B8D39@DB9PR07MB8404.eurprd07.prod.outlook.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: 
- <DB9PR07MB8404AC6DC4A667C638EC55D2B8D39@DB9PR07MB8404.eurprd07.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 May 2022 16:35:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2940
+ <docs@lists.yoctoproject.org>; Fri, 20 May 2022 18:35:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2941
 
-Hi Thomas,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 5/20/22 18:23, Thomas Epperson wrote:
-> It looks like I don't have git send-email on my system. Yes, I made a typo in my patch, I have corrected it.
->
-> From b6bf34d26e49ef637d73085e5fde27bbbefc2ee4 Mon Sep 17 00:00:00 2001
-> From: Thomas Epperson <tepperson@briskheat.com>
-> Date: Fri, 20 May 2022 11:28:15 -0400
-> Subject: [PATCH] Update documentation for bmaptool usage
->
-> Signed-off-by: Thomas Epperson <tepperson@briskheat.com>
-> ---
->  documentation/dev-manual/common-tasks.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-> index b228c75aa..04df750ef 100644
-> --- a/documentation/dev-manual/common-tasks.rst
-> +++ b/documentation/dev-manual/common-tasks.rst
-> @@ -5880,7 +5880,7 @@ Directory onto a USB stick, or whatever media for which you built your
->  image, and boot from the media. You can write the image by using
->  ``bmaptool`` or ``dd``::
->  
-> -   $ oe-run-native bmaptool copy mkefidisk-201804191017-sda.direct /dev/sdX
-> +   $ oe-run-native bmap-tools-native bmaptool copy mkefidisk-201804191017-sda.direct /dev/sdX
->  
->  or ::
->  
+Fixes [YOCTO #14590]
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/common-tasks.rst |  4 +++-
+ documentation/ref-manual/variables.rst    | 13 +++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-Thanks for the update. I just slightly modified the patch summary and
-merged it into the "master-next" branch.
-
-Thanks again!
-Michael.
-
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 3a47a9ff27..ca6d594386 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -5481,7 +5481,9 @@ system needs to meet the following requirements:
+    variable.
+ 
+ -  Include the name of the :ref:`wic kickstart file <openembedded-kickstart-wks-reference>`
+-   as part of the :term:`WKS_FILE` variable
++   as part of the :term:`WKS_FILE` variable. If multiple candidate files can
++   be provided by different layers, specify all the possible names through the
++   :term:`WKS_FILES` variable instead.
+ 
+ Getting Help
+ ------------
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 146af89e8c..ce2b6bf68a 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -8767,6 +8767,19 @@ system and gives an overview of their function and contents.
+       previous example, some-native-tool would be replaced with an actual
+       native tool on which the build would depend.
+ 
++   :term:`WKS_FILES`
++      Specified a list of candidate Wic kickstart files to be used by the
++      OpenEmbedded build system to create a partitioned image. Only the
++      first one that is found, from left to right, will be used.
++
++      This is only useful when there are multiple ``.wks`` that can be used
++      to produce an image. A typical case is when multiple layers are used
++      for different hardware platforms, each supplying a different
++      ``.wks`` file. In this case, you specify all possible ones through
++      :term:`WKS_FILES`.
++
++      If only one ``.wks`` file is used, set :term:`WKS_FILE` instead.
++
+    :term:`WORKDIR`
+       The pathname of the work directory in which the OpenEmbedded build
+       system builds a recipe. This directory is located within the
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
