@@ -1,66 +1,81 @@
-Return-Path: <tepperson@briskheat.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B186C433F5
-	for <webhook@archiver.kernel.org>; Fri, 20 May 2022 15:34:35 +0000 (UTC)
-Subject: PATCH for bmaptool examples
-To: docs@lists.yoctoproject.org
-From: tepperson@briskheat.com
-X-Originating-Location: Pickerington, Ohio, US (12.182.35.188)
-X-Originating-Platform: Windows Chrome 101
-User-Agent: GROUPS.IO Web Poster
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 501BBC433EF
+	for <webhook@archiver.kernel.org>; Fri, 20 May 2022 16:13:15 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web12.811.1653063185240084046
+ for <docs@lists.yoctoproject.org>;
+ Fri, 20 May 2022 09:13:05 -0700
+Authentication-Results: mx.groups.io;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=K6UQzoFG;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id D4019E0006;
+	Fri, 20 May 2022 16:13:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1653063183;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Blp3VhRO7VkiPIGh6pRZc5uTSCWBxV3tU10VQOQLhHE=;
+	b=K6UQzoFGipAmYuCVXld1AI7kyNuCLr47nvMjfreSleT4swLfRgULhflsztXYlDsnon5sVc
+	H3yhHeyzMwLbKzxTMCTSccrN7jX76qaqY3dE8n+V80PX6vyAn+XtGU8k/IoaGvZcIXqiq3
+	ACM1QbdjtSGFQ/rRmPl8kkrQJnpFFMsS/ipv6NaIqwzxdmwCmrHPwdq5xixsJw7rDctEmE
+	nZ8w/x54arapYgrgdA48QdUcMVTBcYn9ow1m0oWodpV6EWg8IyKiG80OS42rr+Jz0QWSWq
+	ZUM17mmwsD10RvTL70F2ZSO2K0VlxvjQXyzCgG4FNY0Cr9u7SW1nw7TbLSd6GA==
+Message-ID: <0d3dc5e6-78fd-037b-8805-d689cdf70dd8@bootlin.com>
+Date: Fri, 20 May 2022 18:13:01 +0200
 MIME-Version: 1.0
-Date: Fri, 20 May 2022 08:34:34 -0700
-Message-ID: <6jIv.1653060874347710359.h4zY@lists.yoctoproject.org>
-Content-Type: multipart/mixed; boundary="c16ZzhAyvMooNAw3IBMl"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [docs] PATCH for bmaptool examples
+Content-Language: en-US
+To: tepperson@briskheat.com, docs@lists.yoctoproject.org
+References: <6jIv.1653060874347710359.h4zY@lists.yoctoproject.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <6jIv.1653060874347710359.h4zY@lists.yoctoproject.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 May 2022 15:34:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2938
+ <docs@lists.yoctoproject.org>; Fri, 20 May 2022 16:13:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2939
 
---c16ZzhAyvMooNAw3IBMl
-Content-Type: multipart/alternative; boundary="9zHrfSPE4qSnJxo4SWvC"
+Hi Thomas,
 
---9zHrfSPE4qSnJxo4SWvC
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you for your contribution!
 
-This patch updates one of the examples for calling bmaptool to the newer bm=
-aptools-native command.
+On 5/20/22 17:34, tepperson@briskheat.com wrote:
+> This patch updates one of the examples for calling bmaptool to the
+> newer bmaptools-native command.
 
---9zHrfSPE4qSnJxo4SWvC
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Good catch!
 
-This patch updates one of the examples for calling bmaptool to the newer bm=
-aptools-native command.
+It would actually be better if you send the patch through git
+send-email. This makes it easier to review patches because we can reply
+to specific lines in our e-mail client.
 
---9zHrfSPE4qSnJxo4SWvC--
+I believe there's a typo in your patch though. You should replace
+"oe-run-native bmaptools-native bmaptool" by "oe-run-native
+bmap-tools-native bmaptool".
 
---c16ZzhAyvMooNAw3IBMl
-Content-Type: application/octet-stream; name="yocto_dev_patch.patch"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="yocto_dev_patch.patch"
+Another thing, we needed your "Signed-off-by" on your patch. You get it
+by adding "-s" to git commit.
 
-RnJvbSA4NDA2ZDdjOGUxZDgxMmRiMzgyMmFjMzA4Nzc1MzdmNTBlOGIzNTJkIE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQ0KRnJvbTogVGhvbWFzIEVwcGVyc29uIDx0ZXBwZXJzb25AYnJpc2toZWF0
-LmNvbT4NCkRhdGU6IEZyaSwgMjAgTWF5IDIwMjIgMTE6Mjg6MTUgLTA0MDANClN1YmplY3Q6IFtQ
-QVRDSF0gVXBkYXRlIGRvY3VtZW50YXRpb24gZm9yIGJtYXB0b29sIHVzYWdlDQoNCi0tLQ0KIGRv
-Y3VtZW50YXRpb24vZGV2LW1hbnVhbC9jb21tb24tdGFza3MucnN0IHwgMiArLQ0KIDEgZmlsZSBj
-aGFuZ2VkLCAxIGluc2VydGlvbigrKSwgMSBkZWxldGlvbigtKQ0KDQpkaWZmIC0tZ2l0IGEvZG9j
-dW1lbnRhdGlvbi9kZXYtbWFudWFsL2NvbW1vbi10YXNrcy5yc3QgYi9kb2N1bWVudGF0aW9uL2Rl
-di1tYW51YWwvY29tbW9uLXRhc2tzLnJzdA0KaW5kZXggYjIyOGM3NWFhLi5iMTk2YzI2NTEgMTAw
-NjQ0DQotLS0gYS9kb2N1bWVudGF0aW9uL2Rldi1tYW51YWwvY29tbW9uLXRhc2tzLnJzdA0KKysr
-IGIvZG9jdW1lbnRhdGlvbi9kZXYtbWFudWFsL2NvbW1vbi10YXNrcy5yc3QNCkBAIC01ODgwLDcg
-KzU4ODAsNyBAQCBEaXJlY3Rvcnkgb250byBhIFVTQiBzdGljaywgb3Igd2hhdGV2ZXIgbWVkaWEg
-Zm9yIHdoaWNoIHlvdSBidWlsdCB5b3VyDQogaW1hZ2UsIGFuZCBib290IGZyb20gdGhlIG1lZGlh
-LiBZb3UgY2FuIHdyaXRlIHRoZSBpbWFnZSBieSB1c2luZw0KIGBgYm1hcHRvb2xgYCBvciBgYGRk
-YGA6Og0KIA0KLSAgICQgb2UtcnVuLW5hdGl2ZSBibWFwdG9vbCBjb3B5IG1rZWZpZGlzay0yMDE4
-MDQxOTEwMTctc2RhLmRpcmVjdCAvZGV2L3NkWA0KKyAgICQgb2UtcnVuLW5hdGl2ZSBibWFwdG9v
-bHMtbmF0aXZlIGJtYXB0b29sIGNvcHkgbWtlZmlkaXNrLTIwMTgwNDE5MTAxNy1zZGEuZGlyZWN0
-IC9kZXYvc2RYDQogDQogb3IgOjoNCiANCi0tIA0KMi4zNC4xDQo=
+Thanks in advance for the new submission.
+Cheers,
+Michael.
 
---c16ZzhAyvMooNAw3IBMl--
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
