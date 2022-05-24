@@ -1,215 +1,320 @@
-Return-Path: <quentin.schulz@theobroma-systems.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BEFEC433EF
-	for <webhook@archiver.kernel.org>; Mon, 23 May 2022 08:30:23 +0000 (UTC)
-Received: from EUR03-VE1-obe.outbound.protection.outlook.com
- (EUR03-VE1-obe.outbound.protection.outlook.com [40.107.5.74])
- by mx.groups.io with SMTP id smtpd.web09.25439.1653294621141305335
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC980C433F5
+	for <webhook@archiver.kernel.org>; Tue, 24 May 2022 08:33:35 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.7089.1653381208836189932
  for <docs@lists.yoctoproject.org>;
- Mon, 23 May 2022 01:30:21 -0700
+ Tue, 24 May 2022 01:33:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="body hash did not verify"
- header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=Q/ZYRmZ9;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.5.74,
- mailfrom: quentin.schulz@theobroma-systems.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iBWMqzYFR6x31DAA+9cFuXcYSLVHn8022SXZvWJ9dB7gf2nAnw+l/6Mb8w/7Jd/KN0twTCZrptS7O1bhVyOWLP+a4mfJWi0LuPo6+sEcOKfEg1WvUScHZXRSbxzDgv/92RDSyU8P7KJODzi7IMo1wyIO9oZHkE5mGtyoR8Ejev+9ZZd22XXRWzbI949sHoTJW+1eDFqNrMx8iDSscB4q1LxLx0aHuYpn2nhZKW+3IKbk0bmoqDWabd4VMjPkHbd5fZdnhoASK9+IKuPXrZAPZKbzl/tsGCxFIp2feJjh3y3sw9Oycsml69EIjTCs3gQPCkklt7YrkG0tYTeDzNiYPA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5inQNCwtb0+tCOdone50IB0r6+R0+HNW7ZW8h+lqizo=;
- b=V8d1OO7ZyNSntr4V1BtaPNoxUFH2VB+zuTexZ0TPFvjY4RmYviuCBOgzELXHZibBdDZxKexyuWYtqP93i7rREscUyiiWdKjde1CNc/4ijnFq2NRXiu+BY0W2vdfeuy62k8BpGmCaRnOLGtSpZmvvdHUoyGX6fV0QZg1U4QCPEDhhGDgx97bRHE9V2DKOI/2omLTWNbAtzUep1gL7oGUu8zrFvE/o0cFqTCPUgjMfhPCDeRMWdDBetcAZbaf0ILJZ/U0SMkM87lTo+as9FUxOOYLs1vqwrFv+cXuJzZxh3Xa9xBk9+WjxPmC5wv5jMnVBVi+RM2jdS/cmN5r1g2y2Sg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5inQNCwtb0+tCOdone50IB0r6+R0+HNW7ZW8h+lqizo=;
- b=Q/ZYRmZ90/YrIojXZQa9N0mmdUs19cy2IyLM2/7vbpBAl+OKHmkHriGXmR8upKZFq/SKI1Nf5XXhwnfRTQAxsAPSsif6tAXraEpnvFcf243ageGUhnZhHTwf6YaLLpbmAApHulo/JP8Y/pN0N0Ye2xQjXBD0qZBlfHar5M2rZfY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
-Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
- by AM6PR04MB6229.eurprd04.prod.outlook.com (2603:10a6:20b:73::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5273.22; Mon, 23 May
- 2022 08:30:16 +0000
-Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
- ([fe80::e443:c646:c299:5512]) by PA4PR04MB9367.eurprd04.prod.outlook.com
- ([fe80::e443:c646:c299:5512%8]) with mapi id 15.20.5227.023; Mon, 23 May 2022
- 08:30:16 +0000
-Message-ID: <5af9dffd-6315-f7dd-323d-a05c3208c77b@theobroma-systems.com>
-Date: Mon, 23 May 2022 10:30:15 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [docs] [PATCH] manuals: add documentation for WKS_FILES
-Content-Language: en-US
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
- docs@lists.yoctoproject.org
-References: <20220520183517.141145-1-michael.opdenacker@bootlin.com>
- <10955e67-9690-c82b-0b5b-c599aa3dd140@theobroma-systems.com>
- <b6f866e9-3fbb-11cc-339a-6c7455a01ad7@bootlin.com>
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <b6f866e9-3fbb-11cc-339a-6c7455a01ad7@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: AS9PR04CA0142.eurprd04.prod.outlook.com
- (2603:10a6:20b:48a::16) To PA4PR04MB9367.eurprd04.prod.outlook.com
- (2603:10a6:102:2aa::7)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=h42UxQCt;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id EB7BD4000F;
+	Tue, 24 May 2022 08:33:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1653381207;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MIV5YYnB9cu8n/6gxR88872az7rRGDk4AaYUFQ8KhLo=;
+	b=h42UxQCtJxTUBOBjqrfU3hBKVxgprsvGmirfcJom3gPgmS7xDOeDNx+sc/61gSgv3+un4b
+	bKdezfSY9b5pX2f7wrWORQwvSNOelW8zKWH7nsRUL9LTPmbKOJ3k7BUct4MavE7GJKDPp2
+	vixwWO6wtWcOXvYQ8oU51KFz0nQf3OBJTAkztK+9Luzyy2PkZNWnJx1RCBz88rbjePRTQ6
+	DoaAVCvBpmwUs613c2WPcIyd0GJUhjHgXsjeXQQE3KS4kKAoFZFHi/5T534RmaQmQV+QI+
+	o25Aa0hdLNpKROAtfgkX4lTjNGl+ait0P5FCDogWSoY0pIMFzFkFMFTggHt2eA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] migration guides: release notes for 4.0.1
+Date: Tue, 24 May 2022 10:33:21 +0200
+Message-Id: <20220524083321.327244-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 054601f9-86fb-4123-47a0-08da3c9676fa
-X-MS-TrafficTypeDiagnostic: AM6PR04MB6229:EE_
-X-Microsoft-Antispam-PRVS: 
-	<AM6PR04MB62294DC52B6A6CFB52D863D5C2D49@AM6PR04MB6229.eurprd04.prod.outlook.com>
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	3txLzturJZQuMQBJCfUpHvp5ZqqReDGBpf5Hb+1NYSfk4CHXhUjaYASoO/qmhph2Tcak1ynn7i3pMaD4a9tL1DEWw3pBZSTYPEKPpJiIuLzJtFDtrPWeyksfnVyLI7J/e+Ebjf6iFvkr2V5x9NWk+bY/PZ+UOKyy8Jh5REkABxHKdsxYG7pEFAGb3Png3/oO2HCMRtWXJjhP2N2tSc/zrvIJ/OKCyLsZrEPAGQlnbyEekFqGQ1IMpKxWujKQDXP8t/YzvetIIWylQ63rcl40t1SSwVqwXrVMMTKg+VaZSDesiPc399QyxwvDqcn2NhnNN8UzzA+p7wMaPjAViiO6+USNJilvLJxA4xlat3axNl25N8/4nDZeUzSAlEGJ3LZp940NbdFU/TIFM0j+FPrTMasdnNIsi9ru+USaZAqot7Gn0Rtuf2hmMDI0siw4u5QEB0latvol451TgQHgKLiyW7aq8Zm7N+loUh9mdgCc0ejIwAT7nj/4j8sZeRinv2nZvHgaolWNGwFi2RLFW+rvmwu/MVBonmc6c1p/C3xTs2UQJUt1rYV0GRnuKSjpQD5tF2ldUJRrg8iaiDfrouXD50YoSArgA25pjV0z4eKTFqx3bsbEb2wRUXRyPMI7jvh+hQ3t8wHwW6h+dMnZDLIoW0YxV2Rqoe3JIRRCMtqTlF5k/OvdUYLTzu8zURP9QeZHubcMPo+0Cy8qUmNtWgxM7T6iuK4Qvf5jrwIuqDIzywt3KtvYcNtUxsW0X+uVRh+Y
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(366004)(83380400001)(26005)(6512007)(86362001)(66556008)(2616005)(31696002)(8676002)(66476007)(6506007)(44832011)(2906002)(508600001)(6486002)(53546011)(186003)(8936002)(38100700002)(5660300002)(316002)(66946007)(31686004)(36756003)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?nsUxOB+ncn70rloFHMkBuCa4gdu6RbqxPwb+sE/rjaFobMuJ+bF00C63JKNE?=
- =?us-ascii?Q?Z6oxAnLDR+u5sjmdLA5M1y770qeqSdHkv6ctF3FOnYM2QyXdhe1n5NlPI6Ed?=
- =?us-ascii?Q?acoUx07APqJdZXTgs4iqOy2ZiWuT4mAoPY0sKnSiSW3JDfB/3M0ylAkjkhi6?=
- =?us-ascii?Q?LM7j/TEHb71cwlWA9Jk++U7suDy+ylIJtIrUDBGNiQTGR5i0/oGEegy8+OSS?=
- =?us-ascii?Q?8/C7mCNSBzn8qi929wsNhSmR+NUp7hNY8aRdtz33pTiZ1RM82mYVNFZ6Znk/?=
- =?us-ascii?Q?J7zKF2XHKJHJKN4KljSO4cbCBREEAsZ5g1XNiHvhvXlK16PP8gPRxTUSoNfK?=
- =?us-ascii?Q?70dx9x7yEfInbBpDs8uoM9uNWFl05b6kqd3kADQ8auo3lFZRX3bA1NJQsf62?=
- =?us-ascii?Q?NV55r4X4g8iJRrekrDewhxB+ZnVhpBDdIvScm/KzZE4K/M7PQP7UnqT/as+D?=
- =?us-ascii?Q?HIwJUOsBbbsNTCMDwFtEujP+YBZQClQMVGydAEFx3zIra7NTpYHSsUZgHLTR?=
- =?us-ascii?Q?byQ4gdz4R40BGoRqqg6gJ8fVf5g2o8bO/oYrJMYDVJl45BaE5og3NKSmr64E?=
- =?us-ascii?Q?XJNDoRBlqDXNMd4N6h8VtwUdrtM9xWuxyHJNOTmamVEshRYa1qn7Grg19qvz?=
- =?us-ascii?Q?MK58RkLH3k9TybHm1jJKx2gPt3fJAy4PAjtJfaVM88vz1XccAW18t9G1xtkB?=
- =?us-ascii?Q?iyLb9lLA8NLuEJpZxIz/0G08gLr4jEUhZRKBrel4xtZXrtvatqyPR2N+tLca?=
- =?us-ascii?Q?c+IGQYNcmUY0HTY9swvRjM5fQ5bnoJCdXJjto+B6LhtkdPUsb4WqcbK1NoUo?=
- =?us-ascii?Q?4io+mSGyFbNadtJob9ptjA1keWm05X2dK6xEgNs2pdMN4i+kCTNC5jTh+AeI?=
- =?us-ascii?Q?aUcVckVp8DAUwqw9E62MUPVvhbWeqYvxubvjRCWrzkLD2bHQFux8ZmvUo8L+?=
- =?us-ascii?Q?P80RIR89moA04x3MLwivKLjzolRVsfkjbObGi+A8f6xOCJ9p+eav1d0PU3Zv?=
- =?us-ascii?Q?R9NxglcIl2oI/L0jsgE2HONURlpd5IuMAim/E/SSyFHL9C7VulGKKFi7BMgT?=
- =?us-ascii?Q?W8AP8uk023SoLIzbnXIxtPF4xVO4GH9MhkkcDvkq1N8ZHlIsQ0f3CR6cWaqQ?=
- =?us-ascii?Q?pZuqyKajIXYMcGI3aiRL26GVZqiEICDxliHaPUk/xdr7HYy38vm7F/tZyXxI?=
- =?us-ascii?Q?IZBCzbjKGENVAqWtuHtuqtkAgsVYRV9+bVdMk3gWZnFlOGkztNRegFfBWIMn?=
- =?us-ascii?Q?eulPzhGdSJJ+SZqvYMLyGSATX60XgzQC2/ZmZAylM1RYiHRIA9SimQhRvfh+?=
- =?us-ascii?Q?8pCiLOxeORNxgKuWpqvrI93S1LdaO5RxtTKx+V3D87KQDHWM7Vsco/Kl7oyA?=
- =?us-ascii?Q?cb9MMVCKkY1gRhPvBMRnoSKSdkCrl0ODGJmJKcxie/FT1SC7CvlqfT5zMgjp?=
- =?us-ascii?Q?g9UUbuKolNsIfOHtPT8Nv910p1qhN1god5L9fOMlk0HAt9NeJ4hJEU06RFkG?=
- =?us-ascii?Q?u8Wow+XjPG+joYngAxvO0M/MYy9oKEoaIIae/HpOdUd1rrTVNQGyAXHejlAr?=
- =?us-ascii?Q?KgiA6Ky7YiIXo5TUgkdUMreDBrpg/s1MDnAAnlpyDR7qso/pXSa8NDoOTeEN?=
- =?us-ascii?Q?r3vHVW2fRtoRm4LhA/Ei6/eIK+qXjGXFTpCN96EJm9h12+lvX34/d6079FdS?=
- =?us-ascii?Q?JnN4R8aEb2OWYXxcpDPjHEJce7XuxERgTdDyZEEesK4Gy/AMWLRbrBSJOztp?=
- =?us-ascii?Q?hT6xGIe3m4WrneTa196exngf8IZ43Uwrfn5A/eOL34J6IQjDOopk?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 
- 054601f9-86fb-4123-47a0-08da3c9676fa
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2022 08:30:16.6002
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 
- oOOiuHbuMfXwu9IibOJk3+kxfQG8L1t95HTl7a2Wd0crNvO+Cu/iW5qCk+AFcoNbMIVcQwJ6fsLD1sOzafNx9qJPNIx0fszXizwEx0qcDIWjCuoSpY8El5lhyc8ar4Rr
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM6PR04MB6229
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 May 2022 08:30:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2944
+ <docs@lists.yoctoproject.org>; Tue, 24 May 2022 08:33:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2946
 
-Hi Michael,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 5/23/22 10:28, Michael Opdenacker wrote:
-> Hi Quentin
->=20
-> Many thanks for the review!
->=20
-> On 5/23/22 10:20, Quentin Schulz wrote:
->> Hi Michael,
->>
->> On 5/20/22 20:35, Michael Opdenacker via lists.yoctoproject.org wrote:
->>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>>
->>> Fixes [YOCTO #14590]
->>>
->>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>> ---
->>>  =C2=A0 documentation/dev-manual/common-tasks.rst |=C2=A0 4 +++-
->>>  =C2=A0 documentation/ref-manual/variables.rst=C2=A0=C2=A0=C2=A0 | 13 +=
-++++++++++++
->>>  =C2=A0 2 files changed, 16 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/documentation/dev-manual/common-tasks.rst
->>> b/documentation/dev-manual/common-tasks.rst
->>> index 3a47a9ff27..ca6d594386 100644
->>> --- a/documentation/dev-manual/common-tasks.rst
->>> +++ b/documentation/dev-manual/common-tasks.rst
->>> @@ -5481,7 +5481,9 @@ system needs to meet the following requirements:
->>>  =C2=A0=C2=A0=C2=A0=C2=A0 variable.
->>>  =C2=A0 =C2=A0 -=C2=A0 Include the name of the :ref:`wic kickstart file
->>> <openembedded-kickstart-wks-reference>`
->>> -=C2=A0=C2=A0 as part of the :term:`WKS_FILE` variable
->>> +=C2=A0=C2=A0 as part of the :term:`WKS_FILE` variable. If multiple can=
-didate
->>> files can
->>> +=C2=A0=C2=A0 be provided by different layers, specify all the possible=
- names
->>> through the
->>> +=C2=A0=C2=A0 :term:`WKS_FILES` variable instead.
->>>  =C2=A0 =C2=A0 Getting Help
->>>  =C2=A0 ------------
->>> diff --git a/documentation/ref-manual/variables.rst
->>> b/documentation/ref-manual/variables.rst
->>> index 146af89e8c..ce2b6bf68a 100644
->>> --- a/documentation/ref-manual/variables.rst
->>> +++ b/documentation/ref-manual/variables.rst
->>> @@ -8767,6 +8767,19 @@ system and gives an overview of their function
->>> and contents.
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 previous example, some-nati=
-ve-tool would be replaced with an
->>> actual
->>>  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 native tool on which the bu=
-ild would depend.
->>>  =C2=A0 +=C2=A0=C2=A0 :term:`WKS_FILES`
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Specified a list of candidate Wic kicks=
-tart files to be used
->>> by the
->>
->> s/Specified/Specifies/
->=20
-> Oops, fixed.
->>
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 OpenEmbedded build system to create a p=
-artitioned image. Only the
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 first one that is found, from left to r=
-ight, will be used.
->>> +
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 This is only useful when there are mult=
-iple ``.wks`` that can
->>> be used
->>
->> +files ?
->=20
->=20
-> Indeed. Good catch.
->=20
->>
->>
->> Looks good otherwise, thanks!
->=20
->=20
-> Great, can I add your "Reviewed-by"? The changes are now in master-next.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.1.rst  | 248 ++++++++++++++++++
+ 2 files changed, 249 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.1.rst
 
-Sure. Don't worry if you forget it sometimes, I don't care too much=20
-about them as a reviewer :)
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index 7062f9d241..2ef7c97afc 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -5,3 +5,4 @@ Release 4.0 (kirkstone)
+ 
+    migration-4.0
+    release-notes-4.0
++   release-notes-4.0.1
+diff --git a/documentation/migration-guides/release-notes-4.0.1.rst b/documentation/migration-guides/release-notes-4.0.1.rst
+new file mode 100644
+index 0000000000..81da6e5f2d
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.1.rst
+@@ -0,0 +1,248 @@
++Release notes for 4.0.1 (kirkstone)
++-----------------------------------
++
++Security Fixes in 4.0.1
++~~~~~~~~~~~~~~~~~~~~~~~
++
++-  linux-yocto/5.15: fix :cve:`2022-28796`
++-  python3: ignore :cve:`2015-20107`
++-  e2fsprogs: fix :cve:`2022-1304`
++-  lua: fix :cve:`2022-28805`
++-  busybox: fix :cve:`2022-28391`
++
++Fixes in 4.0.1
++~~~~~~~~~~~~~~
++
++-  abi_version/sstate: Bump hashequiv and sstate versions due to git changes
++-  apt: add apt selftest to test signed package feeds
++-  apt: upgrade 2.4.4 -> 2.4.5
++-  arch-armv8-2a.inc: fix a typo in TUNEVALID variable
++-  babeltrace: Disable warnings as errors
++-  base: Avoid circular references to our own scripts
++-  base: Drop git intercept
++-  build-appliance-image: Update to kirkstone head revision
++-  build-appliance: Switch to kirkstone branch
++-  buildtools-tarball: Only add cert envvars if certs are included
++-  busybox: Use base_bindir instead of hardcoding /bin path
++-  cases/buildepoxy.py: fix typo
++-  create-spdx: delete virtual/kernel dependency to fix FreeRTOS build
++-  create-spdx: fix error when symlink cannot be created
++-  cve-check: add JSON format to summary output
++-  cve-check: fix symlinks where link and output path are equal
++-  cve-check: no need to depend on the fetch task
++-  cve-update-db-native: let the user to drive the update interval
++-  cve-update-db-native: update the CVE database once a day only
++-  cve_check: skip remote patches that haven't been fetched when searching for CVE tags
++-  dev-manual: add command used to add the signed-off-by line.
++-  devshell.bbclass: Allow devshell & pydevshell to use the network
++-  docs: conf.py: fix cve extlinks caption for sphinx <4.0
++-  docs: migration-guides: migration-3.4: mention that hardcoded password are supported if hashed
++-  docs: migration-guides: release-notes-4.0: fix risc-v typo
++-  docs: migration-guides: release-notes-4.0: replace kernel placeholder with correct recipe name
++-  docs: ref-manual: variables: add hashed password example in EXTRA_USERS_PARAMS
++-  docs: set_versions.py: add information about obsolescence of a release
++-  docs: set_versions.py: fix latest release of a branch being shown twice in switchers.js
++-  docs: set_versions.py: fix latest version of an active release shown as obsolete
++-  docs: set_versions.py: mark as obsolete only branches and old tags from obsolete releases
++-  docs: sphinx-static: switchers.js.in: do not mark branches as outdated
++-  docs: sphinx-static: switchers.js.in: fix broken switcher for branches
++-  docs: sphinx-static: switchers.js.in: improve obsolete version detection
++-  docs: sphinx-static: switchers.js.in: remove duplicate for outdated versions
++-  docs: sphinx-static: switchers.js.in: rename all_versions to switcher_versions
++-  docs: update Bitbake objects.inv location for master branch
++-  documentation/brief-yoctoprojectqs: add directory for local.conf
++-  gcompat: Fix build when usrmerge distro feature is enabled
++-  git: correct license
++-  git: upgrade 2.35.2 -> 2.35.3
++-  glib: upgrade 2.72.0 -> 2.72.1
++-  glibc: ptest: Fix glibc-tests package issue
++-  gnupg: Disable FORTIFY_SOURCES on mips
++-  go.bbclass: disable the use of the default configuration file
++-  gstreamer1.0-plugins-bad: drop patch
++-  gstreamer1.0-plugins-good: Fix libsoup dependency
++-  gstreamer1.0: Minor documentation addition
++-  install/devshell: Introduce git intercept script due to fakeroot issues
++-  kernel-yocto.bbclass: Fixup do_kernel_configcheck usage of KMETA
++-  libc-glibc: Use libxcrypt to provide virtual/crypt
++-  libgit2: upgrade 1.4.2 -> 1.4.3
++-  libsoup: upgrade 3.0.5 -> 3.0.6
++-  libusb1: upgrade 1.0.25 -> 1.0.26
++-  linux-firmware: correct license for ar3k firmware
++-  linux-firmware: upgrade 20220310 -> 20220411
++-  linux-yocto/5.10: base: enable kernel crypto userspace API
++-  linux-yocto/5.10: update to v5.10.112
++-  linux-yocto/5.15: arm: poky-tiny cleanup and fixes
++-  linux-yocto/5.15: base: enable kernel crypto userspace API
++-  linux-yocto/5.15: fix -standard kernel build issue
++-  linux-yocto/5.15: fix ppc boot
++-  linux-yocto/5.15: fix qemuarm graphical boot
++-  linux-yocto/5.15: kasan: fix BUG: sleeping function called from invalid context
++-  linux-yocto/5.15: netfilter: conntrack: avoid useless indirection during conntrack destruction
++-  linux-yocto/5.15: update to v5.15.36
++-  linux-yocto: enable powerpc-debug fragment
++-  mdadm: Drop clang specific cflags
++-  migration-3.4: add missing entry on EXTRA_USERS_PARAMS
++-  migration-guides: add release notes for 4.0
++-  migration-guides: complete migration guide for 4.0
++-  migration-guides: release-notes-4.0: mention LTS release
++-  migration-guides: release-notes-4.0: update 'Repositories / Downloads' section
++-  migration-guides: stop including documents with ".. include"
++-  musl: Fix build when usrmerge distro feature is enabled
++-  ncurses: use COPYING file
++-  neard: Switch SRC_URI to git repo
++-  oeqa/selftest: add test for git working correctly inside pseudo
++-  openssl: minor security upgrade 3.0.2 -> 3.0.3
++-  package.bbclass: Prevent perform_packagecopy from removing /sysroot-only
++-  package: Ensure we track whether PRSERV was active or not
++-  package_manager: fix missing dependency on gnupg when signing deb package feeds
++-  poky-tiny: enable qemuarmv5/qemuarm64 and cleanups
++-  poky.conf: bump version for 4.0.1 release
++-  qemu.bbclass: Extend ppc/ppc64 extra options
++-  qemuarm64: use virtio pci interfaces
++-  qemuarmv5: use arm-versatile-926ejs KMACHINE
++-  ref-manual: Add XZ_THREADS and XZ_MEMLIMIT
++-  ref-manual: add KERNEL_DEBUG_TIMESTAMPS
++-  ref-manual: add ZSTD_THREADS
++-  ref-manual: add a note about hard-coded passwords
++-  ref-manual: add empty-dirs QA check and QA_EMPTY_DIRS*
++-  ref-manual: add mention of vendor filtering to CVE_PRODUCT
++-  ref-manual: mention wildcarding support in INCOMPATIBLE_LICENSE
++-  releases: update for yocto 4.0
++-  rootfs-postcommands: fix symlinks where link and output path are equal
++-  ruby: upgrade 3.1.1 -> 3.1.2
++-  sanity: skip make 4.2.1 warning for debian
++-  scripts/git: Ensure we don't have circular references
++-  scripts: Make git intercept global
++-  seatd: Disable overflow warning as error on ppc64/musl
++-  selftest/lic_checksum: Add test for filename containing space
++-  set_versions: update for 4.0 release
++-  staging: Ensure we filter out ourselves
++-  strace: fix ptest failure in landlock
++-  subversion: upgrade to 1.14.2
++-  systemd-boot: remove outdated EFI_LD comment
++-  systemtap: Fix build with gcc-12
++-  terminal.py: Restore error output from Terminal
++-  u-boot: Correct the SRC_URI
++-  u-boot: Inherit pkgconfig
++-  update_udev_hwdb: fix multilib issue with systemd
++-  util-linux: Create u-a symlink for findfs utility
++-  virgl: skip headless test on alma 8.6
++-  webkitgtk: adjust patch status
++-  wic: do not use PARTLABEL for msdos partition tables
++-  wireless-regdb: upgrade 2022.02.18 -> 2022.04.08
++-  xserver-xorg: Fix build with gcc12
++-  yocto-bsps: update to v5.15.36
++
++Contributors to 4.0.1
++~~~~~~~~~~~~~~~~~~~~~
++
++-  Abongwa Amahnui Bonalais
++-  Alexander Kanavin
++-  Bruce Ashfield
++-  Carlos Rafael Giani
++-  Chen Qi
++-  Davide Gardenal
++-  Dmitry Baryshkov
++-  Ferry Toth
++-  Henning Schild
++-  Jon Mason
++-  Justin Bronder
++-  Kai Kang
++-  Khem Raj
++-  Konrad Weihmann
++-  Lee Chee Yang
++-  Marta Rybczynska
++-  Martin Jansa
++-  Matt Madison
++-  Michael Halstead
++-  Michael Opdenacker
++-  Naveen Saini
++-  Nicolas Dechesne
++-  Paul Eggleton
++-  Paul Gortmaker
++-  Paulo Neves
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Pgowda
++-  Portia
++-  Quentin Schulz
++-  Rahul Kumar
++-  Richard Purdie
++-  Robert Joslyn
++-  Robert Yang
++-  Roland Hieber
++-  Ross Burton
++-  Russ Dill
++-  Steve Sakoman
++-  wangmy
++-  zhengruoqin
++
++Repositories / Downloads for 4.0.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: https://git.yoctoproject.org/git/poky
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.1 </poky/tag/?h=yocto-4.0.1>`
++-  Git Revision: :yocto_git:`8c489602f218bcf21de0d3c9f8cf620ea5f06430 </poky/commit/?id=8c489602f218bcf21de0d3c9f8cf620ea5f06430>`
++-  Release Artefact: poky-8c489602f218bcf21de0d3c9f8cf620ea5f06430
++-  sha: 65c545a316bd8efb13ae1358eeccc8953543be908008103b51f7f90aed960d00
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.1/poky-8c489602f218bcf21de0d3c9f8cf620ea5f06430.tar.bz2,
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.1/poky-8c489602f218bcf21de0d3c9f8cf620ea5f06430.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag: :oe_git:`yocto-4.0.1 </openembedded-core/tag/?h=yocto-4.0>`
++-  Git Revision: :oe_git:`cb8647c08959abb1d6b7c2b3a34b4b415f66d7ee </openembedded-core/commit/?id=cb8647c08959abb1d6b7c2b3a34b4b415f66d7ee>`
++-  Release Artefact: oecore-cb8647c08959abb1d6b7c2b3a34b4b415f66d7ee
++-  sha: 43981b8fad82f601618a133dffbec839524f0d0a055efc3d8f808cbfd811ab17
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.1/oecore-cb8647c08959abb1d6b7c2b3a34b4b415f66d7ee.tar.bz2,
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.1/oecore-cb8647c08959abb1d6b7c2b3a34b4b415f66d7ee.tar.bz2
++
++meta-mingw
++
++-  Repository Location: https://git.yoctoproject.org/git/meta-mingw
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.1 </meta-mingw/tag/?h=yocto-4.0.1>`
++-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
++-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
++-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.1/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.1/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.1 </meta-gplv2/tag/?h=yocto-4.0.1>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-mingw/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.1/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.1/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag: :oe_git:`yocto-4.0 </bitbake/tag/?h=yocto-4.0>`
++-  Git Revision: :oe_git:`59c16ae6c55c607c56efd2287537a1b97ba2bf52 </bitbake/commit/?id=59c16ae6c55c607c56efd2287537a1b97ba2bf52>`
++-  Release Artefact: bitbake-59c16ae6c55c607c56efd2287537a1b97ba2bf52
++-  sha: 3ae466c31f738fc45c3d7c6f665952d59f01697f2667ea42f0544d4298dd6ef0
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.1/bitbake-59c16ae6c55c607c56efd2287537a1b97ba2bf52.tar.bz2,
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.1/bitbake-59c16ae6c55c607c56efd2287537a1b97ba2bf52.tar.bz2
++
++yocto-docs
++
++-  Repository Location: https://git.yoctoproject.org/git/yocto-docs
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.1 </yocto-docs/tag/?h=yocto-4.0>`
++-  Git Revision: :yocto_git:`4ec9df3336a425719a9a35532504731ce56984ca </yocto-docs/commit/?id=4ec9df3336a425719a9a35532504731ce56984ca>`
+-- 
+2.25.1
 
-Cheers,
-Quentin
 
