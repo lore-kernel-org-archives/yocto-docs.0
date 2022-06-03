@@ -1,104 +1,112 @@
-Return-Path: <steve@sakoman.com>
+Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C51F2CCA478
-	for <webhook@archiver.kernel.org>; Thu,  2 Jun 2022 17:05:18 +0000 (UTC)
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com
- [209.85.210.177])
- by mx.groups.io with SMTP id smtpd.web10.138.1654189511751523635
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6518DC433EF
+	for <webhook@archiver.kernel.org>; Fri,  3 Jun 2022 13:34:27 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web08.7257.1654263257484386733
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Jun 2022 10:05:11 -0700
+ Fri, 03 Jun 2022 06:34:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20210112.gappssmtp.com header.s=20210112
- header.b=oCbfyDz+;
- spf=softfail (domain: sakoman.com, ip: 209.85.210.177,
- mailfrom: steve@sakoman.com)
-Received: by mail-pf1-f177.google.com with SMTP id y189so5226088pfy.10
-        for <docs@lists.yoctoproject.org>;
- Thu, 02 Jun 2022 10:05:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20210112.gappssmtp.com; s=20210112;
-        h=from:to:subject:date:message-id:in-reply-to:references:mime-version
-         :content-transfer-encoding;
-        bh=YL8i64YfkCr/y87IwtZjGBfrRKJXjsu/ASVTsPiP6+U=;
-        b=oCbfyDz+WyjOFJXZn4bT6LE1x+UDS0hjji9r/MWuWYGYa4rxQFUemaQVqu3J24bwEb
-         9qtb4G1X6DukAvw9yPauMgDV++um6I32adwj2e7JVB5q3AVouuJRFhlIYKLii9thcVsX
-         qC4EtSX88INqziJOzSLiYoKPfSmofZy5l4F2724w5kpIbuk5M6R2jbU91f2Bcviy8PPR
-         WDDeCe8UrcuTUeTx+080mUS3d7qVvIwbep5GDWNEKtMkIzHbZeyzRYNjllaeebIxGaXI
-         6ffdL0o+Dn2w8Ecc8ojeh/g5y3efhwT0Yed93dwmirYOplKnuhG9uJWBgktm/fUPr/pA
-         6LTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=YL8i64YfkCr/y87IwtZjGBfrRKJXjsu/ASVTsPiP6+U=;
-        b=NWPH0rvCRsECJoEZBcTe3AQ+rqa4iK5kJ0XoSNoN/ghLmMaIexCkijndW1NDewZJqS
-         6d5AQj5r8FK4T7AfpurcXBs4yMuulIbQCof82N6clG0SFn5QM/t/qjI5UYsp94dEjXBj
-         cDCyPPZlhOZAPjHTgd6iPt4HHl0TW/iowBMfoA3HeITl1YORQ5Z5dZl3zmNQ86GEIuT2
-         XPng14LlU7CJEMQa7bVGTqUo8beK0avQqXoCHr0eN0+tdpSCX2h+QOQUX7E+Jko0JMbA
-         v/tW/k67S5jj/OB8t/nt/7C8EtD0hQuwRZTB4dui8r+LTkk2VibXZU6c+6FAbTu21LfO
-         Ed5Q==
-X-Gm-Message-State: AOAM5325/3APihXPKro0qGfUrf9E1UyWiQbd5+GBT5284/vk8UNhAXFo
-	bdh5Ldd2zfWB8wJ6Ncm6zJnU1AQOUr7kDpbP
-X-Google-Smtp-Source: 
- ABdhPJzONZh69NguskTnmmnFG+GOBt/xZjEO5AdwubaGPDqvbl2JyRwuUHGNl5+qvArPvU/CUe8e+A==
-X-Received: by 2002:a63:8749:0:b0:3fc:9fd7:1e20 with SMTP id
- i70-20020a638749000000b003fc9fd71e20mr5115511pge.619.1654189510352;
-        Thu, 02 Jun 2022 10:05:10 -0700 (PDT)
-Received: from hexa.router0800d9.com (dhcp-72-253-6-214.hawaiiantel.net.
- [72.253.6.214])
-        by smtp.gmail.com with ESMTPSA id
- v3-20020a62a503000000b0050dc7628184sm3858342pfm.94.2022.06.02.10.05.08
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Jun 2022 10:05:09 -0700 (PDT)
-From: Steve Sakoman <steve@sakoman.com>
+ dkim=missing;
+ spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.197,
+ mailfrom: foss+yocto@0leil.net)
+Received: (Authenticated sender: foss@0leil.net)
+	by mail.gandi.net (Postfix) with ESMTPSA id 0E5E81C0003;
+	Fri,  3 Jun 2022 13:34:14 +0000 (UTC)
+From: Quentin Schulz <foss+yocto@0leil.net>
 To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell] documentation: update for 3.1.17 release
-Date: Thu,  2 Jun 2022 07:05:01 -1000
-Message-Id: 
- <53bea200a58b6d1b7efbe4699a7d3aecd495423c.1654189451.git.steve@sakoman.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <cover.1654189451.git.steve@sakoman.com>
-References: <cover.1654189451.git.steve@sakoman.com>
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Quentin Schulz <foss+yocto@0leil.net>
+Subject: [PATCH] docs: releases: move hardknott and honister to outdated
+ section
+Date: Fri,  3 Jun 2022 15:33:53 +0200
+Message-Id: <20220603133353.506482-1-foss+yocto@0leil.net>
+X-Mailer: git-send-email 2.36.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 Jun 2022 17:05:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2958
+ <docs@lists.yoctoproject.org>; Fri, 03 Jun 2022 13:34:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2959
 
-Signed-off-by: Steve Sakoman <steve@sakoman.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+
+Hardknott and honister releases are now outdated, let's move their
+manuals to the outdated section.
+
+Cc: Quentin Schulz <foss+yocto@0leil.net>
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 ---
- documentation/poky.yaml | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ documentation/releases.rst | 44 +++++++++++++++++++-------------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 2538822c1..abbd4332f 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,13 +1,13 @@
--DISTRO : "3.1.16"
-+DISTRO : "3.1.17"
- DISTRO_NAME_NO_CAP : "dunfell"
- DISTRO_NAME : "Dunfell"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
--YOCTO_DOC_VERSION : "3.1.16"
-+YOCTO_DOC_VERSION : "3.1.17"
- YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
--DISTRO_REL_TAG : "yocto-3.1.16"
--DOCCONF_VERSION : "3.1.16"
-+DISTRO_REL_TAG : "yocto-3.1.17"
-+DOCCONF_VERSION : "3.1.17"
- BITBAKE_SERIES : "1.46"
--POKYVERSION : "23.0.16"
-+POKYVERSION : "23.0.17"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+diff --git a/documentation/releases.rst b/documentation/releases.rst
+index 08984b2b6..5d14954ca 100644
+--- a/documentation/releases.rst
++++ b/documentation/releases.rst
+@@ -18,28 +18,6 @@ Release Series 4.0 (kirkstone)
+ - :yocto_docs:`4.0 Documentation </4.0>`
+ - :yocto_docs:`4.0.1 Documentation </4.0.1>`
+ 
+-******************************
+-Release Series 3.4 (honister)
+-******************************
+-
+-- :yocto_docs:`3.4 Documentation </3.4>`
+-- :yocto_docs:`3.4.1 Documentation </3.4.1>`
+-- :yocto_docs:`3.4.2 Documentation </3.4.2>`
+-- :yocto_docs:`3.4.3 Documentation </3.4.3>`
+-- :yocto_docs:`3.4.4 Documentation </3.4.4>`
+-
+-******************************
+-Release Series 3.3 (hardknott)
+-******************************
+-
+-- :yocto_docs:`3.3 Documentation </3.3>`
+-- :yocto_docs:`3.3.1 Documentation </3.3.1>`
+-- :yocto_docs:`3.3.2 Documentation </3.3.2>`
+-- :yocto_docs:`3.3.3 Documentation </3.3.3>`
+-- :yocto_docs:`3.3.4 Documentation </3.3.4>`
+-- :yocto_docs:`3.3.5 Documentation </3.3.5>`
+-- :yocto_docs:`3.3.6 Documentation </3.3.6>`
+-
+ ****************************
+ Release Series 3.1 (dunfell)
+ ****************************
+@@ -66,6 +44,28 @@ Release Series 3.1 (dunfell)
+  Outdated Release Manuals
+ ==========================
+ 
++******************************
++Release Series 3.4 (honister)
++******************************
++
++- :yocto_docs:`3.4 Documentation </3.4>`
++- :yocto_docs:`3.4.1 Documentation </3.4.1>`
++- :yocto_docs:`3.4.2 Documentation </3.4.2>`
++- :yocto_docs:`3.4.3 Documentation </3.4.3>`
++- :yocto_docs:`3.4.4 Documentation </3.4.4>`
++
++******************************
++Release Series 3.3 (hardknott)
++******************************
++
++- :yocto_docs:`3.3 Documentation </3.3>`
++- :yocto_docs:`3.3.1 Documentation </3.3.1>`
++- :yocto_docs:`3.3.2 Documentation </3.3.2>`
++- :yocto_docs:`3.3.3 Documentation </3.3.3>`
++- :yocto_docs:`3.3.4 Documentation </3.3.4>`
++- :yocto_docs:`3.3.5 Documentation </3.3.5>`
++- :yocto_docs:`3.3.6 Documentation </3.3.6>`
++
+ *******************************
+ Release Series 3.2 (gatesgarth)
+ *******************************
 -- 
-2.25.1
+2.36.1
 
 
