@@ -2,76 +2,90 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 297E0C433EF
-	for <webhook@archiver.kernel.org>; Mon,  6 Jun 2022 16:00:05 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web10.25.1654531193355395932
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 261BDC43334
+	for <webhook@archiver.kernel.org>; Mon,  6 Jun 2022 16:35:15 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
+ [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.564.1654533307510681750
  for <docs@lists.yoctoproject.org>;
- Mon, 06 Jun 2022 08:59:55 -0700
+ Mon, 06 Jun 2022 09:35:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iQFq3Sdj;
- spf=pass (domain: bootlin.com, ip: 217.70.178.230,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QrOxvOxP;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 2ED8C240007;
-	Mon,  6 Jun 2022 15:59:50 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id A1508240009;
+	Mon,  6 Jun 2022 16:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1654531191;
+	t=1654533305;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8nu3Qa3I+yI0T3NxuPAFV8pmghq9zoaEC4qYnh8/x/w=;
-	b=iQFq3SdjpK8kl/XH2LxJPxRrZF3QePLkbWgkj1sIS4MdbirB7N4HiVKm1A69YMb6M3D5eF
-	Kud4IwEHHRvirYIBDXL3BFAqJvBs3cmDUj4JiVv/c7kYZN+xkH7BzBB9HC2FTsWEpjKjsM
-	TFocoWW+ZVVeB608VnSvaxyEsSzDaJPD+veg7Ex0klW8LSjsfku8HhkI9K0zUMQcnW9oFt
-	cIlnM6SGAjDZSXtZLrpyaJLJt5072BUE09dJOoencAowegC6TD+A6+0lVKi05ZbYrJranp
-	wAe1dcuVhLiTAl/UJZLJyFWtLOV/LoA1mfC3PFHjsOmYUzwtxuz+9nJTOXvE3A==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] dev-manual: mention the new CVE patch metrics page
-Date: Mon,  6 Jun 2022 17:59:43 +0200
-Message-Id: <20220606155943.52427-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.25.1
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VWcKbXeAIXrDkAfROq0BCMaTG1gDoo8IvBpiGPeHCmY=;
+	b=QrOxvOxPj1mnlymnZj8TBiDBbso2OnvZyJDQMLezW1eexspqCZoGluhb7vR/KqJ7YgC0cD
+	9JputB+IyHsgHjBEY1M26mhaQ7PFpylQTwI6Za62I1fbbQII+m8uJXK+C/zyhztDTlvAed
+	FOqGQNAPQ0pLlB0XY8ksERB0EozwvE+A/TdWeOrkbzyiXdbiZHilgIs21t64OZK+GQJxhp
+	Tew6x2wi2GHIAyGGzczZVoSxrdB5Tml8IBWlrT9Ga+7fY94JAtSHqP4yd7es3mTRkGU4EN
+	etLA45LEEpP2YD/3na+SfFKNEzRwAirS3gdo3iSGMeRA84jRtEcZwF0O4vceaQ==
+Message-ID: <bbd52727-f154-4e17-0331-501f40965410@bootlin.com>
+Date: Mon, 6 Jun 2022 18:35:03 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [yocto] [PATCH 1/2] manuals: SYSTEMD_SERVICE allows multiple
+ services
+Content-Language: en-US
+To: Paulo Neves <ptsneves@gmail.com>, yocto@lists.yoctoproject.org
+References: <20220603163521.146659-1-ptsneves@gmail.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20220603163521.146659-1-ptsneves@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 06 Jun 2022 16:00:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2963
+ <docs@lists.yoctoproject.org>; Mon, 06 Jun 2022 16:35:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2964
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Paulo
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/dev-manual/common-tasks.rst | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Thanks for the patches!
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index ca6d594386..d7f0b263e7 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -11507,8 +11507,15 @@ known security vulnerabilities, as tracked by the public
- `Common Vulnerabilities and Exposures (CVE) <https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures>`__
- database.
- 
--To know which packages are vulnerable to known security vulnerabilities,
--add the following setting to your configuration::
-+The Yocto Project maintains a `list of known vulnerabilities
-+<https://autobuilder.yocto.io/pub/non-release/patchmetrics/>`__
-+for packages in Poky and OE-Core, tracking the evolution of the number of
-+unpatched CVEs and the status of patches. Such information is available for
-+the current development version and for each supported release.
-+
-+To know which packages are vulnerable to known security vulnerabilities
-+in the specific image you are building, add the following setting to your
-+configuration::
- 
-    INHERIT += "cve-check"
- 
+On 6/3/22 18:35, Paulo Neves wrote:
+> State that SYSTEMD_SERVICE allows for multiple space
+> separated systemd services
+> ---
+>  documentation/ref-manual/variables.rst | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 367b4674e..ed52c3508 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -7656,6 +7656,8 @@ system and gives an overview of their function and contents.
+>        When inheriting the :ref:`systemd <ref-classes-systemd>` class,
+>        this variable specifies the systemd service name for a package.
+>  
+> +      Multiple services can be specified with each one separated by a space.
+
+
+I'd propose a slightly simpler sentence:
+"... can be specified, each one separated ..."
+
+Would you mind sending the patch again to docs@lists.yoctoproject.org,
+and this time with "Signed-off-by" information (from "git commit -s"),
+please?
+I was going to accept your patch directly, but this is required.
+
+Thanks in advance
+Michael.
+
 -- 
-2.25.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
