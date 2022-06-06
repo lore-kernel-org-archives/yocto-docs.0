@@ -2,74 +2,76 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DFE6C433EF
-	for <webhook@archiver.kernel.org>; Mon,  6 Jun 2022 14:57:15 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
- [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web12.32950.1654527427470826377
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 297E0C433EF
+	for <webhook@archiver.kernel.org>; Mon,  6 Jun 2022 16:00:05 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web10.25.1654531193355395932
  for <docs@lists.yoctoproject.org>;
- Mon, 06 Jun 2022 07:57:08 -0700
+ Mon, 06 Jun 2022 08:59:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=VeEvOUYn;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iQFq3Sdj;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id B336F40005;
-	Mon,  6 Jun 2022 14:57:04 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 2ED8C240007;
+	Mon,  6 Jun 2022 15:59:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1654527425;
+	t=1654531191;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Rytx38OcVL6Iw3jIiCdQSLr0wZ8fapHmL1Y+2gWqAYI=;
-	b=VeEvOUYnQ2Nsa/AodL5wcqAU7yweWbcmxBmdRB3h0qDH6jHRcM9Jkfq0jpYCO2ZP4K5wSI
-	q5Oj8tsACMB5Nbk8VZJyYAFjYahNo0XaQj/hZHATcexRd2ciEr9BFWlqqCIMDMBKLWKK0C
-	uu+SrsXcb60lqOUM+mHmXa/fBxppKqNJyiZ1lMMRWs65XKjpjQ6RA7joUHF1gTNDadY4BI
-	ngH4ti04n4M/bOmDi8l/WExJQhQWtkGHImyolJvWkKw+ot2qEpH9Ee/tU7GTzFfIzcCrkd
-	SLLeRIASh7I+5Gr1a3+HYBGRccRb7SAZeSVZrEPr8LKRU5j5z0V3z2kXFj83Ww==
-Message-ID: <77b2a539-8ef8-eedb-083b-3f5ef84bf3a4@bootlin.com>
-Date: Mon, 6 Jun 2022 16:57:03 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8nu3Qa3I+yI0T3NxuPAFV8pmghq9zoaEC4qYnh8/x/w=;
+	b=iQFq3SdjpK8kl/XH2LxJPxRrZF3QePLkbWgkj1sIS4MdbirB7N4HiVKm1A69YMb6M3D5eF
+	Kud4IwEHHRvirYIBDXL3BFAqJvBs3cmDUj4JiVv/c7kYZN+xkH7BzBB9HC2FTsWEpjKjsM
+	TFocoWW+ZVVeB608VnSvaxyEsSzDaJPD+veg7Ex0klW8LSjsfku8HhkI9K0zUMQcnW9oFt
+	cIlnM6SGAjDZSXtZLrpyaJLJt5072BUE09dJOoencAowegC6TD+A6+0lVKi05ZbYrJranp
+	wAe1dcuVhLiTAl/UJZLJyFWtLOV/LoA1mfC3PFHjsOmYUzwtxuz+9nJTOXvE3A==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] dev-manual: mention the new CVE patch metrics page
+Date: Mon,  6 Jun 2022 17:59:43 +0200
+Message-Id: <20220606155943.52427-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Cc: michael.opdenacker@bootlin.com,
- Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Quentin Schulz <foss+yocto@0leil.net>
-Subject: Re: [docs] [PATCH] docs: releases: move hardknott and honister to
- outdated section
-Content-Language: en-US
-To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-References: <20220603133353.506482-1-foss+yocto@0leil.net>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20220603133353.506482-1-foss+yocto@0leil.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 06 Jun 2022 14:57:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2962
+ <docs@lists.yoctoproject.org>; Mon, 06 Jun 2022 16:00:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2963
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 6/3/22 15:33, Quentin Schulz wrote:
-> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
->
-> Hardknott and honister releases are now outdated, let's move their
-> manuals to the outdated section.
->
-> Cc: Quentin Schulz <foss+yocto@0leil.net>
-> Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/common-tasks.rst | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-
-Correct. Merged in "master-next". Thanks for the update!
-Cheers
-Michael.
-
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index ca6d594386..d7f0b263e7 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -11507,8 +11507,15 @@ known security vulnerabilities, as tracked by the public
+ `Common Vulnerabilities and Exposures (CVE) <https://en.wikipedia.org/wiki/Common_Vulnerabilities_and_Exposures>`__
+ database.
+ 
+-To know which packages are vulnerable to known security vulnerabilities,
+-add the following setting to your configuration::
++The Yocto Project maintains a `list of known vulnerabilities
++<https://autobuilder.yocto.io/pub/non-release/patchmetrics/>`__
++for packages in Poky and OE-Core, tracking the evolution of the number of
++unpatched CVEs and the status of patches. Such information is available for
++the current development version and for each supported release.
++
++To know which packages are vulnerable to known security vulnerabilities
++in the specific image you are building, add the following setting to your
++configuration::
+ 
+    INHERIT += "cve-check"
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
