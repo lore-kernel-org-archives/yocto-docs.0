@@ -2,79 +2,69 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF566C43334
-	for <webhook@archiver.kernel.org>; Fri, 10 Jun 2022 17:17:10 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.29795.1654881426685602554
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D811CC43334
+	for <webhook@archiver.kernel.org>; Fri, 10 Jun 2022 17:42:40 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web12.29781.1654882951830834747
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Jun 2022 10:17:07 -0700
+ Fri, 10 Jun 2022 10:42:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=B2rfEpv1;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WtSVbtT/;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 57A291BF204;
-	Fri, 10 Jun 2022 17:17:03 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5DA9D240003;
+	Fri, 10 Jun 2022 17:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1654881424;
+	t=1654882949;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UUh+jfHUcnJ7BLwszym+n0vuLnh5pUjhWKMh+Q7HRks=;
-	b=B2rfEpv1GfNFV6Uw8ZCuBKmT+f6dtvOu8TjvXv6nDoWfXeySoOvvSDeZYLbDOrmRR/vkCx
-	3w4w1KIgCIMZJGkOT9WUTXr6Zng22+a37/+dNmxHcouq2PFZZz8GJ9YtUcmfF4vrwVXfgV
-	Y+2rYLwfnXF80D1glhBhyKiLGtpUXXDj05HVNlxlQlsFXPGJm9GG9FoQhtGxINzTp1p/ky
-	Lefs5RYErkfWMUbVHkMTeC2rOTd+qIo5FRcmREmgv4YQ1q4WKQO/jEvbkAZ1/nOibywYm3
-	wsIWBMtUvtkpjp2pUNzitriOErgMZC6/nRMqdvo7aTn2XMdlysFDaMYkjC0Feg==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] dev-manual: fix references to BitBake user manual
-Date: Fri, 10 Jun 2022 19:17:01 +0200
-Message-Id: <20220610171701.7654-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=368j7C6TB5OX5Epcb8tXrof4h2UCk0H2bWzS/rbKT8c=;
+	b=WtSVbtT/Tg171Ojsuh7Yuc5WcptGKAZU6XsffAbxS2ojoJsGLu8EL2O5+5CZinLKR+zBO0
+	3Pp2t4qguzWQQ5ZVUtOxEuTUoySMAsac3G8Rb2dINl/iuptR8qPdrnhAZ+hyZdD9YSKI3p
+	B3ce8abzzPcrKvDYn6at79RE0QkMHX9/QgnxYFlHDB9iOLz923RJe7V8H91Vj4znvT5GEt
+	dP5FW/VSgsx8czbFpNFWE9cOqy+cm/qIDHicnJ7kyhDrXzK3XMDBoihaYlMQBv1NjB/lwT
+	X2fsCiofWE6tBZZr8F1mlb0NZ5LNeGywkV43HYFSfWpFI3iPHJZHYYriQtmxRQ==
+Message-ID: <d67b1d84-86e5-c784-5965-9fce2c7e1666@bootlin.com>
+Date: Fri, 10 Jun 2022 19:42:28 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [docs] [PATCH] ref/dev-manual: Update multiconfig documentation
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ docs@lists.yoctoproject.org
+References: <20220609094044.41131-1-richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20220609094044.41131-1-richard.purdie@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Jun 2022 17:17:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2981
+ <docs@lists.yoctoproject.org>; Fri, 10 Jun 2022 17:42:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2982
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Richard,
 
-Fix a wrong reference
-Add missing double quotes in a reference to a chapter title
+Thanks a lot for the update!
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/dev-manual/common-tasks.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 6/9/22 11:40, Richard Purdie wrote:
+> +   The configuration definitions are implmentation dependency but often
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index ca6d594386..7b9fdac10c 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -2563,7 +2563,7 @@ Recipe Syntax
- Understanding recipe file syntax is important for writing recipes. The
- following list overviews the basic items that make up a BitBake recipe
- file. For more complete BitBake syntax descriptions, see the
--":doc:`bitbake-user-manual/bitbake-user-manual-metadata`"
-+":doc:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata`"
- chapter of the BitBake User Manual.
- 
- -  *Variable Assignments and Manipulations:* Variable assignments allow
-@@ -2621,7 +2621,7 @@ chapter of the BitBake User Manual.
- This next list summarizes the most important and most commonly used
- parts of the recipe syntax. For more information on these parts of the
- syntax, you can reference the
--:doc:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata` chapter
-+":doc:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata`" chapter
- in the BitBake User Manual.
- 
- -  *Line Continuation (\\):* Use the backward slash (``\``) character to
+Did you mean "are implementation dependent"?
+I'll be happy to fix this by myself.
+
+Thanks again
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
