@@ -2,65 +2,109 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D811CC43334
-	for <webhook@archiver.kernel.org>; Fri, 10 Jun 2022 17:42:40 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web12.29781.1654882951830834747
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F29D0C433EF
+	for <webhook@archiver.kernel.org>; Fri, 10 Jun 2022 18:03:50 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
+ [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web08.30327.1654884222072674671
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Jun 2022 10:42:32 -0700
+ Fri, 10 Jun 2022 11:03:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WtSVbtT/;
- spf=pass (domain: bootlin.com, ip: 217.70.178.230,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=W1BY8Y3v;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 5DA9D240003;
-	Fri, 10 Jun 2022 17:42:29 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 7053CFF803;
+	Fri, 10 Jun 2022 18:03:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1654882949;
+	t=1654884220;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=368j7C6TB5OX5Epcb8tXrof4h2UCk0H2bWzS/rbKT8c=;
-	b=WtSVbtT/Tg171Ojsuh7Yuc5WcptGKAZU6XsffAbxS2ojoJsGLu8EL2O5+5CZinLKR+zBO0
-	3Pp2t4qguzWQQ5ZVUtOxEuTUoySMAsac3G8Rb2dINl/iuptR8qPdrnhAZ+hyZdD9YSKI3p
-	B3ce8abzzPcrKvDYn6at79RE0QkMHX9/QgnxYFlHDB9iOLz923RJe7V8H91Vj4znvT5GEt
-	dP5FW/VSgsx8czbFpNFWE9cOqy+cm/qIDHicnJ7kyhDrXzK3XMDBoihaYlMQBv1NjB/lwT
-	X2fsCiofWE6tBZZr8F1mlb0NZ5LNeGywkV43HYFSfWpFI3iPHJZHYYriQtmxRQ==
-Message-ID: <d67b1d84-86e5-c784-5965-9fce2c7e1666@bootlin.com>
-Date: Fri, 10 Jun 2022 19:42:28 +0200
+	bh=mvKpOv/PB52XAHrUv7X1wPADmPx9AIuY9MxNnECi+S0=;
+	b=W1BY8Y3vFr3UoAWtxD9cROwR/zpjKv3QWK9bXolKS5ougKVzUY6oAMNMtgqigwMmv7m73h
+	8o71KH/eYBJPpMYe+Zb7Zh6Bgg6fQIQyQFigdkoU0V3YlIa78dF3TwACFzuEdbT9XVOYWD
+	YssemxSfjl15/5V632Gxynm/6oCtFtkCjN2WvyNaKOzK16OIkBUEVWcPJYJQvth0x3tDA3
+	RgALP5o5C39m8XJO1cLKiLKlemS+eljw23gctYxD71OVujF65vctDZvGOJIqeR8H69c2P9
+	HRQR2EYWDIoa6k9Dq2MqwP4NpaKCns8ziS3Y/TTV87P7ov0qr8Z9pBcdWWPqcA==
+Message-ID: <0b1a2f8c-ec06-837a-6e75-656f4029f35e@bootlin.com>
+Date: Fri, 10 Jun 2022 20:03:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.9.1
-Subject: Re: [docs] [PATCH] ref/dev-manual: Update multiconfig documentation
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [bitbake-devel] [PATCH v2] bitbake-user-manual: Correct
+ description of the ??= operator
 Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- docs@lists.yoctoproject.org
-References: <20220609094044.41131-1-richard.purdie@linuxfoundation.org>
+To: Jacob Kroon <jacob.kroon@gmail.com>, bitbake-devel@lists.openembedded.org
+References: <20220603123618.32173-1-jacob.kroon@gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20220609094044.41131-1-richard.purdie@linuxfoundation.org>
+In-Reply-To: <20220603123618.32173-1-jacob.kroon@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Jun 2022 17:42:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2982
+ <docs@lists.yoctoproject.org>; Fri, 10 Jun 2022 18:03:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2983
 
-Hi Richard,
+Hi Jacob
 
-Thanks a lot for the update!
+Many thanks for this update to the BitBake manual.
 
-On 6/9/22 11:40, Richard Purdie wrote:
-> +   The configuration definitions are implmentation dependency but often
+On 6/3/22 14:36, Jacob Kroon wrote:
+> Signed-off-by: Jacob Kroon <jacob.kroon@gmail.com>
+> ---
+>
+> Changes in v2:
+> * Add comment to line with immediate variable expansion
 
-Did you mean "are implementation dependent"?
-I'll be happy to fix this by myself.
+
+Would it also possible to mention what was wrong in the previous 
+description?
+The fact that the assignment is made at the end of the parsing process, 
+which isn't correct given the example that you give? Otherwise, A := 
+"${W}" wouldn't work, right?
+
+>
+>   .../bitbake-user-manual-metadata.rst          | 31 +++++++++----------
+>   1 file changed, 15 insertions(+), 16 deletions(-)
+>
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> index af4b1358..cfe46562 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> @@ -195,22 +195,21 @@ value. However, if ``A`` is not set, the variable is set to "aval".
+>   Setting a weak default value (??=)
+>   ----------------------------------
+>   
+> -It is possible to use a "weaker" assignment than in the previous section
+> -by using the "??=" operator. This assignment behaves identical to "?="
+> -except that the assignment is made at the end of the parsing process
+> -rather than immediately. Consequently, when multiple "??=" assignments
+> -exist, the last one is used. Also, any "=" or "?=" assignment will
+> -override the value set with "??=". Here is an example::
+> -
+> -   A ??= "somevalue"
+> -   A ??= "someothervalue"
+> -
+> -If ``A`` is set before the above statements are
+> -parsed, the variable retains its value. If ``A`` is not set, the
+> -variable is set to "someothervalue".
+> -
+> -Again, this assignment is a "lazy" or "weak" assignment because it does
+> -not occur until the end of the parsing process.
+> +The weak default value of a variable is the value which that variable
+> +will expand to if no value has been assigned to it via one of the other
+> +assignment operators. Here is an example::
+
+Shouldn't we say "via any of the other assignment operators" instead?
+It would sound a little better to me.
 
 Thanks again
-Michael.
+Michael
 
 -- 
 Michael Opdenacker, Bootlin
