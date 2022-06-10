@@ -2,101 +2,79 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F85FC433EF
-	for <webhook@archiver.kernel.org>; Fri, 10 Jun 2022 14:46:50 +0000 (UTC)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
- [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web09.27886.1654872402237118692
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF566C43334
+	for <webhook@archiver.kernel.org>; Fri, 10 Jun 2022 17:17:10 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.29795.1654881426685602554
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Jun 2022 07:46:42 -0700
+ Fri, 10 Jun 2022 10:17:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mmfZJh9N;
- spf=pass (domain: bootlin.com, ip: 217.70.178.232,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=B2rfEpv1;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 0E387200004;
-	Fri, 10 Jun 2022 14:46:39 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 57A291BF204;
+	Fri, 10 Jun 2022 17:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1654872400;
+	t=1654881424;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=bQfdH1hOpj23EK1myxYRxQI82mjKafQnCG9tcxTV5T4=;
-	b=mmfZJh9NF4mdigUBOKB+As9o91HEKO58wLAcQzwZbAAwsRPjYJQTtJz1zApdS3xBQTH21p
-	zT4QJcCLnsmj9q/TPUiZqE/WUfIJeJ0AJsY5QoiU+iQz1wBFSNCy23kvTNwCHG6nBvXrKk
-	eV4KiA/HkF6K8ZOuJ5TdmIwEhu+lqa6isam8I1aIVRzUCQVXGEqFRu0MAofCG6NO80jLz8
-	59kWoqdu6sP1lmV/4gcUbnjlJROCRDypvlxQ/36+34OnxYR9j4J8Jnbkx6gJ6PE28MMSPP
-	GN9WfYkrVCUIe1cj3zuqNCoURM4pgsaqRuuDGRwOPjWdsRGgF8q+jk4GImsGSQ==
-Message-ID: <9b5bd24d-5b93-10b2-78e4-94076ac9aef3@bootlin.com>
-Date: Fri, 10 Jun 2022 16:46:39 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=UUh+jfHUcnJ7BLwszym+n0vuLnh5pUjhWKMh+Q7HRks=;
+	b=B2rfEpv1GfNFV6Uw8ZCuBKmT+f6dtvOu8TjvXv6nDoWfXeySoOvvSDeZYLbDOrmRR/vkCx
+	3w4w1KIgCIMZJGkOT9WUTXr6Zng22+a37/+dNmxHcouq2PFZZz8GJ9YtUcmfF4vrwVXfgV
+	Y+2rYLwfnXF80D1glhBhyKiLGtpUXXDj05HVNlxlQlsFXPGJm9GG9FoQhtGxINzTp1p/ky
+	Lefs5RYErkfWMUbVHkMTeC2rOTd+qIo5FRcmREmgv4YQ1q4WKQO/jEvbkAZ1/nOibywYm3
+	wsIWBMtUvtkpjp2pUNzitriOErgMZC6/nRMqdvo7aTn2XMdlysFDaMYkjC0Feg==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] dev-manual: fix references to BitBake user manual
+Date: Fri, 10 Jun 2022 19:17:01 +0200
+Message-Id: <20220610171701.7654-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.1
-Subject: Re: [docs] [PATCH] Revert "docs: conf.py: fix cve extlinks caption
- for sphinx <4.0"
-Content-Language: en-US
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- docs@lists.yoctoproject.org
-References: <20220610143401.2239827-1-michael.opdenacker@bootlin.com>
- <8bdf4db2-03da-fb6f-a6e6-1c40c7f4e47e@theobroma-systems.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <8bdf4db2-03da-fb6f-a6e6-1c40c7f4e47e@theobroma-systems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Jun 2022 14:46:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2980
+ <docs@lists.yoctoproject.org>; Fri, 10 Jun 2022 17:17:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2981
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 6/10/22 16:41, Quentin Schulz wrote:
-> Hi Michael,
->
-> On 6/10/22 16:34, Michael Opdenacker via lists.yoctoproject.org wrote:
->> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>
->> This reverts commit c9922076f5c1285d9cfd6aff8ce5b6635d88222f,
->> and allows to avoid this new warning which appears with Sphinx 5.0.1:
->>
->> WARNING: extlinks: Sphinx-6.0 will require a caption string to 
->> contain exactly one '%s' and all other '%' need to be escaped as '%%'.
->
-> Missing SoB.
->
-> In any case, NACK until we use a newer Sphinx for building the docs 
-> with the autobuilder (currently 3.2.1) otherwise we get 
-> CVE-%s-<CVE_ID> instead of CVE-<CVE_ID>.
->
-> We'd need a patch that bumps the minimum version of Sphinx to build 
-> the docs (in conf.py, needs_sphinx), revert the patch and use a new 
-> docs_buildtools in the autobuilder. Without this you're just fixing 
-> your a build issue on your local PC and failing the autobuilder.
->
-> We do not have a "stable" release available yet on 
-> https://autobuilder.yocto.io/pub/buildtools/ so we'd need to create 
-> one. I know Richard made an attempt a few months ago when we added 
-> Sphinx recipe inside poky (specifically for creating the docs 
-> buildtools).
->
-> Nothing impossible, but, today, this patch is doing more harm than good.
+Fix a wrong reference
+Add missing double quotes in a reference to a chapter title
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/common-tasks.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Understood, thanks!
-Then, I'll disable the turning of warnings into errors on my PC, waiting 
-for an upgrade to Sphinx.
-Thanks for the quick reply!
-
-I'll file a new bug to keep track of this.
-
-Cheers
-Michael.
-
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index ca6d594386..7b9fdac10c 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -2563,7 +2563,7 @@ Recipe Syntax
+ Understanding recipe file syntax is important for writing recipes. The
+ following list overviews the basic items that make up a BitBake recipe
+ file. For more complete BitBake syntax descriptions, see the
+-":doc:`bitbake-user-manual/bitbake-user-manual-metadata`"
++":doc:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata`"
+ chapter of the BitBake User Manual.
+ 
+ -  *Variable Assignments and Manipulations:* Variable assignments allow
+@@ -2621,7 +2621,7 @@ chapter of the BitBake User Manual.
+ This next list summarizes the most important and most commonly used
+ parts of the recipe syntax. For more information on these parts of the
+ syntax, you can reference the
+-:doc:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata` chapter
++":doc:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata`" chapter
+ in the BitBake User Manual.
+ 
+ -  *Line Continuation (\\):* Use the backward slash (``\``) character to
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
