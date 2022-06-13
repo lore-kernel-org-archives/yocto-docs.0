@@ -1,88 +1,94 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44193C43334
-	for <webhook@archiver.kernel.org>; Mon, 13 Jun 2022 13:56:37 +0000 (UTC)
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com
- [209.85.221.42])
- by mx.groups.io with SMTP id smtpd.web08.6208.1655128593870343943
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CAE6ACCA47B
+	for <webhook@archiver.kernel.org>; Mon, 13 Jun 2022 15:59:57 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web10.7561.1655135986825580919
  for <docs@lists.yoctoproject.org>;
- Mon, 13 Jun 2022 06:56:34 -0700
+ Mon, 13 Jun 2022 08:59:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=JrKCIEOY;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.42,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f42.google.com with SMTP id c21so7277946wrb.1
-        for <docs@lists.yoctoproject.org>;
- Mon, 13 Jun 2022 06:56:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=sRwc1ySwdBSub7U4QrW7huww5VErIuYXTIUVGnUGb2E=;
-        b=JrKCIEOYz/hlslk34Axc/PdmlRA+1IzOpR2AGxkooWy9ucVFQWTDk8bC1gB+b0GomL
-         U2kadfDk1FgkkTN9vJpn+MHjlxLdJBddB7xjVryhuxM7C03yLZZVOKE5jezULQKuMEy9
-         2Onb45nVB/liLIuvYTGergJrBFzHN6zM4G834=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=sRwc1ySwdBSub7U4QrW7huww5VErIuYXTIUVGnUGb2E=;
-        b=mYYQkW79nqy8XnABSrYgjEz7kslyFl6MrP/7I61nHmRtPJEu3NsAevdAAMGcUsztcB
-         hOzWnGZMCNQ1+Z9yxhdooCSrSyYhUU6Cb96C0EEQGY1EO0WHtaeZ/mO1ZQo3wyh9CfPt
-         CMeGDCvs+VMk+wb7euu3KspFokG71KuoYd3k0ek/kufzn8iuUszc4cdjAH8u0xjzQ4ur
-         N7b814aDWT+kbsp5bF4xbcO2Q0hiP5pmo13b62xeUGXJvu8FRbTON1y6MVlv3ZnHbk9H
-         pNsyJUOiuacd0GsQmVIakhPiDuVyEO6/1lM/5ZIFwX9iQWc5Hy4AKSNbBA+O7pHb75oh
-         6+/w==
-X-Gm-Message-State: AJIora9zWqNDnz/IjS4fzN2OolMioKFmxp1pArtwGYkLIVE9zkCkRmUI
-	tC+TXWdlVxCZ5S2+5S2Ghpe14g==
-X-Google-Smtp-Source: 
- AGRyM1uPVWAvhHVnfyfeKd8tNG4jqC503ljC/1+T/Kh0hkrj2V3Q8D9EWpCm9ND1Md/0u1BP8DULqA==
-X-Received: by 2002:a05:6000:85:b0:213:b57a:ea74 with SMTP id
- m5-20020a056000008500b00213b57aea74mr3189wrx.69.1655128591964;
-        Mon, 13 Jun 2022 06:56:31 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:4edb:baaa:8bb1:f083?
- ([2001:8b0:aba:5f3c:4edb:baaa:8bb1:f083])
-        by smtp.gmail.com with ESMTPSA id
- l12-20020a5d674c000000b002185d79dc7fsm8640247wrw.75.2022.06.13.06.56.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 06:56:31 -0700 (PDT)
-Message-ID: 
- <38c002186fe2157ba4cd5a9372e97057c9ac1164.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] ref/dev-manual: Update multiconfig documentation
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	docs@lists.yoctoproject.org
-Date: Mon, 13 Jun 2022 14:56:30 +0100
-In-Reply-To: <d67b1d84-86e5-c784-5965-9fce2c7e1666@bootlin.com>
-References: <20220609094044.41131-1-richard.purdie@linuxfoundation.org>
-	 <d67b1d84-86e5-c784-5965-9fce2c7e1666@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=hKrV2rc+;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id CCFEB240005;
+	Mon, 13 Jun 2022 15:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1655135984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=G4Pm47ZS/vFDFMgliU3irM5k4aOL9QgqivWMwfbtnFY=;
+	b=hKrV2rc+ZeVBr4+xxdT8aI1VZDUFG9RdW7hJcim50cspuNOBx55IygHnVW0JaOFuq0nr+X
+	rDJk3ZGU5FhsR6/caZyLGcSpbALzpZvzLNXWqcwpLRty8JnkdJV4+xWym649DTiQrPHZJq
+	SHswpnSub4Qg9U0RhtnP4CB4WWB28i2+tOFh6Y9uwljBygDd2u8WAMm1aFdqWLei5Ay+5s
+	RfdrZRGe09wjhx79zNwQQXwKJ+Tiz+ScpWe6N3EGJ90AIhbPxYJIu08PLsnmFuG7Hkreb+
+	y3Gk/56AHB69I8T/llC/Mf3sQKQ9BFv8jaSYscwzVkk3ijJ8Q+RBiINf4Q9S8w==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: add description for the "sysroot" term
+Date: Mon, 13 Jun 2022 17:59:39 +0200
+Message-Id: <20220613155939.94911-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 13 Jun 2022 13:56:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2988
+ <docs@lists.yoctoproject.org>; Mon, 13 Jun 2022 15:59:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2990
 
-On Fri, 2022-06-10 at 19:42 +0200, Michael Opdenacker wrote:
-> Hi Richard,
->=20
-> Thanks a lot for the update!
->=20
-> On 6/9/22 11:40, Richard Purdie wrote:
-> > +   The configuration definitions are implmentation dependency but ofte=
-n
->=20
-> Did you mean "are implementation dependent"?
-> I'll be happy to fix this by myself.
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Correct, thanks!
+This term is used throughout the manual but is not properly
+introduced anywhere.
 
-Cheers,
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/ref-manual/terms.rst | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-Richard
+diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
+index cba514c345..76f3fb0d08 100644
+--- a/documentation/ref-manual/terms.rst
++++ b/documentation/ref-manual/terms.rst
+@@ -383,6 +383,31 @@ universal, the list includes them just in case:
+      ":ref:`overview-manual/development-environment:repositories, tags, and branches`"
+      section in the Yocto Project Overview and Concepts Manual.
+ 
++   :term:`Sysroot`
++
++      A directory considered as the root directory for locating
++      header and library files needed to generate binaries for a target
++      processor architecture.
++
++      In the context of cross-compiling toolchains, a *sysroot*
++      typically contains C library and kernel headers, plus the
++      compiled binaries for the C library. A *multilib toolchain*
++      can contain multiple variants of the C library binaries,
++      each compiled for a target instruction set (such as ``armv5``,
++      ``armv7`` and ``armv8``), and possibly optimized for a specific CPU core.
++
++      In the more specific context of the OpenEmbedded build System and
++      of the Yocto Project, each recipe has two *sysroots*:
++
++      -  A *target sysroot* contains all the **target** libraries and headers
++         needed to build the recipe.
++
++      -  A *native sysroot* contains all the **host** files and executables
++         needed to build the recipe.
++
++      See the :term:`SYSROOT_* <SYSROOT_DESTDIR>` variables controlling
++      how sysroots are created and stored.
++
+    :term:`Task`
+       A per-recipe unit of execution for BitBake (e.g.
+       :ref:`ref-tasks-compile`,
+-- 
+2.34.1
+
 
