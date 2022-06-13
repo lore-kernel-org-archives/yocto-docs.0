@@ -1,160 +1,92 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29610C433EF
-	for <webhook@archiver.kernel.org>; Mon, 13 Jun 2022 16:57:58 +0000 (UTC)
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
- by mx.groups.io with SMTP id smtpd.web09.8379.1655139474918090946
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 214ADC433EF
+	for <webhook@archiver.kernel.org>; Mon, 13 Jun 2022 17:02:28 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web11.8455.1655139738714247470
  for <docs@lists.yoctoproject.org>;
- Mon, 13 Jun 2022 09:57:55 -0700
+ Mon, 13 Jun 2022 10:02:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@axis.com header.s=axis-central1 header.b=Z5Qrk9KI;
- spf=pass (domain: axis.com, ip: 195.60.68.17,
- mailfrom: peter.kjellerstedt@axis.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1655139475;
-  x=1686675475;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=IRNX4GjBw088sbtDGS4hbSEaUbVBL9/o0aDSBRECUkU=;
-  b=Z5Qrk9KIdXuXPz45+oF7f3JnbE+s0hE4IAO9BJYfKwhHSyJ5u4oMe/vT
-   tZ4ho+x3M79OCFq3+5eLfkYUeaoAcImqKyPMxXVySwGw7kBUOGLc3WK09
-   tRBXyGYV3Bxn9md567TgvxA9JdamDg66Sp3QpgGajBtGX4qehOIRqOSbu
-   R8uGn7++ND0N2QVTt5EaeoUinVyksD9XSVjuWyF56hcWKFVQVuqhYUvD3
-   CHXyzS8LJ+YP2tASfKExVz+/6ncln6VQ9Rc7pHKd0eCDWQIkZjjYajekx
-   eMWJ84LyNQGV9EqH8Mn/2SybY2NKfOnmaFxl/AJJq3XUTUkqL4//ONw6X
-   g==;
-From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-To: Jacob Kroon <jacob.kroon@gmail.com>,
-	"bitbake-devel@lists.openembedded.org" <bitbake-devel@lists.openembedded.org>
-CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Subject: RE: [bitbake-devel] [PATCH v3] bitbake-user-manual: Correct
- description of the ??= operator
-Thread-Topic: [bitbake-devel] [PATCH v3] bitbake-user-manual: Correct
- description of the ??= operator
-Thread-Index: AQHYfP2XdV77dEx110eNBxTsROEKeK1Njt1w
-Date: Mon, 13 Jun 2022 16:57:51 +0000
-Message-ID: <3f8312432bfa45e7a369e5c5a793569e@axis.com>
-References: <20220610190845.181330-1-jacob.kroon@gmail.com>
-In-Reply-To: <20220610190845.181330-1-jacob.kroon@gmail.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.5.60]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=F6QoOmdl;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id E2B49240005;
+	Mon, 13 Jun 2022 17:02:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1655139737;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=R1NvwTIN8t8Ci++u9jyMjk6XPDjfMTUcD9mosh3e5m8=;
+	b=F6QoOmdlBmuxVulj42TL8NU5PNITw8ARjHRe0cLK7X7u9pRYo7XeS2TNumCVtDKnIVn4Xr
+	LLqne0O0M/MyDlMpbisQXr+GWlUF6l6/ULVZelwgshLHafd/qeDhf6nDyK9kQbP3zftT4a
+	J7IpKd2Aj2CNSEjZboIT1SFl8lfBt+7La0bPJ4xgIa4IoeerQj9Br4yXhUc9AbCIPV7FbU
+	ZBIqUCjNo1GytjW+7PnMEwNnVm+FioQEMC8L4SDkiKvXwDOT5Elk4LYFGlhLNsKrDqRClh
+	VHAewgE8SeKRbs093ILd3Lo6QvPk9WgFeijK9KD0qQvFsNaQiejIxgu4L/KQ/g==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: document SSTATE_EXCLUDEDEPS_SYSROOT
+Date: Mon, 13 Jun 2022 19:02:10 +0200
+Message-Id: <20220613170210.100270-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 13 Jun 2022 16:57:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2993
+ <docs@lists.yoctoproject.org>; Mon, 13 Jun 2022 17:02:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2994
 
-> -----Original Message-----
-> From: bitbake-devel@lists.openembedded.org <bitbake-
-> devel@lists.openembedded.org> On Behalf Of Jacob Kroon
-> Sent: den 10 juni 2022 21:09
-> To: bitbake-devel@lists.openembedded.org
-> Cc: docs@lists.yoctoproject.org
-> Subject: [bitbake-devel] [PATCH v3] bitbake-user-manual: Correct
-> description of the ??=3D operator
->=20
-> Stating that the assignment is done at the end of parsing is misleading.
-> The weak default value is the value which a variable will expand to if no
-> value
-> has been assigned to it using any of the assignment operators.
->=20
-> Signed-off-by: Jacob Kroon <jacob.kroon@gmail.com>
-> ---
->=20
-> Changes in v3:
-> * Update commit message
-> * Change "... via one of ..." to "... via any of ..."
->=20
-> Changes in v2:
-> * Add comment to line with immediate variable expansion
->=20
->  .../bitbake-user-manual-metadata.rst          | 31 +++++++++----------
->  1 file changed, 15 insertions(+), 16 deletions(-)
->=20
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> index af4b1358..45355b6c 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> @@ -195,22 +195,21 @@ value. However, if ``A`` is not set, the variable i=
-s
-> set to "aval".
->  Setting a weak default value (??=3D)
->  ----------------------------------
->=20
-> -It is possible to use a "weaker" assignment than in the previous section
-> -by using the "??=3D" operator. This assignment behaves identical to "?=
-=3D"
-> -except that the assignment is made at the end of the parsing process
-> -rather than immediately. Consequently, when multiple "??=3D" assignments
-> -exist, the last one is used. Also, any "=3D" or "?=3D" assignment will
-> -override the value set with "??=3D". Here is an example::
-> -
-> -   A ??=3D "somevalue"
-> -   A ??=3D "someothervalue"
-> -
-> -If ``A`` is set before the above statements are
-> -parsed, the variable retains its value. If ``A`` is not set, the
-> -variable is set to "someothervalue".
-> -
-> -Again, this assignment is a "lazy" or "weak" assignment because it does
-> -not occur until the end of the parsing process.
-> +The weak default value of a variable is the value which that variable
-> +will expand to if no value has been assigned to it via any of the other
-> +assignment operators. Here is an example::
-> +
-> +   W ??=3D "x"
-> +   A :=3D "${W}" # Immediate variable expansion
-> +   W ??=3D "y"
-> +   B =3D "${W}"
-> +   W ?=3D "z"
-> +
-> +After parsing we will have::
-> +
-> +   A =3D "x"
-> +   B =3D "z"
-> +   W =3D "z"
->=20
->  Immediate variable expansion (:=3D)
->  ---------------------------------
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-I think the new description is missing some of the information of the=20
-original description, e.g., "when multiple "??=3D" assignments exist, the=20
-last one is used". So, e.g.:
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/ref-manual/variables.rst | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-W ??=3D "x"
-W ??=3D "y"
-
-gives
-
-W =3D "y"
-
-Another interesting case that is easy to get wrong is:
-
-W ??=3D "x"
-W +=3D "y"
-
-that gives
-
-W =3D " y"
-=09
-and which should be compared to
-
-W ??=3D "x"
-W:append =3D " y"
-
-that gives
-
-W =3D "x y"
-
-//Peter
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 375333e7f0..3a334f4282 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7218,6 +7218,32 @@ system and gives an overview of their function and contents.
+    :term:`SSTATE_DIR`
+       The directory for the shared state cache.
+ 
++   :term:`SSTATE_EXCLUDEDEPS_SYSROOT`
++      This variable allows to specify indirect dependencies to exclude
++      from sysroots, for example to avoid the situations when a dependency on
++      any ``-native`` recipe will pull in all dependencies of that recipe
++      in the recipe sysroot. This behaviour might not always be wanted,
++      for example when that ``-native`` recipe depends on build tools
++      that are not relevant for the current recipe.
++
++      This way, irrelevant dependencies are ignored, which could have
++      prevented the reuse of prebuilt artifacts stored in the Shared
++      State Cache.
++
++      ``SSTATE_EXCLUDEDEPS_SYSROOT`` is evaluated as two regular
++      expressions of recipe and dependency to ignore. An example
++      is the rule in :oe_git:`meta/conf/layer.conf </meta/conf/layer.conf>`::
++
++         # Nothing needs to depend on libc-initial
++         # base-passwd/shadow-sysroot don't need their dependencies
++         SSTATE_EXCLUDEDEPS_SYSROOT += "\
++             .*->.*-initial.* \
++             .*(base-passwd|shadow-sysroot)->.* \
++         "
++
++      The ``->`` substring represents the dependency between
++      the two regular expressions.
++
+    :term:`SSTATE_MIRROR_ALLOW_NETWORK`
+       If set to "1", allows fetches from mirrors that are specified in
+       :term:`SSTATE_MIRRORS` to work even when
+-- 
+2.34.1
 
 
