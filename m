@@ -1,110 +1,160 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 20AF5C43334
-	for <webhook@archiver.kernel.org>; Mon, 13 Jun 2022 16:55:48 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com
- [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web12.8444.1655139346193426924
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29610C433EF
+	for <webhook@archiver.kernel.org>; Mon, 13 Jun 2022 16:57:58 +0000 (UTC)
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web09.8379.1655139474918090946
  for <docs@lists.yoctoproject.org>;
- Mon, 13 Jun 2022 09:55:46 -0700
+ Mon, 13 Jun 2022 09:57:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Ic3nFlJ7;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.41,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f41.google.com with SMTP id w17so406685wrg.7
-        for <docs@lists.yoctoproject.org>;
- Mon, 13 Jun 2022 09:55:45 -0700 (PDT)
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=Z5Qrk9KI;
+ spf=pass (domain: axis.com, ip: 195.60.68.17,
+ mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=lE1zKXWI7cFoCmcVWNe2AylNPQGZgXJvqE1i4Z2t9+8=;
-        b=Ic3nFlJ7NLD4lwt7X4EuE8HL1R1letQp3OL9MaL9t8WB541eec4IPHAuNR1qzqIFtJ
-         LNXmy657SLWxyw4iqliuzCJi6wdNj1Tw/cmebX2t5g+CDTxtHLlbBCuu/lbFs0AoBC6u
-         nllduFHr3B3srmAe1V7GqFpZepSITIbBwhx8Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=lE1zKXWI7cFoCmcVWNe2AylNPQGZgXJvqE1i4Z2t9+8=;
-        b=MmC5++Hgi0be3nyv3bQUHQ1nSHkhHQmqAZitEgfV5i5xtQpwi++ZN8oCExnb8AJeIZ
-         aDSsWk73Q5rnnryd9vjh3Yy9u/YcvrVn81AJ1QgPtWWXTfc9pXubeh6hWTZQGqgagIGe
-         baoTT3HhOQhnKp7yz3OlX8o8Lc0rhZa3mbwF/2OjBRrXD7A2dA7AeWV9FQSLtud0peLZ
-         d0ATESws9SrrLr9LX4dFJ2q+MVwP2ibc5XHMRWgNnkue9AOqSgCTqkHjWo/uggRHbf5E
-         QiZBq0/Sq4R84euuEFJ87SK2bw3zpKECwB2i4TzbcZMZrVfAXqbBnk0o1GbbgvYwnCPv
-         Rd2w==
-X-Gm-Message-State: AJIora8Awsf6UgZWk9pkrQTsJzzpJCRrP4HiqO/2C6kdNpb5uuR3j2eV
-	w+AymU/eD6MoYhsHigumajsZoA==
-X-Google-Smtp-Source: 
- AGRyM1udkFwI9l6YDuJNQKYoJ3rpKakX9TbjQitilC6Yvcquk9RG3V8Yma0TMPzJpnPfJi/FtBHPPw==
-X-Received: by 2002:adf:dbc1:0:b0:219:e994:6ba7 with SMTP id
- e1-20020adfdbc1000000b00219e9946ba7mr729953wrj.229.1655139344389;
-        Mon, 13 Jun 2022 09:55:44 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:4edb:baaa:8bb1:f083?
- ([2001:8b0:aba:5f3c:4edb:baaa:8bb1:f083])
-        by smtp.gmail.com with ESMTPSA id
- i11-20020a05600c354b00b003942a244f47sm14556130wmq.32.2022.06.13.09.55.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jun 2022 09:55:43 -0700 (PDT)
-Message-ID: 
- <73a31eefa84a8416adb982e76aa19b3b7660e5ae.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] ref-manual: add description for the "sysroot"
- term
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
-Date: Mon, 13 Jun 2022 17:55:42 +0100
-In-Reply-To: <20220613155939.94911-1-michael.opdenacker@bootlin.com>
-References: <20220613155939.94911-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+  d=axis.com; q=dns/txt; s=axis-central1; t=1655139475;
+  x=1686675475;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=IRNX4GjBw088sbtDGS4hbSEaUbVBL9/o0aDSBRECUkU=;
+  b=Z5Qrk9KIdXuXPz45+oF7f3JnbE+s0hE4IAO9BJYfKwhHSyJ5u4oMe/vT
+   tZ4ho+x3M79OCFq3+5eLfkYUeaoAcImqKyPMxXVySwGw7kBUOGLc3WK09
+   tRBXyGYV3Bxn9md567TgvxA9JdamDg66Sp3QpgGajBtGX4qehOIRqOSbu
+   R8uGn7++ND0N2QVTt5EaeoUinVyksD9XSVjuWyF56hcWKFVQVuqhYUvD3
+   CHXyzS8LJ+YP2tASfKExVz+/6ncln6VQ9Rc7pHKd0eCDWQIkZjjYajekx
+   eMWJ84LyNQGV9EqH8Mn/2SybY2NKfOnmaFxl/AJJq3XUTUkqL4//ONw6X
+   g==;
+From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+To: Jacob Kroon <jacob.kroon@gmail.com>,
+	"bitbake-devel@lists.openembedded.org" <bitbake-devel@lists.openembedded.org>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: RE: [bitbake-devel] [PATCH v3] bitbake-user-manual: Correct
+ description of the ??= operator
+Thread-Topic: [bitbake-devel] [PATCH v3] bitbake-user-manual: Correct
+ description of the ??= operator
+Thread-Index: AQHYfP2XdV77dEx110eNBxTsROEKeK1Njt1w
+Date: Mon, 13 Jun 2022 16:57:51 +0000
+Message-ID: <3f8312432bfa45e7a369e5c5a793569e@axis.com>
+References: <20220610190845.181330-1-jacob.kroon@gmail.com>
+In-Reply-To: <20220610190845.181330-1-jacob.kroon@gmail.com>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.5.60]
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
 MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 13 Jun 2022 16:55:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2992
+ <docs@lists.yoctoproject.org>; Mon, 13 Jun 2022 16:57:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/2993
 
-On Mon, 2022-06-13 at 17:59 +0200, Michael Opdenacker via
-lists.yoctoproject.org wrote:
-> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> -----Original Message-----
+> From: bitbake-devel@lists.openembedded.org <bitbake-
+> devel@lists.openembedded.org> On Behalf Of Jacob Kroon
+> Sent: den 10 juni 2022 21:09
+> To: bitbake-devel@lists.openembedded.org
+> Cc: docs@lists.yoctoproject.org
+> Subject: [bitbake-devel] [PATCH v3] bitbake-user-manual: Correct
+> description of the ??=3D operator
 >=20
-> This term is used throughout the manual but is not properly
-> introduced anywhere.
+> Stating that the assignment is done at the end of parsing is misleading.
+> The weak default value is the value which a variable will expand to if no
+> value
+> has been assigned to it using any of the assignment operators.
 >=20
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> Signed-off-by: Jacob Kroon <jacob.kroon@gmail.com>
 > ---
->  documentation/ref-manual/terms.rst | 25 +++++++++++++++++++++++++
->  1 file changed, 25 insertions(+)
 >=20
-> diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manua=
-l/terms.rst
-> index cba514c345..76f3fb0d08 100644
-> --- a/documentation/ref-manual/terms.rst
-> +++ b/documentation/ref-manual/terms.rst
-> @@ -383,6 +383,31 @@ universal, the list includes them just in case:
->       ":ref:`overview-manual/development-environment:repositories, tags, =
-and branches`"
->       section in the Yocto Project Overview and Concepts Manual.
-> =20
-> +   :term:`Sysroot`
+> Changes in v3:
+> * Update commit message
+> * Change "... via one of ..." to "... via any of ..."
+>=20
+> Changes in v2:
+> * Add comment to line with immediate variable expansion
+>=20
+>  .../bitbake-user-manual-metadata.rst          | 31 +++++++++----------
+>  1 file changed, 15 insertions(+), 16 deletions(-)
+>=20
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> index af4b1358..45355b6c 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+> @@ -195,22 +195,21 @@ value. However, if ``A`` is not set, the variable i=
+s
+> set to "aval".
+>  Setting a weak default value (??=3D)
+>  ----------------------------------
+>=20
+> -It is possible to use a "weaker" assignment than in the previous section
+> -by using the "??=3D" operator. This assignment behaves identical to "?=
+=3D"
+> -except that the assignment is made at the end of the parsing process
+> -rather than immediately. Consequently, when multiple "??=3D" assignments
+> -exist, the last one is used. Also, any "=3D" or "?=3D" assignment will
+> -override the value set with "??=3D". Here is an example::
+> -
+> -   A ??=3D "somevalue"
+> -   A ??=3D "someothervalue"
+> -
+> -If ``A`` is set before the above statements are
+> -parsed, the variable retains its value. If ``A`` is not set, the
+> -variable is set to "someothervalue".
+> -
+> -Again, this assignment is a "lazy" or "weak" assignment because it does
+> -not occur until the end of the parsing process.
+> +The weak default value of a variable is the value which that variable
+> +will expand to if no value has been assigned to it via any of the other
+> +assignment operators. Here is an example::
 > +
+> +   W ??=3D "x"
+> +   A :=3D "${W}" # Immediate variable expansion
+> +   W ??=3D "y"
+> +   B =3D "${W}"
+> +   W ?=3D "z"
+> +
+> +After parsing we will have::
+> +
+> +   A =3D "x"
+> +   B =3D "z"
+> +   W =3D "z"
+>=20
+>  Immediate variable expansion (:=3D)
+>  ---------------------------------
 
-How about:
+I think the new description is missing some of the information of the=20
+original description, e.g., "when multiple "??=3D" assignments exist, the=20
+last one is used". So, e.g.:
 
-"""
-When cross compiling, the target file system may be differently laid
-out and contain different things to the of the host system. The concept
-of a sysroot is directory which looks like the target filesystem and
-can be used to cross compile against.
-"""
+W ??=3D "x"
+W ??=3D "y"
 
-then go on and explain target vs. native.=20
+gives
 
+W =3D "y"
 
-Cheers,
+Another interesting case that is easy to get wrong is:
 
-Richard
+W ??=3D "x"
+W +=3D "y"
+
+that gives
+
+W =3D " y"
+=09
+and which should be compared to
+
+W ??=3D "x"
+W:append =3D " y"
+
+that gives
+
+W =3D "x y"
+
+//Peter
+
 
