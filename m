@@ -2,83 +2,86 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E48EC43334
-	for <webhook@archiver.kernel.org>; Wed, 15 Jun 2022 16:22:17 +0000 (UTC)
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
- [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web08.6960.1655310131334460348
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 268C8C43334
+	for <webhook@archiver.kernel.org>; Wed, 15 Jun 2022 18:22:48 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web08.8363.1655317360702883701
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Jun 2022 09:22:12 -0700
+ Wed, 15 Jun 2022 11:22:41 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JtcHm7M8;
- spf=pass (domain: bootlin.com, ip: 217.70.178.231,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Hm9lF029;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 59455100003;
-	Wed, 15 Jun 2022 16:22:08 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 73ED4240004;
+	Wed, 15 Jun 2022 18:22:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1655310129;
+	t=1655317359;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=GJQRxlmrxOKS5u/8HoaiR1hKnUGyojQ25Nna+hlnqrs=;
-	b=JtcHm7M8wlfWIQqS4//8A4yFz4OkcCiqYq3OWV8wxxePSkozDpz9ORM8P6RdPOaxkouZAa
-	TGE1fyA+Lh89RGxjpp19yPhqmq/7K0MHp/Di1Mu7tosaUti7dbW69oEzoWUVctUG3Qk06b
-	JaiNpk5VTx3Iuk6gqxy4WgdDMXM5ufeV//MtyPdI6I3g7JKt9Lrl3N2Ot3f925LNo597KO
-	W0nW7EWeV0eqRbVXAnGJgfdWeUXkbTdYIb2EZfCFSLox+zYL48KnSK/y1W8ZsFRisqASEX
-	Zijlb4wEoSmxrQxHg/h3pUCP6IyR0Bvx27tmXHUYAqmcV4zh/cLgl6cU358rqg==
+	bh=YsCCxbL7C+DlseaGpZ0gRbQGRr7iDadF3z2H7iVEWKA=;
+	b=Hm9lF0298azLVlT4XwLL+m0231M8jONoEpPGBuv9kJGNrGWBxpmQlNTSsNpBtz+J7WpPFC
+	IabV8ANCo1LcMi5GxeTSFk5vcTCUFo14o7j0xZiWGDXHGW7QNgCcPpcBoEPkG71OY9VXqV
+	GEZFS3mih8ZUYxr62IWeKyx2PSGGexlmIALTkGbrDBrSAL3o3LDFm+wxVEm1dtoNLwBdId
+	kjfGcAFOYJhwDjpZNEJJoVrJDdZyw2FiYWZGSCXqw19ya/OwC+V+CJ/kocT4/B1rhOPqto
+	weE1tbrK89LFm3OZNo/QVNzSY/g/pPQc7Y645jJRnYAuQQeKboda9d+xhE9Ldw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: correct description of empty-root-passwd in
- IMAGE_FEATURES
-Date: Wed, 15 Jun 2022 18:22:07 +0200
-Message-Id: <20220615162207.1153708-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	"Robert P . J . Day" <rpjday@crashcourse.ca>
+Subject: [PATCH] ref-manual: document SYSTEMD_DEFAULT_TARGET
+Date: Wed, 15 Jun 2022 20:22:35 +0200
+Message-Id: <20220615182235.1164087-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Jun 2022 16:22:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3008
+ <docs@lists.yoctoproject.org>; Wed, 15 Jun 2022 18:22:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3009
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-"empty-root-passwd" doesn't actually set an empty root password.
-It just doesn't touch the initial root password which is empty by default.
+[YOCTO #14660]
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
 ---
- documentation/ref-manual/features.rst | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ documentation/ref-manual/variables.rst | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
-index f7abb417ba..76bb3bceac 100644
---- a/documentation/ref-manual/features.rst
-+++ b/documentation/ref-manual/features.rst
-@@ -216,8 +216,19 @@ Here are the image features available for all images:
- -  *doc-pkgs:* Installs documentation packages for all packages
-    installed in a given image.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 375333e7f0..606fb3317d 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7640,6 +7640,24 @@ system and gives an overview of their function and contents.
+       For information on Systemd-boot, see the `Systemd-boot
+       documentation <https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
  
---  *empty-root-password:* Sets the root password to an empty string,
--   which allows logins with a blank password.
-+-  *empty-root-password:* This feature or ``debug-tweaks`` is required if
-+   you want to allow root login with an empty password. If these features
-+   are not present in :term:`IMAGE_FEATURES`, a non-empty password is
-+   forced in ``/etc/passwd`` and ``/etc/shadow`` if such files exist.
++   :term:`SYSTEMD_DEFAULT_TARGET`
 +
-+   .. note::
-+       ``empty-root-passwd`` doesn't set an empty root password by itself.
-+       You get an initial empty root password thanks to the
-+       :oe_git:`base-passwd </openembedded-core/tree/meta/recipes-core/base-passwd/>`
-+       and :oe_git:`shadow </openembedded-core/tree/meta/recipes-extended/shadow/>`
-+       recipes, and the presence of ``empty-root-passwd`` or ``debug-tweaks``
-+       just disables the mechanism which forces an non-empty password for the
-+       root user.
- 
- -  *overlayfs-etc:* Configures the ``/etc`` directory to be in ``overlayfs``.
-    This allows to store device specific information elsewhere, especially
++      This variable allows to set the default unit that systemd starts at bootup.
++      Usually, this is either ``multi-user.target`` or ``graphical.target``.
++      This works by creating a ``default.target`` symbolic link to the chosen systemd
++      target file.
++
++      See `systemd's documentation
++      <https://www.freedesktop.org/software/systemd/man/systemd.special.html>`__
++      for details.
++
++      For example, this variable is used in the
++      `core-image-minimal-xfce.bb
++      <https://git.openembedded.org/meta-openembedded/tree/meta-xfce/recipes-core/images/core-image-minimal-xfce.bb>`__
++      recipe::
++
++          SYSTEMD_DEFAULT_TARGET = "graphical.target"
++
+    :term:`SYSTEMD_PACKAGES`
+       When inheriting the :ref:`systemd <ref-classes-systemd>` class,
+       this variable locates the systemd unit files when they are not found
 -- 
 2.34.1
 
