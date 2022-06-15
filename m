@@ -1,134 +1,74 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4590CCA473
-	for <webhook@archiver.kernel.org>; Wed, 15 Jun 2022 07:23:33 +0000 (UTC)
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com
- [209.85.221.47])
- by mx.groups.io with SMTP id smtpd.web09.1737.1655277808277790951
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39036C433EF
+	for <webhook@archiver.kernel.org>; Wed, 15 Jun 2022 09:12:24 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net
+ [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web09.2435.1655284336416300646
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Jun 2022 00:23:28 -0700
+ Wed, 15 Jun 2022 02:12:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Qj4521Nv;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.47,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f47.google.com with SMTP id x17so14091641wrg.6
-        for <docs@lists.yoctoproject.org>;
- Wed, 15 Jun 2022 00:23:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=message-id:subject:from:to:cc:date:in-reply-to:references
-         :content-transfer-encoding:user-agent:mime-version;
-        bh=Vr4uLi8MLAlE4Iqevd2lm2jBAhIfID+Yo/taOapsa2c=;
-        b=Qj4521NvYOREK5ccFJygZ0On36fraT0st7e0Bt0U6ppj3MFW1YHenRfVAPAd8y/Gj1
-         xmhF9VbrZm57Au5UE30zdnl2nD0tyOvlwl4BXueB3PT9ZMt87JQpr7iOJQpfEMeAsGYY
-         p741UWcOcj5+za8n3bGEIS41x52IkDYoU9ifc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
-         :references:content-transfer-encoding:user-agent:mime-version;
-        bh=Vr4uLi8MLAlE4Iqevd2lm2jBAhIfID+Yo/taOapsa2c=;
-        b=aK3eQ0m3tlZ3dV9uFfTYqGr1+GiqFAdYNFnZM91dWHiSW2t9aoCo8Wh4HOhPBHFpNA
-         Pdj/Uy/7Od/5i5Szxcf7dneKseEEXKeTebKtRoSrRGb1zcov83oyvHg+S4V730EJ/Gkf
-         GqNczd43ShS0mW+VRXvWE3PwnMJ7+YhZacGLWoBdCHxpD2naCJhWOs1xuhgI/cJkYtPa
-         p5GpMuZiyoLRZBeHkRce1xK5SpVb0Jd2pK+3Fu+lvJWIpIHGzf7zlpKRpc7g5UVSDPwE
-         V6wbURP2uiEARcGl8BVstktKU7L11fS+SkjT3u/4Xl3ksNOAzxHb9VE9lN0yzv3h4PRW
-         eanA==
-X-Gm-Message-State: AJIora8UtXB6CXUID2dDtmjxkWgY/7HYSs53A7M5ZV2+RZNZRJmisGn4
-	62zMY6gWndnquBKzahhepIAqzw==
-X-Google-Smtp-Source: 
- AGRyM1sIGw/Tw0JTdbr4lY/vXERTDeWKiP2erWVWSfXRjhinp3zWom/6VriQR3ZM8E7TymgvBM6BZw==
-X-Received: by 2002:a05:6000:152:b0:216:160:2e60 with SMTP id
- r18-20020a056000015200b0021601602e60mr8448923wrx.663.1655277806517;
-        Wed, 15 Jun 2022 00:23:26 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:5217:2b74:ee57:d3bc?
- ([2001:8b0:aba:5f3c:5217:2b74:ee57:d3bc])
-        by smtp.gmail.com with ESMTPSA id
- c6-20020a5d4146000000b00213ba3384aesm14604052wrq.35.2022.06.15.00.23.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Jun 2022 00:23:26 -0700 (PDT)
-Message-ID: 
- <d4dd89aa32ad3c7829d8f79e11bd35486397a9c9.camel@linuxfoundation.org>
-Subject: Re: [bitbake-devel] [PATCH v4] bitbake-user-manual: Correct
- description of the ??= operator
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Jacob Kroon <jacob.kroon@gmail.com>, bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org
-Date: Wed, 15 Jun 2022 08:23:25 +0100
-In-Reply-To: <20220615042424.7606-1-jacob.kroon@gmail.com>
-References: <20220615042424.7606-1-jacob.kroon@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=m5fC0or/;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id C2400E0009;
+	Wed, 15 Jun 2022 09:12:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1655284334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TKglURMyQxcLSniTagcN8LkKKK5FTzzrpZDLW9a6Rzs=;
+	b=m5fC0or/YpavjBM6JPCZgiuciVoAFzbiwKZ9ciD+JRk8AZcKvSnUxY/akFdjqoHWoMZCSe
+	m/nJvxuoYDmXeXtjVJPU3Zy8jVgSImI9AeK9jOKG7QsHZPDe828Q+TgKxK9dsRJo7xaD0d
+	kKtiGUh+1AkUu0S4iSw+6f367bEXt2ycmIXZK6nMa24jyTTAPsX2D8Nx8pMvhHu440TqRs
+	3YaFEqxlsAFc1/8TtM6Nf2jr7BxC2PhpohlyGnSIpwisezWvANNE48NZW0/8BPRtyJexSJ
+	vGv5qbXdnUdijjSL9v02ClbzzbytAq9/lSMCdmfbDMgu+7jnk86zpg6Q1rfdFg==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] doc: Makefile: publish pdf and epub versions too
+Date: Wed, 15 Jun 2022 11:12:09 +0200
+Message-Id: <20220615091209.1117442-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Jun 2022 07:23:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3000
+ <docs@lists.yoctoproject.org>; Wed, 15 Jun 2022 09:12:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3001
 
-On Wed, 2022-06-15 at 06:24 +0200, Jacob Kroon wrote:
-> Stating that the assignment is done at the end of parsing is misleading.
-> The weak default value is the value which a variable will expand to if no=
- value
-> has been assigned to it using any of the assignment operators.
->=20
-> Signed-off-by: Jacob Kroon <jacob.kroon@gmail.com>
-> ---
->=20
-> Changes in v4:
-> * Mention that "??=3D" operator overrides previously defined weak default=
- values
-> * Add examples when appending/prepending, with and without override-style=
- syntax
->=20
-> Changes in v3:
-> * Update commit message
-> * Change "... via one of ..." to "... via any of ..."
->=20
-> Changes in v2:
-> * Add comment to line with immediate variable expansion
->=20
->  .../bitbake-user-manual-metadata.rst          | 55 +++++++++++++------
->  1 file changed, 39 insertions(+), 16 deletions(-)
->=20
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/d=
-oc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> index af4b1358..3250c205 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> @@ -195,22 +195,45 @@ value. However, if ``A`` is not set, the variable i=
-s set to "aval".
->  Setting a weak default value (??=3D)
->  ----------------------------------
-> =20
-> -It is possible to use a "weaker" assignment than in the previous section
-> -by using the "??=3D" operator. This assignment behaves identical to "?=
-=3D"
-> -except that the assignment is made at the end of the parsing process
-> -rather than immediately. Consequently, when multiple "??=3D" assignments
-> -exist, the last one is used. Also, any "=3D" or "?=3D" assignment will
-> -override the value set with "??=3D". Here is an example::
-> -
-> -   A ??=3D "somevalue"
-> -   A ??=3D "someothervalue"
-> -
-> -If ``A`` is set before the above statements are
-> -parsed, the variable retains its value. If ``A`` is not set, the
-> -variable is set to "someothervalue".
-> -
-> -Again, this assignment is a "lazy" or "weak" assignment because it does
-> -not occur until the end of the parsing process.
-> +The weak default value of a variable is the value which that variable
-> +will expand to if no value has been assigned to it via any of the other
-> +assignment operators. The "??=3D" operator takes effect immediately, ove=
-rriding
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Generally looks good but I'd replace "overriding" with "replacing"
-since overriding means something very specific to bitbake!
+[YOCTO #14357]
 
-Cheers,
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Richard
+diff --git a/documentation/Makefile b/documentation/Makefile
+index 9fb6814c8f..e013f68e7f 100644
+--- a/documentation/Makefile
++++ b/documentation/Makefile
+@@ -22,10 +22,10 @@ help:
+ 
+ .PHONY: all help Makefile clean publish epub latexpdf
+ 
+-publish: Makefile html singlehtml
++publish: Makefile html singlehtml epub latexpdf
+ 	rm -rf $(BUILDDIR)/$(DESTDIR)/
+ 	mkdir -p $(BUILDDIR)/$(DESTDIR)/
+-	cp -r $(BUILDDIR)/html/* $(BUILDDIR)/$(DESTDIR)/
++	cp -r $(BUILDDIR)/html/* $(BUILDDIR)/epub/TheYoctoProject.epub $(BUILDDIR)/latex/theyoctoproject.pdf $(BUILDDIR)/$(DESTDIR)/
+ 	cp $(BUILDDIR)/singlehtml/index.html $(BUILDDIR)/$(DESTDIR)/singleindex.html
+ 	sed -i -e 's@index.html#@singleindex.html#@g' $(BUILDDIR)/$(DESTDIR)/singleindex.html
+ 
+-- 
+2.34.1
+
 
