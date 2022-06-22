@@ -1,198 +1,90 @@
-Return-Path: <u.oelmann@pengutronix.de>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 44ADECCA47A
-	for <webhook@archiver.kernel.org>; Wed, 22 Jun 2022 05:54:20 +0000 (UTC)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de
- [85.220.165.71])
- by mx.groups.io with SMTP id smtpd.web09.4239.1655877250669068208
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A532C433EF
+	for <webhook@archiver.kernel.org>; Wed, 22 Jun 2022 09:20:21 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
+ [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web08.5123.1655889612396576058
  for <docs@lists.yoctoproject.org>;
- Tue, 21 Jun 2022 22:54:11 -0700
+ Wed, 22 Jun 2022 02:20:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing;
- spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: u.oelmann@pengutronix.de)
-Received: from dude.hi.pengutronix.de ([2001:67c:670:100:1d::7])
-	by metis.ext.pengutronix.de with esmtps
- (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1o3tJY-0003Ow-Pr; Wed, 22 Jun 2022 07:54:08 +0200
-Received: from uol by dude.hi.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1o3tJX-0050UI-7M; Wed, 22 Jun 2022 07:54:07 +0200
-References: <16FAADC4DA16D2D7.32537@lists.openembedded.org>
- <20220621175455.2655775-1-michael.opdenacker@bootlin.com>
-User-agent: mu4e 1.6.9; emacs 29.0.50
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
-To: michael.opdenacker@bootlin.com
-Cc: docs@lists.yoctoproject.org, "Michael Opdenacker via
- lists.openembedded.org"
- <michael.opdenacker=bootlin.com@lists.openembedded.org>,
- bitbake-devel@lists.openembedded.org
-Subject: Re: [bitbake-devel] [PATCH v2] doc: bitbake-user-manual: document
- npm and npmsw fetchers
-Date: Wed, 22 Jun 2022 07:32:55 +0200
-In-reply-to: <20220621175455.2655775-1-michael.opdenacker@bootlin.com>
-Message-ID: <6rwnd9mef4.fsf@pengutronix.de>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZSk4oNKV;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5AF20100004;
+	Wed, 22 Jun 2022 09:20:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1655889610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=rNyb4NwqWF9qe05eMBSxHGJ68IEM2FOTs5t2GQhLGuQ=;
+	b=ZSk4oNKVQNU1Wf64PyrHqP+LZhg5eZfYfzUr3uNYtM3DpNTJYhj8Niq8wXik3CcGtU4N2F
+	0ugeY3DhAzzROZT7IGWwR6PI4yIcy2cHzGxPl8FtJkgzJeKb0kGgtsEiHtmcL9A+LC4DWq
+	IoshoqKLV8CumZQPIEALvxldGxl6PKtHvD+fihMlSu8XakvFGOGQDwmIXX05zdsSDvpWaX
+	Q2o+ffkIdraRNGHjNeQ6JcCavUfJOLAxbDQyFiMQtfL4g3I1LgttyV2VNh+qkQnMbTEhs2
+	rxlrClycFTq9Yzv/4Z8sIlMnawPPDbyb+by1QrgEasM6J2n9F2YENbArLgq6lA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] manuals: switch to the sstate mirror shared between all
+ versions
+Date: Wed, 22 Jun 2022 11:20:07 +0200
+Message-Id: <20220622092007.2691103-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::7
-X-SA-Exim-Mail-From: u.oelmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de);
- SAEximRunCond expanded to false
-X-PTX-Original-Recipient: docs@lists.yoctoproject.org
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 22 Jun 2022 05:54:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3015
+ <docs@lists.yoctoproject.org>; Wed, 22 Jun 2022 09:20:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3018
 
-Hi Michael,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-just some typo fixes I stumbled across.
+Following https://git.yoctoproject.org/poky/commit/?id=cf7d8894545b83f55420fa33f7848e1bfc6754ff
 
-On Tue, Jun 21 2022 at 19:54 +0200, "Michael Opdenacker via lists.openembed=
-ded.org" <michael.opdenacker=3Dbootlin.com@lists.openembedded.org> wrote:
-> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->
-> This addresses bug [YOCTO #10098]
->
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->
-> ---
->
-> * Changes in V2:
->
->   - Fix typos in the names of explicit targets ("nmp" instead of "npm")
->   - Simplify the reference to the "nmpsw" section:
->     no need to use a complex reference when you can directly use
->     a target ("`target`_" as defined in ".. _target:")
-> ---
->  .../bitbake-user-manual-fetching.rst          | 76 ++++++++++++++++++-
->  1 file changed, 74 insertions(+), 2 deletions(-)
->
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/d=
-oc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> index f9d9e617..bb521f63 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> @@ -704,6 +704,80 @@ Here is an example URL::
->=20=20
->     SRC_URI =3D "crate://crates.io/glob/0.2.11"
->=20=20
-> +.. _npm-fetcher:
-> +
-> +NPM Fetcher (``npm://``)
-> +------------------------
-> +
-> +This submodule fetches source code from an
-> +`NPM <https://en.wikipedia.org/wiki/Npm_(software)>`__
-> +Javascript package registry.
-> +
-> +The format for the :term:`SRC_URI` setting must be::
-> +
-> +   SRC_URI =3D "npm://some.registry.url;OptionA=3Dxxx;OptionB=3Dxxx;..."
-> +
-> +This fetcher supports the following parameters:
-> +
-> +-  *"package":* The NPM package name. This is a mandatory parameter.
-> +
-> +-  *"version":* The NPM package version. This is a mandatory parameter.
-> +
-> +-  *"downloadfilename":* Specifies the filename used when storing the do=
-wnloaded file.
-> +
-> +-  *"destsuffix":* Specifies the directory to use to unpack the package =
-(default: ``npm``).
-> +
-> +Note that NPM fetcher only fetches the package source itself. The depend=
-encies
-> +can be fetched through the `npmsw-fetcher`_.
-> +
-> +Here is an example URL with both fetchers::
-> +
-> +   SRC_URI =3D " \
-> +       npm://registry.npmjs.org/;package=3Dcute-files;version=3D${PV} \
-> +       npmsw://${THISDIR}/${BPN}/npm-shrinkwrap.json \
-> +       "
-> +
-> +See :yocto_docs:`Creating Node Package Manager (NPM) Packages
-> +</dev-manual/common-tasks.html#creating-node-package-manager-npm-package=
-s>`
-> +in the Yocto Project manual for details about using
-> +:yocto_docs:`devtool <https://docs.yoctoproject.org/ref-manual/devtool-r=
-eference.html>`
-> +to automatically create a recipe from an NPM URL.
-> +
-> +.. _npmsw-fetcher:
-> +
-> +NPM shrinkwrap Fetcher (``npmsw://``)
-> +-------------------------------------
-> +
-> +This modules fetches source code from an
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/brief-yoctoprojectqs/index.rst         | 7 +------
+ documentation/migration-guides/release-notes-4.0.rst | 2 +-
+ 2 files changed, 2 insertions(+), 7 deletions(-)
 
-s/This modules fetches/This module fetches/
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index 4d5ac85e61..3cf2f76f55 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -257,12 +257,7 @@ an entire Linux distribution, including the toolchain, from source.
+          BB_SIGNATURE_HANDLER = "OEEquivHash"
+          BB_HASHSERVE = "auto"
+          BB_HASHSERVE_UPSTREAM = "typhoon.yocto.io:8687"
+-         SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/&YOCTO_DOC_VERSION;/PATH;downloadfilename=PATH"
+-
+-      The above settings assumed the use of Yocto Project &YOCTO_DOC_VERSION;.
+-      If you are using the development version instead, set :term:`SSTATE_MIRRORS` as follows::
+-
+-         SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/dev/PATH;downloadfilename=PATH"
++         SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
+ 
+ #. **Start the Build:** Continue with the following command to build an OS
+    image for the target, which is ``core-image-sato`` in this example:
+diff --git a/documentation/migration-guides/release-notes-4.0.rst b/documentation/migration-guides/release-notes-4.0.rst
+index eaa40f9317..4bf680db5d 100644
+--- a/documentation/migration-guides/release-notes-4.0.rst
++++ b/documentation/migration-guides/release-notes-4.0.rst
+@@ -23,7 +23,7 @@ New Features / Enhancements in 4.0
+      BB_SIGNATURE_HANDLER = "OEEquivHash"
+      BB_HASHSERVE = "auto"
+      BB_HASHSERVE_UPSTREAM = "typhoon.yocto.io:8687"
+-     SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/&YOCTO_DOC_VERSION;/PATH;downloadfilename=PATH"
++     SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
+ 
+ - The Python package build process is now based on `wheels <https://pythonwheels.com/>`__
+   in line with the upstream direction.
+-- 
+2.34.1
 
-> +`NPM shrinkwrap <https://docs.npmjs.com/cli/v8/commands/npm-shrinkwrap>`=
-__
-> +description file, which lists the dependencies
-> +of an NPM package while locking their versions.
-> +
-> +The format for the :term:`SRC_URI` setting must be::
-> +
-> +   SRC_URI =3D "npmsw://some.registry.url;OptionA=3Dxxx;OptionB=3Dxxx;..=
-."
-> +
-> +This fetcher supports the following parameters:
-> +
-> +-  *"dev":* Set this parameter to ``1`` to install "devDependencies".
-> +
-> +-  *"destsuffix":* Specifies the directory to use to unpack the dependen=
-cies
-> +   (``${S}`` by default).
-> +
-> +Note that the shrinkwrap file can also be provided by the recipe for
-> +the package which has such dependencies, for example::
-> +
-> +   SRC_URI =3D " \
-> +       npm://registry.npmjs.org/;package=3Dcute-files;version=3D${PV} \
-> +       npmsw://${THISDIR}/${BPN}/npm-shrinkwrap.json \
-> +       "
-> +
-> +Such a file can be automatically be generated using
-
-s/can be automatically/can automatically/
-
-Best regards
-Ulrich
-
-
-> +:yocto_docs:`devtool <https://docs.yoctoproject.org/ref-manual/devtool-r=
-eference.html>`
-> +as described in the :yocto_docs:`Creating Node Package Manager (NPM) Pac=
-kages
-> +</dev-manual/common-tasks.html#creating-node-package-manager-npm-package=
-s>`
-> +section of the Yocto Project.
-> +
->  Other Fetchers
->  --------------
->=20=20
-> @@ -713,8 +787,6 @@ Fetch submodules also exist for the following:
->=20=20
->  -  Mercurial (``hg://``)
->=20=20
-> --  npm (``npm://``)
-> -
->  -  OSC (``osc://``)
->=20=20
->  -  Secure FTP (``sftp://``)
---=20
-Pengutronix e.K.                           | Ulrich =C3=96lmann            =
-   |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
