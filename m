@@ -1,94 +1,157 @@
-Return-Path: <aatrapps@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7974DCCA479
-	for <webhook@archiver.kernel.org>; Tue, 28 Jun 2022 16:35:58 +0000 (UTC)
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com
- [209.85.222.175])
- by mx.groups.io with SMTP id smtpd.web10.487.1656434151436560756
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA3E7C43334
+	for <webhook@archiver.kernel.org>; Tue, 28 Jun 2022 17:40:18 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
+ [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web08.1309.1656438013214408696
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Jun 2022 09:35:51 -0700
+ Tue, 28 Jun 2022 10:40:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=GsaxkSUn;
- spf=pass (domain: gmail.com, ip: 209.85.222.175,
- mailfrom: aatrapps@gmail.com)
-Received: by mail-qk1-f175.google.com with SMTP id r138so10033471qke.13
-        for <docs@lists.yoctoproject.org>;
- Tue, 28 Jun 2022 09:35:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cvVJpo4vMlaGwACxiJ4L+bIuSeFGzfXb5VVXCt9VHus=;
-        b=GsaxkSUnngm7S8NlkFjubQ87AOtGGdyyhp/3m4N1Rcq3VxweLQ2cz87q50JAzVIEsV
-         g5v5dUIgx2nDrbUCo+MFhj+LNCs5wpAcnn3wZebcscYrTlcKvAiizs5FQ671CoMX/X9o
-         uu3lgmYnvvVXEmQoLq+7VMMDfGJ3OUUgkfuKf8321mWG1YdBlfydRIA4L7LuFXb9IzVR
-         PEoYV7nZDYen6FSvqIf0LciY3yvYR9+bBncv/xQhlifDBrZG4VVje8LFaOR6nJ0MpPuj
-         wtxifV7OaPAI4U4TNe3hNjPIMJYSsBLklgObs8MCycXZM0iOSPZqv8ECkBeFpRuxTGYL
-         /PKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=cvVJpo4vMlaGwACxiJ4L+bIuSeFGzfXb5VVXCt9VHus=;
-        b=DZAmpmxMPpYPjmUGlYU2ML6mpSYjUwDuhxVPNUl2OlOFQrNRVuvxTOzCH/P1IEDNKn
-         9rugfbIYlZS68zAsm36mOSbU/PtSxBUoJBcm0a2nRnLXtQydB0XkysTrYpyEBPQD0BPM
-         7hZVrvkFOSMIU4dvg+DzoTkZ+CuVMeL94mGvoeV4arLeoPnIsEMXda2Dy0ZSVzsA36fo
-         lP1cdmvpLwpKEpxW6FtG2RGnV/1eRMSgphmHD2vYR4oHNzhFUVYoA+6ByMCnZ/VRnkzd
-         UnJ61f9on3x9L+lkM2nyLrdV/4HLUltLILmpoucNn1CeEtSJeDCE9+GF7tZCBmBjOuJ1
-         EKYA==
-X-Gm-Message-State: AJIora9d0xBOGP++amugLeAW8gdVngG9xTKXT6JaUiuF5Ykzr8ZGr85c
-	Uy8GyHBwXt17AZX3MCUKzseEEqRamCo=
-X-Google-Smtp-Source: 
- AGRyM1sH3Re+k/XGVVD6CeCdTzN7sFFQ+1uzcdbIHg8WBvUxDcdJ4lH/WDBM7qwDiCUeTSi4J5d3Mg==
-X-Received: by 2002:a05:620a:2711:b0:6a7:9aa0:aba4 with SMTP id
- b17-20020a05620a271100b006a79aa0aba4mr12252991qkp.232.1656434150474;
-        Tue, 28 Jun 2022 09:35:50 -0700 (PDT)
-Received: from localhost.localdomain (ool-4578ffd8.dyn.optonline.net.
- [69.120.255.216])
-        by smtp.gmail.com with ESMTPSA id
- l6-20020a37bb06000000b006a981a2c483sm10942881qkf.39.2022.06.28.09.35.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jun 2022 09:35:50 -0700 (PDT)
-From: Aatir Manzur <aatrapps@gmail.com>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=XwJ4Zo2c;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 33F3A240005;
+	Tue, 28 Jun 2022 17:40:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1656438011;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YOI3lJvRH1h6cugWuelJ22+pNafgIuDVUhFl7jhraV4=;
+	b=XwJ4Zo2cHM98NgJCV7jQYIXwb7TgDeVntcwGPgsdUEJF3mcg6Uhgm1BwG5M1QfutuX6Ojf
+	Ykhx//cP7QvtrhNoyvqDf/6u2iPg9kneKMUN9T52gJGmTRBHwb2o+860zFYe+8owYp0x9P
+	pNwFbZ+3nG6FOlHQVlm1nLmdBqH/U2Q/2dMIrJYNQ6jY563M5aP59OrMuB4JW9amU4wJRB
+	gcXeTk3QPR5eLs9eQf5vB2bxrso9c67Yz3EhNpuSvRjBmoU2c6iGEC8yqHe0vn0YWMUj/A
+	oCHmoQP2+qGWeFp32ui6wFcYFY4A36+W6WwgCMpUOzMgAVm51gCaKSHIm4sK2g==
+From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Aatir Manzur <aatrapps@gmail.com>
-Subject: [PATCH] docs: add CONVERSION_CMD definition
-Date: Tue, 28 Jun 2022 12:35:29 -0400
-Message-Id: <20220628163529.3198-1-aatrapps@gmail.com>
-X-Mailer: git-send-email 2.31.0
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH 1/2] dev-manual: update section about creating NPM packages
+Date: Tue, 28 Jun 2022 19:40:04 +0200
+Message-Id: <20220628174005.3295836-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Jun 2022 16:35:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3036
+ <docs@lists.yoctoproject.org>; Tue, 28 Jun 2022 17:40:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3037
 
-Signed-off-by Aatir Manzur <aatrapps@gmail.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+
+From running the instructions using Poky master
+
+In particular, update command output and the contents
+of generated files.
+
+The "cute-files" example application can now directly be run,
+without having to run it through "node".
+
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ documentation/dev-manual/common-tasks.rst | 49 +++++++++++++++--------
+ 1 file changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 8f7b01c12..600e68372 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1297,6 +1297,12 @@ system and gives an overview of their function and contents.
-       the recipe will be skipped, and if the build system attempts to build
-       the recipe then an error will be triggered.
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index 01dac39c6f..8be3c7c0e8 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -7614,6 +7614,11 @@ The
+ fetch URI to download each dependency and capture license details where
+ possible. The result is a generated recipe.
  
-+   :term:`CONVERSION_CMD`
-+      This variable is used for storing image conversion commands. 
-+      Image conversion can convert an image into different objects like:
-+      - compressed version of the image
-+      - checksums for the image
++After running for quite a long time, in particular building the
++``nodejs-native`` package, the command should end as follows::
 +
-    :term:`COPY_LIC_DIRS`
-       If set to "1" along with the
-       :term:`COPY_LIC_MANIFEST` variable, the
++   INFO: Recipe /home/.../build/workspace/recipes/cute-files/cute-files_1.0.2.bb has been automatically created; further editing may be required to make it fully functional
++
+ The recipe file is fairly simple and contains every license that
+ ``recipetool`` finds and includes the licenses in the recipe's
+ :term:`LIC_FILES_CHKSUM`
+@@ -7636,18 +7641,38 @@ runs.
+ The ``devtool edit-recipe`` command lets you take a look at the recipe::
+ 
+    $ devtool edit-recipe cute-files
++   # Recipe created by recipetool
++   # This is the basis of a recipe and may need further editing in order to be fully functional.
++   # (Feel free to remove these comments when editing.)
++
++   SUMMARY = "Turn any folder on your computer into a cute file browser, available on the local network."
++   # WARNING: the following LICENSE and LIC_FILES_CHKSUM values are best guesses - it is
++   # your responsibility to verify that the values are complete and correct.
++   #
++   # NOTE: multiple licenses have been detected; they have been separated with &
++   # in the LICENSE value for now since it is a reasonable assumption that all
++   # of the licenses apply. If instead there is a choice between the multiple
++   # licenses then you should change the value to separate the licenses with |
++   # instead of &. If there is any doubt, check the accompanying documentation
++   # to determine which situation is applicable.
++
+    SUMMARY = "Turn any folder on your computer into a cute file browser, available on the local network."
+-   LICENSE = "MIT & ISC & Unknown"
++   LICENSE = "BSD-3-Clause & ISC & MIT"
+    LIC_FILES_CHKSUM = "file://LICENSE;md5=71d98c0a1db42956787b1909c74a86ca \
+-       file://node_modules/toidentifier/LICENSE;md5=1a261071a044d02eb6f2bb47f51a3502 \
+-       file://node_modules/debug/LICENSE;md5=ddd815a475e7338b0be7a14d8ee35a99 \
+-       ...
++                       file://node_modules/accepts/LICENSE;md5=bf1f9ad1e2e1d507aef4883fff7103de \
++                       file://node_modules/array-flatten/LICENSE;md5=44088ba57cb871a58add36ce51b8de08 \
++   ...
++                       file://node_modules/cookie-signature/Readme.md;md5=57ae8b42de3dd0c1f22d5f4cf191e15a"
++
+    SRC_URI = " \
+        npm://registry.npmjs.org/;package=cute-files;version=${PV} \
+        npmsw://${THISDIR}/${BPN}/npm-shrinkwrap.json \
+        "
++
+    S = "${WORKDIR}/npm"
++
+    inherit npm
++
+    LICENSE:${PN} = "MIT"
+    LICENSE:${PN}-accepts = "MIT"
+    LICENSE:${PN}-array-flatten = "MIT"
+@@ -7680,17 +7705,10 @@ command to deploy your package::
+    $ devtool deploy-target -s cute-files root@192.168.7.2
+ 
+ Once the package is installed on the target, you can
+-test the application:
+-
+-.. note::
+-
+-   Because of a known issue, you cannot simply run ``cute-files`` as you would
+-   if you had run ``npm install``.
+-
+-::
++test the application to show the contents of any directory::
+ 
+   $ cd /usr/lib/node_modules/cute-files
+-  $ node cute-files.js
++  $ cute-files
+ 
+ On a browser,
+ go to ``http://192.168.7.2:3000`` and you see the following:
+@@ -7718,12 +7736,11 @@ command::
+ 
+    $ devtool add https://github.com/martinaglv/cute-files.git
+ 
+-The
+-recipe this command generates is very similar to the recipe created in
++The recipe this command generates is very similar to the recipe created in
+ the previous section. However, the :term:`SRC_URI` looks like the following::
+ 
+    SRC_URI = " \
+-       git://github.com/martinaglv/cute-files.git;protocol=https \
++       git://github.com/martinaglv/cute-files.git;protocol=https;branch=master \
+        npmsw://${THISDIR}/${BPN}/npm-shrinkwrap.json \
+        "
+ 
 -- 
-2.31.0
+2.34.1
 
 
