@@ -1,168 +1,239 @@
-Return-Path: <quentin.schulz@theobroma-systems.com>
+Return-Path: <aatrapps@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 240D9C43334
-	for <webhook@archiver.kernel.org>; Mon, 18 Jul 2022 09:07:11 +0000 (UTC)
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com
- (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.54])
- by mx.groups.io with SMTP id smtpd.web09.25020.1658135220410067321
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEBEBC433EF
+	for <webhook@archiver.kernel.org>; Mon, 18 Jul 2022 11:33:21 +0000 (UTC)
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com
+ [209.85.166.47])
+ by mx.groups.io with SMTP id smtpd.web10.25788.1658143994998902448
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Jul 2022 02:07:00 -0700
+ Mon, 18 Jul 2022 04:33:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherrycloud.onmicrosoft.com
- header.s=selector2-cherrycloud-onmicrosoft-com header.b=WtM8+ciA;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.20.54,
- mailfrom: quentin.schulz@theobroma-systems.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eJcibeDg/QfiMWYBXlAeEVNv+lUUW5f5YvD2YdRjO1U/3bAkGZ75ZxufczRAftfmIkA0M3IL+jkTPY385zUivuvQWdErwT0TcTXOuT+ehKfI3vnrwnYYxtDLFrdFmulrh1G0N73nGmGMJcjYP4yWNl/StCVBu4OF7sZNLbir9B+J0WIlFSLe0xr0hdDcVi/NFcfQfq/Pb3xJhLOQb58B1k+gYWjfc4vMXWB62QVFmq/gF4E9klXDdLcnQGvPFedmnDvxV7zPQ1XE/ExUPo/DOopoQK//UPzkkGD5LfBg1203tuM6L5JQZR13DnmizlNYQFAAoZ+AYJjJ49128NQQWA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d19D47r/H/B7sVzV3oD2qLjvIllrix+GumFXr/kDeU4=;
- b=Zy8gRo+FWWseGc0qMR4t43T8n2PieppwcKkK0gkIqw40adH0slk0H7WR1Zw600igBExgOAnsZPxehpBKIfYPALAC0lywkwAXxsFVFH2yxJyI6MX37Sa+UUFXTDp+EsZfFxEpFeP5sDtlCoWsFad+mniKm0ygSO3Id+IZs5W877GPentxEpiUuf3Ey6rOrDyQBeFjUI9+ut+xoxSZtzMYQO2DaXW1+aePdoM+h1DYQY5AksgXM02J4I2heqxt4KT0OKUfDPZALKbsnGxPzUrmwae6SvJR8xeg1z1bxGS9knXCk+93AwXosWmRyuZYidERIJ8Aay5D1sJLS5hwvPsWIg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=Pnxgbkk4;
+ spf=pass (domain: gmail.com, ip: 209.85.166.47, mailfrom: aatrapps@gmail.com)
+Received: by mail-io1-f47.google.com with SMTP id r70so7807272iod.10
+        for <docs@lists.yoctoproject.org>;
+ Mon, 18 Jul 2022 04:33:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=cherrycloud.onmicrosoft.com; s=selector2-cherrycloud-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d19D47r/H/B7sVzV3oD2qLjvIllrix+GumFXr/kDeU4=;
- b=WtM8+ciAAyhdrkGRewALVVHrjI6aNhosCtubj/wB/1cA8mEpPFYalGLZidSR5oc5T+kwG9wlQvrDyyQOohyUBDFZzhO8iR7Zfl9xToxhJHTQwPI229EFZ1gTYGGDcR3pDPXLiHnVNxA7Qk+lOne8Yc5CGzMUDGRy73Hk/J2XVY0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
-Received: from PA4PR04MB9367.eurprd04.prod.outlook.com (2603:10a6:102:2aa::7)
- by DBBPR04MB6138.eurprd04.prod.outlook.com (2603:10a6:10:cf::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5438.23; Mon, 18 Jul
- 2022 09:06:56 +0000
-Received: from PA4PR04MB9367.eurprd04.prod.outlook.com
- ([fe80::5c3:766e:66e9:8c4]) by PA4PR04MB9367.eurprd04.prod.outlook.com
- ([fe80::5c3:766e:66e9:8c4%9]) with mapi id 15.20.5438.022; Mon, 18 Jul 2022
- 09:06:56 +0000
-Message-ID: <56af7b46-b595-f440-592a-79d8a3cefaf6@theobroma-systems.com>
-Date: Mon, 18 Jul 2022 11:06:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6+jUt8m3qn5OkDnM0UVz3Hb8kyx6kdKw7SGF4UQJf1s=;
+        b=Pnxgbkk4zpcmGbCvayMITeRK0VItekmCUBaKzJgXk6nUSqeJjBlGhKC5biytbDE/jf
+         f/cC1fg9S0ojFVbMGoGf++h2kkMeUS3y1YrF72hQXSAxxxNZlvP5760WWRS58xyn+T9u
+         gkxwUkBuPqVIZAwrdwN9MEXff+7IHty33cTVL0h+QIIsKfqtqMEmYv8XeD3bBgI3b5cn
+         ln6/MyYUo9+DdfJkFXcr3k6b14aE/FGbsTFZ5iDSsqDobK2NnJiIEv8qQk/OTpDu9oHj
+         2+3BAfF3/io6ov2pp92ge1N7gqqvvfJObOGGFhNp0C+orjZpUh0nORKr8E/5QemV14WY
+         5XDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6+jUt8m3qn5OkDnM0UVz3Hb8kyx6kdKw7SGF4UQJf1s=;
+        b=nI1Erjja2Gz3fYT+nv3M1PpnhTfabm4O/Y/87APUQh7rzVPZSc7ZCnihTVeXAWUZc+
+         /Yn1l35algzRW3SaZ+eUFsp8dcLGVfC9308S7+rnUSDwQpFn2xMsEPZwMN/0qlugHUgk
+         gmSqRw8YgY1/tBfMiYX25VF78o9ukdBtd6c/YDlBHj4XBzBidYXxlUEhHK8qZj/wKP8v
+         eV8jbgvepiX7WCWM7+GK7jXBoC30iEUQXj3czUOk7gS7VOTOhQvnSh9TlCYqx4oNdyiX
+         FIc0T1R0HJMT9g9kRoKZhTUep0qqPehDawnZaj1BM79N+GIeIE5Nnj17bamcZMR4jqL+
+         vfzA==
+X-Gm-Message-State: AJIora8ukAcHpmDK6EZLGPOEJivjaOtOVVfTDPkGlsCUIyPHzAorZVDm
+	dxRWJW2VYP/BrRhjSOLc/1YsrozGEpsGGYlvtc8=
+X-Google-Smtp-Source: 
+ AGRyM1tgS3gruhTPlYL0W0WoPwbu86GqrfUWCsbWNZPx3eseXn7fwpzAHmVT2ryaLfE9JHLvlKjP9/WDq1hqdMsnCfY=
+X-Received: by 2002:a05:6602:26c3:b0:66c:f8b2:53c with SMTP id
+ g3-20020a05660226c300b0066cf8b2053cmr12460193ioo.50.1658143994392; Mon, 18
+ Jul 2022 04:33:14 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220705193847.12544-1-aatrapps@gmail.com>
+ <56af7b46-b595-f440-592a-79d8a3cefaf6@theobroma-systems.com>
+ <d5241899-8670-dbad-1872-5f6da520b061@bootlin.com>
+In-Reply-To: <d5241899-8670-dbad-1872-5f6da520b061@bootlin.com>
+From: Aatir Manzur <aatrapps@gmail.com>
+Date: Mon, 18 Jul 2022 07:33:03 -0400
+Message-ID: 
+ <CAJ1z=zxpLP-ph40B3Sid=WEimqE=JrksvfXg41tSRtrBQVrMCA@mail.gmail.com>
 Subject: Re: [docs] [PATCH] docs: Sphinx note directive for DISTO_FEATURES
  definition
-Content-Language: en-US
-To: aatir <aatrapps@gmail.com>, docs@lists.yoctoproject.org
-References: <20220705193847.12544-1-aatrapps@gmail.com>
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <20220705193847.12544-1-aatrapps@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0401CA0003.eurprd04.prod.outlook.com
- (2603:10a6:800:4a::13) To PA4PR04MB9367.eurprd04.prod.outlook.com
- (2603:10a6:102:2aa::7)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: 9bf342fe-5d24-4e84-3938-08da689cdd53
-X-MS-TrafficTypeDiagnostic: DBBPR04MB6138:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	h/2vCp0c9Qe328Ms7jTC4wmcR89VY0KhAi/rQBuFwrnnWuKR+sq5BJu2P34LUczspoxp1JdRMaXLlYZqLCKzK9iH5zw4qZHRlzXM9py3enE6C3Wla89KBixT3WBToeGhtT47DxedLh8JHygjvJYCUm+0dZ0U+KsLP6QK22RNdz8Tpm3C0ylm0T/lulqqUWY7etTLAmu8pL9DZWYJgt/ahoZLQ/wqZWbMztV5YZ83YXWh1UjUuiM++tP5OjhvZPmSlHp0c0BnNM/su+TM1znIN5q02A+yLijfP/EDUanfvoy5TAxmFGjw24Of76vehvXIxEKQB9dmpZnI4kkd9umXwri+RNkMgjtmhBhb6YkVI33sSumPZxCHIVSg2Esu469+KMXA5MYiUuReND+T4XYZwhFrF3U8z4ms2euB59nRglsn5XXNJPvwobNxJhghVgORf3w1RTQB9lDvYQWWTo3CvAKeLhYnkRMJLpW2zyZ+iGchuke6SXcNokop1hbJu0xNBRvDX7NVKP8pGHV6VIIScPnwZDjG/PcIa1hnpTQfzp7egKDq6p3AlSZaRyc2Nolh/rIBvHw0vFJwl/ocJYezNzQZB2QhlPVQ8NxCDU9KLoiMM/6EDVEdj6OGPEBmix8wYNdh8p5a5JS9yEzrCa28+BCvuGmySttQMgPaVn8eXkW6oIf6UWnJprqFtr9fcg7eDZgPestjx5c5ThnTbtxHTzFDuBVhbzklAeDDGXWSc4FSI7zc8yEc2r/9gjU5oX+MnDovVtCMeCLylHMlzMksfohqjei8Bs0OCNq0Qvjc184Qrv0bqQjogJHFi1GlwGBWjkqdb5SpU6IjMUmh4yJrgg==
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB9367.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(396003)(346002)(366004)(39850400004)(376002)(136003)(83380400001)(2616005)(186003)(53546011)(6486002)(478600001)(6506007)(38100700002)(41300700001)(6512007)(66946007)(44832011)(2906002)(31686004)(5660300002)(36756003)(8936002)(8676002)(316002)(31696002)(66556008)(86362001)(66476007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?K25MSFQzSmNJTDc1bDhMd2NqaStkcGZhaVUyU0ZZa2RESmcxZk5xd1hsb1NS?=
- =?utf-8?B?YnZiU1M1MzRCK3A4UjZ4cTVPK2FaR1lpMXo0VGFZdkxDN2xMWDNhY2pUbzk1?=
- =?utf-8?B?OVQ3NDRKYWZRV2xMTnVCK2R6elJMUnMwTTZRZldQelVyYXBTYzlWRVZRd045?=
- =?utf-8?B?TTR6dStJblZDNGZacWZlbmNodG5BSG1PRUx4TjlMMnNDVk1zU0krQ1JHR2Vs?=
- =?utf-8?B?NmNPMHdSOS9yWGFvM0JtMEdOZTlzNkNOM2lxSEtBUnhVTWpIN0VHVHZ1NU5U?=
- =?utf-8?B?N0xndlB4OGsxaXBpd3VyVys1NFJKZnpEeTJZMFFtZW5oVy85b0ZIbzgrbW9y?=
- =?utf-8?B?aE0xZ1JjMVhRY0Zoa3ZqdnhWbWI1c2VvYjBiVjJVQTcxSFZVSlhieC8rdk1V?=
- =?utf-8?B?RkNrdXBOU1NJVHFDeUFSZ2dnSk9nMkR1Vmh1OGZKcGk2TGpubWpiUWcxeWtu?=
- =?utf-8?B?a0F5MVFZRjdNUDVvS29GMHlWSnBpL0duNExlY21VRWZWQlZ0Slp4N25abnZj?=
- =?utf-8?B?QXhEbDV0d1J5b2Z6d2lDcWZTV0NGMm4vVWo5QytKZWE5RGl5YlpYaGc3OGJt?=
- =?utf-8?B?M3I1QjA1SWQvbTM1bFBVOEgybUZpMWlFM254bXFTVE1tSlArWHdtTy9zT2Nt?=
- =?utf-8?B?TzVEdzZNNlBBZU5JbUZkZWRua3VlM3B2UHUrNThlSkMvcVViNFNveWhydGpM?=
- =?utf-8?B?V2szL3JZVzJPcTR1MTRFNGgvNlNxMGtFNkNzSWl5NmtWQWN4QjdUdXVHYko4?=
- =?utf-8?B?LzRvZlJpd1c3UnFFQmZHc01HaHNEcmt2MUt1R2VLYzNwM0JnQ28yTHlnQkNJ?=
- =?utf-8?B?RkFzeWcyR0ZZNGFLRXNmY09uQ3YzeDU5NDBPcmR3ODlWOHo2UGlBU0xnQ1VM?=
- =?utf-8?B?elJ6VzlZU3dOVFVheWdUZjNMeHpybW9zS0tocGpUSjZzRk00R3hOdVBiMmV0?=
- =?utf-8?B?UTJGTW54ZEtGbFRzcTVtTERUYkdQdEJ1NzExS3dCS1ZqQ3VCS25uR1g4WTgv?=
- =?utf-8?B?TE15QWZWWklPMm5INm9LTUx6dHdrQUswcko2UWVlUk5OZEhWQ1lCeUxvTFNC?=
- =?utf-8?B?NlFrRzV4SS95WEFCVFkzNUg5bHI4TFcwdVFneFpyWXRkZzNyUm5FVzlvcFAr?=
- =?utf-8?B?MUdxRHRKS2twOWg1dk02bXA3Tkl1MFJIQkc5cXFwMVFoSFZEaUljMngzUWxv?=
- =?utf-8?B?MGthVGdDcm1lZ3hsL3E4TWRVcnVHUDdVaTNWemdXZWdGRzVxS0R5UUZMRXlC?=
- =?utf-8?B?LzlmWTdRNVBUdkVGT3lQZjlzU1FmV0ZObkdaTzViNm1KdmE4T3M3WGkzeTBB?=
- =?utf-8?B?VEpxTzZ1bnJDaFFPbk96RTBMQkdHTGFkbjJoTDV2VGpYUlkyN3E3TEgzUVgz?=
- =?utf-8?B?NUZ0ZGdEUEloUmNHN3ppdlpjUWdKcFptaUQyeE9mTXhLVDdRcm52YTE4YnU3?=
- =?utf-8?B?aUlRNzZuc2swdXVWenRodmlMUXhuVFlJcDZYWWlidmRyU2IvQUd5L2pMVVc2?=
- =?utf-8?B?WWQrZDJWeVg4OTRiY29rcXVVUVJ5SWtTa2p2bGJZOHBUZ0V3Yy9zeU9zZXV1?=
- =?utf-8?B?L2ZXN3RvUTFCSXc1RVZjQmhnU3lsdStsMjlWRXdTcDh5R0hvalNmdEk3S3VD?=
- =?utf-8?B?OG56WkxXL3NHblFDd1BWSG92RWF3RjAydmJaU3IwTklmN1Z6TW91TGpzMlVU?=
- =?utf-8?B?aE8zTlhsMkdGNXczRXNIYXpGaVdtZi9VTE9IaHVYZGhQemlHeEtOSGdCSFJL?=
- =?utf-8?B?aHdpbjQ3b2dDM2RTaXBMdTZoNUZMM0hmY3piTm9hOTUwaElSRitvTEdMMDN4?=
- =?utf-8?B?UUFNY1QweDFqZnZaaXFVYm02NEFBWVNnMHBETnpCSFhjRTdmajIzTnJWeFM5?=
- =?utf-8?B?RHZhS3BJclZXMVRkZ2k4VFl4emZoSTg4cndUUjFXNGRwSDF1M1huQ1ByRHF6?=
- =?utf-8?B?dzRwQnpZMWdSaUl6QnI5eU1ZRFBQUWlBb2h6RGltSVJpRmNBNE1XSWN2YUlj?=
- =?utf-8?B?b2JnekdZZW14TWlyMW5kN294T2N1Vmdxc3VMYlFTaThUUzlGUEdoUXdoSmNG?=
- =?utf-8?B?NXZlWmx1L3dSNWRCOVRXWmw4VWZCZEsvYm04V2tIT0VwcWlJVkJQSVJVa2xO?=
- =?utf-8?B?d0R1TERDRENJeHd6RkZSaUtvQnRFQXdRYnkrZksrVmpDQ0t2MlpkSlRpM3Ez?=
- =?utf-8?Q?aLTLFz5fwzMN0fCSM58grs2nhGY/goU45nCa2lkBosXb?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 
- 9bf342fe-5d24-4e84-3938-08da689cdd53
-X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB9367.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Jul 2022 09:06:56.8126
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 
- wLxZqzFwX/mvGxooVMq7PbMozbPP35WnO02bAO+YWF3FXfSMG70nM3M/Tv1s2hXfqrnbIXHRsBRNKvqawS/u1nAEsLFuQOTLZmqlXcjiT9Y791exXbfB9oHqMnIUhcuO
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB6138
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+ docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="000000000000c5b63d05e412bb1e"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 18 Jul 2022 09:07:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3057
+ <docs@lists.yoctoproject.org>; Mon, 18 Jul 2022 11:33:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3059
 
-Hi Aatir,
+--000000000000c5b63d05e412bb1e
+Content-Type: text/plain; charset="UTF-8"
 
-Sorry for the delay, just had the time to look at it now.
+Can someone please tell me where that From: field might be getting picked
+up from? I can see my full name when I look at my git log.
+commit caebfc10b69bcb35a4fcf850df2496de5c490b44 (HEAD -> master)
+Author: Aatir Manzur <aatrapps@gmail.com>
+Date:   Tue Jul 5 15:19:07 2022 -0400
 
-On 7/5/22 21:38, aatir wrote:
-> Signed-off-by: Aatir Manzur <aatrapps@gmail.com>
-> ---
->   documentation/ref-manual/variables.rst | 12 ++++++++----
->   1 file changed, 8 insertions(+), 4 deletions(-)
-> 
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index c4b2119f2..6a43e8dc5 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -1886,10 +1886,14 @@ system and gives an overview of their function and contents.
->         optionally support the feature. For example, specifying "x11" in
->         :term:`DISTRO_FEATURES`, causes every piece of software built for the
->         target that can optionally support X11 to have its X11 support
-> -      enabled. Note: just enabling :term:`DISTRO_FEATURES` alone doesn't
-> -      enable feature support for packages, mechanisms such as making
-> -      :term:`PACKAGECONFIG` track :term:`DISTRO_FEATURES` are used
-> -      to enable/disable package features.
-> +      enabled.
-> +
+    docs: Sphinx note directive for DISTO_FEATURES definition
 
-Spurious white space after the dot.
+    Signed-off-by: Aatir Manzur <aatrapps@gmail.com>
 
-> +      .. note::
-> +
+On Mon, Jul 18, 2022 at 7:02 AM Michael Opdenacker <
+michael.opdenacker@bootlin.com> wrote:
 
-Spurious white space after the second colon.
+>
+> On 7/18/22 11:06, Quentin Schulz wrote:
+> > Hi Aatir,
+> >
+> > Sorry for the delay, just had the time to look at it now.
+> >
+> > On 7/5/22 21:38, aatir wrote:
+> >> Signed-off-by: Aatir Manzur <aatrapps@gmail.com>
+> >> ---
+> >>   documentation/ref-manual/variables.rst | 12 ++++++++----
+> >>   1 file changed, 8 insertions(+), 4 deletions(-)
+> >>
+> >> diff --git a/documentation/ref-manual/variables.rst
+> >> b/documentation/ref-manual/variables.rst
+> >> index c4b2119f2..6a43e8dc5 100644
+> >> --- a/documentation/ref-manual/variables.rst
+> >> +++ b/documentation/ref-manual/variables.rst
+> >> @@ -1886,10 +1886,14 @@ system and gives an overview of their
+> >> function and contents.
+> >>         optionally support the feature. For example, specifying "x11" in
+> >>         :term:`DISTRO_FEATURES`, causes every piece of software built
+> >> for the
+> >>         target that can optionally support X11 to have its X11 support
+> >> -      enabled. Note: just enabling :term:`DISTRO_FEATURES` alone
+> >> doesn't
+> >> -      enable feature support for packages, mechanisms such as making
+> >> -      :term:`PACKAGECONFIG` track :term:`DISTRO_FEATURES` are used
+> >> -      to enable/disable package features.
+> >> +      enabled.
+> >> +
+> >
+> > Spurious white space after the dot.
+> >
+> >> +      .. note::
+> >> +
+> >
+> > Spurious white space after the second colon.
+> >
+> > This looks good otherwise, can be fixed while applying by the
+> > maintainer I guess.
+>
+>
+> Right, I fixed that, as well as a typo in the commit title.
+> By the way, the commit author was still wrong, because the "From" field
+> of your e-mail was incomplete:
+>
+> From: "aatir" <aatrapps@gmail.com>
+> instead of
+> From: "Aatir Manzur" <aatrapps@gmail.com>
+>
+> I fixed the commit in master-next, but I hope you can fix it for next time.
+>
+> Many thanks!
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
 
-This looks good otherwise, can be fixed while applying by the maintainer 
-I guess.
+--000000000000c5b63d05e412bb1e
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
+<div dir=3D"ltr">Can someone please tell me where that From: field might be=
+ getting picked up from? I can see my full name when I look at my git log.<=
+div>commit caebfc10b69bcb35a4fcf850df2496de5c490b44 (HEAD -&gt; master)<br>=
+Author: Aatir Manzur &lt;<a href=3D"mailto:aatrapps@gmail.com">aatrapps@gma=
+il.com</a>&gt;<br>Date: =C2=A0 Tue Jul 5 15:19:07 2022 -0400<br><br>=C2=A0 =
+=C2=A0 docs: Sphinx note directive for DISTO_FEATURES definition<br>=C2=A0 =
+=C2=A0 <br>=C2=A0 =C2=A0 Signed-off-by: Aatir Manzur &lt;<a href=3D"mailto:=
+aatrapps@gmail.com">aatrapps@gmail.com</a>&gt;<br></div></div><br><div clas=
+s=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Mon, Jul 18, 202=
+2 at 7:02 AM Michael Opdenacker &lt;<a href=3D"mailto:michael.opdenacker@bo=
+otlin.com">michael.opdenacker@bootlin.com</a>&gt; wrote:<br></div><blockquo=
+te class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px =
+solid rgb(204,204,204);padding-left:1ex"><br>
+On 7/18/22 11:06, Quentin Schulz wrote:<br>
+&gt; Hi Aatir,<br>
+&gt;<br>
+&gt; Sorry for the delay, just had the time to look at it now.<br>
+&gt;<br>
+&gt; On 7/5/22 21:38, aatir wrote:<br>
+&gt;&gt; Signed-off-by: Aatir Manzur &lt;<a href=3D"mailto:aatrapps@gmail.c=
+om" target=3D"_blank">aatrapps@gmail.com</a>&gt;<br>
+&gt;&gt; ---<br>
+&gt;&gt; =C2=A0 documentation/ref-manual/variables.rst | 12 ++++++++----<br=
+>
+&gt;&gt; =C2=A0 1 file changed, 8 insertions(+), 4 deletions(-)<br>
+&gt;&gt;<br>
+&gt;&gt; diff --git a/documentation/ref-manual/variables.rst <br>
+&gt;&gt; b/documentation/ref-manual/variables.rst<br>
+&gt;&gt; index c4b2119f2..6a43e8dc5 100644<br>
+&gt;&gt; --- a/documentation/ref-manual/variables.rst<br>
+&gt;&gt; +++ b/documentation/ref-manual/variables.rst<br>
+&gt;&gt; @@ -1886,10 +1886,14 @@ system and gives an overview of their <br>
+&gt;&gt; function and contents.<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 optionally support the =
+feature. For example, specifying &quot;x11&quot; in<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 :term:`DISTRO_FEATURES`=
+, causes every piece of software built <br>
+&gt;&gt; for the<br>
+&gt;&gt; =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 target that can optiona=
+lly support X11 to have its X11 support<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enabled. Note: just enabling :term=
+:`DISTRO_FEATURES` alone <br>
+&gt;&gt; doesn&#39;t<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enable feature support for package=
+s, mechanisms such as making<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 :term:`PACKAGECONFIG` track :term:=
+`DISTRO_FEATURES` are used<br>
+&gt;&gt; -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to enable/disable package features=
+.<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 enabled.<br>
+&gt;&gt; +<br>
+&gt;<br>
+&gt; Spurious white space after the dot.<br>
+&gt;<br>
+&gt;&gt; +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 .. note::<br>
+&gt;&gt; +<br>
+&gt;<br>
+&gt; Spurious white space after the second colon.<br>
+&gt;<br>
+&gt; This looks good otherwise, can be fixed while applying by the <br>
+&gt; maintainer I guess.<br>
+<br>
+<br>
+Right, I fixed that, as well as a typo in the commit title.<br>
+By the way, the commit author was still wrong, because the &quot;From&quot;=
+ field <br>
+of your e-mail was incomplete:<br>
+<br>
+From: &quot;aatir&quot; &lt;<a href=3D"mailto:aatrapps@gmail.com" target=3D=
+"_blank">aatrapps@gmail.com</a>&gt;<br>
+instead of<br>
+From: &quot;Aatir Manzur&quot; &lt;<a href=3D"mailto:aatrapps@gmail.com" ta=
+rget=3D"_blank">aatrapps@gmail.com</a>&gt;<br>
+<br>
+I fixed the commit in master-next, but I hope you can fix it for next time.=
+<br>
+<br>
+Many thanks!<br>
+Michael.<br>
+<br>
+-- <br>
+Michael Opdenacker, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
+//bootlin.com</a><br>
+<br>
+</blockquote></div>
 
-Thanks!
-Quentin
+--000000000000c5b63d05e412bb1e--
 
