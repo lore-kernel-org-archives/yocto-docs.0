@@ -2,102 +2,77 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B91D7C433EF
-	for <webhook@archiver.kernel.org>; Tue, 19 Jul 2022 17:51:00 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.43904.1658253051709917118
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C708AC43334
+	for <webhook@archiver.kernel.org>; Tue, 19 Jul 2022 18:40:30 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net
+ [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web11.44422.1658256021212581345
  for <docs@lists.yoctoproject.org>;
- Tue, 19 Jul 2022 10:50:52 -0700
+ Tue, 19 Jul 2022 11:40:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZXL8ZSwW;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nFbIcc4W;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 4C3D860003;
-	Tue, 19 Jul 2022 17:50:49 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id EF5D4240005;
+	Tue, 19 Jul 2022 18:40:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1658253049;
+	t=1658256019;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8Cnuxa0qjalXBsQGMUlmSjoMI23evh6VympEqU77bQI=;
-	b=ZXL8ZSwWgKqjAD+POcGqRcqXxU9uLB8/NdcLNHGnnnJZ1tg977TUfamhFzwnDzf8/FeWVV
-	A74rM/3Jip9VJx+Scj/rIEeonkNSW0jELmBinJpecOqx/uZI9Cco+Wf6pgpvU/TYrLQwJL
-	AjbFyzWezm2wJT70NXdXeanlBUOlfK1zpPSunrd2TKdCswYi1GVtH8PFwrf3k9w7V0e7If
-	D7yMQkl8XInRE5VlYeeV0JbRpfEonmRQXfJ3v476rkTvem9dZ4RZqdzgWukXqXfMfVG7Yx
-	XayIrCbdRGIFNuCmvMQTuY+nfouzY4fyUkawOo7HP9szxG1L9VzjUvttLH0XYg==
-Message-ID: <547edd13-2efb-b3a6-39e3-01c86c937f88@bootlin.com>
-Date: Tue, 19 Jul 2022 19:50:48 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=np29NvcIjJ6PdLiP6/3Mx9rsWNJjnyynd8NFd1sCGX8=;
+	b=nFbIcc4WCzhWOFx4NkvvRiRSgxFUsssYrsFsOXyXGc60zJSTbZSbQmBc+RfTWKJenE45Ds
+	DwihtEeNRE7efdZ7e7+nZcgJAvaW1EUISgtMje0B9V7MeznimhnJLD/LgOi736ESIYDhH3
+	Kzr5eIfxnJdQNDkr0onEdoUUTs1Y+BEgKiZA+wOS0S/pv+g/vCIbUNtFDaR7AmOuJ13HgZ
+	KWIIxfI9muOMQ8gFYExFJl743OAgCwCi/LZRp47NJH5ie4B12iK1OTWm9NDrMO8jWHCjtE
+	TzrscE00eO5z27N2dQWvd/5TCjFTWF4UvH3lYVrSG5HCFNnAWLeFNltsb1MqEg==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <foss@0leil.net>
+Subject: [PATCH] dunfell: ref-manual: variables: remove sphinx directive from
+ literal block
+Date: Tue, 19 Jul 2022 20:40:09 +0200
+Message-Id: <20220719184009.511995-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
- Quentin Schulz <foss+yocto@0leil.net>
-Subject: Re: [docs] [PATCH] docs: ref-manual: variables: remove sphinx
- directive from literal block
-Content-Language: en-US
-To: Quentin Schulz <foss@0leil.net>, docs@lists.yoctoproject.org
-References: <20220707133317.1202686-1-foss+yocto@0leil.net>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20220707133317.1202686-1-foss+yocto@0leil.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 Jul 2022 17:51:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3070
+ <docs@lists.yoctoproject.org>; Tue, 19 Jul 2022 18:40:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3071
 
-Hey Quentin
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Thanks for the patch!
+Literal blocks make sphinx take their text verbatim. This means that
+directives cannot be used in literal blocks. This means :term:`S` was
+printed as-is, without actually creating a link to the S variable
+definition as would be expected outside of literal blocks.
 
-On 7/7/22 15:33, Quentin Schulz wrote:
-> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
->
-> Literal blocks make sphinx take their text verbatim. This means that
-> directives cannot be used in literal blocks. This means :term:`S` was
-> printed as-is, without actually creating a link to the S variable
-> definition as would be expected outside of literal blocks.
->
-> Cc: Quentin Schulz <foss+yocto@0leil.net>
-> Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-> ---
->   documentation/ref-manual/variables.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index c4b2119f2..dbb7a4628 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -7660,7 +7660,7 @@ system and gives an overview of their function and contents.
->         :ref:`systemd-boot <ref-classes-systemd-boot>` class sets the
->         :term:`SYSTEMD_BOOT_CFG` as follows::
->   
-> -         SYSTEMD_BOOT_CFG ?= "${:term:`S`}/loader.conf"
-> +         SYSTEMD_BOOT_CFG ?= "${S}/loader.conf"
->   
->         For information on Systemd-boot, see the `Systemd-boot
->         documentation <https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
+Initially contributed to the master branch by Quentin Schulz.
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Quentin Schulz <foss@0leil.net>
+---
+ documentation/ref-manual/ref-variables.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Good catch!
-Using the mega-manual, I double checked that this was the only instance 
-of this issue.
-
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-... and merged into master-next.
-
-Thanks again!
-Cheers
-Michael.
-
+diff --git a/documentation/ref-manual/ref-variables.rst b/documentation/ref-manual/ref-variables.rst
+index e184608d19..b8d56a082b 100644
+--- a/documentation/ref-manual/ref-variables.rst
++++ b/documentation/ref-manual/ref-variables.rst
+@@ -7542,7 +7542,7 @@ system and gives an overview of their function and contents.
+       ``SYSTEMD_BOOT_CFG`` as follows:
+       ::
+ 
+-         SYSTEMD_BOOT_CFG ?= "${:term:`S`}/loader.conf"
++         SYSTEMD_BOOT_CFG ?= "${S}/loader.conf"
+ 
+       For information on Systemd-boot, see the `Systemd-boot
+       documentation <http://www.freedesktop.org/wiki/Software/systemd/systemd-boot/>`__.
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
