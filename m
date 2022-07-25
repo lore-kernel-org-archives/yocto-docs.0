@@ -1,136 +1,98 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <enrico.scholz@sigma-chemnitz.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5ADF4C43334
-	for <webhook@archiver.kernel.org>; Mon, 25 Jul 2022 11:53:57 +0000 (UTC)
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
- by mx.groups.io with SMTP id smtpd.web11.27025.1658750035208099402
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 34744C433EF
+	for <webhook@archiver.kernel.org>; Mon, 25 Jul 2022 18:15:19 +0000 (UTC)
+Received: from smtpout.cvg.de (smtpout.cvg.de [87.128.211.67])
+ by mx.groups.io with SMTP id smtpd.web09.31723.1658772911131165924
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Jul 2022 04:53:56 -0700
+ Mon, 25 Jul 2022 11:15:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@axis.com header.s=axis-central1 header.b=pdkGMJci;
- spf=pass (domain: axis.com, ip: 195.60.68.17,
- mailfrom: peter.kjellerstedt@axis.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1658750036;
-  x=1690286036;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=6tLYXvZtNd5HsyMvja1M6LcwBULUcMx2aqjXUqlNXGE=;
-  b=pdkGMJciZOOEVdrMiTKwUnYCODEkGV6mS88jO4BD0cXmDUO+GRbYBQDI
-   8TqBNpaK+b9siEuDlAvBY5HUevQYjzw4VaJhkw6qlvzx+70vAInFwXvtu
-   r3uJpzAZIFMJ1RO9pSgKS00xbOSLIYOKf3w04bTtSo2xWtkV4JY2yLhpR
-   bmUTfrlRH5xLOIExPU+znrilakYCZzJEh3EnMALiR/CGBJ/8pZt0L1yt+
-   Rjhkx/HDVPoCt+w9Xznj8yBZPgTVAKPAAPdC/AC2bYRvS1tjS3MELku/s
-   ZXtrmu6p+O4oX9vwYZd7ujGVk30aewk2tN7AR/0iZNalvXd3uaF1TgSbV
-   Q==;
-From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>, Marek Vasut
-	<marex@denx.de>, "bitbake-devel@lists.openembedded.org"
-	<bitbake-devel@lists.openembedded.org>
-CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>, "Quentin
- Schulz" <foss+yocto@0leil.net>, Martin Jansa <martin.jansa@gmail.com>,
-	"Richard Purdie" <richard.purdie@linuxfoundation.org>
-Subject: RE: [docs] [bitbake-devel] [PATCH v2] bitbake-user-manual: Document
+ dkim=pass header.i=@sigma-chemnitz.de header.s=v2022040800 header.b=VR7s/b6F;
+ spf=pass (domain: sigma-chemnitz.de, ip: 87.128.211.67,
+ mailfrom: enrico.scholz@sigma-chemnitz.de)
+Received: from mail-mta-2.intern.sigma-chemnitz.de
+ (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
+	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
+ 26PIF6PP646095
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <docs@lists.yoctoproject.org>; Mon, 25 Jul 2022 20:15:06 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
+	s=v2022040800; t=1658772906;
+	bh=ods/jFByCPv9RGJEJPWCH+Yj3YVf0uZsHvJiq8vE+Lg=; l=503;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To;
+	b=VR7s/b6FSR36lRN/imOWeBzXa+GbYBBeYn7yR2f4AvHs7nnyqogKVe428htA3RORd
+	 lTaxdOOeJCwWW2w2I9XH50D49x1kiFe/etzzTVpX5bay8pnsBvIMeQpKGFIR6Vfspt
+	 zn1lsD42O/euH7HY1J8nepnYN8Pkgas08k0vo3R/B0pX37zi0Bonzk5xkoJJa5re4V
+	 xJ+HIOcRTd6vVC/g6nmaOWgpInzlZme6ohgL1t/e4z8mNmwpamk8tw95m+KCkevyqi
+	 20zj6wdKij88kBcWDlkhTm0BHDyYSwkpm1zLp00FqT+ZBoSqVL3XI6+a7tNj8QC9mw
+	 81qZ9shffFxAw==
+Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local
+ [192.168.16.32])
+	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id
+ 26PIF2LP575031
+	for <docs@lists.yoctoproject.org> from enrico.scholz@sigma-chemnitz.de;
+ Mon, 25 Jul 2022 20:15:03 +0200
+Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by
+ reddoxx.intern.sigma-chemnitz.de
+	(Reddoxx engine) with SMTP id 1479363FA9D; Mon, 25 Jul 2022 20:15:01 +0200
+Received: from ensc-pc.intern.sigma-chemnitz.de
+ (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
+	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
+ 26PIEwTf440211
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
+	Mon, 25 Jul 2022 20:14:58 +0200
+Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
+	(envelope-from <ensc@sigma-chemnitz.de>)
+	id 1oG2ba-00FmrU-DX;
+	Mon, 25 Jul 2022 20:14:58 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+To: "Marek Vasut" <marex@denx.de>
+Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
+Subject: Re: [bitbake-devel] [PATCH v3] bitbake-user-manual: Document
  override :append, :prepend, :remove order
-Thread-Topic: [docs] [bitbake-devel] [PATCH v2] bitbake-user-manual: Document
- override :append, :prepend, :remove order
-Thread-Index: AQHYoBVYXvQOsqbXD0uZYYp+3BV9/a2O1wwAgAAhyxA=
-Date: Mon, 25 Jul 2022 11:53:53 +0000
-Message-ID: <6f82be5c0c704100b5a88d9b3f0a8c4f@axis.com>
-References: <20220725105715.89474-1-marex@denx.de>
- <0897938e-df44-2c3d-95ce-ca7474b1c810@theobroma-systems.com>
-In-Reply-To: <0897938e-df44-2c3d-95ce-ca7474b1c810@theobroma-systems.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.5.60]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+References: <20220725155625.381756-1-marex@denx.de>
+Date: Mon, 25 Jul 2022 20:14:58 +0200
+In-Reply-To: <20220725155625.381756-1-marex@denx.de> (Marek Vasut's message of
+	"Mon, 25 Jul 2022 17:56:25 +0200")
+Message-ID: <lyr12983fh.fsf@ensc-pc.intern.sigma-chemnitz.de>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
 MIME-Version: 1.0
+Content-Type: text/plain
+Sender: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 25 Jul 2022 11:53:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3084
+ <docs@lists.yoctoproject.org>; Mon, 25 Jul 2022 18:15:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3085
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
-amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmDQo+IE9mIFF1
-ZW50aW4gU2NodWx6DQo+IFNlbnQ6IGRlbiAyNSBqdWxpIDIwMjIgMTM6NDgNCj4gVG86IE1hcmVr
-IFZhc3V0IDxtYXJleEBkZW54LmRlPjsgYml0YmFrZS1kZXZlbEBsaXN0cy5vcGVuZW1iZWRkZWQu
-b3JnDQo+IENjOiBkb2NzQGxpc3RzLnlvY3RvcHJvamVjdC5vcmc7IFF1ZW50aW4gU2NodWx6IDxm
-b3NzK3lvY3RvQDBsZWlsLm5ldD47DQo+IE1hcnRpbiBKYW5zYSA8bWFydGluLmphbnNhQGdtYWls
-LmNvbT47IFJpY2hhcmQgUHVyZGllDQo+IDxyaWNoYXJkLnB1cmRpZUBsaW51eGZvdW5kYXRpb24u
-b3JnPg0KPiBTdWJqZWN0OiBSZTogW2RvY3NdIFtiaXRiYWtlLWRldmVsXSBbUEFUQ0ggdjJdIGJp
-dGJha2UtdXNlci1tYW51YWw6DQo+IERvY3VtZW50IG92ZXJyaWRlIDphcHBlbmQsIDpwcmVwZW5k
-LCA6cmVtb3ZlIG9yZGVyDQo+IA0KPiBIaSBNYXJlaywNCj4gDQo+IE9uIDcvMjUvMjIgMTI6NTcs
-IE1hcmVrIFZhc3V0IHdyb3RlOg0KPiA+IFRoZSBhcHBsaWNhdGlvbiBvcmRlciBvZiBvdmVycmlk
-ZSBzeW50YXggOmFwcGVuZCwgOnByZXBlbmQsIDpyZW1vdmUgaXMNCj4gPiBpbm9idmlvdXMgYW5k
-IHVuZG9jdW1lbnRlZC4gVGhlIG9yZGVyIGRvZXMgbm90IG1hdGNoIHZhcmlhYmxlIHBhcnNlDQo+
-ID4gaGlzdG9yeSwgaS5lLiBvdXRwdXQgb2YgImJpdGJha2UgLWUiLCBlaXRoZXIuDQo+ID4NCj4g
-PiBBZGQgbm90ZSBkb2N1bWVudGluZyB0aGUgZXhhY3Qgb3JkZXIgaW4gd2hpY2ggOmFwcGVuZCwg
-OnByZXBlbmQsIDpyZW1vdmUNCj4gPiBhcmUgYXBwbGllZCB0byB2YXJpYWJsZSBpbiBsaWIvYmIv
-ZGF0YV9zbWFydC5weSBnZXRWYXJGbGFnKCkuIEFkZCBub3RlDQo+ID4gdGhhdCB0aGlzIG9yZGVy
-IGRvZXMgbm90IG1hdGNoIHRoZSB2YXJpYWJsZSBwYXJzZSBoaXN0b3J5IG9yZGVyLiBUaGlzDQo+
-ID4gaXMgbW9zdGx5IHRvIHByZXZlbnQgb3RoZXJzIGZyb20gcnVubmluZyBpbnRvIHRoaXMgYW5k
-IHNjcmF0Y2hpbmcgdGhlaXINCj4gPiBoZWFkcywgdHJ5aW5nIHRvIGZpbmQgb3V0IHdoYXQgaXMg
-Z29pbmcgb24uDQo+ID4NCj4gPiBSZXZpZXdlZC1ieTogUXVlbnRpbiBTY2h1bHogPGZvc3MreW9j
-dG9AMGxlaWwubmV0Pg0KPiA+IFNpZ25lZC1vZmYtYnk6IE1hcmVrIFZhc3V0IDxtYXJleEBkZW54
-LmRlPg0KPiA+IENjOiBNYXJ0aW4gSmFuc2EgPG1hcnRpbi5qYW5zYUBnbWFpbC5jb20+DQo+ID4g
-Q2M6IFF1ZW50aW4gU2NodWx6IDxmb3NzK3lvY3RvQDBsZWlsLm5ldD4NCj4gPiBDYzogUmljaGFy
-ZCBQdXJkaWUgPHJpY2hhcmQucHVyZGllQGxpbnV4Zm91bmRhdGlvbi5vcmc+DQo+ID4gLS0tDQo+
-ID4gVjI6IC0gQWRkIFJCIGZyb20gUXVlbnRpbg0KPiA+ICAgICAgLSBNZW50aW9uIHVuLXJlbW92
-ZSBpbXBsZW1lbnRhdGlvbg0KPiA+ICAgICAgLSBSZWZlcmVuY2UgOnJlbW92ZSBvcmRlciBpbiBh
-cHBlbmQvcHJlcGVuZCBvdmVycmlkZSBzeW50YXgNCj4gPiAtLS0NCj4gPiAgIC4uLi9iaXRiYWtl
-LXVzZXItbWFudWFsLW1ldGFkYXRhLnJzdCAgICAgICAgICB8IDI1ICsrKysrKysrKysrKysrKysr
-KysNCj4gPiAgIDEgZmlsZSBjaGFuZ2VkLCAyNSBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZm
-IC0tZ2l0IGEvZG9jL2JpdGJha2UtdXNlci1tYW51YWwvYml0YmFrZS11c2VyLW1hbnVhbC1tZXRh
-ZGF0YS5yc3QNCj4gYi9kb2MvYml0YmFrZS11c2VyLW1hbnVhbC9iaXRiYWtlLXVzZXItbWFudWFs
-LW1ldGFkYXRhLnJzdA0KPiA+IGluZGV4IDMzNzgyMTYxLi40ZGExODgyNiAxMDA2NDQNCj4gPiAt
-LS0gYS9kb2MvYml0YmFrZS11c2VyLW1hbnVhbC9iaXRiYWtlLXVzZXItbWFudWFsLW1ldGFkYXRh
-LnJzdA0KPiA+ICsrKyBiL2RvYy9iaXRiYWtlLXVzZXItbWFudWFsL2JpdGJha2UtdXNlci1tYW51
-YWwtbWV0YWRhdGEucnN0DQo+ID4gQEAgLTMxOSw2ICszMTksMTAgQEAgVGhlIHZhcmlhYmxlIGBg
-RGBgIGJlY29tZXMgImR2YWxhZGRpdGlvbmFsIGRhdGEiLg0KPiA+DQo+ID4gICAgICBZb3UgbXVz
-dCBjb250cm9sIGFsbCBzcGFjaW5nIHdoZW4geW91IHVzZSB0aGUgb3ZlcnJpZGUgc3ludGF4Lg0K
-PiA+DQo+ID4gKy4uIG5vdGU6Og0KPiA+ICsNCj4gPiArICAgVGhlIG92ZXJyaWRlcyBhcmUgYXBw
-bGllZCBpbiB0aGlzIG9yZGVyLCAiOmFwcGVuZCIsICI6cHJlcGVuZCIsDQo+ICI6cmVtb3ZlIi4N
-Cj4gPiArDQo+ID4gICBJdCBpcyBhbHNvIHBvc3NpYmxlIHRvIGFwcGVuZCBhbmQgcHJlcGVuZCB0
-byBzaGVsbCBmdW5jdGlvbnMgYW5kDQo+ID4gICBCaXRCYWtlLXN0eWxlIFB5dGhvbiBmdW5jdGlv
-bnMuIFNlZSB0aGUgIjpyZWY6YGJpdGJha2UtdXNlci0NCj4gbWFudWFsL2JpdGJha2UtdXNlci1t
-YW51YWwtbWV0YWRhdGE6c2hlbGwgZnVuY3Rpb25zYCIgYW5kICI6cmVmOmBiaXRiYWtlLQ0KPiB1
-c2VyLW1hbnVhbC9iaXRiYWtlLXVzZXItbWFudWFsLW1ldGFkYXRhOmJpdGJha2Utc3R5bGUgcHl0
-aG9uIGZ1bmN0aW9uc2AiDQo+ID4gICBzZWN0aW9ucyBmb3IgZXhhbXBsZXMuDQo+ID4gQEAgLTM1
-MSw2ICszNTUsMjcgQEAgVGhlIHZhcmlhYmxlIGBgRk9PYGAgYmVjb21lcw0KPiA+ICAgTGlrZSAi
-OmFwcGVuZCIgYW5kICI6cHJlcGVuZCIsICI6cmVtb3ZlIiBpcyBhcHBsaWVkIGF0IHZhcmlhYmxl
-DQo+ID4gICBleHBhbnNpb24gdGltZS4NCj4gPg0KPiA+ICsuLiBub3RlOjoNCj4gPiArDQo+ID4g
-KyAgIFRoZSBvdmVycmlkZXMgYXJlIGFwcGxpZWQgaW4gdGhpcyBvcmRlciwgIjphcHBlbmQiLCAi
-OnByZXBlbmQiLA0KPiAiOnJlbW92ZSIuDQo+ID4gKyAgIFRoaXMgaW1wbGllcyBpdCBpcyBub3Qg
-cG9zc2libGUgdG8gcmUtYXBwZW5kIHByZXZpb3VzbHkgcmVtb3ZlZA0KPiBzdHJpbmdzLg0KPiA+
-ICsgICBXaGlsZSBpdCBpcyBub3QgcG9zc2libGUgdG8gcmUtYXBwZW5kIHN0cmluZ3MsIGl0IGlz
-IHBvc3NpYmxlIHRvDQo+IHJlbW92ZQ0KPiA+ICsgICBzdHJpbmdzIGZyb20gc2VwYXJhdGUgdmFy
-aWFibGUgd2hpY2ggY29udGFpbnMgdGhlIHN0cmluZyByZW1vdmUgbGlzdA0KPiB0bw0KPiA+ICsg
-ICBhY2hpZXZlIHRoZSBzYW1lIGVmZmVjdCB1c2luZyB1bi1yZW1vdmU6Og0KPiA+ICsNCj4gDQo+
-IEkgY2FuIHN1Z2dlc3Q6DQo+ICIiIg0KPiBIb3dldmVyLCBvbmUgY2FuIHVuZG8gYSAiOnJlbW92
-ZSIgYnkgdXNpbmcgYW4gaW50ZXJtZWRpYXRlIHZhcmlhYmxlDQo+IHdob3NlIGNvbnRlbnQgaXMg
-cGFzc2VkIHRvIHRoZSAiOnJlbW92ZSIgc28gdGhhdCBtb2RpZnlpbmcgdGhlDQo+IGludGVybWVk
-aWF0ZSB2YXJpYWJsZSBlcXVhbHMgdG8ga2VlcGluZyB0aGUgc3RyaW5nIGluOjoNCj4gIiIiDQo+
-IA0KPiBJIHNwZWNpZmljYWxseSB3YW50IHRvIGF2b2lkICJ1bi1yZW1vdmUiLiBOb3Qgc3VyZSBt
-eSBzdWdnZXN0aW9uIGlzDQo+IGVhc2llciB0byB1bmRlcnN0YW5kIGFzIEknbSB1c3VhbGx5IHBy
-ZXR0eSBnb29kIGF0IHVud2lsbGluZ2x5IHdyaXRpbmcNCj4gY29udm9sdXRlZCBzZW50ZW5jZXMu
-DQo+IA0KPiA+ICsgICAgIEZPT1JFTU9WRSA9ICIxMjMgNDU2IDc4OSINCj4gPiArICAgICBGT086
-cmVtb3ZlID0gIiR7Rk9PUkVNT1ZFfSINCj4gPiArICAgICBGT09SRU1PVkU6cmVtb3ZlID0gIjQ1
-NiINCg0KSSByZWNvbW1lbmQgbm90IHVzaW5nIDpyZW1vdmUgaGVyZSwgYnV0IHJhdGhlciBleHBs
-aWNpdGx5IHNldHRpbmcgDQpGT09SRU1PVkUuIFdoaWxlIGl0IG9mIGNvdXJzZSB3b3JrcyB0byB1
-c2UgOnJlbW92ZSBsaWtlIHRoYXQsIGl0IA0KZGlzdHJhY3RzIGZyb20gdGhlIGFjdHVhbCBwcm9i
-bGVtLg0KDQpJdCBtaWdodCBhbHNvIGJlIGJldHRlciB3cml0dGVuIGFzOg0KDQogICAgIEZPT1JF
-TU9WRSA9ICIxMjMgNDU2IDc4OSINCiAgICAgRk9POnJlbW92ZSA9ICIke0ZPT1JFTU9WRX0iDQoN
-CiAgICAgLi4uDQoNCiAgICAgRk9PUkVNT1ZFID0gIjEyMyA3ODkiDQoNCnRvIGluZGljYXRlIHRo
-YXQgdGhleSBhcmUgdHlwaWNhbGx5IG5vdCBkZWZpbmVkIGF0IHRoZSBzYW1lIHBsYWNlLg0KDQo+
-ID4gKyA+ICsgICBUaGlzIGV4cGFuZHMgdG8gYGBGT086cmVtb3ZlID0gIjEyMyA3ODkiYGAuDQo+
-ID4gKw0KPiANCj4gRGlkIHlvdSB0ZXN0IHRoaXM/IEkgdGhpbmsgdGhlcmUncyBhbiBhZGRpdGlv
-bmFsIHdoaXRlIHNwYWNlIChiZWNhdXNlDQo+IG9ubHkgNDU2IGdldHMgcmVtb3ZlZCBidXQgdGhl
-IHNwYWNlcyBhcm91bmQgaXQgc3RheSkuDQo+IA0KPiBDaGVlcnMsDQo+IFF1ZW50aW4NCg0KLy9Q
-ZXRlcg0KDQo=
+"Marek Vasut" <marex@denx.de> writes:
+
+>  
+> +.. note::
+> +
+> +   The overrides are applied in this order, ":append", ":prepend", ":remove".
+> +   This implies it is not possible to re-append previously removed
+>     strings.
+
+fwiw, this is possible by anonymous python functions which are evaluated
+after ":remove"
+
+| FOO = "123 abc XYZ"
+| 
+| python () {
+|     v = d.getVar('FOO')
+|     d.setVar('FOO', v + ' abc 789')
+| }
+| 
+| FOO:remove = "abc XYZ"
+
+results in
+
+| FOO="123   abc 789"
+
+
+
+Enrico
 
