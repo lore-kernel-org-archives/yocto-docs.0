@@ -1,98 +1,117 @@
-Return-Path: <enrico.scholz@sigma-chemnitz.de>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 34744C433EF
-	for <webhook@archiver.kernel.org>; Mon, 25 Jul 2022 18:15:19 +0000 (UTC)
-Received: from smtpout.cvg.de (smtpout.cvg.de [87.128.211.67])
- by mx.groups.io with SMTP id smtpd.web09.31723.1658772911131165924
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F0A8C433EF
+	for <webhook@archiver.kernel.org>; Mon, 25 Jul 2022 22:04:49 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
+ [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web12.2076.1658786681409142538
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Jul 2022 11:15:14 -0700
+ Mon, 25 Jul 2022 15:04:41 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sigma-chemnitz.de header.s=v2022040800 header.b=VR7s/b6F;
- spf=pass (domain: sigma-chemnitz.de, ip: 87.128.211.67,
- mailfrom: enrico.scholz@sigma-chemnitz.de)
-Received: from mail-mta-2.intern.sigma-chemnitz.de
- (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
-	by mail-out-3.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
- 26PIF6PP646095
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
-	for <docs@lists.yoctoproject.org>; Mon, 25 Jul 2022 20:15:06 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
-	s=v2022040800; t=1658772906;
-	bh=ods/jFByCPv9RGJEJPWCH+Yj3YVf0uZsHvJiq8vE+Lg=; l=503;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To;
-	b=VR7s/b6FSR36lRN/imOWeBzXa+GbYBBeYn7yR2f4AvHs7nnyqogKVe428htA3RORd
-	 lTaxdOOeJCwWW2w2I9XH50D49x1kiFe/etzzTVpX5bay8pnsBvIMeQpKGFIR6Vfspt
-	 zn1lsD42O/euH7HY1J8nepnYN8Pkgas08k0vo3R/B0pX37zi0Bonzk5xkoJJa5re4V
-	 xJ+HIOcRTd6vVC/g6nmaOWgpInzlZme6ohgL1t/e4z8mNmwpamk8tw95m+KCkevyqi
-	 20zj6wdKij88kBcWDlkhTm0BHDyYSwkpm1zLp00FqT+ZBoSqVL3XI6+a7tNj8QC9mw
-	 81qZ9shffFxAw==
-Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local
- [192.168.16.32])
-	by mail-mta-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTP id
- 26PIF2LP575031
-	for <docs@lists.yoctoproject.org> from enrico.scholz@sigma-chemnitz.de;
- Mon, 25 Jul 2022 20:15:03 +0200
-Received: from mail-msa-2.intern.sigma-chemnitz.de ( [192.168.12.72]) by
- reddoxx.intern.sigma-chemnitz.de
-	(Reddoxx engine) with SMTP id 1479363FA9D; Mon, 25 Jul 2022 20:15:01 +0200
-Received: from ensc-pc.intern.sigma-chemnitz.de
- (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
-	by mail-msa-2.intern.sigma-chemnitz.de (8.16.1/8.16.1) with ESMTPS id
- 26PIEwTf440211
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Mon, 25 Jul 2022 20:14:58 +0200
-Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.95)
-	(envelope-from <ensc@sigma-chemnitz.de>)
-	id 1oG2ba-00FmrU-DX;
-	Mon, 25 Jul 2022 20:14:58 +0200
-From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
-To: "Marek Vasut" <marex@denx.de>
-Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
-Subject: Re: [bitbake-devel] [PATCH v3] bitbake-user-manual: Document
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=DIsMG1GZ;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.53,
+ mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f53.google.com with SMTP id
+ i205-20020a1c3bd6000000b003a2fa488efdso4472826wma.4
+        for <docs@lists.yoctoproject.org>;
+ Mon, 25 Jul 2022 15:04:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :content-transfer-encoding:user-agent:mime-version;
+        bh=wS/Y1c+TsyxeE4gSU80VxC5W6yhT1SmxGXVUKpFkRvY=;
+        b=DIsMG1GZ6lVsliC99sncDAnQH/0DfXHjW6DymlfB16mqL58RYIVkxY8G9NcAOhQAeL
+         F5S+bjgf3MwY5YChCk4zqkmZPY8ygQaaqmUDcjtCPw9bwhmQhMILMwEg6/8+JicZ+lte
+         opllxVVoeWaCmEso+Cojw4hS2MctLfODInwaQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:content-transfer-encoding:user-agent:mime-version;
+        bh=wS/Y1c+TsyxeE4gSU80VxC5W6yhT1SmxGXVUKpFkRvY=;
+        b=fuv9B+o4gXK08ORbxcPBLDpiIouMhCWrLbXK58vM1/dBj3AnTsuI6XA7tamZQXh1R9
+         i3mxkXw3gJL6zMltGxTIFUdpou0prXI3LQTEiwIcGaa6/5km+z8juv4HeoWglEtJFQfg
+         1+h/3XC4TxbF/T7J4wbMEe1N5Wjrzt0JPtBglGzbi1EiyNFr8CI7OrEOhvjhi2sS3fS6
+         84vjI+aq108RHmDOHF0SqVe+TGqR7bOGquZrGtOWAlEww8/mjbPuWdoSLqmURZnL6Era
+         viAvVh7Vh81L2ByrHrbukE2xfXy1kKzkPwefT2WtqoXq0dUl5nLwX4iI7mHOVFF6e3In
+         QQYw==
+X-Gm-Message-State: AJIora+PiBSNdETU2dt3DPFECk1THEe3NGoE6Hm4JCi6nfLEdogS8+0l
+	PGlQHiK7AGQmoqBb+hj6Im0TaQ==
+X-Google-Smtp-Source: 
+ AGRyM1sNOuyHbqXKvIhc8BMm3GbwuACyFBAzoIdXHBQvVc7yJ3q+K5KMDWJ1nfFbAdvb8sypqQifkw==
+X-Received: by 2002:a7b:cd15:0:b0:3a3:1d69:5201 with SMTP id
+ f21-20020a7bcd15000000b003a31d695201mr9707590wmj.10.1658786679684;
+        Mon, 25 Jul 2022 15:04:39 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:289a:8162:dbfe:813c?
+ ([2001:8b0:aba:5f3c:289a:8162:dbfe:813c])
+        by smtp.gmail.com with ESMTPSA id
+ j23-20020a05600c1c1700b003a32251c3f9sm22781954wms.5.2022.07.25.15.04.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Jul 2022 15:04:39 -0700 (PDT)
+Message-ID: 
+ <94302dd15bf3efc70cc72ba1d272e9112812e787.camel@linuxfoundation.org>
+Subject: Re: [docs] [bitbake-devel] [PATCH v3] bitbake-user-manual: Document
  override :append, :prepend, :remove order
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: enrico.scholz@sigma-chemnitz.de, Marek Vasut <marex@denx.de>
+Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
+Date: Mon, 25 Jul 2022 23:04:38 +0100
+In-Reply-To: <lyr12983fh.fsf@ensc-pc.intern.sigma-chemnitz.de>
 References: <20220725155625.381756-1-marex@denx.de>
-Date: Mon, 25 Jul 2022 20:14:58 +0200
-In-Reply-To: <20220725155625.381756-1-marex@denx.de> (Marek Vasut's message of
-	"Mon, 25 Jul 2022 17:56:25 +0200")
-Message-ID: <lyr12983fh.fsf@ensc-pc.intern.sigma-chemnitz.de>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.1 (gnu/linux)
+	 <lyr12983fh.fsf@ensc-pc.intern.sigma-chemnitz.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain
-Sender: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 25 Jul 2022 18:15:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3085
+ <docs@lists.yoctoproject.org>; Mon, 25 Jul 2022 22:04:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3086
 
-"Marek Vasut" <marex@denx.de> writes:
+On Mon, 2022-07-25 at 20:14 +0200, Enrico Scholz via
+lists.yoctoproject.org wrote:
+> "Marek Vasut" <marex@denx.de> writes:
+>=20
+> > =20
+> > +.. note::
+> > +
+> > +   The overrides are applied in this order, ":append", ":prepend", ":r=
+emove".
+> > +   This implies it is not possible to re-append previously removed
+> >     strings.
+>=20
+> fwiw, this is possible by anonymous python functions which are evaluated
+> after ":remove"
+>=20
+> > FOO =3D "123 abc XYZ"
+> >=20
+> > python () {
+> >     v =3D d.getVar('FOO')
+> >     d.setVar('FOO', v + ' abc 789')
+> > }
+> >=20
+> > FOO:remove =3D "abc XYZ"
+>=20
+> results in
+>=20
+> > FOO=3D"123   abc 789"
 
->  
-> +.. note::
-> +
-> +   The overrides are applied in this order, ":append", ":prepend", ":remove".
-> +   This implies it is not possible to re-append previously removed
->     strings.
+The reason for this isn't perhaps obvious and worth documenting - use
+of setVar clears all append/prepend/remove operations against a
+variable.
 
-fwiw, this is possible by anonymous python functions which are evaluated
-after ":remove"
+FOO =3D "A"
+FOO:append =3D " B"
 
-| FOO = "123 abc XYZ"
-| 
-| python () {
-|     v = d.getVar('FOO')
-|     d.setVar('FOO', v + ' abc 789')
-| }
-| 
-| FOO:remove = "abc XYZ"
+python () {
+    d.setVar('FOO', 'C')
+}
 
-results in
+results in C.
 
-| FOO="123   abc 789"
+Cheers,
 
-
-
-Enrico
+Richard
 
