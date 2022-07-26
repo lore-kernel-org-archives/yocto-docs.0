@@ -2,68 +2,85 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D31D7C00140
-	for <webhook@archiver.kernel.org>; Tue, 26 Jul 2022 17:26:44 +0000 (UTC)
-Received: from relay10.mail.gandi.net (relay10.mail.gandi.net
- [217.70.178.230])
- by mx.groups.io with SMTP id smtpd.web09.9653.1658856401645253928
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7BD5C00140
+	for <webhook@archiver.kernel.org>; Tue, 26 Jul 2022 17:46:24 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
+ [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web09.9913.1658857574334936271
  for <docs@lists.yoctoproject.org>;
- Tue, 26 Jul 2022 10:26:42 -0700
+ Tue, 26 Jul 2022 10:46:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ATwxdUQx;
- spf=pass (domain: bootlin.com, ip: 217.70.178.230,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gKXPid8C;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 5B26224000B;
-	Tue, 26 Jul 2022 17:26:38 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id A1EE120003;
+	Tue, 26 Jul 2022 17:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1658856399;
+	t=1658857572;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ng5MhkhJyk2L0YFodQmYWjAsSHX98ws4SmPXvZ/jVYs=;
-	b=ATwxdUQxn+r6z1+bxmNsqJ43cOvS8DyxoE2XVs97+rn42gbG8HEtauszxSgoqTSF3QKbvb
-	bek7NAyCtrsJdHq8pkBMNsTE5ZTXsL/Ip/lhDnYCiWZcN/aDUAGuGBKtS1Kj+gDgxDYVuw
-	x2ElRvUfN8x1+RjqD47xKNhGQXyVkKRoWYcR+/BvyOpExSrV3JNx0YEqFUYiZ5V9CMRccj
-	BdVGm1jfA0e98lJdmMhvjrBLNbCZbVMqOrn+vQe8xxQ/q3RpGWL3qICdpFrUN+Qk26xicO
-	Enydh/n7SyCGM/+UPOhjfF3/hG9mJRvg4+Jn5kluBpLUrveaKPfBvRolKM67NQ==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P5xg4jE81Do0Rb4qFedfV683EGLNa5Qlhs9eUgW3Qfo=;
+	b=gKXPid8C/7CvFzzQmA+LRskIc/wSec75y003PULCw3tzG76pGEDl1wJwC5/bIBRobS82E2
+	BUYvZMTdqNfiGLe9fdCf92eB9LETwnhghv/n4mLWTQOss5CSIoa2suM86kaujhBiY63Yi1
+	Wocp4Dc6bYd9VkThELKOkpyD6EUOMidZmE0z1ED/bmZW/hU/213y0pRS9zLMT/NidqSh7v
+	/MJe4708JRIhltRve3/6EZEr/mUD+ikvkBVJ3paLqxyYmwu+DhTGpg0zkMurXM3uZNOa47
+	WMF8dtEzNxXKG7LX0bQk2TNNGGKlpUa38l1QOUv2QUXb5x+Md+7+i0UOjTdfEw==
 From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] dev-manual: use proper note directive
-Date: Tue, 26 Jul 2022 19:26:33 +0200
-Message-Id: <20220726172633.1732800-1-michael.opdenacker@bootlin.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <foss@0leil.net>
+Subject: [PATCH] bitbake-user-manual: npm fetcher: improve description of
+ SRC_URI format
+Date: Tue, 26 Jul 2022 19:45:45 +0200
+Message-Id: <20220726174545.1734501-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <607a8e9c-ad17-bff5-7b65-b02dd698c891@theobroma-systems.com>
+References: <607a8e9c-ad17-bff5-7b65-b02dd698c891@theobroma-systems.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 26 Jul 2022 17:26:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3087
+ <docs@lists.yoctoproject.org>; Tue, 26 Jul 2022 17:46:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3088
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-For correct rendering of the note
+Using the term "Parameter" which is consistent with the
+description of SRC_URI parameters in the following text.
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Quentin Schulz <foss@0leil.net>
 ---
- documentation/dev-manual/common-tasks.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ doc/bitbake-user-manual/bitbake-user-manual-fetching.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 8be3c7c0e8..b08a55331d 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -6527,7 +6527,7 @@ newest sstate cache file for each package::
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+index 4dfb7889..9c269ca8 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+@@ -717,7 +717,7 @@ Javascript package registry.
  
- This command will ask you to confirm the deletions it identifies.
+ The format for the :term:`SRC_URI` setting must be::
  
--Note::
-+.. note::
+-   SRC_URI = "npm://some.registry.url;OptionA=xxx;OptionB=xxx;..."
++   SRC_URI = "npm://some.registry.url;ParameterA=xxx;ParameterB=xxx;..."
  
-    The duplicated sstate cache files of one package must have the same
-    architecture, which means that sstate cache files with multiple
+ This fetcher supports the following parameters:
+ 
+@@ -757,7 +757,7 @@ of an NPM package while locking their versions.
+ 
+ The format for the :term:`SRC_URI` setting must be::
+ 
+-   SRC_URI = "npmsw://some.registry.url;OptionA=xxx;OptionB=xxx;..."
++   SRC_URI = "npmsw://some.registry.url;ParameterA=xxx;ParameterB=xxx;..."
+ 
+ This fetcher supports the following parameters:
+ 
 -- 
 2.34.1
 
