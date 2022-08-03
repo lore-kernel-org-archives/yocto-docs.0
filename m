@@ -1,98 +1,176 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BBDFFC19F28
-	for <webhook@archiver.kernel.org>; Wed,  3 Aug 2022 14:23:13 +0000 (UTC)
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
- [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.web11.8996.1659536588608496825
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3FD0C19F28
+	for <webhook@archiver.kernel.org>; Wed,  3 Aug 2022 14:52:23 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
+ [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.9502.1659538336625438652
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Aug 2022 07:23:09 -0700
+ Wed, 03 Aug 2022 07:52:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=hm2l7I0E;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.49,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f49.google.com with SMTP id c22so8796878wmr.2
-        for <docs@lists.yoctoproject.org>;
- Wed, 03 Aug 2022 07:23:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc;
-        bh=tFenhtt++eSlIJ/oS2IjRWCtQsl7XvO/cb3sEJkVCGw=;
-        b=hm2l7I0E26mePoO6vAcdwO5qFc0XUjyQnBkTZUBBYNs95rU+5UvgDJ7gZWb0C0l/r6
-         /NOCDD8Sm3EpcShT5KQZrWq7vyqKT5TmPdBDk5xOvGNNS12epBKu/5pQeygMHlg+Gobk
-         xmjtdYQGLZl26bGQvsjUle40HXri+PHHYxhpM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc;
-        bh=tFenhtt++eSlIJ/oS2IjRWCtQsl7XvO/cb3sEJkVCGw=;
-        b=qA5xABGMbU5FFrdmyhrfHQJE9ZXgWRvmsWd6di7zJxsOrvnt8w8XLMC/YsKejhagK6
-         Ynyy1HiewZup6ApU37dNr+EBLFz0UW+KSJ0X9VyVsC111Q8xM9T4PZLgmciPQFmCObRP
-         b8S6QddlfQ8KV1xg7ZJrB4Vo0tY8cu8A//hUFBLUznhcZG0GPjZq+pEbFE1Swtn/RfaO
-         EU6DM4lknBFy3jyuugDc5qJEufq8ook4X8oWHDUPqmIBTCa7vYTu519xrHVKjx4Nrlwa
-         Fs1otLz4Bof9/czsGgxs6co2BI9KGJCgl/zuSlFMAnNUQy5LGiMz82wtaurMLVuTmK75
-         rvcQ==
-X-Gm-Message-State: ACgBeo2dCqrw9/nLbxlN70VuwaQzoDilY7YcKNMKfM4UYzVEwC1wGcaE
-	xGo3Bi8icXOppsp+7wrVl+kFyA==
-X-Google-Smtp-Source: 
- AA6agR7o2E41nMRz3/g99UhTmLBYVGfXZ98BeY8PfWQa3dDlh8I8x+FWlrdHMpwakSEfSsHP+MJdVg==
-X-Received: by 2002:a05:600c:1d04:b0:3a4:f43b:e2e4 with SMTP id
- l4-20020a05600c1d0400b003a4f43be2e4mr2698423wms.121.1659536587012;
-        Wed, 03 Aug 2022 07:23:07 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:ac96:e386:102:36cd?
- ([2001:8b0:aba:5f3c:ac96:e386:102:36cd])
-        by smtp.gmail.com with ESMTPSA id
- g11-20020a05600c4ecb00b003a02cbf862esm3140078wmq.13.2022.08.03.07.23.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Aug 2022 07:23:06 -0700 (PDT)
-Message-ID: 
- <acc2ac5ca374f501bd72ee532067b6d033023fa8.camel@linuxfoundation.org>
-Subject: Re: [docs] Add 3.1.18 to supported release manuals
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: michael.opdenacker@bootlin.com, YP docs mailing list
-	 <docs@lists.yoctoproject.org>
-Date: Wed, 03 Aug 2022 15:23:05 +0100
-In-Reply-To: <21b24dbd-1355-ac55-2d7c-b4ad303817e2@bootlin.com>
-References: <21b24dbd-1355-ac55-2d7c-b4ad303817e2@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=K6NlDILS;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 778C21BF20B;
+	Wed,  3 Aug 2022 14:52:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1659538333;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mqn1RhNT5WJiwxyxaUYU8lzj09k0LU2DUKarkHzPXKI=;
+	b=K6NlDILSPmPmJn27NJN5G1+gkxptKo/PJgYgXUwtMLIUkgCWtkXpm2eAbqgkj8tqKPW0O0
+	8OsVxeTHRSZSG7lnECqIFZVwCEDhCK0EWIzSA324Aeqg/piSXsfi+Qff0H7OfIGBc7bkPO
+	k/mk0SWGuhAG+qv9TFN6VhSgwTzSsuBjY0FgD/u9KH/j1k6SjO6HkNEjqQF7DycCeGysyj
+	sszrGs6P7hBioDcBalmyXwggai9oIeqTwPp3CDHul6b9LcWRbq/31hIZtOtAfHqKXD81Jr
+	R6jbMjipQbaEch1nqLoqbjnLeE2Fk50Vb218BC8HBl1CExaOijHX/GdAjA+q2g==
+Message-ID: <d648db04-13f7-b20e-5922-565a611995c2@bootlin.com>
+Date: Wed, 3 Aug 2022 16:52:13 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Cc: Alexander Kanavin <alex@linutronix.de>
+Subject: Re: [docs] [PATCH 2/2] sdk-manual: describe how to use extensible SDK
+ functionality directly in a Yocto build
+Content-Language: en-US
+To: Alexander Kanavin <alex.kanavin@gmail.com>, docs@lists.yoctoproject.org
+References: <20220802083803.2773818-1-alex@linutronix.de>
+ <20220802083803.2773818-2-alex@linutronix.de>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20220802083803.2773818-2-alex@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 Aug 2022 14:23:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3110
+ <docs@lists.yoctoproject.org>; Wed, 03 Aug 2022 14:52:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3111
 
-On Wed, 2022-08-03 at 16:07 +0200, Michael Opdenacker via
-lists.yoctoproject.org wrote:
-> Hi again Quentin,
->=20
-> This question is also related to release management.
->=20
-> https://docs.yoctoproject.org/dev/releases.html doesn't have version=20
-> 3.1.18 (released yesterday) yet, though a "yocto-3.1.18" tag was added=
-=20
-> the yocto-docs repository too.
->=20
-> I guess nothing triggered a rebuild, and therefore the set_versions.py=
-=20
-> script didn't get a chance to update the list of releases=20
-> (releases.rst). Would it be possible with the Autobuilder to cause the=
-=20
-> addition of a new tag to trigger a new build? Or any other solution?
+Hi Alex,
 
-I suspect this is a buildbot configuration issue and:
+On 8/2/22 10:38, Alexander Kanavin wrote:
+> Signed-off-by: Alexander Kanavin <alex@linutronix.de>
+> ---
+>   .../sdk-manual/appendix-customizing.rst       | 14 ++--
+>   documentation/sdk-manual/appendix-obtain.rst  | 18 +++++-
+>   documentation/sdk-manual/extensible.rst       | 64 ++++++++++++++++++-
+>   documentation/sdk-manual/working-projects.rst |  8 +++
+>   4 files changed, 96 insertions(+), 8 deletions(-)
 
-https://issuehint.com/issue/buildbot/buildbot/6416
 
-may be relevant.
+Thanks for the patch!
 
-Cheers,
+I had a few issues indentation issues but I fixed them:
 
-Richard
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/sdk-manual/extensible.rst:1269: 
+WARNING: Literal block expected; none found.
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/sdk-manual/working-projects.rst:93: 
+ERROR: Unexpected indentation.
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/sdk-manual/working-projects.rst:288: 
+ERROR: Unexpected indentation.
+
+> diff --git a/documentation/sdk-manual/appendix-obtain.rst b/documentation/sdk-manual/appendix-obtain.rst
+> index ece378c75..9b7717a4c 100644
+> --- a/documentation/sdk-manual/appendix-obtain.rst
+> +++ b/documentation/sdk-manual/appendix-obtain.rst
+> @@ -4,8 +4,22 @@
+>   Obtaining the SDK
+>   *****************
+>   
+> +Working with the SDK components directly in a Yocto build
+> +=========================================================
+> +
+> +Please refer to section
+> +":ref:`sdk-manual/extensible:Setting up the Extensible SDK environment directly in a Yocto build`"
+> +
+> +Note that to use this feature effectively either a powerful build
+> +machine, or a well-functioning sstate cache infrastructure is required:
+> +otherwise significant time could be spent waiting for components to be built
+> +by bitbake from source code.
+
+
+I replaced "bitbake" by "BitBake" here. That's how we usually refer to 
+the tool.
+
+>
+> diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+> index ed9e43a2d..ae0587fec 100644
+> --- a/documentation/sdk-manual/extensible.rst
+> +++ b/documentation/sdk-manual/extensible.rst
+> @@ -41,6 +41,42 @@ functionality.
+>   Installing the Extensible SDK
+>   =============================
+>   
+> +Two ways to install the Extensible SDK
+> +--------------------------------------
+> +
+> +Extensible SDK can be installed in two different ways, and both have
+> +their own pros and cons:
+> +
+> +1. *Setting up the Extensible SDK environment directly in a Yocto build*. This
+> +avoids having to produce, test, distribute and maintain separate SDK installer
+> +archives, which can get very large. There is only one environment for the regular
+> +yocto build and the SDK and less code paths where things can go not according to plan.
+> +It's easier to update the SDK: it simply means updating the yocto layers with
+
+Here, I replaced "yocto" by "Yocto" too (4 times in this file).
+
+> +git fetch or layer management tooling. The SDK extensibility is better than in the
+> +second option: just run ``bitbake`` again to add more things to the sysroot, or add layers
+> +if even more things are required.
+> +
+> +2. *Setting up the Extensible SDK from a standalone installer*. This has the benefit of
+> +having a single, self-contained archive that includes all the needed binary artifacts.
+> +So nothing needs to be rebuild, and there is no need to provide a well-functioning
+
+s/rebuild/rebuilt/
+Fixed
+
+> diff --git a/documentation/sdk-manual/working-projects.rst b/documentation/sdk-manual/working-projects.rst
+> index 7f8d9b849..12cb2efee 100644
+> --- a/documentation/sdk-manual/working-projects.rst
+> +++ b/documentation/sdk-manual/working-projects.rst
+> @@ -88,6 +88,10 @@ project:
+>   
+>         $ source /opt/poky/&DISTRO;/environment-setup-i586-poky-linux
+>   
+> +   Another example is sourcing the environment setup directly in a yocto
+> +   build::
+> +      $ source tmp/deploy/images/qemux86-64/environment-setup-core2-64-poky-linux
+
+
+Missing an empty line after "::" here. Fixed.
+
+> +
+>   3. *Create the configure Script:* Use the ``autoreconf`` command to
+>      generate the ``configure`` script.
+>      ::
+> @@ -279,6 +283,10 @@ example:
+>   
+>         $ source /opt/poky/&DISTRO;/environment-setup-i586-poky-linux
+>   
+> +   Another example is sourcing the environment setup directly in a yocto
+> +   build::
+> +      $ source tmp/deploy/images/qemux86-64/environment-setup-core2-64-poky-linux
+
+
+Same here. Fixed too.
+
+After the fixes: Reviewed-by: Michael Opdenacker 
+<michael.opdenacker@bootlin.com>
+... and merged into master-next.
+
+Thanks again!
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
