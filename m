@@ -2,75 +2,144 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF0A5ECAAD2
-	for <webhook@archiver.kernel.org>; Mon, 29 Aug 2022 12:06:35 +0000 (UTC)
-Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
- [217.70.178.232])
- by mx.groups.io with SMTP id smtpd.web10.69750.1661774794915028968
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E1FC7ECAAD2
+	for <webhook@archiver.kernel.org>; Mon, 29 Aug 2022 12:46:35 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net
+ [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web09.69923.1661777193887550027
  for <docs@lists.yoctoproject.org>;
- Mon, 29 Aug 2022 05:06:35 -0700
+ Mon, 29 Aug 2022 05:46:35 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Dcsxm18z;
- spf=pass (domain: bootlin.com, ip: 217.70.178.232,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ILHYBshu;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 0A3EA200012;
-	Mon, 29 Aug 2022 12:06:32 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id BD1C3100008;
+	Mon, 29 Aug 2022 12:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1661774793;
+	t=1661777191;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=I82AbVVdYjS8YtCWQ9YJi1oEGmenbydHJMzW1gzWo3A=;
-	b=Dcsxm18zbZhuobcJV6dwe6ljGbCuI7EGhsdrVaruT0UJwGEsM4Z5+s5kcO7M49BvEpNaUg
-	kg4Reez9LELwfw+fYO1GL29h5aaNp/gLg4dnx4kV0cUYAuNk/WkcFPKQhuG1A9mdVDaU1f
-	8n1PAhr+7ampqeL7szqG5jcjkNxdL5cCWXeTnI/Nx4nhTqmcYq+B+25Ro2yUJbBoWxc7zl
-	HRKTySMb0zDubGxxSRyyPmJZ65yOf4ZOsbqWvmer62wJjH2CsN5wbbwnOOxqKt1GCTw/CP
-	hCNt+3T/4P9TIQsPJLIk5KYPyF8/tSi/pAwBU8SggCzL8DdWwbB/2VmOBoJcjA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Jon Mason <jdmason@kudzu.us>,
-	Quentin Schulz <foss+yocto@0leil.net>
-Subject: [PATCH] [dunfell] ref-manual: add numa to machine features
-Date: Mon, 29 Aug 2022 14:06:26 +0200
-Message-Id: <20220829120626.38883-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=83NU8HmPV4iZg8zsC/KrrexIslEreUv2wQJ3yabFEW8=;
+	b=ILHYBshu6bIn1CFczgHhWubu4CvK3lfrEP8jEPoffDKz9VPPnYenA3k/T9/6aJbrNvifMp
+	YNf6PnSCiMnIojFR78UQ8jfHV22slcUm6VCcD42APTjaRZ8y66p2IYDEse9d+Ee9NFqOs1
+	aGFEJtJV/Z7kKDrZALYvHqS8WolgBks7tMg4ZOqXSS0FxGngoPgbCq1u2ujauY3/CPkOJI
+	fIrV9Zki0VJaTdIduGwxEa0HcBYbE8tdce61oF3Brhcg9y3sTqBY8rAlpmG8/qX6rclqHV
+	9hm+5yDTSKiEZcoaDJCk49nM44Hj7aq00vwjF/Crpc3uRgd0Uu7q/SXGvesbSQ==
+Message-ID: <a7c1377a-b3e1-fea0-9b67-5d5cb652871a@bootlin.com>
+Date: Mon, 29 Aug 2022 14:46:29 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v2] doc: bitbake-user-manual: Add definition for
+ BB_PRESSURE_MAX variables
+Content-Language: en-US
+To: Aryaman Gupta <aryaman.gupta@windriver.com>,
+ bitbake-devel@lists.openembedded.org
+References: <20220812182236.1650194-1-aryaman.gupta@windriver.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20220812182236.1650194-1-aryaman.gupta@windriver.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 29 Aug 2022 12:06:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3126
+ <docs@lists.yoctoproject.org>; Mon, 29 Aug 2022 12:46:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3127
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Aryaman,
 
-From: Jon Mason <jdmason@kudzu.us>
+Many thanks for the patch! Apologies for the late review, I was away on 
+vacation.
 
-numa is an existing machine feature, add it to the list so that users
-are aware of it.
+See my comments below:
 
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
----
- documentation/ref-manual/ref-features.rst | 2 ++
- 1 file changed, 2 insertions(+)
+On 8/12/22 20:22, Aryaman Gupta wrote:
+> Add the definitions for the BB_PRESSURE_MAX{CPU|IO|MEMORY} variables in the
+> bitbake varibales glossary. Further information on how to determine a good
+> threshold will be added to the Yocto reference manual in a later commit.
+>
+> Signed-off-by: Aryaman Gupta <aryaman.gupta@windriver.com>
+> Signed-off-by: Randy Macleod <Randy.Macleod@windriver.com>
+> ---
+>   .../bitbake-user-manual-ref-variables.rst     | 30 +++++++++++++++++++
+>   1 file changed, 30 insertions(+)
+>
+> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> index 12aef3cb..9b2027de 100644
+> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+> @@ -482,6 +482,36 @@ overview of their function and contents.
+>   
+>            You must set this variable in the external environment in order
+>            for it to work.
+> +
+> +   :term:`BB_PRESSURE_MAX_CPU`
+> +      The threshold for maximum CPU pressure before BitBake prevents the
+> +      scheduling of new tasks. Once the :term:`BB_PRESSURE_MAX_CPU` threshold
+> +      is exceeded, new tasks are not started until the pressure subsides to
+> +      below the threshold. If :term:`BB_PRESSURE_MAX_CPU` is not set, CPU
+> +      pressure is not monitored. A threshold can be set in ``conf/local.conf``
+> +      as:
+> +      ::
 
-diff --git a/documentation/ref-manual/ref-features.rst b/documentation/ref-manual/ref-features.rst
-index f28ad2bb4c..be3a9e3a3e 100644
---- a/documentation/ref-manual/ref-features.rst
-+++ b/documentation/ref-manual/ref-features.rst
-@@ -63,6 +63,8 @@ Project metadata:
- 
- -  *keyboard:* Hardware has a keyboard
- 
-+-  *numa:* Hardware has non-uniform memory access
-+
- -  *pcbios:* Support for booting through BIOS
- 
- -  *pci:* Hardware has a PCI bus
+
+Actually, here you can just use "as::" instead of "as:" followed by "::" 
+in the next line.
+
+> +
+> +         BB_PRESSURE_MAX_CPU = "500"
+> +
+> +      Information about how to set a suitable value and some other caveats to
+> +      consider can be found in the
+> +      :ref:`Reference Manual </ref-manual/variables:BB_PRESSURE_MAX_CPU>``
+
+
+I'm afraid you'll have to add this reference in a later commit, because 
+for the moment, this creates a warning that is turned into an error. 
+Sorry, this is the pain of managing two manuals at once. You may say 
+"Yocto Project Reference Manual" then.
+
+By the way, you had an extra backquote at the end of your reference.
+
+> +
+> +   :term:`BB_PRESSURE_MAX_IO`
+> +      The threshold for maximum IO pressure experienced before BitBake
+> +      prevents the scheduling of new tasks. The IO pressure is regulated in the
+> +      same way as :term:`BB_PRESSURE_MAX_CPU`. At this point in time,
+> +      experiments show that IO pressure tends to be short-lived and regulating
+> +      just the CPU can help to reduce it.
+> +
+> +   :term:`BB_PRESSURE_MAX_MEMORY`
+> +      The threshold for maximum memory pressure experienced before BitBake
+> +      prevents the scheduling of new tasks. The memory pressure is regulated in
+> +      the same way as :term:`BB_PRESSURE_MAX_CPU`. Note that any memory
+> +      pressure indicates that a system is being pushed beyond it's capacity. At
+
+
+s/it's/its/
+
+> +      this point in time, experiments show that memory pressure tends to be
+> +      short-lived and regulating just the CPU can help to reduce it.
+>   
+>      :term:`BB_RUNFMT`
+>         Specifies the name of the executable script files (i.e. run files)
+
+
+Would you mind sending a V3 fixing these, please? This one should be 
+ready to merge.
+Thanks in advance, and thank you for your patience :)
+
+Cheers
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
