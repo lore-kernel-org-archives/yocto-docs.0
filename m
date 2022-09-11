@@ -2,145 +2,102 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF464C54EE9
-	for <webhook@archiver.kernel.org>; Sun, 11 Sep 2022 17:26:26 +0000 (UTC)
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com
- [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.web10.662.1662917186036678379
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7936C6FA83
+	for <webhook@archiver.kernel.org>; Sun, 11 Sep 2022 17:26:36 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com
+ [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web11.714.1662917187243934684
  for <docs@lists.yoctoproject.org>;
- Sun, 11 Sep 2022 10:26:26 -0700
+ Sun, 11 Sep 2022 10:26:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=npZP9jpq;
- spf=pass (domain: gmail.com, ip: 209.85.128.49,
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=YgzPKAZh;
+ spf=pass (domain: gmail.com, ip: 209.85.128.53,
  mailfrom: alex.kanavin@gmail.com)
-Received: by mail-wm1-f49.google.com with SMTP id az6so5611688wmb.4
+Received: by mail-wm1-f53.google.com with SMTP id o5so1534510wms.1
         for <docs@lists.yoctoproject.org>;
- Sun, 11 Sep 2022 10:26:25 -0700 (PDT)
+ Sun, 11 Sep 2022 10:26:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date;
-        bh=lHhu6F2Nexs+lofwQF8LxpRLU0SzsGjp6LoB1cK+Z70=;
-        b=npZP9jpqSTTVCmhQHcY2jVb1Ix9MTNwLqjkYeQIYhN9ydDJp7T/rI8vW5V5L8rVj6a
-         Yk29beObNdmP1MkhvW9uZdz8wVfK/KsefqIsqVaAQLm8UZKlX3IYXpKAHtuprV5J9Iyb
-         BBeKgyfcP/fHzx8rJP3cAyUPxfP5oK6t7Z2J1I9i7EjaaxLBfylzYMt/WQRn3UAZGw0P
-         18mutCGkPguW8B2Pj79FJgfsHpPuf5mKmkDps0QxCct9rIA3kuVKlHgBBD4uUkzJS8nJ
-         aSliCAVWEe4g6j8JX+xpWiD0dsLF4I4thtT31aKTn+qwoFM60BWXZ/8AUgRE4sA7x3hT
-         ohmw==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date;
+        bh=uS2DgCFAj1RqRAIc0X5m3/7IrwX7V6ml5+QGx+Ny4Ms=;
+        b=YgzPKAZhQvw1TrZCdRC3l8X1tcYtpdLcWiG3V80mDzaoj+0JmRdJcQLHOObf57B1KW
+         tOrTJGBv3g8YKTqLsTlqAT5tki622mScmrE3zCM5LjFNQ5VLbCyjJ95PawAjOApApOB9
+         triINQDeVC7PS7pG70LvjTxRdp1Xh6ZurG7EDv0oXLvqd0Vo34wTJ8VQVI41UtnA5gGG
+         q6nnZbZCTUGt4pXdJ9Qk342ULYbcNP7f09qg3c6QGjqsMAVifHy6olYgDLDTwx3lcYul
+         V5pA++tnuPZSsBcd8tQwbE45srZVsmbagxntfxo7JFa10Ikoxnw71ppzZ2TtfDSt9TJg
+         FFsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date;
-        bh=lHhu6F2Nexs+lofwQF8LxpRLU0SzsGjp6LoB1cK+Z70=;
-        b=4JUP1SiAq8nTQ0I0wv6AoL006G1pWhMoQuXDhr9PHursdiB8o6zFILklZxngO2D6fA
-         SvQMT/lxknODu30pTMdtute+CPmIkOVPVNr+jDlZv+GKxd3div+LY8yYtvFY2y1iMvl7
-         En8qX5P7zQDjxMuydkvMhlJPxPmIo5YgfzIDG9ibzNbx6AZlcDlrjk9p8b8p+Nw8qSmt
-         +NDa2EalmAALr/brQdlO0D8Gt8dVsV3PM2n2//78paNIgUDcFzhmxzNYgxhv2XvcuRzB
-         lVGt5JgbfdlgtrTqAPPLhbzLxdNUqwFL61C8orOOz9arOXHOSd+Ij7XyKPgxvPSHI5LD
-         p4Xw==
-X-Gm-Message-State: ACgBeo19Tmf7tES6qLmXknxb8akt4DeV6ABn3NLIYBsihTwbwvPXDyAp
-	+y3Uqv4hANnJWtNPBXjST5uoLMdapao=
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=uS2DgCFAj1RqRAIc0X5m3/7IrwX7V6ml5+QGx+Ny4Ms=;
+        b=0Z7hhaNKjGfJi5kooGZr3oprYOzxr7ZjP/CSxnjACfiiAlxYBQSY+bKJBcVeyU+sCb
+         g27PedKcbIz4kR7LQhIvY/YWByk2AfdFXDYaNfySsghW/SoQVA3Fp2mlQMZrCKhvaSNP
+         arPehQwESRJrukkR4yZ7TWzF27yYOeCY5RNf0D4idjnDkp3Ej8Bjz0gmIaVMBdV7yDBp
+         dSso4AxnbdTX8pI3H8V2vRp51S6e6KxSDA8qCcw/yWQVdi0PHouYw3Y1tiAkyX9ooJBn
+         rPAab/dFBL1bita0TbsnQFKPfrZaIWIS7Zb2f5/e7TMnX+7ObMyZwdKh32k4bIPH1Yxh
+         bpgA==
+X-Gm-Message-State: ACgBeo1cKNQgWN7snKlvezowe1jNF1nHkG2iB8z/KIZ/jpJw918ldh+B
+	/qZLySWhQZlzo6Y4CokUTl5ZZe0S4fk=
 X-Google-Smtp-Source: 
- AA6agR4FKz5HPqanfH9v4THMDOzrrQKX9QWs/tP5JyeGVJkvMoSIbOvh8u97UxvAQ12Pl4HlysLK+w==
-X-Received: by 2002:a05:600c:5248:b0:3b3:24cb:fde with SMTP id
- fc8-20020a05600c524800b003b324cb0fdemr11334780wmb.80.1662917184138;
-        Sun, 11 Sep 2022 10:26:24 -0700 (PDT)
+ AA6agR6mPLZ3By2w3eP6XfEo4nQxqSVTTMbiXZ03X02+L5KF2jvsFxywGdvkLzHPjU0B0rIQyHzCWw==
+X-Received: by 2002:a05:600c:4fcb:b0:3a5:f2cc:2f19 with SMTP id
+ o11-20020a05600c4fcb00b003a5f2cc2f19mr11173780wmq.142.1662917185780;
+        Sun, 11 Sep 2022 10:26:25 -0700 (PDT)
 Received: from Zen2.lab.linutronix.de. (drugstore.linutronix.de.
  [80.153.143.164])
         by smtp.gmail.com with ESMTPSA id
- g5-20020a5d4885000000b00228de58ae2bsm5280395wrq.12.2022.09.11.10.26.22
+ g5-20020a5d4885000000b00228de58ae2bsm5280395wrq.12.2022.09.11.10.26.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Sep 2022 10:26:22 -0700 (PDT)
+        Sun, 11 Sep 2022 10:26:25 -0700 (PDT)
 From: Alexander Kanavin <alex.kanavin@gmail.com>
 X-Google-Original-From: Alexander Kanavin <alex@linutronix.de>
 To: docs@lists.yoctoproject.org
 Cc: Alexander Kanavin <alex@linutronix.de>
-Subject: [PATCH 1/5] ref-manual: correct the location of default configuration
- template
-Date: Sun, 11 Sep 2022 19:26:04 +0200
-Message-Id: <20220911172608.2542076-1-alex@linutronix.de>
+Subject: [PATCH 3/5] common-tasks.rst: describe the newly added layer setup
+ and template config commands
+Date: Sun, 11 Sep 2022 19:26:06 +0200
+Message-Id: <20220911172608.2542076-3-alex@linutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20220911172608.2542076-1-alex@linutronix.de>
+References: <20220911172608.2542076-1-alex@linutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 11 Sep 2022 17:26:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3147
+ <docs@lists.yoctoproject.org>; Sun, 11 Sep 2022 17:26:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3149
 
 Signed-off-by: Alexander Kanavin <alex@linutronix.de>
 ---
- documentation/ref-manual/structure.rst | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ documentation/dev-manual/common-tasks.rst | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index bdcffc194..6c6f52e79 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -189,7 +189,7 @@ Directory named ``mybuilds/`` that is outside of the :term:`Source Directory`::
-    $ source oe-init-build-env ~/mybuilds
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index c2afec946..4d19bd921 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -728,6 +728,17 @@ The following list describes the available commands:
  
- The OpenEmbedded build system uses the template configuration files, which
--are found by default in the ``meta-poky/conf/`` directory in the Source
-+are found by default in the ``meta-poky/conf/templates/default`` directory in the Source
- Directory. See the
- ":ref:`dev-manual/common-tasks:creating a custom template configuration directory`"
- section in the Yocto Project Development Tasks Manual for more
-@@ -261,15 +261,15 @@ OpenEmbedded build system creates it from ``local.conf.sample`` when you
- :ref:`structure-core-script`.
+ -  ``create-layer``: Creates a basic layer.
  
- The source ``local.conf.sample`` file used depends on the
--:term:`TEMPLATECONF` script variable, which defaults to ``meta-poky/conf/``
-+:term:`TEMPLATECONF` script variable, which defaults to ``meta-poky/conf/templates/default``
- when you are building from the Yocto Project development environment,
--and to ``meta/conf/`` when you are building from the OpenEmbedded-Core
-+and to ``meta/conf/templates/default`` when you are building from the OpenEmbedded-Core
- environment. Because the script variable points to the source of the
- ``local.conf.sample`` file, this implies that you can configure your
- build environment from any layer by setting the variable in the
- top-level build environment setup script as follows::
++-  ``save-build-conf``: Saves the currently active build configuration
++   (conf/local.conf, conf/bblayers.conf) as a template into a layer.
++   This template can later be used for setting up builds via TEMPLATECONF.
++   For information about saving and usinc configuration templates, see
++   ":ref:`dev-manual/common-tasks:creating a custom template configuration directory`".
++
++-  ``create-layers-setup``: Writes out a configuration file and/or a script that
++   can replicate the directory structure and revisions of the layers in a current build.
++   For more information, see ":ref:`dev-manual/common-tasks:saving and restoring the layers setup`".
++
++
+ Creating a General Layer Using the ``bitbake-layers`` Script
+ ------------------------------------------------------------
  
--   TEMPLATECONF=your_layer/conf
-+   TEMPLATECONF=your_layer/conf/templates/your_template_name
- 
- Once the build process gets the sample
- file, it uses ``sed`` to substitute final
-@@ -281,7 +281,7 @@ file, it uses ``sed`` to substitute final
-    You can see how the :term:`TEMPLATECONF` variable is used by looking at the
-    ``scripts/oe-setup-builddir`` script in the :term:`Source Directory`.
-    You can find the Yocto Project version of the ``local.conf.sample`` file in
--   the ``meta-poky/conf`` directory.
-+   the ``meta-poky/conf/templates/default`` directory.
- 
- .. _structure-build-conf-bblayers.conf:
- 
-@@ -301,14 +301,14 @@ you ``source`` the top-level build environment setup script (i.e.
- 
- As with the ``local.conf`` file, the source ``bblayers.conf.sample``
- file used depends on the :term:`TEMPLATECONF` script variable, which
--defaults to ``meta-poky/conf/`` when you are building from the Yocto
--Project development environment, and to ``meta/conf/`` when you are
-+defaults to ``meta-poky/conf/templates/default`` when you are building from the Yocto
-+Project development environment, and to ``meta/conf/templates/default`` when you are
- building from the OpenEmbedded-Core environment. Because the script
- variable points to the source of the ``bblayers.conf.sample`` file, this
- implies that you can base your build from any layer by setting the
- variable in the top-level build environment setup script as follows::
- 
--   TEMPLATECONF=your_layer/conf
-+   TEMPLATECONF=your_layer/conf/templates/your_template_name
- 
- Once the build process gets the sample file, it uses ``sed`` to substitute final
- ``${``\ :term:`OEROOT`\ ``}`` values for all ``##OEROOT##`` values.
-@@ -317,7 +317,7 @@ Once the build process gets the sample file, it uses ``sed`` to substitute final
- 
-    You can see how the :term:`TEMPLATECONF` variable is defined by the ``scripts/oe-setup-builddir``
-    script in the :term:`Source Directory`. You can find the Yocto Project
--   version of the ``bblayers.conf.sample`` file in the ``meta-poky/conf/``
-+   version of the ``bblayers.conf.sample`` file in the ``meta-poky/conf/templates/default``
-    directory.
- 
- .. _structure-build-conf-sanity_info:
 -- 
 2.30.2
 
