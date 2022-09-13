@@ -1,96 +1,116 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AA7DC6FA82
-	for <webhook@archiver.kernel.org>; Tue, 13 Sep 2022 18:27:36 +0000 (UTC)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com
- [209.85.208.182])
- by mx.groups.io with SMTP id smtpd.web08.1150.1663093651874782350
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 972FFECAAD8
+	for <webhook@archiver.kernel.org>; Tue, 13 Sep 2022 23:59:19 +0000 (UTC)
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web12.499.1663113556138052493
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Sep 2022 11:27:32 -0700
+ Tue, 13 Sep 2022 16:59:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=O7dZ97vc;
- spf=pass (domain: gmail.com, ip: 209.85.208.182,
- mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lj1-f182.google.com with SMTP id p5so15415432ljc.13
-        for <docs@lists.yoctoproject.org>;
- Tue, 13 Sep 2022 11:27:31 -0700 (PDT)
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=CsXKWDWi;
+ spf=pass (domain: axis.com, ip: 195.60.68.17,
+ mailfrom: peter.kjellerstedt@axis.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=Qc4dzRUhjxiHxX+FePu3HhZjaHXVYu+Bv0mG8UHLZwI=;
-        b=O7dZ97vcLzpd5fMLih0jlb8pRyIfWDaj+0JrJIXfi3JfT7Df6mFTxgCqfd+HHzjfHi
-         KN24l/A6i8y0kuws1YcX2Taen+MZGItWLqODNyABYXdkqU8ZY7l9TOU0kiEeiHiW0HUe
-         uCcmkzTSUmFe+vz01oMfe0KvpFKhXtCcyxjHcbt6YWhq2oA5dUoV4rnHRJftZCpnE3ZO
-         CvKndZX+abqA2RAe0eMMwjHGqedtbLJ1nHQA28SJdQBAeQi3uWAULDhLtAy/dKK5pBPh
-         /9KdpWw3vFDg3fPZsMLbN0Gg+//N7cS+SkrScNs2Q51sWUuC1yjGtXI3WN5KLk3e1skD
-         6hNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=Qc4dzRUhjxiHxX+FePu3HhZjaHXVYu+Bv0mG8UHLZwI=;
-        b=BaAv5JUm1DL84FSkxWH3ir9s5WgM3Ps4CpCmRLrzij8QXNovaHpFR/KRXkwiacoZD/
-         aNPl+pa/iiIQsZQiyFv6ndHCIgk6FLlR0JH9TrFIuZeelxEgpx4ddb2urxIZ7zLc5mYq
-         uRHvDMgbHjuEA85521Ul3GAzYfZtc//echZXXuxB9yWYzvmNvySOWHxEcf69BhUbTaDB
-         EpyWvikeZYSwy3/V3DdqZTkJhtJKMGgcFa1g9HIMYxsU8NWIkwMKXYX1Xe2mF0sfj5eX
-         Gf1EPJd7xV/rq/tvGTS/mWqmDlDkDP4nWSY60oMg87OY6XqeyAsx1cNQBXIS9FyXH/lD
-         IuIQ==
-X-Gm-Message-State: ACgBeo2cgWMIYoQILYm/fMS3uVDULDFCWvxzjLz4tAamkaYG41B4IFFS
-	xcq8Aw2cABgJGbJyqaZtvvndx3CBkoBO5ebZSg4=
-X-Google-Smtp-Source: 
- AA6agR4nIKxUYDs886B9eW0gNsamsE0/dwik85osJrAgUC2tbhORTtFMi3BN0npa0sECn9Tfft/0e+7akvpRz2LdmXk=
-X-Received: by 2002:a05:651c:104e:b0:26b:fceb:a526 with SMTP id
- x14-20020a05651c104e00b0026bfceba526mr4010628ljm.109.1663093649568; Tue, 13
- Sep 2022 11:27:29 -0700 (PDT)
-MIME-Version: 1.0
+  d=axis.com; q=dns/txt; s=axis-central1; t=1663113556;
+  x=1694649556;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=9TzEjpj6N2dfi3l1sHQruKQbTuX4SoD5DYMuqH9LaeA=;
+  b=CsXKWDWitZSpx9rG6Mt1rgC2GHNJrT533UbaD3VSVc0BJchkEgYt6eAE
+   jMW0LuhQR07AjOenhLxiMuc9Qb+rij5JyeSRQQBEnwkSMNZdq8yUb4Eci
+   kOE4MprRoI7RVDhguYraNI8U0CzIiZgq2FnkNnbmUJ74UEF1WjkPcAg5B
+   dZKrOh8Tz4D44CBSBXa6/iv1QWUgotgDVpAIpBqmYIuNz2RWA8irUrIMF
+   E+LG5ukB/ucikAjdGMr/7HrGxFRTDSnbc/ZirZh/TJfesxc76qHJlfYPX
+   Mx1Cz0IvlvHam2E4oMquzIm4+rvYqLrP+z885mOKYEncv0upQH/LuzsVt
+   Q==;
+From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+To: Alexander Kanavin <alex.kanavin@gmail.com>
+CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>, "Alexander
+ Kanavin" <alex@linutronix.de>
+Subject: RE: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
+ configuration templates
+Thread-Topic: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
+ configuration templates
+Thread-Index: AQHYxgOmrtezQaE860WfhY1BSZiD963doZfA///twwCAAHcDoA==
+Date: Tue, 13 Sep 2022 23:59:13 +0000
+Message-ID: <0c6e4dbbf24d4221ba58543cfc48a498@axis.com>
 References: <20220911172608.2542076-1-alex@linutronix.de>
  <20220911172608.2542076-5-alex@linutronix.de>
  <f20e7ca0158e49329b2ed2d7685ef945@axis.com>
-In-Reply-To: <f20e7ca0158e49329b2ed2d7685ef945@axis.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Tue, 13 Sep 2022 20:27:18 +0200
-Message-ID: 
  <CANNYZj_mTijA18UCxpTVa9V0k7pPakqvAGBLWBS39UDBCHS8RA@mail.gmail.com>
-Subject: Re: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
- configuration templates
-To: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-Cc: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>,
- Alexander Kanavin <alex@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: 
+ <CANNYZj_mTijA18UCxpTVa9V0k7pPakqvAGBLWBS39UDBCHS8RA@mail.gmail.com>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.5.60]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 Sep 2022 18:27:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3161
+ <docs@lists.yoctoproject.org>; Tue, 13 Sep 2022 23:59:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3162
 
-On Tue, 13 Sept 2022 at 19:38, Peter Kjellerstedt
-<peter.kjellerstedt@axis.com> wrote:
-> I do not agree with this sentiment. If you create and distribute a setup
-> similar to Poky (which we do), why would we not change .templateconf to
-> point at our templates? This has been the documented method and the one
-> at least we use for our distribution. Where have you gotten the notion
-> that this is only to be used by OE-Core & Poky? It does not make sense.
-
-First we need to find out, where the documentation section that sets
-the idea is coming from. It was written by Scott R. in 2014:
-https://git.yoctoproject.org/yocto-docs/commit/?id=c07fb7082fe08387bbc546b2a23620dedc7127b8
-from
-https://bugzilla.yoctoproject.org/show_bug.cgi?id=5895
-
-I believe Scott misunderstood how the whole thing is supposed to work,
-and never road tested what he had written. You are free to continue to
-do the .templateconf rewrite, but I do not want to keep it in the
-docs. It just isn't actually supported, unless you *also* provide a
-description and tools for 'creating a distribution setup similar to
-poky' and for doing the actual rewrite, and find someone else except
-you who's using it (I believe you do this with custom unpublished
-scripts?). Besides, the only feature it gets you is not having to
-specify TEMPLATECONF when you have a default choice for it, which is
-useful, but should be made possible with the setup everyone *actually*
-uses, which is cloning poky, then adding layers next to it.
-
-Alex
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBBbGV4YW5kZXIgS2FuYXZpbiA8
+YWxleC5rYW5hdmluQGdtYWlsLmNvbT4NCj4gU2VudDogZGVuIDEzIHNlcHRlbWJlciAyMDIyIDE5
+OjI3DQo+IFRvOiBQZXRlciBLamVsbGVyc3RlZHQgPHBldGVyLmtqZWxsZXJzdGVkdEBheGlzLmNv
+bT4NCj4gQ2M6IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZzsgQWxleGFuZGVyIEthbmF2aW4g
+PGFsZXhAbGludXRyb25peC5kZT4NCj4gU3ViamVjdDogUmU6IFtkb2NzXSBbUEFUQ0ggNS81XSBj
+b21tb24tdGFza3MucnN0OiByZXdyaXRlIHRoZSBzZWN0aW9uDQo+IGFib3V0IGNvbmZpZ3VyYXRp
+b24gdGVtcGxhdGVzDQo+IA0KPiBPbiBUdWUsIDEzIFNlcHQgMjAyMiBhdCAxOTozOCwgUGV0ZXIg
+S2plbGxlcnN0ZWR0DQo+IDxwZXRlci5ramVsbGVyc3RlZHRAYXhpcy5jb20+IHdyb3RlOg0KPiA+
+IEkgZG8gbm90IGFncmVlIHdpdGggdGhpcyBzZW50aW1lbnQuIElmIHlvdSBjcmVhdGUgYW5kIGRp
+c3RyaWJ1dGUgYSBzZXR1cA0KPiA+IHNpbWlsYXIgdG8gUG9reSAod2hpY2ggd2UgZG8pLCB3aHkg
+d291bGQgd2Ugbm90IGNoYW5nZSAudGVtcGxhdGVjb25mIHRvDQo+ID4gcG9pbnQgYXQgb3VyIHRl
+bXBsYXRlcz8gVGhpcyBoYXMgYmVlbiB0aGUgZG9jdW1lbnRlZCBtZXRob2QgYW5kIHRoZSBvbmUN
+Cj4gPiBhdCBsZWFzdCB3ZSB1c2UgZm9yIG91ciBkaXN0cmlidXRpb24uIFdoZXJlIGhhdmUgeW91
+IGdvdHRlbiB0aGUgbm90aW9uDQo+ID4gdGhhdCB0aGlzIGlzIG9ubHkgdG8gYmUgdXNlZCBieSBP
+RS1Db3JlICYgUG9reT8gSXQgZG9lcyBub3QgbWFrZSBzZW5zZS4NCj4gDQo+IEZpcnN0IHdlIG5l
+ZWQgdG8gZmluZCBvdXQsIHdoZXJlIHRoZSBkb2N1bWVudGF0aW9uIHNlY3Rpb24gdGhhdCBzZXRz
+DQo+IHRoZSBpZGVhIGlzIGNvbWluZyBmcm9tLiBJdCB3YXMgd3JpdHRlbiBieSBTY290dCBSLiBp
+biAyMDE0Og0KPiBodHRwczovL2dpdC55b2N0b3Byb2plY3Qub3JnL3lvY3RvLWRvY3MvY29tbWl0
+Lz9pZD1jMDdmYjcwODJmZTA4Mzg3YmJjNTQ2YjJhMjM2MjBkZWRjNzEyN2I4DQo+IGZyb20NCj4g
+aHR0cHM6Ly9idWd6aWxsYS55b2N0b3Byb2plY3Qub3JnL3Nob3dfYnVnLmNnaT9pZD01ODk1DQo+
+IA0KPiBJIGJlbGlldmUgU2NvdHQgbWlzdW5kZXJzdG9vZCBob3cgdGhlIHdob2xlIHRoaW5nIGlz
+IHN1cHBvc2VkIHRvIHdvcmssDQo+IGFuZCBuZXZlciByb2FkIHRlc3RlZCB3aGF0IGhlIGhhZCB3
+cml0dGVuLg0KDQpBbmQgSSB0aGluayBoZSBkb2N1bWVudGVkIGl0IGV4YWN0bHkgYXMgaXQgd2Fz
+IGludGVuZGVkIHRvIGJlIHVzZWQuIFNlZSANClBhdWwgRWdnbGV0b24ncyBjb21tZW50Og0KDQog
+IE9uZSB3YXkgdG8gZG8gaXQgaXMgdG8gc2V0IFRFTVBMQVRFQ09ORiAoYW4gZW52aXJvbm1lbnQg
+dmFyaWFibGUsIG5vdCBhIA0KICBiaXRiYWtlIHZhcmlhYmxlKSB0byBwb2ludCB0byBhIGRpcmVj
+dG9yeSB3aGVyZSB0aGUgY3VzdG9tIGNvbmYtbm90ZXMudHh0IA0KICBjYW4gYmUgZm91bmQuIElu
+IGEgcmVwb3NpdG9yeSB0aGlzIGNhbiBiZSBzZXQgd2l0aGluIGEgLnRlbXBsYXRlY29uZiBmaWxl
+IC0gDQogIGhvcGVmdWxseSB3ZSBkb2N1bWVudCB0aGF0IHNvbWV3aGVyZSBhcyB3ZWxsLiINCg0K
+PiBZb3UgYXJlIGZyZWUgdG8gY29udGludWUgdG8NCj4gZG8gdGhlIC50ZW1wbGF0ZWNvbmYgcmV3
+cml0ZSwgYnV0IEkgZG8gbm90IHdhbnQgdG8ga2VlcCBpdCBpbiB0aGUNCj4gZG9jcy4NCg0KV2Vs
+bCwgSSB3b3VsZCBwcmVmZXIgdG8ga2VlcCBpdCBpbiB0aGUgZG9jcyBzaW5jZSBpdCBpcyBhIGRv
+Y3VtZW50ZWQgDQpmZWF0dXJlIGFuZCAoYXQgbGVhc3Qgd2FzKSB0aGUgcmVjb21tZW5kZWQgd2F5
+IHRvIGRvIHRoaW5ncy4gTWF5YmUgdGhpcyANCmhhcyBjaGFuZ2VkIG92ZXIgdGhlIHllYXJzLCBi
+dXQgaWYgaXQgaXMgcmVtb3ZlZCBmcm9tIHRoZSBkb2NzIHRoZXJlIGlzIA0Kbm90aGluZyBzdG9w
+cGluZyBzb21lb25lIGZyb20gcmVtb3ZpbmcgaXQuIEFuZCBqdXN0IGJlY2F1c2UgaXQgZG9lcyBu
+b3QgDQptYXRjaCBob3cgeW91IHVzZSBZb2N0bywgZG9lc24ndCBtZWFuIGl0IGlzbid0IHVzZWZ1
+bCB0byBvdGhlcnMuDQoNCj4gSXQganVzdCBpc24ndCBhY3R1YWxseSBzdXBwb3J0ZWQsIHVubGVz
+cyB5b3UgKmFsc28qIHByb3ZpZGUgYQ0KPiBkZXNjcmlwdGlvbiBhbmQgdG9vbHMgZm9yICdjcmVh
+dGluZyBhIGRpc3RyaWJ1dGlvbiBzZXR1cCBzaW1pbGFyIHRvDQo+IHBva3knIGFuZCBmb3IgZG9p
+bmcgdGhlIGFjdHVhbCByZXdyaXRlLCBhbmQgZmluZCBzb21lb25lIGVsc2UgZXhjZXB0DQo+IHlv
+dSB3aG8ncyB1c2luZyBpdCAoSSBiZWxpZXZlIHlvdSBkbyB0aGlzIHdpdGggY3VzdG9tIHVucHVi
+bGlzaGVkDQo+IHNjcmlwdHM/KS4NCg0KTm93YWRheXMgd2UgZG8sIHNpbmNlIHdlIGdhdmUgdXAg
+b24gdGhlIGxpbWl0YXRpb25zIG9mIHN0YXRpYyANCmNvbmZpZ3VyYXRpb25zIGluIHRoZSBsYXll
+cnMuIE91ciByZXBvIG1hbmlmZXN0cyBkZWNpZGUgd2hpY2ggbGF5ZXJzIA0KYXJlIGZldGNoZWQg
+YW5kIHRob3NlIGFyZSB0aGUgbGF5ZXJzIHRoYXQgd2lsbCBiZSBhZGRlZCB0byB0aGUgDQpiYmxh
+eWVycy5jb25mLnNhbXBsZSBmaWxlLg0KDQo+IEJlc2lkZXMsIHRoZSBvbmx5IGZlYXR1cmUgaXQg
+Z2V0cyB5b3UgaXMgbm90IGhhdmluZyB0bw0KPiBzcGVjaWZ5IFRFTVBMQVRFQ09ORiB3aGVuIHlv
+dSBoYXZlIGEgZGVmYXVsdCBjaG9pY2UgZm9yIGl0LCB3aGljaCBpcw0KPiB1c2VmdWwsIGJ1dCBz
+aG91bGQgYmUgbWFkZSBwb3NzaWJsZSB3aXRoIHRoZSBzZXR1cCBldmVyeW9uZSAqYWN0dWFsbHkq
+DQo+IHVzZXMsIHdoaWNoIGlzIGNsb25pbmcgcG9reSwgdGhlbiBhZGRpbmcgbGF5ZXJzIG5leHQg
+dG8gaXQuDQoNCldlbGwsIHRoYXQncyB3aGF0IHdlIGRvIHRvbyB1c2luZyBvdXIgcmVwbyBtYW5p
+ZmVzdHMuIEl0J3MganVzdCB0aGF0IHJlcG8gDQpoYXMgdGhlIHN1cHBvcnQgdG8gY29weSBmaWxl
+cyBpbnRvIHRoZSBkaXJlY3RvcmllcyBpdCBzZXRzIHVwLCB3aGljaCB3ZSANCnVzZSB0byBjb3B5
+IGluIGEgLnRlbXBsYXRlY29uZiB0aGF0IG92ZXJyaWRlcyB0aGUgb25lIGZyb20gcG9reS4gQW55
+b25lIA0KY2FuIGRvIHRoYXQgaWYgdGhleSBoYXZlIGEgZGVmaW5lZCBzZXQgb2YgbGF5ZXJzIHRo
+ZXkgdXNlLg0KDQo+IA0KPiBBbGV4DQoNCi8vUGV0ZXINCg0K
 
