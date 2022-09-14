@@ -1,116 +1,94 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 972FFECAAD8
-	for <webhook@archiver.kernel.org>; Tue, 13 Sep 2022 23:59:19 +0000 (UTC)
-Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
- by mx.groups.io with SMTP id smtpd.web12.499.1663113556138052493
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 42EDEECAAD3
+	for <webhook@archiver.kernel.org>; Wed, 14 Sep 2022 04:51:11 +0000 (UTC)
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com
+ [209.85.167.48])
+ by mx.groups.io with SMTP id smtpd.web11.2685.1663131060740549225
  for <docs@lists.yoctoproject.org>;
- Tue, 13 Sep 2022 16:59:16 -0700
+ Tue, 13 Sep 2022 21:51:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@axis.com header.s=axis-central1 header.b=CsXKWDWi;
- spf=pass (domain: axis.com, ip: 195.60.68.17,
- mailfrom: peter.kjellerstedt@axis.com)
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=pcjVKDV+;
+ spf=pass (domain: gmail.com, ip: 209.85.167.48,
+ mailfrom: alex.kanavin@gmail.com)
+Received: by mail-lf1-f48.google.com with SMTP id s6so12102559lfo.7
+        for <docs@lists.yoctoproject.org>;
+ Tue, 13 Sep 2022 21:51:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1663113556;
-  x=1694649556;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=9TzEjpj6N2dfi3l1sHQruKQbTuX4SoD5DYMuqH9LaeA=;
-  b=CsXKWDWitZSpx9rG6Mt1rgC2GHNJrT533UbaD3VSVc0BJchkEgYt6eAE
-   jMW0LuhQR07AjOenhLxiMuc9Qb+rij5JyeSRQQBEnwkSMNZdq8yUb4Eci
-   kOE4MprRoI7RVDhguYraNI8U0CzIiZgq2FnkNnbmUJ74UEF1WjkPcAg5B
-   dZKrOh8Tz4D44CBSBXa6/iv1QWUgotgDVpAIpBqmYIuNz2RWA8irUrIMF
-   E+LG5ukB/ucikAjdGMr/7HrGxFRTDSnbc/ZirZh/TJfesxc76qHJlfYPX
-   Mx1Cz0IvlvHam2E4oMquzIm4+rvYqLrP+z885mOKYEncv0upQH/LuzsVt
-   Q==;
-From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>, "Alexander
- Kanavin" <alex@linutronix.de>
-Subject: RE: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
- configuration templates
-Thread-Topic: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
- configuration templates
-Thread-Index: AQHYxgOmrtezQaE860WfhY1BSZiD963doZfA///twwCAAHcDoA==
-Date: Tue, 13 Sep 2022 23:59:13 +0000
-Message-ID: <0c6e4dbbf24d4221ba58543cfc48a498@axis.com>
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=w4Wn3RNTMGMHSGIcaDnWZF46O6F/w2tOU2t9TLnBXQQ=;
+        b=pcjVKDV+V0ALI/UO9TlgtCsLcj9NdWFomtBJ/+UYpQxUkXlaSgxrFHdxCnyFM1g1BL
+         BhCES+Xva9A/lqDbUIf7HZ8F/8oPBP5dAqr0AUcY2IrYGjs1bzYzc31XDWbzSTKXJ8pc
+         EJf9A0zIovEJjgSs1KzpxfSw4LpsZqSSx8lnI0iQkYyM/Bs0ZMtsm4Bonu3jKmf1EBfY
+         Wi5pSVwPCTH98NdVTigoXi0dlAIomHccSgMDR35n6SIZyd7J7AXwI1evwOGj5ilZB5BS
+         0A70s6OkFNJa8eTuRY4EAaSK6GYmAW04vlKzGa+NzALIYzGUAlD92rRqDFWg4NcDrbeq
+         EJYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=w4Wn3RNTMGMHSGIcaDnWZF46O6F/w2tOU2t9TLnBXQQ=;
+        b=sM1PQhRYBxTbIGZLYUFqssxD4O/gnBl8z3BaLwxEtMGJOZJoMv+3Y4fU90krpWfQC5
+         nWivk90mWlUoveY3SmJNC470nGcHZSdzHqzUaf4oc/0RWK+u78jTi652eZWF2lmYiNwQ
+         SF/NLKDb4kQ8X1BAAsSUHs9fvSQYBVEgtFOwP/B68lhAyAcv/T4wuiiWEOGqnssZAh29
+         x6xeCQY9zGVVPOTJeZDRQJp/g/22Eck/Ee4QUpSAojyhfK6Nz2OyNtwzMI4RRuYFSjxj
+         3JDkrlNjU3qCnP728skXEgfUzH/FVQxsVVuZhkqjHLTX4Lr8cZV8M4JwLsv8Q2WQWBCX
+         Ukfg==
+X-Gm-Message-State: ACgBeo0ZohMG9DJttGb1ypZVIq5eVUKhATDdKtW1Zg6uk5BgUIVyncBN
+	HIi27nSA4w59Wk4PlVZMes8xFDPBvHs6gRJsQUg=
+X-Google-Smtp-Source: 
+ AA6agR5rilHLcg2T/8Hnv++cNVRZK5tH1o8//x6HrNmqJpzUtDzPKAU5g/r0XAlofrRy0/fCKRoT2dzJ8OhWKEXl7fg=
+X-Received: by 2002:a05:6512:1283:b0:499:d0a3:3ca8 with SMTP id
+ u3-20020a056512128300b00499d0a33ca8mr5718520lfs.665.1663131058727; Tue, 13
+ Sep 2022 21:50:58 -0700 (PDT)
+MIME-Version: 1.0
 References: <20220911172608.2542076-1-alex@linutronix.de>
  <20220911172608.2542076-5-alex@linutronix.de>
  <f20e7ca0158e49329b2ed2d7685ef945@axis.com>
  <CANNYZj_mTijA18UCxpTVa9V0k7pPakqvAGBLWBS39UDBCHS8RA@mail.gmail.com>
-In-Reply-To: 
- <CANNYZj_mTijA18UCxpTVa9V0k7pPakqvAGBLWBS39UDBCHS8RA@mail.gmail.com>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.5.60]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
+ <0c6e4dbbf24d4221ba58543cfc48a498@axis.com>
+In-Reply-To: <0c6e4dbbf24d4221ba58543cfc48a498@axis.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Wed, 14 Sep 2022 06:50:47 +0200
+Message-ID: 
+ <CANNYZj-L_TKTv6tniiRw5-d+Nd9LqpKRcHxcbjN4_f3tgN3ahg@mail.gmail.com>
+Subject: Re: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
+ configuration templates
+To: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+Cc: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>,
+ Alexander Kanavin <alex@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 Sep 2022 23:59:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3162
+ <docs@lists.yoctoproject.org>; Wed, 14 Sep 2022 04:51:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3163
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBBbGV4YW5kZXIgS2FuYXZpbiA8
-YWxleC5rYW5hdmluQGdtYWlsLmNvbT4NCj4gU2VudDogZGVuIDEzIHNlcHRlbWJlciAyMDIyIDE5
-OjI3DQo+IFRvOiBQZXRlciBLamVsbGVyc3RlZHQgPHBldGVyLmtqZWxsZXJzdGVkdEBheGlzLmNv
-bT4NCj4gQ2M6IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZzsgQWxleGFuZGVyIEthbmF2aW4g
-PGFsZXhAbGludXRyb25peC5kZT4NCj4gU3ViamVjdDogUmU6IFtkb2NzXSBbUEFUQ0ggNS81XSBj
-b21tb24tdGFza3MucnN0OiByZXdyaXRlIHRoZSBzZWN0aW9uDQo+IGFib3V0IGNvbmZpZ3VyYXRp
-b24gdGVtcGxhdGVzDQo+IA0KPiBPbiBUdWUsIDEzIFNlcHQgMjAyMiBhdCAxOTozOCwgUGV0ZXIg
-S2plbGxlcnN0ZWR0DQo+IDxwZXRlci5ramVsbGVyc3RlZHRAYXhpcy5jb20+IHdyb3RlOg0KPiA+
-IEkgZG8gbm90IGFncmVlIHdpdGggdGhpcyBzZW50aW1lbnQuIElmIHlvdSBjcmVhdGUgYW5kIGRp
-c3RyaWJ1dGUgYSBzZXR1cA0KPiA+IHNpbWlsYXIgdG8gUG9reSAod2hpY2ggd2UgZG8pLCB3aHkg
-d291bGQgd2Ugbm90IGNoYW5nZSAudGVtcGxhdGVjb25mIHRvDQo+ID4gcG9pbnQgYXQgb3VyIHRl
-bXBsYXRlcz8gVGhpcyBoYXMgYmVlbiB0aGUgZG9jdW1lbnRlZCBtZXRob2QgYW5kIHRoZSBvbmUN
-Cj4gPiBhdCBsZWFzdCB3ZSB1c2UgZm9yIG91ciBkaXN0cmlidXRpb24uIFdoZXJlIGhhdmUgeW91
-IGdvdHRlbiB0aGUgbm90aW9uDQo+ID4gdGhhdCB0aGlzIGlzIG9ubHkgdG8gYmUgdXNlZCBieSBP
-RS1Db3JlICYgUG9reT8gSXQgZG9lcyBub3QgbWFrZSBzZW5zZS4NCj4gDQo+IEZpcnN0IHdlIG5l
-ZWQgdG8gZmluZCBvdXQsIHdoZXJlIHRoZSBkb2N1bWVudGF0aW9uIHNlY3Rpb24gdGhhdCBzZXRz
-DQo+IHRoZSBpZGVhIGlzIGNvbWluZyBmcm9tLiBJdCB3YXMgd3JpdHRlbiBieSBTY290dCBSLiBp
-biAyMDE0Og0KPiBodHRwczovL2dpdC55b2N0b3Byb2plY3Qub3JnL3lvY3RvLWRvY3MvY29tbWl0
-Lz9pZD1jMDdmYjcwODJmZTA4Mzg3YmJjNTQ2YjJhMjM2MjBkZWRjNzEyN2I4DQo+IGZyb20NCj4g
-aHR0cHM6Ly9idWd6aWxsYS55b2N0b3Byb2plY3Qub3JnL3Nob3dfYnVnLmNnaT9pZD01ODk1DQo+
-IA0KPiBJIGJlbGlldmUgU2NvdHQgbWlzdW5kZXJzdG9vZCBob3cgdGhlIHdob2xlIHRoaW5nIGlz
-IHN1cHBvc2VkIHRvIHdvcmssDQo+IGFuZCBuZXZlciByb2FkIHRlc3RlZCB3aGF0IGhlIGhhZCB3
-cml0dGVuLg0KDQpBbmQgSSB0aGluayBoZSBkb2N1bWVudGVkIGl0IGV4YWN0bHkgYXMgaXQgd2Fz
-IGludGVuZGVkIHRvIGJlIHVzZWQuIFNlZSANClBhdWwgRWdnbGV0b24ncyBjb21tZW50Og0KDQog
-IE9uZSB3YXkgdG8gZG8gaXQgaXMgdG8gc2V0IFRFTVBMQVRFQ09ORiAoYW4gZW52aXJvbm1lbnQg
-dmFyaWFibGUsIG5vdCBhIA0KICBiaXRiYWtlIHZhcmlhYmxlKSB0byBwb2ludCB0byBhIGRpcmVj
-dG9yeSB3aGVyZSB0aGUgY3VzdG9tIGNvbmYtbm90ZXMudHh0IA0KICBjYW4gYmUgZm91bmQuIElu
-IGEgcmVwb3NpdG9yeSB0aGlzIGNhbiBiZSBzZXQgd2l0aGluIGEgLnRlbXBsYXRlY29uZiBmaWxl
-IC0gDQogIGhvcGVmdWxseSB3ZSBkb2N1bWVudCB0aGF0IHNvbWV3aGVyZSBhcyB3ZWxsLiINCg0K
-PiBZb3UgYXJlIGZyZWUgdG8gY29udGludWUgdG8NCj4gZG8gdGhlIC50ZW1wbGF0ZWNvbmYgcmV3
-cml0ZSwgYnV0IEkgZG8gbm90IHdhbnQgdG8ga2VlcCBpdCBpbiB0aGUNCj4gZG9jcy4NCg0KV2Vs
-bCwgSSB3b3VsZCBwcmVmZXIgdG8ga2VlcCBpdCBpbiB0aGUgZG9jcyBzaW5jZSBpdCBpcyBhIGRv
-Y3VtZW50ZWQgDQpmZWF0dXJlIGFuZCAoYXQgbGVhc3Qgd2FzKSB0aGUgcmVjb21tZW5kZWQgd2F5
-IHRvIGRvIHRoaW5ncy4gTWF5YmUgdGhpcyANCmhhcyBjaGFuZ2VkIG92ZXIgdGhlIHllYXJzLCBi
-dXQgaWYgaXQgaXMgcmVtb3ZlZCBmcm9tIHRoZSBkb2NzIHRoZXJlIGlzIA0Kbm90aGluZyBzdG9w
-cGluZyBzb21lb25lIGZyb20gcmVtb3ZpbmcgaXQuIEFuZCBqdXN0IGJlY2F1c2UgaXQgZG9lcyBu
-b3QgDQptYXRjaCBob3cgeW91IHVzZSBZb2N0bywgZG9lc24ndCBtZWFuIGl0IGlzbid0IHVzZWZ1
-bCB0byBvdGhlcnMuDQoNCj4gSXQganVzdCBpc24ndCBhY3R1YWxseSBzdXBwb3J0ZWQsIHVubGVz
-cyB5b3UgKmFsc28qIHByb3ZpZGUgYQ0KPiBkZXNjcmlwdGlvbiBhbmQgdG9vbHMgZm9yICdjcmVh
-dGluZyBhIGRpc3RyaWJ1dGlvbiBzZXR1cCBzaW1pbGFyIHRvDQo+IHBva3knIGFuZCBmb3IgZG9p
-bmcgdGhlIGFjdHVhbCByZXdyaXRlLCBhbmQgZmluZCBzb21lb25lIGVsc2UgZXhjZXB0DQo+IHlv
-dSB3aG8ncyB1c2luZyBpdCAoSSBiZWxpZXZlIHlvdSBkbyB0aGlzIHdpdGggY3VzdG9tIHVucHVi
-bGlzaGVkDQo+IHNjcmlwdHM/KS4NCg0KTm93YWRheXMgd2UgZG8sIHNpbmNlIHdlIGdhdmUgdXAg
-b24gdGhlIGxpbWl0YXRpb25zIG9mIHN0YXRpYyANCmNvbmZpZ3VyYXRpb25zIGluIHRoZSBsYXll
-cnMuIE91ciByZXBvIG1hbmlmZXN0cyBkZWNpZGUgd2hpY2ggbGF5ZXJzIA0KYXJlIGZldGNoZWQg
-YW5kIHRob3NlIGFyZSB0aGUgbGF5ZXJzIHRoYXQgd2lsbCBiZSBhZGRlZCB0byB0aGUgDQpiYmxh
-eWVycy5jb25mLnNhbXBsZSBmaWxlLg0KDQo+IEJlc2lkZXMsIHRoZSBvbmx5IGZlYXR1cmUgaXQg
-Z2V0cyB5b3UgaXMgbm90IGhhdmluZyB0bw0KPiBzcGVjaWZ5IFRFTVBMQVRFQ09ORiB3aGVuIHlv
-dSBoYXZlIGEgZGVmYXVsdCBjaG9pY2UgZm9yIGl0LCB3aGljaCBpcw0KPiB1c2VmdWwsIGJ1dCBz
-aG91bGQgYmUgbWFkZSBwb3NzaWJsZSB3aXRoIHRoZSBzZXR1cCBldmVyeW9uZSAqYWN0dWFsbHkq
-DQo+IHVzZXMsIHdoaWNoIGlzIGNsb25pbmcgcG9reSwgdGhlbiBhZGRpbmcgbGF5ZXJzIG5leHQg
-dG8gaXQuDQoNCldlbGwsIHRoYXQncyB3aGF0IHdlIGRvIHRvbyB1c2luZyBvdXIgcmVwbyBtYW5p
-ZmVzdHMuIEl0J3MganVzdCB0aGF0IHJlcG8gDQpoYXMgdGhlIHN1cHBvcnQgdG8gY29weSBmaWxl
-cyBpbnRvIHRoZSBkaXJlY3RvcmllcyBpdCBzZXRzIHVwLCB3aGljaCB3ZSANCnVzZSB0byBjb3B5
-IGluIGEgLnRlbXBsYXRlY29uZiB0aGF0IG92ZXJyaWRlcyB0aGUgb25lIGZyb20gcG9reS4gQW55
-b25lIA0KY2FuIGRvIHRoYXQgaWYgdGhleSBoYXZlIGEgZGVmaW5lZCBzZXQgb2YgbGF5ZXJzIHRo
-ZXkgdXNlLg0KDQo+IA0KPiBBbGV4DQoNCi8vUGV0ZXINCg0K
+On Wed, 14 Sept 2022 at 01:59, Peter Kjellerstedt
+<peter.kjellerstedt@axis.com> wrote:
+> And I think he documented it exactly as it was intended to be used. See
+> Paul Eggleton's comment:
+>
+>   One way to do it is to set TEMPLATECONF (an environment variable, not a
+>   bitbake variable) to point to a directory where the custom conf-notes.txt
+>   can be found. In a repository this can be set within a .templateconf file -
+>   hopefully we document that somewhere as well."
+
+Paul didn't think it through either when he wrote this. Specifically,
+.templateconf must be directly next to oe-init-build-env, which means
+it cannot simply be 'in a repository'.
+
+You can't have it both ways: demand that this is kept in the docs, but
+without explaining how to actually make it work (using standard
+tooling). Also, your setup
+is unnecessarily complicated to begin with: just skip the template
+assembly altogether, and write directly to build/conf. Eventually
+you'll be able to do it in a structured, supported
+way with fragments, which is what we should *actually* be talking about.
+
+Alex
 
