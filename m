@@ -1,88 +1,117 @@
-Return-Path: <steve@sakoman.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 71DC9ECAAA1
-	for <webhook@archiver.kernel.org>; Fri, 16 Sep 2022 16:51:10 +0000 (UTC)
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com
- [209.85.214.171])
- by mx.groups.io with SMTP id smtpd.web09.8579.1663347062917999948
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AFD64C54EE9
+	for <webhook@archiver.kernel.org>; Mon, 19 Sep 2022 14:58:31 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net
+ [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.41.1663599509771087790
  for <docs@lists.yoctoproject.org>;
- Fri, 16 Sep 2022 09:51:03 -0700
+ Mon, 19 Sep 2022 07:58:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20210112.gappssmtp.com header.s=20210112
- header.b=LwKN8fY8;
- spf=softfail (domain: sakoman.com, ip: 209.85.214.171,
- mailfrom: steve@sakoman.com)
-Received: by mail-pl1-f171.google.com with SMTP id b21so21976129plz.7
-        for <docs@lists.yoctoproject.org>;
- Fri, 16 Sep 2022 09:51:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date;
-        bh=os5QlP6eJtkR9K5atlhT08ZgqTmt6kLPPgMysS9YvYo=;
-        b=LwKN8fY80/itBoVoZvHkq9hnLbNxyzSmi2iS2P9bXO2ECDWztaMZ+kQ80sYSfCZD9F
-         sYcFlsLvQGPj31jdCT5koMYTEojNExnIo385AGVX+PtcmNNIw54YJ2dh1XnEctxBOgF/
-         JkbmamBirG+91fRZY/W33jj9gm4G7TAGSiI2tqPCLLGdO//sDVbWFkesgZiSZl7IgYRt
-         0K+3LInNGBqsRKC6HhMLs7MIqQAebcs0D1PyhwDb+rWSWv7zCv6G7ZIOdkmRbib4zXIe
-         oRfuk4/tb2iSd0dH+GE3mmni2DHADp6fEII5C8rqnMcL7l+lKuf/sZTts5xhg/zFB5Bf
-         bRpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date;
-        bh=os5QlP6eJtkR9K5atlhT08ZgqTmt6kLPPgMysS9YvYo=;
-        b=EXeWiSgDlZrZNIrNXQnF9HMeoobuo9YlyVKaD5y7HStWJtvg+CAVY1PHtZjuzKCkr+
-         tXE9pWmrTvtO0YVttEQI6x8etT5l4O3shmLuY3fB5TN+8tR0kSJc8ptbRWeGCNEkSZCP
-         72T+yF192LmD1DaIUJawGLMw7uqfYai2O+ocjdM1CSAB+pOE4rNxDGS9gXDfvdw3UgI4
-         /hGuaGcHTHlSbBhdBBbtsrvJfVufgiOFVTBIM0BooKaBWyVWl5kzjaBc8WMyHiPxtVEn
-         +UUQwQorBab6xQOUgE2VWUmF5r55UxU3e39PBLmcirx7SRtpkxvy7Eyr2DkJ4GGJ542+
-         e0jQ==
-X-Gm-Message-State: ACrzQf02KeWvZwCr93L3TPWLjpVQLqUI8HVu6y82zZIqh/KH9WTqfzVg
-	TyEq5k2rytkSXc31L6zKxdAk7xoXw+t0x3nH
-X-Google-Smtp-Source: 
- AMsMyM6jPx4fcfkdZiqi1qYYwgm218XBvm/yoy0tw+zKq23oENJtCnwxRE0V5PVwQSyhVe8/Mtcy7g==
-X-Received: by 2002:a17:902:6b8b:b0:178:7cf5:ad62 with SMTP id
- p11-20020a1709026b8b00b001787cf5ad62mr714375plk.13.1663347061842;
-        Fri, 16 Sep 2022 09:51:01 -0700 (PDT)
-Received: from hexa.router0800d9.com (dhcp-72-253-6-214.hawaiiantel.net.
- [72.253.6.214])
-        by smtp.gmail.com with ESMTPSA id
- y15-20020a17090264cf00b00176a47e5840sm15045035pli.298.2022.09.16.09.51.00
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Sep 2022 09:51:01 -0700 (PDT)
-From: Steve Sakoman <steve@sakoman.com>
-To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][kirkstone 0/1] Pull request (cover letter only)
-Date: Fri, 16 Sep 2022 06:50:53 -1000
-Message-Id: <cover.1663346903.git.steve@sakoman.com>
-X-Mailer: git-send-email 2.25.1
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=po2mQk3f;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 2FE021C0002;
+	Mon, 19 Sep 2022 14:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1663599507;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=y45iuFmajc7JbGljfPRyTpsknHt3+Yl8lug2lubTDh8=;
+	b=po2mQk3fphZ06+EzOQLC26eLCSzqBvsAijs7xjsrld3fSMBEP7AIHsd/0Qmar0ngkxuNBZ
+	RyIsKAeKUOnGxFCdoma30PnD/I34en1E5eMHD5wAe2+YBJHY2wOUQxO17Z/qpO75QNB5R6
+	o3YqIaSTeRSpaE3i94A1TPPlv5gjghfNpsTxLMQquM66ytjd3I7MwA8wQM6GhP/Pta/KH2
+	PvOapLfC4nl1sO6Zq6kyC8tIGAQvF4BqXidr+/JxpNBeaTNfCZVTyKupnspoDoA+ykrgtf
+	2abxAmyumqPJKvbWTkiy7qZZ+TIsZJ6MjcD99cv5X6UUda6lvkDaog8AbccURw==
+From: michael.opdenacker@bootlin.com
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Aryaman Gupta <aryaman.gupta@windriver.com>,
+	Randy Macleod <Randy.Macleod@windriver.com>,
+	Quentin Schulz <foss+yocto@0leil.net>
+Subject: [PATCH RESEND v3] doc: bitbake-user-manual: Add definition for
+ BB_PRESSURE_MAX variables
+Date: Mon, 19 Sep 2022 16:58:12 +0200
+Message-Id: <20220919145812.38756-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <17111BB47189E793.5304@lists.yoctoproject.org>
+References: <17111BB47189E793.5304@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 16 Sep 2022 16:51:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3168
+ <docs@lists.yoctoproject.org>; Mon, 19 Sep 2022 14:58:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3170
 
-The following changes since commit 23d3687c4cf71e878619a7bd7b95a9df944ca76c:
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-  [kirkstone]: migration guides: add missing release notes (2022-08-30 18:23:36 +0200)
+From: Aryaman Gupta <aryaman.gupta@windriver.com>
 
-are available in the Git repository at:
+Add the definitions for the BB_PRESSURE_MAX{CPU|IO|MEMORY} variables in the
+bitbake varibales glossary. Further information on how to determine a good
+threshold will be added to the Yocto reference manual in a later commit.
 
-  git://git.yoctoproject.org/yocto-docs contrib/kirkstone-next
-  http://git.yoctoproject.org/cgit.cgi/yocto-docs/log/?h=contrib/kirkstone-next
+Signed-off-by: Aryaman Gupta <aryaman.gupta@windriver.com>
+Signed-off-by: Randy Macleod <Randy.Macleod@windriver.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
 
-Steve Sakoman (1):
-  system-requirements.rst: Add Ubuntu 22.04 to list of supported distros
+---
 
- documentation/ref-manual/system-requirements.rst | 2 ++
- 1 file changed, 2 insertions(+)
+Changes in V3 (Michael Opdenacker):
+- Remove reference to Yocto Project manual, not documenting
+  the variables yet.
+- Fix a typo ("it's" -> "its")
+- Simplify syntax (":" followed by "::" replaced by "::"
+---
+ .../bitbake-user-manual-ref-variables.rst     | 25 +++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 12aef3cb..725e6c2c 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -483,6 +483,31 @@ overview of their function and contents.
+          You must set this variable in the external environment in order
+          for it to work.
+ 
++   :term:`BB_PRESSURE_MAX_CPU`
++      The threshold for maximum CPU pressure before BitBake prevents the
++      scheduling of new tasks. Once the :term:`BB_PRESSURE_MAX_CPU` threshold
++      is exceeded, new tasks are not started until the pressure subsides to
++      below the threshold. If :term:`BB_PRESSURE_MAX_CPU` is not set, CPU
++      pressure is not monitored. A threshold can be set in ``conf/local.conf``
++      as::
++
++         BB_PRESSURE_MAX_CPU = "500"
++
++   :term:`BB_PRESSURE_MAX_IO`
++      The threshold for maximum IO pressure experienced before BitBake
++      prevents the scheduling of new tasks. The IO pressure is regulated in the
++      same way as :term:`BB_PRESSURE_MAX_CPU`. At this point in time,
++      experiments show that IO pressure tends to be short-lived and regulating
++      just the CPU can help to reduce it.
++
++   :term:`BB_PRESSURE_MAX_MEMORY`
++      The threshold for maximum memory pressure experienced before BitBake
++      prevents the scheduling of new tasks. The memory pressure is regulated in
++      the same way as :term:`BB_PRESSURE_MAX_CPU`. Note that any memory
++      pressure indicates that a system is being pushed beyond its capacity. At
++      this point in time, experiments show that memory pressure tends to be
++      short-lived and regulating just the CPU can help to reduce it.
++
+    :term:`BB_RUNFMT`
+       Specifies the name of the executable script files (i.e. run files)
+       saved into ``${``\ :term:`T`\ ``}``. By default, the
 -- 
-2.25.1
+2.34.1
 
 
