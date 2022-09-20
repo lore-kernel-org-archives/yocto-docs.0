@@ -2,49 +2,50 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 08F70C6FA82
-	for <webhook@archiver.kernel.org>; Tue, 20 Sep 2022 20:54:07 +0000 (UTC)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com
- [209.85.167.46])
- by mx.groups.io with SMTP id smtpd.web12.2437.1663707243160144756
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A582C6FA82
+	for <webhook@archiver.kernel.org>; Tue, 20 Sep 2022 21:05:07 +0000 (UTC)
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com
+ [209.85.208.169])
+ by mx.groups.io with SMTP id smtpd.web10.2540.1663707897913330150
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Sep 2022 13:54:03 -0700
+ Tue, 20 Sep 2022 14:04:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=heDTTNKc;
- spf=pass (domain: gmail.com, ip: 209.85.167.46,
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=NecmdciC;
+ spf=pass (domain: gmail.com, ip: 209.85.208.169,
  mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lf1-f46.google.com with SMTP id s6so5888189lfo.7
+Received: by mail-lj1-f169.google.com with SMTP id b24so4573654ljk.6
         for <docs@lists.yoctoproject.org>;
- Tue, 20 Sep 2022 13:54:02 -0700 (PDT)
+ Tue, 20 Sep 2022 14:04:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date;
-        bh=RAPXycPy1Uah+UWc2EsnY1AoAiO5p2AmjKEvPNjm4Zo=;
-        b=heDTTNKcCFkUE4qFL1/3U5TfcZ6nuUpNkbhYDCGbDoy72DtlPxuiTdCXalGX2ZzvjY
-         v5FPNLl6Xm9YItgsnLRQ/HLoU8v+ZXv03tfyadjVbJ4p37hlIuTx+IF0V5fG1EZuKcsK
-         GEpPZPtjUZiN9N3shSg57Xq2ono4hVGHAzbe1BLTUmXrgoN+QK1z2blycPENcyizC3yE
-         sAQr6EyTYlJJPiZFdvpivdPPN/g4hAWCZqogQ0q9WHeMlSqy6sO2oauCLd/WzHrttfWa
-         y9l+Hlzuj/mU+xOEuZ7/amZPMuaoIldJih3lz35g4oqyzrDcRbolO0U+ALNELOXaF8Z0
-         As+g==
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date;
+        bh=fSUs5RwXO4eNcSDLosixXPBLbiAzUlc9JlTpr/5JxuA=;
+        b=NecmdciCzxQd5uhR/GXSTCWzYo9sAv2vv+3DT/UdmRs/LXY3sBzH0lv7TRtC16xJpK
+         Het7gVAOeb13JANpQ8Ofr4ICWpl60szcjcBEM//vymZ+JrP6GKxV7C24List3BI7kbOJ
+         66rAWLrS6t2em8NQuWDxmJJ63la9fM1X0CEQ7TOGqN/64BTxfcJ4wacj2crmOn++kmEC
+         oFWEOJ738MzBmxaFeVygldlQvS5Yf3MJbk5DjEM9opNT8sxYQohEHQGNOBtNqR4AdRPm
+         Trjo4Yz5sXQufDSCPMCTl0Bf5vfdh57A7ntECK2bqGQWKhrCQjbgKCFiD22V/qe/qe/o
+         bvcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=RAPXycPy1Uah+UWc2EsnY1AoAiO5p2AmjKEvPNjm4Zo=;
-        b=GH01MxSi19sTwowUh3lA9qCpORpYF/lJjFIQeZv00xGGTlf59Y1I0LU1HR8okc1bDU
-         j11uBnw+FnLbaUmZdswRZKnVotfX5Om5dO4o3jwxm93zxwqIrZb1ccRpekFmppJ19ys7
-         Fsa1SZdEtWmuc4HlWmpVGeEnmH/YftGEGPhtaMjMmxG7H1tOL15C21wB6p6WAfyB/YWy
-         BbZVjz73Te7gH1/U+3eFJXoYIXKCfMFIWa0CnE3lh4Es6yCsM7eMRpIiuh4ePOzUZO1R
-         1Db2ziqp6amh6N/ZF6lzroJOecXa3z0VzT0h7tiOm9E66tiEp2wmaubdK6GknZxqLJgC
-         tL2w==
-X-Gm-Message-State: ACrzQf26NXbZvgHgaaof6cjeVvjHeRleMbJO8BjxUEazY32dQro+Gi2r
-	k8ydgHY/Z3QcX6Mi47IPB0xaUQTFi9ukBB+GtQA=
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=fSUs5RwXO4eNcSDLosixXPBLbiAzUlc9JlTpr/5JxuA=;
+        b=8Lx9BB09meI9ZMGE3LaPO/Gd4rEiPg83kl0df5z1w3FmP6eNmiq5gixZo67fRgE5k7
+         BRymxBhInKcNkTMqbwHKTBAkhAKlIefK9PR5/TNMqONSXOutt61lvqRaNAa2UP+XAbug
+         MqZhRc8YKcTSmReRvFKXtuxpdIDReZcQi3M/8jMdpljreEWYHyluVom48/6WQpWw9SIV
+         9vrJvvqTRqH/Yjy7zbG/LppJbjYdLpUygjyE27nxYeldLE6bFfR78pGBhhLHzb5uxnMy
+         Y2nXSt6mmZRF6/4J4EyAUkmj6643k8Ejy+5oepEn+Zy68X7GWmLvt4DW95hdAu6I7O4C
+         MD1Q==
+X-Gm-Message-State: ACrzQf3jmx76DvIKe2mS27LcsYkWDfODhGuMwsNpEUt4+19HnHiMog9h
+	f2XRIyULw8GqD1CrymY7L44wbUBm/S7xQzEtMEg=
 X-Google-Smtp-Source: 
- AMsMyM5U2j3kFO1mx+upcHaj9/Ncgy+s1Ssdh+oBer4IMsBpBCUcS7asvDVerl2LQzMlYCZ/HotDjR7TxhsTI/Vh52k=
-X-Received: by 2002:a05:6512:950:b0:497:c41e:3d0c with SMTP id
- u16-20020a056512095000b00497c41e3d0cmr9444670lft.673.1663707241211; Tue, 20
- Sep 2022 13:54:01 -0700 (PDT)
+ AMsMyM4k7ooh65IGhss+ohNJmt0cFgVEop56TN/i70IDvaRtQVU6kRq413dXfc7zUv7XZMRpqowTy3P8IGBYLiumf3g=
+X-Received: by 2002:a05:651c:1787:b0:261:c1ff:4407 with SMTP id
+ bn7-20020a05651c178700b00261c1ff4407mr7488781ljb.257.1663707895920; Tue, 20
+ Sep 2022 14:04:55 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220911172608.2542076-1-alex@linutronix.de>
  <20220911172608.2542076-5-alex@linutronix.de>
@@ -53,145 +54,98 @@ References: <20220911172608.2542076-1-alex@linutronix.de>
  <0c6e4dbbf24d4221ba58543cfc48a498@axis.com>
  <CANNYZj-L_TKTv6tniiRw5-d+Nd9LqpKRcHxcbjN4_f3tgN3ahg@mail.gmail.com>
  <eaad5849-ff56-f3d6-9db7-113f4d7ae489@bootlin.com>
-In-Reply-To: <eaad5849-ff56-f3d6-9db7-113f4d7ae489@bootlin.com>
+ <1716ACEC6B725C1D.5502@lists.yoctoproject.org>
+In-Reply-To: <1716ACEC6B725C1D.5502@lists.yoctoproject.org>
 From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Tue, 20 Sep 2022 21:53:50 +0100
+Date: Tue, 20 Sep 2022 23:04:44 +0200
 Message-ID: 
- <CANNYZj9WBpaRaXBiaXedSm3esD2pKYyt3KYgKpoJw-3VpqbExw@mail.gmail.com>
+ <CANNYZj-VCcog_w7HTBuwh3zeaVNvDC_MpUMwEVhPp+Md++71zA@mail.gmail.com>
 Subject: Re: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
  configuration templates
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Alexander Kanavin <alex@linutronix.de>,
- Peter Kjellerstedt <peter.kjellerstedt@axis.com>,
+To: Alexander Kanavin <alex.kanavin@gmail.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+ Alexander Kanavin <alex@linutronix.de>,
+	Peter Kjellerstedt <peter.kjellerstedt@axis.com>,
 	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="0000000000001f6b4d05e9220712"
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 20 Sep 2022 20:54:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3191
+ <docs@lists.yoctoproject.org>; Tue, 20 Sep 2022 21:05:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3192
 
---0000000000001f6b4d05e9220712
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-It=E2=80=99s not a need-for-consensus situation. It=E2=80=99s correcting so=
-mething that
-should have never been added in the first place.
+To clarify, the .templateconf stuff can be brought back, but it must
+come with specific explanation about how to use it if it comes from
+anything else than poky or oe-core. Which is not possible with current
+tooling in core. But Peter is welcome to write that section.
 
 Alex
 
-On Tue 20. Sep 2022 at 21.46, Michael Opdenacker <
-michael.opdenacker@bootlin.com> wrote:
-
-> Greetings,
+On Tue, 20 Sept 2022 at 22:54, Alexander Kanavin via
+lists.yoctoproject.org <alex.kanavin=3Dgmail.com@lists.yoctoproject.org>
+wrote:
 >
-> On 14.09.22 06:50, Alexander Kanavin wrote:
-> > On Wed, 14 Sept 2022 at 01:59, Peter Kjellerstedt
-> > <peter.kjellerstedt@axis.com> wrote:
-> >> And I think he documented it exactly as it was intended to be used. Se=
-e
-> >> Paul Eggleton's comment:
-> >>
-> >>    One way to do it is to set TEMPLATECONF (an environment variable,
-> not a
-> >>    bitbake variable) to point to a directory where the custom
-> conf-notes.txt
-> >>    can be found. In a repository this can be set within a .templatecon=
-f
-> file -
-> >>    hopefully we document that somewhere as well."
-> > Paul didn't think it through either when he wrote this. Specifically,
-> > .templateconf must be directly next to oe-init-build-env, which means
-> > it cannot simply be 'in a repository'.
-> >
-> > You can't have it both ways: demand that this is kept in the docs, but
-> > without explaining how to actually make it work (using standard
-> > tooling). Also, your setup
-> > is unnecessarily complicated to begin with: just skip the template
-> > assembly altogether, and write directly to build/conf. Eventually
-> > you'll be able to do it in a structured, supported
-> > way with fragments, which is what we should *actually* be talking about=
-.
+> It=E2=80=99s not a need-for-consensus situation. It=E2=80=99s correcting =
+something that should have never been added in the first place.
 >
+> Alex
 >
-> It's obvious we don't have a consensus yet here.
-> Can anyone else jump in and contribute to this discussion?
+> On Tue 20. Sep 2022 at 21.46, Michael Opdenacker <michael.opdenacker@boot=
+lin.com> wrote:
+>>
+>> Greetings,
+>>
+>> On 14.09.22 06:50, Alexander Kanavin wrote:
+>> > On Wed, 14 Sept 2022 at 01:59, Peter Kjellerstedt
+>> > <peter.kjellerstedt@axis.com> wrote:
+>> >> And I think he documented it exactly as it was intended to be used. S=
+ee
+>> >> Paul Eggleton's comment:
+>> >>
+>> >>    One way to do it is to set TEMPLATECONF (an environment variable, =
+not a
+>> >>    bitbake variable) to point to a directory where the custom conf-no=
+tes.txt
+>> >>    can be found. In a repository this can be set within a .templateco=
+nf file -
+>> >>    hopefully we document that somewhere as well."
+>> > Paul didn't think it through either when he wrote this. Specifically,
+>> > .templateconf must be directly next to oe-init-build-env, which means
+>> > it cannot simply be 'in a repository'.
+>> >
+>> > You can't have it both ways: demand that this is kept in the docs, but
+>> > without explaining how to actually make it work (using standard
+>> > tooling). Also, your setup
+>> > is unnecessarily complicated to begin with: just skip the template
+>> > assembly altogether, and write directly to build/conf. Eventually
+>> > you'll be able to do it in a structured, supported
+>> > way with fragments, which is what we should *actually* be talking abou=
+t.
+>>
+>>
+>> It's obvious we don't have a consensus yet here.
+>> Can anyone else jump in and contribute to this discussion?
+>>
+>> The other patches in this series have been merged into master-next.
+>>
+>> Thanks in advance
+>> Michael.
+>>
+>> --
+>> Michael Opdenacker, Bootlin
+>> Embedded Linux and Kernel engineering
+>> https://bootlin.com
+>>
 >
-> The other patches in this series have been merged into master-next.
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#3191): https://lists.yoctoproject.org/g/docs/message/=
+3191
+> Mute This Topic: https://lists.yoctoproject.org/mt/93615912/1686489
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kanavin@gm=
+ail.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
 >
-> Thanks in advance
-> Michael.
->
-> --
-> Michael Opdenacker, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
->
-
---0000000000001f6b4d05e9220712
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"auto">It=E2=80=99s not a need-for-consensus situation. It=E2=80=
-=99s correcting something that should have never been added in the first pl=
-ace.</div><div dir=3D"auto"><br></div><div dir=3D"auto">Alex</div><div><br>=
-<div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue 20.=
- Sep 2022 at 21.46, Michael Opdenacker &lt;<a href=3D"mailto:michael.opdena=
-cker@bootlin.com">michael.opdenacker@bootlin.com</a>&gt; wrote:<br></div><b=
-lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
-ft-width:1px;border-left-style:solid;padding-left:1ex;border-left-color:rgb=
-(204,204,204)">Greetings,<br>
-<br>
-On 14.09.22 06:50, Alexander Kanavin wrote:<br>
-&gt; On Wed, 14 Sept 2022 at 01:59, Peter Kjellerstedt<br>
-&gt; &lt;<a href=3D"mailto:peter.kjellerstedt@axis.com" target=3D"_blank">p=
-eter.kjellerstedt@axis.com</a>&gt; wrote:<br>
-&gt;&gt; And I think he documented it exactly as it was intended to be used=
-. See<br>
-&gt;&gt; Paul Eggleton&#39;s comment:<br>
-&gt;&gt;<br>
-&gt;&gt;=C2=A0 =C2=A0 One way to do it is to set TEMPLATECONF (an environme=
-nt variable, not a<br>
-&gt;&gt;=C2=A0 =C2=A0 bitbake variable) to point to a directory where the c=
-ustom conf-notes.txt<br>
-&gt;&gt;=C2=A0 =C2=A0 can be found. In a repository this can be set within =
-a .templateconf file -<br>
-&gt;&gt;=C2=A0 =C2=A0 hopefully we document that somewhere as well.&quot;<b=
-r>
-&gt; Paul didn&#39;t think it through either when he wrote this. Specifical=
-ly,<br>
-&gt; .templateconf must be directly next to oe-init-build-env, which means<=
-br>
-&gt; it cannot simply be &#39;in a repository&#39;.<br>
-&gt;<br>
-&gt; You can&#39;t have it both ways: demand that this is kept in the docs,=
- but<br>
-&gt; without explaining how to actually make it work (using standard<br>
-&gt; tooling). Also, your setup<br>
-&gt; is unnecessarily complicated to begin with: just skip the template<br>
-&gt; assembly altogether, and write directly to build/conf. Eventually<br>
-&gt; you&#39;ll be able to do it in a structured, supported<br>
-&gt; way with fragments, which is what we should *actually* be talking abou=
-t.<br>
-<br>
-<br>
-It&#39;s obvious we don&#39;t have a consensus yet here.<br>
-Can anyone else jump in and contribute to this discussion?<br>
-<br>
-The other patches in this series have been merged into master-next.<br>
-<br>
-Thanks in advance<br>
-Michael.<br>
-<br>
--- <br>
-Michael Opdenacker, Bootlin<br>
-Embedded Linux and Kernel engineering<br>
-<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
-//bootlin.com</a><br>
-<br>
-</blockquote></div></div>
-
---0000000000001f6b4d05e9220712--
 
