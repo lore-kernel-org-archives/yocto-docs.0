@@ -2,150 +2,157 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A582C6FA82
-	for <webhook@archiver.kernel.org>; Tue, 20 Sep 2022 21:05:07 +0000 (UTC)
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com
- [209.85.208.169])
- by mx.groups.io with SMTP id smtpd.web10.2540.1663707897913330150
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CBF7C6FA82
+	for <webhook@archiver.kernel.org>; Tue, 20 Sep 2022 21:23:17 +0000 (UTC)
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com
+ [209.85.208.171])
+ by mx.groups.io with SMTP id smtpd.web10.2713.1663708990377003737
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Sep 2022 14:04:58 -0700
+ Tue, 20 Sep 2022 14:23:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=NecmdciC;
- spf=pass (domain: gmail.com, ip: 209.85.208.169,
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=LLGqAdz9;
+ spf=pass (domain: gmail.com, ip: 209.85.208.171,
  mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lj1-f169.google.com with SMTP id b24so4573654ljk.6
+Received: by mail-lj1-f171.google.com with SMTP id x29so4670573ljq.2
         for <docs@lists.yoctoproject.org>;
- Tue, 20 Sep 2022 14:04:57 -0700 (PDT)
+ Tue, 20 Sep 2022 14:23:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date;
-        bh=fSUs5RwXO4eNcSDLosixXPBLbiAzUlc9JlTpr/5JxuA=;
-        b=NecmdciCzxQd5uhR/GXSTCWzYo9sAv2vv+3DT/UdmRs/LXY3sBzH0lv7TRtC16xJpK
-         Het7gVAOeb13JANpQ8Ofr4ICWpl60szcjcBEM//vymZ+JrP6GKxV7C24List3BI7kbOJ
-         66rAWLrS6t2em8NQuWDxmJJ63la9fM1X0CEQ7TOGqN/64BTxfcJ4wacj2crmOn++kmEC
-         oFWEOJ738MzBmxaFeVygldlQvS5Yf3MJbk5DjEM9opNT8sxYQohEHQGNOBtNqR4AdRPm
-         Trjo4Yz5sXQufDSCPMCTl0Bf5vfdh57A7ntECK2bqGQWKhrCQjbgKCFiD22V/qe/qe/o
-         bvcA==
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date;
+        bh=c2FR4xEKwa5y/KLQT2yu8POQp+HP5RRc7x354d029Ek=;
+        b=LLGqAdz9vm+pq55B6/hhyRyc0O/Zjw7s4WHlKd3AVTLH96MsN6fusVf2YD3H4ymy0J
+         hP9EkAzB8Xf1cBoMbdEhF5ETX4rmeoPEBrXxLNqWPHBXPsZEoQJX1+Q0ww3qPHSBRXt0
+         KgIn8M0u7ipCDP6k4rLgVR7lx/IFeY1ZJ6Lez3I3UGrty0brDJNo9T2uLxkrOi3PFomS
+         gv+MktCA30KrmSCDksakk+fU+yVfMAy5buG2Ft22r747IrfaTwPfs8xOfQ3HOifpcNOE
+         fakgjs4Hl9TL0Zc5wkEwdKeoyRGA23zOJ3BwuuJtZyshcpdZSNNYxJKfoCXWiPpexuo6
+         f29g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date;
-        bh=fSUs5RwXO4eNcSDLosixXPBLbiAzUlc9JlTpr/5JxuA=;
-        b=8Lx9BB09meI9ZMGE3LaPO/Gd4rEiPg83kl0df5z1w3FmP6eNmiq5gixZo67fRgE5k7
-         BRymxBhInKcNkTMqbwHKTBAkhAKlIefK9PR5/TNMqONSXOutt61lvqRaNAa2UP+XAbug
-         MqZhRc8YKcTSmReRvFKXtuxpdIDReZcQi3M/8jMdpljreEWYHyluVom48/6WQpWw9SIV
-         9vrJvvqTRqH/Yjy7zbG/LppJbjYdLpUygjyE27nxYeldLE6bFfR78pGBhhLHzb5uxnMy
-         Y2nXSt6mmZRF6/4J4EyAUkmj6643k8Ejy+5oepEn+Zy68X7GWmLvt4DW95hdAu6I7O4C
-         MD1Q==
-X-Gm-Message-State: ACrzQf3jmx76DvIKe2mS27LcsYkWDfODhGuMwsNpEUt4+19HnHiMog9h
-	f2XRIyULw8GqD1CrymY7L44wbUBm/S7xQzEtMEg=
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date;
+        bh=c2FR4xEKwa5y/KLQT2yu8POQp+HP5RRc7x354d029Ek=;
+        b=xI0lgjHkcJ4T8jqSR7nq0vcwW+MzuiDTq63HiZhT4Rh1xA74uro9Kpzg+PkRJ6cXqz
+         eBTpYu0G+gkF3S4QjzX7asjeM1tf4pIzkdrEuRc9Y+RUUYOI07VnvGclJbLNhwkyvD3k
+         V0tD06/ilIEPop8HnXJj6KlimtH8U9CJ4hwHYSrR99CI7KI1CvmWM2w1peYy1cLT97sc
+         boELYm5x+Ln945YZ2JnAwhfqqVQfwl0I/xSXn84N2b4Y67Mx9K0APosVd7A/WCwT1SxS
+         jEgqjTisHjZVrhWInLPQMjMJYPQNg3+EQrq2n9PLfRcKfDvJfMppEO/2AUslhAbFKjWl
+         slVw==
+X-Gm-Message-State: ACrzQf3mxFFJSvc9JzWU0unyuu+fM3/Kx8oGdattOZkkD3AnZ61RtCvz
+	BmdWbxd9mnbB94v+/1KywB1nryki0MH13MCGrUY=
 X-Google-Smtp-Source: 
- AMsMyM4k7ooh65IGhss+ohNJmt0cFgVEop56TN/i70IDvaRtQVU6kRq413dXfc7zUv7XZMRpqowTy3P8IGBYLiumf3g=
+ AMsMyM4HML3AcbhdkVPDZfgXjlUzAYXLao+TH9I3GAm3c2pzAJFWDWEvJeJowXgI16p9TCNxrBrgkEzFEMUpVRwU3ck=
 X-Received: by 2002:a05:651c:1787:b0:261:c1ff:4407 with SMTP id
- bn7-20020a05651c178700b00261c1ff4407mr7488781ljb.257.1663707895920; Tue, 20
- Sep 2022 14:04:55 -0700 (PDT)
+ bn7-20020a05651c178700b00261c1ff4407mr7509957ljb.257.1663708988572; Tue, 20
+ Sep 2022 14:23:08 -0700 (PDT)
 MIME-Version: 1.0
 References: <20220911172608.2542076-1-alex@linutronix.de>
- <20220911172608.2542076-5-alex@linutronix.de>
- <f20e7ca0158e49329b2ed2d7685ef945@axis.com>
- <CANNYZj_mTijA18UCxpTVa9V0k7pPakqvAGBLWBS39UDBCHS8RA@mail.gmail.com>
- <0c6e4dbbf24d4221ba58543cfc48a498@axis.com>
- <CANNYZj-L_TKTv6tniiRw5-d+Nd9LqpKRcHxcbjN4_f3tgN3ahg@mail.gmail.com>
- <eaad5849-ff56-f3d6-9db7-113f4d7ae489@bootlin.com>
- <1716ACEC6B725C1D.5502@lists.yoctoproject.org>
-In-Reply-To: <1716ACEC6B725C1D.5502@lists.yoctoproject.org>
+ <20220911172608.2542076-3-alex@linutronix.de>
+ <056487c1-6447-d078-be5d-05340b424ce5@theobroma-systems.com>
+ <6b495f9b-fbc3-7f91-19b3-0e1bb433e54a@bootlin.com>
+In-Reply-To: <6b495f9b-fbc3-7f91-19b3-0e1bb433e54a@bootlin.com>
 From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Tue, 20 Sep 2022 23:04:44 +0200
+Date: Tue, 20 Sep 2022 23:22:57 +0200
 Message-ID: 
- <CANNYZj-VCcog_w7HTBuwh3zeaVNvDC_MpUMwEVhPp+Md++71zA@mail.gmail.com>
-Subject: Re: [docs] [PATCH 5/5] common-tasks.rst: rewrite the section about
- configuration templates
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
- Alexander Kanavin <alex@linutronix.de>,
-	Peter Kjellerstedt <peter.kjellerstedt@axis.com>,
-	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+ <CANNYZj8LQMoKhSLd9v1259cseQYr2mmC1YJrnK-xiXxj2pU2Lg@mail.gmail.com>
+Subject: Re: [docs] [PATCH 3/5] common-tasks.rst: describe the newly added
+ layer setup and template config commands
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: quentin.schulz@theobroma-systems.com,
+	Alexander Kanavin <alex@linutronix.de>, docs <docs@lists.yoctoproject.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 20 Sep 2022 21:05:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3192
+ <docs@lists.yoctoproject.org>; Tue, 20 Sep 2022 21:23:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3193
 
-To clarify, the .templateconf stuff can be brought back, but it must
-come with specific explanation about how to use it if it comes from
-anything else than poky or oe-core. Which is not possible with current
-tooling in core. But Peter is welcome to write that section.
+I'm not sure alphabetical order makes sense. There is a certain
+logical order in describing the commands that follows a typical
+'setting up a build and configuration' workflow, and that is perhaps
+better. In any case, that should be a separate commit, as reordering
+things should always be kept separate from modifying them.
+
+Thanks for all the fixups!
 
 Alex
 
-On Tue, 20 Sept 2022 at 22:54, Alexander Kanavin via
-lists.yoctoproject.org <alex.kanavin=3Dgmail.com@lists.yoctoproject.org>
-wrote:
+On Tue, 20 Sept 2022 at 22:28, Michael Opdenacker
+<michael.opdenacker@bootlin.com> wrote:
 >
-> It=E2=80=99s not a need-for-consensus situation. It=E2=80=99s correcting =
-something that should have never been added in the first place.
+> Quentin, Alex,
 >
-> Alex
+> Thanks for the patch and review.
 >
-> On Tue 20. Sep 2022 at 21.46, Michael Opdenacker <michael.opdenacker@boot=
-lin.com> wrote:
->>
->> Greetings,
->>
->> On 14.09.22 06:50, Alexander Kanavin wrote:
->> > On Wed, 14 Sept 2022 at 01:59, Peter Kjellerstedt
->> > <peter.kjellerstedt@axis.com> wrote:
->> >> And I think he documented it exactly as it was intended to be used. S=
-ee
->> >> Paul Eggleton's comment:
->> >>
->> >>    One way to do it is to set TEMPLATECONF (an environment variable, =
-not a
->> >>    bitbake variable) to point to a directory where the custom conf-no=
-tes.txt
->> >>    can be found. In a repository this can be set within a .templateco=
-nf file -
->> >>    hopefully we document that somewhere as well."
->> > Paul didn't think it through either when he wrote this. Specifically,
->> > .templateconf must be directly next to oe-init-build-env, which means
->> > it cannot simply be 'in a repository'.
->> >
->> > You can't have it both ways: demand that this is kept in the docs, but
->> > without explaining how to actually make it work (using standard
->> > tooling). Also, your setup
->> > is unnecessarily complicated to begin with: just skip the template
->> > assembly altogether, and write directly to build/conf. Eventually
->> > you'll be able to do it in a structured, supported
->> > way with fragments, which is what we should *actually* be talking abou=
-t.
->>
->>
->> It's obvious we don't have a consensus yet here.
->> Can anyone else jump in and contribute to this discussion?
->>
->> The other patches in this series have been merged into master-next.
->>
->> Thanks in advance
->> Michael.
->>
->> --
->> Michael Opdenacker, Bootlin
->> Embedded Linux and Kernel engineering
->> https://bootlin.com
->>
+> On 19.09.22 17:23, Quentin Schulz via lists.yoctoproject.org wrote:
+> > Hi Alex,
+> >
+> > On 9/11/22 19:26, Alexander Kanavin wrote:
+> >> Signed-off-by: Alexander Kanavin <alex@linutronix.de>
+> >> ---
+> >>   documentation/dev-manual/common-tasks.rst | 11 +++++++++++
+> >>   1 file changed, 11 insertions(+)
+> >>
+> >> diff --git a/documentation/dev-manual/common-tasks.rst
+> >> b/documentation/dev-manual/common-tasks.rst
+> >> index c2afec946..4d19bd921 100644
+> >> --- a/documentation/dev-manual/common-tasks.rst
+> >> +++ b/documentation/dev-manual/common-tasks.rst
+> >> @@ -728,6 +728,17 @@ The following list describes the available
+> >> commands:
+> >>     -  ``create-layer``: Creates a basic layer.
+> >>   +-  ``save-build-conf``: Saves the currently active build
+> >> configuration
+> >> +   (conf/local.conf, conf/bblayers.conf) as a template into a layer.
+> >
+> > Double tick-quote the paths please, e.g.:
+> > ``conf/local.conf``
+> >
+> >> +   This template can later be used for setting up builds via
+> >> TEMPLATECONF.
+> >
+> > :term:`TEMPLATECONF`
+> >
+> >> +   For information about saving and usinc configuration templates, see
+> >
+> > s/usinc/using/
+> >
+> >> + ":ref:`dev-manual/common-tasks:creating a custom template
+> >> configuration directory`".
+> >> +
+> >> +-  ``create-layers-setup``: Writes out a configuration file and/or a
+> >> script that
+> >> +   can replicate the directory structure and revisions of the layers
+> >> in a current build.
+> >> +   For more information, see ":ref:`dev-manual/common-tasks:saving
+> >> and restoring the layers setup`".
+> >> +
 >
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#3191): https://lists.yoctoproject.org/g/docs/message/=
-3191
-> Mute This Topic: https://lists.yoctoproject.org/mt/93615912/1686489
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kanavin@gm=
-ail.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
+> I took your review into account, Quentin.
+>
+> >
+> > Should we order alphabetically the list of available commands?
+>
+>
+> Maybe, this should be another change, as the commands are not sorted
+> alphabetically in the existing text. At least, I modified Alex' changes
+> to insert them in a way that is consistent with the order in the
+> "--help" output.
+>
+> I agree though that sorting commands alphabetically would help, in the
+> documentation, but in the code too. Would the latter make sense?
+>
+> Anyway, I merged this change into master-next. I had to apply the 4/5
+> patch first, otherwise, this one was making a reference to a chapter
+> that didn't exist yet.
+>
+> Thanks again!
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
 >
 
