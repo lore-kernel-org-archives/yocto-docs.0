@@ -2,166 +2,94 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A6C5C6FA8B
-	for <webhook@archiver.kernel.org>; Wed, 21 Sep 2022 20:25:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC06DC6FA82
+	for <webhook@archiver.kernel.org>; Thu, 22 Sep 2022 07:56:14 +0000 (UTC)
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net
  [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.11434.1663791907445205795
+ by mx.groups.io with SMTP id smtpd.web12.4626.1663833366379383084
  for <docs@lists.yoctoproject.org>;
- Wed, 21 Sep 2022 13:25:08 -0700
+ Thu, 22 Sep 2022 00:56:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TuQarAv0;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=UiP8Eny2;
  spf=pass (domain: bootlin.com, ip: 217.70.183.200,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 6F55020005;
-	Wed, 21 Sep 2022 20:25:05 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id E6BEB20009;
+	Thu, 22 Sep 2022 07:56:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1663791905;
+	t=1663833364;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=2W+E2K3L4iysjIZKTIm6Q5uNdR1TQJ79aKaAANgs71w=;
-	b=TuQarAv0kQQgUs7yKtaCCSiaWDWoa9DHsA17wIgGsaIqtVuT1sja+jN5RGNwWuX+9MPVX1
-	fwXV7QT49C5l9hk7aJvB/M3Kn1eeQLTzXVvhzySmJEjGSOfM3TgYAi/BawiLMFH0+EoAQC
-	M8Sr3L9j5TMctOheJbA5XoHxSxoupkczWDAvWnYkirKT7tywU0OxFUVk4yK3RobGLCAFdz
-	gkWUZV/UU/p0WTpVwyYTDuLv8mlPVL7Au/85SF7wERY8GylzWF+joBwLN0Us+2SxZuLUvo
-	wHiCR69zmmPxlr8TQj8nlx61EvtPY6g2U59AwOOWGOun1QhnysHV09mHaEH9cQ==
+	bh=ta4S0L4z4I4Yrz1PFUyrmlFnPw3xwVYPtLKfAwCDELo=;
+	b=UiP8Eny2Sm5ro8vEWRnXC09KhT1hHiCed0zbnuKXADYKaol/eLXhsN/PuA+tdNJMSVFUqB
+	kZihb+uffZSNwKBagdcJDoE7NajIUNgtIc19ZPC44moHIq0ymxSYZhX/Li/o5bNPsHF7ZW
+	LumHdwzihQR0oKbZ2XLdTZspp4FwYZhadxuR62z8isg7wMdO+iuykUUwnAQ4j8Oamgf4pB
+	W1RBHTMdjPcxfVQYNFGWZ/IXxGxfYPqXrqyMrAH4eWI5XeTfs3I9BILybFaZIUenRb0YN3
+	C5embrR1Ar4Gk/hJ8u4BgJwfEwK2Dt6dTtHN/tehhexF4TEWm7Bq1pDX67bh/Q==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: features.rst: add missing default distro features
-Date: Wed, 21 Sep 2022 22:24:59 +0200
-Message-Id: <20220921202459.150532-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <foss@0leil.net>
+Subject: [PATCH] ref-manual: variables.rst: refer to BBPATH in the BitBake
+ User Manual
+Date: Thu, 22 Sep 2022 09:56:00 +0200
+Message-Id: <20220922075600.1160944-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 21 Sep 2022 20:25:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3201
+ <docs@lists.yoctoproject.org>; Thu, 22 Sep 2022 07:56:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3202
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Document default machine features defined in Poky, and which
-were not listed in the documentation yet.
+As reported in [YOCTO #14502], the description of BBPATH in the
+Yocto Project Manual is redundant with its description in the
+BitBake User Manual.
 
-Took the values of DISTRO_FEATURES_DEFAULT and POKY_DEFAULT_DISTRO_FEATURES:
-meta-poky/conf/distro/poky.conf:DISTRO_FEATURES ?= "${DISTRO_FEATURES_DEFAULT} ${POKY_DEFAULT_DISTRO_FEATURES}"
-
-Also explain that extra layers can define their own features.
-
-This addresses [YOCTO #14515]
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Quentin Schulz <foss@0leil.net>
 
 ---
 
-Note that the list in the document still contains distro features which
-are not part of the default ones:
+Without this redirection, the references to BBPATH would still
+work, as it this the case for terms only definited in the BitBake
+User Manual, but BBPATH would no longer appear in the variable index.
 
-api-documentation, cramfs, directfb, ipsec, keyboard, ldconfig, ppp, smbfs, systemd, usrmerge.
+This would probably be a bad thing.
 ---
- documentation/ref-manual/features.rst | 43 +++++++++++++++++++++++++--
- 1 file changed, 40 insertions(+), 3 deletions(-)
+ documentation/ref-manual/variables.rst | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
-index 8dfe29d66a..5e853caa2c 100644
---- a/documentation/ref-manual/features.rst
-+++ b/documentation/ref-manual/features.rst
-@@ -113,10 +113,15 @@ configuration level. See the
- information.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index fe845bf375..f6cc66e2c4 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -729,20 +729,7 @@ system and gives an overview of their function and contents.
+       section in the Yocto Project Development Tasks Manual.
  
- This list only represents features as shipped with the Yocto Project
--metadata:
-+metadata, as extra layers can define their own:
+    :term:`BBPATH`
+-      Used by BitBake to locate ``.bbclass`` and configuration files. This
+-      variable is analogous to the ``PATH`` variable.
+-
+-      .. note::
+-
+-         If you run BitBake from a directory outside of the
+-         :term:`Build Directory`, you must be sure to set :term:`BBPATH`
+-         to point to the Build Directory. Set the variable as you would any
+-         environment variable and then run BitBake::
+-
+-                 $ BBPATH = "build_directory"
+-                 $ export BBPATH
+-                 $ bitbake target
+-
++      See :term:`bitbake:BBPATH` in the BitBake User Manual.
  
---  *alsa:* Include ALSA support (OSS compatibility kernel modules
--   installed if available).
-+-  *3g:* Include support for cellular data.
-+
-+-  *acl:* Include
-+   `Access Control List <https://en.wikipedia.org/wiki/Access-control_list>`__ support.
-+
-+-  *alsa:* Include `Advanced Linux Sound Architecture <https://en.wikipedia.org/wiki/Advanced_Linux_Sound_Architecture>`__
-+   support (OSS compatibility kernel modules installed if available).
- 
- -  *api-documentation:* Enables generation of API documentation during
-    recipe builds. The resulting documentation is added to SDK tarballs
-@@ -129,6 +134,10 @@ metadata:
- 
- -  *cramfs:* Include CramFS support.
- 
-+-  *debuginfod:* Include support for getting ELF debugging information through
-+   a :ref:`debuginfod <dev-manual/common-tasks:using the debuginfod server method>`
-+   server.
-+
- -  *directfb:* Include DirectFB support.
- 
- -  *ext2:* Include tools for supporting for devices with internal
-@@ -136,14 +145,25 @@ metadata:
- 
- -  *ipsec:* Include IPSec support.
- 
-+-  *ipv4:* Include IPv4 support.
-+
- -  *ipv6:* Include IPv6 support.
- 
- -  *keyboard:* Include keyboard support (e.g. keymaps will be loaded
-    during boot).
- 
-+-  *largefile:* Enable building applications with
-+   `argefile support <https://en.wikipedia.org/wiki/Large-file_support>`__.
-+
-+-  *multiarch:* Enable building applications with multiple architecture
-+   support.
-+
- -  *ldconfig:* Include support for ldconfig and ``ld.so.conf`` on the
-    target.
- 
-+-  *nfc:* Include support for
-+   `Near Field Communication <https://en.wikipedia.org/wiki/Near-field_communication>`__.
-+
- -  *nfs:* Include NFS client support (for mounting NFS exports on
-    device).
- 
-@@ -162,6 +182,11 @@ metadata:
-    ":ref:`dev-manual/common-tasks:testing packages with ptest`" section
-    in the Yocto Project Development Tasks Manual.
- 
-+-  *seccomp:* Enables building applications with
-+   `seccomp <https://en.wikipedia.org/wiki/Seccomp>`__ support, to
-+   allow them to strictly restrict the system calls that they are allowed
-+   to invoke.
-+
- -  *smbfs:* Include SMB networks client support (for mounting
-    Samba/Microsoft Windows shares on device).
- 
-@@ -180,6 +205,12 @@ metadata:
-    directories into their respective counterparts in the ``/usr``
-    directory to provide better package and application compatibility.
- 
-+-  *vfat:* Include `FAT filesystem <https://en.wikipedia.org/wiki/File_Allocation_Table>`__
-+   support.
-+
-+-  *vulkan:* Include support for the
-+   `Vulkan API <https://en.wikipedia.org/wiki/Vulkan>`__.
-+
- -  *wayland:* Include the Wayland display server protocol and the
-    library that supports it.
- 
-@@ -187,6 +218,12 @@ metadata:
- 
- -  *x11:* Include the X server and libraries.
- 
-+-  *xattr:* Include support for
-+   `extended file attributes <https://en.wikipedia.org/wiki/Extended_file_attributes>`__.
-+
-+-  *zeroconf:* Include support for
-+   `zero configuration networking <https://en.wikipedia.org/wiki/Zero-configuration_networking>`__.
-+
- .. _ref-features-image:
- 
- Image Features
+    :term:`BBSERVER`
+       If defined in the BitBake environment, :term:`BBSERVER` points to the
 -- 
 2.34.1
 
