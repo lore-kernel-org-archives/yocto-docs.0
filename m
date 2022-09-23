@@ -2,39 +2,39 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79654C07E9D
-	for <webhook@archiver.kernel.org>; Fri, 23 Sep 2022 17:52:59 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net
- [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web09.556.1663955574824399879
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62823C07E9D
+	for <webhook@archiver.kernel.org>; Fri, 23 Sep 2022 17:53:09 +0000 (UTC)
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
+ [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web10.589.1663955585558332483
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Sep 2022 10:52:55 -0700
+ Fri, 23 Sep 2022 10:53:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=J3hfgegb;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=feL1PDST;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.232,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 749D260005;
-	Fri, 23 Sep 2022 17:52:48 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 77971200007;
+	Fri, 23 Sep 2022 17:53:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1663955573;
+	t=1663955584;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=61DB0R5Qeg02NRpbbfUenzyiA9T5dBxMuXzF5JWRWmw=;
-	b=J3hfgegbIqMBBKrKrJwSe7MAjSDp9NbXZHCCBim/U4td3op+9rCcP9ldhLEJIOot9vQdRk
-	6YGux7gD4t+uANyw8iwG3KIBIG/JxjAtHB81bKa49nSiV7XonS06GUL38O/cHp/86cLDKg
-	LQCxNNRUqa9c2Bx3nuY2DuU28QDEpSo+U6mZaMA9FKaws/fWg56So3OCFre6LrNYJhvU6f
-	78v6kJO+UflaswohQuh4to5cKmLrFq7TKFZlyLBrT34xk69QKfjSxHpLYBi5leTVVx0kdN
-	ZINqox6AhxXyU3pydkkCnnFc+16/b6tdSfCg8Z0SNc8xx9SLHG2umb88s2v/EA==
+	bh=kZDVw2H4UQM+7frqL23kb7Fq59RRZuGua5l/PJZ4tuY=;
+	b=feL1PDSTUbhziyTPVJOzLvopeD1NF9pm/5LLpZdgvC4xxVRSAM8FRVUfs7oyTyFMQK3xHP
+	3EKm4xv/go8jopH7oqoAJAr26wU4721R5g+zfGupVmyj5pjCkNLir1PfmMzShjiHxYxLg4
+	fckYJDDiQcIBy/uIO65cRPQai2ZLL1aEGaUsc0Qdsv+qzxRt+I7+YQCuzHsCd/0eoCByRK
+	uUq4zNHJ4n4qt5b2zf4luWDj90CVRi3uH9iefo3onXFDj3t48CEg+T9tPBu9zMkRZKfgsR
+	9xQAbrOYD6+TYGTBoicWxtE3weubFzkrf+AMdF/bYHN/hA+cYJL6WQxc21QW0A==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Quentin Schulz <foss@0leil.net>
-Subject: [PATCH 04/30] manuals: add reference to "do_configure" task
-Date: Fri, 23 Sep 2022 19:51:53 +0200
-Message-Id: <20220923175219.6652-5-michael.opdenacker@bootlin.com>
+Subject: [PATCH 06/30] manuals: add references to the "do_deploy" task
+Date: Fri, 23 Sep 2022 19:51:55 +0200
+Message-Id: <20220923175219.6652-7-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220923175219.6652-1-michael.opdenacker@bootlin.com>
 References: <20220923175219.6652-1-michael.opdenacker@bootlin.com>
@@ -43,8 +43,8 @@ Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 Sep 2022 17:52:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3219
+ <docs@lists.yoctoproject.org>; Fri, 23 Sep 2022 17:53:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3221
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -52,130 +52,141 @@ From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Reported-by: Quentin Schulz <foss@0leil.net>
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/common-tasks.rst        | 6 +++---
- documentation/migration-guides/migration-1.8.rst | 2 +-
- documentation/migration-guides/migration-2.1.rst | 4 ++--
- documentation/migration-guides/migration-2.6.rst | 2 +-
- documentation/overview-manual/concepts.rst       | 2 +-
- documentation/ref-manual/tasks.rst               | 2 +-
- documentation/ref-manual/variables.rst           | 2 +-
- 7 files changed, 10 insertions(+), 10 deletions(-)
+ .../migration-guides/migration-3.2.rst         |  4 ++--
+ documentation/overview-manual/concepts.rst     | 18 +++++++++---------
+ documentation/ref-manual/tasks.rst             |  8 ++++----
+ documentation/ref-manual/variables.rst         |  2 +-
+ 4 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 7b20234991..61755dd06e 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -2551,7 +2551,7 @@ doing the following:
-    ``${``\ :term:`S`\ ``}``.
+diff --git a/documentation/migration-guides/migration-3.2.rst b/documentation/migration-guides/migration-3.2.rst
+index 8a8d19d605..4c0de7b0f6 100644
+--- a/documentation/migration-guides/migration-3.2.rst
++++ b/documentation/migration-guides/migration-3.2.rst
+@@ -207,9 +207,9 @@ files into a subdirectory and reference that instead.
+ deploy class now cleans ``DEPLOYDIR`` before ``do_deploy``
+ ----------------------------------------------------------
  
-    If ``${S}`` might contain a Makefile, or if you inherit some class
--   that replaces ``do_configure`` and ``do_compile`` with custom
-+   that replaces :ref:`ref-tasks-configure` and ``do_compile`` with custom
-    versions, then you can use the
-    ``[``\ :ref:`noexec <bitbake-user-manual/bitbake-user-manual-metadata:variable flags>`\ ``]``
-    flag to turn the tasks into no-ops, as follows::
-@@ -2881,7 +2881,7 @@ you can use as references.
- If you are creating a new kernel recipe, normal recipe-writing rules
- apply for setting up a :term:`SRC_URI`. Thus, you need to specify any
- necessary patches and set :term:`S` to point at the source code. You need to
--create a ``do_configure`` task that configures the unpacked kernel with
-+create a :ref:`ref-tasks-configure` task that configures the unpacked kernel with
- a ``defconfig`` file. You can do this by using a ``make defconfig``
- command or, more commonly, by copying in a suitable ``defconfig`` file
- and then running ``make oldconfig``. By making use of ``inherit kernel``
-@@ -9634,7 +9634,7 @@ Running Specific Tasks
+-``do_deploy`` as implemented in the :ref:`deploy <ref-classes-deploy>` class now cleans up ${:term:`DEPLOYDIR`} before running, just as :ref:`ref-tasks-install` cleans up ${:term:`D`} before running. This reduces the risk of :term:`DEPLOYDIR` being accidentally contaminated by files from previous runs, possibly even with different config, in case of incremental builds.
++:ref:`ref-tasks-deploy` as implemented in the :ref:`deploy <ref-classes-deploy>` class now cleans up ${:term:`DEPLOYDIR`} before running, just as :ref:`ref-tasks-install` cleans up ${:term:`D`} before running. This reduces the risk of :term:`DEPLOYDIR` being accidentally contaminated by files from previous runs, possibly even with different config, in case of incremental builds.
  
- Any given recipe consists of a set of tasks. The standard BitBake
- behavior in most cases is: :ref:`ref-tasks-fetch`, ``do_unpack``, ``do_patch``,
--``do_configure``, ``do_compile``, :ref:`ref-tasks-install`, ``do_package``,
-+:ref:`ref-tasks-configure`, ``do_compile``, :ref:`ref-tasks-install`, ``do_package``,
- ``do_package_write_*``, and :ref:`ref-tasks-build`. The default task is
- :ref:`ref-tasks-build` and any tasks on which it depends build first. Some tasks,
- such as ``do_devshell``, are not part of the default build chain. If you
-diff --git a/documentation/migration-guides/migration-1.8.rst b/documentation/migration-guides/migration-1.8.rst
-index 51a13873e2..546c798196 100644
---- a/documentation/migration-guides/migration-1.8.rst
-+++ b/documentation/migration-guides/migration-1.8.rst
-@@ -128,7 +128,7 @@ when the :ref:`ref-tasks-configure` task needs to be
- re-executed.
+-Most recipes and classes that inherit the :ref:`deploy <ref-classes-deploy>` class or interact with ``do_deploy`` are unlikely to be affected by this unless they add ``prefuncs`` to ``do_deploy`` *which also* put files into ``${DEPLOYDIR}`` --- these should be refactored to use ``do_deploy_prepend`` instead.
++Most recipes and classes that inherit the :ref:`deploy <ref-classes-deploy>` class or interact with :ref:`ref-tasks-deploy` are unlikely to be affected by this unless they add ``prefuncs`` to :ref:`ref-tasks-deploy` *which also* put files into ``${DEPLOYDIR}`` --- these should be refactored to use ``do_deploy_prepend`` instead.
  
- One of the improvements is to attempt to run "make clean" during the
--``do_configure`` task if a ``Makefile`` exists. Some software packages
-+:ref:`ref-tasks-configure` task if a ``Makefile`` exists. Some software packages
- do not provide a working clean target within their make files. If you
- have such recipes, you need to set
- :term:`CLEANBROKEN` to "1" within the recipe, for example::
-diff --git a/documentation/migration-guides/migration-2.1.rst b/documentation/migration-guides/migration-2.1.rst
-index b2d8a0b678..bfc600ccca 100644
---- a/documentation/migration-guides/migration-2.1.rst
-+++ b/documentation/migration-guides/migration-2.1.rst
-@@ -108,12 +108,12 @@ this change should not be a problem. However, if you have a recipe that
- bypasses the standard :ref:`ref-tasks-configure` task
- from the :ref:`autotools <ref-classes-autotools>` class and the software the recipe is building
- uses a very old version of ``autoconf``, the recipe might be incapable
--of determining the correct size of ``off_t`` during ``do_configure``.
-+of determining the correct size of ``off_t`` during :ref:`ref-tasks-configure`.
  
- The best course of action is to patch the software as necessary to allow
- the default implementation from the :ref:`autotools <ref-classes-autotools>` class to work such
- that ``autoreconf`` succeeds and produces a working configure script,
--and to remove the overridden ``do_configure`` task such that the default
-+and to remove the overridden :ref:`ref-tasks-configure` task such that the default
- implementation does get used.
- 
- .. _migration-2.1-image-generation-split-out-from-filesystem-generation:
-diff --git a/documentation/migration-guides/migration-2.6.rst b/documentation/migration-guides/migration-2.6.rst
-index 11e659de7c..32bb48bccc 100644
---- a/documentation/migration-guides/migration-2.6.rst
-+++ b/documentation/migration-guides/migration-2.6.rst
-@@ -135,7 +135,7 @@ Fetching these types of dependencies that are not provided in the
- sysroot negatively affects the ability to reproduce builds. This type of
- fetching is now explicitly disabled. Consequently, any missing
- dependencies in Python recipes that use these classes now result in an
--error during the ``do_configure`` task.
-+error during the :ref:`ref-tasks-configure` task.
- 
- .. _migration-2.6-linux-yocto-configuration-audit-issues-now-correctly-reported:
- 
+ .. _migration-3.2-nativesdk-sdk-provides-dummy:
 diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 2e1aa3df48..858118beec 100644
+index 06220401bc..f3f8cbd95c 100644
 --- a/documentation/overview-manual/concepts.rst
 +++ b/documentation/overview-manual/concepts.rst
-@@ -1209,7 +1209,7 @@ The build system has knowledge of the relationship between these tasks
- and other preceding tasks. For example, if BitBake runs
- ``do_populate_sysroot_setscene`` for something, it does not make sense
- to run any of the :ref:`ref-tasks-fetch`, ``do_unpack``, ``do_patch``,
--``do_configure``, ``do_compile``, and :ref:`ref-tasks-install` tasks. However, if
-+:ref:`ref-tasks-configure`, ``do_compile``, and :ref:`ref-tasks-install` tasks. However, if
- ``do_package`` needs to be run, BitBake needs to run those other tasks.
+@@ -1801,14 +1801,14 @@ from the :ref:`deploy <ref-classes-deploy>` class::
  
- It becomes more complicated if everything can come from an sstate cache
+ The following list explains the previous example:
+ 
+--  Adding "do_deploy" to ``SSTATETASKS`` adds some required
++-  Adding ``do_deploy`` to ``SSTATETASKS`` adds some required
+    sstate-related processing, which is implemented in the
+    :ref:`sstate <ref-classes-sstate>` class, to
+    before and after the
+    :ref:`ref-tasks-deploy` task.
+ 
+ -  The ``do_deploy[sstate-inputdirs] = "${DEPLOYDIR}"`` declares that
+-   ``do_deploy`` places its output in ``${DEPLOYDIR}`` when run normally
++   :ref:`ref-tasks-deploy` places its output in ``${DEPLOYDIR}`` when run normally
+    (i.e. when not using the sstate cache). This output becomes the input
+    to the shared state cache.
+ 
+@@ -1818,15 +1818,15 @@ The following list explains the previous example:
+ 
+    .. note::
+ 
+-      If ``do_deploy`` is not already in the shared state cache or if its input
++      If :ref:`ref-tasks-deploy` is not already in the shared state cache or if its input
+       checksum (signature) has changed from when the output was cached, the task
+       runs to populate the shared state cache, after which the contents of the
+       shared state cache is copied to ${:term:`DEPLOY_DIR_IMAGE`}. If
+-      ``do_deploy`` is in the shared state cache and its signature indicates
++      :ref:`ref-tasks-deploy` is in the shared state cache and its signature indicates
+       that the cached output is still valid (i.e. if no relevant task inputs
+       have changed), then the contents of the shared state cache copies
+       directly to ${:term:`DEPLOY_DIR_IMAGE`} by the ``do_deploy_setscene`` task
+-      instead, skipping the ``do_deploy`` task.
++      instead, skipping the :ref:`ref-tasks-deploy` task.
+ 
+ -  The following task definition is glue logic needed to make the
+    previous settings effective::
+@@ -1836,16 +1836,16 @@ The following list explains the previous example:
+       }
+       addtask do_deploy_setscene
+ 
+-  ``sstate_setscene()`` takes the flags above as input and accelerates the ``do_deploy`` task
++  ``sstate_setscene()`` takes the flags above as input and accelerates the :ref:`ref-tasks-deploy` task
+   through the shared state cache if possible. If the task was
+   accelerated, ``sstate_setscene()`` returns True. Otherwise, it
+-  returns False, and the normal ``do_deploy`` task runs. For more
++  returns False, and the normal :ref:`ref-tasks-deploy` task runs. For more
+   information, see the ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-execution:setscene`"
+   section in the BitBake User Manual.
+ 
+ -  The ``do_deploy[dirs] = "${DEPLOYDIR} ${B}"`` line creates
+-   ``${DEPLOYDIR}`` and ``${B}`` before the ``do_deploy`` task runs, and
+-   also sets the current working directory of ``do_deploy`` to ``${B}``.
++   ``${DEPLOYDIR}`` and ``${B}`` before the :ref:`ref-tasks-deploy` task runs, and
++   also sets the current working directory of :ref:`ref-tasks-deploy` to ``${B}``.
+    For more information, see the ":ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:variable flags`"
+    section in the BitBake
+    User Manual.
 diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
-index f3aebcecc3..16715984ae 100644
+index e5938ee236..5efe64b35d 100644
 --- a/documentation/ref-manual/tasks.rst
 +++ b/documentation/ref-manual/tasks.rst
-@@ -58,7 +58,7 @@ The default behavior of this task is to run ``oe_runmake clean`` if a
- makefile (``Makefile``, ``makefile``, or ``GNUmakefile``) is found and
- :term:`CLEANBROKEN` is not set to "1". If no such
- file is found or the :term:`CLEANBROKEN` variable is set to "1", the
--``do_configure`` task does nothing.
-+:ref:`ref-tasks-configure` task does nothing.
+@@ -81,7 +81,7 @@ Recipes implementing this task should inherit the
+ :ref:`deploy <ref-classes-deploy>` class and should write the output
+ to ``${``\ :term:`DEPLOYDIR`\ ``}``, which is not to be
+ confused with ``${DEPLOY_DIR}``. The :ref:`deploy <ref-classes-deploy>` class sets up
+-``do_deploy`` as a shared state (sstate) task that can be accelerated
++:ref:`ref-tasks-deploy` as a shared state (sstate) task that can be accelerated
+ through sstate use. The sstate mechanism takes care of copying the
+ output from ``${DEPLOYDIR}`` to ``${DEPLOY_DIR_IMAGE}``.
  
- .. _ref-tasks-configure_ptest_base:
+@@ -90,14 +90,14 @@ output from ``${DEPLOYDIR}`` to ``${DEPLOY_DIR_IMAGE}``.
+    Do not write the output directly to ``${DEPLOY_DIR_IMAGE}``, as this causes
+    the sstate mechanism to malfunction.
  
+-The ``do_deploy`` task is not added as a task by default and
++The :ref:`ref-tasks-deploy` task is not added as a task by default and
+ consequently needs to be added manually. If you want the task to run
+ after :ref:`ref-tasks-compile`, you can add it by doing
+ the following::
+ 
+       addtask deploy after do_compile
+ 
+-Adding ``do_deploy`` after other tasks works the same way.
++Adding :ref:`ref-tasks-deploy` after other tasks works the same way.
+ 
+ .. note::
+ 
+@@ -110,7 +110,7 @@ Adding ``do_deploy`` after other tasks works the same way.
+    See the ":ref:`bitbake-user-manual/bitbake-user-manual-execution:dependencies`"
+    section in the BitBake User Manual for more information.
+ 
+-If the ``do_deploy`` task re-executes, any previous output is removed
++If the :ref:`ref-tasks-deploy` task re-executes, any previous output is removed
+ (i.e. "cleaned").
+ 
+ .. _ref-tasks-fetch:
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 060bf499bb..bc29b5a05b 100644
+index 8055f044d0..8fac7f77ad 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -1620,7 +1620,7 @@ system and gives an overview of their function and contents.
-       the appropriate staging sysroot, given by the
-       :term:`STAGING_DIR* <STAGING_DIR>` variables, by the time the
-       :ref:`ref-tasks-configure` task for ``foo`` runs.
--      This mechanism is implemented by having ``do_configure`` depend on
-+      This mechanism is implemented by having :ref:`ref-tasks-configure` depend on
-       the :ref:`ref-tasks-populate_sysroot` task of
-       each recipe listed in :term:`DEPENDS`, through a
-       ``[``\ :ref:`deptask <bitbake:bitbake-user-manual/bitbake-user-manual-metadata:variable flags>`\ ``]``
+@@ -6712,7 +6712,7 @@ system and gives an overview of their function and contents.
+       - do_populate_lic
+       - do_package_qa
+       - do_populate_sysroot
+-      - do_deploy
++      - :ref:`ref-tasks-deploy`
+ 
+       Despite the default value of "" for the
+       :term:`SDK_RECRDEP_TASKS` variable, the above four tasks are always added
 -- 
 2.34.1
 
