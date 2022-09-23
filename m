@@ -2,39 +2,39 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 627A6C07E9D
-	for <webhook@archiver.kernel.org>; Fri, 23 Sep 2022 17:53:29 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
- [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web12.534.1663955601200039427
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D172C6FA92
+	for <webhook@archiver.kernel.org>; Fri, 23 Sep 2022 17:53:39 +0000 (UTC)
+Received: from relay12.mail.gandi.net (relay12.mail.gandi.net
+ [217.70.178.232])
+ by mx.groups.io with SMTP id smtpd.web08.581.1663955612547298699
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Sep 2022 10:53:21 -0700
+ Fri, 23 Sep 2022 10:53:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cYIsyqJp;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Nxu/JFTj;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.232,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 7DE8EFF803;
-	Fri, 23 Sep 2022 17:53:16 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id E4AAF200006;
+	Fri, 23 Sep 2022 17:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1663955599;
+	t=1663955611;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WGnMCrfzyXsQ9Wbq0kOpHVb46fDTcM+hyhhlfmb47IA=;
-	b=cYIsyqJp1OWf3GMhrvYEYDs4GAd1Ofh8m3GvfzXevE4wYXG0A335cPoavzFJeb14jm6Hss
-	VBGScJXarelq/WmJsNNe2p/EBCB/QMfTlPg7vF18VACe0BG3utTKj2tr9ZbY4U9xcK5YRF
-	je0EMb2Y2ayA20j//3mmDGxpTjZvFe4TwwjGhjJYJ6BWFJzMbQ50eh+IV1RBIDQ/np3JO4
-	EtF35ukta6sZQXHZrq/ZmlkYFXST+lY0pY8y9OMtXPxJ28foiA9KeutXzuocIzlWKafo2a
-	SiBs58+s4Rnw8k7h9TOW8iuVnEt7BLQCi4ea+sA3LmJT9vMfLe4Acenfwzp/rw==
+	bh=KLreiqD6AzLG5eZB8VYQ2nJxHpbSAwjERcOnQHIal8I=;
+	b=Nxu/JFTjdwKRbO26JJ3yUxU8v1lHZYNvE1V+a9yZcaaiYwHD6APsQXNmE5PYG23n2/zxSy
+	3AufHR5E/tirG1+pVJpLx0Lp+q7O384gstZ3UxZl4Ko7NoF3OpKQptZ6hpXS8n4o9igVjL
+	Wh6/bzORhIYr7xidiMiVn27Gv6kx8dmj/yhmkmrr5ZxUf4I45Iy+tlKAK+oLVxnASdFQHi
+	wUI58qHJdT0QlV+XjzX5fX2o0Kbj3nkgSuBZRY9S0uLCP2LV/wwWNV6rkVyiQw66Np8VGf
+	/Ar2Ol9PvOxhPn90y6FWCwQlSAYkPd+lK5BfXm+SHT4zlswG0WCgrfaUb265Rw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Quentin Schulz <foss@0leil.net>
-Subject: [PATCH 09/30] manuals: add references to the "do_package_qa" task
-Date: Fri, 23 Sep 2022 19:51:58 +0200
-Message-Id: <20220923175219.6652-10-michael.opdenacker@bootlin.com>
+Subject: [PATCH 14/30] manuals: add reference to the "do_populate_sdk" task
+Date: Fri, 23 Sep 2022 19:52:03 +0200
+Message-Id: <20220923175219.6652-15-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20220923175219.6652-1-michael.opdenacker@bootlin.com>
 References: <20220923175219.6652-1-michael.opdenacker@bootlin.com>
@@ -43,8 +43,8 @@ Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 Sep 2022 17:53:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3224
+ <docs@lists.yoctoproject.org>; Fri, 23 Sep 2022 17:53:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3229
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -52,50 +52,45 @@ From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Reported-by: Quentin Schulz <foss@0leil.net>
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/migration-guides/migration-1.7.rst | 2 +-
- documentation/migration-guides/migration-3.1.rst | 2 +-
- documentation/ref-manual/variables.rst           | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ documentation/migration-guides/release-notes-3.4.rst | 2 +-
+ documentation/overview-manual/concepts.rst           | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/migration-guides/migration-1.7.rst b/documentation/migration-guides/migration-1.7.rst
-index 8213ab58d9..7b179f2aa1 100644
---- a/documentation/migration-guides/migration-1.7.rst
-+++ b/documentation/migration-guides/migration-1.7.rst
-@@ -165,7 +165,7 @@ The following changes have occurred to the QA check process:
-    more parallel execution. This change is unlikely to be an issue
-    except for highly customized recipes that disable packaging tasks
-    themselves by marking them as ``noexec``. For those packages, you
--   will need to disable the ``do_package_qa`` task as well.
-+   will need to disable the :ref:`ref-tasks-package_qa` task as well.
+diff --git a/documentation/migration-guides/release-notes-3.4.rst b/documentation/migration-guides/release-notes-3.4.rst
+index 323e4df7ae..33525120c6 100644
+--- a/documentation/migration-guides/release-notes-3.4.rst
++++ b/documentation/migration-guides/release-notes-3.4.rst
+@@ -67,7 +67,7 @@ New Features / Enhancements in 3.4
  
- -  Files being overwritten during the
-    :ref:`ref-tasks-populate_sysroot` task now
-diff --git a/documentation/migration-guides/migration-3.1.rst b/documentation/migration-guides/migration-3.1.rst
-index cc788efeba..a6106eefae 100644
---- a/documentation/migration-guides/migration-3.1.rst
-+++ b/documentation/migration-guides/migration-3.1.rst
-@@ -234,7 +234,7 @@ Packaging changes
- Additional warnings
- -------------------
+ -  SDK-related enhancements:
  
--Warnings will now be shown at ``do_package_qa`` time in the following
-+Warnings will now be shown at :ref:`ref-tasks-package_qa` time in the following
- circumstances:
+-   -  Enable do_populate_sdk with multilibs
++   -  Enable :ref:`ref-tasks-populate_sdk` with multilibs
+    -  New ``SDKPATHINSTALL`` variable decouples default install path from built in path to avoid rebuilding nativesdk components on e.g. :term:`DISTRO_VERSION` changes
+    -  eSDK: Error if trying to generate an eSDK from a multiconfig
+    -  eSDK: introduce :term:`TOOLCHAIN_HOST_TASK_ESDK` to be used in place of :term:`TOOLCHAIN_HOST_TASK` to add components to the host part of the eSDK
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index a477139996..1215e0ee94 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -1085,7 +1085,7 @@ the extensible SDK (eSDK):
+    For more information on the cross-development toolchain generation,
+    see the ":ref:`overview-manual/concepts:cross-development toolchain generation`"
+    section. For information on advantages gained when building a
+-   cross-development toolchain using the do_populate_sdk task, see the
++   cross-development toolchain using the :ref:`ref-tasks-populate_sdk` task, see the
+    ":ref:`sdk-manual/appendix-obtain:building an sdk installer`" section in
+    the Yocto Project Application Development and the Extensible Software
+    Development Kit (eSDK) manual.
+@@ -1100,7 +1100,7 @@ actually install. For information on the variables listed in the figure,
+ see the ":ref:`overview-manual/concepts:application development sdk`"
+ section.
  
- -  A recipe installs ``.desktop`` files containing ``MimeType`` keys but
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 8fac7f77ad..45d058a281 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -6710,7 +6710,7 @@ system and gives an overview of their function and contents.
-       the following tasks are added:
- 
-       - do_populate_lic
--      - do_package_qa
-+      - :ref:`ref-tasks-package_qa`
-       - do_populate_sysroot
-       - :ref:`ref-tasks-deploy`
- 
+-The ``do_populate_sdk`` task helps create the standard SDK and handles
++The :ref:`ref-tasks-populate_sdk` task helps create the standard SDK and handles
+ two parts: a target part and a host part. The target part is the part
+ built for the target hardware and includes libraries and headers. The
+ host part is the part of the SDK that runs on the
 -- 
 2.34.1
 
