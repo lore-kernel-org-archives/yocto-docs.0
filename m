@@ -1,81 +1,105 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <steve@sakoman.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BD15C433F5
-	for <webhook@archiver.kernel.org>; Mon,  3 Oct 2022 15:04:59 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net
- [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web12.1037.1664809492922024689
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D3DDC433FE
+	for <webhook@archiver.kernel.org>; Mon,  3 Oct 2022 15:29:49 +0000 (UTC)
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com
+ [209.85.215.171])
+ by mx.groups.io with SMTP id smtpd.web11.1356.1664810981385155263
  for <docs@lists.yoctoproject.org>;
- Mon, 03 Oct 2022 08:04:53 -0700
+ Mon, 03 Oct 2022 08:29:41 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=a5oQr/QV;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201,
- mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id F29AD1BF218;
-	Mon,  3 Oct 2022 15:04:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1664809490;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8cT5z1DdD/0HnzgMt93Lejbd2nC2dBfM8wlQG++g//k=;
-	b=a5oQr/QVHXlW3LakBKeXnb4W6fM4czzSV2PwmvDgSSkkyjZL7f6fSX8Vk1fW1WgD4cKEE+
-	n6SW74q8/XZEPgkqgvrbJejQGvv3cgkF/vaYFHLFXuaZdojbcZBXBAMVIw1IAbWSERFWCl
-	qQg36IwMqi/SnFLsuxrhEFgANZk54a5jAz1W/OfmqCH7a3AtsnDxbl762nV4xEKFC5NqFB
-	cGT8B86bWDkL3/rn/fGKu4V5QLnHsvvcfMsQaPYh6VOMwIbk7lfVaEoAXMVgoRh0/m8kyY
-	w0hV88rXEUS6gsziQtgXtGAaAwIKYqixRdrl1FLepI9le12KXJwQBlI9CRUc5Q==
-Message-ID: <0a132144-f790-2fe7-d21d-c7f52a52aeed@bootlin.com>
-Date: Mon, 3 Oct 2022 17:04:49 +0200
+ dkim=pass header.i=@sakoman-com.20210112.gappssmtp.com header.s=20210112
+ header.b=7hRm+a75;
+ spf=softfail (domain: sakoman.com, ip: 209.85.215.171,
+ mailfrom: steve@sakoman.com)
+Received: by mail-pg1-f171.google.com with SMTP id 78so9937219pgb.13
+        for <docs@lists.yoctoproject.org>;
+ Mon, 03 Oct 2022 08:29:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date;
+        bh=ewlw6Sdl4pDkiNVFa3yD0tjIMLCqHlDEcynuBTFGIio=;
+        b=7hRm+a75aqXCJCiy38/BvM3Ax0MuAiJIU2VPhPCguGJ9Vz0AUz8B4Jaxe+x+nNmtLN
+         zH8qq1WjjVWb0uoXbhFMx6VbCPq5MTyzIx7WiGtxwz4BEoO0fY0ZklFYKIR+bks0Nakz
+         uPEpM/V7l4RWDX0k0tlanigdw6k4ecZdpz1DU5tEv9NC2lHLWJt2GwPeFxSMhdp1Jv3t
+         L73NWVM1Nk/np2AK75umyyUoZJiR6xEkVQ0+Zm/Q+4CLzFt4VQ3Ba/sD6aTTTIznWciB
+         QCar6GdF2usQa5G89ssoHg0bYc3fBaCx5Hb7Wt0GkarfepJAIVchrPpsKzUUPCQZP3pz
+         nmgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date;
+        bh=ewlw6Sdl4pDkiNVFa3yD0tjIMLCqHlDEcynuBTFGIio=;
+        b=PkjodcZq0j3Zhl65kNW+jLovyik2NX+2V5nGA7lWaHJvjfFfQE7lweeIfz3lOguqLs
+         O6VhED8+HmuVjJ3bk0SjIBZNgqFHBeCLpdTam8a3S/Ewkz34jdDbH6WLZ0arPXaP4x0u
+         KE5l2MyT6fyP6eaMTzgLXcVpvaqV8qRMomqFKUnH1IzR6A0J7BwUipz+7qap+hrNFKGX
+         462nxWB8y9pEe8Hxsjhh88AX0X5ipUuFGjPIxNxwZphUs3zR/HDaWbkbRIQIrQoax/JY
+         1N1n20UhyUIkLAQxkIa6igoVAZwsrpVwtyhEypnuAFeO/PtM9XM+kiB2iYUM8a3VSp4S
+         ZARg==
+X-Gm-Message-State: ACrzQf0HMGh95wcGPia7j2rm1QT5AZcGaZ1A1wqnkWdJaEe8X08j31tx
+	sDWt/G+AQ2WS0hpTYklA1BXj89wOpKLV/O4m
+X-Google-Smtp-Source: 
+ AMsMyM7OY3f+xsvGzE8BTwcgdPa0Yd29WXXyUMoox9UlzukqPA2667jaJvoYszi7sVKRxvmRvRUP8g==
+X-Received: by 2002:a05:6a00:138b:b0:561:966a:74a8 with SMTP id
+ t11-20020a056a00138b00b00561966a74a8mr2617471pfg.5.1664810980314;
+        Mon, 03 Oct 2022 08:29:40 -0700 (PDT)
+Received: from hexa.router0800d9.com (dhcp-72-253-6-214.hawaiiantel.net.
+ [72.253.6.214])
+        by smtp.gmail.com with ESMTPSA id
+ m3-20020a170902f64300b001781a7c28b9sm7300261plg.240.2022.10.03.08.29.39
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Oct 2022 08:29:39 -0700 (PDT)
+From: Steve Sakoman <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell 1/1] documentation: update for 3.1.20
+Date: Mon,  3 Oct 2022 05:29:29 -1000
+Message-Id: 
+ <41444bbb1816a20f2518faf9c6a9e4c02505a53b.1664810900.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <cover.1664810900.git.steve@sakoman.com>
+References: <cover.1664810900.git.steve@sakoman.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Cc: "Yocto Documentation (docs@lists.yoctoproject.org)"
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] Incorrect minimum versions shown for GCC and make
-Content-Language: en-US
-To: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-References: <e50abe3c777e4a23a752a3ec25ad0b2a@axis.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <e50abe3c777e4a23a752a3ec25ad0b2a@axis.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 03 Oct 2022 15:04:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3260
+ <docs@lists.yoctoproject.org>; Mon, 03 Oct 2022 15:29:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3261
 
-Hi Peter,
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
+---
+ documentation/poky.yaml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-Thanks for reporting this issue.
-
-On 01.10.22 16:49, Peter Kjellerstedt wrote:
-> If I look at
-> https://docs.yoctoproject.org/dev/singleindex.html#compatible-linux-distribution
-> the minimum version for GCC is shown as "5.0", while the minimum version
-> specified in documentation/poky.yaml.in (MIN_GCC_VERSION) is "7.5".
->
-> And the minimum version "&MIN_MAKE_VERSION;" for make indicates that
-> the MIN_MAKE_VERSION variable is not defined, but in
-> documentation/poky.yaml.in it is set to "4.0".
->
-> Based on the above, it seems the development documentation is using the
-> poky.yaml.in file for Kirkstone rather than the one for Langdale.
-
-Right, and the documentation is out of date for Kirkstone too.
-I'll try to find why this happens.
-
-Thanks again
-Michael.
-
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index dae9abb63..b6baac7d0 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -1,13 +1,13 @@
+-DISTRO : "3.1.19"
++DISTRO : "3.1.20"
+ DISTRO_NAME_NO_CAP : "dunfell"
+ DISTRO_NAME : "Dunfell"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
+-YOCTO_DOC_VERSION : "3.1.19"
++YOCTO_DOC_VERSION : "3.1.20"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
+-DISTRO_REL_TAG : "yocto-3.1.19"
+-DOCCONF_VERSION : "3.1.19"
++DISTRO_REL_TAG : "yocto-3.1.20"
++DOCCONF_VERSION : "3.1.20"
+ BITBAKE_SERIES : "1.46"
+-POKYVERSION : "23.0.19"
++POKYVERSION : "23.0.20"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.25.1
 
 
