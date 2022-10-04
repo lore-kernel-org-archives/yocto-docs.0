@@ -1,139 +1,139 @@
-Return-Path: <mikko.rapeli@linaro.org>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC5D9C433FE
-	for <webhook@archiver.kernel.org>; Tue,  4 Oct 2022 10:11:06 +0000 (UTC)
-Received: from mail.kapsi.fi (mail.kapsi.fi [91.232.154.25])
- by mx.groups.io with SMTP id smtpd.web09.8924.1664878247867705587
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A1FBC4332F
+	for <webhook@archiver.kernel.org>; Tue,  4 Oct 2022 11:09:27 +0000 (UTC)
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
+ [209.85.128.54])
+ by mx.groups.io with SMTP id smtpd.web10.9130.1664881763262080323
  for <docs@lists.yoctoproject.org>;
- Tue, 04 Oct 2022 03:10:48 -0700
+ Tue, 04 Oct 2022 04:09:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing;
- spf=none, err=permanent DNS error (domain: lakka.kapsi.fi, ip: 91.232.154.25,
- mailfrom: mcfrisk@lakka.kapsi.fi)
-Received: from kapsi.fi ([2001:67c:1be8::11] helo=lakka.kapsi.fi)
-	by mail.kapsi.fi with esmtps  (TLS1.3) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1ofest-007iAP-QS; Tue, 04 Oct 2022 13:10:44 +0300
-Received: from mcfrisk by lakka.kapsi.fi with local (Exim 4.94.2)
-	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1ofest-00BUIR-H2; Tue, 04 Oct 2022 13:10:43 +0300
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
-To: openembedded-core@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Mikko Rapeli <mikko.rapeli@linaro.org>
-Subject: [PATCH 1/4] openssl-native.bbclass: add bbclass
-Date: Tue,  4 Oct 2022 13:10:38 +0300
-Message-Id: <20221004101038.2736600-1-mikko.rapeli@linaro.org>
-X-Mailer: git-send-email 2.30.2
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=iNoBx0SA;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.54,
+ mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f54.google.com with SMTP id
+ z13-20020a7bc7cd000000b003b5054c6f9bso10623922wmk.2
+        for <docs@lists.yoctoproject.org>;
+ Tue, 04 Oct 2022 04:09:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date;
+        bh=Ur3ANninksD1O1XNC+fNe3hVg55ccnIwEiTBfm5k+6w=;
+        b=iNoBx0SANnoIt+tx3YBA2AIDY6BBWRn295AJ26Ww8Qv1IHOFzagfmEvN7NzoNL6eua
+         rZHPBKGMqV3mrXlxps3g4y5QSKJHU44Xo+qPWZWt0Z8mEak1xmPeMMSos9v7FnQ0//Oy
+         wk4aEq8gWf8XsU5BdbuhcSl8RE78v2OW7o5dI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date;
+        bh=Ur3ANninksD1O1XNC+fNe3hVg55ccnIwEiTBfm5k+6w=;
+        b=qpHgAGj1N6yo9nhT0o82Kq+wR7udutSFM74rq1Tz4b5f1Dgm4iKVSE9S4jAhK8fTV1
+         x8HdQ+2H0oPTk2/SCRE5S57GD9uMSrqulE8ZjiW8RNlzBYu0WKZfzw6pURTA8O4uxy+b
+         WHJ+dBrIMTsdaeGnM1Z3QwzYHY5HHzlowHeIws265a08oikbf/Bn8fQqmQHZqgtqht/M
+         y3hideCaqkypoHAJ8jTEuY0A5RKKpDMAdY/RuNs3ZMvvUFCdc8bhqyvTjfJZktYkzk4W
+         kiqAOXIuiPn5YLI6Zlbj0fD+j049O8smXLEonadpd8ny3KaUuYNjy2M1l9HvrJHAhDyu
+         Ahzw==
+X-Gm-Message-State: ACrzQf2Ui0ayetEgUKmGu1xYxLKJtxEPdwMfAst2Vt8lIwkzNU8Syy5h
+	h14YggtP1W+44Dj+ecOq3zrODQ==
+X-Google-Smtp-Source: 
+ AMsMyM5GKCD2pYZ7BclN8gmk5IziDg/2zg0btyb/QaON20MsoM7naiKcyBVTnSCtWxBDWmYM77cifQ==
+X-Received: by 2002:a05:600c:1d94:b0:3b4:7b91:7056 with SMTP id
+ p20-20020a05600c1d9400b003b47b917056mr9642781wms.18.1664881761552;
+        Tue, 04 Oct 2022 04:09:21 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:a418:d17a:77b7:6987?
+ ([2001:8b0:aba:5f3c:a418:d17a:77b7:6987])
+        by smtp.gmail.com with ESMTPSA id
+ d16-20020adfe890000000b0022e035a4e93sm11529571wrm.87.2022.10.04.04.09.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Oct 2022 04:09:20 -0700 (PDT)
+Message-ID: 
+ <99339c298138b6f300146d81beec455815b11771.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH 1/4] openssl-native.bbclass: add bbclass
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Mikko Rapeli <mikko.rapeli@linaro.org>,
+	openembedded-core@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org
+Date: Tue, 04 Oct 2022 12:09:18 +0100
+In-Reply-To: <20221004101038.2736600-1-mikko.rapeli@linaro.org>
+References: <20221004101038.2736600-1-mikko.rapeli@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspam-Score: -1.2 (-)
-X-Rspam-Report: Action: no action
- Symbol: RCVD_TLS_LAST(0.00)
- Symbol: ARC_NA(0.00)
- Symbol: DMARC_POLICY_SOFTFAIL(0.10)
- Symbol: FROM_HAS_DN(0.00)
- Symbol: RCPT_COUNT_THREE(0.00)
- Symbol: R_MISSING_CHARSET(0.50)
- Symbol: TO_MATCH_ENVRCPT_ALL(0.00)
- Symbol: MIME_GOOD(-0.10)
- Symbol: TO_DN_SOME(0.00)
- Symbol: MID_CONTAINS_FROM(1.00)
- Symbol: R_SPF_NA(0.00)
- Symbol: FORGED_SENDER(0.30)
- Symbol: R_DKIM_NA(0.00)
- Symbol: MIME_TRACE(0.00)
- Symbol: ASN(0.00)
- Symbol: FROM_NEQ_ENVFROM(0.00)
- Symbol: BAYES_HAM(-3.00)
- Symbol: RCVD_COUNT_TWO(0.00)
- Message-ID: 20221004101038.2736600-1-mikko.rapeli@linaro.org
-X-SA-Exim-Connect-IP: 2001:67c:1be8::11
-X-SA-Exim-Mail-From: mcfrisk@lakka.kapsi.fi
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 04 Oct 2022 10:11:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3268
+ <docs@lists.yoctoproject.org>; Tue, 04 Oct 2022 11:09:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3269
 
-Using openssl-native shared libraries correctly is hard. A number
-of environment variables need to be correctly set or
-the errors may be really confusing. openssl can be made
-to detect these paths automatically, but upstream has rejected
-these ideas. openssl-native provides a wrapper script for 'openssl'
-binary, but shared library users like python3-cryptgraphy-native
-need to have the shared libraries working directly. Thus follow
-example from python3native.bbclass and implement this via
-openssl-native.bbclass.
+Hi Mikko,
 
-If full certificate checking is needed, then users
-also need to DEPEND on ca-certificates-native.
+Thanks for working on this, particularly with upstream.
 
-See also:
-https://lists.openembedded.org/g/openembedded-core/topic/93651845#170562
-https://github.com/openssl/openssl/issues/19242
+On Tue, 2022-10-04 at 13:10 +0300, Mikko Rapeli wrote:
+> Using openssl-native shared libraries correctly is hard. A number
+> of environment variables need to be correctly set or
+> the errors may be really confusing. openssl can be made
+> to detect these paths automatically, but upstream has rejected
+> these ideas. openssl-native provides a wrapper script for 'openssl'
+> binary, but shared library users like python3-cryptgraphy-native
+> need to have the shared libraries working directly. Thus follow
+> example from python3native.bbclass and implement this via
+> openssl-native.bbclass.
+>=20
+> If full certificate checking is needed, then users
+> also need to DEPEND on ca-certificates-native.
+>=20
+> See also:
+> https://lists.openembedded.org/g/openembedded-core/topic/93651845#170562
+> https://github.com/openssl/openssl/issues/19242
+>=20
+> Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+> ---
+>  documentation/ref-manual/classes.rst               | 11 +++++++++++
+>  meta/classes/openssl-native.bbclass                |  7 +++++++
+>  meta/recipes-connectivity/openssl/openssl_3.0.5.bb |  1 +
+>  3 files changed, 19 insertions(+)
 
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
----
- documentation/ref-manual/classes.rst               | 11 +++++++++++
- meta/classes/openssl-native.bbclass                |  7 +++++++
- meta/recipes-connectivity/openssl/openssl_3.0.5.bb |  1 +
- 3 files changed, 19 insertions(+)
- create mode 100644 meta/classes/openssl-native.bbclass
+Docs are in a different repo to OE-Core so this patch would need to be
+split.
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 11e0d472e8..5fc30f9233 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1672,6 +1672,17 @@ one such example. However, being aware of this class can reduce the
- proliferation of different versions of similar classes across multiple
- layers.
- 
-+.. _ref-classes-openssl-native:
-+
-+``openssl-native.bbclass``
-+==================
-+
-+The ``openssl-native`` class supports using the native version of openssl
-+built by the build system rather than support of the version provided
-+by the build host. It helps setting environment variables for engines,
-+modules, certificates etc correctly. For full certificate checking
-+users should also add ``ca-certificates-native`` to :term:`DEPENDS`.
-+
- .. _ref-classes-overlayfs:
- 
- ``overlayfs.bbclass``
-diff --git a/meta/classes/openssl-native.bbclass b/meta/classes/openssl-native.bbclass
-new file mode 100644
-index 0000000000..753f0b0fa4
---- /dev/null
-+++ b/meta/classes/openssl-native.bbclass
-@@ -0,0 +1,7 @@
-+DEPENDS += "openssl-native"
-+
-+export OPENSSL_MODULES="${STAGING_LIBDIR_NATIVE}/ossl-modules"
-+export OPENSSL_ENGINES="${STAGING_LIBDIR_NATIVE}/engines-3"
-+export OPENSSL_CONF="${STAGING_LIBDIR_NATIVE}/ssl-3/openssl.cnf"
-+export SSL_CERT_DIR="${STAGING_LIBDIR_NATIVE}/ssl-3/certs"
-+export SSL_CERT_FILE="${STAGING_LIBDIR_NATIVE}/ssl-3/cert.pem"
-diff --git a/meta/recipes-connectivity/openssl/openssl_3.0.5.bb b/meta/recipes-connectivity/openssl/openssl_3.0.5.bb
-index 04aff04fab..a0e63d7830 100644
---- a/meta/recipes-connectivity/openssl/openssl_3.0.5.bb
-+++ b/meta/recipes-connectivity/openssl/openssl_3.0.5.bb
-@@ -163,6 +163,7 @@ do_install () {
- 	ln -sf ${@oe.path.relative('${libdir}/ssl-3', '${sysconfdir}/ssl/openssl.cnf')} ${D}${libdir}/ssl-3/openssl.cnf
- }
- 
-+# Please keep openssl-native.bbclass in sync with this wrapper
- do_install:append:class-native () {
- 	create_wrapper ${D}${bindir}/openssl \
- 	    OPENSSL_CONF=${libdir}/ssl-3/openssl.cnf \
--- 
-2.17.1
+I think it is worth referencing this too:
+
+https://github.com/openssl/openssl/pull/19260
+
+I noticed there that the patches have thrown some compiler warnings:
+
+crypto/conf/conf_mod.c:667:20: error: passing 'const char *(int)' to parame=
+ter of type 'const void *' converts between void pointer and function point=
+er [-Werror,-Wpedantic]
+        if (dladdr(OpenSSL_version, &info)) {
+crypto/conf/conf_mod.c: In function 'CONF_get1_default_config_file':
+crypto/conf/conf_mod.c:667:20: error: ISO C forbids passing argument 1 of '=
+dladdr' between function pointer and 'void *' [-Werror=3Dpedantic]
+  667 |         if (dladdr(OpenSSL_version, &info)) {
+      |                    ^~~~~~~~~~~~~~~
+In file included from /usr/aarch64-linux-gnu/include/link.h:25,
+                 from crypto/conf/conf_mod.c:34:
+/usr/aarch64-linux-gnu/include/dlfcn.h:98:32: note: expected 'const void *'=
+ but argument is of type 'const char * (*)(int)'
+   98 | extern int dladdr (const void *__address, Dl_info *__info)
+
+
+It may be worth fixing those just in case they consider the patch.
+
+I'm wondering whether we should just carry those patches? They don't
+look so invasive and it would save complicating things elsewhere in our
+codebase...
+
+Cheers,
+
+Richard
+
 
 
