@@ -1,172 +1,156 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <mikko.rapeli@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6220C4332F
-	for <webhook@archiver.kernel.org>; Tue,  4 Oct 2022 13:09:57 +0000 (UTC)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com
- [209.85.221.49])
- by mx.groups.io with SMTP id smtpd.web10.10184.1664888988454308735
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7371C433F5
+	for <webhook@archiver.kernel.org>; Tue,  4 Oct 2022 13:32:57 +0000 (UTC)
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com
+ [209.85.167.46])
+ by mx.groups.io with SMTP id smtpd.web11.10588.1664890369462288057
  for <docs@lists.yoctoproject.org>;
- Tue, 04 Oct 2022 06:09:48 -0700
+ Tue, 04 Oct 2022 06:32:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=SM3/2cZm;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.49,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f49.google.com with SMTP id a10so8902677wrm.12
+ dkim=pass header.i=@linaro.org header.s=google header.b=uKWaB73F;
+ spf=pass (domain: linaro.org, ip: 209.85.167.46,
+ mailfrom: mikko.rapeli@linaro.org)
+Received: by mail-lf1-f46.google.com with SMTP id s20so5479541lfi.11
         for <docs@lists.yoctoproject.org>;
- Tue, 04 Oct 2022 06:09:48 -0700 (PDT)
+ Tue, 04 Oct 2022 06:32:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date;
-        bh=yElxfkA5A+FGK4x3x1manUqo89WYUp677kwvvpjp+tA=;
-        b=SM3/2cZmM1RySl1iqrdn0GlFK/dpHHjf5JlvnWJirS0Htnfqha/K/femM/XzzP/yef
-         oc6A/+4ZLkkaBSASAqrD7rPJiLTg1y8bDWFO7du9mvdAwv7DWWUR8VVP+a12FKItM1Vw
-         n9uMySEcnGo9I2Btni0bn9D8nIqOSbqSVw0Ss=
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=90eosh+ADzdDcc7jufkXDMuQDn4ydd9LnqP58R3/k68=;
+        b=uKWaB73Fry1E7tiIxWZfUkaei0uh3w1Ykf6HtLcXBV8BSIiGpEhlQ51SKunWRRxdQ8
+         dlCe1azQ/7x8rJzeQy5nfQCqsJrs3DB+iz1VlSN3N9gTOTljqf0xT3fqhmFxl7hGqzmz
+         7I2nABKzqyHQWl/k7i81nmjrE6fRgQzSD4E7doJGf2Hx41zz+BeugtdZBowdzCaPRZt4
+         RXYiMCQ6Oa5fc2BPdpxRcb7/lUIqMFOUVP7L+xpFyNwE0LQJ2AzZHHsnylX6NNOwHqpF
+         2+KX30ahmaZGAo+dxfLSBe2alBc11jjN52C+P3jaDSz/eI41wb7KRn+phoNye2M8C7sF
+         Xrvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=yElxfkA5A+FGK4x3x1manUqo89WYUp677kwvvpjp+tA=;
-        b=CeaSG3dkUpC02znxZojfJGYBjGYngxxsgDpaxuXkLsigGtr1AouboL/0LFQ1MP3DgW
-         JQqhc4zMFlVyNmmdimWCAxzqX8GYmW4QAwr7vjQmaPyQyt4SB7lbDoM+0UP3HEfivXKm
-         3XdRJUL/6DobmcgGi6kzEIpP7GMls+9qWMAA/bXX7Gew/RfjEwMwAHREacHZ6aoF8jUA
-         5TuuimJAGFjj3NKDIvlQlLHVHg9/9hTUYfWIZTfVw524KwhIYanVAjg5J41vDFLyXMhx
-         kXPYQHqvmEtVpdLYnqlgdsfCg9L/v5W+z0IRJKpLOMZriXZDgYY3JLPFS0jEpRzmaYjV
-         zC0A==
-X-Gm-Message-State: ACrzQf18WrcQaZAhVgIy6WsgRv5s2DBfvZFUdLUjKhdBBYx8PZuuJ/tD
-	aCCnrEwyVCryMLtMI/lhu8ZNhQ==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=90eosh+ADzdDcc7jufkXDMuQDn4ydd9LnqP58R3/k68=;
+        b=5iGR04kUC3P64SIgyMBef1Rbe54XzQIBAPsahjd6Pq4snelEHMvs0WhRl154eI4HUh
+         Y7S2kstaPou5IfCecSJSaY0e0PZSufC+voR/snGId27YmDkBsfBZF5sD2LcCS6Ox/AOa
+         3ywhtC1SuB87Oil8yBSOXILohgNr6MmrMUflPYXhK+OuFxqgHIqvDTBem0JgE5ykxVCW
+         ZdH9IxLe6frwVz37lO1bnwPpk3VWnC5nhJZRVvgLvHP2USSvZiNfV9wXH3ilK4VwxbmC
+         13vuCG/nuRvMHQDl3jCeht3zikBEgD3UyQj0rscFXTOU8Cm5U9RpS1lCVi8bF5Pw1626
+         sAZg==
+X-Gm-Message-State: ACrzQf2fusYphxkEvFWDVrwlkDNMIXutnvXrMnfAPEt0xpmU8JatvvS4
+	iGMGIPrTv3q5JYP2/RukKMF7bQ==
 X-Google-Smtp-Source: 
- AMsMyM5pZCwLtOh8gdY24+uTRyR2ZYbZOMYvBiTQ6pY/e84nVK5jEcQiNDTpq3JYnGdgmbj+uNoRBg==
-X-Received: by 2002:adf:ee03:0:b0:22c:d32c:4f69 with SMTP id
- y3-20020adfee03000000b0022cd32c4f69mr15467283wrn.585.1664888986622;
-        Tue, 04 Oct 2022 06:09:46 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:a418:d17a:77b7:6987?
- ([2001:8b0:aba:5f3c:a418:d17a:77b7:6987])
+ AMsMyM6SxAti53mDfO8bif8YjjbuH+zCo0qJAklba0IdHeHRylECZoQL+bhhK0ZAEhzpFUke82wJCg==
+X-Received: by 2002:a05:6512:12c7:b0:49b:755d:fde5 with SMTP id
+ p7-20020a05651212c700b0049b755dfde5mr8361055lfg.182.1664890367431;
+        Tue, 04 Oct 2022 06:32:47 -0700 (PDT)
+Received: from nuoska (dsl-olubng11-54f814-94.dhcp.inet.fi. [84.248.20.94])
         by smtp.gmail.com with ESMTPSA id
- o9-20020a05600c510900b003a5c244fc13sm21402491wms.2.2022.10.04.06.09.45
+ u6-20020a2e8446000000b0026c453c51b7sm1232372ljh.68.2022.10.04.06.32.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Oct 2022 06:09:46 -0700 (PDT)
-Message-ID: 
- <9f0b315f790901f89449bd983f60c9092a14e0e6.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 1/4] openssl-native.bbclass: add bbclass
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Mikko Rapeli <mikko.rapeli@linaro.org>
+        Tue, 04 Oct 2022 06:32:46 -0700 (PDT)
+Date: Tue, 4 Oct 2022 16:32:45 +0300
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 Cc: openembedded-core@lists.openembedded.org, docs@lists.yoctoproject.org
-Date: Tue, 04 Oct 2022 14:09:45 +0100
-In-Reply-To: <YzwtE5kjPWFOzYxU@nuoska>
+Subject: Re: [docs] [PATCH 1/4] openssl-native.bbclass: add bbclass
+Message-ID: <Yzw1/WhHjPQTCS8W@nuoska>
 References: <20221004101038.2736600-1-mikko.rapeli@linaro.org>
-	 <99339c298138b6f300146d81beec455815b11771.camel@linuxfoundation.org>
-	 <YzwbPsiFw9YDMAWe@nuoska>
-	 <01b508d0ebd4b4bac844367910d8045ca4c54ef7.camel@linuxfoundation.org>
-	 <YzwtE5kjPWFOzYxU@nuoska>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
+ <99339c298138b6f300146d81beec455815b11771.camel@linuxfoundation.org>
+ <YzwbPsiFw9YDMAWe@nuoska>
+ <01b508d0ebd4b4bac844367910d8045ca4c54ef7.camel@linuxfoundation.org>
+ <YzwtE5kjPWFOzYxU@nuoska>
+ <9f0b315f790901f89449bd983f60c9092a14e0e6.camel@linuxfoundation.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: 
+ <9f0b315f790901f89449bd983f60c9092a14e0e6.camel@linuxfoundation.org>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 04 Oct 2022 13:09:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3273
+ <docs@lists.yoctoproject.org>; Tue, 04 Oct 2022 13:32:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3274
 
-On Tue, 2022-10-04 at 15:54 +0300, Mikko Rapeli wrote:
-> On Tue, Oct 04, 2022 at 01:19:41PM +0100, Richard Purdie wrote:
-> > On Tue, 2022-10-04 at 14:38 +0300, Mikko Rapeli wrote:
-> > > On Tue, Oct 04, 2022 at 12:09:18PM +0100, Richard Purdie wrote:
-> > >=20
-> > > > I noticed there that the patches have thrown some compiler warnings=
-:
-> > > >=20
-> > > > crypto/conf/conf_mod.c:667:20: error: passing 'const char *(int)' t=
-o parameter of type 'const void *' converts between void pointer and functi=
-on pointer [-Werror,-Wpedantic]
-> > > >         if (dladdr(OpenSSL_version, &info)) {
-> > > > crypto/conf/conf_mod.c: In function 'CONF_get1_default_config_file'=
-:
-> > > > crypto/conf/conf_mod.c:667:20: error: ISO C forbids passing argumen=
-t 1 of 'dladdr' between function pointer and 'void *' [-Werror=3Dpedantic]
-> > > >   667 |         if (dladdr(OpenSSL_version, &info)) {
-> > > >       |                    ^~~~~~~~~~~~~~~
-> > > > In file included from /usr/aarch64-linux-gnu/include/link.h:25,
-> > > >                  from crypto/conf/conf_mod.c:34:
-> > > > /usr/aarch64-linux-gnu/include/dlfcn.h:98:32: note: expected 'const=
- void *' but argument is of type 'const char * (*)(int)'
-> > > >    98 | extern int dladdr (const void *__address, Dl_info *__info)
-> > > >=20
-> > > >=20
-> > > > It may be worth fixing those just in case they consider the patch.
-> > >=20
-> > > Yes, but the general design of using dladdr(OpenSSL_version,...) did =
-not
-> > > get any positive comments in the bug report so I think this is wasted
-> > > effort.
-> >=20
-> > There isn't any feedback there saying dladdr is rejected, just that
-> > they're not sure about the general use case. Getting changes accepted
-> > by upstreams does usually require a bit of work so I'd not quite give
-> > up yet! I can understand it from the maintainers side too, if you're
-> > being asked to accept and maintain something, you do need there to be a
-> > compelling reason for it.
->=20
-> openssl has been using these environment variables for decades. I can
-> understand that they hesitate to change any of that. Also because some
-> of the code is obviously trying to avoid any posix dependencies including
-> stat().
->=20
-> https://github.com/openssl/openssl/issues/19242
->=20
-> "t8m commented 15 days ago
-> I am afraid this is potentially asking for security issues. It would
-> have to be implemented very carefully."
->=20
-> "beldmit commented 15 days ago
-> I don't like this approach as a whole. IMHO, we should have some defines
-> to find installation-specific values for a specific installation."
->=20
-> "levitte commented 14 days ago
-> It's possible that it would be better if util/wrap.pl became a public
-> tool. Not necessarily exactly as it works now, but something with a
-> similar intent."
->=20
-> "levitte commented 14 days ago
-> This isn't just an OpenSSL problem, is it? There are other libraries
-> that are plugable (and essentially, providers are exactly that,
-> plugins), and I imagine that they also have their own custom default
-> location for plugins.
-> Otherwise, the obvious answer would be that you should install things
-> that belong with OpenSSL into its default locations... and that's
-> answered with openssl version -a as said above, or with the openssl info
-> command in later OpenSSL versions."
->=20
-> So wrapper it is then.
+Hi,
 
-I was going to write a reply to some of that, I still might, but as I
-was doing it, another idea did just come to mind.
+On Tue, Oct 04, 2022 at 02:09:45PM +0100, Richard Purdie wrote:
+> On Tue, 2022-10-04 at 15:54 +0300, Mikko Rapeli wrote:
+> > On Tue, Oct 04, 2022 at 01:19:41PM +0100, Richard Purdie wrote:
+> > > On Tue, 2022-10-04 at 14:38 +0300, Mikko Rapeli wrote:
+> > > > On Tue, Oct 04, 2022 at 12:09:18PM +0100, Richard Purdie wrote:
+> > > > 
+> > > > > I noticed there that the patches have thrown some compiler warnings:
+> > > > > 
+> > > > > crypto/conf/conf_mod.c:667:20: error: passing 'const char *(int)' to parameter of type 'const void *' converts between void pointer and function pointer [-Werror,-Wpedantic]
+> > > > >         if (dladdr(OpenSSL_version, &info)) {
+> > > > > crypto/conf/conf_mod.c: In function 'CONF_get1_default_config_file':
+> > > > > crypto/conf/conf_mod.c:667:20: error: ISO C forbids passing argument 1 of 'dladdr' between function pointer and 'void *' [-Werror=pedantic]
+> > > > >   667 |         if (dladdr(OpenSSL_version, &info)) {
+> > > > >       |                    ^~~~~~~~~~~~~~~
+> > > > > In file included from /usr/aarch64-linux-gnu/include/link.h:25,
+> > > > >                  from crypto/conf/conf_mod.c:34:
+> > > > > /usr/aarch64-linux-gnu/include/dlfcn.h:98:32: note: expected 'const void *' but argument is of type 'const char * (*)(int)'
+> > > > >    98 | extern int dladdr (const void *__address, Dl_info *__info)
+> > > > > 
+> > > > > 
+> > > > > It may be worth fixing those just in case they consider the patch.
+> > > > 
+> > > > Yes, but the general design of using dladdr(OpenSSL_version,...) did not
+> > > > get any positive comments in the bug report so I think this is wasted
+> > > > effort.
+> > > 
+> > > There isn't any feedback there saying dladdr is rejected, just that
+> > > they're not sure about the general use case. Getting changes accepted
+> > > by upstreams does usually require a bit of work so I'd not quite give
+> > > up yet! I can understand it from the maintainers side too, if you're
+> > > being asked to accept and maintain something, you do need there to be a
+> > > compelling reason for it.
+> > 
+> > openssl has been using these environment variables for decades. I can
+> > understand that they hesitate to change any of that. Also because some
+> > of the code is obviously trying to avoid any posix dependencies including
+> > stat().
+> > 
+> > https://github.com/openssl/openssl/issues/19242
+> > 
+> > "t8m commented 15 days ago
+> > I am afraid this is potentially asking for security issues. It would
+> > have to be implemented very carefully."
+> > 
+> > "beldmit commented 15 days ago
+> > I don't like this approach as a whole. IMHO, we should have some defines
+> > to find installation-specific values for a specific installation."
+> > 
+> > "levitte commented 14 days ago
+> > It's possible that it would be better if util/wrap.pl became a public
+> > tool. Not necessarily exactly as it works now, but something with a
+> > similar intent."
+> > 
+> > "levitte commented 14 days ago
+> > This isn't just an OpenSSL problem, is it? There are other libraries
+> > that are plugable (and essentially, providers are exactly that,
+> > plugins), and I imagine that they also have their own custom default
+> > location for plugins.
+> > Otherwise, the obvious answer would be that you should install things
+> > that belong with OpenSSL into its default locations... and that's
+> > answered with openssl version -a as said above, or with the openssl info
+> > command in later OpenSSL versions."
+> > 
+> > So wrapper it is then.
+> 
+> I was going to write a reply to some of that, I still might, but as I
+> was doing it, another idea did just come to mind.
+> 
+> Somewhere I'm guessing openssl has some common init function?
 
-Somewhere I'm guessing openssl has some common init function?
-
-Perhaps in that we patch in a hook, which looks at the current path of
-the library, compares that to the default install location, then sets
-the magic envvars accordingly if the location has changed?
-
-That code should be isolatable in that we only have one entry point to
-patch in and as you say, the envvars have been around forever, we'd
-just need to watch for new ones.
-
-The advantage to this is that the openssl library should then "just
-work", we don't need to worry about the environment being present
-everywhere?
-
-This would also give us a new way to avoid some of these kinds of
-issues with a new example to follow which doesn't involve manually
-ensuring all users are tweaked. I really don't like the environment
-variable approach for libraries.
+Sadly, there isn't. Not even a common header file. Or at least
+I did not find any. The engines, modules, config files and certs
+are quite different things compared to the plain shared libraries
+which are already found from LD_LIBRARY_PATH.
 
 Cheers,
 
-Richard
+-Mikko
 
