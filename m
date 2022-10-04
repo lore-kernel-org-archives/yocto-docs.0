@@ -1,139 +1,151 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <mikko.rapeli@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A1FBC4332F
-	for <webhook@archiver.kernel.org>; Tue,  4 Oct 2022 11:09:27 +0000 (UTC)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com
- [209.85.128.54])
- by mx.groups.io with SMTP id smtpd.web10.9130.1664881763262080323
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46D6AC4332F
+	for <webhook@archiver.kernel.org>; Tue,  4 Oct 2022 11:38:47 +0000 (UTC)
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com
+ [209.85.208.173])
+ by mx.groups.io with SMTP id smtpd.web09.9555.1664883523443243537
  for <docs@lists.yoctoproject.org>;
- Tue, 04 Oct 2022 04:09:23 -0700
+ Tue, 04 Oct 2022 04:38:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=iNoBx0SA;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.54,
- mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f54.google.com with SMTP id
- z13-20020a7bc7cd000000b003b5054c6f9bso10623922wmk.2
+ dkim=pass header.i=@linaro.org header.s=google header.b=umA7ofFs;
+ spf=pass (domain: linaro.org, ip: 209.85.208.173,
+ mailfrom: mikko.rapeli@linaro.org)
+Received: by mail-lj1-f173.google.com with SMTP id t16so14993494ljh.3
         for <docs@lists.yoctoproject.org>;
- Tue, 04 Oct 2022 04:09:23 -0700 (PDT)
+ Tue, 04 Oct 2022 04:38:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date;
-        bh=Ur3ANninksD1O1XNC+fNe3hVg55ccnIwEiTBfm5k+6w=;
-        b=iNoBx0SANnoIt+tx3YBA2AIDY6BBWRn295AJ26Ww8Qv1IHOFzagfmEvN7NzoNL6eua
-         rZHPBKGMqV3mrXlxps3g4y5QSKJHU44Xo+qPWZWt0Z8mEak1xmPeMMSos9v7FnQ0//Oy
-         wk4aEq8gWf8XsU5BdbuhcSl8RE78v2OW7o5dI=
+        d=linaro.org; s=google;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date;
+        bh=bZDWBu/JVpV8ial4FNgIEseiTLahEwA5A/X3Cg7TYHE=;
+        b=umA7ofFsCIhCwHT3YtGVok+zSZA/8cyipniJwLMFr3rtlQRtdHTKuGSC53PWUrgePs
+         K7mm35eXIt2a9sDqjrKA6xj8Fow9eZFPE/kttBMNxKqBOuEEqYSx98ik3trMXY4Pr53M
+         jFWvAeY583bJO6GQ6uNShAfdsi1oUSqMaQHQdpMlh4OkMWs2NSZ8fgm1Gmou+0jo4Tp4
+         MI2oikGueBLAhMYFsri3r6dhKcHgtSrFlTalMG1PzaHUkBeWchUc5ww9y/ZojmraYlCE
+         fk9peYGpyfNrErT2TqrwAJ0w3Ii9wBs0O9Evia2aMZggOenLUducDyRXREADpELHIt+A
+         FYNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date;
-        bh=Ur3ANninksD1O1XNC+fNe3hVg55ccnIwEiTBfm5k+6w=;
-        b=qpHgAGj1N6yo9nhT0o82Kq+wR7udutSFM74rq1Tz4b5f1Dgm4iKVSE9S4jAhK8fTV1
-         x8HdQ+2H0oPTk2/SCRE5S57GD9uMSrqulE8ZjiW8RNlzBYu0WKZfzw6pURTA8O4uxy+b
-         WHJ+dBrIMTsdaeGnM1Z3QwzYHY5HHzlowHeIws265a08oikbf/Bn8fQqmQHZqgtqht/M
-         y3hideCaqkypoHAJ8jTEuY0A5RKKpDMAdY/RuNs3ZMvvUFCdc8bhqyvTjfJZktYkzk4W
-         kiqAOXIuiPn5YLI6Zlbj0fD+j049O8smXLEonadpd8ny3KaUuYNjy2M1l9HvrJHAhDyu
-         Ahzw==
-X-Gm-Message-State: ACrzQf2Ui0ayetEgUKmGu1xYxLKJtxEPdwMfAst2Vt8lIwkzNU8Syy5h
-	h14YggtP1W+44Dj+ecOq3zrODQ==
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date;
+        bh=bZDWBu/JVpV8ial4FNgIEseiTLahEwA5A/X3Cg7TYHE=;
+        b=07cXG9yyHJDefqzS5pi1YFyDGow/jc9fgDfJkYDubghsnbmJRmK69UeQhbvMhD8l4S
+         v9j3Gi3ryO8JYowrGrQ/G8tZ+YmcVZ+K9tZ/SX6Pry7XWkvq2177DNQLfNyQfLc2obH8
+         xUQ3iwyjs2msCZ8kuP7RGQKZDCMOcrfKVr5zFAXW6/aV07MKhOEWSr4DrShILz4hmBef
+         ZsFo+eTs7Gs9lT5EIu3+C4IuD/A5bz31I67xVPOwM2eCaPM7ZdPmmtdT12kjtIiGd/Qr
+         DmnOx+UXWiEhnG3gLCWZboJ/tt86HEhJ0//1VtObO7u1v7/2yeo6kDTtKkNxpreEGIXx
+         VJkQ==
+X-Gm-Message-State: ACrzQf2XRwlK3MJ8v3OPNYc0ty9NacRL9er21kY09tn4ynlNKGVJd2e7
+	Wnj4XwmxWmI1suVeBb7y0eyx5A==
 X-Google-Smtp-Source: 
- AMsMyM5GKCD2pYZ7BclN8gmk5IziDg/2zg0btyb/QaON20MsoM7naiKcyBVTnSCtWxBDWmYM77cifQ==
-X-Received: by 2002:a05:600c:1d94:b0:3b4:7b91:7056 with SMTP id
- p20-20020a05600c1d9400b003b47b917056mr9642781wms.18.1664881761552;
-        Tue, 04 Oct 2022 04:09:21 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:a418:d17a:77b7:6987?
- ([2001:8b0:aba:5f3c:a418:d17a:77b7:6987])
+ AMsMyM474pq3IV7Q6Iry+V1G+6dxj7oYAnQoV6bPRdifJ3kmwW4bZJ/1xRiGnyJcK64M/AleK06PXw==
+X-Received: by 2002:a2e:9942:0:b0:26d:daa0:6d77 with SMTP id
+ r2-20020a2e9942000000b0026ddaa06d77mr3048274ljj.266.1664883521572;
+        Tue, 04 Oct 2022 04:38:41 -0700 (PDT)
+Received: from nuoska (dsl-olubng11-54f814-94.dhcp.inet.fi. [84.248.20.94])
         by smtp.gmail.com with ESMTPSA id
- d16-20020adfe890000000b0022e035a4e93sm11529571wrm.87.2022.10.04.04.09.20
+ o12-20020a056512230c00b0049a5a59aa68sm1881942lfu.10.2022.10.04.04.38.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Oct 2022 04:09:20 -0700 (PDT)
-Message-ID: 
- <99339c298138b6f300146d81beec455815b11771.camel@linuxfoundation.org>
+        Tue, 04 Oct 2022 04:38:41 -0700 (PDT)
+Date: Tue, 4 Oct 2022 14:38:38 +0300
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+Cc: openembedded-core@lists.openembedded.org, docs@lists.yoctoproject.org
 Subject: Re: [docs] [PATCH 1/4] openssl-native.bbclass: add bbclass
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Mikko Rapeli <mikko.rapeli@linaro.org>,
-	openembedded-core@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org
-Date: Tue, 04 Oct 2022 12:09:18 +0100
-In-Reply-To: <20221004101038.2736600-1-mikko.rapeli@linaro.org>
+Message-ID: <YzwbPsiFw9YDMAWe@nuoska>
 References: <20221004101038.2736600-1-mikko.rapeli@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.1-0ubuntu1 
+ <99339c298138b6f300146d81beec455815b11771.camel@linuxfoundation.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: 
+ <99339c298138b6f300146d81beec455815b11771.camel@linuxfoundation.org>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 04 Oct 2022 11:09:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3269
+ <docs@lists.yoctoproject.org>; Tue, 04 Oct 2022 11:38:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3270
 
-Hi Mikko,
+Hi,
 
-Thanks for working on this, particularly with upstream.
+On Tue, Oct 04, 2022 at 12:09:18PM +0100, Richard Purdie wrote:
+> Hi Mikko,
+> 
+> Thanks for working on this, particularly with upstream.
+> 
+> On Tue, 2022-10-04 at 13:10 +0300, Mikko Rapeli wrote:
+> > Using openssl-native shared libraries correctly is hard. A number
+> > of environment variables need to be correctly set or
+> > the errors may be really confusing. openssl can be made
+> > to detect these paths automatically, but upstream has rejected
+> > these ideas. openssl-native provides a wrapper script for 'openssl'
+> > binary, but shared library users like python3-cryptgraphy-native
+> > need to have the shared libraries working directly. Thus follow
+> > example from python3native.bbclass and implement this via
+> > openssl-native.bbclass.
+> > 
+> > If full certificate checking is needed, then users
+> > also need to DEPEND on ca-certificates-native.
+> > 
+> > See also:
+> > https://lists.openembedded.org/g/openembedded-core/topic/93651845#170562
+> > https://github.com/openssl/openssl/issues/19242
+> > 
+> > Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
+> > ---
+> >  documentation/ref-manual/classes.rst               | 11 +++++++++++
+> >  meta/classes/openssl-native.bbclass                |  7 +++++++
+> >  meta/recipes-connectivity/openssl/openssl_3.0.5.bb |  1 +
+> >  3 files changed, 19 insertions(+)
+> 
+> Docs are in a different repo to OE-Core so this patch would need to be
+> split.
 
-On Tue, 2022-10-04 at 13:10 +0300, Mikko Rapeli wrote:
-> Using openssl-native shared libraries correctly is hard. A number
-> of environment variables need to be correctly set or
-> the errors may be really confusing. openssl can be made
-> to detect these paths automatically, but upstream has rejected
-> these ideas. openssl-native provides a wrapper script for 'openssl'
-> binary, but shared library users like python3-cryptgraphy-native
-> need to have the shared libraries working directly. Thus follow
-> example from python3native.bbclass and implement this via
-> openssl-native.bbclass.
->=20
-> If full certificate checking is needed, then users
-> also need to DEPEND on ca-certificates-native.
->=20
-> See also:
-> https://lists.openembedded.org/g/openembedded-core/topic/93651845#170562
-> https://github.com/openssl/openssl/issues/19242
->=20
-> Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
-> ---
->  documentation/ref-manual/classes.rst               | 11 +++++++++++
->  meta/classes/openssl-native.bbclass                |  7 +++++++
->  meta/recipes-connectivity/openssl/openssl_3.0.5.bb |  1 +
->  3 files changed, 19 insertions(+)
+Ok, will split them.
 
-Docs are in a different repo to OE-Core so this patch would need to be
-split.
+> I think it is worth referencing this too:
+> 
+> https://github.com/openssl/openssl/pull/19260
 
-I think it is worth referencing this too:
+Ok, will add.
 
-https://github.com/openssl/openssl/pull/19260
+> I noticed there that the patches have thrown some compiler warnings:
+> 
+> crypto/conf/conf_mod.c:667:20: error: passing 'const char *(int)' to parameter of type 'const void *' converts between void pointer and function pointer [-Werror,-Wpedantic]
+>         if (dladdr(OpenSSL_version, &info)) {
+> crypto/conf/conf_mod.c: In function 'CONF_get1_default_config_file':
+> crypto/conf/conf_mod.c:667:20: error: ISO C forbids passing argument 1 of 'dladdr' between function pointer and 'void *' [-Werror=pedantic]
+>   667 |         if (dladdr(OpenSSL_version, &info)) {
+>       |                    ^~~~~~~~~~~~~~~
+> In file included from /usr/aarch64-linux-gnu/include/link.h:25,
+>                  from crypto/conf/conf_mod.c:34:
+> /usr/aarch64-linux-gnu/include/dlfcn.h:98:32: note: expected 'const void *' but argument is of type 'const char * (*)(int)'
+>    98 | extern int dladdr (const void *__address, Dl_info *__info)
+> 
+> 
+> It may be worth fixing those just in case they consider the patch.
 
-I noticed there that the patches have thrown some compiler warnings:
+Yes, but the general design of using dladdr(OpenSSL_version,...) did not
+get any positive comments in the bug report so I think this is wasted
+effort.
 
-crypto/conf/conf_mod.c:667:20: error: passing 'const char *(int)' to parame=
-ter of type 'const void *' converts between void pointer and function point=
-er [-Werror,-Wpedantic]
-        if (dladdr(OpenSSL_version, &info)) {
-crypto/conf/conf_mod.c: In function 'CONF_get1_default_config_file':
-crypto/conf/conf_mod.c:667:20: error: ISO C forbids passing argument 1 of '=
-dladdr' between function pointer and 'void *' [-Werror=3Dpedantic]
-  667 |         if (dladdr(OpenSSL_version, &info)) {
-      |                    ^~~~~~~~~~~~~~~
-In file included from /usr/aarch64-linux-gnu/include/link.h:25,
-                 from crypto/conf/conf_mod.c:34:
-/usr/aarch64-linux-gnu/include/dlfcn.h:98:32: note: expected 'const void *'=
- but argument is of type 'const char * (*)(int)'
-   98 | extern int dladdr (const void *__address, Dl_info *__info)
+> I'm wondering whether we should just carry those patches? They don't
+> look so invasive and it would save complicating things elsewhere in our
+> codebase...
 
+I don't think so. For every variable the patch is annoyingly different
+and there are merge/rebase conflicts with newer upstream releases
+already.
 
-It may be worth fixing those just in case they consider the patch.
-
-I'm wondering whether we should just carry those patches? They don't
-look so invasive and it would save complicating things elsewhere in our
-codebase...
+I think pyton3native.bbclass sets the example. Variables need to be set
+for openssl to work correctly after relocation to paths not known at
+compile time. Same applies to any code which needs to dlopen() something
+or which has custom locations for modules, data or configuration files.
 
 Cheers,
 
-Richard
-
-
+-Mikko
 
