@@ -2,191 +2,1170 @@ Return-Path: <paul.eggleton@linux.microsoft.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC296C4167D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2BD6C433F5
 	for <webhook@archiver.kernel.org>; Mon, 10 Oct 2022 09:24:43 +0000 (UTC)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by mx.groups.io with SMTP id smtpd.web12.4271.1665393877464287461
+ by mx.groups.io with SMTP id smtpd.web12.4272.1665393877637531964
  for <docs@lists.yoctoproject.org>;
  Mon, 10 Oct 2022 02:24:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linux.microsoft.com header.s=default header.b=WF0ZCuzG;
+ dkim=fail reason="body hash did not verify" header.i=@linux.microsoft.com
+ header.s=default header.b=bGi1D5Nb;
  spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182,
  mailfrom: pauleg@linux.microsoft.com)
 Received: by linux.microsoft.com (Postfix, from userid 1054)
-	id 0FB5E20F0682; Mon, 10 Oct 2022 02:24:36 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 0FB5E20F0682
+	id 70F0D20EC321; Mon, 10 Oct 2022 02:24:36 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 70F0D20EC321
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1665393877;
-	bh=Lpl+CCTuGs026nfpe1JIwWn0TNl49iykbdZPlcghWgI=;
+	bh=/FQJ8k1/yZVnPQ7Zc80/SHNB4JLvsIN9Q12BJtrxa2A=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=WF0ZCuzGh8MGb3Nuqks1JUZ4aITbWFNeIIO0Kh5LD5Rzh/j5zSeuIJ62z9PALt/Pn
-	 SOl+ErSv/za1favEMDDq1cN3/T/0BD8LL5SsOOuqSsKlx4kuXg6HvUuhyzYnYNPXKu
-	 I65kLkBfa44/RmLHm+gVYTcSeKzpC5rGG5JCRPJg=
+	b=bGi1D5Nb+V11hRxBqliPHlKaJMYaDvKqRQh9F3y9l3sH2NfEtkSRv0HMsl2XCp9Qi
+	 q0zUaLR/PV7BtsqRfIrVegb2Nkb0MNhWtduCmKp3ZJaR3O3P4U23yZ2OqowluH7q0t
+	 N6gScFhIlaLKy8y9CJbKwh/GqdEGS9UmN93bDRAA=
 From: Paul Eggleton <paul.eggleton@linux.microsoft.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 26/34] ref-manual: add missing features
-Date: Mon, 10 Oct 2022 02:24:12 -0700
+Subject: [PATCH 34/34] Add 4.1 migration guide & release notes
+Date: Mon, 10 Oct 2022 02:24:20 -0700
 Message-Id: 
- <fc009a1f60d44ae2fa0fb9a92162884d362bc230.1665392836.git.paul.eggleton@linux.microsoft.com>
+ <eab587c8b9e2b1afc2eed83159e9eb728cdccbbb.1665392836.git.paul.eggleton@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
 In-Reply-To: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
 References: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 10 Oct 2022 09:24:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3329
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3336
 
 From: Paul Eggleton <paul.eggleton@microsoft.com>
 
-Add missing IMAGE_FEATURES, DISTRO_FEATURES and MACHINE_FEATURES items.
-Additionally, add a note that DISTRO_FEATURES doesn't have any impact on
-the kernel configuration so that users are aware they have to take care
-of that as well. (I thought the same was true of MACHINE_FEATURES, but
-it seems we have a couple of isolated cases where that will adjust the
-kernel configuration - few enough that I suspect they might have slipped
-in and thus probably shouldn't be documented yet.)
+This currently does not include known issues or download information.
 
 Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
 ---
- documentation/ref-manual/features.rst | 50 +++++++++++++++++++++++++++++++++++
- 1 file changed, 50 insertions(+)
+ documentation/migration-guides/index.rst           |   1 +
+ documentation/migration-guides/migration-4.1.rst   | 214 +++++++
+ documentation/migration-guides/release-4.1.rst     |   7 +
+ .../migration-guides/release-notes-4.1.rst         | 687 +++++++++++++++=
+++++++
+ 4 files changed, 909 insertions(+)
+ create mode 100644 documentation/migration-guides/migration-4.1.rst
+ create mode 100644 documentation/migration-guides/release-4.1.rst
+ create mode 100644 documentation/migration-guides/release-notes-4.1.rst
 
-diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
-index dad871d..ea4d257 100644
---- a/documentation/ref-manual/features.rst
-+++ b/documentation/ref-manual/features.rst
-@@ -72,6 +72,8 @@ Project metadata:
- 
- -  *phone:* Mobile phone (voice) support
- 
-+-  *qemu-usermode:* QEMU can support user-mode emulation for this machine
+diff --git a/documentation/migration-guides/index.rst b/documentation/mig=
+ration-guides/index.rst
+index 4597506..ce0ca8c 100644
+--- a/documentation/migration-guides/index.rst
++++ b/documentation/migration-guides/index.rst
+@@ -12,6 +12,7 @@ to move to one release of the Yocto Project from the pr=
+evious one.
+ .. toctree::
+=20
+    migration-general
++   release-4.1
+    release-4.0
+    release-3.4
+    migration-3.3
+diff --git a/documentation/migration-guides/migration-4.1.rst b/documenta=
+tion/migration-guides/migration-4.1.rst
+new file mode 100644
+index 0000000..bb8c6dd
+--- /dev/null
++++ b/documentation/migration-guides/migration-4.1.rst
+@@ -0,0 +1,214 @@
++Release 4.1 (langdale)
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +
- -  *qvga:* Machine has a QVGA (320x240) display
- 
- -  *rtc:* Machine has a Real-Time Clock
-@@ -112,6 +114,13 @@ configuration level. See the
- :term:`COMBINED_FEATURES` variable for more
- information.
- 
-+.. note::
++Migration notes for 4.1 (langdale)
++-----------------------------------
 +
-+   :term:`DISTRO_FEATURES` is normally independent of kernel configuration,
-+   so if a feature specified in :term:`DISTRO_FEATURES` also relies on
-+   support in the kernel, you will also need to ensure that support is
-+   enabled in the kernel configuration.
++This section provides migration information for moving to the Yocto
++Project 4.1 Release (codename "langdale") from the prior release.
 +
- This list only represents features as shipped with the Yocto Project
- metadata, as extra layers can define their own:
- 
-@@ -143,6 +152,9 @@ metadata, as extra layers can define their own:
- -  *ext2:* Include tools for supporting for devices with internal
-    HDD/Microdrive for storing files (instead of Flash only devices).
- 
-+-  *gobject-introspection-data:* Include data to support
-+   `GObject Introspection <https://gi.readthedocs.io/en/latest/>`__.
 +
- -  *ipsec:* Include IPSec support.
- 
- -  *ipv4:* Include IPv4 support.
-@@ -155,23 +167,38 @@ metadata, as extra layers can define their own:
- -  *multiarch:* Enable building applications with multiple architecture
-    support.
- 
-+-  *ld-is-gold:* Use the `gold <https://en.wikipedia.org/wiki/Gold_(linker)>`__
-+   linker instead of the standard GCC linker (bfd).
++.. _migration-4.1-make-4.0:
 +
- -  *ldconfig:* Include support for ldconfig and ``ld.so.conf`` on the
-    target.
- 
-+-  *lto:* Enable `Link-Time Optimisation <https://gcc.gnu.org/wiki/LinkTimeOptimization>`__.
++make 4.0 is now the minimum required make version
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
- -  *nfc:* Include support for
-    `Near Field Communication <https://en.wikipedia.org/wiki/Near-field_communication>`__.
- 
- -  *nfs:* Include NFS client support (for mounting NFS exports on
-    device).
- 
-+-  *nls:* Include National Language Support (NLS).
++glibc now requires ``make`` 4.0 to build, thus it is now the version req=
+uired to
++be installed on the build host. A new ``buildtools-make-tarball`` has be=
+en
++introduced to provide just make 4.0 for host distros without a current/w=
+orking
++make 4.x version; if you also need other tools you can use the updated
++``buildtools-tarball``. For more information see
++:ref:`ref-manual/system-requirements:required packages for the build hos=
+t`.
 +
- -  *opengl:* Include the Open Graphics Library, which is a
-    cross-language, multi-platform application programming interface used
-    for rendering two and three-dimensional graphics.
- 
-+-  *overlayfs:* Include `OverlayFS <https://docs.kernel.org/filesystems/overlayfs.html>`__
-+   support.
 +
-+-  *pam:* Include `Pluggable Authentication Module (PAM) <https://en.wikipedia.org/wiki/Pluggable_authentication_module>`__
-+   support.
++.. _migration-4.1-complementary-deps:
 +
- -  *pci:* Include PCI bus support.
- 
- -  *pcmcia:* Include PCMCIA/CompactFlash support.
- 
-+-  *polkit:* Include `Polkit <https://en.wikipedia.org/wiki/Polkit>`__ support.
++Complementary package installation ignores recommends
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
- -  *ppp:* Include PPP dialup support.
- 
- -  *ptest:* Enables building the package tests where supported by
-@@ -179,6 +206,13 @@ metadata, as extra layers can define their own:
-    ":ref:`dev-manual/common-tasks:testing packages with ptest`" section
-    in the Yocto Project Development Tasks Manual.
- 
-+-  *pulseaudio:* Include support for
-+   `PulseAudio <https://www.freedesktop.org/wiki/Software/PulseAudio/>`__.
++When installing complementary packages (e.g. ``-dev`` and ``-dbg`` packa=
+ges when
++building an SDK, or if you have added ``dev-deps`` to :term:`IMAGE_FEATU=
+RES`),
++recommends (as defined by :term:`RRECOMMENDS`) are no longer installed.
 +
-+-  *selinux:* Include support for
-+   `Security-Enhanced Linux (SELinux) <https://en.wikipedia.org/wiki/Security-Enhanced_Linux>`__
-+   (requires `meta-selinux <https://layers.openembedded.org/layerindex/layer/meta-selinux/>`__).
++If you wish to double-check the contents of your images after this chang=
+e, see
++:ref:`Checking Image / SDK Changes <migration-general-buildhistory>`. If=
+ needed
++you can explicitly install items by adding them to :term:`IMAGE_INSTALL`=
+ in
++image recipes or :term:`TOOLCHAIN_TARGET_TASK` for the SDK.
 +
- -  *seccomp:* Enables building applications with
-    `seccomp <https://en.wikipedia.org/wiki/Seccomp>`__ support, to
-    allow them to strictly restrict the system calls that they are allowed
-@@ -270,6 +304,9 @@ Here are the image features available for all images:
-        just disables the mechanism which forces an non-empty password for the
-        root user.
- 
-+-  *lic-pkgs:* Installs license packages for all packages installed in a
-+   given image.
 +
- -  *overlayfs-etc:* Configures the ``/etc`` directory to be in ``overlayfs``.
-    This allows to store device specific information elsewhere, especially
-    if the root filesystem is configured to be read-only.
-@@ -294,6 +331,12 @@ Here are the image features available for all images:
-    section in the Yocto Project Development Tasks Manual for more
-    information.
- 
-+-  *read-only-rootfs-delayed-postinsts:* when specified in conjunction
-+   with ``read-only-rootfs``, specifies that post-install scripts are
-+   still permitted (this assumes that the root filesystem will be made
-+   writeable for the first boot; this feature does not do anything to
-+   ensure that - it just disables the check for post-install scripts.)
++.. _migration-4.1-dev-recommends:
 +
- -  *splash:* Enables showing a splash screen during boot. By default,
-    this screen is provided by ``psplash``, which does allow
-    customization. If you prefer to use an alternative splash screen
-@@ -301,6 +344,11 @@ Here are the image features available for all images:
-    different package name (or names) within the image recipe or at the
-    distro configuration level.
- 
-+-  *stateless-rootfs:*: specifies that the image should be created as
-+   stateless - when using ``systemd``, ``systemctl-native`` will not
-+   be run on the image, leaving the image for population at runtime by
-+   systemd.
++dev dependencies are now recommends
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
- -  *staticdev-pkgs:* Installs static development packages, which are
-    static libraries (i.e. ``*.a`` files), for all packages installed in
-    a given image.
-@@ -351,6 +399,8 @@ these valid features is as follows:
- -  *tools-testapps:* Installs device testing tools (e.g. touchscreen
-    debugging).
- 
-+-  *weston:* Installs Weston (reference Wayland environment).
++The default for ``${PN}-dev`` package is now to use :term:`RRECOMMENDS` =
+instead
++of :term:`RDEPENDS` to pull in the main package. This takes advantage of=
+ a
++change to complimentary package installation to not follow :term:`RRECOM=
+MENDS`
++(as mentioned above) and for example means an SDK for an image with both=
+ openssh
++and dropbear components will now build successfully.
 +
- -  *x11:* Installs the X server.
- 
- -  *x11-base:* Installs the X server with a minimal environment.
--- 
++
++.. _migration-4.1-dropbear-sftp:
++
++dropbear now recommends openssh-sftp-server
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++openssh has switched the scp client to use the sftp protocol instead of =
+scp to
++move files. This means scp from Fedora 36 and other current distribution=
+s will
++no longer be able to move files to/from a system running dropbear with n=
+o sftp
++server installed.
++
++The sftp server from openssh is small (200kb uncompressed) and standalon=
+e, so
++adding it to the packagegroup seems to be the best way to preserve the
++functionality for user sanity. However, if you wish to avoid this depend=
+ency,
++you can either:
++
++ A. Use ``dropbear`` in :term:`IMAGE_INSTALL` instead of
++    ``packagegroup-core-ssh-dropbear`` (or ``ssh-server-dropbear`` in
++    :term:`IMAGE_FEATURES`), or
++ B. Add ``openssh-sftp-server`` to :term:`BAD_RECOMMENDATIONS`.
++
++
++.. _migration-4.1-classes-split:
++
++Classes now split by usage context
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++A split directory structure has now been set up for ``.bbclass`` files -=
+ classes
++that are intended to be inherited only by recipes (e.g. ``inherit`` in a=
+ recipe
++file, :term:`IMAGE_CLASSES` or :term:`KERNEL_CLASSES`) should be in a
++``classes-recipe`` subdirectory and classes that are intended to be inhe=
+rited
++globally (e.g. via ``INHERIT +=3D``, :term:`PACKAGE_CLASSES`, :term:`USE=
+R_CLASSES`
++or :term:`INHERIT_DISTRO`) should be in ``classes-global``. Classes in t=
+he
++existing ``classes`` subdirectory will continue to work in any context a=
+s before.
++
++Other than knowing where to look when manually browsing the class files,=
+ this is
++not likely to require any changes to your configuration. However, if in =
+your
++configuration you were using some classes in the incorrect context, you =
+will now
++receive an error during parsing. For example, the following in ``local.c=
+onf`` will
++now cause an error::
++
++   INHERIT +=3D "testimage"
++
++Since :ref:`testimage <ref-classes-testimage>` is a class intended solel=
+y to
++affect image recipes, this would be correctly specified as::
++
++   IMAGE_CLASSES +=3D "testimage"
++
++
++.. _migration-4.1-local-file-error:
++
++Missing local files in SRC_URI now triggers an error
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++If a file referenced in :term:`SRC_URI` does not exist, in 4.1 this will=
+ trigger
++an error at parse time where previously this only triggered a warning. I=
+n the past
++you could ignore these warnings for example if you have multiple build
++configurations (e.g. for several different target machines) and there we=
+re recipes
++that you were not building in one of the configurations. If you have thi=
+s scenario
++you will now need to conditionally add entries to :term:`SRC_URI` where =
+they are
++valid, or use :term:`COMPATIBLE_MACHINE` / :term:`COMPATIBLE_HOST` to pr=
+event the
++recipe from being available (and therefore avoid it being parsed) in con=
+figurations
++where the files aren't available.
++
++
++.. _migration-4.1-qa-checks:
++
++QA check changes
++~~~~~~~~~~~~~~~~
++
++- The :ref:`buildpaths <qa-check-buildpaths>` QA check is now enabled by=
+ default
++  in :term:`WARN_QA`, and thus any build system paths found in output fi=
+les will
++  trigger a warning. If you see these warnings for your own recipes, for=
+ full
++  binary reproducibility you should make the necessary changes to the re=
+cipe build
++  to remove these paths. If you wish to disable the warning for a partic=
+ular
++  recipe you can use :term:`INSANE_SKIP`, or for the entire build you ca=
+n adjust
++  :term:`WARN_QA`. For more information, see the :ref:`buildpaths QA che=
+ck
++  <qa-check-buildpaths>` section.
++
++- ``do_qa_staging`` now checks shebang length in all directories specifi=
+ed by
++  :term:`SYSROOT_DIRS`, since there is a maximum length defined in the k=
+ernel. For
++  native recipes which write scripts to the sysroot, if the shebang line=
+ in one of
++  these scripts is too long you will get an error. This can be skipped u=
+sing
++  :term:`INSANE_SKIP` if necessary, but the best course of action is of =
+course to
++  fix the script. There is now also a ``create_cmdline_shebang_wrapper``=
+ function
++  that you can call e.g. from ``do_install`` (or ``do_install:append``) =
+within a
++  recipe to create a wrapper to fix such scripts - see the ``libcheck`` =
+recipe
++  for an example usage.
++
++
++
++Miscellaneous changes
++~~~~~~~~~~~~~~~~~~~~~
++
++- ``mount.blacklist`` has been renamed to ``mount.ignorelist`` in
++  ``udev-extraconf``. If you are customising this file via ``udev-extrac=
+onf`` then
++  you will need to update your ``udev-extraconf`` ``.bbappend`` as appro=
+priate.
++- ``help2man-native`` has been removed from implicit sysroot dependencie=
+s. If a
++  recipe needs ``help2man-native`` it should now be explicitly added to
++  :term:`DEPENDS` within the recipe.
++- For images using systemd, the reboot watchdog timeout has been set to =
+60
++  seconds (from the upstream default of 10 minutes). If you wish to over=
+ride this
++  you can set :term:`WATCHDOG_TIMEOUT` to the desired timeout in seconds=
+. Note
++  that the same :term:`WATCHDOG_TIMEOUT` variable also specifies the tim=
+eout used
++  for the ``watchdog`` tool (if that is being built).
++- The :ref:`image-buildinfo <ref-classes-image-buildinfo>` class now wri=
+tes to
++  ``${sysconfdir}/buildinfo`` instead of ``${sysconfdir}/build`` by defa=
+ult (i.e.
++  the default value of :term:`IMAGE_BUILDINFO_FILE` has been changed). I=
+f you have
++  code that reads this from images at build or runtime you will need to =
+update it
++  or specify your own value for :term:`IMAGE_BUILDINFO_FILE`.
++- In the :ref:`archiver <ref-classes-archiver>` class, the default
++  ``ARCHIVER_OUTDIR`` value no longer includes the :term:`MACHINE` value=
+ in order
++  to avoid the archive task running multiple times in a multiconfig setu=
+p. If you
++  have custom code that does something with the files archived by the
++  :ref:`archiver <ref-classes-archiver>` class then you may need to adju=
+st it to
++  the new structure.
++- If you are not using `systemd` then udev is now configured to use labe=
+ls
++  (``LABEL`` or ``PARTLABEL``) to set the mount point for the device. Fo=
+r example::
++
++    /run/media/rootfs-sda2
++
++  instead of::
++
++    /run/media/sda2
++
++- ``icu`` no longer provides the ``icu-config`` configuration tool - ups=
+tream
++  have indicated ``icu-config`` is deprecated and should no longer be us=
+ed. Code
++  with references to it will need to be updated, for example to use ``pk=
+g-config``
++  instead.
++- The ``rng-tools`` systemd service name has changed from ``rngd`` to ``=
+rng-tools``
++- The ``largefile`` :term:`DISTRO_FEATURES` item has been removed, large=
+ file
++  support is now always enabled where it was previously optional.
++- The Python ``zoneinfo`` module is now split out to its own ``python3-z=
+oneinfo``
++  package.
++- The :term:`PACKAGECONFIG` option to enable wpa_supplicant in the ``con=
+nman``
++  recipe has been renamed to "wpa-supplicant". If you have set PACKAGECO=
+NFIG for
++  the ``connman`` recipe to include this option you will need to update
++  your configuration. Related to this, the :term:`WIRELESS_DAEMON` varia=
+ble
++  now expects the new ``wpa-supplicant`` naming and affects ``packagegro=
+up-base``
++  as well as ``connman``.
++- The ``wpa-supplicant`` recipe no longer uses a static (and stale) ``de=
+fconfig``
++  file, instead it uses the upstream version with appropriate edits for =
+the
++  :term:`PACKAGECONFIG`. If you are customising this file you will need =
+to
++  update your customisations.
++- With the introduction of picobuild in
++  :ref:`python_pep517 <ref-classes-python_pep517>`, The ``PEP517_BUILD_A=
+PI``
++  variable is no longer supported. If you have any references to this va=
+riable
++  you should remove them.
++
++
++.. _migration-4.1-removed-recipes:
++
++Removed recipes
++~~~~~~~~~~~~~~~
++
++The following recipes have been removed in this release:
++
++- ``alsa-utils-scripts``: merged into alsa-utils
++- ``cargo-cross-canadian``: optimised out
++- ``lzop``: obsolete, unmaintained upstream
++- ``linux-yocto (5.10)``: 5.15 and 5.19 are currently provided
++- ``rust-cross``: optimised out
++- ``rust-crosssdk``: optimised out
++- ``rust-tools-cross-canadian``: optimised out
++- ``xf86-input-keyboard``: obsolete (replaced by libinput/evdev)
+diff --git a/documentation/migration-guides/release-4.1.rst b/documentati=
+on/migration-guides/release-4.1.rst
+new file mode 100644
+index 0000000..8ebf4a4
+--- /dev/null
++++ b/documentation/migration-guides/release-4.1.rst
+@@ -0,0 +1,7 @@
++Release 4.1 (langdale)
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++.. toctree::
++
++   migration-4.1
++   release-notes-4.1
+diff --git a/documentation/migration-guides/release-notes-4.1.rst b/docum=
+entation/migration-guides/release-notes-4.1.rst
+new file mode 100644
+index 0000000..4639d04
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.1.rst
+@@ -0,0 +1,687 @@
++Release notes for 4.1 (langdale)
++---------------------------------
++
++
++New Features / Enhancements in 4.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- Linux kernel 5.19, glibc 2.36 and ~260 other recipe upgrades
++
++- ``make`` 4.0 is now the minimum make version required on the build hos=
+t.
++  For host distros that do not provide it, this is included as part of t=
+he
++  ``buildtools-tarball``, and additionally a new ``buildtools-make-tarba=
+ll``
++  has been introduced to provide this in particular for host distros wit=
+h
++  a broken make 4.x version. For more details see
++  :ref:`ref-manual/system-requirements:required git, tar, python, make a=
+nd gcc versions`.
++
++- New layer setup tooling:
++
++  - New ``scripts/oe-setup-layers`` standalone script to restore the lay=
+er
++    configuration from a json file
++  - New ``bitbake-layers create-layers-setup destdir`` command to save t=
+he
++    layer configuration to a json file
++  - New ``bitbake-layers save-build-conf`` command to save the active bu=
+ild
++    configuration as a template into a layer
++
++- Rust-related enhancements:
++
++  - Support for building rust for the target
++  - Significant SDK toolchain build optimisation
++  - Support for building native components in the SDK
++  - Support ``crate://`` fetcher with :ref:`externalsrc <ref-classes-ext=
+ernalsrc>`
++
++- New core recipes:
++
++  - ``buildtools-make-tarball``
++  - ``icon-naming-utils`` (previously removed)
++  - ``musl-locales``
++  - ``python3-editables`` (originally in meta-python)
++  - ``python3-hatch-vcs``
++  - ``python3-hatchling`` (originally in meta-oe)
++  - ``python3-lxml`` (originally in meta-python)
++  - ``python3-pathspec`` (originally in meta-python)
++  - ``python3-picobuild``
++  - ``sato-icon-theme`` (previously removed)
++
++- CVE checking enhancements:
++
++  - New :term:`CVE_DB_UPDATE_INTERVAL` variable to allow specifying the =
+CVE database minimum update interval (and default to once per day)
++  - Added JSON format to summary output
++  - Added support for Ignored CVEs
++  - Enable recursive CVE checking also for ``do_populate_sdk``
++  - New :term:`CVE_CHECK_SHOW_WARNINGS` variable to disable unpatched CV=
+E warning messages
++  - The :ref:`pypi <ref-classes-pypi>` class now defaults :term:`CVE_PRO=
+DUCT` from :term:`PYPI_PACKAGE`
++  - Added current kernel CVEs to ignore list since we stay as close to t=
+he kernel stable releases as we can
++  - Optimisations to avoid dependencies on fetching
++
++- Complementary package installation (as used in SDKs and images) no lon=
+ger installs recommended packages, in order to avoid conflicts
++- Dependency of -dev package on main package is now an :term:`RRECOMMEND=
+S` and can be easily set via new :term:`DEV_PKG_DEPENDENCY` variable
++
++- Support for CPU, I/O and memory pressure regulation in BitBake
++- Pressure data gathering in ``buildstats`` and rendering in ``pybootcha=
+rtgui``
++
++- New Picobuild system for lightweight Python PEP-517 build support in t=
+he :ref:`python_pep517 <ref-classes-python_pep517>` class
++
++- Many classes are now split into global and recipe contexts for better
++  validation. For more information, see
++  :ref:`Classes now split by usage context <migration-4.1-classes-split>=
+`.
++
++-  Architecture-specific enhancements:
++
++   - arch-armv8-4a.inc: add tune include for armv8.4a
++   - tune-neoversen2: support tune-neoversen2 base on armv9a
++   - riscv: Add tunes for rv64 without compressed instructions
++   - gnu-efi: enable for riscv64
++   - shadow-securetty: allow ttyS4 for amd-snowyowl-64
++
++-  Kernel-related enhancements:
++
++   - linux-yocto/5.15: cfg/xen: Move x86 configs to separate file
++   - linux-yocto/5.15: Enabled MDIO bus config
++   - linux-yocto: Enable mdio for qemu
++   - linux-yocto/5.15: base: enable kernel crypto userspace API
++   - kern-tools: allow 'y' or 'm' to avoid config audit warnings
++   - kernel-yocto.bbclass: say what SRC_URI entry is being dropped
++   - kernel.bbclass: Do not overwrite recipe's custom postinst
++   - kmod: Enable xz support by default
++   - Run depmod(wrapper) against each compiled kernel when multiple kern=
+els are enabled
++   - linux-yocto-tiny: enable qemuarmv5/qemuarm64
++
++-  wic Image Creator enhancements:
++
++   - Added dependencies to support erofs
++   - Added ``fspassno`` parameter to partition to allow specifying the v=
+alue of the last column (``fs_passno``) in ``/etc/fstab``.
++   - bootimg-efi: added support for loading devicetree files
++   - Added ``none`` fstype for custom image (for use in conjunction with=
+ ``rawcopy``)
++
++-  SDK-related enhancements:
++
++   - :ref:`Support for using the regular build system as an SDK <sdk-man=
+ual/extensible:Setting up the Extensible SDK environment directly in a Yo=
+cto build>`
++   - :ref:`image-buildinfo <ref-classes-image-buildinfo>` class now also=
+ writes build information to SDKs
++   - New :term:`SDK_TOOLCHAIN_LANGS` variable to control support of rust=
+ / go in SDK
++   - rust-llvm: enabled nativesdk variant
++   - python3-pluggy: enabled for native/nativesdk
++
++-  QEMU/runqemu enhancements:
++
++   - qemux86-64: Allow higher tunes
++   - runqemu: display host uptime when starting
++   - runqemu: add ``QB_KERNEL_CMDLINE`` that can be set to "none" to avo=
+id overriding kernel command line specified in dtb
++
++-  Image-related enhancements:
++
++   - New variable :term:`UBOOT_MKIMAGE_KERNEL_TYPE`
++   - New variable :term:`FIT_PAD_ALG` to control FIT image padding algor=
+ithm
++   - New :term:`KERNEL_DEPLOY_DEPEND` variable to allow disabling image =
+dependency on deploying the kernel
++   - image_types: isolate the write of UBI configuration to a ``write_ub=
+i_config`` function that can be easily overridden
++
++- openssh: add support for config snippet includes to ssh and sshd
++- :ref:`create-spdx <ref-classes-create-spdx>`: Add ``SPDX_PRETTY`` opti=
+on
++- wpa-supplicant: build static library if not disabled via :term:`DISABL=
+E_STATIC`
++- wpa-supplicant: package dynamic modules
++- openssl: extract legacy provider module to a separate package
++- linux-firmware: split out ath3k firmware
++- linux-firmware: add support for building snapshots
++- eudev: create static-nodes in init script
++- udev-extraconf: new :term:`MOUNT_BASE` variable allows configuring aut=
+omount base directory
++- udev-extraconf/mount.sh: use partition labels in mountpoint paths
++- systemd: Set RebootWatchdogSec to 60s by default
++- systemd: systemd-systemctl: Support instance conf files during enable
++- weston.init: enable ``xwayland`` in weston.ini if ``x11`` is in :term:=
+`DISTRO_FEATURES`
++- New ``npm_registry`` Python module to enable caching with nodejs 16+
++- :ref:`npm <ref-classes-npm>`: replaced ``npm pack`` call with ``tar cz=
+f`` for nodejs 16+ compatibility and improved ``do_configure`` performanc=
+e
++- Enabled :ref:`bin_package <ref-classes-bin-package>` class to work pro=
+perly in the native case
++- Enabled :ref:`buildpaths <qa-check-buildpaths>` QA check as a warning =
+by default
++- New :term:`OVERLAYFS_ETC_EXPOSE_LOWER` to provide read-only access to =
+the original ``/etc`` content with :ref:`overlayfs-etc <ref-classes-overl=
+ayfs-etc>`
++- New :term:`OVERLAYFS_QA_SKIP` variable to allow skipping check on :ref=
+:`overlayfs <ref-classes-overlayfs>` mounts
++- New :term:`PACKAGECONFIG` options for individual recipes:
++
++   - apr: xsi-strerror
++   - btrfs-tools: lzo
++   - connman: iwd
++   - coreutils: openssl
++   - dropbear: enable-x11-forwarding
++   - eudev: blkid, kmod, rule-generator
++   - eudev: manpages, selinux
++   - flac: avx, ogg
++   - gnutls: fips
++   - gstreamer1.0-plugins-bad: avtp
++   - libsdl2: libusb
++   - llvm: optviewer
++   - mesa: vulkan, vulkan-beta, zink
++   - perf: bfd
++   - piglit: glx, opencl
++   - python3: editline
++   - qemu: bpf, brlapi, capstone, rdma, slirp, uring, vde
++   - rpm: readline
++   - ruby: capstone
++   - systemd: no-dns-fallback, sysext
++   - tiff: jbig
++
++- ptest enhancements in ``curl``, ``json-c``, ``libgcrypt``, ``libgpg-er=
+ror``, ``libxml2``
++- ptest compile/install functions now use :term:`PARALLEL_MAKE` and :ter=
+m:`PARALLEL_MAKEINST` in ptest for significant speedup
++- New :term:`TC_CXX_RUNTIME` variable to enable other layers to more eas=
+ily control C++ runtime
++- Set :term:`BB_DEFAULT_UMASK` using ??=3D to make it easier to override
++- Set :term:`TCLIBC` and :term:`TCMODE` using ??=3D to make them easier =
+to override
++- squashfs-tools: build with lzo support by default
++- insane.bbclass: make ``do_qa_staging`` check shebang length for native=
+ scripts in all :term:`SYSROOT_DIRS`
++- utils: Add ``create_cmdline_shebang_wrapper`` function to allow recipe=
+s to easily create a wrapper to fix long shebang lines
++- meson: provide relocation script and native/cross wrappers also for me=
+son-native
++- meson.bbclass: add cython binary to cross/native toolchain config
++- New ``musl-locales`` recipe to provide a limited set of locale data fo=
+r musl based systems
++- gobject-introspection: use ``OBJDUMP`` environment variable so that ob=
+jdump tool can be picked up from the environment
++- The Python ``zoneinfo`` module is now split out to its own ``python3-z=
+oneinfo`` package.
++- busybox: added devmem 128-bit support
++- vim: split xxd out into its own package
++- New :ref:`github-releases <ref-classes-github-releases>` class to cons=
+olidate version checks for github-based packages
++- ``devtool reset`` now preserves ``workspace/sources`` source trees in =
+``workspace/attic/sources/`` instead of leaving them in-place
++- scripts/patchreview: Add commit to stored json data
++- scripts/patchreview: Make json output human parsable
++- ``wpa-supplicant`` recipe now uses the upstream ``defconfig`` modified=
+ based upon :term:`PACKAGECONFIG` instead of a stale ``defconfig`` file
++- bitbake: build: prefix the tasks with a timestamp in the log.task_orde=
+r
++- bitbake: fetch2/osc: Add support to query latest revision
++- bitbake: utils: Pass lock argument in fileslocked
++- bitbake: utils: Add enable_loopback_networking()
++
++
++Known Issues in 4.1
++~~~~~~~~~~~~~~~~~~~
++
++
++
++Recipe License changes in 4.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++The following corrections have been made to the LICENSE values set by re=
+cipes:
++
++- alsa-state: add GPL-2.0-or-later because of alsa-state-init file
++- git: add GPL-2.0-or-later & BSD-3-Clause & MIT & BSL-1.0 & LGPL-2.1-or=
+-later due to embedded code
++- libgcrypt: dropped GPLv3 license after upstream changes
++- linux-firmware: correct license for ar3k firmware (specific "ar3k" lic=
+ense)
++
++
++
++Security Fixes in 4.1
++~~~~~~~~~~~~~~~~~~~~~
++
++- bind: :cve:`2022-1183`, :cve:`2022-2795`, :cve:`2022-2881`, :cve:`2022=
+-2906`, :cve:`2022-3080`, :cve:`2022-38178`
++- binutils: :cve:`2019-1010204`, :cve:`2022-38126`, :cve:`2022-38127`, :=
+cve:`2022-38128`, :cve:`2022-38533`
++- busybox: :cve:`2022-30065`
++- connman: :cve:`2022-32292`, :cve:`2022-32293`
++- cups: :cve:`2022-26691`
++- e2fsprogs: :cve:`2022-1304`
++- expat: :cve:`2022-40674`
++- freetype: :cve:`2022-27404`
++- glibc: :cve:`2022-39046`
++- gnupg: :cve:`2022-34903`
++- grub2: :cve:`2021-3695`, :cve:`2021-3696`, :cve:`2021-3697`, :cve:`202=
+2-28733`, :cve:`2022-28734`, :cve:`2022-28735`
++- inetutils: :cve:`2022-39028`
++- libtirpc: :cve:`2021-46828`
++- libxml2: :cve:`2016-3709 (ignored)`
++- libxslt: :cve:`2022-29824 (not applicable)`
++- linux-yocto/5.15: :cve:`2022-28796`
++- logrotate: :cve:`2022-1348`
++- lua: :cve:`2022-33099`
++- nasm: :cve:`2020-18974 (ignored)`
++- ncurses: :cve:`2022-29458`
++- openssl: :cve:`2022-1292`, :cve:`2022-1343`, :cve:`2022-1434`, :cve:`2=
+022-1473`, :cve:`2022-2068`, :cve:`2022-2274`, :cve:`2022-2097`
++- python3: :cve:`2015-20107 (ignored)`
++- qemu: :cve:`2021-20255 (ignored)`, :cve:`2019-12067 (ignored)`, :cve:`=
+2021-3507`, :cve:`2022-0216`, :cve:`2022-2962`, :cve:`2022-35414`
++- rpm: :cve:`2021-35937`, :cve:`2021-35938`, :cve:`2021-35939`
++- rsync: :cve:`2022-29154`
++- subversion: :cve:`2021-28544`, :cve:`2022-24070`
++- tiff: :cve:`2022-1210 (not applicable)`, :cve:`2022-1622`, :cve:`2022-=
+1623 (invalid)`, :cve:`2022-2056`, :cve:`2022-2057`, :cve:`2022-2058`, :c=
+ve:`2022-2953`, :cve:`2022-34526`
++- unzip: :cve:`2022-0529`, :cve:`2022-0530`
++- vim: :cve:`2022-1381`, :cve:`2022-1420`, :cve:`2022-1621`, :cve:`2022-=
+1629`, :cve:`2022-1674`, :cve:`2022-1733`, :cve:`2022-1735`, :cve:`2022-1=
+769`, :cve:`2022-1771`, :cve:`2022-1785`, :cve:`2022-1796`, :cve:`2022-19=
+27`, :cve:`2022-1942`, :cve:`2022-2257`, :cve:`2022-2264`, :cve:`2022-228=
+4`, :cve:`2022-2285`, :cve:`2022-2286`, :cve:`2022-2287`, :cve:`2022-2816=
+`, :cve:`2022-2817`, :cve:`2022-2819`, :cve:`2022-2845`, :cve:`2022-2849`=
+, :cve:`2022-2862`, :cve:`2022-2874`, :cve:`2022-2889`, :cve:`2022-2980`,=
+ :cve:`2022-2946`, :cve:`2022-2982`, :cve:`2022-3099`, :cve:`2022-3134`, =
+:cve:`2022-3234`, :cve:`2022-3278`
++- zlib: :cve:`2022-37434`
++
++
++
++
++
++Recipe Upgrades in 4.1
++~~~~~~~~~~~~~~~~~~~~~~
++
++- acpica 20211217 -> 20220331
++- adwaita-icon-theme 41.0 -> 42.0
++- alsa-lib 1.2.6.1 -> 1.2.7.2
++- alsa-plugins 1.2.6 -> 1.2.7.1
++- alsa-ucm-conf 1.2.6.3 -> 1.2.7.2
++- alsa-utils 1.2.6 -> 1.2.7
++- asciidoc 10.1.4 -> 10.2.0
++- at-spi2-core 2.42.0 -> 2.44.1
++- autoconf-archive 2022.02.11 -> 2022.09.03
++- base-passwd 3.5.29 -> 3.5.52
++- bind 9.18.5 -> 9.18.7
++- binutils 2.38 -> 2.39
++- boost 1.78.0 -> 1.80.0
++- boost-build-native 4.4.1 -> 1.80.0
++- btrfs-tools 5.16.2 -> 5.19.1
++- cargo 1.59.0 -> 1.63.0
++- ccache 4.6 -> 4.6.3
++- cmake 3.22.3 -> 3.24.0
++- cmake-native 3.22.3 -> 3.24.0
++- coreutils 9.0 -> 9.1
++- createrepo-c 0.19.0 -> 0.20.1
++- cross-localedef-native 2.35 -> 2.36
++- curl 7.82.0 -> 7.85.0
++- diffoscope 208 -> 221
++- dmidecode 3.3 -> 3.4
++- dnf 4.11.1 -> 4.14.0
++- dos2unix 7.4.2 -> 7.4.3
++- dpkg 1.21.4 -> 1.21.9
++- dropbear 2020.81 -> 2022.82
++- efibootmgr 17 -> 18
++- elfutils 0.186 -> 0.187
++- ell 0.50 -> 0.53
++- enchant2 2.3.2 -> 2.3.3
++- erofs-utils 1.4 -> 1.5
++- ethtool 5.16 -> 5.19
++- eudev 3.2.10 -> 3.2.11
++- ffmpeg 5.0.1 -> 5.1.1
++- file 5.41 -> 5.43
++- flac 1.3.4 -> 1.4.0
++- fontconfig 2.13.1 -> 2.14.0
++- freetype 2.11.1 -> 2.12.1
++- gcc 11.3.0 -> 12.2.0
++- gcompat 1.0.0+1.1+gitX (4d6a5156a6eb=E2=80=A6) -> 1.0.0+1.1+gitX (c692=
+1a1aa454=E2=80=A6)
++- gdb 11.2 -> 12.1
++- ghostscript 9.55.0 -> 9.56.1
++- git 2.35.4 -> 2.37.3
++- glibc 2.35 -> 2.36
++- glslang 1.3.204.1 -> 1.3.216.0
++- gnu-config 20211108+gitX -> 20220525+gitX
++- gnu-efi 3.0.14 -> 3.0.15
++- gnutls 3.7.4 -> 3.7.7
++- go 1.17.13 -> 1.19
++- go-helloworld 0.1 (787a929d5a0d=E2=80=A6) -> 0.1 (2e68773dfca0=E2=80=A6=
+)
++- gpgme 1.17.1 -> 1.18.0
++- gptfdisk 1.0.8 -> 1.0.9
++- harfbuzz 4.0.1 -> 5.1.0
++- hdparm 9.63 -> 9.64
++- help2man 1.49.1 -> 1.49.2
++- hwlatdetect 2.3 -> 2.4
++- icu 70.1 -> 71.1
++- inetutils 2.2 -> 2.3
++- init-system-helpers 1.62 -> 1.64
++- iproute2 5.17.0 -> 5.19.0
++- iptables 1.8.7 -> 1.8.8
++- iw 5.16 -> 5.19
++- json-c 0.15 -> 0.16
++- kbd 2.4.0 -> 2.5.1
++- kea 2.0.2 -> 2.2.0
++- kexec-tools 2.0.23 -> 2.0.25
++- kmod 29 -> 30
++- kmscube git (9f63f359fab1=E2=80=A6) -> git (3bf6ee1a0233=E2=80=A6)
++- less 600 -> 608
++- libaio 0.3.112 -> 0.3.113
++- libbsd 0.11.5 -> 0.11.6
++- libcap-ng 0.8.2 -> 0.8.3
++- libcap-ng-python 0.8.2 -> 0.8.3
++- libcgroup 2.0.2 -> 3.0.0
++- libcomps 0.1.18 -> 0.1.19
++- libdnf 0.66.0 -> 0.69.0
++- libdrm 2.4.110 -> 2.4.113
++- libevdev 1.12.1 -> 1.13.0
++- libfontenc 1.1.4 -> 1.1.6
++- libgcc 11.3.0 -> 12.2.0
++- libgcc-initial 11.3.0 -> 12.2.0
++- libgcrypt 1.9.4 -> 1.10.1
++- libgfortran 11.3.0 -> 12.2.0
++- libgit2 1.4.3 -> 1.5.0
++- libgpg-error 1.44 -> 1.45
++- libhandy 1.5.0 -> 1.6.3
++- libidn2 2.3.2 -> 2.3.3
++- libjitterentropy 3.4.0 -> 3.4.1
++- libmnl 1.0.4 -> 1.0.5
++- libnl 3.5.0 -> 3.7.0
++- libnotify 0.7.9 -> 0.8.1
++- libpipeline 1.5.5 -> 1.5.6
++- libproxy 0.4.17 -> 0.4.18
++- librepo 1.14.3 -> 1.14.5
++- librsvg 2.52.7 -> 2.54.5
++- libsdl2 2.0.20 -> 2.24.0
++- libseccomp 2.5.3 -> 2.5.4
++- libsndfile1 1.0.31 -> 1.1.0
++- libstd-rs 1.59.0 -> 1.63.0
++- libtirpc 1.3.2 -> 1.3.3
++- libubootenv 0.3.2 -> 0.3.3
++- libva 2.14.0 -> 2.15.0
++- libva-utils 2.14.0 -> 2.15.0
++- libx11 1.7.3.1 -> 1.8.1
++- libxau 1.0.9 -> 1.0.10
++- libxcb 1.14 -> 1.15
++- libxcursor 1.2.0 -> 1.2.1
++- libxcvt 0.1.1 -> 0.1.2
++- libxfont2 2.0.5 -> 2.0.6
++- libxvmc 1.0.12 -> 1.0.13
++- linux-libc-headers 5.16 -> 5.19
++- linux-yocto 5.10.143+gitX, 5.15.68+gitX -> 5.15.68+gitX, 5.19.9+gitX
++- linux-yocto-dev 5.18++gitX -> 5.19++gitX
++- linux-yocto-rt 5.10.143+gitX, 5.15.68+gitX -> 5.15.68+gitX, 5.19.9+git=
+X
++- linux-yocto-tiny 5.10.143+gitX, 5.15.68+gitX -> 5.15.68+gitX, 5.19.9+g=
+itX
++- llvm 13.0.1 -> 14.0.6
++- lsof 4.94.0 -> 4.95.0
++- ltp 20220121 -> 20220527
++- lttng-tools 2.13.4 -> 2.13.8
++- lttng-ust 2.13.3 -> 2.13.4
++- mc 4.8.27 -> 4.8.28
++- mesa 22.0.3 -> 22.2.0
++- mesa-demos 8.4.0 -> 8.5.0
++- mesa-gl 22.0.3 -> 22.2.0
++- meson 0.61.3 -> 0.63.2
++- mmc-utils 0.1+gitX (b7e4d5a6ae99=E2=80=A6) -> 0.1+gitX (d7b343fd2628=E2=
+=80=A6)
++- mpg123 1.29.3 -> 1.30.2
++- msmtp 1.8.20 -> 1.8.22
++- mtools 4.0.38 -> 4.0.40
++- musl 1.2.3+gitX (7a43f6fea908=E2=80=A6) -> 1.2.3+gitX (37e18b7bf307=E2=
+=80=A6)
++- musl-obstack 1.1 -> 1.2
++- ncurses 6.3+20220423 (a0bc708bc695=E2=80=A6) -> 6.3+20220423 (20db1fb4=
+1ec9=E2=80=A6)
++- neard 0.16 -> 0.18
++- nettle 3.7.3 -> 3.8.1
++- nfs-utils 2.6.1 -> 2.6.2
++- nghttp2 1.47.0 -> 1.49.0
++- ninja 1.10.2 -> 1.11.1
++- numactl 2.0.14 -> 2.0.15
++- ofono 1.34 -> 2.0
++- opensbi 1.0 -> 1.1
++- openssh 8.9p1 -> 9.0p1
++- opkg 0.5.0 -> 0.6.0
++- ovmf edk2-stable202202 -> edk2-stable202205
++- pango 1.50.4 -> 1.50.9
++- parted 3.4 -> 3.5
++- patchelf 0.14.5 -> 0.15.0
++- pciutils 3.7.0 -> 3.8.0
++- perl 5.34.1 -> 5.36.0
++- perlcross 1.3.7 -> 1.4
++- piglit 1.0+gitrX (2f80c7cc9c02=E2=80=A6) -> 1.0+gitrX (265896c86f90=E2=
+=80=A6)
++- pkgconf 1.8.0 -> 1.9.3
++- psmisc 23.4 -> 23.5
++- pulseaudio 15.0 -> 16.1
++- puzzles 0.0+gitX (c43a34fbfe43=E2=80=A6) -> 0.0+gitX (8399cff6a3b9=E2=80=
+=A6)
++- python3 3.10.4 -> 3.10.6
++- python3-atomicwrites 1.4.0 -> 1.4.1
++- python3-attrs 21.4.0 -> 22.1.0
++- python3-babel 2.9.1 -> 2.10.3
++- python3-bcrypt 3.2.0 -> 3.2.2
++- python3-certifi 2021.10.8 -> 2022.9.14
++- python3-cffi 1.15.0 -> 1.15.1
++- python3-chardet 4.0.0 -> 5.0.0
++- python3-cryptography 36.0.2 -> 37.0.4
++- python3-cryptography-vectors 36.0.2 -> 37.0.4
++- python3-cython 0.29.28 -> 0.29.32
++- python3-dbusmock 0.27.3 -> 0.28.4
++- python3-docutils 0.18.1 -> 0.19
++- python3-dtschema 2022.1 -> 2022.8.3
++- python3-hypothesis 6.39.5 -> 6.54.5
++- python3-idna 3.3 -> 3.4
++- python3-imagesize 1.3.0 -> 1.4.1
++- python3-importlib-metadata 4.11.3 -> 4.12.0
++- python3-jinja2 3.1.1 -> 3.1.2
++- python3-jsonpointer 2.2 -> 2.3
++- python3-jsonschema 4.4.0 -> 4.9.1
++- python3-magic 0.4.25 -> 0.4.27
++- python3-mako 1.1.6 -> 1.2.2
++- python3-markdown 3.3.6 -> 3.4.1
++- python3-more-itertools 8.12.0 -> 8.14.0
++- python3-numpy 1.22.3 -> 1.23.3
++- python3-pbr 5.8.1 -> 5.10.0
++- python3-pip 22.0.3 -> 22.2.2
++- python3-psutil 5.9.0 -> 5.9.2
++- python3-pycryptodome 3.14.1 -> 3.15.0
++- python3-pycryptodomex 3.14.1 -> 3.15.0
++- python3-pyelftools 0.28 -> 0.29
++- python3-pygments 2.11.2 -> 2.13.0
++- python3-pygobject 3.42.0 -> 3.42.2
++- python3-pyparsing 3.0.7 -> 3.0.9
++- python3-pytest 7.1.1 -> 7.1.3
++- python3-pytest-subtests 0.7.0 -> 0.8.0
++- python3-pytz 2022.1 -> 2022.2.1
++- python3-requests 2.27.1 -> 2.28.1
++- python3-scons 4.3.0 -> 4.4.0
++- python3-semantic-version 2.9.0 -> 2.10.0
++- python3-setuptools 59.5.0 -> 65.0.2
++- python3-setuptools-scm 6.4.2 -> 7.0.5
++- python3-sphinx 4.4.0 -> 5.1.1
++- python3-sphinx-rtd-theme 0.5.0 -> 1.0.0
++- python3-typing-extensions 3.10.0.0 -> 4.3.0
++- python3-urllib3 1.26.9 -> 1.26.12
++- python3-webcolors 1.11.1 -> 1.12
++- python3-zipp 3.7.0 -> 3.8.1
++- qemu 6.2.0 -> 7.1.0
++- repo 2.22 -> 2.29.2
++- rpm 4.17.0 -> 4.18.0
++- rsync 3.2.3 -> 3.2.5
++- rt-tests 2.3 -> 2.4
++- rust 1.59.0 -> 1.63.0
++- rust-llvm 1.59.0 -> 1.63.0
++- sbc 1.5 -> 2.0
++- seatd 0.6.4 -> 0.7.0
++- shaderc 2022.1 -> 2022.2
++- shadow 4.11.1 -> 4.12.1
++- shared-mime-info 2.1 -> 2.2
++- slang 2.3.2 -> 2.3.3
++- speex 1.2.0 -> 1.2.1
++- speexdsp 1.2.0 -> 1.2.1
++- spirv-headers 1.3.204.1 -> 1.3.216.0
++- spirv-tools 1.3.204.1 -> 1.3.216.0
++- sqlite3 3.38.5 -> 3.39.3
++- squashfs-tools 4.5 -> 4.5.1
++- strace 5.16 -> 5.19
++- stress-ng 0.13.12 -> 0.14.03
++- sudo 1.9.10 -> 1.9.11p3
++- sysklogd 2.3.0 -> 2.4.4
++- sysstat 12.4.5 -> 12.6.0
++- systemd 250.5 -> 251.4
++- systemd-boot 250.5 -> 251.4
++- systemtap 4.6 -> 4.7
++- systemtap-native 4.6 -> 4.7
++- systemtap-uprobes 4.6 -> 4.7
++- sysvinit 3.01 -> 3.04
++- tiff 4.3.0 -> 4.4.0
++- tzcode-native 2022c -> 2022d
++- tzdata 2022c -> 2022d
++- u-boot 2022.01 -> 2022.07
++- u-boot-tools 2022.01 -> 2022.07
++- util-linux 2.37.4 -> 2.38.1
++- util-linux-libuuid 2.37.4 -> 2.38.1
++- valgrind 3.18.1 -> 3.19.0
++- vim 9.0.0541 -> 9.0.0598
++- vim-tiny 9.0.0541 -> 9.0.0598
++- virglrenderer 0.9.1 -> 0.10.3
++- vte 0.66.2 -> 0.68.0
++- vulkan-headers 1.3.204.1 -> 1.3.216.0
++- vulkan-loader 1.3.204.1 -> 1.3.216.0
++- vulkan-samples git (28ca2dad83ce=E2=80=A6) -> git (74d45aace02d=E2=80=A6=
+)
++- vulkan-tools 1.3.204.1 -> 1.3.216.0
++- wayland 1.20.0 -> 1.21.0
++- wayland-protocols 1.25 -> 1.26
++- webkitgtk 2.36.5 -> 2.36.7
++- x264 r3039+gitX (5db6aa6cab1b=E2=80=A6) -> r3039+gitX (baee400fa9ce=E2=
+=80=A6)
++- xauth 1.1.1 -> 1.1.2
++- xcb-proto 1.14.1 -> 1.15.2
++- xf86-video-cirrus 1.5.3 -> 1.6.0
++- xkeyboard-config 2.35.1 -> 2.36
++- xmlto 0.0.28 -> 0.0.28+0.0.29+gitX
++- xorgproto 2021.5 -> 2022.2
++- zlib 1.2.11 -> 1.2.12
++
++
++
++Contributors to 4.1
++~~~~~~~~~~~~~~~~~~~
++
++Thanks to the following people who contributed to this release:
++
++- Aatir Manzur
++- Ahmed Hossam
++- Alejandro Hernandez Samaniego
++- Alexander Kanavin
++- Alexandre Belloni
++- Alex Kiernan
++- Alex Stewart
++- Andrei Gherzan
++- Andrej Valek
++- Andrey Konovalov
++- An=C3=ADbal Lim=C3=B3n
++- Anuj Mittal
++- Arkadiusz Drabczyk
++- Armin Kuster
++- Aryaman Gupta
++- Awais Belal
++- Beniamin Sandu
++- Bertrand Marquis
++- Bob Henz
++- Bruce Ashfield
++- Carlos Rafael Giani
++- Changhyeok Bae
++- Changqing Li
++- Chanho Park
++- Chen Qi
++- Christoph Lauer
++- Claudius Heine
++- Daiane Angolini
++- Daniel Gomez
++- Daniel McGregor
++- David Bagonyi
++- Davide Gardenal
++- Denys Dmytriyenko
++- Dmitry Baryshkov
++- Drew Moseley
++- Enrico Scholz
++- Ernst Sj=C3=B6strand
++- Etienne Cordonnier
++- Fabio Estevam
++- Federico Pellegrin
++- Felix Moessbauer
++- Ferry Toth
++- Florin Diaconescu
++- Gennaro Iorio
++- Grygorii Tertychnyi
++- Gunjan Gupta
++- Henning Schild
++- He Zhe
++- Hitendra Prajapati
++- Jack Mitchell
++- Jacob Kroon
++- Jan Kiszka
++- Jan Luebbe
++- Jan Vermaete
++- Jasper Orschulko
++- JeongBong Seo
++- Jeremy Puhlman
++- Jiaqing Zhao
++- Joerg Vehlow
++- Johan Korsnes
++- Johannes Schneider
++- John Edward Broadbent
++- Jon Mason
++- Jose Quaresma
++- Joshua Watt
++- Justin Bronder
++- Kai Kang
++- Kevin Hao
++- Khem Raj
++- Konrad Weihmann
++- Kory Maincent
++- Kristian Amlie
++- Lee Chee Yang
++- Lei Maohui
++- Leon Anavi
++- Luca Ceresoli
++- Lucas Stach
++- LUIS ENRIQUEZ
++- Marcel Ziswiler
++- Marius Kriegerowski
++- Mark Hatle
++- Markus Volk
++- Marta Rybczynska
++- Martin Beeger
++- Martin Jansa
++- Mateusz Marciniec
++- Mattias Jernberg
++- Matt Madison
++- Maxime Roussin-B=C3=A9langer
++- Michael Halstead
++- Michael Opdenacker
++- Mihai Lindner
++- Mikko Rapeli
++- Ming Liu
++- Mingli Yu
++- Muhammad Hamza
++- Naveen Saini
++- Neil Horman
++- Nick Potenski
++- Nicolas Dechesne
++- Niko Mauno
++- Ola x Nilsson
++- Otavio Salvador
++- Pascal Bach
++- Paul Eggleton
++- Paul Gortmaker
++- Paulo Neves
++- Pavel Zhukov
++- Peter Bergin
++- Peter Kjellerstedt
++- Peter Marko
++- Petr Vorel
++- Pgowda
++- Portia Stephens
++- Quentin Schulz
++- Rahul Kumar
++- Raju Kumar Pothuraju
++- Randy MacLeod
++- Raphael Teller
++- Rasmus Villemoes
++- Ricardo Salveti
++- Richard Purdie
++- Robert Joslyn
++- Robert Yang
++- Roland Hieber
++- Ross Burton
++- Rouven Czerwinski
++- Ruiqiang Hao
++- Russ Dill
++- Rusty Howell
++- Sakib Sajal
++- Samuli Piippo
++- Schmidt, Adriaan
++- Sean Anderson
++- Shruthi Ravichandran
++- Shubham Kulkarni
++- Simone Weiss
++- Sebastian Suesens
++- Stefan Herbrechtsmeier
++- Stefano Babic
++- Stefan Wiehler
++- Steve Sakoman
++- Sundeep KOKKONDA
++- Teoh Jay Shen
++- Thomas Epperson
++- Thomas Perrot
++- Thomas Roos
++- Tobias Schmidl
++- Tomasz Dziendzielski
++- Tom Hochstein
++- Tom Rini
++- Trevor Woerner
++- Ulrich =C3=96lmann
++- Vyacheslav Yurkov
++- Wang Mingyu
++- William A. Kennington III
++- Xiaobing Luo
++- Xu Huan
++- Yang Xu
++- Yi Zhao
++- Yogesh Tyagi
++- Yongxin Liu
++- Yue Tao
++- Yulong (Kevin) Liu
++- Zach Welch
++- Zheng Ruoqin
++- Zolt=C3=A1n B=C3=B6sz=C3=B6rm=C3=A9nyi
++
++
++
++Repositories / Downloads for 4.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+--=20
 1.8.3.1
 
 
