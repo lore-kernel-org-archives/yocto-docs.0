@@ -2,133 +2,117 @@ Return-Path: <paul.eggleton@linux.microsoft.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A722C3A5A1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A747C47089
 	for <webhook@archiver.kernel.org>; Mon, 10 Oct 2022 09:24:44 +0000 (UTC)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
- by mx.groups.io with SMTP id smtpd.web11.4250.1665393876282291339
+ by mx.groups.io with SMTP id smtpd.web09.4252.1665393876351190575
  for <docs@lists.yoctoproject.org>;
  Mon, 10 Oct 2022 02:24:36 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linux.microsoft.com header.s=default header.b=T72zQqtV;
+ dkim=pass header.i=@linux.microsoft.com header.s=default header.b=GpBg/7ZO;
  spf=pass (domain: linux.microsoft.com, ip: 13.77.154.182,
  mailfrom: pauleg@linux.microsoft.com)
 Received: by linux.microsoft.com (Postfix, from userid 1054)
-	id BF80D2034CAB; Mon, 10 Oct 2022 02:24:35 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BF80D2034CAB
+	id E356F20EC319; Mon, 10 Oct 2022 02:24:35 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E356F20EC319
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1665393875;
-	bh=ghOZfIWG07AkAkfZUbnfMNB/k9Oqn+C7BRpcSdrqhQk=;
-	h=From:To:Subject:Date:From;
-	b=T72zQqtVmjW+KZjUYTP9y5E2OCdJlWMwq+0McZqhwvLhl9cEw0Y3yG4OQkAeIZicr
-	 CzB8Hngix+B5NXHHX6pCB9lAWw+BeChce7kIpaJ4zKLo2Z0xjzxKAHfTSIkQdETPIZ
-	 shqsTxNj5pR2I/h3Ne0aX00513K1raNPsiQhw1pA=
+	bh=s3aY4qMTe4DZaA3qPetwcrXqHo0R8SHhinCH4SSCg1A=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=GpBg/7ZOeA3thDO0AV+1/CiEqZ8EmWhVEnKLNYZ60UMTtPxEOB813ygL5zVHk9beU
+	 YCWHs/3Ytup78gdY/WH4QWy10JlI8duuywvkMgcTLjjWmNAEAJutZ8y83Z+Sti5JGl
+	 MNmwJEKEZ1nRpusmUHostRvDjkPvNagHor2ttu8o=
 From: Paul Eggleton <paul.eggleton@linux.microsoft.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH 00/34] 4.1 release notes and related changes
-Date: Mon, 10 Oct 2022 02:23:46 -0700
-Message-Id: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
+Subject: [PATCH 03/34] ref-manual: expand documentation on image-buildinfo
+ class
+Date: Mon, 10 Oct 2022 02:23:49 -0700
+Message-Id: 
+ <168459f0d56b9c799885a9b241226bf630d68943.1665392835.git.paul.eggleton@linux.microsoft.com>
 X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
+References: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 10 Oct 2022 09:24:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3303
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3304
 
-Here are the release notes and migration guide for 4.1 (langdale) as well
-as a whole heap of additions of missing documentation. I may have got a
-little carried away, but almost all of it was necessary to be able to
-have links from the release notes / migration guide for more information.
+From: Paul Eggleton <paul.eggleton@microsoft.com>
 
-Some things that we still need to sort out before release:
- * Known issues (if any)
- * Download info
- * externalsrc class has been moved to classes-recipe/ but documentation
-   and comments in the class suggest using it globally (presumably to make
-   it easier to support a subset of recipes without having to bbappend all
-   of them.) We need to do one of the following:
-   A) move the class back to classes/ (easiest),
-   B) update the documentation and comments to remove the global usage,
-      and note in the migration guide, or
-   C) add it as a known issue and fix with A/B later.
- * New direct ESDK feature refers to "bitbake populate-sysroots" instead
-   of "bitbake build-sysroots" - Alex will be sending a patch soon.
+Expand the documentation on the image-buildinfo class, and add variable
+glossary entries for IMAGE_BUILDINFO_FILE, IMAGE_BUILDINFO_VARS and
+SDK_BUILDINFO_FILE (latter is new in 4.1).
 
-A few gaps that are still present (probably post-release at this point):
- * Rust support (classes, variables)
- * New layer setup functionality
+Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+---
+ documentation/ref-manual/classes.rst   | 18 ++++++++++++++++--
+ documentation/ref-manual/variables.rst | 16 ++++++++++++++++
+ 2 files changed, 32 insertions(+), 2 deletions(-)
 
-Let me know if I missed anything / messed anything up.
-
-
-The following changes since commit 42d3e26a0d04bc5951e640b471686f347dc9b74a:
-
-  ref-manual/faq.rst: update references to products built with OE / Yocto Project (2022-10-06 10:22:27 +0200)
-
-are available in the git repository at:
-
-  https://git.yoctoproject.org/poky-contrib paule/4.1-release
-  http://git.yoctoproject.org/cgit.cgi/poky-contrib/log/?h=paule/4.1-release
-
-Paul Eggleton (34):
-  migration-general: add section on using buildhistory
-  ref-manual: add DISABLE_STATIC
-  ref-manual: expand documentation on image-buildinfo class
-  ref-manual: add WATCHDOG_TIMEOUT to variable glossary
-  ref-manual: correct default for BUILDHISTORY_COMMIT
-  ref-manual: document new github-releases class
-  ref-manual: add a note to ssh-server-dropbear feature
-  ref-manual: sync supported distro list with code
-  ref-manual: update buildpaths QA check documentation
-  ref-manual: add UBOOT_MKIMAGE_SIGN
-  ref-manual: add DEV_PKG_DEPENDENCY
-  ref-manual: add SDK_TOOLCHAIN_LANGS
-  ref-manual: add pressure limit variable documentation
-  ref-manual: add pypi class
-  ref-manual: update pypi documentation for CVE_PRODUCT default in 4.1
-  ref-manual: add CVE_CHECK_SHOW_WARNINGS
-  ref-manual: add info on buildtools-make-tarball
-  ref-manual: add FIT_PAD_ALG
-  ref-manual: add CVE_DB_UPDATE_INTERVAL
-  ref-manual: add KERNEL_DEPLOY_DEPEND
-  ref-manual: add MOUNT_BASE variable
-  ref-manual: remove reference to testimage-auto class
-  Update documentation for classes split
-  ref-manual: complementary package installation recommends
-  ref-manual: remove reference to largefile in DISTRO_FEATURES
-  ref-manual: add missing features
-  ref-manual: add serial-autologin-root to IMAGE_FEATURES documentation
-  ref-manual: add previous overlayfs-etc variables
-  ref-manual: add OVERLAYFS_ETC_EXPOSE_LOWER
-  ref-manual: add WIRELESS_DAEMON
-  ref-manual: add section for create-spdx class
-  ref-manual: add overlayfs class variables
-  ref-manual: add OVERLAYFS_QA_SKIP
-  Add 4.1 migration guide & release notes
-
- documentation/dev-manual/common-tasks.rst          |   8 +-
- documentation/migration-guides/index.rst           |   1 +
- documentation/migration-guides/migration-1.5.rst   |   2 +-
- documentation/migration-guides/migration-2.6.rst   |   2 +-
- documentation/migration-guides/migration-4.1.rst   | 214 +++++++
- .../migration-guides/migration-general.rst         |  33 +
- documentation/migration-guides/release-4.1.rst     |   7 +
- .../migration-guides/release-notes-4.1.rst         | 687 +++++++++++++++++++++
- documentation/overview-manual/concepts.rst         |   6 +-
- documentation/ref-manual/classes.rst               |  96 ++-
- documentation/ref-manual/faq.rst                   |   2 +-
- documentation/ref-manual/features.rst              |  74 ++-
- documentation/ref-manual/qa-checks.rst             |  16 +
- documentation/ref-manual/release-process.rst       |   2 +-
- documentation/ref-manual/structure.rst             |   6 +-
- documentation/ref-manual/system-requirements.rst   |  28 +-
- documentation/ref-manual/tasks.rst                 |   4 +-
- documentation/ref-manual/variables.rst             | 303 +++++++--
- documentation/test-manual/intro.rst                |   4 +-
- 19 files changed, 1414 insertions(+), 81 deletions(-)
- create mode 100644 documentation/migration-guides/migration-4.1.rst
- create mode 100644 documentation/migration-guides/release-4.1.rst
- create mode 100644 documentation/migration-guides/release-notes-4.1.rst
-
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 5e49613..cc0d212 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -881,8 +881,22 @@ Yocto Project Overview and Concepts Manual.
+ ``image-buildinfo.bbclass``
+ ===========================
+ 
+-The ``image-buildinfo`` class writes information to the target
+-filesystem on ``/etc/build``.
++The ``image-buildinfo`` class writes a plain text file containing
++build information to the target filesystem at ``${sysconfdir}/buildinfo``
++by default (as specified by :term:`IMAGE_BUILDINFO_FILE`.
++This can be useful for manually determining the origin of any given
++image. It writes out two sections:
++
++1. `Build Configuration`: a list of variables and their values (specified
++   by :term:`IMAGE_BUILDINFO_VARS`, which defaults to :term:`DISTRO` and
++   :term:`DISTRO_VERSION`)
++
++2. `Layer Revisions`: the revisions of all of the layers used in the
++   build.
++
++Additionally, when building an SDK it will write the same contents
++to ``/buildinfo`` by default (as specified by
++:term:`SDK_BUILDINFO_FILE`).
+ 
+ .. _ref-classes-image_types:
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 8ea9834..8b0331c 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3053,6 +3053,17 @@ system and gives an overview of their function and contents.
+       material for Wic is located in the
+       ":doc:`/ref-manual/kickstart`" chapter.
+ 
++   :term:`IMAGE_BUILDINFO_FILE`
++      When using the :ref:`image-buildinfo <ref-classes-image-buildinfo>` class,
++      specifies the file in the image to write the build information into. The
++      default value is "``${sysconfdir}/buildinfo``".
++
++   :term:`IMAGE_BUILDINFO_VARS`
++      When using the :ref:`image-buildinfo <ref-classes-image-buildinfo>` class,
++      specifies the list of variables to include in the `Build Configuration`
++      section of the output file (as a space-separated list). Defaults to
++      ":term:`DISTRO` :term:`DISTRO_VERSION`".
++
+    :term:`IMAGE_CLASSES`
+       A list of classes that all images should inherit. You typically use
+       this variable to specify the list of classes that register the
+@@ -6627,6 +6638,11 @@ system and gives an overview of their function and contents.
+       The target architecture for the SDK. Typically, you do not directly
+       set this variable. Instead, use :term:`SDKMACHINE`.
+ 
++   :term:`SDK_BUILDINFO_FILE`
++      When using the :ref:`image-buildinfo <ref-classes-image-buildinfo>` class,
++      specifies the file in the SDK to write the build information into. The
++      default value is "``/buildinfo``".
++
+    :term:`SDK_CUSTOM_TEMPLATECONF`
+       When building the extensible SDK, if :term:`SDK_CUSTOM_TEMPLATECONF` is set to
+       "1" and a ``conf/templateconf.cfg`` file exists in the build directory
 -- 
 1.8.3.1
 
