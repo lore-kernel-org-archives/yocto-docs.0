@@ -1,71 +1,103 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89737C433F5
-	for <webhook@archiver.kernel.org>; Mon, 10 Oct 2022 10:36:14 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net
- [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web12.4747.1665398163740844135
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DA40C4332F
+	for <webhook@archiver.kernel.org>; Mon, 10 Oct 2022 13:55:25 +0000 (UTC)
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web10.6659.1665410119423408679
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Oct 2022 03:36:04 -0700
+ Mon, 10 Oct 2022 06:55:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LYG7t/Yq;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199,
- mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 33556FF804;
-	Mon, 10 Oct 2022 10:36:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1665398161;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oAxjm42D81/e2lu4L8EeEnf0WsXJgrIPLUg+V4AanNA=;
-	b=LYG7t/YqegzQBhRvt8Pf+gXlkTb6Ai014Euaoxz9P2zFHi8SU4j8VinvstCzUHHQfZxS2n
-	8trK24EKDBZ2hmTjk80vq1K/5kKg1RBdlZDzSCm02kcPS476SRvJf1xZb1V/jq8RQdO83C
-	lZtIRsIAeJv5URoRFAvkIDdKG/Fn8jq9ShqzBmCakeR1KJlwXdBDU5BDqrdN2xFH+1nj8d
-	/JVb4O3Zqd5LMUQXO80Z9ZJnn9CJbx+FgGS0jh339evmxSxRulNZFkEHeos0u8nRPnOTXK
-	LjAwJcq4WKNfoTt4QLG6oLovM26NLQIrjfnk+RMMxeIxYgwRdvRNfKWk71J+sA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH v2] ref-manual/variables.rst: clarify sentence
-Date: Mon, 10 Oct 2022 12:35:51 +0200
-Message-Id: <20221010103551.26455-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <171B885700B16EF1.3322@lists.yoctoproject.org>
-References: <171B885700B16EF1.3322@lists.yoctoproject.org>
+ dkim=fail reason="signature has expired" header.i=@axis.com
+ header.s=axis-central1 header.b=O0v/R8AS;
+ spf=pass (domain: axis.com, ip: 195.60.68.17,
+ mailfrom: peter.kjellerstedt@axis.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1665410119;
+  x=1696946119;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=Z5c9oTFovuwsFA6xpCLbKIWZhXjwsBgSyJIpmS4rAT4=;
+  b=O0v/R8AS1gABk2E2JPBhh+kTeMEbXTVN9R/rOuVUpznUzKUA2LnP8h9N
+   01JCNv4dIsgp7iefqBpmhp5N0Sj8ukStX9VvsDpUCTKanWDb1v9r7xJ68
+   +DiRZ9CBAMn0t6uArKDILRkZ22+MG+yIkyZd4bHDYFbZvXC/l5guXsEhh
+   3e6OOQu+3OsG9MP5PZtnO9kCSVh5uf8PfTwhd/lZmfaJ6Qf3HV0mDIVqF
+   Yp/OmwZHbwIh9lYt4mabS+JyE/o+TUFAEXVY2tmbEj+BVjGClZHzRM6Z7
+   FkWSpUssmdVQq7tE+qzNDMb9PYWFg+b/yJzwVRufbZ6zWzG7YmQ7LAP9V
+   Q==;
+From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+To: Paul Eggleton <paul.eggleton@linux.microsoft.com>,
+	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: RE: [docs] [PATCH 16/34] ref-manual: add CVE_CHECK_SHOW_WARNINGS
+Thread-Topic: [docs] [PATCH 16/34] ref-manual: add CVE_CHECK_SHOW_WARNINGS
+Thread-Index: AQHY3IoznvII62tLH0G57Ls5hI+2Z64HpmkA
+Date: Mon, 10 Oct 2022 13:55:17 +0000
+Message-ID: <7454912b76c0453aaed694d1a29e496e@axis.com>
+References: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
+ <e1277d4cbf71153fba9f56516864f23262c06ed1.1665392835.git.paul.eggleton@linux.microsoft.com>
+In-Reply-To: 
+ <e1277d4cbf71153fba9f56516864f23262c06ed1.1665392835.git.paul.eggleton@linux.microsoft.com>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.5.60]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 10 Oct 2022 10:36:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3338
+ <docs@lists.yoctoproject.org>; Mon, 10 Oct 2022 13:55:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3339
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> -----Original Message-----
+> From: docs@lists.yoctoproject.org <docs@lists.yoctoproject.org> On Behalf
+> Of Paul Eggleton
+> Sent: den 10 oktober 2022 11:24
+> To: docs@lists.yoctoproject.org
+> Subject: [docs] [PATCH 16/34] ref-manual: add CVE_CHECK_SHOW_WARNINGS
+>=20
+> From: Paul Eggleton <paul.eggleton@microsoft.com>
+>=20
+> New variable in 4.1.
+>=20
+> Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+> ---
+>  documentation/ref-manual/variables.rst | 7 +++++++
+>  1 file changed, 7 insertions(+)
+>=20
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index 885641a..c226b92 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -1508,6 +1508,13 @@ system and gives an overview of their function and
+> contents.
+>           # This is windows only issue.
+>           CVE_CHECK_IGNORE +=3D "CVE-2020-15523"
+>=20
+> +   :term:`CVE_CHECK_SHOW_WARNINGS`
+> +      Specifies whether or not the :ref:`pypi <ref-classes-cve-check>` c=
+lass
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/ref-manual/variables.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Change "pypi" to "cve-check".
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 1685a26776..89c9618469 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3546,7 +3546,7 @@ system and gives an overview of their function and contents.
- 
- 
-          Although you can use other settings, you might be required to
--         remove dependencies on or provide alternatives to components that
-+         remove dependencies on (or provide alternatives to) components that
-          are required to produce a functional system image.
- 
-    :term:`INCOMPATIBLE_LICENSE_EXCEPTIONS`
--- 
-2.34.1
+> +      should generate warning messages on the console when unpatched CVE=
+s
+> +      are found. The default is "1", but you may wish to set it to "0" i=
+f you
+> +      are already examining/processing the logs after the build has comp=
+leted
+> +      and thus do not need the warning messages.
+> +
+>     :term:`CVE_CHECK_SKIP_RECIPE`
+>        The list of package names (:term:`PN`) for which
+>        CVEs (Common Vulnerabilities and Exposures) are ignored.
+> --
+> 1.8.3.1
+
+//Peter
 
 
