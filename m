@@ -2,67 +2,106 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDEDFC433F5
-	for <webhook@archiver.kernel.org>; Tue, 11 Oct 2022 07:42:58 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
- [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web12.4614.1665474175777284100
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CF0EC433FE
+	for <webhook@archiver.kernel.org>; Tue, 11 Oct 2022 08:08:39 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net
+ [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web08.4723.1665475711748477937
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Oct 2022 00:42:56 -0700
+ Tue, 11 Oct 2022 01:08:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cUPOG2ZE;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198,
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=XA+mH9gA;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194,
  mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 310C5C0007;
-	Tue, 11 Oct 2022 07:42:52 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 8746040004;
+	Tue, 11 Oct 2022 08:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1665474173;
+	t=1665475709;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0kxoHndnhN1W7NJm1XtEKHW2fa792pCKfhED+Xla7uY=;
-	b=cUPOG2ZEdNhW9X+Wvodt29hsJ8okW5TAbLr2vQJ86Xq/xpZe9TtlIE6HpodkyI3bPEmkok
-	dFdPHBeR5FsytPqSetvK9ReJn9RVvC8rvwJ9/aPAqAjnvTTakl/M8MqU0Kh15RNZ8iX3If
-	nVQfvx5RYerao1lfbhjEADlVaMAEd0/XUI3Uxx/isM1C8h8iovnjWPrxfVQwkXNF5XI+RX
-	muL1ml6bbczV0zhnQtGTK35e4zab/FIZXoiMxC9Jebc8xP78AkrUbX0/T6gUUKO79TLstQ
-	CGFtmErJDgw4/tolS3dCWqAS+2X+fJy5aujRIt0gUbOA+2pnAbN4M9V16MAkRg==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] test-manual: fix typo in machine name
-Date: Tue, 11 Oct 2022 09:42:51 +0200
-Message-Id: <20221011074251.2852210-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4czF35652EOHE+BFwyZXoHpw8dFfxIPm1QUtn2U6TEw=;
+	b=XA+mH9gAHf/yxHGhIwyFrt81fRY5fXWPUx2XdYBeVFYSSRZVIZiPvCMKiN2POrLAr7vC8/
+	KTgWoWaotyBJ7ZGf+6vnaka6t7nq+o+3KfZfC8t7ZBxz8vuWNPWda7Ny4JxnAG8jytJno7
+	BiVaq3hCdR/9bYE5XgN44X/SCWCCVHjDxSQvi8XbRgERprKFRoWyOjgs/UspMNhPPLDeQz
+	QbCwJ7iUyLDG41DJDiwK42Q4AK0UnMHWKjEaEpZKHWxMfZZsKwHv1Kr71Jlu5018HLj4pa
+	orcXZVWLRwcjKsymMiRXtzbNB/as/imuagZO+HRQC9BgKDbcUu5yTv3j4OJhxQ==
+Message-ID: <32988c6f-4204-f716-8674-ef2fb3554a02@bootlin.com>
+Date: Tue, 11 Oct 2022 10:08:29 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 01/34] migration-general: add section on using
+ buildhistory
+To: Paul Eggleton <paul.eggleton@linux.microsoft.com>
+References: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
+ <6b333891e6614888bf6de5425db77e7ab856dabe.1665392835.git.paul.eggleton@linux.microsoft.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: 
+ <6b333891e6614888bf6de5425db77e7ab856dabe.1665392835.git.paul.eggleton@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 11 Oct 2022 07:42:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3345
+ <docs@lists.yoctoproject.org>; Tue, 11 Oct 2022 08:08:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3346
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Paul
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/test-manual/understand-autobuilder.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Many thanks for all these patches!
 
-diff --git a/documentation/test-manual/understand-autobuilder.rst b/documentation/test-manual/understand-autobuilder.rst
-index b6809ce7bd..c5e32cfe09 100644
---- a/documentation/test-manual/understand-autobuilder.rst
-+++ b/documentation/test-manual/understand-autobuilder.rst
-@@ -56,7 +56,7 @@ the "templates" section, which looks like::
- 
- Combining these two entries you can see that "qemux86-64" is a three step build where the
- ``bitbake BBTARGETS`` would be run, then ``bitbake SANITYTARGETS`` for each step; all for
--``MACHINE="qemx86-64"`` but with differing SDKMACHINE settings. In step
-+``MACHINE="qemux86-64"`` but with differing SDKMACHINE settings. In step
- 1 an extra variable is added to the ``auto.conf`` file to enable wic
- image generation.
- 
+On 10/10/22 11:23, Paul Eggleton wrote:
+> From: Paul Eggleton <paul.eggleton@microsoft.com>
+>
+> Add a short section recommending the use of buildhistory to compare
+> the build output before and after migration.
+>
+> Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+> ---
+>   .../migration-guides/migration-general.rst         | 33 ++++++++++++++++++++++
+>   1 file changed, 33 insertions(+)
+>
+> diff --git a/documentation/migration-guides/migration-general.rst b/documentation/migration-guides/migration-general.rst
+> index 9eecf69..8b22508 100644
+> --- a/documentation/migration-guides/migration-general.rst
+> +++ b/documentation/migration-guides/migration-general.rst
+> @@ -70,3 +70,36 @@ any new Yocto Project release.
+>        bitbake-layers show-appends
+>   
+>   
+> +.. _migration-general-buildhistory:
+> +
+> +- *Checking Image / SDK Changes*:
+> +
+> +   The :ref:`buildhistory <ref-classes-buildhistory>` class can be used
+> +   if you wish to check the impact of changes to images / SDKs across
+> +   the migration (e.g. added/removed packages, added/removed files, size
+> +   changes etc.). To do this, follow these steps:
+> +
+> +   1. Enable buildhistory before the migration
+> +
+> +   2. Run a pre-migration build
+> +
+> +   3. Capture the buildhistory output (as specified by :term:`BUILDHISTORY_DIR`)
+> +      and ensure it is preserved for subsequent builds. How you would do this
+> +      depends how you are running your builds - if you are doing this all on
+
+
+s/depends how/depends on how/?
+The rest looks good.
+Thanks again
+
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
