@@ -1,84 +1,68 @@
-Return-Path: <bluelightning@bluelightning.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 51126C433FE
-	for <webhook@archiver.kernel.org>; Mon, 10 Oct 2022 19:37:17 +0000 (UTC)
-Received: from mail-49-r22.ipv4.per01.ds.network
- (mail-49-r22.ipv4.per01.ds.network [27.123.26.153])
- by mx.groups.io with SMTP id smtpd.web10.2235.1665430628151544032
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDEDFC433F5
+	for <webhook@archiver.kernel.org>; Tue, 11 Oct 2022 07:42:58 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net
+ [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web12.4614.1665474175777284100
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Oct 2022 12:37:08 -0700
+ Tue, 11 Oct 2022 00:42:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="no key for verify" header.i=@softec.co.nz header.s=default
- header.b=qbzRxE/a;
- spf=none, err=permanent DNS error (domain: bluelightning.org,
- ip: 27.123.26.153, mailfrom: bluelightning@bluelightning.org)
-Received: from server-72-r70.ipv4.per01.ds.network (cp-fp06.syd02.ds.network
- [122.201.124.108])
-	by halon-out01.au.ds.network (Halon) with ESMTPS
-	id 83b837f9-48d3-11ed-89ae-f8db88ea9a09;
-	Tue, 11 Oct 2022 03:41:20 +0800 (AWST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=softec.co.nz; s=default; h=Content-Type:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Ljq8jkD5iOWybgd6lQCzwD7BFUVWVLLuwmuTy6dED3o=; b=qbzRxE/alUkzQudMfpKsyMenQO
-	RZjW84508nFq6oLcV2cIwixsZhxk8pVKd7k9csVL33XtgC+U/7ODVDmaofyEDaUO5QvkSMVPBH+ul
-	RVKWTf86R34cttnu/zeZNgjTyzgc/tlXJlhxXUdWJcFWuMYo1PaWdA/YyTgyco8g5KITa3OdS2HNr
-	uPq62Bq9eic98GOkXmdINnj6aD2XdxftgL9O0BCZiGrwrOavhky/JDyDdy5r9Jsv6syOeGoONnDi1
-	dw/Qu7CEeKIEDib5AXVLNLKGkUHRdzxqi/EdqB7Ec5J/QEQnPvI5yAGotAfxwmTPpEUVsO7CImuRK
-	YnnuG+aA==;
-Received: from [151.210.143.155] (port=49252 helo=linc.localnet)
-	by cp-fp06.syd02.ds.network with esmtpsa  (TLS1.2) tls
- TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <bluelightning@bluelightning.org>)
-	id 1ohyaF-0002ER-GT;
-	Tue, 11 Oct 2022 08:37:03 +1300
-From: Paul Eggleton <bluelightning@bluelightning.org>
-To: Joshua Lock <joshuagloe@gmail.com>
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 10/34] ref-manual: add UBOOT_MKIMAGE_SIGN
-Date: Tue, 11 Oct 2022 08:37:03 +1300
-Message-ID: <6131146.31r3eYUQgx@linc>
-In-Reply-To: <10891.1665397447952895356@lists.yoctoproject.org>
-References: 
- <dc2732f75dd21ca4fcf40c8ba78808209eb00274.1665392835.git.paul.eggleton@linux.microsoft.com>
- <10891.1665397447952895356@lists.yoctoproject.org>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cUPOG2ZE;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198,
+ mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 310C5C0007;
+	Tue, 11 Oct 2022 07:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1665474173;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=0kxoHndnhN1W7NJm1XtEKHW2fa792pCKfhED+Xla7uY=;
+	b=cUPOG2ZEdNhW9X+Wvodt29hsJ8okW5TAbLr2vQJ86Xq/xpZe9TtlIE6HpodkyI3bPEmkok
+	dFdPHBeR5FsytPqSetvK9ReJn9RVvC8rvwJ9/aPAqAjnvTTakl/M8MqU0Kh15RNZ8iX3If
+	nVQfvx5RYerao1lfbhjEADlVaMAEd0/XUI3Uxx/isM1C8h8iovnjWPrxfVQwkXNF5XI+RX
+	muL1ml6bbczV0zhnQtGTK35e4zab/FIZXoiMxC9Jebc8xP78AkrUbX0/T6gUUKO79TLstQ
+	CGFtmErJDgw4/tolS3dCWqAS+2X+fJy5aujRIt0gUbOA+2pnAbN4M9V16MAkRg==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] test-manual: fix typo in machine name
+Date: Tue, 11 Oct 2022 09:42:51 +0200
+Message-Id: <20221011074251.2852210-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
-X-AntiAbuse: This header was added to track abuse,
- please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cp-fp06.syd02.ds.network
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - bluelightning.org
-X-Get-Message-Sender-Via: cp-fp06.syd02.ds.network: authenticated_id:
- paul@softec.co.nz
-X-Authenticated-Sender: cp-fp06.syd02.ds.network: paul@softec.co.nz
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 10 Oct 2022 19:37:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3344
+ <docs@lists.yoctoproject.org>; Tue, 11 Oct 2022 07:42:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3345
 
-On Monday, 10 October 2022 23:24:07 NZDT Joshua Lock wrote:
-> Nit: commit title mentions UBOOT_MKIMAGE_SIGN , but the patch documents
-> UBOOT_MKIMAGE_KERNEL_TYPE
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Oops. Fixed on the branch.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/test-manual/understand-autobuilder.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks
-Paul
-
-
-
+diff --git a/documentation/test-manual/understand-autobuilder.rst b/documentation/test-manual/understand-autobuilder.rst
+index b6809ce7bd..c5e32cfe09 100644
+--- a/documentation/test-manual/understand-autobuilder.rst
++++ b/documentation/test-manual/understand-autobuilder.rst
+@@ -56,7 +56,7 @@ the "templates" section, which looks like::
+ 
+ Combining these two entries you can see that "qemux86-64" is a three step build where the
+ ``bitbake BBTARGETS`` would be run, then ``bitbake SANITYTARGETS`` for each step; all for
+-``MACHINE="qemx86-64"`` but with differing SDKMACHINE settings. In step
++``MACHINE="qemux86-64"`` but with differing SDKMACHINE settings. In step
+ 1 an extra variable is added to the ``auto.conf`` file to enable wic
+ image generation.
+ 
+-- 
+2.34.1
 
 
