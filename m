@@ -2,142 +2,69 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42EE8C4332F
-	for <webhook@archiver.kernel.org>; Wed, 12 Oct 2022 13:21:39 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web12.20243.1665580895242625818
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 675DBC433FE
+	for <webhook@archiver.kernel.org>; Wed, 12 Oct 2022 13:40:19 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web11.20303.1665582014492358133
  for <docs@lists.yoctoproject.org>;
- Wed, 12 Oct 2022 06:21:35 -0700
+ Wed, 12 Oct 2022 06:40:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=G81QRi+B;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ffudmXcn;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id F0D541BF20C;
-	Wed, 12 Oct 2022 13:21:32 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id DFB58240013;
+	Wed, 12 Oct 2022 13:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1665580893;
+	t=1665582012;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0WCiWdPulQC97V21KrtRCsyqtaZ3jcDplJFVKCxtwZ4=;
-	b=G81QRi+BAqHaEAuPIEbEG7etB2xkGakn3kzQzORO8Y2YkabyClT2vxFdHtnUHueUq5fBkG
-	8tuz9Bm031l/mklUQBDpt2yj2Y0QhmT+NnovILcofphBrjqqfa6S32Icsx0m+pcCxx4n2d
-	7LerMGFFYb46ZlrIOx0dUIn0jimV9fmMkMzEMpnLjpYLfZdk8tIUKNHc4iix6UHww2zPGo
-	mkppW/tvYHFpwDwraOzJp637tH4zpzAd1jy4w4gFozBxph1hC3ea8mOIMU2uJLgFIs0SSc
-	K16RHUyjMVYUHwNorHGpkIWptGKipHa25RAiBXMNakzCzN97B2QDOKvx7brFcA==
-From: michael.opdenacker@bootlin.com
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Paul Eggleton <paul.eggleton@microsoft.com>
-Subject: [PATCH v2] doc: bitbake-user-manual: expand description of BB_PRESSURE_MAX variables
-Date: Wed, 12 Oct 2022 15:21:20 +0200
-Message-Id: <20221012132120.2930882-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <171D53BFD3AD88D3.3472@lists.yoctoproject.org>
-References: <171D53BFD3AD88D3.3472@lists.yoctoproject.org>
+	bh=ID9G575B3XFkr6RKnmQWaZmR0nO+dVbdZ6zHmxP1AF0=;
+	b=ffudmXcnQAFT4tPVNBROytaQ7yvVxvVH8A91pE1UyShPdqxyJPoRWqYbqg4gN0mGdVEq9N
+	9s5ponShRExJm5q32oopooxz0vrEX0FI7ZpSl5QNNzaB+abiC/PBd/A6g8XpV8bpdMxal/
+	73zHxyWO+n686WMNMsuhyCNWE/hCs+l9QcRlJ22FKT6CdWcANvX2KORAoPO9HK5al1baEa
+	iDACXKqUXT11PH8azJP9bCeRqhGndEsmO9u6KAY1wyekZtktwuVuzl2iKznKWW0zaRGddF
+	E4B+aGysngYmAX+Bb6HFZx+bXXCwA24LW4exhmFuAu4l3MIlKXO5n9mioIt7Xg==
+Message-ID: <c7ea0d5e-225b-3cf4-f000-52e28adedff1@bootlin.com>
+Date: Wed, 12 Oct 2022 15:40:11 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Cc: Alexander Kanavin <alex@linutronix.de>, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] sdk-manual: correct the bitbake target for a
+ unified sysroot build
+Content-Language: en-US
+To: Alexander Kanavin <alex.kanavin@gmail.com>
+References: <20221010093026.1803479-1-alex@linutronix.de>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20221010093026.1803479-1-alex@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 12 Oct 2022 13:21:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3357
+ <docs@lists.yoctoproject.org>; Wed, 12 Oct 2022 13:40:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3358
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Alex,
 
-Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+On 10/10/22 11:30, Alexander Kanavin wrote:
+> Signed-off-by: Alexander Kanavin <alex@linutronix.de>
+> ---
+>   documentation/sdk-manual/extensible.rst | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
 
----
+Thanks for the patch!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+... and merged into "master-next"
 
-Changes in V2:
-- Specify which version of the Linux kernel introduced /proc/pressure
-  as suggested by Quentin Schulz
-  (https://kernelnewbies.org/Linux_4.20#Pressure_stall_information_for_better_overview_of_system_load)
----
- .../bitbake-user-manual-ref-variables.rst     | 60 +++++++++++++------
- 1 file changed, 43 insertions(+), 17 deletions(-)
+Michael.
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-index 725e6c2c..3522d2b7 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-@@ -484,29 +484,55 @@ overview of their function and contents.
-          for it to work.
- 
-    :term:`BB_PRESSURE_MAX_CPU`
--      The threshold for maximum CPU pressure before BitBake prevents the
--      scheduling of new tasks. Once the :term:`BB_PRESSURE_MAX_CPU` threshold
--      is exceeded, new tasks are not started until the pressure subsides to
--      below the threshold. If :term:`BB_PRESSURE_MAX_CPU` is not set, CPU
--      pressure is not monitored. A threshold can be set in ``conf/local.conf``
--      as::
-+      Specifies a maximum CPU pressure threshold, above which BitBake's
-+      scheduler will not start new tasks (providing there is at least
-+      one active task). If no value is set, CPU pressure is not
-+      monitored when starting tasks.
-+
-+      The pressure data is calculated based upon what Linux kernels since
-+      version 4.20 expose under ``/proc/pressure``. The threshold represents
-+      the difference in "total" pressure from the previous second. The
-+      minimum value is 1.0 (extremely slow builds) and the maximum is
-+      1000000 (a pressure value unlikely to ever be reached).
-+
-+      This threshold can be set in ``conf/local.conf`` as::
- 
-          BB_PRESSURE_MAX_CPU = "500"
- 
-    :term:`BB_PRESSURE_MAX_IO`
--      The threshold for maximum IO pressure experienced before BitBake
--      prevents the scheduling of new tasks. The IO pressure is regulated in the
--      same way as :term:`BB_PRESSURE_MAX_CPU`. At this point in time,
--      experiments show that IO pressure tends to be short-lived and regulating
--      just the CPU can help to reduce it.
-+      Specifies a maximum I/O pressure threshold, above which BitBake's
-+      scheduler will not start new tasks (providing there is at least
-+      one active task). If no value is set, I/O pressure is not
-+      monitored when starting tasks.
-+
-+      The pressure data is calculated based upon what Linux kernels since
-+      version 4.20 expose under ``/proc/pressure``. The threshold represents
-+      the difference in "total" pressure from the previous second. The
-+      minimum value is 1.0 (extremely slow builds) and the maximum is
-+      1000000 (a pressure value unlikely to ever be reached).
-+
-+      At this point in time, experiments show that IO pressure tends to
-+      be short-lived and regulating just the CPU with
-+      :term:`BB_PRESSURE_MAX_CPU` can help to reduce it.
- 
-    :term:`BB_PRESSURE_MAX_MEMORY`
--      The threshold for maximum memory pressure experienced before BitBake
--      prevents the scheduling of new tasks. The memory pressure is regulated in
--      the same way as :term:`BB_PRESSURE_MAX_CPU`. Note that any memory
--      pressure indicates that a system is being pushed beyond its capacity. At
--      this point in time, experiments show that memory pressure tends to be
--      short-lived and regulating just the CPU can help to reduce it.
-+
-+      Specifies a maximum memory pressure threshold, above which BitBake's
-+      scheduler will not start new tasks (providing there is at least
-+      one active task). If no value is set, memory pressure is not
-+      monitored when starting tasks.
-+
-+      The pressure data is calculated based upon what Linux kernels since
-+      version 4.20 expose under ``/proc/pressure``. The threshold represents
-+      the difference in "total" pressure from the previous second. The
-+      minimum value is 1.0 (extremely slow builds) and the maximum is
-+      1000000 (a pressure value unlikely to ever be reached).
-+
-+      Memory pressure is experienced when time is spent swapping,
-+      refaulting pages from the page cache or performing direct reclaim.
-+      This is why memory pressure is rarely seen, but setting this variable
-+      might be useful as a last resort to prevent OOM errors if they are
-+      occurring during builds.
- 
-    :term:`BB_RUNFMT`
-       Specifies the name of the executable script files (i.e. run files)
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
