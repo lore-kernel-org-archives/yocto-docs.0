@@ -2,74 +2,68 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 42A65C4332F
-	for <webhook@archiver.kernel.org>; Wed, 12 Oct 2022 08:50:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F1BC8C433FE
+	for <webhook@archiver.kernel.org>; Wed, 12 Oct 2022 09:51:17 +0000 (UTC)
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web09.18265.1665564644347412271
+ by mx.groups.io with SMTP id smtpd.web12.18523.1665568269688009360
  for <docs@lists.yoctoproject.org>;
- Wed, 12 Oct 2022 01:50:45 -0700
+ Wed, 12 Oct 2022 02:51:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=EHWsrz6o;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=fLu15Qt0;
  spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id A2B72C0014;
-	Wed, 12 Oct 2022 08:50:41 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 36C8DC0009;
+	Wed, 12 Oct 2022 09:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1665564642;
+	t=1665568267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZJ+MyeRGYof+ULk/H4D0eDb3V331w0aSkXA49Wi59y4=;
-	b=EHWsrz6oCaogW1iRkT+UFwUBsmFbyKDFM0HEhyR4zaIy6uG9cQz0Htd1Wh1aKT+sBg5igc
-	tCoYcw0JrDZDSZ/ahBRXUpW+Dggwr1RohUL+L2RUquYTw+bDeKNc2hMWphsXU2sOff0KGI
-	PUsuRzmmsSbGdqntpfjpuEQaEUu3O9zxzDD+hIChcJQyMjAwWBifAhC2pZw187z0f9wvAS
-	UrjVrbE7hMosDDkhdSQqwyKSqTETAfJdh2Nu0CSbBO+lb2yzxPywGvkC8Xmjj28VndEPOi
-	nzIsh5rI+c3Fz5YUeKXdX/hIn6d8cKKBtKb0uvRTSnLV3mL/QKWhhFHcLkDg2A==
-Message-ID: <dda71c0b-808c-5f10-9471-e32ee1646b73@bootlin.com>
-Date: Wed, 12 Oct 2022 10:50:40 +0200
+	bh=acMe+4O/zQD8Hhi1zhusZoAo27nNCoT7IoUvOpiL144=;
+	b=fLu15Qt044zfe/DJnowaC/VioydMVjDYzl3b7dIv6+XinGC37Ev6NrO8ErEV2nDpc/xiJ7
+	Ns0FTxHPe5uD4ipnJ5yOn7rvmP1BjWrYux7XcoBYYGBs9F+aUiybKmWUCMQ/zXFKYXrq0b
+	juwQJl10E7qFvFc0wegXnHAshmTC/CkcCnYyFq40v3HQVVa+XAX6tfuacHQgZ2InupCckh
+	Bjgz/HjMfV1X6M6ojOxmApsY0qTSllwK7fVRsgdKHmt7Mxx4lY9+9Ryq6BnI15wmL/52NS
+	sbkpEIL6y5Au553DrSW/uaL8tBfLyTTsoK34hi94kCTb38zUJy5j14C1iajjSA==
+Message-ID: <5b424ec2-56b6-835f-0f74-8f93bf30b374@bootlin.com>
+Date: Wed, 12 Oct 2022 11:51:06 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.2
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 34/34] Add 4.1 migration guide & release notes
+Subject: Re: [docs] [PATCH 17/34] ref-manual: add info on
+ buildtools-make-tarball
 Content-Language: en-US
 To: Paul Eggleton <paul.eggleton@linux.microsoft.com>
 References: <cover.1665392835.git.paul.eggleton@linux.microsoft.com>
- <eab587c8b9e2b1afc2eed83159e9eb728cdccbbb.1665392836.git.paul.eggleton@linux.microsoft.com>
- <171D1A9DBE3157A3.17458@lists.yoctoproject.org>
- <171D4544CA71D54E.3472@lists.yoctoproject.org>
+ <ca1f1cd15307cd97fa4ccba564a7c8ba7f4f29e6.1665392835.git.paul.eggleton@linux.microsoft.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <171D4544CA71D54E.3472@lists.yoctoproject.org>
+In-Reply-To: <ca1f1cd15307cd97fa4ccba564a7c8ba7f4f29e6.1665392835.git.paul.eggleton@linux.microsoft.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 12 Oct 2022 08:50:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3352
+ <docs@lists.yoctoproject.org>; Wed, 12 Oct 2022 09:51:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3353
 
 
-On 10/12/22 10:33, Michael Opdenacker via lists.yoctoproject.org wrote:
+On 10/10/22 11:24, Paul Eggleton wrote:
+> From: Paul Eggleton <paul.eggleton@microsoft.com>
 >
-> As you already updated your branch for most of the items, I'll take 
-> care of merging your changes into master-next right away.
-> This way, I won't make further changes which will conflict with yours.
+> This is not perfect, but at least covers the use case and the new
+> tarball that we are providing. Note that the --make-only option to
+> install-buildtools is a currently pending patch.
+>
+> Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
 
 
-Done: https://git.yoctoproject.org/yocto-docs/log/?h=master-next
-I just didn't pick the change that was adding Ubuntu 21.10 to the 
-supported distros (we could discuss this further) and the documentation 
-of the pressure variables, which I intend to submit for the BitBake User 
-Manual.
+I'm also holding this patch, and will update the commit message when 
+your patch to OE-core has been accepted.
 
-To contributors on this list: given the number of patches in yocto-docs' 
-master-next, it's best if your patches are based on this branch. This 
-always makes my life easier, though conflicts are rare.
-
-Thanks again
-Cheers
+Thanks!
 Michael.
 
 -- 
