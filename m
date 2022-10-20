@@ -2,31 +2,31 @@ Return-Path: <ito@lineo.co.jp>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9698C433FE
-	for <webhook@archiver.kernel.org>; Thu, 20 Oct 2022 05:01:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DC857C4332F
+	for <webhook@archiver.kernel.org>; Thu, 20 Oct 2022 05:30:23 +0000 (UTC)
 Received: from mail.lineo.co.jp (mail.lineo.co.jp [203.141.200.203])
- by mx.groups.io with SMTP id smtpd.web09.6211.1666242061298248413
+ by mx.groups.io with SMTP id smtpd.web08.6279.1666243819321159171
  for <docs@lists.yoctoproject.org>;
- Wed, 19 Oct 2022 22:01:01 -0700
+ Wed, 19 Oct 2022 22:30:19 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=pass (domain: lineo.co.jp, ip: 203.141.200.203, mailfrom: ito@lineo.co.jp)
 Received: from Lineou-U20.lineo.co.jp (vpn1.lineo.co.jp [203.141.200.204])
-	by mail.lineo.co.jp (Postfix) with ESMTPS id 43A95809F0D59;
-	Thu, 20 Oct 2022 14:00:59 +0900 (JST)
+	by mail.lineo.co.jp (Postfix) with ESMTPS id 7F3DC8033F74A;
+	Thu, 20 Oct 2022 14:30:17 +0900 (JST)
 From: Takayasu Ito <ito@lineo.co.jp>
 To: docs@lists.yoctoproject.org
 Cc: Takayasu Ito <ito@lineo.co.jp>
-Subject: [docs][PATCH v3] remove bitbake-layers subcommand parameter
-Date: Thu, 20 Oct 2022 14:00:57 +0900
-Message-Id: <20221020050057.33282-1-ito@lineo.co.jp>
+Subject: [docs][PATCH v4] release-notes-4.1.rst remove bitbake-layers subcommand argument
+Date: Thu, 20 Oct 2022 14:30:14 +0900
+Message-Id: <20221020053014.33484-1-ito@lineo.co.jp>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 20 Oct 2022 05:01:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3380
+ <docs@lists.yoctoproject.org>; Thu, 20 Oct 2022 05:30:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3381
 
 Signed-off-by: Takayasu Ito <ito@lineo.co.jp>
 ---
