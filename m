@@ -1,58 +1,70 @@
-Return-Path: <ito@lineo.co.jp>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E891C433FE
-	for <webhook@archiver.kernel.org>; Thu, 20 Oct 2022 06:52:54 +0000 (UTC)
-Received: from mail.lineo.co.jp (mail.lineo.co.jp [203.141.200.203])
- by mx.groups.io with SMTP id smtpd.web10.6786.1666248773220811223
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1723C4332F
+	for <webhook@archiver.kernel.org>; Thu, 20 Oct 2022 06:56:54 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.6733.1666249010287119738
  for <docs@lists.yoctoproject.org>;
- Wed, 19 Oct 2022 23:52:53 -0700
+ Wed, 19 Oct 2022 23:56:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: lineo.co.jp, ip: 203.141.200.203, mailfrom: ito@lineo.co.jp)
-Received: from Lineou-U20.lineo.co.jp (vpn1.lineo.co.jp [203.141.200.204])
-	by mail.lineo.co.jp (Postfix) with ESMTPS id 67E9F8041701F;
-	Thu, 20 Oct 2022 15:52:49 +0900 (JST)
-From: ito@lineo.co.jp
-To: docs@lists.yoctoproject.org
-Cc: Takayasu Ito <ito@lineo.co.jp>
-Subject: [docs][PATCH v6] release-notes-4.1.rst remove bitbake-layers subcommand argument
-Date: Thu, 20 Oct 2022 15:52:46 +0900
-Message-Id: <20221020065246.33834-1-ito@lineo.co.jp>
-X-Mailer: git-send-email 2.25.1
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=d3sTvHUI;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 054A51BF204;
+	Thu, 20 Oct 2022 06:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1666249008;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tmleuk8uRSNAPYlzQflL1eMkdsmNuAbXYdNIZLPuk6g=;
+	b=d3sTvHUIDSVWxMC9BhouBfZPuWNQF3IQ/wlcZf7CkhuanrYI482thmrUOZehVmuR+lFPzE
+	Z89shmYMz0yLDjajKZSaFU7b9b3W+zvDE3IZf1mWpjgbDFdFZIJ/Yo+4xY2HdVtGvWM7Pp
+	zRDB2KnVkOO2s6XSXsOx+JoQQIcX4YlMT6LqVKQN3CNP77pSeSp7hVn0+IBbqnUBwE6hbV
+	PTUOZmfmoGYEXyniZf7Rbl7cfY+JZIPWa2ic0iEQecNcKRX8Uy1etAOd8pU5S+1pr6gDJv
+	I86M1YJUXRPRSfP8QT1WI86FfgkgmbGBEOtukNKwaiqwnx5yfjLJD2FHH3mX1A==
+Message-ID: <f82c7294-ed68-9de7-c9a0-cbac7c09213b@bootlin.com>
+Date: Thu, 20 Oct 2022 08:56:47 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs][PATCH v6] release-notes-4.1.rst remove bitbake-layers
+ subcommand argument
+Content-Language: en-US
+To: Takayasu Ito <ito@lineo.co.jp>
+References: <20221020065246.33834-1-ito@lineo.co.jp>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20221020065246.33834-1-ito@lineo.co.jp>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 20 Oct 2022 06:52:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3385
+ <docs@lists.yoctoproject.org>; Thu, 20 Oct 2022 06:56:54 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3386
 
-From: Takayasu Ito <ito@lineo.co.jp>
 
-Signed-off-by: Takayasu Ito <ito@lineo.co.jp>
----
- documentation/migration-guides/release-notes-4.1.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 10/20/22 08:52, Takayasu Ito wrote:
+> From: Takayasu Ito <ito@lineo.co.jp>
+>
+> Signed-off-by: Takayasu Ito <ito@lineo.co.jp>
+> ---
+>   documentation/migration-guides/release-notes-4.1.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/migration-guides/release-notes-4.1.rst b/docum=
-entation/migration-guides/release-notes-4.1.rst
-index 0c552bf1a..a2d4b3d6c 100644
---- a/documentation/migration-guides/release-notes-4.1.rst
-+++ b/documentation/migration-guides/release-notes-4.1.rst
-@@ -18,7 +18,7 @@ New Features / Enhancements in 4.1
-=20
-   - New ``scripts/oe-setup-layers`` standalone script to restore the lay=
-er
-     configuration from a json file
--  - New ``bitbake-layers create-layers-setup destdir`` command to save t=
-he
-+  - New ``bitbake-layers create-layers-setup`` command to save the
-     layer configuration to a json file
-   - New ``bitbake-layers save-build-conf`` command to save the active bu=
-ild
-     configuration as a template into a layer
---=20
-2.25.1
+
+Great, the patch applies correctly now.
+Thanks
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
