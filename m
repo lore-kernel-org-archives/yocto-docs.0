@@ -2,10 +2,10 @@ Return-Path: <mikko.rapeli@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5C7FFA3741
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B92A3C38A2D
 	for <webhook@archiver.kernel.org>; Wed, 26 Oct 2022 13:12:23 +0000 (UTC)
 Received: from mail.kapsi.fi (mail.kapsi.fi [91.232.154.25])
- by mx.groups.io with SMTP id smtpd.web10.7305.1666789937019180280
+ by mx.groups.io with SMTP id smtpd.web10.7304.1666789936545073230
  for <docs@lists.yoctoproject.org>;
  Wed, 26 Oct 2022 06:12:17 -0700
 Authentication-Results: mx.groups.io;
@@ -14,16 +14,16 @@ Received: from kapsi.fi ([2001:67c:1be8::11] helo=lakka.kapsi.fi)
 	by mail.kapsi.fi with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1ongCc-00CFsd-ST; Wed, 26 Oct 2022 16:12:15 +0300
+	id 1ongCb-00CFsR-Os; Wed, 26 Oct 2022 16:12:14 +0300
 Received: from mcfrisk by lakka.kapsi.fi with local (Exim 4.94.2)
 	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1ongCc-00FLhS-DK; Wed, 26 Oct 2022 16:12:14 +0300
+	id 1ongCb-00FLcG-EW; Wed, 26 Oct 2022 16:12:13 +0300
 From: mikko.rapeli@linaro.org
 To: docs@lists.yoctoproject.org
 Cc: Mikko Rapeli <mikko.rapeli@linaro.org>
-Subject: [PATCH 3/4] common-tasks.rst: add regular updates and CVE scans to security best practices
-Date: Wed, 26 Oct 2022 16:12:06 +0300
-Message-Id: <20221026131207.3655961-4-mikko.rapeli@linaro.org>
+Subject: [PATCH 1/4] ref-manual/variables.rst: add documentation for CVE_VERSION
+Date: Wed, 26 Oct 2022 16:12:04 +0300
+Message-Id: <20221026131207.3655961-2-mikko.rapeli@linaro.org>
 X-Mailer: git-send-email 2.26.1
 In-Reply-To: <20221026131207.3655961-1-mikko.rapeli@linaro.org>
 References: <20221026131207.3655961-1-mikko.rapeli@linaro.org>
@@ -50,7 +50,7 @@ X-Rspam-Report: Action: no action
  Symbol: FROM_NEQ_ENVFROM(0.00)
  Symbol: BAYES_HAM(-3.00)
  Symbol: RCVD_COUNT_TWO(0.00)
- Message-ID: 20221026131207.3655961-4-mikko.rapeli@linaro.org
+ Message-ID: 20221026131207.3655961-2-mikko.rapeli@linaro.org
 X-SA-Exim-Connect-IP: 2001:67c:1be8::11
 X-SA-Exim-Mail-From: mcfrisk@lakka.kapsi.fi
 X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
@@ -58,36 +58,40 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 26 Oct 2022 13:12:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3408
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3406
 
 From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-Regular security scans and updates to fix issues and updates from
-upstream maintainers are best practices.
+Related to cve-check.bbclass.
 
 Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
 ---
- documentation/dev-manual/common-tasks.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
+ documentation/ref-manual/variables.rst | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 53e7686633..dff7e1fd5c 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -6231,6 +6231,13 @@ more secure:
-    vulnerabilities discovered in the future. This consideration
-    especially applies when your device is network-enabled.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 71e8c272a7..467b9678f1 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -1508,6 +1508,18 @@ system and gives an overview of their function and contents.
  
-+-  Regularly scan and apply fixes for CVE security issues affecting
-+   all SW components in the product, see ":ref:`dev-manual/common-tasks:checking for vulnerabilities`".
+          CVE_PRODUCT = "vendor:package"
+ 
++   :term:`CVE_VERSION`
++      In a recipe, defines the version used to match the recipe version
++      against the version in the `NIST CVE database <https://nvd.nist.gov/>`__
++      when usign :ref:`cve-check <ref-classes-cve-check>`.
 +
-+-  Regularly update your version of Poky and OE-Core from their upstream
-+   developers, e.g. to apply updates and security fixes from stable
-+   and LTS branches.
++      The default is ${:term:`PV`} but if recipes use custom version numbers
++      which do not map to upstream SW component release versions and the versions
++      used in the CVE database, then this variable can be used to set the
++      version number for :ref:`cve-check <ref-classes-cve-check>`. Example::
 +
- -  Ensure you remove or disable debugging functionality before producing
-    the final image. For information on how to do this, see the
-    ":ref:`dev-manual/common-tasks:considerations specific to the openembedded build system`"
++          CVE_VERSION = "2.39"
++
+    :term:`CVSDIR`
+       The directory in which files checked out under the CVS system are
+       stored.
 -- 
 2.35.1
 
