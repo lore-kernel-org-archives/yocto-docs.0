@@ -1,98 +1,85 @@
-Return-Path: <mikko.rapeli@linaro.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B92A3C38A2D
-	for <webhook@archiver.kernel.org>; Wed, 26 Oct 2022 13:12:23 +0000 (UTC)
-Received: from mail.kapsi.fi (mail.kapsi.fi [91.232.154.25])
- by mx.groups.io with SMTP id smtpd.web10.7304.1666789936545073230
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5FA1C38A2D
+	for <webhook@archiver.kernel.org>; Wed, 26 Oct 2022 13:47:33 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web12.7597.1666792044486316609
  for <docs@lists.yoctoproject.org>;
- Wed, 26 Oct 2022 06:12:17 -0700
+ Wed, 26 Oct 2022 06:47:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: lakka.kapsi.fi, ip: 91.232.154.25, mailfrom: mcfrisk@lakka.kapsi.fi)
-Received: from kapsi.fi ([2001:67c:1be8::11] helo=lakka.kapsi.fi)
-	by mail.kapsi.fi with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1ongCb-00CFsR-Os; Wed, 26 Oct 2022 16:12:14 +0300
-Received: from mcfrisk by lakka.kapsi.fi with local (Exim 4.94.2)
-	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1ongCb-00FLcG-EW; Wed, 26 Oct 2022 16:12:13 +0300
-From: mikko.rapeli@linaro.org
-To: docs@lists.yoctoproject.org
-Cc: Mikko Rapeli <mikko.rapeli@linaro.org>
-Subject: [PATCH 1/4] ref-manual/variables.rst: add documentation for CVE_VERSION
-Date: Wed, 26 Oct 2022 16:12:04 +0300
-Message-Id: <20221026131207.3655961-2-mikko.rapeli@linaro.org>
-X-Mailer: git-send-email 2.26.1
-In-Reply-To: <20221026131207.3655961-1-mikko.rapeli@linaro.org>
-References: <20221026131207.3655961-1-mikko.rapeli@linaro.org>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nSds+IcB;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 674A1FF80B;
+	Wed, 26 Oct 2022 13:47:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1666792042;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=s1gqVa+bkoHKndcFPKMShbOzYAV4MRTsD3+HQTIppt4=;
+	b=nSds+IcBnVIMu0NnW0nU7u1jv2THAby/yLCaJ7MMhcz2BDUWAMgsDaABpi4yhDQ0jSk7FG
+	+rD5dpLAUzOtYrSMOoZtjAZhd75pl3K6hS0+Rh4EaV/vMstYuNxTKcLGSqOjB4zFKc2pfU
+	IsvNPpBV4Hl8+AI6kCi092q5c9xFwHcYF1TRfJCr3CQ1F0Z6uttianEDE7A8U8G/LmA43U
+	iRugdqm47x11AlPIVg8ZM/bs0ZmVnW6NAIqT4nEKSjw59MpjEHUWJqNR34CDfC70cMlxYZ
+	/I30/XlzG/S2jRm8Nn/pnrxL04lAxWS6+glSCZ4Au4YgIyhW7VSASkNr4Opnqg==
+Message-ID: <4c95a562-4f31-0418-1b46-cc60dc6f81a1@bootlin.com>
+Date: Wed, 26 Oct 2022 15:47:20 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspam-Score: -1.2 (-)
-X-Rspam-Report: Action: no action
- Symbol: RCVD_TLS_LAST(0.00)
- Symbol: ARC_NA(0.00)
- Symbol: DMARC_POLICY_SOFTFAIL(0.10)
- Symbol: TO_DN_SOME(0.00)
- Symbol: R_MISSING_CHARSET(0.50)
- Symbol: TO_MATCH_ENVRCPT_ALL(0.00)
- Symbol: MIME_GOOD(-0.10)
- Symbol: RCPT_COUNT_TWO(0.00)
- Symbol: FROM_NO_DN(0.00)
- Symbol: MID_CONTAINS_FROM(1.00)
- Symbol: NEURAL_HAM(-0.00)
- Symbol: R_SPF_NA(0.00)
- Symbol: FORGED_SENDER(0.30)
- Symbol: R_DKIM_NA(0.00)
- Symbol: MIME_TRACE(0.00)
- Symbol: ASN(0.00)
- Symbol: FROM_NEQ_ENVFROM(0.00)
- Symbol: BAYES_HAM(-3.00)
- Symbol: RCVD_COUNT_TWO(0.00)
- Message-ID: 20221026131207.3655961-2-mikko.rapeli@linaro.org
-X-SA-Exim-Connect-IP: 2001:67c:1be8::11
-X-SA-Exim-Mail-From: mcfrisk@lakka.kapsi.fi
-X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 0/4] Improve CVE check and patching documentation
+To: Mikko Rapeli <mikko.rapeli@linaro.org>
+References: <20221026131207.3655961-1-mikko.rapeli@linaro.org>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20221026131207.3655961-1-mikko.rapeli@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 26 Oct 2022 13:12:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3406
+ <docs@lists.yoctoproject.org>; Wed, 26 Oct 2022 13:47:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3411
 
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
+Hi Mikko
 
-Related to cve-check.bbclass.
+On 10/26/22 15:12, Mikko Rapeli wrote:
+> From: Mikko Rapeli <mikko.rapeli@linaro.org>
+>
+> I think detecting and fixing CVE security issues in yocto based distros
+> is quite important so improve the documentation around it. I've been
+> using cve-check.bbclass for a long time and these details hopefully
+> make it easier for others to start using it as well.
+>
+> Mikko Rapeli (4):
+>    ref-manual/variables.rst: add documentation for CVE_VERSION
+>    classes.rst: improve documentation for cve-check.bbclass
+>    common-tasks.rst: add regular updates and CVE scans to security best
+>      practices
+>    common-tasks.rst: refactor and improve "Checking for Vulnerabilities"
+>      section
+>
+>   documentation/dev-manual/common-tasks.rst | 183 +++++++++++++++++-----
+>   documentation/ref-manual/classes.rst      |  52 +++++-
+>   documentation/ref-manual/variables.rst    |  12 ++
+>   3 files changed, 204 insertions(+), 43 deletions(-)
 
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
----
- documentation/ref-manual/variables.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 71e8c272a7..467b9678f1 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1508,6 +1508,18 @@ system and gives an overview of their function and contents.
- 
-          CVE_PRODUCT = "vendor:package"
- 
-+   :term:`CVE_VERSION`
-+      In a recipe, defines the version used to match the recipe version
-+      against the version in the `NIST CVE database <https://nvd.nist.gov/>`__
-+      when usign :ref:`cve-check <ref-classes-cve-check>`.
-+
-+      The default is ${:term:`PV`} but if recipes use custom version numbers
-+      which do not map to upstream SW component release versions and the versions
-+      used in the CVE database, then this variable can be used to set the
-+      version number for :ref:`cve-check <ref-classes-cve-check>`. Example::
-+
-+          CVE_VERSION = "2.39"
-+
-    :term:`CVSDIR`
-       The directory in which files checked out under the CVS system are
-       stored.
+Many thanks for all these. They are much appreciated, and I also found 
+that the CVE management document wasn't sufficient.
+My reviews are following (when there is something to say).
+Cheers
+Michael.
+
 -- 
-2.35.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
