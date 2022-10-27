@@ -2,71 +2,76 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37DCFC67871
-	for <webhook@archiver.kernel.org>; Thu, 27 Oct 2022 08:16:58 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web09.4149.1666858617210602762
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B5FBFA3742
+	for <webhook@archiver.kernel.org>; Thu, 27 Oct 2022 11:39:59 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web08.5347.1666870788646797863
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Oct 2022 01:16:57 -0700
+ Thu, 27 Oct 2022 04:39:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Th98tUo7;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ju/NUCVd;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id DA7701BF20B;
-	Thu, 27 Oct 2022 08:16:54 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5D29DC0002;
+	Thu, 27 Oct 2022 11:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1666858615;
+	t=1666870786;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=fg80ijDp1Rh+f2wjiZ49AVB2Nq98EdSTE82B9WtTrcs=;
-	b=Th98tUo7XfBhDXyzKnpzGLuY/2ZanzI987W1kV0QuAyMKhqlwzx778FDxIixEkOpe9D3uY
-	hA8U4LfNLQ7j42kajQSkMqV3gh2trLOuoW8iVZt2gfLM4FbEtqIGNXUMkp1LbajZInKIvf
-	s/p4soozEGMLp1W+3Ulz/s66III6FaqgtpFEjPtMNXJaLTvGir/Q5WIiAuL3gAoscHAqy3
-	dLisQuHk6Mmo5WwINXESTWyEu0dlSGrWYrsLIRJS5fr7j3+SEvqYyeohKgtqsNVzk8s2Iy
-	7fgN8I7IeEGKqV50iaypdBZYrCbwlguZIwD/AiAQvvuqYOFVs3cRlJlo4kPEtQ==
-Message-ID: <c6b589e3-1c12-e1db-200c-d0c3ff1972b9@bootlin.com>
-Date: Thu, 27 Oct 2022 10:16:54 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mTBseegrJLgMbzJNKCkYNg0DYn7WGKypXybVOI1VMTs=;
+	b=ju/NUCVdtJ1wX7BqJU/J/nqtMbns2irZm/nVutS96FsL8a52dQn8IXVBdVWTIjr+OH0ojM
+	16ZTaCiFNxWSFGVTSDkRecGyxRquDjqkwA5FSZX2Z6qtEqnQk56xBrSNmu7zcZi24vmMqj
+	aBE+vF8lCOb6Hu7Adc8KrpDn3YqjOJv/HKZVBv5Yw7XPdcGJQeo9GnM5DiomUs/BBvloVD
+	42/nu2+2EylPwK7X4prPqwjsEV2sA2SLNFDwLLyKdzM/Ba0DvU2l01MXF3a1iay+PjKd3n
+	1e3/CPME+qWLvK95MO9j5DH3IpdCZAl18XmDS2ZXxWD2wKHD5uyYvgRROItzHQ==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH 1/3] Documentation/README: formalize guidelines for external link syntax
+Date: Thu, 27 Oct 2022 13:39:39 +0200
+Message-Id: <20221027113941.34972-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Cc: docs@lists.yoctoproject.org, rybczynska@gmail.com
-Subject: Re: [docs] [PATCH v2 4/4] dev-manual: common-tasks.rst: refactor and
- improve "Checking for Vulnerabilities" section
-Content-Language: en-US
-To: Mikko Rapeli <mikko.rapeli@linaro.org>
-References: <1721A288D2BAB036.492@lists.yoctoproject.org>
- <20221026160713.2068570-1-michael.opdenacker@bootlin.com>
- <20221026160713.2068570-5-michael.opdenacker@bootlin.com>
- <Y1orJ5GKSJUCbf/z@nuoska>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <Y1orJ5GKSJUCbf/z@nuoska>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Oct 2022 08:16:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3424
+ <docs@lists.yoctoproject.org>; Thu, 27 Oct 2022 11:39:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3425
 
-Hi Mikko
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 10/27/22 08:54, Mikko Rapeli wrote:
-> Now it looks good to me. Thanks for the review and new version!
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/README | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-
-Thanks for reviewing your text once again!
-I fixed all the new issues you reported.
-
-Cheers and thanks again for these very useful improvements to the 
-documentation.
-Michael.
-
+diff --git a/documentation/README b/documentation/README
+index 6333f0496a..c27ed86a33 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -275,6 +275,19 @@ websites.
+ More information can be found here:
+ https://sublime-and-sphinx-guide.readthedocs.io/en/latest/references.html.
+ 
++For external links, we use this syntax:
++`link text <link URL>`__
++
++instead of:
++`link text <link URL>`_
++
++Both syntaxes work, but the latter also creates a "link text" reference
++target which could conflict with other references with the same name.
++So, only use this variant when you wish to make multiple references
++to this link, reusing only the target name.
++
++See https://stackoverflow.com/questions/27420317/restructured-text-rst-http-links-underscore-vs-use
++
+ Anchor (<#link>) links are forbidden as they are not checked by Sphinx during
+ the build and may be broken without knowing about it.
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
