@@ -2,36 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9A99FA3741
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D55E6FA3746
 	for <webhook@archiver.kernel.org>; Fri, 28 Oct 2022 10:19:55 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web09.4667.1666952389111243451
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.4619.1666952389542883847
  for <docs@lists.yoctoproject.org>;
- Fri, 28 Oct 2022 03:19:49 -0700
+ Fri, 28 Oct 2022 03:19:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cyGMy16v;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=AyM7Di1g;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 68B5F40006;
-	Fri, 28 Oct 2022 10:19:46 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id B5A242000C;
+	Fri, 28 Oct 2022 10:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1666952386;
+	t=1666952387;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FBwUGVlgHKH66tlh4Bz9LKRl0yvIeYkPvK4QM4DLd4U=;
-	b=cyGMy16vOhdB+XfH0IJjb+nk+XyF4miwJ1J0WbUfX7X4k5k6zk/K5HV3062y9VFcDdodNq
-	i4Z01SW/AQHFHxaNHKRK4XBNDIL8Wv2WQD8VPAXCT40EZIVW5scyoOgYT5NE2+DdT6A2wr
-	LwQromdvvW0EQNl3H7Dmxh9pYHdYmEeUdFln1MA13beHArq7VTa9OMgpjC6wsT9w13c8eT
-	kJTelHJ9N8qel1mnliZ5WoDx7FY+QkJOTfobTtocr2bLVTLIjjByZw6Hpd81j8VEuCNjYy
-	tYZbrIY10l57wZ4RgCLA/dXjJPVvREZTzIC6q4kwANpcd7vgKCOLZoW2TfSVqg==
+	bh=TU7qDzZW5Cvkq2K/xqGc9TgZih3HK9r3IGfv/lTQOvs=;
+	b=AyM7Di1gWCPHakWinkcW7fGCgnRM4kzUerbPH4iArf9Gfw2jGSdXj8xXNYgtkFJdoro8rz
+	doAD9cbtoeL7Ey/plD8vdnIZUJVNpIFVJ2Az6ikF64BddeLcWG2HAa/mr6JKadh/rJCZ3i
+	LcOtX6olPLOLUUIr152ujyBPe878C9ZwXHv83rSLPfKAL2ZyGaCLa/FV27k4SQCUYlgLfu
+	+PD+hdss80+lSx6qwiOaAlvAwnA/50/SpyNC5MYwGkm5coi9yQ5KO/HJsanrSoJNVFN9g/
+	s58yviUoAnE8N+f0jwvEdrgz8588/jfpocTEY9HRu5XioMumR0/A43+6BtLmRQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 1/5] ref-manual: terms.rst: add SBOM and SPDX terms
-Date: Fri, 28 Oct 2022 12:19:35 +0200
-Message-Id: <20221028101939.93195-2-michael.opdenacker@bootlin.com>
+Subject: [PATCH 2/5] ref-manual: variables.rst: document spdx-create class variables
+Date: Fri, 28 Oct 2022 12:19:36 +0200
+Message-Id: <20221028101939.93195-3-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20221028101939.93195-1-michael.opdenacker@bootlin.com>
 References: <20221028101939.93195-1-michael.opdenacker@bootlin.com>
@@ -41,59 +41,105 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 28 Oct 2022 10:19:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3432
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3433
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/terms.rst | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ documentation/ref-manual/variables.rst | 79 ++++++++++++++++++++++++++
+ 1 file changed, 79 insertions(+)
 
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index 1e3f718a8f..5aedd08aae 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -323,6 +323,23 @@ universal, the list includes them just in case:
-       :term:`build host<Build Host>` and other components, that can
-       work on specific hardware.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 0f9df3ac20..14a20711f5 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7290,6 +7290,85 @@ system and gives an overview of their function and contents.
  
-+   :term:`SBOM`
-+      This term means *Software Bill of Materials*. When you distribute
-+      software, it offers a description of all the components you used,
-+      their corresponding licenses, their dependencies, the changes that were
-+      applied and the known vulnerabilities that were fixed.
-+
-+      This can be used by the recipients of the software to assess
-+      their exposure to license compliance and security vulnerability issues.
-+
-+      See the `Software Supply Chain <https://en.wikipedia.org/wiki/Software_supply_chain>`__
-+      article on Wikipedia for more details.
-+
-+      The OpenEmbedded Build System can generate such documentation for your
-+      project, in :term:`SPDX` format, based on all the metadata it used to
-+      build the software images. See the ":ref:`dev-manual/common-tasks:creating
-+      a software bill of materials`" section of the Development Tasks manual.
-+
-    :term:`Source Directory`
-      This term refers to the directory structure
-      created as a result of creating a local copy of the ``poky`` Git
-@@ -383,6 +400,15 @@ universal, the list includes them just in case:
-      ":ref:`overview-manual/development-environment:repositories, tags, and branches`"
-      section in the Yocto Project Overview and Concepts Manual.
+          You can specify only a single URL in :term:`SOURCE_MIRROR_URL`.
  
-+   :term:`SPDX`
-+      This term means *Software Package Data Exchange*, and is used as a open
-+      standard for providing a *Software Bill of Materials* (:term:`SBOM`).
-+      This standard is developed through a `Linux Foundation project
-+      <https://spdx.dev/>`__ and is used by the OpenEmbedded Build System to
-+      provide an :term:`SBOM` associated to each a software image.
++   :term:`SPDX_ARCHIVE_PACKAGED`
++      This option allows to add to :term:`SPDX` output compressed archives
++      of the files in the generated target packages.
 +
-+      For details, see Wikipedia's `SPDX page <https://en.wikipedia.org/wiki/Software_Package_Data_Exchange>`__.
++      Such archives are available in
++      ``tmp/deploy/spdx/MACHINE/packages/packagename.tar.zst``
++      under the :term:`Build Directory`.
 +
-    :term:`Sysroot`
-       When cross-compiling, the target file system may be differently laid
-       out and contain different things compared to the host system. The concept
++      Enable this option as follows::
++
++         SPDX_ARCHIVE_PACKAGED = "1"
++
++      According to our tests on release 4.1 "langdale", building
++      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling this
++      option multiplied the size of the ``tmp/deploy/spdx`` directory by a
++      factor of 13 (+1.6 GiB for this image), compared to just using the
++      :ref:`create-spdx <ref-classes-create-spdx>` class with no option.
++
++      Note that this option doesn't increase the size of :term:`SPDX`
++      files in ``tmp/deploy/images/MACHINE``.
++
++   :term:`SPDX_ARCHIVE_SOURCES`
++      This option allows to add to :term:`SPDX` output compressed archives
++      of the sources for packages installed on the target. It currently
++      only works when :term:`SPDX_INCLUDE_SOURCES` is set.
++
++      Such archives are available in
++      ``tmp/deploy/spdx/MACHINE/recipes/recipe-packagename.tar.zst``
++      under the :term:`Build Directory`.
++
++      Enable this option as follows::
++
++         SPDX_INCLUDE_SOURCES = "1"
++         SPDX_ARCHIVE_SOURCES = "1"
++
++      According to our tests on release 4.1 "langdale", building
++      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
++      these options multiplied the size of the ``tmp/deploy/spdx``
++      directory by a factor of 11 (+1.4 GiB for this image),
++      compared to just using the :ref:`create-spdx <ref-classes-create-spdx>`
++      class with no option.
++
++      Note that using this option only marginally increases the size
++      of the :term:`SPDX` output in ``tmp/deploy/images/MACHINE/``
++      (+ 0.07\% with the tested image), compared to just enabling
++      :term:`SPDX_INCLUDE_SOURCES`.
++
++   :term:`SPDX_INCLUDE_SOURCES`
++      This option allows to add a description of the source files used to build
++      the host tools and the target packages, to the ``spdx.json`` files in
++      ``tmp/deploy/spdx/MACHINE/recipes/`` under the :term:`Build Directory`.
++      As a consequence, the ``spdx.json`` files under the ``by-namespace`` and
++      ``packages`` subdirectories in ``tmp/deploy/spdx/MACHINE`` are also
++      modified to include references to such source file descriptions.
++
++      Enable this option as follows::
++
++         SPDX_INCLUDE_SOURCES = "1"
++
++      According to our tests on release 4.1 "langdale", building
++      ``core-image-minimal`` for the ``qemux86-64`` machine, enabling
++      this option multiplied the total size of the ``tmp/deploy/spdx``
++      directory by a factor of 3  (+291 MiB for this image),
++      and the size of the ``IMAGE-MACHINE.spdx.tar.zst`` in
++      ``tmp/deploy/images/MACHINE`` by a factor of 130 (+15 MiB for this
++      image), compared to just using the
++      :ref:`create-spdx <ref-classes-create-spdx>` class with no option.
++
++   :term:`SPDX_PRETTY`
++      This option makes the SPDX output more human-readable, using
++      identation and newlines, instead of the default output in a
++      single line::
++
++         SPDX_PRETTY = "1"
++
++      The generated SPDX files are approximately 20% bigger, but
++      this option is recommended if you want to inspect the SPDX
++      output files with a text editor.
++
+    :term:`SPDXLICENSEMAP`
+       Maps commonly used license names to their SPDX counterparts found in
+       ``meta/files/common-licenses/``. For the default :term:`SPDXLICENSEMAP`
 -- 
 2.34.1
 
