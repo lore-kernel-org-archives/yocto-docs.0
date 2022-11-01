@@ -1,139 +1,132 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <u.oelmann@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6534ECAAA1
-	for <webhook@archiver.kernel.org>; Mon, 31 Oct 2022 13:21:31 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web08.9089.1667222485029202186
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5D58C433FE
+	for <webhook@archiver.kernel.org>; Tue,  1 Nov 2022 13:33:40 +0000 (UTC)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+ by mx.groups.io with SMTP id smtpd.web08.6335.1667309617294052177
  for <docs@lists.yoctoproject.org>;
- Mon, 31 Oct 2022 06:21:25 -0700
+ Tue, 01 Nov 2022 06:33:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OetCOCnU;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id D82011BF208;
-	Mon, 31 Oct 2022 13:21:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1667222483;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=e5OzPncuKn57iYxCmA1fVN2lYybNT8jskd+7UHvO91M=;
-	b=OetCOCnUa9g6RpHX2VEcr9+M2/Ht+15pzxvONvQNuVFAJV4lbKNLQILQAW4wBh/HzeIBgu
-	XFiz7HqfhoTXdRLmWAsFTBKVjWDSB3WIoD61qS4cBGRbQF+epyLmDeOkntT3IvM4JOh23K
-	53cxFVQJouKoZN36ae3RC19EBtMbITC8f0SuMfVK1YgmVVgJQ3+Z1KK34g1hdfTy4eqxUE
-	7OIJNzyZQ9JfL1EkCy4DjLRU5m8haT5rxyaSKcodpcjAPWZ/BLg/wDGfW2P8jp2MRIEPUy
-	8mhGB1hPVfVsGnRI5v/Jx4zjC5RIKHZlfOvDDBzNVe5OpgKPXD1xuiZNnsmz8Q==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: schnitzeltony@gmail.com,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] manuals: document "mime-xdg" class and MIME_XDG_PACKAGES
-Date: Mon, 31 Oct 2022 14:21:13 +0100
-Message-Id: <20221031132113.745643-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: uol@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <uol@pengutronix.de>)
+	id 1oprOY-0006Xk-Cq; Tue, 01 Nov 2022 14:33:34 +0100
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1oprOY-001gdg-GS; Tue, 01 Nov 2022 14:33:33 +0100
+Received: from uol by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1oprOW-00CPji-Lw; Tue, 01 Nov 2022 14:33:32 +0100
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Yocto Project Documentation <docs@lists.yoctoproject.org>
+Cc: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Subject: [PATCH] dev-manual: common-tasks.rst: fix typos
+Date: Tue,  1 Nov 2022 14:33:30 +0100
+Message-Id: <20221101133330.2958821-1-u.oelmann@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: uol@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 31 Oct 2022 13:21:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3448
+ <docs@lists.yoctoproject.org>; Tue, 01 Nov 2022 13:33:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3450
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
 ---
- .../migration-guides/migration-3.1.rst        |  2 +-
- documentation/ref-manual/classes.rst          | 21 +++++++++++++++++++
- documentation/ref-manual/qa-checks.rst        |  8 +++----
- documentation/ref-manual/variables.rst        |  7 +++++++
- 4 files changed, 33 insertions(+), 5 deletions(-)
+ documentation/dev-manual/common-tasks.rst | 26 +++++++++++------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/documentation/migration-guides/migration-3.1.rst b/documentation/migration-guides/migration-3.1.rst
-index a6106eefae..7fdd3b88a6 100644
---- a/documentation/migration-guides/migration-3.1.rst
-+++ b/documentation/migration-guides/migration-3.1.rst
-@@ -238,7 +238,7 @@ Warnings will now be shown at :ref:`ref-tasks-package_qa` time in the following
- circumstances:
+diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
+index c747c0deacb8..d99d32793755 100644
+--- a/documentation/dev-manual/common-tasks.rst
++++ b/documentation/dev-manual/common-tasks.rst
+@@ -11518,7 +11518,7 @@ applied and that the issue needs to be investigated. ``Ignored`` means that afte
+ analysis, it has been deemed to ignore the issue as it for example affects
+ the software component on a different operating system platform.
  
- -  A recipe installs ``.desktop`` files containing ``MimeType`` keys but
--   does not inherit the new ``mime-xdg`` class
-+   does not inherit the new :ref:`mime-xdg <ref-classes-mime-xdg>` class
+-After build with CVE check enabled, reports for each compiled source recipe will be
++After a build with CVE check enabled, reports for each compiled source recipe will be
+ found in ``build/tmp/deploy/cve``.
  
- -  A recipe installs ``.xml`` files into ``${datadir}/mime/packages``
-    but does not inherit the :ref:`mime <ref-classes-mime>` class
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 3b33783c58..afe483e2a9 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1586,6 +1586,27 @@ The :ref:`mime <ref-classes-mime>` class generates the proper post-install and p
- These scriptlets call ``update-mime-database`` to add the MIME types to
- the shared database.
+ For example the CVE check report for the ``flex-native`` recipe looks like::
+@@ -11567,36 +11567,36 @@ product name when querying the CVE database. If this mapping contains false posi
+ some reported CVEs are not for the software component in question, or false negatives like
+ some CVEs are not found to impact the recipe when they should, then the problems can be
+ in the recipe name to CVE product mapping. These mapping issues can be fixed by setting
+-the :term:`CVE_PRODUCT` variable inside the recipe. This defines the name of software component in the
++the :term:`CVE_PRODUCT` variable inside the recipe. This defines the name of the software component in the
+ upstream `NIST CVE database <https://nvd.nist.gov/>`__.
  
-+.. _ref-classes-mime-xdg:
-+
-+``mime-xdg.bbclass``
-+====================
-+
-+The :ref:`mime-xdg <ref-classes-mime-xdg>` class generates the proper
-+post-install and post-remove (postinst/postrm) scriptlets for packages
-+that install ``.desktop`` files containing ``MimeType`` entries.
-+These scriptlets call ``update-desktop-database`` to add the MIME types
-+to the database of MIME types handled by desktop files.
-+
-+Thanks to this class, when users open a file through a file browser
-+on recently created images, they don't have to choose the application
-+to open the file from the pool of all known applications, even the ones
-+that cannot open the selected file.
-+
-+If you have recipes installing their ``.desktop`` files as absolute
-+symbolic links, the detection of such files cannot be done by the current
-+implementation of this class. In this case, you have to add the corresponding
-+package names to the :term:`MIME_XDG_PACKAGES` variable.
-+
- .. _ref-classes-mirrors:
+ The variable supports using vendor and product names like this::
  
- ``mirrors.bbclass``
-diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
-index fb31dc16f9..3947dcfc17 100644
---- a/documentation/ref-manual/qa-checks.rst
-+++ b/documentation/ref-manual/qa-checks.rst
-@@ -590,10 +590,10 @@ Errors and Warnings
- - ``package contains desktop file with key 'MimeType' but does not inhert mime-xdg: <packagename> path '<file>' [mime-xdg]``
+    CVE_PRODUCT = "flex_project:flex"
  
-     The specified package contains a .desktop file with a 'MimeType' key
--    present, but does not inherit the mime-xdg class that is required in
--    order for that to be activated. Either add ``inherit mime`` to the
--    recipe or remove the files at the :ref:`ref-tasks-install` step if they are not
--    needed.
-+    present, but does not inherit the :ref:`mime-xdg <ref-classes-mime-xdg>`
-+    class that is required in order for that to be activated. Either add
-+    ``inherit mime`` to the recipe or remove the files at the
-+    :ref:`ref-tasks-install` step if they are not needed.
+-In this example from the vendor name used in CVE database is ``flex_project`` and
++In this example the vendor name used in the CVE database is ``flex_project`` and the
+ product is ``flex``. With this setting the ``flex`` recipe only maps to this specific
+ product and not products from other vendors with same name ``flex``.
  
+-Similary, when the recipe version :term:`PV` is not compatible with software versions used by
++Similarly, when the recipe version :term:`PV` is not compatible with software versions used by
+ the upstream software component releases and the CVE database, these can be fixed using
+-:term:`CVE_VERSION` variable.
++the :term:`CVE_VERSION` variable.
  
- .. _qa-check-src-uri-bad:
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index dc6eccb314..4150464161 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4894,6 +4894,13 @@ system and gives an overview of their function and contents.
-       The revision currently checked out for the OpenEmbedded-Core layer (path
-       determined by :term:`COREBASE`).
+-Note that if the CVE entries in NVD databse contain bugs or have missing or incomplete
++Note that if the CVE entries in the NVD database contain bugs or have missing or incomplete
+ information, it is recommended to fix the information there directly instead of working
+-around the issues for a possibly long time in Poky and OE-Core side recipes. Feedback to
+-NVD about CVEs entries can be provided through the `NVD contact form <https://nvd.nist.gov/info/contact-form>`__.
++around the issues possibly for a long time in Poky and OE-Core side recipes. Feedback to
++NVD about CVE entries can be provided through the `NVD contact form <https://nvd.nist.gov/info/contact-form>`__.
  
-+   :term:`MIME_XDG_PACKAGES`
-+      The current implementation of the :ref:`mime-xdg <ref-classes-mime-xdg>`
-+      class cannot detect ``.desktop`` files installed through absolute
-+      symbolic links. Use this setting to make the class create post-install
-+      and post-remove scripts for these packages anyway, to invoke the
-+      ``update-destop-database`` command.
-+
-    :term:`MIRRORS`
-       Specifies additional paths from which the OpenEmbedded build system
-       gets source code. When the build system searches for source code, it
+ Fixing vulnerabilities in recipes
+ ---------------------------------
+ 
+ If a CVE security issue impacts a software component, it can be fixed by updating to a newer
+ version of the software component or by applying a patch. For Poky and OE-Core master branches, updating
+-to newer software component release with fixes is the best option, but patches can be applied
++to a newer software component release with fixes is the best option, but patches can be applied
+ if releases are not yet available.
+ 
+ For stable branches, it is preferred to apply patches for the issues. For some software
+-components minor version updates can also applied if they are backwards compatible.
++components minor version updates can also be applied if they are backwards compatible.
+ 
+ Here is an example of fixing CVE security issues with patch files,
+ an example from the :oe_layerindex:`ffmpeg recipe</layerindex/recipe/47350>`::
+@@ -11610,8 +11610,8 @@ an example from the :oe_layerindex:`ffmpeg recipe</layerindex/recipe/47350>`::
+               file://fix-CVE-2020-22033-CVE-2020-22019.patch \
+               file://fix-CVE-2021-33815.patch \
+ 
+-A good practice is to include the CVE identifier in both patch file name
+-and inside the patch file commit message use the format::
++A good practice is to include the CVE identifier in both the patch file name
++and inside the patch file commit message using the format::
+ 
+    CVE: CVE-2020-22033
+ 
+@@ -11619,7 +11619,7 @@ CVE checker will then capture this information and change the CVE status to ``Pa
+ in the generated reports.
+ 
+ If analysis shows that the CVE issue does not impact the recipe due to configuration, platform,
+-version or other reasons, the CVE can be marked as ``Ignored`` using :term:`CVE_CHECK_IGNORE` variable.
++version or other reasons, the CVE can be marked as ``Ignored`` using the :term:`CVE_CHECK_IGNORE` variable.
+ As mentioned previously, if data in the CVE database is wrong, it is recommend to fix those
+ issues in the CVE database directly.
+ 
 -- 
-2.34.1
+2.30.2
 
 
