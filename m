@@ -2,62 +2,83 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37A10C4332F
-	for <webhook@archiver.kernel.org>; Tue,  1 Nov 2022 15:20:21 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.7755.1667316019405222724
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FF0EC4332F
+	for <webhook@archiver.kernel.org>; Tue,  1 Nov 2022 15:42:31 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.7997.1667317340493528702
  for <docs@lists.yoctoproject.org>;
- Tue, 01 Nov 2022 08:20:20 -0700
+ Tue, 01 Nov 2022 08:42:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Q4eDclwr;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=U980y8VD;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 8B3E240005;
-	Tue,  1 Nov 2022 15:20:15 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id D717A1BF20A;
+	Tue,  1 Nov 2022 15:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1667316017;
+	t=1667317338;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4R/rxzEz7zuBOf+/eqY7kLNZuSm6ImuIr6hiAPsS8Ug=;
-	b=Q4eDclwr4pA5r65BedUs3mdqw5pMADyA3Bx8E6eGKgA0UeOEHTWuKJX0vIh7edIWrsQ4mu
-	A/LHzsG0Dq5EbHOzeUshB4tMsX1Y5XFj4pXtCKB46KOBUG/vej5QL3TOLmqHUMn8WkdXeS
-	wnvOQMij3TEoJSX/QOVBautJ/Vlb695day12IOFZHfYtKwsycQMbpmaGZuqQuOrURMUv4/
-	rFVUoAUg9TCGm+8bce8qx23zI8zWbAjyH2F0EZLu/mJttwhf9yZAz+uKOdJj4qUaBT7LRc
-	aRVMQifqwx5mPlnIRmSF1eHkJepBEKYO9f/kOXpRu6f2vHfb0/8qoFOVxQzikw==
-Message-ID: <ef643a2f-5c08-2a6c-4d80-7e889769ef8e@bootlin.com>
-Date: Tue, 1 Nov 2022 16:20:14 +0100
+	bh=5+StNNHMa4YQ7gdeLSQVfSjx/ATywjwG+RtOJpnh8b8=;
+	b=U980y8VDX1lBjnnLb8zPRPQffcWx+hCylDvK1n8xmA5CyRl4iYTYhXBXixbZ8DujOCic65
+	H3JJNFWvf/oya+Oe0u0TVFmfFMLXTML2Wbgo0fn+abS9YEp/GFN2O/daxKlPnY0Dj9SznF
+	xcy7vP4LttSLP0fHH2Oeww4awROb+cL8Pk6E6fdR4h+5WWGFsbaB8UTAWwCcMa1H/eZwmM
+	/AGucNGtVTOswkENqrWfTk7HwAdbTyUA2ndZlIsJsel+xaknyn009B3k76a2aD1BEhS8C/
+	9FKLwTFZixeGUCpvXB5qcOXU4F44R/Bp2hfsgyXnHbUiBxoOLXdI78J/fZqk+A==
+Message-ID: <898edb5f-3e7c-9763-c84f-6b59fb5daef6@bootlin.com>
+Date: Tue, 1 Nov 2022 16:42:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.2.2
-Subject: Re: [docs] [PATCH] dev-manual: common-tasks.rst: fix typos
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] Yocto Tasks Detailed Diagram Proposal
 Content-Language: en-US
-To: =?UTF-8?Q?Ulrich_=c3=96lmann?= <u.oelmann@pengutronix.de>,
- Yocto Project Documentation <docs@lists.yoctoproject.org>
-References: <20221101133330.2958821-1-u.oelmann@pengutronix.de>
+To: Bel Hadj Salem Talel <talel.hajsalem@sofia-technologies.com>
+References: <3u6w.1667236384580014962.DpiY@lists.yoctoproject.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20221101133330.2958821-1-u.oelmann@pengutronix.de>
+In-Reply-To: <3u6w.1667236384580014962.DpiY@lists.yoctoproject.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 01 Nov 2022 15:20:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3451
+ <docs@lists.yoctoproject.org>; Tue, 01 Nov 2022 15:42:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3452
 
-Hi Ulrich
+Hi Talel
 
-On 11/1/22 14:33, Ulrich Ölmann wrote:
-> Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
+On 10/31/22 18:13, Bel Hadj Salem Talel wrote:
+> Hello All,
+>
+> I did create a detailed diagram about Yocto Tasks and where they 
+> happen exactly in tmp, downloads and other directories in the build 
+> folder.
+>
+> Please find attached the SVG diagram.
+>
+> If it can be added to Yocto documentation it would be great, so any 
+> comments/reviews are welcome.
+>
+> This will setup the way for me to add more detailed diragrams about 
+> other Yocto topics.
 
 
-Agreeing with all of these. Many thanks for these fixes!
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-... and merged into master-next.
+Many thanks for proposing this contribution!
+Before we find a place in the manual where we could use it, I've got an 
+issue with the text labels, which Google docs turned into shapes when 
+you exported to SVG, removing the possibility to edit them in the future.
 
-Thanks again!
+Ultimately, I'd like this diagram to be maintained in SVG format, so 
+that everyone can easily maintain them, typically using Inkscape.
+
+Maybe we can manually edit this SVG document to fix this, replacing the 
+shapes by real text, which could be rather quick.
+
+List members, any feedback about the content itself?
+
+Thanks again
 Michael.
 
 -- 
