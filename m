@@ -1,71 +1,76 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <glscene2010@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C5F7EC4167D
-	for <webhook@archiver.kernel.org>; Thu,  3 Nov 2022 15:16:03 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.12.1667488558024037341
- for <docs@lists.yoctoproject.org>;
- Thu, 03 Nov 2022 08:15:58 -0700
-Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=S3EydKmd;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 2E7C91C000D;
-	Thu,  3 Nov 2022 15:15:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1667488555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=G+1N9a04ZNX78L4ReSXJzznn2fCiI8Ldze30C2CtcQw=;
-	b=S3EydKmdANP08HJE+b3H0YmrOMY3v4uCElaF0jRgZjatJkmh8KhCHQU0cBxyi51xlRFtsB
-	q4P2yiFjqmK0Yk5imbjM3oV4lAFBXkKkQrxXAz8MoGczOEYbmmwgotEwbW8QxcfcpTdnJ5
-	lE/2rqWsC0DG7Z2Xk2AaHraxTai1q4L+1udiIQ/LDL/ZLBb7LbBiTVoEH/C+Jsx6FkZjTg
-	2YgA8OHjNO/FxDYOIyIy3t8PFFr4IkRVBgWghTSaXxGZoIOCXuS32IUYwNhtyhApwNmt7p
-	riaopXs5eU4aq/Wr0trFUMuffwKrjM+YF+xjNhxu9ouUwLLkJruBpf4IVlFBfg==
-Message-ID: <6a5eb2f2-0760-f1b1-e6fc-ca630c7a8319@bootlin.com>
-Date: Thu, 3 Nov 2022 16:15:54 +0100
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC100C433FE
+	for <webhook@archiver.kernel.org>; Fri,  4 Nov 2022 03:23:17 +0000 (UTC)
+Subject: Re: YP Quick Build: errors/annoyances: ubu-22.04 docker container
+To: docs@lists.yoctoproject.org
+From: glscene2010@gmail.com
+X-Originating-Location: Seongnam-si, Gyeonggi-do, KR (211.250.88.134)
+X-Originating-Platform: Linux Firefox 106
+User-Agent: GROUPS.IO Web Poster
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2 1/1] manuals: remove xterm requirements
-To: Paulo Neves <ptsneves@gmail.com>
-References: <20221103091159.1607775-1-ptsneves@gmail.com>
-Content-Language: en-US
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20221103091159.1607775-1-ptsneves@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Thu, 03 Nov 2022 20:23:09 -0700
+References: <2fd29235-6c93-a911-944a-f78dd7a27904@windriver.com>
+In-Reply-To: <2fd29235-6c93-a911-944a-f78dd7a27904@windriver.com>
+Message-ID: <17126.1667532189686240195@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="h2uAucCGEG5E5YfXvmAo"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 03 Nov 2022 15:16:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3457
+ <docs@lists.yoctoproject.org>; Fri, 04 Nov 2022 03:23:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3458
 
+--h2uAucCGEG5E5YfXvmAo
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 11/3/22 10:11, Paulo Neves wrote:
-> According to [1] xterm is no longer required. Update the manual
-> accordingly. Related to Bug #14873.
->
-> [1] https://git.openembedded.org/openembedded-core/commit/?id=ddb825c87dd3e59d50841a993080a00d1459b1e7
->
-> Signed-off-by: Paulo Neves <ptsneves@gmail.com>
+On Wed, Apr 13, 2022 at 01:05 AM, Randy MacLeod wrote:
 
+>=20
+> pylint3
 
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-and merged into "master-next".
+I read doc ( https://docs.yoctoproject.org/ref-manual/system-requirements.h=
+tml#required-packages-for-the-build-host ) it contains
+1.1 Supported Linux Distributions=EF=83=81
+Currently, the Yocto Project is supported on the following distributions:
+...
+Ubuntu 22.04 (LTS)
 
-Many thanks for helping with this bug!
-Michael.
+And for Ubuntu/Debian doc contains
+sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential c=
+hrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils =
+iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 =
+xterm python3-subunit mesa-common-dev zstd liblz4-tool I use Ubuntu 22. I g=
+et "E: Unable to locate package pylint3". As i know there is no package ( h=
+ttps://packages.ubuntu.com/search?keywords=3Dpylint3 ) pylint3 on Ubuntu 22=
+. YP needs fix doc. It is not normal that user get error on supported OS, i=
+sn't it? I am sorry, I am new and I use github before. So I don't know how =
+add commit for YP doc.
 
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+--h2uAucCGEG5E5YfXvmAo
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Apr 13, 2022 at 01:05 AM, Randy MacLeod wrote:<br />
+<blockquote>pylint3</blockquote>
+I read <a href=3D"https://docs.yoctoproject.org/ref-manual/system-requireme=
+nts.html#required-packages-for-the-build-host" target=3D"_blank" rel=3D"noo=
+pener">doc</a> it contains <br /><em>1.1 Supported Linux Distributions=EF=
+=83=81</em><br /><em>Currently, the Yocto Project is supported on the follo=
+wing distributions:</em><br /><em>...</em><br /><em>&nbsp;&nbsp;&nbsp; Ubun=
+tu 22.04 (LTS)</em><br /><br />And for Ubuntu/Debian doc contains<br />
+<pre>sudo apt install gawk wget git diffstat unzip texinfo gcc build-essent=
+ial chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianu=
+tils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pyl=
+int3 xterm python3-subunit mesa-common-dev zstd liblz4-tool</pre>
+I use Ubuntu 22. I get "E: Unable to locate package pylint3". As i know the=
+re is <a href=3D"https://packages.ubuntu.com/search?keywords=3Dpylint3" tar=
+get=3D"_blank" rel=3D"noopener">no package</a> pylint3 on Ubuntu 22. YP nee=
+ds fix doc. It is not normal that user get error on supported OS, isn't it?=
+ I am sorry, I am new and I use github before. So I don't know how add comm=
+it for YP doc.
+
+--h2uAucCGEG5E5YfXvmAo--
 
