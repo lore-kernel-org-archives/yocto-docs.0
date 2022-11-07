@@ -2,71 +2,60 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE5A1C43219
-	for <webhook@archiver.kernel.org>; Mon,  7 Nov 2022 16:08:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4E20C4332F
+	for <webhook@archiver.kernel.org>; Mon,  7 Nov 2022 16:22:33 +0000 (UTC)
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.76.1667837274054090089
+ by mx.groups.io with SMTP id smtpd.web08.289.1667838148121606721
  for <docs@lists.yoctoproject.org>;
- Mon, 07 Nov 2022 08:07:54 -0800
+ Mon, 07 Nov 2022 08:22:28 -0800
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.195, mailfrom: foss+yocto@0leil.net)
 Received: (Authenticated sender: foss@0leil.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id 7A9E460003;
-	Mon,  7 Nov 2022 16:07:50 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 1B91C6000A;
+	Mon,  7 Nov 2022 16:22:25 +0000 (UTC)
 From: Quentin Schulz <foss+yocto@0leil.net>
 To: docs@lists.yoctoproject.org
 Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
 	Quentin Schulz <foss+yocto@0leil.net>
-Subject: [PATCH] docs: poky.yaml.in: remove pylint3 from Ubuntu/Debian host dependencies
-Date: Mon,  7 Nov 2022 17:07:37 +0100
-Message-Id: <20221107-upstream-pylint-removal-v1-0-014ecbdb50c7@theobroma-systems.com>
+Subject: [PATCH 2/2] docs: ref-manual: classes: add missing closing parenthesis
+Date: Mon,  7 Nov 2022 17:22:06 +0100
+Message-Id: <20221107-upstream-misc-fixes-v1-2-532ba173fc6f@theobroma-systems.com>
 X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20221107-upstream-misc-fixes-v1-0-532ba173fc6f@theobroma-systems.com>
+References: <20221107-upstream-misc-fixes-v1-0-532ba173fc6f@theobroma-systems.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 07 Nov 2022 16:08:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3460
+ <docs@lists.yoctoproject.org>; Mon, 07 Nov 2022 16:22:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3463
 
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-It is not actually needed outside of the autobuilder and since the
-package got renamed in Ubuntu 20.04 and later to pylint, it was giving
-the users an incorrect command line to run and would fail all the time,
-better remove it instead of trying to handle Debian/recent Ubuntu
-differences in the documentation.
-
-Moreover, the other supported host distributions didn't have pylint
-listed as a dependency, proving that it's indeed not needed.
+The closing parenthesis is missing in the sentence so let's add it.
 
 Cc: Quentin Schulz <foss+yocto@0leil.net>
 Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 ---
----
- documentation/poky.yaml.in | 2 +-
+ documentation/ref-manual/classes.rst | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 5639f3ca7..2d6affbca 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -13,7 +13,7 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
- UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
-      build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
-      xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
--     pylint3 xterm python3-subunit mesa-common-dev zstd liblz4-tool"
-+     xterm python3-subunit mesa-common-dev zstd liblz4-tool"
- FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index d418c3a89..3e7deaf47 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -959,7 +959,7 @@ Yocto Project Overview and Concepts Manual.
+ 
+ The :ref:`image-buildinfo <ref-classes-image-buildinfo>` class writes a plain text file containing
+ build information to the target filesystem at ``${sysconfdir}/buildinfo``
+-by default (as specified by :term:`IMAGE_BUILDINFO_FILE`.
++by default (as specified by :term:`IMAGE_BUILDINFO_FILE`).
+ This can be useful for manually determining the origin of any given
+ image. It writes out two sections:
+ 
 
----
-base-commit: dce50679242d39f133e0cde5c8483b5e69f3eb54
-change-id: 20221107-upstream-pylint-removal-00f7219e14f7
-
-Best regards,
 -- 
-Quentin Schulz <quentin.schulz@theobroma-systems.com>
+b4 0.10.1
 
