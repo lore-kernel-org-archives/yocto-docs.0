@@ -1,275 +1,191 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7673BC4332F
-	for <webhook@archiver.kernel.org>; Tue,  8 Nov 2022 07:53:58 +0000 (UTC)
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by mx.groups.io with SMTP id smtpd.web11.5369.1667894036925309768
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4403C4332F
+	for <webhook@archiver.kernel.org>; Tue,  8 Nov 2022 08:20:18 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web09.5735.1667895607649680670
  for <docs@lists.yoctoproject.org>;
- Mon, 07 Nov 2022 23:53:57 -0800
+ Tue, 08 Nov 2022 00:20:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=D445mxZ8;
- spf=pass (domain: intel.com, ip: 192.55.52.93, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1667894037; x=1699430037;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=SHd9cqOlEjHWdcQ6YcSAnHdcNONxSmBylH7qNWjWjD8=;
-  b=D445mxZ8PLJ7V1SP/tHY4GBdSd0ttDCyN+oVuRw6oMWjhtF/mm3ueEDY
-   K5Ma14iFL+4LRiFjuSQgysDRGh6zosDtchsu/TZ+dS9UFxmMntQLnL0Gc
-   H7ipOu7VlIB31hEtzXxJIYfD6Vg/SYqJDeLTlfaCXpErYEbTW9JE+VjUa
-   ICy0QVmgcBReHxoWbRnEjq9zH2mluABK6Jpr29vug79aqCSg8itljzojZ
-   HLhozQ8Ym4oD4sReQ1tkiUXO0ndCPCE1V/54022CphRxXiB4EtbaluNYc
-   ub4VirrKvwqXko2KwAmUhPG3BS1X26GV4/eFip5va/pIX7VI6rUr41NCv
-   w==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="308253651"
-X-IronPort-AV: E=Sophos;i="5.96,147,1665471600"; 
-   d="scan'208";a="308253651"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2022 23:53:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10524"; a="587284087"
-X-IronPort-AV: E=Sophos;i="5.96,147,1665471600"; 
-   d="scan'208";a="587284087"
-Received: from cheeyang-desk1.png.intel.com ([172.30.130.10])
-  by orsmga003.jf.intel.com with ESMTP; 07 Nov 2022 23:53:54 -0800
-From: chee.yang.lee@intel.com
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] migration guides: add release notes for 4.0.5
-Date: Tue,  8 Nov 2022 15:52:26 +0800
-Message-Id: <20221108075226.2889942-1-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=V5jazNdF;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 1264D6000B;
+	Tue,  8 Nov 2022 08:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1667895605;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dre/KR646kX4fAwyuSzsARAmyS6rqAKy7DgK/Tal60g=;
+	b=V5jazNdFsM5YxxoufmYLY+q44RCV0Klvscn0ceLx6oc5UiycNrtVuIH1NjAm5Pzswiz/SG
+	aodnhO/uqRPwpE5eNHTSRHZbkhzhxCz3/M7XSJztK6GCz6i9eNjL5BdxR7Hy6rXpH2bJ5m
+	TFS4KW83YS5k1vBq7cSxKi0tZC5P3C5YEEerhoDYatONATHvhAM/nuat+RJ33gUZuWADvD
+	cZVy+siCuGs0F1FuY3I1o/cxGHIK+V/ygDLmP7QHzLCENe7t9gl7Q1F8WVtP5LZHHM8+Tu
+	pxPt2hDc67CjHJyLzVmW7berhYVjb7JVtD2kuVTnj5ATaa+/vmOAvBzk+LUJSw==
+Message-ID: <87b8a14f-530d-fb50-bd7f-c475249315b3@bootlin.com>
+Date: Tue, 8 Nov 2022 09:20:04 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.2.2
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] migration guides: add release notes for 4.0.5
+Content-Language: en-US
+To: Lee Chee Yang <chee.yang.lee@intel.com>
+References: <20221108075226.2889942-1-chee.yang.lee@intel.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20221108075226.2889942-1-chee.yang.lee@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 08 Nov 2022 07:53:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3467
+ <docs@lists.yoctoproject.org>; Tue, 08 Nov 2022 08:20:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3468
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Hi Chee Yang,
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
----
- .../migration-guides/release-4.0.rst          |   1 +
- .../migration-guides/release-notes-4.0.5.rst  | 196 ++++++++++++++++++
- 2 files changed, 197 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.0.5.rst
+Thanks for the release notes in RST format.
+I found a few issues but I fixed them...
 
-diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
-index 9f67daaff..eb0744cc7 100644
---- a/documentation/migration-guides/release-4.0.rst
-+++ b/documentation/migration-guides/release-4.0.rst
-@@ -9,3 +9,4 @@ Release 4.0 (kirkstone)
-    release-notes-4.0.2
-    release-notes-4.0.3
-    release-notes-4.0.4
-+   release-notes-4.0.5
-diff --git a/documentation/migration-guides/release-notes-4.0.5.rst b/documentation/migration-guides/release-notes-4.0.5.rst
-new file mode 100644
-index 000000000..6db449e11
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.0.5.rst
-@@ -0,0 +1,196 @@
-+Release notes for Yocto-4.0.5 (Kirkstone)
-+-----------------------------------------
-+
-+Security Fixes in Yocto-4.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  qemu: fix :cve:`2021-3750`, :cve:`2021-3611` and :cve:`2022-2962`
-+-  binutils : Fix :cve:`2022-38126`, :cve:`2022-38127` and :cve:`2022-38128`
-+-  tff: Fix :cve:`2022-2867`,:cve:`2022-2868` and :cve:`2022-2869`
-+-  inetutils: fix :cve:`2022-39028`
-+-  go: fix :cve:`2022-27664`
-+
-+Fixes in Yocto-4.0.5
-+~~~~~~~~~~~~~~~~~~~~
-+
-+-  Revert "gcc-cross-canadian: Add symlink to real-ld alongside other symlinks"
-+-  bind: upgrade to 9.18.7
-+-  binutils: stable 2.38 branch updates (dc2474e7)
-+-  bitbake: Fix npm to use https rather than http
-+-  bitbake: asyncrpc/client: Fix unix domain socket chdir race issues
-+-  bitbake: bitbake: Add copyright headers where missing
-+-  bitbake: gitsm: Error out if submodule refers to parent repo
-+-  bitbake: runqueue: Drop deadlock breaking force fail
-+-  bitbake: runqueue: Ensure deferred tasks are sorted by multiconfig
-+-  bitbake: runqueue: Improve deadlock warning messages
-+-  bitbake: siggen: Fix insufficent entropy in sigtask file names
-+-  bitbake: tests/fetch: Allow handling of a file:// url within a submodule
-+-  build-appliance-image: Update to kirkstone head revision (4a88ada)
-+-  busybox: add devmem 128-bit support
-+-  classes: files: Extend overlayfs-etc class
-+-  coreutils: add openssl PACKAGECONFIG
-+-  create-pull-request: don't switch the git remote protocol to git://
-+-  dev-manual: fix reference to BitBake user manual
-+-  expat: upgrade 2.4.8 -> 2.4.9
-+-  files: overlayfs-etc: refactor preinit template
-+-  gcc-cross-canadian: add default plugin linker
-+-  gcc: add arm-v9 support
-+-  git: upgrade 2.35.4 -> 2.35.5
-+-  glibc-locale: explicitly remove empty dirs in ${libdir}
-+-  glibc-tests: use += instead of :append
-+-  glibc: stable 2.35 branch updates.(8d125a1f)
-+-  go-native: switch from SRC_URI:append to SRC_URI +=
-+-  image_types_wic.bbclass: fix cross binutils dependency
-+-  kern-tools: allow 'y' or 'm' to avoid config audit warnings
-+-  kern-tools: fix queue processing in relative TOPDIR configurations
-+-  kernel-yocto: allow patch author date to be commit date
-+-  libpng: upgrade to 1.6.38
-+-  linux-firmware: package new Qualcomm firmware
-+-  linux-firmware: upgrade 20220708 -> 20220913
-+-  linux-libc-headers: switch from SRC_URI:append to SRC_URI +=
-+-  linux-yocto-dev: add qemuarm64
-+-  linux-yocto/5.10: update to v5.10.149
-+-  linux-yocto/5.15: cfg: fix ACPI warnings for -tiny
-+-  linux-yocto/5.15: update to v5.15.68
-+-  local.conf.sample: correct the location of public hashserv
-+-  ltp: Fix pread02 case trigger the glibc overflow detection
-+-  lttng-modules: Fix crash on powerpc64
-+-  lttng-tools: Disable on qemuriscv32
-+-  lttng-tools: Disable on riscv32
-+-  migration-guides: add 4.0.4 release notes
-+-  oeqa/runtime/dnf: fix typo
-+-  own-mirrors: add crate
-+-  perf: Fix for recent kernel upgrades
-+-  poky.conf: bump version for 4.0.5
-+-  poky.yaml.in: update version requirements
-+-  python3-rfc3986-validator: switch from SRC_URI:append to SRC_URI +=
-+-  python3: upgrade 3.10.4 -> 3.10.7
-+-  qemu: Backport patches from upstream to support float128 on qemu-ppc64
-+-  rpm: Remove -Wimplicit-function-declaration warnings
-+-  rpm: update to 4.17.1
-+-  rsync: update to 3.2.5
-+-  stress-cpu: disable float128 math on powerpc64 to avoid SIGILL
-+-  tune-neoversen2: support tune-neoversen2 base on armv9a
-+-  tzdata: update to 2022d
-+-  u-boot: switch from append to += in SRC_URI
-+-  uninative: Upgrade to 3.7 to work with glibc 2.36
-+-  vim: Upgrade to 9.0.0598
-+-  webkitgtk: Update to 2.36.7
-+
-+
-+Known Issues in Yocto-4.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- There are recent CVEs in key components such as openssl. They are not included in this release as it was built before the issues were known and fixes were available but these are now available on the kirkstone branch. 
-+
-+
-+Contributors to Yocto-4.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Adrian Freihofer
-+-  Alexander Kanavin
-+-  Alexandre Belloni
-+-  Bhabu Bindu
-+-  Bruce Ashfield
-+-  Chen Qi
-+-  Daniel McGregor
-+-  Denys Dmytriyenko
-+-  Dmitry Baryshkov
-+-  Florin Diaconescu
-+-  He Zhe
-+-  Joshua Watt
-+-  Khem Raj
-+-  Martin Jansa
-+-  Michael Halstead
-+-  Michael Opdenacker
-+-  Mikko Rapeli
-+-  Mingli Yu
-+-  Neil Horman
-+-  Pavel Zhukov
-+-  Richard Purdie
-+-  Robert Joslyn
-+-  Ross Burton
-+-  Ruiqiang Hao
-+-  Samuli Piippo
-+-  Steve Sakoman
-+-  Sundeep KOKKONDA
-+-  Teoh Jay Shen
-+-  Tim Orling
-+-  Virendra Thakur
-+-  Vyacheslav Yurkov
-+-  Xiangyu Chen
-+-  Yash Shinde
-+-  pgowda
-+-  Wang Mingyu
-+
-+
-+Repositories / Downloads for Yocto-4.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: https://git.yoctoproject.org/git/poky
-+-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.5 </poky/log/?h=yocto-4.0.5>`
-+-  Git Revision: :yocto_git:`2e79b199114b25d81bfaa029ccfb17676946d20d </poky/commit/?id=2e79b199114b25d81bfaa029ccfb17676946d20d>`
-+-  Release Artefact: poky-2e79b199114b25d81bfaa029ccfb17676946d20d
-+-  sha: 7bcf3f901d4c5677fc95944ab096e9e306f4c758a658dde5befd16861ad2b8ea
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/poky-2e79b199114b25d81bfaa029ccfb17676946d20d.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/poky-2e79b199114b25d81bfaa029ccfb17676946d20d.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: https://git.openembedded.org/openembedded-core
-+-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
-+-  Tag:  :oe_git:`yocto-4.0.5 </openembedded-core/log/?h=yocto-4.0.5>`
-+-  Git Revision: :oe_git:`fbdf93f43ff4b876487e1f26752598ec8abcb46e </openembedded-core/commit/?id=fbdf93f43ff4b876487e1f26752598ec8abcb46e>`
-+-  Release Artefact: oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e
-+-  sha: 2d9b5a8e9355b633bb57633cc8c2d319ba13fe4721f79204e61116b3faa6cbf1
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: https://git.yoctoproject.org/git/meta-mingw
-+-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.5 </meta-mingw/log/?h=yocto-4.0.5>`
-+-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
-+-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
-+-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-+
-+meta-gplv2
-+
-+-  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
-+-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.5 </meta-gplv2/log/?h=yocto-4.0.5>`
-+-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-+-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
-+-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: https://git.openembedded.org/bitbake
-+-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
-+-  Tag:  :oe_git:`yocto-4.0.5 </bitbake/log/?h=yocto-4.0.5>`
-+-  Git Revision: :oe_git:`c90d57497b9bcd237c3ae810ee8edb5b0d2d575a </bitbake/commit/?id=c90d57497b9bcd237c3ae810ee8edb5b0d2d575a>`
-+-  Release Artefact: bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a
-+-  sha: 5698d548ce179036e46a24f80b213124c8825a4f443fa1d6be7ab0f70b01a9ff
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: https://git.yoctoproject.org/git/yocto-docs
-+-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
-+-  Tag: :yocto_git:`yocto-4.0.5 </yocto-docs/log/?h=yocto-4.0.5>`
-+-  Git Revision: :yocto_git:`8c2f9f54e29781f4ee72e81eeaa12ceaa82dc2d3 </yocto-docs/commit/?id=8c2f9f54e29781f4ee72e81eeaa12ceaa82dc2d3>`
-+
+On 11/8/22 08:52, Lee Chee Yang wrote:
+> From: Lee Chee Yang <chee.yang.lee@intel.com>
+>
+> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+> ---
+>   .../migration-guides/release-4.0.rst          |   1 +
+>   .../migration-guides/release-notes-4.0.5.rst  | 196 ++++++++++++++++++
+>   2 files changed, 197 insertions(+)
+>   create mode 100644 documentation/migration-guides/release-notes-4.0.5.rst
+>
+> diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+> index 9f67daaff..eb0744cc7 100644
+> --- a/documentation/migration-guides/release-4.0.rst
+> +++ b/documentation/migration-guides/release-4.0.rst
+> @@ -9,3 +9,4 @@ Release 4.0 (kirkstone)
+>      release-notes-4.0.2
+>      release-notes-4.0.3
+>      release-notes-4.0.4
+> +   release-notes-4.0.5
+> diff --git a/documentation/migration-guides/release-notes-4.0.5.rst b/documentation/migration-guides/release-notes-4.0.5.rst
+> new file mode 100644
+> index 000000000..6db449e11
+> --- /dev/null
+> +++ b/documentation/migration-guides/release-notes-4.0.5.rst
+> @@ -0,0 +1,196 @@
+> +Release notes for Yocto-4.0.5 (Kirkstone)
+> +-----------------------------------------
+> +
+> +Security Fixes in Yocto-4.0.5
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +-  qemu: fix :cve:`2021-3750`, :cve:`2021-3611` and :cve:`2022-2962`
+> +-  binutils : Fix :cve:`2022-38126`, :cve:`2022-38127` and :cve:`2022-38128`
+> +-  tff: Fix :cve:`2022-2867`,:cve:`2022-2868` and :cve:`2022-2869`
+
+Here, the missing space before ":cve" was preventing the macro from 
+being expanded. I fixed that.
+You also have a mix of "Fix" and "fix" at the beginning of lines. Not a 
+significant issue, but this distracted my brain. Fixed too.
+
+>
+> +
+> +Repositories / Downloads for Yocto-4.0.5
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +poky
+> +
+> +-  Repository Location: https://git.yoctoproject.org/git/poky
+
+
+Oops, bad link. It should be https://git.yoctoproject.org/poky instead 
+(no "git" subdirectory).
+Fixed, but I realize I missed this in previous release notes. I'll send 
+a patch soon.
+
+> +-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
+> +-  Tag:  :yocto_git:`yocto-4.0.5 </poky/log/?h=yocto-4.0.5>`
+> +-  Git Revision: :yocto_git:`2e79b199114b25d81bfaa029ccfb17676946d20d </poky/commit/?id=2e79b199114b25d81bfaa029ccfb17676946d20d>`
+> +-  Release Artefact: poky-2e79b199114b25d81bfaa029ccfb17676946d20d
+> +-  sha: 7bcf3f901d4c5677fc95944ab096e9e306f4c758a658dde5befd16861ad2b8ea
+> +-  Download Locations:
+> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/poky-2e79b199114b25d81bfaa029ccfb17676946d20d.tar.bz2
+> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/poky-2e79b199114b25d81bfaa029ccfb17676946d20d.tar.bz2
+> +
+> +openembedded-core
+> +
+> +-  Repository Location: https://git.openembedded.org/openembedded-core
+> +-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
+> +-  Tag:  :oe_git:`yocto-4.0.5 </openembedded-core/log/?h=yocto-4.0.5>`
+> +-  Git Revision: :oe_git:`fbdf93f43ff4b876487e1f26752598ec8abcb46e </openembedded-core/commit/?id=fbdf93f43ff4b876487e1f26752598ec8abcb46e>`
+> +-  Release Artefact: oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e
+> +-  sha: 2d9b5a8e9355b633bb57633cc8c2d319ba13fe4721f79204e61116b3faa6cbf1
+> +-  Download Locations:
+> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e.tar.bz2
+> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e.tar.bz2
+> +
+> +meta-mingw
+> +
+> +-  Repository Location: https://git.yoctoproject.org/git/meta-mingw
+
+
+Same here. All references to repositories on 
+https://git.yoctoproject.org/ as impacted.
+
+> +-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
+> +-  Tag:  :yocto_git:`yocto-4.0.5 </meta-mingw/log/?h=yocto-4.0.5>`
+> +-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
+> +-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
+> +-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
+> +-  Download Locations:
+> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
+> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
+> +
+> +meta-gplv2
+> +
+> +-  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
+
+
+Same here too
+
+> +-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
+> +-  Tag:  :yocto_git:`yocto-4.0.5 </meta-gplv2/log/?h=yocto-4.0.5>`
+> +-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
+> +-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
+> +-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
+> +-  Download Locations:
+> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
+> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
+> +
+> +bitbake
+> +
+> +-  Repository Location: https://git.openembedded.org/bitbake
+> +-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
+> +-  Tag:  :oe_git:`yocto-4.0.5 </bitbake/log/?h=yocto-4.0.5>`
+> +-  Git Revision: :oe_git:`c90d57497b9bcd237c3ae810ee8edb5b0d2d575a </bitbake/commit/?id=c90d57497b9bcd237c3ae810ee8edb5b0d2d575a>`
+> +-  Release Artefact: bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a
+> +-  sha: 5698d548ce179036e46a24f80b213124c8825a4f443fa1d6be7ab0f70b01a9ff
+> +-  Download Locations:
+> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a.tar.bz2
+> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a.tar.bz2
+> +
+> +yocto-docs
+> +
+> +-  Repository Location: https://git.yoctoproject.org/git/yocto-docs
+
+Same here too.
+Fixed and merged into master-next.
+
+Thanks again!
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
