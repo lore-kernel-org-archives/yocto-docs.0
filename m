@@ -2,190 +2,247 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A4403C4332F
-	for <webhook@archiver.kernel.org>; Tue,  8 Nov 2022 08:20:18 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web09.5735.1667895607649680670
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BB952C433FE
+	for <webhook@archiver.kernel.org>; Tue,  8 Nov 2022 08:41:48 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web08.5777.1667896901452608699
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Nov 2022 00:20:08 -0800
+ Tue, 08 Nov 2022 00:41:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=V5jazNdF;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QT0c1nhO;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 1264D6000B;
-	Tue,  8 Nov 2022 08:20:04 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 7245B1BF206;
+	Tue,  8 Nov 2022 08:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1667895605;
+	t=1667896899;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dre/KR646kX4fAwyuSzsARAmyS6rqAKy7DgK/Tal60g=;
-	b=V5jazNdFsM5YxxoufmYLY+q44RCV0Klvscn0ceLx6oc5UiycNrtVuIH1NjAm5Pzswiz/SG
-	aodnhO/uqRPwpE5eNHTSRHZbkhzhxCz3/M7XSJztK6GCz6i9eNjL5BdxR7Hy6rXpH2bJ5m
-	TFS4KW83YS5k1vBq7cSxKi0tZC5P3C5YEEerhoDYatONATHvhAM/nuat+RJ33gUZuWADvD
-	cZVy+siCuGs0F1FuY3I1o/cxGHIK+V/ygDLmP7QHzLCENe7t9gl7Q1F8WVtP5LZHHM8+Tu
-	pxPt2hDc67CjHJyLzVmW7berhYVjb7JVtD2kuVTnj5ATaa+/vmOAvBzk+LUJSw==
-Message-ID: <87b8a14f-530d-fb50-bd7f-c475249315b3@bootlin.com>
-Date: Tue, 8 Nov 2022 09:20:04 +0100
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qPJMiWxwOtLgt086qfWS+KX1jQMOUJC5h3W5fwpToZo=;
+	b=QT0c1nhOStv+clb2O9agx32OaZ0diZ49+PLUyCVRRSFLSx4MsD43lqXo3Uj8wwriuz/Nw5
+	GfwtsNxLLWW83m61iQLVcMhu2tHP7yGC3Mpsmh/lJMlZQNG+dbGYoRGtRCvWMffLhm/A71
+	lmdhjBrdWVP9EoFEIBkztwzotJ1O1pjCMIlIROLqS2oRQFHPl64B+AF5NvGRpRxlgRpYdF
+	w+ID6dIkHdsbqiiOaGxrj1AXkksV4i2FN0Mh1bMnuE9ECnZjIttkYZlQ2w8y5ZPXipxF9e
+	9EwVyxqdnLFa8eQEnYMvrsjtFEIM/nocIBlEifIUkefF5FSbpOhL230bNa0rKg==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] release-notes: fix links to git.yoctoproject.org repositories
+Date: Tue,  8 Nov 2022 09:41:37 +0100
+Message-Id: <20221108084137.440012-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.2.2
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] migration guides: add release notes for 4.0.5
-Content-Language: en-US
-To: Lee Chee Yang <chee.yang.lee@intel.com>
-References: <20221108075226.2889942-1-chee.yang.lee@intel.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20221108075226.2889942-1-chee.yang.lee@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 08 Nov 2022 08:20:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3468
+ <docs@lists.yoctoproject.org>; Tue, 08 Nov 2022 08:41:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3469
 
-Hi Chee Yang,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Thanks for the release notes in RST format.
-I found a few issues but I fixed them...
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/migration-guides/release-notes-4.0.2.rst | 8 ++++----
+ documentation/migration-guides/release-notes-4.0.3.rst | 8 ++++----
+ documentation/migration-guides/release-notes-4.0.4.rst | 8 ++++----
+ documentation/migration-guides/release-notes-4.0.rst   | 8 ++++----
+ documentation/migration-guides/release-notes-4.1.rst   | 6 +++---
+ 5 files changed, 19 insertions(+), 19 deletions(-)
 
-On 11/8/22 08:52, Lee Chee Yang wrote:
-> From: Lee Chee Yang <chee.yang.lee@intel.com>
->
-> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-> ---
->   .../migration-guides/release-4.0.rst          |   1 +
->   .../migration-guides/release-notes-4.0.5.rst  | 196 ++++++++++++++++++
->   2 files changed, 197 insertions(+)
->   create mode 100644 documentation/migration-guides/release-notes-4.0.5.rst
->
-> diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
-> index 9f67daaff..eb0744cc7 100644
-> --- a/documentation/migration-guides/release-4.0.rst
-> +++ b/documentation/migration-guides/release-4.0.rst
-> @@ -9,3 +9,4 @@ Release 4.0 (kirkstone)
->      release-notes-4.0.2
->      release-notes-4.0.3
->      release-notes-4.0.4
-> +   release-notes-4.0.5
-> diff --git a/documentation/migration-guides/release-notes-4.0.5.rst b/documentation/migration-guides/release-notes-4.0.5.rst
-> new file mode 100644
-> index 000000000..6db449e11
-> --- /dev/null
-> +++ b/documentation/migration-guides/release-notes-4.0.5.rst
-> @@ -0,0 +1,196 @@
-> +Release notes for Yocto-4.0.5 (Kirkstone)
-> +-----------------------------------------
-> +
-> +Security Fixes in Yocto-4.0.5
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +-  qemu: fix :cve:`2021-3750`, :cve:`2021-3611` and :cve:`2022-2962`
-> +-  binutils : Fix :cve:`2022-38126`, :cve:`2022-38127` and :cve:`2022-38128`
-> +-  tff: Fix :cve:`2022-2867`,:cve:`2022-2868` and :cve:`2022-2869`
-
-Here, the missing space before ":cve" was preventing the macro from 
-being expanded. I fixed that.
-You also have a mix of "Fix" and "fix" at the beginning of lines. Not a 
-significant issue, but this distracted my brain. Fixed too.
-
->
-> +
-> +Repositories / Downloads for Yocto-4.0.5
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +poky
-> +
-> +-  Repository Location: https://git.yoctoproject.org/git/poky
-
-
-Oops, bad link. It should be https://git.yoctoproject.org/poky instead 
-(no "git" subdirectory).
-Fixed, but I realize I missed this in previous release notes. I'll send 
-a patch soon.
-
-> +-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
-> +-  Tag:  :yocto_git:`yocto-4.0.5 </poky/log/?h=yocto-4.0.5>`
-> +-  Git Revision: :yocto_git:`2e79b199114b25d81bfaa029ccfb17676946d20d </poky/commit/?id=2e79b199114b25d81bfaa029ccfb17676946d20d>`
-> +-  Release Artefact: poky-2e79b199114b25d81bfaa029ccfb17676946d20d
-> +-  sha: 7bcf3f901d4c5677fc95944ab096e9e306f4c758a658dde5befd16861ad2b8ea
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/poky-2e79b199114b25d81bfaa029ccfb17676946d20d.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/poky-2e79b199114b25d81bfaa029ccfb17676946d20d.tar.bz2
-> +
-> +openembedded-core
-> +
-> +-  Repository Location: https://git.openembedded.org/openembedded-core
-> +-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
-> +-  Tag:  :oe_git:`yocto-4.0.5 </openembedded-core/log/?h=yocto-4.0.5>`
-> +-  Git Revision: :oe_git:`fbdf93f43ff4b876487e1f26752598ec8abcb46e </openembedded-core/commit/?id=fbdf93f43ff4b876487e1f26752598ec8abcb46e>`
-> +-  Release Artefact: oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e
-> +-  sha: 2d9b5a8e9355b633bb57633cc8c2d319ba13fe4721f79204e61116b3faa6cbf1
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/oecore-fbdf93f43ff4b876487e1f26752598ec8abcb46e.tar.bz2
-> +
-> +meta-mingw
-> +
-> +-  Repository Location: https://git.yoctoproject.org/git/meta-mingw
-
-
-Same here. All references to repositories on 
-https://git.yoctoproject.org/ as impacted.
-
-> +-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
-> +-  Tag:  :yocto_git:`yocto-4.0.5 </meta-mingw/log/?h=yocto-4.0.5>`
-> +-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
-> +-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
-> +-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-> +
-> +meta-gplv2
-> +
-> +-  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
-
-
-Same here too
-
-> +-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
-> +-  Tag:  :yocto_git:`yocto-4.0.5 </meta-gplv2/log/?h=yocto-4.0.5>`
-> +-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-> +-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
-> +-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-> +
-> +bitbake
-> +
-> +-  Repository Location: https://git.openembedded.org/bitbake
-> +-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
-> +-  Tag:  :oe_git:`yocto-4.0.5 </bitbake/log/?h=yocto-4.0.5>`
-> +-  Git Revision: :oe_git:`c90d57497b9bcd237c3ae810ee8edb5b0d2d575a </bitbake/commit/?id=c90d57497b9bcd237c3ae810ee8edb5b0d2d575a>`
-> +-  Release Artefact: bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a
-> +-  sha: 5698d548ce179036e46a24f80b213124c8825a4f443fa1d6be7ab0f70b01a9ff
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.5/bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.5/bitbake-c90d57497b9bcd237c3ae810ee8edb5b0d2d575a.tar.bz2
-> +
-> +yocto-docs
-> +
-> +-  Repository Location: https://git.yoctoproject.org/git/yocto-docs
-
-Same here too.
-Fixed and merged into master-next.
-
-Thanks again!
-Michael.
-
+diff --git a/documentation/migration-guides/release-notes-4.0.2.rst b/documentation/migration-guides/release-notes-4.0.2.rst
+index 632af11297..66779515e6 100644
+--- a/documentation/migration-guides/release-notes-4.0.2.rst
++++ b/documentation/migration-guides/release-notes-4.0.2.rst
+@@ -230,7 +230,7 @@ Repositories / Downloads for Yocto-4.0.2
+ 
+ poky
+ 
+--  Repository Location: https://git.yoctoproject.org/git/poky
++-  Repository Location: https://git.yoctoproject.org/poky
+ -  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.2 </poky/log/?h=yocto-4.0.2>`
+ -  Git Revision: :yocto_git:`a5ea426b1da472fc8549459fff3c1b8c6e02f4b5 </poky/commit/?id=a5ea426b1da472fc8549459fff3c1b8c6e02f4b5>`
+@@ -254,7 +254,7 @@ openembedded-core
+ 
+ meta-mingw
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-mingw
++-  Repository Location: https://git.yoctoproject.org/meta-mingw
+ -  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.2 </meta-mingw/log/?h=yocto-4.0.2>`
+ -  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
+@@ -266,7 +266,7 @@ meta-mingw
+ 
+ meta-gplv2
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
++-  Repository Location: https://git.yoctoproject.org/meta-gplv2
+ -  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.2 </meta-gplv2/log/?h=yocto-4.0.2>`
+ -  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
+@@ -290,7 +290,7 @@ bitbake
+ 
+ yocto-docs
+ 
+--  Repository Location: https://git.yoctoproject.org/git/yocto-docs
++-  Repository Location: https://git.yoctoproject.org/yocto-docs
+ -  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
+ -  Tag: :yocto_git:`yocto-4.0.2 </yocto-docs/log/?h=yocto-4.0.2>`
+ -  Git Revision: :yocto_git:`662294dccd028828d5c7e9fd8f5c8e14df53df4b </yocto-docs/commit/?id=662294dccd028828d5c7e9fd8f5c8e14df53df4b>`
+diff --git a/documentation/migration-guides/release-notes-4.0.3.rst b/documentation/migration-guides/release-notes-4.0.3.rst
+index 83e12a64ef..5c89b7c9ba 100644
+--- a/documentation/migration-guides/release-notes-4.0.3.rst
++++ b/documentation/migration-guides/release-notes-4.0.3.rst
+@@ -247,7 +247,7 @@ Repositories / Downloads for Yocto-4.0.3
+ 
+ poky
+ 
+--  Repository Location: https://git.yoctoproject.org/git/poky
++-  Repository Location: https://git.yoctoproject.org/poky
+ -  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.3 </poky/log/?h=yocto-4.0.3>`
+ -  Git Revision: :yocto_git:`387ab5f18b17c3af3e9e30dc58584641a70f359f </poky/commit/?id=387ab5f18b17c3af3e9e30dc58584641a70f359f>`
+@@ -271,7 +271,7 @@ openembedded-core
+ 
+ meta-mingw
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-mingw
++-  Repository Location: https://git.yoctoproject.org/meta-mingw
+ -  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.3 </meta-mingw/log/?h=yocto-4.0.3>`
+ -  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
+@@ -283,7 +283,7 @@ meta-mingw
+ 
+ meta-gplv2
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
++-  Repository Location: https://git.yoctoproject.org/meta-gplv2
+ -  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.3 </meta-gplv2/log/?h=yocto-4.0.3>`
+ -  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
+@@ -307,7 +307,7 @@ bitbake
+ 
+ yocto-docs
+ 
+--  Repository Location: https://git.yoctoproject.org/git/yocto-docs
++-  Repository Location: https://git.yoctoproject.org/yocto-docs
+ -  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
+ -  Tag: :yocto_git:`yocto-4.0.3 </yocto-docs/log/?h=yocto-4.0.3>`
+ -  Git Revision: :yocto_git:`d9b3dcf65ef25c06f552482aba460dd16862bf96 </yocto-docs/commit/?id=d9b3dcf65ef25c06f552482aba460dd16862bf96>`
+diff --git a/documentation/migration-guides/release-notes-4.0.4.rst b/documentation/migration-guides/release-notes-4.0.4.rst
+index 43f92cae84..1a6cefa483 100644
+--- a/documentation/migration-guides/release-notes-4.0.4.rst
++++ b/documentation/migration-guides/release-notes-4.0.4.rst
+@@ -233,7 +233,7 @@ Repositories / Downloads for Yocto-4.0.4
+ 
+ poky
+ 
+--  Repository Location: https://git.yoctoproject.org/git/poky
++-  Repository Location: https://git.yoctoproject.org/poky
+ -  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.4 </poky/log/?h=yocto-4.0.4>`
+ -  Git Revision: :yocto_git:`d64bef1c7d713b92a51228e5ade945835e5a94a4 </poky/commit/?id=d64bef1c7d713b92a51228e5ade945835e5a94a4>`
+@@ -257,7 +257,7 @@ openembedded-core
+ 
+ meta-mingw
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-mingw
++-  Repository Location: https://git.yoctoproject.org/meta-mingw
+ -  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.4 </meta-mingw/log/?h=yocto-4.0.4>`
+ -  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
+@@ -269,7 +269,7 @@ meta-mingw
+ 
+ meta-gplv2
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
++-  Repository Location: https://git.yoctoproject.org/meta-gplv2
+ -  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
+ -  Tag:  :yocto_git:`yocto-4.0.4 </meta-gplv2/log/?h=yocto-4.0.4>`
+ -  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
+@@ -293,7 +293,7 @@ bitbake
+ 
+ yocto-docs
+ 
+--  Repository Location: https://git.yoctoproject.org/git/yocto-docs
++-  Repository Location: https://git.yoctoproject.org/yocto-docs
+ -  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
+ -  Tag: :yocto_git:`yocto-4.0.4 </yocto-docs/log/?h=yocto-4.0.4>`
+ -  Git Revision: :yocto_git:`f632dad24c39778f948014029e74db3c871d9d21 </yocto-docs/commit/?id=f632dad24c39778f948014029e74db3c871d9d21>`
+diff --git a/documentation/migration-guides/release-notes-4.0.rst b/documentation/migration-guides/release-notes-4.0.rst
+index 02cde0e3f3..45d1e01044 100644
+--- a/documentation/migration-guides/release-notes-4.0.rst
++++ b/documentation/migration-guides/release-notes-4.0.rst
+@@ -866,7 +866,7 @@ Repositories / Downloads for 4.0
+ 
+ poky
+ 
+--  Repository Location: https://git.yoctoproject.org/git/poky
++-  Repository Location: https://git.yoctoproject.org/poky
+ -  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
+ -  Tag: :yocto_git:`yocto-4.0 </poky/tag/?h=yocto-4.0>`
+ -  Git Revision: :yocto_git:`00cfdde791a0176c134f31e5a09eff725e75b905 </poky/commit/?id=00cfdde791a0176c134f31e5a09eff725e75b905>`
+@@ -890,7 +890,7 @@ openembedded-core
+ 
+ meta-mingw
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-mingw
++-  Repository Location: https://git.yoctoproject.org/meta-mingw
+ -  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
+ -  Tag: :yocto_git:`yocto-4.0 </meta-mingw/tag/?h=yocto-4.0>`
+ -  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
+@@ -902,7 +902,7 @@ meta-mingw
+ 
+ meta-gplv2
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-gplv2
++-  Repository Location: https://git.yoctoproject.org/meta-gplv2
+ -  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
+ -  Tag: :yocto_git:`yocto-4.0 </meta-gplv2/tag/?h=yocto-4.0>`
+ -  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-mingw/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
+@@ -926,7 +926,7 @@ bitbake
+ 
+ yocto-docs
+ 
+--  Repository Location: https://git.yoctoproject.org/git/yocto-docs
++-  Repository Location: https://git.yoctoproject.org/yocto-docs
+ -  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
+ -  Tag: :yocto_git:`yocto-4.0 </yocto-docs/tag/?h=yocto-4.0>`
+ -  Git Revision: :yocto_git:`a6f571ad5b087385cad8765ed455c4b4eaeebca6 </yocto-docs/commit/?id=a6f571ad5b087385cad8765ed455c4b4eaeebca6>`
+diff --git a/documentation/migration-guides/release-notes-4.1.rst b/documentation/migration-guides/release-notes-4.1.rst
+index d4ed23f63d..53ad78ef17 100644
+--- a/documentation/migration-guides/release-notes-4.1.rst
++++ b/documentation/migration-guides/release-notes-4.1.rst
+@@ -704,7 +704,7 @@ Repositories / Downloads for 4.1
+ 
+ poky
+ 
+--  Repository Location: https://git.yoctoproject.org/git/poky
++-  Repository Location: https://git.yoctoproject.org/poky
+ -  Branch: :yocto_git:`langdale </poky/log/?h=langdale>`
+ -  Tag:  :yocto_git:`yocto-4.1 </poky/log/?h=yocto-4.1>`
+ -  Git Revision: :yocto_git:`5200799866b92259e855051112520006e1aaaac0 </poky/commit/?id=5200799866b92259e855051112520006e1aaaac0>`
+@@ -728,7 +728,7 @@ openembedded-core
+ 
+ meta-mingw
+ 
+--  Repository Location: https://git.yoctoproject.org/git/meta-mingw
++-  Repository Location: https://git.yoctoproject.org/meta-mingw
+ -  Branch: :yocto_git:`langdale </meta-mingw/log/?h=langdale>`
+ -  Tag:  :yocto_git:`yocto-4.1 </meta-mingw/log/?h=yocto-4.1>`
+ -  Git Revision: :yocto_git:`b0067202db8573df3d23d199f82987cebe1bee2c </meta-mingw/commit/?id=b0067202db8573df3d23d199f82987cebe1bee2c>`
+@@ -752,7 +752,7 @@ bitbake
+ 
+ yocto-docs
+ 
+--  Repository Location: https://git.yoctoproject.org/git/yocto-docs
++-  Repository Location: https://git.yoctoproject.org/yocto-docs
+ -  Branch: :yocto_git:`langdale </yocto-docs/log/?h=langdale>`
+ -  Tag: :yocto_git:`yocto-4.1 </yocto-docs/log/?h=yocto-4.1>`
+ -  Git Revision: :yocto_git:`42d3e26a0d04bc5951e640b471686f347dc9b74a </yocto-docs/commit/?id=42d3e26a0d04bc5951e640b471686f347dc9b74a>`
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
