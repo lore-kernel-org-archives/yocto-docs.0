@@ -2,44 +2,44 @@ Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 105A4C433FE
-	for <webhook@archiver.kernel.org>; Fri, 25 Nov 2022 04:34:45 +0000 (UTC)
-Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
- by mx.groups.io with SMTP id smtpd.web11.40026.1669350883538237797
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78604C4321E
+	for <webhook@archiver.kernel.org>; Fri, 25 Nov 2022 09:57:07 +0000 (UTC)
+Received: from mga12.intel.com (mga12.intel.com [192.55.52.136])
+ by mx.groups.io with SMTP id smtpd.web10.43914.1669370219299346033
  for <docs@lists.yoctoproject.org>;
- Thu, 24 Nov 2022 20:34:43 -0800
+ Fri, 25 Nov 2022 01:56:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=PJYIP7ck;
- spf=pass (domain: intel.com, ip: 192.55.52.43, mailfrom: chee.yang.lee@intel.com)
+ dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=M7sFOy4G;
+ spf=pass (domain: intel.com, ip: 192.55.52.136, mailfrom: chee.yang.lee@intel.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1669350883; x=1700886883;
+  t=1669370219; x=1700906219;
   h=from:to:subject:date:message-id:mime-version:
    content-transfer-encoding;
-  bh=IgBp0X/trFTlFTpxZAXcEFV2Upt+bYnjRSjBBLCvQQg=;
-  b=PJYIP7ckzRNXbW5qtnXYk75VILtUO27rqV7pWgvbGKdzcdUVQjDR8cJB
-   IaeVcVWAYKgDwloLWB3/lJ7gIrVXaQoRiQg8Vim6HNUb1HAh7tzoLoPwm
-   UxqzpNQEZZI7wO4J0zSGwK474DRNxxw92KshHKXG3XOywNaxIc9kig4Si
-   MyrSCwBj33zag5BHaZ5f9x8bIw9/KgOIb3Amoi2XG8EKh+I5u5c6gOi8w
-   ib8KfVDsPhghjN4IqFM/ZUC3exVrBREbOSSQ7HXtDSV2OeLSX8Te0eKSP
-   8uOM1u9hnGgOZaf3/c0K12t4h1vLvSaaokUnDcMRUf8xfwBtjityIguXK
-   Q==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="400698540"
-X-IronPort-AV: E=Sophos;i="5.96,192,1665471600"; 
-   d="scan'208";a="400698540"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2022 20:34:42 -0800
+  bh=XdU7EdBLjSLVLMVO/BYn4PCAGtWi2mhmlDAu5avDtWQ=;
+  b=M7sFOy4GC/wA0ZJiThGRcxZiJZrbDgqY1z/sQac/a3F8D9r7suAGF82F
+   4xGqt0dzzlbbAJ0f9eZXjSAOjKqkwZDz27o3MayN2CiwLFppFu+BXYxQz
+   K0EUyp3FlnOHCuTZJOtEzvUAk3TJCTDSHjyhzpYqO4KHJKhZKdTl5DORR
+   qhKRVMa4VFi/UEXs6dwzgPo9MPPE05DHU4nkOIW4/2x+bjOzD7FCgpZ4E
+   /NKMlAwgGhN6mxZE1urONKPUOqozTWwbq4/L7uPDS2VujnTWBE5xO1c8+
+   Gz+ejq4Xog7Gr6hODldi2UyQDZgkaaWZ4rJ6caah5fL4+sfB5AT2G0TJg
+   A==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="294154911"
+X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
+   d="scan'208";a="294154911"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2022 01:56:58 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="642584277"
-X-IronPort-AV: E=Sophos;i="5.96,192,1665471600"; 
-   d="scan'208";a="642584277"
+X-IronPort-AV: E=McAfee;i="6500,9779,10541"; a="817094679"
+X-IronPort-AV: E=Sophos;i="5.96,193,1665471600"; 
+   d="scan'208";a="817094679"
 Received: from cheeyang-desk2.png.intel.com ([172.30.130.125])
-  by orsmga002.jf.intel.com with ESMTP; 24 Nov 2022 20:34:40 -0800
+  by orsmga005.jf.intel.com with ESMTP; 25 Nov 2022 01:56:57 -0800
 From: chee.yang.lee@intel.com
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] migration-guides: add release-notes for 4.1.1
-Date: Fri, 25 Nov 2022 12:38:48 +0800
-Message-Id: <20221125043848.1547668-1-chee.yang.lee@intel.com>
+Subject: [patch v2] migration-guides: add release-notes for 4.1.1
+Date: Fri, 25 Nov 2022 18:01:05 +0800
+Message-Id: <20221125100105.1646449-1-chee.yang.lee@intel.com>
 X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
@@ -47,13 +47,16 @@ Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 25 Nov 2022 04:34:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3506
+ <docs@lists.yoctoproject.org>; Fri, 25 Nov 2022 09:57:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3507
 
 From: Chee Yang Lee <chee.yang.lee@intel.com>
 
 Signed-off-by: Chee Yang Lee <chee.yang.lee@intel.com>
 ---
+
+v2 add more fixed CVE for openssl 
+
  .../migration-guides/release-4.1.rst          |   1 +
  .../migration-guides/release-notes-4.1.1.rst  | 317 ++++++++++++++++++
  2 files changed, 318 insertions(+)
@@ -70,7 +73,7 @@ index 8ebf4a4c9..c91724c5e 100644
 +   release-notes-4.1.1
 diff --git a/documentation/migration-guides/release-notes-4.1.1.rst b/documentation/migration-guides/release-notes-4.1.1.rst
 new file mode 100644
-index 000000000..0c30e1a8b
+index 000000000..cd52ab3b3
 --- /dev/null
 +++ b/documentation/migration-guides/release-notes-4.1.1.rst
 @@ -0,0 +1,317 @@
@@ -83,7 +86,7 @@ index 000000000..0c30e1a8b
 +-  curl: Fix :cve:`2022-32221`, :cve:`2022-35260`, :cve:`2022-42915` and :cve:`2022-42916`
 +-  libx11: Fix :cve:`2022-3554`
 +-  lighttpd: Fix :cve:`2022-41556`
-+-  openssl: Fix :cve:`2022-3358`
++-  openssl: Fix :cve:`2022-3358`, :cve:`2022-3602` and :cve:`2022-3786`
 +-  pixman: Fix :cve:`2022-44638`
 +-  qemu: Fix :cve:`2022-3165`
 +-  sudo: Fix :cve:`2022-43995`
