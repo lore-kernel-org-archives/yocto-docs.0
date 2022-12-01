@@ -1,443 +1,146 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1C62DC43217
-	for <webhook@archiver.kernel.org>; Thu,  1 Dec 2022 17:06:35 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.49958.1669914390237727846
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1BF59C43217
+	for <webhook@archiver.kernel.org>; Thu,  1 Dec 2022 17:12:05 +0000 (UTC)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.47])
+ by mx.groups.io with SMTP id smtpd.web10.50135.1669914718948751228
  for <docs@lists.yoctoproject.org>;
- Thu, 01 Dec 2022 09:06:31 -0800
+ Thu, 01 Dec 2022 09:11:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=X9uNXV+Y;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 100D8240005;
-	Thu,  1 Dec 2022 17:06:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1669914388;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OmUrj7CfEH6+8/nacInM68h2rZJQpbB5htmu2+JETqY=;
-	b=X9uNXV+Y7KsghWkSbrcjlJTYILwMUBmNMgmgCNFXPjSUo5vWFel7hzdLhTYUQvV8u1a8dU
-	v7h6lSzzWY4b0CLhTyt5w5ZOxEy6AyN948M9M3NPnk2zpNiyHdp/YNeqYlrw8TKusEq6gP
-	8ZXoG5ZuSW8oZzlVEnymesEP/YWxbvONgrWvGgmtd5OIHIc7jSodo/mT4zcYPCZ4AaGc/e
-	EbYYWthT6tIRsdno99Naj4GETFp32cbp1zLBLiP3C6V87SxFsaTSk6KHt87nLbEZ3Kxi30
-	E+1DiukYvhpkhqIeB+MrrOUT1H/jWbSB9nY1/VgIA3hm847/3bK4/6OaYoNRmw==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: add references to variables only documented in the BitBake manual
-Date: Thu,  1 Dec 2022 18:06:25 +0100
-Message-Id: <20221201170625.266217-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=pass header.i=@theobroma-systems.com header.s=selector1 header.b=aAOyH4N+;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.20.47, mailfrom: quentin.schulz@theobroma-systems.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=izOV0sMUQO4OFdV6UV9hLgRGbQSKUXW/ZBXlA+5EVRHl00ykK0PSFebKJ4+hc7khwFSvmwVlNzRQuQ/SZ+PGlnc2UynI1L09V0Sl9gze25rVIf8gtNHKGdTBHD4ZnCgATGw5851JNZQf2WAftxhRV0/92MWrtoXa6vBy15ZUerdMl8UwA/kXmm+BXJeUpJTLrIGZz3ujbq1RAYKGQBVMvItIZWI2Wv8ZW30ogccP+C1sr6pnqnp4wSWCjDkYiXFR8+XbAXKAPyEjsn6pD58d39HbYYB63d0PExQ6wKvl3Vx0Hzo+NezowwIIVGyf9NqqJb8FDUKBYQl0jdriSQmiig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=RkizKW3lsMZ4dPLSFygEXyKglzaGw9KB4acgKSjgs84=;
+ b=Ba7Ujg/FNRLxK1oW3JAHV8S8bIEIQq4Le69jLT2oLhwxMb15E0XrLmoAB25wkozJRiVnwOmjAx8/UHO+TEHT0JB7YyUsLeF+9U6Qw1ZocbUskS6HUnE/FYx3XEIZTpLr+9K4oIrngC1vTBJI6qZ1YpQK+wRtMZ4BSkMldybbsWXQYpkN8zjOcXL1urnVliDWiGHZyJFVFfFrHF8gtROH1pA6CSoi1Kb0lnktAou4dISIqWsSelapcJpXNW76qnWxOGUWQM5Ey/UBE4BrXmiNEXeWu09MFbH/jZhvqjv/WHmAXlNvv2LNxjRjHGakgmQn7AN/tgy8oFOdLVtIgTIROw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theobroma-systems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=RkizKW3lsMZ4dPLSFygEXyKglzaGw9KB4acgKSjgs84=;
+ b=aAOyH4N+KgjuxuGhwOAuJlmgb12h63RMavEg4ICZRqOE8cP4aiMdmTwb3CXgjUaunQVEq6zW13PoTLY3Pg4IM2At7/JoIQjgbSx4rv82AQZI2y4ugOgdo3uYKB4fPBsTk5fzQhWK/Z0ndIj8oOWjmu022kTr9KSm/ABuZTadAdp/Tbk6mcIZYutBs/rmzAuLkn2mDeHT9sas1rJuSvHNF3/bUvHwmtI5vTZYD0auknHwbdzMVdDcA91qayZKhBAFIWl0NPB6vuBCWMxnTFOhis6NzgD/j9Jj0S58R/qXkbcxn5rUWNxisuQBjxw/X1LvgTUhfM8ucO5cQtuKJCqDlg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com (2603:10a6:10:2d7::10)
+ by VE1PR04MB7392.eurprd04.prod.outlook.com (2603:10a6:800:1b2::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5857.19; Thu, 1 Dec
+ 2022 17:11:54 +0000
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::9ebd:cd48:9396:76f6]) by DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::9ebd:cd48:9396:76f6%6]) with mapi id 15.20.5880.008; Thu, 1 Dec 2022
+ 17:11:54 +0000
+Message-ID: <015a0ce9-3745-1720-2af1-3558dc77a688@theobroma-systems.com>
+Date: Thu, 1 Dec 2022 18:11:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Subject: Re: [docs] [PATCH] ref-manual: add references to variables only
+ documented in the BitBake manual
+Content-Language: en-US
+To: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
+References: <20221201170625.266217-1-michael.opdenacker@bootlin.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+In-Reply-To: <20221201170625.266217-1-michael.opdenacker@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR0102CA0076.eurprd01.prod.exchangelabs.com
+ (2603:10a6:803:15::17) To DU2PR04MB8536.eurprd04.prod.outlook.com
+ (2603:10a6:10:2d7::10)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|VE1PR04MB7392:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9518a1ae-9e2f-4984-4e52-08dad3bf24ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	XTFzAmyVyDL0m6iYMTmn4j8khZYRpGiEK1vhQdMiioWs7UaDJNEBZyF+ygkIbbNJBP30t6RBwi0RSHP9fYdX4PxbSW0WPOqjZn/FsG/TioRuZKFIgUcWZMZN4BAanU8KOO2rVYYeWMRmCgc4k43Cq4glDXnJssckbnY+X9o0HQND0GCLbE2wuVWa/Nrpoz4OOM9g/TdnUBB5u7zzmq28JO5zH/agnKbdmUqcERRGfkVZ3iltNq5eW3UsF87MEpdpi0pSUWZvZqAknnp33udjXA2jIQFdypv2I479oVykHYt+gjgzHo4jlst1zqLwSMTedCE9qdjBjrMr21vFYIxA4OCtXhnkcexCXL82wsTGp6zoJUMWE3Cyl9628c6zFcPwdLVHRq7B15OVQRtF4e0DX3PBiIRHR1i4LqNG1gTQHmK/J3kGhCvCwQMf6Aauk91uaX/HpXMhb8nHvyr0dc/fERDZ7tS6T/tjGRXwEa45V4bblj5MybQO0C2emx3L2r4gp7a1MLbTqcql+3llRg7m+v/HfW9CeS+0idtaasrNZXYERViqJTeGvWgC+TfYYbRxT5IeFBZh3UNdaNHb64UgCkZYPzMM7G2JpHhYcV8B+sSkqyclhU9PqRDOfmx7U20YFWFcSpumCrOhilJCscaFnYNPHqmF5SIk6mgxoaAthBPRywYQsiIAAyOynXq3h+ILolTKtlfvRN7qXf2j5qSvdfvbv9ymGtvDARc2O8jPBg4=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8536.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(396003)(366004)(136003)(376002)(39840400004)(346002)(451199015)(2616005)(31686004)(186003)(316002)(478600001)(86362001)(31696002)(36756003)(6512007)(6506007)(38100700002)(6666004)(53546011)(8936002)(41300700001)(4744005)(6486002)(44832011)(2906002)(66556008)(8676002)(66476007)(66946007)(5660300002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?R1pGRmZHeVlwelNxTkJXeHdTTVJOcEkxditSL1lpK3FtNXhKOXRGM3ByZXds?=
+ =?utf-8?B?enJ6b25zUHlJRmtWQW00VkY4WitMQWVWNEZtbEpvZk1LZGZ0TXMxVlpCNTBV?=
+ =?utf-8?B?SVlQdkkwVU5wbmdPdkNxN0dXeGVEZHU2aFJoTVl0QUlQSkhtVjdUOXdUb1Zt?=
+ =?utf-8?B?YnMyTWVTRERRb2lOVXpPSHA1MlNiSE1KT3RZTWw3bzVoV1dQaithVnQ0TGZR?=
+ =?utf-8?B?dVpqbm4xRFhBSUt3WEt3elhCcWU1MDV5U09xMHROOE9NZmJMWUFpNTNIZzJT?=
+ =?utf-8?B?OWwyWDYvRlMrcFp5RjE5Vnh2TGNkb09ZMnpEbFJWcXlCYTg5dFNzT0NNWTM5?=
+ =?utf-8?B?OGw0MXBYdng5T2RPby9GL1EwS2NveHgzUXZFaG9zNFRQS1NjLzlTbWcyY1Fs?=
+ =?utf-8?B?N01Qd0txU0p6MkJvcmR2MVBOTm9Ha2FseVRoMGhSUkViUzVhdXdrdWowd1ZL?=
+ =?utf-8?B?Y2htZVljQnR4d1Y5NmhGUzhYZFVyUjFZRGNZY2NDNExTUmRxVno2UCtqQitD?=
+ =?utf-8?B?SXByOStCYnVoK1ZTSWNSQ0NqUHRLODJPMkNJZzBFV3drTUxPdEl2K0tkeCt2?=
+ =?utf-8?B?WlZCU3JjZnRqTnRkUDRKeEM4ZWN0bE80N1l1RDJjd1pEWU53ZkNDMFVmd2k0?=
+ =?utf-8?B?MmFjM0prOGViWTFFREVKMzVEN0tEUnh0R3BWM0RDSENSMXhzM2xySy8zQzNz?=
+ =?utf-8?B?UmhEMXR1MzBmcEVVbXhQcmZBcWdLOEpjMEJIQTJqRDRvT1ZpeFRPdnJQZ0pS?=
+ =?utf-8?B?OFZLZ0NSeWU0K21MQWQyL2lmM2dMb3V3eTRiQlRoTnRPaXpHZCtaYU9lNElD?=
+ =?utf-8?B?RlZHWW93UUxjejJib1c3RkgxZjlVZ0FlQ2N6MDZ2VC9jMmF0QmpXdlZiUjFp?=
+ =?utf-8?B?UmJkZ1lVWVpCb0l0aTMyUXNMUytHZ0taZVRvQVpoRk9UZVJmeVpwSDZIbkIw?=
+ =?utf-8?B?MUhnYTRaSklZdndnZGRsOUZRNXR4cG1TOXdLb2NuQVpFUlpEbTR0VXJTRHF4?=
+ =?utf-8?B?MUY0ZFJvcGt5ejNLdVEvUUNZY3dveUZxbFVBUWxhbVUrcnc2UUV2eFlOcUpC?=
+ =?utf-8?B?dmFvTjhMSHJGY2dQVTF3T1lhMklHbGo3RTA1ZEpOL1JBeHJHWG1GZTM0MEUy?=
+ =?utf-8?B?VGtwakxGU3IvVGpiTEJqTTVoRmcwV2N2dVRnUVdvRFdWRHlqZFV5dUpweHhu?=
+ =?utf-8?B?OW03cnFZSTlqdFNlT3NmSkN4dlFXb3FxV1hNYWN1UG9SUXFMNnFYY0NzMkRP?=
+ =?utf-8?B?R0wwcjAvRzcrQW42QTZlNUZTUmZyQzhhb3RyYjhRTnBKc1F2LzZhWTVpeS8x?=
+ =?utf-8?B?SnJ5TS9VNWt1b1ExWDBDTUxJVXdrK25mNTM1RGpVMTlPRDZ0STJuUTRzaDlZ?=
+ =?utf-8?B?NnRnZnVXUzRGSmtyVmthYmFJaDBGTXV4cVpzQXhXSno0SWd4MkltZ2IwUFJH?=
+ =?utf-8?B?RjJNbGMvNW9RampneFVpeGZZU0JKT2RINVkrTUlsWDdiWFc4ejMxQUo5UnBC?=
+ =?utf-8?B?WDVPMVJDc095b2FUZzkyOWV6MUdvclpYUmx1UVdOQzhjUmZUZ1Q3MmRIL1h2?=
+ =?utf-8?B?ZTd3R0NyNnFRRUkrMzVTV0xYVDBNR0dKTGdTcURwSXpwdHpkcnhrYmN5ZnU2?=
+ =?utf-8?B?MTZSQncxekFLNUt4RjZ0aG5kd1lCd3V6MXN5SGhDL09tUHFGWjRmOENPZzNN?=
+ =?utf-8?B?TVAzbW1BN3UzM283T1lwS05tVWlpQmJkSllVQzhDZGZjRmlFLzVBa2lGT2V0?=
+ =?utf-8?B?Rnlaa2QvRDB0Z09FSG5vK2xNV0J1cm1lRTRFcWozRmF5bmxBU2Z6eThkc2wv?=
+ =?utf-8?B?V0dxd3FZOGJCTDNnSXhSa1VDVXU4bE5TZ1I2Rnp3MkpkemlTZyt5L0ovZ0dH?=
+ =?utf-8?B?bUJ1ZTZXT3o3SDFBeDRBbVJBdE1vZ1lIdS9JLzJxclRsUlVMWUxiMW1JZFpC?=
+ =?utf-8?B?MVliVXJqQ1VIUytzOGliTmpEcmxvYmxYbmpOajVoZjFjMVpvVitUdm5nT0Vz?=
+ =?utf-8?B?VVFlT2lKNDhsVi8yay8rcElIbVVCMVdxd2RwMFNuZE8rdE9YTU54MTdLUW81?=
+ =?utf-8?B?MHMvdWU1a0ZvT0o2RC9Wc2ZidzVRdWl4YktTeTd4L3pQVUdXTnhaWnY4VUpy?=
+ =?utf-8?B?c1hsRFNwM3FVdWsxNjBMb3kycUdGZW1ydzdKVTVWTHZVaUpnWWxVOG1oREF2?=
+ =?utf-8?B?Q3pMa1dwZEZ1MGZLVzJuZS8ranh3eUVwcytVY1JpVlp6dlVaMEoyVXhFcTdr?=
+ =?utf-8?B?UnQrS0NnSERMczNMd25qdk03VWhnPT0=?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9518a1ae-9e2f-4984-4e52-08dad3bf24ec
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8536.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Dec 2022 17:11:54.6139
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: S+OgzSd8uQ3e/wq1xTHsAWS3i2KzjPj22TIZ4SG9qQgeL4B+Z+AxHvDe5lfKMuybB0VgrLtjg8yeuVWJJ+RZh2CJmzgPT/bLUv8uAEt8rkYG3QEIZgvEO7dNvO4lSM58
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7392
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 01 Dec 2022 17:06:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3511
+ <docs@lists.yoctoproject.org>; Thu, 01 Dec 2022 17:12:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3512
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Michael,
 
-This makes the Yocto Project manual variable list and index more useful,
-not missing any potentially useful variable.
+On 12/1/22 18:06, Michael Opdenacker via lists.yoctoproject.org wrote:
+> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> 
+> This makes the Yocto Project manual variable list and index more useful,
+> not missing any potentially useful variable.
+> 
+> The price to pay is that a reference to such variables now has to go through
+> the intermediate reference in the Yocto Project variable list, instead
+> of going straight to the Bitbake manual.
+> 
 
-The price to pay is that a reference to such variables now has to go through
-the intermediate reference in the Yocto Project variable list, instead
-of going straight to the Bitbake manual.
+Is there a script/command you used and can share that does this or was 
+it done entirely manually?
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/ref-manual/variables.rst | 204 +++++++++++++++++++++++++
- 1 file changed, 204 insertions(+)
+In any case,
+Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 6bfacece07..0435f88347 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -353,6 +353,18 @@ system and gives an overview of their function and contents.
-       host listed in :term:`SRC_URI` after a successful fetch from the
-       :term:`PREMIRRORS` occurs.
- 
-+   :term:`BB_BASEHASH_IGNORE_VARS`
-+      See :term:`bitbake:BB_BASEHASH_IGNORE_VARS` in the BitBake manual.
-+
-+   :term:`BB_CHECK_SSL_CERTS`
-+      See :term:`bitbake:BB_CHECK_SSL_CERTS` in the BitBake manual.
-+
-+   :term:`BB_CONSOLELOG`
-+      See :term:`bitbake:BB_CONSOLELOG` in the BitBake manual.
-+
-+   :term:`BB_CURRENTTASK`
-+      See :term:`bitbake:BB_CURRENTTASK` in the BitBake manual.
-+
-    :term:`BB_DANGLINGAPPENDS_WARNONLY`
-       Defines how BitBake handles situations where an append file
-       (``.bbappend``) has no corresponding recipe file (``.bb``). This
-@@ -371,6 +383,12 @@ system and gives an overview of their function and contents.
- 
-          BB_DANGLINGAPPENDS_WARNONLY = "1"
- 
-+   :term:`BB_DEFAULT_TASK`
-+      See :term:`bitbake:BB_DEFAULT_TASK` in the BitBake manual.
-+
-+   :term:`BB_DEFAULT_UMASK`
-+      See :term:`bitbake:BB_DEFAULT_UMASK` in the BitBake manual.
-+
-    :term:`BB_DISKMON_DIRS`
-       Monitors disk space and available inodes during the build and allows
-       you to control the build based on these parameters.
-@@ -492,6 +510,18 @@ system and gives an overview of their function and contents.
-       a respective interval is reached beyond the initial warning (i.e. 1
-       Gbytes and 100 Kbytes).
- 
-+   :term:`BB_ENV_PASSTHROUGH`
-+      See :term:`bitbake:BB_ENV_PASSTHROUGH` in the BitBake manual.
-+
-+   :term:`BB_ENV_PASSTHROUGH_ADDITIONS`
-+      See :term:`bitbake:BB_ENV_PASSTHROUGH_ADDITIONS` in the BitBake manual.
-+
-+   :term:`BB_FETCH_PREMIRRORONLY`
-+      See :term:`bitbake:BB_FETCH_PREMIRRORONLY` in the BitBake manual.
-+
-+   :term:`BB_FILENAME`
-+      See :term:`bitbake:BB_FILENAME` in the BitBake manual.
-+
-    :term:`BB_GENERATE_MIRROR_TARBALLS`
-       Causes tarballs of the source control repositories (e.g. Git
-       repositories), including metadata, to be placed in the
-@@ -511,6 +541,48 @@ system and gives an overview of their function and contents.
-       clean up your :term:`DL_DIR` directory by deleting any Git or other
-       source control work directories.
- 
-+   :term:`BB_GENERATE_SHALLOW_TARBALLS`
-+      See :term:`bitbake:BB_GENERATE_SHALLOW_TARBALLS` in the BitBake manual.
-+
-+   :term:`BB_GIT_SHALLOW`
-+      See :term:`bitbake:BB_GIT_SHALLOW` in the BitBake manual.
-+
-+   :term:`BB_GIT_SHALLOW_DEPTH`
-+      See :term:`bitbake:BB_GIT_SHALLOW_DEPTH` in the BitBake manual.
-+
-+   :term:`BB_HASHCHECK_FUNCTION`
-+      See :term:`bitbake:BB_HASHCHECK_FUNCTION` in the BitBake manual.
-+
-+   :term:`BB_HASHCONFIG_IGNORE_VARS`
-+      See :term:`bitbake:BB_HASHCONFIG_IGNORE_VARS` in the BitBake manual.
-+
-+   :term:`BB_HASHSERVE`
-+      See :term:`bitbake:BB_HASHSERVE` in the BitBake manual.
-+
-+   :term:`BB_HASHSERVE_UPSTREAM`
-+      See :term:`bitbake:BB_HASHSERVE_UPSTREAM` in the BitBake manual.
-+
-+   :term:`BB_INVALIDCONF`
-+      See :term:`bitbake:BB_INVALIDCONF` in the BitBake manual.
-+
-+   :term:`BB_LOGCONFIG`
-+      See :term:`bitbake:BB_LOGCONFIG` in the BitBake manual.
-+
-+   :term:`BB_LOGFMT`
-+      See :term:`bitbake:BB_LOGFMT` in the BitBake manual.
-+
-+   :term:`BB_MULTI_PROVIDER_ALLOWED`
-+      See :term:`bitbake:BB_MULTI_PROVIDER_ALLOWED` in the BitBake manual.
-+
-+   :term:`BB_NICE_LEVEL`
-+      See :term:`bitbake:BB_NICE_LEVEL` in the BitBake manual.
-+
-+   :term:`BB_NO_NETWORK`
-+      See :term:`bitbake:BB_NO_NETWORK` in the BitBake manual.
-+
-+   :term:`BB_NUMBER_PARSE_THREADS`
-+      See :term:`bitbake:BB_NUMBER_PARSE_THREADS` in the BitBake manual.
-+
-    :term:`BB_NUMBER_THREADS`
-       The maximum number of tasks BitBake should run in parallel at any one
-       time. The OpenEmbedded build system automatically configures this
-@@ -556,6 +628,33 @@ system and gives an overview of their function and contents.
-       tasks already being run from using all CPU threads on the system
-       if :term:`PARALLEL_MAKE` is not set to a low value.
- 
-+   :term:`BB_ORIGENV`
-+      See :term:`bitbake:BB_ORIGENV` in the BitBake manual.
-+
-+   :term:`BB_PRESERVE_ENV`
-+      See :term:`bitbake:BB_PRESERVE_ENV` in the BitBake manual.
-+
-+   :term:`BB_PRESSURE_MAX_CPU`
-+      See :term:`bitbake:BB_PRESSURE_MAX_CPU` in the BitBake manual.
-+
-+   :term:`BB_PRESSURE_MAX_IO`
-+      See :term:`bitbake:BB_PRESSURE_MAX_IO` in the BitBake manual.
-+
-+   :term:`BB_PRESSURE_MAX_MEMORY`
-+      See :term:`bitbake:BB_PRESSURE_MAX_MEMORY` in the BitBake manual.
-+
-+   :term:`BB_RUNFMT`
-+      See :term:`bitbake:BB_RUNFMT` in the BitBake manual.
-+
-+   :term:`BB_RUNTASK`
-+      See :term:`bitbake:BB_RUNTASK` in the BitBake manual.
-+
-+   :term:`BB_SCHEDULER`
-+      See :term:`bitbake:BB_SCHEDULER` in the BitBake manual.
-+
-+   :term:`BB_SCHEDULERS`
-+      See :term:`bitbake:BB_SCHEDULERS` in the BitBake manual.
-+
-    :term:`BB_SERVER_TIMEOUT`
-       Specifies the time (in seconds) after which to unload the BitBake
-       server due to inactivity. Set :term:`BB_SERVER_TIMEOUT` to determine how
-@@ -569,6 +668,36 @@ system and gives an overview of their function and contents.
-       If you want the server to never be unloaded,
-       set :term:`BB_SERVER_TIMEOUT` to "-1".
- 
-+   :term:`BB_SETSCENE_DEPVALID`
-+      See :term:`bitbake:BB_SETSCENE_DEPVALID` in the BitBake manual.
-+
-+   :term:`BB_SIGNATURE_EXCLUDE_FLAGS`
-+      See :term:`bitbake:BB_SIGNATURE_EXCLUDE_FLAGS` in the BitBake manual.
-+
-+   :term:`BB_SIGNATURE_HANDLER`
-+      See :term:`bitbake:BB_SIGNATURE_HANDLER` in the BitBake manual.
-+
-+   :term:`BB_SRCREV_POLICY`
-+      See :term:`bitbake:BB_SRCREV_POLICY` in the BitBake manual.
-+
-+   :term:`BB_STRICT_CHECKSUM`
-+      See :term:`bitbake:BB_STRICT_CHECKSUM` in the BitBake manual.
-+
-+   :term:`BB_TASK_IONICE_LEVEL`
-+      See :term:`bitbake:BB_TASK_IONICE_LEVEL` in the BitBake manual.
-+
-+   :term:`BB_TASK_NICE_LEVEL`
-+      See :term:`bitbake:BB_TASK_NICE_LEVEL` in the BitBake manual.
-+
-+   :term:`BB_TASKHASH`
-+      See :term:`bitbake:BB_TASKHASH` in the BitBake manual.
-+
-+   :term:`BB_VERBOSE_LOGS`
-+      See :term:`bitbake:BB_VERBOSE_LOGS` in the BitBake manual.
-+
-+   :term:`BB_WORKERCONTEXT`
-+      See :term:`bitbake:BB_WORKERCONTEXT` in the BitBake manual.
-+
-    :term:`BBCLASSEXTEND`
-       Allows you to extend a recipe so that it builds variants of the
-       software. There are common variants for recipes as "natives" like
-@@ -599,6 +728,9 @@ system and gives an overview of their function and contents.
-          since ``include`` statements are processed when the recipe is
-          parsed.
- 
-+   :term:`BBDEBUG`
-+      See :term:`bitbake:BBDEBUG` in the BitBake manual.
-+
-    :term:`BBFILE_COLLECTIONS`
-       Lists the names of configured layers. These names are used to find
-       the other ``BBFILE_*`` variables. Typically, each layer will append
-@@ -674,6 +806,9 @@ system and gives an overview of their function and contents.
-              /work/my-layer/bbappends/meta-security-isafw/*/*/*.bbappend
-              /work/my-layer/bbappends/openembedded-core/meta/*/*/*.bbappend
- 
-+   :term:`BBINCLUDED`
-+      See :term:`bitbake:BBINCLUDED` in the BitBake manual.
-+
-    :term:`BBINCLUDELOGS`
-       Variable that controls how BitBake displays logs on build failure.
- 
-@@ -698,6 +833,9 @@ system and gives an overview of their function and contents.
-       This example enables four layers, one of which is a custom,
-       user-defined layer named ``meta-mykernel``.
- 
-+   :term:`BBLAYERS_FETCH_DIR`
-+      See :term:`bitbake:BBLAYERS_FETCH_DIR` in the BitBake manual.
-+
-    :term:`BBMASK`
-       Prevents BitBake from processing recipes and recipe append files.
- 
-@@ -754,6 +892,9 @@ system and gives an overview of their function and contents.
-       ":ref:`dev-manual/building:building images for multiple targets using multiple configurations`"
-       section in the Yocto Project Development Tasks Manual.
- 
-+   :term:`BBPATH`
-+      See :term:`bitbake:BBPATH` in the BitBake manual.
-+
-    :term:`BBSERVER`
-       If defined in the BitBake environment, :term:`BBSERVER` points to the
-       BitBake remote server.
-@@ -767,6 +908,9 @@ system and gives an overview of their function and contents.
-       Consequently, :term:`BBSERVER` is excluded from checksum and dependency
-       data.
- 
-+   :term:`BBTARGETS`
-+      See :term:`bitbake:BBTARGETS` in the BitBake manual.
-+
-    :term:`BINCONFIG`
-       When inheriting the
-       :ref:`binconfig-disabled <ref-classes-binconfig-disabled>` class,
-@@ -804,6 +948,9 @@ system and gives an overview of their function and contents.
-       information on the class in the
-       ":ref:`ref-classes-binconfig`" section.
- 
-+   :term:`BITBAKE_UI`
-+      See :term:`bitbake:BITBAKE_UI` in the BitBake manual.
-+
-    :term:`BP`
-       The base recipe name and version but without any special recipe name
-       suffix (i.e. ``-native``, ``lib64-``, and so forth). :term:`BP` is
-@@ -1051,6 +1198,9 @@ system and gives an overview of their function and contents.
- 
-          BUILDHISTORY_PUSH_REPO ?= ""
- 
-+   :term:`BUILDNAME`
-+      See :term:`bitbake:BUILDNAME` in the BitBake manual.
-+
-    :term:`BUILDSDK_CFLAGS`
-       Specifies the flags to pass to the C compiler when building for the
-       SDK. When building in the ``nativesdk-`` context,
-@@ -1092,6 +1242,9 @@ system and gives an overview of their function and contents.
-       splitting the output executable file. Set the variable to "0" to get
-       a single output executable file.
- 
-+   :term:`BZRDIR`
-+      See :term:`bitbake:BZRDIR` in the BitBake manual.
-+
-    :term:`CACHE`
-       Specifies the directory BitBake uses to store a cache of the
-       :term:`Metadata` so it does not need to be parsed every time
-@@ -2461,6 +2614,24 @@ system and gives an overview of their function and contents.
- 
-          EXTRANATIVEPATH = "foo bar"
- 
-+   :term:`FAKEROOT`
-+      See :term:`bitbake:FAKEROOT` in the BitBake manual.
-+
-+   :term:`FAKEROOTBASEENV`
-+      See :term:`bitbake:FAKEROOTBASEENV` in the BitBake manual.
-+
-+   :term:`FAKEROOTCMD`
-+      See :term:`bitbake:FAKEROOTCMD` in the BitBake manual.
-+
-+   :term:`FAKEROOTDIRS`
-+      See :term:`bitbake:FAKEROOTDIRS` in the BitBake manual.
-+
-+   :term:`FAKEROOTENV`
-+      See :term:`bitbake:FAKEROOTENV` in the BitBake manual.
-+
-+   :term:`FAKEROOTNOENV`
-+      See :term:`bitbake:FAKEROOTNOENV` in the BitBake manual.
-+
-    :term:`FEATURE_PACKAGES`
-       Defines one or more packages to include in an image when a specific
-       item is included in :term:`IMAGE_FEATURES`.
-@@ -2496,6 +2667,12 @@ system and gives an overview of their function and contents.
-       a set of configuration files for you in your target that work with
-       the feed.
- 
-+   :term:`FETCHCMD`
-+      See :term:`bitbake:FETCHCMD` in the BitBake manual.
-+
-+   :term:`FILE`
-+      See :term:`bitbake:FILE` in the BitBake manual.
-+
-    :term:`FILES`
-       The list of files and directories that are placed in a package. The
-       :term:`PACKAGES` variable lists the packages
-@@ -2903,6 +3080,9 @@ system and gives an overview of their function and contents.
-       method modules being installed when the modules are in packages other
-       than the main package.
- 
-+   :term:`HGDIR`
-+      See :term:`bitbake:HGDIR` in the BitBake manual.
-+
-    :term:`HOMEPAGE`
-       Website where more information about the software the recipe is
-       building can be found.
-@@ -4456,6 +4636,9 @@ system and gives an overview of their function and contents.
-       available outside of ``layer.conf`` and references are expanded
-       immediately when parsing of the file completes.
- 
-+   :term:`LAYERDIR_RE`
-+      See :term:`bitbake:LAYERDIR_RE` in the BitBake manual.
-+
-    :term:`LAYERRECOMMENDS`
-       Lists the layers, separated by spaces, recommended for use with this
-       layer.
-@@ -5349,6 +5532,9 @@ system and gives an overview of their function and contents.
- 
-          ${PN}-${PV}
- 
-+   :term:`P4DIR`
-+      See :term:`bitbake:P4DIR` in the BitBake manual.
-+
-    :term:`PACKAGE_ADD_METADATA`
-       This variable defines additional metadata to add to packages.
- 
-@@ -5915,6 +6101,9 @@ system and gives an overview of their function and contents.
-       denotes the path to ``dist/`` (short for distribution) where the
-       binary archive ``wheel`` is built.
- 
-+   :term:`PERSISTENT_DIR`
-+      See :term:`bitbake:PERSISTENT_DIR` in the BitBake manual.
-+
-    :term:`PF`
-       Specifies the recipe or package name and includes all version and
-       revision numbers (i.e. ``glibc-2.13-r20+svnr15508/`` and
-@@ -6118,6 +6307,9 @@ system and gives an overview of their function and contents.
-          desirable since this mechanism is designed to select between mutually
-          exclusive alternative providers.
- 
-+   :term:`PREFERRED_PROVIDERS`
-+      See :term:`bitbake:PREFERRED_PROVIDERS` in the BitBake manual.
-+
-    :term:`PREFERRED_VERSION`
-       If there are multiple versions of a recipe available, this variable
-       determines which version should be given preference. You must always
-@@ -6539,6 +6731,9 @@ system and gives an overview of their function and contents.
-       in the ":ref:`ref-manual/devtool-reference:checking on the upgrade status of a recipe`"
-       section.
- 
-+   :term:`REPODIR`
-+      See :term:`bitbake:REPODIR` in the BitBake manual.
-+
-    :term:`REQUIRED_DISTRO_FEATURES`
-       When inheriting the :ref:`features_check <ref-classes-features_check>`
-       class, this variable identifies distribution features that must exist
-@@ -7444,6 +7639,9 @@ system and gives an overview of their function and contents.
-       section in the Yocto Project Board Support Package Developer's Guide
-       for additional information.
- 
-+   :term:`SRCREV_FORMAT`
-+      See :term:`bitbake:SRCREV_FORMAT` in the BitBake manual.
-+
-    :term:`SRC_URI`
- 
-       See the BitBake manual for the initial description for this variable:
-@@ -7826,6 +8024,9 @@ system and gives an overview of their function and contents.
-       :term:`PV`, and :term:`PR` for related variable
-       information.
- 
-+   :term:`STAMPCLEAN`
-+      See :term:`bitbake:STAMPCLEAN` in the BitBake manual.
-+
-    :term:`STAMPS_DIR`
-       Specifies the base directory in which the OpenEmbedded build system
-       places stamps. The default directory is ``${TMPDIR}/stamps``.
-@@ -8601,6 +8802,9 @@ system and gives an overview of their function and contents.
-       information on setting up a cross-development environment, see the
-       :doc:`/sdk-manual/index` manual.
- 
-+   :term:`TOPDIR`
-+      See :term:`bitbake:TOPDIR` in the BitBake manual.
-+
-    :term:`TRANSLATED_TARGET_ARCH`
-       A sanitized version of :term:`TARGET_ARCH`. This
-       variable is used where the architecture is needed in a value where
--- 
-2.34.1
-
+Cheers,
+Quentin
 
