@@ -2,66 +2,100 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BC54FC4708E
-	for <webhook@archiver.kernel.org>; Fri,  2 Dec 2022 15:59:42 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.79273.1669996778994635876
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3E6B9C4332F
+	for <webhook@archiver.kernel.org>; Fri,  2 Dec 2022 17:40:33 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.82346.1670002828754447565
  for <docs@lists.yoctoproject.org>;
- Fri, 02 Dec 2022 07:59:39 -0800
+ Fri, 02 Dec 2022 09:40:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=p2zjFa++;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=j/Bar0EZ;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id A66AFC000C;
-	Fri,  2 Dec 2022 15:59:36 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5D6041BF205;
+	Fri,  2 Dec 2022 17:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1669996776;
+	t=1670002826;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=nT7I4tfcadYGLvO9TV5Mk5MeepgLngJepYqdg93S+M8=;
-	b=p2zjFa++PlU5HOOgZ/z4p+2HvhqIpPIo5RvsG+xHgqlasHasWnkRrv+YE7t2TgG/ks6Lan
-	SxsKR3Hw79Ig62NPOg5hDKvVvqWVJBMIp9UwNTox6IxLdip9vTJCIUh/tex/IYwuz9dSYw
-	PxTePMstpuYZtBLI7StA7TbxgD7B2GP9VUgf57a2+5j/2sBRgOxzKW/yUZJQtiW3irSkO8
-	e4IjjQoE0fKPCeJvZlu+TDcjOYnoFtbWFH/4i6gplpVwZW40+aEA9/8aAkkgyXsJdyF9/z
-	X2JVKdMD2ecIeIWrzFD0tEGtAL43kAN+KqRAZbdh5zUPSaFNvY7e3O31MtGu9A==
+	bh=StxsxlrpH7jfwLB+T0EroLzAPfW6RJlKlV//wi5KLBU=;
+	b=j/Bar0EZz0SkGlNip2gBUFfXNPY9J5vloHT6D1QVqdh7NnWzn6rT89zGtCXPLZqz3WXlnC
+	CSwE5Tg+By3qhOejihHjiCTfNsGhU3tboK6vG/goTWD1QgKwnv4U1WDNv8G0jsdV6gQjDr
+	IMys0GWnItQl9lC5ZcZrotJFrnvEY96YCfCzemFAOe8ZZANBzDmYkJRQWzLAZZzSJsASHk
+	+zrrHIPYoGFA2nwkc/rreXwYwk3HzT8pnx+88s8eq+SIpLTHyUgf+ZA44JtFLEzhGoNWvV
+	l/AXX5JsSkksr0j4/97zM7OezW9jHW0b8Ii/6tTYq5oG/1o34leKkx7p3a7Qew==
 From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] manuals: add reference to yocto-docs git repository to page footer
-Date: Fri,  2 Dec 2022 16:59:29 +0100
-Message-Id: <20221202155929.343262-1-michael.opdenacker@bootlin.com>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] bitbake-user-manual: update references to Yocto Project manual
+Date: Fri,  2 Dec 2022 18:38:36 +0100
+Message-Id: <20221202173836.352854-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 02 Dec 2022 15:59:42 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3518
+ <docs@lists.yoctoproject.org>; Fri, 02 Dec 2022 17:40:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3519
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-To make documentation sources easier to find.
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/_templates/footer.html | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/_templates/footer.html b/documentation/_templates/footer.html
-index 508129ede4..fb3c58d845 100644
---- a/documentation/_templates/footer.html
-+++ b/documentation/_templates/footer.html
-@@ -5,7 +5,7 @@
-         <br> All Rights Reserved. Linux Foundation&reg; and Yocto Project&reg; are registered trademarks of the Linux Foundation.
-         <br>Linux&reg; is a registered trademark of Linus Torvalds.
-         <br>&copy; Copyright {{ copyright }}
--        <br>Last updated on {{ last_updated }}
-+        <br>Last updated on {{ last_updated }} from the <a href="https://git.yoctoproject.org/yocto-docs/">yocto-docs</a> git repository.
-     </p>
-   </div>
- </footer>
+Please note that this update will work only when the next release is made, linking to
+https://docs.yoctoproject.org/dev-manual/python-development-shell.html#using-a-python-development-shell
+
+Currently, the above link doesn't exist yet; it currently exists only in the "dev" docs:
+https://docs.yoctoproject.org/dev/dev-manual/python-development-shell.html#using-a-python-development-shell
+
+It would be nice for the "dev" version of the BitBake manual
+to point to the "dev" version of the Yocto manual, but
+that's limited to specific needs like this one, so I'm not sure
+that's worth implementing a change.
+---
+ doc/bitbake-user-manual/bitbake-user-manual-fetching.rst | 4 ++--
+ doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+index 9c269ca8..f715dee5 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
+@@ -740,7 +740,7 @@ Here is an example URL with both fetchers::
+        "
+ 
+ See :yocto_docs:`Creating Node Package Manager (NPM) Packages
+-</dev-manual/common-tasks.html#creating-node-package-manager-npm-packages>`
++</dev-manual/packages.html#creating-node-package-manager-npm-packages>`
+ in the Yocto Project manual for details about using
+ :yocto_docs:`devtool <https://docs.yoctoproject.org/ref-manual/devtool-reference.html>`
+ to automatically create a recipe from an NPM URL.
+@@ -777,7 +777,7 @@ the package which has such dependencies, for example::
+ Such a file can automatically be generated using
+ :yocto_docs:`devtool <https://docs.yoctoproject.org/ref-manual/devtool-reference.html>`
+ as described in the :yocto_docs:`Creating Node Package Manager (NPM) Packages
+-</dev-manual/common-tasks.html#creating-node-package-manager-npm-packages>`
++</dev-manual/packages.html#creating-node-package-manager-npm-packages>`
+ section of the Yocto Project.
+ 
+ Other Fetchers
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+index b7c3d809..b839e669 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+@@ -1935,7 +1935,7 @@ Testing and Debugging BitBake Python code
+ The OpenEmbedded build system implements a convenient ``pydevshell`` target which
+ you can use to access the BitBake datastore and experiment with your own Python
+ code. See :yocto_docs:`Using a Python Development Shell
+-</dev-manual/common-tasks.html#using-a-python-development-shell>` in the Yocto
++</dev-manual/python-development-shell.html#using-a-python-development-shell>` in the Yocto
+ Project manual for details.
+ 
+ Task Checksums and Setscene
 -- 
 2.34.1
 
