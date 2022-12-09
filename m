@@ -2,158 +2,93 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0E084C4332F
-	for <webhook@archiver.kernel.org>; Fri,  9 Dec 2022 18:18:38 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.78.1670609911298012061
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06688C4332F
+	for <webhook@archiver.kernel.org>; Fri,  9 Dec 2022 18:24:48 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.231.1670610278627319238
  for <docs@lists.yoctoproject.org>;
- Fri, 09 Dec 2022 10:18:31 -0800
+ Fri, 09 Dec 2022 10:24:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Y7hItV26;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oS/bCqDN;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id E1A1C40004;
-	Fri,  9 Dec 2022 18:18:28 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 7211920008;
+	Fri,  9 Dec 2022 18:24:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1670609909;
+	t=1670610275;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PKTaYNqhxElOj+h1IgK5/v4MvxtZ8nmtJZgtvhN236c=;
-	b=Y7hItV26wgZm6mTtox+CKXBUItLJBOo1iVU9Ixnj8aEuhCCKCOFG1G9il2fSHvULhP/+/e
-	XMQdI2QZrkv7ZyrmVFTLr9WRiUr869YrzU8FwUFSRstIAdb6qpzz6/YAITq95zS4P85J4j
-	0x2P1f7vHctiTqAuEvsdGjea1qyA7aJlh4+mt7gLdjxf5RawRXFxQoCLSprZgZ59ap4qTU
-	xHKC9Lujl5AmzKFz345pqT9j7bYM+l4WDCVRbO9kVe1pZTyTjfh8jFvZ1R/UgFxbRqr9cF
-	8c+J5j6ta8K3DulQMNrVPGvVkMCepDR24FBc97MNhmN+xZY5mkYXEu5CfZrfLw==
-Message-ID: <f56f2a9d-21c4-cf08-4d49-9c9f5977cc09@bootlin.com>
-Date: Fri, 9 Dec 2022 19:18:27 +0100
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=No3W9/7V4ACe7kD7KpqboMtsOL7wCzyu5eKZUci+yAY=;
+	b=oS/bCqDNs76c0Yd6Nr9LtDkMRp+nXvlr9qX+jRcvF9Fw7zin42YJ6nISH6OD9gAPXfBhkq
+	sYowYCwAbf2VmGtf0SE/WbKvnhiohRPtLspEJOHCioFzeNqdyjoZ+486zAPCFaQ8n6CKqN
+	/xT9VXESO2U1hYTM3a8yva+p0zVeM7l7Rv2SXk+3LqrIC5crSMQGa1iY6OzYy1vmJ0n3Md
+	l+ai+CHRv5JrJuEybJeuMI6MylrAfbl/JmTGfUdycarU4a+Fg/kQS4vX55ksDBdWAdY4xa
+	r3tJQ4wYibSatARK8HhMP+TUDBzf+BAx2J9A0iJA97aGlfuxGkol/mwB21Su7w==
+Message-ID: <ac8e0626-c3c3-8cf4-aead-ba8eba290526@bootlin.com>
+Date: Fri, 9 Dec 2022 19:24:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual: update references to release notes
 Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: quentin.schulz@theobroma-systems.com
+References: <20221208151610.20370-1-michael.opdenacker@bootlin.com>
+ <0238be8d-2341-45d5-dd5d-ebfd1ea1ccf1@theobroma-systems.com>
+ <f1540530-9eeb-fa58-a60c-93e1ef8e8d40@bootlin.com>
+ <4a4bc51a-f4a0-bf06-9234-b8dd8d0f2bd3@theobroma-systems.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
 Organization: Bootlin
+In-Reply-To: <4a4bc51a-f4a0-bf06-9234-b8dd8d0f2bd3@theobroma-systems.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 09 Dec 2022 18:18:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3543
-
-Hi Richard,
+ <docs@lists.yoctoproject.org>; Fri, 09 Dec 2022 18:24:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3544
 
 
-The following changes since commit 8d0d56cea5373c928feaaba316038c84130b52e7:
+Am 09.12.22 um 17:38 schrieb Quentin Schulz via lists.yoctoproject.org:
+> Hi Michael,
+>
+> On 12/9/22 16:22, Michael Opdenacker wrote:
+>> Hi Quentin,
+>>
+>> Thanks for the review.
+>>
+>> Am 09.12.22 um 11:05 schrieb Quentin Schulz via lists.yoctoproject.org:
+>>> Hi Michael,
+>>>
+>>> On 12/8/22 16:16, Michael Opdenacker via lists.yoctoproject.org wrote:
+>>>>
+>>>> +         components might cause build problems. See
+>>>> +         :yocto_docs:`Release Information </migration-guides/>` 
+>>>> for your
+>>>> +         version of the Yocto Project, to find the specific 
+>>>> components with
+>>>> +         which the toolchain must be compatible.
+>>>
+>>> Where is this info located exactly?
+>>
+>> Well, information is scarce. In the release notes, you have at least 
+>> the glibc version which is supported, and sometimes but not 
+>> systematically the supported gcc and binutils versions.
+>>
+>> Shall I say "where you may find the specific components..."?
+>
+> I'm just wondering how this would help people if there's no actual way 
+> of knowing the specific components or their version.
+>
+> In the end, if there's not more information than the previous 
+> location, I guess the patch in itself is fine and another 
+> patch/workflow/process can be put in place to make this more helpful 
+> (if even possible).
 
-   dev-manual/runtime-testing.rst: fix oeqa runtime test path 
-(2022-12-01 19:46:50 +0100)
 
-are available in the Git repository at:
-
-   git://git.yoctoproject.org/yocto-docs master-next
-
-for you to fetch changes up to 9a51f1ce0de9152d0cdca4bf1f67546fd6599448:
-
-   ref-manual/images.rst: fix unnumbered list (2022-12-09 17:00:19 +0100)
-
-----------------------------------------------------------------
-Michael Opdenacker (9):
-       ref-manual: add references to variables only documented in the 
-BitBake manual
-       manuals: add reference to yocto-docs git repository to page footer
-       manuals: add missing references to variables
-       manuals: add missing SPDX license header to source files
-       manuals: fix double colons
-       ref-manual/resources.rst: fix formating
-       ref-manual: update references to release notes
-       manual: improve documentation about using external toolchains
-       ref-manual/images.rst: fix unnumbered list
-
-  documentation/_templates/footer.html                   |   2 +-
-  documentation/boilerplate.rst                          |   2 +
-  documentation/dev-manual/building.rst                  |   6 +--
-  documentation/dev-manual/debugging.rst                 |   6 +--
-  documentation/dev-manual/error-reporting-tool.rst      |   3 +-
-  documentation/dev-manual/external-toolchain.rst        |  28 ++++++++----
-  documentation/dev-manual/licenses.rst                  |   3 +-
-  documentation/dev-manual/new-recipe.rst                |  16 +++----
-  documentation/dev-manual/packages.rst                  |   2 +-
-  documentation/dev-manual/qemu.rst                      |  20 +++------
-  documentation/dev-manual/quilt.rst                     |   3 +-
-  documentation/dev-manual/runtime-testing.rst           |   3 +-
-  documentation/dev-manual/upgrading-recipes.rst         |  14 +++---
-  documentation/dev-manual/wic.rst                       |   6 +--
-  documentation/genindex.rst                             |   2 +
-  documentation/kernel-dev/advanced.rst                  |  15 +++----
-  documentation/kernel-dev/common.rst                    |  43 
-++++++++----------
-  documentation/migration-guides/migration-1.4.rst       |   2 +
-  documentation/migration-guides/migration-1.5.rst       |   2 +
-  documentation/migration-guides/migration-1.6.rst       |   2 +
-  documentation/migration-guides/migration-1.7.rst       |   2 +
-  documentation/migration-guides/migration-1.8.rst       |   2 +
-  documentation/migration-guides/migration-2.0.rst       |   2 +
-  documentation/migration-guides/migration-2.1.rst       |   2 +
-  documentation/migration-guides/migration-2.2.rst       |  14 +++---
-  documentation/migration-guides/migration-2.3.rst       |   2 +
-  documentation/migration-guides/migration-2.4.rst       |   2 +
-  documentation/migration-guides/migration-2.5.rst       |   2 +
-  documentation/migration-guides/migration-2.6.rst       |   2 +
-  documentation/migration-guides/migration-2.7.rst       |   2 +
-  documentation/migration-guides/migration-3.0.rst       |   4 +-
-  documentation/migration-guides/migration-3.1.rst       |   2 +
-  documentation/migration-guides/migration-3.2.rst       |   2 +
-  documentation/migration-guides/migration-3.3.rst       |   2 +
-  documentation/migration-guides/migration-3.4.rst       |   2 +
-  documentation/migration-guides/migration-4.0.rst       |   2 +
-  documentation/migration-guides/migration-4.1.rst       |   4 +-
-  documentation/migration-guides/migration-general.rst   |   2 +
-  documentation/migration-guides/release-3.4.rst         |   2 +
-  documentation/migration-guides/release-4.0.rst         |   2 +
-  documentation/migration-guides/release-4.1.rst         |   2 +
-  documentation/migration-guides/release-notes-3.4.1.rst |  24 +++++-----
-  documentation/migration-guides/release-notes-3.4.2.rst |  12 ++---
-  documentation/migration-guides/release-notes-3.4.3.rst |   8 ++--
-  documentation/migration-guides/release-notes-3.4.4.rst |  12 ++---
-  documentation/migration-guides/release-notes-3.4.rst   |  74 
-++++++++++++++++---------------
-  documentation/migration-guides/release-notes-4.0.1.rst |  22 +++++-----
-  documentation/migration-guides/release-notes-4.0.2.rst |  16 ++++---
-  documentation/migration-guides/release-notes-4.0.3.rst |  36 
-+++++++--------
-  documentation/migration-guides/release-notes-4.0.4.rst |  24 +++++-----
-  documentation/migration-guides/release-notes-4.0.5.rst |  14 +++---
-  documentation/migration-guides/release-notes-4.0.rst   |  30 +++++++------
-  documentation/migration-guides/release-notes-4.1.1.rst |  48 
-++++++++++----------
-  documentation/migration-guides/release-notes-4.1.rst   |  10 +++--
-  documentation/overview-manual/concepts.rst             |   6 +--
-  documentation/profile-manual/intro.rst                 |   4 +-
-  documentation/profile-manual/usage.rst                 |   2 +-
-  documentation/ref-manual/classes.rst                   |  18 ++++----
-  documentation/ref-manual/devtool-reference.rst         |   7 +--
-  documentation/ref-manual/faq.rst                       |  19 +-------
-  documentation/ref-manual/images.rst                    |   6 +--
-  documentation/ref-manual/qa-checks.rst                 |   2 +-
-  documentation/ref-manual/resources.rst                 |  48 
-++++++++++----------
-  documentation/ref-manual/variables.rst                 | 284 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------------------
-  documentation/sdk-manual/appendix-customizing.rst      |   3 +-
-  documentation/sdk-manual/appendix-obtain.rst           |   3 +-
-  documentation/sdk-manual/extensible.rst                |  27 +++++-------
-  documentation/sdk-manual/using.rst                     |  21 ++++-----
-  documentation/sdk-manual/working-projects.rst          |  15 +++----
-  documentation/test-manual/intro.rst                    |   8 ++--
-  documentation/test-manual/reproducible-builds.rst      |   2 +-
-  documentation/test-manual/understand-autobuilder.rst   |   2 +-
-  72 files changed, 631 insertions(+), 414 deletions(-)
-
-Thank you in advance
+Agreed. We can improve this in a future commit.
 Cheers
 Michael.
 
