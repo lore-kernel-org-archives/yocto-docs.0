@@ -1,93 +1,104 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 96D61C4167B
-	for <webhook@archiver.kernel.org>; Mon, 12 Dec 2022 10:51:19 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.40151.1670842278002469964
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD4DFC4332F
+	for <webhook@archiver.kernel.org>; Mon, 12 Dec 2022 11:31:39 +0000 (UTC)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+ by mx.groups.io with SMTP id smtpd.web11.40801.1670844695806051894
  for <docs@lists.yoctoproject.org>;
- Mon, 12 Dec 2022 02:51:18 -0800
+ Mon, 12 Dec 2022 03:31:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HRS6nFhJ;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id DD9051BF210;
-	Mon, 12 Dec 2022 10:51:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1670842275;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=nMnYtiH0XDf7ypvdRNMIJFjb13um2FdYBXjP+UghEfs=;
-	b=HRS6nFhJyFkchSubcSScjPPYqszx1ffJbeqld31RTWMH/hIhZEFG1pMVeCIle3pJZEaM5B
-	DueljLuhaiZD60FyDipUCYml1Laz4NZHDtPLSXQdB4T0iXTb/QxmxErIfqEgHmcESR8oSN
-	jDMQ9/xL7cYtkDXBFqP2JMlNJjciVW4y+UZIPnksy9Qfu0abTEuXGGeCqHvM/3mp0SH8so
-	GEUtwgr8FzPQFutppEQ8vZDwvO3t18z0aeAHj1/YyM4zdMw2SW3nrdVlzR8gm/K6uZvpmR
-	bitmTLQwCj2rZDC8B54LO5ngpRS7Apk4uoWS36UqpExYyqbqG0EBkqNp2MuArg==
-From: michael.opdenacker@bootlin.com
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] bitbake-user-manual: remove "OEBasic" signature generator
-Date: Mon, 12 Dec 2022 11:51:06 +0100
-Message-Id: <20221212105106.65882-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.37.2
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=bfhWSWMQ;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.46, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f46.google.com with SMTP id ja17so2104470wmb.3
+        for <docs@lists.yoctoproject.org>; Mon, 12 Dec 2022 03:31:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fI5ne2X8qm+edXovaKUJHhrzEZQX+LnblpwnaHPHlFY=;
+        b=bfhWSWMQBD4t2utMi0Gamyllx6s03jaKlwkJoERnHPupzXDbzzE3ZzO90DkLUV91fj
+         d3KwZRGObDuc1FEvJYNxlUkKwPJT6C5o49Iccu+yNCFbUXqui2h1OkxvJ1WESp211ovC
+         Smmv1z9TUdWOUu5BVYkKr9mwdwDh+ZV+cKzak=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fI5ne2X8qm+edXovaKUJHhrzEZQX+LnblpwnaHPHlFY=;
+        b=8PmyLOkjrpoO0yRi+qCmTAq93ISPJHYpT99Au5qPB/aa5vzhtgYD+1nB8kNKd6Op42
+         8CExA/wLLCryLwWlOSjUXpozcaQix6c4jWl/8XACaNBNa96e6+jjl5gjVtJDlc1W0vzR
+         +vxinFdewjr2UfuJbg/Sv1vFMVIC19H3yljIy/M/TXh7WxkO327qynAqQKPzJdH10uwC
+         T7yNuLeZWn/HMNX+ugR4bZ4T9N6M0JR90N/AAIQAHeyvYdWo5essqLaE8gkai2IlH5hf
+         1LNN5LA/ALGt0GAEbhktv4W5qN+9KpuncatvPVLM+Uh0I3xt4JiLOyd6LDNq5gKk4eA5
+         5s+A==
+X-Gm-Message-State: ANoB5pkIXRQhDwGjWxhJ6AWtIlKfkVQkFYPoAVrqCxeElJtxXqh0lJyY
+	AqDwJJ070RprLPzQ+qi9BdCV0g==
+X-Google-Smtp-Source: AA0mqf7oysEZ3OJmbFQT54aV22rnXc6/2PIA3YHdtfcSRtbLWrUpWfnH1FLSMcofJcTcUmd8Me97kQ==
+X-Received: by 2002:a05:600c:4e54:b0:3cf:51cf:91c with SMTP id e20-20020a05600c4e5400b003cf51cf091cmr12246841wmq.11.1670844694207;
+        Mon, 12 Dec 2022 03:31:34 -0800 (PST)
+Received: from ?IPv6:2001:8b0:aba:5f3c:cbbc:8f6d:4f6e:ffe4? ([2001:8b0:aba:5f3c:cbbc:8f6d:4f6e:ffe4])
+        by smtp.gmail.com with ESMTPSA id l41-20020a05600c1d2900b003c6b874a0dfsm11570542wms.14.2022.12.12.03.31.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Dec 2022 03:31:33 -0800 (PST)
+Message-ID: <698eaf5ecbd97ed92a9cbde2f8a2413218aee6b3.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] manuals: final removal of SERIAL_CONSOLE variable
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: michael.opdenacker@bootlin.com, quentin.schulz@theobroma-systems.com
+Cc: docs@lists.yoctoproject.org
+Date: Mon, 12 Dec 2022 11:31:31 +0000
+In-Reply-To: <09e50cc2-dd35-9b5c-d05b-c1f002e038b5@bootlin.com>
+References: <20221212094955.58455-1-michael.opdenacker@bootlin.com>
+	 <14b23bc2-f744-4452-64ac-ba1926324b7d@theobroma-systems.com>
+	 <09e50cc2-dd35-9b5c-d05b-c1f002e038b5@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 12 Dec 2022 10:51:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3548
+ <docs@lists.yoctoproject.org>; Mon, 12 Dec 2022 11:31:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3549
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+On Mon, 2022-12-12 at 11:26 +0100, Michael Opdenacker via
+lists.yoctoproject.org wrote:
+> Hi Quentin,
+>=20
+> Am 12.12.22 um 11:22 schrieb Quentin Schulz via lists.yoctoproject.org:
+> > Hi Michael,
+> >=20
+> > On 12/12/22 10:49, Michael Opdenacker via lists.yoctoproject.org wrote:
+> > > From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> > >=20
+> > > This deprecated variable has been removed for good through
+> > > https://urldefense.com/v3/__https://git.openembedded.org/openembedded=
+-core/commit/?id=3D9d053af1fb570b4e3483de4ecd6827e1e0be61b7__;!!OOPJP91ZZw!=
+mdIhsk9314XecKGpMxgc_65hSaYE2VoOo41x1ne13KiL-CTEfSgyidbnwYhCshdThpFx9pkMiUT=
+oxlsznioCpyDfYgQ641L54bUJg6MTpZwevFvYDYzv$=20
+> > >=20
+> > >=20
+> >=20
+> > Should we start a migration manual for 4.2 that we update every now=20
+> > and then rather than a big change to review right before (or sometimes=
+=20
+> > after :/) the release has been made?
+> >=20
+> > I don't know exactly what's the workflow/process here, just asking.
+>=20
+>=20
+> Yes, we already started writing the migration notes ahead of time for=20
+> the previous release. This sounds like a good time now for the next one.
+> I'll submit a first draft that people will be able to contribute to.
+> Thanks for the reminder!
 
-Removed in BitBake through
-https://git.openembedded.org/openembedded-core/commit/?id=3667e589ba16eb261cfd72c2b11429f482c239f6
+We definitely should start one. In particular, we need to document the
+need to use the new "addpylib" directive in layer.conf files to enable
+lib directories within layers.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- .../bitbake-user-manual-execution.rst           | 17 ++++++++---------
- 1 file changed, 8 insertions(+), 9 deletions(-)
+Cheers,
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-index 7a22e96e..f6ebf7ba 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-@@ -552,8 +552,8 @@ through dependency chains are more complex and are generally
- accomplished with a Python function. The code in
- ``meta/lib/oe/sstatesig.py`` shows two examples of this and also
- illustrates how you can insert your own policy into the system if so
--desired. This file defines the two basic signature generators
--OpenEmbedded-Core uses: "OEBasic" and "OEBasicHash". By default, there
-+desired. This file defines the basic signature generator
-+OpenEmbedded-Core uses: "OEBasicHash". By default, there
- is a dummy "noop" signature handler enabled in BitBake. This means that
- behavior is unchanged from previous versions. ``OE-Core`` uses the
- "OEBasicHash" signature handler by default through this setting in the
-@@ -561,14 +561,13 @@ behavior is unchanged from previous versions. ``OE-Core`` uses the
- 
-   BB_SIGNATURE_HANDLER ?= "OEBasicHash"
- 
--The "OEBasicHash" :term:`BB_SIGNATURE_HANDLER` is the same as the "OEBasic"
--version but adds the task hash to the stamp files. This results in any
--metadata change that changes the task hash, automatically causing the
--task to be run again. This removes the need to bump
--:term:`PR` values, and changes to metadata automatically
--ripple across the build.
-+The main feature of the "OEBasicHash" :term:`BB_SIGNATURE_HANDLER` is that
-+it adds the task hash to the stamp files. Thanks to this, any metadata
-+change will change the task hash, automatically causing the task to be run
-+again. This removes the need to bump :term:`PR` values, and changes to
-+metadata automatically ripple across the build.
- 
--It is also worth noting that the end result of these signature
-+It is also worth noting that the end result of signature
- generators is to make some dependency and hash information available to
- the build. This information includes:
- 
--- 
-2.37.2
-
+Richard
 
