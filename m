@@ -2,99 +2,113 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06688C4332F
-	for <webhook@archiver.kernel.org>; Fri,  9 Dec 2022 18:24:48 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.231.1670610278627319238
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 62BABC4332F
+	for <webhook@archiver.kernel.org>; Mon, 12 Dec 2022 09:50:09 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.39264.1670838599657505248
  for <docs@lists.yoctoproject.org>;
- Fri, 09 Dec 2022 10:24:38 -0800
+ Mon, 12 Dec 2022 01:50:00 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oS/bCqDN;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kF8BhqWw;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 7211920008;
-	Fri,  9 Dec 2022 18:24:35 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id D965F6000C;
+	Mon, 12 Dec 2022 09:49:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1670610275;
+	t=1670838597;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=No3W9/7V4ACe7kD7KpqboMtsOL7wCzyu5eKZUci+yAY=;
-	b=oS/bCqDNs76c0Yd6Nr9LtDkMRp+nXvlr9qX+jRcvF9Fw7zin42YJ6nISH6OD9gAPXfBhkq
-	sYowYCwAbf2VmGtf0SE/WbKvnhiohRPtLspEJOHCioFzeNqdyjoZ+486zAPCFaQ8n6CKqN
-	/xT9VXESO2U1hYTM3a8yva+p0zVeM7l7Rv2SXk+3LqrIC5crSMQGa1iY6OzYy1vmJ0n3Md
-	l+ai+CHRv5JrJuEybJeuMI6MylrAfbl/JmTGfUdycarU4a+Fg/kQS4vX55ksDBdWAdY4xa
-	r3tJQ4wYibSatARK8HhMP+TUDBzf+BAx2J9A0iJA97aGlfuxGkol/mwB21Su7w==
-Message-ID: <ac8e0626-c3c3-8cf4-aead-ba8eba290526@bootlin.com>
-Date: Fri, 9 Dec 2022 19:24:34 +0100
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FUhZwQ2zPwnbhgNjBfTyE2G2v08k+Lk/uazC1rL2Yo0=;
+	b=kF8BhqWw627Tz5AsmkKnTS4WcHIsawBfHaKnR+0R0fA3yE88P6T2rtcZBS89nYAShQOTra
+	KIZVg+zp1RxqOhOQyE0z0WqN5q+ji4PFWqRCt3z0jgpIDUB/1isdv3JqaZNNfkrVnDXhZy
+	p5vXjRNeOMAm7Uf527+Qxa2dKWV+ijG5CjVu7ur2qRTGD0y5OVJA/B8XG/dLM+jtDP369l
+	9y9tm7xC/a6B94ul5RE2VsCtmByzQvsqJHD0HDaGMFGkvanme5e5iT56fFnGev2pqBArjt
+	1dogyonEbmNgql1O7e0XVsNkboVNElCM7YGKKZWZ9YCYgy4iaU9vLI4CSdyicA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] manuals: final removal of SERIAL_CONSOLE variable
+Date: Mon, 12 Dec 2022 10:49:55 +0100
+Message-Id: <20221212094955.58455-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: update references to release notes
-Content-Language: en-US
-To: quentin.schulz@theobroma-systems.com
-References: <20221208151610.20370-1-michael.opdenacker@bootlin.com>
- <0238be8d-2341-45d5-dd5d-ebfd1ea1ccf1@theobroma-systems.com>
- <f1540530-9eeb-fa58-a60c-93e1ef8e8d40@bootlin.com>
- <4a4bc51a-f4a0-bf06-9234-b8dd8d0f2bd3@theobroma-systems.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <4a4bc51a-f4a0-bf06-9234-b8dd8d0f2bd3@theobroma-systems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 09 Dec 2022 18:24:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3544
+ <docs@lists.yoctoproject.org>; Mon, 12 Dec 2022 09:50:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3545
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Am 09.12.22 um 17:38 schrieb Quentin Schulz via lists.yoctoproject.org:
-> Hi Michael,
->
-> On 12/9/22 16:22, Michael Opdenacker wrote:
->> Hi Quentin,
->>
->> Thanks for the review.
->>
->> Am 09.12.22 um 11:05 schrieb Quentin Schulz via lists.yoctoproject.org:
->>> Hi Michael,
->>>
->>> On 12/8/22 16:16, Michael Opdenacker via lists.yoctoproject.org wrote:
->>>>
->>>> +         components might cause build problems. See
->>>> +         :yocto_docs:`Release Information </migration-guides/>` 
->>>> for your
->>>> +         version of the Yocto Project, to find the specific 
->>>> components with
->>>> +         which the toolchain must be compatible.
->>>
->>> Where is this info located exactly?
->>
->> Well, information is scarce. In the release notes, you have at least 
->> the glibc version which is supported, and sometimes but not 
->> systematically the supported gcc and binutils versions.
->>
->> Shall I say "where you may find the specific components..."?
->
-> I'm just wondering how this would help people if there's no actual way 
-> of knowing the specific components or their version.
->
-> In the end, if there's not more information than the previous 
-> location, I guess the patch in itself is fine and another 
-> patch/workflow/process can be put in place to make this more helpful 
-> (if even possible).
+This deprecated variable has been removed for good through
+https://git.openembedded.org/openembedded-core/commit/?id=9d053af1fb570b4e3483de4ecd6827e1e0be61b7
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/migration-guides/migration-2.6.rst | 15 ++++++---------
+ documentation/ref-manual/variables.rst           | 13 -------------
+ 2 files changed, 6 insertions(+), 22 deletions(-)
 
-Agreed. We can improve this in a future commit.
-Cheers
-Michael.
-
+diff --git a/documentation/migration-guides/migration-2.6.rst b/documentation/migration-guides/migration-2.6.rst
+index 8e79a3edc9..356f720850 100644
+--- a/documentation/migration-guides/migration-2.6.rst
++++ b/documentation/migration-guides/migration-2.6.rst
+@@ -211,22 +211,19 @@ The following changes have been made:
+ ``SERIAL_CONSOLE`` Deprecated
+ -----------------------------
+ 
+-The :term:`SERIAL_CONSOLE` variable has been
+-functionally replaced by the
+-:term:`SERIAL_CONSOLES` variable for some time.
+-With the Yocto Project 2.6 release, :term:`SERIAL_CONSOLE` has been
+-officially deprecated.
++The ``SERIAL_CONSOLE`` variable has been functionally replaced by the
++:term:`SERIAL_CONSOLES` variable for some time. With the Yocto Project 2.6
++release, ``SERIAL_CONSOLE`` has been officially deprecated.
+ 
+-:term:`SERIAL_CONSOLE` will continue to work as before for the 2.6 release.
++``SERIAL_CONSOLE`` will continue to work as before for the 2.6 release.
+ However, for the sake of future compatibility, it is recommended that
+-you replace all instances of :term:`SERIAL_CONSOLE` with
+-:term:`SERIAL_CONSOLES`.
++you replace all instances of ``SERIAL_CONSOLE`` with :term:`SERIAL_CONSOLES`.
+ 
+ .. note::
+ 
+    The only difference in usage is that :term:`SERIAL_CONSOLES`
+    expects entries to be separated using semicolons as compared to
+-   :term:`SERIAL_CONSOLE`, which expects spaces.
++   ``SERIAL_CONSOLE``, which expects spaces.
+ 
+ .. _migration-2.6-poky-sets-unknown-configure-option-to-qa-error:
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 499a26f50b..7717d6deff 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7305,19 +7305,6 @@ system and gives an overview of their function and contents.
+       :term:`FULL_OPTIMIZATION` unless :term:`DEBUG_BUILD` = "1", in which
+       case the value of :term:`DEBUG_OPTIMIZATION` is used.
+ 
+-   :term:`SERIAL_CONSOLE`
+-      Defines a serial console (TTY) to enable using
+-      `getty <https://en.wikipedia.org/wiki/Getty_(Unix)>`__. Provide a
+-      value that specifies the baud rate followed by the TTY device name
+-      separated by a space. You cannot specify more than one TTY device::
+-
+-         SERIAL_CONSOLE = "115200 ttyS0"
+-
+-      .. note::
+-
+-         The :term:`SERIAL_CONSOLE` variable is deprecated. Please use the
+-         :term:`SERIAL_CONSOLES` variable.
+-
+    :term:`SERIAL_CONSOLES`
+       Defines a serial console (TTY) to enable using
+       `getty <https://en.wikipedia.org/wiki/Getty_(Unix)>`__. Provide a
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.37.2
 
 
