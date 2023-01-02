@@ -1,103 +1,78 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83031C46467
-	for <webhook@archiver.kernel.org>; Mon,  2 Jan 2023 10:31:03 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.32930.1672655453622360741
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89264C3DA7A
+	for <webhook@archiver.kernel.org>; Mon,  2 Jan 2023 10:34:03 +0000 (UTC)
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+ by mx.groups.io with SMTP id smtpd.web10.32963.1672655638340499052
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Jan 2023 02:30:53 -0800
+ Mon, 02 Jan 2023 02:33:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KM6dJebW;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id F1B1D1C0007;
-	Mon,  2 Jan 2023 10:30:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1672655451;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MNfsaM3O+nrMfNcOVJs38mTffAG3BdzRUGHjvRkx0Zc=;
-	b=KM6dJebWbXi73zXUax+QSQLo7Q+SswlUTPxAGMqJrmWMux6eDFluUwdPk0MR/1n3Dj+xHk
-	2RHj+ZAtRKnypz7zGSNQVRFR+a79HaQutvp3MD3rFzfuJw2qhBFdGxzPQeaumK0gNuvnxz
-	kEkcG4WLypBsjRfjKZHahIJDRxaXiy9aXRhxyuGMPHMt5TkctqEu3VaxK2/Uk8eev9dvtw
-	wGByylHhCz2Lk7NB+ZQxqjVIMO0HxocZb09fyUxE22NH0xoEiK6iHVhad5Pub8H4oDvVqa
-	unUhVEUmA8EUabn6xyYj3FknUfSjjb/T6vOl0Xan4CZ+G1wRpCvd/kktufWu8A==
-Message-ID: <d3110d81-b0fa-de4a-965a-0c775485e7dd@bootlin.com>
-Date: Mon, 2 Jan 2023 11:30:49 +0100
+ dkim=pass header.i=@gmail.com header.s=20210112 header.b=qrvzbCA2;
+ spf=pass (domain: gmail.com, ip: 209.85.208.178, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-lj1-f178.google.com with SMTP id q2so28716285ljp.6
+        for <docs@lists.yoctoproject.org>; Mon, 02 Jan 2023 02:33:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=yQvEnXcIkYMHS1hWPx202+VRZA6p3xT0AYF5FZTtVeE=;
+        b=qrvzbCA2eqe4Q6X2J70Ym/2vWkVp4z7HSiJ4EnqSJyqQ7/Bb+t7abFs+tZncUKNC6V
+         LWQu4y0iyjCraGGxo6FK1BdBvwrwi89SWjHFS0qn/nXtHEWzUYd617cPVoYJD3u9ubwW
+         mO3OwcEuqPG8dyfqWlE0ZMtYMH4RhAPsqU5+Uu+S/jC7PheCZiiRffluIJWoFNLNlLwp
+         thSxqcr+PSsoXX3CN4mmfcZ0lQAZovzWjhWqBt0iqiU2Uos8dvgKImRVqlYogu3od378
+         mQjQ+fCcOutiJm843uS7V2U5s8dHufakzbcF3ruaRqZ74hTRC5RrtxakBbYw9mm9se2F
+         EuOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yQvEnXcIkYMHS1hWPx202+VRZA6p3xT0AYF5FZTtVeE=;
+        b=fE7i343HQz6Ty6BGpxcPbNCcZbs3ZySuJWs1bENoUXCVx0zTJ4uwGgAWilm5kRe7Bh
+         Z2aEOsPiU1zZiqCA/ND7zh2q3SPbc3cSaCEWHKt2oZP8jpKi9LBeE9dG+I/QkNO7J34B
+         ltR04O43oljauDBtknUNLXm7OQHlOjONOsvS28QRvJ2luJWyKYECVvhkehcxPm+6cZJv
+         sL1sYXdyc6DoAIymSV6G3l7RPZS8XqmiQsB40CJf326JAphS5kQe3sHdyU8VnH53bYBL
+         FCYiz5wlxOo8Y58NQg+k3lizmqLvLLe7Z34WXdxlfAaMWEAGEkVu0t6GpzpdHAfoet50
+         Wbvg==
+X-Gm-Message-State: AFqh2kqjlE0mR07xyYFix6D+CkOhYc3Z+Opns3EKAvd4HLY//N+/qENa
+	VTOPKhQyMaYWPsgTXjprKWL0KFW8UNX3rU4QY0M=
+X-Google-Smtp-Source: AMrXdXv8APQ2x8ySHTiQIRfBx5pYWmlMklXop3fniym5wzxwnUel3elXWj763bXYuXxOwJfCkuViHA38fdNllLX2v18=
+X-Received: by 2002:a05:651c:168a:b0:27a:2285:411b with SMTP id
+ bd10-20020a05651c168a00b0027a2285411bmr3190581ljb.33.1672655636387; Mon, 02
+ Jan 2023 02:33:56 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Cc: docs@lists.yoctoproject.org,
- Richard Purdie <richard.purdie@linuxfoundation.org>,
- quentin.schulz@theobroma-systems.com
-Subject: Re: [docs] [PATCH] ref-manual/system-requirements.rst: support Arch
- Linux
-Content-Language: en-US
-To: Vincent Davis Jr <vince@underview.tech>
-References: <20221227194932.3783-1-vince@underview.tech>
- <456184cf-b08c-9eeb-c261-840552bcb5dc@theobroma-systems.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <456184cf-b08c-9eeb-c261-840552bcb5dc@theobroma-systems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20221227194932.3783-1-vince@underview.tech> <456184cf-b08c-9eeb-c261-840552bcb5dc@theobroma-systems.com>
+ <d3110d81-b0fa-de4a-965a-0c775485e7dd@bootlin.com>
+In-Reply-To: <d3110d81-b0fa-de4a-965a-0c775485e7dd@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Mon, 2 Jan 2023 11:33:44 +0100
+Message-ID: <CANNYZj_hQatNRSiOkxoj0p5HYYeeZHVzq7otc2R7xC7pOOpCTQ@mail.gmail.com>
+Subject: Re: [docs] [PATCH] ref-manual/system-requirements.rst: support Arch Linux
+To: michael.opdenacker@bootlin.com
+Cc: Vincent Davis Jr <vince@underview.tech>, docs@lists.yoctoproject.org, 
+	Richard Purdie <richard.purdie@linuxfoundation.org>, quentin.schulz@theobroma-systems.com
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 02 Jan 2023 10:31:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3565
+ <docs@lists.yoctoproject.org>; Mon, 02 Jan 2023 10:34:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3566
 
-Hi Vincent
+On Mon, 2 Jan 2023 at 11:30, Michael Opdenacker via
+lists.yoctoproject.org
+<michael.opdenacker=bootlin.com@lists.yoctoproject.org> wrote:
+> Another idea would be to create a page on our wiki
+> (https://wiki.yoctoproject.org/), for people trying to use Yocto on
+> distributions which are currently not supported. We could then refer to
+> such a page from the documentation, reminding people that there is no
+> support commitment. Or something specific to Arch would be to update
+> https://wiki.archlinux.org/title/Yocto
 
-Thanks for the patch anyway! I was also going to check whether Arch was 
-tested by our Autobuilder.
+Please no. Wikis are a dumpster of outdated information, and this in
+particular will quickly become a source of confusion, which is worse
+than simply trying to build and dealing with issues as they happen.
 
-Am 02.01.23 um 11:19 schrieb Quentin Schulz via lists.yoctoproject.org:
-> Hi Vincent,
->
-> Thanks for your patch.
->
-> I'm afraid this will not be accepted. We usually refuse to advertise 
-> support for rolling release distributions.
->
-> The advertised supported distributions are tested on our autobuilder 
-> and we don't run ArchLinux there. I would expect we also don't have 
-> the bandwidth to debug when things break in ArchLinux. Note that we 
-> also do not specify support for derivatives of Debian or Ubuntu 
-> distributions, we have seen issues with Pop_OS! in the past for example.
->
-> For this to be accepted in the documentation, I believe we'd need 
-> patches for the autobuilder so that some builds run on an ArchLinux 
-> server. This probably needs to be discussed (and financially 
-> supported?) with Michael Halstead our sysadmin. But first and 
-> foremost, we would need this support to be agreed by maintainer(s), 
-> hence why I'm Cc'ing Richard on this, who I hope can raise this to the 
-> proper board if he doesn't veto this.
->
-> Considering it's holiday season, please expect some delay, but don't 
-> hesitate to ping us in a week or two were you to not receive an answer 
-> meanwhile.
-
-
-Another idea would be to create a page on our wiki 
-(https://wiki.yoctoproject.org/), for people trying to use Yocto on 
-distributions which are currently not supported. We could then refer to 
-such a page from the documentation, reminding people that there is no 
-support commitment. Or something specific to Arch would be to update 
-https://wiki.archlinux.org/title/Yocto
-
-Just my two cents.
-
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Alex
 
