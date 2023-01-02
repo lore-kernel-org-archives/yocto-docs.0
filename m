@@ -1,76 +1,212 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53B0FC4708E
-	for <webhook@archiver.kernel.org>; Mon,  2 Jan 2023 12:58:34 +0000 (UTC)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
- by mx.groups.io with SMTP id smtpd.web11.34481.1672664306296061881
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C17E8C4708E
+	for <webhook@archiver.kernel.org>; Mon,  2 Jan 2023 14:20:14 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.36481.1672669212623241499
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Jan 2023 04:58:26 -0800
+ Mon, 02 Jan 2023 06:20:13 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=GubmHFgM;
- spf=pass (domain: gmail.com, ip: 209.85.208.177, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lj1-f177.google.com with SMTP id n1so29001528ljg.3
-        for <docs@lists.yoctoproject.org>; Mon, 02 Jan 2023 04:58:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=sKL7mUhQikDRxSVEHEKyWsyCHWF2183vOSkrLwpjJE4=;
-        b=GubmHFgMtom78yT5Lt8TSWXGQPnIekddYzMV0Oo2VN/7CyXCAiL7JW97UFEoA2Uarn
-         d3MPiTYAc8Ak+l4xhkrzaqj+opl/7YgX/M97Fo24dq75lnIBEhd1uT8YlIXgV41y7ZSs
-         zqAPs1x7xjlCip/cCe/X0hsrXVmskxvuv2iJJClR2Aohq3CgFX6nLQkczmiQh3cXumeq
-         n3F1+6pzFl8rjFqLc+fusmttR+qar53Ed/ydVKSa4bviyslhyopqZmR5JQlG2PNhj5Sl
-         ffzGNAqDiXN5oJeWBXkNx5BEW6QfSieZiv3A6MrBKbJYzJz0FBNmbNmXsdBB0an7r/by
-         OABA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sKL7mUhQikDRxSVEHEKyWsyCHWF2183vOSkrLwpjJE4=;
-        b=IuKUCNcol/VnykvRiBMS+bc8trn1PlXH1NJ55LwBA0xccyGg0LhyuHBN6b+8LFEUpo
-         LFnGt2pqjtApTud8A5FUTsI1Uj5406hiN7gFSK2u/NITJ5yYCSO7lRcWWuiXtZPjH1CA
-         piegtaSi7xGJLOyzPVzjtgdm4MAz3v3sNrMHhgs3+W2ot9wRpvH8cKYWKXKObw1FZOzg
-         jSgg7eZBHJogTyNxX+TpMWvJtSQfsQBRtXUY8jN4cNIdQ/fYPVI6gGhglPr06WEIYctT
-         oYyq+dQu00BOHc9+cSBgDekr+Im66JM9RkcsUVmhi/Rps5It2AaaIJzifNcmZN8UL/2/
-         P0Dg==
-X-Gm-Message-State: AFqh2ko1jfzkxbiiKd1tOOjhj1nSQDbdJvKs/t8+WbhLM8MxyP2cogaH
-	UFuIiI0BileWUxDOpCVamTD4BkBODc4OV/s1Miw=
-X-Google-Smtp-Source: AMrXdXsSgyH/cma/vyBF+YGvSljA16hrw5NHDUlCZQAmo4gp8HFvWz1+TdwVGvP8T6vLcCAYUeTjHlPBD9DzrK18Vk4=
-X-Received: by 2002:a2e:9d4f:0:b0:27f:f286:15e9 with SMTP id
- y15-20020a2e9d4f000000b0027ff28615e9mr237167ljj.403.1672664304367; Mon, 02
- Jan 2023 04:58:24 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=NAy3tHv5;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id A192DE0015;
+	Mon,  2 Jan 2023 14:20:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1672669209;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=U8ZgsQUEeNtPd5OnvkXgIjuBwXEiEB52Cg9SmI36mKc=;
+	b=NAy3tHv5rKgSlj2danryfn52DXLWRMiSZU5lbRCKI8lr334Um8caf/uID3/S3GNoNqc6Vw
+	5KgLWzLtQH7cEikflXpRb71dJSehfDFxhuSv9if5lfTkFSCNfrvUIYVfbdiQsKzjK4cSez
+	K+WzSSA90NAnLaSE4+d2Lea8LbnI8l2tskrlQ0hc8jwz10arLaUkjMjy01j0cEr1lCeVb3
+	npNou41DULPcjqlYx2yptu8DgWK02g/RajOiwrvgksD76nH9nzOloUwEWCUub8uv61+ag7
+	e5NYL5zAY0cAbzLJHvEhULfjkgtZwDmt6lL7jYU69wjVrBVzYmd2UIpCRUqDnw==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] migration-guides: fix 4.2 migration note issues
+Date: Mon,  2 Jan 2023 15:20:06 +0100
+Message-Id: <20230102142006.147970-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-References: <20221227194932.3783-1-vince@underview.tech> <456184cf-b08c-9eeb-c261-840552bcb5dc@theobroma-systems.com>
- <d3110d81-b0fa-de4a-965a-0c775485e7dd@bootlin.com> <17367770FC1C1495.4716@lists.yoctoproject.org>
-In-Reply-To: <17367770FC1C1495.4716@lists.yoctoproject.org>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Mon, 2 Jan 2023 13:58:12 +0100
-Message-ID: <CANNYZj_ghrVOm0froyS8Bh=MFf49ocEJ9uFYJnV338SdpCSL-g@mail.gmail.com>
-Subject: Re: [docs] [PATCH] ref-manual/system-requirements.rst: support Arch Linux
-To: alex.kanavin@gmail.com
-Cc: michael.opdenacker@bootlin.com, Vincent Davis Jr <vince@underview.tech>, 
-	docs@lists.yoctoproject.org, 
-	Richard Purdie <richard.purdie@linuxfoundation.org>, quentin.schulz@theobroma-systems.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 02 Jan 2023 12:58:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3568
+ <docs@lists.yoctoproject.org>; Mon, 02 Jan 2023 14:20:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3569
 
-On Mon, 2 Jan 2023 at 11:33, Alexander Kanavin via
-lists.yoctoproject.org <alex.kanavin=gmail.com@lists.yoctoproject.org>
-wrote:
-> Please no. Wikis are a dumpster of outdated information, and this in
-> particular will quickly become a source of confusion, which is worse
-> than simply trying to build and dealing with issues as they happen.
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On second thought, people on distributions not supported directly
-should be pointed to buildtools-tarballs of both kinds. But this
-should be in the proper documentation.
+- Eliminate this warning:
+  WARNING: Title underline too short.
+- Remove a leftover patch file
 
-Alex
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ ...-manuals-prepare-4.2-migration-notes.patch | 134 ------------------
+ .../migration-guides/release-notes-4.2.rst    |   2 +-
+ 2 files changed, 1 insertion(+), 135 deletions(-)
+ delete mode 100644 documentation/0001-manuals-prepare-4.2-migration-notes.patch
+
+diff --git a/documentation/0001-manuals-prepare-4.2-migration-notes.patch b/documentation/0001-manuals-prepare-4.2-migration-notes.patch
+deleted file mode 100644
+index 9c8f9d74b5..0000000000
+--- a/documentation/0001-manuals-prepare-4.2-migration-notes.patch
++++ /dev/null
+@@ -1,134 +0,0 @@
+-From 42a8aad2c8b52b1cfbc6c580c689d3c9a7056485 Mon Sep 17 00:00:00 2001
+-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+-Date: Tue, 13 Dec 2022 09:57:04 +0100
+-Subject: [PATCH] manuals: prepare 4.2 migration notes
+-
+-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+----
+- documentation/migration-guides/index.rst      |  1 +
+- .../migration-guides/migration-4.2.rst        | 48 +++++++++++++++++++
+- .../migration-guides/release-4.2.rst          |  9 ++++
+- .../migration-guides/release-notes-4.2.rst    | 28 +++++++++++
+- 4 files changed, 86 insertions(+)
+- create mode 100644 documentation/migration-guides/migration-4.2.rst
+- create mode 100644 documentation/migration-guides/release-4.2.rst
+- create mode 100644 documentation/migration-guides/release-notes-4.2.rst
+-
+-diff --git a/documentation/migration-guides/index.rst b/documentation/migration-guides/index.rst
+-index ce0ca8c659..6f7bcbef29 100644
+---- a/documentation/migration-guides/index.rst
+-+++ b/documentation/migration-guides/index.rst
+-@@ -12,6 +12,7 @@ to move to one release of the Yocto Project from the previous one.
+- .. toctree::
+- 
+-    migration-general
+-+   release-4.2
+-    release-4.1
+-    release-4.0
+-    release-3.4
+-diff --git a/documentation/migration-guides/migration-4.2.rst b/documentation/migration-guides/migration-4.2.rst
+-new file mode 100644
+-index 0000000000..944ad31a4c
+---- /dev/null
+-+++ b/documentation/migration-guides/migration-4.2.rst
+-@@ -0,0 +1,48 @@
+-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+-+
+-+Release 4.2 (mickledore)
+-+========================
+-+
+-+Migration notes for 4.2 (mickledore)
+-+------------------------------------
+-+
+-+This section provides migration information for moving to the Yocto
+-+Project 4.2 Release (codename "mickledore") from the prior release.
+-+
+-+.. _migration-4.2-python-3.8:
+-+
+-+Python 3.8 is now the minimum required Python version version
+-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~------------
+-+
+-+BitBake and OpenEmbedded-Core are now relying on Python 3.8,
+-+making it a requirement to use a distribution providing at least this
+-+version, or to use :term:`buildtools`.
+-+
+-+.. _migration-4.2-qa-checks:
+-+
+-+QA check changes
+-+~~~~~~~~~~~~~~~~
+-+
+-+.. _migration-4.2-misc-changes:
+-+
+-+Miscellaneous changes
+-+~~~~~~~~~~~~~~~~~~~~~
+-+
+-+- The ``OEBasic`` signature handler (see :term:`BB_SIGNATURE_HANDLER`) has been
+-+  removed.
+-+
+-+.. _migration-4.2-removed-variables:
+-+
+-+Removed variables
+-+~~~~~~~~~~~~~~~~~
+-+
+-+The following variables have been removed:
+-+- ``SERIAL_CONSOLE``, deprecated since version 2.6, replaced by :term:``SERIAL_CONSOLES``.
+-+
+-+.. _migration-4.2-removed-recipes:
+-+
+-+Removed recipes
+-+~~~~~~~~~~~~~~~
+-+
+-+The following recipes have been removed in this release:
+-+
+-diff --git a/documentation/migration-guides/release-4.2.rst b/documentation/migration-guides/release-4.2.rst
+-new file mode 100644
+-index 0000000000..ae52d939c8
+---- /dev/null
+-+++ b/documentation/migration-guides/release-4.2.rst
+-@@ -0,0 +1,9 @@
+-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+-+
+-+Release 4.2 (mickledore)
+-+========================
+-+
+-+.. toctree::
+-+
+-+   migration-4.2
+-+   release-notes-4.2
+-diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
+-new file mode 100644
+-index 0000000000..f3d69d98cc
+---- /dev/null
+-+++ b/documentation/migration-guides/release-notes-4.2.rst
+-@@ -0,0 +1,28 @@
+-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+-+
+-+Release notes for 4.2 (mickledore)
+-+---------------------------------
+-+
+-+New Features / Enhancements in 4.2
+-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-+
+-+- Python 3.8 s the minimum Python version required on the build host.
+-+  For host distros that do not provide it, this is included as part of the
+-+  :term:`buildtools` tarball.
+-+
+-+- This release now supports a new ``addpylib`` directive to enable
+-+  Python libraries within layers.
+-+
+-+  This directive should be added to your layer configuration,
+-+  as in the below example from ``meta/conf/layer.conf``::
+-+
+-+     addpylib ${LAYERDIR}/lib oe
+-+
+-+-  Architecture-specific enhancements:
+-+
+-+-  Kernel-related enhancements:
+-+
+-+-  QEMU/runqemu enhancements:
+-+
+-+-  Image-related enhancements:
+-+
+--- 
+-2.37.2
+-
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
+index 690a228f7b..edafe378b0 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -1,7 +1,7 @@
+ .. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+ 
+ Release notes for 4.2 (mickledore)
+----------------------------------
++----------------------------------
+ 
+ New Features / Enhancements in 4.2
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+-- 
+2.37.2
+
 
