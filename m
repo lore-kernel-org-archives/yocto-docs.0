@@ -1,452 +1,153 @@
-Return-Path: <ito@lineo.co.jp>
+Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A9BBC4332F
-	for <webhook@archiver.kernel.org>; Fri, 30 Dec 2022 02:38:00 +0000 (UTC)
-Received: from mail.lineo.co.jp (mail.lineo.co.jp [203.141.200.203])
- by mx.groups.io with SMTP id smtpd.web11.10584.1672367876508043288
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 890A5C46467
+	for <webhook@archiver.kernel.org>; Mon,  2 Jan 2023 10:19:23 +0000 (UTC)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.63])
+ by mx.groups.io with SMTP id smtpd.web10.32790.1672654760978045734
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Dec 2022 18:37:57 -0800
+ Mon, 02 Jan 2023 02:19:21 -0800
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: lineo.co.jp, ip: 203.141.200.203, mailfrom: ito@lineo.co.jp)
-Received: from [192.168.3.12] (softbank126088165209.bbtec.net [126.88.165.209])
-	by mail.lineo.co.jp (Postfix) with ESMTPSA id DB199803DBD0A;
-	Fri, 30 Dec 2022 11:37:53 +0900 (JST)
-Message-ID: <40a9a00e-69af-1742-4e1c-1ff01db4e5e1@lineo.co.jp>
-Date: Fri, 30 Dec 2022 11:37:53 +0900
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.1
-Subject: Re: [docs] [PATCH] migration-guides: add release-notes for 4.0.6
+ dkim=pass header.i=@theobroma-systems.com header.s=selector1 header.b=i36dsBlJ;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.22.63, mailfrom: quentin.schulz@theobroma-systems.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=AUBoWJ1i0Z/TGbYW7WKNQ2ebye6hISukopHyA9t8i3FgXpy9KJi8y4gBclNueJ91t9ndjcgdRbMwlt0nWyz+jE/1fVoXb5O0gMpVcp5cJNPu5BmxVmohWqp2XLu05izlhdAlW75IdHwfHkrT4gCBkT23i6YWZb16kk8YlC8QDdl+YrRFAO8ppdSfwqpz59uIxUml/TTOH2krzLJm4A60u/iQVs2Qqu1IXa9UcZYLSmgs5qHi8qJ0kYVD1dCLTMe2TbraZLwolCeJ05OePfjmMJmGxLrFtcUOMKSj3cT0h1AUsEMdfJkGF/GqE5JqigH/j9gRDyWopR4qdE70CHxXbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=lqG5rwpkvQ/t/+AqYcoaW+iCfG9AMJDLdFBkokOpl3k=;
+ b=Y5A7+n7/JDMfVTTMhibYm88ztkp2DP4/AZe9TmP5xdF8n9Qv69+geWBeMa99WsagjbcqdnrFNm1oqIiafejL0admpxcFybzUhY8o2v/6rk5OeeGu1XJuPFdO3X+4Tbwqce71mAHBT30SrVyUWW1D2//Ghs6C6fqnrxEBUQ7aDumV9Ky2z7frdDp/Vdfp1UmgVHBlT2W6SBMjk24GJUho7C0N8XqkEViOG5YTf610fmrnMAXYYKQWILKeOgEM+WfwfSzhTERNP1F+nVN3fLzSwgwg0tiZ+5rAYQ3n95hjvh57dX2orfCgimirzDqzyRjFSvqH/DNlfTDqUw9BymrBPA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theobroma-systems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=lqG5rwpkvQ/t/+AqYcoaW+iCfG9AMJDLdFBkokOpl3k=;
+ b=i36dsBlJzQHGs8gDJgV8jUhqaKwdkZ/9e2pBlrxQk0QLRdyyczWVqF4B10OnvWM18XoLFNmAd6CS5m+nrdWKacgQjVNlXF9PxQqGr2V8mYoCXnmPv8lZSWKSrkO0nwpE6KvfVAQRDgO3GqfPva0a108t4UiYaRvTCtcwcOkqMzdbLI2xKvCqNJWqtqrM9C6FIhc/XZSJOtqjteMOFvDbKKy3iB4WgOgXh0+gEEqr60rL5q99Nk8kDy2UNIKvPy9K1ARuiYjxGT6P1s4JTgkPGfS6svibeU7xG0m6nujnaDwSrP0Til2Rm9ZrY/EWRIeKGfHiDMNTGdUQ9/Ua8r5b9A==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com (2603:10a6:10:2d7::10)
+ by AS8PR04MB8947.eurprd04.prod.outlook.com (2603:10a6:20b:42e::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5944.19; Mon, 2 Jan
+ 2023 10:19:17 +0000
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::9ebd:cd48:9396:76f6]) by DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::9ebd:cd48:9396:76f6%6]) with mapi id 15.20.5944.019; Mon, 2 Jan 2023
+ 10:19:17 +0000
+Message-ID: <456184cf-b08c-9eeb-c261-840552bcb5dc@theobroma-systems.com>
+Date: Mon, 2 Jan 2023 11:19:14 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [docs] [PATCH] ref-manual/system-requirements.rst: support Arch
+ Linux
 Content-Language: en-US
-To: docs@lists.yoctoproject.org
-References: <20221230013240.3037065-1-chee.yang.lee@intel.com>
-From: Takayasu Ito <ito@lineo.co.jp>
-In-Reply-To: <20221230013240.3037065-1-chee.yang.lee@intel.com>
+To: Vincent Davis Jr <vince@underview.tech>, docs@lists.yoctoproject.org,
+ Richard Purdie <richard.purdie@linuxfoundation.org>
+References: <20221227194932.3783-1-vince@underview.tech>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+In-Reply-To: <20221227194932.3783-1-vince@underview.tech>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1PR0101CA0084.eurprd01.prod.exchangelabs.com
+ (2603:10a6:800:1f::52) To DU2PR04MB8536.eurprd04.prod.outlook.com
+ (2603:10a6:10:2d7::10)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|AS8PR04MB8947:EE_
+X-MS-Office365-Filtering-Correlation-Id: 08719a5f-1beb-41b3-a741-08daecaacde2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	/FPKU6sewikvf7aTx+NkVQEFQ/Vpr00Ef1HYaL+yXKA4nHUcH66UT/4BX3AlJwGIDo1R6nmCsReRKz5E2LFNzsHp47NEfVfWbiyQHgjspErqdanHtr1LRLa2TyO7OnKIc7MZkWBVFdoYjYV/z8FmKIKYLc0CwxSbamma0qsZqLP7ollDw7ybcqvS7PGYvrVJYUa/HMZZTrgh3TJk83hHFCnlg8EqK/Lsw9NFSvcoHGtidyHisKThM3/q6b9Lkbo7V7e97RImmi5qAeQ8HdBARn7k+m6SHntkA/utdglxItvQC6+atyOIJ4BQVa9Op5D05eMlKkPHc7ZDqtCcsizeQpu+IkDY6MflUJuChm/bdjP99jFcfwQFNDxXjcUgTOkugyGYd7vIR3yDMNCfX63zN4U+eGkb01iWxLdss60oXd/QImtp0r0NF4niKVr+oobbHJfPUafn4KFknO4QGbirtDuJ8Ev58tL9ysUGbbUvE6v+6W2bfa1K9NKk3R8mHxqSL5x33J7x0Axcuuif6cTQEgKPWhf7vjltsG9pZz+V7GqxctKyqhOg2kNM45ZdNfvgvOv1aUjDoiZQRRL9/b7BIetd6eFLc315FNnF59kNW366z0Pa+37R6ovpNmcbhjfhQHy2VUfZVNuIe6YS8kQk5lLKr5wSdztTIXvJB5h61mZ/LeHyl9fpYypyKA/acVBGQYjMe2AifXJAlnpovXfYmw85OGCJ3cGaW0DVcbv8pie7u9Bq+f6frR6HBUj/WNQDp79dQ1vOsber3kwNmyfB2Q==
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8536.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(366004)(376002)(136003)(346002)(39840400004)(396003)(451199015)(66946007)(316002)(6512007)(31686004)(6506007)(186003)(110136005)(44832011)(5660300002)(2906002)(6486002)(478600001)(6666004)(41300700001)(86362001)(31696002)(83380400001)(2616005)(38100700002)(66556008)(36756003)(8676002)(66476007)(8936002)(22166006)(43740500002)(45980500001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?ZHNMSW0vdkh4WFdZTzJQejFIQm9XWUprbmVnMG5mU1JMTjUvK25Cd2FRZHE3?=
+ =?utf-8?B?aXpwdHJRQVNtQ09WL3hUMlRzdGlVN1F4aHROczRYd05CWEhtNVlacEIxTXdH?=
+ =?utf-8?B?NjVyaStXaU5BRFFCQXdzNHIrNm5obEVkL0t6TXJnVVZCZVlJU3V0VUk0T0sr?=
+ =?utf-8?B?alh3V1FsNkVSUFpxZU01TmNZN0VISzRWSmM1dm0yRzd4WEZIMXZwZEhCUHJO?=
+ =?utf-8?B?RHNpbHFSTEx5cXJ5TzNURHVzZmVwZDlidlVWTVFFTFg3dXhibHgwNE5KUFlY?=
+ =?utf-8?B?YUhOVktXaDFWSC9rVy9FVkhhQUpMMHRIQUtHanZGZlVMVmNISGZPQTRKSzJN?=
+ =?utf-8?B?dkJqT1VtN3hYWmlrT0FFZjg4WjQ4ZXhWaVJucFpKa2VPVE5tZW8xb3lPb0lS?=
+ =?utf-8?B?OEZyMDh3NE1VSGJRYzZkRVBYdCs1ekF4Q2U4YSs5V1RMYzNNZkNnL2tJbjky?=
+ =?utf-8?B?ODJzd1VuQmlBRlN3T1VOQUFHVjNLMXVvcno2d25wU21LczlmNkpZMldtcTJp?=
+ =?utf-8?B?aXJJN0FIVXhmMGExd1B1WHNjdDA2L3cySThDaS9wempkNUFocVB5ZVRSbzlh?=
+ =?utf-8?B?WmJNZjNQOFpCTnJlc1lkVE5MK3hGcEMyMC9sT1NiWHBTWU1TcFh0UWdmRUZw?=
+ =?utf-8?B?USttK2M4M2dhWHFlM2JaTG8rYUlJZXNVcVFuZjRGNk5yWnZXeitiWVdLdU5V?=
+ =?utf-8?B?UHBFLzhtQzJDRm5EdTk2RHB1aFRNZU4vZGpJd1ZtS0s2NDZqK083WndVcWhW?=
+ =?utf-8?B?RFUvd3FTT1kyeFV2UzE1WnY5elY0aW1XSjFxT21jQ3JjT1VtZk1FdHdPeDVk?=
+ =?utf-8?B?RlY1Q3BFTDFJcElsczVnT0NCSHh3alZ0ZkpoMHdVNGZvbERkWnl0VnpnSFVa?=
+ =?utf-8?B?ZFpVcXlJdGZ5YkJpS0JJc1h6emtlUFVLYVRVc0hudk4vamhMa3VBbWF0VHNY?=
+ =?utf-8?B?WTVKZGNLOUMyVnozU0RPV3VvUStibHpGZU4zWG9nbnJDRjZwczBIQ05qZmNL?=
+ =?utf-8?B?NnZ5dWNRTW9YR3RNUlZZVXZTU3NvQ3g4dnFFNVh1NGtPTVJCemh2UmMrUnNi?=
+ =?utf-8?B?cTRxRUVRTDF3bUF3d1oxZVJBd0F6ZFlaY1N0aHFTalAwNTBSbE92ejhyTmJ4?=
+ =?utf-8?B?MjFvclU5ODdkL214ZEFxTUl4U0dWWWJaY3RzWTlJSm5ScDNXeCs3UEY0dWdJ?=
+ =?utf-8?B?cWdLVmx2cVMzUnVxc1ZqOHdaT2FwWFpGWDBDMmx5UmNjMDRnaFZ4dWI3dmpC?=
+ =?utf-8?B?SUNTWXhzanVjc0dlaUVTdUJRNm5jNlhsRE5za1hYbVhSUDJFZlZucTB5QVhm?=
+ =?utf-8?B?emlrTnBYMlJwZE9YWWxCeHBSTVRrOHArb1k2K3pTTjRNL25FTlRaeW9yTWZi?=
+ =?utf-8?B?ME9TVERWNG5EZW10cTM0d0MyaGFTMXo1ZHV4djgwNDExaTFjdjhIclFyZ2Rv?=
+ =?utf-8?B?QlNvM3g3b3gyMjUrNGFiYnhHeHBNNVBhM0paQTJVbHRPM2N5OUQ5QnpRRjlI?=
+ =?utf-8?B?RnM3cUU4WGZsQjRHVEtCQmpsZHRySitRbG5Yb3A0SE84Qk4xZ0VCRnlLRVVi?=
+ =?utf-8?B?ZGFUSThpOHNueGt2WGxKU0lDQ3VFTjU3MkQ0MTJuc0VpaEJVZ0VCUTl6ZmZV?=
+ =?utf-8?B?cDVrMGFMbWREK0Q2cFJORnBlb1pyN2pxVGltLzF6TG5KQXJRSDdFN3VINGFD?=
+ =?utf-8?B?TmdHMVcwbjB5WUxtT3NHUk1jY1VXOUpyOFNpaUJCbW1UVnpodm1uZFNQbk9n?=
+ =?utf-8?B?clZpK2M3anNzcjZKMGUzV0FqK1FUNld6bm5zN3NYUWY2ZmJtMDVUNnFTOEto?=
+ =?utf-8?B?aEdYemM1eHBxM0FaamJDM0RYL1Rkc3dnQWNZelg3RC9ZVUVka1paVjJkTFdn?=
+ =?utf-8?B?eUR6dGNoR0ZqTnRPbUVsRFRxQlB0eHVvQkEzWkF5VHlnRS81akljaStweVEx?=
+ =?utf-8?B?N1c3WGM1cmdoQWlMZmtxNkZ5VFRCNzN5Yyt5bVEyODgxRW9JbW51NVFZRnVi?=
+ =?utf-8?B?ZlJiejFlTEdNditiMVlidUt1b3d2VmZjb3BLc1ViZi8vQlphdVQ1Z2gvYVdO?=
+ =?utf-8?B?ekE1ZkFBRmdEaVFQQnlpa1d0VWFKQkdKZG04Q2F5T3ZTWFBYT2dmdmV3Qndo?=
+ =?utf-8?B?dTBZcGdEUFhLWHJEa1QxNkhMNW9mN211Ymw5Z0VuWjJnL3pQUHZ4RytGd2o1?=
+ =?utf-8?B?QzJhdERxaFNscVJka1VhKzhMNHNzTnE4bTFTSDZ6MzFqOHYrM1hOK1l5ZHFP?=
+ =?utf-8?B?cUdvU3NHM2t1WDcwbS8wUU1xVUN3PT0=?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 08719a5f-1beb-41b3-a741-08daecaacde2
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8536.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2023 10:19:17.1898
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: xygEIyiMmb7gIOcMTaOh4676V3pQg0FAgYjmCzwRdfjov9HVqkClg+2M48t092/XNsOI+g+U/A+b1pKxjOiaxXr42A15vmG9+t9hKpLl70OeCNoFPFRWOIhkbNZevL5w
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8947
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 30 Dec 2022 02:38:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3563
+ <docs@lists.yoctoproject.org>; Mon, 02 Jan 2023 10:19:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3564
 
-Hi Lee
+Hi Vincent,
 
-vim has been upgraded three times, each time with CVE countermeasures.
+Thanks for your patch.
 
+I'm afraid this will not be accepted. We usually refuse to advertise 
+support for rolling release distributions.
 
-Add Security Fixes in Yocto-4.0.6
+The advertised supported distributions are tested on our autobuilder and 
+we don't run ArchLinux there. I would expect we also don't have the 
+bandwidth to debug when things break in ArchLinux. Note that we also do 
+not specify support for derivatives of Debian or Ubuntu distributions, 
+we have seen issues with Pop_OS! in the past for example.
 
-vim:  CVE-2022-3352 CVE-2022-3705 CVE-2022-4141
+For this to be accepted in the documentation, I believe we'd need 
+patches for the autobuilder so that some builds run on an ArchLinux 
+server. This probably needs to be discussed (and financially supported?) 
+with Michael Halstead our sysadmin. But first and foremost, we would 
+need this support to be agreed by maintainer(s), hence why I'm Cc'ing 
+Richard on this, who I hope can raise this to the proper board if he 
+doesn't veto this.
 
-https://git.yoctoproject.org/poky/commit/?h=3Dkirkstone&id=3Dc0a61b5e5df0=
-a3110bf4ace8de80d9fa29dc1fda
-https://git.yoctoproject.org/poky/commit/?h=3Dkirkstone&id=3D94d917219993=
-b45b9d69a87aba1b69a6ca8f4d1e
-https://git.yoctoproject.org/poky/commit/?h=3Dkirkstone&id=3Dd513c3043bb0=
-e71f563f06cbf98ac51e9e835391
+Considering it's holiday season, please expect some delay, but don't 
+hesitate to ping us in a week or two were you to not receive an answer 
+meanwhile.
 
-On 2022/12/30 10:32, Lee Chee Yang wrote:
-> From: Lee Chee Yang <chee.yang.lee@intel.com>
->=20
-> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-> ---
->   .../migration-guides/release-4.0.rst          |   1 +
->   .../migration-guides/release-notes-4.0.6.rst  | 310 +++++++++++++++++=
-+
->   2 files changed, 311 insertions(+)
->   create mode 100644 documentation/migration-guides/release-notes-4.0.6=
-.rst
->=20
-> diff --git a/documentation/migration-guides/release-4.0.rst b/documenta=
-tion/migration-guides/release-4.0.rst
-> index bb9c1a7b2..8ca849883 100644
-> --- a/documentation/migration-guides/release-4.0.rst
-> +++ b/documentation/migration-guides/release-4.0.rst
-> @@ -12,3 +12,4 @@ Release 4.0 (kirkstone)
->      release-notes-4.0.3
->      release-notes-4.0.4
->      release-notes-4.0.5
-> +   release-notes-4.0.6
-> diff --git a/documentation/migration-guides/release-notes-4.0.6.rst b/d=
-ocumentation/migration-guides/release-notes-4.0.6.rst
-> new file mode 100644
-> index 000000000..169282405
-> --- /dev/null
-> +++ b/documentation/migration-guides/release-notes-4.0.6.rst
-> @@ -0,0 +1,310 @@
-> +Release notes for Yocto-4.0.6 (Kirkstone)
-> +-----------------------------------------
-> +
-> +Security Fixes in Yocto-4.0.6
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +-  bash: Fix :cve:`2022-3715`
-> +-  curl: Fix :cve:`2022-32221`, :cve:`2022-42915` and :cve:`2022-42916=
-`
-> +-  dbus: Fix :cve:`2022-42010`, :cve:`2022-42011` and :cve:`2022-42012=
-`
-> +-  dropbear: Fix :cve:`2021-36369`
-> +-  ffmpeg: Fix :cve:`2022-3964`, :cve:`2022-3965`
-> +-  go: Fix :cve:`2022-2880`
-> +-  grub2: Fix :cve:`2022-2601`, :cve:`2022-3775` and :cve:`2022-28736`
-> +-  libarchive: Fix :cve:`2022-36227`
-> +-  libpam: Fix :cve:`2022-28321`
-> +-  libsndfile1: Fix :cve:`2021-4156`
-> +-  lighttpd: Fix :cve:`2022-41556`
-> +-  openssl: Fix :cve:`2022-3358`
-> +-  pixman: Fix :cve:`2022-44638`
-> +-  python3-mako: Fix :cve:`2022-40023`
-> +-  python3: Fix :cve:`2022-42919`
-> +-  qemu: Fix :cve:`2022-3165`
-> +-  sysstat: Fix :cve:`2022-39377`
-> +-  systemd: Fix :cve:`2022-3821`
-> +-  tiff: Fix :cve:`2022-2953`, :cve:`2022-3599`, :cve:`2022-3597`, :cv=
-e:`2022-3626`, :cve:`2022-3627`, :cve:`2022-3570`, :cve:`2022-3598` and :=
-cve:`2022-3970`
-> +-  wayland: Fix :cve:`2021-3782`
-> +-  xserver-xorg: Fix :cve:`2022-3550` and :cve:`2022-3551`
-> +
-> +
-> +Fixes in Yocto-4.0.6
-> +~~~~~~~~~~~~~~~~~~~~
-> +
-> +-  archiver: avoid using machine variable as it breaks multiconfig
-> +-  babeltrace: upgrade to 1.5.11
-> +-  bind: upgrade to 9.18.8
-> +-  bitbake.conf: Drop export of SOURCE_DATE_EPOCH_FALLBACK
-> +-  bitbake: gitsm: Fix regression in gitsm submodule path parsing
-> +-  bitbake: runqueue: Fix race issues around hash equivalence and ssta=
-te reuse
-> +-  bluez5: Point hciattach bcm43xx firmware search path to /lib/firmwa=
-re
-> +-  bluez5: add dbus to RDEPENDS
-> +-  build-appliance-image: Update to kirkstone head revision
-> +-  buildtools-tarball: export certificates to python and curl
-> +-  cargo_common.bbclass: Fix typos
-> +-  classes: make TOOLCHAIN more permissive for kernel
-> +-  cmake-native: Fix host tool contamination (Bug: 14951)
-> +-  common-tasks.rst: fix oeqa runtime test path
-> +-  create-spdx.bbclass: remove unused SPDX_INCLUDE_PACKAGED
-> +-  create-spdx: Remove ";name=3D..." for downloadLocation
-> +-  create-spdx: default share_src for shared sources
-> +-  cve-update-db-native: add timeout to urlopen() calls
-> +-  dbus: upgrade to 1.14.4
-> +-  dhcpcd: fix to work with systemd
-> +-  expat: upgrade to 2.5.0
-> +-  externalsrc.bbclass: Remove a trailing slash from ${B}
-> +-  externalsrc.bbclass: fix git repo detection
-> +-  externalsrc: git submodule--helper list unsupported
-> +-  gcc-shared-source: Fix source date epoch handling
-> +-  gcc-source: Drop gengtype manipulation
-> +-  gcc-source: Ensure deploy_source_date_epoch sstate hash doesn't cha=
-nge
-> +-  gcc-source: Fix gengtypes race
-> +-  gdk-pixbuf: upgrade to 2.42.10
-> +-  get_module_deps3.py: Check attribute '__file__'
-> +-  glib-2.0: fix rare GFileInfo test case failure
-> +-  glibc-locale: Do not INHIBIT_DEFAULT_DEPS
-> +-  gnomebase.bbclass: return the whole version for tarball directory i=
-f it is a number
-> +-  gnutls: Unified package names to lower-case
-> +-  groff: submit patches upstream
-> +-  gstreamer1.0-libav: fix errors with ffmpeg 5.x
-> +-  gstreamer1.0: upgrade to 1.20.4
-> +-  ifupdown: upgrade to 0.8.39
-> +-  insane.bbclass: Allow hashlib version that only accepts on paramete=
-r
-> +-  iso-codes: upgrade to 4.12.0
-> +-  kea: submit patch upstream (fix-multilib-conflict.patch)
-> +-  kern-tools: fix relative path processing
-> +-  kern-tools: integrate ZFS speedup patch
-> +-  kernel-yocto: improve fatal error messages of symbol_why.py
-> +-  kernel.bbclass: Include randstruct seed assets in STAGING_KERNEL_BU=
-ILDDIR
-> +-  kernel.bbclass: make KERNEL_DEBUG_TIMESTAMPS work at rebuild
-> +-  kernel: Clear SYSROOT_DIRS instead of replacing sysroot_stage_all
-> +-  libcap: upgrade to 2.66
-> +-  libepoxy: convert to git
-> +-  libepoxy: update to 1.5.10
-> +-  libffi: submit patch upstream (0001-arm-sysv-reverted-clang-VFP-mit=
-igation.patch )
-> +-  libffi: upgrade to 3.4.4
-> +-  libical: upgrade to 3.0.16
-> +-  libksba: upgrade to 1.6.2
-> +-  libuv: fixup SRC_URI
-> +-  libxcrypt: upgrade to 4.4.30
-> +-  lighttpd: upgrade to 1.4.67
-> +-  linux-firmware: add new fw file to ${PN}-qcom-adreno-a530
-> +-  linux-firmware: don't put the firmware into the sysroot
-> +-  linux-firmware: package amdgpu firmware
-> +-  linux-firmware: split rtl8761 firmware
-> +-  linux-firmware: upgrade to 20221109
-> +-  linux-yocto/5.10: update genericx86* machines to v5.10.149
-> +-  linux-yocto/5.15: fix CONFIG_CRYPTO_CCM mismatch warnings
-> +-  linux-yocto/5.15: update genericx86* machines to v5.15.72
-> +-  linux-yocto/5.15: update to v5.15.78
-> +-  ltp: backport clock_gettime04 fix from upstream
-> +-  lttng-modules: upgrade to 2.13.7
-> +-  lttng-tools: Upgrade to 2.13.8
-> +-  lttng-tools: submit determinism.patch upstream
-> +-  lttng-ust: upgrade to 2.13.5
-> +-  meson: make wrapper options sub-command specific
-> +-  meta-selftest/staticids: add render group for systemd
-> +-  mirrors.bbclass: update CPAN_MIRROR
-> +-  mirrors.bbclass: use shallow tarball for binutils-native
-> +-  mobile-broadband-provider-info: upgrade 20220725 -> 20221107
-> +-  mtd-utils: upgrade 2.1.4 -> 2.1.5
-> +-  numactl: upgrade to 2.0.16
-> +-  oe/packagemanager/rpm: don't leak file objects
-> +-  oeqa/selftest/lic_checksum: Cleanup changes to emptytest include
-> +-  oeqa/selftest/minidebuginfo: Create selftest for minidebuginfo
-> +-  oeqa/selftest/tinfoil: Add test for separate config_data with recip=
-e_parse_file()
-> +-  openssl: Fix SSL_CERT_FILE to match ca-certs location
-> +-  openssl: upgrade to 3.0.7
-> +-  openssl: export necessary env vars in SDK
-> +-  opkg-utils: use a git clone, not a dynamic snapshot
-> +-  opkg: Set correct info_dir and status_file in opkg.conf
-> +-  overlayfs: Allow not used mount points
-> +-  ovmf: correct patches status
-> +-  package: Fix handling of minidebuginfo with newer binutils
-> +-  perf: Depend on native setuptools3
-> +-  poky.conf: bump version for 4.0.6
-> +-  psplash: add psplash-default in rdepends
-> +-  psplash: consider the situation of psplash not exist for systemd
-> +-  python3: advance to version 3.10.8
-> +-  qemu-helper-native: Correctly pass program name as argv[0]
-> +-  qemu-helper-native: Re-write bridge helper as C program
-> +-  qemu-native: Add PACKAGECONFIG option for jack
-> +-  qemu: add io_uring PACKAGECONFIG
-> +-  quilt: backport a patch to address grep 3.8 failures
-> +-  resolvconf: make it work
-> +-  rm_work: exclude the SSTATETASKS from the rm_work tasks sinature
-> +-  runqemu: Do not perturb script environment
-> +-  runqemu: Fix gl-es argument from causing other arguments to be igno=
-red
-> +-  sanity: Drop data finalize call
-> +-  sanity: check for GNU tar specifically
-> +-  scripts/oe-check-sstate: cleanup
-> +-  scripts/oe-check-sstate: force build to run for all targets, specif=
-ically populate_sysroot
-> +-  scripts: convert-overrides: Allow command-line customizations
-> +-  socat: upgrade to 1.7.4.4
-> +-  SPDX and CVE documentation updates
-> +-  sstate: Allow optimisation of do_deploy_archives task dependencies
-> +-  sstatesig: emit more helpful error message when not finding sstate =
-manifest
-> +-  sstatesig: skip the rm_work task signature
-> +-  sudo: upgrade to 1.9.12p1
-> +-  systemd: Consider PACKAGECONFIG in RRECOMMENDS
-> +-  systemd: add group render to udev package
-> +-  tcl: correct patch status
-> +-  tiff: refresh with devtool
-> +-  tiff: add CVE tag to b258ed69a485a9cfb299d9f060eb2a46c54e5903.patch
-> +-  u-boot: Remove duplicate inherit of cml1
-> +-  uboot-sign: Fix using wrong KEY_REQ_ARGS
-> +-  vala: install vapigen-wrapper into /usr/bin/crosscripts and stage o=
-nly that
-> +-  valgrind: remove most hidden tests for arm64
-> +-  vim: Upgrade to 9.0.0947
-> +-  vulkan-samples: add lfs=3D0 to SRC_URI to avoid git smudge errors i=
-n do_unpack
-> +-  wic: honor the SOURCE_DATE_EPOCH in case of updated fstab
-> +-  wic: make ext2/3/4 images reproducible
-> +-  wic: swap partitions are not added to fstab
-> +-  wpebackend-fdo: upgrade to 1.14.0
-> +-  xserver-xorg: move some recommended dependencies in required
-> +-  xwayland: upgrade to 22.1.5
-> +
-> +
-> +Known Issues in Yocto-4.0.6
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +- N/A
-> +
-> +
-> +Contributors to Yocto-4.0.6
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +-  Alex Kiernan
-> +-  Alexander Kanavin
-> +-  Alexey Smirnov
-> +-  Bartosz Golaszewski
-> +-  Bernhard Rosenkr=C3=A4nzer
-> +-  Bhabu Bindu
-> +-  Bruce Ashfield
-> +-  Chee Yang Lee
-> +-  Chen Qi
-> +-  Christian Eggers
-> +-  Claus Stovgaard
-> +-  Diego Sueiro
-> +-  Dmitry Baryshkov
-> +-  Ed Tanous
-> +-  Enrico J=C3=B6rns
-> +-  Etienne Cordonnier
-> +-  Frank de Brabander
-> +-  Harald Seiler
-> +-  Hitendra Prajapati
-> +-  Jan-Simon Moeller
-> +-  Jeremy Puhlman
-> +-  Joe Slater
-> +-  John Edward Broadbent
-> +-  Jose Quaresma
-> +-  Joshua Watt
-> +-  Kai Kang
-> +-  Keiya Nobuta
-> +-  Khem Raj
-> +-  Konrad Weihmann
-> +-  Leon Anavi
-> +-  Liam Beguin
-> +-  Marek Vasut
-> +-  Mark Hatle
-> +-  Martin Jansa
-> +-  Michael Opdenacker
-> +-  Mikko Rapeli
-> +-  Narpat Mali
-> +-  Nathan Rossi
-> +-  Niko Mauno
-> +-  Pavel Zhukov
-> +-  Peter Kjellerstedt
-> +-  Peter Marko
-> +-  Polampalli, Archana
-> +-  Qiu, Zheng
-> +-  Ravula Adhitya Siddartha
-> +-  Richard Purdie
-> +-  Ross Burton
-> +-  Sakib Sajal
-> +-  Sean Anderson
-> +-  Sergei Zhmylev
-> +-  Steve Sakoman
-> +-  Teoh Jay Shen
-> +-  Thomas Perrot
-> +-  Tim Orling
-> +-  Vincent Davis Jr
-> +-  Vivek Kumbhar
-> +-  Vyacheslav Yurkov
-> +-  Wang Mingyu
-> +-  Xiangyu Chen
-> +-  Zheng Qiu
-> +-  Ciaran Courtney
-> +-  Wang Mingyu
-> +
-> +
-> +Repositories / Downloads for Yocto-4.0.6
-> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> +
-> +poky
-> +
-> +-  Repository Location: :yocto_git:`/poky`
-> +-  Branch: :yocto_git:`kirkstone </poky/log/?h=3Dkirkstone>`
-> +-  Tag:  :yocto_git:`yocto-4.0.6 </poky/log/?h=3Dyocto-4.0.6>`
-> +-  Git Revision: :yocto_git:`c4e08719a782fd4119eaf643907b80cebf57f88f =
-</poky/commit/?id=3Dc4e08719a782fd4119eaf643907b80cebf57f88f>`
-> +-  Release Artefact: poky-c4e08719a782fd4119eaf643907b80cebf57f88f
-> +-  sha: 2eb3b323dd2ccd25f9442bfbcbde82bc081fad5afd146a8e6dde439db24a99=
-d4
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.6/poky-c=
-4e08719a782fd4119eaf643907b80cebf57f88f.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.6/poky-c4e08719a782=
-fd4119eaf643907b80cebf57f88f.tar.bz2
-> +
-> +openembedded-core
-> +
-> +-  Repository Location: :oe_git:`/openembedded-core`
-> +-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=3Dkirkstone>`
-> +-  Tag:  :oe_git:`yocto-4.0.6 </openembedded-core/log/?h=3Dyocto-4.0.6=
->`
-> +-  Git Revision: :oe_git:`45a8b4101b14453aa3020d3f2b8a76b4dc0ae3f2 </o=
-penembedded-core/commit/?id=3D45a8b4101b14453aa3020d3f2b8a76b4dc0ae3f2>`
-> +-  Release Artefact: oecore-45a8b4101b14453aa3020d3f2b8a76b4dc0ae3f2
-> +-  sha: de8b443365927befe67cc443b60db57563ff0726377223f836a3f3971cf405=
-ec
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.6/oecore=
--45a8b4101b14453aa3020d3f2b8a76b4dc0ae3f2.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.6/oecore-45a8b4101b=
-14453aa3020d3f2b8a76b4dc0ae3f2.tar.bz2
-> +
-> +meta-mingw
-> +
-> +-  Repository Location: :yocto_git:`/meta-mingw`
-> +-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=3Dkirkstone>`
-> +-  Tag:  :yocto_git:`yocto-4.0.6 </meta-mingw/log/?h=3Dyocto-4.0.6>`
-> +-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 =
-</meta-mingw/commit/?id=3Da90614a6498c3345704e9611f2842eb933dc51c1>`
-> +-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51=
-c1
-> +-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c63=
-02
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.6/meta-m=
-ingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.6/meta-mingw-a90614=
-a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-> +
-> +meta-gplv2
-> +
-> +-  Repository Location: :yocto_git:`/meta-gplv2`
-> +-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=3Dkirkstone>`
-> +-  Tag:  :yocto_git:`yocto-4.0.6 </meta-gplv2/log/?h=3Dyocto-4.0.6>`
-> +-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a =
-</meta-gplv2/commit/?id=3Dd2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-> +-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e=
-8a
-> +-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca=
-6d
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.6/meta-g=
-plv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.6/meta-gplv2-d2f8b5=
-cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-> +
-> +bitbake
-> +
-> +-  Repository Location: :oe_git:`/bitbake`
-> +-  Branch: :oe_git:`2.0 </bitbake/log/?h=3D2.0>`
-> +-  Tag:  :oe_git:`yocto-4.0.6 </bitbake/log/?h=3Dyocto-4.0.6>`
-> +-  Git Revision: :oe_git:`7e268c107bb0240d583d2c34e24a71e373382509 </b=
-itbake/commit/?id=3D7e268c107bb0240d583d2c34e24a71e373382509>`
-> +-  Release Artefact: bitbake-7e268c107bb0240d583d2c34e24a71e373382509
-> +-  sha: c3e2899012358c95962c7a5c85cf98dc30c58eae0861c374124e96d9556bb9=
-01
-> +-  Download Locations:
-> +   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.6/bitbak=
-e-7e268c107bb0240d583d2c34e24a71e373382509.tar.bz2
-> +   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.6/bitbake-7e268c107=
-bb0240d583d2c34e24a71e373382509.tar.bz2
-> +
-> +yocto-docs
-> +
-> +-  Repository Location: :yocto_git:`/yocto-docs`
-> +-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=3Dkirkstone>`
-> +-  Tag: :yocto_git:`yocto-4.0.6 </yocto-docs/log/?h=3Dyocto-4.0.6>`
-> +-  Git Revision: :yocto_git:`c10d65ef3bbdf4fe3abc03e3aef3d4ca8c2ad87f =
-</yocto-docs/commit/?id=3Dc10d65ef3bbdf4fe3abc03e3aef3d4ca8c2ad87f>`
-> +
-> +
->=20
->=20
->=20
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#3562): https://lists.yoctoproject.org/g/docs/messag=
-e/3562
-> Mute This Topic: https://lists.yoctoproject.org/mt/95947516/3617373
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [ito@lineo.co.=
-jp]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->=20
-
---=20
-Takayasu Ito
-Solution Department, Lineo Solutions, Inc.
-https://www.lineo.co.jp/english/
-Email: ito@lineo.co.jp
-Yocto Project Ambassador
-
+Cheers,
+Quentin
 
