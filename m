@@ -2,93 +2,80 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2DEFFC3DA7D
-	for <webhook@archiver.kernel.org>; Tue,  3 Jan 2023 18:49:38 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.1818.1672771777226661122
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7C1EC4332F
+	for <webhook@archiver.kernel.org>; Wed,  4 Jan 2023 09:09:30 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.7873.1672823364550414676
  for <docs@lists.yoctoproject.org>;
- Tue, 03 Jan 2023 10:49:37 -0800
+ Wed, 04 Jan 2023 01:09:24 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LJuw9UfO;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pZ4fvUxT;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 98242E0004;
-	Tue,  3 Jan 2023 18:49:34 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 9E10F40017;
+	Wed,  4 Jan 2023 09:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1672771775;
+	t=1672823362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=D+31F9+l392wzJ76OkhydQOnRHZNDlatTKs97OAfqm8=;
-	b=LJuw9UfOOwYpXOdVALoFD0FyH5iY2I9lA4GKNnIu44KM7O2MwWN86erueEywgDu49eD6Hg
-	d0cKd44TTfit5ib2xJQJxxlE/jSZN+K+TmRKgB6hkRZekjgGQa8Xi850Z3SLku0joJ37ut
-	FyyT8WJfCcZCDAdSpkf4fEmfYHDXXuPnvwmqBgOfSB5ypMu/7bSFOI0PsBw+mpa5UHNbnb
-	c/8FgBuAMa7Tu0wHZDexNd/cWrLHWWP15W8rtnAqqioTVklQzsqUmgfjZ12G2cFWRCnSv0
-	SEL0PfE29D1JLWLfWoodCL80GTKMTgtOo20xD6sv89Ai2+Fk6ZQkV3HjWrbstw==
-Message-ID: <0d696eac-7344-ddad-504b-08d8205f33c2@bootlin.com>
-Date: Tue, 3 Jan 2023 19:49:33 +0100
+	bh=ks6uqONUO7lfIPsEawsYtUztv9n7nb8swGhFkFcITbs=;
+	b=pZ4fvUxTWodKAd4LUxA6KtvvbqOP+fRnZ2Wirg/ZiaTnvCTrpSFSx3nr34/JTtXQ63viz5
+	Uo0OEskgwwk08p1TNMmqL44aadouz87i11vpisyoUQbcxg72k48eDhng1IIMkN+Vdz91jP
+	GWqsiszrNqMccV4Xske3LtxXHvU2eN7sFh8WTXpnHeWiDw/gkpSdTzY1BdoCTYDPa3WOwQ
+	PefTHTmZsi+tBJGlEdwHtoKfyXujvCwnTGiDtOva7gV0dnvgcxOBJCtgylWsDsBuLsOPpS
+	fpOchmj+uiI1N09OGRY6RAT974RhBCRG2lRmBFH1SsH3tOvygJrQuEU2PpcHLQ==
+Message-ID: <06079ed7-7f81-c869-e141-b62d29497585@bootlin.com>
+Date: Wed, 4 Jan 2023 10:09:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] doc: user-manual: intro: reword a sentence
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [bitbake-devel] Typo on the BitBake Documentation
 Content-Language: en-US
-To: quentin.schulz@theobroma-systems.com,
- Peter Kjellerstedt <peter.kjellerstedt@axis.com>,
- than.matos+bitbake@gmail.com, Quentin Schulz <foss+yocto@0leil.net>
-References: <20230103-typo-202301-v1-0-bb5014c684d0@theobroma-systems.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ than.matos+bitbake@gmail.com, bitbake-devel@lists.openembedded.org
+References: <bWm9.1672174859052782246.2l5k@lists.openembedded.org>
+ <dee6ed9a3beabd5cd18042c61b0dfd31c2c4ff8e.camel@linuxfoundation.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20230103-typo-202301-v1-0-bb5014c684d0@theobroma-systems.com>
+In-Reply-To: <dee6ed9a3beabd5cd18042c61b0dfd31c2c4ff8e.camel@linuxfoundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 03 Jan 2023 18:49:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3577
+ <docs@lists.yoctoproject.org>; Wed, 04 Jan 2023 09:09:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3578
+
+Hi Richard,
+
+Am 03.01.23 um 23:24 schrieb Richard Purdie:
+> On Tue, 2022-12-27 at 13:00 -0800, than.matos+bitbake@gmail.com wrote:
+>> I'm not sure if this is the right place to report and if I'm writing
+>> in the wrong place, please feel free to remove this post.
+>>   
+>> I'm also not a native of English, but I think there is a typo on the
+>> BitBake documentation page.
+>>   
+>>> You can obtain BitBake several different ways:
+>> I feel like there is a missing `in` before the word `several`.
+>>   
+>> Sorry to bother you!
+> Thanks for reporting it.
+>
+> I'm a little torn on this. I am a native speaker and I'd have said it
+> was probably sounds better as it is now. Adding "in" could likely be
+> argued to me more grammatically correct and more formal for a written
+> document but it doesn't feel quite right to me. I suspect it is one of
+> those cases where there isn't a 100% correct answer.
 
 
-Am 03.01.23 um 18:59 schrieb Quentin Schulz via lists.yoctoproject.org:
-> It's been reported this sentence is a bit odd, so let's reword it.
->
-> Reported-by: than.matos+bitbake@gmail.com
-> Suggested-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-> Cc: Quentin Schulz <foss+yocto@0leil.net>
-> Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-> ---
-> reword odd sentence
->
-> Cc: docs@lists.yoctoproject.org
-> Cc: bitbake-devel@lists.openembedded.org
-> ---
->   doc/bitbake-user-manual/bitbake-user-manual-intro.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> index 35ffb88b0..797feb516 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-> @@ -275,7 +275,7 @@ simple as ``busybox_%.bbappend`` to be entirely version independent.
->   Obtaining BitBake
->   =================
->   
-> -You can obtain BitBake several different ways:
-> +There are several different ways that BitBake can be obtained:
->   
->   -  **Cloning BitBake:** Using Git to clone the BitBake source code
->      repository is the recommended method for obtaining BitBake. Cloning
->
-> ---
-> base-commit: 367a83ed46c7fbcdd06579b6cc3a6e48a89ca7fb
-> change-id: 20230103-typo-202301-c5f8f3571209
->
-> Best regards,
+Thanks for the native advice!
 
+What about "There are several ways to obtain BitBake"?
 
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Thanks for the patch!
 Cheers
 Michael.
 
