@@ -2,86 +2,68 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7C1EC4332F
-	for <webhook@archiver.kernel.org>; Wed,  4 Jan 2023 09:09:30 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.7873.1672823364550414676
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D599C46467
+	for <webhook@archiver.kernel.org>; Wed,  4 Jan 2023 10:07:51 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.8584.1672826861842974947
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Jan 2023 01:09:24 -0800
+ Wed, 04 Jan 2023 02:07:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pZ4fvUxT;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gtOE3j3Q;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 9E10F40017;
-	Wed,  4 Jan 2023 09:09:21 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 2E2521C0010;
+	Wed,  4 Jan 2023 10:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1672823362;
+	t=1672826859;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ks6uqONUO7lfIPsEawsYtUztv9n7nb8swGhFkFcITbs=;
-	b=pZ4fvUxTWodKAd4LUxA6KtvvbqOP+fRnZ2Wirg/ZiaTnvCTrpSFSx3nr34/JTtXQ63viz5
-	Uo0OEskgwwk08p1TNMmqL44aadouz87i11vpisyoUQbcxg72k48eDhng1IIMkN+Vdz91jP
-	GWqsiszrNqMccV4Xske3LtxXHvU2eN7sFh8WTXpnHeWiDw/gkpSdTzY1BdoCTYDPa3WOwQ
-	PefTHTmZsi+tBJGlEdwHtoKfyXujvCwnTGiDtOva7gV0dnvgcxOBJCtgylWsDsBuLsOPpS
-	fpOchmj+uiI1N09OGRY6RAT974RhBCRG2lRmBFH1SsH3tOvygJrQuEU2PpcHLQ==
-Message-ID: <06079ed7-7f81-c869-e141-b62d29497585@bootlin.com>
-Date: Wed, 4 Jan 2023 10:09:21 +0100
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wvm6mvONexf/q9ysXaOrDNvcER9qh654os6PnxhOab8=;
+	b=gtOE3j3QsPxMUXY88BNYSCznj9ZE7Ehh1DPOc6QWr0hF4qnB2wUE04qbdWaVLrL0g0xtrt
+	3rkFRvvM7f7xKTd0TMq+SbrXXcszWZoB01t86esPes2SrhZvrhaaOtngVHUbXK4JG7JzEy
+	ylCOu5i8Xid7hV3LYLtfBvDxHn2n49UTrHTOigA/h1XMjs/r922k4QMFhwKV6tsXEsroIv
+	j70SCR15y8Bal3O8cixApiuTSLWdIQfZYQHQJsueTsdN8ODyn/ftwduHhlMZ+qpR46t2vx
+	nDaAheVz3y1JCWf8xXCZJtCJTQjiBc09kJBMfJLINSo+a4v2aywVOQFMbZt5qA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] migration-1.6.rst: fix redundant reference
+Date: Wed,  4 Jan 2023 11:07:37 +0100
+Message-Id: <20230104100737.1739304-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [bitbake-devel] Typo on the BitBake Documentation
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- than.matos+bitbake@gmail.com, bitbake-devel@lists.openembedded.org
-References: <bWm9.1672174859052782246.2l5k@lists.openembedded.org>
- <dee6ed9a3beabd5cd18042c61b0dfd31c2c4ff8e.camel@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <dee6ed9a3beabd5cd18042c61b0dfd31c2c4ff8e.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 04 Jan 2023 09:09:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3578
+ <docs@lists.yoctoproject.org>; Wed, 04 Jan 2023 10:07:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3579
 
-Hi Richard,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Am 03.01.23 um 23:24 schrieb Richard Purdie:
-> On Tue, 2022-12-27 at 13:00 -0800, than.matos+bitbake@gmail.com wrote:
->> I'm not sure if this is the right place to report and if I'm writing
->> in the wrong place, please feel free to remove this post.
->>   
->> I'm also not a native of English, but I think there is a typo on the
->> BitBake documentation page.
->>   
->>> You can obtain BitBake several different ways:
->> I feel like there is a missing `in` before the word `several`.
->>   
->> Sorry to bother you!
-> Thanks for reporting it.
->
-> I'm a little torn on this. I am a native speaker and I'd have said it
-> was probably sounds better as it is now. Adding "in" could likely be
-> argued to me more grammatically correct and more formal for a written
-> document but it doesn't feel quite right to me. I suspect it is one of
-> those cases where there isn't a 100% correct answer.
+Fix sentence containing two references to the same section.
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/migration-guides/migration-1.6.rst | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks for the native advice!
-
-What about "There are several ways to obtain BitBake"?
-
-Cheers
-Michael.
-
+diff --git a/documentation/migration-guides/migration-1.6.rst b/documentation/migration-guides/migration-1.6.rst
+index 1baf8b311a..32f77f9a72 100644
+--- a/documentation/migration-guides/migration-1.6.rst
++++ b/documentation/migration-guides/migration-1.6.rst
+@@ -223,8 +223,7 @@ Package Test (ptest)
+ Package Tests (ptest) are built but not installed by default. For
+ information on using Package Tests, see the
+ ":ref:`dev-manual/packages:testing packages with ptest`" section in the
+-Yocto Project Development Tasks Manual. For information on the
+-:ref:`ptest <ref-classes-ptest>` class, see the ":ref:`ref-classes-ptest`"
++Yocto Project Development Tasks Manual. See also the ":ref:`ref-classes-ptest`"
+ section.
+ 
+ .. _migration-1.6-build-changes:
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.37.2
 
 
