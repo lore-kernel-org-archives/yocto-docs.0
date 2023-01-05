@@ -2,79 +2,118 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FC78C3DA7D
-	for <webhook@archiver.kernel.org>; Thu,  5 Jan 2023 12:24:31 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.11461.1672921466290238530
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E23E9C53210
+	for <webhook@archiver.kernel.org>; Thu,  5 Jan 2023 14:23:21 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web11.13738.1672928599567462912
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Jan 2023 04:24:26 -0800
+ Thu, 05 Jan 2023 06:23:20 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=NFopXTib;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ghw5hCSp;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 51FA04000C;
-	Thu,  5 Jan 2023 12:24:23 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 96D98240005;
+	Thu,  5 Jan 2023 14:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1672921464;
+	t=1672928597;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JMU2oI4wRWNroUGbKFih+BSwyFYrWhCe/xBlZsfzbKw=;
-	b=NFopXTibRAwRwkbdtzlTfKL2ah5i/nR4frDmp94Ox3zLC5cvKO50hwgwsZNgShavUsH2nz
-	KTYCTYgG0VtaG1hErDgAsZgnBtnS7Vr1r+RzfsfVzGPO2k++VCVPp2jfI5EAC5sN/bdq/Q
-	n0YNb2EwZ+g1dZeo7LSe0++aGEJ7h1tBb+nf2xbweFJGpl7t6FKBrcutogyWPIDQTI3ZHx
-	4YteoACtGbgIjHgFE5APeDA9PjAEfC8NbBKCjWdFEuON+D9MVY6dQ4EnJ9NC2sZcas9mtN
-	ZnkVH5spnNtUhMyJWW8gmUJOgitgLb2s7r+3CqRlBGheE5BYEuAXyo8AZxZTHw==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>,
-	Quentin Schulz <foss+yocto@0leil.net>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Subject: [PATCH 2/2] [langdale] docs: migration-4.0: specify variable name change for kernel inclusion in image recipe
-Date: Thu,  5 Jan 2023 13:24:19 +0100
-Message-Id: <20230105122419.59421-2-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230105122419.59421-1-michael.opdenacker@bootlin.com>
-References: <20230105122419.59421-1-michael.opdenacker@bootlin.com>
+	bh=MC57V2De9WehMM04xgZjn4cvZr0S6kEfWvlL/JYkgr4=;
+	b=Ghw5hCSpwtdT67ebDI7+KW3fEEa1bGeOtxr3hg/OBjFO8XGVUCkwyoLcr822QIg4QfeAPz
+	MsG0caPaTgT0NfesG7quilxdAzpKw7ajJVzCV1oJpt3kyOdYmTDpOvz/NsybXhRSsDY6yt
+	lCbagbdjtcTdMqUAn5vGZui37kFgB68wuQEo8SxGLKeKuSDnjSEuzRa++IWiyO/YTaDdqW
+	URqzQOggKgl1dQw/he4MagP7a249jGtcMqNVeQ1gdxRNg1AA63jwb38SedMOp/7tB2o+wt
+	r96PoPZMGcz/XuJi9tTNx5Bcsg0ye95ZQ92Ai0KIVV2bOv2kq/VrD/IBod2d0Q==
+Message-ID: <b725dbd2-3825-1eb7-3f71-a19a17c2ef7f@bootlin.com>
+Date: Thu, 5 Jan 2023 15:23:14 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Cc: OE Core mailing list <openembedded-core@lists.openembedded.org>,
+ Khem Raj <raj.khem@gmail.com>, "Robert P. J. Day" <rpjday@crashcourse.ca>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [OE-core] is "poky" distro defined to use "sysvinit" as
+ INIT_MANAGER?
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+References: <2893205d-57e1-e63e-5c12-c57c7bbcb924@crashcourse.ca>
+ <CAMKF1spKw-X-JTvdicfBBNNGk93EPL=gqD3jixvJkb7YfT1P0g@mail.gmail.com>
+ <1736D38C7177CA6A.6604@lists.openembedded.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <1736D38C7177CA6A.6604@lists.openembedded.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Jan 2023 12:24:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3588
+ <docs@lists.yoctoproject.org>; Thu, 05 Jan 2023 14:23:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3589
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Am 03.01.23 um 15:41 schrieb Michael Opdenacker via lists.openembedded.org:
+> Hello Richard,
+>
+> Trying to improve the documentation about the selection of the init 
+> system, I'm jumping back to this old conversation, following a change 
+> that you made (https://lists.yoctoproject.org/g/poky/message/12760).
+>
+> Am 06.07.22 um 18:40 schrieb Khem Raj:
+>> On Wed, Jul 6, 2022 at 12:38 PM Robert P. J. Day 
+>> <rpjday@crashcourse.ca> wrote:
+>>>
+>>>    not sure why i never noticed this before, but i started a new
+>>> project from the poky layer (not OE), and realized that poky.conf
+>>> explicitly sets:
+>>>
+>>>    INIT_MANAGER = "sysvinit"
+>>>
+>>> which can't be overridden in my local.conf. if i want systemd, i guess
+>>> i can initialize my project from the OE layer, and i also notice that
+>>> i could use poky-altcfg.conf.
+>>>
+>>>    but is there a reason that the default poky-based project fixes
+>>> INIT_MANAGER to "sysvinit". perhaps just for simplicity?
+>>>
+>> poky defaults to sysvinit.
+>> poky has poky-alt distro fi you want to use say systemd
+>
+> But why not setting INIT_MANAGER with "?=" instead of "=" in poky.conf?
+>
+> This way, we could just override INIT_MANAGER from local.conf.
+>
+> I checked that the generated system works. This would make things 
+> easier to document, unless I'm missing other reasons.
 
-Since commit f6d963fa6d0e ("kernel: make kernel-base recommend
-kernel-image, not depend"), present in Kirkstone 4.0, one should
-set RRECOMMENDS and not RDEPENDS to avoid including the kernel in the
-image, so let's update the documentation to reflect that.
 
-Reported-by: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>
-Cc: Quentin Schulz <foss+yocto@0leil.net>
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/migration-guides/migration-4.0.rst | 3 +++
- 1 file changed, 3 insertions(+)
+Richard told me on IRC that, from memory, this was set because of 
+interference poky-altcfg (if I understood correctly).
 
-diff --git a/documentation/migration-guides/migration-4.0.rst b/documentation/migration-guides/migration-4.0.rst
-index 02d3c3e2bd..ab82280f5e 100644
---- a/documentation/migration-guides/migration-4.0.rst
-+++ b/documentation/migration-guides/migration-4.0.rst
-@@ -265,3 +265,6 @@ Miscellaneous changes
-   when parsing recipes. Any code depending on the previous behaviour will no longer
-   work - change any such code to explicitly use appropriate path variables instead.
- 
-+- In order to exclude the kernel image from the image rootfs,
-+  :term:`RRECOMMENDS`\ ``:${KERNEL_PACKAGE_NAME}-base`` should be set instead of
-+  :term:`RDEPENDS`\ ``:${KERNEL_PACKAGE_NAME}-base``.
+I understand one recommended way to have systemd instead of sysvinit in 
+Poky is to use "poky-altcfg" instead of "poky" as distro.
+
+Similarly, I guess I should use "poky-tiny" if I want to use 
+"mdev-busybox" as INIT_MANAGER.
+
+Then, I guess I'll document something like this:
+
+  * With the OpenEmbedded build system, you can choose your init system
+    by setting INIT_MANAGER to "sysvinit", "systemd", "busybox-mdev" or
+    "none"
+  * BUT if you're using Poky, that won't work, so your options will be
+    to use either "poky" (sysvinit), "poky-altcfg" (systemd) or
+    "poky-tiny" (mdev-busybox).
+
+Does this sound like the right way to document this?
+
+Cheers
+Michael.
+
 -- 
-2.37.2
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
