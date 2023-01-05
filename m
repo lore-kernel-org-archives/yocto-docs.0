@@ -1,80 +1,84 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D55DC54EBE
-	for <webhook@archiver.kernel.org>; Thu,  5 Jan 2023 15:09:52 +0000 (UTC)
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
- by mx.groups.io with SMTP id smtpd.web11.14943.1672931389231593764
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E5E0C3DA7A
+	for <webhook@archiver.kernel.org>; Thu,  5 Jan 2023 15:20:22 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web10.15372.1672932016550407684
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Jan 2023 07:09:49 -0800
+ Thu, 05 Jan 2023 07:20:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=NXUJaub3;
- spf=pass (domain: gmail.com, ip: 209.85.167.47, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lf1-f47.google.com with SMTP id f34so55350386lfv.10
-        for <docs@lists.yoctoproject.org>; Thu, 05 Jan 2023 07:09:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ECkTBUhhIpG17Y7FDlw7Idu7jUHDS4zYkBBZFc04VPQ=;
-        b=NXUJaub3D3NuHIwvPuuVFY514Q3fDLpuCxvHeYzWCN5F/nRg+TkX3Vz1R3Tgxtg1L/
-         7XEp2mWhoFJXU4WKXw1VkFAG96L4CS6z0noac3dtNoHELVuxLd9L/KBqMbHfmLxIJc4u
-         igJsJAF6eTB2gRRmRwdRYaik1S4hllJzbGqb9GzxUvEHNQx05VP+ZpbhicubxfdzOSNi
-         IFsj1V7+GByyTRJjcdx2wdABUTys8hzoj6KI1+qkdyh53SG41QW4SoDGnumfX4y/NVD4
-         7yLPzWzXvTWWqkMXoig224dX9FHNX+IhdfbXU3luN1Sn/PbmrZbnoQg7PN2q6XeDBeYE
-         omTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ECkTBUhhIpG17Y7FDlw7Idu7jUHDS4zYkBBZFc04VPQ=;
-        b=Oh2oEgR8SfpyWt09mThdmYteAgUvfeB9oiNY8FEk87PiOODDerc6VeYhJMERPx4iOM
-         GVi/+oCfefCafaHaQzDRUVyF+cWhc0aPOIsXnETDakV9ohMp0DY14bo2oN3PoNM+q/3o
-         Bixb3MsSaZzRqhLLY9CVYmLCH9GA7JtoDbj0tXZWvQ+v6MEKGjsL/j691rAXVP+niu7g
-         ZLy0vhKrF9SN4PFng3vpJmsF5Pm4iRX8DLrNDRfR8TaOJhADnu/RlFOpPqz+UJgZ2UB2
-         OpxpiYB4UL9YwS0IU0xusLM/voXZqLBL4GmA9t7WRFEwYfHhprvARcfwFgW5ihAlw6JD
-         2+WA==
-X-Gm-Message-State: AFqh2koyJPU89dZ7oMzQ3Hm1+ecKIBk76t+aqbJR8VFKwbNm/FcRz4FO
-	sOvK2y3iUva94Eag1KtKRfbOOIY/ZVlRdgWXxh8=
-X-Google-Smtp-Source: AMrXdXsBGkbySK4vMjgWM150/Ak3yEPel5upVkEoQajgfkhZkwX9sGmX2zIZKX6T1i89ttjGjv8vy8IW5npkT1iwQ10=
-X-Received: by 2002:ac2:4bc9:0:b0:4b5:4502:1323 with SMTP id
- o9-20020ac24bc9000000b004b545021323mr2957209lfq.345.1672931387271; Thu, 05
- Jan 2023 07:09:47 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=VJnJwsPn;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 2C263240010;
+	Thu,  5 Jan 2023 15:20:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1672932014;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=p0mvcbvtDC9bKPrYpxdozvJgsNnBAOrQZue8/zLOYxk=;
+	b=VJnJwsPn8Hsnnmxfq8ubh6s6GkG6NCHNIBj8gZg4vi/8EiSYo/p58ieGmsrOeTfMQ2l6hf
+	aBHE+NZAv3J5u/zT3kRVZBv5xycl/zu1y2KcV8KjPluw3Dc8ctuHyJs1d02V+7usFZzH1E
+	jUukRx6BpXzUq+ub8TDbxjVRnckCwbOSvC17pGQo8xVoSzxEUtqz+p97bDdVALg8RAcgCp
+	aUXf0WxRRrXMIo7py4YBMHbijrAsDM/ARLsKyiwe3OShAnDv1QGhH33HSbvGEMDkiGIwjh
+	YT01Y0I+iyIcaj7QzyAP6C4O5Fk5qIfgg0EcLkHlTiDFWOVCUxUXbQG/A+YbTw==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Alexander Kanavin <alex.kanavin@gmail.com>
+Subject: [PATCH] ref-manual/system-requirements.rst: recommend buildtools for not supported distros
+Date: Thu,  5 Jan 2023 16:20:10 +0100
+Message-Id: <20230105152010.2318650-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-References: <2893205d-57e1-e63e-5c12-c57c7bbcb924@crashcourse.ca>
- <CAMKF1spKw-X-JTvdicfBBNNGk93EPL=gqD3jixvJkb7YfT1P0g@mail.gmail.com>
- <1736D38C7177CA6A.6604@lists.openembedded.org> <b725dbd2-3825-1eb7-3f71-a19a17c2ef7f@bootlin.com>
- <d92b4751144e16c0d97823b7eef1b88b3a20b760.camel@linuxfoundation.org> <c39c062f-44d2-7b84-9b22-3b52957407f5@bootlin.com>
-In-Reply-To: <c39c062f-44d2-7b84-9b22-3b52957407f5@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Thu, 5 Jan 2023 16:09:35 +0100
-Message-ID: <CANNYZj_qBzHoTTsa3GeW9eUKoL+XHv+uiyoNmq9=z+78RLbvmA@mail.gmail.com>
-Subject: Re: [docs] [OE-core] is "poky" distro defined to use "sysvinit" as INIT_MANAGER?
-To: michael.opdenacker@bootlin.com
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, 
-	OE Core mailing list <openembedded-core@lists.openembedded.org>, Khem Raj <raj.khem@gmail.com>, 
-	"Robert P. J. Day" <rpjday@crashcourse.ca>, YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Jan 2023 15:09:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3592
+ <docs@lists.yoctoproject.org>; Thu, 05 Jan 2023 15:20:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3593
 
-On Thu, 5 Jan 2023 at 16:02, Michael Opdenacker via
-lists.yoctoproject.org
-<michael.opdenacker=bootlin.com@lists.yoctoproject.org> wrote:
-> As far as I am concerned, I tried to set INIT_MANAGER with "?=" in
-> poky.conf and the set INIT_MANAGER = "systemd" in local.conf and the
-> resulting system was booting fine.
-> Shall we make the change in master and see if autobuilders catch any
-> issue? Unless your remember was the complexity was about.
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-I think you have the privilege of running things directly on the AB
-without having to ask anyone, so I'd say just make a commit and toss
-it into one of the master-next builds that bootlin runs :)
+Also minor correction to supported distribution notes
 
-Alex
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Suggested-by: Alexander Kanavin <alex.kanavin@gmail.com>
+---
+ documentation/ref-manual/system-requirements.rst | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index 1f9b3b1b58..2bb813b385 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -34,8 +34,7 @@ and conceptual information in the :doc:`/overview-manual/index`.
+ Supported Linux Distributions
+ =============================
+ 
+-Currently, the Yocto Project is supported on the following
+-distributions:
++Currently, the Yocto Project is supported on the following distributions:
+ 
+ -  Ubuntu 18.04 (LTS)
+ 
+@@ -71,7 +70,11 @@ distributions:
+       has no plans to support rolling-releases or development
+       distributions due to their constantly changing nature. We welcome
+       patches and bug reports, but keep in mind that our priority is on
+-      the supported platforms listed below.
++      the supported platforms listed above.
++
++   -  If your Linux distribution is not in the above list, we recommend to
++      get the :term:`buildtools` or :term:`buildtools-extended` tarballs
++      containing the host tools required by your Yocto Project release.
+ 
+    -  You may use Windows Subsystem For Linux v2 to set up a build host
+       using Windows 10 or later, or Windows Server 2019 or later, but validation
+-- 
+2.37.2
+
 
