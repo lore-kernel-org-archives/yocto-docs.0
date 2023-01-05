@@ -2,49 +2,46 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A3004C53210
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2FD2C3DA7D
 	for <webhook@archiver.kernel.org>; Thu,  5 Jan 2023 10:22:30 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.9750.1672914149463407490
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.9748.1672914146000978457
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Jan 2023 02:22:29 -0800
+ Thu, 05 Jan 2023 02:22:26 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ESqeeMTj;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=m05Th5e3;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 216ACFF807;
-	Thu,  5 Jan 2023 10:22:26 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id DECCA1BF214;
+	Thu,  5 Jan 2023 10:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1672914147;
+	t=1672914143;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7ovZibRurTqcPPuiLyjt4yYHn6JtxaZifmgcNM7R60c=;
-	b=ESqeeMTjn3MxwjfGDyyIrzOrYLQB6QeHQBsWmhQy6F7LObA1cDE6MiAeee+3ofIuPkHK23
-	IJ0ojfFcCz2qiC3zVe2jCaAFJh1YyOoDPsA/Kvl74aQJLpkttVnVntIli1DGWTgINQfDGr
-	gIcFYfQsLDCloxlb/5tqVX/NJCd3FlWsdYdsiqN/fTysPZaxlnEI0+Eeg9A+v23G0deLUo
-	xR+FcOB2jZEOy/8ywJa62+l68Ap6BKvVXis+Bw0V6+lwrEEflaZCK8q2XD7RV0Fo05opr6
-	cMqO/MpvETbPlnF6uNmqmevuAIG8f+h4FvYUUeK3z2ifr8AIIEz9JrYSNDX4uA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5X36GtbVpRCEdOgi4MDXI1RNe/CotMXuRcds6qmoZqw=;
+	b=m05Th5e3LjEDyl0w5A+S0DjihvrxYHd2FuUKQpd2HDbbmsNiKF/KTQmkCPhI4NebACmY3L
+	uLC57e5HvRc3NxXzicQiO+YMOCBWPmdHbN1DKILG+wuBfjaWBhs+tuHnJBaUyJ5kzOFctc
+	S59tPnqpRovRdbJTmMzVgNEkjPzhv7kaKdXuL/vXpm6wsL+J6Gvehht45sUachGK2NQznm
+	3UlUNuOxAPqjuQ/JwC54Vdm7OYFwCd1aXT1ri3eo3gfWQbje7vDTA5Sl4PIhnDgfj4g/jH
+	oqTZbKwQHlCIROgnpP394K4fTnfaSCEYe6UPN86vC7HT2fxupri5v8Jq0Hu+Pg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>,
 	Quentin Schulz <foss+yocto@0leil.net>,
 	Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Subject: [PATCH 2/2] [kirkstone] docs: kernel-dev: faq: update tip on how to not include kernel in image
-Date: Thu,  5 Jan 2023 11:21:55 +0100
-Message-Id: <20230105102155.55177-2-michael.opdenacker@bootlin.com>
+Subject: [PATCH 1/2] [kirstone] docs: migration-4.0: specify variable name change for kernel inclusion in image recipe
+Date: Thu,  5 Jan 2023 11:21:54 +0100
+Message-Id: <20230105102155.55177-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
-In-Reply-To: <20230105102155.55177-1-michael.opdenacker@bootlin.com>
-References: <20230105102155.55177-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 05 Jan 2023 10:22:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3585
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3584
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -60,22 +57,20 @@ Cc: Quentin Schulz <foss+yocto@0leil.net>
 Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/kernel-dev/faq.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/migration-guides/migration-4.0.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/documentation/kernel-dev/faq.rst b/documentation/kernel-dev/faq.rst
-index e40e3ff372..76923f6104 100644
---- a/documentation/kernel-dev/faq.rst
-+++ b/documentation/kernel-dev/faq.rst
-@@ -36,7 +36,7 @@ How do I install/not-install the kernel image on the root filesystem?
- The kernel image (e.g. ``vmlinuz``) is provided by the
- ``kernel-image`` package. Image recipes depend on ``kernel-base``. To
- specify whether or not the kernel image is installed in the generated
--root filesystem, override ``RDEPENDS:${KERNEL_PACKAGE_NAME}-base`` to include or not
-+root filesystem, override ``RRECOMMENDS:${KERNEL_PACKAGE_NAME}-base`` to include or not
- include "kernel-image". See the
- ":ref:`dev-manual/common-tasks:appending other layers metadata with your layer`"
- section in the
+diff --git a/documentation/migration-guides/migration-4.0.rst b/documentation/migration-guides/migration-4.0.rst
+index a8e6b4c331..fc801144b1 100644
+--- a/documentation/migration-guides/migration-4.0.rst
++++ b/documentation/migration-guides/migration-4.0.rst
+@@ -265,3 +265,6 @@ Miscellaneous changes
+   when parsing recipes. Any code depending on the previous behaviour will no longer
+   work - change any such code to explicitly use appropriate path variables instead.
+ 
++- In order to exclude the kernel image from the image rootfs,
++  :term:`RRECOMMENDS`\ ``:${KERNEL_PACKAGE_NAME}-base`` should be set instead of
++  :term:`RDEPENDS`\ ``:${KERNEL_PACKAGE_NAME}-base``.
 -- 
 2.37.2
 
