@@ -1,132 +1,160 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D6795C54EBE
-	for <webhook@archiver.kernel.org>; Thu,  5 Jan 2023 21:46:36 +0000 (UTC)
-Received: from smtp2.axis.com (smtp2.axis.com [195.60.68.18])
- by mx.groups.io with SMTP id smtpd.web10.2529.1672955191819252654
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD96BC54E76
+	for <webhook@archiver.kernel.org>; Fri,  6 Jan 2023 17:12:01 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.19569.1673025112342637806
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Jan 2023 13:46:32 -0800
+ Fri, 06 Jan 2023 09:11:52 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@axis.com header.s=axis-central1 header.b=XP1gwNj0;
- spf=pass (domain: axis.com, ip: 195.60.68.18, mailfrom: peter.kjellerstedt@axis.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=axis.com; q=dns/txt; s=axis-central1; t=1672955192;
-  x=1704491192;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ghw6j5vuGkZDaAmt8SbJFvMONWB6dHO6/tb3mGyIkcE=;
-  b=XP1gwNj0O3RAAoWZtXMhK6Q1FU2vg5Q2pnv37EpOYUvkjIL2bKTxpjKL
-   L8aGVWdvvIdNiAyIAgKxbFg1Vu7EY35vuFJE9HMC05w3nWG8Fo3BcoEST
-   rcubTsBEAgr8OBhmHrUfvhhYCIn8NUYNjBYkMf5lCijxEFOh9s1V6wn3q
-   4/AAOAuujQv579pIla1NrN/+Hz18Vg0G+unTB+6ClKwupSLq/D89BIs/j
-   TzKN09p8XNk6HfitateoNxkQFU8uKRC7pzvTSEn88+sVFYeY3JaKLgpIc
-   7l4s2cLgo76dzrF8SOwUF+ydSIoUmX/W0hnXiRVxBoEWsuLG5fpVhWQ/0
-   g==;
-From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>, Michael Opdenacker
-	<michael.opdenacker@bootlin.com>
-CC: OE Core mailing list <openembedded-core@lists.openembedded.org>, Khem Raj
-	<raj.khem@gmail.com>, "Robert P. J. Day" <rpjday@crashcourse.ca>, "YP docs
- mailing list" <docs@lists.yoctoproject.org>
-Subject: RE: [docs] [OE-core] is "poky" distro defined to use "sysvinit" as
- INIT_MANAGER?
-Thread-Topic: [docs] [OE-core] is "poky" distro defined to use "sysvinit" as
- INIT_MANAGER?
-Thread-Index: AQHYkVbi0oJ8W2ObPEi8RsyfTWhiBq1xah2AgR+VvpL///iwgIAAfVQg
-Date: Thu, 5 Jan 2023 21:46:29 +0000
-Message-ID: <c4d5aede6530434a8276511941747bdc@axis.com>
-References: <2893205d-57e1-e63e-5c12-c57c7bbcb924@crashcourse.ca>
-	 <CAMKF1spKw-X-JTvdicfBBNNGk93EPL=gqD3jixvJkb7YfT1P0g@mail.gmail.com>
-	 <1736D38C7177CA6A.6604@lists.openembedded.org>
-	 <b725dbd2-3825-1eb7-3f71-a19a17c2ef7f@bootlin.com>
- <d92b4751144e16c0d97823b7eef1b88b3a20b760.camel@linuxfoundation.org>
-In-Reply-To: <d92b4751144e16c0d97823b7eef1b88b3a20b760.camel@linuxfoundation.org>
-Accept-Language: en-US, sv-SE
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [10.0.5.60]
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kEsEAOE0;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 24D271BF20B;
+	Fri,  6 Jan 2023 17:11:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1673025110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=m3VAZnkyG2nUqZl/z3YRD8oTJpIIRhQlwZ4u4Iy0fAo=;
+	b=kEsEAOE0BaYoaIIbYIHeFJWYaeeFtZzYCP3eMT6in1EgL7VRftWlS+FiTsvMw9udXaApok
+	UheryVJ7XQyLadb4U1zGJvJvRrj9ILowQgoxggNCuCKoM+7VrV/qBi9m3LNeIkMf01ZESV
+	1ZY9XyZQEQORRi8CdW/WcaXOIWxFBhI+s/sNbTo1WHU5c/yESoAsjaLcnxsDp9ZXZeuecU
+	eWg0dPXCi5aSDufX8j0gmME5uUZX2MXJM50ua3iYWmEn+PMJnwb7ppBU7Y9ZXTcSpdp+7P
+	pRTwayUgkdNN91XJFM+ynRCkhxb2pQ4s51rxGXI1xKodDgw/polB9KjMVWo6YQ==
+Message-ID: <a23557be-328a-41fc-0af8-c7d551af346b@bootlin.com>
+Date: Fri, 6 Jan 2023 18:11:49 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
+Organization: Bootlin
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Jan 2023 21:46:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3598
+ <docs@lists.yoctoproject.org>; Fri, 06 Jan 2023 17:12:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3599
 
-PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
-amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmDQo+IE9mIFJp
-Y2hhcmQgUHVyZGllDQo+IFNlbnQ6IGRlbiA1IGphbnVhcmkgMjAyMyAxNTo1Nw0KPiBUbzogTWlj
-aGFlbCBPcGRlbmFja2VyIDxtaWNoYWVsLm9wZGVuYWNrZXJAYm9vdGxpbi5jb20+DQo+IENjOiBP
-RSBDb3JlIG1haWxpbmcgbGlzdCA8b3BlbmVtYmVkZGVkLWNvcmVAbGlzdHMub3BlbmVtYmVkZGVk
-Lm9yZz47IEtoZW0NCj4gUmFqIDxyYWoua2hlbUBnbWFpbC5jb20+OyBSb2JlcnQgUC4gSi4gRGF5
-IDxycGpkYXlAY3Jhc2hjb3Vyc2UuY2E+OyBZUA0KPiBkb2NzIG1haWxpbmcgbGlzdCA8ZG9jc0Bs
-aXN0cy55b2N0b3Byb2plY3Qub3JnPg0KPiBTdWJqZWN0OiBSZTogW2RvY3NdIFtPRS1jb3JlXSBp
-cyAicG9reSIgZGlzdHJvIGRlZmluZWQgdG8gdXNlICJzeXN2aW5pdCINCj4gYXMgSU5JVF9NQU5B
-R0VSPw0KPiANCj4gT24gVGh1LCAyMDIzLTAxLTA1IGF0IDE1OjIzICswMTAwLCBNaWNoYWVsIE9w
-ZGVuYWNrZXIgd3JvdGU6DQo+ID4gQW0gMDMuMDEuMjMgdW0gMTU6NDEgc2NocmllYiBNaWNoYWVs
-IE9wZGVuYWNrZXIgdmlhDQo+IGxpc3RzLm9wZW5lbWJlZGRlZC5vcmc6DQo+ID4gPiBIZWxsbyBS
-aWNoYXJkLA0KPiA+ID4NCj4gPiA+IFRyeWluZyB0byBpbXByb3ZlIHRoZSBkb2N1bWVudGF0aW9u
-IGFib3V0IHRoZSBzZWxlY3Rpb24gb2YgdGhlIGluaXQNCj4gPiA+IHN5c3RlbSwgSSdtIGp1bXBp
-bmcgYmFjayB0byB0aGlzIG9sZCBjb252ZXJzYXRpb24sIGZvbGxvd2luZyBhIGNoYW5nZQ0KPiA+
-ID4gdGhhdCB5b3UgbWFkZSAoaHR0cHM6Ly9saXN0cy55b2N0b3Byb2plY3Qub3JnL2cvcG9reS9t
-ZXNzYWdlLzEyNzYwKS4NCj4gPiA+DQo+ID4gPiBBbSAwNi4wNy4yMiB1bSAxODo0MCBzY2hyaWVi
-IEtoZW0gUmFqOg0KPiA+ID4gPiBPbiBXZWQsIEp1bCA2LCAyMDIyIGF0IDEyOjM4IFBNIFJvYmVy
-dCBQLiBKLiBEYXkNCj4gPiA+ID4gPHJwamRheUBjcmFzaGNvdXJzZS5jYT4gd3JvdGU6DQo+ID4g
-PiA+ID4NCj4gPiA+ID4gPiDCoMKgIG5vdCBzdXJlIHdoeSBpIG5ldmVyIG5vdGljZWQgdGhpcyBi
-ZWZvcmUsIGJ1dCBpIHN0YXJ0ZWQgYSBuZXcNCj4gPiA+ID4gPiBwcm9qZWN0IGZyb20gdGhlIHBv
-a3kgbGF5ZXIgKG5vdCBPRSksIGFuZCByZWFsaXplZCB0aGF0IHBva3kuY29uZg0KPiA+ID4gPiA+
-IGV4cGxpY2l0bHkgc2V0czoNCj4gPiA+ID4gPg0KPiA+ID4gPiA+IMKgwqAgSU5JVF9NQU5BR0VS
-ID0gInN5c3Zpbml0Ig0KPiA+ID4gPiA+DQo+ID4gPiA+ID4gd2hpY2ggY2FuJ3QgYmUgb3ZlcnJp
-ZGRlbiBpbiBteSBsb2NhbC5jb25mLiBpZiBpIHdhbnQgc3lzdGVtZCwgaSBndWVzcw0KPiA+ID4g
-PiA+IGkgY2FuIGluaXRpYWxpemUgbXkgcHJvamVjdCBmcm9tIHRoZSBPRSBsYXllciwgYW5kIGkg
-YWxzbyBub3RpY2UgdGhhdA0KPiA+ID4gPiA+IGkgY291bGQgdXNlIHBva3ktYWx0Y2ZnLmNvbmYu
-DQo+ID4gPiA+ID4NCj4gPiA+ID4gPiDCoMKgIGJ1dCBpcyB0aGVyZSBhIHJlYXNvbiB0aGF0IHRo
-ZSBkZWZhdWx0IHBva3ktYmFzZWQgcHJvamVjdCBmaXhlcw0KPiA+ID4gPiA+IElOSVRfTUFOQUdF
-UiB0byAic3lzdmluaXQiLiBwZXJoYXBzIGp1c3QgZm9yIHNpbXBsaWNpdHk/DQo+ID4gPiA+ID4N
-Cj4gPiA+ID4gcG9reSBkZWZhdWx0cyB0byBzeXN2aW5pdC4NCj4gPiA+ID4gcG9reSBoYXMgcG9r
-eS1hbHQgZGlzdHJvIGZpIHlvdSB3YW50IHRvIHVzZSBzYXkgc3lzdGVtZA0KPiA+ID4NCj4gPiA+
-IEJ1dCB3aHkgbm90IHNldHRpbmcgSU5JVF9NQU5BR0VSIHdpdGggIj89IiBpbnN0ZWFkIG9mICI9
-IiBpbiBwb2t5LmNvbmY/DQo+ID4gPg0KPiA+ID4gVGhpcyB3YXksIHdlIGNvdWxkIGp1c3Qgb3Zl
-cnJpZGUgSU5JVF9NQU5BR0VSIGZyb20gbG9jYWwuY29uZi4NCj4gPiA+DQo+ID4gPiBJIGNoZWNr
-ZWQgdGhhdCB0aGUgZ2VuZXJhdGVkIHN5c3RlbSB3b3Jrcy4gVGhpcyB3b3VsZCBtYWtlIHRoaW5n
-cw0KPiA+ID4gZWFzaWVyIHRvIGRvY3VtZW50LCB1bmxlc3MgSSdtIG1pc3Npbmcgb3RoZXIgcmVh
-c29ucy4NCj4gPg0KPiA+DQo+ID4gUmljaGFyZCB0b2xkIG1lIG9uIElSQyB0aGF0LCBmcm9tIG1l
-bW9yeSwgdGhpcyB3YXMgc2V0IGJlY2F1c2Ugb2YNCj4gPiBpbnRlcmZlcmVuY2UgcG9reS1hbHRj
-ZmcgKGlmIEkgdW5kZXJzdG9vZCBjb3JyZWN0bHkpLg0KPiA+DQo+ID4gSSB1bmRlcnN0YW5kIG9u
-ZSByZWNvbW1lbmRlZCB3YXkgdG8gaGF2ZSBzeXN0ZW1kIGluc3RlYWQgb2Ygc3lzdmluaXQgaW4N
-Cj4gPiBQb2t5IGlzIHRvIHVzZSAicG9reS1hbHRjZmciIGluc3RlYWQgb2YgInBva3kiIGFzIGRp
-c3Ryby4NCg0KSSBhbSBub3Qgc3VyZSB1c2luZyBwb2t5LWFsdGNmZyBhcyBhbiBhbHRlcm5hdGl2
-ZSB0byB1c2luZyBwb2t5ICsgc3lzdGVtZCANCmlzIGEgZ29vZCBzdWdnZXN0aW9uIHNpbmNlIHBv
-a3ktYWx0Y2ZnIGNoYW5nZXMgYSBjb3VwbGUgb2Ygb3RoZXIgc2V0dGluZ3MgYXMgDQp3ZWxsIChz
-ZWUgbWV0YS1wb2t5L2NvbmYvZGlzdHJvL2luY2x1ZGUvcG9reS1kaXN0cm8tYWx0LXRlc3QtY29u
-ZmlnLmluYykuDQoNCj4gPg0KPiA+IFNpbWlsYXJseSwgSSBndWVzcyBJIHNob3VsZCB1c2UgInBv
-a3ktdGlueSIgaWYgSSB3YW50IHRvIHVzZQ0KPiA+ICJtZGV2LWJ1c3lib3giIGFzIElOSVRfTUFO
-QUdFUi4NCj4gPg0KPiA+IFRoZW4sIEkgZ3Vlc3MgSSdsbCBkb2N1bWVudCBzb21ldGhpbmcgbGlr
-ZSB0aGlzOg0KPiA+DQo+ID4gICAqIFdpdGggdGhlIE9wZW5FbWJlZGRlZCBidWlsZCBzeXN0ZW0s
-IHlvdSBjYW4gY2hvb3NlIHlvdXIgaW5pdCBzeXN0ZW0NCj4gPiAgICAgYnkgc2V0dGluZyBJTklU
-X01BTkFHRVIgdG8gInN5c3Zpbml0IiwgInN5c3RlbWQiLCAiYnVzeWJveC1tZGV2IiBvcg0KPiA+
-ICAgICAibm9uZSINCj4gPiAgICogQlVUIGlmIHlvdSdyZSB1c2luZyBQb2t5LCB0aGF0IHdvbid0
-IHdvcmssIHNvIHlvdXIgb3B0aW9ucyB3aWxsIGJlDQo+ID4gICAgIHRvIHVzZSBlaXRoZXIgInBv
-a3kiIChzeXN2aW5pdCksICJwb2t5LWFsdGNmZyIgKHN5c3RlbWQpIG9yDQo+ID4gICAgICJwb2t5
-LXRpbnkiIChtZGV2LWJ1c3lib3gpLg0KPiA+DQo+ID4gRG9lcyB0aGlzIHNvdW5kIGxpa2UgdGhl
-IHJpZ2h0IHdheSB0byBkb2N1bWVudCB0aGlzPw0KPiANCj4gV2Ugc2hvdWxkIHJlYWxseSBmaXgg
-cG9reSBzbyB0aGlzIHdvcmtzIGNvcnJlY3RseS4gSSBqdXN0IGhhdmUgYSBtZW1vcnkNCj4gb2Yg
-dHJ5aW5nIHRvIGZpeCBpdCBhbmQgaXQgbm90IGJlaW5nIGFzIHN0cmFpZ2h0Zm9yd2FyZCBpdCBm
-aXJzdA0KPiBhcHBlYXJzLiBJJ2QgdGhlbiBoYXZlIGdvdCBkaXN0cmFjdGVkIGJ5IHRoZSBuZXh0
-IHByb2JsZW0gOi8NCj4gDQo+IENoZWVycywNCj4gDQo+IFJpY2hhcmQNCg0KWW91IGNhbiBvZiBj
-b3Vyc2Ugb3ZlcnJpZGUgaXQgaW4geW91ciBsb2NhbC5jb25mLCBidXQgaXQgcmVxdWlyZXMgdG8g
-dXNlIGFuIA0Kb3ZlcnJpZGUsIGUuZy4sIElOSVRfTUFOQUdFUjpwb2t5ID0gInN5c3RlbWQiIHNo
-b3VsZCB3b3JrIGlmIHlvdSBhcmUgaW4gZmFjdCANCnVzaW5nIHRoZSBwb2t5IGRpc3Ryby4NCg0K
-SG93ZXZlciwgc2luY2UgdGhlIHJlY29tbWVuZGF0aW9uIHR5cGljYWxseSBpcyB0byB1c2UgeW91
-ciBvd24gZGlzdHJvIGlmIHlvdSANCmFyZSBkb2luZyBtb3JlIHNlcmlvdXMgY2hhbmdlcyAobGlr
-ZSwgZS5nLiwgdXNpbmcgYW5vdGhlciBpbml0IG1hbmFnZXIgdGhhbiANCnRoZSBkZWZhdWx0IG9u
-ZSksIHRoaXMgc2hvdWxkIG5vcm1hbGx5IG5vdCBiZSBhIHByb2JsZW0uIEluIHRoZSBzaW1wbGVz
-dCBjYXNlIA0KeW91IGNhbiBjcmVhdGUgYSBkaXN0cm8gbGlrZToNCg0KcmVxdWlyZSBjb25mL2Rp
-c3Ryby9wb2t5LmNvbmYNCg0KSU5JVF9NQU5BR0VSID0gInN5c3RlbWQiDQoNCmFuZCB5b3UgYXJl
-IHRoZW4gYmV0dGVyIG9mZiB0aGFuIGRvaW5nIHRoaXMga2luZCBvZiBjaGFuZ2VzIGluIHlvdXIg
-DQpsb2NhbC5jb25mLg0KDQovL1BldGVyDQoNCg==
+Hi Richard,
+
+The following changes since commit 9276628507233aef554450c807d8456a0eb00225:
+
+   manuals: prepare 4.2 migration notes (2022-12-16 11:44:34 +0100)
+
+are available in the Git repository at:
+
+   git://git.yoctoproject.org/yocto-docs master-next
+
+for you to fetch changes up to df8f862042633594846a93a1b7702fc01bc32ae0:
+
+   ref-manual/system-requirements.rst: recommend buildtools for not 
+supported distros (2023-01-06 17:47:59 +0100)
+
+----------------------------------------------------------------
+Lee Chee Yang (1):
+       migration-guides: add release-notes for 4.0.6
+
+Michael Opdenacker (6):
+       migration-guides: fix 4.2 migration note issues
+       toaster-manual: fix description of introduction video
+       ref-manual/classes.rst: remove .bbclass from section titles
+       manuals: simplify references to classes
+       migration-1.6.rst: fix redundant reference
+       ref-manual/system-requirements.rst: recommend buildtools for not 
+supported distros
+
+Quentin Schulz (2):
+       docs: kernel-dev: faq: update tip on how to not include kernel in 
+image
+       docs: migration-guides: migration-4.0: specify variable name 
+change for kernel inclusion in image recipe
+
+  documentation/0001-manuals-prepare-4.2-migration-notes.patch | 134 
+---------
+  documentation/bsp-guide/bsp.rst                              | 2 +-
+  documentation/dev-manual/build-quality.rst                   | 12 +-
+  documentation/dev-manual/building.rst                        | 15 +-
+  documentation/dev-manual/debugging.rst                       | 8 +-
+  documentation/dev-manual/disk-space.rst                      | 3 +-
+  documentation/dev-manual/error-reporting-tool.rst            | 6 +-
+  documentation/dev-manual/gobject-introspection.rst           | 4 +-
+  documentation/dev-manual/licenses.rst                        | 19 +-
+  documentation/dev-manual/new-recipe.rst                      | 85 +++---
+  documentation/dev-manual/packages.rst                        | 16 +-
+  documentation/dev-manual/quilt.rst                           | 4 +-
+  documentation/dev-manual/read-only-rootfs.rst                | 2 +-
+  documentation/dev-manual/runtime-testing.rst                 | 4 +-
+  documentation/dev-manual/sbom.rst                            | 4 +-
+  documentation/dev-manual/securing-images.rst                 | 8 +-
+  documentation/dev-manual/speeding-up-build.rst               | 3 +-
+  documentation/dev-manual/upgrading-recipes.rst               | 3 +-
+  documentation/dev-manual/vulnerabilities.rst                 | 10 +-
+  documentation/dev-manual/wic.rst                             | 3 +-
+  documentation/kernel-dev/common.rst                          | 10 +-
+  documentation/kernel-dev/faq.rst                             | 2 +-
+  documentation/migration-guides/migration-1.3.rst             | 12 +-
+  documentation/migration-guides/migration-1.5.rst             | 9 +-
+  documentation/migration-guides/migration-1.6.rst             | 14 +-
+  documentation/migration-guides/migration-1.7.rst             | 13 +-
+  documentation/migration-guides/migration-1.8.rst             | 28 +-
+  documentation/migration-guides/migration-2.0.rst             | 2 +-
+  documentation/migration-guides/migration-2.1.rst             | 32 +--
+  documentation/migration-guides/migration-2.3.rst             | 22 +-
+  documentation/migration-guides/migration-2.4.rst             | 12 +-
+  documentation/migration-guides/migration-2.5.rst             | 10 +-
+  documentation/migration-guides/migration-2.6.rst             | 18 +-
+  documentation/migration-guides/migration-2.7.rst             | 3 +-
+  documentation/migration-guides/migration-3.0.rst             | 6 +-
+  documentation/migration-guides/migration-3.1.rst             | 6 +-
+  documentation/migration-guides/migration-3.2.rst             | 33 ++-
+  documentation/migration-guides/migration-3.3.rst             | 17 +-
+  documentation/migration-guides/migration-3.4.rst             | 4 +-
+  documentation/migration-guides/migration-4.0.rst             | 24 +-
+  documentation/migration-guides/migration-4.1.rst             | 10 +-
+  documentation/migration-guides/migration-general.rst         | 14 +-
+  documentation/migration-guides/release-4.0.rst               | 1 +
+  documentation/migration-guides/release-notes-3.4.rst         | 4 +-
+  documentation/migration-guides/release-notes-4.0.6.rst       | 313 
+++++++++++++++++++++
+  documentation/migration-guides/release-notes-4.0.rst         | 11 +-
+  documentation/migration-guides/release-notes-4.1.rst         | 30 +-
+  documentation/migration-guides/release-notes-4.2.rst         | 2 +-
+  documentation/overview-manual/concepts.rst                   | 58 ++--
+  documentation/ref-manual/classes.rst                         | 1199 
++++++++++++++++++++++++++++++++++++++---------------------------------------
+  documentation/ref-manual/features.rst                        | 2 +-
+  documentation/ref-manual/qa-checks.rst                       | 12 +-
+  documentation/ref-manual/structure.rst                       | 4 +-
+  documentation/ref-manual/system-requirements.rst             | 11 +-
+  documentation/ref-manual/tasks.rst                           | 10 +-
+  documentation/ref-manual/variables.rst                       | 690 
++++++++++++++++++++++-----------------------
+  documentation/sdk-manual/appendix-customizing.rst            | 3 +-
+  documentation/sdk-manual/extensible.rst                      | 5 +-
+  documentation/test-manual/intro.rst                          | 18 +-
+  documentation/test-manual/understand-autobuilder.rst         | 2 +-
+  documentation/toaster-manual/intro.rst                       | 5 +-
+  61 files changed, 1553 insertions(+), 1473 deletions(-)
+  delete mode 100644 
+documentation/0001-manuals-prepare-4.2-migration-notes.patch
+  create mode 100644 documentation/migration-guides/release-notes-4.0.6.rst
+
+Thank you in advance,
+Cheers
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
