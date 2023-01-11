@@ -2,117 +2,181 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8C39C5479D
-	for <webhook@archiver.kernel.org>; Mon,  9 Jan 2023 18:05:09 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.79947.1673287501196488245
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 91E95C46467
+	for <webhook@archiver.kernel.org>; Wed, 11 Jan 2023 09:51:39 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.20099.1673430694004563357
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Jan 2023 10:05:01 -0800
+ Wed, 11 Jan 2023 01:51:34 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=F+Q9hR+l;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZQwAthjI;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 5CB9C1BF203;
-	Mon,  9 Jan 2023 18:04:58 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 4278BFF80B;
+	Wed, 11 Jan 2023 09:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1673287498;
+	t=1673430691;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=Wn2BvhlAL28u5806tzM+qoK7nGNKpoowfiHP4+L9kEY=;
-	b=F+Q9hR+lRgdXPfyYNu33k3EuRxjzDlrk8n4NZiOiYKKxG4lQemzELxeynX83QrboDYXl2k
-	uagoMFzPxRJroZUOkR0q5BQCWvOGNqeh/77nvQxrC9XVXJp27alIYVLbcY53Fpnn+N13Ol
-	LVIk0LYDstzcb03ObjSd87bkANIm+RSiC615SSgALZWW1RJhZHq12nYBW8CM1Yrvhf7Bp2
-	o+k+hCBtnyIzsG6+DwzfUyvh8XLx9bkw1aKXxAprkNugtS8eid3yH853PdH6/DXltDlR9Z
-	ivSjYDLOza+zXXxiGrvL3fTNF+Nkvm928kUd+iKdLyoHfKhwXqNUl+cmGfuZ9w==
+	bh=lzBTbItV/+LJG+wZI6OdMLyoZz+hizcjXUehPOBvrGE=;
+	b=ZQwAthjI0eO6etLTnL89PdWzfuvsaKab5Ws8orL/cdd0bm7gCv+WLa5nhq9FigRmXNOaL4
+	hpbwep9LdR+nPKHHXHA6yQ2UPXzn3s0Cmm47xY+Veo+QvFgkpLSSTp1aYAXzOy06DfJmRh
+	xEiKXpvcVm1EDwOaNDNg3JGSb/MjCDesSDEIaqpiVntUET5ylR5jBO1scR+ggUJCyMHxZE
+	2kY2IU7GC6mTGcc1n/8s/mUyC2gyObOVWMA/C8+Y4b4qrOJRL4Fn/Wgbz0kAwS9J70CVuc
+	G154SMm7k1Wy4K2wVthvmhFWnlJVO8a2ly0fLvRs58O8CTg5KSdIacTAygTlMQ==
 From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] [kirkstone] manuals: document SPDX_PRETTY variable
-Date: Mon,  9 Jan 2023 19:04:55 +0100
-Message-Id: <20230109180455.12209-1-michael.opdenacker@bootlin.com>
+To: otavio.salvador@gmail.com,
+	pab@pabigot.com,
+	Qi.Chen@windriver.com,
+	alex.kanavin@gmail.com,
+	Ahmed.Hossam@opensynergy.com,
+	raj.khem@gmail.com,
+	matt@madison.systems
+Cc: docs@lists.yoctoproject.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Jan Dorniak <jaskij@gmail.com>
+Subject: [PATCH] ref-manual: initial documentation for go and go-mod classes
+Date: Wed, 11 Jan 2023 10:51:09 +0100
+Message-Id: <20230111095109.477423-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 09 Jan 2023 18:05:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3602
+ <docs@lists.yoctoproject.org>; Wed, 11 Jan 2023 09:51:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3603
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Now that it has been backported to Kirkstone
-https://git.yoctoproject.org/poky/commit/?h=kirkstone&id=99483cff5c358d847ceb077349321eb57d5143e4
+This addresses [YOCTO #14582]
+
+---
+ If you are familiar with the Go classes, please review and propose corrections
+ or extensions to what I wrote. My understanding of Go is very limited,
+ and I'm not even sure go-mod.bbclass is for building or just importing
+ Go modules.
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Jan Dorniak <jaskij@gmail.com>
 ---
- documentation/dev-manual/common-tasks.rst | 13 +++++++------
- documentation/ref-manual/classes.rst      |  4 ++--
- documentation/ref-manual/variables.rst    | 11 +++++++++++
- 3 files changed, 20 insertions(+), 8 deletions(-)
+ documentation/ref-manual/classes.rst   | 23 +++++++++
+ documentation/ref-manual/variables.rst | 67 ++++++++++++++++++++++++++
+ 2 files changed, 90 insertions(+)
 
-diff --git a/documentation/dev-manual/common-tasks.rst b/documentation/dev-manual/common-tasks.rst
-index 1b91ada0a1..ce7eb6c9dd 100644
---- a/documentation/dev-manual/common-tasks.rst
-+++ b/documentation/dev-manual/common-tasks.rst
-@@ -11713,12 +11713,13 @@ containing an index of JSON :term:`SPDX` files for individual recipes, together
- with an ``IMAGE-MACHINE.spdx.tar.zst`` compressed archive containing all such
- files.
- 
--The :ref:`create-spdx <ref-classes-create-spdx>` class offers options to include
--more information in the output :term:`SPDX` data, such as adding compressed
--archives of the files in the generated target packages
--(:term:`SPDX_ARCHIVE_PACKAGED`), adding a description of the source files
--handled by the target recipes (:term:`SPDX_INCLUDE_SOURCES`) and adding archives
--of these source files themselves (:term:`SPDX_ARCHIVE_SOURCES`).
-+The :ref:`ref-classes-create-spdx` class offers options to include
-+more information in the output :term:`SPDX` data, such as making the generated
-+files more human readable (:term:`SPDX_PRETTY`), adding compressed archives of
-+the files in the generated target packages (:term:`SPDX_ARCHIVE_PACKAGED`),
-+adding a description of the source files used to generate host tools and target
-+packages (:term:`SPDX_INCLUDE_SOURCES`) and adding archives of these source
-+files themselves (:term:`SPDX_ARCHIVE_SOURCES`).
- 
- Though the toplevel :term:`SPDX` output is available in
- ``tmp/deploy/images/MACHINE/`` inside the :term:`Build Directory`, ancillary
 diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 6e73c5d4fb..6ee0d33451 100644
+index 7dba617db5..0cb507b500 100644
 --- a/documentation/ref-manual/classes.rst
 +++ b/documentation/ref-manual/classes.rst
-@@ -380,8 +380,8 @@ The toplevel :term:`SPDX` output file is generated in JSON format as a
- as well as in ``tmp/deploy/spdx``.
+@@ -758,6 +758,29 @@ software from the GNOME stack. This class sets
+ mirrors as well as extending :term:`FILES` with the typical
+ GNOME installation paths.
  
- The exact behaviour of this class, and the amount of output can be controlled
--by the :term:`SPDX_ARCHIVE_PACKAGED`, :term:`SPDX_ARCHIVE_SOURCES` and
--:term:`SPDX_INCLUDE_SOURCES` variables.
-+by the :term:`SPDX_PRETTY`, :term:`SPDX_ARCHIVE_PACKAGED`,
-+:term:`SPDX_ARCHIVE_SOURCES` and :term:`SPDX_INCLUDE_SOURCES` variables.
++.. _ref-classes-go:
++
++``go``
++======
++
++The :ref:`ref-classes-go` class supports building Go programs. The behavior of
++this class is controlled by the mandatory :term:`GO_IMPORT` variable, and
++by the optional :term:`GO_INSTALL` and :term:`GO_INSTALL_FILTEROUT` ones.
++
++To build a Go program with the Yocto Project, you can use the
++:yocto_git:`go-helloworld_0.1.bb </poky/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
++recipe as an example.
++
++.. _ref-classes-go-mod:
++
++``go-mod``
++==========
++
++The :ref:`ref-classes-go-mod` class allows to use Go modules, and inherits the
++:ref:`ref-classes-go` class.
++
++See the associated :term:`GO_WORKDIR` variable.
++
+ .. _ref-classes-gobject-introspection:
  
- See the description of these variables and the
- ":ref:`dev-manual/common-tasks:creating a software bill of materials`"
+ ``gobject-introspection``
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c182478a31..061b1c28d8 100644
+index f2decd713b..8419c80d03 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -7165,6 +7165,17 @@ system and gives an overview of their function and contents.
-       image), compared to just using the
-       :ref:`create-spdx <ref-classes-create-spdx>` class with no option.
+@@ -3012,6 +3012,73 @@ system and gives an overview of their function and contents.
  
-+   :term:`SPDX_PRETTY`
-+      This option makes the SPDX output more human-readable, using
-+      identation and newlines, instead of the default output in a
-+      single line::
+          GLIBC_GENERATE_LOCALES = "en_GB.UTF-8 en_US.UTF-8"
+ 
++   :term:`GO_IMPORT`
++      When inheriting the :ref:`ref-classes-go` class, this mandatory variable
++      sets the import path for the Go package that will be created for the code
++      to build. If you have a ``go.mod`` file in the source directory, this
++      typically matches the path in the ``module`` line in this file.
 +
-+         SPDX_PRETTY = "1"
++      Other Go programs importing this package will use this path.
 +
-+      The generated SPDX files are approximately 20% bigger, but
-+      this option is recommended if you want to inspect the SPDX
-+      output files with a text editor.
++      Here is an example setting from the
++      :yocto_git:`go-helloworld_0.1.bb </poky/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
++      recipe::
 +
-    :term:`SPDXLICENSEMAP`
-       Maps commonly used license names to their SPDX counterparts found in
-       ``meta/files/common-licenses/``. For the default :term:`SPDXLICENSEMAP`
++          GO_IMPORT = "golang.org/x/example"
++
++   :term:`GO_INSTALL`
++      When inheriting the :ref:`ref-classes-go` class, this optional variable
++      specifies which packages in the sources should be compiled and
++      installed in the Go build space by the
++      `go install <https://go.dev/ref/mod#go-install>`__ command.
++
++      Here is an example setting from the
++      :oe_git:`crucible </meta-openembedded/tree/meta-oe/recipes-support/crucible/>`
++      recipe::
++
++         GO_INSTALL = "\
++             ${GO_IMPORT}/cmd/crucible \
++             ${GO_IMPORT}/cmd/habtool \
++         "
++
++      By default, :term:`GO_INSTALL` is defined as::
++
++         GO_INSTALL ?= "${GO_IMPORT}/..."
++
++      The ``...`` wildcard means that it will catch all
++      packages found in the sources.
++
++      See the :term:`GO_INSTALL_FILTEROUT` variable for
++      filtering out unwanted packages from the ones
++      found from the :term:`GO_INSTALL` value.
++
++   :term:`GO_INSTALL_FILTEROUT`
++      When using the Go "vendor" mechanism to bring in dependencies for a Go
++      package, the default :term:`GO_INSTALL` setting, which uses the ``...``
++      wildcard, will include the vendored packages in the build, which produces
++      incorrect results.
++
++      There are also some Go packages that are structured poorly, so that the
++      ``...`` wildcard results in building example or test code that should not
++      be included in the build, or could fail to build.
++
++      This optional variable allows for filtering out a subset of the sources.
++      It defaults to excluding everything under the ``vendor`` subdirectory
++      under package's main directory. This is the normal location for vendored
++      packages, but it can be overridden by a recipe to filter out other
++      subdirectories if needed.
++
++   :term:`GO_WORKDIR`
++      When using Go Modules, the current working directory must be the directory
++      containing the ``go.mod`` file, or one of its subdirectories. When the
++      ``go`` tool is used, it will automatically look for the ``go.mod`` file
++      in the Go working directory or in any parent directory, but not in
++      subdirectories.
++
++      When using the :ref:`ref-classes-go-mod` class to use Go modules,
++      the optional :term:`GO_WORKDIR` variable, defaulting to the value
++      of :term:`GO_IMPORT`, allows to specify a different Go working directory.
++
+    :term:`GROUPADD_PARAM`
+       When inheriting the :ref:`ref-classes-useradd` class,
+       this variable specifies for a package what parameters should be
 -- 
 2.37.2
 
