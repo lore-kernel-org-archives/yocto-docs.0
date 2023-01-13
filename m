@@ -2,181 +2,123 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 91E95C46467
-	for <webhook@archiver.kernel.org>; Wed, 11 Jan 2023 09:51:39 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.20099.1673430694004563357
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 336F5C54EBD
+	for <webhook@archiver.kernel.org>; Fri, 13 Jan 2023 18:09:47 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.95759.1673633381231771893
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Jan 2023 01:51:34 -0800
+ Fri, 13 Jan 2023 10:09:41 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZQwAthjI;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bRTINQ5F;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 4278BFF80B;
-	Wed, 11 Jan 2023 09:51:30 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id C103F60008;
+	Fri, 13 Jan 2023 18:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1673430691;
+	t=1673633379;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=lzBTbItV/+LJG+wZI6OdMLyoZz+hizcjXUehPOBvrGE=;
-	b=ZQwAthjI0eO6etLTnL89PdWzfuvsaKab5Ws8orL/cdd0bm7gCv+WLa5nhq9FigRmXNOaL4
-	hpbwep9LdR+nPKHHXHA6yQ2UPXzn3s0Cmm47xY+Veo+QvFgkpLSSTp1aYAXzOy06DfJmRh
-	xEiKXpvcVm1EDwOaNDNg3JGSb/MjCDesSDEIaqpiVntUET5ylR5jBO1scR+ggUJCyMHxZE
-	2kY2IU7GC6mTGcc1n/8s/mUyC2gyObOVWMA/C8+Y4b4qrOJRL4Fn/Wgbz0kAwS9J70CVuc
-	G154SMm7k1Wy4K2wVthvmhFWnlJVO8a2ly0fLvRs58O8CTg5KSdIacTAygTlMQ==
+	bh=t6IueuQ0M0dZE5QCMtye+boMbDeXTvLgUvmerH9sjl0=;
+	b=bRTINQ5FGsfRpH2uGi6wbr4XuIiAZhyxbtVcuJgWvGVNr+CWLXzly+7hC5oz1RiIoIp4+2
+	PE6ys4nmWoXZuDBBYgoPTZsw/74waLEe1ciqwo2qBBUXLrh+T3Tr0sdra4IALJ+VJy2cx5
+	LZjHc87eTuFvugsqH4lQqxmxkmrQYVso1bi/r8YJpOTyjjWYpx4o9HwGdOgIEIybtPSCD+
+	5ksIx4j7GEdWosmaVTS6g9H7lroOuts5NanXiL8eV6FaDwSCxZ3B8kNJ8eFJVhV64VF2iS
+	i1FinOP+VvoQ2bqJMRJalzMHhpdHpVWZcekXwu3JZN2FohEbBIUC79oaY35xPQ==
 From: michael.opdenacker@bootlin.com
-To: otavio.salvador@gmail.com,
-	pab@pabigot.com,
-	Qi.Chen@windriver.com,
-	alex.kanavin@gmail.com,
-	Ahmed.Hossam@opensynergy.com,
-	raj.khem@gmail.com,
-	matt@madison.systems
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Jan Dorniak <jaskij@gmail.com>
-Subject: [PATCH] ref-manual: initial documentation for go and go-mod classes
-Date: Wed, 11 Jan 2023 10:51:09 +0100
-Message-Id: <20230111095109.477423-1-michael.opdenacker@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: document Rust classes
+Date: Fri, 13 Jan 2023 19:09:32 +0100
+Message-Id: <20230113180932.1507356-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 11 Jan 2023 09:51:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3603
+ <docs@lists.yoctoproject.org>; Fri, 13 Jan 2023 18:09:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3604
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-This addresses [YOCTO #14582]
-
----
- If you are familiar with the Go classes, please review and propose corrections
- or extensions to what I wrote. My understanding of Go is very limited,
- and I'm not even sure go-mod.bbclass is for building or just importing
- Go modules.
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Reported-by: Jan Dorniak <jaskij@gmail.com>
 ---
- documentation/ref-manual/classes.rst   | 23 +++++++++
- documentation/ref-manual/variables.rst | 67 ++++++++++++++++++++++++++
- 2 files changed, 90 insertions(+)
+ documentation/ref-manual/classes.rst | 54 ++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
 diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 7dba617db5..0cb507b500 100644
+index 0cb507b500..cc6ba04bff 100644
 --- a/documentation/ref-manual/classes.rst
 +++ b/documentation/ref-manual/classes.rst
-@@ -758,6 +758,29 @@ software from the GNOME stack. This class sets
- mirrors as well as extending :term:`FILES` with the typical
- GNOME installation paths.
+@@ -254,6 +254,42 @@ When inherited globally, prints statistics at the end of the build on
+ sstate re-use. In order to function, this class requires the
+ :ref:`ref-classes-buildstats` class be enabled.
  
-+.. _ref-classes-go:
++.. _ref-classes-cargo:
 +
-+``go``
-+======
++``cargo``
++=========
 +
-+The :ref:`ref-classes-go` class supports building Go programs. The behavior of
-+this class is controlled by the mandatory :term:`GO_IMPORT` variable, and
-+by the optional :term:`GO_INSTALL` and :term:`GO_INSTALL_FILTEROUT` ones.
++The :ref:`ref-classes-cargo` class allows to compile Rust language programs
++using `Cargo <https://doc.rust-lang.org/cargo/>`__. Cargo is Rust's package
++manager, allowing to fetch package dependencies and build your program.
 +
-+To build a Go program with the Yocto Project, you can use the
-+:yocto_git:`go-helloworld_0.1.bb </poky/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
-+recipe as an example.
++Using this class makes it very easy to build Rust programs. All you need
++is to use the :term:`SRC_URI` variable to point to a source repository
++which can be built by Cargo, typically one that was created by the
++``cargo new`` command, containing a ``Cargo.toml`` file and an ``src``
++subdirectory.
 +
-+.. _ref-classes-go-mod:
++You will find a simple example in the
++:oe_git:`rust-hello-world_git.bb </openembedded-core/tree/meta/recipes-extended/rust-example/rust-hello-world_git.bb>`
++recipe. A more complex example, with package dependencies, is the
++:oe_git:`uutils-coreutils </meta-openembedded/tree/meta-oe/recipes-core/uutils-coreutils>`
++recipe, which was generated by the `cargo-bitbake <https://crates.io/crates/cargo-bitbake>`__
++tool.
 +
-+``go-mod``
-+==========
++This class inherits the :ref:`ref-classes-cargo_common` class.
 +
-+The :ref:`ref-classes-go-mod` class allows to use Go modules, and inherits the
-+:ref:`ref-classes-go` class.
++.. _ref-classes-cargo_common:
 +
-+See the associated :term:`GO_WORKDIR` variable.
++``cargo_common``
++================
 +
- .. _ref-classes-gobject-introspection:
++The :ref:`ref-classes-cargo_common` class is an internal class
++that is not intended to be used directly.
++
++An exception is the "rust" recipe, to build the Rust compiler and runtime
++library, which is built by Cargo but cannot use the :ref:`ref-classes-cargo`
++class. This is why this class was introduced.
++
+ .. _ref-classes-ccache:
  
- ``gobject-introspection``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index f2decd713b..8419c80d03 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3012,6 +3012,73 @@ system and gives an overview of their function and contents.
+ ``ccache``
+@@ -2493,6 +2529,24 @@ For information on how root filesystem images are created, see the
+ ":ref:`overview-manual/concepts:image generation`"
+ section in the Yocto Project Overview and Concepts Manual.
  
-          GLIBC_GENERATE_LOCALES = "en_GB.UTF-8 en_US.UTF-8"
++.. _ref-classes-rust:
++
++``rust``
++========
++
++The :ref:`ref-classes-rust` class is an internal class which is just used
++in the "rust" recipe, to build the Rust compiler and runtime
++library. Except for this recipe, it is not intended to be used directly.
++
++.. _ref-classes-rust-common:
++
++``rust-common``
++===============
++
++The :ref:`ref-classes-rust-common` class is an internal class to the
++:ref:`ref-classes-cargo_common` and :ref:`ref-classes-rust` classes and is not
++intended to be used directly.
++
+ .. _ref-classes-sanity:
  
-+   :term:`GO_IMPORT`
-+      When inheriting the :ref:`ref-classes-go` class, this mandatory variable
-+      sets the import path for the Go package that will be created for the code
-+      to build. If you have a ``go.mod`` file in the source directory, this
-+      typically matches the path in the ``module`` line in this file.
-+
-+      Other Go programs importing this package will use this path.
-+
-+      Here is an example setting from the
-+      :yocto_git:`go-helloworld_0.1.bb </poky/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
-+      recipe::
-+
-+          GO_IMPORT = "golang.org/x/example"
-+
-+   :term:`GO_INSTALL`
-+      When inheriting the :ref:`ref-classes-go` class, this optional variable
-+      specifies which packages in the sources should be compiled and
-+      installed in the Go build space by the
-+      `go install <https://go.dev/ref/mod#go-install>`__ command.
-+
-+      Here is an example setting from the
-+      :oe_git:`crucible </meta-openembedded/tree/meta-oe/recipes-support/crucible/>`
-+      recipe::
-+
-+         GO_INSTALL = "\
-+             ${GO_IMPORT}/cmd/crucible \
-+             ${GO_IMPORT}/cmd/habtool \
-+         "
-+
-+      By default, :term:`GO_INSTALL` is defined as::
-+
-+         GO_INSTALL ?= "${GO_IMPORT}/..."
-+
-+      The ``...`` wildcard means that it will catch all
-+      packages found in the sources.
-+
-+      See the :term:`GO_INSTALL_FILTEROUT` variable for
-+      filtering out unwanted packages from the ones
-+      found from the :term:`GO_INSTALL` value.
-+
-+   :term:`GO_INSTALL_FILTEROUT`
-+      When using the Go "vendor" mechanism to bring in dependencies for a Go
-+      package, the default :term:`GO_INSTALL` setting, which uses the ``...``
-+      wildcard, will include the vendored packages in the build, which produces
-+      incorrect results.
-+
-+      There are also some Go packages that are structured poorly, so that the
-+      ``...`` wildcard results in building example or test code that should not
-+      be included in the build, or could fail to build.
-+
-+      This optional variable allows for filtering out a subset of the sources.
-+      It defaults to excluding everything under the ``vendor`` subdirectory
-+      under package's main directory. This is the normal location for vendored
-+      packages, but it can be overridden by a recipe to filter out other
-+      subdirectories if needed.
-+
-+   :term:`GO_WORKDIR`
-+      When using Go Modules, the current working directory must be the directory
-+      containing the ``go.mod`` file, or one of its subdirectories. When the
-+      ``go`` tool is used, it will automatically look for the ``go.mod`` file
-+      in the Go working directory or in any parent directory, but not in
-+      subdirectories.
-+
-+      When using the :ref:`ref-classes-go-mod` class to use Go modules,
-+      the optional :term:`GO_WORKDIR` variable, defaulting to the value
-+      of :term:`GO_IMPORT`, allows to specify a different Go working directory.
-+
-    :term:`GROUPADD_PARAM`
-       When inheriting the :ref:`ref-classes-useradd` class,
-       this variable specifies for a package what parameters should be
+ ``sanity``
 -- 
 2.37.2
 
