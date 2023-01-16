@@ -2,78 +2,116 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EA453C54EBE
-	for <webhook@archiver.kernel.org>; Mon, 16 Jan 2023 17:08:28 +0000 (UTC)
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.172582.1673888901177036205
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AB3CC46467
+	for <webhook@archiver.kernel.org>; Mon, 16 Jan 2023 17:18:29 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.172968.1673889503165796460
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Jan 2023 09:08:21 -0800
+ Mon, 16 Jan 2023 09:18:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZIOQSjIh;
- spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KJkrQuk4;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 8F95D100009;
-	Mon, 16 Jan 2023 17:08:18 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id EA97B1BF20C;
+	Mon, 16 Jan 2023 17:18:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1673888899;
+	t=1673889501;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ohhkV9LzxQCQgi09956eLBqQYRbwvCPqtLYaW3FA3Hc=;
-	b=ZIOQSjIhSppzIcHsoDYNt9AZFK8H6GnMVmW1CXH48axPoUv3PVSqSFHnymau4eWb2i049n
-	LlbsmX2WcR/JAT22JoSWs11V4xbbtC7uESoMq5/4IU5Bd2T0kp5fsjTIdi2/tmxZpyfeOJ
-	kfr39DzoOjXwXrp/KWjz8JY6BRNYo+bqgMhJ9WYGCLomKLam8V3T4XIPDgP7UGuR0VT+8v
-	jhhITxUw+4rCZb4mkL4qn7F9Iajl3IX7y1f6ej3NyxfjkEfQ4oTxeZT2U+rmhs43KTQXtB
-	y51gH21xIplBuogSW8tdiQx1RIbZ2WGLIhzj7r5TIn2sMR/M3YK1uPF7LR46bQ==
-Message-ID: <2a2d305b-df74-479c-cf5d-5ef8cce215ee@bootlin.com>
-Date: Mon, 16 Jan 2023 18:08:18 +0100
+	bh=vRrey52HOA2ghGKn+w0Az6NnkvUQNhtkP59Dxc9fLKI=;
+	b=KJkrQuk4qvYEVxApwCFfNSPLFlXmUWijUSTCct3xU2GYWOVsHaqhHIRjIeZpOgvGS737Xj
+	Ptb8pLzrBb0BAXDO1TlxBNcsN844O9qf7DgFriw2Xyeo1Oc+bpmn2t8fePr01TGFVstYof
+	P6WL6MpUOXFhC3C8ciB9m4AMNxVjMoaiG8ZBDE9mMl3Ft2Jv8Y2ML4sj9dYklyyRAVOzI7
+	gpueGqWvWalfNty/hg4YqMFbtfyD1SOm/b8PsdFijL3fC68hZvIbvPY9Ry24Oj70a/fWBk
+	ndm8jFusiw1Mlyvf3GPc1b4hqm/n8KOaUCbLgIoCOpHH9sBcBXO9huVhXtJV4A==
+Message-ID: <6c8a96b9-8000-723e-e39a-c8ee3d13cc98@bootlin.com>
+Date: Mon, 16 Jan 2023 18:18:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.4.2
-Cc: docs@lists.yoctoproject.org
+Cc: docs@lists.yoctoproject.org, Alexander Kanavin <alex.kanavin@gmail.com>
 Subject: Re: [docs] [PATCH] ref-manual: document Rust classes
 Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>,
- =?UTF-8?Q?Ulrich_=c3=96lmann?= <u.oelmann@pengutronix.de>
+To: Alex Kiernan <alex.kiernan@gmail.com>
 References: <20230113180932.1507356-1-michael.opdenacker@bootlin.com>
- <6rsfga2abu.fsf@pengutronix.de>
- <2a53087f-ebe5-e571-9731-cfc680ace44e@bootlin.com>
- <173AD6377FCD14EA.23170@lists.yoctoproject.org>
- <313f2f809ffb451062547e7c5438a82173549d09.camel@linuxfoundation.org>
+ <CAO5Uq5TgP2N0fhR_zPpK4FBzZ6RO67tqiSOYWDsyS2wbfAfuNw@mail.gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <313f2f809ffb451062547e7c5438a82173549d09.camel@linuxfoundation.org>
+In-Reply-To: <CAO5Uq5TgP2N0fhR_zPpK4FBzZ6RO67tqiSOYWDsyS2wbfAfuNw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Jan 2023 17:08:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3612
+ <docs@lists.yoctoproject.org>; Mon, 16 Jan 2023 17:18:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3613
 
+Hi Alex,
 
-On 16.01.23 at 17:34, Richard Purdie wrote:
+On 15.01.23 at 21:03, Alex Kiernan wrote:
+> On Fri, Jan 13, 2023 at 6:09 PM Michael Opdenacker via
+> lists.yoctoproject.org
+> <michael.opdenacker=bootlin.com@lists.yoctoproject.org> wrote:
+>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>
+>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>> ---
+>>   documentation/ref-manual/classes.rst | 54 ++++++++++++++++++++++++++++
+>>   1 file changed, 54 insertions(+)
+>>
+>> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+>> index 0cb507b500..cc6ba04bff 100644
+>> --- a/documentation/ref-manual/classes.rst
+>> +++ b/documentation/ref-manual/classes.rst
+>> @@ -254,6 +254,42 @@ When inherited globally, prints statistics at the end of the build on
+>>   sstate re-use. In order to function, this class requires the
+>>   :ref:`ref-classes-buildstats` class be enabled.
+>>
+>> +.. _ref-classes-cargo:
+>> +
+>> +``cargo``
+>> +=========
+>> +
+>> +The :ref:`ref-classes-cargo` class allows to compile Rust language programs
+>> +using `Cargo <https://doc.rust-lang.org/cargo/>`__. Cargo is Rust's package
+>> +manager, allowing to fetch package dependencies and build your program.
+>> +
+>> +Using this class makes it very easy to build Rust programs. All you need
+>> +is to use the :term:`SRC_URI` variable to point to a source repository
+>> +which can be built by Cargo, typically one that was created by the
+>> +``cargo new`` command, containing a ``Cargo.toml`` file and an ``src``
+>> +subdirectory.
+>> +
+>> +You will find a simple example in the
+>> +:oe_git:`rust-hello-world_git.bb </openembedded-core/tree/meta/recipes-extended/rust-example/rust-hello-world_git.bb>`
+>> +recipe. A more complex example, with package dependencies, is the
+>> +:oe_git:`uutils-coreutils </meta-openembedded/tree/meta-oe/recipes-core/uutils-coreutils>`
+>> +recipe, which was generated by the `cargo-bitbake <https://crates.io/crates/cargo-bitbake>`__
+>> +tool.
+>> +
+> We should reference `cargo-update-recipe-crates` here rather than
+> `cargo bitbake`. The flow for creating a recipe then goes something
+> like (using hippotat as an example
+> https://www.chiark.greenend.org.uk/~ianmdlvl/hippotat/current/docs/):
 >
->>> I'd disagree on this one. If you read "src", what you pronounce ("S. R.
->>> C.") starts with a vowel, hence the use of "an".
->>>
->>> https://editorsmanual.com/articles/indefinite-article-a-an-with-abbreviations/
->>> seems to agree with me, but I'd be happy to be corrected!
->>>
->>> Thanks for the proofreading!
->> As a native speaker, it is definitely "a source" or "a src", "an src"
->> just sounds plain wrong to me!
-> I was thinking a bit more about this, I think the reason is that you'd
-> always pronounce this as "source", I'm not sure how you'd say "src" out
-> loud! :)
+> devtool add -S a6ac94b4922602af64f22b86ba5347ad95fcda44 -V 1.1.7
+> hippotat https://salsa.debian.org/iwj/hippotat.git
+> # edit resulting recipe delete boiler plate tasks and add `inherit
+> cargo cargo-update-recipe-crates`
+> bitbake -c update_crates hippotat
+> # edit recipe to add `require ${BPN}-crates.inc`
+> devtool build hippotat
+> # fix resulting errors (add `DEPENDS += "openssl"`, `inherit
+> pkgconfig` in this case)
+> devtool build hippotat
 
 
-That's what's difficult with English, there are so many different uses 
-of it, and I'm saying "S. R. C." while you say "source" for "src".
-Anyway, you win as a native speaker :)
-
-Thanks
+Thanks for the review and suggestion. I overlooked this class so I will 
+mention it in the docs, as well as the example you gave.
+Thanks again
+Cheers
 Michael.
 
 -- 
