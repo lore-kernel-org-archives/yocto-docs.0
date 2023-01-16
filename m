@@ -1,155 +1,82 @@
-Return-Path: <u.oelmann@pengutronix.de>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FCDDC46467
-	for <webhook@archiver.kernel.org>; Mon, 16 Jan 2023 07:43:56 +0000 (UTC)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
- by mx.groups.io with SMTP id smtpd.web11.161507.1673855033840062719
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4FB3C54EBE
+	for <webhook@archiver.kernel.org>; Mon, 16 Jan 2023 16:05:18 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web11.170714.1673885107861284873
  for <docs@lists.yoctoproject.org>;
- Sun, 15 Jan 2023 23:43:54 -0800
+ Mon, 16 Jan 2023 08:05:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: u.oelmann@pengutronix.de)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1pHK9n-0001W8-2o; Mon, 16 Jan 2023 08:43:51 +0100
-Received: from uol by pty.hi.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1pHK9l-001cOO-Sf; Mon, 16 Jan 2023 08:43:49 +0100
-References: <20230113180932.1507356-1-michael.opdenacker@bootlin.com>
-User-agent: mu4e 1.6.9; emacs 29.0.50
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
-To: michael.opdenacker@bootlin.com
-Cc: "Michael Opdenacker via lists.yoctoproject.org"
- <michael.opdenacker=bootlin.com@lists.yoctoproject.org>,
- docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: document Rust classes
-Date: Mon, 16 Jan 2023 08:35:02 +0100
-In-reply-to: <20230113180932.1507356-1-michael.opdenacker@bootlin.com>
-Message-ID: <6rsfga2abu.fsf@pengutronix.de>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TT00e8te;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 1B83D10000B;
+	Mon, 16 Jan 2023 16:05:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1673885106;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=E7/RY/WJlmGSPtnDAJNwkHJbp5Zp+BEC3mKG4BUJ7A8=;
+	b=TT00e8te0/8YaWSrYlq0ST7E53+H0wFJvrhnUgkdC3SyoiQwKliBbfgzTOp9aqfVNirbMU
+	YuP43RV5+tBPg019HSy5NamPZd8fs+kfqJv+oTcskhkzbp1K3CV1Byf1BMYh1Wt/JJ0eTn
+	6iWzHLEwMneqlKnId1GeG9Aqf1K8PKYtjUaxH9/zc6w5HZDIffarzVabxvVWKuU3/6+p1p
+	UWl9vYEaTtBPO6eHHoQzzUhUQS8ECc/hRVnww8hswnBBvPCc4+oKRFov4UtJEcI1aj/bQH
+	52v1Y8LqYG84ypqPYd0g8nfmETpEb/3luwra3E/HI46DZj/s+LT5PHadbjF8nw==
+Message-ID: <2a53087f-ebe5-e571-9731-cfc680ace44e@bootlin.com>
+Date: Mon, 16 Jan 2023 17:05:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: u.oelmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: docs@lists.yoctoproject.org
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual: document Rust classes
+Content-Language: en-US
+To: =?UTF-8?Q?Ulrich_=c3=96lmann?= <u.oelmann@pengutronix.de>
+References: <20230113180932.1507356-1-michael.opdenacker@bootlin.com>
+ <6rsfga2abu.fsf@pengutronix.de>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <6rsfga2abu.fsf@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Jan 2023 07:43:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3608
+ <docs@lists.yoctoproject.org>; Mon, 16 Jan 2023 16:05:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3609
 
-Hi Michael,
+Hi Ulrich,
 
-I am no inhabitant of the rust world, so I can not evaluate the
-technical content - nevertheless: thanks for writing this up!
-There is only a small typo I came across.
-
-On Fri, Jan 13 2023 at 19:09 +0100, "Michael Opdenacker via lists.yoctoproj=
-ect.org" <michael.opdenacker=3Dbootlin.com@lists.yoctoproject.org> wrote:
-> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+On 16.01.23 at 08:35, Ulrich Ölmann wrote:
+> Hi Michael,
 >
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> ---
->  documentation/ref-manual/classes.rst | 54 ++++++++++++++++++++++++++++
->  1 file changed, 54 insertions(+)
->
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 0cb507b500..cc6ba04bff 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -254,6 +254,42 @@ When inherited globally, prints statistics at the en=
-d of the build on
->  sstate re-use. In order to function, this class requires the
->  :ref:`ref-classes-buildstats` class be enabled.
->=20=20
-> +.. _ref-classes-cargo:
-> +
-> +``cargo``
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The :ref:`ref-classes-cargo` class allows to compile Rust language progr=
-ams
-> +using `Cargo <https://doc.rust-lang.org/cargo/>`__. Cargo is Rust's pack=
-age
-> +manager, allowing to fetch package dependencies and build your program.
-> +
-> +Using this class makes it very easy to build Rust programs. All you need
-> +is to use the :term:`SRC_URI` variable to point to a source repository
-> +which can be built by Cargo, typically one that was created by the
-> +``cargo new`` command, containing a ``Cargo.toml`` file and an ``src``
-
-s/and an ``src``/and a ``src``/
-
-Best regards
-Ulrich
+> I am no inhabitant of the rust world, so I can not evaluate the
+> technical content
 
 
-> +subdirectory.
-> +
-> +You will find a simple example in the
-> +:oe_git:`rust-hello-world_git.bb </openembedded-core/tree/meta/recipes-e=
-xtended/rust-example/rust-hello-world_git.bb>`
-> +recipe. A more complex example, with package dependencies, is the
-> +:oe_git:`uutils-coreutils </meta-openembedded/tree/meta-oe/recipes-core/=
-uutils-coreutils>`
-> +recipe, which was generated by the `cargo-bitbake <https://crates.io/cra=
-tes/cargo-bitbake>`__
-> +tool.
-> +
-> +This class inherits the :ref:`ref-classes-cargo_common` class.
-> +
-> +.. _ref-classes-cargo_common:
-> +
-> +``cargo_common``
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The :ref:`ref-classes-cargo_common` class is an internal class
-> +that is not intended to be used directly.
-> +
-> +An exception is the "rust" recipe, to build the Rust compiler and runtime
-> +library, which is built by Cargo but cannot use the :ref:`ref-classes-ca=
-rgo`
-> +class. This is why this class was introduced.
-> +
->  .. _ref-classes-ccache:
->=20=20
->  ``ccache``
-> @@ -2493,6 +2529,24 @@ For information on how root filesystem images are =
-created, see the
->  ":ref:`overview-manual/concepts:image generation`"
->  section in the Yocto Project Overview and Concepts Manual.
->=20=20
-> +.. _ref-classes-rust:
-> +
-> +``rust``
-> +=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The :ref:`ref-classes-rust` class is an internal class which is just used
-> +in the "rust" recipe, to build the Rust compiler and runtime
-> +library. Except for this recipe, it is not intended to be used directly.
-> +
-> +.. _ref-classes-rust-common:
-> +
-> +``rust-common``
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +The :ref:`ref-classes-rust-common` class is an internal class to the
-> +:ref:`ref-classes-cargo_common` and :ref:`ref-classes-rust` classes and =
-is not
-> +intended to be used directly.
-> +
->  .. _ref-classes-sanity:
->=20=20
->  ``sanity``
---=20
-Pengutronix e.K.                           | Ulrich =C3=96lmann            =
-   |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+That's not very different from my status. I'm just a tourist to the Rust 
+world so far ;-)
+
+> s/and an ``src``/and a ``src``/
+
+
+I'd disagree on this one. If you read "src", what you pronounce ("S. R. 
+C.") starts with a vowel, hence the use of "an".
+
+https://editorsmanual.com/articles/indefinite-article-a-an-with-abbreviations/ 
+seems to agree with me, but I'd be happy to be corrected!
+
+Thanks for the proofreading!
+
+Cheers
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
