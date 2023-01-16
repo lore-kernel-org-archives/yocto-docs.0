@@ -1,128 +1,155 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <u.oelmann@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13F19C3DA78
-	for <webhook@archiver.kernel.org>; Sun, 15 Jan 2023 20:09:23 +0000 (UTC)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
- by mx.groups.io with SMTP id smtpd.web10.149194.1673813361190287388
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FCDDC46467
+	for <webhook@archiver.kernel.org>; Mon, 16 Jan 2023 07:43:56 +0000 (UTC)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+ by mx.groups.io with SMTP id smtpd.web11.161507.1673855033840062719
  for <docs@lists.yoctoproject.org>;
- Sun, 15 Jan 2023 12:09:21 -0800
+ Sun, 15 Jan 2023 23:43:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=G3Fo6RT4;
- spf=pass (domain: gmail.com, ip: 209.85.167.41, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lf1-f41.google.com with SMTP id br9so4838652lfb.4
-        for <docs@lists.yoctoproject.org>; Sun, 15 Jan 2023 12:09:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMR1Puc+lmqvsxzyPquZzv3Wau0u9YSeuZzv+l30JRw=;
-        b=G3Fo6RT43Wr2UGeyKuHA71lVkXXxQOHykmSphvCUBsn6AehdciWf57t6AZeXCGYlam
-         FgquhNAp9SrpDUrR4+gSb57CV4Hr1M7jvtzX+i/FcHQweDudXKB5By3ICindHab9cdrY
-         X0J+633ZPx8xBklb3pRtBTTubaC927GqXfRUVyx3B35dbfKbfJ+NlwWfG+055TyqPuwg
-         u16b24lgM5btR0ebGgLSoxhbdXkat5ccG/NQyRd48pOmCnzenUDgJUotzwci5ULeew+O
-         npdTw29mR6ozxEXlj8y004F89DriK8d7mP8kXjPiMnQXVHXOEIhhTPBAnrwGKhSwTeNq
-         pkdg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wMR1Puc+lmqvsxzyPquZzv3Wau0u9YSeuZzv+l30JRw=;
-        b=6xkeSvLvMi7ggCgotJZyT4rFI4PDPSL3CJOPE6r3N4+Pm4gLkpwc1CMGGm+1NJuD88
-         iOJO1Swd04u/45plIHKekmCnAdmg9cSKmwnD7KxDaplXngIGcggtJ8aYQqQd3lqOT5EP
-         t4WCwukvUYffKeszE0Gym7zc8bcna7+eeumNnrn8XKPI50C2nio8asqBFb4ffnMpRGEn
-         i9qs6laLTyAXij9Yt6sclrmwx8ym5mHbya6OWCp5k4IDhpl5mzTnJkZvENvFqjxUtyJc
-         81IB0R/9ryvv50TC3vNOXeyLNQ1tMxF9IQ+3tWcxphEdNTmyxOrU2a/NuQQDwvSy+r2J
-         MkfA==
-X-Gm-Message-State: AFqh2ko0H1O1CKosOXYqvmMmhbPukeHHrfX/Dq3vLJW8ouT4kCO7pbZ4
-	018kvSMol234uhZR34LGvx/qjq5LDm8J2TEAl0g=
-X-Google-Smtp-Source: AMrXdXuPv2KMxlnSl+bx/ONYxdIibpck9oJsZlImZahnH86IJdiIBS+oMerkNJw9eKLjmtGLkPsi7tBcHqWk6Q+QafY=
-X-Received: by 2002:a05:6512:3a86:b0:4cc:7ecb:32af with SMTP id
- q6-20020a0565123a8600b004cc7ecb32afmr2240000lfu.393.1673813359504; Sun, 15
- Jan 2023 12:09:19 -0800 (PST)
-MIME-Version: 1.0
-References: <20230113180932.1507356-1-michael.opdenacker@bootlin.com> <CAO5Uq5TgP2N0fhR_zPpK4FBzZ6RO67tqiSOYWDsyS2wbfAfuNw@mail.gmail.com>
-In-Reply-To: <CAO5Uq5TgP2N0fhR_zPpK4FBzZ6RO67tqiSOYWDsyS2wbfAfuNw@mail.gmail.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Sun, 15 Jan 2023 21:09:08 +0100
-Message-ID: <CANNYZj_vS3RaFL3JipjqE6+Qxv1ocGKVYnWMmNe2LqhyQeTomA@mail.gmail.com>
+ dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: u.oelmann@pengutronix.de)
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1pHK9n-0001W8-2o; Mon, 16 Jan 2023 08:43:51 +0100
+Received: from uol by pty.hi.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1pHK9l-001cOO-Sf; Mon, 16 Jan 2023 08:43:49 +0100
+References: <20230113180932.1507356-1-michael.opdenacker@bootlin.com>
+User-agent: mu4e 1.6.9; emacs 29.0.50
+From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: michael.opdenacker@bootlin.com
+Cc: "Michael Opdenacker via lists.yoctoproject.org"
+ <michael.opdenacker=bootlin.com@lists.yoctoproject.org>,
+ docs@lists.yoctoproject.org
 Subject: Re: [docs] [PATCH] ref-manual: document Rust classes
-To: Alex Kiernan <alex.kiernan@gmail.com>
-Cc: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Date: Mon, 16 Jan 2023 08:35:02 +0100
+In-reply-to: <20230113180932.1507356-1-michael.opdenacker@bootlin.com>
+Message-ID: <6rsfga2abu.fsf@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
+X-SA-Exim-Mail-From: u.oelmann@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 15 Jan 2023 20:09:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3607
+ <docs@lists.yoctoproject.org>; Mon, 16 Jan 2023 07:43:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3608
 
-Perhaps you could write a patch to the docs that sets them right?
+Hi Michael,
 
-Alex
+I am no inhabitant of the rust world, so I can not evaluate the
+technical content - nevertheless: thanks for writing this up!
+There is only a small typo I came across.
 
-On Sun, 15 Jan 2023 at 21:03, Alex Kiernan <alex.kiernan@gmail.com> wrote:
+On Fri, Jan 13 2023 at 19:09 +0100, "Michael Opdenacker via lists.yoctoproj=
+ect.org" <michael.opdenacker=3Dbootlin.com@lists.yoctoproject.org> wrote:
+> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 >
-> On Fri, Jan 13, 2023 at 6:09 PM Michael Opdenacker via
-> lists.yoctoproject.org
-> <michael.opdenacker=bootlin.com@lists.yoctoproject.org> wrote:
-> >
-> > From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> >
-> > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> > ---
-> >  documentation/ref-manual/classes.rst | 54 ++++++++++++++++++++++++++++
-> >  1 file changed, 54 insertions(+)
-> >
-> > diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-> > index 0cb507b500..cc6ba04bff 100644
-> > --- a/documentation/ref-manual/classes.rst
-> > +++ b/documentation/ref-manual/classes.rst
-> > @@ -254,6 +254,42 @@ When inherited globally, prints statistics at the end of the build on
-> >  sstate re-use. In order to function, this class requires the
-> >  :ref:`ref-classes-buildstats` class be enabled.
-> >
-> > +.. _ref-classes-cargo:
-> > +
-> > +``cargo``
-> > +=========
-> > +
-> > +The :ref:`ref-classes-cargo` class allows to compile Rust language programs
-> > +using `Cargo <https://doc.rust-lang.org/cargo/>`__. Cargo is Rust's package
-> > +manager, allowing to fetch package dependencies and build your program.
-> > +
-> > +Using this class makes it very easy to build Rust programs. All you need
-> > +is to use the :term:`SRC_URI` variable to point to a source repository
-> > +which can be built by Cargo, typically one that was created by the
-> > +``cargo new`` command, containing a ``Cargo.toml`` file and an ``src``
-> > +subdirectory.
-> > +
-> > +You will find a simple example in the
-> > +:oe_git:`rust-hello-world_git.bb </openembedded-core/tree/meta/recipes-extended/rust-example/rust-hello-world_git.bb>`
-> > +recipe. A more complex example, with package dependencies, is the
-> > +:oe_git:`uutils-coreutils </meta-openembedded/tree/meta-oe/recipes-core/uutils-coreutils>`
-> > +recipe, which was generated by the `cargo-bitbake <https://crates.io/crates/cargo-bitbake>`__
-> > +tool.
-> > +
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> ---
+>  documentation/ref-manual/classes.rst | 54 ++++++++++++++++++++++++++++
+>  1 file changed, 54 insertions(+)
 >
-> We should reference `cargo-update-recipe-crates` here rather than
-> `cargo bitbake`. The flow for creating a recipe then goes something
-> like (using hippotat as an example
-> https://www.chiark.greenend.org.uk/~ianmdlvl/hippotat/current/docs/):
->
-> devtool add -S a6ac94b4922602af64f22b86ba5347ad95fcda44 -V 1.1.7
-> hippotat https://salsa.debian.org/iwj/hippotat.git
-> # edit resulting recipe delete boiler plate tasks and add `inherit
-> cargo cargo-update-recipe-crates`
-> bitbake -c update_crates hippotat
-> # edit recipe to add `require ${BPN}-crates.inc`
-> devtool build hippotat
-> # fix resulting errors (add `DEPENDS += "openssl"`, `inherit
-> pkgconfig` in this case)
-> devtool build hippotat
->
->
-> --
-> Alex Kiernan
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+> index 0cb507b500..cc6ba04bff 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -254,6 +254,42 @@ When inherited globally, prints statistics at the en=
+d of the build on
+>  sstate re-use. In order to function, this class requires the
+>  :ref:`ref-classes-buildstats` class be enabled.
+>=20=20
+> +.. _ref-classes-cargo:
+> +
+> +``cargo``
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The :ref:`ref-classes-cargo` class allows to compile Rust language progr=
+ams
+> +using `Cargo <https://doc.rust-lang.org/cargo/>`__. Cargo is Rust's pack=
+age
+> +manager, allowing to fetch package dependencies and build your program.
+> +
+> +Using this class makes it very easy to build Rust programs. All you need
+> +is to use the :term:`SRC_URI` variable to point to a source repository
+> +which can be built by Cargo, typically one that was created by the
+> +``cargo new`` command, containing a ``Cargo.toml`` file and an ``src``
+
+s/and an ``src``/and a ``src``/
+
+Best regards
+Ulrich
+
+
+> +subdirectory.
+> +
+> +You will find a simple example in the
+> +:oe_git:`rust-hello-world_git.bb </openembedded-core/tree/meta/recipes-e=
+xtended/rust-example/rust-hello-world_git.bb>`
+> +recipe. A more complex example, with package dependencies, is the
+> +:oe_git:`uutils-coreutils </meta-openembedded/tree/meta-oe/recipes-core/=
+uutils-coreutils>`
+> +recipe, which was generated by the `cargo-bitbake <https://crates.io/cra=
+tes/cargo-bitbake>`__
+> +tool.
+> +
+> +This class inherits the :ref:`ref-classes-cargo_common` class.
+> +
+> +.. _ref-classes-cargo_common:
+> +
+> +``cargo_common``
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The :ref:`ref-classes-cargo_common` class is an internal class
+> +that is not intended to be used directly.
+> +
+> +An exception is the "rust" recipe, to build the Rust compiler and runtime
+> +library, which is built by Cargo but cannot use the :ref:`ref-classes-ca=
+rgo`
+> +class. This is why this class was introduced.
+> +
+>  .. _ref-classes-ccache:
+>=20=20
+>  ``ccache``
+> @@ -2493,6 +2529,24 @@ For information on how root filesystem images are =
+created, see the
+>  ":ref:`overview-manual/concepts:image generation`"
+>  section in the Yocto Project Overview and Concepts Manual.
+>=20=20
+> +.. _ref-classes-rust:
+> +
+> +``rust``
+> +=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The :ref:`ref-classes-rust` class is an internal class which is just used
+> +in the "rust" recipe, to build the Rust compiler and runtime
+> +library. Except for this recipe, it is not intended to be used directly.
+> +
+> +.. _ref-classes-rust-common:
+> +
+> +``rust-common``
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The :ref:`ref-classes-rust-common` class is an internal class to the
+> +:ref:`ref-classes-cargo_common` and :ref:`ref-classes-rust` classes and =
+is not
+> +intended to be used directly.
+> +
+>  .. _ref-classes-sanity:
+>=20=20
+>  ``sanity``
+--=20
+Pengutronix e.K.                           | Ulrich =C3=96lmann            =
+   |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
