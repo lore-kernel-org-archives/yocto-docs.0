@@ -1,96 +1,69 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <u.oelmann@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D1EB0C05027
-	for <webhook@archiver.kernel.org>; Mon,  6 Feb 2023 17:57:25 +0000 (UTC)
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.60765.1675706238227555429
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BC3FC636CC
+	for <webhook@archiver.kernel.org>; Tue,  7 Feb 2023 12:19:11 +0000 (UTC)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+ by mx.groups.io with SMTP id smtpd.web10.81804.1675772348095098267
  for <docs@lists.yoctoproject.org>;
- Mon, 06 Feb 2023 09:57:18 -0800
+ Tue, 07 Feb 2023 04:19:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JXXIHwrQ;
- spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 0BB3C100004;
-	Mon,  6 Feb 2023 17:57:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1675706236;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jTpO9j0D1upLsdnH//rkyM2O8dBupch6LJwOLOalMWk=;
-	b=JXXIHwrQ3uID1IWpQF6bl4/MDDvSN4Sv1caPrh/xlJNgmwVyky+DDM3mK29PsE949UytEi
-	+DSfWzy/E97rvHS9az5wJlUvytWWph5kViTSF5rqL3Nr9K/fxfTjfhF0fFLtjmRwdDOQcL
-	wO2Y3nqmGIwA9KDvQjEi/mUaq0qqj1F7f/0T1iXY1F0IWzw7uNiwl39n+OluCztuxVn0i3
-	oUZOcdouG2TViX/k3Xiu9yOpge56oHw8wa26oCezIYL+9dOYYJE1j1RPaZvr7uuj5KFe/E
-	neKv9gHY+lSuPMECfD0Ih2buejue367DQ48cIxdlS4n6aBWCkdqITg69DRX8DA==
-Message-ID: <382a889b-971a-a41d-2f73-3589c83f594d@bootlin.com>
-Date: Mon, 6 Feb 2023 18:57:15 +0100
+ dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: uol@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <uol@pengutronix.de>)
+	id 1pPMwE-0000Ld-5r; Tue, 07 Feb 2023 13:19:06 +0100
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1pPMwC-003HSq-70; Tue, 07 Feb 2023 13:19:05 +0100
+Received: from uol by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1pPMwC-003p0R-LU; Tue, 07 Feb 2023 13:19:04 +0100
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Yocto Project Documentation <docs@lists.yoctoproject.org>
+Cc: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Subject: [PATCH] dev-manual: fix old override syntax
+Date: Tue,  7 Feb 2023 13:19:01 +0100
+Message-Id: <20230207121901.911003-1-u.oelmann@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.4.2
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [yocto-docs][dunfell] documentation: update for 3.1.23
-Content-Language: en-US
-To: Steve Sakoman <steve@sakoman.com>
-References: <cover.1675704607.git.steve@sakoman.com>
- <59a206b093160127f82352f04031c7190c36ab5c.1675704607.git.steve@sakoman.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <59a206b093160127f82352f04031c7190c36ab5c.1675704607.git.steve@sakoman.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: uol@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 06 Feb 2023 17:57:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3639
+ <docs@lists.yoctoproject.org>; Tue, 07 Feb 2023 12:19:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3640
 
-Hi Steve,
+Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
+---
+ documentation/dev-manual/prebuilt-libraries.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-On 06.02.23 at 18:31, Steve Sakoman wrote:
-> Signed-off-by: Steve Sakoman <steve@sakoman.com>
-> ---
->   documentation/poky.yaml | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-> index 2fb917cae..d33ea2712 100644
-> --- a/documentation/poky.yaml
-> +++ b/documentation/poky.yaml
-> @@ -1,13 +1,13 @@
-> -DISTRO : "3.1.22"
-> +DISTRO : "3.1.23"
->   DISTRO_NAME_NO_CAP : "dunfell"
->   DISTRO_NAME : "Dunfell"
->   DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
-> -YOCTO_DOC_VERSION : "3.1.22"
-> +YOCTO_DOC_VERSION : "3.1.23"
->   YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
-> -DISTRO_REL_TAG : "yocto-3.1.22"
-> -DOCCONF_VERSION : "3.1.22"
-> +DISTRO_REL_TAG : "yocto-3.1.23"
-> +DOCCONF_VERSION : "3.1.23"
->   BITBAKE_SERIES : "1.46"
-> -POKYVERSION : "23.0.22"
-> +POKYVERSION : "23.0.23"
->   YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
->   YOCTO_DL_URL : "https://downloads.yoctoproject.org"
->   YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-
-
-Thanks for the update!
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-... and merged into the "dunfell" branch.
-
-Cheers
-Michael.
-
+diff --git a/documentation/dev-manual/prebuilt-libraries.rst b/documentation/dev-manual/prebuilt-libraries.rst
+index ca4346382008..b80a844e9372 100644
+--- a/documentation/dev-manual/prebuilt-libraries.rst
++++ b/documentation/dev-manual/prebuilt-libraries.rst
+@@ -153,9 +153,9 @@ default :term:`FILES` variables in ``bitbake.conf``::
+ 
+    SOLIBS = ".so.*"
+    SOLIBSDEV = ".so"
+-   FILES_${PN} = "... ${libdir}/lib*${SOLIBS} ..."
++   FILES:${PN} = "... ${libdir}/lib*${SOLIBS} ..."
+    FILES_SOLIBSDEV ?= "... ${libdir}/lib*${SOLIBSDEV} ..."
+-   FILES_${PN}-dev = "... ${FILES_SOLIBSDEV} ..."
++   FILES:${PN}-dev = "... ${FILES_SOLIBSDEV} ..."
+ 
+ :term:`SOLIBS` defines a pattern that matches real shared object libraries.
+ :term:`SOLIBSDEV` matches the development form (unversioned symlink). These two
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.30.2
 
 
