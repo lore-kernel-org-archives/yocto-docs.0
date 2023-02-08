@@ -2,91 +2,64 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B776C636CC
-	for <webhook@archiver.kernel.org>; Wed,  8 Feb 2023 17:22:06 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.4225.1675876919735770365
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1228FC636D3
+	for <webhook@archiver.kernel.org>; Wed,  8 Feb 2023 17:46:36 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.4957.1675878385422608688
  for <docs@lists.yoctoproject.org>;
- Wed, 08 Feb 2023 09:22:00 -0800
+ Wed, 08 Feb 2023 09:46:26 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=b3i2sZXi;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=H7+HW2Ez;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 474F4C000C;
-	Wed,  8 Feb 2023 17:21:57 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id D2B0FE0005;
+	Wed,  8 Feb 2023 17:46:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1675876917;
+	t=1675878383;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=1zsvsvNEDF9MBvDuai4e/uVjL/6VGlK292g8iS6HkVY=;
-	b=b3i2sZXijOyv8HOJgctjcJTRz2ILt20+7nw2OudQ5fL12O9IgW44Iz10jJp9bnO6ko6nEU
-	+NQy0fN1r+eUAw9w4MjLYe73q9yuupq4mHfDNbsi5bNz8dxMOudUloLDZl52bKpfybSFBi
-	/lR8sBG4XdiHs2OPDros3Hca97dK1ySyW9ZeexYZJoRJ3BfINR1MZBU4YiqwOeK2qSzLUd
-	pMefcv5AnLQabd2vCe6I0cKRK/J7NSTr0J2iUirxX30I17rKN4+Hhpe1ElPPcjoLlc+mXu
-	fOQkaIPWxPnQoUrx5PMYy9tB8YmcEpGLx9oqeMuN5orOf8WgWeZP8IswNXYHgg==
+	bh=TFeKLTaOpcVxdf9Itji67qX7f+nLrIsoVV4RGu5gKxM=;
+	b=H7+HW2EzrgbkVY6ZG6PHLg1dBy+N1jgZxO7rth5pyoHzFRtAkG8RFOTPuZ5tyILwS8ZCuu
+	vbg0Z6t7fXwljfC0CNN6Y0Dv0HUxcYjlMGjH//eBh401lvAk0OBmNORA1oV2Gr67WvbA42
+	iQpGs9DgjJj3jRoPb9e+H3dCPZBZjdD3XXN3e9dkYag+IzVhxC2untWV1X5BGLIpJFCUH6
+	qp9Lb1VKEee5ZMIGwZ0nVulo+VhF4oBFKUN/X8KxKzb5HC03jMGVWsU68nfxG3CLeYj5ab
+	xOoBn3guxDC9tU4hfbIbTtKXD4z3jj7XrR+UFvU0oxNKauvsStUL5eyaLT2CUw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: improve "devtool check-upgrade-status" explanations
-Date: Wed,  8 Feb 2023 18:21:55 +0100
-Message-Id: <20230208172155.101239-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: variables.rst: fix broken hyperlink
+Date: Wed,  8 Feb 2023 18:46:15 +0100
+Message-Id: <20230208174615.103749-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 08 Feb 2023 17:22:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3650
+ <docs@lists.yoctoproject.org>; Wed, 08 Feb 2023 17:46:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3651
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-- Fix broken link to a .bb file
-- Clarify the explanations
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../ref-manual/devtool-reference.rst          | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ documentation/ref-manual/variables.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
-index 6aa09f6d6f..32e64d02a2 100644
---- a/documentation/ref-manual/devtool-reference.rst
-+++ b/documentation/ref-manual/devtool-reference.rst
-@@ -378,14 +378,7 @@ command::
- Unless you provide a specific recipe name on the command line, the
- command checks all recipes in all configured layers.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index edc3aa6523..1989bd6206 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7794,7 +7794,7 @@ system and gives an overview of their function and contents.
  
--Following is a partial example table that reports on all the recipes.
--Notice the reported reason for not upgrading the ``base-passwd`` recipe.
--In this example, while a new version is available upstream, you do not
--want to use it because the dependency on ``cdebconf`` is not easily
--satisfied. Maintainers can explicit the reason that is shown by adding
--the :term:`RECIPE_NO_UPDATE_REASON` variable to the corresponding recipe.
--See :yocto_git:`base-passwd.bb </poky/tree/meta/recipes-core/base-passwd/base-passwd_3.5.29.bb>`
--for an example::
-+Following is a partial example table that reports on all the recipes::
+       :term:`SSTATE_EXCLUDEDEPS_SYSROOT` is evaluated as two regular
+       expressions of recipe and dependency to ignore. An example
+-      is the rule in :oe_git:`meta/conf/layer.conf </meta/conf/layer.conf>`::
++      is the rule in :oe_git:`meta/conf/layer.conf </openembedded-core/tree/meta/conf/layer.conf>`::
  
-    $ devtool check-upgrade-status
-    ...
-@@ -396,6 +389,16 @@ for an example::
-    INFO: base-passwd               3.5.29          3.5.51          Anuj Mittal <anuj.mittal@intel.com>  cannot be updated due to: Version 3.5.38 requires cdebconf for update-passwd utility
-    ...
- 
-+Notice the reported reason for not upgrading the ``base-passwd`` recipe.
-+In this example, while a new version is available upstream, you do not
-+want to use it because the dependency on ``cdebconf`` is not easily
-+satisfied. Maintainers can explicit the reason that is shown by adding
-+the :term:`RECIPE_NO_UPDATE_REASON` variable to the corresponding recipe.
-+See :yocto_git:`base-passwd.bb </poky/tree/meta/recipes-core/base-passwd/base-passwd_3.5.29.bb?h=kirkstone>`
-+for an example::
-+
-+   RECIPE_NO_UPDATE_REASON = "Version 3.5.38 requires cdebconf for update-passwd utility"
-+
- Last but not least, you may set :term:`UPSTREAM_VERSION_UNKNOWN` to ``1``
- in a recipe when there's currently no way to determine its latest upstream
- version.
+          # Nothing needs to depend on libc-initial
+          # base-passwd/shadow-sysroot don't need their dependencies
 -- 
 2.37.2
 
