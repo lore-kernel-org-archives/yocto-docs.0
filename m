@@ -2,81 +2,100 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB288C636D3
-	for <webhook@archiver.kernel.org>; Wed,  8 Feb 2023 20:14:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 180A3C05027
+	for <webhook@archiver.kernel.org>; Wed,  8 Feb 2023 20:36:07 +0000 (UTC)
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.9437.1675887239434449369
+ by mx.groups.io with SMTP id smtpd.web10.10061.1675888565631882072
  for <docs@lists.yoctoproject.org>;
- Wed, 08 Feb 2023 12:13:59 -0800
+ Wed, 08 Feb 2023 12:36:06 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LYRnFFvk;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=S7uTD4ye;
  spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 417B240002;
-	Wed,  8 Feb 2023 20:13:57 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id C55E640005;
+	Wed,  8 Feb 2023 20:36:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1675887237;
+	t=1675888564;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=ONdxsT8yGTU58RJ/rb7/kcLb4bPccMB+6Jg0eHKe7lU=;
-	b=LYRnFFvkfUSq5EXFjotI+Sng3xlJaw0pLeQdxcTbbkyF7jVFCSytZMEsI6ooA0bXyGFzYv
-	XwnfVk0aT8Uu75888Wf474aU+vM+vhJDpQKogL5S09uRk+By21A2A1OwmaZEz5otFs7VMa
-	veXQK8qUeCJLNExgLZwTg5siNf+bCFUrgL1een7p39+DHwdNa0ruRoUnmC1Aq+AIYYLkmE
-	TaF2GB5mw8Q3UdOPrJCRUvVB8Uydoy7r5IERBJcGa+ux+IKi8ny+qvbIQVf4V136MT7HNG
-	rUV3CyaFb74s4tabzahoBM2mEhJdKmoUKARVMdN8Oot52Wl4lAQNg8oh+9qpFQ==
+	bh=plyUC1mkoF1GVQoxELABkp8yH0oJPdY0OB/jp4GxeJk=;
+	b=S7uTD4yemAEXoapzV1M39enX9uw9xXTZLdeKId9hORYjZP4tZ8JFpdo7C1cywWMsTkA8H9
+	HDE3jI7w+ReB4ntwcd9ZRakr9rHJYSFhnxXHGcZxYP+sgQs/zWeADqr2k2+bGB094B+FnJ
+	gXZKFBJ7CKxliPZGedxNg+vJK1Af6GEyHmZXj02KihMwBUDBNWhUrYQzTpTUCOFKELY3jP
+	cZ86z6bU9VYjhF7E4jbZGj22B09bZsy2xwphAlSQ1X4+kvy550a+x3c//7I+88lc7potF7
+	QGvvv+2MatBDio0Ofx9IsO6S/XrTWirt8FGPTGvyd0UbnZkv176wU3tBnFSTqg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] bsp-guide: fix broken git URLs and missing word
-Date: Wed,  8 Feb 2023 21:13:55 +0100
-Message-Id: <20230208201355.107087-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] manuals: replace unnecessary uses of 'yocto_docs' by internal references
+Date: Wed,  8 Feb 2023 21:36:01 +0100
+Message-Id: <20230208203601.109671-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 08 Feb 2023 20:14:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3652
+ <docs@lists.yoctoproject.org>; Wed, 08 Feb 2023 20:36:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3653
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
+These :yocto_docs: references were making external references
+to another section of the manual, using the https://docs.yoctoproject.org
+website. It's actually better to use internal references (:doc: for an
+entire document, and :ref: for a specific section, as they will cause
+an error in Sphinx if one day they are no longer valid.
+
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/bsp-guide/bsp.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ documentation/ref-manual/resources.rst            | 2 +-
+ documentation/ref-manual/variables.rst            | 2 +-
+ documentation/test-manual/reproducible-builds.rst | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index fccf059ccc..f2f5d4d954 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -1179,14 +1179,14 @@ Use these steps to create a BSP layer:
-    :yocto_git:`Source Repositories <>`. To get examples of what you need
-    in your configuration file, locate a layer (e.g. "meta-ti") and
-    examine the
--   :yocto_git:`local.conf </meta-ti/tree/conf/layer.conf>`
-+   :yocto_git:`local.conf </meta-ti/tree/meta-ti-bsp/conf/layer.conf>`
-    file.
+diff --git a/documentation/ref-manual/resources.rst b/documentation/ref-manual/resources.rst
+index 5a09909c70..d2344e39a0 100644
+--- a/documentation/ref-manual/resources.rst
++++ b/documentation/ref-manual/resources.rst
+@@ -173,7 +173,7 @@ Here is a list of resources you might find helpful:
+ -  :yocto_wiki:`FAQ </FAQ>`: A list of commonly asked
+    questions and their answers.
  
- -  *Create a Machine Configuration File:* Create a
-    ``conf/machine/bsp_root_name.conf`` file. See
-    :yocto_git:`meta-yocto-bsp/conf/machine </poky/tree/meta-yocto-bsp/conf/machine>`
-    for sample ``bsp_root_name.conf`` files. There are other samples such as
--   :yocto_git:`meta-ti </meta-ti/tree/conf/machine>`
-+   :yocto_git:`meta-ti </meta-ti/tree/meta-ti-bsp/conf/machine>`
-    and
-    :yocto_git:`meta-freescale </meta-freescale/tree/conf/machine>`
-    from other vendors that have more specific machine and tuning
-@@ -1209,7 +1209,7 @@ BSP Layer Configuration Example
- -------------------------------
+--  :yocto_docs:`Release Information </migration-guides/>`:
++-  :doc:`Release Information </migration-guides/index>`:
+    Migration guides, release notes, new features, updates and known issues
+    for the current and past releases of the Yocto Project.
  
- The layer's ``conf`` directory contains the ``layer.conf`` configuration
--file. In this example, the ``conf/layer.conf`` is the following::
-+file. In this example, the ``conf/layer.conf`` file is the following::
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index edc3aa6523..73a9975905 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -8481,7 +8481,7 @@ system and gives an overview of their function and contents.
+          responsibility to ensure that the toolchain is compatible with the
+          default toolchain. Using older or newer versions of these
+          components might cause build problems. See
+-         :yocto_docs:`Release Information </migration-guides/>` for your
++         :doc:`Release Information </migration-guides/index>` for your
+          version of the Yocto Project, to find the specific components with
+          which the toolchain must be compatible.
  
-    # We have a conf and classes directory, add to BBPATH
-    BBPATH .= ":${LAYERDIR}"
+diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
+index 2a2f7790d2..50256fb197 100644
+--- a/documentation/test-manual/reproducible-builds.rst
++++ b/documentation/test-manual/reproducible-builds.rst
+@@ -24,8 +24,8 @@ reproducibility matters. The primary focus of the project is the ability to
+ detect security issues being introduced. However, from a Yocto Project
+ perspective, it is also hugely important that our builds are deterministic. When
+ you build a given input set of metadata, we expect you to get consistent output.
+-This has always been a key focus but, :yocto_docs:`since release 3.1 ("dunfell")
+-</ref-manual/migration-3.1.html#reproducible-builds-now-enabled-by-default>`,
++This has always been a key focus but, :ref:`since release 3.1 ("dunfell")
++<migration-guides/migration-3.1:reproducible builds now enabled by default>`,
+ it is now true down to the binary level including timestamps.
+ 
+ For example, at some point in the future life of a product, you find that you
 -- 
 2.37.2
 
