@@ -2,49 +2,49 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82834C6379F
-	for <webhook@archiver.kernel.org>; Wed,  8 Feb 2023 14:13:27 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.9318.1675865606027542652
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D85DC636CC
+	for <webhook@archiver.kernel.org>; Wed,  8 Feb 2023 15:18:05 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.327.1675869480491677445
  for <docs@lists.yoctoproject.org>;
- Wed, 08 Feb 2023 06:13:26 -0800
+ Wed, 08 Feb 2023 07:18:00 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ffKd1lcZ;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Y+XeLvX/;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id A058FFF80D;
-	Wed,  8 Feb 2023 14:13:23 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 8A3961BF206;
+	Wed,  8 Feb 2023 15:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1675865604;
+	t=1675869478;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=W4jkOdpt7dzUzm+12X1s8N3EhkKnuuGHqrBagI7aKg8=;
-	b=ffKd1lcZKhhfPtvFT9VptfrGlbFkAD/xy4/jR+OgVf3bKsP+EPGrnfKuE1GPI90yUIwz7/
-	I13aLoWgAQESpohaPwbWv19GEa480eMNAyVKsjfxXiV3c2gS45BsTORoA+8gE+CmcB/hgG
-	4lumwh4HZPN8ZtKb8OpnL68wrz6xFlSvE3qc3DWnfIs8P67d21H4F9NY61NVF7I6EcUmSL
-	440WsuvabmLb7DG/NuEtU/eOC9aFAYKeS2Mdh5T/+suwZwaV/wi02cvH9JX+9FSLbZ33q1
-	VLRiZiOcc2FJrEAhWNLJO0WkHe4W1eTEK6QypTIgzT63msoYM6JOBT3C2yPbmg==
+	bh=CoQ8scUpNwg2LbF3f/xg3Ntsw2XAwF84ILR8Ow6iYi0=;
+	b=Y+XeLvX/JSmaY8QvdmfVN+u9bdKtRE4goAl5MnlYVBlS4tgYk2circ1vizAZXPr+Akweez
+	j5KwEHQQ+zOYnltXUjPrSHo+GI+TTyFPQfmemh1qnezvt9GxKBeeXljW6x8/3RtzcSiQLR
+	A6AeeH4PpBZ7NBieBFVlZ0mQihfCo0UXy6gBMF0GpPnnYhNrxqU/shCxd7+TO27qP05Ilv
+	j2cIRtG2KEJcFVXQfcImm9fgIjq/l3+MWJol10CbtNih5tHxYymvVdxzlkA0mpwzO4+fuW
+	dTW1w7hDpO3zxpu+AnGV1piRgyfKQ/YwQ5HVYCgjs23AIH1Zbnlsc3DBc8PiUg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Lee Chee Yang <chee.yang.lee@intel.com>,
 	Takayasu Ito <ito@lineo.co.jp>
-Subject: [PATCH v2] migration-guides: add release-notes for 4.0.7
-Date: Wed,  8 Feb 2023 15:13:13 +0100
-Message-Id: <20230208141313.86045-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH v3] migration-guides: add release-notes for 4.0.7
+Date: Wed,  8 Feb 2023 16:17:54 +0100
+Message-Id: <20230208151754.93494-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
-In-Reply-To: <1741DE881B50EDA9.20031@lists.yoctoproject.org>
-References: <1741DE881B50EDA9.20031@lists.yoctoproject.org>
+In-Reply-To: <1741DEE3ED944C18.20031@lists.yoctoproject.org>
+References: <1741DEE3ED944C18.20031@lists.yoctoproject.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 08 Feb 2023 14:13:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3647
+ <docs@lists.yoctoproject.org>; Wed, 08 Feb 2023 15:18:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3648
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -56,7 +56,7 @@ Suggested-by: Takayasu Ito <ito@lineo.co.jp>
 
 ---
 
-Changes in V2:
+Changes in V3:
 - Fix "underline too short" warnings
 - Fix broken links in CVEs, not existing in the NIST dababase
   because of a "RESERVED" state. Replaced by other links:
@@ -65,10 +65,13 @@ Changes in V2:
 - Also added:
   -  python3: Fix :cve:`2022-45061`
   Reported by Takayasu Ito <ito@lineo.co.jp>
+
+Changes in V2:
+- V2 was sent by mistake with no changes
 ---
  .../migration-guides/release-4.0.rst          |   1 +
- .../migration-guides/release-notes-4.0.7.rst  | 241 ++++++++++++++++++
- 2 files changed, 242 insertions(+)
+ .../migration-guides/release-notes-4.0.7.rst  | 242 ++++++++++++++++++
+ 2 files changed, 243 insertions(+)
  create mode 100644 documentation/migration-guides/release-notes-4.0.7.rst
 
 diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
@@ -82,20 +85,20 @@ index 8ca8498838..87ba768a22 100644
 +   release-notes-4.0.7
 diff --git a/documentation/migration-guides/release-notes-4.0.7.rst b/documentation/migration-guides/release-notes-4.0.7.rst
 new file mode 100644
-index 0000000000..3499ba3fae
+index 0000000000..9e8ad51a0c
 --- /dev/null
 +++ b/documentation/migration-guides/release-notes-4.0.7.rst
-@@ -0,0 +1,241 @@
+@@ -0,0 +1,242 @@
 +.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
 +
 +Release notes for Yocto-4.0.7 (Kirkstone)
 +-----------------------------------------
 +
 +Security Fixes in Yocto-4.0.7
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
 +-  binutils: Fix :cve:`2022-4285`
-+-  curl: Fix :cve:`2022-43551` and :cve:`2022-43552`
++-  curl: Fix :cve:`2022-43551` and `CVE-2022-43552 <https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-43552>`__
 +-  ffmpeg: Fix :cve:`2022-3109` and :cve:`2022-3341`
 +-  go: Fix :cve:`2022-41715` and :cve:`2022-41717`
 +-  libX11: Fix :cve:`2022-3554` and :cve:`2022-3555`
@@ -104,6 +107,7 @@ index 0000000000..3499ba3fae
 +-  libpng: Fix :cve:`2019-6129`
 +-  libxml2: Fix :cve:`2022-40303` and :cve:`2022-40304`
 +-  openssl: Fix :cve:`2022-3996`
++-  python3: Fix :cve:`2022-45061`
 +-  python3-git: Fix :cve:`2022-24439`
 +-  python3-setuptools: Fix :cve:`2022-40897`
 +-  python3-wheel: Fix :cve:`2022-40898`
@@ -111,11 +115,11 @@ index 0000000000..3499ba3fae
 +-  sqlite: Fix :cve:`2022-46908`
 +-  systemd: Fix :cve:`2022-45873`
 +-  vim: Fix :cve:`2023-0049`, :cve:`2023-0051`, :cve:`2023-0054` and :cve:`2023-0088`
-+-  webkitgtk: Fix :cve:`2022-32886`, :cve:`2022-32891` and :cve:`2022-32912`
++-  webkitgtk: Fix :cve:`2022-32886`, `CVE-2022-32891 <https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32891>`__ and :cve:`2022-32912`
 +
 +
 +Fixes in Yocto-4.0.7
-+~~~~~~~~~~~~~~~~~~~
++~~~~~~~~~~~~~~~~~~~~
 +
 +-  Revert "gstreamer1.0: disable flaky gstbin:test_watch_for_state_change test"
 +-  at: Change when files are copied
@@ -199,13 +203,13 @@ index 0000000000..3499ba3fae
 +
 +
 +Known Issues in Yocto-4.0.7
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
 +- N/A
 +
 +
 +Contributors to Yocto-4.0.7
-+~~~~~~~~~~~~~~~~~~~~~~~~~~
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
 +-  Alejandro Hernandez Samaniego
 +-  Alex Kiernan
