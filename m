@@ -2,82 +2,105 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE2C5C05027
-	for <webhook@archiver.kernel.org>; Fri, 10 Feb 2023 09:53:34 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.10686.1676022808284798793
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B5EDC05027
+	for <webhook@archiver.kernel.org>; Fri, 10 Feb 2023 10:33:45 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.11177.1676025221941301880
  for <docs@lists.yoctoproject.org>;
- Fri, 10 Feb 2023 01:53:28 -0800
+ Fri, 10 Feb 2023 02:33:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MKht/AZw;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=A06xD+On;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 8EA72240010;
-	Fri, 10 Feb 2023 09:53:25 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 4BED360009;
+	Fri, 10 Feb 2023 10:33:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1676022806;
+	t=1676025219;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=cuZELyjfuKxFUSAO/76cq4qvVQRYHogqXrjfkO1ZPSo=;
-	b=MKht/AZw0nL423J7m5QtoYvVIlonCJZoMR8r5FwwsNkcFlYlemnn7rbYoLqxJiNrsSK8r/
-	gXYCk4He58QtpO3qk1UUm8xNrV+42JDX9OQLomRERA8OBf1ne7YyKgmk0LNkvy51KFPqzU
-	WfZHVRN5Bi1PCjk0mkpj5l6dfbyDEVz+OSgqKXxgeZscHwdi29nUE8vAnwToqJ1sXY5kDo
-	51uXUWTJx6wLIilOe1+BRlkb2AMJMEaNLZJmD+PXzWBCzxO72Nau1RNM0mfbC8PekAdUfg
-	jp9kinl3+tinAVg3hRUbdnZgUVMlSpgKYwl2xJH9AaktFr9zJcN7Vw4HtbAHgA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] [kirkstone] bsp-guide: fix broken git URLs and missing word
-Date: Fri, 10 Feb 2023 10:53:21 +0100
-Message-Id: <20230210095321.219439-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.37.2
+	bh=tTqnknDdneXOzgNxesUBQT/WaA3L5j/D1CXzWB3Ph9A=;
+	b=A06xD+Onhtl7myOxh8f5LTViL9DWI5w4nexeqgZtGpBH3WQv71v0w1Ph0SfWOxYfsS78il
+	+scrGTqsqOPDr4IztFgrpGL/j3TjuSYfr8XAEqhkVoeLm8X0JJq/b0wKxVQv0lWFxYlzoY
+	JZ4IXd88lPxuPaX4Ovf+BdUTnSpHio8qUiq9Ooj1ipod2gtAfO6LK28pL3ieMGqNE8nMT+
+	t+hlAtGg0rvf080LpRSVX87ziVXhj403Jh83kafHzoiLWILYgXxYFPZ92yTsigiw2cfwpg
+	7VJhwSITGEw2gEnP+ifclrqsFwnXeEdZjGOHopJe6wG8kO1Q+uuuf41CjiFupQ==
+Message-ID: <7bb63e93-f8e7-5414-e9ee-e61f1bc55c80@bootlin.com>
+Date: Fri, 10 Feb 2023 11:33:38 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
+Organization: Bootlin
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 10 Feb 2023 09:53:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3663
+ <docs@lists.yoctoproject.org>; Fri, 10 Feb 2023 10:33:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3664
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Richard,
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/bsp-guide/bsp.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+The following changes since commit 2a98cebea5238bcea46abfdb6b3981e615161b8d:
 
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index 8ec7f2957e..8201c93862 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -1179,14 +1179,14 @@ Use these steps to create a BSP layer:
-    :yocto_git:`Source Repositories <>`. To get examples of what you need
-    in your configuration file, locate a layer (e.g. "meta-ti") and
-    examine the
--   :yocto_git:`local.conf </meta-ti/tree/conf/layer.conf>`
-+   :yocto_git:`local.conf </meta-ti/tree/meta-ti-bsp/conf/layer.conf>`
-    file.
- 
- -  *Create a Machine Configuration File:* Create a
-    ``conf/machine/bsp_root_name.conf`` file. See
-    :yocto_git:`meta-yocto-bsp/conf/machine </poky/tree/meta-yocto-bsp/conf/machine>`
-    for sample ``bsp_root_name.conf`` files. There are other samples such as
--   :yocto_git:`meta-ti </meta-ti/tree/conf/machine>`
-+   :yocto_git:`meta-ti </meta-ti/tree/meta-ti-bsp/conf/machine>`
-    and
-    :yocto_git:`meta-freescale </meta-freescale/tree/conf/machine>`
-    from other vendors that have more specific machine and tuning
-@@ -1209,7 +1209,7 @@ BSP Layer Configuration Example
- -------------------------------
- 
- The layer's ``conf`` directory contains the ``layer.conf`` configuration
--file. In this example, the ``conf/layer.conf`` is the following::
-+file. In this example, the ``conf/layer.conf`` file is the following::
- 
-    # We have a conf and classes directory, add to BBPATH
-    BBPATH .= ":${LAYERDIR}"
+   migration-guides: add release-notes for 4.1.2 (2023-01-19 16:50:33 +0100)
+
+are available in the Git repository at:
+
+   git://git.yoctoproject.org/yocto-docs master-next
+
+for you to fetch changes up to 3f3f0ad23f31fb5bb7b550dbe18bbedb1449b3ca:
+
+   ref-manual: document Rust classes (2023-02-10 11:16:14 +0100)
+
+----------------------------------------------------------------
+Lee Chee Yang (1):
+       migration-guides: add release-notes for 4.0.7
+
+Michael Opdenacker (7):
+       migration-guides/migration-4.2.rst: fix minor issues
+       ref-manual: variables.rst: fix broken hyperlink
+       profile-manual: update WireShark hyperlinks
+       manuals: replace unnecessary uses of 'yocto_docs' by internal 
+references
+       bsp-guide: fix broken git URLs and missing word
+       ref-manual: improve "devtool check-upgrade-status" explanations
+       ref-manual: document Rust classes
+
+Richard Leitner (1):
+       ref-manual: variables: FIT_KERNEL_COMP_ALG: add lzo
+
+Ulrich Ölmann (1):
+       dev-manual: fix old override syntax
+
+  documentation/bsp-guide/bsp.rst                        |   6 ++--
+  documentation/dev-manual/prebuilt-libraries.rst        |   4 +--
+  documentation/migration-guides/migration-4.2.rst       |   9 +++---
+  documentation/migration-guides/release-4.0.rst         |   1 +
+  documentation/migration-guides/release-notes-4.0.7.rst | 242 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  documentation/profile-manual/usage.rst                 |   6 ++--
+  documentation/ref-manual/classes.rst                   |  78 
+++++++++++++++++++++++++++++++++++++++++++++++++
+  documentation/ref-manual/devtool-reference.rst         |  19 +++++++-----
+  documentation/ref-manual/resources.rst                 |   2 +-
+  documentation/ref-manual/variables.rst                 |   9 +++---
+  documentation/test-manual/reproducible-builds.rst      |   4 +--
+  11 files changed, 353 insertions(+), 27 deletions(-)
+  create mode 100644 documentation/migration-guides/release-notes-4.0.7.rst
+
+Thank you in advance
+Cheers
+Michael.
+
 -- 
-2.37.2
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
