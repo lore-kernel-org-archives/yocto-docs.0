@@ -1,95 +1,99 @@
-Return-Path: <u.oelmann@pengutronix.de>
+Return-Path: <peter.kjellerstedt@axis.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CF6D3C636D3
-	for <webhook@archiver.kernel.org>; Sun, 12 Feb 2023 22:02:23 +0000 (UTC)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
- by mx.groups.io with SMTP id smtpd.web11.1179.1676239334632564111
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 115D3C636CC
+	for <webhook@archiver.kernel.org>; Mon, 13 Feb 2023 09:19:37 +0000 (UTC)
+Received: from smtp1.axis.com (smtp1.axis.com [195.60.68.17])
+ by mx.groups.io with SMTP id smtpd.web11.10635.1676279967074634686
  for <docs@lists.yoctoproject.org>;
- Sun, 12 Feb 2023 14:02:15 -0800
+ Mon, 13 Feb 2023 01:19:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: u.oelmann@pengutronix.de)
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1pRKQG-0005iD-G2
-	for docs@lists.yoctoproject.org; Sun, 12 Feb 2023 23:02:12 +0100
-Received: from uol by pty.hi.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1pRKQE-002vAL-VK
-	for docs@lists.yoctoproject.org; Sun, 12 Feb 2023 23:02:10 +0100
+ dkim=pass header.i=@axis.com header.s=axis-central1 header.b=eV1/HLhF;
+ spf=pass (domain: axis.com, ip: 195.60.68.17, mailfrom: peter.kjellerstedt@axis.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=axis.com; q=dns/txt; s=axis-central1; t=1676279967;
+  x=1707815967;
+  h=from:to:subject:date:message-id:references:in-reply-to:
+   content-transfer-encoding:mime-version;
+  bh=g7PbcB83Gs71qFGiK1t96XmbUazKFEhrVGDBIuxX8EU=;
+  b=eV1/HLhFTbDfy3Rxik8Hz4Hq9leYQykwZ/9A2n+JxFx0zdds+rGhq+2X
+   cEYru0m0EXlVOZx4mc1NXdbT0TdxIbEjVh0dHmQBKdGptJ7g54PcVo8xO
+   kHmwpcsOvNAnxuDTONhvAQpnCZJkRZcuHQthjKpTxwOuUEFOWP+iumFaV
+   zvdi10AkxMI2R8NIZVenyTT5Y3ihgHrBmSgXs9rXMud2uEWlOKSlh/HWZ
+   eLInHyzO5pwhj1BnVeKvfV0Ew0BVzt7ahEFir84z1/fHrwh420MoM+gti
+   4ooWZ4Nyr4uTU99Zx0fKDUucZV5T8iJuVKxcvqWCyyIAUZJSW/dDszT/Q
+   A==;
+From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+To: =?utf-8?B?VWxyaWNoIMOWbG1hbm4=?= <u.oelmann@pengutronix.de>,
+	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Subject: RE: [docs] [PATCH] ref-manual: add missing quotes
+Thread-Topic: [docs] [PATCH] ref-manual: add missing quotes
+Thread-Index: AQHZPytksOE4vRNqvkOa3fEaSOSYLa7MmHyA
+Date: Mon, 13 Feb 2023 09:19:24 +0000
+Message-ID: <4992cb7d98b942e2b0b54358bb38d707@axis.com>
 References: <174331ACAD9BF3F3.21535@lists.yoctoproject.org>
-User-agent: mu4e 1.6.9; emacs 29.0.50
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
-To: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: add missing quotes
-Date: Sun, 12 Feb 2023 22:45:59 +0100
-In-reply-to: <174331ACAD9BF3F3.21535@lists.yoctoproject.org>
-Message-ID: <6r7cwmpmot.fsf@pengutronix.de>
+ <6r7cwmpmot.fsf@pengutronix.de>
+In-Reply-To: <6r7cwmpmot.fsf@pengutronix.de>
+Accept-Language: en-US, sv-SE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.0.5.60]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 2001:67c:670:100:1d::c5
-X-SA-Exim-Mail-From: u.oelmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 12 Feb 2023 22:02:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3666
+ <docs@lists.yoctoproject.org>; Mon, 13 Feb 2023 09:19:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3667
 
-Hi there,
-
-On Sun, Feb 12 2023 at 22:41 +0100, Ulrich =C3=96lmann <u.oelmann@pengutron=
-ix.de> wrote:
-> Signed-off-by: Ulrich =C3=96lmann <u.oelmann@pengutronix.de>
-> ---
->  documentation/ref-manual/variables.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index a36c4c6df962..c561aae6563a 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -4275,7 +4275,7 @@ system and gives an overview of their function and =
-contents.
->        To use the variable, set it in the append file for your kernel rec=
-ipe
->        using the following form::
->
-> -         KBUILD_DEFCONFIG_KMACHINE ?=3D defconfig_file
-> +         KBUILD_DEFCONFIG_KMACHINE ?=3D "defconfig_file"
-
-I did not find any occurance of a variable named "KBUILD_DEFCONFIG_
-KMACHINE" in kernel-yocto.bbclass and from the above line's context my
-feeling is that the last underscore was meant to be the old override
-syntax which should be updated to ":" now. If this is correct then I
-would additionally expect the override not to be KMACHINE but MACHINE
-instead as only the latter is a valid override. Could someone with more
-insight please confirm or reject my suspicion?
-
-In case of positive feedback I would gladly send another patch doing a
-
-  s/KBUILD_DEFCONFIG_KMACHINE/KBUILD_DEFCONFIG:MACHINE/
-
-that changes both occurances in ref-manual/variables.rst and kernel-dev/
-common.rst.
-
-Best regards
-Ulrich
-
-
->        Here is an example from a "raspberrypi2" :term:`KMACHINE` build th=
-at uses
->        a ``defconfig`` file named "bcm2709_defconfig"::
---=20
-Pengutronix e.K.                           | Ulrich =C3=96lmann            =
-   |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiBGcm9tOiBkb2NzQGxpc3RzLnlvY3RvcHJv
+amVjdC5vcmcgPGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZz4gT24gQmVoYWxmIE9mIFVscmlj
+aCDDlmxtYW5uDQo+IFNlbnQ6IGRlbiAxMiBmZWJydWFyaSAyMDIzIDIyOjQ2DQo+IFRvOiBkb2Nz
+QGxpc3RzLnlvY3RvcHJvamVjdC5vcmcNCj4gU3ViamVjdDogUmU6IFtkb2NzXSBbUEFUQ0hdIHJl
+Zi1tYW51YWw6IGFkZCBtaXNzaW5nIHF1b3Rlcw0KPiANCj4gSGkgdGhlcmUsDQo+IA0KPiBPbiBT
+dW4sIEZlYiAxMiAyMDIzIGF0IDIyOjQxICswMTAwLCBVbHJpY2ggw5ZsbWFubiA8dS5vZWxtYW5u
+QHBlbmd1dHJvbml4LmRlPiB3cm90ZToNCj4gPiBTaWduZWQtb2ZmLWJ5OiBVbHJpY2ggw5ZsbWFu
+biA8dS5vZWxtYW5uQHBlbmd1dHJvbml4LmRlPg0KPiA+IC0tLQ0KPiA+ICBkb2N1bWVudGF0aW9u
+L3JlZi1tYW51YWwvdmFyaWFibGVzLnJzdCB8IDIgKy0NCj4gPiAgMSBmaWxlIGNoYW5nZWQsIDEg
+aW5zZXJ0aW9uKCspLCAxIGRlbGV0aW9uKC0pDQo+ID4NCj4gPiBkaWZmIC0tZ2l0IGEvZG9jdW1l
+bnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QgYi9kb2N1bWVudGF0aW9uL3JlZi1tYW51
+YWwvdmFyaWFibGVzLnJzdA0KPiA+IGluZGV4IGEzNmM0YzZkZjk2Mi4uYzU2MWFhZTY1NjNhIDEw
+MDY0NA0KPiA+IC0tLSBhL2RvY3VtZW50YXRpb24vcmVmLW1hbnVhbC92YXJpYWJsZXMucnN0DQo+
+ID4gKysrIGIvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QNCj4gPiBAQCAt
+NDI3NSw3ICs0Mjc1LDcgQEAgc3lzdGVtIGFuZCBnaXZlcyBhbiBvdmVydmlldyBvZiB0aGVpciBm
+dW5jdGlvbiBhbmQgY29udGVudHMuDQo+ID4gICAgICAgIFRvIHVzZSB0aGUgdmFyaWFibGUsIHNl
+dCBpdCBpbiB0aGUgYXBwZW5kIGZpbGUgZm9yIHlvdXIga2VybmVsIHJlY2lwZQ0KPiA+ICAgICAg
+ICB1c2luZyB0aGUgZm9sbG93aW5nIGZvcm06Og0KPiA+DQo+ID4gLSAgICAgICAgIEtCVUlMRF9E
+RUZDT05GSUdfS01BQ0hJTkUgPz0gZGVmY29uZmlnX2ZpbGUNCj4gPiArICAgICAgICAgS0JVSUxE
+X0RFRkNPTkZJR19LTUFDSElORSA/PSAiZGVmY29uZmlnX2ZpbGUiDQo+IA0KPiBJIGRpZCBub3Qg
+ZmluZCBhbnkgb2NjdXJhbmNlIG9mIGEgdmFyaWFibGUgbmFtZWQgIktCVUlMRF9ERUZDT05GSUdf
+DQo+IEtNQUNISU5FIiBpbiBrZXJuZWwteW9jdG8uYmJjbGFzcyBhbmQgZnJvbSB0aGUgYWJvdmUg
+bGluZSdzIGNvbnRleHQgbXkNCj4gZmVlbGluZyBpcyB0aGF0IHRoZSBsYXN0IHVuZGVyc2NvcmUg
+d2FzIG1lYW50IHRvIGJlIHRoZSBvbGQgb3ZlcnJpZGUNCj4gc3ludGF4IHdoaWNoIHNob3VsZCBi
+ZSB1cGRhdGVkIHRvICI6IiBub3cuIElmIHRoaXMgaXMgY29ycmVjdCB0aGVuIEkNCj4gd291bGQg
+YWRkaXRpb25hbGx5IGV4cGVjdCB0aGUgb3ZlcnJpZGUgbm90IHRvIGJlIEtNQUNISU5FIGJ1dCBN
+QUNISU5FDQo+IGluc3RlYWQgYXMgb25seSB0aGUgbGF0dGVyIGlzIGEgdmFsaWQgb3ZlcnJpZGUu
+IENvdWxkIHNvbWVvbmUgd2l0aCBtb3JlDQo+IGluc2lnaHQgcGxlYXNlIGNvbmZpcm0gb3IgcmVq
+ZWN0IG15IHN1c3BpY2lvbj8NCj4gDQo+IEluIGNhc2Ugb2YgcG9zaXRpdmUgZmVlZGJhY2sgSSB3
+b3VsZCBnbGFkbHkgc2VuZCBhbm90aGVyIHBhdGNoIGRvaW5nIGENCj4gDQo+ICAgcy9LQlVJTERf
+REVGQ09ORklHX0tNQUNISU5FL0tCVUlMRF9ERUZDT05GSUc6TUFDSElORS8NCg0KSSBkb24ndCBr
+bm93IHdoYXQgc3ludGF4IGlzIHVzZWQgaW4gdGhlIG1hbnVhbHMgZm9yIGluZGljYXRpbmcgdGhh
+dCANCnNvbWV0aGluZyBpcyBleHBlY3RlZCB0byBiZSByZXBsYWNlZCBieSBhbiBhY3R1YWwgdmFs
+dWUsIGJ1dCBJIHdvdWxkIA0KZXhwZWN0ZWQgaXQgdG8gYmUgc29tZXRoaW5nIGxpa2UgYEtCVUlM
+RF9ERUZDT05GSUc6PG1hY2hpbmU+YCB0byANCmluZGljYXRlIHRoYXQgYW4gYWN0dWFsIG1hY2hp
+bmUgbmFtZSBpcyBzdXBwb3NlZCB0byBiZSB1c2VkIGluc3RlYWQgDQpvZiBgPG1hY2hpbmU+YC4N
+Cg0KPiANCj4gdGhhdCBjaGFuZ2VzIGJvdGggb2NjdXJhbmNlcyBpbiByZWYtbWFudWFsL3Zhcmlh
+Ymxlcy5yc3QgYW5kIGtlcm5lbC1kZXYvDQo+IGNvbW1vbi5yc3QuDQo+IA0KPiBCZXN0IHJlZ2Fy
+ZHMNCj4gVWxyaWNoDQo+IA0KPiANCj4gPiAgICAgICAgSGVyZSBpcyBhbiBleGFtcGxlIGZyb20g
+YSAicmFzcGJlcnJ5cGkyIiA6dGVybTpgS01BQ0hJTkVgIGJ1aWxkIHRoYXQgdXNlcw0KPiA+ICAg
+ICAgICBhIGBgZGVmY29uZmlnYGAgZmlsZSBuYW1lZCAiYmNtMjcwOV9kZWZjb25maWciOjoNCj4g
+LS0NCj4gUGVuZ3V0cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgVWxyaWNo
+IMOWbG1hbm4gICAgICAgICAgICAgICB8DQo+IEluZHVzdHJpYWwgTGludXggU29sdXRpb25zICAg
+ICAgICAgICAgICAgICB8IGh0dHA6Ly93d3cucGVuZ3V0cm9uaXguZGUvICB8DQo+IFBlaW5lciBT
+dHIuIDYtOCwgMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSB8IFBob25lOiArNDktNTEyMS0yMDY5
+MTctMCAgICB8DQo+IEFtdHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8
+IEZheDogICArNDktNTEyMS0yMDY5MTctNTU1NSB8DQoNCi8vUGV0ZXINCg0K
 
