@@ -2,57 +2,55 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32C9FC636CC
-	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 10:34:56 +0000 (UTC)
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
- by mx.groups.io with SMTP id smtpd.web11.12050.1676457291144052232
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D85CC636CC
+	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 10:36:46 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web10.12144.1676457399614276251
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Feb 2023 02:34:51 -0800
+ Wed, 15 Feb 2023 02:36:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=cxP68rR4;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f45.google.com with SMTP id g6-20020a05600c310600b003e1f6dff952so1200887wmo.1
-        for <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 02:34:50 -0800 (PST)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=C+6ax9ho;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.53, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f53.google.com with SMTP id z13so12987917wmp.2
+        for <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 02:36:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linuxfoundation.org; s=google;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WaM5y8dd7x2ObM4pn1JrUHlU6jj2Hh1C9O8EtnAE89U=;
-        b=cxP68rR4D6HGoW0lmO46xHNO81X+e7JqlS5S4NSLg24nG8KsDVB9R1Toqec9ERbMg3
-         hgfjVMmv5KI7M8eL09MM8vaqgvHPnR59W6WdaVK3UuePrYI8EqsLvP2TRG00t9uUIIHU
-         LnSl4WNSbLUG8y0cykRE7hB+jcP31fAdPkuEc=
+        bh=rGHmykCVlfaV5fqIDudZl+U17pXoJ0FEzCgI0ta035M=;
+        b=C+6ax9hoqbWBpdSqBn5L3IalzCXPlmTtKd25pgDyVTZvOPiqz30jLORJPTk4ElIXva
+         IWsXpiJe+F5/PRRG7Kfm9IRQeQoLSZdD7BCpn6G74mTawChlINADzTNptJjF4KUztyZi
+         ZrxXk2Sb5V4k+sxT64DbS8Pp+n7kiyGy9dmHk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WaM5y8dd7x2ObM4pn1JrUHlU6jj2Hh1C9O8EtnAE89U=;
-        b=kP+qAELlNGEmhdRgwVY2qy/JxkRkRDOdnl6cwl1Lu84ewv5iSWn9TUqdTCppPCX+sq
-         SgLcWnF1RrW65SkkSYWbICq/xsIfcVoXNuzgd9eO5tejs5yC0PCZFrLyOLb21wUp6aPp
-         to8OK2BLy6GiIaSRlpXYOG9avIAj+cgjZrBukjIAEW2qwnSnl8VydnuOkhB3TJHkx1NX
-         yrmMkUCQVT2tzSEX+sEBU+cWNKIOQY4iu6vSMykuzqGOcW8zwRDSpBTLjQnSHTA3bBcu
-         AOKSUF8yTglxBDh8ZCUnLrkAUj4yUfgKmS3hk8QsufxAZoPG7B7z0YvbUlrmgSTctbvq
-         gNyQ==
-X-Gm-Message-State: AO0yUKXU3Vlf/b3DqyMOL984Uh1YJ2zM6jdXOl7h5YVsaQT6NwpGqTX7
-	62QafxktyDYhVMGVLAbAzANfHQ==
-X-Google-Smtp-Source: AK7set/6RyxTDELlWWx71+4EbCLDXenvU25IvdYLOW3HXcpxW3WtEiiShKtQeIM860/rcOfjiQhqjw==
-X-Received: by 2002:a05:600c:a0a:b0:3dc:4fd7:31e9 with SMTP id z10-20020a05600c0a0a00b003dc4fd731e9mr1501136wmp.7.1676457289649;
-        Wed, 15 Feb 2023 02:34:49 -0800 (PST)
+        bh=rGHmykCVlfaV5fqIDudZl+U17pXoJ0FEzCgI0ta035M=;
+        b=uKtphBbKK9ydbYjV7aqb3bw8S4ekYcSRoGOR7NdZ8KzUOtsDk0gNIoUNcWK9C74HwH
+         8/rEBd9TKD40wOzT/CH4x4OmzmFy5uV07YXJfzfQnoJ2a7U85ZjKVeLyrNwThlQeSdTF
+         +4TIY/qboLyukF3hifhkcvUv7oe6/2o7zU/hcWnxjxb1BMRjW/hb75SaZMMruoIO9t2r
+         ulVd9L+dj4kWuYQ3IMDKC7+HjTs+RKUG8eY9hZc85f5NhQO69d++vVSRjfblAef+CWM5
+         uQ/jjVtxEPC2uWWow3D3L/ET2gEOONHBsDjki3gdjI2A0w828J+sbVbprUfj+wujwwjE
+         IwVg==
+X-Gm-Message-State: AO0yUKW8CXq3BXrodMoP+O0S2qkx/zYNFTmtTH8GWmq6GePv8d15MkDy
+	OlVjD1DNDqNGT9vBHP/2V4DgHBXehwHVfbOL
+X-Google-Smtp-Source: AK7set//qa0tcP2v2fFsz06IxZVSiJxY9/o0iSDJQJkT+gPYDMVmykCcrydNgPU6FxOqrYs+8jRiog==
+X-Received: by 2002:a05:600c:4b1b:b0:3df:fbc7:5b10 with SMTP id i27-20020a05600c4b1b00b003dffbc75b10mr1663641wmp.0.1676457398108;
+        Wed, 15 Feb 2023 02:36:38 -0800 (PST)
 Received: from ?IPv6:2001:8b0:aba:5f3c:fcb8:24dc:acf7:61c1? ([2001:8b0:aba:5f3c:fcb8:24dc:acf7:61c1])
-        by smtp.gmail.com with ESMTPSA id r18-20020a05600c459200b003dc4baaedd3sm1805432wmo.37.2023.02.15.02.34.49
+        by smtp.gmail.com with ESMTPSA id k1-20020a05600c0b4100b003dd8feea827sm1749490wmr.4.2023.02.15.02.36.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Feb 2023 02:34:49 -0800 (PST)
-Message-ID: <46e53e9f4568f515f28203c51d862f4d31d041f1.camel@linuxfoundation.org>
+        Wed, 15 Feb 2023 02:36:37 -0800 (PST)
+Message-ID: <04fd91ba07210a370b240b2107957839ba30c8a4.camel@linuxfoundation.org>
 Subject: Re: [docs] [PATCH] [RFC] dev-manual: stop advising to produce
  patches with Quilt
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: quentin.schulz@theobroma-systems.com, michael.opdenacker@bootlin.com, 
-	docs@lists.yoctoproject.org
-Date: Wed, 15 Feb 2023 10:34:48 +0000
-In-Reply-To: <0d6bca8c-e563-993d-6dfd-607a47f8ab2a@theobroma-systems.com>
+To: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
+Date: Wed, 15 Feb 2023 10:36:37 +0000
+In-Reply-To: <20230214144927.80982-1-michael.opdenacker@bootlin.com>
 References: <20230214144927.80982-1-michael.opdenacker@bootlin.com>
-	 <0d6bca8c-e563-993d-6dfd-607a47f8ab2a@theobroma-systems.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.46.1-0ubuntu1 
@@ -60,53 +58,43 @@ MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 10:34:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3687
+ <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 10:36:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3688
 
-On Tue, 2023-02-14 at 15:59 +0100, Quentin Schulz via
+On Tue, 2023-02-14 at 15:49 +0100, Michael Opdenacker via
 lists.yoctoproject.org wrote:
-> Hi Michael,
+> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 >=20
-> On 2/14/23 15:49, Michael Opdenacker via lists.yoctoproject.org wrote:
-> > From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> >=20
-> > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> >=20
-> > ---
-> >=20
-> > Who still wants to produce patches with Quilt instead of Git?
-> > Who still wants to accept patches which are not generated by Git
-> > or a modern source control system?
-> >=20
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 >=20
-> Well... Quilt is the tool used to patch most recipes by bitbake AFAIR :)=
-=20
-> c.f. PATCHTOOL in meta/conf/bitbake.conf. Since they probably have a=20
-> different conflict resolution, it might still be a good idea to explain=
-=20
-> how to create patches with quilt? or do we expect to just say "set=20
-> PATCHTOOL =3D "git" in your recipe if the patch doesn't apply" ?
+> ---
 >=20
-> Note that the only time I had to use git PATCHTOOL was for patches where=
-=20
-> there was some binary in there since quilt doesn't support this.
+> Who still wants to produce patches with Quilt instead of Git?
+> Who still wants to accept patches which are not generated by Git
+> or a modern source control system?
+>=20
+> Today:
+> - 1012 patches in Poky were created using Git
+> - 4 patches were created using Quilt
+>=20
+> If this patch is acceptable, I'll also update
+> dev-manual/debugging.rst so that it gives an example
+> based on git, to create a patch for a package to fix.
+> ---
+>  documentation/dev-manual/debugging.rst |  3 -
+>  documentation/dev-manual/index.rst     |  1 -
+>  documentation/dev-manual/quilt.rst     | 89 --------------------------
+>  3 files changed, 93 deletions(-)
+>  delete mode 100644 documentation/dev-manual/quilt.rst
 
-I think a lot depends on the underlying recipe. If it uses a tarball,
-quilt will be there, git won't be setup. If the underlying recipe uses
-git, creating patches with it can be easier.
+I am 100% against deleting the information on quilt. We do use it in
+the builds for applying patches and it should therefore be covered in
+the manual.
 
-Personally, I still do use quilt as it is muscle memory. With git you
-have issues that the indexes can be out of sync due to patches or
-autoreconf.
-
-I think we should document the git workflow and then let the user
-choose which direction to go. We should make the pitfalls clear too
-(index not in sync, no git metadata on a tarball etc.)
+I am fine with documenting git and giving the user a choice on which
+tool to use to generate patches.
 
 Cheers,
 
 Richard
-
-
-
 
