@@ -2,114 +2,97 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A382AC636D4
-	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 10:59:16 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.12349.1676458752367124694
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F357C636CC
+	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 14:39:38 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.16517.1676471968697645828
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Feb 2023 02:59:13 -0800
+ Wed, 15 Feb 2023 06:39:29 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nH3UCrVY;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HdRyRXB+;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 52533C0008;
-	Wed, 15 Feb 2023 10:59:09 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 6824AFF803;
+	Wed, 15 Feb 2023 14:39:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1676458750;
+	t=1676471966;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kY5zXKBKSPWPv0k9FfPXIKorH63NAMGXzvD6KZqUuJw=;
-	b=nH3UCrVYG1s4ppUUbJVgBgms1mYefSzr+r1aORfYdmuyRrRpbxBQrRVbzIwNInfQ4US+ct
-	n1wcZq0PMI3caXZske3qlii+AILRV4hcJg0859RarVk/FEpi8++8jyPOvdh0rbQvraCmlK
-	3vKlQg3hBvswbOc1rp5mFFUATIf0wYidqywvObUgsRoOBdronXLmvgKpFLyvG4V1JY7cZI
-	UO5i6kjV0xRVlQ9iCzlDaUBfff5zgft7wmtuH+RQ6mlnBXKsXD9sGYqe9BO0y42ns0cSbI
-	sAqpCXOI+/yUYbRE9ntPUvEuZhKaUV5DDsHxxAI6Wq2yEekvNM2Z1PrsqONJJQ==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: classes.rst: improvements to cmake class documentation
-Date: Wed, 15 Feb 2023 11:59:07 +0100
-Message-Id: <20230215105907.114700-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.37.2
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cVi0F8afAxwSOETUh35Msb3z8hbzhFwIz+ARer73ctI=;
+	b=HdRyRXB+1fJ9gqrMpdPni73z8obE+MXazGAV0KbWmfkslM69760orBJuZDeNuzizyXRmVj
+	Qa7xbGvziLAhZPAJORJib1kc8+T/xGjX+J7K8af8XMCDQvVj0M/wVK1/3gZmSCyOwjL4cz
+	Ws2l4Ep24VzRb6an8iyLrkpLsrvuGaE2vW5Z4xZ0TOYLAuXXvAEnV34kkmu5TL7Z65qP8w
+	u49Gez65L7+3yTimsZ+4QclOZHvdoJSOpoCDfwHIzvy7VvWGFfyzcgfgYVPIzLxh26dPml
+	9khAIyD6WQYlSLO+6dYhJCoSV1F+8ZrWvPGOCdsrwENK8zf3edy/xHvGfjC/mg==
+Message-ID: <6e38c13b-5ef9-d467-9919-198ad9e3cc3d@bootlin.com>
+Date: Wed, 15 Feb 2023 15:39:25 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] [RFC] dev-manual: stop advising to produce patches
+ with Quilt
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+References: <20230214144927.80982-1-michael.opdenacker@bootlin.com>
+ <04fd91ba07210a370b240b2107957839ba30c8a4.camel@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <04fd91ba07210a370b240b2107957839ba30c8a4.camel@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 10:59:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3689
+ <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 14:39:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3690
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-- Fix quoting for path to cmake modules
-- Document OECMAKE_GENERATOR variable
-- Style simplifications
+On 15.02.23 at 11:36, Richard Purdie wrote:
+> On Tue, 2023-02-14 at 15:49 +0100, Michael Opdenacker via
+> lists.yoctoproject.org wrote:
+>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>
+>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>
+>> ---
+>>
+>> Who still wants to produce patches with Quilt instead of Git?
+>> Who still wants to accept patches which are not generated by Git
+>> or a modern source control system?
+>>
+>> Today:
+>> - 1012 patches in Poky were created using Git
+>> - 4 patches were created using Quilt
+>>
+>> If this patch is acceptable, I'll also update
+>> dev-manual/debugging.rst so that it gives an example
+>> based on git, to create a patch for a package to fix.
+>> ---
+>>   documentation/dev-manual/debugging.rst |  3 -
+>>   documentation/dev-manual/index.rst     |  1 -
+>>   documentation/dev-manual/quilt.rst     | 89 --------------------------
+>>   3 files changed, 93 deletions(-)
+>>   delete mode 100644 documentation/dev-manual/quilt.rst
+> I am 100% against deleting the information on quilt. We do use it in
+> the builds for applying patches and it should therefore be covered in
+> the manual.
+>
+> I am fine with documenting git and giving the user a choice on which
+> tool to use to generate patches.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/ref-manual/classes.rst   | 25 ++++++++++++++-----------
- documentation/ref-manual/variables.rst | 10 ++++++++++
- 2 files changed, 24 insertions(+), 11 deletions(-)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index b5443c0d0a..3beccb4855 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -346,17 +346,20 @@ in order to make them relocatable.
- ``cmake``
- =========
- 
--The ref:`ref-classes-cmake` class allows for recipes that need to build software using
--the `CMake <https://cmake.org/overview/>`__ build system. You can use
--the :term:`EXTRA_OECMAKE` variable to specify
--additional configuration options to be passed using the ``cmake``
--command line.
--
--On the occasion that you would be installing custom CMake toolchain
--files supplied by the application being built, you should install them
--to the preferred CMake Module directory: ``${D}${datadir}/cmake/``
--Modules during
--:ref:`ref-tasks-install`.
-+The :ref:`ref-classes-cmake` class allows recipes to build software using the
-+`CMake <https://cmake.org/overview/>`__ build system. You can use the
-+:term:`EXTRA_OECMAKE` variable to specify additional configuration options to
-+pass to the ``cmake`` command line.
-+
-+By default, the :ref:`ref-classes-cmake` class uses
-+`Ninja <https://ninja-build.org/>`__ instead of GNU make for building, which
-+offers better build performance. If a recipe is broken with Ninja, then the
-+recipe can set the :term:`OECMAKE_GENERATOR` variable to ``Unix Makefiles`` to
-+use GNU make instead.
-+
-+If you need to instal custom CMake toolchain files supplied by the application
-+being built, you should install them (during :ref:`ref-tasks-install`) to the
-+preferred CMake Module directory: ``${D}${datadir}/cmake/modules/``.
- 
- .. _ref-classes-cml1:
- 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 62176f7ee8..c204f49aac 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5399,6 +5399,16 @@ system and gives an overview of their function and contents.
-       :term:`Source Directory` for details on how this class
-       applies these additional sed command arguments.
- 
-+   :term:`OECMAKE_GENERATOR`
-+      A variable for the :ref:`ref-classes-cmake` class, allowing to choose
-+      which back-end will be generated by CMake to build an application.
-+
-+      By default, this variable is set to ``Ninja``, which is faster than GNU
-+      make, but if building is broken with Ninja, a recipe can use this
-+      variable to use GNU make instead::
-+
-+         OECMAKE_GENERATOR = "Unix Makefiles"
-+
-    :term:`OE_IMPORTS`
-       An internal variable used to tell the OpenEmbedded build system what
-       Python modules to import for every Python function run by the system.
+Thanks for the strong points. I'll see what I can do, but I'm not sure I 
+want to complicate the explanations too much.
+Thanks again
+
+Michael.
 -- 
-2.37.2
+
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
