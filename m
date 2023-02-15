@@ -1,92 +1,112 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0AD6C636CC
-	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 10:08:15 +0000 (UTC)
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.11823.1676455689282536533
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 32C9FC636CC
+	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 10:34:56 +0000 (UTC)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+ by mx.groups.io with SMTP id smtpd.web11.12050.1676457291144052232
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Feb 2023 02:08:09 -0800
+ Wed, 15 Feb 2023 02:34:51 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=p2UTkazq;
- spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id A027C100011;
-	Wed, 15 Feb 2023 10:08:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1676455687;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=enRIsykJvACklS7u9pRlHVIOtsP/03dpCWb/D6xvLi4=;
-	b=p2UTkazqHFhC2ujK/duYulvr5wx4tZD7i6ERymCw2Zay6magKgI5xhmvp5nsillsI+CaZW
-	zWM69TW3cIE5d5tymeqS2tEp/NdGxy45j843pMxNemMLkmYq2ZiiiJscEgQVOqT0Kn2YMi
-	SaLas0l10xpMF9D/NGVI4jwqKN/UVAjQe67xgkuVQVNg91rWWFYdhs8m6gDEl1Bhc4DA+E
-	URgDrvk8F0KppZqSwafVeO544VV+qD4VtkIFI0G3urFxxHJ9PIQ4KQeY9fnOv5x2OgdXLN
-	dcY9doEfK9DR+k81yLUQ89lzduy5MUmx/QbvZvtF4gMKptgW7OYBWwV5q5yHQA==
-Message-ID: <306cebb3-2bff-a79f-0c18-e23efd02f5a1@bootlin.com>
-Date: Wed, 15 Feb 2023 11:08:05 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] [RFC] dev-manual: stop advising to produce patches
- with Quilt
-Content-Language: en-US
-References: <20230214144927.80982-1-michael.opdenacker@bootlin.com>
- <0d6bca8c-e563-993d-6dfd-607a47f8ab2a@theobroma-systems.com>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=cxP68rR4;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.45, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f45.google.com with SMTP id g6-20020a05600c310600b003e1f6dff952so1200887wmo.1
+        for <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 02:34:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WaM5y8dd7x2ObM4pn1JrUHlU6jj2Hh1C9O8EtnAE89U=;
+        b=cxP68rR4D6HGoW0lmO46xHNO81X+e7JqlS5S4NSLg24nG8KsDVB9R1Toqec9ERbMg3
+         hgfjVMmv5KI7M8eL09MM8vaqgvHPnR59W6WdaVK3UuePrYI8EqsLvP2TRG00t9uUIIHU
+         LnSl4WNSbLUG8y0cykRE7hB+jcP31fAdPkuEc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=WaM5y8dd7x2ObM4pn1JrUHlU6jj2Hh1C9O8EtnAE89U=;
+        b=kP+qAELlNGEmhdRgwVY2qy/JxkRkRDOdnl6cwl1Lu84ewv5iSWn9TUqdTCppPCX+sq
+         SgLcWnF1RrW65SkkSYWbICq/xsIfcVoXNuzgd9eO5tejs5yC0PCZFrLyOLb21wUp6aPp
+         to8OK2BLy6GiIaSRlpXYOG9avIAj+cgjZrBukjIAEW2qwnSnl8VydnuOkhB3TJHkx1NX
+         yrmMkUCQVT2tzSEX+sEBU+cWNKIOQY4iu6vSMykuzqGOcW8zwRDSpBTLjQnSHTA3bBcu
+         AOKSUF8yTglxBDh8ZCUnLrkAUj4yUfgKmS3hk8QsufxAZoPG7B7z0YvbUlrmgSTctbvq
+         gNyQ==
+X-Gm-Message-State: AO0yUKXU3Vlf/b3DqyMOL984Uh1YJ2zM6jdXOl7h5YVsaQT6NwpGqTX7
+	62QafxktyDYhVMGVLAbAzANfHQ==
+X-Google-Smtp-Source: AK7set/6RyxTDELlWWx71+4EbCLDXenvU25IvdYLOW3HXcpxW3WtEiiShKtQeIM860/rcOfjiQhqjw==
+X-Received: by 2002:a05:600c:a0a:b0:3dc:4fd7:31e9 with SMTP id z10-20020a05600c0a0a00b003dc4fd731e9mr1501136wmp.7.1676457289649;
+        Wed, 15 Feb 2023 02:34:49 -0800 (PST)
+Received: from ?IPv6:2001:8b0:aba:5f3c:fcb8:24dc:acf7:61c1? ([2001:8b0:aba:5f3c:fcb8:24dc:acf7:61c1])
+        by smtp.gmail.com with ESMTPSA id r18-20020a05600c459200b003dc4baaedd3sm1805432wmo.37.2023.02.15.02.34.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 15 Feb 2023 02:34:49 -0800 (PST)
+Message-ID: <46e53e9f4568f515f28203c51d862f4d31d041f1.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] [RFC] dev-manual: stop advising to produce
+ patches with Quilt
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: quentin.schulz@theobroma-systems.com, michael.opdenacker@bootlin.com, 
+	docs@lists.yoctoproject.org
+Date: Wed, 15 Feb 2023 10:34:48 +0000
 In-Reply-To: <0d6bca8c-e563-993d-6dfd-607a47f8ab2a@theobroma-systems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20230214144927.80982-1-michael.opdenacker@bootlin.com>
+	 <0d6bca8c-e563-993d-6dfd-607a47f8ab2a@theobroma-systems.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.1-0ubuntu1 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 10:08:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3686
+ <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 10:34:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3687
 
-Hi Quentin
-
-Thanks for the review!
-
-On 14.02.23 at 15:59, Quentin Schulz wrote:
+On Tue, 2023-02-14 at 15:59 +0100, Quentin Schulz via
+lists.yoctoproject.org wrote:
 > Hi Michael,
->
+>=20
 > On 2/14/23 15:49, Michael Opdenacker via lists.yoctoproject.org wrote:
->> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>
->> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>
->> ---
->>
->> Who still wants to produce patches with Quilt instead of Git?
->> Who still wants to accept patches which are not generated by Git
->> or a modern source control system?
->>
->
-> Well... Quilt is the tool used to patch most recipes by bitbake AFAIR 
-> :) c.f. PATCHTOOL in meta/conf/bitbake.conf. Since they probably have 
-> a different conflict resolution, it might still be a good idea to 
-> explain how to create patches with quilt? or do we expect to just say 
-> "set PATCHTOOL = "git" in your recipe if the patch doesn't apply" ?
+> > From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> >=20
+> > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> >=20
+> > ---
+> >=20
+> > Who still wants to produce patches with Quilt instead of Git?
+> > Who still wants to accept patches which are not generated by Git
+> > or a modern source control system?
+> >=20
+>=20
+> Well... Quilt is the tool used to patch most recipes by bitbake AFAIR :)=
+=20
+> c.f. PATCHTOOL in meta/conf/bitbake.conf. Since they probably have a=20
+> different conflict resolution, it might still be a good idea to explain=
+=20
+> how to create patches with quilt? or do we expect to just say "set=20
+> PATCHTOOL =3D "git" in your recipe if the patch doesn't apply" ?
+>=20
+> Note that the only time I had to use git PATCHTOOL was for patches where=
+=20
+> there was some binary in there since quilt doesn't support this.
+
+I think a lot depends on the underlying recipe. If it uses a tarball,
+quilt will be there, git won't be setup. If the underlying recipe uses
+git, creating patches with it can be easier.
+
+Personally, I still do use quilt as it is muscle memory. With git you
+have issues that the indexes can be out of sync due to patches or
+autoreconf.
+
+I think we should document the git workflow and then let the user
+choose which direction to go. We should make the pitfalls clear too
+(index not in sync, no git metadata on a tarball etc.)
+
+Cheers,
+
+Richard
 
 
-That's right this is still the default PATCHTOOL. However, how likely 
-are we to have issues with git patches that don't apply with quilt, as 
-less than 1% of the patches currently in use were produced by quilt.
-
-What I mean is that it feels weird to recommend a solution that almost 
-nobody uses any more to create patches for recipes.
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
 
