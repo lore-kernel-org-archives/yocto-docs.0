@@ -1,100 +1,115 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1D85CC636CC
-	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 10:36:46 +0000 (UTC)
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
- by mx.groups.io with SMTP id smtpd.web10.12144.1676457399614276251
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A382AC636D4
+	for <webhook@archiver.kernel.org>; Wed, 15 Feb 2023 10:59:16 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.12349.1676458752367124694
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Feb 2023 02:36:40 -0800
+ Wed, 15 Feb 2023 02:59:13 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=C+6ax9ho;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.53, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f53.google.com with SMTP id z13so12987917wmp.2
-        for <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 02:36:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rGHmykCVlfaV5fqIDudZl+U17pXoJ0FEzCgI0ta035M=;
-        b=C+6ax9hoqbWBpdSqBn5L3IalzCXPlmTtKd25pgDyVTZvOPiqz30jLORJPTk4ElIXva
-         IWsXpiJe+F5/PRRG7Kfm9IRQeQoLSZdD7BCpn6G74mTawChlINADzTNptJjF4KUztyZi
-         ZrxXk2Sb5V4k+sxT64DbS8Pp+n7kiyGy9dmHk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=rGHmykCVlfaV5fqIDudZl+U17pXoJ0FEzCgI0ta035M=;
-        b=uKtphBbKK9ydbYjV7aqb3bw8S4ekYcSRoGOR7NdZ8KzUOtsDk0gNIoUNcWK9C74HwH
-         8/rEBd9TKD40wOzT/CH4x4OmzmFy5uV07YXJfzfQnoJ2a7U85ZjKVeLyrNwThlQeSdTF
-         +4TIY/qboLyukF3hifhkcvUv7oe6/2o7zU/hcWnxjxb1BMRjW/hb75SaZMMruoIO9t2r
-         ulVd9L+dj4kWuYQ3IMDKC7+HjTs+RKUG8eY9hZc85f5NhQO69d++vVSRjfblAef+CWM5
-         uQ/jjVtxEPC2uWWow3D3L/ET2gEOONHBsDjki3gdjI2A0w828J+sbVbprUfj+wujwwjE
-         IwVg==
-X-Gm-Message-State: AO0yUKW8CXq3BXrodMoP+O0S2qkx/zYNFTmtTH8GWmq6GePv8d15MkDy
-	OlVjD1DNDqNGT9vBHP/2V4DgHBXehwHVfbOL
-X-Google-Smtp-Source: AK7set//qa0tcP2v2fFsz06IxZVSiJxY9/o0iSDJQJkT+gPYDMVmykCcrydNgPU6FxOqrYs+8jRiog==
-X-Received: by 2002:a05:600c:4b1b:b0:3df:fbc7:5b10 with SMTP id i27-20020a05600c4b1b00b003dffbc75b10mr1663641wmp.0.1676457398108;
-        Wed, 15 Feb 2023 02:36:38 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:fcb8:24dc:acf7:61c1? ([2001:8b0:aba:5f3c:fcb8:24dc:acf7:61c1])
-        by smtp.gmail.com with ESMTPSA id k1-20020a05600c0b4100b003dd8feea827sm1749490wmr.4.2023.02.15.02.36.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Feb 2023 02:36:37 -0800 (PST)
-Message-ID: <04fd91ba07210a370b240b2107957839ba30c8a4.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] [RFC] dev-manual: stop advising to produce
- patches with Quilt
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
-Date: Wed, 15 Feb 2023 10:36:37 +0000
-In-Reply-To: <20230214144927.80982-1-michael.opdenacker@bootlin.com>
-References: <20230214144927.80982-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.1-0ubuntu1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nH3UCrVY;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 52533C0008;
+	Wed, 15 Feb 2023 10:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1676458750;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=kY5zXKBKSPWPv0k9FfPXIKorH63NAMGXzvD6KZqUuJw=;
+	b=nH3UCrVYG1s4ppUUbJVgBgms1mYefSzr+r1aORfYdmuyRrRpbxBQrRVbzIwNInfQ4US+ct
+	n1wcZq0PMI3caXZske3qlii+AILRV4hcJg0859RarVk/FEpi8++8jyPOvdh0rbQvraCmlK
+	3vKlQg3hBvswbOc1rp5mFFUATIf0wYidqywvObUgsRoOBdronXLmvgKpFLyvG4V1JY7cZI
+	UO5i6kjV0xRVlQ9iCzlDaUBfff5zgft7wmtuH+RQ6mlnBXKsXD9sGYqe9BO0y42ns0cSbI
+	sAqpCXOI+/yUYbRE9ntPUvEuZhKaUV5DDsHxxAI6Wq2yEekvNM2Z1PrsqONJJQ==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: classes.rst: improvements to cmake class documentation
+Date: Wed, 15 Feb 2023 11:59:07 +0100
+Message-Id: <20230215105907.114700-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 10:36:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3688
+ <docs@lists.yoctoproject.org>; Wed, 15 Feb 2023 10:59:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3689
 
-On Tue, 2023-02-14 at 15:49 +0100, Michael Opdenacker via
-lists.yoctoproject.org wrote:
-> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->=20
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->=20
-> ---
->=20
-> Who still wants to produce patches with Quilt instead of Git?
-> Who still wants to accept patches which are not generated by Git
-> or a modern source control system?
->=20
-> Today:
-> - 1012 patches in Poky were created using Git
-> - 4 patches were created using Quilt
->=20
-> If this patch is acceptable, I'll also update
-> dev-manual/debugging.rst so that it gives an example
-> based on git, to create a patch for a package to fix.
-> ---
->  documentation/dev-manual/debugging.rst |  3 -
->  documentation/dev-manual/index.rst     |  1 -
->  documentation/dev-manual/quilt.rst     | 89 --------------------------
->  3 files changed, 93 deletions(-)
->  delete mode 100644 documentation/dev-manual/quilt.rst
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-I am 100% against deleting the information on quilt. We do use it in
-the builds for applying patches and it should therefore be covered in
-the manual.
+- Fix quoting for path to cmake modules
+- Document OECMAKE_GENERATOR variable
+- Style simplifications
 
-I am fine with documenting git and giving the user a choice on which
-tool to use to generate patches.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/ref-manual/classes.rst   | 25 ++++++++++++++-----------
+ documentation/ref-manual/variables.rst | 10 ++++++++++
+ 2 files changed, 24 insertions(+), 11 deletions(-)
 
-Cheers,
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index b5443c0d0a..3beccb4855 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -346,17 +346,20 @@ in order to make them relocatable.
+ ``cmake``
+ =========
+ 
+-The ref:`ref-classes-cmake` class allows for recipes that need to build software using
+-the `CMake <https://cmake.org/overview/>`__ build system. You can use
+-the :term:`EXTRA_OECMAKE` variable to specify
+-additional configuration options to be passed using the ``cmake``
+-command line.
+-
+-On the occasion that you would be installing custom CMake toolchain
+-files supplied by the application being built, you should install them
+-to the preferred CMake Module directory: ``${D}${datadir}/cmake/``
+-Modules during
+-:ref:`ref-tasks-install`.
++The :ref:`ref-classes-cmake` class allows recipes to build software using the
++`CMake <https://cmake.org/overview/>`__ build system. You can use the
++:term:`EXTRA_OECMAKE` variable to specify additional configuration options to
++pass to the ``cmake`` command line.
++
++By default, the :ref:`ref-classes-cmake` class uses
++`Ninja <https://ninja-build.org/>`__ instead of GNU make for building, which
++offers better build performance. If a recipe is broken with Ninja, then the
++recipe can set the :term:`OECMAKE_GENERATOR` variable to ``Unix Makefiles`` to
++use GNU make instead.
++
++If you need to instal custom CMake toolchain files supplied by the application
++being built, you should install them (during :ref:`ref-tasks-install`) to the
++preferred CMake Module directory: ``${D}${datadir}/cmake/modules/``.
+ 
+ .. _ref-classes-cml1:
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 62176f7ee8..c204f49aac 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5399,6 +5399,16 @@ system and gives an overview of their function and contents.
+       :term:`Source Directory` for details on how this class
+       applies these additional sed command arguments.
+ 
++   :term:`OECMAKE_GENERATOR`
++      A variable for the :ref:`ref-classes-cmake` class, allowing to choose
++      which back-end will be generated by CMake to build an application.
++
++      By default, this variable is set to ``Ninja``, which is faster than GNU
++      make, but if building is broken with Ninja, a recipe can use this
++      variable to use GNU make instead::
++
++         OECMAKE_GENERATOR = "Unix Makefiles"
++
+    :term:`OE_IMPORTS`
+       An internal variable used to tell the OpenEmbedded build system what
+       Python modules to import for every Python function run by the system.
+-- 
+2.37.2
 
-Richard
 
