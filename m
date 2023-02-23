@@ -2,85 +2,114 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E511C6379F
-	for <webhook@archiver.kernel.org>; Thu, 23 Feb 2023 09:21:38 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.6763.1677144088619023986
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4541C636D6
+	for <webhook@archiver.kernel.org>; Thu, 23 Feb 2023 09:57:18 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web10.7188.1677146236708009920
  for <docs@lists.yoctoproject.org>;
- Thu, 23 Feb 2023 01:21:29 -0800
+ Thu, 23 Feb 2023 01:57:17 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ExBjVbwv;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mR0YVETO;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 06C2B240004;
-	Thu, 23 Feb 2023 09:21:25 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id F30FE100013;
+	Thu, 23 Feb 2023 09:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1677144086;
+	t=1677146234;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=IM+U7uyjbfjEPjUYGeV3PeaXwZ6laGZX4s+9Y2qdUo8=;
-	b=ExBjVbwvIjXf7ldYJO900JvYLkJm6V2KscySlSbkSqARHfYJNB7dbPR3s9UhCDkfkNPKEm
-	JVUG7dPCgM1lbxa06HziY6UvHsfSv4sjZD6K+0KGQgnmC2sYwmEotu8BGHOz6hECybTJ+E
-	5a4JZDtSoE1lbw+GVHpuHQGJ45jHxdR6oyb6hwyuhsnzGjnA1qiVTQntX5vtud0q2tcbRD
-	++kMNXW1i2qmyQVfNWtVHSgRRyi+LfzDVNT8/RlaCkLjhDbuTqTUvkoJr6PJvhbPLjnmQx
-	4gWJg/PSpWeuRRGtIY4tc6uDBv/Er+536PfwOoWYBXO1axS64zA4FsMdQha50A==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Steve Sakoman <steve@sakoman.com>
-Subject: [PATCH] ref-manual: system-requirements.rst: update supported distros
-Date: Thu, 23 Feb 2023 10:21:22 +0100
-Message-Id: <20230223092122.200648-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.37.2
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Mwm0HY2EOS/422MOJmqiQ7Q8Nsb8+wCOvaZLnGhJUrU=;
+	b=mR0YVETO9Wi4/9wUQNyl7n0Cn+qkYf4XBZOhiwD6nB6mgjNfwm7cwB/C6UkZ6sdUk05rlJ
+	Fce3LCPNWGADbokUR5w2122iQKlwJrHJvv5KlTQO7lPDz/T2OlKhRkAzyZIgtZq09gi0Lx
+	upv88rPbfuz6LwheaulvPshWZT6GriTqifbkXhY+nTm3MdOxmp54nu0RAIbmQcxn0d7e2G
+	FCcyKU2lOIF8yf++B5eT7StTbuq3Pze3ZXV9vHuaZHcxhH9ZsZYW/UCrvk5YLHIrvWuJ/p
+	zKn4xi7fEwNo3dQockZR2TGRKRk90hmknjbjBinIOCl9++qr0jUcJKvK5BS4bw==
+Message-ID: <54b9159e-3549-8593-9bc7-11f327baf09b@bootlin.com>
+Date: Thu, 23 Feb 2023 10:57:13 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v2] manuals: document
+ COMMERCIAL_[AUDIO|VIDEO]_PLUGINS variables
+Content-Language: en-US
+To: quentin.schulz@theobroma-systems.com
+References: <3891ece8-e2e3-1e37-a372-dd88a7bbabf7@theobroma-systems.com>
+ <20230221184156.65816-1-michael.opdenacker@bootlin.com>
+ <9a2b7892-fdd6-362b-3950-5c216dd3ed66@theobroma-systems.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <9a2b7892-fdd6-362b-3950-5c216dd3ed66@theobroma-systems.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 Feb 2023 09:21:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3720
+ <docs@lists.yoctoproject.org>; Thu, 23 Feb 2023 09:57:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3721
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Quentin,
 
-Syncing with meta-yocto/meta-poky/conf/distro/poky.conf
+On 22.02.23 at 14:49, Quentin Schulz via lists.yoctoproject.org wrote:
+> Hi Michael,
+>
+> On 2/21/23 19:41, Michael Opdenacker via lists.yoctoproject.org wrote:
+>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>
+>> - Add COMMERCIAL_[AUDIO|VIDEO]_PLUGINS variables to the
+>>    variable index.
+>> - Clarify that these plugins are still open-source
+>> - Improve line width
+>>
+>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>
+>> ---
+>>
+>> Changes in V2:
+>> - Style fixes
+>> - Highlight that the "bad" status is according to GStreamer contributors
+>> - Add a new "gstreamer-commercial-licenses" target so that we can refer
+>>    to the modified section without hardcoding the title and the manual
+>>    name in the reference. That's more resistant to changes.
+>> According to the review from Quentin Schulz (thanks!)
+>> ---
+>>   documentation/dev-manual/licenses.rst  | 32 +++++++++++++++-----------
+>>   documentation/ref-manual/variables.rst | 18 +++++++++++++++
+>>   2 files changed, 37 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/documentation/dev-manual/licenses.rst 
+>> b/documentation/dev-manual/licenses.rst
+>> index 65914e5efe..91a2ebce81 100644
+>> --- a/documentation/dev-manual/licenses.rst
+>> +++ b/documentation/dev-manual/licenses.rst
+>> @@ -232,6 +232,8 @@ Here are some other scenarios:
+>>      in the :term:`LICENSE_FLAGS_ACCEPTED` list (e.g.
+>>      "commercial_foo_1.2") to specifically match a versioned recipe.
+>>   +.. _gstreamer-commercial-licenses:
+>> +
+>
+> My bad, I thought there were more examples, unrelated to GStreamer, in 
+> the "Other Variables Related to Commercial Licenses" section. But here 
+> I don't think it makes much sense to add this target actually since we 
+> already have some automatically added by sphinx for sections/subsections.
+>
+> Otherwise,
+> Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Suggested-by: Steve Sakoman <steve@sakoman.com>
----
- documentation/ref-manual/system-requirements.rst | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 3cd0894687..38d4aaf5a7 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -42,18 +42,20 @@ Currently, the Yocto Project is supported on the following distributions:
- 
- -  Ubuntu 22.04 (LTS)
- 
---  Fedora 34
-+-  Fedora 36
- 
---  Fedora 35
-+-  Fedora 37
- 
---  AlmaLinux 8.5
-+-  AlmaLinux 8.7
- 
---  Debian GNU/Linux 10.x (Buster)
-+-  AlmaLinux 9.1
- 
- -  Debian GNU/Linux 11.x (Bullseye)
- 
- -  OpenSUSE Leap 15.3
- 
-+-  OpenSUSE Leap 15.4
-+
- .. note::
- 
-    -  While the Yocto Project Team attempts to ensure all Yocto Project
+I'm not sure I understand, because the idea to use references to targets 
+without referring to the document name made sense to me.
+
+Here's a V3 anyway, that may help clarify any misunderstanding.
+
+Thanks
+Michael.
+
 -- 
-2.37.2
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
