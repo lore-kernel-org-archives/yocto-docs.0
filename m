@@ -2,101 +2,71 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD237C636D6
-	for <webhook@archiver.kernel.org>; Thu, 23 Feb 2023 15:37:50 +0000 (UTC)
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.13496.1677166660760751637
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 27CFFC61DA4
+	for <webhook@archiver.kernel.org>; Thu, 23 Feb 2023 16:59:41 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.16191.1677171578133334659
  for <docs@lists.yoctoproject.org>;
- Thu, 23 Feb 2023 07:37:41 -0800
+ Thu, 23 Feb 2023 08:59:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DZ/Hn+5r;
- spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kaVTCn5+;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 301E2100003;
-	Thu, 23 Feb 2023 15:37:37 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 020861C0004;
+	Thu, 23 Feb 2023 16:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1677166658;
+	t=1677171576;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=cCO1EKPyyGP9p7P9QCCN+McA14tbWel2lHiB9khhzgw=;
-	b=DZ/Hn+5rUa0lpL5bbNx/x8qludgE+vlMFoVHnBak1FPpzrYWqGs0nY2hbm3NQM1Rm5gK+N
-	VeSBG6DctzuWYGrt1lHBnlaiuZyxlm+GMqTXxOWpyoINdpjwI1tHCZPUbspNg6uIXrrZMP
-	aLJkc2vHPtMtUQ2R9a+1ApRtN5FJkzz4E49v9O6eXZSHzIr1NGZQL/xZy1aKqMbz/Rxq5D
-	j03RUTV23Q3dBTAyihUIviy7kFS4XPX/JB+06ppS/KoiwdNpEF86FFzILAJVRMxn+faMhv
-	VmtcSU0CnQAU6x3GTx0P022ECY8wxjeN2lHO0oiyCZGpMG9GchcEHEt9L9ASVA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 1/2] dev-manual: new-recipe.rst: add Meson example recipe
-Date: Thu, 23 Feb 2023 16:37:28 +0100
-Message-Id: <20230223153729.2492175-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.37.2
+	bh=W3TI+DxPCmOhw2fI3Tst4rD8gyiCoiuBuytzsbv6AKU=;
+	b=kaVTCn5+lP7IB7gTSXmok2nLDUFwKsvxkBQNPmfT9l3GMqdn6uQ4rhrmlJh46IL49FjCis
+	wKxwrqZO01VVRI8yOlrskNVTYYPafOBNnJiEazRN+S6jmDXUzzYUMLTpvECHRmQisRIbl2
+	fY/+2STkxI0BFOdZjlJW7Vjjx6j/ST/S+FnGVrY3g2BL+4g/pGtYJDAzUuO2+CFWXOBQ6Z
+	APxFJ5Iwc4GwCsyYa8f+Gsr2QGBdYLM0Qsiq1UsRaL+77Ih1OQssm5vHdaKNZ256ZAhnp3
+	QGvczFpcVpA9QxkraN7CFdRmm22VuMxDX7oRt8T44mAvQsFCwlEV2c85gPK4NA==
+Message-ID: <8a4852e0-7d49-dfc3-7f41-9bf6c0c28016@bootlin.com>
+Date: Thu, 23 Feb 2023 17:59:35 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Language: en-US
+To: OE-core <openembedded-core@lists.openembedded.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [DISTRO|MACHINE]_FEATURES_BACKFILL_CONSIDERED: confusing variable
+ names?
+Organization: Bootlin
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 Feb 2023 15:37:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3726
+ <docs@lists.yoctoproject.org>; Thu, 23 Feb 2023 16:59:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3728
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Greetings
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/dev-manual/new-recipe.rst | 31 +++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+Anybody else finding the DISTRO_FEATURES_BACKFILL_CONSIDERED and 
+MACHINE_FEATURES_BACKFILL_CONSIDERED variable names confusing?
 
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index 143c8b9c3b..9f00ac198f 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -1173,6 +1173,8 @@ recipe examples given various scenarios:
- 
- -  Building an Autotooled package
- 
-+-  Building a Meson package
-+
- -  Splitting an application into multiple packages
- 
- -  Adding binaries to an image
-@@ -1288,6 +1290,35 @@ as described in the ":ref:`dev-manual/licenses:tracking license changes`"
- section in the Yocto Project Overview and Concepts Manual. You can quickly
- create Autotool-based recipes in a manner similar to the previous example.
- 
-+Building a Meson Package
-+------------------------
-+
-+Applications built with the `Meson build system <https://mesonbuild.com/>`__
-+just need a recipe that has sources described in :term:`SRC_URI` and inherits
-+the :ref:`ref-classes-meson` class.
-+
-+The :oe_git:`ipcalc recipe </meta-openembedded/tree/meta-networking/recipes-support/ipcalc>`
-+is a simple example of an application without dependencies::
-+
-+   SUMMARY = "Tool to assist in network address calculations for IPv4 and IPv6."
-+   HOMEPAGE = "https://gitlab.com/ipcalc/ipcalc"
-+
-+   SECTION = "net"
-+
-+   LICENSE = "GPL-2.0-only"
-+   LIC_FILES_CHKSUM = "file://COPYING;md5=b234ee4d69f5fce4486a80fdaf4a4263"
-+
-+   SRC_URI = "git://gitlab.com/ipcalc/ipcalc.git;protocol=https;branch=master"
-+   SRCREV = "4c4261a47f355946ee74013d4f5d0494487cc2d6"
-+
-+   S = "${WORKDIR}/git"
-+
-+   inherit meson
-+
-+Applications with dependencies are likely to inherit the
-+:ref:`ref-classes-pkgconfig` class, as ``pkg-config`` it is the default method
-+that Meson uses to find dependencies and compile applications against them.
-+
- Splitting an Application into Multiple Packages
- -----------------------------------------------
- 
+According to the documentation about "feature backfilling" 
+(https://docs.yoctoproject.org/ref-manual/features.html#ref-features-backfill), 
+these variables allow to exclude some features from being backfilled.
+
+I'm not a native English speaker, but for me, "considered" carries the 
+intention to include a feature, not to exclude one.
+
+Shouldn't we call these variables DISTRO_FEATURES_BACKFILL_EXCLUDED and 
+MACHINE_FEATURES_BACKFILL_EXCLUDED instead ?
+
+Thanks in advance
+Cheers
+Michael.
+
 -- 
-2.37.2
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
