@@ -1,177 +1,155 @@
-Return-Path: <tom.hochstein@nxp.com>
+Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3847FC64ED6
-	for <webhook@archiver.kernel.org>; Thu, 23 Feb 2023 23:25:05 +0000 (UTC)
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.76])
- by mx.groups.io with SMTP id smtpd.web10.4953.1677194696775086526
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 330FFC61DA3
+	for <webhook@archiver.kernel.org>; Fri, 24 Feb 2023 10:14:49 +0000 (UTC)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.73])
+ by mx.groups.io with SMTP id smtpd.web10.14505.1677233680142729536
  for <docs@lists.yoctoproject.org>;
- Thu, 23 Feb 2023 15:24:57 -0800
+ Fri, 24 Feb 2023 02:14:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@nxp.com header.s=selector2 header.b=Vr+m3Yh2;
- spf=pass (domain: nxp.com, ip: 40.107.22.76, mailfrom: tom.hochstein@nxp.com)
+ dkim=pass header.i=@theobroma-systems.com header.s=selector1 header.b=jQKoy1lW;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.22.73, mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JfIHuDd8raKyIu7Z1eQ6QeKubkIrBDU9gtlbg6QlIMlaM5Dl2ou3EqfdNnvppVMX+ki6YFBWELjmZQ6MOrE7pzTlHkltV89I20uoPF/UgdSWzO2MZHrLOS+pTCHTD6e+SMygPg8HQLHUHGZlWg/HATPSUK7dLM+T5eb+iBRT0qv5wyLTcmOX1ilJjueg0Gj8c/qtgfDVvM0OdbSS7eWBf2cRME1hT8XeBgeJv5ymNSNnUKtn68w3I1jVXOuVKWKHuJ97xtmwdjFTa0G92Hdw806mZXOXLfjRTarc26mO3VhtzCDar2gC3ebg+wkSvDFAY+Q8xKB6kv3bRTEDLaMfSw==
+ b=lDxm7bWDLjqZH+4zWWWmfHZcyBIy6FKZFdtH3Syez4wjTfa1gbgaCfqmbO/l4nS0hQ7chLM2Wzh6V0aphRZRHWUYkoIMkvdL4JKCND6hp3THTPIgnXBaGSAmKIuvmN/sdcp+XWT8Q/BKZvVH7npEPmSuenxMXQktZkXSefHPeC0VQCJfNnmrvFALuTk6PpNJZYYiy9Fesidp1h2mmUKPswRde+I2wNEYgqNzAP75JirsNThVjo1IS5j0QCV1SEUnOgX5LYpnyCe5TUsJN07ZL31fA2Ayuzlam13pv/uQTSgJRz0JJXg4EN8GMSZmAYegxIic5kQVtoE8NDEd93etQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lAO8+P7ZVfJEBFBUWfJ23FKsmBUQ993uGGi8sXkFIoY=;
- b=d9yzfwYm+EpK0Xb+HFy/LFtx8DnIbOnhE7CwSCEPDgKpzPWvgWui7EPtj6WnUU2RqnKp0mVR4p/racZT+eFPzkwyHE1Se0D0TLnImFMnGTM02V5Ovw1Lyei5Dcisvd1R81j7a0OtI0iMbVhM88lNMUROVI9xDIXANZqOPaIkOFXhqfnFvunRkUN9IdUk1cnkch0IaP5V2ZN9JtPVcbHxbaoutV8NPiAn9zr6Qr44BsALvlRrpcTvwlsf4ivyJBoq1rfPdCrJKPBeIAOJ9CtIby/sH1zchlakCeNpkhHn6c6NJgUPGljyf2b2lV9wIQ4pCKJZH2gTEcjAwAfJRX22RA==
+ bh=baYfCE6jElzpkc75bYhQryOselixMu0/D+G2DshyWm0=;
+ b=M9E+inwTyoYjs/STasZyA3f1JHM+INTSIVzxZQ03bVzcR5ImhmWv7uSOYA9xkmJIXPEDs8BpPPMQdRTuLdXlb5yc8Y/ZriA6keN7CoqBCGSNRMpYorJUzBa5xGwRzqDJVP4JB2vtRRb1fYmsGPTs+KdSL5Qhzd2LlLfRc3iE+UaGe6uO8C0cJCjRJJL/cYKNOQZPcZKiRtj8IHAj8KRfuVlXuQIp8AZHSPlRRM9Ov44pu1yuRhYJLdQWq/Ra9SGe0uW/ytlxt5LhC1A4PjeDo3+OAcHLkm2cM8tCvNHcy7+nMlBuFfNhIUZToadfNJHXWKhqbyGVPa8jHFGsEGeSmQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theobroma-systems.com;
+ s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lAO8+P7ZVfJEBFBUWfJ23FKsmBUQ993uGGi8sXkFIoY=;
- b=Vr+m3Yh2GaCfg0sUkLYElhCJZZ2BwkUbkxm9F992zy0qKOu+kVusfiR/yP1d68O11GvjqFTXFaOiMOn1JgOPtWGZidQKIQBHuyZWvIAkReOKSLNTeUXkb1u8W+AwrWfLhJWqMSyBlUUOWTooyxRdxmEDBd2q1jxI26t5OVwooA4=
-Received: from DB3PR0402MB3852.eurprd04.prod.outlook.com (2603:10a6:8:f::15)
- by DU2PR04MB8840.eurprd04.prod.outlook.com (2603:10a6:10:2e3::6) with
+ bh=baYfCE6jElzpkc75bYhQryOselixMu0/D+G2DshyWm0=;
+ b=jQKoy1lWq2rca+hYaFMUWdPX+ynpx9a8uEtzEF/+yECNFEMYya8PbNXDMU/UbkV0rLdCYTieGnzIkZi2Y8CqOZSK9VECopfGmYdZM127MyTd67OhVj2EJYbcmeYOIZ+N8wrrOn8B1j8fVGzheo5z8xFBlngw6C+uDzJMfFQeUNxf3oKuORkawXVWtPHdpWBUBR5SOyILX3Z/EQpCdv16HDPesf4HfmV+6Uqc1i1BKJfwoXR6n9XZHJsq8ggyDZLgCNib10iP0VHgVCYm04jzMdhETgcffKbXiqGnO2sidYkSRUZmHZ1YXeOpzDs20B+86QGX/LkbRo9aQhanyga0EQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com (2603:10a6:10:2d7::10)
+ by PA4PR04MB9709.eurprd04.prod.outlook.com (2603:10a6:102:26b::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.24; Thu, 23 Feb
- 2023 23:24:53 +0000
-Received: from DB3PR0402MB3852.eurprd04.prod.outlook.com
- ([fe80::1667:141d:675c:ea2e]) by DB3PR0402MB3852.eurprd04.prod.outlook.com
- ([fe80::1667:141d:675c:ea2e%4]) with mapi id 15.20.6134.021; Thu, 23 Feb 2023
- 23:24:53 +0000
-From: Tom Hochstein <tom.hochstein@nxp.com>
-To: "michael.opdenacker@bootlin.com" <michael.opdenacker@bootlin.com>, OE-core
-	<openembedded-core@lists.openembedded.org>
-CC: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: RE: [OE-core] [DISTRO|MACHINE]_FEATURES_BACKFILL_CONSIDERED:
- confusing variable names?
-Thread-Topic: [OE-core] [DISTRO|MACHINE]_FEATURES_BACKFILL_CONSIDERED:
- confusing variable names?
-Thread-Index: AQHZR6g8vwkwJ5+4r0+QgjBGl0YsVK7c8QvA
-Date: Thu, 23 Feb 2023 23:24:53 +0000
-Message-ID: 
- <DB3PR0402MB3852CCB16686C166ADAED151E2AB9@DB3PR0402MB3852.eurprd04.prod.outlook.com>
-References: <8a4852e0-7d49-dfc3-7f41-9bf6c0c28016@bootlin.com>
-In-Reply-To: <8a4852e0-7d49-dfc3-7f41-9bf6c0c28016@bootlin.com>
-Accept-Language: en-US
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6134.19; Fri, 24 Feb
+ 2023 10:14:37 +0000
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::24d3:14a5:eeda:6cdd]) by DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::24d3:14a5:eeda:6cdd%4]) with mapi id 15.20.6134.024; Fri, 24 Feb 2023
+ 10:14:36 +0000
+Message-ID: <354e06b1-c01a-9db5-692f-0c0dda040e2b@theobroma-systems.com>
+Date: Fri, 24 Feb 2023 11:14:34 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Subject: Re: [docs] [PATCH] ref-manual: update DEV_PKG_DEPENDENCY in variables
 Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DB3PR0402MB3852:EE_|DU2PR04MB8840:EE_
-x-ms-office365-filtering-correlation-id: 6b1b8c40-1229-43de-62d4-08db15f52acc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- BXi7UlmsfG/9pnjgFy4TXsuvi4aIhNQLeE6tr3RwtViwQfa0yn7xZRLwoZOa3Frq1ata9RC1yb23REkh//5w2IcB3KbeTLabYZIGK+pa3BiSsRg0o67ndqLtrKlpVyCV3qjf0qPjNf9LJTMcRF9NCXI//Nz2ElCma6oEe/uqtuC+Oe/cDOjXBKQJwHS6LbLxUBRWzMm3iR6QKrl4QaDhZzOBTP9HddPBQkLgsPLS3fHn1oy3c0LNsCH7pwLxT10Htm+tLWE92XUuguitNrk1JvTkyBjX3MugWyZxnYuQXuomm2tN1abv9U4C5q5xuvGWBBPlHxMBUpxiFyKEXSHMD1YYy8hf8CQre6eqQ57dNwIXOYEL40cU2EPu2JI3ND+/43lZ3zkLYUF/gTmmdqsKgePumhxt6uH+f6VgndwZ2wgSxPeU9LkM6kmbJbzYI8vK0cH3Q39B4aV2iNTDNWXVmERMb0T3bCHyakAqOEwLQQOtSNj1+qOgCtueDFn+jBSlezqTw3j7ocjhTSMCXvqhXjMybND9sMterQr8VMza+KvZ08+AP5SQJEaxdppPT1Wv6VNX7eG1Nd02P92IYLW+8i3o4GeqPfHjS+2pQ1P4W7YR9IfzbErArrkErBLLSzn/oMHmLAFGsz2p+s1npsi4mNz2xvCtrCejV2k4R29Kvz0bdiM8DzC3j03phBEyhT2RDkb/wsVneraFagIQabtb7A==
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DB3PR0402MB3852.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(136003)(39860400002)(376002)(396003)(366004)(346002)(451199018)(33656002)(66556008)(8676002)(71200400001)(966005)(7696005)(83380400001)(53546011)(6506007)(186003)(9686003)(26005)(8936002)(55016003)(52536014)(41300700001)(38070700005)(86362001)(2906002)(44832011)(5660300002)(316002)(38100700002)(478600001)(45080400002)(122000001)(110136005)(64756008)(66446008)(66476007)(76116006)(66946007)(4326008)(83133001);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?z7RPPLyQCdf1OD9s4Nnl2W19agp2MWIER9OTX+n09WgtFJ7SQbaUbLE5RLvC?=
- =?us-ascii?Q?KCyhd6J5co0VWqzA2VPEVS/eCWeNLZqG+I9SUD6qqjUNMdnOi8O3GIVr3R6f?=
- =?us-ascii?Q?h50iW12ieLrmHKzol4y9z1WKFWUOeY6+EMaO1taXYZ3KgzrmReEPRi4zUOfx?=
- =?us-ascii?Q?ZDUaaLGm2e3HlfXj6FPeWKua9sBVYEIIGVQ9k3qqQ6qVaSnnWl+0BruFvqbd?=
- =?us-ascii?Q?4jsMY9jsnuB/NBKH6HQbsABuFV2zeYoDlDvnsW06xXq4l9u6ZbQeb0rIZAm0?=
- =?us-ascii?Q?V28EkF8DIjhVphBVQZGPKDZpPRIKtjQi+NgueS5aGzLN86Zui3+xHEthsJFj?=
- =?us-ascii?Q?KYd/4YEanVK1A5V3bGZMT0MrMAgHDCLn9jwJKwneJruoj7wSgzs0DC+6Fdwp?=
- =?us-ascii?Q?3J17+tXgwgt0I2jFVhyQCI2Rqk2lF6dcFT7JmEOgeNyrVAlgKeSxw/W5p6g7?=
- =?us-ascii?Q?JeuPy1Uy44V0Y4pBoygLVQYj8kguANvt3nFdrgnRuvv3Y3U8EYDvv8b34BZk?=
- =?us-ascii?Q?zhwFzYzeoAc2jmOzxKONaiwE9nTgV2NtvF+ShSO585T+dvd3KayR9EjLaHjL?=
- =?us-ascii?Q?c3DRJY+VILfN8X07zGmmC+sRs1vfgDgqGCD1xGL29RWb/tXR36gbGxxXkR9/?=
- =?us-ascii?Q?zhgQdPWPURAr7WY2s7mPFz7mh+Hdnl/tJ5GGXL0CH4ueqt4OL4s21I4PmhNu?=
- =?us-ascii?Q?ApJRtqIGw8T2BlwPOaQRipjYKlpWOLFhcrg9BHAVc/7g0Xwb5Dpacd089J/p?=
- =?us-ascii?Q?FgG9vPZP6WnBkb8XVjGTiZaNwU0ImA6u4JxKtEXUX5hV7vZOWQubSX2dEUlI?=
- =?us-ascii?Q?5NPq3KaJdsVeFjYTufAh58hnFoAGTkfW7bWLj61+hBR0VFDq6LZn5YZjtTNP?=
- =?us-ascii?Q?kLAZzZH5GRtEP1GD5jFMfuCXxsE1f0fMcbRsBCYDvyvQopWnsjE/fKYnnrjr?=
- =?us-ascii?Q?eFewXgNEUEMYQ9/KBKu3WneB42awUYZgIcWEYH4Jd6/Z1Jv6oHP1s8my/Tpp?=
- =?us-ascii?Q?88/ZLiOO1eX4Nz/uTidsEA/ebPj4VilT0yhXxhrA8l79VASutMvMRgDt9WBR?=
- =?us-ascii?Q?ewMAHWjZ9zxuSZUXK7MCN8h4oARmcg0OG9d272m+BVtSRu7E7i/f1PqRegEB?=
- =?us-ascii?Q?U1Er2L0+7SVB/ow2sMheVV8lEPzA51KXP62mvu7eQA7o/xhMpjMwVL8/go9F?=
- =?us-ascii?Q?GqSAT19o2UBRmROX7WYG4kMItLTGKcsQLWsC531kfIL0OgXsrS7ra/x1c9Er?=
- =?us-ascii?Q?+mJ8qlVE7iOujF0idZ1mGkoHk/1LXk+ihd0r3nx85+9r7Mbhn/9K9A/29oOl?=
- =?us-ascii?Q?K7fwRzTtW7VZYNGEIZk5MXO90TUGOi/NpW8G9J5vB99gIhj1rkpS6q7MDGpT?=
- =?us-ascii?Q?eNhXlXUhjGzzUr1Z4/6zsWamd6Ng98T97yqVi/Wnsusuma+/xc4K2f+zvQse?=
- =?us-ascii?Q?+N2hTlcYEYnMC7rVGeo1RKdQyyRfNsNi1MRTlO8SLCMHpHBhu/CxGSUmFV+j?=
- =?us-ascii?Q?dk4JWC1VqP76hLIw/RAyEjpxBZSOvQ2TqSWd/khDijyy1p5HmleBNPpVLAZ8?=
- =?us-ascii?Q?X5pXqX2HNO5/pwWwl9AQxXd7QU1lVNTnxH4vPMcI?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+To: Fawzi KHABER <fawzi.khaber@smile.fr>, docs@lists.yoctoproject.org
+Cc: Yoann CONGAL <yoann.congal@smile.fr>
+References: <20230223103636.10170-1-fawzi.khaber@smile.fr>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+In-Reply-To: <20230223103636.10170-1-fawzi.khaber@smile.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: AS9P194CA0011.EURP194.PROD.OUTLOOK.COM
+ (2603:10a6:20b:46d::16) To DU2PR04MB8536.eurprd04.prod.outlook.com
+ (2603:10a6:10:2d7::10)
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|PA4PR04MB9709:EE_
+X-MS-Office365-Filtering-Correlation-Id: ae6506bc-b69b-4af2-654c-08db164feea7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	K0B7PRAXYsn/G+8LB0+3dvf9SaEkG19O1zMvjUtdKqOUX/d4TMgMT8zfvwdIyqd8v1LuLzAuWM1/Yh71NB6pL1yShYTbvxZ2G9t3K5hbpqOzYe6sb6wpWXlcs9cObTIHs4vsop7P3J5Q10/10Ppg4GJpM5U2IXgY8KTF6vZrA2j2oA31EX9ecd2KgmLmwMXWjd/kyeGYiFZ2ZkqEJubRW62n14AHfZH8m1UWS4SEmSndikj+oWCDjLM1zTIa9GVU/deb+UApfRUjVQ/AYJYxijSXp+kXRksyLrg2+leH8n/rZMKEWHxGMIprLXtuNzFXdfuwdGm5zx9ETtqWGA3jIiCvbyWuljaxo2nGBlDsKyuxEicDvJUS5J8L3FS93tR1N4RdRKQGpu6BHpI05Is6Uam8MPEjaYO2PFLHS6z5Oq8OmZvOspGTy5kSEOBFqG/oTqJlW4AGBnI8plAyw0CkuNysS/d+LjesXSj243aPwtn7JWC98u4/wZrzchXqpGjYMVfHNzqnAeQv8SQ+ow7AcI6oCKtKYRHn54KehVdq+SV5gPMUQ867MEX3YO6/yWDC+wThMX+Pv3YjuV25pvUTxYbwc8VTTTaFjbI3rcus/Hq+nMAz3jQkdLYfcGGkH/2W/03WvxQiCZcvMG0umeA63EcRLN3mcS7Xg0yTuVlM2BFDXsxJH5chJzdfMu7zmXhV
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8536.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(376002)(39850400004)(136003)(346002)(396003)(366004)(451199018)(478600001)(31696002)(38100700002)(44832011)(2906002)(86362001)(316002)(41300700001)(8676002)(5660300002)(66556008)(36756003)(4326008)(66476007)(8936002)(66946007)(2616005)(6486002)(31686004)(26005)(186003)(6512007)(53546011)(84970400001)(6506007)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?eHduRFJCQnUrWmlHeVpDVUlnUXlrSVhENEpwWCthYTdqZC80NVUrd0xxbk5L?=
+ =?utf-8?B?YXMrSHpzWWhzSEExSk4rMGxlYkg2SWZuRnI5OUFWRUFxRzJsNHFOa3B0VlpK?=
+ =?utf-8?B?TDBaMWJGekhERkVXTnBocWlyeXA1YytNTzdjSnBkaVg5WVRtTDROZVBZSDl6?=
+ =?utf-8?B?MG9YWGduOFQyYUtQT0NZNis2UmUyVGIvR3I1VWFKb29tc2VGcU1Qa2kxWWRU?=
+ =?utf-8?B?NWsxQk5yRGVjRGJKTlNuQ2Q5YlpLR3FSdGJ6R2FKMndnc2xmMTRUYWpmcXJS?=
+ =?utf-8?B?U2hQSVJnL3hNWFB6SktZN0p3UjdpTVZZdmpQVGFsblpwcDRwV3NpZjY1dTRq?=
+ =?utf-8?B?akNyR1ZYOGh6YzBaVnlmQzBIWWpEK3Z1TlJDM3pYVVhjeXd5SXhOKy85cG1i?=
+ =?utf-8?B?SzhrM0RVbzlWS29hNkhhUnlBOE1vVnhKN3N4VmtYZHpvTVRCRXNidWVMdjQ1?=
+ =?utf-8?B?aU5FSEIyVUtTOXVGeWQ1UEloV0Y2VEo5K0h0aDVzR3UwNTFOTzk5QUNYNVhN?=
+ =?utf-8?B?Z1RZQm9ZaVRGdHJ4SFFBNzV5eHRybHArUTE4RTM4R2lrTTRUL2tudVo0S3Bo?=
+ =?utf-8?B?OGoyR043ZGNzVjVRaWtyNElSVkRSZDM1eDJZSjUwV3dEUFpZbVBwVk92ZHo0?=
+ =?utf-8?B?MmdDUmNDZWVXZEFocDJXMy9hdkNSNzg1ZTF2M3BUdzh3dFNabTV2Snhvbkoy?=
+ =?utf-8?B?RFBZdFBJN2xFWGJuTDc2YU53UjB2QTRiM1hBeStRbXB3ZkZkNzhPSHZwYmJm?=
+ =?utf-8?B?SjhtT25rR2RJdXJCcTZhU1ZyMGdNUTU1ak0vd1A0VXJWVTFJbWZiblduTy9q?=
+ =?utf-8?B?YW0rV041MitUQzYrNGloalVOalA1SEI1RzZhOExZdmtSeWJGSFcwVmF6WXZD?=
+ =?utf-8?B?TDl1V2lIRytkWUVETndnN3BvUnZEMGhlYW5mZjRIRkY1OUptRTVWbXZzVTZW?=
+ =?utf-8?B?a0JkVloybVQwRkdLaEllWWV1VEZZMWwvWHA0ZUk4TitwcFhBUTdqTWhWdDJW?=
+ =?utf-8?B?bXJ5T0VmT0ZvM3lBQlRYRFQwVEtZZlQ3NVBKbjBVUUFVNnd0TDY4L3pKelBa?=
+ =?utf-8?B?TFdJUHlMT010U1ZBbFg1VmlJRWFFMlJ6OU5mWTFZY3psQ0xjYzhpTHpxdTht?=
+ =?utf-8?B?SWFlTW5iK0JETnRlZzNpcG9SWXYxcUxZL21JT1RXY01KOGtPRTBlKzFvNmJl?=
+ =?utf-8?B?MmF0TnJWRmhQRjF5ZTBudXUvNDB4WU93SUZKTnN4Y201dENWekFvK2RkWFov?=
+ =?utf-8?B?bnFlUHhFRTZHL3dYZXdrTkdTSlVTV0JpWkRqODJwT0phRXhsUWNHa29sSmJX?=
+ =?utf-8?B?Y3hJTVJlSXZteEFUVHJBUnNjM0VSZzM0M0JZdWpDanhEWWxqcGRXRC9BcmNY?=
+ =?utf-8?B?akljckFHUHo5MnVNK24xZ2NyWVZYNUNtMGc4cm94U3NJUDdqS3A5OXNLWXh4?=
+ =?utf-8?B?ajNxbFIvTUlWemlSS2N4MzFud1JGZUxKQ0t6b1MrYUI3S3A2UGxsQkN0dGVJ?=
+ =?utf-8?B?RzdYVWQ0ZjJGdFVYMmhGWUlVblZhaFV2TGMwa0h1ZW0vZk1IUUZmT05YaUQw?=
+ =?utf-8?B?ZlJabmlUZTV1ZWRDMlROUkFLZHZwOWNaYXdEdzJyMFJ2UDBhTXl2YzJ3Z3dl?=
+ =?utf-8?B?RjZuMWgwMWNrUlJPRzc5ZzcxZWVRYmIwSVFmRzhXMjRSRkNLUmNGV0I0TmFu?=
+ =?utf-8?B?UFNkOHBja0t1MUtLdGI3RTNYWUQ4VmZVcUs3ZFBUVzBlTlNFcWZ0MitZSmpY?=
+ =?utf-8?B?ODlmSHJNbGw5eDRHeHpWMC9sM21aUDkxUHlFUkp3b29JeU9tNThXNlBHSC8w?=
+ =?utf-8?B?dWtheVh0TjZVbGY4ZjVzRHEraWY1b24xdngwYWFlaGsvSCtURkhXQWltM3Fs?=
+ =?utf-8?B?VS9sK2sycWh4eW5wcGlsc2QrOFEzWVZtV3YycDJjL1lESE5DV3pqY1hSWXov?=
+ =?utf-8?B?Q1AxcU85KzNNRm00UEhZYnN1QkYrNk5OWG5rV1l0ZVFZK2pwa1pmNWo4WXNp?=
+ =?utf-8?B?NFVVSTJiaGs1TGtzZDdRdWcyVWF4dWxLTHVQRHBsRUpiZG9uU2FlOGZNY1Jl?=
+ =?utf-8?B?bzlEUU56elZXanZhZ3ZuVGs4SkJVM2tmaGhpQ2ZvSlJwMTdPTXpwZzB5THpu?=
+ =?utf-8?B?aENmeFhKbUVUODV1SmY4UDZnWlFXTkpkaVFiU3Fid3QwOXhOejBsVityZDJv?=
+ =?utf-8?Q?XYgAUcfjvPaew+smeZm/Yw4=3D?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ae6506bc-b69b-4af2-654c-08db164feea7
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8536.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DB3PR0402MB3852.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6b1b8c40-1229-43de-62d4-08db15f52acc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Feb 2023 23:24:53.1640
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2023 10:14:36.6794
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: wk1XHGqKAphDU5QRCzoyhqCN8WI6J9jWk124w1K85lX/gUc/8Bae2vKxXuAO3DwVKadHPlQwgVS5a/HdQJ1g6A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB8840
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VasEY6LqzRE+DIxIM5SN0/WRbLQD/ss6LDNv7F8m8YW+7sqONSuRRmrHhfIRsuxiwS4fQ7oaMHiOIFQ1MJVk1Jb7sIr0DL7kn7TaLA+AutKR51xRZ0G+oitm8Y+aT0s7
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB9709
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 Feb 2023 23:25:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3733
+ <docs@lists.yoctoproject.org>; Fri, 24 Feb 2023 10:14:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3734
 
-I agree. The problem I have with these variable names is that it's ambiguou=
-s whether the features will be included or excluded from the backfill. All =
-you can tell from the names is that the values were 'considered'. What does=
- that mean? You have to go to the manual to find the full meaning.
+Hi Fawzi,
 
-What's important about the variables is that they will be 'excluded' from t=
-he backfill, so this does look much clearer to me:
+On 2/23/23 11:36, Fawzi KHABER wrote:
+> Since release 4.1, the variable DEV_PKG_DEPENDENCY sets RRECOMMENDS unstead
+> of RDEPENDS for the -dev package on the main package, this change fix the
+> documentation the match the actual state
+> 
 
-	DISTRO_FEATURES_BACKFILL_EXCLUDED +=3D "some-feature"
+This is somewhat misleading.
 
-Is there a good reason why we have this separate variable and can't just do=
- this?
+DEV_PKG_DEPENDENCY was introduced in 4.1 and started by being used as 
+RDEPENDS but then migrated to RRECOMMENDS during the normal development 
+phase of the 4.1 release (before the first release actually).
 
-	DISTRO_FEATURES_BACKFILL:remove =3D "some-feature"
+Why it was important to me was to understand if we needed to backport 
+this to 4.1 release docs and maybe even earlier.
 
-Tom
+FWIW, the commit introducing the mechanism is:
+73cf55cdde1f ("bitbake.conf/recipes: Introduce add DEV_PKG_DEPENDENCY to 
+change RDEPENDS:${PN}-dev")
+and migrating to RRECOMMENDS:
+ddbd90a37c7e ("bitbake.conf: Change -dev RDEPENDS to RRECOMMENDS")
+(in poky).
 
------Original Message-----
-From: openembedded-core@lists.openembedded.org <openembedded-core@lists.ope=
-nembedded.org> On Behalf Of Michael Opdenacker via lists.openembedded.org
-Sent: Thursday, February 23, 2023 11:00 AM
-To: OE-core <openembedded-core@lists.openembedded.org>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: [OE-core] [DISTRO|MACHINE]_FEATURES_BACKFILL_CONSIDERED: confusing=
- variable names?
+In any case, the suggested change is correct, so
+Reviewed-by: Quentin Schulz <foss+yocto@0leil.net>
 
-Greetings
+@Michael, this is a candidate for langdale backport.
 
-Anybody else finding the DISTRO_FEATURES_BACKFILL_CONSIDERED and=20
-MACHINE_FEATURES_BACKFILL_CONSIDERED variable names confusing?
-
-According to the documentation about "feature backfilling"=20
-(https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fdocs.y=
-octoproject.org%2Fref-manual%2Ffeatures.html%23ref-features-backfill&data=
-=3D05%7C01%7Ctom.hochstein%40nxp.com%7Cf4e5b1f4523a469612dc08db15bf5d8e%7C6=
-86ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638127683879148065%7CUnknown%7CTW=
-FpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3=
-D%7C3000%7C%7C%7C&sdata=3D4i2IX0GpQlQXAh8Jausfvb2o1oF6MBZaU144KHKjcKg%3D&re=
-served=3D0),=20
-these variables allow to exclude some features from being backfilled.
-
-I'm not a native English speaker, but for me, "considered" carries the=20
-intention to include a feature, not to exclude one.
-
-Shouldn't we call these variables DISTRO_FEATURES_BACKFILL_EXCLUDED and=20
-MACHINE_FEATURES_BACKFILL_EXCLUDED instead ?
-
-Thanks in advance
-Cheers
-Michael.
-
---=20
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://eur01.safelinks.protection.outlook.com/?url=3Dhttps%3A%2F%2Fbootlin=
-.com%2F&data=3D05%7C01%7Ctom.hochstein%40nxp.com%7Cf4e5b1f4523a469612dc08db=
-15bf5d8e%7C686ea1d3bc2b4c6fa92cd99c5c301635%7C0%7C0%7C638127683879148065%7C=
-Unknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiL=
-CJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=3DS4rZtW35Uxk1ww8OkrPlCJdlI2FWgIpxHcq7P=
-Dq2M1o%3D&reserved=3D0
-
+Thanks,
+Quentin
 
