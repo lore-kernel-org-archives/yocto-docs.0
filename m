@@ -1,114 +1,85 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <rich@richelberger.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 263E1C7EE23
-	for <webhook@archiver.kernel.org>; Fri, 24 Feb 2023 21:33:43 +0000 (UTC)
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
- by mx.groups.io with SMTP id smtpd.web11.30927.1677274419559247760
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23E2DC6FA8E
+	for <webhook@archiver.kernel.org>; Sat, 25 Feb 2023 16:36:09 +0000 (UTC)
+Received: from a8-18.smtp-out.amazonses.com (a8-18.smtp-out.amazonses.com [54.240.8.18])
+ by mx.groups.io with SMTP id smtpd.web11.47256.1677342967968167333
  for <docs@lists.yoctoproject.org>;
- Fri, 24 Feb 2023 13:33:39 -0800
+ Sat, 25 Feb 2023 08:36:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=XClaAEVv;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.48, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f48.google.com with SMTP id bw19so456841wrb.13
-        for <docs@lists.yoctoproject.org>; Fri, 24 Feb 2023 13:33:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ugXRQyklcbTX8qhCgkuBrBhRFDLejPGUqHTH3SkV4E4=;
-        b=XClaAEVvS/u5Uc4QJtyYMcsnoWbfHj/j64ckDIZhd1NRyinf/ZMAAzaEzTluULtUv1
-         TVKW3iMVy8KmWDkDqmlI4J8+VZY8sy5rGkgsZqTKYey+u2FCIUftOCJKuZ4Mw1ULXz+K
-         6cMYkBkx2SV3UFbqyTX2ceWQ3VwkurXAKuVvM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ugXRQyklcbTX8qhCgkuBrBhRFDLejPGUqHTH3SkV4E4=;
-        b=uIsqnX0r6TBJQApOZFablSTmMkR/nYXiQnYnggH7SU0jX3cndrYuyEMZmqHGRJrhVh
-         H9FL2mxt9aOOkowgJSaT5WwBdJVBbISYVmQ4qR8jbG+Axk7sl9/Gt1Dg+1XTW7/iOMBb
-         M7N1y9iNzss32d+QH86UeII+fJcCcXUK+opye+nLSbS8mL2tkBdeqt2KNW0fTggvLco1
-         povbZIViRuh/e5NzgbmS5zJPgMZrjUoeUSk1rgjzTge+pLc+IR/PXnmf+5SP2iRCS98f
-         P//c9tnZcdqnL4QIOgn0V2vrcQtzvLJg0NrUjFEI4cSga94YqNxNpDANVwtdBRq12M0r
-         3cnw==
-X-Gm-Message-State: AO0yUKWJnSRNXDofplRRe5LlunP47gx4uLMO4jMH+7Z6WM+AfNKZkBXk
-	P8iItcciBouoiLJNjfXYJ3r4aA==
-X-Google-Smtp-Source: AK7set+sfq0mBwu/TpHWjDlDMSTICD1/liEVR0WB7UYqm2RvaN5jum2gWYBiopFiEKGOt+AvTRKDhA==
-X-Received: by 2002:a05:6000:189:b0:2c6:dbe7:1d8e with SMTP id p9-20020a056000018900b002c6dbe71d8emr13090134wrx.45.1677274417787;
-        Fri, 24 Feb 2023 13:33:37 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:e7ea:a56:22dd:5e1f? ([2001:8b0:aba:5f3c:e7ea:a56:22dd:5e1f])
-        by smtp.gmail.com with ESMTPSA id j24-20020a05600c1c1800b003e22508a343sm475957wms.12.2023.02.24.13.33.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Feb 2023 13:33:37 -0800 (PST)
-Message-ID: <8ddacda7563bc605bae4686733d3e8bf72f0f9ed.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] documentation: bitbake: add file-checksums to
- varflags section
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Richard Elberger <rich@richelberger.com>, 
-	"bitbake-devel@lists.openembedded.org"
-	 <bitbake-devel@lists.openembedded.org>
-Cc: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Date: Fri, 24 Feb 2023 21:33:35 +0000
-In-Reply-To: <010001868510232c-5929cc94-ce2e-4817-b311-3ea6f58a267c-000000@email.amazonses.com>
-References: <20230224201426.357606-1-rich@richelberger.com>
-	 <010001868510232c-5929cc94-ce2e-4817-b311-3ea6f58a267c-000000@email.amazonses.com>
-Content-Type: text/plain; charset="UTF-8"
+ dkim=pass header.i=@richelberger.com header.s=5u2mht5g5nbgnd5xxu4iibla5zobc5bd header.b=iTGNEoyy;
+ spf=pass (domain: amazonses.com, ip: 54.240.8.18, mailfrom: 01000186896e845c-37272abb-a04f-4c1e-87ef-c0007b322ca0-000000@amazonses.com)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=5u2mht5g5nbgnd5xxu4iibla5zobc5bd; d=richelberger.com;
+	t=1677342967;
+	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:References:Message-Id;
+	bh=nWAxN80icACbBKqKGZdCqNq37bH69WjmNodOp54erRs=;
+	b=iTGNEoyy23DuLzye6jJufeEiPHPfZwYG8aWV3kuT8NtumDq2ExpV2TdJ3uE2nnRu
+	dvmqCEYmdurjZUDJSk+4RY6hhtzwjPztmVJe8tWPd1m8eEZ2WY/BeFtLCuxBuKzOC1Y
+	cQWtovlFLSYWarClVcbBX9LbQxK1LGebCFMXfj68=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1677342967;
+	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:References:Message-Id:Feedback-ID;
+	bh=nWAxN80icACbBKqKGZdCqNq37bH69WjmNodOp54erRs=;
+	b=iWp+/OwLmYjoIYTF0vbEv3HLQJBsEwy0K2c66YFMt7rFWNo9GnJdcKEnl6s5OauK
+	2co9dXBvdwTGT2IyfgbzYwTQq6i7sRX1/4iaXAt7klQbX1afrjPUcsG6mLCFBAd6WYY
+	owBNipDRiZsMmFB63LP7VsaI7EdKaSRqinoCumlQ=
+Subject: [PATCH] documentation: bitbake: add file-checksums to varflags
+ section
+From: =?UTF-8?Q?Richard_Elberger?= <rich@richelberger.com>
+To: =?UTF-8?Q?bitbake-devel=40lists=2Eopenembedded=2Eorg?=
+  <bitbake-devel@lists.openembedded.org>
+Cc: =?UTF-8?Q?docs=40lists=2Eyoctoproject=2Eorg?=
+  <docs@lists.yoctoproject.org>, =?UTF-8?Q?Richard_Elberger?=
+  <rich@richelberger.com>
+Date: Sat, 25 Feb 2023 16:36:06 +0000
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.1-0ubuntu1 
-MIME-Version: 1.0
+References: <20230225163601.377422-1-rich@richelberger.com>
+X-Mailer: Amazon WorkMail
+Thread-Index: AQHZSTdAIrouy/VPT9qxy+VNpMFPdw==
+Thread-Topic: [PATCH] documentation: bitbake: add file-checksums to varflags
+ section
+X-Original-Mailer: git-send-email 2.34.1
+X-Wm-Sent-Timestamp: 1677342965
+Message-ID: <01000186896e845c-37272abb-a04f-4c1e-87ef-c0007b322ca0-000000@email.amazonses.com>
+Feedback-ID: 1.us-east-1.LF00NED762KFuBsfzrtoqw+Brn/qlF9OYdxWukAhsl8=:AmazonSES
+X-SES-Outgoing: 2023.02.25-54.240.8.18
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 Feb 2023 21:33:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3741
+ <docs@lists.yoctoproject.org>; Sat, 25 Feb 2023 16:36:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3742
 
-On Fri, 2023-02-24 at 20:14 +0000, Richard Elberger wrote:
-> Fixes [YOCTO #11605] by:
->=20
-> - Adding definition of file-checksums to Variable Flags section.
-> - Describe data to add to list which adds external file dependencies.
-> - Write example on usage to prepend a value to file-checksums list.
->=20
-> Signed-off-by: Richard Elberger <rich@richelberger.com>
-> ---
->  .../bitbake-user-manual-metadata.rst                  | 11 +++++++++++
->  1 file changed, 11 insertions(+)
->=20
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/d=
-oc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> index deb7afad..c2f0cad2 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-> @@ -1496,6 +1496,17 @@ functionality of the task:
->     directory listed is used as the current working directory for the
->     task.
-> =20
-> +- ``[file-checksums]``: Controls the file dependencies for a task. The
-> +  baseline file list is the set of files associated with
-> +  :term:`SRC_URI`. May be used to set additional dependencies on
-> +  files not associated with :term:`SRC_URI`.
-> +
-> +  The value set to the list is a pair where the first value is the
-> +  file name and the second is whether or not it physically exists on
-> +  the filesystem. ::
-> +
-> +    do_configure[file-checksums] +=3D "${MY_DIRPATH}/my-file.txt:True"
-> +
-
-Thanks, this is good to document. We should probably add that:
-
-"""
-It is important to record any paths which the task looked at and which
-didn't exist. This means that if these do exist at a later time, the
-task can be rerun with the new additional files. The "exists" True or
-False value after the path allows this to be handled.
-"""
-
-Cheers,
-
-Richard
-
+Fixes [YOCTO #11605] by:=0D=0A=0D=0A- Adding definition of file-checksums=
+ to Variable Flags section.=0D=0A- Describe data to add to list which add=
+s external file dependencies.=0D=0A- Write example on usage to prepend a =
+value to file-checksums list.=0D=0A=0D=0ASigned-off-by: Richard Elberger =
+<rich@richelberger.com>=0D=0A---=0D=0A .../bitbake-user-manual-metadata.r=
+st            | 17 +++++++++++++++++=0D=0A 1 file changed, 17 insertions(=
++)=0D=0A=0D=0Adiff --git a/doc/bitbake-user-manual/bitbake-user-manual-me=
+tadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst=0D=0A=
+index deb7afad..ba8129af 100644=0D=0A--- a/doc/bitbake-user-manual/bitbak=
+e-user-manual-metadata.rst=0D=0A+++ b/doc/bitbake-user-manual/bitbake-use=
+r-manual-metadata.rst=0D=0A@@ -1496,6 +1496,23 @@ functionality of the ta=
+sk:=0D=0A    directory listed is used as the current working directory fo=
+r the=0D=0A    task.=0D=0A=20=0D=0A+- ``[file-checksums]``: Controls the =
+file dependencies for a task. The=0D=0A+  baseline file list is the set o=
+f files associated with=0D=0A+  :term:`SRC_URI`. May be used to set addit=
+ional dependencies on=0D=0A+  files not associated with :term:`SRC_URI`.=0D=
+=0A+=0D=0A+  The value set to the list is a file-boolean pair where the f=
+irst=0D=0A+  value is the file name and the second is whether or not it=0D=
+=0A+  physically exists on the filesystem. ::=0D=0A+=0D=0A+    do_configu=
+re[file-checksums] +=3D "${MY_DIRPATH}/my-file.txt:True"=0D=0A+=0D=0A+  I=
+t is important to record any paths which the task looked at and=0D=0A+  w=
+hich didn't exist. This means that if these do exist at a later=0D=0A+  t=
+ime, the task can be rerun with the new additional files. The=0D=0A+  "ex=
+ists" True or False value after the path allows this to be=0D=0A+  handle=
+d.=0D=0A+=0D=0A -  ``[lockfiles]``: Specifies one or more lockfiles to lo=
+ck while the=0D=0A    task executes. Only one task may hold a lockfile, a=
+nd any task that=0D=0A    attempts to lock an already locked file will bl=
+ock until the lock is=0D=0A--=20=0D=0A2.34.1=0D=0A=0D=0A
 
