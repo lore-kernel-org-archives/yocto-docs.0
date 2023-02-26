@@ -1,69 +1,83 @@
-Return-Path: <rich@richelberger.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CE1AC64EC7
-	for <webhook@archiver.kernel.org>; Sat, 25 Feb 2023 16:36:59 +0000 (UTC)
-Received: from a48-178.smtp-out.amazonses.com (a48-178.smtp-out.amazonses.com [54.240.48.178])
- by mx.groups.io with SMTP id smtpd.web10.47165.1677343010355715950
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D09AC64ED6
+	for <webhook@archiver.kernel.org>; Sun, 26 Feb 2023 12:09:05 +0000 (UTC)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+ by mx.groups.io with SMTP id smtpd.web10.64142.1677413334813547992
  for <docs@lists.yoctoproject.org>;
- Sat, 25 Feb 2023 08:36:50 -0800
+ Sun, 26 Feb 2023 04:08:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@richelberger.com header.s=5u2mht5g5nbgnd5xxu4iibla5zobc5bd header.b=nneLkN79;
- spf=pass (domain: amazonses.com, ip: 54.240.48.178, mailfrom: 01000186896f2981-96e1cb88-396f-45d3-adb6-386dacf207ce-000000@amazonses.com)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=5u2mht5g5nbgnd5xxu4iibla5zobc5bd; d=richelberger.com;
-	t=1677343009;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id;
-	bh=b18VPZfHSp7xcbYVksIYKqrXz3i/WDpLzbC3t2NyV0s=;
-	b=nneLkN79Rp/33s9VOmzMlwE+QkWUbVwxflHJ27Yz/52/UucGvaWusQagnHK8qDbX
-	YBr3UURHCkUMTXsSmT8fZ6Ok4JJ+PTJKUQxahD3CMFudMyyl01Q7TPQKH12imWcaza5
-	UvCAdmxRTqzSKuBL+sd2HW34qng2xoOzvIzhveng=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
-	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1677343009;
-	h=Subject:From:To:Cc:Date:Mime-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:References:Message-Id:Feedback-ID;
-	bh=b18VPZfHSp7xcbYVksIYKqrXz3i/WDpLzbC3t2NyV0s=;
-	b=KHj79T3uYLGPcWwuzyLFOj3KLIclCQBTIiFTxwcURdoX6rloO0xwHYBMum9C9yEZ
-	PBl/3/BDVLMZwuinZT+vicmUgfQBxeSVuj6qGS+mJDm6XfXqgBjpocdDa7LfBP/CvcT
-	DuUjQhVX9TAh6JJPTa8EeGnpQ4Lo4qHBa4ZdYc7o=
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=g9zjd+Eo;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.54, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f54.google.com with SMTP id j2so3492779wrh.9
+        for <docs@lists.yoctoproject.org>; Sun, 26 Feb 2023 04:08:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mkvkUnV43m6JTfUskvORGohmEcjwdvhdAI56qa1QOp8=;
+        b=g9zjd+Eo0Tbj45ZBVDN+PQ4EPNfH3FIFaRkYNML/jo6TJCKORnnJyaXLNY4wsR3c3Z
+         5bqncnbe0z6luv7XrY8BR+kWfEMvZwd+YRswKzJid5c4l/lssGmNb3hpRHcnON05Hr4n
+         AUkdr7duvZJ9dHR1xEsduRsU1w+2cgshwqk8M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mkvkUnV43m6JTfUskvORGohmEcjwdvhdAI56qa1QOp8=;
+        b=QL5GSvLqZI7XL4gJ10y9xsgh93R1uCCXT1wKeRii/SguxzoaP3ikqCfgVxrEwu6kVJ
+         ZLzRzhYJICD4RjkdFvQjb8ENyNGbdB2JVzxheOQy0NCMlfYV4ZBE1gsp2V6JJl+E696i
+         mJH2GjwexWmTvHpgolU+ZILkzuxPIvRmH2C+yM2uCTSmpmp8mzqd2PnQDne+trR+gHZs
+         jmS7QfRepqz+6hF/xcFeubS+hGe1ONFMKl0TxDT2/IXjISBM67IPVSB5sYaC2uzHrxWR
+         wa4XPjDkDRSYywvlm7ifFa5XMbDTxiVJq9Qdfw4ve2tyo8PfYpvuKk8gLJzKafIhBTkx
+         NuVA==
+X-Gm-Message-State: AO0yUKW0+nKnlVAL2RH1aRhva4ga4nymDC8L/GkPJCqdw+0Zq5JEzBOS
+	QIWevQ3UAoE1M5eosTszSlj2JQ==
+X-Google-Smtp-Source: AK7set9iKYx/vSAYYxqxOugNOe9hEAoKFDNMcumfkrCW3SI2k8XErWTj+RpffTlKe+VM75G7B3tbag==
+X-Received: by 2002:adf:fbca:0:b0:2c5:899f:3412 with SMTP id d10-20020adffbca000000b002c5899f3412mr17236658wrs.26.1677413333166;
+        Sun, 26 Feb 2023 04:08:53 -0800 (PST)
+Received: from ?IPv6:2001:8b0:aba:5f3c:acca:18ee:3f6:d4ed? ([2001:8b0:aba:5f3c:acca:18ee:3f6:d4ed])
+        by smtp.gmail.com with ESMTPSA id f7-20020adffcc7000000b002c7163660a9sm4327832wrs.105.2023.02.26.04.08.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Feb 2023 04:08:52 -0800 (PST)
+Message-ID: <41b18bac009eb26cfbbccc4e179feabab0ebef53.camel@linuxfoundation.org>
 Subject: Re: [docs] [PATCH] documentation: bitbake: add file-checksums to
  varflags section
-From: =?UTF-8?Q?Richard_Elberger?= <rich@richelberger.com>
-To: =?UTF-8?Q?Richard_Purdie?= <richard.purdie@linuxfoundation.org>, 
- =?UTF-8?Q?bitbake-devel=40lists=2Eopenembedded=2Eorg?=
-  <bitbake-devel@lists.openembedded.org>
-Cc: =?UTF-8?Q?docs=40lists=2Eyoctoproject=2Eorg?=
-  <docs@lists.yoctoproject.org>
-Date: Sat, 25 Feb 2023 16:36:49 +0000
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-In-Reply-To: 
- <8ddacda7563bc605bae4686733d3e8bf72f0f9ed.camel@linuxfoundation.org>
-References: <20230224201426.357606-1-rich@richelberger.com> 
- <010001868510232c-5929cc94-ce2e-4817-b311-3ea6f58a267c-000000@email.amazonses.com> 
- <8ddacda7563bc605bae4686733d3e8bf72f0f9ed.camel@linuxfoundation.org> 
- <169ccc6a-513e-88a0-b2e8-1c74b3aa2b5d@richelberger.com>
-X-Mailer: Amazon WorkMail
-Thread-Index: AQHZSIyaIxX+jF56Q0uWGR6i9QqucAACxEWBACqwIsI=
-Thread-Topic: [docs] [PATCH] documentation: bitbake: add file-checksums to
- varflags section
-X-Wm-Sent-Timestamp: 1677343008
-Message-ID: <01000186896f2981-96e1cb88-396f-45d3-adb6-386dacf207ce-000000@email.amazonses.com>
-Feedback-ID: 1.us-east-1.LF00NED762KFuBsfzrtoqw+Brn/qlF9OYdxWukAhsl8=:AmazonSES
-X-SES-Outgoing: 2023.02.25-54.240.48.178
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Richard Elberger <rich@richelberger.com>, 
+	"bitbake-devel@lists.openembedded.org"
+	 <bitbake-devel@lists.openembedded.org>
+Cc: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+Date: Sun, 26 Feb 2023 12:08:52 +0000
+In-Reply-To: <01000186896f2981-96e1cb88-396f-45d3-adb6-386dacf207ce-000000@email.amazonses.com>
+References: <20230224201426.357606-1-rich@richelberger.com>
+	  <010001868510232c-5929cc94-ce2e-4817-b311-3ea6f58a267c-000000@email.amazonses.com>
+	  <8ddacda7563bc605bae4686733d3e8bf72f0f9ed.camel@linuxfoundation.org>
+	  <169ccc6a-513e-88a0-b2e8-1c74b3aa2b5d@richelberger.com>
+	 <01000186896f2981-96e1cb88-396f-45d3-adb6-386dacf207ce-000000@email.amazonses.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.1-0ubuntu1 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 25 Feb 2023 16:36:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3743
+ <docs@lists.yoctoproject.org>; Sun, 26 Feb 2023 12:09:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3744
 
-Hello Richard, I have added this, amended the commit, and sent through 
-another patch.
+On Sat, 2023-02-25 at 16:36 +0000, Richard Elberger wrote:
+> Hello Richard, I have added this, amended the commit, and sent through=
+=20
+> another patch.
 
-On 2/24/23 16:33, Richard Purdie wrote:
-> It is important to record any paths which the task looked at and which
-> didn't exist. This means that if these do exist at a later time, the
-> task can be rerun with the new additional files. The "exists" True or
-> False value after the path allows this to be handled.
+Thanks! I've merged it. If there are other tweaks others want to
+make/add we can build on this incrementally, it is great to get it
+documented.
+
+Cheers,
+
+Richard
 
