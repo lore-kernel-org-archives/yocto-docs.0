@@ -2,90 +2,260 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7087C7EE32
-	for <webhook@archiver.kernel.org>; Tue, 28 Feb 2023 13:03:18 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.22572.1677589397818557199
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D0E4C64EC7
+	for <webhook@archiver.kernel.org>; Tue, 28 Feb 2023 18:08:40 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.31364.1677607719252673899
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Feb 2023 05:03:18 -0800
+ Tue, 28 Feb 2023 10:08:39 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KDX/N0Yo;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=F6EUSBEX;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 03B3F1BF20F;
-	Tue, 28 Feb 2023 13:03:14 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id C8DB06000A;
+	Tue, 28 Feb 2023 18:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1677589395;
+	t=1677607717;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EihpzTmjh5iqx/ARUYoJ9JGLuZYei2esySLY5irGm68=;
-	b=KDX/N0YoGrII2gVMqzTH/9iANpHIiCBZiiqQjIdiku+Vk8lXO7bv4OUzUBgavAjDoagCDH
-	nNUFKRjKxe7KfEE8yLyl8Ac2ZCTQ8KLnFzJNQ0SVyneNrVh5eS47jddyhA72vwBZrGn6vv
-	EmaJ7KXlMx/1NUWkQ82nmQcAF9texI59rhB3ATt0tFuzDPM96mCmFLPMF1Nma9H/UXOc8M
-	1qCE7F/i9H1/kvsp6w095dfCA2Zqjd5VaYVrpyRrQmNQE83ZV+ga3L8mzkGe+T8ihAs2C6
-	1D7Co9cjqFTnT1NyA/8bJBmLigHtfcchjpc9M5RAWRxKTIfaACEz7tiS6GqXKw==
-Message-ID: <7c984573-9a10-eeda-e76d-fba06a64d032@bootlin.com>
-Date: Tue, 28 Feb 2023 14:03:14 +0100
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ez9nycSD+DXaJqJlRcbmpUuj3ceaKY+Ot2rA+vZc8Ho=;
+	b=F6EUSBEX6GyiqTxxgcpkj7lF8rwebNU6FkCjd356ucVZyMyirWyDHjUgdShkEWyqR9p46k
+	ti/wZx4bkfqT2xw+rzeojLzbRiCqfhCU9t2hDNX+/uT0LnAjXrFJKtwFrMB1xsQ7nxeznu
+	nwZrWb4n/itB5hVQy5qQgRxiU4ktCR0jvrOgB4xKzjjeZ0cm4VblzfImdTIvlrLAbaDxrN
+	/soMZumI7/tu2sGI2ZgAQCt5RyK2HIkab+u1S+ILwu1WUXFtf+DxDqU6Vvr/4kHkDOTDSG
+	WO8QfU9tVvhLtkuh62lEGbUniK5OXKCNc509tS79DdZ99U1kyJjnQkanPskV+w==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: clarify explanations about feature backfilling
+Date: Tue, 28 Feb 2023 19:08:34 +0100
+Message-Id: <20230228180834.359270-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] dev-manual: simplify references within the same
- document
-Content-Language: en-US
-To: quentin.schulz@theobroma-systems.com
-References: <20230227150137.271106-1-michael.opdenacker@bootlin.com>
- <6a26afbf-3669-bcb3-5add-e9e5c38a09f9@theobroma-systems.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <6a26afbf-3669-bcb3-5add-e9e5c38a09f9@theobroma-systems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Feb 2023 13:03:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3756
+ <docs@lists.yoctoproject.org>; Tue, 28 Feb 2023 18:08:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3757
 
-Hi Quentin
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 28.02.23 at 12:15, Quentin Schulz via lists.yoctoproject.org wrote:
-> Hi Michael,
->
-> On 2/27/23 16:01, Michael Opdenacker via lists.yoctoproject.org wrote:
->> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>
->> Replace :ref:`path/docname.rst:section title`
->> by `section title`_, which is much more compact and
->> doesn't need changing when you change the document file name.
->>
->> There are drawbacks though:
->>
->> - There are no warnings at compile time when the trailing
->>    `_` character is omitted. You just get plain italic text
->>    without a link. However, you do get an error if `_` is
->>    present and the text doesn't correspond to an existing target.
->>
->> - The capitalization of the link text doesn't necessarily
->>    match the one in the target. You get the capitalization that you
->>    specify in the text between quotes (target matching is
->>    case insensitive).
->>
->
-> Does it also detect when a link is broken because the section got 
-> renamed or removed?
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/ref-manual/classes.rst   |  5 +-
+ documentation/ref-manual/features.rst  | 92 ++++++++++++--------------
+ documentation/ref-manual/variables.rst | 50 +++++++++-----
+ 3 files changed, 78 insertions(+), 69 deletions(-)
 
-
-Yes, the references to the section will be broken, causing an error when 
-building the docs.
-Cheers
-Michael.
-
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 7ff0fcb335..e8dec31b00 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -858,8 +858,9 @@ introspection. This functionality is only enabled if the
+ 
+ .. note::
+ 
+-   This functionality is backfilled by default and, if not applicable,
+-   should be disabled through :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED` or
++   This functionality is :ref:`backfilled <ref-features-backfill>` by default
++   and, if not applicable, should be disabled through
++   :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED` or
+    :term:`MACHINE_FEATURES_BACKFILL_CONSIDERED`, respectively.
+ 
+ .. _ref-classes-grub-efi:
+diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
+index 051bf9320a..5a064329f1 100644
+--- a/documentation/ref-manual/features.rst
++++ b/documentation/ref-manual/features.rst
+@@ -6,7 +6,7 @@ Features
+ 
+ This chapter provides a reference of shipped machine and distro features
+ you can include as part of your image, a reference on image features you
+-can select, and a reference on feature backfilling.
++can select, and a reference on :ref:`ref-features-backfill`.
+ 
+ Features provide a mechanism for working out which packages should be
+ included in the generated images. Distributions can select which
+@@ -416,58 +416,50 @@ these valid features is as follows:
+ Feature Backfilling
+ ===================
+ 
+-Sometimes it is necessary in the OpenEmbedded build system to extend
+-:term:`MACHINE_FEATURES` or
+-:term:`DISTRO_FEATURES` to control functionality
+-that was previously enabled and not able to be disabled. For these
+-cases, we need to add an additional feature item to appear in one of
+-these variables, but we do not want to force developers who have
+-existing values of the variables in their configuration to add the new
+-feature in order to retain the same overall level of functionality.
+-Thus, the OpenEmbedded build system has a mechanism to automatically
+-"backfill" these added features into existing distro or machine
++Sometimes it is necessary in the OpenEmbedded build system to
++add new functionality to :term:`MACHINE_FEATURES` or
++:term:`DISTRO_FEATURES`, but at the same time, allow existing
++distributions or machine definitions to opt out of such new
++features, to retain the same overall level of functionality.
++
++To make this possible, the OpenEmbedded build system has a mechanism to
++automatically "backfill" features into existing distro or machine
+ configurations. You can see the list of features for which this is done
+-by finding the
+-:term:`DISTRO_FEATURES_BACKFILL` and
+-:term:`MACHINE_FEATURES_BACKFILL`
+-variables in the ``meta/conf/bitbake.conf`` file.
+-
+-Because such features are backfilled by default into all configurations
+-as described in the previous paragraph, developers who wish to disable
+-the new features need to be able to selectively prevent the backfilling
+-from occurring. They can do this by adding the undesired feature or
+-features to the
++by checking the :term:`DISTRO_FEATURES_BACKFILL` and
++:term:`MACHINE_FEATURES_BACKFILL` variables in the
++``meta/conf/bitbake.conf`` file.
++
++These two variables are paired with the
+ :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED`
+-or
+-:term:`MACHINE_FEATURES_BACKFILL_CONSIDERED`
+-variables for distro features and machine features respectively.
+-
+-Here are two examples to help illustrate feature backfilling:
+-
+--  *The "pulseaudio" distro feature option*: Previously, PulseAudio
+-   support was enabled within the Qt and GStreamer frameworks. Because
+-   of this, the feature is backfilled and thus enabled for all distros
+-   through the :term:`DISTRO_FEATURES_BACKFILL` variable in the
+-   ``meta/conf/bitbake.conf`` file. However, your distro needs to
+-   disable the feature. You can disable the feature without affecting
+-   other existing distro configurations that need PulseAudio support by
+-   adding "pulseaudio" to :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED` in
+-   your distro's ``.conf`` file. Adding the feature to this variable
+-   when it also exists in the :term:`DISTRO_FEATURES_BACKFILL` variable
+-   prevents the build system from adding the feature to your
+-   configuration's :term:`DISTRO_FEATURES`, effectively disabling the
+-   feature for that particular distro.
++and :term:`MACHINE_FEATURES_BACKFILL_CONSIDERED` variables
++which allow distro or machine configuration maintainers to `consider` any
++added feature, and decide when they wish to keep or exclude such feature,
++thus preventing the backfilling from happening.
++
++Here are two examples to illustrate feature backfilling:
++
++-  *The "pulseaudio" distro feature option*: Previously, PulseAudio support was
++   enabled within the Qt and GStreamer frameworks. Because of this, the feature
++   is now backfilled and thus enabled for all distros through the
++   :term:`DISTRO_FEATURES_BACKFILL` variable in the ``meta/conf/bitbake.conf``
++   file. However, if your distro needs to disable the feature, you can do so
++   without affecting other existing distro configurations that need PulseAudio
++   support. You do this by adding "pulseaudio" to
++   :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED` in your distro's ``.conf``
++   file. So, adding the feature to this variable when it also exists in the
++   :term:`DISTRO_FEATURES_BACKFILL` variable prevents the build system from
++   adding the feature to your configuration's :term:`DISTRO_FEATURES`,
++   effectively disabling the feature for that particular distro.
+ 
+ -  *The "rtc" machine feature option*: Previously, real time clock (RTC)
+    support was enabled for all target devices. Because of this, the
+    feature is backfilled and thus enabled for all machines through the
+-   :term:`MACHINE_FEATURES_BACKFILL` variable in the
+-   ``meta/conf/bitbake.conf`` file. However, your target device does not
+-   have this capability. You can disable RTC support for your device
+-   without affecting other machines that need RTC support by adding the
+-   feature to your machine's :term:`MACHINE_FEATURES_BACKFILL_CONSIDERED`
+-   list in the machine's ``.conf`` file. Adding the feature to this
+-   variable when it also exists in the :term:`MACHINE_FEATURES_BACKFILL`
+-   variable prevents the build system from adding the feature to your
+-   configuration's :term:`MACHINE_FEATURES`, effectively disabling RTC
+-   support for that particular machine.
++   :term:`MACHINE_FEATURES_BACKFILL` variable in the ``meta/conf/bitbake.conf``
++   file. However, if your target device does not have this capability, you can
++   disable RTC support for your device without affecting other machines
++   that need RTC support. You do this by adding the "rtc" feature to the
++   :term:`MACHINE_FEATURES_BACKFILL_CONSIDERED` list in your machine's ``.conf``
++   file. So, adding the feature to this variable when it also exists in the
++   :term:`MACHINE_FEATURES_BACKFILL` variable prevents the build system from
++   adding the feature to your configuration's :term:`MACHINE_FEATURES`,
++   effectively disabling RTC support for that particular machine.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 9b581599e3..2e32e264db 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -2111,19 +2111,27 @@ system and gives an overview of their function and contents.
+       provide with this variable, see the ":ref:`ref-features-distro`" section.
+ 
+    :term:`DISTRO_FEATURES_BACKFILL`
+-      Features to be added to :term:`DISTRO_FEATURES` if not also present in
+-      :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED`.
++      A space-separated list of features to be added to :term:`DISTRO_FEATURES`
++      if not also present in :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED`.
+ 
+       This variable is set in the ``meta/conf/bitbake.conf`` file. It is
+       not intended to be user-configurable. It is best to just reference
+-      the variable to see which distro features are being backfilled for
+-      all distro configurations. See the ":ref:`ref-features-backfill`" section
+-      for more information.
++      the variable to see which distro features are being
++      :ref:`backfilled <ref-features-backfill>` for all distro configurations.
+ 
+    :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED`
+-      Features from :term:`DISTRO_FEATURES_BACKFILL` that should not be
+-      backfilled (i.e. added to :term:`DISTRO_FEATURES`) during the build. See
+-      the ":ref:`ref-features-backfill`" section for more information.
++      A space-separated list of features from :term:`DISTRO_FEATURES_BACKFILL`
++      that should not be :ref:`backfilled <ref-features-backfill>` (i.e. added
++      to :term:`DISTRO_FEATURES`) during the build.
++
++      This corresponds to an opt-out mechanism. When new default distro
++      features are introduced, distribution maintainers can review (`consider`)
++      them and decide to exclude them from the
++      :ref:`backfilled <ref-features-backfill>` features. Therefore, the
++      combination of :term:`DISTRO_FEATURES_BACKFILL` and
++      :term:`DISTRO_FEATURES_BACKFILL_CONSIDERED` makes it possible to
++      add new default features without breaking existing distributions.
++
+ 
+    :term:`DISTRO_FEATURES_DEFAULT`
+       A convenience variable that gives you the default list of distro
+@@ -5129,19 +5137,27 @@ system and gives an overview of their function and contents.
+       shipped, see the ":ref:`ref-features-machine`" section.
+ 
+    :term:`MACHINE_FEATURES_BACKFILL`
+-      Features to be added to :term:`MACHINE_FEATURES` if not also present in
++      A list of space-separated features to be added to
++      :term:`MACHINE_FEATURES` if not also present in
+       :term:`MACHINE_FEATURES_BACKFILL_CONSIDERED`.
+ 
+-      This variable is set in the ``meta/conf/bitbake.conf`` file. It is
+-      not intended to be user-configurable. It is best to just reference
+-      the variable to see which machine features are being backfilled for
+-      all machine configurations. See the ":ref:`ref-features-backfill`"
+-      section for more information.
++      This variable is set in the ``meta/conf/bitbake.conf`` file. It is not
++      intended to be user-configurable. It is best to just reference the
++      variable to see which machine features are being
++      :ref:`backfilled <ref-features-backfill>` for all machine configurations.
+ 
+    :term:`MACHINE_FEATURES_BACKFILL_CONSIDERED`
+-      Features from :term:`MACHINE_FEATURES_BACKFILL` that should not be
+-      backfilled (i.e. added to :term:`MACHINE_FEATURES`) during the build. See
+-      the ":ref:`ref-features-backfill`" section for more information.
++      A list of space-separated features from :term:`MACHINE_FEATURES_BACKFILL`
++      that should not be :ref:`backfilled <ref-features-backfill>` (i.e. added
++      to :term:`MACHINE_FEATURES`) during the build.
++
++      This corresponds to an opt-out mechanism. When new default machine
++      features are introduced, machine definition maintainers can review
++      (`consider`) them and decide to exclude them from the
++      :ref:`backfilled <ref-features-backfill>` features. Therefore, the
++      combination of :term:`MACHINE_FEATURES_BACKFILL` and
++      :term:`MACHINE_FEATURES_BACKFILL_CONSIDERED` makes it possible to
++      add new default features without breaking existing machine definitions.
+ 
+    :term:`MACHINEOVERRIDES`
+       A colon-separated list of overrides that apply to the current
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.37.2
 
 
