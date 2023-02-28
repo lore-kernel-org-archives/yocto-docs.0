@@ -2,48 +2,60 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D0E4C64EC7
-	for <webhook@archiver.kernel.org>; Tue, 28 Feb 2023 18:08:40 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.31364.1677607719252673899
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 74688C64ED6
+	for <webhook@archiver.kernel.org>; Tue, 28 Feb 2023 18:12:50 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web11.31493.1677607966106553003
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Feb 2023 10:08:39 -0800
+ Tue, 28 Feb 2023 10:12:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=F6EUSBEX;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cJJ4e2Mo;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id C8DB06000A;
-	Tue, 28 Feb 2023 18:08:36 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 943D8240003;
+	Tue, 28 Feb 2023 18:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1677607717;
+	t=1677607964;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=ez9nycSD+DXaJqJlRcbmpUuj3ceaKY+Ot2rA+vZc8Ho=;
-	b=F6EUSBEX6GyiqTxxgcpkj7lF8rwebNU6FkCjd356ucVZyMyirWyDHjUgdShkEWyqR9p46k
-	ti/wZx4bkfqT2xw+rzeojLzbRiCqfhCU9t2hDNX+/uT0LnAjXrFJKtwFrMB1xsQ7nxeznu
-	nwZrWb4n/itB5hVQy5qQgRxiU4ktCR0jvrOgB4xKzjjeZ0cm4VblzfImdTIvlrLAbaDxrN
-	/soMZumI7/tu2sGI2ZgAQCt5RyK2HIkab+u1S+ILwu1WUXFtf+DxDqU6Vvr/4kHkDOTDSG
-	WO8QfU9tVvhLtkuh62lEGbUniK5OXKCNc509tS79DdZ99U1kyJjnQkanPskV+w==
+	bh=MqBcsvVyB6xYXmrUhWJEopDh3X+HTT6FRz61WrZlZ1g=;
+	b=cJJ4e2MoADb3T+hJ0o8c491Yv6sgLNm5fmbr/lv7NfpBKf593nDdFy9gRCnguxVTvuQ6aI
+	EArGqd1boUb6tfxLUyJh2TSkMMuqLUxX+4BUB/GZh+Pbemhnmwqo0zW/foswF5d1UNNY/4
+	ufL3gU92eCV/O7r7AgJ+efLZTsaYWDfZA/zH+J0Rsp15udxYm9r5QT3FFQ851Q2rB13p1Q
+	UzrphIrJeSWE3axcQ+yi7Nd0HHcPVieSvIg8NogWIWsaUZIslSlrdLzwSgw8CnsvjdaiKC
+	+Qu47hTr2tuO9pGAGrW7zeRUX9wSdRT3N3aq8AvnE43iTZeL5qYAr+9ZHy4BJg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: clarify explanations about feature backfilling
-Date: Tue, 28 Feb 2023 19:08:34 +0100
-Message-Id: <20230228180834.359270-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Joshua Watt <JPEWhacker@gmail.com>,
+	Martin Jansa <martin.jansa@gmail.com>,
+	Tom Hochstein <tom.hochstein@nxp.com>,
+	Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: [PATCH RESEND] ref-manual: clarify explanations about feature backfilling
+Date: Tue, 28 Feb 2023 19:12:38 +0100
+Message-Id: <20230228181238.359651-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Feb 2023 18:08:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3757
+ <docs@lists.yoctoproject.org>; Tue, 28 Feb 2023 18:12:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3758
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: Joshua Watt <JPEWhacker@gmail.com>
+CC: Martin Jansa <martin.jansa@gmail.com>
+CC: Tom Hochstein <tom.hochstein@nxp.com>
+CC: Richard Purdie <richard.purdie@linuxfoundation.org>
 ---
+
+ Resend to CC the people who contributed to the discussion
+ about the corresponding variables.
+
  documentation/ref-manual/classes.rst   |  5 +-
  documentation/ref-manual/features.rst  | 92 ++++++++++++--------------
  documentation/ref-manual/variables.rst | 50 +++++++++-----
