@@ -2,238 +2,112 @@ Return-Path: <fawzi.khaber@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CEE95C7EE2D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0109C7EE2F
 	for <webhook@archiver.kernel.org>; Wed,  1 Mar 2023 13:16:37 +0000 (UTC)
 Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
  by mx.groups.io with SMTP id smtpd.web10.21406.1677676590387427406
  for <docs@lists.yoctoproject.org>;
- Wed, 01 Mar 2023 05:16:32 -0800
+ Wed, 01 Mar 2023 05:16:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile-fr.20210112.gappssmtp.com header.s=20210112 header.b=bfrO2DCX;
+ dkim=pass header.i=@smile-fr.20210112.gappssmtp.com header.s=20210112 header.b=6/xM34MV;
  spf=pass (domain: smile.fr, ip: 209.85.128.48, mailfrom: fawzi.khaber@smile.fr)
-Received: by mail-wm1-f48.google.com with SMTP id l7-20020a05600c4f0700b003e79fa98ce1so7816905wmq.2
-        for <docs@lists.yoctoproject.org>; Wed, 01 Mar 2023 05:16:31 -0800 (PST)
+Received: by mail-wm1-f48.google.com with SMTP id l7-20020a05600c4f0700b003e79fa98ce1so7816829wmq.2
+        for <docs@lists.yoctoproject.org>; Wed, 01 Mar 2023 05:16:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=smile-fr.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b5rgUVN07dYAZY06UcmRJM86fgvbypHFrlUlOcE2ZLY=;
-        b=bfrO2DCXcXGoGKtmkMScwdoJQLSPKTDLouEYOC9VwJED8HZVRt5VkTu6EX9013Ku9u
-         MoO/GitqzEQIIp+rcUCRydqIFBKvPkRx54fuQncSZdIShxa+olEtSq32C6QLWVj3iKMC
-         tn0qqUm+jq+gpCqw3IhAvlMWOgnzgyeJMgC6AFHgDHaZytJGH27qxprEnORujeCUKFzL
-         ybQ+8fdjCHEuHQjRfS1C+a6v9jTItUycEGilHLhYcOlIPcLuwROl++i72Si2OELbqtXR
-         N+0l3pbdxOkwQPC67ealRPFtq55aYiaYnrpsTvMbEwwR/iZ7DCb36dEpVYu6hJOc9UEo
-         laJA==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/0918a1DQgyOeWZBSQNtzuEK/5MPQVE8DO3uJsPDtfQ=;
+        b=6/xM34MVYbDaPSeamRw+4J9iolhJtylqL4lsybS8s80How+KZTFeYccbdNmhQkbgfF
+         CrcQMlCcrIrgdFeRXYbATI8Tt1Jyl94KB1Y0umFLeJTqIs+VFGEaTeBmAVGfSwLy7V7v
+         8NEhyeMdlfpjOT5OboHh4iRgasGOTI09TxoxgyjWGPBZowQLwCoiYlpZ8sOIvpIrk87J
+         G6sJKOobUfyEqTtfV7NpKLbJaXkB8yhuDI5UvRBGQ319MXajap3O3RSKzZkeZs4dIyiD
+         MKju0cTMRgy1GyX9IIs+HEqn4j/Yol1LLymIGoBBteATmAKsCqsl3WhMXiK9dqkcjEc0
+         Gxiw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b5rgUVN07dYAZY06UcmRJM86fgvbypHFrlUlOcE2ZLY=;
-        b=CNXiNCR5jihCK9TvKC7H7qETWqZPf+8cazC/La4uOIx2CV42OQWko/ETUELSokoD6L
-         X3ElQRl0yUN+rUehmM7BT68bSwJtPnl1POYrK7wO12JSjzUKQLlXiHzMuDNiWj3fjj6I
-         nVy9ITzzE/wyxyBLpLHnmZjeXNX22D1oJpLGWwq40/zu/IDp7CjQOWXX54rPhauJ8qjQ
-         jGwDLGLfXVOFNoNw3tkh6qV0mKnvIZsu0JlQiDbw/qfdYlJcXHbDfbsvqqpOMfVFmu1z
-         XrwfIW7KITRSUw3nwohMy90lSEd4tnoklgfDos8rSZseklFO5NXxKdscpe0wngOwjN5I
-         TcJQ==
-X-Gm-Message-State: AO0yUKUwQv6YEmogWMyr6G9xE2sXMiT54EcA1GVnnZUh+EZX7IE7lNwu
-	ExVGHpE4hoBCW8KbvJfICGEQIg==
-X-Google-Smtp-Source: AK7set+2/dOKMRQLIigKxTRIMtmk1GPgIrELJ+n/tHFdg1O4QhkP+JVBSwmASV0sA/3ZAfhjr6AXPg==
-X-Received: by 2002:a05:600c:a297:b0:3ea:c110:55ba with SMTP id hu23-20020a05600ca29700b003eac11055bamr5018364wmb.18.1677676591183;
-        Wed, 01 Mar 2023 05:16:31 -0800 (PST)
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/0918a1DQgyOeWZBSQNtzuEK/5MPQVE8DO3uJsPDtfQ=;
+        b=m0k2my67/3ly3T9u/6+BXQtLXPeowrE+AM7rKzS4aXN4FrejfAdKjVYzKM1YuKYTCW
+         3TYV8zbKoyA/bRZNzuKxxIYOetB8w9q46e9d0rtnTC0jjPpT2eEEGSjSMlz4KUnGGq7F
+         Zl8gaB/OruKeSljYjeOLHIJccEzRCxpo13EPWTIIvEu0qKLNPU640vf1KTg5fFvvas5h
+         oTtaYSrS0iuMNFxCevnFsuhqM5kC81RqSt+QdiGgM0gr5XZj1U8hqFVDySmoJzaQENiI
+         UdycwYNoE/Vcc5kr9ueNuhkwdK4ZUkMTD18rlnSfRCEi9wPCKlxrzTNjH+yBKkkDcoVy
+         2q8w==
+X-Gm-Message-State: AO0yUKUuo7U6hqsdezrIN7cTPURRIOaSFlaF+hY8k1CJ8pGQO3Brfnz6
+	MKrFDTFDoZYKx11JQjTT/FGIAg==
+X-Google-Smtp-Source: AK7set/PsyBySx8RStkYkKx6V6GxA1FoccfLmCcHZM++/F6xIMhDmK+06ikqu/aeaLdZPq5mZyiNhg==
+X-Received: by 2002:a05:600c:4707:b0:3eb:42fa:39d6 with SMTP id v7-20020a05600c470700b003eb42fa39d6mr4834088wmo.14.1677676588845;
+        Wed, 01 Mar 2023 05:16:28 -0800 (PST)
 Received: from P-ASN-SCRUM.idf.intranet (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
-        by smtp.gmail.com with ESMTPSA id l4-20020a05600c4f0400b003df7b40f99fsm20800605wmq.11.2023.03.01.05.16.30
+        by smtp.gmail.com with ESMTPSA id l4-20020a05600c4f0400b003df7b40f99fsm20800605wmq.11.2023.03.01.05.16.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 05:16:30 -0800 (PST)
+        Wed, 01 Mar 2023 05:16:28 -0800 (PST)
 From: Fawzi KHABER <fawzi.khaber@smile.fr>
 To: bitbake-devel@lists.openembedded.org
 Cc: docs@lists.yoctoproject.org,
 	Fawzi KHABER <fawzi.khaber@smile.fr>,
 	Ever ATILANO <ever.atilano@smile.fr>,
 	Yoann CONGAL <yoann.congal@smile.fr>
-Subject: [PATCH v3 2/2] bitbake-user-manual: update Hello World example
-Date: Wed,  1 Mar 2023 14:16:11 +0100
-Message-Id: <20230301131611.16265-2-fawzi.khaber@smile.fr>
+Subject: [PATCH v3 1/2] doc: ref-variables: add LAYERSERIES_COMPAT to term glossary
+Date: Wed,  1 Mar 2023 14:16:10 +0100
+Message-Id: <20230301131611.16265-1-fawzi.khaber@smile.fr>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230301131611.16265-1-fawzi.khaber@smile.fr>
-References: <20230301131611.16265-1-fawzi.khaber@smile.fr>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 01 Mar 2023 13:16:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3767
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3766
 
-Fix broken link "Obtaining bitbake".
-Update documentation for the bitbake hello world example, the output was
-outdated.
-Fix LAYERSERIES_COMPAT warning by adding dunfell as default compatible release.
-Add proper formating for base.bbclass command.
+Bitbake throws a warning if the layer compatibility is not defined since
+cca81e33b58c390dcf5cc3a31555a43b79177166. This variable did not figure in
+the documentation.
 
 Reviewed-by: Ever ATILANO <ever.atilano@smile.fr>
 Reviewed-by: Yoann CONGAL <yoann.congal@smile.fr>
 Signed-off-by: Fawzi KHABER <fawzi.khaber@smile.fr>
 ---
- .../bitbake-user-manual-hello.rst             | 89 ++++++++-----------
- 1 file changed, 39 insertions(+), 50 deletions(-)
+ .../bitbake-user-manual-ref-variables.rst     | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-hello.rst b/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
-index 722dc5a2..2afa8e5c 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
-@@ -18,7 +18,7 @@ it.
- Obtaining BitBake
- =================
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 09d09a8d..a48e7000 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -1096,6 +1096,29 @@ overview of their function and contents.
+       variable is not available outside of ``layer.conf`` and references
+       are expanded immediately when parsing of the file completes.
  
--See the :ref:`bitbake-user-manual/bitbake-user-manual-hello:obtaining bitbake` section for
-+See the :ref:`bitbake-user-manual/bitbake-user-manual-intro:obtaining bitbake` section for
- information on how to obtain BitBake. Once you have the source code on
- your machine, the BitBake directory appears as follows::
- 
-@@ -52,7 +52,7 @@ directory to where your local BitBake files are and run the following
- command::
- 
-   $ ./bin/bitbake --version
--  BitBake Build Tool Core version 1.23.0, bitbake version 1.23.0
-+  BitBake Build Tool Core version 2.3.1
- 
- The console output tells you what version
- you are running.
-@@ -130,23 +130,8 @@ Following is the complete "Hello World" example.
-     directory. Run the ``bitbake`` command and see what it does::
- 
-        $ bitbake
--       The BBPATH variable is not set and bitbake did not
--       find a conf/bblayers.conf file in the expected location.
-+       ERROR: The BBPATH variable is not set and bitbake did not find a conf/bblayers.conf file in the expected location.
-        Maybe you accidentally invoked bitbake from the wrong directory?
--       DEBUG: Removed the following variables from the environment:
--       GNOME_DESKTOP_SESSION_ID, XDG_CURRENT_DESKTOP,
--       GNOME_KEYRING_CONTROL, DISPLAY, SSH_AGENT_PID, LANG, no_proxy,
--       XDG_SESSION_PATH, XAUTHORITY, SESSION_MANAGER, SHLVL,
--       MANDATORY_PATH, COMPIZ_CONFIG_PROFILE, WINDOWID, EDITOR,
--       GPG_AGENT_INFO, SSH_AUTH_SOCK, GDMSESSION, GNOME_KEYRING_PID,
--       XDG_SEAT_PATH, XDG_CONFIG_DIRS, LESSOPEN, DBUS_SESSION_BUS_ADDRESS,
--       _, XDG_SESSION_COOKIE, DESKTOP_SESSION, LESSCLOSE, DEFAULTS_PATH,
--       UBUNTU_MENUPROXY, OLDPWD, XDG_DATA_DIRS, COLORTERM, LS_COLORS
--
--    The majority of this output is specific to environment variables that
--    are not directly relevant to BitBake. However, the very first
--    message regarding the :term:`BBPATH` variable and the
--    ``conf/bblayers.conf`` file is relevant.
- 
-     When you run BitBake, it begins looking for metadata files. The
-     :term:`BBPATH` variable is what tells BitBake where
-@@ -179,20 +164,14 @@ Following is the complete "Hello World" example.
-     ``bitbake`` command again::
- 
-        $ bitbake
--       ERROR: Traceback (most recent call last):
--         File "/home/scott-lenovo/bitbake/lib/bb/cookerdata.py", line 163, in wrapped
--           return func(fn, *args)
--         File "/home/scott-lenovo/bitbake/lib/bb/cookerdata.py", line 173, in parse_config_file
--           return bb.parse.handle(fn, data, include)
--         File "/home/scott-lenovo/bitbake/lib/bb/parse/__init__.py", line 99, in handle
--           return h['handle'](fn, data, include)
--         File "/home/scott-lenovo/bitbake/lib/bb/parse/parse_py/ConfHandler.py", line 120, in handle
--           abs_fn = resolve_file(fn, data)
--         File "/home/scott-lenovo/bitbake/lib/bb/parse/__init__.py", line 117, in resolve_file
--           raise IOError("file %s not found in %s" % (fn, bbpath))
--       IOError: file conf/bitbake.conf not found in /home/scott-lenovo/hello
--
--       ERROR: Unable to parse conf/bitbake.conf: file conf/bitbake.conf not found in /home/scott-lenovo/hello
-+       ERROR: Unable to parse /home/scott-lenovo/bitbake/lib/bb/parse/__init__.py
-+       Traceback (most recent call last):
-+       File "/home/scott-lenovo/bitbake/lib/bb/parse/__init__.py", line 127, in resolve_file(fn='conf/bitbake.conf', d=<bb.data_smart.DataSmart object at 0x7f22919a3df0>):
-+             if not newfn:
-+       >            raise IOError(errno.ENOENT, "file %s not found in %s" % (fn, bbpath))
-+             fn = newfn
-+       FileNotFoundError: [Errno 2] file conf/bitbake.conf not found in <projectdirectory>
++   :term:`LAYERSERIES_COMPAT`
++      Lists the versions of the OpenEmbedded-Core (OE-Core) for which
++      a layer is compatible. Using the :term:`LAYERSERIES_COMPAT` variable
++      allows the layer maintainer to indicate which combinations of the
++      layer and OE-Core can be expected to work. The variable gives the
++      system a way to detect when a layer has not been tested with new
++      releases of OE-Core (e.g. the layer is not maintained).
 +
- 
-     This sample output shows that BitBake could not find the
-     ``conf/bitbake.conf`` file in the project directory. This file is
-@@ -254,18 +233,14 @@ Following is the complete "Hello World" example.
-     exists, you can run the ``bitbake`` command again::
- 
-        $ bitbake
--       ERROR: Traceback (most recent call last):
--         File "/home/scott-lenovo/bitbake/lib/bb/cookerdata.py", line 163, in wrapped
--           return func(fn, *args)
--         File "/home/scott-lenovo/bitbake/lib/bb/cookerdata.py", line 177, in _inherit
--           bb.parse.BBHandler.inherit(bbclass, "configuration INHERITs", 0, data)
--         File "/home/scott-lenovo/bitbake/lib/bb/parse/parse_py/BBHandler.py", line 92, in inherit
--           include(fn, file, lineno, d, "inherit")
--         File "/home/scott-lenovo/bitbake/lib/bb/parse/parse_py/ConfHandler.py", line 100, in include
--           raise ParseError("Could not %(error_out)s file %(fn)s" % vars(), oldfn, lineno)
--       ParseError: ParseError in configuration INHERITs: Could not inherit file classes/base.bbclass
--
--       ERROR: Unable to parse base: ParseError in configuration INHERITs: Could not inherit file classes/base.bbclass
-+       ERROR: Unable to parse /home/scott-lenovo/bitbake/lib/bb/parse/parse_py/BBHandler.py
-+       Traceback (most recent call last):
-+       File "/home/scott-lenovo/bitbake/lib/bb/parse/parse_py/BBHandler.py", line 67, in inherit(files=['base'], fn='configuration INHERITs', lineno=0, d=<bb.data_smart.DataSmart object at 0x7fab6815edf0>):
-+             if not os.path.exists(file):
-+       >            raise ParseError("Could not inherit file %s" % (file), fn, lineno)
-+     
-+       bb.parse.ParseError: ParseError in configuration INHERITs: Could not inherit file classes/base.bbclass
++      To specify the OE-Core versions for which a layer is compatible, use
++      this variable in your layer's ``conf/layer.conf`` configuration file.
++      For the list, use the Yocto Project release name (e.g. "kirkstone",
++      "mickledore"). To specify multiple OE-Core versions for the layer, use
++      a space-separated list::
 +
- 
-     In the sample output,
-     BitBake could not find the ``classes/base.bbclass`` file. You need
-@@ -284,7 +259,10 @@ Following is the complete "Hello World" example.
-       $ mkdir classes
- 
-     Move to the ``classes`` directory and then create the
--    ``base.bbclass`` file by inserting this single line: addtask build
-+    ``base.bbclass`` file by inserting this single line::
-+   
-+      addtask build
-+   
-     The minimal task that BitBake runs is the ``do_build`` task. This is
-     all the example needs in order to build the project. Of course, the
-     ``base.bbclass`` can have much more depending on which build
-@@ -328,10 +306,19 @@ Following is the complete "Hello World" example.
-       BBFILES += "${LAYERDIR}/*.bb"
-       BBFILE_COLLECTIONS += "mylayer"
-       BBFILE_PATTERN_mylayer := "^${LAYERDIR_RE}/"
-+      LAYERSERIES_CORENAMES = "hello_world_example"
-+      LAYERSERIES_COMPAT_mylayer = "hello_world_example"
- 
-     For information on these variables, click on :term:`BBFILES`,
--    :term:`LAYERDIR`, :term:`BBFILE_COLLECTIONS` or :term:`BBFILE_PATTERN_mylayer <BBFILE_PATTERN>`
--    to go to the definitions in the glossary.
-+    :term:`LAYERDIR`, :term:`BBFILE_COLLECTIONS`, :term:`BBFILE_PATTERN_mylayer <BBFILE_PATTERN>`
-+    or :term:`LAYERSERIES_COMPAT` to go to the definitions in the glossary.
++         LAYERSERIES_COMPAT_layer_root_name = "kirkstone mickledore"
 +
-+    .. note::
++      .. note::
 +
-+       We are setting both LAYERSERIES_CORENAMES and LAYERSERIES_COMPAT in this particular case, because we
-+       are using bitbake without OpenEmbedded. 
-+       You should usually just use LAYERSERIES_COMPAT to specify the OE-Core versions for which your layer
-+       is compatible, and add the meta-openembedded layer to your project.
- 
-     You need to create the recipe file next. Inside your layer at the
-     top-level, use an editor and create a recipe file named
-@@ -389,12 +376,14 @@ Following is the complete "Hello World" example.
-     target::
- 
-        $ bitbake printhello
-+       Loading cache: 100% |
-+       Loaded 0 entries from dependency cache.
-        Parsing recipes: 100% |##################################################################################|
--       Time: 00:00:00
-        Parsing of 1 .bb files complete (0 cached, 1 parsed). 1 targets, 0 skipped, 0 masked, 0 errors.
-        NOTE: Resolving any missing task queue dependencies
--       NOTE: Preparing RunQueue
--       NOTE: Executing RunQueue Tasks
-+       Initialising tasks: 100% |###############################################################################|
-+       NOTE: No setscene tasks
-+       NOTE: Executing Tasks
-        ********************
-        *                  *
-        *  Hello, World!   *
++         Setting :term:`LAYERSERIES_COMPAT` is required by the Yocto Project
++         Compatible version 2 standard.
++         The OpenEmbedded build system produces a warning if the variable
++         is not set for any given layer.
++
+    :term:`LAYERVERSION`
+       Optionally specifies the version of a layer as a single number. You
+       can use this variable within
 -- 
 2.39.2
 
