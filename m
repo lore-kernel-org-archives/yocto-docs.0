@@ -1,89 +1,105 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F21FC6FA9D
-	for <webhook@archiver.kernel.org>; Wed,  1 Mar 2023 16:48:50 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web11.28065.1677689321895555254
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1119EC678D4
+	for <webhook@archiver.kernel.org>; Thu,  2 Mar 2023 11:10:49 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.12838.1677755445297483742
  for <docs@lists.yoctoproject.org>;
- Wed, 01 Mar 2023 08:48:42 -0800
+ Thu, 02 Mar 2023 03:10:45 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile-fr.20210112.gappssmtp.com header.s=20210112 header.b=uSNpdyX2;
- spf=pass (domain: smile.fr, ip: 209.85.221.41, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f41.google.com with SMTP id l25so13939476wrb.3
-        for <docs@lists.yoctoproject.org>; Wed, 01 Mar 2023 08:48:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20210112.gappssmtp.com; s=20210112; t=1677689320;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3HyAGneLnbIoUmXEdhL/3bDyGKJ9ebmmRRHeZnRBZqQ=;
-        b=uSNpdyX2V+AA63FJTbt9mLHwratEmRTLVCsWCcqEy5dOOJUJ9X9qFVCDscS+T4sx9P
-         JECkLF+TPdoKIn2IolWaplYtUYCfjZsZMd0jSKlFJR08YuCyIl0q0EiaxVwqdwVfNdfk
-         UMi4AunGVEUe+au/nBZ/Ldw4aZLghSmdXpZpUtHhzVcmB2stBiQOV3wp5Pt0+0M9katH
-         QghrTIEE2KUTC9j8p+SYacIwXadc836gjOl1KOSBfk0SgUHTL29/9zteTrQ6BiTjMW3t
-         dwfG3E+H/Xb9msIJ9bGzidoDdg1Mk5QT2skWLCQZSXWEaXfiMtNxxfb0/tYl4D55o0e3
-         uCBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677689320;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3HyAGneLnbIoUmXEdhL/3bDyGKJ9ebmmRRHeZnRBZqQ=;
-        b=ORjpxaSu6E4kPGv/OymXeZPc9KNzRNvbiQMnxPH/XUZpscdQpr0mopPlIeQK21zWPl
-         1LgMn121iOwQ0IvT3WcmzDWJjy1q43o3p+b6gmuu7El4nkCF/p95p+QopcgmFENDFwZK
-         3sBBh0rqU45CBQUamJ2liVX6ccjp6wJ3FLoXecdhio1hA+NApbgXhftrqaioC0E+g5Zn
-         ts83HHkBp2TgOCstVFQZmf+SdDCaB6OaRmWVMkX7jb92mwZG7lPVo+gbkwq/POxStG0J
-         hwDgNanSb+FQupLHx2SO3D+0jKy+HOWWYqT9+YHhBjsuuMdqoLIXMlySsLdUjRuqfvNh
-         +G1A==
-X-Gm-Message-State: AO0yUKUtERjN5VPy6+umN8rtvNt0Kzo1Dn/5OwQbSu/zmGxLPC74dNo3
-	S2zGXJjm/d4z9RrlimacRZ4/2cvKlgNlJitR
-X-Google-Smtp-Source: AK7set/TCug6DwirW5or6no9JVd87n8Q0s5cDHc+mdLMbQkdDDOdOF35Q8b3lfSTezWEfMZMX5GIcw==
-X-Received: by 2002:a05:6000:1f10:b0:2c7:e48:8c87 with SMTP id bv16-20020a0560001f1000b002c70e488c87mr10201612wrb.25.1677689320204;
-        Wed, 01 Mar 2023 08:48:40 -0800 (PST)
-Received: from P-ASN-ECS-830T8C3.mpl.intranet (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
-        by smtp.gmail.com with ESMTPSA id i5-20020a5d5585000000b002c569acab1esm13146775wrv.73.2023.03.01.08.48.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 Mar 2023 08:48:39 -0800 (PST)
-From: Yoann Congal <yoann.congal@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Richard Purdie <richard.purdie@linuxfoundation.org>,
-	Alexander Kanavin <alex.kanavin@gmail.com>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH v2 0/1] ref-manual: Add info on "mixin" layers
-Date: Wed,  1 Mar 2023 17:48:14 +0100
-Message-Id: <20230301164815.208527-1-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.30.2
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=IxBk0sS0;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 950BFC0004;
+	Thu,  2 Mar 2023 11:10:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1677755443;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CnKIXRJW4peUstJZ1jgpGPpNTlaFQpi0l/0Op91UxfE=;
+	b=IxBk0sS0pKalRp5guDUmV3HKOS8qgbJWK+diMLTq9hQJNjkiqXDjkRGlycjhj6ToE8cHXG
+	W3fXsOHbgHHC6P9yCHdLemhluOtWduPe1uNy1PUcUisBa08aFagVNIFrArogiQb3VJEbiK
+	OPgftcwPUMREZA+1GibHq9OuDqIiMfxhI+mj15kSietRktDolCHMkq4UBSuRuZ+W0ixCg5
+	NX7n5CgEDNPPk6pim+L+TQzkLuwp8M7ViIRPKc6cHVlFb18EYcjBQ+CWh+FpDSbQBNR6yG
+	SNqJJtafF6rQgIvHZBd4wH8++CyaGQnd5DIihr9Um7xwUobi1Rzi/k1/Jq9aZg==
+Message-ID: <cef2e53b-7538-7e74-5568-f44af4292983@bootlin.com>
+Date: Thu, 2 Mar 2023 12:10:41 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.1
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
+ Alexander Kanavin <alex.kanavin@gmail.com>, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v2 1/1] ref-manual: Add info on "mixin" layers
+Content-Language: en-US
+To: Yoann Congal <yoann.congal@smile.fr>
+References: <20230301164815.208527-1-yoann.congal@smile.fr>
+ <20230301164815.208527-2-yoann.congal@smile.fr>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20230301164815.208527-2-yoann.congal@smile.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 01 Mar 2023 16:48:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3770
+ <docs@lists.yoctoproject.org>; Thu, 02 Mar 2023 11:10:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3772
 
-Hi list, hi Michael,
+Hi Yoann,
 
-During today's "Yocto Project Technical Team Meeting / Engineering
-Sync", we spoke about "mixin" layers. Those are not documented. This
-patch is my attempt at adding the missing doc...
+Many thanks for the update!
 
-Changes v1->v2:
-* LTS -> LTS release
-* depends -> depend
-* as needed/case by case -> as-needed/case-by-case
-* Added info on mixin layers hosted on git.yoctoproject.org
+On 01.03.23 at 17:48, Yoann Congal wrote:
+> This is heavily inspired from:
+> https://wiki.yoctoproject.org/wiki/index.php?title=Stable_Release_and_LTS&oldid=84847#LTS_.E2.80.9CMixin.E2.80.9D_repositories
+>
+> Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+> ---
+>   documentation/ref-manual/release-process.rst | 17 +++++++++++++++++
+>   1 file changed, 17 insertions(+)
+>
+> diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+> index 19e804063..fa057e055 100644
+> --- a/documentation/ref-manual/release-process.rst
+> +++ b/documentation/ref-manual/release-process.rst
+> @@ -97,6 +97,23 @@ through the same release process as do point releases. You can find more
+>   information about stable branch maintenance at
+>   :yocto_wiki:`/Stable_branch_maintenance`.
+>   
+> +.. note::
+> +
+> +   In some circumstances, a layer can be created by the community in order to
+> +   add a specific feature or support a new version of some package for an LTS
+> +   release.  This is called a "mixin" layer. These are thin and specific
+> +   purpose layers which can be stacked with an LTS release to "mix" a specific
+> +   feature into that build. These are created on an as-needed basis and
+> +   maintained by the people who need them.
+> +
+> +   Policies on testing these layers depend on how widespread their usage is and
+> +   determined on a case-by-case basis. You can find some "mixin" layers in the
+> +   :yocto_git:`meta-lts-mixins </meta-lts-mixins>` repository. While the Yocto
+> +   Project provides hosting for those repositories, it does not provides
+> +   testing on them. Other "mixin" layers may be released elsewhere by the wider
+> +   community.
+> +
+> +
 
-Best regards,
 
-Yoann Congal (1):
-  ref-manual: Add info on "mixin" layers
+Perfect.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+... and merged into "master-next".
 
- documentation/ref-manual/release-process.rst | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+Thanks again
+Michael.
+
 
 -- 
-2.30.2
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
