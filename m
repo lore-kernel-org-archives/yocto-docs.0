@@ -1,118 +1,116 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <fawzi.khaber@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CB76C7EE32
-	for <webhook@archiver.kernel.org>; Thu,  2 Mar 2023 14:24:00 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.17014.1677767035487036554
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AC9C7C6FA8E
+	for <webhook@archiver.kernel.org>; Thu,  2 Mar 2023 16:14:40 +0000 (UTC)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+ by mx.groups.io with SMTP id smtpd.web11.20373.1677773678891132905
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Mar 2023 06:23:55 -0800
+ Thu, 02 Mar 2023 08:14:39 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jKXQErvu;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id D942C1C000A;
-	Thu,  2 Mar 2023 14:23:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1677767033;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JSIYDCS+h+HEBiJZzBjPzj5+aZar8b75qqmYw4iHrww=;
-	b=jKXQErvu8oMQl7hNyufaaFeWwhDQVb/qv8+tDFcH/fsnwu31VfsJG2NMs07bUytvtcFRO0
-	PSdj0GC2otwqdCV8I6qf13GuGetoJ50oh1NCprWpbm1gjKXn0rqklCMprFKFWbJSjCOQ1n
-	zxF7RNh53QPZv2GjPZ1hKrbP1VhvauL6e7AD0s8SJ9DsXwK3hjcXI2m6vja4yk4TDI/8bb
-	0NxYodNJ+FpBleyNrlz8qvfSpxcL/fuardF4p8h0kNwgKRCYTFWpR/Rfs2CBvYv9UQi3I0
-	3wydCnNM2voFgqU22bB5PYSua9a4JqBlUG0+QkwV9aJeOTi8owbsLI8J5YXAGg==
-Message-ID: <cdbc02fc-3e88-0fff-58c4-18a54b8f84c1@bootlin.com>
-Date: Thu, 2 Mar 2023 15:23:51 +0100
+ dkim=pass header.i=@smile-fr.20210112.gappssmtp.com header.s=20210112 header.b=YcGbwTsG;
+ spf=pass (domain: smile.fr, ip: 209.85.128.42, mailfrom: fawzi.khaber@smile.fr)
+Received: by mail-wm1-f42.google.com with SMTP id r19-20020a05600c459300b003eb3e2a5e7bso1849104wmo.0
+        for <docs@lists.yoctoproject.org>; Thu, 02 Mar 2023 08:14:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20210112.gappssmtp.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=YUW22duzAmduApEKg9J/njcvQm+OeW23YzbEzVAlVvc=;
+        b=YcGbwTsGdOcxEXIFj9q2e+42KUXmXi9B9MWSdGkiGBwh8vkjtJBmCwFIY+FQThjfX+
+         ZaKkdADjKomfKR0VBfBgwMnRQjfBzoJBz2Ezx0xyysvxV5y5KgFIYsRME5ru0CixpOED
+         qX5IQLzmKilrS3tiNju7NWm5u6qbZcD3fnkk1tGYyv7t7K5/HgJHNoeg8qDCyx0gQaVm
+         3ghyOUvatKjly1TKv9xwq5ktjxoVwn85YNkCoPLZHWVJ1TfjrCYDyFvU7JOaXToQkX2y
+         lc7fKoVCC+kYBZhfsESw10R2HtSnliPDY7hcbPaH0NNhYzaKcWmG2VWkb7tHchRV9szp
+         AYQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YUW22duzAmduApEKg9J/njcvQm+OeW23YzbEzVAlVvc=;
+        b=iVx3FmNBP82JS4dMz2v0r7JtFE2R8b+FzEvS83L7jbr3E6zySy1JUpw3YPQDLjcfly
+         7lodCtNn2QN3gYWhIPOc2MR8aBkJ7Relxq54Su66Tt+Q4xdktuZ0ifoeIW0/cjY3YtB4
+         PPNSdZdz29Cdu4NXvQmhViWjqv9+4T49jQi1dko/kgjvvhPCyLs1j4JDBdmR2D1NanOa
+         7pP5nuNbvgN/8yPglwSJFwALtiesQAKj50T51gHEXraMCiUF1H/ea4kCXuh0v/dnV14s
+         /D1ywj9mugixyLXom3xWGLAhuVjWdaMCTeEhNzV4D8AKUDQbiI6mMeik3ETr+7YV/hkh
+         NVIw==
+X-Gm-Message-State: AO0yUKX/2iCVGlKolD4leo3glwXZM+ltHviTYguyS44ZnDhvilBBkDpW
+	cpiwE4/dDRiTFqeF6NVrMKP96Q==
+X-Google-Smtp-Source: AK7set9wIiIibfTdDEc42YdZWH54bZccols6zVYSBMUGYXe9NzpDVbAurfa8HpHv6UwspVCXeZagpQ==
+X-Received: by 2002:a05:600c:30d3:b0:3eb:376e:2b9c with SMTP id h19-20020a05600c30d300b003eb376e2b9cmr7855031wmn.36.1677773677168;
+        Thu, 02 Mar 2023 08:14:37 -0800 (PST)
+Received: from localhost.localdomain (251.38.22.93.rev.sfr.net. [93.22.38.251])
+        by smtp.gmail.com with ESMTPSA id w7-20020a05600c474700b003e204fdb160sm3861779wmo.3.2023.03.02.08.14.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Mar 2023 08:14:36 -0800 (PST)
+From: Fawzi KHABER <fawzi.khaber@smile.fr>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Fawzi KHABER <fawzi.khaber@smile.fr>,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Ever ATILANO <ever.atilano@smile.fr>,
+	Yoann CONGAL <yoann.congal@smile.fr>
+Subject: [PATCH v4 1/2] doc: ref-variables: add LAYERSERIES_COMPAT to term glossary
+Date: Thu,  2 Mar 2023 17:14:30 +0100
+Message-Id: <20230302161431.8594-1-fawzi.khaber@smile.fr>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Cc: docs@lists.yoctoproject.org, Ever ATILANO <ever.atilano@smile.fr>,
- Yoann CONGAL <yoann.congal@smile.fr>
-Subject: Re: [docs] [PATCH v3 2/2] bitbake-user-manual: update Hello World
- example
-Content-Language: en-US
-To: Fawzi KHABER <fawzi.khaber@smile.fr>, bitbake-devel@lists.openembedded.org
-References: <20230301131611.16265-1-fawzi.khaber@smile.fr>
- <20230301131611.16265-2-fawzi.khaber@smile.fr>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20230301131611.16265-2-fawzi.khaber@smile.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 Mar 2023 14:24:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3774
+ <docs@lists.yoctoproject.org>; Thu, 02 Mar 2023 16:14:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3775
 
-Hi Fawzi,
+Bitbake throws a warning if the layer compatibility is not defined since
+cca81e33b58c390dcf5cc3a31555a43b79177166. The description of this variable
+comes from the Yocto Project manual.
 
-Thank you for this other patch update.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reviewed-by: Ever ATILANO <ever.atilano@smile.fr>
+Reviewed-by: Yoann CONGAL <yoann.congal@smile.fr>
+Signed-off-by: Fawzi KHABER <fawzi.khaber@smile.fr>
+---
+ .../bitbake-user-manual-ref-variables.rst     | 23 +++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-For your information, the patch applies with whitespace warnings when I 
-run "git am":
-
-.git/rebase-apply/patch:102: trailing whitespace.
-
-.git/rebase-apply/patch:114: trailing whitespace.
-
-.git/rebase-apply/patch:116: trailing whitespace.
-
-.git/rebase-apply/patch:136: trailing whitespace.
-
-At least I see three lines containing just a few whitespaces. Not 
-critical, but a bit distracting (my vim editor highlights them in red).
-
-You may try to apply your own patch on branch "master", and see whether 
-you're getting this or not.
-
-On 01.03.23 at 14:16, Fawzi KHABER wrote:
-> Fix broken link "Obtaining bitbake".
-> Update documentation for the bitbake hello world example, the output was
-> outdated.
-> Fix LAYERSERIES_COMPAT warning by adding dunfell as default compatible release.
-> Add proper formating for base.bbclass command.
->
-> Reviewed-by: Ever ATILANO <ever.atilano@smile.fr>
-> Reviewed-by: Yoann CONGAL <yoann.congal@smile.fr>
-> Signed-off-by: Fawzi KHABER <fawzi.khaber@smile.fr>
-> ---
->   .../bitbake-user-manual-hello.rst             | 89 ++++++++-----------
->   1 file changed, 39 insertions(+), 50 deletions(-)
->
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-hello.rst b/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
-> index 722dc5a2..2afa8e5c 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-hello.rst
-> @@ -18,7 +18,7 @@ it.
->   Obtaining BitBake
->   =================
->   
-> -See the :ref:`bitbake-user-manual/bitbake-user-manual-hello:obtaining bitbake` section for
-> +See the :ref:`bitbake-user-manual/bitbake-user-manual-intro:obtaining bitbake` section for
->   information on how to obtain BitBake. Once you have the source code on
->   your machine, the BitBake directory appears as follows::
-
-
-Ouch, I also realize that the bitbake source directory contents in this 
-section ("6.2 Obtaining BitBake") have changed too. Could you update 
-them too?
-
-All the rest is fine now (thanks!), and I get the same output as you do. 
-Could you just resend a quick V4 correcting these?
-
-Thanks in advance
-Cheers
-Michael.
-
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 09d09a8d..a48e7000 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -1096,6 +1096,29 @@ overview of their function and contents.
+       variable is not available outside of ``layer.conf`` and references
+       are expanded immediately when parsing of the file completes.
+ 
++   :term:`LAYERSERIES_COMPAT`
++      Lists the versions of the OpenEmbedded-Core (OE-Core) for which
++      a layer is compatible. Using the :term:`LAYERSERIES_COMPAT` variable
++      allows the layer maintainer to indicate which combinations of the
++      layer and OE-Core can be expected to work. The variable gives the
++      system a way to detect when a layer has not been tested with new
++      releases of OE-Core (e.g. the layer is not maintained).
++
++      To specify the OE-Core versions for which a layer is compatible, use
++      this variable in your layer's ``conf/layer.conf`` configuration file.
++      For the list, use the Yocto Project release name (e.g. "kirkstone",
++      "mickledore"). To specify multiple OE-Core versions for the layer, use
++      a space-separated list::
++
++         LAYERSERIES_COMPAT_layer_root_name = "kirkstone mickledore"
++
++      .. note::
++
++         Setting :term:`LAYERSERIES_COMPAT` is required by the Yocto Project
++         Compatible version 2 standard.
++         The OpenEmbedded build system produces a warning if the variable
++         is not set for any given layer.
++
+    :term:`LAYERVERSION`
+       Optionally specifies the version of a layer as a single number. You
+       can use this variable within
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.39.2
 
 
