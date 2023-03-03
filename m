@@ -2,317 +2,431 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C3D47C64EC4
-	for <webhook@archiver.kernel.org>; Fri,  3 Mar 2023 11:04:15 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.20447.1677841449184804108
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB484C678D4
+	for <webhook@archiver.kernel.org>; Fri,  3 Mar 2023 14:45:16 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.24912.1677854714563139905
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Mar 2023 03:04:09 -0800
+ Fri, 03 Mar 2023 06:45:15 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pdJagwX4;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RWATPgGA;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 53A5960006;
-	Fri,  3 Mar 2023 11:04:06 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5B9931BF20E;
+	Fri,  3 Mar 2023 14:45:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1677841447;
+	t=1677854712;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=yo9QIyDOj2c4+m48KcckbPkfm45EBnZ94GV/0WpyCNc=;
-	b=pdJagwX4MABwqBZMC4cQ48gKOXEURWHKwAqorHrlWVD+4HRkvMKzQrKH5Iw/cmV5mOCgXY
-	kQ1mPA72uVHtMbUc8L7ysuYyJT4tPFMG7QWb6mvwZu8p1yjjBP3Rja9i6W3T/a7abFFX/b
-	UhE99Qt1B+AvGR8QizKLMcGLbd33tj3BxJeFkQ4QysfWcgpMsOorXT9ysQk68oWJBxjQjO
-	2mZF7X+aE/5f7pYpkOOipnJNtKpWdhV7QkCHsjGSI3CA0NQE9a85nQGLZDgq/yUK5MT8Jr
-	52VUetEWMpn3ezQ25525xo5DKEObxX+FrIrgpv2sUrRaOyMLfzDcDj3nQ2K7hA==
+	bh=NiI036yt06QHTJhM13nH23favZjfc8pxlU3BUkK7xkg=;
+	b=RWATPgGAYTCQqQx/RsLUbSQGQXLVc2J9bj9C5N6IplfUSXXVGP7JWK8VMidrU29gP6C0C0
+	KhbLNHNz4K9TMZRX4N+LKhec+R7/9lPazRR3Y+Fsv7bI2IAP9PNXqSi+Svx7Y/jMJQSiDb
+	TR2vB7TRsKCPDvsFyq7RGOZbcpxcXZGl9LtyA/Fs5cri0z7gDFMJphLbsPr94dsq1f5snn
+	8vkV+vcaXiFnVJkjKtvV9fSZSym45tpEgZlPbnNm0C4q4PHB0SjL32AZT7xJyr4NFTAikl
+	UsaxolSnE4+jqpTL9Om+NPRtRAS4PTq1wlz/dSV7mbFA+5uYK7R3rfdW5/RQ9w==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] overview-manual: concepts.rst: simplify internal references
-Date: Fri,  3 Mar 2023 12:04:02 +0100
-Message-Id: <20230303110402.537271-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] kernel-dev: simplify local references
+Date: Fri,  3 Mar 2023 15:45:10 +0100
+Message-Id: <20230303144510.542165-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.37.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Mar 2023 11:04:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3782
+ <docs@lists.yoctoproject.org>; Fri, 03 Mar 2023 14:45:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3783
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/overview-manual/concepts.rst | 122 +++++++++------------
- 1 file changed, 50 insertions(+), 72 deletions(-)
+- Simplify references to sections within the same document
+- Take advantage of this to fix line width in the modified
+  paragraphs.
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index e7551149a1..b0d906b78a 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -39,9 +39,7 @@ section of the Yocto Project Development Tasks Manual.
+Signen-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/kernel-dev/advanced.rst      | 43 +++++-------
+ documentation/kernel-dev/common.rst        | 82 ++++++++--------------
+ documentation/kernel-dev/concepts-appx.rst |  2 +-
+ documentation/kernel-dev/intro.rst         |  2 +-
+ 4 files changed, 50 insertions(+), 79 deletions(-)
+
+diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel-dev/advanced.rst
+index 35195135c4..d0632e333b 100644
+--- a/documentation/kernel-dev/advanced.rst
++++ b/documentation/kernel-dev/advanced.rst
+@@ -57,7 +57,7 @@ the same "intel-corei7-64" value for :term:`KMACHINE`. It is important to
+ realize that :term:`KMACHINE` is just for kernel mapping, while :term:`MACHINE`
+ is the machine type within a BSP Layer. Even with this distinction,
+ however, these two variables can hold the same value. See the
+-":ref:`kernel-dev/advanced:bsp descriptions`" section for more information.
++"`BSP Descriptions`_" section for more information.
  
- Following are some brief details on these core components. For
- additional information on how these components interact during a build,
--see the
--":ref:`overview-manual/concepts:openembedded build system concepts`"
--section.
-+see the "`openembedded build system concepts`_" section.
+ Every linux-yocto style recipe must also indicate the Linux kernel
+ source repository branch used to build the Linux kernel. The
+@@ -86,7 +86,7 @@ Together with :term:`KMACHINE`, :term:`LINUX_KERNEL_TYPE` defines the search
+ arguments used by the kernel tools to find the appropriate description
+ within the kernel Metadata with which to build out the sources and
+ configuration. The linux-yocto recipes define "standard", "tiny", and
+-"preempt-rt" kernel types. See the ":ref:`kernel-dev/advanced:kernel types`"
++"preempt-rt" kernel types. See the "`Kernel Types`_"
+ section for more information on kernel types.
  
- BitBake
- -------
-@@ -201,9 +199,8 @@ User configuration helps define the build. Through user configuration,
- you can tell BitBake the target architecture for which you are building
- the image, where to store downloaded source, and other build properties.
+ During the build, the kern-tools search for the BSP description file
+@@ -120,7 +120,7 @@ the entries in :term:`KERNEL_FEATURES` are dependent on their location
+ within the kernel Metadata itself. The examples here are taken from the
+ ``yocto-kernel-cache`` repository. Each branch of this repository
+ contains "features" and "cfg" subdirectories at the top-level. For more
+-information, see the ":ref:`kernel-dev/advanced:kernel metadata syntax`"
++information, see the "`Kernel Metadata Syntax`_"
+ section.
  
--The following figure shows an expanded representation of the "User
--Configuration" box of the :ref:`general workflow
--figure <overview-manual/concepts:openembedded build system concepts>`:
-+The following figure shows an expanded representation of the "User Configuration"
-+box of the `general workflow figure <openembedded build system concepts>`_:
+ Kernel Metadata Syntax
+@@ -145,7 +145,7 @@ Features aggregate sources in the form of patches and configuration
+ fragments into a modular reusable unit. You can use features to
+ implement conceptually separate kernel Metadata descriptions such as
+ pure configuration fragments, simple patches, complex features, and
+-kernel types. :ref:`kernel-dev/advanced:kernel types` define general kernel
++kernel types. `Kernel Types`_ define general kernel
+ features and policy to be reused in the BSPs.
  
- .. image:: figures/user-configuration.png
-    :width: 100%
-@@ -352,8 +349,8 @@ layers the build system uses to further control the build. These layers
- provide Metadata for the software, machine, and policies.
+ BSPs define hardware-specific features and aggregate them with kernel
+@@ -163,7 +163,7 @@ following Metadata file hierarchy is recommended::
+       ktypes/
+       patches/
  
- In general, there are three types of layer input. You can see them below
--the "User Configuration" box in the `general workflow
--figure <overview-manual/concepts:openembedded build system concepts>`:
-+the "User Configuration" box in the `general workflow figure
-+<openembedded build system concepts>`_:
+-The ``bsp`` directory contains the :ref:`kernel-dev/advanced:bsp descriptions`.
++The ``bsp`` directory contains the `BSP Descriptions`_.
+ The remaining directories all contain "features". Separating ``bsp`` from the
+ rest of the structure aids conceptualizing intended usage.
  
- -  *Metadata (.bb + Patches):* Software layers containing
-    user-supplied recipe files, patches, and append files. A good example
-@@ -382,8 +379,7 @@ figure <overview-manual/concepts:openembedded build system concepts>`:
-    that contain many policy configurations for the Poky distribution.
+@@ -190,15 +190,11 @@ impact on the functionality of the kernel Metadata. There is no impact
+ because all of ``cfg``, ``features``, ``patches``, and ``ktypes``,
+ contain "features" as far as the kernel tools are concerned.
  
- The following figure shows an expanded representation of these three
--layers from the :ref:`general workflow figure
--<overview-manual/concepts:openembedded build system concepts>`:
-+layers from the `general workflow figure <openembedded build system concepts>`_:
+-Paths used in kernel Metadata files are relative to base, which is
+-either
+-:term:`FILESEXTRAPATHS` if
+-you are creating Metadata in
+-:ref:`recipe-space <kernel-dev/advanced:recipe-space metadata>`,
+-or the top level of
++Paths used in kernel Metadata files are relative to base, which is either
++:term:`FILESEXTRAPATHS` if you are creating Metadata in
++`Recipe-Space Metadata`_, or the top level of
+ :yocto_git:`yocto-kernel-cache </yocto-kernel-cache/tree/>`
+-if you are creating
+-:ref:`kernel-dev/advanced:metadata outside the recipe-space`.
++if you are creating `Metadata Outside the Recipe-Space`_.
  
- .. image:: figures/layer-input.png
-    :align: center
-@@ -394,12 +390,9 @@ licensing file (e.g. ``COPYING.MIT``) if the layer is to be distributed,
- a ``README`` file as good practice and especially if the layer is to be
- distributed, a configuration directory, and recipe directories. You can
- learn about the general structure for layers used with the Yocto Project
--in the
--":ref:`dev-manual/layers:creating your own layer`"
--section in the
--Yocto Project Development Tasks Manual. For a general discussion on
--layers and the many layers from which you can draw, see the
--":ref:`overview-manual/concepts:layers`" and
-+in the ":ref:`dev-manual/layers:creating your own layer`" section in the
-+Yocto Project Development Tasks Manual. For a general discussion on layers
-+and the many layers from which you can draw, see the "`Layers`_" and
- ":ref:`overview-manual/yp-intro:the yocto project layer model`" sections both
- earlier in this manual.
+ .. [1]
+    ``scc`` stands for Series Configuration Control, but the naming has
+@@ -345,9 +341,8 @@ as how an additional feature description file is included with the
+ Typically, features are less granular than configuration fragments and
+ are more likely than configuration fragments and patches to be the types
+ of things you want to specify in the :term:`KERNEL_FEATURES` variable of the
+-Linux kernel recipe. See the
+-":ref:`kernel-dev/advanced:using kernel metadata in a recipe`" section earlier
+-in the manual.
++Linux kernel recipe. See the "`Using Kernel Metadata in a Recipe`_" section
++earlier in the manual.
  
-@@ -494,13 +487,12 @@ project needs.
- Sources
- -------
- 
--In order for the OpenEmbedded build system to create an image or any
--target, it must be able to access source files. The :ref:`general workflow
--figure <overview-manual/concepts:openembedded build system concepts>`
--represents source files using the "Upstream Project Releases", "Local
--Projects", and "SCMs (optional)" boxes. The figure represents mirrors,
--which also play a role in locating source files, with the "Source
--Materials" box.
-+In order for the OpenEmbedded build system to create an image or any target, it
-+must be able to access source files. The `general workflow figure
-+<openembedded build system concepts>`_ represents source files using the
-+"Upstream Project Releases", "Local Projects", and "SCMs (optional)" boxes.
-+The figure represents mirrors, which also play a role in locating source files,
-+with the "Source Materials" box.
- 
- The method by which source files are ultimately organized is a function
- of the project. For example, for released software, projects tend to use
-@@ -535,7 +527,7 @@ source file.
- 
- The remainder of this section provides a deeper look into the source
- files and the mirrors. Here is a more detailed look at the source file
--area of the :ref:`general workflow figure <overview-manual/concepts:openembedded build system concepts>`:
-+area of the `general workflow figure <openembedded build system concepts>`_:
- 
- .. image:: figures/source-input.png
-    :align: center
-@@ -605,10 +597,9 @@ functioning for some reason or another.
- Package Feeds
- -------------
- 
--When the OpenEmbedded build system generates an image or an SDK, it gets
--the packages from a package feed area located in the
--:term:`Build Directory`. The :ref:`general workflow figure
--<overview-manual/concepts:openembedded build system concepts>`
-+When the OpenEmbedded build system generates an image or an SDK, it gets the
-+packages from a package feed area located in the :term:`Build Directory`. The
-+`general workflow figure <openembedded build system concepts>`_
- shows this package feeds area in the upper-right corner.
- 
- This section looks a little closer into the package feeds area used by
-@@ -666,12 +657,11 @@ architecture are placed in ``build/tmp/deploy/ipk/qemux86``.
- BitBake Tool
+ Kernel Types
  ------------
+@@ -356,7 +351,7 @@ A kernel type defines a high-level kernel policy by aggregating non-hardware
+ configuration fragments with patches you want to use when building a Linux
+ kernel of a specific type (e.g. a real-time kernel). Syntactically, kernel
+ types are no different than features as described in the
+-":ref:`kernel-dev/advanced:features`" section. The :term:`LINUX_KERNEL_TYPE`
++"`Features`_" section. The :term:`LINUX_KERNEL_TYPE`
+ variable in the kernel recipe selects the kernel type. For example, in the
+ ``linux-yocto_4.12.bb`` kernel recipe found in ``poky/meta/recipes-kernel/linux``, a
+ :ref:`require <bitbake-user-manual/bitbake-user-manual-metadata:\`\`require\`\` directive>`
+@@ -376,8 +371,7 @@ type as follows::
+    You can find kernel recipes in the ``meta/recipes-kernel/linux`` directory
+    of the :ref:`overview-manual/development-environment:yocto project source repositories`
+    (e.g. ``poky/meta/recipes-kernel/linux/linux-yocto_4.12.bb``). See the
+-   ":ref:`kernel-dev/advanced:using kernel metadata in a recipe`"
+-   section for more information.
++   "`Using Kernel Metadata in a Recipe`_" section for more information.
  
--The OpenEmbedded build system uses
--:term:`BitBake` to produce images and
--Software Development Kits (SDKs). You can see from the :ref:`general workflow
--figure <overview-manual/concepts:openembedded build system concepts>`,
--the BitBake area consists of several functional areas. This section takes a
--closer look at each of those areas.
-+The OpenEmbedded build system uses :term:`BitBake` to produce images and
-+Software Development Kits (SDKs). You can see from the `general workflow
-+figure <openembedded build system concepts>`_, the BitBake area consists of
-+several functional areas. This section takes a closer look at each of those
-+areas.
+ Three kernel types ("standard", "tiny", and "preempt-rt") are supported
+ for Linux Yocto kernels:
+@@ -440,8 +434,7 @@ and ``patch`` commands, respectively.
+    It is not strictly necessary to create a kernel type ``.scc``
+    file. The Board Support Package (BSP) file can implicitly define the
+    kernel type using a ``define`` :term:`KTYPE` ``myktype`` line. See the
+-   ":ref:`kernel-dev/advanced:bsp descriptions`" section for more
+-   information.
++   "`BSP descriptions`_" section for more information.
  
- .. note::
+ BSP Descriptions
+ ----------------
+@@ -523,8 +516,7 @@ example, this is done using the following::
  
-@@ -788,11 +778,9 @@ source files, which are located in the
- :term:`S` directory.
+ This file aggregates all the configuration
+ fragments, patches, and features that make up your standard kernel
+-policy. See the ":ref:`kernel-dev/advanced:kernel types`" section for more
+-information.
++policy. See the "`Kernel Types`_" section for more information.
  
- For more information on how the source directories are created, see the
--":ref:`overview-manual/concepts:source fetching`" section. For
--more information on how to create patches and how the build system
--processes patches, see the
--":ref:`dev-manual/new-recipe:patching code`"
--section in the
-+"`Source Fetching`_" section. For more information on how to create patches and
-+how the build system processes patches, see the
-+":ref:`dev-manual/new-recipe:patching code`" section in the
- Yocto Project Development Tasks Manual. You can also see the
- ":ref:`sdk-manual/extensible:use \`\`devtool modify\`\` to modify the source of an existing component`"
- section in the Yocto Project Application Development and the Extensible
-@@ -924,8 +912,7 @@ Depending on the type of packages being created (RPM, DEB, or IPK), the
- :ref:`do_package_write_* <ref-tasks-package_write_deb>`
- task creates the actual packages and places them in the Package Feed
- area, which is ``${TMPDIR}/deploy``. You can see the
--":ref:`overview-manual/concepts:package feeds`" section for more detail on
--that part of the build process.
-+"`Package Feeds`_" section for more detail on that part of the build process.
+ To aggregate common configurations and features specific to the kernel
+ for `mybsp`, use the following::
+@@ -795,11 +787,10 @@ Given this scenario, you do not need to create any branches in the
+ source repository. Rather, you just take the static patches you need and
+ encapsulate them within a feature description. Once you have the feature
+ description, you simply include that into the BSP description as
+-described in the ":ref:`kernel-dev/advanced:bsp descriptions`" section.
++described in the "`BSP Descriptions`_" section.
  
- .. note::
+ You can find information on how to create patches and BSP descriptions
+-in the ":ref:`kernel-dev/advanced:patches`" and
+-":ref:`kernel-dev/advanced:bsp descriptions`" sections.
++in the "`Patches`_" and "`BSP Descriptions`_" sections.
  
-@@ -1064,8 +1051,8 @@ the extensible SDK (eSDK):
- .. note::
+ Machine Branches
+ ----------------
+diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
+index e0a85575c1..bda1e56860 100644
+--- a/documentation/kernel-dev/common.rst
++++ b/documentation/kernel-dev/common.rst
+@@ -49,8 +49,7 @@ Getting Ready to Develop Using ``devtool``
+ Follow these steps to prepare to update the kernel image using
+ ``devtool``. Completing this procedure leaves you with a clean kernel
+ image and ready to make modifications as described in the
+-":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
+-section:
++"`Using devtool to Patch the Kernel`_" section:
  
-    For more information on the cross-development toolchain generation,
--   see the ":ref:`overview-manual/concepts:cross-development toolchain generation`"
--   section. For information on advantages gained when building a
-+   see the "`Cross-Development Toolchain Generation`_" section.
-+   For information on advantages gained when building a
-    cross-development toolchain using the :ref:`ref-tasks-populate_sdk` task, see the
-    ":ref:`sdk-manual/appendix-obtain:building an sdk installer`" section in
-    the Yocto Project Application Development and the Extensible Software
-@@ -1078,8 +1065,7 @@ and
- :ref:`ref-tasks-populate_sdk_ext`
- tasks use these key variables to help create the list of packages to
- actually install. For information on the variables listed in the figure,
--see the ":ref:`overview-manual/concepts:application development sdk`"
+ #. *Initialize the BitBake Environment:*
+    you need to initialize the BitBake build environment by sourcing
+@@ -139,10 +138,8 @@ section:
+    :yocto_wiki:`TipsAndTricks/KernelDevelopmentWithEsdk </TipsAndTricks/KernelDevelopmentWithEsdk>`
+    Wiki page.
+ 
+-At this point you have set up to start making modifications to the
+-kernel. For a continued example, see the
+-":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
 -section.
-+see the "`Application Development SDK`_" section.
++At this point you have set up to start making modifications to the kernel. For
++a continued example, see the "`Using devtool to Patch the Kernel`_" section.
  
- The :ref:`ref-tasks-populate_sdk` task helps create the standard SDK and handles
- two parts: a target part and a host part. The target part is the part
-@@ -1102,12 +1088,10 @@ includes the environment setup script.
- Stamp Files and the Rerunning of Tasks
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ Getting Ready for Traditional Kernel Development
+ ------------------------------------------------
+@@ -152,11 +149,10 @@ involves many of the same steps as described in the previous section.
+ However, you need to establish a local copy of the kernel source since
+ you will be editing these files.
  
--For each task that completes successfully, BitBake writes a stamp file
--into the :term:`STAMPS_DIR`
--directory. The beginning of the stamp file's filename is determined by
--the :term:`STAMP` variable, and the end
--of the name consists of the task's name and current :ref:`input
--checksum <overview-manual/concepts:checksums (signatures)>`.
-+For each task that completes successfully, BitBake writes a stamp file into the
-+:term:`STAMPS_DIR` directory. The beginning of the stamp file's filename is
-+determined by the :term:`STAMP` variable, and the end of the name consists of
-+the task's name and current `input checksum <checksums (signatures)>`_.
+-Follow these steps to prepare to update the kernel image using
+-traditional kernel development flow with the Yocto Project. Completing
+-this procedure leaves you ready to make modifications to the kernel
+-source as described in the ":ref:`kernel-dev/common:using traditional kernel development to patch the kernel`"
+-section:
++Follow these steps to prepare to update the kernel image using traditional
++kernel development flow with the Yocto Project. Completing this procedure
++leaves you ready to make modifications to the kernel source as described in the
++"`Using Traditional Kernel Development to Patch the Kernel`_" section:
+ 
+ #. *Initialize the BitBake Environment:* Before you can do anything
+    using BitBake, you need to initialize the BitBake build environment
+@@ -284,8 +280,7 @@ section:
+ 
+ At this point, you are ready to start making modifications to the kernel
+ using traditional kernel development steps. For a continued example, see
+-the ":ref:`kernel-dev/common:using traditional kernel development to patch the kernel`"
+-section.
++the "`Using Traditional Kernel Development to Patch the Kernel`_" section.
+ 
+ Creating and Preparing a Layer
+ ==============================
+@@ -371,16 +366,15 @@ the :term:`Source Directory` in
+ 
+ Modifying an existing recipe can consist of the following:
+ 
+-- :ref:`kernel-dev/common:creating the append file`
++- `Creating the append file`_
+ 
+-- :ref:`kernel-dev/common:applying patches`
++- `Applying patches`_
+ 
+-- :ref:`kernel-dev/common:changing the configuration`
++- `Changing the configuration`_
+ 
+ Before modifying an existing recipe, be sure that you have created a
+ minimal, custom layer from which you can work. See the
+-":ref:`kernel-dev/common:creating and preparing a layer`" section for
+-information.
++"`Creating and Preparing a Layer`_" section for information.
+ 
+ Creating the Append File
+ ------------------------
+@@ -548,12 +542,9 @@ The next time you run BitBake to build
+ the Linux kernel, BitBake detects the change in the recipe and fetches
+ and applies the patches before building the kernel.
+ 
+-For a detailed example showing how to patch the kernel using
+-``devtool``, see the
+-":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
+-and
+-":ref:`kernel-dev/common:using traditional kernel development to patch the kernel`"
+-sections.
++For a detailed example showing how to patch the kernel using ``devtool``,
++see the "`Using devtool to Patch the Kernel`_" and
++"`Using Traditional Kernel Development to Patch the Kernel`_" sections.
+ 
+ Changing the Configuration
+ --------------------------
+@@ -625,10 +616,10 @@ Linux kernel, BitBake detects the change in the recipe and fetches and
+ applies the new configuration before building the kernel.
+ 
+ For a detailed example showing how to configure the kernel, see the
+-":ref:`kernel-dev/common:configuring the kernel`" section.
++"`Configuring the Kernel`_" section.
+ 
+-Using an "In-Tree"  ``defconfig`` File
+---------------------------------------
++Using an "In-Tree" ``defconfig`` File
++-------------------------------------
+ 
+ It might be desirable to have kernel configuration fragment support
+ through a ``defconfig`` file that is pulled from the kernel source tree
+@@ -680,8 +671,7 @@ The steps in this procedure show you how you can patch the kernel using
+ 
+    Before attempting this procedure, be sure you have performed the
+    steps to get ready for updating the kernel as described in the
+-   ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``"
+-   section.
++   "`Getting Ready to Develop Using devtool`_" section.
+ 
+ Patching the kernel involves changing or adding configurations to an
+ existing kernel, changing or adding recipes to the kernel that are
+@@ -693,15 +683,14 @@ output at boot time through ``printk`` statements in the kernel's
+ ``calibrate.c`` source code file. Applying the patch and booting the
+ modified image causes the added messages to appear on the emulator's
+ console. The example is a continuation of the setup procedure found in
+-the ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``" Section.
++the "`Getting Ready to Develop Using devtool`_" section.
+ 
+ #. *Check Out the Kernel Source Files:* First you must use ``devtool``
+    to checkout the kernel source code in its workspace.
+ 
+    .. note::
+ 
+-      See this step in the
+-      ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``"
++      See this step in the "`Getting Ready to Develop Using devtool`_"
+       section for more information.
+ 
+    Use the following ``devtool`` command to check out the code::
+@@ -811,8 +800,7 @@ the ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``" Se
+ 
+    .. note::
+ 
+-      See Step 3 of the
+-      ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``"
++      See Step 3 of the "`Getting Ready to Develop Using devtool`_"
+       section for information on setting up this layer.
+ 
+    Once the command
+@@ -831,17 +819,14 @@ Using Traditional Kernel Development to Patch the Kernel
+ ========================================================
+ 
+ The steps in this procedure show you how you can patch the kernel using
+-traditional kernel development (i.e. not using ``devtool``
+-as described in the
+-":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
+-section).
++traditional kernel development (i.e. not using ``devtool`` as described
++in the "`Using devtool to Patch the Kernel`_" section).
  
  .. note::
  
-@@ -1122,9 +1106,8 @@ the task is rerun.
+    Before attempting this procedure, be sure you have performed the
+    steps to get ready for updating the kernel as described in the
+-   ":ref:`kernel-dev/common:getting ready for traditional kernel development`"
+-   section.
++   "`Getting Ready for Traditional Kernel Development`_" section.
  
- .. note::
+ Patching the kernel involves changing or adding configurations to an
+ existing kernel, changing or adding recipes to the kernel that are
+@@ -853,14 +838,12 @@ emulator console output at boot time through ``printk`` statements in
+ the kernel's ``calibrate.c`` source code file. Applying the patch and
+ booting the modified image causes the added messages to appear on the
+ emulator's console. The example is a continuation of the setup procedure
+-found in the
+-":ref:`kernel-dev/common:getting ready for traditional kernel development`"
+-Section.
++found in the "`Getting Ready for Traditional Kernel Development`_" section.
  
--   The stamp mechanism is more general than the shared state (sstate)
--   cache mechanism described in the
--   ":ref:`overview-manual/concepts:setscene tasks and shared state`" section.
-+   The stamp mechanism is more general than the shared state (sstate) cache
-+   mechanism described in the "`Setscene Tasks and Shared State`_" section.
-    BitBake avoids rerunning any task that has a valid stamp file, not just
-    tasks that can be accelerated through the sstate cache.
+ #. *Edit the Source Files* Prior to this step, you should have used Git
+    to create a local copy of the repository for your kernel. Assuming
+    you created the repository as directed in the
+-   ":ref:`kernel-dev/common:getting ready for traditional kernel development`"
++   "`Getting Ready for Traditional Kernel Development`_"
+    section, use the following commands to edit the ``calibrate.c`` file:
  
-@@ -1227,8 +1210,7 @@ Images
+    #. *Change the working directory*: You need to locate the source
+@@ -992,8 +975,7 @@ Section.
+    enable the OpenEmbedded build system to find the patch file.
  
- The images produced by the build system are compressed forms of the root
- filesystem and are ready to boot on a target device. You can see from
--the :ref:`general workflow figure
--<overview-manual/concepts:openembedded build system concepts>` that BitBake
-+the `general workflow figure <openembedded build system concepts>`_ that BitBake
- output, in part, consists of images. This section takes a closer look at
- this output:
+    For more information on append files and patches, see the
+-   ":ref:`kernel-dev/common:creating the append file`" and
+-   ":ref:`kernel-dev/common:applying patches`" sections. You can also see the
++   "`Creating the Append File`_" and "`Applying Patches`_" sections. You can also see the
+    ":ref:`dev-manual/layers:appending other layers metadata with your layer`"
+    section in the Yocto Project Development Tasks Manual.
  
-@@ -1282,8 +1264,7 @@ containing images for the current configuration.
- Application Development SDK
- ---------------------------
+@@ -1027,7 +1009,7 @@ configuration fragments, and how to interactively modify your
+ possible.
  
--In the :ref:`general workflow figure
--<overview-manual/concepts:openembedded build system concepts>`, the
-+In the `general workflow figure <openembedded build system concepts>`_, the
- output labeled "Application Development SDK" represents an SDK. The SDK
- generation process differs depending on whether you build an extensible
- SDK (e.g. ``bitbake -c populate_sdk_ext`` imagename) or a standard SDK
-@@ -1314,8 +1295,7 @@ can initialize the environment before using the tools.
+ For more information on kernel configuration, see the
+-":ref:`kernel-dev/common:changing the configuration`" section.
++"`Changing the Configuration`_" section.
  
-    -  For background information on cross-development toolchains in the
-       Yocto Project development environment, see the
--      ":ref:`overview-manual/concepts:cross-development toolchain generation`"
--      section.
-+      "`Cross-Development Toolchain Generation`_" section.
+ Using  ``menuconfig``
+ ---------------------
+@@ -1072,10 +1054,8 @@ the tool and save your changes to create an updated version of the
  
-    -  For information on setting up a cross-development environment, see
-       the :doc:`/sdk-manual/index` manual.
-@@ -1713,13 +1693,12 @@ through this setting in the ``bitbake.conf`` file::
+    You can use the entire ``.config`` file as the ``defconfig`` file. For
+    information on ``defconfig`` files, see the
+-   ":ref:`kernel-dev/common:changing the configuration`",
+-   ":ref:`kernel-dev/common:using an "in-tree" \`\`defconfig\`\` file`",
+-   and ":ref:`kernel-dev/common:creating a \`\`defconfig\`\` file`"
+-   sections.
++   "`Changing the Configuration`_", "`Using an "In-Tree" defconfig File`_",
++   and "`Creating a defconfig File`_" sections.
  
-    BB_SIGNATURE_HANDLER ?= "OEBasicHash"
+ Consider an example that configures the "CONFIG_SMP" setting for the
+ ``linux-yocto-4.12`` kernel.
+diff --git a/documentation/kernel-dev/concepts-appx.rst b/documentation/kernel-dev/concepts-appx.rst
+index 6a2fe4bb0b..bcac7effe6 100644
+--- a/documentation/kernel-dev/concepts-appx.rst
++++ b/documentation/kernel-dev/concepts-appx.rst
+@@ -327,7 +327,7 @@ host system when you build the kernel using BitBake. This
  
--The "OEBasicHash" :term:`BB_SIGNATURE_HANDLER` is the same
--as the "OEBasic" version but adds the task hash to the :ref:`stamp
--files <overview-manual/concepts:stamp files and the rerunning of tasks>`. This
--results in any metadata change that changes the task hash, automatically causing
--the task to be run again. This removes the need to bump
--:term:`PR` values, and changes to metadata
--automatically ripple across the build.
-+The "OEBasicHash" :term:`BB_SIGNATURE_HANDLER` is the same as the "OEBasic"
-+version but adds the task hash to the `stamp files <stamp files and the
-+rerunning of tasks>`_. This results in any metadata change that changes the
-+task hash, automatically causing the task to be run again. This removes the
-+need to bump :term:`PR` values, and changes to metadata automatically ripple
-+across the build.
+ Again, for additional information on the Yocto Project kernel's
+ architecture and its branching strategy, see the
+-":ref:`kernel-dev/concepts-appx:yocto linux kernel architecture and branching strategies`"
++"`Yocto Linux Kernel Architecture and Branching Strategies`_"
+ section. You can also reference the
+ ":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
+ and
+diff --git a/documentation/kernel-dev/intro.rst b/documentation/kernel-dev/intro.rst
+index a663733a1d..564247afeb 100644
+--- a/documentation/kernel-dev/intro.rst
++++ b/documentation/kernel-dev/intro.rst
+@@ -90,7 +90,7 @@ understand the following documentation:
+ -  The ":ref:`dev-manual/layers:understanding and creating layers`"
+    section in the Yocto Project Development Tasks Manual.
  
- It is also worth noting that the end result of these signature
- generators is to make some dependency and hash information available to
-@@ -1831,11 +1810,10 @@ The following list explains the previous example:
+--  The ":ref:`kernel-dev/intro:kernel modification workflow`" section.
++-  The "`Kernel Modification Workflow`_" section.
  
- 
- -  The ``do_deploy[stamp-extra-info] = "${MACHINE_ARCH}"`` line appends extra
--   metadata to the :ref:`stamp file <overview-manual/concepts:stamp files and the rerunning of tasks>`.
--   In this case, the metadata makes the task specific to a machine's architecture.
--   See the ":ref:`bitbake-user-manual/bitbake-user-manual-execution:the task list`"
--   section in the BitBake User Manual for more information on the
--   ``stamp-extra-info`` flag.
-+   metadata to the `stamp file <stamp files and the rerunning of tasks>`_. In
-+   this case, the metadata makes the task specific to a machine's architecture.
-+   See ":ref:`bitbake-user-manual/bitbake-user-manual-execution:the task list`"
-+   section in the BitBake User Manual for more information on the ``stamp-extra-info`` flag.
- 
- -  ``sstate-inputdirs`` and ``sstate-outputdirs`` can also be used with
-    multiple directories. For example, the following declares
+ Kernel Modification Workflow
+ ============================
 -- 
 2.37.2
 
