@@ -1,433 +1,294 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB484C678D4
-	for <webhook@archiver.kernel.org>; Fri,  3 Mar 2023 14:45:16 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.24912.1677854714563139905
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24985C61DA4
+	for <webhook@archiver.kernel.org>; Sat, 11 Mar 2023 05:36:04 +0000 (UTC)
+Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
+ by mx.groups.io with SMTP id smtpd.web10.40051.1678512958848880628
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Mar 2023 06:45:15 -0800
+ Fri, 10 Mar 2023 21:35:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RWATPgGA;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 5B9931BF20E;
-	Fri,  3 Mar 2023 14:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1677854712;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=NiI036yt06QHTJhM13nH23favZjfc8pxlU3BUkK7xkg=;
-	b=RWATPgGAYTCQqQx/RsLUbSQGQXLVc2J9bj9C5N6IplfUSXXVGP7JWK8VMidrU29gP6C0C0
-	KhbLNHNz4K9TMZRX4N+LKhec+R7/9lPazRR3Y+Fsv7bI2IAP9PNXqSi+Svx7Y/jMJQSiDb
-	TR2vB7TRsKCPDvsFyq7RGOZbcpxcXZGl9LtyA/Fs5cri0z7gDFMJphLbsPr94dsq1f5snn
-	8vkV+vcaXiFnVJkjKtvV9fSZSym45tpEgZlPbnNm0C4q4PHB0SjL32AZT7xJyr4NFTAikl
-	UsaxolSnE4+jqpTL9Om+NPRtRAS4PTq1wlz/dSV7mbFA+5uYK7R3rfdW5/RQ9w==
-From: michael.opdenacker@bootlin.com
+ dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=j/HISMVa;
+ spf=pass (domain: intel.com, ip: 134.134.136.126, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1678512958; x=1710048958;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=COvDUByC/m7N70UIpeIrpF3WByArnje27pn1UeZMKgI=;
+  b=j/HISMVazq6ZGgWDhpp8hwo020C6oE6mbPQi/W85OxHmmIihIz1w0naF
+   4p07mfHH+VvLu/Zhka9QdKxeHcjNZob4CTiA0vU+lJwHj/OyBy0FAnx78
+   zkAPc5Rb1WWxPmuoYKFcVkyk+LgVlygCVKu0xeJfcJwaL7I0osrmhqM2p
+   pCED2jRCTwkkr9QSsyTaVVgwIokgFHOcci6DbMC5JMu/FSz3Ow2Dh0cVd
+   ycM1Z3KmgkT0OHt99ffAE1zZCNa8Boa7UF29wPHXNHQsu26PxHhp3fIw/
+   7kwA1TaTrbgIlSWwIyyBDKH2bPfPNolQx+sEl3JY5UrXrNcWMzU5g9+uE
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="320729675"
+X-IronPort-AV: E=Sophos;i="5.98,252,1673942400"; 
+   d="scan'208";a="320729675"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2023 21:35:58 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6500,9779,10645"; a="678076200"
+X-IronPort-AV: E=Sophos;i="5.98,252,1673942400"; 
+   d="scan'208";a="678076200"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.12])
+  by orsmga002.jf.intel.com with ESMTP; 10 Mar 2023 21:35:57 -0800
+From: chee.yang.lee@intel.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] kernel-dev: simplify local references
-Date: Fri,  3 Mar 2023 15:45:10 +0100
-Message-Id: <20230303144510.542165-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.37.2
+Subject: [PATCH] migration-guides: add release-notes for 4.0.8
+Date: Sat, 11 Mar 2023 13:32:03 +0800
+Message-Id: <20230311053203.1411861-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Mar 2023 14:45:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3783
+ <docs@lists.yoctoproject.org>; Sat, 11 Mar 2023 05:36:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3784
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-- Simplify references to sections within the same document
-- Take advantage of this to fix line width in the modified
-  paragraphs.
-
-Signen-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- documentation/kernel-dev/advanced.rst      | 43 +++++-------
- documentation/kernel-dev/common.rst        | 82 ++++++++--------------
- documentation/kernel-dev/concepts-appx.rst |  2 +-
- documentation/kernel-dev/intro.rst         |  2 +-
- 4 files changed, 50 insertions(+), 79 deletions(-)
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.8.rst  | 214 ++++++++++++++++++
+ 2 files changed, 215 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.8.rst
 
-diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel-dev/advanced.rst
-index 35195135c4..d0632e333b 100644
---- a/documentation/kernel-dev/advanced.rst
-+++ b/documentation/kernel-dev/advanced.rst
-@@ -57,7 +57,7 @@ the same "intel-corei7-64" value for :term:`KMACHINE`. It is important to
- realize that :term:`KMACHINE` is just for kernel mapping, while :term:`MACHINE`
- is the machine type within a BSP Layer. Even with this distinction,
- however, these two variables can hold the same value. See the
--":ref:`kernel-dev/advanced:bsp descriptions`" section for more information.
-+"`BSP Descriptions`_" section for more information.
- 
- Every linux-yocto style recipe must also indicate the Linux kernel
- source repository branch used to build the Linux kernel. The
-@@ -86,7 +86,7 @@ Together with :term:`KMACHINE`, :term:`LINUX_KERNEL_TYPE` defines the search
- arguments used by the kernel tools to find the appropriate description
- within the kernel Metadata with which to build out the sources and
- configuration. The linux-yocto recipes define "standard", "tiny", and
--"preempt-rt" kernel types. See the ":ref:`kernel-dev/advanced:kernel types`"
-+"preempt-rt" kernel types. See the "`Kernel Types`_"
- section for more information on kernel types.
- 
- During the build, the kern-tools search for the BSP description file
-@@ -120,7 +120,7 @@ the entries in :term:`KERNEL_FEATURES` are dependent on their location
- within the kernel Metadata itself. The examples here are taken from the
- ``yocto-kernel-cache`` repository. Each branch of this repository
- contains "features" and "cfg" subdirectories at the top-level. For more
--information, see the ":ref:`kernel-dev/advanced:kernel metadata syntax`"
-+information, see the "`Kernel Metadata Syntax`_"
- section.
- 
- Kernel Metadata Syntax
-@@ -145,7 +145,7 @@ Features aggregate sources in the form of patches and configuration
- fragments into a modular reusable unit. You can use features to
- implement conceptually separate kernel Metadata descriptions such as
- pure configuration fragments, simple patches, complex features, and
--kernel types. :ref:`kernel-dev/advanced:kernel types` define general kernel
-+kernel types. `Kernel Types`_ define general kernel
- features and policy to be reused in the BSPs.
- 
- BSPs define hardware-specific features and aggregate them with kernel
-@@ -163,7 +163,7 @@ following Metadata file hierarchy is recommended::
-       ktypes/
-       patches/
- 
--The ``bsp`` directory contains the :ref:`kernel-dev/advanced:bsp descriptions`.
-+The ``bsp`` directory contains the `BSP Descriptions`_.
- The remaining directories all contain "features". Separating ``bsp`` from the
- rest of the structure aids conceptualizing intended usage.
- 
-@@ -190,15 +190,11 @@ impact on the functionality of the kernel Metadata. There is no impact
- because all of ``cfg``, ``features``, ``patches``, and ``ktypes``,
- contain "features" as far as the kernel tools are concerned.
- 
--Paths used in kernel Metadata files are relative to base, which is
--either
--:term:`FILESEXTRAPATHS` if
--you are creating Metadata in
--:ref:`recipe-space <kernel-dev/advanced:recipe-space metadata>`,
--or the top level of
-+Paths used in kernel Metadata files are relative to base, which is either
-+:term:`FILESEXTRAPATHS` if you are creating Metadata in
-+`Recipe-Space Metadata`_, or the top level of
- :yocto_git:`yocto-kernel-cache </yocto-kernel-cache/tree/>`
--if you are creating
--:ref:`kernel-dev/advanced:metadata outside the recipe-space`.
-+if you are creating `Metadata Outside the Recipe-Space`_.
- 
- .. [1]
-    ``scc`` stands for Series Configuration Control, but the naming has
-@@ -345,9 +341,8 @@ as how an additional feature description file is included with the
- Typically, features are less granular than configuration fragments and
- are more likely than configuration fragments and patches to be the types
- of things you want to specify in the :term:`KERNEL_FEATURES` variable of the
--Linux kernel recipe. See the
--":ref:`kernel-dev/advanced:using kernel metadata in a recipe`" section earlier
--in the manual.
-+Linux kernel recipe. See the "`Using Kernel Metadata in a Recipe`_" section
-+earlier in the manual.
- 
- Kernel Types
- ------------
-@@ -356,7 +351,7 @@ A kernel type defines a high-level kernel policy by aggregating non-hardware
- configuration fragments with patches you want to use when building a Linux
- kernel of a specific type (e.g. a real-time kernel). Syntactically, kernel
- types are no different than features as described in the
--":ref:`kernel-dev/advanced:features`" section. The :term:`LINUX_KERNEL_TYPE`
-+"`Features`_" section. The :term:`LINUX_KERNEL_TYPE`
- variable in the kernel recipe selects the kernel type. For example, in the
- ``linux-yocto_4.12.bb`` kernel recipe found in ``poky/meta/recipes-kernel/linux``, a
- :ref:`require <bitbake-user-manual/bitbake-user-manual-metadata:\`\`require\`\` directive>`
-@@ -376,8 +371,7 @@ type as follows::
-    You can find kernel recipes in the ``meta/recipes-kernel/linux`` directory
-    of the :ref:`overview-manual/development-environment:yocto project source repositories`
-    (e.g. ``poky/meta/recipes-kernel/linux/linux-yocto_4.12.bb``). See the
--   ":ref:`kernel-dev/advanced:using kernel metadata in a recipe`"
--   section for more information.
-+   "`Using Kernel Metadata in a Recipe`_" section for more information.
- 
- Three kernel types ("standard", "tiny", and "preempt-rt") are supported
- for Linux Yocto kernels:
-@@ -440,8 +434,7 @@ and ``patch`` commands, respectively.
-    It is not strictly necessary to create a kernel type ``.scc``
-    file. The Board Support Package (BSP) file can implicitly define the
-    kernel type using a ``define`` :term:`KTYPE` ``myktype`` line. See the
--   ":ref:`kernel-dev/advanced:bsp descriptions`" section for more
--   information.
-+   "`BSP descriptions`_" section for more information.
- 
- BSP Descriptions
- ----------------
-@@ -523,8 +516,7 @@ example, this is done using the following::
- 
- This file aggregates all the configuration
- fragments, patches, and features that make up your standard kernel
--policy. See the ":ref:`kernel-dev/advanced:kernel types`" section for more
--information.
-+policy. See the "`Kernel Types`_" section for more information.
- 
- To aggregate common configurations and features specific to the kernel
- for `mybsp`, use the following::
-@@ -795,11 +787,10 @@ Given this scenario, you do not need to create any branches in the
- source repository. Rather, you just take the static patches you need and
- encapsulate them within a feature description. Once you have the feature
- description, you simply include that into the BSP description as
--described in the ":ref:`kernel-dev/advanced:bsp descriptions`" section.
-+described in the "`BSP Descriptions`_" section.
- 
- You can find information on how to create patches and BSP descriptions
--in the ":ref:`kernel-dev/advanced:patches`" and
--":ref:`kernel-dev/advanced:bsp descriptions`" sections.
-+in the "`Patches`_" and "`BSP Descriptions`_" sections.
- 
- Machine Branches
- ----------------
-diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index e0a85575c1..bda1e56860 100644
---- a/documentation/kernel-dev/common.rst
-+++ b/documentation/kernel-dev/common.rst
-@@ -49,8 +49,7 @@ Getting Ready to Develop Using ``devtool``
- Follow these steps to prepare to update the kernel image using
- ``devtool``. Completing this procedure leaves you with a clean kernel
- image and ready to make modifications as described in the
--":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
--section:
-+"`Using devtool to Patch the Kernel`_" section:
- 
- #. *Initialize the BitBake Environment:*
-    you need to initialize the BitBake build environment by sourcing
-@@ -139,10 +138,8 @@ section:
-    :yocto_wiki:`TipsAndTricks/KernelDevelopmentWithEsdk </TipsAndTricks/KernelDevelopmentWithEsdk>`
-    Wiki page.
- 
--At this point you have set up to start making modifications to the
--kernel. For a continued example, see the
--":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
--section.
-+At this point you have set up to start making modifications to the kernel. For
-+a continued example, see the "`Using devtool to Patch the Kernel`_" section.
- 
- Getting Ready for Traditional Kernel Development
- ------------------------------------------------
-@@ -152,11 +149,10 @@ involves many of the same steps as described in the previous section.
- However, you need to establish a local copy of the kernel source since
- you will be editing these files.
- 
--Follow these steps to prepare to update the kernel image using
--traditional kernel development flow with the Yocto Project. Completing
--this procedure leaves you ready to make modifications to the kernel
--source as described in the ":ref:`kernel-dev/common:using traditional kernel development to patch the kernel`"
--section:
-+Follow these steps to prepare to update the kernel image using traditional
-+kernel development flow with the Yocto Project. Completing this procedure
-+leaves you ready to make modifications to the kernel source as described in the
-+"`Using Traditional Kernel Development to Patch the Kernel`_" section:
- 
- #. *Initialize the BitBake Environment:* Before you can do anything
-    using BitBake, you need to initialize the BitBake build environment
-@@ -284,8 +280,7 @@ section:
- 
- At this point, you are ready to start making modifications to the kernel
- using traditional kernel development steps. For a continued example, see
--the ":ref:`kernel-dev/common:using traditional kernel development to patch the kernel`"
--section.
-+the "`Using Traditional Kernel Development to Patch the Kernel`_" section.
- 
- Creating and Preparing a Layer
- ==============================
-@@ -371,16 +366,15 @@ the :term:`Source Directory` in
- 
- Modifying an existing recipe can consist of the following:
- 
--- :ref:`kernel-dev/common:creating the append file`
-+- `Creating the append file`_
- 
--- :ref:`kernel-dev/common:applying patches`
-+- `Applying patches`_
- 
--- :ref:`kernel-dev/common:changing the configuration`
-+- `Changing the configuration`_
- 
- Before modifying an existing recipe, be sure that you have created a
- minimal, custom layer from which you can work. See the
--":ref:`kernel-dev/common:creating and preparing a layer`" section for
--information.
-+"`Creating and Preparing a Layer`_" section for information.
- 
- Creating the Append File
- ------------------------
-@@ -548,12 +542,9 @@ The next time you run BitBake to build
- the Linux kernel, BitBake detects the change in the recipe and fetches
- and applies the patches before building the kernel.
- 
--For a detailed example showing how to patch the kernel using
--``devtool``, see the
--":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
--and
--":ref:`kernel-dev/common:using traditional kernel development to patch the kernel`"
--sections.
-+For a detailed example showing how to patch the kernel using ``devtool``,
-+see the "`Using devtool to Patch the Kernel`_" and
-+"`Using Traditional Kernel Development to Patch the Kernel`_" sections.
- 
- Changing the Configuration
- --------------------------
-@@ -625,10 +616,10 @@ Linux kernel, BitBake detects the change in the recipe and fetches and
- applies the new configuration before building the kernel.
- 
- For a detailed example showing how to configure the kernel, see the
--":ref:`kernel-dev/common:configuring the kernel`" section.
-+"`Configuring the Kernel`_" section.
- 
--Using an "In-Tree"  ``defconfig`` File
----------------------------------------
-+Using an "In-Tree" ``defconfig`` File
-+-------------------------------------
- 
- It might be desirable to have kernel configuration fragment support
- through a ``defconfig`` file that is pulled from the kernel source tree
-@@ -680,8 +671,7 @@ The steps in this procedure show you how you can patch the kernel using
- 
-    Before attempting this procedure, be sure you have performed the
-    steps to get ready for updating the kernel as described in the
--   ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``"
--   section.
-+   "`Getting Ready to Develop Using devtool`_" section.
- 
- Patching the kernel involves changing or adding configurations to an
- existing kernel, changing or adding recipes to the kernel that are
-@@ -693,15 +683,14 @@ output at boot time through ``printk`` statements in the kernel's
- ``calibrate.c`` source code file. Applying the patch and booting the
- modified image causes the added messages to appear on the emulator's
- console. The example is a continuation of the setup procedure found in
--the ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``" Section.
-+the "`Getting Ready to Develop Using devtool`_" section.
- 
- #. *Check Out the Kernel Source Files:* First you must use ``devtool``
-    to checkout the kernel source code in its workspace.
- 
-    .. note::
- 
--      See this step in the
--      ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``"
-+      See this step in the "`Getting Ready to Develop Using devtool`_"
-       section for more information.
- 
-    Use the following ``devtool`` command to check out the code::
-@@ -811,8 +800,7 @@ the ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``" Se
- 
-    .. note::
- 
--      See Step 3 of the
--      ":ref:`kernel-dev/common:getting ready to develop using \`\`devtool\`\``"
-+      See Step 3 of the "`Getting Ready to Develop Using devtool`_"
-       section for information on setting up this layer.
- 
-    Once the command
-@@ -831,17 +819,14 @@ Using Traditional Kernel Development to Patch the Kernel
- ========================================================
- 
- The steps in this procedure show you how you can patch the kernel using
--traditional kernel development (i.e. not using ``devtool``
--as described in the
--":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
--section).
-+traditional kernel development (i.e. not using ``devtool`` as described
-+in the "`Using devtool to Patch the Kernel`_" section).
- 
- .. note::
- 
-    Before attempting this procedure, be sure you have performed the
-    steps to get ready for updating the kernel as described in the
--   ":ref:`kernel-dev/common:getting ready for traditional kernel development`"
--   section.
-+   "`Getting Ready for Traditional Kernel Development`_" section.
- 
- Patching the kernel involves changing or adding configurations to an
- existing kernel, changing or adding recipes to the kernel that are
-@@ -853,14 +838,12 @@ emulator console output at boot time through ``printk`` statements in
- the kernel's ``calibrate.c`` source code file. Applying the patch and
- booting the modified image causes the added messages to appear on the
- emulator's console. The example is a continuation of the setup procedure
--found in the
--":ref:`kernel-dev/common:getting ready for traditional kernel development`"
--Section.
-+found in the "`Getting Ready for Traditional Kernel Development`_" section.
- 
- #. *Edit the Source Files* Prior to this step, you should have used Git
-    to create a local copy of the repository for your kernel. Assuming
-    you created the repository as directed in the
--   ":ref:`kernel-dev/common:getting ready for traditional kernel development`"
-+   "`Getting Ready for Traditional Kernel Development`_"
-    section, use the following commands to edit the ``calibrate.c`` file:
- 
-    #. *Change the working directory*: You need to locate the source
-@@ -992,8 +975,7 @@ Section.
-    enable the OpenEmbedded build system to find the patch file.
- 
-    For more information on append files and patches, see the
--   ":ref:`kernel-dev/common:creating the append file`" and
--   ":ref:`kernel-dev/common:applying patches`" sections. You can also see the
-+   "`Creating the Append File`_" and "`Applying Patches`_" sections. You can also see the
-    ":ref:`dev-manual/layers:appending other layers metadata with your layer`"
-    section in the Yocto Project Development Tasks Manual.
- 
-@@ -1027,7 +1009,7 @@ configuration fragments, and how to interactively modify your
- possible.
- 
- For more information on kernel configuration, see the
--":ref:`kernel-dev/common:changing the configuration`" section.
-+"`Changing the Configuration`_" section.
- 
- Using  ``menuconfig``
- ---------------------
-@@ -1072,10 +1054,8 @@ the tool and save your changes to create an updated version of the
- 
-    You can use the entire ``.config`` file as the ``defconfig`` file. For
-    information on ``defconfig`` files, see the
--   ":ref:`kernel-dev/common:changing the configuration`",
--   ":ref:`kernel-dev/common:using an "in-tree" \`\`defconfig\`\` file`",
--   and ":ref:`kernel-dev/common:creating a \`\`defconfig\`\` file`"
--   sections.
-+   "`Changing the Configuration`_", "`Using an "In-Tree" defconfig File`_",
-+   and "`Creating a defconfig File`_" sections.
- 
- Consider an example that configures the "CONFIG_SMP" setting for the
- ``linux-yocto-4.12`` kernel.
-diff --git a/documentation/kernel-dev/concepts-appx.rst b/documentation/kernel-dev/concepts-appx.rst
-index 6a2fe4bb0b..bcac7effe6 100644
---- a/documentation/kernel-dev/concepts-appx.rst
-+++ b/documentation/kernel-dev/concepts-appx.rst
-@@ -327,7 +327,7 @@ host system when you build the kernel using BitBake. This
- 
- Again, for additional information on the Yocto Project kernel's
- architecture and its branching strategy, see the
--":ref:`kernel-dev/concepts-appx:yocto linux kernel architecture and branching strategies`"
-+"`Yocto Linux Kernel Architecture and Branching Strategies`_"
- section. You can also reference the
- ":ref:`kernel-dev/common:using \`\`devtool\`\` to patch the kernel`"
- and
-diff --git a/documentation/kernel-dev/intro.rst b/documentation/kernel-dev/intro.rst
-index a663733a1d..564247afeb 100644
---- a/documentation/kernel-dev/intro.rst
-+++ b/documentation/kernel-dev/intro.rst
-@@ -90,7 +90,7 @@ understand the following documentation:
- -  The ":ref:`dev-manual/layers:understanding and creating layers`"
-    section in the Yocto Project Development Tasks Manual.
- 
---  The ":ref:`kernel-dev/intro:kernel modification workflow`" section.
-+-  The "`Kernel Modification Workflow`_" section.
- 
- Kernel Modification Workflow
- ============================
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index 87ba768a2..2294265a4 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -14,3 +14,4 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.5
+    release-notes-4.0.6
+    release-notes-4.0.7
++   release-notes-4.0.8
+diff --git a/documentation/migration-guides/release-notes-4.0.8.rst b/documentation/migration-guides/release-notes-4.0.8.rst
+new file mode 100644
+index 000000000..9603c6f6e
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.8.rst
+@@ -0,0 +1,214 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-4.0.8 (Kirkstone)
++-----------------------------------------
++
++Security Fixes in Yocto-4.0.8
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  apr-util: Fix :cve:`2022-25147`
++-  apr: Fix :cve:`2022-24963`, :cve:`2022-28331` and :cve:`2021-35940`
++-  bind: Fix :cve:`2022-3094`, :cve:`2022-3736` and :cve:`2022-3924`
++-  git: Ignore :cve:`2022-41953`
++-  git: Fix :cve:`2022-23521` and :cve:`2022-41903`
++-  ppp: Fix :cve:`2022-4603`
++-  python3-certifi: Fix :cve:`2022-23491`
++-  sudo: Fix :cve:`2023-2280`
++-  tar: Fix :cve:`2022-48303`
++
++
++Fixes in Yocto-4.0.8
++~~~~~~~~~~~~~~~~~~~~
++
++-  Fix missing leading whitespace with ':append'
++-  apr-util: upgrade to 1.6.3
++-  apr: upgrade to 1.7.2
++-  apt: fix do_package_qa failure
++-  bind: upgrade to 9.18.11
++-  bitbake: bb/utils: include SSL certificate paths in export_proxies
++-  bitbake: bitbake-diffsigs: Make PEP8 compliant
++-  bitbake: bitbake-diffsigs: break on first dependent task difference
++-  bitbake: fetch2/git: Clarify the meaning of namespace
++-  bitbake: fetch2/git: Prevent git fetcher from fetching gitlab repository metadata
++-  bitbake: fetch2/git: show SRCREV and git repo in error message about fixed SRCREV
++-  bitbake: siggen: Fix inefficient string concatenation
++-  bitbake: utils/ply: Update md5 to better report errors with hashlib
++-  bootchart2: Fix usrmerge support
++-  bsp-guide: fix broken git URLs and missing word
++-  build-appliance-image: Update to kirkstone head revision
++-  buildtools-tarball: set pkg-config search path
++-  classes/fs-uuid: Fix command output decoding issue
++-  dev-manual: common-tasks.rst: add link to FOSDEM 2023 video
++-  dev-manual: fix old override syntax
++-  devshell: Do not add scripts/git-intercept to PATH
++-  devtool: fix devtool finish when gitmodules file is empty
++-  diffutils: upgrade to 3.9
++-  gdk-pixbuf: do not use tools from gdk-pixbuf-native when building tests
++-  git: upgrade to 2.35.7
++-  glslang: branch rename master -> main
++-  httpserver: add error handler that write to the logger
++-  image.bbclass: print all QA functions exceptions
++-  kernel/linux-kernel-base: Fix kernel build artefact determinism issues
++-  libc-locale: Fix on target locale generation
++-  libgit2: upgrade to 1.4.5
++-  libjpeg-turbo: upgrade to 2.1.5
++-  libtirpc: Check if file exists before operating on it
++-  libusb1: Link with latomic only if compiler has no atomic builtins
++-  libusb1: Strip trailing whitespaces
++-  linux-firmware: upgrade to 20230117
++-  linux-yocto/5.15: update to v5.15.91
++-  lsof: fix old override syntax
++-  lttng-modules: Fix for 5.10.163 kernel version
++-  lttng-tools: upgrade to 2.13.9
++-  make-mod-scripts: Ensure kernel build output is deterministic
++-  manuals: update patchwork instance URL
++-  meta: remove True option to getVar and getVarFlag calls (again)
++-  migration-guides: add release-notes for 4.0.7
++-  native: Drop special variable handling
++-  numactl: skip test case when target platform doesn't have 2 CPU node
++-  oeqa context.py: fix --target-ip comment to include ssh port number
++-  oeqa dump.py: add error counter and stop after 5 failures
++-  oeqa qemurunner.py: add timeout to QMP calls
++-  oeqa qemurunner.py: try to avoid reading one character at a time
++-  oeqa qemurunner: read more data at a time from serial
++-  oeqa ssh.py: add connection keep alive options to ssh client
++-  oeqa ssh.py: move output prints to new line
++-  oeqa/qemurunner: do not use Popen.poll() when terminating runqemu with a signal
++-  oeqa/selftest/bbtests: Update message lookup for test_git_unpack_nonetwork_fail
++-  oeqa/selftest/locales: Add selftest for locale generation/presence
++-  poky.conf: Update SANITY_TESTED_DISTROS to match autobuilder
++-  poky.conf: bump version for 4.0.8
++-  profile-manual: update WireShark hyperlinks
++-  python3-pytest: depend on python3-tomli instead of python3-toml
++-  qemu: fix compile error
++-  quilt: fix intermittent failure in faildiff.test
++-  quilt: use upstreamed faildiff.test fix
++-  recipe_sanity: fix old override syntax
++-  ref-manual: document SSTATE_EXCLUDEDEPS_SYSROOT
++-  scons.bbclass: Make MAXLINELENGTH overridable
++-  scons: Pass MAXLINELENGTH to scons invocation
++-  sdkext/cases/devtool: pass a logger to HTTPService
++-  spirv-headers: set correct branch name
++-  sudo: upgrade to 1.9.12p2
++-  system-requirements.rst: add Fedora 36 and AlmaLinux 8.7 to list of supported distros
++-  testimage: Fix error message to reflect new syntax
++-  update-alternatives: fix typos
++-  vulkan-samples: branch rename master -> main
++
++
++Known Issues in Yocto-4.0.8
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.8
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Alejandro Hernandez Samaniego
++-  Alexander Kanavin
++-  Alexandre Belloni
++-  Armin Kuster
++-  Arnout Vandecappelle
++-  Bruce Ashfield
++-  Changqing Li
++-  Chee Yang Lee
++-  Etienne Cordonnier
++-  Harald Seiler
++-  Kai Kang
++-  Khem Raj
++-  Lee Chee Yang
++-  Louis Rannou
++-  Marek Vasut
++-  Marius Kriegerowski
++-  Mark Hatle
++-  Martin Jansa
++-  Mauro Queiros
++-  Michael Opdenacker
++-  Mikko Rapeli
++-  Mingli Yu
++-  Narpat Mali
++-  Niko Mauno
++-  Pawel Zalewski
++-  Peter Kjellerstedt
++-  Richard Purdie
++-  Rodolfo Quesada Zumbado
++-  Ross Burton
++-  Sakib Sajal
++-  Schmidt, Adriaan
++-  Steve Sakoman
++-  Thomas Roos
++-  Ulrich Ölmann
++-  Xiangyu Chen
++
++
++Repositories / Downloads for Yocto-4.0.8
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.8 </poky/log/?h=yocto-4.0.8>`
++-  Git Revision: :yocto_git:`a361fb3df9c87cf12963a9d785a9f99faa839222 </poky/commit/?id=a361fb3df9c87cf12963a9d785a9f99faa839222>`
++-  Release Artefact: poky-a361fb3df9c87cf12963a9d785a9f99faa839222
++-  sha: af4e8d64be27d3a408357c49b7952ce04c6d8bb0b9d7b50c48848d9355de7fc2
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.8/poky-a361fb3df9c87cf12963a9d785a9f99faa839222.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.8/poky-a361fb3df9c87cf12963a9d785a9f99faa839222.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.8 </openembedded-core/log/?h=yocto-4.0.8>`
++-  Git Revision: :oe_git:`b20e2134daec33fbb8ce358d984751d887752bd5 </openembedded-core/commit/?id=b20e2134daec33fbb8ce358d984751d887752bd5>`
++-  Release Artefact: oecore-b20e2134daec33fbb8ce358d984751d887752bd5
++-  sha: 63cce6f1caf8428eefc1471351ab024affc8a41d8d7777f525e3aa9ea454d2cd
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.8/oecore-b20e2134daec33fbb8ce358d984751d887752bd5.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.8/oecore-b20e2134daec33fbb8ce358d984751d887752bd5.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.8 </meta-mingw/log/?h=yocto-4.0.8>`
++-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
++-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
++-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.8/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.8/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.8 </meta-gplv2/log/?h=yocto-4.0.8>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.8/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.8/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.8 </bitbake/log/?h=yocto-4.0.8>`
++-  Git Revision: :oe_git:`9bbdedc0ba7ca819b898e2a29a151d6a2014ca11 </bitbake/commit/?id=9bbdedc0ba7ca819b898e2a29a151d6a2014ca11>`
++-  Release Artefact: bitbake-9bbdedc0ba7ca819b898e2a29a151d6a2014ca11
++-  sha: 8e724411f4df00737e81b33eb568f1f97d2a00d5364342c0a212c46abb7b005b
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.8/bitbake-9bbdedc0ba7ca819b898e2a29a151d6a2014ca11.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.8/bitbake-9bbdedc0ba7ca819b898e2a29a151d6a2014ca11.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.8 </yocto-docs/log/?h=yocto-4.0.8>`
++-  Git Revision: :yocto_git:`16ecbe028f2b9cc021267817a5413054e070b563 </yocto-docs/commit/?id=16ecbe028f2b9cc021267817a5413054e070b563>`
++
 -- 
-2.37.2
+2.34.1
 
 
