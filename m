@@ -2,94 +2,100 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6FA8C6FD19
-	for <webhook@archiver.kernel.org>; Thu, 16 Mar 2023 15:18:57 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.14953.1678979936174273543
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D207C7618E
+	for <webhook@archiver.kernel.org>; Thu, 16 Mar 2023 20:48:14 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web11.3768.1678999684238594008
  for <docs@lists.yoctoproject.org>;
- Thu, 16 Mar 2023 08:18:56 -0700
+ Thu, 16 Mar 2023 13:48:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TCZq+vxM;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MiM4ffqi;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 9C01B24000C;
-	Thu, 16 Mar 2023 15:18:53 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 8AC6A240004;
+	Thu, 16 Mar 2023 20:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1678979934;
+	t=1678999681;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=dWn55ktNS3cwv5OMytOH0ZUqmg3Jdb0Boss9Xvp10fM=;
-	b=TCZq+vxMxytSdtcgZCHufdAyYEdPOJhf9AJWGe+FGK89JDcrlq+LRuJGev1hTFcoV7TElS
-	D++WhtD73+cx4wlymjI2vOVzq3n3DB3nqBdPMsNEw4MZLVRc83d6MgOMrOu11B4qZRmtuv
-	UbC/X6BiDdsUlBQ/CLmWBU4DRIJUT4P82MUEt25r0qgeQLgMeR9FDAtyG4DbzAmxyvy1wh
-	BSjNiYuUVVrZ+9bmBEbeZtGt+1qtL7GgcSFMb7OabRpAfs0Ccynr2jNQBLs/G/XFXokF1l
-	YJz2Q5Fbc3GzjF39p0ED9cICjVLmfNDeL3n+B4EUzy2YugaQC4ESNdSCNXYgLA==
+	bh=hyuEPn6Co0djKZ0ZPABp9Y/ageQCeBY+0V0J966/p58=;
+	b=MiM4ffqiQhn8y8y3rNhgKhbsjwURtHPsNbvFs5gH5Iue3bWdbkVBZV9WT7HjaNc/obl7CS
+	DtMXiAwAAiPuk4JPzBEBf83tM1MmlZjC2QvBNXYPIoDKA2HKaArjAkuZtPX8at4TdwJ0QS
+	Ix7ByNW2m3uyOaSQOrHEaQvSOac0aMkxMsQ3+zwfKB1Cg/D15odoDG+6LJPQEsBu66ciJN
+	CE3guUijWTVG077lN3CQSEm3y8iMIHqDIPBIN4v4GnT8hU1xX2WtrPpqukflGnyupiV9lM
+	ZDbjs5MlIeateQPLR+wrW5McclLfbvecHEhTs0H+2B1TDzHNKeAtsLrrtt+Zqw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: variables.rst: update LAYERSERIES_COMPAT
-Date: Thu, 16 Mar 2023 16:18:39 +0100
-Message-Id: <20230316151839.3708045-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH 1/2] manuals: update disk space requirements
+Date: Thu, 16 Mar 2023 21:47:49 +0100
+Message-Id: <20230316204750.4156695-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 16 Mar 2023 15:18:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3800
+ <docs@lists.yoctoproject.org>; Thu, 16 Mar 2023 20:48:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3801
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-- Replace by a reference to the description which was
-  moved to the BitBake manual.
+Tests made on Poky master on March 16, 2023.
 
-- Also drop the reference to the Yocto Project Development Tasks Manual
-  which doesn't add extra information on this variable.
+Add a "Free Disk Space" section to the "System Requirements" document.
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 26 +-------------------------
- 1 file changed, 1 insertion(+), 25 deletions(-)
+ documentation/brief-yoctoprojectqs/index.rst     | 2 +-
+ documentation/poky.yaml.in                       | 2 ++
+ documentation/ref-manual/system-requirements.rst | 9 +++++++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 6c59ffee5f..c787a17937 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4741,31 +4741,7 @@ system and gives an overview of their function and contents.
-       ``LAYERRECOMMENDS_mylayer``).
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index 7b8baf233a..5410036a30 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -40,7 +40,7 @@ Compatible Linux Distribution
+ Make sure your :term:`Build Host` meets the
+ following requirements:
  
-    :term:`LAYERSERIES_COMPAT`
--      Lists the versions of the :term:`OpenEmbedded-Core (OE-Core)` for which
--      a layer is compatible. Using the :term:`LAYERSERIES_COMPAT` variable
--      allows the layer maintainer to indicate which combinations of the
--      layer and OE-Core can be expected to work. The variable gives the
--      system a way to detect when a layer has not been tested with new
--      releases of OE-Core (e.g. the layer is not maintained).
--
--      To specify the OE-Core versions for which a layer is compatible, use
--      this variable in your layer's ``conf/layer.conf`` configuration file.
--      For the list, use the Yocto Project
--      :yocto_wiki:`Release Name </Releases>` (e.g.
--      &DISTRO_NAME_NO_CAP;). To specify multiple OE-Core versions for the
--      layer, use a space-separated list::
--
--         LAYERSERIES_COMPAT_layer_root_name = "&DISTRO_NAME_NO_CAP; &DISTRO_NAME_NO_CAP_MINUS_ONE;"
--
--      .. note::
--
--         Setting :term:`LAYERSERIES_COMPAT` is required by the Yocto Project
--         Compatible version 2 standard.
--         The OpenEmbedded build system produces a warning if the variable
--         is not set for any given layer.
--
--      See the ":ref:`dev-manual/layers:creating your own layer`"
--      section in the Yocto Project Development Tasks Manual.
-+      See :term:`bitbake:LAYERSERIES_COMPAT` in the BitBake manual.
+--  50 Gbytes of free disk space
++-  &MIN_DISK_SPACE; Gbytes of free disk space
  
-    :term:`LAYERVERSION`
-       Optionally specifies the version of a layer as a single number. You
+ -  Runs a supported Linux distribution (i.e. recent releases of Fedora,
+    openSUSE, CentOS, Debian, or Ubuntu). For a list of Linux
+diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+index 30e1050824..7810b8d2a5 100644
+--- a/documentation/poky.yaml.in
++++ b/documentation/poky.yaml.in
+@@ -41,3 +41,5 @@ MIN_TAR_VERSION : "1.28"
+ MIN_GIT_VERSION : "1.8.3.1"
+ MIN_GCC_VERSION : "7.5"
+ MIN_MAKE_VERSION : "4.0"
++# Disk space (Gbytes) needed to generate qemux86-64 core-image-sato on Ubuntu 22.04 (x86-64), rounded up from 87
++MIN_DISK_SPACE : "90"
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index 0fbe3f12c8..1add92e85d 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -31,6 +31,15 @@ and conceptual information in the :doc:`/overview-manual/index`.
+ 
+ .. _detailed-supported-distros:
+ 
++Free Disk Space
++===============
++
++To build an image such as ``core-image-sato``, you need a system with at least
++&MIN_DISK_SPACE; Gbytes of free disk space.
++
++If you have a shortage of disk space, see the ":doc:`/dev-manual/disk-space`"
++section of the Development Tasks Manual.
++
+ Supported Linux Distributions
+ =============================
+ 
 -- 
 2.34.1
 
