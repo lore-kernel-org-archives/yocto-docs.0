@@ -2,72 +2,95 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BA55C74A5B
-	for <webhook@archiver.kernel.org>; Tue, 21 Mar 2023 17:50:08 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.20985.1679421004485454588
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 267FAC76195
+	for <webhook@archiver.kernel.org>; Tue, 21 Mar 2023 20:39:09 +0000 (UTC)
+Received: from relay10.mail.gandi.net (relay10.mail.gandi.net [217.70.178.230])
+ by mx.groups.io with SMTP id smtpd.web10.25918.1679431146867490353
  for <docs@lists.yoctoproject.org>;
- Tue, 21 Mar 2023 10:50:04 -0700
+ Tue, 21 Mar 2023 13:39:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CIo7zlzA;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=PgfuetTO;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.230, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 9E9011C0007;
-	Tue, 21 Mar 2023 17:50:02 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 9F822240005;
+	Tue, 21 Mar 2023 20:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1679421002;
+	t=1679431144;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=suE/3gU5qP6bKOrTqTNoKLUeqPQ/74A9TSSHJcC4caE=;
-	b=CIo7zlzABCwMXFDrq7R/o28g3GrTyOoRfaJmeT9xhmwfsWGchpbgIBKMmanm1ZsKP4IyGO
-	1X5GG+lbNqD3/lcqyv7iHqbcU2QVVoztUUbQpqUYqEfBgqgunG8gu+OGk4mI/xB+hScKz9
-	CUY2jMdbMUNxNKxhsboGm4M6FNh8fQgYJnWjrbmrdrDcdYU95snsYxp83CYhw6JwuWCneL
-	yRNr/FCLHO+wc2DYuiwwn4r0UyiiXzoaVKudcCMexntOL6H/YLl7INaWvaN5EFZjBvCCG8
-	7bIladCrtzotDe9CgiTNd8viETyGwr8Av4HKBw/0A4GgFx6h8rtVLouxgtywlQ==
-Message-ID: <3fc33c4e-b166-96f8-78ee-e840a4657f61@bootlin.com>
-Date: Tue, 21 Mar 2023 18:50:01 +0100
+	bh=9ZWwwSLWzGDkoIzRoNGhHs425BONlV6cCpJzOI0Uq5k=;
+	b=PgfuetTOF9XRr74s7weyfixeVCsSyN2EtJmj5hKrLscj5FsSJMjv+u36tbz7+l9jmlny50
+	BhTDuD0cn1Dw4isoA8g4wO58Mtrkjq3h2XlueAvVoS8WDQvflJPRarcbK7gcfUSYjjFIxI
+	fPA2dbCtLkQRnk6mxkIy2HKLga1Vsw15FkUjFGO5UNQ5Cg63jD+AatZZ2FJ30xcamhWvaW
+	og/lSptCLtf/Ii1TVUGKJ4b2o/6qZp/BrF2hBPoWBZEqoaqfHbpG7y37be2XbqMWg0JsnC
+	m7Hfo2wJpVCStKGirG/fLAkX5sT+RXO6vYEWbbAqOhb1hjIAMVTfaBQlv3m+OA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Ross Burton <ross.burton@arm.com>
+Subject: [PATCH] ref-manual: release-process.rst: update testing section
+Date: Tue, 21 Mar 2023 21:39:02 +0100
+Message-Id: <20230321203902.71281-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Cc: Paul Eggleton <paul.eggleton@linux.microsoft.com>
-Content-Language: en-US
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: Need content for 4.2 release and migration notes
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 21 Mar 2023 17:50:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3810
+ <docs@lists.yoctoproject.org>; Tue, 21 Mar 2023 20:39:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3811
 
-Greetings,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-As discussed in the weekly engineering meeting, we need to have release 
-and migration notes ready for the 4.2 release, hopefully happening in 
-about 10 days.
+- Remove note to section not carrying information about
+  special hosts tools for oe-selftest
 
-Here's what we have so far:
-https://docs.yoctoproject.org/dev/migration-guides/release-4.2.html
+- Add links to mentioned repositories
 
-I can try to find some noteworthy details by myself by looking at the 
-commits in the master branch, but I'm sure some of you will see the big 
-picture better.
+CC: Ross Burton <ross.burton@arm.com>
+---
+ documentation/ref-manual/release-process.rst | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
 
-So, please drop here quick descriptions of the changes you are thinking 
-about. I'll take care of polishing them and adding them to the manuals. 
-Submitting patches directly is also possible, of course.
-
-Thank you in advance
-Cheers
-Michael.
-
+diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+index fa057e055c..be47ddfa6d 100644
+--- a/documentation/ref-manual/release-process.rst
++++ b/documentation/ref-manual/release-process.rst
+@@ -161,25 +161,19 @@ consists of the following pieces:
+    ``oe-selftest`` can run all tests by default or can run selected
+    tests or test suites.
+ 
+-   .. note::
+-
+-      Running ``oe-selftest`` requires host packages beyond the "Essential"
+-      grouping. See the :ref:`ref-manual/system-requirements:required packages for the build host`
+-      section for more information.
+-
+ Originally, much of this testing was done manually. However, significant
+ effort has been made to automate the tests so that more people can use
+ them and the Yocto Project development team can run them faster and more
+ efficiently.
+ 
+-The Yocto Project's main Autobuilder (&YOCTO_AB_URL;)
+-publicly tests each Yocto Project release's code in the
+-:term:`OpenEmbedded-Core (OE-Core)`, Poky, and BitBake repositories. The testing
+-occurs for both the current state of the "master" branch and also for
++The Yocto Project's main Autobuilder (&YOCTO_AB_URL;) publicly tests each Yocto
++Project release's code in the :oe_git:`openembedded-core </openembedded-core>`,
++:yocto_git:`poky </poky>` and :oe_git:`bitbake </bitbake>` repositories. The
++testing occurs for both the current state of the "master" branch and also for
+ submitted patches. Testing for submitted patches usually occurs in the
+-"ross/mut" branch in the ``poky-contrib`` repository (i.e. the
+-master-under-test branch) or in the "master-next" branch in the ``poky``
+-repository.
++"ross/mut" branch in the :yocto_git:`poky-contrib </poky-contrib>` repository
++(i.e. the master-under-test branch) or in the "master-next" branch in the
++:yocto_git:`poky </poky>` repository.
+ 
+ .. note::
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
