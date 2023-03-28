@@ -1,69 +1,75 @@
-Return-Path: <u.oelmann@pengutronix.de>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 977D4C76195
-	for <webhook@archiver.kernel.org>; Tue, 28 Mar 2023 10:49:05 +0000 (UTC)
-Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
- by mx.groups.io with SMTP id smtpd.web10.63024.1680000539973122786
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5106EC76196
+	for <webhook@archiver.kernel.org>; Tue, 28 Mar 2023 17:26:50 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.2559.1680024400172436176
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Mar 2023 03:49:00 -0700
+ Tue, 28 Mar 2023 10:26:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: uol@pengutronix.de)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <uol@pengutronix.de>)
-	id 1ph6sr-00048R-KF; Tue, 28 Mar 2023 12:48:57 +0200
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <uol@pengutronix.de>)
-	id 1ph6sr-007HlA-0B; Tue, 28 Mar 2023 12:48:57 +0200
-Received: from uol by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <uol@pengutronix.de>)
-	id 1ph6sq-007xa5-6x; Tue, 28 Mar 2023 12:48:56 +0200
-From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-To: Yocto Project Documentation <docs@lists.yoctoproject.org>
-Cc: yocto@pengutronix.de,
-	=?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
-Subject: [PATCH 2/2] ref-manual: classes.rst: fix typo
-Date: Tue, 28 Mar 2023 12:48:53 +0200
-Message-Id: <20230328104853.1897266-2-u.oelmann@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230328104853.1897266-1-u.oelmann@pengutronix.de>
-References: <20230328104853.1897266-1-u.oelmann@pengutronix.de>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZSBrjP13;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 4B967FF803;
+	Tue, 28 Mar 2023 17:26:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1680024397;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kh3iyk/BQKq8CtIAGtHs10ZPmQv8zrBr3tZAnbXD4a0=;
+	b=ZSBrjP13JYdmrzhksekektM5/Pi/6wYaujvvneHlPjEiI0f+B6y0KvzVF+CrX9/vEH977e
+	O1bMnb0moA2eNPpCMabvGJBCAzINrFkoXGGAG0Sp9pbbdj9I0xFH8w8CBndVEMPTrgCuG1
+	VnUXOZX5bus38Zmrv7Km+p9QUWmfdHCIWTbh0skiiD9ht0JHl7tCJRd+HoVeQVfLV8tHim
+	mmyXEKErDbVAn4eV6QqrX4R8Dge4x5X6rgXz/JJkzg6aZOmhTRupkJNqqi4vvoRX7zdC4n
+	/pRPk0e29+EbTYdGHgYVqV5Z8qlRdTgMsKKrYYfW7Q3g9cTXHBul/Qgc0Tq0uw==
+Message-ID: <447bc0ac-99ca-a102-8332-b974c8e7a938@bootlin.com>
+Date: Tue, 28 Mar 2023 19:26:36 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Cc: yocto@pengutronix.de
+Subject: Re: [docs] [PATCH 2/2] ref-manual: classes.rst: fix typo
+Content-Language: en-US
+To: =?UTF-8?Q?Ulrich_=c3=96lmann?= <u.oelmann@pengutronix.de>,
+ Yocto Project Documentation <docs@lists.yoctoproject.org>
+References: <20230328104853.1897266-1-u.oelmann@pengutronix.de>
+ <20230328104853.1897266-2-u.oelmann@pengutronix.de>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20230328104853.1897266-2-u.oelmann@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: uol@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Mar 2023 10:49:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3817
+ <docs@lists.yoctoproject.org>; Tue, 28 Mar 2023 17:26:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3818
 
-Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
----
- documentation/ref-manual/classes.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Hi Ulrich
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index e8dec31b0078..f8172e6b2904 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -137,7 +137,7 @@ The :ref:`ref-classes-base` class is special in that every ``.bb`` file implicit
- inherits the class. This class contains definitions for standard basic
- tasks such as fetching, unpacking, configuring (empty by default),
- compiling (runs any ``Makefile`` present), installing (empty by default)
--and packaging (empty by default). These classes are often overridden or
-+and packaging (empty by default). These tasks are often overridden or
- extended by other classes such as the :ref:`ref-classes-autotools` class or the
- :ref:`ref-classes-package` class.
- 
+Many thanks for these fixes!
+
+On 28.03.23 at 12:48, Ulrich Ölmann wrote:
+> Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
+> ---
+>   documentation/ref-manual/classes.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+
+For both patches:
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+... and merged into "master-next".
+
+Thanks again
+Cheers
+Michael.
+
 -- 
-2.39.2
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
