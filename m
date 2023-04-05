@@ -2,104 +2,258 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10617C77B60
-	for <webhook@archiver.kernel.org>; Wed,  5 Apr 2023 14:40:59 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.131952.1680705655446224440
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED70BC761AF
+	for <webhook@archiver.kernel.org>; Wed,  5 Apr 2023 17:47:09 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.137475.1680716827770841173
  for <docs@lists.yoctoproject.org>;
- Wed, 05 Apr 2023 07:40:55 -0700
+ Wed, 05 Apr 2023 10:47:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=aDKydo1m;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YJ+BnW7C;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id F015340009;
-	Wed,  5 Apr 2023 14:40:52 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id D16F1E0002;
+	Wed,  5 Apr 2023 17:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1680705653;
+	t=1680716825;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=b3itV/iRowBG86AQyBWa0DCmuWTLFu1cD+55Gsu9/Rw=;
-	b=aDKydo1moSZh6MoXK+psMXUWiuonbYHjvw8z2p+xad8lZ8uRu6kMNKr1Ykae2DaFB4gtzj
-	/d2ygh5LdTzVH+Mb+RX34WZ8ELDW/xrPDJddkD9Ms7mQWDKuNOzq9dOy9ytp1xXsVy/7eA
-	QKBGrECdqZ3Ko1bQuIhRWPNudjw70fQMXUojuGwbI8SypS2kU9danu/GyQVyQlj+1i3Jdm
-	yEsPxY8BpxSfPdyGhMbD+0qE75pUukwYl/zige7a0ONnaRoPC0kmIsMHNmA+RdGt2Ui5J8
-	5EL3wZTqqAINuCEgBK9G0OlheZPnCDAI36xP553ceLdHdcQ3BXy9ZtxBEIHRbA==
+	bh=l8mOpQa6CsC/KWi/gsHKY75SNHQWiina8t6/wFb/tnk=;
+	b=YJ+BnW7CT/2sdrgGzUWr71P4QjUAQJVCN9k59j91Xihc4F24ILegWksUksG8zyvsHirUQf
+	RLs1cwPmWBTDxkRehJQzZbywKnjE92MvWXbZ5XlZd06K1sWQ8kN7Mb/i2T55C+MZRfNxoR
+	BujIc1fbuqnjjGdkFtHys3E0gYdANq18+/s7imjIMxjoYDFtnAPAVEqSve/z19Cs+GjB/4
+	lQssyGHBp/9uzsMteRPMHBc30Mrys/Qr5ROXc1I7f0W4us+OeQUApLBpwqEGzhMXhv1W5T
+	20Mufc8+PQF4BDoG7wf6xix1242/vBwLDHvqI2i3pHdUrgtYqHSVesrC2CXCLg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] [mickledore] manuals: improve and fix target for supported distros
-Date: Wed,  5 Apr 2023 16:40:49 +0200
-Message-Id: <20230405144049.213630-1-michael.opdenacker@bootlin.com>
+Cc: openembedded-core@lists.openembedded.org,
+	Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Frederic Martinsons <frederic.martinsons@gmail.com>,
+	Marta Rybczynska <rybczynska@gmail.com>,
+	Paul Eggleton <paul.eggleton@linux.microsoft.com>,
+	Alex Kiernan <alex.kiernan@gmail.com>
+Subject: [PATCH] migration-guides: update 4.2 migration and release notes
+Date: Wed,  5 Apr 2023 19:46:35 +0200
+Message-Id: <20230405174635.228857-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 14:40:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3826
+ <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 17:47:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3827
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-- Fix the location of the target for supported distributions
-- Improve the name of this target
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: Frederic Martinsons <frederic.martinsons@gmail.com>
+CC: Marta Rybczynska <rybczynska@gmail.com>
+CC: Paul Eggleton <paul.eggleton@linux.microsoft.com>
+CC: Alex Kiernan <alex.kiernan@gmail.com>
 ---
- documentation/dev-manual/start.rst               | 2 +-
- documentation/dev-manual/wic.rst                 | 2 +-
- documentation/ref-manual/system-requirements.rst | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ .../migration-guides/migration-4.2.rst        | 75 ++++++++++++++++++-
+ .../migration-guides/release-notes-4.2.rst    | 68 +++++++++++++++--
+ 2 files changed, 134 insertions(+), 9 deletions(-)
 
-diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
-index 498734a04d..27fc0fcd01 100644
---- a/documentation/dev-manual/start.rst
-+++ b/documentation/dev-manual/start.rst
-@@ -302,7 +302,7 @@ Project Build Host:
-    as these releases are frequently tested against the Yocto Project and
-    officially supported. For a list of the distributions under
-    validation and their status, see the ":ref:`Supported Linux
--   Distributions <detailed-supported-distros>`"
-+   Distributions <system-requirements-supported-distros>`"
-    section in the Yocto Project Reference Manual and the wiki page at
-    :yocto_wiki:`Distribution Support </Distribution_Support>`.
+diff --git a/documentation/migration-guides/migration-4.2.rst b/documentation/migration-guides/migration-4.2.rst
+index 1339411b3e..3b04e072cb 100644
+--- a/documentation/migration-guides/migration-4.2.rst
++++ b/documentation/migration-guides/migration-4.2.rst
+@@ -18,11 +18,69 @@ BitBake and OpenEmbedded-Core are now relying on Python 3.8,
+ making it a requirement to use a distribution providing at least this
+ version, or to use :term:`buildtools`.
  
-diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-index a8d2f46955..2a4408cdb0 100644
---- a/documentation/dev-manual/wic.rst
-+++ b/documentation/dev-manual/wic.rst
-@@ -72,7 +72,7 @@ In order to use the Wic utility with the OpenEmbedded Build system, your
- system needs to meet the following requirements:
- 
- -  The Linux distribution on your development host must support the
--   Yocto Project. See the ":ref:`detailed-supported-distros`"
-+   Yocto Project. See the ":ref:`system-requirements-supported-distros`"
-    section in the Yocto Project Reference Manual for the list of
-    distributions that support the Yocto Project.
- 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 4fe0cb841b..fd4a8afb5d 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -29,8 +29,6 @@ and conceptual information in the :doc:`/overview-manual/index`.
-    For more information about the Yocto Project Documentation set, see
-    the :ref:`ref-manual/resources:links and related documentation` section.
- 
--.. _detailed-supported-distros:
--
- Minimum Free Disk Space
- =======================
- 
-@@ -50,6 +48,8 @@ You will manage to build an image such as ``core-image-sato`` for the
- system with 4 CPU cores, but your builds will be much faster on a system with
- as much RAM and as many CPU cores as possible.
- 
-+.. _system-requirements-supported-distros:
++.. _migration-4.2-gcc-8.0:
 +
- Supported Linux Distributions
- =============================
++gcc 8.0 is now the minumum required GNU C compiler version
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++This version, released in 2018, is a minimum requirement
++to build the ``mesa-native`` recipe.
++
++.. _migration-4.2-new-nvd-api:
++
++Fetching the NVD vulnerability database through the 2.0 API
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++This new version adds a new fetcher for the NVD database using the 2.0 API,
++as the 1.0 API will be retired in 2023.
++
++The implementation changes as little as possible, keeping the current
++database format (but using a different database file for the transition
++period), with a notable exception of not using the META table.
++
++Here are minor changes that you may notice:
++
++-  The database starts in 1999 instead of 2002
++-  The complete fetch is longer (30 minutes typically)
++
++.. _migration-4.2-rust-crate-checksums:
++
++Rust: mandatory checksums for crates
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++This release now supports checksums for Rust crates and make
++them mandatory for each crate in a recipe. See :yocto_git:`python3_bcrypt recipe changes
++</poky/commit/?h=mickledore&id=0dcb5ab3462fdaaf1646b05a00c7150eea711a9a>`
++for example.
++
++The ``cargo-update-recipe-crates`` utility
++:yocto_git:`has been extended </poky/commit/?h=mickledore&id=eef7fbea2c5bf59369390be4d5efa915591b7b22>`
++to include such checksums.
++
+ .. _migration-4.2-qa-checks:
  
+ QA check changes
+ ~~~~~~~~~~~~~~~~
+ 
++.. _migration-4.2-supported-distributions:
++
++Supported distributions
++~~~~~~~~~~~~~~~~~~~~~~~
++
++This release supports running BitBake on new GNU/Linux distributions:
++
++-  Fedora 36 and 37
++-  AlmaLinux 8.7 and 9.1
++-  OpenSuse 15.4
++
++On the other hand, some earlier distributions are no longer supported:
++
++-  Debian 10.x
++-  Fedora 34 and 35
++-  AlmaLinux 8.5
++
++See :ref:`all supported distributions <system-requirements-supported-distros>`.
++
+ .. _migration-4.2-misc-changes:
+ 
+ Miscellaneous changes
+@@ -30,6 +88,7 @@ Miscellaneous changes
+ 
+ -  The ``OEBasic`` signature handler (see :term:`BB_SIGNATURE_HANDLER`) has been
+    removed.
++  
+ 
+ .. _migration-4.2-removed-variables:
+ 
+@@ -38,7 +97,7 @@ Removed variables
+ 
+ The following variables have been removed:
+ 
+--  ``SERIAL_CONSOLE``, deprecated since version 2.6, replaced by :term:``SERIAL_CONSOLES``.
++-  ``SERIAL_CONSOLE``, deprecated since version 2.6, replaced by :term:`SERIAL_CONSOLES`.
+ 
+ .. _migration-4.2-removed-recipes:
+ 
+@@ -47,3 +106,17 @@ Removed recipes
+ 
+ The following recipes have been removed in this release:
+ 
++-  ``python3-picobuild``: after switching to ``python3-build``
++-  ``python3-strict-rfc3339``: unmaintained and not needed by anything in
++   :oe_git:`openembedded-core </openembedded-core>`
++   or :oe_git:`meta-openembedded </meta-openembedded>`.
++
++.. _migration-4.2-removed-classes:
++
++Removed classes
++~~~~~~~~~~~~~~~
++
++The following classes have been removed in this release:
++
++-  ``rust-bin``: no longer used in Poky
++
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
+index edafe378b0..1a60fe5490 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -6,23 +6,75 @@ Release notes for 4.2 (mickledore)
+ New Features / Enhancements in 4.2
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+-- Python 3.8 is the minimum Python version required on the build host.
+-  For host distributions that do not provide it, this is included as part of the
+-  :term:`buildtools` tarball.
++-  Python 3.8 is the minimum Python version required on the build host.
++   For host distributions that do not provide it, this is included as part of the
++   :term:`buildtools` tarball.
+ 
+-- This release now supports a new ``addpylib`` directive to enable
+-  Python libraries within layers.
++-  BitBake in this release now supports a new ``addpylib`` directive to enable
++   Python libraries within layers.
+ 
+-  This directive should be added to your layer configuration,
+-  as in the below example from ``meta/conf/layer.conf``::
++   This directive should be added to your layer configuration
++   as in the below example from ``meta/conf/layer.conf``::
+ 
+-     addpylib ${LAYERDIR}/lib oe
++      addpylib ${LAYERDIR}/lib oe
++
++-  BitBake has seen multiple internal changes that may impact
++   memory and disk usage as well as parsing time, in particular:
++
++   -  BitBake's Cooker server is now multithreaded.
++
++   -  BitBake's cache has been extended to include more hash
++      debugging data, but has also been optimized to :yocto_git:`compress
++      cache data <https://git.yoctoproject.org/poky/commit/?h=mickledore&id=7d010055e2af3294e17db862f42664ca689a9356>`.
++
++   -  BitBake's Cooker server :yocto_git:`can now be pinged
++      https://git.yoctoproject.org/poky/commit/?h=mickledore&id=26f255da09>`
++      from the UI.
+ 
+ -  Architecture-specific enhancements:
+ 
++   -  This release adds initial support for the
++      :wikipedia:`LoongArch <Loongson#LoongArch>`
++      (``loongarch64``) architecture, though there is no testing for it yet.
++
+ -  Kernel-related enhancements:
+ 
+ -  QEMU/runqemu enhancements:
+ 
+ -  Image-related enhancements:
+ 
++-  New variables:
++
++   - :term:`VOLATILE_TMP_DIR` allows to specify
++     whether ``/tmp`` should be on persistent storage
++     or in RAM.
++
++-  Rust improvements:
++
++   -  This release adds Cargo support on the target, and includes
++      automated QA tests for this functionality.
++
++   -  It also supports checksums for Rust crates and makes
++      them mandatory for each crate in a recipe.
++
++-  Testing:
++
++   -  The ``test-results`` script has been substantially improved
++      to better process and help to interpret test results.
++      See `this example <https://autobuilder.yocto.io/pub/non-release/20230405-6/testresults/buildperf-alma8/perf-alma8_master_20230405030047_38e3769a72.html>`__.
++
++   -  It is now possible to track regression changes between releases using
++      ``resulttool``. Here is an example command, which allowed to spot and fix
++      a regression in the ``quilt`` ptest::
++
++         yocto_testresults_query.py regression-report 4.2_M1 4.2_M2
++
++   -  This release adds support for parallel ptest execution with a ptest per image.
++      This takes ptest execution time from 3.5 hours to around 45 minutes on the autobuilder.
++
++-  Miscellaneous changes:
++
++   -  Supporting 64 bit dates on 32 bit platforms: several packages have been
++      updated to pass Y2038 tests.
++
++   -  Many packages were updated to add large file support.
 -- 
 2.34.1
 
