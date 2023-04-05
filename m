@@ -2,43 +2,43 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E52DCC76188
-	for <webhook@archiver.kernel.org>; Wed,  5 Apr 2023 14:27:18 +0000 (UTC)
-Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
- by mx.groups.io with SMTP id smtpd.web10.131437.1680704837521530327
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10617C77B60
+	for <webhook@archiver.kernel.org>; Wed,  5 Apr 2023 14:40:59 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.131952.1680705655446224440
  for <docs@lists.yoctoproject.org>;
- Wed, 05 Apr 2023 07:27:17 -0700
+ Wed, 05 Apr 2023 07:40:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gTg/+S9p;
- spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=aDKydo1m;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 5E09010000B;
-	Wed,  5 Apr 2023 14:27:15 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id F015340009;
+	Wed,  5 Apr 2023 14:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1680704835;
+	t=1680705653;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
 	bh=b3itV/iRowBG86AQyBWa0DCmuWTLFu1cD+55Gsu9/Rw=;
-	b=gTg/+S9pdZVcPVhVORsrvTIRtT8NAmPA1CU+kPZ7jZg2XO+h5rPzRrjngvra6c+Jt3lO9H
-	AFeYG5Qufz7+4+AbCJEqhxub9xpgRMzYbaQhx/weg0D/d+qEoXlHgb8ve9BcFIFwIcb6JO
-	4p3lPle0lmLWm2ZBksMcZ5X3VNnoBeHDrD5z8Gvo2HJbPfv/pAchErTPgeaWpApjyETuel
-	nkYsa1Qzx+EZYDi5cI8UoDsZq4vrLlLYz9/rVqCcx+Jk5ki/8+Awh3lE7d0VRQQqqynoWH
-	HgtHEAq0R1Zeg4VjPxcFr4u+iQqEzRKfnUIldOSTswtTT6xvvaws3WVokP9LLA==
+	b=aDKydo1moSZh6MoXK+psMXUWiuonbYHjvw8z2p+xad8lZ8uRu6kMNKr1Ykae2DaFB4gtzj
+	/d2ygh5LdTzVH+Mb+RX34WZ8ELDW/xrPDJddkD9Ms7mQWDKuNOzq9dOy9ytp1xXsVy/7eA
+	QKBGrECdqZ3Ko1bQuIhRWPNudjw70fQMXUojuGwbI8SypS2kU9danu/GyQVyQlj+1i3Jdm
+	yEsPxY8BpxSfPdyGhMbD+0qE75pUukwYl/zige7a0ONnaRoPC0kmIsMHNmA+RdGt2Ui5J8
+	5EL3wZTqqAINuCEgBK9G0OlheZPnCDAI36xP553ceLdHdcQ3BXy9ZtxBEIHRbA==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] manuals: improve and fix target for supported distros
-Date: Wed,  5 Apr 2023 16:27:12 +0200
-Message-Id: <20230405142712.212444-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] [mickledore] manuals: improve and fix target for supported distros
+Date: Wed,  5 Apr 2023 16:40:49 +0200
+Message-Id: <20230405144049.213630-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 14:27:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3825
+ <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 14:40:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3826
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
