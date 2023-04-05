@@ -2,76 +2,104 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C0E41C76188
-	for <webhook@archiver.kernel.org>; Wed,  5 Apr 2023 10:13:07 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.126266.1680689582635273881
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E52DCC76188
+	for <webhook@archiver.kernel.org>; Wed,  5 Apr 2023 14:27:18 +0000 (UTC)
+Received: from relay11.mail.gandi.net (relay11.mail.gandi.net [217.70.178.231])
+ by mx.groups.io with SMTP id smtpd.web10.131437.1680704837521530327
  for <docs@lists.yoctoproject.org>;
- Wed, 05 Apr 2023 03:13:03 -0700
+ Wed, 05 Apr 2023 07:27:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RDWvGz43;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gTg/+S9p;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.231, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 6390BFF80B;
-	Wed,  5 Apr 2023 10:13:00 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5E09010000B;
+	Wed,  5 Apr 2023 14:27:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1680689580;
+	t=1680704835;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=wM4510wnuaTVIvx5RBreOepkK8Db9qNFAF6OHcOlpFA=;
-	b=RDWvGz43TErlClDq+4L6jT0EMhIjeyHjruzXZeLIeE87tUQartf/lNXB4/ZtqRfG4lS7VD
-	XzXIUu/NvTUyLqBmadr2/KAup4rNAlqtrW8mXywDacRy4x0IynEtMIzcRxy/9kbbxmJaqp
-	4uhmWQ23SR+1m9ytwLNuQybN9u9WTBxdVeDC63sZpvUhkoJEkbBMv0/FQmWa6xlDlb1d2f
-	oANA2p9K8GiAOnU71q7NeQ83eGRUrZgQzF1g+3XHqzNtIoLgtgDt3CtM+5E1Cf0jkpY6FD
-	fTjqnIMsGSSkpvI/Cf0t4kMjCU4TyibR+8shlRtek2Q2i3I2qR7KDrGWqOPUJQ==
+	bh=b3itV/iRowBG86AQyBWa0DCmuWTLFu1cD+55Gsu9/Rw=;
+	b=gTg/+S9pdZVcPVhVORsrvTIRtT8NAmPA1CU+kPZ7jZg2XO+h5rPzRrjngvra6c+Jt3lO9H
+	AFeYG5Qufz7+4+AbCJEqhxub9xpgRMzYbaQhx/weg0D/d+qEoXlHgb8ve9BcFIFwIcb6JO
+	4p3lPle0lmLWm2ZBksMcZ5X3VNnoBeHDrD5z8Gvo2HJbPfv/pAchErTPgeaWpApjyETuel
+	nkYsa1Qzx+EZYDi5cI8UoDsZq4vrLlLYz9/rVqCcx+Jk5ki/8+Awh3lE7d0VRQQqqynoWH
+	HgtHEAq0R1Zeg4VjPxcFr4u+iQqEzRKfnUIldOSTswtTT6xvvaws3WVokP9LLA==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Trevor Woerner <twoerner@gmail.com>
-Subject: [PATCH] ref-manual: variables: document VOLATILE_TMP_DIR
-Date: Wed,  5 Apr 2023 12:12:48 +0200
-Message-Id: <20230405101248.203432-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] manuals: improve and fix target for supported distros
+Date: Wed,  5 Apr 2023 16:27:12 +0200
+Message-Id: <20230405142712.212444-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 10:13:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3824
+ <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 14:27:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3825
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: Trevor Woerner <twoerner@gmail.com>
----
- documentation/ref-manual/variables.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+- Fix the location of the target for supported distributions
+- Improve the name of this target
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c787a17937..62f28bd278 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -9387,6 +9387,18 @@ system and gives an overview of their function and contents.
-       file is not persistent. You can override this setting by setting the
-       variable to "no" to make the log directory persistent.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/start.rst               | 2 +-
+ documentation/dev-manual/wic.rst                 | 2 +-
+ documentation/ref-manual/system-requirements.rst | 4 ++--
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index 498734a04d..27fc0fcd01 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -302,7 +302,7 @@ Project Build Host:
+    as these releases are frequently tested against the Yocto Project and
+    officially supported. For a list of the distributions under
+    validation and their status, see the ":ref:`Supported Linux
+-   Distributions <detailed-supported-distros>`"
++   Distributions <system-requirements-supported-distros>`"
+    section in the Yocto Project Reference Manual and the wiki page at
+    :yocto_wiki:`Distribution Support </Distribution_Support>`.
  
-+   :term:`VOLATILE_TMP_DIR`
-+      Specifies the persistence of the target's ``/tmp`` directory.
+diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
+index a8d2f46955..2a4408cdb0 100644
+--- a/documentation/dev-manual/wic.rst
++++ b/documentation/dev-manual/wic.rst
+@@ -72,7 +72,7 @@ In order to use the Wic utility with the OpenEmbedded Build system, your
+ system needs to meet the following requirements:
+ 
+ -  The Linux distribution on your development host must support the
+-   Yocto Project. See the ":ref:`detailed-supported-distros`"
++   Yocto Project. See the ":ref:`system-requirements-supported-distros`"
+    section in the Yocto Project Reference Manual for the list of
+    distributions that support the Yocto Project.
+ 
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index 4fe0cb841b..fd4a8afb5d 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -29,8 +29,6 @@ and conceptual information in the :doc:`/overview-manual/index`.
+    For more information about the Yocto Project Documentation set, see
+    the :ref:`ref-manual/resources:links and related documentation` section.
+ 
+-.. _detailed-supported-distros:
+-
+ Minimum Free Disk Space
+ =======================
+ 
+@@ -50,6 +48,8 @@ You will manage to build an image such as ``core-image-sato`` for the
+ system with 4 CPU cores, but your builds will be much faster on a system with
+ as much RAM and as many CPU cores as possible.
+ 
++.. _system-requirements-supported-distros:
 +
-+      By default, :term:`VOLATILE_TMP_DIR` is set to "yes", in which case
-+      ``/tmp`` links to a directory which resides in RAM in a ``tmpfs``
-+      filesystem.
-+
-+      If instead, you want the ``/tmp`` directory to be persistent, set the
-+      variable to "no" to make it a regular directory in the root filesystem.
-+
-+      This supports both sysvinit and systemd based systems.
-+
-    :term:`WARN_QA`
-       Specifies the quality assurance checks whose failures are reported as
-       warnings by the OpenEmbedded build system. You set this variable in
+ Supported Linux Distributions
+ =============================
+ 
 -- 
 2.34.1
 
