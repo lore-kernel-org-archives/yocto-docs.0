@@ -1,229 +1,99 @@
-Return-Path: <frederic.martinsons@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 57775C76188
-	for <webhook@archiver.kernel.org>; Wed,  5 Apr 2023 19:05:20 +0000 (UTC)
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
- by mx.groups.io with SMTP id smtpd.web11.139668.1680721511934727813
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06DD2C76196
+	for <webhook@archiver.kernel.org>; Thu,  6 Apr 2023 08:23:34 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.153429.1680769410881915618
  for <docs@lists.yoctoproject.org>;
- Wed, 05 Apr 2023 12:05:12 -0700
+ Thu, 06 Apr 2023 01:23:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20210112 header.b=G2WhcZoc;
- spf=pass (domain: gmail.com, ip: 209.85.167.52, mailfrom: frederic.martinsons@gmail.com)
-Received: by mail-lf1-f52.google.com with SMTP id k37so48027265lfv.0
-        for <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 12:05:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1680721510;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=qc37+bHgY+QwKMZu64iS24xes03CLZ5wNjmgzmbHNFY=;
-        b=G2WhcZocz0X1clXL0lQiEcf9mffnwgurjsJ3dyzpPz/K3u+b9qpIuTx7jZWjMXP180
-         C58YgCir9Cq4D42DhX3YFlrfUXgn9FOcxGl6jkG2Cf3SrH8YMMV+SeJBpjw1sLAvwzqT
-         U+B5Yx33UGkhfj5KyiNypH3SsXD4QLJ4eJiqicRjzl0CB4y52UaP+/EXXzRKd/PpLflE
-         m+WQBxkwVBqdF+eS6QsVgu8oBjMzFEeatn9xy42qXIhEYcQDEfiQdJCKNI3ZBaKZZ3B1
-         PuWXmXn32WHViipk+ZJycRR+lEuODei7F3nJL//aXYS9v0hRqH6Lb50pFvwVDhLe73nY
-         a4Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680721510;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qc37+bHgY+QwKMZu64iS24xes03CLZ5wNjmgzmbHNFY=;
-        b=qXCkrb9eMFZj7JboET/AxDi0sN3+E8GhaOuQr6VurYfYao4xOTNd6i5FtXAdnrlI36
-         yY5O0kFiAM0qm0tvRTVENksOSucTqlZ4okgGFBhOVOaxYuZdEo79NVwQOnMAeiYHESqs
-         qgzChUBT3cA4XyGkvD98BjiyRqQ7HJ3NQlpcE1M0y9xsMtF+AX1mdSr7BanqpOWt3Fj1
-         rEJk5rouHknWnNePRwWuLbIks+V1OGfTvOO6Z064Qgg2GHRn73bEyH5AUoW42Akj+wQj
-         VGoSiRjmRH5OF9WKxyCNc1rdX3wNEw9G7iyuoE9aPwX53qjk2a0slDDwPN6wxMxb2/Ju
-         td3g==
-X-Gm-Message-State: AAQBX9f1IXBdgHhoaofZP589B+XEGFKMDg+HnStCAATXLCmM3VrUrx9I
-	41C1P7zmF8AL2NWnjiAXc8jMFa5mQIitB5q/8fQ=
-X-Google-Smtp-Source: AKy350YHJMmZLMzipVIB7W/5OPHDFdg1/35S4o+4iN0FxIflI/f5kdd8MWkpz4OaTsUTLC/0H1VgEUT4xTF1UAjXY/4=
-X-Received: by 2002:ac2:538a:0:b0:4d5:ca43:7049 with SMTP id
- g10-20020ac2538a000000b004d5ca437049mr2273612lfh.12.1680721509683; Wed, 05
- Apr 2023 12:05:09 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=onTQWTd6;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 325021C000F;
+	Thu,  6 Apr 2023 08:23:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1680769409;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5mUisNO+lBIJdWCUgcTgeaBnSYw8ht8THTx/qflCu9s=;
+	b=onTQWTd6OshEH6vbItkp6vO8BvKWj4yI69Dsk8eYWAzCchuo6gU35RSg3n12og5/d6rDKH
+	Q+CJ8qm0aPCcaPYwUGvWUTvOvfaCkMXAmKGzgNZNDSH/WyCsDEhlH7fgxEzbGDd3NgWCyp
+	K/OzKDsKwEpVlzTDc0vPcALmmMLOOB+exoJVgyhr+Xs16zu0ZVo7Clh2T1NytihJw+iDcU
+	m2x5N/b2n+iFYiH0IYIlg84UXJSF90JWZ0cIfQHtOURtb3ulR3Yr/B/W6d+0DWb8Ka5/sc
+	KH0sLvuSJUZSwWMCBTrRI42dZZ8bhxO/NKUP+Hw0z+dwnNXOm7iIoZh0nwL+WQ==
+Message-ID: <67d102c4-cb70-169d-b8ad-cb141378b7f0@bootlin.com>
+Date: Thu, 6 Apr 2023 10:23:27 +0200
 MIME-Version: 1.0
-References: <17531B0D0DFA1CB6.3977@lists.openembedded.org> <41ad289e-fffb-b9a1-ab53-0c0510c3d324@bootlin.com>
-In-Reply-To: <41ad289e-fffb-b9a1-ab53-0c0510c3d324@bootlin.com>
-From: =?UTF-8?B?RnLDqWTDqXJpYyBNYXJ0aW5zb25z?= <frederic.martinsons@gmail.com>
-Date: Wed, 5 Apr 2023 21:04:58 +0200
-Message-ID: <CA+cAkeoPkXN+4Z39DWewrhSL1c3GSsbadPhY-_=Rf9p-Na5u+Q@mail.gmail.com>
-Subject: Re: [OE-core] [PATCH] migration-guides: update 4.2 migration and
- release notes
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: docs@lists.yoctoproject.org, openembedded-core@lists.openembedded.org, 
-	Marta Rybczynska <rybczynska@gmail.com>, Paul Eggleton <paul.eggleton@linux.microsoft.com>, 
-	Alex Kiernan <alex.kiernan@gmail.com>
-Content-Type: multipart/alternative; boundary="0000000000008d1f8d05f89b7803"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.0
+Cc: docs@lists.yoctoproject.org, openembedded-core@lists.openembedded.org,
+ Marta Rybczynska <rybczynska@gmail.com>,
+ Paul Eggleton <paul.eggleton@linux.microsoft.com>,
+ Alex Kiernan <alex.kiernan@gmail.com>
+Subject: Re: [docs] [OE-core] [PATCH] migration-guides: update 4.2 migration
+ and release notes
+Content-Language: en-US
+To: Frederic Martinsons <frederic.martinsons@gmail.com>
+References: <17531B0D0DFA1CB6.3977@lists.openembedded.org>
+ <41ad289e-fffb-b9a1-ab53-0c0510c3d324@bootlin.com>
+ <CA+cAkeoPkXN+4Z39DWewrhSL1c3GSsbadPhY-_=Rf9p-Na5u+Q@mail.gmail.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <CA+cAkeoPkXN+4Z39DWewrhSL1c3GSsbadPhY-_=Rf9p-Na5u+Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 05 Apr 2023 19:05:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3829
+ <docs@lists.yoctoproject.org>; Thu, 06 Apr 2023 08:23:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3830
 
---0000000000008d1f8d05f89b7803
-Content-Type: text/plain; charset="UTF-8"
+Hi Frederic
 
-On Wed, 5 Apr 2023 at 20:40, Michael Opdenacker <
-michael.opdenacker@bootlin.com> wrote:
-
-> Greetings,
->
-> I copied the OE-core mailing list to get the attention of contributors.
-> If you want your new features to be featured in the release and
-> migration notes for 4.2, it's time to speak!
->
-> What I wrote so far is a very early draft meant to help you detect
-> what's missing and correct what I've written so far.
->
-> See my questions and comments below...
->
-> On 05.04.23 at 19:46, Michael Opdenacker via lists.openembedded.org wrote:
-> > diff --git a/documentation/migration-guides/migration-4.2.rst
-> b/documentation/migration-guides/migration-4.2.rst
-> > index 1339411b3e..3b04e072cb 100644
-> > ...
-> > +Rust: mandatory checksums for crates
-> > +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > +
-> > +This release now supports checksums for Rust crates and make
-> > +them mandatory for each crate in a recipe. See
-> :yocto_git:`python3_bcrypt recipe changes
-> >
-> +</poky/commit/?h=mickledore&id=0dcb5ab3462fdaaf1646b05a00c7150eea711a9a>`
-> > +for example.
-> > +
-> > +The ``cargo-update-recipe-crates`` utility
-> > +:yocto_git:`has been extended
-> </poky/commit/?h=mickledore&id=eef7fbea2c5bf59369390be4d5efa915591b7b22>`
-> > +to include such checksums.
+On 05.04.23 at 21:04, Frederic Martinsons wrote:
 >
 >
-> Any more Rust changes we should mention in the migration notes?
+>
+>     Any more Rust changes we should mention in the migration notes?
 >
 >
-Maybe mention a specific procedure to update a cargo based recipe from
-scratch (i.e. a recipe that
-didn't use the cargo-update-recipe-crates inheritance):
-
-To bootstrap a cargo base recipe which have not the checksum list, below are
-the steps to make:
-  - make the recipe inherit cargo-update-recipe-crates
-  - remove all crate:// from the recipe
-  - create an empty ${BPN}-crates.inc file and make your recipe requires it
-  - execute "bitbake -c update_crates your_recipe"
-  - copy paste the output of bitbake about the missing checksums in your
-${BPN}-crates.inc
-
-The last step requires a bitbake patch to show all the missing checksum
-which I don't know
-if it will be in 4.2.
+> Maybe mention a specific procedure to update a cargo based recipe from 
+> scratch (i.e. a recipe that
+> didn't use the cargo-update-recipe-crates inheritance):
+>
+> To bootstrap a cargo base recipe which have not the checksum list, 
+> below are
+> the steps to make:
+>   - make the recipe inherit cargo-update-recipe-crates
+>   - remove all crate:// from the recipe
+>   - create an empty ${BPN}-crates.inc file and make your recipe 
+> requires it
+>   - execute "bitbake -c update_crates your_recipe"
+>   - copy paste the output of bitbake about the missing checksums in 
+> your ${BPN}-crates.inc
+>
+> The last step requires a bitbake patch to show all the missing 
+> checksum which I don't know
+> if it will be in 4.2.
 
 
-> > +
-> > +-  Rust improvements:
-> > +
-> > +   -  This release adds Cargo support on the target, and includes
-> > +      automated QA tests for this functionality.
-> > +
-> > +   -  It also supports checksums for Rust crates and makes
-> > +      them mandatory for each crate in a recipe.
->
->
-> More Rust changes we should highlight?
->
+Do you mean this one?
+https://git.openembedded.org/bitbake/commit/?h=2.4&id=dafa07c080e05975b6319b5adf78a9691c6b6643
 
-This one seems redundant with the previously mentioned rust changes, isn't
-it ?
- Nevertheless, I'd maybe add a line about the fact that now we can develop
-rust project which contains "private" crate (i.e. crates that would be
-hosted
-in a git repository instead of crates.io registry), and by develop, it
-means we
-can of course build such a package but perform devtool operation on it (at
-least devtool modify and devtool deploy-target)
+It just got merged.
+Thanks for the tip.
 
---0000000000008d1f8d05f89b7803
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Cheers
+Michael.
 
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><div class=3D"gmail_quote"><div=
- dir=3D"ltr" class=3D"gmail_attr">On Wed, 5 Apr 2023 at 20:40, Michael Opde=
-nacker &lt;<a href=3D"mailto:michael.opdenacker@bootlin.com">michael.opdena=
-cker@bootlin.com</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" =
-style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);pa=
-dding-left:1ex">Greetings,<br>
-<br>
-I copied the OE-core mailing list to get the attention of contributors. <br=
->
-If you want your new features to be featured in the release and <br>
-migration notes for 4.2, it&#39;s time to speak!<br>
-<br>
-What I wrote so far is a very early draft meant to help you detect <br>
-what&#39;s missing and correct what I&#39;ve written so far.<br>
-<br>
-See my questions and comments below...<br>
-<br>
-On 05.04.23 at 19:46, Michael Opdenacker via <a href=3D"http://lists.openem=
-bedded.org" rel=3D"noreferrer" target=3D"_blank">lists.openembedded.org</a>=
- wrote:<br>
-&gt; diff --git a/documentation/migration-guides/migration-4.2.rst b/docume=
-ntation/migration-guides/migration-4.2.rst<br>
-&gt; index 1339411b3e..3b04e072cb 100644<br>
-&gt; ...<br>
-&gt; +Rust: mandatory checksums for crates<br>
-&gt; +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>
-&gt; +<br>
-&gt; +This release now supports checksums for Rust crates and make<br>
-&gt; +them mandatory for each crate in a recipe. See :yocto_git:`python3_bc=
-rypt recipe changes<br>
-&gt; +&lt;/poky/commit/?h=3Dmickledore&amp;id=3D0dcb5ab3462fdaaf1646b05a00c=
-7150eea711a9a&gt;`<br>
-&gt; +for example.<br>
-&gt; +<br>
-&gt; +The ``cargo-update-recipe-crates`` utility<br>
-&gt; +:yocto_git:`has been extended &lt;/poky/commit/?h=3Dmickledore&amp;id=
-=3Deef7fbea2c5bf59369390be4d5efa915591b7b22&gt;`<br>
-&gt; +to include such checksums.<br>
-<br>
-<br>
-Any more Rust changes we should mention in the migration notes?<br>
-<br></blockquote><div><br></div><div>Maybe mention a specific procedure to =
-update a cargo based recipe from scratch (i.e. a recipe that=C2=A0</div><di=
-v>didn&#39;t use the cargo-update-recipe-crates inheritance):</div><div><br=
-></div><div><div>To bootstrap=C2=A0a cargo base recipe which have not the c=
-hecksum list, below are</div><div>the steps to make:</div><div>=C2=A0 - mak=
-e the recipe inherit cargo-update-recipe-crates</div><div>=C2=A0 - remove a=
-ll crate:// from the recipe</div><div>=C2=A0 - create an empty ${BPN}-crate=
-s.inc file and make your recipe requires it</div><div>=C2=A0 - execute &quo=
-t;bitbake -c update_crates your_recipe&quot;</div><div>=C2=A0 - copy paste =
-the output of bitbake about the missing checksums in your ${BPN}-crates.inc=
-</div></div><div><br></div><div>The last step requires a bitbake patch to s=
-how all the missing checksum which I don&#39;t know</div><div>if it will be=
- in 4.2.</div><div><br></div><blockquote class=3D"gmail_quote" style=3D"mar=
-gin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1=
-ex"><br>
-&gt; +<br>
-&gt; +-=C2=A0 Rust improvements:<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0-=C2=A0 This release adds Cargo support on the target, a=
-nd includes<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 automated QA tests for this functionality.<br>
-&gt; +<br>
-&gt; +=C2=A0 =C2=A0-=C2=A0 It also supports checksums for Rust crates and m=
-akes<br>
-&gt; +=C2=A0 =C2=A0 =C2=A0 them mandatory for each crate in a recipe.<br>
-<br>
-<br>
-More Rust changes we should highlight?<br></blockquote><div><br></div><div>=
-This one seems redundant with the previously mentioned rust changes, isn&#3=
-9;t it ?</div><div>=C2=A0Nevertheless, I&#39;d maybe add a line about the f=
-act that now we can develop</div><div>rust project which contains &quot;pri=
-vate&quot; crate (i.e. crates that would be hosted</div><div>in a git repos=
-itory instead of <a href=3D"http://crates.io">crates.io</a> registry), and =
-by develop, it means we</div><div>can of course build such a package but pe=
-rform devtool operation on it (at</div><div>least devtool modify and devtoo=
-l deploy-target)</div><div><br></div></div></div>
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
---0000000000008d1f8d05f89b7803--
 
