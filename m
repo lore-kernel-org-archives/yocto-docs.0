@@ -2,52 +2,53 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 343F2C6FD1D
-	for <webhook@archiver.kernel.org>; Fri,  7 Apr 2023 09:54:34 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.3709.1680861265291935124
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 33F5DC77B72
+	for <webhook@archiver.kernel.org>; Tue, 11 Apr 2023 10:26:31 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.10186.1681208781655822403
  for <docs@lists.yoctoproject.org>;
- Fri, 07 Apr 2023 02:54:26 -0700
+ Tue, 11 Apr 2023 03:26:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HgRGTFSl;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WYcTGLYS;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id DA35E1BF20F;
-	Fri,  7 Apr 2023 09:54:21 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 85D4CFF808;
+	Tue, 11 Apr 2023 10:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1680861263;
+	t=1681208780;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4c/MY5afjB9zVY6KzOg0ifpm3T9bcUQV5l2XhUhMzcs=;
-	b=HgRGTFSl/3RVgKgbT+ENtfj724XjyjajzKzr1d8oAkSh4S9BSMxTGaHTn3w/OASrfzgXUg
-	cVDN2zpqCztb/G0tlX7Jlfj5/Oqk964yxpYijegvxPNtLZJqKe6yF5ZGncXKCDBwB+sjkU
-	zSLLmOy+nHM0+TY0D8PVSZMe/t2VNoIn1N9cAlYhUlDWRnDR5StA3uitiOs99FtzGqxK+H
-	tVuNZtd0BwXA/zgVjPuPd6khTnhlyCKKdF1nHGVPZcGNSVUsEICKPc4kzEah/Xv9X3Q5Q4
-	jWQgH9fp0U4MH6f2g/EMwf9RbdITOI6Tx/4Pbte3u6ZM6vqK1NQTWKVaOdgBnw==
+	bh=L8Xn9PEO28UUAWlqWPFmcLTN2uQj4W6kq+3r/pgtRxA=;
+	b=WYcTGLYSdcZnBycNd2N1K9yR6YlNRi00mKR6ddGCLLl/7k8W9Wxsq+pr473FTOyyoNuRja
+	sIiNEbIahpz0YAsAhEWsk4k1/g7YrSbROTI9Qou/NMHkyjLebepSVneiXClEgY2cbwrX/R
+	Y0lLPPi/OcJ5nN6HrnGcp1BurpRUAEysiaUFGZpOoAYiOW3vIs4Ltn36VtsgkqC2nTF7u6
+	YzTLGfdjk1f8MwxjlrgY6NJ609piJUsnaURI8f0CFbAhMY1956XO4m+lQD5QZsS22tRM3C
+	VLrGO6KLf13i89GxhjX0Ey97VTke0PL3LrkpoCo3B/wPlCE+2dcEGmfmxqQCLQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: openembedded-core@lists.openembedded.org,
+	alexis.lothore@bootlin.com,
 	Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Frederic Martinsons <frederic.martinsons@gmail.com>,
 	Marta Rybczynska <rybczynska@gmail.com>,
 	Paul Eggleton <paul.eggleton@linux.microsoft.com>,
 	Alex Kiernan <alex.kiernan@gmail.com>
-Subject: [PATCH v3] migration-guides: update 4.2 migration and release notes
-Date: Fri,  7 Apr 2023 11:53:57 +0200
-Message-Id: <20230407095357.312892-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH v4] migration-guides: update 4.2 migration and release notes
+Date: Tue, 11 Apr 2023 12:25:57 +0200
+Message-Id: <20230411102557.461391-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <175373D2D58215B5.3578@lists.openembedded.org>
-References: <175373D2D58215B5.3578@lists.openembedded.org>
+In-Reply-To: <17539E6A97252C13.11304@lists.openembedded.org>
+References: <17539E6A97252C13.11304@lists.openembedded.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Apr 2023 09:54:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3833
+ <docs@lists.yoctoproject.org>; Tue, 11 Apr 2023 10:26:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3834
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -60,6 +61,10 @@ CC: Alexis Lothoré <alexis.lothore@bootlin.com
 
 ---
 
+Changes in V4:
+- Fix details about regression detection, thanks to
+  feedback from Alexis Lothoré
+
 Changes in V3:
 - Add details about ptest images as suggested by Richard Purdie
 - Add details about resulttools improvements, pointing to
@@ -69,9 +74,9 @@ Changes in V2:
 - Add details about filling checksums using the 'cargo-update-recipe-crates'
   class, as suggested by Frederic Martinsons.
 ---
- .../migration-guides/migration-4.2.rst        | 84 +++++++++++++++++-
- .../migration-guides/release-notes-4.2.rst    | 86 +++++++++++++++++--
- 2 files changed, 161 insertions(+), 9 deletions(-)
+ .../migration-guides/migration-4.2.rst        | 84 ++++++++++++++++++-
+ .../migration-guides/release-notes-4.2.rst    | 83 ++++++++++++++++--
+ 2 files changed, 158 insertions(+), 9 deletions(-)
 
 diff --git a/documentation/migration-guides/migration-4.2.rst b/documentation/migration-guides/migration-4.2.rst
 index 1339411b3e..3b60b9a807 100644
@@ -192,10 +197,10 @@ index 1339411b3e..3b60b9a807 100644
 +-  ``rust-bin``: no longer used in Poky
 +
 diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
-index edafe378b0..6fa41ce33b 100644
+index edafe378b0..b6e278ee5d 100644
 --- a/documentation/migration-guides/release-notes-4.2.rst
 +++ b/documentation/migration-guides/release-notes-4.2.rst
-@@ -6,23 +6,93 @@ Release notes for 4.2 (mickledore)
+@@ -6,23 +6,90 @@ Release notes for 4.2 (mickledore)
  New Features / Enhancements in 4.2
  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
@@ -274,19 +279,16 @@ index edafe378b0..6fa41ce33b 100644
 +      the dependencies are more accurately tested.
 +
 +   -  It is now possible to track regression changes between releases using
-+      :oe_git:`resulttool </openembedded-core/tree/scripts/resulttool>`, which
-+      has been massively improved to better process test results, interpret them
-+      and detect regressions, eliminating noise and false positives.
-+
-+      Here is an example command, which allowed to spot and fix
-+      a regression in the ``quilt`` ptest::
++      :oe_git:`yocto_testresults_query.py </openembedded-core/tree/scripts/yocto_testresults_query.py>`,
++      which is a thin wrapper over :oe_git:`resulttool
++      </openembedded-core/tree/scripts/resulttool>`. Here is an example
++      command, which allowed to spot and fix a regression in the
++      ``quilt`` ptest::
 +
 +         yocto_testresults_query.py regression-report 4.2_M1 4.2_M2
 +
 +      See this `blog post about regression detection
-+      <https://bootlin.com/blog/continuous-integration-in-yocto-improving-the-regressions-detection/>`__
-+      and `this example test result
-+      <https://autobuilder.yocto.io/pub/non-release/20230405-6/testresults/buildperf-alma8/perf-alma8_master_20230405030047_38e3769a72.html>`__.
++      <https://bootlin.com/blog/continuous-integration-in-yocto-improving-the-regressions-detection/>`__.
 +
 +   -  This release adds support for parallel ptest execution with a ptest per image.
 +      This takes ptest execution time from 3.5 hours to around 45 minutes on the autobuilder.
