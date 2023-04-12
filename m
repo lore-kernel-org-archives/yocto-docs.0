@@ -2,53 +2,52 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 33F5DC77B72
-	for <webhook@archiver.kernel.org>; Tue, 11 Apr 2023 10:26:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 438D1C77B71
+	for <webhook@archiver.kernel.org>; Wed, 12 Apr 2023 08:32:47 +0000 (UTC)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.10186.1681208781655822403
+ by mx.groups.io with SMTP id smtpd.web10.37824.1681288358083832175
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Apr 2023 03:26:22 -0700
+ Wed, 12 Apr 2023 01:32:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WYcTGLYS;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=UzZkxF96;
  spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 85D4CFF808;
-	Tue, 11 Apr 2023 10:26:19 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id F043FFF807;
+	Wed, 12 Apr 2023 08:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1681208780;
+	t=1681288355;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L8Xn9PEO28UUAWlqWPFmcLTN2uQj4W6kq+3r/pgtRxA=;
-	b=WYcTGLYSdcZnBycNd2N1K9yR6YlNRi00mKR6ddGCLLl/7k8W9Wxsq+pr473FTOyyoNuRja
-	sIiNEbIahpz0YAsAhEWsk4k1/g7YrSbROTI9Qou/NMHkyjLebepSVneiXClEgY2cbwrX/R
-	Y0lLPPi/OcJ5nN6HrnGcp1BurpRUAEysiaUFGZpOoAYiOW3vIs4Ltn36VtsgkqC2nTF7u6
-	YzTLGfdjk1f8MwxjlrgY6NJ609piJUsnaURI8f0CFbAhMY1956XO4m+lQD5QZsS22tRM3C
-	VLrGO6KLf13i89GxhjX0Ey97VTke0PL3LrkpoCo3B/wPlCE+2dcEGmfmxqQCLQ==
+	bh=/eFYJs84wXt21688YvqxHuV4uIgflZyfQMQreQ777b0=;
+	b=UzZkxF96dEYmSp1Gb1XqeDMQdEjIpFansg7PPHbliQ9L8o3/G/uuG+D9e3/DLg19Ha6k0C
+	hPA3mNAuHubKSOa+zHk2vrJthbQLsN+3B4MUuG4gNM8l+UrebqmcZCXJRTnOyoT3+ebhTK
+	uGMlsJP8VNt+GVoD8LD9IrxjI9b9fEfsz28F2fSFDVLATmOvZB0TRJAJxgeDrYJqg2POFf
+	7eft1/EK3pS4iJrma17owH6EpM2sIP2OzTkBCE7RphobaZH//PQQSsrKx4JketYG4V+f+H
+	8LYNNLE9PwQGhDc4wxioJfc+ReE7Msao+OeqigRn4Tx3aOfJnnRQ9kGcdXUuRA==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: openembedded-core@lists.openembedded.org,
-	alexis.lothore@bootlin.com,
 	Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Frederic Martinsons <frederic.martinsons@gmail.com>,
 	Marta Rybczynska <rybczynska@gmail.com>,
 	Paul Eggleton <paul.eggleton@linux.microsoft.com>,
 	Alex Kiernan <alex.kiernan@gmail.com>
-Subject: [PATCH v4] migration-guides: update 4.2 migration and release notes
-Date: Tue, 11 Apr 2023 12:25:57 +0200
-Message-Id: <20230411102557.461391-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH v5] migration-guides: update 4.2 migration and release notes
+Date: Wed, 12 Apr 2023 10:32:24 +0200
+Message-Id: <20230412083224.529102-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <17539E6A97252C13.11304@lists.openembedded.org>
-References: <17539E6A97252C13.11304@lists.openembedded.org>
+In-Reply-To: <1754DA7B0A2BC525.1885@lists.openembedded.org>
+References: <1754DA7B0A2BC525.1885@lists.openembedded.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 11 Apr 2023 10:26:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3834
+ <docs@lists.yoctoproject.org>; Wed, 12 Apr 2023 08:32:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3835
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -60,6 +59,10 @@ CC: Alex Kiernan <alex.kiernan@gmail.com>
 CC: Alexis Lothoré <alexis.lothore@bootlin.com
 
 ---
+
+Changes in V5:
+- Remove empty "QA changes" in the migration notes.
+  This way, this version is ready for the release.
 
 Changes in V4:
 - Fix details about regression detection, thanks to
@@ -74,20 +77,23 @@ Changes in V2:
 - Add details about filling checksums using the 'cargo-update-recipe-crates'
   class, as suggested by Frederic Martinsons.
 ---
- .../migration-guides/migration-4.2.rst        | 84 ++++++++++++++++++-
+ .../migration-guides/migration-4.2.rst        | 85 ++++++++++++++++++-
  .../migration-guides/release-notes-4.2.rst    | 83 ++++++++++++++++--
- 2 files changed, 158 insertions(+), 9 deletions(-)
+ 2 files changed, 156 insertions(+), 12 deletions(-)
 
 diff --git a/documentation/migration-guides/migration-4.2.rst b/documentation/migration-guides/migration-4.2.rst
-index 1339411b3e..3b60b9a807 100644
+index 1339411b3e..ccc3e8905e 100644
 --- a/documentation/migration-guides/migration-4.2.rst
 +++ b/documentation/migration-guides/migration-4.2.rst
-@@ -18,11 +18,78 @@ BitBake and OpenEmbedded-Core are now relying on Python 3.8,
+@@ -18,10 +18,72 @@ BitBake and OpenEmbedded-Core are now relying on Python 3.8,
  making it a requirement to use a distribution providing at least this
  version, or to use :term:`buildtools`.
  
+-.. _migration-4.2-qa-checks:
 +.. _migration-4.2-gcc-8.0:
-+
+ 
+-QA check changes
+-~~~~~~~~~~~~~~~~
 +gcc 8.0 is now the minumum required GNU C compiler version
 +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
@@ -134,11 +140,6 @@ index 1339411b3e..3b60b9a807 100644
 +#.  Copy and paste the output of BitBake about the missing checksums into the
 +    ``${BPN}-crates.inc`` file.
 +
- .. _migration-4.2-qa-checks:
- 
- QA check changes
- ~~~~~~~~~~~~~~~~
- 
 +.. _migration-4.2-supported-distributions:
 +
 +Supported distributions
@@ -157,11 +158,10 @@ index 1339411b3e..3b60b9a807 100644
 +-  AlmaLinux 8.5
 +
 +See :ref:`all supported distributions <system-requirements-supported-distros>`.
-+
+ 
  .. _migration-4.2-misc-changes:
  
- Miscellaneous changes
-@@ -30,6 +97,7 @@ Miscellaneous changes
+@@ -30,6 +92,7 @@ Miscellaneous changes
  
  -  The ``OEBasic`` signature handler (see :term:`BB_SIGNATURE_HANDLER`) has been
     removed.
@@ -169,7 +169,7 @@ index 1339411b3e..3b60b9a807 100644
  
  .. _migration-4.2-removed-variables:
  
-@@ -38,7 +106,7 @@ Removed variables
+@@ -38,7 +101,7 @@ Removed variables
  
  The following variables have been removed:
  
@@ -178,7 +178,7 @@ index 1339411b3e..3b60b9a807 100644
  
  .. _migration-4.2-removed-recipes:
  
-@@ -47,3 +115,17 @@ Removed recipes
+@@ -47,3 +110,17 @@ Removed recipes
  
  The following recipes have been removed in this release:
  
