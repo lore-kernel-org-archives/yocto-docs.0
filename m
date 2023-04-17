@@ -2,96 +2,69 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 43AE4C77B78
-	for <webhook@archiver.kernel.org>; Mon, 17 Apr 2023 19:30:12 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.6384.1681759807923894025
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53397C77B76
+	for <webhook@archiver.kernel.org>; Mon, 17 Apr 2023 19:47:22 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.6798.1681760836914122398
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Apr 2023 12:30:08 -0700
+ Mon, 17 Apr 2023 12:47:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LC0sKRzQ;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=AlToC6Mu;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id CAC4C24000B;
-	Mon, 17 Apr 2023 19:30:05 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id D7B73FF804;
+	Mon, 17 Apr 2023 19:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1681759806;
+	t=1681760835;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=eBHNqLilj3ZdgUAWzKMti8yPsW5699O0ixtdQjd4wp8=;
-	b=LC0sKRzQ7SjMFxbUWS+MrgVhfgCY3/EOMB1tcn610EdsIO8vy5IyQHj3VMgZEtjuFy0Yyt
-	DPam9znSdqx2ZDyu0sfBarrqGIX+MjEtgxKNaLDaO/CFXvGlX4QWGJ5ilwWEsKi5LXxq9A
-	7aufKX0TbXbQRCjA4IgrCDtwY2B6pvDIS0JyXfUdZYiJvgqlbVR8j/0dap7h5EIl5CJsEX
-	+WLSg0U9FhP2oJB1f6D0DLpfI3aFV6AJG2sirZWPGps7eaLD2PYqUmV/DTm6Ucv1MO/Wzq
-	K4wYeSS8URzQiYZK4draSW/JW1pPwMvYCqCnVnYSYp0vowLLiQA+4O7i1P7ooA==
+	bh=FYT4Mg/tLJgjN5hKjlsvJ3fB1pKPeqx4q050Oj1oLiI=;
+	b=AlToC6MuamxWlisNLBDX/X1aC6ru5eHwcq60GAuFi9B0CZ3CpbNF6NkIY9mRbDlOQ9NtYm
+	f0hIiprayCYtbyCMaXGjAMxqQHZaJg9zAHDYiC/mCVPF1GpDcsd9sCirJ4M3axHyAkfnKt
+	YXqWG7piO5lCMMaT2XJi1a1JE5TW5fHHvieemm5ZJafr54qQvs6cw+n4Ro+JCESOEbeS9o
+	ETJPJqePP5ajEPbg1XX1sFEYHYaskNMMd4C40rUzCrr9t+e7wkxbIr4pQb0Zi5KKKRDz4U
+	+H9ViMC2KNagGsmU7SqjbTG9xv+/oNl9T1U1lMSk60K+4B8CV9y8d8t5WFyaSw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: variables.rst: add wikipedia shortcut for "getty"
-Date: Mon, 17 Apr 2023 21:29:59 +0200
-Message-Id: <20230417192959.1250012-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: remove unused and obsolete file
+Date: Mon, 17 Apr 2023 21:47:12 +0200
+Message-Id: <20230417194712.1251800-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 17 Apr 2023 19:30:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3839
+ <docs@lists.yoctoproject.org>; Mon, 17 Apr 2023 19:47:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3840
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ documentation/ref-manual/TODO | 11 -----------
+ 1 file changed, 11 deletions(-)
+ delete mode 100644 documentation/ref-manual/TODO
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 62f28bd278..53105afa32 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -7385,9 +7385,9 @@ system and gives an overview of their function and contents.
- 
-    :term:`SERIAL_CONSOLES`
-       Defines a serial console (TTY) to enable using
--      `getty <https://en.wikipedia.org/wiki/Getty_(Unix)>`__. Provide a
--      value that specifies the baud rate followed by the TTY device name
--      separated by a semicolon. Use spaces to separate multiple devices::
-+      :wikipedia:`getty <Getty_(Unix)>`. Provide a value that specifies the
-+      baud rate followed by the TTY device name separated by a semicolon.
-+      Use spaces to separate multiple devices::
- 
-          SERIAL_CONSOLES = "115200;ttyS0 115200;ttyS1"
- 
-@@ -8316,12 +8316,10 @@ system and gives an overview of their function and contents.
-       will be silently ignored.
- 
-    :term:`SYSVINIT_ENABLED_GETTYS`
--      When using
--      :ref:`SysVinit <dev-manual/new-recipe:enabling system services>`,
-+      When using :ref:`SysVinit <dev-manual/new-recipe:enabling system services>`,
-       specifies a space-separated list of the virtual terminals that should
--      run a `getty <https://en.wikipedia.org/wiki/Getty_%28Unix%29>`__
--      (allowing login), assuming :term:`USE_VT` is not set to
--      "0".
-+      run a :wikipedia:`getty <Getty_(Unix)>` (allowing login), assuming
-+      :term:`USE_VT` is not set to "0".
- 
-       The default value for :term:`SYSVINIT_ENABLED_GETTYS` is "1" (i.e. only
-       run a getty on the first virtual terminal).
-@@ -9228,9 +9226,8 @@ system and gives an overview of their function and contents.
-    :term:`USE_VT`
-       When using
-       :ref:`SysVinit <dev-manual/new-recipe:enabling system services>`,
--      determines whether or not to run a
--      `getty <https://en.wikipedia.org/wiki/Getty_%28Unix%29>`__ on any
--      virtual terminals in order to enable logging in through those
-+      determines whether or not to run a :wikipedia:`getty <Getty_(Unix)>`
-+      on any virtual terminals in order to enable logging in through those
-       terminals.
- 
-       The default value used for :term:`USE_VT` is "1" when no default value is
+diff --git a/documentation/ref-manual/TODO b/documentation/ref-manual/TODO
+deleted file mode 100644
+index 0510f54710..0000000000
+--- a/documentation/ref-manual/TODO
++++ /dev/null
+@@ -1,11 +0,0 @@
+-Handbook Todo List:
+-
+-  * Document adding a new IMAGE_FEATURE to the customising images section
+-  * Add instructions about using zaurus/openmoko emulation
+-  * Add component overview/block diagrams
+-  * Software Development intro should mention its software development for
+-    intended target and could be a different arch etc and thus special case.
+-  * Expand insane.bbclass documentation to cover tests
+-  * Document remaining classes (see list in ref-classes)
+-  * Document formfactor
+-
 -- 
 2.34.1
 
