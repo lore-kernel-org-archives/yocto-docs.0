@@ -2,69 +2,128 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53397C77B76
-	for <webhook@archiver.kernel.org>; Mon, 17 Apr 2023 19:47:22 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.6798.1681760836914122398
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F3B6C77B76
+	for <webhook@archiver.kernel.org>; Tue, 18 Apr 2023 09:09:22 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.3999.1681808959659635130
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Apr 2023 12:47:17 -0700
+ Tue, 18 Apr 2023 02:09:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=AlToC6Mu;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=FQhwJkRm;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id D7B73FF804;
-	Mon, 17 Apr 2023 19:47:14 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 5617760013;
+	Tue, 18 Apr 2023 09:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1681760835;
+	t=1681808957;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=FYT4Mg/tLJgjN5hKjlsvJ3fB1pKPeqx4q050Oj1oLiI=;
-	b=AlToC6MuamxWlisNLBDX/X1aC6ru5eHwcq60GAuFi9B0CZ3CpbNF6NkIY9mRbDlOQ9NtYm
-	f0hIiprayCYtbyCMaXGjAMxqQHZaJg9zAHDYiC/mCVPF1GpDcsd9sCirJ4M3axHyAkfnKt
-	YXqWG7piO5lCMMaT2XJi1a1JE5TW5fHHvieemm5ZJafr54qQvs6cw+n4Ro+JCESOEbeS9o
-	ETJPJqePP5ajEPbg1XX1sFEYHYaskNMMd4C40rUzCrr9t+e7wkxbIr4pQb0Zi5KKKRDz4U
-	+H9ViMC2KNagGsmU7SqjbTG9xv+/oNl9T1U1lMSk60K+4B8CV9y8d8t5WFyaSw==
+	bh=OTImP/Xv/yR3w1MSS/9FiHf3e2RUZqkXBFrfHUDl0IQ=;
+	b=FQhwJkRmp4C3C92fHb/DJqfEjOAfAoou0F1/J39J9hc4lGxII4AJx/0qh/B7jyRhH3Bw+H
+	8mOFdZoBsNn1qrYTicci/vzTp45PvJIB6DN5/8AwCVr+EKP4ahh/skhCVSM9FxB/M30kCv
+	ZXMTlAZ+R8yr/o8o7eW20ck0/0gdSsrUpbela6p3mhIIJeCQrxVTkpgyZ2HcTc9lB9NBqA
+	haACXa+b2B5kF+p6O4zAu6zyZHfG7pq+sjBHIuTNOR56PNT52VA9YI5qE3DjPeM9Hq6yFx
+	C1ABZMr2KJFC1nSpmEcTlizrqcgvTO85oXB6jry77hoyDIBc+d/r4G2p0TsPrw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: remove unused and obsolete file
-Date: Mon, 17 Apr 2023 21:47:12 +0200
-Message-Id: <20230417194712.1251800-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Saul Wold <Saul.Wold@windriver.com>,
+	Joshua Watt <JPEWhacker@gmail.com>
+Subject: [PATCH] manuals: document SPDX_CUSTOM_ANNOTATION_VARS
+Date: Tue, 18 Apr 2023 11:09:09 +0200
+Message-Id: <20230418090909.1282106-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 17 Apr 2023 19:47:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3840
+ <docs@lists.yoctoproject.org>; Tue, 18 Apr 2023 09:09:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3841
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: Saul Wold <Saul.Wold@windriver.com>
+CC: Joshua Watt <JPEWhacker@gmail.com>
 ---
- documentation/ref-manual/TODO | 11 -----------
- 1 file changed, 11 deletions(-)
- delete mode 100644 documentation/ref-manual/TODO
+ documentation/dev-manual/sbom.rst             |  3 +++
+ .../migration-guides/release-notes-4.2.rst    |  9 ++++---
+ documentation/ref-manual/variables.rst        | 26 +++++++++++++++++++
+ 3 files changed, 35 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/ref-manual/TODO b/documentation/ref-manual/TODO
-deleted file mode 100644
-index 0510f54710..0000000000
---- a/documentation/ref-manual/TODO
-+++ /dev/null
-@@ -1,11 +0,0 @@
--Handbook Todo List:
--
--  * Document adding a new IMAGE_FEATURE to the customising images section
--  * Add instructions about using zaurus/openmoko emulation
--  * Add component overview/block diagrams
--  * Software Development intro should mention its software development for
--    intended target and could be a different arch etc and thus special case.
--  * Expand insane.bbclass documentation to cover tests
--  * Document remaining classes (see list in ref-classes)
--  * Document formfactor
--
+diff --git a/documentation/dev-manual/sbom.rst b/documentation/dev-manual/sbom.rst
+index 448c071c55..f51d08f84d 100644
+--- a/documentation/dev-manual/sbom.rst
++++ b/documentation/dev-manual/sbom.rst
+@@ -63,6 +63,9 @@ generated files are available in ``tmp/deploy/spdx/MACHINE`` too, such as:
+    (when :term:`SPDX_ARCHIVE_SOURCES` is set). Those are needed to fulfill
+    "source code access" license requirements.
+ 
++See also the :term:`SPDX_CUSTOM_ANNOTATION_VARS` variable which allows
++to associate custom notes to a recipe.
++
+ See the `tools page <https://spdx.dev/resources/tools/>`__ on the :term:`SPDX`
+ project website for a list of tools to consume and transform the :term:`SPDX`
+ data generated by the OpenEmbedded build system.
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
+index 4cf1974d4f..eb75dec6dc 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -45,9 +45,12 @@ New Features / Enhancements in 4.2
+ 
+ -  New variables:
+ 
+-   - :term:`VOLATILE_TMP_DIR` allows to specify
+-     whether ``/tmp`` should be on persistent storage
+-     or in RAM.
++   -  :term:`VOLATILE_TMP_DIR` allows to specify
++      whether ``/tmp`` should be on persistent storage
++      or in RAM.
++
++   -  :term:`SPDX_CUSTOM_ANNOTATION_VARS` allows to add
++      specific comments to the :term:`SPDX` description of a recipe.
+ 
+ -  Rust improvements:
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 62f28bd278..26ed1f29ae 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7629,6 +7629,32 @@ system and gives an overview of their function and contents.
+       (+ 0.07\% with the tested image), compared to just enabling
+       :term:`SPDX_INCLUDE_SOURCES`.
+ 
++   :term:`SPDX_CUSTOM_ANNOTATION_VARS`
++      This option allows to associate `SPDX annotations
++      <https://spdx.github.io/spdx-spec/v2.3/annotations/>`__ to a recipe,
++      using the values of variables in the recipe::
++        
++         ANNOTATION1 = "First annotation for recipe"
++         ANNOTATION1 = "Second annotation for recipe"
++         SPDX_CUSTOM_ANNOTATION_VARS = "ANNOTATION1 ANNOTATION2"
++
++      This will add a new block to the recipe ``.sdpx.json`` output::
++
++         "annotations": [
++           {
++             "annotationDate": "2023-04-18T08:32:12Z",
++             "annotationType": "OTHER",
++             "annotator": "Tool: oe-spdx-creator - 1.0",
++             "comment": "ANNOTATION1=First annotation for recipe"
++           },
++           {
++             "annotationDate": "2023-04-18T08:32:12Z",
++             "annotationType": "OTHER",
++             "annotator": "Tool: oe-spdx-creator - 1.0",
++             "comment": "ANNOTATION2=Second annotation for recipe"
++           }
++         ],
++
+    :term:`SPDX_INCLUDE_SOURCES`
+       This option allows to add a description of the source files used to build
+       the host tools and the target packages, to the ``spdx.json`` files in
 -- 
 2.34.1
 
