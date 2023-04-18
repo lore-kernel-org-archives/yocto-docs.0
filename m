@@ -2,72 +2,115 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 40711C6FD18
-	for <webhook@archiver.kernel.org>; Tue, 18 Apr 2023 12:24:03 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.7081.1681820641067301249
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D2613C77B75
+	for <webhook@archiver.kernel.org>; Tue, 18 Apr 2023 14:42:23 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.10752.1681828939203949594
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Apr 2023 05:24:01 -0700
+ Tue, 18 Apr 2023 07:42:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=AQSiGCNK;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lv8f6DJr;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id D51042000B;
-	Tue, 18 Apr 2023 12:23:58 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 753D4C000A;
+	Tue, 18 Apr 2023 14:42:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1681820639;
+	t=1681828936;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ft7ZUWmK5wpSBsuW3ZIP2sX28kPc18ZU78/REJphoBw=;
-	b=AQSiGCNKh/yZpOjrT0uH8Y8h5H4TAGhD+laN5Dycm92FMQCmVTb/wZPpuBrwZn1dPVypKA
-	wQCbCouoPIkVIwDA/gN/HeUtr69s92uhAAQAvmxYuo02LZrBqr5jEapZLFHBkuv0CBY6A0
-	pRdiZgjbTLALAVTUCBnOO7MStdyAzMzzdWKgYGYP5o/7QirYBz2dmzv1IK4I7IjCB31xid
-	/0o1zUA3NGknlJcpCBg3VcoUoqIwdbmUJzJvB2LKHimdjNsyoQe0oeT/3dJzCl0cYCF72Z
-	vBfA4jW0wz9/b5LmGWzTctRIVBQtqbQh67LSn/10dDuJsN7k/GfdEmI8Ta2SZw==
-Message-ID: <6417e4df-d44e-b2cf-cf3b-482f753653e9@bootlin.com>
-Date: Tue, 18 Apr 2023 14:23:58 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=pYufJoykioYnPuVZQTXc6rXu8tYKgd3JkQNYmeq4yUI=;
+	b=lv8f6DJrH0ASNmo4Es1XJUxphBYpCS61sNgCiALUuwf37FCsREd8MrwItZvE+Igr/SiwO1
+	sr/RTNfAB+OVHqRFj7cbvw2R5GrtFKA+1T+OSxay6kHdSI7cesOX1RYFCu3xaCW2ipNL/A
+	QXKgHJt1Pz9/MEwSzG01EQEowLhNK0RbBd55doqIq59GCyd84V9i46BWIHW0SvOxImslg8
+	1HogblbrODyR2S/CKov6BypC/3mi/i9jKx1pr0PfQ+TJShLaBU3TNafSwi05MD9qXMwWmK
+	Eot21gcnOxi2ntN65hjN4El8kVevyDMF7vgQikaqM+EwGd47z40COs7cN7dK4g==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: add "Mixin Layer" term
+Date: Tue, 18 Apr 2023 16:42:13 +0200
+Message-Id: <20230418144213.1312004-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Cc: Saul Wold <Saul.Wold@windriver.com>, Joshua Watt <JPEWhacker@gmail.com>,
- docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] manuals: document SPDX_CUSTOM_ANNOTATION_VARS
-Content-Language: en-US
-To: Daniel Ammann <daniel.ammann@bytesatwork.ch>
-References: <20230418090909.1282106-1-michael.opdenacker@bootlin.com>
- <1a0a5493-8234-c12c-000d-39827867b948@bytesatwork.ch>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <1a0a5493-8234-c12c-000d-39827867b948@bytesatwork.ch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Apr 2023 12:24:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3844
+ <docs@lists.yoctoproject.org>; Tue, 18 Apr 2023 14:42:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3846
 
-Hi Daniel,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Thanks for the review!
+Also add a target (and use) a target
+for the "Long Term Support Release" section.
 
-On 18.04.23 at 14:12, Daniel Ammann wrote:
->
->> +
->> +         ANNOTATION1 = "First annotation for recipe"
->> +         ANNOTATION1 = "Second annotation for recipe"
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/ref-manual/release-process.rst | 8 +++++---
+ documentation/ref-manual/terms.rst           | 8 +++++++-
+ 2 files changed, 12 insertions(+), 4 deletions(-)
 
-
-Oops, yes, good catch!
-Fixed.
-Many thanks.
-Michael.
-
+diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+index 170565f9bc..2ffbd935c7 100644
+--- a/documentation/ref-manual/release-process.rst
++++ b/documentation/ref-manual/release-process.rst
+@@ -87,6 +87,8 @@ stable release.
+    exception to this policy occurs when there is a strong reason such as
+    the fix happens to also be the preferred upstream approach.
+ 
++.. _ref-long-term-support-releases:
++
+ Long Term Support Releases
+ ==========================
+ 
+@@ -120,16 +122,16 @@ of stable and :term:`LTS` releases.
+ 
+    In some circumstances, a layer can be created by the community in order to
+    add a specific feature or support a new version of some package for an :term:`LTS`
+-   release.  This is called a "mixin" layer. These are thin and specific
++   release.  This is called a :term:`Mixin` layer. These are thin and specific
+    purpose layers which can be stacked with an :term:`LTS` release to "mix" a specific
+    feature into that build. These are created on an as-needed basis and
+    maintained by the people who need them.
+ 
+    Policies on testing these layers depend on how widespread their usage is and
+-   determined on a case-by-case basis. You can find some "mixin" layers in the
++   determined on a case-by-case basis. You can find some :term:`Mixin` layers in the
+    :yocto_git:`meta-lts-mixins </meta-lts-mixins>` repository. While the Yocto
+    Project provides hosting for those repositories, it does not provides
+-   testing on them. Other "mixin" layers may be released elsewhere by the wider
++   testing on them. Other :term:`Mixin` layers may be released elsewhere by the wider
+    community.
+ 
+ Testing and Quality Assurance
+diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
+index 5a7363acad..7673507887 100644
+--- a/documentation/ref-manual/terms.rst
++++ b/documentation/ref-manual/terms.rst
+@@ -231,7 +231,7 @@ universal, the list includes them just in case:
+       This term means "Long Term Support", and in the context of the Yocto
+       Project, it corresponds to selected stable releases for which bug and
+       security fixes are provided for at least two years. See
+-      ":doc:`/ref-manual/release-process`" for details.
++      the :ref:`ref-long-term-support-releases` section for details.
+ 
+    :term:`Metadata`
+       A key element of the Yocto Project is the Metadata that
+@@ -252,6 +252,12 @@ universal, the list includes them just in case:
+       :yocto_git:`yocto-kernel-cache </yocto-kernel-cache>`
+       Git repository.
+ 
++   :term:`Mixin`
++      A :term:`Mixin` layer is a layer which can be created by the community to
++      add a specific feature or support a new version of some package for an
++      :term:`LTS` release. See the :ref:`ref-long-term-support-releases`
++      section for details.
++
+    :term:`OpenEmbedded-Core (OE-Core)`
+       OE-Core is metadata comprised of
+       foundational recipes, classes, and associated files that are meant to
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
