@@ -1,169 +1,145 @@
-Return-Path: <daniel.ammann@bytesatwork.ch>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 587A7C77B75
-	for <webhook@archiver.kernel.org>; Tue, 18 Apr 2023 12:12:43 +0000 (UTC)
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
- by mx.groups.io with SMTP id smtpd.web10.6950.1681819955741810822
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 66EB3C77B75
+	for <webhook@archiver.kernel.org>; Tue, 18 Apr 2023 12:22:03 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.7045.1681820519270006290
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Apr 2023 05:12:36 -0700
+ Tue, 18 Apr 2023 05:22:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="signature has expired" header.i=@bytesatwork-ch.20221208.gappssmtp.com header.s=20221208 header.b=M8p06Vm1;
- spf=pass (domain: bytesatwork.ch, ip: 209.85.218.48, mailfrom: daniel.ammann@bytesatwork.ch)
-Received: by mail-ej1-f48.google.com with SMTP id xd13so38663177ejb.4
-        for <docs@lists.yoctoproject.org>; Tue, 18 Apr 2023 05:12:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytesatwork-ch.20221208.gappssmtp.com; s=20221208; t=1681819953; x=1684411953;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=igOfnMGH/kZLYnXA9X/aaQiDtBtkckcr9DrRduUa9rk=;
-        b=M8p06Vm1KCGJhkN1tex24qKJWUsbVH7hV+KQXD9EYNTQBRxCkXdccwJTYXXr0Ycs8A
-         TtuyO8VLY2K4GoyiGoZ+eLZKiQGoewjnqTry/p5xx/U4vHHPVEA4vGYDUoE+wn1TxMnx
-         5tH1s3pbqtl1GkYQ4WgmtqWC+m7VEKHU1KnLYl22J7zHgdChdvL+9LdZLjAcYlMhz+ou
-         pfgENEkz+Nk+tUsFesIDJtvyZU8Qt1BIt0OEXC643Pmohs0141pbvNpNpmklka4P67Ce
-         gNH829rxurjVzev3lpAy+lPHZ/zyNWKaiBDm5642Ip+aatdYpC9bZMKInlaoLmmngWk2
-         9JUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681819953; x=1684411953;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=igOfnMGH/kZLYnXA9X/aaQiDtBtkckcr9DrRduUa9rk=;
-        b=lCelSCHxI2si8+WuLND/z2RhZ3TPCOtoY8OsNPZsox8IOHznsrG3RqQcM/4pa6jP3f
-         AmGuM7+TvvqIjCwx79IV1uR7ctcCJpKaBX5jo7d1120NChEqPfdHQqxRMHirBO7Xdl+2
-         katKtXpyuJGVwvB3BAz/+g2PpRZciAkNOj3P2b1qAwu3lgdvH00qtuAHEGC6eF7fCILP
-         1N0RBdtHzoAZzcN3tgVYOPncHZzyiM82oUXGq35NvtgE1OC1aVq9kNFMFMt28I7+POg7
-         oYvPjqOsqDQxPDya8cjri40+UyF1rwNBuRYGLRWLFltqGQ4lSTJWnurtkcD5qZuyIMyP
-         47cA==
-X-Gm-Message-State: AAQBX9cx37ivLLwhu9A5F9erYyZwPhjCSqFiiPKnhoSnMMoN3PHlVo6w
-	rDDFJEShpKN1mJxKEN0MDGlJug==
-X-Google-Smtp-Source: AKy350aAc/mVBzJ8tTgKx4ljliPjMcEG+UaODYjXfqZqdT6K/AoOfTdjT1o3ArpJJ7sVI9qAzroY6g==
-X-Received: by 2002:a17:906:b190:b0:94a:785e:6a46 with SMTP id w16-20020a170906b19000b0094a785e6a46mr12818801ejy.24.1681819953209;
-        Tue, 18 Apr 2023 05:12:33 -0700 (PDT)
-Received: from [192.168.2.42] (162.40.150.83.ftth.as8758.net. [83.150.40.162])
-        by smtp.gmail.com with ESMTPSA id 14-20020a17090601ce00b0094a671c2298sm2542559ejj.62.2023.04.18.05.12.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Apr 2023 05:12:32 -0700 (PDT)
-Message-ID: <1a0a5493-8234-c12c-000d-39827867b948@bytesatwork.ch>
-Date: Tue, 18 Apr 2023 14:12:32 +0200
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mBMw+Z+x;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id CB74320014;
+	Tue, 18 Apr 2023 12:21:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1681820517;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qecK8gSBg01A1AGkvfwucGM/iPi4xcptisBOia4yekI=;
+	b=mBMw+Z+xqzjtUCKQPlaYnZYdBqzSA5Ak0hvTK28x1Mh2JyRZMZSmNDAKN1IUQbAt7NaSZ4
+	fQKTWfFYp63hhYY+vHMdekWjftGbuVqP6bziGOeu2OR9SuHw9awytoYicORA+iEsdv1Wpr
+	ZIivvY0LRLtBWwbXkzBNRdfLY8KS933e7rkg4EM+4PMveEu0Kjl041wUoYohTcN14qBHU5
+	ZB27OKhAK3WC4JnmxgCXsihTQWBjlVutOe4FqUtBuSI1QrvqWG8LdOxM1attRr9WQgHKo5
+	qODda0NRq390ATnGI1YWm/dHD6NEIUs9VtnpeSXFYFwv6fhuKq6S7oktJIP6Ow==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] overview-manual: update section about source archives
+Date: Tue, 18 Apr 2023 14:21:53 +0200
+Message-Id: <20230418122153.1293051-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Subject: Re: [docs] [PATCH] manuals: document SPDX_CUSTOM_ANNOTATION_VARS
-Content-Language: en-US
-To: michael.opdenacker@bootlin.com
-Cc: Saul Wold <Saul.Wold@windriver.com>, Joshua Watt <JPEWhacker@gmail.com>,
- docs@lists.yoctoproject.org
-References: <20230418090909.1282106-1-michael.opdenacker@bootlin.com>
-From: Daniel Ammann <daniel.ammann@bytesatwork.ch>
-In-Reply-To: <20230418090909.1282106-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Apr 2023 12:12:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3842
+ <docs@lists.yoctoproject.org>; Tue, 18 Apr 2023 12:22:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3843
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
+Except the "yocto" and "uninative" directories, everything
+under https://downloads.yoctoproject.org/releases/, in particular
+"bitbake".
 
-On 4/18/23 11:09, Michael Opdenacker via lists.yoctoproject.org wrote:
-> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> 
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> CC: Saul Wold <Saul.Wold@windriver.com>
-> CC: Joshua Watt <JPEWhacker@gmail.com>
-> ---
->   documentation/dev-manual/sbom.rst             |  3 +++
->   .../migration-guides/release-notes-4.2.rst    |  9 ++++---
->   documentation/ref-manual/variables.rst        | 26 +++++++++++++++++++
->   3 files changed, 35 insertions(+), 3 deletions(-)
-> 
-> diff --git a/documentation/dev-manual/sbom.rst b/documentation/dev-manual/sbom.rst
-> index 448c071c55..f51d08f84d 100644
-> --- a/documentation/dev-manual/sbom.rst
-> +++ b/documentation/dev-manual/sbom.rst
-> @@ -63,6 +63,9 @@ generated files are available in ``tmp/deploy/spdx/MACHINE`` too, such as:
->      (when :term:`SPDX_ARCHIVE_SOURCES` is set). Those are needed to fulfill
->      "source code access" license requirements.
->   
-> +See also the :term:`SPDX_CUSTOM_ANNOTATION_VARS` variable which allows
-> +to associate custom notes to a recipe.
-> +
->   See the `tools page <https://spdx.dev/resources/tools/>`__ on the :term:`SPDX`
->   project website for a list of tools to consume and transform the :term:`SPDX`
->   data generated by the OpenEmbedded build system.
-> diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
-> index 4cf1974d4f..eb75dec6dc 100644
-> --- a/documentation/migration-guides/release-notes-4.2.rst
-> +++ b/documentation/migration-guides/release-notes-4.2.rst
-> @@ -45,9 +45,12 @@ New Features / Enhancements in 4.2
->   
->   -  New variables:
->   
-> -   - :term:`VOLATILE_TMP_DIR` allows to specify
-> -     whether ``/tmp`` should be on persistent storage
-> -     or in RAM.
-> +   -  :term:`VOLATILE_TMP_DIR` allows to specify
-> +      whether ``/tmp`` should be on persistent storage
-> +      or in RAM.
-> +
-> +   -  :term:`SPDX_CUSTOM_ANNOTATION_VARS` allows to add
-> +      specific comments to the :term:`SPDX` description of a recipe.
->   
->   -  Rust improvements:
->   
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 62f28bd278..26ed1f29ae 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -7629,6 +7629,32 @@ system and gives an overview of their function and contents.
->         (+ 0.07\% with the tested image), compared to just enabling
->         :term:`SPDX_INCLUDE_SOURCES`.
->   
-> +   :term:`SPDX_CUSTOM_ANNOTATION_VARS`
-> +      This option allows to associate `SPDX annotations
-> +      <https://spdx.github.io/spdx-spec/v2.3/annotations/>`__ to a recipe,
-> +      using the values of variables in the recipe::
-> +
-> +         ANNOTATION1 = "First annotation for recipe"
-> +         ANNOTATION1 = "Second annotation for recipe"
-                       ^
-I can't comment on the rest, but this seems to be a typo.
+Point to https://downloads.yoctoproject.org/releases/yocto/
+instead for people interested in tar archives.
 
-> +         SPDX_CUSTOM_ANNOTATION_VARS = "ANNOTATION1 ANNOTATION2"
-> +
-> +      This will add a new block to the recipe ``.sdpx.json`` output::
-> +
-> +         "annotations": [
-> +           {
-> +             "annotationDate": "2023-04-18T08:32:12Z",
-> +             "annotationType": "OTHER",
-> +             "annotator": "Tool: oe-spdx-creator - 1.0",
-> +             "comment": "ANNOTATION1=First annotation for recipe"
-> +           },
-> +           {
-> +             "annotationDate": "2023-04-18T08:32:12Z",
-> +             "annotationType": "OTHER",
-> +             "annotator": "Tool: oe-spdx-creator - 1.0",
-> +             "comment": "ANNOTATION2=Second annotation for recipe"
-> +           }
-> +         ],
-> +
->      :term:`SPDX_INCLUDE_SOURCES`
->         This option allows to add a description of the source files used to build
->         the host tools and the target packages, to the ``spdx.json`` files in
-> 
-> 
-> 
-> -=-=-=-=-=-=-=-=-=-=-=-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#3841): https://lists.yoctoproject.org/g/docs/message/3841
-> Mute This Topic: https://lists.yoctoproject.org/mt/98339958/3616718
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [daniel.ammann@bytesatwork.ch]
-> -=-=-=-=-=-=-=-=-=-=-=-
-> 
+Simplify the description too, unnecessarily verbose.
+
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/start.rst            | 45 +++++--------------
+ .../development-environment.rst               |  2 +-
+ 2 files changed, 13 insertions(+), 34 deletions(-)
+
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index 27fc0fcd01..4881481044 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -613,44 +613,23 @@ Use the following procedure to locate the latest upstream copy of the
+       For information on cloning a repository, see the
+       ":ref:`dev-manual/start:cloning the \`\`poky\`\` repository`" section.
+ 
+-Accessing Index of Releases
+----------------------------
++Accessing Source Archives
++-------------------------
++
++The Yocto Project also provides source archives of its releases, which
++are available on :yocto_dl:`/releases/yocto/`. Then, choose the subdirectory
++containing the release you wish to use, for example
++:yocto_dl:`yocto-&DISTRO; </releases/yocto/yocto-&DISTRO;/>`.
+ 
+-Yocto Project maintains an Index of Releases area that contains related
+-files that contribute to the Yocto Project. Rather than Git
+-repositories, these files are tarballs that represent snapshots in time
+-of a given component.
++You will find there source archives of individual components (if you wish
++to use them individually), and of the corresponding Poky release bundling
++a selection of these components. 
+ 
+ .. note::
+ 
+    The recommended method for accessing Yocto Project components is to
+    use Git to clone the upstream repository and work from within that
+-   locally cloned repository. However, this section documents how to
+-   use a tarball snapshot of any given component.
+-
+-Follow these steps to locate and download a particular tarball:
+-
+-#. *Access the Index of Releases:* Open a browser and go to
+-   :yocto_dl:`Index of Releases </releases>`. The
+-   list represents released components (e.g. ``bitbake``, ``sato``, and
+-   so on).
+-
+-   .. note::
+-
+-      The ``yocto`` directory contains the full array of released Poky
+-      tarballs. The ``poky`` directory in the Index of Releases was
+-      historically used for very early releases and exists now only for
+-      retroactive completeness.
+-
+-#. *Select a Component:* Click on any released component in which you
+-   are interested (e.g. ``yocto``).
+-
+-#. *Find the Tarball:* Drill down to find the associated tarball. For
+-   example, click on ``yocto-&DISTRO;`` to view files associated with the
+-   Yocto Project &DISTRO; release.
+-
+-#. *Download the Tarball:* Click the tarball to download and save a
+-   snapshot of the given component.
++   locally cloned repository.
+ 
+ Using the Downloads Page
+ ------------------------
+@@ -659,7 +638,7 @@ The :yocto_home:`Yocto Project Website <>` uses a "DOWNLOADS" page
+ from which you can locate and download tarballs of any Yocto Project
+ release. Rather than Git repositories, these files represent snapshot
+ tarballs similar to the tarballs located in the Index of Releases
+-described in the ":ref:`dev-manual/start:accessing index of releases`" section.
++described in the ":ref:`dev-manual/start:accessing source archives`" section.
+ 
+ #. *Go to the Yocto Project Website:* Open The
+    :yocto_home:`Yocto Project Website <>` in your browser.
+diff --git a/documentation/overview-manual/development-environment.rst b/documentation/overview-manual/development-environment.rst
+index 0d931df3dc..8d470c9ce7 100644
+--- a/documentation/overview-manual/development-environment.rst
++++ b/documentation/overview-manual/development-environment.rst
+@@ -193,7 +193,7 @@ development:
+       :width: 50%
+ 
+    For steps on how to view and access these files, see the
+-   ":ref:`dev-manual/start:accessing index of releases`"
++   ":ref:`dev-manual/start:accessing source archives`"
+    section in the Yocto Project Development Tasks Manual.
+ 
+ -  *"DOWNLOADS" page for the* :yocto_home:`Yocto Project Website <>` *:*
+-- 
+2.34.1
+
 
