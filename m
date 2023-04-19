@@ -1,111 +1,115 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <bruce.ashfield@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5C1AC77B75
-	for <webhook@archiver.kernel.org>; Tue, 18 Apr 2023 17:14:44 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.15856.1681838082434001020
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 01C3AC6FD18
+	for <webhook@archiver.kernel.org>; Wed, 19 Apr 2023 16:37:41 +0000 (UTC)
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+ by mx.groups.io with SMTP id smtpd.web10.42916.1681922257231127995
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Apr 2023 10:14:43 -0700
+ Wed, 19 Apr 2023 09:37:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ADtsgym1;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 331F4FF808;
-	Tue, 18 Apr 2023 17:14:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1681838080;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=x0nVV0tW9sjyYqKPjMD58R+ITrLeNVcRxu5cts/Muc8=;
-	b=ADtsgym1p6kigUJEhtzzY6wzhYLWglM++FHet1CPytPenqHzfKG0VEEyMlXYlMns6YM3rD
-	Vh/13pXHD+H+WwiPmCurLRQZAv7IQyhM1kInUj+6Z7p4UUxKFfIsKhjc6cqWl+xRwoA6SI
-	uyHjtIxU4pkRXGtSlahavP6LvvTqlPo/ZIIIcuvibPEPAJvwKHDZm3zK1W1qIIGc9BptDt
-	86MJIXWFhtqevxjiR306QzlvIbI2XLF0iKrvR3MyaiRkgMMW4Bx2DseDZu8w42HVH1Z0hI
-	NIgf5lJrl7UIbN+lkzruGrfKiJgsC8HyDyK1jwmel8CtgkGptVzE88f6Shv7zw==
-Message-ID: <4926faa7-4343-6432-2b5d-b47feb2886b6@bootlin.com>
-Date: Tue, 18 Apr 2023 19:14:39 +0200
+ dkim=fail reason="signature has expired" header.i=@gmail.com header.s=20221208 header.b=YtEn1aJj;
+ spf=pass (domain: gmail.com, ip: 209.85.166.180, mailfrom: bruce.ashfield@gmail.com)
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3293e4b2cb5so39344505ab.3
+        for <docs@lists.yoctoproject.org>; Wed, 19 Apr 2023 09:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1681922256; x=1684514256;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nHlwWbH09e8bmomlzh0zxPloFDgWjYF/Y5SYBMkCv5M=;
+        b=YtEn1aJjinslNFkknaYtyXcVEgTmIom2dUUNvnha/COZmUqXJ78l28ZNApTsKOtjOS
+         g8X9DGTDo7bTiEYrSZ3fTcgXN+JXzKvxSEoA2X/4isZDaWGyRTej7CRYeRZqBr7u2DSa
+         g6u83t4Bc3c8/Lp2XPRhs6yVktMEG226VjvA3L8ars722T8RxSsSwFjp75CcMirPgcZO
+         oEi2lbJb0O4TDSeDqmbNW1GjUm2IdtHUIjxKpt8ckExKNCRX3q/BKHh0wJfjVVF86tZ+
+         t9OMDmKsKObskQ64sGTazK+V60OsxylcsJD9tEjLd55ARaA0rAoaftaGUHRYgzaKXsTg
+         Z4ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1681922256; x=1684514256;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nHlwWbH09e8bmomlzh0zxPloFDgWjYF/Y5SYBMkCv5M=;
+        b=eQgs0qFqZuKv/MvF7XQwsHLSLIFCdRTgo6yblKDjrqgFk3o+VObq5/uANgOi1pwN0m
+         4aj2UJkvKXFIJB1qBUKAnYlU5ZR8fbz2zDHZZCm20fPylBS/Twv2JN4LY4YPfVlaAC55
+         vyoH3w26XxVGJhRsCa+l9jh1rrtA5cyjFSEIvURmO4mMauueAkmZ1EDFuRozLvdJhxeL
+         6rUfAzLwnSYi0pINj9BQ+yhGxLLmaUUisthGG2uYpWFVrfXp79Dilf0oiYAl9SUwILuJ
+         Z+lhNlbAdZeMIP/H1yyVZFph5RoOXkJzTmaYHBefVM4siNCXotEVFE4fsfu/ML59TZLG
+         JAcw==
+X-Gm-Message-State: AAQBX9cOyu3ZaCrb3qhb27zahDJglyPx2xnS2TdgVqxT8s2XqyfWUL9U
+	M2Li8lRHQmCM5oXd/I5SMLIi1mizBuiSDyAYNOI=
+X-Google-Smtp-Source: AKy350Yp7wmZvdUOw+Uh7qW/6uoSh558T2Gc7751EdZRvUF/imFPeH86x6dNZlHrW2sL1llJ4/AZZ6Jwc5hDOMtHn5k=
+X-Received: by 2002:a92:902:0:b0:328:213e:4cc9 with SMTP id
+ y2-20020a920902000000b00328213e4cc9mr470143ilg.26.1681922256379; Wed, 19 Apr
+ 2023 09:37:36 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.0
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20230418171026.1327353-1-michael.opdenacker@bootlin.com>
+In-Reply-To: <20230418171026.1327353-1-michael.opdenacker@bootlin.com>
+From: Bruce Ashfield <bruce.ashfield@gmail.com>
+Date: Wed, 19 Apr 2023 12:37:30 -0400
+Message-ID: <CADkTA4MpL8+E1x40G=Wmp7orWwA=veBHLRC=vPwoFk06EvFZpA@mail.gmail.com>
+Subject: Re: [PATCH] ref-manual: variables.rst: document KERNEL_DANGLING_FEATURES_WARN_ONLY
+To: michael.opdenacker@bootlin.com
+Cc: docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Apr 2023 17:14:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3848
+ <docs@lists.yoctoproject.org>; Wed, 19 Apr 2023 16:37:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3849
 
-Hello Richard,
+On Tue, Apr 18, 2023 at 1:10=E2=80=AFPM <michael.opdenacker@bootlin.com> wr=
+ote:
+>
+> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> CC: Bruce Ashfield <bruce.ashfield@gmail.com>
+> ---
+>  documentation/ref-manual/variables.rst | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
+>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index 6a9dcfd5ba..2899bd78fc 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -4420,6 +4420,20 @@ system and gives an overview of their function and=
+ contents.
+>        You can register custom kernel image types with the
+>        :ref:`ref-classes-kernel` class using this variable.
+>
+> +   :term:`KERNEL_DANGLING_FEATURES_WARN_ONLY`
+> +      When kernel configuration fragments are missing for some
+> +      :term:`KERNEL_FEATURES` specified by layers or BSPs,
+> +      building and configuring the kernel stops with an error.
+> +
+> +      You can turn these errors into warnings by setting the
+> +      following in ``conf/local.conf``::
+> +
+> +         KERNEL_DANGLING_FEATURES_WARN_ONLY =3D "1"
+> +
+> +      You will still be warned that runtime issues may occur,
+> +      but at least the kernel configuration and build process will
+> +      be allowed to continue.
+> +
 
-The following changes since commit 3aac9f8b57434f3852a78915c326074252177515:
+Looks good to me.
 
-   migration-guides: update 4.2 migration and release notes (2023-04-12 
-14:41:19 +0200)
+Reviewed-by: Bruce Ashfield <bruce.ashfield@gmail.com>
 
-are available in the Git repository at:
+>     :term:`KERNEL_DEBUG_TIMESTAMPS`
+>        If set to "1", enables timestamping functionality during building
+>        the kernel. The default is "0" to disable this for reproducibility
+> --
+> 2.34.1
+>
 
-   git://git.yoctoproject.org/yocto-docs master-next
 
-for you to fetch changes up to 1123e1eedb62d98d44e141d2a366794c1c82b45a:
-
-   ref-manual: add "Mixin" term (2023-04-18 16:44:29 +0200)
-
-----------------------------------------------------------------
-Michael Opdenacker (8):
-       ref-manual: classes.rst: document devicetree.bbclass
-       ref-manual: remove unused and obsolete file
-       ref-manual: variables.rst: add wikipedia shortcut for "getty"
-       manuals: document INIT_MANAGER
-       overview-manual: update section about source archives
-       manuals: document SPDX_CUSTOM_ANNOTATION_VARS
-       overview-manual: development-environment: update text and screenshots
-       ref-manual: add "Mixin" term
-
-  documentation/dev-manual/device-manager.rst               |   2 ++
-  documentation/dev-manual/init-manager.rst                 | 111 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++----------------------------------------------
-  documentation/dev-manual/sbom.rst                         |   3 +++
-  documentation/dev-manual/start.rst                        |  45 
-++++++++++++---------------------------------
-  documentation/migration-guides/migration-3.0.rst          |   6 +++---
-  documentation/migration-guides/release-notes-4.2.rst      |   9 ++++++---
-  documentation/overview-manual/development-environment.rst |  34 
-+++++++++++-----------------------
-  documentation/overview-manual/figures/index-downloads.png | Bin 18142 
--> 0 bytes
-  documentation/overview-manual/figures/source-repos.png    | Bin 298757 
--> 775796 bytes
-  documentation/overview-manual/figures/yp-download.png     | Bin 82939 
--> 518257 bytes
-  documentation/ref-manual/TODO                             |  11 
------------
-  documentation/ref-manual/classes.rst                      |  43 
-+++++++++++++++++++++++++++++++++++++++++++
-  documentation/ref-manual/release-process.rst              |   8 +++++---
-  documentation/ref-manual/terms.rst                        |   8 +++++++-
-  documentation/ref-manual/variables.rst                    |  70 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----------
-  15 files changed, 216 insertions(+), 134 deletions(-)
-  delete mode 100755 
-documentation/overview-manual/figures/index-downloads.png
-  delete mode 100644 documentation/ref-manual/TODO
-
-Thank you in advance
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+--=20
+- Thou shalt not follow the NULL pointer, for chaos and madness await
+thee at its end
+- "Use the force Harry" - Gandalf, Star Trek II
 
