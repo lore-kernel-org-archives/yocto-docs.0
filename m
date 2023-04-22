@@ -1,327 +1,70 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <bluelightning@bluelightning.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 328E2C77B61
-	for <webhook@archiver.kernel.org>; Sat, 22 Apr 2023 02:42:06 +0000 (UTC)
-Received: from mga06.intel.com (mga06.intel.com [134.134.136.31])
- by mx.groups.io with SMTP id smtpd.web10.837.1682131323515874347
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B039C77B7C
+	for <webhook@archiver.kernel.org>; Sat, 22 Apr 2023 03:20:06 +0000 (UTC)
+Received: from mail2.g23.pair.com (mail2.g23.pair.com [66.39.132.40])
+ by mx.groups.io with SMTP id smtpd.web11.1289.1682133603625021069
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Apr 2023 19:42:03 -0700
+ Fri, 21 Apr 2023 20:20:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=V6ZBCyRl;
- spf=pass (domain: intel.com, ip: 134.134.136.31, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1682131323; x=1713667323;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=uvOBdPVaMtqQHrfFDVr7U97uuT2KJNDRTd02suuYZsw=;
-  b=V6ZBCyRlsP2ithLVpYjM38GjHMf7ZZQO80XG0H+utP32R3zBX4LkiCGq
-   ohsjrhQp6s0FNkQT6Y7T29XegD8f+Ugk4ocT4U7QCpoisapTiO7jJ1iMP
-   b20M/2UKl1TWhLJhVTXzOsVBIDGOHnEVW2qcbIYWDnmVZzl8BNGvWgm8G
-   Y63cmEIDo6NsrsbJw2oHh7kTpHhLHxjoAOQbkMoyTgagtziW/yy7cJ5IH
-   TbHFZjyp1lyL+ZXlszgD6tWNB38M/2rEOVXHIpwAlOrRrDx0rPOHuVT3w
-   VknAC3onwhyvr1BGo/JwcUeOVkbHOFfIenOgCAPu1AP191OPVHlhZp75b
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="409061262"
-X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
-   d="scan'208";a="409061262"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2023 19:42:03 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10687"; a="669898032"
-X-IronPort-AV: E=Sophos;i="5.99,216,1677571200"; 
-   d="scan'208";a="669898032"
-Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
-  by orsmga006.jf.intel.com with ESMTP; 21 Apr 2023 19:42:01 -0700
-From: chee.yang.lee@intel.com
+ dkim=missing; spf=none, err=permanent DNS error (domain: bluelightning.org, ip: 66.39.132.40, mailfrom: bluelightning@bluelightning.org)
+Received: from mail2.g23.pair.com (localhost [127.0.0.1])
+	by mail2.g23.pair.com (Postfix) with ESMTP id 603DAE6A43;
+	Fri, 21 Apr 2023 23:20:02 -0400 (EDT)
+Received: from linc.fritz.box (unknown [161.29.131.251])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by mail2.g23.pair.com (Postfix) with ESMTPSA id 8D83CE73BA;
+	Fri, 21 Apr 2023 23:20:01 -0400 (EDT)
+From: Paul Eggleton <bluelightning@bluelightning.org>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] migration-guides: add release-notes for 4.0.9
-Date: Sat, 22 Apr 2023 10:40:51 +0800
-Message-Id: <20230422024051.2758644-1-chee.yang.lee@intel.com>
+Cc: michael.opdenacker@bootlin.com
+Subject: [PATCH 01/17] ref-manual: add new SDK_ZIP_OPTIONS variable
+Date: Sat, 22 Apr 2023 15:19:37 +1200
+Message-Id: <f023eedcfcf7afb8fa0a404e534f9f860fd2d5da.1682133339.git.bluelightning@bluelightning.org>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1682133339.git.bluelightning@bluelightning.org>
+References: <cover.1682133339.git.bluelightning@bluelightning.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-Scanned-By: mailmunge 3.11 on 66.39.132.40
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 22 Apr 2023 02:42:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3850
+ <docs@lists.yoctoproject.org>; Sat, 22 Apr 2023 03:20:06 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3852
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Newly added for 4.2.
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+Signed-off-by: Paul Eggleton <bluelightning@bluelightning.org>
 ---
- .../migration-guides/release-4.0.rst          |   1 +
- .../migration-guides/release-notes-4.0.9.rst  | 247 ++++++++++++++++++
- 2 files changed, 248 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.0.9.rst
+ documentation/ref-manual/variables.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
-index 2294265a4..1fc74a0f6 100644
---- a/documentation/migration-guides/release-4.0.rst
-+++ b/documentation/migration-guides/release-4.0.rst
-@@ -15,3 +15,4 @@ Release 4.0 (kirkstone)
-    release-notes-4.0.6
-    release-notes-4.0.7
-    release-notes-4.0.8
-+   release-notes-4.0.9
-diff --git a/documentation/migration-guides/release-notes-4.0.9.rst b/documentation/migration-guides/release-notes-4.0.9.rst
-new file mode 100644
-index 000000000..883514e68
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.0.9.rst
-@@ -0,0 +1,247 @@
-+Release notes for Yocto-4.0.9 (Kirkstone)
-+-----------------------------------------
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+index 62f28bd278c..c5cbda8aa81 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7318,6 +7318,11 @@ system and gives an overview of their function and=
+ contents.
+       :term:`DISTRO_VERSION` and
+       :term:`METADATA_REVISION` variables.
+=20
++   :term:`SDK_ZIP_OPTIONS`
++      Specifies extra options to pass to the ``zip`` command when zippin=
+g the SDK
++      (i.e. when :term:`SDK_ARCHIVE_TYPE` is set to "zip"). The default =
+value is
++      "-y".
 +
-+Security Fixes in Yocto-4.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  binutils: Fix :cve:`2023-22608`
-+-  curl: Fix :cve:`2023-23914`, :cve:`2023-23915` and :cve:`2023-23916`
-+-  epiphany: Fix :cve:`2023-26081`
-+-  git: Ignore :cve:`2023-22743`
-+-  glibc: Fix  :cve:`2023-0687`
-+-  gnutls: Fix :cve:`2023-0361`
-+-  go: Fix :cve:`2022-2879`, :cve:`2022-41720` and :cve:`2022-41723`
-+-  harfbuzz: Fix :cve:`2023-25193`
-+-  less: Fix :cve:`2022-46663`
-+-  libmicrohttpd: Fix :cve:`2023-27371`
-+-  libsdl2: Fix :cve:`2022-4743`
-+-  openssl: Fix :cve:`2022-3996`, :cve:`2023-0464`, :cve:`2023-0465` and :cve:`2023-0466`
-+-  pkgconf: Fix :cve:`2023-24056`
-+-  python3: Fix :cve:`2023-24329`
-+-  shadow: Ignore :cve:`2016-15024`
-+-  systemd: Fix :cve:`2022-4415`
-+-  tiff: Fix :cve:`2023-0800`, :cve:`2023-0801`, :cve:`2023-0802`, :cve:`2023-0803` and :cve:`2023-0804`
-+-  vim: Fix :cve:`2023-0433`, :cve:`2023-0512`, :cve:`2023-1127`, :cve:`2023-1170`, :cve:`2023-1175`, :cve:`2023-1264` and :cve:`2023-1355`
-+-  xserver-xorg: Fix :cve:`2023-0494`
-+-  xwayland: Fix :cve:`2023-0494`
-+
-+
-+Fixes in Yocto-4.0.9
-+~~~~~~~~~~~~~~~~~~~~
-+
-+-  base-files: Drop localhost.localdomain from hosts file
-+-  binutils: Fix nativesdk ld.so search
-+-  bitbake: cookerdata: Drop dubious exception handling code
-+-  bitbake: cookerdata: Improve early exception handling
-+-  bitbake: cookerdata: Remove incorrect SystemExit usage
-+-  bitbake: fetch/git: Fix local clone url to make it work with repo
-+-  bitbake: utils: Allow to_boolean to support int values
-+-  bmap-tools: switch to main branch
-+-  buildtools-tarball: Handle spaces within user $PATH
-+-  busybox: Fix depmod patch
-+-  cracklib: update github branch to 'main'
-+-  cups: add/fix web interface packaging
-+-  cups: check PACKAGECONFIG for pam feature
-+-  cups: use BUILDROOT instead of DESTDIR
-+-  curl: fix dependencies when building with ldap/ldaps
-+-  cve-check: Fix false negative version issue
-+-  dbus: upgrade to 1.14.6
-+-  devtool/upgrade: do not delete the workspace/recipes directory
-+-  dhcpcd: Fix install conflict when enable multilib.
-+-  dhcpcd: fix dhcpcd start failure on qemuppc64
-+-  gcc-shared-source: do not use ${S}/.. in deploy_source_date_epoch
-+-  glibc: Add missing binutils dependency
-+-  image_types: fix multiubi var init
-+-  iso-codes: upgrade to  4.13.0
-+-  json-c: Add ptest for json-c
-+-  kernel-yocto: fix kernel-meta data detection
-+-  lib/buildstats: handle tasks that never finished
-+-  lib/resulttool: fix typo breaking resulttool log --ptest
-+-  libjpeg-turbo: upgrade to 2.1.5.1
-+-  libmicrohttpd: upgrade to 0.9.76
-+-  libseccomp: fix for the ptest result format
-+-  libssh2: Clean up ptest patch/coverage
-+-  linux-firmware: add yamato fw files to qcom-adreno-a2xx package
-+-  linux-firmware: properly set license for all Qualcomm firmware
-+-  linux-firmware: upgrade to 20230210
-+-  linux-yocto-rt/5.15: update to -rt59
-+-  linux-yocto/5.10: upgrade to v5.10.175
-+-  linux-yocto/5.15: upgrade to v5.15.103
-+-  linux: inherit pkgconfig in kernel.bbclass
-+-  lttng-modules: fix for kernel 6.2+
-+-  lttng-modules: upgrade to v2.13.9
-+-  lua: Fix install conflict when enable multilib.
-+-  mdadm: Fix raid0, 06wrmostly and 02lineargrow tests
-+-  meson: Fix wrapper handling of implicit setup command
-+-  migration-guides: add 4.0.8 release notes
-+-  nghttp2: never build python bindings
-+-  oeqa rtc.py: skip if read-only-rootfs
-+-  oeqa ssh.py: fix hangs in run()
-+-  oeqa/sdk: Improve Meson test
-+-  oeqa/selftest/prservice: Improve debug output for failure
-+-  oeqa/selftest/resulttooltests: fix minor typo
-+-  openssl: upgrade to 3.0.8
-+-  package.bbclase: Add check for /build in copydebugsources()
-+-  patchelf: replace a rejected patch with an equivalent uninative.bbclass tweak
-+-  poky.conf: bump version for 4.0.9
-+-  populate_sdk_ext: Handle spaces within user $PATH
-+-  pybootchartui: Fix python syntax issue
-+-  python3-git: fix indent error
-+-  python3-setuptools-rust-native: Add direct dependency of native python3 modules
-+-  qemu: Revert "fix :cve:`2021-3507`" as not applicable for qemu 6.2
-+-  rsync: Add missing prototypes to function declarations
-+-  rsync: Turn on -pedantic-errors at the end of 'configure'
-+-  runqemu: kill qemu if it hangs
-+-  scripts/lib/buildstats: handle top-level build_stats not being complete
-+-  selftest/recipetool: Stop test corrupting tinfoil class
-+-  selftest/runtime_test/virgl: Disable for all Rocky Linux
-+-  selftest: devtool: set BB_HASHSERVE_UPSTREAM when setting SSTATE_MIRROR
-+-  sstatesig: Improve output hash calculation
-+-  staging/multilib: Fix manifest corruption
-+-  staging: Separate out different multiconfig manifests
-+-  sudo: update 1.9.12p2 -> 1.9.13p3
-+-  systemd.bbclass: Add /usr/lib/systemd to searchpaths as well
-+-  systemd: add group sgx to udev package
-+-  systemd: fix wrong nobody-group assignment
-+-  timezone: use 'tz' subdir instead of ${WORKDIR} directly
-+-  toolchain-scripts: Handle spaces within user $PATH
-+-  tzcode-native: fix build with gcc-13 on host
-+-  tzdata: use separate B instead of WORKDIR for zic output
-+-  uninative: upgrade to 3.9 to include libgcc and glibc 2.37
-+-  vala: Fix install conflict when enable multilib.
-+-  vim: add missing pkgconfig inherit
-+-  vim: set modified-by to the recipe MAINTAINER
-+-  vim: upgrade to 9.0.1429
-+-  wic: Fix usage of fstype=none in wic
-+-  wireless-regdb: upgrade to 2023.02.13
-+-  xserver-xorg: upgrade to 21.1.7
-+-  xwayland: upgrade to 22.1.8
-+
-+
-+Known Issues in Yocto-4.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+
-+Contributors to Yocto-4.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Alexander Kanavin
-+-  Alexis Lothoré
-+-  Bruce Ashfield
-+-  Changqing Li
-+-  Chee Yang Lee
-+-  Dmitry Baryshkov
-+-  Federico Pellegrin
-+-  Geoffrey GIRY
-+-  Hitendra Prajapati
-+-  Hongxu Jia
-+-  Joe Slater
-+-  Kai Kang
-+-  Kenfe-Mickael Laventure
-+-  Khem Raj
-+-  Martin Jansa
-+-  Mateusz Marciniec
-+-  Michael Halstead
-+-  Michael Opdenacker
-+-  Mikko Rapeli
-+-  Ming Liu
-+-  Mingli Yu
-+-  Narpat Mali
-+-  Pavel Zhukov
-+-  Pawan Badganchi
-+-  Peter Marko
-+-  Piotr Łobacz
-+-  Poonam Jadhav
-+-  Randy MacLeod
-+-  Richard Purdie
-+-  Robert Yang
-+-  Romuald Jeanne
-+-  Ross Burton
-+-  Sakib Sajal
-+-  Saul Wold
-+-  Shubham Kulkarni
-+-  Siddharth Doshi
-+-  Simone Weiss
-+-  Steve Sakoman
-+-  Tim Orling
-+-  Tom Hochstein
-+-  Trevor Woerner
-+-  Ulrich Ölmann
-+-  Vivek Kumbhar
-+-  Wang Mingyu
-+-  Xiangyu Chen
-+-  Yash Shinde
-+
-+
-+Repositories / Downloads for Yocto-4.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.9 </poky/log/?h=yocto-4.0.9>`
-+-  Git Revision: :yocto_git:`09def309f91929f47c6cce386016ccb777bd2cfc </poky/commit/?id=09def309f91929f47c6cce386016ccb777bd2cfc>`
-+-  Release Artefact: poky-09def309f91929f47c6cce386016ccb777bd2cfc
-+-  sha: 5c7ce209c8a6b37ec2898e5ca21858234d91999c11fa862880ba98e8bde62f63
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.9/poky-09def309f91929f47c6cce386016ccb777bd2cfc.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.9/poky-09def309f91929f47c6cce386016ccb777bd2cfc.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
-+-  Tag:  :oe_git:`yocto-4.0.9 </openembedded-core/log/?h=yocto-4.0.9>`
-+-  Git Revision: :oe_git:`ff4b57ffff903a93b710284c7c7f916ddd74712f </openembedded-core/commit/?id=ff4b57ffff903a93b710284c7c7f916ddd74712f>`
-+-  Release Artefact: oecore-ff4b57ffff903a93b710284c7c7f916ddd74712f
-+-  sha: 726778ffc291136db1704316b196de979f68df9f96476b785e1791957fbb66b3
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.9/oecore-ff4b57ffff903a93b710284c7c7f916ddd74712f.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.9/oecore-ff4b57ffff903a93b710284c7c7f916ddd74712f.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.9 </meta-mingw/log/?h=yocto-4.0.9>`
-+-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
-+-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
-+-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.9/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.9/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-+
-+meta-gplv2
-+
-+-  Repository Location: :yocto_git:`/meta-gplv2`
-+-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.9 </meta-gplv2/log/?h=yocto-4.0.9>`
-+-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-+-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
-+-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.9/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.9/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
-+-  Tag:  :oe_git:`yocto-4.0.9 </bitbake/log/?h=yocto-4.0.9>`
-+-  Git Revision: :oe_git:`2802adb572eb73a3eb2725a74a9bbdaafc543fa7 </bitbake/commit/?id=2802adb572eb73a3eb2725a74a9bbdaafc543fa7>`
-+-  Release Artefact: bitbake-2802adb572eb73a3eb2725a74a9bbdaafc543fa7
-+-  sha: 5c6e713b5e26b3835c0773095c7a1bc1f8affa28316b33597220ed86f1f1b643
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.9/bitbake-2802adb572eb73a3eb2725a74a9bbdaafc543fa7.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.9/bitbake-2802adb572eb73a3eb2725a74a9bbdaafc543fa7.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
-+-  Tag: :yocto_git:`yocto-4.0.9 </yocto-docs/log/?h=yocto-4.0.9>`
-+-  Git Revision: :yocto_git:`86d0b38a97941ad52b1af220c7b801a399d50e93 </yocto-docs/commit/?id=86d0b38a97941ad52b1af220c7b801a399d50e93>`
-+
--- 
+    :term:`SDKEXTPATH`
+       The default installation directory for the Extensible SDK. By
+       default, this directory is based on the :term:`DISTRO`
+--=20
 2.34.1
 
 
