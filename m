@@ -2,366 +2,1043 @@ Return-Path: <bluelightning@bluelightning.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41D2DC7EE20
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4152EC77B7C
 	for <webhook@archiver.kernel.org>; Sat, 22 Apr 2023 03:20:26 +0000 (UTC)
 Received: from mail2.g23.pair.com (mail2.g23.pair.com [66.39.132.40])
- by mx.groups.io with SMTP id smtpd.web11.1298.1682133619179948090
+ by mx.groups.io with SMTP id smtpd.web11.1300.1682133621783280609
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Apr 2023 20:20:19 -0700
+ Fri, 21 Apr 2023 20:20:22 -0700
 Authentication-Results: mx.groups.io;
  dkim=missing; spf=none, err=permanent DNS error (domain: bluelightning.org, ip: 66.39.132.40, mailfrom: bluelightning@bluelightning.org)
 Received: from mail2.g23.pair.com (localhost [127.0.0.1])
-	by mail2.g23.pair.com (Postfix) with ESMTP id 94628E756B;
-	Fri, 21 Apr 2023 23:20:18 -0400 (EDT)
+	by mail2.g23.pair.com (Postfix) with ESMTP id 26E48E7660;
+	Fri, 21 Apr 2023 23:20:21 -0400 (EDT)
 Received: from linc.fritz.box (unknown [161.29.131.251])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by mail2.g23.pair.com (Postfix) with ESMTPSA id C56B5E7656;
-	Fri, 21 Apr 2023 23:20:17 -0400 (EDT)
+	by mail2.g23.pair.com (Postfix) with ESMTPSA id 2672BE7800;
+	Fri, 21 Apr 2023 23:20:19 -0400 (EDT)
 From: Paul Eggleton <bluelightning@bluelightning.org>
 To: docs@lists.yoctoproject.org
 Cc: michael.opdenacker@bootlin.com
-Subject: [PATCH 15/17] migration-guides: extend migration guide for 4.2
-Date: Sat, 22 Apr 2023 15:19:51 +1200
-Message-Id: <40a4ed6333162daf67a2294126eaff3596580cef.1682133339.git.bluelightning@bluelightning.org>
+Subject: [PATCH 17/17] release-notes-4.2: add release notes
+Date: Sat, 22 Apr 2023 15:19:53 +1200
+Message-Id: <6e383cb942cad3ce1d1ce3d6bd4946abbda0d4d9.1682133339.git.bluelightning@bluelightning.org>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <cover.1682133339.git.bluelightning@bluelightning.org>
 References: <cover.1682133339.git.bluelightning@bluelightning.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-Scanned-By: mailmunge 3.11 on 66.39.132.40
 Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Sat, 22 Apr 2023 03:20:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3866
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3868
 
-* Reorder and extend existing info a little
-* Add additional sections after combing through changes
+Add new features, upgrades, CVEs, contributors and license changes
+based upon combing through the commits in the release. I haven't yet
+noted any known issues.
+
+Note: I had to add the upgrades list from the commits rather than from
+the layer index this time (as the branch comparison feature is
+unfortunately broken there at the moment), thus the format is a little
+different.
 
 Signed-off-by: Paul Eggleton <bluelightning@bluelightning.org>
 ---
- .../migration-guides/migration-4.2.rst        | 196 +++++++++++++++---
- 1 file changed, 162 insertions(+), 34 deletions(-)
+ .../migration-guides/release-notes-4.2.rst    | 847 +++++++++++++++++-
+ 1 file changed, 828 insertions(+), 19 deletions(-)
 
-diff --git a/documentation/migration-guides/migration-4.2.rst b/documenta=
-tion/migration-guides/migration-4.2.rst
-index c2ec8af8a45..1db6fbca42e 100644
---- a/documentation/migration-guides/migration-4.2.rst
-+++ b/documentation/migration-guides/migration-4.2.rst
-@@ -9,22 +9,47 @@ Migration notes for 4.2 (mickledore)
- This section provides migration information for moving to the Yocto
- Project 4.2 Release (codename "mickledore") from the prior release.
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/docum=
+entation/migration-guides/release-notes-4.2.rst
+index a3e821cb4be..bf003c1a005 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -6,26 +6,51 @@ Release notes for 4.2 (mickledore)
+ New Features / Enhancements in 4.2
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 =20
-+.. _migration-4.2-supported-distributions:
+--  Python 3.8 is the minimum Python version required on the build host.
+-   For host distributions that do not provide it, this is included as pa=
+rt of the
+-   :term:`buildtools` tarball.
++-  Linux kernel 6.1, glibc 2.37 and ~350 other recipe upgrades
 +
-+Supported distributions
-+~~~~~~~~~~~~~~~~~~~~~~~
++-  Rust improvements:
 +
-+This release supports running BitBake on new GNU/Linux distributions:
++   -  This release adds Cargo support on the target, and includes
++      automated QA tests for this functionality.
 +
-+-  Fedora 36 and 37
-+-  AlmaLinux 8.7 and 9.1
-+-  OpenSuse 15.4
++   -  It also supports checksums for Rust crates and makes
++      them mandatory for each crate in a recipe.
 +
-+On the other hand, some earlier distributions are no longer supported:
++   -  New :ref:`ref-classes-cargo-update-recipe-crates` class to
++      enable updating :term:`SRC_URI` crate lists from ``Cargo.lock``
 +
-+-  Debian 10.x
-+-  Fedora 34 and 35
-+-  AlmaLinux 8.5
++   -  Enabled building Rust for baremetal targets
 +
-+See :ref:`all supported distributions <system-requirements-supported-dis=
-tros>`.
++   -  You can now also easily select to build beta or nightly
++      versions of rust with a new :term:`RUST_CHANNEL` variable
++      (use at own risk)
 +
- .. _migration-4.2-python-3.8:
-=20
- Python 3.8 is now the minimum required Python version version
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
--BitBake and OpenEmbedded-Core are now relying on Python 3.8,
-+BitBake and OpenEmbedded-Core now require Python 3.8 or newer,
- making it a requirement to use a distribution providing at least this
--version, or to use :term:`buildtools`.
-+version, or to install a :term:`buildtools` tarball.
-=20
- .. _migration-4.2-gcc-8.0:
-=20
--gcc 8.0 is now the minumum required GNU C compiler version
-+gcc 8.0 is now the minimum required GNU C compiler version
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
- This version, released in 2018, is a minimum requirement
--to build the ``mesa-native`` recipe.
-+to build the ``mesa-native`` recipe and as the latter is in the
-+default dependency chain when building QEMU this has now been
-+made a requirement for all builds.
++   -  Support for local github repos in :term:`SRC_URI` as
++      replacements for cargo dependencies
 +
-+In the event that your host distribution does not provide this
-+or a newer version of gcc, you can install a
-+:term:`buildtools-extended` tarball.
-=20
- .. _migration-4.2-new-nvd-api:
-=20
-@@ -48,7 +73,7 @@ Here are minor changes that you may notice:
- Rust: mandatory checksums for crates
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-=20
--This release now supports checksums for Rust crates and make
-+This release now supports checksums for Rust crates and makes
- them mandatory for each crate in a recipe. See :yocto_git:`python3_bcryp=
-t recipe changes
- </poky/commit/?h=3Dmickledore&id=3D0dcb5ab3462fdaaf1646b05a00c7150eea711=
-a9a>`
- for example.
-@@ -66,25 +91,6 @@ follow these steps:
- #.  Copy and paste the output of BitBake about the missing checksums int=
-o the
-     ``${BPN}-crates.inc`` file.
-=20
--.. _migration-4.2-supported-distributions:
--
--Supported distributions
--~~~~~~~~~~~~~~~~~~~~~~~
--
--This release supports running BitBake on new GNU/Linux distributions:
--
---  Fedora 36 and 37
---  AlmaLinux 8.7 and 9.1
---  OpenSuse 15.4
--
--On the other hand, some earlier distributions are no longer supported:
--
---  Debian 10.x
---  Fedora 34 and 35
---  AlmaLinux 8.5
--
--See :ref:`all supported distributions <system-requirements-supported-dis=
-tros>`.
--
-=20
- .. _migration-4.2-addpylib:
-=20
-@@ -107,15 +113,6 @@ make modules available for use sooner than the curre=
-nt BBPATH-based approach.
- For more information, see :ref:`bitbake-user-manual/bitbake-user-manual-=
-metadata:extending python library code`.
-=20
-=20
--.. _migration-4.2-misc-changes:
--
--Miscellaneous changes
--~~~~~~~~~~~~~~~~~~~~~
--
---  The ``OEBasic`` signature handler (see :term:`BB_SIGNATURE_HANDLER`) =
-has been
--   removed.
-- =20
--
- .. _migration-4.2-removed-variables:
-=20
- Removed variables
-@@ -124,6 +121,10 @@ Removed variables
- The following variables have been removed:
-=20
- -  ``SERIAL_CONSOLE``, deprecated since version 2.6, replaced by :term:`=
-SERIAL_CONSOLES`.
-+-  ``PACKAGEBUILDPKGD``, a mostly internal variable in the ref:`ref-clas=
-ses-package`
-+   class was rarely used to customise packaging. If you were using this =
-in your custom
-+   recipes or bbappends, you will need to switch to using :term:`PACKAGE=
-_PREPROCESS_FUNCS`
-+   or :term:`PACKAGESPLITFUNCS` instead.
-=20
- .. _migration-4.2-removed-recipes:
-=20
-@@ -136,6 +137,8 @@ The following recipes have been removed in this relea=
-se:
- -  ``python3-strict-rfc3339``: unmaintained and not needed by anything i=
-n
-    :oe_git:`openembedded-core </openembedded-core>`
-    or :oe_git:`meta-openembedded </meta-openembedded>`.
-+-  ``linux-yocto``: removed version 5.19 recipes (6.1 and 5.15 still pro=
-vided)
++   -  Use built-in rust targets for -native builds to save several
++      minutes building the Rust toolchain
 +
++-  Python 3.8+ and GCC 8.0+ are now the minimum required versions on the=
+ build host
 =20
- .. _migration-4.2-removed-classes:
+ -  BitBake in this release now supports a new ``addpylib`` directive to =
+enable
+    Python libraries within layers. For more information,
+    see :ref:`bitbake-user-manual/bitbake-user-manual-metadata:extending =
+python library code`.
 =20
-@@ -144,5 +147,130 @@ Removed classes
+--  BitBake has seen multiple internal changes that may impact
++-  BitBake has seen multiple internal changes that may improve
+    memory and disk usage as well as parsing time, in particular:
 =20
- The following classes have been removed in this release:
+    -  BitBake's Cooker server is now multithreaded.
 =20
---  ``rust-bin``: no longer used in Poky
-+-  ``rust-bin``: no longer used
-+-  ``package_tar``: could not be used for actual packaging, and thus not=
- particularly useful.
++   -  Ctrl+C can now be used to interrupt some long-running operations
++      that previously ignored it.
 +
+    -  BitBake's cache has been extended to include more hash
+       debugging data, but has also been optimized to :yocto_git:`compres=
+s
+       cache data <https://git.yoctoproject.org/poky/commit/?h=3Dmickledo=
+re&id=3D7d010055e2af3294e17db862f42664ca689a9356>`.
+=20
+-   -  BitBake's Cooker server :yocto_git:`can now be pinged
+-      </poky/commit/?h=3Dmickledore&id=3D26f255da09>`
+-      from the UI.
++   -  BitBake's UI will now ping the server regularly to ensure
++      it is still alive.
+=20
+ -  Architecture-specific enhancements:
+=20
+@@ -33,35 +58,92 @@ New Features / Enhancements in 4.2
+       :wikipedia:`LoongArch <Loongson#LoongArch>`
+       (``loongarch64``) architecture, though there is no testing for it =
+yet.
+=20
++   -  New ``x86-64-v3`` tunes (AVX, AVX2, BMI1, BMI2, F16C, FMA, LZCNT, =
+MOVBE, XSAVE)
 +
-+LAYERSERIES_COMPAT for custom layers and devtool workspace
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Some layer maintainers have been setting :term:`LAYERSERIES_COMPAT` in t=
-heir
-+layer's ``conf/layer.conf`` to the value of ``LAYERSERIES_CORENAMES`` to
-+effectively bypass the compatibility check - this is no longer permitted=
++   -  go: add support to build on ppc64le
++   -  rust: rustfmt now working and installed for riscv32
++   -  libpng: enable NEON for aarch64 to enensure consistency with arm32=
 .
-+Layer maintainers should set :term:`LAYERSERIES_COMPAT` appropriately to
-+help users understand the compatibility status of the layer.
++   -  baremetal-helloworld: Enable x86 and x86-64 ports
 +
-+Additionally, the :term:`LAYERSERIES_COMPAT` value for the devtool works=
-pace
-+layer is now set at the time of creation, thus if you upgrade with the
-+workspace layer enabled and you wish to retain it, you will need to manu=
-ally
-+update the :term:`LAYERSERIES_COMPAT` value in ``workspace/conf/layer.co=
-nf``
-+(or remove the path from :term:`BBLAYERS` in ``conf/bblayers.conf`` and
-+delete/move the ``workspace`` directory out of the way if you no longer
-+need it).
+ -  Kernel-related enhancements:
 =20
++   -  Added some support for building 6.2/6.3-rc kernels
++   -  linux-yocto-dev: mark as compatible with qemuarm64 and qemuarmv5
++   -  Add kernel specific OBJCOPY to help switching toolchains cleanly f=
+or kernel build between gcc and clang
 +
-+.. _migration-4.2-runqemu-slirp:
++-  New core recipes:
 +
-+runqemu now limits slirp host port forwarding to localhost
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++   - ``debugedit``
++   - ``gtk4`` (import from meta-gnome)
++   - ``gcr``: add recipe for gcr-4
++   - ``graphene`` (import from meta-oe)
++   - ``libc-test``
++   - ``libportal`` (import from meta-gnome)
++   - ``libslirp``
++   - ``libtest-fatal-perl``
++   - ``libtest-warnings-perl`` (import from meta-perl)
++   - ``libtry-tiny-perl``
++   - ``python3-build``
++   - ``python3-pyproject-hooks``
++   - ``python3-hatch-fancy-pypi-readme``
++   - ``python3-unittest-automake``
 +
-+With default slirp port forwarding configuration in runqemu, qemu
-+previously listened on TCP ports 2222 and 2323 on all IP addresses
-+available on the build host. Most use cases with runqemu only need
-+it for localhost and it is not safe to run qemu images with root
-+login without password enabled and listening on all available,
-+possibly Internet reachable network interfaces. Thus, in this
-+release we limit qemu port forwarding to localhost (127.0.0.1).
+ -  QEMU/runqemu enhancements:
+=20
++   -  Set ``QB_SMP`` with ?=3D to make it easier to modify
++   -  Set ``QB_CPU`` with ?=3D to make it easier to modify (x86 configur=
+ation only)
++   -  New ``QB_NFSROOTFS_EXTRA_OPT`` to allow extra options to be append=
+ed to the nfs rootfs options in kernel boot args, e.g. ``"wsize=3D4096,rs=
+ize=3D4096"``
++   -  New ``QB_SETUP_CMD`` and ``QB_CLEANUP_CMD`` to enable running cust=
+om shell setup and cleanup commands before and after QEMU.
++   -  ``QB_DEFAULT_KERNEL`` now defaults to pick the bundled initramfs k=
+ernel image if the Linux kernel image is generated with :term:`INITRAMFS_=
+IMAGE_BUNDLE` set to "1"
++   -  Split out the QEMU guest agent to its own ``qemu-guest-agent`` pac=
+kage
++   -  runqemu: new "guestagent" option to enable communication with the =
+guest agent
++   -  runqemu: respect :term:`IMAGE_LINK_NAME` when searching for image
 +
-+However, if you need the qemu machine to be reachable from the
-+network, then it can be enabled via ``conf/local.conf`` or machine
-+config variable ``QB_SLIRP_OPT``::
+ -  Image-related enhancements:
+=20
+--  New variables:
++   -  Add 7-Zip support in image conversion types (``7zip``)
++   -  New :term:`IMAGE_MACHINE_SUFFIX` variable to allow easily removing=
+ machine name suffix from image file names
+=20
+-   - :term:`VOLATILE_TMP_DIR` allows to specify
+-     whether ``/tmp`` should be on persistent storage
+-     or in RAM.
++-  wic Image Creator enhancements:
+=20
+--  Rust improvements:
++   -  bootimg-efi: add support for directly loading Linux kernel UEFI st=
+ub
++   -  bootimg-efi: implement --include-path
++   -  Allow usage of fstype=3Dnone to specify an unformatted partition
++   -  Implement repeatable disk identifiers based on SOURCE_DATE_EPOCH
+=20
+-   -  This release adds Cargo support on the target, and includes
+-      automated QA tests for this functionality.
++-  FIT image related improvements:
+=20
+-   -  It also supports checksums for Rust crates and makes
+-      them mandatory for each crate in a recipe.
++   -  FIT image signing support has been reworked to remove interdepende=
+ncies and make it more easily extensible
++   -  Skip FDT section creation for applicable symlinks to avoid the sam=
+e dtb being duplicated
++   -  New :term:`FIT_CONF_DEFAULT_DTB` variable to enable selecting defa=
+ult dtb when multiple dtbs exist
 +
-+   QB_SLIRP_OPT =3D "-netdev user,id=3Dnet0,hostfwd=3Dtcp::2222-:22"
++-  SDK-related improvements:
++
++   -  Extended the following recipes to nativesdk:
++
++      - ``bc``
++      - ``gi-docgen``
++      - ``gperf``
++      - ``python3-iniconfig``
++      - ``python3-atomicwrites``
++      - ``python3-markdown``
++      - ``python3-smartypants``
++      - ``python3-typogrify``
++      - ``ruby``
++      - ``unifdef``
++
++   -  New :term:`SDK_ZIP_OPTIONS` variable to enable passing additional =
+options to the zip command when preparing the SDK zip archive
++   -  New Rust SDK target packagegroup (packagegroup-rust-sdk-target)
+=20
+ -  Testing:
+=20
+    -  The ptest images have changed structure in this release. The
+       underlying ``core-image-ptest`` recipe now uses :term:`BBCLASSEXTE=
+ND` to
+-      create a variant for each ptest enabled recipe in OE-Core.=20
++      create a variant for each ptest enabled recipe in OE-Core.
+=20
+       For example, this means that ``core-image-ptest-bzip2``,
+       ``core-image-ptest-lttng-tools`` and many more image targets now e=
+xist
+-      and can be built/tested individually.=20
++      and can be built/tested individually.
+=20
+       The ``core-image-ptest-all`` and ``core-image-ptest-fast`` targets=
+ are now
+       wrappers that target groups of individual images and means that th=
+e tests
+@@ -83,9 +165,736 @@ New Features / Enhancements in 4.2
+    -  This release adds support for parallel ptest execution with a ptes=
+t per image.
+       This takes ptest execution time from 3.5 hours to around 45 minute=
+s on the autobuilder.
+=20
++   -  Basic Rust compile/run and cargo tests
++
++   -  New ``python3-unittest-automake`` recipe which provides modules fo=
+r pytest
++      and unittest to adjust their output to automake-style for easier i=
+ntegration
++      with the ptest system.
++
++   -  ptest support added to ``bc``, ``cpio`` and ``gnutls``, and fixes =
+made to
++      ptests in numerous other recipes.
++
++   -  ``ptest-runner`` now adds a non-root "ptest" user for tests to run=
+ as
++
++   -  resulttool: add a --list-ptest option to the log subcommand to lis=
+t ptest names
++      in a results file
++
++   -  resulttool: regression: add metadata filtering for oeselftest
 +
 +
-+.. _migration-4.2-patch-qa:
++-  New :term:`PACKAGECONFIG` options in the following recipes:
 +
-+Patch QA checks
-+~~~~~~~~~~~~~~~
++   - ``at-spi2-core``
++   - ``base-passwd``
++   - ``cronie``
++   - ``cups``
++   - ``cups``
++   - ``curl``
++   - ``file``
++   - ``gstreamer1.0-plugins-good``
++   - ``gtk+3``
++   - ``iproute2``
++   - ``libsdl2``
++   - ``libtiff``
++   - ``llvm``
++   - ``mesa``
++   - ``psmisc``
++   - ``qemu``
++   - ``sudo``
++   - ``systemd``
++   - ``tiff``
++   - ``util-linux``
 +
-+The QA checks for patch fuzz and Upstream-Status have been reworked
-+slightly in this release. The Upstream-Status checking is now configurab=
++-  Extended the following recipes to native:
++
++   - ``iso-codes``
++   - ``libxkbcommon``
++   - ``p11-kit``
++   - ``python3-atomicwrites``
++   - ``python3-dbusmock``
++   - ``python3-iniconfig``
++   - ``xkeyboard-config``
++
++-  Utility script changes:
++
++   -  devtool: ignore patch-fuzz errors when extracting source in order =
+to enable fixing fuzz issues
++   -  oe-setup-layers: Make efficiently idempotent
++   -  oe-setup-layers: print a note about submodules if present
++   -  New buildstats-summary script to show a summary of the buildstats =
+data
++   -  report-error: catch Nothing PROVIDES error
++   -  combo-layer: add sync-revs command
++   -  scripts: convert-overrides: Allow command-line customizations
++
++-  bitbake-layers improvements:
++
++   -  layerindex-fetch: checkout layer(s) branch when clone exists
++   -  create: add -a/--add-layer option to add layer to bblayers.conf af=
+ter creating layer
++   -  show-layers: improve output layout
++
++-  Other BitBake improvements:
++
++   -  Inline python snippets can now include dictionary expressions
++   -  Evaluate the value of export/unexport/network flags so that they c=
+an be reset to "0"
++   -  Make :term:`EXCLUDE_FROM_WORLD` boolean so that it can be reset to=
+ "0"
++   -  Support int values in bb.utils.to_boolean() in addition to strings
++   -  bitbake-getvar: Add a quiet command line argument
++   -  Allow the '@' character in variable flag names
++   -  Python library code will now be included when calculating task has=
+hes
++   -  fetch2/npmsw: add more short forms for git operations
++   -  Display a warning when ``SRCREV =3D "${AUTOREV}"`` is set too late=
+ to be effective
++   -  Display all missing :term:`SRC_URI` checksums at once
++   -  Improve error message for a missing multiconfig
++   -  Switch to a new :term:`BB_CACHEDIR` variable for codeparser cache =
+location
++   -  Mechanism introduced to reduce the codeparser cache unnecessarily =
+growing in size
++
++-  Packaging changes:
++
++   -  rng-tools is no longer recommended by openssh, and the rng-tools s=
+ervice files have been split out to their own package
++   -  linux-firmware: split rtl8761 and amdgpu firmware
++   -  linux-firmware: add new fw file to ${PN}-qcom-adreno-a530
++   -  iproute2: separate routel and add python dependency
++   -  xinetd: move xconv.pl script to separate package
++   -  perf: Enable debug/source packaging
++
+ -  Miscellaneous changes:
+=20
+    -  Supporting 64 bit dates on 32 bit platforms: several packages have=
+ been
+-      updated to pass Y2038 tests.
++      updated to pass Y2038 tests, and a QA check for 32 bit time and fi=
 le
-+from :term:`WARN_QA` / :term:`ERROR_QA` (``patch-status-core`` for the
-+core layer, and ``patch-status-noncore`` for other layers).
++      offset functions has been added (default off)
 +
-+The ``patch-fuzz`` and ``patch-status-core`` checks are now in the defau=
-lt
-+value of :term:`ERROR_QA` so that they will cause the build to fail
-+if triggered. If you prefer to avoid this you will need to adjust the va=
-lue
-+of :term:`ERROR_QA` in your configuration as desired.
++   -  Patch fuzz/Upstream-Status checking has been reworked:
++      -  Upstream-Status checking is now configurable from :term:`WARN_Q=
+A`/:term:`ERROR_QA` (``patch-status-core``)
++      -  Can now be enabled for non-core layers (``patch-status-noncore`=
+`)
++      -  ``patch-fuzz`` is now in :term:`ERROR_QA` by default, and actua=
+lly stops the build
+=20
+    -  Many packages were updated to add large file support.
++
++   -  New :term:`VOLATILE_TMP_DIR` variable allows to specify whether ``=
+/tmp``
++      should be on persistent storage or in RAM.
++
++   -  vulkan-loader: Allow headless targets to build the loader
++   -  dhcpcd: fix to work with systemd
++   -  u-boot: Add /boot to :term:`SYSROOT_DIRS` to allow boot files to b=
+e used by other recipes
++   -  linux-firmware: don't put the firmware into the sysroot
++   -  cups: add :term:`PACKAGECONFIG` to control web interface and defau=
+lt to off
++   -  buildtools-tarball: export certificates to python and curl
++   -  yocto-check-layer: Allow OE-Core to be tested
++   -  yocto-check-layer: check for patch file upstream status
++   -  boost: enable building Boost.URL library
++   -  native: Drop special variable handling
++   -  poky: make it easier to set :term:`INIT_MANAGER` from local.conf
++   -  create-spdx: Add support for custom Annotations
++   -  create-spdx: Report downloads as separate packages
++   -  create-spdx: Removed the top-level image SPDX file and the JSON in=
+dex file from :term:`DEPLOYDIR` to avoid confusion
++   -  os-release: replace ``DISTRO_CODENAME`` with ``VERSION_CODENAME`` =
+(still set from :term:`DISTRO_CODENAME`)
++   -  weston: Add kiosk shell
++   -  overlayfs: Allow unused mount points
++   -  sstatesig: emit more helpful error message when not finding sstate=
+ manifest
++   -  pypi.bbclass: Set :term:`SRC_URI` downloadfilename with an optiona=
+l prefix
++   -  poky-bleeding: Update and rework
++   -  package.bbclass: check if package names conflict via PKG:${PN} ove=
+rride in do_package
++   -  cve-update-nvd2-native: new NVD CVE database fetcher using the 2.0=
+ API
++   -  mirrors.bbclass: use shallow tarball for binutils-native/nativesdk=
+-binutils
++   -  meta/conf: move default configuration templates into meta/conf/tem=
+plates/default
++   -  binutils: Enable --enable-new-dtags as per many Linux distribution=
+s
++   -  base-files: Drop localhost.localdomain from hosts file as per many=
+ Linux distributions
++   -  packagegroup-core-boot: make init-ifupdown package a recommendatio=
+n
 +
 +
-+.. _migration-4.2-mesa:
-+
-+Native/nativesdk mesa usage and graphics drivers
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+This release includes mesa 23.0, and with that mesa release it is not lo=
-nger
-+possible to use drivers from the host system, as mesa upstream has added=
- strict
-+checks for matching builds between drivers and libraries that load them.
-+
-+This is particularly relevant when running QEMU built within the build
-+system. A check has been added to runqemu so that there is a helpful err=
-or
-+when there is no native/nativesdk opengl/virgl support available.
-+
-+To support this, a number of drivers have been enabled when building ``m=
-esa-native``.
-+The one major dependency pulled in by this change is ``llvm-native`` whi=
-ch will
-+add a few minutes to the build on a modern machine. If this is undesirab=
-le, you
-+can set the value of :term:`DISTRO_FEATURES_NATIVE` in your configuratio=
-n such
-+that ``opengl`` is excluded.
++Known Issues in 4.2
++~~~~~~~~~~~~~~~~~~~
 +
 +
-+.. _migration-4.2-misc-changes:
++Recipe License changes in 4.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+Miscellaneous changes
++The following corrections have been made to the :term:`LICENSE` values s=
+et by recipes:
++
++- curl: set :term:`LICENSE` appropriately to "curl" as it is a special d=
+erivative of the MIT/X license, not exactly that license.
++- libgit2: added Zlib, ISC, LGPL-2.1-or-later and CC0-1.0 to :term:`LICE=
+NSE` covering portions of the included code.
++- linux-firmware: set package :term:`LICENSE` appropriately for all qcom=
+ packages
++
++
++
++Security Fixes in 4.2
 +~~~~~~~~~~~~~~~~~~~~~
 +
-+-  The :term:`IMAGE_NAME` variable is now set based on :term:`IMAGE_LINK=
-_NAME`. This
-+   means that if you are setting :term:`IMAGE_LINK_NAME` to "" to disabl=
-e unversioned
-+   image symlink creation, you also now need to set :term:`IMAGE_NAME` t=
-o still have
-+   a reasonable value e.g.::
++- binutils: :cve:`2022-4285`, :cve:`2023-25586`
++- curl: :cve:`2022-32221`, :cve:`2022-35260`, :cve:`2022-42915`, :cve:`2=
+022-42916`
++- epiphany: :cve:`2023-26081`
++- expat: :cve:`2022-43680`
++- ffmpeg: :cve:`2022-3964`, :cve:`2022-3965`
++- git: :cve:`2022-39260`, :cve:`2022-41903`, :cve:`2022-23521`, :cve:`20=
+22-41953` (ignored)
++- glibc: :cve:`2023-25139` (ignored)
++- go: :cve:`2023-2453`
++- grub2: :cve:`2022-2601`, :cve:`2022-3775`, :cve:`2022-28736`
++- inetutils: :cve:`2019-0053`
++- less: :cve:`2022-46663`
++- libarchive: :cve:`2022-36227`
++- libinput: :cve:`2022-1215`
++- libpam: :cve:`2022-28321`
++- libpng: :cve:`2019-6129`
++- libx11: :cve:`2022-3554`
++- openssh: :cve:`2023-28531`
++- openssl: :cve:`2022-3358`, :cve:`2022-3786`, :cve:`2022-3602`, :cve:`2=
+022-3996`, :cve:`2023-0286`, :cve:`2022-4304`, :cve:`2022-4203`, :cve:`20=
+23-0215`, :cve:`2022-4450`, :cve:`2023-0216`, :cve:`2023-0217`, :cve:`202=
+3-0401`, :cve:`2023-0464`
++- ppp: :cve:`2022-4603`
++- python3-cryptography{-vectors}: :cve:`2022-3602`, :cve:`2022-3786`, :c=
+ve:`2023-23931`
++- python3: :cve:`2022-37460`
++- qemu: :cve:`2022-3165`
++- rust: :cve:`2022-46176`
++- rxvt-unicode: :cve:`2022-4170`
++- shadow: :cve:`2016-15024` (ignored)
++- sudo: :cve:`2022-43995`
++- systemd: :cve:`2022-4415` (ignored)
++- tar: :cve:`2022-48303`
++- tiff: :cve:`2022-3599`, :cve:`2022-3597`, :cve:`2022-3626`, :cve:`2022=
+-3627`, :cve:`2022-3570`, :cve:`2022-3598`, :cve:`2022-3970`, :cve:`2022-=
+48281`
++- vim: :cve:`2022-3352`, :cve:`2022-4141`, :cve:`2023-0049`, :cve:`2023-=
+0051`, :cve:`2023-0054`, :cve:`2023-0288`, :cve:`2023-1127`, :cve:`2023-1=
+170`, :cve:`2023-1175`, :cve:`2023-1127`, :cve:`2023-1170`, :cve:`2023-11=
+75`, :cve:`2023-1264`, :cve:`2023-1355`, :cve:`2023-0433`, :cve:`2022-470=
+24`, :cve:`2022-3705`
++- xdg-utils: :cve:`2022-4055`
++- xserver-xorg: :cve:`2022-3550`, :cve:`2022-3551`, :cve:`2023-0494`, :c=
+ve:`2022-3553` (ignored)
 +
-+      IMAGE_LINK_NAME =3D ""
-+      IMAGE_NAME =3D "${IMAGE_BASENAME}${IMAGE_MACHINE_SUFFIX}${IMAGE_VE=
-RSION_SUFFIX}"
 +
-+-  In ``/etc/os-release``, the ``VERSION_CODENAME`` field is now used in=
-stead of
-+   ``DISTRO_CODENAME`` (though its value is still set from the :term:`DI=
-STRO_CODENAME`
-+   variable) for better conformance to standard os-release usage. If you=
- have runtime
-+   code reading this from ``/etc/os-release`` it may need to be updated.
++Recipe Upgrades in 4.2
++~~~~~~~~~~~~~~~~~~~~~~
 +
-+-  The kmod recipe now enables OpenSSL support by default in order to su=
-pport module
-+   signing. If you do not need this and wish to reclaim some space/avoid=
- the dependency
-+   you should set :term:`PACKAGECONFIG` in a kmod bbappend (or ``PACKAGE=
-CONFIG:pn-kmod``
-+   at the configuration level) to exclude ``openssl``.
++- acpid: upgrade 2.0.33 -> 2.0.34
++- adwaita-icon-theme: update 42.0 -> 43
++- alsa-lib: upgrade 1.2.7.2 -> 1.2.8
++- alsa-ucm-conf: upgrade 1.2.7.2 -> 1.2.8
++- alsa-utils: upgrade 1.2.7 -> 1.2.8
++- apr: update 1.7.0 -> 1.7.2
++- apr-util: update 1.6.1 -> 1.6.3
++- argp-standalone: replace with a maintained fork
++- at-spi2-core: upgrade 2.44.1 -> 2.46.0
++- autoconf-archive: upgrade 2022.09.03 -> 2023.02.20
++- babeltrace: upgrade 1.5.8 -> 1.5.11
++- base-passwd: Update to 3.6.1
++- bash: update 5.1.16 -> 5.2.15
++- bind: upgrade 9.18.7 -> 9.18.12
++- binutils: Upgrade to 2.40 release
++- bluez: update 5.65 -> 5.66
++- boost-build-native: update 1.80.0 -> 1.81.0
++- boost: upgrade 1.80.0 -> 1.81.0
++- btrfs-tools: upgrade 5.19.1 -> 6.1.3
++- busybox: 1.35.0 -> 1.36.0
++- ccache: upgrade 4.6.3 -> 4.7.4
++- cmake: update 3.24.0 -> 3.25.2
++- cracklib: upgrade to v2.9.10
++- curl: upgrade 7.86.0 -> 8.0.1
++- dbus: upgrade 1.14.0 -> 1.14.6
++- diffoscope: upgrade 221 -> 236
++- diffstat: upgrade 1.64 -> 1.65
++- diffutils: update 3.8 -> 3.9
++- dos2unix: upgrade 7.4.3 -> 7.4.4
++- dpkg: update 1.21.9 -> 1.21.21
++- dropbear: upgrade 2022.82 -> 2022.83
++- dtc: upgrade 1.6.1 -> 1.7.0
++- e2fsprogs: upgrade 1.46.5 -> 1.47.0
++- ed: upgrade 1.18 -> 1.19
++- elfutils: update 0.187 -> 0.188
++- ell: upgrade 0.53 -> 0.56
++- enchant2: upgrade 2.3.3 -> 2.3.4
++- encodings: update 1.0.6 -> 1.0.7
++- epiphany: update 42.4 -> 43.1
++- ethtool: upgrade 5.19 -> 6.2
++- expat: upgrade to 2.5.0
++- ffmpeg: upgrade 5.1.1 -> 5.1.2
++- file: upgrade 5.43 -> 5.44
++- flac: update 1.4.0 -> 1.4.2
++- font-alias: update 1.0.4 -> 1.0.5
++- fontconfig: upgrade 2.14.0 -> 2.14.2
++- font-util: upgrade 1.3.3 -> 1.4.0
++- freetype: update 2.12.1 -> 2.13.0
++- gawk: update 5.1.1 -> 5.2.1
++- gcr3: update 3.40.0 -> 3.41.1
++- gcr: rename gcr -> gcr3
++- gdb: Upgrade to 13.1
++- gdk-pixbuf: upgrade 2.42.9 -> 2.42.10
++- gettext: update 0.21 -> 0.21.1
++- ghostscript: update 9.56.1 -> 10.0.0
++- gi-docgen: upgrade 2022.1 -> 2023.1
++- git: upgrade 2.37.3 -> 2.39.2
++- glib-2.0: update 2.72.3 -> 2.74.6
++- glibc: upgrade to 2.37 release + stable updates
++- glib-networking: update 2.72.2 -> 2.74.0
++- glslang: upgrade 1.3.236.0 -> 1.3.239.0
++- gnu-config: upgrade to latest revision
++- gnupg: upgrade 2.3.7 -> 2.4.0
++- gnutls: upgrade 3.7.7 -> 3.8.0
++- gobject-introspection: upgrade 1.72.0 -> 1.74.0
++- go: update 1.19 -> 1.20.1
++- grep: update 3.7 -> 3.10
++- gsettings-desktop-schemas: upgrade 42.0 -> 43.0
++- gstreamer1.0: upgrade 1.20.3 -> 1.22.0
++- gtk+3: upgrade 3.24.34 -> 3.24.36
++- gtk4: update 4.8.2 -> 4.10.0
++- harfbuzz: upgrade 5.1.0 -> 7.1.0
++- hdparm: update 9.64 -> 9.65
++- help2man: upgrade 1.49.2 -> 1.49.3
++- icu: update 71.1 -> 72-1
++- ifupdown: upgrade 0.8.37 -> 0.8.41
++- igt-gpu-tools: upgrade 1.26 -> 1.27.1
++- inetutils: upgrade 2.3 -> 2.4
++- init-system-helpers: upgrade 1.64 -> 1.65.2
++- iproute2: upgrade 5.19.0 -> 6.2.0
++- iptables: update 1.8.8 -> 1.8.9
++- iputils: update to 20221126
++- iso-codes: upgrade 4.11.0 -> 4.13.0
++- jquery: upgrade 3.6.0 -> 3.6.3
++- kexec-tools: upgrade 2.0.25 -> 2.0.26
++- kmscube: upgrade to latest revision
++- libarchive: upgrade 3.6.1 -> 3.6.2
++- libbsd: upgrade 0.11.6 -> 0.11.7
++- libcap: upgrade 2.65 -> 2.67
++- libdnf: update 0.69.0 -> 0.70.0
++- libdrm: upgrade 2.4.113 -> 2.4.115
++- libedit: upgrade 20210910-3.1 -> 20221030-3.1
++- libepoxy: update 1.5.9 -> 1.5.10
++- libffi: upgrade 3.4.2 -> 3.4.4
++- libfontenc: upgrade 1.1.6 -> 1.1.7
++- libgit2: upgrade 1.5.0 -> 1.6.3
++- libgpg-error: update 1.45 -> 1.46
++- libhandy: update 1.6.3 -> 1.8.1
++- libical: upgrade 3.0.14 -> 3.0.16
++- libice: update 1.0.10 -> 1.1.1
++- libidn2: upgrade 2.3.3 -> 2.3.4
++- libinput: upgrade 1.19.4 -> 1.22.1
++- libjpeg-turbo: upgrade 2.1.4 -> 2.1.5.1
++- libksba: upgrade 1.6.0 -> 1.6.3
++- libmicrohttpd: upgrade 0.9.75 -> 0.9.76
++- libmodule-build-perl: update 0.4231 -> 0.4232
++- libmpc: upgrade 1.2.1 -> 1.3.1
++- libnewt: update 0.52.21 -> 0.52.23
++- libnotify: upgrade 0.8.1 -> 0.8.2
++- libpcap: upgrade 1.10.1 -> 1.10.3
++- libpciaccess: update 0.16 -> 0.17
++- libpcre2: upgrade 10.40 -> 10.42
++- libpipeline: upgrade 1.5.6 -> 1.5.7
++- libpng: upgrade 1.6.38 -> 1.6.39
++- libpsl: upgrade 0.21.1 -> 0.21.2
++- librepo: upgrade 1.14.5 -> 1.15.1
++- libsdl2: upgrade 2.24.1 -> 2.26.3
++- libsm: 1.2.3 > 1.2.4
++- libsndfile1: upgrade 1.1.0 -> 1.2.0
++- libsolv: upgrade 0.7.22 -> 0.7.23
++- libsoup-2.4: upgrade 2.74.2 -> 2.74.3
++- libsoup: upgrade 3.0.7 -> 3.2.2
++- libtest-fatal-perl: upgrade 0.016 -> 0.017
++- libtest-needs-perl: upgrade 0.002009 -> 0.002010
++- libunistring: upgrade 1.0 -> 1.1
++- liburcu: upgrade 0.13.2 -> 0.14.0
++- liburi-perl: upgrade 5.08 -> 5.17
++- libva: upgrade 2.15.0 -> 2.16.0
++- libva-utils: upgrade 2.15.0 -> 2.17.1
++- libwebp: upgrade 1.2.4 -> 1.3.0
++- libwpe: upgrade 1.12.3 -> 1.14.1
++- libx11: 1.8.1 -> 1.8.4
++- libx11-compose-data: 1.6.8 -> 1.8.4
++- libxau: upgrade 1.0.10 -> 1.0.11
++- libxcomposite: update 0.4.5 -> 0.4.6
++- libxcrypt-compat: upgrade 4.4.30 -> 4.4.33
++- libxcrypt: upgrade 4.4.28 -> 4.4.30
++- libxdamage: update 1.1.5 -> 1.1.6
++- libxdmcp: update 1.1.3 -> 1.1.4
++- libxext: update 1.3.4 -> 1.3.5
++- libxft: update 2.3.4 -> 2.3.6
++- libxft: upgrade 2.3.6 -> 2.3.7
++- libxinerama: update 1.1.4 -> 1.1.5
++- libxkbcommon: upgrade 1.4.1 -> 1.5.0
++- libxkbfile: update 1.1.0 -> 1.1.1
++- libxkbfile: upgrade 1.1.1 -> 1.1.2
++- libxml2: upgrade 2.9.14 -> 2.10.3
++- libxmu: update 1.1.3 -> 1.1.4
++- libxpm: update 3.5.13 -> 3.5.15
++- libxrandr: update 1.5.2 -> 1.5.3
++- libxrender: update 0.9.10 -> 0.9.11
++- libxres: update 1.2.1 -> 1.2.2
++- libxscrnsaver: update 1.2.3 -> 1.2.4
++- libxshmfence: update 1.3 -> 1.3.2
++- libxslt: upgrade 1.1.35 -> 1.1.37
++- libxtst: update 1.2.3 -> 1.2.4
++- libxv: update 1.0.11 -> 1.0.12
++- libxxf86vm: update 1.1.4 -> 1.1.5
++- lighttpd: upgrade 1.4.66 -> 1.4.69
++- linux-firmware: upgrade 20220913 -> 20230210
++- linux-libc-headers: bump to 6.1
++- linux-yocto/5.15: update genericx86* machines to v5.15.78
++- linux-yocto/5.15: update to v5.15.103
++- linux-yocto/6.1: update to v6.1.20
++- linux-yocto-dev: bump to v6.3
++- linux-yocto-rt/5.15: update to -rt59
++- linux-yocto-rt/6.1: update to -rt7
++- llvm: update 14.0.6 -> 15.0.7
++- log4cplus: upgrade 2.0.8 -> 2.1.0
++- logrotate: upgrade 3.20.1 -> 3.21.0
++- lsof: upgrade 4.95.0 -> 4.98.0
++- ltp: upgrade 20220527 -> 20230127
++- lttng-modules: upgrade 2.13.4 -> 2.13.9
++- lttng-tools: update 2.13.8 -> 2.13.9
++- lttng-ust: upgrade 2.13.4 -> 2.13.5
++- makedepend: upgrade 1.0.6 -> 1.0.8
++- make: update 4.3 -> 4.4.1
++- man-db: update 2.10.2 -> 2.11.2
++- man-pages: upgrade 5.13 -> 6.03
++- matchbox-config-gtk: Update to latest SRCREV
++- matchbox-desktop-2: Update 2.2 -> 2.3
++- matchbox-panel-2: Update 2.11 -> 2.12
++- matchbox-terminal: Update to latest SRCREV
++- matchbox-wm: Update 1.2.2 -> 1.2.3
++- mc: update 4.8.28 -> 4.8.29
++- mesa: update 22.2.0 -> 23.0.0
++- meson: upgrade 0.63.2 -> 1.0.1
++- mmc-utils: upgrade to latest revision
++- mobile-broadband-provider-info: upgrade 20220725 -> 20221107
++- mpfr: upgrade 4.1.0 -> 4.2.0
++- mpg123: upgrade 1.30.2 -> 1.31.2
++- msmtp: upgrade 1.8.22 -> 1.8.23
++- mtd-utils: upgrade 2.1.4 -> 2.1.5
++- mtools: upgrade 4.0.40 -> 4.0.42
++- musl-obstack: Update to 1.2.3
++- musl: Upgrade to latest master
++- nasm: update 2.15.05 -> 2.16.01
++- ncurses: upgrade 6.3+20220423 -> 6.4
++- netbase: upgrade 6.3 -> 6.4
++- newlib: Upgrade 4.2.0 -> 4.3.0
++- nghttp2: upgrade 1.49.0 -> 1.52.0
++- numactl: upgrade 2.0.15 -> 2.0.16
++- opensbi: Upgrade to 1.2 release
++- openssh: upgrade 9.0p1 -> 9.3p1
++- openssl: Upgrade 3.0.5 -> 3.1.0
++- opkg: upgrade to version 0.6.1
++- orc: upgrade 0.4.32 -> 0.4.33
++- ovmf: upgrade edk2-stable202205 -> edk2-stable202211
++- pango: upgrade 1.50.9 -> 1.50.13
++- patchelf: upgrade 0.15.0 -> 0.17.2
++- pciutils: upgrade 3.8.0 -> 3.9.0
++- piglit: upgrade to latest revision
++- pinentry: update 1.2.0 -> 1.2.1
++- pixman: upgrade 0.40.0 -> 0.42.2
++- pkgconf: upgrade 1.9.3 -> 1.9.4
++- popt: update 1.18 -> 1.19
++- powertop: upgrade 2.14 -> 2.15
++- procps: update 3.3.17 -> 4.0.3
++- psmisc: upgrade 23.5 -> 23.6
++- puzzles: upgrade to latest revision
++- python3-alabaster: upgrade 0.7.12 -> 0.7.13
++- python3-attrs: upgrade 22.1.0 -> 22.2.0
++- python3-babel: upgrade 2.10.3 -> 2.12.1
++- python3-bcrypt: upgrade 3.2.2 -> 4.0.1
++- python3-certifi: upgrade 2022.9.14 -> 2022.12.7
++- python3-chardet: upgrade 5.0.0 -> 5.1.0
++- python3-cryptography: upgrade 38.0.3 -> 39.0.4
++- python3-cryptography-vectors: upgrade 37.0.4 -> 39.0.2
++- python3-cython: upgrade 0.29.32 -> 0.29.33
++- python3-dbusmock: update 0.28.4 -> 0.28.7
++- python3-dbus: upgrade 1.2.18 -> 1.3.2
++- python3-dtschema: upgrade 2022.8.3 -> 2023.1
++- python3-flit-core: upgrade 3.7.1 -> 3.8.0
++- python3-gitdb: upgrade 4.0.9 -> 4.0.10
++- python3-git: upgrade 3.1.27 -> 3.1.31
++- python3-hatch-fancy-pypi-readme: upgrade 22.7.0 -> 22.8.0
++- python3-hatchling: upgrade 1.9.0 -> 1.13.0
++- python3-hatch-vcs: upgrade 0.2.0 -> 0.3.0
++- python3-hypothesis: upgrade 6.54.5 -> 6.68.2
++- python3-importlib-metadata: upgrade 4.12.0 -> 6.0.0
++- python3-iniconfig: upgrade 1.1.1 -> 2.0.0
++- python3-installer: update 0.5.1 -> 0.6.0
++- python3-iso8601: upgrade 1.0.2 -> 1.1.0
++- python3-jsonschema: upgrade 4.9.1 -> 4.17.3
++- python3-lxml: upgrade 4.9.1 -> 4.9.2
++- python3-mako: upgrade 1.2.2 -> 1.2.4
++- python3-markupsafe: upgrade 2.1.1 -> 2.1.2
++- python3-more-itertools: upgrade 8.14.0 -> 9.1.0
++- python3-numpy: upgrade 1.23.3 -> 1.24.2
++- python3-packaging: upgrade to 23.0
++- python3-pathspec: upgrade 0.10.1 -> 0.11.0
++- python3-pbr: upgrade 5.10.0 -> 5.11.1
++- python3-pip: upgrade 22.2.2 -> 23.0.1
++- python3-poetry-core: upgrade 1.0.8 -> 1.5.2
++- python3-psutil: upgrade 5.9.2 -> 5.9.4
++- python3-pycairo: upgrade 1.21.0 -> 1.23.0
++- python3-pycryptodome: upgrade 3.15.0 -> 3.17
++- python3-pycryptodomex: upgrade 3.15.0 -> 3.17
++- python3-pygments: upgrade 2.13.0 -> 2.14.0
++- python3-pyopenssl: upgrade 22.0.0 -> 23.0.0
++- python3-pyrsistent: upgrade 0.18.1 -> 0.19.3
++- python3-pytest-subtests: upgrade 0.8.0 -> 0.10.0
++- python3-pytest: upgrade 7.1.3 -> 7.2.2
++- python3-pytz: upgrade 2022.2.1 -> 2022.7.1
++- python3-requests: upgrade 2.28.1 -> 2.28.2
++- python3-scons: upgrade 4.4.0 -> 4.5.2
++- python3-setuptools-rust: upgrade 1.5.1 -> 1.5.2
++- python3-setuptools-scm: upgrade 7.0.5 -> 7.1.0
++- python3-setuptools: upgrade 65.0.2 -> 67.6.0
++- python3-sphinxcontrib-applehelp: update 1.0.2 -> 1.0.4
++- python3-sphinxcontrib-htmlhelp: 2.0.0 -> 2.0.1
++- python3-sphinx-rtd-theme: upgrade 1.0.0 -> 1.2.0
++- python3-sphinx: upgrade 5.1.1 -> 6.1.3
++- python3-subunit: upgrade 1.4.0 -> 1.4.2
++- python3-testtools: upgrade 2.5.0 -> 2.6.0
++- python3-typing-extensions: upgrade 4.3.0 -> 4.5.0
++- python3: update 3.10.6 -> 3.11.2
++- python3-urllib3: upgrade 1.26.12 -> 1.26.15
++- python3-wcwidth: upgrade 0.2.5 -> 0.2.6
++- python3-wheel: upgrade 0.37.1 -> 0.40.0
++- python3-zipp: upgrade 3.8.1 -> 3.15.0
++- qemu: update 7.1.0 -> 7.2.0
++- quota: update 4.06 -> 4.09
++- readline: update 8.1.2 -> 8.2
++- repo: upgrade 2.29.2 -> 2.32
++- rgb: update 1.0.6 -> 1.1.0
++- rng-tools: upgrade 6.15 -> 6.16
++- rsync: update 3.2.5 -> 3.2.7
++- rt-tests: update 2.4 -> 2.5
++- ruby: update 3.1.2 -> 3.2.1
++- rust: update 1.63.0 -> 1.68.1
++- rxvt-unicode: upgrade 9.30 -> 9.31
++- sed: update 4.8 -> 4.9
++- shaderc: upgrade 2022.2 -> 2023.2
++- shadow: update 4.12.1 -> 4.13
++- socat: upgrade 1.7.4.3 -> 1.7.4.4
++- spirv-headers: upgrade 1.3.236.0 -> 1.3.239.0
++- spirv-tools: upgrade 1.3.236.0 -> 1.3.239.0
++- sqlite3: upgrade 3.39.3 -> 3.41.0
++- strace: upgrade 5.19 -> 6.2
++- stress-ng: update 0.14.03 -> 0.15.06
++- sudo: upgrade 1.9.11p3 -> 1.9.13p3
++- swig: update 4.0.2 -> 4.1.1
++- sysstat: upgrade 12.6.0 -> 12.6.2
++- systemd: update 251.4 -> 253.1
++- systemtap: upgrade 4.7 -> 4.8
++- taglib: upgrade 1.12 -> 1.13
++- tcf-agent: Update to current version
++- tcl: update 8.6.11 -> 8.6.13
++- texinfo: update 6.8 -> 7.0.2
++- tiff: update 4.4.0 -> 4.5.0
++- tzdata: update 2022d -> 2023c
++- u-boot: upgrade 2022.07 -> 2023.01
++- unfs: update 0.9.22 -> 0.10.0
++- usbutils: upgrade 014 -> 015
++- util-macros: upgrade 1.19.3 -> 1.20.0
++- vala: upgrade 0.56.3 -> 0.56.4
++- valgrind: update to 3.20.0
++- vim: Upgrade 9.0.0598 -> 9.0.1429
++- virglrenderer: upgrade 0.10.3 -> 0.10.4
++- vte: update 0.68.0 -> 0.72.0
++- vulkan-headers: upgrade 1.3.236.0 -> 1.3.239.0
++- vulkan-loader: upgrade 1.3.236.0 -> 1.3.239.0
++- vulkan-samples: update to latest revision
++- vulkan-tools: upgrade 1.3.236.0 -> 1.3.239.0
++- vulkan: update 1.3.216.0 -> 1.3.236.0
++- wayland-protocols: upgrade 1.26 -> 1.31
++- wayland-utils: update 1.0.0 -> 1.1.0
++- webkitgtk: update 2.36.7 -> 2.38.5
++- weston: update 10.0.2 -> 11.0.1
++- wireless-regdb: upgrade 2022.08.12 -> 2023.02.13
++- wpebackend-fdo: upgrade 1.12.1 -> 1.14.0
++- xcb-util: update 0.4.0 -> 0.4.1
++- xcb-util-keysyms: 0.4.0 -> 0.4.1
++- xcb-util-renderutil: 0.3.9 -> 0.3.10
++- xcb-util-wm: 0.4.1 -> 0.4.2
++- xcb-util-image: 0.4.0 -> 0.4.1
++- xf86-input-mouse: update 1.9.3 -> 1.9.4
++- xf86-input-vmmouse: update 13.1.0 -> 13.2.0
++- xf86-video-vesa: update 2.5.0 -> 2.6.0
++- xf86-video-vmware: update 13.3.0 -> 13.4.0
++- xhost: update 1.0.8 -> 1.0.9
++- xinit: update 1.4.1 -> 1.4.2
++- xkbcomp: update 1.4.5 -> 1.4.6
++- xkeyboard-config: upgrade 2.36 -> 2.38
++- xprop: update 1.2.5 -> 1.2.6
++- xrandr: upgrade 1.5.1 -> 1.5.2
++- xserver-xorg: upgrade 21.1.4 -> 21.1.7
++- xset: update 1.2.4 -> 1.2.5
++- xvinfo: update 1.1.4 -> 1.1.5
++- xwayland: upgrade 22.1.3 -> 22.1.8
++- xz: upgrade 5.2.6 -> 5.4.2
++- zlib: upgrade 1.2.12 -> 1.2.13
++- zstd: upgrade 1.5.2 -> 1.5.4
 +
-+-  The ``OEBasic`` signature handler (see :term:`BB_SIGNATURE_HANDLER`) =
-has been
-+   removed. It is unlikely that you would have selected to use this, but=
- if you have
-+   you will need to remove this setting.
 +
-+-  The :ref:`ref-classes-package` class now checks if package names conf=
-lict via
-+   ``PKG:${PN}`` override during ``do_package``. If you receive the asso=
-ciated error
-+   you will need to address the :term:`PKG` usage so that the conflict i=
-s resolved.
 +
-+-  openssh no longer uses :term:`RRECOMMENDS` to pull in ``rng-tools``, =
-since rngd
-+   is no longer needed as of Linux kernel 5.6. If you still need ``rng-t=
-ools``
-+   installed for other reasons, you should add ``rng-tools`` explicitly =
-to your
-+   image. If you additionally need rngd to be started as a service you w=
-ill also
-+   need to add the ``rng-tools-service`` package as that has been split =
-out.
 +
-+-  The cups recipe no longer builds with the web interface enabled, savi=
-ng ~1.8M of
-+   space in the final image. If you wish to enable it, you should set
-+   :term:`PACKAGECONFIG` in a cups bbappend (or ``PACKAGECONFIG:pn-cups`=
-` at the
-+   configuration level) to include ``webif``.
++Contributors to 4.2
++~~~~~~~~~~~~~~~~~~~
 +
-+-  The :ref:`ref-classes-scons` class now passes a ``MAXLINELENGTH`` arg=
-ument to
-+   scons in order to fix an issue with scons and command line lengths wh=
-en ccache is
-+   enabled. However, some recipes may be using older scons versions whic=
-h don't support
-+   this argument. If that is the case you can set the following in the r=
-ecipe in order
-+   to disable this::
++Thanks to the following people who contributed to this release:
 +
-+      SCONS_MAXLINELENGTH =3D ""
++- Adrian Freihofer
++- Ahmad Fatoum
++- Alejandro Hernandez Samaniego
++- Alexander Kanavin
++- Alexandre Belloni
++- Alexey Smirnov
++- Alexis Lothor=C3=A9
++- Alex Kiernan
++- Alex Stewart
++- Andrej Valek
++- Andrew Geissler
++- Anton Antonov
++- Antonin Godard
++- Archana Polampalli
++- Armin Kuster
++- Arnout Vandecappelle
++- Arturo Buzarra
++- Atanas Bunchev
++- Benjamin Sz=C5=91ke
++- Beno=C3=AEt Mauduit
++- Bernhard Rosenkr=C3=A4nzer
++- Bruce Ashfield
++- Caner Altinbasak
++- Carlos Alberto Lopez Perez
++- Changhyeok Bae
++- Changqing Li
++- Charlie Johnston
++- Chase Qi
++- Chee Yang Lee
++- Chen Qi
++- Chris Elledge
++- Christian Eggers
++- Christoph Lauer
++- Chuck Wolber
++- Ciaran Courtney
++- Claus Stovgaard
++- Cl=C3=A9ment P=C3=A9ron
++- Daniel Ammann
++- David Bagonyi
++- Denys Dmytriyenko
++- Denys Zagorui
++- Diego Sueiro
++- Dmitry Baryshkov
++- Ed Tanous
++- Enguerrand de Ribaucourt
++- Enrico J=C3=B6rns
++- Enrico Scholz
++- Etienne Cordonnier
++- Fabio Estevam
++- Fabre S=C3=A9bastien
++- Fawzi KHABER
++- Federico Pellegrin
++- Frank de Brabander
++- Frederic Martinsons
++- Geoffrey GIRY
++- George Kelly
++- Harald Seiler
++- He Zhe
++- Hitendra Prajapati
++- Jagadeesh Krishnanjanappa
++- James Raphael Tiovalen
++- Jan Kircher
++- Jan Luebbe
++- Jan-Simon Moeller
++- Javier Tia
++- Jeremy Puhlman
++- Jermain Horsman
++- Jialing Zhang
++- Joel Stanley
++- Joe Slater
++- Johan Korsnes
++- Jon Mason
++- Jordan Crouse
++- Jose Quaresma
++- Joshua Watt
++- Justin Bronder
++- Kai Kang
++- Kasper Revsbech
++- Keiya Nobuta
++- Kenfe-Mickael Laventure
++- Kevin Hao
++- Khem Raj
++- Konrad Weihmann
++- Lei Maohui
++- Leon Anavi
++- Liam Beguin
++- Louis Rannou
++- Luca Boccassi
++- Luca Ceresoli
++- Luis Martins
++- Maanya Goenka
++- Marek Vasut
++- Mark Asselstine
++- Mark Hatle
++- Markus Volk
++- Marta Rybczynska
++- Martin Jansa
++- Martin Larsson
++- Mateusz Marciniec
++- Mathieu Dubois-Briand
++- Mauro Queiros
++- Maxim Uvarov
++- Michael Halstead
++- Michael Opdenacker
++- Mike Crowe
++- Mikko Rapeli
++- Ming Liu
++- Mingli Yu
++- Narpat Mali
++- Nathan Rossi
++- Niko Mauno
++- Ola x Nilsson
++- Oliver Lang
++- Ovidiu Panait
++- Pablo Saavedra
++- Patrick Williams
++- Paul Eggleton
++- Paulo Neves
++- Pavel Zhukov
++- Pawel Zalewski
++- Pedro Baptista
++- Peter Bergin
++- Peter Kjellerstedt
++- Peter Marko
++- Petr Kubiz=C5=88=C3=A1k
++- Petr Vorel
++- pgowda
++- Piotr =C5=81obacz
++- Quentin Schulz
++- Randy MacLeod
++- Ranjitsinh Rathod
++- Ravineet Singh
++- Ravula Adhitya Siddartha
++- Richard Elberger
++- Richard Leitner
++- Richard Purdie
++- Robert Andersson
++- Robert Joslyn
++- Robert Yang
++- Romuald JEANNE
++- Ross Burton
++- Ryan Eatmon
++- Sakib Sajal
++- Sandeep Gundlupet Raju
++- Saul Wold
++- Sean Anderson
++- Sergei Zhmylev
++- Siddharth Doshi
++- Soumya
++- Sudip Mukherjee
++- Sundeep KOKKONDA
++- Teoh Jay Shen
++- Thomas De Schampheleire
++- Thomas Perrot
++- Thomas Roos
++- Tim Orling
++- Tobias Hagelborn
++- Tom Hochstein
++- Trevor Woerner
++- Ulrich =C3=96lmann
++- Vincent Davis Jr
++- Vivek Kumbhar
++- Vyacheslav Yurkov
++- Wang Mingyu
++- Wentao Zhang
++- Xiangyu Chen
++- Xiaotian Wu
++- Yan Xinkuan
++- Yash Shinde
++- Yi Zhao
++- Yoann Congal
++- Yureka Lilian
++- Zang Ruochen
++- Zheng Qiu
++- Zheng Ruoqin
++- Zoltan Boszormenyi
++- =E5=BC=A0=E5=BF=A0=E5=B1=B1
++
++
 --=20
 2.34.1
 
