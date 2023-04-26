@@ -1,91 +1,108 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2511EC6FD18
-	for <webhook@archiver.kernel.org>; Sat, 22 Apr 2023 10:01:48 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web10.4613.1682157699529354389
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30BCAC77B60
+	for <webhook@archiver.kernel.org>; Wed, 26 Apr 2023 07:19:17 +0000 (UTC)
+Received: from mga07.intel.com (mga07.intel.com [134.134.136.100])
+ by mx.groups.io with SMTP id smtpd.web10.2375.1682493547978157942
  for <docs@lists.yoctoproject.org>;
- Sat, 22 Apr 2023 03:01:39 -0700
+ Wed, 26 Apr 2023 00:19:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=VnfV0qcQ;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.41, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-2fa47de5b04so2515433f8f.1
-        for <docs@lists.yoctoproject.org>; Sat, 22 Apr 2023 03:01:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1682157698; x=1684749698;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=n7phUwuPQcPcaZdbAiw03W53JRxQkgfB/I/Zja314wE=;
-        b=VnfV0qcQqdfIUcfItcdm4rrhUFH7h2CAGtPyH+AyYA2gCvoPyy0M7K9CsoZGnGULu0
-         9jBuj+266gKCnG+O2+4A+cjxbpd7vW6PS+XON/k7/1NCRzlDNclbOmXHDljhcYp4IrX7
-         tOIXj1XC6NaxAkupu3rUn+sZT+c0lzCNFoPCc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1682157698; x=1684749698;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=n7phUwuPQcPcaZdbAiw03W53JRxQkgfB/I/Zja314wE=;
-        b=LqnlsTFgVT1vMq+pP1YtMTqKu1rO+wEHs/BUdJvUtl4dIVpUQT1T7C2KpKMm1hcnK1
-         QlBsUoBqLWbx0VXZrUiZDWbFIjA5OJyq90naGMwE/p416KbZKmsZM0LDynX1oQKTokpi
-         Sldp+SoTCaWC+CwpDFtChWlzMvjpYT75xFtmRKPRfJeB5R7ItDa/bqLHwq9A0UFkdVe1
-         n1+HYd+FIZmv75eU8bLkcf0akd3eOXXuy17mfONrSGIpY5KTXS9w8CmzvoYgc/jQ8Lb7
-         8xgK0fk1oeuBjeOl/9bVHYrqExQ7q+RprIBK/lleep8+0kju9z+wnUQ70r1DNN8Svn2i
-         hbAA==
-X-Gm-Message-State: AAQBX9c6ymH2u0Sc16DzoN/CtfnkzpZa/UcoqNuEDXoq4JyRmhablfCZ
-	mHZieZ1csKXXrAbtX7dhdsJNUg==
-X-Google-Smtp-Source: AKy350YGMs6ApiI+sakvdI2ibHbNXBsrMvv5DCtWY/SUXitxfWbnW0BaxTFTa3mZqHMBb1JqdiUabg==
-X-Received: by 2002:a5d:6a08:0:b0:303:49f9:4a71 with SMTP id m8-20020a5d6a08000000b0030349f94a71mr3640116wru.7.1682157697813;
-        Sat, 22 Apr 2023 03:01:37 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:5f22:3f4c:8346:a897? ([2001:8b0:aba:5f3c:5f22:3f4c:8346:a897])
-        by smtp.gmail.com with ESMTPSA id g16-20020a5d5410000000b002fbc61cd080sm6302540wrv.9.2023.04.22.03.01.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Apr 2023 03:01:37 -0700 (PDT)
-Message-ID: <f427391295df1ee31f77de7ffaa7cac103e66e72.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 00/17] Documentation updates for 4.2
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Paul Eggleton <bluelightning@bluelightning.org>, 
-	docs@lists.yoctoproject.org
-Cc: michael.opdenacker@bootlin.com
-Date: Sat, 22 Apr 2023 11:01:36 +0100
-In-Reply-To: <cover.1682133339.git.bluelightning@bluelightning.org>
-References: <cover.1682133339.git.bluelightning@bluelightning.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.47.3-1 
+ dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=lvJJpOZN;
+ spf=pass (domain: intel.com, ip: 134.134.136.100, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1682493548; x=1714029548;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=TIS1zZTWyK6fU+i+gcxFUD9TvWnan1cYfzKY9Hjhu1Y=;
+  b=lvJJpOZNwWGGEKgyhihzn30KeUFOjhP95AEMgucUkgmb0fk4l2LxgF92
+   V9yTPS1eEaQN6DxWZ9EHP2rpxnauc01HBONRiInI4vSiPiLd5l4QGVuMM
+   72Gbmxd6EBX30GIRGKKC1EmPxdgyA1lJ+7suJow05LFP2X2rSxcICMuew
+   1F2o8WKbV62mgHxdJGAAihHSQsNE5ou04OHXpAU+L+cEIWvruWqqQGx8A
+   ECWWMfzL5wQhhT/JWXeRBnzgg3LgQipTTwUWOzczZbcSwG3GxXCUHjBXd
+   P4Uqe/SD0KOWmF8s2nC89HdcKjAWOgRmTweIS0Vk1g2tlNJgY2+GztUnA
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="412330925"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="412330925"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2023 00:19:07 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10691"; a="696497386"
+X-IronPort-AV: E=Sophos;i="5.99,227,1677571200"; 
+   d="scan'208";a="696497386"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by fmsmga007.fm.intel.com with ESMTP; 26 Apr 2023 00:19:06 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] release-notes-4.2: update RC3 changes
+Date: Wed, 26 Apr 2023 15:17:57 +0800
+Message-Id: <20230426071757.2962260-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 22 Apr 2023 10:01:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3869
+ <docs@lists.yoctoproject.org>; Wed, 26 Apr 2023 07:19:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3870
 
-On Sat, 2023-04-22 at 15:19 +1200, Paul Eggleton wrote:
-> Release notes, migration guide and additional manual updates for the
-> imminent 4.2 release.
->=20
-> As usual I found a bunch of things that were undocumented that I either
-> needed to link to or that I felt should be completed, those are included
-> in this series. There is also a dependency on the BitBake User Manual
-> changes I just sent.
->=20
-> Please let me know if I missed or messed up anything :) Thanks.
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Thanks Paul, you do have an eye for this and do a great job, it is very
-much appreciated.
+also fix typo for CVE-2023-24532.
 
-Things looked good from my perspective and improve things. We're about
-to rebuild the release due to a kernel issue so I decided to pull these
-into the rebuild. If there are any issues Michael spots when he is
-back, we can improve as needed with further patches.
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-notes-4.2.rst          | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-Cheers,
-
-Richard
-
-
-
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
+index bf003c1a0..04261244f 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -326,7 +326,7 @@ Security Fixes in 4.2
+ - ffmpeg: :cve:`2022-3964`, :cve:`2022-3965`
+ - git: :cve:`2022-39260`, :cve:`2022-41903`, :cve:`2022-23521`, :cve:`2022-41953` (ignored)
+ - glibc: :cve:`2023-25139` (ignored)
+-- go: :cve:`2023-2453`
++- go: :cve:`2023-24532`, :cve:`2023-24537`
+ - grub2: :cve:`2022-2601`, :cve:`2022-3775`, :cve:`2022-28736`
+ - inetutils: :cve:`2019-0053`
+ - less: :cve:`2022-46663`
+@@ -343,14 +343,15 @@ Security Fixes in 4.2
+ - qemu: :cve:`2022-3165`
+ - rust: :cve:`2022-46176`
+ - rxvt-unicode: :cve:`2022-4170`
+-- shadow: :cve:`2016-15024` (ignored)
++- screen: :cve:`2023-24626`
++- shadow: :cve:`2023-29383`, :cve:`2016-15024` (ignored)
+ - sudo: :cve:`2022-43995`
+ - systemd: :cve:`2022-4415` (ignored)
+ - tar: :cve:`2022-48303`
+ - tiff: :cve:`2022-3599`, :cve:`2022-3597`, :cve:`2022-3626`, :cve:`2022-3627`, :cve:`2022-3570`, :cve:`2022-3598`, :cve:`2022-3970`, :cve:`2022-48281`
+ - vim: :cve:`2022-3352`, :cve:`2022-4141`, :cve:`2023-0049`, :cve:`2023-0051`, :cve:`2023-0054`, :cve:`2023-0288`, :cve:`2023-1127`, :cve:`2023-1170`, :cve:`2023-1175`, :cve:`2023-1127`, :cve:`2023-1170`, :cve:`2023-1175`, :cve:`2023-1264`, :cve:`2023-1355`, :cve:`2023-0433`, :cve:`2022-47024`, :cve:`2022-3705`
+ - xdg-utils: :cve:`2022-4055`
+-- xserver-xorg: :cve:`2022-3550`, :cve:`2022-3551`, :cve:`2023-0494`, :cve:`2022-3553` (ignored)
++- xserver-xorg: :cve:`2022-3550`, :cve:`2022-3551`, :cve:`2023-1393`, :cve:`2023-0494`, :cve:`2022-3553` (ignored)
+ 
+ 
+ Recipe Upgrades in 4.2
+@@ -517,9 +518,9 @@ Recipe Upgrades in 4.2
+ - lighttpd: upgrade 1.4.66 -> 1.4.69
+ - linux-firmware: upgrade 20220913 -> 20230210
+ - linux-libc-headers: bump to 6.1
+-- linux-yocto/5.15: update genericx86* machines to v5.15.78
+-- linux-yocto/5.15: update to v5.15.103
+-- linux-yocto/6.1: update to v6.1.20
++- linux-yocto/5.15: update genericx86* machines to v5.15.103
++- linux-yocto/5.15: update to v5.15.108
++- linux-yocto/6.1: update to v6.1.25
+ - linux-yocto-dev: bump to v6.3
+ - linux-yocto-rt/5.15: update to -rt59
+ - linux-yocto-rt/6.1: update to -rt7
+-- 
+2.34.1
 
 
