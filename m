@@ -1,68 +1,73 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <u.oelmann@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BDCD3C77B73
-	for <webhook@archiver.kernel.org>; Thu, 27 Apr 2023 08:57:11 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.15731.1682585830111235559
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6AC4C77B61
+	for <webhook@archiver.kernel.org>; Thu, 27 Apr 2023 13:06:52 +0000 (UTC)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+ by mx.groups.io with SMTP id smtpd.web11.19867.1682600810432678246
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Apr 2023 01:57:10 -0700
+ Thu, 27 Apr 2023 06:06:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=X2dU6Wj/;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id E507F240004;
-	Thu, 27 Apr 2023 08:57:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1682585828;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C876NZSwFtMnbLnrTf7Q4ibRa4RwQwk2TjS4mD2qaYc=;
-	b=X2dU6Wj/OFYrcdWwTMmxoPPnghPShGIR6zsZZax4/lnUi4wbpsDPMCowkzzRcisP+wh71l
-	q/XraxhWk/TKalQZON79QIKLR5eJiVT0xD4PIg+ecHjDce3hue85Jyu8Be+Gysn1ZOj3HS
-	o0dk2oO36ffhuzw6NbIOHJRotq/70y965RjOQf/UTHTgLgDLTex08pPdak3bHN73Wlx9nE
-	m55Q5PVo4pBLQM3dxPRGYXds7kqf/GTPnSemw4eoL/CoUCQ+l0NIwE8Y2wIbXL7FSCk7Ct
-	rBWF6+7ZN5WfHr1K6sOYgv9fSe5XcN0iAfWkfZLTohuNWil6DaySMe8DSKH7Ag==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [PATCH] migration-guides: release-notes-4.0.9.rst: add missing SPDX info
-Date: Thu, 27 Apr 2023 10:56:56 +0200
-Message-Id: <20230427085656.18352-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <1759BE70A86F9C52.22629@lists.yoctoproject.org>
-References: <1759BE70A86F9C52.22629@lists.yoctoproject.org>
+ dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: uol@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <uol@pengutronix.de>)
+	id 1ps1Kh-0007ev-Gp; Thu, 27 Apr 2023 15:06:47 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1ps1Kf-00E9nn-JQ; Thu, 27 Apr 2023 15:06:45 +0200
+Received: from uol by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1ps1Ke-00GttV-PD; Thu, 27 Apr 2023 15:06:44 +0200
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	yocto@pengutronix.de,
+	=?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Subject: [PATCH] bitbake-user-manual: fix BB_RUNFMT's default value
+Date: Thu, 27 Apr 2023 15:06:36 +0200
+Message-Id: <20230427130636.4028096-1-u.oelmann@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: uol@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Apr 2023 08:57:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3872
+ <docs@lists.yoctoproject.org>; Thu, 27 Apr 2023 13:06:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3873
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+According to the code the default value is slightly different (see [1] which
+reflects the current tip commit at the time of writing).
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: Lee Chee Yang <chee.yang.lee@intel.com>
+[1] https://git.openembedded.org/bitbake/tree/lib/bb/build.py?id=d97d62e2cbe4bae17f0886f3b4759e8f9ba6d38c#n237
+
+Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
 ---
- documentation/migration-guides/release-notes-4.0.9.rst | 2 ++
- 1 file changed, 2 insertions(+)
+ doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/migration-guides/release-notes-4.0.9.rst b/documentation/migration-guides/release-notes-4.0.9.rst
-index 883514e686..7c35b85810 100644
---- a/documentation/migration-guides/release-notes-4.0.9.rst
-+++ b/documentation/migration-guides/release-notes-4.0.9.rst
-@@ -1,3 +1,5 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
- Release notes for Yocto-4.0.9 (Kirkstone)
- -----------------------------------------
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 6ccf58b21234..01d4f8d14a35 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -563,7 +563,7 @@ overview of their function and contents.
+       :term:`BB_RUNFMT` variable is undefined and the run filenames get
+       created using the following form::
  
+-         run.{task}.{pid}
++         run.{func}.{pid}
+ 
+       If you want to force run files to take a specific name, you can set this
+       variable in a configuration file.
 -- 
-2.34.1
+2.39.2
 
 
