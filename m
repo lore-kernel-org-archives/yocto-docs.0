@@ -2,65 +2,72 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 17EE4C77B61
-	for <webhook@archiver.kernel.org>; Fri, 28 Apr 2023 08:26:27 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.14522.1682670381982538678
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89489C77B61
+	for <webhook@archiver.kernel.org>; Fri, 28 Apr 2023 09:03:57 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.14964.1682672632193881839
  for <docs@lists.yoctoproject.org>;
- Fri, 28 Apr 2023 01:26:22 -0700
+ Fri, 28 Apr 2023 02:03:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mwKvO/BA;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oHYAJ+kj;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id DDCC42000D;
-	Fri, 28 Apr 2023 08:26:18 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id D2F6C1BF20E;
+	Fri, 28 Apr 2023 09:03:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1682670379;
+	t=1682672630;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=TBUHEacVOpOQUPp5PHlbeYODN3WdTjHSham9SCXBP4c=;
-	b=mwKvO/BA4NT1Ah76fAyvu+xjajUyxWRtMMVrve7qXnL35BiAwM4lJr3j0PMCdWMmOJ7kNX
-	QvkLS819FrRK87nHEA+KaqXf00oZP/f8EufTyAHX0y7pwh85wwCz+WgXXfkzjMEPAvm4EK
-	XwH+hjqbzZSQ5gA+JDJemyDK1hpkOfa+FJMmnVLqgAdqZYQhO5OKR/bey79urlghYTBE1+
-	vfGcJo/w/vm1heYY6gU83lqOxlhIyYLxfmp6cXAO42B4fOYA9i3aEiSbFgP/ZYYHK+fHO5
-	IOmCMHUEoRGFPmLl9tAF49Y2yxLRiczrsILnJJx0AweLrKdSN+jgU5NO54sWvw==
-Message-ID: <95f9c9fe-88e8-50dc-4118-ed9245dc837d@bootlin.com>
-Date: Fri, 28 Apr 2023 10:26:18 +0200
+	bh=mY76xHxGhQMNo3Bo6KbjdsNreEovoi8PzlqHLb0UEHM=;
+	b=oHYAJ+kjuUwLJ011MQvQQnYKrf/D7OxqYbRpowbCcJrUPT/VHqNCcm9/mfW9bAuBYBzec9
+	DwUfXjjHCFvk5o1ND7biSK/ItOi02P+Q/nQXHhl8B4q5Y1XlnGVTNXJRK/jpfLHe6lhPU4
+	Z6HP2E6pnXylfYFKh4GhEqYfC/oTflR7o/YFM0Neh8ww13XVXaAqujOw8z9Lm+fmEfrJPi
+	UVooa0R6wqxt3niH4tlT31aOVQoOi2iMtJZH/afiafrd6llLQky9jYV7DIfMIN+dDDymbc
+	qxyDLisJsOqmV1zfKO4T1jCqCYSONqS0auGVhwXhkJTBZ9TzPAx15KY23F5N4Q==
+Message-ID: <febb64e8-f66a-79dc-3922-50bba3605969@bootlin.com>
+Date: Fri, 28 Apr 2023 11:03:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
-Cc: Paul Eggleton <bluelightning@bluelightning.org>,
- docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] manuals: expand init manager documentation
-To: =?UTF-8?Q?Ulrich_=c3=96lmann?= <u.oelmann@pengutronix.de>
-References: <20230427155308.56744-1-michael.opdenacker@bootlin.com>
- <6redo4bhk0.fsf@pengutronix.de>
+Cc: OE-core <openembedded-core@lists.openembedded.org>,
+ YP docs mailing list <docs@lists.yoctoproject.org>,
+ Paul Eggleton <paul.eggleton@linux.microsoft.com>
+Subject: Re: [docs] [OE-core] Difference between INIT_MANAGER="none" and
+ INIT_MANAGER="sysvinit"?
 Content-Language: en-US
+To: Alexander Kanavin <alex.kanavin@gmail.com>, Khem Raj <raj.khem@gmail.com>
+References: <66b9a05e-00fe-a3f7-82e1-2cb9459d87f8@bootlin.com>
+ <CAMKF1srkaS9byR-TmRKxbr3Nka4BJ5VEhwkU6nSmrAD53VLzhA@mail.gmail.com>
+ <CANNYZj9v5gskXjCPRvvaixnyZeV4A1mSdACUkME8etUc28BBHg@mail.gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <6redo4bhk0.fsf@pengutronix.de>
+In-Reply-To: <CANNYZj9v5gskXjCPRvvaixnyZeV4A1mSdACUkME8etUc28BBHg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 28 Apr 2023 08:26:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3878
+ <docs@lists.yoctoproject.org>; Fri, 28 Apr 2023 09:03:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3879
 
-Hi Ulrich,
+Hi Alex,
 
-Many thanks for the review!
+Getting back to this old thread about setting INIT_MANAGER to "none", 
+which currently produces a system based on sysvinit and udev.
 
-On 28.04.23 at 09:11, Ulrich Ölmann wrote:
-> here a typo probably slipped in:
->
->    s/becomes the must simpler/becomes the much simpler/
+On 23.02.23 at 19:22, Alexander Kanavin wrote:
+> none is a confusing name though. Should it be dropped and nodistro
+> tweaked to use sysvinit?
 
+Indeed, that's confusing. Even Paul Eggleton got it wrong when he 
+documented INIT_MANAGER.
 
-Good catch. Fixed.
-Thanks again!
+I'll send a patch that fixes this on master Poky, but indeed removing 
+"none" is another option.
+
+Cheers
 Michael.
 
 -- 
