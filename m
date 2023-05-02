@@ -1,99 +1,83 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D506C77B73
-	for <webhook@archiver.kernel.org>; Tue,  2 May 2023 14:18:39 +0000 (UTC)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
- by mx.groups.io with SMTP id smtpd.web10.848.1683037111796058069
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E95CC77B73
+	for <webhook@archiver.kernel.org>; Tue,  2 May 2023 14:49:19 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.1814.1683038954326780763
  for <docs@lists.yoctoproject.org>;
- Tue, 02 May 2023 07:18:32 -0700
+ Tue, 02 May 2023 07:49:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=gwbUa59V;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.43, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-3f315735514so171201675e9.1
-        for <docs@lists.yoctoproject.org>; Tue, 02 May 2023 07:18:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1683037110; x=1685629110;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=tQhsgc8Y1cCfPj2atP2CSx/wKhDFEv05ZQDoIc9vMtY=;
-        b=gwbUa59V1tugaFsc5gU0f3OVYrM6wB/3A3s5UbogRd2elr47zKI9BNF8NiUcx259Nl
-         yQBl2+0I4D+pbX+fKIcSXFxCcHqU39ayk5+ZDgSXkDdjMhrxvtXuL/7SU9e+13EqAb1M
-         FwV8+TzJS2wtikXQ/D/b8fxFV/dgzgdwc8wSA=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683037110; x=1685629110;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=tQhsgc8Y1cCfPj2atP2CSx/wKhDFEv05ZQDoIc9vMtY=;
-        b=SNRGg4JPuDJ0CmtFEE4qVP4DHODuQ8omyrUkkxM2KIQAX6vGrt5OcyVGn3f1wPO/q2
-         HiTe3QOpvPgHf9wzkgNFJdt6jPAyav+w9tcZQCG0zzNWb7tHBlbzcVtyP//xbY+qW6HF
-         r5swkKrxzHZF9TU8xXr7QY/mrJBrK0Fl4raWEqS5zH/lBSkb1g976iNPCRKmzeXedueX
-         0ClwgcBg66DKDiYdS3hx+2fJKbNXdH85B/Ne8x/s748u3kQ086l0qJ0ivTjwFs1EGPEw
-         OkkERFrX+Qs3kZetZ1uTqpnhI99lHwih8ApygCmMCAcfRUkcvJLJgmSk4cDOcGdU+6UW
-         Ddng==
-X-Gm-Message-State: AC+VfDz62qZ5of/LiJNGY6wULL3BsqkcM8WETYeXh/cMSS2uAgkbbVim
-	T0FxsnRaUBsh7q/fE5dM3Zenrw==
-X-Google-Smtp-Source: ACHHUZ7yw+dYm1lG0qUSQXGm3/2ripDB5e0cueQU5kO7E8GqpDxyp4JXGGjozipH3wM4Fmj0U4Bpkg==
-X-Received: by 2002:a5d:67c2:0:b0:2f6:1a6d:a6c3 with SMTP id n2-20020a5d67c2000000b002f61a6da6c3mr15671648wrw.21.1683037110177;
-        Tue, 02 May 2023 07:18:30 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:cffc:b608:40fd:850d? ([2001:8b0:aba:5f3c:cffc:b608:40fd:850d])
-        by smtp.gmail.com with ESMTPSA id h7-20020a5d6e07000000b003048084a57asm21590259wrz.79.2023.05.02.07.18.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 May 2023 07:18:29 -0700 (PDT)
-Message-ID: <e20d1f52fef28bd8236efc791a0beeed1c7a31f5.camel@linuxfoundation.org>
-Subject: Re: [docs] [OE-core] [PATCH] init-manager-none.inc: have no init
- manager
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: alexandre.belloni@bootlin.com, michael.opdenacker@bootlin.com
-Cc: openembedded-core@lists.openembedded.org, docs@lists.yoctoproject.org
-Date: Tue, 02 May 2023 15:18:28 +0100
-In-Reply-To: <20230502141402301f77f9@mail.local>
-References: <175A0DD84C89F64A.26969@lists.openembedded.org>
-	 <20230428090602.82995-1-michael.opdenacker@bootlin.com>
-	 <20230502141402301f77f9@mail.local>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.47.3-1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=d1YdDLj8;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: (Authenticated sender: michael.opdenacker@bootlin.com)
+	by mail.gandi.net (Postfix) with ESMTPSA id 543691C0007;
+	Tue,  2 May 2023 14:49:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1683038952;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=QRnVTwI4tkTuFH4M9BDqqs+9fgyRlus8HdlxAhBwI14=;
+	b=d1YdDLj8vvhLhQU6EO6PP8CsX4JPrIUkQS3xFZirejJ2ul4t/eNsaZZU0RH1PCuKrHJIBC
+	OcNmUF7FcaMebWz1rpkXmFlAi5fAKwa1OBTkq3Miz09O153QSfsBJgor8JX6LEMOnf0M0o
+	Rp80MvDJKvOnvYH28trqlZOQuIiWAN6fzbMb9NAmKpXvOY1J92wI568ODQgpvPk9fdhZWa
+	nsrskhTMIkCLhnrqJriifBzOxljbdVwAl83+uaiOHs4pMN+wK4hP5xubvHZ0OmRugIlkfW
+	tOdu/YcoEUcqYqgJKgudbyKGqCmSjlF4MOp7qtrDmFYXqFaly9NWjP0v2jG3CA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: [PATCH] ref-manual: variables.rst: don't mention the INIT_MANAGER "none" option
+Date: Tue,  2 May 2023 16:49:06 +0200
+Message-Id: <20230502144906.2449915-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 02 May 2023 14:18:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3889
+ <docs@lists.yoctoproject.org>; Tue, 02 May 2023 14:49:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3890
 
-On Tue, 2023-05-02 at 16:14 +0200, Alexandre Belloni via
-lists.yoctoproject.org wrote:
-> Hello,
->=20
-> This causes the following error:
->=20
-> https://autobuilder.yoctoproject.org/typhoon/#/builders/47/builds/7035/st=
-eps/12/logs/stdio
->=20
-> This is the expected behaviour of the patch but doesn't fit with what
-> this particular build (qemuarm-oecore) is testing as we can't run
-> testimage without an init. I'm wondering what should be the proper
-> course of action here.
->=20
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-INIT_MANAGER didn't used to be a variable and therefore could in theory
-be unset. The "none" configuration was designed to cause the system to
-fall back to the original behaviour. OE-Core's "nodistro" uses the
-fallback.
+As it is mainly used for internal purposes, so not necessarily useful
+for regular users.
 
-We could decide just to require this variable to be set to something
-but this could potentially conflict with people setting up their init
-system "manually" within their own distro.
+OE-core "nodistro" uses it as a fallback to the default setting.
 
-It is a bit tricky to know what to do in situations like these.
-INIT_MANAGER was added to try and help people avoid needing to repeat
-certain config fragments.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ documentation/ref-manual/variables.rst | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Cheers,
-
-Richard
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 4dc67a1324..574af2c2f9 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3962,7 +3962,6 @@ system and gives an overview of their function and contents.
+       -  ``sysvinit``
+       -  ``systemd``
+       -  ``mdev-busybox``
+-      -  ``none``
+ 
+       With ``sysvinit``, the init manager is set to
+       :wikipedia:`SysVinit <Init#SysV-style>`, the traditional UNIX init
+@@ -3977,10 +3976,6 @@ system and gives an overview of their function and contents.
+       and lightest solution, and probably the best choice for low-end systems
+       with a rather slow CPU and a limited amount of RAM.
+ 
+-      With ``none``, the init manager is also set to ``sysvinit``. This is the
+-      default setting in OpenEmbedded-Core. This option also selects the
+-      :wikipedia:`udev <Udev>` device manager.
+-
+       More concretely, this is used to include
+       ``conf/distro/include/init-manager-${INIT_MANAGER}.inc`` into the global
+       configuration. You can have a look at the
+-- 
+2.34.1
 
 
