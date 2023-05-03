@@ -1,104 +1,126 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <mhalstead@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98C64C77B7F
-	for <webhook@archiver.kernel.org>; Wed,  3 May 2023 15:44:40 +0000 (UTC)
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
- by mx.groups.io with SMTP id smtpd.web11.23256.1683128679254032181
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF63AC77B78
+	for <webhook@archiver.kernel.org>; Wed,  3 May 2023 22:35:22 +0000 (UTC)
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+ by mx.groups.io with SMTP id smtpd.web11.36016.1683153319257334550
  for <docs@lists.yoctoproject.org>;
- Wed, 03 May 2023 08:44:39 -0700
+ Wed, 03 May 2023 15:35:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=LCv0WOFR;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.46, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-3f182d745deso52218255e9.0
-        for <docs@lists.yoctoproject.org>; Wed, 03 May 2023 08:44:39 -0700 (PDT)
+ dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=gDvyGh3s;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.215.177, mailfrom: mhalstead@linuxfoundation.org)
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-52c6504974dso1099848a12.2
+        for <docs@lists.yoctoproject.org>; Wed, 03 May 2023 15:35:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1683128677; x=1685720677;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YVEXMVAhyvoV8A0tSGcaBLW1kykOtfP0Fb09rSrNdxA=;
-        b=LCv0WOFRQ4YD4v93K7llmnmBt10UWHuEePez+dpUqTD91mMc6RU4ct941n0aylfIz4
-         PUOlO/pDGdQ0YRZe37OtkavsQCrN5uyG2FAlBRVza2Cu1b8H03Tqn+bKowJovAMc/99z
-         9jwDgseai4fjlC0YIoW8qZeeKGFVG/Oc0woNc=
+        d=linuxfoundation.org; s=google; t=1683153318; x=1685745318;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jj5tKRiYi6Ze3Qs7j6fqqsPIkxU1WvxrKsGPhWo6cjE=;
+        b=gDvyGh3ssgmBkPZa+cIgnOl6KXk742+jBN36Q4MtGKP1QaZZX233RonDEyU+gTV6D8
+         gTIl6QRsmB7uKAS6T/CH3GfSYQRo2blQTGT0DSYv2uFFDMfmsuxGpuXdCq+1kebLuHmo
+         Vl7FSwfTuelJLg6fDypJ4DNNCXM5EFEeRvRik=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683128677; x=1685720677;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YVEXMVAhyvoV8A0tSGcaBLW1kykOtfP0Fb09rSrNdxA=;
-        b=IW1dFl1bCLZ+nE1Bm4frWVOoDwN52L+Mi/f0j6cKH0CtGxkegt7ktG2RsjL3O3my0M
-         NyV/WpAKly6iQBUNcFvrFEYqZSW7RMvPEvnkMW6gyPUvq1FazkNfoduuzWnP0GcMK7Ec
-         QEKvy/CZ1H7D35q0BPD5QrDTiCwDxRnErbekPKpwkqbv69DCq0Ur66FvlxTwDbBHluNl
-         ZoTZn32xubJGiEWWA7AdD4IyCuNRIwgY1S19F7ir+sVeTlT2VXzJLAwu3ECdAZ3Iu2Td
-         5dLDb98A13Mc47deCM+mR8FcAGH5rj7n9GtqIfh9/2Uv/pxke7fsB5ToboY3/vfsnEsH
-         OKJA==
-X-Gm-Message-State: AC+VfDzQqDCtFDJqCt9sjNGfKJnqKbA6r4YF58sPKMlluIhfircVJxil
-	Gakj55Cw/pCoYFXcSXDltwuWhA==
-X-Google-Smtp-Source: ACHHUZ5E0BuSElEjTYtcf9sHMI+dev+wwDaooW0nsy+xZvzzX2vCned2m4wbd9HEC+1tzH3o7oOGqg==
-X-Received: by 2002:a7b:c4cd:0:b0:3f1:9b77:f581 with SMTP id g13-20020a7bc4cd000000b003f19b77f581mr14896348wmk.33.1683128677602;
-        Wed, 03 May 2023 08:44:37 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:7d60:21e0:c1e5:ef4b? ([2001:8b0:aba:5f3c:7d60:21e0:c1e5:ef4b])
-        by smtp.gmail.com with ESMTPSA id k22-20020a05600c0b5600b003f40049a65bsm1029109wmr.21.2023.05.03.08.44.37
+        d=1e100.net; s=20221208; t=1683153318; x=1685745318;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jj5tKRiYi6Ze3Qs7j6fqqsPIkxU1WvxrKsGPhWo6cjE=;
+        b=GMqdzhw28CT2yUT3MtFLw2UlKE1dFrk34EfQAuEHEdZW3YU7UJBTL5uPFd+ygJ9rS5
+         yDKK4KZOpK54Qt5wR94HxwMKRWqxRu88itOx8x+i1klPTbHl3RHTBkdRcJHkkpfgd9FT
+         R0IEdKtL3G2JnbSVxJK/N11+D9BS2sNph9/hUY7x7t3CVFIV0IeYiiBYsGDCX7YSG2Ke
+         i90WNPQW5EnToabQPipSNiyJcOuMaxpUR+XFKFwW+3V/+WvBFXlKlUxoVw5oeLYGwk2M
+         4daTI5m2ZXrOVjo8cYVVGpCo4VFqQFvM0WTSa5xhg+pj79TAUr+hSLbKnZ3YBBb5wrLk
+         ZKdg==
+X-Gm-Message-State: AC+VfDyZ52y4XYLu7Bb1uoLBM9MkGbQiLwpcjkWZ/97+9usp32wuv+FI
+	xQZHQXwAtd55992yff6CI1DfvqKCoNXyUUmIEVY=
+X-Google-Smtp-Source: ACHHUZ4DUaONf+if92sLPrJI8Lg9Pm5m8Y9Lrq6UgrrftcvPS/Iinu2bD8Drtr1Hb8zWIqZsLlz3mQ==
+X-Received: by 2002:a17:90a:7c09:b0:24d:e937:6670 with SMTP id v9-20020a17090a7c0900b0024de9376670mr105412pjf.19.1683153317825;
+        Wed, 03 May 2023 15:35:17 -0700 (PDT)
+Received: from halstead-B660M-DS3H-AX-DDR4.chateau ([97.115.159.33])
+        by smtp.gmail.com with ESMTPSA id v10-20020a17090a520a00b0023fcece8067sm9896643pjh.2.2023.05.03.15.35.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 08:44:37 -0700 (PDT)
-Message-ID: <83da1e5d83a06e41a00b64b0eb1a305a756ce3b2.camel@linuxfoundation.org>
-Subject: Re: [docs] Start of 4.3 migration guide docs
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: docs <docs@lists.yoctoproject.org>
-Date: Wed, 03 May 2023 16:44:36 +0100
-In-Reply-To: <a00e3eba-e10b-c47b-8425-3005a4c72445@bootlin.com>
-References: 
-	<d7788bbd4dba10c004fa56f0f4160f6c46bfd6f6.camel@linuxfoundation.org>
-	 <a00e3eba-e10b-c47b-8425-3005a4c72445@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.47.3-1 
+        Wed, 03 May 2023 15:35:17 -0700 (PDT)
+From: Michael Halstead <mhalstead@linuxfoundation.org>
+To: docs@lists.yoctoproject.org
+Cc: richard.purdie@linuxfoundation.org,
+	michael.opdenacker@bootlin.com,
+	Michael Halstead <mhalstead@linuxfoundation.org>
+Subject: [PATCH] docs: add support for mickledore (4.2) release
+Date: Wed,  3 May 2023 15:34:56 -0700
+Message-Id: <20230503223456.23985-1-mhalstead@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 May 2023 15:44:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3903
+ <docs@lists.yoctoproject.org>; Wed, 03 May 2023 22:35:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3904
 
-On Wed, 2023-05-03 at 17:30 +0200, Michael Opdenacker wrote:
-> Hi Richard,
->=20
-> On 03.05.23 at 16:55, Richard Purdie wrote:
-> > As mentioned on the weekly tech call, we need to get better about
-> > documenting changes for the migration guide and release notes as we go
-> > along. Whilst we're not far into 4.3, I realise I made or merged
-> > changes already which will need notes. Since we don't have a guide yet,
-> > let me note them here on the basis Michael will inject them into a new
-> > doc.
-> >=20
-> >=20
-> > * The '-crosssdk' suffix and any MLPREFIX were removed from virtual/XXX
-> > provider/dependencies where a PREFIX was used as well as we don't need
-> > both and it made automated dependency rewriting unnecessarily complex.
-> > In general this only affects internal toolchain dependencies so isn't
-> > end user visible.
-> >=20
-> > * runtime testing of ptest now fails if no test results are returned by
-> > any given ptest.
-> >=20
-> > * the bitbake cooker log now contains notes when the caches are
-> > invalidated which is useful for memory resident bitbake debugging.
-> >=20
-> > * glide was dropped as "go mod" has become the standard
->=20
->=20
-> That's a great start, thanks!
->=20
-> I was waiting for the release to made before creating the new pages, to=
-=20
-> make it easier to merge last minute changes into the "mickledore" branch.
+This adds support for the Mickledore (4.2) release and update the
+current dev branch to Nanbield.
 
-At this point I think we can diverge things.
+Signed-off-by: Michael Halstead <mhalstead@linuxfoundation.org>
+---
+ documentation/poky.yaml.in    | 12 ++++++------
+ documentation/set_versions.py |  6 ++++--
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-Cheers,
+diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+index 1c072c1d0..b2b6a6330 100644
+--- a/documentation/poky.yaml.in
++++ b/documentation/poky.yaml.in
+@@ -1,10 +1,10 @@
+-DISTRO : "4.1"
+-DISTRO_NAME_NO_CAP : "langdale"
+-DISTRO_NAME : "Langdale"
+-DISTRO_NAME_NO_CAP_MINUS_ONE : "kirkstone"
++DISTRO : "4.2"
++DISTRO_NAME_NO_CAP : "mickledore"
++DISTRO_NAME : "Mickledore"
++DISTRO_NAME_NO_CAP_MINUS_ONE : "langdale"
+ DISTRO_NAME_NO_CAP_LTS : "kirkstone"
+-YOCTO_DOC_VERSION : "4.1"
+-DISTRO_REL_TAG : "yocto-4.1"
++YOCTO_DOC_VERSION : "4.2"
++DISTRO_REL_TAG : "yocto-4.2"
+ DOCCONF_VERSION : "dev"
+ BITBAKE_SERIES : ""
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+index efaebe43b..354dabe61 100755
+--- a/documentation/set_versions.py
++++ b/documentation/set_versions.py
+@@ -26,8 +26,8 @@ ourversion = None
+ if len(sys.argv) == 2:
+     ourversion = sys.argv[1]
+ 
+-activereleases = ["langdale", "kirkstone", "dunfell"]
+-devbranch = "mickledore"
++activereleases = ["mickledore", "kirkstone", "dunfell"]
++devbranch = "nanbield"
+ ltsseries = ["kirkstone", "dunfell"]
+ 
+ # used by run-docs-builds to get the default page
+@@ -36,6 +36,7 @@ if ourversion == "getlatest":
+     sys.exit(0)
+ 
+ release_series = collections.OrderedDict()
++release_series["nanbield"] = "4.3"
+ release_series["mickledore"] = "4.2"
+ release_series["langdale"] = "4.1"
+ release_series["kirkstone"] = "4.0"
+@@ -66,6 +67,7 @@ release_series["laverne"] = "0.9"
+ 
+ 
+ bitbake_mapping = {
++    "nanbield" : "2.6",
+     "mickledore" : "2.4",
+     "langdale" : "2.2",
+     "kirkstone" : "2.0",
+-- 
+2.34.1
 
-Richard
 
