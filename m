@@ -1,136 +1,85 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B4779C7EE21
-	for <webhook@archiver.kernel.org>; Thu,  4 May 2023 19:55:39 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.4869.1683230132211424609
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05FCAC77B7C
+	for <webhook@archiver.kernel.org>; Thu,  4 May 2023 20:32:20 +0000 (UTC)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+ by mx.groups.io with SMTP id smtpd.web10.5724.1683232333925742107
  for <docs@lists.yoctoproject.org>;
- Thu, 04 May 2023 12:55:32 -0700
+ Thu, 04 May 2023 13:32:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ERDsHoK3;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 654331BF204;
-	Thu,  4 May 2023 19:55:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1683230130;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=FbauHAjZxYAEfXnZLrGYtaf5/qdyVln1WoYDJZS76qQ=;
-	b=ERDsHoK3P+KFhfgX/i0gtQ1ZW8jOrUcYty57DjpfdTLEvYgUor99+f+sAbcZ9BkllIiHW4
-	Q8q1I4ytEdYyPjiyUCY0E5q9g9Hup/bTmpinKHodPb6G+A0xlo7ZyadeBocnW5RWFI6RiH
-	C4Pd8qjXVaYpTx/hRAqyD8fa6rbFGLsr8bJ3OtDNMc9MWlEeooIJe6R9xh53T3uDQODU1e
-	RmO65Q6na0ewFJyMweHRuQMwZAUjUGwgctBK/MiMz8Y0DLysI6jpmOae27t2ZyfApMq51m
-	EqJOe6bNZlBoN4YIiTKDnhOXFu5NXZ7iZgicrbnqRjnhiSPzKsg4WMRDpojuxg==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Jamin Lin <jamin_lin@aspeedtech.com>
-Subject: [PATCH] ref-manual: document FIT_ADDRESS_CELLS
-Date: Thu,  4 May 2023 21:55:20 +0200
-Message-Id: <20230504195520.2624698-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=CxsQAH5o;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.42, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-3f1950f569eso7272975e9.2
+        for <docs@lists.yoctoproject.org>; Thu, 04 May 2023 13:32:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1683232332; x=1685824332;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FiDEoVt+TB49Kq5YZ0Xy7MOqCjpHA74rXEcTQ9llSoI=;
+        b=CxsQAH5oVbcZBpnf7k13mj1rZAlKhKfML//OVHO6r8ThiSoAG9ecx69Bs0N/MfnphF
+         UFULjqzsHEPUDarULps+fUxXhz+lAGIUSR3wvZeqi+coZlDoVaC/Q7+VTYYnhNM7WGto
+         W1NO1NQGv5nbGDTSg4zTD/7B0+zy/9UC3wTMk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1683232332; x=1685824332;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FiDEoVt+TB49Kq5YZ0Xy7MOqCjpHA74rXEcTQ9llSoI=;
+        b=BeamVANdrUkf7dWCUPa3pX9VfKEgsZBXs93jUZ+lsAremfwx+a/JO1LA2yBvidVADm
+         ig54io6uEMMvKf6+j/VkVCj4M1w+skjE2ZKi1Vz4nE7BdIx/Ts9eXED0P189uAU02Ngm
+         WY/fLfjiCRN+1koQQohZuhsgwBne5VFgpMxUSHyOjWZSRLvAo2HRk8C9702wiZ648ILB
+         pHBklKfwRXWvOf/ozUdfd7hFjQvTxgQD/G244OSNhcFpgWOHa9qfU9xM495MueOdVFJv
+         Wfy5e/fi3/TZpqWQL8HvAPdtpfRkAPDycFD/neSo5dbCfA82gKFscXoJFzyzf51HQOdn
+         UxpQ==
+X-Gm-Message-State: AC+VfDzgfCfHDOHF88y8Wf+kP4zl53pS4i/h0GBZtsJi7M2XLXmrbQHi
+	d47ql1xORZjO8SOrSihbKr13Ig==
+X-Google-Smtp-Source: ACHHUZ7foM+t3WZm4CidRq525m5ipUpIPixYA8EF9lR6Q44/ZJgHC+bvKCYzyaOfr4mpjovGESQ6kw==
+X-Received: by 2002:a1c:791a:0:b0:3f1:6f44:ff3a with SMTP id l26-20020a1c791a000000b003f16f44ff3amr627786wme.13.1683232332306;
+        Thu, 04 May 2023 13:32:12 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:aa1b:875d:4fc3:dd86? ([2001:8b0:aba:5f3c:aa1b:875d:4fc3:dd86])
+        by smtp.gmail.com with ESMTPSA id n18-20020adfe792000000b002f7780eee10sm151356wrm.59.2023.05.04.13.32.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 May 2023 13:32:11 -0700 (PDT)
+Message-ID: <138930bb46ca53edbad2b186f630bc5688635aab.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] docs: add support for mickledore (4.2) release
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Michael Halstead <mhalstead@linuxfoundation.org>, Michael Opdenacker
+	 <michael.opdenacker@bootlin.com>
+Cc: docs@lists.yoctoproject.org
+Date: Thu, 04 May 2023 21:32:10 +0100
+In-Reply-To: <CADfgfoZ0VtaxPni_Uy1vptxqmmeX9zvvE6C2867v=bt=EnZi9A@mail.gmail.com>
+References: <20230503223456.23985-1-mhalstead@linuxfoundation.org>
+	 <fcd085b3-44de-9dfe-a063-381de52dae5b@bootlin.com>
+	 <CADfgfoZ0VtaxPni_Uy1vptxqmmeX9zvvE6C2867v=bt=EnZi9A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.47.3-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 04 May 2023 19:55:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3908
+ <docs@lists.yoctoproject.org>; Thu, 04 May 2023 20:32:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3909
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+On Thu, 2023-05-04 at 12:47 -0700, Michael Halstead wrote:
+> After this patch the docs are labeling both 4.2 and 4.2.999 as
+> Mickledore. Is that=C2=A0correct or should 4.2.999=C2=A0use the
+> devbranch=C2=A0name?=C2=A0
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: Jamin Lin <jamin_lin@aspeedtech.com>
----
- .../migration-guides/release-notes-4.3.rst    |  5 ++++
- documentation/ref-manual/classes.rst          |  3 ++-
- documentation/ref-manual/variables.rst        | 26 +++++++++++++++++++
- 3 files changed, 33 insertions(+), 1 deletion(-)
+4.2.999 is confusing but correct as the code stands today, it means
+"latest unreleased mickledore branch". We really need to do something
+better.
 
-diff --git a/documentation/migration-guides/release-notes-4.3.rst b/documentation/migration-guides/release-notes-4.3.rst
-index 16320d3db2..04dcc3d9a7 100644
---- a/documentation/migration-guides/release-notes-4.3.rst
-+++ b/documentation/migration-guides/release-notes-4.3.rst
-@@ -22,6 +22,11 @@ New Features / Enhancements in 4.3
- 
- -  wic Image Creator enhancements:
- 
-+-  FIT image related improvements:
-+
-+   -  New :term:`FIT_ADDRESS_CELLS` variable allowing
-+      to specify 64 bit addresses.
-+
- -  SDK-related improvements:
- 
- -  Testing:
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index a78368b380..96d7c0d414 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1590,7 +1590,8 @@ Only a single kernel can be added to the FIT image created by
- :ref:`ref-classes-kernel-fitimage` and the kernel image in FIT is mandatory. The
- address where the kernel image is to be loaded by U-Boot is
- specified by :term:`UBOOT_LOADADDRESS` and the entrypoint by
--:term:`UBOOT_ENTRYPOINT`.
-+:term:`UBOOT_ENTRYPOINT`. Setting :term:`FIT_ADDRESS_CELLS` to "2"
-+is necessary if such addresses are 64 bit ones.
- 
- Multiple device trees can be added to the FIT image created by
- :ref:`ref-classes-kernel-fitimage` and the device tree is optional.
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 574af2c2f9..6ee65e1788 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -2898,6 +2898,26 @@ system and gives an overview of their function and contents.
-       For guidance on how to create your own file permissions settings
-       table file, examine the existing ``fs-perms.txt``.
- 
-+   :term:`FIT_ADDRESS_CELLS`
-+
-+      Specifies the value of the ``#address-cells`` value for the
-+      description of the kernel FIT image.  
-+
-+      The default value is set to "1" by the :ref:`ref-classes-kernel-fitimage`
-+      class, which corresponds to 32 bit addresses. 
-+
-+      For platforms who need to set 64 bit addresses in
-+      :term:`UBOOT_LOADADDRESS` and :term:`UBOOT_ENTRYPOINT`, you need to
-+      set this value to "2", as two 32 bit values (cells) will be needed 
-+      to represent such addresses.
-+
-+      Here is an example setting "0x400000000" as a load address::
-+    
-+         FIT_ADDRESS_CELLS = "2"
-+         UBOOT_LOADADDRESS= "0x04 0x00000000"
-+
-+      See `more details about #address-cells <https://elinux.org/Device_Tree_Usage#How_Addressing_Works>`__.
-+
-    :term:`FIT_CONF_DEFAULT_DTB`
-       Specifies the default device tree binary (dtb) file for a fitImage when
-       multiple are provided.
-@@ -9041,11 +9061,17 @@ system and gives an overview of their function and contents.
-       creation, the :term:`UBOOT_ENTRYPOINT` variable is passed as a
-       command-line parameter to the ``uboot-mkimage`` utility.
- 
-+      To pass a 64 bit address for FIT image creation, you will need to set
-+      the :term:`FIT_ADDRESS_CELLS` variable too.
-+
-    :term:`UBOOT_LOADADDRESS`
-       Specifies the load address for the U-Boot image. During U-Boot image
-       creation, the :term:`UBOOT_LOADADDRESS` variable is passed as a
-       command-line parameter to the ``uboot-mkimage`` utility.
- 
-+      To pass a 64 bit address for FIT image creation, you will need to set
-+      the :term:`FIT_ADDRESS_CELLS` variable too.
-+
-    :term:`UBOOT_LOCALVERSION`
-       Appends a string to the name of the local version of the U-Boot
-       image. For example, assuming the version of the U-Boot image built
--- 
-2.34.1
+> Also it marks 4.1.3 as=C2=A0obsolete=C2=A0already. Is that correct or is =
+it
+> supported until the end of May?=C2=A0
 
+4.1 is supported until the end of May.
+
+Cheers,
+
+Richard
 
