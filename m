@@ -2,327 +2,132 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BF21FC77B7F
-	for <webhook@archiver.kernel.org>; Fri, 12 May 2023 08:50:01 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.19323.1683881393018645126
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA182C77B7C
+	for <webhook@archiver.kernel.org>; Fri, 12 May 2023 09:45:01 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.20091.1683884694128752646
  for <docs@lists.yoctoproject.org>;
- Fri, 12 May 2023 01:49:53 -0700
+ Fri, 12 May 2023 02:44:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZwXL1IR6;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cNCAGnM6;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id AFF136000C;
-	Fri, 12 May 2023 08:49:50 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 8BA32FF807;
+	Fri, 12 May 2023 09:44:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1683881391;
+	t=1683884691;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=6EDn3x0ri5pjGxKTxyQgoc8CzGWIvYCP4hhX+Jch36M=;
-	b=ZwXL1IR6ff1yezVME2JOFyx9yuqDEb/rp5ZLNktFXOVm3w21uq/jR13wlp7xYmj7iHrfrV
-	TehN/i6Geux0xlnAwy9jD+yL1Op78YDGkAUfhEecTd4cAY7dq8wPS2gCg5TK8KhoGgxBQv
-	lyxzcUQlM3zDlNu/SY5jzi+tsidOiW48M5JE3DINBmBhyhrUELawLsbEp5YpxtigyQnTnQ
-	J55nUpABk8IiRBGfimeC0ECAtA26zYao7lOxAyyaqcJ7niREFrRlSwghmqXRN6j2IZxInb
-	DERyg4N7vCICM4gxyjxvWvIaGSQD3sSig2ULTm43LminyAZOMs/HMNpbAg0haw==
+	bh=4bjQgVJE88dDlvtT1eSgx1r82z7jTN9hM3wmy/UVAKQ=;
+	b=cNCAGnM6f3m/3BCgpDHkcOTBqMX1OS6HC2JKzYRgNDNNVxDA0MIlxiB5XUrNNSuXQW/yfF
+	PqFoX6ogou8yCJInssIpa9vJgkuOn6Sopus6RGA1S4dNPfgrQSRYv0DoMYXOxNtZvaxuXf
+	+OFmGv6x4xLoNiB9eTKVDCDwwsZzZztaefSI2KBdbRws5mi3z7PNGgeR1ePXLoH43GeYr5
+	lsId0CLPdEecvwCjdkIc5aqRlgDvX5JXoJGMInuUlgAlC5xWFEo8f8Pf1GL2UdAwuzOp06
+	9yN5iDd+kI9uyhCHwMZakHcX0UloemGt4VDPIFK2y4Yv/l1J64IweTFC72TuKg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [PATCH] [langdale] migration-guides: add release-notes for 4.1.4
-Date: Fri, 12 May 2023 10:49:45 +0200
-Message-Id: <20230512084945.2418944-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: improve documentation for kernel-devicetree class
+Date: Fri, 12 May 2023 11:44:49 +0200
+Message-Id: <20230512094449.2424101-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 May 2023 08:50:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3939
+ <docs@lists.yoctoproject.org>; Fri, 12 May 2023 09:45:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3940
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+- Document the new KERNEL_DTBDEST and KERNEL_DTBVENDORED variables
+- Also document the related KERNEL_DEVICETREE_BUNDLE
+  and KERNEL_PACKAGE_NAME variables
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../migration-guides/release-4.1.rst          |   1 +
- .../migration-guides/release-notes-4.1.4.rst  | 254 ++++++++++++++++++
- 2 files changed, 255 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.1.4.rst
+ documentation/ref-manual/classes.rst   |  8 +++++++
+ documentation/ref-manual/variables.rst | 32 ++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/documentation/migration-guides/release-4.1.rst b/documentation/migration-guides/release-4.1.rst
-index dbca7c7e04..7d1ce95e25 100644
---- a/documentation/migration-guides/release-4.1.rst
-+++ b/documentation/migration-guides/release-4.1.rst
-@@ -10,3 +10,4 @@ Release 4.1 (langdale)
-    release-notes-4.1.1
-    release-notes-4.1.2
-    release-notes-4.1.3
-+   release-notes-4.1.4
-diff --git a/documentation/migration-guides/release-notes-4.1.4.rst b/documentation/migration-guides/release-notes-4.1.4.rst
-new file mode 100644
-index 0000000000..de469f4bee
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.1.4.rst
-@@ -0,0 +1,254 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 78174d51d1..e454a54537 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1576,6 +1576,14 @@ Linux kernel compilation (including modules).
+ The :ref:`ref-classes-kernel-devicetree` class, which is inherited by the
+ :ref:`ref-classes-kernel` class, supports device tree generation.
+ 
++Its behavior is mainly controlled by the following variables:
 +
-+Release notes for Yocto-4.1.4 (Langdale)
-+----------------------------------------
++-  :term:`KERNEL_DEVICETREE_BUNDLE`: whether to bundle the kernel and device tree
++-  :term:`KERNEL_DTBDEST`: directory where to install DTB files
++-  :term:`KERNEL_DTBVENDORED`: whether to keep vendor subdirectories
++-  :term:`KERNEL_DTC_FLAGS`: flags for ``dtc``, the Device Tree Compiler
++-  :term:`KERNEL_PACKAGE_NAME`: base name of the kernel packages
 +
-+Security Fixes in Yocto-4.1.4
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ .. _ref-classes-kernel-fitimage:
+ 
+ ``kernel-fitimage``
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index b7829ae7af..50a8d69907 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -4451,6 +4451,13 @@ system and gives an overview of their function and contents.
+       In order to use this variable, the :ref:`ref-classes-kernel-devicetree`
+       class must be inherited.
+ 
++   :term:`KERNEL_DEVICETREE_BUNDLE`
++      When set to "1", this variable allows to bundle the Linux kernel
++      and the Device Tree Binary together in a single file.
 +
-+-  cve-extra-exclusions/linux-yocto: Ignore :cve:`2020-27784`, :cve:`2021-3669`, :cve:`2021-3759`, :cve:`2021-4218`, :cve:`2022-0480`, :cve:`2022-1184`, :cve:`2022-1462`, :cve:`2022-2308`, :cve:`2022-2327`, :cve:`2022-26365`, :cve:`2022-2663`, :cve:`2022-2785`, :cve:`2022-3176`, :cve:`2022-33740`, :cve:`2022-33741`, :cve:`2022-33742`, :cve:`2022-3526`, :cve:`2022-3563`, :cve:`2022-3621`, :cve:`2022-3623`, :cve:`2022-3624`, :cve:`2022-3625`, :cve:`2022-3629`, :cve:`2022-3630`, :cve:`2022-3633`, :cve:`2022-3635`, :cve:`2022-3636`, :cve:`2022-3637`, :cve:`2022-3646` and :cve:`2022-3649`
-+-  cve-extra-exclusions/linux-yocto 5.15: Ignore :cve:`2022-3435`, :cve:`2022-3534`, :cve:`2022-3564`, :cve:`2022-3564`, :cve:`2022-3619`, :cve:`2022-3640`, :cve:`2022-42895`, :cve:`2022-42896`, :cve:`2022-4382`, :cve:`2023-0266` and :cve:`2023-0394`
-+-  epiphany: Fix :cve:`2023-26081`
-+-  git: Ignore :cve:`2023-22743`
-+-  go: Fix :cve:`2022-41722`, :cve:`2022-41723`, :cve:`2022-41724`, :cve:`2022-41725` and :cve:`2023-24532`
-+-  harfbuzz: Fix :cve:`2023-25193`
-+-  libmicrohttpd: Fix :cve:`2023-27371`
-+-  libxml2: Fix :cve:`2022-40303` and :cve:`2022-40304`
-+-  openssl: Fix :cve:`2023-0464`, :cve:`2023-0465` and :cve:`2023-0466`
-+-  python3-setuptools: Fix :cve:`2022-40897`
-+-  qemu: Fix :cve:`2022-4144`
-+-  screen: Fix :cve:`2023-24626`
-+-  shadow: Ignore :cve:`2016-15024`
-+-  tiff: Fix :cve:`2022-48281`, :cve:`2023-0795`, :cve:`2023-0796`, :cve:`2023-0797`, :cve:`2023-0798`, :cve:`2023-0799`, :cve:`2023-0800`, :cve:`2023-0801`, :cve:`2023-0802`, :cve:`2023-0803` and :cve:`2023-0804`
-+-  vim: Fix :cve:`2023-1127`, :cve:`2023-1170`, :cve:`2023-1175`, :cve:`2023-1264` and :cve:`2023-1355`
-+-  xdg-utils: Fix :cve:`2022-4055`
-+-  xserver-xorg: Fix for :cve:`2023-1393`
++      This variable is set to "0" by default by the
++      :ref:`ref-classes-kernel-devicetree` class.
 +
+    :term:`KERNEL_DTB_LINK_NAME`
+       The link name of the kernel device tree binary (DTB). This variable
+       is set in the ``meta/classes-recipe/kernel-artifact-names.bbclass`` file as
+@@ -4476,6 +4483,23 @@ system and gives an overview of their function and contents.
+ 
+       See :term:`KERNEL_ARTIFACT_NAME` for additional information.
+ 
++   :term:`KERNEL_DTBDEST`
++      This variable, used by the :ref:`ref-classes-kernel-devicetree`
++      class, allows to change the installation directory of the DTB
++      (Device Tree Binary) files.
 +
-+Fixes in Yocto-4.1.4
-+~~~~~~~~~~~~~~~~~~~~
++      It is set by default to "${KERNEL_IMAGEDEST}" by the
++      :ref:`ref-classes-kernel` class.
 +
-+-  apt: re-enable version check
-+-  base-files: Drop localhost.localdomain from hosts file
-+-  binutils: Fix nativesdk ld.so search
-+-  bitbake: bin/utils: Ensure locale en_US.UTF-8 is available on the system
-+-  bitbake: cookerdata: Drop dubious exception handling code
-+-  bitbake: cookerdata: Improve early exception handling
-+-  bitbake: cookerdata: Remove incorrect SystemExit usage
-+-  bitbake: fetch/git: Fix local clone url to make it work with repo
-+-  bitbake: toaster: Add refreshed oe-core and poky fixtures
-+-  bitbake: toaster: fixtures/README: django 1.8 -> 3.2
-+-  bitbake: toaster: fixtures/gen_fixtures.py: update branches
-+-  bitbake: utils: Allow to_boolean to support int values
-+-  bmap-tools: switch to main branch
-+-  build-appliance-image: Update to langdale head revision
-+-  buildtools-tarball: Handle spaces within user $PATH
-+-  busybox: move hwclock init earlier in startup
-+-  cargo.bbclass: use offline mode for building
-+-  cpio: Fix wrong CRC with ASCII CRC for large files
-+-  cracklib: update github branch to 'main'
-+-  cups: add/fix web interface packaging
-+-  cups: check :term:`PACKAGECONFIG` for pam feature
-+-  cups: use BUILDROOT instead of DESTDIR
-+-  cve-check: Fix false negative version issue
-+-  devtool/upgrade: do not delete the workspace/recipes directory
-+-  dhcpcd: Fix install conflict when enable multilib.
-+-  ffmpeg: fix build failure when vulkan is enabled
-+-  filemap.py: enforce maximum of 4kb block size
-+-  gcc-shared-source: do not use ${S}/.. in deploy_source_date_epoch
-+-  glibc: Add missing binutils dependency
-+-  go: upgrade to 1.19.7
-+-  image_types: fix multiubi var init
-+-  image_types: fix vname var init in multiubi_mkfs() function
-+-  iso-codes: upgrade to 4.13.0
-+-  kernel-devsrc: fix mismatched compiler warning
-+-  lib/oe/gpg_sign.py: Avoid race when creating .sig files in detach_sign
-+-  lib/resulttool: fix typo breaking resulttool log --ptest
-+-  libcomps: Fix callback function prototype for PyCOMPS_hash
-+-  libdnf: upgrade to 0.70.0
-+-  libgit2: update license information
-+-  libmicrohttpd: upgrade to 0.9.76
-+-  linux-yocto-rt/5.15: upgrade to -rt59
-+-  linux-yocto/5.15: upgrade to v5.15.108
-+-  linux: inherit pkgconfig in kernel.bbclass
-+-  lttng-modules: upgrade to v2.13.9
-+-  lua: Fix install conflict when enable multilib.
-+-  mdadm: Fix raid0, 06wrmostly and 02lineargrow tests
-+-  mesa-demos: packageconfig weston should have a dependency on wayland-protocols
-+-  meson: Fix wrapper handling of implicit setup command
-+-  meson: remove obsolete RPATH stripping patch
-+-  migration-guides: update release notes
-+-  oeqa ping.py: avoid busylooping failing ping command
-+-  oeqa ping.py: fail test if target IP address has not been set
-+-  oeqa rtc.py: skip if read-only-rootfs
-+-  oeqa/runtime: clean up deprecated backslash expansion
-+-  oeqa/sdk: Improve Meson test
-+-  oeqa/selftest/cases/package.py: adding unittest for package rename conflicts
-+-  oeqa/selftest/cases/runqemu: update imports
-+-  oeqa/selftest/prservice: Improve debug output for failure
-+-  oeqa/selftest/reproducible: Split different packages from missing packages output
-+-  oeqa/selftest: OESelftestTestContext: convert relative to full path when newbuilddir is provided
-+-  oeqa/targetcontrol: do not set dump_host_cmds redundantly
-+-  oeqa/targetcontrol: fix misspelled RuntimeError
-+-  oeqa/targetcontrol: remove unused imports
-+-  oeqa/utils/commands: fix usage of undefined EPIPE
-+-  oeqa/utils/commands: remove unused imports
-+-  oeqa/utils/qemurunner: replace hard-coded user 'root' in debug output
-+-  oeqs/selftest: OESelftestTestContext: replace the os.environ after subprocess.check_output
-+-  package.bbclass: check packages name conflict in do_package
-+-  pango: upgrade to 1.50.13
-+-  piglit: Fix build time dependency
-+-  poky.conf: bump version for 4.1.4
-+-  populate_sdk_base: add zip options
-+-  populate_sdk_ext: Handle spaces within user $PATH
-+-  pybootchart: Fix extents handling to account for cpu/io/mem pressure changes
-+-  pybootchartui: Fix python syntax issue
-+-  report-error: catch Nothing :term:`PROVIDES` error
-+-  rpm: Fix hdr_hash function prototype
-+-  run-postinsts: Set dependency for ldconfig to avoid boot issues
-+-  runqemu: respect :term:`IMAGE_LINK_NAME`
-+-  runqemu: Revert "workaround for APIC hang on pre 4.15 kernels on qemux86q"
-+-  scripts/lib/buildstats: handle top-level build_stats not being complete
-+-  selftest/recipetool: Stop test corrupting tinfoil class
-+-  selftest/runtime_test/virgl: Disable for all Rocky Linux
-+-  selftest: devtool: set :term:`BB_HASHSERVE_UPSTREAM` when setting :term:`SSTATE_MIRRORS`
-+-  selftest: runqemu: better check for ROOTFS: in the log
-+-  selftest: runqemu: use better error message when asserts fail
-+-  shadow: Fix can not print full login timeout message
-+-  staging/multilib: Fix manifest corruption
-+-  staging: Separate out different multiconfig manifests
-+-  sudo: upgrade to 1.9.13p3
-+-  systemd.bbclass: Add /usr/lib/systemd to searchpaths as well
-+-  systemd: add group sgx to udev package
-+-  systemd: fix wrong nobody-group assignment
-+-  timezone: use 'tz' subdir instead of ${WORKDIR} directly
-+-  toolchain-scripts: Handle spaces within user $PATH
-+-  tzcode-native: fix build with gcc-13 on host
-+-  tzdata: upgrade to 2023c
-+-  tzdata: use separate :term:`B` instead of :term:`WORKDIR` for zic output
-+-  u-boot: Map arm64 into map for u-boot dts installation
-+-  uninative: Upgrade to 3.9 to include glibc 2.37
-+-  vala: Fix install conflict when enable multilib.
-+-  vim: add missing pkgconfig inherit
-+-  vim: set modified-by to the recipe :term:`MAINTAINER`
-+-  vim: upgrade to 9.0.1429
-+-  xcb-proto: Fix install conflict when enable multilib.
++   :term:`KERNEL_DTBVENDORED`
++      This variable, used by the :ref:`ref-classes-kernel-devicetree`,
++      allows to ignore vendor subdirectories when installing DTB
++      (Device Tree Binary) files, when it is set to "false".
 +
++      To keep vendor subdirectories, set this variable to "true".
 +
-+Known Issues in Yocto-4.1.4
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
++      It is set by default to "false" by the :ref:`ref-classes-kernel` class.
 +
-+- N/A
+    :term:`KERNEL_DTC_FLAGS`
+       Specifies the ``dtc`` flags that are passed to the Linux kernel build
+       system when generating the device trees (via ``DTC_FLAGS`` environment
+@@ -4624,6 +4648,14 @@ system and gives an overview of their function and contents.
+       provide those module configurations, see the
+       :term:`module_conf_* <module_conf>` variable.
+ 
++   :term:`KERNEL_PACKAGE_NAME`
++      Specifies the base name of the kernel packages, such as "kernel"
++      in the kernel packages such as "kernel-modules", "kernel-image" and
++      "kernel-dbg".
 +
++      The default value for this variable is set to "kernel" by the
++      :ref:`ref-classes-kernel` class.
 +
-+Contributors to Yocto-4.1.4
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Alexander Kanavin
-+-  Andrew Geissler
-+-  Arturo Buzarra
-+-  Bhabu Bindu
-+-  Bruce Ashfield
-+-  Carlos Alberto Lopez Perez
-+-  Chee Yang Lee
-+-  Chris Elledge
-+-  Christoph Lauer
-+-  Dmitry Baryshkov
-+-  Enrico Jörns
-+-  Fawzi KHABER
-+-  Frank de Brabander
-+-  Frederic Martinsons
-+-  Geoffrey GIRY
-+-  Hitendra Prajapati
-+-  Jose Quaresma
-+-  Kenfe-Mickael Laventure
-+-  Khem Raj
-+-  Marek Vasut
-+-  Martin Jansa
-+-  Michael Halstead
-+-  Michael Opdenacker
-+-  Mikko Rapeli
-+-  Ming Liu
-+-  Mingli Yu
-+-  Narpat Mali
-+-  Pavel Zhukov
-+-  Peter Marko
-+-  Piotr Łobacz
-+-  Randy MacLeod
-+-  Richard Purdie
-+-  Robert Yang
-+-  Romuald JEANNE
-+-  Romuald Jeanne
-+-  Ross Burton
-+-  Siddharth
-+-  Siddharth Doshi
-+-  Soumya
-+-  Steve Sakoman
-+-  Sudip Mukherjee
-+-  Tim Orling
-+-  Tobias Hagelborn
-+-  Tom Hochstein
-+-  Trevor Woerner
-+-  Wang Mingyu
-+-  Xiangyu Chen
-+-  Zoltan Boszormenyi
-+
-+
-+Repositories / Downloads for Yocto-4.1.4
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`langdale </poky/log/?h=langdale>`
-+-  Tag:  :yocto_git:`yocto-4.1.4 </poky/log/?h=yocto-4.1.4>`
-+-  Git Revision: :yocto_git:`3e95f268ce04b49ba6731fd4bbc53b1693c21963 </poky/commit/?id=3e95f268ce04b49ba6731fd4bbc53b1693c21963>`
-+-  Release Artefact: poky-3e95f268ce04b49ba6731fd4bbc53b1693c21963
-+-  sha: 54798c4b519f5e11f409e1fd074bea1bc0a1b80672aa60dddbac772c8e4d838b
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/poky-3e95f268ce04b49ba6731fd4bbc53b1693c21963.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/poky-3e95f268ce04b49ba6731fd4bbc53b1693c21963.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`langdale </openembedded-core/log/?h=langdale>`
-+-  Tag:  :oe_git:`yocto-4.1.4 </openembedded-core/log/?h=yocto-4.1.4>`
-+-  Git Revision: :oe_git:`78211cda40eb018a3aa535c75b61e87337236628 </openembedded-core/commit/?id=78211cda40eb018a3aa535c75b61e87337236628>`
-+-  Release Artefact: oecore-78211cda40eb018a3aa535c75b61e87337236628
-+-  sha: 1303d836bae54c438c64d6b9f068eb91c32be4cc1779e89d0f2d915a55d59b15
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/oecore-78211cda40eb018a3aa535c75b61e87337236628.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/oecore-78211cda40eb018a3aa535c75b61e87337236628.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`langdale </meta-mingw/log/?h=langdale>`
-+-  Tag:  :yocto_git:`yocto-4.1.4 </meta-mingw/log/?h=yocto-4.1.4>`
-+-  Git Revision: :yocto_git:`b0067202db8573df3d23d199f82987cebe1bee2c </meta-mingw/commit/?id=b0067202db8573df3d23d199f82987cebe1bee2c>`
-+-  Release Artefact: meta-mingw-b0067202db8573df3d23d199f82987cebe1bee2c
-+-  sha: 704f2940322b81ce774e9cbd27c3cfa843111d497dc7b1eeaa39cd694d9a2366
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/meta-mingw-b0067202db8573df3d23d199f82987cebe1bee2c.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/meta-mingw-b0067202db8573df3d23d199f82987cebe1bee2c.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.2 </bitbake/log/?h=2.2>`
-+-  Tag:  :oe_git:`yocto-4.1.4 </bitbake/log/?h=yocto-4.1.4>`
-+-  Git Revision: :oe_git:`5b105e76dd7de3b9a25b17b397f2c12c80048894 </bitbake/commit/?id=5b105e76dd7de3b9a25b17b397f2c12c80048894>`
-+-  Release Artefact: bitbake-5b105e76dd7de3b9a25b17b397f2c12c80048894
-+-  sha: 2cd6448138816f5a906f9927c6b6fdc5cf24981ef32b6402312f52ca490edb4f
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/bitbake-5b105e76dd7de3b9a25b17b397f2c12c80048894.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/bitbake-5b105e76dd7de3b9a25b17b397f2c12c80048894.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`langdale </yocto-docs/log/?h=langdale>`
-+-  Tag: :yocto_git:`yocto-4.1.4 </yocto-docs/log/?h=yocto-4.1.4>`
-+-  Git Revision: :yocto_git:`da685fc5e69d49728e3ffd6c4d623e7e1745059d </yocto-docs/commit/?id=da685fc5e69d49728e3ffd6c4d623e7e1745059d>`
-+
+    :term:`KERNEL_PATH`
+       The location of the kernel sources. This variable is set to the value
+       of the :term:`STAGING_KERNEL_DIR` within the :ref:`ref-classes-module`
 -- 
 2.34.1
 
