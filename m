@@ -2,87 +2,80 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE10AC77B7C
-	for <webhook@archiver.kernel.org>; Fri, 12 May 2023 08:13:31 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.18902.1683879209896367233
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8DF52C77B7C
+	for <webhook@archiver.kernel.org>; Fri, 12 May 2023 08:32:21 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.19123.1683880332545071119
  for <docs@lists.yoctoproject.org>;
- Fri, 12 May 2023 01:13:30 -0700
+ Fri, 12 May 2023 01:32:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KasdKZDp;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iF22n/sB;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
 Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 32D30C0002;
-	Fri, 12 May 2023 08:13:26 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id E7972FF809;
+	Fri, 12 May 2023 08:32:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1683879208;
+	t=1683880330;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zhiPjCBeF5SCLbPYeYjuN7zTFY5vlXNQ1ZTD7oQhYus=;
-	b=KasdKZDpiNKr+eWje+gwapzaddqyoyFJArzozEs2eoNFoyKsw99Cd5lG0DEI4RaUaiPFe/
-	PpX/MiJ31rJM64FzHFvvMmBFNEb4DS7yX5pq7JtloXNXqIzW8qBjn+W7Uux+ViuekciORb
-	riBUdy2aaFnQfQG4SwX6yM9haFWc8w+egNs/LQ3ia7kONqU+FnNQfJmp4FfanTLjyvdi9h
-	VNF5ioGOl20Br3gVKJffXGDx1NIXTvIRCeUJuvIZrPTaXQsaAt1lVevDPZYrxdtATS2fbh
-	Pzyl9cUndTo64l8Z/8s/Q43HtrJl/bYB+yO3CUHaD7DYaSMrNfkxTX68Y2o/Nw==
-Message-ID: <5a6bbc2e-ab65-933d-080b-7fcb38fc4f79@bootlin.com>
-Date: Fri, 12 May 2023 10:13:25 +0200
+	bh=uVjYrPxcy94grJkBLPXMTwKBP1ZsSdHA5WzpBU0qbgo=;
+	b=iF22n/sBSr7eXIF77xFTM47QgVgBs4IqKdH7L+iV1V+Q7B0t6rMyklssOwJijM4PuqqbS3
+	+jW20WBMrNOuDY1cV378HDsYWTfxz8ICfOoOAILh7SZ5N59xmGfzBBIgoK5CUd0QX7fLCt
+	GhZPK7FEnMmbR+QodZzuYlaTrOwxZ4un1kNsTGLd132Xy+BIZ3ViF4+rAnK/1pCKS6En6/
+	2nhYtvRiBSfyasZW++IgdMvFZnSQdBRaxiIUkimQiHITAcSrUlnr7N3n6MTgKMX6sIRCBb
+	8H1GuCD6guVPFqCybCHfFVQZ142q4N+79SI4Ike5QvkMS3Ufc+54acbdAkA7kw==
+Message-ID: <3de531a1-29ab-6863-b3d4-1a8782350cc9@bootlin.com>
+Date: Fri, 12 May 2023 10:32:09 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [PATCH 2/2] ref-manual: document uboot-sign class and variables
+Subject: Re: [docs] [PATCH] migration-guides: add release-notes for 4.1.4
 Content-Language: en-US
-To: Sean Anderson <sean.anderson@seco.com>
-References: <20230511161140.2387483-1-michael.opdenacker@bootlin.com>
- <20230511161140.2387483-2-michael.opdenacker@bootlin.com>
- <ee686b0e-410f-6ff8-2a10-be6fbb6446cc@seco.com>
+To: Lee Chee Yang <chee.yang.lee@intel.com>
+References: <20230512075536.393334-1-chee.yang.lee@intel.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <ee686b0e-410f-6ff8-2a10-be6fbb6446cc@seco.com>
+In-Reply-To: <20230512075536.393334-1-chee.yang.lee@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 May 2023 08:13:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3935
+ <docs@lists.yoctoproject.org>; Fri, 12 May 2023 08:32:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3936
 
-Hi Sean,
+Hi Lee,
 
-On 11.05.23 at 20:51, Sean Anderson wrote:
+On 12.05.23 at 09:55, Lee Chee Yang wrote:
+> From: Lee Chee Yang <chee.yang.lee@intel.com>
 >
->> +-  :term:`UBOOT_FIT_GENERATE_KEYS`: allows to generate the keys
->> +   if they don't exist yet.
-> Remove the "allows to"
-
-
-Fixed, thanks
-
+> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+> ---
+>   .../migration-guides/release-4.1.rst          |   1 +
+>   .../migration-guides/release-notes-4.1.4.rst  | 254 ++++++++++++++++++
+>   2 files changed, 255 insertions(+)
+>   create mode 100644 documentation/migration-guides/release-notes-4.1.4.rst
 >
->> +-  :term:`UBOOT_FIT_HASH_ALG`: hash algorithm for the FIT image.
->> +-  :term:`UBOOT_FIT_KEY_GENRSA_ARGS`: ``openssl genrsa`` arguments.
->> +-  :term:`UBOOT_FIT_KEY_REQ_ARGS`: ``openssl req`` arguments.
->> +-  :term:`UBOOT_FIT_SIGN_ALG`: signature algorithm for the FIT image.
->> +-  :term:`UBOOT_FIT_SIGN_NUMBITS`: size of the private key for FIT image
->> +   signing.
->> +-  :term:`UBOOT_FIT_KEY_SIGN_PKCS`: format for the public key certificate
->> +   for FIT image signing.
-> Maybe "algorithm" instead of "format"? The format stays the same (a
-> binary blob), but what's changing is the way the data is interpreted.
-
-Sure, done.
-
->
->> +-  :term:`UBOOT_FITIMAGE_ENABLE`: enables the generation of a U-Boot FIT image.
-> enables -> enable
+> diff --git a/documentation/migration-guides/release-4.1.rst b/documentation/migration-guides/release-4.1.rst
+> index dbca7c7e0..7d1ce95e2 100644
+> --- a/documentation/migration-guides/release-4.1.rst
+> +++ b/documentation/migration-guides/release-4.1.rst
+> @@ -10,3 +10,4 @@ Release 4.1 (langdale)
+>      release-notes-4.1.1
+>      release-notes-4.1.2
+>      release-notes-4.1.3
+> +   release-notes-4.1.4
 
 
-Good catch. Thanks.
-All these fixes are now in master-next.
+Many thanks for the new release notes.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+(I'm checking all the CVE links!)
 
-Thanks again
+Merged in master-next.
+Thanks again,
 Cheers
 Michael.
 
