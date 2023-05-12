@@ -1,262 +1,333 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E725C77B7C
-	for <webhook@archiver.kernel.org>; Thu, 11 May 2023 16:12:07 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.769.1683821517531244700
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F5E6C77B75
+	for <webhook@archiver.kernel.org>; Fri, 12 May 2023 07:56:41 +0000 (UTC)
+Received: from mga03.intel.com (mga03.intel.com [134.134.136.65])
+ by mx.groups.io with SMTP id smtpd.web10.18851.1683878200030259593
  for <docs@lists.yoctoproject.org>;
- Thu, 11 May 2023 09:11:58 -0700
+ Fri, 12 May 2023 00:56:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Wc/o5eQn;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: (Authenticated sender: michael.opdenacker@bootlin.com)
-	by mail.gandi.net (Postfix) with ESMTPSA id 233646000F;
-	Thu, 11 May 2023 16:11:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1683821515;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uKPlsKw6nnh9a+hCF4RGhLmwycpFR89d4wd+JA0yy1A=;
-	b=Wc/o5eQnUiN7frKlwOePD/s5WzMy+JvmR2sJ9LpV/UO1Ytf7PNDJP/BRpJVQArt0BY8ykG
-	DRyYl+j04lgqo1qWdc0jeP05YQliRkdRCiIz+CZyYoEEtlVAsHYMGdzV+qpk3LuSM5NliL
-	0CBqXYjAAgebXWqaIFFZ4JloMKq1zP46kcAWxxDBQWtLEXrrAN2TeUEMKAeAShco6vjBzc
-	LIHZkG8+puxb+zoqTIBJ72xNbJ7+dsVf9JzlOk7TEtGQowX+ufo7PUxWI188I8Hmy3T+PH
-	/3HHLpfsLw7FW7Q+1UKl1WAMkoI87HL8pYLmH3f2TuJqSThWojbnEsF97Hkyeg==
-From: michael.opdenacker@bootlin.com
+ dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=b+Wtaa2X;
+ spf=pass (domain: intel.com, ip: 134.134.136.65, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1683878200; x=1715414200;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Lx+7Qx3DM9IPaTbik6b8BZG8T5FEquRqkGQpExiS9aA=;
+  b=b+Wtaa2XVD2IfraAvyIOHYmDDsZlkF/ihmZR4dRs+xqxnK6pJdrQiYWM
+   krXwMMv8kq4FWkKXgiBBSz1n6J3h6mS5pMulsoKINovTZZMRWhI6PJ0As
+   MAsAkQU1aV1LMk0lFjMtL0+j3nF7D8hcqcZf6aQkc0XINj4dvU+3NhZLA
+   Pwv0ovq9LMP3aqurlQ6aypS1sZJxjl0LCAehokioqIkJc2czrsOfbSstQ
+   hBom+nzuWEgNeK+cIemXdTKvJVEKJ01v4ZpUBecYI7INM4dnNArMInAPM
+   rqn4EqgPO1nmdTabsvLjAa47y1Sw/vr2Bzvk+O3Acowrou2hRQPNSZ7E8
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="353862500"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="353862500"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2023 00:56:38 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10707"; a="703097797"
+X-IronPort-AV: E=Sophos;i="5.99,269,1677571200"; 
+   d="scan'208";a="703097797"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by fmsmga007.fm.intel.com with ESMTP; 12 May 2023 00:56:37 -0700
+From: chee.yang.lee@intel.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Jamin Lin <jamin_lin@aspeedtech.com>,
-	Sean Anderson <sean.anderson@seco.com>
-Subject: [PATCH 2/2] ref-manual: document uboot-sign class and variables
-Date: Thu, 11 May 2023 18:11:40 +0200
-Message-Id: <20230511161140.2387483-2-michael.opdenacker@bootlin.com>
+Subject: [PATCH] migration-guides: add release-notes for 4.1.4
+Date: Fri, 12 May 2023 15:55:36 +0800
+Message-Id: <20230512075536.393334-1-chee.yang.lee@intel.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230511161140.2387483-1-michael.opdenacker@bootlin.com>
-References: <20230511161140.2387483-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 11 May 2023 16:12:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3932
+ <docs@lists.yoctoproject.org>; Fri, 12 May 2023 07:56:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3933
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: Jamin Lin <jamin_lin@aspeedtech.com>
-CC: Sean Anderson <sean.anderson@seco.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- documentation/ref-manual/classes.rst   |  39 ++++++++
- documentation/ref-manual/variables.rst | 121 ++++++++++++++++++++++++-
- 2 files changed, 155 insertions(+), 5 deletions(-)
+ .../migration-guides/release-4.1.rst          |   1 +
+ .../migration-guides/release-notes-4.1.4.rst  | 254 ++++++++++++++++++
+ 2 files changed, 255 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.1.4.rst
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 2f96ffb82f..9a79ec51b4 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3178,6 +3178,45 @@ You can also specify the machine using this method::
- See the :term:`UBOOT_CONFIG` and :term:`UBOOT_MACHINE` variables for additional
- information.
- 
-+.. _ref-classes-uboot-sign:
+diff --git a/documentation/migration-guides/release-4.1.rst b/documentation/migration-guides/release-4.1.rst
+index dbca7c7e0..7d1ce95e2 100644
+--- a/documentation/migration-guides/release-4.1.rst
++++ b/documentation/migration-guides/release-4.1.rst
+@@ -10,3 +10,4 @@ Release 4.1 (langdale)
+    release-notes-4.1.1
+    release-notes-4.1.2
+    release-notes-4.1.3
++   release-notes-4.1.4
+diff --git a/documentation/migration-guides/release-notes-4.1.4.rst b/documentation/migration-guides/release-notes-4.1.4.rst
+new file mode 100644
+index 000000000..236602069
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.1.4.rst
+@@ -0,0 +1,254 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
 +
-+``uboot-sign``
-+==============
++Release notes for Yocto-4.1.4 (Langdale)
++----------------------------------------
 +
-+The :ref:`ref-classes-uboot-sign` class provides support for U-Boot verified boot.
-+It is intended to be inherited from U-Boot recipes.
++Security Fixes in Yocto-4.1.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+Here are variables used by this class:
++-  cve-extra-exclusions/linux-yocto: Ignore :cve:`2020-27784`, :cve:`2021-3669`, :cve:`2021-3759`, :cve:`2021-4218`, :cve:`2022-0480`, :cve:`2022-1184`, :cve:`2022-1462`, :cve:`2022-2308`, :cve:`2022-2327`, :cve:`2022-26365`, :cve:`2022-2663`, :cve:`2022-2785`, :cve:`2022-3176`, :cve:`2022-33740`, :cve:`2022-33741`, :cve:`2022-33742`, :cve:`2022-3526`, :cve:`2022-3563`, :cve:`2022-3621`, :cve:`2022-3623`, :cve:`2022-3624`, :cve:`2022-3625`, :cve:`2022-3629`, :cve:`2022-3630`, :cve:`2022-3633`, :cve:`2022-3635`, :cve:`2022-3636`, :cve:`2022-3637`, :cve:`2022-3646` and :cve:`2022-3649`
++-  cve-extra-exclusions/linux-yocto 5.15: Ignore :cve:`2022-3435`, :cve:`2022-3534`, :cve:`2022-3564`, :cve:`2022-3564`, :cve:`2022-3619`, :cve:`2022-3640`, :cve:`2022-42895`, :cve:`2022-42896`, :cve:`2022-4382`, :cve:`2023-0266` and :cve:`2023-0394`
++-  epiphany: Fix :cve:`2023-26081`
++-  git: Ignore :cve:`2023-22743`
++-  go: Fix :cve:`2022-41722`, :cve:`2022-41723`, :cve:`2022-41724`, :cve:`2022-41725` and :cve:`2023-24532`
++-  harfbuzz: Fix :cve:`2023-25193`
++-  libmicrohttpd: Fix :cve:`2023-27371`
++-  libxml2: Fix :cve:`2022-40303` and :cve:`2022-40304`
++-  openssl: Fix :cve:`2023-0464`, :cve:`2023-0465` and :cve:`2023-0466`
++-  python3-setuptools: Fix :cve:`2022-40897`
++-  qemu: Fix :cve:`2022-4144`
++-  screen: Fix :cve:`2023-24626`
++-  shadow: Ignore :cve:`2016-15024`
++-  tiff: Fix :cve:`2022-48281`, :cve:`2023-0795`, :cve:`2023-0796`, :cve:`2023-0797`, :cve:`2023-0798`, :cve:`2023-0799`, :cve:`2023-0800`, :cve:`2023-0801`, :cve:`2023-0802`, :cve:`2023-0803` and :cve:`2023-0804`
++-  vim: Fix :cve:`2023-1127`, :cve:`2023-1170`, :cve:`2023-1175`, :cve:`2023-1264` and :cve:`2023-1355`
++-  xdg-utils: Fix :cve:`2022-4055`
++-  xserver-xorg: Fix for :cve:`2023-1393`
 +
-+-  :term:`SPL_MKIMAGE_DTCOPTS`: DTC options for U-Boot ``mkimage`` when
-+   building the FIT image.
-+-  :term:`SPL_SIGN_ENABLE`: enable signing the FIT image.
-+-  :term:`SPL_SIGN_KEYDIR`: directory containing the signing keys.
-+-  :term:`SPL_SIGN_KEYNAME`: base filename of the signing keys.
-+-  :term:`UBOOT_FIT_ADDRESS_CELLS`: ``#address-cells`` value for the FIT image.
-+-  :term:`UBOOT_FIT_DESC`: description string encoded into the FIT image.
-+-  :term:`UBOOT_FIT_GENERATE_KEYS`: allows to generate the keys
-+   if they don't exist yet.
-+-  :term:`UBOOT_FIT_HASH_ALG`: hash algorithm for the FIT image.
-+-  :term:`UBOOT_FIT_KEY_GENRSA_ARGS`: ``openssl genrsa`` arguments.
-+-  :term:`UBOOT_FIT_KEY_REQ_ARGS`: ``openssl req`` arguments.
-+-  :term:`UBOOT_FIT_SIGN_ALG`: signature algorithm for the FIT image.
-+-  :term:`UBOOT_FIT_SIGN_NUMBITS`: size of the private key for FIT image
-+   signing.                                                  
-+-  :term:`UBOOT_FIT_KEY_SIGN_PKCS`: format for the public key certificate
-+   for FIT image signing.
-+-  :term:`UBOOT_FITIMAGE_ENABLE`: enables the generation of a U-Boot FIT image.
-+-  :term:`UBOOT_MKIMAGE_DTCOPTS`: DTC options for U-Boot ``mkimage`` when
-+   rebuilding the FIT image containing the kernel.
 +
-+See U-Boot's documentation for details about `verified boot
-+<https://source.denx.de/u-boot/u-boot/-/blob/master/doc/uImage.FIT/verified-boot.txt>`__
-+and the `signature process
-+<https://source.denx.de/u-boot/u-boot/-/blob/master/doc/uImage.FIT/signature.txt>`__.
++Fixes in Yocto-4.1.4
++~~~~~~~~~~~~~~~~~~~~
 +
-+See also the description of :ref:`ref-classes-kernel-fitimage` class, which this class
-+imitates.
++-  apt: re-enable version check
++-  base-files: Drop localhost.localdomain from hosts file
++-  binutils: Fix nativesdk ld.so search
++-  bitbake: bin/utils: Ensure locale en_US.UTF-8 is available on the system
++-  bitbake: cookerdata: Drop dubious exception handling code
++-  bitbake: cookerdata: Improve early exception handling
++-  bitbake: cookerdata: Remove incorrect SystemExit usage
++-  bitbake: fetch/git: Fix local clone url to make it work with repo
++-  bitbake: toaster: Add refreshed oe-core and poky fixtures
++-  bitbake: toaster: fixtures/README: django 1.8 -> 3.2
++-  bitbake: toaster: fixtures/gen_fixtures.py: update branches
++-  bitbake: utils: Allow to_boolean to support int values
++-  bmap-tools: switch to main branch
++-  build-appliance-image: Update to langdale head revision
++-  buildtools-tarball: Handle spaces within user $PATH
++-  busybox: move hwclock init earlier in startup
++-  cargo.bbclass: use offline mode for building
++-  cpio: Fix wrong CRC with ASCII CRC for large files
++-  cracklib: update github branch to 'main'
++-  cups: add/fix web interface packaging
++-  cups: check :term:`PACKAGECONFIG` for pam feature
++-  cups: use BUILDROOT instead of DESTDIR
++-  cve-check: Fix false negative version issue
++-  devtool/upgrade: do not delete the workspace/recipes directory
++-  dhcpcd: Fix install conflict when enable multilib.
++-  ffmpeg: fix build failure when vulkan is enabled
++-  filemap.py: enforce maximum of 4kb block size
++-  gcc-shared-source: do not use ${S}/.. in deploy_source_date_epoch
++-  glibc: Add missing binutils dependency
++-  go: upgrade to 1.19.7
++-  image_types: fix multiubi var init
++-  image_types: fix vname var init in multiubi_mkfs() function
++-  iso-codes: upgrade to 4.13.0
++-  kernel-devsrc: fix mismatched compiler warning
++-  lib/oe/gpg_sign.py: Avoid race when creating .sig files in detach_sign
++-  lib/resulttool: fix typo breaking resulttool log --ptest
++-  libcomps: Fix callback function prototype for PyCOMPS_hash
++-  libdnf: upgrade to 0.70.0
++-  libgit2: update license information
++-  libmicrohttpd: upgrade to 0.9.76
++-  linux-yocto-rt/5.15: upgrade to -rt59
++-  linux-yocto/5.15: upgrade to v5.15.108
++-  linux: inherit pkgconfig in kernel.bbclass
++-  lttng-modules: upgrade to v2.13.9
++-  lua: Fix install conflict when enable multilib.
++-  mdadm: Fix raid0, 06wrmostly and 02lineargrow tests
++-  mesa-demos: packageconfig weston should have a dependency on wayland-protocols
++-  meson: Fix wrapper handling of implicit setup command
++-  meson: remove obsolete RPATH stripping patch
++-  migration-guides: update release notes
++-  oeqa ping.py: avoid busylooping failing ping command
++-  oeqa ping.py: fail test if target IP address has not been set
++-  oeqa rtc.py: skip if read-only-rootfs
++-  oeqa/runtime: clean up deprecated backslash expansion
++-  oeqa/sdk: Improve Meson test
++-  oeqa/selftest/cases/package.py: adding unittest for package rename conflicts
++-  oeqa/selftest/cases/runqemu: update imports
++-  oeqa/selftest/prservice: Improve debug output for failure
++-  oeqa/selftest/reproducible: Split different packages from missing packages output
++-  oeqa/selftest: OESelftestTestContext: convert relative to full path when newbuilddir is provided
++-  oeqa/targetcontrol: do not set dump_host_cmds redundantly
++-  oeqa/targetcontrol: fix misspelled RuntimeError
++-  oeqa/targetcontrol: remove unused imports
++-  oeqa/utils/commands: fix usage of undefined EPIPE
++-  oeqa/utils/commands: remove unused imports
++-  oeqa/utils/qemurunner: replace hard-coded user 'root' in debug output
++-  oeqs/selftest: OESelftestTestContext: replace the os.environ after subprocess.check_output
++-  package.bbclass: check packages name conflict in do_package
++-  pango: upgrade to 1.50.13
++-  piglit: Fix build time dependency
++-  poky.conf: bump version for 4.1.4
++-  populate_sdk_base: add zip options
++-  populate_sdk_ext: Handle spaces within user $PATH
++-  pybootchart: Fix extents handling to account for cpu/io/mem pressure changes
++-  pybootchartui: Fix python syntax issue
++-  report-error: catch Nothing :term:`PROVIDES` error
++-  rpm: Fix hdr_hash function prototype
++-  run-postinsts: Set dependency for ldconfig to avoid boot issues
++-  runqemu: respect :term:`IMAGE_LINK_NAME`
++-  runqemu: Revert "workaround for APIC hang on pre 4.15 kernels on qemux86q"
++-  scripts/lib/buildstats: handle top-level build_stats not being complete
++-  selftest/recipetool: Stop test corrupting tinfoil class
++-  selftest/runtime_test/virgl: Disable for all Rocky Linux
++-  selftest: devtool: set BB_HASHSERVE_UPSTREAM when setting SSTATE_MIRROR
++-  selftest: runqemu: better check for ROOTFS: in the log
++-  selftest: runqemu: use better error message when asserts fail
++-  shadow: Fix can not print full login timeout message
++-  staging/multilib: Fix manifest corruption
++-  staging: Separate out different multiconfig manifests
++-  sudo: upgrade to 1.9.13p3
++-  systemd.bbclass: Add /usr/lib/systemd to searchpaths as well
++-  systemd: add group sgx to udev package
++-  systemd: fix wrong nobody-group assignment
++-  timezone: use 'tz' subdir instead of ${WORKDIR} directly
++-  toolchain-scripts: Handle spaces within user $PATH
++-  tzcode-native: fix build with gcc-13 on host
++-  tzdata: upgrade to 2023c
++-  tzdata: use separate :term:`B` instead of :term:`WORKDIR` for zic output
++-  u-boot: Map arm64 into map for u-boot dts installation
++-  uninative: Upgrade to 3.9 to include glibc 2.37
++-  vala: Fix install conflict when enable multilib.
++-  vim: add missing pkgconfig inherit
++-  vim: set modified-by to the recipe :term:`MAINTAINER`
++-  vim: upgrade to 9.0.1429
++-  xcb-proto: Fix install conflict when enable multilib.
 +
- .. _ref-classes-uninative:
- 
- ``uninative``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index b7d3c05ce2..b7829ae7af 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -2927,7 +2927,7 @@ system and gives an overview of their function and contents.
-       The default value is set to "1" by the :ref:`ref-classes-kernel-fitimage`
-       class, which corresponds to 32 bit addresses. 
- 
--      For platforms who need to set 64 bit addresses in
-+      For platforms that need to set 64 bit addresses, for example in
-       :term:`UBOOT_LOADADDRESS` and :term:`UBOOT_ENTRYPOINT`, you need to
-       set this value to "2", as two 32 bit values (cells) will be needed 
-       to represent such addresses.
-@@ -7759,6 +7759,32 @@ system and gives an overview of their function and contents.
-       section in the Yocto Project Board Support Package Developer's Guide
-       for additional information.
- 
-+   :term:`SPL_MKIMAGE_DTCOPTS`
-+      Options for the device tree compiler passed to ``mkimage -D`` feature
-+      while creating a FIT image with the :ref:`ref-classes-uboot-sign`
-+      class. If :term:`SPL_MKIMAGE_DTCOPTS` is not set then the
-+      :ref:`ref-classes-uboot-sign` class will not pass the ``-D`` option
-+      to ``mkimage``.
 +
-+      The default value is set to "" by the :ref:`ref-classes-uboot-config`
-+      class.
++Known Issues in Yocto-4.1.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+   :term:`SPL_SIGN_ENABLE`
-+      Enable signing of the U-Boot FIT image. The default value is "0".
-+      This variable is used by the :ref:`ref-classes-uboot-sign` class.
++- N/A
 +
-+   :term:`SPL_SIGN_KEYDIR`
-+      Location of the directory containing the RSA key and certificate used for
-+      signing the U-Boot FIT image, used by the :ref:`ref-classes-uboot-sign`
-+      class.
 +
-+   :term:`SPL_SIGN_KEYNAME`
-+      The name of keys used by the :ref:`ref-classes-kernel-fitimage` class
-+      for signing U-Boot FIT image stored in the :term:`SPL_SIGN_KEYDIR`
-+      directory. If we have for example a ``dev.key`` key and a ``dev.crt``
-+      certificate stored in the :term:`SPL_SIGN_KEYDIR` directory, you will 
-+      have to set :term:`SPL_SIGN_KEYNAME` to ``dev``.
++Contributors to Yocto-4.1.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-    :term:`SRCREV_FORMAT`
-       See :term:`bitbake:SRCREV_FORMAT` in the BitBake manual.
- 
-@@ -9097,16 +9123,101 @@ system and gives an overview of their function and contents.
-       creation, the :term:`UBOOT_ENTRYPOINT` variable is passed as a
-       command-line parameter to the ``uboot-mkimage`` utility.
- 
--      To pass a 64 bit address for FIT image creation, you will need to set
--      the :term:`FIT_ADDRESS_CELLS` variable too.
-+      To pass a 64 bit address for FIT image creation, you will need to set:
-+      -  The :term:`FIT_ADDRESS_CELLS` variable for FIT image creation.
-+      -  The :term:`UBOOT_FIT_ADDRESS_CELLS` variable for U-Boot FIT image creation.
++-  Alexander Kanavin
++-  Andrew Geissler
++-  Arturo Buzarra
++-  Bhabu Bindu
++-  Bruce Ashfield
++-  Carlos Alberto Lopez Perez
++-  Chee Yang Lee
++-  Chris Elledge
++-  Christoph Lauer
++-  Dmitry Baryshkov
++-  Enrico Jörns
++-  Fawzi KHABER
++-  Frank de Brabander
++-  Frederic Martinsons
++-  Geoffrey GIRY
++-  Hitendra Prajapati
++-  Jose Quaresma
++-  Kenfe-Mickael Laventure
++-  Khem Raj
++-  Marek Vasut
++-  Martin Jansa
++-  Michael Halstead
++-  Michael Opdenacker
++-  Mikko Rapeli
++-  Ming Liu
++-  Mingli Yu
++-  Narpat Mali
++-  Pavel Zhukov
++-  Peter Marko
++-  Piotr Łobacz
++-  Randy MacLeod
++-  Richard Purdie
++-  Robert Yang
++-  Romuald JEANNE
++-  Romuald Jeanne
++-  Ross Burton
++-  Siddharth
++-  Siddharth Doshi
++-  Soumya
++-  Steve Sakoman
++-  Sudip Mukherjee
++-  Tim Orling
++-  Tobias Hagelborn
++-  Tom Hochstein
++-  Trevor Woerner
++-  Wang Mingyu
++-  Xiangyu Chen
++-  Zoltan Boszormenyi
 +
-+      This variable is used by the :ref:`ref-classes-kernel-fitimage`,
-+      :ref:`ref-classes-kernel-uimage`, :ref:`ref-classes-kernel`,
-+      :ref:`ref-classes-uboot-config` and :ref:`ref-classes-uboot-sign`
-+      classes.
- 
-+   :term:`UBOOT_FIT_ADDRESS_CELLS`
-+      Specifies the value of the ``#address-cells`` value for the
-+      description of the U-Boot FIT image.  
 +
-+      The default value is set to "1" by the :ref:`ref-classes-uboot-sign`
-+      class, which corresponds to 32 bit addresses. 
++Repositories / Downloads for Yocto-4.1.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+      For platforms that need to set 64 bit addresses in
-+      :term:`UBOOT_LOADADDRESS` and :term:`UBOOT_ENTRYPOINT`, you need to
-+      set this value to "2", as two 32 bit values (cells) will be needed
-+      to represent such addresses.
++poky
 +
-+      Here is an example setting "0x400000000" as a load address::
-+    
-+         UBOOT_FIT_ADDRESS_CELLS = "2"
-+         UBOOT_LOADADDRESS= "0x04 0x00000000"
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`langdale </poky/log/?h=langdale>`
++-  Tag:  :yocto_git:`yocto-4.1.4 </poky/log/?h=yocto-4.1.4>`
++-  Git Revision: :yocto_git:`3e95f268ce04b49ba6731fd4bbc53b1693c21963 </poky/commit/?id=3e95f268ce04b49ba6731fd4bbc53b1693c21963>`
++-  Release Artefact: poky-3e95f268ce04b49ba6731fd4bbc53b1693c21963
++-  sha: 54798c4b519f5e11f409e1fd074bea1bc0a1b80672aa60dddbac772c8e4d838b
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/poky-3e95f268ce04b49ba6731fd4bbc53b1693c21963.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/poky-3e95f268ce04b49ba6731fd4bbc53b1693c21963.tar.bz2
 +
-+      See `more details about #address-cells <https://elinux.org/Device_Tree_Usage#How_Addressing_Works>`__.
++openembedded-core
 +
-+   :term:`UBOOT_FIT_DESC`
-+      Specifies the description string encoded into a U-Boot fitImage. The default
-+      value is set by the :ref:`ref-classes-uboot-sign` class as follows::
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`langdale </openembedded-core/log/?h=langdale>`
++-  Tag:  :oe_git:`yocto-4.1.4 </openembedded-core/log/?h=yocto-4.1.4>`
++-  Git Revision: :oe_git:`78211cda40eb018a3aa535c75b61e87337236628 </openembedded-core/commit/?id=78211cda40eb018a3aa535c75b61e87337236628>`
++-  Release Artefact: oecore-78211cda40eb018a3aa535c75b61e87337236628
++-  sha: 1303d836bae54c438c64d6b9f068eb91c32be4cc1779e89d0f2d915a55d59b15
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/oecore-78211cda40eb018a3aa535c75b61e87337236628.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/oecore-78211cda40eb018a3aa535c75b61e87337236628.tar.bz2
 +
-+         UBOOT_FIT_DESC ?= "U-Boot fitImage for ${DISTRO_NAME}/${PV}/${MACHINE}"
++meta-mingw
 +
-+   :term:`UBOOT_FIT_GENERATE_KEYS`
-+      Decides whether to generate the keys for signing the U-Boot fitImage if
-+      they don't already exist. The keys are created in :term:`SPL_SIGN_KEYDIR`.
-+      The default value is "0".
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`langdale </meta-mingw/log/?h=langdale>`
++-  Tag:  :yocto_git:`yocto-4.1.4 </meta-mingw/log/?h=yocto-4.1.4>`
++-  Git Revision: :yocto_git:`b0067202db8573df3d23d199f82987cebe1bee2c </meta-mingw/commit/?id=b0067202db8573df3d23d199f82987cebe1bee2c>`
++-  Release Artefact: meta-mingw-b0067202db8573df3d23d199f82987cebe1bee2c
++-  sha: 704f2940322b81ce774e9cbd27c3cfa843111d497dc7b1eeaa39cd694d9a2366
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/meta-mingw-b0067202db8573df3d23d199f82987cebe1bee2c.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/meta-mingw-b0067202db8573df3d23d199f82987cebe1bee2c.tar.bz2
 +
-+      Enable this as follows::
++bitbake
 +
-+         UBOOT_FIT_GENERATE_KEYS = "1"
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.2 </bitbake/log/?h=2.2>`
++-  Tag:  :oe_git:`yocto-4.1.4 </bitbake/log/?h=yocto-4.1.4>`
++-  Git Revision: :oe_git:`5b105e76dd7de3b9a25b17b397f2c12c80048894 </bitbake/commit/?id=5b105e76dd7de3b9a25b17b397f2c12c80048894>`
++-  Release Artefact: bitbake-5b105e76dd7de3b9a25b17b397f2c12c80048894
++-  sha: 2cd6448138816f5a906f9927c6b6fdc5cf24981ef32b6402312f52ca490edb4f
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.1.4/bitbake-5b105e76dd7de3b9a25b17b397f2c12c80048894.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.1.4/bitbake-5b105e76dd7de3b9a25b17b397f2c12c80048894.tar.bz2
 +
-+      This variable is used in the :ref:`ref-classes-uboot-sign` class.
++yocto-docs
 +
-+   :term:`UBOOT_FIT_HASH_ALG`
-+      Specifies the hash algorithm used in creating the U-Boot FIT Image.
-+      It is set by default to ``sha256`` by the :ref:`ref-classes-uboot-sign`
-+      class.
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`langdale </yocto-docs/log/?h=langdale>`
++-  Tag: :yocto_git:`yocto-4.1.4 </yocto-docs/log/?h=yocto-4.1.4>`
++-  Git Revision: :yocto_git:`da685fc5e69d49728e3ffd6c4d623e7e1745059d </yocto-docs/commit/?id=da685fc5e69d49728e3ffd6c4d623e7e1745059d>`
 +
-+   :term:`UBOOT_FIT_KEY_GENRSA_ARGS`
-+      Arguments to ``openssl genrsa`` for generating a RSA private key for
-+      signing the U-Boot FIT image. The default value of this variable
-+      is set to "-F4" by the :ref:`ref-classes-uboot-sign` class.
-+
-+   :term:`UBOOT_FIT_KEY_REQ_ARGS`
-+      Arguments to ``openssl req`` for generating a certificate for signing
-+      the U-Boot FIT image. The default value is "-batch -new" by the
-+      :ref:`ref-classes-uboot-sign` class, "batch" for
-+      non interactive mode and "new" for generating new keys.
-+
-+   :term:`UBOOT_FIT_KEY_SIGN_PKCS`
-+      Format for the public key certificate used for signing the U-Boot FIT
-+      image. The default value is set to "x509" by the
-+      :ref:`ref-classes-uboot-sign` class.
-+
-+   :term:`UBOOT_FIT_SIGN_ALG`
-+      Specifies the signature algorithm used in creating the U-Boot FIT Image.
-+      This variable is set by default to "rsa2048" by the
-+      :ref:`ref-classes-uboot-sign` class.
-+
-+   :term:`UBOOT_FIT_SIGN_NUMBITS`
-+      Size of the private key used in signing the U-Boot FIT image, in number
-+      of bits. The default value for this variable is set to "2048"
-+      by the :ref:`ref-classes-uboot-sign` class.
-+
-+   :term:`UBOOT_FITIMAGE_ENABLE`
-+      This variable allows to generate a FIT image for U-Boot, which is one
-+      of the ways to implement a verified boot process.
-+
-+      Its default value is "0", so set it to "1" to enable this functionality::
-+
-+         UBOOT_FITIMAGE_ENABLE = "1"
-+
-+      See the :ref:`ref-classes-uboot-sign` class for details.
-+      
-    :term:`UBOOT_LOADADDRESS`
-       Specifies the load address for the U-Boot image. During U-Boot image
-       creation, the :term:`UBOOT_LOADADDRESS` variable is passed as a
-       command-line parameter to the ``uboot-mkimage`` utility.
- 
--      To pass a 64 bit address for FIT image creation, you will need to set
--      the :term:`FIT_ADDRESS_CELLS` variable too.
-+      To pass a 64 bit address, you will also need to set:
-+
-+      -  The :term:`FIT_ADDRESS_CELLS` variable for FIT image creation.
-+      -  The :term:`UBOOT_FIT_ADDRESS_CELLS` variable for U-Boot FIT image creation.
- 
-       This variable is used by the :ref:`ref-classes-kernel-fitimage`,
-       :ref:`ref-classes-kernel-uimage`, :ref:`ref-classes-kernel`,
 -- 
 2.34.1
 
