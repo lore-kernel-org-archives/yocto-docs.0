@@ -1,312 +1,226 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <ross.burton@arm.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8208DC77B7A
-	for <webhook@archiver.kernel.org>; Wed, 24 May 2023 09:35:44 +0000 (UTC)
-Received: from mga18.intel.com (mga18.intel.com [134.134.136.126])
- by mx.groups.io with SMTP id smtpd.web10.4823.1684920939661148621
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA14EC7EE2C
+	for <webhook@archiver.kernel.org>; Wed, 24 May 2023 14:59:15 +0000 (UTC)
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (EUR02-DB5-obe.outbound.protection.outlook.com [40.107.249.70])
+ by mx.groups.io with SMTP id smtpd.web11.11135.1684940349774326691
  for <docs@lists.yoctoproject.org>;
- Wed, 24 May 2023 02:35:40 -0700
+ Wed, 24 May 2023 07:59:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=bxE1wAlk;
- spf=pass (domain: intel.com, ip: 134.134.136.126, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1684920939; x=1716456939;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=9JYqx1t+NG/HvywDNZm8YcyEH2jeydGj0k1L8qnXeh4=;
-  b=bxE1wAlk8cVbDJebYYIPvlq8EnC1h5iAKz7xXTxf1Gn1/5ZEQrG+goUa
-   7IQhlHNRUTmXDvJlaWymd8sw3cD/0iRp81hrqG7tg2+Gkr/3Ufv8ynWEh
-   qclHwNfPlvzWqxy9wu1s/xWVJYQ6iHMmZ7Yc1K1DpTfwqB1MO/gykGHIH
-   fy6FqGLoZ5dhZpR5Ach+owiQvX/MYTLeKq6DAM2woJ9BL6HshDOW6Ms4T
-   Gj6qF6s0Qw11qi3fmBG5EbmbF0NwpVef3V4hDpd95+eUNTEtj/WoAYukR
-   O+z1MilacjeLVUrbcYlqgEFGU/qbFHM9qXtkrKPhS34Q/E3NJ6nEHZpEu
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="338095144"
-X-IronPort-AV: E=Sophos;i="6.00,188,1681196400"; 
-   d="scan'208";a="338095144"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2023 02:35:38 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10719"; a="769369201"
-X-IronPort-AV: E=Sophos;i="6.00,188,1681196400"; 
-   d="scan'208";a="769369201"
-Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
-  by fmsmga008.fm.intel.com with ESMTP; 24 May 2023 02:35:33 -0700
-From: chee.yang.lee@intel.com
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] migration-guides: add release notes for 4.0.10
-Date: Wed, 24 May 2023 17:34:37 +0800
-Message-Id: <20230524093437.1050032-1-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.34.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ dkim=pass header.i=@armh.onmicrosoft.com header.s=selector2-armh-onmicrosoft-com header.b=xNk8JtM8;
+ spf=pass (domain: arm.com, ip: 40.107.249.70, mailfrom: ross.burton@arm.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=T/S1xzAaw+fvNxRpgntjrSsWmEjdNqVNPwhdZAcihjE=;
+ b=xNk8JtM8G8sV3vAb+AgMS84nRcO6nYOx+0pdPJjiMp39OsNtma7ttF5JkrMb9tOJrJ5HW0U+xOQQGmga4h4RF7K0k5q3Y3Qoul5Tqv9YmwY20+gXKIkBRgRYuhiMccb8is0B5coY6vPn0OzL5sao34IAqdP2WTKL5uuvQUgrIiA=
+Received: from DUZPR01CA0025.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:46b::13) by AS4PR08MB7578.eurprd08.prod.outlook.com
+ (2603:10a6:20b:4fd::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15; Wed, 24 May
+ 2023 14:59:01 +0000
+Received: from DBAEUR03FT064.eop-EUR03.prod.protection.outlook.com
+ (2603:10a6:10:46b:cafe::e0) by DUZPR01CA0025.outlook.office365.com
+ (2603:10a6:10:46b::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6411.29 via Frontend
+ Transport; Wed, 24 May 2023 14:59:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
+ smtp.mailfrom=arm.com; dkim=pass (signature was verified)
+ header.d=armh.onmicrosoft.com;dmarc=pass action=none header.from=arm.com;
+Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
+ 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
+ client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
+ pr=C
+Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
+ DBAEUR03FT064.mail.protection.outlook.com (100.127.143.3) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6433.15 via Frontend Transport; Wed, 24 May 2023 14:59:01 +0000
+Received: ("Tessian outbound 945aec65ec65:v136"); Wed, 24 May 2023 14:59:01 +0000
+X-CheckRecipientChecked: true
+X-CR-MTA-CID: 4d63f92f50880bf4
+X-CR-MTA-TID: 64aa7808
+Received: from 5f2962abe88c.1
+	by 64aa7808-outbound-1.mta.getcheckrecipient.com id 1580F7E9-609E-474B-A821-6D792AC12849.1;
+	Wed, 24 May 2023 14:58:54 +0000
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com
+    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 5f2962abe88c.1
+    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
+    Wed, 24 May 2023 14:58:54 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=h+dSvWEnjQLlQUm1Z4Fz3vpRvSPO2pMew7rbo97DvpDeIhwrWGMziuob47uXQpAK6/kxM9Zc/MXY7azZvRkbN9SD1X0icPKfbsaj1m9de1s6KTfBaSuMM7G8YpU4J1qyYeJqhoYhs9BwKjyPQdj8D4ACbSaXnPEqtnXZXd55Y2bgyazfitXuGoTCCr8TxRcQk1WTKv74yrBEhaDs0vfjGmYzlG70q2xcFo434Db/YCSw0NUmtbtzge+HW2OHpop4iqvYnOArWBSYHFzVSj6++o2WRzOwsxVTntWT2EoFgFu6k7UYa1lKTW1waJ6wqyJa2z9vzgclhUJTOf4xv3wMyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=T/S1xzAaw+fvNxRpgntjrSsWmEjdNqVNPwhdZAcihjE=;
+ b=JfaQsBzaA0OflPn597+JeWHdpT3d+PJ1sXUeSimnDPXmn0utKH/OKtwe6luBgDhEclDk+405IS70gsXH5lgh/I5s6wNauY+29alBNWQX+rF2QNt48+LzsP4z/tj5pdb5lBmFwNGpS7w2eRY00O3VwBVvREd1KsGHFSPejmrF76UJCq3LDIUe3xcFQU6RRubL3tEmzNrG56INML1aDNdlYT/14ulJGWgH/QBK19qL4/6bTt+jOPT3tz1g/nII1VOG4NEYG8saPjDnZ9qpVrF8Ys3jycjBXa3JNm5T6NNDdq2tGZX2+c9z509UyQaAEMEdBvGJnUXmDWdjMNGgyaOgNg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
+ header.d=arm.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
+ s=selector2-armh-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=T/S1xzAaw+fvNxRpgntjrSsWmEjdNqVNPwhdZAcihjE=;
+ b=xNk8JtM8G8sV3vAb+AgMS84nRcO6nYOx+0pdPJjiMp39OsNtma7ttF5JkrMb9tOJrJ5HW0U+xOQQGmga4h4RF7K0k5q3Y3Qoul5Tqv9YmwY20+gXKIkBRgRYuhiMccb8is0B5coY6vPn0OzL5sao34IAqdP2WTKL5uuvQUgrIiA=
+Received: from PA4PR08MB7411.eurprd08.prod.outlook.com (2603:10a6:102:2a3::12)
+ by AM8PR08MB5617.eurprd08.prod.outlook.com (2603:10a6:20b:1dc::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6433.15; Wed, 24 May
+ 2023 14:58:52 +0000
+Received: from PA4PR08MB7411.eurprd08.prod.outlook.com
+ ([fe80::eb3c:9b42:21c9:494e]) by PA4PR08MB7411.eurprd08.prod.outlook.com
+ ([fe80::eb3c:9b42:21c9:494e%7]) with mapi id 15.20.6411.028; Wed, 24 May 2023
+ 14:58:52 +0000
+From: Ross Burton <Ross.Burton@arm.com>
+To: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
+CC: OE-core <openembedded-core@lists.openembedded.org>
+Subject: Re: [OE-core] [PATCH] base: add ability to provide further details
+ when using LICENSE_FLAGS
+Thread-Topic: [OE-core] [PATCH] base: add ability to provide further details
+ when using LICENSE_FLAGS
+Thread-Index: AQHZjlAXmsOjZWFYgk6sIDbI6BE40K9pg9SA
+Date: Wed, 24 May 2023 14:58:52 +0000
+Message-ID: <5432CF2D-FEFB-472A-A980-0D05A1AEE7E8@arm.com>
+References: <20230524145721.3628187-1-ross.burton@arm.com>
+In-Reply-To: <20230524145721.3628187-1-ross.burton@arm.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-mailer: Apple Mail (2.3731.500.231)
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+x-ms-traffictypediagnostic: 
+	PA4PR08MB7411:EE_|AM8PR08MB5617:EE_|DBAEUR03FT064:EE_|AS4PR08MB7578:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0b68de03-564b-4be7-9f2d-08db5c6768de
+x-checkrecipientrouted: true
+nodisclaimer: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original: 
+ msvXSiZi/xGsrOQWyTitdEtrhMwf/Z59T2pmleEdLaNRKE8B8ktIZ53Gb+g1OR3CKn1ipWwjR2UDwSb7m30dHp5D+Y+VLPALpYEVTJE0lFw9IVsqZXcTw6cbaOTBZkBbmjBZkWxQo6zdPMZy/aTs/FkAW9hO+7zFIJys+0D0FZGcdevZjIvlFj5ZbcconOa8XTmxeQOWIIrCt/TPtvMaMpWnHH4PbVls9LoN7+fuHwDgfET8CtmtPdP5p3+5DnI5yTgyyqKmVr3ClrlIUYa1e9NfCNivMW8DSBSe4g8MaS4U3qEyc91DIwHhV48ME7/v/9gI6hYsgHXyMQAxQC2xrMO72f41LKalrTt+YSsniFlVK1OIEhfKdwMIVRTWAY+hfayp6YQT3wDEG9hy92JB2DeomtChcpAsA54ayS5cTjfkGFh7MRqOAr5rHdE9XjCpooHbqKWPspznkO2KFpmD9yXuZGc9OFuz5lJrgTlT69gsRQ2ckxvqIzSV87voZH35bFc0Q7YW6VGuVC9aW6lWjF7ICEFYCVS5YCLmTzKcMa8c17aEKKUIVMWkaBdIUxl+ST91j867liS7mPKRSbbuhGrIoj0kaWyVAFvi9ieXyjCwYy2SBljhljZ0GUNgLnzGjIhYbmjo3bukXfoUSuHlrg==
+X-Forefront-Antispam-Report-Untrusted: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR08MB7411.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(39860400002)(396003)(136003)(366004)(346002)(376002)(451199021)(2906002)(66899021)(5660300002)(8936002)(8676002)(41300700001)(6486002)(76116006)(91956017)(64756008)(66446008)(66476007)(66556008)(6916009)(478600001)(316002)(36756003)(4326008)(66946007)(33656002)(71200400001)(966005)(6512007)(6506007)(26005)(53546011)(38100700002)(2616005)(122000001)(86362001)(83380400001)(186003)(38070700005)(45980500001);DIR:OUT;SFP:1101;
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <04C55DD519955A42820FB911CFBE0C54@eurprd08.prod.outlook.com>
 Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR08MB5617
+Original-Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arm.com;
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped: 
+ DBAEUR03FT064.eop-EUR03.prod.protection.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs: 
+	12a7d781-cb7e-4b4d-0415-08db5c676369
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 
+	gp9lEJkbkoGt4UidBdXhXTM7nKMUIsWRpfl0pFMssswnUiw54Xy/BU7IEx9tQ7mf9vQj+lwwarpxcw8I+ipCR1b2XUMCveVtR693qvcnLbJ1FNxLMFMTVd+Nt/1vkoc9dUF7nCLNScvCOkaXr/+nP+lcUpUVf9cD8nrwXYpjvfQimbv72cSbiclh9ROTkZdmLTQEqgDaLQNS4szS3lwkvEBLznLHzKrA4Ty77dpeVSPzVpzQLe2W4AxqAcf+JzAPGY3dlpoaQyyr8Qb+ybrzKXpoaN1MI+5swYP+lCvx7F81rIh4AmJ2Nf0jDkDqlVB8dDBbUG4zwZ9/jJFg6p/lzm1m44bryWKOeuXGH1kmDktvmtWoCpcN0rtozRcqt10tOTKGL2/SfCj2hngKfTMD2Uf2DydOddSwBp+080sA+zzx4DZE3sOxd3PrBwZualTMveAz/t2a/DYIfW7Mi3lyBhR5IADJ1h+wZpJc7dIb9SlCIPjzW4vXkPKzFjw3kYE7fg9C2bnbjpVp2DNUCT457JK7D4oBRfv/COpkRLYYlDuQ93C88+a84mQNmkO3twUUfRXPdonnPuFBpqZJOf4y2zcHGvvX8I3CTd+qY/EchZ94txmwOjBtu0u0BiLkT8P6QripqQLemQxavvBMjb7d8xMfMccBubVaZVeY/RrpCd8D0ssscM+wGWNoa1wrbF93BXYgGrK2Kt0qjcuWZEO2b8GLbQ4wKCORiiJya64jDEU=
+X-Forefront-Antispam-Report: 
+	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(13230028)(4636009)(396003)(39860400002)(376002)(346002)(136003)(451199021)(46966006)(36840700001)(40470700004)(82310400005)(82740400003)(36860700001)(33656002)(81166007)(356005)(70206006)(70586007)(6916009)(83380400001)(336012)(4326008)(36756003)(47076005)(316002)(2906002)(186003)(6486002)(41300700001)(2616005)(53546011)(6512007)(66899021)(966005)(6506007)(26005)(8676002)(8936002)(86362001)(107886003)(478600001)(40460700003)(5660300002)(40480700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: arm.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 May 2023 14:59:01.3864
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0b68de03-564b-4be7-9f2d-08db5c6768de
+X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
+X-MS-Exchange-CrossTenant-AuthSource: 
+	DBAEUR03FT064.eop-EUR03.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR08MB7578
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 May 2023 09:35:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3955
+ <docs@lists.yoctoproject.org>; Wed, 24 May 2023 14:59:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3956
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Hi,
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
----
- .../migration-guides/release-4.0.rst          |   1 +
- .../migration-guides/release-notes-4.0.10.rst | 180 ++++++++++++++++++
- 2 files changed, 181 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.0.10.rst
+If this merges, this new variable should be covered in the section about us=
+ing special licenses.
 
-diff --git a/documentation/migration-guides/release-4.0.rst b/documentation=
-/migration-guides/release-4.0.rst
-index 1fc74a0f6..05c2705e8 100644
---- a/documentation/migration-guides/release-4.0.rst
-+++ b/documentation/migration-guides/release-4.0.rst
-@@ -16,3 +16,4 @@ Release 4.0 (kirkstone)
-    release-notes-4.0.7
-    release-notes-4.0.8
-    release-notes-4.0.9
-+   release-notes-4.0.10
-diff --git a/documentation/migration-guides/release-notes-4.0.10.rst b/docu=
-mentation/migration-guides/release-notes-4.0.10.rst
-new file mode 100644
-index 000000000..a3fa4e1e0
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.0.10.rst
-@@ -0,0 +1,180 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Release notes for Yocto-4.0.10 (Kirkstone)
-+------------------------------------------
-+
-+Security Fixes in Yocto-4.0.10
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  binutils: Fix :cve:`2023-1579`, :cve:`2023-1972`, :cve:`2023-25584`, :c=
-ve:`2023-25585` and :cve:`2023-25588`
-+-  cargo : Ignore cve-2022-46176
-+-  connman: Fix :cve:`2023-28488`
-+-  curl: Fix :cve:`2023-27533`, :cve:`2023-27534`, :cve:`2023-27535`, :cve=
-:`2023-27536` and :cve:`2023-27538`
-+-  ffmpeg: Fix :cve:`2022-48434`
-+-  freetype: Fix :cve:`2023-2004`
-+-  ghostscript: Fix :cve:`2023-29979`
-+-  git: Fix :cve:`2023-25652` and :cve:`2023-29007`
-+-  go: Fix :cve:`2022-41722`, :cve:`2022-41724`, :cve:`2022-41725`, :cve:`=
-2023-24534`, :cve:`2023-24537` and :cve:`2023-24538`
-+-  go: Ignore :cve:`2022-41716`
-+-  libxml2: Fix :cve:`2023-28484` and :cve:`2023-29469`
-+-  libxpm: Fix :cve:`2022-44617`, :cve:`2022-46285` and :cve:`2022-4883`
-+-  linux-yocto: Ignore :cve:`2021-3759`, :cve:`2021-4135`, :cve:`2021-4155=
-`, :cve:`2022-0168`, :cve:`2022-0171`, :cve:`2022-1016`, :cve:`2022-1184`, =
-:cve:`2022-1198`, :cve:`2022-1199`, :cve:`2022-1462`, :cve:`2022-1734`, :cv=
-e:`2022-1852`, :cve:`2022-1882`, :cve:`2022-1998`, :cve:`2022-2078`, :cve:`=
-2022-2196`, :cve:`2022-2318`, :cve:`2022-2380`, :cve:`2022-2503`, :cve:`202=
-2-26365`, :cve:`2022-2663`, :cve:`2022-2873`, :cve:`2022-2905`, :cve:`2022-=
-2959`, :cve:`2022-3028`, :cve:`2022-3078`, :cve:`2022-3104`, :cve:`2022-310=
-5`, :cve:`2022-3106`, :cve:`2022-3107`, :cve:`2022-3111`, :cve:`2022-3112`,=
- :cve:`2022-3113`, :cve:`2022-3115`, :cve:`2022-3202`, :cve:`2022-32250`, :=
-cve:`2022-32296`, :cve:`2022-32981`, :cve:`2022-3303`, :cve:`2022-33740`, :=
-cve:`2022-33741`, :cve:`2022-33742`, :cve:`2022-33743`, :cve:`2022-33744`, =
-:cve:`2022-33981`, :cve:`2022-3424`, :cve:`2022-3435`, :cve:`2022-34918`, :=
-cve:`2022-3521`, :cve:`2022-3545`, :cve:`2022-3564`, :cve:`2022-3586`, :cve=
-:`2022-3594`, :cve:`2022-36123`, :cve:`2022-3621`, :cve:`2022-3623`, :cve:`=
-2022-3629`, :cve:`2022-3633`, :cve:`2022-3635`, :cve:`2022-3646`, :cve:`202=
-2-3649`, :cve:`2022-36879`, :cve:`2022-36946`, :cve:`2022-3707`, :cve:`2022=
--39188`, :cve:`2022-39190`, :cve:`2022-39842`, :cve:`2022-40307`, :cve:`202=
-2-40768`, :cve:`2022-4095`, :cve:`2022-41218`, :cve:`2022-4139`, :cve:`2022=
--41849`, :cve:`2022-41850`, :cve:`2022-41858`, :cve:`2022-42328`, :cve:`202=
-2-42329`, :cve:`2022-42703`, :cve:`2022-42721`, :cve:`2022-42722`, :cve:`20=
-22-42895`, :cve:`2022-4382`, :cve:`2022-4662`, :cve:`2022-47518`, :cve:`202=
-2-47519`, :cve:`2022-47520`, :cve:`2022-47929`, :cve:`2023-0179`, :cve:`202=
-3-0394`, :cve:`2023-0461`, :cve:`2023-0590`, :cve:`2023-1073`, :cve:`2023-1=
-074`, :cve:`2023-1077`, :cve:`2023-1078`, :cve:`2023-1079`, :cve:`2023-1095=
-`, :cve:`2023-1118`, :cve:`2023-1249`, :cve:`2023-1252`, :cve:`2023-1281`, =
-:cve:`2023-1382`, :cve:`2023-1513`, :cve:`2023-1829`, :cve:`2023-1838`, :cv=
-e:`2023-1998`, :cve:`2023-2006`, :cve:`2023-2008`, :cve:`2023-2162`, :cve:`=
-2023-2166`, :cve:`2023-2177`, :cve:`2023-22999`, :cve:`2023-23002`, :cve:`2=
-023-23004`, :cve:`2023-23454`, :cve:`2023-23455`, :cve:`2023-23559`, :cve:`=
-2023-25012`, :cve:`2023-26545`, :cve:`2023-28327` and :cve:`2023-28328`
-+-  nasm: Fix :cve:`2022-44370`
-+-  python3-cryptography: Fix :cve:`2023-23931`
-+-  qemu: Ignore :cve:`2023-0664`
-+-  ruby: Fix :cve:`2023-28755` and :cve:`2023-28756`
-+-  screen: Fix :cve:`2023-24626`
-+-  shadow: Fix :cve:`2023-29383`
-+-  tiff: Fix :cve:`2022-4645`
-+-  webkitgtk: Fix :cve:`2022-32888` and :cve:`2022-32923`
-+-  xserver-xorg: Fix :cve:`2023-1393`
-+
-+
-+Fixes in Yocto-4.0.10
-+~~~~~~~~~~~~~~~~~~~~~
-+
-+-  bitbake: bin/utils: Ensure locale en_US.UTF-8 is available on the system
-+-  build-appliance-image: Update to kirkstone head revision
-+-  cmake: add CMAKE_SYSROOT to generated toolchain file
-+-  glibc: stable 2.35 branch updates.
-+-  kernel-devsrc: depend on python3-core instead of python3
-+-  kernel: improve initramfs bundle processing time
-+-  libarchive: Enable acls, xattr for native as well as target
-+-  libbsd: Add correct license for all packages
-+-  libpam: Fix the xtests/tst-pam_motd[1|3] failures
-+-  libxpm: upgrade to 3.5.15
-+-  linux-firmware: upgrade to 20230404
-+-  linux-yocto/5.15: upgrade to v5.15.108
-+-  migration-guides: add release-notes for 4.0.9
-+-  oeqa/utils/metadata.py: Fix running oe-selftest running with no distro =
-set
-+-  openssl: Move microblaze to linux-latomic config
-+-  package.bbclass: correct check for /build in copydebugsources()
-+-  poky.conf: bump version for 4.0.10
-+-  populate_sdk_base: add zip options
-+-  populate_sdk_ext.bbclass: set :term:`METADATA_REVISION` with an :term:`=
-DISTRO` override
-+-  run-postinsts: Set dependency for ldconfig to avoid boot issues
-+-  update-alternatives.bbclass: fix old override syntax
-+-  wic/bootimg-efi: if fixed-size is set then use that for mkdosfs
-+-  wpebackend-fdo: upgrade to 1.14.2
-+-  xorg-lib-common: Add variable to set tarball type
-+-  xserver-xorg: upgrade to 21.1.8
-+
-+
-+Known Issues in Yocto-4.0.10
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+
-+Contributors to Yocto-4.0.10
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Archana Polampalli
-+-  Arturo Buzarra
-+-  Bruce Ashfield
-+-  Christoph Lauer
-+-  Deepthi Hemraj
-+-  Dmitry Baryshkov
-+-  Frank de Brabander
-+-  Hitendra Prajapati
-+-  Joe Slater
-+-  Kai Kang
-+-  Kyle Russell
-+-  Lee Chee Yang
-+-  Mark Hatle
-+-  Martin Jansa
-+-  Mingli Yu
-+-  Narpat Mali
-+-  Pascal Bach
-+-  Pawan Badganchi
-+-  Peter Bergin
-+-  Peter Marko
-+-  Piotr =C5=81obacz
-+-  Randolph Sapp
-+-  Ranjitsinh Rathod
-+-  Ross Burton
-+-  Shubham Kulkarni
-+-  Siddharth Doshi
-+-  Steve Sakoman
-+-  Sundeep KOKKONDA
-+-  Thomas Roos
-+-  Virendra Thakur
-+-  Vivek Kumbhar
-+-  Wang Mingyu
-+-  Xiangyu Chen
-+-  Yash Shinde
-+-  Yoann Congal
-+-  Yogita Urade
-+-  Zhixiong Chi
-+
-+
-+Repositories / Downloads for Yocto-4.0.10
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`kirkstone </poky/log/?h=3Dkirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.10 </poky/log/?h=3Dyocto-4.0.10>`
-+-  Git Revision: :yocto_git:`f53ab3a2ff206a130cdc843839dd0ea5ec4ad02f </po=
-ky/commit/?id=3Df53ab3a2ff206a130cdc843839dd0ea5ec4ad02f>`
-+-  Release Artefact: poky-f53ab3a2ff206a130cdc843839dd0ea5ec4ad02f
-+-  sha: 8820aeac857ce6bbd1c7ef26cadbb86eca02be93deded253b4a5f07ddd69255d
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.10/poky-f53a=
-b3a2ff206a130cdc843839dd0ea5ec4ad02f.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.10/poky-f53ab3a2ff206a1=
-30cdc843839dd0ea5ec4ad02f.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=3Dkirkstone>`
-+-  Tag:  :oe_git:`yocto-4.0.10 </openembedded-core/log/?h=3Dyocto-4.0.10>`
-+-  Git Revision: :oe_git:`d2713785f9cd2d58731df877bc8b7bcc71b6c8e6 </opene=
-mbedded-core/commit/?id=3Dd2713785f9cd2d58731df877bc8b7bcc71b6c8e6>`
-+-  Release Artefact: oecore-d2713785f9cd2d58731df877bc8b7bcc71b6c8e6
-+-  sha: 78e084a1aceaaa6ec022702f29f80eaffade3159e9c42b6b8985c1b7ddd2fbab
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.10/oecore-d2=
-713785f9cd2d58731df877bc8b7bcc71b6c8e6.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.10/oecore-d2713785f9cd2=
-d58731df877bc8b7bcc71b6c8e6.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=3Dkirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.10 </meta-mingw/log/?h=3Dyocto-4.0.10>`
-+-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </me=
-ta-mingw/commit/?id=3Da90614a6498c3345704e9611f2842eb933dc51c1>`
-+-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
-+-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.10/meta-ming=
-w-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.10/meta-mingw-a90614a64=
-98c3345704e9611f2842eb933dc51c1.tar.bz2
-+
-+meta-gplv2
-+
-+-  Repository Location: :yocto_git:`/meta-gplv2`
-+-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=3Dkirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.10 </meta-gplv2/log/?h=3Dyocto-4.0.10>`
-+-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </me=
-ta-gplv2/commit/?id=3Dd2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-+-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
-+-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.10/meta-gplv=
-2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.10/meta-gplv2-d2f8b5cdb=
-285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.0 </bitbake/log/?h=3D2.0>`
-+-  Tag:  :oe_git:`yocto-4.0.10 </bitbake/log/?h=3Dyocto-4.0.10>`
-+-  Git Revision: :oe_git:`0c6f86b60cfba67c20733516957c0a654eb2b44c </bitba=
-ke/commit/?id=3D0c6f86b60cfba67c20733516957c0a654eb2b44c>`
-+-  Release Artefact: bitbake-0c6f86b60cfba67c20733516957c0a654eb2b44c
-+-  sha: 4caa94ee4d644017b0cc51b702e330191677f7d179018cbcec8b1793949ebc74
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.10/bitbake-0=
-c6f86b60cfba67c20733516957c0a654eb2b44c.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.10/bitbake-0c6f86b60cfb=
-a67c20733516957c0a654eb2b44c.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=3Dkirkstone>`
-+-  Tag: :yocto_git:`yocto-4.0.10 </yocto-docs/log/?h=3Dyocto-4.0.10>`
-+-  Git Revision: :yocto_git:`8388be749806bd0bf4fccf1005dae8f643aa4ef4 </yo=
-cto-docs/commit/?id=3D8388be749806bd0bf4fccf1005dae8f643aa4ef4>`
-+
---=20
-2.34.1
+Ross
+
+
+> On 24 May 2023, at 15:57, Ross Burton via lists.openembedded.org <ross.bu=
+rton=3Darm.com@lists.openembedded.org> wrote:
+>=20
+> From: Ross Burton <ross.burton@arm.com>
+>=20
+> Recipes with proprietary licenses often need to use LICENSE_FLAGS so
+> that the user can opt-in with consent. However, if you don't consent
+> then the error simply tells you the license identifier but not further
+> context.
+>=20
+> Add a new variable LICENSE_FLAGS_DETAILS, which will be looked in for a
+> flag with the name of the licence.  If found then the contents are
+> printed as a source of further details.
+>=20
+> For example, a recipe with an EULA may set:
+>=20
+>  LICENSE_FLAGS =3D "FooBar-EULA"
+>  LICENSE_FLAGS_DETAILS[FooBar-EULA] =3D "https://example.com/eula"
+>=20
+> If Foobar-EULA isn't in LICENSE_FLAGS_ACCEPTED then the error message is
+> more useful:
+>=20
+>  Has a restricted license 'FooBar-EULA' which is not listed in your
+>  LICENSE_FLAGS_ACCEPTED. For further details, see
+>  https://example.com/eula.
+>=20
+> Signed-off-by: Ross Burton <ross.burton@arm.com>
+> ---
+> meta/classes-global/base.bbclass | 12 ++++++------
+> 1 file changed, 6 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/meta/classes-global/base.bbclass b/meta/classes-global/base.=
+bbclass
+> index b6e339ed9c5..976a2ddee4b 100644
+> --- a/meta/classes-global/base.bbclass
+> +++ b/meta/classes-global/base.bbclass
+> @@ -516,12 +516,12 @@ python () {
+>         check_license_format(d)
+>         unmatched_license_flags =3D check_license_flags(d)
+>         if unmatched_license_flags:
+> -            if len(unmatched_license_flags) =3D=3D 1:
+> -                message =3D "because it has a restricted license '{0}'. =
+Which is not listed in LICENSE_FLAGS_ACCEPTED".format(unmatched_license_fla=
+gs[0])
+> -            else:
+> -                message =3D "because it has restricted licenses {0}. Whi=
+ch are not listed in LICENSE_FLAGS_ACCEPTED".format(
+> -                    ", ".join("'{0}'".format(f) for f in unmatched_licen=
+se_flags))
+> -            bb.debug(1, "Skipping %s %s" % (pn, message))
+> +            for unmatched in unmatched_license_flags:
+> +                message =3D "Has a restricted license '%s' which is not =
+listed in your LICENSE_FLAGS_ACCEPTED." % unmatched
+> +                details =3D d.getVarFlag("LICENSE_FLAGS_DETAILS", unmatc=
+hed)
+> +                if details:
+> +                    message +=3D " For further details, see %s." % detai=
+ls
+> +            bb.debug(1, "Skipping %s: %s" % (pn, message))
+>             raise bb.parse.SkipRecipe(message)
+>=20
+>     # If we're building a target package we need to use fakeroot (pseudo)
+> --=20
+> 2.34.1
+>=20
+>=20
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#181677): https://lists.openembedded.org/g/openembedde=
+d-core/message/181677
+> Mute This Topic: https://lists.openembedded.org/mt/99110379/6875888
+> Group Owner: openembedded-core+owner@lists.openembedded.org
+> Unsubscribe: https://lists.openembedded.org/g/openembedded-core/unsub [ro=
+ss.burton@arm.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>=20
 
 
