@@ -1,78 +1,65 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <ross.burton@arm.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2F70C7EE2D
-	for <webhook@archiver.kernel.org>; Wed, 24 May 2023 15:02:25 +0000 (UTC)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
- by mx.groups.io with SMTP id smtpd.web11.11224.1684940540061092841
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 584D2C77B73
+	for <webhook@archiver.kernel.org>; Wed, 24 May 2023 16:32:13 +0000 (UTC)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+ by mx.groups.io with SMTP id smtpd.web10.1786.1684945929330512097
  for <docs@lists.yoctoproject.org>;
- Wed, 24 May 2023 08:02:20 -0700
+ Wed, 24 May 2023 09:32:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=Z49BheTX;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.43, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-3f6042d605dso9368755e9.2
-        for <docs@lists.yoctoproject.org>; Wed, 24 May 2023 08:02:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1684940538; x=1687532538;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VMxdO3tSHXoFD4pg8JgmxYppyESttHGAU0RAaroYrx4=;
-        b=Z49BheTX7wlKKT6bke54QkVqPOPQWCvfivwgr2hvtjkGaRhQWJhmh+wJ9ppU3ZzmAi
-         Y57kcXhTCnggk0jzfslbE5IeUr6TgXppFrH0Kr5L6ylKdN+/CmDO/brUtjBGHy8KEgqs
-         oOWEIev6s8r12fnfOuRbOuCZdWoNa0rmU8qnc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1684940538; x=1687532538;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VMxdO3tSHXoFD4pg8JgmxYppyESttHGAU0RAaroYrx4=;
-        b=kGUflJsYDAowClcLJBvfbLhywWdgSepzx+rtJM/LZsaORo5k2FLCc5UET6RVcJldrh
-         26+Ze9fpcZkDLQg6E8E/de4U4HiCO+B1NL740B09CIw6dhyMZR65Y5qUJzf0xGGIkGGz
-         LFKd6eDz3b+QAw/KKgZl8gCOdYNqNsEdEfTkzLD+8b9OHPe3bfoyTipNuk9aqKzP3OXH
-         pUglAxu44u0CZh6yOYbmNUqBsgeVfnJRnU6b9lK1JiRDzHxa/gNlV6oOnFds59MgcDTg
-         EMNcunJhczhNXxsJtp8ib7ELcm6Y7c4S0EIRoDGt+IQaMhlMw5jC2N5/igoN2VmtPmN+
-         r/9w==
-X-Gm-Message-State: AC+VfDzfEAnEJ5vBmyFb4LYc2Xlapsd/PRLZoCFVzG7eiX6/vvQpbyOP
-	07hXBy3oqDPBIUSQgbv3YUeskw==
-X-Google-Smtp-Source: ACHHUZ5OFBwbtAUlR24oOPt9kw9HKF4qnabL/03bB78nNe+ERQ8dJ2orZ68XR7Qt5+4rjT0OHwQfgQ==
-X-Received: by 2002:a1c:7910:0:b0:3f4:bb58:d174 with SMTP id l16-20020a1c7910000000b003f4bb58d174mr37123wme.22.1684940538581;
-        Wed, 24 May 2023 08:02:18 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:e50f:20dd:d0e2:cad5? ([2001:8b0:aba:5f3c:e50f:20dd:d0e2:cad5])
-        by smtp.gmail.com with ESMTPSA id o19-20020a05600c059300b003f60119ee08sm2549754wmd.43.2023.05.24.08.02.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 May 2023 08:02:18 -0700 (PDT)
-Message-ID: <445f641488427440bbaf60ec1418d81abdfd06a5.camel@linuxfoundation.org>
-Subject: Re: [OE-core] [PATCH] base: add ability to provide further details
- when using LICENSE_FLAGS
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Ross Burton <ross.burton@arm.com>, "docs@lists.yoctoproject.org"
-	 <docs@lists.yoctoproject.org>
-Cc: OE-core <openembedded-core@lists.openembedded.org>
-Date: Wed, 24 May 2023 16:02:17 +0100
-In-Reply-To: <5432CF2D-FEFB-472A-A980-0D05A1AEE7E8@arm.com>
-References: <20230524145721.3628187-1-ross.burton@arm.com>
-	 <5432CF2D-FEFB-472A-A980-0D05A1AEE7E8@arm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.0-1 
+ dkim=missing; spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B09231042;
+	Wed, 24 May 2023 09:32:53 -0700 (PDT)
+Received: from oss-tx204.lab.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 27D603F6C4;
+	Wed, 24 May 2023 09:32:08 -0700 (PDT)
+From: ross.burton@arm.com
+To: docs@lists.yoctoproject.org
+Cc: nd@arm.com
+Subject: [RFC PATCH] WIP LICENSE_FLAGS_DETAILS documentation
+Date: Wed, 24 May 2023 17:32:01 +0100
+Message-Id: <20230524163201.3630288-1-ross.burton@arm.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 24 May 2023 15:02:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3957
+ <docs@lists.yoctoproject.org>; Wed, 24 May 2023 16:32:13 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3958
 
-On Wed, 2023-05-24 at 14:58 +0000, Ross Burton wrote:
-> Hi,
->=20
-> If this merges, this new variable should be covered in the section about =
-using special licenses.
+From: Ross Burton <ross.burton@arm.com>
 
-Shouldn't there be a documentation patch here? ;-)
+---
+ documentation/dev-manual/licenses.rst | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Cheers,
+diff --git a/documentation/dev-manual/licenses.rst b/documentation/dev-ma=
+nual/licenses.rst
+index 9629dc53293..805b40fd482 100644
+--- a/documentation/dev-manual/licenses.rst
++++ b/documentation/dev-manual/licenses.rst
+@@ -123,6 +123,13 @@ name and version (after variable expansion)::
+=20
+    LICENSE_FLAGS =3D "license_${PN}_${PV}"
+=20
++It is possible to specify where to find more details for a specific lice=
+nse
++using flags on the :term:`LICENSE_FLAGS_DETAILS` variable:
++
++  LICENSE_FLAGS_DETAILS[my-eula-license] =3D "https://example.com/eula"
++
++If set, this will be displayed to the user if the license hasn't been ac=
+cepted.
++
+ In order for a component restricted by a
+ :term:`LICENSE_FLAGS` definition to be enabled and included in an image,=
+ it
+ needs to have a matching entry in the global
+--=20
+2.34.1
 
-Richard
 
