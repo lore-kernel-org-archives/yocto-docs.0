@@ -2,85 +2,118 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AD76C7EE2D
-	for <webhook@archiver.kernel.org>; Fri, 26 May 2023 09:18:53 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.4198.1685092732183686044
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30367C7EE2D
+	for <webhook@archiver.kernel.org>; Fri, 26 May 2023 09:25:33 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.4245.1685093129402955105
  for <docs@lists.yoctoproject.org>;
- Fri, 26 May 2023 02:18:52 -0700
+ Fri, 26 May 2023 02:25:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=auoqvEp2;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Tqx6spOL;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
 X-GND-Sasl: michael.opdenacker@bootlin.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1685092730;
+	t=1685093127;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9iSkXrvn9O634Y1+8pEoMHHJ0POPguQeczfKgOThyPE=;
-	b=auoqvEp2MbIx1B0HwopRotP7eIjTBvWg31Dda6pjhwTvGOmjJel0ZnUYJoya3/CjB+ZX+6
-	ss253qAGI9CEehjs5ShTkJ0D7SWTy4waAHyMBWE0yadgjw0NDr5XebCPww1sIns2NP+wy8
-	De1jfsHUOjkYqxI1ckHPaXRvpYF59FgbohMFKPR4etZiswrRfiFi3V6L5M7TEHXHZzrPgn
-	P1cX0/aERe3YTSuT5vRM48NVxmHauRwxMgkCUETs/iSO+GY4eYAIi29QUGbNrtByiA98ST
-	uSkjpoczK/2g+t+2gngDh4DV0nMEBzNQL9JJNmwks7MhxmoDUNqZzTgDViOucQ==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=zB0v7j+G6o6gv/Lme9bMBPGzRKFak1VdMQBVJx5Z69M=;
+	b=Tqx6spOLA47o/8WFFfNWBLYi52TM2ZdP+M15p/fOnbh8JBqJw5qCtrLT1CkhYYqij1UPJR
+	wKnmRgJXjJOWYtzaXiC82mrepDIe+K6eDEGOl9iZddjk3vNOmBxdbh8LDdIFDfAWDLzbz5
+	1Bq3MePerzWGeysT9Za3pvexaePxZLqlH1aDQ5PQJJg83XTCXc/7aiFJq8qyeUJ/Aza/CB
+	Gr3wBtEmxemfpS+Uhq5mQ70xnzafcoP9/gqTZLd81ows/h+IsaTS1AF9SWqfoDawjF2RsN
+	2ftlr9pIuB0GI6wQSegWa8qVz1T7XxEk7wLGSXmlKaCmDAJUvOqhi5WXgl4APQ==
 X-GND-Sasl: michael.opdenacker@bootlin.com
-X-GND-Sasl: michael.opdenacker@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EC603FF803;
-	Fri, 26 May 2023 09:18:49 +0000 (UTC)
-Message-ID: <02d5ac9b-c4eb-0d60-d812-4128501d5473@bootlin.com>
-Date: Fri, 26 May 2023 11:18:49 +0200
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4E4241C000F;
+	Fri, 26 May 2023 09:25:25 +0000 (UTC)
+Message-ID: <bd546c0f-490a-a5c2-b1eb-b80b3be02d80@bootlin.com>
+Date: Fri, 26 May 2023 11:25:25 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.0
-Cc: nd@arm.com, docs@lists.yoctoproject.org
-Subject: Re: [docs] [RFC PATCH] WIP LICENSE_FLAGS_DETAILS documentation
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Language: en-US
-To: Ross Burton <ross.burton@arm.com>
-References: <20230524163201.3630288-1-ross.burton@arm.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
 Organization: Bootlin
-In-Reply-To: <20230524163201.3630288-1-ross.burton@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 26 May 2023 09:18:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3967
+ <docs@lists.yoctoproject.org>; Fri, 26 May 2023 09:25:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3968
 
-Hi Ross,
+Hi Richard,
 
-On 24.05.23 at 18:32, Ross Burton wrote:
-> From: Ross Burton <ross.burton@arm.com>
->
-> ---
->   documentation/dev-manual/licenses.rst | 7 +++++++
->   1 file changed, 7 insertions(+)
->
-> diff --git a/documentation/dev-manual/licenses.rst b/documentation/dev-manual/licenses.rst
-> index 9629dc53293..805b40fd482 100644
-> --- a/documentation/dev-manual/licenses.rst
-> +++ b/documentation/dev-manual/licenses.rst
-> @@ -123,6 +123,13 @@ name and version (after variable expansion)::
->   
->      LICENSE_FLAGS = "license_${PN}_${PV}"
->   
-> +It is possible to specify where to find more details for a specific license
-> +using flags on the :term:`LICENSE_FLAGS_DETAILS` variable:
-> +
-> +  LICENSE_FLAGS_DETAILS[my-eula-license] = "https://example.com/eula"
-> +
-> +If set, this will be displayed to the user if the license hasn't been accepted.
-> +
->   In order for a component restricted by a
->   :term:`LICENSE_FLAGS` definition to be enabled and included in an image, it
->   needs to have a matching entry in the global
+The following changes since commit 220b25d7d47d46b0d85c616b88ead75fab917092:
 
+   ref-manual: classes: kernel: document automatic defconfig usage 
+(2023-05-05 20:38:37 +0200)
 
-Thank you for starting this.
-I'll get back to it when support for LICENSE_FLAGS_DETAILS is merged.
+are available in the Git repository at:
 
+   git://git.yoctoproject.org/yocto-docs master-next
+
+for you to fetch changes up to 084ba9fad50d9903f520d0333e6a7d5ed4f40cc9:
+
+   migration-guides: release-notes-4.0.4.rst: fix typo (2023-05-25 
+15:39:10 +0200)
+
+----------------------------------------------------------------
+Lee Chee Yang (3):
+       release-notes-4.2: update known issues and Repositories/Downloads
+       migration-guides: add release-notes for 4.1.4
+       migration-guides: add release notes for 4.0.10
+
+Michael Opdenacker (11):
+       migration-guides: release-notes-4.2: add doc improvement highlights
+       migration-guides: release-notes-4.3: add stub section for 
+documentation changes
+       releases.svg: update according to latest release
+       ref-manual: improve description of kernel-fitimage variables
+       ref-manual: document uboot-sign class and variables
+       ref-manual: improve documentation for kernel-devicetree class
+       migration-guides: update 4.3 release notes
+       releases.svg: fix and explain duration of Hardknott 3.3
+       conf.py: add macro for Mitre CVE links
+       migration-guides: use new cve_mitre macro
+       migration-guides: release-notes-4.0.4.rst: fix typo
+
+Peter Kjellerstedt (1):
+       manuals: kernel-dev: Use protocol=https in a SRC_URI example
+
+Petr Kubizňák (1):
+       ref-manual: document devicetree class variables
+
+  documentation/conf.py                                   |   1 +
+  documentation/dev-manual/new-recipe.rst                 |   2 +
+  documentation/kernel-dev/advanced.rst                   |   7 ++--
+  documentation/migration-guides/release-4.0.rst          |   1 +
+  documentation/migration-guides/release-4.1.rst          |   1 +
+  documentation/migration-guides/release-notes-4.0.10.rst | 180 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  documentation/migration-guides/release-notes-4.0.4.rst  |   2 +-
+  documentation/migration-guides/release-notes-4.0.7.rst  |   4 +-
+  documentation/migration-guides/release-notes-4.1.3.rst  |   4 +-
+  documentation/migration-guides/release-notes-4.1.4.rst  | 254 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  documentation/migration-guides/release-notes-4.2.rst    |  85 
++++++++++++++++++++++++++++++++++++--
+  documentation/migration-guides/release-notes-4.3.rst    |  19 ++++++++-
+  documentation/ref-manual/classes.rst                    |  59 
+++++++++++++++++++++++++--
+  documentation/ref-manual/svg/releases.svg               |  77 
++++++++++++++++++++++-------------
+  documentation/ref-manual/system-requirements.rst        |   2 +
+  documentation/ref-manual/variables.rst                  | 283 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------------------
+  16 files changed, 891 insertions(+), 90 deletions(-)
+  create mode 100644 documentation/migration-guides/release-notes-4.0.10.rst
+  create mode 100644 documentation/migration-guides/release-notes-4.1.4.rst
+
+Thank you in advance :)
 Cheers
 Michael.
 
