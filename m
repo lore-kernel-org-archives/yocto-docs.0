@@ -1,69 +1,67 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <u.oelmann@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E6076C7EE23
-	for <webhook@archiver.kernel.org>; Tue, 30 May 2023 08:47:10 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.5327.1685436427311832028
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B5B6C7EE23
+	for <webhook@archiver.kernel.org>; Tue, 30 May 2023 20:08:18 +0000 (UTC)
+Received: from metis.ext.pengutronix.de (metis.ext.pengutronix.de [85.220.165.71])
+ by mx.groups.io with SMTP id smtpd.web10.4346.1685477293403697021
  for <docs@lists.yoctoproject.org>;
- Tue, 30 May 2023 01:47:07 -0700
+ Tue, 30 May 2023 13:08:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lWMwKn5y;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-X-GND-Sasl: michael.opdenacker@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1685436425;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MaETuQsCAv9HBh/Rn0RPL0pNf1taVHNedDBjYrc9f0o=;
-	b=lWMwKn5y3I7iKxAprasK1bBHdMtpJvaWoxchZqIDk2tYBI/H6kARkUyZEx6D7lgAwHup8V
-	FbaypvhfUAZNDGtaEeWkVPK7EuIvo7tLwPmqJ3RnxU9IJ+pyBtBDaLkhjOSLJFyynnaWsa
-	N3wovxis7liImaF0tVOwig0zBvw8F4NIu2i6tPGdXcCkHWR0J/5CXVablXeSlPo4kX2n9P
-	Vsdb+GvAFDFYt5rgelhcDr+Sf8TRa5Y36IF1sFzkPzR67z3Mf0fkwaPMlvtqsuKbn5bFuV
-	p3/kDTsmIDg3gf0e0iyj5xBut1XMIcZzuyJVcTmkPiyf7vnwRvXeIeHQrIwZZA==
-X-GND-Sasl: michael.opdenacker@bootlin.com
-X-GND-Sasl: michael.opdenacker@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8D0551C0009;
-	Tue, 30 May 2023 08:47:05 +0000 (UTC)
-Message-ID: <1d562974-52ac-ac2b-ead7-c884a0c407e8@bootlin.com>
-Date: Tue, 30 May 2023 10:47:05 +0200
+ dkim=missing; spf=pass (domain: pengutronix.de, ip: 85.220.165.71, mailfrom: uol@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <uol@pengutronix.de>)
+	id 1q45da-0002lD-Pn; Tue, 30 May 2023 22:08:10 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1q45da-003whx-0j; Tue, 30 May 2023 22:08:10 +0200
+Received: from uol by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1q45dZ-008bs4-8m; Tue, 30 May 2023 22:08:09 +0200
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Yocto Project Documentation <docs@lists.yoctoproject.org>
+Cc: yocto@pengutronix.de,
+	=?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Subject: [PATCH] ref-manual: classes.rst: fix typo
+Date: Tue, 30 May 2023 22:08:04 +0200
+Message-Id: <20230530200804.2052179-1-u.oelmann@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] Fix makefile.
-Content-Language: en-US
-To: Alexander Kanavin <alex.kanavin@gmail.com>,
- Tom Isaacson <tom.isaacson@teknique.com>
-References: <20230529030612.663-1-tom.isaacson@teknique.com>
- <CANNYZj8nnq8Kw0A8WvQyqfTQy_eyPTyzGdU5m7-J6v+0qHWCMw@mail.gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <CANNYZj8nnq8Kw0A8WvQyqfTQy_eyPTyzGdU5m7-J6v+0qHWCMw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: uol@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.ext.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 30 May 2023 08:47:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3979
+ <docs@lists.yoctoproject.org>; Tue, 30 May 2023 20:08:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3980
 
+Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
+---
+ documentation/ref-manual/classes.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 29.05.23 at 06:46, Alexander Kanavin wrote:
-> What is bring fixed and why? The commit message needs to include this 
-> information.
-
-
-Happy to help with that. Thanks Isaac for the patch and Alex for the review!
-Cheers
-Michael.
-
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index e454a54537f7..11e70006e5ac 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1473,7 +1473,7 @@ Here are the tests you can list with the :term:`WARN_QA` and
+ 
+ -  ``unhandled-features-check:`` check that if one of the variables that
+    the :ref:`ref-classes-features_check` class supports (e.g.
+-   :term:`REQUIRED_DISTRO_FEATURES`) is set by a recupe, then the recipe
++   :term:`REQUIRED_DISTRO_FEATURES`) is set by a recipe, then the recipe
+    also inherits :ref:`ref-classes-features_check` in order for the
+    requirement to actually work.
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.39.2
 
 
