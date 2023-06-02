@@ -2,74 +2,101 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 48ADBC77B7E
-	for <webhook@archiver.kernel.org>; Thu,  1 Jun 2023 13:22:00 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.31407.1685625712981120967
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 159EBC77B7A
+	for <webhook@archiver.kernel.org>; Fri,  2 Jun 2023 15:10:29 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.1578.1685718624267430713
  for <docs@lists.yoctoproject.org>;
- Thu, 01 Jun 2023 06:21:53 -0700
+ Fri, 02 Jun 2023 08:10:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dxSfhJDu;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=E0X0x0u5;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
 X-GND-Sasl: michael.opdenacker@bootlin.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1685625711;
+	t=1685718621;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=exCrUXg8uN3nXYAuqr1UYOb8VxfdwNP46P5qutniTJU=;
-	b=dxSfhJDuCdFZsmcvBvJotxeRmogNSGnSmvxJD8H85Zx5iE6yvkoDGaHuTCi84X90g63b2B
-	Sr3bSOpdfO4YuQm4/3BWrmj52Nx3PpSQOxzD6YDtqLWJMLZpv0YxCPFwUhcMua/W5cGGmT
-	hEMpwdVA/ui/Ttg8658QH7NckTbHuAM9sPf/jCGJ/0JaGZd5A4qGtN70zorrhv/3yRArC4
-	qiRa8BxcEBoaQUbyI0OQpGbWyJXM0vZ7IW3bSxdVlwQzGVyubBNTCXdBZZza/a4jINVJz0
-	uCf/Lb249oYDbNAijHj/qSwpBvOa7qOzG6mf8mKnRdyPV4NI9/VH//sU65ZAbg==
+	bh=lxO4KeEgmIZ2upI6kZ2uceIW1ifuXsOWoIsebThrmWE=;
+	b=E0X0x0u5kqEFkhwSuiPkKVmJFvyzqM/aL/0uymx1ETKPD8orVidTyyRhO4v/2DEsehvk9X
+	VzNgBBUphrfekH4xQgaMf4FR/6rnheYtRVQSDl0XsmgoYWApIkObhDh71RwNRymHG5iVRT
+	3qhIDbiLT20kn3CacS+0j/ah0PMwttYYrcAp6fBFpE3l3s1z5OQK3+i7QLk/uCDmLfQNMt
+	NaCJNMacQ40C7kWuHA/Ys32yCQED5Vo7ESvz2HohnmlBu56EaX5a9WjioXktGnegTwwMst
+	O1hIkD5gSLdNE5mezjSNRF/ej1SvShNbqi9wcJe+vud+Lz0Te9+PHqWmEZAkMw==
 X-GND-Sasl: michael.opdenacker@bootlin.com
-X-GND-Sasl: michael.opdenacker@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D018AC000B;
-	Thu,  1 Jun 2023 13:21:50 +0000 (UTC)
-From: michael.opdenacker@bootlin.com
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] bitbake-user-manual: document "network" task flag
-Date: Thu,  1 Jun 2023 15:21:17 +0200
-Message-Id: <20230601132117.2988856-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3283640008;
+	Fri,  2 Jun 2023 15:10:21 +0000 (UTC)
+Message-ID: <907f730f-1901-0a25-8c29-edb4da6aaac3@bootlin.com>
+Date: Fri, 2 Jun 2023 17:10:20 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
+Organization: Bootlin
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 01 Jun 2023 13:22:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3983
+ <docs@lists.yoctoproject.org>; Fri, 02 Jun 2023 15:10:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3984
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Richard,
 
-This addresses [YOCTO #15127]
+The following changes since commit 084ba9fad50d9903f520d0333e6a7d5ed4f40cc9:
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+   migration-guides: release-notes-4.0.4.rst: fix typo (2023-05-25 
+15:39:10 +0200)
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-index b35c332c..58975f4c 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-@@ -1519,6 +1519,12 @@ functionality of the task:
-    released. You can use this variable flag to accomplish mutual
-    exclusion.
- 
-+-  ``[network]``: When set to "1", allows a task to access the network. By
-+   default, only the ``do_fetch`` task is granted network access. Recipes
-+   shouldn't access the network outside of ``do_fetch`` as it usually
-+   undermines fetcher source mirroring, image and licence manifests, software
-+   auditing and supply chain security.
-+
- -  ``[noexec]``: When set to "1", marks the task as being empty, with
-    no execution required. You can use the ``[noexec]`` flag to set up
-    tasks as dependency placeholders, or to disable tasks defined
+are available in the Git repository at:
+
+   git://git.yoctoproject.org/yocto-docs master-next
+
+for you to fetch changes up to ad24794b095b17beee8e7bdb0b8c92ae72c6e5b0:
+
+   sdk-manual: fix Makefile example (2023-06-01 15:51:33 +0200)
+
+----------------------------------------------------------------
+Daniel Ammann (1):
+       overview-manual: concepts.rst: Fix a typo
+
+Lee Chee Yang (1):
+       migration-guides: add release notes for 4.2.1
+
+Michael Opdenacker (2):
+       ref-manual: document SPLASH variable
+       manuals: document SPLASH_IMAGES variable
+
+Tom Isaacson (1):
+       sdk-manual: fix Makefile example
+
+Ulrich Ölmann (1):
+       ref-manual: classes.rst: fix typo
+
+  documentation/dev-manual/custom-distribution.rst       |   9 ++++---
+  documentation/migration-guides/release-4.2.rst         |   1 +
+  documentation/migration-guides/release-notes-4.2.1.rst | 206 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  documentation/overview-manual/concepts.rst             |   2 +-
+  documentation/ref-manual/classes.rst                   |   2 +-
+  documentation/ref-manual/features.rst                  |   2 +-
+  documentation/ref-manual/variables.rst                 |  38 
+++++++++++++++++++++++++++
+  documentation/sdk-manual/working-projects.rst          |   6 ++---
+  8 files changed, 256 insertions(+), 10 deletions(-)
+  create mode 100644 documentation/migration-guides/release-notes-4.2.1.rst
+
+Thank you in advance
+Cheers
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
