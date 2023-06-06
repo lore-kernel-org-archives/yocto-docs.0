@@ -1,74 +1,83 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <beroset@ieee.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 724F1C7EE24
-	for <webhook@archiver.kernel.org>; Fri,  2 Jun 2023 16:22:49 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.17823.1685722960052895012
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2ED0BC77B73
+	for <webhook@archiver.kernel.org>; Tue,  6 Jun 2023 18:09:47 +0000 (UTC)
+Received: from drive140.trustyservers.com (drive140.trustyservers.com [64.118.88.4])
+ by mx.groups.io with SMTP id smtpd.web10.3931.1686074980520726135
  for <docs@lists.yoctoproject.org>;
- Fri, 02 Jun 2023 09:22:40 -0700
+ Tue, 06 Jun 2023 11:09:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=FAZDYjcv;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-X-GND-Sasl: michael.opdenacker@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1685722957;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=9SnTBnaPKKKEWmkgn6QkK5sIM+RQLzAg9ngWq/MUPJw=;
-	b=FAZDYjcvq+3KcgZ+OA/4Dpi7LyWSDF2+Pja1VL/v7GogIXSgBRNXhxyCTnOQnVoZWWKG0d
-	ZP4dEN98r3E6E+7U6XMnNBufnfcx15sx/WDyGEcOK/AYmiRCnmn87mCrxAyjij4LTASsmq
-	A/BpWnSBnL3vLBEs8TQZc/A8jeRr9JnneAGG18W4jkZDEPAN0V2Fk7x672MakFkzyj0EIG
-	aSGgK+FOuI94adL3WxClZ91Ckj7iDO3g2YD4p8N2EvcPaGZNb02TH0YFPmbQAB895V+Hb7
-	F2JLfoj5xJ5N2/JrytMQtKZNyHQQ32w7WQ8RBnh71hI8X2XLnH69VO2WP57TrA==
-X-GND-Sasl: michael.opdenacker@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7180EFF80C;
-	Fri,  2 Jun 2023 16:22:37 +0000 (UTC)
-From: michael.opdenacker@bootlin.com
+ dkim=pass header.i=@beroset.com header.s=default header.b=xRwhdE9R;
+ spf=permerror, err=parse error for token &{10 18 _spf.google.com}: parse error for token &{10 18 _netblocks3.google.com}: limit exceeded (domain: ieee.org, ip: 64.118.88.4, mailfrom: beroset@ieee.org)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=beroset.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=Ts3u2C2qznRUY46w4W4HD39nZRcMnGhHfxgZAr6m8EY=; b=xRwhdE9RVfXVii9/WcTSos/nB0
+	BghSe0GEz/ut1Aflj+Kq6FqA8KtPF6/1d8UZ7yhI2uVn8wahBOQDPhed6DwTlzzn+urCIstv7a7cY
+	60usJq6OjIOKxnb3EkXaxEiR0Dk6jumJ2lb3pcfOi/1vxzDXhBeSkjtZweqU+JbhT2ThkDcm/hPC4
+	3hAt8Vyhd+xK2UYORkcrP5Q9uUpDAzPsj68C/ce4BgY0FwGmMPgErjvoF5SkJcGELNSpHSKI7jWO5
+	4sC7uPItkpr9xhWmGU01dXg+flyNd79xjEVqwitoVaEywaZ9wIaPUHqc/JXauUATaOMaVYDQS48R0
+	vuGwW6jA==;
+Received: from 104-185-76-86.lightspeed.rlghnc.sbcglobal.net ([104.185.76.86]:34646 helo=flash.attlocal.net)
+	by drive140.trustyservers.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <beroset@ieee.org>)
+	id 1q6b7k-0002mB-24;
+	Tue, 06 Jun 2023 14:09:39 -0400
+From: Ed Beroset <beroset@ieee.org>
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] migration-guides: release-notes-4.3: update documentation notes
-Date: Fri,  2 Jun 2023 18:22:35 +0200
-Message-Id: <20230602162235.2497009-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Ed Beroset <beroset@ieee.org>
+Subject: [PATCH] Add clarification for SRCREV
+Date: Tue,  6 Jun 2023 14:09:31 -0400
+Message-Id: <20230606180931.369018-1-beroset@ieee.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - drive140.trustyservers.com
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - ieee.org
+X-Get-Message-Sender-Via: drive140.trustyservers.com: authenticated_id: eddieieee@beroset.com
+X-Authenticated-Sender: drive140.trustyservers.com: eddieieee@beroset.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 02 Jun 2023 16:22:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3985
+ <docs@lists.yoctoproject.org>; Tue, 06 Jun 2023 18:09:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3986
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+It was not clear to me what a "full revision identifier" was in the
+context of the note documenting SRCREV.  After clarification via IRC,
+this submission attempts to clarify what is meant to help future
+readers.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Ed Beroset <beroset@ieee.org>
 ---
- documentation/migration-guides/release-notes-4.3.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ documentation/ref-manual/variables.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/migration-guides/release-notes-4.3.rst b/documentation/migration-guides/release-notes-4.3.rst
-index 1cae8f19b5..d782a5917d 100644
---- a/documentation/migration-guides/release-notes-4.3.rst
-+++ b/documentation/migration-guides/release-notes-4.3.rst
-@@ -59,6 +59,15 @@ New Features / Enhancements in 4.3
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 6a7888ab4..5b96e4efe 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7942,7 +7942,7 @@ system and gives an overview of their function and contents.
+       that if you want to build a fixed revision and you want to avoid
+       performing a query on the remote repository every time BitBake parses
+       your recipe, you should specify a :term:`SRCREV` that is a full revision
+-      identifier and not just a tag.
++      identifier (e.g. the full SHA hash in git) and not just a tag.
  
- -  Prominent documentation updates:
+       .. note::
  
-+   -  Long due documentation for the :ref:`ref-classes-devicetree` class.
-+
-+   -  New :ref:`summary about available init systems
-+      <dev-manual/init-manager:summary>`.
-+
-+   -  New documentation for the :ref:`ref-classes-uboot-sign` class and
-+      its variables and for the :ref:`ref-classes-kernel-devicetree` class
-+      variables.
-+
- -  Miscellaneous changes:
- 
-    -  Git based recipes in OE-Core which used the git protocol have been
 -- 
-2.34.1
+2.40.1
 
 
