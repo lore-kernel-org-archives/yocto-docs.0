@@ -1,97 +1,85 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <beroset@ieee.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B6C4C7EE29
-	for <webhook@archiver.kernel.org>; Wed,  7 Jun 2023 08:22:26 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.3507.1686126139089119565
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E3FA7C77B7A
+	for <webhook@archiver.kernel.org>; Wed,  7 Jun 2023 13:59:17 +0000 (UTC)
+Received: from drive140.trustyservers.com (drive140.trustyservers.com [64.118.88.4])
+ by mx.groups.io with SMTP id smtpd.web10.9288.1686146348179481419
  for <docs@lists.yoctoproject.org>;
- Wed, 07 Jun 2023 01:22:19 -0700
+ Wed, 07 Jun 2023 06:59:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=C1Lu8MIP;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-X-GND-Sasl: michael.opdenacker@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1686126137;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ECVU7kXUFtxJDBDDAaFvniqlFvAaPZHOmvD2WFOwfy8=;
-	b=C1Lu8MIPi2zxgxjAFxKrYtM/fV8J//Ravf8I5LOaWTWklPYlDWsTBD62DK0G4a/NHh8NEW
-	ZKjBILfevGAFUf18GTB/AQChaYFyt8Xa/nnYzaD9OTHUbq7kPE4Q6hLOZzW7LSQlb+Z9kR
-	XoUlWvijTleeXUbm9nw6JGod+LBCyA9yw3SoKU3P5nADOZgJLWoO7Kg+TFl+IXO/oUbx8I
-	Ed82i+qtdQYy2SoJz8szqOHb8s7gEeUGYk6Qi0dRbvoT6BHnUS3tuyOvWDDpy9AyH7CIYY
-	7GKv0kU5T5m1IJJ0JJ+JxXv1mcIZcJZchJrK+FyVT1hRXLH3hOwfkqtW4kJEMg==
-X-GND-Sasl: michael.opdenacker@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CCB961C0005;
-	Wed,  7 Jun 2023 08:22:16 +0000 (UTC)
-Message-ID: <37f36f58-7697-9b9a-649c-dc899ccd9ced@bootlin.com>
-Date: Wed, 7 Jun 2023 10:22:16 +0200
+ dkim=pass header.i=@beroset.com header.s=default header.b=sMjKPjQe;
+ spf=permerror, err=parse error for token &{10 18 _spf.google.com}: parse error for token &{10 18 _netblocks3.google.com}: limit exceeded (domain: ieee.org, ip: 64.118.88.4, mailfrom: beroset@ieee.org)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=beroset.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject
+	:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=RzvX4bEAj2FWmynxhQFnwORh/5dPbyDQiwsECtXrDMU=; b=sMjKPjQe0DAlD7tzA8J5/pIjUS
+	D9nvyQZtxB87an0C3OcuNmFOef6m2DfQpolGPxWML26YUhS/JWTQCngf3zP/jgY2gaW7wN1KLsQqr
+	++Jprf/molh0Pn2bOo3hG5XUP+OrjtprFP1Q2th7o/P0GU/92fHIuN+NO24LarPmRk/h2oCEcRFEK
+	a390a2ZaB8T3ieQTuNB00k5bblKmWZu3ze+u0Oz4jI7+eh9iwhx3TQ3y+VQIi2MbeW8GsPTkH6SAY
+	jggWFx+AldjpfJk67cixcwIc8PFhXZqxfuF8fR1d4maeKTd6oKD+T2kB4SBfwOhMfMtXCojXcU4kU
+	h+sfoLkg==;
+Received: from 104-185-76-86.lightspeed.rlghnc.sbcglobal.net ([104.185.76.86]:33086 helo=flash.attlocal.net)
+	by drive140.trustyservers.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <beroset@ieee.org>)
+	id 1q6tgq-0001rV-2N;
+	Wed, 07 Jun 2023 09:59:07 -0400
+From: beroset@ieee.org
+To: docs@lists.yoctoproject.org
+Cc: Ed Beroset <beroset@ieee.org>
+Subject: [PATCH] Add clarification for SRCREV
+Date: Wed,  7 Jun 2023 09:58:31 -0400
+Message-Id: <20230607135831.519561-1-beroset@ieee.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] Add clarification for SRCREV
-Content-Language: en-US
-To: beroset@ieee.org
-References: <20230606180931.369018-1-beroset@ieee.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20230606180931.369018-1-beroset@ieee.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - drive140.trustyservers.com
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - ieee.org
+X-Get-Message-Sender-Via: drive140.trustyservers.com: authenticated_id: eddieieee@beroset.com
+X-Authenticated-Sender: drive140.trustyservers.com: eddieieee@beroset.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 07 Jun 2023 08:22:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3988
+ <docs@lists.yoctoproject.org>; Wed, 07 Jun 2023 13:59:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3989
 
-Hi Ed
+From: Ed Beroset <beroset@ieee.org>
 
-On 06.06.23 at 20:09, Ed Beroset via lists.yoctoproject.org wrote:
-> It was not clear to me what a "full revision identifier" was in the
-> context of the note documenting SRCREV.  After clarification via IRC,
-> this submission attempts to clarify what is meant to help future
-> readers.
->
-> Signed-off-by: Ed Beroset <beroset@ieee.org>
-> ---
->   documentation/ref-manual/variables.rst | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 6a7888ab4..5b96e4efe 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -7942,7 +7942,7 @@ system and gives an overview of their function and contents.
->         that if you want to build a fixed revision and you want to avoid
->         performing a query on the remote repository every time BitBake parses
->         your recipe, you should specify a :term:`SRCREV` that is a full revision
-> -      identifier and not just a tag.
-> +      identifier (e.g. the full SHA hash in git) and not just a tag.
->   
->         .. note::
+It was not clear to me what a "full revision identifier" was in the
+context of the note documenting SRCREV.  After clarification via IRC,
+this submission attempts to clarify what is meant to help future
+readers.
 
+Signed-off-by: Ed Beroset <beroset@ieee.org>
+---
+ documentation/ref-manual/variables.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Many thanks for the patch!
-Everything looks good, except that your patch is received through "Your 
-Name via lists.openembedded.org" or "Your Name via 
-lists.yoctoproject.org". We'd need you to do add one thing to your git 
-configuration, so that your patches are given an "Author" field which 
-matches your "Signed-off-by" information. See 
-https://www.openembedded.org/wiki/How_to_submit_a_patch_to_OpenEmbedded#Fixing_your_From_identity 
-for details.
-
-Don't hesitate to send a patch test directly to me, if you wish.
-Thanks in advance
-Michael.
-
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 6a7888ab4..5b96e4efe 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7942,7 +7942,7 @@ system and gives an overview of their function and contents.
+       that if you want to build a fixed revision and you want to avoid
+       performing a query on the remote repository every time BitBake parses
+       your recipe, you should specify a :term:`SRCREV` that is a full revision
+-      identifier and not just a tag.
++      identifier (e.g. the full SHA hash in git) and not just a tag.
+ 
+       .. note::
+ 
 -- 
-
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.40.1
 
 
