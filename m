@@ -1,107 +1,97 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <steve@sakoman.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B865CC7EE25
-	for <webhook@archiver.kernel.org>; Thu,  8 Jun 2023 20:37:06 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.5007.1686256622121937277
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5F6FEB64D7
+	for <webhook@archiver.kernel.org>; Wed, 14 Jun 2023 02:39:51 +0000 (UTC)
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+ by mx.groups.io with SMTP id smtpd.web10.2789.1686710387750820923
  for <docs@lists.yoctoproject.org>;
- Thu, 08 Jun 2023 13:37:02 -0700
+ Tue, 13 Jun 2023 19:39:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ho4AGGfX;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-X-GND-Sasl: michael.opdenacker@bootlin.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1686256620;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vsmdUPQWsOJM1MDsdfDr+3hWqKJtO7mJTFRCo8lZOUk=;
-	b=Ho4AGGfXxkjLKeUDqsWbYRLW6GfJnoN/P2I84rRITxCfNEvoGBEh5SNbPk7GVEwC4lhVkM
-	VWbJYcVLVo3NQ3zSU9AOwS0iLT+C9LWRsNDD+LGUpB4rkkC1zhH0OC0CHReifVh139hZnY
-	Aga0Z5yEQszHklIcv20Wt6eqA6x0UuY9Z5y78BCnSHU3WMfomgtc+51G01uz155Ud+KmSq
-	LIp/NjbDUDNwMEINY5oVi7MJMjD/ACYrlpewia/JM/uuNH3yeCVLA94mxzNa8xe6ZrzRZJ
-	QcIxOCKGHOW8RCyZPF+8Fs+EwDOTN2dI+a+xEbMqIlDlJuxZKHjj/7QbeuHLyw==
-X-GND-Sasl: michael.opdenacker@bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DCC9EE0007;
-	Thu,  8 Jun 2023 20:36:59 +0000 (UTC)
-Message-ID: <e1a49252-48b2-5159-ffb9-a23d7057263d@bootlin.com>
-Date: Thu, 8 Jun 2023 22:36:59 +0200
+ dkim=pass header.i=@sakoman-com.20221208.gappssmtp.com header.s=20221208 header.b=rnpFs0Md;
+ spf=softfail (domain: sakoman.com, ip: 209.85.210.182, mailfrom: steve@sakoman.com)
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-651e298be3fso6555800b3a.2
+        for <docs@lists.yoctoproject.org>; Tue, 13 Jun 2023 19:39:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20221208.gappssmtp.com; s=20221208; t=1686710387; x=1689302387;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+JBpuvUiZHUD38MzqhvHyQ4pMHp0/+jY/hXa1/MXkyI=;
+        b=rnpFs0MdK73XiKguwvs55SDO9EWzMsdpixn8SQRmyi+pgifrxdRR0t8kwOhlpwdF2a
+         7331l1LDqFGgSxoOdHDJqB7kgVB7RCela682gqJ973b20mNbaoC7d8Neduklm5I3/7AV
+         3UwevVdZ4oe0wFz7mb1/ogJkKyFJ3ypHP4f43EKGpKYnwseVSAdfv+ZaMuWVhDMoOq38
+         AKHJPjnZHLSDBF07lUwoIDxt2K6k3XNoOjLJ0pCSzWMR4cTANLlsjDwr+eOoFGjpJkjT
+         JXEzSbycyAYogl+Tf1u63xn+pZ8zsCoyVnLvphFaHiylJKgvXB8/JMiUiznXgtMNG+Lv
+         zKvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686710387; x=1689302387;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+JBpuvUiZHUD38MzqhvHyQ4pMHp0/+jY/hXa1/MXkyI=;
+        b=Do52VS3G+K2AYmPq/HMAbgvOwtRZ6emHAL4r2uNkAuZculOkO92mdiWwAX9A7Ujz4e
+         2+mb0L58VFeL4pPAiYgxm1KUMJnG37tCJvzWQbBvK44qDNc1J2cKd8aG5t6Pjwuy2USJ
+         wPpGpINnm5Ow3IMULzOmLVsZrsXVCDBRZ9IOCRbeovuJgW0V79sTdDbDr4kdb4pVP2sf
+         r6hh+eYNDBgB9cTr1/lPicoZtl4ijzdAHPLmTLXVx9YvmgilN29LpaTYCzZLfV6jwx3k
+         k8/znkckXK5wYoUSMgG4ZvnMsai+s1O9kvF/hm4c01vNvgxBUt4Bdq3GEl39lKKfnV1M
+         AmXA==
+X-Gm-Message-State: AC+VfDybuDItEOjeg066yH61Uk/759pBSJXr4BET8utWtFDA6bGLDT9Y
+	7ACjsrsJW+JD/V3iNeuCLz7JpL240vaUJtAyoQs=
+X-Google-Smtp-Source: ACHHUZ5OhlzSGyInj5Rn2wrYhzDGfCZ2uJM2TxMPbSTyaRq2x6XuPuyjzLnOA6p0U5qVfPJb8GPKNg==
+X-Received: by 2002:a05:6a20:2590:b0:110:e7bc:b0cb with SMTP id k16-20020a056a20259000b00110e7bcb0cbmr571939pzd.39.1686710386466;
+        Tue, 13 Jun 2023 19:39:46 -0700 (PDT)
+Received: from hexa.router0800d9.com (dhcp-72-234-106-30.hawaiiantel.net. [72.234.106.30])
+        by smtp.gmail.com with ESMTPSA id 18-20020a056a00073200b0063799398eaesm9270246pfm.51.2023.06.13.19.39.45
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jun 2023 19:39:46 -0700 (PDT)
+From: Steve Sakoman <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell] documentation: update for 3.1.26
+Date: Tue, 13 Jun 2023 16:39:41 -1000
+Message-Id: <6f5d97a43a9dc7144afe4544c1841d3f378bd4a0.1686710324.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1686710324.git.steve@sakoman.com>
+References: <cover.1686710324.git.steve@sakoman.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] poky.yaml.in: simplify host package requirements
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <20230503090136.2483595-1-michael.opdenacker@bootlin.com>
- <cdaf1f42bc82c7a9146070925079ea0ceba3e98e.camel@linuxfoundation.org>
- <65845df5-37a5-202f-f5ec-00d2199bc347@bootlin.com>
- <222f54244c8ac90667615737d7886bc21ea46577.camel@linuxfoundation.org>
- <175BA9792333BDA0.14539@lists.yoctoproject.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <175BA9792333BDA0.14539@lists.yoctoproject.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 08 Jun 2023 20:37:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3993
+ <docs@lists.yoctoproject.org>; Wed, 14 Jun 2023 02:39:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3994
 
-Hello,
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
+---
+ documentation/poky.yaml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-On 03.05.23 at 16:46, Michael Opdenacker via lists.yoctoproject.org wrote:
->
-> On 03.05.23 at 12:44, Richard Purdie wrote:
->>
->>>> Ideally there would be two levels of dependencies, those needed for 
->>>> the
->>>> basics and those needed to cover all the needs.
->>>>
->>>> Looking at the original bug, I think we did remove some of the
->>>> SDL/xterm/vnc requirements. Even then some vnc pieces are still needed
->>>> for some autobuilder setups though.
->>>>
->>>> We likely should define which workflows we expect to work with this
->>>> "essential" dependency list?
->>>
->>> Maybe we could document this elsewhere (in a section for developers /
->>> testers ?), to keep the list short for regular users.
->> I agree, I think we do likely need to have two different lists with
->> pointers to move the user to the appropriate one. Would you be able to
->> propose a change?
->
->
-> Sure, but I'd need to know what commands I should test to figure out 
-> which extra packages are needed.
->
-> I'm asking because I suspect that some of the host packages we're 
-> listing are no longer necessary anyway, either because of distro 
-> changes, or because of our own changes. It's also good to document 
-> what the host packages are necessary for.
->
-> So, would you (or others) have such commands to run? I'd install the 
-> "minimum" requirements first for each distro, and then run these 
-> commands until I've found all the extra host packages they actually need.
-
-
-So, any clue about the commands I should run to find the extra host 
-packages that are needed to generate more than images, such as running 
-Autobuilder and some testing jobs?
-
-Anyway, if we document such extra host packages, we'll need to explain 
-what they are needed for.
-Thanks in advance
-Cheers
-Michael.
-
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 62d69f9c8..ead58a970 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -1,13 +1,13 @@
+-DISTRO : "3.1.25"
++DISTRO : "3.1.26"
+ DISTRO_NAME_NO_CAP : "dunfell"
+ DISTRO_NAME : "Dunfell"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
+-YOCTO_DOC_VERSION : "3.1.25"
++YOCTO_DOC_VERSION : "3.1.26"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
+-DISTRO_REL_TAG : "yocto-3.1.25"
+-DOCCONF_VERSION : "3.1.25"
++DISTRO_REL_TAG : "yocto-3.1.26"
++DOCCONF_VERSION : "3.1.26"
+ BITBAKE_SERIES : "1.46"
+-POKYVERSION : "23.0.25"
++POKYVERSION : "23.0.26"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
