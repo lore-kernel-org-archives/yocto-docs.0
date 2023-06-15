@@ -2,10 +2,10 @@ Return-Path: <mikko.rapeli@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AF7A2EB64DD
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF16AEB64DC
 	for <webhook@archiver.kernel.org>; Thu, 15 Jun 2023 11:26:50 +0000 (UTC)
 Received: from mail.kapsi.fi (mail.kapsi.fi [91.232.154.25])
- by mx.groups.io with SMTP id smtpd.web10.15577.1686828404506155828
+ by mx.groups.io with SMTP id smtpd.web10.15576.1686828404500791315
  for <docs@lists.yoctoproject.org>;
  Thu, 15 Jun 2023 04:26:45 -0700
 Authentication-Results: mx.groups.io;
@@ -14,17 +14,19 @@ Received: from kapsi.fi ([2001:67c:1be8::11] helo=lakka.kapsi.fi)
 	by mail.kapsi.fi with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1q9l7g-001kwk-3Q; Thu, 15 Jun 2023 14:26:40 +0300
+	id 1q9l7h-001kx7-Jv; Thu, 15 Jun 2023 14:26:41 +0300
 Received: from mcfrisk by lakka.kapsi.fi with local (Exim 4.94.2)
 	(envelope-from <mcfrisk@lakka.kapsi.fi>)
-	id 1q9l7f-00FXBY-RO; Thu, 15 Jun 2023 14:26:39 +0300
+	id 1q9l7h-00FXCw-BF; Thu, 15 Jun 2023 14:26:41 +0300
 From: mikko.rapeli@linaro.org
 To: docs@lists.yoctoproject.org
 Cc: Mikko Rapeli <mikko.rapeli@linaro.org>
-Subject: [PATCH 1/2] variables.rst: document OEQA_REPRODUCIBLE_TEST_TARGET and OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS
-Date: Thu, 15 Jun 2023 14:26:32 +0300
-Message-Id: <20230615112633.3702207-1-mikko.rapeli@linaro.org>
+Subject: [PATCH 2/2] reproducible-builds.rst: document OEQA_REPRODUCIBLE_TEST_TARGET and OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS
+Date: Thu, 15 Jun 2023 14:26:33 +0300
+Message-Id: <20230615112633.3702207-2-mikko.rapeli@linaro.org>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230615112633.3702207-1-mikko.rapeli@linaro.org>
+References: <20230615112633.3702207-1-mikko.rapeli@linaro.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-Score: -1.4 (-)
@@ -48,7 +50,7 @@ X-Rspam-Report: Action: no action
  Symbol: FROM_NEQ_ENVFROM(0.00)
  Symbol: BAYES_HAM(-3.00)
  Symbol: RCVD_COUNT_TWO(0.00)
- Message-ID: 20230615112633.3702207-1-mikko.rapeli@linaro.org
+ Message-ID: 20230615112633.3702207-2-mikko.rapeli@linaro.org
 X-SA-Exim-Connect-IP: 2001:67c:1be8::11
 X-SA-Exim-Mail-From: mcfrisk@lakka.kapsi.fi
 X-SA-Exim-Scanned: No (on mail.kapsi.fi); SAEximRunCond expanded to false
@@ -56,39 +58,42 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 15 Jun 2023 11:26:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3997
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/3996
 
 From: Mikko Rapeli <mikko.rapeli@linaro.org>
 
-They control which build targets to use when testing build
-reproducibility and which build targets can reuse sstate
-cache during the test.
+They are used to fine tune build reproducibility test for
+different build targets than "bitbake world" and to define
+which recipes can be rebuild using sstate cache.
+
+These are useful when ramping up build reproducibility in complex
+build configurations where "bitbake world" has too many failures.
 
 Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
 ---
- documentation/ref-manual/variables.rst | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ documentation/test-manual/reproducible-builds.rst | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 6a7888ab47..bb9d4cc66a 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5541,6 +5541,15 @@ system and gives an overview of their function and contents.
-       For additional information on how this variable is used, see the
-       initialization script.
+diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
+index 50256fb197..28feb78391 100644
+--- a/documentation/test-manual/reproducible-builds.rst
++++ b/documentation/test-manual/reproducible-builds.rst
+@@ -103,10 +103,12 @@ run::
+    oe-selftest -r reproducible.ReproducibleTests.test_reproducible_builds
  
-+   :term:`OEQA_REPRODUCIBLE_TEST_TARGET`
-+      Set build target for build reproducibility testing. By default
-+      all available recipes are compile with "bitbake world", see also ``EXCLUDE_FROM_WORLD``
-+      and :doc:`/test-manual/reproducible-builds`.
-+
-+   :term:`OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS`
-+      Set build targets which can be rebuild using :ref:`shared state <overview-manual/concepts:shared state cache>`
-+      when running build reproducibility test. See :doc:`/test-manual/reproducible-builds`.
-+
-    :term:`OLDEST_KERNEL`
-       Declares the oldest version of the Linux kernel that the produced
-       binaries must support. This variable is passed into the build of the
+ This defaults to including a ``world`` build so, if other layers are added, it would
+-also run the tests for recipes in the additional layers. The first build will be
+-run using :ref:`Shared State <overview-manual/concepts:Shared State>` if
++also run the tests for recipes in the additional layers. Different build targets
++can be defined using ``OEQA_REPRODUCIBLE_TEST_TARGET`` variable in ``local.conf``.
++The first build will be run using :ref:`Shared State <overview-manual/concepts:Shared State>` if
+ available, the second build explicitly disables
+-:ref:`Shared State <overview-manual/concepts:Shared State>` and builds on the
++:ref:`Shared State <overview-manual/concepts:Shared State>` except for recipes defined in
++``OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS`` variable, and builds on the
+ specific host the build is running on. This means we can test reproducibility
+ builds between different host distributions over time on the Autobuilder.
+ 
 -- 
 2.34.1
 
