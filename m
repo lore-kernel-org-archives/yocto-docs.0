@@ -1,114 +1,87 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53A3EEB64D8
-	for <webhook@archiver.kernel.org>; Tue, 20 Jun 2023 22:27:59 +0000 (UTC)
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
- by mx.groups.io with SMTP id smtpd.web10.3331.1687300077124524919
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B07BBEB64D7
+	for <webhook@archiver.kernel.org>; Wed, 21 Jun 2023 08:48:25 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.6420.1687337296887103839
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Jun 2023 15:27:57 -0700
+ Wed, 21 Jun 2023 01:48:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=aK4dxRZC;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.47, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3112f2b9625so3607999f8f.1
-        for <docs@lists.yoctoproject.org>; Tue, 20 Jun 2023 15:27:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1687300075; x=1689892075;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yv/kDwiCSZ2Yur/Kp33+kXmmlWlYuKtLCTNQZ33dbqI=;
-        b=aK4dxRZCFEnnKGtAjkfIxAZN0KJ9G+50BKBSmxTisyvi6vCuxSs6ePdzO2MEoxQLLp
-         wF61JENXyHS5DF/rCdm9/wnpXCZ1qlbO5Ea1hwDGQYYar/P77VjQHjTo9g4xaSaOappR
-         pTk4NA4WKd1y4TaWFa2Wrr1YlT6u4dq2AOlf4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687300075; x=1689892075;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yv/kDwiCSZ2Yur/Kp33+kXmmlWlYuKtLCTNQZ33dbqI=;
-        b=FPyLKJn5FbWGtNZiMtM5Hp79H1XEdgdnkqv6ctNw9XYWZ5Snurj7MyYDx9U+0qmG76
-         FGV5AyZe7QvAXCNnfRPyKQvQQyAuqt+1lCb5Cb5v8aXY5uZ3Ao/O+i+Fd0RWK0hF9zSa
-         7Qotgu1181ZzdMdM23o8+tz2wHS6RyNJzJ/DF1QKSdTfs/kdIb+8Sdso5zPwTU0kdWS0
-         yxtkRpCQD0lZ5BEyzqoBuSM5RPDgO46JkdUiKkrH21DOKIE1FsQ1cxpvOlBnBX8q/IZi
-         C2hM64Uo0zarA/ww4PnSZS0JJM9Y4eKSUxJnioXeiqtx4dL5lDyL6GIBVJGGYW5x+OsZ
-         5iyw==
-X-Gm-Message-State: AC+VfDy3bP8Z4xngQdoSZ8b543oyF7Y8YmUagyjjMcy+6nNjyz5eVL3N
-	h+QI/ZAdpH6yVtWU1yHXXTwapQ==
-X-Google-Smtp-Source: ACHHUZ5Cy919SmywDYxgf39KOMrQrAlZ3GU9tS02RHX7XE5biwBgWMK1fvaz7ctrVDU53JLvdcHYhg==
-X-Received: by 2002:adf:ec03:0:b0:306:36ef:2e3b with SMTP id x3-20020adfec03000000b0030636ef2e3bmr10292133wrn.70.1687300075335;
-        Tue, 20 Jun 2023 15:27:55 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:1417:9a5:3a38:428a? ([2001:8b0:aba:5f3c:1417:9a5:3a38:428a])
-        by smtp.gmail.com with ESMTPSA id p2-20020a7bcc82000000b003f9bcba3839sm445097wma.12.2023.06.20.15.27.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Jun 2023 15:27:54 -0700 (PDT)
-Message-ID: <d3339edca72c52a5f4bd15e67f37cf8717ef607a.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] doc: Document FILE_LAYERNAME
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
-	bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org
-Date: Tue, 20 Jun 2023 23:27:53 +0100
-In-Reply-To: <60145e50-fd6a-b28c-51ab-f3cf3540f4a5@bootlin.com>
-References: <20230620135822.2802308-1-richard.purdie@linuxfoundation.org>
-	 <60145e50-fd6a-b28c-51ab-f3cf3540f4a5@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oqnnBt2R;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+X-GND-Sasl: michael.opdenacker@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1687337294;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=H+5AhGG5DrfI1YtqN8MWuR4weS55x9xbU+Oxfy/LhxI=;
+	b=oqnnBt2RwCO78xj5R9G9bQjSWIy/kJfvVT8pmzrhOB7MEUvCIIcAZJVzIw3Qh9s5hWCz0E
+	5F+TEpSSG0rTzKa7pOjkOq2b3KDmOilbosKkYz2PIG55Hv1n20Vk1pGy4RiWczSVXqgphy
+	3ej7FiPGqorF4SoPUA+d4W3grS+MnC1AzB0Wc0Jqy7dFRB12+6HIuvx3GYArk2GTI3dyyi
+	jVh11g1cHkbW5k52UaIVfwTh9JV6vl6L/Ywwa/ebvYWerLhtmJAwp2VWVNYTYWl0Yhvry1
+	UZCYygACzHVe8h9uooracx7Oq6VEsVF4WaNRKiD+Yd/Anw/kpXUkAw8QjhJdEw==
+X-GND-Sasl: michael.opdenacker@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 00C1460007;
+	Wed, 21 Jun 2023 08:48:13 +0000 (UTC)
+Message-ID: <24b77e34-7e49-adfc-f0f3-259ed41eda2c@bootlin.com>
+Date: Wed, 21 Jun 2023 10:48:13 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 2/2] migration-guide: Add notes on systemd/usrmerge
+ changes
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+References: <20230620140053.2802542-1-richard.purdie@linuxfoundation.org>
+ <20230620140053.2802542-2-richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20230620140053.2802542-2-richard.purdie@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 20 Jun 2023 22:27:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4016
+ <docs@lists.yoctoproject.org>; Wed, 21 Jun 2023 08:48:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4017
 
-On Tue, 2023-06-20 at 22:16 +0200, Michael Opdenacker wrote:
-> Hi Richard
->=20
-> On 20.06.23 at 15:58, Richard Purdie wrote:
-> > Document the new variable.
-> >=20
-> > Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> > ---
-> >   .../bitbake-user-manual-ref-variables.rst                    | 5 ++++=
-+
-> >   1 file changed, 5 insertions(+)
-> >=20
-> > diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.=
-rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> > index ee5d7ba8d4..337cfa3ed5 100644
-> > --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> > +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> > @@ -1072,6 +1072,11 @@ overview of their function and contents.
-> >         environment variable. The value is a colon-separated list of
-> >         directories that are searched left-to-right in order.
-> >  =20
-> > +   :term:`FILE_LAYERNAME`
-> > +      During parsing and task execution, this is set to the name of th=
-e
-> > +      layer containing the recipe file. Code can use this to identify =
-which
-> > +      layer a recipe is from.
-> > +
-> >      :term:`GITDIR`
-> >         The directory in which a local copy of a Git repository is stor=
-ed
-> >         when it is cloned.
->=20
->=20
-> Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->=20
-> If you can merge this commit quickly, I'll be able to include the Yocto=
-=20
-> Manual one you submitted, referring to it.
+Hi Richard,
 
-Merged!
+On 20.06.23 at 16:00, Richard Purdie wrote:
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+> ---
+>   documentation/migration-guides/migration-4.3.rst | 7 +++++++
+>   1 file changed, 7 insertions(+)
+>
+> diff --git a/documentation/migration-guides/migration-4.3.rst b/documentation/migration-guides/migration-4.3.rst
+> index e72967bf3..74cc6354c 100644
+> --- a/documentation/migration-guides/migration-4.3.rst
+> +++ b/documentation/migration-guides/migration-4.3.rst
+> @@ -55,6 +55,13 @@ Go language changes
+>   -  Support for the Glide package manager has been removed, as ``go mod``
+>      has become the standard.
+>   
+> +Systemd changes
+> +~~~~~~~~~~~~~~~
+> +
+> +Upstream systemd is now more strict on filesystem layout and the usrmerge
+> +feature is therefore required alongside systemd. The Poky test configurations
+> +have been updated accordingly for systemd.
 
-We may need to expand some of the documentation on this but I wanted to
-at least have the basics.
 
-Cheers,
+Thanks for the two patches!
+After a few minor formatting edits, I merged them into master-next.
+Cheers
+Michael.
 
-Richard
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
