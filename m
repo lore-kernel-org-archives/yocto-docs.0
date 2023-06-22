@@ -1,183 +1,127 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <luca.ceresoli@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAB46EB64DD
-	for <webhook@archiver.kernel.org>; Thu, 22 Jun 2023 16:51:28 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.16875.1687452684277304535
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C0596EB64D8
+	for <webhook@archiver.kernel.org>; Thu, 22 Jun 2023 17:06:18 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.17267.1687453568176656156
  for <docs@lists.yoctoproject.org>;
- Thu, 22 Jun 2023 09:51:24 -0700
+ Thu, 22 Jun 2023 10:06:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=missing; spf=none, err=permanent DNS error (domain: 0leil.net, ip: 217.70.183.201, mailfrom: foss+yocto@0leil.net)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 46B351BF20B;
-	Thu, 22 Jun 2023 16:51:22 +0000 (UTC)
-From: Quentin Schulz <foss+yocto@0leil.net>
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>,
-	docs@lists.yoctoproject.org
-Cc: Quentin Schulz <foss+yocto@0leil.net>
-Subject: [PATCH 3/4] docs: fix unnecessary double white space
-Date: Thu, 22 Jun 2023 18:51:05 +0200
-Message-ID: <20230622-typos-202306-v1-3-68489d7f23f2@theobroma-systems.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230622-typos-202306-v1-0-68489d7f23f2@theobroma-systems.com>
-References: <20230622-typos-202306-v1-0-68489d7f23f2@theobroma-systems.com>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TurjNzXL;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: luca.ceresoli@bootlin.com)
+X-GND-Sasl: luca.ceresoli@bootlin.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1687453565;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lra4ZQiT6hT5nLKlrXRoN3Rytw+9mseAi3Tju2ljSWM=;
+	b=TurjNzXLh/MjbVQpX/xF0GMsHkUDaIC1ZoHW7GLlNGgYFJOqfBG4nMYpN4rmDKM6pxwB/w
+	tr7SOSrHRJfgqWcwnJBTVnLjfA+HgjSDRmgO9IDYaI8CTbSF4zLe5hsBbOAHPRGvR1d6SN
+	2lgzWBHi3jaQmoy08c3Ha4Puplqvj1GIm9RE2utNrMSCVdJc+DGC1sVuWDk4KuS0m8CYtd
+	GcIHCSq1w0PePML/HtgFPL5GxmePAL8KxunzMuKLACtpHdos29zYyP6tCqK8tD5R70R5NF
+	F7nKlvIys3IsWU6BKTsMclaRBkviWIYfnX2kVj40kF6+aeP2QTzklpcJFDha2w==
+X-GND-Sasl: luca.ceresoli@bootlin.com
+X-GND-Sasl: luca.ceresoli@bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 08F2C20003;
+	Thu, 22 Jun 2023 17:06:04 +0000 (UTC)
+Date: Thu, 22 Jun 2023 19:06:02 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual: classes.rst: document
+ devicetree.bbclass
+Message-ID: <20230622190602.415ff38d@booty>
+In-Reply-To: <f4e27e11-5b97-207e-61e5-559dbad5da43@theobroma-systems.com>
+References: <20230412191122.620584-1-michael.opdenacker@bootlin.com>
+	<f4e27e11-5b97-207e-61e5-559dbad5da43@theobroma-systems.com>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.2
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 22 Jun 2023 16:51:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4030
+ <docs@lists.yoctoproject.org>; Thu, 22 Jun 2023 17:06:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4032
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Hi Quentin,
 
-There's no need for double white spaces here so let's just remove them.
+On Thu, 22 Jun 2023 14:54:13 +0200
+Quentin Schulz <quentin.schulz@theobroma-systems.com> wrote:
 
-Cc: Quentin Schulz <foss+yocto@0leil.net>
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
----
- documentation/dev-manual/init-manager.rst              | 2 +-
- documentation/dev-manual/new-recipe.rst                | 2 +-
- documentation/dev-manual/upgrading-recipes.rst         | 2 +-
- documentation/migration-guides/migration-3.4.rst       | 2 +-
- documentation/migration-guides/release-notes-4.0.9.rst | 2 +-
- documentation/overview-manual/concepts.rst             | 2 +-
- documentation/ref-manual/release-process.rst           | 2 +-
- documentation/ref-manual/terms.rst                     | 2 +-
- documentation/ref-manual/variables.rst                 | 4 ++--
- 9 files changed, 10 insertions(+), 10 deletions(-)
+> Hi Michael, Luca,
+> 
+> On 4/12/23 21:11, Michael Opdenacker via lists.yoctoproject.org wrote:
+> > From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> > 
+> > This addresses [YOCTO #15092]
+> > 
+> > Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+> > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> > ---
+> >   documentation/ref-manual/classes.rst | 43 ++++++++++++++++++++++++++++
+> >   1 file changed, 43 insertions(+)
+> > 
+> > diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> > index f8172e6b29..79a2bdb69b 100644
+> > --- a/documentation/ref-manual/classes.rst
+> > +++ b/documentation/ref-manual/classes.rst
+> > @@ -580,6 +580,49 @@ add the task at the appropriate place, which is usually after
+> >   :ref:`ref-tasks-install`. The class then takes care of
+> >   staging the files from :term:`DEPLOYDIR` to :term:`DEPLOY_DIR_IMAGE`.
+> >   
+> > +.. _ref-classes-devicetree:
+> > +
+> > +``devicetree``
+> > +==============
+> > +
+> > +The :ref:`ref-classes-devicetree` class allows to build a recipe that compiles
+> > +device tree source files that are not in the kernel tree.
+> > +
+> > +The compilation of out-of-tree device tree sources is the same as the kernel
+> > +in-tree device tree compilation process. This includes the ability to include
+> > +sources from the kernel such as SoC ``dtsi`` files as well as C header files,
+> > +such as ``gpio.h``.
+> > +
+> > +The :ref:`ref-tasks-compile` task will compile two kinds of files:
+> > +
+> > +- Regular device tree sources with a ``.dts`` extension.
+> > +
+> > +- Device tree overlays, detected from the presence of the ``/plugin/;``
+> > +  string in the file contents.
+> > +
+> > +This class behaves in a similar way as the :ref:`ref-classes-kernel-devicetree`
+> > +class, also deploying output files into ``/boot/devicetree``. However, this
+> > +class stores the deployed device tree binaries into the ``devicetree``
+> > +subdirectory.  
+> 
+> If I'm not mistaken, you're saying the same thing twice.
+> 
+> I believe :ref:`ref-classes-kernel-devicetree` class puts the dtb in 
+> /boot directory by default (KERNEL_DTBDEST which defaults to 
+> KERNEL_IMAGEDEST which defaults to boot) while 
+> :ref:`ref-classes-devicetree` class puts it into /boot/devicetree/ 
+> directory?
 
-diff --git a/documentation/dev-manual/init-manager.rst b/documentation/dev-manual/init-manager.rst
-index b96e011eb..20d61ea83 100644
---- a/documentation/dev-manual/init-manager.rst
-+++ b/documentation/dev-manual/init-manager.rst
-@@ -53,7 +53,7 @@ The ":ref:`device-manager`" chapter has more details about device managers.
- Using SysVinit with udev
- =========================
- 
--SysVinit with  the udev device manager corresponds to the
-+SysVinit with the udev device manager corresponds to the
- default setting in Poky. This corresponds to setting::
- 
-    INIT_MANAGER = "sysvinit"
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index ab3e193aa..1be04a765 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -1603,7 +1603,7 @@ in the BitBake User Manual.
-    space. Also, the operator is applied after all the ``+=``, and ``=+``
-    operators have been applied and after all ``=`` assignments have
-    occurred. This means that if ``:append`` is used in a recipe, it can
--   only be overridden by another layer using the  special ``:remove``
-+   only be overridden by another layer using the special ``:remove``
-    operator, which in turn will prevent further layers from adding it back.
- 
-    The following example shows the space being explicitly added to the
-diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
-index 13133fddc..947ef138a 100644
---- a/documentation/dev-manual/upgrading-recipes.rst
-+++ b/documentation/dev-manual/upgrading-recipes.rst
-@@ -73,7 +73,7 @@ The following steps describe how to set up the AUH utility:
-    onto your development host. The following command uses Git to create
-    a local copy of the repository on your system::
- 
--      $ git clone  git://git.yoctoproject.org/auto-upgrade-helper
-+      $ git clone git://git.yoctoproject.org/auto-upgrade-helper
-       Cloning into 'auto-upgrade-helper'... remote: Counting objects: 768, done.
-       remote: Compressing objects: 100% (300/300), done.
-       remote: Total 768 (delta 499), reused 703 (delta 434)
-diff --git a/documentation/migration-guides/migration-3.4.rst b/documentation/migration-guides/migration-3.4.rst
-index a80d43a86..f50fe5ee0 100644
---- a/documentation/migration-guides/migration-3.4.rst
-+++ b/documentation/migration-guides/migration-3.4.rst
-@@ -197,7 +197,7 @@ Package/recipe splitting
-   then you may now need to add it explicitly.
- 
- - The ``rpm`` package no longer has ``rpm-build`` in its :term:`RRECOMMENDS`;
--  if by chance  you still need rpm package building functionality in
-+  if by chance you still need rpm package building functionality in
-   your image and you have not already done so then you should add
-   ``rpm-build`` to your image explicitly.
- 
-diff --git a/documentation/migration-guides/release-notes-4.0.9.rst b/documentation/migration-guides/release-notes-4.0.9.rst
-index 7c35b8581..236477443 100644
---- a/documentation/migration-guides/release-notes-4.0.9.rst
-+++ b/documentation/migration-guides/release-notes-4.0.9.rst
-@@ -54,7 +54,7 @@ Fixes in Yocto-4.0.9
- -  gcc-shared-source: do not use ${S}/.. in deploy_source_date_epoch
- -  glibc: Add missing binutils dependency
- -  image_types: fix multiubi var init
---  iso-codes: upgrade to  4.13.0
-+-  iso-codes: upgrade to 4.13.0
- -  json-c: Add ptest for json-c
- -  kernel-yocto: fix kernel-meta data detection
- -  lib/buildstats: handle tasks that never finished
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 668e00256..af825a98c 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -1989,7 +1989,7 @@ variables:
- -  :term:`BB_HASHSERVE_UPSTREAM`, when ``BB_HASHSERVE = "auto"``,
-    allowing to connect the local server to an upstream one.
- 
---  :term:`bitbake:BB_SIGNATURE_HANDLER`, which must be set  to ``OEEquivHash``.
-+-  :term:`bitbake:BB_SIGNATURE_HANDLER`, which must be set to ``OEEquivHash``.
- 
- Therefore, the default configuration in Poky corresponds to the
- below settings::
-diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
-index 2ffbd935c..50e7d3962 100644
---- a/documentation/ref-manual/release-process.rst
-+++ b/documentation/ref-manual/release-process.rst
-@@ -122,7 +122,7 @@ of stable and :term:`LTS` releases.
- 
-    In some circumstances, a layer can be created by the community in order to
-    add a specific feature or support a new version of some package for an :term:`LTS`
--   release.  This is called a :term:`Mixin` layer. These are thin and specific
-+   release. This is called a :term:`Mixin` layer. These are thin and specific
-    purpose layers which can be stacked with an :term:`LTS` release to "mix" a specific
-    feature into that build. These are created on an as-needed basis and
-    maintained by the people who need them.
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index 8f7281676..bdb4f934c 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -235,7 +235,7 @@ universal, the list includes them just in case:
- 
-       -  For booting the same kernel binary on multiple systems requiring
-          different device drivers. The :term:`Initramfs` image is then customized
--	 for each type of system, to include the specific  kernel modules
-+	 for each type of system, to include the specific kernel modules
-          necessary to access the final root filesystem. This technique
- 	 is used on all GNU / Linux distributions for desktops and servers.
- 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index cba3cf5d0..afbb8bf82 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1320,7 +1320,7 @@ system and gives an overview of their function and contents.
-       This variable is specific to the :yocto_git:`GStreamer recipes
-       </poky/tree/meta/recipes-multimedia/gstreamer/gstreamer1.0-meta-base.bb>`.
-       It allows to build the GStreamer `"ugly"
--      <https://github.com/GStreamer/gst-plugins-ugly>`__  and
-+      <https://github.com/GStreamer/gst-plugins-ugly>`__ and
-       `"bad" <https://github.com/GStreamer/gst-plugins-bad>`__ audio plugins.
- 
-       See the :ref:`dev-manual/licenses:other variables related to commercial licenses`
-@@ -1330,7 +1330,7 @@ system and gives an overview of their function and contents.
-       This variable is specific to the :yocto_git:`GStreamer recipes
-       </poky/tree/meta/recipes-multimedia/gstreamer/gstreamer1.0-meta-base.bb>`.
-       It allows to build the GStreamer `"ugly"
--      <https://github.com/GStreamer/gst-plugins-ugly>`__  and
-+      <https://github.com/GStreamer/gst-plugins-ugly>`__ and
-       `"bad" <https://github.com/GStreamer/gst-plugins-bad>`__ video plugins.
- 
-       See the :ref:`dev-manual/licenses:other variables related to commercial licenses`
+Haha, you are perfectly right, I wrote nonsense! :-)
+
+> I think you may have used the comment from the devicetree.bbclass header 
+> which is also a bit confusing.
+
+Indeed that was my starting point.
+
+I'm sending an amendment tomorrow.
+
+Thanks for reviewing,
+Luca
 
 -- 
-2.41.0
-
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
