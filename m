@@ -1,237 +1,130 @@
-Return-Path: <jeremy.drezet@airbus.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B288EB64D9
-	for <webhook@archiver.kernel.org>; Tue, 27 Jun 2023 12:44:37 +0000 (UTC)
-Received: from mo2.myeers.net (mo2.myeers.net [87.190.7.233])
- by mx.groups.io with SMTP id smtpd.web10.12269.1687869868416351132
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 438A1EB64DC
+	for <webhook@archiver.kernel.org>; Tue, 27 Jun 2023 14:45:58 +0000 (UTC)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+ by mx.groups.io with SMTP id smtpd.web10.15448.1687877156372663995
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Jun 2023 05:44:28 -0700
+ Tue, 27 Jun 2023 07:45:56 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@airbus.com header.s=eers-ng2048 header.b=cTsyJ6Mm;
- spf=pass (domain: airbus.com, ip: 87.190.7.233, mailfrom: jeremy.drezet@airbus.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=airbus.com; i=@airbus.com; l=9941; q=dns/txt;
-  s=eers-ng2048; t=1687869868; x=1719405868;
-  h=mime-version:from:date:message-id:subject:to;
-  bh=6LN+J0BkIUMO+7nWK1gSbqD7z6AsGXC8c7BmMWuik8U=;
-  b=cTsyJ6Mmhe836tb5f4NDgszqrkvcwOvODN7uOXYBm/IqIIuJIEPtcyJ9
-   STnptW6PbdAGaEvPDVsbSlPa6xyDE7lyriZ/AGCXIX7esFrs6gQcPiKzn
-   u+sQ58nyRsnkv82Gr3EasASrjegCXdMVdewfZv1r2KmKXUHL3PmbwmzBQ
-   1Weo/aMedVSaBCcV5icLk9i6n4HFc2M1AnzoC1WOnCJtSg8AylXRc8UiA
-   F9w3X2U5bJE3lnPkO5YrCxBd/bdas1kCA2dBfajkKiEfqxxOAV5o/KaTo
-   x784J/FJKuRbzDS/elP3LONBD9giThEAvqv/GudfRn13wm07RJIkmu53I
-   w==;
-Received-SPF: Fail (MX: domain of jeremy.drezet@airbus.com does
-  not designate 209.85.208.197 as permitted sender)
-  identity=mailfrom; client-ip=209.85.208.197; receiver=MX;
-  envelope-from="jeremy.drezet@airbus.com";
-  x-sender="jeremy.drezet@airbus.com"; x-conformance=spf_only;
-  x-record-type="v=spf1"; x-record-text="v=spf1
-  ip4:87.190.7.224/28 ip4:80.242.167.16/28
-  ip4:217.239.138.48/28 ip4:62.217.58.112/28
-  include:group1._spf.airbus.com include:group2._spf.airbus.com
-  include:group3._spf.airbus.com include:group4._spf.airbus.com
-  -all"
-Received-SPF: None (MX: no sender authenticity information
-  available from domain of postmaster@mail-lj1-f197.google.com)
-  identity=helo; client-ip=209.85.208.197; receiver=MX;
-  envelope-from="jeremy.drezet@airbus.com";
-  x-sender="postmaster@mail-lj1-f197.google.com";
-  x-conformance=spf_only
-Authentication-Results: MX; spf=Fail smtp.mailfrom=jeremy.drezet@airbus.com; spf=None smtp.helo=postmaster@mail-lj1-f197.google.com; dkim=pass (signature verified) header.i=@airbus.com
-X-Ironport-Dmarc-Check-Result: validskip
-IronPort-SDR: 2Qm8UP8+dyDhxdRtNULHbU7+2BlBxZJri7cPXOACiScBcjTkCq++0v3jQ3p8h0JYHiWoZqsmGT
- g5lan3rxBVmg==
-X-Loop: 1
-X-IronPort-AV: E=Sophos;i="6.01,162,1684792800"; 
-   d="scan'208,217";a="93226921"
-Received: from mail-lj1-f197.google.com ([209.85.208.197])
-  by mo2.myeers.net with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jun 2023 14:44:25 +0200
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2b6997407faso22976851fa.2
-        for <docs@lists.yoctoproject.org>; Tue, 27 Jun 2023 05:44:25 -0700 (PDT)
+ dkim=fail reason="signature has expired" header.i=@linuxfoundation.org header.s=google header.b=TZsLfYt7;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.46, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-3fba5a8af2cso7728615e9.3
+        for <docs@lists.yoctoproject.org>; Tue, 27 Jun 2023 07:45:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=airbus.com; s=google; t=1687869865; x=1690461865;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9PhEbhpLxnDWsOwyGsbOtwKQ0grQONM1yIsZqJoaon8=;
-        b=G/GMwRE8IMK97AeaJaxF4Km7COpj+cdxz6LmVvmj01l/xyyJdjNhBVDBlG01TkVpf0
-         37GoVTw6yudzeBRpUnX18nNus9wsvfTrkPx4k4LUQv720EqnjTowG1+lcJGsty+M+xXp
-         8oZv4PaAp27uBCqiUxBdKMK6xWGGPWNrV/zW08VrQWQJSg1FGZay3gPsr8LO1/HsynCU
-         uPMdOdKwUFztIWPMCtLL6dYKe1fCyuFbfwn89x80wYQd+zg9W9+FjV+XAP95Iw4iedAl
-         hrx3D88YDoj/nddnlVA9LXsYULovGK5oBrWCRkfk1jzvkW2eqe1XPedSM0NZdQFqhA9V
-         mWWA==
+        d=linuxfoundation.org; s=google; t=1687877154; x=1690469154;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qHSxIB5KtgdH6NPaTwPIddIFvKn/Oy1olsmyDHv0ZTs=;
+        b=TZsLfYt7HQ51Cb+bEXzqftortss3FtiasApWEnZt7aSMNLh0DA2mnc/KOZy0piPavQ
+         Cvy3mXyzzxxYjojL6Q/P74c6tzuDa3cTO/MYgv5Jy+3rhiJX1xKbUWTtyhFHneNRZg/p
+         5mrHE0PgQWfJs6RJngnL2aHwoFDwaBDrheZY0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687869865; x=1690461865;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9PhEbhpLxnDWsOwyGsbOtwKQ0grQONM1yIsZqJoaon8=;
-        b=S8j5cSEyfx4+qtvDwMGi5uYi2FP9tA5B8eNj6LRJrHFvJQbQERpcetHucu3xRGYfXs
-         ejMZv5frrVQjaZvPTQaiyVIKdOp5k35wv6ZPtrlP26UrOqQkb9C72QA5ecn/3+f+f8tf
-         aj7uY9L4D2aNdM/mXlMXPPafslTbAy5/QrIrzNVyHsEeyS8OTAUisH6JTgy2f5XBei0i
-         1DQDpuuL565t+9RlVyTG0sVvGou+YX0qAs8iTTKz3cEfaVouZM09xZ7AjGimJ6ZEJ0ik
-         UXOPxx8Ekfgcn9twOZsZj3Tb6nvnylaas0v3fomD2Tm15y6KSmhqGZd/72Lk7ldhQgor
-         3fhQ==
-X-Gm-Message-State: AC+VfDyg0pjKOK51hX9uaeG/+BjyutfZ/vGjYPSsMmd9oyX8cGrOgTOs
-	JPuQ9HQEs21JRtfycdswblsdZRhJRst7xvcEPRdwbBenOGbMlFOEm7FK0aSjyuMHBt1W0p+7zoD
-	AlMKvs+4D/X2yPLfDxHoLsBnQhtuLkyY1ckTXBLva4dRvcV1gyQ==
-X-Received: by 2002:a05:6512:a91:b0:4fb:741f:75bf with SMTP id m17-20020a0565120a9100b004fb741f75bfmr4473166lfu.16.1687869864703;
-        Tue, 27 Jun 2023 05:44:24 -0700 (PDT)
-X-Google-Smtp-Source: ACHHUZ7Dvo3j6Ee8qU4mNO47hGvX1EA/CzsgqoFT3hqMORSIaor46klxosTuEgZ6jxVfyp1j/UTxXj0r4A9h0P7rVvQ=
-X-Received: by 2002:a05:6512:a91:b0:4fb:741f:75bf with SMTP id
- m17-20020a0565120a9100b004fb741f75bfmr4473149lfu.16.1687869864012; Tue, 27
- Jun 2023 05:44:24 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1687877154; x=1690469154;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qHSxIB5KtgdH6NPaTwPIddIFvKn/Oy1olsmyDHv0ZTs=;
+        b=ZQWFjmp42Uh23gQEuucDNzdmqOFVZJqMzXoPilspuYHDirSSpV79EVMcBAz6uVYC0E
+         sId/+xZCkZzYoJTeAXZra0XFd//F5dJtNZ4fW/c3bkJGZdF+xflDPSQbwml8LwuAF8nC
+         QTJSJTm2kRmSkLKGQ16j+UT7neNt9CSXLF5+NANxzpZfQUVbofbIS5GzTbGuGgcZHqV0
+         SyW98JUj+pXIYk7+Y1WNkF6dxAVrdHlPxi/ekCmZFh4cGgLyMic6iWNonn4VnjK/j92n
+         fUi0sY6qxzWiDW0SlpFUtRrbaVwSLUdrnr1oLdCwaMgrhX9U/F5YyICKWZcRf3Vfqd8V
+         UgRQ==
+X-Gm-Message-State: AC+VfDzH+u6Y/AyirCB3VbfjJGaK2hxozzy+dtvJgpKhQk5B3amoYkny
+	x5mTOQosVUpoEE5ZIiofthbzUA==
+X-Google-Smtp-Source: ACHHUZ7iZFsHQDUyNJiwgyXE7S3U+dwf3WYJc5lsbsCVEtYeV0wqux7JykJEhYL1piGnmasXoVmw8Q==
+X-Received: by 2002:a5d:452f:0:b0:313:e12d:b245 with SMTP id j15-20020a5d452f000000b00313e12db245mr7317316wra.29.1687877154537;
+        Tue, 27 Jun 2023 07:45:54 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:90b7:e2b1:2368:2244? ([2001:8b0:aba:5f3c:90b7:e2b1:2368:2244])
+        by smtp.gmail.com with ESMTPSA id r11-20020adfce8b000000b00313f3c11512sm5213343wrn.89.2023.06.27.07.45.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jun 2023 07:45:54 -0700 (PDT)
+Message-ID: <0666fd2c344a5831fcb9c7727dc6f7805157079f.camel@linuxfoundation.org>
+Subject: Re: [docs] First quick build of Yocto poky
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: jeremy.drezet@airbus.com, docs@lists.yoctoproject.org
+Date: Tue, 27 Jun 2023 15:45:53 +0100
+In-Reply-To: <CAO9kbo+WzKyAi98qeXcxW8PdNxUEk4_WyP+gzUfSLn_99i1Y6A@mail.gmail.com>
+References: 
+	<CAO9kbo+WzKyAi98qeXcxW8PdNxUEk4_WyP+gzUfSLn_99i1Y6A@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
 MIME-Version: 1.0
-From: Jeremy DREZET <jeremy.drezet@airbus.com>
-Date: Tue, 27 Jun 2023 14:44:13 +0200
-Message-ID: <CAO9kbo+WzKyAi98qeXcxW8PdNxUEk4_WyP+gzUfSLn_99i1Y6A@mail.gmail.com>
-Subject: First quick build of Yocto poky
-To: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000ac01b905ff1bd371"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 27 Jun 2023 12:44:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4041
+ <docs@lists.yoctoproject.org>; Tue, 27 Jun 2023 14:45:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4042
 
---000000000000ac01b905ff1bd371
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+On Tue, 2023-06-27 at 14:44 +0200, Jeremy DREZET via lists.yoctoproject.org=
+ wrote:
+> Hello
+>=20
+>=20
+> I send you this email because I am just trying to build a first version o=
+f Poky in order to test basic capabilities of th OS, but when using "bitbak=
+e" I have some warnings and errors of this kind :
+>=20
+> #########################################################################=
+##
+>=20
+> WARNING: cmake-native-3.25.2-r0 do_fetch: Failed to fetch URL=C2=A0https:=
+//cmake.org/files/v3.25/cmake-3.25.2.tar.gz, attempting MIRRORS if availabl=
+e
+> ERROR: cmake-native-3.25.2-r0 do_fetch: Fetcher failure: Fetch command ex=
+port PSEUDO_DISABLED=3D1; export DBUS_SESSION_BUS_ADDRESS=3D"unix:path=3D/r=
+un/user/1001/bus"; export SSH_AUTH_SOCK=3D"/run/user/1001/keyring/ssh"; exp=
+ort PATH=3D"/home/adminj/poky/scripts/native-intercept:/home/adminj/poky/bu=
+ild/tmp/sysroots-uninative/x86_64-linux/usr/bin:/home/adminj/poky/scripts:/=
+home/adminj/poky/build/tmp/work/x86_64-linux/cmake-native/3.25.2-r0/recipe-=
+sysroot-native/usr/bin/x86_64-linux:/home/adminj/poky/build/tmp/work/x86_64=
+-linux/cmake-native/3.25.2-r0/recipe-sysroot-native/usr/bin:/home/adminj/po=
+ky/build/tmp/work/x86_64-linux/cmake-native/3.25.2-r0/recipe-sysroot-native=
+/usr/sbin:/home/adminj/poky/build/tmp/work/x86_64-linux/cmake-native/3.25.2=
+-r0/recipe-sysroot-native/usr/bin:/home/adminj/poky/build/tmp/work/x86_64-l=
+inux/cmake-native/3.25.2-r0/recipe-sysroot-native/sbin:/home/adminj/poky/bu=
+ild/tmp/work/x86_64-linux/cmake-native/3.25.2-r0/recipe-sysroot-native/bin:=
+/home/adminj/poky/bitbake/bin:/home/adminj/poky/build/tmp/hosttools"; expor=
+t HOME=3D"/home/adminj"; /usr/bin/env wget -t 2 -T 30 --passive-ftp -O /hom=
+e/adminj/poky/build/downloads/cmake-3.25.2.tar.gz.tmp -P /home/adminj/poky/=
+build/downloads 'https://cmake.org/files/v3.25/cmake-3.25.2.tar.gz' --progr=
+ess=3Ddot -v failed with exit code 4, no output
+>=20
+> ERROR: cmake-native-3.25.2-r0 do_fetch: Bitbake Fetcher Error: FetchError=
+('Unable to fetch URL from any source.', 'https://cmake.org/files/v3.25/cma=
+ke-3.25.2.tar.gz')
+>=20
+> ERROR: Logfile of failure stored in: /home/adminj/poky/build/tmp/work/x86=
+_64-linux/cmake-native/3.25.2-r0/temp/log.do_fetch.330289
+>=20
+> ERROR: Task (/home/adminj/poky/meta/recipes-devtools/cmake/cmake-native_3=
+.25.2.bb:do_fetch) failed with exit code '1'
+>=20
+> #########################################################################=
+##
+>=20
+>=20
+> Maybe something is wrong with sockets use... Could you please help me on =
+this point ?
 
-SGVsbG8KCgpJIHNlbmQgeW91IHRoaXMgZW1haWwgYmVjYXVzZSBJIGFtIGp1c3QgdHJ5aW5nIHRv
-IGJ1aWxkIGEgZmlyc3QgdmVyc2lvbiBvZgpQb2t5IGluIG9yZGVyIHRvIHRlc3QgYmFzaWMgY2Fw
-YWJpbGl0aWVzIG9mIHRoIE9TLCBidXQgd2hlbiB1c2luZyAiYml0YmFrZSIKSSBoYXZlIHNvbWUg
-d2FybmluZ3MgYW5kIGVycm9ycyBvZiB0aGlzIGtpbmQgOgoKIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjCgpX
-QVJOSU5HOiBjbWFrZS1uYXRpdmUtMy4yNS4yLXIwIGRvX2ZldGNoOiBGYWlsZWQgdG8gZmV0Y2gg
-VVJMCmh0dHBzOi8vY21ha2Uub3JnL2ZpbGVzL3YzLjI1L2NtYWtlLTMuMjUuMi50YXIuZ3osIGF0
-dGVtcHRpbmcgTUlSUk9SUyBpZgphdmFpbGFibGUKRVJST1I6IGNtYWtlLW5hdGl2ZS0zLjI1LjIt
-cjAgZG9fZmV0Y2g6IEZldGNoZXIgZmFpbHVyZTogRmV0Y2ggY29tbWFuZApleHBvcnQgUFNFVURP
-X0RJU0FCTEVEPTE7IGV4cG9ydApEQlVTX1NFU1NJT05fQlVTX0FERFJFU1M9InVuaXg6cGF0aD0v
-cnVuL3VzZXIvMTAwMS9idXMiOyBleHBvcnQKU1NIX0FVVEhfU09DSz0iL3J1bi91c2VyLzEwMDEv
-a2V5cmluZy9zc2giOyBleHBvcnQKUEFUSD0iL2hvbWUvYWRtaW5qL3Bva3kvc2NyaXB0cy9uYXRp
-dmUtaW50ZXJjZXB0Oi9ob21lL2FkbWluai9wb2t5L2J1aWxkL3RtcC9zeXNyb290cy11bmluYXRp
-dmUveDg2XzY0LWxpbnV4L3Vzci9iaW46L2hvbWUvYWRtaW5qL3Bva3kvc2NyaXB0czovaG9tZS9h
-ZG1pbmovcG9reS9idWlsZC90bXAvd29yay94ODZfNjQtbGludXgvY21ha2UtbmF0aXZlLzMuMjUu
-Mi1yMC9yZWNpcGUtc3lzcm9vdC1uYXRpdmUvdXNyL2Jpbi94ODZfNjQtbGludXg6L2hvbWUvYWRt
-aW5qL3Bva3kvYnVpbGQvdG1wL3dvcmsveDg2XzY0LWxpbnV4L2NtYWtlLW5hdGl2ZS8zLjI1LjIt
-cjAvcmVjaXBlLXN5c3Jvb3QtbmF0aXZlL3Vzci9iaW46L2hvbWUvYWRtaW5qL3Bva3kvYnVpbGQv
-dG1wL3dvcmsveDg2XzY0LWxpbnV4L2NtYWtlLW5hdGl2ZS8zLjI1LjItcjAvcmVjaXBlLXN5c3Jv
-b3QtbmF0aXZlL3Vzci9zYmluOi9ob21lL2FkbWluai9wb2t5L2J1aWxkL3RtcC93b3JrL3g4Nl82
-NC1saW51eC9jbWFrZS1uYXRpdmUvMy4yNS4yLXIwL3JlY2lwZS1zeXNyb290LW5hdGl2ZS91c3Iv
-YmluOi9ob21lL2FkbWluai9wb2t5L2J1aWxkL3RtcC93b3JrL3g4Nl82NC1saW51eC9jbWFrZS1u
-YXRpdmUvMy4yNS4yLXIwL3JlY2lwZS1zeXNyb290LW5hdGl2ZS9zYmluOi9ob21lL2FkbWluai9w
-b2t5L2J1aWxkL3RtcC93b3JrL3g4Nl82NC1saW51eC9jbWFrZS1uYXRpdmUvMy4yNS4yLXIwL3Jl
-Y2lwZS1zeXNyb290LW5hdGl2ZS9iaW46L2hvbWUvYWRtaW5qL3Bva3kvYml0YmFrZS9iaW46L2hv
-bWUvYWRtaW5qL3Bva3kvYnVpbGQvdG1wL2hvc3R0b29scyI7CmV4cG9ydCBIT01FPSIvaG9tZS9h
-ZG1pbmoiOyAvdXNyL2Jpbi9lbnYgd2dldCAtdCAyIC1UIDMwIC0tcGFzc2l2ZS1mdHAgLU8KL2hv
-bWUvYWRtaW5qL3Bva3kvYnVpbGQvZG93bmxvYWRzL2NtYWtlLTMuMjUuMi50YXIuZ3oudG1wIC1Q
-Ci9ob21lL2FkbWluai9wb2t5L2J1aWxkL2Rvd25sb2FkcyAnCmh0dHBzOi8vY21ha2Uub3JnL2Zp
-bGVzL3YzLjI1L2NtYWtlLTMuMjUuMi50YXIuZ3onIC0tcHJvZ3Jlc3M9ZG90IC12IGZhaWxlZAp3
-aXRoIGV4aXQgY29kZSA0LCBubyBvdXRwdXQKCkVSUk9SOiBjbWFrZS1uYXRpdmUtMy4yNS4yLXIw
-IGRvX2ZldGNoOiBCaXRiYWtlIEZldGNoZXIgRXJyb3I6CkZldGNoRXJyb3IoJ1VuYWJsZSB0byBm
-ZXRjaCBVUkwgZnJvbSBhbnkgc291cmNlLicsICcKaHR0cHM6Ly9jbWFrZS5vcmcvZmlsZXMvdjMu
-MjUvY21ha2UtMy4yNS4yLnRhci5neicpCgpFUlJPUjogTG9nZmlsZSBvZiBmYWlsdXJlIHN0b3Jl
-ZCBpbjoKL2hvbWUvYWRtaW5qL3Bva3kvYnVpbGQvdG1wL3dvcmsveDg2XzY0LWxpbnV4L2NtYWtl
-LW5hdGl2ZS8zLjI1LjItcjAvdGVtcC9sb2cuZG9fZmV0Y2guMzMwMjg5CgpFUlJPUjogVGFzawoo
-L2hvbWUvYWRtaW5qL3Bva3kvbWV0YS9yZWNpcGVzLWRldnRvb2xzL2NtYWtlL2NtYWtlLW5hdGl2
-ZV8zLjI1LjIuYmI6ZG9fZmV0Y2gpCmZhaWxlZCB3aXRoIGV4aXQgY29kZSAnMScKCiMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIwoKCk1heWJlIHNvbWV0aGluZyBpcyB3cm9uZyB3aXRoIHNvY2tldHMgdXNlLi4u
-IENvdWxkIHlvdSBwbGVhc2UgaGVscCBtZSBvbgp0aGlzIHBvaW50ID8KClRoYW5rcyBpbiBhZHZh
-bmNlCgoKSsOpcsOpbXkgRHJlemV0CkFQWVQgQlUgQ3liZXJzZWN1cml0eSBDb25zdWx0aW5nClRo
-ZSBpbmZvcm1hdGlvbiBpbiB0aGlzIGUtbWFpbCBpcyBjb25maWRlbnRpYWwuIFRoZSBjb250ZW50
-cyBtYXkgbm90IGJlIGRpc2Nsb3NlZCBvciB1c2VkIGJ5IGFueW9uZSBvdGhlciB0aGFuIHRoZSBh
-ZGRyZXNzZWUuIEFjY2VzcyB0byB0aGlzIGUtbWFpbCBieSBhbnlvbmUgZWxzZSBpcyB1bmF1dGhv
-cmlzZWQuCklmIHlvdSBhcmUgbm90IHRoZSBpbnRlbmRlZCByZWNpcGllbnQsIHBsZWFzZSBub3Rp
-ZnkgQWlyYnVzIGltbWVkaWF0ZWx5IGFuZCBkZWxldGUgdGhpcyBlLW1haWwuCkFpcmJ1cyBjYW5u
-b3QgYWNjZXB0IGFueSByZXNwb25zaWJpbGl0eSBmb3IgdGhlIGFjY3VyYWN5IG9yIGNvbXBsZXRl
-bmVzcyBvZiB0aGlzIGUtbWFpbCBhcyBpdCBoYXMgYmVlbiBzZW50IG92ZXIgcHVibGljIG5ldHdv
-cmtzLiBJZiB5b3UgaGF2ZSBhbnkgY29uY2VybnMgb3ZlciB0aGUgY29udGVudCBvZiB0aGlzIG1l
-c3NhZ2Ugb3IgaXRzIEFjY3VyYWN5IG9yIEludGVncml0eSwgcGxlYXNlIGNvbnRhY3QgQWlyYnVz
-IGltbWVkaWF0ZWx5LgpBbGwgb3V0Z29pbmcgZS1tYWlscyBmcm9tIEFpcmJ1cyBhcmUgY2hlY2tl
-ZCB1c2luZyByZWd1bGFybHkgdXBkYXRlZCB2aXJ1cyBzY2FubmluZyBzb2Z0d2FyZSBidXQgeW91
-IHNob3VsZCB0YWtlIHdoYXRldmVyIG1lYXN1cmVzIHlvdSBkZWVtIHRvIGJlIGFwcHJvcHJpYXRl
-IHRvIGVuc3VyZSB0aGF0IHRoaXMgbWVzc2FnZSBhbmQgYW55IGF0dGFjaG1lbnRzIGFyZSB2aXJ1
-cyBmcmVlLgo=
 
---000000000000ac01b905ff1bd371
-MIME-Version: 1.0
-Content-Type: text/html; charset="utf-8"
-Content-Transfer-Encoding: base64
+It is showing the wget command failed with exit status 4 which is "network =
+failure".
 
-PGRpdiBkaXI9Imx0ciI+PGRpdj5IZWxsbzwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+PGJyPjwv
-ZGl2PjxkaXY+SSBzZW5kIHlvdSB0aGlzIGVtYWlsIGJlY2F1c2UgSSBhbSBqdXN0IHRyeWluZyB0
-byBidWlsZCBhIGZpcnN0IHZlcnNpb24gb2YgUG9reSBpbiBvcmRlciB0byB0ZXN0IGJhc2ljIGNh
-cGFiaWxpdGllcyBvZiB0aCBPUywgYnV0IHdoZW4gdXNpbmcgJnF1b3Q7Yml0YmFrZSZxdW90OyBJ
-IGhhdmUgc29tZSB3YXJuaW5ncyBhbmQgZXJyb3JzIG9mIHRoaXMga2luZCA6PC9kaXY+PGRpdj48
-YnI+PC9kaXY+PGRpdj4jIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyM8YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+
-PGRpdj5XQVJOSU5HOiBjbWFrZS1uYXRpdmUtMy4yNS4yLXIwIGRvX2ZldGNoOiBGYWlsZWQgdG8g
-ZmV0Y2ggVVJMwqA8YSBocmVmPSJodHRwczovL2NtYWtlLm9yZy9maWxlcy92My4yNS9jbWFrZS0z
-LjI1LjIudGFyLmd6IiB0YXJnZXQ9Il9ibGFuayI+aHR0cHM6Ly9jbWFrZS5vcmcvZmlsZXMvdjMu
-MjUvY21ha2UtMy4yNS4yLnRhci5nejwvYT4sIGF0dGVtcHRpbmcgTUlSUk9SUyBpZiBhdmFpbGFi
-bGU8YnI+PC9kaXY+PGRpdj5FUlJPUjogY21ha2UtbmF0aXZlLTMuMjUuMi1yMCBkb19mZXRjaDog
-RmV0Y2hlciBmYWlsdXJlOiBGZXRjaCBjb21tYW5kIGV4cG9ydCBQU0VVRE9fRElTQUJMRUQ9MTsg
-ZXhwb3J0IERCVVNfU0VTU0lPTl9CVVNfQUREUkVTUz0mcXVvdDt1bml4OnBhdGg9L3J1bi91c2Vy
-LzEwMDEvYnVzJnF1b3Q7OyBleHBvcnQgU1NIX0FVVEhfU09DSz0mcXVvdDsvcnVuL3VzZXIvMTAw
-MS9rZXlyaW5nL3NzaCZxdW90OzsgZXhwb3J0IFBBVEg9JnF1b3Q7L2hvbWUvYWRtaW5qL3Bva3kv
-c2NyaXB0cy9uYXRpdmUtaW50ZXJjZXB0Oi9ob21lL2FkbWluai9wb2t5L2J1aWxkL3RtcC9zeXNy
-b290cy11bmluYXRpdmUveDg2XzY0LWxpbnV4L3Vzci9iaW46L2hvbWUvYWRtaW5qL3Bva3kvc2Ny
-aXB0czovaG9tZS9hZG1pbmovcG9reS9idWlsZC90bXAvd29yay94ODZfNjQtbGludXgvY21ha2Ut
-bmF0aXZlLzMuMjUuMi1yMC9yZWNpcGUtc3lzcm9vdC1uYXRpdmUvdXNyL2Jpbi94ODZfNjQtbGlu
-dXg6L2hvbWUvYWRtaW5qL3Bva3kvYnVpbGQvdG1wL3dvcmsveDg2XzY0LWxpbnV4L2NtYWtlLW5h
-dGl2ZS8zLjI1LjItcjAvcmVjaXBlLXN5c3Jvb3QtbmF0aXZlL3Vzci9iaW46L2hvbWUvYWRtaW5q
-L3Bva3kvYnVpbGQvdG1wL3dvcmsveDg2XzY0LWxpbnV4L2NtYWtlLW5hdGl2ZS8zLjI1LjItcjAv
-cmVjaXBlLXN5c3Jvb3QtbmF0aXZlL3Vzci9zYmluOi9ob21lL2FkbWluai9wb2t5L2J1aWxkL3Rt
-cC93b3JrL3g4Nl82NC1saW51eC9jbWFrZS1uYXRpdmUvMy4yNS4yLXIwL3JlY2lwZS1zeXNyb290
-LW5hdGl2ZS91c3IvYmluOi9ob21lL2FkbWluai9wb2t5L2J1aWxkL3RtcC93b3JrL3g4Nl82NC1s
-aW51eC9jbWFrZS1uYXRpdmUvMy4yNS4yLXIwL3JlY2lwZS1zeXNyb290LW5hdGl2ZS9zYmluOi9o
-b21lL2FkbWluai9wb2t5L2J1aWxkL3RtcC93b3JrL3g4Nl82NC1saW51eC9jbWFrZS1uYXRpdmUv
-My4yNS4yLXIwL3JlY2lwZS1zeXNyb290LW5hdGl2ZS9iaW46L2hvbWUvYWRtaW5qL3Bva3kvYml0
-YmFrZS9iaW46L2hvbWUvYWRtaW5qL3Bva3kvYnVpbGQvdG1wL2hvc3R0b29scyZxdW90OzsgZXhw
-b3J0IEhPTUU9JnF1b3Q7L2hvbWUvYWRtaW5qJnF1b3Q7OyAvdXNyL2Jpbi9lbnYgd2dldCAtdCAy
-IC1UIDMwIC0tcGFzc2l2ZS1mdHAgLU8gL2hvbWUvYWRtaW5qL3Bva3kvYnVpbGQvZG93bmxvYWRz
-L2NtYWtlLTMuMjUuMi50YXIuZ3oudG1wIC1QIC9ob21lL2FkbWluai9wb2t5L2J1aWxkL2Rvd25s
-b2FkcyAmIzM5OzxhIGhyZWY9Imh0dHBzOi8vY21ha2Uub3JnL2ZpbGVzL3YzLjI1L2NtYWtlLTMu
-MjUuMi50YXIuZ3oiIHRhcmdldD0iX2JsYW5rIj5odHRwczovL2NtYWtlLm9yZy9maWxlcy92My4y
-NS9jbWFrZS0zLjI1LjIudGFyLmd6PC9hPiYjMzk7IC0tcHJvZ3Jlc3M9ZG90IC12IGZhaWxlZCB3
-aXRoIGV4aXQgY29kZSA0LCBubyBvdXRwdXQ8YnI+PGJyPkVSUk9SOiBjbWFrZS1uYXRpdmUtMy4y
-NS4yLXIwIGRvX2ZldGNoOiBCaXRiYWtlIEZldGNoZXIgRXJyb3I6IEZldGNoRXJyb3IoJiMzOTtV
-bmFibGUgdG8gZmV0Y2ggVVJMIGZyb20gYW55IHNvdXJjZS4mIzM5OywgJiMzOTs8YSBocmVmPSJo
-dHRwczovL2NtYWtlLm9yZy9maWxlcy92My4yNS9jbWFrZS0zLjI1LjIudGFyLmd6IiB0YXJnZXQ9
-Il9ibGFuayI+aHR0cHM6Ly9jbWFrZS5vcmcvZmlsZXMvdjMuMjUvY21ha2UtMy4yNS4yLnRhci5n
-ejwvYT4mIzM5Oyk8YnI+PGJyPkVSUk9SOiBMb2dmaWxlIG9mIGZhaWx1cmUgc3RvcmVkIGluOiAv
-aG9tZS9hZG1pbmovcG9reS9idWlsZC90bXAvd29yay94ODZfNjQtbGludXgvY21ha2UtbmF0aXZl
-LzMuMjUuMi1yMC90ZW1wL2xvZy5kb19mZXRjaC4zMzAyODk8YnI+PGJyPkVSUk9SOiBUYXNrICgv
-aG9tZS9hZG1pbmovcG9reS9tZXRhL3JlY2lwZXMtZGV2dG9vbHMvY21ha2UvY21ha2UtbmF0aXZl
-XzMuMjUuMi5iYjpkb19mZXRjaCkgZmFpbGVkIHdpdGggZXhpdCBjb2RlICYjMzk7MSYjMzk7PGJy
-PjwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMj
-IyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjPC9kaXY+PGRpdj48
-YnI+PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5NYXliZSBzb21ldGhpbmcgaXMgd3Jvbmcgd2l0
-aCBzb2NrZXRzIHVzZS4uLiBDb3VsZCB5b3UgcGxlYXNlIGhlbHAgbWUgb24gdGhpcyBwb2ludCA/
-PC9kaXY+PGRpdj48YnI+PC9kaXY+PGRpdj5UaGFua3MgaW4gYWR2YW5jZTwvZGl2PjxkaXY+PGJy
-PjwvZGl2PjxkaXY+PGJyPjwvZGl2PjxkaXY+PGRpdiBkaXI9Imx0ciIgY2xhc3M9ImdtYWlsX3Np
-Z25hdHVyZSIgZGF0YS1zbWFydG1haWw9ImdtYWlsX3NpZ25hdHVyZSI+PGRpdiBkaXI9Imx0ciI+
-SsOpcsOpbXkgRHJlemV0PGRpdj5BUFlUIEJVIEN5YmVyc2VjdXJpdHkgQ29uc3VsdGluZzwvZGl2
-PjwvZGl2PjwvZGl2PjwvZGl2PjwvZGl2Pgo8Zm9udCBzdHlsZT0iZm9udC1zaXplOiA5cHg7Ij5U
-aGUgaW5mb3JtYXRpb24gaW4gdGhpcyBlLW1haWwgaXMgY29uZmlkZW50aWFsLiBUaGUgY29udGVu
-dHMgbWF5IG5vdCBiZSBkaXNjbG9zZWQgb3IgdXNlZCBieSBhbnlvbmUgb3RoZXIgdGhhbiB0aGUg
-YWRkcmVzc2VlLiBBY2Nlc3MgdG8gdGhpcyBlLW1haWwgYnkgYW55b25lIGVsc2UgaXMgdW5hdXRo
-b3Jpc2VkLjxicj5JZiB5b3UgYXJlIG5vdCB0aGUgaW50ZW5kZWQgcmVjaXBpZW50LCBwbGVhc2Ug
-bm90aWZ5IEFpcmJ1cyBpbW1lZGlhdGVseSBhbmQgZGVsZXRlIHRoaXMgZS1tYWlsLjxicj5BaXJi
-dXMgY2Fubm90IGFjY2VwdCBhbnkgcmVzcG9uc2liaWxpdHkgZm9yIHRoZSBhY2N1cmFjeSBvciBj
-b21wbGV0ZW5lc3Mgb2YgdGhpcyBlLW1haWwgYXMgaXQgaGFzIGJlZW4gc2VudCBvdmVyIHB1Ymxp
-YyBuZXR3b3Jrcy4gSWYgeW91IGhhdmUgYW55IGNvbmNlcm5zIG92ZXIgdGhlIGNvbnRlbnQgb2Yg
-dGhpcyBtZXNzYWdlIG9yIGl0cyBBY2N1cmFjeSBvciBJbnRlZ3JpdHksIHBsZWFzZSBjb250YWN0
-IEFpcmJ1cyBpbW1lZGlhdGVseS48YnI+QWxsIG91dGdvaW5nIGUtbWFpbHMgZnJvbSBBaXJidXMg
-YXJlIGNoZWNrZWQgdXNpbmcgcmVndWxhcmx5IHVwZGF0ZWQgdmlydXMgc2Nhbm5pbmcgc29mdHdh
-cmUgYnV0IHlvdSBzaG91bGQgdGFrZSB3aGF0ZXZlciBtZWFzdXJlcyB5b3UgZGVlbSB0byBiZSBh
-cHByb3ByaWF0ZSB0byBlbnN1cmUgdGhhdCB0aGlzIG1lc3NhZ2UgYW5kIGFueSBhdHRhY2htZW50
-cyBhcmUgdmlydXMgZnJlZS48L2ZvbnQ+
 
---000000000000ac01b905ff1bd371--
+It is trying to run the command "wget -t 2 -T 30 --passive-ftp -O /home/adm=
+inj/poky/build/downloads/cmake-3.25.2.tar.gz.tmp -P /home/adminj/poky/build=
+/downloads 'https://cmake.org/files/v3.25/cmake-3.25.2.tar.gz' --progress=
+=3Ddot -v".
 
+Is network access available where you're running this build?
+
+Cheers,
+
+Richard
 
