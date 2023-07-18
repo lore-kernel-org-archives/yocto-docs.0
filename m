@@ -2,77 +2,101 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DFBCFEB64DA
-	for <webhook@archiver.kernel.org>; Tue, 18 Jul 2023 10:01:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77D3FEB64DA
+	for <webhook@archiver.kernel.org>; Tue, 18 Jul 2023 12:43:09 +0000 (UTC)
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.4259.1689674472859249115
+ by mx.groups.io with SMTP id smtpd.web11.6494.1689684184410910504
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Jul 2023 03:01:13 -0700
+ Tue, 18 Jul 2023 05:43:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZexlpnQl;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mQzbTx21;
  spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id ADAEA40005;
-	Tue, 18 Jul 2023 10:01:10 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 23DAD40014;
+	Tue, 18 Jul 2023 12:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1689674471;
+	t=1689684182;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ScidO55lUQLmvqVwBU52uwEvdcIeEWypStBaoC2hNUE=;
-	b=ZexlpnQluEAEAZTT+ZVwrR4Fv6tw2d/rs0oqpx7QpbhFckq9oLsRSCnqVP+NH6K+DIDIyu
-	+JU5uJByjH/2o37WZ4WHfbc1PrJQINdpk19D4t1Xfja53ReN4x5CLYmKhx+KXpe1uQnq+Y
-	psUCsyYuxxAySUFAYsIlijJMuUMLhOAq0+IJtquw4umsga6Eqz9RrsC+GOiLWAIKKOSSeS
-	oZed3dvUaqtvMIgkiY/u/pEcYyqJU3SbQrAqcefqmFqqHvoWxB5YkuTzjt5Hkjv8NrkZc1
-	DqD2HLK/64AIjWD9dsly7f1h6U7JHDdGgsLKIqE74s6c7bSdf81aXCYoLuypSA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Quentin Schulz <foss+yocto@0leil.net>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Subject: [PATCH] [kirkstone] docs: ref-manual: terms: fix typos in SPDX term
-Date: Tue, 18 Jul 2023 12:01:08 +0200
-Message-Id: <20230718100108.182738-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6xm+wbOJeRnf9CrNluMwjdDAC8+rJEpzzw2UTE8bDnU=;
+	b=mQzbTx21GqB94A1/i5ep+yHtzRL8vV2giiTYSxNgMjYdbnSeu69glW22MSOp5o+M6Agfyf
+	eHr69QIYwJFc0In2tLaMq615igocSaYPzjl952iv4G1UXXzZvVjFWGN/Vnxeu5lbiXOr/A
+	cHm1n2eHSHtzzNGuf5/PwMq3LjWAvWZGR+1YWZErTsMm9Y+GkexA/iTE7C6p+FbQYYMnKW
+	+BJ/bgNIOLFAscqEwHKydaxN5/DW5YKi7pJ1q+zQxWuuhDeQ0LkVXCkmc98f+CntS9NoGU
+	T1Qe7IVmPEkD+XQyce4vcYl6oeYSz9JsJRV1ldijkCA+za7xLsVLVyRFMyeNyQ==
+Message-ID: <9262f63a-ad4f-4842-076e-351030608db3@bootlin.com>
+Date: Tue, 18 Jul 2023 14:43:01 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [yocto] [ANNOUNCEMENT] Yocto Project 4.0.11 is Released
+Content-Language: en-US
+To: Lee Chee Yang <chee.yang.lee@intel.com>
+References: <CH3PR11MB8093282D366825D9D00DB9BFB92EA@CH3PR11MB8093.namprd11.prod.outlook.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <CH3PR11MB8093282D366825D9D00DB9BFB92EA@CH3PR11MB8093.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Jul 2023 10:01:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4057
+ <docs@lists.yoctoproject.org>; Tue, 18 Jul 2023 12:43:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4058
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Lee,
 
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+On 04.07.23 at 03:24, Lee Chee Yang wrote:
+>
+> Hi
+>
+> We are pleased to announce the Yocto Project 4.0.11 Release is now 
+> available for download.
+>
+> http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/poky-fc697fe87412b9b179ae3a68d266ace85bb1fcc6.tar.bz2
+>
+> http://mirrors.kernel.org/yocto/yocto/yocto-4.0.11/poky-fc697fe87412b9b179ae3a68d266ace85bb1fcc6.tar.bz2
+>
+> A gpg signed version of these release notes is available at:
+>
+> http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/RELEASENOTES
+>
+> Full Test Report:
+>
+> http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/testreport.txt
+>
+> Thank you for everyone's contributions to this release.
+>
+> Chee Yang
+>
+> chee.yang.lee@intel.com
+>
+> Yocto Project Build and Release
+>
+>
+>
+> - --------------------------
+>
+> yocto-4.0.11 Release Notes
+>
+> - --------------------------
+>
 
-Fixes: 2c53ac40e99a ("ref-manual: terms.rst: add SBOM and SPDX terms")
-Cc: Quentin Schulz <foss+yocto@0leil.net>
-Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/ref-manual/terms.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks for the release! Don't you have the release notes in rst format 
+as well?
+I can make them from the text version, but your scripts are probably 
+more efficient...
 
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index a9c84fe3a5..d94fa4a5c9 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -401,11 +401,11 @@ universal, the list includes them just in case:
-      section in the Yocto Project Overview and Concepts Manual.
- 
-    :term:`SPDX`
--      This term means *Software Package Data Exchange*, and is used as a open
-+      This term means *Software Package Data Exchange*, and is used as an open
-       standard for providing a *Software Bill of Materials* (:term:`SBOM`).
-       This standard is developed through a `Linux Foundation project
-       <https://spdx.dev/>`__ and is used by the OpenEmbedded Build System to
--      provide an :term:`SBOM` associated to each a software image.
-+      provide an :term:`SBOM` associated to each software image.
- 
-       For details, see Wikipedia's :wikipedia:`SPDX page <Software_Package_Data_Exchange>`
-       and the ":ref:`dev-manual/common-tasks:creating a software bill of materials`"
+Thanks in advance
+Cheers
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
