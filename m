@@ -2,165 +2,293 @@ Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B438DEB64DC
-	for <webhook@archiver.kernel.org>; Wed, 19 Jul 2023 02:39:03 +0000 (UTC)
-Received: from mga11.intel.com (mga11.intel.com [192.55.52.93])
- by mx.groups.io with SMTP id smtpd.web11.5502.1689734341211534189
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C5D42EB64DC
+	for <webhook@archiver.kernel.org>; Wed, 19 Jul 2023 03:00:13 +0000 (UTC)
+Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
+ by mx.groups.io with SMTP id smtpd.web10.5883.1689735603539892045
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Jul 2023 19:39:01 -0700
+ Tue, 18 Jul 2023 20:00:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=Lgtgp70q;
- spf=pass (domain: intel.com, ip: 192.55.52.93, mailfrom: chee.yang.lee@intel.com)
+ dkim=fail reason="unable to parse pub key" header.i=@intel.com header.s=intel header.b=BTRka/ll;
+ spf=pass (domain: intel.com, ip: 134.134.136.20, mailfrom: chee.yang.lee@intel.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1689734341; x=1721270341;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=rqIIM2xIoRBvIacSk+gqRmPW8QMfX4272L+xYLCIcMk=;
-  b=Lgtgp70qXpyy9vRyEXwBEwN0qmIEMEQmjjosb7I4dC82oO6KW4SR7Keh
-   6itqZUQtsyeJy2z9gmRXjzBrMeuZxRdZ0DxuawZFNHdqEnstZVBw7bTKb
-   zFogyXS82NP/2jhKv46Fv/nvtWlFg0ea/5+NG5XCGDzQF8SmGCSnORS9f
-   BDw/LSFwGpoYHNYjsb8WVhsR2Y8g25QFilKSU0+P5bqsHaj04JwxFEy1J
-   O/MhvfOrip6AzYxGwhJpDXfrvIYh13j1H8McuNnvS/meliyS6jzMsFmNc
-   JdgzmFrdGvj+Sid/56MTeNfdTnNNOeXzK6gPEAlcwCuh3hF12DQ0UNjrV
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="363815498"
+  t=1689735603; x=1721271603;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=CwWRQJKM+5jOP9EhZUj0mnNiO9UP8otj9fMGriFLW+M=;
+  b=BTRka/llyCxRZFTLAzyqKmRuD2w2qIJgG2IdjWbA9ZtopBAsUHG79bwN
+   OoZwUbPiWAfCCsOZq4kMcCxTtFz4ORuWXEamiy5yB3qtQg6eVPl+bYC/v
+   xn1xynwIK8HKh9X0KPvDW1oThWsJS3wyUjs4hvEdAC07jqCQ2CIx1eGFp
+   KnVIt2NaO4un+p3mEcDJgQH3L84/k7kvogxuSzsmp+zOyDAfuEc9Fs7J2
+   MfRfBEAJpH59oRrv4NFMi4JwgXPuTVHkq8zfUHmpgQKrVO9sI0VXsUf8V
+   CLNM7FvZsw8DwerykJZmY4rycoVBgSyZ/FgKEbxnzkab/97aAv0eupjvM
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="356307016"
 X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="363815498"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 19:39:00 -0700
+   d="scan'208";a="356307016"
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jul 2023 20:00:02 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="897755893"
+X-IronPort-AV: E=McAfee;i="6600,9927,10775"; a="674132763"
 X-IronPort-AV: E=Sophos;i="6.01,215,1684825200"; 
-   d="scan'208";a="897755893"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by orsmga005.jf.intel.com with ESMTP; 18 Jul 2023 19:38:59 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 18 Jul 2023 19:38:59 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 18 Jul 2023 19:38:59 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Tue, 18 Jul 2023 19:38:59 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
- edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Tue, 18 Jul 2023 19:38:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=I/qqEmRNBn6O3ilmNWCOZN2TN0GHfnzXh8fTrSiEz223YvJgXIJIBBFrRoxRPJPN3cl5nepOLtHAI7QmVNow4Y9OEhONUFTONXrMwuv/Bw3RfcJQ3ckP47XT02pJEgOXYw2qOcDRerH9t/zlsTCk3J1Q9VNGaZhyo+FUBSXqoLJvSPL4uPbKsYz3YEIojJFyd3F9F8nL7I4N8cThnRIEAj9O2gAsJ/3okOIVWhS/OxF0L/jQrf1FMfJ6CMRgpmrqK4TLGXUCT/Hz28C3H/oi111M+n8asUaoT0K8UAqAs0Y5W6I12qExmDQhDNazUOMGpdnGyXZQcI6qzf4lN3Dm9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rqIIM2xIoRBvIacSk+gqRmPW8QMfX4272L+xYLCIcMk=;
- b=Hw04c0rmhm2/qZml+LzX2gKRS8p6RBM1/+C/YyFhTCBLXC/kBSTjTB2RksAbPugKifOAebdInIAx/ChZNLFeua+8nsQ2kkX/RSUYyyOanGMd+DvoMAgBNQK8mD2iwG3/w7ueyCBjNTcYeluk+9ANszsJKdvd+MwuVEIUsBvTsU1XjbeIav97e/XmaIRhFAnBtV6kxZqHKUUw7K8XS78ombB53GB3ESVquOcoQEFysgHQJ03RTqgAEoAeTRPw7XAUuvh/vFTxhWJvUrvjsP6lobcaXM4xvf//KUEyLW1AOYzk5Qi2jFHVoQ6ZmfyJM1PPMVvTu9Q+F60DdrEkYsjGtQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB8093.namprd11.prod.outlook.com (2603:10b6:610:139::10)
- by IA1PR11MB6418.namprd11.prod.outlook.com (2603:10b6:208:3aa::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.31; Wed, 19 Jul
- 2023 02:38:57 +0000
-Received: from CH3PR11MB8093.namprd11.prod.outlook.com
- ([fe80::2245:151d:2cf4:c5f9]) by CH3PR11MB8093.namprd11.prod.outlook.com
- ([fe80::2245:151d:2cf4:c5f9%4]) with mapi id 15.20.6609.022; Wed, 19 Jul 2023
- 02:38:57 +0000
-From: "Lee, Chee Yang" <chee.yang.lee@intel.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: RE: [yocto] [ANNOUNCEMENT] Yocto Project 4.0.11 is Released
-Thread-Topic: [yocto] [ANNOUNCEMENT] Yocto Project 4.0.11 is Released
-Thread-Index: AdmtwJjE8lJylhPDRA2C2K9dENALJgLtMpiAABzcp4A=
-Date: Wed, 19 Jul 2023 02:38:56 +0000
-Message-ID: <CH3PR11MB8093F5BF2398A84BF563ED9FB939A@CH3PR11MB8093.namprd11.prod.outlook.com>
-References: <CH3PR11MB8093282D366825D9D00DB9BFB92EA@CH3PR11MB8093.namprd11.prod.outlook.com>
- <9262f63a-ad4f-4842-076e-351030608db3@bootlin.com>
-In-Reply-To: <9262f63a-ad4f-4842-076e-351030608db3@bootlin.com>
-Accept-Language: en-SG, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB8093:EE_|IA1PR11MB6418:EE_
-x-ms-office365-filtering-correlation-id: 22614f9a-260e-4faa-b5f7-08db88014cbc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: aURU0Q9Z0jFMv+GZy0Cag2mbva3a85bYyYKHJFWykygC5vSus5dCfVX82m3qVVGP90Z7ZBuvxmn9scQSj4WBKAsn6N1JJsxzXgnMBYb2ubBB+ZluuCxioQ6lwA+Ha1XKXImVpxhfSV4b6pSMUB3zu6dH2p2b7lKnJkG/EAce/LcrBqwliAwtnCi63+H4rcOJu7HTStg3UBaDvtMmxldrnc3OXX919HydNQbRo/74hX/1ONuOjZYSjdah/lqCktykdp8juO48NKuRwdXjsQEY81OcIJaHVi/uNyJjeC/wQulgtYAaKfdxhosRZekASuVd3BNXSEJgVCbgpF128xJu4qEXWWZJauxbR+GLpWEbadB8ZuXzBnB1vQLs2TP/SpcsC0yljR1uIZdpZieoVfjvwKsNg8kpV2TYLQNjo/8wAVq7R7TefRCMb1Hewv5iO8+/n/IchtRxMQiCzSrSwvmo/KDLcJ7H5O1+/lYqwNQ5evkalMSXu0lnRvcAz5fdoDhuKS6sKctgC4Et1ACo/7QeZtTVcq+6f3fXOXlj99U+O2O4bSEpCprs5PE9CmtvI5d2Zliyc0o+rqo4ZxlAqhNChLz9YRo9gUzelw+dr6CPyx4=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8093.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(346002)(376002)(366004)(396003)(136003)(39860400002)(451199021)(7696005)(71200400001)(478600001)(83380400001)(38070700005)(33656002)(86362001)(55016003)(4744005)(2906002)(76116006)(6506007)(186003)(966005)(9686003)(38100700002)(122000001)(82960400001)(66476007)(64756008)(66946007)(66446008)(41300700001)(66556008)(4326008)(316002)(6916009)(8676002)(5660300002)(8936002)(52536014);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UFpndEw1VXA5d2ZjbUkrL3JITmJVclRzSXdxYU5iU0RmVUZyd3VhajhZNTQz?=
- =?utf-8?B?dDJtVjJ2MHJ6aCsrSWNiVUFleDh0U3BMYUw5V0ZTd3IyRnJuc0p6OEdYUXZl?=
- =?utf-8?B?SVdiZUZQN0QzeU50eDllL3B5cTQwU2llVlY1eVNKQ3A0OXJhSDRmUXFDVWRN?=
- =?utf-8?B?dGFaTWtxOVN0Q1R0RCtBTys0YUZhZ1BZNHRJSmlyajIwbFpSbHJKSEZ2aG8w?=
- =?utf-8?B?K1h6RUQvbEpROHd2NVlaTHVtZUgrS051SDlpS1B4T0w2M1V1c1g0azU2ckhn?=
- =?utf-8?B?Tk8wNDZjT3JFWGhQSGJTRWNPMThFeWZwSU10anE0c0ZCRkx0WFFiUzVxVzZZ?=
- =?utf-8?B?Q0V1aU5pQ2V4RnFHOWFOazZQUXM1VTBvcEhPVXd2VXlVUnJId0Q0MXFsY01t?=
- =?utf-8?B?OEh4c2pwcDlCQVFuaXRPSGRMTlVXcGNOWnVhVEJBa3l3RTFtUVU5ODhDRXF4?=
- =?utf-8?B?UFZ5Q09INCtSWFRRRTVkZU9FUkVpb0dqR2VUMVhzRy9NQWZVVnJjMFpNOGdU?=
- =?utf-8?B?RFBjbndFdVlWU29oSjVpblNMMHE2NEFEa1pjUEduUkw1Y2VPQk9lbHZuZGg1?=
- =?utf-8?B?YTJOZ0c5Y1MzMUFEMDFkL2I4TXVPQkZsQ1hyekVQalVDczBzZ09CeVZqSm5r?=
- =?utf-8?B?U0IwZC9FdmZ4OUY2RmJwdW4xTEJFVU5kNjRpOEllVFhQcEQ5K0tZZ0x0ZkMy?=
- =?utf-8?B?NGFMMWlkWUF4WDdDREtGY3Izam1mZS9lU0VvbzJZUTNQaVdQQVJMTTRNU3lp?=
- =?utf-8?B?cVcxdnozSlIyelVUNnpMK1BySXovWmhyQWc2RXNCc1hvOVlHZUZKaGR5alE0?=
- =?utf-8?B?VHFPUzNrdDlObi80SUJaUlBsalBjUlJXRkNNMFJDWFFGVVc0MDBidkplNERE?=
- =?utf-8?B?SXROOTJoY0djQzJGWk41dkVTNk55Qm9rRHdST0ZZNHZUeHNacGxhYjJVUmoy?=
- =?utf-8?B?TStWWkVWcm52dHhaM1JOZEJoVTNtSUhnT2ZuVTFSS3dSTy9XOVZyd29DVXBX?=
- =?utf-8?B?WW4vaEVTcTdzR0drVmwxVDZuNGNoa29Pb0hYcjNIazVja2pLd1NjNndzdTMz?=
- =?utf-8?B?ZnhOVFVqY0pLVFBSMlR6cWhZbjlCdEk2VHdTUkhEQ1FUWC9zR0MvTVZXUjBm?=
- =?utf-8?B?am9VOXN3YkwxcmNKNldRbFU1UllpVzU4dTN3V1ZMYjRuRFdCWW8wdDVlbUlz?=
- =?utf-8?B?d1k0S3E0QUVVWkVWV1lxTXZLdGFWZzdXdVF3YWZVUkczZk15ZGpubmNScXpK?=
- =?utf-8?B?TVpQQlFKMHRkRmFaSGp5Szg4cDJXNnk5N1dsam15Q3U3eUp6VnBBUmxqckhG?=
- =?utf-8?B?K0c0ZGFwb1FBWTlWYWpjZzZqSjZHR2Z2RlFzalA4OG5OQ3RWRGx4M3piR1hF?=
- =?utf-8?B?a1gzcnA5WU5QZTBuc3lKWlZBdFhDRWtUMFQxNURTb2o3Vkp6aUNFRmxtbnVk?=
- =?utf-8?B?NjVicDQ0bDJtNXVJSVgvWUZlTUdzL2ZjT3BKZVhjSXBnM1FzNEhVRE14RFdC?=
- =?utf-8?B?NENFb0R4TnJwRzlpSWgySjdoZWpaVmVVN0pBOGM1bmVlMGRGU3pQM21RZWdp?=
- =?utf-8?B?QmFjMzFyWHE3WmpMWWZyek92YnVNeGhrWkNNT291Q0tTRll6Nyt5cmJjQ3lL?=
- =?utf-8?B?YUJaZlRHdmJtdnBWRUhSZVBNYWdUM3hCM3VLbG01WjZvNHN1aU01SDVmZVlY?=
- =?utf-8?B?R2dvNS9KWjFoY0c0eTRVTFVudlB2R2E5eGNjSU9qL0VpS2U4ZWVXN2ZpRGRl?=
- =?utf-8?B?M0VYZjV1bTRxRTFVUGZuTURNcHJMK3Q4U1JmK0M1UEJjZENsWXVieW5xeHZE?=
- =?utf-8?B?RkJnM2p3Slcxd0xuRkI1NUlnMSs3aFpzbklmK2hIc0NmVlJsekkyYnlvTUdD?=
- =?utf-8?B?WWxUaHQ5dzlBdXRzK2tIT3g3Y0F0VDlNZjNVM3FBZWpWZlhUdG16cWtiUURS?=
- =?utf-8?B?RXM0MnJqR2lQNGxYZlhaQVREcnk3MkVmN3IxZjE5VlVaeER5ZjJkaWdaM3pr?=
- =?utf-8?B?QUllYUR2bkNQVmFpTE5RMWZlWUEzMnRGNXNVbElpNUkvMG81VXQ5dDEyTDBq?=
- =?utf-8?B?YlZYTE5yTkF4MGdVWG9MaFFkeXV5UERvd3RTamc2SElDQWl3V0VnVUFsTVZl?=
- =?utf-8?B?MjRJS2NIVG4reVdMa3hMd012ZFNncFF0bXFCLys0NjhacC8yYUtiY1ZmK0ov?=
- =?utf-8?Q?HrSn/GiVZn+7N0NV82v2IHFgbUybV/AWJfBELKlubzJY?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+   d="scan'208";a="674132763"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by orsmga003.jf.intel.com with ESMTP; 18 Jul 2023 20:00:01 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 4.0.11
+Date: Wed, 19 Jul 2023 10:59:31 +0800
+Message-Id: <20230719025931.1561357-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8093.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 22614f9a-260e-4faa-b5f7-08db88014cbc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Jul 2023 02:38:56.6804
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: RhPABMvIQmFXaJPBN0KQWAW2OOEAK0OFJIsc2DgMIXALYweCk/CMfgd2+KRURiBsMnmRv3LmpZ25boZ0DHyllA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB6418
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 19 Jul 2023 02:39:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4060
+ <docs@lists.yoctoproject.org>; Wed, 19 Jul 2023 03:00:13 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4061
 
-PiA+DQo+ID4gLSAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+DQo+ID4geW9jdG8tNC4w
-LjExIFJlbGVhc2UgTm90ZXMNCj4gPg0KPiA+IC0gLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0N
-Cj4gPg0KPiANCj4gVGhhbmtzIGZvciB0aGUgcmVsZWFzZSEgRG9uJ3QgeW91IGhhdmUgdGhlIHJl
-bGVhc2Ugbm90ZXMgaW4gcnN0IGZvcm1hdCBhcyB3ZWxsPw0KPiBJIGNhbiBtYWtlIHRoZW0gZnJv
-bSB0aGUgdGV4dCB2ZXJzaW9uLCBidXQgeW91ciBzY3JpcHRzIGFyZSBwcm9iYWJseSBtb3JlDQo+
-IGVmZmljaWVudC4uLg0KDQpZZWFoLCAgSSBwcmVwYXJlZCBpdCwgIGZvcmdvdHRlbiB0byBzZW5k
-IG91dCBhZnRlciB0aGUgYW5ub3VuY2VtZW50LiANClRoYW5rIGZvciB0aGUgcmVtaW5kZXIuICAN
-Cg0KDQo+IA0KPiBUaGFua3MgaW4gYWR2YW5jZQ0KPiBDaGVlcnMNCj4gTWljaGFlbC4NCj4gDQo+
-IC0tDQo+IE1pY2hhZWwgT3BkZW5hY2tlciwgQm9vdGxpbg0KPiBFbWJlZGRlZCBMaW51eCBhbmQg
-S2VybmVsIGVuZ2luZWVyaW5nDQo+IGh0dHBzOi8vYm9vdGxpbi5jb20NCg0K
+From: Lee Chee Yang <chee.yang.lee@intel.com>
+
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.11.rst | 214 ++++++++++++++++++
+ 2 files changed, 215 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.11.rst
+
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index 05c2705e8..1f08c8844 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -17,3 +17,4 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.8
+    release-notes-4.0.9
+    release-notes-4.0.10
++   release-notes-4.0.11
+diff --git a/documentation/migration-guides/release-notes-4.0.11.rst b/documentation/migration-guides/release-notes-4.0.11.rst
+new file mode 100644
+index 000000000..8a1588490
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.11.rst
+@@ -0,0 +1,214 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-4.0.11 (Kirkstone)
++------------------------------------------
++
++Security Fixes in Yocto-4.0.11
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  cups: Fix :cve:`2023-32324`
++-  curl: Fix :cve:`2023-28319`, :cve:`2023-28320`, :cve:`2023-28321` and :cve:`2023-28322`
++-  git: Ignore :cve:`2023-25815`
++-  go: Fix :cve:`2023-24539` and :cve:`2023-24540`
++-  nasm: Fix :cve:`2022-46457`
++-  openssh: Fix :cve:`2023-28531`
++-  openssl: Fix :cve:`2023-1255` and :cve:`2023-2650`
++-  perl: Fix :cve:`2023-31484`
++-  python3-requests: Fix for :cve:`2023-32681`
++-  sysstat: Fix :cve:`2023-33204`
++-  vim: Fix :cve:`2023-2426`
++-  webkitgtk: fix :cve:`2022-42867`, :cve:`2022-46691`, :cve:`2022-46699` and :cve:`2022-46700`
++
++
++Fixes in Yocto-4.0.11
++~~~~~~~~~~~~~~~~~~~~~
++
++-  Revert "docs: conf.py: fix cve extlinks caption for sphinx <4.0"
++-  Revert "ipk: Decode byte data to string in manifest handling"
++-  avahi: fix D-Bus introspection
++-  build-appliance-image: Update to kirkstone head revision
++-  conf.py: add macro for Mitre CVE links
++-  conf: add nice level to the hash config ignred variables
++-  cpio: Fix wrong CRC with ASCII CRC for large files
++-  cve-update-nvd2-native: added the missing http import
++-  cve-update-nvd2-native: new CVE database fetcher
++-  dhcpcd: use git instead of tarballs
++-  e2fsprogs: fix ptest bug for second running
++-  gcc-runtime: Use static dummy libstdc++
++-  glibc: stable 2.35 branch updates (cbceb903c4d7)
++-  go.bbclass: don't use test to check output from ls
++-  gstreamer1.0: Upgrade to 1.20.6
++-  iso-codes: Upgrade to 4.15.0
++-  kernel-devicetree: allow specification of dtb directory
++-  kernel-devicetree: make shell scripts posix compliant
++-  kernel-devicetree: recursively search for dtbs
++-  kernel: don't force PAHOLE=false
++-  kmscube: Correct :term:`DEPENDS` to avoid overwrite
++-  lib/terminal.py: Add urxvt terminal
++-  license.bbclass: Include :term:`LICENSE` in the output when it fails to parse
++-  linux-yocto/5.10: Upgrade to v5.10.180
++-  linux-yocto/5.15: Upgrade to v5.15.113
++-  llvm: backport a fix for build with gcc-13
++-  maintainers.inc: Fix email address typo
++-  maintainers.inc: Move repo to unassigned
++-  migration-guides: add release notes for 4.0.10
++-  migration-guides: use new cve_mitre macro
++-  nghttp2: Deleted the entries for -client and -server, and removed a dependency on them from the main package.
++-  oeqa/selftest/cases/devtool.py: skip all tests require folder a git repo
++-  openssh: Remove BSD-4-clause contents completely from codebase
++-  openssl: Upgrade to 3.0.9
++-  overview-manual: concepts.rst: Fix a typo
++-  p11-kit: add native to :term:`BBCLASSEXTEND`
++-  package: enable recursion on file globs
++-  package_manager/ipk: fix config path generation in _create_custom_config()
++-  piglit: Add :term:`PACKAGECONFIG` for glx and opencl
++-  piglit: Add missing glslang dependencies
++-  piglit: Fix build time dependency
++-  poky.conf: bump version for 4.0.11
++-  profile-manual: fix blktrace remote usage instructions
++-  quilt: Fix merge.test race condition
++-  ref-manual: add clarification for :term:`SRCREV`
++-  selftest/reproducible: Allow native/cross reuse in test
++-  staging.bbclass: do not add extend_recipe_sysroot to prefuncs of prepare_recipe_sysroot
++-  systemd-networkd: backport fix for rm unmanaged wifi
++-  systemd-systemctl: fix instance template WantedBy symlink construction
++-  systemd-systemctl: support instance expansion in WantedBy
++-  uninative: Upgrade to 3.10 to support gcc 13
++-  uninative: Upgrade to 4.0 to include latest gcc 13.1.1
++-  vim: Upgrade to 9.0.1527
++-  waffle: Upgrade to 1.7.2
++-  weston: add xwayland to :term:`DEPENDS` for :term:`PACKAGECONFIG` xwayland
++
++
++Known Issues in Yocto-4.0.11
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.11
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Alexander Kanavin
++-  Andrew Jeffery
++-  Archana Polampalli
++-  Bhabu Bindu
++-  Bruce Ashfield
++-  C. Andy Martin
++-  Chen Qi
++-  Daniel Ammann
++-  Deepthi Hemraj
++-  Ed Beroset
++-  Eero Aaltonen
++-  Enrico Jörns
++-  Hannu Lounento
++-  Hitendra Prajapati
++-  Ian Ray
++-  Jan Luebbe
++-  Jan Vermaete
++-  Khem Raj
++-  Lee Chee Yang
++-  Lei Maohui
++-  Lorenzo Arena
++-  Marek Vasut
++-  Marta Rybczynska
++-  Martin Jansa
++-  Martin Siegumfeldt
++-  Michael Halstead
++-  Michael Opdenacker
++-  Ming Liu
++-  Narpat Mali
++-  Omkar Patil
++-  Pablo Saavedra
++-  Pavel Zhukov
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Qiu Tingting
++-  Quentin Schulz
++-  Randolph Sapp
++-  Randy MacLeod
++-  Ranjitsinh Rathod
++-  Richard Purdie
++-  Riyaz Khan
++-  Sakib Sajal
++-  Sanjay Chitroda
++-  Soumya Sambu
++-  Steve Sakoman
++-  Thomas Roos
++-  Tom Hochstein
++-  Vivek Kumbhar
++-  Wang Mingyu
++-  Yogita Urade
++-  Zoltan Boszormenyi
++
++
++Repositories / Downloads for Yocto-4.0.11
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.11 </poky/log/?h=yocto-4.0.11>`
++-  Git Revision: :yocto_git:`fc697fe87412b9b179ae3a68d266ace85bb1fcc6 </poky/commit/?id=fc697fe87412b9b179ae3a68d266ace85bb1fcc6>`
++-  Release Artefact: poky-fc697fe87412b9b179ae3a68d266ace85bb1fcc6
++-  sha: d42ab1b76b9d8ab164d86dc0882c908658f6b5be0742b13a71531068f6a5ee98
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/poky-fc697fe87412b9b179ae3a68d266ace85bb1fcc6.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.11/poky-fc697fe87412b9b179ae3a68d266ace85bb1fcc6.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.11 </openembedded-core/log/?h=yocto-4.0.11>`
++-  Git Revision: :oe_git:`7949e786cf8e50f716ff1f1c4797136637205e0c </openembedded-core/commit/?id=7949e786cf8e50f716ff1f1c4797136637205e0c>`
++-  Release Artefact: oecore-7949e786cf8e50f716ff1f1c4797136637205e0c
++-  sha: 3bda3f7d15961bad5490faf3194709528591a97564b5eae3da7345b63be20334
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/oecore-7949e786cf8e50f716ff1f1c4797136637205e0c.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.11/oecore-7949e786cf8e50f716ff1f1c4797136637205e0c.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.11 </meta-mingw/log/?h=yocto-4.0.11>`
++-  Git Revision: :yocto_git:`a90614a6498c3345704e9611f2842eb933dc51c1 </meta-mingw/commit/?id=a90614a6498c3345704e9611f2842eb933dc51c1>`
++-  Release Artefact: meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1
++-  sha: 49f9900bfbbc1c68136f8115b314e95d0b7f6be75edf36a75d9bcd1cca7c6302
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.11/meta-mingw-a90614a6498c3345704e9611f2842eb933dc51c1.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.11 </meta-gplv2/log/?h=yocto-4.0.11>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.11/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.11 </bitbake/log/?h=yocto-4.0.11>`
++-  Git Revision: :oe_git:`0c6f86b60cfba67c20733516957c0a654eb2b44c </bitbake/commit/?id=0c6f86b60cfba67c20733516957c0a654eb2b44c>`
++-  Release Artefact: bitbake-0c6f86b60cfba67c20733516957c0a654eb2b44c
++-  sha: 4caa94ee4d644017b0cc51b702e330191677f7d179018cbcec8b1793949ebc74
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.11/bitbake-0c6f86b60cfba67c20733516957c0a654eb2b44c.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.11/bitbake-0c6f86b60cfba67c20733516957c0a654eb2b44c.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.11 </yocto-docs/log/?h=yocto-4.0.11>`
++-  Git Revision: :yocto_git:`6d16d2bde0aa32276a035ee49703e6eea7c7b29a </yocto-docs/commit/?id=6d16d2bde0aa32276a035ee49703e6eea7c7b29a>`
++
+-- 
+2.34.1
+
 
