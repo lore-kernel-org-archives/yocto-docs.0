@@ -2,103 +2,95 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 855D6C00528
-	for <webhook@archiver.kernel.org>; Wed, 19 Jul 2023 05:23:44 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.7563.1689744214746078383
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B062EB64DA
+	for <webhook@archiver.kernel.org>; Wed, 19 Jul 2023 08:14:15 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.9198.1689754449958246773
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Jul 2023 22:23:35 -0700
+ Wed, 19 Jul 2023 01:14:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Vuhj0SFN;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8C71CC0002;
-	Wed, 19 Jul 2023 05:23:32 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Is2QWRvn;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A4F68FF80C;
+	Wed, 19 Jul 2023 08:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1689744212;
+	t=1689754448;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gBtixqpYetHqgbazVQpUArc9RWqxyxE1vHg6RhEv/I4=;
-	b=Vuhj0SFNWJ4KTr8Xex++gwip9niUj9rM33+7t86WKHC2jkskj793MGhcri2uZ5PMifj9bV
-	rnf5XPElFJ8OeMfOfvLMHB/7Ai0xpt05LYCrfeldMdaY+QLr5EQ4bmOlHv0pSR5DsPEmIX
-	fLOKU0wfUSBmPrNiQ1tH6juPslXOmIFu5Kdtt6qfpwf2QSuY7gwD0oulwarqCPinhZkFqA
-	M0PJ8o/9VfiEJfHb9iiApdIgKoLA90Lid0y/b9vBBPO+t0fYM+cWSFX45owAaRj3QyB2AW
-	scC2nyGFIZjFLJPgSTU+/KJydcLbR/52f5zDw+minFblFwHMa2sZlkjmfkkKAQ==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: LTS releases now supported for 4 years
-Date: Wed, 19 Jul 2023 07:23:21 +0200
-Message-Id: <20230719052321.255614-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=x/x/J53ruX2cYYSSu19dw5XaQy2hdMf9SNO2GEpOmYE=;
+	b=Is2QWRvnTPxHidXM5DXD0/bOc3qVJwlBxG7qSPOXV69lVTMe8jMumgjMoQjzOukvjMmk34
+	notuo248aFHlcnXNHZ1g1hUAA5PiRi0QJDgIoXSCPR4M9qgOr3zeT0977VJU6ocAMz3n9d
+	38FVtpEH9vAJ2xBPVSwG9lDxSGs6XLmSLOObFzCQBJpt6euQwPjHka51voEs3b4LxUWEXr
+	/Pht/WAhQOL5XHps+9NjPlsazP+6QiC1uinLrv3IQgNsgsryT+hAS02lWEf8QnYrFDVcKu
+	DLUKrtYu3BogMXyNtoNfMbE901qMJzB2ZD4xdKaD1ZzcNwp8TQBB41PRoE72uA==
+Message-ID: <69b804db-6718-75a2-9f63-8554a0faff58@bootlin.com>
+Date: Wed, 19 Jul 2023 10:14:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [yocto-docs][dunfell] documentation: update for 3.1.27
+Content-Language: en-US
+To: Steve Sakoman <steve@sakoman.com>
+References: <cover.1689707871.git.steve@sakoman.com>
+ <cbb8e7fbc366a55c0eaf9dbf19dfdf0825383e93.1689707871.git.steve@sakoman.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <cbb8e7fbc366a55c0eaf9dbf19dfdf0825383e93.1689707871.git.steve@sakoman.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 19 Jul 2023 05:23:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4062
+ <docs@lists.yoctoproject.org>; Wed, 19 Jul 2023 08:14:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4063
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Steve
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/ref-manual/release-process.rst | 21 ++++++++++----------
- documentation/ref-manual/terms.rst           |  2 +-
- 2 files changed, 11 insertions(+), 12 deletions(-)
+On 18.07.23 at 21:19, Steve Sakoman wrote:
+> Signed-off-by: Steve Sakoman <steve@sakoman.com>
+> ---
+>   documentation/poky.yaml | 10 +++++-----
+>   1 file changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+> index ead58a970..15b08723d 100644
+> --- a/documentation/poky.yaml
+> +++ b/documentation/poky.yaml
+> @@ -1,13 +1,13 @@
+> -DISTRO : "3.1.26"
+> +DISTRO : "3.1.27"
+>   DISTRO_NAME_NO_CAP : "dunfell"
+>   DISTRO_NAME : "Dunfell"
+>   DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
+> -YOCTO_DOC_VERSION : "3.1.26"
+> +YOCTO_DOC_VERSION : "3.1.27"
+>   YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
+> -DISTRO_REL_TAG : "yocto-3.1.26"
+> -DOCCONF_VERSION : "3.1.26"
+> +DISTRO_REL_TAG : "yocto-3.1.27"
+> +DOCCONF_VERSION : "3.1.27"
+>   BITBAKE_SERIES : "1.46"
+> -POKYVERSION : "23.0.26"
+> +POKYVERSION : "23.0.27"
+>   YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+>   YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+>   YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
 
-diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
-index 50e7d39629..c861feaa9d 100644
---- a/documentation/ref-manual/release-process.rst
-+++ b/documentation/ref-manual/release-process.rst
-@@ -96,22 +96,21 @@ While stable releases are supported for a duration of seven months,
- some specific ones are now supported for a longer period by the Yocto
- Project, and are called Long Term Support (:term:`LTS`) releases.
- 
--This started with version 3.1 ("Dunfell"), released in April 2020, that
--the project committed to supporting until the next :term:`LTS` release was out.
--This next :term:`LTS` release, version 4.0 ("Kirkstone"), was released in May 2022
--and offered with two years of support too.
--
--However, as an experiment, support for "Dunfell" was extended to four years, until
--April 2024, therefore offering more stability to projects and leaving more time
--to upgrade to the latest :term:`LTS` release. The project hasn't made any commitment to
--extending "Kirkstone" support too, as this will also depend on available funding
--for such an effort.
--
- When significant issues are found, :term:`LTS` releases allow to publish
- fixes not only for the current stable release, but also to the
- :term:`LTS` releases that are still supported. Older stable releases which
- have reached their End of Life (EOL) won't receive such updates.
- 
-+This started with version 3.1 ("Dunfell"), released in April 2020, which
-+the project initially committed to supporting for two years, but this duration
-+was later extended to four years. Similarly, the following :term:`LTS` release,
-+version 4.0 ("Kirkstone"), was released two years later in May 2022 and the
-+project committed to supporting it for four years too.
-+
-+Therefore, a new :term:`LTS` release is made every two years and is supported
-+for four years. This offers more stability to project users and leaves more
-+time to upgrade to the following :term:`LTS` release.
-+
- See :yocto_wiki:`/Stable_Release_and_LTS` for details about the management
- of stable and :term:`LTS` releases.
- 
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index b5d5f1dbdf..31ddeae009 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -276,7 +276,7 @@ universal, the list includes them just in case:
-    :term:`LTS`
-       This term means "Long Term Support", and in the context of the Yocto
-       Project, it corresponds to selected stable releases for which bug and
--      security fixes are provided for at least two years. See
-+      security fixes are provided for at least four years. See
-       the :ref:`ref-long-term-support-releases` section for details.
- 
-    :term:`Metadata`
+
+Thanks for the update!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+and merged into the "dunfell" branch.
+
+Cheers
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
