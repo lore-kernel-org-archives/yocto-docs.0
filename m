@@ -2,83 +2,111 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EA17C001E0
-	for <webhook@archiver.kernel.org>; Wed,  2 Aug 2023 14:55:59 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.17524.1690988158021073368
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 83260C001E0
+	for <webhook@archiver.kernel.org>; Wed,  2 Aug 2023 18:48:27 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.4364.1691002105414461124
  for <docs@lists.yoctoproject.org>;
- Wed, 02 Aug 2023 07:55:58 -0700
+ Wed, 02 Aug 2023 11:48:26 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ecehCgKd;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 34391E000F;
-	Wed,  2 Aug 2023 14:55:55 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bD2/CDe8;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 463AAFF802;
+	Wed,  2 Aug 2023 18:48:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1690988155;
+	t=1691002103;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=58nLBPO2pi0Dy2DDX4Nbz8aDY8ITV1Iat44pQq9pngw=;
-	b=ecehCgKdX2JBnb3gWa7Wso5lQrjYulJP5aIb4QYr1Db9fTHEBXEO+a/MGAF8t6P+N2ymBn
-	P2uuQ4ftCjN01NFgKCj8jh2GmZGs40Wq//8+WErJRiwB+oZjmOF0wP2sAJ/r47NpRTJIXH
-	vPz1d6ikrpVG4cDdO5qn7jPx/g5OillN9TRvNj2/N9qkMGEcO8N9gqAlT6OOoSm7F1plzR
-	I4lyPuwsWVFncvUZj5uf/1dad4VULKI+x+fSPDOSasxb6q5TUbD6E7pWrgLI7ybzyhd9cy
-	40y0FDCLCYw5qNSOXov9MNbXGim08M3YaeYBqrfzshEO8J4Wp4J/l5PP/2VIzQ==
-Message-ID: <19776934-5246-96c2-f3f8-e94699f3a34f@bootlin.com>
-Date: Wed, 2 Aug 2023 16:55:54 +0200
+	bh=1RMr4dvFQUUu10KTWsOagGOKJfK1UFka74KDoQlMhSQ=;
+	b=bD2/CDe8kjSbZjD6MkNKWAqnoe6SQM9ENdssVH40xmy4st1Uah4zZ50VybhrIDXHWmzWka
+	7wRKbuYyjVnan96ltmY/bk8S5BWAt5qXV75SWDUC6OFqNPlKoIcr4+JcfGxeI+HWUVX9Ow
+	olonzondPoUL9vEpTZ7thBXfESzW3OC4TB24Ai07WGo9RmtDRlPnBnOrzELQ7h+5SBPXhB
+	JUjLALxpi2rXdX+WNqp1HPP/QdLQ3HbpyBUdS//QF2VWgL/TlKZfgSC2NDQCQZH9It6UL3
+	LyfLrdbr0xUkDv3ok7tSGXnI/XfOQAsjz4bOIcZG3d9tyi30t/GsriVhAJuwsQ==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Frederic Martinsons <frederic.martinsons@gmail.com>
+Subject: [PATCH v2] ref-manual: classes.rst: suppress rust-hello-world reference, add ptest-cargo class
+Date: Wed,  2 Aug 2023 20:48:10 +0200
+Message-Id: <20230802184810.193478-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <177798C553711AAA.2497@lists.yoctoproject.org>
+References: <177798C553711AAA.2497@lists.yoctoproject.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: classes.rst: suppress rust-hello-world
- reference and ptest-cargo class
-Content-Language: en-US
-To: =?UTF-8?B?RnLDqWTDqXJpYyBNYXJ0aW5zb25z?= <frederic.martinsons@gmail.com>
-References: <20230802132352.95244-1-frederic.martinsons@gmail.com>
- <cc9f9aa3-3951-f9cf-fd8c-a2b38db5ffc2@bootlin.com>
- <CA+cAkeoD9DotF5VU-GEC_6_b7WEeOY-Lr4qvb8C0NvUsAcbH+g@mail.gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <CA+cAkeoD9DotF5VU-GEC_6_b7WEeOY-Lr4qvb8C0NvUsAcbH+g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 02 Aug 2023 14:55:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4100
+ <docs@lists.yoctoproject.org>; Wed, 02 Aug 2023 18:48:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4101
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 02.08.23 at 16:51, Frédéric Martinsons wrote:
->
->
->     Could you just confirm that this patch doesn't depend on the 3
->     OE-core
->     patches you've just sent?
->
->
-> Glad you asked, the part concerning ptest-cargo class doesn't depend 
-> on them, but the removal
-> of rust-hello-world does (third patch on the series you mentioned).
-> Sorry, I should have made two patches for the docs. Please tell me
-> if it is too annoying for you and I'll send a rework here with two 
-> patches instead of a single one (one for ptest-cargo
-> doc and one for removal of rust-hello-world).
+From: Frederic Martinsons <frederic.martinsons@gmail.com>
 
+Signed-off-by: Frederic Martinsons <frederic.martinsons@gmail.com>
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Well, it doesn't hurt to stop mentioning example code that will be 
-removed later. It's not like mentioning some code that hasn't been 
-merged yet.
-So, I believe your single commit is fine.
+---
 
-Thanks
-Michael.
+Changes in V2:
+- Fix commit title
+  (was suggesting that ptest-cargo was removed)
+- Misc style and grammar fixes
+- Replace "_" by "-" in the "ptest_cargo" name
+- Move the "ptest-cargo" description further in the file
+  to keep the alphabetic ordering of class names.
+---
+ documentation/ref-manual/classes.rst | 22 ++++++++++++++++++----
+ 1 file changed, 18 insertions(+), 4 deletions(-)
 
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index a7819d5b60..973070dfb1 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -266,12 +266,15 @@ manager, allowing to fetch package dependencies and build your program.
+ Using this class makes it very easy to build Rust programs. All you need
+ is to use the :term:`SRC_URI` variable to point to a source repository
+ which can be built by Cargo, typically one that was created by the
+-``cargo new`` command, containing a ``Cargo.toml`` file and a ``src``
++``cargo new`` command, containing a ``Cargo.toml`` file, a ``Cargo.lock`` file and a ``src``
+ subdirectory.
+ 
+-You will find a simple example in the
+-:oe_git:`rust-hello-world_git.bb </openembedded-core/tree/meta/recipes-extended/rust-example/rust-hello-world_git.bb>`
+-recipe. A more complex example, with package dependencies, is the
++If you want to build and package tests of the program, inherit the
++:ref:`ref-classes-ptest-cargo` class instead of :ref:`ref-classes-cargo`.
++
++You will find an example (that show also how to handle possible git source dependencies) in the
++:oe_git:`zvariant_3.12.0.bb </openembedded-core/tree/meta-selftest/recipes-extended/zvariant/zvariant_3.12.0.bb>`
++recipe. Another example, with only crate dependencies, is the
+ :oe_git:`uutils-coreutils </meta-openembedded/tree/meta-oe/recipes-core/uutils-coreutils>`
+ recipe, which was generated by the `cargo-bitbake <https://crates.io/crates/cargo-bitbake>`__
+ tool.
+@@ -2517,6 +2520,17 @@ the class' functionality is largely disabled unless "ptest" appears in
+ section in the Yocto Project Development Tasks Manual for more information
+ on ptest.
+ 
++.. _ref-classes-ptest-cargo:
++
++``ptest-cargo``
++===============
++
++The :ref:`ref-classes-ptest-cargo` class is a class which extends the
++:ref:`ref-classes-cargo` class and adds ``compile_ptest_cargo`` and
++``install_ptest_cargo`` steps to respectively build and install
++test suites defined in the ``Cargo.toml`` file, into a dedicated
++``-ptest`` package.
++
+ .. _ref-classes-ptest-gnome:
+ 
+ ``ptest-gnome``
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
