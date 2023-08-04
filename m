@@ -2,128 +2,106 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 25AD8EB64DD
-	for <webhook@archiver.kernel.org>; Thu,  3 Aug 2023 12:50:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E801C001DB
+	for <webhook@archiver.kernel.org>; Fri,  4 Aug 2023 17:45:08 +0000 (UTC)
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.13940.1691067050738288041
+ by mx.groups.io with SMTP id smtpd.web10.3525.1691171101203876018
  for <docs@lists.yoctoproject.org>;
- Thu, 03 Aug 2023 05:50:51 -0700
+ Fri, 04 Aug 2023 10:45:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=L6zrwI+q;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dIuvqEuJ;
  spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C7D6620012;
-	Thu,  3 Aug 2023 12:50:48 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B53F720005;
+	Fri,  4 Aug 2023 17:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691067048;
+	t=1691171099;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=ZnOFZB1PqfJY9srsIOz9faThu+SLzpgLR6KOjZipQUM=;
-	b=L6zrwI+qTM1tFAcetOwpyRJy3D8FmT/EQSGf3mKUc3cjMMK+HbMUslC19uzSd/jg5taM6f
-	LkSxPYpB713MOy81Z0a+V/GZC86NNGMGkwb8/jLTlBCFobwbbrVAtssT6GudfEFY578qbF
-	raHKEN5WmD9Kg9n928jhrv4ixiP8qoHM5umlbPyMQbEi4TBzI8WVZgZrbJ7gmfq3GRI5Bs
-	u1lIbvMPPsF3DIMDZTTMWL955622pTM5RMk2HwU1tq635XATe8klQtO+mbOG+lTYNc9TqG
-	6fxWJNfn38B8dZe07cNfwRHQnsbUeCV54oxtsvBuSU1GAXEEILJbmZvRTRCVzw==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: update supported distro versions
-Date: Thu,  3 Aug 2023 14:50:43 +0200
-Message-Id: <20230803125043.3025475-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	bh=AeJTXOhjsRusFWXIUpYE4Jv7YwNH/Ze5ilsmOnLvF4c=;
+	b=dIuvqEuJUg12ieAW2wA0f8V2UHOMbx0AUnVZcxZeqJtZ1E7S++37iXtFka/PXLUu/svN2e
+	vprydmFGPrFnD/BtVKw+nODy6+aSwO0deTost74zTv+Fbd6XFTuiE+zf/ltDPkTwHvtYc4
+	Pi91RbZFKrwyxXVRwenXVYpBkEIxxxYC7FJeklXne3+kSWRq+0C1oS4knHgXVRAI0W3E7n
+	ynQ+7I6NcWjmcVLkBGr1siaIBrCcClJi/rqL0PS+rUVo41x4RmacP7JVMdhxCHH2LKSX+a
+	pCQh6OuTpZOB17+3kRZU5XDKVDRS1pd8+sS/iN2ZG8B9rF4gGg5hNMpdvVWBBQ==
+Message-ID: <f1935be9-60dd-0dbd-855e-b8edbe83c417@bootlin.com>
+Date: Fri, 4 Aug 2023 19:44:58 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Language: en-US
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
+Organization: Bootlin
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 03 Aug 2023 12:50:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4105
+ <docs@lists.yoctoproject.org>; Fri, 04 Aug 2023 17:45:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4106
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Richard,
 
-- Update according to changes in SANITY_TESTED_DISTROS
-  (meta-poky/conf/distro/poky.conf)
+The following changes since commit efa1c57ecec934998792b7851b4a162be92c8b23:
 
-- No longer declare as "Supported" the distributions versions
-  which are End of Life for their vendors, as some of them
-  (Ubuntu for example) ship updates to subscribers only,
-  which the Yocto Project has no access to.
+   ref-manual: document image-specific variant of INCOMPATIBLE_LICENSE 
+(2023-07-31 11:30:46 +0200)
 
-- List distribution versions which were previously tested
-  for the branch of the Yocto Project being considered
-  (should be an empty list on master, until the next
-  release is made).
+are available in the Git repository at:
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- .../ref-manual/system-requirements.rst        | 31 ++++++++++++++-----
- 1 file changed, 23 insertions(+), 8 deletions(-)
+   git://git.yoctoproject.org/yocto-docs master-next
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 3c2f979a6d..ff26d68709 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -55,27 +55,43 @@ as much RAM and as many CPU cores as possible.
- Supported Linux Distributions
- =============================
- 
--Currently, the Yocto Project is supported on the following distributions:
--
---  Ubuntu 18.04 (LTS)
-+Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
-+supported on the following distributions:
- 
- -  Ubuntu 20.04 (LTS)
- 
- -  Ubuntu 22.04 (LTS)
- 
-+-  Fedora 37
-+
-+-  Debian GNU/Linux 11 (Bullseye)
-+
-+-  Debian GNU/Linux 12 (Bookworm)
-+
-+-  OpenSUSE Leap 15.4
-+
-+The following distribution versions are still tested (being listed
-+in :term:`SANITY_TESTED_DISTROS`, even though the organization
-+publishing them no longer make updates publicly available:
-+
-+-  Ubuntu 18.04 (LTS)
-+
- -  Fedora 36
- 
---  Fedora 37
-+-  OpenSUSE Leap 15.3
- 
- -  AlmaLinux 8.7
- 
- -  AlmaLinux 9.1
- 
---  Debian GNU/Linux 11.x (Bullseye)
-+Note that the Yocto Project doesn't have access to private updates
-+that some of these versions may have. Therefore, our testing has
-+limited value if you have access to such updates.
- 
---  OpenSUSE Leap 15.3
-+Finally, here are the distribution versions which were previously
-+tested by the &DISTRO; release ("&DISTRO_NAME;"), but no longer are:
- 
---  OpenSUSE Leap 15.4
-+*This list is currently empty*
- 
- .. note::
- 
-@@ -117,7 +133,6 @@ Currently, the Yocto Project is supported on the following distributions:
-       and the ":doc:`../contributor-guide/submit-defect`"
-       section in the Yocto Project and OpenEmbedded Contributor Guide.
- 
--
- Required Packages for the Build Host
- ====================================
- 
+for you to fetch changes up to cfac42fa5424c383f3e5701c9be9918bdfcfbd9b:
+
+   ref-manual: classes.rst: fix location of _ref-classes-ccache 
+(2023-08-02 20:53:17 +0200)
+
+----------------------------------------------------------------
+Frederic Martinsons (1):
+       ref-manual: classes.rst: suppress rust-hello-world reference, add 
+ptest-cargo class
+
+Michael Opdenacker (2):
+       manuals: create a dedicated "Contributor Guide" document
+       ref-manual: classes.rst: fix location of _ref-classes-ccache
+
+  documentation/bsp-guide/bsp.rst |   4 ++--
+  documentation/contributor-guide/identify-component.rst |  29 
++++++++++++++++++++++++++++++
+  documentation/contributor-guide/index.rst |  25 +++++++++++++++++++++++++
+  documentation/{dev-manual/changes.rst => 
+contributor-guide/submit-change.rst} | 102 
+++++++++++++++++++++----------------------------------------------------------------------------------
+  documentation/contributor-guide/submit-defect.rst |  67 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+  documentation/dev-manual/debugging.rst |   7 ++-----
+  documentation/dev-manual/index.rst |   3 ---
+  documentation/dev-manual/start.rst |   9 ++++-----
+  documentation/dev-manual/vulnerabilities.rst |   2 +-
+  documentation/index.rst |   1 +
+  documentation/overview-manual/development-environment.rst |  19 
++++++++++----------
+  documentation/ref-manual/classes.rst |  26 ++++++++++++++++++++------
+  documentation/ref-manual/resources.rst |   7 +++----
+  documentation/ref-manual/system-requirements.rst |   4 ++--
+  14 files changed, 185 insertions(+), 120 deletions(-)
+  create mode 100644 documentation/contributor-guide/identify-component.rst
+  create mode 100644 documentation/contributor-guide/index.rst
+  rename documentation/{dev-manual/changes.rst => 
+contributor-guide/submit-change.rst} (85%)
+  create mode 100644 documentation/contributor-guide/submit-defect.rst
+
+Thank you in advance
+Cheers
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
