@@ -2,106 +2,118 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E801C001DB
-	for <webhook@archiver.kernel.org>; Fri,  4 Aug 2023 17:45:08 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.3525.1691171101203876018
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8831DC001DB
+	for <webhook@archiver.kernel.org>; Mon,  7 Aug 2023 18:29:44 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.42695.1691432973972987757
  for <docs@lists.yoctoproject.org>;
- Fri, 04 Aug 2023 10:45:01 -0700
+ Mon, 07 Aug 2023 11:29:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dIuvqEuJ;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B53F720005;
-	Fri,  4 Aug 2023 17:44:58 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mM68nS1k;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 577CBC0003;
+	Mon,  7 Aug 2023 18:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691171099;
+	t=1691432971;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=AeJTXOhjsRusFWXIUpYE4Jv7YwNH/Ze5ilsmOnLvF4c=;
-	b=dIuvqEuJUg12ieAW2wA0f8V2UHOMbx0AUnVZcxZeqJtZ1E7S++37iXtFka/PXLUu/svN2e
-	vprydmFGPrFnD/BtVKw+nODy6+aSwO0deTost74zTv+Fbd6XFTuiE+zf/ltDPkTwHvtYc4
-	Pi91RbZFKrwyxXVRwenXVYpBkEIxxxYC7FJeklXne3+kSWRq+0C1oS4knHgXVRAI0W3E7n
-	ynQ+7I6NcWjmcVLkBGr1siaIBrCcClJi/rqL0PS+rUVo41x4RmacP7JVMdhxCHH2LKSX+a
-	pCQh6OuTpZOB17+3kRZU5XDKVDRS1pd8+sS/iN2ZG8B9rF4gGg5hNMpdvVWBBQ==
-Message-ID: <f1935be9-60dd-0dbd-855e-b8edbe83c417@bootlin.com>
-Date: Fri, 4 Aug 2023 19:44:58 +0200
+	bh=Vvt/M27R8aqC2yMdKo5xY45eL40RQg5qI0+t4Dv0Ggk=;
+	b=mM68nS1kJMvi/TSBBMCMGCFolAj4cYjVgjAvTLr1oe0RHI2lkLaKQz/Wt1zL74YI+6wjmC
+	bUdyeH8nFaVLmVBYGbhmU3xAxqvvZzQEQm56ItxF5ksf6SpQEpeQfWmLBfpt6VdIHSwjYZ
+	RBJOAZl/DV1PcvA6DOcIoJ3/nfHFie2OQX7nV7EM6fc34sMe0lXiNglN5vehpQ3hdJ6awd
+	CgU64PTwt2ymSjqUb7CwyyVFmveMLPY5d/TOeKwVVGLG6mC4Vq7T4q0fC5dszGDyf6GONC
+	Qs7bIPmpQsHqwMeujgYjKckObIa8a8sFRJPHALGoqhrlGyO7O/meQ1y29CUmzw==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] [mickledore] ref-manual: system-requirements: update supported distros
+Date: Mon,  7 Aug 2023 20:29:27 +0200
+Message-Id: <20230807182927.106792-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 04 Aug 2023 17:45:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4106
+ <docs@lists.yoctoproject.org>; Mon, 07 Aug 2023 18:29:44 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4107
 
-Hi Richard,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-The following changes since commit efa1c57ecec934998792b7851b4a162be92c8b23:
+- Update according to changes in SANITY_TESTED_DISTROS
+  (meta-poky/conf/distro/poky.conf)
 
-   ref-manual: document image-specific variant of INCOMPATIBLE_LICENSE 
-(2023-07-31 11:30:46 +0200)
+- No longer declare as "Supported" the distributions versions
+  which are End of Life for their vendors, as some of them
+  (Ubuntu for example) ship updates to subscribers only,
+  which the Yocto Project has no access to.
 
-are available in the Git repository at:
+- List distribution versions which were previously tested
+  for the branch of the Yocto Project being considered
+  (should be an empty list on master, until the next
+  release is made).
 
-   git://git.yoctoproject.org/yocto-docs master-next
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ .../ref-manual/system-requirements.rst        | 28 ++++++++++++++-----
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-for you to fetch changes up to cfac42fa5424c383f3e5701c9be9918bdfcfbd9b:
-
-   ref-manual: classes.rst: fix location of _ref-classes-ccache 
-(2023-08-02 20:53:17 +0200)
-
-----------------------------------------------------------------
-Frederic Martinsons (1):
-       ref-manual: classes.rst: suppress rust-hello-world reference, add 
-ptest-cargo class
-
-Michael Opdenacker (2):
-       manuals: create a dedicated "Contributor Guide" document
-       ref-manual: classes.rst: fix location of _ref-classes-ccache
-
-  documentation/bsp-guide/bsp.rst |   4 ++--
-  documentation/contributor-guide/identify-component.rst |  29 
-+++++++++++++++++++++++++++++
-  documentation/contributor-guide/index.rst |  25 +++++++++++++++++++++++++
-  documentation/{dev-manual/changes.rst => 
-contributor-guide/submit-change.rst} | 102 
-++++++++++++++++++++----------------------------------------------------------------------------------
-  documentation/contributor-guide/submit-defect.rst |  67 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  documentation/dev-manual/debugging.rst |   7 ++-----
-  documentation/dev-manual/index.rst |   3 ---
-  documentation/dev-manual/start.rst |   9 ++++-----
-  documentation/dev-manual/vulnerabilities.rst |   2 +-
-  documentation/index.rst |   1 +
-  documentation/overview-manual/development-environment.rst |  19 
-+++++++++----------
-  documentation/ref-manual/classes.rst |  26 ++++++++++++++++++++------
-  documentation/ref-manual/resources.rst |   7 +++----
-  documentation/ref-manual/system-requirements.rst |   4 ++--
-  14 files changed, 185 insertions(+), 120 deletions(-)
-  create mode 100644 documentation/contributor-guide/identify-component.rst
-  create mode 100644 documentation/contributor-guide/index.rst
-  rename documentation/{dev-manual/changes.rst => 
-contributor-guide/submit-change.rst} (85%)
-  create mode 100644 documentation/contributor-guide/submit-defect.rst
-
-Thank you in advance
-Cheers
-Michael.
-
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index d6e8b4583c..c0df9bd44d 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -55,27 +55,41 @@ as much RAM and as many CPU cores as possible.
+ Supported Linux Distributions
+ =============================
+ 
+-Currently, the Yocto Project is supported on the following distributions:
+-
+--  Ubuntu 18.04 (LTS)
++Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
++supported on the following distributions:
+ 
+ -  Ubuntu 20.04 (LTS)
+ 
+ -  Ubuntu 22.04 (LTS)
+ 
++-  Fedora 37
++
++-  Debian GNU/Linux 11 (Bullseye)
++
++-  OpenSUSE Leap 15.4
++
++The following distribution versions are still tested (being listed
++in :term:`SANITY_TESTED_DISTROS`), even though the organizations
++publishing them no longer make updates publicly available:
++
++-  Ubuntu 18.04 (LTS)
++
+ -  Fedora 36
+ 
+--  Fedora 37
++-  OpenSUSE Leap 15.3
+ 
+ -  AlmaLinux 8.7
+ 
+ -  AlmaLinux 9.1
+ 
+--  Debian GNU/Linux 11.x (Bullseye)
++Note that the Yocto Project doesn't have access to private updates
++that some of these versions may have. Therefore, our testing has
++limited value if you have access to such updates.
+ 
+--  OpenSUSE Leap 15.3
++Finally, here are the distribution versions which were previously
++tested by the &DISTRO; release ("&DISTRO_NAME;"), but no longer are:
+ 
+--  OpenSUSE Leap 15.4
++*This list is currently empty*
+ 
+ .. note::
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
