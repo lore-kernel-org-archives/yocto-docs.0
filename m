@@ -1,93 +1,137 @@
-Return-Path: <dse@thaumatec.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D49D7C001B0
-	for <webhook@archiver.kernel.org>; Tue,  8 Aug 2023 08:49:58 +0000 (UTC)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
- by mx.groups.io with SMTP id smtpd.web11.57106.1691484597865126587
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EE5BEC001DB
+	for <webhook@archiver.kernel.org>; Tue,  8 Aug 2023 09:17:18 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.57611.1691486234346460282
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Aug 2023 01:49:58 -0700
+ Tue, 08 Aug 2023 02:17:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@thaumatec-com.20221208.gappssmtp.com header.s=20221208 header.b=gVrlt1ue;
- spf=pass (domain: thaumatec.com, ip: 209.85.208.179, mailfrom: dse@thaumatec.com)
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2b9db1de50cso82974421fa.3
-        for <docs@lists.yoctoproject.org>; Tue, 08 Aug 2023 01:49:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thaumatec-com.20221208.gappssmtp.com; s=20221208; t=1691484596; x=1692089396;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=u1JwLXR+Jpa2s7ZCzwnnZmUQEQvO6pDmAbrX8cepaiw=;
-        b=gVrlt1ueUhCJFvgWPqQIM+0wmDYxeZHWRQ1W2YmgOm/n2K+Qmz+Hjo+J3CDNXtN4cl
-         ENIa2JXmvCs4Rdjpu2J4CNMKzEzO7QIrTSTqMD71n6EAbdQ7AeO+Ib8802Vm1bzw0abw
-         EU0pgCfEnYOSVt703IwTzvblL/1u+Szl20Uow1wytmQSth4SE/Xtbggzzz2+7BHz8ZWY
-         nH3XPQT3WeteX3+XYo0rN9auqIlyGfRt1vqzplrljaQwDNKLKun6T7+vw9NYPtsGGH5v
-         vWxSx8fR5VVl4u/bVS6Cgeszh7xGUVXT9GYy9oj16beVzYR9BSA2amVHH9Zi0RFy3RXi
-         i7tw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1691484596; x=1692089396;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u1JwLXR+Jpa2s7ZCzwnnZmUQEQvO6pDmAbrX8cepaiw=;
-        b=MLT3UiXYW0vzB4oygDdSYvbGA2RLXrtzwIgfDgFg/9wQknuRJj7ApHn/mADoXM6gew
-         Ii4dW7+Zilj1ZE0bblns8FsbeNSZ88+iP0J4gfImwGijUpIxv7iRGSqhtOUr6lTqedDl
-         jLR8cmzQK43afQKoAIl0n1wQKT88qOFj+LCIuPwyVpd9vXe9HytEtgY2DzSvC8zwW4k7
-         a6ZeMJed4h/dkxXZTH87QJ2jbFtCbjaePv1++O0HKWc2z8QP2bcLlnGpUdt0sJZQ6dRm
-         6BEgC4ABtL6a1AFxZ88GBTuJR93SeZE9+icXk0a7RObpac9+BRVpPE/74J/8Gb7TSHgp
-         NxYw==
-X-Gm-Message-State: AOJu0YyyFUmcSAUghB7U99CxRvXv8yuxZgNJfqweAxobOmq4xWTfQhed
-	vgMZPJWEK61Pg+wkCLl7xh9LbihOO37Qq5/IslvRhQ==
-X-Google-Smtp-Source: AGHT+IH54xbHd4KM9Nhg8gE8BfCAV5qXlFxYCfFiOmICIZXigLigVv3GyorATs7o9ZJruvW90dZHeA==
-X-Received: by 2002:a2e:3219:0:b0:2b6:cc93:4ecb with SMTP id y25-20020a2e3219000000b002b6cc934ecbmr8780497ljy.43.1691484595934;
-        Tue, 08 Aug 2023 01:49:55 -0700 (PDT)
-Received: from localhost.localdomain ([91.90.172.13])
-        by smtp.gmail.com with ESMTPSA id m21-20020a2e8715000000b002b6ea79c613sm2196173lji.94.2023.08.08.01.49.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 08 Aug 2023 01:49:55 -0700 (PDT)
-From: Daniel Semkowicz <dse@thaumatec.com>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ERochdRC;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5BF9D1C000A;
+	Tue,  8 Aug 2023 09:17:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1691486232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=k2s8c5I6afqyy4J+CrA2nFirAwxWzXe7PgiQia5aFUk=;
+	b=ERochdRCh+mEAy8Z/4vkbOzyo3EWN5TNG6nxIO85NYk62Vsq1+JXz2nYyRUKJO/bftF75S
+	ASNdYPYCWOsabYMBXH56VJXtNDHIw7tjXr2FWlwR2PmbNUIMd4saDlM5dicXtqYpuVIvNM
+	N1JM6EoeWw+MXaLh3dqRpv4kX1DKCvBBg5PoLbP195VtzpOPgvPrkbhqkiyVqYH74nc7wz
+	EZDtMopG/jlv5PaNqQtuum2glWNQaOsXfQUB7Qv8dXSEJsB2W3Jnqlf9kRfj5wflDQ2zGu
+	6cDYZTthnvK2xgU2ltbS5/9MP0DtcpufR0u9qaGNcO6jN4akSK5V1W5Lp4tCag==
+From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Daniel Semkowicz <dse@thaumatec.com>
-Subject: [PATCH] dev-manual: wic.rst: Update native tools build command
-Date: Tue,  8 Aug 2023 10:49:32 +0200
-Message-ID: <20230808084945.24457-1-dse@thaumatec.com>
-X-Mailer: git-send-email 2.41.0
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] [dunfell] ref-manual: ref-system-requirements: update supported distros
+Date: Tue,  8 Aug 2023 11:17:03 +0200
+Message-Id: <20230808091703.144011-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 08 Aug 2023 08:49:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4111
+ <docs@lists.yoctoproject.org>; Tue, 08 Aug 2023 09:17:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4112
 
-Requirements list seems to be outdated. It is not possible to follow
-instructions for Raw Mode as not all of the native tools are available.
-All wic dependencies are gathered under wic-tools package. Some commands
-in the instruction already use wic-tools native sysroot, but this
-dependency is not specified in the requirements.
-Update the command for building native tools to use wic-tools instead
-of the seperate packages.
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Signed-off-by: Daniel Semkowicz <dse@thaumatec.com>
+- Update according to changes in SANITY_TESTED_DISTROS
+  (meta-poky/conf/distro/poky.conf)
+
+- No longer declare as "Supported" the distributions versions
+  which are End of Life for their vendors, as some of them
+  (Ubuntu for example) ship updates to subscribers only,
+  which the Yocto Project has no access to.
+
+- List distribution versions which were previously tested
+  for the branch of the Yocto Project being considered.
+
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/wic.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ref-manual/ref-system-requirements.rst    | 34 ++++++++++++-------
+ 1 file changed, 22 insertions(+), 12 deletions(-)
 
-diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-index 2a4408cdb..664f07a21 100644
---- a/documentation/dev-manual/wic.rst
-+++ b/documentation/dev-manual/wic.rst
-@@ -92,7 +92,7 @@ system needs to meet the following requirements:
- -  You must build several native tools, which are built to run on the
-    build system::
+diff --git a/documentation/ref-manual/ref-system-requirements.rst b/documentation/ref-manual/ref-system-requirements.rst
+index ac963dcdb9..d45a88efa5 100644
+--- a/documentation/ref-manual/ref-system-requirements.rst
++++ b/documentation/ref-manual/ref-system-requirements.rst
+@@ -34,22 +34,27 @@ and conceptual information in the :doc:`../overview-manual/overview-manual`.
+ Supported Linux Distributions
+ =============================
  
--      $ bitbake parted-native dosfstools-native mtools-native
-+      $ bitbake wic-tools
+-Currently, the Yocto Project is supported on the following
+-distributions:
++Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
++supported on the following distributions:
  
- -  Include "wic" as part of the
-    :term:`IMAGE_FSTYPES`
+--  Ubuntu 16.04 (LTS)
+-
+--  Ubuntu 18.04 (LTS)
+-
+--  Ubuntu 19.04
+ 
+ -  Ubuntu 20.04
+ 
+ -  Ubuntu 22.04
+ 
+--  Fedora 28
++-  CentOS 7.x
+ 
+--  Fedora 29
++-  Debian GNU/Linux 11.x (Bullseye)
++
++The following distribution versions are still tested (being listed
++in :term:`SANITY_TESTED_DISTROS`), even though the organizations
++publishing them no longer make updates publicly available:
++
++-  Ubuntu 16.04 (LTS)
++
++-  Ubuntu 18.04 (LTS)
++
++-  Ubuntu 19.04
+ 
+ -  Fedora 30
+ 
+@@ -65,7 +70,7 @@ distributions:
+ 
+ -  Fedora 36
+ 
+--  CentOS 7.x
++-  CentOS 8.x
+ 
+ -  Debian GNU/Linux 8.x (Jessie)
+ 
+@@ -73,8 +78,6 @@ distributions:
+ 
+ -  Debian GNU/Linux 10.x (Buster)
+ 
+--  Debian GNU/Linux 11.x (Bullseye)
+-
+ -  OpenSUSE Leap 15.1
+ 
+ -  OpenSUSE Leap 15.2
+@@ -85,6 +88,13 @@ distributions:
+ 
+ -  AlmaLinux 8.7
+ 
++Finally, here are the distribution versions which were previously
++tested by the &DISTRO; release ("&DISTRO_NAME;"), but no longer are:
++
++-  Fedora 28
++
++-  Fedora 29
++
+ .. note::
+ 
+    -  While the Yocto Project Team attempts to ensure all Yocto Project
 -- 
-2.41.0
-
+2.34.1
 
 
