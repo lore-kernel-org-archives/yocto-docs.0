@@ -2,140 +2,112 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86ACDEB64DD
-	for <webhook@archiver.kernel.org>; Wed,  9 Aug 2023 08:14:35 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.83608.1691568867317026037
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87A0BC04A6A
+	for <webhook@archiver.kernel.org>; Wed,  9 Aug 2023 14:25:37 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.89544.1691591131677996551
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Aug 2023 01:14:28 -0700
+ Wed, 09 Aug 2023 07:25:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Z4ve6nKC;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4EAB920009;
-	Wed,  9 Aug 2023 08:14:24 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ga8jS592;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E055B60009;
+	Wed,  9 Aug 2023 14:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691568865;
+	t=1691591129;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bMrCg1/ivbgeL3NOwKH8uy6vFVFd8TX+DX3Lvas7yCY=;
-	b=Z4ve6nKCLkGAiY3Ix+Fd5W0AmTD5opo1efIv2BZKTLbN4lmGC01spMVCQE8YYwyi6fxMST
-	4k5E2jcNOthaRab0o/iSYWtObAbczz0nGpAJLvoJe9iVa/pefTQ5cERXCOuAUmyiZd8IJe
-	0GTy+EYQk31jmL+3LTyWPUre91NZ/fkBjGOoXgt+0Pw66VJ6P+g2pbw3t9oFhuR4NOSXfq
-	7DcDOOZxoprisbazIRsHvYLHzaNk7HtAS9QJHc9MMgghzoxIMDS7PMxgDfMDWdjNNTXWoh
-	u04qQfWzttjGCVyjN7VTPEduEfRJ5Ai0Aa4vth9j1yTEIuWqK69et2jIGyTYMg==
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OvG18oMg+53nk1OnQmTCWd3V5/UCXpTO063lCtAVGkM=;
+	b=ga8jS592IiSRfiGFOor2TRQ9e7I+nDRVpsmdFF2g/iQWerqyj2nWbEeA4hsUtRI7H8fDE3
+	zW96pWNJpvGDa4cvpN9QSmj6Bings1P1JTCdxs/8RQfvY/TWeNYt/6wGSKTaBmEUePyje5
+	2KtQpAMDIvH3A4LQwIujHnZFqwkXYtHRkqmLqMrzz6Bjxn2Q3CmmegZG8yQ5qmT0V4CBOY
+	64D+3siGlET3FJ0S/m7OFbgN4fSKo9RNiD/sLAMmg2AZAztES59y+NYERfB2qcgoAaW1Ve
+	fTTQMlu52wrgNUS+xKShjvMeDLV6kDFg71ZPkAhBQkTQ9pKBfdI8ntztWRs9Wg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH v2] ref-manual: update supported distro versions
-Date: Wed,  9 Aug 2023 10:14:21 +0200
-Message-Id: <20230809081421.195693-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: [PATCH 2/3] contributor-guide: add section about why we use mailing lists
+Date: Wed,  9 Aug 2023 16:25:19 +0200
+Message-Id: <20230809142520.226581-2-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230809142520.226581-1-michael.opdenacker@bootlin.com>
+References: <20230809142520.226581-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 09 Aug 2023 08:14:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4119
+ <docs@lists.yoctoproject.org>; Wed, 09 Aug 2023 14:25:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4121
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-- Update according to changes in SANITY_TESTED_DISTROS
-  (meta-poky/conf/distro/poky.conf)
-
-- No longer declare as "Supported" the distributions versions
-  which are End of Life for their vendors, as some of them
-  (Ubuntu for example) ship updates to subscribers only,
-  which the Yocto Project has no access to.
-
-- List distribution versions which were previously tested
-  for the branch of the Yocto Project being considered
-  (should be an empty list on master, until the next
-  release is made).
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 ---
+ .../contributor-guide/submit-change.rst       | 41 ++++++++++++++++++-
+ 1 file changed, 40 insertions(+), 1 deletion(-)
 
-Changes in V2:
-- Update with recent update of SANITY_TESTED_DISTROS
-  Thanks to this, more recent versions are declared as supported.
----
- .../ref-manual/system-requirements.rst        | 39 ++++++++++++++-----
- 1 file changed, 29 insertions(+), 10 deletions(-)
-
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 3c2f979a6d..9ae7b4e63b 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -55,28 +55,48 @@ as much RAM and as many CPU cores as possible.
- Supported Linux Distributions
- =============================
+diff --git a/documentation/contributor-guide/submit-change.rst b/documentation/contributor-guide/submit-change.rst
+index 2555767102..573491ecbc 100644
+--- a/documentation/contributor-guide/submit-change.rst
++++ b/documentation/contributor-guide/submit-change.rst
+@@ -8,10 +8,49 @@ Because the system is extremely configurable and flexible, we recognize
+ that developers will want to extend, configure or optimize it for their
+ specific uses.
  
--Currently, the Yocto Project is supported on the following distributions:
--
---  Ubuntu 18.04 (LTS)
-+Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
-+supported on the following distributions:
- 
- -  Ubuntu 20.04 (LTS)
- 
- -  Ubuntu 22.04 (LTS)
- 
---  Fedora 36
--
- -  Fedora 37
- 
---  AlmaLinux 8.7
-+-  Fedora 38
- 
---  AlmaLinux 9.1
-+-  CentOS Stream 8
- 
---  Debian GNU/Linux 11.x (Bullseye)
-+-  Debian GNU/Linux 11 (Bullseye)
- 
---  OpenSUSE Leap 15.3
-+-  Debian GNU/Linux 12 (Bookworm)
- 
- -  OpenSUSE Leap 15.4
- 
-+-  AlmaLinux 8.8
++.. _ref-why-mailing-lists:
 +
-+-  AlmaLinux 9.2
++Contributing through mailing lists --- Why not using web-based workflows?
++=========================================================================
 +
-+The following distribution versions are still tested (being listed
-+in :term:`SANITY_TESTED_DISTROS`), even though the organizations
-+publishing them no longer make updates publicly available:
++Both Yocto Project and OpenEmbedded have many key components that are
++maintained by patches being submitted on mailing lists. We appreciate this
++approach does look a little old fashioned when other workflows are available
++through web technology such as GitHub, GitLab and others. Since we are often
++asked this question, we’ve decided to document the reasons for using mailing
++lists.
 +
-+-  Ubuntu 18.04 (LTS)
++One significant factor is that we value peer review. When a change is proposed
++to many of the core pieces of the project, it helps to have many eyes of review
++go over them. Whilst there is ultimately one maintainer who needs to make the
++final call on accepting or rejecting a patch, the review is made by many eyes
++and the exact people reviewing it are likely unknown to the maintainer. It is
++often the surprise reviewer that catches the most interesting issues!
 +
-+-  Ubuntu 22.10
++This is in contrast to the "GitHub" style workflow where either just a
++maintainer makes that review, or review is specifically requested from
++nominated people. We believe there is significant value added to the codebase
++by this peer review and that moving away from mailing lists would be to the
++detriment of our code.
 +
-+-  OpenSUSE Leap 15.3
++We also need to acknowledge that many of our developers are used to this
++mailing list workflow and have worked with it for years, with tools and
++processes built around it. Changing away from this would result in a loss
++of key people from the project, which would again be to its detriment.
 +
-+Note that the Yocto Project doesn't have access to private updates
-+that some of these versions may have. Therefore, our testing has
-+limited value if you have access to such updates.
++The projects are acutely aware that potential new contributors find the
++mailing list approach off-putting and would prefer a point-and-click web GUI.
++Since we don’t believe that can work for us, the project is aiming to ensure
++`patchwork <https://patchwork.yoctoproject.org/>` is available to help track
++patch status and also looking at how tooling can provide more feedback to users
++about patch status. We are looking at tools such as ``patchtest`` to
++test user contributions before they hit the mailing lists and also at better
++documenting how to use such workflows since we recognise that whilst this was
++common knowledge a decade ago, it might not be as familiar now.
 +
-+Finally, here are the distribution versions which were previously
-+tested by the &DISTRO; release ("&DISTRO_NAME;"), but no longer are:
-+
-+*This list is currently empty*
-+
- .. note::
+ Finding a Suitable Mailing List
+ ===============================
  
-    -  While the Yocto Project Team attempts to ensure all Yocto Project
-@@ -117,7 +137,6 @@ Currently, the Yocto Project is supported on the following distributions:
-       and the ":doc:`../contributor-guide/submit-defect`"
-       section in the Yocto Project and OpenEmbedded Contributor Guide.
- 
--
- Required Packages for the Build Host
- ====================================
- 
+-The Yocto Project uses a mailing list and a patch-based workflow that is
+ similar to the Linux kernel but contains important differences. In
+ general, there is a mailing list through which you can submit patches. You
+ should send patches to the appropriate mailing list so that they can be
 -- 
 2.34.1
 
