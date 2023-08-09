@@ -2,403 +2,140 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C1CDBC001DB
-	for <webhook@archiver.kernel.org>; Tue,  8 Aug 2023 15:56:20 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.65257.1691510177822926107
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86ACDEB64DD
+	for <webhook@archiver.kernel.org>; Wed,  9 Aug 2023 08:14:35 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.83608.1691568867317026037
  for <docs@lists.yoctoproject.org>;
- Tue, 08 Aug 2023 08:56:18 -0700
+ Wed, 09 Aug 2023 01:14:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iq04EhN+;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5EF09FF805;
-	Tue,  8 Aug 2023 15:56:15 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Z4ve6nKC;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4EAB920009;
+	Wed,  9 Aug 2023 08:14:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691510175;
+	t=1691568865;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=1DKNCnclUnlfUZJiCFWm6+NIMgtZvAx2KjIKaPj2LEw=;
-	b=iq04EhN+esHhVPrZKMYnZ3tO7z3GUYtM7uYvtaFU4cfbpn5rBuPthdMs92rOUOaov6+Li0
-	W0N12taKxiIPiGS6plbi6NI31pfr1NJ6vhySgRrA4MXWRpqt5WdOnxwpUzDFiWYJPo+gmE
-	u4EKKjXIfaJaQ729EkfnJbpdjAHA5Ev/lBawlR0vh+e7+mz2WfxM6pROYbCf+7fB+FHq2p
-	TM+cXhn2TQLM3vUyFB0yLUZ8WykrHoAvLRZ6+Gmf9FlUpx2MJjy2Ps5+dsz93I3q7cEL1l
-	9ntDJ4TWQ7HcSrtWzb7kyYgP2kmbaZPas2QkynZC6o3NCIVBoD2H0fzvTb+F6A==
+	bh=bMrCg1/ivbgeL3NOwKH8uy6vFVFd8TX+DX3Lvas7yCY=;
+	b=Z4ve6nKCLkGAiY3Ix+Fd5W0AmTD5opo1efIv2BZKTLbN4lmGC01spMVCQE8YYwyi6fxMST
+	4k5E2jcNOthaRab0o/iSYWtObAbczz0nGpAJLvoJe9iVa/pefTQ5cERXCOuAUmyiZd8IJe
+	0GTy+EYQk31jmL+3LTyWPUre91NZ/fkBjGOoXgt+0Pw66VJ6P+g2pbw3t9oFhuR4NOSXfq
+	7DcDOOZxoprisbazIRsHvYLHzaNk7HtAS9QJHc9MMgghzoxIMDS7PMxgDfMDWdjNNTXWoh
+	u04qQfWzttjGCVyjN7VTPEduEfRJ5Ai0Aa4vth9j1yTEIuWqK69et2jIGyTYMg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [PATCH] [mickledore] migration-guides: add release notes for 4.2.2
-Date: Tue,  8 Aug 2023 17:56:07 +0200
-Message-Id: <20230808155607.175891-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH v2] ref-manual: update supported distro versions
+Date: Wed,  9 Aug 2023 10:14:21 +0200
+Message-Id: <20230809081421.195693-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 08 Aug 2023 15:56:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4118
+ <docs@lists.yoctoproject.org>; Wed, 09 Aug 2023 08:14:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4119
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+- Update according to changes in SANITY_TESTED_DISTROS
+  (meta-poky/conf/distro/poky.conf)
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+- No longer declare as "Supported" the distributions versions
+  which are End of Life for their vendors, as some of them
+  (Ubuntu for example) ship updates to subscribers only,
+  which the Yocto Project has no access to.
+
+- List distribution versions which were previously tested
+  for the branch of the Yocto Project being considered
+  (should be an empty list on master, until the next
+  release is made).
+
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+
 ---
- .../migration-guides/release-4.2.rst          |   1 +
- .../migration-guides/release-notes-4.2.2.rst  | 330 ++++++++++++++++++
- 2 files changed, 331 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.2.2.rst
 
-diff --git a/documentation/migration-guides/release-4.2.rst b/documentation/migration-guides/release-4.2.rst
-index 2757f89274..981600ae00 100644
---- a/documentation/migration-guides/release-4.2.rst
-+++ b/documentation/migration-guides/release-4.2.rst
-@@ -8,3 +8,4 @@ Release 4.2 (mickledore)
-    migration-4.2
-    release-notes-4.2
-    release-notes-4.2.1
-+   release-notes-4.2.2
-diff --git a/documentation/migration-guides/release-notes-4.2.2.rst b/documentation/migration-guides/release-notes-4.2.2.rst
-new file mode 100644
-index 0000000000..74f2d0e82a
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.2.2.rst
-@@ -0,0 +1,330 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+Changes in V2:
+- Update with recent update of SANITY_TESTED_DISTROS
+  Thanks to this, more recent versions are declared as supported.
+---
+ .../ref-manual/system-requirements.rst        | 39 ++++++++++++++-----
+ 1 file changed, 29 insertions(+), 10 deletions(-)
+
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index 3c2f979a6d..9ae7b4e63b 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -55,28 +55,48 @@ as much RAM and as many CPU cores as possible.
+ Supported Linux Distributions
+ =============================
+ 
+-Currently, the Yocto Project is supported on the following distributions:
+-
+--  Ubuntu 18.04 (LTS)
++Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
++supported on the following distributions:
+ 
+ -  Ubuntu 20.04 (LTS)
+ 
+ -  Ubuntu 22.04 (LTS)
+ 
+--  Fedora 36
+-
+ -  Fedora 37
+ 
+--  AlmaLinux 8.7
++-  Fedora 38
+ 
+--  AlmaLinux 9.1
++-  CentOS Stream 8
+ 
+--  Debian GNU/Linux 11.x (Bullseye)
++-  Debian GNU/Linux 11 (Bullseye)
+ 
+--  OpenSUSE Leap 15.3
++-  Debian GNU/Linux 12 (Bookworm)
+ 
+ -  OpenSUSE Leap 15.4
+ 
++-  AlmaLinux 8.8
 +
-+Release notes for Yocto-4.2.2 (Mickledore)
-+------------------------------------------
++-  AlmaLinux 9.2
 +
-+Security Fixes in Yocto-4.2.2
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++The following distribution versions are still tested (being listed
++in :term:`SANITY_TESTED_DISTROS`), even though the organizations
++publishing them no longer make updates publicly available:
 +
-+-  binutils: Fix :cve:`2023-1972`
-+-  cups: Fix :cve:`2023-32324`
-+-  curl: Fix :cve:`2023-28319`, :cve:`2023-28320`, :cve:`2023-28321` and :cve:`2023-28322`
-+-  dbus: Fix :cve:`2023-34969`
-+-  git: Fix :cve:`2023-25652` and :cve:`2023-29007`
-+-  git: Ignore :cve:`2023-25815`
-+-  libwebp: Fix :cve:`2023-1999`
-+-  libxml2: Fix :cve:`2023-28484` and :cve:`2023-29469`
-+-  libxpm: Fix :cve:`2022-44617`
-+-  ninja: Ignore :cve:`2021-4336`
-+-  openssl: Fix :cve:`2023-0464`, :cve:`2023-0465`, :cve:`2023-0466`, :cve:`2023-1255` and :cve:`2023-2650`
-+-  perl: Fix :cve:`2023-31484` and :cve:`2023-31486`
-+-  sysstat: Fix :cve:`2023-33204`
-+-  tiff: Fix :cve_mitre:`2023-25434`, :cve:`2023-26965` and :cve:`2023-2731`
-+-  vim: Fix :cve:`2023-2426`
++-  Ubuntu 18.04 (LTS)
 +
++-  Ubuntu 22.10
 +
-+Fixes in Yocto-4.2.2
-+~~~~~~~~~~~~~~~~~~~~
++-  OpenSUSE Leap 15.3
 +
-+-  apr: Upgrade to 1.7.4
-+-  avahi: fix D-Bus introspection
-+-  babeltrace2: Always use BFD linker when building tests with ld-is-lld distro feature
-+-  babeltrace2: Upgrade to 2.0.5
-+-  baremetal-helloworld: Update :term:`SRCREV` to fix entry addresses for ARM architectures
-+-  bind: Upgrade to 9.18.15
-+-  binutils: move packaging of gprofng static lib into common .inc
-+-  binutils: package static libs from gprofng
-+-  binutils: stable 2.40 branch updates (7343182dd1)
-+-  bitbake.conf: add unzstd in :term:`HOSTTOOLS`
-+-  bitbake: runqueue: Fix deferred task/multiconfig race issue
-+-  bno_plot.py, btt_plot.py: Ask for python3 specifically
-+-  build-appliance-image: Update to mickledore head revision
-+-  busybox: Upgrade to 1.36.1
-+-  cmake.bbclass: do not search host paths for find_program()
-+-  conf: add nice level to the hash config ignred variables
-+-  connman: fix warning by specifying runstatedir at configure time
-+-  cpio: Run ptests under ptest user
-+-  dbus: Upgrade to 1.14.8
-+-  devtool: Fix the wrong variable in srcuri_entry
-+-  dnf: only write the log lock to root for native dnf
-+-  docs: bsp-guide: bsp: fix typo
-+-  dpkg: Upgrade to v1.21.22
-+-  e2fsprogs: Fix error SRCDIR when using usrmerge :term:`DISTRO_FEATURES`
-+-  e2fsprogs: fix ptest bug for second running
-+-  ell: Upgrade to 0.57
-+-  expect: Add ptest support
-+-  fribidi: Upgrade to 1.0.13
-+-  gawk: Upgrade to 5.2.2
-+-  gcc : upgrade to v12.3
-+-  gdb: fix crashes when debugging threads with Arm Pointer Authentication enabled
-+-  gdb: Upgrade to 13.2
-+-  git: Upgrade to 2.39.3
-+-  glib-networking: use correct error code in ptest
-+-  glibc: Pass linker choice via compiler flags
-+-  glibc: stable 2.37 branch updates.
-+-  gnupg: Upgrade to 2.4.2
-+-  go.bbclass: don't use test to check output from ls
-+-  go: Upgrade to 1.20.5
-+-  go: Use -no-pie to build target cgo
-+-  gobject-introspection: remove obsolete :term:`DEPENDS`
-+-  grub: submit determinism.patch upstream
-+-  gstreamer1.0: Upgrade to 1.22.3
-+-  gtk4: Upgrade to 4.10.4
-+-  image-live.bbclass: respect :term:`IMAGE_MACHINE_SUFFIX`
-+-  image_types: Fix reproducible builds for initramfs and UKI img
-+-  inetutils: remove unused patch files
-+-  ipk: Revert Decode byte data to string in manifest handling
-+-  iso-codes: Upgrade to 4.15.0
-+-  kernel: don't force PAHOLE=false
-+-  kmod: remove unused ptest.patch
-+-  kmscube: Correct :term:`DEPENDS` to avoid overwrite
-+-  layer.conf: Add missing dependency exclusion
-+-  lib/terminal.py: Add urxvt terminal
-+-  libbsd: Add correct license for all packages
-+-  libdnf: Upgrade to 0.70.1
-+-  libgcrypt: Upgrade to 1.10.2
-+-  libgloss: remove unused patch file
-+-  libmicrohttpd: Upgrade to 0.9.77
-+-  libmodule-build-perl: Upgrade to 0.4234
-+-  libx11: remove unused patch and :term:`FILESEXTRAPATHS`
-+-  libx11: Upgrade to 1.8.5
-+-  libxfixes: Upgrade to v6.0.1
-+-  libxft: Upgrade to 2.3.8
-+-  libxi: Upgrade to v1.8.1
-+-  libxml2: Do not use lld linker when building with tests on rv64
-+-  libxml2: Upgrade to 2.10.4
-+-  libxpm: Upgrade to 3.5.16
-+-  linux-firmware: Upgrade to 20230515
-+-  linux-yocto/5.15: cfg: fix DECNET configuration warning
-+-  linux-yocto/5.15: Upgrade to v5.15.118
-+-  linux-yocto/6.1: fix intermittent x86 boot hangs
-+-  linux-yocto/6.1: Upgrade to v6.1.35
-+-  linux-yocto: move build / debug dependencies to .inc
-+-  logrotate: Do not create logrotate.status file
-+-  maintainers.inc: correct Carlos Rafael Giani's email address
-+-  maintainers.inc: correct unassigned entries
-+-  maintainers.inc: unassign Adrian Bunk from wireless-regdb
-+-  maintainers.inc: unassign Alistair Francis from opensbi
-+-  maintainers.inc: unassign Andreas Müller from itstool entry
-+-  maintainers.inc: unassign Chase Qi from libc-test
-+-  maintainers.inc: unassign Oleksandr Kravchuk from python3 and all other items
-+-  maintainers.inc: unassign Pascal Bach from cmake entry
-+-  maintainers.inc: unassign Ricardo Neri from ovmf
-+-  maintainers.inc: update version for gcc-source
-+-  maintainers.inc: unassign Richard Weinberger from erofs-utils entry
-+-  meta: depend on autoconf-archive-native, not autoconf-archive
-+-  meta: lib: oe: npm_registry: Add more safe caracters
-+-  migration-guides: add release notes for 4.2.1
-+-  minicom: remove unused patch files
-+-  mobile-broadband-provider-info: Upgrade to 20230416
-+-  musl: Correct :term:`SRC_URI`
-+-  oeqa/selftest/bbtests: add non-existent prefile/postfile tests
-+-  oeqa/selftest/cases/devtool.py: skip all tests require folder a git repo
-+-  oeqa: adding selftest-hello and use it to speed up tests
-+-  openssh: Remove BSD-4-clause contents completely from codebase
-+-  openssl: fix building on riscv32
-+-  openssl: Upgrade to 3.1.1
-+-  overview-manual: concepts.rst: Fix a typo
-+-  parted: Add missing libuuid to linker cmdline for libparted-fs-resize.so
-+-  perf: Make built-in libtraceevent plugins cohabit with external libtraceevent
-+-  piglit: Add missing glslang dependencies
-+-  piglit: Fix c++11-narrowing warnings in tests
-+-  pkgconf: Upgrade to 1.9.5
-+-  pm-utils: fix multilib conflictions
-+-  poky.conf: bump version for 4.2.2 release
-+-  populate_sdk_base.bbclass: respect :term:`MLPREFIX` for ptest-pkgs's ptest-runner
-+-  profile-manual: fix blktrace remote usage instructions
-+-  psmisc: Set :term:`ALTERNATIVE` for pstree to resolve conflict with busybox
-+-  ptest-runner: Ensure data writes don't race
-+-  ptest-runner: Pull in "runner: Remove threads and mutexes" fix
-+-  ptest-runner: Pull in sync fix to improve log warnings
-+-  python3-bcrypt: Use BFD linker when building tests
-+-  python3-numpy: remove NPY_INLINE, use inline instead
-+-  qemu: a pending patch was submitted and accepted upstream
-+-  qemu: remove unused qemu-7.0.0-glibc-2.36.patch
-+-  qemurunner.py: fix error message about qmp
-+-  qemurunner: avoid leaking server_socket
-+-  ref-manual: add clarification for :term:`SRCREV`
-+-  ref-manual: classes.rst: fix typo
-+-  rootfs-postcommands.bbclass: add post func remove_unused_dnf_log_lock
-+-  rpcsvc-proto: Upgrade to 1.4.4
-+-  rpm: drop unused 0001-Rip-out-partial-support-for-unused-MD2-and-RIPEMD160.patch
-+-  rpm: Upgrade to 4.18.1
-+-  rpm: write macros under libdir
-+-  runqemu-gen-tapdevs: Refactoring
-+-  runqemu-ifupdown/get-tapdevs: Add support for ip tuntap
-+-  scripts/runqemu: allocate unfsd ports in a way that doesn't race or clash with unrelated processes
-+-  scripts/runqemu: split lock dir creation into a reusable function
-+-  scripts: fix buildstats diff/summary hard bound to host python3
-+-  sdk.py: error out when moving file fails
-+-  sdk.py: fix moving dnf contents
-+-  selftest/license: Exclude from world
-+-  selftest/reproducible: Allow native/cross reuse in test
-+-  serf: Upgrade to 1.3.10
-+-  staging.bbclass: do not add extend_recipe_sysroot to prefuncs of prepare_recipe_sysroot
-+-  strace: Disable failing test
-+-  strace: Merge two similar patches
-+-  strace: Update patches/tests with upstream fixes
-+-  sysfsutils: fetch a supported fork from github
-+-  systemd-systemctl: support instance expansion in WantedBy
-+-  systemd: Drop a backport
-+-  tiff: Remove unused patch from tiff
-+-  uninative: Upgrade to 3.10 to support gcc 13
-+-  uninative: Upgrade to 4.0 to include latest gcc 13.1.1
-+-  unzip: fix configure check for cross compilation
-+-  unzip: remove hardcoded LARGE_FILE_SUPPORT
-+-  useradd-example: package typo correction
-+-  useradd-staticids.bbclass: improve error message
-+-  v86d: Improve kernel dependency
-+-  vim: Upgrade to 9.0.1527
-+-  weston-init: add profile to point users to global socket
-+-  weston-init: add the weston user to the wayland group
-+-  weston-init: add weston user to the render group
-+-  weston-init: fix the mixed indentation
-+-  weston-init: guard against systemd configs
-+-  weston-init: make sure the render group exists
-+-  wget: Upgrade to 1.21.4
-+-  wireless-regdb: Upgrade to 2023.05.03
-+-  xdpyinfo: Upgrade to 1.3.4
-+-  xf86-video-intel: Use the HTTPS protocol to fetch the Git repositories
-+-  xinput: upgrade to v1.6.4
-+-  xwininfo: upgrade to v1.1.6
-+-  xz: Upgrade to 5.4.3
-+-  yocto-bsps: update to v5.15.106
-+-  zip: fix configure check by using _Static_assert
-+-  zip: remove unnecessary LARGE_FILE_SUPPORT CLFAGS
++Note that the Yocto Project doesn't have access to private updates
++that some of these versions may have. Therefore, our testing has
++limited value if you have access to such updates.
 +
++Finally, here are the distribution versions which were previously
++tested by the &DISTRO; release ("&DISTRO_NAME;"), but no longer are:
 +
-+Known Issues in Yocto-4.2.2
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
++*This list is currently empty*
 +
-+- N/A
-+
-+
-+Contributors to Yocto-4.2.2
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Alberto Planas
-+-  Alejandro Hernandez Samaniego
-+-  Alexander Kanavin
-+-  Andrej Valek
-+-  Andrew Jeffery
-+-  Anuj Mittal
-+-  Archana Polampalli
-+-  BELOUARGA Mohamed
-+-  Bruce Ashfield
-+-  Changqing Li
-+-  Charlie Wu
-+-  Chen Qi
-+-  Chi Xu
-+-  Daniel Ammann
-+-  Deepthi Hemraj
-+-  Denys Dmytriyenko
-+-  Dmitry Baryshkov
-+-  Ed Beroset
-+-  Eero Aaltonen
-+-  Fabien Mahot
-+-  Frieder Paape
-+-  Frieder Schrempf
-+-  Hannu Lounento
-+-  Ian Ray
-+-  Jermain Horsman
-+-  Jörg Sommer
-+-  Kai Kang
-+-  Khem Raj
-+-  Lee Chee Yang
-+-  Lorenzo Arena
-+-  Marc Ferland
-+-  Markus Volk
-+-  Martin Jansa
-+-  Michael Halstead
-+-  Mikko Rapeli
-+-  Mingli Yu
-+-  Natasha Bailey
-+-  Nikhil R
-+-  Pablo Saavedra
-+-  Paul Gortmaker
-+-  Pavel Zhukov
-+-  Peter Kjellerstedt
-+-  Qiu Tingting
-+-  Quentin Schulz
-+-  Randolph Sapp
-+-  Randy MacLeod
-+-  Ranjitsinh Rathod
-+-  Richard Purdie
-+-  Riyaz Khan
-+-  Ross Burton
-+-  Sakib Sajal
-+-  Sanjay Chitroda
-+-  Siddharth Doshi
-+-  Soumya Sambu
-+-  Steve Sakoman
-+-  Sudip Mukherjee
-+-  Sundeep KOKKONDA
-+-  Thomas Roos
-+-  Tim Orling
-+-  Tom Hochstein
-+-  Trevor Gamblin
-+-  Ulrich Ölmann
-+-  Wang Mingyu
-+-  Xiangyu Chen
-+
-+
-+Repositories / Downloads for Yocto-4.2.2
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`mickledore </poky/log/?h=mickledore>`
-+-  Tag:  :yocto_git:`yocto-4.2.2 </poky/log/?h=yocto-4.2.2>`
-+-  Git Revision: :yocto_git:`6e17b3e644ca15b8b4afd071ccaa6f172a0e681a </poky/commit/?id=6e17b3e644ca15b8b4afd071ccaa6f172a0e681a>`
-+-  Release Artefact: poky-6e17b3e644ca15b8b4afd071ccaa6f172a0e681a
-+-  sha: c0b4dadcf00b97d866dd4cc2f162474da2c3e3289badaa42a978bff1d479af99
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.2.2/poky-6e17b3e644ca15b8b4afd071ccaa6f172a0e681a.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.2.2/poky-6e17b3e644ca15b8b4afd071ccaa6f172a0e681a.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`mickledore </openembedded-core/log/?h=mickledore>`
-+-  Tag:  :oe_git:`yocto-4.2.2 </openembedded-core/log/?h=yocto-4.2.2>`
-+-  Git Revision: :oe_git:`3ef283e02b0b91daf64c3a589e1f6bb68d4f5aa1 </openembedded-core/commit/?id=3ef283e02b0b91daf64c3a589e1f6bb68d4f5aa1>`
-+-  Release Artefact: oecore-3ef283e02b0b91daf64c3a589e1f6bb68d4f5aa1
-+-  sha: d2fd127f46e626fa4456c193af3dbd25d4b2565db59bc23be69a3b2dd4febed5
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.2.2/oecore-3ef283e02b0b91daf64c3a589e1f6bb68d4f5aa1.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.2.2/oecore-3ef283e02b0b91daf64c3a589e1f6bb68d4f5aa1.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`mickledore </meta-mingw/log/?h=mickledore>`
-+-  Tag:  :yocto_git:`yocto-4.2.2 </meta-mingw/log/?h=yocto-4.2.2>`
-+-  Git Revision: :yocto_git:`4608d0bb7e47c52b8f6e9be259bfb1716fda9fd6 </meta-mingw/commit/?id=4608d0bb7e47c52b8f6e9be259bfb1716fda9fd6>`
-+-  Release Artefact: meta-mingw-4608d0bb7e47c52b8f6e9be259bfb1716fda9fd6
-+-  sha: fcbae0dedb363477492b86b8f997e06f995793285535b24dc66038845483eeef
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.2.2/meta-mingw-4608d0bb7e47c52b8f6e9be259bfb1716fda9fd6.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.2.2/meta-mingw-4608d0bb7e47c52b8f6e9be259bfb1716fda9fd6.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.4 </bitbake/log/?h=2.4>`
-+-  Tag:  :oe_git:`yocto-4.2.2 </bitbake/log/?h=yocto-4.2.2>`
-+-  Git Revision: :oe_git:`08033b63ae442c774bd3fce62844eac23e6882d7 </bitbake/commit/?id=08033b63ae442c774bd3fce62844eac23e6882d7>`
-+-  Release Artefact: bitbake-08033b63ae442c774bd3fce62844eac23e6882d7
-+-  sha: 1d070c133bfb6502ac04befbf082cbfda7582c8b1c48296a788384352e5061fd
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.2.2/bitbake-08033b63ae442c774bd3fce62844eac23e6882d7.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.2.2/bitbake-08033b63ae442c774bd3fce62844eac23e6882d7.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`mickledore </yocto-docs/log/?h=mickledore>`
-+-  Tag: :yocto_git:`yocto-4.2.2 </yocto-docs/log/?h=yocto-4.2.2>`
-+-  Git Revision: :yocto_git:`54d849d259a332389beea159d789f8fa92871475 </yocto-docs/commit/?id=54d849d259a332389beea159d789f8fa92871475>`
-+
+ .. note::
+ 
+    -  While the Yocto Project Team attempts to ensure all Yocto Project
+@@ -117,7 +137,6 @@ Currently, the Yocto Project is supported on the following distributions:
+       and the ":doc:`../contributor-guide/submit-defect`"
+       section in the Yocto Project and OpenEmbedded Contributor Guide.
+ 
+-
+ Required Packages for the Build Host
+ ====================================
+ 
 -- 
 2.34.1
 
