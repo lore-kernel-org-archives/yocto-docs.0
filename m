@@ -2,76 +2,82 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 060A8C001DE
-	for <webhook@archiver.kernel.org>; Thu, 10 Aug 2023 08:33:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F0F0C001DE
+	for <webhook@archiver.kernel.org>; Thu, 10 Aug 2023 08:59:55 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.12853.1691656411043706926
+ by mx.groups.io with SMTP id smtpd.web10.13142.1691657987038007617
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Aug 2023 01:33:31 -0700
+ Thu, 10 Aug 2023 01:59:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Pw7cgzA2;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JK6N7DVG;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 380A01BF207;
-	Thu, 10 Aug 2023 08:33:28 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2F2501BF20B;
+	Thu, 10 Aug 2023 08:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691656408;
+	t=1691657985;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=i7wpdiC2Bi62HFfromB/fCazCoXrlUtX7JhvKN/jiTQ=;
-	b=Pw7cgzA2yU/q5q8hMsPg+r/5k+hlCXOGwtZDLy2E9IE4UQP2qqmPV7iZm1e4NvZvpUostY
-	JUuI/8BFXYjtlbk9xkT3M8k7+yOYr9XgmdgNhrde6uJJ1ySGJ9ARwddq3ZPtBp7ry7mZy0
-	McuATH1at8S0C7EkY3ov1Huh9IcIHgUM/Q7ViTdEMXLOIATes9yZFKWvphE/5aAOVIvHan
-	3jqr/I60+k930D8Z9stdDSD/mMB/z7eSKGYLIgAwqpNojOQbxGDya7+Mj+F2b0/YgaHljl
-	ua9EwbG23BHXk5wpbe8qDprSTbIH/8Xu9HkA2/11h6tvHiwT/9OIIOqWmOEgrg==
-Message-ID: <d5fafe35-8d96-a3ce-5c5b-e31c1165438c@bootlin.com>
-Date: Thu, 10 Aug 2023 10:33:27 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=tImKVL3SkcDF8MyLlpIpjufUDAs6zT0tZ6fBUjY4tM0=;
+	b=JK6N7DVGos6thGQFguPFRl+aRKqNvCUPIcJFxfsnwO/I7NmbHmo5Nmvi+Swi+LskLEowYb
+	iJQ6h3LNhmf4fE0XHVQPHLE9UrZ+wqP4TXuWCUoOF8AjNyFG++wh7JIWJ4I0a49r+TapgS
+	QwwmiEsIANb2ZKpUZZNRsrKWPHHO60j5ciQvoQHF8BoRA6fL3ahpHTlZxP9qGPaq4oL8D0
+	5zc7sUyEuTbVwytuVgfwtFUOCRTDCHImqH2lx42jCsnZaYUWh2m7QHerR55zlngHUWSR7X
+	d5t82k28pv/OuRpQPKohOyWR4VvnbDGrwc+TDV0HwV8YSgTpTeYVxF6syvK0cA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] ref-manual: remove AUTHOR variable
+Date: Thu, 10 Aug 2023 10:59:43 +0200
+Message-Id: <20230810085943.968932-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: docs@lists.yoctoproject.org,
- =?UTF-8?B?RnLDqWTDqXJpYyBNYXJ0aW5zb25z?= <frederic.martinsons@gmail.com>
-Subject: Re: [docs] [PATCH 2/3] contributor-guide: add section about why we
- use mailing lists
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <20230809142520.226581-1-michael.opdenacker@bootlin.com>
- <20230809142520.226581-2-michael.opdenacker@bootlin.com>
- <CA+cAkeqBLnr5YRygjCT_6j2M-Hkht3DxAxiQLrP63nBvG9sFwQ@mail.gmail.com>
- <88d3c02eaadc6ce5356608cf93f84dc81471146d.camel@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <88d3c02eaadc6ce5356608cf93f84dc81471146d.camel@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Aug 2023 08:33:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4133
+ <docs@lists.yoctoproject.org>; Thu, 10 Aug 2023 08:59:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4134
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 09.08.23 at 19:57, Richard Purdie wrote:
->>
->> I find the term "point-and-click" a little patronizing,
->> github/gitlab/others web tools
->> are not just point-and-click machine but highly customizable tool
->> aims at smoothen the developer work (in term of tracking, viewing
->> diff, forking) and to provide enhanced user experience.
-> I agree we should tweak the wording.
+Following https://git.openembedded.org/openembedded-core/commit/?id=9d5edd124b7dddb995ceddd79f8a7fc8cf44badf
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/contributor-guide/recipe-style-guide.rst | 1 -
+ documentation/ref-manual/variables.rst                 | 4 ----
+ 2 files changed, 5 deletions(-)
 
-I changed the text to a more neutral "would prefer a web-based GUI".
-Done directly in master-next.
-Thanks for the review!
-Michael.
-
-
+diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+index 5210062802..35ffbc61ef 100644
+--- a/documentation/contributor-guide/recipe-style-guide.rst
++++ b/documentation/contributor-guide/recipe-style-guide.rst
+@@ -144,7 +144,6 @@ general order when possible:
+ 
+ -  :term:`SUMMARY`
+ -  :term:`DESCRIPTION`
+--  :term:`AUTHOR`
+ -  :term:`HOMEPAGE`
+ -  :term:`BUGTRACKER`
+ -  :term:`SECTION`
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 44e2dd08a8..7a71abc0ae 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -192,10 +192,6 @@ system and gives an overview of their function and contents.
+ 
+          ASSUME_SHLIBS = "libEGL.so.1:libegl-implementation"
+ 
+-   :term:`AUTHOR`
+-      The email address used to contact the original author or authors in
+-      order to send patches and forward bugs.
+-
+    :term:`AUTO_LIBNAME_PKGS`
+       When the :ref:`ref-classes-debian` class is inherited,
+       which is the default behavior, :term:`AUTO_LIBNAME_PKGS` specifies which
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
