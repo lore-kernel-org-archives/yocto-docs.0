@@ -2,82 +2,71 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F0F0C001DE
-	for <webhook@archiver.kernel.org>; Thu, 10 Aug 2023 08:59:55 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.13142.1691657987038007617
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AD2D8C001B0
+	for <webhook@archiver.kernel.org>; Thu, 10 Aug 2023 14:04:56 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web11.17889.1691676289133797519
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Aug 2023 01:59:47 -0700
+ Thu, 10 Aug 2023 07:04:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JK6N7DVG;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2F2501BF20B;
-	Thu, 10 Aug 2023 08:59:44 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BRuAuCsC;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C7C09240008;
+	Thu, 10 Aug 2023 14:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691657985;
+	t=1691676287;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=tImKVL3SkcDF8MyLlpIpjufUDAs6zT0tZ6fBUjY4tM0=;
-	b=JK6N7DVGos6thGQFguPFRl+aRKqNvCUPIcJFxfsnwO/I7NmbHmo5Nmvi+Swi+LskLEowYb
-	iJQ6h3LNhmf4fE0XHVQPHLE9UrZ+wqP4TXuWCUoOF8AjNyFG++wh7JIWJ4I0a49r+TapgS
-	QwwmiEsIANb2ZKpUZZNRsrKWPHHO60j5ciQvoQHF8BoRA6fL3ahpHTlZxP9qGPaq4oL8D0
-	5zc7sUyEuTbVwytuVgfwtFUOCRTDCHImqH2lx42jCsnZaYUWh2m7QHerR55zlngHUWSR7X
-	d5t82k28pv/OuRpQPKohOyWR4VvnbDGrwc+TDV0HwV8YSgTpTeYVxF6syvK0cA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: remove AUTHOR variable
-Date: Thu, 10 Aug 2023 10:59:43 +0200
-Message-Id: <20230810085943.968932-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	bh=hZL0ZdUl+fKAK7Nd9zHBHB1lCdMo0W8FevPLHo23uWY=;
+	b=BRuAuCsCf33yynqVRnYl4zAw2y6ed2Rg+Zm7bbxbgmlheIiEbLsprzZp1lqF2YVFMPCJv6
+	c4bhyOX0YIzVuIZer3VzH5okN3iCeXWILvP8lCr/pBdfCub9eAGu8eDi5I9x95G0f19x9+
+	0wbynpV5eQ0DMRtgNLvnO0/5RHE7zzcMYGoIb+7g9Hi8lSrBir0Wmb/YABdHJWYkpwKg6D
+	5zjbWYWKUeUASeNoTWTFoXST96dzlgzfkqpL4CEqn5Xgp5I9eg6dAejzaih555397e+Mum
+	8S3fzEwfdYwm/y/Spfr/46LDohf/qS+OWWpjJNriC+4t+CuiLw2kiECQmOYdsA==
+Message-ID: <3faef71d-caaf-3d10-a894-5dec092d0d3c@bootlin.com>
+Date: Thu, 10 Aug 2023 16:04:46 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc: michael.opdenacker@bootlin.com,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Language: en-US
+To: OE-core <openembedded-core@lists.openembedded.org>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: Keep scripts/create-pull-request and send-pull-request ?
+Organization: Bootlin
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Aug 2023 08:59:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4134
+ <docs@lists.yoctoproject.org>; Thu, 10 Aug 2023 14:04:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4135
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Greetings,
 
-Following https://git.openembedded.org/openembedded-core/commit/?id=9d5edd124b7dddb995ceddd79f8a7fc8cf44badf
+I'm reviewing 
+https://docs.yoctoproject.org/next/contributor-guide/submit-change.html#using-scripts-to-push-a-change-upstream-and-request-a-pull 
+and trying to simplify it.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/contributor-guide/recipe-style-guide.rst | 1 -
- documentation/ref-manual/variables.rst                 | 4 ----
- 2 files changed, 5 deletions(-)
+Do people still use scripts/create-pull-request and send-pull-request? I 
+see some obsolete URLs in the first script, and mostly old commits to 
+their code.
 
-diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index 5210062802..35ffbc61ef 100644
---- a/documentation/contributor-guide/recipe-style-guide.rst
-+++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -144,7 +144,6 @@ general order when possible:
- 
- -  :term:`SUMMARY`
- -  :term:`DESCRIPTION`
---  :term:`AUTHOR`
- -  :term:`HOMEPAGE`
- -  :term:`BUGTRACKER`
- -  :term:`SECTION`
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 44e2dd08a8..7a71abc0ae 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -192,10 +192,6 @@ system and gives an overview of their function and contents.
- 
-          ASSUME_SHLIBS = "libEGL.so.1:libegl-implementation"
- 
--   :term:`AUTHOR`
--      The email address used to contact the original author or authors in
--      order to send patches and forward bugs.
--
-    :term:`AUTO_LIBNAME_PKGS`
-       When the :ref:`ref-classes-debian` class is inherited,
-       which is the default behavior, :term:`AUTO_LIBNAME_PKGS` specifies which
+I'm also asking because I'm wondering whether it's better to document 
+how to create and send pull requests from standard git tools. This way, 
+people also learn how to submit pull requests to other upstreams.
+
+What do you think?
+
+Thanks in advance
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
