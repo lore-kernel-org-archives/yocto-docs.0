@@ -1,72 +1,118 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <bruce.ashfield@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD2D8C001B0
-	for <webhook@archiver.kernel.org>; Thu, 10 Aug 2023 14:04:56 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.17889.1691676289133797519
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94863C04E69
+	for <webhook@archiver.kernel.org>; Thu, 10 Aug 2023 14:09:56 +0000 (UTC)
+Received: from mail-io1-f43.google.com (mail-io1-f43.google.com [209.85.166.43])
+ by mx.groups.io with SMTP id smtpd.web10.18032.1691676588501027296
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Aug 2023 07:04:49 -0700
+ Thu, 10 Aug 2023 07:09:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BRuAuCsC;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C7C09240008;
-	Thu, 10 Aug 2023 14:04:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1691676287;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hZL0ZdUl+fKAK7Nd9zHBHB1lCdMo0W8FevPLHo23uWY=;
-	b=BRuAuCsCf33yynqVRnYl4zAw2y6ed2Rg+Zm7bbxbgmlheIiEbLsprzZp1lqF2YVFMPCJv6
-	c4bhyOX0YIzVuIZer3VzH5okN3iCeXWILvP8lCr/pBdfCub9eAGu8eDi5I9x95G0f19x9+
-	0wbynpV5eQ0DMRtgNLvnO0/5RHE7zzcMYGoIb+7g9Hi8lSrBir0Wmb/YABdHJWYkpwKg6D
-	5zjbWYWKUeUASeNoTWTFoXST96dzlgzfkqpL4CEqn5Xgp5I9eg6dAejzaih555397e+Mum
-	8S3fzEwfdYwm/y/Spfr/46LDohf/qS+OWWpjJNriC+4t+CuiLw2kiECQmOYdsA==
-Message-ID: <3faef71d-caaf-3d10-a894-5dec092d0d3c@bootlin.com>
-Date: Thu, 10 Aug 2023 16:04:46 +0200
+ dkim=pass header.i=@gmail.com header.s=20221208 header.b=nWMWI62v;
+ spf=pass (domain: gmail.com, ip: 209.85.166.43, mailfrom: bruce.ashfield@gmail.com)
+Received: by mail-io1-f43.google.com with SMTP id ca18e2360f4ac-7878e573827so30892539f.1
+        for <docs@lists.yoctoproject.org>; Thu, 10 Aug 2023 07:09:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1691676588; x=1692281388;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dkFjsFkuOzNtzbDD6oHNmyeeMNfvjVvli8nw0eROczQ=;
+        b=nWMWI62vruKnkK0pLPEdMafJrquphKIcCv8H4YWDltUaZPGkGeEZOuG1286NxXO+n4
+         QyAqSWU7uUwQY7O9oxUL3xxqBueLlTnNxtd7iqAp502x7ujfgMnzvnMcGt4LgNhjM6hs
+         9rK4o9I6ZmVAQZfohi42yWCebeMJqxWk1zlYjCfN6XcK/flrJm1oX9p/HsOUpUN13+c/
+         6d45elhXQu0znl6ZX0gDmq4PIdKqFbrDohfOceefK5smlH+8AtKAUHM70s+EDRlGxPpi
+         E9jwS98BTJ2KhA7PQXB5gLUUZPNAvCtacyFMhi2rmZWgDkeenz3bsiP3GSoAcRopHM9s
+         MJCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1691676588; x=1692281388;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dkFjsFkuOzNtzbDD6oHNmyeeMNfvjVvli8nw0eROczQ=;
+        b=e3yS/x5DHzzGgDbxgYERnBJR6A2rv+LOX8PkkaqzZ7mYLwsN4exNYIR9x+XU/m9Pwq
+         +E82qkWkwlrmrqLstNbHIGtreI0sa5vsJed//LoSZyn5LdINEZMtz6PzN97UvxM83Cko
+         jLinxUtc21kLxf7VDj85o0jHkmphLBJDOEyaNf1Xc3r6JmQIzyyCfp8TMPdppJvY8bF4
+         2Spmeqodx/0vJAO2vwU/lYHBxqRIJ0Dy018JfZk5ForeYB7TFMk14Q50/JteuSbmwtil
+         fA4/skxkfej5fD2wB/9Ckltmm6XdsQBpWo/Jf3PbUOPLI/dGe/KvNMCq4XpJCqlsi+Hw
+         KXsQ==
+X-Gm-Message-State: AOJu0YzgcZxx316xHJt2nQy+/0u8gid7AUexkEMddH7BJvrBxj7ykIHV
+	qshmVHssNtI/poLk4BMSwEjiZ2j6ZHXDAfeTzt8=
+X-Google-Smtp-Source: AGHT+IFiHL6Ay/RhyzOYch1nll85usch+71pbBXupNTHsfjZPJHfv6R1oZQiOQUXBhzON3zACBowRjpN3uXCqoNJvz8=
+X-Received: by 2002:a5d:9e05:0:b0:790:9460:6304 with SMTP id
+ h5-20020a5d9e05000000b0079094606304mr3347708ioh.5.1691676587645; Thu, 10 Aug
+ 2023 07:09:47 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Cc: michael.opdenacker@bootlin.com,
- YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Language: en-US
-To: OE-core <openembedded-core@lists.openembedded.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: Keep scripts/create-pull-request and send-pull-request ?
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+References: <3faef71d-caaf-3d10-a894-5dec092d0d3c@bootlin.com>
+In-Reply-To: <3faef71d-caaf-3d10-a894-5dec092d0d3c@bootlin.com>
+From: Bruce Ashfield <bruce.ashfield@gmail.com>
+Date: Thu, 10 Aug 2023 10:09:38 -0400
+Message-ID: <CADkTA4PUSq22Ct4qg50VaAtY79Q9o9FgtDmziry7QwyAqqi3qg@mail.gmail.com>
+Subject: Re: [docs] Keep scripts/create-pull-request and send-pull-request ?
+To: michael.opdenacker@bootlin.com
+Cc: OE-core <openembedded-core@lists.openembedded.org>, 
+	YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Aug 2023 14:04:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4135
+ <docs@lists.yoctoproject.org>; Thu, 10 Aug 2023 14:09:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4136
 
-Greetings,
+On Thu, Aug 10, 2023 at 10:04=E2=80=AFAM Michael Opdenacker via
+lists.yoctoproject.org
+<michael.opdenacker=3Dbootlin.com@lists.yoctoproject.org> wrote:
+>
+> Greetings,
+>
+> I'm reviewing
+> https://docs.yoctoproject.org/next/contributor-guide/submit-change.html#u=
+sing-scripts-to-push-a-change-upstream-and-request-a-pull
+> and trying to simplify it.
+>
+> Do people still use scripts/create-pull-request and send-pull-request? I
+> see some obsolete URLs in the first script, and mostly old commits to
+> their code.
 
-I'm reviewing 
-https://docs.yoctoproject.org/next/contributor-guide/submit-change.html#using-scripts-to-push-a-change-upstream-and-request-a-pull 
-and trying to simplify it.
+I use create-pull-request for all my series, so the scripts still do
+work and are in at least in use here.
 
-Do people still use scripts/create-pull-request and send-pull-request? I 
-see some obsolete URLs in the first script, and mostly old commits to 
-their code.
+But I send with git send-email directly.
 
-I'm also asking because I'm wondering whether it's better to document 
-how to create and send pull requests from standard git tools. This way, 
-people also learn how to submit pull requests to other upstreams.
+Bruce
 
-What do you think?
+>
+> I'm also asking because I'm wondering whether it's better to document
+> how to create and send pull requests from standard git tools. This way,
+> people also learn how to submit pull requests to other upstreams.
+>
+> What do you think?
+>
+> Thanks in advance
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#4135): https://lists.yoctoproject.org/g/docs/message/=
+4135
+> Mute This Topic: https://lists.yoctoproject.org/mt/100663723/1050810
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [bruce.ashfield@=
+gmail.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
 
-Thanks in advance
-Michael.
 
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+--=20
+- Thou shalt not follow the NULL pointer, for chaos and madness await
+thee at its end
+- "Use the force Harry" - Gandalf, Star Trek II
 
