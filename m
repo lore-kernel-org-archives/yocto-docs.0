@@ -1,92 +1,107 @@
-Return-Path: <ecordonnier@snap.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D055BC83F14
-	for <webhook@archiver.kernel.org>; Tue, 29 Aug 2023 11:45:59 +0000 (UTC)
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
- by mx.groups.io with SMTP id smtpd.web10.15289.1693309555715983847
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A320C83F15
+	for <webhook@archiver.kernel.org>; Wed, 30 Aug 2023 15:44:53 +0000 (UTC)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+ by mx.groups.io with SMTP id smtpd.web10.524.1693410288908797894
  for <docs@lists.yoctoproject.org>;
- Tue, 29 Aug 2023 04:45:56 -0700
+ Wed, 30 Aug 2023 08:44:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@snap.com header.s=google header.b=Z3PKSt0q;
- spf=pass (domain: snapchat.com, ip: 209.85.218.49, mailfrom: ecordonnier@snapchat.com)
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-99c136ee106so554643366b.1
-        for <docs@lists.yoctoproject.org>; Tue, 29 Aug 2023 04:45:55 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=BHntOZM1;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.52, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-401b0d97850so56255135e9.2
+        for <docs@lists.yoctoproject.org>; Wed, 30 Aug 2023 08:44:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snap.com; s=google; t=1693309554; x=1693914354;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=B6HNi987H8NoDPsSgUx4MKdltbw7uaNbKB8/mh8CV/I=;
-        b=Z3PKSt0qzw7hLQyM8rkxCv9ZPEvUVb9NUxZZCp+W9bjHCpxD0rP7o2GxKHlG6iTJxg
-         wC8v79clH/i8oDQMNpfGO0olKlgLu9IxsHdHfo2ENYmM+4KPHDwsinSIWdq2mMwbUC/Q
-         uPMcDm9WuBp0RddjwgjF+6ZhclZEwAa4xUfzA=
+        d=linuxfoundation.org; s=google; t=1693410287; x=1694015087; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=azYrLULykSxdLDhED6JewZt+WUiM126YPGH7Hi1vK+Q=;
+        b=BHntOZM1yaU6hnKGeL32/W4iumh/ubEjbid0xZcXIpq98W0kfriQNK6gE5Pa3BuSZ3
+         e6Ic42Cr4dsdKUgAn0totIqwaNfyn7hsSN2fSRJsuZ7OEWhfN3AYdCNQbrPhZLn5g43T
+         +nNOUDBeuh1TQKqm4e9WCDZeXuBIYddvr8sRY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693309554; x=1693914354;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=B6HNi987H8NoDPsSgUx4MKdltbw7uaNbKB8/mh8CV/I=;
-        b=BSUrUAVV1UDwqC/Ns3tKoBsTxTNLhmdawQXh3zPjioPLKR6v7tydhQ9Zub2k2V4S+a
-         aCH6cl5x1uIBtDK47mRdT8GYkFimULtupftkSY4HiKc+6EE4LIy3jN8iJvzvVecak2Y0
-         yeuevHEehYs8e4H+X/gUK++MtOpR0TgRm32n+9byPd3HaABkZOkcLartFLcQTmYZVnL0
-         0k1zyCXSnuikzzamztUng3ziyGPRO4KMTVyk5HNpTrxRScHmFIEGLjKWkwa/AUpXV+pB
-         /3o3c1w5U97t+k95jZWsq8MmRnCRk1MqRjxqVcEF1KBPbQPtd4K41XUDAjIkHNa/23H6
-         E/tg==
-X-Gm-Message-State: AOJu0Yz06W7nlTR+CkIH1IgaZDS1yfj5EOyyo+TDJHcT9p8O4Dyrgk6K
-	dpyxXG+CAaQmKTfh5iS3HtEft7aoxE6ATKr9oowsdQ==
-X-Google-Smtp-Source: AGHT+IFf7ao7/AiLrh3DTfhgdsZCScNg8PbO4RROzvbWIAwQSUix/ncAsWAfeM4MPxFd/Lg3H2lKyw==
-X-Received: by 2002:a17:907:c297:b0:9a5:d657:47e1 with SMTP id tk23-20020a170907c29700b009a5d65747e1mr546227ejc.43.1693309553894;
-        Tue, 29 Aug 2023 04:45:53 -0700 (PDT)
-Received: from lj8k2dq3.sc-core.net ([213.249.125.50])
-        by smtp.gmail.com with ESMTPSA id a8-20020a1709066d4800b0098e422d6758sm5817667ejt.219.2023.08.29.04.45.53
+        d=1e100.net; s=20221208; t=1693410287; x=1694015087;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=azYrLULykSxdLDhED6JewZt+WUiM126YPGH7Hi1vK+Q=;
+        b=ClNRw5CVRLIEYnBoIMgn/FAmCrq6yS5lY48U/fVIyGsrsobBVS3Z/TvvbkyOlt6xtX
+         FUzkHqcU+lpXciVtW0NJ/rGWBihe6lJJMWjPknni2Al+8GpK9U+LHXu5hlnXTTahHE02
+         sej3nmCkqhL3HXAwypG94WNrYrA/GPnfqGkq03V8oBdbz4kXElFQw4vzaTgQmcmyj4rS
+         FHfjgfzmgY1nfh928VF3CT/E5Yt8xq/zcuHbrSdAw6qd8sJCbieHyt1rJ7tBhVNkZIAK
+         6chDJc2MCjeW3BBn7664WhQtR1BMlQqKCw01pJ/WuDRghgT4ZtBwYCqUx6DZocSfqAer
+         ha2Q==
+X-Gm-Message-State: AOJu0Ywt0vqeRglU+07MrRDz8QnY6tbv93GCsSup6/aJk5xKK0jcdICn
+	sp6hbAdICufrLpDwDAJIykA1Gj5uDR8Yy/4H0cM=
+X-Google-Smtp-Source: AGHT+IGuTbfdlmdYl+2EKFO+l16J9Fhw1/kmkwaST+12NIGKlyg7UDjQhO/U/jxDKxHR/vo6QW//BA==
+X-Received: by 2002:a05:600c:2297:b0:400:2dc5:2006 with SMTP id 23-20020a05600c229700b004002dc52006mr2182000wmf.36.1693410287136;
+        Wed, 30 Aug 2023 08:44:47 -0700 (PDT)
+Received: from max.int.rpsys.net ([2001:8b0:aba:5f3c:15ec:a052:9304:60a5])
+        by smtp.gmail.com with ESMTPSA id o9-20020a05600c510900b003fbe791a0e8sm2772181wms.0.2023.08.30.08.44.46
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 04:45:53 -0700 (PDT)
-From: ecordonnier@snap.com
+        Wed, 30 Aug 2023 08:44:46 -0700 (PDT)
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
 To: docs@lists.yoctoproject.org
-Cc: Etienne Cordonnier <ecordonnier@snap.com>
-Subject: [PATCH] migration-guides: system-conf -> systemd-conf
-Date: Tue, 29 Aug 2023 13:45:47 +0200
-Message-Id: <20230829114547.3763369-1-ecordonnier@snap.com>
-X-Mailer: git-send-email 2.36.1.vfs.0.0
+Subject: [PATCH] README: Update to point to new contributor guide
+Date: Wed, 30 Aug 2023 16:44:45 +0100
+Message-Id: <20230830154445.2017109-1-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 29 Aug 2023 11:45:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4178
+ <docs@lists.yoctoproject.org>; Wed, 30 Aug 2023 15:44:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4179
 
-From: Etienne Cordonnier <ecordonnier@snap.com>
+Now we have a contributor guide combining various wiki pages, point at
+that and tweak to match our other READMEs.
 
-Fix this typo. There is no system-conf recipe.
-
-Signed-off-by: Etienne Cordonnier <ecordonnier@snap.com>
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
 ---
- documentation/migration-guides/migration-2.6.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ README | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/documentation/migration-guides/migration-2.6.rst b/documentation/migration-guides/migration-2.6.rst
-index dd21eb3ba..ecb559dd4 100644
---- a/documentation/migration-guides/migration-2.6.rst
-+++ b/documentation/migration-guides/migration-2.6.rst
-@@ -277,13 +277,13 @@ The following changes have occurred:
-    See the ":ref:`bitbake-user-manual/bitbake-user-manual-metadata:removal (override style syntax)`"
-    section in the BitBake User Manual for a detailed example.
+diff --git a/README b/README
+index 85d8d837b..dfbf7bf0e 100644
+--- a/README
++++ b/README
+@@ -10,23 +10,22 @@ An online version of the documentation can be found at:
+ Contributing
+ ============
  
--.. _migration-2.6-systemd-configuration-now-split-out-to-system-conf:
-+.. _migration-2.6-systemd-configuration-now-split-out-to-systemd-conf:
+-See https://www.openembedded.org/wiki/How_to_submit_a_patch_to_OpenEmbedded
+-for generic guidelines for configuring Git and preparing patches.
++Please refer to our contributor guide here: https://docs.yoctoproject.org/dev/contributor-guide/
++for full details on how to submit changes.
  
- ``systemd`` Configuration is Now Split Into ``systemd-conf``
- ------------------------------------------------------------
+-Read the documentation/README and documentation/standards.md files
+-for rules to follow when contributing to the documentation.
+-
+-Where to Send Patches
+-=====================
++As a quick guide, patches should be sent to docs@lists.yoctoproject.org
++The git command to do that would be:
  
- The configuration for the ``systemd`` recipe has been moved into a
--``system-conf`` recipe. Moving this configuration to a separate recipe
-+``systemd-conf`` recipe. Moving this configuration to a separate recipe
- avoids the ``systemd`` recipe from becoming machine-specific for cases
- where machine-specific configurations need to be applied (e.g. for
- ``qemu*`` machines).
+-When sending single patches, please using something like:
+-'git send-email -1 --to docs@lists.yoctoproject.org
++     git send-email -M -1 --to docs@lists.yoctoproject.org
+ 
+ The 'To' header can be set as default for this repository:
+ 
+-$ git config sendemail.to docs@lists.yoctoproject.org
++     git config sendemail.to docs@lists.yoctoproject.org
+ 
+ Now you can just do 'git send-email origin/master..' to send all local patches.
+ 
++Read the documentation/README and documentation/standards.md files
++for rules to follow when contributing to the documentation.
++
+ Git repository: https://git.yoctoproject.org/yocto-docs
+ Mailing list: docs@lists.yoctoproject.org
 -- 
-2.36.1.vfs.0.0
+2.39.2
 
 
