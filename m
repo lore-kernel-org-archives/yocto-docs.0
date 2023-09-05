@@ -1,122 +1,124 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7837C83F33
-	for <webhook@archiver.kernel.org>; Tue,  5 Sep 2023 10:06:41 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.17923.1693908397660629066
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E6A47C83F3E
+	for <webhook@archiver.kernel.org>; Tue,  5 Sep 2023 13:34:22 +0000 (UTC)
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+ by mx.groups.io with SMTP id smtpd.web11.21548.1693920852079295484
  for <docs@lists.yoctoproject.org>;
- Tue, 05 Sep 2023 03:06:38 -0700
+ Tue, 05 Sep 2023 06:34:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OVjZR6qz;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 52933240007;
-	Tue,  5 Sep 2023 10:06:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1693908395;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2CO0Jst/JyNa9V72uysscPBKS0745RtSAYTndo39TzA=;
-	b=OVjZR6qzSZJglkQglh8FdNqko2tFwOkdsltDgn1fNJj70limQSM8Xr3BSOnXP0bPAbC4DY
-	qB9BPYn9AlT/yLNl5ECd1wJzf3HHibiDVoOh12tmyOXJgsr1MIeKfrexzI4emoJrIb5T5S
-	XfIaK7+o4mZ2vThApPeT5nnCcym1RjF7pNNRDZEYKYiPssoYRmVF3LfqveLF1kjzb3d1em
-	0zx50Qb8YSJes5W3F4HouDfAZTssGITOZFjW7EPGp40SX6ejXD4H9xNz7WHLOfrTMMLS7h
-	7vlwognaIjO/btg+b/xEoJ9QBpK/n9OrQVamcTnlMKufpOm5I3maakbHsnLrmA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH] ref-manual: system-requirements: update supported distros
-Date: Tue,  5 Sep 2023 12:06:32 +0200
-Message-Id: <20230905100632.92761-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=pass header.i=@smile-fr.20230601.gappssmtp.com header.s=20230601 header.b=o4LulgLD;
+ spf=pass (domain: smile.fr, ip: 209.85.128.47, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-401b393df02so25497005e9.1
+        for <docs@lists.yoctoproject.org>; Tue, 05 Sep 2023 06:34:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1693920850; x=1694525650; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lLYKL4rgp36GRTfILd7vVKYDB//ye97LXhS/TAZsV6k=;
+        b=o4LulgLDg2Kvijei05LRFUe5i9vV6L/y4UeoE0tQ4dOfgTZBetr72A/PIaIsOhR//y
+         Ee5+rJiGonJZciv1oR6gTYHlF12bC4OqsY7XufQTSgRxgpgXY0uVfn1YDb3K49O453aQ
+         RJvFQe2EwpELOj7ySx3oeQfNYnOMjiH6PCY16vaxTghqq9gaFwodW6BIhiyeB6zaERBa
+         oe/ZEWI2B9UjiTbMxClstxNCfY2Kc+CsEg5uWmJdbg+EMJimPbmD5NW03ug78f/nD/rD
+         f+CIon4lADA7alswKyXiGffepwvpqInIHQ3HnHO8vOy01Iw0uFXZkvQVqVIKXA2yKaEM
+         Ys9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693920850; x=1694525650;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lLYKL4rgp36GRTfILd7vVKYDB//ye97LXhS/TAZsV6k=;
+        b=OhQXMhrvEZHDhXHZ3BL9O/Ar+f0ZifrFYE6dXD21SF5wudNGOGWDtIx3eorxq73XuA
+         +1MAQNomtSORe6EN48b23gnsj22USIeYTNwHa9BKu7GPteRmsDNYcjItrxn4qDQoTRPG
+         xlZWw37PNAeCiebT9REHAFr6aNef2HJ70Cz77ZgF2m90K9tALedifUTTBhxUY4BoNhPC
+         Z/Rq4WmlkHt7CpL9UBcz9x/4ddILG1hoTRqzAF14O+ATxt22G+UVqV0j9qx46hH6IofQ
+         jTBy+gosiqRI+eAKZOn9J9VyRCgDZ15TK9ZBonBqWEN0XhAUmkc3uZi60Z60bRUnjTNp
+         ib+A==
+X-Gm-Message-State: AOJu0YyktnuMF1LHTFv+9hVOmFZZj7V0pWYX3SlW+c12/EPtF56saD/5
+	WQB9k8SXSCFyW4Jx0bbksIhbag==
+X-Google-Smtp-Source: AGHT+IETifp+HX2ooJt0B3/Aitbj5v0w+JJfsunXnOy3TBrFBk2tygPiryVmF18uK+poOsVTarWomw==
+X-Received: by 2002:a05:600c:22ca:b0:3fb:b5dc:dab1 with SMTP id 10-20020a05600c22ca00b003fbb5dcdab1mr9447798wmg.39.1693920850058;
+        Tue, 05 Sep 2023 06:34:10 -0700 (PDT)
+Received: from [192.168.0.32] ([89.159.1.53])
+        by smtp.gmail.com with ESMTPSA id f23-20020a1c6a17000000b003fc01189b0dsm16758959wmc.42.2023.09.05.06.34.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Sep 2023 06:34:09 -0700 (PDT)
+Message-ID: <ef36bc2e-c29c-a06f-3520-ae0a2e3f4521@smile.fr>
+Date: Tue, 5 Sep 2023 15:34:08 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.12.0
+Subject: Re: [docs] [PATCH] dev-manual: remove unsupported :term: markup
+ inside markup
+Content-Language: en-US
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: docs@lists.yoctoproject.org
+References: <20230904102111.472125-1-yoann.congal@smile.fr>
+ <20af2d30-c531-7285-073d-030fc58d44cf@bootlin.com>
+From: Yoann Congal <yoann.congal@smile.fr>
+Organization: Smile ECS
+In-Reply-To: <20af2d30-c531-7285-073d-030fc58d44cf@bootlin.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 05 Sep 2023 10:06:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4190
+ <docs@lists.yoctoproject.org>; Tue, 05 Sep 2023 13:34:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4191
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+On 9/5/23 10:21, Michael Opdenacker wrote:
+> Hi Yoann
 
-- Update according to changes in SANITY_TESTED_DISTROS
-  (meta-poky/conf/distro/poky.conf)
+Hi Michael,
 
-- No longer declare as "Supported" the distributions versions
-  which are End of Life for their vendors, as some of them
-  (Ubuntu for example) ship updates to subscribers only,
-  which the Yocto Project has no access to.
+> On 04.09.23 at 12:21, Yoann Congal wrote:
+>> ":term:`Initramfs`" in bold text appears verbatim (no link is created).
+>>
+>> The term link is present elsewhere in the text so remove the extra
+>> markup.
+>>
+>> Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+>> ---
+>>   documentation/dev-manual/building.rst | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
+>> index 1f1642e84..a39579349 100644
+>> --- a/documentation/dev-manual/building.rst
+>> +++ b/documentation/dev-manual/building.rst
+>> @@ -273,12 +273,12 @@ loading modules needed to locate and mount the final root filesystem.
+>>     Follow these steps to create an :term:`Initramfs` image:
+>>   -#. *Create the :term:`Initramfs` Image Recipe:* You can reference the
+>> +#. *Create the Initramfs Image Recipe:* You can reference the
+>>      ``core-image-minimal-initramfs.bb`` recipe found in the
+>>      ``meta/recipes-core`` directory of the :term:`Source Directory`
+>>      as an example from which to work.
+>>   -#. *Decide if You Need to Bundle the :term:`Initramfs` Image Into the Kernel
+>> +#. *Decide if You Need to Bundle the Initramfs Image Into the Kernel
+>>      Image:* If you want the :term:`Initramfs` image that is built to be bundled
+>>      in with the kernel image, set the :term:`INITRAMFS_IMAGE_BUNDLE`
+>>      variable to ``"1"`` in your ``local.conf`` configuration file and set the
+> 
+> 
+> Thank you for the patch!
+> Actually, I'd prefer to keep the code as it is. It doesn't hurt as the output is the same, and it makes it easier to look for terms which are not referred to through a ":term:" statement.
 
-- List distribution versions which were previously tested
-  for the branch of the Yocto Project being considered.
+Maybe I was not clear enough in my message.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- .../ref-manual/system-requirements.rst        | 35 ++++++++++++++-----
- 1 file changed, 27 insertions(+), 8 deletions(-)
+The output does not stay the same :
+It goes from ":term:`Initramfs`" (":term:" is visible in the output!). see https://photos.app.goo.gl/KqRnXGy4B5UGi4Wi6 or https://docs.yoctoproject.org/dev/dev-manual/building.html#building-an-initial-ram-filesystem-initramfs-image
+... to just "Initramfs".
+ 
+> It's also possible that future versions of Sphinx will create such a link.
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 060a5dde02..83e9ea0f43 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -34,15 +34,38 @@ and conceptual information in the :doc:`/overview-manual/index`.
- Supported Linux Distributions
- =============================
- 
--Currently, the Yocto Project is supported on the following
--distributions:
--
---  Ubuntu 18.04 (LTS)
-+Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
-+supported on the following distributions:
- 
- -  Ubuntu 20.04 (LTS)
- 
- -  Ubuntu 22.04 (LTS)
- 
-+-  Fedora 37
-+
-+-  Debian GNU/Linux 11.x (Bullseye)
-+
-+-  AlmaLinux 8.8
-+
-+The following distribution versions are still tested (being listed
-+in :term:`SANITY_TESTED_DISTROS`), even though the organizations
-+publishing them no longer make updates publicly available:
-+
-+-  Ubuntu 18.04 (LTS)
-+
-+-  OpenSUSE Leap 15.3
-+
-+Note that the Yocto Project doesn't have access to private updates
-+that some of these versions may have. Therefore, our testing has
-+limited value if you have access to such updates.
-+
-+Finally, here are the distribution versions which were previously
-+tested on former revisions of "&DISTRO_NAME;", but no longer are:
-+
-+-  Ubuntu 16.04 (LTS)
-+
-+-  Ubuntu 21.10
-+
- -  Fedora 34
- 
- -  Fedora 35
-@@ -61,10 +84,6 @@ distributions:
- 
- -  Debian GNU/Linux 10.x (Buster)
- 
---  Debian GNU/Linux 11.x (Bullseye)
--
---  OpenSUSE Leap 15.3
--
- .. note::
- 
-    -  While the Yocto Project Team attempts to ensure all Yocto Project
+In any case, feel free to ignore this patch. The choice is yours, I just wanted to be sure you saw the problem I was trying to fix.
+
+Regards,
 -- 
-2.34.1
-
+Yoann Congal
+Smile ECS - Tech Expert
 
