@@ -2,35 +2,35 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A885C83F2C
-	for <webhook@archiver.kernel.org>; Tue,  5 Sep 2023 05:40:20 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.15137.1693892415567766103
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75B08CA0FE9
+	for <webhook@archiver.kernel.org>; Tue,  5 Sep 2023 05:43:40 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.15069.1693892613115853870
  for <docs@lists.yoctoproject.org>;
- Mon, 04 Sep 2023 22:40:16 -0700
+ Mon, 04 Sep 2023 22:43:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bZREX+xW;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DCFBEE0005;
-	Tue,  5 Sep 2023 05:40:12 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jVpX1Ki3;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1B1AF6000B;
+	Tue,  5 Sep 2023 05:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1693892413;
+	t=1693892610;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
 	bh=yKQjJZLq1r7jJqZ1lKjmj+hVLDomoWnovo/fhzKDI4s=;
-	b=bZREX+xWUv75/NSD213pfDhQBAu91rYc1W99Hek7nRM9mEp9h8UXkDMyjPMv6RTuq199IZ
-	ASOhMPiOQ53Xnx9a/1Fg/c3hNsHVLUkNvTdEtQMdXziL41dSGYNg6TASFobuPXup5Jeidm
-	z6TgxI1dzT/k08B+oubRtPtYYiH+Xo/U5U2opDynvbn0EM0TeRosURux4ntZzhrNRHnIdL
-	eljlEVMG7yTIY/E5ZqlP+gD5BLKBBaimeJhHk+S7LVydm3oAJ3snUgl+u63ZwCQdsYMx7F
-	JjqpzKl8LzSUsNBqaX0i1npnWOQsb2I76taJCjvCdekVukDCAlFYwZplH7gevg==
+	b=jVpX1Ki3SRjmsbju2sTPcIy1sshaGdThnqdFofJ8+WZg/YT7t0DwsQPVygwgEbzcf3hr9O
+	DAFIll9E3YaEF2R4ocyb+qdGbIcLGYa+82r6F1bRHWc46s7enxeffVZmVoUvArmZDq9Lcr
+	TOx7qOkofs0x1reDleRwTh3bWCCKv6JPXzIDk8N24poGkEUGtrJa6J3hWhC7OwGi9jqlrf
+	0ztWoZerHjkfdOrrDvj7eNclFYkN3qu7REKGo8OqXaeK0KDDEzehdWe4uk5WL+xvg+oO71
+	V+M5el8K7d1j28rJGXvGbRSOQewPiU4LvVCBX5qqwQs2NJDdjPv0z1ZITz48pg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [mickledore][PATCH] migration-guides: add release notes for 4.0.12
-Date: Tue,  5 Sep 2023 07:40:07 +0200
-Message-Id: <20230905054007.74067-1-michael.opdenacker@bootlin.com>
+Subject: [kirkstone][PATCH] migration-guides: add release notes for 4.0.12
+Date: Tue,  5 Sep 2023 07:43:24 +0200
+Message-Id: <20230905054324.74793-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -39,8 +39,8 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 05 Sep 2023 05:40:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4186
+ <docs@lists.yoctoproject.org>; Tue, 05 Sep 2023 05:43:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4187
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
