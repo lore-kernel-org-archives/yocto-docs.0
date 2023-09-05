@@ -2,72 +2,124 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC29FC83F3F
-	for <webhook@archiver.kernel.org>; Mon,  4 Sep 2023 17:54:26 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.3081.1693850057504011510
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CE31C83F2C
+	for <webhook@archiver.kernel.org>; Tue,  5 Sep 2023 05:29:00 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.14937.1693891738917285233
  for <docs@lists.yoctoproject.org>;
- Mon, 04 Sep 2023 10:54:18 -0700
+ Mon, 04 Sep 2023 22:28:59 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KIyw8e9X;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9DF0A20007;
-	Mon,  4 Sep 2023 17:54:14 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Tx81THtT;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C96F3FF808;
+	Tue,  5 Sep 2023 05:28:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1693850055;
+	t=1693891736;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=U2mVYUpKktpJDOLKeEFnWHNiL3rBZ/Nlx2sKFWTPt4A=;
-	b=KIyw8e9XuZLAlqZrCs5BlXu3LwU5hs37QupZbu5/fgS1dZitGgzN0ajvh1rDen0R14PRvF
-	dyWjO5Hlp1jU5SUos8TDgFhBwc9QeLtNLCuggc2yv1vS8D6d9S3PE9aZEccWr7rIhELrQV
-	jfYYoQH4BPUcOA128MIwGxXhESiQHd94X79UeM6HTevWnbhddH5crvbTxyTzRnODSiuV01
-	XWZIObJ8sXvkzdEVcAf6dRT+QFruyHA/j5U0/ADj+Zdlm61+zrnNwDGKR89s4REN6yfWAY
-	N1VC0kfWHLgWNI/JxeL3FNqruNH/RXcWDBSlIH5aMBt5uBj/FRfLTRyzP7xbdA==
-From: michael.opdenacker@bootlin.com
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] doc: bitbake-user-manual: remove reference to SSTATE_MIRRORS variable
-Date: Mon,  4 Sep 2023 19:53:52 +0200
-Message-Id: <20230904175352.52769-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3G0GCNDWxscttxevBQfFg1YMC7ZvIQX0yhSO+p1yPeo=;
+	b=Tx81THtT7NG1sx8lgKWKraQZIWGgqtb7f2maHiy0grdEAQYaKdqjDb99kav59FPnblXdVx
+	/yqiVynQ1GiyQAa8wbNYSX1VxqFV67c3VMmMxNdfv5qhSXhqJvj3Ok6SaBCvBqUi3/xE1J
+	7LfJLq/Htksku+ko7+6JjWT4YAT/zF8GVQIum46pCwgrHdxfEIBmwIGw5nSF3d8UtwiGft
+	ddNsSbYmGKqGQqRXWJMxkAnyNQs+VgsEGMGQwGpudQAtAnKMCH/rHGyGSIgjLFwuxejUzN
+	0VaAsyBWmFrcvQCiStySgZvWzQhPJ9ZVq/cJQzm5QDy2PlSJh+QWz7Rc1WXEwg==
+Message-ID: <bdd026a8-39b5-4f9a-b50d-7f06bef1d466@bootlin.com>
+Date: Tue, 5 Sep 2023 07:28:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] migration-guides: add release notes for 4.0.12
+Content-Language: en-US
+To: Lee Chee Yang <chee.yang.lee@intel.com>
+References: <20230824144847.850298-1-chee.yang.lee@intel.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20230824144847.850298-1-chee.yang.lee@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 04 Sep 2023 17:54:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4184
+ <docs@lists.yoctoproject.org>; Tue, 05 Sep 2023 05:29:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4185
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Lee
 
-This variable is implemented in OE-Core, and therefore
-only documented in the Yocto Project manual.
+Many thanks for the release notes!
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- doc/bitbake-user-manual/bitbake-user-manual-fetching.rst | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On 24.08.23 at 16:48, Lee Chee Yang wrote:
+> From: Lee Chee Yang <chee.yang.lee@intel.com>
+>
+> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+> ---
+>   .../migration-guides/release-4.0.rst          |   1 +
+>   .../migration-guides/release-notes-4.0.12.rst | 277 ++++++++++++++++++
+>   2 files changed, 278 insertions(+)
+>   create mode 100644 documentation/migration-guides/release-notes-4.0.12.rst
+>
+> diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+> index 1f08c8844..688ea7ae0 100644
+> --- a/documentation/migration-guides/release-4.0.rst
+> +++ b/documentation/migration-guides/release-4.0.rst
+> @@ -18,3 +18,4 @@ Release 4.0 (kirkstone)
+>      release-notes-4.0.9
+>      release-notes-4.0.10
+>      release-notes-4.0.11
+> +   release-notes-4.0.12
+> diff --git a/documentation/migration-guides/release-notes-4.0.12.rst b/documentation/migration-guides/release-notes-4.0.12.rst
+> new file mode 100644
+> index 000000000..3dbbfcbed
+> --- /dev/null
+> +++ b/documentation/migration-guides/release-notes-4.0.12.rst
+> @@ -0,0 +1,277 @@
+> +.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+> +
+> +Release notes for Yocto-4.0.12 (Kirkstone)
+> +------------------------------------------
+> +
+> +Security Fixes in Yocto-4.0.12
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +-  bind: Fix :cve:`2023-2828` and :cve:`2023-2911`
+> +-  cups: Fix :cve:`2023-34241`
+> +-  curl: Added :cve:`2023-28320` Follow-up patch
+> +-  dbus: Fix :cve:`2023-34969`
+> +-  dmidecode: fix :cve:`2023-30630`
+> +-  ghostscript: fix :cve:`2023-36664`
+> +-  go: fix :cve_mitre:`2023-24531`, :cve:`2023-24536`, :cve:`2023-29400`, :cve:`2023-29402`, :cve:`2023-29404`, :cve:`2023-29405` and :cve:`2023-29406`
+> +-  libarchive: Ignore :cve:`2023-30571`
+> +-  libcap: Fix :cve:`2023-2602` and :cve:`2023-2603`
+> +-  libjpeg-turbo: Fix :cve:`2023-2804`
+> +-  libpcre2: Fix :cve:`2022-41409`
+> +-  libtiff: fix :cve:`2023-26965`
+> +-  libwebp: Fix :cve:`2023-1999`
+> +-  libx11: Fix :cve:`2023-3138`
+> +-  libxpm: Fix :cve:`2022-44617`
+> +-  ninja: Ignore :cve:`2021-4336`
+> +-  openssh: Fix :cve:`2023-38408`
+> +-  openssl: Fix :cve:`2023-2975`, :cve:`2023-3446` and :cve:`2023-3817`
+> +-  perl: Fix :cve:`2023-31486`
+> +-  python3: Ignore :cve:`2023-36632`
+> +-  qemu: Fix :cve:`2023-0330`, :cve_mitre:`2023-2861`, :cve_mitre:`2023-3255` and :cve_mitre:`2023-3301`
+> +-  sqlite3: Fix :cve:`2023-36191`
+> +-  tiff: Fix :cve:`2023-0795`, :cve:`2023-0796`, :cve:`2023-0797`, :cve:`2023-0798`, :cve:`2023-0799`, :cve:`2023-25433`, :cve:`2023-25434` and :cve:`2023-25435`
+> +-  vim: CVE-2023-2609 :cve:`2023-2610`
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-index f5723d67..ec3797db 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-@@ -707,8 +707,9 @@ The fetcher requires that the machine has valid credentials for accessing the
- chosen bucket. Instructions for authentication can be found in the
- `Google Cloud documentation <https://cloud.google.com/docs/authentication/provide-credentials-adc#local-dev>`__.
- 
--The fetcher can be used for fetching sstate artifacts from a GCS bucket by
--specifying the :term:`SSTATE_MIRRORS` variable as shown below::
-+If it used from the OpenEmbedded build system, the fetcher can be used for
-+fetching sstate artifacts from a GCS bucket by specifying the
-+``SSTATE_MIRRORS`` variable as shown below::
- 
-    SSTATE_MIRRORS ?= "\
-        file://.* gs://<bucket name>/PATH \
+
+You forgot one ":cve:" macro in the last line, but I fixed it.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+and merged into "master-next".
+
+Thanks again
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
