@@ -2,35 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BE848CE79AF
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D76E0CE79B1
 	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 08:08:12 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.31932.1695197285412559411
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.32058.1695197292079188429
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Sep 2023 01:08:05 -0700
+ Wed, 20 Sep 2023 01:08:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mpvKCfF9;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 609281C0007;
-	Wed, 20 Sep 2023 08:08:03 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CTu2Z2w+;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3CC1420005;
+	Wed, 20 Sep 2023 08:08:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1695197283;
+	t=1695197290;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uIjO9+raJ6G0uzyu+816OyfR9YEttvbSTcIccq3aNQQ=;
-	b=mpvKCfF9FvY/UEhn2p5tmcVXxW6VnuSTZ5ytTZ9Q1Ece1pW4+6krfFS5XtRVUtigK/PE6S
-	T2E4FoEilBZQFe3DobHZ9F3TFM7anrrzauJ9La2dmANQsQO38IbJDUJmbqXrN0iyEMFOEc
-	FeGMUOXywkQiDQhKNYdMHY13fBZqyCvE3z/9EovFbIaAMZ32TkRgHhj4Wao/PcST9zM+NQ
-	xiXtQT2+k7+snmbOPtZm6iWF95iUyA80OC0pnEeHVoPMVahmB7sR8lHA1INDRGp22oUeUQ
-	Hx1xCw/EOPUMtFM0PGimGNujqlZomZHZYiaA4/NgAmX10YBigWQYg4qN0K9X9Q==
+	bh=GwE8mlT5jSMESeNK3tN7LKOp8jV4pHC8vKw3RMAsjdk=;
+	b=CTu2Z2w+ar57T9Pw5siSnA85JMOuOCcUK4vYBsf00LJlVys2abix3BM7X23Rxs4bEqN7js
+	mtqvftbCNT7/P2TP/9paiDLP63IAbcyiUsGspF85CO2AMCYBiB2KdUfDz4A8e3TrtPSHVo
+	fLzFnv7BzE8avZtfoUu7VhSf06nOjhr2JYLR+krzt3OZeHRJPvAaFFgi0iYkuzAR6c8iDn
+	UY6paCJ/NEOzpmlOyeJc5QbFIPlEaZklOVQnXtBCojuK7cuiC78CSPLV9J4OqHEKfh+VLu
+	/K2k6VLYgeUDy27ZMIiOlLa6SfZWIFPRFDGfXpOWjTS2VUYM643qwFS+JWcvSQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [mickledore][PATCH 3/7] dev-manual: new-recipe.rst fix inconsistency with contributor guide
-Date: Wed, 20 Sep 2023 10:07:50 +0200
-Message-Id: <20230920080754.1225508-4-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Roland Hieber <rhi@pengutronix.de>
+Subject: [mickledore][PATCH 6/7] template: fix typo in section header
+Date: Wed, 20 Sep 2023 10:07:53 +0200
+Message-Id: <20230920080754.1225508-7-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230920080754.1225508-1-michael.opdenacker@bootlin.com>
 References: <20230920080754.1225508-1-michael.opdenacker@bootlin.com>
@@ -41,44 +42,31 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 08:08:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4242
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4245
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-This document was suggesting a way to version pre-releases
-which doesn't match the latest recommendations from the
-contributor guide.
+From: Roland Hieber <rhi@pengutronix.de>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/new-recipe.rst | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ documentation/template/template.svg | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
-index ab3e193aaf..39ee9683b0 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -1082,13 +1082,14 @@ build system and package managers, so the resulting packages will not
- correctly trigger an upgrade.
- 
- In order to ensure the versions compare properly, the recommended
--convention is to set :term:`PV` within the
--recipe to "previous_version+current_version". You can use an additional
--variable so that you can use the current version elsewhere. Here is an
--example::
-+convention is to use a tilde (``~``) character as follows::
- 
--   REALPV = "0.8.16-rc1"
--   PV = "0.8.15+${REALPV}"
-+  PV = 0.8.16~rc1
-+
-+This way ``0.8.16~rc1`` sorts before ``0.8.16``. See the
-+":ref:`contributor-guide/recipe-style-guide:version policy`" section in the
-+Yocto Project and OpenEmbedded Contributor Guide for more details about
-+versioning code corresponding to a pre-release or to a specific Git commit.
- 
- Post-Installation Scripts
- =========================
+diff --git a/documentation/template/template.svg b/documentation/template/template.svg
+index 43043e3afb..50715c08b0 100644
+--- a/documentation/template/template.svg
++++ b/documentation/template/template.svg
+@@ -1019,7 +1019,7 @@
+          id="tspan1183-1-8"
+          x="-52.348656"
+          y="518.42615"
+-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Objets</tspan></text>
++         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:37.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans, Bold';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;stroke:none">Objects</tspan></text>
+     <text
+        xml:space="preserve"
+        style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
 -- 
 2.34.1
 
