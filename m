@@ -2,10 +2,10 @@ Return-Path: <rhi@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29D4DCE79B9
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AFABCE79BB
 	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 10:07:06 +0000 (UTC)
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
- by mx.groups.io with SMTP id smtpd.web10.34183.1695204416680570314
+ by mx.groups.io with SMTP id smtpd.web11.34233.1695204416312614466
  for <docs@lists.yoctoproject.org>;
  Wed, 20 Sep 2023 03:06:57 -0700
 Authentication-Results: mx.groups.io;
@@ -14,27 +14,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <rhi@pengutronix.de>)
-	id 1qiu6f-0007b8-TT; Wed, 20 Sep 2023 12:06:54 +0200
+	id 1qiu6f-0007b5-Pm; Wed, 20 Sep 2023 12:06:53 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <rhi@pengutronix.de>)
-	id 1qiu6f-007erD-7m; Wed, 20 Sep 2023 12:06:53 +0200
+	id 1qiu6f-007erA-5S; Wed, 20 Sep 2023 12:06:53 +0200
 Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <rhi@pengutronix.de>)
-	id 1qiu6f-004MIt-0T;
+	id 1qiu6f-004MIi-0J;
 	Wed, 20 Sep 2023 12:06:53 +0200
 From: Roland Hieber <rhi@pengutronix.de>
 To: docs@lists.yoctoproject.org
 Cc: yocto@pengutronix.de,
-	Roland Hieber <rhi@pengutronix.de>,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 4/4] contributor-guide: deprecate "Accepted" patch status
-Date: Wed, 20 Sep 2023 12:06:47 +0200
-Message-Id: <20230920100647.1038583-4-rhi@pengutronix.de>
+	Roland Hieber <rhi@pengutronix.de>
+Subject: [PATCH 1/4] contributor-guide: recipe-style-guide: add section about CVE patches
+Date: Wed, 20 Sep 2023 12:06:44 +0200
+Message-Id: <20230920100647.1038583-1-rhi@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230920100647.1038583-1-rhi@pengutronix.de>
-References: <20230920100647.1038583-1-rhi@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -45,58 +42,71 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 10:07:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4264
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4265
 
-This is in accordance with the Release Notes of the gatesgarth release:
+This was previously included in the OpenEmbedded wiki page [1], but was
+not ported along with the rest in commit 95c9a1e1e78bbfb82ade
+(2023-09-12, Michael Opdenacker: "contributor-guide: recipe-style-guide:
+add Upstream-Status").
 
-  > In the ``Upstream-Status`` header convention for patches,
-  > ``Accepted`` has | been replaced with ``Backport`` as these almost
-  > always mean the same thing i.e. the patch is already upstream and
-  > may need to be removed in a future recipe upgrade. If you are adding
-  > these headers to your own patches then use Backport to indicate that
-  > the patch has been sent upstream.
+  [1]: https://www.openembedded.org/index.php?title=Commit_Patch_Message_Guidelines&oldid=10935
 
-  <https://docs.yoctoproject.org/migration-guides/migration-3.2.html#miscellaneous-changes>
+Group the examples in their own sections.
 
-Suggested-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 ---
- .../contributor-guide/recipe-style-guide.rst       | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+This is basically v2 of "[PATCH] contributor-guide: add docs for
+Upstream-Status patch headers", Message-Id:
+<20230919111549.997443-2-rhi@pengutronix.de>
+<https://lists.yoctoproject.org/g/docs/topic/resend_patch/101455254>
+rebased onto master-next, but since it looks so different now I made a
+new v1 patch out of it.
+
+ .../contributor-guide/recipe-style-guide.rst  | 27 ++++++++++++++++++-
+ 1 file changed, 26 insertions(+), 1 deletion(-)
 
 diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index bc14c58a9759..ab3b94f02e7e 100644
+index 99105179a6b9..52ab4523c49f 100644
 --- a/documentation/contributor-guide/recipe-style-guide.rst
 +++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -277,13 +277,13 @@ following status strings:
-    Submitted to upstream, waiting for approval. Optionally include where
-    it was submitted, such as the author, mailing list, etc.
+@@ -321,7 +321,17 @@ the status should be changed to ``Submitted [where]``, and an additional
+ ``Signed-off-by:`` line should be added to the patch by the person claiming
+ responsibility for upstreaming.
  
--``Accepted``
--   Accepted in upstream, expect it to be removed at next update, include
--   expected version info.
-+``Backport [version]``
-+   Accepted upstream and included in the next release, or backported from newer
-+   upstream version, because we are at a fixed version.
-+   Include upstream version info (e.g. commit ID or next expected version).
+-For example, if the patch has been submitted upstream::
++CVE patches
++-----------
++
++In order to have a better control of vulnerabilities, patches that fix CVEs must
++contain a *"CVE:"* tag. This tag list all CVEs fixed by the patch. If more than
++one CVE is fixed, separate them using spaces.
++
++Examples
++--------
++
++Here's an example of a patch that has been submitted upstream::
  
--``Backport``
--   Backported from new upstream version, because we are at a fixed version,
--   include upstream version info.
-+   Note: historically, ``Accepted`` was another way to mark such patches, but
-+   this status is now deprecated.
+    rpm: Adjusted the foo setting in bar
  
- ``Denied``
-    Not accepted by upstream, include reason in patch.
-@@ -342,7 +342,7 @@ Here's an example of a patch that has been submitted upstream::
+@@ -336,3 +346,18 @@ For example, if the patch has been submitted upstream::
  
-    Signed-off-by: Joe Developer <joe.developer@example.com>
- 
--A future update can change the value to ``Accepted`` or ``Denied`` as
-+A future update can change the value to ``Backport`` or ``Denied`` as
+ A future update can change the value to ``Accepted`` or ``Denied`` as
  appropriate.
- 
- Another example of a patch that is specific to OpenEmbedded::
++
++This should be the header of patch that fixes CVE-2015-8370 in GRUB2::
++
++   grub2: Fix CVE-2015-8370
++
++   [No upstream tracking] -- https://bugzilla.redhat.com/show_bug.cgi?id=1286966
++
++   Back to 28; Grub2 Authentication
++
++   Two functions suffer from integer underflow fault; the grub_username_get() and grub_password_get()located in
++   grub-core/normal/auth.c and lib/crypto.c respectively. This can be exploited to obtain a Grub rescue shell.
++
++   Upstream-Status: Backport [http://git.savannah.gnu.org/cgit/grub.git/commit/?id=451d80e52d851432e109771bb8febafca7a5f1f2]
++   CVE: CVE-2015-8370
++   Signed-off-by: Joe Developer <joe.developer@example.com>
 -- 
 2.39.2
 
