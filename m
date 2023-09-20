@@ -2,35 +2,35 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5A9E9CE79B2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E197CE79B1
 	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 08:16:13 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.32325.1695197766494761289
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.32324.1695197765929764981
  for <docs@lists.yoctoproject.org>;
  Wed, 20 Sep 2023 01:16:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MasGMsDe;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F019CE0010;
-	Wed, 20 Sep 2023 08:16:04 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=hAITAgrH;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F055C1BF206;
+	Wed, 20 Sep 2023 08:16:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1695197765;
+	t=1695197764;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tP5wxlfI2tUCirctecwEnN+DZzkUEXfraBFuUeJGuGg=;
-	b=MasGMsDew8AFVJ1zLEijLJfviy789kPiGpDQQL1Nwf12Ak/MG3q/ZF3I+3j8OAGnh8X+bJ
-	7YZgVNFh8hZM1dPgcG8E/hStsAZCbglZaik12SV0DkUmv9lAkLjGvr6H46Sx4jfPGnOmpV
-	DIzeNFMgF0QTxxP48rlQwgByiF2v5QePK2ELloteCo/JSq+YqxMfn24o6xRYtBIvjKjVjG
-	HpOvnddoKhdxEw8QiEs3HAqEoLbB5EITJy8mV6rrz7Ok42PMvHKowOjkXVYbnzUQA/nwZ7
-	7ACA9NuwUhhIeekoa/2WdCEcRhPwWXiOoW7ptJwS3z6mQnti+jFr5nbVD6cmuA==
+	bh=9OcZTZ6teY1FrCtqYmhMBPk17aSkQdMfjIgzG2k1wgE=;
+	b=hAITAgrHfTztKRWooJ9QVLMetghhs4cgObKkQXee+1w4Dqp3k83HmbVKELhreAiuwf+F9a
+	l3QzIQrTGWbXP+qo6FCoi/c7ktsXsSyRJkX541O+yf76it+BW4b4ysBRxMfqaNv6hCJQ4t
+	bXwUDuRXQi0Tz58Kz5+YYwVv6j3qguJtEmzVx+yhX6AXjDaFKVZUpF1DOv3QJHzzIheAkB
+	a4LFTMkd2YnWOkOQ5laKshC9Og6BHpimyWlogy3BQzi1WH25w/Ol2zUCAQ79dCilDnVh/C
+	TT01njW8RJ9Wkm7JwwJjtyrAuA/CRLQG+Sj5+sIbo01rIOGuFWse6U82RuCEMw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH 05/10] contributor-guide: recipe-style-guide: add Upstream-Status
-Date: Wed, 20 Sep 2023 10:15:39 +0200
-Message-Id: <20230920081544.1226760-6-michael.opdenacker@bootlin.com>
+Subject: [kirkstone][PATCH 03/10] documentation/README: align with master
+Date: Wed, 20 Sep 2023 10:15:37 +0200
+Message-Id: <20230920081544.1226760-4-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230920081544.1226760-1-michael.opdenacker@bootlin.com>
 References: <20230920081544.1226760-1-michael.opdenacker@bootlin.com>
@@ -41,104 +41,106 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 08:16:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4252
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4250
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../contributor-guide/recipe-style-guide.rst  | 81 +++++++++++++++++++
- 1 file changed, 81 insertions(+)
+ documentation/README | 43 +++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 35 insertions(+), 8 deletions(-)
 
-diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index a0d513e8e9..99105179a6 100644
---- a/documentation/contributor-guide/recipe-style-guide.rst
-+++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -255,3 +255,84 @@ Tips and Guidelines for Writing Recipes
- -  Use :term:`BBCLASSEXTEND` instead of creating separate recipes such as ``-native``
-    and ``-nativesdk`` ones, whenever possible. This avoids having to maintain multiple
-    recipe files at the same time.
+diff --git a/documentation/README b/documentation/README
+index 6f6a8ec842..4d31036e69 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -34,16 +34,18 @@ Manual Organization
+ 
+ Here the folders corresponding to individual manuals:
+ 
++* brief-yoctoprojectqs - Yocto Project Quick Start
+ * overview-manual      - Yocto Project Overview and Concepts Manual
+-* sdk-manual           - Yocto Project Software Development Kit (SDK) Developer's Guide.
++* contributor-guide    - Yocto Project and OpenEmbedded Contributor Guide
++* ref-manual           - Yocto Project Reference Manual
+ * bsp-guide            - Yocto Project Board Support Package (BSP) Developer's Guide
+ * dev-manual           - Yocto Project Development Tasks Manual
+ * kernel-dev           - Yocto Project Linux Kernel Development Manual
+-* ref-manual           - Yocto Project Reference Manual
+-* brief-yoctoprojectqs - Yocto Project Quick Start
+ * profile-manual       - Yocto Project Profiling and Tracing Manual
++* sdk-manual           - Yocto Project Software Development Kit (SDK) Developer's Guide.
+ * toaster-manual       - Toaster User Manual
+ * test-manual          - Yocto Project Test Environment Manual
++* migration-guides     - Yocto Project Release and Migration Notes
+ 
+ Each folder is self-contained regarding content and figures.
+ 
+@@ -129,6 +131,10 @@ Also install the "inkscape" package from your distribution.
+ Inkscape is need to convert SVG graphics to PNG (for EPUB
+ export) and to PDF (for PDF export).
+ 
++Additionally install "fncychap.sty" TeX font if you want to build PDFs. Debian
++and Ubuntu have it in "texlive-latex-extra" package while RedHat distributions
++and OpenSUSE have it in "texlive-fncychap" package for example.
 +
-+Patch Upstream Status
-+=====================
+ To build the documentation locally, run:
+ 
+  $ cd documentation
+@@ -271,6 +277,19 @@ websites.
+ More information can be found here:
+ https://sublime-and-sphinx-guide.readthedocs.io/en/latest/references.html.
+ 
++For external links, we use this syntax:
++`link text <link URL>`__
 +
-+In order to keep track of patches applied by recipes and ultimately reduce the
-+number of patches that need maintaining, the OpenEmbedded build system
-+requires information about the upstream status of each patch.
++instead of:
++`link text <link URL>`_
 +
-+In its description, each patch should provide detailed information about the
-+bug that it addresses, such as the URL in a bug tracking system and links
-+to relevant mailing list archives.
++Both syntaxes work, but the latter also creates a "link text" reference
++target which could conflict with other references with the same name.
++So, only use this variant when you wish to make multiple references
++to this link, reusing only the target name.
 +
-+Then, you should also add an ``Upstream-Status:`` tag containing one of the
-+following status strings:
++See https://stackoverflow.com/questions/27420317/restructured-text-rst-http-links-underscore-vs-use
 +
-+``Pending``
-+   No determination has been made yet or not yet submitted to upstream.
+ Anchor (<#link>) links are forbidden as they are not checked by Sphinx during
+ the build and may be broken without knowing about it.
+ 
+@@ -340,13 +359,16 @@ The sphinx.ext.intersphinx extension is enabled by default
+ so that we can cross reference content from other Sphinx based
+ documentation projects, such as the BitBake manual.
+ 
+-References to the BitBake manual can be done:
++References to the BitBake manual can directly be done:
+  - With a specific description instead of the section name:
+-  :ref:`Azure Storage fetcher (az://) <bitbake:bitbake-user-manual/bitbake-user-manual-fetching:fetchers>`
++  :ref:`Azure Storage fetcher (az://) <bitbake-user-manual/bitbake-user-manual-fetching:fetchers>`
+  - With the section name:
+-  :ref:`bitbake:bitbake-user-manual/bitbake-user-manual-intro:usage and syntax` option
+- - Linking to the entire BitBake manual:
+-  :doc:`BitBake User Manual <bitbake:index>`
++  :ref:`bitbake-user-manual/bitbake-user-manual-intro:usage and syntax` option
 +
-+``Submitted [where]``
-+   Submitted to upstream, waiting for approval. Optionally include where
-+   it was submitted, such as the author, mailing list, etc.
++If you want to refer to an entire document (or chapter) in the BitBake manual,
++you have to use the ":doc:" macro with the "bitbake:" prefix:
++ - :doc:`BitBake User Manual <bitbake:index>`
++ - :doc:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata`" chapter
+ 
+ Note that a reference to a variable (:term:`VARIABLE`) automatically points to
+ the BitBake manual if the variable is not described in the Reference Manual's Variable Glossary.
+@@ -355,6 +377,11 @@ BitBake manual as follows:
+ 
+   :term:`bitbake:BB_NUMBER_PARSE_THREADS`
+ 
++This would be the same if we had identical document filenames in
++both the Yocto Project and BitBake manuals:
 +
-+``Accepted``
-+   Accepted in upstream, expect it to be removed at next update, include
-+   expected version info.
++  :ref:`bitbake:directory/file:section title`
 +
-+``Backport``
-+   Backported from new upstream version, because we are at a fixed version,
-+   include upstream version info.
-+
-+``Denied``
-+   Not accepted by upstream, include reason in patch.
-+
-+``Inactive-Upstream [lastcommit: when (and/or) lastrelease: when]``
-+   The upstream is no longer available. This typically means a defunct project
-+   where no activity has happened for a long time --- measured in years. To make
-+   that judgement, it is recommended to look at not only when the last release
-+   happened, but also when the last commit happened, and whether newly made bug
-+   reports and merge requests since that time receive no reaction. It is also
-+   recommended to add to the patch description any relevant links where the
-+   inactivity can be clearly seen.
-+
-+``Inappropriate [reason]``
-+   The patch is not appropriate for upstream, include a brief reason on the
-+   same line enclosed with ``[]``. The reason can be:
-+
-+   -  ``not author`` (you are not the author and do not intend to upstream this,
-+      the source must be listed in the comments)
-+   -  ``native``
-+   -  ``licensing``
-+   -  ``configuration``
-+   -  ``enable feature``
-+   -  ``disable feature``
-+   -  ``bugfix`` (add bug URL here)
-+   -  ``embedded specific``
-+   -  ``other`` (give details in comments)
-+
-+The various ``Inappropriate [reason]`` status items are meant to indicate that
-+the person responsible for adding this patch to the system does not intend to
-+upstream the patch for a specific reason.
-+
-+Of course, if another person later takes care of submitting this patch upstream,
-+the status should be changed to ``Submitted [where]``, and an additional
-+``Signed-off-by:`` line should be added to the patch by the person claiming
-+responsibility for upstreaming.
-+
-+For example, if the patch has been submitted upstream::
-+
-+   rpm: Adjusted the foo setting in bar
-+
-+   [RPM Ticket #65] -- http://rpm5.org/cvs/tktview?tn=65,5
-+
-+   The foo setting in bar was decreased from X to X-50% in order to
-+   ensure we don't exhaust all system memory with foobar threads.
-+
-+   Upstream-Status: Submitted [rpm5-devel@rpm5.org]
-+
-+   Signed-off-by: Joe Developer <joe.developer@example.com>
-+
-+A future update can change the value to ``Accepted`` or ``Denied`` as
-+appropriate.
+ Submitting documentation changes
+ ================================
+ 
 -- 
 2.34.1
 
