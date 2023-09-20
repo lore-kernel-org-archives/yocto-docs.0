@@ -1,86 +1,147 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F887CE79BF
-	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 10:12:36 +0000 (UTC)
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
- by mx.groups.io with SMTP id smtpd.web10.34258.1695204752393942628
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D53CCE79D2
+	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 14:12:02 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.40719.1695219112490006700
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Sep 2023 03:12:32 -0700
+ Wed, 20 Sep 2023 07:11:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=Pi4vmNM2;
- spf=pass (domain: gmail.com, ip: 209.85.208.181, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2c022ce8114so31918141fa.1
-        for <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 03:12:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1695204750; x=1695809550; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7XI7cK4zCji+qqssxO4Ps7Wt0UDAymqvlAJGBQy1qIk=;
-        b=Pi4vmNM2g4KIq71HhPST4lSeBE2B33HoEkebcPTyI/jWBpPb3v17nN18fE+Ym2u1RG
-         yX30ggmQSwd7egNj0SfW42irJfLVyE1FSKbBJV/Eax9mxgHtGmkdA20DUoH4XAsj466X
-         yf4V6L2Ip48RMijK7JFp78pKa2zSz43HQwDARdxVqitB1k0gPPTNlzLnNovnKSjdXwce
-         2mMMNng4W/mFBOKy2SmMd8jBCk6uXwnxMR2R3fE+F9XCeXHTByzy4M5F2AapJ9JhbzPH
-         +HbMSUOIXdX7qAFL35oEQCHvLBeV6Bop66hDZVQG7NGq/7uO7VtWlbmNiSQ8rvBMsApG
-         wCrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695204750; x=1695809550;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7XI7cK4zCji+qqssxO4Ps7Wt0UDAymqvlAJGBQy1qIk=;
-        b=WQTbN8Zkoja//zawLrW6+vgdkODxeolsUndpLY9bWKpFRRrlZ+5h3TCHJ7Vq78CeIj
-         VTqSvZv1NcSrmvHo0vuz2u7qNLK98U0kcVf3TSTG2eyWqV1ypOUt+rzXOJNuxPluePzw
-         CcICfTNP2wwpnu7K3jfSRKSmzkmQa2Wdr1THCd1qVMBFtH1hWHMjTSQ+EVjTxcgGdCBt
-         NnQOP5QcHA93Nct95feqtdu8lceOGkbJN8R33/ZavqWAH4PXJlswU+yJKoJcCn9jCYSd
-         ZouYcKj/lQMO5aKr9G6NKJ0v2F25EkHj4ZI6pHAgZPP+zeiIgCBYO5Fzp9VKodQhDeVR
-         gkDA==
-X-Gm-Message-State: AOJu0Yy3MmTD3dV4ZN19nvCcZe/htrtwJiYf3IwgJF/yVIWgUQVcBjPc
-	GzQW+Au3EoKoWbRgR1XN29g1bKrueDtOSwBPV8U=
-X-Google-Smtp-Source: AGHT+IFUGWYyJLVnuSYZQG14OZREOJ0Tci+jgZYNJxBAkni5XCZ7MvAAj8YkXupZuAUpj4HJQ5v1muOdeydfajX9HqY=
-X-Received: by 2002:a2e:8912:0:b0:2bc:eb95:15c7 with SMTP id
- d18-20020a2e8912000000b002bceb9515c7mr1453584lji.49.1695204750382; Wed, 20
- Sep 2023 03:12:30 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GiCa4NhD;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 013ED4000B;
+	Wed, 20 Sep 2023 14:11:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1695219110;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7YafwOQMUSTNxjxo6M730pz2HpEF7UcUkMI7Pl1Tnhg=;
+	b=GiCa4NhDWSubkMHSpACm8vC2Sd2Dbr9fcKmH+CIW4aF0YtQAjmTWjgZB8Ltcuk3v1vCDyi
+	t9Z/goqLGixbgkpo8eeYrL6Gv4Ud5afcNuQyFTNM6Ej1gYA7iKfP82hZHfGwlmkUIibnWM
+	R8/dD2p8G6vM8ddVPqLn9h4MH3sualGylYvvaAHWKWLPvwdX0e8EU7DjQJLDF9NfZpk6Kj
+	T2wsHG79RZSgYo5IEevoOYWSHzV4M1z+Txu29t8rEqghgWBhE/0x/8mc9MwFaTbpZkxQKD
+	V0fchbEN/mgwRYKGtpDPgQ0l2w1n+xYDbs3BcqqlvuG+slHLgvDYUV4il5TUkQ==
+Message-ID: <88d5ed59-f2bb-9472-2efb-099bc8d0ef96@bootlin.com>
+Date: Wed, 20 Sep 2023 16:11:49 +0200
 MIME-Version: 1.0
-References: <20230919125757.1571746-1-rhi@pengutronix.de> <20230919125757.1571746-2-rhi@pengutronix.de>
- <d3358ebb-5918-aaab-1a86-4236ce9b8854@bootlin.com> <CANNYZj9sEW_cBLppDmfkk+Hoo628G3WTiH9SBL3TY6iWcd9Nvg@mail.gmail.com>
- <4670f2e9-971a-3ced-3b5a-b551b1ba558f@bootlin.com> <CANNYZj-7C_DeNgVCyRuHRCXZNX-2JPcnysKLn7gQq8w-4aAkNA@mail.gmail.com>
- <20230920100944.2orm2thm5ekqsngt@pengutronix.de>
-In-Reply-To: <20230920100944.2orm2thm5ekqsngt@pengutronix.de>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Wed, 20 Sep 2023 12:12:19 +0200
-Message-ID: <CANNYZj9g3L=XqBQTBkaHD9YWbYh1LY5e4on7Wf_GKuUUVMmV4g@mail.gmail.com>
-Subject: Re: [docs] [RESEND] [PATCH] contributor-guide: add docs for
- Upstream-Status patch headers
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Cc: yocto@pengutronix.de
+Subject: Re: [docs] [PATCH 1/4] contributor-guide: recipe-style-guide: add
+ section about CVE patches
+Content-Language: en-US
+To: Roland Hieber <rhi@pengutronix.de>, docs@lists.yoctoproject.org
+References: <20230920100647.1038583-1-rhi@pengutronix.de>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20230920100647.1038583-1-rhi@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 10:12:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4269
+ <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 14:12:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4270
 
-On Wed, 20 Sept 2023 at 12:09, Roland Hieber <rhi@pengutronix.de> wrote:
-> > We can notify about these changes outside of the docs list, but
-> > otherwise as long as the language makes room for other options (e.g.
-> > saying that there can be other reasons, but they must be clearly
-> > explained) I don't think this is particularly controversial.
-> >
-> > We should also explain that Pending is something that should not be
-> > misused as 'I can't be bother to submit upstream', and must have some
-> > genuine obstacle to immediate upstream submission - just need to find
-> > polite phrasing for that :)
+Hi Roland
+
+Many thanks for the update!
+
+See my comments below...
+
+On 20.09.23 at 12:06, Roland Hieber wrote:
+> This was previously included in the OpenEmbedded wiki page [1], but was
+> not ported along with the rest in commit 95c9a1e1e78bbfb82ade
+> (2023-09-12, Michael Opdenacker: "contributor-guide: recipe-style-guide:
+> add Upstream-Status").
 >
-> Ah =E2=80=93 just saw this mail after having sent out the patch series al=
-ready.
-> Feel free to leave that one out for now if more discussion is needed.I
+>    [1]: https://www.openembedded.org/index.php?title=Commit_Patch_Message_Guidelines&oldid=10935
+>
+> Group the examples in their own sections.
+>
+> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+> ---
+> This is basically v2 of "[PATCH] contributor-guide: add docs for
+> Upstream-Status patch headers", Message-Id:
+> <20230919111549.997443-2-rhi@pengutronix.de>
+> <https://lists.yoctoproject.org/g/docs/topic/resend_patch/101455254>
+> rebased onto master-next, but since it looks so different now I made a
+> new v1 patch out of it.
+>
+>   .../contributor-guide/recipe-style-guide.rst  | 27 ++++++++++++++++++-
+>   1 file changed, 26 insertions(+), 1 deletion(-)
+>
+> diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+> index 99105179a6b9..52ab4523c49f 100644
+> --- a/documentation/contributor-guide/recipe-style-guide.rst
+> +++ b/documentation/contributor-guide/recipe-style-guide.rst
+> @@ -321,7 +321,17 @@ the status should be changed to ``Submitted [where]``, and an additional
+>   ``Signed-off-by:`` line should be added to the patch by the person claiming
+>   responsibility for upstreaming.
+>   
+> -For example, if the patch has been submitted upstream::
+> +CVE patches
+> +-----------
 
-If you can fold these two suggestions into the patch, I don't have any
-other feedback and it can go in from my POV :)
 
-Alex
+I've got an issue with this... This makes the "CVE patches" section a 
+subsection of "Patch Upstream Status".
+Could you instead use?
+
+CVE patches
+========
+
+> +
+> +In order to have a better control of vulnerabilities, patches that fix CVEs must
+> +contain a *"CVE:"* tag. This tag list all CVEs fixed by the patch. If more than
+
+
+s/*"CVE:"* tag/``CVE:``/
+to match the way Upstream-Status was introduced
+
+> +one CVE is fixed, separate them using spaces.
+> +
+> +Examples
+> +--------
+> +
+> +Here's an example of a patch that has been submitted upstream::
+>   
+>      rpm: Adjusted the foo setting in bar
+>   
+> @@ -336,3 +346,18 @@ For example, if the patch has been submitted upstream::
+>   
+>   A future update can change the value to ``Accepted`` or ``Denied`` as
+>   appropriate.
+> +
+> +This should be the header of patch that fixes CVE-2015-8370 in GRUB2::
+
+s/of patch/of the patch/
+
+We have a macro for CVEs:
+s/CVE-2015-8370/:cve:`2015-8370`/
+
+I know, you can't know this ;-)
+
+> +
+> +   grub2: Fix CVE-2015-8370
+
+
+Could you add this section to another "Examples" subsection, dedicated 
+to the "CVE:" tag? This way, each section (Upstream-Status and CVE) has 
+its own examples subsection, and we don't have to create an "Examples" 
+section which applies only by the last two sessions (a bit weird).
+
+Thanks in advance,
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
