@@ -2,86 +2,94 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD1DCCE79AC
-	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 09:44:15 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.33897.1695203052925348203
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 885FCCE79AD
+	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 09:47:25 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.34008.1695203243256675824
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Sep 2023 02:44:13 -0700
+ Wed, 20 Sep 2023 02:47:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZfgOWbAg;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 91B81FF806;
-	Wed, 20 Sep 2023 09:44:10 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=PoXTDqqM;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4CE811C0009;
+	Wed, 20 Sep 2023 09:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1695203051;
+	t=1695203240;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lcmSqjaJ/llticSIRvpz+w2dwgKQHnIIYb5cmX6+HPE=;
-	b=ZfgOWbAg7ib39cofhD0wWJdDmQXPue52J4kHWoFd5MyE/fUJanfdXRR9PJRA0DCUUOGiMq
-	0UM3JugMK91eYO45KjII04Ntet5Zu1+nHoHj4u33VwFfrWqA6nLUMMmFfyMw8ig7uFQM1E
-	E4NSuCHwL7/RFfGQ9XDYP3rvVO9jIG+dFVdQoafc97u2dkiotWwfxE7LGY1fWnGmdWXiuT
-	8f6YTCiW0z6w+19qgjIwZdWyPzdR0YR4wW7oZDRMCmYOp0a4WNtpOG0qmJu2/OsSuNjUnM
-	BMDjqeOtPUgYe2bD+BRDBGebrVuUoTXvRa6fLeSU0aMTu4fn1+YGQtA53Vsrfw==
-Message-ID: <21d27c4a-50b4-2f95-cad6-b7ca844b611e@bootlin.com>
-Date: Wed, 20 Sep 2023 11:44:09 +0200
+	bh=5DmLUTBoSpf84UgyR+wGv3uN6WdcCCpCuEu/EQQP2p0=;
+	b=PoXTDqqMRLLu8dOmiTunEq+Lp9hmRh/+gBfkTpyyU+OXvsfZbp/LMfyxfPXY3JvmA2Xmnt
+	LE42Dr/EaIqO6zee3TBayAq/MJAEgDg9GKi+jt/ryPi+ruu6sErrY8vIwcjdCH5iIsVLPF
+	FJJxFICLSy1T0jr5LZmdQcIutKGVk4bkGSB4pZNs2GjjgdJimgLwAROBmrsmzGjkwOChK+
+	jAgLvO5DbCInvLH2vBlhRk9vPbM+MiSltpT5t0xhUGY0+0Xf/F3dlGFp/hlc01I8EAOdxP
+	xY/84Ixy7QVoaMOh1TjOntA6hJbnKWrQNJmEXjFLjtBCRv9MxgINxsro9l4hmw==
+Message-ID: <4670f2e9-971a-3ced-3b5a-b551b1ba558f@bootlin.com>
+Date: Wed, 20 Sep 2023 11:47:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Cc: docs@lists.yoctoproject.org
+Cc: Roland Hieber <rhi@pengutronix.de>, docs@lists.yoctoproject.org
 Subject: Re: [docs] [RESEND] [PATCH] contributor-guide: add docs for
  Upstream-Status patch headers
 Content-Language: en-US
-To: Roland Hieber <rhi@pengutronix.de>
+To: Alexander Kanavin <alex.kanavin@gmail.com>
 References: <20230919125757.1571746-1-rhi@pengutronix.de>
  <20230919125757.1571746-2-rhi@pengutronix.de>
  <d3358ebb-5918-aaab-1a86-4236ce9b8854@bootlin.com>
- <20230920085637.ypa3jr676bdqocf5@pengutronix.de>
+ <CANNYZj9sEW_cBLppDmfkk+Hoo628G3WTiH9SBL3TY6iWcd9Nvg@mail.gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20230920085637.ypa3jr676bdqocf5@pengutronix.de>
+In-Reply-To: <CANNYZj9sEW_cBLppDmfkk+Hoo628G3WTiH9SBL3TY6iWcd9Nvg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 09:44:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4259
+ <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 09:47:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4260
 
-Hi Roland
+Hi Alex,
 
-On 20.09.23 at 10:56, Roland Hieber wrote:
-> I resent them because apparently my first submission did not appear on
-> the web archive (maybe because I was not yet subscribed to the group,
-> but got auto-subscribed after the submission…?) and I wanted to make
-> sure they made it through.
->
->> However, I see that the version on master-next
->> (https://docs.yoctoproject.org/next/) doesn't cover CVE tags yet, and your
->> patch did. Would you be interested in sending an update against master-next
->> if necessary, knowing that there is also documentation on https://docs.yoctoproject.org/dev-manual/vulnerabilities.html#fixing-vulnerabilities-in-recipes?
-> Ah, I didn't see the master-next version yet! I'll rework my patches and
-> send a new version for the one patch that was not applied yet.
+Many thanks for your comments!
 
-Great, thanks! The changes are in master now, by the way :)
-
->
+On 19.09.23 at 16:23, Alexander Kanavin wrote:
+> On Tue, 19 Sept 2023 at 16:07, Michael Opdenacker via
+> lists.yoctoproject.org
+> <michael.opdenacker=bootlin.com@lists.yoctoproject.org> wrote:
 >> I'd also like to more details about the "Inappropriate" reasons. For
->> example, I don't have a clue what "native" would mean. Why would be patch be
->> rejected upstream because it only applies to the x86 host platform?
->>
->> Last but not least, we'd need to deprecate the "Accepted" reason and
->> recommend "Backport" instead (see https://docs.yoctoproject.org/migration-guides/migration-3.2.html#miscellaneous-changes).
-> Phew… I have the same questions as you… I only ported the existing
-> text from the wiki… :D But I think what Alexander wrote in the other
-> message in the thread seems reasonable, I'll keep that in mind for v2.
+>> example, I don't have a clue what "native" would mean. Why would be
+>> patch be rejected upstream because it only applies to the x86 host platform?
+> For what it's worth I think the entire list of possible Inappropriate
+> reasons in the original wiki and by extension in this patch is
+> horrible, and should be completely deleted. The two valid reasons I
+> can think of:
+> - the issue is not yocto-specific, and should be fixed upstream but
+> the patch in its current form is not suitable for merging upstream,
+> and the author lacks sufficient expertise to developer a proper patch.
+> Instead the issue is handled via a bug report (include link). This
+> would be [upstream ticket <link>] with extended explanation in commit
+> message.
+> - the issue is specific to how yocto performs builds or sets things up
+> at runtime, and can be resolved only with a patch that is not however
+> relevant or appropriate for general upstream submission. This would be
+> [oe specific] also with extended explanation in commit messages.
+>
+> Things like 'I'm not the author of the patch' or 'licensing fix' or
+> whatnot aren't valid reasons to mark Inappropriate. We should also say
+> clearly that adding Inappropriate patches is strongly discouraged, as
+> they add to maintenance burden, and can't be allowed to grow
+> indefinitely in their numbers.
 
 
-Perfect, thanks!
-Cheers
+This definitely makes sense. We could propose documentation changes are 
+the reason strings are not specified in the code. However, isn't this 
+something we should discuss first with a wider audience, for example 
+using the openembedded-core mailing list?
+
+Thanks again,
 Michael.
 
 -- 
