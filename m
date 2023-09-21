@@ -1,68 +1,100 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <rhi@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 435F8E706F2
-	for <webhook@archiver.kernel.org>; Thu, 21 Sep 2023 08:37:18 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.11414.1695285434329977647
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75388E706F3
+	for <webhook@archiver.kernel.org>; Thu, 21 Sep 2023 08:52:48 +0000 (UTC)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+ by mx.groups.io with SMTP id smtpd.web11.11603.1695286366842091947
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Sep 2023 01:37:14 -0700
+ Thu, 21 Sep 2023 01:52:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Q4tz1Lfc;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5895BC000C;
-	Thu, 21 Sep 2023 08:37:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1695285432;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=hFudwXRfCDVigOTqDUtCWzeMuOcRKpZ101qzVgPq/98=;
-	b=Q4tz1LfcRvJvWrcKtuclYl1QQsyj3A6xQWmd4vxZOZuT44RcqsQcX7/AjB/Nkejw2qAmAY
-	B4HC/xLmv+QDqaKUByrCAlNqTX0+qPiGIkUGRNY1tkWh+/l3W7TlhOFgLCWWUM+FLrgpFm
-	c5qhz+MIrMjYpfDXBhA+5RlEu8fBnO2lW3iPe6apnNsf1QCb7Rg4VHNaahHSML4iW8rUrw
-	nVgYhVZOfiEXlex1IcWUrQxug0UDb1z2dBP+SHWqizAqWdcOtI2VbKDytAyYvvszumwyES
-	ipOsuFHb7Ib9GIPDrm1tWDJeWzKJwGvbCx0GE79pVzOoqTiB0BGq6MjrtUactw==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] bsp-guide: bsp.rst: replace reference to wiki
-Date: Thu, 21 Sep 2023 10:37:09 +0200
-Message-Id: <20230921083709.2520578-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=none (message not signed); spf=pass (domain: pengutronix.de, ip: 185.203.201.7, mailfrom: rhi@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qjFQS-0005RK-FI; Thu, 21 Sep 2023 10:52:44 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qjFQR-007su4-Ap; Thu, 21 Sep 2023 10:52:43 +0200
+Received: from rhi by pty.whiteo.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qjFQR-00CZdk-1k; Thu, 21 Sep 2023 10:52:43 +0200
+Date: Thu, 21 Sep 2023 10:52:43 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+To: michael.opdenacker@bootlin.com
+Cc: docs@lists.yoctoproject.org, yocto@pengutronix.de
+Subject: Re: [docs] [PATCH 2/4] contributor-guide: recipe-style-guide: add
+ some more patch tagging examples
+Message-ID: <20230921085243.yunlcrdstdwpthld@pengutronix.de>
+References: <20230920100647.1038583-1-rhi@pengutronix.de>
+ <20230920100647.1038583-2-rhi@pengutronix.de>
+ <6e8be021-45ef-0b0e-5956-31fb1a252575@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <6e8be021-45ef-0b0e-5956-31fb1a252575@bootlin.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: rhi@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 Sep 2023 08:37:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4284
+ <docs@lists.yoctoproject.org>; Thu, 21 Sep 2023 08:52:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4285
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+On Wed, Sep 20, 2023 at 04:16:12PM +0200, Michael Opdenacker via lists.yoctoproject.org wrote:
+> 
+> On 20.09.23 at 12:06, Roland Hieber wrote:
+> > Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+> > ---
+> >   .../contributor-guide/recipe-style-guide.rst     | 16 ++++++++++++++++
+> >   1 file changed, 16 insertions(+)
+> > 
+> > diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+> > index 52ab4523c49f..4faadcd122d8 100644
+> > --- a/documentation/contributor-guide/recipe-style-guide.rst
+> > +++ b/documentation/contributor-guide/recipe-style-guide.rst
+> > @@ -347,6 +347,22 @@ Here's an example of a patch that has been submitted upstream::
+> >   A future update can change the value to ``Accepted`` or ``Denied`` as
+> >   appropriate.
+> > +Another example of a patch that is specific to OpenEmbedded::
+> > +
+> > +   Do not treat warnings as errors
+> > +
+> > +   There are additional warnings found with musl which are
+> > +   treated as errors and fails the build, we have more combinations
+> > +   than upstream supports to handle.
+> > +
+> > +   Upstream-Status: Inappropriate [oe specific]
+> > +
+> > +Here's a patch that has been backported from a pull request::
+> > +
+> > +   include missing sys/file.h for LOCK_EX
+> > +
+> > +   Upstream-Status: Backport [https://github.com/systemd/systemd/pull/28651]
+> 
+> Could we instead use an example giving a commit instead of a pull request?
+> With a pull request (like this one), it's hard to see what the final commit
+> was, and we have to follow the link to double check whether the request was
+> merged or not.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/bsp-guide/bsp.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Yes, that also makes more sense to me. But note that GitHub URLs
+pointing to a commit also work if the commit in question was not yet
+merged (or even if it is only available in a fork), so you'd still have
+to click on the URL or check for the commit ID in the Git repo yourself
+to see if it was merged (however this way you have the commit ID
+directly in the patch).
 
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index 3be314bcf6..c78fbeb68f 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -893,8 +893,8 @@ Yocto Project:
-    ``recipes-*`` subdirectories specific to the recipe's function, or
-    within a subdirectory containing a set of closely-related recipes.
-    The recipes themselves should follow the general guidelines for
--   recipes used in the Yocto Project found in the ":oe_wiki:`OpenEmbedded
--   Style Guide </Styleguide>`".
-+   recipes found in the ":doc:`../contributor-guide/recipe-style-guide`"
-+   in the Yocto Project and OpenEmbedded Contributor Guide.
- 
- -  *License File:* You must include a license file in the
-    ``meta-bsp_root_name`` directory. This license covers the BSP
+ - Roland
+
 -- 
-2.34.1
-
+Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 
