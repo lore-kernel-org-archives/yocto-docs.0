@@ -1,119 +1,233 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <ecordonnier@snap.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D77EBC05024
-	for <webhook@archiver.kernel.org>; Wed, 20 Sep 2023 20:50:34 +0000 (UTC)
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
- by mx.groups.io with SMTP id smtpd.web11.823.1695243025605492010
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AEE9CE79A8
+	for <webhook@archiver.kernel.org>; Thu, 21 Sep 2023 07:57:04 +0000 (UTC)
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+ by mx.groups.io with SMTP id smtpd.web11.10933.1695283023455421624
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Sep 2023 13:50:26 -0700
+ Thu, 21 Sep 2023 00:57:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=a6nIDP16;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.53, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-401f68602a8so2631035e9.3
-        for <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 13:50:25 -0700 (PDT)
+ dkim=pass header.i=@snap.com header.s=google header.b=XAhKOISW;
+ spf=pass (domain: snapchat.com, ip: 209.85.208.54, mailfrom: ecordonnier@snapchat.com)
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-530e180ffcbso626605a12.1
+        for <docs@lists.yoctoproject.org>; Thu, 21 Sep 2023 00:57:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1695243024; x=1695847824; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=HbM8acmcR1pT99lhLvI7XlMUtE53adPzRXOtVZD12mY=;
-        b=a6nIDP16DGg1jzM1uU6w0T+IfvtG/M7yv/lJBouQMOCw6gFaIrluRIdUHV6vrxcsnE
-         ZRV0uTu5UMYmvHRoAxe8xTqp6F/+x3z7vrPIQedMcfLMazJw4MDRIBeSi2AY8cTdv6Qf
-         w0SHixQfIw0oHZWF5aD1XhJUvEHS5FROPn9Y4=
+        d=snap.com; s=google; t=1695283022; x=1695887822; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iSxVL88McJMpcIjfGVlFBTxtsrXPkx2NNYYJoARBI+c=;
+        b=XAhKOISWK50m4ttGNUJRGt96xTMc4aMqGVHfzjHJA4LrHRBT0BcWqkfhOavmCq/3fw
+         3vtEvbeBZl5aZN8J/XA6v66t1HTj8MlgZ2l8YJV6XFSz7hwGlD8hevnjMA8J6y0LdzMy
+         qgZywABd34Sga2V5D0S31HM5ERNLcu0GGnc6o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695243024; x=1695847824;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HbM8acmcR1pT99lhLvI7XlMUtE53adPzRXOtVZD12mY=;
-        b=lsKqgajxKEwplY70LSkCLYTef/UXwA4bBcbO3Wlbz/TythMf8T/xrdydYql3Ey2KkS
-         d8X260vW1kk2BkqSpg15L2ci9x0FYrHzPcQG031bYulq+h7bswFFOGZ95LzuvMox3w6l
-         v28+k2fN7dya9k2k5NhaElVZI212lbrW5Aq5+QdClyCyaf4Pgn/Q0I7IBziqixKbdWeE
-         KcAYdhVoV1DEtKlqf9cc0yKFXoGmOvZ0OYzR7fv12o63G/T/3gN1f4sAkEdJTfJbLRIV
-         QOsuk39rlW9pv94S7XZoxLmECIBK3p2T9O4j2snG5m8EkjXdR1BuCcqK/iXAXcZVxCvs
-         s8pA==
-X-Gm-Message-State: AOJu0YwShCZuNwMDhBltPYjvwuJ8xNP3jIbNOebHvvDVY2OcmIjRwc88
-	uhvWX5BV3JVr7+M2I3PU4qqxIQ==
-X-Google-Smtp-Source: AGHT+IE+CrAJixxuacJTPO58rcO/3fjet1zfglzS40MhEwj9kpy27x0lVy7aajxdDXySQv9MoGlhXQ==
-X-Received: by 2002:a1c:f717:0:b0:3fe:d1b9:7ea9 with SMTP id v23-20020a1cf717000000b003fed1b97ea9mr3450703wmh.36.1695243023944;
-        Wed, 20 Sep 2023 13:50:23 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:a109:22f2:cbec:fa4e? ([2001:8b0:aba:5f3c:a109:22f2:cbec:fa4e])
-        by smtp.gmail.com with ESMTPSA id h1-20020adfe981000000b0031f300a4c26sm1743393wrm.93.2023.09.20.13.50.23
+        d=1e100.net; s=20230601; t=1695283022; x=1695887822;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iSxVL88McJMpcIjfGVlFBTxtsrXPkx2NNYYJoARBI+c=;
+        b=pDq/XNymW3eM3VC5WH8f9sJkpc2QvZ2VFKhYMoBx0MAIayicCI1aq9344pD8tlFbGr
+         Xm9MmKyaJp21/sjBbEumuVhgY4gE7KZJONhdkoLKLH1uA48Ko5Z9CJg5mG23zILf9ZKh
+         FiLig3k3Fn+/v4FQZ55tFm2Yk8nNPLBkv5Zt1XJ+9f8c/kydyReJnrxUS1+nWZ2w+ZgK
+         +Jih1a0+1YBpJpU+WGGkAgp/TPnWj7qCNRIThwwKdV+9NOqR0Y7GEsWtf7KcvZegi0Vf
+         47nAYabZRdelpd7oJ+4ZWWb5rnxebIYVyUVzPKTETMuxWUFeRFudcC+Y/yZmkt9lziM3
+         VXyw==
+X-Gm-Message-State: AOJu0YzXp3Y1kvhG++qRv7U/y1J4D7rwiD+24bcmm7n8jKeDC7SbXROs
+	ppU+rvkzny7eTIbTlO9TD2M+6Q==
+X-Google-Smtp-Source: AGHT+IENczgfAoZIhrW0H1VCPstxy6XcSPUDe2ygdrGpMdbmwnsQ2l0Kn1Buc6ndMMvb75uF/MDItw==
+X-Received: by 2002:a17:906:2001:b0:9a4:88af:b82 with SMTP id 1-20020a170906200100b009a488af0b82mr3790371ejo.77.1695283021739;
+        Thu, 21 Sep 2023 00:57:01 -0700 (PDT)
+Received: from lj8k2dq3.sc-core.net ([213.249.125.50])
+        by smtp.gmail.com with ESMTPSA id lo18-20020a170906fa1200b0099bd1a78ef5sm648202ejb.74.2023.09.21.00.57.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Sep 2023 13:50:23 -0700 (PDT)
-Message-ID: <6cbbd72577806ebf54412268686f4974c5954d61.camel@linuxfoundation.org>
-Subject: Re: [PATCH v2] contributor-guide/style-guide: Add a note about task
- idempotence
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
-Cc: Yoann Congal <yoann.congal@smile.fr>
-Date: Wed, 20 Sep 2023 21:50:22 +0100
-In-Reply-To: <20230920191329.2504837-1-michael.opdenacker@bootlin.com>
-References: <95b653db-9dd2-7fe9-189c-03d646a57b20@smile.fr>
-	 <20230920191329.2504837-1-michael.opdenacker@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+        Thu, 21 Sep 2023 00:57:01 -0700 (PDT)
+From: ecordonnier@snap.com
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Etienne Cordonnier <ecordonnier@snap.com>
+Subject: [PATCH] bitbake-worker: add header with length of message
+Date: Thu, 21 Sep 2023 09:56:58 +0200
+Message-Id: <20230921075658.509846-1-ecordonnier@snap.com>
+X-Mailer: git-send-email 2.36.1.vfs.0.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 20 Sep 2023 20:50:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4279
+ <docs@lists.yoctoproject.org>; Thu, 21 Sep 2023 07:57:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4280
 
-On Wed, 2023-09-20 at 21:13 +0200, michael.opdenacker@bootlin.com
-wrote:
-> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->=20
-> From: Richard Purdie <richard.purdie@linuxfoundation.org>
->=20
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> CC: Yoann Congal <yoann.congal@smile.fr>
->=20
-> ---
-> Changes in V2:
-> - Use a bulleted list to clarify the order of steps
->   (Suggested by Yoann Congal)
-> - Recall that we are talking about idempotence in tasks.
->   Useful for people overlooking the previous paragraph.
-> ---
->  .../contributor-guide/recipe-style-guide.rst       | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
->=20
-> diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/doc=
-umentation/contributor-guide/recipe-style-guide.rst
-> index 1a1c1c6ee2..b63172bd77 100644
-> --- a/documentation/contributor-guide/recipe-style-guide.rst
-> +++ b/documentation/contributor-guide/recipe-style-guide.rst
-> @@ -257,6 +257,20 @@ Tips and Guidelines for Writing Recipes
->     and ``-nativesdk`` ones, whenever possible. This avoids having to mai=
-ntain multiple
->     recipe files at the same time.
-> =20
-> +-  Recipes should have tasks which are idempotent, i.e. that executing a=
- given task
-> +   multiple times shouldn't change the end result. The build environment=
- is built upon
-> +   this assumption and breaking it can cause obscure build failures.
-> +
-> +-  For idempotence when modifying files in tasks, it is usually best to:
-> +
-> +   - copy a file ``X`` to ``X.orig`` (only if it doesn't exist already)
-> +   - then, copy ``X.orig`` back to ``X``,
-> +   - and, finally, modify ``X``.
-> +
-> +   This ensures if rerun the task always has the same end result and the
-> +   original file can be preserved to reuse. It also guards against an
-> +   interrupted build corrupting the file.
-> +
->  Patch Upstream Status
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+From: Etienne Cordonnier <ecordonnier@snap.com>
 
+The IPC mechanism between runqueue.py and bitbake-worker is currently
+not scalable:
 
-FWIW, fine by me, thanks.
+The data is sent with the format <tag>pickled-data</tag>, and bitbake-worker
+has no information about the size of the message. Therefore, the bitbake-worker
+is calling select() and read() in a loop, and then calling "self.queue.find(b"</" + item + b">")"
+for each chunk received.
 
-Richard
+This does not scale, because queue.find has a linear complexity relative to the size of the queue,
+and workerdata messages get very big e.g. for builds which reference a lot of files in SRC_URI.
+The number of chunks varies, but on my test system a lot of chunks of 65536 bytes are sent, and each
+iteration takes 0.1 seconds, making the transfer of the "workerdata" data very slow (on my test setup
+35 seconds before this fix, and 1.5 seconds after this fix).
+
+This commit adds a 4 bytes header after <tag>, so that bitbake-worker knows how many bytes need to be
+received, and does not need to constantly search the whole queue for </tag>.
+
+Signed-off-by: Etienne Cordonnier <ecordonnier@snap.com>
+---
+ bin/bitbake-worker | 34 +++++++++++++++++++++++-----------
+ lib/bb/runqueue.py | 34 ++++++++++++++++++++++------------
+ 2 files changed, 45 insertions(+), 23 deletions(-)
+
+diff --git a/bin/bitbake-worker b/bin/bitbake-worker
+index 451e6926..a4e78991 100755
+--- a/bin/bitbake-worker
++++ b/bin/bitbake-worker
+@@ -433,18 +433,30 @@ class BitbakeWorker(object):
+                 while self.process_waitpid():
+                     continue
+ 
+-
+     def handle_item(self, item, func):
+-        if self.queue.startswith(b"<" + item + b">"):
+-            index = self.queue.find(b"</" + item + b">")
+-            while index != -1:
+-                try:
+-                    func(self.queue[(len(item) + 2):index])
+-                except pickle.UnpicklingError:
+-                    workerlog_write("Unable to unpickle data: %s\n" % ":".join("{:02x}".format(c) for c in self.queue))
+-                    raise
+-                self.queue = self.queue[(index + len(item) + 3):]
+-                index = self.queue.find(b"</" + item + b">")
++        opening_tag = b"<" + item + b">"
++        if not self.queue.startswith(opening_tag):
++            return
++
++        tag_len = len(opening_tag)
++        if len(self.queue) < tag_len + 4:
++            # we need to receive more data
++            return
++        header = self.queue[tag_len:tag_len + 4]
++        payload_len = int.from_bytes(header, 'big')
++        # closing tag has length (tag_len + 1)
++        if len(self.queue) < tag_len * 2 + 1 + payload_len:
++            # we need to receive more data
++            return
++
++        index = self.queue.find(b"</" + item + b">")
++        if index != -1:
++            try:
++                func(self.queue[(tag_len + 4):index])
++            except pickle.UnpicklingError:
++                workerlog_write("Unable to unpickle data: %s\n" % ":".join("{:02x}".format(c) for c in self.queue))
++                raise
++            self.queue = self.queue[(index + len(b"</") + len(item) + len(b">")):]
+ 
+     def handle_cookercfg(self, data):
+         self.cookercfg = pickle.loads(data)
+diff --git a/lib/bb/runqueue.py b/lib/bb/runqueue.py
+index c88d7129..9afb899c 100644
+--- a/lib/bb/runqueue.py
++++ b/lib/bb/runqueue.py
+@@ -1318,6 +1318,16 @@ class RunQueue:
+         self.worker = {}
+         self.fakeworker = {}
+ 
++    @staticmethod
++    def send_pickled_data(worker, data, name):
++        msg = bytearray()
++        msg.extend(b"<" + name.encode() + b">")
++        pickled_data = pickle.dumps(data)
++        msg.extend(len(pickled_data).to_bytes(4, 'big'))
++        msg.extend(pickled_data)
++        msg.extend(b"</" + name.encode() + b">")
++        worker.stdin.write(msg)
++
+     def _start_worker(self, mc, fakeroot = False, rqexec = None):
+         logger.debug("Starting bitbake-worker")
+         magic = "decafbad"
+@@ -1353,9 +1363,9 @@ class RunQueue:
+             "umask" : self.cfgData.getVar("BB_DEFAULT_UMASK"),
+         }
+ 
+-        worker.stdin.write(b"<cookerconfig>" + pickle.dumps(self.cooker.configuration) + b"</cookerconfig>")
+-        worker.stdin.write(b"<extraconfigdata>" + pickle.dumps(self.cooker.extraconfigdata) + b"</extraconfigdata>")
+-        worker.stdin.write(b"<workerdata>" + pickle.dumps(workerdata) + b"</workerdata>")
++        RunQueue.send_pickled_data(worker, self.cooker.configuration, "cookerconfig")
++        RunQueue.send_pickled_data(worker, self.cooker.extraconfigdata, "extraconfigdata")
++        RunQueue.send_pickled_data(worker, workerdata, "workerdata")
+         worker.stdin.flush()
+ 
+         return RunQueueWorker(worker, workerpipe)
+@@ -1365,7 +1375,7 @@ class RunQueue:
+             return
+         logger.debug("Teardown for bitbake-worker")
+         try:
+-           worker.process.stdin.write(b"<quit></quit>")
++           RunQueue.send_pickled_data(worker.process, b"", "quit")
+            worker.process.stdin.flush()
+            worker.process.stdin.close()
+         except IOError:
+@@ -1892,14 +1902,14 @@ class RunQueueExecute:
+     def finish_now(self):
+         for mc in self.rq.worker:
+             try:
+-                self.rq.worker[mc].process.stdin.write(b"<finishnow></finishnow>")
++                RunQueue.send_pickled_data(self.rq.worker[mc].process, b"", "finishnow")
+                 self.rq.worker[mc].process.stdin.flush()
+             except IOError:
+                 # worker must have died?
+                 pass
+         for mc in self.rq.fakeworker:
+             try:
+-                self.rq.fakeworker[mc].process.stdin.write(b"<finishnow></finishnow>")
++                RunQueue.send_pickled_data(self.rq.fakeworker[mc].process, b"", "finishnow")
+                 self.rq.fakeworker[mc].process.stdin.flush()
+             except IOError:
+                 # worker must have died?
+@@ -2194,10 +2204,10 @@ class RunQueueExecute:
+             if 'fakeroot' in taskdep and taskname in taskdep['fakeroot'] and not self.cooker.configuration.dry_run:
+                 if not mc in self.rq.fakeworker:
+                     self.rq.start_fakeworker(self, mc)
+-                self.rq.fakeworker[mc].process.stdin.write(b"<runtask>" + pickle.dumps(runtask) + b"</runtask>")
++                RunQueue.send_pickled_data(self.rq.fakeworker[mc].process, runtask, "runtask")
+                 self.rq.fakeworker[mc].process.stdin.flush()
+             else:
+-                self.rq.worker[mc].process.stdin.write(b"<runtask>" + pickle.dumps(runtask) + b"</runtask>")
++                RunQueue.send_pickled_data(self.rq.worker[mc].process, runtask, "runtask")
+                 self.rq.worker[mc].process.stdin.flush()
+ 
+             self.build_stamps[task] = bb.parse.siggen.stampfile_mcfn(taskname, taskfn, extrainfo=False)
+@@ -2295,10 +2305,10 @@ class RunQueueExecute:
+                         self.rq.state = runQueueFailed
+                         self.stats.taskFailed()
+                         return True
+-                self.rq.fakeworker[mc].process.stdin.write(b"<runtask>" + pickle.dumps(runtask) + b"</runtask>")
++                RunQueue.send_pickled_data(self.rq.fakeworker[mc].process, runtask, "runtask")
+                 self.rq.fakeworker[mc].process.stdin.flush()
+             else:
+-                self.rq.worker[mc].process.stdin.write(b"<runtask>" + pickle.dumps(runtask) + b"</runtask>")
++                RunQueue.send_pickled_data(self.rq.worker[mc].process, runtask, "runtask")
+                 self.rq.worker[mc].process.stdin.flush()
+ 
+             self.build_stamps[task] = bb.parse.siggen.stampfile_mcfn(taskname, taskfn, extrainfo=False)
+@@ -2500,9 +2510,9 @@ class RunQueueExecute:
+ 
+         if changed:
+             for mc in self.rq.worker:
+-                self.rq.worker[mc].process.stdin.write(b"<newtaskhashes>" + pickle.dumps(bb.parse.siggen.get_taskhashes()) + b"</newtaskhashes>")
++                RunQueue.send_pickled_data(self.rq.worker[mc].process, bb.parse.siggen.get_taskhashes(), "newtaskhashes")
+             for mc in self.rq.fakeworker:
+-                self.rq.fakeworker[mc].process.stdin.write(b"<newtaskhashes>" + pickle.dumps(bb.parse.siggen.get_taskhashes()) + b"</newtaskhashes>")
++                RunQueue.send_pickled_data(self.rq.fakeworker[mc].process, bb.parse.siggen.get_taskhashes(), "newtaskhashes")
+ 
+             hashequiv_logger.debug(pprint.pformat("Tasks changed:\n%s" % (changed)))
+ 
+-- 
+2.36.1.vfs.0.0
 
 
