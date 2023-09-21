@@ -1,114 +1,70 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A55AE706EA
-	for <webhook@archiver.kernel.org>; Thu, 21 Sep 2023 08:22:18 +0000 (UTC)
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
- by mx.groups.io with SMTP id smtpd.web11.11223.1695284533605094414
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 38080E706EE
+	for <webhook@archiver.kernel.org>; Thu, 21 Sep 2023 08:27:38 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.11295.1695284849802921340
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Sep 2023 01:22:13 -0700
+ Thu, 21 Sep 2023 01:27:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=MvUXyuDt;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.41, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-402c46c49f4so6931425e9.1
-        for <docs@lists.yoctoproject.org>; Thu, 21 Sep 2023 01:22:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1695284532; x=1695889332; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yj5nnGeSPQCBGg8jLtlS3NzJvcaTMH9JnF1MIl824bo=;
-        b=MvUXyuDtzmpxaBporsWnzeeTFZCYaFmk7RIbgwLEM7lIste4G1pq1THYyqNa7IbSoB
-         T7q6FvOFPbu/7q2teKlEcaadM/l/5NIecpNuZ1QvxbFQm9p2R7Xm2lB2Cpp1ra8NsDL8
-         RlOnyRZQAIMULAY/2XW1CgVA3yYl73byyvqI0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695284532; x=1695889332;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yj5nnGeSPQCBGg8jLtlS3NzJvcaTMH9JnF1MIl824bo=;
-        b=kpvwCuaufQvkOYq2ftaYh+3DeMOONIN9aqYd2XAkpE+izDld736dcYBDBb5oURJj+d
-         mkm+Hznhg6AIcL1Gaf0AJwg4FnCkqMwVWIxacL9BddNs39MV63ODPooupB18uuVjNGZ1
-         AhLtR0hEfYrSfDbVWQMW69jRpM03DakqCKRTfzWOKEMNay0QZZzrQAutENEGiWKYaWqE
-         jHlGMADH9f/8IDjip8p7bg7ez1VXqBe/bQoBD6ilpfwN/NuEAMb4KfKirGt0yg8isufn
-         a4VPpu5r3Yb0Bb6kKSReYXT+ujL7jh+ap5WbB0uUewJUbj8gP1QykMzhKVNiezG5I7Jz
-         8uTg==
-X-Gm-Message-State: AOJu0YzOp/Wvf3T1Us4s61iFOIXDikwV7e/ODSng3v3UjOGaRi6gLkkm
-	3f0+SQ2Z6dWKbL07s2YfrFeJNg==
-X-Google-Smtp-Source: AGHT+IFRZIWN7upxPZPJ9/9epqwaSjwUouWNTZ5jf92qoG7AkVaIAk/UXrw22t/axslwS9sYmqJuCQ==
-X-Received: by 2002:a05:600c:24e:b0:401:8225:14ee with SMTP id 14-20020a05600c024e00b00401822514eemr4416480wmj.41.1695284531627;
-        Thu, 21 Sep 2023 01:22:11 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:a109:22f2:cbec:fa4e? ([2001:8b0:aba:5f3c:a109:22f2:cbec:fa4e])
-        by smtp.gmail.com with ESMTPSA id x14-20020a05600c21ce00b003fefcbe7fa8sm1239799wmj.28.2023.09.21.01.22.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Sep 2023 01:22:11 -0700 (PDT)
-Message-ID: <0d94ff1c8efe8d37471f3c0bfe09403a7d8c5af8.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] bitbake-worker: add header with length of message
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: ecordonnier@snap.com, bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org
-Date: Thu, 21 Sep 2023 09:22:10 +0100
-In-Reply-To: <20230921075658.509846-1-ecordonnier@snap.com>
-References: <20230921075658.509846-1-ecordonnier@snap.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YjZZl9Tj;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 52A842000E;
+	Thu, 21 Sep 2023 08:27:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1695284847;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=S8EMYoQQp9taWm5GcKZnav3MnHizx8S3GOXtVJeltzE=;
+	b=YjZZl9TjKuBPzYdKtGJas6MRCVyNuGtFXkQeF0dSDckpEfxsJsCkIVH49N5L/Qe1jDMqWi
+	BThFFFbeMFj0dBAOs0U3qZ1i2VG6ZHXMukff+dWhTv+DaiDRVnIHyiBMGruGvnNuLE6Z/A
+	Jm5aKh98mayCQjzzC/p71R2i77BtO99i9sJHBotLsVjYkDTRu9C4UGdelxadvyk1meE/aC
+	KT0TdDjUZEla1ylCp55CllJDvAM/vGu5zCzpvUCIlNtoi+U1GJRXiiQY69cPxpA3dW6LX/
+	6PtNci+vBe1qaUsbt/0faLSvmCHV2VNwYgN7tpL+FpLRflZ0AxtitIEZa/KRLA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] dev-manual: new-recipe.rst: replace reference to wiki
+Date: Thu, 21 Sep 2023 10:27:24 +0200
+Message-Id: <20230921082724.2519518-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 Sep 2023 08:22:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4282
+ <docs@lists.yoctoproject.org>; Thu, 21 Sep 2023 08:27:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4283
 
-On Thu, 2023-09-21 at 09:56 +0200, Etienne Cordonnier via
-lists.yoctoproject.org wrote:
-> From: Etienne Cordonnier <ecordonnier@snap.com>
->=20
-> The IPC mechanism between runqueue.py and bitbake-worker is currently
-> not scalable:
->=20
-> The data is sent with the format <tag>pickled-data</tag>, and bitbake-wor=
-ker
-> has no information about the size of the message. Therefore, the bitbake-=
-worker
-> is calling select() and read() in a loop, and then calling "self.queue.fi=
-nd(b"</" + item + b">")"
-> for each chunk received.
->=20
-> This does not scale, because queue.find has a linear complexity relative =
-to the size of the queue,
-> and workerdata messages get very big e.g. for builds which reference a lo=
-t of files in SRC_URI.
-> The number of chunks varies, but on my test system a lot of chunks of 655=
-36 bytes are sent, and each
-> iteration takes 0.1 seconds, making the transfer of the "workerdata" data=
- very slow (on my test setup
-> 35 seconds before this fix, and 1.5 seconds after this fix).
->=20
-> This commit adds a 4 bytes header after <tag>, so that bitbake-worker kno=
-ws how many bytes need to be
-> received, and does not need to constantly search the whole queue for </ta=
-g>.
->=20
-> Signed-off-by: Etienne Cordonnier <ecordonnier@snap.com>
-> ---
->  bin/bitbake-worker | 34 +++++++++++++++++++++++-----------
->  lib/bb/runqueue.py | 34 ++++++++++++++++++++++------------
->  2 files changed, 45 insertions(+), 23 deletions(-)
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-This does look interesting. The IPC mechanism was never intended to
-carry large data and it has changed over time in ways it was never
-really designed for.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ documentation/dev-manual/new-recipe.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-I'm guessing just one of the objects is particularly large? You mention
-lots of files in SRC_URI causing the issue, I'd like to better
-understand that.
+diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
+index 457f9632ce..02bb08474f 100644
+--- a/documentation/dev-manual/new-recipe.rst
++++ b/documentation/dev-manual/new-recipe.rst
+@@ -1395,9 +1395,9 @@ doing the following:
+ Following Recipe Style Guidelines
+ =================================
+ 
+-When writing recipes, it is good to conform to existing style
+-guidelines. The :oe_wiki:`OpenEmbedded Styleguide </Styleguide>` wiki page
+-provides rough guidelines for preferred recipe style.
++When writing recipes, it is good to conform to existing style guidelines.
++See the ":doc:`../contributor-guide/recipe-style-guide`" in the Yocto Project
++and OpenEmbedded Contributor Guide for reference.
+ 
+ It is common for existing recipes to deviate a bit from this style.
+ However, aiming for at least a consistent style is a good idea. Some
+-- 
+2.34.1
 
-I'm just wondering whether instead of improving the IPC, we could avoid
-some of the data in the first place?
-
-Cheers,
-
-Richard
 
