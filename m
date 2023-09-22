@@ -2,86 +2,93 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E0CAE6FE28
-	for <webhook@archiver.kernel.org>; Fri, 22 Sep 2023 13:14:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C0C0E6FE29
+	for <webhook@archiver.kernel.org>; Fri, 22 Sep 2023 13:19:23 +0000 (UTC)
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.21313.1695388469643710876
+ by mx.groups.io with SMTP id smtpd.web11.21425.1695388761700086064
  for <docs@lists.yoctoproject.org>;
- Fri, 22 Sep 2023 06:14:29 -0700
+ Fri, 22 Sep 2023 06:19:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=A1QjsWEr;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Jrm05KYx;
  spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5B36D20005;
-	Fri, 22 Sep 2023 13:14:26 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id ECA5620002;
+	Fri, 22 Sep 2023 13:19:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1695388467;
+	t=1695388760;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wjEzQuV/6dywHrGSIBj4J0yoKnH2g7NSfnMAqA3Z894=;
-	b=A1QjsWEreiE5hZoHYeKK6WPxFwpZnPhFpZ77EcdVfMm0AD7eStg6AB8tJy8X7UOek1kXa6
-	Y+PYczCikNDtjpvQg20VzypOUp7qcSm+cdF0PtWg+pQW9hq47wPr/9zkl3kxzMaThZaz7G
-	iXSFR5gyssBXn9kC/zrEOCFkqTg2YQBzleN2obuFlBtsdzfd+ThFlgXkm9fwsmyhhKJMMu
-	TqSIB8WBMtDauudpYFK4tdZatk8LM6ZjqO/UpG03umz8ZfDVLpVdhW7vyftvG1y0ikN7l4
-	fDpMXLVcAaUKARciScFt/Gxh93xVBN12fPkhb10qBN+RvcbhmUATpcNnAAp+vg==
-Message-ID: <65e503d6-5609-c8d4-6be2-6c9635445f2d@bootlin.com>
-Date: Fri, 22 Sep 2023 15:14:25 +0200
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vLEqL9tRCKCKUa/JKli08PyyJYLqCex7iLYaQJh0MEw=;
+	b=Jrm05KYxNXIhMQ3tOS/DB5VFcfOtiKxUDDvaq2UuPbLdfCk3LOXSYfXmF9r/8YVK7HxKJg
+	1d7H+QN69FUnB34eXFxkErD41b3hugyBN9uggMLny5FsxBoA4JCzs/etLvpL6dgIzlVeo6
+	hs6Zmytn0WVPZMqsWWWX6egXpUP1s5hz9muWSTnPXS3jNaqvQVye0PDQGKQjn6ForBcNdF
+	LVTg3PZwUzi+aO4eP5F/VI5IoTp9LAbxhUYXvmy4OO4w5YpnWLbkuMSuNpC7tsReOc7Aon
+	u5UWq1jrO8VFpWsewbFIKZPMp/vN681F+cDf88jQtqHua5jZDxHg+P0hz9h6HA==
+Message-ID: <fd7baf57-fa9d-5dca-9560-1a3d85f3af2e@bootlin.com>
+Date: Fri, 22 Sep 2023 15:19:19 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Cc: yocto@pengutronix.de, Alexander Kanavin <alex.kanavin@gmail.com>
-Subject: Re: [docs] [PATCH v2 5/5] contributor-guide: style-guide: discourage
- using Pending patch status
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>,
+ Roland Hieber <rhi@pengutronix.de>
 Content-Language: en-US
-To: Roland Hieber <rhi@pengutronix.de>, docs@lists.yoctoproject.org
-References: <20230922100006.756477-1-rhi@pengutronix.de>
- <20230922100006.756477-5-rhi@pengutronix.de>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
 Organization: Bootlin
-In-Reply-To: <20230922100006.756477-5-rhi@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 Sep 2023 13:14:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4296
+ <docs@lists.yoctoproject.org>; Fri, 22 Sep 2023 13:19:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4297
 
-Hi Roland
+Hi Richard,
 
-On 22.09.23 at 12:00, Roland Hieber wrote:
-> Suggested-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Suggested-by: Alexander Kanavin <alex.kanavin@gmail.com>
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-> ---
-> PATCH v2:
->   * new patch in v2, based on feedback by Michael Opdenacker in v1
->     https://lore.kernel.org/yocto-docs/12ef125b-5466-408c-ec8c-c5bef1510bc7@bootlin.com/
->     and Alexander Kanavin in
->     https://lore.kernel.org/yocto-docs/CANNYZj-7C_DeNgVCyRuHRCXZNX-2JPcnysKLn7gQq8w-4aAkNA@mail.gmail.com/
-> ---
->   documentation/contributor-guide/recipe-style-guide.rst | 8 +++++++-
->   1 file changed, 7 insertions(+), 1 deletion(-)
+The following changes since commit 318261d8ea91c2373709a9c1e82304ab7e9e9a3b:
 
+   sdk-manual: extensible.rst: fix multiple formatting issues 
+(2023-09-19 16:31:50 +0200)
 
-Many thanks for these updates!
-For all of them: Reviewed-by: Michael Opdenacker 
-<michael.opdenacker@bootlin.com>
-Merged into "master-next".
+are available in the Git repository at:
 
-Thanks to you, the Contributor Guide has made nice progress this week, 
-and we now have a better and up to date reference for people adding 
-patches to recipes.
+   git://git.yoctoproject.org/yocto-docs master-next
 
-Come back anytime :)
+for you to fetch changes up to 4924c900582aaa803b003e10e48fc4a4373f6a77:
 
-Cheers
+   contributor-guide: style-guide: discourage using Pending patch status 
+(2023-09-22 15:05:10 +0200)
+
+----------------------------------------------------------------
+Michael Opdenacker (2):
+       bsp-guide: bsp.rst: replace reference to wiki
+       dev-manual: new-recipe.rst: replace reference to wiki
+
+Richard Purdie (2):
+       contributor-guide/style-guide: Refer to recipes, not packages
+       contributor-guide/style-guide: Add a note about task idempotence
+
+Roland Hieber (5):
+       contributor-guide: recipe-style-guide: add more patch tagging 
+examples
+       contributor-guide: recipe-style-guide: add section about CVE patches
+       contributor-guide: discourage marking patches as Inappropriate
+       contributor-guide: deprecate "Accepted" patch status
+       contributor-guide: style-guide: discourage using Pending patch status
+
+  documentation/bsp-guide/bsp.rst                        |   4 ++--
+  documentation/contributor-guide/recipe-style-guide.rst | 127 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------
+  documentation/dev-manual/new-recipe.rst                |   6 +++---
+  3 files changed, 99 insertions(+), 38 deletions(-)
+
+Thank you in advance
+Kind regards
 Michael.
 
 -- 
-
 Michael Opdenacker, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
