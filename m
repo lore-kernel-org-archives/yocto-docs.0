@@ -1,96 +1,109 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <rhi@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C0C0E6FE29
-	for <webhook@archiver.kernel.org>; Fri, 22 Sep 2023 13:19:23 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.21425.1695388761700086064
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6269CE7A94
+	for <webhook@archiver.kernel.org>; Mon, 25 Sep 2023 10:48:40 +0000 (UTC)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+ by mx.groups.io with SMTP id smtpd.web10.57920.1695638918430956979
  for <docs@lists.yoctoproject.org>;
- Fri, 22 Sep 2023 06:19:22 -0700
+ Mon, 25 Sep 2023 03:48:38 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Jrm05KYx;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id ECA5620002;
-	Fri, 22 Sep 2023 13:19:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1695388760;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vLEqL9tRCKCKUa/JKli08PyyJYLqCex7iLYaQJh0MEw=;
-	b=Jrm05KYxNXIhMQ3tOS/DB5VFcfOtiKxUDDvaq2UuPbLdfCk3LOXSYfXmF9r/8YVK7HxKJg
-	1d7H+QN69FUnB34eXFxkErD41b3hugyBN9uggMLny5FsxBoA4JCzs/etLvpL6dgIzlVeo6
-	hs6Zmytn0WVPZMqsWWWX6egXpUP1s5hz9muWSTnPXS3jNaqvQVye0PDQGKQjn6ForBcNdF
-	LVTg3PZwUzi+aO4eP5F/VI5IoTp9LAbxhUYXvmy4OO4w5YpnWLbkuMSuNpC7tsReOc7Aon
-	u5UWq1jrO8VFpWsewbFIKZPMp/vN681F+cDf88jQtqHua5jZDxHg+P0hz9h6HA==
-Message-ID: <fd7baf57-fa9d-5dca-9560-1a3d85f3af2e@bootlin.com>
-Date: Fri, 22 Sep 2023 15:19:19 +0200
+ dkim=none (message not signed); spf=pass (domain: pengutronix.de, ip: 185.203.201.7, mailfrom: rhi@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qkj8m-0007Zy-Nh; Mon, 25 Sep 2023 12:48:36 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qkj8l-008qc4-OC; Mon, 25 Sep 2023 12:48:35 +0200
+Received: from rhi by pty.whiteo.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qkj8l-000nQq-Ez; Mon, 25 Sep 2023 12:48:35 +0200
+Date: Mon, 25 Sep 2023 12:48:35 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+To: michael.opdenacker@bootlin.com
+Cc: docs@lists.yoctoproject.org, yocto@pengutronix.de
+Subject: Re: [docs] [PATCH v2 5/5] contributor-guide: style-guide: discourage
+ using Pending patch status
+Message-ID: <20230925104835.x4mlrgy24ord54r2@pengutronix.de>
+References: <20230922100006.756477-1-rhi@pengutronix.de>
+ <20230922100006.756477-5-rhi@pengutronix.de>
+ <65e503d6-5609-c8d4-6be2-6c9635445f2d@bootlin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>,
- Roland Hieber <rhi@pengutronix.de>
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <65e503d6-5609-c8d4-6be2-6c9635445f2d@bootlin.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: rhi@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 Sep 2023 13:19:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4297
+ <docs@lists.yoctoproject.org>; Mon, 25 Sep 2023 10:48:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4298
 
-Hi Richard,
+On Fri, Sep 22, 2023 at 03:14:25PM +0200, Michael Opdenacker via lists.yoctoproject.org wrote:
+> Hi Roland
+> 
+> On 22.09.23 at 12:00, Roland Hieber wrote:
+> > Suggested-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> > Suggested-by: Alexander Kanavin <alex.kanavin@gmail.com>
+> > Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+> > ---
+> > PATCH v2:
+> >   * new patch in v2, based on feedback by Michael Opdenacker in v1
+> >     https://lore.kernel.org/yocto-docs/12ef125b-5466-408c-ec8c-c5bef1510bc7@bootlin.com/
+> >     and Alexander Kanavin in
+> >     https://lore.kernel.org/yocto-docs/CANNYZj-7C_DeNgVCyRuHRCXZNX-2JPcnysKLn7gQq8w-4aAkNA@mail.gmail.com/
+> > ---
+> >   documentation/contributor-guide/recipe-style-guide.rst | 8 +++++++-
+> >   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> 
+> Many thanks for these updates!
+> For all of them: Reviewed-by: Michael Opdenacker
+> <michael.opdenacker@bootlin.com>
+> Merged into "master-next".
+> 
+> Thanks to you, the Contributor Guide has made nice progress this week, and
+> we now have a better and up to date reference for people adding patches to
+> recipes.
 
-The following changes since commit 318261d8ea91c2373709a9c1e82304ab7e9e9a3b:
+Whee \o/ And thanks for your fixups too!
 
-   sdk-manual: extensible.rst: fix multiple formatting issues 
-(2023-09-19 16:31:50 +0200)
+ - Roland
 
-are available in the Git repository at:
+> Come back anytime :)
+> 
+> Cheers
+> Michael.
+> 
+> -- 
+> 
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+> 
 
-   git://git.yoctoproject.org/yocto-docs master-next
+> 
+> -=-=-=-=-=-=-=-=-=-=-=-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#4296): https://lists.yoctoproject.org/g/docs/message/4296
+> Mute This Topic: https://lists.yoctoproject.org/mt/101518215/5053951
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [rhi@pengutronix.de]
+> -=-=-=-=-=-=-=-=-=-=-=-
+> 
 
-for you to fetch changes up to 4924c900582aaa803b003e10e48fc4a4373f6a77:
-
-   contributor-guide: style-guide: discourage using Pending patch status 
-(2023-09-22 15:05:10 +0200)
-
-----------------------------------------------------------------
-Michael Opdenacker (2):
-       bsp-guide: bsp.rst: replace reference to wiki
-       dev-manual: new-recipe.rst: replace reference to wiki
-
-Richard Purdie (2):
-       contributor-guide/style-guide: Refer to recipes, not packages
-       contributor-guide/style-guide: Add a note about task idempotence
-
-Roland Hieber (5):
-       contributor-guide: recipe-style-guide: add more patch tagging 
-examples
-       contributor-guide: recipe-style-guide: add section about CVE patches
-       contributor-guide: discourage marking patches as Inappropriate
-       contributor-guide: deprecate "Accepted" patch status
-       contributor-guide: style-guide: discourage using Pending patch status
-
-  documentation/bsp-guide/bsp.rst                        |   4 ++--
-  documentation/contributor-guide/recipe-style-guide.rst | 127 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------
-  documentation/dev-manual/new-recipe.rst                |   6 +++---
-  3 files changed, 99 insertions(+), 38 deletions(-)
-
-Thank you in advance
-Kind regards
-Michael.
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
+Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
+31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
 
