@@ -1,117 +1,114 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <tgamblin@baylibre.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BED7E75437
-	for <webhook@archiver.kernel.org>; Tue,  3 Oct 2023 09:05:17 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web11.103951.1696323910115450040
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E051AE7AD71
+	for <webhook@archiver.kernel.org>; Tue,  3 Oct 2023 15:17:52 +0000 (UTC)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+ by mx.groups.io with SMTP id smtpd.web10.111379.1696346264460897877
  for <docs@lists.yoctoproject.org>;
- Tue, 03 Oct 2023 02:05:11 -0700
+ Tue, 03 Oct 2023 08:17:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile-fr.20230601.gappssmtp.com header.s=20230601 header.b=CDn5dhV8;
- spf=pass (domain: smile.fr, ip: 209.85.221.41, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3232be274a0so2415141f8f.1
-        for <docs@lists.yoctoproject.org>; Tue, 03 Oct 2023 02:05:09 -0700 (PDT)
+ dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=NaA9yv/t;
+ spf=pass (domain: baylibre.com, ip: 209.85.222.178, mailfrom: tgamblin@baylibre.com)
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-775810b032aso75894085a.1
+        for <docs@lists.yoctoproject.org>; Tue, 03 Oct 2023 08:17:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1696323908; x=1696928708; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lnZhLX1TpxzGAKUwXxa8nu4HAYDyfIMkOYDwNNT8Kz4=;
-        b=CDn5dhV8B13XUDb5L54trmsNQqtgCAe6ebuzDxTbsJlHSgwaCRMrIJKx7RK+FIMSie
-         aH8y9gBe3dYYazPCJoHXQqbKmyUc+HsGAanLV54vkRf2NSc915osF23whqpe8HgCgZjm
-         QQw6fh+Wy5fzSPcWj9+Lb9s578Jxpx5l89nppf2XPavLSIo3BRjcbIkTyi2KAFdlt86O
-         aRdCtFagknchVqQ/j7Xxj/wgc9IAYwH2mHKCnvibjFa3qu9yd9Ca52Ik7SD38Q7cEAhs
-         knM9rdLdWaw764jzP+jgfQ8GyW6svNdSuz/rX26OdPWJb+nBFqtiVS80bqzIg5uTBSIW
-         ++HQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1696346263; x=1696951063; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LVzeeCZ04fB648DFwPVGvxBW30ebfWfTVBHv6LdxaZ8=;
+        b=NaA9yv/tmHXKSihRMvetXX3hIbDw8JVp/kXoCJeqybiqLrntr3c2IKykxO4eZ+kkST
+         jL1GE03+jnZRwG+7xZVoC3/Z67lnCHMWZaJIrtaX0X/IfSshjOnDcrzVUeTpbIuln35o
+         Iyvwv8meSqCOn+8/308sDLshcDUfVSh4LKkV7Rvz0eZD0UGo/zCoTmwsXtqoko6zvf4O
+         VOYzozlxABQfHjECESezAPABA4+CnstFX3EDGufTxQk0fbt/7XO43+LxyVuhtVzoZfLa
+         6ccoxmrqV5b0rl67oIgO6YJ8rOJGxDu4APAgzvT+QTKrZfxbDNpjwdYHbkAG7wAGUtxo
+         Wudg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696323908; x=1696928708;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lnZhLX1TpxzGAKUwXxa8nu4HAYDyfIMkOYDwNNT8Kz4=;
-        b=nEOhALkK6N0ndV7Rfcg5s+HuppbozjKN2mQQXYF65FQq4YU7rrtBIVJm3dZwkatFn1
-         NKaHHi46SOUp7a+sftwi52y0eouKg9QUQwfoXnC2700fDWkusanqlUnmwjKP+pmFQjMa
-         fkK6bilaVcZUhJDhB11AQTmeruswUi9hHRszgn4mQ8z1qVkoC3LvliuV71o315FaPEHq
-         jb2clyrxlY8CNWg0zTkAs/gd+0/3FErZH4/qB5EO75VJ8eRL1VJ4mMopuDJ/bxBJTTS7
-         T7Y/WQM2M/Ny74GMo4ruSv0qTf+9AHNR/REwf3Y5xbS2/Dmo8PSm5bZ2cNk58zuVkhdh
-         DsmQ==
-X-Gm-Message-State: AOJu0YyPSqf8rjiwedft25YZpuPgX8gPX69njHpmjDhl5Y+wxoFv7ifi
-	tk+HpcPb0z1Bo4Z/LNrW21vLiRGRZCmQi/UXpDE=
-X-Google-Smtp-Source: AGHT+IF9OTtkPwiTX/o8AOhiZQQXgRt0g86B1xYX4vfQiEgr1WfpoljyiGmAdgFwPM9z4tyDh14UGg==
-X-Received: by 2002:a5d:4944:0:b0:318:416:a56a with SMTP id r4-20020a5d4944000000b003180416a56amr1626048wrs.13.1696323907917;
-        Tue, 03 Oct 2023 02:05:07 -0700 (PDT)
-Received: from P-ASN-ECS-830T8C3.numericable.fr ([89.159.1.53])
-        by smtp.gmail.com with ESMTPSA id g14-20020a5d46ce000000b003258934a4bfsm1074342wrs.36.2023.10.03.02.05.07
+        d=1e100.net; s=20230601; t=1696346263; x=1696951063;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LVzeeCZ04fB648DFwPVGvxBW30ebfWfTVBHv6LdxaZ8=;
+        b=PgsxG2w6t7XbfF2NX4uoRMfOfXmWRXguN2sAizQ+GKEgdAp7A/MtUmqz3shXRQ28qi
+         xIEYAHJr8Fu9c8j6BeUwPMZyMLHu/2/2xVwh3YWCM9pV1Ygbw0Rod+GbFwojHFcn1SHH
+         NY8FIZ2IfhqIlhzyqxbCNFWk4bavmz7+120C0PWwKlVf2OHNHJRIl4gSPC25meWt1pXi
+         SySXpOx4vjozSrxPrul498zkttB74JtfZ9+1ke7H7nhIWeAMb6SDwCv1m3rgTH6tmT99
+         odMCHmL3piNsbaFOfwqZzjJwNQm88OmlPkYaYaB07f2zCO7CgyXIXARfOqpEePObbF2/
+         Jz+w==
+X-Gm-Message-State: AOJu0YyKYS74KeMQOpa1xxBc9Ox+laDFRqWHIZVGqPDhiPQB2WkNR2R/
+	o+X1UEB/p4sbEbqlyEPYXs9Q+3NG7JDw8f7WkHC0YQ==
+X-Google-Smtp-Source: AGHT+IHO+NgztIuKXB6mVgyA1I6Jc5XdLaxKyMs92V+HNkNZffU6bKyEL89HZ2GBdqEh69fzYEZnWg==
+X-Received: by 2002:a05:620a:404c:b0:775:a3fc:a9f1 with SMTP id i12-20020a05620a404c00b00775a3fca9f1mr10352466qko.21.1696346262954;
+        Tue, 03 Oct 2023 08:17:42 -0700 (PDT)
+Received: from megalith.cgocable.net ([2001:1970:5b1f:ab00:fc4e:ec42:7e5d:48dd])
+        by smtp.gmail.com with ESMTPSA id j6-20020a05620a146600b0077413b342e9sm526405qkl.128.2023.10.03.08.17.42
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Oct 2023 02:05:07 -0700 (PDT)
-From: Yoann Congal <yoann.congal@smile.fr>
+        Tue, 03 Oct 2023 08:17:42 -0700 (PDT)
+From: Trevor Gamblin <tgamblin@baylibre.com>
 To: docs@lists.yoctoproject.org
-Cc: =?UTF-8?q?J=C3=A9r=C3=A9my=20Rosen?= <jeremy.rosen@smile.fr>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH] QA, ptest: Add documentation of unimplemented-ptest QA check
-Date: Tue,  3 Oct 2023 11:04:30 +0200
-Message-Id: <20231003090430.692589-1-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.30.2
+Subject: [PATCH] dev-manual: fix testimage usage instructions
+Date: Tue,  3 Oct 2023 11:17:41 -0400
+Message-ID: <20231003151741.1255292-1-tgamblin@baylibre.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 03 Oct 2023 09:05:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4303
+ <docs@lists.yoctoproject.org>; Tue, 03 Oct 2023 15:17:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4304
 
-From: Jérémy Rosen <jeremy.rosen@smile.fr>
+The proper way to inherit the testimage class is now
 
-Signed-off-by: Jérémy Rosen <jeremy.rosen@smile.fr>
-Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
+IMAGE_CLASSES += "testimage"
 
+so change lines with 'INHERIT += "testimage"' to match. This makes the
+dev-manual consistent with the migration guide, which already specifies
+that the old way causes an error.
+
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
-NB: This is the documentation part of this not merged yet patch series :
-https://lists.openembedded.org/g/openembedded-core/message/188448
+ documentation/dev-manual/runtime-testing.rst   | 4 ++--
+ documentation/dev-manual/upgrading-recipes.rst | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
- documentation/ref-manual/classes.rst   |  3 +++
- documentation/ref-manual/qa-checks.rst | 11 +++++++++++
- 2 files changed, 14 insertions(+)
-
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 3f0d4844e..3eede8c7b 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1480,6 +1480,9 @@ Here are the tests you can list with the :term:`WARN_QA` and
-    also inherits :ref:`ref-classes-features_check` in order for the
-    requirement to actually work.
+diff --git a/documentation/dev-manual/runtime-testing.rst b/documentation/dev-manual/runtime-testing.rst
+index c5c5653be..af3fe2c1d 100644
+--- a/documentation/dev-manual/runtime-testing.rst
++++ b/documentation/dev-manual/runtime-testing.rst
+@@ -229,7 +229,7 @@ The final thing you need to do when setting :term:`TEST_TARGET` to
+    statements in your ``local.conf`` file::
  
-+-  ``unimplemented-ptest:`` Checks that ptest are implemented for upstream
-+   tests.
-+
- -  ``unlisted-pkg-lics:`` Checks that all declared licenses applying
-    for a package are also declared on the recipe level (i.e. any license
-    in ``LICENSE:*`` should appear in :term:`LICENSE`).
-diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
-index 4a02e7206..cc9afeb7c 100644
---- a/documentation/ref-manual/qa-checks.rst
-+++ b/documentation/ref-manual/qa-checks.rst
-@@ -789,6 +789,17 @@ Errors and Warnings
-     use a relative path rather than an absolute one, or to pick up the path from
-     runtime configuration or environment variables.
+       IMAGE_FSTYPES += "tar.gz"
+-      INHERIT += "testimage"
++      IMAGE_CLASSES += "testimage"
+       TEST_TARGET = "SystemdbootTarget"
+       TEST_TARGET_IP = "192.168.2.3"
  
-+.. _qa-check-unimplemented-ptest:
-+
-+- ``<tool> tests detected [unimpemented-ptest]``
-+
-+    This check will detect if the source of the package contains some upstream-
-+    provided tests and, if such tests are detected, that ptests are implemented
-+    for this recipe.  see the ":ref:`dev-manual/packages:testing packages with ptest`"
-+    section in the Yocto Project Development Tasks Manual. See also the
-+    ":ref:`ref-classes-ptest`" section.
-+
-+
+@@ -335,7 +335,7 @@ You can start the tests automatically or manually:
+    inherit the :ref:`ref-classes-testimage` class by editing your
+    ``local.conf`` file::
  
- Configuring and Disabling QA Checks
- ===================================
+-      INHERIT += "testimage"
++      IMAGE_CLASSES += "testimage"
+ 
+    Next, use BitBake to run the tests::
+ 
+diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
+index 947ef138a..4fac78bdf 100644
+--- a/documentation/dev-manual/upgrading-recipes.rst
++++ b/documentation/dev-manual/upgrading-recipes.rst
+@@ -117,7 +117,7 @@ The following steps describe how to set up the AUH utility:
+       class, which is optional, you need to have the following set in
+       your ``conf/local.conf`` file::
+ 
+-         INHERIT += "testimage"
++         IMAGE_CLASSES += "testimage"
+ 
+       .. note::
+ 
 -- 
-2.30.2
+2.41.0
 
 
