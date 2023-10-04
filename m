@@ -1,68 +1,119 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80E58E8FDB0
-	for <webhook@archiver.kernel.org>; Tue,  3 Oct 2023 19:45:31 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.341.1696362329408653919
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CE11CE7C4C5
+	for <webhook@archiver.kernel.org>; Wed,  4 Oct 2023 14:37:03 +0000 (UTC)
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+ by mx.groups.io with SMTP id smtpd.web11.20164.1696430222849629296
  for <docs@lists.yoctoproject.org>;
- Tue, 03 Oct 2023 12:45:30 -0700
+ Wed, 04 Oct 2023 07:37:03 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bKjka4MP;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BB6CFE0002;
-	Tue,  3 Oct 2023 19:45:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1696362326;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=OChJKFy8chG2VlRLwQOhLSlqiwgLU5zMtLat+vZIcAA=;
-	b=bKjka4MPAQOqxTS4SPnKpU9Bp2Cx7J9myA8Z6QqYwvHNHKgQLG6kTpAZwwKkcOGdk+glOE
-	PQXZknjRrSzhTBJvQoYH9r38br1an/Vdr/UXXIN5ODlpzbZ3fX3g/803uLwSggg1Lr1DzD
-	l15X9JVCOEggC9BC7BelWwkIjwGfnhWlOcDkrajhQ1cEGkAC/0Roo09RLXkiElvAlzuFo2
-	VVeyzDhVGxfoniSQpJ1cwjlmQ30XxU8jFTHrLG+gYPAL/cF+4ZvSmK66owKf5SDyBnyNSD
-	Z6sHIg6jtxxCtZxJnZNh+ttc6LJn8kdlQf6OKKdgaNARJgyp+stbIgD3xBN+Rw==
-From: michael.opdenacker@bootlin.com
+ dkim=pass header.i=@smile-fr.20230601.gappssmtp.com header.s=20230601 header.b=ca3JdYAV;
+ spf=pass (domain: smile.fr, ip: 209.85.128.48, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-40684f53d11so7409815e9.1
+        for <docs@lists.yoctoproject.org>; Wed, 04 Oct 2023 07:37:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1696430221; x=1697035021; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fQshZ8HAYHAzQgOAQ23b0jo+tNxKkNRWCFxhxlD+Mnw=;
+        b=ca3JdYAVmhVttt0K83P7ex/u9Y/ErJrtQ8kCMZKrwHFLemDI15zEe29CTfs4CIQB+c
+         syey1Wh14INy5/z0KUPSfyOvp3vFLjs+tEcrYp5Fo35AbF+u6eEgNuu4gMOkUiKlZQ6z
+         qATYw7yzcRT165m/7U4m7KcSXm8xBk0O/seMIRlTZwvuwPmCGDnf2zePQwux8vH8iWLn
+         vcwf3LcetQcOBICohPMbTp/7eplwK5gDWwmjikPCK65KKTiJCMStXsZuVhWDx/UTRzDK
+         KCR9Uly7oPEKNwBTO2tynzsDJ9rsMa1cPl14gNmJh/fnIFAlBNNsJXkC/f1kuw0e/OwJ
+         OXlQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696430221; x=1697035021;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fQshZ8HAYHAzQgOAQ23b0jo+tNxKkNRWCFxhxlD+Mnw=;
+        b=vqYGC5Mzfhk5YEi7mxewSXrKauUZIUwH9kCw+61jDAb7155EA6kEpifDDZg8dibZ2d
+         838c6HJhlCNJJxRKs41TX3NkrFrBSkjv2epnSBrqDa4EfuiPzy57kA7MI1X1kxqOpCmw
+         iF+g0MypxwnHzvssp3HyVySOen4GtqR9mipXt7O5+NUwPQQxMkzKHI4Nrt1mHxI+oKji
+         CuFYN2AqGW8T0vFxdcjybCM002emaCRvKMRtkr24KHL2lAh4LJyn4nkbS3GQKGWuJUcY
+         PPwvEVCz9AytTy8MKl6x1Q8CEMVjM/jWpxVG1sl+TUUQXEb2drj5AhPov8CybjRVmOoH
+         Chiw==
+X-Gm-Message-State: AOJu0YzMTu3GgBKfC9s1hqD1v8P7HChv2MZLcBHGxLZSuZkxwQtbQNDN
+	AFqM4QdzsNjG2zVN1R7qhwpXpmLXxe5JgPazvlY=
+X-Google-Smtp-Source: AGHT+IGD1OJWNiP3e/NNAniQh0jW5Fj01jHGOoo+rjUePsHOn7MT3Hbv8fD+kiV+TVYcttCarMrcOA==
+X-Received: by 2002:adf:f48f:0:b0:319:66b2:6798 with SMTP id l15-20020adff48f000000b0031966b26798mr2429054wro.43.1696430221044;
+        Wed, 04 Oct 2023 07:37:01 -0700 (PDT)
+Received: from P-ASN-ECS-830T8C3.idf.intranet (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
+        by smtp.gmail.com with ESMTPSA id r7-20020a5d6c67000000b00327df8fcbd9sm4034924wrz.9.2023.10.04.07.37.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Oct 2023 07:37:00 -0700 (PDT)
+From: Yoann Congal <yoann.congal@smile.fr>
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] ref-manual: releases.svg: Scarthgap is now version 5.0
-Date: Tue,  3 Oct 2023 21:45:21 +0200
-Message-Id: <20231003194521.2732168-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+Cc: =?UTF-8?q?J=C3=A9r=C3=A9my=20Rosen?= <jeremy.rosen@smile.fr>,
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: [PATCH v2] ref-manual: Add documentation for the unimplemented-ptest QA warning
+Date: Wed,  4 Oct 2023 16:36:51 +0200
+Message-Id: <20231004143651.1796870-1-yoann.congal@smile.fr>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 03 Oct 2023 19:45:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4305
+ <docs@lists.yoctoproject.org>; Wed, 04 Oct 2023 14:37:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4306
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+From: Jérémy Rosen <jeremy.rosen@smile.fr>
 
-According to https://wiki.yoctoproject.org/wiki/Releases
-
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Jérémy Rosen <jeremy.rosen@smile.fr>
+Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
 ---
- documentation/ref-manual/svg/releases.svg | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This is the v2 for the doc of this series:
+https://lists.openembedded.org/g/openembedded-core/message/188680
 
-diff --git a/documentation/ref-manual/svg/releases.svg b/documentation/ref-manual/svg/releases.svg
-index e7d5c6d502..5333498d1f 100644
---- a/documentation/ref-manual/svg/releases.svg
-+++ b/documentation/ref-manual/svg/releases.svg
-@@ -718,7 +718,7 @@
-          x="1373.233"
-          y="-247.33261"
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
--         id="tspan10317-2-9-1-4-6-5">4.4</tspan></text>
-+         id="tspan10317-2-9-1-4-6-5">5.0</tspan></text>
-     <rect
-        style="fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
-        id="rect917-0-0-4-4-9-9"
+v1->v2:
+* Fix shortlog tag
+
+ documentation/ref-manual/classes.rst   |  3 +++
+ documentation/ref-manual/qa-checks.rst | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
+
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 3f0d4844e..3eede8c7b 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1480,6 +1480,9 @@ Here are the tests you can list with the :term:`WARN_QA` and
+    also inherits :ref:`ref-classes-features_check` in order for the
+    requirement to actually work.
+ 
++-  ``unimplemented-ptest:`` Checks that ptest are implemented for upstream
++   tests.
++
+ -  ``unlisted-pkg-lics:`` Checks that all declared licenses applying
+    for a package are also declared on the recipe level (i.e. any license
+    in ``LICENSE:*`` should appear in :term:`LICENSE`).
+diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
+index 4a02e7206..cc9afeb7c 100644
+--- a/documentation/ref-manual/qa-checks.rst
++++ b/documentation/ref-manual/qa-checks.rst
+@@ -789,6 +789,17 @@ Errors and Warnings
+     use a relative path rather than an absolute one, or to pick up the path from
+     runtime configuration or environment variables.
+ 
++.. _qa-check-unimplemented-ptest:
++
++- ``<tool> tests detected [unimpemented-ptest]``
++
++    This check will detect if the source of the package contains some upstream-
++    provided tests and, if such tests are detected, that ptests are implemented
++    for this recipe.  see the ":ref:`dev-manual/packages:testing packages with ptest`"
++    section in the Yocto Project Development Tasks Manual. See also the
++    ":ref:`ref-classes-ptest`" section.
++
++
+ 
+ Configuring and Disabling QA Checks
+ ===================================
 -- 
-2.34.1
+2.30.2
 
 
