@@ -2,38 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1221BE92738
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 13621E92739
 	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 20:03:43 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.25884.1696536215837408024
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.25881.1696536212363139729
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Oct 2023 13:03:36 -0700
+ Thu, 05 Oct 2023 13:03:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OVYpj+nV;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 535BC240005;
-	Thu,  5 Oct 2023 20:03:34 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=aF/AhFsr;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2E25B40008;
+	Thu,  5 Oct 2023 20:03:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1696536214;
+	t=1696536210;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J0bzY39eZ8E+rBpv4dnGyOKRu649hGL3lTBISEi6fOA=;
-	b=OVYpj+nVMUVtFBX2ZhVsmD8sUJq+47LfpPWICXRhzMNr68EOWaqHmkgGCNRhzp0SAUmFZF
-	EST4QzP0nfzJW027N93gEvXBLYLtM3F7BJluaRVO+DhErRpiXVeBsIF0KaL3MYFCv67tHj
-	LMXX6g4Q1c9s3goNQpuGVGXzf07Lb3rViGjs0p95NpRlflBwnYWhrCysED9mG7D3g6YY7Y
-	EXvCV73026S8S8exUFn6lUwwihdMzOvzVRBrJ+9MkSvy11M8dhokkscjHXDZfpjZ8MtudO
-	7T6dHcaBQ36AwT8IW8uawXEDpTnSj1itS52eeuWLH3h8j0KPKZU6Mj/P7n+U9A==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oJqlVD2xctWRWK/WOPTZVNcLW8APwlw2NfNewjNPswU=;
+	b=aF/AhFsr28HIpWJpdUMqwvsI13VYNeXVcQ2p6XmURZGiqi1PcAIVfC7A5VWMKb8d/2RxyX
+	QTAbSUqHi7IdSqt7C0+AnN1obDWszdKkZ9APIAJzZvepW9f7Cb9gTQsMXJsh17A1cUcwao
+	LlrIR4xlnWsq7ydrmkqS8i+lLUHcHg9cDhA5K4QdudjFHSHWfUD8CZrPgoGa/V5j8/MeKQ
+	HA3qJQ5yRqvQTT2P/np9TkCPsuS4P51f2Aa/qdgJ8eZyu+NlwhEi/2pUjsXLEjfMwAJr5W
+	cA18oUpP1ianJd7wOH6gcX8UOdSpgU++2ikC09UrBqb6JhqBjJX4+pFgr7EANg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirstone][PATCH 3/9] bsp-guide: bsp.rst: replace reference to wiki
-Date: Thu,  5 Oct 2023 22:03:12 +0200
-Message-Id: <20231005200318.2873125-3-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Richard Purdie <richard.purdie@linuxfoundation.org>
+Subject: [kirstone][PATCH 1/9] contributor-guide/style-guide: Refer to recipes, not packages
+Date: Thu,  5 Oct 2023 22:03:10 +0200
+Message-Id: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
-References: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
@@ -41,30 +39,67 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 20:03:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4312
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4310
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/bsp-guide/bsp.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
 
-diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bsp.rst
-index 109811a0c4..8b29290b59 100644
---- a/documentation/bsp-guide/bsp.rst
-+++ b/documentation/bsp-guide/bsp.rst
-@@ -893,8 +893,8 @@ Yocto Project:
-    ``recipes-*`` subdirectories specific to the recipe's function, or
-    within a subdirectory containing a set of closely-related recipes.
-    The recipes themselves should follow the general guidelines for
--   recipes used in the Yocto Project found in the ":oe_wiki:`OpenEmbedded
--   Style Guide </Styleguide>`".
-+   recipes found in the ":doc:`../contributor-guide/recipe-style-guide`"
-+   in the Yocto Project and OpenEmbedded Contributor Guide.
+Whilst often referred to as packages by people we should use the more
+accurate term in documentation, 'recipe' instead of 'packages'.
+
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ .../contributor-guide/recipe-style-guide.rst      | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
+
+diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+index 99105179a6..1a1c1c6ee2 100644
+--- a/documentation/contributor-guide/recipe-style-guide.rst
++++ b/documentation/contributor-guide/recipe-style-guide.rst
+@@ -7,17 +7,18 @@ Recipe Naming Conventions
+ =========================
  
- -  *License File:* You must include a license file in the
-    ``meta-bsp_root_name`` directory. This license covers the BSP
+ In general, most recipes should follow the naming convention
+-``recipes-category/package/packagename_version.bb``. Recipes for related
+-projects may share the same package directory. ``packagename``, ``category``,
+-and ``package`` may contain hyphens, but hyphens are not allowed in ``version``.
++``recipes-category/recipename/recipename_version.bb``. Recipes for related
++projects may share the same recipe directory. ``recipename`` and ``category``
++may contain hyphens, but hyphens are not allowed in ``version``.
+ 
+ If the recipe is tracking a Git revision that does not correspond to a released
+-version of the software, ``version`` may be ``git`` (e.g. ``packagename_git.bb``)
++version of the software, ``version`` may be ``git`` (e.g. ``recipename_git.bb``)
++and the recipe would set :term:`PV`.
+ 
+ Version Policy
+ ==============
+ 
+-Our versions follow the form ``<package epoch>:<package version>-<package revision>``
++Our versions follow the form ``<epoch>:<version>-<revision>``
+ or in BitBake variable terms ${:term:`PE`}:${:term:`PV`}-${:term:`PR`}. We
+ generally follow the `Debian <https://www.debian.org/doc/debian-policy/ch-controlfields.html#version>`__
+ version policy which defines these terms.
+@@ -26,7 +27,7 @@ In most cases the version :term:`PV` will be set automatically from the recipe
+ file name. It is recommended to use released versions of software as these are
+ revisions that upstream are expecting people to use.
+ 
+-Package versions should always compare and sort correctly so that upgrades work
++Recipe versions should always compare and sort correctly so that upgrades work
+ as expected. With conventional versions such as ``1.4`` upgrading ``to 1.5``
+ this happens naturally, but some versions don't sort. For example,
+ ``1.5 Release Candidate 2`` could be written as ``1.5rc2`` but this sorts after
+@@ -62,7 +63,7 @@ Version Number Changes
+ 
+ The :term:`PR` variable is used to indicate different revisions of a recipe
+ that reference the same upstream source version. It can be used to force a
+-new version of a package to be installed onto a device from a package feed.
++new version of a recipe to be installed onto a device from a package feed.
+ These once had to be set manually but in most cases these can now be set and
+ incremented automatically by a PR Server connected with a package feed.
+ 
 -- 
 2.34.1
 
