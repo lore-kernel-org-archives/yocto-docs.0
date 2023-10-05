@@ -2,102 +2,117 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7BDB1E9371B
-	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 20:05:13 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.25927.1696536307167703925
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BCC0AE9370C
+	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 20:06:23 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.26025.1696536377358574586
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Oct 2023 13:05:07 -0700
+ Thu, 05 Oct 2023 13:06:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HRUti+gM;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8FA38240002;
-	Thu,  5 Oct 2023 20:05:05 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=S5TRKhQy;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 93B1140003
+	for <docs@lists.yoctoproject.org>; Thu,  5 Oct 2023 20:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1696536305;
+	t=1696536375;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X/pF+3FbmgRAhHX5/6ZglyOj6qnU3kX5YLilRmR9a5c=;
-	b=HRUti+gMUQBiDtTUCGobKNyn/64LAoC9zzb2q1L0Kz5puyJfMXk0lw+L53O5/WHECi7o2R
-	BAU3XqQsZuGSJsBRFploYG3kL4qXEbZrf2fY3Q8KKDxkBgeYx9BmLUivJST0DD1JwaCx/4
-	8y01bBEZWjtCMx+PPYLf8f5Tu86OLFs9HXLhJNCG5amB0YlYB+0eUJVZIQzBUitYMrnLIL
-	JagoKZLNkS8ZHo7JyPtSkM9q91seltkamEe1sYVOqvYj+xPrW0E4hFrWumL4XLLlWc+FZH
-	cA9/jYue9ArUspsWqbAosD8UiZFUXePTKIdLezLuG/F9OOx0zFM/b4Zsfynh6g==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Roland Hieber <rhi@pengutronix.de>
-Subject: [mickledore][PATCH 8/9] contributor-guide: deprecate "Accepted" patch status
-Date: Thu,  5 Oct 2023 22:04:52 +0200
-Message-Id: <20231005200453.2873299-8-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231005200453.2873299-1-michael.opdenacker@bootlin.com>
-References: <20231005200453.2873299-1-michael.opdenacker@bootlin.com>
+	bh=P20ksQRCuswJca61EpHdMVNRORpPSeGgRdnBjaOcxFQ=;
+	b=S5TRKhQy7lOsyASM7BE1NY0XdWJZM6wNhPGXtmAEj8FjLpz75X9zIIIqegxUqUGE82214l
+	CmbBUzEVoWJxN3K1r+6ehOOuU7tUKqf8XwgKCGyUEgzy4YZdH3EyOk3pE5WFI67NGV7tfL
+	r5nCwP+Y7r51z9pmk85VS2ZUGWZwScA15DaH9jnaoNf84S2ZWguRAulg2BA7OMQSMdtRjw
+	yrpLrwZ/ExbsVM2SxZ1Zh3Gnvz3tjoPaJZsujtkBZ0NoTAzmIrLA/GOLo1dkcSPROwqPvK
+	/QogU2SV9AcEshjYEkc37vXBHxsZ/J//mgu65ZUg4uYpH/VBONFcFf0rGO4YgA==
+Message-ID: <6a4582f8-45ce-a8fc-4061-55ee5bad5b8f@bootlin.com>
+Date: Thu, 5 Oct 2023 22:06:15 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [kirstone][PATCH 1/9] contributor-guide/style-guide: Refer to
+ recipes, not packages
+Content-Language: en-US
+To: docs@lists.yoctoproject.org
+References: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 20:05:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4326
+ <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 20:06:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4328
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Apologies for "kirstone" instead of "kirkstone" in the subject line :/
 
-From: Roland Hieber <rhi@pengutronix.de>
+On 05.10.23 at 22:03, michael.opdenacker@bootlin.com wrote:
+> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>
+> From: Richard Purdie <richard.purdie@linuxfoundation.org>
+>
+> Whilst often referred to as packages by people we should use the more
+> accurate term in documentation, 'recipe' instead of 'packages'.
+>
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+> Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> ---
+>   .../contributor-guide/recipe-style-guide.rst      | 15 ++++++++-------
+>   1 file changed, 8 insertions(+), 7 deletions(-)
+>
+> diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+> index 99105179a6..1a1c1c6ee2 100644
+> --- a/documentation/contributor-guide/recipe-style-guide.rst
+> +++ b/documentation/contributor-guide/recipe-style-guide.rst
+> @@ -7,17 +7,18 @@ Recipe Naming Conventions
+>   =========================
+>   
+>   In general, most recipes should follow the naming convention
+> -``recipes-category/package/packagename_version.bb``. Recipes for related
+> -projects may share the same package directory. ``packagename``, ``category``,
+> -and ``package`` may contain hyphens, but hyphens are not allowed in ``version``.
+> +``recipes-category/recipename/recipename_version.bb``. Recipes for related
+> +projects may share the same recipe directory. ``recipename`` and ``category``
+> +may contain hyphens, but hyphens are not allowed in ``version``.
+>   
+>   If the recipe is tracking a Git revision that does not correspond to a released
+> -version of the software, ``version`` may be ``git`` (e.g. ``packagename_git.bb``)
+> +version of the software, ``version`` may be ``git`` (e.g. ``recipename_git.bb``)
+> +and the recipe would set :term:`PV`.
+>   
+>   Version Policy
+>   ==============
+>   
+> -Our versions follow the form ``<package epoch>:<package version>-<package revision>``
+> +Our versions follow the form ``<epoch>:<version>-<revision>``
+>   or in BitBake variable terms ${:term:`PE`}:${:term:`PV`}-${:term:`PR`}. We
+>   generally follow the `Debian <https://www.debian.org/doc/debian-policy/ch-controlfields.html#version>`__
+>   version policy which defines these terms.
+> @@ -26,7 +27,7 @@ In most cases the version :term:`PV` will be set automatically from the recipe
+>   file name. It is recommended to use released versions of software as these are
+>   revisions that upstream are expecting people to use.
+>   
+> -Package versions should always compare and sort correctly so that upgrades work
+> +Recipe versions should always compare and sort correctly so that upgrades work
+>   as expected. With conventional versions such as ``1.4`` upgrading ``to 1.5``
+>   this happens naturally, but some versions don't sort. For example,
+>   ``1.5 Release Candidate 2`` could be written as ``1.5rc2`` but this sorts after
+> @@ -62,7 +63,7 @@ Version Number Changes
+>   
+>   The :term:`PR` variable is used to indicate different revisions of a recipe
+>   that reference the same upstream source version. It can be used to force a
+> -new version of a package to be installed onto a device from a package feed.
+> +new version of a recipe to be installed onto a device from a package feed.
+>   These once had to be set manually but in most cases these can now be set and
+>   incremented automatically by a PR Server connected with a package feed.
+>   
 
-This is in accordance with the gatesgarth Release Notes:
-
-  > In the ``Upstream-Status`` header convention for patches,
-  > ``Accepted`` has | been replaced with ``Backport`` as these almost
-  > always mean the same thing i.e. the patch is already upstream and
-  > may need to be removed in a future recipe upgrade. If you are adding
-  > these headers to your own patches then use Backport to indicate that
-  > the patch has been sent upstream.
-
-  <https://docs.yoctoproject.org/migration-guides/migration-3.2.html#miscellaneous-changes>
-
-Suggested-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- .../contributor-guide/recipe-style-guide.rst        | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
-
-diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index 7e336a0424..e03b8ff2ba 100644
---- a/documentation/contributor-guide/recipe-style-guide.rst
-+++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -292,13 +292,10 @@ following status strings:
-    Submitted to upstream, waiting for approval. Optionally include where
-    it was submitted, such as the author, mailing list, etc.
- 
--``Accepted``
--   Accepted in upstream, expect it to be removed at next update, include
--   expected version info.
--
--``Backport``
--   Backported from new upstream version, because we are at a fixed version,
--   include upstream version info.
-+``Backport [version]``
-+   Accepted upstream and included in the next release, or backported from newer
-+   upstream version, because we are at a fixed version.
-+   Include upstream version info (e.g. commit ID or next expected version).
- 
- ``Denied``
-    Not accepted by upstream, include reason in patch.
-@@ -350,7 +347,7 @@ Here's an example of a patch that has been submitted upstream::
- 
-    Signed-off-by: Joe Developer <joe.developer@example.com>
- 
--A future update can change the value to ``Accepted`` or ``Denied`` as
-+A future update can change the value to ``Backport`` or ``Denied`` as
- appropriate.
- 
- Another example of a patch that is specific to OpenEmbedded::
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
