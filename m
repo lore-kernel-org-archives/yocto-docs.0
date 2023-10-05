@@ -2,115 +2,108 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E6E1E7C4E6
-	for <webhook@archiver.kernel.org>; Wed,  4 Oct 2023 17:14:16 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.25085.1696439646574641022
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0FBDE7C4F7
+	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 08:30:25 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.10867.1696494620628438457
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Oct 2023 10:14:07 -0700
+ Thu, 05 Oct 2023 01:30:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oyh3VfT5;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D601C1BF207;
-	Wed,  4 Oct 2023 17:14:03 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=eHpNky01;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 814FAC000C;
+	Thu,  5 Oct 2023 08:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1696439644;
+	t=1696494618;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=GTHjICP7d3ESTrhipdrXHDVuaML7tl0dtaFfK9oe9wQ=;
-	b=oyh3VfT5uUmfRwGnAqbS2MC67W3acjKqxV57v1pYlWcmzWip9fB+udfXyQuImuY4nJ1mL9
-	UmNX85uoplc+Em1VijphYvoswwJqmJb55KtrJQIuc9jCFzIzYRVOSanTMWKtdnxD2gdkkU
-	LXdo8VaaVqJEvF5I/tDehxixRGCfTOPLSG+Xg1DV4Z36XBcIWSdLmz+4KkvrJfrb6friJd
-	3BvSOOZWlSJUEWm6kJhc76xMs4ry5VgreMpKS/g799ZkxRxbdIBAukaEt8sRL3uztZ+LR2
-	UTHKslqFnd80odOsJ6/HtvtLOSLw5EbwM7dXVYsytRiN0y2nhNVwKbwHLaKeFQ==
-Message-ID: <ae397d71-220a-e86e-e087-55ea6000dece@bootlin.com>
-Date: Wed, 4 Oct 2023 19:14:03 +0200
+	bh=W16eaXki4zobztIvOwl2OpL5ZEH8xNPRHu42j3yO/xU=;
+	b=eHpNky01JqBfY3jIOMO2EgpduawdIHOJUVd45ZM9ggjBBQ8zPtM2qHxEiWN06hqIb2urMt
+	SakuSZOwyWuiOUfMYtTd1WerUXddyGhpYiaerrys/bAENFZoQ2J2jz+OTn+1H31H9eYnyJ
+	X/LThK2ztbCEsdMl4Wo8geIXFCNI6nAA3PKFOtvHmpRaItDg37AouVHCheriskxMQ8SJbL
+	GWet20ncJmcCo+HoGlOO6SA8xgHYoWoK5XXWHrtg4yTrHeP9UK4okWZL+tdVPi1yJ5HXHP
+	Qm+MyYf2tMKuBWP23vDhqS4swkNv7ZRzDTUAlAF9MEf9pZxnRhWoC980264l4Q==
+Message-ID: <b60f377b-523d-a5b4-b1e9-f9946b30fd60@bootlin.com>
+Date: Thu, 5 Oct 2023 10:30:16 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Cc: =?UTF-8?B?SsOpcsOpbXkgUm9zZW4=?= <jeremy.rosen@smile.fr>,
- docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2] ref-manual: Add documentation for the
- unimplemented-ptest QA warning
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] dev-manual: fix testimage usage instructions
 Content-Language: en-US
-To: Yoann Congal <yoann.congal@smile.fr>
-References: <20231004143651.1796870-1-yoann.congal@smile.fr>
+To: Trevor Gamblin <tgamblin@baylibre.com>
+References: <20231003151741.1255292-1-tgamblin@baylibre.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20231004143651.1796870-1-yoann.congal@smile.fr>
+In-Reply-To: <20231003151741.1255292-1-tgamblin@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 04 Oct 2023 17:14:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4307
+ <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 08:30:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4308
 
-Yoann, Jérémy,
+Hi Trevor
 
-Thanks for the documentation patch!
-
-On 04.10.23 at 16:36, Yoann Congal wrote:
-> From: Jérémy Rosen <jeremy.rosen@smile.fr>
+On 03.10.23 at 17:17, Trevor Gamblin wrote:
+> The proper way to inherit the testimage class is now
 >
-> Signed-off-by: Jérémy Rosen <jeremy.rosen@smile.fr>
-> Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
+> IMAGE_CLASSES += "testimage"
+>
+> so change lines with 'INHERIT += "testimage"' to match. This makes the
+> dev-manual consistent with the migration guide, which already specifies
+> that the old way causes an error.
+>
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 > ---
-> This is the v2 for the doc of this series:
-> https://lists.openembedded.org/g/openembedded-core/message/188680
+>   documentation/dev-manual/runtime-testing.rst   | 4 ++--
+>   documentation/dev-manual/upgrading-recipes.rst | 2 +-
+>   2 files changed, 3 insertions(+), 3 deletions(-)
 >
-> v1->v2:
-> * Fix shortlog tag
->
->   documentation/ref-manual/classes.rst   |  3 +++
->   documentation/ref-manual/qa-checks.rst | 11 +++++++++++
->   2 files changed, 14 insertions(+)
->
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-> index 3f0d4844e..3eede8c7b 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -1480,6 +1480,9 @@ Here are the tests you can list with the :term:`WARN_QA` and
->      also inherits :ref:`ref-classes-features_check` in order for the
->      requirement to actually work.
+> diff --git a/documentation/dev-manual/runtime-testing.rst b/documentation/dev-manual/runtime-testing.rst
+> index c5c5653be..af3fe2c1d 100644
+> --- a/documentation/dev-manual/runtime-testing.rst
+> +++ b/documentation/dev-manual/runtime-testing.rst
+> @@ -229,7 +229,7 @@ The final thing you need to do when setting :term:`TEST_TARGET` to
+>      statements in your ``local.conf`` file::
 >   
-> +-  ``unimplemented-ptest:`` Checks that ptest are implemented for upstream
-> +   tests.
-
-Shouldn't it be "ptests" instead of "ptest"?
-
-> +
->   -  ``unlisted-pkg-lics:`` Checks that all declared licenses applying
->      for a package are also declared on the recipe level (i.e. any license
->      in ``LICENSE:*`` should appear in :term:`LICENSE`).
-> diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
-> index 4a02e7206..cc9afeb7c 100644
-> --- a/documentation/ref-manual/qa-checks.rst
-> +++ b/documentation/ref-manual/qa-checks.rst
-> @@ -789,6 +789,17 @@ Errors and Warnings
->       use a relative path rather than an absolute one, or to pick up the path from
->       runtime configuration or environment variables.
+>         IMAGE_FSTYPES += "tar.gz"
+> -      INHERIT += "testimage"
+> +      IMAGE_CLASSES += "testimage"
+>         TEST_TARGET = "SystemdbootTarget"
+>         TEST_TARGET_IP = "192.168.2.3"
 >   
-> +.. _qa-check-unimplemented-ptest:
-> +
-> +- ``<tool> tests detected [unimpemented-ptest]``
+> @@ -335,7 +335,7 @@ You can start the tests automatically or manually:
+>      inherit the :ref:`ref-classes-testimage` class by editing your
+>      ``local.conf`` file::
+>   
+> -      INHERIT += "testimage"
+> +      IMAGE_CLASSES += "testimage"
+>   
+>      Next, use BitBake to run the tests::
+>   
+> diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
+> index 947ef138a..4fac78bdf 100644
+> --- a/documentation/dev-manual/upgrading-recipes.rst
+> +++ b/documentation/dev-manual/upgrading-recipes.rst
+> @@ -117,7 +117,7 @@ The following steps describe how to set up the AUH utility:
+>         class, which is optional, you need to have the following set in
+>         your ``conf/local.conf`` file::
+>   
+> -         INHERIT += "testimage"
+> +         IMAGE_CLASSES += "testimage"
+>   
+>         .. note::
 
-s/unimpemented/unimplemented/
 
-> +
-> +    This check will detect if the source of the package contains some upstream-
-> +    provided tests and, if such tests are detected, that ptests are implemented
-s/if such tests are detected/if so/
-> +    for this recipe.  see the ":ref:`dev-manual/packages:testing packages with ptest`"
+Many thanks for the update!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+and merged into "master-next".
 
-
-s/see/See/
-
-Looks good to me otherwise.
-Thanks in advance for a quick V3 ;-)
 Cheers
 Michael.
 
