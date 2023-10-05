@@ -2,36 +2,37 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28D74E92739
-	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 20:03:53 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.25968.1696536225202291353
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CB78E9273B
+	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 20:04:03 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.25970.1696536234905218625
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Oct 2023 13:03:45 -0700
+ Thu, 05 Oct 2023 13:03:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Pr7gh5Gr;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 634862000B;
-	Thu,  5 Oct 2023 20:03:41 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DH5G6YVo;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C08E2FF806;
+	Thu,  5 Oct 2023 20:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1696536222;
+	t=1696536233;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=X/pF+3FbmgRAhHX5/6ZglyOj6qnU3kX5YLilRmR9a5c=;
-	b=Pr7gh5GrwVhmc/X5trVoda1aEpjR4I8GLqsIPeslo4iFzjHOBkeI5Lld35Y4uPs1UwEbyx
-	Ph/8snQW28072PegI7aKyj9y1LvCNdSUtN3gv145UNXTz+OY9wyBRTLbOB2BarEVg8Fv1A
-	KUwEc6ePBkcpB4pwEnSujWIg08xFaooH2kiSyhs9gO/dikOJZOwrx9AM5e+Bjlzv5NOxgi
-	gkoV5ve2Ew54KuvWWIYmhnpe9dMTRLsrqGN76p0wlRo9Xd6Uu9YScuM2y5JSxrGwLR2PT5
-	njtZxZ34ZXNx5Xw8qUXfE6ogP7rfja1TXgNN7082ZRSLs43eWe1Rkg2sIBo9yQ==
+	bh=CLmesjVkNE0LwzvSiL9Xt5Jfae9mIWCRGPj45cQTtug=;
+	b=DH5G6YVoQOPBzCUdgan9zaA87T5NEqKLrNjlZA0C9tmI4+Hw64/wxNsX4aLJdq2Jxu/p5+
+	miO9FJfNn3AND370F2IBtEVUYbpv8VHT1kqvxVHKMKZisj7M7BQBasuFWlNyhwCGm3csix
+	6jODotNqK+F457+rW6sNlvsv92L2NSNvzuN+nFSPCxMs5FOW8/Fx3xovUeVoUAPpzdSiJO
+	X1nEJ3mhz8MtUPF4818hVFl0+ZE6/q5oz6qZdThoeypk2LjqnFwlHw8FVkCS7q3ZmrvpX1
+	Q4zckA82UIOWszVZIK+eJP3/LSNBQCPiwIDMJ2roaCVUy17VjZgAqfFPagcehw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Alexander Kanavin <alex.kanavin@gmail.com>,
 	Roland Hieber <rhi@pengutronix.de>
-Subject: [kirstone][PATCH 8/9] contributor-guide: deprecate "Accepted" patch status
-Date: Thu,  5 Oct 2023 22:03:17 +0200
-Message-Id: <20231005200318.2873125-8-michael.opdenacker@bootlin.com>
+Subject: [kirstone][PATCH 9/9] contributor-guide: style-guide: discourage using Pending patch status
+Date: Thu,  5 Oct 2023 22:03:18 +0200
+Message-Id: <20231005200318.2873125-9-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
 References: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
@@ -41,62 +42,41 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 20:03:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4317
+ <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 20:04:03 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4318
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 From: Roland Hieber <rhi@pengutronix.de>
 
-This is in accordance with the gatesgarth Release Notes:
-
-  > In the ``Upstream-Status`` header convention for patches,
-  > ``Accepted`` has | been replaced with ``Backport`` as these almost
-  > always mean the same thing i.e. the patch is already upstream and
-  > may need to be removed in a future recipe upgrade. If you are adding
-  > these headers to your own patches then use Backport to indicate that
-  > the patch has been sent upstream.
-
-  <https://docs.yoctoproject.org/migration-guides/migration-3.2.html#miscellaneous-changes>
-
 Suggested-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Suggested-by: Alexander Kanavin <alex.kanavin@gmail.com>
 Signed-off-by: Roland Hieber <rhi@pengutronix.de>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../contributor-guide/recipe-style-guide.rst        | 13 +++++--------
- 1 file changed, 5 insertions(+), 8 deletions(-)
+ documentation/contributor-guide/recipe-style-guide.rst | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index 7e336a0424..e03b8ff2ba 100644
+index e03b8ff2ba..a005aa3247 100644
 --- a/documentation/contributor-guide/recipe-style-guide.rst
 +++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -292,13 +292,10 @@ following status strings:
+@@ -286,7 +286,14 @@ Then, you should also add an ``Upstream-Status:`` tag containing one of the
+ following status strings:
+ 
+ ``Pending``
+-   No determination has been made yet or not yet submitted to upstream.
++   No determination has been made yet, or patch has not yet been submitted to
++   upstream.
++
++   Keep in mind that every patch submitted upstream reduces the maintainance
++   burden in OpenEmbedded and Yocto Project in the long run, so this patch
++   status should only be used in exceptional cases if there are genuine
++   obstacles to submitting a patch upstream; the reason for that should be
++   included in the patch.
+ 
+ ``Submitted [where]``
     Submitted to upstream, waiting for approval. Optionally include where
-    it was submitted, such as the author, mailing list, etc.
- 
--``Accepted``
--   Accepted in upstream, expect it to be removed at next update, include
--   expected version info.
--
--``Backport``
--   Backported from new upstream version, because we are at a fixed version,
--   include upstream version info.
-+``Backport [version]``
-+   Accepted upstream and included in the next release, or backported from newer
-+   upstream version, because we are at a fixed version.
-+   Include upstream version info (e.g. commit ID or next expected version).
- 
- ``Denied``
-    Not accepted by upstream, include reason in patch.
-@@ -350,7 +347,7 @@ Here's an example of a patch that has been submitted upstream::
- 
-    Signed-off-by: Joe Developer <joe.developer@example.com>
- 
--A future update can change the value to ``Accepted`` or ``Denied`` as
-+A future update can change the value to ``Backport`` or ``Denied`` as
- appropriate.
- 
- Another example of a patch that is specific to OpenEmbedded::
 -- 
 2.34.1
 
