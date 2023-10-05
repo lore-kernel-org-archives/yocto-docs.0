@@ -2,101 +2,92 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 228C1E7C4F9
-	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 08:52:26 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.10907.1696495938560358387
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FD91E92734
+	for <webhook@archiver.kernel.org>; Thu,  5 Oct 2023 20:03:43 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.25883.1696536214129140577
  for <docs@lists.yoctoproject.org>;
- Thu, 05 Oct 2023 01:52:19 -0700
+ Thu, 05 Oct 2023 13:03:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JQqCdXqg;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 15AC34000A;
-	Thu,  5 Oct 2023 08:52:15 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=EwbNacSA;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CF7ED240004;
+	Thu,  5 Oct 2023 20:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1696495936;
+	t=1696536212;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=L0gIH7nJMFqZtJOJcp4M7GVQQTLRdW+3ShAU6XuIS7Y=;
-	b=JQqCdXqgkKFOhGTd21b/nXVxSA8v6KUh1M3zwqYDTy8Xt7wDyuD/Pa/crNl5S9qnaOrwOx
-	JrctxdneexES68MyZOGTyMlr0/ysnCwRpiJHgCDQBeeGRHUZn+jJvaSkYQ+l6WP1fFv1Pg
-	ReMI3FQBozldEBX6GuFG4C+NttSRDzuXEGeUn1qqeP3nrMHqc0lF4Y0lmVZvgTwYTvMw5Q
-	vP8VRkb2NEm4HuRC3/iCKMBl5gt/w2tBzmRSJN9EstkYt9hNfjXjdpyOIqC7n8LFSbY/1Q
-	WAZN+0l4tx3tNy5vaGerNZavm31LcY1PO7225mJGPz/WVo2GXuP7f6g++kHCHQ==
-Message-ID: <a7b5802d-54da-93e4-9bcc-8b0c8ba685e4@bootlin.com>
-Date: Thu, 5 Oct 2023 10:52:15 +0200
+	bh=fF1gg/GHRmXQh0W4kMMQtQO9oaY5mGZRPenMq3z1vVo=;
+	b=EwbNacSAtnSqJ2GNlCig5UMbX+J+6Mi7Z0soFSAn9KKdDhByZKsLrPQfkOYnjsfudgIpAm
+	nmXjqxSEx+CY7YSmgj5ZAi2GG611hh9Zy47tqOZw2kpv12k+/vEwcWmafdpJKi5bbmCQeJ
+	lXLf8IJM7s5DC1gDbH+xMgwe9x8G+zz5gbwoMLHiBl1349yMoc1lJf3jNP4T4a0rsDLyvY
+	ns1AdRaFdgVnMGZ+toxDrTdnzOj+r21fKbNWE+40J+TNcrsHo5D+AuT8q6TM36nZkcTyAE
+	eur/knFUrRSLCyJXJbvvky4rK3yJkMwHfkb6Y+CAibUxC8FoIxU+h10llP4cHA==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Richard Purdie <richard.purdie@linuxfoundation.org>,
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: [kirstone][PATCH 2/9] contributor-guide/style-guide: Add a note about task idempotence
+Date: Thu,  5 Oct 2023 22:03:11 +0200
+Message-Id: <20231005200318.2873125-2-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
+References: <20231005200318.2873125-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Cc: docs@lists.yoctoproject.org, Roland Hieber <rhi@pengutronix.de>,
- =?UTF-8?Q?Ulrich_=c3=96lmann?= <u.oelmann@pengutronix.de>
-Subject: Re: [docs][PATCH v2] overview: Add note about non-reproducibility
- side effects
-Content-Language: en-US
-To: Joshua Watt <JPEWhacker@gmail.com>
-References: <20230926160049.1537656-1-JPEWhacker@gmail.com>
- <20230928182616.17453-1-JPEWhacker@gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20230928182616.17453-1-JPEWhacker@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 08:52:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4309
+ <docs@lists.yoctoproject.org>; Thu, 05 Oct 2023 20:03:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4311
 
-Hi Joshua
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Many thanks for the update.
-Roland, Ulrich, thanks for the reviews too!
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
 
-On 28.09.23 at 20:26, Joshua Watt wrote:
-> Adds an additional note about some of the side effects that can occur if
-> recipes are not reproducible and hash equivalence is enabled.
->
-> Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
-> ---
->   documentation/overview-manual/concepts.rst | 9 +++++++++
->   1 file changed, 9 insertions(+)
->
-> diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-> index af825a98c..4e3f6425a 100644
-> --- a/documentation/overview-manual/concepts.rst
-> +++ b/documentation/overview-manual/concepts.rst
-> @@ -1963,6 +1963,15 @@ task output from the Shared State cache.
->      the stability of the task's output hash. Therefore, the effectiveness
->      of Hash Equivalence strongly depends on it.
->   
-> +   Recipes that are not reproducible may have undesired behavior if hash
-> +   equivalence is enabled, since the non-reproducible diverging output maybe be
-> +   remapped to an older sstate object in the cache by the server.
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+CC: Yoann Congal <yoann.congal@smile.fr>
 
-Wouldn't it be very unlikely to have the same output hash anyway?
+---
+Changes in V2:
+- Use a bulleted list to clarify the order of steps
+  (Suggested by Yoann Congal)
+- Recall that we are talking about idempotence in tasks.
+  Useful for people overlooking the previous paragraph.
+---
+ .../contributor-guide/recipe-style-guide.rst       | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
->   If a recipe
-> +   is non-reproducible in trivial ways, such as different timestamps, this is
-> +   likely not a problem. However recipes that have more dramatic changes (such
-> +   as completely different file names) will likely outright fail since the
-> +   downstream sstate objects are not actually equivalent to what was just
-> +   built.
-> +
-
-Anyway
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-and merged into master-next.
-
-Thanks again
-Michael.
-
+diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
+index 1a1c1c6ee2..b63172bd77 100644
+--- a/documentation/contributor-guide/recipe-style-guide.rst
++++ b/documentation/contributor-guide/recipe-style-guide.rst
+@@ -257,6 +257,20 @@ Tips and Guidelines for Writing Recipes
+    and ``-nativesdk`` ones, whenever possible. This avoids having to maintain multiple
+    recipe files at the same time.
+ 
++-  Recipes should have tasks which are idempotent, i.e. that executing a given task
++   multiple times shouldn't change the end result. The build environment is built upon
++   this assumption and breaking it can cause obscure build failures.
++
++-  For idempotence when modifying files in tasks, it is usually best to:
++
++   - copy a file ``X`` to ``X.orig`` (only if it doesn't exist already)
++   - then, copy ``X.orig`` back to ``X``,
++   - and, finally, modify ``X``.
++
++   This ensures if rerun the task always has the same end result and the
++   original file can be preserved to reuse. It also guards against an
++   interrupted build corrupting the file.
++
+ Patch Upstream Status
+ =====================
+ 
 -- 
-
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
