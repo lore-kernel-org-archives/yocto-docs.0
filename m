@@ -2,87 +2,67 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D390AE95A91
-	for <webhook@archiver.kernel.org>; Mon,  9 Oct 2023 13:22:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A3168CD690A
+	for <webhook@archiver.kernel.org>; Tue, 10 Oct 2023 08:39:16 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.61631.1696857774594230561
+ by mx.groups.io with SMTP id smtpd.web10.86556.1696927146069580068
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Oct 2023 06:22:55 -0700
+ Tue, 10 Oct 2023 01:39:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oBkBfKaQ;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cvQzqLNU;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 205971BF208;
-	Mon,  9 Oct 2023 13:22:51 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DC6FF1BF205;
+	Tue, 10 Oct 2023 08:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1696857772;
+	t=1696927144;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ayeL2q8qP5531KsrrU8gkHQ91CCMqcYTgdD8m0qA8Lw=;
-	b=oBkBfKaQS2OcIKRmHfiDF62obRtdLe5zosmzyIYtY8LCdIiJTKYOE5j9NOANtihR8vtbpv
-	cIvNCkJYf9rEF3TdYYL+zV+1ovko3Zt4wisbSot4PYP8OMQw5Xy1id7LU8wmB8KBUm54RH
-	YtyCN8Snz8wGuTNn4F9fZOiVQxEI+TG5mncAD40tGMpfe5P02dpRLPuXiUqdEXvG7yMziW
-	ydODsJPrDeMUOvW+VihjxoxURNveTmH/LXCCsAwp0Ug+qCQ1m7n0dOaYXBb2ED6opnilNQ
-	wxA49EkGJjy3TCX5l7VJ9xt8JJ9oEKBTNsCYSCsaZhYLsCzE1+mwfx9nA4IXwQ==
-Message-ID: <7005259b-70ac-4fff-9d7d-830ee784879f@bootlin.com>
-Date: Mon, 9 Oct 2023 15:22:50 +0200
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2T1gFLVzd9Zhg8kRcN1duFUyHT1vnm5XXsJ88BXmk/I=;
+	b=cvQzqLNU/zpILp7Oj1lCZAoCAAxU+RHD8zh/3kwMzOht//BzjWbdohcb+R4q8wLfaAJDkY
+	Hu5WYtHN9NrE1bVkTrAJWRAIUoXmNCbBO0t15xbXIeAisKdQ8vyK8488QYRZS96dS5BwVN
+	1J+JNTl/C6HJX3Uw7JqU8kZwiclVcvX3FURVjC9vdgG8gW/eao5hGs9uOT87mKh9SaA19J
+	1I2jzPlIptaYq4At83cR4K5hyKSiTNFRoxEnQVhKOJXrOTE/fUKtCvpBv/9ez9eQhlPp0N
+	IHI1f05O1H2xW6FRVI7jgRy13JtrYShHdX0lfbHwjRN3b9f6OcLbIJ0VXDar/w==
+Message-ID: <1a48de66-a431-451f-ad28-70879392ffe9@bootlin.com>
+Date: Tue, 10 Oct 2023 10:39:02 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] does PACKAGE_EXCLUDE not handle .deb packages?
 Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+References: <929b18be-e9ac-ad9-b8b2-36f95834834a@crashcourse.ca>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
 Organization: Bootlin
+In-Reply-To: <929b18be-e9ac-ad9-b8b2-36f95834834a@crashcourse.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 09 Oct 2023 13:22:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4333
+ <docs@lists.yoctoproject.org>; Tue, 10 Oct 2023 08:39:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4334
 
-Hi Richard
+Hi Robert
 
-The following changes since commit 4924c900582aaa803b003e10e48fc4a4373f6a77:
+On 09.10.23 at 07:33, Robert P. J. Day wrote:
+>    from
+> https://docs.yoctoproject.org/ref-manual/variables.html#term-PACKAGE_EXCLUDE:
+>
+> "This variable is supported only when using the IPK and RPM packaging
+> backends. DEB is not supported."
+>
+>    i just tried it with .deb packages and it *appears* to work.
+> thoughts?
 
-   contributor-guide: style-guide: discourage using Pending patch status 
-(2023-09-22 15:05:10 +0200)
 
-are available in the Git repository at:
+Funny, I came across this paragraph last week. Thanks for testing!
+Indeed, the code seems to support this.
+Shall we change the docs if nobody objects?
 
-   git://git.yoctoproject.org/yocto-docs master-next
-
-for you to fetch changes up to ceb1812e63b9fac062f886c2a1dde23137c0e1ed:
-
-   migration-guides: add release notes for 4.0.13 (2023-10-06 09:59:00 
-+0200)
-
-----------------------------------------------------------------
-Joshua Watt (1):
-       overview: Add note about non-reproducibility side effects
-
-Lee Chee Yang (1):
-       migration-guides: add release notes for 4.0.13
-
-Michael Opdenacker (1):
-       ref-manual: releases.svg: Scarthgap is now version 5.0
-
-Trevor Gamblin (1):
-       dev-manual: fix testimage usage instructions
-
-  documentation/dev-manual/runtime-testing.rst            |   4 +-
-  documentation/dev-manual/upgrading-recipes.rst          |   2 +-
-  documentation/migration-guides/release-4.0.rst          |   1 +
-  documentation/migration-guides/release-notes-4.0.13.rst | 271 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  documentation/overview-manual/concepts.rst              |   9 ++++
-  documentation/ref-manual/svg/releases.svg               |   2 +-
-  6 files changed, 285 insertions(+), 4 deletions(-)
-  create mode 100644 documentation/migration-guides/release-notes-4.0.13.rst
-
-Thank you in advance
 Cheers
 Michael.
 
