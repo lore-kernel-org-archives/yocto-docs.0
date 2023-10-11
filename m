@@ -2,36 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E529CD6E6E
-	for <webhook@archiver.kernel.org>; Wed, 11 Oct 2023 13:37:31 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.16708.1697031449614587104
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BE22CD6E72
+	for <webhook@archiver.kernel.org>; Wed, 11 Oct 2023 13:37:41 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.16701.1697031452012364741
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Oct 2023 06:37:29 -0700
+ Wed, 11 Oct 2023 06:37:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oABPTRNE;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0AA17FF818;
-	Wed, 11 Oct 2023 13:37:27 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Pl1UqnU2;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BC6531BF203;
+	Wed, 11 Oct 2023 13:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697031448;
+	t=1697031450;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=G070BO5iD2WinK4mUfHZoWSMlm4vI91gnOsSrl1TGbM=;
-	b=oABPTRNE22ZDc2PSNkBHNaG/Y4vXkKwKOqmujCaBz1jlucPxv+0a8n+kg/iUwER1nYq+rP
-	bkrDx7jjV8/fWZUEHh0jwuoOsDdjHRUSEHjAlNiNzqT4dSaepB9ty1xsSX+q+nx/Y1hv2W
-	fi5OexiOCOFPT94q/OqXBxd0D3qdE/w68bQsKZad7whQv7QB1y9jXYTY6mTwGzAGRtBUnR
-	WzSQ4KuR/Yj9YgPDpCDsbb2pAYYco4V7bikE1A6QD1t4YThBDsbki/x5BHCtpPX/ZAnz4F
-	02LjKYc4mTvKPjg3+K6E6FCUgtEY+bwKUuntkIL2QKGvGlOWlQ5vZ5F4n8CPhA==
+	bh=lRdgDaxsCRhUDWajb3dIyWxPF+QHzewazfjorQ0cRvk=;
+	b=Pl1UqnU2Lm20c9S+ALafLkcJwRKuMN0K6gePNuMZeKuFA8iWDxIpdKHhonza1hFoVgBuI0
+	MAQhdH+rY7YYdf0uQZEeeJju5NXkKSE3S5FV0Lmh6lBjzCHGLxBiH0luH+d9DdTRhUio19
+	zQBMvq8vKZ8L7AxNpuI6bfxBWK4GHD5wkV8ox9IRsVv3RUgqNY6wODMatQH/6zBmn6mmc3
+	IGHxqyleLXSSMZxR+umcmiy4udgAW0+6oUpenHIom+V5wFWI5FKt5aPtUSpgB2m/kPcJVl
+	UbN9O5LrkGFemimhA878lbpJ0XzI1LoTQ8xYcdeLij6BMZmKpv45qvFoJu4kNQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>
-Subject: [mickledore][PATCH 2/4] dev-manual: fix testimage usage instructions
-Date: Wed, 11 Oct 2023 15:37:18 +0200
-Message-Id: <20231011133720.78265-2-michael.opdenacker@bootlin.com>
+	Joshua Watt <JPEWhacker@gmail.com>
+Subject: [mickledore][PATCH 3/4] overview: Add note about non-reproducibility side effects
+Date: Wed, 11 Oct 2023 15:37:19 +0200
+Message-Id: <20231011133720.78265-3-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231011133720.78265-1-michael.opdenacker@bootlin.com>
 References: <20231011133720.78265-1-michael.opdenacker@bootlin.com>
@@ -41,63 +41,42 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 11 Oct 2023 13:37:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4347
+ <docs@lists.yoctoproject.org>; Wed, 11 Oct 2023 13:37:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4348
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Trevor Gamblin <tgamblin@baylibre.com>
+From: Joshua Watt <JPEWhacker@gmail.com>
 
-The proper way to inherit the testimage class is now
+Adds an additional note about some of the side effects that can occur if
+recipes are not reproducible and hash equivalence is enabled.
 
-IMAGE_CLASSES += "testimage"
-
-so change lines with 'INHERIT += "testimage"' to match. This makes the
-dev-manual consistent with the migration guide, which already specifies
-that the old way causes an error.
-
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+Signed-off-by: Joshua Watt <JPEWhacker@gmail.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/runtime-testing.rst   | 4 ++--
- documentation/dev-manual/upgrading-recipes.rst | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ documentation/overview-manual/concepts.rst | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/documentation/dev-manual/runtime-testing.rst b/documentation/dev-manual/runtime-testing.rst
-index c5c5653bef..af3fe2c1dd 100644
---- a/documentation/dev-manual/runtime-testing.rst
-+++ b/documentation/dev-manual/runtime-testing.rst
-@@ -229,7 +229,7 @@ The final thing you need to do when setting :term:`TEST_TARGET` to
-    statements in your ``local.conf`` file::
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 668e002565..80d75dd7c3 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -1963,6 +1963,15 @@ task output from the Shared State cache.
+    the stability of the task's output hash. Therefore, the effectiveness
+    of Hash Equivalence strongly depends on it.
  
-       IMAGE_FSTYPES += "tar.gz"
--      INHERIT += "testimage"
-+      IMAGE_CLASSES += "testimage"
-       TEST_TARGET = "SystemdbootTarget"
-       TEST_TARGET_IP = "192.168.2.3"
++   Recipes that are not reproducible may have undesired behavior if hash
++   equivalence is enabled, since the non-reproducible diverging output maybe be
++   remapped to an older sstate object in the cache by the server. If a recipe
++   is non-reproducible in trivial ways, such as different timestamps, this is
++   likely not a problem. However recipes that have more dramatic changes (such
++   as completely different file names) will likely outright fail since the
++   downstream sstate objects are not actually equivalent to what was just
++   built.
++
+ This applies to multiple scenarios:
  
-@@ -335,7 +335,7 @@ You can start the tests automatically or manually:
-    inherit the :ref:`ref-classes-testimage` class by editing your
-    ``local.conf`` file::
- 
--      INHERIT += "testimage"
-+      IMAGE_CLASSES += "testimage"
- 
-    Next, use BitBake to run the tests::
- 
-diff --git a/documentation/dev-manual/upgrading-recipes.rst b/documentation/dev-manual/upgrading-recipes.rst
-index 13133fddcf..33a7ca39dd 100644
---- a/documentation/dev-manual/upgrading-recipes.rst
-+++ b/documentation/dev-manual/upgrading-recipes.rst
-@@ -117,7 +117,7 @@ The following steps describe how to set up the AUH utility:
-       class, which is optional, you need to have the following set in
-       your ``conf/local.conf`` file::
- 
--         INHERIT += "testimage"
-+         IMAGE_CLASSES += "testimage"
- 
-       .. note::
- 
+ -  A "trivial" change to a recipe that doesn't impact its generated output,
 -- 
 2.34.1
 
