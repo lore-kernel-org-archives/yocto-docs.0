@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EBFACD6E49
-	for <webhook@archiver.kernel.org>; Wed, 11 Oct 2023 08:58:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B363CD6E56
+	for <webhook@archiver.kernel.org>; Wed, 11 Oct 2023 09:54:20 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.12292.1697014691046155947
+ by mx.groups.io with SMTP id smtpd.web10.12919.1697018056491615724
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Oct 2023 01:58:11 -0700
+ Wed, 11 Oct 2023 02:54:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=axsaZ9GR;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=SC513o3D;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
@@ -17,26 +17,26 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=mRdrprhZeRGr6Ch32kCSg+fqiqz2j62/ATk9PNOjnUY=; b=axsaZ9GRZzoZWeA6f5RjoNovDP
-	N+hAbhDs8H7BA1EwtUt6fiia/ujQOR0J3e/WvYxfMgQ1TWF/IrwTDpt+UDPhYWXThACQSHzpwIJFH
-	7dYM9HybORZpDJJp840rYbp6J33yt+WREMcG/FCTgzIx5lxxvNlo+lgiGY7GCNikhxQIxgbuL4p6h
-	qx9e50opsMzegCYm8rSj/9b6fEBF/eNhDKvnKhIkG3K71jZjPxTlebw3KE+BQOxKUvqIp29aRBFd9
-	Fj7efit4lUQIThcKo/tifFpuHaJcmvUqPCv8/FrGoT5E1tZHcERyA4diznd7a1u2Us20a/BYL6nhO
-	kpO1bkpA==;
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.102.5]:53418 helo=fedora)
+	bh=avjJ1t/KGMlmkMDCue91h2Ok6rgQUGPL33gRKg61Ar4=; b=SC513o3DtQQPBTtFEfm2GChQF6
+	cVNz755T4WiK16stnUN0tIUc7H3V+qIT4dLqkf/R8CdTZkyPd78tNbRpraqT+W5PB1/txMrjqQEqH
+	t4YIlrFFBEWYGd1R3hHv1kjvrCMZdW35vz3PL6OmcCmK4Tdd+Op0G5CBKpaG+1g3DBbnvr6xBwLxf
+	+UmE6oNKS9EQ5sYyB8rU4ff+61HznjjyditULGdW3PTIaxDvyQ5X3J2NZqtTa7Vy/fV4ojFUHLSZC
+	25kqeBdL3aQLqTHN4o6hpCFj/24zN7wC1lfh0UHrWk4M7yiwJim1DEll8n/RqL74tZyYv5Wjed1+9
+	ybFBiGew==;
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.102.5]:53420 helo=fedora)
 	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
 	(Exim 4.96.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1qqV2d-006hMi-2v;
-	Wed, 11 Oct 2023 04:58:09 -0400
-Date: Wed, 11 Oct 2023 04:58:05 -0400 (EDT)
+	id 1qqVur-006lyj-2r;
+	Wed, 11 Oct 2023 05:54:15 -0400
+Date: Wed, 11 Oct 2023 05:54:07 -0400 (EDT)
 From: "Robert P. J. Day" <rpjday@crashcourse.ca>
 To: Richard Purdie <richard.purdie@linuxfoundation.org>
 cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Subject: Re: [docs] does bbappend wildcarding cover when there is no version
  string?
 In-Reply-To: <3f9eaa19ebb74df218439d6ac03f8f837a7a41f6.camel@linuxfoundation.org>
-Message-ID: <bd3d869-a6ed-491-f839-9f68c374c3e4@crashcourse.ca>
+Message-ID: <15e64529-886c-23b4-27e9-1e8ee9439ea@crashcourse.ca>
 References: <b69076ea-5ef4-6c5a-9aff-9a99ff19ce@crashcourse.ca> <3f9eaa19ebb74df218439d6ac03f8f837a7a41f6.camel@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -53,8 +53,8 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 11 Oct 2023 08:58:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4340
+ <docs@lists.yoctoproject.org>; Wed, 11 Oct 2023 09:54:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4341
 
 On Wed, 11 Oct 2023, Richard Purdie wrote:
 
@@ -84,12 +84,12 @@ On Wed, 11 Oct 2023, Richard Purdie wrote:
 > would work but would also match
 >
 > performance_1.0.bb
->
-> which is why we suggest perf_%.bbappend
 
-  wait, that would *work*? even though the base recipe file is simply
-"perf.bb"? i need to test this, i was sure i tried that once and it
-didn't match.
+  i am definitely going to have to review my wildcarding, as i was
+unaware that it could wildcard the actual recipe name itself; that
+seems just dangerous. personally, i would make illegal something like
+"perf%.bbappend" since i see no justification for that kind of
+weirdness.
 
 rday
 
