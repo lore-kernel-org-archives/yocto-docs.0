@@ -1,117 +1,69 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D8AACD80DB
-	for <webhook@archiver.kernel.org>; Tue, 10 Oct 2023 13:53:09 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web11.91712.1696945984298259601
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6281CD98F6
+	for <webhook@archiver.kernel.org>; Wed, 11 Oct 2023 07:14:19 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web11.11264.1697008451814279447
  for <docs@lists.yoctoproject.org>;
- Tue, 10 Oct 2023 06:53:04 -0700
+ Wed, 11 Oct 2023 00:14:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile-fr.20230601.gappssmtp.com header.s=20230601 header.b=uTFyRpdk;
- spf=pass (domain: smile.fr, ip: 209.85.221.41, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3248e90f032so5590040f8f.1
-        for <docs@lists.yoctoproject.org>; Tue, 10 Oct 2023 06:53:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1696945982; x=1697550782; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ajlay+dlTsH7LbsEj8oYZhxnR85yFSD6WfFKhTrXS3g=;
-        b=uTFyRpdkb7Iu4sJhOUVxakbBuFKUAonfrVH2tTSc7NsXGEXc9asesAF2A6kCEQp4CN
-         +H6c8R5W9cox0I6ObsNntz4Yyy4kjj3ZettDHs9ojKEaPWgKa5A8YoZHSB8wGtWcZpy+
-         2RT0K2S3PjWnE3M0yabQMyIlAcpYR/60uy4s4D+iDJjfZhnhiiEc9ysm7zwA0hETGWw6
-         a/wzz+v9oSRGQDgMB7ey9mtRIR5DuyrLE6f0Z4dsnxxEoQWc4bXIOsfK8Kw1I6omj/1V
-         +5DK35HTYXtkYM6L4FoOJjcEI2gS4QgmxdgEQYpK4aCeMIx/VkUotGnoBnpOo6r+CjzR
-         hrEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696945982; x=1697550782;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ajlay+dlTsH7LbsEj8oYZhxnR85yFSD6WfFKhTrXS3g=;
-        b=Uc3JmxLuK22xKndeRy8geVesaQKxPXf44a+PB0jHZXJ59vKyUAKo0aW84leFc/ZpjM
-         0taZlu1D364QIGKZizvozrdOfTVA/jM3NqMl60mPJ0spqnDkNspYVhqTHPM8V41NLxun
-         7y75xuwhrRO8C/Fc6eRrsm7eRGccaHRkcY3eqWcCvORSmK5S2b580LSz6b690mZA0qfo
-         piQDgl5Of8QfSdmkLxmIWVB4lPkawAvzOp3SBEacy3EtET0EQ/RTF/IQWhc+bztJLNe4
-         CX4jKCPTTzcOxMdmKCmXknWIULLOmIDIV8F28el5kfdExFyqEczILK1cO5JZuQnZxU6h
-         36Jw==
-X-Gm-Message-State: AOJu0YwwdUDtWLajpI+AGJ46y72i4tSAvcV9SFZC7jVLLthqem08w1mw
-	Zr3vhOOvwb6iz0xAxcdrtH7ogtVwhtpk94lMRDE=
-X-Google-Smtp-Source: AGHT+IFocOPi5fFXFaK6nUZ3DN51tL9OaChkusaGoVGDqoV0IBF+ve+XxmkvvVOPslHmXUcZwJc81w==
-X-Received: by 2002:a05:6000:1f15:b0:32d:1c5d:b47b with SMTP id bv21-20020a0560001f1500b0032d1c5db47bmr1464329wrb.57.1696945982010;
-        Tue, 10 Oct 2023 06:53:02 -0700 (PDT)
-Received: from P-ASN-ECS-830T8C3.numericable.fr ([89.159.1.53])
-        by smtp.gmail.com with ESMTPSA id p4-20020a5d68c4000000b003232f167df5sm12784579wrw.108.2023.10.10.06.53.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Oct 2023 06:53:01 -0700 (PDT)
-From: Yoann Congal <yoann.congal@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: =?UTF-8?q?J=C3=A9r=C3=A9my=20Rosen?= <jeremy.rosen@smile.fr>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH v3] ref-manual: Add documentation for the unimplemented-ptest QA warning
-Date: Tue, 10 Oct 2023 15:51:40 +0200
-Message-Id: <20231010135139.3995226-1-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.30.2
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=HeKRgNsq;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=wfR98GiEGmaNZ6TgzmyvQCACuJvncQWk8e9rousZoI4=; b=HeKRgNsqgwq14CjUQZjmWYLPNw
+	mZscl4dnXp8lQTyhS8oPFddivrYYXDYqCDlqvMz6yfZflRhEkClZBYe/EhM5p7dP62lJOJ3JnnIg2
+	5D8PHXx+issY5BFmmkPVfGs/2qqtubX/mMY8M/utyo6vfeO5/NFe8hVIHY59D+S3y9ydytqkIwMoB
+	V6up1HHtOZKtdtJXc8dJBDdJ3EEdBo7t0d8lUpDhjv/FXiSwfwdzZOO9armjc9Tm9EXzcL2RpKTf3
+	Iv8LSms1+02yNAXg1Xog45SPd9ZhVo3dVgHsdFiSjBorzaA/DI1RQs1fGMRX5/SIngZYvFHzwHOyx
+	4gBiFDdA==;
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.102.5]:53414 helo=fedora)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1qqTPy-006Xan-0D
+	for docs@lists.yoctoproject.org;
+	Wed, 11 Oct 2023 03:14:10 -0400
+Date: Wed, 11 Oct 2023 03:14:03 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: BSP guide still conflates "repo" with "layer"
+Message-ID: <67f75a6f-3f77-3ae5-56-25c011722bb9@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 10 Oct 2023 13:53:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4335
-
-From: Jérémy Rosen <jeremy.rosen@smile.fr>
-
-Signed-off-by: Jérémy Rosen <jeremy.rosen@smile.fr>
-Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
----
-Note: The code documented here has been sent to ML there:
-https://lists.openembedded.org/g/openembedded-core/message/188892
+ <docs@lists.yoctoproject.org>; Wed, 11 Oct 2023 07:14:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4336
 
 
- documentation/ref-manual/classes.rst   |  3 +++
- documentation/ref-manual/qa-checks.rst | 11 +++++++++++
- 2 files changed, 14 insertions(+)
+  i've mentioned this before, but some of the YP docs still
+mislabel a checkout as a "layer". case in point -- the reference to
+"meta-ti" as a "layer" in the BSP guide. it's not, of course:
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 3f0d4844e..c7a5e9a63 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1480,6 +1480,9 @@ Here are the tests you can list with the :term:`WARN_QA` and
-    also inherits :ref:`ref-classes-features_check` in order for the
-    requirement to actually work.
- 
-+-  ``unimplemented-ptest:`` Checks that ptests are implemented for upstream
-+   tests.
-+
- -  ``unlisted-pkg-lics:`` Checks that all declared licenses applying
-    for a package are also declared on the recipe level (i.e. any license
-    in ``LICENSE:*`` should appear in :term:`LICENSE`).
-diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
-index 4a02e7206..63b2ecdc4 100644
---- a/documentation/ref-manual/qa-checks.rst
-+++ b/documentation/ref-manual/qa-checks.rst
-@@ -789,6 +789,17 @@ Errors and Warnings
-     use a relative path rather than an absolute one, or to pick up the path from
-     runtime configuration or environment variables.
- 
-+.. _qa-check-unimplemented-ptest:
-+
-+- ``<tool> tests detected [unimplemented-ptest]``
-+
-+    This check will detect if the source of the package contains some upstream-
-+    provided tests and, if so, that ptests are implemented for this recipe.
-+    See the ":ref:`dev-manual/packages:testing packages with ptest`"
-+    section in the Yocto Project Development Tasks Manual. See also the
-+    ":ref:`ref-classes-ptest`" section.
-+
-+
- 
- Configuring and Disabling QA Checks
- ===================================
--- 
-2.30.2
+  https://git.yoctoproject.org/meta-ti/tree/
 
+it's a git repo which consists of two layers, but the current BSP
+guide still describes meta-ti as a "layer" in places. i'll ponder how
+to fix this. are there any other checkouts with that structure? i
+recall meta-intel used to do that, but now it's a proper layer.
+
+rday
 
