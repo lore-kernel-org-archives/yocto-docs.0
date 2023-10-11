@@ -2,89 +2,68 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C54EACD6E72
-	for <webhook@archiver.kernel.org>; Wed, 11 Oct 2023 14:00:41 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.17272.1697032834516610132
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ED1F9CD6E75
+	for <webhook@archiver.kernel.org>; Wed, 11 Oct 2023 14:17:31 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.17662.1697033847274823302
  for <docs@lists.yoctoproject.org>;
- Wed, 11 Oct 2023 07:00:35 -0700
+ Wed, 11 Oct 2023 07:17:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TThuI5Uz;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 35E8E24000A;
-	Wed, 11 Oct 2023 14:00:32 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nsjmwmXE;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 56A7F40005;
+	Wed, 11 Oct 2023 14:17:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697032832;
+	t=1697033844;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zw4hUVntUPfdNLaPdaNXQeGm/aOiieVtri+E7YHdsVc=;
-	b=TThuI5Uz0o4FQeAqUYZJWPDnf+1iieW5406Z9lW8+82JQn+8Y/qPGJtWGu+O8h/l9XVxYb
-	i3TieXQn76V7fQyS1u12fTTaan/diK9N1+h71/AVTWQHEcK5dElZL66QbHv2dxotgdyH/E
-	ZAPthN7n/U4gOB7aIDg8Hm6TJSpUoIJA1JBUbEszTek5ZrF65Z8aSv99AhxzoS3jcYJZbc
-	BVFT95KAJUnTRohddKhaR/hgTSLGQFcR5krkOP4HKBpzwiqBlPMbm7NsW6FtZcpjd5Ie2/
-	c8S/sI/rgRvlAIF4Gs1kzxhsVMvIxea7k/KREKIGy332BBiHz/RQraBF8NvkYQ==
-Message-ID: <c51aa19c-a5d0-4bbe-98ee-be68e4a1a3df@bootlin.com>
-Date: Wed, 11 Oct 2023 16:00:31 +0200
+	bh=3UsKXVCUyGYb6kwKZ5T8BngQui0ywRO2zktxasVaLbw=;
+	b=nsjmwmXE84oQ1YL//6/1Lj3fYPpJQN2kohY0l7dvRwuQ92kkQ3Y1n28TKU3LfQjal6wG2Y
+	2oyAsyvXYqCe4AQ63EkUhEupjR9jN2C1J0Wb2XQJMksH8Ui0rXvC8rTOqnxHzmN6IRNKj0
+	WXFbUWhGNd6UYAD/R8NkIIgLAF6Xcq9itPaG60JSISDuuKKyDjzM6FNaKSCGRzx8LuFr0L
+	unbezWY50iJz6Kt80wmEPDYh2iFPHnWHLHND2g312YtuPKvxb2xBlSJbqP7C4rEShLB2Kr
+	aHVmqCF6Pmvzwr3XXFQGfEzTrsMB9RS8NomzqF+EzBxWLMoskLDcrKG5sFQ2Yg==
+Message-ID: <f33d2f73-f4eb-4a10-bffd-eb252a9da78a@bootlin.com>
+Date: Wed, 11 Oct 2023 16:17:23 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: Warn about COMPATIBLE_MACHINE skipping
- native recipes
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [docs] BSP guide still conflates "repo" with "layer"
 Content-Language: en-US
-To: Arne Schwerdt <arne.schwerdt@elbbits.com>
-References: <20231011084804.154987-1-arne.schwerdt@elbbits.com>
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+References: <67f75a6f-3f77-3ae5-56-25c011722bb9@crashcourse.ca>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20231011084804.154987-1-arne.schwerdt@elbbits.com>
+In-Reply-To: <67f75a6f-3f77-3ae5-56-25c011722bb9@crashcourse.ca>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 11 Oct 2023 14:00:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4350
+ <docs@lists.yoctoproject.org>; Wed, 11 Oct 2023 14:17:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4351
 
-Hi Arne
+Hi Robert
 
-On 11.10.23 at 10:48, Arne Schwerdt wrote:
-> ---
-> A recipe inherits from the native.bbclass is always skipped when the COMPATIBLE_MACHINE is set. This behavior has been introduced with daisy (poky/meta/classes/native.bbclass:107). It should be at least mentioned in the documentation.
+On 11.10.23 at 09:14, Robert P. J. Day wrote:
+>    i've mentioned this before, but some of the YP docs still
+> mislabel a checkout as a "layer". case in point -- the reference to
+> "meta-ti" as a "layer" in the BSP guide. it's not, of course:
 >
->   documentation/ref-manual/variables.rst | 6 ++++++
->   1 file changed, 6 insertions(+)
+>    https://git.yoctoproject.org/meta-ti/tree/
 >
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 11523bb9e..a6f7ea03a 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -1358,6 +1358,12 @@ system and gives an overview of their function and contents.
->         speed since the build system skips parsing recipes not compatible
->         with the current machine.
->   
-> +      .. note::
-> +
-> +         When :term:`COMPATIBLE_MACHINE` is set in a recipe inherits from native, the recipe is always skipped.
-> +         All native recipes must be entirely target independent and should not rely on :term:`MACHINE`.
-> +
-> +
->      :term:`COMPLEMENTARY_GLOB`
->         Defines wildcards to match when installing a list of complementary
->         packages for all the packages explicitly (or implicitly) installed in
+> it's a git repo which consists of two layers, but the current BSP
+> guide still describes meta-ti as a "layer" in places. i'll ponder how
+> to fix this. are there any other checkouts with that structure? i
+> recall meta-intel used to do that, but now it's a proper layer.
 
+Oops, good catch.
+What about just replacing "meta-ti" and other bad examples by better ones?
+Patches welcome, but let me know if you wish me to take care of this.
 
-Thanks for the patch!
-Oops, you forget to sign-off your patch. Next time you should use "git 
-commit -s" (see 
-https://docs.yoctoproject.org/contributor-guide/submit-changes.html#creating-patches).
-I fixed this by myself.
-
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-and merged into "master-next".
-
-Thanks again!
 Cheers
 Michael.
 
