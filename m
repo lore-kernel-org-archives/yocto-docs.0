@@ -2,14 +2,14 @@ Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BFB19CDB482
-	for <webhook@archiver.kernel.org>; Thu, 12 Oct 2023 12:14:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 50147CDB46E
+	for <webhook@archiver.kernel.org>; Thu, 12 Oct 2023 18:34:14 +0000 (UTC)
 Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web10.9493.1697112849825446043
+ by mx.groups.io with SMTP id smtpd.web11.20576.1697135649727216049
  for <docs@lists.yoctoproject.org>;
- Thu, 12 Oct 2023 05:14:10 -0700
+ Thu, 12 Oct 2023 11:34:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=ktgptZT7;
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=Mr74Kp1R;
  spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=crashcourse.ca; s=default; h=Content-Transfer-Encoding:Content-Type:
@@ -17,26 +17,25 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
 	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
 	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Kn/b89nLOQZm5wwSqmZhf/DYh0LhHoIG0X9CsboE4Ng=; b=ktgptZT7dXtqbtpk5/3rqKFxjz
-	SwrOmQPlZ7hxlIC3q82gdh2sxvSf6N2RUx7lf8NECPFaRuaHGQYJUJMlQlb/zAifiAZtmAuBbRk5I
-	3MGiC7tDORu0VU56IAYO6mi4eucxY6iXfSsGOaXbYW6KCop7nhIg/mWZlWTdYhl6jpgymF/FXFQ2V
-	oeywC6O7X3+iUESSn5sEbxCD7C5OBlySKV1GQ1ziZA9PvkQ81ZBcu3xd5T3/irfds7sGW43kaqG6N
-	V4Pcf5nJO0Wg+vwfzLRJfg2CN4doxq9CS4d6SI9QrkJI4VCd7orbrICDSQGxh6ZKAUNsD/w21uCff
-	9M6ZVsdA==;
-Received: from [::1] (port=45374 helo=cpanel10.indieserve.net)
+	bh=a5fLH84n51rZ1nnp2suPX2BStQW/8ITcotr1Xo7iih0=; b=Mr74Kp1RtWN/RBBx/Tx6u1cWyk
+	TtH14J6A4AlbvjvxNbs5qqJCefrahLp2gveMqopyi5wGyvM6cZPXSdQIhz/1+zeDrNf1QONbyVcYx
+	tvuaktCpEaraRQhJ0sjVDGSlJtnKiV9iR93uZh6SqTgPVlpfx4iStgatXcgaKmC51NgUTfFkEePo8
+	Sb3rh+hQy2IlEQO9puevqBpfMgej+8jrRianpq+xOygS76/umi9oN6lH/T/kVW8ZkwhI5+bs89jnt
+	Dpw+S4G9UJtuZB0AbI5tVJ+mg5hmeVQu3cO1P0fjBdGcZTFhaov0SM2ubfBOAEfPfbYTO8TGI+aOc
+	5nI4FJAg==;
+Received: from [::1] (port=53176 helo=cpanel10.indieserve.net)
 	by cpanel10.indieserve.net with esmtpa (Exim 4.96.1)
 	(envelope-from <rpjday@crashcourse.ca>)
-	id 1qquZp-009557-2l
+	id 1qr0VZ-009fVz-2A
 	for docs@lists.yoctoproject.org;
-	Thu, 12 Oct 2023 08:14:08 -0400
+	Thu, 12 Oct 2023 14:34:07 -0400
 MIME-Version: 1.0
-Date: Thu, 12 Oct 2023 08:14:06 -0400
+Date: Thu, 12 Oct 2023 14:34:06 -0400
 From: rpjday@crashcourse.ca
 To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: PATCH: dev-manual/new-recipe.rst: add missing parenthesis to
- "Patching Code" section
+Subject: should "Enabling System Services" mention mdev-busybox?
 User-Agent: Roundcube Webmail/1.6.0
-Message-ID: <09705a7fc497768ca30a5de2b500e573@crashcourse.ca>
+Message-ID: <9f9e7b9d8ecf711a3825a081b8cf030a@crashcourse.ca>
 X-Sender: rpjday@crashcourse.ca
 Content-Type: text/plain; charset=US-ASCII;
  format=flowed
@@ -54,33 +53,18 @@ X-Source-Dir:
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 12 Oct 2023 12:14:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4363
+ <docs@lists.yoctoproject.org>; Thu, 12 Oct 2023 18:34:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4364
 
-Add missing parenthesis, and another example of a compressed patch 
-filename.
+Here:
 
-Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+https://docs.yoctoproject.org/dev-manual/new-recipe.html#enabling-system-services
 
----
+the two methods for starting system services are listged as SysVinit and 
+systemd.
+but the INIT_MANAGER variable also accepts "mdev-busybox" as another 
+init manager,
+should that be mentioned in that section as well? or am i misreading?
 
-testing a new mail client so hoping it doesn't mangle patch submissions
-
-diff --git a/documentation/dev-manual/new-recipe.rst 
-b/documentation/dev-manual/new-recipe.rst
-index 02bb08474..e741cef0e 100644
---- a/documentation/dev-manual/new-recipe.rst
-+++ b/documentation/dev-manual/new-recipe.rst
-@@ -409,8 +409,8 @@ Patching Code
-
-  Sometimes it is necessary to patch code after it has been fetched. Any
-  files mentioned in :term:`SRC_URI` whose names end in ``.patch`` or
--``.diff`` or compressed versions of these suffixes (e.g. ``diff.gz`` 
-are
--treated as patches. The
-+``.diff`` or compressed versions of these suffixes (e.g. ``diff.gz``,
-+``patch.bz2``, etc.) are treated as patches. The
-  :ref:`ref-tasks-patch` task
-  automatically applies these patches.
-
+rday
 
