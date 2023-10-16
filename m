@@ -1,147 +1,147 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B762CDB465
-	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 16:08:01 +0000 (UTC)
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
- by mx.groups.io with SMTP id smtpd.web10.130851.1697472477544697355
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71B4BCDB474
+	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 16:26:21 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.131357.1697473577852298128
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Oct 2023 09:07:57 -0700
+ Mon, 16 Oct 2023 09:26:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile-fr.20230601.gappssmtp.com header.s=20230601 header.b=UY64YUYk;
- spf=pass (domain: smile.fr, ip: 209.85.218.48, mailfrom: yoann.congal@smile.fr)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-9be3b66f254so391015566b.3
-        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 09:07:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile-fr.20230601.gappssmtp.com; s=20230601; t=1697472476; x=1698077276; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+o/E87/ASjdKGSfPpBXJJsKF+00TAmJUYz32xDmHUHE=;
-        b=UY64YUYkFez5AHqu1CSLie4W0gEDJAND/P0P+m6inWoDmF4aNo1v1uO0URXpGH/U6i
-         p1qHX9uuA8nkLvs2GCZvqpXLZBi5tD0Ck02BRADl9lvsNi2x2QKzrpQW6pDJDqDA6HRf
-         XkAaOGJtTs0gaEVageGytyx0e6MjpB3jCbfz4AVUCu5YU5FiEovKprh2VmPXC6MxZY6A
-         rY/uIEjiw3Ezq24pGnrzAScweDGPBqs5XmcMMhD1axwKE3ZZiRHbXhvsaxNmum+MOyXe
-         sSoew+lqwT+L1bxxu3pYevyPEldbyX7mgRF6en6KB0SgguEgl1NPCa2UpYWDQoVIfPRi
-         Aynw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697472476; x=1698077276;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+o/E87/ASjdKGSfPpBXJJsKF+00TAmJUYz32xDmHUHE=;
-        b=MFwJp94n6Xk3A02S40WPqBH3qOTH1A4pj8CDojgxxGYZq/XyZdyeZtUhg5pth+ypia
-         h28+i2MJc+a1I4F9/LAgJixTp/L4q0avQ9u4BOhv57BkZSwT7M2K099Mox1jhe7JQ/EE
-         Qhl45ou+usxv8OO8/6q3O/yCqd4F6BFvoDRNFJ8iWLsijpKM8Vao4ex/r/rXbRtYHp3l
-         8VXMjK/pxVSOOiXoQwjGtKjfODaRVyn6UjWeAdxCou34wMh2DlkHj8+jX6ajq5Fb5eOh
-         Q0/wjergKJwTdJCXMmB/hoA2lzI1Tx/y/RcYM6BKPq8zdR/LDuoKvpQKTYXYQTV66BnK
-         I2lQ==
-X-Gm-Message-State: AOJu0Yxy4ewpO71CmtAtMYBGj805ePyzO8ykaH9EAs8Na+wmpSCcOARK
-	I0QxGdGIGxvPFKJNMrr3IW6zd+JDu9BD0b8eUOAuOgD4wLc9v6km
-X-Google-Smtp-Source: AGHT+IF8HvWB3i30oA7nBIby/iZCOzF2KugwcVrimlEdd5lJc8c4Ae4olUCW/bZSLWMWoM78PQfvevD97uzGOWz6iJw=
-X-Received: by 2002:a17:907:77c9:b0:9b2:6d09:847c with SMTP id
- kz9-20020a17090777c900b009b26d09847cmr27466283ejc.10.1697472475768; Mon, 16
- Oct 2023 09:07:55 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OAm9hZpk;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3443660009;
+	Mon, 16 Oct 2023 16:26:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1697473575;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lRioNTcrR9nGSOTI6LZBhQbWtnFipMt0EyTX6U6XniA=;
+	b=OAm9hZpk2FK4Q19bqgd5sI7Kg5Ubphd2dmF6pPNo0JHpr0GlMLNZ8ehulmysBMCsPAgi3Z
+	KulfsKkB+N5x1XdTV0RfjBImCOkFw95wD8Rw0lrKxFuplOIF/3lK1Y8qmz0bPbTc6w5KJm
+	MiK+FMi+E6j+FB5xjZ67NDRh8jGoGRxkkgTSeuYQXXfMJU4buvfxG2G1rJ3kkBWKZxbGIJ
+	2Ysq/ELmeUAsrMOL6n3PWwE24eqq64CYeDwzs7OdC0Ni9BafIPsZO4wI1JMZGF6PVCRlyM
+	Abt/bNiZuoJ92n366xqWOr+UcCjfjmmJMe0gW3olvTtXlomrzwQk+X87lszKpA==
+Message-ID: <8c194048-f5f1-4a90-a634-21e941c2be2c@bootlin.com>
+Date: Mon, 16 Oct 2023 18:26:09 +0200
 MIME-Version: 1.0
-References: <20231010135139.3995226-1-yoann.congal@smile.fr>
-In-Reply-To: <20231010135139.3995226-1-yoann.congal@smile.fr>
-From: Yoann CONGAL <yoann.congal@smile.fr>
-Date: Mon, 16 Oct 2023 18:07:30 +0200
-Message-ID: <CAMSfU+58yne1QDVLQMLK2xBbM4n3kCPLsFdS_NXU5+OXKyuN+A@mail.gmail.com>
-Subject: Re: [PATCH v3] ref-manual: Add documentation for the
- unimplemented-ptest QA warning
-To: docs@lists.yoctoproject.org, 
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: =?UTF-8?B?SsOpcsOpbXkgUm9zZW4=?= <jeremy.rosen@smile.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] Update PACKAGECONFIG term and add custom example
+Content-Language: en-US
+To: BELHADJ SALEM Talel <bhstalel@gmail.com>
+References: <20231016064714.3038862-1-bhstalel@gmail.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20231016064714.3038862-1-bhstalel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 16:08:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4381
+ <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 16:26:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4382
 
-Hi Michael,
+Hi Talel
 
-Le mar. 10 oct. 2023 =C3=A0 15:53, Yoann Congal <yoann.congal@smile.fr> a =
-=C3=A9crit :
+Thank you for your contribution!
+
+On 16.10.23 at 08:47, BELHADJ SALEM Talel wrote:
+> PACKAGECONFIG's first and second flag value will be added to PACKAGECONFIG_CONFARGS
+> and then it will be added to the appropriate variable (EXTRA_OECMAKE, or ...)
+> So we need to only mention PACKAGECONFIG_CONFARGS and it will lead to other variables.
 >
-> From: J=C3=A9r=C3=A9my Rosen <jeremy.rosen@smile.fr>
+> I added a custom example that can help understanding very well PACKAGECONFIG.
 >
-> Signed-off-by: J=C3=A9r=C3=A9my Rosen <jeremy.rosen@smile.fr>
-> Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
+> Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
 > ---
-> Note: The code documented here has been sent to ML there:
-> https://lists.openembedded.org/g/openembedded-core/message/188892
-
-FYi, the code part has been merged :
-https://git.yoctoproject.org/poky/commit/?id=3D5330065f51fc0dcc2b74360220b2=
-c97c4b80e622
-https://git.yoctoproject.org/poky/commit/?id=3D18bd65d241d2ca2d14541b9c6dd0=
-d9f3f1cdba35
-https://git.yoctoproject.org/poky/commit/?id=3Df4b039cae0833634487607a4c6ad=
-e441dbe94cbf
-https://git.yoctoproject.org/poky/commit/?id=3Db233e2f8c2d756010fd4fae5b817=
-3b1fddf39693
-
-Thanks!
-
-
->  documentation/ref-manual/classes.rst   |  3 +++
->  documentation/ref-manual/qa-checks.rst | 11 +++++++++++
->  2 files changed, 14 insertions(+)
+>   documentation/ref-manual/variables.rst | 40 ++++++++++++++++++++++----
+>   1 file changed, 34 insertions(+), 6 deletions(-)
 >
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 3f0d4844e..c7a5e9a63 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -1480,6 +1480,9 @@ Here are the tests you can list with the :term:`WAR=
-N_QA` and
->     also inherits :ref:`ref-classes-features_check` in order for the
->     requirement to actually work.
->
-> +-  ``unimplemented-ptest:`` Checks that ptests are implemented for upstr=
-eam
-> +   tests.
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 11523bb9e..c52271e8b 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -6059,13 +6059,11 @@ system and gives an overview of their function and contents.
+>         omit any argument you like but must retain the separating commas. The
+>         order is important and specifies the following:
+>   
+> -      #. Extra arguments that should be added to the configure script
+> -         argument list (:term:`EXTRA_OECONF` or
+> -         :term:`PACKAGECONFIG_CONFARGS`) if
+> -         the feature is enabled.
+> +      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
+> +         if the feature is enabled.
+>   
+> -      #. Extra arguments that should be added to :term:`EXTRA_OECONF` or
+> -         :term:`PACKAGECONFIG_CONFARGS` if the feature is disabled.
+> +      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
+> +         if the feature is disabled.
+>   
+>         #. Additional build dependencies (:term:`DEPENDS`)
+>            that should be added if the feature is enabled.
+> @@ -6123,6 +6121,36 @@ system and gives an overview of their function and contents.
+>   
+>               PACKAGECONFIG:append:pn-recipename = " f4"
+>   
+> +      Consider the following example of a :ref:`ref-classes-cmake` recipe with a systemd service
+> +      in which :term:`PACKAGECONFIG` plays a good rule to transform the systemd service
+
+I'm not sure "plays a good rule" is what you meant.
+What about just "is used"?
+
+> +      into a feature that can be easily enabled or disabled via :term:`PACKAGECONFIG`::
 > +
->  -  ``unlisted-pkg-lics:`` Checks that all declared licenses applying
->     for a package are also declared on the recipe level (i.e. any license
->     in ``LICENSE:*`` should appear in :term:`LICENSE`).
-> diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-m=
-anual/qa-checks.rst
-> index 4a02e7206..63b2ecdc4 100644
-> --- a/documentation/ref-manual/qa-checks.rst
-> +++ b/documentation/ref-manual/qa-checks.rst
-> @@ -789,6 +789,17 @@ Errors and Warnings
->      use a relative path rather than an absolute one, or to pick up the p=
-ath from
->      runtime configuration or environment variables.
->
-> +.. _qa-check-unimplemented-ptest:
+> +         example.c
+> +         example.service
+> +         CMakeLists.txt
 > +
-> +- ``<tool> tests detected [unimplemented-ptest]``
+> +      The `CMakeLists.txt` file contains::
 > +
-> +    This check will detect if the source of the package contains some up=
-stream-
-> +    provided tests and, if so, that ptests are implemented for this reci=
-pe.
-> +    See the ":ref:`dev-manual/packages:testing packages with ptest`"
-> +    section in the Yocto Project Development Tasks Manual. See also the
-> +    ":ref:`ref-classes-ptest`" section.
+> +         if(WITH_SYSTEMD)
+> +            install(FILES ${PROJECT_SOURCE_DIR}/example.service DESTINATION /etc/systemd/systemd)
+> +         endif(WITH_SYSTEMD)
 > +
-> +
->
->  Configuring and Disabling QA Checks
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> --
-> 2.30.2
->
+> +      In order to enable the installation of `example.service` we need to ensure
+
+I guess this should be ``example.service`` (double backquotes).
+
+> +      that `-DWITH_SYSTEMD=ON` is passed to the `cmake` command execution.
+> +      Recipes that have `CMakeLists.txt`, generally, inherit :ref:`ref-classes-cmake`, that runs `cmake`\
 
 
---
-Yoann Congal
-Smile ECS - Tech expert
+Same comment for ``cmake`` and ``CMakeLists.txt``.
+
+s/, generally,/ generally/?
+
+> +      with :term:`EXTRA_OECMAKE` which :term:`PACKAGECONFIG_CONFARGS` will be appended to.
+
+
+s/ which/, which/?
+
+> +      Now, knowing that :term:`PACKAGECONFIG_CONFARGS` is automatically filled with either
+> +      the first or second element of :term:`PACKAGECONFIG` flag value, the recipe would be like::
+> +
+> +         inherit cmake
+> +         PACKAGECONFIG = "systemd"
+> +         PACKAGECONFIG[systemd] = "-DWITH_SYSTEMD=ON,-DWITH_SYSTEMD=OFF"
+> +
+> +      A side note to this recipe is to check if `systemd` is in fact the used :term:`INIT_MANAGER`
+
+``systemd``
+
+Thanks again,
+Cheers
+Michael.
+
+-- 
+
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
