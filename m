@@ -1,136 +1,118 @@
-Return-Path: <bhstalel@gmail.com>
+Return-Path: <tgamblin@baylibre.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8354CDB465
-	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 17:12:11 +0000 (UTC)
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
- by mx.groups.io with SMTP id smtpd.web10.132796.1697476324194409966
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD3E8CDB465
+	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 19:55:52 +0000 (UTC)
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+ by mx.groups.io with SMTP id smtpd.web11.178185.1697486151875139457
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Oct 2023 10:12:04 -0700
+ Mon, 16 Oct 2023 12:55:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=H0eEW1sq;
- spf=pass (domain: gmail.com, ip: 209.85.218.51, mailfrom: bhstalel@gmail.com)
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-9becde9ea7bso447437166b.0
-        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 10:12:03 -0700 (PDT)
+ dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=Z+9V7dz1;
+ spf=pass (domain: baylibre.com, ip: 209.85.160.179, mailfrom: tgamblin@baylibre.com)
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4197fa36b6aso29049091cf.3
+        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 12:55:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697476322; x=1698081122; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+qqjPjvilrrkyfpcLBmajsw93JjI2pUZxXp7ZVQZYAQ=;
-        b=H0eEW1sq7lVz9m+NNw6Sq8azZf+xIYyEUVPaDLy6A8R1DKyZW2vN8MnCjnEAkJj7/2
-         xJlJPz4kWj0+Q1kVz4TxwwxdoI84TOGCKhtskNIickP70FGWauHz/YRlQfjH5BCPxIAT
-         kVfxJaDZviDl+KEX8FeX0E8/ap53523ePKM98xFYf80DKx87fT4uk/yXkZhYtjH3oBnS
-         AFby++VKzI6BjnxDQJWDaQDp839a0OuHp0kSm5ewpwHqixFFudD2jxDdnYsG//YfrE8z
-         DQRqL8QyQmK4u9XZ2eVaifcjbXnraqGqwffIjQO7UdYsdJaSwoRUGD5TCrtTo6AqEtAd
-         ON6Q==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697486151; x=1698090951; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F9I10pDOHcD0vVao6FfClI9LOJQDjT9t29DTLHumOIo=;
+        b=Z+9V7dz1a/U/fS63DleFDEu0kZpqAzKGYr1HCGS3Ty4arlYSPDrgMwfjTZzkz3DXa/
+         0BHYdz0JTXYYqJwNruN8d0yfYXmAA/KPGVUs2LKShuKetz6czwQ7lUg/u86vINvIrT5C
+         qV/2RYwguQDIiobDMt8Yv8z52lOs/r/Xpe6RfKbiRhH11AGPjlorRdlhPnqC7vBBfRML
+         mPlWsGwocMGiYSx/Ef3MZIl5VYjA1qCB3YCT2U7cK9PFPHzIqxJlvjkWt9uhuHFprGL9
+         sZRXXX/RoCaMd72/oHChi8aZOrVjSb/rXKhRUG6eDRZIdjDgW1yoUHGUAgxFP6BAlL4r
+         irXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697476322; x=1698081122;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+qqjPjvilrrkyfpcLBmajsw93JjI2pUZxXp7ZVQZYAQ=;
-        b=Ed8TD/pVCKK8g++TQbU9E+347IWX3qMZF3bLKJ6Y+Zg1EACJS8IKB0iyeTKm85PnZE
-         t5Dg/yjSocYF2BSny8CtzH+TmuNY5EvYgQ72qE4/mSMn+pt37HtOJqyPd+lZaU/amC0O
-         pKzIt/poNiMGUQ/8U3YLLw37Dturz0vbq17pS1StvlrLF/KTIzkbYp2L0XvnpCPc5NGb
-         +Kbod4H3ZFT3xWfrz8itCfLW5MkEl1ewrJZmAsNDg3DRqhE6QtkLJJhFYkb9Rq7zow4R
-         uq1gGIZ8oweNG55tVYy9TTJvWzmfZGhoJnVL6+d8V6WDBhHc0RmDN9lorAzUiw2K/j9j
-         j9tA==
-X-Gm-Message-State: AOJu0YxSY7iEJcYJbIorkrHNpxC9X9mNiD8G7DHoBzy8hhpXknZk0gn7
-	5FRirsO6awnTvSHFNtdxBvvyvNClXc0=
-X-Google-Smtp-Source: AGHT+IHuzKAsChrJTvOSWTIKPgYEdG20RqxNtiUnyOSz5gCVKsFUigaQyxauMe57XREJg0SY/cjV0Q==
-X-Received: by 2002:a17:907:3da5:b0:9b2:bcea:e517 with SMTP id he37-20020a1709073da500b009b2bceae517mr67645ejc.10.1697476322050;
-        Mon, 16 Oct 2023 10:12:02 -0700 (PDT)
-Received: from talel.sofia.local ([193.95.99.58])
-        by smtp.gmail.com with ESMTPSA id u6-20020a1709064ac600b00991d54db2acsm4344489ejt.44.2023.10.16.10.12.01
+        d=1e100.net; s=20230601; t=1697486151; x=1698090951;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=F9I10pDOHcD0vVao6FfClI9LOJQDjT9t29DTLHumOIo=;
+        b=e1KeXv99EJrnl3ZBrCvH/41FfM3vz1PqMMjSg8kFF920GBKbZjyqgOeRvUqwTxDwUu
+         Fgpbqz213MmsHPiJsp7eOAYSf/IDkdvvbmHRX7Jmjbd7+cvtm3voZB+Zv/zXq2B/a0x5
+         GHGO270Hj5wfKQJsL+LuYqTQV+xTCBYoh8eKonHJXOPUgsxFOICv6TJKred868CnAQmg
+         bNN2YMtG9CCcqLpQQUomYG+tA2qAkFVs//GJyC9CTGM1UCpZ4Qu9NplnxFbuOpNVfHaT
+         GL1LxjMaUCnf6d4nEXs+A3dwNX+7g92ytEnSEub8EYtuyQw/7hFUXYmgTZq6LfE1QvYd
+         fXbQ==
+X-Gm-Message-State: AOJu0YyIJJFS8gohdiKcJxMOvYHvKhZFYOvne4k1MzgwkctKudATZ9Wd
+	tBqtoK3/j5H7eF67yeGbWy5t75IN+WlNx6bodEI+NQ==
+X-Google-Smtp-Source: AGHT+IE/pmDStCRuJ7UNwnenBYDg/l8LCncjYfDNk21kyuMdp2fTdxSnS4uaY1mapcUD+nQu9ZKH5Q==
+X-Received: by 2002:a05:622a:14c6:b0:417:af73:9eb9 with SMTP id u6-20020a05622a14c600b00417af739eb9mr346185qtx.62.1697486150647;
+        Mon, 16 Oct 2023 12:55:50 -0700 (PDT)
+Received: from megalith.cgocable.net ([2001:1970:5b1f:ab00:fc4e:ec42:7e5d:48dd])
+        by smtp.gmail.com with ESMTPSA id r8-20020ac87948000000b004166905aa2asm14440qtt.28.2023.10.16.12.55.50
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Oct 2023 10:12:01 -0700 (PDT)
-From: Talel BELHAJSALEM <bhstalel@gmail.com>
+        Mon, 16 Oct 2023 12:55:50 -0700 (PDT)
+From: Trevor Gamblin <tgamblin@baylibre.com>
 To: docs@lists.yoctoproject.org
-Cc: Talel BELHAJSALEM <bhstalel@gmail.com>
-Subject: [PATCH] ref-manual: Fix PACKAGECONFIG term and add an example
-Date: Mon, 16 Oct 2023 18:11:53 +0100
-Message-Id: <20231016171153.3075747-1-bhstalel@gmail.com>
-X-Mailer: git-send-email 2.25.1
+Subject: [docs][PATCH] contributor-guide: add patchtest section
+Date: Mon, 16 Oct 2023 15:55:49 -0400
+Message-ID: <20231016195549.2243243-1-tgamblin@baylibre.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 17:12:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4383
+ <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 19:55:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4384
 
-PACKAGECONFIG's first and second flag value will be added to PACKAGECONFIG_CONFARGS
-and then it will be added to the appropriate variable (EXTRA_OECMAKE, or ...)
-So we need to only mention PACKAGECONFIG_CONFARGS and it will lead to other variables.
-
-I added a custom example that can help understanding very well PACKAGECONFIG.
-
-Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- documentation/ref-manual/variables.rst | 40 ++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 6 deletions(-)
+ .../contributor-guide/submit-changes.rst      | 37 +++++++++++++++++++
+ 1 file changed, 37 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 11523bb9e..2f286d26c 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -6059,13 +6059,11 @@ system and gives an overview of their function and contents.
-       omit any argument you like but must retain the separating commas. The
-       order is important and specifies the following:
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index cda2d12d2..6dfb0ffec 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -401,6 +401,43 @@ Anyway, you'll also be able to access the new messages on mailing list archives,
+ either through a web browser, or for the lists archived on https://lore.kernelorg,
+ through an individual newsgroup feed or a git repository.
  
--      #. Extra arguments that should be added to the configure script
--         argument list (:term:`EXTRA_OECONF` or
--         :term:`PACKAGECONFIG_CONFARGS`) if
--         the feature is enabled.
-+      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
-+         if the feature is enabled.
++Validating Patches with Patchtest
++=================================
++
++Patchtest is available in ``openembedded-core`` as a tool for making sure
++that your patches are well-formatted and contain important info for
++maintenance purposes, such as ``Signed-off-by`` and ``Upstream-Status``
++tags. Once you have generated the patch files and run ``source
++oe-init-build-env`` to initialize your workspace, you can run patchtest
++like so::
++
++    patchtest --patch <patch_name>
++
++Where ``/path/to/target/repo`` may (for example) be openembedded-core,
++with the actual patchtest tests being kept in
++``openembedded-core/meta/lib/patchtest/tests``. Alternatively, if you
++want patchtest to iterate over and test multiple patches stored in a
++directory, you can use::
++
++    patchtest --directory <directory_name>
++
++By default, patchtest uses its own modules' file paths to determine what
++repository and test suite to check patches against. If you wish to test
++patches against a repository other than ``openembedded-core`` and/or use
++a different set of tests, you can use the --repodir and --testdir
++flags::
++
++    patchtest --patch <patch_name> --repodir <path/to/repo> --testdir <path/to/testdir>
++
++Finally, note that patchtest is designed to test patches in a standalone
++way, so if your patches are meant to apply on top of changes made by
++previous patches in a series, it is possible that patchtest will report
++false failures regarding the "merge on head" test.
++
++Using patchtest in this manner provides a final check for the overall
++quality of your changes before they are submitted for review by the
++maintainers.
++
+ Sending Patches via Email
+ -------------------------
  
--      #. Extra arguments that should be added to :term:`EXTRA_OECONF` or
--         :term:`PACKAGECONFIG_CONFARGS` if the feature is disabled.
-+      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
-+         if the feature is disabled.
- 
-       #. Additional build dependencies (:term:`DEPENDS`)
-          that should be added if the feature is enabled.
-@@ -6123,6 +6121,36 @@ system and gives an overview of their function and contents.
- 
-             PACKAGECONFIG:append:pn-recipename = " f4"
- 
-+      Consider the following example of a :ref:`ref-classes-cmake` recipe with a systemd service
-+      in which :term:`PACKAGECONFIG` is used to transform the systemd service
-+      into a feature that can be easily enabled or disabled via :term:`PACKAGECONFIG`::
-+
-+         example.c
-+         example.service
-+         CMakeLists.txt
-+
-+      The ``CMakeLists.txt`` file contains::
-+
-+         if(WITH_SYSTEMD)
-+            install(FILES ${PROJECT_SOURCE_DIR}/example.service DESTINATION /etc/systemd/systemd)
-+         endif(WITH_SYSTEMD)
-+
-+      In order to enable the installation of ``example.service`` we need to ensure
-+      that `-DWITH_SYSTEMD=ON` is passed to the ``cmake`` command execution.
-+      Recipes that have ``CMakeLists.txt`` generally inherit :ref:`ref-classes-cmake`, that runs ``cmake``
-+      with :term:`EXTRA_OECMAKE`, which :term:`PACKAGECONFIG_CONFARGS` will be appended to.
-+      Now, knowing that :term:`PACKAGECONFIG_CONFARGS` is automatically filled with either
-+      the first or second element of :term:`PACKAGECONFIG` flag value, the recipe would be like::
-+
-+         inherit cmake
-+         PACKAGECONFIG = "systemd"
-+         PACKAGECONFIG[systemd] = "-DWITH_SYSTEMD=ON,-DWITH_SYSTEMD=OFF"
-+
-+      A side note to this recipe is to check if ``systemd`` is in fact the used :term:`INIT_MANAGER`
-+      or not::
-+
-+         PACKAGECONFIG = "${@'systemd' if d.getVar('INIT_MANAGER') == 'systemd' else ''}"
-+
-    :term:`PACKAGECONFIG_CONFARGS`
-       A space-separated list of configuration options generated from the
-       :term:`PACKAGECONFIG` setting.
 -- 
-2.25.1
+2.41.0
 
 
