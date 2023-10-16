@@ -1,118 +1,108 @@
-Return-Path: <tgamblin@baylibre.com>
+Return-Path: <bhstalel@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD3E8CDB465
-	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 19:55:52 +0000 (UTC)
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
- by mx.groups.io with SMTP id smtpd.web11.178185.1697486151875139457
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70178CDB465
+	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 21:53:23 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web10.181674.1697493194805110654
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Oct 2023 12:55:52 -0700
+ Mon, 16 Oct 2023 14:53:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=Z+9V7dz1;
- spf=pass (domain: baylibre.com, ip: 209.85.160.179, mailfrom: tgamblin@baylibre.com)
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4197fa36b6aso29049091cf.3
-        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 12:55:51 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=cXpr0CLG;
+ spf=pass (domain: gmail.com, ip: 209.85.128.53, mailfrom: bhstalel@gmail.com)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4066692ad35so51451285e9.1
+        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 14:53:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1697486151; x=1698090951; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=F9I10pDOHcD0vVao6FfClI9LOJQDjT9t29DTLHumOIo=;
-        b=Z+9V7dz1a/U/fS63DleFDEu0kZpqAzKGYr1HCGS3Ty4arlYSPDrgMwfjTZzkz3DXa/
-         0BHYdz0JTXYYqJwNruN8d0yfYXmAA/KPGVUs2LKShuKetz6czwQ7lUg/u86vINvIrT5C
-         qV/2RYwguQDIiobDMt8Yv8z52lOs/r/Xpe6RfKbiRhH11AGPjlorRdlhPnqC7vBBfRML
-         mPlWsGwocMGiYSx/Ef3MZIl5VYjA1qCB3YCT2U7cK9PFPHzIqxJlvjkWt9uhuHFprGL9
-         sZRXXX/RoCaMd72/oHChi8aZOrVjSb/rXKhRUG6eDRZIdjDgW1yoUHGUAgxFP6BAlL4r
-         irXw==
+        d=gmail.com; s=20230601; t=1697493193; x=1698097993; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gldh/j79a+aq6nwRavL3biHMJkarZ55wSlyl/ooIgi4=;
+        b=cXpr0CLG49XNmrJCvBenJvtxKdFd8u7KO9neZxiaZakAQIIvrw9u/VgJ6pv1P0I6aY
+         8VSj5wHVUnll6fvpOJfK2HeDPQGk8f/GPsUngK7PAmb3idhQCM9jTKB6vpEsVn40ytym
+         xm6jcQ39S6gLK4BZ0rk6wg8gdA49FwLULhmQmcLlaAfRBaPE/3oNGwXdFrlO4/IX+kWk
+         edDLXZONdjjl/k750ZZJYRqfgDu2id3L4hksDrhkPD4U7gDn4qGc0dosUVcbqrR8win4
+         BF7SIHS6fRdQceRslZZ8UElkktSzK4IMLu2OAXvDX2xFuqDefBeqxzzQBHlgrs3N52M1
+         XXUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697486151; x=1698090951;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F9I10pDOHcD0vVao6FfClI9LOJQDjT9t29DTLHumOIo=;
-        b=e1KeXv99EJrnl3ZBrCvH/41FfM3vz1PqMMjSg8kFF920GBKbZjyqgOeRvUqwTxDwUu
-         Fgpbqz213MmsHPiJsp7eOAYSf/IDkdvvbmHRX7Jmjbd7+cvtm3voZB+Zv/zXq2B/a0x5
-         GHGO270Hj5wfKQJsL+LuYqTQV+xTCBYoh8eKonHJXOPUgsxFOICv6TJKred868CnAQmg
-         bNN2YMtG9CCcqLpQQUomYG+tA2qAkFVs//GJyC9CTGM1UCpZ4Qu9NplnxFbuOpNVfHaT
-         GL1LxjMaUCnf6d4nEXs+A3dwNX+7g92ytEnSEub8EYtuyQw/7hFUXYmgTZq6LfE1QvYd
-         fXbQ==
-X-Gm-Message-State: AOJu0YyIJJFS8gohdiKcJxMOvYHvKhZFYOvne4k1MzgwkctKudATZ9Wd
-	tBqtoK3/j5H7eF67yeGbWy5t75IN+WlNx6bodEI+NQ==
-X-Google-Smtp-Source: AGHT+IE/pmDStCRuJ7UNwnenBYDg/l8LCncjYfDNk21kyuMdp2fTdxSnS4uaY1mapcUD+nQu9ZKH5Q==
-X-Received: by 2002:a05:622a:14c6:b0:417:af73:9eb9 with SMTP id u6-20020a05622a14c600b00417af739eb9mr346185qtx.62.1697486150647;
-        Mon, 16 Oct 2023 12:55:50 -0700 (PDT)
-Received: from megalith.cgocable.net ([2001:1970:5b1f:ab00:fc4e:ec42:7e5d:48dd])
-        by smtp.gmail.com with ESMTPSA id r8-20020ac87948000000b004166905aa2asm14440qtt.28.2023.10.16.12.55.50
-        for <docs@lists.yoctoproject.org>
+        d=1e100.net; s=20230601; t=1697493193; x=1698097993;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gldh/j79a+aq6nwRavL3biHMJkarZ55wSlyl/ooIgi4=;
+        b=mN1nlKcVOHXcWElT7LgMmT0NSNuN7WI6qroH+Zx5P96W3LQf0H9h513Qv+tsM7Bj5i
+         ruwlwexTfSpgeF5nOGDD52EC+D6rrzkLfwCr+AA6WxJCH1w1EyyXkH2WsNf1xkkUHLQt
+         9kV/zJzJIGDpDb/PpY5IqgSv7Nxfm8m+AmoA8Hte9Gt7xhoekMZJyFeQedzlX82vsMuH
+         4SWKPit9Aw5ozarP2S0W4BkqWbStRmPS5bigu2PLXh7c/nycGpG4RJiP9Ii1YHnRxcp2
+         AtIp4RfyLUUXLrsKrfdKHEcTabcIlD2kv0iDNb0kyfMHzwmktACRoCcE6u9h8M2ZFs5g
+         EZyw==
+X-Gm-Message-State: AOJu0YznCgsWYhNIMnSztq08UOAPYZUhOO5Qd9+/Cqv9S3t26lfRTpfl
+	O7zRNS89LG5RQ2L3dPeUD4T8lu9UM3g=
+X-Google-Smtp-Source: AGHT+IEXlRHEPvNCNx+ujTCm1RkhXf2DiEIZPf/EJDVkmAmVE/r5igW3rc6nDsjvEgx2uRmr+MZocg==
+X-Received: by 2002:a05:600c:470a:b0:401:b53e:6c40 with SMTP id v10-20020a05600c470a00b00401b53e6c40mr288017wmo.10.1697493192713;
+        Mon, 16 Oct 2023 14:53:12 -0700 (PDT)
+Received: from localhost.localdomain ([197.27.115.232])
+        by smtp.gmail.com with ESMTPSA id i12-20020a05600c290c00b0040588d85b3asm8051962wmd.15.2023.10.16.14.53.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Oct 2023 12:55:50 -0700 (PDT)
-From: Trevor Gamblin <tgamblin@baylibre.com>
+        Mon, 16 Oct 2023 14:53:12 -0700 (PDT)
+From: Talel BELHAJSALEM <bhstalel@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [docs][PATCH] contributor-guide: add patchtest section
-Date: Mon, 16 Oct 2023 15:55:49 -0400
-Message-ID: <20231016195549.2243243-1-tgamblin@baylibre.com>
-X-Mailer: git-send-email 2.41.0
+Cc: Talel BELHAJSALEM <bhstalel@gmail.com>
+Subject: [PATCH 3/3] ref-manual: Add TOOLCHAIN_OPTIONS variable
+Date: Mon, 16 Oct 2023 22:53:02 +0100
+Message-Id: <20231016215302.3089907-1-bhstalel@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 19:55:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4384
+ <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 21:53:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4385
 
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
 ---
- .../contributor-guide/submit-changes.rst      | 37 +++++++++++++++++++
- 1 file changed, 37 insertions(+)
+ documentation/ref-manual/variables.rst | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-index cda2d12d2..6dfb0ffec 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -401,6 +401,43 @@ Anyway, you'll also be able to access the new messages on mailing list archives,
- either through a web browser, or for the lists archived on https://lore.kernelorg,
- through an individual newsgroup feed or a git repository.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 246584fc5..6cb4efff5 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -6952,13 +6952,9 @@ system and gives an overview of their function and contents.
+       used by the compiler in order to find headers and other needs to complete
+       its job.
  
-+Validating Patches with Patchtest
-+=================================
-+
-+Patchtest is available in ``openembedded-core`` as a tool for making sure
-+that your patches are well-formatted and contain important info for
-+maintenance purposes, such as ``Signed-off-by`` and ``Upstream-Status``
-+tags. Once you have generated the patch files and run ``source
-+oe-init-build-env`` to initialize your workspace, you can run patchtest
-+like so::
-+
-+    patchtest --patch <patch_name>
-+
-+Where ``/path/to/target/repo`` may (for example) be openembedded-core,
-+with the actual patchtest tests being kept in
-+``openembedded-core/meta/lib/patchtest/tests``. Alternatively, if you
-+want patchtest to iterate over and test multiple patches stored in a
-+directory, you can use::
-+
-+    patchtest --directory <directory_name>
-+
-+By default, patchtest uses its own modules' file paths to determine what
-+repository and test suite to check patches against. If you wish to test
-+patches against a repository other than ``openembedded-core`` and/or use
-+a different set of tests, you can use the --repodir and --testdir
-+flags::
-+
-+    patchtest --patch <patch_name> --repodir <path/to/repo> --testdir <path/to/testdir>
-+
-+Finally, note that patchtest is designed to test patches in a standalone
-+way, so if your patches are meant to apply on top of changes made by
-+previous patches in a series, it is possible that patchtest will report
-+false failures regarding the "merge on head" test.
-+
-+Using patchtest in this manner provides a final check for the overall
-+quality of your changes before they are submitted for review by the
-+maintainers.
-+
- Sending Patches via Email
- -------------------------
+-      The value of this variable will be affected to :term:`TOOLCHAIN_OPTIONS`
+-      as::
+-         
+-         TOOLCHAIN_OPTIONS = " --sysroot=${RECIPE_SYSROOT}"
+-
+       This variable is related to :term:`STAGING_DIR_HOST` or :term:`STAGING_DIR_TARGET`
+-      according to the type of the recipe and the build target.
++      according to the type of the recipe and the build target and also related to
++      :term:`TOOLCHAIN_OPTIONS`.
  
+       To understand more this variable, consider the following examples:
+ 
+@@ -9141,6 +9137,16 @@ system and gives an overview of their function and contents.
+       portion of an eSDK. This is similar to :term:`TOOLCHAIN_HOST_TASK`
+       applying to SDKs.
+ 
++   :term:`TOOLCHAIN_OPTIONS`
++      This variable holds extra options passed to the compiler and the linker
++      for non ``-native`` recipes as they have to point to their custom
++      ``sysroot`` folder pointed to by :term:`RECIPE_SYSROOT`::
++
++         TOOLCHAIN_OPTIONS = " --sysroot=${RECIPE_SYSROOT}"
++
++      As ``-native`` recipes are built for the ``HOST`` itself this variable
++      is not used, thus it is empty.
++
+    :term:`TOOLCHAIN_OUTPUTNAME`
+       This variable defines the name used for the toolchain output. The
+       :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class sets
 -- 
-2.41.0
+2.25.1
 
 
