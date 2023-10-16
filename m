@@ -2,134 +2,109 @@ Return-Path: <bhstalel@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 771FBCDB465
-	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 21:55:03 +0000 (UTC)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
- by mx.groups.io with SMTP id smtpd.web11.181404.1697493301218894267
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5961DCDB465
+	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 21:55:33 +0000 (UTC)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+ by mx.groups.io with SMTP id smtpd.web11.181421.1697493331071840416
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Oct 2023 14:55:01 -0700
+ Mon, 16 Oct 2023 14:55:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=O2ByRVg6;
- spf=pass (domain: gmail.com, ip: 209.85.128.43, mailfrom: bhstalel@gmail.com)
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-405361bb94eso57717365e9.0
-        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 14:55:01 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=jgRyY7nO;
+ spf=pass (domain: gmail.com, ip: 209.85.128.52, mailfrom: bhstalel@gmail.com)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-405505b07dfso37605965e9.0
+        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 14:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697493299; x=1698098099; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20230601; t=1697493329; x=1698098129; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8a1XK39egV0LBYk5QhbuPas515fS723o4Wkhwuf4J3A=;
-        b=O2ByRVg6qKo0Yg4PtHEs5ZK8xKB9tTlIleQpw8sIvIQMvJgNgUFG969CDEM/hMIBxN
-         cQUphSYXl/7wjxP4/FxiQtuzxwFm5cVBZ6UA6/MtpnRMO0LM8Wl/wrBpivSBHrmY6u6D
-         ZW4rePFndFzCKbIopDMdYAeGOIp7EPmBaKCZxXZGo7hd/WMjJyrgMiNufNFrb8vpI/yC
-         EFm23s6+d7xMeTubXdDmnUMqU6QLWGBMUM2THbBW+N8Rg7J0I7TNCN8Q6ftRW90j91c6
-         NubV+ySZZ2Cs8UHOzolDNitbvasTKkrepEt7mA4tdfgrkp8R+RiVZAILcEbwKJqg49jI
-         EORg==
+        bh=kBskgLKfER2kcvXXKQdp+NLGxcHAacu4bLwkk1L2NoA=;
+        b=jgRyY7nOAjPHZ0jz4FMg/GxOWjZRCN1QkVaXi8144ajFjTEqFQ8qH8zON0/arJYv3B
+         usYOYCQ+4BMZtUlrz8ZxVGS7DwwpgmPjYM1mwWO2fsbmpqmQesQobor6JVimHllnmsJg
+         qpzQ09uoXj/prJ9a5+kK5KluGFehQz01jkNwaKW28ypJMbTEywRXlLjzcMArMJ0ygl8X
+         3ehkA1JB1CL6SaPvSz0BjfuXeImh1ZDxbUG3q3XnxccIMnat+XZRFRj6svdCAktqKUAU
+         gAWHRzFBbZGJOuN9F4vfo36oZju0CtUUT0RVkc5QvTZWruu4VBFtTMlwnIYSlKzW5Pn8
+         W89Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697493299; x=1698098099;
+        d=1e100.net; s=20230601; t=1697493329; x=1698098129;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=8a1XK39egV0LBYk5QhbuPas515fS723o4Wkhwuf4J3A=;
-        b=aPJaADpQL+CpAmFZWKFVf0n6FVfXpB3aj0J204GylpuuXqlqow1covjAKIs43Q+hoR
-         SofjYoEgna2runYjS5yr4IvWLjK0uwIoXcCLCyWcnAxFwTu9Q4d0rRPpXJb+NkVJC9MN
-         w1WPohluliwMhtI3AJvnkva5jfcu5gtpyiAFrnROL2AGfr4ibMpmzZr6fYdNRWg/U5lP
-         dx18Cy7+aDnWaAJGZc1g9+7YPqyIyD8A7wsc//XBHec8Uv9kEF6LZ0/rxNUJQneFyZlF
-         sf6RY3xlmLuvTngf0XnxjaaT3pu7fCkWzUWN9kGfyzdxIwkNVEgQdWgLJ172JsaYcTnK
-         hwvQ==
-X-Gm-Message-State: AOJu0YxM4zSwk6GY/Y6nyhVpxFNa7sSUjdoeZwTgKV6mK9xinXl9Qb6B
-	AmZTBfxm3tKYRhNHR3fEi19hVT+apt8=
-X-Google-Smtp-Source: AGHT+IGwuandTGyqQSwdJFASbQ6aydvV99JWULx2Iz9fE/AfUj6/bGWzIl4FKfBHu1sQaiESoFvcIQ==
-X-Received: by 2002:a05:600c:4f51:b0:405:4a78:a892 with SMTP id m17-20020a05600c4f5100b004054a78a892mr337068wmq.9.1697493299124;
-        Mon, 16 Oct 2023 14:54:59 -0700 (PDT)
+        bh=kBskgLKfER2kcvXXKQdp+NLGxcHAacu4bLwkk1L2NoA=;
+        b=MKPe3gYyKZB2UI/rXSHv+6xEWGXesps5cyf2oa3gyxekkmSNEK5zUKMb+LT6MI8fTY
+         LM/gNud3PxHG8CSxRRFNjuiCVxJ5DChUvXfLzWDmjRk74WkAMNPvNQy1oRWKuQd4Cj4S
+         aG6LhRoLysSg7ivOHGBi+wRSUpk09erwjgVwV45o/OVrU6bvvCCfaIM3asAxDmdak+/L
+         iCn6S79+t5LAJMj7S3YhDSehvkSQnX0qhxZY/6X+HJHrP3GQCsoVFDvKqKHa0aDbpaCs
+         t+4UBeEwKYuGroIAxo1qIFDIWqPA841HW36A1WW/QLhSQ4SOJjH5nUU7RobiXX2tRjDB
+         pLJg==
+X-Gm-Message-State: AOJu0Yzg+owxzQaUGXcnRzg6mmL7lhWkvOBv5Yf5YJCV6ZzmTk+/MpL5
+	sJg5u0TkkwPdVqF+PBQryBYgOyhzrz8=
+X-Google-Smtp-Source: AGHT+IGlYB9hpUOpfDe21hIBWTyWnWTrDWh4/AnmS6D4pnKYnQ3DfUEHpGvqbcxisCe/eIpYKWnZSQ==
+X-Received: by 2002:a05:600c:1f8e:b0:403:c70b:b688 with SMTP id je14-20020a05600c1f8e00b00403c70bb688mr17951wmb.6.1697493328873;
+        Mon, 16 Oct 2023 14:55:28 -0700 (PDT)
 Received: from localhost.localdomain ([197.27.115.232])
-        by smtp.gmail.com with ESMTPSA id 13-20020a05600c230d00b004068495910csm8084663wmo.23.2023.10.16.14.54.58
+        by smtp.gmail.com with ESMTPSA id e13-20020a05600c4e4d00b004065daba6casm8194123wmq.46.2023.10.16.14.55.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Oct 2023 14:54:58 -0700 (PDT)
+        Mon, 16 Oct 2023 14:55:28 -0700 (PDT)
 From: Talel BELHAJSALEM <bhstalel@gmail.com>
 To: docs@lists.yoctoproject.org
 Cc: Talel BELHAJSALEM <bhstalel@gmail.com>
-Subject: [PATCH 2/3] ref-manual: Add RECIPE_SYSROOT and RECIPE_SYSROOT_NATIVE variables
-Date: Mon, 16 Oct 2023 22:54:50 +0100
-Message-Id: <20231016215450.3090118-1-bhstalel@gmail.com>
+Subject: [PATCH 1/3] ref-manual: Add example for SYSROOT_DIRS
+Date: Mon, 16 Oct 2023 22:55:24 +0100
+Message-Id: <20231016215524.3090203-1-bhstalel@gmail.com>
 X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 21:55:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4386
+ <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 21:55:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4387
 
 Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
 ---
- documentation/ref-manual/variables.rst | 40 +++++++++++++++++++++++++-
- 1 file changed, 39 insertions(+), 1 deletion(-)
+ documentation/ref-manual/variables.rst | 29 ++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index a6e550aa5..246584fc5 100644
+index c52271e8b..a6e550aa5 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -6945,6 +6945,40 @@ system and gives an overview of their function and contents.
-       in the ":ref:`ref-manual/devtool-reference:checking on the upgrade status of a recipe`"
-       section.
+@@ -8414,6 +8414,35 @@ system and gives an overview of their function and contents.
+              /sysroot-only \
+              "
  
-+   :term:`RECIPE_SYSROOT`
-+      This variable points to the directory that holds all files populated from
-+      recipes specified in :term:`DEPENDS`. As the name indicates,
-+      think of this variable as a custom root ``/`` for the recipe that will be
-+      used by the compiler in order to find headers and other needs to complete
-+      its job.
++      Consider the following example in which you need to manipulate this variable.
++      If you have a recipe ``A`` that provides a shared library ``.so.*`` with all
++      required symbolic links for it, specially the ``.so`` link, into custom folder
++      other than "``${libdir}``", or "``${base_libdir}``" (example: "``/opt/lib``").
 +
-+      The value of this variable will be affected to :term:`TOOLCHAIN_OPTIONS`
-+      as::
-+         
-+         TOOLCHAIN_OPTIONS = " --sysroot=${RECIPE_SYSROOT}"
++      .. note::
 +
-+      This variable is related to :term:`STAGING_DIR_HOST` or :term:`STAGING_DIR_TARGET`
-+      according to the type of the recipe and the build target.
++         This is not recommended when working with provided shared libraries,
++         but this is for the goal of understanding an example for :term:`SYSROOT_DIRS`.
 +
-+      To understand more this variable, consider the following examples:
++      When a recipe ``B`` :term:`DEPENDS` on ``A`` it means what is in
++      :term:`SYSROOT_DIRS` will be copied from :term:`D` of the recipe ``B``
++      into ``B``'s :term:`SYSROOT_DESTDIR` that is "``${WORKDIR}/sysroot-destdir``".
 +
-+      - For ``#include <header.h>``, ``header.h`` should be in ``"${RECIPE_SYSROOT}/usr/include"``
-+      - For ``-lexample``, ``libexample.so`` should be in ``"${RECIPE_SYSROOT}/lib"``
-+        or other library sysroot directories.
++      Now, since ``/opt/lib`` is not in :term:`SYSROOT_DIRS` it will never be copied to
++      ``A``'s :term:`RECIPE_SYSROOT` which is "``${WORKDIR}/recipe-sysroot``". So,
++      the linking process will fail.
 +
-+      The default value is ``"${WORKDIR}/recipe-sysroot"``.
-+      Do not change the default value.
++      To fix this, you need to add ``/opt/lib`` to :term:`SYSROOT_DIRS`::
 +
-+   :term:`RECIPE_SYSROOT_NATIVE`
-+      This is the same as :term:`RECIPE_SYSROOT` but the populated files are from
-+      ``-native`` recipes. This makes a recipe built for the target machine
-+      can use ``native`` tools.
++         SYSROOT_DIRS:append = " /opt/lib"
 +
-+      This variable is related to :term:`STAGING_DIR_NATIVE`.
++      .. note::
++         Even after setting ``/opt/lib`` to :term:`SYSROOT_DIRS`, the linking process will fail
++         because the linker does not know that location since :term:`TARGET_LDFLAGS` (if your recipe
++         is for target) doesn't contain it, so you should add that::
 +
-+      The default value is ``"${WORKDIR}/recipe-sysroot-native"``.
-+      Do not change the default value.
++            TARGET_LDFLAGS:append = " -L${RECIPE_SYSROOT}/opt/lib"
 +
-    :term:`REPODIR`
-       See :term:`bitbake:REPODIR` in the BitBake manual.
- 
-@@ -8216,7 +8250,8 @@ system and gives an overview of their function and contents.
-       the component is built to run (the system that hosts the component).
-       For most recipes, this sysroot is the one in which that recipe's
-       :ref:`ref-tasks-populate_sysroot` task copies
--      files. Exceptions include ``-native`` recipes, where the
-+      files, check :term:`RECIPE_SYSROOT`.
-+      Exceptions include ``-native`` recipes, where the
-       :ref:`ref-tasks-populate_sysroot` task instead uses
-       :term:`STAGING_DIR_NATIVE`. Depending on
-       the type of recipe and the build target, :term:`STAGING_DIR_HOST` can
-@@ -8253,6 +8288,9 @@ system and gives an overview of their function and contents.
-       Specifies the path to the sysroot directory used when building
-       components that run on the build host itself.
- 
-+      The default value is ``"${RECIPE_SYSROOT_NATIVE}"``,
-+      check :term:`RECIPE_SYSROOT_NATIVE`
-+
-    :term:`STAGING_DIR_TARGET`
-       Specifies the path to the sysroot used for the system for which the
-       component generates code. For components that do not generate code,
+    :term:`SYSROOT_DIRS_IGNORE`
+       Directories that are not staged into the sysroot by the
+       :ref:`ref-tasks-populate_sysroot` task. You
 -- 
 2.25.1
 
