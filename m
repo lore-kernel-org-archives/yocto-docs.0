@@ -1,96 +1,84 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B344CDB465
-	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 13:23:00 +0000 (UTC)
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
- by mx.groups.io with SMTP id smtpd.web10.123915.1697462578793401934
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89267CDB465
+	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 13:29:50 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.124145.1697462985817527618
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Oct 2023 06:22:59 -0700
+ Mon, 16 Oct 2023 06:29:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=l8w8/R8A;
- spf=pass (domain: gmail.com, ip: 209.85.208.176, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2c51388ccebso23897481fa.3
-        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 06:22:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697462577; x=1698067377; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8CbOaATkqs/Q7o5Wc6OkpLrIEcBPbcKP2Vf8imQBQps=;
-        b=l8w8/R8A5UGx1YVhky0ce1Pd68k+CzWgpqkDYMjqrK9v8M2wk5LHyeRu5GS7k1c4OK
-         oNX4mAwkFc+zW/UhvT080zZc1kUk+qj6m6DCgD5FaMgvyq5D40HSvkQSllFIX5zUigPi
-         X6VIG92unZwKE/Bm7H42ozU/+B1xP4O5sR6sk4TK2X6Gkf/Xght0gHYXQWSp0oHrvol3
-         z9NRwxBTq+rL/SvY6UmHve2dVoTN193kTnYgHeXxjmEHbXFgHx/wejGQs3W99tFm/ftG
-         SnEFNFI4LMMLGvvP1Px0wFqntMr4/kML4WUDbNQ60A1nRlNVCi2bVx63VcOzMSAcqdjU
-         jqnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697462577; x=1698067377;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8CbOaATkqs/Q7o5Wc6OkpLrIEcBPbcKP2Vf8imQBQps=;
-        b=hnm27cITuwH7dGvP7SX2C56JsSKsOJoYpTEWQXfBS6qekQn/HwZJNGK/AAAGEZsTnN
-         WWyv7KIlVgNoew633HqLrbzq7nimPV3XmNcv8pMj1VU/SNWdi+dZLc9kcHUXdVKCnzQP
-         VVouPWEeZy4FBGgN9rZ++mKMgbZQ+3MhCnOYq23Hykl/H1yAWzS9ftCKJJIgmS85lrPo
-         7j5w+UE8U7JIYNRPno4TafXX9LncO9PObdvazVOUK3j3ff0ZQdzSzVT9ICrG74ONmEmw
-         NDiUiuQFtYa5pMWB0UjQZohGv+7yDaVsVRV/OD8Jtnd0LXz00C8DnxLmqSs7MTQR8c1Y
-         7GWw==
-X-Gm-Message-State: AOJu0YxM9o0irTT+b3KUEDTyBaXtPwzIsBoFOLZjOJleNkkRHRv4bz6x
-	K0YJi7IxRVqVUCIjxSFNXFF42wh/Xz/YHcs6w4E=
-X-Google-Smtp-Source: AGHT+IGdaT7sAp4dX/94k+uoTCvq/uQefJVlqXt8pMAeIPQgpDOKGqSsyo0oIuQftlKPftAbjtcVPhH2VYF/SaAxqz8=
-X-Received: by 2002:a2e:a789:0:b0:2c5:1603:9c48 with SMTP id
- c9-20020a2ea789000000b002c516039c48mr6615997ljf.20.1697462576565; Mon, 16 Oct
- 2023 06:22:56 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pPXhV2wk;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 86A281BF337;
+	Mon, 16 Oct 2023 13:29:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1697462983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5hKnK+8wYYIz3ifV4GU9m9Zt4+zuriu/9o7H9aCEUZQ=;
+	b=pPXhV2wkJNaJkYYqdK/9EQXHPlihHCjvLLvTPN5wZ/IZlD9oDCk4WrLG1TM9FPo4JUelSW
+	f8TSlaXNONuRR5YaN60CiSF9Rvoax6dYhOaRQ1ucMa5I86xaGWPI4SJ2B0G4rdtfqZH3M9
+	Ivv+WcYIacHKsbLRyy7RfWQOTfDtg5uThrkBJhf/UOpAjwpW6nivipuTxN0IGOuvvgaExR
+	DmuhAus6xXDD0cspKa2R8/NHNjfPvRZnCS8NMt2Vb15V+i0OwzJnSeHiedy7jtW9XN6zKz
+	R23bEFxyyexoPARQX/F5EnbYBybbEXm2V4amq8frhl5qJe4wzqBCRPv55TddVQ==
+Message-ID: <db1bc714-64a1-478d-b4ba-f322f7326d8c@bootlin.com>
+Date: Mon, 16 Oct 2023 15:29:42 +0200
 MIME-Version: 1.0
-References: <b04580d85e3578125b326abb70607998@crashcourse.ca>
-In-Reply-To: <b04580d85e3578125b326abb70607998@crashcourse.ca>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Mon, 16 Oct 2023 15:22:45 +0200
-Message-ID: <CANNYZj_=WZj_1MvuOuh4Bz76L_Pc-=4gddE=xOTO1kq+wWFPiA@mail.gmail.com>
-Subject: Re: [docs] Dev Manual, "5.16 Sharing Files Between Recipes", does not
- define /sysroot-only
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+User-Agent: Mozilla Thunderbird
 Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [docs] PATCH: dev-manual/new-recipe.rst: add missing parenthesis
+ to "Patching Code" section
+Content-Language: en-US
+To: "Robert P. J. Day" <rpjday@crashcourse.ca>
+References: <09705a7fc497768ca30a5de2b500e573@crashcourse.ca>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <09705a7fc497768ca30a5de2b500e573@crashcourse.ca>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 13:23:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4377
+ <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 13:29:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4378
 
-What I think this means is that placing items into ${D}/sysroot-only/
-at do_install() will not package those in do_package() at all, but
-will still provide the items in sysroots of dependent recipes.
+Hi Robert
 
-Alex
+On 12.10.23 at 14:14, Robert P. J. Day wrote:
+> Add missing parenthesis, and another example of a compressed patch 
+> filename.
+>
+> Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+>
+> ---
+>
+> testing a new mail client so hoping it doesn't mangle patch submissions
 
-On Sun, 15 Oct 2023 at 11:46, Robert P. J. Day <rpjday@crashcourse.ca> wrote:
->
-> Here:
->
-> https://docs.yoctoproject.org/dev-manual/new-recipe.html#sharing-files-between-recipes
->
-> the Note reads:
->
-> "The /sysroot-only is to be used by recipes that generate artifacts that
-> are not
-> included in the target filesystem, allowing them to share these
-> artifacts without
-> needing to use the DEPLOY_DIR."
->
-> Except there does not appear to be any explanation of what
-> "/sysroot-only" means
-> earlier in that manual.
->
-> rday
->
-> -=-=-=-=-=-=-=-=-=-=-=-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#4372): https://lists.yoctoproject.org/g/docs/message/4372
-> Mute This Topic: https://lists.yoctoproject.org/mt/101974338/1686489
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kanavin@gmail.com]
-> -=-=-=-=-=-=-=-=-=-=-=-
->
+
+Thanks for the patch.
+Not totally right, though, as you should have "[PATCH]" instead of just 
+"PATCH". Otherwise, you get "PATCH" in the commit title.
+
+Don't you use "git format-patch" and "git send-email" to prepare your 
+patches? It's more fail-safe.
+
+Anyway, I see that your next patch doesn't have this issue :)
+
+After editing the subject
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+and merged into master-next.
+
+Thanks again
+Michael
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
