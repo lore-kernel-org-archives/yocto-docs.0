@@ -1,80 +1,98 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 973E8CDB465
-	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 13:36:50 +0000 (UTC)
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.web11.125851.1697463405788958938
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6F92C41513
+	for <webhook@archiver.kernel.org>; Mon, 16 Oct 2023 14:33:00 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.127391.1697466776378499273
  for <docs@lists.yoctoproject.org>;
- Mon, 16 Oct 2023 06:36:46 -0700
+ Mon, 16 Oct 2023 07:32:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=aeIalw5L;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.42, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-40572aeb6d0so44501875e9.1
-        for <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 06:36:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1697463404; x=1698068204; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GP620KAnv2C7AXwV/ZVUeAUEGP4zxO13zJlyNcyuOcM=;
-        b=aeIalw5LEAkkj4D5UY5rPPfUExJeD5B5MNQXxQTRzQxGpuyuD7S+UsMfmdjdCwm0bJ
-         AWgXJlNu4LCP5VfJCt0f4QnSRhYyntFrI3SV13Q8IUGobH6fuRvgiBnfM3i2KWhGpTvS
-         5xWSG5f3nmzGFJNMgg+/gDaM31Iso8rkI8his=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697463404; x=1698068204;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GP620KAnv2C7AXwV/ZVUeAUEGP4zxO13zJlyNcyuOcM=;
-        b=wUOUCGiC7dk5tpvDs8NknqunrSzcV7Q+y5fGdktse+OpfPkcWVUeBx41OPkNYAXWdl
-         iOKik2Uj8aF7ZuNBg7MtWiHV0kZ0DT8NY52MzN2CZgsIKO9chv/+Cm7z7bmSYrDPkqvD
-         c0dSneW2VM+6n7XdABFJHNpEHQHZzbuBpGzvCKnodoK/V/84eBF8e59D50ULsnnoOh4J
-         tKAKtjBWSh0cWlg8oMKtLSHvw4RrJ3A3qgZPNnBu1HbrANfETWNis6PVJW2p6GBYUe2L
-         talXaPe3nZQGddSMCDlzbJzmUj2dTZt9E1hUazX4J3SC3n3rIKiKVCn4XYNlYsUfMUs5
-         uq2Q==
-X-Gm-Message-State: AOJu0Yy2u1U9i/DlJEijnZIdYoAPo/EEVyEXM0rhOgXN8vGLaUXQB24o
-	7tynA0fEQ4USUgkbm8KSi3rlzQ==
-X-Google-Smtp-Source: AGHT+IHAaJkx+Xl3YwPJ/JkF+6DY2+gQFbIX/ELTLgRRduIHUpJ6ysjnZK6CeAgU39E7JGq7fHlJMw==
-X-Received: by 2002:a05:600c:2298:b0:3fe:1af6:6542 with SMTP id 24-20020a05600c229800b003fe1af66542mr28645607wmf.33.1697463404074;
-        Mon, 16 Oct 2023 06:36:44 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:ece6:f4dd:6417:6a0? ([2001:8b0:aba:5f3c:ece6:f4dd:6417:6a0])
-        by smtp.gmail.com with ESMTPSA id g23-20020a7bc4d7000000b004065e235417sm7110942wmk.21.2023.10.16.06.36.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Oct 2023 06:36:43 -0700 (PDT)
-Message-ID: <818d0fb6780d3b7ef3513ab33dde7f4c13e73c81.camel@linuxfoundation.org>
-Subject: Re: [docs] Dev Manual, "5.16 Sharing Files Between Recipes", does
- not define /sysroot-only
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Alexander Kanavin <alex.kanavin@gmail.com>, "Robert P. J. Day"
-	 <rpjday@crashcourse.ca>
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Date: Mon, 16 Oct 2023 14:36:43 +0100
-In-Reply-To: <CANNYZj_=WZj_1MvuOuh4Bz76L_Pc-=4gddE=xOTO1kq+wWFPiA@mail.gmail.com>
-References: <b04580d85e3578125b326abb70607998@crashcourse.ca>
-	 <CANNYZj_=WZj_1MvuOuh4Bz76L_Pc-=4gddE=xOTO1kq+wWFPiA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.1-0ubuntu1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YN0wf6Mm;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D9B252000D;
+	Mon, 16 Oct 2023 14:32:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1697466774;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Z+FWukk8gf2IqCpEMdIP6K9inxjqaIh930gBh5YhMTA=;
+	b=YN0wf6Mm6n5cuLP1up9/FhhS85bjHLJVZn8XcXZr520O+irLmo28N9jb5+LMz2pzgIwOjF
+	PPKpWI5IUQ6KHiPK4c+9VL54wzWVOPHCChOhBhAOk7udT+gBD5WP1+rIH47tL0CDAKaGgs
+	c2dN1IG+j2pZk4dpGocBn+oXFSFovcXQl645bjqgdMhA4IJLZs+ohS52gwdi1PnkAvHpo5
+	IUN+dfZYPtuE5gNxOuMPsT7iGwdwczmj4D0yz9qd0Wq7FwKvyv/gGS/XnM5i5jGs/51x7z
+	MWAg+p96lcQ49QPk4wpTMYCIfVQ/41xzRhR5I+TpwkytLlIxODA93nFknbzh+Q==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	"Robert P . J . Day" <rpjday@crashcourse.ca>
+Subject: [PATCH] dev-manual: start.rst: remove obsolete reference
+Date: Mon, 16 Oct 2023 16:32:49 +0200
+Message-Id: <20231016143249.199759-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 13:36:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4379
+ <docs@lists.yoctoproject.org>; Mon, 16 Oct 2023 14:33:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4380
 
-On Mon, 2023-10-16 at 15:22 +0200, Alexander Kanavin wrote:
-> What I think this means is that placing items into ${D}/sysroot-only/
-> at do_install() will not package those in do_package() at all, but
-> will still provide the items in sysroots of dependent recipes.
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-FWIW I'd prefer people don't use/rely on this. It was added due to very
-specific use cases. Now it was added, people want docs and I can
-understand that but we should be clear this is for exception
-circumstances only.
+Remove a reference to a web resource which is clearly marked as obsolete.
+Replace the unnecessarily verbose note by just links to the mentioned tools.
 
-Cheers,
+[YOCTO #15233]
 
-Richard
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
+---
+ documentation/dev-manual/start.rst | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
+
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index 88afa27ad5..4a556967eb 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -88,27 +88,15 @@ particular working environment and set of practices.
+        For information about BitBake, see the
+        :doc:`bitbake:index`.
+ 
+-    It is relatively easy to set up Git services and create
+-    infrastructure like :yocto_git:`/`, which is based on
+-    server software called ``gitolite`` with ``cgit`` being used to
+-    generate the web interface that lets you view the repositories. The
+-    ``gitolite`` software identifies users using SSH keys and allows
++    It is relatively easy to set up Git services and create infrastructure like
++    :yocto_git:`/`, which is based on server software called
++    `Gitolite <https://gitolite.com>`__
++    with `cgit <https://git.zx2c4.com/cgit/about/>`__ being used to
++    generate the web interface that lets you view the repositories.
++    ``gitolite`` identifies users using SSH keys and allows
+     branch-based access controls to repositories that you can control as
+     little or as much as necessary.
+ 
+-    .. note::
+-
+-       The setup of these services is beyond the scope of this manual.
+-       However, here are sites describing how to perform setup:
+-
+-       -  `Gitolite <https://gitolite.com>`__: Information for
+-          ``gitolite``.
+-
+-       -  `Interfaces, frontends, and
+-          tools <https://git.wiki.kernel.org/index.php/Interfaces,_frontends,_and_tools>`__:
+-          Documentation on how to create interfaces and frontends for
+-          Git.
+-
+ #.  *Set up the Application Development Machines:* As mentioned earlier,
+     application developers are creating applications on top of existing
+     software stacks. Following are some best practices for setting up
+-- 
+2.34.1
+
 
