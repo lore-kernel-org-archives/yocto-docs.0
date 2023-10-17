@@ -2,95 +2,70 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97F5ECDB474
-	for <webhook@archiver.kernel.org>; Tue, 17 Oct 2023 12:47:28 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.213822.1697546841279061982
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BC708CDB474
+	for <webhook@archiver.kernel.org>; Tue, 17 Oct 2023 13:11:28 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.214356.1697548287847348352
  for <docs@lists.yoctoproject.org>;
- Tue, 17 Oct 2023 05:47:21 -0700
+ Tue, 17 Oct 2023 06:11:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Vo0/O7fT;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4BEC2240009;
-	Tue, 17 Oct 2023 12:47:18 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mXlT67UV;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5174B1C000C;
+	Tue, 17 Oct 2023 13:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697546838;
+	t=1697548285;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=y43PCIWuMLc0eVB260KCabL1CmKlElfGx2lZ3/Pgt9M=;
-	b=Vo0/O7fTllHnkZlgOu1QadDOcqLTTgV0AzNVx9XuqqaALhtaeMH3WWL5PV3xBW9S2rGyaf
-	LPrx1o69hMD5usbnhVHXqbMVbvysVWH7LCyfrqWi0mYn5lACO12DRUE1O3VpCbYIsQnFR4
-	0ygL7PIqaYOO5FkNEDByFqvfifAqJIex2xwH98D2NLu3lFEBCCVZCwMlfMzeiXW280Dldo
-	Donrc1aZQiQp7psTAuOjR+WILtVGx9mvlhxUps3AwwjklLIMRpaQasocJ7V6hLYpCjixK0
-	o3DyIldR+AHKrAljm9GSkjpuuukgBSIKC+4TnbjjnshPqi2l/iZo6uKvEYbzFg==
-Message-ID: <4d5b7227-6fcc-4a03-867a-0417b0ea115f@bootlin.com>
-Date: Tue, 17 Oct 2023 14:47:17 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+V1BGY/pVfSilH6RPWMnRfc121+/t3LHQda/wS6SWTY=;
+	b=mXlT67UVBPIicsK/aTLFx9p0vHJrjvpSg20jNVyczxXUOPTx9yP8CbNlJ4TdSIH3GicqtN
+	7jCz/7QRA6VMT6hz8I170lVzq+8E6RCkgI2KubXa9Ym4U6xonjdTFpPUaws+7HQfGdIaMj
+	ASLgMIdASvF1JbOLqMATORFPkGdEhlQQHDos5hJnxAtQGwQGDqyJzSfpPCPCGAa2Mt4rih
+	4sIKkm7zkKe5LohWH/LAlv8ULuh2HLJ5my3259BGjlp7AWkhV9c6mbsK9UWWTG5YsOqz/t
+	mZvJ8LwOaMOHJmKh56D44/iftVb8T17ydFAtutKiQ1xTFi91NkUZ6zg/4usuyw==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	richard.purdie@linuxfoundation.org
+Subject: [PATCH] brief-yoctoprojectqs: use new CDN mirror for sstate
+Date: Tue, 17 Oct 2023 15:11:22 +0200
+Message-Id: <20231017131122.291053-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] dev-manual: layers: Add notes about layer.conf
-Content-Language: en-US
-To: BELHADJ SALEM Talel <bhstalel@gmail.com>
-References: <20231017120524.3094506-1-bhstalel@gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20231017120524.3094506-1-bhstalel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 17 Oct 2023 12:47:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4399
+ <docs@lists.yoctoproject.org>; Tue, 17 Oct 2023 13:11:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4400
 
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 17.10.23 at 14:05, BELHADJ SALEM Talel wrote:
-> As discussed before with Richard Purdie, the code supports this but the documentation is not.
-> Developers in general will not notice this or focus on it because they do not mess with the
-> layer.conf template file, but in my opinion I think more details can help.
->
-> Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
-> ---
->   documentation/dev-manual/layers.rst | 11 +++++++++++
->   1 file changed, 11 insertions(+)
->
-> diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-> index 2d809562d..7e83d9a3a 100644
-> --- a/documentation/dev-manual/layers.rst
-> +++ b/documentation/dev-manual/layers.rst
-> @@ -128,6 +128,17 @@ Follow these general steps to create your layer without using tools:
->         variable is a good way to indicate if your particular layer is
->         current.
->   
-> +
-> +   .. note::
-> +
-> +      A layer does not have to contain only recipes ``.bb`` or append files ``.bbappend``.
-> +      Generally, developers create layers using ``bitbake-layers create-layer``, see
-> +      ":ref:`dev-manual/layers:creating a general layer using the \`\`bitbake-layers\`\` script`", that
-> +      creates the ``layer.conf`` file from a template located in ``meta/lib/bblayers/templates/layer.conf``.
-> +      In fact, all the variables set in ``layer.conf`` are not mandatory,
-> +      except when :term:`BBFILE_COLLECTIONS` is present. In this case
-> +      :term:`LAYERSERIES_COMPAT` and :term:`BBFILE_PATTERN` will have to be defined too.
-> +
->   #. *Add Content:* Depending on the type of layer, add the content. If
->      the layer adds support for a machine, add the machine configuration
->      in a ``conf/machine/`` file within the layer. If the layer adds
+Recommended instead of the Yocto Project mirror, because expected
+to be faster. Make sure you only set one such mirror.
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: richard.purdie@linuxfoundation.org
+---
+ documentation/brief-yoctoprojectqs/index.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-(after a few extra minor tweaks on a couple sentences)
-Merged into "master-next".
-
-Thanks again!
-Michael.
-
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index 0ccffccc60..df8d75edc2 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -254,7 +254,7 @@ an entire Linux distribution, including the toolchain, from source.
+          BB_SIGNATURE_HANDLER = "OEEquivHash"
+          BB_HASHSERVE = "auto"
+          BB_HASHSERVE_UPSTREAM = "hashserv.yocto.io:8687"
+-         SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
++         SSTATE_MIRRORS ?= "file://.* http://cdn.jsdelivr.net/yocto/sstate/all/PATH;downloadfilename=PATH"
+ 
+ #. **Start the Build:** Continue with the following command to build an OS
+    image for the target, which is ``core-image-sato`` in this example:
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
