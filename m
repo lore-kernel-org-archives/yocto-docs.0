@@ -2,133 +2,128 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 98E1ECDB474
-	for <webhook@archiver.kernel.org>; Tue, 17 Oct 2023 09:26:07 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.202843.1697534759883562292
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B526ACDB482
+	for <webhook@archiver.kernel.org>; Tue, 17 Oct 2023 09:50:47 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.204190.1697536245614957683
  for <docs@lists.yoctoproject.org>;
- Tue, 17 Oct 2023 02:26:00 -0700
+ Tue, 17 Oct 2023 02:50:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=G9Wk/bmA;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B5D2FC0003;
-	Tue, 17 Oct 2023 09:25:57 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LLxeuQ0M;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9C43060014;
+	Tue, 17 Oct 2023 09:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697534758;
+	t=1697536243;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lSBIfXY9aIzZjq/eQ5rJfSGMDi6OKLLe1sl3+heoowU=;
-	b=G9Wk/bmAT/LIj9uz+c7DyZw4b8FnmHIxN/J8S64jhsMlf4tHeTWFD8nAtA8HbmEVqQX8s2
-	USQkDdSWI882O6rseUENv8N5HxlUJfA+e2UcBXvqgwufIPlFYS/GuKiKtv6KuN5gcsnZ4c
-	u4d+x4JkvEt161pbg/dx3WtaM6l86FYdKKQaA3TSUYPvDvh1z8Rz7M9W0JrXQA2m64UW16
-	hUyagd4S0E2mkiUqudNv8ysIQTNuMNg2A8O7njKWFP/eAq3yDnxGx2C1qU+8BfI9rq11XB
-	sWjmK5yYMTkwF6uTYDi/Ptg8XUm62c072ORHZ8nNdUlnHVxnSvLFqtpEwovtDA==
-Message-ID: <390ad2ed-6989-4dfb-b497-d635d82c4734@bootlin.com>
-Date: Tue, 17 Oct 2023 11:25:57 +0200
+	bh=v8Y+3jJt7BhSXabo466MGfp+Yg7SZLzGAd9g+CS2xQk=;
+	b=LLxeuQ0MCDE1neSBgux//XmosTOdWC/6QVYwAfAZpLNcpCt+5W7vt3mek5Ev1mlSx9Tckk
+	7zp68hZTMoMhduecQfsuKQ8ojkwwbDoZ5IMvOfLDT/GFDVO1AzjwAbPIJ5C+1E1eWJ98cx
+	kPcc7FHVGiA4Th36zEfGk2wfLwOd3XjGXkOV7L4zL3YEYTp18Jen3pTkzgpQ/rCAv37sY+
+	JBmyiFeEGf/hstXJrBKYOp7CrlYRDY3r99OcRUndYuK9kh5x0cv2BsOFAKDyMPa/JsDsfh
+	rDS+lg5F7kCN/1RI7M49e1T+hZLdl8GBB224NkRu762T35kR1mFw0/aIzzpkxQ==
+Message-ID: <afb9ec96-589c-47b2-8f40-fd4ee0f7e9ca@bootlin.com>
+Date: Tue, 17 Oct 2023 11:50:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs][PATCH] contributor-guide: add patchtest section
+Subject: Re: [docs] [PATCH] ref-manual: Fix PACKAGECONFIG term and add an
+ example
 Content-Language: en-US
-To: Trevor Gamblin <tgamblin@baylibre.com>
-References: <20231016195549.2243243-1-tgamblin@baylibre.com>
+To: BELHADJ SALEM Talel <bhstalel@gmail.com>
+References: <20231016171153.3075747-1-bhstalel@gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20231016195549.2243243-1-tgamblin@baylibre.com>
+In-Reply-To: <20231016171153.3075747-1-bhstalel@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 17 Oct 2023 09:26:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4389
+ <docs@lists.yoctoproject.org>; Tue, 17 Oct 2023 09:50:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4390
 
-Hi Trevor,
+Hi Talel
 
-Many thanks for the patch!
-
-I have a few quick tweaks to suggest, see below...
-
-On 16.10.23 at 21:55, Trevor Gamblin wrote:
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
-> ---
->   .../contributor-guide/submit-changes.rst      | 37 +++++++++++++++++++
->   1 file changed, 37 insertions(+)
+On 16.10.23 at 19:11, BELHADJ SALEM Talel wrote:
+> PACKAGECONFIG's first and second flag value will be added to PACKAGECONFIG_CONFARGS
+> and then it will be added to the appropriate variable (EXTRA_OECMAKE, or ...)
+> So we need to only mention PACKAGECONFIG_CONFARGS and it will lead to other variables.
 >
-> diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-> index cda2d12d2..6dfb0ffec 100644
-> --- a/documentation/contributor-guide/submit-changes.rst
-> +++ b/documentation/contributor-guide/submit-changes.rst
-> @@ -401,6 +401,43 @@ Anyway, you'll also be able to access the new messages on mailing list archives,
->   either through a web browser, or for the lists archived on https://lore.kernelorg,
->   through an individual newsgroup feed or a git repository.
+> I added a custom example that can help understanding very well PACKAGECONFIG.
+>
+> Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
+> ---
+>   documentation/ref-manual/variables.rst | 40 ++++++++++++++++++++++----
+>   1 file changed, 34 insertions(+), 6 deletions(-)
+>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 11523bb9e..2f286d26c 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -6059,13 +6059,11 @@ system and gives an overview of their function and contents.
+>         omit any argument you like but must retain the separating commas. The
+>         order is important and specifies the following:
 >   
-> +Validating Patches with Patchtest
-> +=================================
-
-
-Hey, what about having this section right after the "Creating Patches" 
-and before "Sending the Patches via Email"? This would make more sense IMHO.
-
+> -      #. Extra arguments that should be added to the configure script
+> -         argument list (:term:`EXTRA_OECONF` or
+> -         :term:`PACKAGECONFIG_CONFARGS`) if
+> -         the feature is enabled.
+> +      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
+> +         if the feature is enabled.
+>   
+> -      #. Extra arguments that should be added to :term:`EXTRA_OECONF` or
+> -         :term:`PACKAGECONFIG_CONFARGS` if the feature is disabled.
+> +      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
+> +         if the feature is disabled.
+>   
+>         #. Additional build dependencies (:term:`DEPENDS`)
+>            that should be added if the feature is enabled.
+> @@ -6123,6 +6121,36 @@ system and gives an overview of their function and contents.
+>   
+>               PACKAGECONFIG:append:pn-recipename = " f4"
+>   
+> +      Consider the following example of a :ref:`ref-classes-cmake` recipe with a systemd service
+> +      in which :term:`PACKAGECONFIG` is used to transform the systemd service
+> +      into a feature that can be easily enabled or disabled via :term:`PACKAGECONFIG`::
 > +
-> +Patchtest is available in ``openembedded-core`` as a tool for making sure
-> +that your patches are well-formatted and contain important info for
-> +maintenance purposes, such as ``Signed-off-by`` and ``Upstream-Status``
-> +tags. Once you have generated the patch files and run ``source
-> +oe-init-build-env`` to initialize your workspace, you can run patchtest
-> +like so::
-
-
-Here and in the rest of the patch, could you use "``patchtest``" instead 
-of "Patchtest" or "patchtest"? This would be aligned with the way we 
-refer to other tools such as devtool (see 
-https://git.yoctoproject.org/yocto-docs/tree/documentation/standards.md#n74)
-
+> +         example.c
+> +         example.service
+> +         CMakeLists.txt
 > +
-> +    patchtest --patch <patch_name>
+> +      The ``CMakeLists.txt`` file contains::
 > +
-> +Where ``/path/to/target/repo`` may (for example) be openembedded-core,
-> +with the actual patchtest tests being kept in
-> +``openembedded-core/meta/lib/patchtest/tests``.
-
-Is this sentence relevant here, as "/path/to/target/repo" is not part of 
-the above command line?
-
-> Alternatively, if you
-> +want patchtest to iterate over and test multiple patches stored in a
-> +directory, you can use::
+> +         if(WITH_SYSTEMD)
+> +            install(FILES ${PROJECT_SOURCE_DIR}/example.service DESTINATION /etc/systemd/systemd)
+> +         endif(WITH_SYSTEMD)
 > +
-> +    patchtest --directory <directory_name>
+> +      In order to enable the installation of ``example.service`` we need to ensure
+> +      that `-DWITH_SYSTEMD=ON` is passed to the ``cmake`` command execution.
+> +      Recipes that have ``CMakeLists.txt`` generally inherit :ref:`ref-classes-cmake`, that runs ``cmake``
+> +      with :term:`EXTRA_OECMAKE`, which :term:`PACKAGECONFIG_CONFARGS` will be appended to.
+> +      Now, knowing that :term:`PACKAGECONFIG_CONFARGS` is automatically filled with either
+> +      the first or second element of :term:`PACKAGECONFIG` flag value, the recipe would be like::
 > +
-> +By default, patchtest uses its own modules' file paths to determine what
-> +repository and test suite to check patches against. If you wish to test
-> +patches against a repository other than ``openembedded-core`` and/or use
-> +a different set of tests, you can use the --repodir and --testdir
-
-
-Use ``--repodir`` and ``--testdir``.
-
-> +flags::
+> +         inherit cmake
+> +         PACKAGECONFIG = "systemd"
+> +         PACKAGECONFIG[systemd] = "-DWITH_SYSTEMD=ON,-DWITH_SYSTEMD=OFF"
 > +
-> +    patchtest --patch <patch_name> --repodir <path/to/repo> --testdir <path/to/testdir>
+> +      A side note to this recipe is to check if ``systemd`` is in fact the used :term:`INIT_MANAGER`
+> +      or not::
 > +
-> +Finally, note that patchtest is designed to test patches in a standalone
-> +way, so if your patches are meant to apply on top of changes made by
-> +previous patches in a series, it is possible that patchtest will report
-> +false failures regarding the "merge on head" test.
+> +         PACKAGECONFIG = "${@'systemd' if d.getVar('INIT_MANAGER') == 'systemd' else ''}"
 > +
-> +Using patchtest in this manner provides a final check for the overall
-> +quality of your changes before they are submitted for review by the
-> +maintainers.
+>      :term:`PACKAGECONFIG_CONFARGS`
+>         A space-separated list of configuration options generated from the
+>         :term:`PACKAGECONFIG` setting.
 
-
-Very cool, I'm excited to use this tool, including for documentation 
-patches ;-)
-
-Of course, I'll apply your patch when patchtest makes it to oe-core.
+Thanks for the update!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+... and merged into master-next.
 
 Cheers
 Michael.
