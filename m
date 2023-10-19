@@ -2,101 +2,138 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F2BCCDB465
-	for <webhook@archiver.kernel.org>; Thu, 19 Oct 2023 14:29:51 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.29429.1697725788452470802
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EEC6FCDB483
+	for <webhook@archiver.kernel.org>; Thu, 19 Oct 2023 17:39:01 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.34287.1697737134778667157
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Oct 2023 07:29:49 -0700
+ Thu, 19 Oct 2023 10:38:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=acPQoSau;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6C58DE000E;
-	Thu, 19 Oct 2023 14:29:45 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Fk2wNH2N;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 9975E1C0006;
+	Thu, 19 Oct 2023 17:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697725785;
+	t=1697737132;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LnZ1qCH0AVS9KWMEUmG0GOrg1kHG7oAj3UAi68KLSxo=;
-	b=acPQoSauNUjgRUW6FYmOGRKyCFF0jxSmVkUW2QRRM/tiRh1qR3WzekPFrEQw0fvWr488u2
-	V8yceCAzewQ2pnzwbI+yre8Vi/dV0UDoQn26Sv9z2wj7/zHi4djoE90RAuhajjUkVHIxuQ
-	maScyHa8DKqruZ3Ft/2f2zczDSvWAphuZYm3AgxYDvMqx3ryZaOe7td+dZ7273uLc4hkzd
-	TG/eswQoWV9gKowxmlKOGWhEwnqMOow6cBY+9zY/MXF+dZxxsZAWjlDGKZh8FXlsKQ8TMM
-	IooPxAIRn5FETw8CnZNaZcEVEOsr8FTLS1Q+OweyQtqF2hiXC7D5/3nL7b4TUg==
-Message-ID: <5c668a44-d9e3-4ca2-ad1d-e42730c76530@bootlin.com>
-Date: Thu, 19 Oct 2023 16:29:45 +0200
+	bh=gjyy1yTARqOD7UAEgE+sTtXNmi/L/BR+7aXVkL/Ei78=;
+	b=Fk2wNH2NzLhbrO2Gd2d2k0PWpKcQAZYPXQpDyTX4cq9OlFO+jdNNSBzC+KtSWWmITpF8mq
+	RZFW/HTJgZJ5JcJYWoErPLlSdLKY+x+QyVcrRgL4t4DGcuHP2SoAxRGfTwKVH1ycNhjtOW
+	Z/ACl0/PLBsGfWkHMNld4FnF4NdXjRVOFBT6WzWGGLiERswcEM31tK4RCB1qdVQaX+2MU8
+	8s4x9o6J/OXZWz+wUS5jDROQHKAl6yjMbFewLhw5SGpMC/J4stbyUUxQ8rLTQFmFdV5J12
+	L9jeXkHHIN/YlrWEyqNlXmqde7OTEfRtXTeUb+H0o6wLgdWc+7XJs2ZqJuXBUA==
+Message-ID: <11ad77ad-2fa9-4000-a053-dc9a91c59034@bootlin.com>
+Date: Thu, 19 Oct 2023 19:38:52 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] Yocto Tasks Detailed Diagram Proposal
+Subject: Re: [docs] [PATCH 1/3] ref-manual: Add example for SYSROOT_DIRS
 Content-Language: en-US
 To: BELHADJ SALEM Talel <bhstalel@gmail.com>
-References: <18651.1687433672747999997@lists.yoctoproject.org>
- <29645.1697569015596670723@lists.yoctoproject.org>
+References: <20231016215524.3090203-1-bhstalel@gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <29645.1697569015596670723@lists.yoctoproject.org>
+In-Reply-To: <20231016215524.3090203-1-bhstalel@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 19 Oct 2023 14:29:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4424
+ <docs@lists.yoctoproject.org>; Thu, 19 Oct 2023 17:39:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4425
 
 Hi Talel
 
-On 17.10.23 at 20:56, BELHADJ SALEM Talel wrote:
-> Hello,
+Thanks for the patch!
+
+On 16.10.23 at 23:55, BELHADJ SALEM Talel wrote:
+> Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
+> ---
+>   documentation/ref-manual/variables.rst | 29 ++++++++++++++++++++++++++
+>   1 file changed, 29 insertions(+)
 >
-> Returning to the detailed diagram proposal,
->
-> I have created another one that is more and more detailed using 
-> draw.io, I tried inkspace but it seems really to deal with.
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index c52271e8b..a6e550aa5 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -8414,6 +8414,35 @@ system and gives an overview of their function and contents.
+>                /sysroot-only \
+>                "
+>   
+> +      Consider the following example in which you need to manipulate this variable.
+> +      If you have a recipe ``A`` that provides a shared library ``.so.*`` with all
+> +      required symbolic links for it, specially the ``.so`` link, into custom folder
 
 
-This one looks good. I opened it in Inkscape and I can open it and edit 
-it, which is what matter most.
+s/links for it/links to it/ ?
+s/into custom folder/into a custom folder/
 
-A minor issue though. I can see in your PNG export that you are using 
-"fancy" fonts, and I don't have them on my Linux box, and we probably 
-don't either on the autobuilder machine which compiles the docs. 
-However, this should be fixable. You could look at the fonts I used on 
-https://docs.yoctoproject.org/_images/releases.svg and you/we could 
-probably use those or similar ones.
+> +      other than "``${libdir}``", or "``${base_libdir}``" (example: "``/opt/lib``").
 
->
-> If this SVG file fine and accepted we can move on with it, otherwise, 
-> what is the solution for this ? Should I try to take more time to 
-> adapt it to inkscape and following the SVG template or someone can 
-> help me with this ?
+Hey, that sentence is incomplete! That's like saying...
 
+"If you have a recipe that provides a shared library."
 
-Actually, the style of the SVG template should be updated. I liked the 
-style of your original diagram and I must confess it influence me for 
-https://docs.yoctoproject.org/_images/releases.svg :)
+Did you mean "Assume you have a recipe..."?
 
-This being said, we should be careful not to convey too much meaning 
-through colors, and keep in mind colorblind people and readers on e-ink 
-(grayscale) displays. Accessibility is important and this is something 
-you could improve  in the version you've just submitted. The first 
-version was almost perfect with respect to this. All we need is manage 
-to import it properly with an Open Source editor like Inkscape.
+> +
+> +      .. note::
+> +
+> +         This is not recommended when working with provided shared libraries,
+> +         but this is for the goal of understanding an example for :term:`SYSROOT_DIRS`.
 
 
->
-> After dealing with that, I am planning to suggest adding a new "6.5 
-> Tasks Map" in ref-manual/tasks and for the recipes example in the 
-> diagram I will put their content in that section before introducing 
-> the diagram.
->
-> What do you think?
+I would rephrase this a little... What about
+"This is not a recommended way to deal with shared libraries, but this 
+is just to show the usefulness of setting :term:`SYSROOT_DIR`."?
 
-It sounds great! I'll be happy to help if I can.
-Thanks in advance,
+> +
+> +      When a recipe ``B`` :term:`DEPENDS` on ``A`` it means what is in
+
+
+I'd add ", " before "it means" (easier to read)
+
+> +      :term:`SYSROOT_DIRS` will be copied from :term:`D` of the recipe ``B``
+> +      into ``B``'s :term:`SYSROOT_DESTDIR` that is "``${WORKDIR}/sysroot-destdir``".
+> +
+> +      Now, since ``/opt/lib`` is not in :term:`SYSROOT_DIRS` it will never be copied to
+> +      ``A``'s :term:`RECIPE_SYSROOT` which is "``${WORKDIR}/recipe-sysroot``". So,
+
+Hey, your patches are out of order here ;-)
+I need to apply your second patch first to get the first one to compile.
+
+So the patch defining :term:`RECIPE_SYSROOT` should come first ;-)
+
+> +      the linking process will fail.
+
+I'd also add ", " before "it will" and "which is".
+
+> +
+> +      To fix this, you need to add ``/opt/lib`` to :term:`SYSROOT_DIRS`::
+> +
+> +         SYSROOT_DIRS:append = " /opt/lib"
+> +
+> +      .. note::
+> +         Even after setting ``/opt/lib`` to :term:`SYSROOT_DIRS`, the linking process will fail
+s/will fail/will still fail/
+> +         because the linker does not know that location since :term:`TARGET_LDFLAGS` (if your recipe
+> +         is for target) doesn't contain it, so you should add that::
+
+s/for target/for the target/
+s/, so you should add that::/. Therefore, you should add::/
+
+> +
+> +            TARGET_LDFLAGS:append = " -L${RECIPE_SYSROOT}/opt/lib"
+> +
+
+
+Thanks in advance for a V2 ;-)
+These are mostly style issues, and documenting this is much appreciated :)
+
 Cheers
 Michael.
 
