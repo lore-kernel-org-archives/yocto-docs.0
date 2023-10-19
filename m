@@ -2,94 +2,106 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AA9B2CDB483
-	for <webhook@archiver.kernel.org>; Thu, 19 Oct 2023 13:14:10 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.27155.1697721242583029766
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AFC55CDB482
+	for <webhook@archiver.kernel.org>; Thu, 19 Oct 2023 13:46:20 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.28028.1697723175399118678
  for <docs@lists.yoctoproject.org>;
- Thu, 19 Oct 2023 06:14:03 -0700
+ Thu, 19 Oct 2023 06:46:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nRLadzEO;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 680A61C0004;
-	Thu, 19 Oct 2023 13:14:00 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=AnFDYjYb;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 718FEC0003;
+	Thu, 19 Oct 2023 13:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697721240;
+	t=1697723172;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iEJKxP/wif4edAefywWx4BUN3st1vb8JxHFuPls2+fo=;
-	b=nRLadzEOVfEoJPaLU4Yh1ioHZgbSzsyGU1SrDpLIP77D2KA9Y+P49v/z+j9oCEdmNLqFPZ
-	1pNMpztea+s66BaVie1feUbpgEH5rDxDnFx0WUbKQtaC+fRycpWovlalO6iO0fYB7bTcuS
-	/qzMvQXSVA9wT9kdpFFZVdo17plOZcgAc813ou2D8SMzUDICBSYBaasB7//4zv6W6lta3i
-	8B0K497d6iameO9YLRyY8fX5WOh7lshOgAP0N+5TSQekKf/lNl+b3nZXTuZj5CMIrTxsCD
-	MCMSLp3iOVjtFTX1f5NnaGj2s6y49JLhsOcgh1QDcKACpJGKV94a5oI+iGksbw==
-Message-ID: <88cc907e-186c-44a4-8c57-cf7295c46742@bootlin.com>
-Date: Thu, 19 Oct 2023 15:13:59 +0200
+	bh=pxIp0cCDhnY0kDB1DF67atSfVlHfsfIL+9dIZcu0wDM=;
+	b=AnFDYjYbse2NGK0YeigdjbZc87wzJoCen7cxFh9dKRmyMQdmPuh/Jb0PxUstv07h+OdKb6
+	WrvBhgJ3oOp2DmQPKwm92yY4fiIFN52ce7Kn2w85zhfme6G9MZrv7+9GqqIiyQPkp83gl7
+	zwakPZZySYCcoYoFF1LBWlgppYYG3heB+YrSHYGJRXB8ggV/gseA3jgmw0ahH9cCTlPG2Y
+	xUIbmNDiPcktt53sp9QSnVav3Gd+ssV6Q1j1J+Pzx/kJK0dNvR0O5ZIbKLyLjeYOncwpRF
+	OMTJ7i9ZBXJKZuJAx5vXSGacViUwDrcCAPWcBDva1RD04A9LIQp+zq6ASRFR3g==
+Message-ID: <cfb10d45-0b9e-42c7-b7aa-5a9ee2c80331@bootlin.com>
+Date: Thu, 19 Oct 2023 15:46:11 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: michael.opdenacker@bootlin.com
-Subject: Re: [docs][PATCH] contributor-guide: clarify patchtest usage
+Cc: =?UTF-8?B?SsOpcsOpbXkgUm9zZW4=?= <jeremy.rosen@smile.fr>
+Subject: Re: [docs] [PATCH v3] ref-manual: Add documentation for the
+ unimplemented-ptest QA warning
 Content-Language: en-US
-To: Trevor Gamblin <tgamblin@baylibre.com>, docs@lists.yoctoproject.org
-References: <20231017163203.2268267-1-tgamblin@baylibre.com>
+To: Yoann Congal <yoann.congal@smile.fr>, docs@lists.yoctoproject.org
+References: <20231010135139.3995226-1-yoann.congal@smile.fr>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20231017163203.2268267-1-tgamblin@baylibre.com>
+In-Reply-To: <20231010135139.3995226-1-yoann.congal@smile.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 19 Oct 2023 13:14:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4422
+ <docs@lists.yoctoproject.org>; Thu, 19 Oct 2023 13:46:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4423
 
-Hi Trevor
-
-On 17.10.23 at 18:32, Trevor Gamblin wrote:
-> - Make it clear that patchtest only supports openembedded-core for now
-> - Add a short list of instructions for installing Python module
->    dependencies on the host
-> - Add a step to add meta-selftest with bitbake layers so that all tests
->    can run
+Yoann, Jérémy,
+On 10.10.23 at 15:51, Yoann Congal wrote:
+> From: Jérémy Rosen <jeremy.rosen@smile.fr>
 >
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> Signed-off-by: Jérémy Rosen <jeremy.rosen@smile.fr>
+> Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
 > ---
->   .../contributor-guide/submit-changes.rst         | 16 +++++++++++-----
->   1 file changed, 11 insertions(+), 5 deletions(-)
+> Note: The code documented here has been sent to ML there:
+> https://lists.openembedded.org/g/openembedded-core/message/188892
 >
-> diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-> index 8a300c366..f93c87ca3 100644
-> --- a/documentation/contributor-guide/submit-changes.rst
-> +++ b/documentation/contributor-guide/submit-changes.rst
-> @@ -282,12 +282,18 @@ Here is the general procedure on how to create patches to be sent through email:
->   Validating Patches with Patchtest
->   =================================
+>
+>   documentation/ref-manual/classes.rst   |  3 +++
+>   documentation/ref-manual/qa-checks.rst | 11 +++++++++++
+>   2 files changed, 14 insertions(+)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> index 3f0d4844e..c7a5e9a63 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -1480,6 +1480,9 @@ Here are the tests you can list with the :term:`WARN_QA` and
+>      also inherits :ref:`ref-classes-features_check` in order for the
+>      requirement to actually work.
 >   
-> -``patchtest`` is available in ``openembedded-core`` as a tool for making sure
-> -that your patches are well-formatted and contain important info for
-> +``patchtest`` is available in ``openembedded-core`` as a tool for making
-> +sure that your patches are well-formatted and contain important info for
->   maintenance purposes, such as ``Signed-off-by`` and ``Upstream-Status``
-> -tags. Once you have generated the patch files and run ``source
-> -oe-init-build-env`` to initialize your workspace, you can run ``patchtest``
-> -like so::
-> +tags. Currently, it only supports testing patches for
-> +``openembedded-core`` branches. To setup, perform the following::
+> +-  ``unimplemented-ptest:`` Checks that ptests are implemented for upstream
+> +   tests.
 > +
-> +#. ``pip install -r meta/lib/patchtest/requirements.txt``
-> +#. ``source oe-init-build-env``
-> +#. ``bitbake-layers add-layer ../meta-selftest``
+>   -  ``unlisted-pkg-lics:`` Checks that all declared licenses applying
+>      for a package are also declared on the recipe level (i.e. any license
+>      in ``LICENSE:*`` should appear in :term:`LICENSE`).
+> diff --git a/documentation/ref-manual/qa-checks.rst b/documentation/ref-manual/qa-checks.rst
+> index 4a02e7206..63b2ecdc4 100644
+> --- a/documentation/ref-manual/qa-checks.rst
+> +++ b/documentation/ref-manual/qa-checks.rst
+> @@ -789,6 +789,17 @@ Errors and Warnings
+>       use a relative path rather than an absolute one, or to pick up the path from
+>       runtime configuration or environment variables.
+>   
+> +.. _qa-check-unimplemented-ptest:
+> +
+> +- ``<tool> tests detected [unimplemented-ptest]``
+> +
+> +    This check will detect if the source of the package contains some upstream-
+> +    provided tests and, if so, that ptests are implemented for this recipe.
+
+Here I put "upstream-provided" on the same line, to avoid having a space 
+between the two words.
+
+> +    See the ":ref:`dev-manual/packages:testing packages with ptest`"
+> +    section in the Yocto Project Development Tasks Manual. See also the
+> +    ":ref:`ref-classes-ptest`" section.
 
 
-Thanks for the update. I just removed the "#." characters which made the 
-output look weird.
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Merged into "master-next".
-
-Cheers
+Merged into master-next.
+Thanks again
 Michael.
 
 -- 
