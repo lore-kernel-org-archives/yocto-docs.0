@@ -1,293 +1,254 @@
-Return-Path: <rybczynska@gmail.com>
+Return-Path: <raj.khem@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3711FC001DF
-	for <webhook@archiver.kernel.org>; Fri, 20 Oct 2023 14:39:49 +0000 (UTC)
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
- by mx.groups.io with SMTP id smtpd.web11.56202.1697812779395097781
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 17C49C001DF
+	for <webhook@archiver.kernel.org>; Fri, 20 Oct 2023 16:02:40 +0000 (UTC)
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+ by mx.groups.io with SMTP id smtpd.web10.58173.1697817751986005134
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Oct 2023 07:39:39 -0700
+ Fri, 20 Oct 2023 09:02:32 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=CECAkdR4;
- spf=pass (domain: gmail.com, ip: 209.85.221.44, mailfrom: rybczynska@gmail.com)
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-32caaa1c493so663228f8f.3
-        for <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 07:39:39 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=JjT1oZsJ;
+ spf=pass (domain: gmail.com, ip: 209.85.214.179, mailfrom: raj.khem@gmail.com)
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1bf55a81eeaso7553605ad.0
+        for <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 09:02:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1697812777; x=1698417577; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=86vxqvh8CMBUl0YDhmf2T5XG9y+4RzHkOtSzRWYXF4M=;
-        b=CECAkdR4rb/GAg8wg09dqsbiRq63pXKBH7rbkkKhIHKtSqcNJ6JmJjalkvp4CjtP1y
-         EGs6Gs0HxFj9tH/Ame/SN29rcmfdQ1FsxpRRqXQbIimiBjpH+cGomMjZ9ot3GcK2HBdn
-         9gK2GXp3hlv2OiubXC0Fd61GQP8qz0jbaPVXQDQAoQckk55c51/+uoMt3yqG3+kbBXw1
-         40pRQLiogaNyP0pkQ8bRpeE4dh6EEWYvUaNnxOKeVxUO9LkF4mQDyGuwlkCi/bDtiYhh
-         1Y1xJW+d9qNHUuhR5fIlIKYT8rjIXcwYx8KeftuthyB/YICCt0xhG+0OLme9VfuLhPL6
-         eyeg==
+        d=gmail.com; s=20230601; t=1697817751; x=1698422551; darn=lists.yoctoproject.org;
+        h=in-reply-to:autocrypt:from:references:to:content-language:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6avisJyO+G2mte/5mbzuaEwyt8Coykd+e2Z8W8/jP8g=;
+        b=JjT1oZsJ8O3KuhJDBQ8+8BEIwTOWE23feBp3cMODwYFbSUZ4L56Ly5g5ZTmRTzeTfH
+         kThXctN2Cs2De1b+WwmnhIYExKWKrHjDUiKl39ZyjaA7A1ZW/WKHzo/mTZ4AEqYcrrCX
+         FpvbUWH4PM3KogAU/5F+TsScWYjT4EjcOuFXZr4UbVYf9790Ds99BtkAtO722ApkRzde
+         IZTKvJJoHkQCuPXCEnlnwr99X+wuHKYGijiHJ/gyndUtw08OXeFlLnsv6XhqyovCEJc9
+         dO1LGj4BhqvZF1l386OjMplRxkefpHloMVvskaPVVsIkEkO8VrPGcY0vogsCE7xYAp3+
+         jSOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1697812777; x=1698417577;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=86vxqvh8CMBUl0YDhmf2T5XG9y+4RzHkOtSzRWYXF4M=;
-        b=bibdx7+Sn9WVKMQnrraBnfg5TBR5WfooJ3Dq4ueNz8b6QQJyef3lVZO9MSyrekir1I
-         f/c2YQFlvFQimYG9FJpulYWtQ35WfuZZLWM80tpUJRNTy4pnvpjVDiRt4ov2j4fP9TGP
-         mtWT0IMIia1CbFwR2ksgyMfRfyv6ZR2+NAGp03GdrmPqqh7nzJIrwaFoN53ayQiG3rY8
-         gWq9a2ksPyL7+DpkioM9F9ubjyRWE8jq5EM0Ganwzlnh2+NBGqWc0sDVYUPNkaxOShuK
-         FFQf7pGYTVTKrTDNA4mY8QDN/xzjeidzQkJDM3Yw5o6dILV7x/XXecgnt4nIAOnEtNpJ
-         w4Zw==
-X-Gm-Message-State: AOJu0Ywex9b+Q0v2WptASvAFQnBjM7RGzAw9uruhWYuu/ENK48hUckLv
-	A0I+vTjLe3wa4XeXwxHPmAzwB4gR7HI=
-X-Google-Smtp-Source: AGHT+IG0e0qOwYMCjvVmlLC9OYHCRRAyhqcDYwBAQWgdkAu6Vx4/iNtUdWhzNoeQ3DrDsrYnBxofOw==
-X-Received: by 2002:adf:e58f:0:b0:31f:a0ab:26b5 with SMTP id l15-20020adfe58f000000b0031fa0ab26b5mr1614590wrm.8.1697812776731;
-        Fri, 20 Oct 2023 07:39:36 -0700 (PDT)
-Received: from localhost.localdomain (91-161-217-16.subs.proxad.net. [91.161.217.16])
-        by smtp.gmail.com with ESMTPSA id o22-20020a5d58d6000000b003143867d2ebsm1811985wrf.63.2023.10.20.07.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Oct 2023 07:39:36 -0700 (PDT)
-From: Marta Rybczynska <rybczynska@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Marta Rybczynska <rybczynska@gmail.com>,
-	Marta Rybczynska <marta.rybczynska@syslinbit.com>
-Subject: [PATCH v2][docs] dev--manual: add security team processes
-Date: Fri, 20 Oct 2023 16:39:28 +0200
-Message-Id: <20231020143928.1700522-1-rybczynska@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1697817751; x=1698422551;
+        h=in-reply-to:autocrypt:from:references:to:content-language:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=6avisJyO+G2mte/5mbzuaEwyt8Coykd+e2Z8W8/jP8g=;
+        b=n2/DNtNk0hz6dOm6Z5GSyF6BWcQDy8dyUk6+rvErt63c/dt5wColubx9Wxe6Pa38xF
+         8BIDo7rjiIBwNeOL0Xvw7Jv3oYAuOpx2wsKLssvB5eIw6LV4HJ/6Rda2BaTCNJFXZyT7
+         tzdmpjS5utPiEWYzcNLlreNqGnJSFM8oYyu1O+0UaY4T/yq7PPJyyBz4CJ6tFT/HF+e6
+         SBed4G4AOpSWVAU9h1TeMVkeSMgEAhR0npCuKsfNgVDNU8fAEcKlyCEfOWZ8zhzUYi6U
+         ZNWwcFtq6I42tWF59PmzVmN6hTaT3VuXin5txKBFUYuiAGCCRuxmODhWk4W4pYMLMuAW
+         f3Cg==
+X-Gm-Message-State: AOJu0Yzf2LD3Pvp4Ym4zvsmoYanXIFzn5YUN5hbZtyCEtT+HFcPTKpyj
+	FlPOT2nPb5wg8r4CijDtcpE=
+X-Google-Smtp-Source: AGHT+IHwCbq+yw9yKOxKXa/IgOYBWPP8mqnCl/JBMIoRfXk+NzppKhMyvZDllu4KOExD24RTLoAZ4w==
+X-Received: by 2002:a17:903:2348:b0:1c9:bfd3:1f4a with SMTP id c8-20020a170903234800b001c9bfd31f4amr2254239plh.66.1697817751004;
+        Fri, 20 Oct 2023 09:02:31 -0700 (PDT)
+Received: from ?IPV6:2601:646:9100:2cb0:f423:bfba:96f6:f9d8? ([2601:646:9100:2cb0:f423:bfba:96f6:f9d8])
+        by smtp.gmail.com with ESMTPSA id f12-20020a17090274cc00b001a98f844e60sm1691684plt.263.2023.10.20.09.02.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Oct 2023 09:02:30 -0700 (PDT)
+Message-ID: <72ce5635-5b2e-4c43-9b09-ffd7f436d4cb@gmail.com>
+Date: Fri, 20 Oct 2023 09:02:29 -0700
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 1/3] ref-manual: variables: Add RECIPE_SYSROOT and
+ RECIPE_SYSROOT_NATIVE
+Content-Language: en-US
+To: BELHADJ SALEM Talel <bhstalel@gmail.com>, docs@lists.yoctoproject.org
+References: <20231020094102.414940-1-bhstalel@gmail.com>
+From: Khem Raj <raj.khem@gmail.com>
+Autocrypt: addr=raj.khem@gmail.com; keydata=
+ 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
+In-Reply-To: <20231020094102.414940-1-bhstalel@gmail.com>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------YE21iGYjkVx5A2CgHfQJjzIP"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 14:39:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4446
+ <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 16:02:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4447
 
-Add the initial version of the section on vulnerability reports,
-operations of the Security Team with a
-transcription of https://wiki.yoctoproject.org/wiki/Security_private_reporting
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------YE21iGYjkVx5A2CgHfQJjzIP
+Content-Type: multipart/mixed; boundary="------------CQmjgef9Bo0oFdxdwmezyyM2";
+ protected-headers="v1"
+From: Khem Raj <raj.khem@gmail.com>
+To: BELHADJ SALEM Talel <bhstalel@gmail.com>, docs@lists.yoctoproject.org
+Message-ID: <72ce5635-5b2e-4c43-9b09-ffd7f436d4cb@gmail.com>
+Subject: Re: [docs] [PATCH 1/3] ref-manual: variables: Add RECIPE_SYSROOT and
+ RECIPE_SYSROOT_NATIVE
+References: <20231020094102.414940-1-bhstalel@gmail.com>
+In-Reply-To: <20231020094102.414940-1-bhstalel@gmail.com>
 
-Signed-off-by: Marta Rybczynska <marta.rybczynska@syslinbit.com>
----
- documentation/dev-manual/index.rst            |   1 +
- .../dev-manual/security-subjects.rst          | 197 ++++++++++++++++++
- 2 files changed, 198 insertions(+)
- create mode 100644 documentation/dev-manual/security-subjects.rst
+--------------CQmjgef9Bo0oFdxdwmezyyM2
+Content-Type: multipart/mixed; boundary="------------fahdyxN9z4QkcLjd4GwriaHr"
 
-diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
-index 3106b90a4..9ccf60f70 100644
---- a/documentation/dev-manual/index.rst
-+++ b/documentation/dev-manual/index.rst
-@@ -42,6 +42,7 @@ Yocto Project Development Tasks Manual
-    runtime-testing
-    debugging
-    licenses
-+   security-subjects
-    vulnerabilities
-    sbom
-    error-reporting-tool
-diff --git a/documentation/dev-manual/security-subjects.rst b/documentation/dev-manual/security-subjects.rst
-new file mode 100644
-index 000000000..feec5f337
---- /dev/null
-+++ b/documentation/dev-manual/security-subjects.rst
-@@ -0,0 +1,197 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Dealing with Vulnerability Reports
-+**********************************
-+
-+The Yocto Project and OpenEmbedded are open-source, community-based projects
-+used in numerous products. They assemble multiple other open-source projects,
-+and need to handle security issues and practices both internal (in the code
-+maintained by both projects), and external (maintained by otehr projects and
-+organizations).
-+
-+This manual assembles security-related information concerning the whole
-+ecosystem. It includes information on reporting a potential security issue,
-+the operation of the YP Security team and how to contribute in the
-+related code. It is written to be useful for both security researchers and
-+YP developers.
-+
-+How to report a potential security vulnerability?
-+=================================================
-+
-+If you would like to report a public issue (for example, one with a released
-+CVE number), please report it using the
-+:yocto_bugs:`Security Bugzilla </enter_bug.cgi?product=Security>`.
-+
-+If you are dealing with a not-yet released or urgent issue, please send a
-+message to security AT yoctoproject DOT org, including as many details as
-+possible: the layer or software module affected, the recipe and its version,
-+and any example code, if available. This mailing list is monitored by the
-+Yocto Project Security team.
-+
-+For each layer, you might also look for specific instructions (if any) for
-+reporting potential security issues in the specific ``SECURITY.md`` file at the
-+root of the repository. Instructions on how and where submit a patch are
-+usually available in ``README.md``. If this is your first patch to the
-+Yocto Project/OpenEmbedded, you might want to have a look into the
-+Contributor's Manual section
-+":ref:`contributor-guide/submit-changes:preparing changes for submission`".
-+
-+Branches maintained with security fixes
-+========================================
-+
-+See the :yocto_wiki:`Stable release and LTS </Stable_Release_and_LTS>`
-+wiki page for detailed info regarding the policies and maintenance of stable
-+branches.
-+
-+The :yocto_wiki:`Releases page </Releases>` contains a list
-+of all releases of the Yocto Project. Versions in grey are no longer actively
-+maintained with security patches, but well-tested patches may still be accepted
-+for them for significant issues.
-+
-+Security-reated discussions at the Yocto Project
-+================================================
-+
-+We have set up two security-related mailing lists:
-+
-+  -  Public List yocto [dash] security [at] yoctoproject[dot] org
-+
-+    This is a public mailing list for anyone to subscribe to. This list is an
-+    open list to discuss public security issues/patches and security-related
-+    initiatives. For more information, including subscription information,
-+    please see the yocto-security mailing list info page.
-+
-+  - Private List security [at] yoctoproject [dot] org
-+
-+    This is a private mailing list for reporting non-published potential
-+    vulnerabilities. The list is monitored by the Yocto Project Security team.
-+
-+
-+What you should do if you find a security vulnerability
-+-------------------------------------------------------
-+
-+If you find a security flaw; a crash, an information leakage, or anything that
-+can have a security impact if exploited in any Open Source software built or
-+used by the Yocto Project, please report this to the Yocto Project Security
-+Team. If you prefer to contact the upstream project directly, please send a
-+copy to the security team at the Yocto Project as well. If you believe this is
-+highly sensitive information, please report the vulnerability in a secure way,
-+i.e. encrypt the email and send it to the private list. This ensures that
-+the exploit is not leaked and exploited before a response/fix has been generated.
-+
-+
-+What Yocto Security Team does when it receives a security vulnerability
-+-----------------------------------------------------------------------
-+
-+The YP Security Team team performs a quick analysis and would usually report
-+the flaw to the upstream project. Normally the upstream project analyzes the
-+problem. If they deem it a real security problem in their software, they
-+develop and release a fix following their own security policy. They may want
-+to include the original reporter in the loop. There is also sometimes some
-+coordination for handling patches, backporting patches etc, or just
-+understanding the problem or what caused it.
-+
-+The security policy of the upstream project might include a notification to
-+Linux distributions or other important downstream projects in advance to
-+discuss coordinated disclosure. These mailing lists are normally non-public.
-+
-+When the upstream project releases a version with the fix, they are responsible
-+for contacting `Mitre <https://www.cve.org/>`__ to get a CVE number assigned and
-+the CVE record published.
-+
-+If an upstream project does not respond quickly
-+-----------------------------------------------
-+
-+If an upstream project does not fix the problem in a reasonable time,
-+the Yocto's Security Team will contact other interested parties (usually
-+other distributions) in the community and together try to solve the
-+vulnerability as quickly as possible.
-+
-+The Yocto Project Security team adheres to the 90 days disclosure policy
-+by default. An increase of the embargo time is possible when necessary.
-+
-+Security team
-+=============
-+
-+The Yocto Project/OpenEmbedded security team coordinates the work on security
-+subjects in the project. All general discussion takes place publicly. The
-+Security Team only uses confidential communication tools to deal with private
-+vulnerability reports before they are released.
-+
-+Security team appointment
-+-------------------------
-+
-+The Yocto Project Security Team consists of at least three members. When new
-+members are needed, the YP TSC asks for nominations by public channels including
-+a nomination deadline. Self-nominations are possible. When the limit time is
-+reached, the YP TSC posts the list of candidates for the comments of project
-+participants and developers. Comments may be sent publicly or privately to the
-+YP and OE TSCs. The candidates are approved by both YP TSC and OE TSC and the
-+final list of the team members is announced publicly. The aim is to have people
-+representing technical leadership, security knowledge and infrastructure present
-+with enough people to provide backup/coverage but keep the notification list
-+small enough to minimise information risk and maintain trust.
-+
-+YP Security Team members may resign at any time.
-+
-+Security Team Operations
-+------------------------
-+
-+The work of the Security Team might require high confidentiality. Team members
-+are individuals selected by merit and do not represent the companies they work
-+for. They do not share information about confidential issues outside of the team
-+and do not hint about ongoing embargoes.
-+
-+Team members can bring in domain experts as needed. Those people should be
-+added to individual issues only and adhere to the same standards as the YP
-+Security Team.
-+
-+The YP security team organizes its meetings and communication as needed.
-+
-+When the YP Security team receives a report about a potential security
-+vulnerability, they quickly analyze and notify the reporter of the result.
-+They might also request more information.
-+
-+If the issue is confirmed and affects the code maintained by the YP, they
-+confidentially notify maintainers of that code and work with them to prepare
-+a fix.
-+
-+If the issue is confirmed and affects an upstream project, the YP security team
-+notifies the project. Usually, the upstream project analyzes the problem again.
-+If they deem it a real security problem in their software, they develop and
-+release a fix following their security policy. They may want to include the
-+original reporter in the loop. There is also sometimes some coordination for
-+handling patches, backporting patches etc, or just understanding the problem
-+or what caused it.
-+
-+The security policy of the upstream project might include a notification to
-+Linux distributions or other important downstream projects in advance to discuss
-+coordinated disclosure. These mailing lists are generally non-public. The YP
-+Security Team participates in the discussion as needed. They might also
-+include the YP maintainer of the affected package.
-+
-+When the upstream project releases a version with the fix, they are responsible
-+for contacting `Mitre <https://www.cve.org/>`__ to get a CVE number assigned
-+and the CVE record published.
-+
-+When the fix is publicly available, the YP security team member or the
-+package maintainer sends patches against the YP code base, following usual
-+procedures, including public code review.
-+
-+Current Security Team members
-+-----------------------------
-+
-+For secure communications, please send your messages encrypted using the GPG
-+keys. Remember, message headers are not encrypted so do not include sensitive
-+information in the subject line.
-+
-+  -  Ross Burton <ross@burtonini.com> `Public key <https://keys.openpgp.org/search?q=ross%40burtonini.com>`__
-+
-+  -  Michael Halstead <mhalstead [at] linuxfoundation [dot] org>
-+     `Public key <https://pgp.mit.edu/pks/lookup?op=vindex&search=0x3373170601861969>`__
-+     or `Public key <https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xd1f2407285e571ed12a407a73373170601861969>`__
-+
-+  -  Richard Purdie <richard.purdie@linuxfoundation.org> `Public key <https://keys.openpgp.org/search?q=richard.purdie%40linuxfoundation.org>`__
-+
-+  -  Marta Rybczynska <marta DOT rybczynska [at] syslinbit [dot] com> `Public key <https://keys.openpgp.org/search?q=marta.rybczynska@syslinbit.com>`__
-+
-+  -  Steve Sakoman <steve [at] sakoman [dot] com> `Public key <https://keys.openpgp.org/search?q=steve%40sakoman.com>`__
--- 
-2.39.2
+--------------fahdyxN9z4QkcLjd4GwriaHr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
 
+T24gMTAvMjAvMjMgMjo0MSBBTSwgQkVMSEFESiBTQUxFTSBUYWxlbCB3cm90ZToNCj4gU2ln
+bmVkLW9mZi1ieTogVGFsZWwgQkVMSEFKU0FMRU0gPGJoc3RhbGVsQGdtYWlsLmNvbT4NCj4g
+LS0tDQo+ICAgZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QgfCAzNSAr
+KysrKysrKysrKysrKysrKysrKysrKysrKw0KPiAgIDEgZmlsZSBjaGFuZ2VkLCAzNSBpbnNl
+cnRpb25zKCspDQo+IA0KPiBkaWZmIC0tZ2l0IGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFs
+L3ZhcmlhYmxlcy5yc3QgYi9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvdmFyaWFibGVzLnJz
+dA0KPiBpbmRleCAyNmE1YWVkODIuLmIwMDQ0NTk0NiAxMDA2NDQNCj4gLS0tIGEvZG9jdW1l
+bnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QNCj4gKysrIGIvZG9jdW1lbnRhdGlv
+bi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QNCj4gQEAgLTY5NzEsNiArNjk3MSwzNiBAQCBz
+eXN0ZW0gYW5kIGdpdmVzIGFuIG92ZXJ2aWV3IG9mIHRoZWlyIGZ1bmN0aW9uIGFuZCBjb250
+ZW50cy4NCj4gICAgICAgICBpbiB0aGUgIjpyZWY6YHJlZi1tYW51YWwvZGV2dG9vbC1yZWZl
+cmVuY2U6Y2hlY2tpbmcgb24gdGhlIHVwZ3JhZGUgc3RhdHVzIG9mIGEgcmVjaXBlYCINCj4g
+ICAgICAgICBzZWN0aW9uLg0KPiAgIA0KPiArICAgOnRlcm06YFJFQ0lQRV9TWVNST09UYA0K
+PiArICAgICAgVGhpcyB2YXJpYWJsZSBwb2ludHMgdG8gdGhlIGRpcmVjdG9yeSB0aGF0IGhv
+bGRzIGFsbCBmaWxlcyBwb3B1bGF0ZWQgZnJvbQ0KPiArICAgICAgcmVjaXBlcyBzcGVjaWZp
+ZWQgaW4gOnRlcm06YERFUEVORFNgLiBBcyB0aGUgbmFtZSBpbmRpY2F0ZXMsDQo+ICsgICAg
+ICB0aGluayBvZiB0aGlzIHZhcmlhYmxlIGFzIGEgY3VzdG9tIHJvb3QgYGAvYGAgZm9yIHRo
+ZSByZWNpcGUgdGhhdCB3aWxsIGJlDQo+ICsgICAgICB1c2VkIGJ5IHRoZSBjb21waWxlciBp
+biBvcmRlciB0byBmaW5kIGhlYWRlcnMgYW5kIG90aGVyIGZpbGVzIG5lZWRlZCB0byBjb21w
+bGV0ZQ0KPiArICAgICAgaXRzIGpvYi4NCg0KVGhhbmtzIGZvciBhZGRpbmcgdGhpcyB0byBk
+b2NzLiBJIHRoaW5rIGl0IHdpbGwgYmUgZ29vZCB0byBtZW50aW9uIHRoYXQgDQp0aGlzIGlz
+IG5vdCB0eXBpY2FsIHN5c3Jvb3Qgd2hlcmUgZXZlcnl0aGluZyBpcyBhdmFpbGFibGUgYnV0
+IGl0cyBhIA0KbWltaW1hbCBzeXNyb290IHRoYXQgY29udGFpbnMgaGVhZGVycyBhbmQgbGli
+cmFyaWVzIGZyb20gcmVjaXBlIHNwZWNpZmljIA0KYnVpbGQgdGltZSBkZXBlbmRlbmNpZXMg
+b25seS4NCg0KPiArDQo+ICsgICAgICBUaGlzIHZhcmlhYmxlIGlzIHJlbGF0ZWQgdG8gOnRl
+cm06YFNUQUdJTkdfRElSX0hPU1RgIG9yIDp0ZXJtOmBTVEFHSU5HX0RJUl9UQVJHRVRgDQo+
+ICsgICAgICBhY2NvcmRpbmcgdG8gdGhlIHR5cGUgb2YgdGhlIHJlY2lwZSBhbmQgdGhlIGJ1
+aWxkIHRhcmdldC4NCj4gKw0KPiArICAgICAgVG8gYmV0dGVyIHVuZGVyc3RhbmQgdGhpcyB2
+YXJpYWJsZSwgY29uc2lkZXIgdGhlIGZvbGxvd2luZyBleGFtcGxlczoNCj4gKw0KPiArICAg
+ICAgLSAgRm9yIGBgI2luY2x1ZGUgPGhlYWRlci5oPmBgLCBgYGhlYWRlci5oYGAgc2hvdWxk
+IGJlIGluIGBgIiR7UkVDSVBFX1NZU1JPT1R9L3Vzci9pbmNsdWRlImBgDQo+ICsNCj4gKyAg
+ICAgIC0gIEZvciBgYC1sZXhhbXBsZWBgLCBgYGxpYmV4YW1wbGUuc29gYCBzaG91bGQgYmUg
+aW4gYGAiJHtSRUNJUEVfU1lTUk9PVH0vbGliImBgDQo+ICsgICAgICAgICBvciBvdGhlciBs
+aWJyYXJ5IHN5c3Jvb3QgZGlyZWN0b3JpZXMuDQo+ICsNCj4gKyAgICAgIFRoZSBkZWZhdWx0
+IHZhbHVlIGlzIGBgIiR7V09SS0RJUn0vcmVjaXBlLXN5c3Jvb3QiYGAuDQo+ICsgICAgICBE
+byBub3QgbW9kaWZ5IGl0Lg0KPiArDQo+ICsgICA6dGVybTpgUkVDSVBFX1NZU1JPT1RfTkFU
+SVZFYA0KPiArICAgICAgVGhpcyBpcyBzaW1pbGFyIHRvIDp0ZXJtOmBSRUNJUEVfU1lTUk9P
+VGAgYnV0IHRoZSBwb3B1bGF0ZWQgZmlsZXMgYXJlIGZyb20NCj4gKyAgICAgIGBgLW5hdGl2
+ZWBgIHJlY2lwZXMuIFRoaXMgYWxsb3dzIGEgcmVjaXBlIGJ1aWx0IGZvciB0aGUgdGFyZ2V0
+IG1hY2hpbmUgdG8NCj4gKyAgICAgIHVzZSBgYG5hdGl2ZWBgIHRvb2xzLg0KPiArDQo+ICsg
+ICAgICBUaGlzIHZhcmlhYmxlIGlzIHJlbGF0ZWQgdG8gOnRlcm06YFNUQUdJTkdfRElSX05B
+VElWRWAuDQo+ICsNCj4gKyAgICAgIFRoZSBkZWZhdWx0IHZhbHVlIGlzIGBgIiR7V09SS0RJ
+Un0vcmVjaXBlLXN5c3Jvb3QtbmF0aXZlImBgLg0KPiArICAgICAgRG8gbm90IG1vZGlmeSBp
+dC4NCj4gKw0KPiAgICAgIDp0ZXJtOmBSRVBPRElSYA0KPiAgICAgICAgIFNlZSA6dGVybTpg
+Yml0YmFrZTpSRVBPRElSYCBpbiB0aGUgQml0QmFrZSBtYW51YWwuDQo+ICAgDQo+IEBAIC04
+Mjc1LDEwICs4MzA1LDE1IEBAIHN5c3RlbSBhbmQgZ2l2ZXMgYW4gb3ZlcnZpZXcgb2YgdGhl
+aXIgZnVuY3Rpb24gYW5kIGNvbnRlbnRzLg0KPiAgICAgICAgICAgICAgIGZvciBgYC1uYXRp
+dmVgYCByZWNpcGVzLCBhcyB0aGV5IG1ha2UgdXNlIG9mIGhvc3QgaGVhZGVycyBhbmQNCj4g
+ICAgICAgICAgICAgICBsaWJyYXJpZXMuDQo+ICAgDQo+ICsgICAgICBDaGVjayA6dGVybTpg
+UkVDSVBFX1NZU1JPT1RgIGFuZCA6dGVybTpgUkVDSVBFX1NZU1JPT1RfTkFUSVZFYC4NCj4g
+Kw0KPiAgICAgIDp0ZXJtOmBTVEFHSU5HX0RJUl9OQVRJVkVgDQo+ICAgICAgICAgU3BlY2lm
+aWVzIHRoZSBwYXRoIHRvIHRoZSBzeXNyb290IGRpcmVjdG9yeSB1c2VkIHdoZW4gYnVpbGRp
+bmcNCj4gICAgICAgICBjb21wb25lbnRzIHRoYXQgcnVuIG9uIHRoZSBidWlsZCBob3N0IGl0
+c2VsZi4NCj4gICANCj4gKyAgICAgIFRoZSBkZWZhdWx0IHZhbHVlIGlzIGBgIiR7UkVDSVBF
+X1NZU1JPT1RfTkFUSVZFfSJgYCwNCj4gKyAgICAgIGNoZWNrIDp0ZXJtOmBSRUNJUEVfU1lT
+Uk9PVF9OQVRJVkVgLg0KPiArDQo+ICAgICAgOnRlcm06YFNUQUdJTkdfRElSX1RBUkdFVGAN
+Cj4gICAgICAgICBTcGVjaWZpZXMgdGhlIHBhdGggdG8gdGhlIHN5c3Jvb3QgdXNlZCBmb3Ig
+dGhlIHN5c3RlbSBmb3Igd2hpY2ggdGhlDQo+ICAgICAgICAgY29tcG9uZW50IGdlbmVyYXRl
+cyBjb2RlLiBGb3IgY29tcG9uZW50cyB0aGF0IGRvIG5vdCBnZW5lcmF0ZSBjb2RlLA0KPiAN
+Cj4gDQo+IA0KPiAtPS09LT0tPS09LT0tPS09LT0tPS09LQ0KPiBMaW5rczogWW91IHJlY2Vp
+dmUgYWxsIG1lc3NhZ2VzIHNlbnQgdG8gdGhpcyBncm91cC4NCj4gVmlldy9SZXBseSBPbmxp
+bmUgKCM0NDM3KTogaHR0cHM6Ly9saXN0cy55b2N0b3Byb2plY3Qub3JnL2cvZG9jcy9tZXNz
+YWdlLzQ0MzcNCj4gTXV0ZSBUaGlzIFRvcGljOiBodHRwczovL2xpc3RzLnlvY3RvcHJvamVj
+dC5vcmcvbXQvMTAyMDc3NzQ4LzE5OTc5MTQNCj4gR3JvdXAgT3duZXI6IGRvY3Mrb3duZXJA
+bGlzdHMueW9jdG9wcm9qZWN0Lm9yZw0KPiBVbnN1YnNjcmliZTogaHR0cHM6Ly9saXN0cy55
+b2N0b3Byb2plY3Qub3JnL2cvZG9jcy91bnN1YiBbcmFqLmtoZW1AZ21haWwuY29tXQ0KPiAt
+PS09LT0tPS09LT0tPS09LT0tPS09LQ0KPiANCg==
+--------------fahdyxN9z4QkcLjd4GwriaHr
+Content-Type: application/pgp-keys; name="OpenPGP_0xBB053355919D3314.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xBB053355919D3314.asc"
+Content-Description: OpenPGP public key
+Content-Transfer-Encoding: quoted-printable
+
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+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
+//VuX4EDPW3CZmbPy6U=3D
+=3D+jUt
+-----END PGP PUBLIC KEY BLOCK-----
+
+--------------fahdyxN9z4QkcLjd4GwriaHr--
+
+--------------CQmjgef9Bo0oFdxdwmezyyM2--
+
+--------------YE21iGYjkVx5A2CgHfQJjzIP
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wmMEABEIACMWIQSPpVvapDR0rgZCCc27BTNVkZ0zFAUCZTKklQUDAAAAAAAKCRC7BTNVkZ0zFKMe
+AJ9zmvFGj62k2wtWOrcFm60pcALoJQCfZO0iMreKrtATPQ9w5Ew+X/q5qXw=
+=Id6B
+-----END PGP SIGNATURE-----
+
+--------------YE21iGYjkVx5A2CgHfQJjzIP--
 
