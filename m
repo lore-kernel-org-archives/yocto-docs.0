@@ -1,77 +1,110 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <bhstalel@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18969CDB474
-	for <webhook@archiver.kernel.org>; Fri, 20 Oct 2023 16:07:30 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.58410.1697818045077614708
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 54D48C001DF
+	for <webhook@archiver.kernel.org>; Fri, 20 Oct 2023 17:06:30 +0000 (UTC)
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+ by mx.groups.io with SMTP id smtpd.web10.59871.1697821588861821745
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Oct 2023 09:07:25 -0700
+ Fri, 20 Oct 2023 10:06:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ld03KXgF;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F3FD36000E;
-	Fri, 20 Oct 2023 16:07:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697818042;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q4pBbJYSL43WJeEK5hb1mLK1LJjwRZhSCWd2NSRAH8A=;
-	b=ld03KXgFeK/cnrWxWz6U2G1Td+HHowa6tcXQwwCss0/UFm/LWPGrFb7z68FMOaz3tTInKh
-	w7D2PXMkJe0nTIN3ywzfQaAS9rTbrARN+OSi82rpZHnyjbNEoz5uHUuchuyoDnHaPyr6Fz
-	UEUvvEIFUbApp8FEPgklhqomqOykD5C85lQx2DBGhX8xO84wbcNmuuXdiWbgQntDpxKJLP
-	OLdxtQ+YFofPFerOFzA8uCmtaCXWjBV73zGsp5PUZydX+bZ/fvxvdsVO17Ty+wjqmCOrQt
-	7/J5bkoYFgCItv7FsluJqlrw+HG1oNDoMKwARphMqXAOyzq+2cKEW5OwyMpq7Q==
-Message-ID: <1cdcd3f1-781f-4301-b9d3-233ec2180f88@bootlin.com>
-Date: Fri, 20 Oct 2023 18:07:18 +0200
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=lh12QfmD;
+ spf=pass (domain: gmail.com, ip: 209.85.208.45, mailfrom: bhstalel@gmail.com)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-53b32dca0bfso2312867a12.0
+        for <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 10:06:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697821587; x=1698426387; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uHoNFpS31qk06L2mXkXIJmfG1p8AA3/v4Wz+hR9WcLQ=;
+        b=lh12QfmDnYMJPGQSTvXY1wVs6QYch3+tK3roiQSzEnN6x01AFj4VnEq5j9Fvq70ypT
+         wrWEwfKvK/3PTVAOYI5ewid5TJm99yaZEcyGjNRXTiShhdr6DU6JasdyQymE90N+Tz4D
+         Pi+Z78+XCZWjunW8NZ8OlMxtLi4l0sCOTnNA+4faeqPeGuOzESGkJJ3Y+KLQcZh89dAU
+         JM7TDP3YKjPaNctQ3vTf610RW/R8uCf2hl+wbXM8iI+9zzPvLX3wudBunbMQvXl09xhJ
+         Q196XwNpjFxvVOPu7C7R5rfUdeiMMgkdKdDgrHjDynE50INArwrDs2kT0HnqEmqafw2e
+         YR5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697821587; x=1698426387;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uHoNFpS31qk06L2mXkXIJmfG1p8AA3/v4Wz+hR9WcLQ=;
+        b=ejHaYO9X1H22WCXWwc2RqdmewtQrq9445z3YFMA0WCpUpNN1B8iFIkT/sWdIwg9uH6
+         ap4/5rm+jatQFAgllyjEbg4edaa3/oy/hmYxtfqcUlSH3SnU3vxnPYvi+4Y1vBNGvpWX
+         W0IQm2TzJrvfGUDHLtKETlKIm4vZeOhat1lYv/DDp867P2zZZ6EDQxIB4cFffmYbDWD3
+         +vR+cUm5IXqgEwO0hMgcJwE7kYJchBohPVwVj814nX4RW8HxoaJw7RPiWwxFin8E3AMi
+         xXgBCET7m7zV37Lwf17PiBktCWxvBgz9aYBf11WoSFh1dOCv9TsvKemMotPShjJdT4wz
+         f7zg==
+X-Gm-Message-State: AOJu0YwJriqzwDDpDNkc6T1ja1VCY5pq3PLKAHbllq5d9OaIG/iIE8Il
+	ryH1qtmOjPrHIZI8uBTA+sG3JBuM8IGaM+PbsxZzI7LY+Z8=
+X-Google-Smtp-Source: AGHT+IHXVQg7cGFvtpTpC/BVNmWsZvqjP3T6WpXxpsVGjXGHCZyOIUK1ba4qQ/F7lEVXxYaRVkDT3/0eOECKogQ2j9M=
+X-Received: by 2002:a50:d49e:0:b0:533:ccec:552 with SMTP id
+ s30-20020a50d49e000000b00533ccec0552mr2366653edi.9.1697821586819; Fri, 20 Oct
+ 2023 10:06:26 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Marta Rybczynska <marta.rybczynska@syslinbit.com>,
- docs@lists.yoctoproject.org
-Subject: Re: [docs] [RFC][PATCH] security-manual: initial version
-Content-Language: en-US
-To: Marta Rybczynska <rybczynska@gmail.com>,
- Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <20231019094826.9503-1-rybczynska@gmail.com>
- <CAApg2=S9ConmZUMi9hTYJM1ZBCwQrehky+3NKKqva8fc_n=Qkw@mail.gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <CAApg2=S9ConmZUMi9hTYJM1ZBCwQrehky+3NKKqva8fc_n=Qkw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+From: Talel BELHADJ SALEM <bhstalel@gmail.com>
+Date: Fri, 20 Oct 2023 18:06:15 +0100
+Message-ID: <CAOgG7m3Z8E9PvROHDV5qL8-WGJmY0f6NQgPrfxG8YXnVw6AfPA@mail.gmail.com>
+Subject: [Proposition] Workshop-like documentation
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Content-Type: multipart/alternative; boundary="000000000000931080060828e45b"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 16:07:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4449
+ <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 17:06:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4450
 
-Hi Marta
+--000000000000931080060828e45b
+Content-Type: text/plain; charset="UTF-8"
 
-On 19.10.23 at 11:51, Marta Rybczynska wrote:
-> On Thu, Oct 19, 2023 at 11:48 AM Marta Rybczynska <rybczynska@gmail.com> wrote:
->> Add the initial version of the Security Manual with a
->> transcription of https://wiki.yoctoproject.org/wiki/Security_private_reporting
->>
-> Here is the first version. As a separate manual, so that you can make your mind
-> about the best way to follow. This is bringing only the main page we discussed,
-> I'm going for more content.
+Hello Michael,
 
+I have a website for Yocto that I have some articles in there:
+https://yoctoleef.xyz/
 
-Thanks for this first version.
-Indeed, it confirms that it's good to start from a subchapter in the 
-development manual (in a separate file anyway) as Richard suggested.
+I am a Yocto trainer for long time now, and I love detailing everything,
 
-Let me give you feedback on the V2 you've just sent.
-Thanks again
-Michael.
+For instance check:
+https://yoctoleef.xyz/2023/07/27/details-you-should-know-about-the-recipes-working-directory-part-ii/
 
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+I would like to contribute something like:
 
+   - Practical Manual, or
+   - Workshop Manual
+
+or something like that, the aim is to provide a learning process for
+newcomers.
+
+It is like putting a Yocto training path with workshops and examples to
+follow in order to master Yocto.
+
+It is like The Rust Programming Book idea.
+
+What do you think?
+
+Kind regards
+Talel
+
+--000000000000931080060828e45b
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">Hello Michael,<div><br></div><div>I have a website for Yoc=
+to that I have some articles in there:=C2=A0<a href=3D"https://yoctoleef.xy=
+z/">https://yoctoleef.xyz/</a></div><div><br></div><div>I am a Yocto traine=
+r for long time now, and I love detailing everything,</div><div><br></div><=
+div>For instance check:=C2=A0<a href=3D"https://yoctoleef.xyz/2023/07/27/de=
+tails-you-should-know-about-the-recipes-working-directory-part-ii/">https:/=
+/yoctoleef.xyz/2023/07/27/details-you-should-know-about-the-recipes-working=
+-directory-part-ii/</a></div><div><br></div><div>I would like to contribute=
+ something=C2=A0like:</div><div><ul><li>Practical=C2=A0Manual, or</li><li>W=
+orkshop Manual</li></ul><div>or something like that, the aim is to provide =
+a learning process for newcomers.</div></div><div><br></div><div>It is like=
+ putting a Yocto training path with workshops and examples to follow in ord=
+er to master Yocto.</div><div><br></div><div>It is like The Rust Programmin=
+g Book idea.</div><div><br></div><div>What do=C2=A0you think?</div><div><br=
+></div><div>Kind=C2=A0regards</div><div>Talel</div></div>
+
+--000000000000931080060828e45b--
 
