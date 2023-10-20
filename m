@@ -1,327 +1,237 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <bhstalel@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 99747C001DF
-	for <webhook@archiver.kernel.org>; Fri, 20 Oct 2023 17:57:10 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.61541.1697824628129811248
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9F077C001DF
+	for <webhook@archiver.kernel.org>; Fri, 20 Oct 2023 18:03:50 +0000 (UTC)
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+ by mx.groups.io with SMTP id smtpd.web10.61585.1697825026675035879
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Oct 2023 10:57:09 -0700
+ Fri, 20 Oct 2023 11:03:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dKcxrydN;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 147FC40009;
-	Fri, 20 Oct 2023 17:57:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1697824625;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O2OKOP3NDeqmE4d0nft/k/ddmlCGTfTiQx46DpTZ5CY=;
-	b=dKcxrydN6hu+DtiG4Mokc7uBGP7+zjEkBQh54v8qP5OZwMs2hCpp5cHctAKe2i9N0rWQyn
-	dcVRsRcSPs1oZ06PmvfxXGFEdn6apwX7avBuKBBQ8QlPHr4FhPez0+yNlU0/ABDjgJTc8O
-	N/JZPySSk6lXw1AXXbK+2OVSaxHAGCekjUVlRWqI98/Y6PuW/afnggLOGlrpT5rLm5nfxJ
-	ORG+vBS+T+GVFNSaiWfyslAI/K1VnABXpLMpy3zvKaokTIOyFPMQZBrW6KqK3KCoxtLlxm
-	inlyOaY0IDB/mXL96uIw9pGwNZhi2xdym7udvqMcY1HpHQ8tlnqUdvhAT7RGtA==
-Message-ID: <2638fa02-b0d9-4d5e-9203-94623f065586@bootlin.com>
-Date: Fri, 20 Oct 2023 19:57:04 +0200
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=HDeolpNE;
+ spf=pass (domain: gmail.com, ip: 209.85.218.53, mailfrom: bhstalel@gmail.com)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-9a58dbd5daeso173003966b.2
+        for <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 11:03:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1697825025; x=1698429825; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=ryb1jwqZAklzMahnQde7aTR4AzLq/bjuIUm859TEm2U=;
+        b=HDeolpNEtcwhULal6XWbb66Kf3pO+otxnJpO0HilAriuMiWEurCDCSbz+zdRyldR/a
+         hPcQkc6p/6+GnWvEYGEaaAdWRaQgLLFi6MD6VoiPHWizmCXXRh4g1yGUWVplNogSGsDo
+         0cD0OnvPR+aKbOr2efqb/5FnHjtkWGTkiNvblyT48BcfgZ3muvjHNn2e7LsNGyKXAiQO
+         w4eWxOX5Nd454021MvdyqOwTH8QLuh9Fcd20fN0Q9TcdBXd4EFkHvIVHPLYQ6EqANVZ5
+         GTqj4HbrX1Hf/gebp0FfaK2Ghe32VV1WAPi5v4SwwQAvai+x3P0cHEm3ds0xZN7qYtYY
+         xbTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1697825025; x=1698429825;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ryb1jwqZAklzMahnQde7aTR4AzLq/bjuIUm859TEm2U=;
+        b=ItKPUCsP3w9XZ5Ff6adQQ3syo+dQeaD8cLzNHNxrt3SC7aQ0ao9PDla+FEI1IItQ2g
+         kqpLrRQWs91s7UeuAuMv419GG/BZ4zNcm4hTUWC5zWSyfWoCwPCPTd0WKN+40exdlzSA
+         CsPYLKrbYG501zf3OajEo06ZNrrNWQOrDtfGFPh7TR5tvubBQ+Vprej3W6Af8EJWryK4
+         x8y5apCJNV/GqKUVVot9dOfQ2Czo+RS6gXU9fZ2zqz2RRp3FLaXVU23rVka7EivQcdWY
+         N87beIHwlLP8Xrp3qmzQkLiGoQ4Ykevi3TXlHj6BDqZFPIA7waWoFU2TvzPrATynyeQ0
+         ZIoQ==
+X-Gm-Message-State: AOJu0Yw9rpN4Ia9DxGZyv+M3CqVlbtiJ2QM1mkz4xss01vc6qrWoWy79
+	U+iEUiBqlrZA5ojoQdXEJ3jfuV4B5WHhsWRYtUg=
+X-Google-Smtp-Source: AGHT+IEa3KugI85V4+ZANX7Cv3rf65GudXTUDnvx/aNI9DrVFDtaay0GKNBNexAfI1PI5INHqyj0p0sBrSRymnKMvMI=
+X-Received: by 2002:a17:907:c007:b0:9c7:6fa7:586e with SMTP id
+ ss7-20020a170907c00700b009c76fa7586emr1365297ejc.1.1697825024848; Fri, 20 Oct
+ 2023 11:03:44 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Marta Rybczynska <marta.rybczynska@syslinbit.com>,
- docs@lists.yoctoproject.org
-Subject: Re: [PATCH v2][docs] dev--manual: add security team processes
-Content-Language: en-US
-To: Marta Rybczynska <rybczynska@gmail.com>
-References: <20231020143928.1700522-1-rybczynska@gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20231020143928.1700522-1-rybczynska@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+References: <18651.1687433672747999997@lists.yoctoproject.org>
+ <29645.1697569015596670723@lists.yoctoproject.org> <5c668a44-d9e3-4ca2-ad1d-e42730c76530@bootlin.com>
+In-Reply-To: <5c668a44-d9e3-4ca2-ad1d-e42730c76530@bootlin.com>
+From: Talel BELHADJ SALEM <bhstalel@gmail.com>
+Date: Fri, 20 Oct 2023 19:03:33 +0100
+Message-ID: <CAOgG7m0eQPFhnrmXd8GhbZJJEf_0dDRAj6Vpthh-NOtVPbZAjg@mail.gmail.com>
+Subject: Re: [docs] Yocto Tasks Detailed Diagram Proposal
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="0000000000007f3894060829b1a7"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 17:57:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4452
+ <docs@lists.yoctoproject.org>; Fri, 20 Oct 2023 18:03:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4453
 
-Hi Marta
+--0000000000007f3894060829b1a7
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thanks for this new version!
-See my comments below...
+Hello Michael,
 
-On 20.10.23 at 16:39, Marta Rybczynska wrote:
-> Add the initial version of the section on vulnerability reports,
-> operations of the Security Team with a
-> transcription of https://wiki.yoctoproject.org/wiki/Security_private_reporting
+If I understand correctly:
+
+
+   - The diagram is correct and I only need to:
+   - Change the font
+   - Remove the color coding indication (Should I keep the coloring as well
+   ? Or make everything with 2 colors at max?)
+   - Complete the section content and append the diagram and submit the
+   patch
+
+Let me know if I miss anything.
+
+Thanks.
+Talel
+
+On Thu, Oct 19, 2023 at 3:29=E2=80=AFPM Michael Opdenacker <
+michael.opdenacker@bootlin.com> wrote:
+
+> Hi Talel
 >
-> Signed-off-by: Marta Rybczynska <marta.rybczynska@syslinbit.com>
-> ---
->   documentation/dev-manual/index.rst            |   1 +
->   .../dev-manual/security-subjects.rst          | 197 ++++++++++++++++++
->   2 files changed, 198 insertions(+)
->   create mode 100644 documentation/dev-manual/security-subjects.rst
+> On 17.10.23 at 20:56, BELHADJ SALEM Talel wrote:
+> > Hello,
+> >
+> > Returning to the detailed diagram proposal,
+> >
+> > I have created another one that is more and more detailed using
+> > draw.io, I tried inkspace but it seems really to deal with.
 >
-> diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
-> index 3106b90a4..9ccf60f70 100644
-> --- a/documentation/dev-manual/index.rst
-> +++ b/documentation/dev-manual/index.rst
-> @@ -42,6 +42,7 @@ Yocto Project Development Tasks Manual
->      runtime-testing
->      debugging
->      licenses
-> +   security-subjects
->      vulnerabilities
->      sbom
->      error-reporting-tool
-> diff --git a/documentation/dev-manual/security-subjects.rst b/documentation/dev-manual/security-subjects.rst
-> new file mode 100644
-> index 000000000..feec5f337
-> --- /dev/null
-> +++ b/documentation/dev-manual/security-subjects.rst
-> @@ -0,0 +1,197 @@
-> +.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-> +
-> +Dealing with Vulnerability Reports
-> +**********************************
-> +
-> +The Yocto Project and OpenEmbedded are open-source, community-based projects
-> +used in numerous products. They assemble multiple other open-source projects,
-> +and need to handle security issues and practices both internal (in the code
-> +maintained by both projects), and external (maintained by otehr projects and
+>
+> This one looks good. I opened it in Inkscape and I can open it and edit
+> it, which is what matter most.
+>
+> A minor issue though. I can see in your PNG export that you are using
+> "fancy" fonts, and I don't have them on my Linux box, and we probably
+> don't either on the autobuilder machine which compiles the docs.
+> However, this should be fixable. You could look at the fonts I used on
+> https://docs.yoctoproject.org/_images/releases.svg and you/we could
+> probably use those or similar ones.
+>
+> >
+> > If this SVG file fine and accepted we can move on with it, otherwise,
+> > what is the solution for this ? Should I try to take more time to
+> > adapt it to inkscape and following the SVG template or someone can
+> > help me with this ?
+>
+>
+> Actually, the style of the SVG template should be updated. I liked the
+> style of your original diagram and I must confess it influence me for
+> https://docs.yoctoproject.org/_images/releases.svg :)
+>
+> This being said, we should be careful not to convey too much meaning
+> through colors, and keep in mind colorblind people and readers on e-ink
+> (grayscale) displays. Accessibility is important and this is something
+> you could improve  in the version you've just submitted. The first
+> version was almost perfect with respect to this. All we need is manage
+> to import it properly with an Open Source editor like Inkscape.
+>
+>
+> >
+> > After dealing with that, I am planning to suggest adding a new "6.5
+> > Tasks Map" in ref-manual/tasks and for the recipes example in the
+> > diagram I will put their content in that section before introducing
+> > the diagram.
+> >
+> > What do you think?
+>
+> It sounds great! I'll be happy to help if I can.
+> Thanks in advance,
+> Cheers
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
 
-s/otehr/other/
+--0000000000007f3894060829b1a7
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> +organizations).
-> +
-> +This manual assembles security-related information concerning the whole
-> +ecosystem. It includes information on reporting a potential security issue,
-> +the operation of the YP Security team and how to contribute in the
-> +related code. It is written to be useful for both security researchers and
-> +YP developers.
-> +
-> +How to report a potential security vulnerability?
-> +=================================================
-> +
-> +If you would like to report a public issue (for example, one with a released
-> +CVE number), please report it using the
-> +:yocto_bugs:`Security Bugzilla </enter_bug.cgi?product=Security>`.
-> +
-> +If you are dealing with a not-yet released or urgent issue, please send a
-> +message to security AT yoctoproject DOT org, including as many details as
-> +possible: the layer or software module affected, the recipe and its version,
-> +and any example code, if available. This mailing list is monitored by the
-> +Yocto Project Security team.
-> +
-> +For each layer, you might also look for specific instructions (if any) for
-> +reporting potential security issues in the specific ``SECURITY.md`` file at the
-> +root of the repository. Instructions on how and where submit a patch are
-> +usually available in ``README.md``. If this is your first patch to the
-> +Yocto Project/OpenEmbedded, you might want to have a look into the
-> +Contributor's Manual section
-> +":ref:`contributor-guide/submit-changes:preparing changes for submission`".
-> +
-> +Branches maintained with security fixes
-> +========================================
-> +
-> +See the :yocto_wiki:`Stable release and LTS </Stable_Release_and_LTS>`
-> +wiki page for detailed info regarding the policies and maintenance of stable
-> +branches.
+<div dir=3D"ltr">Hello=C2=A0Michael,<div><br></div><div>If I understand cor=
+rectly:</div><div><br></div><div><ul><li>The diagram is correct and I only =
+need to:</li><li>Change the font</li><li>Remove the=C2=A0color coding indic=
+ation (Should I keep the coloring as well ? Or make everything with 2 color=
+s at max?)</li><li>Complete the section content and append the diagram and =
+submit the patch</li></ul><div>Let me know if I miss=C2=A0anything.</div></=
+div><div><br></div><div>Thanks.</div><div>Talel</div></div><br><div class=
+=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Thu, Oct 19, 2023=
+ at 3:29=E2=80=AFPM Michael Opdenacker &lt;<a href=3D"mailto:michael.opdena=
+cker@bootlin.com">michael.opdenacker@bootlin.com</a>&gt; wrote:<br></div><b=
+lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
+ft:1px solid rgb(204,204,204);padding-left:1ex">Hi Talel<br>
+<br>
+On 17.10.23 at 20:56, BELHADJ SALEM Talel wrote:<br>
+&gt; Hello,<br>
+&gt;<br>
+&gt; Returning to the detailed diagram proposal,<br>
+&gt;<br>
+&gt; I have created another one that is more and more detailed using <br>
+&gt; <a href=3D"http://draw.io" rel=3D"noreferrer" target=3D"_blank">draw.i=
+o</a>, I tried inkspace but it seems really to deal with.<br>
+<br>
+<br>
+This one looks good. I opened it in Inkscape and I can open it and edit <br=
+>
+it, which is what matter most.<br>
+<br>
+A minor issue though. I can see in your PNG export that you are using <br>
+&quot;fancy&quot; fonts, and I don&#39;t have them on my Linux box, and we =
+probably <br>
+don&#39;t either on the autobuilder machine which compiles the docs. <br>
+However, this should be fixable. You could look at the fonts I used on <br>
+<a href=3D"https://docs.yoctoproject.org/_images/releases.svg" rel=3D"noref=
+errer" target=3D"_blank">https://docs.yoctoproject.org/_images/releases.svg=
+</a> and you/we could <br>
+probably use those or similar ones.<br>
+<br>
+&gt;<br>
+&gt; If this SVG file fine and accepted we can move on with it, otherwise, =
+<br>
+&gt; what is the solution for this ? Should I try to take more time to <br>
+&gt; adapt it to inkscape and following the SVG template or someone can <br=
+>
+&gt; help me with this ?<br>
+<br>
+<br>
+Actually, the style of the SVG template should be updated. I liked the <br>
+style of your original diagram and I must confess it influence me for <br>
+<a href=3D"https://docs.yoctoproject.org/_images/releases.svg" rel=3D"noref=
+errer" target=3D"_blank">https://docs.yoctoproject.org/_images/releases.svg=
+</a> :)<br>
+<br>
+This being said, we should be careful not to convey too much meaning <br>
+through colors, and keep in mind colorblind people and readers on e-ink <br=
+>
+(grayscale) displays. Accessibility is important and this is something <br>
+you could improve=C2=A0 in the version you&#39;ve just submitted. The first=
+ <br>
+version was almost perfect with respect to this. All we need is manage <br>
+to import it properly with an Open Source editor like Inkscape.<br>
+<br>
+<br>
+&gt;<br>
+&gt; After dealing with that, I am planning to suggest adding a new &quot;6=
+.5 <br>
+&gt; Tasks Map&quot; in ref-manual/tasks and for the recipes example in the=
+ <br>
+&gt; diagram I will put their content in that section before introducing <b=
+r>
+&gt; the diagram.<br>
+&gt;<br>
+&gt; What do you think?<br>
+<br>
+It sounds great! I&#39;ll be happy to help if I can.<br>
+Thanks in advance,<br>
+Cheers<br>
+Michael.<br>
+<br>
+-- <br>
+Michael Opdenacker, Bootlin<br>
+Embedded Linux and Kernel engineering<br>
+<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
+//bootlin.com</a><br>
+<br>
+</blockquote></div>
 
-Do you think we could point to 
-https://docs.yoctoproject.org/ref-manual/release-process.html instead. 
-Does it have enough information?
-
-> +
-> +The :yocto_wiki:`Releases page </Releases>` contains a list
-> +of all releases of the Yocto Project. Versions in grey are no longer actively
-> +maintained with security patches, but well-tested patches may still be accepted
-> +for them for significant issues.
-> +
-> +Security-reated discussions at the Yocto Project
-> +================================================
-> +
-> +We have set up two security-related mailing lists:
-> +
-> +  -  Public List yocto [dash] security [at] yoctoproject[dot] org
-
-
-What about "Public List:" instead ?
-
-> +
-> +    This is a public mailing list for anyone to subscribe to. This list is an
-> +    open list to discuss public security issues/patches and security-related
-> +    initiatives. For more information, including subscription information,
-> +    please see the yocto-security mailing list info page.
-
-I would use ":yocto_lists:`yocto-security mailing list info page 
-</g/yocto-security>`" here.
-
-> +
-> +  - Private List security [at] yoctoproject [dot] org
-
-Same here as earlier, "Private List:"?
-
-> +
-> +    This is a private mailing list for reporting non-published potential
-> +    vulnerabilities. The list is monitored by the Yocto Project Security team.
-> +
-> +
-> +What you should do if you find a security vulnerability
-> +-------------------------------------------------------
-> +
-> +If you find a security flaw; a crash, an information leakage, or anything that
-> +can have a security impact if exploited in any Open Source software built or
-> +used by the Yocto Project, please report this to the Yocto Project Security
-> +Team. If you prefer to contact the upstream project directly, please send a
-> +copy to the security team at the Yocto Project as well. If you believe this is
-> +highly sensitive information, please report the vulnerability in a secure way,
-> +i.e. encrypt the email and send it to the private list. This ensures that
-> +the exploit is not leaked and exploited before a response/fix has been generated.
-> +
-> +
-> +What Yocto Security Team does when it receives a security vulnerability
-> +-----------------------------------------------------------------------
-> +
-> +The YP Security Team team performs a quick analysis and would usually report
-> +the flaw to the upstream project. Normally the upstream project analyzes the
-> +problem. If they deem it a real security problem in their software, they
-> +develop and release a fix following their own security policy. They may want
-> +to include the original reporter in the loop. There is also sometimes some
-> +coordination for handling patches, backporting patches etc, or just
-> +understanding the problem or what caused it.
-> +
-> +The security policy of the upstream project might include a notification to
-> +Linux distributions or other important downstream projects in advance to
-> +discuss coordinated disclosure. These mailing lists are normally non-public.
-> +
-> +When the upstream project releases a version with the fix, they are responsible
-> +for contacting `Mitre <https://www.cve.org/>`__ to get a CVE number assigned and
-> +the CVE record published.
-> +
-> +If an upstream project does not respond quickly
-> +-----------------------------------------------
-> +
-> +If an upstream project does not fix the problem in a reasonable time,
-> +the Yocto's Security Team will contact other interested parties (usually
-> +other distributions) in the community and together try to solve the
-> +vulnerability as quickly as possible.
-> +
-> +The Yocto Project Security team adheres to the 90 days disclosure policy
-> +by default. An increase of the embargo time is possible when necessary.
-> +
-> +Security team
-> +=============
-> +
-> +The Yocto Project/OpenEmbedded security team coordinates the work on security
-> +subjects in the project. All general discussion takes place publicly. The
-> +Security Team only uses confidential communication tools to deal with private
-> +vulnerability reports before they are released.
-> +
-> +Security team appointment
-> +-------------------------
-> +
-> +The Yocto Project Security Team consists of at least three members. When new
-> +members are needed, the YP TSC asks for nominations by public channels including
-
-s/YP TSC/Yocto Project Technical Steering Committee (YP TSC)/
-
-(replacing the first instance is enough)
-
-> +a nomination deadline. Self-nominations are possible. When the limit time is
-> +reached, the YP TSC posts the list of candidates for the comments of project
-> +participants and developers. Comments may be sent publicly or privately to the
-> +YP and OE TSCs. The candidates are approved by both YP TSC and OE TSC and the
-
-s/OE TSC/OpenEmbedded (OE) TSC/
-
-> +final list of the team members is announced publicly. The aim is to have people
-> +representing technical leadership, security knowledge and infrastructure present
-> +with enough people to provide backup/coverage but keep the notification list
-> +small enough to minimise information risk and maintain trust.
-> +
-> +YP Security Team members may resign at any time.
-> +
-> +Security Team Operations
-> +------------------------
-> +
-> +The work of the Security Team might require high confidentiality. Team members
-> +are individuals selected by merit and do not represent the companies they work
-> +for. They do not share information about confidential issues outside of the team
-> +and do not hint about ongoing embargoes.
-> +
-> +Team members can bring in domain experts as needed. Those people should be
-> +added to individual issues only and adhere to the same standards as the YP
-> +Security Team.
-> +
-> +The YP security team organizes its meetings and communication as needed.
-> +
-> +When the YP Security team receives a report about a potential security
-> +vulnerability, they quickly analyze and notify the reporter of the result.
-> +They might also request more information.
-> +
-> +If the issue is confirmed and affects the code maintained by the YP, they
-> +confidentially notify maintainers of that code and work with them to prepare
-> +a fix.
-> +
-> +If the issue is confirmed and affects an upstream project, the YP security team
-> +notifies the project. Usually, the upstream project analyzes the problem again.
-> +If they deem it a real security problem in their software, they develop and
-> +release a fix following their security policy. They may want to include the
-> +original reporter in the loop. There is also sometimes some coordination for
-> +handling patches, backporting patches etc, or just understanding the problem
-> +or what caused it.
-> +
-> +The security policy of the upstream project might include a notification to
-> +Linux distributions or other important downstream projects in advance to discuss
-> +coordinated disclosure. These mailing lists are generally non-public. The YP
-> +Security Team participates in the discussion as needed. They might also
-> +include the YP maintainer of the affected package.
-> +
-> +When the upstream project releases a version with the fix, they are responsible
-> +for contacting `Mitre <https://www.cve.org/>`__ to get a CVE number assigned
-> +and the CVE record published.
-
-Oops, you already have the exact same paragraph in one of the earlier 
-sections above.
-You also have "They may want to include the original reporter in the 
-loop"  twice in your patch. I guess the two paragraphs need a bit of rework.
-
-> +
-> +When the fix is publicly available, the YP security team member or the
-> +package maintainer sends patches against the YP code base, following usual
-> +procedures, including public code review.
-> +
-> +Current Security Team members
-> +-----------------------------
-> +
-> +For secure communications, please send your messages encrypted using the GPG
-> +keys. Remember, message headers are not encrypted so do not include sensitive
-> +information in the subject line.
-> +
-> +  -  Ross Burton <ross@burtonini.com> `Public key <https://keys.openpgp.org/search?q=ross%40burtonini.com>`__
-> +
-> +  -  Michael Halstead <mhalstead [at] linuxfoundation [dot] org>
-> +     `Public key <https://pgp.mit.edu/pks/lookup?op=vindex&search=0x3373170601861969>`__
-> +     or `Public key <https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xd1f2407285e571ed12a407a73373170601861969>`__
-> +
-> +  -  Richard Purdie <richard.purdie@linuxfoundation.org> `Public key <https://keys.openpgp.org/search?q=richard.purdie%40linuxfoundation.org>`__
-> +
-> +  -  Marta Rybczynska <marta DOT rybczynska [at] syslinbit [dot] com> `Public key <https://keys.openpgp.org/search?q=marta.rybczynska@syslinbit.com>`__
-> +
-> +  -  Steve Sakoman <steve [at] sakoman [dot] com> `Public key <https://keys.openpgp.org/search?q=steve%40sakoman.com>`__
-
-Maybe add a ":" character right after each name?
-That's all I have. Thanks for the quality of this document!
-
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+--0000000000007f3894060829b1a7--
 
