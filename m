@@ -2,283 +2,149 @@ Return-Path: <rybczynska@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2B3BC25B45
-	for <webhook@archiver.kernel.org>; Mon, 23 Oct 2023 18:33:43 +0000 (UTC)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
- by mx.groups.io with SMTP id smtpd.web11.129117.1698086013422111470
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C73D7C25B45
+	for <webhook@archiver.kernel.org>; Mon, 23 Oct 2023 18:38:23 +0000 (UTC)
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+ by mx.groups.io with SMTP id smtpd.web11.129289.1698086302756699287
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Oct 2023 11:33:33 -0700
+ Mon, 23 Oct 2023 11:38:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=Ni+ATjg+;
- spf=pass (domain: gmail.com, ip: 209.85.208.172, mailfrom: rybczynska@gmail.com)
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2c501bd6ff1so50456101fa.3
-        for <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 11:33:33 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=NIoioeSU;
+ spf=pass (domain: gmail.com, ip: 209.85.208.180, mailfrom: rybczynska@gmail.com)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2c5039d4e88so55413471fa.3
+        for <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 11:38:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698086011; x=1698690811; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oPqq6rTW6MgmaMRcvjqaVOPusdeeuCip078J/5y8KYU=;
-        b=Ni+ATjg+FAnqZAXbMa2mDnL2++MS5b5l3uW1q0M5K1LRfR6o4PfC2qXyB68yJ07c2J
-         DugRjiJwqIYZbif7xiwsOofY+HXuclPhzqaMgQXg1yQ4JzyWf4o5JNKPQnUmeZ7xpM+0
-         0GCOPdk3hH2RGSygddoJxUOwSEiIEsYi/hV3cyOwBvqZdon5JOFEFP6/JxdSf1zha9DA
-         DsTMxWX2VwVaKibmQi5iqgi613RqBGgOqmBuHP2hGjEjLgEHQVsrhnpIrqNKcHynsrbO
-         ddUcXdfbo7JTs+zS5XW9o7YvpuMDLDglBarBQlPOFOfdkfCsnAY4VF/CS0TkwQy/+yjk
-         WwNA==
+        d=gmail.com; s=20230601; t=1698086301; x=1698691101; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RxqDf8+ePjoihmv6AV4yR4u2teQLDvYUW6CRf5o8tbw=;
+        b=NIoioeSUQdpkhKtur9hA+yr7UOvyp0fpD/i6gRgcdOwPU8aVdp+bWJTjOPnybK7+az
+         QcJXEZON5tgZf7dWxBHfnCZAsk4c1bTh4D1vk8WCEoCp31ULZc2PtirWO7uXuSAtlTdJ
+         dv6Ygeh6wGp66RFZWLxU4WN/Pl+82cqp8LlabMR3Kylr7J/y/7S0E+GxFaGHIUVdNCfE
+         or5fPUtrwal4YY6pYd4bzbDQNd5TzM2AWuHXKu8XRIQrDg8MX2hqJO2f8k/yIpvUDfd7
+         cAG5ETSBciZdOOuAiS70HEK2t87I3SzgNI/r180/UX4pPFT+XhjeuSXk5O573+OANtSX
+         0XJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698086011; x=1698690811;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oPqq6rTW6MgmaMRcvjqaVOPusdeeuCip078J/5y8KYU=;
-        b=h3naGktSfDcdizpZ72HFsIp/e4kA7piV7KgjJeuaWI3UEwjj3YPmznjRTU9/kQrJaA
-         qbjgLZjNQEpaEbHPylfS+tod1gio6VXEmHBooMHUds7w1iEa1kvy6p+Wg9kVwtV8tWSD
-         VcQSMU4n8rVG8zdqKZHl7pJuZTzl/7qHAQJUy9HiSC9MKyLvNV/DYWr8tAN8DHZ0eaOZ
-         gAa4W1o39MxKOkG8FK4k4m45wIz6mGpAHIFASk9LnbxSJwx1D7Wh2C2U1CaT+mMSv6No
-         sPCpgJM+rVtX3ngG+M0F1ydE1IWMSQ129/+EFf2svRJqT+/70+gtMYLHigDYJZ3KfLwu
-         aCbg==
-X-Gm-Message-State: AOJu0YynZs1q0KeQRBEGb4kwG4nymgxLafBT3g4fFIP/j8G4gW+Tyukf
-	cchPCOGbF2QTT6XXuvubUtvTTHV7ijs=
-X-Google-Smtp-Source: AGHT+IGUu4P8/bEq6jPWtR7JCUywqH7lqxGLozIeUGtNASQ82680IOHm2Hy/q6fDMYwfGgQ411M+ow==
-X-Received: by 2002:a2e:350e:0:b0:2c5:1c4:9005 with SMTP id z14-20020a2e350e000000b002c501c49005mr6695863ljz.32.1698086010658;
-        Mon, 23 Oct 2023 11:33:30 -0700 (PDT)
-Received: from localhost.localdomain (91-161-217-16.subs.proxad.net. [91.161.217.16])
-        by smtp.gmail.com with ESMTPSA id v19-20020a05600c471300b00405959bbf4fsm10149577wmo.19.2023.10.23.11.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Oct 2023 11:33:29 -0700 (PDT)
-From: Marta Rybczynska <rybczynska@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Marta Rybczynska <rybczynska@gmail.com>,
-	Marta Rybczynska <marta.rybczynska@syslinbit.com>
-Subject: [PATCH v3][docs] dev-manual: add security team processes
-Date: Mon, 23 Oct 2023 20:33:23 +0200
-Message-Id: <20231023183323.10676-1-rybczynska@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1698086301; x=1698691101;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RxqDf8+ePjoihmv6AV4yR4u2teQLDvYUW6CRf5o8tbw=;
+        b=S/fOPuaGma0DC8s+GbOC1HqdOb0pdJ0V+S+iUoJIW9Bzv1LSBRSlYDHmehvEzLSlB8
+         tHzq21yU9VvFwImVs5XAZjiPseY/lRlMWSIXXD+4+5ikRQpZzBDClWUg4NaN25YtPF2n
+         JwlcGmBunsm+FYPc4VgaAZRr1F6u+bNywLtgVdS9SHIOfQ675TdzXnGSTvL7Q5f5apMd
+         NrQjIfxjLd0ZgmrZRtBcIPrOF1k0zEhbwYRSTU0fnpqkdmMmg0syEHhJeFHf4Ym6TiFA
+         fahk69LavxEymJVQnooQZEqeZRcZZA4qo+ekSIiycl/C6fG+ZHdA4hBrD14XopELWVxi
+         HDig==
+X-Gm-Message-State: AOJu0YzZLS8dWdLeQhal+0P4fE83iRRe8L65uNcE02RafiiAjAPLx5wk
+	iotBKYgUd+LVeuKaSOJbM4TbNoWtxqJnpT0pYcw=
+X-Google-Smtp-Source: AGHT+IEqnUKL9EqOwJAKNsFfnW9/OGa76g4YcXFGomuZZkuArEt6xE3YDhdwKlbw/w0Hc0OtXAUV1PZvGoDwKuh5q8o=
+X-Received: by 2002:a05:651c:211d:b0:2bf:e61b:c980 with SMTP id
+ a29-20020a05651c211d00b002bfe61bc980mr8893678ljq.8.1698086300609; Mon, 23 Oct
+ 2023 11:38:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20231020143928.1700522-1-rybczynska@gmail.com> <2638fa02-b0d9-4d5e-9203-94623f065586@bootlin.com>
+In-Reply-To: <2638fa02-b0d9-4d5e-9203-94623f065586@bootlin.com>
+From: Marta Rybczynska <rybczynska@gmail.com>
+Date: Mon, 23 Oct 2023 20:38:08 +0200
+Message-ID: <CAApg2=S2U6ryg68cvXtVDPJOHvNMMQu9pRwJuXm40fx+0M51Fw@mail.gmail.com>
+Subject: Re: [PATCH v2][docs] dev--manual: add security team processes
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Cc: Marta Rybczynska <marta.rybczynska@syslinbit.com>, docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 18:33:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4457
+ <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 18:38:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4458
 
-Add the initial version of the section on vulnerability reports,
-operations of the Security Team with a
-transcription of https://wiki.yoctoproject.org/wiki/Security_private_reporting
+Helo Michael,
+Thanks for comments, all are addressed in v3.
 
-Signed-off-by: Marta Rybczynska <marta.rybczynska@syslinbit.com>
----
- documentation/dev-manual/index.rst            |   1 +
- .../dev-manual/security-subjects.rst          | 188 ++++++++++++++++++
- 2 files changed, 189 insertions(+)
- create mode 100644 documentation/dev-manual/security-subjects.rst
+On Fri, Oct 20, 2023 at 7:57=E2=80=AFPM Michael Opdenacker
+<michael.opdenacker@bootlin.com> wrote:
+>
+> > +
+> > +Branches maintained with security fixes
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +See the :yocto_wiki:`Stable release and LTS </Stable_Release_and_LTS>`
+> > +wiki page for detailed info regarding the policies and maintenance of =
+stable
+> > +branches.
+>
+> Do you think we could point to
+> https://docs.yoctoproject.org/ref-manual/release-process.html instead.
+> Does it have enough information?
+>
 
-diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
-index 3106b90a4..9ccf60f70 100644
---- a/documentation/dev-manual/index.rst
-+++ b/documentation/dev-manual/index.rst
-@@ -42,6 +42,7 @@ Yocto Project Development Tasks Manual
-    runtime-testing
-    debugging
-    licenses
-+   security-subjects
-    vulnerabilities
-    sbom
-    error-reporting-tool
-diff --git a/documentation/dev-manual/security-subjects.rst b/documentation/dev-manual/security-subjects.rst
-new file mode 100644
-index 000000000..7a388784b
---- /dev/null
-+++ b/documentation/dev-manual/security-subjects.rst
-@@ -0,0 +1,188 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Dealing with Vulnerability Reports
-+**********************************
-+
-+The Yocto Project and OpenEmbedded are open-source, community-based projects
-+used in numerous products. They assemble multiple other open-source projects,
-+and need to handle security issues and practices both internal (in the code
-+maintained by both projects), and external (maintained by other projects and
-+organizations).
-+
-+This manual assembles security-related information concerning the whole
-+ecosystem. It includes information on reporting a potential security issue,
-+the operation of the YP Security team and how to contribute in the
-+related code. It is written to be useful for both security researchers and
-+YP developers.
-+
-+How to report a potential security vulnerability?
-+=================================================
-+
-+If you would like to report a public issue (for example, one with a released
-+CVE number), please report it using the
-+:yocto_bugs:`Security Bugzilla </enter_bug.cgi?product=Security>`.
-+
-+If you are dealing with a not-yet released or urgent issue, please send a
-+message to security AT yoctoproject DOT org, including as many details as
-+possible: the layer or software module affected, the recipe and its version,
-+and any example code, if available. This mailing list is monitored by the
-+Yocto Project Security team.
-+
-+For each layer, you might also look for specific instructions (if any) for
-+reporting potential security issues in the specific ``SECURITY.md`` file at the
-+root of the repository. Instructions on how and where submit a patch are
-+usually available in ``README.md``. If this is your first patch to the
-+Yocto Project/OpenEmbedded, you might want to have a look into the
-+Contributor's Manual section
-+":ref:`contributor-guide/submit-changes:preparing changes for submission`".
-+
-+Branches maintained with security fixes
-+---------------------------------------
-+
-+See the
-+:ref:`Release process <ref-manual/release-process:Stable Release Process>`
-+documentation for details regarding the policies and maintenance of stable
-+branches.
-+
-+The :yocto_wiki:`Releases page </Releases>` contains a list
-+of all releases of the Yocto Project. Versions in grey are no longer actively
-+maintained with security patches, but well-tested patches may still be accepted
-+for them for significant issues.
-+
-+Security-reated discussions at the Yocto Project
-+------------------------------------------------
-+
-+We have set up two security-related mailing lists:
-+
-+  -  Public List: yocto [dash] security [at] yoctoproject[dot] org
-+
-+    This is a public mailing list for anyone to subscribe to. This list is an
-+    open list to discuss public security issues/patches and security-related
-+    initiatives. For more information, including subscription information,
-+    please see the  :yocto_lists:`yocto-security mailing list info page </g/yocto-security>`.
-+
-+  - Private List: security [at] yoctoproject [dot] org
-+
-+    This is a private mailing list for reporting non-published potential
-+    vulnerabilities. The list is monitored by the Yocto Project Security team.
-+
-+
-+What you should do if you find a security vulnerability
-+-------------------------------------------------------
-+
-+If you find a security flaw; a crash, an information leakage, or anything that
-+can have a security impact if exploited in any Open Source software built or
-+used by the Yocto Project, please report this to the Yocto Project Security
-+Team. If you prefer to contact the upstream project directly, please send a
-+copy to the security team at the Yocto Project as well. If you believe this is
-+highly sensitive information, please report the vulnerability in a secure way,
-+i.e. encrypt the email and send it to the private list. This ensures that
-+the exploit is not leaked and exploited before a response/fix has been generated.
-+
-+Security team
-+=============
-+
-+The Yocto Project/OpenEmbedded security team coordinates the work on security
-+subjects in the project. All general discussion takes place publicly. The
-+Security Team only uses confidential communication tools to deal with private
-+vulnerability reports before they are released.
-+
-+Security team appointment
-+-------------------------
-+
-+The Yocto Project Security Team consists of at least three members. When new
-+members are needed, the Yocto Project Technical Steering Committee (YP TSC)
-+asks for nominations by public channels including a nomination deadline.
-+Self-nominations are possible. When the limit time is
-+reached, the YP TSC posts the list of candidates for the comments of project
-+participants and developers. Comments may be sent publicly or privately to the
-+YP and OE TSCs. The candidates are approved by both YP TSC and OE TSC and the
-+final list of the team members is announced publicly. The aim is to have people
-+representing technical leadership, security knowledge and infrastructure present
-+with enough people to provide backup/coverage but keep the notification list
-+small enough to minimise information risk and maintain trust.
-+
-+YP Security Team members may resign at any time.
-+
-+Security Team Operations
-+------------------------
-+
-+The work of the Security Team might require high confidentiality. Team members
-+are individuals selected by merit and do not represent the companies they work
-+for. They do not share information about confidential issues outside of the team
-+and do not hint about ongoing embargoes.
-+
-+Team members can bring in domain experts as needed. Those people should be
-+added to individual issues only and adhere to the same standards as the YP
-+Security Team.
-+
-+The YP security team organizes its meetings and communication as needed.
-+
-+When the YP Security team receives a report about a potential security
-+vulnerability, they quickly analyze and notify the reporter of the result.
-+They might also request more information.
-+
-+If the issue is confirmed and affects the code maintained by the YP, they
-+confidentially notify maintainers of that code and work with them to prepare
-+a fix.
-+
-+If the issue is confirmed and affects an upstream project, the YP security team
-+notifies the project. Usually, the upstream project analyzes the problem again.
-+If they deem it a real security problem in their software, they develop and
-+release a fix following their security policy. They may want to include the
-+original reporter in the loop. There is also sometimes some coordination for
-+handling patches, backporting patches etc, or just understanding the problem
-+or what caused it.
-+
-+When the fix is publicly available, the YP security team member or the
-+package maintainer sends patches against the YP code base, following usual
-+procedures, including public code review.
-+
-+What Yocto Security Team does when it receives a security vulnerability
-+-----------------------------------------------------------------------
-+
-+The YP Security Team team performs a quick analysis and would usually report
-+the flaw to the upstream project. Normally the upstream project analyzes the
-+problem. If they deem it a real security problem in their software, they
-+develop and release a fix following their own security policy. They may want
-+to include the original reporter in the loop. There is also sometimes some
-+coordination for handling patches, backporting patches etc, or just
-+understanding the problem or what caused it.
-+
-+The security policy of the upstream project might include a notification to
-+Linux distributions or other important downstream projects in advance to
-+discuss coordinated disclosure. These mailing lists are normally non-public.
-+
-+When the upstream project releases a version with the fix, they are responsible
-+for contacting `Mitre <https://www.cve.org/>`__ to get a CVE number assigned and
-+the CVE record published.
-+
-+If an upstream project does not respond quickly
-+-----------------------------------------------
-+
-+If an upstream project does not fix the problem in a reasonable time,
-+the Yocto's Security Team will contact other interested parties (usually
-+other distributions) in the community and together try to solve the
-+vulnerability as quickly as possible.
-+
-+The Yocto Project Security team adheres to the 90 days disclosure policy
-+by default. An increase of the embargo time is possible when necessary.
-+
-+Current Security Team members
-+-----------------------------
-+
-+For secure communications, please send your messages encrypted using the GPG
-+keys. Remember, message headers are not encrypted so do not include sensitive
-+information in the subject line.
-+
-+  -  Ross Burton <ross@burtonini.com> `Public key <https://keys.openpgp.org/search?q=ross%40burtonini.com>`__
-+
-+  -  Michael Halstead <mhalstead [at] linuxfoundation [dot] org>
-+     `Public key <https://pgp.mit.edu/pks/lookup?op=vindex&search=0x3373170601861969>`__
-+     or `Public key <https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xd1f2407285e571ed12a407a73373170601861969>`__
-+
-+  -  Richard Purdie <richard.purdie@linuxfoundation.org> `Public key <https://keys.openpgp.org/search?q=richard.purdie%40linuxfoundation.org>`__
-+
-+  -  Marta Rybczynska <marta DOT rybczynska [at] syslinbit [dot] com> `Public key <https://keys.openpgp.org/search?q=marta.rybczynska@syslinbit.com>`__
-+
-+  -  Steve Sakoman <steve [at] sakoman [dot] com> `Public key <https://keys.openpgp.org/search?q=steve%40sakoman.com>`__
--- 
-2.39.2
+Yes, it is good. Changed the reference.
 
+> > +
+> > +  -  Public List yocto [dash] security [at] yoctoproject[dot] org
+>
+>
+> What about "Public List:" instead ?
+>
+
+Yes.
+
+> > +When the upstream project releases a version with the fix, they are re=
+sponsible
+> > +for contacting `Mitre <https://www.cve.org/>`__ to get a CVE number as=
+signed
+> > +and the CVE record published.
+>
+> Oops, you already have the exact same paragraph in one of the earlier
+> sections above.
+> You also have "They may want to include the original reporter in the
+> loop"  twice in your patch. I guess the two paragraphs need a bit of rewo=
+rk.
+>
+
+I moved content around so that this information is given only once now.
+
+> > +Current Security Team members
+> > +-----------------------------
+> > +
+> > +For secure communications, please send your messages encrypted using t=
+he GPG
+> > +keys. Remember, message headers are not encrypted so do not include se=
+nsitive
+> > +information in the subject line.
+> > +
+> > +  -  Ross Burton <ross@burtonini.com> `Public key <https://keys.openpg=
+p.org/search?q=3Dross%40burtonini.com>`__
+> > +
+> > +  -  Michael Halstead <mhalstead [at] linuxfoundation [dot] org>
+> > +     `Public key <https://pgp.mit.edu/pks/lookup?op=3Dvindex&search=3D=
+0x3373170601861969>`__
+> > +     or `Public key <https://keyserver.ubuntu.com/pks/lookup?op=3Dget&=
+search=3D0xd1f2407285e571ed12a407a73373170601861969>`__
+> > +
+> > +  -  Richard Purdie <richard.purdie@linuxfoundation.org> `Public key <=
+https://keys.openpgp.org/search?q=3Drichard.purdie%40linuxfoundation.org>`_=
+_
+> > +
+> > +  -  Marta Rybczynska <marta DOT rybczynska [at] syslinbit [dot] com> =
+`Public key <https://keys.openpgp.org/search?q=3Dmarta.rybczynska@syslinbit=
+.com>`__
+> > +
+> > +  -  Steve Sakoman <steve [at] sakoman [dot] com> `Public key <https:/=
+/keys.openpgp.org/search?q=3Dsteve%40sakoman.com>`__
+>
+> Maybe add a ":" character right after each name?
+> That's all I have. Thanks for the quality of this document!
+
+Not sure about it. I was wondering, however, about showing key
+fingerprint directly.
+That would mean, however, that LTS documentation will require changes
+in that regard
+(key expiration is typically 1 or 2 years). What do you think?
+
+Regards,
+Marta
 
