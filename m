@@ -1,217 +1,284 @@
-Return-Path: <bhstalel@gmail.com>
+Return-Path: <rybczynska@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CEFFC004C0
-	for <webhook@archiver.kernel.org>; Mon, 23 Oct 2023 15:54:22 +0000 (UTC)
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
- by mx.groups.io with SMTP id smtpd.web10.124374.1698076452553899619
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C2B3BC25B45
+	for <webhook@archiver.kernel.org>; Mon, 23 Oct 2023 18:33:43 +0000 (UTC)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+ by mx.groups.io with SMTP id smtpd.web11.129117.1698086013422111470
  for <docs@lists.yoctoproject.org>;
- Mon, 23 Oct 2023 08:54:12 -0700
+ Mon, 23 Oct 2023 11:33:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=iKbWQSq3;
- spf=pass (domain: gmail.com, ip: 209.85.208.48, mailfrom: bhstalel@gmail.com)
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-53e08e439c7so5609220a12.0
-        for <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 08:54:12 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=Ni+ATjg+;
+ spf=pass (domain: gmail.com, ip: 209.85.208.172, mailfrom: rybczynska@gmail.com)
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2c501bd6ff1so50456101fa.3
+        for <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 11:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698076450; x=1698681250; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=DYPjAY8cCftg6tUiOwV4CK+RyeANwmcNPa/ZziZhKI0=;
-        b=iKbWQSq3wTK5Xl/SxTGNZnEcmxi+ngrT/BlI700Um7/22Vjtvi9o/EwGYKNmgG8yDV
-         GSLFVPikTaTbyzk7uNFGENdQtQwV6Rc56pJk7cpJjm7i/y6Uo3vn7Fif86ck0oG4y3WJ
-         CYeYz4fraZJeAGIFgF74qXIjIC2rf7ACsBnrvXNQx+RxVrCAQthMFU791LMjAPUHgAjl
-         Jcm8Pnr4Gf3CQW6voefcShDXkD/jt2GChK0oiedMGl3STkuNjSEa3iGnVLnVpgW5m+AD
-         zcfSPyaZ2g9wzy+hX314g1rd5/khqfg+D/ARQjPtCBSKz9grP6Uqo8Hk78ggBFNCWkKz
-         RPYg==
+        d=gmail.com; s=20230601; t=1698086011; x=1698690811; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oPqq6rTW6MgmaMRcvjqaVOPusdeeuCip078J/5y8KYU=;
+        b=Ni+ATjg+FAnqZAXbMa2mDnL2++MS5b5l3uW1q0M5K1LRfR6o4PfC2qXyB68yJ07c2J
+         DugRjiJwqIYZbif7xiwsOofY+HXuclPhzqaMgQXg1yQ4JzyWf4o5JNKPQnUmeZ7xpM+0
+         0GCOPdk3hH2RGSygddoJxUOwSEiIEsYi/hV3cyOwBvqZdon5JOFEFP6/JxdSf1zha9DA
+         DsTMxWX2VwVaKibmQi5iqgi613RqBGgOqmBuHP2hGjEjLgEHQVsrhnpIrqNKcHynsrbO
+         ddUcXdfbo7JTs+zS5XW9o7YvpuMDLDglBarBQlPOFOfdkfCsnAY4VF/CS0TkwQy/+yjk
+         WwNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698076450; x=1698681250;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1698086011; x=1698690811;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=DYPjAY8cCftg6tUiOwV4CK+RyeANwmcNPa/ZziZhKI0=;
-        b=j1UvjnRnq+w7n8YqwQbE/9TRwGzG9cW4mWo+J0JZchaHVQzLKS8ayip9MbaF8+wG5b
-         8SMZiw+x6DYBppWIaoTbL2cXF1rcBx/Ic8sTlA2Wegvkq7lrpcZDjX6v5dOlNVSairh8
-         EOa57YsNIPTxqLrVphbHP6xwAXCEBWDhibgqjxdjmdROCJsrwkCr6KZWovM7snrf52Da
-         1UMzYSb+EwnZAkm2Iub6RwMtoG7cfm856HcuJc6C/hzMHV9HcUCiegOUojIVEnSF0B6O
-         McZEgcZR4ohyxvBep8n26XwcHGHnQ1jtL6OZoSvzOfg1TgXAqfYOCoBsbxeHbZk95n+5
-         8ALA==
-X-Gm-Message-State: AOJu0YxYzrtppj2PmMHK4jkb4UYovBN/LWe+aekdTkcRH2Wa7I2xQf5e
-	lWrZek7cx/biBiuvpsLDQiUQyFK/x3tVyoqNyNg=
-X-Google-Smtp-Source: AGHT+IFWHUR8BJEaViNIbqwaDqQMxCPR9IG5q2pXK9cv6yTIQJYbteys0PtqdUh7cDFDN2kn5q6kZhGWxyxq8wbQnHE=
-X-Received: by 2002:a17:907:60d4:b0:9ad:ef31:6efc with SMTP id
- hv20-20020a17090760d400b009adef316efcmr8714188ejc.21.1698076450026; Mon, 23
- Oct 2023 08:54:10 -0700 (PDT)
+        bh=oPqq6rTW6MgmaMRcvjqaVOPusdeeuCip078J/5y8KYU=;
+        b=h3naGktSfDcdizpZ72HFsIp/e4kA7piV7KgjJeuaWI3UEwjj3YPmznjRTU9/kQrJaA
+         qbjgLZjNQEpaEbHPylfS+tod1gio6VXEmHBooMHUds7w1iEa1kvy6p+Wg9kVwtV8tWSD
+         VcQSMU4n8rVG8zdqKZHl7pJuZTzl/7qHAQJUy9HiSC9MKyLvNV/DYWr8tAN8DHZ0eaOZ
+         gAa4W1o39MxKOkG8FK4k4m45wIz6mGpAHIFASk9LnbxSJwx1D7Wh2C2U1CaT+mMSv6No
+         sPCpgJM+rVtX3ngG+M0F1ydE1IWMSQ129/+EFf2svRJqT+/70+gtMYLHigDYJZ3KfLwu
+         aCbg==
+X-Gm-Message-State: AOJu0YynZs1q0KeQRBEGb4kwG4nymgxLafBT3g4fFIP/j8G4gW+Tyukf
+	cchPCOGbF2QTT6XXuvubUtvTTHV7ijs=
+X-Google-Smtp-Source: AGHT+IGUu4P8/bEq6jPWtR7JCUywqH7lqxGLozIeUGtNASQ82680IOHm2Hy/q6fDMYwfGgQ411M+ow==
+X-Received: by 2002:a2e:350e:0:b0:2c5:1c4:9005 with SMTP id z14-20020a2e350e000000b002c501c49005mr6695863ljz.32.1698086010658;
+        Mon, 23 Oct 2023 11:33:30 -0700 (PDT)
+Received: from localhost.localdomain (91-161-217-16.subs.proxad.net. [91.161.217.16])
+        by smtp.gmail.com with ESMTPSA id v19-20020a05600c471300b00405959bbf4fsm10149577wmo.19.2023.10.23.11.33.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Oct 2023 11:33:29 -0700 (PDT)
+From: Marta Rybczynska <rybczynska@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Marta Rybczynska <rybczynska@gmail.com>,
+	Marta Rybczynska <marta.rybczynska@syslinbit.com>
+Subject: [PATCH v3][docs] dev-manual: add security team processes
+Date: Mon, 23 Oct 2023 20:33:23 +0200
+Message-Id: <20231023183323.10676-1-rybczynska@gmail.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <CAOgG7m3Z8E9PvROHDV5qL8-WGJmY0f6NQgPrfxG8YXnVw6AfPA@mail.gmail.com>
- <CANNYZj8xYZWLnbxoHuBaGR0SDx98vbO26ob8qmsZ7eTRZgQA3g@mail.gmail.com>
-In-Reply-To: <CANNYZj8xYZWLnbxoHuBaGR0SDx98vbO26ob8qmsZ7eTRZgQA3g@mail.gmail.com>
-From: Talel BELHADJ SALEM <bhstalel@gmail.com>
-Date: Mon, 23 Oct 2023 16:53:59 +0100
-Message-ID: <CAOgG7m0w5z0TpntHnzEHwKngkwc3c9nvsnpmR0_zGR+K_Ng9-Q@mail.gmail.com>
-Subject: Re: [docs] [Proposition] Workshop-like documentation
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-Cc: docs@lists.yoctoproject.org, 
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Content-Type: multipart/alternative; boundary="0000000000009af93a0608643b66"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 15:54:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4456
+ <docs@lists.yoctoproject.org>; Mon, 23 Oct 2023 18:33:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4457
 
---0000000000009af93a0608643b66
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Add the initial version of the section on vulnerability reports,
+operations of the Security Team with a
+transcription of https://wiki.yoctoproject.org/wiki/Security_private_reporting
 
-Hello Alexander,
+Signed-off-by: Marta Rybczynska <marta.rybczynska@syslinbit.com>
+---
+ documentation/dev-manual/index.rst            |   1 +
+ .../dev-manual/security-subjects.rst          | 188 ++++++++++++++++++
+ 2 files changed, 189 insertions(+)
+ create mode 100644 documentation/dev-manual/security-subjects.rst
 
-Thanks for the suggestion.
+diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
+index 3106b90a4..9ccf60f70 100644
+--- a/documentation/dev-manual/index.rst
++++ b/documentation/dev-manual/index.rst
+@@ -42,6 +42,7 @@ Yocto Project Development Tasks Manual
+    runtime-testing
+    debugging
+    licenses
++   security-subjects
+    vulnerabilities
+    sbom
+    error-reporting-tool
+diff --git a/documentation/dev-manual/security-subjects.rst b/documentation/dev-manual/security-subjects.rst
+new file mode 100644
+index 000000000..7a388784b
+--- /dev/null
++++ b/documentation/dev-manual/security-subjects.rst
+@@ -0,0 +1,188 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Dealing with Vulnerability Reports
++**********************************
++
++The Yocto Project and OpenEmbedded are open-source, community-based projects
++used in numerous products. They assemble multiple other open-source projects,
++and need to handle security issues and practices both internal (in the code
++maintained by both projects), and external (maintained by other projects and
++organizations).
++
++This manual assembles security-related information concerning the whole
++ecosystem. It includes information on reporting a potential security issue,
++the operation of the YP Security team and how to contribute in the
++related code. It is written to be useful for both security researchers and
++YP developers.
++
++How to report a potential security vulnerability?
++=================================================
++
++If you would like to report a public issue (for example, one with a released
++CVE number), please report it using the
++:yocto_bugs:`Security Bugzilla </enter_bug.cgi?product=Security>`.
++
++If you are dealing with a not-yet released or urgent issue, please send a
++message to security AT yoctoproject DOT org, including as many details as
++possible: the layer or software module affected, the recipe and its version,
++and any example code, if available. This mailing list is monitored by the
++Yocto Project Security team.
++
++For each layer, you might also look for specific instructions (if any) for
++reporting potential security issues in the specific ``SECURITY.md`` file at the
++root of the repository. Instructions on how and where submit a patch are
++usually available in ``README.md``. If this is your first patch to the
++Yocto Project/OpenEmbedded, you might want to have a look into the
++Contributor's Manual section
++":ref:`contributor-guide/submit-changes:preparing changes for submission`".
++
++Branches maintained with security fixes
++---------------------------------------
++
++See the
++:ref:`Release process <ref-manual/release-process:Stable Release Process>`
++documentation for details regarding the policies and maintenance of stable
++branches.
++
++The :yocto_wiki:`Releases page </Releases>` contains a list
++of all releases of the Yocto Project. Versions in grey are no longer actively
++maintained with security patches, but well-tested patches may still be accepted
++for them for significant issues.
++
++Security-reated discussions at the Yocto Project
++------------------------------------------------
++
++We have set up two security-related mailing lists:
++
++  -  Public List: yocto [dash] security [at] yoctoproject[dot] org
++
++    This is a public mailing list for anyone to subscribe to. This list is an
++    open list to discuss public security issues/patches and security-related
++    initiatives. For more information, including subscription information,
++    please see the  :yocto_lists:`yocto-security mailing list info page </g/yocto-security>`.
++
++  - Private List: security [at] yoctoproject [dot] org
++
++    This is a private mailing list for reporting non-published potential
++    vulnerabilities. The list is monitored by the Yocto Project Security team.
++
++
++What you should do if you find a security vulnerability
++-------------------------------------------------------
++
++If you find a security flaw; a crash, an information leakage, or anything that
++can have a security impact if exploited in any Open Source software built or
++used by the Yocto Project, please report this to the Yocto Project Security
++Team. If you prefer to contact the upstream project directly, please send a
++copy to the security team at the Yocto Project as well. If you believe this is
++highly sensitive information, please report the vulnerability in a secure way,
++i.e. encrypt the email and send it to the private list. This ensures that
++the exploit is not leaked and exploited before a response/fix has been generated.
++
++Security team
++=============
++
++The Yocto Project/OpenEmbedded security team coordinates the work on security
++subjects in the project. All general discussion takes place publicly. The
++Security Team only uses confidential communication tools to deal with private
++vulnerability reports before they are released.
++
++Security team appointment
++-------------------------
++
++The Yocto Project Security Team consists of at least three members. When new
++members are needed, the Yocto Project Technical Steering Committee (YP TSC)
++asks for nominations by public channels including a nomination deadline.
++Self-nominations are possible. When the limit time is
++reached, the YP TSC posts the list of candidates for the comments of project
++participants and developers. Comments may be sent publicly or privately to the
++YP and OE TSCs. The candidates are approved by both YP TSC and OE TSC and the
++final list of the team members is announced publicly. The aim is to have people
++representing technical leadership, security knowledge and infrastructure present
++with enough people to provide backup/coverage but keep the notification list
++small enough to minimise information risk and maintain trust.
++
++YP Security Team members may resign at any time.
++
++Security Team Operations
++------------------------
++
++The work of the Security Team might require high confidentiality. Team members
++are individuals selected by merit and do not represent the companies they work
++for. They do not share information about confidential issues outside of the team
++and do not hint about ongoing embargoes.
++
++Team members can bring in domain experts as needed. Those people should be
++added to individual issues only and adhere to the same standards as the YP
++Security Team.
++
++The YP security team organizes its meetings and communication as needed.
++
++When the YP Security team receives a report about a potential security
++vulnerability, they quickly analyze and notify the reporter of the result.
++They might also request more information.
++
++If the issue is confirmed and affects the code maintained by the YP, they
++confidentially notify maintainers of that code and work with them to prepare
++a fix.
++
++If the issue is confirmed and affects an upstream project, the YP security team
++notifies the project. Usually, the upstream project analyzes the problem again.
++If they deem it a real security problem in their software, they develop and
++release a fix following their security policy. They may want to include the
++original reporter in the loop. There is also sometimes some coordination for
++handling patches, backporting patches etc, or just understanding the problem
++or what caused it.
++
++When the fix is publicly available, the YP security team member or the
++package maintainer sends patches against the YP code base, following usual
++procedures, including public code review.
++
++What Yocto Security Team does when it receives a security vulnerability
++-----------------------------------------------------------------------
++
++The YP Security Team team performs a quick analysis and would usually report
++the flaw to the upstream project. Normally the upstream project analyzes the
++problem. If they deem it a real security problem in their software, they
++develop and release a fix following their own security policy. They may want
++to include the original reporter in the loop. There is also sometimes some
++coordination for handling patches, backporting patches etc, or just
++understanding the problem or what caused it.
++
++The security policy of the upstream project might include a notification to
++Linux distributions or other important downstream projects in advance to
++discuss coordinated disclosure. These mailing lists are normally non-public.
++
++When the upstream project releases a version with the fix, they are responsible
++for contacting `Mitre <https://www.cve.org/>`__ to get a CVE number assigned and
++the CVE record published.
++
++If an upstream project does not respond quickly
++-----------------------------------------------
++
++If an upstream project does not fix the problem in a reasonable time,
++the Yocto's Security Team will contact other interested parties (usually
++other distributions) in the community and together try to solve the
++vulnerability as quickly as possible.
++
++The Yocto Project Security team adheres to the 90 days disclosure policy
++by default. An increase of the embargo time is possible when necessary.
++
++Current Security Team members
++-----------------------------
++
++For secure communications, please send your messages encrypted using the GPG
++keys. Remember, message headers are not encrypted so do not include sensitive
++information in the subject line.
++
++  -  Ross Burton <ross@burtonini.com> `Public key <https://keys.openpgp.org/search?q=ross%40burtonini.com>`__
++
++  -  Michael Halstead <mhalstead [at] linuxfoundation [dot] org>
++     `Public key <https://pgp.mit.edu/pks/lookup?op=vindex&search=0x3373170601861969>`__
++     or `Public key <https://keyserver.ubuntu.com/pks/lookup?op=get&search=0xd1f2407285e571ed12a407a73373170601861969>`__
++
++  -  Richard Purdie <richard.purdie@linuxfoundation.org> `Public key <https://keys.openpgp.org/search?q=richard.purdie%40linuxfoundation.org>`__
++
++  -  Marta Rybczynska <marta DOT rybczynska [at] syslinbit [dot] com> `Public key <https://keys.openpgp.org/search?q=marta.rybczynska@syslinbit.com>`__
++
++  -  Steve Sakoman <steve [at] sakoman [dot] com> `Public key <https://keys.openpgp.org/search?q=steve%40sakoman.com>`__
+-- 
+2.39.2
 
-I have the article "Things you should know about Recipe's working directory=
-"
-
-I think it can be added to "dev-manual" as "40. Understanding WORKDIR" or
-"40. Recipe WORKDIR workshop"
-
-What do you think?
-
-Kind regards
-Talel
-
-On Mon, Oct 23, 2023 at 12:30=E2=80=AFPM Alexander Kanavin <alex.kanavin@gm=
-ail.com>
-wrote:
-
-> Hello Talel,
->
-> I really like the idea. Hand drawn diagrams are awesome! This could be
-> on the doc website just under the 'Quick Build':
-> https://docs.yoctoproject.org/index.html
->
-> Alex
->
-> On Fri, 20 Oct 2023 at 19:06, BELHADJ SALEM Talel <bhstalel@gmail.com>
-> wrote:
-> >
-> > Hello Michael,
-> >
-> > I have a website for Yocto that I have some articles in there:
-> https://yoctoleef.xyz/
-> >
-> > I am a Yocto trainer for long time now, and I love detailing everything=
-,
-> >
-> > For instance check:
-> https://yoctoleef.xyz/2023/07/27/details-you-should-know-about-the-recipe=
-s-working-directory-part-ii/
-> >
-> > I would like to contribute something like:
-> >
-> > Practical Manual, or
-> > Workshop Manual
-> >
-> > or something like that, the aim is to provide a learning process for
-> newcomers.
-> >
-> > It is like putting a Yocto training path with workshops and examples to
-> follow in order to master Yocto.
-> >
-> > It is like The Rust Programming Book idea.
-> >
-> > What do you think?
-> >
-> > Kind regards
-> > Talel
-> >
-> > -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> > Links: You receive all messages sent to this group.
-> > View/Reply Online (#4450):
-> https://lists.yoctoproject.org/g/docs/message/4450
-> > Mute This Topic: https://lists.yoctoproject.org/mt/102085617/1686489
-> > Group Owner: docs+owner@lists.yoctoproject.org
-> > Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
-> alex.kanavin@gmail.com]
-> > -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> >
->
-
---0000000000009af93a0608643b66
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hello=C2=A0Alexander,<div><br></div><div>Thanks=C2=A0for t=
-he suggestion.</div><div><br></div><div>I have the article &quot;Things you=
- should know about Recipe&#39;s working directory&quot;</div><div><br></div=
-><div>I think it can be added to &quot;dev-manual&quot; as &quot;40. Unders=
-tanding WORKDIR&quot; or &quot;40. Recipe WORKDIR workshop&quot;</div><div>=
-<br></div><div>What do you think?</div><div><br></div><div>Kind regards</di=
-v><div>Talel</div></div><br><div class=3D"gmail_quote"><div dir=3D"ltr" cla=
-ss=3D"gmail_attr">On Mon, Oct 23, 2023 at 12:30=E2=80=AFPM Alexander Kanavi=
-n &lt;<a href=3D"mailto:alex.kanavin@gmail.com">alex.kanavin@gmail.com</a>&=
-gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0=
-px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hello=
- Talel,<br>
-<br>
-I really like the idea. Hand drawn diagrams are awesome! This could be<br>
-on the doc website just under the &#39;Quick Build&#39;:<br>
-<a href=3D"https://docs.yoctoproject.org/index.html" rel=3D"noreferrer" tar=
-get=3D"_blank">https://docs.yoctoproject.org/index.html</a><br>
-<br>
-Alex<br>
-<br>
-On Fri, 20 Oct 2023 at 19:06, BELHADJ SALEM Talel &lt;<a href=3D"mailto:bhs=
-talel@gmail.com" target=3D"_blank">bhstalel@gmail.com</a>&gt; wrote:<br>
-&gt;<br>
-&gt; Hello Michael,<br>
-&gt;<br>
-&gt; I have a website for Yocto that I have some articles in there: <a href=
-=3D"https://yoctoleef.xyz/" rel=3D"noreferrer" target=3D"_blank">https://yo=
-ctoleef.xyz/</a><br>
-&gt;<br>
-&gt; I am a Yocto trainer for long time now, and I love detailing everythin=
-g,<br>
-&gt;<br>
-&gt; For instance check: <a href=3D"https://yoctoleef.xyz/2023/07/27/detail=
-s-you-should-know-about-the-recipes-working-directory-part-ii/" rel=3D"nore=
-ferrer" target=3D"_blank">https://yoctoleef.xyz/2023/07/27/details-you-shou=
-ld-know-about-the-recipes-working-directory-part-ii/</a><br>
-&gt;<br>
-&gt; I would like to contribute something like:<br>
-&gt;<br>
-&gt; Practical Manual, or<br>
-&gt; Workshop Manual<br>
-&gt;<br>
-&gt; or something like that, the aim is to provide a learning process for n=
-ewcomers.<br>
-&gt;<br>
-&gt; It is like putting a Yocto training path with workshops and examples t=
-o follow in order to master Yocto.<br>
-&gt;<br>
-&gt; It is like The Rust Programming Book idea.<br>
-&gt;<br>
-&gt; What do you think?<br>
-&gt;<br>
-&gt; Kind regards<br>
-&gt; Talel<br>
-&gt;<br>
-&gt; -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-&gt; Links: You receive all messages sent to this group.<br>
-&gt; View/Reply Online (#4450): <a href=3D"https://lists.yoctoproject.org/g=
-/docs/message/4450" rel=3D"noreferrer" target=3D"_blank">https://lists.yoct=
-oproject.org/g/docs/message/4450</a><br>
-&gt; Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/10208561=
-7/1686489" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.=
-org/mt/102085617/1686489</a><br>
-&gt; Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" ta=
-rget=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
-&gt; Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" r=
-el=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/u=
-nsub</a> [<a href=3D"mailto:alex.kanavin@gmail.com" target=3D"_blank">alex.=
-kanavin@gmail.com</a>]<br>
-&gt; -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
-&gt;<br>
-</blockquote></div>
-
---0000000000009af93a0608643b66--
 
