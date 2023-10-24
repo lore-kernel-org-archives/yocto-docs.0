@@ -2,36 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 871D7C25B71
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 906C8C25B72
 	for <webhook@archiver.kernel.org>; Tue, 24 Oct 2023 13:23:49 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.147621.1698153822159212109
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.147622.1698153822596854840
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Oct 2023 06:23:42 -0700
+ Tue, 24 Oct 2023 06:23:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=D68B4aPF;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9FD3E4000B;
-	Tue, 24 Oct 2023 13:23:39 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=PXBGBtbf;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5743924000A;
+	Tue, 24 Oct 2023 13:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1698153819;
+	t=1698153820;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Kk141M6u6ssSuuUpHMo+v9gVDa3ZhiSr5pY9GX2TBAc=;
-	b=D68B4aPFN7tcjc74c77nP1TSalbHhbgtwJn6H1eDBfjxuZNacywHhA9DGTY5nNV4lNf5+c
-	SYTk3ZPmIJlbdTUgu0PYBXZZd4RVaGQTgqrManNq1zhhEuuZ7oJiSjmJ8lMXIJRVIgbSLN
-	uCByJgabK4JnHU8MJA5UiCIYmSWyaFJiPtjpSuKndBSB3a1SAyUg82YFiW1b5zMk/XBfBy
-	Rn2GfLxiONAokRMwm5kRvKBVikEx1fmS810iDUKHevfIWwTv1GSPd0y0FZnk7XhdaZXnDc
-	yROMF9Weu6AINJF09kgVVHM5Mx491ZIqAI27w9IRDPi2Xr+voXENnL77HkDjAw==
+	bh=2Cb+bKRBvfi2GgbyE/eLr7Up0st8IxV2rOGajfJ+ybw=;
+	b=PXBGBtbf1mMsX84N/NrLfPXPiit5g5gr9VDngBWU/ExNogMd8+8azTKjuO4Bv3dNl6TKRw
+	duOYt/yfhB3PsCMgmjQqzS2nmu+bdm6JlSWgRR5qm7gq8KUv1/kd5nQRC8KR+Roy4FD3sW
+	zuww3MZVcx4V+mABQsZjYry3hGeGCMCPeztEYPwgRA6jeRtCtNvqUJrObCuCbQe22ZuNmm
+	Pq+Ar00nwBaYy6ksGiBQg0twaq6QFd5qje0qH8Rdgx+tAJcio8PI3ueVMrFy4A0TwN7m7Z
+	ua2hqNDSEnD9IiEsoBQXSzvUTdCavPqMlY99V6LUGrQUr+skvrIUAjnoC4hbWg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Talel BELHAJSALEM <bhstalel@gmail.com>
-Subject: [mickledore][PATCH 05/13] ref-manual: Fix PACKAGECONFIG term and add an example
-Date: Tue, 24 Oct 2023 15:23:10 +0200
-Message-Id: <20231024132318.90209-6-michael.opdenacker@bootlin.com>
+	"Robert P . J . Day" <rpjday@crashcourse.ca>
+Subject: [mickledore][PATCH 06/13] profile-manual: aesthetic cleanups
+Date: Tue, 24 Oct 2023 15:23:11 +0200
+Message-Id: <20231024132318.90209-7-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
 References: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
@@ -42,85 +42,107 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 24 Oct 2023 13:23:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4466
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4467
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: BELHADJ SALEM Talel <bhstalel@gmail.com>
+From: Robert P. J. Day <rpjday@crashcourse.ca>
 
-PACKAGECONFIG's first and second flag value will be added to PACKAGECONFIG_CONFARGS
-and then it will be added to the appropriate variable (EXTRA_OECMAKE, or ...)
-So we need to only mention PACKAGECONFIG_CONFARGS and it will lead to other variables.
+Various aesthetic cleanups of section 1 of that manual, including:
 
-I added a custom example that can help understanding very well PACKAGECONFIG.
+  * replace 'HOWTO' with manual
+  * add more examples of sdk-related images
+  * font fixes
 
-Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
+Signed-off-by: Robert P. J. Day <rpjday@crashcourse.ca>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 42 ++++++++++++++++++++++----
- 1 file changed, 36 insertions(+), 6 deletions(-)
+ documentation/profile-manual/intro.rst | 40 ++++++++++++++------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 445274f62f..8d557495d4 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -5925,13 +5925,11 @@ system and gives an overview of their function and contents.
-       omit any argument you like but must retain the separating commas. The
-       order is important and specifies the following:
+diff --git a/documentation/profile-manual/intro.rst b/documentation/profile-manual/intro.rst
+index 93f8429ee3..86310cf318 100644
+--- a/documentation/profile-manual/intro.rst
++++ b/documentation/profile-manual/intro.rst
+@@ -7,43 +7,45 @@ Yocto Project Profiling and Tracing Manual
+ Introduction
+ ============
  
--      #. Extra arguments that should be added to the configure script
--         argument list (:term:`EXTRA_OECONF` or
--         :term:`PACKAGECONFIG_CONFARGS`) if
--         the feature is enabled.
-+      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
-+         if the feature is enabled.
+-Yocto bundles a number of tracing and profiling tools --- this 'HOWTO'
++Yocto Project bundles a number of tracing and profiling tools --- this manual
+ describes their basic usage and shows by example how to make use of them
+-to examine application and system behavior.
++to analyze application and system behavior.
  
--      #. Extra arguments that should be added to :term:`EXTRA_OECONF` or
--         :term:`PACKAGECONFIG_CONFARGS` if the feature is disabled.
-+      #. Extra arguments that should be added to :term:`PACKAGECONFIG_CONFARGS`
-+         if the feature is disabled.
+-The tools presented are for the most part completely open-ended and have
++The tools presented are, for the most part, completely open-ended and have
+ quite good and/or extensive documentation of their own which can be used
+ to solve just about any problem you might come across in Linux. Each
+ section that describes a particular tool has links to that tool's
+ documentation and website.
  
-       #. Additional build dependencies (:term:`DEPENDS`)
-          that should be added if the feature is enabled.
-@@ -5989,6 +5987,38 @@ system and gives an overview of their function and contents.
+-The purpose of this 'HOWTO' is to present a set of common and generally
++The purpose of this manual is to present a set of common and generally
+ useful tracing and profiling idioms along with their application (as
+ appropriate) to each tool, in the context of a general-purpose
+ 'drill-down' methodology that can be applied to solving a large number
+-(90%?) of problems. For help with more advanced usages and problems,
+-please see the documentation and/or websites listed for each tool.
++of problems. For help with more advanced usages and problems,
++refer to the documentation and/or websites provided for each tool.
  
-             PACKAGECONFIG:append:pn-recipename = " f4"
+-The final section of this 'HOWTO' is a collection of real-world examples
+-which we'll be continually adding to as we solve more problems using the
+-tools --- feel free to add your own examples to the list!
++The final section of this manual is a collection of real-world examples
++which we'll be continually updating as we solve more problems using the
++tools --- feel free to suggest additions to what you read here.
  
-+      Consider the following example of a :ref:`ref-classes-cmake` recipe with a systemd service
-+      in which :term:`PACKAGECONFIG` is used to transform the systemd service
-+      into a feature that can be easily enabled or disabled via :term:`PACKAGECONFIG`::
-+
-+         example.c
-+         example.service
-+         CMakeLists.txt
-+
-+      The ``CMakeLists.txt`` file contains::
-+
-+         if(WITH_SYSTEMD)
-+            install(FILES ${PROJECT_SOURCE_DIR}/example.service DESTINATION /etc/systemd/systemd)
-+         endif(WITH_SYSTEMD)
-+
-+      In order to enable the installation of ``example.service`` we need to
-+      ensure that ``-DWITH_SYSTEMD=ON`` is passed to the ``cmake`` command
-+      execution.  Recipes that have ``CMakeLists.txt`` generally inherit the
-+      :ref:`ref-classes-cmake` class, that runs ``cmake`` with
-+      :term:`EXTRA_OECMAKE`, which :term:`PACKAGECONFIG_CONFARGS` will be
-+      appended to.  Now, knowing that :term:`PACKAGECONFIG_CONFARGS` is
-+      automatically filled with either the first or second element of
-+      :term:`PACKAGECONFIG` flag value, the recipe would be like::
-+
-+         inherit cmake
-+         PACKAGECONFIG = "systemd"
-+         PACKAGECONFIG[systemd] = "-DWITH_SYSTEMD=ON,-DWITH_SYSTEMD=OFF"
-+
-+      A side note to this recipe is to check if ``systemd`` is in fact the used :term:`INIT_MANAGER`
-+      or not::
-+
-+         PACKAGECONFIG = "${@'systemd' if d.getVar('INIT_MANAGER') == 'systemd' else ''}"
-+
-    :term:`PACKAGECONFIG_CONFARGS`
-       A space-separated list of configuration options generated from the
-       :term:`PACKAGECONFIG` setting.
+ General Setup
+ =============
+ 
+-Most of the tools are available only in 'sdk' images or in images built
+-after adding 'tools-profile' to your local.conf. So, in order to be able
+-to access all of the tools described here, please first build and boot
+-an 'sdk' image e.g. ::
++Most of the tools are available only in ``sdk`` images or in images built
++after adding ``tools-profile`` to your ``local.conf`` file. So, in order to be able
++to access all of the tools described here, you can build and boot
++an ``sdk`` image, perhaps one of::
+ 
+    $ bitbake core-image-sato-sdk
++   $ bitbake core-image-weston-sdk
++   $ bitbake core-image-rt-sdk
+ 
+-or alternatively by adding 'tools-profile' to the :term:`EXTRA_IMAGE_FEATURES` line in
+-your local.conf::
++Alternatively,  you can add ``tools-profile`` to the :term:`EXTRA_IMAGE_FEATURES` line in
++your ``local.conf`` file::
+ 
+    EXTRA_IMAGE_FEATURES = "debug-tweaks tools-profile"
+ 
+-If you use the 'tools-profile' method, you don't need to build an sdk image -
++If you use the ``tools-profile`` method, you don't need to build an sdk image ---
+ the tracing and profiling tools will be included in non-sdk images as well e.g.::
+ 
+    $ bitbake core-image-sato
+@@ -64,12 +66,12 @@ the tracing and profiling tools will be included in non-sdk images as well e.g.:
+ If you've already built a stripped image, you can generate debug
+ packages (xxx-dbg) which you can manually install as needed.
+ 
+-To generate debug info for packages, you can add dbg-pkgs to
+-:term:`EXTRA_IMAGE_FEATURES` in local.conf. For example::
++To generate debug info for packages, you can add ``dbg-pkgs`` to
++:term:`EXTRA_IMAGE_FEATURES` in ``local.conf``. For example::
+ 
+    EXTRA_IMAGE_FEATURES = "debug-tweaks tools-profile dbg-pkgs"
+ 
+-Additionally, in order to generate the right type of debuginfo, we also need to
++Additionally, in order to generate the right type of debug info, we also need to
+ set :term:`PACKAGE_DEBUG_SPLIT_STYLE` in the ``local.conf`` file::
+ 
+    PACKAGE_DEBUG_SPLIT_STYLE = 'debug-file-directory'
 -- 
 2.34.1
 
