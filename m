@@ -2,36 +2,35 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E02AC00A8F
-	for <webhook@archiver.kernel.org>; Tue, 24 Oct 2023 13:23:39 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.147618.1698153818515018826
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35B45C25B48
+	for <webhook@archiver.kernel.org>; Tue, 24 Oct 2023 13:23:49 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.17904.1698153819211356853
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Oct 2023 06:23:38 -0700
+ Tue, 24 Oct 2023 06:23:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=VkSKcaZ2;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AB928FF818;
-	Tue, 24 Oct 2023 13:23:36 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QIds86ZD;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BC7251BF218;
+	Tue, 24 Oct 2023 13:23:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1698153816;
+	t=1698153817;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jU8xAKVcWYUAEM4iH3nzQwOhJpy1vJWWLGhMBNoU67k=;
-	b=VkSKcaZ2pNJnWVisPwP2lUwrHa1JU3VoeZD8gIeaCTvqpjxe3Whb2wyyC+8aWtET/tzOMG
-	TxczRzcwW8CrP7izghAoO3pD3Rqkw2M7A65+iXqWoso6EYxsEU6nqm1gSYJeOR3bf+lH84
-	yqXA4H7jsWo/32Kl68BwETRAVl5c8876S9egk2/pAYJ54whT3vrUtLSkGlqWr75gc9G/fN
-	Gcs3pFYIunbuBc175HOTStv9OK0Dsd8zu/DMxXdqkscPbXQ4Hkmaka7cAnB26wxhpJB1Bv
-	+dYAhgO2RHDkN8gLTtZiQfACWU+latbMZniWXhsZUsIoCoLRn+ckyAJIK1pnPA==
+	bh=Ib6/O4FQcolWUk5LXR6vdwAHxfPSr0MMs+WppDOeMfY=;
+	b=QIds86ZDc0X9ofiYErS7cyhnwiMwej99fTbq7oPeSqInezJj+3EuXshLlEv+/I4I3+hGTg
+	Anoz13fNof+tBllxkPXSZGot+a1TUgH9EELgGG1bP0oIo9qNsWFecJxs1lp3I2Of28iF0r
+	0JZCDkdLPyFV0QaIL17ZkhAqnTCocUrQ8ZLXmqDIC9WQ5AIxlqvOyQ247+TXfKGaUeqObI
+	19JCodoWBcB3kps7kvR4HakF15UxJcltAEVartsW5igOh7R1FjYjkgVam4NhCRYL9nIh/d
+	0kR9CaJO3dMGleArMGckkoloMKKecgn2bLPo6BTODBCIYRmviODIQYE7nyNJdQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Arne Schwerdt <arne.schwerdt@elbbits.com>
-Subject: [mickledore][PATCH 01/13] ref-manual: Warn about COMPATIBLE_MACHINE skipping native recipes
-Date: Tue, 24 Oct 2023 15:23:06 +0200
-Message-Id: <20231024132318.90209-2-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [mickledore][PATCH 03/13] sdk-manual: appendix-obtain: improve and update descriptions
+Date: Tue, 24 Oct 2023 15:23:08 +0200
+Message-Id: <20231024132318.90209-4-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
 References: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
@@ -41,37 +40,110 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Oct 2023 13:23:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4462
+ <docs@lists.yoctoproject.org>; Tue, 24 Oct 2023 13:23:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4464
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Arne Schwerdt <arne.schwerdt@elbbits.com>
+- Improve text formatting
+- Stop mentioning all possible values
+- Update examples
+- Correct descriptions
 
-Signed-off-by: Arne Schwerdt <arne.schwerdt@elbbits.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 7 +++++++
- 1 file changed, 7 insertions(+)
+ documentation/sdk-manual/appendix-obtain.rst | 50 +++++++-------------
+ 1 file changed, 18 insertions(+), 32 deletions(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 5722376815..445274f62f 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -1362,6 +1362,13 @@ system and gives an overview of their function and contents.
-       speed since the build system skips parsing recipes not compatible
-       with the current machine.
+diff --git a/documentation/sdk-manual/appendix-obtain.rst b/documentation/sdk-manual/appendix-obtain.rst
+index ba844507d3..be4928cf4d 100644
+--- a/documentation/sdk-manual/appendix-obtain.rst
++++ b/documentation/sdk-manual/appendix-obtain.rst
+@@ -39,27 +39,20 @@ Follow these steps to locate and hand-install the toolchain:
+    download the installer appropriate for your build host, target
+    hardware, and image type.
  
-+      .. note::
-+
-+         When :term:`COMPATIBLE_MACHINE` is set in a recipe inherits from
-+         native, the recipe is always skipped. All native recipes must be
-+         entirely target independent and should not rely on :term:`MACHINE`.
-+
-+
-    :term:`COMPLEMENTARY_GLOB`
-       Defines wildcards to match when installing a list of complementary
-       packages for all the packages explicitly (or implicitly) installed in
+-   The installer files (``*.sh``) follow this naming convention::
++   The installer files (``*.sh``) follow this naming convention:
++   ``poky-glibc-host_system-core-image-type-arch-toolchain[-ext]-release.sh``:
+ 
+-      poky-glibc-host_system-core-image-type-arch-toolchain[-ext]-release.sh
++   -  ``host_system``: string representing your development system: ``i686`` or ``x86_64``
+ 
+-      Where:
+-          host_system is a string representing your development system:
+-                 "i686" or "x86_64"
++   -  ``type``: string representing the image: ``sato`` or ``minimal``
+ 
+-          type is a string representing the image:
+-                "sato" or "minimal"
++   -  ``arch``: string representing the target architecture such as ``cortexa57-qemuarm64``
+ 
+-          arch is a string representing the target architecture:
+-                 "aarch64", "armv5e", "core2-64", "cortexa8hf-neon", "i586", "mips32r2",
+-                 "mips64", or "ppc7400"
+-
+-          release is the version of Yocto Project.
+-
+-          NOTE:
+-             The standard SDK installer does not have the "-ext" string as
+-             part of the filename.
++   -  ``release``: version of the Yocto Project.
+ 
++   .. note::
++      The standard SDK installer does not have the ``-ext`` string as
++      part of the filename.
+ 
+    The toolchains provided by the Yocto
+    Project are based off of the ``core-image-sato`` and
+@@ -67,16 +60,16 @@ Follow these steps to locate and hand-install the toolchain:
+    developing against those images.
+ 
+    For example, if your build host is a 64-bit x86 system and you need
+-   an extended SDK for a 64-bit core2 target, go into the ``x86_64``
++   an extended SDK for a 64-bit core2 QEMU target, go into the ``x86_64``
+    folder and download the following installer::
+ 
+-      poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-&DISTRO;.sh
++      poky-glibc-x86_64-core-image-sato-core2-64-qemux86-64-toolchain-&DISTRO;.sh
+ 
+ #. *Run the Installer:* Be sure you have execution privileges and run
+    the installer. Following is an example from the ``Downloads``
+    directory::
+ 
+-      $ ~/Downloads/poky-glibc-x86_64-core-image-sato-core2-64-toolchain-ext-&DISTRO;.sh
++      $ ~/Downloads/poky-glibc-x86_64-core-image-sato-core2-64-qemux86-64-toolchain-&DISTRO;.sh
+ 
+    During execution of the script, you choose the root location for the
+    toolchain. See the
+@@ -215,21 +208,14 @@ Follow these steps to extract the root filesystem:
+    also contain flattened root filesystem image files (``*.ext4``),
+    which you can use with QEMU directly.
+ 
+-   The pre-built root filesystem image files follow these naming
+-   conventions::
+-
+-      core-image-profile-arch.tar.bz2
++   The pre-built root filesystem image files follow the
++   ``core-image-profile-machine.tar.bz2`` naming convention:
+ 
+-      Where:
+-          profile is the filesystem image's profile:
+-                    lsb, lsb-dev, lsb-sdk, minimal, minimal-dev, minimal-initramfs,
+-                    sato, sato-dev, sato-sdk, sato-sdk-ptest. For information on
+-                    these types of image profiles, see the "Images" chapter in
+-                    the Yocto Project Reference Manual.
++   -  ``profile``: filesystem image's profile, such as ``minimal``,
++      ``minimal-dev`` or ``sato``. For information on these types of image
++      profiles, see the "Images" chapter in the Yocto Project Reference Manual.
+ 
+-          arch is a string representing the target architecture:
+-                    beaglebone-yocto, beaglebone-yocto-lsb, edgerouter, edgerouter-lsb,
+-                    genericx86, genericx86-64, genericx86-64-lsb, genericx86-lsb and qemu*.
++   -  ``machine``:  same string as the name of the parent download directory.
+ 
+    The root filesystems
+    provided by the Yocto Project are based off of the
 -- 
 2.34.1
 
