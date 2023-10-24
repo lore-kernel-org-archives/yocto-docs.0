@@ -2,36 +2,37 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EAA2C27C46
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 95EA7C25B6F
 	for <webhook@archiver.kernel.org>; Tue, 24 Oct 2023 13:23:49 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.147625.1698153823666416588
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.147624.1698153822696470967
  for <docs@lists.yoctoproject.org>;
  Tue, 24 Oct 2023 06:23:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=m00PO1t2;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C694A1C0012;
-	Tue, 24 Oct 2023 13:23:41 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cF3HrAc3;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EB6EB240006;
+	Tue, 24 Oct 2023 13:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1698153821;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=s8ySGILYpc6oNVQyuEKZnNPeXUnzKaBSyBM7Ym/atPY=;
-	b=m00PO1t2QdJ/Fpx+kNP5+Lo9sOGn7gTWSWIsDC/o3O+q0TwXXbDNfCnt638MjDx+uaLRIr
-	DKlc7Al6gycq+YBPXejsSk/MaFVReQLBu2vBNywDCcsXW4VWfJXswnxddjdyotYky/8GUh
-	4KKngPiCrSPICsz+1eZFfMSQuLJ/7/jd5qYaotQiwAA/bvFnKvqfafbt3h0FQIGtOwzu77
-	JWtWrHfwl1SPJlUtaduXWzjFz4kSKx/7WsoTGkSES2s5VtXdi4Vq5r1/WtfqUgCamRJ4H7
-	AEL1naTQWgRzNoU1hfnElMQNyMkzSPHum65+lKzCINhBuANZ8oTl7dayjMzd4w==
+	bh=yKg4mMoAwtyK0oHTZ5C0w3rpfyM+xT/hZJ/dkUzNt5Q=;
+	b=cF3HrAc3EhCqi7WinJzfv3+AaaCGQzdF5ooomLO5zWGPW3cD/dKuxBB6GxvabMUr0IXLxZ
+	5jBudWuMGOkB6+/gnfLdv+xGuXuWrsgdZc6C6TE0MPhsjPIRsOMZJrQA6s5QD/Dj1cPuZd
+	z67XPKINkcsSQIX/TwgsTfRIpDj5EJ4mp4lkYOKDBx1FEc1W1A6IOFmUc7TDpWXWZjdOyA
+	1GKs1j6fGU0RGjyKUd0MqsNXXh9Cjoc5FbKX6v4A9DyE0WCvhC38gHg9R6W26Ms/jPZmgp
+	PWuyiOggoBlRSE1QRLzq0MdNwE0vWgwgSGeqdSQIdOc9bKHFP4hH6du+tzF7gQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Talel BELHAJSALEM <bhstalel@gmail.com>
-Subject: [mickledore][PATCH 08/13] dev-manual: layers: Add notes about layer.conf
-Date: Tue, 24 Oct 2023 15:23:13 +0200
-Message-Id: <20231024132318.90209-9-michael.opdenacker@bootlin.com>
+	Quentin Schulz <foss+yocto@0leil.net>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Subject: [mickledore][PATCH 07/13] ref-manual: variables: provide no-match example for COMPATIBLE_MACHINE
+Date: Tue, 24 Oct 2023 15:23:12 +0200
+Message-Id: <20231024132318.90209-8-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
 References: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
@@ -42,47 +43,81 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 24 Oct 2023 13:23:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4469
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4468
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: BELHADJ SALEM Talel <bhstalel@gmail.com>
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-As discussed before with Richard Purdie, the code supports this but the documentation does not.
-Developers in general will not notice this or focus on it because they do not mess with the
-layer.conf template file, but in my opinion I think more details can help.
+COMPATIBLE_MACHINE is used to forbid the use of a recipe or its packages
+for a specific set of machines.
 
-Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
+In some cases, it may make more sense to have the logic inverted and
+have the recipe always forbidden except for hand-picked machines. Such
+could be the case for pieces of software that only support some
+architectures. In that scenario, it is sometimes a bit easier on the eye
+and for maintenance to use the OVERRIDES mechanism but for that, a
+default should be set.
+
+COMPATIBLE_MACHINE:aarch64 = "^(aarch64)$"
+COMPATIBLE_MACHINE:mips64 = "^(mips64)$"
+
+wouldn't do much because if COMPATIBLE_MACHINE isn't set, the recipe is
+assumed compatible and therefore, if no default is provided we enter
+that case.
+
+Hence, we need to add
+
+COMPATIBLE_MACHINE = "^$"
+
+as default so that it only matches the empty string, which isn't
+possible for MACHINEOVERRIDES.
+
+Cc: Quentin Schulz <foss+yocto@0leil.net>
+Signed-off-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/layers.rst | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ documentation/ref-manual/variables.rst | 21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-index 2d809562d1..c65a94b4fa 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -128,6 +128,20 @@ Follow these general steps to create your layer without using tools:
-       variable is a good way to indicate if your particular layer is
-       current.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 8d557495d4..eb19048db2 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -1362,13 +1362,32 @@ system and gives an overview of their function and contents.
+       speed since the build system skips parsing recipes not compatible
+       with the current machine.
  
++      If one wants to have a recipe only available for some architectures
++      (here ``aarch64`` and ``mips64``), the following can be used::
 +
-+   .. note::
++         COMPATIBLE_MACHINE = "^$"
++         COMPATIBLE_MACHINE:arch64 = "^(aarch64)$"
++         COMPATIBLE_MACHINE:mips64 = "^(mips64)$"
 +
-+      A layer does not have to contain only recipes ``.bb`` or append files
-+      ``.bbappend``. Generally, developers create layers using
-+      ``bitbake-layers create-layer``.
-+      See ":ref:`dev-manual/layers:creating a general layer using the \`\`bitbake-layers\`\` script`",
-+      explaining how the ``layer.conf`` file is created from a template located in
-+      ``meta/lib/bblayers/templates/layer.conf``.
-+      In fact, none of the variables set in ``layer.conf`` are mandatory,
-+      except when :term:`BBFILE_COLLECTIONS` is present. In this case
-+      :term:`LAYERSERIES_COMPAT` and :term:`BBFILE_PATTERN` have to be
-+      defined too.
++      The first line means "match all machines whose :term:`MACHINEOVERRIDES`
++      contains the empty string", which will always be none.
 +
- #. *Add Content:* Depending on the type of layer, add the content. If
-    the layer adds support for a machine, add the machine configuration
-    in a ``conf/machine/`` file within the layer. If the layer adds
++      The second is for matching all machines whose :term:`MACHINEOVERRIDES`
++      contains one override which is exactly ``aarch64``.
++
++      The third is for matching all machines whose :term:`MACHINEOVERRIDES`
++      contains one override which is exactly ``mips64``.
++
++      The same could be achieved with::
++
++         COMPATIBLE_MACHINE = "^(aarch64|mips64)$"
++
+       .. note::
+ 
+          When :term:`COMPATIBLE_MACHINE` is set in a recipe inherits from
+          native, the recipe is always skipped. All native recipes must be
+          entirely target independent and should not rely on :term:`MACHINE`.
+ 
+-
+    :term:`COMPLEMENTARY_GLOB`
+       Defines wildcards to match when installing a list of complementary
+       packages for all the packages explicitly (or implicitly) installed in
 -- 
 2.34.1
 
