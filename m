@@ -2,36 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4F68EC25B6C
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5773AC25B6E
 	for <webhook@archiver.kernel.org>; Tue, 24 Oct 2023 13:23:49 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.17908.1698153824471544068
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.147629.1698153825555260903
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Oct 2023 06:23:44 -0700
+ Tue, 24 Oct 2023 06:23:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=A+QclLEd;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 04DEA1BF20E;
-	Tue, 24 Oct 2023 13:23:42 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DV6TwRCe;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BF2E0C000C;
+	Tue, 24 Oct 2023 13:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1698153823;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kRReMtct+dhI6n7zr9xqK6SupOEmNNLnvAlq6dU612A=;
-	b=A+QclLEd+RzqESQCaJ7A0U/ndSMnuT69vvpJFS0Glh7Dk4bjZV9rdPRaVqf+nTnOoWu9n1
-	Jo+jAZy1HCdqykTyNwRfSkE6pnkhA9R399JWb5qKlP7cp4Y/1XK3bVsD8bkvCFisR9ilbb
-	PnAL4Z7uuE15TLpmNrsuz5lgGxRRXPjNNjY63ZlZF2hy2A8uMIbElOMXZYEs7JcTKhrB7T
-	CPufMftoX2Z2YUYEwKf9ASB4doYx/NBobnn14zCjX49hcYOWrkC/KqT27TgRFrbFAqqgJd
-	YEamSdFeeY4GVjhQPKPA4aSN6n/R66blQkEL/QVxIAsVFV4lRPmRehdlspaMBg==
+	bh=BY999GfuIf3FnCYTal75ONyBKvUeJnJ3Ibxse+B3MBA=;
+	b=DV6TwRCe3bbQoAIMFWQRf1NSAj+A22nOAkBdEFx+A7Y2vsk0kGM36EQkhAkkTnnpE13lVz
+	LN+zqsZdeR+3EVgL6P8psclSOm0WQLAdb5pTi7/vFt3iayqEUorHl7HXwMaqNNhQMCyUJ3
+	EcRByan1vN6hLRiBorGUWyxqBveIX86balgy/IHO+xHBw6IhasJi4wnidD+qHqlElp7/3u
+	nIq8WKmJ05+5KHwhnGCLtCstn2UKqQzMJqdb6PFmBZ/QakQuDNK8RaCH937zVh8IA+ND1z
+	mOBZESvnRkbwn4q8QRMezWRizUmTOlJY9ieLiuqdcqQAJb0z5qsREQd100j0Gg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
 	Talel BELHAJSALEM <bhstalel@gmail.com>
-Subject: [mickledore][PATCH 11/13] ref-manual: variables: add RECIPE_SYSROOT and RECIPE_SYSROOT_NATIVE
-Date: Tue, 24 Oct 2023 15:23:16 +0200
-Message-Id: <20231024132318.90209-12-michael.opdenacker@bootlin.com>
+Subject: [mickledore][PATCH 12/13] ref-manual: variables: add TOOLCHAIN_OPTIONS variable
+Date: Tue, 24 Oct 2023 15:23:17 +0200
+Message-Id: <20231024132318.90209-13-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
 References: <20231024132318.90209-1-michael.opdenacker@bootlin.com>
@@ -42,7 +42,7 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 24 Oct 2023 13:23:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4472
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4473
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -51,66 +51,30 @@ From: BELHADJ SALEM Talel <bhstalel@gmail.com>
 Signed-off-by: Talel BELHAJSALEM <bhstalel@gmail.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 35 ++++++++++++++++++++++++++
- 1 file changed, 35 insertions(+)
+ documentation/ref-manual/variables.rst | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index eb19048db2..aab41fedb2 100644
+index aab41fedb2..3529b6f47c 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -6832,6 +6832,36 @@ system and gives an overview of their function and contents.
-       in the ":ref:`ref-manual/devtool-reference:checking on the upgrade status of a recipe`"
-       section.
+@@ -8931,6 +8931,16 @@ system and gives an overview of their function and contents.
+       portion of an eSDK. This is similar to :term:`TOOLCHAIN_HOST_TASK`
+       applying to SDKs.
  
-+   :term:`RECIPE_SYSROOT`
-+      This variable points to the directory that holds all files populated from
-+      recipes specified in :term:`DEPENDS`. As the name indicates,
-+      think of this variable as a custom root (``/``) for the recipe that will be
-+      used by the compiler in order to find headers and other files needed to complete
-+      its job.
++   :term:`TOOLCHAIN_OPTIONS`
++      This variable holds extra options passed to the compiler and the linker
++      for non ``-native`` recipes as they have to point to their custom
++      ``sysroot`` folder pointed to by :term:`RECIPE_SYSROOT`::
 +
-+      This variable is related to :term:`STAGING_DIR_HOST` or :term:`STAGING_DIR_TARGET`
-+      according to the type of the recipe and the build target.
++         TOOLCHAIN_OPTIONS = " --sysroot=${RECIPE_SYSROOT}"
 +
-+      To better understand this variable, consider the following examples:
++      Native recipes don't need this variable to be set, as they are
++      built for the host machine with the native compiler.
 +
-+      -  For ``#include <header.h>``, ``header.h`` should be in ``"${RECIPE_SYSROOT}/usr/include"``
-+
-+      -  For ``-lexample``, ``libexample.so`` should be in ``"${RECIPE_SYSROOT}/lib"``
-+         or other library sysroot directories.
-+
-+      The default value is ``"${WORKDIR}/recipe-sysroot"``.
-+      Do not modify it.
-+
-+   :term:`RECIPE_SYSROOT_NATIVE`
-+      This is similar to :term:`RECIPE_SYSROOT` but the populated files are from
-+      ``-native`` recipes. This allows a recipe built for the target machine to
-+      use ``native`` tools.
-+
-+      This variable is related to :term:`STAGING_DIR_NATIVE`.
-+
-+      The default value is ``"${WORKDIR}/recipe-sysroot-native"``.
-+      Do not modify it.
-+
-    :term:`REPODIR`
-       See :term:`bitbake:REPODIR` in the BitBake manual.
- 
-@@ -8071,10 +8101,15 @@ system and gives an overview of their function and contents.
-             for ``-native`` recipes, as they make use of host headers and
-             libraries.
- 
-+      Check :term:`RECIPE_SYSROOT` and :term:`RECIPE_SYSROOT_NATIVE`.
-+
-    :term:`STAGING_DIR_NATIVE`
-       Specifies the path to the sysroot directory used when building
-       components that run on the build host itself.
- 
-+      The default value is ``"${RECIPE_SYSROOT_NATIVE}"``,
-+      check :term:`RECIPE_SYSROOT_NATIVE`.
-+
-    :term:`STAGING_DIR_TARGET`
-       Specifies the path to the sysroot used for the system for which the
-       component generates code. For components that do not generate code,
+    :term:`TOOLCHAIN_OUTPUTNAME`
+       This variable defines the name used for the toolchain output. The
+       :ref:`populate_sdk_base <ref-classes-populate-sdk-*>` class sets
 -- 
 2.34.1
 
