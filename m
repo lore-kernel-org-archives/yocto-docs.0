@@ -2,104 +2,89 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FEB2C4332F
-	for <webhook@archiver.kernel.org>; Mon, 30 Oct 2023 09:20:11 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.144631.1698657600711569818
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45169C4332F
+	for <webhook@archiver.kernel.org>; Mon, 30 Oct 2023 09:48:11 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.144918.1698659281326823350
  for <docs@lists.yoctoproject.org>;
- Mon, 30 Oct 2023 02:20:01 -0700
+ Mon, 30 Oct 2023 02:48:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=M+xWVdG9;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 49EE720003;
-	Mon, 30 Oct 2023 09:19:58 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Z/8976K8;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7DD5B1C0005;
+	Mon, 30 Oct 2023 09:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1698657598;
+	t=1698659279;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=tMCc/PCaRJ7IhzeM5mM9vmg2vnICVZ7ZtzGWINXFWAw=;
-	b=M+xWVdG97VRu4KOM9psEaPXzyWPU3MS5vDy65ToLYlx3GS1DkP2vveV6vLh0+I65r9Mdkt
-	WvHhPO2F14+X6sEwXwLknMNaOLdGcRs794dHyBq09qI89uG5LIH7zMKeLGxHCsvnOqr//B
-	pFPDCK5CTPUOv2g/tSw6dkOauKVWbIxoOHPeR6sx7omA97IFqw9ex7UEGre6Y2jP13wgxp
-	oWVt7e6c24WpX4fx9HTbpd09g/t546BQ0voKA7PJvkI8ZLM6ewrYBkMiRqBd+5CCecVCpU
-	y3ZEmD3+6tqaPyjeqonblN7C6y1yBlmiMe1f3Ac9lYfTjeLfHZdrFOoMO3kHMg==
-Message-ID: <f386da74-a418-44eb-b35a-3555228b2357@bootlin.com>
-Date: Mon, 30 Oct 2023 10:19:57 +0100
+	bh=MmGFsJuEymYyhRct70VS6BCNO6xZAXwsBklw1cp4//4=;
+	b=Z/8976K8/0ktMIhEO4GR3grNozBWlH0SySCfVM3kBQsdwEimh8KipSnPb3sVC09E+nO68J
+	W5RbkTyTMzcdSUg9gc4JLJjEeGlbN9EGyPoLzO/b2CVrMROL4J9DKTSTWPWVxEclaC+FaQ
+	9cjbljvpsJKixwZIxLfv+z8Wbq/aV0G6m3EEsub6b1XrFe1ITTjulYecVcudSBq22RstKe
+	9QXDFzLFBaiKBmNnsf03YWsS8BTEIEki6px6T5rYPhcv4Rvvew++cpUUCFnpShTvxo+h6P
+	s512QJ6ET09RspKd1naKuXiO0abrt66QfrM+lD0nq9dP9+/VRGMfM+CTo//zKw==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Ross Burton <ross.burton@arm.com>
+Subject: [PATCH] ref-manual: document MESON_TARGET
+Date: Mon, 30 Oct 2023 10:47:47 +0100
+Message-Id: <20231030094747.1731168-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 30 Oct 2023 09:20:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4523
+ <docs@lists.yoctoproject.org>; Mon, 30 Oct 2023 09:48:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4524
 
-Hi Richard,
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-The following changes since commit 65b62118da6f355e56c489c6be08ba9ea94b9f04:
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: Ross Burton <ross.burton@arm.com>
+---
+ documentation/ref-manual/classes.rst   | 7 ++++---
+ documentation/ref-manual/variables.rst | 5 +++++
+ 2 files changed, 9 insertions(+), 3 deletions(-)
 
-   ref-manual: variables: add example for SYSROOT_DIRS variable 
-(2023-10-20 15:19:18 +0200)
-
-are available in the Git repository at:
-
-   git://git.yoctoproject.org/yocto-docs master-next
-
-for you to fetch changes up to cfef5fe41b6c819e783c88829448ae38141650a5:
-
-   manuals: improve description of CVE_STATUS and CVE_STATUS_GROUPS 
-(2023-10-30 10:15:41 +0100)
-
-----------------------------------------------------------------
-Eero Aaltonen (1):
-       ref-manual: add systemd-resolved to distro features
-
-Marta Rybczynska (1):
-       dev-manual: add security team processes
-
-Michael Opdenacker (9):
-       manuals: correct "yocto-linux" by "linux-yocto"
-       test-manual: reproducible-builds: stop mentioning LTO bug
-       ref-manual: document KERNEL_LOCALVERSION
-       ref-manual: variables: document OEQA_REPRODUCIBLE_TEST_PACKAGE
-       migration-guides: updates for 4.3
-       migration-guides: mention runqemu change in serial port management
-       ref-manual: document KERNEL_STRIP
-       migration-guides: further updates for 4.3
-       manuals: improve description of CVE_STATUS and CVE_STATUS_GROUPS
-
-  documentation/bsp-guide/bsp.rst                      |   2 +-
-  documentation/dev-manual/index.rst                   |   1 +
-  documentation/dev-manual/security-subjects.rst       | 189 
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  documentation/dev-manual/vulnerabilities.rst         |   3 +++
-  documentation/kernel-dev/common.rst                  |   2 +-
-  documentation/migration-guides/migration-4.3.rst     |  57 
-+++++++++++++++++++++++++++++++++++++++++++
-  documentation/migration-guides/release-notes-4.3.rst |  32 
-+++++++++++++++++++++++--
-  documentation/ref-manual/features.rst                |   4 ++++
-  documentation/ref-manual/variables.rst               |  22 
-++++++++++++++++-
-  documentation/test-manual/reproducible-builds.rst    |  11 ---------
-  10 files changed, 307 insertions(+), 16 deletions(-)
-  create mode 100644 documentation/dev-manual/security-subjects.rst
-
-Thank you in advance
-Michael.
-
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index c7a5e9a63a..f1d545f310 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1779,9 +1779,10 @@ class.
+ =========
+ 
+ The :ref:`ref-classes-meson` class allows to create recipes that build software
+-using the `Meson <https://mesonbuild.com/>`__ build system. You can use
+-the :term:`MESON_BUILDTYPE` and :term:`EXTRA_OEMESON` variables to specify
+-additional configuration options to be passed using the ``meson`` command line.
++using the `Meson <https://mesonbuild.com/>`__ build system. You can use the
++:term:`MESON_BUILDTYPE`, :term:`MESON_TARGET` and :term:`EXTRA_OEMESON`
++variables to specify additional configuration options to be passed using the
++``meson`` command line.
+ 
+ .. _ref-classes-metadata_scm:
+ 
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 2d875c984d..3eff516f62 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -5319,6 +5319,11 @@ system and gives an overview of their function and contents.
+       you to specify the inclusion of debugging symbols and the compiler
+       optimizations (none, performance or size).
+ 
++   :term:`MESON_TARGET`
++      A variable for the :ref:`ref-classes-meson` class, allowing to choose
++      a Meson target to build in :ref:`ref-tasks-compile`.  Otherwise, the
++      default targets are built.
++
+    :term:`METADATA_BRANCH`
+       The branch currently checked out for the OpenEmbedded-Core layer (path
+       determined by :term:`COREBASE`).
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
