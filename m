@@ -1,247 +1,212 @@
-Return-Path: <bhstalel@gmail.com>
+Return-Path: <rybczynska@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50567C4167B
-	for <webhook@archiver.kernel.org>; Tue, 31 Oct 2023 16:33:42 +0000 (UTC)
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
- by mx.groups.io with SMTP id smtpd.web11.129.1698770019917451002
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24D63C4332F
+	for <webhook@archiver.kernel.org>; Wed,  1 Nov 2023 06:26:28 +0000 (UTC)
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+ by mx.groups.io with SMTP id smtpd.web11.1186.1698819984369349373
  for <docs@lists.yoctoproject.org>;
- Tue, 31 Oct 2023 09:33:40 -0700
+ Tue, 31 Oct 2023 23:26:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=QaaPcmYS;
- spf=pass (domain: gmail.com, ip: 209.85.167.51, mailfrom: bhstalel@gmail.com)
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-507b9408c61so8150558e87.0
-        for <docs@lists.yoctoproject.org>; Tue, 31 Oct 2023 09:33:39 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=Q1fZhIGa;
+ spf=pass (domain: gmail.com, ip: 209.85.210.172, mailfrom: rybczynska@gmail.com)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6b1e46ca282so6528346b3a.2
+        for <docs@lists.yoctoproject.org>; Tue, 31 Oct 2023 23:26:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1698770018; x=1699374818; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=broi7YSn+w3zk0NJhdMf4OdRxplaKnQ8gRPlnBA9zVY=;
-        b=QaaPcmYSRzvtM2F9NkrNXMBxk9PxepocpIfz0vGHFyl+0D9RoWe2cg2s2aW9DnmufE
-         jBdqVtYr0HKF+vXpXScQZjvUDklIXo2DWcETBwXx/lZDREQRRznkgyfrPVRfbjKfTwP7
-         RVXXjyMzELA/IG7McjpOkRHb60svi5Sd6RIEtzLHnJWggBBrJoN81X4xvm4cFdFW8EqL
-         aH8EO7aut4oGnJe5AjK7Tbn8DOCpLSY0t9CU3foVl2WqUnbmCXt/wZ5HBl6xOmI6f4Nk
-         G6WwDYNxqFoPWVs+Yc75HE1xpvTxGq595CzHgZOslVlNg9Q55fCzC0rC/6/PRDIgYHwR
-         L9jw==
+        d=gmail.com; s=20230601; t=1698819983; x=1699424783; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=c6ECQcn+0DfBGYYnhBztFomNTGrmZ0lb4WgJ+JkY+zk=;
+        b=Q1fZhIGakVMk21fmTFyWoR522VWTaerY5hpZPeIUftzxJtlHKgHwDO/7l2UxNoq/48
+         DhGH66DYcLT8yFxWN0Q3JVsOE0pNGLp1x+BVMDHxS6rqhpHTRGe/uOAz+1VIzZMdHc+I
+         NF/vup1g2X1z+Yo+boPSSzI9WMgxZnMbyIE14VkjKyXNcdI3Qi2xa7aCXWGOjOX8Hha5
+         YRI/OT9tEr5y+YV3yycUQjt36d3u3wn0YMbxD1pK45oDTGaDYf5JeEVT1jGbTNI6HG6S
+         8M7tkzVkmB8maSxOzuTSzm2j2Ro5rMAPyYsYKNa58ORLl0VZSjJiLD8WYyiProYvdBMJ
+         VNJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1698770018; x=1699374818;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1698819983; x=1699424783;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=broi7YSn+w3zk0NJhdMf4OdRxplaKnQ8gRPlnBA9zVY=;
-        b=uuICIYwqxXKh65s69cfA4ZVBy6ryh2Hltc3Cx6Zbayym3qrr2uYPOmODi8x3c/GrST
-         R0yjNu2xRaQnVofLdBpK+zAWzY6dMSkyeUzSyGUSAieBD2ESHvL0Jxe1+N7bzxyXMA5M
-         lE4bAuOvLXWVi/rpW6mbjeaBQpVg+qMpOnmXC8Z01pEsSgL7mD6JyAJERbtmn8z8YukU
-         rB6fPEtS5L8HdM2Xs047iOq9Rfx9G58yNgXv1+aD3qgn1oBbom0vDTTaQNK4v+OxcqC4
-         7PoA+HveqIrkLEPgetjjKvKYF6bQcaWdH+q7Xv4fa3aiiue5F7DMBWC0uECPnQ0MGSCr
-         ubfQ==
-X-Gm-Message-State: AOJu0YyFTGrSbIBp5sF5JFzzXSxJGfU/2fn4xHue1SftZDurTLeCMmVV
-	XsL0ONQEpEOfq60ndyWokO+GU04R/33sGs1TAnw=
-X-Google-Smtp-Source: AGHT+IEPLDdzYCUR43HN31Mks3dBe+3ZTL9ZZiSH36b4XBXpwAcBpZItrOONf6EbPyyPk8d5WBlzQ2oISy+hvynqpXY=
-X-Received: by 2002:a05:6512:159f:b0:507:ce49:81bd with SMTP id
- bp31-20020a056512159f00b00507ce4981bdmr11453026lfb.61.1698770016037; Tue, 31
- Oct 2023 09:33:36 -0700 (PDT)
+        bh=c6ECQcn+0DfBGYYnhBztFomNTGrmZ0lb4WgJ+JkY+zk=;
+        b=wK6SZCRsjsLTwsy0lsbQbmVKOuFB9dMSBN8FXpQ3Eszi/r2SK7Khgm5lM6DwclWz8C
+         Zzt7sBURQR4VpCYLoUPyt1TPmJwlrfSHrMisDTh5mfOPoGCaoWgyowabZ/BNsT2Dlrnh
+         QRdpPRbFF/vtAerKoitwetiZs71xClEO8/hnol9vWVeKxetxD0WN8cIcK9xETSMx+mKZ
+         Px2uz3FBKnxHU2nzzpmjJPoVr+xrvbOy+inoKhRrV2ZPT2GhUEWySp6XoxNYV3S/LyuW
+         AhrXPzEiIKanFfraMP1h6YaYUE6z/MnwiINfj+VXGZdIcbXT9DHEWJZXer1PaoBtRyGj
+         M/Lw==
+X-Gm-Message-State: AOJu0YwVhsv7HQE1H/v51zfxnWNAIvJ+hGSzIl51E39eIzIR5EwBb1XI
+	6zPr0CHNJ0cAKYAQEOCHAsQVRihBSQEJDQ==
+X-Google-Smtp-Source: AGHT+IFXkuBMTBm4kiTFkq71slxq+LUEGO/HPuVIsKGb9ZkkFCY8VvyTkxXgfidLvR/Nj69FJ1nTvA==
+X-Received: by 2002:a05:6a21:a597:b0:161:76a4:4f74 with SMTP id gd23-20020a056a21a59700b0016176a44f74mr21611905pzc.1.1698819982761;
+        Tue, 31 Oct 2023 23:26:22 -0700 (PDT)
+Received: from localhost.localdomain ([61.84.2.32])
+        by smtp.gmail.com with ESMTPSA id 8-20020a17090a018800b0028098225450sm228878pjc.1.2023.10.31.23.26.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 31 Oct 2023 23:26:21 -0700 (PDT)
+From: Marta Rybczynska <rybczynska@gmail.com>
+X-Google-Original-From: Marta Rybczynska <marta.rybczynska@syslinbit.com>
+To: docs@lists.yoctoproject.org
+Cc: Marta Rybczynska <marta.rybczynska@syslinbit.com>
+Subject: [PATCH] dev-manual: extend the description of CVE patch preparation
+Date: Wed,  1 Nov 2023 07:26:14 +0100
+Message-ID: <20231101062614.8357-1-marta.rybczynska@syslinbit.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-References: <20231027155312.577723-1-bhstalel@gmail.com> <da2e6ce3-4338-4273-816e-8fba92f6e0ca@bootlin.com>
- <af4eec13-87d9-d4d1-6f38-2a224fb3dd6c@crashcourse.ca>
-In-Reply-To: <af4eec13-87d9-d4d1-6f38-2a224fb3dd6c@crashcourse.ca>
-From: Talel BELHADJ SALEM <bhstalel@gmail.com>
-Date: Tue, 31 Oct 2023 17:33:25 +0100
-Message-ID: <CAOgG7m3Y=Uu+Ck5VqG0yU=7ikNNRN6whR5DZ0wNexEkYyFF1LQ@mail.gmail.com>
-Subject: Re: [docs] [PATCH] overview-manual: concepts: Add Bitbake Tasks Map
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>
-Cc: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="0000000000005c6f59060905b7c8"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 31 Oct 2023 16:33:42 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4543
+ <docs@lists.yoctoproject.org>; Wed, 01 Nov 2023 06:26:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4544
 
---0000000000005c6f59060905b7c8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Extend the description on how to prepare a patch for a CVE issue.
+Add a more illustrative and current example of how to modify
+the patch file. Add an example of how to use CVE_STATUS.
 
-Hello Robert, Michael,
+Signed-off-by: Marta Rybczynska <marta.rybczynska@syslinbit.com>
+---
+ documentation/dev-manual/vulnerabilities.rst | 111 +++++++++++++++----
+ 1 file changed, 91 insertions(+), 20 deletions(-)
 
-Thank you for the review.
+diff --git a/documentation/dev-manual/vulnerabilities.rst b/documentation/dev-manual/vulnerabilities.rst
+index c492b62ff..1bc2a8592 100644
+--- a/documentation/dev-manual/vulnerabilities.rst
++++ b/documentation/dev-manual/vulnerabilities.rst
+@@ -129,31 +129,97 @@ NVD about CVE entries can be provided through the `NVD contact form <https://nvd
+ Fixing vulnerabilities in recipes
+ =================================
+ 
+-If a CVE security issue impacts a software component, it can be fixed by updating to a newer
+-version of the software component, by applying a patch or by marking it as patched via
+-:term:`CVE_STATUS` variable flag. For Poky and OE-Core master branches, updating
+-to a newer software component release with fixes is the best option, but patches can be applied
+-if releases are not yet available.
+-
+-For stable branches, it is preferred to apply patches for the issues. For some software
+-components minor version updates can also be applied if they are backwards compatible.
++Suppose a CVE security issue impacts a software component. In that case, it can
++be fixed by updating to a newer version, by applying a patch, or by marking it
++as patched via :term:`CVE_STATUS` variable flag. For Poky and OE-Core master
++branches, updating to a more recent software component release with fixes is
++the best option, but patches can be applied if releases are not yet available.
++
++For stable branches, we want to avoid API (Application Programming Interface)
++or ABI (Application Binary Interface) breakages. When submitting an update,
++a minor version update of a component is preferred if the version is
++backward-compatible. Many software components have backward-compatible stable
++versions, with a notable example of the Linux kernel. However, if the new
++version does or likely might introduce incompatibilities, extracting and
++backporting patches is preferred.
+ 
+ Here is an example of fixing CVE security issues with patch files,
+-an example from the :oe_layerindex:`ffmpeg recipe</layerindex/recipe/47350>`::
++an example from the :oe_layerindex:`ffmpeg recipe for dunfell </layerindex/recipe/122174>`::
+ 
+    SRC_URI = "https://www.ffmpeg.org/releases/${BP}.tar.xz \
++              file://mips64_cpu_detection.patch \
++              file://CVE-2020-12284.patch \
+               file://0001-libavutil-include-assembly-with-full-path-from-sourc.patch \
+-              file://fix-CVE-2020-20446.patch \
+-              file://fix-CVE-2020-20453.patch \
+-              file://fix-CVE-2020-22015.patch \
+-              file://fix-CVE-2020-22021.patch \
+-              file://fix-CVE-2020-22033-CVE-2020-22019.patch \
+-              file://fix-CVE-2021-33815.patch \
++              file://CVE-2021-3566.patch \
++              file://CVE-2021-38291.patch \
++              file://CVE-2022-1475.patch \
++              file://CVE-2022-3109.patch \
++              file://CVE-2022-3341.patch \
++              file://CVE-2022-48434.patch \
++          "
++
++The recipe has both generic and security-related fixes. The CVE patch files are named
++according to the CVE they fix.
++
++When preparing the patch file, take the original patch from the upstream repository.
++Do not use patches from different distributions, except if it is the only available source.
++
++Modify the patch adding OE-related metadata. We will follow the example of the
++``CVE-2022-3341.patch``.
++
++The original `commit message <https://github.com/FFmpeg/FFmpeg/commit/9cf652cef49d74afe3d454f27d49eb1a1394951e.patch/>`__
++is::
++
++   From 9cf652cef49d74afe3d454f27d49eb1a1394951e Mon Sep 17 00:00:00 2001
++   From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
++   Date: Wed, 23 Feb 2022 10:31:59 +0800
++   Subject: [PATCH] avformat/nutdec: Add check for avformat_new_stream
++
++   Check for failure of avformat_new_stream() and propagate
++   the error code.
++
++   Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
++   ---
++    libavformat/nutdec.c | 16 ++++++++++++----
++    1 file changed, 12 insertions(+), 4 deletions(-)
++
++
++For the correct operations of the ``cve-check``, it requires the CVE
++identification in a ``CVE:`` tag of the patch file commit message using
++the format::
+ 
+-A good practice is to include the CVE identifier in both the patch file name
+-and inside the patch file commit message using the format::
++   CVE: CVE-2022-3341
+ 
+-   CVE: CVE-2020-22033
++It is also recommended to add the ``Upstream-Status:`` tag with a link
++to the original patch and sign-off by people working on the backport.
++If there are any modifications to the original patch, note them in
++the ``Comments:`` tag.
++
++With the additional information, the header of the patch file in OE-core becomes::
++
++   From 9cf652cef49d74afe3d454f27d49eb1a1394951e Mon Sep 17 00:00:00 2001
++   From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
++   Date: Wed, 23 Feb 2022 10:31:59 +0800
++   Subject: [PATCH] avformat/nutdec: Add check for avformat_new_stream
++
++   Check for failure of avformat_new_stream() and propagate
++   the error code.
++
++   Signed-off-by: Michael Niedermayer <michael@niedermayer.cc>
++
++   CVE: CVE-2022-3341
++
++   Upstream-Status: Backport [https://github.com/FFmpeg/FFmpeg/commit/9cf652cef49d74afe3d454f27d49eb1a1394951e]
++
++   Comments: Refreshed Hunk
++   Signed-off-by: Narpat Mali <narpat.mali@windriver.com>
++   Signed-off-by: Bhabu Bindu <bhabu.bindu@kpit.com>
++   ---
++    libavformat/nutdec.c | 16 ++++++++++++----
++    1 file changed, 12 insertions(+), 4 deletions(-)
++
++A good practice is to include the CVE identifier in the patch file name, the patch file
++commit message and optionally in the recipe commit message.
+ 
+ CVE checker will then capture this information and change the CVE status to ``Patched``
+ in the generated reports.
+@@ -161,8 +227,13 @@ in the generated reports.
+ If analysis shows that the CVE issue does not impact the recipe due to configuration, platform,
+ version or other reasons, the CVE can be marked as ``Ignored`` by using
+ the :term:`CVE_STATUS` variable flag with appropriate reason which is mapped to ``Ignored``.
+-As mentioned previously, if data in the CVE database is wrong, it is recommend to fix those
+-issues in the CVE database directly.
++The entry should have the format like::
++
++   CVE_STATUS[CVE-2016-10642] = "cpe-incorrect: This is specific to the npm package that installs cmake, so isn't relevant to OpenEmbedded"
++
++As mentioned previously, if data in the CVE database is wrong, it is recommended
++to fix those issues in the CVE database (NVD in the case of OE-core and Poky)
++directly.
+ 
+ Note that if there are many CVEs with the same status and reason, those can be
+ shared by using the :term:`CVE_STATUS_GROUPS` variable.
+-- 
+2.42.0
 
-I fixed the comments, I just need to fix the diagram.
-
-Regarding SONAME, I just wanted to specify that "you need to follow
-guidelines when creating shared libraries", anyways
-I changed it to:
-
-.. note::
-
-   When creating shared libraries, it is strongly recommended to follow the
-> Linux
->    conventions and guidelines. (see `this article
->    <https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html>`_=
-_
->    for some background).
-
-
-I will send V2 by tonight or tomorrow.
-
-Thanks again,
-kind regards
-Talel
-
-On Tue, Oct 31, 2023 at 4:00=E2=80=AFPM Robert P. J. Day <rpjday@crashcours=
-e.ca>
-wrote:
-
-> On Tue, 31 Oct 2023, Michael Opdenacker via lists.yoctoproject.org wrote:
->
-> > Hi Talel,
-> >
-> > Many thanks for all this work! See my comments below... Sorry,
-> > mostly nitpicking and style improvements, but I do it before Quentin
-> > Schulz or Robert P. J. Day wake up ;-)
->
->   too late.
->
-> > > +about where and what bitbake does as a job (tasks) in order to
-> generate
-> > > +the final recipe's package file.
-> >
-> > "where" sounds weird for a computer task, and the wording sounds
-> unnecessarily
-> > complicated anyway. What about instead?
-> >
-> > "to have the full picture about the tasks that BitBake runs to generate
-> the
-> > final package file for the recipe."
->
->   rule #1: eschew superfliage. that is, don't use unnecessary words.
-> why not just, "to understand the tasks that BitBake runs ..."? or, "to
-> understand how BitBake generates the final package file for the
-> recipe"?
->
-> > "``sayhello`` depends on ``libhello`` at compile time as it needs the
-> shared
-> > library at compile time. It also depends on it at runtime as the shared
->
->   you're saying "at compile time" twice in the same sentence.
->
-> > library loader needs to find the library in the root filesystem."
->
->   where else would it find it other than the root filesystem?
->
-> > s/rootfs/root filesystem/
-> >
-> > > +
-> > > +#. Create a Git repository for each project with the corresponding
-> files
-> > > +#. Create a recipe for each project
-> > > +#. Make sure that ``sayhello`` recipe :term:`DEPENDS` on ``libhello`=
-`
-> > > +#. Make sure that ``sayhello`` recipe :term:`RDEPENDS` on ``libhello=
-``
-> > > +#. Add ``sayhello`` to :term:`IMAGE_INSTALL` to integrate it into
-> > > +   the final rootfs
-> >
-> > Same here
->
->   is it necessary to qualify this as the "final" rootfs? as opposed to
-> what other rootfs?
->
-> rday
->
-
---0000000000005c6f59060905b7c8
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">Hello=C2=A0Robert, Michael,<div><br></div><div>Thank you f=
-or the review.</div><div><br></div><div>I fixed the comments, I just need t=
-o fix the diagram.</div><div><br></div><div>Regarding SONAME, I just wanted=
- to specify that &quot;you need to follow guidelines when creating shared l=
-ibraries&quot;, anyways</div><div>I changed it to:</div><div><br></div><blo=
-ckquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left=
-:1px solid rgb(204,204,204);padding-left:1ex">.. note::</blockquote><div><b=
-lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
-ft:1px solid rgb(204,204,204);padding-left:1ex">=C2=A0 =C2=A0When creating =
-shared libraries, it is strongly recommended to follow the Linux<br>=C2=A0 =
-=C2=A0conventions and guidelines. (see `this article<br>=C2=A0 =C2=A0&lt;<a=
- href=3D"https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html=
-">https://tldp.org/HOWTO/Program-Library-HOWTO/shared-libraries.html</a>&gt=
-;`__<br>=C2=A0 =C2=A0for some background).</blockquote></div><div><br></div=
-><div>I will send V2 by tonight or tomorrow.</div><div><br></div><div>Thank=
-s again,</div><div>kind regards</div><div>Talel</div></div><br><div class=
-=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Oct 31, 2023=
- at 4:00=E2=80=AFPM Robert P. J. Day &lt;<a href=3D"mailto:rpjday@crashcour=
-se.ca">rpjday@crashcourse.ca</a>&gt; wrote:<br></div><blockquote class=3D"g=
-mail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204=
-,204,204);padding-left:1ex">On Tue, 31 Oct 2023, Michael Opdenacker via <a =
-href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_blank"=
->lists.yoctoproject.org</a> wrote:<br>
-<br>
-&gt; Hi Talel,<br>
-&gt;<br>
-&gt; Many thanks for all this work! See my comments below... Sorry,<br>
-&gt; mostly nitpicking and style improvements, but I do it before Quentin<b=
-r>
-&gt; Schulz or Robert P. J. Day wake up ;-)<br>
-<br>
-=C2=A0 too late.<br>
-<br>
-&gt; &gt; +about where and what bitbake does as a job (tasks) in order to g=
-enerate<br>
-&gt; &gt; +the final recipe&#39;s package file.<br>
-&gt;<br>
-&gt; &quot;where&quot; sounds weird for a computer task, and the wording so=
-unds unnecessarily<br>
-&gt; complicated anyway. What about instead?<br>
-&gt;<br>
-&gt; &quot;to have the full picture about the tasks that BitBake runs to ge=
-nerate the<br>
-&gt; final package file for the recipe.&quot;<br>
-<br>
-=C2=A0 rule #1: eschew superfliage. that is, don&#39;t use unnecessary word=
-s.<br>
-why not just, &quot;to understand the tasks that BitBake runs ...&quot;? or=
-, &quot;to<br>
-understand how BitBake generates the final package file for the<br>
-recipe&quot;?<br>
-<br>
-&gt; &quot;``sayhello`` depends on ``libhello`` at compile time as it needs=
- the shared<br>
-&gt; library at compile time. It also depends on it at runtime as the share=
-d<br>
-<br>
-=C2=A0 you&#39;re saying &quot;at compile time&quot; twice in the same sent=
-ence.<br>
-<br>
-&gt; library loader needs to find the library in the root filesystem.&quot;=
-<br>
-<br>
-=C2=A0 where else would it find it other than the root filesystem?<br>
-<br>
-&gt; s/rootfs/root filesystem/<br>
-&gt;<br>
-&gt; &gt; +<br>
-&gt; &gt; +#. Create a Git repository for each project with the correspondi=
-ng files<br>
-&gt; &gt; +#. Create a recipe for each project<br>
-&gt; &gt; +#. Make sure that ``sayhello`` recipe :term:`DEPENDS` on ``libhe=
-llo``<br>
-&gt; &gt; +#. Make sure that ``sayhello`` recipe :term:`RDEPENDS` on ``libh=
-ello``<br>
-&gt; &gt; +#. Add ``sayhello`` to :term:`IMAGE_INSTALL` to integrate it int=
-o<br>
-&gt; &gt; +=C2=A0 =C2=A0the final rootfs<br>
-&gt;<br>
-&gt; Same here<br>
-<br>
-=C2=A0 is it necessary to qualify this as the &quot;final&quot; rootfs? as =
-opposed to<br>
-what other rootfs?<br>
-<br>
-rday<br>
-</blockquote></div>
-
---0000000000005c6f59060905b7c8--
 
