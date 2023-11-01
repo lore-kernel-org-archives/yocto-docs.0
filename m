@@ -1,79 +1,92 @@
-Return-Path: <ross.burton@arm.com>
+Return-Path: <bluelightning@bluelightning.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BD3CC4167D
-	for <webhook@archiver.kernel.org>; Wed,  1 Nov 2023 17:27:32 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by mx.groups.io with SMTP id smtpd.web10.102.1698859644868167908
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0B17C4332F
+	for <webhook@archiver.kernel.org>; Wed,  1 Nov 2023 18:26:02 +0000 (UTC)
+Received: from www1.webmail.pair.com (www1.webmail.pair.com [209.68.6.94])
+ by mx.groups.io with SMTP id smtpd.web10.13892.1698863152656193134
  for <docs@lists.yoctoproject.org>;
- Wed, 01 Nov 2023 10:27:24 -0700
+ Wed, 01 Nov 2023 11:25:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6C7802F4;
-	Wed,  1 Nov 2023 10:28:06 -0700 (PDT)
-Received: from oss-tx204.lab.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 08BEA3F738;
-	Wed,  1 Nov 2023 10:27:23 -0700 (PDT)
-From: ross.burton@arm.com
-To: docs@lists.yoctoproject.org,
-	michael.opdenacker@bootlin.com
-Cc: nd@arm.com
-Subject: [PATCH 13/14] packaging changes
-Date: Wed,  1 Nov 2023 17:27:05 +0000
-Message-Id: <20231101172706.81576-14-ross.burton@arm.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231101172706.81576-1-ross.burton@arm.com>
-References: <20231101172706.81576-1-ross.burton@arm.com>
+ dkim=none (message not signed); spf=none, err=permanent DNS error (domain: bluelightning.org, ip: 209.68.6.94, mailfrom: bluelightning@bluelightning.org)
+Received: from rc.webmail.pair.com (localhost [127.0.0.1])
+	by www1.webmail.pair.com (Postfix) with ESMTP id 6A45F1A0C7A;
+	Wed,  1 Nov 2023 14:25:51 -0400 (EDT)
 MIME-Version: 1.0
+Date: Thu, 02 Nov 2023 07:25:51 +1300
+From: Paul Eggleton <bluelightning@bluelightning.org>
+To: michael.opdenacker@bootlin.com
+Cc: docs@lists.yoctoproject.org, ross.burton@arm.com
+Subject: Re: [docs] [PATCH] migration-guides: updates for 4.3
+In-Reply-To: <3e5aa494-8541-40b3-b2b9-bc6dc8074b24@bootlin.com>
+References: <1791F57D905EEBD5.3183@lists.yoctoproject.org>
+ <e3ad6981-b0cb-4d91-9ee6-c9b4df114bff@bootlin.com>
+ <3e5aa494-8541-40b3-b2b9-bc6dc8074b24@bootlin.com>
+Message-ID: <b2673a860aeb1e6e3d8bbc5a7fb3457b@bluelightning.org>
+X-Sender: bluelightning@bluelightning.org
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+X-Scanned-By: mailmunge 3.09 on 209.68.6.94
 Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 01 Nov 2023 17:27:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4559
+ <docs@lists.yoctoproject.org>; Wed, 01 Nov 2023 18:26:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4561
 
-From: Ross Burton <ross.burton@arm.com>
+Hi Michael
 
----
- .../migration-guides/release-notes-4.3.rst        | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+I see Ross just sent release notes changes, sorry I guess I kept you=20
+waiting too long :( I had done a bunch of work already, but I'll use=20
+what I have to check Ross's content and send any delta on top of that.
 
-diff --git a/documentation/migration-guides/release-notes-4.3.rst b/docum=
-entation/migration-guides/release-notes-4.3.rst
-index 757592751..10c5e50a4 100644
---- a/documentation/migration-guides/release-notes-4.3.rst
-+++ b/documentation/migration-guides/release-notes-4.3.rst
-@@ -170,6 +170,21 @@ New Features / Enhancements in 4.3
-=20
- -  Packaging changes:
-=20
-+   -  ``FILES`` now accepts ``**``, which matches zero or more subdirect=
-ories.
-+ =20
-+   -  The X server packagroup now defaults to using the ``modesetting`` =
-X
-+      driver, which obsoletes the ``fbdev`` driver.
-+ =20
-+   -  If a recipe uses ``LICENSE_FLAGS`` and the licenses are not accept=
-ed, it
-+      can set a custom message with ``LICENSE_FLAGS_DETAILS`` to be disp=
-layed to
-+      the users.
-+
-+   -  Recipes that fetch specific revisions no longer need to explictly =
-add
-+      ``SRCPV`` to ``PV`` as BitBake will now automatically add the revi=
-sion
-+      infomation to ``PKGV`` if needed.
-+
-+   -  The default ``PR`` values in many recipes have been removed.
-+ =20
- -  Security improvements:
-=20
-    -  Most repositories now include a :yocto_git:`SECURITY.md
---=20
-2.34.1
+Paul
 
+On 28.10.2023 04:50, Michael Opdenacker via lists.yoctoproject.org=20
+wrote:
+> Hi Paul,
+>=20
+> On 27.10.23 at 14:10, Michael Opdenacker wrote:
+>>=20
+>> On 27.10.23 at 14:07, Michael Opdenacker via lists.yoctoproject.org=20
+>> wrote:
+>>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>>=20
+>>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+>>> CC: Paul Eggleton <bluelightning@bluelightning.org>
+>>> ---
+>>> =C2=A0 .../migration-guides/migration-4.3.rst=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 6 ++++
+>>> =C2=A0 .../migration-guides/release-notes-4.3.rst=C2=A0=C2=A0=C2=A0 |=
+ 30=20
+>>> +++++++++++++++++--
+>>=20
+>>=20
+>> By the way, I'm checking commits one by one. Currently at:
+>> 2023-06-17 selftest/reproducible: Allow chose the package manager
+>> <https://git.yoctoproject.org/poky/commit/?h=3Dnanbield&id=3D88abdec71=
+5ed0c1f613c9b5132cd45db741d5c65>(https://git.yoctoproject.org/poky/log/?h=
+=3Dnanbield&ofs=3D1350)=20
+>> 1350 to go ;-)
+>=20
+>=20
+> By the way, if you have time to contribute to the release notes (which=20
+> would be great, as I am likely to miss significant changes), please=20
+> submit them against "master-next", which is where I keep my recent=20
+> changes.
+> Thanks :)
+>=20
+> Michael.
+>=20
+>=20
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#4518):=20
+> https://lists.yoctoproject.org/g/docs/message/4518
+> Mute This Topic: https://lists.yoctoproject.org/mt/102219472/2167413
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub=20
+> [bluelightning@bluelightning.org]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
 
