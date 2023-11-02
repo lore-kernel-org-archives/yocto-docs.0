@@ -1,81 +1,109 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <u.oelmann@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0856C4167B
-	for <webhook@archiver.kernel.org>; Thu,  2 Nov 2023 09:41:56 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.27135.1698918110103533492
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F24CCC4332F
+	for <webhook@archiver.kernel.org>; Thu,  2 Nov 2023 09:58:26 +0000 (UTC)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+ by mx.groups.io with SMTP id smtpd.web11.27094.1698919098344818723
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Nov 2023 02:41:50 -0700
+ Thu, 02 Nov 2023 02:58:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ik7bz4m2;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7400BC0005;
-	Thu,  2 Nov 2023 09:41:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1698918107;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4zCnrVag9zEyohmjJaf/y7ga7FAOkMQKL5D9uec6Dsc=;
-	b=Ik7bz4m2LXNZC5lDqW7r2w0K38uYs3K/JcDOZOwOOM3QAxDgvv5R9360J/TwjCc53qfae3
-	vVr5EsJ2Pbp1aeJnLlosyzpUrtHgCBMIFU2di3SbCwfQLTQuBqKAhG8azY3IOgvhaiMV13
-	B0IpE8jwTdW2xlJNRbvIq2VruQzSDcXDcB1KKBEeN/e8rvYwvTGL1cHDO1YPDeMWbnrz3w
-	MJHv9o9HJ2p2GVS4yvMoF+AAs+8eRdClfCaue7FrFuzvLwbPw+EFA7ZS6p2buNpVuqQaCa
-	EeJMGGe7BwS+fi4z4jfiCHYYCwrY04rscSxwLEay8yde6EUx8c1QMpjIHufrgQ==
-Message-ID: <4e756817-a697-4fe8-9990-51fd30eb8025@bootlin.com>
-Date: Thu, 2 Nov 2023 10:41:46 +0100
+ dkim=none (message not signed); spf=pass (domain: pengutronix.de, ip: 185.203.201.7, mailfrom: u.oelmann@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1qyUSu-0002Ck-2m; Thu, 02 Nov 2023 10:58:16 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1qyUSs-0062U0-SL; Thu, 02 Nov 2023 10:58:14 +0100
+Received: from uol by pty.whiteo.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1qyUSs-002vfd-JN; Thu, 02 Nov 2023 10:58:14 +0100
+References: <20231027092935.1601588-1-michael.opdenacker@bootlin.com>
+User-agent: mu4e 1.6.9; emacs 29.0.50
+From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: michael.opdenacker@bootlin.com
+Cc: Bruce Ashfield <bruce.ashfield@gmail.com>, "Michael Opdenacker via
+ lists.yoctoproject.org"
+ <michael.opdenacker=bootlin.com@lists.yoctoproject.org>,
+ docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual: document KERNEL_LOCALVERSION
+Date: Thu, 02 Nov 2023 10:55:23 +0100
+In-reply-to: <20231027092935.1601588-1-michael.opdenacker@bootlin.com>
+Message-ID: <6rjzr0tr2h.fsf@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org, nd@arm.com
-Subject: Re: [docs] [PATCH 06/14] mention cdn
-Content-Language: en-US
-To: Ross Burton <ross.burton@arm.com>
-References: <20231101172706.81576-1-ross.burton@arm.com>
- <20231101172706.81576-7-ross.burton@arm.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20231101172706.81576-7-ross.burton@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: u.oelmann@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 Nov 2023 09:41:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4563
+ <docs@lists.yoctoproject.org>; Thu, 02 Nov 2023 09:58:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4564
 
+Hi Michael,
 
-On 01.11.23 at 18:26, Ross Burton wrote:
-> From: Ross Burton <ross.burton@arm.com>
+just a small typo, otherwise a good description.
+
+On Fri, Oct 27 2023 at 11:29 +0200, "Michael Opdenacker via lists.yoctoproj=
+ect.org" <michael.opdenacker=3Dbootlin.com@lists.yoctoproject.org> wrote:
+> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 >
+> Introduced by
+> https://git.yoctoproject.org/poky/commit/?id=3D66ed174ccdf7a89cb998f503cc=
+6b631e2d1adcc0
+>
+> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> CC: Bruce Ashfield <bruce.ashfield@gmail.com>
 > ---
->   documentation/migration-guides/release-notes-4.3.rst | 2 ++
->   1 file changed, 2 insertions(+)
+>  documentation/ref-manual/variables.rst | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 >
-> diff --git a/documentation/migration-guides/release-notes-4.3.rst b/documentation/migration-guides/release-notes-4.3.rst
-> index 6249154d7..f2bc42f53 100644
-> --- a/documentation/migration-guides/release-notes-4.3.rst
-> +++ b/documentation/migration-guides/release-notes-4.3.rst
-> @@ -8,6 +8,8 @@ New Features / Enhancements in 4.3
->   
->   -  Linux kernel 6.5 and 6.1, gcc 13, glibc 2.38, LLVM 17, and other recipe upgrades
->   
-> +-  The autobuilder's shared-state artefacts are now available over a CDN.
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index 03234d3f78..771eb91af6 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -2485,6 +2485,16 @@ system and gives an overview of their function and=
+ contents.
+>        external tools. See the :ref:`ref-classes-kernel-yocto` class in
+>        ``meta/classes-recipe`` to see how the variable is used.
+>=20=20
+> +   :term:`KERNEL_LOCALVERSION`
+> +      This variable allows to appends a string to the version
+
+s/appends/append/
+
+Thanks and best regards
+Ulrich
 
 
-I actually added a link to jsDelivr, which deserves recognition for 
-their free service to Open Source projects.
-See for yourself in "master-next".
-
-Thanks
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+> +      of the kernel image. This corresponds to the ``CONFIG_LOCALVERSION=
+``
+> +      kernel configuration parameter.
+> +
+> +      Using this variable is only useful when you are using a kernel rec=
+ipe
+> +      inheriting the :ref:`ref-classes-kernel` class, and which doesn't
+> +      already set a local version. Therefore, setting this variable has =
+no
+> +      impact on ``linux-yocto`` kernels.
+> +
+>     :term:`EXTERNAL_TOOLCHAIN`
+>        When you intend to use an
+>        :ref:`external toolchain <dev-manual/external-toolchain:optionally=
+ using an external toolchain>`,
+--=20
+Pengutronix e.K.                           | Ulrich =C3=96lmann            =
+   |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
