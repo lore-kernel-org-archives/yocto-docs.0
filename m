@@ -1,92 +1,76 @@
-Return-Path: <bluelightning@bluelightning.org>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D0B17C4332F
-	for <webhook@archiver.kernel.org>; Wed,  1 Nov 2023 18:26:02 +0000 (UTC)
-Received: from www1.webmail.pair.com (www1.webmail.pair.com [209.68.6.94])
- by mx.groups.io with SMTP id smtpd.web10.13892.1698863152656193134
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A896C4332F
+	for <webhook@archiver.kernel.org>; Thu,  2 Nov 2023 09:05:36 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.26431.1698915933014185517
  for <docs@lists.yoctoproject.org>;
- Wed, 01 Nov 2023 11:25:52 -0700
+ Thu, 02 Nov 2023 02:05:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=none, err=permanent DNS error (domain: bluelightning.org, ip: 209.68.6.94, mailfrom: bluelightning@bluelightning.org)
-Received: from rc.webmail.pair.com (localhost [127.0.0.1])
-	by www1.webmail.pair.com (Postfix) with ESMTP id 6A45F1A0C7A;
-	Wed,  1 Nov 2023 14:25:51 -0400 (EDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CRFkNhl4;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5E59B40005;
+	Thu,  2 Nov 2023 09:05:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1698915930;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=P5zTiC7zfKNOmeEIsh6UN+Kok2C5IviuOqRipRnBFPI=;
+	b=CRFkNhl4Jm2F/OV60Cq08Dw/JZV0SG5HZ63ah91v18wEkFuTYZK3xree5DaoPaLp5P4nDm
+	oucVCu95vkFKYBMwRsMcLmDBIuzmOK5hjqlwus8k1z7/c95ZhwUJSUbnVl0JdkHanE8or6
+	jRSOa6+FEQvj3u1MhJaRX+D1AY5evxbDGcSlpqYqAxZdFHXfWqXm6Zu7tHJo4ictAdt6pc
+	3IVKtCH1m/YdKZxnb5jZ9zwMnd0ENQ16ZnbLTwp7Hi8c10d2JodvB29kuUVmwKJwr7lV18
+	Ws3aXTkCJ9b+42gQJCJV4HXb8Kh9bjBy4tHCa0/pMqUUF9WFYI2orfDU0SQnrA==
+Message-ID: <16867f1a-98fd-4299-814d-15541c6fd262@bootlin.com>
+Date: Thu, 2 Nov 2023 10:05:29 +0100
 MIME-Version: 1.0
-Date: Thu, 02 Nov 2023 07:25:51 +1300
-From: Paul Eggleton <bluelightning@bluelightning.org>
-To: michael.opdenacker@bootlin.com
-Cc: docs@lists.yoctoproject.org, ross.burton@arm.com
-Subject: Re: [docs] [PATCH] migration-guides: updates for 4.3
-In-Reply-To: <3e5aa494-8541-40b3-b2b9-bc6dc8074b24@bootlin.com>
-References: <1791F57D905EEBD5.3183@lists.yoctoproject.org>
- <e3ad6981-b0cb-4d91-9ee6-c9b4df114bff@bootlin.com>
- <3e5aa494-8541-40b3-b2b9-bc6dc8074b24@bootlin.com>
-Message-ID: <b2673a860aeb1e6e3d8bbc5a7fb3457b@bluelightning.org>
-X-Sender: bluelightning@bluelightning.org
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-X-Scanned-By: mailmunge 3.09 on 209.68.6.94
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Cc: nd@arm.com, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH 00/14] Release notes changes
+Content-Language: en-US
+To: Ross Burton <ross.burton@arm.com>
+References: <20231101172706.81576-1-ross.burton@arm.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20231101172706.81576-1-ross.burton@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 01 Nov 2023 18:26:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4561
+ <docs@lists.yoctoproject.org>; Thu, 02 Nov 2023 09:05:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4562
 
-Hi Michael
+Hi Ross
 
-I see Ross just sent release notes changes, sorry I guess I kept you=20
-waiting too long :( I had done a bunch of work already, but I'll use=20
-what I have to check Ross's content and send any delta on top of that.
+On 01.11.23 at 18:26, Ross Burton wrote:
+> From: Ross Burton <ross.burton@arm.com>
+>
+> Hi Michael,
+>
+> Here's a series of patches to add more to the release notes.  I'm 99% sure
+> you'll want to reword or add more formatting to most of them, and you probably
+> have more local changes, so I sent them as independent changes which will be
+> easier to rebase.
+>
+> Feel free to rewrite/squash/edit as needed!
 
-Paul
 
-On 28.10.2023 04:50, Michael Opdenacker via lists.yoctoproject.org=20
-wrote:
-> Hi Paul,
->=20
-> On 27.10.23 at 14:10, Michael Opdenacker wrote:
->>=20
->> On 27.10.23 at 14:07, Michael Opdenacker via lists.yoctoproject.org=20
->> wrote:
->>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>>=20
->>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>> CC: Paul Eggleton <bluelightning@bluelightning.org>
->>> ---
->>> =C2=A0 .../migration-guides/migration-4.3.rst=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0 6 ++++
->>> =C2=A0 .../migration-guides/release-notes-4.3.rst=C2=A0=C2=A0=C2=A0 |=
- 30=20
->>> +++++++++++++++++--
->>=20
->>=20
->> By the way, I'm checking commits one by one. Currently at:
->> 2023-06-17 selftest/reproducible: Allow chose the package manager
->> <https://git.yoctoproject.org/poky/commit/?h=3Dnanbield&id=3D88abdec71=
-5ed0c1f613c9b5132cd45db741d5c65>(https://git.yoctoproject.org/poky/log/?h=
-=3Dnanbield&ofs=3D1350)=20
->> 1350 to go ;-)
->=20
->=20
-> By the way, if you have time to contribute to the release notes (which=20
-> would be great, as I am likely to miss significant changes), please=20
-> submit them against "master-next", which is where I keep my recent=20
-> changes.
-> Thanks :)
->=20
-> Michael.
->=20
->=20
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#4518):=20
-> https://lists.yoctoproject.org/g/docs/message/4518
-> Mute This Topic: https://lists.yoctoproject.org/mt/102219472/2167413
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub=20
-> [bluelightning@bluelightning.org]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+Sure, will do (starting right now).
+In particular, I will add the missing "Signed-off-by" line. It's not the 
+first time you forget ;-)
+
+Many thanks!
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
