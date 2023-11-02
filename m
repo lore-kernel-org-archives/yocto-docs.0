@@ -2,70 +2,75 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A896C4332F
-	for <webhook@archiver.kernel.org>; Thu,  2 Nov 2023 09:05:36 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.26431.1698915933014185517
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0856C4167B
+	for <webhook@archiver.kernel.org>; Thu,  2 Nov 2023 09:41:56 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.27135.1698918110103533492
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Nov 2023 02:05:33 -0700
+ Thu, 02 Nov 2023 02:41:50 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CRFkNhl4;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5E59B40005;
-	Thu,  2 Nov 2023 09:05:30 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ik7bz4m2;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7400BC0005;
+	Thu,  2 Nov 2023 09:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1698915930;
+	t=1698918107;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P5zTiC7zfKNOmeEIsh6UN+Kok2C5IviuOqRipRnBFPI=;
-	b=CRFkNhl4Jm2F/OV60Cq08Dw/JZV0SG5HZ63ah91v18wEkFuTYZK3xree5DaoPaLp5P4nDm
-	oucVCu95vkFKYBMwRsMcLmDBIuzmOK5hjqlwus8k1z7/c95ZhwUJSUbnVl0JdkHanE8or6
-	jRSOa6+FEQvj3u1MhJaRX+D1AY5evxbDGcSlpqYqAxZdFHXfWqXm6Zu7tHJo4ictAdt6pc
-	3IVKtCH1m/YdKZxnb5jZ9zwMnd0ENQ16ZnbLTwp7Hi8c10d2JodvB29kuUVmwKJwr7lV18
-	Ws3aXTkCJ9b+42gQJCJV4HXb8Kh9bjBy4tHCa0/pMqUUF9WFYI2orfDU0SQnrA==
-Message-ID: <16867f1a-98fd-4299-814d-15541c6fd262@bootlin.com>
-Date: Thu, 2 Nov 2023 10:05:29 +0100
+	bh=4zCnrVag9zEyohmjJaf/y7ga7FAOkMQKL5D9uec6Dsc=;
+	b=Ik7bz4m2LXNZC5lDqW7r2w0K38uYs3K/JcDOZOwOOM3QAxDgvv5R9360J/TwjCc53qfae3
+	vVr5EsJ2Pbp1aeJnLlosyzpUrtHgCBMIFU2di3SbCwfQLTQuBqKAhG8azY3IOgvhaiMV13
+	B0IpE8jwTdW2xlJNRbvIq2VruQzSDcXDcB1KKBEeN/e8rvYwvTGL1cHDO1YPDeMWbnrz3w
+	MJHv9o9HJ2p2GVS4yvMoF+AAs+8eRdClfCaue7FrFuzvLwbPw+EFA7ZS6p2buNpVuqQaCa
+	EeJMGGe7BwS+fi4z4jfiCHYYCwrY04rscSxwLEay8yde6EUx8c1QMpjIHufrgQ==
+Message-ID: <4e756817-a697-4fe8-9990-51fd30eb8025@bootlin.com>
+Date: Thu, 2 Nov 2023 10:41:46 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: nd@arm.com, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 00/14] Release notes changes
+Cc: docs@lists.yoctoproject.org, nd@arm.com
+Subject: Re: [docs] [PATCH 06/14] mention cdn
 Content-Language: en-US
 To: Ross Burton <ross.burton@arm.com>
 References: <20231101172706.81576-1-ross.burton@arm.com>
+ <20231101172706.81576-7-ross.burton@arm.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20231101172706.81576-1-ross.burton@arm.com>
+In-Reply-To: <20231101172706.81576-7-ross.burton@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 Nov 2023 09:05:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4562
+ <docs@lists.yoctoproject.org>; Thu, 02 Nov 2023 09:41:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4563
 
-Hi Ross
 
 On 01.11.23 at 18:26, Ross Burton wrote:
 > From: Ross Burton <ross.burton@arm.com>
 >
-> Hi Michael,
+> ---
+>   documentation/migration-guides/release-notes-4.3.rst | 2 ++
+>   1 file changed, 2 insertions(+)
 >
-> Here's a series of patches to add more to the release notes.  I'm 99% sure
-> you'll want to reword or add more formatting to most of them, and you probably
-> have more local changes, so I sent them as independent changes which will be
-> easier to rebase.
->
-> Feel free to rewrite/squash/edit as needed!
+> diff --git a/documentation/migration-guides/release-notes-4.3.rst b/documentation/migration-guides/release-notes-4.3.rst
+> index 6249154d7..f2bc42f53 100644
+> --- a/documentation/migration-guides/release-notes-4.3.rst
+> +++ b/documentation/migration-guides/release-notes-4.3.rst
+> @@ -8,6 +8,8 @@ New Features / Enhancements in 4.3
+>   
+>   -  Linux kernel 6.5 and 6.1, gcc 13, glibc 2.38, LLVM 17, and other recipe upgrades
+>   
+> +-  The autobuilder's shared-state artefacts are now available over a CDN.
 
 
-Sure, will do (starting right now).
-In particular, I will add the missing "Signed-off-by" line. It's not the 
-first time you forget ;-)
+I actually added a link to jsDelivr, which deserves recognition for 
+their free service to Open Source projects.
+See for yourself in "master-next".
 
-Many thanks!
+Thanks
 Michael.
 
 -- 
