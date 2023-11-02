@@ -1,98 +1,60 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AE45C4332F
-	for <webhook@archiver.kernel.org>; Thu,  2 Nov 2023 15:17:39 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.33607.1698938249999293253
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 09F1EC4332F
+	for <webhook@archiver.kernel.org>; Thu,  2 Nov 2023 15:24:09 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.34098.1698938643666493240
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Nov 2023 08:17:30 -0700
+ Thu, 02 Nov 2023 08:24:04 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KnEE12I7;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7777FE0010;
-	Thu,  2 Nov 2023 15:17:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1698938248;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RhSwwGiQ8zvTFlckdQUrVqbrcD4GqG1lWEAafegeQpk=;
-	b=KnEE12I7dR1sJ8PAGZ5/RwdXM1OR108jTFRhzsJm795AoP+zh3Bc5BQV8gh42DUT3/JLDo
-	df7ybUyxk6jzVNglR681SDx8oRrDpo3cIx9LFD9seFvfp/on0ex4GQL7WTdf88j7BgI6mM
-	qjtc5f22V/+GuP9u0uX1YhkpjkG5Pjx7qVa/VijkSQpYoigMqTd1xabqt39h7XykOWJiFF
-	DUKUf3QHAwwzRreBwv+gqVAXjjTplEhpSWawmy4ibhseluTDnTCre1+AmCAcxxWwYPikiL
-	BwqtwBXCDhd2qolDgA8QmZuHTkdZH7WeaMGWj+pqT82nDnMmp4WHrj3RMYITeA==
-Message-ID: <c7a1127a-e3d8-4818-8edb-a1ff87aa79b6@bootlin.com>
-Date: Thu, 2 Nov 2023 16:17:27 +0100
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=y6Hfhuxf;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:References:
+	Message-ID:In-Reply-To:Subject:cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=1XytUqTxWPjDYVfN9mOnY0Qw4deAY/Ji6zRZKTLvOW8=; b=y6Hfhuxf/DuHIbv/u3yuwuwbB3
+	qUOvkkBSJiteDYtAIcj0QclxWsba/SXgNVjx1V9QHdyhdG0qvnydV/26cHdqWdR9BEOL8U97iow78
+	HcQdr7D0QZXM6xSBcZ9HHiSxJB61p54uUSgtIqXglvI3/iwjfuK8rrncbyvGYi4JRXBxI7q/aatIQ
+	FmdVDBN+Rw3VgFF/wn9BMUPbRCZKF9djCwSEte9sdEo/BY4vJdns76b7XAgvz/vJMHV56s+5Ezl+p
+	Fj70ykhYSEmG2ZEBO3nCFXme17mZwBYB5d/g/69QwUcVKcdVKfpO5U4qzwTXrgXAuFKqEl5h07HDc
+	usUiHzOw==;
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.102.5]:33366 helo=fedora)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1qyZY7-00Ga1g-0s;
+	Thu, 02 Nov 2023 11:24:02 -0400
+Date: Thu, 2 Nov 2023 11:23:58 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: Ross Burton <ross.burton@arm.com>
+cc: docs@lists.yoctoproject.org, michael.opdenacker@bootlin.com, nd@arm.com
+Subject: Re: [docs] [PATCH 09/14] sdpx is poky, not global default
+In-Reply-To: <20231101172706.81576-10-ross.burton@arm.com>
+Message-ID: <9097745-6a19-e7cf-cd76-7a74581d51b1@crashcourse.ca>
+References: <20231101172706.81576-1-ross.burton@arm.com> <20231101172706.81576-10-ross.burton@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Bruce Ashfield <bruce.ashfield@gmail.com>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: document KERNEL_LOCALVERSION
-Content-Language: en-US
-To: "Robert P. J. Day" <rpjday@crashcourse.ca>,
- =?UTF-8?Q?Ulrich_=C3=96lmann?= <u.oelmann@pengutronix.de>
-References: <20231027092935.1601588-1-michael.opdenacker@bootlin.com>
- <6rjzr0tr2h.fsf@pengutronix.de>
- <44d9c528-fceb-928-421f-e8b26cb1f3@crashcourse.ca>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <44d9c528-fceb-928-421f-e8b26cb1f3@crashcourse.ca>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 Nov 2023 15:17:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4575
+ <docs@lists.yoctoproject.org>; Thu, 02 Nov 2023 15:24:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4576
 
 
-On 02.11.23 at 15:52, Robert P. J. Day wrote:
-> On Thu, 2 Nov 2023, Ulrich Ölmann wrote:
->
->> Hi Michael,
->>
->> just a small typo, otherwise a good description.
->>
->> On Fri, Oct 27 2023 at 11:29 +0200, "Michael Opdenacker via lists.yoctoproject.org" <michael.opdenacker=bootlin.com@lists.yoctoproject.org> wrote:
->>> From: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>>
->>> Introduced by
->>> https://git.yoctoproject.org/poky/commit/?id=66ed174ccdf7a89cb998f503cc6b631e2d1adcc0
->>>
->>> Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
->>> CC: Bruce Ashfield <bruce.ashfield@gmail.com>
->>> ---
->>>   documentation/ref-manual/variables.rst | 10 ++++++++++
->>>   1 file changed, 10 insertions(+)
->>>
->>> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
->>> index 03234d3f78..771eb91af6 100644
->>> --- a/documentation/ref-manual/variables.rst
->>> +++ b/documentation/ref-manual/variables.rst
->>> @@ -2485,6 +2485,16 @@ system and gives an overview of their function and contents.
->>>         external tools. See the :ref:`ref-classes-kernel-yocto` class in
->>>         ``meta/classes-recipe`` to see how the variable is used.
->>>
->>> +   :term:`KERNEL_LOCALVERSION`
->>> +      This variable allows to appends a string to the version
->> s/appends/append/
->    i don't like that variation either ... why not just "allows
-> appending". or, better yet, "supports appending"?
-
-Oops, too late, as the commit already made it into "master".
-Maybe you could send a wider patch replacing instances of "allows to" by 
-something you think sounds better.
-
-Thanks!
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+  "sdpx"?
 
