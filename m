@@ -2,86 +2,258 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 167A4C4332F
-	for <webhook@archiver.kernel.org>; Fri,  3 Nov 2023 14:24:26 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.53422.1699021456088657469
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CC970C0018A
+	for <webhook@archiver.kernel.org>; Fri,  3 Nov 2023 14:55:26 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web11.54662.1699023316968117421
  for <docs@lists.yoctoproject.org>;
- Fri, 03 Nov 2023 07:24:16 -0700
+ Fri, 03 Nov 2023 07:55:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kx4VRgK0;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4B8BDFF80D;
-	Fri,  3 Nov 2023 14:24:13 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Y8mnPr5P;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 25DED240007;
+	Fri,  3 Nov 2023 14:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1699021454;
+	t=1699023314;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hra/vJSDHGbyQuZ76E5lO9WsiMrHIaVSsbT+H8WbL+s=;
-	b=kx4VRgK0aGscfCVjt/d3cgqCxn6LaLY5wglbBlX/uEPgqj8k7LHSA534LWmZ6ybdH9xhD7
-	ZB/zpd4QYcbMC2DYiByvRyEkB1fLSIs1ao/6DXgwKB2DkEMLaYrRN8KyhhLY/1NalK2UiS
-	UIm1r+EOY12XYVcnyHS346fvKxGrAhwSznHwj1RkmJ4WQYO+YcGUjziJCOMZDGN4NXXGOB
-	qmjPYScuRjh10A5vl72/ljBz673wg+je88ITiOv+P29LfIZAfwG8mkeq7zzPcVoRB0SqOX
-	hISD7VySMLGpIbpiUS1GomruN0WdegxIlPqdcMCLyqVFR71rR8F4PjSrh6iY9g==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 2/2] ref-manual: variables; remove SERIAL_CONSOLES_CHECK
-Date: Fri,  3 Nov 2023 15:24:10 +0100
-Message-Id: <20231103142410.2022995-2-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20231103142410.2022995-1-michael.opdenacker@bootlin.com>
-References: <20231103142410.2022995-1-michael.opdenacker@bootlin.com>
+	bh=3LCPKVchfXAzlvvH7/8V7MBFLwZMcUTAz/B5lcAEXsA=;
+	b=Y8mnPr5PtHrZHEwX+QMOBBGKlDwHxC2tlZk+lV64bBq+R5jGufLbkU85vMUN4RVJhEOWzr
+	wl6hfBk6v2AMI1j/hrT7u4M+XvRPYRGMXUs4+tR66rZ05G8lR37wfeqmL5Ula1viJDg8aI
+	LjDvp9eY70YpT1mHTpl4CbZ1SExHlSewAac0JSlYq1gMoaMjpYAHEfm6dYYFeQJPm6ZqLf
+	Wp9SlZ9gbpNKpA333WyaPOFJ5hv2cVdNsp+moWZD5sPofHjmHn1XEkFYe45ks10KvCgTv4
+	QyBk1//CAxEGZUgLPFgWv2dF8ytB8ZEZk14kC5thGvHxkH6gHQARcH0bihUWlg==
+Message-ID: <10ea9852-27b3-4f26-91c4-e47108f71750@bootlin.com>
+Date: Fri, 3 Nov 2023 15:55:13 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>,
+ docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v8] docs: cover devtool ide
+Content-Language: en-US
+To: Adrian Freihofer <adrian.freihofer@gmail.com>
+References: <20231102222933.2758532-1-adrian.freihofer@siemens.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20231102222933.2758532-1-adrian.freihofer@siemens.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 03 Nov 2023 14:24:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4582
+ <docs@lists.yoctoproject.org>; Fri, 03 Nov 2023 14:55:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4583
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Adrian
 
-No longer in use in Poky (dropped in Nanbield through
-multiple commits)
+Many thanks for this update!
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/ref-manual/variables.rst | 17 -----------------
- 1 file changed, 17 deletions(-)
+Just a few more comments and suggestions...
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 38c63d6179..3002bda3ff 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -7641,23 +7641,6 @@ system and gives an overview of their function and contents.
- 
-          SERIAL_CONSOLES = "115200;ttyS0 115200;ttyS1"
- 
--   :term:`SERIAL_CONSOLES_CHECK`
--      Specifies serial consoles, which must be listed in
--      :term:`SERIAL_CONSOLES`, to check against
--      ``/proc/console`` before enabling them using getty. This variable
--      allows aliasing in the format: <device>:<alias>. If a device was
--      listed as "sclp_line0" in ``/dev/`` and "ttyS0" was listed in
--      ``/proc/console``, you would do the following::
--
--         SERIAL_CONSOLES_CHECK = "slcp_line0:ttyS0"
--
--      This variable is currently only supported with SysVinit (i.e. not
--      with systemd). Note that :term:`SERIAL_CONSOLES_CHECK` also requires
--      ``/etc/inittab`` to be writable when used with SysVinit. This makes it
--      incompatible with customizations such as the following::
--
--         EXTRA_IMAGE_FEATURES += "read-only-rootfs"
--
-    :term:`SETUPTOOLS_BUILD_ARGS`
-       When used by recipes that inherit the :ref:`ref-classes-setuptools3`
-       class, this variable can be used to specify additional arguments to be
+On 02.11.23 at 23:29, Adrian Freihofer wrote:
+> Cover the new devtool ide plugin in the extensible sdk section.
+>
+> Many thanks to Enguerrand de Ribaucourt for his re-view and
+> contributions.
+>
+> Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+> ---
+>   documentation/sdk-manual/extensible.rst | 121 +++++++++++++++++++++++-
+>   1 file changed, 120 insertions(+), 1 deletion(-)
+>
+> diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+> index 355c6cb0e4a..21eff792a27 100644
+> --- a/documentation/sdk-manual/extensible.rst
+> +++ b/documentation/sdk-manual/extensible.rst
+> @@ -63,6 +63,8 @@ their own pros and cons:
+>      need to provide a well-functioning binary artefact cache over the network
+>      for developers with underpowered laptops.
+>   
+> +.. _setting_up_ext_sdk_in_build:
+> +
+>   Setting up the Extensible SDK environment directly in a Yocto build
+>   -------------------------------------------------------------------
+>   
+> @@ -230,13 +232,15 @@ all the commands.
+>      See the ":doc:`/ref-manual/devtool-reference`"
+>      section in the Yocto Project Reference Manual.
+>   
+> -Three ``devtool`` subcommands provide entry-points into development:
+> +``devtool`` subcommands provide entry-points into development:
+>   
+>   -  *devtool add*: Assists in adding new software to be built.
+>   
+>   -  *devtool modify*: Sets up an environment to enable you to modify
+>      the source of an existing component.
+
+to let you modify?
+This sounds lighter.
+
+>   
+> +-  *devtool ide*: Generates a configuration for an IDE.
+> +
+>   -  *devtool upgrade*: Updates an existing recipe so that you can
+>      build it for an updated set of source files.
+>   
+> @@ -614,6 +618,121 @@ command:
+>         decide you do not want to proceed with your work. If you do use this
+>         command, realize that the source tree is preserved.
+>   
+> +Use ``devtool ide`` to generate a configuration for the IDE
+> +-----------------------------------------------------------
+> +
+> +``devtool ide`` automatically configures IDEs for cross-compiling and remote debugging.
+> +To make sure that all parts of the eSDK required by the generated IDE configuration are
+> +available, ``devtool ide`` uses bitbake in the background to bootstrap the SDK.
+BitBake
+> +
+> +#. *Recipe mode*: Generate the IDE configuration for a workspace created by ``devtool modify``.
+> +
+> +   In order to use the tool, a few settings must be made.
+
+"make a setting" sounds fuzzy.
+
+What about "a few variables must be set"?
+
+> +   As a starting example, the following lines of code can be added to the ``local.conf`` file::
+> +
+> +      # Build the companion debug file system
+> +      IMAGE_GEN_DEBUGFS = "1"
+> +      # Optimize build time: with devtool ide the dbg tar is not needed
+> +      IMAGE_FSTYPES_DEBUGFS = ""
+> +
+> +      # ssh is mandatory, no password simplifies the usage
+> +      EXTRA_IMAGE_FEATURES += "\
+> +         ssh-server-openssh \
+> +         debug-tweaks \
+> +      "
+> +
+> +      # Remote debugging needs the gdbserver on the target device
+> +      IMAGE_INSTALL:append = " gdbserver"
+> +
+> +   Assuming the development environment is set up correctly and a workspace has been created
+> +   for the recipe using ``devtool modify recipe``, the following command can create the
+> +   SDK and the configuration for VSCode in the recipe workspace::
+> +
+> +      $ devtool ide recipe core-image-minimal --target root@192.168.7.2
+> +
+> +   The command requires an image recipe that is used to create the SDK.
+> +   This firmware image should also be installed on the target device.
+> +   It is possible to pass multiple package recipes.
+> +   ``devtool ide`` tries to create an IDE configuration for all package recipes.
+> +
+> +   Exactly what this command does depends on the recipe respectively on the build tool used by
+> +   the recipe. The basic idea is to configure the IDE so that it calls the build tool exactly
+> +   as ``bitbake`` does.
+
+s/``bitbake``/BitBake/
+
+We are talking about the tool in general, not the particular executable 
+for the command line.
+
+> +
+> +   For example, a CMake preset is created for a recipe that inherits :ref:`ref-classes-cmake`.
+> +   In the case of VSCode, CMake presets are supported by the CMake Tools plugin.
+> +   This is an example of how the build configuration used by ``bitbake`` is exported to an IDE
+
+BitBake
+
+> +   configuration that gives exactly the same build results.
+> +
+> +   Support for remote debugging with seamless integration into the IDE is important for a cross-SDK.
+> +   ``devtool ide`` automatically generates the necessary helper scripts for deploying the compiled
+> +   artifacts to the target device as well as the necessary configuration for the debugger and the IDE.
+> +
+> +   .. note::
+> +
+> +      To ensure that the debug symbols on the build machine match the binaries running on the target device,
+> +      it is essential that the image built by ``devtool ide`` is running on the target device.
+> +
+> +   ``devtool ide`` aims to support multiple programming languages and multiple IDEs natively.
+> +   Native means that the IDE is configured to call the build tool (e.g. CMake or Meson) directly.
+s/Native/Natively/
+> +   This has several advantages. First of all, it is much faster than ``devtool build``, for example.
+> +   But it also allows to use the very good integration of tools like CMake or GDB directly with VSCode or other IDEs.
+> +   However, supporting many programming languages and multiple IDEs is quite an elaborate and constantly evolving thing.
+> +   To handle combinations that are not natively supported, ``devtool ide`` creates a configuration that falls back
+> +   to ``devtool build`` and ``devtool deploy-target`` if there is no native support available.
+> +
+> +   The default IDE is VSCode. Some hints about using VSCode:
+> +
+> +   - To work with CMake press ``Ctrl + Shift + p``, type ``cmake``.
+> +     This will show some possible commands like selecting a CMake preset, compiling or running CTest.
+> +     Cross-compiled unit tests are executed transparently with qemu-user.
+
+``qemu-user``
+
+> +
+> +   - To work with Meson press ``Ctrl + Shift + p``, type ``meson``.
+> +     This will show some possible commands like compiling or executing the unit tests.
+> +
+> +   - For the deployment to the target device, just press ``Ctrl + Shift + p``, type ``task``.
+> +     Select the ``install & deploy task``.
+> +
+> +   - For remote debugging, switch to the debugging view by pressing the "play" button with the ``bug icon`` on the left side.
+> +     This will provide a green play button with a drop-down list where a debug configuration can be selected.
+> +     After selecting one of the generated configurations, press the "play" button.
+> +
+> +     Starting a remote debugging sesssion automatically initiates the deployment to the target device.
+s/sesssion/session/
+> +     If this is not desired, the ``"dependsOn": ["install && deploy-target...]`` parameter of the tasks
+> +     with ``"label": "gdbserver start...`` can be removed from the ``tasks.json`` file.
+> +
+> +   Additionally ``--ide=none`` is supported.
+> +   With the none IDE parameter some generic configurations files like ``.gdbinit`` files and some helper scripts
+> +   starting the gdbserver remotely on the target device as well as the gdb client on the host are generated.
+
+s/the gdbserver/``gdbserver``/
+s/gdb client/GDB client/
+
+> +
+> +#. *Shared sysroots mode*: Generate the IDE configuration for using a cross-toolchain as provided by
+> +   ``bitbake meta-ide-support build-sysroots``.
+> +
+> +   For some special recipes and use cases a per-recipe sysroot based SDK is not suitable.
+> +   Therefore ``devtool ide`` also supports setting up the shared sysroots environment and generating
+> +   IDE configurations referring to the shared sysroots. Recipes leading to a shared sysroot
+> +   are for example ``meta-ide-support`` or ``shared-sysroots``.
+> +   Also passing ``none`` as a recipe name leads to a shared sysroot SDK::
+> +
+> +      $ devtool ide none core-image-minimal
+> +
+> +   For VSCode the cross-tool-chain is exposed as a CMake kit. CMake kits are defined in
+> +   ``~/.local/share/CMakeTools/cmake-tools-kits.json``.
+> +   The following example shows how the cross-toolchain can be selected in VSCode.
+> +   Fist of all we create a CMake project and start VSCode::
+> +
+> +      mkdir kit-test
+> +      echo "project(foo VERSION 1.0)" > kit-test/CMakeLists.txt
+> +      code kit-test
+> +
+> +   If there is a CMake project in the workspace cross-compilation is supported:
+> +
+> +   - Press ``Ctrl + Shift + P``, type ``CMake: Scan for Kits``
+> +   - Press ``Ctrl + Shift + P``, type ``CMake: Select a Kit``
+> +
+> +   For other IDEs than VSCode ``devtool ide none ...`` is just a simple wrapper for the
+> +   setup of the extensible SDK as described in :ref:`setting_up_ext_sdk_in_build`.
+> +
+>   Use ``devtool upgrade`` to Create a Version of the Recipe that Supports a Newer Version of the Software
+>   -------------------------------------------------------------------------------------------------------
+
+
+That was all.
+Thanks for letting us know when your series gets merged (crossing fingers).
+
+Thanks again!
+Michael.
+
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
