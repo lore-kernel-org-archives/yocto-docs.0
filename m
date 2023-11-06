@@ -2,72 +2,129 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19A83C41535
-	for <webhook@archiver.kernel.org>; Mon,  6 Nov 2023 20:46:03 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.66213.1699303557085525980
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CB88C4332F
+	for <webhook@archiver.kernel.org>; Mon,  6 Nov 2023 20:48:53 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.66813.1699303723385429185
  for <docs@lists.yoctoproject.org>;
- Mon, 06 Nov 2023 12:45:57 -0800
+ Mon, 06 Nov 2023 12:48:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bFssL+Ff;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2524B1C0004;
-	Mon,  6 Nov 2023 20:45:52 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Kz4OBrh3;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 23DB5C0004;
+	Mon,  6 Nov 2023 20:48:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1699303554;
+	t=1699303721;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oAeyu13MRxpi1Rn+tJcsb1/50Qto4b+1avzsz2NJ19E=;
-	b=bFssL+Ff7oBHhQOaW/goCdOqoEFFplYDh3C5pBZhnBVwGWHvoYcrxqlaThWbD1AL3CR6Dh
-	H62CXEgu+lGBWYmUfsRJNPkQE2axuRvvJS3u7vc7v2ec16x7MrbqjWOhuEB1bf+3l1JM8/
-	pf1pa7eTcYSIudGBUsERLO7tJbajuKMlSsGYh9bPJtYB5mhHHSAsyF6RW0npC8p8g5rHyW
-	8Gta3+lUQ0E1cp16DMU9rt7+JNsTUS6n+Ogp4aXn9m8TjP6kmFv5Q35IZRvvTJTXVIA1fQ
-	XEMrpAb4eDCZRTDRQOT+kMEFzalsN8dsQlgrog23nHCvJK120RXjVinZ7zajtQ==
-Message-ID: <dfe72e9e-9b85-4944-90ff-7542455edbee@bootlin.com>
-Date: Mon, 6 Nov 2023 21:45:51 +0100
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BBGmmXgekBcIH8iI1LU8171F6ZTXrKyGK01OB4sARCc=;
+	b=Kz4OBrh3hGEvTHO5qZtfWjyazsBPwYFpfim5WlD5l38sLeO9194Ug4mpQZk1SM4D0r4Fcb
+	sbv37w61wMoVxvoJ6TnuCdDyadHpgqlZzI6maWLB0bdluZOR5gN3IyQ0nGkv1XjXdqZSfe
+	gHVKpcCzGmN0EyB9LSu69FteZSKFenBzSdxmZbnhiYxLMmYndzkFE68tAjD1MhqoCp0iQw
+	P3sQdxVG9BOYfVoRHDuOL+kmr8STkhS2coMaMLBW1wrf2ulXvvbOAs+VqxIuByYw4NNvGW
+	v/Wf5yaVY/EhiYCdpfoeRR/2HBFLaD7oLVF8Zp8zRGRda14Tmk2z2K5KRx0BMA==
+Message-ID: <8bed973c-a99c-497d-9161-7c00b777cc58@bootlin.com>
+Date: Mon, 6 Nov 2023 21:48:40 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 12/12] migration-4.3: additional migration items
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Language: en-US
-To: Paul Eggleton <bluelightning@bluelightning.org>,
- =?UTF-8?Q?Ulrich_=C3=96lmann?= <u.oelmann@pengutronix.de>
-References: <cover.1699266393.git.bluelightning@bluelightning.org>
- <76de363e7d3d18d38be8d63cbd683e22337f7af6.1699266393.git.bluelightning@bluelightning.org>
- <6rbkc7i1vs.fsf@pengutronix.de>
- <87b72e9424d830730d3fcacd12d3e225@bluelightning.org>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master nanbield] Pull request
 Organization: Bootlin
-In-Reply-To: <87b72e9424d830730d3fcacd12d3e225@bluelightning.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 06 Nov 2023 20:46:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4608
+ <docs@lists.yoctoproject.org>; Mon, 06 Nov 2023 20:48:53 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4609
 
-Paul, many thanks for this great contribution. I can't imagine the time 
-it took!
-Ulrich, thanks for the review too!
+Hi Richard,
 
-On 06.11.23 at 17:16, Paul Eggleton wrote:
-> On 06.11.2023 23:58, Ulrich Ölmann wrote:
->>> ...
->>> +-  The :term:`SRCPV` variable is no longer be needed in :term:`PV`, 
->>> but since
->>
->> s/is no longer be needed/is no longer needed/
->
-> Fix pushed to the branch.
+The following changes since commit 8109eeb5b7a4e5b2f50047e049ce0295bdc94856:
 
+   ref-manual: document MESON_TARGET (2023-10-30 10:56:25 +0100)
 
-All merged into master-next, now.
-It looks ready for the release.
-Thanks again
+are available in the Git repository at:
+
+   git://git.yoctoproject.org/yocto-docs master-next
+
+for you to fetch changes up to 897d5017eae6b3af2d5d489fc4e0915d9ce21458:
+
+   migration-guides: fix empty sections (2023-11-06 21:41:05 +0100)
+
+----------------------------------------------------------------
+BELHADJ SALEM Talel (1):
+       overview-manual: concepts: Add Bitbake Tasks Map
+
+Marta Rybczynska (1):
+       dev-manual: extend the description of CVE patch preparation
+
+Michael Opdenacker (8):
+       ref-manual: document cargo_c class
+       ref-manual: variables: mention new CDN for SSTATE_MIRRORS
+       ref-manual: variables: add RECIPE_MAINTAINER
+       ref-manual: variables: remove SERIAL_CONSOLES_CHECK
+       migration-guides: further updates for release 4.3
+       bsp-guide: bsp.rst: update beaglebone example
+       ref-manual: classes: explain cml1 class name
+       migration-guides: fix empty sections
+
+Paul Eggleton (12):
+       Remove references to apm in MACHINE_FEATURES
+       ref-manual: update SDK_NAME variable documentation
+       ref-manual: remove semicolons from *PROCESS_COMMAND variables
+       release-notes-4.3: fix some typos
+       release-notes-4.3: tweaks to existing text
+       release-notes-4.3: add CVEs, recipe upgrades, license changes, 
+contributors
+       release-notes-4.3: remove the Distribution section
+       release-notes-4.3: move new classes to Rust section
+       release-notes-4.3: feature additions
+       migration-4.3: remove some unnecessary items
+       migration-4.3: adjustments to existing text
+       migration-4.3: additional migration items
+
+Ross Burton (14):
+       migration-guides: add debian 12 to newly supported distros
+       migration-guides: edgerouter machine removed
+       migration-guides: QEMU_USE_SLIRP variable removed
+       migration-guides: remove non-notable change
+       migration-guides: mention LLVM 17
+       migration-guides: mention CDN
+       migration-guides: add kernel notes
+       migration-guides: remove SERIAL_CONSOLES_CHECK
+       migration-guides: enabling SPDX only for Poky, not a global default
+       migration-guides: add testing notes
+       migration-guides: add utility notes
+       migration-guides: add BitBake changes
+       migration-guides: packaging changes
+       migration-guides: git recipes reword
+
+  documentation/bsp-guide/bsp.rst                         |  63 +++++----
+  documentation/dev-manual/new-machine.rst                |   2 +-
+  documentation/dev-manual/vulnerabilities.rst            | 111 
++++++++++++++---
+  documentation/migration-guides/migration-4.3.rst        | 124 
+++++++++++++++----
+  documentation/migration-guides/release-notes-4.3.rst    | 835 
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-----
+  documentation/overview-manual/concepts.rst              | 170 
++++++++++++++++++++++++++
+  documentation/overview-manual/svg/bitbake_tasks_map.svg |   4 +
+  documentation/ref-manual/classes.rst                    |  17 ++-
+  documentation/ref-manual/features.rst                   |   2 -
+  documentation/ref-manual/variables.rst                  |  94 
+++++++++------
+  10 files changed, 1272 insertions(+), 150 deletions(-)
+  create mode 100644 documentation/overview-manual/svg/bitbake_tasks_map.svg
+
+Thank you in advance
+Cheers
 Michael.
 
 -- 
