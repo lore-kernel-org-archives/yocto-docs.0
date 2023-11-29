@@ -1,68 +1,66 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 37E34C4167B
-	for <webhook@archiver.kernel.org>; Wed, 29 Nov 2023 02:23:40 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
- by mx.groups.io with SMTP id smtpd.web11.20950.1701224616401532484
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53E04C4167B
+	for <webhook@archiver.kernel.org>; Wed, 29 Nov 2023 09:25:02 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.28347.1701249896555022900
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Nov 2023 18:23:36 -0800
+ Wed, 29 Nov 2023 01:24:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=aziwELsv;
- spf=pass (domain: intel.com, ip: 198.175.65.10, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701224616; x=1732760616;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=GTh74TWDU/qi+nCT2KBFT7QrJ0RMfgeza3DyXZBOC/M=;
-  b=aziwELsv4lkd2Q1MkC/mO3ddEzHxkLYC+K4APmB8F3BH6CcSFK6UFQhs
-   arOzYUCtFof377JV/3Ut9j0qWNNwn6nDEhk8zV4eiAsI6jHEY1Lt0CYGa
-   shPHzdpA5vJu5AAtGwg3TrqVL1gzwOUqmvJvoLqWhzjQZ32etaQuxCz0w
-   1Xypplhdi1nl0Q7w+RYJkQYEXTw2nuqCLZh09iG0grDXmwMk08VNsRiCR
-   NJHiDBbJ/NRSG9B1UeBVz7rcmXSMqywC2nulR+RC4EFdm+rslr1D7xcnh
-   8AUedyxskkE8TUMypuH+egfvYrZ5w1OIQQpWCNJNaqw3gz3l7GHZNYooc
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="6340543"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="6340543"
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 18:23:35 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="892291606"
-X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="892291606"
-Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
-  by orsmga004.jf.intel.com with ESMTP; 28 Nov 2023 18:23:34 -0800
-From: chee.yang.lee@intel.com
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Z0QTQ5Ln;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7CD62C0002;
+	Wed, 29 Nov 2023 09:24:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1701249894;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7yirPoTfhL3EMA/+9bS/d6JprEVhlikEVwVO8Mzux6s=;
+	b=Z0QTQ5LnFJmSbGweP5ArJSDJhlN85zdduN0JH00HR/SmTjIvhkytitZ0XdSXDfHcJj+371
+	ERCgT5I3unuKbm5f84AoAx4vvVGf8nlb5dtT6aIIXYrrGopSStH5OxrKdqM2adhvXrzMB0
+	hn0q930D8iMkH0o3tMwtQAIh6FSM8Hc9BhFjsBhJOVEokevdtXddt8N8Dy89GhRAWw2au1
+	VXI1OCTBeUPp82jjUWWkmYYR1LYSUikHmdTrx2LVFX95/pcpoVQZJy+8nx9rgtON2bKQyX
+	v7kTfxZYvGaeaLmGC5WGFTtL/TjTlvtT+h3y1XZOGOHYLTuGnAHV74Uy2YEuZQ==
+From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] migration-guides: add release notes for 4.3.1
-Date: Wed, 29 Nov 2023 10:20:37 +0800
-Message-Id: <20231129022037.1881331-1-chee.yang.lee@intel.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Lee Chee Yang <chee.yang.lee@intel.com>
+Subject: [nanbield][PATCH v2] migration-guides: add release notes for 4.3.1
+Date: Wed, 29 Nov 2023 10:24:48 +0100
+Message-Id: <20231129092448.227545-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 29 Nov 2023 02:23:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4651
+ <docs@lists.yoctoproject.org>; Wed, 29 Nov 2023 09:25:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4652
+
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 From: Lee Chee Yang <chee.yang.lee@intel.com>
 
 Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
----
-v2: split linux-yocto by version
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
+---
+
+Changes in V2:
+- Split CVE fixes between linux-yocto/6.1 and 6.5
+---
  .../migration-guides/release-4.3.rst          |   1 +
  .../migration-guides/release-notes-4.3.1.rst  | 237 ++++++++++++++++++
  2 files changed, 238 insertions(+)
  create mode 100644 documentation/migration-guides/release-notes-4.3.1.rst
 
 diff --git a/documentation/migration-guides/release-4.3.rst b/documentation/migration-guides/release-4.3.rst
-index 92516ae8f..5b651a2ef 100644
+index 92516ae8f5..5b651a2efd 100644
 --- a/documentation/migration-guides/release-4.3.rst
 +++ b/documentation/migration-guides/release-4.3.rst
 @@ -7,3 +7,4 @@ Release 4.3 (nanbield)
@@ -72,7 +70,7 @@ index 92516ae8f..5b651a2ef 100644
 +   release-notes-4.3.1
 diff --git a/documentation/migration-guides/release-notes-4.3.1.rst b/documentation/migration-guides/release-notes-4.3.1.rst
 new file mode 100644
-index 000000000..377cdb43f
+index 0000000000..377cdb43f4
 --- /dev/null
 +++ b/documentation/migration-guides/release-notes-4.3.1.rst
 @@ -0,0 +1,237 @@
