@@ -2,189 +2,318 @@ Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E2594C4167B
-	for <webhook@archiver.kernel.org>; Wed, 29 Nov 2023 01:22:09 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
- by mx.groups.io with SMTP id smtpd.web10.17029.1701220928670981577
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 37E34C4167B
+	for <webhook@archiver.kernel.org>; Wed, 29 Nov 2023 02:23:40 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+ by mx.groups.io with SMTP id smtpd.web11.20950.1701224616401532484
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Nov 2023 17:22:08 -0800
+ Tue, 28 Nov 2023 18:23:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=bdX3Cvq4;
- spf=pass (domain: intel.com, ip: 192.198.163.8, mailfrom: chee.yang.lee@intel.com)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=aziwELsv;
+ spf=pass (domain: intel.com, ip: 198.175.65.10, mailfrom: chee.yang.lee@intel.com)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1701220928; x=1732756928;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=3CxIeRe475Ojf30gczKcAyllyN1Bx7Cn0bbdJeoiVb0=;
-  b=bdX3Cvq4cugIiHCrTSyH08F+52eO6dxlK95Nmk+scWHiYLscfn2OR8sh
-   20P9JDJDlqYdtdZe20i6iXEptaH9F99h20ABDf/cuS30r42JAk1JhfEpW
-   3WVu7Wv1a+qAR785lyt2zkV2lLSBR11tGeuQV1nxLsm0/7OBdyDQ5vtrf
-   9W6a0GWg8ZyEJWeG9kWS1iqNTnNrdZOVNmY5mecjm6am8TV9q3OiJkpg0
-   sBZz9bOMIEEUgiMIrWfOAVsgOr5Q+KncMdVaiUnuSsOETCx6UNyUJkcYi
-   oNJXFoNWJmkdp/qGYa3bD3qffgcjEZY6qrs6SzBY//aR9IrgagTbuN+ru
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="6281258"
+  t=1701224616; x=1732760616;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GTh74TWDU/qi+nCT2KBFT7QrJ0RMfgeza3DyXZBOC/M=;
+  b=aziwELsv4lkd2Q1MkC/mO3ddEzHxkLYC+K4APmB8F3BH6CcSFK6UFQhs
+   arOzYUCtFof377JV/3Ut9j0qWNNwn6nDEhk8zV4eiAsI6jHEY1Lt0CYGa
+   shPHzdpA5vJu5AAtGwg3TrqVL1gzwOUqmvJvoLqWhzjQZ32etaQuxCz0w
+   1Xypplhdi1nl0Q7w+RYJkQYEXTw2nuqCLZh09iG0grDXmwMk08VNsRiCR
+   NJHiDBbJ/NRSG9B1UeBVz7rcmXSMqywC2nulR+RC4EFdm+rslr1D7xcnh
+   8AUedyxskkE8TUMypuH+egfvYrZ5w1OIQQpWCNJNaqw3gz3l7GHZNYooc
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="6340543"
 X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="6281258"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 17:22:06 -0800
+   d="scan'208";a="6340543"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Nov 2023 18:23:35 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="762114991"
+X-IronPort-AV: E=McAfee;i="6600,9927,10908"; a="892291606"
 X-IronPort-AV: E=Sophos;i="6.04,234,1695711600"; 
-   d="scan'208";a="762114991"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orsmga007.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 28 Nov 2023 17:22:06 -0800
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34; Tue, 28 Nov 2023 17:22:05 -0800
-Received: from ORSEDG602.ED.cps.intel.com (10.7.248.7) by
- orsmsx612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.34 via Frontend Transport; Tue, 28 Nov 2023 17:22:05 -0800
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (104.47.56.41) by
- edgegateway.intel.com (134.134.137.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.34; Tue, 28 Nov 2023 17:22:05 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gZnaUwFF8FgAPtbdnQ8l9TQoDz3iYcwWk9AG9xijJqVV8qMIENojgQPiV+PFyfYTaqVsPxiZN5NU6awf5nOnDJ6JBz1ICk7PYsM1xR5E6J+MXcD5NPUq8JUyXKZ+NRra4Khk5/SYlbX1iKtK2cYQDFLjdX0rp1BpEIHCGdafanbDuj7qinuX0Qcg5kKgI4T1FGyZhsVU8yUiEImClzcJyhuIfRfiFtu54Go75RwRm8IGXn4ROz+gS9SENplJPs0L2kPqDrqtzcE5IFBBAZV84i18ZZvTTNTGVR8JkPmxStPOdLfXndzg/swHbwaU97uRFf7tTqZmg8rPrd4k3pMABg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3CxIeRe475Ojf30gczKcAyllyN1Bx7Cn0bbdJeoiVb0=;
- b=EXyD3+q1KH8zDgKHi/zHYB/zYejwgEIv67XGwQYq96ix7zxZKLNJgRdguWiwbRAznbzyMpLjE+uqG+EnNWkzCgqm6j+bJFiuWpU2y4WM7z/IdaU02qvZKM4aSXaUygDZ8mSBBzpBjTvLYiBtidJx1fpuwDP+kN4eIfj1e0W8iIqfxztDoJKluCa0Mg7Ptk83sa7yyxB3ybtY+sxz3zPHUbnhLGD7vJ/9kI4eWmIjwAyy2sx+195M4LivQoSU/2s6dIQOWEk6SkM4p4C6gHpnoMF3catGCL8icGaVKN4wCKt1OLbYPsTglfKcnLGC7+Mv32U7uoN0lY5IZ2EsJci1Qw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CH3PR11MB8093.namprd11.prod.outlook.com (2603:10b6:610:139::10)
- by SA0PR11MB4749.namprd11.prod.outlook.com (2603:10b6:806:9a::23) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7025.29; Wed, 29 Nov
- 2023 01:22:03 +0000
-Received: from CH3PR11MB8093.namprd11.prod.outlook.com
- ([fe80::1fb7:4c3f:3dd2:a698]) by CH3PR11MB8093.namprd11.prod.outlook.com
- ([fe80::1fb7:4c3f:3dd2:a698%7]) with mapi id 15.20.7025.022; Wed, 29 Nov 2023
- 01:22:03 +0000
-From: "Lee, Chee Yang" <chee.yang.lee@intel.com>
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Subject: RE: [docs] [PATCH] migration-guides: add release notes for 4.3.1
-Thread-Topic: [docs] [PATCH] migration-guides: add release notes for 4.3.1
-Thread-Index: AQHaIepMXOXKjs6Yak2gTMkepPOGU7CQfX7g
-Date: Wed, 29 Nov 2023 01:22:03 +0000
-Message-ID: <CH3PR11MB80938187B6CD704EE260C44FB983A@CH3PR11MB8093.namprd11.prod.outlook.com>
-References: <20231128065058.1858790-1-chee.yang.lee@intel.com>
- <62fb1e4d-2983-49f4-8135-3e8d5a98de1f@bootlin.com>
-In-Reply-To: <62fb1e4d-2983-49f4-8135-3e8d5a98de1f@bootlin.com>
-Accept-Language: en-SG, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR11MB8093:EE_|SA0PR11MB4749:EE_
-x-ms-office365-filtering-correlation-id: d555b9ed-dfa2-4378-0f8e-08dbf0799829
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: g1Di+SQyv5iabGd91//FaFUOAO6mSLBUUuqbjT3PpKUqzLM9/HWO2/9rISXZrtcEDCEneMsnc8Tl/Jei8wZUnexEDYvs7of5cFdfr2lh97YDaKapX/PBXZ0GGgq6tj3rvTwL80kpZusXbyEnoyEAKslVTgx3f5P5XL7J0zv2Oxm/njYY79ZiEWMcPSTssUXte9Tl+0VQ0SC3gFiA/AvKtEfI4/ph9Wvndo2zyr9Nl1XDJGFuRGeXBc5ahGX/3SfHrWQ3FEak3n98et7NI+pGC1uanrspgTAF75b6DjnkreWWTK1Zr2VXESdEgiExEIh3UZh/jzOpSrow2Ekm/WNCAjNoTZkicK8BNpoF+16EW0pDjkpDscNNsLJDiCfb6zvgC+yCw8AJSiKyoM8yf1rsj6hnOp81ODqwSWQtA/ZHME1XeXyM9Z+TTfTaV0+JGdyS3MyjVP/YM9XytwzV7D1ZxnqBU8xkYhLfEj9olerRQm9T6WzS+SyFW07githOd9BRRx85Xc9WQ9Lo6yIt3HvKHkip5AO2Ww/l3kHO1mFndnolbPmmRZzn+BfltP+Lfe0y0tIsFXWwwhwZ1kdy6sonUHeJcGu1El97HlJs6CUUBuMG0WAxjETNtSIZLz19f+eR
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8093.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(136003)(366004)(376002)(396003)(39860400002)(230922051799003)(1800799012)(451199024)(186009)(64100799003)(38100700002)(33656002)(38070700009)(82960400001)(122000001)(86362001)(41300700001)(66556008)(66446008)(6916009)(8936002)(478600001)(66946007)(66476007)(316002)(8676002)(64756008)(76116006)(9686003)(55016003)(53546011)(7696005)(6506007)(71200400001)(5660300002)(4326008)(2906002)(52536014)(26005)(83380400001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?ZW9UbVZhNEdRN3NWVkZwaUdPeWNTWCtxOUNIVXZZU0ZML09SK0ZsOVZuQWJk?=
- =?utf-8?B?VGdjN3QycDN3T3RMK1VrNUVXOGdOYnlYeGhpZDBBdm1jOXVCTkRSSktXU2xG?=
- =?utf-8?B?dklzL2tLbG5mUkVUN3lmSXljL0RsdzA1RVlTUDk2SzJrSXNqR1p5bWZoREJi?=
- =?utf-8?B?ckVGbHY4QjQ3K1ZsTktVUSs3RUVmMG9MSHBvK01WaGpMOWVEekJJTWpxazVO?=
- =?utf-8?B?Y1R2WTNjSGQyUStYMGo3TS9LQ0lHRTZPSGdaUjJMNEg1NnJQa0FGWUtTL2da?=
- =?utf-8?B?UjN0N2lsMWdmWVNXTlhZRjVaT3NJZDRRL2JJK3pyMFZjQ1d1YmZYaWQ2U1Q3?=
- =?utf-8?B?eEVpV3diblBZY2JCZVgra2o4Z09IYi9ORjdPWjJkSHErSWMrL1ViUlAxWU5t?=
- =?utf-8?B?bmI4cUVsLzR1c2hQclhoODMrTENqNlE2c0h4SGRkakkvVlhmN1IxMHVLQm5R?=
- =?utf-8?B?MU5xWWJ5bFBaMzNqa0FibnRpVmZTOXJwL2NIU20rTzNMcTliOTRBbnlpbEY0?=
- =?utf-8?B?RmdGNVZ4eGZPMGYwWlRqNFJWanc5NFIwekdMaVZlakFWZlhLSTk3a0JFUnB6?=
- =?utf-8?B?aEhoMkoxdWI4SFJOd0tjN0VyVStZc1RUSkJiUmVtZjdmbjlWWStjQnZuT1ZS?=
- =?utf-8?B?enhSNFJnNGJBd3JFSWZDOENnK3MrSDJPL1N6elhaQTlZVVNuKzZ3N2Y0K3pt?=
- =?utf-8?B?L2pPOGU3aWhPNkd2MXo2QVRNeFJLSUZiRmhRUXZnM3hidVVNYmJmV3VVMG1O?=
- =?utf-8?B?SkN1U1F0QWdjS2k4OUxHdVpPd2g0NWU1NmF5Y2o0bGZYeDFZYlpYdXU5djFY?=
- =?utf-8?B?QUNORjc5UXlhWi9CbnN1aWlVZUVNcUZZZEZHL0JscnVieWVOVysxTUZiai92?=
- =?utf-8?B?dEd3Q0RDY1l3R1RoanU0QWZzL1QyUHpPbjQzSkQ0TVBwbmk3Ymt6ZjJzS1Fm?=
- =?utf-8?B?dy8yUlMrRVRQV2xSMGczMy8wMGtxckxPOE5QNEFUTi9weUcwOEZBVkxEY0VM?=
- =?utf-8?B?MzcyQWRPeHd6YnBja3ErQnY5NTNMMG44VHRHODc5WThSVFVIaGxIRlRtRldz?=
- =?utf-8?B?bGZ1RXdPSG5jZzB4ckVjSEszOXBaWmdhVUt6M0QxWGxsaWtGZXJrTlJBcGlw?=
- =?utf-8?B?eGlhcWM0L1VZYVdhb2hwSWVTN3c1amFOamE3elVGWXZxOEVaNjJUbTRHbUxk?=
- =?utf-8?B?TWF6aFJ6S1JWUTBqYmluaDdmeFNEV2FiWGlYRWNsVVIwNk9hUFFlUzVob3ZM?=
- =?utf-8?B?RG0vWXI5NFRPRUdNVWQ0cUIyZUYwd2tmSWxYcEJheUtMYW94UlRFdGpVU1cy?=
- =?utf-8?B?T0FXdU1WZ251SlZHbWQwN0tLZ1N3NC9kUXY3U3h6L2J1VElWQWZSdHo1SWhw?=
- =?utf-8?B?R0dxS3lQQ3Q3d0NaMU9ReGdxVUIvamNPdU55a3p6ZTY3dUtnZ1VUQ1U0d2Z2?=
- =?utf-8?B?QmVVWHRDMEJGdVErMGVDMjJhR2dkSkNaMTVhVXg1SDF1SzJMa0JpTUhsYnJm?=
- =?utf-8?B?dWZkVEN2SU9IM1RCWWtjcUxEcHpEQ1MyVE1XS2pYR3dUYnBsdDlkQ1dFdy9S?=
- =?utf-8?B?cGVVQlhpS1dBalYzcjhDZi8vMzZIZ1ZVblF0U0hiY000bFFJT1lSaVRYUU9t?=
- =?utf-8?B?Vm9ZcWtEcXhtVUNwWmVIOGJXcEdOWmNaQ09mV1VYdXBseVU5bWZicjFQOUpW?=
- =?utf-8?B?SlQ2a3JtMWVOaWt0UUhoL2dKbFgrU1dxbFZCVFVmQ1Flc0pOdkhJT2l0cXJs?=
- =?utf-8?B?L3psQU94alQyN1VkTktDWkZFakh4cVpFNVBZZWNDOXhqck95Y2hUMi9sSHlz?=
- =?utf-8?B?V2FIZXdJRnErdWxTS2p3RVFQU1hxaEZWclE2NWpnVE1lbTBQbGg0L1NkMDg3?=
- =?utf-8?B?K3BKWDdLWXZsbHNhWXZxSWhwZ1dWckVDdEdmNWhjR3lJeW12ZE5kTVZIY01w?=
- =?utf-8?B?VHNjNjFsU0tySkcrRDVsL0JrcU9Qa05YdXlsOE1qQVpScUJjQXdDZHBJdFg1?=
- =?utf-8?B?VmF4Z3p6Q1g0OVQrL0NxckRvSm1JWk93dGRzTzBWY1U5NVNkZjU3anhKT1Y2?=
- =?utf-8?B?US9mRWZyZzA3YmtuWUxrTnhwaTJWRXNHWFE2RFo1LzZrWW8rTVR6VXNDZUNa?=
- =?utf-8?Q?T8u5aZRAjaFe8qGnAl3gapzm+?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+   d="scan'208";a="892291606"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by orsmga004.jf.intel.com with ESMTP; 28 Nov 2023 18:23:34 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH v2] migration-guides: add release notes for 4.3.1
+Date: Wed, 29 Nov 2023 10:20:37 +0800
+Message-Id: <20231129022037.1881331-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8093.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d555b9ed-dfa2-4378-0f8e-08dbf0799829
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Nov 2023 01:22:03.7569
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: Oq1kJX+ZA3sCUQVPS/Z9kYpPP6G4QfC/q7vuNdBxEqnmnsHpBzlNP9os/MJWqr+HJ7A7VrazUg+7bZUXNFSoPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4749
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 29 Nov 2023 01:22:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4650
+ <docs@lists.yoctoproject.org>; Wed, 29 Nov 2023 02:23:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4651
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogTWljaGFlbCBPcGRlbmFj
-a2VyIDxtaWNoYWVsLm9wZGVuYWNrZXJAYm9vdGxpbi5jb20+DQo+IFNlbnQ6IFR1ZXNkYXksIE5v
-dmVtYmVyIDI4LCAyMDIzIDc6MDIgUE0NCj4gVG86IExlZSwgQ2hlZSBZYW5nIDxjaGVlLnlhbmcu
-bGVlQGludGVsLmNvbT4NCj4gQ2M6IGRvY3NAbGlzdHMueW9jdG9wcm9qZWN0Lm9yZw0KPiBTdWJq
-ZWN0OiBSZTogW2RvY3NdIFtQQVRDSF0gbWlncmF0aW9uLWd1aWRlczogYWRkIHJlbGVhc2Ugbm90
-ZXMgZm9yIDQuMy4xDQo+IA0KPiBIaSBMZWUNCj4gDQo+IE1hbnkgdGhhbmtzIGZvciB0aGUgcmVs
-ZWFzZSBub3RlcyENCj4gU2VlIG15IGNvbW1lbnRzIGJlbG93Li4uDQo+IA0KPiBPbiAyOC4xMS4y
-MyBhdCAwNzo1MCwgTGVlIENoZWUgWWFuZyB3cm90ZToNCj4gPiBGcm9tOiBMZWUgQ2hlZSBZYW5n
-IDxjaGVlLnlhbmcubGVlQGludGVsLmNvbT4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IExlZSBD
-aGVlIFlhbmcgPGNoZWUueWFuZy5sZWVAaW50ZWwuY29tPg0KPiA+IC0tLQ0KPiA+ICAgLi4uL21p
-Z3JhdGlvbi1ndWlkZXMvcmVsZWFzZS00LjMucnN0ICAgICAgICAgIHwgICAxICsNCj4gPiAgIC4u
-Li9taWdyYXRpb24tZ3VpZGVzL3JlbGVhc2Utbm90ZXMtNC4zLjEucnN0ICB8IDIzNiArKysrKysr
-KysrKysrKysrKysNCj4gPiAgIDIgZmlsZXMgY2hhbmdlZCwgMjM3IGluc2VydGlvbnMoKykNCj4g
-PiAgIGNyZWF0ZSBtb2RlIDEwMDY0NA0KPiA+IGRvY3VtZW50YXRpb24vbWlncmF0aW9uLWd1aWRl
-cy9yZWxlYXNlLW5vdGVzLTQuMy4xLnJzdA0KPiA+DQo+ID4gZGlmZiAtLWdpdCBhL2RvY3VtZW50
-YXRpb24vbWlncmF0aW9uLWd1aWRlcy9yZWxlYXNlLTQuMy5yc3QNCj4gPiBiL2RvY3VtZW50YXRp
-b24vbWlncmF0aW9uLWd1aWRlcy9yZWxlYXNlLTQuMy5yc3QNCj4gPiBpbmRleCA5MjUxNmFlOGYu
-LjViNjUxYTJlZiAxMDA2NDQNCj4gPiAtLS0gYS9kb2N1bWVudGF0aW9uL21pZ3JhdGlvbi1ndWlk
-ZXMvcmVsZWFzZS00LjMucnN0DQo+ID4gKysrIGIvZG9jdW1lbnRhdGlvbi9taWdyYXRpb24tZ3Vp
-ZGVzL3JlbGVhc2UtNC4zLnJzdA0KPiA+IEBAIC03LDMgKzcsNCBAQCBSZWxlYXNlIDQuMyAobmFu
-YmllbGQpDQo+ID4NCj4gPiAgICAgIG1pZ3JhdGlvbi00LjMNCj4gPiAgICAgIHJlbGVhc2Utbm90
-ZXMtNC4zDQo+ID4gKyAgIHJlbGVhc2Utbm90ZXMtNC4zLjENCj4gPiBkaWZmIC0tZ2l0IGEvZG9j
-dW1lbnRhdGlvbi9taWdyYXRpb24tZ3VpZGVzL3JlbGVhc2Utbm90ZXMtNC4zLjEucnN0DQo+ID4g
-Yi9kb2N1bWVudGF0aW9uL21pZ3JhdGlvbi1ndWlkZXMvcmVsZWFzZS1ub3Rlcy00LjMuMS5yc3QN
-Cj4gPiBuZXcgZmlsZSBtb2RlIDEwMDY0NA0KPiA+IGluZGV4IDAwMDAwMDAwMC4uYTllYmNlZTlk
-DQo+ID4gLS0tIC9kZXYvbnVsbA0KPiA+ICsrKyBiL2RvY3VtZW50YXRpb24vbWlncmF0aW9uLWd1
-aWRlcy9yZWxlYXNlLW5vdGVzLTQuMy4xLnJzdA0KPiA+IEBAIC0wLDAgKzEsMjM2IEBADQo+ID4g
-Ky4uIFNQRFgtTGljZW5zZS1JZGVudGlmaWVyOiBDQy1CWS1TQS0yLjAtVUsNCj4gPiArDQo+ID4g
-K1JlbGVhc2Ugbm90ZXMgZm9yIFlvY3RvLTQuMy4xIChOYW5iaWVsZCkNCj4gPiArLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLQ0KPiA+ICsNCj4gPiArU2VjdXJpdHkgRml4
-ZXMgaW4gWW9jdG8tNC4zLjENCj4gPiArfn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4g
-PiArDQo+ID4gKy0gIGxpYnNuZGZpbGUxOiBGaXggOmN2ZTpgMjAyMi0zMzA2NWANCj4gPiArLSAg
-bGlieG1sMjogSWdub3JlIDpjdmU6YDIwMjMtNDUzMjJgDQo+ID4gKy0gIGxpbnV4LXlvY3RvOiBJ
-Z25vcmUgOmN2ZTpgMjAyMC0yNzQxOGAsIDpjdmU6YDIwMjAtMjc0MThgLA0KPiANCj4gDQo+IE9v
-cHMsIHlvdSBtZW50aW9uZWQgMjAyMC0yNzQxOCB0d2ljZS4gRml4ZWQsIGJ1dCBpZiB5b3UgbWVh
-bnQgYW5vdGhlciBvbmUNCj4gaW5zdGVhZCwgbGV0IG1lIGtub3cuDQoNClRoYW5rcyBmb3IgY2F0
-Y2hpbmcgdGhpcy4NCkkgbWVhbnQgdG8gbWVudGlvbiBieSBsaW51eC15b2N0by82LjEgYW5kIGxp
-bnV4LXlvY3RvLzYuNSBidXQgc29tZWhvdyBtaXhlZCBpbnRvIHNpbmdsZSBsaW5lLiBXaWxsIHNl
-bmQgYSBWMiB0byBzcGxpdCB0aGVtLg0KICANCg0KDQoNCg0KDQo=
+From: Lee Chee Yang <chee.yang.lee@intel.com>
+
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+v2: split linux-yocto by version
+
+ .../migration-guides/release-4.3.rst          |   1 +
+ .../migration-guides/release-notes-4.3.1.rst  | 237 ++++++++++++++++++
+ 2 files changed, 238 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.3.1.rst
+
+diff --git a/documentation/migration-guides/release-4.3.rst b/documentation/migration-guides/release-4.3.rst
+index 92516ae8f..5b651a2ef 100644
+--- a/documentation/migration-guides/release-4.3.rst
++++ b/documentation/migration-guides/release-4.3.rst
+@@ -7,3 +7,4 @@ Release 4.3 (nanbield)
+ 
+    migration-4.3
+    release-notes-4.3
++   release-notes-4.3.1
+diff --git a/documentation/migration-guides/release-notes-4.3.1.rst b/documentation/migration-guides/release-notes-4.3.1.rst
+new file mode 100644
+index 000000000..377cdb43f
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.3.1.rst
+@@ -0,0 +1,237 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-4.3.1 (Nanbield)
++----------------------------------------
++
++Security Fixes in Yocto-4.3.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  libsndfile1: Fix :cve:`2022-33065`
++-  libxml2: Ignore :cve:`2023-45322`
++-  linux-yocto/6.1: Ignore :cve:`2020-27418`, :cve:`2023-31085`, :cve_mitre:`2023-34324`, :cve:`2023-39189`, :cve:`2023-39192`, :cve:`2023-39193`, :cve:`2023-39194`, :cve:`2023-4244`, :cve:`2023-42754`, :cve:`2023-42756`, :cve:`2023-44466`, :cve:`2023-4563`, :cve:`2023-45862`, :cve:`2023-45863`, :cve:`2023-45871`, :cve:`2023-45898`, :cve:`2023-4732`, :cve:`2023-5158`, :cve:`2023-5197` and :cve:`2023-5345`
++-  linux-yocto/6.5: Ignore :cve:`2020-27418`, :cve:`2023-1193`, :cve:`2023-39191`, :cve:`2023-39194`, :cve:`2023-40791`, :cve:`2023-44466`, :cve:`2023-45862`, :cve:`2023-45863`, :cve:`2023-4610` and :cve:`2023-4732`
++-  openssl: Fix :cve:`2023-5363`
++-  pixman: Ignore :cve:`2023-37769`
++-  vim: Fix :cve:`2023-46246`
++-  zlib: Ignore :cve:`2023-45853`
++
++
++Fixes in Yocto-4.3.1
++~~~~~~~~~~~~~~~~~~~~
++
++-  Remove references to apm in :term:`MACHINE_FEATURES`
++-  baremetal-helloworld: Pull in fix for race condition on x86-64
++-  base: Ensure recipes using mercurial-native have certificates
++-  bb-matrix-plot.sh: Show underscores correctly in labels
++-  bin_package.bbclass: revert "Inhibit the default dependencies"
++-  bitbake: SECURITY.md: add file
++-  brief-yoctoprojectqs: use new CDN mirror for sstate
++-  bsp-guide: bsp.rst: update beaglebone example
++-  bsp-guide: bsp: skip Intel machines no longer supported in Poky
++-  build-appliance-image: Update to nanbield head revision
++-  contributor-guide: add patchtest section
++-  contributor-guide: clarify patchtest usage
++-  cve-check: don't warn if a patch is remote
++-  cve-check: slightly more verbose warning when adding the same package twice
++-  cve-check: sort the package list in the JSON report
++-  dev-manual: add security team processes
++-  dev-manual: extend the description of CVE patch preparation
++-  dev-manual: layers: Add notes about layer.conf
++-  dev-manual: new-recipe.rst: add missing parenthesis to "Patching Code" section
++-  dev-manual: start.rst: remove obsolete reference
++-  dev-manual: wic: update "wic list images" output
++-  docs: add support for nanbield (4.3) release
++-  documentation.conf: drop SERIAL_CONSOLES_CHECK
++-  ell: Upgrade to 0.59
++-  glib-2.0: Remove unnecessary assignement
++-  goarch: Move Go architecture mapping to a library
++-  kernel-arch: drop CCACHE from :term:`KERNEL_STRIP` definition
++-  kernel.bbclass: Use strip utility used for kernel build in do_package
++-  layer.conf: Switch layer to nanbield series only
++-  libsdl2: upgrade to 2.28.4
++-  linux-yocto: make sure the pahole-native available before do_kernel_configme
++-  llvm: Upgrade to 17.0.3
++-  machine: drop obsolete SERIAL_CONSOLES_CHECK
++-  manuals: correct "yocto-linux" by "linux-yocto"
++-  manuals: improve description of :term:`CVE_STATUS` and :term:`CVE_STATUS_GROUPS`
++-  manuals: update linux-yocto append examples
++-  manuals: update list of supported machines
++-  migration-4.3: additional migration items
++-  migration-4.3: adjustments to existing text
++-  migration-4.3: remove some unnecessary items
++-  migration-guides: QEMU_USE_SLIRP variable removed
++-  migration-guides: add BitBake changes
++-  migration-guides: add debian 12 to newly supported distros
++-  migration-guides: add kernel notes
++-  migration-guides: add testing notes
++-  migration-guides: add utility notes
++-  migration-guides: edgerouter machine removed
++-  migration-guides: enabling :term:`SPDX` only for Poky, not a global default
++-  migration-guides: fix empty sections
++-  migration-guides: further updates for 4.3
++-  migration-guides: further updates for release 4.3
++-  migration-guides: git recipes reword
++-  migration-guides: mention CDN
++-  migration-guides: mention LLVM 17
++-  migration-guides: mention runqemu change in serial port management
++-  migration-guides: packaging changes
++-  migration-guides: remove SERIAL_CONSOLES_CHECK
++-  migration-guides: remove non-notable change
++-  migration-guides: updates for 4.3
++-  oeqa/selftest/debuginfod: improve selftest
++-  oeqa/selftest/devtool: abort if a local workspace already exist
++-  oeqa/ssh: Handle SSHCall timeout error code
++-  openssl: Upgrade to 3.1.4
++-  overview-manual: concepts: Add Bitbake Tasks Map
++-  patchtest-send-results: add In-Reply-To
++-  patchtest-send-results: check max line length, simplify responses
++-  patchtest-send-results: fix sender parsing
++-  patchtest-send-results: improve subject line
++-  patchtest-send-results: send results to submitter
++-  patchtest/selftest: add XSKIP, update test files
++-  patchtest: disable merge test
++-  patchtest: fix lic_files_chksum test regex
++-  patchtest: make pylint tests compatible with 3.x
++-  patchtest: reduce checksum test output length
++-  patchtest: remove test for CVE tag in mbox
++-  patchtest: remove unused imports
++-  patchtest: rework license checksum tests
++-  patchtest: shorten test result outputs
++-  patchtest: simplify test directory structure
++-  patchtest: skip merge test if not targeting master
++-  patchtest: test regardless of mergeability
++-  perl: fix intermittent test failure
++-  poky.conf: bump version for 4.3.1 release
++-  profile-manual: aesthetic cleanups
++-  ref-manual: Add documentation for the unimplemented-ptest QA warning
++-  ref-manual: Fix :term:`PACKAGECONFIG` term and add an example
++-  ref-manual: Warn about :term:`COMPATIBLE_MACHINE` skipping native recipes
++-  ref-manual: add systemd-resolved to distro features
++-  ref-manual: classes: explain cml1 class name
++-  ref-manual: document :term:`KERNEL_LOCALVERSION`
++-  ref-manual: document :term:`KERNEL_STRIP`
++-  ref-manual: document :term:`MESON_TARGET`
++-  ref-manual: document cargo_c class
++-  ref-manual: remove semicolons from ``*PROCESS_COMMAND`` variables
++-  ref-manual: update :term:`SDK_NAME` variable documentation
++-  ref-manual: variables: add :term:`RECIPE_MAINTAINER`
++-  ref-manual: variables: add :term:`RECIPE_SYSROOT` and :term:`RECIPE_SYSROOT_NATIVE`
++-  ref-manual: variables: add :term:`TOOLCHAIN_OPTIONS` variable
++-  ref-manual: variables: add example for :term:`SYSROOT_DIRS` variable
++-  ref-manual: variables: document :term:`OEQA_REPRODUCIBLE_TEST_PACKAGE`
++-  ref-manual: variables: mention new CDN for :term:`SSTATE_MIRRORS`
++-  ref-manual: variables: provide no-match example for :term:`COMPATIBLE_MACHINE`
++-  ref-manual: variables: remove SERIAL_CONSOLES_CHECK
++-  release-notes-4.3: add CVEs, recipe upgrades, license changes, contributors
++-  release-notes-4.3: add Repositories / Downloads section
++-  release-notes-4.3: feature additions
++-  release-notes-4.3: fix some typos
++-  release-notes-4.3: move new classes to Rust section
++-  release-notes-4.3: remove the Distribution section
++-  release-notes-4.3: tweaks to existing text
++-  sdk-manual: appendix-obtain: improve and update descriptions
++-  test-manual: reproducible-builds: stop mentioning LTO bug
++-  vim: Improve locale handling
++-  vim: Upgrade to 9.0.2068
++-  vim: use upstream generated .po files
++
++
++Known Issues in Yocto-4.3.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.3.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Alejandro Hernandez Samaniego
++-  Alex Stewart
++-  Archana Polampalli
++-  Arne Schwerdt
++-  BELHADJ SALEM Talel
++-  Dmitry Baryshkov
++-  Eero Aaltonen
++-  Joshua Watt
++-  Julien Stephan
++-  Jérémy Rosen
++-  Khem Raj
++-  Lee Chee Yang
++-  Marta Rybczynska
++-  Max Krummenacher
++-  Michael Halstead
++-  Michael Opdenacker
++-  Paul Eggleton
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Quentin Schulz
++-  Richard Purdie
++-  Robert P. J. Day
++-  Ross Burton
++-  Rouven Czerwinski
++-  Steve Sakoman
++-  Trevor Gamblin
++-  Wang Mingyu
++-  William Lyu
++-  Xiangyu Chen
++-  luca fancellu
++
++
++Repositories / Downloads for Yocto-4.3.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`nanbield </poky/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.1 </poky/log/?h=yocto-4.3.1>`
++-  Git Revision: :yocto_git:`bf9f2f6f60387b3a7cd570919cef6c4570edcb82 </poky/commit/?id=bf9f2f6f60387b3a7cd570919cef6c4570edcb82>`
++-  Release Artefact: poky-bf9f2f6f60387b3a7cd570919cef6c4570edcb82
++-  sha: 9b4351159d728fec2b63a50f1ac15edc412e2d726e9180a40afc06051fadb922
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/poky-bf9f2f6f60387b3a7cd570919cef6c4570edcb82.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/poky-bf9f2f6f60387b3a7cd570919cef6c4570edcb82.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`nanbield </openembedded-core/log/?h=nanbield>`
++-  Tag:  :oe_git:`yocto-4.3.1 </openembedded-core/log/?h=yocto-4.3.1>`
++-  Git Revision: :oe_git:`cce77e8e79c860f4ef0ac4a86b9375bf87507360 </openembedded-core/commit/?id=cce77e8e79c860f4ef0ac4a86b9375bf87507360>`
++-  Release Artefact: oecore-cce77e8e79c860f4ef0ac4a86b9375bf87507360
++-  sha: e6cde08e7c549f57a67d833a36cdb942648fba81558dc8b0e65332d2a2c023cc
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/oecore-cce77e8e79c860f4ef0ac4a86b9375bf87507360.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/oecore-cce77e8e79c860f4ef0ac4a86b9375bf87507360.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`nanbield </meta-mingw/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.1 </meta-mingw/log/?h=yocto-4.3.1>`
++-  Git Revision: :yocto_git:`49617a253e09baabbf0355bc736122e9549c8ab2 </meta-mingw/commit/?id=49617a253e09baabbf0355bc736122e9549c8ab2>`
++-  Release Artefact: meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2
++-  sha: 2225115b73589cdbf1e491115221035c6a61679a92a93b2a3cf761ff87bf4ecc
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.6 </bitbake/log/?h=2.6>`
++-  Tag:  :oe_git:`yocto-4.3.1 </bitbake/log/?h=yocto-4.3.1>`
++-  Git Revision: :oe_git:`936fcec41efacc4ce988c81882a9ae6403702bea </bitbake/commit/?id=936fcec41efacc4ce988c81882a9ae6403702bea>`
++-  Release Artefact: bitbake-936fcec41efacc4ce988c81882a9ae6403702bea
++-  sha: efbdd5fe7f29227a3fd26d6a08a368bf8215083a588b4d23f3adf35044897520
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/bitbake-936fcec41efacc4ce988c81882a9ae6403702bea.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/bitbake-936fcec41efacc4ce988c81882a9ae6403702bea.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`nanbield </yocto-docs/log/?h=nanbield>`
++-  Tag: :yocto_git:`yocto-4.3.1 </yocto-docs/log/?h=yocto-4.3.1>`
++-  Git Revision: :yocto_git:`6b98a6164263298648e89b5a5ae1260a58f1bb35 </yocto-docs/commit/?id=6b98a6164263298648e89b5a5ae1260a58f1bb35>`
++
+-- 
+2.34.1
+
 
