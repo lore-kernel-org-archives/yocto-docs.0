@@ -2,315 +2,92 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53E04C4167B
-	for <webhook@archiver.kernel.org>; Wed, 29 Nov 2023 09:25:02 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.28347.1701249896555022900
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A663CC4167B
+	for <webhook@archiver.kernel.org>; Thu, 30 Nov 2023 14:46:23 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.73947.1701355583066467892
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Nov 2023 01:24:57 -0800
+ Thu, 30 Nov 2023 06:46:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Z0QTQ5Ln;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7CD62C0002;
-	Wed, 29 Nov 2023 09:24:54 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=aLPHu1to;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 04AFA1C000E;
+	Thu, 30 Nov 2023 14:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701249894;
+	t=1701355581;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=7yirPoTfhL3EMA/+9bS/d6JprEVhlikEVwVO8Mzux6s=;
-	b=Z0QTQ5LnFJmSbGweP5ArJSDJhlN85zdduN0JH00HR/SmTjIvhkytitZ0XdSXDfHcJj+371
-	ERCgT5I3unuKbm5f84AoAx4vvVGf8nlb5dtT6aIIXYrrGopSStH5OxrKdqM2adhvXrzMB0
-	hn0q930D8iMkH0o3tMwtQAIh6FSM8Hc9BhFjsBhJOVEokevdtXddt8N8Dy89GhRAWw2au1
-	VXI1OCTBeUPp82jjUWWkmYYR1LYSUikHmdTrx2LVFX95/pcpoVQZJy+8nx9rgtON2bKQyX
-	v7kTfxZYvGaeaLmGC5WGFTtL/TjTlvtT+h3y1XZOGOHYLTuGnAHV74Uy2YEuZQ==
+	bh=XaiBp9cFor1XbfNogEX+UVnS94P4Bsc3VeHLq3V2wYE=;
+	b=aLPHu1toRo8XREaa6b1oYxFy+dXCEWF4/U4yNdqB8gc70qBVeO9ppgz0R2gyHIzmFHp6VC
+	EEKJX6GD6eARbLleAv2CfyOnySe3cZ7CUZsVyZzgEVb2sDKUUgR3FJYPoYzLr0rB+uHd1G
+	CN9v9vdqP44LqK1xnb/W4dp5bOeMqlggG8FZDby7VF5uTvgX36v7qqEA9XR5UttSgVMHvH
+	+h6KM31IFK3ZLPmx4aJuqvOLVJVtmSlowh1oyH/IPuF6eV6e7dwOMki9I/BWD12hfsnyrj
+	jWSbrdchMNwJdcNw4R5bxcvsqpF9wTI2o96suXHQlC6GRBHEFnd1sxlk8SmXQw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [nanbield][PATCH v2] migration-guides: add release notes for 4.3.1
-Date: Wed, 29 Nov 2023 10:24:48 +0100
-Message-Id: <20231129092448.227545-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] migration-guides: release 3.5 is actually 4.0
+Date: Thu, 30 Nov 2023 15:46:18 +0100
+Message-Id: <20231130144618.347448-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 29 Nov 2023 09:25:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4652
+ <docs@lists.yoctoproject.org>; Thu, 30 Nov 2023 14:46:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4653
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
-
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
+ documentation/migration-guides/migration-2.2.rst | 2 +-
+ documentation/migration-guides/migration-3.0.rst | 2 +-
+ documentation/migration-guides/migration-3.4.rst | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Changes in V2:
-- Split CVE fixes between linux-yocto/6.1 and 6.5
----
- .../migration-guides/release-4.3.rst          |   1 +
- .../migration-guides/release-notes-4.3.1.rst  | 237 ++++++++++++++++++
- 2 files changed, 238 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.3.1.rst
-
-diff --git a/documentation/migration-guides/release-4.3.rst b/documentation/migration-guides/release-4.3.rst
-index 92516ae8f5..5b651a2efd 100644
---- a/documentation/migration-guides/release-4.3.rst
-+++ b/documentation/migration-guides/release-4.3.rst
-@@ -7,3 +7,4 @@ Release 4.3 (nanbield)
+diff --git a/documentation/migration-guides/migration-2.2.rst b/documentation/migration-guides/migration-2.2.rst
+index 5435835102..3932792c78 100644
+--- a/documentation/migration-guides/migration-2.2.rst
++++ b/documentation/migration-guides/migration-2.2.rst
+@@ -29,7 +29,7 @@ Staging Directories in Sysroot Has Been Simplified
+ The way directories are staged in sysroot has been simplified and
+ introduces the new :term:`SYSROOT_DIRS`,
+ :term:`SYSROOT_DIRS_NATIVE`, and ``SYSROOT_DIRS_BLACKLIST``
+-(replaced by :term:`SYSROOT_DIRS_IGNORE` in version 3.5). See the
++(replaced by :term:`SYSROOT_DIRS_IGNORE` in version 4.0). See the
+ :oe_lists:`v2 patch series on the OE-Core Mailing List
+ </pipermail/openembedded-core/2016-May/121365.html>`
+ for additional information.
+diff --git a/documentation/migration-guides/migration-3.0.rst b/documentation/migration-guides/migration-3.0.rst
+index 8e7a58e74d..67fcac41f7 100644
+--- a/documentation/migration-guides/migration-3.0.rst
++++ b/documentation/migration-guides/migration-3.0.rst
+@@ -150,7 +150,7 @@ XML feeds that ``cve-check-tool`` was using, supports CVSSv3 scoring,
+ and makes other improvements.
  
-    migration-4.3
-    release-notes-4.3
-+   release-notes-4.3.1
-diff --git a/documentation/migration-guides/release-notes-4.3.1.rst b/documentation/migration-guides/release-notes-4.3.1.rst
-new file mode 100644
-index 0000000000..377cdb43f4
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.3.1.rst
-@@ -0,0 +1,237 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Release notes for Yocto-4.3.1 (Nanbield)
-+----------------------------------------
-+
-+Security Fixes in Yocto-4.3.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  libsndfile1: Fix :cve:`2022-33065`
-+-  libxml2: Ignore :cve:`2023-45322`
-+-  linux-yocto/6.1: Ignore :cve:`2020-27418`, :cve:`2023-31085`, :cve_mitre:`2023-34324`, :cve:`2023-39189`, :cve:`2023-39192`, :cve:`2023-39193`, :cve:`2023-39194`, :cve:`2023-4244`, :cve:`2023-42754`, :cve:`2023-42756`, :cve:`2023-44466`, :cve:`2023-4563`, :cve:`2023-45862`, :cve:`2023-45863`, :cve:`2023-45871`, :cve:`2023-45898`, :cve:`2023-4732`, :cve:`2023-5158`, :cve:`2023-5197` and :cve:`2023-5345`
-+-  linux-yocto/6.5: Ignore :cve:`2020-27418`, :cve:`2023-1193`, :cve:`2023-39191`, :cve:`2023-39194`, :cve:`2023-40791`, :cve:`2023-44466`, :cve:`2023-45862`, :cve:`2023-45863`, :cve:`2023-4610` and :cve:`2023-4732`
-+-  openssl: Fix :cve:`2023-5363`
-+-  pixman: Ignore :cve:`2023-37769`
-+-  vim: Fix :cve:`2023-46246`
-+-  zlib: Ignore :cve:`2023-45853`
-+
-+
-+Fixes in Yocto-4.3.1
-+~~~~~~~~~~~~~~~~~~~~
-+
-+-  Remove references to apm in :term:`MACHINE_FEATURES`
-+-  baremetal-helloworld: Pull in fix for race condition on x86-64
-+-  base: Ensure recipes using mercurial-native have certificates
-+-  bb-matrix-plot.sh: Show underscores correctly in labels
-+-  bin_package.bbclass: revert "Inhibit the default dependencies"
-+-  bitbake: SECURITY.md: add file
-+-  brief-yoctoprojectqs: use new CDN mirror for sstate
-+-  bsp-guide: bsp.rst: update beaglebone example
-+-  bsp-guide: bsp: skip Intel machines no longer supported in Poky
-+-  build-appliance-image: Update to nanbield head revision
-+-  contributor-guide: add patchtest section
-+-  contributor-guide: clarify patchtest usage
-+-  cve-check: don't warn if a patch is remote
-+-  cve-check: slightly more verbose warning when adding the same package twice
-+-  cve-check: sort the package list in the JSON report
-+-  dev-manual: add security team processes
-+-  dev-manual: extend the description of CVE patch preparation
-+-  dev-manual: layers: Add notes about layer.conf
-+-  dev-manual: new-recipe.rst: add missing parenthesis to "Patching Code" section
-+-  dev-manual: start.rst: remove obsolete reference
-+-  dev-manual: wic: update "wic list images" output
-+-  docs: add support for nanbield (4.3) release
-+-  documentation.conf: drop SERIAL_CONSOLES_CHECK
-+-  ell: Upgrade to 0.59
-+-  glib-2.0: Remove unnecessary assignement
-+-  goarch: Move Go architecture mapping to a library
-+-  kernel-arch: drop CCACHE from :term:`KERNEL_STRIP` definition
-+-  kernel.bbclass: Use strip utility used for kernel build in do_package
-+-  layer.conf: Switch layer to nanbield series only
-+-  libsdl2: upgrade to 2.28.4
-+-  linux-yocto: make sure the pahole-native available before do_kernel_configme
-+-  llvm: Upgrade to 17.0.3
-+-  machine: drop obsolete SERIAL_CONSOLES_CHECK
-+-  manuals: correct "yocto-linux" by "linux-yocto"
-+-  manuals: improve description of :term:`CVE_STATUS` and :term:`CVE_STATUS_GROUPS`
-+-  manuals: update linux-yocto append examples
-+-  manuals: update list of supported machines
-+-  migration-4.3: additional migration items
-+-  migration-4.3: adjustments to existing text
-+-  migration-4.3: remove some unnecessary items
-+-  migration-guides: QEMU_USE_SLIRP variable removed
-+-  migration-guides: add BitBake changes
-+-  migration-guides: add debian 12 to newly supported distros
-+-  migration-guides: add kernel notes
-+-  migration-guides: add testing notes
-+-  migration-guides: add utility notes
-+-  migration-guides: edgerouter machine removed
-+-  migration-guides: enabling :term:`SPDX` only for Poky, not a global default
-+-  migration-guides: fix empty sections
-+-  migration-guides: further updates for 4.3
-+-  migration-guides: further updates for release 4.3
-+-  migration-guides: git recipes reword
-+-  migration-guides: mention CDN
-+-  migration-guides: mention LLVM 17
-+-  migration-guides: mention runqemu change in serial port management
-+-  migration-guides: packaging changes
-+-  migration-guides: remove SERIAL_CONSOLES_CHECK
-+-  migration-guides: remove non-notable change
-+-  migration-guides: updates for 4.3
-+-  oeqa/selftest/debuginfod: improve selftest
-+-  oeqa/selftest/devtool: abort if a local workspace already exist
-+-  oeqa/ssh: Handle SSHCall timeout error code
-+-  openssl: Upgrade to 3.1.4
-+-  overview-manual: concepts: Add Bitbake Tasks Map
-+-  patchtest-send-results: add In-Reply-To
-+-  patchtest-send-results: check max line length, simplify responses
-+-  patchtest-send-results: fix sender parsing
-+-  patchtest-send-results: improve subject line
-+-  patchtest-send-results: send results to submitter
-+-  patchtest/selftest: add XSKIP, update test files
-+-  patchtest: disable merge test
-+-  patchtest: fix lic_files_chksum test regex
-+-  patchtest: make pylint tests compatible with 3.x
-+-  patchtest: reduce checksum test output length
-+-  patchtest: remove test for CVE tag in mbox
-+-  patchtest: remove unused imports
-+-  patchtest: rework license checksum tests
-+-  patchtest: shorten test result outputs
-+-  patchtest: simplify test directory structure
-+-  patchtest: skip merge test if not targeting master
-+-  patchtest: test regardless of mergeability
-+-  perl: fix intermittent test failure
-+-  poky.conf: bump version for 4.3.1 release
-+-  profile-manual: aesthetic cleanups
-+-  ref-manual: Add documentation for the unimplemented-ptest QA warning
-+-  ref-manual: Fix :term:`PACKAGECONFIG` term and add an example
-+-  ref-manual: Warn about :term:`COMPATIBLE_MACHINE` skipping native recipes
-+-  ref-manual: add systemd-resolved to distro features
-+-  ref-manual: classes: explain cml1 class name
-+-  ref-manual: document :term:`KERNEL_LOCALVERSION`
-+-  ref-manual: document :term:`KERNEL_STRIP`
-+-  ref-manual: document :term:`MESON_TARGET`
-+-  ref-manual: document cargo_c class
-+-  ref-manual: remove semicolons from ``*PROCESS_COMMAND`` variables
-+-  ref-manual: update :term:`SDK_NAME` variable documentation
-+-  ref-manual: variables: add :term:`RECIPE_MAINTAINER`
-+-  ref-manual: variables: add :term:`RECIPE_SYSROOT` and :term:`RECIPE_SYSROOT_NATIVE`
-+-  ref-manual: variables: add :term:`TOOLCHAIN_OPTIONS` variable
-+-  ref-manual: variables: add example for :term:`SYSROOT_DIRS` variable
-+-  ref-manual: variables: document :term:`OEQA_REPRODUCIBLE_TEST_PACKAGE`
-+-  ref-manual: variables: mention new CDN for :term:`SSTATE_MIRRORS`
-+-  ref-manual: variables: provide no-match example for :term:`COMPATIBLE_MACHINE`
-+-  ref-manual: variables: remove SERIAL_CONSOLES_CHECK
-+-  release-notes-4.3: add CVEs, recipe upgrades, license changes, contributors
-+-  release-notes-4.3: add Repositories / Downloads section
-+-  release-notes-4.3: feature additions
-+-  release-notes-4.3: fix some typos
-+-  release-notes-4.3: move new classes to Rust section
-+-  release-notes-4.3: remove the Distribution section
-+-  release-notes-4.3: tweaks to existing text
-+-  sdk-manual: appendix-obtain: improve and update descriptions
-+-  test-manual: reproducible-builds: stop mentioning LTO bug
-+-  vim: Improve locale handling
-+-  vim: Upgrade to 9.0.2068
-+-  vim: use upstream generated .po files
-+
-+
-+Known Issues in Yocto-4.3.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+
-+Contributors to Yocto-4.3.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Alejandro Hernandez Samaniego
-+-  Alex Stewart
-+-  Archana Polampalli
-+-  Arne Schwerdt
-+-  BELHADJ SALEM Talel
-+-  Dmitry Baryshkov
-+-  Eero Aaltonen
-+-  Joshua Watt
-+-  Julien Stephan
-+-  Jérémy Rosen
-+-  Khem Raj
-+-  Lee Chee Yang
-+-  Marta Rybczynska
-+-  Max Krummenacher
-+-  Michael Halstead
-+-  Michael Opdenacker
-+-  Paul Eggleton
-+-  Peter Kjellerstedt
-+-  Peter Marko
-+-  Quentin Schulz
-+-  Richard Purdie
-+-  Robert P. J. Day
-+-  Ross Burton
-+-  Rouven Czerwinski
-+-  Steve Sakoman
-+-  Trevor Gamblin
-+-  Wang Mingyu
-+-  William Lyu
-+-  Xiangyu Chen
-+-  luca fancellu
-+
-+
-+Repositories / Downloads for Yocto-4.3.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`nanbield </poky/log/?h=nanbield>`
-+-  Tag:  :yocto_git:`yocto-4.3.1 </poky/log/?h=yocto-4.3.1>`
-+-  Git Revision: :yocto_git:`bf9f2f6f60387b3a7cd570919cef6c4570edcb82 </poky/commit/?id=bf9f2f6f60387b3a7cd570919cef6c4570edcb82>`
-+-  Release Artefact: poky-bf9f2f6f60387b3a7cd570919cef6c4570edcb82
-+-  sha: 9b4351159d728fec2b63a50f1ac15edc412e2d726e9180a40afc06051fadb922
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/poky-bf9f2f6f60387b3a7cd570919cef6c4570edcb82.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/poky-bf9f2f6f60387b3a7cd570919cef6c4570edcb82.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`nanbield </openembedded-core/log/?h=nanbield>`
-+-  Tag:  :oe_git:`yocto-4.3.1 </openembedded-core/log/?h=yocto-4.3.1>`
-+-  Git Revision: :oe_git:`cce77e8e79c860f4ef0ac4a86b9375bf87507360 </openembedded-core/commit/?id=cce77e8e79c860f4ef0ac4a86b9375bf87507360>`
-+-  Release Artefact: oecore-cce77e8e79c860f4ef0ac4a86b9375bf87507360
-+-  sha: e6cde08e7c549f57a67d833a36cdb942648fba81558dc8b0e65332d2a2c023cc
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/oecore-cce77e8e79c860f4ef0ac4a86b9375bf87507360.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/oecore-cce77e8e79c860f4ef0ac4a86b9375bf87507360.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`nanbield </meta-mingw/log/?h=nanbield>`
-+-  Tag:  :yocto_git:`yocto-4.3.1 </meta-mingw/log/?h=yocto-4.3.1>`
-+-  Git Revision: :yocto_git:`49617a253e09baabbf0355bc736122e9549c8ab2 </meta-mingw/commit/?id=49617a253e09baabbf0355bc736122e9549c8ab2>`
-+-  Release Artefact: meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2
-+-  sha: 2225115b73589cdbf1e491115221035c6a61679a92a93b2a3cf761ff87bf4ecc
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.6 </bitbake/log/?h=2.6>`
-+-  Tag:  :oe_git:`yocto-4.3.1 </bitbake/log/?h=yocto-4.3.1>`
-+-  Git Revision: :oe_git:`936fcec41efacc4ce988c81882a9ae6403702bea </bitbake/commit/?id=936fcec41efacc4ce988c81882a9ae6403702bea>`
-+-  Release Artefact: bitbake-936fcec41efacc4ce988c81882a9ae6403702bea
-+-  sha: efbdd5fe7f29227a3fd26d6a08a368bf8215083a588b4d23f3adf35044897520
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.1/bitbake-936fcec41efacc4ce988c81882a9ae6403702bea.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.1/bitbake-936fcec41efacc4ce988c81882a9ae6403702bea.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`nanbield </yocto-docs/log/?h=nanbield>`
-+-  Tag: :yocto_git:`yocto-4.3.1 </yocto-docs/log/?h=yocto-4.3.1>`
-+-  Git Revision: :yocto_git:`6b98a6164263298648e89b5a5ae1260a58f1bb35 </yocto-docs/commit/?id=6b98a6164263298648e89b5a5ae1260a58f1bb35>`
-+
+ Additionally, the ``CVE_CHECK_CVE_WHITELIST`` variable has been replaced
+-by ``CVE_CHECK_WHITELIST`` (replaced by :term:`CVE_CHECK_IGNORE` in version 3.5).
++by ``CVE_CHECK_WHITELIST`` (replaced by :term:`CVE_CHECK_IGNORE` in version 4.0).
+ 
+ .. _migration-3.0-bitbake-changes:
+ 
+diff --git a/documentation/migration-guides/migration-3.4.rst b/documentation/migration-guides/migration-3.4.rst
+index f50fe5ee04..a9b1057206 100644
+--- a/documentation/migration-guides/migration-3.4.rst
++++ b/documentation/migration-guides/migration-3.4.rst
+@@ -255,7 +255,7 @@ Miscellaneous
+ - The previously deprecated ``COMPRESS_CMD`` and
+   ``CVE_CHECK_CVE_WHITELIST`` variables have been removed. Use
+   :term:`CONVERSION_CMD` and ``CVE_CHECK_WHITELIST`` (replaced by
+-  :term:`CVE_CHECK_IGNORE` in version 3.5) respectively
++  :term:`CVE_CHECK_IGNORE` in version 4.0) respectively
+   instead.
+ 
+ - The obsolete ``oe_machinstall`` function previously provided in the
 -- 
 2.34.1
 
