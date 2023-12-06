@@ -1,93 +1,97 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <steve@sakoman.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BAF11C4167B
-	for <webhook@archiver.kernel.org>; Fri,  1 Dec 2023 10:09:45 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.19576.1701425382365467761
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78CB1C4167B
+	for <webhook@archiver.kernel.org>; Wed,  6 Dec 2023 14:26:48 +0000 (UTC)
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+ by mx.groups.io with SMTP id smtpd.web11.32580.1701872801653014897
  for <docs@lists.yoctoproject.org>;
- Fri, 01 Dec 2023 02:09:42 -0800
+ Wed, 06 Dec 2023 06:26:41 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nFVgEuEa;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0E83A1C0002;
-	Fri,  1 Dec 2023 10:09:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701425380;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=645nKOn9HV9h9xAc4FFS+Mv45grvaVkfm9l/82L7x8g=;
-	b=nFVgEuEa+BQxWGJ9U6zgpWQGgukDapnoOKbVHWMnrBvLBcaGecg0/qbHNjX0qSHvNWoaaq
-	tDWH2RPbs/8qC4AUwO/kg22IV+2gMK5zBQa9RKqjNDjFd30tU5OPW/H/Ti1SVMC0cA7dBd
-	8OOsnc0VtM8r8AgojYh5eb4MB8kgDSYMBeqTH9Tu2VOQy3nKo1fORkxZoaEw8xzbqlLK0L
-	jaBCsIwEo/YrJnmiB3rGkPFGCU32sp/ZCRvJkyjt1f3Z+Qe2aj5rQpBnpGC1NmbbM9X90c
-	kSwHzzkD9CXAnHpqgHCkplF/rCsRnh+Ld0g5/VBuI3dXIb4baJIO56mjahMCtA==
-Message-ID: <08ff66a3-5259-48d8-9aab-05999acde4cf@bootlin.com>
-Date: Fri, 1 Dec 2023 11:09:39 +0100
+ dkim=pass header.i=@sakoman-com.20230601.gappssmtp.com header.s=20230601 header.b=Vybbn1f0;
+ spf=softfail (domain: sakoman.com, ip: 209.85.210.175, mailfrom: steve@sakoman.com)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-6ce32821a53so2458438b3a.0
+        for <docs@lists.yoctoproject.org>; Wed, 06 Dec 2023 06:26:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20230601.gappssmtp.com; s=20230601; t=1701872800; x=1702477600; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r3puKyfeUjKpY6sf9oCQUJgzCqrXomlR+KHiz1O7AJ8=;
+        b=Vybbn1f0bHgXEI51TGBIucmhIMsQ0Oo1NS/iiQ8f+pVHnMzspqRjbc18brvrZDvWeg
+         0XCIWsekqBth7gLd7Bp92dgkmcSLV9hzLqy0+Pj35wXdjaU/DAVPTDMCLDBZOes5d+EK
+         GUGHY1G6ofzQIHv26bmZnENj8mlyRhvZ2sMn3rpIhgaKppW2bf0zaoiPkp5+spiScCsJ
+         507S7GQ0PNHib3+0QNqGD5w4E2/oL9ClPW70VffD0WjIGtqwq5kaBZmirp5093CrqwGJ
+         VHokjv9jtQjVW+OTuqWX+EbUk++HxXZ8bogK0/n5/UGZx/z4GFXBwv0FOKEHxhRqSZoN
+         6hBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701872800; x=1702477600;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=r3puKyfeUjKpY6sf9oCQUJgzCqrXomlR+KHiz1O7AJ8=;
+        b=FbR00v2EWfTGhOYy3JGjqaGA3YK8+D0ng0C7uf1bRB2NXU6W8NtKE5A5G5qeX7CpfT
+         kMPDIj80AMnBnPBeslPd+Z/Vhbks30Qbc/qeQjifghLHmi6We7ZSIgTFfNrxlfxB2O4z
+         JDquayI0eaVI6zvn0kI15GWhZBG9L1OCDEWe+AT3lI+JcT/ty0/II6oNSPjs9xZH/Nuc
+         HYObtq9y6hEiBxfXfcK72RsHPDrkuN9d+tXh6kz3uOEWnNgdsTV9lNTcifOTTKsCvOe4
+         7QsD3FhXwt/nDhdLw1bUdYq7oAqvo9SnLhIwUeya6xyrCBqv5Dz2PY5EiIt2OIzixBPK
+         Dy1w==
+X-Gm-Message-State: AOJu0YyQfmjFT8Dy7kKRprAVi1JDG93Y56U9ARxFqgPGbsqrLKKVgT/l
+	jF8/MFFcquiJnic9FNPTX2RRYg6xemqpHE6jD2o=
+X-Google-Smtp-Source: AGHT+IEM2qL7lJlpa/1ydy6tvJGPWZXiIv3818Ne/uRed01/zAEoDPHeqdqGnqdhivo26PVZp4CLDg==
+X-Received: by 2002:a05:6a20:72a6:b0:187:2c9a:c9ad with SMTP id o38-20020a056a2072a600b001872c9ac9admr741447pzk.55.1701872800223;
+        Wed, 06 Dec 2023 06:26:40 -0800 (PST)
+Received: from hexa.lan (dhcp-72-234-108-41.hawaiiantel.net. [72.234.108.41])
+        by smtp.gmail.com with ESMTPSA id s25-20020a639259000000b00578afd8e012sm6666228pgn.92.2023.12.06.06.26.39
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Dec 2023 06:26:39 -0800 (PST)
+From: Steve Sakoman <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell] documentation: update for 3.1.30
+Date: Wed,  6 Dec 2023 04:26:32 -1000
+Message-Id: <097511f227abbef31409fe36734795b879471868.1701872735.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1701872735.git.steve@sakoman.com>
+References: <cover.1701872735.git.steve@sakoman.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
-Organization: Bootlin
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 01 Dec 2023 10:09:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4654
+ <docs@lists.yoctoproject.org>; Wed, 06 Dec 2023 14:26:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4655
 
-Hi Richard,
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
+---
+ documentation/poky.yaml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-The following changes since commit de4fb1f877ae9994c61dfc60447446da317bee0f:
-
-   migration-guide: add release notes for 4.2.4 (2023-11-16 10:29:02 +0100)
-
-are available in the Git repository at:
-
-   git://git.yoctoproject.org/yocto-docs master-next
-
-for you to fetch changes up to 7107e18bfa4cf24b912df6c60d8ffb8c74152bca:
-
-   migration-guides: release 3.5 is actually 4.0 (2023-11-30 15:45:49 +0100)
-
-----------------------------------------------------------------
-Justin Bronder (1):
-       contributor-guide: add License-Update tag
-
-Lee Chee Yang (1):
-       migration-guides: add release notes for 4.3.1
-
-Michael Opdenacker (3):
-       dev-manual: layers: update link to YP Compatible form
-       contributor-guide: fix command option
-       migration-guides: release 3.5 is actually 4.0
-
-  documentation/contributor-guide/recipe-style-guide.rst |  12 ++++++++
-  documentation/contributor-guide/submit-changes.rst     |   2 +-
-  documentation/dev-manual/layers.rst                    |   4 +--
-  documentation/migration-guides/migration-2.2.rst       |   2 +-
-  documentation/migration-guides/migration-3.0.rst       |   2 +-
-  documentation/migration-guides/migration-3.4.rst       |   2 +-
-  documentation/migration-guides/release-4.3.rst         |   1 +
-  documentation/migration-guides/release-notes-4.3.1.rst | 237 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-  8 files changed, 256 insertions(+), 6 deletions(-)
-  create mode 100644 documentation/migration-guides/release-notes-4.3.1.rst
-
-Thank you in advance
-Cheers
-Michael.
-
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 132b772c1..54a1c3203 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -1,13 +1,13 @@
+-DISTRO : "3.1.29"
++DISTRO : "3.1.30"
+ DISTRO_NAME_NO_CAP : "dunfell"
+ DISTRO_NAME : "Dunfell"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
+-YOCTO_DOC_VERSION : "3.1.29"
++YOCTO_DOC_VERSION : "3.1.30"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
+-DISTRO_REL_TAG : "yocto-3.1.29"
+-DOCCONF_VERSION : "3.1.29"
++DISTRO_REL_TAG : "yocto-3.1.30"
++DOCCONF_VERSION : "3.1.30"
+ BITBAKE_SERIES : "1.46"
+-POKYVERSION : "23.0.29"
++POKYVERSION : "23.0.30"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
