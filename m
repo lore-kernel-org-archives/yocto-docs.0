@@ -2,86 +2,64 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EAFE0C4167B
-	for <webhook@archiver.kernel.org>; Thu,  7 Dec 2023 18:41:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id ECFAFC4167B
+	for <webhook@archiver.kernel.org>; Thu,  7 Dec 2023 18:49:59 +0000 (UTC)
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.92597.1701974499054188171
+ by mx.groups.io with SMTP id smtpd.web11.92566.1701974989453568002
  for <docs@lists.yoctoproject.org>;
- Thu, 07 Dec 2023 10:41:39 -0800
+ Thu, 07 Dec 2023 10:49:49 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jsH4KBK1;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=fWqbqn4w;
  spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 020AB40005;
-	Thu,  7 Dec 2023 18:41:36 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id EB0E840002;
+	Thu,  7 Dec 2023 18:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1701974497;
+	t=1701974988;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CkvZ4xRCUGOgItBHzh8REI2Nuq0c9OIbqAMYDCPl8hA=;
-	b=jsH4KBK1cgu5mQKeRBYPweH4YGVsCZ+hVFtzSHdLmvGLVefL9dopaOh+D3bxpYumfQu/vG
-	ycZNJs0+cF1rIIb9ARvAF6Di+EicHVlKcKQncwy8A6+a2j/jARCJdRk+si9MVGMHq8BDDN
-	PECpFXWWrjgCbxmjRaodawa/tYqE0IbmsDMqSOHO0Lx0MP3+ykeM8RY6H9OiNXLm+DbjLy
-	KYSPSubHUOuWm4XfwIeOqwQAXZNRO0c/nUCyeM6oFfqQELFpDotVGwMvqHFNgvNtbZ+9pQ
-	4J4gOg/cKpHdLMG6paw5owcpMVo3fQFq5Hh+kCsXvlOf+zegiadlZf9Uc0L3dQ==
-Message-ID: <7d157aa0-0db0-44cc-9a44-8d941aa66f6c@bootlin.com>
-Date: Thu, 7 Dec 2023 19:41:36 +0100
+	bh=eP0mSdL/20GSWsg02JmpuojRPL5kCbMzfMtlzR+AtYk=;
+	b=fWqbqn4wwkDuMAs4rVV8mf4NCBnAHSuV4gbOUsB74g6mj3rjpRAyAbLG87kHv8KrFkTYOz
+	wQMy3fC7FHQW1Gw0YTxEKCB0hdYE70hW1T5b/8djCAPq5+2XXKP7P34A4Q4KdljbmD50tS
+	MdmyjDtcXslGntpLn+/TtyKTLe7UkQK7F91Qseh+aF2veVqRreXJizUWzLYYkW2dl6hRee
+	1Q+i0uGDna7+KUPAJgeXzAsQdWVUPHxFO5/vqTrTyovd+hTF/OUR6QXXlRjYYCrctJrinM
+	duG6IeZec56zYYiYYyEKkVDEHdplg1J/FzBEADRwfP3U1T2AGQ//+78SGpKvJA==
+Message-ID: <2df71773-dab0-4846-a959-e82385169a0a@bootlin.com>
+Date: Thu, 7 Dec 2023 19:49:47 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [yocto-docs][dunfell] documentation: update for 3.1.30
+Subject: Re: [docs] [PATCH] dev-manual: Discourage the use of SRC_URI[md5sum]
 Content-Language: en-US
-To: Steve Sakoman <steve@sakoman.com>
-References: <cover.1701872735.git.steve@sakoman.com>
- <097511f227abbef31409fe36734795b879471868.1701872735.git.steve@sakoman.com>
+To: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+References: <20231206184041.2824572-1-pkj@axis.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <097511f227abbef31409fe36734795b879471868.1701872735.git.steve@sakoman.com>
+In-Reply-To: <20231206184041.2824572-1-pkj@axis.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 07 Dec 2023 18:41:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4668
+ <docs@lists.yoctoproject.org>; Thu, 07 Dec 2023 18:49:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4669
 
-Hi Steve,
+Hi Peter,
 
-On 06.12.23 at 15:26, Steve Sakoman wrote:
-> Signed-off-by: Steve Sakoman <steve@sakoman.com>
-> ---
->   documentation/poky.yaml | 10 +++++-----
->   1 file changed, 5 insertions(+), 5 deletions(-)
+On 06.12.23 at 19:40, Peter Kjellerstedt wrote:
+> SRC_URI[md5sum] has been deprecated for a long time. Discourage its use
+> by removing it from examples and note that it should be replaced by
+> SRC_URI[sha256sum] when updating recipes.
 >
-> diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-> index 132b772c1..54a1c3203 100644
-> --- a/documentation/poky.yaml
-> +++ b/documentation/poky.yaml
-> @@ -1,13 +1,13 @@
-> -DISTRO : "3.1.29"
-> +DISTRO : "3.1.30"
->   DISTRO_NAME_NO_CAP : "dunfell"
->   DISTRO_NAME : "Dunfell"
->   DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
-> -YOCTO_DOC_VERSION : "3.1.29"
-> +YOCTO_DOC_VERSION : "3.1.30"
->   YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
-> -DISTRO_REL_TAG : "yocto-3.1.29"
-> -DOCCONF_VERSION : "3.1.29"
-> +DISTRO_REL_TAG : "yocto-3.1.30"
-> +DOCCONF_VERSION : "3.1.30"
->   BITBAKE_SERIES : "1.46"
-> -POKYVERSION : "23.0.29"
-> +POKYVERSION : "23.0.30"
->   YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
->   YOCTO_DL_URL : "https://downloads.yoctoproject.org"
->   YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
+> Also mention that bitbake supports other checksums, though they are not
+> commonly used.
 
 
-Thanks for the update.
-Merged into the "dunfell" branch.
+Thanks for the patch!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into master-next.
 Cheers
 Michael.
 
