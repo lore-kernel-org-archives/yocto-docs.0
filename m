@@ -2,191 +2,345 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21D17C4706E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 122AFC47072
 	for <webhook@archiver.kernel.org>; Mon, 18 Dec 2023 21:34:23 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.2939.1702935258493762167
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.2935.1702935256027056511
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Dec 2023 13:34:18 -0800
+ Mon, 18 Dec 2023 13:34:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kt7c+Mvg;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F2AEC1C0003;
-	Mon, 18 Dec 2023 21:34:16 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dbF5Amxz;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8AE351BF203;
+	Mon, 18 Dec 2023 21:34:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1702935257;
+	t=1702935254;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kXHXW6Er/Izq1qIVo7wM5l/7geWhnYWErJGrf7lov3s=;
-	b=kt7c+Mvg7ae8kzVNNaBkoP1EWwVCvbmmZ2dHWdYoenSuime4ynSiysZKuHT+3U0+gNDgbO
-	NWpdvMrbj7jBiFx6i8ic4yCzmPPxnlzCGU39bU760BhxndFWKzgnoq825o/z+6agBBEmwa
-	YwXjLbFreZ5VseNbK8hLYAmZpXKnn5IBwSQ/9IWgdoHnmuhP7d+0tN1miH0N4q5/jM/GdZ
-	k1zYBUenHiP/ESroVAL1gyfwTIwWk8MoMy89+m//srqDDSZgrn+jO45+59Fjn84AfvtuD4
-	qrh5q6qKchZFdCdUqO8tD8dlqU9bZ5D34lJ/FRw7qyfop1nqgJ2sXjkRKe/Z5g==
+	bh=Q1XB+x8aMBrHoDezAvCBrzpH8aRsrCFxzuwUggnFh6c=;
+	b=dbF5AmxzQlm9ZrR81+LgXVd0smghH84f8XUZB/l7enY2H2/9UGGr6NHAgkuWLuUOwA9D50
+	jvSdi3/JfSFWyXwjm+PzEOAAdM76gwbk6A98z9eXurVAgPf1ANh0NkO0dnyrRVwmVt/miI
+	1YUKSsUbjIYdzVFpEOdegC6q6hMEAfOeajuyCuQEe6rEENnxcXV2W2pCY4zTIYOswdc5af
+	Di07jimFeI3oW3LN1FUOl24uVzXLTyke2O24eSkX1FZdAY9PTPEBhBjl1K3V7C/0S+RXjC
+	kybfqIFkxMBe4xxYT3Z3q9GWvDyd1Sn39IgTwaUI/cJv353JfgCZ8gF0DrSQBA==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [nanbield][PATCH 15/20] test-manual: add or improve hyperlinks
-Date: Mon, 18 Dec 2023 22:33:29 +0100
-Message-Id: <20231218213334.146370-16-michael.opdenacker@bootlin.com>
+Subject: [nanbield][PATCH 11/20] test-manual: text and formatting fixes
+Date: Mon, 18 Dec 2023 22:33:25 +0100
+Message-Id: <20231218213334.146370-12-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218213334.146370-1-michael.opdenacker@bootlin.com>
 References: <20231218213334.146370-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 18 Dec 2023 21:34:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4700
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4697
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/test-manual/test-process.rst    | 32 +++++++++----------
- .../test-manual/understand-autobuilder.rst    | 31 +++++++++---------
- 2 files changed, 31 insertions(+), 32 deletions(-)
+ documentation/test-manual/intro.rst           | 44 +++++++++----------
+ documentation/test-manual/test-process.rst    | 12 ++---
+ .../test-manual/understand-autobuilder.rst    | 33 +++++++-------
+ 3 files changed, 45 insertions(+), 44 deletions(-)
 
+diff --git a/documentation/test-manual/intro.rst b/documentation/test-manual/intro.rst
+index aaf64ae017..f27210642c 100644
+--- a/documentation/test-manual/intro.rst
++++ b/documentation/test-manual/intro.rst
+@@ -14,7 +14,7 @@ release works as intended. All the project's testing infrastructure and
+ processes are publicly visible and available so that the community can
+ see what testing is being performed, how it's being done and the current
+ status of the tests and the project at any given time. It is intended
+-that Other organizations can leverage off the process and testing
++that other organizations can leverage off the process and testing
+ environment used by the Yocto Project to create their own automated,
+ production test environment, building upon the foundations from the
+ project core.
+@@ -93,8 +93,8 @@ the following types of tests:
+ -  *Build Testing:* Tests whether specific configurations build by
+    varying :term:`MACHINE`,
+    :term:`DISTRO`, other configuration
+-   options, and the specific target images being built (or world). Used
+-   to trigger builds of all the different test configurations on the
++   options, and the specific target images being built (or ``world``). This is
++   used to trigger builds of all the different test configurations on the
+    Autobuilder. Builds usually cover many different targets for
+    different architectures, machines, and distributions, as well as
+    different configurations, such as different init systems. The
+@@ -120,7 +120,7 @@ the following types of tests:
+ 
+       $ bitbake image -c testsdkext
+ 
+-   The tests utilize the :ref:`ref-classes-testsdk` class and the
++   The tests use the :ref:`ref-classes-testsdk` class and the
+    ``do_testsdkext`` task.
+ 
+ -  *Feature Testing:* Various scenario-based tests are run through the
+@@ -131,7 +131,7 @@ the following types of tests:
+ 
+       $ bitbake image -c testimage
+ 
+-   The tests utilize the :ref:`ref-classes-testimage`
++   The tests use the :ref:`ref-classes-testimage`
+    class and the :ref:`ref-tasks-testimage` task.
+ 
+ -  *Layer Testing:* The Autobuilder has the possibility to test whether
+@@ -151,7 +151,7 @@ the following types of tests:
+ 
+       $ bitbake image -c testsdk
+ 
+-   The tests utilize the :ref:`ref-classes-testsdk` class and
++   The tests use the :ref:`ref-classes-testsdk` class and
+    the ``do_testsdk`` task.
+ 
+ -  *Unit Testing:* Unit tests on various components of the system run
+@@ -190,7 +190,7 @@ Tests map into the codebase as follows:
+       $ bitbake-selftest -v
+ 
+    To skip tests that access the Internet, use the ``BB_SKIP_NETTESTS``
+-   variable when running "bitbake-selftest" as follows::
++   variable when running ``bitbake-selftest`` as follows::
+ 
+       $ BB_SKIP_NETTESTS=yes bitbake-selftest
+ 
+@@ -215,7 +215,7 @@ Tests map into the codebase as follows:
+    -  These tests use OE to test the workflows, which include testing
+       specific features, behaviors of tasks, and API unit tests.
+ 
+-   -  The tests can take advantage of parallelism through the "-j"
++   -  The tests can take advantage of parallelism through the ``-j``
+       option, which can specify a number of threads to spread the tests
+       across. Note that all tests from a given class of tests will run
+       in the same thread. To parallelize large numbers of tests you can
+@@ -231,18 +231,18 @@ Tests map into the codebase as follows:
+          $ oe-selftest -a
+ 
+    -  To run a specific test, use the following command form where
+-      testname is the name of the specific test::
++      ``testname`` is the name of the specific test::
+ 
+          $ oe-selftest -r <testname>
+ 
+-      For example, the following command would run the tinfoil
+-      getVar API test::
++      For example, the following command would run the ``tinfoil``
++      ``getVar`` API test::
+ 
+          $ oe-selftest -r tinfoil.TinfoilTests.test_getvar
+ 
+       It is also possible to run a set
+       of tests. For example the following command will run all of the
+-      tinfoil tests::
++      ``tinfoil`` tests::
+ 
+          $ oe-selftest -r tinfoil
+ 
+@@ -391,14 +391,14 @@ so tests within a given test class should always run in the same build,
+ while tests in different classes or modules may be split into different
+ builds. There is no data store available for these tests since the tests
+ launch the ``bitbake`` command and exist outside of its context. As a
+-result, common bitbake library functions (bb.\*) are also unavailable.
++result, common BitBake library functions (``bb.\*``) are also unavailable.
+ 
+ ``testimage``
+ -------------
+ 
+ These tests are run once an image is up and running, either on target
+ hardware or under QEMU. As a result, they are assumed to be running in a
+-target image environment, as opposed to a host build environment. A
++target image environment, as opposed to in a host build environment. A
+ simple example from ``meta/lib/oeqa/runtime/cases/python.py`` contains
+ the following::
+ 
+@@ -413,19 +413,19 @@ the following::
+ 
+ In this example, the ``OERuntimeTestCase`` class wraps
+ ``unittest.TestCase``. Within the test, ``self.target`` represents the
+-target system, where commands can be run on it using the ``run()``
++target system, where commands can be run using the ``run()``
+ method.
+ 
+-To ensure certain test or package dependencies are met, you can use the
++To ensure certain tests or package dependencies are met, you can use the
+ ``OETestDepends`` and ``OEHasPackage`` decorators. For example, the test
+-in this example would only make sense if python3-core is installed in
++in this example would only make sense if ``python3-core`` is installed in
+ the image.
+ 
+ ``testsdk_ext``
+ ---------------
+ 
+ These tests are run against built extensible SDKs (eSDKs). The tests can
+-assume that the eSDK environment has already been setup. An example from
++assume that the eSDK environment has already been set up. An example from
+ ``meta/lib/oeqa/sdk/cases/devtool.py`` contains the following::
+ 
+    class DevtoolTest(OESDKExtTestCase):
+@@ -472,9 +472,9 @@ following::
+             output = self._run(cmd)
+             self.assertEqual(output, "Hello, world\n")
+ 
+-In this example, if nativesdk-python3-core has been installed into the SDK, the code runs
+-the python3 interpreter with a basic command to check it is working
+-correctly. The test would only run if Python3 is installed in the SDK.
++In this example, if ``nativesdk-python3-core`` has been installed into the SDK,
++the code runs the ``python3`` interpreter with a basic command to check it is
++working correctly. The test would only run if Python3 is installed in the SDK.
+ 
+ ``oe-build-perf-test``
+ ----------------------
+@@ -520,7 +520,7 @@ an isolated directory.
+ 
+ This can delete files from :term:`SSTATE_DIR` which would potentially break
+ other builds running in parallel. If this is required, :term:`SSTATE_DIR` must
+-be set to an isolated directory. Alternatively, you can use the "-f"
++be set to an isolated directory. Alternatively, you can use the ``-f``
+ option with the ``bitbake`` command to "taint" tasks by changing the
+ sstate checksums to ensure sstate cache items will not be reused.
+ 
 diff --git a/documentation/test-manual/test-process.rst b/documentation/test-manual/test-process.rst
-index 0c560efe39..7bec5ba828 100644
+index 4c3b32bfea..0c560efe39 100644
 --- a/documentation/test-manual/test-process.rst
 +++ b/documentation/test-manual/test-process.rst
-@@ -20,8 +20,8 @@ helps review and test patches and this is his testing tree).
- We have two broad categories of test builds, including "full" and
- "quick". On the Autobuilder, these can be seen as "a-quick" and
- "a-full", simply for ease of sorting in the UI. Use our Autobuilder
--console view to see where me manage most test-related items, available
--at: :yocto_ab:`/typhoon/#/console`.
-+:yocto_ab:`console view </typhoon/#/console>` to see where we manage most
-+test-related items.
- 
- Builds are triggered manually when the test branches are ready. The
- builds are monitored by the SWAT team. For additional information, see
-@@ -34,18 +34,15 @@ which the result was required.
- 
- The Autobuilder does build the ``master`` branch once daily for several
- reasons, in particular, to ensure the current ``master`` branch does
--build, but also to keep ``yocto-testresults``
--(:yocto_git:`/yocto-testresults/`),
--buildhistory
--(:yocto_git:`/poky-buildhistory/`), and
--our sstate up to date. On the weekend, there is a master-next build
-+build, but also to keep (:yocto_git:`yocto-testresults </yocto-testresults/>`),
-+(:yocto_git:`buildhistory </poky-buildhistory/>`), and
-+our sstate up to date. On the weekend, there is a ``master-next`` build
+@@ -42,16 +42,16 @@ our sstate up to date. On the weekend, there is a master-next build
  instead to ensure the test results are updated for the less frequently
  run targets.
  
- Performance builds (``buildperf-\*`` targets in the console) are triggered
+-Performance builds (buildperf-\* targets in the console) are triggered
++Performance builds (``buildperf-\*`` targets in the console) are triggered
  separately every six hours and automatically push their results to the
--buildstats repository at:
--:yocto_git:`/yocto-buildstats/`.
-+:yocto_git:`buildstats </yocto-buildstats/>` repository.
+ buildstats repository at:
+ :yocto_git:`/yocto-buildstats/`.
  
- The "quick" targets have been selected to be the ones which catch the
- most failures or give the most valuable data. We run "fast" ptests in
-@@ -69,10 +66,10 @@ configured to generate and publish artifacts and the milestone number,
+-The 'quick' targets have been selected to be the ones which catch the
+-most failures or give the most valuable data. We run 'fast' ptests in
++The "quick" targets have been selected to be the ones which catch the
++most failures or give the most valuable data. We run "fast" ptests in
+ this case for example but not the ones which take a long time. The quick
+-target doesn't include \*-lsb builds for all architectures, some world
+-builds and doesn't trigger performance tests or ltp testing. The full
++target doesn't include ``\*-lsb`` builds for all architectures, some ``world``
++builds and doesn't trigger performance tests or ``ltp`` testing. The full
+ build includes all these things and is slower but more comprehensive.
+ 
+ Release Builds
+@@ -67,7 +67,7 @@ that in :ref:`test-manual/test-process:day to day development`, in that the
+ a-full target of the Autobuilder is used but in addition the form is
+ configured to generate and publish artifacts and the milestone number,
  version, release candidate number and other information is entered. The
- box to "generate an email to QA" is also checked.
+-box to "generate an email to QA"is also checked.
++box to "generate an email to QA" is also checked.
  
--When the build completes, an email is sent out using the send-qa-email
--script in the ``yocto-autobuilder-helper`` repository to the list of
--people configured for that release. Release builds are placed into a
--directory in https://autobuilder.yocto.io/pub/releases on the
-+When the build completes, an email is sent out using the ``send-qa-email``
-+script in the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
-+repository to the list of people configured for that release. Release builds
-+are placed into a directory in https://autobuilder.yocto.io/pub/releases on the
- Autobuilder which is included in the email. The process from here is
- more manual and control is effectively passed to release engineering.
- The next steps include:
-@@ -80,14 +77,15 @@ The next steps include:
- -  QA teams respond to the email saying which tests they plan to run and
-    when the results will be available.
- 
---  QA teams run their tests and share their results in the yocto-
--   testresults-contrib repository, along with a summary of their
--   findings.
-+-  QA teams run their tests and share their results in the
-+   :yocto_git:`yocto-testresults-contrib </yocto-testresults-contrib>`
-+   repository, along with a summary of their findings.
- 
- -  Release engineering prepare the release as per their process.
- 
- -  Test results from the QA teams are included into the release in
--   separate directories and also uploaded to the yocto-testresults
-+   separate directories and also uploaded to the
-+   :yocto_git:`yocto-testresults </yocto-testresults>`
-    repository alongside the other test results for the given revision.
- 
- -  The QA report in the final release is regenerated using resulttool to
+ When the build completes, an email is sent out using the send-qa-email
+ script in the ``yocto-autobuilder-helper`` repository to the list of
 diff --git a/documentation/test-manual/understand-autobuilder.rst b/documentation/test-manual/understand-autobuilder.rst
-index a3fff29aca..6b4fab4f0b 100644
+index 7a6cb2443b..a3fff29aca 100644
 --- a/documentation/test-manual/understand-autobuilder.rst
 +++ b/documentation/test-manual/understand-autobuilder.rst
-@@ -9,8 +9,8 @@ Execution Flow within the Autobuilder
+@@ -32,8 +32,8 @@ which looks like::
+         }
+    },
  
- The "a-full" and "a-quick" targets are the usual entry points into the
- Autobuilder and it makes sense to follow the process through the system
--starting there. This is best visualized from the Autobuilder Console
--view (:yocto_ab:`/typhoon/#/console`).
-+starting there. This is best visualized from the :yocto_ab:`Autobuilder
-+Console view </typhoon/#/console>`.
+-And to expand that, you need the "arch-qemu" entry from
+-the "templates" section, which looks like::
++And to expand that, you need the ``arch-qemu`` entry from
++the ``templates`` section, which looks like::
  
- Each item along the top of that view represents some "target build" and
- these targets are all run in parallel. The 'full' build will trigger the
-@@ -18,9 +18,9 @@ majority of them, the "quick" build will trigger some subset of them.
- The Autobuilder effectively runs whichever configuration is defined for
- each of those targets on a separate buildbot worker. To understand the
- configuration, you need to look at the entry on ``config.json`` file
--within the ``yocto-autobuilder-helper`` repository. The targets are
--defined in the ‘overrides' section, a quick example could be qemux86-64
--which looks like::
-+within the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
-+repository. The targets are defined in the ``overrides`` section, a quick
-+example could be ``qemux86-64`` which looks like::
+    "arch-qemu" : {
+          "BUILDINFO" : true,
+@@ -54,11 +54,11 @@ the "templates" section, which looks like::
+          }
+    },
  
-    "qemux86-64" : {
-          "MACHINE" : "qemux86-64",
-@@ -88,9 +88,9 @@ roughly consist of:
+-Combining these two entries you can see that "qemux86-64" is a three step build where the
+-``bitbake BBTARGETS`` would be run, then ``bitbake SANITYTARGETS`` for each step; all for
+-``MACHINE="qemux86-64"`` but with differing :term:`SDKMACHINE` settings. In step
+-1 an extra variable is added to the ``auto.conf`` file to enable wic
+-image generation.
++Combining these two entries you can see that ``qemux86-64`` is a three step
++build where ``bitbake BBTARGETS`` would be run, then ``bitbake SANITYTARGETS``
++for each step; all for ``MACHINE="qemux86-64"`` but with differing
++:term:`SDKMACHINE` settings. In step 1, an extra variable is added to the
++``auto.conf`` file to enable wic image generation.
  
- #. *Obtain yocto-autobuilder-helper*
+ While not every detail of this is covered here, you can see how the
+ template mechanism allows quite complex configurations to be built up
+@@ -163,8 +163,9 @@ Autobuilder Worker Janitor
+ --------------------------
  
--   This step clones the ``yocto-autobuilder-helper`` git repository.
--   This is necessary to prevent the requirement to maintain all the
--   release or project-specific code within Buildbot. The branch chosen
-+   This step clones the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
-+   git repository. This is necessary to avoid the requirement to maintain all
-+   the release or project-specific code within Buildbot. The branch chosen
-    matches the release being built so we can support older releases and
-    still make changes in newer ones.
+ This is a process running on each Worker that performs two basic
+-operations, including background file deletion at IO idle (see :ref:`test-manual/understand-autobuilder:Autobuilder Target Execution Overview`: Run clobberdir) and
+-maintenance of a cache of cloned repositories to improve the speed
++operations, including background file deletion at IO idle (see
++"Run clobberdir" in :ref:`test-manual/understand-autobuilder:Autobuilder Target Execution Overview`)
++and maintenance of a cache of cloned repositories to improve the speed
+ the system can checkout repositories.
  
-@@ -251,13 +251,14 @@ Deploying Yocto Autobuilder
- ===========================
+ Shared DL_DIR
+@@ -172,7 +173,7 @@ Shared DL_DIR
  
- The most up to date information about how to setup and deploy your own
--Autobuilder can be found in README.md in the ``yocto-autobuilder2``
--repository.
--
--We hope that people can use the ``yocto-autobuilder2`` code directly but
--it is inevitable that users will end up needing to heavily customise the
--``yocto-autobuilder-helper`` repository, particularly the
--``config.json`` file as they will want to define their own test matrix.
-+Autobuilder can be found in :yocto_git:`README.md </yocto-autobuilder2/tree/README.md>`
-+in the :yocto_git:`yocto-autobuilder2 </yocto-autobuilder2>` repository.
-+
-+We hope that people can use the :yocto_git:`yocto-autobuilder2 </yocto-autobuilder2>`
-+code directly but it is inevitable that users will end up needing to heavily
-+customize the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
-+repository, particularly the ``config.json`` file as they will want to define
-+their own test matrix.
+ The Workers are all connected over NFS which allows :term:`DL_DIR` to be shared
+ between them. This reduces network accesses from the system and allows
+-the build to be sped up. Usage of the directory within the build system
++the build to be sped up. The usage of the directory within the build system
+ is designed to be able to be shared over NFS.
  
- The Autobuilder supports two customization options:
+ Shared SSTATE_DIR
+@@ -180,8 +181,8 @@ Shared SSTATE_DIR
+ 
+ The Workers are all connected over NFS which allows the ``sstate``
+ directory to be shared between them. This means once a Worker has built
+-an artifact, all the others can benefit from it. Usage of the directory
+-within the directory is designed for sharing over NFS.
++an artifact, all the others can benefit from it. The usage of the directory
++within the build system is designed for sharing over NFS.
+ 
+ Resulttool
+ ----------
+@@ -192,7 +193,7 @@ in a given build and their status. Additional information, such as
+ failure logs or the time taken to run the tests, may also be included.
+ 
+ Resulttool is part of OpenEmbedded-Core and is used to manipulate these
+-json results files. It has the ability to merge files together, display
++JSON results files. It has the ability to merge files together, display
+ reports of the test results and compare different result files.
+ 
+ For details, see :yocto_wiki:`/Resulttool`.
+@@ -206,7 +207,7 @@ are general setup steps that are run once and include:
+ 
+ #. Set up any :term:`buildtools` tarball if configured.
+ 
+-#. Call "buildhistory-init" if :ref:`ref-classes-buildhistory` is configured.
++#. Call ``buildhistory-init`` if :ref:`ref-classes-buildhistory` is configured.
+ 
+ For each step that is configured in ``config.json``, it will perform the
+ following:
+@@ -258,7 +259,7 @@ it is inevitable that users will end up needing to heavily customise the
+ ``yocto-autobuilder-helper`` repository, particularly the
+ ``config.json`` file as they will want to define their own test matrix.
+ 
+-The Autobuilder supports wo customization options:
++The Autobuilder supports two customization options:
+ 
+ -  variable substitution
+ 
+@@ -278,7 +279,7 @@ environment::
+    $ ABHELPER_JSON="config.json /some/location/local.json"
+ 
+ One issue users often run into is validation of the ``config.json`` files. A
+-tip for minimizing issues from invalid json files is to use a Git
++tip for minimizing issues from invalid JSON files is to use a Git
+ ``pre-commit-hook.sh`` script to verify the JSON file before committing
+ it. Create a symbolic link as follows::
  
 -- 
 2.34.1
