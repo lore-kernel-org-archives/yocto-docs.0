@@ -2,35 +2,35 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80979C46CD8
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96F5FC4706F
 	for <webhook@archiver.kernel.org>; Mon, 18 Dec 2023 21:45:13 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.3159.1702935906131722105
+ by mx.groups.io with SMTP id smtpd.web11.3223.1702935911298976878
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Dec 2023 13:45:06 -0800
+ Mon, 18 Dec 2023 13:45:11 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=k1snUuPl;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZHhtg6ql;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5FC801BF203;
-	Mon, 18 Dec 2023 21:45:04 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DA2591BF204;
+	Mon, 18 Dec 2023 21:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1702935904;
+	t=1702935910;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=i7cIFqgIdJiNcf5y7FAVHqqd+HIY0NaC3TsvTY8dMKQ=;
-	b=k1snUuPl6dtYJYYtAWBrLOWbBa79erqAdY6y9/iElclXdustQSNPxJLJcm9DTMzegJukQL
-	87Yorj1djk9Wad00+ZVZrn6x5/3uAyVEK1jusYavIYkLldBDNdiTczGMAtKr+JnefphcA6
-	QdelQ6leYSnZOy9szEabcOEHOxAA8QS1OIc49tGYyTKHfkilsfXoSKiG4rTu5Rama15CQh
-	h5hrlN0mwWS6NfPYXy5FVPiMux4Oth8uRapLTd72EklV+eN9B+Vc1ydhWlYv2oapxoQijT
-	Ytb/quWX3k8O4VB0Gl38i3MgSmVOQtjW2HeXE9Oc+UwYSt/vjuqvywn+2/Tfew==
+	bh=fsbc3gaG4ZXhwRfDtBb9Ly/RLBUrTLdpvnt3gXB1biM=;
+	b=ZHhtg6qlcfzNBAepthQPDHfq+xXnBNUHvGKc1ILwOhfd/WWClbJ1g2unH+nzHIN/D8x9fj
+	fRiDBd5D/zvvTirfvjM8qxeK8dqAeDiGWg3ZZX/BPR73Dwn6GSxgobThj8NzEyxUOGX78h
+	nkyE9o7cR2CBK+CBUShoAtpO3VX29FDUI28AH+T1wn5ku4SODgV2LxlguZRB4JB/HYurDb
+	ORJhPXSmvIHDRcaAjNzl1TbrnAa7bOY5KiLDuJVAMX0UsdrSoN3LnZHalAmcZiwjd1fmwl
+	xd7nmSVrRDfph2/48AvLj6BsiW9fuccG/PTFtwCOVCEXJNePqOqoS1s+5s6yLg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH 03/18] ref-manual: releases.svg: update nanbield release status
-Date: Mon, 18 Dec 2023 22:44:27 +0100
-Message-Id: <20231218214442.147385-4-michael.opdenacker@bootlin.com>
+Subject: [kirkstone][PATCH 11/18] test-manual: resource updates
+Date: Mon, 18 Dec 2023 22:44:35 +0100
+Message-Id: <20231218214442.147385-12-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218214442.147385-1-michael.opdenacker@bootlin.com>
 References: <20231218214442.147385-1-michael.opdenacker@bootlin.com>
@@ -41,83 +41,68 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 18 Dec 2023 21:45:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4709
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4717
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-- nanbield is now released
-- update the start and end dates
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/svg/releases.svg | 32 +++++++++++------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ documentation/test-manual/intro.rst | 20 +++++++++-----------
+ 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/documentation/ref-manual/svg/releases.svg b/documentation/ref-manual/svg/releases.svg
-index 5333498d1f..198d4632b1 100644
---- a/documentation/ref-manual/svg/releases.svg
-+++ b/documentation/ref-manual/svg/releases.svg
-@@ -404,15 +404,15 @@
-      guidetolerance="10"
-      inkscape:pageopacity="0"
-      inkscape:pageshadow="2"
--     inkscape:window-width="1846"
--     inkscape:window-height="1016"
-+     inkscape:window-width="1920"
-+     inkscape:window-height="1043"
-      id="namedview4"
-      showgrid="true"
--     inkscape:zoom="0.51166405"
--     inkscape:cx="-43.974166"
--     inkscape:cy="311.72798"
--     inkscape:window-x="1994"
--     inkscape:window-y="27"
-+     inkscape:zoom="1.4472045"
-+     inkscape:cx="736.24703"
-+     inkscape:cy="312.32629"
-+     inkscape:window-x="1728"
-+     inkscape:window-y="0"
-      inkscape:window-maximized="1"
-      inkscape:current-layer="g10"
-      inkscape:document-rotation="0"
-@@ -669,28 +669,28 @@
-          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
-          id="tspan10317-2-9-1-4">4.2</tspan></text>
-     <g
--       id="g32107">
-+       id="g1379">
-       <rect
--         style="opacity:0.75;fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
--         id="rect917-0-0-4-4-9-4-5-3"
--         width="140.00014"
-+         style="fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
-+         id="rect917-0-0-4-4-9-4-5-38"
-+         width="140.00003"
-          height="45.000004"
--         x="1199.9999"
--         y="-229.99998"
-+         x="1220"
-+         y="-230.00005"
-          ry="2.2558987" />
-       <text
-          xml:space="preserve"
-          style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
--         x="1247.2329"
-+         x="1269.2329"
-          y="-210.32925"
-          id="text1185-3-55-4-0-0-0-1-1"><tspan
-            sodipodi:role="line"
--           x="1247.2329"
-+           x="1269.2329"
-            y="-210.32925"
-            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
-            id="tspan957-2-8-6-3-9-7-4">Nanbield</tspan><tspan
-            sodipodi:role="line"
--           x="1247.2329"
-+           x="1269.2329"
-            y="-192.33258"
-            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
-            id="tspan10317-2-9-1-4-6">4.3</tspan></text>
+diff --git a/documentation/test-manual/intro.rst b/documentation/test-manual/intro.rst
+index 3a3fc2270e..51934f4851 100644
+--- a/documentation/test-manual/intro.rst
++++ b/documentation/test-manual/intro.rst
+@@ -19,10 +19,8 @@ environment used by the Yocto Project to create their own automated,
+ production test environment, building upon the foundations from the
+ project core.
+ 
+-Currently, the Yocto Project Test Environment Manual has no projected
+-release date. This manual is a work-in-progress and is being initially
+-loaded with information from the README files and notes from key
+-engineers:
++This manual is a work-in-progress and is being initially loaded with
++information from the README files and notes from key engineers:
+ 
+ -  *yocto-autobuilder2:* This
+    :yocto_git:`README.md </yocto-autobuilder2/tree/README.md>`
+@@ -39,7 +37,7 @@ engineers:
+    As a result, it can be used by any Continuous Improvement (CI) system
+    to run builds, support getting the correct code revisions, configure
+    builds and layers, run builds, and collect results. The code is
+-   independent of any CI system, which means the code can work `Buildbot <https://docs.buildbot.net/0.9.15.post1/>`__,
++   independent of any CI system, which means the code can work `Buildbot <https://docs.buildbot.net/current/>`__,
+    Jenkins, or others. This repository has a branch per release of the
+    project defining the tests to run on a per release basis.
+ 
+@@ -54,8 +52,8 @@ the Autobuilder tests if things work. The Autobuilder builds all test
+ targets and runs all the tests.
+ 
+ The Yocto Project uses now uses standard upstream
+-`Buildbot <https://docs.buildbot.net/0.9.15.post1/>`__ (version 9) to
+-drive its integration and testing. Buildbot Nine has a plug-in interface
++Buildbot (`version 3.8 <https://docs.buildbot.net/3.8.0/>`__) to
++drive its integration and testing. Buildbot has a plug-in interface
+ that the Yocto Project customizes using code from the
+ ``yocto-autobuilder2`` repository, adding its own console UI plugin. The
+ resulting UI plug-in allows you to visualize builds in a way suited to
+@@ -299,11 +297,11 @@ Tests map into the codebase as follows:
+       Git repository.
+ 
+       Use the ``oe-build-perf-report`` command to generate text reports
+-      and HTML reports with graphs of the performance data. For
+-      examples, see
+-      :yocto_dl:`/releases/yocto/yocto-2.7/testresults/buildperf-centos7/perf-centos7.yoctoproject.org_warrior_20190414204758_0e39202.html`
++      and HTML reports with graphs of the performance data. See
++      :yocto_dl:`html </releases/yocto/yocto-4.3/testresults/buildperf-debian11/perf-debian11_nanbield_20231019191258_15b576c410.html>`
+       and
+-      :yocto_dl:`/releases/yocto/yocto-2.7/testresults/buildperf-centos7/perf-centos7.yoctoproject.org_warrior_20190414204758_0e39202.txt`.
++      :yocto_dl:`txt </releases/yocto/yocto-4.3/testresults/buildperf-debian11/perf-debian11_nanbield_20231019191258_15b576c410.txt>`
++      examples.
+ 
+    -  The tests are contained in ``lib/oeqa/buildperf/test_basic.py``.
+ 
 -- 
 2.34.1
 
