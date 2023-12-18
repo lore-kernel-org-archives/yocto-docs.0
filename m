@@ -2,36 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BCA98C46CD7
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA8E9C46CD8
 	for <webhook@archiver.kernel.org>; Mon, 18 Dec 2023 21:34:22 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.2907.1702935258941247236
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.2905.1702935255398749859
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Dec 2023 13:34:19 -0800
+ Mon, 18 Dec 2023 13:34:15 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KDkVy8qr;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6F49840002;
-	Mon, 18 Dec 2023 21:34:17 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gnYghBFB;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CC50DE0003;
+	Mon, 18 Dec 2023 21:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1702935257;
+	t=1702935254;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cX6M920vlMgKz7XgWTWJh1ORBHTdkxdjWZq3CfC3Bjs=;
-	b=KDkVy8qrhgj/Tpmp3gBRbImXrooYhidRVD0NcIxpx5r1HNDpmA+gb135qH70S4WFkKiQcq
-	rvp1dy5YA5edy8MWSa8cgSs28d9THUU1ZAPaIHiVSx1KSTx+lFfRfCr1K5xlL0sU3qtHbz
-	NPpec29vkCfIOsfczhAcJ7Dphd4rvw51eJG98m0KoBaJ7K5yoJuSy9c2mOj/vOww1YXdwP
-	QqilVjcX6bSUld3egzksqlIUD9yUEZc9HtwoxFePLjFW21/FNaZvgdyocrcmMwCj+xfBEb
-	ovCAdSShvmKMHn0RBmEtv/gzjsXwU8chLwW6eJXlt73beYxYXPj95hihjLM9Gg==
+	bh=LU5WppjMHHI+BGCQ7KmQt/GxuUkcZcKfD+yDKGtFv2g=;
+	b=gnYghBFBXsTShNivSl/AZb+kvE6Bk2/Vexk2y+flUMlGO8XncTSMqVqsTedAtCKQrrDzS4
+	RUl7Ty+8NiBx3fw6aChqb0uhuP75et+Gw97ARRBdTLRGAjz+It9cr8g/Vm/tGPBbpx1vK7
+	q+ZhMBxB66LlRQIGbjfpYSjtgFZg6z9OY5cKlKYmVvRTdpdrQ3j9qkk16/WG46+DktXD+f
+	4drfdpexILLIEGF+GWB/PJSydO9WNW6CoAosdYthsObPYCN1Inyvvi/0aI+OFXE/wJDHLT
+	wPNr/rf4deSLf8jiftxopdvHovurg2h26XDgdQkfxKrx3oFDLY5NlKWAvdH+3A==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [nanbield][PATCH 16/20] migration-guides: reword fix in release-notes-4.3.1
-Date: Mon, 18 Dec 2023 22:33:30 +0100
-Message-Id: <20231218213334.146370-17-michael.opdenacker@bootlin.com>
+	Peter Kjellerstedt <peter.kjellerstedt@axis.com>
+Subject: [nanbield][PATCH 10/20] dev-manual: Discourage the use of SRC_URI[md5sum]
+Date: Mon, 18 Dec 2023 22:33:24 +0100
+Message-Id: <20231218213334.146370-11-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218213334.146370-1-michael.opdenacker@bootlin.com>
 References: <20231218213334.146370-1-michael.opdenacker@bootlin.com>
@@ -42,40 +42,88 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 18 Dec 2023 21:34:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4702
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4696
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+From: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
 
-Reword a fix to align with the final release notes.
+SRC_URI[md5sum] has been deprecated for a long time. Discourage its use
+by removing it from examples and note that it should be replaced by
+SRC_URI[sha256sum] when updating recipes.
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+Also mention that bitbake supports other checksums, though they are not
+commonly used.
+
+Signed-off-by: Peter Kjellerstedt <peter.kjellerstedt@axis.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/migration-guides/release-notes-4.3.1.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ documentation/dev-manual/debugging.rst  |  2 +-
+ documentation/dev-manual/new-recipe.rst | 27 +++++++++++++++----------
+ 2 files changed, 17 insertions(+), 12 deletions(-)
 
-diff --git a/documentation/migration-guides/release-notes-4.3.1.rst b/documentation/migration-guides/release-notes-4.3.1.rst
-index 377cdb43f4..cea9c538a2 100644
---- a/documentation/migration-guides/release-notes-4.3.1.rst
-+++ b/documentation/migration-guides/release-notes-4.3.1.rst
-@@ -19,7 +19,6 @@ Security Fixes in Yocto-4.3.1
- Fixes in Yocto-4.3.1
- ~~~~~~~~~~~~~~~~~~~~
+diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-manual/debugging.rst
+index fea2cb30a1..bd1e716b0b 100644
+--- a/documentation/dev-manual/debugging.rst
++++ b/documentation/dev-manual/debugging.rst
+@@ -327,7 +327,7 @@ BitBake has determined by doing the following:
+    the task. This list also includes indirect dependencies from
+    variables depending on other variables, recursively::
  
---  Remove references to apm in :term:`MACHINE_FEATURES`
- -  baremetal-helloworld: Pull in fix for race condition on x86-64
- -  base: Ensure recipes using mercurial-native have certificates
- -  bb-matrix-plot.sh: Show underscores correctly in labels
-@@ -54,6 +53,7 @@ Fixes in Yocto-4.3.1
- -  machine: drop obsolete SERIAL_CONSOLES_CHECK
- -  manuals: correct "yocto-linux" by "linux-yocto"
- -  manuals: improve description of :term:`CVE_STATUS` and :term:`CVE_STATUS_GROUPS`
-+-  manuals: Remove references to apm in :term:`MACHINE_FEATURES`
- -  manuals: update linux-yocto append examples
- -  manuals: update list of supported machines
- -  migration-4.3: additional migration items
+-      Task dependencies: ['PV', 'SRCREV', 'SRC_URI', 'SRC_URI[md5sum]', 'SRC_URI[sha256sum]', 'base_do_fetch']
++      Task dependencies: ['PV', 'SRCREV', 'SRC_URI', 'SRC_URI[sha256sum]', 'base_do_fetch']
+ 
+    .. note::
+ 
+diff --git a/documentation/dev-manual/new-recipe.rst b/documentation/dev-manual/new-recipe.rst
+index e741cef0e8..2c1033eb35 100644
+--- a/documentation/dev-manual/new-recipe.rst
++++ b/documentation/dev-manual/new-recipe.rst
+@@ -303,28 +303,33 @@ If your :term:`SRC_URI` statement includes URLs pointing to individual files
+ fetched from a remote server other than a version control system,
+ BitBake attempts to verify the files against checksums defined in your
+ recipe to ensure they have not been tampered with or otherwise modified
+-since the recipe was written. Two checksums are used:
+-``SRC_URI[md5sum]`` and ``SRC_URI[sha256sum]``.
++since the recipe was written. Multiple checksums are supported:
++``SRC_URI[md5sum]``, ``SRC_URI[sha1sum]``, ``SRC_URI[sha256sum]``.
++``SRC_URI[sha384sum]`` and ``SRC_URI[sha512sum]``, but only
++``SRC_URI[sha256sum]`` is commonly used.
++
++.. note::
++
++   ``SRC_URI[md5sum]`` used to also be commonly used, but it is deprecated
++   and should be replaced by ``SRC_URI[sha256sum]`` when updating existing
++   recipes.
+ 
+ If your :term:`SRC_URI` variable points to more than a single URL (excluding
+-SCM URLs), you need to provide the ``md5`` and ``sha256`` checksums for
+-each URL. For these cases, you provide a name for each URL as part of
+-the :term:`SRC_URI` and then reference that name in the subsequent checksum
+-statements. Here is an example combining lines from the files
+-``git.inc`` and ``git_2.24.1.bb``::
++SCM URLs), you need to provide the ``sha256`` checksum for each URL. For these
++cases, you provide a name for each URL as part of the :term:`SRC_URI` and then
++reference that name in the subsequent checksum statements. Here is an example
++combining lines from the files ``git.inc`` and ``git_2.24.1.bb``::
+ 
+    SRC_URI = "${KERNELORG_MIRROR}/software/scm/git/git-${PV}.tar.gz;name=tarball \
+               ${KERNELORG_MIRROR}/software/scm/git/git-manpages-${PV}.tar.gz;name=manpages"
+ 
+-   SRC_URI[tarball.md5sum] = "166bde96adbbc11c8843d4f8f4f9811b"
+    SRC_URI[tarball.sha256sum] = "ad5334956301c86841eb1e5b1bb20884a6bad89a10a6762c958220c7cf64da02"
+-   SRC_URI[manpages.md5sum] = "31c2272a8979022497ba3d4202df145d"
+    SRC_URI[manpages.sha256sum] = "9a7ae3a093bea39770eb96ca3e5b40bff7af0b9f6123f089d7821d0e5b8e1230"
+ 
+-Proper values for ``md5`` and ``sha256`` checksums might be available
++The proper value for the ``sha256`` checksum might be available together
+ with other signatures on the download page for the upstream source (e.g.
+ ``md5``, ``sha1``, ``sha256``, ``GPG``, and so forth). Because the
+-OpenEmbedded build system only deals with ``sha256sum`` and ``md5sum``,
++OpenEmbedded build system typically only deals with ``sha256sum``,
+ you should verify all the signatures you find by hand.
+ 
+ If no :term:`SRC_URI` checksums are specified when you attempt to build the
 -- 
 2.34.1
 
