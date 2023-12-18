@@ -2,116 +2,192 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F894C47073
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 21D17C4706E
 	for <webhook@archiver.kernel.org>; Mon, 18 Dec 2023 21:34:23 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.2937.1702935257484449649
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.2939.1702935258493762167
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Dec 2023 13:34:17 -0800
+ Mon, 18 Dec 2023 13:34:18 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=hocrXHgr;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 08ED21BF204;
-	Mon, 18 Dec 2023 21:34:15 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kt7c+Mvg;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id F2AEC1C0003;
+	Mon, 18 Dec 2023 21:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1702935256;
+	t=1702935257;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BpHpVrn0jQg5a6pimDXUvZ9h1P8ylYcC2WmyQVmgNKY=;
-	b=hocrXHgr94jZtj/WPbrPy5QP/NUh/dsVLMt/P0RsDb9Pgx5Rr1iw9B+oxgDo9VY7+BKDc4
-	bJp8Knv8BffJ9/4UG/e6eFIWHWVoUwao0DA5qNRrGlLm8Pm8ahPIJkOPHVMbDOFwMGQvsK
-	SaEhDJfveq+pRXCCeqXPTbC9CGwG5h+2dstENGQwlRyvkLYiKw9KIn0+RhEaq0VSQuR3Tv
-	YU3lrZhUT0kcl8yBPBe7Ce2hH8pDSIQN9hpVSVEYu+/0jqZWkDR8kr7IoJU3Ffjm8Nke41
-	sxk6AI6bEZ2BVwHh7cP0tP7/apAK6eTFHYRnYPGzVoLaBJ0lZncRtrz7RIU69g==
+	bh=kXHXW6Er/Izq1qIVo7wM5l/7geWhnYWErJGrf7lov3s=;
+	b=kt7c+Mvg7ae8kzVNNaBkoP1EWwVCvbmmZ2dHWdYoenSuime4ynSiysZKuHT+3U0+gNDgbO
+	NWpdvMrbj7jBiFx6i8ic4yCzmPPxnlzCGU39bU760BhxndFWKzgnoq825o/z+6agBBEmwa
+	YwXjLbFreZ5VseNbK8hLYAmZpXKnn5IBwSQ/9IWgdoHnmuhP7d+0tN1miH0N4q5/jM/GdZ
+	k1zYBUenHiP/ESroVAL1gyfwTIwWk8MoMy89+m//srqDDSZgrn+jO45+59Fjn84AfvtuD4
+	qrh5q6qKchZFdCdUqO8tD8dlqU9bZ5D34lJ/FRw7qyfop1nqgJ2sXjkRKe/Z5g==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [nanbield][PATCH 13/20] test-manual: add links to python unittest
-Date: Mon, 18 Dec 2023 22:33:27 +0100
-Message-Id: <20231218213334.146370-14-michael.opdenacker@bootlin.com>
+Subject: [nanbield][PATCH 15/20] test-manual: add or improve hyperlinks
+Date: Mon, 18 Dec 2023 22:33:29 +0100
+Message-Id: <20231218213334.146370-16-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20231218213334.146370-1-michael.opdenacker@bootlin.com>
 References: <20231218213334.146370-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 18 Dec 2023 21:34:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4699
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4700
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Better than using "python unittest" without any
-special formatting.
-
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/test-manual/intro.rst | 28 ++++++++++++++++------------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ documentation/test-manual/test-process.rst    | 32 +++++++++----------
+ .../test-manual/understand-autobuilder.rst    | 31 +++++++++---------
+ 2 files changed, 31 insertions(+), 32 deletions(-)
 
-diff --git a/documentation/test-manual/intro.rst b/documentation/test-manual/intro.rst
-index d14aa20f76..a76ae25609 100644
---- a/documentation/test-manual/intro.rst
-+++ b/documentation/test-manual/intro.rst
-@@ -205,8 +205,8 @@ Tests map into the codebase as follows:
+diff --git a/documentation/test-manual/test-process.rst b/documentation/test-manual/test-process.rst
+index 0c560efe39..7bec5ba828 100644
+--- a/documentation/test-manual/test-process.rst
++++ b/documentation/test-manual/test-process.rst
+@@ -20,8 +20,8 @@ helps review and test patches and this is his testing tree).
+ We have two broad categories of test builds, including "full" and
+ "quick". On the Autobuilder, these can be seen as "a-quick" and
+ "a-full", simply for ease of sorting in the UI. Use our Autobuilder
+-console view to see where me manage most test-related items, available
+-at: :yocto_ab:`/typhoon/#/console`.
++:yocto_ab:`console view </typhoon/#/console>` to see where we manage most
++test-related items.
  
-       $ bitbake-selftest bb.tests.data.TestOverrides.test_one_override
+ Builds are triggered manually when the test branches are ready. The
+ builds are monitored by the SWAT team. For additional information, see
+@@ -34,18 +34,15 @@ which the result was required.
  
--   The tests are based on `Python
--   unittest <https://docs.python.org/3/library/unittest.html>`__.
-+   The tests are based on
-+   `Python unittest <https://docs.python.org/3/library/unittest.html>`__.
+ The Autobuilder does build the ``master`` branch once daily for several
+ reasons, in particular, to ensure the current ``master`` branch does
+-build, but also to keep ``yocto-testresults``
+-(:yocto_git:`/yocto-testresults/`),
+-buildhistory
+-(:yocto_git:`/poky-buildhistory/`), and
+-our sstate up to date. On the weekend, there is a master-next build
++build, but also to keep (:yocto_git:`yocto-testresults </yocto-testresults/>`),
++(:yocto_git:`buildhistory </poky-buildhistory/>`), and
++our sstate up to date. On the weekend, there is a ``master-next`` build
+ instead to ensure the test results are updated for the less frequently
+ run targets.
  
- -  *oe-selftest:*
+ Performance builds (``buildperf-\*`` targets in the console) are triggered
+ separately every six hours and automatically push their results to the
+-buildstats repository at:
+-:yocto_git:`/yocto-buildstats/`.
++:yocto_git:`buildstats </yocto-buildstats/>` repository.
  
-@@ -219,7 +219,8 @@ Tests map into the codebase as follows:
-       in the same thread. To parallelize large numbers of tests you can
-       split the class into multiple units.
+ The "quick" targets have been selected to be the ones which catch the
+ most failures or give the most valuable data. We run "fast" ptests in
+@@ -69,10 +66,10 @@ configured to generate and publish artifacts and the milestone number,
+ version, release candidate number and other information is entered. The
+ box to "generate an email to QA" is also checked.
  
--   -  The tests are based on Python unittest.
-+   -  The tests are based on
-+      `Python unittest <https://docs.python.org/3/library/unittest.html>`__.
+-When the build completes, an email is sent out using the send-qa-email
+-script in the ``yocto-autobuilder-helper`` repository to the list of
+-people configured for that release. Release builds are placed into a
+-directory in https://autobuilder.yocto.io/pub/releases on the
++When the build completes, an email is sent out using the ``send-qa-email``
++script in the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
++repository to the list of people configured for that release. Release builds
++are placed into a directory in https://autobuilder.yocto.io/pub/releases on the
+ Autobuilder which is included in the email. The process from here is
+ more manual and control is effectively passed to release engineering.
+ The next steps include:
+@@ -80,14 +77,15 @@ The next steps include:
+ -  QA teams respond to the email saying which tests they plan to run and
+    when the results will be available.
  
-    -  The code for the tests resides in
-       ``meta/lib/oeqa/selftest/cases/``.
-@@ -338,21 +339,24 @@ A simple test example from ``lib/bb/tests/data.py`` is::
-             val = self.d.expand("${foo}")
-             self.assertEqual(str(val), "value_of_foo")
+--  QA teams run their tests and share their results in the yocto-
+-   testresults-contrib repository, along with a summary of their
+-   findings.
++-  QA teams run their tests and share their results in the
++   :yocto_git:`yocto-testresults-contrib </yocto-testresults-contrib>`
++   repository, along with a summary of their findings.
  
--In this example, a ``DataExpansions`` class of tests is created,
--derived from standard Python unittest. The class has a common ``setUp``
--function which is shared by all the tests in the class. A simple test is
--then added to test that when a variable is expanded, the correct value
--is found.
-+In this example, a ``DataExpansions`` class of tests is created, derived from
-+standard `Python unittest <https://docs.python.org/3/library/unittest.html>`__.
-+The class has a common ``setUp`` function which is shared by all the tests in
-+the class. A simple test is then added to test that when a variable is
-+expanded, the correct value is found.
+ -  Release engineering prepare the release as per their process.
  
--BitBake selftests are straightforward Python unittest. Refer to the
--Python unittest documentation for additional information on writing
--these tests at: https://docs.python.org/3/library/unittest.html.
-+BitBake selftests are straightforward
-+`Python unittest <https://docs.python.org/3/library/unittest.html>`__.
-+Refer to the `Python unittest documentation
-+<https://docs.python.org/3/library/unittest.html>`__ for additional information
-+on writing such tests.
+ -  Test results from the QA teams are included into the release in
+-   separate directories and also uploaded to the yocto-testresults
++   separate directories and also uploaded to the
++   :yocto_git:`yocto-testresults </yocto-testresults>`
+    repository alongside the other test results for the given revision.
  
- ``oe-selftest``
- ---------------
+ -  The QA report in the final release is regenerated using resulttool to
+diff --git a/documentation/test-manual/understand-autobuilder.rst b/documentation/test-manual/understand-autobuilder.rst
+index a3fff29aca..6b4fab4f0b 100644
+--- a/documentation/test-manual/understand-autobuilder.rst
++++ b/documentation/test-manual/understand-autobuilder.rst
+@@ -9,8 +9,8 @@ Execution Flow within the Autobuilder
  
- These tests are more complex due to the setup required behind the scenes
--for full builds. Rather than directly using Python's unittest, the code
-+for full builds. Rather than directly using `Python unittest
-+<https://docs.python.org/3/library/unittest.html>`__, the code
- wraps most of the standard objects. The tests can be simple, such as
- testing a command from within the OE build environment using the
- following example::
+ The "a-full" and "a-quick" targets are the usual entry points into the
+ Autobuilder and it makes sense to follow the process through the system
+-starting there. This is best visualized from the Autobuilder Console
+-view (:yocto_ab:`/typhoon/#/console`).
++starting there. This is best visualized from the :yocto_ab:`Autobuilder
++Console view </typhoon/#/console>`.
+ 
+ Each item along the top of that view represents some "target build" and
+ these targets are all run in parallel. The 'full' build will trigger the
+@@ -18,9 +18,9 @@ majority of them, the "quick" build will trigger some subset of them.
+ The Autobuilder effectively runs whichever configuration is defined for
+ each of those targets on a separate buildbot worker. To understand the
+ configuration, you need to look at the entry on ``config.json`` file
+-within the ``yocto-autobuilder-helper`` repository. The targets are
+-defined in the ‘overrides' section, a quick example could be qemux86-64
+-which looks like::
++within the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
++repository. The targets are defined in the ``overrides`` section, a quick
++example could be ``qemux86-64`` which looks like::
+ 
+    "qemux86-64" : {
+          "MACHINE" : "qemux86-64",
+@@ -88,9 +88,9 @@ roughly consist of:
+ 
+ #. *Obtain yocto-autobuilder-helper*
+ 
+-   This step clones the ``yocto-autobuilder-helper`` git repository.
+-   This is necessary to prevent the requirement to maintain all the
+-   release or project-specific code within Buildbot. The branch chosen
++   This step clones the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
++   git repository. This is necessary to avoid the requirement to maintain all
++   the release or project-specific code within Buildbot. The branch chosen
+    matches the release being built so we can support older releases and
+    still make changes in newer ones.
+ 
+@@ -251,13 +251,14 @@ Deploying Yocto Autobuilder
+ ===========================
+ 
+ The most up to date information about how to setup and deploy your own
+-Autobuilder can be found in README.md in the ``yocto-autobuilder2``
+-repository.
+-
+-We hope that people can use the ``yocto-autobuilder2`` code directly but
+-it is inevitable that users will end up needing to heavily customise the
+-``yocto-autobuilder-helper`` repository, particularly the
+-``config.json`` file as they will want to define their own test matrix.
++Autobuilder can be found in :yocto_git:`README.md </yocto-autobuilder2/tree/README.md>`
++in the :yocto_git:`yocto-autobuilder2 </yocto-autobuilder2>` repository.
++
++We hope that people can use the :yocto_git:`yocto-autobuilder2 </yocto-autobuilder2>`
++code directly but it is inevitable that users will end up needing to heavily
++customize the :yocto_git:`yocto-autobuilder-helper </yocto-autobuilder-helper>`
++repository, particularly the ``config.json`` file as they will want to define
++their own test matrix.
+ 
+ The Autobuilder supports two customization options:
+ 
 -- 
 2.34.1
 
