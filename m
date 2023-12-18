@@ -1,68 +1,82 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <rybczynska@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C304AC35274
-	for <webhook@archiver.kernel.org>; Mon, 18 Dec 2023 10:55:24 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.41685.1702896915245509396
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 60190C46CD3
+	for <webhook@archiver.kernel.org>; Mon, 18 Dec 2023 15:38:16 +0000 (UTC)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+ by mx.groups.io with SMTP id smtpd.web10.46437.1702913888965518215
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Dec 2023 02:55:16 -0800
+ Mon, 18 Dec 2023 07:38:09 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=XFJlrcdp;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7E578C0006;
-	Mon, 18 Dec 2023 10:55:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1702896912;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PXecpkpvE015KAx7LiCzBihJYRRbp1uduzGl3ayNut4=;
-	b=XFJlrcdpe9mfhW0epk9Q0ySffqvUyB3SuX8bQ4xCWlkYja59Su7QkfVF45klSDHYan3Y6Y
-	ZicarRRir4CNiDLGvatLHq/5PGEmREKgsbkbQc30iMjuvdV8/0jFhAkOLXiIPzXl+YGRK9
-	OQbvhrI2n7GYO08wydL+oiWpxUybAxeCHijq39oT602PI/o8+7twI8+bF591QChc3DhzCb
-	Zv+L8aDpaQ18ESeSGBKSeJJ/5YIRerl9G6eMMF6mBbJv8Qvk2gdFzkK9VDKO5L5FZ+mzEA
-	fJM2b/XoEUzQOhYs2jGYnE9GCIQqTIctZs9QoVwThdVbw+NLcjnrqgFdq4xflg==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH] contributor-guide: use "apt" instead of "aptitude"
-Date: Mon, 18 Dec 2023 11:55:10 +0100
-Message-Id: <20231218105510.114907-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=VR64nN6M;
+ spf=pass (domain: gmail.com, ip: 209.85.208.172, mailfrom: rybczynska@gmail.com)
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2cc5e48779aso22148921fa.2;
+        Mon, 18 Dec 2023 07:38:08 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1702913886; x=1703518686; darn=lists.yoctoproject.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=eqdtF9HdxwqBiu0vp0/0IloTIZLOgy4TyyhZULNGO4s=;
+        b=VR64nN6MuZsbVNv0VrXw2PYAn6TQlTycq9U8kRROEP0oUG1+DzhQ51XpnH0m4zNcIn
+         uKTGeBkpMEqjOUxj8hljMWV4Qg0rpP6ATRfUtEl3pl+VFnjvOSDJ4u8I6ESiR3sPNsiS
+         zcxPtbtCF17X/x166TMuAXl+CPAJq/UT+M/HC4Iulgm++yFEyE7lwON4l7ao+FSEQecF
+         2LER2Qt8+gccYH8DExhzr+PkO4GjmJIgDvGKyHT6ZeUflpWxcJl3VEjgU+P/eQsLF793
+         BjMdn2umucX3wyVE6nCwEfwo0z0Vt6+d+AyICnVEVQkIr/L40elGwKKM8Ppv9TqjAnZV
+         e1Ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1702913886; x=1703518686;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=eqdtF9HdxwqBiu0vp0/0IloTIZLOgy4TyyhZULNGO4s=;
+        b=B/kwec8DfQI3x1hRmLoD4c5WFSpL9QbbEbo28gmifgJWS7prOBKAvgz7mwhWyT6AH7
+         N7eHIfegjK1nA1IsByIQOQBptzjh7KjkijUZPpNRbVINSkm5JwstIDCb6N/LZ72EE4T6
+         gIndWeM1cSBxLEVZhZshWN+nF6yCYVPqM6dgxmBqfVMroyfbHUN74tZmzKdijXHNIKxr
+         9jPidjT2uJtixLBfgCYw2tAw4TvnbTDt/A7WCDBTJp/xe6L9FcWPsLtJ6Re8p8lxDzTw
+         3aAmBwRIIrXnznkwJpIwA7LSoXa49psS4IGpFYOGB0SN1i3MyBZ6n5K3phOI/uByotJs
+         ajxw==
+X-Gm-Message-State: AOJu0Yx/x2VSy4azMQEfLDHsr3VIWsngUkWTpolzWWxNRc+eQNZS7XT4
+	AfJq4A+6Jse8x7GtrSN0stEEz0DlUqE/RPfwAFXmWGdv+0A=
+X-Google-Smtp-Source: AGHT+IH23DjPMJO1nGVHIRTogS0Gp/HFlhoZaYt7gkFAnju4D858r4v/JJtEenCiTTl4vTg1/iclM37HaQk4NzGxuvI=
+X-Received: by 2002:a2e:7808:0:b0:2cc:6809:bb9a with SMTP id
+ t8-20020a2e7808000000b002cc6809bb9amr538369ljc.26.1702913885861; Mon, 18 Dec
+ 2023 07:38:05 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+From: Marta Rybczynska <rybczynska@gmail.com>
+Date: Mon, 18 Dec 2023 16:37:53 +0100
+Message-ID: <CAApg2=RSBvoPrS4F5ZOxtwEN97188huhA0LSQ_WXT3vocarb5g@mail.gmail.com>
+Subject: Documenting security advisories
+To: YP docs mailing list <docs@lists.yoctoproject.org>, yocto-security@lists.yoctoproject.org, 
+	Richard Purdie <richard.purdie@linuxfoundation.org>, 
+	Michael Opdenacker <michael.opdenacker@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 18 Dec 2023 10:55:24 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4684
+ <docs@lists.yoctoproject.org>; Mon, 18 Dec 2023 15:38:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4685
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hello,
+When discussing security processes, there is one thing that we haven't
+set up for now. This is, where are we going to put any possible
+security advisories affecting the Yocto Project. The need to release
+such an advisory could happen one day.
 
-As used in the rest of the manual.
+A security advisory describes in more detail a single issue or a
+series of issues. Gives the context, workarounds, information about
+the version where the issue is fixed. An issue from an advisory is
+likely affecting multiple versions of YP, and might have different
+fixes for each version. The advisory will be referenced in the CVE
+issue, security aggregators etc.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/contributor-guide/submit-changes.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Where can we put such advisories:
+* mailing list of the affected layer/module
+* general documentation in "Release Manuals", using a separate section
+for advisories with links from each of the affected versions? OR a
+separate manual section?
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-index 5a6136c8c8..95728c25c6 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -57,7 +57,7 @@ Set up Git
- The first thing to do is to install Git packages. Here is an example
- on Debian and Ubuntu::
- 
--   sudo aptitude install git-core git-email
-+   sudo apt install git-core git-email
- 
- Then, you need to set a name and e-mail address that Git will
- use to identify your commits::
--- 
-2.34.1
+What do you think?
 
+Kind regards,
+Marta
 
