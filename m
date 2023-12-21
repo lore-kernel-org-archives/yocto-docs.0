@@ -2,34 +2,34 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F707C46CCD
-	for <webhook@archiver.kernel.org>; Thu, 21 Dec 2023 14:54:00 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.52398.1703170431651982004
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6AF58C35274
+	for <webhook@archiver.kernel.org>; Thu, 21 Dec 2023 15:04:20 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.52649.1703171058595785637
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Dec 2023 06:53:52 -0800
+ Thu, 21 Dec 2023 07:04:18 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Vp+b98az;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9BC3740004;
-	Thu, 21 Dec 2023 14:53:49 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gGU2SZEt;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C304D60009;
+	Thu, 21 Dec 2023 15:04:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1703170429;
+	t=1703171056;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=N81joFF1vFPGAHjudExKNm/2/nptDua44nFDM4nPnEQ=;
-	b=Vp+b98azbAs7Pt2F8kKsOLDiK7YhIvrZS2PDPQ1RPY0A5onrOPVbynLl1MSbt3TQhdnAoR
-	etUgj07So0cirQx2Tvxau62OzUaJfBwzBk9tWAlx3YvNSIpuR0aM9GiTvqIq++XD9OZ3ay
-	YTfsRUcrgnQuiw4qCGGYjpBAtE27rJH+TZukF4ST5EhwG4N7CJ2D50dBVxEnyjlsBOcNFd
-	ejLDr0FvpXLbMUOpVDy6LyUIJw4HBs1y42WzN7iApdli28on2jadm3Tl/WuLuEaL6BsY0c
-	oDzf0wR/YJscps/FTCHK0bhYz7nwlNcQoY1SO5mTvXMukCEJgYIiWdtBN7/z4A==
+	bh=gLYeJAhhx6Ah4fB8/3DzJmx/zh3K3Eb2Gz6/B1yfT5Y=;
+	b=gGU2SZEtw6MAhBdREkZk9/VieLKA/CUQMxBijW2lHr60x2nLz+wl/RD76TwP789LA85He1
+	cuE7S0uBzbBVM8HXVefqqKXy3dHoRMQ/yU8+8A0aCtZ1sEtL4XIp7vtKungRlAMYYofo4M
+	iJRsmhz/s+TKQQyFNxSRP1WhX+mzlJeEeWIrxiuFU2E25m6NN/9VK9kjZfNsVygXo6R7z3
+	ZDaQRUMXRoCmLtrZdNlPjREtlzrYdlCjw660j+SnZc508k2WpHrfSziDdytKHYBDbuxaa3
+	9zW4p+5QeGxn+ejSopSjsoBE30/xkKwp0LZHb5/527xg0D3snBRvYEU+Mqquuw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH] ref-manual: update tested and supported distros
-Date: Thu, 21 Dec 2023 15:53:46 +0100
-Message-Id: <20231221145346.760708-1-michael.opdenacker@bootlin.com>
+Subject: [nanbield][PATCH] ref-manual: update tested and supported distros
+Date: Thu, 21 Dec 2023 16:04:14 +0100
+Message-Id: <20231221150414.761686-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,8 +37,8 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 Dec 2023 14:54:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4729
+ <docs@lists.yoctoproject.org>; Thu, 21 Dec 2023 15:04:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4730
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -52,55 +52,61 @@ lists currently tested distros.
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/ref-manual/system-requirements.rst | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ .../ref-manual/system-requirements.rst        | 21 ++++++++++---------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
 diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 2527b5bdb6..4e4c4a9bdf 100644
+index e1ff51c859..4dabb67ca2 100644
 --- a/documentation/ref-manual/system-requirements.rst
 +++ b/documentation/ref-manual/system-requirements.rst
-@@ -41,20 +41,17 @@ supported on the following distributions:
+@@ -62,12 +62,8 @@ supported on the following distributions:
  
  -  Ubuntu 22.04 (LTS)
  
 --  Fedora 37
-+-  Fedora 38
+-
+ -  Fedora 38
  
- -  Debian GNU/Linux 11.x (Bullseye)
+--  CentOS Stream 8
+-
+ -  Debian GNU/Linux 11 (Bullseye)
  
- -  AlmaLinux 8.8
+ -  Debian GNU/Linux 12 (Bookworm)
+@@ -78,15 +74,16 @@ supported on the following distributions:
+ 
+ -  AlmaLinux 9.2
  
 -The following distribution versions are still tested (being listed
 -in :term:`SANITY_TESTED_DISTROS`), even though the organizations
 -publishing them no longer make updates publicly available:
++-  Rocky 9
++
 +The following distribution versions are still tested, even though the
 +organizations publishing them no longer make updates publicly available:
  
  -  Ubuntu 18.04 (LTS)
  
+--  Ubuntu 22.10
++-  Ubuntu 23.04
+ 
 --  OpenSUSE Leap 15.3
--
++-  CentOS Stream 8
+ 
  Note that the Yocto Project doesn't have access to private updates
  that some of these versions may have. Therefore, our testing has
- limited value if you have access to such updates.
-@@ -72,6 +69,8 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
+@@ -95,7 +92,11 @@ limited value if you have access to such updates.
+ Finally, here are the distribution versions which were previously
+ tested on former revisions of "&DISTRO_NAME;", but no longer are:
  
- -  Fedora 36
- 
+-*This list is currently empty*
++-  Ubuntu 22.10
++
 +-  Fedora 37
 +
- -  CentOS 7.x
- 
- -  CentOS 8.x
-@@ -84,6 +83,8 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
- 
- -  Debian GNU/Linux 10.x (Buster)
- 
 +-  OpenSUSE Leap 15.3
-+
+ 
  .. note::
  
-    -  While the Yocto Project Team attempts to ensure all Yocto Project
 -- 
 2.34.1
 
