@@ -2,34 +2,34 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1A0F7C41535
-	for <webhook@archiver.kernel.org>; Fri, 22 Dec 2023 10:56:55 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.20782.1703242606954681624
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19A75C41535
+	for <webhook@archiver.kernel.org>; Fri, 22 Dec 2023 10:58:55 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.21111.1703242734316128336
  for <docs@lists.yoctoproject.org>;
- Fri, 22 Dec 2023 02:56:47 -0800
+ Fri, 22 Dec 2023 02:58:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ftCORfcc;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 95CF040008;
-	Fri, 22 Dec 2023 10:56:44 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RDA9o8MG;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DC557FF818;
+	Fri, 22 Dec 2023 10:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1703242604;
+	t=1703242732;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=qzefQJWPxHnXbx3UfzF4H/ntdQU53Hq60XFmPQ/zqs0=;
-	b=ftCORfccB3UZcTgt0fv+4ekhlPmzRMxS7J1sbNUFu+UVb7P71V8/fj34sfRmvc+w0NUmoY
-	WO+7HTFsK8P0dwkmzJPNkLm3R8vObwDFyQNydFkd9laMLKx/U4XfImNdP71D649/NFChDO
-	Ps6JdzswqbwUZ0OblQgWWFzkbwPit/p/FHlRfpm784FBY0J19rOwZPdAnOMB3sjmRLUIV5
-	eE+HVx8EwIblo9YWQzScBXQwf9EllUYwUuhQGxQ9LBC87Is7HYcOhEoPhZ5mUf77rMAG2X
-	Qk/sqGQA53J6zdvpttW0y4G9YlBGHdeEFGVdUjfUayreZvQdK74uQcMg9DrDCg==
+	bh=6/7NnpATcXS4xIBuHfOIG4tbZO6XxKdcH8LVOVOtzjk=;
+	b=RDA9o8MGqvDc/LlMVRdnDJthE4LmGuM5k0ZybKGTPEPxC1yOCdz3noBUkRKdM38oXo6IOD
+	AnSkmwv+up6/ZDxN1BTL0KCd92PBV0nPxdnMbbqd4+kYIRIBsBOccxUIkXQFoXIbSwng+V
+	PUPiHpCXqAuWKTU2e9IyoLJgutmRuaWVGgNLuC8AoxrkGyIwKz820+Ef4KwoBCZsOD2Gvb
+	DR2X16j/R3sP88ca6bAp1Mq6/mHqO/SXho0oKLSxA4JrbX+LfXH7MQ9azq4w/10uDljpob
+	JSz2fOXlc3b8iW3l7jp8xeJ+VZDPNId8FmsSm5Hk0D14+bWzXU9/fV9awYXGnA==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH v2] ref-manual: update tested and supported distros
-Date: Fri, 22 Dec 2023 11:56:42 +0100
-Message-Id: <20231222105642.805072-1-michael.opdenacker@bootlin.com>
+Subject: [dunfell][PATCH v2] ref-manual: update tested and supported distros
+Date: Fri, 22 Dec 2023 11:58:49 +0100
+Message-Id: <20231222105849.805366-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,8 +37,8 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 Dec 2023 10:56:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4735
+ <docs@lists.yoctoproject.org>; Fri, 22 Dec 2023 10:58:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4736
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -59,14 +59,19 @@ Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Changes in V2:
 - Replace AlmaLinux 8.8 and 9.2 by just AlmaLinux 8 and 9
 ---
- .../ref-manual/system-requirements.rst        | 19 ++++++++-----------
- 1 file changed, 8 insertions(+), 11 deletions(-)
+ .../ref-manual/ref-system-requirements.rst     | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 2527b5bdb6..274781a903 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -41,20 +41,17 @@ supported on the following distributions:
+diff --git a/documentation/ref-manual/ref-system-requirements.rst b/documentation/ref-manual/ref-system-requirements.rst
+index 3791d1bb09..efb60e1009 100644
+--- a/documentation/ref-manual/ref-system-requirements.rst
++++ b/documentation/ref-manual/ref-system-requirements.rst
+@@ -37,25 +37,21 @@ Supported Linux Distributions
+ Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
+ supported on the following distributions:
+ 
+-
+ -  Ubuntu 20.04 (LTS)
  
  -  Ubuntu 22.04 (LTS)
  
@@ -81,17 +86,17 @@ index 2527b5bdb6..274781a903 100644
 -The following distribution versions are still tested (being listed
 -in :term:`SANITY_TESTED_DISTROS`), even though the organizations
 -publishing them no longer make updates publicly available:
-+The following distribution versions are still tested, even though the
++The following distribution versions are still tested even though the
 +organizations publishing them no longer make updates publicly available:
  
  -  Ubuntu 18.04 (LTS)
  
 --  OpenSUSE Leap 15.3
 -
- Note that the Yocto Project doesn't have access to private updates
- that some of these versions may have. Therefore, our testing has
- limited value if you have access to such updates.
-@@ -72,18 +69,18 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
+ Finally, here are the distribution versions which were previously
+ tested on former revisions of "&DISTRO_NAME;", but no longer are:
+ 
+@@ -81,6 +77,8 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
  
  -  Fedora 36
  
@@ -100,20 +105,17 @@ index 2527b5bdb6..274781a903 100644
  -  CentOS 7.x
  
  -  CentOS 8.x
+@@ -95,9 +93,7 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
+ 
+ -  OpenSUSE Leap 15.2
  
 --  AlmaLinux 8.5
 -
 --  AlmaLinux 8.7
--
- -  Debian GNU/Linux 9.x (Stretch)
- 
- -  Debian GNU/Linux 10.x (Buster)
- 
 +-  OpenSUSE Leap 15.3
-+
+ 
  .. note::
  
-    -  While the Yocto Project Team attempts to ensure all Yocto Project
 -- 
 2.34.1
 
