@@ -2,34 +2,34 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B9CFC46CCD
-	for <webhook@archiver.kernel.org>; Thu, 21 Dec 2023 15:18:20 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.52949.1703171898875829803
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1862CC41535
+	for <webhook@archiver.kernel.org>; Fri, 22 Dec 2023 10:50:05 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web11.20716.1703242196861945170
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Dec 2023 07:18:19 -0800
+ Fri, 22 Dec 2023 02:49:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KBOUhUWV;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8437F60003;
-	Thu, 21 Dec 2023 15:18:16 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jBY+yjSG;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E7488E0004;
+	Fri, 22 Dec 2023 10:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1703171896;
+	t=1703242195;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=/vVlNMU9RJ0Z8xKPmt/agc2xBEKbkSh1RjWWyxPj5FQ=;
-	b=KBOUhUWV8dUAvuU5F6x16P3a1tuEea5cQfaAXsazxc/eXkP9Vr9HIqvETBBQDvxwEfZpCf
-	Bd9iaxF2k4pSbcvZm7ngeYTckD9c84kN/g+V+6662iM9cp4yEuPHQmVpf5jLry7sjAgaeH
-	HogInntwYWHuCdcxm77bCE4jKcq22z9sAgGCfF6fV3kzsUg3a2/NS1GE7AVlaC+D5p8Hl6
-	56qKwpt4AkDtimdY7gbV3vJIXRIVT8hr258YLLrF5yHH1wa0meRWCLahE69aPcblzWPRce
-	u0tLdYZ6p2MLgrgJIyaljJkemba4AJNRxuKWc2bnTio7DPlVfD+4E+GxOkdDiw==
+	bh=vCVbwnnpJ/aPx68XYMyUgPUeLw178aFddAWlbLdEfrs=;
+	b=jBY+yjSG39m8+ahXOiFY2N7WyqtD7kZU2cuhNFmirRdzAXIblp88T9nwAMTD51mZlBqOi3
+	k1g4bLuzF2t61L68FDdF4Y93Zuw93ODKXZKzPf4ou9B81MzIzYB5d25hwgzDPICHxnI2R1
+	KtMZC2UVwciW9da2Na8ILPPd/pOyaAvPs8ntre0acjs1K9ib9oCSfEu+BA7zCzj9HCs1tm
+	hoHnLTMY/3xKDmW7JJPDeJ/wnU1nt3U90qzKOIFr+HEjEzi+4PquV9oN/saak8uyLXx2Df
+	Gi2dTERg2WBhFJMLS5LQmEd1TqU75Aw1v+ZSsAYNy4l0LImNbDdD267/HsQX2Q==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [nanbield][PATCH v2] ref-manual: update tested and supported distros
-Date: Thu, 21 Dec 2023 16:18:12 +0100
-Message-Id: <20231221151812.763135-1-michael.opdenacker@bootlin.com>
+Subject: [PATCH v2] ref-manual: update tested and supported distros
+Date: Fri, 22 Dec 2023 11:49:50 +0100
+Message-Id: <20231222104950.804178-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -37,30 +37,31 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 Dec 2023 15:18:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4732
+ <docs@lists.yoctoproject.org>; Fri, 22 Dec 2023 10:50:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4733
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 According to currently active workers
 https://autobuilder.yoctoproject.org/typhoon/#/workers
-and to the "workers_prev_releases" definition
-in https://git.yoctoproject.org/yocto-autobuilder2/tree/config.py
 
 Also correct the text saying that SANITY_TESTED_DISTROS
 lists currently tested distros.
+
+Also replace AlmaLinux 8.8 and 9.2 by just AlmaLinux 8 and 9,
+as we update our workers anyway.
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
 ---
 Changes in V2:
-- CentOS Stream 8 is still a supported distribution
+- Replace AlmaLinux 8.8 and 9.2 by just AlmaLinux 8 and 9
 ---
- .../ref-manual/system-requirements.rst        | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ .../ref-manual/system-requirements.rst          | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
 diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index e1ff51c859..bc5e5232db 100644
+index e1ff51c859..9e2dd532f9 100644
 --- a/documentation/ref-manual/system-requirements.rst
 +++ b/documentation/ref-manual/system-requirements.rst
 @@ -62,8 +62,6 @@ supported on the following distributions:
@@ -72,9 +73,15 @@ index e1ff51c859..bc5e5232db 100644
  -  Fedora 38
  
  -  CentOS Stream 8
-@@ -78,15 +76,14 @@ supported on the following distributions:
+@@ -74,19 +72,18 @@ supported on the following distributions:
  
- -  AlmaLinux 9.2
+ -  OpenSUSE Leap 15.4
+ 
+--  AlmaLinux 8.8
++-  AlmaLinux 8
+ 
+--  AlmaLinux 9.2
++-  AlmaLinux 9
  
 -The following distribution versions are still tested (being listed
 -in :term:`SANITY_TESTED_DISTROS`), even though the organizations
@@ -93,19 +100,6 @@ index e1ff51c859..bc5e5232db 100644
  
  Note that the Yocto Project doesn't have access to private updates
  that some of these versions may have. Therefore, our testing has
-@@ -95,7 +92,11 @@ limited value if you have access to such updates.
- Finally, here are the distribution versions which were previously
- tested on former revisions of "&DISTRO_NAME;", but no longer are:
- 
--*This list is currently empty*
-+-  Ubuntu 22.10
-+
-+-  Fedora 37
-+
-+-  OpenSUSE Leap 15.3
- 
- .. note::
- 
 -- 
 2.34.1
 
