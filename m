@@ -1,122 +1,111 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <simone.p.weiss@posteo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19A75C41535
-	for <webhook@archiver.kernel.org>; Fri, 22 Dec 2023 10:58:55 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.21111.1703242734316128336
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BA986C3DA6E
+	for <webhook@archiver.kernel.org>; Sat, 23 Dec 2023 12:02:40 +0000 (UTC)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+ by mx.groups.io with SMTP id smtpd.web11.5282.1703332957955195180
  for <docs@lists.yoctoproject.org>;
- Fri, 22 Dec 2023 02:58:54 -0800
+ Sat, 23 Dec 2023 04:02:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RDA9o8MG;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DC557FF818;
-	Fri, 22 Dec 2023 10:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1703242732;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6/7NnpATcXS4xIBuHfOIG4tbZO6XxKdcH8LVOVOtzjk=;
-	b=RDA9o8MGqvDc/LlMVRdnDJthE4LmGuM5k0ZybKGTPEPxC1yOCdz3noBUkRKdM38oXo6IOD
-	AnSkmwv+up6/ZDxN1BTL0KCd92PBV0nPxdnMbbqd4+kYIRIBsBOccxUIkXQFoXIbSwng+V
-	PUPiHpCXqAuWKTU2e9IyoLJgutmRuaWVGgNLuC8AoxrkGyIwKz820+Ef4KwoBCZsOD2Gvb
-	DR2X16j/R3sP88ca6bAp1Mq6/mHqO/SXho0oKLSxA4JrbX+LfXH7MQ9azq4w/10uDljpob
-	JSz2fOXlc3b8iW3l7jp8xeJ+VZDPNId8FmsSm5Hk0D14+bWzXU9/fV9awYXGnA==
-From: michael.opdenacker@bootlin.com
+ dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=gWvSB9JR;
+ spf=pass (domain: posteo.com, ip: 185.67.36.65, mailfrom: simone.p.weiss@posteo.com)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 31FF8240027
+	for <docs@lists.yoctoproject.org>; Sat, 23 Dec 2023 13:02:35 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
+	t=1703332956; bh=flDh4pRGZwOKVybz5yycxmdRsE3h57QE1D0/d8nLFoU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:
+	 Content-Transfer-Encoding:From;
+	b=gWvSB9JRYm6n7RSjHeuL/2x6H5Fwf1zghwvSX6XMdB1fIrHp/6Oky8BvHQFTJH6E+
+	 TEOwfQG/M3bpKvBVEQn4DT7NFLZfYYMdBWKUHzDV4CiPTtRRKcI1Y47EDXCVIzL9J0
+	 ewwUCOLRo0Xp08L5OWsB3PRIpEGXwRYBSLg3E9EBoxRnPoxd47El6Z7fT5E/AZbgSq
+	 RkX03ET8VdDwNpWxPfd6clMLo/5L7yQnG/87j0EOni2gfH94P+ArkW0xCkFh84qH6v
+	 H8azivLVIfTN1TlrIM+IPPeO+5DC/xltNhFM7dMaImzppHGSQMJ0Avm8k/+LVJCyvt
+	 8j7d0x1PrGPjg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Sy2pz32W0z6tx2;
+	Sat, 23 Dec 2023 13:02:34 +0100 (CET)
+From: simone.p.weiss@posteo.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [dunfell][PATCH v2] ref-manual: update tested and supported distros
-Date: Fri, 22 Dec 2023 11:58:49 +0100
-Message-Id: <20231222105849.805366-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+Cc: =?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
+Subject: [PATCH] dev-manual: start.rst: Update use of Download page
+Date: Sat, 23 Dec 2023 11:51:24 +0000
+Message-Id: <20231223115124.62413-1-simone.p.weiss@posteo.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 Dec 2023 10:58:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4736
+ <docs@lists.yoctoproject.org>; Sat, 23 Dec 2023 12:02:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4737
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 
-According to currently active workers
-https://autobuilder.yoctoproject.org/typhoon/#/workers
-and to the "workers_prev_releases" definition
-in https://git.yoctoproject.org/yocto-autobuilder2/tree/config.py
+The yocto website has changed its structure. Update the section for
+Accessing the Downloads page to match the new structure.
 
-Also correct the text saying that SANITY_TESTED_DISTROS
-lists currently tested distros.
-
-Also replace AlmaLinux 8.8 and 9.2 by just AlmaLinux 8 and 9,
-as we update our workers anyway.
-
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-
+Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 ---
-Changes in V2:
-- Replace AlmaLinux 8.8 and 9.2 by just AlmaLinux 8 and 9
----
- .../ref-manual/ref-system-requirements.rst     | 18 +++++++-----------
- 1 file changed, 7 insertions(+), 11 deletions(-)
+ documentation/dev-manual/start.rst | 18 ++++++++++--------
+ 1 file changed, 10 insertions(+), 8 deletions(-)
 
-diff --git a/documentation/ref-manual/ref-system-requirements.rst b/documentation/ref-manual/ref-system-requirements.rst
-index 3791d1bb09..efb60e1009 100644
---- a/documentation/ref-manual/ref-system-requirements.rst
-+++ b/documentation/ref-manual/ref-system-requirements.rst
-@@ -37,25 +37,21 @@ Supported Linux Distributions
- Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project is
- supported on the following distributions:
- 
--
- -  Ubuntu 20.04 (LTS)
- 
- -  Ubuntu 22.04 (LTS)
- 
---  Fedora 37
-+-  Fedora 38
- 
- -  Debian GNU/Linux 11.x (Bullseye)
- 
---  AlmaLinux 8.8
-+-  AlmaLinux 8
- 
--The following distribution versions are still tested (being listed
--in :term:`SANITY_TESTED_DISTROS`), even though the organizations
--publishing them no longer make updates publicly available:
-+The following distribution versions are still tested even though the
-+organizations publishing them no longer make updates publicly available:
- 
- -  Ubuntu 18.04 (LTS)
- 
---  OpenSUSE Leap 15.3
--
- Finally, here are the distribution versions which were previously
- tested on former revisions of "&DISTRO_NAME;", but no longer are:
- 
-@@ -81,6 +77,8 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
- 
- -  Fedora 36
- 
-+-  Fedora 37
-+
- -  CentOS 7.x
- 
- -  CentOS 8.x
-@@ -95,9 +93,7 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
- 
- -  OpenSUSE Leap 15.2
- 
---  AlmaLinux 8.5
--
---  AlmaLinux 8.7
-+-  OpenSUSE Leap 15.3
- 
- .. note::
- 
--- 
-2.34.1
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manua=
+l/start.rst
+index 4a556967e..f2027badd 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -621,7 +621,7 @@ a selection of these components.
+ Using the Downloads Page
+ ------------------------
+=20
+-The :yocto_home:`Yocto Project Website <>` uses a "DOWNLOADS" page
++The :yocto_home:`Yocto Project Website <>` uses a "RELEASES" page
+ from which you can locate and download tarballs of any Yocto Project
+ release. Rather than Git repositories, these files represent snapshot
+ tarballs similar to the tarballs located in the Index of Releases
+@@ -630,11 +630,13 @@ described in the ":ref:`dev-manual/start:accessing =
+source archives`" section.
+ #. *Go to the Yocto Project Website:* Open The
+    :yocto_home:`Yocto Project Website <>` in your browser.
+=20
+-#. *Get to the Downloads Area:* Select the "DOWNLOADS" item from the
+-   pull-down "SOFTWARE" tab menu near the top of the page.
++#. *Get to the Downloads Area:* Select the "RELEASES" item from the
++   pull-down "DEVELOPMENT" tab menu near the top of the page.
+=20
+-#. *Select a Yocto Project Release:* Use the menu next to "RELEASE" to
+-   display and choose a recent or past supported Yocto Project release
++#. *Select a Yocto Project Release:* On the top of the "RELEASE" page cu=
+rrently
++   supported release are displayed, further down past supported Yocto Pr=
+oject
++   releases are visible. The "Download" links in the rows of the table t=
+here
++   will lead to the download tarballs for the release.
+    (e.g. &DISTRO_NAME_NO_CAP;, &DISTRO_NAME_NO_CAP_MINUS_ONE;, and so fo=
+rth).
+=20
+    .. note::
+@@ -645,9 +647,9 @@ described in the ":ref:`dev-manual/start:accessing so=
+urce archives`" section.
+    You can use the "RELEASE ARCHIVE" link to reveal a menu of all Yocto
+    Project releases.
+=20
+-#. *Download Tools or Board Support Packages (BSPs):* From the
+-   "DOWNLOADS" page, you can download tools or BSPs as well. Just scroll
+-   down the page and look for what you need.
++#. *Download Tools or Board Support Packages (BSPs):* Next to the tarbal=
+ls you
++   will find download tools or BSPs as well. Just select a Yocto Project
++   release and look for what you need.
+=20
+ Cloning and Checking Out Branches
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D
+--=20
+2.39.2
 
 
