@@ -2,110 +2,5765 @@ Return-Path: <simone.p.weiss@posteo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BA986C3DA6E
-	for <webhook@archiver.kernel.org>; Sat, 23 Dec 2023 12:02:40 +0000 (UTC)
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
- by mx.groups.io with SMTP id smtpd.web11.5282.1703332957955195180
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E924C3DA6E
+	for <webhook@archiver.kernel.org>; Sat, 23 Dec 2023 17:16:42 +0000 (UTC)
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+ by mx.groups.io with SMTP id smtpd.web11.10731.1703351797823435534
  for <docs@lists.yoctoproject.org>;
- Sat, 23 Dec 2023 04:02:38 -0800
+ Sat, 23 Dec 2023 09:16:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=gWvSB9JR;
- spf=pass (domain: posteo.com, ip: 185.67.36.65, mailfrom: simone.p.weiss@posteo.com)
+ dkim=pass header.i=@posteo.com header.s=2017 header.b=W4BoGS3B;
+ spf=pass (domain: posteo.com, ip: 185.67.36.66, mailfrom: simone.p.weiss@posteo.com)
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 31FF8240027
-	for <docs@lists.yoctoproject.org>; Sat, 23 Dec 2023 13:02:35 +0100 (CET)
+	by mout02.posteo.de (Postfix) with ESMTPS id 81CA9240101
+	for <docs@lists.yoctoproject.org>; Sat, 23 Dec 2023 18:16:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
-	t=1703332956; bh=flDh4pRGZwOKVybz5yycxmdRsE3h57QE1D0/d8nLFoU=;
+	t=1703351795; bh=L4ctoa+05AvBiNUkZg1rwWTUFTerycyEzux3HLZYJUs=;
 	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:
 	 Content-Transfer-Encoding:From;
-	b=gWvSB9JRYm6n7RSjHeuL/2x6H5Fwf1zghwvSX6XMdB1fIrHp/6Oky8BvHQFTJH6E+
-	 TEOwfQG/M3bpKvBVEQn4DT7NFLZfYYMdBWKUHzDV4CiPTtRRKcI1Y47EDXCVIzL9J0
-	 ewwUCOLRo0Xp08L5OWsB3PRIpEGXwRYBSLg3E9EBoxRnPoxd47El6Z7fT5E/AZbgSq
-	 RkX03ET8VdDwNpWxPfd6clMLo/5L7yQnG/87j0EOni2gfH94P+ArkW0xCkFh84qH6v
-	 H8azivLVIfTN1TlrIM+IPPeO+5DC/xltNhFM7dMaImzppHGSQMJ0Avm8k/+LVJCyvt
-	 8j7d0x1PrGPjg==
+	b=W4BoGS3BTvF+ea6Qj84pIfCo/EhDFDMQHtfz8fj1S2pBC/OZh45Vw/P8MvLiOOCFV
+	 TfSNnNXyUwuTjUUT5V8CwlpmZ5ck5+qapLYxDN3/Z9AGLo+lXzqeitfJqJCwGzeuhC
+	 dcR4JH9quVcFDh4Ils6bs7yV+6GxWHAFMlci06H3Dn/IJAO0x+fhFFjJ5Vzm12tzHL
+	 F6WuNBI9UtcJvkwORJfkq7npwCZgzr5VwZnFhPb1Tps+oqn88AaM76lDvc+6d/5osD
+	 IMTv2SM5GtJ6j6sIlMHR6KMx8xd2C+1mEfrgL04ZPUqpoiFf/2XKy7q7fLAzlim/gZ
+	 mhhLdJ3Yw0yqA==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Sy2pz32W0z6tx2;
-	Sat, 23 Dec 2023 13:02:34 +0100 (CET)
+	by submission (posteo.de) with ESMTPSA id 4Sy9nG2HjWz6txj;
+	Sat, 23 Dec 2023 18:16:33 +0100 (CET)
 From: simone.p.weiss@posteo.com
 To: docs@lists.yoctoproject.org
 Cc: =?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
-Subject: [PATCH] dev-manual: start.rst: Update use of Download page
-Date: Sat, 23 Dec 2023 11:51:24 +0000
-Message-Id: <20231223115124.62413-1-simone.p.weiss@posteo.com>
+Subject: [PATCH] overview-manual: Fix bitbake taskmap example
+Date: Sat, 23 Dec 2023 17:08:08 +0000
+Message-Id: <20231223170808.873741-1-simone.p.weiss@posteo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 23 Dec 2023 12:02:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4737
+ <docs@lists.yoctoproject.org>; Sat, 23 Dec 2023 17:16:42 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4738
 
 From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 
-The yocto website has changed its structure. Update the section for
-Accessing the Downloads page to match the new structure.
+Fix the shared library example, as it currently will throw errors during
+`bitbake sayhello`.
+
+1) Add `SRCREV =3D ${AUTOREV}` to both recipes to fix the FetchError
+   complaining about missing valid `SRCREV`.
+2) Ensure the libhello is build as libhello.so.0.1 instead of libhello.so.1=
+.0.
+   This causes otherwhise issues in do_install of libhello_0.1.bb
 
 Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 ---
- documentation/dev-manual/start.rst | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ documentation/overview-manual/concepts.rst              | 4 +++-
+ documentation/overview-manual/svg/bitbake_tasks_map.svg | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manua=
-l/start.rst
-index 4a556967e..f2027badd 100644
---- a/documentation/dev-manual/start.rst
-+++ b/documentation/dev-manual/start.rst
-@@ -621,7 +621,7 @@ a selection of these components.
- Using the Downloads Page
- ------------------------
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/ove=
+rview-manual/concepts.rst
+index d335c2fcd..fec699c85 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -2245,7 +2245,7 @@ The following are the contents of ``libhello/Makefile=
+``::
+    all: $(LIB)
 =20
--The :yocto_home:`Yocto Project Website <>` uses a "DOWNLOADS" page
-+The :yocto_home:`Yocto Project Website <>` uses a "RELEASES" page
- from which you can locate and download tarballs of any Yocto Project
- release. Rather than Git repositories, these files represent snapshot
- tarballs similar to the tarballs located in the Index of Releases
-@@ -630,11 +630,13 @@ described in the ":ref:`dev-manual/start:accessing =
-source archives`" section.
- #. *Go to the Yocto Project Website:* Open The
-    :yocto_home:`Yocto Project Website <>` in your browser.
+    $(LIB): hellolib.o
+-      $(CC) $< -Wl,-soname,$(LIB).1 -fPIC $(LDFLAGS) -shared -o $(LIB).1.0
++      $(CC) $< -Wl,-soname,$(LIB).1 -fPIC $(LDFLAGS) -shared -o $(LIB).0.1
 =20
--#. *Get to the Downloads Area:* Select the "DOWNLOADS" item from the
--   pull-down "SOFTWARE" tab menu near the top of the page.
-+#. *Get to the Downloads Area:* Select the "RELEASES" item from the
-+   pull-down "DEVELOPMENT" tab menu near the top of the page.
+    %.o: %.c
+       $(CC) -c $<
+@@ -2317,6 +2317,7 @@ The following are the contents of ``libhello_0.1.bb``=
+::
+    # Assuming the branch is main
+    # Change <username> accordingly
+    SRC_URI =3D "git://github.com/<username>/libhello;branch=3Dmain;protoco=
+l=3Dhttps"
++   SRCREV =3D ${AUTOREV}
 =20
--#. *Select a Yocto Project Release:* Use the menu next to "RELEASE" to
--   display and choose a recent or past supported Yocto Project release
-+#. *Select a Yocto Project Release:* On the top of the "RELEASE" page cu=
-rrently
-+   supported release are displayed, further down past supported Yocto Pr=
-oject
-+   releases are visible. The "Download" links in the rows of the table t=
-here
-+   will lead to the download tarballs for the release.
-    (e.g. &DISTRO_NAME_NO_CAP;, &DISTRO_NAME_NO_CAP_MINUS_ONE;, and so fo=
-rth).
+    S =3D "${WORKDIR}/git"
 =20
-    .. note::
-@@ -645,9 +647,9 @@ described in the ":ref:`dev-manual/start:accessing so=
-urce archives`" section.
-    You can use the "RELEASE ARCHIVE" link to reveal a menu of all Yocto
-    Project releases.
+@@ -2340,6 +2341,7 @@ The following are the contents of ``sayhello_0.1.bb``=
+::
+    # Assuming the branch is main
+    # Change <username> accordingly
+    SRC_URI =3D "git://github.com/<username>/sayhello;branch=3Dmain;protoco=
+l=3Dhttps"
++   SRCREV =3D ${AUTOREV}
 =20
--#. *Download Tools or Board Support Packages (BSPs):* From the
--   "DOWNLOADS" page, you can download tools or BSPs as well. Just scroll
--   down the page and look for what you need.
-+#. *Download Tools or Board Support Packages (BSPs):* Next to the tarbal=
-ls you
-+   will find download tools or BSPs as well. Just select a Yocto Project
-+   release and look for what you need.
-=20
- Cloning and Checking Out Branches
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
+    DEPENDS +=3D "libhello"
+    RDEPENDS:${PN} +=3D "libhello"
+diff --git a/documentation/overview-manual/svg/bitbake_tasks_map.svg b/docu=
+mentation/overview-manual/svg/bitbake_tasks_map.svg
+index 09ef36faa..fbffb8913 100644
+--- a/documentation/overview-manual/svg/bitbake_tasks_map.svg
++++ b/documentation/overview-manual/svg/bitbake_tasks_map.svg
+@@ -1,4 +1,4 @@
+ <?xml version=3D"1.0" encoding=3D"UTF-8"?>
+ <!-- Do not edit this file with editors other than draw.io -->
+ <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics=
+/SVG/1.1/DTD/svg11.dtd">
+-<svg xmlns=3D"http://www.w3.org/2000/svg" xmlns:xlink=3D"http://www.w3.org=
+/1999/xlink" version=3D"1.1" width=3D"12270px" height=3D"3804px" viewBox=3D=
+"-0.5 -0.5 12270 3804" content=3D"&lt;mxfile host=3D&quot;app.diagrams.net&=
+quot; modified=3D&quot;2023-11-01T08:31:56.536Z&quot; agent=3D&quot;Mozilla=
+/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.=
+0.0.0 Safari/537.36&quot; etag=3D&quot;p-CQVME_iMteI52En1Eq&quot; version=
+=3D&quot;22.0.8&quot; type=3D&quot;device&quot;&gt;&lt;diagram name=3D&quot=
+;Page-1&quot; id=3D&quot;c7558073-3199-34d8-9f00-42111426c3f3&quot;&gt;7V1b=
+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
+rb97Sic74fw=3D=3D&lt;/diagram&gt;&lt;/mxfile&gt;" style=3D"background-color=
+: rgb(255, 255, 255);"><defs><style type=3D"text/css">@import url(https://f=
+onts.googleapis.com/css?family=3DLiberation+Sans);&#xa;</style></defs><g><r=
+ect x=3D"9428" y=3D"2640" width=3D"1120" height=3D"600" rx=3D"90" ry=3D"90"=
+ fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=
+=3D"12 12" pointer-events=3D"all"/><path d=3D"M 8868 3120.57 Q 8656.57 3120=
+.57 8656.57 1980.33" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"=
+4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12" pointer-events=3D"st=
+roke"/><path d=3D"M 8656.57 1959.33 L 8665.9 1987.33 L 8656.57 1980.33 L 86=
+47.24 1987.33 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 9228 3=
+600 Q 9228 3760.57 9608 3760.57 Q 9988 3760.57 9988 3280.42" fill=3D"none" =
+stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-eve=
+nts=3D"stroke"/><path d=3D"M 9988 3253.42 L 10006 3289.42 L 9988 3280.42 L =
+9970 3289.42 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" str=
+oke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"8868" y=3D"2640" w=
+idth=3D"480" height=3D"960" rx=3D"72" ry=3D"72" fill=3D"none" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"=
+all"/><rect x=3D"2868" y=3D"2640" width=3D"1080" height=3D"960" rx=3D"144" =
+ry=3D"144" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-=
+dasharray=3D"12 12" pointer-events=3D"all"/><rect x=3D"1082" y=3D"840" widt=
+h=3D"1080" height=3D"440" rx=3D"66" ry=3D"66" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><rect x=3D"2148" y=3D"2640" width=3D"560" height=3D"960" rx=3D"84" ry=
+=3D"84" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-das=
+harray=3D"12 12" pointer-events=3D"all"/><path d=3D"M 4928 160 L 4928 360" =
+fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"stroke"/><path d=3D"M 4928.57 160 L 4928.57 200.5=
+7 Q 4928.57 240.57 4888.57 240.57 L 1662.29 240.57 Q 1622.29 240.57 1622.19=
+ 280.57 L 1622.06 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-widt=
+h=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 16=
+22.01 355.53 L 1608.08 327.49 L 1622.06 334.53 L 1636.08 327.56 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><path d=3D"M 4928.57 160 L 4928.57 200.57 Q=
+ 4928.57 240.57 4968.57 240.57 L 5808.57 240.57 Q 5848.57 240.57 5848.38 28=
+0.57 L 5848.12 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 584=
+8.02 355.53 L 5834.16 327.46 L 5848.12 334.53 L 5862.16 327.6 Z" fill=3D"rg=
+b(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D=
+"10" pointer-events=3D"all"/><path d=3D"M 4928.57 160 L 4928.57 200.57 Q 49=
+28.57 240.57 4968.57 240.57 L 7273.71 240.57 Q 7313.71 240.57 7313.81 280.5=
+7 L 7313.94 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4=
+" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7313.99 =
+355.53 L 7299.92 327.56 L 7313.94 334.53 L 7327.92 327.49 Z" fill=3D"rgb(0,=
+ 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10"=
+ pointer-events=3D"all"/><path d=3D"M 4928.57 160 L 4928.57 200.57 Q 4928.5=
+7 240.57 4888.57 240.57 L 2620 240.57 Q 2580 240.57 2580.01 280.57 L 2580.0=
+2 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-m=
+iterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 2580.02 355.53 L 2=
+566.01 327.53 L 2580.02 334.53 L 2594.01 327.53 Z" fill=3D"rgb(0, 0, 0)" st=
+roke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-e=
+vents=3D"all"/><rect x=3D"4788" y=3D"0" width=3D"280" height=3D"160" rx=3D"=
+24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wi=
+dth=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale=
+(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 68px; height: 1px; padding-top: 20px; =
+margin-left: 1198px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " sty=
+le=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div sty=
+le=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation=
+ Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; wh=
+ite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://f=
+onts.googleapis.com/css?family=3DArchitects+Daughter">tmp</font></div></div=
+></div></foreignObject><text x=3D"1232" y=3D"24" fill=3D"rgb(0, 0, 0)" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">tmp</=
+text></switch></g><path d=3D"M 4928 520 L 4928 1040" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-event=
+s=3D"stroke"/><rect x=3D"4788" y=3D"360" width=3D"280" height=3D"160" rx=3D=
+"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-w=
+idth=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scal=
+e(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 68px; height: 1px; padding-top: 110px;=
+ margin-left: 1198px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " st=
+yle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div st=
+yle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberatio=
+n Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; w=
+hite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://=
+fonts.googleapis.com/css?family=3DArchitects+Daughter">work</font></div></d=
+iv></div></foreignObject><text x=3D"1232" y=3D"114" fill=3D"rgb(0, 0, 0)" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">wo=
+rk</text></switch></g><path d=3D"M 4928 1200 L 4928.29 1240.57 Q 4928.57 12=
+80.57 4968.57 1280.57 L 5648.57 1280.57 Q 5688.57 1280.57 5688.57 1320.29 L=
+ 5688.57 1360" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" str=
+oke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 4928 1200 L 4=
+928.29 1240.57 Q 4928.57 1280.57 4888.57 1280.57 L 3156 1280.57 Q 3116 1280=
+.57 3115.98 1320.29 L 3115.96 1360" fill=3D"none" stroke=3D"rgb(0, 0, 0)" s=
+troke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path=
+ d=3D"M 4588 1120 Q 4398.29 1120.57 4398.24 1334.53" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dashar=
+ray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 4398.24 1355.53 L 438=
+8.91 1327.53 L 4398.24 1334.53 L 4407.58 1327.53 Z" fill=3D"rgb(0, 0, 0)" s=
+troke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-=
+events=3D"all"/><rect x=3D"4588" y=3D"1040" width=3D"680" height=3D"160" rx=
+=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 168px; height: 1px; padding-top: 280=
+px; margin-left: 1148px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); "=
+ style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div=
+ style=3D"display: inline-block; font-size: 12px; font-family: &quot;Libera=
+tion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all=
+; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter"><b>${MULTIMACH_TA=
+RGET_OS}</b></font></div></div></div></foreignObject><text x=3D"1232" y=3D"=
+284" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12p=
+x" text-anchor=3D"middle">${MULTIMACH_TARGET_OS}</text></switch></g><path d=
+=3D"M 3115.96 1520 L 3116 1680" fill=3D"none" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><rect x=
+=3D"2975.96" y=3D"1360" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fi=
+ll=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 68px; height: 1px; padding-top: 360px; margin-left: 745p=
+x;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: =
+border-box; font-size: 0px; text-align: center;"><div style=3D"display: inl=
+ine-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color=
+: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal;=
+ overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.co=
+m/css?family=3DArchitects+Daughter">libhello</font></div></div></div></fore=
+ignObject><text x=3D"779" y=3D"364" fill=3D"rgb(0, 0, 0)" font-family=3D"Li=
+beration Sans" font-size=3D"12px" text-anchor=3D"middle">libhello</text></s=
+witch></g><path d=3D"M 5688.57 1520 L 5688.57 1560.57 Q 5688.57 1600.57 568=
+8.57 1570.29 L 5688.57 1555.14 Q 5688.57 1540 5688.29 1580 L 5688 1620" fil=
+l=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"=
+10" pointer-events=3D"stroke"/><rect x=3D"5548" y=3D"1360" width=3D"280" he=
+ight=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(=
+0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"transl=
+ate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" widt=
+h=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/f=
+eature#Extensibility" style=3D"overflow: visible; text-align: left;"><div x=
+mlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: =
+unsafe center; justify-content: unsafe center; width: 68px; height: 1px; pa=
+dding-top: 360px; margin-left: 1388px;"><div data-drawio-colors=3D"color: r=
+gb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align:=
+ center;"><div style=3D"display: inline-block; font-size: 12px; font-family=
+: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; point=
+er-events: all; white-space: normal; overflow-wrap: normal;"><font data-fon=
+t-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">say=
+hello</font></div></div></div></foreignObject><text x=3D"1422" y=3D"364" fi=
+ll=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text=
+-anchor=3D"middle">sayhello</text></switch></g><path d=3D"M 3116 1840 L 311=
+6 1960.57 Q 3116 2000.57 3076 2000.57 L 2036 2000.57 Q 1996 2000.57 1996 20=
+40.57 L 1996 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1996 2=
+155.53 L 1986.67 2127.53 L 1996 2134.53 L 2005.33 2127.53 Z" fill=3D"rgb(0,=
+ 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10"=
+ pointer-events=3D"all"/><path d=3D"M 3116 1840 L 3116 1960.57 Q 3116 2000.=
+57 3076 2000.57 L 2468 2000.57 Q 2428 2000.57 2428 2040.57 L 2428 2134.53" =
+fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"stroke"/><path d=3D"M 2428 2155.53 L 2418.67 2127=
+.53 L 2428 2134.53 L 2437.33 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"al=
+l"/><path d=3D"M 3116 1840 L 3115.96 2134.53" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stro=
+ke"/><path d=3D"M 3115.96 2155.53 L 3101.96 2127.53 L 3115.96 2134.53 L 312=
+9.96 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 3116 1=
+840 L 3116 1960.57 Q 3116 2000.57 3156 2000.57 L 4268 2000.57 Q 4308 2000.5=
+7 4308 2040.57 L 4308 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke=
+-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D=
+"M 4308 2155.53 L 4294 2127.53 L 4308 2134.53 L 4322 2127.53 Z" fill=3D"rgb=
+(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"=
+10" pointer-events=3D"all"/><path d=3D"M 3116 1840 L 3116 1960.57 Q 3116 20=
+00.57 3076 2000.57 L 1508 2000.57 Q 1468 2000.57 1468 2040.57 L 1468 2134.5=
+3" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlim=
+it=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1468 2155.53 L 1458.67 21=
+27.53 L 1468 2134.53 L 1477.33 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"=
+all"/><rect x=3D"2976" y=3D"1680" width=3D"280" height=3D"160" rx=3D"24" ry=
+=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 68px; height: 1px; padding-top: 440px; margin-=
+left: 745px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"bo=
+x-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"di=
+splay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&qu=
+ot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-spac=
+e: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goo=
+gleapis.com/css?family=3DArchitects+Daughter">0.1-r0</font></div></div></di=
+v></foreignObject><text x=3D"779" y=3D"444" fill=3D"rgb(0, 0, 0)" font-fami=
+ly=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">0.1-r0</te=
+xt></switch></g><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.=
+57 5648.57 2000.57 L 5568.57 2000.57 Q 5528.57 2000.57 5528.43 2040.57 L 55=
+28.09 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" str=
+oke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5528.02 2155.=
+53 L 5514.12 2127.48 L 5528.09 2134.53 L 5542.12 2127.58 Z" fill=3D"rgb(0, =
+0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.=
+57 2000.57 5728.57 2000.57 L 6988 2000.57 Q 7028 2000.57 7028 2040.57 L 702=
+8 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-=
+miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7028 2155.53 L 70=
+14 2127.53 L 7028 2134.53 L 7042 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D=
+"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=
+=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.57 572=
+8.57 2000.57 L 7676 2000.57 Q 7716 2000.57 7715.99 2040.57 L 7715.97 2134.5=
+3" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlim=
+it=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7715.96 2155.53 L 7701.97=
+ 2127.52 L 7715.97 2134.53 L 7729.97 2127.53 Z" fill=3D"rgb(0, 0, 0)" strok=
+e=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-even=
+ts=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.57 5=
+728.57 2000.57 L 8313.71 2000.57 Q 8353.71 2000.57 8353.79 2040.57 L 8353.9=
+5 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-=
+miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 8353.99 2155.53 L=
+ 8339.94 2127.55 L 8353.95 2134.53 L 8367.94 2127.5 Z" fill=3D"rgb(0, 0, 0)=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 20=
+00.57 5728.57 2000.57 L 9068 2000.57 Q 9108 2000.57 9108 2040.57 L 9108 213=
+4.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miter=
+limit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9108 2155.53 L 9094 21=
+27.53 L 9108 2134.53 L 9122 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(=
+0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all=
+"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.57 5728.57 20=
+00.57 L 9948 2000.57 Q 9988 2000.57 9988 2040.57 L 9988 2134.53" fill=3D"no=
+ne" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poi=
+nter-events=3D"stroke"/><path d=3D"M 9988 2155.53 L 9974 2127.53 L 9988 213=
+4.53 L 10002 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"5=
+548" y=3D"1620" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rg=
+b(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 68px; height: 1px; padding-top: 425px; margin-left: 1388px;"><di=
+v data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-=
+box; font-size: 0px; text-align: center;"><div style=3D"display: inline-blo=
+ck; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0=
+, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overfl=
+ow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter">0.1-r0</font></div></div></div></foreignObject=
+><text x=3D"1422" y=3D"429" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation=
+ Sans" font-size=3D"12px" text-anchor=3D"middle">0.1-r0</text></switch></g>=
+<path d=3D"M 1622.29 520 L 1622.29 560.57 Q 1622.29 600.57 1622.29 560.57 L=
+ 1622.29 540.57 Q 1622.29 520.57 1622.29 560.29 L 1622.29 600" fill=3D"none=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"stroke"/><path d=3D"M 1762 440 Q 2215.43 440.57 2215.04 205.47=
+" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimi=
+t=3D"10" stroke-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M=
+ 2215.01 184.47 L 2224.39 212.46 L 2215.04 205.47 L 2205.72 212.49 Z" fill=
+=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterli=
+mit=3D"10" pointer-events=3D"all"/><rect x=3D"1482" y=3D"360" width=3D"280"=
+ height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 68px; height: 1px;=
+ padding-top: 110px; margin-left: 371px;"><div data-drawio-colors=3D"color:=
+ rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-alig=
+n: center;"><div style=3D"display: inline-block; font-size: 12px; font-fami=
+ly: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poi=
+nter-events: all; white-space: normal; overflow-wrap: normal;"><font data-f=
+ont-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">d=
+ownloads</font></div></div></div></foreignObject><text x=3D"405" y=3D"114" =
+fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" te=
+xt-anchor=3D"middle">downloads</text></switch></g><path d=3D"M 1622 760 L 1=
+622.14 800.57 Q 1622.29 840.57 1622.29 800.57 L 1622.29 780.57 Q 1622.29 76=
+0.57 1622.29 800.29 L 1622.29 840" fill=3D"none" stroke=3D"rgb(0, 0, 0)" st=
+roke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><rect =
+x=3D"1482" y=3D"600" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fill=
+=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-=
+events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fore=
+ignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFe=
+atures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overfl=
+ow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml"=
+ style=3D"display: flex; align-items: unsafe center; justify-content: unsaf=
+e center; width: 68px; height: 1px; padding-top: 170px; margin-left: 371px;=
+"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bo=
+rder-box; font-size: 0px; text-align: center;"><div style=3D"display: inlin=
+e-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: =
+rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; o=
+verflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/=
+css?family=3DArchitects+Daughter">git2</font></div></div></div></foreignObj=
+ect><text x=3D"405" y=3D"174" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle">git2</text></switch></g>=
+<path d=3D"M 2082 1160 L 2628 1160.53 Q 2668 1160.57 2668 1200.57 L 2668 22=
+00.57 Q 2668 2240.57 2628 2240.41 L 2568.42 2240.16" fill=3D"none" stroke=
+=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D=
+"stroke"/><path d=3D"M 2541.42 2240.05 L 2577.49 2222.2 L 2568.42 2240.16 L=
+ 2577.34 2258.2 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" =
+stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"1162" y=3D"880"=
+ width=3D"920" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"#eeeeee" stroke=
+=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 228px; height: 1px=
+; padding-top: 240px; margin-left: 291px;"><div data-drawio-colors=3D"color=
+: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-ali=
+gn: center;"><div style=3D"display: inline-block; font-size: 12px; font-fam=
+ily: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; po=
+inter-events: all; white-space: normal; overflow-wrap: normal;">github.com.=
+&lt;username&gt;.sayhello</div></div></div></foreignObject><text x=3D"405" =
+y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">github.com.&lt;username&gt;.sayhello</text=
+></switch></g><path d=3D"M 2082 960 L 6628 960.57 Q 6668 960.57 6668 1000.5=
+7 L 6668 2200.57 Q 6668 2240.57 6708 2240.48 L 6887.58 2240.09" fill=3D"non=
+e" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-=
+events=3D"stroke"/><path d=3D"M 6914.58 2240.03 L 6878.62 2258.11 L 6887.58=
+ 2240.09 L 6878.54 2222.11 Z" fill=3D"#000000" stroke=3D"#000000" stroke-wi=
+dth=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"1162=
+" y=3D"1080" width=3D"920" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"#eeee=
+ee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transf=
+orm=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 228px; =
+height: 1px; padding-top: 290px; margin-left: 291px;"><div data-drawio-colo=
+rs=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0p=
+x; text-align: center;"><div style=3D"display: inline-block; font-size: 12p=
+x; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heig=
+ht: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">=
+github.com.&lt;username&gt;.libhello</div></div></div></foreignObject><text=
+ x=3D"405" y=3D"294" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" =
+font-size=3D"12px" text-anchor=3D"middle">github.com.&lt;username&gt;.libhe=
+llo</text></switch></g><path d=3D"M 2428 2320 Q 2428 2320 2428 2614.53" fil=
+l=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"=
+10" pointer-events=3D"stroke"/><path d=3D"M 2428 2635.53 L 2414 2607.53 L 2=
+428 2614.53 L 2442 2607.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect =
+x=3D"2328" y=3D"2160" width=3D"200" height=3D"160" rx=3D"24" ry=3D"24" fill=
+=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-=
+events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fore=
+ignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFe=
+atures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overfl=
+ow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml"=
+ style=3D"display: flex; align-items: unsafe center; justify-content: unsaf=
+e center; width: 48px; height: 1px; padding-top: 560px; margin-left: 583px;=
+"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bo=
+rder-box; font-size: 0px; text-align: center;"><div style=3D"display: inlin=
+e-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: =
+rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; o=
+verflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/=
+css?family=3DArchitects+Daughter">git</font></div></div></div></foreignObje=
+ct><text x=3D"607" y=3D"564" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberatio=
+n Sans" font-size=3D"12px" text-anchor=3D"middle">git</text></switch></g><r=
+ect x=3D"2212" y=3D"2720" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" f=
+ill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all=
+"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject poi=
+nter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"htt=
+p://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; =
+text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"dis=
+play: flex; align-items: unsafe center; justify-content: unsafe center; wid=
+th: 112px; height: 1px; padding-top: 690px; margin-left: 554px;"><div data-=
+drawio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; font-si=
+ze: 0px; text-align: center;"><div style=3D"display: inline-block; font-siz=
+e: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); =
+line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: =
+normal;">Makefile</div></div></div></foreignObject><text x=3D"610" y=3D"694=
+" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text-=
+anchor=3D"middle">Makefile</text></switch></g><path d=3D"M 2212 2880.57 L 2=
+117.14 2880.57 Q 2077.14 2880.57 2077.14 2840.57 L 2077.14 2714.86 Q 2077.1=
+4 2674.86 2037.14 2674.9 L 1966.47 2674.97" fill=3D"none" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 1=
+2" pointer-events=3D"stroke"/><path d=3D"M 1945.47 2675 L 1973.46 2665.63 L=
+ 1966.47 2674.97 L 1973.48 2684.3 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0,=
+ 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/=
+><rect x=3D"2212" y=3D"2840" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12=
+" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"=
+all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject =
+pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"=
+http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visibl=
+e; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"=
+display: flex; align-items: unsafe center; justify-content: unsafe center; =
+width: 112px; height: 1px; padding-top: 720px; margin-left: 554px;"><div da=
+ta-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box;=
+ font-size: 0px; text-align: center;"><div style=3D"display: inline-block; =
+font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0,=
+ 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-w=
+rap: normal;">LICENSE</div></div></div></foreignObject><text x=3D"610" y=3D=
+"724" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12=
+px" text-anchor=3D"middle">LICENSE</text></switch></g><path d=3D"M 2212 300=
+0 Q 2028 3000.57 2028 3060.57 Q 2028 3120.57 2171.58 3120.13" fill=3D"none"=
+ stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-ev=
+ents=3D"stroke"/><path d=3D"M 2198.58 3120.04 L 2162.62 3132.15 L 2171.58 3=
+120.13 L 2162.55 3108.15 Z" fill=3D"#000000" stroke=3D"#000000" stroke-widt=
+h=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"2212" =
+y=3D"2960" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5"=
+ stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transform=
+=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"=
+none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/=
+TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: lef=
+t;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; ali=
+gn-items: unsafe center; justify-content: unsafe center; width: 112px; heig=
+ht: 1px; padding-top: 750px; margin-left: 554px;"><div data-drawio-colors=
+=3D"color: #333333; " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: =
+1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">fix.=
+patch</div></div></div></foreignObject><text x=3D"610" y=3D"754" fill=3D"#3=
+33333" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mi=
+ddle">fix.patch</text></switch></g><path d=3D"M 2214.74 3151.44 Q 1988 3151=
+.43 1988 3278.29 Q 1988 3405.14 2179.58 3405.02" fill=3D"none" stroke=3D"#0=
+00000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"strok=
+e"/><path d=3D"M 2206.58 3405.01 L 2170.6 3423.03 L 2179.58 3405.02 L 2170.=
+57 3387.03 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" strok=
+e-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"2212" y=3D"3080" wid=
+th=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=3D"#66=
+6666" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(=
+-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D=
+"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/featu=
+re#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 112px; height: 1px; paddi=
+ng-top: 780px; margin-left: 554px;"><div data-drawio-colors=3D"color: #3333=
+33; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"=
+><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;L=
+iberation Sans&quot;; color: rgb(51, 51, 51); line-height: 1.2; pointer-eve=
+nts: all; white-space: normal; overflow-wrap: normal;">hellolib.c</div></di=
+v></div></foreignObject><text x=3D"610" y=3D"784" fill=3D"#333333" font-fam=
+ily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">hellolib.=
+c</text></switch></g><rect x=3D"1896" y=3D"2160" width=3D"200" height=3D"16=
+0" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -=
+0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%"=
+ height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ext=
+ensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"ht=
+tp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cen=
+ter; justify-content: unsafe center; width: 48px; height: 1px; padding-top:=
+ 560px; margin-left: 475px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0)=
+; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><=
+div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Lib=
+eration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: =
+all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"ht=
+tps://fonts.googleapis.com/css?family=3DArchitects+Daughter">temp</font></d=
+iv></div></div></foreignObject><text x=3D"499" y=3D"564" fill=3D"rgb(0, 0, =
+0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e">temp</text></switch></g><path d=3D"M 4308 2320 L 4308 2640" fill=3D"none=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"stroke"/><rect x=3D"4068" y=3D"2160" width=3D"480" height=3D"1=
+60" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 =
+-0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%=
+" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ex=
+tensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"h=
+ttp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe ce=
+nter; justify-content: unsafe center; width: 118px; height: 1px; padding-to=
+p: 560px; margin-left: 1018px;"><div data-drawio-colors=3D"color: rgb(0, 0,=
+ 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;=
+"><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;=
+Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-event=
+s: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D=
+"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">sysroot-des=
+tdir</font></div></div></div></foreignObject><text x=3D"1077" y=3D"564" fil=
+l=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-=
+anchor=3D"middle">sysroot-destdir</text></switch></g><path d=3D"M 5528 2320=
+ L 5528 2614.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" s=
+troke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5528 2635.5=
+3 L 5518.67 2607.53 L 5528 2614.53 L 5537.33 2607.53 Z" fill=3D"rgb(0, 0, 0=
+)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poin=
+ter-events=3D"all"/><rect x=3D"5308" y=3D"2160" width=3D"440" height=3D"160=
+" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" s=
+troke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0=
+.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" =
+height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Exte=
+nsibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"htt=
+p://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cent=
+er; justify-content: unsafe center; width: 108px; height: 1px; padding-top:=
+ 560px; margin-left: 1328px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0=
+); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;">=
+<div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Li=
+beration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events:=
+ all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"h=
+ttps://fonts.googleapis.com/css?family=3DArchitects+Daughter">recipe-sysroo=
+t</font></div></div></div></foreignObject><text x=3D"1382" y=3D"564" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">recipe-sysroot</text></switch></g><path d=3D"M 3116 2320 L=
+ 3116 2694.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" str=
+oke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 3116 2715.53 =
+L 3106.67 2687.53 L 3116 2694.53 L 3125.33 2687.53 Z" fill=3D"rgb(0, 0, 0)"=
+ stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointe=
+r-events=3D"all"/><rect x=3D"2989.96" y=3D"2160" width=3D"252" height=3D"16=
+0" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -=
+0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%"=
+ height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ext=
+ensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"ht=
+tp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cen=
+ter; justify-content: unsafe center; width: 61px; height: 1px; padding-top:=
+ 560px; margin-left: 748px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0)=
+; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><=
+div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Lib=
+eration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: =
+all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"ht=
+tps://fonts.googleapis.com/css?family=3DArchitects+Daughter">image</font></=
+div></div></div></foreignObject><text x=3D"779" y=3D"564" fill=3D"rgb(0, 0,=
+ 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"midd=
+le">image</text></switch></g><path d=3D"M 3116 2880 L 3116 2920.57 Q 3116 2=
+960.57 3115.99 2987.55 L 3115.99 3014.53" fill=3D"none" stroke=3D"rgb(0, 0,=
+ 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/=
+><path d=3D"M 3115.98 3035.53 L 3106.65 3007.53 L 3115.99 3014.53 L 3125.32=
+ 3007.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4=
+" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 3116 2880 Q=
+ 3116 2960.57 3354.86 2960.57 Q 3593.71 2960.57 3593.91 3014.53" fill=3D"no=
+ne" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poi=
+nter-events=3D"stroke"/><path d=3D"M 3593.98 3035.53 L 3584.55 3007.56 L 35=
+93.91 3014.53 L 3603.22 3007.49 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0=
+, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><=
+rect x=3D"3029" y=3D"2720" width=3D"174" height=3D"160" rx=3D"24" ry=3D"24"=
+ fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" poi=
+nter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch>=
+<foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requi=
+redFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"o=
+verflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/x=
+html" style=3D"display: flex; align-items: unsafe center; justify-content: =
+unsafe center; width: 42px; height: 1px; padding-top: 700px; margin-left: 7=
+58px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizin=
+g: border-box; font-size: 0px; text-align: center;"><div style=3D"display: =
+inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; co=
+lor: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: norm=
+al; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis=
+.com/css?family=3DArchitects+Daughter">usr</font></div></div></div></foreig=
+nObject><text x=3D"779" y=3D"704" fill=3D"rgb(0, 0, 0)" font-family=3D"Libe=
+ration Sans" font-size=3D"12px" text-anchor=3D"middle">usr</text></switch><=
+/g><path d=3D"M 3115.98 3200 L 3116 3294.53" fill=3D"none" stroke=3D"rgb(0,=
+ 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"strok=
+e"/><path d=3D"M 3116 3315.53 L 3106.66 3287.53 L 3116 3294.53 L 3125.33 32=
+87.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" s=
+troke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"3008.48" y=3D"30=
+40" width=3D"215" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, =
+255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g=
+ transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-=
+events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://w=
+ww.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-=
+align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display:=
+ flex; align-items: unsafe center; justify-content: unsafe center; width: 5=
+2px; height: 1px; padding-top: 780px; margin-left: 753px;"><div data-drawio=
+-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-siz=
+e: 0px; text-align: center;"><div style=3D"display: inline-block; font-size=
+: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line=
+-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: norm=
+al;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchi=
+tects+Daughter">include</font></div></div></div></foreignObject><text x=3D"=
+779" y=3D"784" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-s=
+ize=3D"12px" text-anchor=3D"middle">include</text></switch></g><path d=3D"M=
+ 3593.71 3200 L 3593.71 3240.57 Q 3593.71 3280.57 3593.76 3287.55 L 3593.82=
+ 3294.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-m=
+iterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 3593.97 3315.53 L =
+3579.77 3287.63 L 3593.82 3294.53 L 3607.76 3287.43 Z" fill=3D"rgb(0, 0, 0)=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"all"/><rect x=3D"3507" y=3D"3040" width=3D"174" height=3D"160"=
+ rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" st=
+roke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.=
+5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" h=
+eight=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Exten=
+sibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http=
+://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cente=
+r; justify-content: unsafe center; width: 42px; height: 1px; padding-top: 7=
+80px; margin-left: 878px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); =
+" style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><di=
+v style=3D"display: inline-block; font-size: 12px; font-family: &quot;Liber=
+ation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: al=
+l; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"http=
+s://fonts.googleapis.com/css?family=3DArchitects+Daughter">lib</font></div>=
+</div></div></foreignObject><text x=3D"899" y=3D"784" fill=3D"rgb(0, 0, 0)"=
+ font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">=
+lib</text></switch></g><rect x=3D"2956" y=3D"3320" width=3D"320" height=3D"=
+100" rx=3D"15" ry=3D"15" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 78px; height: 1px; padding-top: 843px; marg=
+in-left: 740px;"><div data-drawio-colors=3D"color: #333333; " style=3D"box-=
+sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"disp=
+lay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot=
+;; color: rgb(51, 51, 51); line-height: 1.2; pointer-events: all; white-spa=
+ce: normal; overflow-wrap: normal;">hellolib.h</div></div></div></foreignOb=
+ject><text x=3D"779" y=3D"846" fill=3D"#333333" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">hellolib.h</text></switch></=
+g><rect x=3D"3348" y=3D"3350" width=3D"480" height=3D"80" rx=3D"12" ry=3D"1=
+2" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D=
+"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject=
+ pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D=
+"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visib=
+le; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D=
+"display: flex; align-items: unsafe center; justify-content: unsafe center;=
+ width: 118px; height: 1px; padding-top: 848px; margin-left: 838px;"><div d=
+ata-drawio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; fon=
+t-size: 0px; text-align: center;"><div style=3D"display: inline-block; font=
+-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 5=
+1); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;">libhello.so.1</div></div></div></foreignObject><text x=3D"897"=
+ y=3D"851" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12=
+px" text-anchor=3D"middle">libhello.so.1</text></switch></g><rect x=3D"3348=
+" y=3D"3450" width=3D"480" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#f5f5=
+f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transf=
+orm=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 118px; =
+height: 1px; padding-top: 875px; margin-left: 838px;"><div data-drawio-colo=
+rs=3D"color: #333333; " style=3D"box-sizing: border-box; font-size: 0px; te=
+xt-align: center;"><div style=3D"display: inline-block; font-size: 12px; fo=
+nt-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height=
+: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">li=
+bhello.so.1.0</div></div></div></foreignObject><text x=3D"897" y=3D"879" fi=
+ll=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text-anch=
+or=3D"middle">libhello.so.1.0</text></switch></g><rect x=3D"3320" y=3D"3320=
+" width=3D"548" height=3D"250" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke=
+-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><path d=3D"=
+M 4428 3600 Q 4428 3760.57 4978.29 3760.57 Q 5528.57 3760.57 5528.14 3640.4=
+2" fill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=
+=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5528.05 3613.42 L 5546.18 3=
+649.35 L 5528.14 3640.42 L 5510.18 3649.48 Z" fill=3D"#000000" stroke=3D"#0=
+00000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/=
+><rect x=3D"4068" y=3D"2640" width=3D"480" height=3D"960" rx=3D"72" ry=3D"7=
+2" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" stroke-dasharray=
+=3D"12 12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scal=
+e(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 118px; height: 1px; padding-top: 780px=
+; margin-left: 1018px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " s=
+tyle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div s=
+tyle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberati=
+on Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; =
+white-space: normal; overflow-wrap: normal;">Everything in <b>image</b> fol=
+der that is present in <b>SYSROOT_DIRS</b> will be copied here.</div></div>=
+</div></foreignObject><text x=3D"1077" y=3D"784" fill=3D"rgb(0, 0, 0)" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">Every=
+thing in image...</text></switch></g><path d=3D"M 3678 3600 Q 3678.29 3760.=
+57 3993.14 3760.57 Q 4308 3760.57 4308 3640.42" fill=3D"none" stroke=3D"#00=
+0000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"stroke=
+"/><path d=3D"M 4308 3613.42 L 4326 3649.42 L 4308 3640.42 L 4290 3649.42 Z=
+" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><path d=3D"M 2428 3600 Q 2428 3760.57 2941.=
+14 3760.57 Q 3454.29 3760.57 3454.4 3639.46" fill=3D"none" stroke=3D"#00000=
+0" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/>=
+<path d=3D"M 3454.43 3612.46 L 3472.39 3648.47 L 3454.4 3639.46 L 3436.39 3=
+648.44 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" stroke-mi=
+terlimit=3D"10" pointer-events=3D"all"/><rect x=3D"2748" y=3D"3680" width=
+=3D"360" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D=
+"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 1px; height: 1px; padding-top: 935px; margin-l=
+eft: 732px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter">do_install</font></div></div></div></foreignObject>=
+<text x=3D"732" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">do_install</text></switch></=
+g><rect x=3D"2220" y=3D"3350" width=3D"456" height=3D"110" rx=3D"16.5" ry=
+=3D"16.5" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-ev=
+ents=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreig=
+nObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeat=
+ures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow=
+: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" s=
+tyle=3D"display: flex; align-items: unsafe center; justify-content: unsafe =
+center; width: 112px; height: 1px; padding-top: 851px; margin-left: 556px;"=
+><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bor=
+der-box; font-size: 0px; text-align: center;"><div style=3D"display: inline=
+-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: r=
+gb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; ov=
+erflow-wrap: normal;">libhello.so.1.0</div></div></div></foreignObject><tex=
+t x=3D"612" y=3D"855" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans"=
+ font-size=3D"12px" text-anchor=3D"middle">libhello.so.1.0</text></switch><=
+/g><rect x=3D"1668" y=3D"3180" width=3D"440" height=3D"120" fill=3D"#eeeeee=
+" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transfor=
+m=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D=
+"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org=
+/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: le=
+ft;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; al=
+ign-items: unsafe center; justify-content: unsafe center; width: 1px; heigh=
+t: 1px; padding-top: 810px; margin-left: 472px;"><div data-drawio-colors=3D=
+"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; te=
+xt-align: center;"><div style=3D"display: inline-block; font-size: 12px; fo=
+nt-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1=
+.2; pointer-events: all; white-space: nowrap;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_configure<br /=
+></font></div></div></div></foreignObject><text x=3D"472" y=3D"814" fill=3D=
+"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anch=
+or=3D"middle">do_configure&#xa;</text></switch></g><rect x=3D"2212" y=3D"32=
+00" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=
+=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 112px; height: 1px=
+; padding-top: 810px; margin-left: 554px;"><div data-drawio-colors=3D"color=
+: #333333; " style=3D"box-sizing: border-box; font-size: 0px; text-align: c=
+enter;"><div style=3D"display: inline-block; font-size: 12px; font-family: =
+&quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;">hellolib.h</d=
+iv></div></div></foreignObject><text x=3D"610" y=3D"814" fill=3D"#333333" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">he=
+llolib.h</text></switch></g><rect x=3D"1788" y=3D"3000" width=3D"320" heigh=
+t=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-ev=
+ents=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreig=
+nObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeat=
+ures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow=
+: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" s=
+tyle=3D"display: flex; align-items: unsafe center; justify-content: unsafe =
+center; width: 1px; height: 1px; padding-top: 765px; margin-left: 487px;"><=
+div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: borde=
+r-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-b=
+lock; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb=
+(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><fo=
+nt data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Da=
+ughter">do_patch<br /></font></div></div></div></foreignObject><text x=3D"4=
+87" y=3D"769" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">do_patch&#xa;</text></switch></g><rect x=
+=3D"2494" y=3D"1620" width=3D"360" height=3D"120" fill=3D"#eeeeee" stroke=
+=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; =
+padding-top: 420px; margin-left: 669px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: nowrap;"><font data-font-src=3D"https://fonts=
+.googleapis.com/css?family=3DArchitects+Daughter">do_unpack<br /></font></d=
+iv></div></div></foreignObject><text x=3D"669" y=3D"424" fill=3D"rgb(0, 0, =
+0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e">do_unpack&#xa;</text></switch></g><ellipse cx=3D"2434" cy=3D"1680" rx=3D=
+"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56=
+517e" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(=
+-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D=
+"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/featu=
+re#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 28px; height: 1px; paddin=
+g-top: 420px; margin-left: 595px;"><div data-drawio-colors=3D"color: rgb(0,=
+ 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: cent=
+er;"><div style=3D"display: inline-block; font-size: 12px; font-family: &qu=
+ot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-ev=
+ents: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D=
+"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">6</b></font></div></div>=
+</div></foreignObject><text x=3D"609" y=3D"424" fill=3D"rgb(0, 0, 0)" font-=
+family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">6</tex=
+t></switch></g><ellipse cx=3D"1728" cy=3D"3060" rx=3D"60.00000000000001" ry=
+=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"=
+4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 28px; height: 1px; padding-top: 765px; margin-l=
+eft: 418px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goog=
+leapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><=
+b style=3D"font-size: 15px;">7</b></font></div></div></div></foreignObject>=
+<text x=3D"432" y=3D"769" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">7</text></switch></g><ellips=
+e cx=3D"1608" cy=3D"3240" rx=3D"60.00000000000001" ry=3D"60.00000000000001"=
+ fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"a=
+ll"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject p=
+ointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"h=
+ttp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible=
+; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"d=
+isplay: flex; align-items: unsafe center; justify-content: unsafe center; w=
+idth: 28px; height: 1px; padding-top: 810px; margin-left: 388px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size:=
+ 15px;">8</b></font></div></div></div></foreignObject><text x=3D"402" y=3D"=
+814" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12p=
+x" text-anchor=3D"middle">8</text></switch></g><rect x=3D"1748" y=3D"3310" =
+width=3D"360" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 1px; height: 1px; padding-top: 843px; mar=
+gin-left: 482px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter">do_compile<br /></font></div></div></div></for=
+eignObject><text x=3D"482" y=3D"846" fill=3D"rgb(0, 0, 0)" font-family=3D"L=
+iberation Sans" font-size=3D"12px" text-anchor=3D"middle">do_compile&#xa;</=
+text></switch></g><ellipse cx=3D"1688" cy=3D"3370" rx=3D"60.00000000000001"=
+ ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 28px; height: 1px; padding-top: 843px; marg=
+in-left: 408px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D=
+"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D=
+"display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans=
+&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-s=
+pace: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.=
+googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=3D"=
+1"><b style=3D"font-size: 15px;">9</b></font></div></div></div></foreignObj=
+ect><text x=3D"422" y=3D"846" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle">9</text></switch></g><el=
+lipse cx=3D"2688" cy=3D"3740" rx=3D"60.00000000000001" ry=3D"60.00000000000=
+001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 28px; height: 1px; padding-top: 935px; margin-left: 658px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflo=
+w-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?fa=
+mily=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-s=
+ize: 15px;">10</b></font></div></div></div></foreignObject><text x=3D"672" =
+y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">10</text></switch></g><rect x=3D"3728" y=
+=3D"3680" width=3D"640" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" =
+stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -=
+0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%"=
+ height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ext=
+ensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"ht=
+tp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cen=
+ter; justify-content: unsafe center; width: 1px; height: 1px; padding-top: =
+935px; margin-left: 1012px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0)=
+; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><=
+div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Lib=
+eration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: =
+all; white-space: nowrap;"><font data-font-src=3D"https://fonts.googleapis.=
+com/css?family=3DArchitects+Daughter">do_populate_sysroot</font></div></div=
+></div></foreignObject><text x=3D"1012" y=3D"939" fill=3D"rgb(0, 0, 0)" fon=
+t-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">do_p=
+opulate_sysroot</text></switch></g><ellipse cx=3D"3668" cy=3D"3740" rx=3D"6=
+0.00000000000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#5651=
+7e" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0=
+.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"1=
+00%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature=
+#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 28px; height: 1px; paddin=
+g-top: 935px; margin-left: 903px;"><div data-drawio-colors=3D"color: rgb(0,=
+ 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: cent=
+er;"><div style=3D"display: inline-block; font-size: 12px; font-family: &qu=
+ot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-ev=
+ents: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D=
+"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">11</b></font></div></div=
+></div></foreignObject><text x=3D"917" y=3D"939" fill=3D"rgb(0, 0, 0)" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">11</t=
+ext></switch></g><path d=3D"M 7028 3280 Q 7028 3760.57 7372 3760.57 Q 7716 =
+3760.57 7715.97 3640.42" fill=3D"none" stroke=3D"#000000" stroke-width=3D"1=
+2" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7715.96=
+ 3613.42 L 7733.97 3649.41 L 7715.97 3640.42 L 7697.97 3649.42 Z" fill=3D"#=
+000000" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" poi=
+nter-events=3D"all"/><rect x=3D"6748" y=3D"2640" width=3D"560" height=3D"64=
+0" rx=3D"84" ry=3D"84" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><path d=3D"M 7028=
+ 2320 Q 7028 2320 7028 2614.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=
+=3D"M 7028 2635.53 L 7014 2607.53 L 7028 2614.53 L 7042 2607.53 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><rect x=3D"6928" y=3D"2160" width=3D"200" h=
+eight=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"trans=
+late(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" wid=
+th=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/=
+feature#Extensibility" style=3D"overflow: visible; text-align: left;"><div =
+xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items:=
+ unsafe center; justify-content: unsafe center; width: 48px; height: 1px; p=
+adding-top: 560px; margin-left: 1733px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;"><font data-fo=
+nt-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">gi=
+t</font></div></div></div></foreignObject><text x=3D"1757" y=3D"564" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">git</text></switch></g><rect x=3D"6800" y=3D"2720" width=
+=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=3D"#6666=
+66" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0=
+.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"1=
+00%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature=
+#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 112px; height: 1px; paddi=
+ng-top: 690px; margin-left: 1701px;"><div data-drawio-colors=3D"color: #333=
+333; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;=
+"><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;=
+Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: 1.2; pointer-ev=
+ents: all; white-space: normal; overflow-wrap: normal;">Makefile</div></div=
+></div></foreignObject><text x=3D"1757" y=3D"694" fill=3D"#333333" font-fam=
+ily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">Makefile<=
+/text></switch></g><rect x=3D"6800" y=3D"2840" width=3D"456" height=3D"80" =
+rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" =
+pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><swit=
+ch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" re=
+quiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 112px; height: 1px; padding-top: 720px; margin-l=
+eft: 1701px;"><div data-drawio-colors=3D"color: #333333; " style=3D"box-siz=
+ing: border-box; font-size: 0px; text-align: center;"><div style=3D"display=
+: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; =
+color: rgb(51, 51, 51); line-height: 1.2; pointer-events: all; white-space:=
+ normal; overflow-wrap: normal;">LICENSE</div></div></div></foreignObject><=
+text x=3D"1757" y=3D"724" fill=3D"#333333" font-family=3D"Liberation Sans" =
+font-size=3D"12px" text-anchor=3D"middle">LICENSE</text></switch></g><path =
+d=3D"M 6800 3000 Q 6588 3000.57 6588 3088 Q 6588 3175.43 6759.58 3175.08" f=
+ill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10=
+" pointer-events=3D"stroke"/><path d=3D"M 6786.58 3175.03 L 6750.62 3193.1 =
+L 6759.58 3175.08 L 6750.55 3157.1 Z" fill=3D"#000000" stroke=3D"#000000" s=
+troke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=
+=3D"6800" y=3D"2960" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=
+=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 112px; height: 1px; padding-top: 750px; margin-left: 1701px;"><div data-dr=
+awio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; font-size=
+: 0px; text-align: center;"><div style=3D"display: inline-block; font-size:=
+ 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); li=
+ne-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: no=
+rmal;">sayhello.c</div></div></div></foreignObject><text x=3D"1757" y=3D"75=
+4" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text=
+-anchor=3D"middle">sayhello.c</text></switch></g><rect x=3D"6800" y=3D"3120=
+" width=3D"456" height=3D"110" rx=3D"16.5" ry=3D"16.5" fill=3D"#eeeeee" str=
+oke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"=
+translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none=
+" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/S=
+VG11/feature#Extensibility" style=3D"overflow: visible; text-align: left;">=
+<div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-i=
+tems: unsafe center; justify-content: unsafe center; width: 112px; height: =
+1px; padding-top: 794px; margin-left: 1701px;"><div data-drawio-colors=3D"c=
+olor: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2=
+; pointer-events: all; white-space: normal; overflow-wrap: normal;">sayhell=
+o</div></div></div></foreignObject><text x=3D"1757" y=3D"797" fill=3D"rgb(0=
+, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"=
+middle">sayhello</text></switch></g><path d=3D"M 7835.96 3600 Q 7828 3760.5=
+7 8090.86 3760.57 Q 8353.71 3760.57 8353.94 3640.42" fill=3D"none" stroke=
+=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D=
+"stroke"/><path d=3D"M 8353.99 3613.42 L 8371.93 3649.45 L 8353.94 3640.42 =
+L 8335.93 3649.38 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12=
+" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"7475.96" y=3D=
+"2640" width=3D"480" height=3D"960" rx=3D"72" ry=3D"72" fill=3D"none" strok=
+e=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-ev=
+ents=3D"all"/><path d=3D"M 7715.96 2320 L 7715.96 2614.53" fill=3D"none" st=
+roke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-e=
+vents=3D"stroke"/><path d=3D"M 7715.96 2635.53 L 7706.63 2607.53 L 7715.96 =
+2614.53 L 7725.29 2607.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=
+=3D"7589.96" y=3D"2160" width=3D"252" height=3D"160" rx=3D"24" ry=3D"24" fi=
+ll=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 61px; height: 1px; padding-top: 560px; margin-left: 1898=
+px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing:=
+ border-box; font-size: 0px; text-align: center;"><div style=3D"display: in=
+line-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; colo=
+r: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal=
+; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.c=
+om/css?family=3DArchitects+Daughter">image</font></div></div></div></foreig=
+nObject><text x=3D"1929" y=3D"564" fill=3D"rgb(0, 0, 0)" font-family=3D"Lib=
+eration Sans" font-size=3D"12px" text-anchor=3D"middle">image</text></switc=
+h></g><path d=3D"M 7716 2880 L 7716 2940 Q 7716 2980 7716.01 3017.26 L 7716=
+.01 3054.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" strok=
+e-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7716.02 3075.53=
+ L 7706.68 3047.53 L 7716.01 3054.53 L 7725.35 3047.53 Z" fill=3D"rgb(0, 0,=
+ 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" po=
+inter-events=3D"all"/><rect x=3D"7629" y=3D"2720" width=3D"174" height=3D"1=
+60" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 =
+-0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%=
+" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ex=
+tensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"h=
+ttp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe ce=
+nter; justify-content: unsafe center; width: 42px; height: 1px; padding-top=
+: 700px; margin-left: 1908px;"><div data-drawio-colors=3D"color: rgb(0, 0, =
+0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"=
+><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;L=
+iberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events=
+: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"=
+https://fonts.googleapis.com/css?family=3DArchitects+Daughter">usr</font></=
+div></div></div></foreignObject><text x=3D"1929" y=3D"704" fill=3D"rgb(0, 0=
+, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mid=
+dle">usr</text></switch></g><path d=3D"M 7716.02 3240 L 7716 3394.53" fill=
+=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"1=
+0" pointer-events=3D"stroke"/><path d=3D"M 7716 3415.53 L 7706.67 3387.53 L=
+ 7716 3394.53 L 7725.34 3387.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0=
+, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><=
+rect x=3D"7608.52" y=3D"3080" width=3D"215" height=3D"160" rx=3D"24" ry=3D"=
+24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" =
+pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><swit=
+ch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" re=
+quiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 52px; height: 1px; padding-top: 790px; margin-le=
+ft: 1903px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goog=
+leapis.com/css?family=3DArchitects+Daughter">bin</font></div></div></div></=
+foreignObject><text x=3D"1929" y=3D"794" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">bin</text></=
+switch></g><rect x=3D"1268" y=3D"2160" width=3D"400" height=3D"160" rx=3D"2=
+4" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 98px; height: 1px; padding-top: 560px; ma=
+rgin-left: 318px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">libhello-0.1</font></di=
+v></div></div></foreignObject><text x=3D"367" y=3D"564" fill=3D"rgb(0, 0, 0=
+)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+">libhello-0.1</text></switch></g><path d=3D"M 1241 2160 Q 1241.71 2220 124=
+5.14 2050.29 Q 1248.57 1880.57 1785.14 1880.57 Q 2321.71 1880.57 2321.08 21=
+27.06" fill=3D"none" stroke=3D"#000000" stroke-width=3D"8" stroke-miterlimi=
+t=3D"10" stroke-dasharray=3D"8 16" pointer-events=3D"stroke"/><path d=3D"M =
+2321.02 2151.06 L 2310.44 2119.03 L 2321.08 2127.06 L 2331.77 2119.08 Z" fi=
+ll=3D"#000000" stroke=3D"#000000" stroke-width=3D"8" stroke-miterlimit=3D"1=
+0" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 1px; height: 1px; padding-top: 472px; margin-le=
+ft: 435px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); background-colo=
+r: rgb(255, 255, 255); border-color: rgb(0, 0, 0); " style=3D"box-sizing: b=
+order-box; font-size: 0px; text-align: center;"><div style=3D"display: inli=
+ne-block; font-size: 11px; font-family: &quot;Liberation Sans&quot;; color:=
+ rgb(0, 0, 0); line-height: 1.2; pointer-events: all; background-color: rgb=
+(255, 255, 255); border: 1px solid rgb(0, 0, 0); white-space: nowrap;"><fon=
+t data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Dau=
+ghter" style=3D"font-size: 14px;">S =3D "${WORKDIR}/git"</font></div></div>=
+</div></foreignObject><text x=3D"435" y=3D"475" fill=3D"rgb(0, 0, 0)" font-=
+family=3D"Liberation Sans" font-size=3D"11px" text-anchor=3D"middle">S =3D =
+"${WORKDIR}/git"</text></switch></g><rect x=3D"3203" y=3D"1620" width=3D"25=
+2" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" poin=
+ter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><=
+foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requir=
+edFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ov=
+erflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xh=
+tml" style=3D"display: flex; align-items: unsafe center; justify-content: u=
+nsafe center; width: 61px; height: 1px; padding-top: 418px; margin-left: 80=
+2px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: bor=
+der-box; font-size: 0px; text-align: center;"><div style=3D"display: inline=
+-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: r=
+gb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight: bold=
+; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter">WORKDIR</font></d=
+iv></div></div></foreignObject><text x=3D"832" y=3D"421" fill=3D"#ffffff" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" fo=
+nt-weight=3D"bold">WORKDIR</text></switch></g><rect x=3D"2923" y=3D"2160" w=
+idth=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"=
+none" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"=
+><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"10=
+0%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" s=
+tyle=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.o=
+rg/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-=
+content: unsafe center; width: 24px; height: 1px; padding-top: 553px; margi=
+n-left: 732px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-s=
+izing: border-box; font-size: 0px; text-align: center;"><div style=3D"displ=
+ay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;=
+; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-we=
+ight: bold; white-space: normal; overflow-wrap: normal;"><font data-font-sr=
+c=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">D</font=
+></div></div></div></foreignObject><text x=3D"744" y=3D"556" fill=3D"#fffff=
+f" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+" font-weight=3D"bold">D</text></switch></g><rect x=3D"2268" y=3D"2160" wid=
+th=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"no=
+ne" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-=
+left: 568px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-siz=
+ing: border-box; font-size: 0px; text-align: center;"><div style=3D"display=
+: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; =
+color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weig=
+ht: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">S</font>=
+</div></div></div></foreignObject><text x=3D"580" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">S</text></switch></g><rect x=3D"2162" y=3D"2160" widt=
+h=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-l=
+eft: 542px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">B</font>=
+</div></div></div></foreignObject><text x=3D"554" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">B</text></switch></g><rect x=3D"1188" y=3D"2160" widt=
+h=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-l=
+eft: 298px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">S</font>=
+</div></div></div></foreignObject><text x=3D"310" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">S</text></switch></g><rect x=3D"1835" y=3D"2160" widt=
+h=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-l=
+eft: 460px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">T</font>=
+</div></div></div></foreignObject><text x=3D"472" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">T</text></switch></g><rect x=3D"3628" y=3D"3160" widt=
+h=3D"200" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 48px; height: 1px; padding-top: 803px; margin-l=
+eft: 908px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">libdir</=
+font></div></div></div></foreignObject><text x=3D"932" y=3D"806" fill=3D"#f=
+fffff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mi=
+ddle" font-weight=3D"bold">libdir</text></switch></g><rect x=3D"3135" y=3D"=
+3160" width=3D"320" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" str=
+oke=3D"none" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)sc=
+ale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heigh=
+t=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibi=
+lity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://w=
+ww.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; j=
+ustify-content: unsafe center; width: 78px; height: 1px; padding-top: 803px=
+; margin-left: 785px;"><div data-drawio-colors=3D"color: #ffffff; " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all=
+; font-weight: bold; white-space: normal; overflow-wrap: normal;"><font dat=
+a-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter=
+">includedir</font></div></div></div></foreignObject><text x=3D"824" y=3D"8=
+06" fill=3D"#ffffff" font-family=3D"Liberation Sans" font-size=3D"12px" tex=
+t-anchor=3D"middle" font-weight=3D"bold">includedir</text></switch></g><rec=
+t x=3D"5603.48" y=3D"2280" width=3D"464.52" height=3D"100" rx=3D"15" ry=3D"=
+15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g transform=
+=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"=
+none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/=
+TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: lef=
+t;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; ali=
+gn-items: unsafe center; justify-content: unsafe center; width: 114px; heig=
+ht: 1px; padding-top: 583px; margin-left: 1402px;"><div data-drawio-colors=
+=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line-heigh=
+t: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overfl=
+ow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter">RECIPE_SYSROOT</font></div></div></div></forei=
+gnObject><text x=3D"1459" y=3D"586" fill=3D"#ffffff" font-family=3D"Liberat=
+ion Sans" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">RE=
+CIPE_SYSROOT</text></switch></g><path d=3D"M 7226.86 2260 Q 7226.86 2110.29=
+ 7197.14 2110.29 Q 7167.43 2110.29 7167.49 1985.47" fill=3D"none" stroke=3D=
+"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=
+=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 7167.5 1964.47 L 7176.82=
+ 1992.48 L 7167.49 1985.47 L 7158.15 1992.47 Z" fill=3D"rgb(0, 0, 0)" strok=
+e=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-even=
+ts=3D"all"/><rect x=3D"7174" y=3D"2260" width=3D"106" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 24p=
+x; height: 1px; padding-top: 578px; margin-left: 1795px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">S</font></div></div></div></foreignObjec=
+t><text x=3D"1807" y=3D"581" fill=3D"#ffffff" font-family=3D"Liberation San=
+s" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">S</text><=
+/switch></g><rect x=3D"7068" y=3D"2260" width=3D"106" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 24p=
+x; height: 1px; padding-top: 578px; margin-left: 1768px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">B</font></div></div></div></foreignObjec=
+t><text x=3D"1780" y=3D"581" fill=3D"#ffffff" font-family=3D"Liberation San=
+s" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">B</text><=
+/switch></g><rect x=3D"7803" y=3D"2260" width=3D"106" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 24p=
+x; height: 1px; padding-top: 578px; margin-left: 1952px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">D</font></div></div></div></foreignObjec=
+t><text x=3D"1964" y=3D"581" fill=3D"#ffffff" font-family=3D"Liberation San=
+s" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">D</text><=
+/switch></g><rect x=3D"5788" y=3D"1580" width=3D"252" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 61p=
+x; height: 1px; padding-top: 408px; margin-left: 1448px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">WORKDIR</font></div></div></div></foreig=
+nObject><text x=3D"1479" y=3D"411" fill=3D"#ffffff" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">WOR=
+KDIR</text></switch></g><rect x=3D"4640" y=3D"3680" width=3D"800" height=3D=
+"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 1px; height: 1px; padding-top: 935px; margin-left: 1260px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font =
+data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daugh=
+ter">do_prepare_recipe_sysroot</font></div></div></div></foreignObject><tex=
+t x=3D"1260" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans=
+" font-size=3D"12px" text-anchor=3D"middle">do_prepare_recipe_sysroot</text=
+></switch></g><rect x=3D"7536" y=3D"3420" width=3D"360" height=3D"110" rx=
+=3D"16.5" ry=3D"16.5" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4=
+" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><sw=
+itch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" =
+requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 88px; height: 1px; padding-top: 869px; margin-le=
+ft: 1885px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: normal; overflow-wrap: normal;">sayhello</div></div></div></foreignObject=
+><text x=3D"1929" y=3D"872" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation=
+ Sans" font-size=3D"12px" text-anchor=3D"middle">sayhello</text></switch></=
+g><rect x=3D"4988" y=3D"2640" width=3D"1080" height=3D"960" rx=3D"144" ry=
+=3D"144" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-da=
+sharray=3D"12 12" pointer-events=3D"all"/><path d=3D"M 5236 2880 Q 5236 296=
+0.57 5235.99 3014.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5235.9=
+8 3035.53 L 5226.65 3007.53 L 5235.99 3014.53 L 5245.32 3007.53 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><path d=3D"M 5236 2880 Q 5236 2960.57 5474.=
+86 2960.57 Q 5713.71 2960.57 5713.91 3014.53" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stro=
+ke"/><path d=3D"M 5713.98 3035.53 L 5704.55 3007.56 L 5713.91 3014.53 L 572=
+3.22 3007.49 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"5149" y=
+=3D"2720" width=3D"174" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255,=
+ 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 42px; height: 1px; padding-top: 700px; margin-left: 1288px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter">usr</font></div></div></div></foreignObject><text x=
+=3D"1309" y=3D"704" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" f=
+ont-size=3D"12px" text-anchor=3D"middle">usr</text></switch></g><path d=3D"=
+M 5235.98 3200 L 5236 3294.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke=
+-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D=
+"M 5236 3315.53 L 5226.66 3287.53 L 5236 3294.53 L 5245.33 3287.53 Z" fill=
+=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterli=
+mit=3D"10" pointer-events=3D"all"/><rect x=3D"5128.48" y=3D"3040" width=3D"=
+215" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=
+=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"=
+none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/=
+TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: lef=
+t;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; ali=
+gn-items: unsafe center; justify-content: unsafe center; width: 52px; heigh=
+t: 1px; padding-top: 780px; margin-left: 1283px;"><div data-drawio-colors=
+=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px;=
+ text-align: center;"><div style=3D"display: inline-block; font-size: 12px;=
+ font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height=
+: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"><f=
+ont data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+D=
+aughter">include</font></div></div></div></foreignObject><text x=3D"1309" y=
+=3D"784" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">include</text></switch></g><path d=3D"M 5713.=
+71 3200 L 5713.71 3240.57 Q 5713.71 3280.57 5713.76 3287.55 L 5713.82 3294.=
+53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterli=
+mit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5713.97 3315.53 L 5704.4=
+3 3287.6 L 5713.82 3294.53 L 5723.1 3287.46 Z" fill=3D"rgb(0, 0, 0)" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-event=
+s=3D"all"/><rect x=3D"5627" y=3D"3040" width=3D"174" height=3D"160" rx=3D"2=
+4" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 42px; height: 1px; padding-top: 780px; ma=
+rgin-left: 1408px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">lib</font></div></div><=
+/div></foreignObject><text x=3D"1429" y=3D"784" fill=3D"rgb(0, 0, 0)" font-=
+family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">lib</t=
+ext></switch></g><rect x=3D"5076" y=3D"3320" width=3D"320" height=3D"100" r=
+x=3D"15" ry=3D"15" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" p=
+ointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switc=
+h><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" req=
+uiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D=
+"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999=
+/xhtml" style=3D"display: flex; align-items: unsafe center; justify-content=
+: unsafe center; width: 78px; height: 1px; padding-top: 843px; margin-left:=
+ 1270px;"><div data-drawio-colors=3D"color: #333333; " style=3D"box-sizing:=
+ border-box; font-size: 0px; text-align: center;"><div style=3D"display: in=
+line-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; colo=
+r: rgb(51, 51, 51); line-height: 1.2; pointer-events: all; white-space: nor=
+mal; overflow-wrap: normal;">hellolib.h</div></div></div></foreignObject><t=
+ext x=3D"1309" y=3D"846" fill=3D"#333333" font-family=3D"Liberation Sans" f=
+ont-size=3D"12px" text-anchor=3D"middle">hellolib.h</text></switch></g><rec=
+t x=3D"5468" y=3D"3350" width=3D"480" height=3D"80" rx=3D"12" ry=3D"12" fil=
+l=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/=
+><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject point=
+er-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:=
+//www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; te=
+xt-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displ=
+ay: flex; align-items: unsafe center; justify-content: unsafe center; width=
+: 118px; height: 1px; padding-top: 848px; margin-left: 1368px;"><div data-d=
+rawio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; font-siz=
+e: 0px; text-align: center;"><div style=3D"display: inline-block; font-size=
+: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); l=
+ine-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: n=
+ormal;">libhello.so.1</div></div></div></foreignObject><text x=3D"1427" y=
+=3D"851" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px=
+" text-anchor=3D"middle">libhello.so.1</text></switch></g><rect x=3D"5468" =
+y=3D"3450" width=3D"480" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#f5f5f5=
+" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transfor=
+m=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D=
+"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org=
+/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: le=
+ft;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; al=
+ign-items: unsafe center; justify-content: unsafe center; width: 118px; hei=
+ght: 1px; padding-top: 875px; margin-left: 1368px;"><div data-drawio-colors=
+=3D"color: #333333; " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: =
+1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">libh=
+ello.so.1.0</div></div></div></foreignObject><text x=3D"1427" y=3D"879" fil=
+l=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text-ancho=
+r=3D"middle">libhello.so.1.0</text></switch></g><rect x=3D"5440" y=3D"3320"=
+ width=3D"548" height=3D"250" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-=
+width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><rect x=3D"3=
+880" y=3D"1680" width=3D"1560" height=3D"280" fill=3D"none" stroke=3D"#3639=
+3d" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><=
+g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer=
+-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://=
+www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text=
+-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display=
+: flex; align-items: unsafe center; justify-content: unsafe center; width: =
+1px; height: 1px; padding-top: 455px; margin-left: 1165px;"><div data-drawi=
+o-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-si=
+ze: 0px; text-align: center;"><div style=3D"display: inline-block; font-siz=
+e: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); lin=
+e-height: 1.2; pointer-events: all; white-space: nowrap;"><font data-font-s=
+rc=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" style=
+=3D"font-size: 15px;">This also contains other files from other=C2=A0<br />=
+dependencies. Default dependencies are:<br />basically <b style=3D""><u>gcc=
+</u></b>, <b style=3D""><u>compilerlibs</u></b> and <b style=3D""><u style=
+=3D"">libc</u></b></font></div></div></div></foreignObject><text x=3D"1165"=
+ y=3D"459" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">This also contains other files from other.=
+..</text></switch></g><rect x=3D"4368" y=3D"2280" width=3D"510" height=3D"1=
+00" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"=
+all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject =
+pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"=
+http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visibl=
+e; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"=
+display: flex; align-items: unsafe center; justify-content: unsafe center; =
+width: 126px; height: 1px; padding-top: 583px; margin-left: 1093px;"><div d=
+ata-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; fon=
+t-size: 0px; text-align: center;"><div style=3D"display: inline-block; font=
+-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255,=
+ 255); line-height: 1.2; pointer-events: all; font-weight: bold; white-spac=
+e: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goo=
+gleapis.com/css?family=3DArchitects+Daughter">SYSROOT_DESTDIR</font></div><=
+/div></div></foreignObject><text x=3D"1156" y=3D"586" fill=3D"#ffffff" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" font-=
+weight=3D"bold">SYSROOT_DESTDIR</text></switch></g><path d=3D"M 330 960 L 1=
+121.58 960" fill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-mit=
+erlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1148.58 960 L 1112.5=
+8 978 L 1121.58 960 L 1112.58 942 Z" fill=3D"#000000" stroke=3D"#000000" st=
+roke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=
+=3D"M 330 1160 L 1121.58 1160" fill=3D"none" stroke=3D"#000000" stroke-widt=
+h=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1=
+148.58 1160 L 1112.58 1178 L 1121.58 1160 L 1112.58 1142 Z" fill=3D"#000000=
+" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-e=
+vents=3D"all"/><rect x=3D"2" y=3D"860" width=3D"328" height=3D"400" rx=3D"4=
+9.2" ry=3D"49.2" fill=3D"#000000" stroke=3D"#23445d" stroke-width=3D"4" poi=
+nter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch>=
+<foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requi=
+redFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"o=
+verflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/x=
+html" style=3D"display: flex; align-items: unsafe center; justify-content: =
+unsafe center; width: 80px; height: 1px; padding-top: 265px; margin-left: 1=
+px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing:=
+ border-box; font-size: 0px; text-align: center;"><div style=3D"display: in=
+line-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; colo=
+r: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal=
+; overflow-wrap: normal;"><font color=3D"#fcfcfc">Github</font></div></div>=
+</div></foreignObject><text x=3D"41" y=3D"269" fill=3D"rgb(0, 0, 0)" font-f=
+amily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">Github<=
+/text></switch></g><rect x=3D"535" y=3D"900" width=3D"320" height=3D"120" f=
+ill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all=
+"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject poi=
+nter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"htt=
+p://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; =
+text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"dis=
+play: flex; align-items: unsafe center; justify-content: unsafe center; wid=
+th: 1px; height: 1px; padding-top: 240px; margin-left: 174px;"><div data-dr=
+awio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font=
+-size: 0px; text-align: center;"><div style=3D"display: inline-block; font-=
+size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); =
+line-height: 1.2; pointer-events: all; white-space: nowrap;"><font data-fon=
+t-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_=
+fetch<br /></font></div></div></div></foreignObject><text x=3D"174" y=3D"24=
+4" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px"=
+ text-anchor=3D"middle">do_fetch&#xa;</text></switch></g><ellipse cx=3D"475=
+" cy=3D"960" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000=
+000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g trans=
+form=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 28px; h=
+eight: 1px; padding-top: 240px; margin-left: 105px;"><div data-drawio-color=
+s=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heigh=
+t: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"><=
+font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+=
+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">1</b><=
+/font></div></div></div></foreignObject><text x=3D"119" y=3D"244" fill=3D"r=
+gb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=
+=3D"middle">1</text></switch></g><rect x=3D"535" y=3D"1100" width=3D"320" h=
+eight=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 1px; height: 1px; padding-top: 290px; margin-left: 174px=
+;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: b=
+order-box; font-size: 0px; text-align: center;"><div style=3D"display: inli=
+ne-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color:=
+ rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"=
+><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitect=
+s+Daughter">do_fetch<br /></font></div></div></div></foreignObject><text x=
+=3D"174" y=3D"294" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" fo=
+nt-size=3D"12px" text-anchor=3D"middle">do_fetch&#xa;</text></switch></g><e=
+llipse cx=3D"475" cy=3D"1160" rx=3D"60.00000000000001" ry=3D"60.00000000000=
+001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 28px; height: 1px; padding-top: 290px; margin-left: 105px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflo=
+w-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?fa=
+mily=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-s=
+ize: 15px;">5</b></font></div></div></div></foreignObject><text x=3D"119" y=
+=3D"294" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">5</text></switch></g><rect x=3D"6228" y=3D"29=
+80" width=3D"440" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke=
+-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)sc=
+ale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heigh=
+t=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibi=
+lity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://w=
+ww.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; j=
+ustify-content: unsafe center; width: 1px; height: 1px; padding-top: 760px;=
+ margin-left: 1612px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " st=
+yle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div st=
+yle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberatio=
+n Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; w=
+hite-space: nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/cs=
+s?family=3DArchitects+Daughter">do_configure<br /></font></div></div></div>=
+</foreignObject><text x=3D"1612" y=3D"764" fill=3D"rgb(0, 0, 0)" font-famil=
+y=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">do_configur=
+e&#xa;</text></switch></g><ellipse cx=3D"6168" cy=3D"3040" rx=3D"60.0000000=
+0000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" strok=
+e-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 28px; height: 1px; padding-top: 760p=
+x; margin-left: 1528px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " =
+style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div =
+style=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberat=
+ion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all;=
+ white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https:=
+//fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" =
+size=3D"1"><b style=3D"font-size: 15px;">12</b></font></div></div></div></f=
+oreignObject><text x=3D"1542" y=3D"764" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">12</text></s=
+witch></g><rect x=3D"6308" y=3D"3110" width=3D"360" height=3D"120" fill=3D"=
+#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 1px=
+; height: 1px; padding-top: 793px; margin-left: 1622px;"><div data-drawio-c=
+olors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size:=
+ 0px; text-align: center;"><div style=3D"display: inline-block; font-size: =
+12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-h=
+eight: 1.2; pointer-events: all; white-space: nowrap;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_compi=
+le<br /></font></div></div></div></foreignObject><text x=3D"1622" y=3D"796"=
+ fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" t=
+ext-anchor=3D"middle">do_compile&#xa;</text></switch></g><ellipse cx=3D"624=
+8" cy=3D"3170" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#0=
+00000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g tra=
+nsform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-even=
+ts=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w=
+3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-alig=
+n: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: fle=
+x; align-items: unsafe center; justify-content: unsafe center; width: 28px;=
+ height: 1px; padding-top: 793px; margin-left: 1548px;"><div data-drawio-co=
+lors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: =
+0px; text-align: center;"><div style=3D"display: inline-block; font-size: 1=
+2px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-he=
+ight: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;=
+"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitec=
+ts+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">13<=
+/b></font></div></div></div></foreignObject><text x=3D"1562" y=3D"796" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">13</text></switch></g><rect x=3D"2508" y=3D"900" width=3D"=
+360" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" =
+pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><swit=
+ch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" re=
+quiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 1px; height: 1px; padding-top: 240px; margin-lef=
+t: 672px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-s=
+izing: border-box; font-size: 0px; text-align: center;"><div style=3D"displ=
+ay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;=
+; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: =
+nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DA=
+rchitects+Daughter">do_unpack<br /></font></div></div></div></foreignObject=
+><text x=3D"672" y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation =
+Sans" font-size=3D"12px" text-anchor=3D"middle">do_unpack&#xa;</text></swit=
+ch></g><ellipse cx=3D"2448" cy=3D"960" rx=3D"60.00000000000001" ry=3D"60.00=
+000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 28px; height: 1px; padding-top: 240px; margin-left: 598p=
+x;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: =
+border-box; font-size: 0px; text-align: center;"><div style=3D"display: inl=
+ine-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color=
+: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal;=
+ overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.co=
+m/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=
+=3D"font-size: 15px;">2</b></font></div></div></div></foreignObject><text x=
+=3D"612" y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" fo=
+nt-size=3D"12px" text-anchor=3D"middle">2</text></switch></g><path d=3D"M 5=
+848.57 520 Q 5848.57 600.57 5849.05 594.61" fill=3D"none" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke=
+"/><path d=3D"M 5847.36 615.54 L 5835.66 586.51 L 5849.05 594.61 L 5863.57 =
+588.76 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" =
+stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 5848.57 520 Q=
+ 5848.57 560.57 5593.14 560.57 Q 5337.71 560.57 5337.31 594.53" fill=3D"non=
+e" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poin=
+ter-events=3D"stroke"/><path d=3D"M 5337.05 615.53 L 5323.39 587.36 L 5337.=
+31 594.53 L 5351.39 587.7 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=
+=3D"M 5848.57 520 Q 5848.57 560.57 6108.57 560.57 Q 6368.57 560.57 6368.24 =
+594.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-mit=
+erlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 6368.04 615.53 L 635=
+4.31 587.39 L 6368.24 594.53 L 6382.31 587.66 Z" fill=3D"rgb(0, 0, 0)" stro=
+ke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-eve=
+nts=3D"all"/><rect x=3D"5708" y=3D"360" width=3D"280" height=3D"160" rx=3D"=
+24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wi=
+dth=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale=
+(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 68px; height: 1px; padding-top: 110px;=
+ margin-left: 1428px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " st=
+yle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div st=
+yle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberatio=
+n Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; w=
+hite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://=
+fonts.googleapis.com/css?family=3DArchitects+Daughter">conf</font></div></d=
+iv></div></foreignObject><text x=3D"1462" y=3D"114" fill=3D"rgb(0, 0, 0)" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">co=
+nf</text></switch></g><path d=3D"M 5149 660 Q 5108 660 5108 510.29 Q 5108 3=
+60.57 5252 360.57 Q 5396 360.57 5396 205.47" fill=3D"none" stroke=3D"rgb(0,=
+ 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 =
+12" pointer-events=3D"stroke"/><path d=3D"M 5396 184.47 L 5405.33 212.47 L =
+5396 205.47 L 5386.67 212.47 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0=
+)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rec=
+t x=3D"5149" y=3D"620" width=3D"376" height=3D"80" rx=3D"12" ry=3D"12" fill=
+=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 92px; height: 1px; padding-top: 165px; margin-left: 1288px;"><div data-dra=
+wio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-=
+size: 0px; text-align: center;"><div style=3D"display: inline-block; font-s=
+ize: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); l=
+ine-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: n=
+ormal;">local.conf</div></div></div></foreignObject><text x=3D"1334" y=3D"1=
+69" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px=
+" text-anchor=3D"middle">local.conf</text></switch></g><path d=3D"M 5847.43=
+ 700 Q 5847.43 860 6048 860 Q 6248.57 860 6248.09 994.53" fill=3D"none" str=
+oke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-das=
+harray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 6248.02 1015.53 L =
+6238.78 987.49 L 6248.09 994.53 L 6257.45 987.56 Z" fill=3D"rgb(0, 0, 0)" s=
+troke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-=
+events=3D"all"/><rect x=3D"5627" y=3D"620" width=3D"440" height=3D"80" rx=
+=3D"12" ry=3D"12" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" po=
+inter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch=
+><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requ=
+iredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"=
+overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/=
+xhtml" style=3D"display: flex; align-items: unsafe center; justify-content:=
+ unsafe center; width: 108px; height: 1px; padding-top: 165px; margin-left:=
+ 1408px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-si=
+zing: border-box; font-size: 0px; text-align: center;"><div style=3D"displa=
+y: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;;=
+ color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: n=
+ormal; overflow-wrap: normal;">bblayers.conf</div></div></div></foreignObje=
+ct><text x=3D"1462" y=3D"169" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle">bblayers.conf</text></sw=
+itch></g><rect x=3D"6707" y=3D"1360" width=3D"921" height=3D"600" fill=3D"r=
+gb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dashar=
+ray=3D"12 12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 228px; height: 1px; padding-top: 415=
+px; margin-left: 1678px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); "=
+ style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div=
+ style=3D"display: inline-block; font-size: 12px; font-family: &quot;Libera=
+tion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all=
+; white-space: normal; overflow-wrap: normal;"><font style=3D"font-size: 15=
+px;"><b><u>S</u></b> defaults generally to <b><u>${WORKDIR}/${BPN}-${PV}</u=
+></b><br />In <b>git</b> recipes change it to <b><u>${WORKDIR}/git</u></b><=
+/font></div></div></div></foreignObject><text x=3D"1792" y=3D"419" fill=3D"=
+rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-ancho=
+r=3D"middle">S defaults generally to ${WORKDIR}/${B...</text></switch></g><=
+rect x=3D"6228" y=3D"2700" width=3D"440" height=3D"160" fill=3D"#eeeeee" st=
+roke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D=
+"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"non=
+e" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/=
+SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: left;"=
+><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-=
+items: unsafe center; justify-content: unsafe center; width: 1px; height: 1=
+px; padding-top: 695px; margin-left: 1612px;"><div data-drawio-colors=3D"co=
+lor: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-=
+align: center;"><div style=3D"display: inline-block; font-size: 12px; font-=
+family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2;=
+ pointer-events: all; white-space: nowrap;"><font data-font-src=3D"https://=
+fonts.googleapis.com/css?family=3DArchitects+Daughter">do_patch<br /><i>(No=
+ patches)</i><br /></font></div></div></div></foreignObject><text x=3D"1612=
+" y=3D"699" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">do_patch...</text></switch></g><ellipse cx=
+=3D"6168" cy=3D"2780" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fil=
+l=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/=
+><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject point=
+er-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:=
+//www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; te=
+xt-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displ=
+ay: flex; align-items: unsafe center; justify-content: unsafe center; width=
+: 28px; height: 1px; padding-top: 695px; margin-left: 1528px;"><div data-dr=
+awio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font=
+-size: 0px; text-align: center;"><div style=3D"display: inline-block; font-=
+size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); =
+line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: =
+normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DA=
+rchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15p=
+x;">3</b></font></div></div></div></foreignObject><text x=3D"1542" y=3D"699=
+" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" =
+text-anchor=3D"middle">3</text></switch></g><ellipse cx=3D"4580" cy=3D"3740=
+" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=
+=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 28px; height: 1px;=
+ padding-top: 935px; margin-left: 1131px;"><div data-drawio-colors=3D"color=
+: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-ali=
+gn: center;"><div style=3D"display: inline-block; font-size: 12px; font-fam=
+ily: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; po=
+inter-events: all; white-space: normal; overflow-wrap: normal;"><font data-=
+font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" =
+color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">4</b></font></di=
+v></div></div></foreignObject><text x=3D"1145" y=3D"939" fill=3D"rgb(0, 0, =
+0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e">4</text></switch></g><rect x=3D"6927" y=3D"3560" width=3D"360" height=3D=
+"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 1px; height: 1px; padding-top: 905px; margin-left: 1777px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font =
+data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daugh=
+ter">do_install<br /></font></div></div></div></foreignObject><text x=3D"17=
+77" y=3D"909" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">do_install&#xa;</text></switch></g><elli=
+pse cx=3D"6868" cy=3D"3620" rx=3D"60.00000000000001" ry=3D"60.0000000000000=
+1" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D=
+"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject=
+ pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D=
+"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visib=
+le; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D=
+"display: flex; align-items: unsafe center; justify-content: unsafe center;=
+ width: 28px; height: 1px; padding-top: 905px; margin-left: 1703px;"><div d=
+ata-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box=
+; font-size: 0px; text-align: center;"><div style=3D"display: inline-block;=
+ font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0=
+, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-=
+wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?fami=
+ly=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-siz=
+e: 15px;">14</b></font></div></div></div></foreignObject><text x=3D"1717" y=
+=3D"909" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">14</text></switch></g><path d=3D"M 8354.02 23=
+20 L 8354.02 2614.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 8354.0=
+2 2635.53 L 8344.69 2607.53 L 8354.02 2614.53 L 8363.35 2607.53 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><rect x=3D"8228" y=3D"2160" width=3D"252" h=
+eight=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"trans=
+late(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" wid=
+th=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/=
+feature#Extensibility" style=3D"overflow: visible; text-align: left;"><div =
+xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items:=
+ unsafe center; justify-content: unsafe center; width: 61px; height: 1px; p=
+adding-top: 560px; margin-left: 2058px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;"><font data-fo=
+nt-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">pa=
+ckage</font></div></div></div></foreignObject><text x=3D"2089" y=3D"564" fi=
+ll=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text=
+-anchor=3D"middle">package</text></switch></g><rect x=3D"8441.04" y=3D"2260=
+" width=3D"146.96" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stro=
+ke=3D"none" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)sca=
+le(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 35px; height: 1px; padding-top: 578px;=
+ margin-left: 2111px;"><div data-drawio-colors=3D"color: #ffffff; " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all=
+; font-weight: bold; white-space: normal; overflow-wrap: normal;"><font dat=
+a-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter=
+">PKGD</font></div></div></div></foreignObject><text x=3D"2129" y=3D"581" f=
+ill=3D"#ffffff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anc=
+hor=3D"middle" font-weight=3D"bold">PKGD</text></switch></g><path d=3D"M 84=
+61.77 3600 Q 8461.14 3760.57 8784.57 3760.57 Q 9108 3760.57 9108 3640.42" f=
+ill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10=
+" pointer-events=3D"stroke"/><path d=3D"M 9108 3613.42 L 9126 3649.42 L 910=
+8 3640.42 L 9090 3649.42 Z" fill=3D"#000000" stroke=3D"#000000" stroke-widt=
+h=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"8138.5=
+2" y=3D"2640" width=3D"431" height=3D"960" rx=3D"64.65" ry=3D"64.65" fill=
+=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" stroke-dasharray=3D"12 1=
+2" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 106px; height: 1px; padding-top: 780px; margin-=
+left: 2036px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"b=
+ox-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"d=
+isplay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&q=
+uot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-spa=
+ce: normal; overflow-wrap: normal;">A copy of=C2=A0<b>${D}<br /></b>excludi=
+ng<br /><b>/sysroot-only</b></div></div></div></foreignObject><text x=3D"20=
+89" y=3D"784" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">A copy of=C2=A0${D}...</text></switch></=
+g><rect x=3D"7960.96" y=3D"3680" width=3D"360" height=3D"120" fill=3D"#eeee=
+ee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transf=
+orm=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 1px; he=
+ight: 1px; padding-top: 935px; margin-left: 2035px;"><div data-drawio-color=
+s=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heigh=
+t: 1.2; pointer-events: all; white-space: nowrap;"><font data-font-src=3D"h=
+ttps://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_package<br=
+ /></font></div></div></div></foreignObject><text x=3D"2035" y=3D"939" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">do_package&#xa;</text></switch></g><ellipse cx=3D"7901.96"=
+ cy=3D"3740" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000=
+000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g trans=
+form=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 28px; h=
+eight: 1px; padding-top: 935px; margin-left: 1961px;"><div data-drawio-colo=
+rs=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0p=
+x; text-align: center;"><div style=3D"display: inline-block; font-size: 12p=
+x; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heig=
+ht: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">=
+<font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects=
++Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">15</b=
+></font></div></div></div></foreignObject><text x=3D"1975" y=3D"939" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">15</text></switch></g><path d=3D"M 9108 2320 L 9108 2614.5=
+3" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlim=
+it=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9108 2635.53 L 9098.67 26=
+07.53 L 9108 2614.53 L 9117.33 2607.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"=
+all"/><rect x=3D"8868" y=3D"2160" width=3D"480" height=3D"160" rx=3D"24" ry=
+=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 118px; height: 1px; padding-top: 560px; margin=
+-left: 2218px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"=
+box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"=
+display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&=
+quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-sp=
+ace: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.g=
+oogleapis.com/css?family=3DArchitects+Daughter">packages-split</font></div>=
+</div></div></foreignObject><text x=3D"2277" y=3D"564" fill=3D"rgb(0, 0, 0)=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+>packages-split</text></switch></g><rect x=3D"9308" y=3D"2260" width=3D"240=
+" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" point=
+er-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><f=
+oreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" require=
+dFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ove=
+rflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xht=
+ml" style=3D"display: flex; align-items: unsafe center; justify-content: un=
+safe center; width: 58px; height: 1px; padding-top: 578px; margin-left: 232=
+8px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: bor=
+der-box; font-size: 0px; text-align: center;"><div style=3D"display: inline=
+-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: r=
+gb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight: bold=
+; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter">PKGDEST</font></d=
+iv></div></div></foreignObject><text x=3D"2357" y=3D"581" fill=3D"#ffffff" =
+font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" f=
+ont-weight=3D"bold">PKGDEST</text></switch></g><path d=3D"M 9108 2840 L 910=
+8 2895.1" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-m=
+iterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9108 2916.1 L 9098=
+.67 2888.1 L 9108 2895.1 L 9117.33 2888.1 Z" fill=3D"rgb(0, 0, 0)" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-event=
+s=3D"all"/><rect x=3D"8982" y=3D"2680" width=3D"252" height=3D"160" rx=3D"2=
+4" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 61px; height: 1px; padding-top: 690px; ma=
+rgin-left: 2247px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">sayhello</font></div></=
+div></div></foreignObject><text x=3D"2277" y=3D"694" fill=3D"rgb(0, 0, 0)" =
+font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">s=
+ayhello</text></switch></g><path d=3D"M 9108 3080 L 9108 3120.57 Q 9108 316=
+0.57 9108 3162.55 L 9108 3164.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" str=
+oke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=
+=3D"M 9107.98 3185.53 L 9098.67 3157.52 L 9108 3164.53 L 9117.34 3157.53 Z"=
+ fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-mi=
+terlimit=3D"10" pointer-events=3D"all"/><rect x=3D"9021" y=3D"2920" width=
+=3D"174" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" str=
+oke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transfor=
+m=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D=
+"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org=
+/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: le=
+ft;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; al=
+ign-items: unsafe center; justify-content: unsafe center; width: 42px; heig=
+ht: 1px; padding-top: 750px; margin-left: 2256px;"><div data-drawio-colors=
+=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px;=
+ text-align: center;"><div style=3D"display: inline-block; font-size: 12px;=
+ font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height=
+: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"><f=
+ont data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+D=
+aughter">usr</font></div></div></div></foreignObject><text x=3D"2277" y=3D"=
+754" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12p=
+x" text-anchor=3D"middle">usr</text></switch></g><path d=3D"M 9107.98 3350 =
+L 9107.97 3414.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4"=
+ stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9107.96 3=
+435.53 L 9098.63 3407.53 L 9107.97 3414.53 L 9117.3 3407.53 Z" fill=3D"rgb(=
+0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"1=
+0" pointer-events=3D"all"/><rect x=3D"9000.48" y=3D"3190" width=3D"215" hei=
+ght=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"transla=
+te(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=
+=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/fe=
+ature#Extensibility" style=3D"overflow: visible; text-align: left;"><div xm=
+lns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: u=
+nsafe center; justify-content: unsafe center; width: 52px; height: 1px; pad=
+ding-top: 818px; margin-left: 2251px;"><div data-drawio-colors=3D"color: rg=
+b(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: =
+center;"><div style=3D"display: inline-block; font-size: 12px; font-family:=
+ &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointe=
+r-events: all; white-space: normal; overflow-wrap: normal;"><font data-font=
+-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">bin<=
+/font></div></div></div></foreignObject><text x=3D"2277" y=3D"821" fill=3D"=
+rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-ancho=
+r=3D"middle">bin</text></switch></g><rect x=3D"7689.48" y=3D"1360" width=3D=
+"1287" height=3D"595" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" s=
+troke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><g tra=
+nsform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-even=
+ts=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w=
+3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-alig=
+n: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: fle=
+x; align-items: unsafe center; justify-content: unsafe center; width: 320px=
+; height: 1px; padding-top: 414px; margin-left: 1923px;"><div data-drawio-c=
+olors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size:=
+ 0px; text-align: center;"><div style=3D"display: inline-block; font-size: =
+12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-h=
+eight: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal=
+;"><span style=3D"font-size: 15px;">Folders created here are present in <b>=
+<u>PACKAGES</u></b> variable, BitBake knows what and where to put things us=
+ing the <b><u>FILES</u></b> variable, example: <b><u>FILES:${PN}</u></b> fi=
+les will go to <b><u>${PN}</u></b>=C2=A0folder which is in <b><u>PACKAGES</=
+u></b></span></div></div></div></foreignObject><text x=3D"2083" y=3D"418" f=
+ill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" tex=
+t-anchor=3D"middle">Folders created here are present in PACKAGES variable..=
+.</text></switch></g><rect x=3D"8640.48" y=3D"3680" width=3D"360" height=3D=
+"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 1px; height: 1px; padding-top: 935px; margin-left: 2205px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font =
+data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daugh=
+ter">do_package<br /></font></div></div></div></foreignObject><text x=3D"22=
+05" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">do_package&#xa;</text></switch></g><elli=
+pse cx=3D"8581.48" cy=3D"3740" rx=3D"60.00000000000001" ry=3D"60.0000000000=
+0001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 28px; height: 1px; padding-top: 935px; margin-left: 2131px;"><di=
+v data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-=
+box; font-size: 0px; text-align: center;"><div style=3D"display: inline-blo=
+ck; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0=
+, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overfl=
+ow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-=
+size: 15px;">16</b></font></div></div></div></foreignObject><text x=3D"2145=
+" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">16</text></switch></g><path d=3D"M 9988 23=
+20 L 9988 2674.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4"=
+ stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9988 2695=
+.53 L 9978.67 2667.53 L 9988 2674.53 L 9997.33 2667.53 Z" fill=3D"rgb(0, 0,=
+ 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" po=
+inter-events=3D"all"/><rect x=3D"9748" y=3D"2160" width=3D"480" height=3D"1=
+60" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 =
+-0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%=
+" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ex=
+tensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"h=
+ttp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe ce=
+nter; justify-content: unsafe center; width: 118px; height: 1px; padding-to=
+p: 560px; margin-left: 2438px;"><div data-drawio-colors=3D"color: rgb(0, 0,=
+ 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;=
+"><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;=
+Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-event=
+s: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D=
+"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">deploy-<b><=
+i>pkg</i></b></font></div></div></div></foreignObject><text x=3D"2497" y=3D=
+"564" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12=
+px" text-anchor=3D"middle">deploy-pkg</text></switch></g><path d=3D"M 9988 =
+2860 L 9988 3014.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"=
+4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9988 30=
+35.53 L 9978.67 3007.53 L 9988 3014.53 L 9997.33 3007.53 Z" fill=3D"rgb(0, =
+0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"all"/><rect x=3D"9748" y=3D"2700" width=3D"480" height=3D=
+"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0=
+)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.=
+5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"10=
+0%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#=
+Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D=
+"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe =
+center; justify-content: unsafe center; width: 118px; height: 1px; padding-=
+top: 695px; margin-left: 2438px;"><div data-drawio-colors=3D"color: rgb(0, =
+0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: cente=
+r;"><div style=3D"display: inline-block; font-size: 12px; font-family: &quo=
+t;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-eve=
+nts: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter"><b>${PAC=
+KAGE_ARCH}</b></font></div></div></div></foreignObject><text x=3D"2497" y=
+=3D"699" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">${PACKAGE_ARCH}</text></switch></g><rect x=3D=
+"9028" y=3D"1360" width=3D"1640" height=3D"595" fill=3D"rgb(255, 255, 255)"=
+ stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" poin=
+ter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><=
+foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requir=
+edFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ov=
+erflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xh=
+tml" style=3D"display: flex; align-items: unsafe center; justify-content: u=
+nsafe center; width: 408px; height: 1px; padding-top: 414px; margin-left: 2=
+258px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nor=
+mal; overflow-wrap: normal;"><font style=3D"font-size: 15px;">This can be <=
+b><u>rpms</u></b>, <b><u>debs</u></b> or <b><u>ipks</u></b>.<br />These are=
+ provided by<br /><b><u>package_rpm</u></b>, <b><u>package_deb</u></b> and =
+<b><u>package_ipk</u></b> classes respectively, use <b><u>PACKAGE_CLASSES</=
+u></b> for that as<br />content of <b><u>PACKAGE_CLASSES</u></b> will be ap=
+pended<br />to <b><u>INHERIT</u></b><br /></font></div></div></div></foreig=
+nObject><text x=3D"2462" y=3D"418" fill=3D"rgb(0, 0, 0)" font-family=3D"Lib=
+eration Sans" font-size=3D"12px" text-anchor=3D"middle">This can be rpms, d=
+ebs or ipks....</text></switch></g><path d=3D"M 10522 3105 L 10708 3105.59 =
+Q 10748 3105.71 10748 3065.71 L 10748 1320.57 Q 10748 1280.57 10708 1280.57=
+ L 7353.71 1280.57 Q 7313.71 1280.57 7313.8 1240.57 L 7313.92 1180.42" fill=
+=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" p=
+ointer-events=3D"stroke"/><path d=3D"M 7313.97 1153.42 L 7331.9 1189.45 L 7=
+313.92 1180.42 L 7295.9 1189.38 Z" fill=3D"#000000" stroke=3D"#000000" stro=
+ke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D=
+"9454" y=3D"3040" width=3D"1068" height=3D"130" rx=3D"19.5" ry=3D"19.5" fil=
+l=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/=
+><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject point=
+er-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:=
+//www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; te=
+xt-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displ=
+ay: flex; align-items: unsafe center; justify-content: unsafe center; width=
+: 265px; height: 1px; padding-top: 776px; margin-left: 2365px;"><div data-d=
+rawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; fon=
+t-size: 0px; text-align: center;"><div style=3D"display: inline-block; font=
+-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0);=
+ line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap:=
+ normal;">sayhello-0.1-r0.${PACKAGE_ARCH}.<i>pkg</i></div></div></div></for=
+eignObject><text x=3D"2497" y=3D"780" fill=3D"rgb(0, 0, 0)" font-family=3D"=
+Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">sayhello-0.1-r0.=
+${PACKAGE_ARCH}.pkg</text></switch></g><rect x=3D"10788" y=3D"2640" width=
+=3D"1480" height=3D"680" fill=3D"none" stroke=3D"#36393d" stroke-width=3D"4=
+" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><g transform=3D"transl=
+ate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" widt=
+h=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/f=
+eature#Extensibility" style=3D"overflow: visible; text-align: left;"><div x=
+mlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: =
+unsafe center; justify-content: unsafe center; width: 368px; height: 1px; p=
+adding-top: 745px; margin-left: 2698px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;"><font style=
+=3D"font-size: 15px;">This task also depends on <b><u>PACKAGE_CLASSES</u></=
+b>,<br /><b><u><i>pkg</i></u></b>=C2=A0can be <b><u>rpm</u></b>, <b><u>deb<=
+/u></b> or <b><u>ipk</u></b> for <b><u>package_rpm</u></b>,<br /><b><u>pack=
+age_deb</u></b> or <u style=3D"font-weight: bold;">package_ipk</u>=C2=A0res=
+pectively.<br />The generated package generally named using:<br /><b><u>${P=
+N}</u></b>, <b><u>${PR}</u></b>, <b><u>${PACKAGE_ARCH}</u></b> and=C2=A0<b>=
+<u><i>pkg</i></u></b><br /></font></div></div></div></foreignObject><text x=
+=3D"2882" y=3D"749" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" f=
+ont-size=3D"12px" text-anchor=3D"middle">This task also depends on PACKAGE_=
+CLASSES,...</text></switch></g><path d=3D"M 7314 520 L 7314 654.53" fill=3D=
+"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"stroke"/><path d=3D"M 7314 675.53 L 7300 647.53 L 7314 65=
+4.53 L 7328 647.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-=
+width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 7=
+454 440 Q 7454 440 7742.53 440" fill=3D"none" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12" pointer-e=
+vents=3D"stroke"/><path d=3D"M 7763.53 440 L 7735.53 449.33 L 7742.53 440 L=
+ 7735.53 430.67 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"7174" =
+y=3D"360" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255,=
+ 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 68px; height: 1px; padding-top: 110px; margin-left: 1795px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter">deploy</font></div></div></div></foreignObject><tex=
+t x=3D"1829" y=3D"114" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans=
+" font-size=3D"12px" text-anchor=3D"middle">deploy</text></switch></g><path=
+ d=3D"M 7313.71 840 L 7313.71 880.57 Q 7313.71 920.57 7313.71 910.29 L 7313=
+.71 905.14 Q 7313.71 900 7313.81 927.26 L 7313.91 954.53" fill=3D"none" str=
+oke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-ev=
+ents=3D"stroke"/><path d=3D"M 7313.98 975.53 L 7299.88 947.58 L 7313.91 954=
+.53 L 7327.88 947.48 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"7=
+054.48" y=3D"680" width=3D"519" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"=
+rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-even=
+ts=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignO=
+bject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatur=
+es=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: =
+visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" sty=
+le=3D"display: flex; align-items: unsafe center; justify-content: unsafe ce=
+nter; width: 128px; height: 1px; padding-top: 190px; margin-left: 1765px;">=
+<div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bord=
+er-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-=
+block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rg=
+b(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; ove=
+rflow-wrap: normal;"><b>${DEPLOY_DIR_<i>pkg</i>}</b></div></div></div></for=
+eignObject><text x=3D"1828" y=3D"194" fill=3D"rgb(0, 0, 0)" font-family=3D"=
+Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">${DEPLOY_DIR_pkg=
+}</text></switch></g><rect x=3D"9488" y=3D"3680" width=3D"600" height=3D"12=
+0" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D=
+"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject=
+ pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D=
+"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visib=
+le; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D=
+"display: flex; align-items: unsafe center; justify-content: unsafe center;=
+ width: 1px; height: 1px; padding-top: 935px; margin-left: 2447px;"><div da=
+ta-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box;=
+ font-size: 0px; text-align: center;"><div style=3D"display: inline-block; =
+font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0,=
+ 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font dat=
+a-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter=
+">do_package_write_<i>pkg</i><br /></font></div></div></div></foreignObject=
+><text x=3D"2447" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation=
+ Sans" font-size=3D"12px" text-anchor=3D"middle">do_package_write_pkg&#xa;<=
+/text></switch></g><ellipse cx=3D"9408" cy=3D"3740" rx=3D"60.00000000000001=
+" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 28px; height: 1px; padding-top: 935px; marg=
+in-left: 2338px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=
+=3D"1"><b style=3D"font-size: 15px;">17</b></font></div></div></div></forei=
+gnObject><text x=3D"2352" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Li=
+beration Sans" font-size=3D"12px" text-anchor=3D"middle">17</text></switch>=
+</g><path d=3D"M 10048 3740 Q 11528.57 3740 11528.03 3345.47" fill=3D"none"=
+ stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke=
+-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 11528.01 3324.=
+47 L 11537.38 3352.46 L 11528.03 3345.47 L 11518.71 3352.48 Z" fill=3D"rgb(=
+0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"1=
+0" pointer-events=3D"all"/><rect x=3D"7074" y=3D"980" width=3D"480" height=
+=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0=
+, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(=
+-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D=
+"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/featu=
+re#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 118px; height: 1px; paddi=
+ng-top: 265px; margin-left: 1770px;"><div data-drawio-colors=3D"color: rgb(=
+0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: ce=
+nter;"><div style=3D"display: inline-block; font-size: 12px; font-family: &=
+quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-=
+events: all; white-space: normal; overflow-wrap: normal;">${PACKAGE_ARCH}</=
+div></div></div></foreignObject><text x=3D"1829" y=3D"269" fill=3D"rgb(0, 0=
+, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mid=
+dle">${PACKAGE_ARCH}</text></switch></g><rect x=3D"7768" y=3D"672.52" width=
+=3D"1660" height=3D"167.48" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0,=
+ 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 413px; height: 1px; padding-top: 189px; margin-left: 1943px;"><div data-dr=
+awio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font=
+-size: 0px; text-align: center;"><div style=3D"display: inline-block; font-=
+size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); =
+line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: =
+normal;"><font style=3D"font-size: 15px;">For packages, this can be <b><u>I=
+PK</u></b>, <b><u>RPM</u></b> or <b><u>DEB</u></b> (<i>check step 17</i>)</=
+font></div></div></div></foreignObject><text x=3D"2150" y=3D"193" fill=3D"r=
+gb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=
+=3D"middle">For packages, this can be IPK, RPM or DEB (check step 17)</text=
+></switch></g><rect x=3D"7369.48" y=3D"480" width=3D"320" height=3D"100" rx=
+=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 78px; height: 1px; padding-top: 133px; margin-left: 1843px;"><div data-dra=
+wio-colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size:=
+ 0px; text-align: center;"><div style=3D"display: inline-block; font-size: =
+12px; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); =
+line-height: 1.2; pointer-events: all; font-weight: bold; white-space: norm=
+al; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis=
+.com/css?family=3DArchitects+Daughter">DEPLOY_DIR</font></div></div></div><=
+/foreignObject><text x=3D"1882" y=3D"136" fill=3D"#ffffff" font-family=3D"L=
+iberation Sans" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bo=
+ld">DEPLOY_DIR</text></switch></g><rect x=3D"4988" y=3D"80" width=3D"240" h=
+eight=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-=
+events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fore=
+ignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFe=
+atures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overfl=
+ow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml"=
+ style=3D"display: flex; align-items: unsafe center; justify-content: unsaf=
+e center; width: 58px; height: 1px; padding-top: 33px; margin-left: 1248px;=
+"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: border-=
+box; font-size: 0px; text-align: center;"><div style=3D"display: inline-blo=
+ck; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(2=
+55, 255, 255); line-height: 1.2; pointer-events: all; font-weight: bold; wh=
+ite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://f=
+onts.googleapis.com/css?family=3DArchitects+Daughter">TMPDIR</font></div></=
+div></div></foreignObject><text x=3D"1277" y=3D"36" fill=3D"#ffffff" font-f=
+amily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" font-we=
+ight=3D"bold">TMPDIR</text></switch></g><rect x=3D"1668" y=3D"480" width=3D=
+"250.72" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none=
+" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><sw=
+itch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" =
+requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 61px; height: 1px; padding-top: 133px; margin-le=
+ft: 418px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizin=
+g: border-box; font-size: 0px; text-align: center;"><div style=3D"display: =
+inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; co=
+lor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight=
+: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D=
+"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">DL_DIR</fon=
+t></div></div></div></foreignObject><text x=3D"448" y=3D"136" fill=3D"#ffff=
+ff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e" font-weight=3D"bold">DL_DIR</text></switch></g><path d=3D"M 7573.48 760 =
+L 7630.29 760.34 Q 7670.29 760.57 7706.42 758.98 L 7742.55 757.38" fill=3D"=
+none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" s=
+troke-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 7763.53 7=
+56.46 L 7735.97 767.02 L 7742.55 757.38 L 7735.15 748.37 Z" fill=3D"rgb(0, =
+0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"all"/><rect x=3D"10488" y=3D"2380" width=3D"600" height=
+=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-eve=
+nts=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreign=
+Object pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatu=
+res=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow:=
+ visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" st=
+yle=3D"display: flex; align-items: unsafe center; justify-content: unsafe c=
+enter; width: 1px; height: 1px; padding-top: 610px; margin-left: 2697px;"><=
+div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: borde=
+r-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-b=
+lock; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb=
+(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><fo=
+nt data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Da=
+ughter">do_package_write_<i>pkg</i><br /></font></div></div></div></foreign=
+Object><text x=3D"2697" y=3D"614" fill=3D"rgb(0, 0, 0)" font-family=3D"Libe=
+ration Sans" font-size=3D"12px" text-anchor=3D"middle">do_package_write_pkg=
+&#xa;</text></switch></g><ellipse cx=3D"10408" cy=3D"2440" rx=3D"60.0000000=
+0000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" strok=
+e-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 28px; height: 1px; padding-top: 610p=
+x; margin-left: 2588px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " =
+style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div =
+style=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberat=
+ion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all;=
+ white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https:=
+//fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" =
+size=3D"1"><b style=3D"font-size: 15px;">18</b></font></div></div></div></f=
+oreignObject><text x=3D"2602" y=3D"614" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">18</text></s=
+witch></g><path d=3D"M 10268 2310.29 Q 10879.43 2310.29 10879.43 1999.43 Q =
+10879.43 1688.57 10878.68 1140.47" fill=3D"none" stroke=3D"rgb(0, 0, 0)" st=
+roke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12" pointe=
+r-events=3D"stroke"/><path d=3D"M 10878.65 1119.47 L 10888.02 1147.46 L 108=
+78.68 1140.47 L 10869.35 1147.48 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/>=
+<rect x=3D"10148" y=3D"2260" width=3D"120" height=3D"100" rx=3D"15" ry=3D"1=
+5" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><path d=3D"M 10=
+088 2200 Q 10088.57 2077.14 10173.14 2077.14 Q 10257.71 2077.14 10257.94 19=
+80.47" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-mite=
+rlimit=3D"10" stroke-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=
+=3D"M 10257.99 1959.47 L 10267.26 1987.49 L 10257.94 1980.47 L 10248.59 198=
+7.45 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" st=
+roke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"9628" y=3D"805" w=
+idth=3D"1667.52" height=3D"310" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 415px; height: 1px; padding-top: 240px; margin-left: 2408px;"><div dat=
+a-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; =
+font-size: 0px; text-align: center;"><div style=3D"display: inline-block; f=
+ont-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, =
+0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;"><font style=3D"font-size: 15px;">This can be <b><u>PKGWRITEDIR=
+RPM</u></b>, <b><u>PKGWRITEDIRDEB</u></b> or <b><u>PKGWRITEDIRIPK</u></b> f=
+or <b><u>package_rpm</u></b>, <b><u>package_deb</u></b><br />or <b><u>packa=
+ge_ipk</u></b> respectively<br /></font></div></div></div></foreignObject><=
+text x=3D"2615" y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">This can be PKGWRITEDIRRPM, =
+PKGWRITEDIRDEB or PKGWRITEDIRIPK for pack...</text></switch></g><rect x=3D"=
+628" y=3D"2470" width=3D"1313" height=3D"410" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 326px; height: 1px; padding-top: 669px; margin-left: 158px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><span style=3D"font-size: 15px;">License checking happens in <b=
+><u>do_populate_lic</u></b> after <b><u>do_patch<br /></u></b>and before th=
+at a checksum check<br />happends on=C2=A0<b><u>LIC_FILES_CHKSUM</u></b> if=
+ the<br />license is not <b><u>CLOSED</u></b><br /></span></div></div></div=
+></foreignObject><text x=3D"321" y=3D"672" fill=3D"rgb(0, 0, 0)" font-famil=
+y=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">License che=
+cking happens in do_populate_lic after do_pa...</text></switch></g><rect x=
+=3D"3528.48" y=3D"1360" width=3D"1739.52" height=3D"280" fill=3D"none" stro=
+ke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-e=
+vents=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><forei=
+gnObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFea=
+tures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflo=
+w: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" =
+style=3D"display: flex; align-items: unsafe center; justify-content: unsafe=
+ center; width: 433px; height: 1px; padding-top: 375px; margin-left: 883px;=
+"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bo=
+rder-box; font-size: 0px; text-align: center;"><div style=3D"display: inlin=
+e-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: =
+rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; o=
+verflow-wrap: normal;"><span style=3D"font-size: 15px;">This variable is us=
+ed to separate recipes<br />based on their target. This has value of<br /><=
+b><u>${PACKAGE_ARCH}${TARGET_VENDOR}-${TARGET_OS}</u></b><br /></span></div=
+></div></div></foreignObject><text x=3D"1100" y=3D"379" fill=3D"rgb(0, 0, 0=
+)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+">This variable is used to separate recipes...</text></switch></g><path d=
+=3D"M 6588 660 Q 6863.43 660 6863.4 505.47" fill=3D"none" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 1=
+2" pointer-events=3D"stroke"/><path d=3D"M 6863.39 484.47 L 6872.73 512.47 =
+L 6863.4 505.47 L 6854.06 512.47 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/>=
+<rect x=3D"6148" y=3D"620" width=3D"440" height=3D"80" rx=3D"12" ry=3D"12" =
+fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 108px; height: 1px; padding-top: 165px; margin-left: 1538px;"><div dat=
+a-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; =
+font-size: 0px; text-align: center;"><div style=3D"display: inline-block; f=
+ont-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, =
+0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;">conf-notes.txt</div></div></div></foreignObject><text x=3D"159=
+2" y=3D"169" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-siz=
+e=3D"12px" text-anchor=3D"middle">conf-notes.txt</text></switch></g><path d=
+=3D"M 2580.02 520 Q 2580 660 3042.53 660" fill=3D"none" stroke=3D"rgb(0, 0,=
+ 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12"=
+ pointer-events=3D"stroke"/><path d=3D"M 3063.53 660 L 3035.53 669.33 L 304=
+2.53 660 L 3035.53 650.67 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=
+=3D"M 2374 440 Q 2215.43 440.57 2215.04 205.47" fill=3D"none" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"=
+12 12" pointer-events=3D"stroke"/><path d=3D"M 2215.01 184.47 L 2224.39 212=
+.46 L 2215.04 205.47 L 2205.72 212.49 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rg=
+b(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"a=
+ll"/><rect x=3D"2374" y=3D"360" width=3D"412.04" height=3D"160" rx=3D"24" r=
+y=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 101px; height: 1px; padding-top: 110px; mar=
+gin-left: 595px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">sstate-cache</font></di=
+v></div></div></foreignObject><text x=3D"645" y=3D"114" fill=3D"rgb(0, 0, 0=
+)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+">sstate-cache</text></switch></g><rect x=3D"2643.92" y=3D"480" width=3D"33=
+2.04" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" p=
+ointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switc=
+h><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" req=
+uiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D=
+"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999=
+/xhtml" style=3D"display: flex; align-items: unsafe center; justify-content=
+: unsafe center; width: 81px; height: 1px; padding-top: 133px; margin-left:=
+ 662px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: =
+border-box; font-size: 0px; text-align: center;"><div style=3D"display: inl=
+ine-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color=
+: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight: b=
+old; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"ht=
+tps://fonts.googleapis.com/css?family=3DArchitects+Daughter">SSTATE_DIR</fo=
+nt></div></div></div></foreignObject><text x=3D"702" y=3D"136" fill=3D"#fff=
+fff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"midd=
+le" font-weight=3D"bold">SSTATE_DIR</text></switch></g><rect x=3D"8927.96" =
+y=3D"3440" width=3D"360" height=3D"110" rx=3D"16.5" ry=3D"16.5" fill=3D"#ee=
+eeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g tran=
+sform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-event=
+s=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3=
+.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align=
+: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex=
+; align-items: unsafe center; justify-content: unsafe center; width: 88px; =
+height: 1px; padding-top: 874px; margin-left: 2233px;"><div data-drawio-col=
+ors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0=
+px; text-align: center;"><div style=3D"display: inline-block; font-size: 12=
+px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-hei=
+ght: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"=
+>sayhello</div></div></div></foreignObject><text x=3D"2277" y=3D"877" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">sayhello</text></switch></g><path d=3D"M 4660 1960 Q 4660 =
+2300 4904.57 2300 Q 5149.14 2300 5148.94 2611.65" fill=3D"none" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=
+=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 5148.92 2632.65 L 5139.6=
+1 2604.64 L 5148.94 2611.65 L 5158.27 2604.65 Z" fill=3D"rgb(0, 0, 0)" stro=
+ke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-eve=
+nts=3D"all"/><rect x=3D"3068" y=3D"480" width=3D"1640" height=3D"360" fill=
+=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12=
+ 12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)">=
+<switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100=
+%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" st=
+yle=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.or=
+g/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-c=
+ontent: unsafe center; width: 408px; height: 1px; padding-top: 165px; margi=
+n-left: 768px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"=
+box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"=
+display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&=
+quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-sp=
+ace: normal; overflow-wrap: normal;"><span style=3D"font-size: 15px;">This =
+folder contains cache for recipes build output, this is used by BitBake, if=
+ the recipe checksum did not change it knows that the output to use is the =
+same.<br /></span></div></div></div></foreignObject><text x=3D"972" y=3D"16=
+9" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px"=
+ text-anchor=3D"middle">This folder contains cache for recipes build output=
+, this is used by...</text></switch></g><rect x=3D"1395" y=3D"0" width=3D"1=
+640" height=3D"180" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4=
+" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><g transform=3D"transl=
+ate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" widt=
+h=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/f=
+eature#Extensibility" style=3D"overflow: visible; text-align: left;"><div x=
+mlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: =
+unsafe center; justify-content: unsafe center; width: 408px; height: 1px; p=
+adding-top: 23px; margin-left: 350px;"><div data-drawio-colors=3D"color: rg=
+b(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: =
+center;"><div style=3D"display: inline-block; font-size: 12px; font-family:=
+ &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointe=
+r-events: all; white-space: normal; overflow-wrap: normal;"><span style=3D"=
+font-size: 15px;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DLiberation+Sans">These directories can be shared accross builds to =
+save disk space and build time</font><br /></span></div></div></div></forei=
+gnObject><text x=3D"554" y=3D"26" fill=3D"rgb(0, 0, 0)" font-family=3D"Libe=
+ration Sans" font-size=3D"12px" text-anchor=3D"middle">These directories ca=
+n be shared accross builds to save disk space an...</text></switch></g><rec=
+t x=3D"7768" y=3D"350" width=3D"1667.52" height=3D"180" fill=3D"rgb(255, 25=
+5, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 =
+12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 415px; height: 1px; padding-top: 110px; margin=
+-left: 1943px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"=
+box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"=
+display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&=
+quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-sp=
+ace: normal; overflow-wrap: normal;"><font style=3D"font-size: 15px;">This =
+directory contains other output directories such as <b><u>images</u></b>, <=
+b><u>sdk</u></b> and <b><u>licenses</u></b><br /></font></div></div></div><=
+/foreignObject><text x=3D"2150" y=3D"114" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">This directo=
+ry contains other output directories such as images, sdk...</text></switch>=
+</g><rect x=3D"5908" y=3D"1020" width=3D"680" height=3D"520" fill=3D"none" =
+stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" point=
+er-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><f=
+oreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" require=
+dFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ove=
+rflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xht=
+ml" style=3D"display: flex; align-items: unsafe center; justify-content: un=
+safe center; width: 168px; height: 1px; padding-top: 320px; margin-left: 14=
+78px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizin=
+g: border-box; font-size: 0px; text-align: center;"><div style=3D"display: =
+inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; co=
+lor: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: norm=
+al; overflow-wrap: normal;"><font style=3D"font-size: 15px;">This file cont=
+ains all <b>layers</b> that BitBake should consider when looking for metada=
+ta.<br /></font></div></div></div></foreignObject><text x=3D"1562" y=3D"324=
+" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" =
+text-anchor=3D"middle">This file contains all layer...</text></switch></g><=
+rect x=3D"5396" y=3D"20" width=3D"1760" height=3D"160" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-eve=
+nts=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreign=
+Object pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatu=
+res=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow:=
+ visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" st=
+yle=3D"display: flex; align-items: unsafe center; justify-content: unsafe c=
+enter; width: 438px; height: 1px; padding-top: 25px; margin-left: 1350px;">=
+<div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bord=
+er-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-=
+block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rg=
+b(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; ove=
+rflow-wrap: normal;"><font style=3D"font-size: 15px;">This is base configur=
+ation file containing essential user config such as <b><u>MACHINE</u></b> a=
+nd <b><u>DISTRO</u></b><br /></font></div></div></div></foreignObject><text=
+ x=3D"1569" y=3D"29" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" =
+font-size=3D"12px" text-anchor=3D"middle">This is base configuration file c=
+ontaining essential user config such as...</text></switch></g><rect x=3D"61=
+40" y=3D"320" width=3D"964.52" height=3D"160" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 239px; height: 1px; padding-top: 100px; margin-left: 1536px;"><div dat=
+a-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; =
+font-size: 0px; text-align: center;"><div style=3D"display: inline-block; f=
+ont-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, =
+0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;"><font style=3D"font-size: 15px;">The message to show after <b>=
+source oe-init-build-env</b><br /></font></div></div></div></foreignObject>=
+<text x=3D"1656" y=3D"104" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation =
+Sans" font-size=3D"12px" text-anchor=3D"middle">The message to show after s=
+ource oe-init...</text></switch></g><rect x=3D"10948" y=3D"2400" width=3D"1=
+20" height=3D"80" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" =
+pointer-events=3D"all"/><rect x=3D"10348" y=3D"3065" width=3D"80" height=3D=
+"80" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-event=
+s=3D"all"/><rect x=3D"9948" y=3D"3700" width=3D"100" height=3D"80" fill=3D"=
+none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><r=
+ect x=3D"10028" y=3D"2200" width=3D"80" height=3D"80" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><rect x=3D"745=
+4" y=3D"725" width=3D"80" height=3D"80" fill=3D"none" stroke=3D"rgb(0, 0, 0=
+)" stroke-width=3D"4" pointer-events=3D"all"/></g><switch><g requiredFeatur=
+es=3D"http://www.w3.org/TR/SVG11/feature#Extensibility"/><a transform=3D"tr=
+anslate(0,-5)" xlink:href=3D"https://www.drawio.com/doc/faq/svg-export-text=
+-problems" target=3D"_blank"><text text-anchor=3D"middle" font-size=3D"10px=
+" x=3D"50%" y=3D"100%">Text is not SVG - cannot display</text></a></switch>=
+</svg>
+\ No newline at end of file
++<svg xmlns=3D"http://www.w3.org/2000/svg" xmlns:xlink=3D"http://www.w3.org=
+/1999/xlink" version=3D"1.1" width=3D"12270px" height=3D"3804px" viewBox=3D=
+"-0.5 -0.5 12270 3804" content=3D"&lt;mxfile host=3D&quot;app.diagrams.net&=
+quot; modified=3D&quot;2023-11-01T08:31:56.536Z&quot; agent=3D&quot;Mozilla=
+/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.=
+0.0.0 Safari/537.36&quot; etag=3D&quot;p-CQVME_iMteI52En1Eq&quot; version=
+=3D&quot;22.0.8&quot; type=3D&quot;device&quot;&gt;&lt;diagram name=3D&quot=
+;Page-1&quot; id=3D&quot;c7558073-3199-34d8-9f00-42111426c3f3&quot;&gt;7V1b=
+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
+rb97Sic74fw=3D=3D&lt;/diagram&gt;&lt;/mxfile&gt;" style=3D"background-color=
+: rgb(255, 255, 255);"><defs><style type=3D"text/css">@import url(https://f=
+onts.googleapis.com/css?family=3DLiberation+Sans);&#xa;</style></defs><g><r=
+ect x=3D"9428" y=3D"2640" width=3D"1120" height=3D"600" rx=3D"90" ry=3D"90"=
+ fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=
+=3D"12 12" pointer-events=3D"all"/><path d=3D"M 8868 3120.57 Q 8656.57 3120=
+.57 8656.57 1980.33" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"=
+4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12" pointer-events=3D"st=
+roke"/><path d=3D"M 8656.57 1959.33 L 8665.9 1987.33 L 8656.57 1980.33 L 86=
+47.24 1987.33 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 9228 3=
+600 Q 9228 3760.57 9608 3760.57 Q 9988 3760.57 9988 3280.42" fill=3D"none" =
+stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-eve=
+nts=3D"stroke"/><path d=3D"M 9988 3253.42 L 10006 3289.42 L 9988 3280.42 L =
+9970 3289.42 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" str=
+oke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"8868" y=3D"2640" w=
+idth=3D"480" height=3D"960" rx=3D"72" ry=3D"72" fill=3D"none" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"=
+all"/><rect x=3D"2868" y=3D"2640" width=3D"1080" height=3D"960" rx=3D"144" =
+ry=3D"144" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-=
+dasharray=3D"12 12" pointer-events=3D"all"/><rect x=3D"1082" y=3D"840" widt=
+h=3D"1080" height=3D"440" rx=3D"66" ry=3D"66" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><rect x=3D"2148" y=3D"2640" width=3D"560" height=3D"960" rx=3D"84" ry=
+=3D"84" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-das=
+harray=3D"12 12" pointer-events=3D"all"/><path d=3D"M 4928 160 L 4928 360" =
+fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"stroke"/><path d=3D"M 4928.57 160 L 4928.57 200.5=
+7 Q 4928.57 240.57 4888.57 240.57 L 1662.29 240.57 Q 1622.29 240.57 1622.19=
+ 280.57 L 1622.06 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-widt=
+h=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 16=
+22.01 355.53 L 1608.08 327.49 L 1622.06 334.53 L 1636.08 327.56 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><path d=3D"M 4928.57 160 L 4928.57 200.57 Q=
+ 4928.57 240.57 4968.57 240.57 L 5808.57 240.57 Q 5848.57 240.57 5848.38 28=
+0.57 L 5848.12 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 584=
+8.02 355.53 L 5834.16 327.46 L 5848.12 334.53 L 5862.16 327.6 Z" fill=3D"rg=
+b(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D=
+"10" pointer-events=3D"all"/><path d=3D"M 4928.57 160 L 4928.57 200.57 Q 49=
+28.57 240.57 4968.57 240.57 L 7273.71 240.57 Q 7313.71 240.57 7313.81 280.5=
+7 L 7313.94 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4=
+" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7313.99 =
+355.53 L 7299.92 327.56 L 7313.94 334.53 L 7327.92 327.49 Z" fill=3D"rgb(0,=
+ 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10"=
+ pointer-events=3D"all"/><path d=3D"M 4928.57 160 L 4928.57 200.57 Q 4928.5=
+7 240.57 4888.57 240.57 L 2620 240.57 Q 2580 240.57 2580.01 280.57 L 2580.0=
+2 334.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-m=
+iterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 2580.02 355.53 L 2=
+566.01 327.53 L 2580.02 334.53 L 2594.01 327.53 Z" fill=3D"rgb(0, 0, 0)" st=
+roke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-e=
+vents=3D"all"/><rect x=3D"4788" y=3D"0" width=3D"280" height=3D"160" rx=3D"=
+24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wi=
+dth=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale=
+(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 68px; height: 1px; padding-top: 20px; =
+margin-left: 1198px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " sty=
+le=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div sty=
+le=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation=
+ Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; wh=
+ite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://f=
+onts.googleapis.com/css?family=3DArchitects+Daughter">tmp</font></div></div=
+></div></foreignObject><text x=3D"1232" y=3D"24" fill=3D"rgb(0, 0, 0)" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">tmp</=
+text></switch></g><path d=3D"M 4928 520 L 4928 1040" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-event=
+s=3D"stroke"/><rect x=3D"4788" y=3D"360" width=3D"280" height=3D"160" rx=3D=
+"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-w=
+idth=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scal=
+e(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 68px; height: 1px; padding-top: 110px;=
+ margin-left: 1198px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " st=
+yle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div st=
+yle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberatio=
+n Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; w=
+hite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://=
+fonts.googleapis.com/css?family=3DArchitects+Daughter">work</font></div></d=
+iv></div></foreignObject><text x=3D"1232" y=3D"114" fill=3D"rgb(0, 0, 0)" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">wo=
+rk</text></switch></g><path d=3D"M 4928 1200 L 4928.29 1240.57 Q 4928.57 12=
+80.57 4968.57 1280.57 L 5648.57 1280.57 Q 5688.57 1280.57 5688.57 1320.29 L=
+ 5688.57 1360" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" str=
+oke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 4928 1200 L 4=
+928.29 1240.57 Q 4928.57 1280.57 4888.57 1280.57 L 3156 1280.57 Q 3116 1280=
+.57 3115.98 1320.29 L 3115.96 1360" fill=3D"none" stroke=3D"rgb(0, 0, 0)" s=
+troke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path=
+ d=3D"M 4588 1120 Q 4398.29 1120.57 4398.24 1334.53" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dashar=
+ray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 4398.24 1355.53 L 438=
+8.91 1327.53 L 4398.24 1334.53 L 4407.58 1327.53 Z" fill=3D"rgb(0, 0, 0)" s=
+troke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-=
+events=3D"all"/><rect x=3D"4588" y=3D"1040" width=3D"680" height=3D"160" rx=
+=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 168px; height: 1px; padding-top: 280=
+px; margin-left: 1148px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); "=
+ style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div=
+ style=3D"display: inline-block; font-size: 12px; font-family: &quot;Libera=
+tion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all=
+; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter"><b>${MULTIMACH_TA=
+RGET_OS}</b></font></div></div></div></foreignObject><text x=3D"1232" y=3D"=
+284" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12p=
+x" text-anchor=3D"middle">${MULTIMACH_TARGET_OS}</text></switch></g><path d=
+=3D"M 3115.96 1520 L 3116 1680" fill=3D"none" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><rect x=
+=3D"2975.96" y=3D"1360" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fi=
+ll=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 68px; height: 1px; padding-top: 360px; margin-left: 745p=
+x;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: =
+border-box; font-size: 0px; text-align: center;"><div style=3D"display: inl=
+ine-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color=
+: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal;=
+ overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.co=
+m/css?family=3DArchitects+Daughter">libhello</font></div></div></div></fore=
+ignObject><text x=3D"779" y=3D"364" fill=3D"rgb(0, 0, 0)" font-family=3D"Li=
+beration Sans" font-size=3D"12px" text-anchor=3D"middle">libhello</text></s=
+witch></g><path d=3D"M 5688.57 1520 L 5688.57 1560.57 Q 5688.57 1600.57 568=
+8.57 1570.29 L 5688.57 1555.14 Q 5688.57 1540 5688.29 1580 L 5688 1620" fil=
+l=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"=
+10" pointer-events=3D"stroke"/><rect x=3D"5548" y=3D"1360" width=3D"280" he=
+ight=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(=
+0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"transl=
+ate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" widt=
+h=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/f=
+eature#Extensibility" style=3D"overflow: visible; text-align: left;"><div x=
+mlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: =
+unsafe center; justify-content: unsafe center; width: 68px; height: 1px; pa=
+dding-top: 360px; margin-left: 1388px;"><div data-drawio-colors=3D"color: r=
+gb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align:=
+ center;"><div style=3D"display: inline-block; font-size: 12px; font-family=
+: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; point=
+er-events: all; white-space: normal; overflow-wrap: normal;"><font data-fon=
+t-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">say=
+hello</font></div></div></div></foreignObject><text x=3D"1422" y=3D"364" fi=
+ll=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text=
+-anchor=3D"middle">sayhello</text></switch></g><path d=3D"M 3116 1840 L 311=
+6 1960.57 Q 3116 2000.57 3076 2000.57 L 2036 2000.57 Q 1996 2000.57 1996 20=
+40.57 L 1996 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1996 2=
+155.53 L 1986.67 2127.53 L 1996 2134.53 L 2005.33 2127.53 Z" fill=3D"rgb(0,=
+ 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10"=
+ pointer-events=3D"all"/><path d=3D"M 3116 1840 L 3116 1960.57 Q 3116 2000.=
+57 3076 2000.57 L 2468 2000.57 Q 2428 2000.57 2428 2040.57 L 2428 2134.53" =
+fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"stroke"/><path d=3D"M 2428 2155.53 L 2418.67 2127=
+.53 L 2428 2134.53 L 2437.33 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"al=
+l"/><path d=3D"M 3116 1840 L 3115.96 2134.53" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stro=
+ke"/><path d=3D"M 3115.96 2155.53 L 3101.96 2127.53 L 3115.96 2134.53 L 312=
+9.96 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 3116 1=
+840 L 3116 1960.57 Q 3116 2000.57 3156 2000.57 L 4268 2000.57 Q 4308 2000.5=
+7 4308 2040.57 L 4308 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke=
+-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D=
+"M 4308 2155.53 L 4294 2127.53 L 4308 2134.53 L 4322 2127.53 Z" fill=3D"rgb=
+(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"=
+10" pointer-events=3D"all"/><path d=3D"M 3116 1840 L 3116 1960.57 Q 3116 20=
+00.57 3076 2000.57 L 1508 2000.57 Q 1468 2000.57 1468 2040.57 L 1468 2134.5=
+3" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlim=
+it=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1468 2155.53 L 1458.67 21=
+27.53 L 1468 2134.53 L 1477.33 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"=
+all"/><rect x=3D"2976" y=3D"1680" width=3D"280" height=3D"160" rx=3D"24" ry=
+=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 68px; height: 1px; padding-top: 440px; margin-=
+left: 745px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"bo=
+x-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"di=
+splay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&qu=
+ot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-spac=
+e: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goo=
+gleapis.com/css?family=3DArchitects+Daughter">0.1-r0</font></div></div></di=
+v></foreignObject><text x=3D"779" y=3D"444" fill=3D"rgb(0, 0, 0)" font-fami=
+ly=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">0.1-r0</te=
+xt></switch></g><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.=
+57 5648.57 2000.57 L 5568.57 2000.57 Q 5528.57 2000.57 5528.43 2040.57 L 55=
+28.09 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" str=
+oke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5528.02 2155.=
+53 L 5514.12 2127.48 L 5528.09 2134.53 L 5542.12 2127.58 Z" fill=3D"rgb(0, =
+0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.=
+57 2000.57 5728.57 2000.57 L 6988 2000.57 Q 7028 2000.57 7028 2040.57 L 702=
+8 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-=
+miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7028 2155.53 L 70=
+14 2127.53 L 7028 2134.53 L 7042 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D=
+"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=
+=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.57 572=
+8.57 2000.57 L 7676 2000.57 Q 7716 2000.57 7715.99 2040.57 L 7715.97 2134.5=
+3" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlim=
+it=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7715.96 2155.53 L 7701.97=
+ 2127.52 L 7715.97 2134.53 L 7729.97 2127.53 Z" fill=3D"rgb(0, 0, 0)" strok=
+e=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-even=
+ts=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.57 5=
+728.57 2000.57 L 8313.71 2000.57 Q 8353.71 2000.57 8353.79 2040.57 L 8353.9=
+5 2134.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-=
+miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 8353.99 2155.53 L=
+ 8339.94 2127.55 L 8353.95 2134.53 L 8367.94 2127.5 Z" fill=3D"rgb(0, 0, 0)=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"all"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 20=
+00.57 5728.57 2000.57 L 9068 2000.57 Q 9108 2000.57 9108 2040.57 L 9108 213=
+4.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miter=
+limit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9108 2155.53 L 9094 21=
+27.53 L 9108 2134.53 L 9122 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(=
+0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all=
+"/><path d=3D"M 5688.57 1780 L 5688.57 1960.57 Q 5688.57 2000.57 5728.57 20=
+00.57 L 9948 2000.57 Q 9988 2000.57 9988 2040.57 L 9988 2134.53" fill=3D"no=
+ne" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poi=
+nter-events=3D"stroke"/><path d=3D"M 9988 2155.53 L 9974 2127.53 L 9988 213=
+4.53 L 10002 2127.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"5=
+548" y=3D"1620" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rg=
+b(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 68px; height: 1px; padding-top: 425px; margin-left: 1388px;"><di=
+v data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-=
+box; font-size: 0px; text-align: center;"><div style=3D"display: inline-blo=
+ck; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0=
+, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overfl=
+ow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter">0.1-r0</font></div></div></div></foreignObject=
+><text x=3D"1422" y=3D"429" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation=
+ Sans" font-size=3D"12px" text-anchor=3D"middle">0.1-r0</text></switch></g>=
+<path d=3D"M 1622.29 520 L 1622.29 560.57 Q 1622.29 600.57 1622.29 560.57 L=
+ 1622.29 540.57 Q 1622.29 520.57 1622.29 560.29 L 1622.29 600" fill=3D"none=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"stroke"/><path d=3D"M 1762 440 Q 2215.43 440.57 2215.04 205.47=
+" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimi=
+t=3D"10" stroke-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M=
+ 2215.01 184.47 L 2224.39 212.46 L 2215.04 205.47 L 2205.72 212.49 Z" fill=
+=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterli=
+mit=3D"10" pointer-events=3D"all"/><rect x=3D"1482" y=3D"360" width=3D"280"=
+ height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 68px; height: 1px;=
+ padding-top: 110px; margin-left: 371px;"><div data-drawio-colors=3D"color:=
+ rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-alig=
+n: center;"><div style=3D"display: inline-block; font-size: 12px; font-fami=
+ly: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poi=
+nter-events: all; white-space: normal; overflow-wrap: normal;"><font data-f=
+ont-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">d=
+ownloads</font></div></div></div></foreignObject><text x=3D"405" y=3D"114" =
+fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" te=
+xt-anchor=3D"middle">downloads</text></switch></g><path d=3D"M 1622 760 L 1=
+622.14 800.57 Q 1622.29 840.57 1622.29 800.57 L 1622.29 780.57 Q 1622.29 76=
+0.57 1622.29 800.29 L 1622.29 840" fill=3D"none" stroke=3D"rgb(0, 0, 0)" st=
+roke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><rect =
+x=3D"1482" y=3D"600" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fill=
+=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-=
+events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fore=
+ignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFe=
+atures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overfl=
+ow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml"=
+ style=3D"display: flex; align-items: unsafe center; justify-content: unsaf=
+e center; width: 68px; height: 1px; padding-top: 170px; margin-left: 371px;=
+"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bo=
+rder-box; font-size: 0px; text-align: center;"><div style=3D"display: inlin=
+e-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: =
+rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; o=
+verflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/=
+css?family=3DArchitects+Daughter">git2</font></div></div></div></foreignObj=
+ect><text x=3D"405" y=3D"174" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle">git2</text></switch></g>=
+<path d=3D"M 2082 1160 L 2628 1160.53 Q 2668 1160.57 2668 1200.57 L 2668 22=
+00.57 Q 2668 2240.57 2628 2240.41 L 2568.42 2240.16" fill=3D"none" stroke=
+=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D=
+"stroke"/><path d=3D"M 2541.42 2240.05 L 2577.49 2222.2 L 2568.42 2240.16 L=
+ 2577.34 2258.2 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" =
+stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"1162" y=3D"880"=
+ width=3D"920" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"#eeeeee" stroke=
+=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 228px; height: 1px=
+; padding-top: 240px; margin-left: 291px;"><div data-drawio-colors=3D"color=
+: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-ali=
+gn: center;"><div style=3D"display: inline-block; font-size: 12px; font-fam=
+ily: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; po=
+inter-events: all; white-space: normal; overflow-wrap: normal;">github.com.=
+&lt;username&gt;.sayhello</div></div></div></foreignObject><text x=3D"405" =
+y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">github.com.&lt;username&gt;.sayhello</text=
+></switch></g><path d=3D"M 2082 960 L 6628 960.57 Q 6668 960.57 6668 1000.5=
+7 L 6668 2200.57 Q 6668 2240.57 6708 2240.48 L 6887.58 2240.09" fill=3D"non=
+e" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-=
+events=3D"stroke"/><path d=3D"M 6914.58 2240.03 L 6878.62 2258.11 L 6887.58=
+ 2240.09 L 6878.54 2222.11 Z" fill=3D"#000000" stroke=3D"#000000" stroke-wi=
+dth=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"1162=
+" y=3D"1080" width=3D"920" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"#eeee=
+ee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transf=
+orm=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 228px; =
+height: 1px; padding-top: 290px; margin-left: 291px;"><div data-drawio-colo=
+rs=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0p=
+x; text-align: center;"><div style=3D"display: inline-block; font-size: 12p=
+x; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heig=
+ht: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">=
+github.com.&lt;username&gt;.libhello</div></div></div></foreignObject><text=
+ x=3D"405" y=3D"294" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" =
+font-size=3D"12px" text-anchor=3D"middle">github.com.&lt;username&gt;.libhe=
+llo</text></switch></g><path d=3D"M 2428 2320 Q 2428 2320 2428 2614.53" fil=
+l=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"=
+10" pointer-events=3D"stroke"/><path d=3D"M 2428 2635.53 L 2414 2607.53 L 2=
+428 2614.53 L 2442 2607.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect =
+x=3D"2328" y=3D"2160" width=3D"200" height=3D"160" rx=3D"24" ry=3D"24" fill=
+=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-=
+events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fore=
+ignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFe=
+atures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overfl=
+ow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml"=
+ style=3D"display: flex; align-items: unsafe center; justify-content: unsaf=
+e center; width: 48px; height: 1px; padding-top: 560px; margin-left: 583px;=
+"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bo=
+rder-box; font-size: 0px; text-align: center;"><div style=3D"display: inlin=
+e-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: =
+rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; o=
+verflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/=
+css?family=3DArchitects+Daughter">git</font></div></div></div></foreignObje=
+ct><text x=3D"607" y=3D"564" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberatio=
+n Sans" font-size=3D"12px" text-anchor=3D"middle">git</text></switch></g><r=
+ect x=3D"2212" y=3D"2720" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" f=
+ill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all=
+"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject poi=
+nter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"htt=
+p://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; =
+text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"dis=
+play: flex; align-items: unsafe center; justify-content: unsafe center; wid=
+th: 112px; height: 1px; padding-top: 690px; margin-left: 554px;"><div data-=
+drawio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; font-si=
+ze: 0px; text-align: center;"><div style=3D"display: inline-block; font-siz=
+e: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); =
+line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: =
+normal;">Makefile</div></div></div></foreignObject><text x=3D"610" y=3D"694=
+" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text-=
+anchor=3D"middle">Makefile</text></switch></g><path d=3D"M 2212 2880.57 L 2=
+117.14 2880.57 Q 2077.14 2880.57 2077.14 2840.57 L 2077.14 2714.86 Q 2077.1=
+4 2674.86 2037.14 2674.9 L 1966.47 2674.97" fill=3D"none" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 1=
+2" pointer-events=3D"stroke"/><path d=3D"M 1945.47 2675 L 1973.46 2665.63 L=
+ 1966.47 2674.97 L 1973.48 2684.3 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0,=
+ 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/=
+><rect x=3D"2212" y=3D"2840" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12=
+" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"=
+all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject =
+pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"=
+http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visibl=
+e; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"=
+display: flex; align-items: unsafe center; justify-content: unsafe center; =
+width: 112px; height: 1px; padding-top: 720px; margin-left: 554px;"><div da=
+ta-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box;=
+ font-size: 0px; text-align: center;"><div style=3D"display: inline-block; =
+font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0,=
+ 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-w=
+rap: normal;">LICENSE</div></div></div></foreignObject><text x=3D"610" y=3D=
+"724" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12=
+px" text-anchor=3D"middle">LICENSE</text></switch></g><path d=3D"M 2212 300=
+0 Q 2028 3000.57 2028 3060.57 Q 2028 3120.57 2171.58 3120.13" fill=3D"none"=
+ stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-ev=
+ents=3D"stroke"/><path d=3D"M 2198.58 3120.04 L 2162.62 3132.15 L 2171.58 3=
+120.13 L 2162.55 3108.15 Z" fill=3D"#000000" stroke=3D"#000000" stroke-widt=
+h=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"2212" =
+y=3D"2960" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5"=
+ stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transform=
+=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"=
+none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/=
+TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: lef=
+t;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; ali=
+gn-items: unsafe center; justify-content: unsafe center; width: 112px; heig=
+ht: 1px; padding-top: 750px; margin-left: 554px;"><div data-drawio-colors=
+=3D"color: #333333; " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: =
+1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">fix.=
+patch</div></div></div></foreignObject><text x=3D"610" y=3D"754" fill=3D"#3=
+33333" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mi=
+ddle">fix.patch</text></switch></g><path d=3D"M 2214.74 3151.44 Q 1988 3151=
+.43 1988 3278.29 Q 1988 3405.14 2179.58 3405.02" fill=3D"none" stroke=3D"#0=
+00000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"strok=
+e"/><path d=3D"M 2206.58 3405.01 L 2170.6 3423.03 L 2179.58 3405.02 L 2170.=
+57 3387.03 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" strok=
+e-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"2212" y=3D"3080" wid=
+th=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=3D"#66=
+6666" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(=
+-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D=
+"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/featu=
+re#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 112px; height: 1px; paddi=
+ng-top: 780px; margin-left: 554px;"><div data-drawio-colors=3D"color: #3333=
+33; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"=
+><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;L=
+iberation Sans&quot;; color: rgb(51, 51, 51); line-height: 1.2; pointer-eve=
+nts: all; white-space: normal; overflow-wrap: normal;">hellolib.c</div></di=
+v></div></foreignObject><text x=3D"610" y=3D"784" fill=3D"#333333" font-fam=
+ily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">hellolib.=
+c</text></switch></g><rect x=3D"1896" y=3D"2160" width=3D"200" height=3D"16=
+0" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -=
+0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%"=
+ height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ext=
+ensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"ht=
+tp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cen=
+ter; justify-content: unsafe center; width: 48px; height: 1px; padding-top:=
+ 560px; margin-left: 475px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0)=
+; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><=
+div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Lib=
+eration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: =
+all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"ht=
+tps://fonts.googleapis.com/css?family=3DArchitects+Daughter">temp</font></d=
+iv></div></div></foreignObject><text x=3D"499" y=3D"564" fill=3D"rgb(0, 0, =
+0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e">temp</text></switch></g><path d=3D"M 4308 2320 L 4308 2640" fill=3D"none=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"stroke"/><rect x=3D"4068" y=3D"2160" width=3D"480" height=3D"1=
+60" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 =
+-0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%=
+" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ex=
+tensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"h=
+ttp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe ce=
+nter; justify-content: unsafe center; width: 118px; height: 1px; padding-to=
+p: 560px; margin-left: 1018px;"><div data-drawio-colors=3D"color: rgb(0, 0,=
+ 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;=
+"><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;=
+Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-event=
+s: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D=
+"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">sysroot-des=
+tdir</font></div></div></div></foreignObject><text x=3D"1077" y=3D"564" fil=
+l=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-=
+anchor=3D"middle">sysroot-destdir</text></switch></g><path d=3D"M 5528 2320=
+ L 5528 2614.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" s=
+troke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5528 2635.5=
+3 L 5518.67 2607.53 L 5528 2614.53 L 5537.33 2607.53 Z" fill=3D"rgb(0, 0, 0=
+)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poin=
+ter-events=3D"all"/><rect x=3D"5308" y=3D"2160" width=3D"440" height=3D"160=
+" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" s=
+troke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0=
+.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" =
+height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Exte=
+nsibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"htt=
+p://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cent=
+er; justify-content: unsafe center; width: 108px; height: 1px; padding-top:=
+ 560px; margin-left: 1328px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0=
+); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;">=
+<div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Li=
+beration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events:=
+ all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"h=
+ttps://fonts.googleapis.com/css?family=3DArchitects+Daughter">recipe-sysroo=
+t</font></div></div></div></foreignObject><text x=3D"1382" y=3D"564" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">recipe-sysroot</text></switch></g><path d=3D"M 3116 2320 L=
+ 3116 2694.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" str=
+oke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 3116 2715.53 =
+L 3106.67 2687.53 L 3116 2694.53 L 3125.33 2687.53 Z" fill=3D"rgb(0, 0, 0)"=
+ stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointe=
+r-events=3D"all"/><rect x=3D"2989.96" y=3D"2160" width=3D"252" height=3D"16=
+0" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -=
+0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%"=
+ height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ext=
+ensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"ht=
+tp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cen=
+ter; justify-content: unsafe center; width: 61px; height: 1px; padding-top:=
+ 560px; margin-left: 748px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0)=
+; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><=
+div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Lib=
+eration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: =
+all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"ht=
+tps://fonts.googleapis.com/css?family=3DArchitects+Daughter">image</font></=
+div></div></div></foreignObject><text x=3D"779" y=3D"564" fill=3D"rgb(0, 0,=
+ 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"midd=
+le">image</text></switch></g><path d=3D"M 3116 2880 L 3116 2920.57 Q 3116 2=
+960.57 3115.99 2987.55 L 3115.99 3014.53" fill=3D"none" stroke=3D"rgb(0, 0,=
+ 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/=
+><path d=3D"M 3115.98 3035.53 L 3106.65 3007.53 L 3115.99 3014.53 L 3125.32=
+ 3007.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4=
+" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 3116 2880 Q=
+ 3116 2960.57 3354.86 2960.57 Q 3593.71 2960.57 3593.91 3014.53" fill=3D"no=
+ne" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poi=
+nter-events=3D"stroke"/><path d=3D"M 3593.98 3035.53 L 3584.55 3007.56 L 35=
+93.91 3014.53 L 3603.22 3007.49 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0=
+, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><=
+rect x=3D"3029" y=3D"2720" width=3D"174" height=3D"160" rx=3D"24" ry=3D"24"=
+ fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" poi=
+nter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch>=
+<foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requi=
+redFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"o=
+verflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/x=
+html" style=3D"display: flex; align-items: unsafe center; justify-content: =
+unsafe center; width: 42px; height: 1px; padding-top: 700px; margin-left: 7=
+58px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizin=
+g: border-box; font-size: 0px; text-align: center;"><div style=3D"display: =
+inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; co=
+lor: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: norm=
+al; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis=
+.com/css?family=3DArchitects+Daughter">usr</font></div></div></div></foreig=
+nObject><text x=3D"779" y=3D"704" fill=3D"rgb(0, 0, 0)" font-family=3D"Libe=
+ration Sans" font-size=3D"12px" text-anchor=3D"middle">usr</text></switch><=
+/g><path d=3D"M 3115.98 3200 L 3116 3294.53" fill=3D"none" stroke=3D"rgb(0,=
+ 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"strok=
+e"/><path d=3D"M 3116 3315.53 L 3106.66 3287.53 L 3116 3294.53 L 3125.33 32=
+87.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" s=
+troke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"3008.48" y=3D"30=
+40" width=3D"215" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, =
+255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g=
+ transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-=
+events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://w=
+ww.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-=
+align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display:=
+ flex; align-items: unsafe center; justify-content: unsafe center; width: 5=
+2px; height: 1px; padding-top: 780px; margin-left: 753px;"><div data-drawio=
+-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-siz=
+e: 0px; text-align: center;"><div style=3D"display: inline-block; font-size=
+: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line=
+-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: norm=
+al;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchi=
+tects+Daughter">include</font></div></div></div></foreignObject><text x=3D"=
+779" y=3D"784" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-s=
+ize=3D"12px" text-anchor=3D"middle">include</text></switch></g><path d=3D"M=
+ 3593.71 3200 L 3593.71 3240.57 Q 3593.71 3280.57 3593.76 3287.55 L 3593.82=
+ 3294.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-m=
+iterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 3593.97 3315.53 L =
+3579.77 3287.63 L 3593.82 3294.53 L 3607.76 3287.43 Z" fill=3D"rgb(0, 0, 0)=
+" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" point=
+er-events=3D"all"/><rect x=3D"3507" y=3D"3040" width=3D"174" height=3D"160"=
+ rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" st=
+roke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.=
+5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" h=
+eight=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Exten=
+sibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http=
+://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cente=
+r; justify-content: unsafe center; width: 42px; height: 1px; padding-top: 7=
+80px; margin-left: 878px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); =
+" style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><di=
+v style=3D"display: inline-block; font-size: 12px; font-family: &quot;Liber=
+ation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: al=
+l; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"http=
+s://fonts.googleapis.com/css?family=3DArchitects+Daughter">lib</font></div>=
+</div></div></foreignObject><text x=3D"899" y=3D"784" fill=3D"rgb(0, 0, 0)"=
+ font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">=
+lib</text></switch></g><rect x=3D"2956" y=3D"3320" width=3D"320" height=3D"=
+100" rx=3D"15" ry=3D"15" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 78px; height: 1px; padding-top: 843px; marg=
+in-left: 740px;"><div data-drawio-colors=3D"color: #333333; " style=3D"box-=
+sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"disp=
+lay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot=
+;; color: rgb(51, 51, 51); line-height: 1.2; pointer-events: all; white-spa=
+ce: normal; overflow-wrap: normal;">hellolib.h</div></div></div></foreignOb=
+ject><text x=3D"779" y=3D"846" fill=3D"#333333" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">hellolib.h</text></switch></=
+g><rect x=3D"3348" y=3D"3350" width=3D"480" height=3D"80" rx=3D"12" ry=3D"1=
+2" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D=
+"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject=
+ pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D=
+"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visib=
+le; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D=
+"display: flex; align-items: unsafe center; justify-content: unsafe center;=
+ width: 118px; height: 1px; padding-top: 848px; margin-left: 838px;"><div d=
+ata-drawio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; fon=
+t-size: 0px; text-align: center;"><div style=3D"display: inline-block; font=
+-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 5=
+1); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;">libhello.so.1</div></div></div></foreignObject><text x=3D"897"=
+ y=3D"851" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12=
+px" text-anchor=3D"middle">libhello.so.1</text></switch></g><rect x=3D"3348=
+" y=3D"3450" width=3D"480" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#f5f5=
+f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transf=
+orm=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 118px; =
+height: 1px; padding-top: 875px; margin-left: 838px;"><div data-drawio-colo=
+rs=3D"color: #333333; " style=3D"box-sizing: border-box; font-size: 0px; te=
+xt-align: center;"><div style=3D"display: inline-block; font-size: 12px; fo=
+nt-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height=
+: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">li=
+bhello.so.0.1</div></div></div></foreignObject><text x=3D"897" y=3D"879" fi=
+ll=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text-anch=
+or=3D"middle">libhello.so.0.1</text></switch></g><rect x=3D"3320" y=3D"3320=
+" width=3D"548" height=3D"250" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke=
+-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><path d=3D"=
+M 4428 3600 Q 4428 3760.57 4978.29 3760.57 Q 5528.57 3760.57 5528.14 3640.4=
+2" fill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=
+=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5528.05 3613.42 L 5546.18 3=
+649.35 L 5528.14 3640.42 L 5510.18 3649.48 Z" fill=3D"#000000" stroke=3D"#0=
+00000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/=
+><rect x=3D"4068" y=3D"2640" width=3D"480" height=3D"960" rx=3D"72" ry=3D"7=
+2" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" stroke-dasharray=
+=3D"12 12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scal=
+e(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 118px; height: 1px; padding-top: 780px=
+; margin-left: 1018px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " s=
+tyle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div s=
+tyle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberati=
+on Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; =
+white-space: normal; overflow-wrap: normal;">Everything in <b>image</b> fol=
+der that is present in <b>SYSROOT_DIRS</b> will be copied here.</div></div>=
+</div></foreignObject><text x=3D"1077" y=3D"784" fill=3D"rgb(0, 0, 0)" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">Every=
+thing in image...</text></switch></g><path d=3D"M 3678 3600 Q 3678.29 3760.=
+57 3993.14 3760.57 Q 4308 3760.57 4308 3640.42" fill=3D"none" stroke=3D"#00=
+0000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"stroke=
+"/><path d=3D"M 4308 3613.42 L 4326 3649.42 L 4308 3640.42 L 4290 3649.42 Z=
+" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><path d=3D"M 2428 3600 Q 2428 3760.57 2941.=
+14 3760.57 Q 3454.29 3760.57 3454.4 3639.46" fill=3D"none" stroke=3D"#00000=
+0" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/>=
+<path d=3D"M 3454.43 3612.46 L 3472.39 3648.47 L 3454.4 3639.46 L 3436.39 3=
+648.44 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12" stroke-mi=
+terlimit=3D"10" pointer-events=3D"all"/><rect x=3D"2748" y=3D"3680" width=
+=3D"360" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D=
+"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 1px; height: 1px; padding-top: 935px; margin-l=
+eft: 732px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter">do_install</font></div></div></div></foreignObject>=
+<text x=3D"732" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">do_install</text></switch></=
+g><rect x=3D"2220" y=3D"3350" width=3D"456" height=3D"110" rx=3D"16.5" ry=
+=3D"16.5" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-ev=
+ents=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreig=
+nObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeat=
+ures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow=
+: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" s=
+tyle=3D"display: flex; align-items: unsafe center; justify-content: unsafe =
+center; width: 112px; height: 1px; padding-top: 851px; margin-left: 556px;"=
+><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bor=
+der-box; font-size: 0px; text-align: center;"><div style=3D"display: inline=
+-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: r=
+gb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; ov=
+erflow-wrap: normal;">libhello.so.0.1</div></div></div></foreignObject><tex=
+t x=3D"612" y=3D"855" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans"=
+ font-size=3D"12px" text-anchor=3D"middle">libhello.so.0.1</text></switch><=
+/g><rect x=3D"1668" y=3D"3180" width=3D"440" height=3D"120" fill=3D"#eeeeee=
+" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transfor=
+m=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D=
+"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org=
+/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: le=
+ft;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; al=
+ign-items: unsafe center; justify-content: unsafe center; width: 1px; heigh=
+t: 1px; padding-top: 810px; margin-left: 472px;"><div data-drawio-colors=3D=
+"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; te=
+xt-align: center;"><div style=3D"display: inline-block; font-size: 12px; fo=
+nt-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1=
+.2; pointer-events: all; white-space: nowrap;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_configure<br /=
+></font></div></div></div></foreignObject><text x=3D"472" y=3D"814" fill=3D=
+"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anch=
+or=3D"middle">do_configure&#xa;</text></switch></g><rect x=3D"2212" y=3D"32=
+00" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=
+=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 112px; height: 1px=
+; padding-top: 810px; margin-left: 554px;"><div data-drawio-colors=3D"color=
+: #333333; " style=3D"box-sizing: border-box; font-size: 0px; text-align: c=
+enter;"><div style=3D"display: inline-block; font-size: 12px; font-family: =
+&quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;">hellolib.h</d=
+iv></div></div></foreignObject><text x=3D"610" y=3D"814" fill=3D"#333333" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">he=
+llolib.h</text></switch></g><rect x=3D"1788" y=3D"3000" width=3D"320" heigh=
+t=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-ev=
+ents=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreig=
+nObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeat=
+ures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow=
+: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" s=
+tyle=3D"display: flex; align-items: unsafe center; justify-content: unsafe =
+center; width: 1px; height: 1px; padding-top: 765px; margin-left: 487px;"><=
+div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: borde=
+r-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-b=
+lock; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb=
+(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><fo=
+nt data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Da=
+ughter">do_patch<br /></font></div></div></div></foreignObject><text x=3D"4=
+87" y=3D"769" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">do_patch&#xa;</text></switch></g><rect x=
+=3D"2494" y=3D"1620" width=3D"360" height=3D"120" fill=3D"#eeeeee" stroke=
+=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 1px; height: 1px; =
+padding-top: 420px; margin-left: 669px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: nowrap;"><font data-font-src=3D"https://fonts=
+.googleapis.com/css?family=3DArchitects+Daughter">do_unpack<br /></font></d=
+iv></div></div></foreignObject><text x=3D"669" y=3D"424" fill=3D"rgb(0, 0, =
+0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e">do_unpack&#xa;</text></switch></g><ellipse cx=3D"2434" cy=3D"1680" rx=3D=
+"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56=
+517e" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(=
+-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D=
+"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/featu=
+re#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 28px; height: 1px; paddin=
+g-top: 420px; margin-left: 595px;"><div data-drawio-colors=3D"color: rgb(0,=
+ 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: cent=
+er;"><div style=3D"display: inline-block; font-size: 12px; font-family: &qu=
+ot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-ev=
+ents: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D=
+"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">6</b></font></div></div>=
+</div></foreignObject><text x=3D"609" y=3D"424" fill=3D"rgb(0, 0, 0)" font-=
+family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">6</tex=
+t></switch></g><ellipse cx=3D"1728" cy=3D"3060" rx=3D"60.00000000000001" ry=
+=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"=
+4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 28px; height: 1px; padding-top: 765px; margin-l=
+eft: 418px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goog=
+leapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><=
+b style=3D"font-size: 15px;">7</b></font></div></div></div></foreignObject>=
+<text x=3D"432" y=3D"769" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">7</text></switch></g><ellips=
+e cx=3D"1608" cy=3D"3240" rx=3D"60.00000000000001" ry=3D"60.00000000000001"=
+ fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"a=
+ll"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject p=
+ointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"h=
+ttp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible=
+; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"d=
+isplay: flex; align-items: unsafe center; justify-content: unsafe center; w=
+idth: 28px; height: 1px; padding-top: 810px; margin-left: 388px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size:=
+ 15px;">8</b></font></div></div></div></foreignObject><text x=3D"402" y=3D"=
+814" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12p=
+x" text-anchor=3D"middle">8</text></switch></g><rect x=3D"1748" y=3D"3310" =
+width=3D"360" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 1px; height: 1px; padding-top: 843px; mar=
+gin-left: 482px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter">do_compile<br /></font></div></div></div></for=
+eignObject><text x=3D"482" y=3D"846" fill=3D"rgb(0, 0, 0)" font-family=3D"L=
+iberation Sans" font-size=3D"12px" text-anchor=3D"middle">do_compile&#xa;</=
+text></switch></g><ellipse cx=3D"1688" cy=3D"3370" rx=3D"60.00000000000001"=
+ ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 28px; height: 1px; padding-top: 843px; marg=
+in-left: 408px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D=
+"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D=
+"display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans=
+&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-s=
+pace: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.=
+googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=3D"=
+1"><b style=3D"font-size: 15px;">9</b></font></div></div></div></foreignObj=
+ect><text x=3D"422" y=3D"846" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle">9</text></switch></g><el=
+lipse cx=3D"2688" cy=3D"3740" rx=3D"60.00000000000001" ry=3D"60.00000000000=
+001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 28px; height: 1px; padding-top: 935px; margin-left: 658px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflo=
+w-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?fa=
+mily=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-s=
+ize: 15px;">10</b></font></div></div></div></foreignObject><text x=3D"672" =
+y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">10</text></switch></g><rect x=3D"3728" y=
+=3D"3680" width=3D"640" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" =
+stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -=
+0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%"=
+ height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ext=
+ensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"ht=
+tp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe cen=
+ter; justify-content: unsafe center; width: 1px; height: 1px; padding-top: =
+935px; margin-left: 1012px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0)=
+; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><=
+div style=3D"display: inline-block; font-size: 12px; font-family: &quot;Lib=
+eration Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: =
+all; white-space: nowrap;"><font data-font-src=3D"https://fonts.googleapis.=
+com/css?family=3DArchitects+Daughter">do_populate_sysroot</font></div></div=
+></div></foreignObject><text x=3D"1012" y=3D"939" fill=3D"rgb(0, 0, 0)" fon=
+t-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">do_p=
+opulate_sysroot</text></switch></g><ellipse cx=3D"3668" cy=3D"3740" rx=3D"6=
+0.00000000000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#5651=
+7e" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0=
+.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"1=
+00%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature=
+#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 28px; height: 1px; paddin=
+g-top: 935px; margin-left: 903px;"><div data-drawio-colors=3D"color: rgb(0,=
+ 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: cent=
+er;"><div style=3D"display: inline-block; font-size: 12px; font-family: &qu=
+ot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-ev=
+ents: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D=
+"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">11</b></font></div></div=
+></div></foreignObject><text x=3D"917" y=3D"939" fill=3D"rgb(0, 0, 0)" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">11</t=
+ext></switch></g><path d=3D"M 7028 3280 Q 7028 3760.57 7372 3760.57 Q 7716 =
+3760.57 7715.97 3640.42" fill=3D"none" stroke=3D"#000000" stroke-width=3D"1=
+2" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7715.96=
+ 3613.42 L 7733.97 3649.41 L 7715.97 3640.42 L 7697.97 3649.42 Z" fill=3D"#=
+000000" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" poi=
+nter-events=3D"all"/><rect x=3D"6748" y=3D"2640" width=3D"560" height=3D"64=
+0" rx=3D"84" ry=3D"84" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><path d=3D"M 7028=
+ 2320 Q 7028 2320 7028 2614.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=
+=3D"M 7028 2635.53 L 7014 2607.53 L 7028 2614.53 L 7042 2607.53 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><rect x=3D"6928" y=3D"2160" width=3D"200" h=
+eight=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"trans=
+late(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" wid=
+th=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/=
+feature#Extensibility" style=3D"overflow: visible; text-align: left;"><div =
+xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items:=
+ unsafe center; justify-content: unsafe center; width: 48px; height: 1px; p=
+adding-top: 560px; margin-left: 1733px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;"><font data-fo=
+nt-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">gi=
+t</font></div></div></div></foreignObject><text x=3D"1757" y=3D"564" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">git</text></switch></g><rect x=3D"6800" y=3D"2720" width=
+=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=3D"#6666=
+66" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0=
+.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"1=
+00%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature=
+#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 112px; height: 1px; paddi=
+ng-top: 690px; margin-left: 1701px;"><div data-drawio-colors=3D"color: #333=
+333; " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;=
+"><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;=
+Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: 1.2; pointer-ev=
+ents: all; white-space: normal; overflow-wrap: normal;">Makefile</div></div=
+></div></foreignObject><text x=3D"1757" y=3D"694" fill=3D"#333333" font-fam=
+ily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">Makefile<=
+/text></switch></g><rect x=3D"6800" y=3D"2840" width=3D"456" height=3D"80" =
+rx=3D"12" ry=3D"12" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" =
+pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><swit=
+ch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" re=
+quiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 112px; height: 1px; padding-top: 720px; margin-l=
+eft: 1701px;"><div data-drawio-colors=3D"color: #333333; " style=3D"box-siz=
+ing: border-box; font-size: 0px; text-align: center;"><div style=3D"display=
+: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; =
+color: rgb(51, 51, 51); line-height: 1.2; pointer-events: all; white-space:=
+ normal; overflow-wrap: normal;">LICENSE</div></div></div></foreignObject><=
+text x=3D"1757" y=3D"724" fill=3D"#333333" font-family=3D"Liberation Sans" =
+font-size=3D"12px" text-anchor=3D"middle">LICENSE</text></switch></g><path =
+d=3D"M 6800 3000 Q 6588 3000.57 6588 3088 Q 6588 3175.43 6759.58 3175.08" f=
+ill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10=
+" pointer-events=3D"stroke"/><path d=3D"M 6786.58 3175.03 L 6750.62 3193.1 =
+L 6759.58 3175.08 L 6750.55 3157.1 Z" fill=3D"#000000" stroke=3D"#000000" s=
+troke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=
+=3D"6800" y=3D"2960" width=3D"456" height=3D"80" rx=3D"12" ry=3D"12" fill=
+=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 112px; height: 1px; padding-top: 750px; margin-left: 1701px;"><div data-dr=
+awio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; font-size=
+: 0px; text-align: center;"><div style=3D"display: inline-block; font-size:=
+ 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); li=
+ne-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: no=
+rmal;">sayhello.c</div></div></div></foreignObject><text x=3D"1757" y=3D"75=
+4" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text=
+-anchor=3D"middle">sayhello.c</text></switch></g><rect x=3D"6800" y=3D"3120=
+" width=3D"456" height=3D"110" rx=3D"16.5" ry=3D"16.5" fill=3D"#eeeeee" str=
+oke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"=
+translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none=
+" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/S=
+VG11/feature#Extensibility" style=3D"overflow: visible; text-align: left;">=
+<div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-i=
+tems: unsafe center; justify-content: unsafe center; width: 112px; height: =
+1px; padding-top: 794px; margin-left: 1701px;"><div data-drawio-colors=3D"c=
+olor: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2=
+; pointer-events: all; white-space: normal; overflow-wrap: normal;">sayhell=
+o</div></div></div></foreignObject><text x=3D"1757" y=3D"797" fill=3D"rgb(0=
+, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"=
+middle">sayhello</text></switch></g><path d=3D"M 7835.96 3600 Q 7828 3760.5=
+7 8090.86 3760.57 Q 8353.71 3760.57 8353.94 3640.42" fill=3D"none" stroke=
+=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D=
+"stroke"/><path d=3D"M 8353.99 3613.42 L 8371.93 3649.45 L 8353.94 3640.42 =
+L 8335.93 3649.38 Z" fill=3D"#000000" stroke=3D"#000000" stroke-width=3D"12=
+" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"7475.96" y=3D=
+"2640" width=3D"480" height=3D"960" rx=3D"72" ry=3D"72" fill=3D"none" strok=
+e=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-ev=
+ents=3D"all"/><path d=3D"M 7715.96 2320 L 7715.96 2614.53" fill=3D"none" st=
+roke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-e=
+vents=3D"stroke"/><path d=3D"M 7715.96 2635.53 L 7706.63 2607.53 L 7715.96 =
+2614.53 L 7725.29 2607.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=
+=3D"7589.96" y=3D"2160" width=3D"252" height=3D"160" rx=3D"24" ry=3D"24" fi=
+ll=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 61px; height: 1px; padding-top: 560px; margin-left: 1898=
+px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing:=
+ border-box; font-size: 0px; text-align: center;"><div style=3D"display: in=
+line-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; colo=
+r: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal=
+; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.c=
+om/css?family=3DArchitects+Daughter">image</font></div></div></div></foreig=
+nObject><text x=3D"1929" y=3D"564" fill=3D"rgb(0, 0, 0)" font-family=3D"Lib=
+eration Sans" font-size=3D"12px" text-anchor=3D"middle">image</text></switc=
+h></g><path d=3D"M 7716 2880 L 7716 2940 Q 7716 2980 7716.01 3017.26 L 7716=
+.01 3054.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" strok=
+e-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 7716.02 3075.53=
+ L 7706.68 3047.53 L 7716.01 3054.53 L 7725.35 3047.53 Z" fill=3D"rgb(0, 0,=
+ 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" po=
+inter-events=3D"all"/><rect x=3D"7629" y=3D"2720" width=3D"174" height=3D"1=
+60" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 =
+-0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%=
+" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ex=
+tensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"h=
+ttp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe ce=
+nter; justify-content: unsafe center; width: 42px; height: 1px; padding-top=
+: 700px; margin-left: 1908px;"><div data-drawio-colors=3D"color: rgb(0, 0, =
+0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"=
+><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;L=
+iberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events=
+: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"=
+https://fonts.googleapis.com/css?family=3DArchitects+Daughter">usr</font></=
+div></div></div></foreignObject><text x=3D"1929" y=3D"704" fill=3D"rgb(0, 0=
+, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mid=
+dle">usr</text></switch></g><path d=3D"M 7716.02 3240 L 7716 3394.53" fill=
+=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"1=
+0" pointer-events=3D"stroke"/><path d=3D"M 7716 3415.53 L 7706.67 3387.53 L=
+ 7716 3394.53 L 7725.34 3387.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0=
+, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><=
+rect x=3D"7608.52" y=3D"3080" width=3D"215" height=3D"160" rx=3D"24" ry=3D"=
+24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" =
+pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><swit=
+ch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" re=
+quiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 52px; height: 1px; padding-top: 790px; margin-le=
+ft: 1903px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goog=
+leapis.com/css?family=3DArchitects+Daughter">bin</font></div></div></div></=
+foreignObject><text x=3D"1929" y=3D"794" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">bin</text></=
+switch></g><rect x=3D"1268" y=3D"2160" width=3D"400" height=3D"160" rx=3D"2=
+4" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 98px; height: 1px; padding-top: 560px; ma=
+rgin-left: 318px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">libhello-0.1</font></di=
+v></div></div></foreignObject><text x=3D"367" y=3D"564" fill=3D"rgb(0, 0, 0=
+)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+">libhello-0.1</text></switch></g><path d=3D"M 1241 2160 Q 1241.71 2220 124=
+5.14 2050.29 Q 1248.57 1880.57 1785.14 1880.57 Q 2321.71 1880.57 2321.08 21=
+27.06" fill=3D"none" stroke=3D"#000000" stroke-width=3D"8" stroke-miterlimi=
+t=3D"10" stroke-dasharray=3D"8 16" pointer-events=3D"stroke"/><path d=3D"M =
+2321.02 2151.06 L 2310.44 2119.03 L 2321.08 2127.06 L 2331.77 2119.08 Z" fi=
+ll=3D"#000000" stroke=3D"#000000" stroke-width=3D"8" stroke-miterlimit=3D"1=
+0" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 1px; height: 1px; padding-top: 472px; margin-le=
+ft: 435px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); background-colo=
+r: rgb(255, 255, 255); border-color: rgb(0, 0, 0); " style=3D"box-sizing: b=
+order-box; font-size: 0px; text-align: center;"><div style=3D"display: inli=
+ne-block; font-size: 11px; font-family: &quot;Liberation Sans&quot;; color:=
+ rgb(0, 0, 0); line-height: 1.2; pointer-events: all; background-color: rgb=
+(255, 255, 255); border: 1px solid rgb(0, 0, 0); white-space: nowrap;"><fon=
+t data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Dau=
+ghter" style=3D"font-size: 14px;">S =3D "${WORKDIR}/git"</font></div></div>=
+</div></foreignObject><text x=3D"435" y=3D"475" fill=3D"rgb(0, 0, 0)" font-=
+family=3D"Liberation Sans" font-size=3D"11px" text-anchor=3D"middle">S =3D =
+"${WORKDIR}/git"</text></switch></g><rect x=3D"3203" y=3D"1620" width=3D"25=
+2" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" poin=
+ter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><=
+foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requir=
+edFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ov=
+erflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xh=
+tml" style=3D"display: flex; align-items: unsafe center; justify-content: u=
+nsafe center; width: 61px; height: 1px; padding-top: 418px; margin-left: 80=
+2px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: bor=
+der-box; font-size: 0px; text-align: center;"><div style=3D"display: inline=
+-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: r=
+gb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight: bold=
+; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter">WORKDIR</font></d=
+iv></div></div></foreignObject><text x=3D"832" y=3D"421" fill=3D"#ffffff" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" fo=
+nt-weight=3D"bold">WORKDIR</text></switch></g><rect x=3D"2923" y=3D"2160" w=
+idth=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"=
+none" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"=
+><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"10=
+0%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" s=
+tyle=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.o=
+rg/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-=
+content: unsafe center; width: 24px; height: 1px; padding-top: 553px; margi=
+n-left: 732px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-s=
+izing: border-box; font-size: 0px; text-align: center;"><div style=3D"displ=
+ay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;=
+; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-we=
+ight: bold; white-space: normal; overflow-wrap: normal;"><font data-font-sr=
+c=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">D</font=
+></div></div></div></foreignObject><text x=3D"744" y=3D"556" fill=3D"#fffff=
+f" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+" font-weight=3D"bold">D</text></switch></g><rect x=3D"2268" y=3D"2160" wid=
+th=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"no=
+ne" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-=
+left: 568px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-siz=
+ing: border-box; font-size: 0px; text-align: center;"><div style=3D"display=
+: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; =
+color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weig=
+ht: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">S</font>=
+</div></div></div></foreignObject><text x=3D"580" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">S</text></switch></g><rect x=3D"2162" y=3D"2160" widt=
+h=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-l=
+eft: 542px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">B</font>=
+</div></div></div></foreignObject><text x=3D"554" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">B</text></switch></g><rect x=3D"1188" y=3D"2160" widt=
+h=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-l=
+eft: 298px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">S</font>=
+</div></div></div></foreignObject><text x=3D"310" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">S</text></switch></g><rect x=3D"1835" y=3D"2160" widt=
+h=3D"106" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 24px; height: 1px; padding-top: 553px; margin-l=
+eft: 460px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">T</font>=
+</div></div></div></foreignObject><text x=3D"472" y=3D"556" fill=3D"#ffffff=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+ font-weight=3D"bold">T</text></switch></g><rect x=3D"3628" y=3D"3160" widt=
+h=3D"200" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"non=
+e" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 48px; height: 1px; padding-top: 803px; margin-l=
+eft: 908px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weigh=
+t: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">libdir</=
+font></div></div></div></foreignObject><text x=3D"932" y=3D"806" fill=3D"#f=
+fffff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mi=
+ddle" font-weight=3D"bold">libdir</text></switch></g><rect x=3D"3135" y=3D"=
+3160" width=3D"320" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" str=
+oke=3D"none" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)sc=
+ale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heigh=
+t=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibi=
+lity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://w=
+ww.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; j=
+ustify-content: unsafe center; width: 78px; height: 1px; padding-top: 803px=
+; margin-left: 785px;"><div data-drawio-colors=3D"color: #ffffff; " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all=
+; font-weight: bold; white-space: normal; overflow-wrap: normal;"><font dat=
+a-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter=
+">includedir</font></div></div></div></foreignObject><text x=3D"824" y=3D"8=
+06" fill=3D"#ffffff" font-family=3D"Liberation Sans" font-size=3D"12px" tex=
+t-anchor=3D"middle" font-weight=3D"bold">includedir</text></switch></g><rec=
+t x=3D"5603.48" y=3D"2280" width=3D"464.52" height=3D"100" rx=3D"15" ry=3D"=
+15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g transform=
+=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"=
+none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/=
+TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: lef=
+t;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; ali=
+gn-items: unsafe center; justify-content: unsafe center; width: 114px; heig=
+ht: 1px; padding-top: 583px; margin-left: 1402px;"><div data-drawio-colors=
+=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line-heigh=
+t: 1.2; pointer-events: all; font-weight: bold; white-space: normal; overfl=
+ow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter">RECIPE_SYSROOT</font></div></div></div></forei=
+gnObject><text x=3D"1459" y=3D"586" fill=3D"#ffffff" font-family=3D"Liberat=
+ion Sans" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">RE=
+CIPE_SYSROOT</text></switch></g><path d=3D"M 7226.86 2260 Q 7226.86 2110.29=
+ 7197.14 2110.29 Q 7167.43 2110.29 7167.49 1985.47" fill=3D"none" stroke=3D=
+"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=
+=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 7167.5 1964.47 L 7176.82=
+ 1992.48 L 7167.49 1985.47 L 7158.15 1992.47 Z" fill=3D"rgb(0, 0, 0)" strok=
+e=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-even=
+ts=3D"all"/><rect x=3D"7174" y=3D"2260" width=3D"106" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 24p=
+x; height: 1px; padding-top: 578px; margin-left: 1795px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">S</font></div></div></div></foreignObjec=
+t><text x=3D"1807" y=3D"581" fill=3D"#ffffff" font-family=3D"Liberation San=
+s" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">S</text><=
+/switch></g><rect x=3D"7068" y=3D"2260" width=3D"106" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 24p=
+x; height: 1px; padding-top: 578px; margin-left: 1768px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">B</font></div></div></div></foreignObjec=
+t><text x=3D"1780" y=3D"581" fill=3D"#ffffff" font-family=3D"Liberation San=
+s" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">B</text><=
+/switch></g><rect x=3D"7803" y=3D"2260" width=3D"106" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 24p=
+x; height: 1px; padding-top: 578px; margin-left: 1952px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">D</font></div></div></div></foreignObjec=
+t><text x=3D"1964" y=3D"581" fill=3D"#ffffff" font-family=3D"Liberation San=
+s" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">D</text><=
+/switch></g><rect x=3D"5788" y=3D"1580" width=3D"252" height=3D"100" rx=3D"=
+15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 61p=
+x; height: 1px; padding-top: 408px; margin-left: 1448px;"><div data-drawio-=
+colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); line=
+-height: 1.2; pointer-events: all; font-weight: bold; white-space: normal; =
+overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com=
+/css?family=3DArchitects+Daughter">WORKDIR</font></div></div></div></foreig=
+nObject><text x=3D"1479" y=3D"411" fill=3D"#ffffff" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bold">WOR=
+KDIR</text></switch></g><rect x=3D"4640" y=3D"3680" width=3D"800" height=3D=
+"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 1px; height: 1px; padding-top: 935px; margin-left: 1260px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font =
+data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daugh=
+ter">do_prepare_recipe_sysroot</font></div></div></div></foreignObject><tex=
+t x=3D"1260" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans=
+" font-size=3D"12px" text-anchor=3D"middle">do_prepare_recipe_sysroot</text=
+></switch></g><rect x=3D"7536" y=3D"3420" width=3D"360" height=3D"110" rx=
+=3D"16.5" ry=3D"16.5" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4=
+" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><sw=
+itch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" =
+requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 88px; height: 1px; padding-top: 869px; margin-le=
+ft: 1885px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box=
+-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"dis=
+play: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quo=
+t;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space=
+: normal; overflow-wrap: normal;">sayhello</div></div></div></foreignObject=
+><text x=3D"1929" y=3D"872" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation=
+ Sans" font-size=3D"12px" text-anchor=3D"middle">sayhello</text></switch></=
+g><rect x=3D"4988" y=3D"2640" width=3D"1080" height=3D"960" rx=3D"144" ry=
+=3D"144" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-da=
+sharray=3D"12 12" pointer-events=3D"all"/><path d=3D"M 5236 2880 Q 5236 296=
+0.57 5235.99 3014.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5235.9=
+8 3035.53 L 5226.65 3007.53 L 5235.99 3014.53 L 5245.32 3007.53 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><path d=3D"M 5236 2880 Q 5236 2960.57 5474.=
+86 2960.57 Q 5713.71 2960.57 5713.91 3014.53" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stro=
+ke"/><path d=3D"M 5713.98 3035.53 L 5704.55 3007.56 L 5713.91 3014.53 L 572=
+3.22 3007.49 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"5149" y=
+=3D"2720" width=3D"174" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255,=
+ 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 42px; height: 1px; padding-top: 700px; margin-left: 1288px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter">usr</font></div></div></div></foreignObject><text x=
+=3D"1309" y=3D"704" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" f=
+ont-size=3D"12px" text-anchor=3D"middle">usr</text></switch></g><path d=3D"=
+M 5235.98 3200 L 5236 3294.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke=
+-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D=
+"M 5236 3315.53 L 5226.66 3287.53 L 5236 3294.53 L 5245.33 3287.53 Z" fill=
+=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterli=
+mit=3D"10" pointer-events=3D"all"/><rect x=3D"5128.48" y=3D"3040" width=3D"=
+215" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=
+=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"=
+none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/=
+TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: lef=
+t;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; ali=
+gn-items: unsafe center; justify-content: unsafe center; width: 52px; heigh=
+t: 1px; padding-top: 780px; margin-left: 1283px;"><div data-drawio-colors=
+=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px;=
+ text-align: center;"><div style=3D"display: inline-block; font-size: 12px;=
+ font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height=
+: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"><f=
+ont data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+D=
+aughter">include</font></div></div></div></foreignObject><text x=3D"1309" y=
+=3D"784" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">include</text></switch></g><path d=3D"M 5713.=
+71 3200 L 5713.71 3240.57 Q 5713.71 3280.57 5713.76 3287.55 L 5713.82 3294.=
+53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterli=
+mit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 5713.97 3315.53 L 5704.4=
+3 3287.6 L 5713.82 3294.53 L 5723.1 3287.46 Z" fill=3D"rgb(0, 0, 0)" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-event=
+s=3D"all"/><rect x=3D"5627" y=3D"3040" width=3D"174" height=3D"160" rx=3D"2=
+4" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 42px; height: 1px; padding-top: 780px; ma=
+rgin-left: 1408px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">lib</font></div></div><=
+/div></foreignObject><text x=3D"1429" y=3D"784" fill=3D"rgb(0, 0, 0)" font-=
+family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">lib</t=
+ext></switch></g><rect x=3D"5076" y=3D"3320" width=3D"320" height=3D"100" r=
+x=3D"15" ry=3D"15" fill=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" p=
+ointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switc=
+h><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" req=
+uiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D=
+"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999=
+/xhtml" style=3D"display: flex; align-items: unsafe center; justify-content=
+: unsafe center; width: 78px; height: 1px; padding-top: 843px; margin-left:=
+ 1270px;"><div data-drawio-colors=3D"color: #333333; " style=3D"box-sizing:=
+ border-box; font-size: 0px; text-align: center;"><div style=3D"display: in=
+line-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; colo=
+r: rgb(51, 51, 51); line-height: 1.2; pointer-events: all; white-space: nor=
+mal; overflow-wrap: normal;">hellolib.h</div></div></div></foreignObject><t=
+ext x=3D"1309" y=3D"846" fill=3D"#333333" font-family=3D"Liberation Sans" f=
+ont-size=3D"12px" text-anchor=3D"middle">hellolib.h</text></switch></g><rec=
+t x=3D"5468" y=3D"3350" width=3D"480" height=3D"80" rx=3D"12" ry=3D"12" fil=
+l=3D"#f5f5f5" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/=
+><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject point=
+er-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:=
+//www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; te=
+xt-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displ=
+ay: flex; align-items: unsafe center; justify-content: unsafe center; width=
+: 118px; height: 1px; padding-top: 848px; margin-left: 1368px;"><div data-d=
+rawio-colors=3D"color: #333333; " style=3D"box-sizing: border-box; font-siz=
+e: 0px; text-align: center;"><div style=3D"display: inline-block; font-size=
+: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); l=
+ine-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: n=
+ormal;">libhello.so.1</div></div></div></foreignObject><text x=3D"1427" y=
+=3D"851" fill=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px=
+" text-anchor=3D"middle">libhello.so.1</text></switch></g><rect x=3D"5468" =
+y=3D"3450" width=3D"480" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#f5f5f5=
+" stroke=3D"#666666" stroke-width=3D"4" pointer-events=3D"all"/><g transfor=
+m=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D=
+"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org=
+/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: le=
+ft;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; al=
+ign-items: unsafe center; justify-content: unsafe center; width: 118px; hei=
+ght: 1px; padding-top: 875px; margin-left: 1368px;"><div data-drawio-colors=
+=3D"color: #333333; " style=3D"box-sizing: border-box; font-size: 0px; text=
+-align: center;"><div style=3D"display: inline-block; font-size: 12px; font=
+-family: &quot;Liberation Sans&quot;; color: rgb(51, 51, 51); line-height: =
+1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">libh=
+ello.so.0.1</div></div></div></foreignObject><text x=3D"1427" y=3D"879" fil=
+l=3D"#333333" font-family=3D"Liberation Sans" font-size=3D"12px" text-ancho=
+r=3D"middle">libhello.so.0.1</text></switch></g><rect x=3D"5440" y=3D"3320"=
+ width=3D"548" height=3D"250" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-=
+width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><rect x=3D"3=
+880" y=3D"1680" width=3D"1560" height=3D"280" fill=3D"none" stroke=3D"#3639=
+3d" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><=
+g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer=
+-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://=
+www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text=
+-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display=
+: flex; align-items: unsafe center; justify-content: unsafe center; width: =
+1px; height: 1px; padding-top: 455px; margin-left: 1165px;"><div data-drawi=
+o-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-si=
+ze: 0px; text-align: center;"><div style=3D"display: inline-block; font-siz=
+e: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); lin=
+e-height: 1.2; pointer-events: all; white-space: nowrap;"><font data-font-s=
+rc=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" style=
+=3D"font-size: 15px;">This also contains other files from other=C2=A0<br />=
+dependencies. Default dependencies are:<br />basically <b style=3D""><u>gcc=
+</u></b>, <b style=3D""><u>compilerlibs</u></b> and <b style=3D""><u style=
+=3D"">libc</u></b></font></div></div></div></foreignObject><text x=3D"1165"=
+ y=3D"459" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">This also contains other files from other.=
+..</text></switch></g><rect x=3D"4368" y=3D"2280" width=3D"510" height=3D"1=
+00" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"=
+all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject =
+pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"=
+http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visibl=
+e; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"=
+display: flex; align-items: unsafe center; justify-content: unsafe center; =
+width: 126px; height: 1px; padding-top: 583px; margin-left: 1093px;"><div d=
+ata-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; fon=
+t-size: 0px; text-align: center;"><div style=3D"display: inline-block; font=
+-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255,=
+ 255); line-height: 1.2; pointer-events: all; font-weight: bold; white-spac=
+e: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.goo=
+gleapis.com/css?family=3DArchitects+Daughter">SYSROOT_DESTDIR</font></div><=
+/div></div></foreignObject><text x=3D"1156" y=3D"586" fill=3D"#ffffff" font=
+-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" font-=
+weight=3D"bold">SYSROOT_DESTDIR</text></switch></g><path d=3D"M 330 960 L 1=
+121.58 960" fill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-mit=
+erlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1148.58 960 L 1112.5=
+8 978 L 1121.58 960 L 1112.58 942 Z" fill=3D"#000000" stroke=3D"#000000" st=
+roke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=
+=3D"M 330 1160 L 1121.58 1160" fill=3D"none" stroke=3D"#000000" stroke-widt=
+h=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 1=
+148.58 1160 L 1112.58 1178 L 1121.58 1160 L 1112.58 1142 Z" fill=3D"#000000=
+" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" pointer-e=
+vents=3D"all"/><rect x=3D"2" y=3D"860" width=3D"328" height=3D"400" rx=3D"4=
+9.2" ry=3D"49.2" fill=3D"#000000" stroke=3D"#23445d" stroke-width=3D"4" poi=
+nter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch>=
+<foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requi=
+redFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"o=
+verflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/x=
+html" style=3D"display: flex; align-items: unsafe center; justify-content: =
+unsafe center; width: 80px; height: 1px; padding-top: 265px; margin-left: 1=
+px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing:=
+ border-box; font-size: 0px; text-align: center;"><div style=3D"display: in=
+line-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; colo=
+r: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal=
+; overflow-wrap: normal;"><font color=3D"#fcfcfc">Github</font></div></div>=
+</div></foreignObject><text x=3D"41" y=3D"269" fill=3D"rgb(0, 0, 0)" font-f=
+amily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">Github<=
+/text></switch></g><rect x=3D"535" y=3D"900" width=3D"320" height=3D"120" f=
+ill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all=
+"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject poi=
+nter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"htt=
+p://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; =
+text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"dis=
+play: flex; align-items: unsafe center; justify-content: unsafe center; wid=
+th: 1px; height: 1px; padding-top: 240px; margin-left: 174px;"><div data-dr=
+awio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font=
+-size: 0px; text-align: center;"><div style=3D"display: inline-block; font-=
+size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); =
+line-height: 1.2; pointer-events: all; white-space: nowrap;"><font data-fon=
+t-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_=
+fetch<br /></font></div></div></div></foreignObject><text x=3D"174" y=3D"24=
+4" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px"=
+ text-anchor=3D"middle">do_fetch&#xa;</text></switch></g><ellipse cx=3D"475=
+" cy=3D"960" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000=
+000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g trans=
+form=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 28px; h=
+eight: 1px; padding-top: 240px; margin-left: 105px;"><div data-drawio-color=
+s=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heigh=
+t: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"><=
+font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+=
+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">1</b><=
+/font></div></div></div></foreignObject><text x=3D"119" y=3D"244" fill=3D"r=
+gb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=
+=3D"middle">1</text></switch></g><rect x=3D"535" y=3D"1100" width=3D"320" h=
+eight=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 1px; height: 1px; padding-top: 290px; margin-left: 174px=
+;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: b=
+order-box; font-size: 0px; text-align: center;"><div style=3D"display: inli=
+ne-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color:=
+ rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"=
+><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitect=
+s+Daughter">do_fetch<br /></font></div></div></div></foreignObject><text x=
+=3D"174" y=3D"294" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" fo=
+nt-size=3D"12px" text-anchor=3D"middle">do_fetch&#xa;</text></switch></g><e=
+llipse cx=3D"475" cy=3D"1160" rx=3D"60.00000000000001" ry=3D"60.00000000000=
+001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 28px; height: 1px; padding-top: 290px; margin-left: 105px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflo=
+w-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?fa=
+mily=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-s=
+ize: 15px;">5</b></font></div></div></div></foreignObject><text x=3D"119" y=
+=3D"294" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">5</text></switch></g><rect x=3D"6228" y=3D"29=
+80" width=3D"440" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke=
+-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)sc=
+ale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heigh=
+t=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibi=
+lity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://w=
+ww.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; j=
+ustify-content: unsafe center; width: 1px; height: 1px; padding-top: 760px;=
+ margin-left: 1612px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " st=
+yle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div st=
+yle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberatio=
+n Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; w=
+hite-space: nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/cs=
+s?family=3DArchitects+Daughter">do_configure<br /></font></div></div></div>=
+</foreignObject><text x=3D"1612" y=3D"764" fill=3D"rgb(0, 0, 0)" font-famil=
+y=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">do_configur=
+e&#xa;</text></switch></g><ellipse cx=3D"6168" cy=3D"3040" rx=3D"60.0000000=
+0000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" strok=
+e-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 28px; height: 1px; padding-top: 760p=
+x; margin-left: 1528px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " =
+style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div =
+style=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberat=
+ion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all;=
+ white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https:=
+//fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" =
+size=3D"1"><b style=3D"font-size: 15px;">12</b></font></div></div></div></f=
+oreignObject><text x=3D"1542" y=3D"764" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">12</text></s=
+witch></g><rect x=3D"6308" y=3D"3110" width=3D"360" height=3D"120" fill=3D"=
+#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g t=
+ransform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-ev=
+ents=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www=
+.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-al=
+ign: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: f=
+lex; align-items: unsafe center; justify-content: unsafe center; width: 1px=
+; height: 1px; padding-top: 793px; margin-left: 1622px;"><div data-drawio-c=
+olors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size:=
+ 0px; text-align: center;"><div style=3D"display: inline-block; font-size: =
+12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-h=
+eight: 1.2; pointer-events: all; white-space: nowrap;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_compi=
+le<br /></font></div></div></div></foreignObject><text x=3D"1622" y=3D"796"=
+ fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" t=
+ext-anchor=3D"middle">do_compile&#xa;</text></switch></g><ellipse cx=3D"624=
+8" cy=3D"3170" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#0=
+00000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g tra=
+nsform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-even=
+ts=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w=
+3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-alig=
+n: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: fle=
+x; align-items: unsafe center; justify-content: unsafe center; width: 28px;=
+ height: 1px; padding-top: 793px; margin-left: 1548px;"><div data-drawio-co=
+lors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: =
+0px; text-align: center;"><div style=3D"display: inline-block; font-size: 1=
+2px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-he=
+ight: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;=
+"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitec=
+ts+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">13<=
+/b></font></div></div></div></foreignObject><text x=3D"1562" y=3D"796" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">13</text></switch></g><rect x=3D"2508" y=3D"900" width=3D"=
+360" height=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" =
+pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><swit=
+ch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" re=
+quiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 1px; height: 1px; padding-top: 240px; margin-lef=
+t: 672px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-s=
+izing: border-box; font-size: 0px; text-align: center;"><div style=3D"displ=
+ay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;=
+; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: =
+nowrap;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DA=
+rchitects+Daughter">do_unpack<br /></font></div></div></div></foreignObject=
+><text x=3D"672" y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation =
+Sans" font-size=3D"12px" text-anchor=3D"middle">do_unpack&#xa;</text></swit=
+ch></g><ellipse cx=3D"2448" cy=3D"960" rx=3D"60.00000000000001" ry=3D"60.00=
+000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointe=
+r-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fo=
+reignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" required=
+Features=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"over=
+flow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtm=
+l" style=3D"display: flex; align-items: unsafe center; justify-content: uns=
+afe center; width: 28px; height: 1px; padding-top: 240px; margin-left: 598p=
+x;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: =
+border-box; font-size: 0px; text-align: center;"><div style=3D"display: inl=
+ine-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color=
+: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal;=
+ overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.co=
+m/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=
+=3D"font-size: 15px;">2</b></font></div></div></div></foreignObject><text x=
+=3D"612" y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" fo=
+nt-size=3D"12px" text-anchor=3D"middle">2</text></switch></g><path d=3D"M 5=
+848.57 520 Q 5848.57 600.57 5849.05 594.61" fill=3D"none" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke=
+"/><path d=3D"M 5847.36 615.54 L 5835.66 586.51 L 5849.05 594.61 L 5863.57 =
+588.76 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" =
+stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 5848.57 520 Q=
+ 5848.57 560.57 5593.14 560.57 Q 5337.71 560.57 5337.31 594.53" fill=3D"non=
+e" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" poin=
+ter-events=3D"stroke"/><path d=3D"M 5337.05 615.53 L 5323.39 587.36 L 5337.=
+31 594.53 L 5351.39 587.7 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=
+=3D"M 5848.57 520 Q 5848.57 560.57 6108.57 560.57 Q 6368.57 560.57 6368.24 =
+594.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-mit=
+erlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 6368.04 615.53 L 635=
+4.31 587.39 L 6368.24 594.53 L 6382.31 587.66 Z" fill=3D"rgb(0, 0, 0)" stro=
+ke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-eve=
+nts=3D"all"/><rect x=3D"5708" y=3D"360" width=3D"280" height=3D"160" rx=3D"=
+24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wi=
+dth=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale=
+(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 68px; height: 1px; padding-top: 110px;=
+ margin-left: 1428px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " st=
+yle=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div st=
+yle=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberatio=
+n Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; w=
+hite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://=
+fonts.googleapis.com/css?family=3DArchitects+Daughter">conf</font></div></d=
+iv></div></foreignObject><text x=3D"1462" y=3D"114" fill=3D"rgb(0, 0, 0)" f=
+ont-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">co=
+nf</text></switch></g><path d=3D"M 5149 660 Q 5108 660 5108 510.29 Q 5108 3=
+60.57 5252 360.57 Q 5396 360.57 5396 205.47" fill=3D"none" stroke=3D"rgb(0,=
+ 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 =
+12" pointer-events=3D"stroke"/><path d=3D"M 5396 184.47 L 5405.33 212.47 L =
+5396 205.47 L 5386.67 212.47 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0=
+)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rec=
+t x=3D"5149" y=3D"620" width=3D"376" height=3D"80" rx=3D"12" ry=3D"12" fill=
+=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 92px; height: 1px; padding-top: 165px; margin-left: 1288px;"><div data-dra=
+wio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-=
+size: 0px; text-align: center;"><div style=3D"display: inline-block; font-s=
+ize: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); l=
+ine-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: n=
+ormal;">local.conf</div></div></div></foreignObject><text x=3D"1334" y=3D"1=
+69" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px=
+" text-anchor=3D"middle">local.conf</text></switch></g><path d=3D"M 5847.43=
+ 700 Q 5847.43 860 6048 860 Q 6248.57 860 6248.09 994.53" fill=3D"none" str=
+oke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-das=
+harray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 6248.02 1015.53 L =
+6238.78 987.49 L 6248.09 994.53 L 6257.45 987.56 Z" fill=3D"rgb(0, 0, 0)" s=
+troke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-=
+events=3D"all"/><rect x=3D"5627" y=3D"620" width=3D"440" height=3D"80" rx=
+=3D"12" ry=3D"12" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" po=
+inter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch=
+><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requ=
+iredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"=
+overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/=
+xhtml" style=3D"display: flex; align-items: unsafe center; justify-content:=
+ unsafe center; width: 108px; height: 1px; padding-top: 165px; margin-left:=
+ 1408px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-si=
+zing: border-box; font-size: 0px; text-align: center;"><div style=3D"displa=
+y: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;;=
+ color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: n=
+ormal; overflow-wrap: normal;">bblayers.conf</div></div></div></foreignObje=
+ct><text x=3D"1462" y=3D"169" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberati=
+on Sans" font-size=3D"12px" text-anchor=3D"middle">bblayers.conf</text></sw=
+itch></g><rect x=3D"6707" y=3D"1360" width=3D"921" height=3D"600" fill=3D"r=
+gb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dashar=
+ray=3D"12 12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 228px; height: 1px; padding-top: 415=
+px; margin-left: 1678px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); "=
+ style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div=
+ style=3D"display: inline-block; font-size: 12px; font-family: &quot;Libera=
+tion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all=
+; white-space: normal; overflow-wrap: normal;"><font style=3D"font-size: 15=
+px;"><b><u>S</u></b> defaults generally to <b><u>${WORKDIR}/${BPN}-${PV}</u=
+></b><br />In <b>git</b> recipes change it to <b><u>${WORKDIR}/git</u></b><=
+/font></div></div></div></foreignObject><text x=3D"1792" y=3D"419" fill=3D"=
+rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-ancho=
+r=3D"middle">S defaults generally to ${WORKDIR}/${B...</text></switch></g><=
+rect x=3D"6228" y=3D"2700" width=3D"440" height=3D"160" fill=3D"#eeeeee" st=
+roke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D=
+"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"non=
+e" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/=
+SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: left;"=
+><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-=
+items: unsafe center; justify-content: unsafe center; width: 1px; height: 1=
+px; padding-top: 695px; margin-left: 1612px;"><div data-drawio-colors=3D"co=
+lor: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-=
+align: center;"><div style=3D"display: inline-block; font-size: 12px; font-=
+family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2;=
+ pointer-events: all; white-space: nowrap;"><font data-font-src=3D"https://=
+fonts.googleapis.com/css?family=3DArchitects+Daughter">do_patch<br /><i>(No=
+ patches)</i><br /></font></div></div></div></foreignObject><text x=3D"1612=
+" y=3D"699" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">do_patch...</text></switch></g><ellipse cx=
+=3D"6168" cy=3D"2780" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fil=
+l=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/=
+><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject point=
+er-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:=
+//www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; te=
+xt-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displ=
+ay: flex; align-items: unsafe center; justify-content: unsafe center; width=
+: 28px; height: 1px; padding-top: 695px; margin-left: 1528px;"><div data-dr=
+awio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font=
+-size: 0px; text-align: center;"><div style=3D"display: inline-block; font-=
+size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); =
+line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: =
+normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=3DA=
+rchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15p=
+x;">3</b></font></div></div></div></foreignObject><text x=3D"1542" y=3D"699=
+" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" =
+text-anchor=3D"middle">3</text></switch></g><ellipse cx=3D"4580" cy=3D"3740=
+" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=
+=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"tra=
+nslate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" w=
+idth=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG1=
+1/feature#Extensibility" style=3D"overflow: visible; text-align: left;"><di=
+v xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-item=
+s: unsafe center; justify-content: unsafe center; width: 28px; height: 1px;=
+ padding-top: 935px; margin-left: 1131px;"><div data-drawio-colors=3D"color=
+: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-ali=
+gn: center;"><div style=3D"display: inline-block; font-size: 12px; font-fam=
+ily: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; po=
+inter-events: all; white-space: normal; overflow-wrap: normal;"><font data-=
+font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter" =
+color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">4</b></font></di=
+v></div></div></foreignObject><text x=3D"1145" y=3D"939" fill=3D"rgb(0, 0, =
+0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e">4</text></switch></g><rect x=3D"6927" y=3D"3560" width=3D"360" height=3D=
+"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 1px; height: 1px; padding-top: 905px; margin-left: 1777px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font =
+data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daugh=
+ter">do_install<br /></font></div></div></div></foreignObject><text x=3D"17=
+77" y=3D"909" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">do_install&#xa;</text></switch></g><elli=
+pse cx=3D"6868" cy=3D"3620" rx=3D"60.00000000000001" ry=3D"60.0000000000000=
+1" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D=
+"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject=
+ pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D=
+"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visib=
+le; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D=
+"display: flex; align-items: unsafe center; justify-content: unsafe center;=
+ width: 28px; height: 1px; padding-top: 905px; margin-left: 1703px;"><div d=
+ata-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box=
+; font-size: 0px; text-align: center;"><div style=3D"display: inline-block;=
+ font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0=
+, 0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-=
+wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?fami=
+ly=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-siz=
+e: 15px;">14</b></font></div></div></div></foreignObject><text x=3D"1717" y=
+=3D"909" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">14</text></switch></g><path d=3D"M 8354.02 23=
+20 L 8354.02 2614.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 8354.0=
+2 2635.53 L 8344.69 2607.53 L 8354.02 2614.53 L 8363.35 2607.53 Z" fill=3D"=
+rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=
+=3D"10" pointer-events=3D"all"/><rect x=3D"8228" y=3D"2160" width=3D"252" h=
+eight=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"trans=
+late(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" wid=
+th=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/=
+feature#Extensibility" style=3D"overflow: visible; text-align: left;"><div =
+xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items:=
+ unsafe center; justify-content: unsafe center; width: 61px; height: 1px; p=
+adding-top: 560px; margin-left: 2058px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;"><font data-fo=
+nt-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">pa=
+ckage</font></div></div></div></foreignObject><text x=3D"2089" y=3D"564" fi=
+ll=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text=
+-anchor=3D"middle">package</text></switch></g><rect x=3D"8441.04" y=3D"2260=
+" width=3D"146.96" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stro=
+ke=3D"none" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)sca=
+le(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=
+=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibil=
+ity" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://ww=
+w.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; ju=
+stify-content: unsafe center; width: 35px; height: 1px; padding-top: 578px;=
+ margin-left: 2111px;"><div data-drawio-colors=3D"color: #ffffff; " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(255, 255, 255); line-height: 1.2; pointer-events: all=
+; font-weight: bold; white-space: normal; overflow-wrap: normal;"><font dat=
+a-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter=
+">PKGD</font></div></div></div></foreignObject><text x=3D"2129" y=3D"581" f=
+ill=3D"#ffffff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anc=
+hor=3D"middle" font-weight=3D"bold">PKGD</text></switch></g><path d=3D"M 84=
+61.77 3600 Q 8461.14 3760.57 8784.57 3760.57 Q 9108 3760.57 9108 3640.42" f=
+ill=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10=
+" pointer-events=3D"stroke"/><path d=3D"M 9108 3613.42 L 9126 3649.42 L 910=
+8 3640.42 L 9090 3649.42 Z" fill=3D"#000000" stroke=3D"#000000" stroke-widt=
+h=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"8138.5=
+2" y=3D"2640" width=3D"431" height=3D"960" rx=3D"64.65" ry=3D"64.65" fill=
+=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" stroke-dasharray=3D"12 1=
+2" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><s=
+witch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%"=
+ requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" styl=
+e=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/=
+1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-con=
+tent: unsafe center; width: 106px; height: 1px; padding-top: 780px; margin-=
+left: 2036px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"b=
+ox-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"d=
+isplay: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&q=
+uot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-spa=
+ce: normal; overflow-wrap: normal;">A copy of=C2=A0<b>${D}<br /></b>excludi=
+ng<br /><b>/sysroot-only</b></div></div></div></foreignObject><text x=3D"20=
+89" y=3D"784" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">A copy of=C2=A0${D}...</text></switch></=
+g><rect x=3D"7960.96" y=3D"3680" width=3D"360" height=3D"120" fill=3D"#eeee=
+ee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g transf=
+orm=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 1px; he=
+ight: 1px; padding-top: 935px; margin-left: 2035px;"><div data-drawio-color=
+s=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px=
+; text-align: center;"><div style=3D"display: inline-block; font-size: 12px=
+; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heigh=
+t: 1.2; pointer-events: all; white-space: nowrap;"><font data-font-src=3D"h=
+ttps://fonts.googleapis.com/css?family=3DArchitects+Daughter">do_package<br=
+ /></font></div></div></div></foreignObject><text x=3D"2035" y=3D"939" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">do_package&#xa;</text></switch></g><ellipse cx=3D"7901.96"=
+ cy=3D"3740" rx=3D"60.00000000000001" ry=3D"60.00000000000001" fill=3D"#000=
+000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=3D"all"/><g trans=
+form=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=
+=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.=
+org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align:=
+ left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex;=
+ align-items: unsafe center; justify-content: unsafe center; width: 28px; h=
+eight: 1px; padding-top: 935px; margin-left: 1961px;"><div data-drawio-colo=
+rs=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0p=
+x; text-align: center;"><div style=3D"display: inline-block; font-size: 12p=
+x; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-heig=
+ht: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;">=
+<font data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects=
++Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-size: 15px;">15</b=
+></font></div></div></div></foreignObject><text x=3D"1975" y=3D"939" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">15</text></switch></g><path d=3D"M 9108 2320 L 9108 2614.5=
+3" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlim=
+it=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9108 2635.53 L 9098.67 26=
+07.53 L 9108 2614.53 L 9117.33 2607.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"=
+all"/><rect x=3D"8868" y=3D"2160" width=3D"480" height=3D"160" rx=3D"24" ry=
+=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D=
+"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 118px; height: 1px; padding-top: 560px; margin=
+-left: 2218px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"=
+box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"=
+display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&=
+quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-sp=
+ace: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.g=
+oogleapis.com/css?family=3DArchitects+Daughter">packages-split</font></div>=
+</div></div></foreignObject><text x=3D"2277" y=3D"564" fill=3D"rgb(0, 0, 0)=
+" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle"=
+>packages-split</text></switch></g><rect x=3D"9308" y=3D"2260" width=3D"240=
+" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" point=
+er-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><f=
+oreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" require=
+dFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ove=
+rflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xht=
+ml" style=3D"display: flex; align-items: unsafe center; justify-content: un=
+safe center; width: 58px; height: 1px; padding-top: 578px; margin-left: 232=
+8px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: bor=
+der-box; font-size: 0px; text-align: center;"><div style=3D"display: inline=
+-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: r=
+gb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight: bold=
+; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https=
+://fonts.googleapis.com/css?family=3DArchitects+Daughter">PKGDEST</font></d=
+iv></div></div></foreignObject><text x=3D"2357" y=3D"581" fill=3D"#ffffff" =
+font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" f=
+ont-weight=3D"bold">PKGDEST</text></switch></g><path d=3D"M 9108 2840 L 910=
+8 2895.1" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-m=
+iterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9108 2916.1 L 9098=
+.67 2888.1 L 9108 2895.1 L 9117.33 2888.1 Z" fill=3D"rgb(0, 0, 0)" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-event=
+s=3D"all"/><rect x=3D"8982" y=3D"2680" width=3D"252" height=3D"160" rx=3D"2=
+4" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(=
+4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D=
+"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility=
+" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w=
+3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justi=
+fy-content: unsafe center; width: 61px; height: 1px; padding-top: 690px; ma=
+rgin-left: 2247px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">sayhello</font></div></=
+div></div></foreignObject><text x=3D"2277" y=3D"694" fill=3D"rgb(0, 0, 0)" =
+font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">s=
+ayhello</text></switch></g><path d=3D"M 9108 3080 L 9108 3120.57 Q 9108 316=
+0.57 9108 3162.55 L 9108 3164.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" str=
+oke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=
+=3D"M 9107.98 3185.53 L 9098.67 3157.52 L 9108 3164.53 L 9117.34 3157.53 Z"=
+ fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-mi=
+terlimit=3D"10" pointer-events=3D"all"/><rect x=3D"9021" y=3D"2920" width=
+=3D"174" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" str=
+oke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transfor=
+m=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D=
+"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org=
+/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align: le=
+ft;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; al=
+ign-items: unsafe center; justify-content: unsafe center; width: 42px; heig=
+ht: 1px; padding-top: 750px; margin-left: 2256px;"><div data-drawio-colors=
+=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px;=
+ text-align: center;"><div style=3D"display: inline-block; font-size: 12px;=
+ font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height=
+: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"><f=
+ont data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+D=
+aughter">usr</font></div></div></div></foreignObject><text x=3D"2277" y=3D"=
+754" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12p=
+x" text-anchor=3D"middle">usr</text></switch></g><path d=3D"M 9107.98 3350 =
+L 9107.97 3414.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4"=
+ stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9107.96 3=
+435.53 L 9098.63 3407.53 L 9107.97 3414.53 L 9117.3 3407.53 Z" fill=3D"rgb(=
+0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"1=
+0" pointer-events=3D"all"/><rect x=3D"9000.48" y=3D"3190" width=3D"215" hei=
+ght=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"transla=
+te(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=
+=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/fe=
+ature#Extensibility" style=3D"overflow: visible; text-align: left;"><div xm=
+lns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: u=
+nsafe center; justify-content: unsafe center; width: 52px; height: 1px; pad=
+ding-top: 818px; margin-left: 2251px;"><div data-drawio-colors=3D"color: rg=
+b(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: =
+center;"><div style=3D"display: inline-block; font-size: 12px; font-family:=
+ &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointe=
+r-events: all; white-space: normal; overflow-wrap: normal;"><font data-font=
+-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">bin<=
+/font></div></div></div></foreignObject><text x=3D"2277" y=3D"821" fill=3D"=
+rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-ancho=
+r=3D"middle">bin</text></switch></g><rect x=3D"7689.48" y=3D"1360" width=3D=
+"1287" height=3D"595" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" s=
+troke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><g tra=
+nsform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-even=
+ts=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w=
+3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-alig=
+n: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: fle=
+x; align-items: unsafe center; justify-content: unsafe center; width: 320px=
+; height: 1px; padding-top: 414px; margin-left: 1923px;"><div data-drawio-c=
+olors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size:=
+ 0px; text-align: center;"><div style=3D"display: inline-block; font-size: =
+12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-h=
+eight: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal=
+;"><span style=3D"font-size: 15px;">Folders created here are present in <b>=
+<u>PACKAGES</u></b> variable, BitBake knows what and where to put things us=
+ing the <b><u>FILES</u></b> variable, example: <b><u>FILES:${PN}</u></b> fi=
+les will go to <b><u>${PN}</u></b>=C2=A0folder which is in <b><u>PACKAGES</=
+u></b></span></div></div></div></foreignObject><text x=3D"2083" y=3D"418" f=
+ill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" tex=
+t-anchor=3D"middle">Folders created here are present in PACKAGES variable..=
+.</text></switch></g><rect x=3D"8640.48" y=3D"3680" width=3D"360" height=3D=
+"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 1px; height: 1px; padding-top: 935px; margin-left: 2205px;"><div=
+ data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-b=
+ox; font-size: 0px; text-align: center;"><div style=3D"display: inline-bloc=
+k; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0,=
+ 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font =
+data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daugh=
+ter">do_package<br /></font></div></div></div></foreignObject><text x=3D"22=
+05" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-si=
+ze=3D"12px" text-anchor=3D"middle">do_package&#xa;</text></switch></g><elli=
+pse cx=3D"8581.48" cy=3D"3740" rx=3D"60.00000000000001" ry=3D"60.0000000000=
+0001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=3D"4" pointer-events=
+=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObj=
+ect pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=
+=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: vi=
+sible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=
+=3D"display: flex; align-items: unsafe center; justify-content: unsafe cent=
+er; width: 28px; height: 1px; padding-top: 935px; margin-left: 2131px;"><di=
+v data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-=
+box; font-size: 0px; text-align: center;"><div style=3D"display: inline-blo=
+ck; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0=
+, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; overfl=
+ow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DArchitects+Daughter" color=3D"#ffffff" size=3D"1"><b style=3D"font-=
+size: 15px;">16</b></font></div></div></div></foreignObject><text x=3D"2145=
+" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=
+=3D"12px" text-anchor=3D"middle">16</text></switch></g><path d=3D"M 9988 23=
+20 L 9988 2674.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4"=
+ stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9988 2695=
+.53 L 9978.67 2667.53 L 9988 2674.53 L 9997.33 2667.53 Z" fill=3D"rgb(0, 0,=
+ 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" po=
+inter-events=3D"all"/><rect x=3D"9748" y=3D"2160" width=3D"480" height=3D"1=
+60" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)"=
+ stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 =
+-0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%=
+" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Ex=
+tensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"h=
+ttp://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe ce=
+nter; justify-content: unsafe center; width: 118px; height: 1px; padding-to=
+p: 560px; margin-left: 2438px;"><div data-drawio-colors=3D"color: rgb(0, 0,=
+ 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: center;=
+"><div style=3D"display: inline-block; font-size: 12px; font-family: &quot;=
+Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-event=
+s: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D=
+"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">deploy-<b><=
+i>pkg</i></b></font></div></div></div></foreignObject><text x=3D"2497" y=3D=
+"564" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12=
+px" text-anchor=3D"middle">deploy-pkg</text></switch></g><path d=3D"M 9988 =
+2860 L 9988 3014.53" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"=
+4" stroke-miterlimit=3D"10" pointer-events=3D"stroke"/><path d=3D"M 9988 30=
+35.53 L 9978.67 3007.53 L 9988 3014.53 L 9997.33 3007.53 Z" fill=3D"rgb(0, =
+0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"all"/><rect x=3D"9748" y=3D"2700" width=3D"480" height=3D=
+"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0=
+)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.=
+5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"10=
+0%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#=
+Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D=
+"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe =
+center; justify-content: unsafe center; width: 118px; height: 1px; padding-=
+top: 695px; margin-left: 2438px;"><div data-drawio-colors=3D"color: rgb(0, =
+0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: cente=
+r;"><div style=3D"display: inline-block; font-size: 12px; font-family: &quo=
+t;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-eve=
+nts: all; white-space: normal; overflow-wrap: normal;"><font data-font-src=
+=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter"><b>${PAC=
+KAGE_ARCH}</b></font></div></div></div></foreignObject><text x=3D"2497" y=
+=3D"699" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D=
+"12px" text-anchor=3D"middle">${PACKAGE_ARCH}</text></switch></g><rect x=3D=
+"9028" y=3D"1360" width=3D"1640" height=3D"595" fill=3D"rgb(255, 255, 255)"=
+ stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" poin=
+ter-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><=
+foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requir=
+edFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ov=
+erflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xh=
+tml" style=3D"display: flex; align-items: unsafe center; justify-content: u=
+nsafe center; width: 408px; height: 1px; padding-top: 414px; margin-left: 2=
+258px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizi=
+ng: border-box; font-size: 0px; text-align: center;"><div style=3D"display:=
+ inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; c=
+olor: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nor=
+mal; overflow-wrap: normal;"><font style=3D"font-size: 15px;">This can be <=
+b><u>rpms</u></b>, <b><u>debs</u></b> or <b><u>ipks</u></b>.<br />These are=
+ provided by<br /><b><u>package_rpm</u></b>, <b><u>package_deb</u></b> and =
+<b><u>package_ipk</u></b> classes respectively, use <b><u>PACKAGE_CLASSES</=
+u></b> for that as<br />content of <b><u>PACKAGE_CLASSES</u></b> will be ap=
+pended<br />to <b><u>INHERIT</u></b><br /></font></div></div></div></foreig=
+nObject><text x=3D"2462" y=3D"418" fill=3D"rgb(0, 0, 0)" font-family=3D"Lib=
+eration Sans" font-size=3D"12px" text-anchor=3D"middle">This can be rpms, d=
+ebs or ipks....</text></switch></g><path d=3D"M 10522 3105 L 10708 3105.59 =
+Q 10748 3105.71 10748 3065.71 L 10748 1320.57 Q 10748 1280.57 10708 1280.57=
+ L 7353.71 1280.57 Q 7313.71 1280.57 7313.8 1240.57 L 7313.92 1180.42" fill=
+=3D"none" stroke=3D"#000000" stroke-width=3D"12" stroke-miterlimit=3D"10" p=
+ointer-events=3D"stroke"/><path d=3D"M 7313.97 1153.42 L 7331.9 1189.45 L 7=
+313.92 1180.42 L 7295.9 1189.38 Z" fill=3D"#000000" stroke=3D"#000000" stro=
+ke-width=3D"12" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D=
+"9454" y=3D"3040" width=3D"1068" height=3D"130" rx=3D"19.5" ry=3D"19.5" fil=
+l=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/=
+><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject point=
+er-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:=
+//www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; te=
+xt-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displ=
+ay: flex; align-items: unsafe center; justify-content: unsafe center; width=
+: 265px; height: 1px; padding-top: 776px; margin-left: 2365px;"><div data-d=
+rawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; fon=
+t-size: 0px; text-align: center;"><div style=3D"display: inline-block; font=
+-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0);=
+ line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap:=
+ normal;">sayhello-0.1-r0.${PACKAGE_ARCH}.<i>pkg</i></div></div></div></for=
+eignObject><text x=3D"2497" y=3D"780" fill=3D"rgb(0, 0, 0)" font-family=3D"=
+Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">sayhello-0.1-r0.=
+${PACKAGE_ARCH}.pkg</text></switch></g><rect x=3D"10788" y=3D"2640" width=
+=3D"1480" height=3D"680" fill=3D"none" stroke=3D"#36393d" stroke-width=3D"4=
+" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><g transform=3D"transl=
+ate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" widt=
+h=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/f=
+eature#Extensibility" style=3D"overflow: visible; text-align: left;"><div x=
+mlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: =
+unsafe center; justify-content: unsafe center; width: 368px; height: 1px; p=
+adding-top: 745px; margin-left: 2698px;"><div data-drawio-colors=3D"color: =
+rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align=
+: center;"><div style=3D"display: inline-block; font-size: 12px; font-famil=
+y: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; poin=
+ter-events: all; white-space: normal; overflow-wrap: normal;"><font style=
+=3D"font-size: 15px;">This task also depends on <b><u>PACKAGE_CLASSES</u></=
+b>,<br /><b><u><i>pkg</i></u></b>=C2=A0can be <b><u>rpm</u></b>, <b><u>deb<=
+/u></b> or <b><u>ipk</u></b> for <b><u>package_rpm</u></b>,<br /><b><u>pack=
+age_deb</u></b> or <u style=3D"font-weight: bold;">package_ipk</u>=C2=A0res=
+pectively.<br />The generated package generally named using:<br /><b><u>${P=
+N}</u></b>, <b><u>${PR}</u></b>, <b><u>${PACKAGE_ARCH}</u></b> and=C2=A0<b>=
+<u><i>pkg</i></u></b><br /></font></div></div></div></foreignObject><text x=
+=3D"2882" y=3D"749" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" f=
+ont-size=3D"12px" text-anchor=3D"middle">This task also depends on PACKAGE_=
+CLASSES,...</text></switch></g><path d=3D"M 7314 520 L 7314 654.53" fill=3D=
+"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"stroke"/><path d=3D"M 7314 675.53 L 7300 647.53 L 7314 65=
+4.53 L 7328 647.53 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-=
+width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=3D"M 7=
+454 440 Q 7454 440 7742.53 440" fill=3D"none" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12" pointer-e=
+vents=3D"stroke"/><path d=3D"M 7763.53 440 L 7735.53 449.33 L 7742.53 440 L=
+ 7735.53 430.67 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-wid=
+th=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"7174" =
+y=3D"360" width=3D"280" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255,=
+ 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 68px; height: 1px; padding-top: 110px; margin-left: 1795px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><font data-font-src=3D"https://fonts.googleapis.com/css?family=
+=3DArchitects+Daughter">deploy</font></div></div></div></foreignObject><tex=
+t x=3D"1829" y=3D"114" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans=
+" font-size=3D"12px" text-anchor=3D"middle">deploy</text></switch></g><path=
+ d=3D"M 7313.71 840 L 7313.71 880.57 Q 7313.71 920.57 7313.71 910.29 L 7313=
+.71 905.14 Q 7313.71 900 7313.81 927.26 L 7313.91 954.53" fill=3D"none" str=
+oke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-ev=
+ents=3D"stroke"/><path d=3D"M 7313.98 975.53 L 7299.88 947.58 L 7313.91 954=
+.53 L 7327.88 947.48 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" strok=
+e-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"7=
+054.48" y=3D"680" width=3D"519" height=3D"160" rx=3D"24" ry=3D"24" fill=3D"=
+rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-even=
+ts=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignO=
+bject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatur=
+es=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: =
+visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" sty=
+le=3D"display: flex; align-items: unsafe center; justify-content: unsafe ce=
+nter; width: 128px; height: 1px; padding-top: 190px; margin-left: 1765px;">=
+<div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bord=
+er-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-=
+block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rg=
+b(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; ove=
+rflow-wrap: normal;"><b>${DEPLOY_DIR_<i>pkg</i>}</b></div></div></div></for=
+eignObject><text x=3D"1828" y=3D"194" fill=3D"rgb(0, 0, 0)" font-family=3D"=
+Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">${DEPLOY_DIR_pkg=
+}</text></switch></g><rect x=3D"9488" y=3D"3680" width=3D"600" height=3D"12=
+0" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D=
+"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject=
+ pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D=
+"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visib=
+le; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D=
+"display: flex; align-items: unsafe center; justify-content: unsafe center;=
+ width: 1px; height: 1px; padding-top: 935px; margin-left: 2447px;"><div da=
+ta-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box;=
+ font-size: 0px; text-align: center;"><div style=3D"display: inline-block; =
+font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0,=
+ 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><font dat=
+a-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Daughter=
+">do_package_write_<i>pkg</i><br /></font></div></div></div></foreignObject=
+><text x=3D"2447" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation=
+ Sans" font-size=3D"12px" text-anchor=3D"middle">do_package_write_pkg&#xa;<=
+/text></switch></g><ellipse cx=3D"9408" cy=3D"3740" rx=3D"60.00000000000001=
+" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 28px; height: 1px; padding-top: 935px; marg=
+in-left: 2338px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" size=
+=3D"1"><b style=3D"font-size: 15px;">17</b></font></div></div></div></forei=
+gnObject><text x=3D"2352" y=3D"939" fill=3D"rgb(0, 0, 0)" font-family=3D"Li=
+beration Sans" font-size=3D"12px" text-anchor=3D"middle">17</text></switch>=
+</g><path d=3D"M 10048 3740 Q 11528.57 3740 11528.03 3345.47" fill=3D"none"=
+ stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke=
+-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 11528.01 3324.=
+47 L 11537.38 3352.46 L 11528.03 3345.47 L 11518.71 3352.48 Z" fill=3D"rgb(=
+0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"1=
+0" pointer-events=3D"all"/><rect x=3D"7074" y=3D"980" width=3D"480" height=
+=3D"160" rx=3D"24" ry=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0=
+, 0)" stroke-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(=
+-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" width=3D=
+"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/featu=
+re#Extensibility" style=3D"overflow: visible; text-align: left;"><div xmlns=
+=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsa=
+fe center; justify-content: unsafe center; width: 118px; height: 1px; paddi=
+ng-top: 265px; margin-left: 1770px;"><div data-drawio-colors=3D"color: rgb(=
+0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: ce=
+nter;"><div style=3D"display: inline-block; font-size: 12px; font-family: &=
+quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-=
+events: all; white-space: normal; overflow-wrap: normal;">${PACKAGE_ARCH}</=
+div></div></div></foreignObject><text x=3D"1829" y=3D"269" fill=3D"rgb(0, 0=
+, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"mid=
+dle">${PACKAGE_ARCH}</text></switch></g><rect x=3D"7768" y=3D"672.52" width=
+=3D"1660" height=3D"167.48" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0,=
+ 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 413px; height: 1px; padding-top: 189px; margin-left: 1943px;"><div data-dr=
+awio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font=
+-size: 0px; text-align: center;"><div style=3D"display: inline-block; font-=
+size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); =
+line-height: 1.2; pointer-events: all; white-space: normal; overflow-wrap: =
+normal;"><font style=3D"font-size: 15px;">For packages, this can be <b><u>I=
+PK</u></b>, <b><u>RPM</u></b> or <b><u>DEB</u></b> (<i>check step 17</i>)</=
+font></div></div></div></foreignObject><text x=3D"2150" y=3D"193" fill=3D"r=
+gb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=
+=3D"middle">For packages, this can be IPK, RPM or DEB (check step 17)</text=
+></switch></g><rect x=3D"7369.48" y=3D"480" width=3D"320" height=3D"100" rx=
+=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/>=
+<g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointe=
+r-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http:/=
+/www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; tex=
+t-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"displa=
+y: flex; align-items: unsafe center; justify-content: unsafe center; width:=
+ 78px; height: 1px; padding-top: 133px; margin-left: 1843px;"><div data-dra=
+wio-colors=3D"color: #ffffff; " style=3D"box-sizing: border-box; font-size:=
+ 0px; text-align: center;"><div style=3D"display: inline-block; font-size: =
+12px; font-family: &quot;Liberation Sans&quot;; color: rgb(255, 255, 255); =
+line-height: 1.2; pointer-events: all; font-weight: bold; white-space: norm=
+al; overflow-wrap: normal;"><font data-font-src=3D"https://fonts.googleapis=
+.com/css?family=3DArchitects+Daughter">DEPLOY_DIR</font></div></div></div><=
+/foreignObject><text x=3D"1882" y=3D"136" fill=3D"#ffffff" font-family=3D"L=
+iberation Sans" font-size=3D"12px" text-anchor=3D"middle" font-weight=3D"bo=
+ld">DEPLOY_DIR</text></switch></g><rect x=3D"4988" y=3D"80" width=3D"240" h=
+eight=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" pointer-=
+events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><fore=
+ignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFe=
+atures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overfl=
+ow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml"=
+ style=3D"display: flex; align-items: unsafe center; justify-content: unsaf=
+e center; width: 58px; height: 1px; padding-top: 33px; margin-left: 1248px;=
+"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: border-=
+box; font-size: 0px; text-align: center;"><div style=3D"display: inline-blo=
+ck; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(2=
+55, 255, 255); line-height: 1.2; pointer-events: all; font-weight: bold; wh=
+ite-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://f=
+onts.googleapis.com/css?family=3DArchitects+Daughter">TMPDIR</font></div></=
+div></div></foreignObject><text x=3D"1277" y=3D"36" fill=3D"#ffffff" font-f=
+amily=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle" font-we=
+ight=3D"bold">TMPDIR</text></switch></g><rect x=3D"1668" y=3D"480" width=3D=
+"250.72" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none=
+" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><sw=
+itch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" =
+requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=
+=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1=
+999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-cont=
+ent: unsafe center; width: 61px; height: 1px; padding-top: 133px; margin-le=
+ft: 418px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizin=
+g: border-box; font-size: 0px; text-align: center;"><div style=3D"display: =
+inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; co=
+lor: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight=
+: bold; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D=
+"https://fonts.googleapis.com/css?family=3DArchitects+Daughter">DL_DIR</fon=
+t></div></div></div></foreignObject><text x=3D"448" y=3D"136" fill=3D"#ffff=
+ff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middl=
+e" font-weight=3D"bold">DL_DIR</text></switch></g><path d=3D"M 7573.48 760 =
+L 7630.29 760.34 Q 7670.29 760.57 7706.42 758.98 L 7742.55 757.38" fill=3D"=
+none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" s=
+troke-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 7763.53 7=
+56.46 L 7735.97 767.02 L 7742.55 757.38 L 7735.15 748.37 Z" fill=3D"rgb(0, =
+0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" =
+pointer-events=3D"all"/><rect x=3D"10488" y=3D"2380" width=3D"600" height=
+=3D"120" fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-eve=
+nts=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreign=
+Object pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatu=
+res=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow:=
+ visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" st=
+yle=3D"display: flex; align-items: unsafe center; justify-content: unsafe c=
+enter; width: 1px; height: 1px; padding-top: 610px; margin-left: 2697px;"><=
+div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: borde=
+r-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-b=
+lock; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb=
+(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: nowrap;"><fo=
+nt data-font-src=3D"https://fonts.googleapis.com/css?family=3DArchitects+Da=
+ughter">do_package_write_<i>pkg</i><br /></font></div></div></div></foreign=
+Object><text x=3D"2697" y=3D"614" fill=3D"rgb(0, 0, 0)" font-family=3D"Libe=
+ration Sans" font-size=3D"12px" text-anchor=3D"middle">do_package_write_pkg=
+&#xa;</text></switch></g><ellipse cx=3D"10408" cy=3D"2440" rx=3D"60.0000000=
+0000001" ry=3D"60.00000000000001" fill=3D"#000000" stroke=3D"#56517e" strok=
+e-width=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)s=
+cale(4)"><switch><foreignObject pointer-events=3D"none" width=3D"100%" heig=
+ht=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensib=
+ility" style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://=
+www.w3.org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; =
+justify-content: unsafe center; width: 28px; height: 1px; padding-top: 610p=
+x; margin-left: 2588px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " =
+style=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div =
+style=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberat=
+ion Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all;=
+ white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https:=
+//fonts.googleapis.com/css?family=3DArchitects+Daughter" color=3D"#ffffff" =
+size=3D"1"><b style=3D"font-size: 15px;">18</b></font></div></div></div></f=
+oreignObject><text x=3D"2602" y=3D"614" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">18</text></s=
+witch></g><path d=3D"M 10268 2310.29 Q 10879.43 2310.29 10879.43 1999.43 Q =
+10879.43 1688.57 10878.68 1140.47" fill=3D"none" stroke=3D"rgb(0, 0, 0)" st=
+roke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12" pointe=
+r-events=3D"stroke"/><path d=3D"M 10878.65 1119.47 L 10888.02 1147.46 L 108=
+78.68 1140.47 L 10869.35 1147.48 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/>=
+<rect x=3D"10148" y=3D"2260" width=3D"120" height=3D"100" rx=3D"15" ry=3D"1=
+5" fill=3D"#000000" stroke=3D"none" pointer-events=3D"all"/><path d=3D"M 10=
+088 2200 Q 10088.57 2077.14 10173.14 2077.14 Q 10257.71 2077.14 10257.94 19=
+80.47" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-mite=
+rlimit=3D"10" stroke-dasharray=3D"12 12" pointer-events=3D"stroke"/><path d=
+=3D"M 10257.99 1959.47 L 10267.26 1987.49 L 10257.94 1980.47 L 10248.59 198=
+7.45 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" st=
+roke-miterlimit=3D"10" pointer-events=3D"all"/><rect x=3D"9628" y=3D"805" w=
+idth=3D"1667.52" height=3D"310" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 415px; height: 1px; padding-top: 240px; margin-left: 2408px;"><div dat=
+a-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; =
+font-size: 0px; text-align: center;"><div style=3D"display: inline-block; f=
+ont-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, =
+0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;"><font style=3D"font-size: 15px;">This can be <b><u>PKGWRITEDIR=
+RPM</u></b>, <b><u>PKGWRITEDIRDEB</u></b> or <b><u>PKGWRITEDIRIPK</u></b> f=
+or <b><u>package_rpm</u></b>, <b><u>package_deb</u></b><br />or <b><u>packa=
+ge_ipk</u></b> respectively<br /></font></div></div></div></foreignObject><=
+text x=3D"2615" y=3D"244" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation S=
+ans" font-size=3D"12px" text-anchor=3D"middle">This can be PKGWRITEDIRRPM, =
+PKGWRITEDIRDEB or PKGWRITEDIRIPK for pack...</text></switch></g><rect x=3D"=
+628" y=3D"2470" width=3D"1313" height=3D"410" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 326px; height: 1px; padding-top: 669px; margin-left: 158px;"><div data=
+-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; f=
+ont-size: 0px; text-align: center;"><div style=3D"display: inline-block; fo=
+nt-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0=
+); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wra=
+p: normal;"><span style=3D"font-size: 15px;">License checking happens in <b=
+><u>do_populate_lic</u></b> after <b><u>do_patch<br /></u></b>and before th=
+at a checksum check<br />happends on=C2=A0<b><u>LIC_FILES_CHKSUM</u></b> if=
+ the<br />license is not <b><u>CLOSED</u></b><br /></span></div></div></div=
+></foreignObject><text x=3D"321" y=3D"672" fill=3D"rgb(0, 0, 0)" font-famil=
+y=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">License che=
+cking happens in do_populate_lic after do_pa...</text></switch></g><rect x=
+=3D"3528.48" y=3D"1360" width=3D"1739.52" height=3D"280" fill=3D"none" stro=
+ke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-e=
+vents=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><forei=
+gnObject pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFea=
+tures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflo=
+w: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" =
+style=3D"display: flex; align-items: unsafe center; justify-content: unsafe=
+ center; width: 433px; height: 1px; padding-top: 375px; margin-left: 883px;=
+"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bo=
+rder-box; font-size: 0px; text-align: center;"><div style=3D"display: inlin=
+e-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: =
+rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; o=
+verflow-wrap: normal;"><span style=3D"font-size: 15px;">This variable is us=
+ed to separate recipes<br />based on their target. This has value of<br /><=
+b><u>${PACKAGE_ARCH}${TARGET_VENDOR}-${TARGET_OS}</u></b><br /></span></div=
+></div></div></foreignObject><text x=3D"1100" y=3D"379" fill=3D"rgb(0, 0, 0=
+)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+">This variable is used to separate recipes...</text></switch></g><path d=
+=3D"M 6588 660 Q 6863.43 660 6863.4 505.47" fill=3D"none" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 1=
+2" pointer-events=3D"stroke"/><path d=3D"M 6863.39 484.47 L 6872.73 512.47 =
+L 6863.4 505.47 L 6854.06 512.47 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, =
+0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/>=
+<rect x=3D"6148" y=3D"620" width=3D"440" height=3D"80" rx=3D"12" ry=3D"12" =
+fill=3D"#eeeeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 108px; height: 1px; padding-top: 165px; margin-left: 1538px;"><div dat=
+a-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; =
+font-size: 0px; text-align: center;"><div style=3D"display: inline-block; f=
+ont-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, =
+0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;">conf-notes.txt</div></div></div></foreignObject><text x=3D"159=
+2" y=3D"169" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-siz=
+e=3D"12px" text-anchor=3D"middle">conf-notes.txt</text></switch></g><path d=
+=3D"M 2580.02 520 Q 2580 660 3042.53 660" fill=3D"none" stroke=3D"rgb(0, 0,=
+ 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"12 12"=
+ pointer-events=3D"stroke"/><path d=3D"M 3063.53 660 L 3035.53 669.33 L 304=
+2.53 660 L 3035.53 650.67 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rgb(0, 0, 0)" =
+stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"all"/><path d=
+=3D"M 2374 440 Q 2215.43 440.57 2215.04 205.47" fill=3D"none" stroke=3D"rgb=
+(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=3D"=
+12 12" pointer-events=3D"stroke"/><path d=3D"M 2215.01 184.47 L 2224.39 212=
+.46 L 2215.04 205.47 L 2205.72 212.49 Z" fill=3D"rgb(0, 0, 0)" stroke=3D"rg=
+b(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-events=3D"a=
+ll"/><rect x=3D"2374" y=3D"360" width=3D"412.04" height=3D"160" rx=3D"24" r=
+y=3D"24" fill=3D"rgb(255, 255, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=
+=3D"4" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)=
+"><switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"1=
+00%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" =
+style=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.=
+org/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify=
+-content: unsafe center; width: 101px; height: 1px; padding-top: 110px; mar=
+gin-left: 595px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=
+=3D"box-sizing: border-box; font-size: 0px; text-align: center;"><div style=
+=3D"display: inline-block; font-size: 12px; font-family: &quot;Liberation S=
+ans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; whit=
+e-space: normal; overflow-wrap: normal;"><font data-font-src=3D"https://fon=
+ts.googleapis.com/css?family=3DArchitects+Daughter">sstate-cache</font></di=
+v></div></div></foreignObject><text x=3D"645" y=3D"114" fill=3D"rgb(0, 0, 0=
+)" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle=
+">sstate-cache</text></switch></g><rect x=3D"2643.92" y=3D"480" width=3D"33=
+2.04" height=3D"100" rx=3D"15" ry=3D"15" fill=3D"#000000" stroke=3D"none" p=
+ointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switc=
+h><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" req=
+uiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D=
+"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999=
+/xhtml" style=3D"display: flex; align-items: unsafe center; justify-content=
+: unsafe center; width: 81px; height: 1px; padding-top: 133px; margin-left:=
+ 662px;"><div data-drawio-colors=3D"color: #ffffff; " style=3D"box-sizing: =
+border-box; font-size: 0px; text-align: center;"><div style=3D"display: inl=
+ine-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color=
+: rgb(255, 255, 255); line-height: 1.2; pointer-events: all; font-weight: b=
+old; white-space: normal; overflow-wrap: normal;"><font data-font-src=3D"ht=
+tps://fonts.googleapis.com/css?family=3DArchitects+Daughter">SSTATE_DIR</fo=
+nt></div></div></div></foreignObject><text x=3D"702" y=3D"136" fill=3D"#fff=
+fff" font-family=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"midd=
+le" font-weight=3D"bold">SSTATE_DIR</text></switch></g><rect x=3D"8927.96" =
+y=3D"3440" width=3D"360" height=3D"110" rx=3D"16.5" ry=3D"16.5" fill=3D"#ee=
+eeee" stroke=3D"#36393d" stroke-width=3D"4" pointer-events=3D"all"/><g tran=
+sform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-event=
+s=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3=
+.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible; text-align=
+: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex=
+; align-items: unsafe center; justify-content: unsafe center; width: 88px; =
+height: 1px; padding-top: 874px; margin-left: 2233px;"><div data-drawio-col=
+ors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0=
+px; text-align: center;"><div style=3D"display: inline-block; font-size: 12=
+px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-hei=
+ght: 1.2; pointer-events: all; white-space: normal; overflow-wrap: normal;"=
+>sayhello</div></div></div></foreignObject><text x=3D"2277" y=3D"877" fill=
+=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" text-a=
+nchor=3D"middle">sayhello</text></switch></g><path d=3D"M 4660 1960 Q 4660 =
+2300 4904.57 2300 Q 5149.14 2300 5148.94 2611.65" fill=3D"none" stroke=3D"r=
+gb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" stroke-dasharray=
+=3D"12 12" pointer-events=3D"stroke"/><path d=3D"M 5148.92 2632.65 L 5139.6=
+1 2604.64 L 5148.94 2611.65 L 5158.27 2604.65 Z" fill=3D"rgb(0, 0, 0)" stro=
+ke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-miterlimit=3D"10" pointer-eve=
+nts=3D"all"/><rect x=3D"3068" y=3D"480" width=3D"1640" height=3D"360" fill=
+=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12=
+ 12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)">=
+<switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100=
+%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" st=
+yle=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.or=
+g/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-c=
+ontent: unsafe center; width: 408px; height: 1px; padding-top: 165px; margi=
+n-left: 768px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"=
+box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"=
+display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&=
+quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-sp=
+ace: normal; overflow-wrap: normal;"><span style=3D"font-size: 15px;">This =
+folder contains cache for recipes build output, this is used by BitBake, if=
+ the recipe checksum did not change it knows that the output to use is the =
+same.<br /></span></div></div></div></foreignObject><text x=3D"972" y=3D"16=
+9" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px"=
+ text-anchor=3D"middle">This folder contains cache for recipes build output=
+, this is used by...</text></switch></g><rect x=3D"1395" y=3D"0" width=3D"1=
+640" height=3D"180" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4=
+" stroke-dasharray=3D"12 12" pointer-events=3D"all"/><g transform=3D"transl=
+ate(-0.5 -0.5)scale(4)"><switch><foreignObject pointer-events=3D"none" widt=
+h=3D"100%" height=3D"100%" requiredFeatures=3D"http://www.w3.org/TR/SVG11/f=
+eature#Extensibility" style=3D"overflow: visible; text-align: left;"><div x=
+mlns=3D"http://www.w3.org/1999/xhtml" style=3D"display: flex; align-items: =
+unsafe center; justify-content: unsafe center; width: 408px; height: 1px; p=
+adding-top: 23px; margin-left: 350px;"><div data-drawio-colors=3D"color: rg=
+b(0, 0, 0); " style=3D"box-sizing: border-box; font-size: 0px; text-align: =
+center;"><div style=3D"display: inline-block; font-size: 12px; font-family:=
+ &quot;Liberation Sans&quot;; color: rgb(0, 0, 0); line-height: 1.2; pointe=
+r-events: all; white-space: normal; overflow-wrap: normal;"><span style=3D"=
+font-size: 15px;"><font data-font-src=3D"https://fonts.googleapis.com/css?f=
+amily=3DLiberation+Sans">These directories can be shared accross builds to =
+save disk space and build time</font><br /></span></div></div></div></forei=
+gnObject><text x=3D"554" y=3D"26" fill=3D"rgb(0, 0, 0)" font-family=3D"Libe=
+ration Sans" font-size=3D"12px" text-anchor=3D"middle">These directories ca=
+n be shared accross builds to save disk space an...</text></switch></g><rec=
+t x=3D"7768" y=3D"350" width=3D"1667.52" height=3D"180" fill=3D"rgb(255, 25=
+5, 255)" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 =
+12" pointer-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><=
+switch><foreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%=
+" requiredFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" sty=
+le=3D"overflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org=
+/1999/xhtml" style=3D"display: flex; align-items: unsafe center; justify-co=
+ntent: unsafe center; width: 415px; height: 1px; padding-top: 110px; margin=
+-left: 1943px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"=
+box-sizing: border-box; font-size: 0px; text-align: center;"><div style=3D"=
+display: inline-block; font-size: 12px; font-family: &quot;Liberation Sans&=
+quot;; color: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-sp=
+ace: normal; overflow-wrap: normal;"><font style=3D"font-size: 15px;">This =
+directory contains other output directories such as <b><u>images</u></b>, <=
+b><u>sdk</u></b> and <b><u>licenses</u></b><br /></font></div></div></div><=
+/foreignObject><text x=3D"2150" y=3D"114" fill=3D"rgb(0, 0, 0)" font-family=
+=3D"Liberation Sans" font-size=3D"12px" text-anchor=3D"middle">This directo=
+ry contains other output directories such as images, sdk...</text></switch>=
+</g><rect x=3D"5908" y=3D"1020" width=3D"680" height=3D"520" fill=3D"none" =
+stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" point=
+er-events=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><f=
+oreignObject pointer-events=3D"none" width=3D"100%" height=3D"100%" require=
+dFeatures=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"ove=
+rflow: visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xht=
+ml" style=3D"display: flex; align-items: unsafe center; justify-content: un=
+safe center; width: 168px; height: 1px; padding-top: 320px; margin-left: 14=
+78px;"><div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizin=
+g: border-box; font-size: 0px; text-align: center;"><div style=3D"display: =
+inline-block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; co=
+lor: rgb(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: norm=
+al; overflow-wrap: normal;"><font style=3D"font-size: 15px;">This file cont=
+ains all <b>layers</b> that BitBake should consider when looking for metada=
+ta.<br /></font></div></div></div></foreignObject><text x=3D"1562" y=3D"324=
+" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" font-size=3D"12px" =
+text-anchor=3D"middle">This file contains all layer...</text></switch></g><=
+rect x=3D"5396" y=3D"20" width=3D"1760" height=3D"160" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-eve=
+nts=3D"all"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreign=
+Object pointer-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatu=
+res=3D"http://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow:=
+ visible; text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" st=
+yle=3D"display: flex; align-items: unsafe center; justify-content: unsafe c=
+enter; width: 438px; height: 1px; padding-top: 25px; margin-left: 1350px;">=
+<div data-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: bord=
+er-box; font-size: 0px; text-align: center;"><div style=3D"display: inline-=
+block; font-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rg=
+b(0, 0, 0); line-height: 1.2; pointer-events: all; white-space: normal; ove=
+rflow-wrap: normal;"><font style=3D"font-size: 15px;">This is base configur=
+ation file containing essential user config such as <b><u>MACHINE</u></b> a=
+nd <b><u>DISTRO</u></b><br /></font></div></div></div></foreignObject><text=
+ x=3D"1569" y=3D"29" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation Sans" =
+font-size=3D"12px" text-anchor=3D"middle">This is base configuration file c=
+ontaining essential user config such as...</text></switch></g><rect x=3D"61=
+40" y=3D"320" width=3D"964.52" height=3D"160" fill=3D"none" stroke=3D"rgb(0=
+, 0, 0)" stroke-width=3D"4" stroke-dasharray=3D"12 12" pointer-events=3D"al=
+l"/><g transform=3D"translate(-0.5 -0.5)scale(4)"><switch><foreignObject po=
+inter-events=3D"none" width=3D"100%" height=3D"100%" requiredFeatures=3D"ht=
+tp://www.w3.org/TR/SVG11/feature#Extensibility" style=3D"overflow: visible;=
+ text-align: left;"><div xmlns=3D"http://www.w3.org/1999/xhtml" style=3D"di=
+splay: flex; align-items: unsafe center; justify-content: unsafe center; wi=
+dth: 239px; height: 1px; padding-top: 100px; margin-left: 1536px;"><div dat=
+a-drawio-colors=3D"color: rgb(0, 0, 0); " style=3D"box-sizing: border-box; =
+font-size: 0px; text-align: center;"><div style=3D"display: inline-block; f=
+ont-size: 12px; font-family: &quot;Liberation Sans&quot;; color: rgb(0, 0, =
+0); line-height: 1.2; pointer-events: all; white-space: normal; overflow-wr=
+ap: normal;"><font style=3D"font-size: 15px;">The message to show after <b>=
+source oe-init-build-env</b><br /></font></div></div></div></foreignObject>=
+<text x=3D"1656" y=3D"104" fill=3D"rgb(0, 0, 0)" font-family=3D"Liberation =
+Sans" font-size=3D"12px" text-anchor=3D"middle">The message to show after s=
+ource oe-init...</text></switch></g><rect x=3D"10948" y=3D"2400" width=3D"1=
+20" height=3D"80" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" =
+pointer-events=3D"all"/><rect x=3D"10348" y=3D"3065" width=3D"80" height=3D=
+"80" fill=3D"none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-event=
+s=3D"all"/><rect x=3D"9948" y=3D"3700" width=3D"100" height=3D"80" fill=3D"=
+none" stroke=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><r=
+ect x=3D"10028" y=3D"2200" width=3D"80" height=3D"80" fill=3D"none" stroke=
+=3D"rgb(0, 0, 0)" stroke-width=3D"4" pointer-events=3D"all"/><rect x=3D"745=
+4" y=3D"725" width=3D"80" height=3D"80" fill=3D"none" stroke=3D"rgb(0, 0, 0=
+)" stroke-width=3D"4" pointer-events=3D"all"/></g><switch><g requiredFeatur=
+es=3D"http://www.w3.org/TR/SVG11/feature#Extensibility"/><a transform=3D"tr=
+anslate(0,-5)" xlink:href=3D"https://www.drawio.com/doc/faq/svg-export-text=
+-problems" target=3D"_blank"><text text-anchor=3D"middle" font-size=3D"10px=
+" x=3D"50%" y=3D"100%">Text is not SVG - cannot display</text></a></switch>=
+</svg>
 --=20
 2.39.2
+
 
 
