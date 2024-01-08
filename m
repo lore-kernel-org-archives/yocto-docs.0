@@ -1,91 +1,124 @@
-Return-Path: <iillyyaa@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F27FEC3DA6E
-	for <webhook@archiver.kernel.org>; Wed,  3 Jan 2024 19:25:46 +0000 (UTC)
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
- by mx.groups.io with SMTP id smtpd.web10.26487.1704309940166461651
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D86F5C3DA6E
+	for <webhook@archiver.kernel.org>; Mon,  8 Jan 2024 14:31:25 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.8048.1704724283513344469
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Jan 2024 11:25:40 -0800
+ Mon, 08 Jan 2024 06:31:24 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=bM4uuakv;
- spf=pass (domain: gmail.com, ip: 209.85.222.172, mailfrom: iillyyaa@gmail.com)
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7810827e54eso1000591785a.2
-        for <docs@lists.yoctoproject.org>; Wed, 03 Jan 2024 11:25:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704309938; x=1704914738; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ePM2QFEf84jkQjXi4mMoaN4mv2SRUP4BRJFpeeTOD5g=;
-        b=bM4uuakvsC66A7/W8PS02htqpIZyMXPyeRuSIxFKQ36XJ6gUozFTaJ5hxSRNtBpm3g
-         PWa82eRxk7/I+xN6T+0miEzjaoQmNVZnbJS+VpHA3VwKEbSbkok1Fir0rz79bzehSi+O
-         ZmmxOTS15AFYKm7gP09cveqxB1Vy2PH86Eo72gTHvUhuqiOeVaxq07IcZRoRO1RrlwHB
-         brLkglWoyuP32YBowi83YxBtBwhBLRF1sq60zUGJQYb0awO62dQL4SjT/DlmoUlt4tzo
-         oA0F9qWzCpOFg2ynyF+/xsPtJIxc+zXVF/daFgnUQ9qFynd1cQai2iSWyYur9tvS3ETq
-         bFJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704309938; x=1704914738;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ePM2QFEf84jkQjXi4mMoaN4mv2SRUP4BRJFpeeTOD5g=;
-        b=k3RPAdybj4peNExxTCNsATwu2ZQOFle9psQ3Yah2BwFtJ5vGfKKp3QqyZ2TmTyFQj3
-         d6r3ayIlSqtxoiUr24vNqSekAjjPwX4SBJ6EzNef6Yab17q6dMDcXpvgpjCyW3g9d/08
-         xPSowfGvo8gx05mGSri5jL+x+EFPI/1f4GlZS/txpZjANCoHcM/UFIJ9Nvak2GsdMzOL
-         TDGLZ1yR5rwHDXB/kLYM/NDC3hM56oamWU/o+2QIYsjL7pRs8m1mYjdq7oW+tooiiJBw
-         SxRhLWb57BGVA8BzhMwHXyJE/wWNwSO1bJewcV/orBWiyV43HGeEm9MWlLUq06aBtM3j
-         6VPw==
-X-Gm-Message-State: AOJu0YyiKbQzCzETcEa2IGwcEd7CPS57eZ86DVUspHPipxw7D7FdwKQc
-	5QvJbwD0u40qTJH5qAeY3MVELNsVH8s=
-X-Google-Smtp-Source: AGHT+IGS0PcVME947xX6VyKKuQm9QrQr2NLhGTj9tYsxlSHBSE2RYEzJiwrKFs6gJDXqdIisZNNbrw==
-X-Received: by 2002:a05:620a:f:b0:781:4319:dc88 with SMTP id j15-20020a05620a000f00b007814319dc88mr19060073qki.41.1704309938416;
-        Wed, 03 Jan 2024 11:25:38 -0800 (PST)
-Received: from palpot.eng.veobot.io ([50.239.151.2])
-        by smtp.gmail.com with ESMTPSA id l19-20020a05620a28d300b0078119f89f44sm10386659qkp.33.2024.01.03.11.25.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jan 2024 11:25:38 -0800 (PST)
-From: "Ilya A. Kriveshko" <iillyyaa@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: "Ilya A. Kriveshko" <iillyyaa@gmail.com>
-Subject: [PATCH] dev-manual: update license manifest path
-Date: Wed,  3 Jan 2024 14:25:35 -0500
-Message-Id: <20240103192535.1129768-1-iillyyaa@gmail.com>
-X-Mailer: git-send-email 2.39.0
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=fPqz7abj;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4F30DFF80A;
+	Mon,  8 Jan 2024 14:31:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1704724281;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zAkULtMkkSZDCgyqOqcsPj3d5XG/+1Sq1qWSo3yYHUs=;
+	b=fPqz7abjM+tghrsZa2rJqFaXyTPQvWeWnaK6l9c42adezrWTrk5TE/8JLd0goaVaiZTCqE
+	otWDLCjUz01IJJxlYAwnOutQTfP8qHSvGErIdvKYpm0/QAooLlOd5jRi/9iQNIUbxp55SJ
+	YsdTsvOWqGO8JwKpv3ZrP3Ci00q5nth8Z3eQburFv4SJ4baRWO9/WYv5RGu1ldhtgqDtD/
+	ioS5VneRuYUG22VeNFxaOqd14X5LVuWq/urmJ38Utav8/hSq+/Ol3AGCfKmyeCbix7rVUl
+	SECg7gVeAbWf0axlEKdVG2INFZL1Qg5dmKzzcRXqRH8CkWPreyKETYbObuldsw==
+Message-ID: <f9f97504-a57d-4f6a-b988-9f9c9e19cb3b@bootlin.com>
+Date: Mon, 8 Jan 2024 15:31:20 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] dev-manual: start.rst: Update use of Download page
+Content-Language: en-US
+To: simone.p.weiss@posteo.com
+References: <20231223115124.62413-1-simone.p.weiss@posteo.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20231223115124.62413-1-simone.p.weiss@posteo.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 Jan 2024 19:25:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4743
+ <docs@lists.yoctoproject.org>; Mon, 08 Jan 2024 14:31:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4744
 
-After changes in openembedded-core@1a4ab9f, image licenses moved one
-directory down into ${SSTATE_PKGARCH} subdir.
+Hi Simone,
 
-Signed-off-by: Ilya A. Kriveshko <iillyyaa@gmail.com>
----
- documentation/dev-manual/licenses.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks a lot for the update!
 
-diff --git a/documentation/dev-manual/licenses.rst b/documentation/dev-manual/licenses.rst
-index 3b9190d47..57713effa 100644
---- a/documentation/dev-manual/licenses.rst
-+++ b/documentation/dev-manual/licenses.rst
-@@ -330,11 +330,11 @@ completeness.
- 
- .. note::
- 
-    The Yocto Project generates a license manifest during image creation
-    that is located in
--   ``${DEPLOY_DIR}/licenses/<image-name>-<machine>.rootfs-<datestamp>/``
-+   ``${DEPLOY_DIR}/licenses/${SSTATE_PKGARCH}/<image-name>-<machine>.rootfs-<datestamp>/``
-    to assist with any audits.
- 
- Providing the Source Code
- -------------------------
- 
+On 23.12.23 at 12:51, simone.p.weiss@posteo.com wrote:
+> From: Simone Weiß <simone.p.weiss@posteo.com>
+>
+> The yocto website has changed its structure. Update the section for
+> Accessing the Downloads page to match the new structure.
+>
+> Signed-off-by: Simone Weiß <simone.p.weiss@posteo.com>
+> ---
+>   documentation/dev-manual/start.rst | 18 ++++++++++--------
+>   1 file changed, 10 insertions(+), 8 deletions(-)
+>
+> diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+> index 4a556967e..f2027badd 100644
+> --- a/documentation/dev-manual/start.rst
+> +++ b/documentation/dev-manual/start.rst
+> @@ -621,7 +621,7 @@ a selection of these components.
+>   Using the Downloads Page
+>   ------------------------
+>   
+> -The :yocto_home:`Yocto Project Website <>` uses a "DOWNLOADS" page
+> +The :yocto_home:`Yocto Project Website <>` uses a "RELEASES" page
+>   from which you can locate and download tarballs of any Yocto Project
+>   release. Rather than Git repositories, these files represent snapshot
+>   tarballs similar to the tarballs located in the Index of Releases
+> @@ -630,11 +630,13 @@ described in the ":ref:`dev-manual/start:accessing source archives`" section.
+>   #. *Go to the Yocto Project Website:* Open The
+>      :yocto_home:`Yocto Project Website <>` in your browser.
+>   
+> -#. *Get to the Downloads Area:* Select the "DOWNLOADS" item from the
+> -   pull-down "SOFTWARE" tab menu near the top of the page.
+> +#. *Get to the Downloads Area:* Select the "RELEASES" item from the
+> +   pull-down "DEVELOPMENT" tab menu near the top of the page.
+>   
+> -#. *Select a Yocto Project Release:* Use the menu next to "RELEASE" to
+> -   display and choose a recent or past supported Yocto Project release
+> +#. *Select a Yocto Project Release:* On the top of the "RELEASE" page currently
+> +   supported release are displayed, further down past supported Yocto Project
+
+
+s/release/releases/
+I fixed this by myself.
+
+> +   releases are visible. The "Download" links in the rows of the table there
+> +   will lead to the download tarballs for the release.
+>      (e.g. &DISTRO_NAME_NO_CAP;, &DISTRO_NAME_NO_CAP_MINUS_ONE;, and so forth).
+>   
+>      .. note::
+> @@ -645,9 +647,9 @@ described in the ":ref:`dev-manual/start:accessing source archives`" section.
+>      You can use the "RELEASE ARCHIVE" link to reveal a menu of all Yocto
+>      Project releases.
+>   
+> -#. *Download Tools or Board Support Packages (BSPs):* From the
+> -   "DOWNLOADS" page, you can download tools or BSPs as well. Just scroll
+> -   down the page and look for what you need.
+> +#. *Download Tools or Board Support Packages (BSPs):* Next to the tarballs you
+> +   will find download tools or BSPs as well. Just select a Yocto Project
+> +   release and look for what you need.
+>   
+
+
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into master-next, and will backport to other maintained branches.
+Thanks again!
+Cheers
+Michael.
+
 -- 
-2.39.0
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
