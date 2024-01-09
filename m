@@ -1,204 +1,326 @@
-Return-Path: <joerg.sommer@navimatix.de>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1EC06C46CD2
-	for <webhook@archiver.kernel.org>; Tue,  9 Jan 2024 11:38:40 +0000 (UTC)
-Received: from EUR01-DB5-obe.outbound.protection.outlook.com (EUR01-DB5-obe.outbound.protection.outlook.com [40.107.15.49])
- by mx.groups.io with SMTP id smtpd.web10.14647.1704800315406241722
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 896EBC46CD2
+	for <webhook@archiver.kernel.org>; Tue,  9 Jan 2024 12:51:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+ by mx.groups.io with SMTP id smtpd.web10.15873.1704804709895803607
  for <docs@lists.yoctoproject.org>;
- Tue, 09 Jan 2024 03:38:36 -0800
+ Tue, 09 Jan 2024 04:51:50 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@navimatix.de header.s=selector1 header.b=n37nz9Gz;
- spf=pass (domain: navimatix.de, ip: 40.107.15.49, mailfrom: joerg.sommer@navimatix.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=k4h7+2+cRU0wWHj6Del4rvgDrBnBT+o9TTOJKZNvGAQaUKd+64iUnAgqe3EZdlaz5WzAcOY0uu4BcpLLDpDqTmlkukVKYvLJJNnzDQmlDE/Hi2bH6uu+gTs7SlTW7Mw4RO9tLmyMUVKp2XqDK25mr+UdEoI66oxIbi42yPVdYNKdfYQ9x+yrhm2+5CYu7x4vHmJBKv3d8rARLSyiNkKZpkf+cH4b121E3pQUV/sd4N/zMd66ue99gJZ2ljE2sEUoixo9zsguYvylhUw4D0Joi+SWpSaxj4L4T3Cdrn8TdIrFqlyHHg88oAx5tPM+ZYidHptGh/luGz6+VTMoayfCww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yyf4VhQo0LryvS5pZGi7c9930IzEJnMwAnES/wsp14c=;
- b=UcpUJWV4sDZyVnqJCNb5iGbETHH/DFuXCWlBUIFnaArZoJHyO5W54KqHub99Zys7dSwsWbxXnNXeDyXmOiS/KyA5zFHGEwon8waiis7h1gXv70UQLqZSYuVguc6bS1JZqfkWCLoHknjXxAwNGxM9AX1GRJZ1jPbX920WoVQodDkSBSFoRI+TPlWQuRWNvcIXdKpXf3nx8dNcIYK8ew7bcl2386enmyN8+OfAzpK4KX+x6lNjGGT9l33cCEm+m9nL7/NjionQEcXaXO2l2kNH01RUfdb1fBWT8qp6H8U3Sra26h5Gt/dP7dd88DGK785y1bL60UbYgywZ9iuat46A9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=navimatix.de; dmarc=pass action=none header.from=navimatix.de;
- dkim=pass header.d=navimatix.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=navimatix.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yyf4VhQo0LryvS5pZGi7c9930IzEJnMwAnES/wsp14c=;
- b=n37nz9Gz88UEcKSvqDWnt6EwKn4gU/afn+8MtyXjAEjTaqA0p8oCkvuwu4p9IMOEw7VSaoHewiJpH8WkDy+Fy2ZuKmEgCOzApM9UhROpMOaLmTIQJ2/hc3AQJB3G6eOBYxomVbHSdImu+DiJH9SIw4YzcVcLEdehBbY0/55ysHM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=navimatix.de;
-Received: from DU2PR01MB8592.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:2f7::22) by DBBPR01MB7642.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:1e0::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7159.23; Tue, 9 Jan
- 2024 11:38:32 +0000
-Received: from DU2PR01MB8592.eurprd01.prod.exchangelabs.com
- ([fe80::ccd0:21d8:8742:ee1f]) by DU2PR01MB8592.eurprd01.prod.exchangelabs.com
- ([fe80::ccd0:21d8:8742:ee1f%5]) with mapi id 15.20.7159.020; Tue, 9 Jan 2024
- 11:38:32 +0000
-From: joerg.sommer@navimatix.de
-To: docs@lists.yoctoproject.org,
-	michael.opdenacker@bootlin.com
-CC: =?UTF-8?q?J=C3=B6rg=20Sommer?= <joerg.sommer@navimatix.de>
-Subject: [PATCH] documentation: Add UBOOT_BINARY, extend UBOOT_CONFIG
-Date: Tue,  9 Jan 2024 12:35:37 +0100
-Message-ID: <05650416067ed51a60dabc7226a9e200918ff8ae.1704800137.git.joerg.sommer@navimatix.de>
+ dkim=pass header.i=@intel.com header.s=Intel header.b=TxSXRbis;
+ spf=pass (domain: intel.com, ip: 192.55.52.120, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1704804709; x=1736340709;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=GLbzvbQUngFi9qA91j+nkD524O1xCsmm9s9bc3SwYjU=;
+  b=TxSXRbisXZIcjl/T6/1mT9sB695RuJn2cI0RtLV1ogyaZfZn8vvwtaVd
+   J0v5o0PMl+GstQXDXZWKoFybdTV46Fqz23DUm2foo5UdbSp4xrF6fUfSp
+   7+FLfW4w1lcYu7XwB8SmqRO3nX/lO7nWYfy/cmh/QyhlmDKtJ54IkEF3K
+   hjajTpiIaBMZWp87Z5NXxOp2Iy1PN0RFmSThC1CiHcKxY+sbD4X7qUQ+u
+   KJsM0N9p4udUVjNtjpOW01i89/aNWXXLfSPhbEPSewezi9EdvImLO1cF7
+   ryZeliS2bCPfUPIeh1r/CFShJMIGYvwS/r+gMapGDUHbkiSIfHFqIcfEY
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="397048340"
+X-IronPort-AV: E=Sophos;i="6.04,182,1695711600"; 
+   d="scan'208";a="397048340"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2024 04:51:49 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10947"; a="905150624"
+X-IronPort-AV: E=Sophos;i="6.04,182,1695711600"; 
+   d="scan'208";a="905150624"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by orsmga004.jf.intel.com with ESMTP; 09 Jan 2024 04:51:47 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guide: add release notes for 4.3.2
+Date: Tue,  9 Jan 2024 20:48:04 +0800
+Message-Id: <20240109124804.616460-1-chee.yang.lee@intel.com>
 X-Mailer: git-send-email 2.34.1
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BE1P281CA0381.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:80::23) To DU2PR01MB8592.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:2f7::22)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR01MB8592:EE_|DBBPR01MB7642:EE_
-X-MS-Office365-Filtering-Correlation-Id: 03ed4073-f8c4-4973-a45b-08dc110781e1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	MdiWAz0WAf5yyhYCT0J7fXDpasb7yeGobyWquFUv2hAhZH1kRra03fzYzOGbmcc4dAznUYRoWwVohtEbtOFxv5B1MSORFsmYlYs9+DsXapqPaLyEjj0yRSKvuAQNoKEBur8hU3FEIpYJVpiT0keLrBuwYwkiCepmazB52TQx2S7MkRAJ1RIhEkSCzwVv4Awwwb/noyFTeODc09UUQOYO6IGHHg9wY6q08XUpZtvb1FgnfvxulxEpB6LUbIrCabKw5+amZ2x6xx8E5GTgtH2ay8ZCeYBhxkPAVqGluXZaB5gj6hck8ReiS+LOv3tp9LjWl3SZiKJ4ph1o7r6KC6OQXfTRMNEcf6+XwX8G++98r0Gh3cvi4K8QAidReBnW5HepQ8tMpjlO1L1rf7V3Ri54nYjjTrXZ6IAfhxlyvcbqeMQs/X0akIG/gd+4j8DwqysN13oQFyx35fxfQRiJ/skBFGKpikcET+8/gnm1keRAokG96DsdSZaQL06UQymio/Av6LOkKTsUZk9ynjd0rKAGBQ5AiaKy/8sFNNhOazlG/s+q1/WQbcOmfUXUMA+vKG7GdsJrX+Gik6vPrrK4OM8mN+kiUrWvG0HKCptz8Fgz+st58LjDL0ZghGT0tn54oCE1
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR01MB8592.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230031)(396003)(346002)(39840400004)(376002)(136003)(366004)(230922051799003)(64100799003)(186009)(1800799012)(451199024)(26005)(83380400001)(9686003)(6512007)(6506007)(52116002)(2616005)(107886003)(5660300002)(4326008)(41300700001)(2906002)(6486002)(478600001)(66476007)(316002)(8676002)(66556008)(8936002)(66946007)(36756003)(86362001)(38100700002)(38350700005);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?aI2xGV/V/pNHO/0IylDFqSjRNvmq6kBemynaRv5pDQbNQdp/O8soyfTKRwY7?=
- =?us-ascii?Q?JnwjGpJuJsnFdOX+cGFSCUIWUuLpBtHm6fhGRzQDcv5CnOXe1Bsb+4o0GX6T?=
- =?us-ascii?Q?dVppWkeDvhoG9nNV+KZ5diqq3QLHErEmBaeWNjB2YP1JxVOH1dErsf7479Oc?=
- =?us-ascii?Q?vxuNBWnsmMka8zCljQEF62KByF30NXcn/w6pog5+x8nWzY67jjm6rMve6wL+?=
- =?us-ascii?Q?mX0tvAp0Z6GQvQQuP4/SrxioqZSmRximd/woWUFAkZ9lx/B/zWosj2Su5NV+?=
- =?us-ascii?Q?TKcUT8AlrhX0FXskdtuMDaqHmVMO8y+iMCJijPA/0Hg8MI3JlXE0ENicrxQS?=
- =?us-ascii?Q?IAmFhh81+E5leeQScsQG1+ufhsL0iSXdqGxuZfclxP8GaKlouJUdydbvkOBO?=
- =?us-ascii?Q?DS22QooiVb9chiBwFCOZ72ORbIcJT1gjPK+gLzNm3vMqvdNcIBZp7d3EufGA?=
- =?us-ascii?Q?B99N2kX8PZdae0hOEyxZLgj64NwVEcFFGNyPG6U/STEWPNPx4ooH4eESBPLz?=
- =?us-ascii?Q?YQspGTopcLZcGRwnNwq5UmmGPfCO7jAsghcN6fNSyeJuCv2/bTzV5kOOOzS6?=
- =?us-ascii?Q?ZGmdL5Jb5i5s65Ey6csvWyAwdwyUmgXrEcWMY6KwVkZ5KSs6HkGvFSOUQr9h?=
- =?us-ascii?Q?pkjdTgmBXQaRLqQ0Hx3xEV3ESgyzNS3Nq8giHNYKCNsN9cmdrLvo5h42fzsq?=
- =?us-ascii?Q?CdD1/BXwVHtGVK8NEWx94tFyxg7Dc6Q/bFKr5WizYPyymvDTnrRTsdb2LJH7?=
- =?us-ascii?Q?dlmUS0hG2aJRStozsgeGK3z/7v0GePwpuhwjUGK/AXJRAaS9b/T+BESwbF0f?=
- =?us-ascii?Q?Um7pH0mT0C/MZ9erJjRMIfSyPZkwAzjOfJgUQaI1XKwufLYZJFJI1S0GSt83?=
- =?us-ascii?Q?qeClI2l9X/yqONezsoKkoy8FKs/kmTRGKSpgp4KaGCN8avNd26d+dDJx2VTk?=
- =?us-ascii?Q?a2KIdm57R07fHT1OhymIEXWeol8AJbtAu1OrVgCMDQquHTZeguNM1O4H8vM8?=
- =?us-ascii?Q?Fep3F1Y5T6MtX9s4B4O3pXC6Fu2VpVICIqBDI+vPYKTocSA6Nufa68zZgEHK?=
- =?us-ascii?Q?RT1UAHXaa3Dtu/MAmA+lpuyLPaKco3u/WhJRHAoW2h6EoeYB6zLmG5XrFaq2?=
- =?us-ascii?Q?WzCuTrB89CR9kDxj6dw4tB36i8z4hDTZOICyt5o7kV+20Mi5OYltinyFNIh4?=
- =?us-ascii?Q?QUqaRjxaaf0O3RYOlUCpT3khLW0YHo3D0XKEfcTSP2WsJjlKOSgMYeG0112N?=
- =?us-ascii?Q?n83GDgkt/NdO0xxbYaH19QOdAaMmbBH6WGXbm0AAKisaROS3g/HRWBlC779A?=
- =?us-ascii?Q?wbtlgowaZSOoD36B5BRqQ/NvqSAKYKbbTiXmD6sHvf9xmM0PGdgup5V+rtPr?=
- =?us-ascii?Q?1g0YHdyj3makA7zoCRUaLP2bnUdHLjXeQEb6Ht8lSCpxKJyGi7ZpIiCSR95F?=
- =?us-ascii?Q?N97ASs5bpLtalmZ4zb2BxW0EE93L1onHtzdkm0algbMyuJQVWy7S37DDhy/F?=
- =?us-ascii?Q?vUzUH2WUT82jIaWb6oGP1wZQpYdtWHNkzWFMHOJDUUvJVy63xbdWm5TIBE8C?=
- =?us-ascii?Q?mn3jo9tjBaNTBN3ROGVtO4zVTtIamY1Ccev/xZYrO7FRZY5/+l7hkEC8SWru?=
- =?us-ascii?Q?VA=3D=3D?=
-X-OriginatorOrg: navimatix.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 03ed4073-f8c4-4973-a45b-08dc110781e1
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR01MB8592.eurprd01.prod.exchangelabs.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2024 11:38:32.2032
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: c87b4f54-b992-4813-8f3f-4a876324197f
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: EdvfqtQuziHhp1xfPTXu7MF9tILcJZ4RuAOOAHUDDGM+2+rDV+CdJ36gW3gApeUKCNjV/Xfp3SwCgZ0ZUhH4wLcYrPH/M60cP0ks317bkXM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR01MB7642
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 09 Jan 2024 11:38:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4754
+ <docs@lists.yoctoproject.org>; Tue, 09 Jan 2024 12:51:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4755
 
-From: J=C3=B6rg Sommer <joerg.sommer@navimatix.de>
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-UBOOT_CONFIG accepts a third parameter for the UBOOT_BINARY that isn't
-documented. To show its usage another example from the meta-freescale layer
-was picked.
-
-Signed-off-by: J=C3=B6rg Sommer <joerg.sommer@navimatix.de>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- documentation/ref-manual/classes.rst   |  2 +-
- documentation/ref-manual/variables.rst | 33 ++++++++++++++++----------
- 2 files changed, 21 insertions(+), 14 deletions(-)
+ .../migration-guides/release-4.3.rst          |   1 +
+ .../migration-guides/release-notes-4.3.2.rst  | 246 ++++++++++++++++++
+ 2 files changed, 247 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.3.2.rst
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
-l/classes.rst
-index a8afe9f2dc..7b68ae1090 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3210,7 +3210,7 @@ The :ref:`ref-classes-uboot-config` class provides su=
-pport for U-Boot configurat
- a machine. Specify the machine in your recipe as follows::
-=20
-    UBOOT_CONFIG ??=3D <default>
--   UBOOT_CONFIG[foo] =3D "config,images"
-+   UBOOT_CONFIG[foo] =3D "config,images,binary"
-=20
- You can also specify the machine using this method::
-=20
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
-ual/variables.rst
-index b394d31099..6f7d6ff01e 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -9383,23 +9383,30 @@ system and gives an overview of their function and =
-contents.
-       See the machine include files in the :term:`Source Directory`
-       for these features.
-=20
-+   :term:`UBOOT_BINARY`
-+      Specifies the name of the binary build by U-Boot.
+diff --git a/documentation/migration-guides/release-4.3.rst b/documentation/migration-guides/release-4.3.rst
+index 5b651a2ef..3adb5b620 100644
+--- a/documentation/migration-guides/release-4.3.rst
++++ b/documentation/migration-guides/release-4.3.rst
+@@ -8,3 +8,4 @@ Release 4.3 (nanbield)
+    migration-4.3
+    release-notes-4.3
+    release-notes-4.3.1
++   release-notes-4.3.2
+diff --git a/documentation/migration-guides/release-notes-4.3.2.rst b/documentation/migration-guides/release-notes-4.3.2.rst
+new file mode 100644
+index 000000000..8e6795d5b
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.3.2.rst
+@@ -0,0 +1,246 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
 +
-    :term:`UBOOT_CONFIG`
--      Configures the :term:`UBOOT_MACHINE` and can
--      also define :term:`IMAGE_FSTYPES` for individual
--      cases.
-+      Configures one or more U-Boot configurations to build. Each
-+      configuration can define the :term:`UBOOT_MACHINE` and optionally th=
-e
-+      :term:`IMAGE_FSTYPES` and the :term:`UBOOT_BINARY`.
-=20
--      Following is an example from the ``meta-fsl-arm`` layer. ::
-+      Following is an example from the ``meta-freescale`` layer. ::
-=20
--         UBOOT_CONFIG ??=3D "sd"
--         UBOOT_CONFIG[sd] =3D "mx6qsabreauto_config,sdcard"
--         UBOOT_CONFIG[eimnor] =3D "mx6qsabreauto_eimnor_config"
--         UBOOT_CONFIG[nand] =3D "mx6qsabreauto_nand_config,ubifs"
--         UBOOT_CONFIG[spinor] =3D "mx6qsabreauto_spinor_config"
-+         UBOOT_CONFIG ??=3D "sdcard-ifc-secure-boot sdcard-ifc sdcard-qspi=
- lpuart qspi secure-boot nor"
-+         UBOOT_CONFIG[nor] =3D "ls1021atwr_nor_defconfig"
-+         UBOOT_CONFIG[sdcard-ifc] =3D "ls1021atwr_sdcard_ifc_defconfig,,u-=
-boot-with-spl-pbl.bin"
-+         UBOOT_CONFIG[sdcard-qspi] =3D "ls1021atwr_sdcard_qspi_defconfig,,=
-u-boot-with-spl-pbl.bin"
-+         UBOOT_CONFIG[lpuart] =3D "ls1021atwr_nor_lpuart_defconfig"
-+         UBOOT_CONFIG[qspi] =3D "ls1021atwr_qspi_defconfig"
-+         UBOOT_CONFIG[secure-boot] =3D "ls1021atwr_nor_SECURE_BOOT_defconf=
-ig"
-+         UBOOT_CONFIG[sdcard-ifc-secure-boot] =3D "ls1021atwr_sdcard_ifc_S=
-ECURE_BOOT_defconfig,,u-boot-with-spl-pbl.bin"
-=20
--      In this example, "sd" is selected as the configuration of the possib=
-le four for the
--      :term:`UBOOT_MACHINE`. The "sd" configuration defines
--      "mx6qsabreauto_config" as the value for :term:`UBOOT_MACHINE`, while=
- the
--      "sdcard" specifies the :term:`IMAGE_FSTYPES` to use for the U-Boot i=
-mage.
-+      In this example, all possible seven configurations are selected. Eac=
-h
-+      configuration specifies "..._defconfig" as :term:`UBOOT_MACHINE`, an=
-d
-+      the "sd..." configurations define an individual name for
-+      :term:`UBOOT_BINARY`. No configuration defines a second parameter fo=
-r
-+      :term:`IMAGE_FSTYPES` to use for the U-Boot image.
-=20
-       For more information on how the :term:`UBOOT_CONFIG` is handled, see=
- the
-       :ref:`ref-classes-uboot-config` class.
---=20
++Release notes for Yocto-4.3.2 (Nanbield)
++----------------------------------------
++
++Security Fixes in Yocto-4.3.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  avahi: Fix :cve:`2023-1981`, :cve:`2023-38469`, :cve:`2023-38470`, :cve:`2023-38471`, :cve:`2023-38472` and :cve:`2023-38473`
++-  curl: Fix :cve:`2023-46218`
++-  ghostscript: Fix :cve:`2023-46751`
++-  grub: fix :cve:`2023-4692` and :cve:`2023-4693`
++-  linux-yocto/6.1: Ignore :cve_mitre:`2023-39197`, :cve:`2023-39198`, :cve:`2023-5090`, :cve:`2023-5633`, :cve:`2023-6111`, :cve:`2023-6121` and :cve:`2023-6176`
++-  linux-yocto/6.5: Ignore :cve:`2022-44034`, :cve_mitre:`2023-39197`, :cve:`2023-39198`, :cve:`2023-5972`, :cve:`2023-6039`, :cve:`2023-6111` and :cve:`2023-6176`
++-  perl: fix :cve:`2023-47100`
++-  python3-urllib3: Fix :cve:`2023-45803`
++-  rust: Fix :cve:`2023-40030`
++-  vim: Fix :cve:`2023-48231`, :cve:`2023-48232`, :cve:`2023-48233`, :cve:`2023-48234`, :cve:`2023-48235`, :cve:`2023-48236` and :cve:`2023-48237`
++-  xserver-xorg: Fix :cve:`2023-5367` and :cve:`2023-5380`
++-  xwayland: Fix :cve:`2023-5367`
++
++
++Fixes in Yocto-4.3.2
++~~~~~~~~~~~~~~~~~~~~
++
++-  base-passwd: Upgrade to 3.6.2
++-  bind: Upgrade to 9.18.20
++-  binutils: stable 2.41 branch updates
++-  bitbake: command: Make parseRecipeFile() handle virtual recipes correctly
++-  bitbake: lib/bb: Add workaround for libgcc issues with python 3.8 and 3.9
++-  bitbake: toastergui: verify that an existing layer path is given
++-  bluez5: fix connection for ps5/dualshock controllers
++-  build-appliance-image: Update to nanbield head revision
++-  cmake: Upgrade to 3.27.7
++-  contributor-guide: add License-Update tag
++-  contributor-guide: fix command option
++-  cups: Add root,sys,wheel to system groups
++-  cve-update-nvd2-native: faster requests with API keys
++-  cve-update-nvd2-native: increase the delay between subsequent request failures
++-  cve-update-nvd2-native: make number of fetch attemtps configurable
++-  cve-update-nvd2-native: remove unused variable CVE_SOCKET_TIMEOUT
++-  dev-manual: Discourage the use of SRC_URI[md5sum]
++-  dev-manual: layers: update link to YP Compatible form
++-  dev-manual: runtime-testing: fix test module name
++-  devtool: finish/update-recipe: restrict mode srcrev to recipes fetched from SCM
++-  devtool: fix update-recipe dry-run mode
++-  ell: Upgrade to 0.60
++-  enchant2: Upgrade to 2.6.2
++-  ghostscript: Upgrade to 10.02.1
++-  glib-2.0: Upgrade to 2.78.1
++-  glibc: stable 2.38 branch updates
++-  gstreamer1.0: Upgrade to 1.22.7
++-  gtk: Add rdepend on printbackend for cups
++-  harfbuzz: Upgrade to 8.2.2
++-  json-c: fix icecc compilation
++-  kern-tools: bump :term:`SRCREV` for queue processing changes
++-  kern-tools: make lower context patches reproducible
++-  kern-tools: update :term:`SRCREV` to include SECURITY.md file
++-  kernel-arch: use ccache only for compiler
++-  kernel-yocto: improve metadata patching
++-  lib/oe/buildcfg.py: Include missing import
++-  lib/oe/buildcfg.py: Remove unused parameter
++-  lib/oe/patch: ensure os.chdir restoring always happens
++-  lib/oe/path: Deploy files can start only with a dot
++-  libgcrypt: Upgrade to 1.10.3
++-  libjpeg-turbo: Upgrade to 3.0.1
++-  libnewt: Upgrade to 0.52.24
++-  libnsl2: Upgrade to 2.0.1
++-  libsolv: Upgrade to 0.7.26
++-  libxslt: Upgrade to 1.1.39
++-  linux-firmware: add audio topology symlink to the X13's audio package
++-  linux-firmware: add missing depenencies on license packages
++-  linux-firmware: add new fw file to ${PN}-rtl8821
++-  linux-firmware: add notice file to sdm845 modem firmware
++-  linux-firmware: create separate packages
++-  linux-firmware: package Qualcomm Venus 6.0 firmware
++-  linux-firmware: package Robotics RB5 sensors DSP firmware
++-  linux-firmware: package firmware for Qualcomm Adreno a702
++-  linux-firmware: package firmware for Qualcomm QCM2290 / QRB4210
++-  linux-firmware: Upgrade to 20231030
++-  linux-yocto-rt/6.1: update to -rt18
++-  linux-yocto/6.1: cfg: restore CONFIG_DEVMEM
++-  linux-yocto/6.1: drop removed IMA option
++-  linux-yocto/6.1: Upgrade to v6.1.68
++-  linux-yocto/6.5: cfg: restore CONFIG_DEVMEM
++-  linux-yocto/6.5: cfg: split runtime and symbol debug
++-  linux-yocto/6.5: drop removed IMA option
++-  linux-yocto/6.5: fix AB-INT: QEMU kernel panic: No irq handler for vector
++-  linux-yocto/6.5: Upgrade to v6.5.13
++-  linux/cve-exclusion6.1: Update to latest kernel point release
++-  log4cplus: Upgrade to 2.1.1
++-  lsb-release: use https for :term:`UPSTREAM_CHECK_URI`
++-  manuals: brief-yoctoprojectqs: align variable order with default local.conf
++-  manuals: fix URL
++-  meson: use correct targets for rust binaries
++-  migration-guide: add release notes for 4.0.14, 4.0.15, 4.2.4, 4.3.1
++-  migration-guides: release 3.5 is actually 4.0
++-  migration-guides: reword fix in release-notes-4.3.1
++-  msmtp: Upgrade to 1.8.25
++-  oeqa/selftest/tinfoil: Add tests that parse virtual recipes
++-  openssl: improve handshake test error reporting
++-  package_ipk: Fix Source: field variable dependency
++-  patchtest: shorten patch signed-off-by test output
++-  perf: lift :term:`TARGET_CC_ARCH` modification out of security_flags.inc
++-  perl: Upgrade to 5.38.2
++-  perlcross: Upgrade to 1.5.2
++-  poky.conf: bump version for 4.3.2 release
++-  python3-ptest: skip test_storlines
++-  python3-urllib3: Upgrade to 2.0.7
++-  qemu: Upgrade to 8.1.2
++-  ref-manual: Fix reference to MIRRORS/PREMIRRORS defaults
++-  ref-manual: releases.svg: update nanbield release status
++-  useradd_base: sed -i destroys symlinks
++-  rootfs-postcommands: sed -i destroys symlinks
++-  sstate: Ensure sstate searches update file mtime
++-  strace: backport fix for so_peerpidfd-test
++-  systemd-boot: Fix build issues on armv7a-linux
++-  systemd-compat-units.bb: fix postinstall script
++-  systemd: fix DynamicUser issue
++-  systemd: update :term:`LICENSE` statement
++-  tcl: skip async and event tests in run-ptest
++-  tcl: skip timing-dependent tests in run-ptest
++-  test-manual: add links to python unittest
++-  test-manual: add or improve hyperlinks
++-  test-manual: explicit or fix file paths
++-  test-manual: resource updates
++-  test-manual: text and formatting fixes
++-  test-manual: use working example
++-  testimage: Drop target_dumper and most of monitor_dumper
++-  testimage: Exclude wtmp from target-dumper commands
++-  tzdata: Upgrade to 2023d
++-  update_gtk_icon_cache: Fix for GTK4-only builds
++-  useradd_base: Fix sed command line for passwd-expire
++-  vim: Upgrade to 9.0.2130
++-  xserver-xorg: Upgrade to 21.1.9
++-  xwayland: Upgrade to 23.2.2
++
++
++Known Issues in Yocto-4.3.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++Contributors to Yocto-4.3.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Adam Johnston
++-  Alexander Kanavin
++-  Anuj Mittal
++-  Bastian Krause
++-  Bruce Ashfield
++-  Chen Qi
++-  Deepthi Hemraj
++-  Dhairya Nagodra
++-  Dmitry Baryshkov
++-  Fahad Arslan
++-  Javier Tia
++-  Jermain Horsman
++-  Joakim Tjernlund
++-  Julien Stephan
++-  Justin Bronder
++-  Khem Raj
++-  Lee Chee Yang
++-  Marco Felsch
++-  Markus Volk
++-  Marta Rybczynska
++-  Massimiliano Minella
++-  Michael Opdenacker
++-  Paul Barker
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Randy MacLeod
++-  Rasmus Villemoes
++-  Richard Purdie
++-  Ross Burton
++-  Shubham Kulkarni
++-  Simone Weiß
++-  Steve Sakoman
++-  Sundeep KOKKONDA
++-  Tim Orling
++-  Trevor Gamblin
++-  Vijay Anusuri
++-  Viswanath Kraleti
++-  Vyacheslav Yurkov
++-  Wang Mingyu
++-  William Lyu
++-  Zoltán Böszörményi
++
++Repositories / Downloads for Yocto-4.3.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`nanbield </poky/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.2 </poky/log/?h=yocto-4.3.2>`
++-  Git Revision: :yocto_git:`f768ffb8916feb6542fcbe3e946cbf30e247b151 </poky/commit/?id=f768ffb8916feb6542fcbe3e946cbf30e247b151>`
++-  Release Artefact: poky-f768ffb8916feb6542fcbe3e946cbf30e247b151
++-  sha: 21ca1695d70aba9b4bd8626d160111feab76206883cd14fe41eb024692bdfd7b
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.2/poky-f768ffb8916feb6542fcbe3e946cbf30e247b151.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.2/poky-f768ffb8916feb6542fcbe3e946cbf30e247b151.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`nanbield </openembedded-core/log/?h=nanbield>`
++-  Tag:  :oe_git:`yocto-4.3.2 </openembedded-core/log/?h=yocto-4.3.2>`
++-  Git Revision: :oe_git:`ff595b937d37d2315386aebf315cea719e2362ea </openembedded-core/commit/?id=ff595b937d37d2315386aebf315cea719e2362ea>`
++-  Release Artefact: oecore-ff595b937d37d2315386aebf315cea719e2362ea
++-  sha: a7c6332dc0e09ecc08221e78b11151e8e2a3fd9fa3eaad96a4c03b67012bfb97
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.2/oecore-ff595b937d37d2315386aebf315cea719e2362ea.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.2/oecore-ff595b937d37d2315386aebf315cea719e2362ea.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`nanbield </meta-mingw/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.2 </meta-mingw/log/?h=yocto-4.3.2>`
++-  Git Revision: :yocto_git:`49617a253e09baabbf0355bc736122e9549c8ab2 </meta-mingw/commit/?id=49617a253e09baabbf0355bc736122e9549c8ab2>`
++-  Release Artefact: meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2
++-  sha: 2225115b73589cdbf1e491115221035c6a61679a92a93b2a3cf761ff87bf4ecc
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.2/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.2/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.6 </bitbake/log/?h=2.6>`
++-  Tag:  :oe_git:`yocto-4.3.2 </bitbake/log/?h=yocto-4.3.2>`
++-  Git Revision: :oe_git:`72bf75f0b2e7f36930185e18a1de8277ce7045d8 </bitbake/commit/?id=72bf75f0b2e7f36930185e18a1de8277ce7045d8>`
++-  Release Artefact: bitbake-72bf75f0b2e7f36930185e18a1de8277ce7045d8
++-  sha: 0b6ccd4796ccd211605090348a3d4378358c839ae1bb4c35964d0f36f2663187
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.2/bitbake-72bf75f0b2e7f36930185e18a1de8277ce7045d8.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.2/bitbake-72bf75f0b2e7f36930185e18a1de8277ce7045d8.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`nanbield </yocto-docs/log/?h=nanbield>`
++-  Tag: :yocto_git:`yocto-4.3.2 </yocto-docs/log/?h=yocto-4.3.2>`
++-  Git Revision: :yocto_git:`fac88b9e80646a68b31975c915a718a9b6b2b439 </yocto-docs/commit/?id=fac88b9e80646a68b31975c915a718a9b6b2b439>`
++
+-- 
 2.34.1
 
 
