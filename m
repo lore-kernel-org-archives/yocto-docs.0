@@ -1,109 +1,84 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F28DC47DA2
-	for <webhook@archiver.kernel.org>; Fri, 12 Jan 2024 16:55:15 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.12648.1705078506477312106
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8851AC47077
+	for <webhook@archiver.kernel.org>; Tue, 16 Jan 2024 12:11:54 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.11983.1705407106268342676
  for <docs@lists.yoctoproject.org>;
- Fri, 12 Jan 2024 08:55:06 -0800
+ Tue, 16 Jan 2024 04:11:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jP1jUiBj;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9A7BDC0004;
-	Fri, 12 Jan 2024 16:55:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1705078504;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=rPV2bZAy23Q6ty8xGuaiZowfbtjZCMsixgJRdAsJXgY=;
-	b=jP1jUiBjinAmBjm1k5BpINMKSFvNtaZ1s7cwVFE+gvX/c3ovNsNeaLB7OfoB8J2JE3sQKW
-	TCZVh/UNIbMjUh/MZPeVt0ZxTdltBHoNtI4l0/lMN3vU+l1Ex7eWfysbLx57rvtrCCdBH7
-	3HXhx4ardg53dTLIxu6n7dVETNbB/CzrY8YP+8YzIXHnG4SVpkPBftfCtlPaUOJRWZVa0h
-	7HPURaBsqqPD44Lk6Nv9HrxEn4y6PFOI43Nwe3Qh2SjOxT0HlGGKBLa1n1+8VGNo/psZcl
-	/h6HrVEeBGQ5jCDrg5Q20pXfma4MmYVVOoQeyIApqy4tjmtK45btZTnq10cnwA==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	=?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
-Subject: [dunfell][PATCH 1/2] dev-manual: start.rst: update use of Download page
-Date: Fri, 12 Jan 2024 17:54:58 +0100
-Message-Id: <20240112165459.3554452-2-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240112165459.3554452-1-michael.opdenacker@bootlin.com>
-References: <20240112165459.3554452-1-michael.opdenacker@bootlin.com>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=B6BP4bmD;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=wKbaXpkstEMyWmLCE4Q0Uwa8c+j2ihPRIf8GGv878bs=; b=B6BP4bmDg1Jb2XqYBHcM4YahHF
+	KqATvxw9jeZUTYNQpo15i+mP9ne/azTWrROJFF/o0+Y1tMws1PzXimC40qJ5m/0nxLdBvi8DFITRR
+	jzubx8k1vOuxrn3K2e2aSFVG9Org4KdxiX9eoFyky0htYVfGuiodCCHbgAho0Pvn+1yxIB+1ru+nJ
+	3lq8ka0obA1vNEhPVLVq2WbQpamGEQKzgQR7QhgeO1m0vz37pli47sBipKocoUUJzTmE4L4hghIs9
+	1s+rFJA+N2CIHmz+JLWYlRfm+QMet/vMeq7czMUjc0ZMYZjTBR59Hq0rmLuo/pCsdGbalL7K/u6Zz
+	/NVJrCJQ==;
+Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.102.5]:49764 helo=fedora)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1rPiIB-00CAo0-1G
+	for docs@lists.yoctoproject.org;
+	Tue, 16 Jan 2024 07:11:44 -0500
+Date: Tue, 16 Jan 2024 07:11:39 -0500 (EST)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: question about EXPORT_FUNCTIONS from bitbake user manual
+Message-ID: <c2e177fb-6447-98f-fd51-8017ea87294a@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 12 Jan 2024 16:55:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4782
+ <docs@lists.yoctoproject.org>; Tue, 16 Jan 2024 12:11:54 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4783
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Simone Weiß <simone.p.weiss@posteo.com>
+  hoping that bitbake doc questions have been subsumed under the YP
+docs mailing list ...
 
-The yocto website has changed its structure. Update the section for
-Accessing the Downloads page to match the new structure.
+i'm reading the section, "Flexible Inheritance for Class Functions",
+here:
 
-Signed-off-by: Simone Weiß <simone.p.weiss@posteo.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/dev-manual/dev-manual-start.rst | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-metadata.html?highlight=inheritance#flexible-inheritance-for-class-functions
 
-diff --git a/documentation/dev-manual/dev-manual-start.rst b/documentation/dev-manual/dev-manual-start.rst
-index a85b86fbfb..6a330d4a32 100644
---- a/documentation/dev-manual/dev-manual-start.rst
-+++ b/documentation/dev-manual/dev-manual-start.rst
-@@ -659,7 +659,7 @@ Follow these steps to locate and download a particular tarball:
- Using the Downloads Page
- ------------------------
- 
--The :yocto_home:`Yocto Project Website <>` uses a "DOWNLOADS" page
-+The :yocto_home:`Yocto Project Website <>` uses a "RELEASES" page
- from which you can locate and download tarballs of any Yocto Project
- release. Rather than Git repositories, these files represent snapshot
- tarballs similar to the tarballs located in the Index of Releases
-@@ -676,12 +676,13 @@ Releases <#accessing-index-of-releases>`__" section.
- 1. *Go to the Yocto Project Website:* Open The
-    :yocto_home:`Yocto Project Website <>` in your browser.
- 
--2. *Get to the Downloads Area:* Select the "DOWNLOADS" item from the
--   pull-down "SOFTWARE" tab menu near the top of the page.
-+#. *Get to the Downloads Area:* Select the "RELEASES" item from the
-+   pull-down "DEVELOPMENT" tab menu near the top of the page.
- 
--3. *Select a Yocto Project Release:* Use the menu next to "RELEASE" to
--   display and choose a recent or past supported Yocto Project release
--   (e.g. &DISTRO_NAME_NO_CAP;, &DISTRO_NAME_NO_CAP_MINUS_ONE;, and so forth).
-+#. *Select a Yocto Project Release:* On the top of the "RELEASE" page currently
-+   supported releases are displayed, further down past supported Yocto Project
-+   releases are visible. The "Download" links in the rows of the table there
-+   will lead to the download tarballs for the release.
- 
-    .. note::
- 
-@@ -691,9 +692,9 @@ Releases <#accessing-index-of-releases>`__" section.
-    You can use the "RELEASE ARCHIVE" link to reveal a menu of all Yocto
-    Project releases.
- 
--4. *Download Tools or Board Support Packages (BSPs):* From the
--   "DOWNLOADS" page, you can download tools or BSPs as well. Just scroll
--   down the page and look for what you need.
-+#. *Download Tools or Board Support Packages (BSPs):* Next to the tarballs you
-+   will find download tools or BSPs as well. Just select a Yocto Project
-+   release and look for what you need.
- 
- Accessing Nightly Builds
- ------------------------
--- 
-2.34.1
+and i understand the point of examples like autotools.bbclass defining
+task functions like "autotools_do_install" so recipes that "inherit
+autotools" can define their own "do_install" function that, somewhere
+internally, calls "autotools_do_install".
 
+  but what if the recipe that inherits autotools does *not* define its
+own do_install() function? would it still pick up the
+autotools_do_install? what if that recipe tried to:
+
+  do_install:append = ...
+
+would that even make sense? which install function would it be
+appending to?
+
+  in short, while that section explains how to invoke the "base" task
+function, it is not clear what happens if you don't invoke it that
+way, and just try to take advantage of the "default" do_install.
+
+rday
 
