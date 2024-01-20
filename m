@@ -1,98 +1,114 @@
-Return-Path: <steve@sakoman.com>
+Return-Path: <mhagans@skyviewsat.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B8777C4707B
-	for <webhook@archiver.kernel.org>; Thu, 18 Jan 2024 15:06:05 +0000 (UTC)
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
- by mx.groups.io with SMTP id smtpd.web11.13732.1705590362433681353
- for <docs@lists.yoctoproject.org>;
- Thu, 18 Jan 2024 07:06:02 -0800
-Authentication-Results: mx.groups.io;
- dkim=pass header.i=@sakoman-com.20230601.gappssmtp.com header.s=20230601 header.b=s9iwK9/r;
- spf=softfail (domain: sakoman.com, ip: 209.85.215.172, mailfrom: steve@sakoman.com)
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-5cd8667c59eso8634933a12.2
-        for <docs@lists.yoctoproject.org>; Thu, 18 Jan 2024 07:06:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sakoman-com.20230601.gappssmtp.com; s=20230601; t=1705590361; x=1706195161; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qSsAF4aP8lz9pPN4bw7zViACd7ZNxJN/arrkX9YTsEA=;
-        b=s9iwK9/r7K0VzB/OM6FkvLUf2x8BBCjLlgiCRV8Fav65hY5muhGi2Dzul9XxdXmZiX
-         vRhQ3926ZhzNZMqVWCY4/L2UdKa8CWmAYAUSerRgyDtboaneqGb7He8em2nl7iQmvqsK
-         7ZUq8cAdbLVExYUjabyauaGI9ouCmKEm0ExU8Tztmkv6XSaeGSFgMmjBiDZq/M67HAof
-         33e3eUiOLM8GNXDSVXmyvN46U3AIPgfhohxCKUBg4dU1qC8CYUMG4yROYDcfQELcphTE
-         JRAhr2m0fdCkd6IIALp8xVogUKs/LUyYNw/REcCCtQpHf6wg2QmgMD/SsUy4b6u+BcGT
-         7Xhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1705590361; x=1706195161;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qSsAF4aP8lz9pPN4bw7zViACd7ZNxJN/arrkX9YTsEA=;
-        b=NwmwJl0f6X48wSu658w3Saq6FUQyKNJNABCkNlvrBpWFxYF4ZfrdUR5V9Q8jq3/31X
-         EO+qEUBlKuDCkxQIBNJ2dbsThv0yQRwSp4bMeg18qFIiKX1To22d1TLlo7eY6Zi7uiCA
-         Csn4j963/yWZVfUG2wAaJs0ctNUcQm2CntldQEcmpK8JaWK1SVH1RcvsYN59eFcxKP6C
-         RN1ebmfGgHX0u8e5E1nb6yt2/RoV6EFCdHgRk1YKQMcx7OsD/HWD2buOiYll8ulAwKPa
-         i6te1vVJiuXEnYrWEpSAjk4zstbrxyMibjT2wk3xgBUISU2boA3Icj6xYhFFo+HUSwxX
-         tSVw==
-X-Gm-Message-State: AOJu0Yxc6bS85QVB6kdstLZ1LV5AW0IXfePIu+RP+Q/2UqgmR0yoDtF3
-	px8X95eRnPARPqdbUe5ucgzcURAkNmRRHBFRdHQ5b1VFkM+G2pott9DHBogOM7RmtwUzMPx2JZi
-	CWnQ=
-X-Google-Smtp-Source: AGHT+IENTOQpAGXWGeg2LUfwDh8m1BSuxM5I3x3ZiI4fSTJ/XwETNa+ATOYOHlghucOvpmhIEo/dgA==
-X-Received: by 2002:a17:90a:ad89:b0:28e:2841:67fc with SMTP id s9-20020a17090aad8900b0028e284167fcmr863503pjq.86.1705590361206;
-        Thu, 18 Jan 2024 07:06:01 -0800 (PST)
-Received: from hexa.router0800d9.com (dhcp-72-234-108-41.hawaiiantel.net. [72.234.108.41])
-        by smtp.gmail.com with ESMTPSA id si6-20020a17090b528600b0028df5c748e4sm1949820pjb.44.2024.01.18.07.06.00
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 18 Jan 2024 07:06:00 -0800 (PST)
-From: Steve Sakoman <steve@sakoman.com>
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3FECC47258
+	for <webhook@archiver.kernel.org>; Sat, 20 Jan 2024 17:52:57 +0000 (UTC)
+Subject: installing documentation per the Reference manual section 1.4.1
 To: docs@lists.yoctoproject.org
-Subject: [yocto-docs][dunfell] documentation: update for 3.1.31
-Date: Thu, 18 Jan 2024 05:05:50 -1000
-Message-Id: <b72faefe16e1ac1dfa95ad7ff9b9b63254e62196.1705590269.git.steve@sakoman.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <cover.1705590269.git.steve@sakoman.com>
-References: <cover.1705590269.git.steve@sakoman.com>
+From: mhagans@skyviewsat.com
+X-Originating-Location: Rainsville, Alabama, US (137.119.15.248)
+X-Originating-Platform: Linux Firefox 115
+User-Agent: GROUPS.IO Web Poster
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date: Sat, 20 Jan 2024 09:52:49 -0800
+Message-ID: <qBwK.1705773169837336808.wBv6@lists.yoctoproject.org>
+Content-Type: multipart/alternative; boundary="FD0CY5kHUpUYi3TjE28y"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 18 Jan 2024 15:06:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4786
+ <docs@lists.yoctoproject.org>; Sat, 20 Jan 2024 17:52:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4787
 
-Signed-off-by: Steve Sakoman <steve@sakoman.com>
----
- documentation/poky.yaml | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+--FD0CY5kHUpUYi3TjE28y
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/documentation/poky.yaml b/documentation/poky.yaml
-index 54a1c3203..0e04203fa 100644
---- a/documentation/poky.yaml
-+++ b/documentation/poky.yaml
-@@ -1,13 +1,13 @@
--DISTRO : "3.1.30"
-+DISTRO : "3.1.31"
- DISTRO_NAME_NO_CAP : "dunfell"
- DISTRO_NAME : "Dunfell"
- DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
--YOCTO_DOC_VERSION : "3.1.30"
-+YOCTO_DOC_VERSION : "3.1.31"
- YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
--DISTRO_REL_TAG : "yocto-3.1.30"
--DOCCONF_VERSION : "3.1.30"
-+DISTRO_REL_TAG : "yocto-3.1.31"
-+DOCCONF_VERSION : "3.1.31"
- BITBAKE_SERIES : "1.46"
--POKYVERSION : "23.0.30"
-+POKYVERSION : "23.0.31"
- YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
--- 
-2.34.1
+Hi all - new to Yocto, going through the process of making my Build Host.=
+=C2=A0 My Build Host hardware is Lenovo Thinkpad X1 carbon (4th gen) with i=
+ntel i7 processor, running Debian GNU/Linux 12.
+The instructions for building the Project Documentation manuals in 1.4.1 (D=
+ebian and Ubuntu) says:
 
+Here are the packages needed to build Project documentation manuals:
+
+$ sudo apt install make python3-pip inkscape texlive-latex-extra
+$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml
+
+the first install string ran successfully, but the second one gave me the f=
+ollowing error, and I don't know how to proceed.
+mike@X1CARBON:~$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml
+>=20
+> error: externally-managed-environment=C3=97 This environment is externall=
+y
+> managed=E2=95=B0=E2=94=80> To install Python packages system-wide, try ap=
+t install=C2=A0=C2=A0=C2=A0
+> python3-xyz, where xyz is the package you are trying to=C2=A0=C2=A0=C2=A0=
+ install.=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0
+> If you wish to install a non-Debian-packaged Python package,=C2=A0=C2=A0=
+=C2=A0 create a
+> virtual environment using python3 -m venv path/to/venv.=C2=A0=C2=A0=C2=A0=
+ Then use
+> path/to/venv/bin/python and path/to/venv/bin/pip. Make=C2=A0=C2=A0=C2=A0 =
+sure you have
+> python3-full installed.=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 If you wish =
+to install a non-Debian
+> packaged Python application,=C2=A0=C2=A0=C2=A0 it may be easiest to use p=
+ipx install xyz,
+> which will manage a=C2=A0=C2=A0=C2=A0 virtual environment for you. Make s=
+ure you have
+> pipx installed.=C2=A0=C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 See /usr/share/doc/p=
+ython3.11/README.venv for more
+> information.note: If you believe this is a mistake, please contact your
+> Python installation or OS distribution provider. You can override this, a=
+t
+> the risk of breaking your Python installation or OS, by passing
+> --break-system-packages.hint: See PEP 668 for the detailed specification.
+
+Do I override with --break-system or?
+
+TIA,
+Mike
+
+--FD0CY5kHUpUYi3TjE28y
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Hi all - new to Yocto, going through the process of making my Build Host.&n=
+bsp; My Build Host hardware is Lenovo Thinkpad X1 carbon (4th gen) with int=
+el i7 processor, running Debian GNU/Linux 12.<br />The instructions for bui=
+lding the Project Documentation manuals in 1.4.1 (Debian and Ubuntu) says:<=
+br />
+<p>Here are the packages needed to build Project documentation manuals:</p>
+<div class=3D"highlight-default notranslate">
+<div class=3D"highlight">
+<pre><span></span>$ sudo apt install make python3-pip inkscape texlive-late=
+x-extra
+$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml
+</pre>
+</div>
+</div>
+the first install string ran successfully, but the second one gave me the f=
+ollowing error, and I don't know how to proceed.<br />mike@X1CARBON:~$ sudo=
+ pip3 install sphinx sphinx_rtd_theme pyyaml
+<blockquote>error: externally-managed-environment&times; This environment i=
+s externally managed=E2=95=B0=E2=94=80&gt; To install Python packages syste=
+m-wide, try apt install&nbsp;&nbsp;&nbsp; python3-xyz, where xyz is the pac=
+kage you are trying to&nbsp;&nbsp;&nbsp; install.&nbsp;&nbsp; &nbsp;&nbsp;&=
+nbsp;&nbsp; If you wish to install a non-Debian-packaged Python package,&nb=
+sp;&nbsp;&nbsp; create a virtual environment using python3 -m venv path/to/=
+venv.&nbsp;&nbsp;&nbsp; Then use path/to/venv/bin/python and path/to/venv/b=
+in/pip. Make&nbsp;&nbsp;&nbsp; sure you have python3-full installed.&nbsp;&=
+nbsp; &nbsp;&nbsp;&nbsp;&nbsp; If you wish to install a non-Debian packaged=
+ Python application,&nbsp;&nbsp;&nbsp; it may be easiest to use pipx instal=
+l xyz, which will manage a&nbsp;&nbsp;&nbsp; virtual environment for you. M=
+ake sure you have pipx installed.&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; See =
+/usr/share/doc/python3.11/README.venv for more information.note: If you bel=
+ieve this is a mistake, please contact your Python installation or OS distr=
+ibution provider. You can override this, at the risk of breaking your Pytho=
+n installation or OS, by passing --break-system-packages.hint: See PEP 668 =
+for the detailed specification.</blockquote>
+Do I override with --break-system or?<br /><br />TIA,<br />Mike<br />
+
+--FD0CY5kHUpUYi3TjE28y--
 
