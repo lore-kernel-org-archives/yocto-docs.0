@@ -1,106 +1,82 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <simone.p.weiss@posteo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4F83C47422
-	for <webhook@archiver.kernel.org>; Mon, 22 Jan 2024 03:12:27 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.65054.1705893138132847507
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 150BEC47258
+	for <webhook@archiver.kernel.org>; Thu, 25 Jan 2024 16:41:36 +0000 (UTC)
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+ by mx.groups.io with SMTP id smtpd.web10.23052.1706200888259783110
  for <docs@lists.yoctoproject.org>;
- Sun, 21 Jan 2024 19:12:18 -0800
+ Thu, 25 Jan 2024 08:41:28 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZfMXfRqB;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8CA99C0002;
-	Mon, 22 Jan 2024 03:12:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1705893136;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jyg92eGHbRXvaad4EcZtCTBSDw7JXbxSTmvFEHRuPmM=;
-	b=ZfMXfRqBDXEq++C5YS9cgG5jYlMkfzcDtjsGbsDaV2EtKDH3Tkg4ZgMB3M8IGqWf7bt2h7
-	M3eqEm8dkFytikfSw2FHQPxFsQbEQktaIhTW4atJNBrnNnqMhsOqxgINrSIBamNIDp7J4T
-	z4x5H552/NqMzIAzHQKFCj6WeKxDCd6SQZdGHrchTEAJnZHXEQSOfktXTG/tkjMYxNbJPu
-	URWLvi+KzBxaRpDKc/gArE4CpU1bulyEQhy+50PpmNFTNfoleiL99XGtOfIwdALznn0guI
-	3GOd7Wtwh+jhpur7c3nFxoKWIbFxmA/SoiKXHur2HrtXw+Yk1FElI4mkoHnDvQ==
-Message-ID: <477fcd38-8fc4-48b4-9718-23548c8131b2@bootlin.com>
-Date: Sun, 21 Jan 2024 22:12:13 -0500
+ dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=Q4vmJGR9;
+ spf=pass (domain: posteo.com, ip: 185.67.36.66, mailfrom: simone.p.weiss@posteo.com)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 31015240103
+	for <docs@lists.yoctoproject.org>; Thu, 25 Jan 2024 17:41:25 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
+	t=1706200886; bh=6FO1DFb0KjYIxz8fc0TjQMAiiIbGGiRTQfCdtgSvpmM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=Q4vmJGR90fPWq11XfZxQLCZ0snYG0+c4geaZhNLQoIwjNpbMgWJnD6yFY42C6LR44
+	 Msvb0BozfuYohdo+7+cADVPDFO3ZMMQrQRRgSPVmquKXO86vHvGY+OOu8NTwNOOfHk
+	 jJWOXH3JhNOnT35cGblOr4r5pPn+ozTaAMRa9m/b/LUD99y2/81hvo5xayEnbzK/Nl
+	 COAOsjbFhmuW8NIb+j56xqCzeB7J/29Q0rbj3rwx27v1UB+TUEeL241aqCjaM03Ivd
+	 +w72u2x3t6YkFOh6ehaPepflnSt2AJ8GkVcrT1f6lMnEH49s3VSIBIEJEhyFMlsFxo
+	 Bfq2kvn1WuZAw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4TLRRT30r5z9rxB;
+	Thu, 25 Jan 2024 17:41:24 +0100 (CET)
+From: simone.p.weiss@posteo.com
+To: docs@lists.yoctoproject.org
+Cc: =?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
+Subject: [PATCH] bsp-guide: correct formfactor recipe name
+Date: Thu, 25 Jan 2024 16:41:18 +0000
+Message-Id: <20240125164118.6943-1-simone.p.weiss@posteo.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] installing documentation per the Reference manual section
- 1.4.1
-Content-Language: en-US
-To: mhagans@skyviewsat.com
-References: <qBwK.1705773169837336808.wBv6@lists.yoctoproject.org>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <qBwK.1705773169837336808.wBv6@lists.yoctoproject.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 22 Jan 2024 03:12:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4789
+ <docs@lists.yoctoproject.org>; Thu, 25 Jan 2024 16:41:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4790
 
-Hi Mike,
+From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 
-On 1/20/24 at 12:52, mhagans@skyviewsat.com wrote:
-> Hi all - new to Yocto, going through the process of making my Build 
-> Host.  My Build Host hardware is Lenovo Thinkpad X1 carbon (4th gen) 
-> with intel i7 processor, running Debian GNU/Linux 12.
-> The instructions for building the Project Documentation manuals in 
-> 1.4.1 (Debian and Ubuntu) says:
->
-> Here are the packages needed to build Project documentation manuals:
->
-> $ sudo apt install make python3-pip inkscape texlive-latex-extra
-> $ sudo pip3 install sphinx sphinx_rtd_theme pyyaml
-> the first install string ran successfully, but the second one gave me 
-> the following error, and I don't know how to proceed.
-> mike@X1CARBON:~$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml
->
->     error: externally-managed-environment× This environment is
->     externally managed╰─> To install Python packages system-wide, try
->     apt install    python3-xyz, where xyz is the package you are
->     trying to    install.        If you wish to install a
->     non-Debian-packaged Python package,    create a virtual
->     environment using python3 -m venv path/to/venv.    Then use
->     path/to/venv/bin/python and path/to/venv/bin/pip. Make sure you
->     have python3-full installed.        If you wish to install a
->     non-Debian packaged Python application,    it may be easiest to
->     use pipx install xyz, which will manage a    virtual environment
->     for you. Make sure you have pipx installed. See
->     /usr/share/doc/python3.11/README.venv for more information.note:
->     If you believe this is a mistake, please contact your Python
->     installation or OS distribution provider. You can override this,
->     at the risk of breaking your Python installation or OS, by passing
->     --break-system-packages.hint: See PEP 668 for the detailed
->     specification.
->
-> Do I override with --break-system or?
+This recipe was renamed some time ago. Update the name here as well for
+consistency.
 
+Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+---
+ documentation/bsp-guide/bsp.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Oops, thanks for reporting this.
-I confirm that I can reproduce this with a Debian 12 Docker container 
-(I'm on Ubuntu 22.04).
-
-However, I found a solution without pip:
-sudo apt install sphinx python3-saneyaml python3-sphinx-rtd-theme
-
-It seems to work for me. Does it work for you too?
-I'll be happy to update the docs.
-
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/documentation/bsp-guide/bsp.rst b/documentation/bsp-guide/bs=
+p.rst
+index f92b1177b..29c69a930 100644
+--- a/documentation/bsp-guide/bsp.rst
++++ b/documentation/bsp-guide/bsp.rst
+@@ -336,7 +336,7 @@ the :yocto_git:`Source Repositories <>`:
+    meta-raspberrypi/recipes-bsp/formfactor/formfactor
+    meta-raspberrypi/recipes-bsp/formfactor/formfactor/raspberrypi
+    meta-raspberrypi/recipes-bsp/formfactor/formfactor/raspberrypi/machco=
+nfig
+-   meta-raspberrypi/recipes-bsp/formfactor/formfactor_0.0.bbappend
++   meta-raspberrypi/recipes-bsp/formfactor/formfactor_%.bbappend
+    meta-raspberrypi/recipes-bsp/rpi-u-boot-src
+    meta-raspberrypi/recipes-bsp/rpi-u-boot-src/files
+    meta-raspberrypi/recipes-bsp/rpi-u-boot-src/files/boot.cmd.in
+@@ -620,7 +620,7 @@ You can find these files in the BSP Layer at::
+=20
+ This optional directory contains miscellaneous recipe files for the BSP.
+ Most notably would be the formfactor files. For example, in the
+-Raspberry Pi BSP, there is the ``formfactor_0.0.bbappend`` file, which
++Raspberry Pi BSP, there is the ``formfactor_%.bbappend`` file, which
+ is an append file used to augment the recipe that starts the build.
+ Furthermore, there are machine-specific settings used during the build
+ that are defined by the ``machconfig`` file further down in the
+--=20
+2.39.2
 
 
