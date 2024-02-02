@@ -1,73 +1,66 @@
-Return-Path: <simone.p.weiss@posteo.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D82BAC48286
-	for <webhook@archiver.kernel.org>; Thu,  1 Feb 2024 16:51:03 +0000 (UTC)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
- by mx.groups.io with SMTP id smtpd.web10.46.1706806259008195907
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A7361C4828E
+	for <webhook@archiver.kernel.org>; Fri,  2 Feb 2024 09:44:37 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.19399.1706867069452381722
  for <docs@lists.yoctoproject.org>;
- Thu, 01 Feb 2024 08:50:59 -0800
+ Fri, 02 Feb 2024 01:44:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=OYlQTVVG;
- spf=pass (domain: posteo.com, ip: 185.67.36.66, mailfrom: simone.p.weiss@posteo.com)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 084A0240101
-	for <docs@lists.yoctoproject.org>; Thu,  1 Feb 2024 17:50:56 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
-	t=1706806257; bh=XUiWFbcdPolgVbzarJggq6gVytFPwjPTGO+0g3YsXOA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=OYlQTVVGIfghhgk97vFf0AyLQpPUVv1iJ0xepymplKxyrJ2JkEn3FwFvmyGQc0i4H
-	 t9d4w1b23hZd836cR1u2rUEVW3cdqRC8xrrfNJd6nCPd/sU7Ne/bKcswDrb0tO4Qw1
-	 7tirc5olAJXGfSCWVZXbmy/XFymFfE09K2DKg+TGQZb6fdzW1Xm/8gEnmd3ao3ggqs
-	 c4aUVUJsnwWKobQYMrDg1zfjrFJHjUdRXCRWpiyuMeh2/+1mbtqyxvtG7HYGrtkHme
-	 ZWHZ3c/evSxpxP9x1C4FGjVueg0UbS+oiwqHnbfT50J5Pbj20W7WkGND4cthRRK8Yz
-	 JUXf363oj2HPw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4TQlKD1GRtz9rxD;
-	Thu,  1 Feb 2024 17:50:55 +0100 (CET)
-From: simone.p.weiss@posteo.com
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TFxy+ASA;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A67C660007;
+	Fri,  2 Feb 2024 09:44:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1706867067;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=KC3EEXkFuDG/PjdH3MrmtB//6HjhPtyQu1dO3C1PciE=;
+	b=TFxy+ASAxuDe3dxJ/gkLuOc94tpJakDhUBUKbv51dKPgG31BKJdg6Nn/BHoFxEM9ZPNoxA
+	BjVZluGvBMpoXqGlFhlVbfiZRWBGj9tmzuYjoFY5cVLgnPCS+rn08lKEloSkS7a96Qsqd1
+	un5z4Re2Z2Ar9LXSSWZLwhk/wMXDCnhVcfE1OkVowPnemyPfGVo75y1BEcbbsbXIjyMPRU
+	JjtQ0fKs2bYUh4lAxdzL8vqZZhOZTY9/ETyJtU8xt8EIYYJLgUTNFydCgIYXxgf/Ogmbv+
+	UhC9Xz4FrLocVGobxozRQp7zS77iH67ScaMvJA69Ug/eiqpzn7Ko84T7y8nRUg==
+From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: =?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
-Subject: [PATCH] dev-manual: gen-tapdevs need iptables installed
-Date: Thu,  1 Feb 2024 16:50:46 +0000
-Message-Id: <20240201165046.28589-1-simone.p.weiss@posteo.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [PATCH] docs: remove support for mickledore (4.2) release
+Date: Fri,  2 Feb 2024 10:44:20 +0100
+Message-Id: <20240202094420.3271944-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 01 Feb 2024 16:51:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4805
+ <docs@lists.yoctoproject.org>; Fri, 02 Feb 2024 09:44:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4806
 
-From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Add the hint to the test setup that runqemu-gen-tapdevs will need the
-iptables package installed.
-
-Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/runtime-testing.rst | 2 ++
- 1 file changed, 2 insertions(+)
+ documentation/set_versions.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/dev-manual/runtime-testing.rst b/documentation=
-/dev-manual/runtime-testing.rst
-index be1e8c02e..1a2e9ec4f 100644
---- a/documentation/dev-manual/runtime-testing.rst
-+++ b/documentation/dev-manual/runtime-testing.rst
-@@ -52,6 +52,8 @@ In order to run tests, you need to do the following:
-          -  Be sure to use an absolute path when calling this script
-             with sudo.
-=20
-+         -  Ensure that your host has the package ``iptables`` installed=
-.
-+
-          -  The package recipe ``qemu-helper-native`` is required to run
-             this script. Build the package using the following command::
-=20
---=20
-2.39.2
+diff --git a/documentation/set_versions.py b/documentation/set_versions.py
+index a7c4d5af0b..90e08fc5e0 100755
+--- a/documentation/set_versions.py
++++ b/documentation/set_versions.py
+@@ -26,7 +26,7 @@ ourversion = None
+ if len(sys.argv) == 2:
+     ourversion = sys.argv[1]
+ 
+-activereleases = ["nanbield", "mickledore", "kirkstone", "dunfell"]
++activereleases = ["nanbield", "kirkstone", "dunfell"]
+ devbranch = "scarthgap"
+ ltsseries = ["kirkstone", "dunfell"]
+ 
+-- 
+2.34.1
 
 
