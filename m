@@ -2,111 +2,75 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83AAFC48291
-	for <webhook@archiver.kernel.org>; Mon,  5 Feb 2024 11:12:25 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.60216.1707131540764502162
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 880D5C48291
+	for <webhook@archiver.kernel.org>; Mon,  5 Feb 2024 11:17:15 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.60764.1707131830769679095
  for <docs@lists.yoctoproject.org>;
- Mon, 05 Feb 2024 03:12:21 -0800
+ Mon, 05 Feb 2024 03:17:11 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LC0fsl5S;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 685C0E0003;
-	Mon,  5 Feb 2024 11:12:18 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Gx8gYYN7;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8958C240009;
+	Mon,  5 Feb 2024 11:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1707131538;
+	t=1707131828;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jDnNVNqU6DCRWOgZjENGPUyi8ggrsiHNwN/cc+aEOaI=;
-	b=LC0fsl5SX9/Q4Y590VE5OmRRD1059o3W9i+khI4oWuv3XRkf2Jhpa9hxslLtmrxNr6ty30
-	l5t0DA/4U+8kwZ+c9m9q661Ks9JbP/P1/dN1za5KcNA0YQs+y21lSiQWXmvgBeROEYjT+J
-	ZKvf+arTfbJSDzkF+bnU4pMmB14iQG4SUeLxIYIHFh8ROp8yPplhgynmfqf/cCdrkKrChv
-	KMWXbpeNAfPG1s+I050XONEOSMx9Uo/rVvABIKEjDMFSX17B2ibxQI9WLXgZDPWKblU586
-	9RmIhju+Quje4miRYEgThq9MBecArbxj2bmn03NVH9IKMRGfPovhmJ50rYoWNw==
-Message-ID: <9c1772fe-0423-4128-8563-5fdc7dc1c647@bootlin.com>
-Date: Mon, 5 Feb 2024 12:12:18 +0100
+	bh=bXteyNLteUoeh//XwgQMJwXNensVU8T4+q91O9kCqOQ=;
+	b=Gx8gYYN7GW/jVw2frvEaxf1O0JUQaMEcIvp06T2NdWNdrhSSG0JGQmuwktzvvIPvDc5AWW
+	bZbXozvecJ50DGZ6jCz/nTBpAQoisiaN2iQDB8Ak4ZEjCQ+Mt3VHmX/C7NcS2nTbnfoX0n
+	GEnefBbMM7trVayrKCaTe5fRfFMLm6aas8eNtmSZzfum+apTDcLnREQ2t2YP2u4N8bSMJy
+	YpO+2LqtA+vlJTfwSAbwMaXt8DHzILTds1iEatIFfYW4HV3fz9JrLMTXfQIrUCW2PnWOfr
+	dZgjMxFD4F1Pte5k9r+lrRaG7hXU6YA2cnZT1yHYVCaMcrq/GzUrb6hSS9tLrw==
+Message-ID: <8ece52f8-904b-414e-ac2c-a0f05f827e41@bootlin.com>
+Date: Mon, 5 Feb 2024 12:17:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] dev-manual: gen-tapdevs need iptables installed
+Cc: michael.opdenacker@bootlin.com
+Subject: Re: [docs] [PATCH] contributor-guide: fix lore URL
 Content-Language: en-US
-To: =?UTF-8?Q?Simone_Wei=C3=9F?= <simone.p.weiss@posteo.com>
-References: <20240201165046.28589-1-simone.p.weiss@posteo.com>
- <17B012973AA0B915.1968@lists.yoctoproject.org>
+To: baruch@tkos.co.il, docs@lists.yoctoproject.org
+References: <7542f40a18bc1485daaf503d1ab05019be088142.1707119145.git.baruch@tkos.co.il>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <17B012973AA0B915.1968@lists.yoctoproject.org>
+In-Reply-To: <7542f40a18bc1485daaf503d1ab05019be088142.1707119145.git.baruch@tkos.co.il>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 05 Feb 2024 11:12:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4809
+ <docs@lists.yoctoproject.org>; Mon, 05 Feb 2024 11:17:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4810
 
-Hi Simone
+Hi Baruch
 
-On 2/2/24 at 15:38, Michael Opdenacker via lists.yoctoproject.org wrote:
-> Hi Simone
+On 2/5/24 at 08:45, baruch@tkos.co.il via lists.yoctoproject.org wrote:
+> Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> ---
+>   documentation/contributor-guide/submit-changes.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> On 2/1/24 at 17:50, Simone Weiß wrote:
->> From: Simone Weiß <simone.p.weiss@posteo.com>
->>
->> Add the hint to the test setup that runqemu-gen-tapdevs will need the
->> iptables package installed.
->>
->> Signed-off-by: Simone Weiß <simone.p.weiss@posteo.com>
->> ---
->>   documentation/dev-manual/runtime-testing.rst | 2 ++
->>   1 file changed, 2 insertions(+)
->>
->> diff --git a/documentation/dev-manual/runtime-testing.rst 
->> b/documentation/dev-manual/runtime-testing.rst
->> index be1e8c02e..1a2e9ec4f 100644
->> --- a/documentation/dev-manual/runtime-testing.rst
->> +++ b/documentation/dev-manual/runtime-testing.rst
->> @@ -52,6 +52,8 @@ In order to run tests, you need to do the following:
->>            -  Be sure to use an absolute path when calling this script
->>               with sudo.
->>   +         -  Ensure that your host has the package ``iptables`` 
->> installed.
->> +
->>            -  The package recipe ``qemu-helper-native`` is required 
->> to run
->>               this script. Build the package using the following 
->> command::
->
->
-> Thanks for the patch, but it doesn't apply with "git am" on 
-> "master-next". Did you send it with "git send-email", or was the patch 
-> messed-up by your mail server?
->
-> Applying: dev-manual: gen-tapdevs need iptables installed
->
-> error: patch failed: documentation/dev-manual/runtime-testing.rst:52
->
-> error: documentation/dev-manual/runtime-testing.rst: patch does not apply
->
-> Patch failed at 0001 dev-manual: gen-tapdevs need iptables installed
->
-> hint: Use 'git am --show-current-patch=diff' to see the failed patch
->
-> When you have resolved this problem, run "git am --continue".
->
-> If you prefer to skip this patch, run "git am --skip" instead.
->
-> To restore the original branch and stop patching, run "git am --abort".
->
-> Of course, I could re-create the patch, but that's interesting to 
-> solve this issue for next time.
+> diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+> index 95728c25c615..61f3157d602e 100644
+> --- a/documentation/contributor-guide/submit-changes.rst
+> +++ b/documentation/contributor-guide/submit-changes.rst
+> @@ -438,7 +438,7 @@ their e-mail clients will default to including your email address in the
+>   conversation anyway.
+>   
+>   Anyway, you'll also be able to access the new messages on mailing list archives,
+> -either through a web browser, or for the lists archived on https://lore.kernelorg,
+> +either through a web browser, or for the lists archived on https://lore.kernel.org,
+>   through an individual newsgroup feed or a git repository.
 
 
-Never mind, the problem is probably on my side. It seems I tried to 
-apply it twice, so everything's OK now and the patch is in "master-next".
-Thanks again
+Oops, good catch, thanks a lot!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into "master-next"
 Michael.
 
 -- 
