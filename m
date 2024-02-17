@@ -1,99 +1,204 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <simone.p.weiss@posteo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B586C4829E
-	for <webhook@archiver.kernel.org>; Thu, 15 Feb 2024 09:55:56 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.10785.1707990950884813154
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1B4EC48BC4
+	for <webhook@archiver.kernel.org>; Sat, 17 Feb 2024 11:07:17 +0000 (UTC)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+ by mx.groups.io with SMTP id smtpd.web11.7912.1708168036111354469
  for <docs@lists.yoctoproject.org>;
- Thu, 15 Feb 2024 01:55:51 -0800
+ Sat, 17 Feb 2024 03:07:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LvfKdQI/;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EBDDA4000F;
-	Thu, 15 Feb 2024 09:55:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1707990948;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mFGrbDFl1c+KZDaUTG+E5CnVohXIGpfsRQUI4oOKujA=;
-	b=LvfKdQI/N14NVnVPN2S9oRFCLfMPP0rmeO9onvJxUah+UEXjkG/6jZMjfo/wfuYJo42+n9
-	7X48ytmF7k68tpI6he2xsM8dQKF9XXdxHecs+vrPT5ZAORUU0qsmbgYTpK0sMK+EcC8Yro
-	bnwk+hwiDDbj92pHypKu+ZpvCe9Uj3t8TGRdWs5kIeluQ5v1+mHMySEjk6eyYEAHGvMD+W
-	iQEMIV8PiSYRnNmCGuKCt5PEwYyYIg81sugFoNKOXAAY9GcLiXg7weRPbxEzh2pMPn2Ztq
-	SsPK5nZrc5TSqA5syGbgCmtl97vjJLFDgv/zQcA6xwKMPgNl0yYCeYOMc4t6ag==
-Message-ID: <79156a5c-b233-4940-88f1-a5d04e4f9920@bootlin.com>
-Date: Thu, 15 Feb 2024 10:55:47 +0100
+ dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=HKjHWA3T;
+ spf=pass (domain: posteo.com, ip: 185.67.36.65, mailfrom: simone.p.weiss@posteo.com)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id EEB03240029
+	for <docs@lists.yoctoproject.org>; Sat, 17 Feb 2024 12:07:13 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
+	t=1708168034; bh=DK2NGbTjksg+LzVQOzyIQM3C7FGdiSz2aBC5K0OgAaY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=HKjHWA3TtlHr7uEalHMy9maF9Tm/SAaLaXtCVpZ4iPU1zud51H3gyjzMZ2mQJK2gm
+	 woBg0R6R0RnH4ku7wK/glS6O69MRArVtUGFHqlSwQ+IlGV98V8HQzWtPzZcC/HZCqu
+	 pTsm4OtwKWHA7vhwcbNB+V1EKeNMmiLR4YtkrKVKhXufCupLpHXEsFIlxqT2kszpW6
+	 CtzhOZsZQ3cQI6fLkecsEKiE5BnhhCQYvVU/2cfB51I7VJ21fbs7V3cW6ao68MhdD8
+	 RmaAe6BoVvN5/fTlDQptuL8lD3rtmtFXxCgVpbTGUPpvPx2yKdhYyHLzaT7EbOmQYz
+	 Esnaq+65JKxTg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4TcQxD6nCTz6tw8;
+	Sat, 17 Feb 2024 12:07:11 +0100 (CET)
+From: simone.p.weiss@posteo.com
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	=?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
+Subject: [PATCH v2] bitbake: doc: Add section for variable context
+Date: Sat, 17 Feb 2024 11:07:03 +0000
+Message-Id: <20240217110704.49901-1-simone.p.weiss@posteo.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: f.lahoudere@technologyandstrategy.com,
- BELOUARGA Mohamed <m.belouarga@technologyandstrategy.com>
-Subject: Re: [docs] [PATCH 2/2] documentation: add documentation of the
- variable SPDX_NAMESPACE_PREFIX
-Content-Language: en-US
-To: belouargamohamed@gmail.com, docs@lists.yoctoproject.org
-References: <20240214215237.151434-1-m.belouarga@technologyandstrategy.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20240214215237.151434-1-m.belouarga@technologyandstrategy.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 15 Feb 2024 09:55:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4839
+ <docs@lists.yoctoproject.org>; Sat, 17 Feb 2024 11:07:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4840
 
-Hi Mohamed,
+From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 
-On 2/14/24 at 22:52, belouargamohamed@gmail.com wrote:
-> From: BELOUARGA Mohamed <m.belouarga@technologyandstrategy.com>
->
-> The documentation of the variable SPDX_NAMESPACE_PREFIX does not exist.
-> This variable is used to change the prefix of some links in SPDX docs.
->
-> [ YOCTO #15398 ]
->
-> Signed-off-by: BELOUARGA Mohamed <m.belouarga@technologyandstrategy.com>
-> ---
->   documentation/ref-manual/variables.rst | 5 +++++
->   1 file changed, 5 insertions(+)
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 6f7d6ff01e..907575ba82 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -7913,6 +7913,11 @@ system and gives an overview of their function and contents.
->         image), compared to just using the :ref:`ref-classes-create-spdx` class
->         with no option.
->   
-> +   :term:`SPDX_NAMESPACE_PREFIX`
-> +      This option could be used in order to change the prefix of ``spdxDocument``
-> +      and the prefix of ``documentNamespace``. It is set by default to:
-> +      ``https://spdx.org/spdxdocs`` .
-> +
+This is inspired by the same section in the yocto-docs. It aims to provid=
+e
+information in what contexts(recipes, .conf, bbclass,...) a variable is u=
+sually
+used. For that I tried to group similar variables, so that a short overvi=
+ew is
+given. This was inspired by [YOCTO #14072], but of course does not implem=
+ent a
+warning if a variable is used in an unintended context.
 
+Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+---
+ ...bake-user-manual-ref-variables-context.rst | 89 +++++++++++++++++++
+ doc/index.rst                                 |  1 +
+ 2 files changed, 90 insertions(+)
+ create mode 100644 doc/bitbake-user-manual/bitbake-user-manual-ref-varia=
+bles-context.rst
 
-This looks good to me, thanks!
-However, I have to wait for your first patch to be merged to merge this 
-one, otherwise the default value is incorrect.
-Don't hesitate to ping me if necessary.
-
-As a separate patch, you may also mention this variable in the 
-description of the "create-spdx" class (ref-manual/classes.rst). 
-Otherwise, people may overlook this variable, if it's not referred to 
-from any other place.
-
-Thanks again
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-co=
+ntext.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-con=
+text.rst
+new file mode 100644
+index 00000000..8252889e
+--- /dev/null
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-context.r=
+st
+@@ -0,0 +1,89 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++****************
++Variable Context
++****************
++
++Variables might only have an impact or can be used in certain contexts. =
+Some
++should only be used in global files like ``.conf``, while others are int=
+ended only
++for local files like ``.bb``. This chapter aims to describe some importa=
+nt variable
++contexts.
++
++.. _ref-varcontext-configuration:
++
++BitBake's own configuration
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D
++
++Variables starting with ``BB_`` usually configure the behaviour of BitBa=
+ke itself.
++For example, one could configure:
++
++- System resources, like disk space to be used (:term:`BB_DISKMON_DIRS`)=
+,
++  or the number of tasks to be run in parallel by BitBake (:term:`BB_NUM=
+BER_THREADS`).
++
++- How the fetchers shall behave, e.g., :term:`BB_FETCH_PREMIRRORONLY` is=
+ used
++  by BitBake to determine if BitBake's fetcher shall search only
++  :term:`PREMIRRORS` for files.
++
++Those variables are usually configured globally.
++
++BitBake configuration
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++There are variables:
++
++- Like :term:`B` or :term:`T`, that are used to specify directories used=
+ by
++  BitBake during the build of a particular recipe. Those variables are
++  specified in ``bitbake.conf``. Some, like :term:`B`, are quite often
++  overwritten in recipes.
++
++- Starting with ``FAKEROOT``, to configure how the ``fakeroot`` command =
+is
++  handled. Those are usually set by ``bitbake.conf`` and might get adapt=
+ed in a
++  ``bbclass``.
++
++- Detailing where BitBake will store and fetch information from, for
++  data reuse between build runs like :term:`CACHE`, :term:`DL_DIR` or
++  :term:`PERSISTENT_DIR`. Those are usually global.
++
++
++Layers and files
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++Variables starting with ``LAYER`` configure how BitBake handles layers.
++Additionally, variables starting with ``BB`` configure how layers and fi=
+les are
++handled. For example:
++
++- :term:`LAYERDEPENDS` is used to configure on which layers a given laye=
+r
++  depends.
++
++- The configured layers are contained in :term:`BBLAYERS` and files in
++  :term:`BBFILES`.
++
++Those variables are often used in the files ``layer.conf`` and ``bblayer=
+s.conf``.
++
++Recipes and packages
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++Variables handling recipes and packages can be split into:
++
++- :term:`PN`, :term:`PV` or :term:`PF` for example, contain information =
+about
++  the name or revision of a recipe or package. Usually, the default set =
+in
++  ``bitbake.conf`` is used, but those are from time to time overwritten =
+in
++  recipes.
++
++- :term:`SUMMARY`, :term:`DESCRIPTION`, :term:`LICENSE` or :term:`HOMEPA=
+GE`
++  contain the expected information and should be set specifically for ev=
+ery
++  recipe.
++
++- In recipes, variables are also used to control build and runtime
++  dependencies between recipes/packages with other recipes/packages. The
++  most common should be: :term:`PROVIDES`, :term:`RPROVIDES`, :term:`DEP=
+ENDS`,
++  and :term:`RDEPENDS`.
++
++- There are further variables starting with ``SRC`` that specify the sou=
+rces in
++  a recipe like :term:`SRC_URI` or :term:`SRCDATE`. Those are also usual=
+ly set
++  in recipes.
++
++- Which version or=C2=A0provider of a recipe should be given preference =
+when
++  multiple recipes would provide the same item, is controlled by variabl=
+es
++  starting with ``PREFERRED_``. Those are normally set in the configurat=
+ion
++  files of a ``MACHINE`` or ``DISTRO``.
+diff --git a/doc/index.rst b/doc/index.rst
+index 3ff8b158..ee1660ac 100644
+--- a/doc/index.rst
++++ b/doc/index.rst
+@@ -13,6 +13,7 @@ BitBake User Manual
+    bitbake-user-manual/bitbake-user-manual-intro
+    bitbake-user-manual/bitbake-user-manual-execution
+    bitbake-user-manual/bitbake-user-manual-metadata
++   bitbake-user-manual/bitbake-user-manual-ref-variables-context
+    bitbake-user-manual/bitbake-user-manual-fetching
+    bitbake-user-manual/bitbake-user-manual-ref-variables
+    bitbake-user-manual/bitbake-user-manual-hello
+--=20
+2.39.2
 
 
