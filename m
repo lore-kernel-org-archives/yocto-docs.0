@@ -1,204 +1,278 @@
-Return-Path: <simone.p.weiss@posteo.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1B4EC48BC4
-	for <webhook@archiver.kernel.org>; Sat, 17 Feb 2024 11:07:17 +0000 (UTC)
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
- by mx.groups.io with SMTP id smtpd.web11.7912.1708168036111354469
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EF0AC48260
+	for <webhook@archiver.kernel.org>; Mon, 19 Feb 2024 05:27:08 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+ by mx.groups.io with SMTP id smtpd.web10.35417.1708320425804849784
  for <docs@lists.yoctoproject.org>;
- Sat, 17 Feb 2024 03:07:16 -0800
+ Sun, 18 Feb 2024 21:27:05 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=HKjHWA3T;
- spf=pass (domain: posteo.com, ip: 185.67.36.65, mailfrom: simone.p.weiss@posteo.com)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id EEB03240029
-	for <docs@lists.yoctoproject.org>; Sat, 17 Feb 2024 12:07:13 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
-	t=1708168034; bh=DK2NGbTjksg+LzVQOzyIQM3C7FGdiSz2aBC5K0OgAaY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=HKjHWA3TtlHr7uEalHMy9maF9Tm/SAaLaXtCVpZ4iPU1zud51H3gyjzMZ2mQJK2gm
-	 woBg0R6R0RnH4ku7wK/glS6O69MRArVtUGFHqlSwQ+IlGV98V8HQzWtPzZcC/HZCqu
-	 pTsm4OtwKWHA7vhwcbNB+V1EKeNMmiLR4YtkrKVKhXufCupLpHXEsFIlxqT2kszpW6
-	 CtzhOZsZQ3cQI6fLkecsEKiE5BnhhCQYvVU/2cfB51I7VJ21fbs7V3cW6ao68MhdD8
-	 RmaAe6BoVvN5/fTlDQptuL8lD3rtmtFXxCgVpbTGUPpvPx2yKdhYyHLzaT7EbOmQYz
-	 Esnaq+65JKxTg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4TcQxD6nCTz6tw8;
-	Sat, 17 Feb 2024 12:07:11 +0100 (CET)
-From: simone.p.weiss@posteo.com
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	=?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
-Subject: [PATCH v2] bitbake: doc: Add section for variable context
-Date: Sat, 17 Feb 2024 11:07:03 +0000
-Message-Id: <20240217110704.49901-1-simone.p.weiss@posteo.com>
+ dkim=pass header.i=@intel.com header.s=Intel header.b=lKKK8Y6e;
+ spf=pass (domain: intel.com, ip: 198.175.65.15, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708320426; x=1739856426;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=4RZfrIsj005T9mcS3xHVdUPITSecRKeGSF7/XNlk4bI=;
+  b=lKKK8Y6ewOiFb7ANfAEYeshb939CW/TsS95bVnfP9ExFBar9zyhaGcde
+   gF95a2+tuj03zJti9D6489JC5keVis2ogQTQEfImMmFQx4bVzhDOJnfZE
+   ZzH/8DDFsrePnaJbnds8zuUUzZHSIuB7Gax7JTZOoGnfO6+bYS7RcmWcp
+   WXbNaC7aI1MMSUnVqsE2csvG15wECpKiSv5omOdyZD9AKZ+rXKPLEww5h
+   CbaEKCSoZ+mUK7uXcYHPGzdyVkHHBDtrmjX73wDsooJkxTYp/YtRZLWu5
+   +OaJErnSnsEHCQN/Reqr1vT6v4Jwdqu2OSa69MGu0Gb1ObfS7rIv+wh7k
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10988"; a="6207694"
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
+   d="scan'208";a="6207694"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2024 21:27:06 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,170,1705392000"; 
+   d="scan'208";a="4739241"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by orviesa006.jf.intel.com with ESMTP; 18 Feb 2024 21:27:04 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guide: add release notes for 4.3.3
+Date: Mon, 19 Feb 2024 13:22:35 +0800
+Message-Id: <20240219052235.3608147-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 17 Feb 2024 11:07:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4840
+ <docs@lists.yoctoproject.org>; Mon, 19 Feb 2024 05:27:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4841
 
-From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-This is inspired by the same section in the yocto-docs. It aims to provid=
-e
-information in what contexts(recipes, .conf, bbclass,...) a variable is u=
-sually
-used. For that I tried to group similar variables, so that a short overvi=
-ew is
-given. This was inspired by [YOCTO #14072], but of course does not implem=
-ent a
-warning if a variable is used in an unintended context.
-
-Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- ...bake-user-manual-ref-variables-context.rst | 89 +++++++++++++++++++
- doc/index.rst                                 |  1 +
- 2 files changed, 90 insertions(+)
- create mode 100644 doc/bitbake-user-manual/bitbake-user-manual-ref-varia=
-bles-context.rst
+ .../migration-guides/release-4.3.rst          |   1 +
+ .../migration-guides/release-notes-4.3.3.rst  | 199 ++++++++++++++++++
+ 2 files changed, 200 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.3.3.rst
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-co=
-ntext.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-con=
-text.rst
+diff --git a/documentation/migration-guides/release-4.3.rst b/documentation/migration-guides/release-4.3.rst
+index 3adb5b620..fa5653c46 100644
+--- a/documentation/migration-guides/release-4.3.rst
++++ b/documentation/migration-guides/release-4.3.rst
+@@ -9,3 +9,4 @@ Release 4.3 (nanbield)
+    release-notes-4.3
+    release-notes-4.3.1
+    release-notes-4.3.2
++   release-notes-4.3.3
+diff --git a/documentation/migration-guides/release-notes-4.3.3.rst b/documentation/migration-guides/release-notes-4.3.3.rst
 new file mode 100644
-index 00000000..8252889e
+index 000000000..cf4fd87c7
 --- /dev/null
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-context.r=
-st
-@@ -0,0 +1,89 @@
++++ b/documentation/migration-guides/release-notes-4.3.3.rst
+@@ -0,0 +1,199 @@
 +.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
 +
-+****************
-+Variable Context
-+****************
++Release notes for Yocto-4.3.3 (Nanbield)
++----------------------------------------
 +
-+Variables might only have an impact or can be used in certain contexts. =
-Some
-+should only be used in global files like ``.conf``, while others are int=
-ended only
-+for local files like ``.bb``. This chapter aims to describe some importa=
-nt variable
-+contexts.
++Security Fixes in Yocto-4.3.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+.. _ref-varcontext-configuration:
-+
-+BitBake's own configuration
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-+
-+Variables starting with ``BB_`` usually configure the behaviour of BitBa=
-ke itself.
-+For example, one could configure:
-+
-+- System resources, like disk space to be used (:term:`BB_DISKMON_DIRS`)=
-,
-+  or the number of tasks to be run in parallel by BitBake (:term:`BB_NUM=
-BER_THREADS`).
-+
-+- How the fetchers shall behave, e.g., :term:`BB_FETCH_PREMIRRORONLY` is=
- used
-+  by BitBake to determine if BitBake's fetcher shall search only
-+  :term:`PREMIRRORS` for files.
-+
-+Those variables are usually configured globally.
-+
-+BitBake configuration
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+There are variables:
-+
-+- Like :term:`B` or :term:`T`, that are used to specify directories used=
- by
-+  BitBake during the build of a particular recipe. Those variables are
-+  specified in ``bitbake.conf``. Some, like :term:`B`, are quite often
-+  overwritten in recipes.
-+
-+- Starting with ``FAKEROOT``, to configure how the ``fakeroot`` command =
-is
-+  handled. Those are usually set by ``bitbake.conf`` and might get adapt=
-ed in a
-+  ``bbclass``.
-+
-+- Detailing where BitBake will store and fetch information from, for
-+  data reuse between build runs like :term:`CACHE`, :term:`DL_DIR` or
-+  :term:`PERSISTENT_DIR`. Those are usually global.
++-  curl: Fix :cve:`2023-46219`
++-  glibc: Ignore fixed :cve:`2023-0687` and :cve:`2023-5156`
++-  linux-yocto/6.1: Ignore :cve:`2022-48619`, :cve:`2023-1193`, :cve:`2023-4610`, :cve_mitre:`2023-51779`, :cve:`2023-5178`, :cve:`2023-51780`, :cve:`2023-51781`, :cve:`2023-51782`, :cve:`2023-5972`, :cve:`2023-6040`, :cve:`2023-6531`, :cve:`2023-6546`, :cve:`2023-6606`, :cve:`2023-6622`, :cve:`2023-6679`, :cve:`2023-6817`, :cve:`2023-6931`, :cve:`2023-6932`, :cve:`2023-7192`, :cve:`2024-0193` and :cve:`2024-0443`
++-  qemu: Fix :cve:`2023-3019`
++-  shadow: Fix :cve:`2023-4641`
++-  sqlite3: Fix :cve:`2024-0232`
++-  sqlite3: drop obsolete CVE ignore :cve:`2023-36191`
++-  sudo: Fix :cve:`2023-42456` and :cve:`2023-42465`
++-  tiff: Fix :cve:`2023-6277`
++-  xwayland: Fix :cve:`2023-6377` and :cve:`2023-6478`
 +
 +
-+Layers and files
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++Fixes in Yocto-4.3.3
++~~~~~~~~~~~~~~~~~~~~
 +
-+Variables starting with ``LAYER`` configure how BitBake handles layers.
-+Additionally, variables starting with ``BB`` configure how layers and fi=
-les are
-+handled. For example:
++-  aspell: upgrade to 0.60.8.1
++-  avahi: update URL for new project location
++-  base-passwd: upgrade to 3.6.3
++-  bitbake: asyncrpc: Add context manager API
++-  bitbake: toaster/toastergui: Bug-fix verify given layer path only if import/add local layer
++-  build-appliance-image: Update to nanbield head revision
++-  classes-global/sstate: Fix variable typo
++-  cmake: Unset CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES
++-  contributor-guide: fix lore URL
++-  contributor-guide: use "apt" instead of "aptitude"
++-  create-spdx-2.2: combine spdx can try to write before dir creation
++-  curl: Disable test 1091 due to intermittent failures
++-  curl: Disable two intermittently failing tests
++-  dev-manual: gen-tapdevs need iptables installed
++-  dev-manual: start.rst: Update use of Download page
++-  dev-manual: update license manifest path
++-  devtool: deploy: provide max_process to strip_execs
++-  devtool: modify: Handle recipes with a menuconfig task correctly
++-  docs: document VSCode extension
++-  dtc: preserve version also from shallow git clones
++-  elfutils: Update license information
++-  glib-2.0: upgrade to 2.78.3
++-  glibc-y2038-tests: do not run tests using 32 bit time APIs
++-  go: upgrade to 1.20.12
++-  grub: fs/fat: Don't error when mtime is 0
++-  gstreamer1.0: upgrade to 1.22.8
++-  icon-naming-utils: take tarball from debian
++-  kea: upgrade to 2.4.1
++-  lib/prservice: Improve lock handling robustness
++-  libadwaita: upgrade to 1.4.2
++-  libatomic-ops: upgrade to 7.8.2
++-  libva-utils: upgrade to 2.20.1
++-  linux-firmware: Change bnx2 packaging
++-  linux-firmware: Create bnx2x subpackage
++-  linux-firmware: Fix the linux-firmware-bcm4373 :term:`FILES` variable
++-  linux-firmware: Package iwlwifi .pnvm files
++-  linux-yocto/6.1: security/cfg: add configs to harden protection
++-  linux-yocto/6.1: update to v6.1.73
++-  meta/documentation.conf: fix do_menuconfig description
++-  migration-guide: add release notes for 4.0.16
++-  migration-guide: add release notes for 4.3.2
++-  ncurses: Fix - tty is hung after reset
++-  nfs-utils: Update Upstream-Status
++-  nfs-utils: upgrade to 2.6.4
++-  oeqa/selftest/prservice: Improve test robustness
++-  package.py: OEHasPackage: Add :term:`MLPREFIX` to packagename
++-  poky.conf: bump version for 4.3.3 release
++-  pseudo: Update to pull in syncfs probe fix
++-  python3-license-expression: Fix the ptest failure
++-  qemu.bbclass: fix a python TypeError
++-  qemu: upgrade to 8.1.4
++-  ref-manual: Add UBOOT_BINARY, extend :term:`UBOOT_CONFIG`
++-  ref-manual: classes: remove insserv bbclass
++-  ref-manual: update tested and supported distros
++-  release-notes-4.3: fix spacing
++-  rootfs.py: check depmodwrapper execution result
++-  rpcbind: Specify state directory under /run
++-  scripts/runqemu: fix regex escape sequences
++-  sqlite3: upgrade to 3.43.2
++-  sstate: Fix dir ownership issues in :term:`SSTATE_DIR`
++-  sudo: upgrade to 1.9.15p5
++-  tcl: Fix prepending to run-ptest script
++-  uninative-tarball.xz - reproducibility fix
++-  xwayland: upgrade to 23.2.3
++-  zstd: fix :term:`LICENSE` statement
 +
-+- :term:`LAYERDEPENDS` is used to configure on which layers a given laye=
-r
-+  depends.
 +
-+- The configured layers are contained in :term:`BBLAYERS` and files in
-+  :term:`BBFILES`.
++Known Issues in Yocto-4.3.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+Those variables are often used in the files ``layer.conf`` and ``bblayer=
-s.conf``.
++- N/A
 +
-+Recipes and packages
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 +
-+Variables handling recipes and packages can be split into:
++Contributors to Yocto-4.3.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+- :term:`PN`, :term:`PV` or :term:`PF` for example, contain information =
-about
-+  the name or revision of a recipe or package. Usually, the default set =
-in
-+  ``bitbake.conf`` is used, but those are from time to time overwritten =
-in
-+  recipes.
++-  Alassane Yattara
++-  Alexander Kanavin
++-  Anuj Mittal
++-  Baruch Siach
++-  Bruce Ashfield
++-  Chen Qi
++-  Clay Chang
++-  Enguerrand de Ribaucourt
++-  Ilya A. Kriveshko
++-  Jason Andryuk
++-  Jeremy A. Puhlman
++-  Joao Marcos Costa
++-  Jose Quaresma
++-  Joshua Watt
++-  Jörg Sommer
++-  Khem Raj
++-  Lee Chee Yang
++-  Markus Volk
++-  Massimiliano Minella
++-  Maxin B. John
++-  Michael Opdenacker
++-  Ming Liu
++-  Mingli Yu
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Richard Purdie
++-  Robert Berger
++-  Robert Yang
++-  Rodrigo M. Duarte
++-  Ross Burton
++-  Saul Wold
++-  Simone Weiß
++-  Soumya Sambu
++-  Steve Sakoman
++-  Trevor Gamblin
++-  Wang Mingyu
++-  William Lyu
++-  Xiangyu Chen
++-  Yang Xu
++-  Zahir Hussain
 +
-+- :term:`SUMMARY`, :term:`DESCRIPTION`, :term:`LICENSE` or :term:`HOMEPA=
-GE`
-+  contain the expected information and should be set specifically for ev=
-ery
-+  recipe.
 +
-+- In recipes, variables are also used to control build and runtime
-+  dependencies between recipes/packages with other recipes/packages. The
-+  most common should be: :term:`PROVIDES`, :term:`RPROVIDES`, :term:`DEP=
-ENDS`,
-+  and :term:`RDEPENDS`.
++Repositories / Downloads for Yocto-4.3.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+- There are further variables starting with ``SRC`` that specify the sou=
-rces in
-+  a recipe like :term:`SRC_URI` or :term:`SRCDATE`. Those are also usual=
-ly set
-+  in recipes.
++poky
 +
-+- Which version or=C2=A0provider of a recipe should be given preference =
-when
-+  multiple recipes would provide the same item, is controlled by variabl=
-es
-+  starting with ``PREFERRED_``. Those are normally set in the configurat=
-ion
-+  files of a ``MACHINE`` or ``DISTRO``.
-diff --git a/doc/index.rst b/doc/index.rst
-index 3ff8b158..ee1660ac 100644
---- a/doc/index.rst
-+++ b/doc/index.rst
-@@ -13,6 +13,7 @@ BitBake User Manual
-    bitbake-user-manual/bitbake-user-manual-intro
-    bitbake-user-manual/bitbake-user-manual-execution
-    bitbake-user-manual/bitbake-user-manual-metadata
-+   bitbake-user-manual/bitbake-user-manual-ref-variables-context
-    bitbake-user-manual/bitbake-user-manual-fetching
-    bitbake-user-manual/bitbake-user-manual-ref-variables
-    bitbake-user-manual/bitbake-user-manual-hello
---=20
-2.39.2
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`nanbield </poky/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.3 </poky/log/?h=yocto-4.3.3>`
++-  Git Revision: :yocto_git:`d3b27346c3a4a7ef7ec517e9d339d22bda74349d </poky/commit/?id=d3b27346c3a4a7ef7ec517e9d339d22bda74349d>`
++-  Release Artefact: poky-d3b27346c3a4a7ef7ec517e9d339d22bda74349d
++-  sha: 2db39f1bf7bbcee039e9970eed1f6f9233bcc95d675159647c9a2a334fc81eb0
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.3/poky-d3b27346c3a4a7ef7ec517e9d339d22bda74349d.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.3/poky-d3b27346c3a4a7ef7ec517e9d339d22bda74349d.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`nanbield </openembedded-core/log/?h=nanbield>`
++-  Tag:  :oe_git:`yocto-4.3.3 </openembedded-core/log/?h=yocto-4.3.3>`
++-  Git Revision: :oe_git:`0584d01f623e1f9b0fef4dfa95dd66de6cbfb7b3 </openembedded-core/commit/?id=0584d01f623e1f9b0fef4dfa95dd66de6cbfb7b3>`
++-  Release Artefact: oecore-0584d01f623e1f9b0fef4dfa95dd66de6cbfb7b3
++-  sha: 730de0d5744f139322402ff9a6b2483c6ab929f704cec06258ae51de1daebe3d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.3/oecore-0584d01f623e1f9b0fef4dfa95dd66de6cbfb7b3.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.3/oecore-0584d01f623e1f9b0fef4dfa95dd66de6cbfb7b3.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`nanbield </meta-mingw/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.3 </meta-mingw/log/?h=yocto-4.3.3>`
++-  Git Revision: :yocto_git:`49617a253e09baabbf0355bc736122e9549c8ab2 </meta-mingw/commit/?id=49617a253e09baabbf0355bc736122e9549c8ab2>`
++-  Release Artefact: meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2
++-  sha: 2225115b73589cdbf1e491115221035c6a61679a92a93b2a3cf761ff87bf4ecc
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.3/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.3/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.6 </bitbake/log/?h=2.6>`
++-  Tag:  :oe_git:`yocto-4.3.3 </bitbake/log/?h=yocto-4.3.3>`
++-  Git Revision: :oe_git:`380a9ac97de5774378ded5e37d40b79b96761a0c </bitbake/commit/?id=380a9ac97de5774378ded5e37d40b79b96761a0c>`
++-  Release Artefact: bitbake-380a9ac97de5774378ded5e37d40b79b96761a0c
++-  sha: 78f579b9d29e72d09b6fb10ac62aa925104335e92d2afb3155bc9ab1994e36c1
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.3/bitbake-380a9ac97de5774378ded5e37d40b79b96761a0c.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.3/bitbake-380a9ac97de5774378ded5e37d40b79b96761a0c.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`nanbield </yocto-docs/log/?h=nanbield>`
++-  Tag: :yocto_git:`yocto-4.3.3 </yocto-docs/log/?h=yocto-4.3.3>`
++-  Git Revision: :yocto_git:`dde4b815db82196af086847f68ee27d7902b4ffa </yocto-docs/commit/?id=dde4b815db82196af086847f68ee27d7902b4ffa>`
++
+-- 
+2.34.1
 
 
