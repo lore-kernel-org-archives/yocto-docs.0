@@ -1,74 +1,86 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <uvv.mail@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CE19DC48BC4
-	for <webhook@archiver.kernel.org>; Tue, 20 Feb 2024 10:38:04 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.10483.1708425478513529583
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B6F7FC48BC3
+	for <webhook@archiver.kernel.org>; Wed, 21 Feb 2024 07:26:35 +0000 (UTC)
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+ by mx.groups.io with SMTP id smtpd.web10.8167.1708500393443072191
  for <docs@lists.yoctoproject.org>;
- Tue, 20 Feb 2024 02:37:59 -0800
+ Tue, 20 Feb 2024 23:26:33 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=O1gmhG+J;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 71B2D4000F;
-	Tue, 20 Feb 2024 10:37:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708425476;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=v0ZdyRD2if8dim9xqSl6DQHwi/dgXgTu+XY07EjmOhs=;
-	b=O1gmhG+JrkZUGLEbP+JDjwExTfpc4Kdfr0y0x+2TPYSQGoODAZfkmhPCe8cCj2a5XQshB0
-	bPiXdA70nGSvx1KSwPMPdriP58qKOxb14bOTrd3SlUU6fFbcTN40uyjdaba2TqAauUo94d
-	8AkuthRVlzb+o+6CLIvgxkJ7tj0VfGZX45jIuHQ36K/Ym9QSUZTvMB87keo3sgLA82srYR
-	JBd86khMe8mMWYMGKVbDum1SfVa7MImWPkJ1vD6xUW9lPDTB3RItJkT7MZyGHn2le776se
-	/o6a0yq+zQ+JzRMO69E5YKEdQNqxrrxVRwexLyblj1+VF7cH3SpBU2beZ9tiVQ==
-Message-ID: <3ad9ddcb-97af-4ea5-95c9-dcbdbe903897@bootlin.com>
-Date: Tue, 20 Feb 2024 11:37:56 +0100
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=KbdvmZWi;
+ spf=pass (domain: gmail.com, ip: 209.85.218.47, mailfrom: uvv.mail@gmail.com)
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a3e550ef31cso22389866b.3
+        for <docs@lists.yoctoproject.org>; Tue, 20 Feb 2024 23:26:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708500391; x=1709105191; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xUqZsjzjFQHA/UKLi+Zq9/VjGCBoiIf3XRGm+e76foc=;
+        b=KbdvmZWihJ0RehSqyT5a/xUHZw+LdOjovsO8H3uccnXWUREUDOItINTRv4KhI5eXuI
+         0e/VguuOLtgY13GBowrqhYzL67WqCTTx95zBbVOVJ+0aSGul88zuq/SoCEPiHBv5cq17
+         45pYNaEaHuhrMZnRZ7UlumfWlMJD1dVHDNo8zK/9dJPwjGDAJtPtDIH1xDfCRamJLKrf
+         /n5yGBTTVYGJB+8bRU/vWEpJoPcheXRl/3eKnThggYx4VZmARIzDlR4YgvkI5c+DsJFO
+         Wnyc8pP9sUJ+vrVzgMelQYLrMmt3om/x+BEnT+/nxlj+LbFONJH1rFLQEN769NU30T+u
+         JaCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708500391; x=1709105191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xUqZsjzjFQHA/UKLi+Zq9/VjGCBoiIf3XRGm+e76foc=;
+        b=AMa1tpToc7YdEFlYLCatNUdpbwroqeS0V9MZA25ugWAu0hcgBIYn+lsxaVHyRkIvhV
+         yN1DHagriW50kPnUUAFnZbFAnkfrR7x3Z0QZpNo4p9EUlOLv0DjUuxUy9LlThIBdn8/4
+         QJ6I0Vlb9nnQUn5i5acy2p5Y0u8KPeb5t7NPdYC9IgXWqf3PptDZlCuyCcMoPDERowfZ
+         1zA7/bxrjj036x20iXUqmlyOISDkWt/cJTv4OAi7q6izbWq2clPF/03DXNPlopwHIhSM
+         4gRoZPyxgcroUjOoeUrXEA0rx8mgbqzHaik3w2Ps41ANNC4zvAWFDkToAuFuVr0zByJa
+         gVMQ==
+X-Gm-Message-State: AOJu0YyvGTWOOqBLFd2Xk1hchTtGLIrQgxKwC21uCyOyIAiYmDuuSKdp
+	YwA73Hq0qRXSeCnrciPPq/5BntVXu53fcQZOlJtoH+WO5pdMyMibOjEhfmNHXglMaYg1
+X-Google-Smtp-Source: AGHT+IFdg3bUkbFb6zXXkU4tmg9s3WJls4qHuVwpD15csafuB91GZTEWut3SaFtCUCyo3SVogjwOlA==
+X-Received: by 2002:a17:906:604d:b0:a3e:b66e:d647 with SMTP id p13-20020a170906604d00b00a3eb66ed647mr4664824ejj.41.1708500391482;
+        Tue, 20 Feb 2024 23:26:31 -0800 (PST)
+Received: from slackware.local (dslb-002-205-007-169.002.205.pools.vodafone-ip.de. [2.205.7.169])
+        by smtp.gmail.com with ESMTPSA id an3-20020a17090656c300b00a3e77f93ea9sm3201634ejc.98.2024.02.20.23.26.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Feb 2024 23:26:31 -0800 (PST)
+From: Vyacheslav Yurkov <uvv.mail@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Vyacheslav Yurkov <uvv.mail@gmail.com>
+Subject: [PATCH] manuals: kernel-dev: Fix BSP in recipe space
+Date: Wed, 21 Feb 2024 08:26:12 +0100
+Message-Id: <20240221072612.79402-1-uvv.mail@gmail.com>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2] migration-guide: add release notes for 4.3.3
-Content-Language: en-US
-To: Lee Chee Yang <chee.yang.lee@intel.com>,
- Takayasu Ito <ypa.takayasu.ito@gmail.com>
-References: <20240220041233.3730675-1-chee.yang.lee@intel.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20240220041233.3730675-1-chee.yang.lee@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 20 Feb 2024 10:38:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4851
+ <docs@lists.yoctoproject.org>; Wed, 21 Feb 2024 07:26:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4852
 
-Lee, Takayasu,
+File fetcher doesn't have destsuffix parameter.
 
-Thanks for review and update!
+Signed-off-by: Vyacheslav Yurkov <uvv.mail@gmail.com>
+---
+ documentation/kernel-dev/advanced.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 2/20/24 at 05:12, Lee Chee Yang wrote:
-> From: Lee Chee Yang <chee.yang.lee@intel.com>
->
-> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-> ---
-> v2: move some linux-yocto/6.1 cve to "fix". These were fixed in version
->   upgrade but marked Ignore in exclusion as fixed dot version not updated
->   in NVD database.
-
-I was too quick to merge the first iteration!
-
-I updated "master-next", and will update "nanbield" soon too.
-Thanks again
-Michael.
-
+diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel-dev/advanced.rst
+index bcaaaeed1..bddff1158 100644
+--- a/documentation/kernel-dev/advanced.rst
++++ b/documentation/kernel-dev/advanced.rst
+@@ -718,7 +718,7 @@ If the BSP description is in recipe space, you cannot simply list the
+ form from your kernel append file::
+ 
+    SRC_URI:append:myplatform = " \
+-       file://myplatform;type=kmeta;destsuffix=myplatform \
++       file://myplatform;type=kmeta;subdir=myplatfrom \
+        "
+ 
+ Metadata Outside the Recipe-Space
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.35.1
 
 
