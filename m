@@ -2,65 +2,73 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7220CC54798
-	for <webhook@archiver.kernel.org>; Thu, 22 Feb 2024 12:57:17 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.11988.1708606630829790889
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE515C48BC4
+	for <webhook@archiver.kernel.org>; Fri, 23 Feb 2024 09:35:45 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.7208.1708680941290144423
  for <docs@lists.yoctoproject.org>;
- Thu, 22 Feb 2024 04:57:11 -0800
+ Fri, 23 Feb 2024 01:35:41 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=o0Ehqr32;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D3C891BF20A;
-	Thu, 22 Feb 2024 12:57:08 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jxJDVnSW;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C00F8C0003;
+	Fri, 23 Feb 2024 09:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708606629;
+	t=1708680939;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P5dVcDOkIjU4cWkz1Dm55Yi1L1PsD6rukFCepzSaJmY=;
-	b=o0Ehqr32UONYq2Rxu1f721IW94XGulh62l4RGYMnZjdSE5gjxZQ7xUqxBY0RRzsI0vven1
-	MnvM+1YmcR+52wM2H6eNfH0SMhVUVuTVlmXJYdMt6ZWcZlnZ9Fx5dp3YlKCr+BAva6uHq7
-	qPFFwwUJbHWTRDwK3ZQg6X1n5OSKRqYFYjbVUyHfJAske1b+O3ryEkv3mJ8aK/77JHgcqP
-	RscTWPjAQ6hGh68/mTtgl1V6+QBEdS3fWViNcWaQLu0WvpAI26mYAdOf1sODV4TH3l4dtp
-	RbIAoeghC7jnKPBY3vCli0KGyLCz3K9XHlPt32YyyoyLOpTkRtEF3N9m1NrKpQ==
-Message-ID: <47ace772-d585-4585-b7f9-ff86b1f55cf6@bootlin.com>
-Date: Thu, 22 Feb 2024 13:57:08 +0100
+	bh=oybnhbg0J6/TL0N698y4O/SgcabgWtCqABmYgOe8cSE=;
+	b=jxJDVnSWEKp5JolT+ES4n14vhH7h2SbqfD+yW4xypug9pnUzJ+jF6MWxBYh9w5XjzsAiZ8
+	UhJWz01fQULWYYktWwYU8HF5IbbPiB3WpaPi28iz8ZUetZFyBU7AmXqMlBemG/tFMohKk6
+	TW3pycF/pel+8yqSFBjreYPPsb78cWkF01hV7DeWV/9Rgkn9QB1GjSRtT3WAH1cUgrL+a/
+	b3cs8CgCwPf06ry04fe2X+6OshQ9LUm6E9I72DBDX2HeuDJiRM48IT/tAj3wl7Ii0R+RH1
+	+nNRg/FJ+18ji4hzc9J4B4CcRfXGsXvTDE5ckfLBANYXyL1xINyzb6jS8KgeMQ==
+Message-ID: <0ec61615-ec1d-4fa5-8753-10730e0ac7da@bootlin.com>
+Date: Fri, 23 Feb 2024 10:35:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] docs: Remove PYTHON_PN from reference
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>,
+ Enguerrand de Ribaucourt <enguerrand.de-ribaucourt@savoirfairelinux.com>
+Subject: Re: [docs] [PATCH] sdk-manual: extensible.rst: cover devtool ide-sdk
 Content-Language: en-US
-To: Khem Raj <raj.khem@gmail.com>
-References: <20240221230257.3551066-1-raj.khem@gmail.com>
+To: Adrian Freihofer <adrian.freihofer@gmail.com>, docs@lists.yoctoproject.org
+References: <20240221195921.1911170-1-adrian.freihofer@siemens.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20240221230257.3551066-1-raj.khem@gmail.com>
+In-Reply-To: <20240221195921.1911170-1-adrian.freihofer@siemens.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 22 Feb 2024 12:57:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4858
+ <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 09:35:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4859
 
-Hi Khem,
+Hi Andrian
 
-On 2/22/24 at 00:02, Khem Raj wrote:
-> PYTHON_PN is on its way out, therefore its good to remove it from
-> documentation so its used is not promoted anymore.
+On 2/21/24 at 20:59, Adrian Freihofer wrote:
+> Cover the new devtool ide plugin in the extensible sdk section.
 >
-> Signed-off-by: Khem Raj <raj.khem@gmail.com>
-> ---
->   documentation/ref-manual/variables.rst | 14 --------------
->   1 file changed, 14 deletions(-)
+> Many thanks to Enguerrand de Ribaucourt for his re-view and
+> contributions.
 
-Thanks for the patch. Indeed, it's been completely removed recently.
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Merged into master-next.
 
+Many thanks for this very nice addition to the documentation! I took a 
+bit of time to review it, fix a few minor issues and also improve the 
+formatting.
+
+That would have taken too much time to report all the small changes I 
+wanted to make, so I directly merged them in the master-next branch. You 
+can check the resulting output on 
+https://docs.yoctoproject.org/next/sdk-manual/extensible.html or the 
+final source code on 
+https://git.yoctoproject.org/yocto-docs/log/?h=master-next .
+
+That's not too late to correct some mistakes I could have introduced.
+Thanks again
 Cheers
 Michael.
 
