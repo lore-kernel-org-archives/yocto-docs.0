@@ -2,104 +2,117 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 223CEC54E4C
-	for <webhook@archiver.kernel.org>; Fri, 23 Feb 2024 10:18:16 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.7730.1708683491168423683
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BBD4C54E49
+	for <webhook@archiver.kernel.org>; Fri, 23 Feb 2024 10:20:06 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.7732.1708683598254943794
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Feb 2024 02:18:11 -0800
+ Fri, 23 Feb 2024 02:19:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GqltulQI;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 291EFC0011;
-	Fri, 23 Feb 2024 10:18:09 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WHSxoA0S;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1D1121C0012;
+	Fri, 23 Feb 2024 10:19:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708683489;
+	t=1708683596;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=3W6yy12g02DSVWahV1/Ktb3rxeBJonlFkKeh+PTVJ5M=;
-	b=GqltulQIJBDgAKe61HVPXCU5C9VGiI957abL2EPcoWaeuiNl6FTPgHs0yyQdOTWOARs4dk
-	lSfciK1YxBalFepDulaCYJycRaaiLaF6zyZiSQ0ad0Qp21Ly6mHdzI8rzgHEvFGV2PYhhe
-	0QekBd6GbEittqnjaWYGp/x7s/KVjYs0nuszODwzA3DXD7KYctsXlQ5izjX7UNQv35fRqW
-	JO3QqEb5A3Muv2UBT8b1bAuEVY5yRS3cOBicuEBr8YPlCrTmefmJ7fxJB+bDuVSZA0u2xA
-	MXPMnWiNCW5OJjeolu6tHD2ro8RIyxKyLRF+2W/hIuHA/Hvw0/O0u+zIY30jkA==
-Message-ID: <795e8e0a-34ea-4a94-bd50-6fc6a4b32054@bootlin.com>
-Date: Fri, 23 Feb 2024 11:18:08 +0100
+	bh=4IOlGbMaOEblXXCkrs6PtyekGH8/dve5cugahf4wup0=;
+	b=WHSxoA0Sl+Gf2nCzEw6dYshc7xjMtlo76Ii8bbDgxbanqseD/WfWaEt7WtURxWKJDI90Wd
+	miKFPiCHpcncriqIIJfQUXadbpktEbxLuGZjrXGsiaG2KcFg5aze2LUwlsCkxliT2qHx3Y
+	QspnzZmSaLw9LBJOfo1UAjBerJczYTstXZ1sG8YQRAk2LsueEAaAtxWdHXHq89A9gaO6+n
+	C9nALiwo+c+/GgjnhVyuo/sc10WVWSaquMSQ2hVehZBEeMdrREcjBJRS6bUw83O0Kes3Pl
+	vxWcKr0aYbn1Ef9kIAUdPwlBLXi8R1o0puOjlfI+X8Gzp7M7z7HSXL5xegebLA==
+Message-ID: <2116c77c-1328-4eb0-83bf-3114fc074928@bootlin.com>
+Date: Fri, 23 Feb 2024 11:19:55 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 2/2] documentation: add documentation of the
- variable SPDX_NAMESPACE_PREFIX
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] variables.rst: SDKPATHINSTALL correct installation
+ default path
 Content-Language: en-US
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-To: belouargamohamed@gmail.com
-References: <20240214215237.151434-1-m.belouarga@technologyandstrategy.com>
- <79156a5c-b233-4940-88f1-a5d04e4f9920@bootlin.com>
+To: "Bezem, Johan (extern)" <JBezem.extern@arri.de>
+References: <20240213125218.5480-1-jbezem.extern@arri.de>
+ <760fc9a0-3160-4226-9797-a66e3ebf6da2@bootlin.com>
 Organization: Bootlin
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
-In-Reply-To: <79156a5c-b233-4940-88f1-a5d04e4f9920@bootlin.com>
+In-Reply-To: <760fc9a0-3160-4226-9797-a66e3ebf6da2@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 10:18:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4860
+ <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 10:20:06 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4861
 
-Hi Mohamed,
+Hi Yohan
 
-On 2/15/24 at 10:55, Michael Opdenacker wrote:
-> Hi Mohamed,
+On 2/14/24 at 10:31, Michael Opdenacker wrote:
+> Hi Johan
 >
-> On 2/14/24 at 22:52, belouargamohamed@gmail.com wrote:
->> From: BELOUARGA Mohamed <m.belouarga@technologyandstrategy.com>
+> Thanks for pointing this out!
+>
+> On 2/13/24 at 13:52, Bezem, Johan (extern) wrote:
+>> From: "Bezem, Johan" <jbezem.extern@arri.de>
 >>
->> The documentation of the variable SPDX_NAMESPACE_PREFIX does not exist.
->> This variable is used to change the prefix of some links in SPDX docs.
+>> The SDKPATH variable seems mistakenly identified as the
+>> default path where the SDK will be installed by the generated
+>> installation script, unless option '-d' or a manual input
+>> overrides this default.
 >>
->> [ YOCTO #15398 ]
+>>  From what I understood from the various sources, the intended
+>> variable is SDKPATHINSTALL.
 >>
->> Signed-off-by: BELOUARGA Mohamed <m.belouarga@technologyandstrategy.com>
+>> I have tried overriding both SDKPATH and SDKPATHINSTALL
+>> (separately), and only overriding the latter had the intended
+>> effect and was successful.
+>>
+>> Signed-off-by: Johan Bezem <jbezem.extern@arri.de>
 >> ---
->>   documentation/ref-manual/variables.rst | 5 +++++
->>   1 file changed, 5 insertions(+)
+>>   documentation/ref-manual/variables.rst | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
 >>
 >> diff --git a/documentation/ref-manual/variables.rst 
 >> b/documentation/ref-manual/variables.rst
->> index 6f7d6ff01e..907575ba82 100644
+>> index 6f7d6ff01..f292b8dad 100644
 >> --- a/documentation/ref-manual/variables.rst
 >> +++ b/documentation/ref-manual/variables.rst
->> @@ -7913,6 +7913,11 @@ system and gives an overview of their function 
+>> @@ -7611,7 +7611,7 @@ system and gives an overview of their function 
 >> and contents.
->>         image), compared to just using the 
->> :ref:`ref-classes-create-spdx` class
->>         with no option.
->>   +   :term:`SPDX_NAMESPACE_PREFIX`
->> +      This option could be used in order to change the prefix of 
->> ``spdxDocument``
->> +      and the prefix of ``documentNamespace``. It is set by default to:
->> +      ``https://spdx.org/spdxdocs`` .
->> +
+>>            variable in your distribution configuration file. If you 
+>> do, the
+>>            configuration will not take effect.
+>>   -   :term:`SDKPATH`
+>> +   :term:`SDKPATHINSTALL`
+>>         Defines the path offered to the user for installation of the 
+>> SDK that
+>>         is generated by the OpenEmbedded build system. The path 
+>> appears as
+>>         the default location for installing the SDK when you run the 
+>> SDK's
 >
 >
-> This looks good to me, thanks!
-> However, I have to wait for your first patch to be merged to merge 
-> this one, otherwise the default value is incorrect.
-> Don't hesitate to ping me if necessary.
+> I believe we should also keep SDKPATH as it's still used in some 
+> recipes in Poky. Could you describe it's current usage too?
 >
-> As a separate patch, you may also mention this variable in the 
-> description of the "create-spdx" class (ref-manual/classes.rst). 
-> Otherwise, people may overlook this variable, if it's not referred to 
-> from any other place.
+> Another thing is that you should also update 
+> documentation/overview-manual/concepts.rst which refers to SDKPATH, 
+> and the description of SDKTARGETSYSROOT too.
+>
+> You could have caught this by running "make html":
+> .../yocto-docs/documentation/overview-manual/concepts.rst:1378: 
+> WARNING: term not in glossary: 'SDKPATH'
+> .../yocto-docs/documentation/ref-manual/variables.rst:7617: WARNING: 
+> term not in glossary: 'SDKPATH'
+>
+> Could you send an update?
 
 
-Any news about the first patch? Don't hesitate to get back to me when it 
-is merged.
-Another possibility, if the first patch doesn't make it, is to add the 
-change without mentioning the default value.
-I'll be glad to do it in case you don't have time at the moment.
+Do you need help doing this? I'll be happy to help if you don't have 
+time right now.
 Cheers
 Michael.
 
