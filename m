@@ -1,131 +1,103 @@
-Return-Path: <bruce.ashfield@gmail.com>
+Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8193C54798
-	for <webhook@archiver.kernel.org>; Fri, 23 Feb 2024 13:44:27 +0000 (UTC)
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
- by mx.groups.io with SMTP id smtpd.web10.10768.1708695859177398437
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E09B7C54798
+	for <webhook@archiver.kernel.org>; Fri, 23 Feb 2024 15:29:08 +0000 (UTC)
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+ by mx.groups.io with SMTP id smtpd.web11.15219.1708702140132220018
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Feb 2024 05:44:19 -0800
+ Fri, 23 Feb 2024 07:29:00 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=UHWItzZo;
- spf=pass (domain: gmail.com, ip: 209.85.216.42, mailfrom: bruce.ashfield@gmail.com)
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-29a7951c6faso387639a91.1
-        for <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 05:44:19 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=V8QbQQGT;
+ spf=pass (domain: gmail.com, ip: 209.85.128.45, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-41294af9ad7so3443225e9.3
+        for <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 07:28:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708695858; x=1709300658; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1708702138; x=1709306938; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6GGxn5CoJpwBFSM6uPe2aC+nFoxNddvyC56MhaaY0OE=;
-        b=UHWItzZo88emOkWfcJoOYCPp3w6abNw6nAgyQkNYfOUrQHMTNF66AN+X4MInHDQOyE
-         7xKbEQP8tkOxw1p1qMvlODW09WhF4KccDjH750W3iP9/Bqk4TH8a06wmoawdpDO0jOFN
-         U6WYjPONQOjL2Vzh2MvGqqlaFst9VpqwoDDfdZ6O8+cFlEalp02+a9kUnMtcX05A3pVv
-         VkyaRFXAFv8DzFB3UbM2xsPMz/HzYITcyDfFSxD+No5DX6E1qKPUz7wBv+47Zk6vvxpR
-         AFOXYbG8roeS64PIhxRxSsjaEJ4v91EEK6GtMLBCgVls7y6ZjAYuFrneXrT3O4nwlAGv
-         BYYQ==
+        bh=lmU+WD2Gjl+VzbfNr5FiXtM9ZLazmu3zP1Y+HvKAedc=;
+        b=V8QbQQGT1OPru33O1ZDZYxmmjLJSsTzZhdJmUH69msmHkRJpvVs+WAcxwFK1dnlay9
+         o1UQ3KgzAkTITpXqWpjO9QUihbuR6+Abp3Id5OXBI4/t4zR9qcWRnnSW5J1D8sdnE2Sx
+         VFaWov+b/DlyWeeSlz0zS4iuI++bEObkeEkIQBlOMkqnkzX1wkQK19MUQLWFGqXW/WeN
+         iwKPh05Kr1doh8z0bPBchIcDPYTxF7ath+LNCmEZe9F5noMMiPhLh44FtXONyDJh+M08
+         y/AhcBIq4sXMSIEW/2DA+LZUaT+/YvHvzzHz7Wn4u6ZEjFtsvM/ddHdCChu3SYxzL8eF
+         8PBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708695858; x=1709300658;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6GGxn5CoJpwBFSM6uPe2aC+nFoxNddvyC56MhaaY0OE=;
-        b=D/4L11FezqkQqlxKW4buVVlZ867wmTTnS3cB2TJtxJogtX5LR3jtLmTLBAyF25gWx1
-         YkyW0RHxe4SXbZoU/9lyBo0yobw2l/m+yl2Mysw7WxOcGtx6KfUQEW7BQf5jnrWaOKXz
-         xfYZrO6oNdWCxRo4pCFQYufcbVtHg5FuT8TxyF0Bxn4d5BCYE4CD0sTpzs9c6+TJgyHK
-         sBU7ReujMJDJECaxOpxX+kebIh0/4PHjTaaXLDcr1nZInRa42rht7bBSJ/EsllSJwVFk
-         hzc0LN631DOBNEuJZpDgH908qcfR4/5A0QcIMUIdnKf+eDtym8PYPZDadK+XavpSVMJM
-         2Eow==
-X-Gm-Message-State: AOJu0YwzQHUCVsqfwQ/TCH3EtdLelquYTTijA5Se9kQ5AP7r1B+FPG0n
-	oU0Yq0kKrNI77lVMdqLo3wM+O20cROfL182myhl+ZpAo9/5QPZHrrVspwOB8bEuvqJp9ZR75A0z
-	hU5LzBp0tmX0UX2FUEf9SOek+uR8=
-X-Google-Smtp-Source: AGHT+IEdINKvT6xAZ4w0K9I+15+AohfqB6QzkyLwaZ+JZ+B6LLlgaX07JWQFPlHKoUfPkuoIHAJOjf4Zx5QqF7O5uJ0=
-X-Received: by 2002:a17:90a:5502:b0:299:4269:b8c9 with SMTP id
- b2-20020a17090a550200b002994269b8c9mr1679053pji.26.1708695858484; Fri, 23 Feb
- 2024 05:44:18 -0800 (PST)
-MIME-Version: 1.0
-References: <20240221072612.79402-1-uvv.mail@gmail.com>
-In-Reply-To: <20240221072612.79402-1-uvv.mail@gmail.com>
-From: Bruce Ashfield <bruce.ashfield@gmail.com>
-Date: Fri, 23 Feb 2024 08:44:06 -0500
-Message-ID: <CADkTA4NVhyHwRkjoodbxb6gvJM3y5UiW5WkyHha-dTuH2xs=wg@mail.gmail.com>
-Subject: Re: [docs] [PATCH] manuals: kernel-dev: Fix BSP in recipe space
-To: Vyacheslav Yurkov <uvv.mail@gmail.com>
-Cc: docs@lists.yoctoproject.org
+        d=1e100.net; s=20230601; t=1708702138; x=1709306938;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lmU+WD2Gjl+VzbfNr5FiXtM9ZLazmu3zP1Y+HvKAedc=;
+        b=dr/qKY8c+H0iYzWEcPDbgY9XtTWqfD4cYTOQcqdPoFCEVXJrp82zTrdqHH09VMZ7+h
+         U5MGL6Ay4F6o1dlpfBQ2iCYsFgJH3ZV5rE1tRgibCJ72ZuGiWNDDt2dsGG1NzPjm1nM7
+         biij+1C65hIyGh598fQm3Fv6Fdx82PegIl0qGNf/up1nRCr3C+4HkxfUJGQjL6V4hTfJ
+         SvKc2I8yk6DGDQu6m357MNa4/6DPZEOwLYsvV1vfjfibahUIANjvijgGSR17KISirLjI
+         lPvBCv5Skqn7elZwHVVruYJgrQ6x1WXxpLkRebDyoTQEBzGGI7VpBQIj2D2aK+judD4h
+         R2Kg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrCGnDF6hPCNN9CBZCWS5UyQMilus+KjN49u/ibQYDW+hDn+unsIxzGX5++3+dI0qrv/9SRNISM5WtRo6zhHISo24Vvb0HCdbv8JM=
+X-Gm-Message-State: AOJu0YxYgLVZMDiBiJ4gTKsIewi1r8DGxitnvJlpEMPRRANc/yYcm0u8
+	jqetQ7TivSnpOLy/ew9u0wwpGc28avRCZ8fdzEO6K7JB44SbgV6Y
+X-Google-Smtp-Source: AGHT+IHEmH4QGhGhBL3+Mb/VuUSS6S2WpUwqaTB+mWjONk4oFnS1yH+YhfLSuoyjLwqW6QBni5umyA==
+X-Received: by 2002:adf:f30b:0:b0:33d:b2d5:ede9 with SMTP id i11-20020adff30b000000b0033db2d5ede9mr80505wro.40.1708702138326;
+        Fri, 23 Feb 2024 07:28:58 -0800 (PST)
+Received: from ?IPv6:2a02:169:59a6:0:55c4:f628:91f3:4287? ([2a02:169:59a6:0:55c4:f628:91f3:4287])
+        by smtp.gmail.com with ESMTPSA id q25-20020a056000137900b0033ce06c303csm3123841wrz.40.2024.02.23.07.28.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Feb 2024 07:28:57 -0800 (PST)
+Message-ID: <a0d2052d14f7d931e430c18f7e70aad39799dba1.camel@gmail.com>
+Subject: Re: [docs] [PATCH] sdk-manual: extensible.rst: cover devtool ide-sdk
+From: adrian.freihofer@gmail.com
+To: Michael Opdenacker <michael.opdenacker@bootlin.com>, 
+	docs@lists.yoctoproject.org
+Date: Fri, 23 Feb 2024 16:28:57 +0100
+In-Reply-To: <0ec61615-ec1d-4fa5-8753-10730e0ac7da@bootlin.com>
+References: <20240221195921.1911170-1-adrian.freihofer@siemens.com>
+	 <0ec61615-ec1d-4fa5-8753-10730e0ac7da@bootlin.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.module_f38+17164+63eeee4a) 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 13:44:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4865
+ <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 15:29:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4866
 
-On Wed, Feb 21, 2024 at 2:26=E2=80=AFAM Vyacheslav Yurkov <uvv.mail@gmail.c=
-om> wrote:
->
-> File fetcher doesn't have destsuffix parameter.
->
+On Fri, 2024-02-23 at 10:35 +0100, Michael Opdenacker wrote:
+> Hi Andrian
+>=20
+> On 2/21/24 at 20:59, Adrian Freihofer wrote:
+> > Cover the new devtool ide plugin in the extensible sdk section.
+> >=20
+> > Many thanks to Enguerrand de Ribaucourt for his re-view and
+> > contributions.
+>=20
+>=20
+> Many thanks for this very nice addition to the documentation! I took
+> a=20
+> bit of time to review it, fix a few minor issues and also improve the
+> formatting.
+>=20
+> That would have taken too much time to report all the small changes I
+> wanted to make, so I directly merged them in the master-next branch.
+> You=20
+> can check the resulting output on=20
+> https://docs.yoctoproject.org/next/sdk-manual/extensible.html=C2=A0or the=
+=20
+> final source code on=20
+> https://git.yoctoproject.org/yocto-docs/log/?h=3Dmaster-next=C2=A0.
+>=20
+> That's not too late to correct some mistakes I could have introduced.
 
-While the file fetcher doesn't have that option, it was the fact that
-it didn't have it that kept things working.
+Thank you very much. Your corrections look very good.
+Adrian
 
-If you use subdir, then in fact, a recipe space BSP doesn't work at
-all as the tools can't find the BSP definition.
+> Thanks again
+> Cheers
+> Michael.
+>=20
 
-The kernel-yocto bbclass is what is using this to set up search paths
-for kernel features when it sees the type=3Dkmeta.
-
-The option could have had a less confusing name (since it is
-effectively passthrough like "type=3Dkmeta", but that's not something
-that I'm willing to change right now (I'll do it post release)
-
-But the documents are correct, you do need destsuffix or the
-recipe-space BSP will  not work.
-
-Bruce
-
-
-
-
-> Signed-off-by: Vyacheslav Yurkov <uvv.mail@gmail.com>
-> ---
->  documentation/kernel-dev/advanced.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel=
--dev/advanced.rst
-> index bcaaaeed1..bddff1158 100644
-> --- a/documentation/kernel-dev/advanced.rst
-> +++ b/documentation/kernel-dev/advanced.rst
-> @@ -718,7 +718,7 @@ If the BSP description is in recipe space, you cannot=
- simply list the
->  form from your kernel append file::
->
->     SRC_URI:append:myplatform =3D " \
-> -       file://myplatform;type=3Dkmeta;destsuffix=3Dmyplatform \
-> +       file://myplatform;type=3Dkmeta;subdir=3Dmyplatfrom \
->         "
->
->  Metadata Outside the Recipe-Space
-> --
-> 2.35.1
->
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#4852): https://lists.yoctoproject.org/g/docs/message/=
-4852
-> Mute This Topic: https://lists.yoctoproject.org/mt/104484337/1050810
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [bruce.ashfield@=
-gmail.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
-
-
---
-- Thou shalt not follow the NULL pointer, for chaos and madness await
-thee at its end
-- "Use the force Harry" - Gandalf, Star Trek II
 
