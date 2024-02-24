@@ -1,219 +1,192 @@
-Return-Path: <simone.p.weiss@posteo.com>
+Return-Path: <bruce.ashfield@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB8F0C54798
-	for <webhook@archiver.kernel.org>; Fri, 23 Feb 2024 19:21:07 +0000 (UTC)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
- by mx.groups.io with SMTP id smtpd.web11.3686.1708716057467790727
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 29AC8C54798
+	for <webhook@archiver.kernel.org>; Sat, 24 Feb 2024 03:35:20 +0000 (UTC)
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+ by mx.groups.io with SMTP id smtpd.web10.12817.1708745714371960606
  for <docs@lists.yoctoproject.org>;
- Fri, 23 Feb 2024 11:20:57 -0800
+ Fri, 23 Feb 2024 19:35:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=HZz018wo;
- spf=pass (domain: posteo.com, ip: 185.67.36.66, mailfrom: simone.p.weiss@posteo.com)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 25355240103
-	for <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 20:20:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
-	t=1708716055; bh=L2ajYHeHHMekHvVsuMxsXJLxC7f3cUf5Wn/SzWsvc2A=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=HZz018wo/w0Du9b0PznJmcbCPCXiEcytTXZORzfSaodfTyydmIJCO3mIRP9mNijzp
-	 YYIlpPmV2iJpiYNUnPZwxCrreFCCqm7f1ejGi2q8gbfWqQ3BFabMqt2GvHxH60HwEa
-	 7u9DulGZdbu6onNp1OI40UJK9muQAGvxOc4o5BUpOK+EbUh+mzxHzXhpNNgRg1Wrdj
-	 /OiQ+oG0fd7HCi3/D0zruyCTwC2Q6pHSpnJn3PPSdeeHmTZ6Fw2TuYB58lkx5+E5S/
-	 rLGfAxyd9Jhb3krFSMLDSKXdpT0iBxb375q6iV7mJjLqhUMx2BlGlXL1sXMaDwMC/F
-	 cz5VhZjh+NvlQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4ThKc54G6wz9rxP;
-	Fri, 23 Feb 2024 20:20:53 +0100 (CET)
-From: simone.p.weiss@posteo.com
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	=?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>,
-	Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH v3] bitbake: doc: Add section for variable context
-Date: Fri, 23 Feb 2024 19:20:47 +0000
-Message-Id: <20240223192047.7431-1-simone.p.weiss@posteo.com>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=ZNgeUL8R;
+ spf=pass (domain: gmail.com, ip: 209.85.214.173, mailfrom: bruce.ashfield@gmail.com)
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1d934c8f8f7so13319205ad.2
+        for <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 19:35:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708745714; x=1709350514; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gZnnhiTb1KYMhWhyPRRANO5nMX28I5gNSlvFoG4TYYY=;
+        b=ZNgeUL8RxNXc6gJdJCfbqqZhSKA8oFVP4TKRNbqJQ0/kteyX+UbcDpjQKGdwXHeEmT
+         bzVZfFjH/fa5YEq/VVXD6p4mHsbK4FDAVoFo4v2KfbVXnL4Og6HxRQ59N4UvGkf71j2I
+         ZYf7ODxZJHg5rzYr9WwTzevFotSdPTPSx1A/TjBgEwMNLaAnySNFBtoK9AG02vlRRodt
+         +K8U1eeLgekuho+R9K4Kozr/mfW+fbIUPCO+9hAWM7Q7sIMhwzxglMm+YUPGuK/QMeMF
+         dx/GZk+GQ1tpfF502DCJNpKRew094bhL4AFXerZWf1BCaBewqQTwgvGB32lxmmlOktO+
+         6s7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708745714; x=1709350514;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gZnnhiTb1KYMhWhyPRRANO5nMX28I5gNSlvFoG4TYYY=;
+        b=tagu/sSSkZ12s45f51VEC6o3nJypoWTGbHVMaCUOwWj24QyfD2PMuvgGgUL+UZKzh9
+         DtzByXjaA/xXboosp3AzqNjegSTx+BSUUivCHsIzd088fxIe6bbz2CoOuqxNyDTWciOA
+         +C5TUCLAXIbyFBpHKula4eF2zNGHHXDIQEsxqzn+uQKveG/B5e3Nsr2EfN9XXHgVTFER
+         p4Gz2QVDb4jB0KZJg74RbclM0qN/G9wcW3Ct2fi+Z1dGcsDnf6lYVvkeZ0E6ZoIpIGX+
+         +NkrUzjPxSiTXJHAyfwCKVY8tDqoSKFVrI/HkvDuAvQrDYYe/qzOe00rpJOzIE9sarjN
+         BpQg==
+X-Forwarded-Encrypted: i=1; AJvYcCWf7d2xg5Y9gDQAscQdzxAo6roOapIrtPEBaigTPJroSbzD5Yh9qnxp1Ty2qc5lfzQKyJffFMS/27CP4AjyyC5RuaiJXc72UkA098g=
+X-Gm-Message-State: AOJu0YxNAKmdeCEwgvJ70hDsE+LsBQrApOrfkIU6emJMsQ8skgE1EZ/U
+	GmHR0qzcKWZvbPn9eXjM6394lQlQxBSMetwMJ0FhWV6h7X+nYDvfE1EeQa+YJoeusZSDZnt9GAH
+	8kSMC9ZAwX8+xX9XU3PksgeGAMdE=
+X-Google-Smtp-Source: AGHT+IE89CZSUIRAZOlHYh+qa8VO99XqLkXVKxq1M7XeKU086mRxNPhHqe3OB9cno/Itozgy5hMZC/hgUiPA23MTpkM=
+X-Received: by 2002:a17:902:6e10:b0:1dc:6152:7c24 with SMTP id
+ u16-20020a1709026e1000b001dc61527c24mr1445820plk.43.1708745713751; Fri, 23
+ Feb 2024 19:35:13 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+References: <b381569f-6a73-4efa-9eed-19119070c467@bootlin.com>
+In-Reply-To: <b381569f-6a73-4efa-9eed-19119070c467@bootlin.com>
+From: Bruce Ashfield <bruce.ashfield@gmail.com>
+Date: Fri, 23 Feb 2024 22:35:02 -0500
+Message-ID: <CADkTA4Mpr_jgh7MUYFo1vMC6amMFdOTz3yA1Bh3CJz24KYgmYw@mail.gmail.com>
+Subject: Re: [docs] [master] Pull request
+To: michael.opdenacker@bootlin.com
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, 
+	YP docs mailing list <docs@lists.yoctoproject.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 Feb 2024 19:21:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4868
+ <docs@lists.yoctoproject.org>; Sat, 24 Feb 2024 03:35:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4869
 
-From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+On Fri, Feb 23, 2024 at 1:47=E2=80=AFPM Michael Opdenacker via
+lists.yoctoproject.org
+<michael.opdenacker=3Dbootlin.com@lists.yoctoproject.org> wrote:
+>
+> Hi Richard,
+>
+> The following changes since commit 79530aeb97976b9a63bf04ed247f98061fc9d7=
+37:
+>
+>    release-notes-4.3: fix spacing (2024-02-05 15:22:33 +0100)
+>
+> are available in the Git repository at:
+>
+>    git://git.yoctoproject.org/yocto-docs master-next
+>
+> for you to fetch changes up to b63e6a5ac71b347961037b7ee496c2e958ad22c5:
+>
+>    dev-manual: packages: need enough free space (2024-02-23 09:50:37 +010=
+0)
+>
+> ----------------------------------------------------------------
+> Adrian Freihofer (1):
+>        sdk-manual: extensible.rst: cover devtool ide-sdk
+>
+> Khem Raj (1):
+>        ref-manual: variables: remove PYTHON_PN
+>
+> Lee Chee Yang (1):
+>        migration-guide: add release notes for 4.3.3
+>
+> Michael Opdenacker (5):
+>        ref-manual: system-requirements: update packages to build docs
+>        ref-manual: release-process: grammar fix
+>        manuals: suppress excess use of "following" word
+>        dev-manual: packages: clarify shared PR service constraint
+>        dev-manual: packages: need enough free space
+>
+> Simone Wei=C3=9F (1):
+>        dev-manual: Rephrase spdx creation
+>
+> Vyacheslav Yurkov (1):
+>        manuals: kernel-dev: Fix BSP in recipe space
 
-This is inspired by the same section in the yocto-docs. It aims to provid=
-e
-information in what contexts(recipes, .conf, bbclass,...) a variable is u=
-sually
-used. For that I tried to group similar variables, so that a short overvi=
-ew is
-given. This was inspired by [YOCTO #14072], but of course does not implem=
-ent a
-warning if a variable is used in an unintended context.
+As I commented on the patch itself, the above documentation tweak
+isn't correct and should be dropped.
 
-Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
+Bruce
 
-Notes to v3:=20
-- Applied the fixes suggested in review (thanks for the patch! I hope add=
-ing the
-  Signed-off like this during squashing is fine)
-- For the ref label, I plan to come up with an svg that illustrates tasks=
-,
-  recipes, classes, conf (thanks Quentin for the suggestion), but in a ge=
-neric
-  way and add it to the Concepts section, I want to add a ref from there.
-=20
- ...bake-user-manual-ref-variables-context.rst | 91 +++++++++++++++++++
- doc/index.rst                                 |  1 +
- 2 files changed, 92 insertions(+)
- create mode 100644 doc/bitbake-user-manual/bitbake-user-manual-ref-varia=
-bles-context.rst
-
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-co=
-ntext.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-con=
-text.rst
-new file mode 100644
-index 00000000..e9c454ba
---- /dev/null
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables-context.r=
+>
+>   documentation/bsp-guide/bsp.rst                        |   9 ++--
+>   documentation/dev-manual/building.rst                  |   2 +-
+>   documentation/dev-manual/debugging.rst                 |   8 ++--
+>   documentation/dev-manual/development-shell.rst         |   2 +-
+>   documentation/dev-manual/layers.rst                    |   8 ++--
+>   documentation/dev-manual/libraries.rst                 |   4 +-
+>   documentation/dev-manual/licenses.rst                  |   2 +-
+>   documentation/dev-manual/new-machine.rst               |   2 +-
+>   documentation/dev-manual/new-recipe.rst                |   8 ++--
+>   documentation/dev-manual/packages.rst                  |  22 +++++++---
+>   documentation/dev-manual/prebuilt-libraries.rst        |   4 +-
+>   documentation/dev-manual/python-development-shell.rst  |   2 +-
+>   documentation/dev-manual/qemu.rst                      |   4 +-
+>   documentation/dev-manual/runtime-testing.rst           |   4 +-
+>   documentation/dev-manual/sbom.rst                      |  40
+> ++++++++++-------
+>   documentation/dev-manual/speeding-up-build.rst         |   4 +-
+>   documentation/dev-manual/start.rst                     |   6 +--
+>   documentation/kernel-dev/advanced.rst                  |   2 +-
+>   documentation/kernel-dev/common.rst                    |   4 +-
+>   documentation/migration-guides/migration-1.5.rst       |   6 +--
+>   documentation/migration-guides/migration-2.2.rst       |   6 +--
+>   documentation/migration-guides/migration-2.4.rst       |   8 ----
+>   documentation/migration-guides/migration-2.5.rst       |   8 +---
+>   documentation/migration-guides/migration-4.0.rst       |   2 +-
+>   documentation/migration-guides/release-4.3.rst         |   1 +
+>   documentation/migration-guides/release-notes-4.3.3.rst | 200
+> +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++++++++
+>   documentation/overview-manual/concepts.rst             |  18 ++++----
+>   documentation/overview-manual/yp-intro.rst             |   2 +-
+>   documentation/ref-manual/classes.rst                   |   8 ++--
+>   documentation/ref-manual/devtool-reference.rst         |   4 +-
+>   documentation/ref-manual/faq.rst                       |   6 +--
+>   documentation/ref-manual/features.rst                  |   2 +-
+>   documentation/ref-manual/images.rst                    |   2 +-
+>   documentation/ref-manual/release-process.rst           |   8 ++--
+>   documentation/ref-manual/structure.rst                 |   2 +-
+>   documentation/ref-manual/system-requirements.rst       |  10 ++---
+>   documentation/ref-manual/terms.rst                     |   4 +-
+>   documentation/ref-manual/variables.rst                 |  22 ++--------
+>   documentation/sdk-manual/appendix-obtain.rst           |  10 ++---
+>   documentation/sdk-manual/extensible.rst                | 283
+> +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
+++++++++++++++++++++++++++++++++++++++++++++++-
+>   documentation/sdk-manual/intro.rst                     |   2 +-
+>   documentation/toaster-manual/setup-and-use.rst         |   4 +-
+>   42 files changed, 614 insertions(+), 141 deletions(-)
+>   create mode 100644 documentation/migration-guides/release-notes-4.3.3.r=
 st
-@@ -0,0 +1,91 @@
-+.. SPDX-License-Identifier: CC-BY-2.5
-+
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+Variable Context
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+|
-+
-+Variables might only have an impact or can be used in certain contexts. =
-Some
-+should only be used in global files like ``.conf``, while others are int=
-ended only
-+for local files like ``.bb``. This chapter aims to describe some importa=
-nt variable
-+contexts.
-+
-+.. _ref-varcontext-configuration:
-+
-+BitBake's own configuration
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D
-+
-+Variables starting with ``BB_`` usually configure the behaviour of BitBa=
-ke itself.
-+For example, one could configure:
-+
-+- System resources, like disk space to be used (:term:`BB_DISKMON_DIRS`)=
-,
-+  or the number of tasks to be run in parallel by BitBake (:term:`BB_NUM=
-BER_THREADS`).
-+
-+- How the fetchers shall behave, e.g., :term:`BB_FETCH_PREMIRRORONLY` is=
- used
-+  by BitBake to determine if BitBake's fetcher shall search only
-+  :term:`PREMIRRORS` for files.
-+
-+Those variables are usually configured globally.
-+
-+BitBake configuration
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+There are variables:
-+
-+- Like :term:`B` or :term:`T`, that are used to specify directories used=
- by
-+  BitBake during the build of a particular recipe. Those variables are
-+  specified in ``bitbake.conf``. Some, like :term:`B`, are quite often
-+  overwritten in recipes.
-+
-+- Starting with ``FAKEROOT``, to configure how the ``fakeroot`` command =
-is
-+  handled. Those are usually set by ``bitbake.conf`` and might get adapt=
-ed in a
-+  ``bbclass``.
-+
-+- Detailing where BitBake will store and fetch information from, for
-+  data reuse between build runs like :term:`CACHE`, :term:`DL_DIR` or
-+  :term:`PERSISTENT_DIR`. Those are usually global.
-+
-+
-+Layers and files
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+Variables starting with ``LAYER`` configure how BitBake handles layers.
-+Additionally, variables starting with ``BB`` configure how layers and fi=
-les are
-+handled. For example:
-+
-+- :term:`LAYERDEPENDS` is used to configure on which layers a given laye=
-r
-+  depends.
-+
-+- The configured layers are contained in :term:`BBLAYERS` and files in
-+  :term:`BBFILES`.
-+
-+Those variables are often used in the files ``layer.conf`` and ``bblayer=
-s.conf``.
-+
-+Recipes and packages
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+Variables handling recipes and packages can be split into:
-+
-+- :term:`PN`, :term:`PV` or :term:`PF` for example, contain information =
-about
-+  the name or revision of a recipe or package. Usually, the default set =
-in
-+  ``bitbake.conf`` is used, but those are from time to time overwritten =
-in
-+  recipes.
-+
-+- :term:`SUMMARY`, :term:`DESCRIPTION`, :term:`LICENSE` or :term:`HOMEPA=
-GE`
-+  contain the expected information and should be set specifically for ev=
-ery
-+  recipe.
-+
-+- In recipes, variables are also used to control build and runtime
-+  dependencies between recipes/packages with other recipes/packages. The
-+  most common should be: :term:`PROVIDES`, :term:`RPROVIDES`, :term:`DEP=
-ENDS`,
-+  and :term:`RDEPENDS`.
-+
-+- There are further variables starting with ``SRC`` that specify the sou=
-rces in
-+  a recipe like :term:`SRC_URI` or :term:`SRCDATE`. Those are also usual=
-ly set
-+  in recipes.
-+
-+- Which version or=C2=A0provider of a recipe should be given preference =
-when
-+  multiple recipes would provide the same item, is controlled by variabl=
-es
-+  starting with ``PREFERRED_``. Those are normally set in the configurat=
-ion
-+  files of a ``MACHINE`` or ``DISTRO``.
-diff --git a/doc/index.rst b/doc/index.rst
-index 3ff8b158..ee1660ac 100644
---- a/doc/index.rst
-+++ b/doc/index.rst
-@@ -13,6 +13,7 @@ BitBake User Manual
-    bitbake-user-manual/bitbake-user-manual-intro
-    bitbake-user-manual/bitbake-user-manual-execution
-    bitbake-user-manual/bitbake-user-manual-metadata
-+   bitbake-user-manual/bitbake-user-manual-ref-variables-context
-    bitbake-user-manual/bitbake-user-manual-fetching
-    bitbake-user-manual/bitbake-user-manual-ref-variables
-    bitbake-user-manual/bitbake-user-manual-hello
---=20
-2.39.2
+>
+> Thank you in advance
+> Cheers
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#4867): https://lists.yoctoproject.org/g/docs/message/=
+4867
+> Mute This Topic: https://lists.yoctoproject.org/mt/104534340/1050810
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [bruce.ashfield@=
+gmail.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
 
+
+--=20
+- Thou shalt not follow the NULL pointer, for chaos and madness await
+thee at its end
+- "Use the force Harry" - Gandalf, Star Trek II
 
