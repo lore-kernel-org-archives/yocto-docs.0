@@ -1,108 +1,81 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <simone.p.weiss@posteo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC328C48BF6
-	for <webhook@archiver.kernel.org>; Sat, 24 Feb 2024 16:02:03 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.21675.1708790515486730727
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 10C85C5478C
+	for <webhook@archiver.kernel.org>; Sat, 24 Feb 2024 17:22:44 +0000 (UTC)
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+ by mx.groups.io with SMTP id smtpd.web11.23481.1708795360493805389
  for <docs@lists.yoctoproject.org>;
- Sat, 24 Feb 2024 08:01:55 -0800
+ Sat, 24 Feb 2024 09:22:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WfgRu0gE;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E85B360008;
-	Sat, 24 Feb 2024 16:01:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1708790513;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zYnh/cIOu9T6H6yBpsXgHBCJv803nhN0vTuqBF2VwhA=;
-	b=WfgRu0gE/qG5jkolrqjcx2FllcaOrO0BpWXZ5YrOFfg0pDnbJ1k7W1CltWJbN+b2fZyoPK
-	Rvnk7f6rHUB8rdtVdfXUJp2EA1aa/IyDDmDbegfQurtpwYExKT3tEiXAH/WEUHecqnXfIK
-	CZbkEL5BVqIgyfq27zUjsUfjcI7O+inRgAqfWwgrLEK+AavBmUm9cG2Jc5nrVlRCpkDWTl
-	D59BNpabi1pP+G+2DnuZQ67LwyKA60q7XzuW/5Gag2Hp+FTsUdoleISNW615ZZBuZuuASP
-	qGFjs1H0qiG7/3YdKI0/OKty+j+R8NnXUd60MO3sRKRvPCDRzvMbjcskvS9GuA==
-Message-ID: <8c42d162-0787-49d0-b185-e152ddb38690@bootlin.com>
-Date: Sat, 24 Feb 2024 17:01:42 +0100
+ dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=o9cHgLL1;
+ spf=pass (domain: posteo.com, ip: 185.67.36.66, mailfrom: simone.p.weiss@posteo.com)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 4C25A240104
+	for <docs@lists.yoctoproject.org>; Sat, 24 Feb 2024 18:22:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
+	t=1708795358; bh=3GGakZtFpTuA3Bdiq0KfKUdiY1PTzAXg49ESbE2CxjI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=o9cHgLL1VK3P0h/Rnjfv/yCy0iC4x+T4UzF3eDty3P1WgqJ1LknNtu18qh80e+NbL
+	 iB3yEYAsH22OwbeWN96G3NvPImzekh4xp8GqjNGHDzbdFzzOT2BLKpNs+UnE6wKJ7a
+	 MyMrtPisl8Mgy20x9mOof6bCYiYJx9s/u8WdhN2oDBpvS4bIEesTlPgZRNv4/2AAEA
+	 dbBe0z5QaOjSYYC6bGG0z/9s2TBu0BpEGiwqdyfZsRsL/Xp76XgIxDS4a6lK6E/d0a
+	 AYcfMIiCh2TiM/PCHtP+EpTZNH/TIOsV6Erm8CjtmmRYT7jx91bz7RqoT7B21Z97pv
+	 91b5npELwvVBA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Thtx94M02z6tvd;
+	Sat, 24 Feb 2024 18:22:37 +0100 (CET)
+From: simone.p.weiss@posteo.com
+To: docs@lists.yoctoproject.org
+Cc: =?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
+Subject: [PATCH] ref-manual: classes: Add cve status check for oe.qa
+Date: Sat, 24 Feb 2024 17:22:14 +0000
+Message-Id: <20240224172214.557369-1-simone.p.weiss@posteo.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
- YP docs mailing list <docs@lists.yoctoproject.org>,
- Vyacheslav Yurkov <uvv.mail@gmail.com>
-Subject: Re: [docs] [master] Pull request
-Content-Language: en-US
-To: Bruce Ashfield <bruce.ashfield@gmail.com>
-References: <b381569f-6a73-4efa-9eed-19119070c467@bootlin.com>
- <CADkTA4Mpr_jgh7MUYFo1vMC6amMFdOTz3yA1Bh3CJz24KYgmYw@mail.gmail.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <CADkTA4Mpr_jgh7MUYFo1vMC6amMFdOTz3yA1Bh3CJz24KYgmYw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 24 Feb 2024 16:02:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4870
+ <docs@lists.yoctoproject.org>; Sat, 24 Feb 2024 17:22:44 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4871
 
-Hi Bruce,
+From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 
-On 2/24/24 at 04:35, Bruce Ashfield wrote:
-> On Fri, Feb 23, 2024 at 1:47 PM Michael Opdenacker via
-> lists.yoctoproject.org
-> <michael.opdenacker=bootlin.com@lists.yoctoproject.org> wrote:
->> Hi Richard,
->>
->> The following changes since commit 79530aeb97976b9a63bf04ed247f98061fc9d737:
->>
->>     release-notes-4.3: fix spacing (2024-02-05 15:22:33 +0100)
->>
->> are available in the Git repository at:
->>
->>     git://git.yoctoproject.org/yocto-docs master-next
->>
->> for you to fetch changes up to b63e6a5ac71b347961037b7ee496c2e958ad22c5:
->>
->>     dev-manual: packages: need enough free space (2024-02-23 09:50:37 +0100)
->>
->> ----------------------------------------------------------------
->> Adrian Freihofer (1):
->>         sdk-manual: extensible.rst: cover devtool ide-sdk
->>
->> Khem Raj (1):
->>         ref-manual: variables: remove PYTHON_PN
->>
->> Lee Chee Yang (1):
->>         migration-guide: add release notes for 4.3.3
->>
->> Michael Opdenacker (5):
->>         ref-manual: system-requirements: update packages to build docs
->>         ref-manual: release-process: grammar fix
->>         manuals: suppress excess use of "following" word
->>         dev-manual: packages: clarify shared PR service constraint
->>         dev-manual: packages: need enough free space
->>
->> Simone Weiß (1):
->>         dev-manual: Rephrase spdx creation
->>
->> Vyacheslav Yurkov (1):
->>         manuals: kernel-dev: Fix BSP in recipe space
-> As I commented on the patch itself, the above documentation tweak
-> isn't correct and should be dropped.
+With a new check was added for oe.qa for CVE_STATUS via commit
+3c5b7605acd9cd68b ("cve-check: Log if CVE_STATUS set but not
+reported for component")
+in poky. Add related documentation here.
 
+Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+---
+ documentation/ref-manual/classes.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Oops, thanks for highlighting this.
-I removed this commit from my branch.
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+index 844433c55..4f1188ef2 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1297,6 +1297,11 @@ Here are the tests you can list with the :term:`WA=
+RN_QA` and
+    paths to locations on the build host were used. Using such paths
+    might result in host contamination of the build output.
+=20
++-  ``cve_status_not_in_db:`` Checks for each component if CVEs that are =
+ignored
++   via :term:`CVE_STATUS`, that those are (still) reported for this comp=
+onent
++   in the NIST database. If not, a warning is printed. This check is dis=
+abled
++   by default.
++
+ -  ``debug-deps:`` Checks that all packages except ``-dbg`` packages
+    do not depend on ``-dbg`` packages, which would cause a packaging
+    bug.
+--=20
+2.39.2
 
 
