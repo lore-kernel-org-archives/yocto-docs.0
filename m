@@ -1,81 +1,98 @@
-Return-Path: <simone.p.weiss@posteo.com>
+Return-Path: <uvv.mail@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 10C85C5478C
-	for <webhook@archiver.kernel.org>; Sat, 24 Feb 2024 17:22:44 +0000 (UTC)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
- by mx.groups.io with SMTP id smtpd.web11.23481.1708795360493805389
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBBDAC54E49
+	for <webhook@archiver.kernel.org>; Mon, 26 Feb 2024 09:30:18 +0000 (UTC)
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+ by mx.groups.io with SMTP id smtpd.web10.16967.1708939809263524622
  for <docs@lists.yoctoproject.org>;
- Sat, 24 Feb 2024 09:22:40 -0800
+ Mon, 26 Feb 2024 01:30:09 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=o9cHgLL1;
- spf=pass (domain: posteo.com, ip: 185.67.36.66, mailfrom: simone.p.weiss@posteo.com)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 4C25A240104
-	for <docs@lists.yoctoproject.org>; Sat, 24 Feb 2024 18:22:37 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
-	t=1708795358; bh=3GGakZtFpTuA3Bdiq0KfKUdiY1PTzAXg49ESbE2CxjI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:From;
-	b=o9cHgLL1VK3P0h/Rnjfv/yCy0iC4x+T4UzF3eDty3P1WgqJ1LknNtu18qh80e+NbL
-	 iB3yEYAsH22OwbeWN96G3NvPImzekh4xp8GqjNGHDzbdFzzOT2BLKpNs+UnE6wKJ7a
-	 MyMrtPisl8Mgy20x9mOof6bCYiYJx9s/u8WdhN2oDBpvS4bIEesTlPgZRNv4/2AAEA
-	 dbBe0z5QaOjSYYC6bGG0z/9s2TBu0BpEGiwqdyfZsRsL/Xp76XgIxDS4a6lK6E/d0a
-	 AYcfMIiCh2TiM/PCHtP+EpTZNH/TIOsV6Erm8CjtmmRYT7jx91bz7RqoT7B21Z97pv
-	 91b5npELwvVBA==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Thtx94M02z6tvd;
-	Sat, 24 Feb 2024 18:22:37 +0100 (CET)
-From: simone.p.weiss@posteo.com
-To: docs@lists.yoctoproject.org
-Cc: =?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
-Subject: [PATCH] ref-manual: classes: Add cve status check for oe.qa
-Date: Sat, 24 Feb 2024 17:22:14 +0000
-Message-Id: <20240224172214.557369-1-simone.p.weiss@posteo.com>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=FK6Zf3/Y;
+ spf=pass (domain: gmail.com, ip: 209.85.167.180, mailfrom: uvv.mail@gmail.com)
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3c199237eaeso1300326b6e.0
+        for <docs@lists.yoctoproject.org>; Mon, 26 Feb 2024 01:30:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708939808; x=1709544608; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vJos8bzSl7fs4sL/zz2oxjTqlTWiNGs7qXtHicI5f88=;
+        b=FK6Zf3/YBkFoDxl2q/jWeSabBU6xyOf4rwJtncaLeBQA+KVksnPh3TF8WEpW+ygQzW
+         8R7BjK9778bScI8AW1216UU6ZPgHomW8yQZ9L6Ln78VWjRANAPrwUdT+llUvQgsFZpbB
+         XnwzTTUshUbHU+ritrGU+QaROiTqqsW8hFECsCcUP/QKXCwkye/1GJ3rCyHuhkFbvUAq
+         KVG3yelOCbWC6gdWvKLguFpV9pPW2vctiYuQ7C0R05WMgGUBGFbgP5PJbwTfEJMfNAeK
+         9EpI9o812TVGkLcbreOMHhs51klmvFEC7yP6f1lVvtvBpEx0AoBurVWcnEZ1UD1hmPQp
+         3Q2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708939808; x=1709544608;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vJos8bzSl7fs4sL/zz2oxjTqlTWiNGs7qXtHicI5f88=;
+        b=gUurkOCI8nrMjDWxlOGy5gnJJdYikis9F+GtQyMJPmz37npsQKbqIX64yKphUnrXFF
+         YS2B3M61bDYQkEzG7u9oYg86vqYai9wpVhJPv4AbslybfgKLY3xz4skF5BY4lDmXUaFH
+         dyAkV8syyEKRwXbyz/rWdOcgt1jgE0/HBAfrsFrIXpFo2NnAwmk+h0GDZ3iLhPpGDn6z
+         u09Mft9ty9twO3YkJjZDtZz/DFNOQA/A6V+kuVY/zDLwOsU1TSPrdjVq6lMposrUEsFH
+         e7648K35gvDoeXzAGLugzib9bzpP0Vf1f0GymgT4XJzINMTP80gBkCvBd1VW6+nDk8QO
+         Lqng==
+X-Gm-Message-State: AOJu0YydTjOMJKmLErxJUhrsIYhROEvsF7n7SrRuymbxixgkO7rTWtST
+	+h1w46y0W91qM96+85dzNFS3h3M2a97TxOwYewovSoxgRgBwrZYu
+X-Google-Smtp-Source: AGHT+IFpF8L5qnuJgHoPVwsJugVW2QXJvmWyOPAzCNMWngLfSPfCIMneM16i+m+XCycozsMgKv+QjA==
+X-Received: by 2002:a05:6808:1403:b0:3c1:4e89:f119 with SMTP id w3-20020a056808140300b003c14e89f119mr8161568oiv.0.1708939808558;
+        Mon, 26 Feb 2024 01:30:08 -0800 (PST)
+Received: from [10.139.121.62] ([149.40.58.132])
+        by smtp.gmail.com with ESMTPSA id bl11-20020a056808308b00b003c1343a9c6csm1006057oib.52.2024.02.26.01.30.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Feb 2024 01:30:08 -0800 (PST)
+Message-ID: <d830331b-f366-4a0b-b83d-8219c32a2e4f@gmail.com>
+Date: Mon, 26 Feb 2024 10:30:04 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH] manuals: kernel-dev: Fix BSP in recipe space
+Content-Language: en-US
+To: Bruce Ashfield <bruce.ashfield@gmail.com>
+Cc: docs@lists.yoctoproject.org
+References: <20240221072612.79402-1-uvv.mail@gmail.com>
+ <CADkTA4NVhyHwRkjoodbxb6gvJM3y5UiW5WkyHha-dTuH2xs=wg@mail.gmail.com>
+From: Vyacheslav Yurkov <uvv.mail@gmail.com>
+In-Reply-To: <CADkTA4NVhyHwRkjoodbxb6gvJM3y5UiW5WkyHha-dTuH2xs=wg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 24 Feb 2024 17:22:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4871
+ <docs@lists.yoctoproject.org>; Mon, 26 Feb 2024 09:30:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4872
 
-From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+On 23.02.2024 14:44, Bruce Ashfield wrote:
+> On Wed, Feb 21, 2024 at 2:26 AM Vyacheslav Yurkov <uvv.mail@gmail.com> wrote:
+>> File fetcher doesn't have destsuffix parameter.
+>>
+> While the file fetcher doesn't have that option, it was the fact that
+> it didn't have it that kept things working.
+>
+> If you use subdir, then in fact, a recipe space BSP doesn't work at
+> all as the tools can't find the BSP definition.
+>
+> The kernel-yocto bbclass is what is using this to set up search paths
+> for kernel features when it sees the type=kmeta.
+>
+> The option could have had a less confusing name (since it is
+> effectively passthrough like "type=kmeta", but that's not something
+> that I'm willing to change right now (I'll do it post release)
+>
+> But the documents are correct, you do need destsuffix or the
+> recipe-space BSP will  not work.
+>
+> Bruce
+>
 
-With a new check was added for oe.qa for CVE_STATUS via commit
-3c5b7605acd9cd68b ("cve-check: Log if CVE_STATUS set but not
-reported for component")
-in poky. Add related documentation here.
+Oh, interesting. Perhaps the recipe-space BSP works this way, but the 
+recipe-space additions for other parts of 'kmeta' didn't work for me. 
+Whenever I wanted to extend kernel features that yocto-kernel-cache 
+didn't have, I had to use subdir.
 
-Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
----
- documentation/ref-manual/classes.rst | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-index 844433c55..4f1188ef2 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1297,6 +1297,11 @@ Here are the tests you can list with the :term:`WA=
-RN_QA` and
-    paths to locations on the build host were used. Using such paths
-    might result in host contamination of the build output.
-=20
-+-  ``cve_status_not_in_db:`` Checks for each component if CVEs that are =
-ignored
-+   via :term:`CVE_STATUS`, that those are (still) reported for this comp=
-onent
-+   in the NIST database. If not, a warning is printed. This check is dis=
-abled
-+   by default.
-+
- -  ``debug-deps:`` Checks that all packages except ``-dbg`` packages
-    do not depend on ``-dbg`` packages, which would cause a packaging
-    bug.
---=20
-2.39.2
-
+Slava
 
