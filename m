@@ -2,35 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D32F0C54E59
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E589EC54E5A
 	for <webhook@archiver.kernel.org>; Tue, 27 Feb 2024 14:01:51 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.12665.1709042502687453718
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.12663.1709042502326522593
  for <docs@lists.yoctoproject.org>;
- Tue, 27 Feb 2024 06:01:43 -0800
+ Tue, 27 Feb 2024 06:01:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=obzXHiqO;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3ECCEE0014;
-	Tue, 27 Feb 2024 14:01:41 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MmwdjvDl;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CDA48FF808;
+	Tue, 27 Feb 2024 14:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1709042501;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=js1fErLrJGGSE7dFQmISvrvV6z8jwMudw02kJDWYt0Q=;
-	b=obzXHiqOd+DKJRWU3SrWbBW6wXsNfCIt+hUeD8AO435/lAf+g2Kq8rpw7Iixl2XSUH5eNJ
-	LrmqwdrCGSEeg6SQutnSzNZGMyqxO5NZoH00xufFIdAWLXniqhJpmJdMmQUpSH+zSTSHrm
-	uysULASSA0r2wJvWVxoNdV9oFvBL0LEQgdmYOtp9yO9n8W0DqAVSF6XtTYmbz68IMbaoDx
-	Y4EEeP/zgJlTf/7ZD6IptsYhnOrq8qloI2j1Mk3w54nxD6c+TUNxkF1+7YjrWKZeB2yrsQ
-	6QTUKggcvpxDGM7X0Kg4IVa9mI33AmWp3pOW7/xBhI/rTVIF6HgJHzf6gpvT2Q==
+	bh=dqHLUzO6MG6pq3j/n7EG82gPWIYqfOs9BZqBkcx5+VA=;
+	b=MmwdjvDlJI4kA4RDN3FA9RWzPOL1ATvJwLi5+E/XEZLLUsIKff+LYzarRK8Wo2tO2cSO9t
+	mMaFbDClCfxm9nAIoh5+xuKYiHKGpKsLlUqbf2d4XrOjxObiiP823/bPm0rYG4nW7VjK6d
+	mD0P1B938wQ4mSldTM4W+fr5cyYXR7205pYCIJyOwZRizewOKv84gmPPcXuEtFwc+owW5F
+	WRdrOTMfI86duYM86ad4tEwjvHGDlrJP0JkvmYV0A9n0Jnx18PvAgKwfNlmYM3qiqmxUO2
+	z60B9nMFCEc01PtDv3B7N9ZKsuPvQhI3GJXi85yLiq3T2zBhfjzUNqovomscTg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH 13/16] ref-manual: system-requirements.rst: simplify supported distro requirements
-Date: Tue, 27 Feb 2024 15:01:25 +0100
-Message-Id: <20240227140128.481522-14-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <foss@0leil.net>
+Subject: [kirkstone][PATCH 12/16] manuals: updates for building on Windows (WSL 2)
+Date: Tue, 27 Feb 2024 15:01:24 +0100
+Message-Id: <20240227140128.481522-13-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227140128.481522-1-michael.opdenacker@bootlin.com>
 References: <20240227140128.481522-1-michael.opdenacker@bootlin.com>
@@ -41,255 +42,250 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Feb 2024 14:01:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4904
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4903
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-- This allows to continue sharing the updated Ubuntu/Debian requirements
-  with the brief-yoctoprojectqs/index.rst without indentation mismatches
-  (caused by using the same macro in two different contexts: in direct
-  text and in a bullet list).
-
-- Update poky.yaml.in to adapt the number of spaces at the beginning
-  of lines.
-
-- brief-yoctoprojectqs/index.rst: fix bad number of spaces
-  before quote block.
+- Use the Wikipedia naming scheme: WSL 2 instead of WSLv2
+- Take into account Windows Server 2019 and 2022 which are
+  supported too.
+- Improve some explanations
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reviewed-by: Quentin Schulz <foss@0leil.net>
+
 ---
- documentation/brief-yoctoprojectqs/index.rst  |   6 +-
- documentation/poky.yaml.in                    |  25 ++--
- .../ref-manual/system-requirements.rst        | 120 ++++++------------
- 3 files changed, 48 insertions(+), 103 deletions(-)
+
+Changes in V2:
+- Now using "Windows 10 or later, or Windows Server 2019 or later"
+  as suggested by Quentin Schulz.
+---
+ documentation/brief-yoctoprojectqs/index.rst  | 17 ++---
+ documentation/dev-manual/start.rst            | 72 +++++++++----------
+ documentation/overview-manual/yp-intro.rst    | 17 ++---
+ .../ref-manual/system-requirements.rst        | 10 +--
+ 4 files changed, 51 insertions(+), 65 deletions(-)
 
 diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index f52b7fa0e0..db17437aa8 100644
+index 9eff13f583..f52b7fa0e0 100644
 --- a/documentation/brief-yoctoprojectqs/index.rst
 +++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -76,11 +76,9 @@ Build Host Packages
+@@ -25,18 +25,11 @@ build a reference embedded OS called Poky.
+       in the Yocto Project Development Tasks Manual for more
+       information.
  
- You must install essential host packages on your build host. The
- following command installs the host packages based on an Ubuntu
--distribution:
-+distribution::
- 
--.. code-block:: shell
+-   -  You may use Windows Subsystem For Linux v2 to set up a build host
+-      using Windows 10.
 -
--  $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-+   $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
+-      .. note::
+-
+-         The Yocto Project is not compatible with WSLv1, it is
+-         compatible but not officially supported nor validated with
+-         WSLv2, if you still decide to use WSL please upgrade to WSLv2.
+-
+-      See the :ref:`dev-manual/start:setting up to use windows
+-      subsystem for linux (wslv2)` section in the Yocto Project Development
+-      Tasks Manual for more information.
++   -  You may use version 2 of Windows Subsystem For Linux (WSL 2) to set
++      up a build host using Windows 10 or later, Windows Server 2019 or later.
++      See the :ref:`dev-manual/start:setting up to use windows subsystem for
++      linux (wsl 2)` section in the Yocto Project Development Tasks Manual
++      for more information.
+ 
+ If you want more conceptual or background information on the Yocto
+ Project, see the :doc:`/overview-manual/index`.
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index 7d3a25b1f9..7b6026cf42 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -254,16 +254,16 @@ development using the Yocto Project. Your build host can be a native
+ Linux machine (recommended), it can be a machine (Linux, Mac, or
+ Windows) that uses `CROPS <https://github.com/crops/poky-container>`__,
+ which leverages `Docker Containers <https://www.docker.com/>`__ or it
+-can be a Windows machine capable of running Windows Subsystem For Linux
+-v2 (WSL).
++can be a Windows machine capable of running version 2 of Windows Subsystem
++For Linux (WSL 2).
  
  .. note::
  
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 8c6549d571..b9cdd844e4 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -13,7 +13,8 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
- UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
-      build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
-      xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
--     pylint3 xterm python3-subunit mesa-common-dev zstd liblz4-tool"
-+     python3-subunit mesa-common-dev zstd liblz4-tool file locales
-+     \n\   $ sudo locale-gen en_US.UTF-8"
- FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
-@@ -22,20 +23,14 @@ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip pe
-      perl-File-Copy perl-locale zstd lz4"
- OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
-      diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
--     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel xterm rpcgen Mesa-dri-devel \
--     zstd lz4
--     \n\      $ sudo pip3 install GitPython"
--CENTOS7_HOST_PACKAGES_ESSENTIAL : "-y epel-release
--     \n\      $ sudo yum makecache
--     \n\      $ sudo yum install gawk make wget tar bzip2 gzip python3 unzip perl patch \
--     diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath socat \
--     perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip xz \
--     which SDL-devel xterm mesa-libGL-devel zstd lz4
--     \n\      $ sudo pip3 install GitPython jinja2"
--CENTOS8_HOST_PACKAGES_ESSENTIAL : "-y epel-release
--     \n\      $ sudo dnf config-manager --set-enabled PowerTools
--     \n\      $ sudo dnf makecache
--     \n\      $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch \
-+     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel rpcgen Mesa-dri-devel \
-+     zstd lz4 bzip2 gzip hostname
-+     \n\   $ sudo pip3 install GitPython"
-+ALMALINUX_HOST_PACKAGES_ESSENTIAL : "-y epel-release
-+     \n\   $ sudo yum install dnf-plugins-core
-+     \n\   $ sudo dnf config-manager --set-enabled crb
-+     \n\   $ sudo dnf makecache
-+     \n\   $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch \
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
-      socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
-      python3-GitPython python3-jinja2 python3-pexpect xz which SDL-devel xterm \
+-   The Yocto Project is not compatible with
+-   `Windows Subsystem for Linux v1 <https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux>`__.
+-   It is compatible but not officially supported nor validated with
+-   WSLv2. If you still decide to use WSL please upgrade to
+-   `WSLv2 <https://docs.microsoft.com/en-us/windows/wsl/install-win10>`__.
++   The Yocto Project is not compatible with version 1 of
++   `Windows Subsystem for Linux <https://en.wikipedia.org/wiki/Windows_Subsystem_for_Linux>`__.
++   It is compatible but neither officially supported nor validated with
++   WSL 2. If you still decide to use WSL please upgrade to
++   `WSL 2 <https://learn.microsoft.com/en-us/windows/wsl/install>`__.
+ 
+ Once your build host is set up to use the Yocto Project, further steps
+ are necessary depending on what you want to accomplish. See the
+@@ -434,35 +434,36 @@ the `Yocto Project BitBake
+ <https://marketplace.visualstudio.com/items?itemName=yocto-project.yocto-bitbake>`__
+ extension accordingly.
+ 
+-Setting Up to Use Windows Subsystem For Linux (WSLv2)
++Setting Up to Use Windows Subsystem For Linux (WSL 2)
+ -----------------------------------------------------
+ 
+-With `Windows Subsystem for Linux
+-(WSLv2) <https://docs.microsoft.com/en-us/windows/wsl/wsl2-about>`__,
++With `Windows Subsystem for Linux (WSL 2)
++<https://learn.microsoft.com/en-us/windows/wsl/>`__,
+ you can create a Yocto Project development environment that allows you
+ to build on Windows. You can set up a Linux distribution inside Windows
+ in which you can develop using the Yocto Project.
+ 
+-Follow these general steps to prepare a Windows machine using WSLv2 as
++Follow these general steps to prepare a Windows machine using WSL 2 as
+ your Yocto Project build host:
+ 
+-1. *Make sure your Windows 10 machine is capable of running WSLv2:*
+-   WSLv2 is only available for Windows 10 builds > 18917. To check which
+-   build version you are running, you may open a command prompt on
+-   Windows and execute the command "ver".
+-   ::
++1. *Make sure your Windows machine is capable of running WSL 2:*
++
++   While all Windows 11 and Windows Server 2022 builds support WSL 2,
++   the first versions of Windows 10 and Windows Server 2019 didn't.
++   Check the minimum build numbers for `Windows 10
++   <https://learn.microsoft.com/en-us/windows/wsl/install-manual#step-2---check-requirements-for-running-wsl-2>`__
++   and for `Windows Server 2019
++   <https://learn.microsoft.com/en-us/windows/wsl/install-on-server>`__.
++
++   To check which build version you are running, you may open a command
++   prompt on Windows and execute the command "ver"::
+ 
+       C:\Users\myuser> ver
+ 
+       Microsoft Windows [Version 10.0.19041.153]
+ 
+-   If your build is capable of running
+-   WSLv2 you may continue, for more information on this subject or
+-   instructions on how to upgrade to WSLv2 visit `Windows 10
+-   WSLv2 <https://docs.microsoft.com/en-us/windows/wsl/wsl2-install>`__
+-
+-2. *Install the Linux distribution of your choice inside Windows 10:*
+-   Once you know your version of Windows 10 supports WSLv2, you can
++2. *Install the Linux distribution of your choice inside WSL 2:*
++   Once you know your version of Windows supports WSL 2, you can
+    install the distribution of your choice from the Microsoft Store.
+    Open the Microsoft Store and search for Linux. While there are
+    several Linux distributions available, the assumption is that your
+@@ -471,31 +472,28 @@ your Yocto Project build host:
+    making your selection, simply click "Get" to download and install the
+    distribution.
+ 
+-3. *Check your Linux distribution is using WSLv2:* Open a Windows
++3. *Check which Linux distribution WSL 2 is using:* Open a Windows
+    PowerShell and run::
+ 
+       C:\WINDOWS\system32> wsl -l -v
+       NAME    STATE   VERSION
+       *Ubuntu Running 2
+ 
+-   Note the version column which says the WSL version
+-   being used by your distribution, on compatible systems, this can be
+-   changed back at any point in time.
++   Note that WSL 2 supports running as many different Linux distributions
++   as you want to install.
+ 
+-4. *Optionally Orient Yourself on WSL:* If you are unfamiliar with WSL,
+-   you can learn more here -
++4. *Optionally Get Familiar with WSL:* You can learn more on
+    https://docs.microsoft.com/en-us/windows/wsl/wsl2-about.
+ 
+ 5. *Launch your WSL Distibution:* From the Windows start menu simply
+    launch your WSL distribution just like any other application.
+ 
+-6. *Optimize your WSLv2 storage often:* Due to the way storage is
+-   handled on WSLv2, the storage space used by the undelying Linux
+-   distribution is not reflected immedately, and since bitbake heavily
++6. *Optimize your WSL 2 storage often:* Due to the way storage is
++   handled on WSL 2, the storage space used by the underlying Linux
++   distribution is not reflected immediately, and since BitBake heavily
+    uses storage, after several builds, you may be unaware you are
+-   running out of space. WSLv2 uses a VHDX file for storage, this issue
+-   can be easily avoided by manually optimizing this file often, this
+-   can be done in the following way:
++   running out of space. As WSL 2 uses a VHDX file for storage, this issue
++   can be easily avoided by regularly optimizing this file in a manual way:
+ 
+    1. *Find the location of your VHDX file:*
+ 
+@@ -549,14 +547,14 @@ your Yocto Project build host:
+ 
+ .. note::
+ 
+-   The current implementation of WSLv2 does not have out-of-the-box
++   The current implementation of WSL 2 does not have out-of-the-box
+    access to external devices such as those connected through a USB
+    port, but it automatically mounts your ``C:`` drive on ``/mnt/c/``
+    (and others), which you can use to share deploy artifacts to be later
+    flashed on hardware through Windows, but your build directory should
+    not reside inside this mountpoint.
+ 
+-Once you have WSLv2 set up, everything is in place to develop just as if
++Once you have WSL 2 set up, everything is in place to develop just as if
+ you were running on a native Linux machine. If you are going to use the
+ Extensible SDK container, see the ":doc:`/sdk-manual/extensible`" Chapter in the Yocto
+ Project Application Development and the Extensible Software Development
+diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
+index 3dc8ae5519..8683fb9ebd 100644
+--- a/documentation/overview-manual/yp-intro.rst
++++ b/documentation/overview-manual/yp-intro.rst
+@@ -596,20 +596,15 @@ Build Host runs, you have several choices.
+    ":ref:`dev-manual/start:setting up to use cross platforms (crops)`"
+    section in the Yocto Project Development Tasks Manual.
+ 
+--  *Windows Subsystem For Linux (WSLv2):* You may use Windows Subsystem
+-   For Linux v2 to set up a Build Host using Windows 10.
++-  *Windows Subsystem For Linux (WSL 2):* You may use Windows Subsystem
++   For Linux version 2 to set up a Build Host using Windows 10 or later,
++   or Windows Server 2019 or later.
+ 
+-   .. note::
+-
+-      The Yocto Project is not compatible with WSLv1, it is compatible
+-      but not officially supported nor validated with WSLv2, if you
+-      still decide to use WSL please upgrade to WSLv2.
+-
+-   The Windows Subsystem For Linux allows Windows 10 to run a real Linux
++   The Windows Subsystem For Linux allows Windows to run a real Linux
+    kernel inside of a lightweight virtual machine (VM).
+ 
+-   For information on how to set up a Build Host with WSLv2, see the
+-   ":ref:`dev-manual/start:setting up to use windows subsystem for linux (wslv2)`"
++   For information on how to set up a Build Host with WSL 2, see the
++   ":ref:`dev-manual/start:setting up to use windows subsystem for linux (wsl 2)`"
+    section in the Yocto Project Development Tasks Manual.
+ 
+ -  *Toaster:* Regardless of what your Build Host is running, you can use
 diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 8499c1b1e8..c5fe4da036 100644
+index 79c40046b4..8499c1b1e8 100644
 --- a/documentation/ref-manual/system-requirements.rst
 +++ b/documentation/ref-manual/system-requirements.rst
-@@ -155,8 +155,10 @@ function.
- Ubuntu and Debian
- -----------------
+@@ -127,12 +127,12 @@ tested on former revisions of "&DISTRO_NAME;", but no longer are:
+       the ":ref:`system-requirements-buildtools`" section.
  
--Here are the required packages by function given a
--supported Ubuntu or Debian Linux distribution:
-+Here are the packages needed to build an image on a headless system
-+with a supported Ubuntu or Debian Linux distribution::
-+
-+   $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
+    -  You may use Windows Subsystem For Linux v2 to set up a build host
+-      using Windows 10, but validation is not performed against build
+-      hosts using WSLv2.
++      using Windows 10 or later, or Windows Server 2019 or later, but validation
++      is not performed against build hosts using WSL 2.
  
- .. note::
+-   -  The Yocto Project is not compatible with WSLv1, it is
+-      compatible but not officially supported nor validated with
+-      WSLv2, if you still decide to use WSL please upgrade to WSLv2.
++      See the
++      :ref:`dev-manual/start:setting up to use windows subsystem for linux (wsl 2)`
++      section in the Yocto Project Development Tasks Manual for more information.
  
-@@ -168,21 +170,10 @@ supported Ubuntu or Debian Linux distribution:
-          $ sudo apt build-dep qemu
-          $ sudo apt remove oss4-dev
- 
--   -  For Debian-8, ``python3-git`` and ``pylint3`` are no longer
--      available via ``apt``.
--      ::
--
--         $ sudo pip3 install GitPython pylint==1.9.5
--
---  *Essentials:* Packages needed to build an image on a headless system::
-+Here are the packages needed to build Project documentation manuals::
- 
--      $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
--
---  *Documentation:* Packages needed if you are going to build out the
--   Yocto Project documentation manuals::
--
--      $ sudo apt install make python3-pip
--      &PIP3_HOST_PACKAGES_DOC;
-+   $ sudo apt install make python3-pip inkscape texlive-latex-extra
-+   &PIP3_HOST_PACKAGES_DOC;
- 
-    .. note::
- 
-@@ -193,94 +184,55 @@ supported Ubuntu or Debian Linux distribution:
- Fedora Packages
- ---------------
- 
--Here are the required packages by function given a
--supported Fedora Linux distribution:
--
---  *Essentials:* Packages needed to build an image for a headless
--   system::
-+Here are the packages needed to build an image on a headless system
-+with a supported Fedora Linux distribution::
- 
--      $ sudo dnf install &FEDORA_HOST_PACKAGES_ESSENTIAL;
-+   $ sudo dnf install &FEDORA_HOST_PACKAGES_ESSENTIAL;
- 
---  *Documentation:* Packages needed if you are going to build out the
--   Yocto Project documentation manuals::
-+Here are the packages needed to build Project documentation manuals::
- 
--      $ sudo dnf install make python3-pip which
--      &PIP3_HOST_PACKAGES_DOC;
-+   $ sudo dnf install make python3-pip which inkscape texlive-fncychap
-+   &PIP3_HOST_PACKAGES_DOC;
- 
- openSUSE Packages
- -----------------
- 
--Here are the required packages by function given a
--supported openSUSE Linux distribution:
--
---  *Essentials:* Packages needed to build an image for a headless
--   system::
--
--      $ sudo zypper install &OPENSUSE_HOST_PACKAGES_ESSENTIAL;
--
---  *Documentation:* Packages needed if you are going to build out the
--   Yocto Project documentation manuals::
--
--      $ sudo zypper install make python3-pip which
--      &PIP3_HOST_PACKAGES_DOC;
--
--
--CentOS-7 Packages
-------------------
--
--Here are the required packages by function given a
--supported CentOS-7 Linux distribution:
-+Here are the packages needed to build an image on a headless system
-+with a supported openSUSE distribution::
- 
---  *Essentials:* Packages needed to build an image for a headless
--   system::
-+   $ sudo zypper install &OPENSUSE_HOST_PACKAGES_ESSENTIAL;
- 
--      $ sudo yum install &CENTOS7_HOST_PACKAGES_ESSENTIAL;
-+Here are the packages needed to build Project documentation manuals::
- 
--   .. note::
--
--      -  Extra Packages for Enterprise Linux (i.e. ``epel-release``) is
--         a collection of packages from Fedora built on RHEL/CentOS for
--         easy installation of packages not included in enterprise Linux
--         by default. You need to install these packages separately.
-+   $ sudo zypper install make python3-pip which inkscape texlive-fncychap
-+   &PIP3_HOST_PACKAGES_DOC;
- 
--      -  The ``makecache`` command consumes additional Metadata from
--         ``epel-release``.
- 
---  *Documentation:* Packages needed if you are going to build out the
--   Yocto Project documentation manuals::
-+AlmaLinux Packages
-+------------------
- 
--      $ sudo yum install make python3-pip which
--      &PIP3_HOST_PACKAGES_DOC;
-+Here are the packages needed to build an image on a headless system
-+with a supported AlmaLinux distribution::
- 
--CentOS-8 Packages
-------------------
-+   $ sudo dnf install &ALMALINUX8_HOST_PACKAGES_ESSENTIAL;
- 
--Here are the required packages by function given a
--supported CentOS-8 Linux distribution:
--
---  *Essentials:* Packages needed to build an image for a headless
--   system::
--
--      $ sudo dnf install &CENTOS8_HOST_PACKAGES_ESSENTIAL;
--
--   .. note::
-+.. note::
- 
--      -  Extra Packages for Enterprise Linux (i.e. ``epel-release``) is
--         a collection of packages from Fedora built on RHEL/CentOS for
--         easy installation of packages not included in enterprise Linux
--         by default. You need to install these packages separately.
-+   -  Extra Packages for Enterprise Linux (i.e. ``epel-release``) is
-+      a collection of packages from Fedora built on RHEL/CentOS for
-+      easy installation of packages not included in enterprise Linux
-+      by default. You need to install these packages separately.
- 
--      -  The ``PowerTools`` repo provides additional packages such as
--         ``rpcgen`` and ``texinfo``.
-+   -  The ``PowerTools/CRB`` repo provides additional packages such as
-+      ``rpcgen`` and ``texinfo``.
- 
--      -  The ``makecache`` command consumes additional Metadata from
--         ``epel-release``.
-+   -  The ``makecache`` command consumes additional Metadata from
-+      ``epel-release``.
- 
---  *Documentation:* Packages needed if you are going to build out the
--   Yocto Project documentation manuals::
-+Here are the packages needed to build Project documentation manuals::
- 
--      $ sudo dnf install make python3-pip which
--      &PIP3_HOST_PACKAGES_DOC;
-+   $ sudo dnf install make python3-pip which inkscape texlive-fncychap
-+   &PIP3_HOST_PACKAGES_DOC;
- 
- .. _system-requirements-buildtools:
- 
+    -  If you encounter problems, please go to :yocto_bugs:`Yocto Project
+       Bugzilla <>` and submit a bug. We are
 -- 
 2.34.1
 
