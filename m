@@ -2,36 +2,35 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B37FC54E51
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6C39EC54E55
 	for <webhook@archiver.kernel.org>; Tue, 27 Feb 2024 14:01:41 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.12831.1709042500358504890
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.12830.1709042499632892225
  for <docs@lists.yoctoproject.org>;
  Tue, 27 Feb 2024 06:01:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iA/7o7wa;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E22B66000C;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=n3zqzzEJ;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3862C20007;
 	Tue, 27 Feb 2024 14:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709042499;
+	t=1709042498;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=08fmOFOTkj2ThVbhpCA2HTZp/P+PXtLcKuwuWhu9g/8=;
-	b=iA/7o7wavI970ljgEwOUB57tRhQJOcnV8jtTqg0z4kwvSH4jrZkllAvLaRn74WPATy29EC
-	2SxX/xVQ8DKUioFNwTiSSa+IuxHtJ7wb3kcgYHHHbv7xSc0e8OvgLfNPJhmQfLrckFjafQ
-	5YH5gWsytHbm/e0ObdCh/ygo3G/RLx+jKiJqt/43wQJm876bAmfy8YMl5bT7R09nYypjxL
-	620Ou0NlOoLtZkoB7Hu8EtzLexPlkfkOv8C4AV0Wy2wCoBKaUW5hQlspqry9lkfwVTBFgM
-	sFpdLSrz0Tc3FXxY/RqlWpztWwPoO5mtlTeF7ktxrxeGUAovti2dn4ZGwie8ow==
+	bh=916V1MNbg+hpB1kx1vdDBRucA789AemVe4AsknXM+vw=;
+	b=n3zqzzEJPMB5KB3X11j7fJ+vcRp/KbqdNGV8Sb2RrDmagJ02PuNU2aHF8PwEzzxYBcVHBs
+	1L7gGc82NQIfkSiMkNQ73xgBlHuWbVGLVXOj46da3vd1qy5E7xkLlGpng9lqUGK9d89JLo
+	5CYcQYuNNW5B2VfYNk4HThV5iWgTegCteiJ6A73C4XECudTs5unteb4LobrONnkEg3O8Yj
+	+N50HuKXG32dn++f7U8JfmjgpAGkyqWuUHr8zNiPv2vSu4UzgGm21tW2/7ZkDrl0YBeDNs
+	vCKV/3SCJRmwBdNFW7ci6W3mkLees0qR2SZW3xBi+oZPH2M/k82r9qHcduPxTQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Paul Eggleton <paul.eggleton@microsoft.com>
-Subject: [kirkstone][PATCH 08/16] ref-manual: add info on buildtools-make-tarball
-Date: Tue, 27 Feb 2024 15:01:20 +0100
-Message-Id: <20240227140128.481522-9-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [kirkstone][PATCH 06/16] manuals: update disk space requirements
+Date: Tue, 27 Feb 2024 15:01:18 +0100
+Message-Id: <20240227140128.481522-7-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240227140128.481522-1-michael.opdenacker@bootlin.com>
 References: <20240227140128.481522-1-michael.opdenacker@bootlin.com>
@@ -42,89 +41,68 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 27 Feb 2024 14:01:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4899
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4897
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Paul Eggleton <paul.eggleton@microsoft.com>
+Tests made on Poky master on March 16, 2023.
 
-PENDING ON THIS OE-CORE PATCH:
-install-buildtools: support buildtools-make-tarball and update to 4.1
-https://lists.openembedded.org/g/openembedded-core/message/171522
+Add a "Free Disk Space" section to the "System Requirements" document.
 
-Cover the use case and the new provided tarball.
-
-Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../ref-manual/system-requirements.rst        | 26 ++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
+ documentation/brief-yoctoprojectqs/index.rst     |  4 +++-
+ documentation/poky.yaml.in                       |  2 ++
+ documentation/ref-manual/system-requirements.rst | 11 +++++++++++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
 
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index ec4cc8b051..565e00be2e 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -47,7 +47,9 @@ Compatible Linux Distribution
+ Make sure your :term:`Build Host` meets the
+ following requirements:
+ 
+--  50 Gbytes of free disk space
++-  At least &MIN_DISK_SPACE; Gbytes of free disk space, though
++   much more will help to run multiple builds and increase
++   performance by reusing build artifacts.
+ 
+ -  Runs a supported Linux distribution (i.e. recent releases of Fedora,
+    openSUSE, CentOS, Debian, or Ubuntu). For a list of Linux
+diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+index 6b942f0959..1d4e176604 100644
+--- a/documentation/poky.yaml.in
++++ b/documentation/poky.yaml.in
+@@ -46,3 +46,5 @@ MIN_TAR_VERSION : "1.28"
+ MIN_GIT_VERSION : "1.8.3.1"
+ MIN_GCC_VERSION : "7.5"
+ MIN_MAKE_VERSION : "4.0"
++# Disk space (Gbytes) needed to generate qemux86-64 core-image-sato on Ubuntu 22.04 (x86-64), rounded up from 87
++MIN_DISK_SPACE : "90"
 diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 92e2211629..e0b8400178 100644
+index 274781a903..72579a5e23 100644
 --- a/documentation/ref-manual/system-requirements.rst
 +++ b/documentation/ref-manual/system-requirements.rst
-@@ -303,8 +303,13 @@ resolve this by installing a ``buildtools-extended`` tarball that
- contains additional tools, the equivalent of the Debian/Ubuntu ``build-essential``
- package.
+@@ -29,6 +29,17 @@ and conceptual information in the :doc:`/overview-manual/index`.
+    For more information about the Yocto Project Documentation set, see
+    the :ref:`ref-manual/resources:links and related documentation` section.
  
-+For systems with a broken make version (e.g. make 4.2.1 without patches) but
-+where the rest of the host tools are usable, you can use the ``buildtools-make``
-+tarball instead.
++Minimum Free Disk Space
++=======================
 +
- In the sections that follow, three different methods will be described for
--installing the ``buildtools`` or ``buildtools-extended`` toolset.
-+installing the ``buildtools``, ``buildtools-extended`` or ``buildtools-make``
-+toolset.
- 
- Installing a Pre-Built ``buildtools`` Tarball with ``install-buildtools`` script
- --------------------------------------------------------------------------------
-@@ -339,6 +344,13 @@ installer and automatically installs the tools for you:
-       $ cd poky
-       $ scripts/install-buildtools
- 
-+   Alternatively if your host development system has a broken ``make``
-+   version such that you only need a known good version of ``make``,
-+   you can use the ``--make-only`` option:
++To build an image such as ``core-image-sato`` for the ``qemux86-64`` machine,
++you need a system with at least &MIN_DISK_SPACE; Gbytes of free disk space.
++However, much more disk space will be necessary to build more complex images,
++to run multiple builds and to cache build artifacts, improving build efficiency.
 +
-+      $ cd poky
-+      $ scripts/install-buildtools --make-only
++If you have a shortage of disk space, see the ":doc:`/dev-manual/disk-space`"
++section of the Development Tasks Manual.
 +
- 2. Source the tools environment setup script by using a command like the
-    following::
+ .. _detailed-supported-distros:
  
-@@ -373,6 +385,10 @@ steps:
- 
-       $ sh ~/Downloads/x86_64-buildtools-extended-nativesdk-standalone-&DISTRO;.sh
- 
-+   An example for the make-only installer::
-+
-+      $ sh ~/Downloads/x86_64-buildtools-make-nativesdk-standalone-&DISTRO;.sh
-+
-    During execution, a prompt appears that allows you to choose the
-    installation directory. For example, you could choose the following:
-    ``/home/your-username/buildtools``
-@@ -418,6 +434,10 @@ installer:
- 
-       $ bitbake buildtools-extended-tarball
- 
-+   or to build the make-only tarball::
-+
-+      $ bitbake buildtools-make-tarball
-+
-    .. note::
- 
-       The :term:`SDKMACHINE` variable in your ``local.conf`` file determines
-@@ -441,6 +461,10 @@ installer:
- 
-       $ sh ~/Downloads/x86_64-buildtools-extended-nativesdk-standalone-&DISTRO;.sh
- 
-+   or for the make-only installer::
-+
-+      $ sh ~/Downloads/x86_64-buildtools-make-nativesdk-standalone-&DISTRO;.sh
-+
-    During execution, a prompt appears that allows you to choose the
-    installation directory. For example, you could choose the following:
-    ``/home/your_username/buildtools``
+ Supported Linux Distributions
 -- 
 2.34.1
 
