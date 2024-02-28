@@ -2,39 +2,39 @@ Return-Path: <luca.ceresoli@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 04538C47DD9
-	for <webhook@archiver.kernel.org>; Wed, 28 Feb 2024 11:25:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DD249C54E41
+	for <webhook@archiver.kernel.org>; Wed, 28 Feb 2024 11:25:33 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.10926.1709119524303461292
+ by mx.groups.io with SMTP id smtpd.web11.10844.1709119523848592694
  for <docs@lists.yoctoproject.org>;
  Wed, 28 Feb 2024 03:25:24 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=itKXfJgm;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BAsVKVRb;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: luca.ceresoli@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8DB861BF212;
-	Wed, 28 Feb 2024 11:25:22 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 544C71BF211;
+	Wed, 28 Feb 2024 11:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709119522;
+	t=1709119521;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=++gn/5GQpAxpJesijFk6niZFLUub3LLY/yNS84puGJA=;
-	b=itKXfJgmqwXvAwflnT8sucsrf6yKvb8p9FkNz/YU/XnCoxqebDBdi7bk+Oq42n4fJn1usZ
-	1epE6qv78aS2C3fgkJuU2UEuN93JaLusQJ9wFvEQ1GzjQZcc7/ydyQVIbP0kSnTE8kK4eS
-	0tf2ke9y7tLq/DrOlxfS63ThmGsIC9nk0nBKRY3vlPRx3BTpd5g7P15hegpBWEXA407wBI
-	JZgGNFN+PA9dyfqPCri/dvkafn+wOX2QXeruxxElCRMOXYOtDYCCgbr0Mp2n1wVJOsQ/4j
-	uC/Kj8aM4NJrujKXZsbC3mpS4Q+IAUSGCVUVS5bmYTTY6Vqxn3WqgOuyaiNMjw==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EI01ZzLEHGcZ6x9H5f14ILp94M8Wi6Zl4P1IosQ2PFw=;
+	b=BAsVKVRbz3byziXIBgBTCC9Q5vSZJic4FD0jaBe49fEkKZIglNGTBtyTWW37icEVJyB1MQ
+	8JhnQfUUeyQnHn7lNh3Fi8LtjAwm5F8bi4tzoG+jnCWJD5ta1DdJny3xrQ9KBdfBfYwBvQ
+	tGBmaoIoqq5pjzb301TXwg0PXX8NMdWDF6ISdOD+zXQnGI1bjPJSXvS5Joc+VhXMFD5jBv
+	Fji8bctZEFcJEkWtCgDAjLeyap4ssbXGRNZjUcCij6v4+mGgbsXaLpE+M7e2MQbD3VC26M
+	8ivParqtD21mn3jQ8yaP2Pg8g/SdFnl12U6AaFEMY6CXeloFQ9Pc+Q9+5vnH9w==
 From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Wed, 28 Feb 2024 12:25:15 +0100
-Subject: [PATCH v3 2/2] ref-manual: tasks: do_cleansstate: recommend using
- '-f' instead for a shared sstate
+Subject: [PATCH v3 0/2] Discourage using do_cleansstate and do_cleanall
+Date: Wed, 28 Feb 2024 12:25:13 +0100
+Message-Id: <20240228-clean-tasks-notes-v3-0-368af5e1aa0e@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240228-clean-tasks-notes-v3-2-368af5e1aa0e@bootlin.com>
-References: <20240228-clean-tasks-notes-v3-0-368af5e1aa0e@bootlin.com>
-In-Reply-To: <20240228-clean-tasks-notes-v3-0-368af5e1aa0e@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIABkY32UC/32NQQ6CMBBFr0Jm7ZhmEBBX3sOwKGWQidiaTkM0h
+ LtbOYDL95L//grKUVjhUqwQeRGV4DOUhwLcZP2dUYbMQIZOhqhBN7P1mKw+FH1IrFjV57a1le2
+ HsYa8e0Ue5b03b13mSTSF+NkvFvrZf7WF0GBZjX1NDbfOmmsfQprFH114Qrdt2xeyUBmMtAAAA
+ A==
 To: docs@lists.yoctoproject.org
 Cc: Quentin Schulz <quentin.schulz@theobroma-systems.com>, 
  Richard Purdie <richard.purdie@linuxfoundation.org>, 
@@ -45,46 +45,40 @@ X-GND-Sasl: luca.ceresoli@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 28 Feb 2024 11:25:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4914
+ <docs@lists.yoctoproject.org>; Wed, 28 Feb 2024 11:25:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4912
 
-do_cleansstat can produce build errors when using a shared sstate cache.
+do_cleansstate and do_cleanall can generate build failures. Document this
+and discourage using them.
 
-Add a note to clearly discourage, provide a safe alternative (bitbake -f),
-and the rationale.
-
-Proposed-by: Quentin Schulz  <quentin.schulz@theobroma-systems.com>
-Link: https://lore.kernel.org/yocto-docs/20240219155513.76738-1-luca.ceresoli@bootlin.com/T/#m5529687ecb0f9ec2dacddcb6ff58e2df73af9cde
 Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
 ---
- documentation/ref-manual/tasks.rst | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Changes in v3:
+- fix typos
+- add missing '-c'
+- mention DL_DIR and SSTATE_DIR
+- reword sentence using the version proposed by Quentin
+- Link to v2: https://lore.kernel.org/r/20240227-clean-tasks-notes-v2-0-35fb627e9ca0@bootlin.com
 
-diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
-index 7a0915c6e57a..79469bc37221 100644
---- a/documentation/ref-manual/tasks.rst
-+++ b/documentation/ref-manual/tasks.rst
-@@ -514,6 +514,18 @@ When you run the :ref:`ref-tasks-cleansstate` task, the OpenEmbedded build syste
- no longer uses any sstate. Consequently, building the recipe from
- scratch is guaranteed.
- 
-+.. note::
-+
-+   Using :ref:`ref-tasks-cleansstate` with a shared :term:`SSTATE_DIR` is
-+   not recommended because it could trigger an error during the build of a
-+   separate bitbake instance. This is because the builds check sstate "up
-+   front" but download the files later, so it if is deleted in the
-+   meantime, it will cause an error but not a total failure as it will
-+   rebuild it.
-+
-+   The reliable and preferred way to force a new build is to use ``bitbake
-+   -f`` instead.
-+
- .. note::
- 
-    The :ref:`ref-tasks-cleansstate` task cannot remove sstate from a remote sstate
+Changes in v2:
+- improved the do_cleanall patch to show it applies also without a
+  shared DL_DIR
+- add new patch for do_cleansstate
+- Link to v1: https://lore.kernel.org/yocto-docs/20240219155513.76738-1-luca.ceresoli@bootlin.com
 
+---
+Luca Ceresoli (2):
+      ref-manual: tasks: do_cleanall: recommend using '-f' instead
+      ref-manual: tasks: do_cleansstate: recommend using '-f' instead for a shared sstate
+
+ documentation/ref-manual/tasks.rst | 38 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 35 insertions(+), 3 deletions(-)
+---
+base-commit: 6571eb02cbd5c2b96df0f279f25b63255ab7eac4
+change-id: 20240227-clean-tasks-notes-56899a5abdf6
+
+Best regards,
 -- 
-2.34.1
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
 
