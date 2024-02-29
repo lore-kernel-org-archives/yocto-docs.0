@@ -1,104 +1,98 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <steve@sakoman.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 443ADC48BF6
-	for <webhook@archiver.kernel.org>; Thu, 29 Feb 2024 12:42:53 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.24086.1709210567867782810
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0876EC54E41
+	for <webhook@archiver.kernel.org>; Thu, 29 Feb 2024 15:44:04 +0000 (UTC)
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+ by mx.groups.io with SMTP id smtpd.web11.28142.1709221436679679567
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Feb 2024 04:42:48 -0800
+ Thu, 29 Feb 2024 07:43:56 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iHFfUWUT;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 9F3FAE000B;
-	Thu, 29 Feb 2024 12:42:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709210566;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jHEt0+4olyqDHiQD9twE8yYobxCVvQuD9ys3f1rUtlQ=;
-	b=iHFfUWUTlKrxUd+eoNQhGlOV9t778wbQcNHyiu03H8CNCLU+L9MIDSe4TqrbXwZ9cb9kA4
-	9i3+fGfR8+PAdp/oG3EG6L8M2VhzMJbIkQv5xGGXy4rSecWTbAKTdRF8AM0VxrESlGD1H9
-	jAPqHG1RWg17BafhxoC3qabSwkWkj+M8+G3LiT8reQLlsXhKRD8/IPRulDPdpuisd0Q+02
-	x2iTDN0j2Sheo28+OnOGAS4vAmfnj10EaxcVUX5Izmakamk0BOIC0ThZ29rDGRJkzmwo8d
-	pvFHz1tJgtzalOScNlKBysDQyO5P7XQG+A9lvwx7GoPlt4WYyxDqaami7d+Q5A==
-Message-ID: <35fbf022-990b-4f73-90d5-cedc2e272bc6@bootlin.com>
-Date: Thu, 29 Feb 2024 13:42:45 +0100
+ dkim=pass header.i=@sakoman-com.20230601.gappssmtp.com header.s=20230601 header.b=C5+I6KRY;
+ spf=softfail (domain: sakoman.com, ip: 209.85.210.170, mailfrom: steve@sakoman.com)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6e5896846f2so740176b3a.2
+        for <docs@lists.yoctoproject.org>; Thu, 29 Feb 2024 07:43:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sakoman-com.20230601.gappssmtp.com; s=20230601; t=1709221436; x=1709826236; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=wodx4+BTFHWi0g17BAZmDGZt/0MwVXiC6p12LjoNgQQ=;
+        b=C5+I6KRYglHelJXi1Q43EWlCVZ+BOEcZi6ciWLjW4bgMDZbthsgn80Oke16CaMM8YQ
+         ir8uGeKFrdCDQ8LLHD3mzofH+hPmkYgJcuPm11LqF5Ob+CBlpLUK4dHh051vTucMpUR1
+         WQkOnQky4hdEWQbXgl23sO2KJ5lLW9X3qXfeYHTdcJ9EDeJtVUDX/0gGBd6JPZOcNxxF
+         7fwZvZNhvNn5ts0jzy5Vx0km7hhlkICxhZ/xABaxj8ZHkwTZsssIA4H1qLR0mKjZijJ5
+         8tNhdskdVrBGuI0ZnRU8TZMU/xT1hk4ww4pR+eAtJfMBtd5YlCUfWK10C7WGx+MYtF9m
+         GAFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709221436; x=1709826236;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wodx4+BTFHWi0g17BAZmDGZt/0MwVXiC6p12LjoNgQQ=;
+        b=Ex9SM88jDaiYdL5F7JnfFpP368p5qrJTbyyNxvqB4Pw6a9hNYbch9PsPgbByyEVVss
+         PVYMcfJBlEr2v+hSstGFaC5HOqBfIvqK2OAcnk+4y2891+zM8h5/P3pthdyQHe/5A929
+         +Pq6/v0n0R7XavfL1BwLJIa78sL0oy63yL6xuy3wdIFzxfpMlBIos9MtcpVayoLn2kZw
+         z1+Ix9XqSbCbJeHpAvHT8wurKDAUW2TO+K01C2Q6qiSuVNM2s2eMHq7SKMwA8KcYOU8y
+         bmq+ti6OWsTtJlx/R6UWU4lqXriwZSeixoE/xNEx0JsP7eeRqnazcVenS565fjajQGpK
+         PWmA==
+X-Gm-Message-State: AOJu0YyH2REb4p0VNdkVBFHLRsbV7z3xi3V0cMOHwogEkZPnTxEyd1in
+	6OnJFXbt9vQViBoaefQHzs4PGqid9LYrY6GOaZxUZkvEwJhQauFc4KdPH54t5iiDQjhom1gpeym
+	2X0A=
+X-Google-Smtp-Source: AGHT+IH6JbnJrX9dq4lL4U/oRnXg495UDBBtPPAgSWsVcy2r8fhYM5M6e19lFD2EIMC4qnpb1KOsjw==
+X-Received: by 2002:aa7:9835:0:b0:6e5:65f6:58b with SMTP id q21-20020aa79835000000b006e565f6058bmr2438412pfl.7.1709221435738;
+        Thu, 29 Feb 2024 07:43:55 -0800 (PST)
+Received: from hexa.router0800d9.com (dhcp-72-234-108-41.hawaiiantel.net. [72.234.108.41])
+        by smtp.gmail.com with ESMTPSA id c4-20020aa78804000000b006e05c801748sm1410784pfo.199.2024.02.29.07.43.55
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 07:43:55 -0800 (PST)
+From: Steve Sakoman <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][dunfell] documentation: update for 3.1.32
+Date: Thu, 29 Feb 2024 05:43:48 -1000
+Message-Id: <4a14c4e826dfb7019c41b359919569c8640cfc5e.1709221377.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1709221377.git.steve@sakoman.com>
+References: <cover.1709221377.git.steve@sakoman.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Geoff Parker <geoffrey.parker@arthrex.com>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: variables.rst: adding multiple groups
- in GROUPADD_PARAM
-Content-Language: en-US
-To: Geoff Parker <geoffhp@gmail.com>
-References: <20240228072455.1452176-1-geoffrey.parker@arthrex.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20240228072455.1452176-1-geoffrey.parker@arthrex.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 29 Feb 2024 12:42:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4919
+ <docs@lists.yoctoproject.org>; Thu, 29 Feb 2024 15:44:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4920
 
-Hi Geoff
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
+---
+ documentation/poky.yaml | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-On 2/28/24 at 08:24, Geoff Parker wrote:
-> From: Geoff Parker <geoffrey.parker@arthrex.com>
->
-> Add missing documentation on how to add multiple groups with a single
-> GROUPADD_PARAM:${PN}
->
-> Signed-off-by: Geoff Parker <geoffrey.parker@arthrex.com>
-> ---
->   documentation/ref-manual/variables.rst | 8 ++++++++
->   1 file changed, 8 insertions(+)
-
-
-Many thanks for this improvement to the docs!
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Merged into master-next.
-Cheers
-Michael.
-
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index a0187a6d47..fdebcc9ba4 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -3234,6 +3234,14 @@ system and gives an overview of their function and contents.
->   
->            GROUPADD_PARAM:${PN} = "-r netdev"
->   
-> +      More than one group can be added by separating each set of different
-> +      groups' parameters with a semicolon.
-> +
-> +      Here is an example adding multiple groups from the ``useradd-example.bb``
-> +      file in the ``meta-skeleton`` layer::
-> +
-> +         GROUPADD_PARAM:${PN} = "-g 880 group1; -g 890 group2"
-> +
->         For information on the standard Linux shell command
->         ``groupadd``, see https://linux.die.net/man/8/groupadd.
->   
->
-> -=-=-=-=-=-=-=-=-=-=-=-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#4910): https://lists.yoctoproject.org/g/docs/message/4910
-> Mute This Topic: https://lists.yoctoproject.org/mt/104619596/1051844
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [michael.opdenacker@bootlin.com]
-> -=-=-=-=-=-=-=-=-=-=-=-
->
+diff --git a/documentation/poky.yaml b/documentation/poky.yaml
+index 0e04203fa..e41e355fa 100644
+--- a/documentation/poky.yaml
++++ b/documentation/poky.yaml
+@@ -1,13 +1,13 @@
+-DISTRO : "3.1.31"
++DISTRO : "3.1.32"
+ DISTRO_NAME_NO_CAP : "dunfell"
+ DISTRO_NAME : "Dunfell"
+ DISTRO_NAME_NO_CAP_MINUS_ONE : "zeus"
+-YOCTO_DOC_VERSION : "3.1.31"
++YOCTO_DOC_VERSION : "3.1.32"
+ YOCTO_DOC_VERSION_MINUS_ONE : "3.0.4"
+-DISTRO_REL_TAG : "yocto-3.1.31"
+-DOCCONF_VERSION : "3.1.31"
++DISTRO_REL_TAG : "yocto-3.1.32"
++DOCCONF_VERSION : "3.1.32"
+ BITBAKE_SERIES : "1.46"
+-POKYVERSION : "23.0.31"
++POKYVERSION : "23.0.32"
+ YOCTO_POKY : "poky-&DISTRO_NAME_NO_CAP;-&POKYVERSION;"
+ YOCTO_DL_URL : "https://downloads.yoctoproject.org"
+ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
