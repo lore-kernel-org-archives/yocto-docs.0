@@ -2,96 +2,81 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE81DC54798
-	for <webhook@archiver.kernel.org>; Thu, 29 Feb 2024 11:07:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E4C59C48BF6
+	for <webhook@archiver.kernel.org>; Thu, 29 Feb 2024 11:20:12 +0000 (UTC)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.21900.1709204834605915489
+ by mx.groups.io with SMTP id smtpd.web10.22356.1709205608657605278
  for <docs@lists.yoctoproject.org>;
- Thu, 29 Feb 2024 03:07:15 -0800
+ Thu, 29 Feb 2024 03:20:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kfSGbwjX;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=S9H3y2yG;
  spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4DDBDFF803;
-	Thu, 29 Feb 2024 11:07:12 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7EBFDFF80A;
+	Thu, 29 Feb 2024 11:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709204832;
+	t=1709205606;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UsWlTeFLVSMD3rZq5bF/AYSlAcnKAExSSBazGCDyl0s=;
-	b=kfSGbwjXQuuH/BR6Mn6/OdPhNkolAyux674GTvx8lsJ9QUv1ja22N2IeQiAD5Om5Mq8VI8
-	ReGTbU2c+K16FhZF+My9oCaw5G3hA0lC4LHTjsqkMfoEoBL+RLFsotxeyyVK2anpVhIWyY
-	CVbnNTQMMdgIrKtdvfpL0JygjP2ikH1qoWCH/IuM8HdLyFHXvlVOGdgkPjkpAGze/14Wi7
-	/fdL3sQSz+kH9569gKZe3obnp0XqNmAcBLlXisDJrf2Aq57WGdULtX3rIn4UtLvpsLhGel
-	TsnSWG2SJ0HHS9EWXFxeF/iBGF4IaTh48zErduozgKOdUmoAeCom9m4i8Qe8xg==
-Message-ID: <24ed4572-8008-48c8-8884-af215d313742@bootlin.com>
-Date: Thu, 29 Feb 2024 12:07:11 +0100
+	bh=cr857Iq1NMW/TgAf+ftQPQ7BeNPE4kcYRMO+BPJVw3w=;
+	b=S9H3y2yGVnwqhO1ZMPOC1ZPjvn3Vrp5MscQMNzp15iJlqm3oSefgI3yYmWOWyLfaZigOww
+	W2UPIL94ej8OIBwMlSiC2nCzwQwcF4tLWNzVa8R4QoP7RJsi4RBt4oRjpvuSOL5imAK5nw
+	GgVpxod1alSCzPn8ozPXeje1tjT92x0EaGNkwwNS4X1FOmmoJcecp5A284zI91tuZ7FLkN
+	7+oq/5mbgIO9U7tDGK20GpGd27g7dx9kUwM6Zp6n9LAp6xinhEewyOr+VrMZ+JWnNe8o5Z
+	0kstIgVfYbmXHErH8mI06gqzDQOhIAR2suIfBvsex/8LbdT8rgpObLZGY84V6A==
+Message-ID: <54df2516-b2c6-46ca-946c-dafb6e120153@bootlin.com>
+Date: Thu, 29 Feb 2024 12:20:05 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v3 2/2] ref-manual: tasks: do_cleansstate:
- recommend using '-f' instead for a shared sstate
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] variables.rst: SDKPATHINSTALL correct installation
+ default path
 Content-Language: en-US
-To: quentin.schulz@theobroma-systems.com,
- Luca Ceresoli <luca.ceresoli@bootlin.com>
-References: <20240228-clean-tasks-notes-v3-0-368af5e1aa0e@bootlin.com>
- <20240228-clean-tasks-notes-v3-2-368af5e1aa0e@bootlin.com>
- <f21a5175-3c01-4bf4-9285-3a1ecda302ad@theobroma-systems.com>
+To: "Bezem, Johan (extern)" <JBezem.extern@arri.de>
+References: <20240226161506.48020-1-jbezem.extern@arri.de>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <f21a5175-3c01-4bf4-9285-3a1ecda302ad@theobroma-systems.com>
+In-Reply-To: <20240226161506.48020-1-jbezem.extern@arri.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 29 Feb 2024 11:07:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4917
+ <docs@lists.yoctoproject.org>; Thu, 29 Feb 2024 11:20:12 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4918
 
-Luca, Quentin,
+Hi Johan
 
-Many thanks for the patches and reviews!
-
-On 2/28/24 at 12:46, Quentin Schulz via lists.yoctoproject.org wrote:
-> Hi Luca,
+On 2/26/24 at 17:15, Bezem, Johan (extern) wrote:
+> From: "Bezem, Johan" <jbezem.extern@arri.de>
 >
-> On 2/28/24 12:25, Luca Ceresoli wrote:
->> do_cleansstat can produce build errors when using a shared sstate cache.
->>
->> Add a note to clearly discourage, provide a safe alternative (bitbake 
->> -f),
->> and the rationale.
->>
->> Proposed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+> The SDKPATH variable seems mistakenly identified as the
+> default path where the SDK will be installed by the generated
+> installation script, unless option '-d' or a manual input
+> overrides this default.
 >
-> In poky:
-> $ git log --oneline --grep "Proposed-by" | wc -l
-> 2
-> $ git log --oneline --grep "Suggested-by" | wc -l
-> 46
+> The intended variable is SDKPATHINSTALL. SDKPATH indicates
+> where the SDK is being composed and built.
 >
-> https://git-scm.com/docs/SubmittingPatches#sign-off also only mentions 
-> Suggested-by as a trailer.
+> The definitions have been added/updated.
 >
-> Not really important, it just surprised me to see this trailer for the 
-> first time :)
-
-I fixed this in the commit.
-
->
-> For the whole series,
->
-> Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+> Signed-off-by: Johan Bezem <jbezem.extern@arri.de>
+> ---
+>   documentation/overview-manual/concepts.rst | 2 +-
+>   documentation/ref-manual/variables.rst     | 6 +++++-
+>   2 files changed, 6 insertions(+), 2 deletions(-)
 
 
-Merged into "master-next"
-Thanks again.
+Thanks for the new version!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into master-next.
+Cheers
 Michael.
 
 -- 
+
 Michael Opdenacker, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
