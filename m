@@ -1,137 +1,126 @@
-Return-Path: <peter.kjellerstedt@axis.com>
+Return-Path: <simone.p.weiss@posteo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD9B0C48BF6
-	for <webhook@archiver.kernel.org>; Mon,  4 Mar 2024 16:01:00 +0000 (UTC)
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (EUR03-AM7-obe.outbound.protection.outlook.com [40.107.105.79])
- by mx.groups.io with SMTP id smtpd.web10.102906.1709568052127854751
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C8239C48BF6
+	for <webhook@archiver.kernel.org>; Mon,  4 Mar 2024 20:50:49 +0000 (UTC)
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+ by mx.groups.io with SMTP id smtpd.web11.2955.1709585448711620368
  for <docs@lists.yoctoproject.org>;
- Mon, 04 Mar 2024 08:00:52 -0800
+ Mon, 04 Mar 2024 12:50:49 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@axis.com header.s=selector1 header.b=h6sSxSX7;
- spf=pass (domain: axis.com, ip: 40.107.105.79, mailfrom: peter.kjellerstedt@axis.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XOo6YTNT56QbsvMSpFgE9BIVEbu0g9K+LdHv7giw4818hzwSP3fIU4upiIgO4xFaIT0bbx/4KBqsdiVBCT8x4ikbVPbSymAT1YtI9P59O4yxNHVIOf/8rsxBZnQ1xVvdQDFPtuO+UHSWfbOXIyyiloiFxBBE8K4Lqw8VqtYyo/3vV6STEj6WjnJ9qyp3xElETCyyTtrp0SUkk7juHHVKZy4MYbNBlC8Z6atvemMSuPU9TReOANrm4m7NYJLkcYhSTYq/97WQC38TAA/fSlAYoF5H6nPCvYrkp+4TWvKjwlN/uDP+utb7Je6UdvPvZDsKCYvLeQBienh+pZn9jnLLhw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eDRmOOtXwEaievi9/3wTNXTRx8+J0bHG0HJOH1P3moI=;
- b=JymJ/0wekv5mniceLQNSPEaKabdkCNUJcEaJe2rWA7zoQxTO/z2TsfOi03baTODkrNt7v9TAptzFOXHzVPMKMDBwosU+OP+xSHV5GfSShsMlTjYaUcnIA7l3IFxsLSGOfUjmoHN9aRkKupvsdYeMSyoSGjlY4mmVF/Hk+Wpkcr9hvUdRLSgXc5foUZD+KdJqqp383kxbBk9NOW2QxCbRM5uwHUQ/HKkSbfm53i1Cwno45L5yyZlf/nntOVezeqT4TGfyU8A0ol7miczrlIhNgvwV5HFM8ZbQ6L5/3ohNNxk9jVAbyAY5GfOZ18MvurmjXM0ztBAC3cjLtAeU2b/6Ow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 195.60.68.100) smtp.rcpttodomain=lists.yoctoproject.org
- smtp.mailfrom=axis.com; dmarc=fail (p=none sp=none pct=100) action=none
- header.from=axis.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axis.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eDRmOOtXwEaievi9/3wTNXTRx8+J0bHG0HJOH1P3moI=;
- b=h6sSxSX7HhIN/Sj1VIVMlUeL9KujJNGczJYMtq7w5HhpkT11ecQefPoyqlGIHx+z2oVzG+2HjLhdTQ6bDFATgNctQNHZGe5b6kmeKRVD/VG7+JB1TAr98fLzIP2Wyuti8aq69jvi/SoQscYwyQIAX9PuE0G889AKVgaegHPfwcA=
-Received: from AS4P191CA0008.EURP191.PROD.OUTLOOK.COM (2603:10a6:20b:5d5::19)
- by DB3PR0202MB9304.eurprd02.prod.outlook.com (2603:10a6:10:429::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.38; Mon, 4 Mar
- 2024 16:00:48 +0000
-Received: from AMS0EPF000001B4.eurprd05.prod.outlook.com
- (2603:10a6:20b:5d5:cafe::e9) by AS4P191CA0008.outlook.office365.com
- (2603:10a6:20b:5d5::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7339.39 via Frontend
- Transport; Mon, 4 Mar 2024 16:00:48 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 195.60.68.100)
- smtp.mailfrom=axis.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=axis.com;
-Received-SPF: Fail (protection.outlook.com: domain of axis.com does not
- designate 195.60.68.100 as permitted sender) receiver=protection.outlook.com;
- client-ip=195.60.68.100; helo=mail.axis.com;
-Received: from mail.axis.com (195.60.68.100) by
- AMS0EPF000001B4.mail.protection.outlook.com (10.167.16.168) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7362.11 via Frontend Transport; Mon, 4 Mar 2024 16:00:48 +0000
-Received: from SE-MAILARCH01W.axis.com (10.20.40.15) by se-mail01w.axis.com
- (10.20.40.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 4 Mar
- 2024 17:00:47 +0100
-Received: from se-mail02w.axis.com (10.20.40.8) by SE-MAILARCH01W.axis.com
- (10.20.40.15) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Mon, 4 Mar
- 2024 17:00:47 +0100
-Received: from se-intmail01x.se.axis.com (10.0.5.60) by se-mail02w.axis.com
- (10.20.40.8) with Microsoft SMTP Server id 15.1.2375.34 via Frontend
- Transport; Mon, 4 Mar 2024 17:00:47 +0100
-Received: from saur.se.axis.com (saur.se.axis.com [10.92.3.10])
-	by se-intmail01x.se.axis.com (Postfix) with ESMTP id BF4471598A
-	for <docs@lists.yoctoproject.org>; Mon,  4 Mar 2024 17:00:47 +0100 (CET)
-Received: from saur.se.axis.com (localhost [127.0.0.1])
-	by saur.se.axis.com (8.17.1/8.15.2) with ESMTPS id 424G0lJv2326997
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT)
-	for <docs@lists.yoctoproject.org>; Mon, 4 Mar 2024 17:00:47 +0100
-Received: (from pkj@localhost)
-	by saur.se.axis.com (8.17.1/8.17.1/Submit) id 424G0lQg2326879
-	for docs@lists.yoctoproject.org; Mon, 4 Mar 2024 17:00:47 +0100
-From: Peter Kjellerstedt <pkj@axis.com>
-To: <docs@lists.yoctoproject.org>
-Subject: [PATCH] ref-manual: classes: Add the kernel-module-dirs class
-Date: Mon, 4 Mar 2024 17:00:44 +0100
-Message-ID: <20240304160044.2325620-1-pkj@axis.com>
-X-Mailer: git-send-email 2.40.1
+ dkim=fail reason="dkim: body hash did not verify" header.i=@posteo.com header.s=2017 header.b=nO8oFhCV;
+ spf=pass (domain: posteo.com, ip: 185.67.36.66, mailfrom: simone.p.weiss@posteo.com)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id E3202240103
+	for <docs@lists.yoctoproject.org>; Mon,  4 Mar 2024 21:50:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.com; s=2017;
+	t=1709585446; bh=VKYcynreBlzETpoUYffB/3pEneWLY0wdcausBcIW8Yw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type:
+	 Content-Transfer-Encoding:From;
+	b=nO8oFhCVAU8YeQhbqBDnBqxjD/9GXZnPUxw4noWnFkk4w1pWAcr/MZUHU70T4ROv4
+	 YJ86L+oTNfBdXN91mPl76+p07EKxgouHow/ksWU2WxcZOIJKCA44A/pkgxEtHL/c+h
+	 OKULVf/LqfYoorkUfng8QzRQQuZ1eOh4t+FoQ0mphIitB7kgMs1FmMdJFXHcG1ZFuR
+	 0YBFC7jaHJ/S8U9T5Tq6p8A7Kny8UQbXGu7Qbyf7OyE5zrTKvyzUonIohZCVTLinpY
+	 MnTuihKC8jI/Jooln8hWrX88FMfvCIWoLF/ecYC7jJHq8Yw16ALTnW4K9EG1Szz7+v
+	 pdNFOIp9wpfOw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4TpW796Br5z6txV;
+	Mon,  4 Mar 2024 21:50:45 +0100 (CET)
+From: simone.p.weiss@posteo.com
+To: docs@lists.yoctoproject.org
+Cc: =?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
+Subject: [PATCH] contributor-guide: Add notes for tests
+Date: Mon,  4 Mar 2024 20:50:38 +0000
+Message-Id: <20240304205038.9060-1-simone.p.weiss@posteo.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS0EPF000001B4:EE_|DB3PR0202MB9304:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9380f470-2a1b-4db5-6098-08dc3c644212
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	/MZaUh+agopZfrSvXS9AQRyDUNpAWyB21EohIJHCuq1qazOIhcSCHtyO5WWLlDG4Aa6ZI6B8SpvDAbbLR1C9YCzpUC6Die/rPfJzqYvfiPPmj1sQXo1OJHWNGKIXEr8MEXSwLHlrN8HcGpbeugghbWHnEo2DFTvV7d8mayPQRbJF8CC3xJeH2XbOJu1kaHhCbHR859PQBDBR5VIRhSrDTkJa1mowZMDK7IXSKOa0KjouBkn9P6yRWDY40qdU3ZE+2eUf1481V2ISzVxkdlCni+2T+SvaCMnTGVFLR/1dO9IIQnqh42Jpn6dQEDzvrqE7mn1AcRZ0Gj36khsP7IH/Aufg8yTmcaGSidgn0XUdwu9Zl3y7OC8B32htwQLBw8z6NGWpA8Z+FWovlOKQpELIYM/xHmJP300EwKjckhHBvq+MyBwuDUQ6Vs/Q2nq61vCyqA4dSVUey1+aZi3TXONhEgu1nBO9vdYK6gdpsZfIPWTHjV89Fsmmch1lG0f5OtTG+KlCmfYYRG/qGoWWuJDs81I8zo7yr917LZ+6564z8wCzsr8MDLB/OnGEOHXKSwpfitTWLeZKPfswlyKIL7EuKeqsjlyuY8e3oNXEbSr0/spKKV99w09H9LHBSCkvP9wq/2WTn7e4pkH/VKe8vczAUnAtESr9THj9NqQUYcDGY1FSTgqwEL7nuxyyhzL3uKBVE35V2UFJxOgmE0WatFmcHaNSSdMyn7DfJWK7OvkGU8K/4IFvcfgXPAMAqcpPxxcX
-X-Forefront-Antispam-Report: 
-	CIP:195.60.68.100;CTRY:SE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.axis.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(82310400014)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: axis.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2024 16:00:48.2195
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9380f470-2a1b-4db5-6098-08dc3c644212
-X-MS-Exchange-CrossTenant-Id: 78703d3c-b907-432f-b066-88f7af9ca3af
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=78703d3c-b907-432f-b066-88f7af9ca3af;Ip=[195.60.68.100];Helo=[mail.axis.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	AMS0EPF000001B4.eurprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB3PR0202MB9304
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 04 Mar 2024 16:01:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4927
+ <docs@lists.yoctoproject.org>; Mon, 04 Mar 2024 20:50:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4928
 
+From: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
+
+This adds some hints that and how chnages should be tested when contribut=
+ing.
+
+Fixes [YOCTO #15412]
+
+Signed-off-by: Simone Wei=C3=9F <simone.p.weiss@posteo.com>
 ---
+ .../contributor-guide/submit-changes.rst      | 37 ++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 2 deletions(-)
 
-This is of course pending the actual addition of the new bbclass to
-OE-Core.
-
- documentation/ref-manual/classes.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
-
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
-l/classes.rst
-index 7300020ef1..d61be8e4bc 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1705,6 +1705,14 @@ The :ref:`ref-classes-kernel-grub` class updates the=
- boot area and the boot menu
- the kernel as the priority boot mechanism while installing a RPM to
- update the kernel on a deployed target.
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documen=
+tation/contributor-guide/submit-changes.rst
+index 61f3157d6..d2167a2f3 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -221,6 +221,38 @@ to add the upgraded version.
+    <https://www.kernel.org/doc/html/latest/process/submitting-patches.ht=
+ml#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes>`__
+    in the Linux kernel documentation.
 =20
-+.. _ref-classes-kernel-module-dirs:
++Test your changes
++-----------------
 +
-+``kernel-module-dirs``
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++For each contributions you make, you should test your changes as well.
++For this the Yocto Project offers several types of tests. Those tests co=
+ver
++different areas and it depends on your changes which are feasible. For e=
+xample run:
 +
-+The :ref:`ref-classes-kernel-module-dirs` class provides path variables re=
-lated
-+to kernel modules.
++   -  For changes that affect the build environment:
 +
- .. _ref-classes-kernel-module-split:
++      -  ``bitbake-selftest``: for changes within BitBake
++
++      -  ``oe-selftest``: to test combinations of BitBake runs
++
++      -  ``oe-build-perf-test``: to test the performance of common build=
+ scenarios
++
++   -  For changes in a recipe:
++
++      - ``ptest``: of the package, if it exists
++
++      - ``testimage``: build an image, boot it and run testcases on it
++
++      - If applicable, ensure also the ``native`` and ``nativesdk`` vari=
+ants builds
++
++   -  For changes relating to the SDK:
++
++      - ``testsdk``: to build, install and run tests against a SDK
++
++      - ``testsdk_ext``: to build, install and run tests against an exte=
+nded SDK
++
++Note that this list just gives suggestions and is not exhaustive. More d=
+etails can
++be found here: :ref:`test-manual/intro:Yocto Project Tests --- Types of =
+Testing Overview`.
++
+ Creating Patches
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
 =20
- ``kernel-module-split``
+@@ -285,8 +317,9 @@ Validating Patches with Patchtest
+ ``patchtest`` is available in ``openembedded-core`` as a tool for making
+ sure that your patches are well-formatted and contain important info for
+ maintenance purposes, such as ``Signed-off-by`` and ``Upstream-Status``
+-tags. Currently, it only supports testing patches for
+-``openembedded-core`` branches. To setup, perform the following::
++tags. Note that no functional testing of the changes will be performed b=
+y ``patchtesti``.
++Currently, it only supports testing patches for ``openembedded-core`` br=
+anches.
++To setup, perform the following::
+=20
+     pip install -r meta/lib/patchtest/requirements.txt
+     source oe-init-build-env
+--=20
+2.39.2
+
 
