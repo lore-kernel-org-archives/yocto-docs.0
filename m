@@ -1,97 +1,121 @@
-Return-Path: <festevam@gmail.com>
+Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AD77C54798
-	for <webhook@archiver.kernel.org>; Tue,  5 Mar 2024 19:52:30 +0000 (UTC)
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
- by mx.groups.io with SMTP id smtpd.web11.2632.1709668345748735868
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FC93C54798
+	for <webhook@archiver.kernel.org>; Tue,  5 Mar 2024 22:08:07 +0000 (UTC)
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+ by mx.groups.io with SMTP id smtpd.web11.1611.1709676477540853244
  for <docs@lists.yoctoproject.org>;
- Tue, 05 Mar 2024 11:52:25 -0800
+ Tue, 05 Mar 2024 14:07:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=W5KIcPL8;
- spf=pass (domain: gmail.com, ip: 209.85.215.177, mailfrom: festevam@gmail.com)
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-5cfcf509fbdso2297718a12.1
-        for <docs@lists.yoctoproject.org>; Tue, 05 Mar 2024 11:52:25 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=QioAJXKa;
+ spf=pass (domain: gmail.com, ip: 209.85.222.176, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7882b02ed2dso110381485a.3
+        for <docs@lists.yoctoproject.org>; Tue, 05 Mar 2024 14:07:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709668345; x=1710273145; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=weRBtS4BblqzaZQBteIlqINQwMKFdKNXb02dvjaiMUM=;
-        b=W5KIcPL8nUK0rrcx3D7HikqC08SLueRw+VvRBdha+TXLPIAOO/sKY/Z4xoXiv+YoaE
-         L3QnFH483zoAuAVdfYPC+pemz0n+a3czPj6XaGqnsxSxOG8j9AmW/z2dv9jFYw7tbWO8
-         d2hiSo50sghAMgtu9rk19wKwAAHYeUtHxpz7X2HIMHiRSy8iG7QBvWlVdd98qF9jN8dO
-         b3j6OGtvmQhAuMkZDuncegRvNLgKAeink5Sozn/p/iWiYqJXQgwELV7Bg4jHMeFaMXG1
-         mprZNpxQbOBLt8VFzHQkYbV/FcQQy9CQ6RSxqte6YpTJHSLUbE++IATTIbu1/m0jp+EE
-         DIBw==
+        d=gmail.com; s=20230601; t=1709676476; x=1710281276; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bvnp9Z+5fRAb2tGRnKwP30A0fmlJnFmbb5xFCJLmFnE=;
+        b=QioAJXKaZHfHYHPE3oN+pnG0igeDFuNrDpv+kYAcGqH+LchJ72eaNTqeYJIDtwciuO
+         QzttUxQr7+MwFXSu8rDPxG95pdZzUKaRZfVnfAnHM3F8j5DHnQy6IXoiHXOYQyNc0pE2
+         SJfsTVcJIGMqzpVMifqP3DAJO+GWjSBivBTrH9U5JPvWQW9a6PdOeviXnbK/ZD9EW37n
+         nAOHRS16W3fhCNdRYwnFyd0/yinYbtNHeWD/qLxCZmoq1GUD+crzVJDCvC0DKP9BaiG/
+         mn0fkeziW0NMw3P4XK5wAp6GXbqGfVepn2ZgOaCU2vUQMFDNCjF3FwjsJL9VR+ORGmvq
+         rc0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709668345; x=1710273145;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=weRBtS4BblqzaZQBteIlqINQwMKFdKNXb02dvjaiMUM=;
-        b=XJntkWVNQ70ggJ1PP4LBFtDWHvdpH7B7rq462KXtiy6N1eLVB1xPeURUhPxXT02ZuP
-         OV4cYjXYDkoSt42egqamMHAkABk2Fp4CRvdkM0QLVhcBPeTgB30j9Y5MuxxI4kPsY6Ik
-         95Xtp1fGRYg6iofuzQggWJPCTRSwsAhYimeNkfg5uX+k50fMXP0MRS5SHgDMas8nXIwK
-         hFh0ej96xt1q0EkHhollY4BrmP6R5izn708ZVzNEvDjo4IiEtppSYuZO9VfNc0mEjNvM
-         RFAtiZlU37DleOYRMZT+V5Q9HcTn0GSz2o/Jlhn7LXA4OzYst3cyyh4LiSPSqJ8vbV4Z
-         tXrA==
-X-Forwarded-Encrypted: i=1; AJvYcCXK6nVXXAT1ExXmDEDu6UndzZHWrvTRzmjyWDHN+d9eNk7KrOtx8rAlfkRHgIFQfXLXe3D4i+JfoHj0hQVFPErm6iJ0b5mBXRX+b4Q=
-X-Gm-Message-State: AOJu0YwBcDMLw/6vCmH2BW8HDRptlyog2eqR/ho668JNxn+grQEhQX8M
-	7LnSGdF5JkLoHVWvDTrKKbVbDGG4fGPPyPZ/xPSuTk+bJ1f0aPSK
-X-Google-Smtp-Source: AGHT+IFaDw8BUhOouG/5fMlwBy1Bw8hYYEvYXT2HeVr6S7+X3sqcQ1d6UwYnhSb+qFCnIYkzW7MRhA==
-X-Received: by 2002:a05:6a00:1821:b0:6e6:3069:660d with SMTP id y33-20020a056a00182100b006e63069660dmr1636193pfa.1.1709668344904;
-        Tue, 05 Mar 2024 11:52:24 -0800 (PST)
-Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:faa2:7198:2727:549f])
-        by smtp.gmail.com with ESMTPSA id q5-20020a056a00084500b006e535914f9bsm9595242pfk.97.2024.03.05.11.52.22
+        d=1e100.net; s=20230601; t=1709676476; x=1710281276;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Bvnp9Z+5fRAb2tGRnKwP30A0fmlJnFmbb5xFCJLmFnE=;
+        b=V7R1Jq9RA7fjzg6rBEkv1o9aYh9laItcoJxOZgVBepDcf+zw7f2vf6ROX5u7Z7hpu2
+         Noc3nsXlkTqu+7nJamAThO7R5TlDD6Q0nWRCDDg7oSPaY50SUOYdO1x42PohD8o9Gbdc
+         dKwZU4LywEH0zXZHp3JYhvvzyDTucDaqSnskiZLQC5cImDCoAEIF8+Ukai37FMjK/2X0
+         RLZppP3YFdiMckdh3x5U8f6F1tHNY+mLtZ29zGLS6mq9GqX3MwyraDvdza/lWliL0xHj
+         f14BbskAO5U/INJyOHQRNl60KyGkrjKOBtfPDcauESfuapOfnGoC1CzSR6bxQJIwOp/n
+         TyKg==
+X-Gm-Message-State: AOJu0YyAIp5UV6F2QPZhObKlTYEF4qqxWppfQStXgI7ulN7vh7fMN0iE
+	b3Y+YvsLiyQB6ygFG4ZAA8bI4gDPZrx957eIKAuNTnE2bTsdTHqwsOB1ysqrqmU=
+X-Google-Smtp-Source: AGHT+IEOmN0N7ENC2YiLFmRiNtDG7CiLHFfbEiW0NYsmvoGYql4cVd45cwuHYazAi66XGUGNxYIvUg==
+X-Received: by 2002:ad4:4e32:0:b0:690:7bf5:e742 with SMTP id dm18-20020ad44e32000000b006907bf5e742mr3148628qvb.58.1709676475609;
+        Tue, 05 Mar 2024 14:07:55 -0800 (PST)
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id ma19-20020a0562145b1300b006904513b379sm6670331qvb.113.2024.03.05.14.07.54
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Mar 2024 11:52:24 -0800 (PST)
-From: Fabio Estevam <festevam@gmail.com>
-To: openembedded-core@lists.openembedded.org
-Cc: raj.khem@gmail.com,
-	docs@lists.yoctoproject.org,
-	Fabio Estevam <festevam@gmail.com>
-Subject: [PATCH v2] dev-manual: Convert to 'bmaptool-native'
-Date: Tue,  5 Mar 2024 16:52:13 -0300
-Message-Id: <20240305195213.1098945-1-festevam@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Tue, 05 Mar 2024 14:07:54 -0800 (PST)
+From: Trevor Woerner <twoerner@gmail.com>
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] bmaptool: rename
+Date: Tue,  5 Mar 2024 17:07:49 -0500
+Message-ID: <20240305220749.4742-1-twoerner@gmail.com>
+X-Mailer: git-send-email 2.43.0.76.g1a87c842ece3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 05 Mar 2024 19:52:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4937
+ <docs@lists.yoctoproject.org>; Tue, 05 Mar 2024 22:08:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4938
 
-Since commit 7a036b1a1ec7 ("bmaptool: now part of Yocto Project")
-'bmap-tools-native' has been renamed as 'bmaptool-native'.
+What was previously known variously as Bmaptool, bmaptools, bmap-tool,
+and/or bmap-tools has been updated to the singular name: bmaptool. Update
+all references to suit.
 
-Adjust the references in the documentation accordingly.
+Since we are not in charge of debian's package naming policy, any
+references that relate to debian package(s) will stay as "bmap-tools".
 
-Suggested-by: Khem Raj <raj.khem@gmail.com>
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
-Changes since v1:
-- Add docs@lists.yoctoproject.org on Cc
-
- documentation/dev-manual/bmaptool.rst | 6 +++---
- documentation/dev-manual/wic.rst      | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ documentation/dev-manual/bmaptool.rst | 20 ++++++++++----------
+ documentation/dev-manual/wic.rst      |  2 +-
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/documentation/dev-manual/bmaptool.rst b/documentation/dev-manual/bmaptool.rst
-index 9add72cf3b80..3a2a61d8cdfe 100644
+index 9add72cf3b80..f6f0e6afaf8f 100644
 --- a/documentation/dev-manual/bmaptool.rst
 +++ b/documentation/dev-manual/bmaptool.rst
-@@ -22,7 +22,7 @@ system image files much faster.
+@@ -4,10 +4,10 @@ Flashing Images Using ``bmaptool``
+ **********************************
+ 
+ A fast and easy way to flash an image to a bootable device is to use
+-Bmaptool, which is integrated into the OpenEmbedded build system.
+-Bmaptool is a generic tool that creates a file's block map (bmap) and
++bmaptool, which is integrated into the OpenEmbedded build system.
++bmaptool is a generic tool that creates a file's block map (bmap) and
+ then uses that map to copy the file. As compared to traditional tools
+-such as dd or cp, Bmaptool can copy (or flash) large files like raw
++such as dd or cp, bmaptool can copy (or flash) large files like raw
+ system image files much faster.
+ 
+ .. note::
+@@ -20,13 +20,13 @@ system image files much faster.
+          $ sudo apt install bmap-tools
+ 
     -  If you are unable to install the ``bmap-tools`` package, you will
-       need to build Bmaptool before using it. Use the following command::
+-      need to build Bmaptool before using it. Use the following command::
++      need to build bmaptool before using it. Use the following command::
  
 -         $ bitbake bmap-tools-native
 +         $ bitbake bmaptool-native
  
  Following, is an example that shows how to flash a Wic image. Realize
- that while this example uses a Wic image, you can use Bmaptool to flash
-@@ -45,13 +45,13 @@ any type of image. Use these steps to flash an image using Bmaptool:
+-that while this example uses a Wic image, you can use Bmaptool to flash
+-any type of image. Use these steps to flash an image using Bmaptool:
++that while this example uses a Wic image, you can use bmaptool to flash
++any type of image. Use these steps to flash an image using bmaptool:
+ 
+ #. *Update your local.conf File:* You need to have the following set
+    in your ``local.conf`` file before building your image::
+@@ -39,19 +39,19 @@ any type of image. Use these steps to flash an image using Bmaptool:
+ 
+       $ bitbake image
+ 
+-#. *Flash the Device:* Flash the device with the image by using Bmaptool
++#. *Flash the Device:* Flash the device with the image by using bmaptool
+    depending on your particular setup. The following commands assume the
+    image resides in the :term:`Build Directory`'s ``deploy/images/`` area:
  
     -  If you have write access to the media, use this command form::
  
@@ -121,6 +145,6 @@ index 312f78c403a2..05e9cb381b31 100644
  or ::
  
 -- 
-2.34.1
+2.43.0.76.g1a87c842ece3
 
 
