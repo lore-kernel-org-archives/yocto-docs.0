@@ -1,189 +1,133 @@
-Return-Path: <ticotimo@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD907C54798
-	for <webhook@archiver.kernel.org>; Tue,  5 Mar 2024 17:03:15 +0000 (UTC)
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
- by mx.groups.io with SMTP id smtpd.web11.29416.1709658187581288069
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C93EC54798
+	for <webhook@archiver.kernel.org>; Tue,  5 Mar 2024 18:41:10 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.693.1709664067901051524
  for <docs@lists.yoctoproject.org>;
- Tue, 05 Mar 2024 09:03:07 -0800
+ Tue, 05 Mar 2024 10:41:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=G3rmxXW3;
- spf=pass (domain: gmail.com, ip: 209.85.128.181, mailfrom: ticotimo@gmail.com)
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-608c40666e0so54935127b3.2
-        for <docs@lists.yoctoproject.org>; Tue, 05 Mar 2024 09:03:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709658187; x=1710262987; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=SgmO9Ljpaahr/Y4VxVLtbXinpg6WN4gMlr4Q/MgJvmM=;
-        b=G3rmxXW3cAWgxvt8Dy4ZY5lddyaj2Erq66DuZ5aDgXHO2uSiA/bWQJYZhVc64X6uaL
-         lrx5CznRnfHsszgHmSvJD0BkD0kWdDLDbBpnpZmIGOAzge0axH5p6ZwPtxN1C7rS4WI7
-         tQX8bKUj8qILIyOZIQcnf0RIFZl0JNBDKRLZ2Hcm2LM7w35HgaRUBUmIZpJ3x87WQM5Q
-         C6IUH/dNn6T50eSMsz21O2iNbGw8BwaKA3hx+Tlz4HdP4EY2WwvARu/sJSo45ucF+B7d
-         6WdwHntU4uujNBKWkqqVv8RkQRIHdbkXxk5GwVge7Shl6jTcU5u1ErE4ro4TyM1YS7QN
-         yLBg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709658187; x=1710262987;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SgmO9Ljpaahr/Y4VxVLtbXinpg6WN4gMlr4Q/MgJvmM=;
-        b=HKGJUdE4caFT5buVm8Yy7P0O4eWWVz78KIW7plOQYH5dQhO1ry5I21Gzm7rbCbev6+
-         Hh2fyjgIG/ivbix8NubzJn4Pk5oObiNnQzFK6gFGkY1QxrSWwRPeuO9Gu0L1vs/RlmEB
-         Gkoo1qWQLOUdIPoDQ10AB4WRo6q8nKjXqVIdTMt9RRdjs+Bkx7mttjLZ0Xdu1JmFQgwg
-         iYOCKNBscOOfCTDb0JVjWLMnpPlTLf1bHjuqdvUJ7QrAdrCAA4xgwDk0vhKzsWPh302v
-         LcgP5Y4oDztpYHkDIStIosZgGRhrfUaBEkpmLQnsJAfPPJHm4myHlHpCldV9zzQ1VwIm
-         qKjg==
-X-Forwarded-Encrypted: i=1; AJvYcCXGwbc/jZ8YnJRb7YPcXJeq55MkXxGiRGFF3gmPPCGF0u5UKcKq0+5vB5/YmSctvHG4fbK/gb1a+QU7uFGVJMb5NAbZlhXkJwCCLIQ=
-X-Gm-Message-State: AOJu0Yz5vGDqpUOjK5D15g4brKkb+/o1mkOE8dmPcDFJ8sZOAnwJykSI
-	ZIEtqDRwdBbURyzgado2BsOhV3D+d4fnfS4kTW/g08uRFIbPJpvbJto9rTR1r2q39KS508eCT7a
-	HHt3I+YUc/A9DMZTqolLXowwz2Vw=
-X-Google-Smtp-Source: AGHT+IFui2PQXRit09tla/ffnfcBFprvGX5LZ3reuxv9csKsh55AQO4tVsAD9SPpgbHhlS3Hl10RSBifwHH2RvsIqSk=
-X-Received: by 2002:a81:a1ce:0:b0:607:6634:cfcc with SMTP id
- y197-20020a81a1ce000000b006076634cfccmr4681639ywg.51.1709658186484; Tue, 05
- Mar 2024 09:03:06 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nPU53vk1;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 00C59FF802;
+	Tue,  5 Mar 2024 18:41:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1709664066;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Kb92Ue+fLfQGD3H5yG3FN6HPK2AFJhZWhr1lB7U1KTw=;
+	b=nPU53vk1wgvAhmpUuw4B2LuQaJkO4K8gcbMHt6I2XQXlbtQsPyOWRUlEOay5HGFuyHnqBT
+	0zyK0/TopU3btmBCO7Myl9+TS3OduNeKXIPacD+V8zQBXXdVhzRVB34gWzNJQWtZKjoY5N
+	LMrhsUM9uyWM0eGJAIqyhupGVuValBN0WMqoo60tugVGfAixRSX2cJ6uGyNp7yaVbUiXTr
+	c1W0O2RiScHlxaEGhsEAguyOA7UGCcvcVULNobcXBMH/qUDk5x/ROYstaVRW37b2VHdGK1
+	9qYVHmSurlOWbjXA5PpBmgkluO33cM8pHQRmmM+7SSNjE7cq3KATJ6UZTTWwUQ==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Tim Orling <ticotimo@gmail.com>
+Subject: [PATCH] manuals: document VIRTUAL-RUNTIME variables
+Date: Tue,  5 Mar 2024 19:41:00 +0100
+Message-Id: <20240305184100.281028-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <93bfc62e-c92b-4aff-b06e-40bbcbd46d87@bootlin.com> <1c5608a9af6785fd1478a78a28617c9a54ed30e7.camel@linuxfoundation.org>
-In-Reply-To: <1c5608a9af6785fd1478a78a28617c9a54ed30e7.camel@linuxfoundation.org>
-From: Tim Orling <ticotimo@gmail.com>
-Date: Tue, 5 Mar 2024 09:02:55 -0800
-Message-ID: <CANx9H-AO6jedVeqXpaMxTHKhPGUWo9KBEVVdJwddGStbGycraQ@mail.gmail.com>
-Subject: Re: [docs] Documenting VIRTUAL-RUNTIME variables
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: michael.opdenacker@bootlin.com, 
-	YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000e4c8350612ecd023"
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 05 Mar 2024 17:03:15 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4935
+ <docs@lists.yoctoproject.org>; Tue, 05 Mar 2024 18:41:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4936
 
---000000000000e4c8350612ecd023
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On Tue, Mar 5, 2024 at 6:55=E2=80=AFAM Richard Purdie <
-richard.purdie@linuxfoundation.org> wrote:
+Document the convention to use variables prefixed by VIRTUAL_RUNTIME.
+Add references to the new term where possible.
 
-> On Tue, 2024-03-05 at 15:51 +0100, Michael Opdenacker via
-> lists.yoctoproject.org wrote:
-> > Greetings,
-> >
-> > Following a warning from Tim (thanks!).
-> >
-> > The VIRTUAL-RUNTIME_* variables do not appear in the YP manual
-> > variable
-> > index, and we shouldn't definitely address this.
-> >
-> > However, I still hesitate between:
-> >
-> >  1. Creating multiple entries, especially for the most frequent
-> >     variables (VIRTUAL-RUNTIME_init_manager,
-> >     VIRTUAL-RUNTIME_dev_manager...), and maybe for "VIRTUAL-RUNTIME"
-> > as
-> >     a name prefix
-> >  2. Creating just a generic "VIRTUAL-RUNTIME" entry for this common
-> > prefix.
-> >
-> > I'm tempted to go for 1, but then I guess it opens to door to
-> > documenting most uses of this scheme.
->
-> I'd suggest 2 since there can be an arbitrary number of them.
->
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Tim Orling <ticotimo@gmail.com>
+---
+ documentation/dev-manual/device-manager.rst |  8 ++---
+ documentation/ref-manual/variables.rst      | 37 ++++++++++++++++++---
+ 2 files changed, 36 insertions(+), 9 deletions(-)
 
-I agree we should keep it simple with #2.
+diff --git a/documentation/dev-manual/device-manager.rst b/documentation/dev-manual/device-manager.rst
+index 0343d19b9c..49fc785fec 100644
+--- a/documentation/dev-manual/device-manager.rst
++++ b/documentation/dev-manual/device-manager.rst
+@@ -60,10 +60,10 @@ kernel.
+ All devices created by ``devtmpfs`` will be owned by ``root`` and have
+ permissions ``0600``.
+ 
+-To have more control over the device nodes, you can use a device manager
+-like ``udev`` or ``busybox-mdev``. You choose the device manager by
+-defining the ``VIRTUAL-RUNTIME_dev_manager`` variable in your machine or
+-distro configuration file. Alternatively, you can set this variable in
++To have more control over the device nodes, you can use a device manager like
++``udev`` or ``busybox-mdev``. You choose the device manager by defining the
++:term:`VIRTUAL-RUNTIME_dev_manager <VIRTUAL-RUNTIME>` variable in your machine
++or distro configuration file. Alternatively, you can set this variable in
+ your ``local.conf`` configuration file::
+ 
+    VIRTUAL-RUNTIME_dev_manager = "udev"
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 9db1808cc2..6e66dc7358 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -6750,11 +6750,11 @@ system and gives an overview of their function and contents.
+ 
+       .. note::
+ 
+-         A corresponding mechanism for virtual runtime dependencies
+-         (packages) exists. However, the mechanism does not depend on any
+-         special functionality beyond ordinary variable assignments. For
+-         example, ``VIRTUAL-RUNTIME_dev_manager`` refers to the package of
+-         the component that manages the ``/dev`` directory.
++         A corresponding mechanism for virtual runtime dependencies (packages)
++         exists. However, the mechanism does not depend on any special
++         functionality beyond ordinary variable assignments. For example,
++         :term:`VIRTUAL-RUNTIME_dev_manager <VIRTUAL-RUNTIME>` refers to the
++         package of the component that manages the ``/dev`` directory.
+ 
+          Setting the "preferred provider" for runtime dependencies is as
+          simple as using the following assignment in a configuration file::
+@@ -9866,6 +9866,33 @@ system and gives an overview of their function and contents.
+       Additionally, you should also set the
+       :term:`USERADD_ERROR_DYNAMIC` variable.
+ 
++   :term:`VIRTUAL-RUNTIME`
++      :term:`VIRTUAL-RUNTIME` is a commonly used prefix for defining virtual
++      packages for runtime usage, typically for use in :term:`RDEPENDS`
++      or in image definitions.
++
++      An example is ``VIRTUAL-RUNTIME_base-utils`` that makes it possible
++      to either use BusyBox based utilities::
++
++         VIRTUAL-RUNTIME_base-utils = "busybox"
++
++      or their full featured implementations from GNU Coreutils
++      and other projects::
++
++         VIRTUAL-RUNTIME_base-utils = "packagegroup-core-base-utils"
++
++      Here are two examples using this virtual runtime package. The
++      first one is in :yocto_git:`initramfs-framework_1.0.bb
++      </poky/tree/meta/recipes-core/initrdscripts/initramfs-framework_1.0.bb?h=scarthgap>`::
++
++         RDEPENDS:${PN} += "${VIRTUAL-RUNTIME_base-utils}"
++
++      The second example is in the :yocto_git:`core-image-initramfs-boot
++      </poky/tree/meta/recipes-core/images/core-image-initramfs-boot.bb?h=scarthgap>`
++      image definition::
++
++         PACKAGE_INSTALL = "${INITRAMFS_SCRIPTS} ${VIRTUAL-RUNTIME_base-utils} base-passwd"
++
+    :term:`VOLATILE_LOG_DIR`
+       Specifies the persistence of the target's ``/var/log`` directory,
+       which is used to house postinstall target log files.
+-- 
+2.34.1
 
-The recipe that triggered the warning and the reason I asked was:
-https://git.yoctoproject.org/meta-java/tree/recipes-core/ca-certificates-ja=
-va/ca-certificates-java_20180516.bb#n103
-RDEPENDS:${PN}:append:class-native =3D " virtual/java-native"
-
-This causes:
-"QA Issue: RDEPENDS is set to virtual/java-native but the substring
-'virtual/' holds no meaning in this context. It only works for build time
-dependencies, not runtime ones. It is suggested to use 'VIRTUAL-RUNTIME_'
-variables instead. [virtual-slash]"
-Which JaMa suggested in IRC should instead be
-RDEPENDS:${PN}:append:class-native =3D " ${VIRTUAL-RUNTIME_java-native}"
-although we both question if that line is even needed or not.
-
-I guess my reason for the query was to understand (a) what the variable
-should be used for and what it means
-(b) what the specific fix should be in a case like this when we get the
-[virtual-slash] QA warning.
-
-
-> Cheers,
->
-> Richard
->
-
---000000000000e4c8350612ecd023
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
-<div dir=3D"ltr" class=3D"gmail_attr">On Tue, Mar 5, 2024 at 6:55=E2=80=AFA=
-M Richard Purdie &lt;<a href=3D"mailto:richard.purdie@linuxfoundation.org">=
-richard.purdie@linuxfoundation.org</a>&gt; wrote:<br></div><blockquote clas=
-s=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
-gb(204,204,204);padding-left:1ex">On Tue, 2024-03-05 at 15:51 +0100, Michae=
-l Opdenacker via<br>
-<a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_bla=
-nk">lists.yoctoproject.org</a> wrote:<br>
-&gt; Greetings,<br>
-&gt; <br>
-&gt; Following a warning from Tim (thanks!).<br>
-&gt; <br>
-&gt; The VIRTUAL-RUNTIME_* variables do not appear in the YP manual<br>
-&gt; variable <br>
-&gt; index, and we shouldn&#39;t definitely address this.<br>
-&gt; <br>
-&gt; However, I still hesitate between:<br>
-&gt; <br>
-&gt; =C2=A01. Creating multiple entries, especially for the most frequent<b=
-r>
-&gt; =C2=A0=C2=A0=C2=A0 variables (VIRTUAL-RUNTIME_init_manager,<br>
-&gt; =C2=A0=C2=A0=C2=A0 VIRTUAL-RUNTIME_dev_manager...), and maybe for &quo=
-t;VIRTUAL-RUNTIME&quot;<br>
-&gt; as<br>
-&gt; =C2=A0=C2=A0=C2=A0 a name prefix<br>
-&gt; =C2=A02. Creating just a generic &quot;VIRTUAL-RUNTIME&quot; entry for=
- this common<br>
-&gt; prefix.<br>
-&gt; <br>
-&gt; I&#39;m tempted to go for 1, but then I guess it opens to door to <br>
-&gt; documenting most uses of this scheme.<br>
-<br>
-I&#39;d suggest 2 since there can be an arbitrary number of them.<br></bloc=
-kquote><div><br></div><div>I agree we should keep it simple with #2.</div><=
-div><br></div><div>The recipe that triggered the warning and the reason I a=
-sked was:</div><div><a href=3D"https://git.yoctoproject.org/meta-java/tree/=
-recipes-core/ca-certificates-java/ca-certificates-java_20180516.bb#n103">ht=
-tps://git.yoctoproject.org/meta-java/tree/recipes-core/ca-certificates-java=
-/ca-certificates-java_20180516.bb#n103</a></div><div>RDEPENDS:${PN}:append:=
-class-native =3D &quot; virtual/java-native&quot;<br></div><div><br></div><=
-div>This causes:</div><div>&quot;QA Issue: RDEPENDS is set to virtual/java-=
-native but the substring &#39;virtual/&#39; holds no meaning in this contex=
-t. It only works for build time dependencies, not runtime ones. It is sugge=
-sted to use &#39;VIRTUAL-RUNTIME_&#39; variables instead. [virtual-slash]&q=
-uot;</div><div>Which JaMa suggested in IRC should instead be</div><div>RDEP=
-ENDS:${PN}:append:class-native =3D &quot; ${VIRTUAL-RUNTIME_java-native}&qu=
-ot;<br></div><div>although we both question if that line is even needed or =
-not.</div><div><br></div><div>I guess my reason for the query was to unders=
-tand (a) what the variable should be used for and what it means=C2=A0</div>=
-<div>(b) what the specific fix should be in a case like this when we get th=
-e [virtual-slash] QA warning.=C2=A0</div><div><br></div><blockquote class=
-=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
-b(204,204,204);padding-left:1ex">
-<br>
-Cheers,<br>
-<br>
-Richard<br>
-</blockquote></div></div>
-
---000000000000e4c8350612ecd023--
 
