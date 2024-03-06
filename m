@@ -2,69 +2,91 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3536AC5475B
-	for <webhook@archiver.kernel.org>; Wed,  6 Mar 2024 09:04:38 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.7957.1709715875769936485
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B6B5C5475B
+	for <webhook@archiver.kernel.org>; Wed,  6 Mar 2024 09:10:58 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.8065.1709716254809719070
  for <docs@lists.yoctoproject.org>;
- Wed, 06 Mar 2024 01:04:36 -0800
+ Wed, 06 Mar 2024 01:10:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lZ9lvWBS;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CBC0224000B;
-	Wed,  6 Mar 2024 09:04:33 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=hLqtjLkT;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D08AB2000E;
+	Wed,  6 Mar 2024 09:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709715874;
+	t=1709716253;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uGUHltSqNoS3/yCcofV9tNrepFpfXoqgsUVQIsisqjc=;
-	b=lZ9lvWBS2Cj/EScBnkcxuxoRzsFu3F5+8+7dXoV4NfEBGT3r0VSl1qugk2+vmd4jm9CLE6
-	JUO9rq/ivhNtvDdwsx/dXIZEnS21gfP5UxmgL2lM9C1pobkw0/iEuMjFHxp6bfSnwhX3wD
-	oQJ8RmjIDs2+hB8rH1bBnkLFflOdq2dvUM9yJCmtAQ2hHYgvrnF2qLb4z3qcdZXZ4D7Puc
-	W7dPFUmOl+oLW75Tqmn5rqZ710af5cnRKb7QdlXzpUkanNgmufbNFlFTaggQw4F8I+uBGp
-	EXl3u10XIkIv7/DOFxjwE3aZvolMlD4wCEV8LATLg+CzKXWDgBnh8xFb8rlfSQ==
-Message-ID: <6f132256-1f3b-43b8-beb3-2d3e2c7f7fe2@bootlin.com>
-Date: Wed, 6 Mar 2024 10:04:33 +0100
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=fxo1Rl9jHN3549mwfNmwPdpSOyCNm581n0IQoInnMBI=;
+	b=hLqtjLkTKgTKT9t16qSMr0W83P8YMSt9jL6LYWqsKeDL35a0iou+gHyAVnuvR1uNCLPwFz
+	OsI8tqDI0Yhtt91UsZbAX6Usec4wvI53Go5EibIjXuQZTii1y84EHnavIME7kaNaUSjTsx
+	N5ug6WWF+lS9HQy7YCdvyhgDXZ8cBXjPJNidyYD9zhK8ri3e8mO4Ue7KD63Sr3jB9V2/uD
+	gNja/6y/BopFUnI1jzYN1UVzkM6Dq6A0d6dVdn+4weFD+NFNqPFoV4l1LZzWOGIatS/NLq
+	xRctgiIghPdRbcBh61u/+OnM6wdeuqFr2QBNU71OmuJ8RKb7vDTuROphmyCo5w==
+Message-ID: <f7e5b325-567b-4351-aa44-b9433c7f3e13@bootlin.com>
+Date: Wed, 6 Mar 2024 10:10:52 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2] contributor-guide: Add notes for tests
+Cc: YP docs mailing list <docs@lists.yoctoproject.org>
 Content-Language: en-US
-To: =?UTF-8?Q?Simone_Wei=C3=9F?= <simone.p.weiss@posteo.com>
-References: <20240305164651.5132-1-simone.p.weiss@posteo.com>
+To: Richard Purdie <richard.purdie@linuxfoundation.org>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [master] Pull request
 Organization: Bootlin
-In-Reply-To: <20240305164651.5132-1-simone.p.weiss@posteo.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 06 Mar 2024 09:04:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4939
+ <docs@lists.yoctoproject.org>; Wed, 06 Mar 2024 09:10:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4940
 
-Hi Simone
+Hi Richard
 
-On 3/5/24 at 17:46, Simone Weiß wrote:
-> From: Simone Weiß <simone.p.weiss@posteo.com>
->
-> This adds some hints that and how changes should be tested when contributing.
->
-> Fixes [YOCTO #15412]
->
-> Signed-off-by: Simone Weiß <simone.p.weiss@posteo.com>
-> ---
-> v2: improve ptest wording and fix spelling
->   .../contributor-guide/submit-changes.rst      | 37 ++++++++++++++++++-
->   1 file changed, 35 insertions(+), 2 deletions(-)
+The following changes since commit 6571eb02cbd5c2b96df0f279f25b63255ab7eac4:
 
-Thanks for the update.
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Merged into master-next.
+   dev-manual: packages: need enough free space (2024-02-24 17:00:17 +0100)
 
+are available in the Git repository at:
+
+   git://git.yoctoproject.org/yocto-docs master-next
+
+for you to fetch changes up to 6f3dbb2a909ba5b71efb09b251ee3f8650e30146:
+
+   contributor-guide: add notes for tests (2024-03-06 10:09:46 +0100)
+
+----------------------------------------------------------------
+Geoff Parker (1):
+       ref-manual: variables: adding multiple groups in GROUPADD_PARAM
+
+Johan Bezem (1):
+       ref-manual: variables: correct sdk installation default path
+
+Luca Ceresoli (2):
+       ref-manual: tasks: do_cleanall: recommend using '-f' instead
+       ref-manual: tasks: do_cleansstate: recommend using '-f' instead 
+for a shared sstate
+
+Michael Opdenacker (1):
+       dev-manual: packages: fix capitalization
+
+Simone Weiß (2):
+       ref-manual: classes: add cve status check for oe.qa
+       contributor-guide: add notes for tests
+
+  documentation/contributor-guide/submit-changes.rst | 37 
++++++++++++++++++++++++++++++++++++--
+  documentation/dev-manual/packages.rst              |  2 +-
+  documentation/overview-manual/concepts.rst         |  2 +-
+  documentation/ref-manual/classes.rst               |  5 +++++
+  documentation/ref-manual/tasks.rst                 | 38 
++++++++++++++++++++++++++++++++++++---
+  documentation/ref-manual/variables.rst             | 14 +++++++++++++-
+  6 files changed, 90 insertions(+), 8 deletions(-)
+
+Thank you in advance
 Cheers
 Michael.
 
