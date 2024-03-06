@@ -2,92 +2,68 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5B6B5C5475B
-	for <webhook@archiver.kernel.org>; Wed,  6 Mar 2024 09:10:58 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.8065.1709716254809719070
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4884C54E41
+	for <webhook@archiver.kernel.org>; Wed,  6 Mar 2024 15:24:09 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.14516.1709738641430403535
  for <docs@lists.yoctoproject.org>;
- Wed, 06 Mar 2024 01:10:55 -0800
+ Wed, 06 Mar 2024 07:24:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=hLqtjLkT;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D08AB2000E;
-	Wed,  6 Mar 2024 09:10:52 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=fcolaztn;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 746AEFF806;
+	Wed,  6 Mar 2024 15:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1709716253;
+	t=1709738639;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=fxo1Rl9jHN3549mwfNmwPdpSOyCNm581n0IQoInnMBI=;
-	b=hLqtjLkTKgTKT9t16qSMr0W83P8YMSt9jL6LYWqsKeDL35a0iou+gHyAVnuvR1uNCLPwFz
-	OsI8tqDI0Yhtt91UsZbAX6Usec4wvI53Go5EibIjXuQZTii1y84EHnavIME7kaNaUSjTsx
-	N5ug6WWF+lS9HQy7YCdvyhgDXZ8cBXjPJNidyYD9zhK8ri3e8mO4Ue7KD63Sr3jB9V2/uD
-	gNja/6y/BopFUnI1jzYN1UVzkM6Dq6A0d6dVdn+4weFD+NFNqPFoV4l1LZzWOGIatS/NLq
-	xRctgiIghPdRbcBh61u/+OnM6wdeuqFr2QBNU71OmuJ8RKb7vDTuROphmyCo5w==
-Message-ID: <f7e5b325-567b-4351-aa44-b9433c7f3e13@bootlin.com>
-Date: Wed, 6 Mar 2024 10:10:52 +0100
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Kvfr9vF6GhhBOPEVqurjRWBJO/s/gU2x8ztGBPwuocU=;
+	b=fcolaztnjmZSXcc1cSa//3+dUPQSR0nYzv4S6Zv2HHAqy8T+sX3hC9HtY+trAOxaftqa9/
+	z2HwbtcfyO6fdt7Od6SQppIWduHwh6VTKEFgjfo6z3BeBy1sZ0DK8blV5tXlkSU6NUOIYx
+	C3+lszIFsZRy6Yuh7DwPT4fV4c+6Pp58xVvzOlXH9kzurW7+4D8cpCywGBRep2p3xDh+SL
+	Gnkd63yCTp0+2P0N2C2xfwrj9MygtE042vbEWPzQtjqeuxRTMDxWttk7wZamzOW1JpGPDD
+	myiuy+rjau1orwGJpe93ozJ2o/x2fJ/nXhNnB77KaExlD1Yr3V+CMj/Yltq0+g==
+Message-ID: <1d9a5834-d8d5-4c52-9f3d-ca28317e37fb@bootlin.com>
+Date: Wed, 6 Mar 2024 16:23:58 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: YP docs mailing list <docs@lists.yoctoproject.org>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] bmaptool: rename
 Content-Language: en-US
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Trevor Woerner <twoerner@gmail.com>
+References: <20240305220749.4742-1-twoerner@gmail.com>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [master] Pull request
 Organization: Bootlin
+In-Reply-To: <20240305220749.4742-1-twoerner@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 06 Mar 2024 09:10:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4940
+ <docs@lists.yoctoproject.org>; Wed, 06 Mar 2024 15:24:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4941
 
-Hi Richard
+Hi Trevor
 
-The following changes since commit 6571eb02cbd5c2b96df0f279f25b63255ab7eac4:
+Thanks for the patch and for taking care of bmaptool!
 
-   dev-manual: packages: need enough free space (2024-02-24 17:00:17 +0100)
+On 3/5/24 at 23:07, Trevor Woerner wrote:
+> What was previously known variously as Bmaptool, bmaptools, bmap-tool,
+> and/or bmap-tools has been updated to the singular name: bmaptool. Update
+> all references to suit.
+>
+> Since we are not in charge of debian's package naming policy, any
+> references that relate to debian package(s) will stay as "bmap-tools".
+>
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 
-are available in the Git repository at:
 
-   git://git.yoctoproject.org/yocto-docs master-next
-
-for you to fetch changes up to 6f3dbb2a909ba5b71efb09b251ee3f8650e30146:
-
-   contributor-guide: add notes for tests (2024-03-06 10:09:46 +0100)
-
-----------------------------------------------------------------
-Geoff Parker (1):
-       ref-manual: variables: adding multiple groups in GROUPADD_PARAM
-
-Johan Bezem (1):
-       ref-manual: variables: correct sdk installation default path
-
-Luca Ceresoli (2):
-       ref-manual: tasks: do_cleanall: recommend using '-f' instead
-       ref-manual: tasks: do_cleansstate: recommend using '-f' instead 
-for a shared sstate
-
-Michael Opdenacker (1):
-       dev-manual: packages: fix capitalization
-
-Simone Weiß (2):
-       ref-manual: classes: add cve status check for oe.qa
-       contributor-guide: add notes for tests
-
-  documentation/contributor-guide/submit-changes.rst | 37 
-+++++++++++++++++++++++++++++++++++--
-  documentation/dev-manual/packages.rst              |  2 +-
-  documentation/overview-manual/concepts.rst         |  2 +-
-  documentation/ref-manual/classes.rst               |  5 +++++
-  documentation/ref-manual/tasks.rst                 | 38 
-+++++++++++++++++++++++++++++++++++---
-  documentation/ref-manual/variables.rst             | 14 +++++++++++++-
-  6 files changed, 90 insertions(+), 8 deletions(-)
-
-Thank you in advance
-Cheers
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into "master-next"
+Thanks again
 Michael.
 
 -- 
