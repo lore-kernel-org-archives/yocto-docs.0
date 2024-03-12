@@ -1,81 +1,85 @@
-Return-Path: <rpjday@crashcourse.ca>
+Return-Path: <u.oelmann@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D7313C5475B
-	for <webhook@archiver.kernel.org>; Fri,  8 Mar 2024 11:46:26 +0000 (UTC)
-Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
- by mx.groups.io with SMTP id smtpd.web11.19946.1709898380115663028
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BD3A9C54E5D
+	for <webhook@archiver.kernel.org>; Tue, 12 Mar 2024 20:38:23 +0000 (UTC)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+ by mx.groups.io with SMTP id smtpd.web11.7752.1710275901124943173
  for <docs@lists.yoctoproject.org>;
- Fri, 08 Mar 2024 03:46:20 -0800
+ Tue, 12 Mar 2024 13:38:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@crashcourse.ca header.s=default header.b=I4VL0OQJ;
- spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
-	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=PHX0dyhOs3RenTf9FtrlOy9+fAaSU3cfhDqFWfMjZuA=; b=I4VL0OQJSRHQH5h+o+19ESbqUl
-	pLfIgm1EFf1vYImEeLmQEfV2EV/9VpXGX7oGujZ1xSqG4rBLnpu4QJYQ5w4zh9fcYwjvCOrZM8mCr
-	P8nZ9IFEVO3PfyN3/mvaTD9/78Rbj35ZzClQ7ebkP2i7HQ+ipFW1sjL6KBqzCjXS/1XKwe3H+j/Zk
-	1MxzCQOzfIKwrfbJhIkXSWL88vGuFB4XDcUmmZb8/SU84YQc9iysmFvb/u/+C/uJbCyXN+6B6x0Wv
-	UBRbA+05O2hbFs70V9W8ANtQIWNb/2ZHp8xr8DrqDMtPB1OYlTxlLCtfjbVmusIkEWraGkM+cq999
-	XqpT+FdA==;
-Received: from cpeac202e043973-cmac202e043970.sdns.net.rogers.com ([174.114.102.5]:45338 helo=fedora)
-	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <rpjday@crashcourse.ca>)
-	id 1riYg0-007sZh-0B
-	for docs@lists.yoctoproject.org;
-	Fri, 08 Mar 2024 06:46:18 -0500
-Date: Fri, 8 Mar 2024 06:46:03 -0500 (EST)
-From: "Robert P. J. Day" <rpjday@crashcourse.ca>
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: why would a ptest makefile patch set "DESTDIR =
- /usr/share/xmlsec1"?
-Message-ID: <ad358f7-d5e-ec36-c7ad-aa3e8c78216c@crashcourse.ca>
+ dkim=none (message not signed); spf=pass (domain: pengutronix.de, ip: 185.203.201.7, mailfrom: uol@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <uol@pengutronix.de>)
+	id 1rk8t8-0004Xb-H4; Tue, 12 Mar 2024 21:38:18 +0100
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1rk8t8-005yzb-4b; Tue, 12 Mar 2024 21:38:18 +0100
+Received: from uol by dude03.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <uol@pengutronix.de>)
+	id 1rk8t8-006uHa-0F;
+	Tue, 12 Mar 2024 21:38:18 +0100
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Yocto Project Documentation <docs@lists.yoctoproject.org>
+Cc: yocto@pengutronix.de,
+	=?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+Subject: [PATCH] ref-manual: classes: update description of class 'image_types'
+Date: Tue, 12 Mar 2024 21:38:07 +0100
+Message-Id: <20240312203807.1646308-1-u.oelmann@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
-X-AntiAbuse: Original Domain - lists.yoctoproject.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - crashcourse.ca
-X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: uol@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 08 Mar 2024 11:46:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4943
+ <docs@lists.yoctoproject.org>; Tue, 12 Mar 2024 20:38:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4944
 
+Cite usage of IMGCLASSES variable in class 'image' as found in OE-Core's
+commit [1].
 
-  back story: i'm writing a fairly detailed doc on ptest for
-colleagues (which i am willing to share with YP docs after i finish),
-and am trying to use examples right out of the OE source, which is why
-i'm flagging oddities that are hard to explain.
+[1] 451363438d38 ("classes/recipes: Switch to use inherit_defer")
 
-  in particular, this line:
+Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
+---
+ documentation/ref-manual/classes.rst | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-https://git.openembedded.org/meta-openembedded/tree/meta-oe/recipes-support/xmlsec1/xmlsec1/makefile-ptest.patch#n33
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 5aaf8ecc0c24..412dc5ca2fe5 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1184,13 +1184,17 @@ enables the :ref:`ref-classes-image_types` class. The :ref:`ref-classes-image` c
+ ``IMGCLASSES`` variable as follows::
+ 
+    IMGCLASSES = "rootfs_${IMAGE_PKGTYPE} image_types ${IMAGE_CLASSES}"
+-   IMGCLASSES += "${@['populate_sdk_base', 'populate_sdk_ext']['linux' in d.getVar("SDK_OS")]}"
++   # Only Linux SDKs support populate_sdk_ext, fall back to populate_sdk_base
++   # in the non-Linux SDK_OS case, such as mingw32
++   inherit populate_sdk_base
++   IMGCLASSES += "${@['', 'populate_sdk_ext']['linux' in d.getVar("SDK_OS")]}"
+    IMGCLASSES += "${@bb.utils.contains_any('IMAGE_FSTYPES', 'live iso hddimg', 'image-live', '', d)}"
+    IMGCLASSES += "${@bb.utils.contains('IMAGE_FSTYPES', 'container', 'image-container', '', d)}"
+    IMGCLASSES += "image_types_wic"
+    IMGCLASSES += "rootfs-postcommands"
+    IMGCLASSES += "image-postinst-intercepts"
+-   inherit ${IMGCLASSES}
++   IMGCLASSES += "overlayfs-etc"
++   inherit_defer ${IMGCLASSES}
+ 
+ The :ref:`ref-classes-image_types` class also handles conversion and compression of images.
+ 
+-- 
+2.39.2
 
-i've seen lots of examples of recipe patches to add "install-ptest"
-targets to the Makefile, but i'm baffled by the setting of DESTDIR to
-that directory just before the target definition -- the default, of
-course, being ${D}/${PTEST_PATH}.
-
-  i looked around that recipe to see if maybe that /usr/share dir was
-being added to the contents of the ptest package but i don't see that.
-is there some weird functionality to that assignment that i'm just
-missing?
-
-  that recipe is a nice example of simple ptest, but that one line
-kind of stands out as inexplicable.
-
-rday
 
