@@ -2,202 +2,102 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A90CC54E5D
-	for <webhook@archiver.kernel.org>; Tue, 12 Mar 2024 21:03:56 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.124.1710277431062788819
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CCEAFC54E58
+	for <webhook@archiver.kernel.org>; Wed, 13 Mar 2024 09:10:10 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.11976.1710321000227515803
  for <docs@lists.yoctoproject.org>;
- Tue, 12 Mar 2024 14:03:51 -0700
+ Wed, 13 Mar 2024 02:10:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ayB3v2YS;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 432111BF205;
-	Tue, 12 Mar 2024 21:03:48 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WaTPyYWj;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A196DE0004;
+	Wed, 13 Mar 2024 09:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710277429;
+	t=1710320998;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=tV/SMGvrZJAtU4O+s7xbMriWi6q3yFqIF324l3nR8OM=;
-	b=ayB3v2YSMGcpscgTnSQiQk9tHD2Zr7vX/ohJdtOrnKi0NI/2UIN4ewki/zrh4ZpF54Gvrz
-	7/GdIbbQgRF+GVmdBgt+0OGDyJ0vRMxFm/eXf7EUNMeevq5UeqCtWA1y99oHQA8BMsAsNl
-	jl5d329dMm1iPFEzdbkuic3viIBrPFaHqCb51JDdGr33VC6j1U5toRVSGUxCA9bYLcMG0+
-	QdM44YHNydkrUuaR30MFlP6K9n7wGmR2HkVcia8pcwMz3lDZ0ZNJeKZIyEcjaBTiBF4shW
-	uuRavEh7PPK5uuttO0aaXmtAJkn9Qi5dBwZnMStHuFiiN8G78EBOQ7jv+MxJGQ==
-From: michael.opdenacker@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: [PATCH] manuals: add initial stylechecks with Vale
-Date: Tue, 12 Mar 2024 22:03:45 +0100
-Message-Id: <20240312210345.8832-1-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7WnnPsgJPz86+vjWfprRnxmSWrTDTmFJ1rp1TyTq2Gg=;
+	b=WaTPyYWjWZpbxn4DNeJfiKaSRhtH9bB8bvionb0QSfxIUnBdXuWkhN9Xp71kum1ATFfr6K
+	g+dUrFV1oRMqJ+YbWG5rQ0RUNHmBDRMDrbSgVSwqnkKh8iCEcuajUbicygz4A4PW7fJ7N5
+	mD0ouWfK9kWQA7Sd5XUcF3svGestg1D6lQphJA/BZiv/01g9WmbAsv3yPHKOZMvSXPG51H
+	nzRt+fbyt1Q+lANoiVhqLEJ31iVUM9wRounw+UYD4eBuE47+ZqOdqDSJedcrYKD9aV4Dfa
+	5Yd8Dp94f99AiqYu/q/l/GWLJPvBHw81k2IiouTyuWkz1JSxZCOfsBoTIkI+Gw==
+Message-ID: <df0b53b8-49f2-4c83-b875-90290fe2ddda@bootlin.com>
+Date: Wed, 13 Mar 2024 10:09:58 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: yocto@pengutronix.de,
+ Yocto Project Documentation <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] ref-manual: classes: update description of class
+ 'image_types'
+To: =?UTF-8?Q?Ulrich_=C3=96lmann?= <u.oelmann@pengutronix.de>
+References: <20240312203807.1646308-1-u.oelmann@pengutronix.de>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20240312203807.1646308-1-u.oelmann@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 12 Mar 2024 21:03:56 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4945
+ <docs@lists.yoctoproject.org>; Wed, 13 Mar 2024 09:10:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4946
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Hi Ulrich
 
-Use the "Vale" (https://vale.sh) tool to perform text style checks
-Run "make stylecheck" to run the checks.
+On 3/12/24 at 21:38, Ulrich Ölmann wrote:
+> Cite usage of IMGCLASSES variable in class 'image' as found in OE-Core's
+> commit [1].
+>
+> [1] 451363438d38 ("classes/recipes: Switch to use inherit_defer")
+>
+> Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
+> ---
+>   documentation/ref-manual/classes.rst | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> index 5aaf8ecc0c24..412dc5ca2fe5 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -1184,13 +1184,17 @@ enables the :ref:`ref-classes-image_types` class. The :ref:`ref-classes-image` c
+>   ``IMGCLASSES`` variable as follows::
+>   
+>      IMGCLASSES = "rootfs_${IMAGE_PKGTYPE} image_types ${IMAGE_CLASSES}"
+> -   IMGCLASSES += "${@['populate_sdk_base', 'populate_sdk_ext']['linux' in d.getVar("SDK_OS")]}"
+> +   # Only Linux SDKs support populate_sdk_ext, fall back to populate_sdk_base
+> +   # in the non-Linux SDK_OS case, such as mingw32
+> +   inherit populate_sdk_base
+> +   IMGCLASSES += "${@['', 'populate_sdk_ext']['linux' in d.getVar("SDK_OS")]}"
+>      IMGCLASSES += "${@bb.utils.contains_any('IMAGE_FSTYPES', 'live iso hddimg', 'image-live', '', d)}"
+>      IMGCLASSES += "${@bb.utils.contains('IMAGE_FSTYPES', 'container', 'image-container', '', d)}"
+>      IMGCLASSES += "image_types_wic"
+>      IMGCLASSES += "rootfs-postcommands"
+>      IMGCLASSES += "image-postinst-intercepts"
+> -   inherit ${IMGCLASSES}
+> +   IMGCLASSES += "overlayfs-etc"
+> +   inherit_defer ${IMGCLASSES}
+>   
+>   The :ref:`ref-classes-image_types` class also handles conversion and compression of images.
 
-This just checks the text, not the Sphinx syntax style choices.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Suggested-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Many thanks for this update!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into master-next.
 
----
+Do you think we should add the IMGCLASSES variable to the variable index 
+too?
+Cheers
+Michael.
 
-See https://lwn.net/Articles/964075/ for a recent introduction.
-Don't hesitate to run the checks, propose fixes for the reported
-issues and improvements to the checking rules and accepted words!
----
- documentation/.gitignore                          |  2 ++
- documentation/.vale.ini                           |  7 +++++++
- documentation/Makefile                            |  9 ++++++++-
- documentation/README                              | 14 ++++++++++++++
- documentation/standards.md                        | 15 +++++++++++++++
- .../config/vocabularies/OpenSource/accept.txt     |  4 ++++
- .../styles/config/vocabularies/Yocto/accept.txt   |  4 ++++
- 7 files changed, 54 insertions(+), 1 deletion(-)
- create mode 100644 documentation/.vale.ini
- create mode 100644 documentation/styles/config/vocabularies/OpenSource/accept.txt
- create mode 100644 documentation/styles/config/vocabularies/Yocto/accept.txt
-
-diff --git a/documentation/.gitignore b/documentation/.gitignore
-index 494b4f4de5..b23d598054 100644
---- a/documentation/.gitignore
-+++ b/documentation/.gitignore
-@@ -7,3 +7,5 @@ releases.rst
- .vscode/
- */svg/*.png
- */svg/*.pdf
-+styles/*
-+!styles/config
-diff --git a/documentation/.vale.ini b/documentation/.vale.ini
-new file mode 100644
-index 0000000000..02042bb632
---- /dev/null
-+++ b/documentation/.vale.ini
-@@ -0,0 +1,7 @@
-+StylesPath = styles
-+MinAlertLevel = suggestion
-+Packages = RedHat, proselint, write-good, alex, Readability, Joblint
-+Vocab = Yocto, OpenSource
-+[*.rst]
-+BasedOnStyles = Vale, RedHat, proselint, write-good, alex, Readability, Joblint
-+
-diff --git a/documentation/Makefile b/documentation/Makefile
-index 9fb6814c8f..e1b61f17f1 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -5,6 +5,9 @@
- # from the environment for the first two.
- SPHINXOPTS    ?= -W --keep-going -j auto
- SPHINXBUILD   ?= sphinx-build
-+# Release notes are excluded because they contain contributor names and commit messages which can't be modified
-+VALEOPTS      ?= --no-wrap --no-wrap --glob '!migration-guides/release-notes-*.rst'
-+VALEDOCS      ?= .
- SOURCEDIR     = .
- IMAGEDIRS     = */svg
- BUILDDIR      = _build
-@@ -20,7 +23,7 @@ endif
- help:
- 	@$(SPHINXBUILD) -M help "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
- 
--.PHONY: all help Makefile clean publish epub latexpdf
-+.PHONY: all help Makefile clean stylecheck publish epub latexpdf
- 
- publish: Makefile html singlehtml
- 	rm -rf $(BUILDDIR)/$(DESTDIR)/
-@@ -46,6 +49,10 @@ PNGs := $(foreach dir, $(IMAGEDIRS), $(patsubst %.svg,%.png,$(wildcard $(SOURCED
- clean:
- 	@rm -rf $(BUILDDIR) $(PNGs) $(PDFs) poky.yaml sphinx-static/switchers.js
- 
-+stylecheck:
-+	vale init
-+	vale $(VALEOPTS) $(VALEDOCS)
-+
- epub: $(PNGs)
- 	$(SOURCEDIR)/set_versions.py
- 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
-diff --git a/documentation/README b/documentation/README
-index 4d31036e69..8035418cac 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -151,6 +151,20 @@ dependencies in a virtual environment:
-  $ pipenv install
-  $ pipenv run make html
- 
-+Style checking the Yocto Project documentation
-+==============================================
-+
-+The project is starting to use Vale (https://vale.sh/)
-+to validate the text style.
-+
-+To install Vale:
-+
-+ $ pip install vale
-+
-+To run Vale:
-+
-+ $ make stylecheck
-+
- Sphinx theme and CSS customization
- ==================================
- 
-diff --git a/documentation/standards.md b/documentation/standards.md
-index 9f4771ebd9..a4f8be0dcf 100644
---- a/documentation/standards.md
-+++ b/documentation/standards.md
-@@ -5,6 +5,21 @@ documentation is created.
- 
- It is currently a work in progress.
- 
-+## Automatic style validation
-+
-+There is an ongoing effort to automate style validation
-+through the [Vale](https://vale.sh/). To try it, run:
-+
-+    $ make vale
-+
-+Note that this just applies to text. Therefore, the syntax
-+conventions described below still apply.
-+
-+If you wish to add words to the "accept.txt" files
-+(./styles/config/vocabularies/<Vocab>/accept.txt),
-+make sure the spelling and capitalization matches
-+what Wikipedia uses. Wikipedia is our reference!
-+
- ## Text standards
- 
- ### Bulleted lists
-diff --git a/documentation/styles/config/vocabularies/OpenSource/accept.txt b/documentation/styles/config/vocabularies/OpenSource/accept.txt
-new file mode 100644
-index 0000000000..98e76ae1f5
---- /dev/null
-+++ b/documentation/styles/config/vocabularies/OpenSource/accept.txt
-@@ -0,0 +1,4 @@
-+ftrace
-+toolchain
-+systemd
-+LTTng
-diff --git a/documentation/styles/config/vocabularies/Yocto/accept.txt b/documentation/styles/config/vocabularies/Yocto/accept.txt
-new file mode 100644
-index 0000000000..b725414014
---- /dev/null
-+++ b/documentation/styles/config/vocabularies/Yocto/accept.txt
-@@ -0,0 +1,4 @@
-+Yocto
-+BSP
-+BitBake
-+OpenEmbedded
 -- 
-2.34.1
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
