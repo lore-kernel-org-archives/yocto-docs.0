@@ -2,118 +2,73 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0106CC54E68
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1CF15C54E6E
 	for <webhook@archiver.kernel.org>; Thu, 14 Mar 2024 09:15:25 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.8373.1710407719646989293
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.8391.1710407719192975698
  for <docs@lists.yoctoproject.org>;
- Thu, 14 Mar 2024 02:15:20 -0700
+ Thu, 14 Mar 2024 02:15:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=P2Av8Mt6;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1D28220002;
-	Thu, 14 Mar 2024 09:15:18 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LGbvSyKm;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B97DF24000E;
+	Thu, 14 Mar 2024 09:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710407718;
+	t=1710407717;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=d0i+58X2Lf183VKlkly0UFB/pQFAw3+hoKPbLs8rE44=;
-	b=P2Av8Mt6ay0QBCI/WKMEXTmTB4am24J7OxLcBc/99QU92QEcmez0OQB5UrkE90lNdZLLeb
-	IA18i/fKCH6Xtgiufcwkjh9g1DhPeqXGe/2OMvgXEPOgQ19ZCNQlWarZpS/ervxEQQRPvl
-	T7q2UpcI5Y0ArfB0etvl8xU1tZFDV1AiAKlmAl+Vd+wMlob87yL+588U8UbNl29D3YyEzZ
-	7Ek3JbgMTUqH0QoPJX/wWc/3sWih7yos6o6fa6qVIwFkNmxt2cK75kmWyY9lwv+5kfaCLV
-	KGkOVs8vH0uvhMBYgqbMpPO0ssHBTxv1p9dpWn9Ulb+f7qhS0E7SVD7AMrR3iA==
+	bh=89g5xuVS7heUR9Cq3BV/iDoYGePtfeN5zXumo2vTVvE=;
+	b=LGbvSyKmSbmU6M4yRL8cyXaYA3PaajJ5LMoGOqjpsb92THiSf1RwIOaHjFGUw3F/9/QTnI
+	M3AtRQsVF/TYr9F0t9oUWLtX74/vg/UMcvS7aPCujaEenZoAK7qtzdJzjvXRGNIJXorLWH
+	OclpqfPZZwcITnlqBkTJ67ZddYI4oRSUIt9QC4+QHbPZ83xi2ceTwjXOdTg5CbBN4KNRQ5
+	bEEPi19Tuja6I7ohd0zUCDu+NylGwluwFQhX0aO2ks3k1EiIc8wT1VqyNeyUuKLhT+OJHD
+	8G0L036GEiftqp2a7lIPSGG6ll9BKXWmkBez6yX7oGqCMas9Iln6b/LwFpqlCg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	=?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
-Subject: [nanbield][PATCH 6/7] contributor-guide: add notes for tests
-Date: Thu, 14 Mar 2024 10:15:07 +0100
-Message-Id: <20240314091508.84166-7-michael.opdenacker@bootlin.com>
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Subject: [nanbield][PATCH 5/7] dev-manual: packages: fix capitalization
+Date: Thu, 14 Mar 2024 10:15:06 +0100
+Message-Id: <20240314091508.84166-6-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240314091508.84166-1-michael.opdenacker@bootlin.com>
 References: <20240314091508.84166-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 14 Mar 2024 09:15:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4974
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4973
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Simone Weiß <simone.p.weiss@posteo.com>
+Using "PR service" instead of "PR Service", like in the other
+two instances in this document.
 
-This adds some hints that and how changes should be tested when contributing.
-
-Fixes [YOCTO #15412]
-
-Signed-off-by: Simone Weiß <simone.p.weiss@posteo.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Reported-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 ---
- .../contributor-guide/submit-changes.rst      | 37 ++++++++++++++++++-
- 1 file changed, 35 insertions(+), 2 deletions(-)
+ documentation/dev-manual/packages.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-index 61f3157d60..59f3c1e406 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -221,6 +221,38 @@ to add the upgraded version.
-    <https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes>`__
-    in the Linux kernel documentation.
+diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
+index a6e6af0de7..e5028fffdc 100644
+--- a/documentation/dev-manual/packages.rst
++++ b/documentation/dev-manual/packages.rst
+@@ -206,7 +206,7 @@ history, see the
+    part of the shared state (sstate) packages. If you maintain an sstate
+    feed, it's expected that either all your building systems that
+    contribute to the sstate feed use a shared PR service, or you do not
+-   run a PR Service on any of your building systems.
++   run a PR service on any of your building systems.
  
-+Test your changes
-+-----------------
-+
-+For each contributions you make, you should test your changes as well.
-+For this the Yocto Project offers several types of tests. Those tests cover
-+different areas and it depends on your changes which are feasible. For example run:
-+
-+   -  For changes that affect the build environment:
-+
-+      -  ``bitbake-selftest``: for changes within BitBake
-+
-+      -  ``oe-selftest``: to test combinations of BitBake runs
-+
-+      -  ``oe-build-perf-test``: to test the performance of common build scenarios
-+
-+   -  For changes in a recipe:
-+
-+      - ``ptest``: run package specific tests, if they exist
-+
-+      - ``testimage``: build an image, boot it and run testcases on it
-+
-+      - If applicable, ensure also the ``native`` and ``nativesdk`` variants builds
-+
-+   -  For changes relating to the SDK:
-+
-+      - ``testsdk``: to build, install and run tests against a SDK
-+
-+      - ``testsdk_ext``: to build, install and run tests against an extended SDK
-+
-+Note that this list just gives suggestions and is not exhaustive. More details can
-+be found here: :ref:`test-manual/intro:Yocto Project Tests --- Types of Testing Overview`.
-+
- Creating Patches
- ================
- 
-@@ -285,8 +317,9 @@ Validating Patches with Patchtest
- ``patchtest`` is available in ``openembedded-core`` as a tool for making
- sure that your patches are well-formatted and contain important info for
- maintenance purposes, such as ``Signed-off-by`` and ``Upstream-Status``
--tags. Currently, it only supports testing patches for
--``openembedded-core`` branches. To setup, perform the following::
-+tags. Note that no functional testing of the changes will be performed by ``patchtest``.
-+Currently, it only supports testing patches for ``openembedded-core`` branches.
-+To setup, perform the following::
- 
-     pip install -r meta/lib/patchtest/requirements.txt
-     source oe-init-build-env
+    That's because if you had multiple machines sharing a PR service but
+    not their sstate feed, you could end up with "diverging" hashes for
 -- 
 2.34.1
 
