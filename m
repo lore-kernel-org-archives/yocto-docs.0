@@ -2,106 +2,106 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8E2C54E69
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AB3F5C54E6E
 	for <webhook@archiver.kernel.org>; Thu, 14 Mar 2024 09:14:14 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.8366.1710407653913476240
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.8345.1710407652434270674
  for <docs@lists.yoctoproject.org>;
- Thu, 14 Mar 2024 02:14:14 -0700
+ Thu, 14 Mar 2024 02:14:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Hs116Jqj;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5ED8B24000C;
-	Thu, 14 Mar 2024 09:14:12 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TlPq6JrD;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 500CA20008;
+	Thu, 14 Mar 2024 09:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710407652;
+	t=1710407650;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YxlJscNJvEv9EPqEmVoz3eH6Qa2VzNEpFVqX2LLVhvY=;
-	b=Hs116JqjkyXffrMEXhGARyQmDsf5/ThNHydhOaH+I8E2rYdxOeodsSR7e9MG6LJ8WwCCMC
-	p22yRwXmZyer8ooapdkY6i6+X2L76Owz5MvTR5wZiNHYeb+ApOV+SwLZ3ajHUQinQkMpJy
-	UrAAOKCxkFvSrW/P6CawZj9CMc2yNPG9VWZ/ZxLN/AU6fcjpkiMPG7BC6yWr8pqhs9yLMR
-	HdSSi35J4Few3U4Nt+HN1vZAPnedpJQHc49S5JjIgwyx6HFZ9QYSXbLFPq0VI/4l52yKUo
-	5Ec5jPdT1nATjWHs5w1oYXOI/yJAAdFxLtt6eLhM87iN6CvFg9PmjCsW0pVzYw==
+	bh=ZqoJSZh2VZw+6ilCsQiFeF9Bcjn/CHuk9XTUhsK1KrU=;
+	b=TlPq6JrDCZZATq+ZWkL5WiAWHV3uJqyciMpWI1A3h9I9wTcOLCCMNeLAFcPWTgUHv6pJrx
+	C7S+8tZxhbmgnjuyySHm4gdBdrV9GPg2cE38eY7TfJ7ey1LAjF8ToHForSvRwYWntybjI8
+	GzIrfIHxMTEEY9LCwcYh0dzx7l0Vn38TZYGL74O8K467JYRZpoGYc6UwglbMZ74wCvPVRA
+	rF6M4xl/xD9k31qDbkaIM5v570+UycgiNY0Gn9UgmaCpSdgYXhzpKU4o5YjoUw7CX1i7yz
+	0bn8DbEuGzaxtKVU58IQQ9PAtmkaLTIdBbwXOWPQhqigpSdFivq0txFYQXMnJQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	=?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
-Subject: [kirkstone][PATCH 7/8] contributor-guide: add notes for tests
-Date: Thu, 14 Mar 2024 10:13:57 +0100
-Message-Id: <20240314091358.84025-8-michael.opdenacker@bootlin.com>
+	Johan Bezem <jbezem.extern@arri.de>
+Subject: [kirkstone][PATCH 3/8] ref-manual: variables: correct sdk installation default path
+Date: Thu, 14 Mar 2024 10:13:53 +0100
+Message-Id: <20240314091358.84025-4-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240314091358.84025-1-michael.opdenacker@bootlin.com>
 References: <20240314091358.84025-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 14 Mar 2024 09:14:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4966
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4963
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Simone Weiß <simone.p.weiss@posteo.com>
+From: Johan Bezem <jbezem.extern@arri.de>
 
-This adds some hints that and how changes should be tested when contributing.
+The SDKPATH variable seems mistakenly identified as the
+default path where the SDK will be installed by the generated
+installation script, unless option '-d' or a manual input
+overrides this default.
 
-Fixes [YOCTO #15412]
+The intended variable is SDKPATHINSTALL. SDKPATH indicates
+where the SDK is being composed and built.
 
-Signed-off-by: Simone Weiß <simone.p.weiss@posteo.com>
+The definitions have been added/updated.
+
+Signed-off-by: Johan Bezem <jbezem.extern@arri.de>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../contributor-guide/submit-changes.rst      | 32 +++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ documentation/overview-manual/concepts.rst | 2 +-
+ documentation/ref-manual/variables.rst     | 6 +++++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-index 319f41b51f..c0f2aa7cb4 100644
---- a/documentation/contributor-guide/submit-changes.rst
-+++ b/documentation/contributor-guide/submit-changes.rst
-@@ -221,6 +221,38 @@ to add the upgraded version.
-    <https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes>`__
-    in the Linux kernel documentation.
+diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+index 3e80d6fddd..a1fd3c4dad 100644
+--- a/documentation/overview-manual/concepts.rst
++++ b/documentation/overview-manual/concepts.rst
+@@ -1407,7 +1407,7 @@ This next list, shows the variables associated with a standard SDK:
+    Lists packages that make up the target part of the SDK (i.e. the part
+    built for the target hardware).
  
-+Test your changes
-+-----------------
-+
-+For each contributions you make, you should test your changes as well.
-+For this the Yocto Project offers several types of tests. Those tests cover
-+different areas and it depends on your changes which are feasible. For example run:
-+
-+   -  For changes that affect the build environment:
-+
-+      -  ``bitbake-selftest``: for changes within BitBake
-+
-+      -  ``oe-selftest``: to test combinations of BitBake runs
-+
-+      -  ``oe-build-perf-test``: to test the performance of common build scenarios
-+
-+   -  For changes in a recipe:
-+
-+      - ``ptest``: run package specific tests, if they exist
-+
-+      - ``testimage``: build an image, boot it and run testcases on it
-+
-+      - If applicable, ensure also the ``native`` and ``nativesdk`` variants builds
-+
-+   -  For changes relating to the SDK:
-+
-+      - ``testsdk``: to build, install and run tests against a SDK
-+
-+      - ``testsdk_ext``: to build, install and run tests against an extended SDK
-+
-+Note that this list just gives suggestions and is not exhaustive. More details can
-+be found here: :ref:`test-manual/intro:Yocto Project Tests --- Types of Testing Overview`.
-+
- Creating Patches
- ================
+--  :term:`SDKPATH`: Defines the
++-  :term:`SDKPATHINSTALL`: Defines the
+    default SDK installation path offered by the installation script.
  
+ -  :term:`SDK_HOST_MANIFEST`:
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 691a0cdc1a..0887a40b6b 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7201,6 +7201,10 @@ system and gives an overview of their function and contents.
+          configuration will not take effect.
+ 
+    :term:`SDKPATH`
++      Defines the path used to collect the SDK components and build the
++      installer.
++
++   :term:`SDKPATHINSTALL`
+       Defines the path offered to the user for installation of the SDK that
+       is generated by the OpenEmbedded build system. The path appears as
+       the default location for installing the SDK when you run the SDK's
+@@ -7210,7 +7214,7 @@ system and gives an overview of their function and contents.
+    :term:`SDKTARGETSYSROOT`
+       The full path to the sysroot used for cross-compilation within an SDK
+       as it will be when installed into the default
+-      :term:`SDKPATH`.
++      :term:`SDKPATHINSTALL`.
+ 
+    :term:`SECTION`
+       The section in which packages should be categorized. Package
 -- 
 2.34.1
 
