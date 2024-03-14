@@ -2,35 +2,39 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 897ACC54E5D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A8E2C54E69
 	for <webhook@archiver.kernel.org>; Thu, 14 Mar 2024 09:14:14 +0000 (UTC)
 Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.8361.1710407650457981591
+ by mx.groups.io with SMTP id smtpd.web10.8366.1710407653913476240
  for <docs@lists.yoctoproject.org>;
- Thu, 14 Mar 2024 02:14:11 -0700
+ Thu, 14 Mar 2024 02:14:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=icI8jtN0;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Hs116Jqj;
  spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 79550240008;
-	Thu, 14 Mar 2024 09:14:08 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5ED8B24000C;
+	Thu, 14 Mar 2024 09:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710407648;
+	t=1710407652;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=758Uz6i7oEsli/nw7CLM9W2stdlacUw13+fsgZTSMlg=;
-	b=icI8jtN0LhfSmDAF2wL0L/VVyALPyq5yUQErEiScdut47pRblFKO8lNc2JXrUWE6y+lpod
-	qDkso9QIWiKjFHWfUJHTgqx3eW+YhbKxuQqDRHNkB/qrrn2h/QngIVoNmjR/ZX1xpd7IPi
-	CZ+a3WU+JjDeXeCzDCGUWQ+ji7y1kfLu+k3b/D944dP7ATxN1LMNSOJdP3DjmLLwcNrlkG
-	D788LOi7r5s7ZsXf9klgIHCRdDYtSrjw/pwKXS+a1NciFTjDpxNWumFbZ48tOc4GlQ2vh3
-	ljIUm4dHBoO5eYB5AEqjSbGR8des6QFL8Ej75ba9r7HfaxE+CEzXNglbtkGGig==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YxlJscNJvEv9EPqEmVoz3eH6Qa2VzNEpFVqX2LLVhvY=;
+	b=Hs116JqjkyXffrMEXhGARyQmDsf5/ThNHydhOaH+I8E2rYdxOeodsSR7e9MG6LJ8WwCCMC
+	p22yRwXmZyer8ooapdkY6i6+X2L76Owz5MvTR5wZiNHYeb+ApOV+SwLZ3ajHUQinQkMpJy
+	UrAAOKCxkFvSrW/P6CawZj9CMc2yNPG9VWZ/ZxLN/AU6fcjpkiMPG7BC6yWr8pqhs9yLMR
+	HdSSi35J4Few3U4Nt+HN1vZAPnedpJQHc49S5JjIgwyx6HFZ9QYSXbLFPq0VI/4l52yKUo
+	5Ec5jPdT1nATjWHs5w1oYXOI/yJAAdFxLtt6eLhM87iN6CvFg9PmjCsW0pVzYw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH 0/8] documentation backports
-Date: Thu, 14 Mar 2024 10:13:50 +0100
-Message-Id: <20240314091358.84025-1-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	=?UTF-8?q?Simone=20Wei=C3=9F?= <simone.p.weiss@posteo.com>
+Subject: [kirkstone][PATCH 7/8] contributor-guide: add notes for tests
+Date: Thu, 14 Mar 2024 10:13:57 +0100
+Message-Id: <20240314091358.84025-8-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240314091358.84025-1-michael.opdenacker@bootlin.com>
+References: <20240314091358.84025-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -39,60 +43,65 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 14 Mar 2024 09:14:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4959
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4966
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Apply relevant patches from the "master" branch.
+From: Simone Weiß <simone.p.weiss@posteo.com>
 
-Geoff Parker (1):
-  ref-manual: variables: adding multiple groups in GROUPADD_PARAM
+This adds some hints that and how changes should be tested when contributing.
 
-Johan Bezem (1):
-  ref-manual: variables: correct sdk installation default path
+Fixes [YOCTO #15412]
 
-Luca Ceresoli (2):
-  ref-manual: tasks: do_cleanall: recommend using '-f' instead
-  ref-manual: tasks: do_cleansstate: recommend using '-f' instead for a
-    shared sstate
+Signed-off-by: Simone Weiß <simone.p.weiss@posteo.com>
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ .../contributor-guide/submit-changes.rst      | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-Michael Opdenacker (3):
-  dev-manual: packages: fix capitalization
-  manuals: replace hyphens with em dashes
-  manuals: document VIRTUAL-RUNTIME variables
-
-Simone Weiß (1):
-  contributor-guide: add notes for tests
-
- documentation/bsp-guide/bsp.rst               |  6 +-
- .../contributor-guide/submit-changes.rst      | 32 ++++++
- documentation/dev-manual/device-manager.rst   |  8 +-
- documentation/dev-manual/packages.rst         |  2 +-
- documentation/kernel-dev/advanced.rst         |  2 +-
- documentation/kernel-dev/concepts-appx.rst    |  2 +-
- .../migration-guides/migration-1.6.rst        | 26 ++---
- .../migration-guides/migration-3.0.rst        |  4 +-
- .../migration-guides/migration-3.1.rst        |  2 +-
- .../migration-guides/migration-3.2.rst        | 18 ++--
- .../migration-guides/migration-3.3.rst        |  1 -
- .../migration-guides/migration-3.4.rst        |  4 +-
- .../migration-guides/release-notes-3.4.rst    |  2 +-
- documentation/overview-manual/concepts.rst    |  8 +-
- .../development-environment.rst               |  2 +-
- documentation/overview-manual/yp-intro.rst    |  2 +-
- documentation/profile-manual/usage.rst        | 24 ++---
- .../ref-manual/devtool-reference.rst          |  2 +-
- documentation/ref-manual/faq.rst              |  4 +-
- documentation/ref-manual/structure.rst        | 10 +-
- documentation/ref-manual/tasks.rst            | 40 +++++++-
- documentation/ref-manual/terms.rst            |  4 +-
- documentation/ref-manual/variables.rst        | 99 +++++++++++++------
- documentation/ref-manual/varlocality.rst      |  2 +-
- documentation/sdk-manual/working-projects.rst |  6 +-
- documentation/test-manual/intro.rst           |  4 +-
- .../transitioning-to-a-custom-environment.rst |  2 +-
- 27 files changed, 210 insertions(+), 108 deletions(-)
-
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index 319f41b51f..c0f2aa7cb4 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -221,6 +221,38 @@ to add the upgraded version.
+    <https://www.kernel.org/doc/html/latest/process/submitting-patches.html#using-reported-by-tested-by-reviewed-by-suggested-by-and-fixes>`__
+    in the Linux kernel documentation.
+ 
++Test your changes
++-----------------
++
++For each contributions you make, you should test your changes as well.
++For this the Yocto Project offers several types of tests. Those tests cover
++different areas and it depends on your changes which are feasible. For example run:
++
++   -  For changes that affect the build environment:
++
++      -  ``bitbake-selftest``: for changes within BitBake
++
++      -  ``oe-selftest``: to test combinations of BitBake runs
++
++      -  ``oe-build-perf-test``: to test the performance of common build scenarios
++
++   -  For changes in a recipe:
++
++      - ``ptest``: run package specific tests, if they exist
++
++      - ``testimage``: build an image, boot it and run testcases on it
++
++      - If applicable, ensure also the ``native`` and ``nativesdk`` variants builds
++
++   -  For changes relating to the SDK:
++
++      - ``testsdk``: to build, install and run tests against a SDK
++
++      - ``testsdk_ext``: to build, install and run tests against an extended SDK
++
++Note that this list just gives suggestions and is not exhaustive. More details can
++be found here: :ref:`test-manual/intro:Yocto Project Tests --- Types of Testing Overview`.
++
+ Creating Patches
+ ================
+ 
 -- 
 2.34.1
 
