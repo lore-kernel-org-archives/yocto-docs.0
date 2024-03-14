@@ -2,36 +2,37 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AB3F5C54E6E
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C66B3C54E71
 	for <webhook@archiver.kernel.org>; Thu, 14 Mar 2024 09:14:14 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.8345.1710407652434270674
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web11.8343.1710407651042163130
  for <docs@lists.yoctoproject.org>;
- Thu, 14 Mar 2024 02:14:12 -0700
+ Thu, 14 Mar 2024 02:14:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TlPq6JrD;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 500CA20008;
-	Thu, 14 Mar 2024 09:14:10 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JOxPhB2k;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8CB3E24000F;
+	Thu, 14 Mar 2024 09:14:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710407650;
+	t=1710407649;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZqoJSZh2VZw+6ilCsQiFeF9Bcjn/CHuk9XTUhsK1KrU=;
-	b=TlPq6JrDCZZATq+ZWkL5WiAWHV3uJqyciMpWI1A3h9I9wTcOLCCMNeLAFcPWTgUHv6pJrx
-	C7S+8tZxhbmgnjuyySHm4gdBdrV9GPg2cE38eY7TfJ7ey1LAjF8ToHForSvRwYWntybjI8
-	GzIrfIHxMTEEY9LCwcYh0dzx7l0Vn38TZYGL74O8K467JYRZpoGYc6UwglbMZ74wCvPVRA
-	rF6M4xl/xD9k31qDbkaIM5v570+UycgiNY0Gn9UgmaCpSdgYXhzpKU4o5YjoUw7CX1i7yz
-	0bn8DbEuGzaxtKVU58IQQ9PAtmkaLTIdBbwXOWPQhqigpSdFivq0txFYQXMnJQ==
+	bh=LDHxbF1Q/OFOiVwmE2AZPvQfkW4suGGvPrhUvyoPcJI=;
+	b=JOxPhB2k3DPwI6gudmQWuiSsDGOLCK+12VTAPSkSyZCT0Wn2sIZGsu3hTa1gmh2bBj/yp2
+	5kdkjmjG4gc8Rl5IU2h/+INsN9puliSCPEvGt8tXp00JYgj/KbGFDR/pzsQ1yu+8oWSbG0
+	fnk2cT6gI8P4WK8o246TiwJcua1RUxaecQoPyzB1K8/OXqG/PF0zMAMrCnIykYtAp/4kmr
+	HjPV7vnmxGkT/cZQkURE0S9pMvNgPh6zoiOCjHgDRIuZ44q7tZhbS+0MDZP+GGhcrf2rwY
+	XSBh1pVdBfWPQJFo8xgRy6OH1TGxFmRsTa9Heea1cbYZ3ObXvmRTQrSuIF5VZg==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Johan Bezem <jbezem.extern@arri.de>
-Subject: [kirkstone][PATCH 3/8] ref-manual: variables: correct sdk installation default path
-Date: Thu, 14 Mar 2024 10:13:53 +0100
-Message-Id: <20240314091358.84025-4-michael.opdenacker@bootlin.com>
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [kirkstone][PATCH 2/8] ref-manual: tasks: do_cleansstate: recommend using '-f' instead for a shared sstate
+Date: Thu, 14 Mar 2024 10:13:52 +0100
+Message-Id: <20240314091358.84025-3-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240314091358.84025-1-michael.opdenacker@bootlin.com>
 References: <20240314091358.84025-1-michael.opdenacker@bootlin.com>
@@ -42,66 +43,50 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 14 Mar 2024 09:14:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4963
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4960
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Johan Bezem <jbezem.extern@arri.de>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-The SDKPATH variable seems mistakenly identified as the
-default path where the SDK will be installed by the generated
-installation script, unless option '-d' or a manual input
-overrides this default.
+do_cleansstat can produce build errors when using a shared sstate cache.
 
-The intended variable is SDKPATHINSTALL. SDKPATH indicates
-where the SDK is being composed and built.
+Add a note to clearly discourage, provide a safe alternative (bitbake -f),
+and the rationale.
 
-The definitions have been added/updated.
-
-Signed-off-by: Johan Bezem <jbezem.extern@arri.de>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Suggested-by: Quentin Schulz  <quentin.schulz@theobroma-systems.com>
+Link: https://lore.kernel.org/yocto-docs/20240219155513.76738-1-luca.ceresoli@bootlin.com/T/#m5529687ecb0f9ec2dacddcb6ff58e2df73af9cde
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 ---
- documentation/overview-manual/concepts.rst | 2 +-
- documentation/ref-manual/variables.rst     | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ documentation/ref-manual/tasks.rst | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 3e80d6fddd..a1fd3c4dad 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -1407,7 +1407,7 @@ This next list, shows the variables associated with a standard SDK:
-    Lists packages that make up the target part of the SDK (i.e. the part
-    built for the target hardware).
+diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
+index a3258fda55..0f1f95b9ff 100644
+--- a/documentation/ref-manual/tasks.rst
++++ b/documentation/ref-manual/tasks.rst
+@@ -527,7 +527,19 @@ scratch is guaranteed.
  
---  :term:`SDKPATH`: Defines the
-+-  :term:`SDKPATHINSTALL`: Defines the
-    default SDK installation path offered by the installation script.
+ .. note::
  
- -  :term:`SDK_HOST_MANIFEST`:
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 691a0cdc1a..0887a40b6b 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -7201,6 +7201,10 @@ system and gives an overview of their function and contents.
-          configuration will not take effect.
- 
-    :term:`SDKPATH`
-+      Defines the path used to collect the SDK components and build the
-+      installer.
+-   The ``do_cleansstate`` task cannot remove sstate from a remote sstate
++   Using :ref:`ref-tasks-cleansstate` with a shared :term:`SSTATE_DIR` is
++   not recommended because it could trigger an error during the build of a
++   separate BitBake instance. This is because the builds check sstate "up
++   front" but download the files later, so it if is deleted in the
++   meantime, it will cause an error but not a total failure as it will
++   rebuild it.
 +
-+   :term:`SDKPATHINSTALL`
-       Defines the path offered to the user for installation of the SDK that
-       is generated by the OpenEmbedded build system. The path appears as
-       the default location for installing the SDK when you run the SDK's
-@@ -7210,7 +7214,7 @@ system and gives an overview of their function and contents.
-    :term:`SDKTARGETSYSROOT`
-       The full path to the sysroot used for cross-compilation within an SDK
-       as it will be when installed into the default
--      :term:`SDKPATH`.
-+      :term:`SDKPATHINSTALL`.
++   The reliable and preferred way to force a new build is to use ``bitbake
++   -f`` instead.
++
++.. note::
++
++   The :ref:`ref-tasks-cleansstate` task cannot remove sstate from a remote sstate
+    mirror. If you need to build a target from scratch using remote mirrors, use
+    the "-f" option as follows::
  
-    :term:`SECTION`
-       The section in which packages should be categorized. Package
 -- 
 2.34.1
 
