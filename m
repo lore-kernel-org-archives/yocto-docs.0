@@ -1,307 +1,210 @@
-Return-Path: <ross.burton@arm.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AC1BC54E67
-	for <webhook@archiver.kernel.org>; Fri, 15 Mar 2024 20:58:59 +0000 (UTC)
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (EUR03-AM7-obe.outbound.protection.outlook.com [40.107.105.60])
- by mx.groups.io with SMTP id smtpd.web10.4403.1710536333472743573
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0995C54E69
+	for <webhook@archiver.kernel.org>; Mon, 18 Mar 2024 09:44:13 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.39324.1710755046071841049
  for <docs@lists.yoctoproject.org>;
- Fri, 15 Mar 2024 13:58:53 -0700
+ Mon, 18 Mar 2024 02:44:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@armh.onmicrosoft.com header.s=selector2-armh-onmicrosoft-com header.b=P9LDfKBu;
- dkim=pass header.i=@armh.onmicrosoft.com header.s=selector2-armh-onmicrosoft-com header.b=P9LDfKBu;
- spf=pass (domain: arm.com, ip: 40.107.105.60, mailfrom: ross.burton@arm.com)
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=pass;
- b=eCGZ8aOckQqMLt57JEtejuj/NgIIAt7M0Ff0nH3T7oNWhje1I/m5jQOzZLs42ESbLfVAaM8MxsjvHY2A5vvk0Btn1qxMEK6Xvox5JHc5x0noYxpJwToC9DmvoMJw+LYk8WMYjIN5WrCU/KQEkdbhSpEDYSoTsIUWifL/wlgRRv7ynX6QLY8U5gymoE8C2sb3YMPZJCGbKqnL3dk5cdHtZkERlaT7wRoK1COduFQfXnGOU47Anp8HkUa0pU/kDjWWacOQdcHw2DX492TAwCMecMHsZmCmTgzs950Fpq3njk50GH6Ss8Q17CYkVaSPGPMd/33IVaAZbUG0gyZFOVk1Yg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CYg5mHRbYLYDRokokbDZOnKLzCvuVQaZXMqLvSJ3vrk=;
- b=NGr/drmdyPtLAUb80I+kH3i/TP115sW+itZNz2072hvsfFA8xzTOu0ZURWzRutldSYv/vvR54JrbbHLsGGi4CQF0bJvOhV2exJ6HbDiIxK9iTDLfJhqjYi61YnuVXDCq19Eg/yuKNmlEDBO51iDdhiRRtMAtesP6ZAbUOtRZ5yFiD39Jh9+0DFiv12UpTzV8Er70Clg0kAmUE1lRh+8aKDycXHgZpWbfpFy/jw/UtDMybO8kIALhRmMGg+ERtAF2Oe1abmMeZ8fRffdfyuW8j6CJMeISPiDUjEoJpUOX2ll4lbIBvYLEACnUQ0/1tUalPYlloHHFX0mNRdxKJpSpKg==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 63.35.35.123) smtp.rcpttodomain=lists.yoctoproject.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=armh.onmicrosoft.com; arc=pass (0
- oda=1 ltdi=1 spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CYg5mHRbYLYDRokokbDZOnKLzCvuVQaZXMqLvSJ3vrk=;
- b=P9LDfKBuNIhora+irelHcos1VN623VRP/GqHK3iW7fCPmFhOihTl40OGmpkwExTA3Fm8ZOK5CFlZX2gtRtRcT+ftLqg/ZpqMwVrlQn5IOZ6aIzOGINOXeIW2G/kttD61/WOTbnFTC2tvh/4DNFy65k2TRP29CY4PjRILDjFde6U=
-Received: from DU2PR04CA0276.eurprd04.prod.outlook.com (2603:10a6:10:28c::11)
- by VI0PR08MB10584.eurprd08.prod.outlook.com (2603:10a6:800:1b8::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.21; Fri, 15 Mar
- 2024 20:58:47 +0000
-Received: from DU6PEPF0000A7DF.eurprd02.prod.outlook.com
- (2603:10a6:10:28c:cafe::88) by DU2PR04CA0276.outlook.office365.com
- (2603:10a6:10:28c::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.19 via Frontend
- Transport; Fri, 15 Mar 2024 20:58:47 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=armh.onmicrosoft.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
- pr=C
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- DU6PEPF0000A7DF.mail.protection.outlook.com (10.167.8.36) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7386.12 via Frontend Transport; Fri, 15 Mar 2024 20:58:47 +0000
-Received: ("Tessian outbound 7b0d57313a48:v276"); Fri, 15 Mar 2024 20:58:46 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: a41c022ec2106e4a
-X-CR-MTA-TID: 64aa7808
-Received: from 1132dfe3b059.1
-	by 64aa7808-outbound-1.mta.getcheckrecipient.com id 5FB714CE-2E1E-41F2-9638-73C09878F3E2.1;
-	Fri, 15 Mar 2024 20:58:40 +0000
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id 1132dfe3b059.1
-    (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384);
-    Fri, 15 Mar 2024 20:58:40 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=EmXAUGQ0qixIxjm7TpfooBHzmXvew+kiWivyI5XtRxznkSx2tePomCepyIzWx5CA4TF6LPjsj0LRozwwDHle3lE+Jw7ZPNay0MUmCMhQvs3pL1UXKB41tZQlJBbHMwouVVysELgFA0mIdHNk/+EisVtlUtgC5SKzeDuWZPirywJz5pItrCCn4hnkpXqiRVCWJLSt5kyN0X24jkQ2xygMBH0JQum1+LRtkkbhtyrI3EPVKesHqFfuc3Wm4h2fQrmqcWmNnE3R+CSL1xJ9AX3BiBqmhASOxKiPsKrX6fWlTtCp5mestvDZn/lv00rPp4pCO2hmiyXl+1mGCtVKuBAoSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CYg5mHRbYLYDRokokbDZOnKLzCvuVQaZXMqLvSJ3vrk=;
- b=afRC8h2P+uw5aTmTAMOmwrUd7XCrfdAo389jnDFhPdShl6XZkdE8D1GuWi6sF+ZBqaUvC5FLK+JTZw8FtkD0gTefMf31qb5/Te6NHpTcromqdXOvEBrqkGtCLTssL2hPBqIPQhXJWjIM4g0D1bWLqTdisjO5GThgB8titFLFJzFBfz1JbN4ClIZeBC76vXBB+nqPMqkfpTTnbX/Wk+hXjeFNdtRL9ip13hVHsM7LsQksumon7eIsjNVKjqONcdSkzwNJUXDLq6HWBe6IVOOYJ82bnheyKMLEEdgYbgC1jYqaDEbTguCQgRbnY2UjarfTwh1iQuoBEYNSuYM09Pb3+w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=armh.onmicrosoft.com;
- s=selector2-armh-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CYg5mHRbYLYDRokokbDZOnKLzCvuVQaZXMqLvSJ3vrk=;
- b=P9LDfKBuNIhora+irelHcos1VN623VRP/GqHK3iW7fCPmFhOihTl40OGmpkwExTA3Fm8ZOK5CFlZX2gtRtRcT+ftLqg/ZpqMwVrlQn5IOZ6aIzOGINOXeIW2G/kttD61/WOTbnFTC2tvh/4DNFy65k2TRP29CY4PjRILDjFde6U=
-Received: from PA4PR08MB7411.eurprd08.prod.outlook.com (2603:10a6:102:2a3::12)
- by PAVPR08MB9700.eurprd08.prod.outlook.com (2603:10a6:102:31f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.21; Fri, 15 Mar
- 2024 20:58:38 +0000
-Received: from PA4PR08MB7411.eurprd08.prod.outlook.com
- ([fe80::36de:39f1:4d:5228]) by PA4PR08MB7411.eurprd08.prod.outlook.com
- ([fe80::36de:39f1:4d:5228%5]) with mapi id 15.20.7386.020; Fri, 15 Mar 2024
- 20:58:38 +0000
-From: Ross Burton <Ross.Burton@arm.com>
-To: "michael.opdenacker@bootlin.com" <michael.opdenacker@bootlin.com>
-CC: OE-core <openembedded-core@lists.openembedded.org>, YP docs mailing list
-	<docs@lists.yoctoproject.org>
-Subject: Re: [OE-core] Call for contributions to the 5.0 release notes
-Thread-Topic: [OE-core] Call for contributions to the 5.0 release notes
-Thread-Index: AQHadrCV/xJ1T5TQaESiL+5vQLRC6rE5SayA
-Date: Fri, 15 Mar 2024 20:58:37 +0000
-Message-ID: <5AFFF9F0-625C-42D7-A2FC-26AE3323796D@arm.com>
-References: <f53c085e-3d24-42d3-ba62-e1c543311dd1@bootlin.com>
-In-Reply-To: <f53c085e-3d24-42d3-ba62-e1c543311dd1@bootlin.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3774.400.31)
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-x-ms-traffictypediagnostic: 
-	PA4PR08MB7411:EE_|PAVPR08MB9700:EE_|DU6PEPF0000A7DF:EE_|VI0PR08MB10584:EE_
-X-MS-Office365-Filtering-Correlation-Id: 90d1fe9c-d3ff-47af-6afc-08dc4532b52f
-x-checkrecipientrouted: true
-nodisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted: BCL:0;
-X-Microsoft-Antispam-Message-Info-Original: 
- nfTYtMC4m3QbVdP80p32Y2ib8HBxkITb019Cy/uGMUql8KXF+PT59PaAQ/CjuO93ERUGOTbPEzdqFyzaPG1CdqdinkJa7I2a8/20rBUygffmrsb6biB0VDfX4MwERwtK6jLFS1mOU78Wyen6ciHnJs4n6UOWHjV6N6Io8iI3KZYj+sFOOP+xOWtpiYBxkt1n4f366RTFxKQesW+Ay9ExNsDJgNKwOc/UHubBNVCrL5z9eT2p/kI3yymVzS6kdvUiczlPnCp1SXbfcYK0vdcw6dvGVvJbmIQrT1RnkxQd6RRFrfWb095IJQYMR6KmTrq2zF7arNvbaxoNfdm+CNdHnGphjTrIhoekYuCl/3w04I5d3EesQOWZ/YB+tknowvQKVbz34GK3O81JUviSm3ZAyom4Gd8rr6FWC/2loPRX4hBdn2cmYJD7W8ZKWdznpL3Ybh5gp758v5FYLHaiXcKvla82WceAtB44E6wbVJgMe+L7BGW4RvWEA0LpPJylN6ByWBCATkGIYVOXpeJcqYE62xQS2hYCVaYXMdjNxzs84oRW0P25R3ZvFRTHTE+ZtnbbfzaKp0wX0ZnHdqHtZATYZes5870LKbUSL6SORQDsczUuO0+5l/jm8E6mZ8Xwg8sIA19Lw3o/CptIGCE2cyf/WrkgkUWw+kSFa1iYQmMb7iblJQcZ/SMtLc/mUDBIttbWm+jwiHxmt3Ru9Sv2dB4hiVpP2W/ZEoy02fhaetC2pic=
-X-Forefront-Antispam-Report-Untrusted: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR08MB7411.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1101;
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <609F2DED3DCC13408FC4E80230EDE4C6@eurprd08.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DSef/wQn;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id DD0701BF206;
+	Mon, 18 Mar 2024 09:44:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1710755044;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=nmkTTo7iILOnhXJOMyrkb7ceQXQencVvSrH+gcrnKoI=;
+	b=DSef/wQnNRjCr91I1pV893SEx7rQgEQ0uu7RVNQqgueJdi5jE3hoPJbTruvZ4b4jIcY3A2
+	elxVD92kuC3ljQk8lUjPBZA5UjNc9q2leJz/gCFEM5DHYE4ONdnVg2armWvVLHvR58LM6U
+	tHHaNRNfw2PHKw/+s0MYtfDKXUpsy1UgTT7jULVAVcU6POoyc7Ij/0mQiAJVnkEpD6Pj1Y
+	T/dpiojvlPrEgCdVBvXl04PxHJvgOPWO+eVBewnSOtAayDvilqAtfhQ0xRCHZPiedIYr0Z
+	Ggsk6RPslKV5jy05RmGnWrYptzno53PvJPzToA+wIFCt7ixwSMkPbTttROA3lA==
+Message-ID: <04ed62be-d020-49e4-a714-526c12c57332@bootlin.com>
+Date: Mon, 18 Mar 2024 10:44:03 +0100
 MIME-Version: 1.0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR08MB9700
-Original-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: 
- DU6PEPF0000A7DF.eurprd02.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 
-	49b59e85-c39c-44a9-b060-08dc4532afd6
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	BSTo5RSBcmr+QzCtKVCKYGxqQvsTh62R4sHrTirRhs+k0bFXQYA7efmAwJDYrvZiCdYq/H7aTKtxf3n/PmOBZ8axwsbnF9hk8ibtFA0TrtoAd0wIDSmhw14offnw+qOE/qm5hLeC2DIbmT3ZfLOSPtJgyxZzuvtCwAFgMkMNmrci00YHYYGGasR0rYNqhY0c/Tpu9zB/m17t3rBv+B6ljVj4hEWS1kP2/9ZNJAL2yZbj7XIJhOZUi+O3bH7NnTRRwQFTEPxOSZnzMR0ydDxC7ETdJPcPXupFybPS5GrLkSqmyho6kKklS42jX75SpRu7N9Gy730dMrTZaII7Fnhha/TbTSpByBkhdh+r5PrW6BmT7aY/b4HMQzby96+0xcdM3mPfNTJS5bsu9Yru1tUq8Kcl1yIdiMXYa/peF9ILHS+ON08ibR3521aCyNoHAg1ACVgB3gT98FQ0JmLIl1SULRnlTpo2a3hrehpa91UrbsEsTJ3/YJR+Euvm4QKB6QuWCz4u6+/ACZcPDZ73CvZPvqrde9B4sZVD9HwPKmoyAPXXWBi3xZXzf/a//2MYakh/S5gMBmYVUcrp9+XNj4CDj/pzmMeO+GGu+tTrbqnSLmCWaOvIshcqoE2fgV4K2MPxrpfVbPyZMJgY0JYonrdpU6masEwStM7EwLeqsTyOKNjKcQYSe3U6x33zVRaJTOogeJ8xUetup1xqsYWeTPKrUJR5591bKpuU8YP0X31C46IfNizwmqATuWsfAg/JGByG
-X-Forefront-Antispam-Report: 
-	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:ec2-63-35-35-123.eu-west-1.compute.amazonaws.com;CAT:NONE;SFS:(13230031)(82310400014)(376005)(1800799015)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Mar 2024 20:58:47.0232
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 90d1fe9c-d3ff-47af-6afc-08dc4532b52f
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	DU6PEPF0000A7DF.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB10584
+User-Agent: Mozilla Thunderbird
+Cc: OE-core <openembedded-core@lists.openembedded.org>,
+ YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Re: [OE-core] Call for contributions to the 5.0 release notes
+Content-Language: en-US
+To: Ross Burton <Ross.Burton@arm.com>
+References: <f53c085e-3d24-42d3-ba62-e1c543311dd1@bootlin.com>
+ <5AFFF9F0-625C-42D7-A2FC-26AE3323796D@arm.com>
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <5AFFF9F0-625C-42D7-A2FC-26AE3323796D@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 15 Mar 2024 20:58:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4983
+ <docs@lists.yoctoproject.org>; Mon, 18 Mar 2024 09:44:13 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4984
 
-T24gMTUgTWFyIDIwMjQsIGF0IDA4OjEyLCBNaWNoYWVsIE9wZGVuYWNrZXIgdmlhIGxpc3RzLm9w
-ZW5lbWJlZGRlZC5vcmcgPG1pY2hhZWwub3BkZW5hY2tlcj1ib290bGluLmNvbUBsaXN0cy5vcGVu
-ZW1iZWRkZWQub3JnPiB3cm90ZToNCj4gDQo+IEdyZWV0aW5ncywNCj4gDQo+IElmIHlvdSBjb250
-cmlidXRlZCBuZXcgZmVhdHVyZXMgdG8gdGhlIHVwY29taW5nIHJlbGVhc2UsIG9yIGlmIHlvdSBh
-cmUgaW50ZXJlc3RlZCBpbiBmaWd1cmluZyBvdXQgd2hhdCdzIG5ldyBpbiA1LjAsIHRoYXQgd291
-bGQgYmUgZ3JlYXQgaWYgeW91IGNvdWxkIGhlbHAgdXMgYnkgc3VibWl0dGluZyBiaXRzIG9mIHJl
-bGVhc2Ugbm90ZXMgYWJvdXQgdGhlbSB0b28uDQoNCknigJl2ZSBiZWVuIG1ha2luZyBub3RlcyBv
-ZiBldmVyeSBjb21taXQgdGhhdCBJ4oCZdmUgc2VlbiBnbyBpbnRvIG1hc3RlciB0aGF0IGxvb2tz
-IGxpa2UgaXQgc2hvdWxkIGJlIGluIHRoZSByZWxlYXNlIG5vdGVzLiAgSSBkaWRu4oCZdCBpbmNs
-dWRlIHVwZ3JhZGVzIHVubGVzcyB0aGV5IHdlcmUgaW5jcmVkaWJseSBub3RhYmxlIGJlY2F1c2Ug
-dGhhdCBjYW4gYmUgZ2VuZXJhdGVkIGJ5IGEgc2NyaXB0Lg0KDQpJIGtub3cgdGhpcyBpc27igJl0
-IHZlcnkgdXNlZnVsIGFzIGl0IGlzLCBhbmQgSSBkbyBob3BlIHRvIHN0YXJ0IHdyaXRpbmcgc29t
-ZSBlbnRyaWVzIHdoZXJlIEkgd2FzIHJlc3BvbnNpYmxlIGZvciB0aGUgY2hhbmdlcywgYnV0IGhl
-cmXigJlzIHRoZSByYXcgbGlzdDoNCg0KYjQ5ZDQyY2U6IG9lcWEvcnVudGltZS9sb2dpbjogUHJv
-b2Ygb2YgY29uY2VwdCBmb3Igc2NyZWVuc2hvdCB0ZXN0Y2FzZXMNCmU5ODcwMDI4OiBpbWFnZV90
-eXBlcy5iYmNsYXNzOiBmaXggdmZhdCBpbWFnZSBuYW1lcw0KMjJkNmMwOTY6IHJ4dnQ6IGFkZCBy
-eHZ0IHRvIGRlc2t0b3AgZW50cnkgbmFtZQ0KMmY0ZjcyZmY6IEFkZCBnZW5lcmljYXJtNjQgTUFD
-SElORQ0KZjE1Njc2NTk6IGJtYXB0b29sOiBub3cgcGFydCBvZiBZb2N0byBQcm9qZWN0DQpmZDJl
-NWUwYjogZ29hcmNoOiBkaXNhYmxlIGR5bmFtaWMgbGlua2luZyBnbG9iYWxseQ0KMjM4N2JkNjM6
-IGNvcmUtaW1hZ2UtZnVsbC1jbWRsaW5lOiBhZGQgcGFja2FnZS1tYW5hZ2VtZW50DQo2OTRiODVh
-MjogcnVzdDogUmV2ZXJ0IFBHTyB0byBpdCdzIGRlZmF1bHQNCjkwODkzYjVlOiBweXRob24zOiBk
-b250IGRpc2FibGUgcmVhZGxpbmUgbW9kdWxlIGZvciBlZGl0bGluZQ0KZWUwMTRjYTU6IHdpYzog
-YWxsb3cgaW1hZ2VyLXNwZWNpZmljIGZpbGVuYW1lIGV4dGVuc2lvbnMNCjA4YWE2OWExOiBiaXRi
-YWtlOiBydW5xdWV1ZTogQWRkIHN1cHBvcnQgZm9yIEJCX0xPQURGQUNUT1JfTUFYDQphMjI2ODY1
-YzogYmFzZS1maWxlczogYWRkIHVzYWdlIHdhcm5pbmcgdG8gbW90ZA0KOWY3NDc1YjQ6IHJlY2lw
-ZXRvb2w7IGFkZCBzdXBwb3J0IGZvciBweXRob25fbWVzb25weSBjbGFzcw0KYTc0ODRhNjY6IHB5
-dGhvbl9tZXNvbnB5LmJiY2xhc3M6IG1vdmUgZnJvbSBtZXRhLXB5dGhvbg0KYzBhMmUzYTk6IHB5
-dGhvbjMtbWVzb24tcHl0aG9uOiBtb3ZlIGZyb20gbWV0YS1weXRob24NCjAzZjNhYTY0OiBweXRo
-b24zLXB5cHJvamVjdC1tZXRhZGF0YTogbW92ZSBmcm9tIG1ldGEtcHl0aG9uDQo0Y2ZkMGY3ZTog
-bGliL29lL3BhdGNoOiBVc2UgZ2l0IG5vdGVzIHRvIHN0b3JlIHRoZSBmaWxlbmFtZXMgZm9yIHRo
-ZSBwYXRjaGVzDQo2ZjMyNzY5YTogb3ZlcmxheWZzLWV0YzogYWRkIG9wdGlvbiB0byBza2lwIGNy
-ZWF0aW9uIG9mIG1vdW50IGRpcnMNCjFlZmZkMTAxOiBiaXRiYWtlOiBoYXNoc2VydjogQWRkIFVu
-aWhhc2ggR2FyYmFnZSBDb2xsZWN0aW9uDQpmZDYwMDcyODogbWV0YS1wb2t5L2NvbmYvdGVtcGxh
-dGVzL2RlZmF1bHQvY29uZi1zdW1tYXJ5LnR4dDogYWRkIGEgdGVtcGxhdGUgc3VtbWFyeQ0KYzM5
-MGIyZTY6IG9lLXNldHVwLWJ1aWxkOiBhZGQgYSB0b29sIGZvciBkaXNjb3ZlcmluZyBjb25maWcg
-dGVtcGxhdGVzIGFuZCBzZXR0aW5nIHVwIGJ1aWxkcw0KZGZlOTg3MTM6IG9lLWluaXQtYnVpbGQt
-ZW52OiBnZW5lcmF0ZSAudnNjb2RlIGZyb20gdGVtcGxhdGUNCmY2MmU0ZDgxOiBiaXRiYWtlOiB0
-YXNrZXhwX25jdXJzZXM6IG5jdXJzZXMgdmVyc2lvbiBvZiB0YXNrZXhwLnB5DQozY2NiNGQ4YTog
-ZGV2dG9vbDogbmV3IGlkZS1zZGsgcGx1Z2luDQo4ZGE2YmQ2OTogY3VwczogdXNlIExPQ0FMRV9Q
-QVRIUyB0byBzcGxpdCBsb2NhbGl6ZWQgSFRNTCB0ZW1wbGF0ZXMNCmMyYTdjMDA4OiBsaWIvb2Uv
-cGFja2FnZTogYWRkIExPQ0FMRV9QQVRIUyB0byBhZGQgZGVmaW5lIGFsbCBsb2NhdGlvbnMgZm9y
-IGxvY2FsZXMNCmE3YmJiMTA1OiBiaXRiYWtlOiBydW5xdWV1ZTogSW1wcm92ZSBwZXJmb3JtYW5j
-ZSBmb3IgZXhlY3V0aW5nIHRhc2tzDQo4MDM5NmNjNzogc2FuaXR5LmJiY2xhc3M6IHJhaXNlX3Nh
-bml0eV9lcnJvciBpZiAvdG1wIGlzIG5vZXhlYw0KMDcwMDZjNDg6IFJldmVydCAibHpvcDogcmVt
-b3ZlIHJlY2lwZSBmcm9tIG9lLWNvcmUiDQo5MmQ3OTBmNTogY29uZi9tYWNoaW5lOiBBZGQgUG93
-ZXI4IHR1bmUgdG8gUG93ZXJQQyBhcmNoaXRlY3R1cmUNCjgxZDkwZmM4OiBwYWNrYWdlX3JwbTog
-YWRkIFJQTUJVSUxEX0VYVFJBX1BBUkFNUyB2YXJpYWJsZQ0KNzdmNWY5OWY6IHBhY2thZ2VfbWFu
-YWdlcjogaXBrOiBhZGQgT1BLR19NQUtFX0lOREVYX0VYVFJBX1BBUkFNUyB2YXJpYWJsZQ0KZTY4
-NTc3MzU6IHdpYzogaW1wbGVtZW50IHJlcHJvZHVjaWJsZSBEaXNrIEdVSUQNCmNjNzQwYmY2OiBh
-cm0vYXJtdio6IGFkZCBhbGwgdGhlIEFybSB0dW5lcyBpbiBHQ0MgMTMuMi4wDQplNzFmNTRjNjog
-dHVuZXMvc3ZlOiBBZGQgc3VwcG9ydCBmb3Igc3ZlMiBpbnN0cnVjdGlvbnMNCjZkNTAzYTdmOiBn
-bGliYzogVXBncmFkZSB0byAyLjM5DQpiMGU1NTQyZTogYmludXRpbHM6IFVwZ3JhZGUgdG8gYmlu
-dXRpbHMgMi40Mg0KNzhjOTlhZjI6IGV1ZGV2OiBhbGxvdyBmb3IgcHJlZGljdGFibGUgbmV0d29y
-ayBpbnRlcmZhY2UgbmFtZXMNCjY1NDBmNjVhOiBsaW51eC15b2N0by1kZXY6IHVwZGF0ZSB0byB2
-Ni44DQplZDA4MTgwNjogc3lzcm9vdCB1c2VyIG1hbmFnZW1lbnQgcG9zdGluc3RzOiBydW4gd2l0
-aCAvYmluL3NoIC1lIHRvIHJlcG9ydCBlcnJvcnMgd2hlbiB0aGV5IGhhcHBlbg0KYmI2MzBjM2U6
-IHJ1c3Q6IEVuYWJsZSBydXN0IG9lLXNlbGZ0ZXN0Lg0KOTk5YmNmOTk6IGxpbnV4LXlvY3RvLzYu
-MTogZHJvcCByZWNpcGVzDQo2MDM2NjlkMzogeHNlcnZlci14b3JnOiBkaXNhYmxlIHh2ZmIgYnkg
-ZGVmYXVsdA0KOTdmZDcwNGE6IHR1bmUtY29yZTI6IFVwZGF0ZSBxZW11IGNwdSB0byBzdXBwb3J0
-ZWQgbW9kZWwNCjA5YjY5YTY5OiBybmctdG9vbHM6IFJldmVydCAicm5nLXRvb2xzOiBtb3ZlIHRv
-IG1ldGEtb2UiDQozZTU3OWMzMDogY2xhc3NlczogZ28tdmVuZG9yOiBIYW5kbGUgbW9kdWxlcyBm
-cm9tIHRoZSBzYW1lIHJlcG8NCjAxNjFkMDhhOiByZWNpcGV0b29sOiBEb24ndCBmYWlsIG9uIGxv
-Y2FsIGdvIG1vZHVsZXMNCjZlMDA3NzRhOiBjbGFzc2VzLWdsb2JhbC9pbnNhbmU6IEFkZCBjaGVj
-ayBmb3IgInZpcnR1YWwvIiBpbiBSUFJPVklERVMgYW5kIFJERVBFTkRTDQpjOTE3MzIzYTogY2xh
-c3Nlcy9yZWNpcGVzOiBTd2l0Y2ggdG8gdXNlIGluaGVyaXRfZGVmZXINCmM1NmZjZTllOiBiaXRi
-YWtlOiBhc3QvQkJIYW5kbGVyOiBBZGQgaW5oZXJpdF9kZWZlciBzdXBwb3J0DQo1MDMxY2Y0Mjog
-cGFja2FnZS5weTogZml4IERhcndpbiBzdXBwb3J0DQpkMmI0NDUzODogcm5nLXRvb2xzOiBtb3Zl
-IHRvIG1ldGEtb2UNCjYxMTgyNjU5OiBiaXRiYWtlOiBydW5xdWV1ZTogRml4IHJ1bmFsbCBhbGwg
-YnVnDQozZGM4OTU4MDogYXV0b3Rvb2xzOiBkb24ndCBleGNsdWRlIGd0a2RvY2l6ZQ0KNjdlM2Yy
-NDM6IGJpdGJha2U6IGJpdGJha2UvcnVucXVldWU6IHJld29yayAnYml0YmFrZSAtUyBwcmludGRp
-ZmYnIGxvZ2ljDQpjNjY1YTJjOTogYml0YmFrZTogYXN0OiBGaXggRVhQT1JUX0ZVTkNUSU9OUyBi
-dWcNCjNmNDE1OTI5OiBiaXRiYWtlOiBiaXRiYWtlOiBldmVudDogSW5qZWN0IGVtcHR5IGxpbmVz
-IHRvIG1ha2UgY29kZSBtYXRjaCBsaW5lbm8gaW4gZmlsZW5hbWUNCjhjNzMyNDI1OiBvcGVuc3No
-OiBBZGQgUEFDS0FHRUNPTkZJRyBvcHRpb24gdG8gY3VzdG9taXplIHNzaGQgbW9kZQ0KMTAwNzVi
-MjU6IGxpbnV4LXlvY3RvLzYuMTogdXBkYXRlIHRvIHY2LjEuNzANCjQ4NjU4OGUyOiBsaW51eC15
-b2N0by82LjY6IHVwZGF0ZSB0byB2Ni42LjkNCmRmOWViNjlmOiBsaW51eC15b2N0bzogaW50cm9k
-dWNlIDYuNiByZWZlcmVuY2Uga2VybmVsDQo0ZjJjNDk5Mzogc3lzdGVtZC1ib290OiBBZGQgcmVj
-aXBlIHRvIGNvbXBpbGUgbmF0aXZlDQpiNDBhOGUwMjogenZhcmlhbnQ6IERyb3AgcmVjaXBlDQpm
-ZGVmNTZhNTogYXJjaGl2ZXIuYmJjbGFzczogRHJvcCB0YXJmaWxlIG1vZHVsZSB0byBpbXByb3Zl
-IHBlcmZvcm1hbmNlDQozMDAwYWJlMjogY29uZi9tYWNoaW5lLXNkazogZGVjbGFyZSBxZW11LXVz
-ZXJtb2RlIFNES19NQUNISU5FX0ZFQVRVUkUNCjY0MTYyYjE4OiBuYXRpdmVzZGs6IGRvbid0IHVu
-c2V0IE1BQ0hJTkVfRkVBVFVSRVMsIGxldCBtYWNoaW5lLXNkay8gc2V0IGl0DQo2MGNlNjgxODog
-bmF0aXZlc2RrOiBlbnN1cmUgZmVhdHVyZXMgZG9uJ3QgZ2V0IGJhY2tmaWxsZWQNCmRmNTQ4ZTk4
-OiBpcGs6IFN3aXRjaCB0byB1c2luZyB6c3RkIGNvbXByZXNzaW9uDQpiYzhjYTBiYTogd2ljOiB1
-c2UgRTJGU1BST0dTX0ZBS0VfVElNRSBhbmQgaGFzaF9zZWVkIHRvIGdlbmVyYXRlIHJlcHJvZHVj
-aWJsZSBleHQ0IGltYWdlcw0KMTQzNjg2ZmU6IGdwZ21lOiBkaXNhYmxlIHB5dGhvbiBzdXBwb3J0
-ICh1bnRpbCB1cHN0cmVhbSBmaXhlcyAzLjEyIGNvbXBhdGliaWxpdHkpDQplNzNiMzc0NDogcHl0
-aG9uMzogcmUtZW5hYmxlIHByb2ZpbGUgZ3VpZGVkIG9wdGltaXNhdGlvbg0KMmY1NmFlYzA6IG1h
-Y2hpbmUvYXJjaC1hcm12OTogcmVtb3ZlIGNyYyBhbmQgc3ZlIHR1bmVzLCB0aGV5IGFyZSBtYW5k
-YXRvcnkNCjI2NTYwZWZhOiBpbWFnZXM6IGFkZCBjb3JlLWltYWdlLWluaXRyYW1mcy1ib290DQow
-ODM2OTgxMjogdGVzdGltYWdlOiBEcm9wIHRhcmdldF9kdW1wZXIgYW5kIG1vc3Qgb2YgbW9uaXRv
-cl9kdW1wZXINCjhkZmY3MTg2OiBiaXRiYWtlLmNvbmY6IEFkZCBydW50aW1lZGlyDQo3ZDg4MWYw
-Mjogb2VxYTogYWRkICJtYXR1cmluIGRldmVsb3AiIFNESyB0ZXN0IGNhc2UNCmIyYjJlMDI3OiBv
-ZXFhOiBhZGQgc2ltcGxlICdtYXR1cmluJyBTREsgKHRlc3RzZGspIHRlc3QgY2FzZQ0KODQ0ZTkx
-MDQ6IG9lLXNlbGZlc3Q6IGFkZCBtYXR1cm4gcnVudGltZSAodGVzdGltYWdlKSB0ZXN0DQo5NzA3
-ZGM1NTogcmVjaXBldG9vbDogYWRkIHB5dGhvbl9tYXR1cmluIHN1cHBvcnQNCmNhNTQyNzI4OiBj
-bGFzc2VzLXJlY2lwZTogYWRkIHB5dGhvbl9tYXR1cmluLmJiY2xhc3MNCmQ5NzYzNmEwOiBweXRo
-b24zLW1hdHVyaW46IGFkZCB2MS40LjANCjZlNmJiOTNmOiBvZXFhL3NlbGZ0ZXN0L3NzdGF0ZXRl
-c3RzOiByZS13b3JrIENETiB0ZXN0cywgYWRkIGxvY2FsIGNhY2hlIHRlc3RzDQo2Y2U2MWI0Mzog
-c3RyYWNlOiBEaXNhYmxlIGJsdWV0b290aCBzdXBwb3J0IGJ5IGRlZmF1bHQNCjQ3Y2M2Mjg4OiBz
-c3RhdGU6IEZpeCBkaXIgb3duZXJzaGlwIGlzc3VlcyBpbiBTU1RBVEVfRElSDQo3YTIwMzgxNDog
-cnVzdDogRGlzYWJsZSBydXN0IG9lLXNlbGZ0ZXN0DQplZjM3MWQxYzogY3ZlLXVwZGF0ZS1udmQy
-LW5hdGl2ZTogZmFzdGVyIHJlcXVlc3RzIHdpdGggQVBJIGtleXMNCmQ1YTZlM2I1OiBiaXRiYWtl
-OiB0b2FzdGVyL3Rlc3RzOiBSZWZhY3Rvcml6ZSB0ZXN0cy9mdW5jdGlvbmFsDQo5YTVjMTQ1Njog
-ZGV2dG9vbDogbW9kaWZ5OiBNYWtlIC0tbm8tZXh0cmFjdCB3b3JrIGFnYWluDQpkZWNmNmU2Njog
-cmVjaXBldG9vbDogY3JlYXRlOiBJbXByb3ZlIGlkZW50aWZpY2F0aW9uIG9mIGxpY2Vuc2VzDQoz
-NmI2NjU1MzogaW1hZ2UtdWVmaS5jb25mOiBBZGQgRUZJX1VLSV9QQVRIIHZhcmlhYmxlDQoyYzU5
-ZjVhZDogbGliL29lL3BhdGNoOiBoYW5kbGUgY3JlYXRpbmcgcGF0Y2hlcyBmb3IgQ1JMRiBzb3Vy
-Y2VzDQo0NjNkNTZiOTogc3lzdGVtdGFwLXVwcm9iZXM6IHJlbW92ZWQgYXMgb2Jzb2xldGUNCjQx
-ZmZhMTY5OiBvZXFhL3J1bnRpbWUvcGFyc2Vsb2dzOiBsb2FkIGlnbm9yZXMgZnJvbSBkaXNrDQo4
-NWEyYTZmNjogcmVjaXBldG9vbDogY3JlYXRlX2J1aWxkc3lzX3B5dGhvbjogYWRkIHB5cGkgc3Vw
-cG9ydA0KMGY0ZmU0Zjc6IGJpdGJha2U6IHJ1bnF1ZXVlOiBJbXByb3ZlIGludGVyIHNldHNjZW5l
-IHRhc2sgZGVwZW5kZW5jeSBoYW5kbGluZw0KZjg5ZDkyNDA6IHZ0ZTogU2VwYXJhdGUgb3V0IGd0
-azQgcGllY2VzIG9mIHZ0ZSBpbnRvIGluZGl2aWR1YWwgcGFja2FnZXMNCjBhMzlmMWFhOiB3aWM6
-IGJvb3RpbWctZWZpOiBNYWtlIGtlcm5lbCBpbWFnZSBpbnN0YWxsYXRpb24gY29uZmlndXJhYmxl
-DQo4OWYxNjYyNDogZGV2dG9vbDogYWRkIHN1cHBvcnQgZm9yIGdpdCBzdWJtb2R1bGVzDQowNzQ2
-Mjk5MjogY21ha2UtcWVtdS5iYmNsYXNzOiBzdXBwb3J0IHFlbXUgZm9yIGNtYWtlDQo1ZDEyYzBh
-Mzogd2ljOiByYXdjb3B5OiBhZGQgc3VwcG9ydCBmb3IgenN0ZCBkZWNvbXByZXNzaW9uDQo2OWVk
-NDEyNzogYml0YmFrZS5jb25mOiBMb2cgZXZlbnRzIGJ5IGRlZmF1bHQgdXNpbmcgQkJfREVGQVVM
-VF9FVkVOVExPRw0KZmYzYTQ4OTI6IGJpdGJha2U6IHRvYXN0ZXIvdGVzdHM6IEFkZCBVSSBUZXN0
-Q2FzZSBmb3IgdmlzdWFsaXplIGFsbCBwcm9qZWN0cyBzaG93IHJvd3MNCjZjYTU0MTE3OiBiaXRi
-YWtlOiBjb29rZXI6IEFkZCBzdXBwb3J0IGZvciBCQl9ERUZBVUxUX0VWRU5UTE9HDQo1ZmY2ODhm
-ZTogdnNjb2RlOiBhZGQgbWluaW1hbCBjb25maWd1cmF0aW9uDQowOTA0YzRjMzogYml0YmFrZS5j
-b25mOiBkcm9wICR7UEV9IGFuZCAke1BSfSBmcm9tIC1me2ZpbGUsbWFjcm8sZGVidWd9LXByZWZp
-eC1tYXANCjA3NjllOGVmOiBiaXRiYWtlLmNvbmY6IERyb3Agb2xkaW5jbHVkZWRpcg0KZDIxN2Nh
-NDE6IGdub21lYmFzZS5iYmNsYXNzOiBVc2UgbWVzb24gYXMgZGVmYXVsdCBidWlsZHN5c3RlbQ0K
-MzNjZGU0N2U6IGJpdGJha2U6IGhhc2hzZXJ2OiBBbGxvdyBzZWxmLXNlcnZpY2UgZGVsZXRpb24N
-CmMxNTc0YWU0OiBiaXRiYWtlOiBoYXNoc2VydjogQWRkIGRhdGFiYXNlIGNvbHVtbiBxdWVyeSBB
-UEkNCjNhMmM1YTZmOiBiaXRiYWtlOiBoYXNoc2VydjogQWRkIGRiLXVzYWdlIEFQSQ0KOGNmYjk0
-YzA6IGJpdGJha2U6IGhhc2hzZXJ2OiBBZGQgYmVjb21lLXVzZXIgQVBJDQoxYWY3MjViMjogYml0
-YmFrZTogaGFzaHNlcnY6IEFkZCB1c2VyIHBlcm1pc3Npb25zDQpjZmJiMWQyYzogYml0YmFrZTog
-aGFzaHNlcnY6IEFkZCBTUUxhbGNoZW15IGJhY2tlbmQNCjI0ODRiZDg5OiBiaXRiYWtlOiBoYXNo
-c2VydjogQWRkIHdlYnNvY2tldCBjb25uZWN0aW9uIGltcGxlbWVudGF0aW9uDQo3ZGUzNmIyNTog
-cmVjaXBldG9vbDogQWRkIGhhbmRsZXIgdG8gY3JlYXRlIGdvIHJlY2lwZXMNCjIyZjhmZGJlOiBj
-bGFzc2VzOiBnby12ZW5kb3I6IEFkZCBnby12ZW5kb3IgY2xhc3MNCjc2OWFiZTU3OiBydXN0LWNy
-b3NzLWNhbmFkaWFuOiBBZGQgcmlzY3Y2NCB0byBjcm9zcy1jYW5hZGlhbiBob3N0cw0KZjc4MzBl
-ZDg6IG1hY2hpbmUtc2RrOiBBZGQgU0RLX0FSQ0ggZm9yIHJpc2N2NjQNCmIxMTE2YzgxOiBpbWFn
-ZV90eXBlcy5iYmNsYXNzOiBVc2UgeHogZGVmYXVsdCBjb21wcmVzc2lvbiBwcmVzZXQgbGV2ZWwN
-CjM2ODFkYjZiOiBsaWJjcm9jbzogZHJvcCByZWNpcGUNCmQ2MTM0YzlmOiB2b2xhdGlsZS1iaW5k
-czogQWxsb3cgY3JlYXRpb24gb2Ygc3ViZGlyZWN0b3JpZXMNCjUwYzU3ZWUzOiBSZXZlcnQgImJp
-bl9wYWNrYWdlLmJiY2xhc3M6IEluaGliaXQgdGhlIGRlZmF1bHQgZGVwZW5kZW5jaWVzIg0KOWZm
-YWMzZmM6IHJlY2lwZXRvb2w6IGFkZCBweXRob25faGF0Y2hsaW5nIHN1cHBvcnQNCjJjZjEzZjI1
-OiBsaWIvb2Uvc3N0YXRlc2lnLnB5OiBkdW1wIGxvY2tlZC5zaWdzLmluYyBvbmx5IHdoZW4gZXhw
-bGljaXRseSBhc2tlZCB2aWEgLVMgbG9ja2Vkc2lncw0KZDRkZWJiZjU6IHJlY2lwZXRvb2wvY3Jl
-YXRlX2J1aWxkc3lzX3B5dGhvbjogYWRkIFBFUDUxNyBzdXBwb3J0DQpiZTEyOWJkMDogcmVjaXBl
-dG9vbC9jcmVhdGVfYnVpbGRzeXNfcHl0aG9uOiBwcmVmaXggY3JlYXRlZCByZWNpcGVzIHdpdGgg
-cHl0aG9uMy0NCjg0OWQyOWM4OiBwYWNrYWdlX3JwbTogQWxsb3cgY29tcHJlc3Npb24gbW9kZSBv
-dmVycmlkZQ0KN2NiYTAyZTg6IGxpZ2h0dHBkOiBtb2Rlcm5pemUgbGlnaHR0cGQuY29uZg0KZTMz
-MjY3Zjg6IHN5c3RlbWQ6IGFkZCBvcHRpb24gdG8gdXNlIHN0dWItcmVzb2x2LmNvbmYNCjZmMzBl
-MzU4OiBiYXNlLWZpbGVzLCBzeXN0ZW1kOiBhZGQgbnNzLXJlc29sdmUgcGx1Z2luDQphMDQyMzQy
-Mjogb3BlbnNzaDogQWRkIHNzaGQuc2VydmljZQ0KMTViMDhiODI6IHNjcmlwdHMvYml0YmFrZS13
-aGF0Y2hhbmdlZDogcmVtb3ZlDQo2MjczOWMyZTogYml0YmFrZS5jb25mOiBEcm9wIERFUExPWV9E
-SVJfVEFSDQoNCkNoZWVycywNClJvc3MNCg0K
+Hi Ross
+
+On 3/15/24 at 21:58, Ross Burton wrote:
+> On 15 Mar 2024, at 08:12, Michael Opdenacker via lists.openembedded.org <michael.opdenacker=bootlin.com@lists.openembedded.org> wrote:
+>> Greetings,
+>>
+>> If you contributed new features to the upcoming release, or if you are interested in figuring out what's new in 5.0, that would be great if you could help us by submitting bits of release notes about them too.
+> I’ve been making notes of every commit that I’ve seen go into master that looks like it should be in the release notes.  I didn’t include upgrades unless they were incredibly notable because that can be generated by a script.
+>
+> I know this isn’t very useful as it is, and I do hope to start writing some entries where I was responsible for the changes, but here’s the raw list:
+>
+> b49d42ce: oeqa/runtime/login: Proof of concept for screenshot testcases
+> e9870028: image_types.bbclass: fix vfat image names
+> 22d6c096: rxvt: add rxvt to desktop entry name
+> 2f4f72ff: Add genericarm64 MACHINE
+> f1567659: bmaptool: now part of Yocto Project
+> fd2e5e0b: goarch: disable dynamic linking globally
+> 2387bd63: core-image-full-cmdline: add package-management
+> 694b85a2: rust: Revert PGO to it's default
+> 90893b5e: python3: dont disable readline module for editline
+> ee014ca5: wic: allow imager-specific filename extensions
+> 08aa69a1: bitbake: runqueue: Add support for BB_LOADFACTOR_MAX
+> a226865c: base-files: add usage warning to motd
+> 9f7475b4: recipetool; add support for python_mesonpy class
+> a7484a66: python_mesonpy.bbclass: move from meta-python
+> c0a2e3a9: python3-meson-python: move from meta-python
+> 03f3aa64: python3-pyproject-metadata: move from meta-python
+> 4cfd0f7e: lib/oe/patch: Use git notes to store the filenames for the patches
+> 6f32769a: overlayfs-etc: add option to skip creation of mount dirs
+> 1effd101: bitbake: hashserv: Add Unihash Garbage Collection
+> fd600728: meta-poky/conf/templates/default/conf-summary.txt: add a template summary
+> c390b2e6: oe-setup-build: add a tool for discovering config templates and setting up builds
+> dfe98713: oe-init-build-env: generate .vscode from template
+> f62e4d81: bitbake: taskexp_ncurses: ncurses version of taskexp.py
+> 3ccb4d8a: devtool: new ide-sdk plugin
+> 8da6bd69: cups: use LOCALE_PATHS to split localized HTML templates
+> c2a7c008: lib/oe/package: add LOCALE_PATHS to add define all locations for locales
+> a7bbb105: bitbake: runqueue: Improve performance for executing tasks
+> 80396cc7: sanity.bbclass: raise_sanity_error if /tmp is noexec
+> 07006c48: Revert "lzop: remove recipe from oe-core"
+> 92d790f5: conf/machine: Add Power8 tune to PowerPC architecture
+> 81d90fc8: package_rpm: add RPMBUILD_EXTRA_PARAMS variable
+> 77f5f99f: package_manager: ipk: add OPKG_MAKE_INDEX_EXTRA_PARAMS variable
+> e6857735: wic: implement reproducible Disk GUID
+> cc740bf6: arm/armv*: add all the Arm tunes in GCC 13.2.0
+> e71f54c6: tunes/sve: Add support for sve2 instructions
+> 6d503a7f: glibc: Upgrade to 2.39
+> b0e5542e: binutils: Upgrade to binutils 2.42
+> 78c99af2: eudev: allow for predictable network interface names
+> 6540f65a: linux-yocto-dev: update to v6.8
+> ed081806: sysroot user management postinsts: run with /bin/sh -e to report errors when they happen
+> bb630c3e: rust: Enable rust oe-selftest.
+> 999bcf99: linux-yocto/6.1: drop recipes
+> 603669d3: xserver-xorg: disable xvfb by default
+> 97fd704a: tune-core2: Update qemu cpu to supported model
+> 09b69a69: rng-tools: Revert "rng-tools: move to meta-oe"
+> 3e579c30: classes: go-vendor: Handle modules from the same repo
+> 0161d08a: recipetool: Don't fail on local go modules
+> 6e00774a: classes-global/insane: Add check for "virtual/" in RPROVIDES and RDEPENDS
+> c917323a: classes/recipes: Switch to use inherit_defer
+> c56fce9e: bitbake: ast/BBHandler: Add inherit_defer support
+> 5031cf42: package.py: fix Darwin support
+> d2b44538: rng-tools: move to meta-oe
+> 61182659: bitbake: runqueue: Fix runall all bug
+> 3dc89580: autotools: don't exclude gtkdocize
+> 67e3f243: bitbake: bitbake/runqueue: rework 'bitbake -S printdiff' logic
+> c665a2c9: bitbake: ast: Fix EXPORT_FUNCTIONS bug
+> 3f415929: bitbake: bitbake: event: Inject empty lines to make code match lineno in filename
+> 8c732425: openssh: Add PACKAGECONFIG option to customize sshd mode
+> 10075b25: linux-yocto/6.1: update to v6.1.70
+> 486588e2: linux-yocto/6.6: update to v6.6.9
+> df9eb69f: linux-yocto: introduce 6.6 reference kernel
+> 4f2c4993: systemd-boot: Add recipe to compile native
+> b40a8e02: zvariant: Drop recipe
+> fdef56a5: archiver.bbclass: Drop tarfile module to improve performance
+> 3000abe2: conf/machine-sdk: declare qemu-usermode SDK_MACHINE_FEATURE
+> 64162b18: nativesdk: don't unset MACHINE_FEATURES, let machine-sdk/ set it
+> 60ce6818: nativesdk: ensure features don't get backfilled
+> df548e98: ipk: Switch to using zstd compression
+> bc8ca0ba: wic: use E2FSPROGS_FAKE_TIME and hash_seed to generate reproducible ext4 images
+> 143686fe: gpgme: disable python support (until upstream fixes 3.12 compatibility)
+> e73b3744: python3: re-enable profile guided optimisation
+> 2f56aec0: machine/arch-armv9: remove crc and sve tunes, they are mandatory
+> 26560efa: images: add core-image-initramfs-boot
+> 08369812: testimage: Drop target_dumper and most of monitor_dumper
+> 8dff7186: bitbake.conf: Add runtimedir
+> 7d881f02: oeqa: add "maturin develop" SDK test case
+> b2b2e027: oeqa: add simple 'maturin' SDK (testsdk) test case
+> 844e9104: oe-selfest: add maturn runtime (testimage) test
+> 9707dc55: recipetool: add python_maturin support
+> ca542728: classes-recipe: add python_maturin.bbclass
+> d97636a0: python3-maturin: add v1.4.0
+> 6e6bb93f: oeqa/selftest/sstatetests: re-work CDN tests, add local cache tests
+> 6ce61b43: strace: Disable bluetooth support by default
+> 47cc6288: sstate: Fix dir ownership issues in SSTATE_DIR
+> 7a203814: rust: Disable rust oe-selftest
+> ef371d1c: cve-update-nvd2-native: faster requests with API keys
+> d5a6e3b5: bitbake: toaster/tests: Refactorize tests/functional
+> 9a5c1456: devtool: modify: Make --no-extract work again
+> decf6e66: recipetool: create: Improve identification of licenses
+> 36b66553: image-uefi.conf: Add EFI_UKI_PATH variable
+> 2c59f5ad: lib/oe/patch: handle creating patches for CRLF sources
+> 463d56b9: systemtap-uprobes: removed as obsolete
+> 41ffa169: oeqa/runtime/parselogs: load ignores from disk
+> 85a2a6f6: recipetool: create_buildsys_python: add pypi support
+> 0f4fe4f7: bitbake: runqueue: Improve inter setscene task dependency handling
+> f89d9240: vte: Separate out gtk4 pieces of vte into individual packages
+> 0a39f1aa: wic: bootimg-efi: Make kernel image installation configurable
+> 89f16624: devtool: add support for git submodules
+> 07462992: cmake-qemu.bbclass: support qemu for cmake
+> 5d12c0a3: wic: rawcopy: add support for zstd decompression
+> 69ed4127: bitbake.conf: Log events by default using BB_DEFAULT_EVENTLOG
+> ff3a4892: bitbake: toaster/tests: Add UI TestCase for visualize all projects show rows
+> 6ca54117: bitbake: cooker: Add support for BB_DEFAULT_EVENTLOG
+> 5ff688fe: vscode: add minimal configuration
+> 0904c4c3: bitbake.conf: drop ${PE} and ${PR} from -f{file,macro,debug}-prefix-map
+> 0769e8ef: bitbake.conf: Drop oldincludedir
+> d217ca41: gnomebase.bbclass: Use meson as default buildsystem
+> 33cde47e: bitbake: hashserv: Allow self-service deletion
+> c1574ae4: bitbake: hashserv: Add database column query API
+> 3a2c5a6f: bitbake: hashserv: Add db-usage API
+> 8cfb94c0: bitbake: hashserv: Add become-user API
+> 1af725b2: bitbake: hashserv: Add user permissions
+> cfbb1d2c: bitbake: hashserv: Add SQLalchemy backend
+> 2484bd89: bitbake: hashserv: Add websocket connection implementation
+> 7de36b25: recipetool: Add handler to create go recipes
+> 22f8fdbe: classes: go-vendor: Add go-vendor class
+> 769abe57: rust-cross-canadian: Add riscv64 to cross-canadian hosts
+> f7830ed8: machine-sdk: Add SDK_ARCH for riscv64
+> b1116c81: image_types.bbclass: Use xz default compression preset level
+> 3681db6b: libcroco: drop recipe
+> d6134c9f: volatile-binds: Allow creation of subdirectories
+> 50c57ee3: Revert "bin_package.bbclass: Inhibit the default dependencies"
+> 9ffac3fc: recipetool: add python_hatchling support
+> 2cf13f25: lib/oe/sstatesig.py: dump locked.sigs.inc only when explicitly asked via -S lockedsigs
+> d4debbf5: recipetool/create_buildsys_python: add PEP517 support
+> be129bd0: recipetool/create_buildsys_python: prefix created recipes with python3-
+> 849d29c8: package_rpm: Allow compression mode override
+> 7cba02e8: lighttpd: modernize lighttpd.conf
+> e33267f8: systemd: add option to use stub-resolv.conf
+> 6f30e358: base-files, systemd: add nss-resolve plugin
+> a0423422: openssh: Add sshd.service
+> 15b08b82: scripts/bitbake-whatchanged: remove
+> 62739c2e: bitbake.conf: Drop DEPLOY_DIR_TAR
+
+
+Thanks for all this sorting work. This should prove very useful.
+As I'm also busy with the binary distro project, any patches to cover 
+these changes in the documentation will be welcome indeed. And once 
+again, even a raw text description will be useful too.
+Thanks again
+Cheers
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
