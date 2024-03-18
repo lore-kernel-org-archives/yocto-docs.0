@@ -1,210 +1,134 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0995C54E69
-	for <webhook@archiver.kernel.org>; Mon, 18 Mar 2024 09:44:13 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.39324.1710755046071841049
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05677C54E68
+	for <webhook@archiver.kernel.org>; Mon, 18 Mar 2024 13:20:05 +0000 (UTC)
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+ by mx.groups.io with SMTP id smtpd.web11.43870.1710767998373005443
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Mar 2024 02:44:06 -0700
+ Mon, 18 Mar 2024 06:19:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DSef/wQn;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DD0701BF206;
-	Mon, 18 Mar 2024 09:44:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710755044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nmkTTo7iILOnhXJOMyrkb7ceQXQencVvSrH+gcrnKoI=;
-	b=DSef/wQnNRjCr91I1pV893SEx7rQgEQ0uu7RVNQqgueJdi5jE3hoPJbTruvZ4b4jIcY3A2
-	elxVD92kuC3ljQk8lUjPBZA5UjNc9q2leJz/gCFEM5DHYE4ONdnVg2armWvVLHvR58LM6U
-	tHHaNRNfw2PHKw/+s0MYtfDKXUpsy1UgTT7jULVAVcU6POoyc7Ij/0mQiAJVnkEpD6Pj1Y
-	T/dpiojvlPrEgCdVBvXl04PxHJvgOPWO+eVBewnSOtAayDvilqAtfhQ0xRCHZPiedIYr0Z
-	Ggsk6RPslKV5jy05RmGnWrYptzno53PvJPzToA+wIFCt7ixwSMkPbTttROA3lA==
-Message-ID: <04ed62be-d020-49e4-a714-526c12c57332@bootlin.com>
-Date: Mon, 18 Mar 2024 10:44:03 +0100
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=RZb8A4cZ;
+ spf=pass (domain: gmail.com, ip: 209.85.208.172, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d2509c66daso62218761fa.3
+        for <docs@lists.yoctoproject.org>; Mon, 18 Mar 2024 06:19:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710767996; x=1711372796; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ltq61nv3ZUOnePteRuBUQkM88IWivvIDwzub7/dU93E=;
+        b=RZb8A4cZ+QiRqqNP4eWDeeaq6/V1LnPZ1cKLQRfu+gBM5maJ4RPaOpmk8juvjYPKPF
+         sBghvA4YnNG+5yBWOfJAcZ3v/TWP1Cvvdd8YbhYZNXwK8ZfLm1ks1VqYdMiyzryKnihI
+         Utgy5+BHta/7RVhuw2caCIrL+jkROuPKmvUqBHWhf6c/ZvzjAFCS/ohncKeYgISQLQ2M
+         k7IilVK5IL4251Zhuc40kNacIa4vuVHiIbza1TAei34VRRx+1dq0fMGAvlnGs9ihTjTp
+         qh2snNx4RsptJaVtoFcTeS7UWliVooZ9OYZl0KJ56+/T8LPHjA2OW95DAPEj134DPpq7
+         TL8Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710767996; x=1711372796;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ltq61nv3ZUOnePteRuBUQkM88IWivvIDwzub7/dU93E=;
+        b=wWOf8j9C41oN7F8qX0c80aCJ/X1Z2l0SXkUzNzy4QGaZOUe0ph60eh0pBiu50KkqoA
+         D/QLZUwT2oqKYyzP+HXylpZotNTrTyRYmISQfD5Z9LBSiw8nysottqwS6Wg6HXK+qjOQ
+         q3mWIW4ixV3Rq6ty/Sql93oP7ZSThCmyA0tvO62BKJM/1fRZPFPiiXl20faywnuVTCbI
+         1Hdm4lh00pwtn9DZ0KMLss+mki+1qm4dhdKRXrRGrdO3hZXOsxEnSx6go2AN6rp8vl1u
+         g3fkpFpHX6pbADdvzNAo5Oei8UrnspYLXSe44jOINd3N16O6CWB95G9DIgzikH0H8UPI
+         2jMw==
+X-Forwarded-Encrypted: i=1; AJvYcCXlfoTdTWajhGt0T5FsbFX0jy1oAjt3+noqy/5jNB1Yo+/5i/Iaa0AKdKpFCAqoA7EnIRo1/qDeQ4dimJQJRqeAoM6zFM85UpbgDZY=
+X-Gm-Message-State: AOJu0YxMwlOot28IJgn5wzW4Gyz0sK3AuN+u+mBcNcRONUnZfms3JOuv
+	UEvi1LAFrhY2U5NmwQjfGFuxeheUysHpP7Q/GSoBS3LPZuf10ZANAtGA7p8yaNFBS+oA5xBMz05
+	q0cDj/xAS58ykUAx4klECJUEgnXU=
+X-Google-Smtp-Source: AGHT+IHOZHF3Ko0y126RSkJjz/aeJJBwSPjXLfMkL4CwGk8V3Q+Wxl5eA4KAbjwLxHxkDbyuW5etEmDVo87L9z8iqqs=
+X-Received: by 2002:a2e:9243:0:b0:2d4:a041:874d with SMTP id
+ v3-20020a2e9243000000b002d4a041874dmr3212407ljg.48.1710767996283; Mon, 18 Mar
+ 2024 06:19:56 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: OE-core <openembedded-core@lists.openembedded.org>,
- YP docs mailing list <docs@lists.yoctoproject.org>
-Subject: Re: [OE-core] Call for contributions to the 5.0 release notes
-Content-Language: en-US
-To: Ross Burton <Ross.Burton@arm.com>
 References: <f53c085e-3d24-42d3-ba62-e1c543311dd1@bootlin.com>
- <5AFFF9F0-625C-42D7-A2FC-26AE3323796D@arm.com>
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <5AFFF9F0-625C-42D7-A2FC-26AE3323796D@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+In-Reply-To: <f53c085e-3d24-42d3-ba62-e1c543311dd1@bootlin.com>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Mon, 18 Mar 2024 14:19:45 +0100
+Message-ID: <CANNYZj8KxPxPxmLDQrOgMAXo8csysaz6u4Upd07=MCv23M9D9g@mail.gmail.com>
+Subject: Re: [OE-core] Call for contributions to the 5.0 release notes
+To: michael.opdenacker@bootlin.com
+Cc: OE-core <openembedded-core@lists.openembedded.org>, 
+	YP docs mailing list <docs@lists.yoctoproject.org>, 
+	Richard Purdie <richard.purdie@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 18 Mar 2024 09:44:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4984
+ <docs@lists.yoctoproject.org>; Mon, 18 Mar 2024 13:20:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4985
 
-Hi Ross
+So I have looked through my commits over the past year that
+*definitely* need documenting, and identified these standouts:
 
-On 3/15/24 at 21:58, Ross Burton wrote:
-> On 15 Mar 2024, at 08:12, Michael Opdenacker via lists.openembedded.org <michael.opdenacker=bootlin.com@lists.openembedded.org> wrote:
->> Greetings,
->>
->> If you contributed new features to the upcoming release, or if you are interested in figuring out what's new in 5.0, that would be great if you could help us by submitting bits of release notes about them too.
-> I’ve been making notes of every commit that I’ve seen go into master that looks like it should be in the release notes.  I didn’t include upgrades unless they were incredibly notable because that can be generated by a script.
+- https://git.yoctoproject.org/poky/commit/?id=63e53fb8b60d38315015844bd3357fa1649cd639
+"build-sysroots: target or native sysroot population need to be
+selected explicitly"
+Easy fix to existing docs, will send asap.
+
+- https://git.yoctoproject.org/poky/commit/?id=2187e823ad66eaaee6a4ed7d748f2c68028a45e7
+"selftest/sstatetests: add tests for 'bitbake -S printdiff'"
+This functionality needs to be documented; a review of whether there's
+something for bitbake-diffsigs (which is related) is also needed. I'll
+do this after the first item.
+
+ - https://git.yoctoproject.org/poky/commit/?id=6f29e2319cf8f6124de4998e887efab90bc63ba4
+"meta/conf/templates/default/conf-summary.txt: add a template summary"
+Needs to be documented everywhere where config templates or config
+template descriptions are mentioned. Also on todo list.
+
+- https://git.yoctoproject.org/poky/commit/?id=c390b2e615930b60db0d7f3e72d056e0c67ef5bc
+"oe-setup-build: add a tool for discovering config templates and
+setting up builds"
+
+This was added to master very recently and documenting it is pending
+an important fixup:
+https://patchwork.yoctoproject.org/project/oe-core/patch/20240305073749.4133403-1-alex@linutronix.de/
+which I hope lands in master soon, but for some reason isn't in master-next.
+
+Alex
+
+
+
+On Fri, 15 Mar 2024 at 09:12, Michael Opdenacker via
+lists.openembedded.org
+<michael.opdenacker=bootlin.com@lists.openembedded.org> wrote:
 >
-> I know this isn’t very useful as it is, and I do hope to start writing some entries where I was responsible for the changes, but here’s the raw list:
+> Greetings,
 >
-> b49d42ce: oeqa/runtime/login: Proof of concept for screenshot testcases
-> e9870028: image_types.bbclass: fix vfat image names
-> 22d6c096: rxvt: add rxvt to desktop entry name
-> 2f4f72ff: Add genericarm64 MACHINE
-> f1567659: bmaptool: now part of Yocto Project
-> fd2e5e0b: goarch: disable dynamic linking globally
-> 2387bd63: core-image-full-cmdline: add package-management
-> 694b85a2: rust: Revert PGO to it's default
-> 90893b5e: python3: dont disable readline module for editline
-> ee014ca5: wic: allow imager-specific filename extensions
-> 08aa69a1: bitbake: runqueue: Add support for BB_LOADFACTOR_MAX
-> a226865c: base-files: add usage warning to motd
-> 9f7475b4: recipetool; add support for python_mesonpy class
-> a7484a66: python_mesonpy.bbclass: move from meta-python
-> c0a2e3a9: python3-meson-python: move from meta-python
-> 03f3aa64: python3-pyproject-metadata: move from meta-python
-> 4cfd0f7e: lib/oe/patch: Use git notes to store the filenames for the patches
-> 6f32769a: overlayfs-etc: add option to skip creation of mount dirs
-> 1effd101: bitbake: hashserv: Add Unihash Garbage Collection
-> fd600728: meta-poky/conf/templates/default/conf-summary.txt: add a template summary
-> c390b2e6: oe-setup-build: add a tool for discovering config templates and setting up builds
-> dfe98713: oe-init-build-env: generate .vscode from template
-> f62e4d81: bitbake: taskexp_ncurses: ncurses version of taskexp.py
-> 3ccb4d8a: devtool: new ide-sdk plugin
-> 8da6bd69: cups: use LOCALE_PATHS to split localized HTML templates
-> c2a7c008: lib/oe/package: add LOCALE_PATHS to add define all locations for locales
-> a7bbb105: bitbake: runqueue: Improve performance for executing tasks
-> 80396cc7: sanity.bbclass: raise_sanity_error if /tmp is noexec
-> 07006c48: Revert "lzop: remove recipe from oe-core"
-> 92d790f5: conf/machine: Add Power8 tune to PowerPC architecture
-> 81d90fc8: package_rpm: add RPMBUILD_EXTRA_PARAMS variable
-> 77f5f99f: package_manager: ipk: add OPKG_MAKE_INDEX_EXTRA_PARAMS variable
-> e6857735: wic: implement reproducible Disk GUID
-> cc740bf6: arm/armv*: add all the Arm tunes in GCC 13.2.0
-> e71f54c6: tunes/sve: Add support for sve2 instructions
-> 6d503a7f: glibc: Upgrade to 2.39
-> b0e5542e: binutils: Upgrade to binutils 2.42
-> 78c99af2: eudev: allow for predictable network interface names
-> 6540f65a: linux-yocto-dev: update to v6.8
-> ed081806: sysroot user management postinsts: run with /bin/sh -e to report errors when they happen
-> bb630c3e: rust: Enable rust oe-selftest.
-> 999bcf99: linux-yocto/6.1: drop recipes
-> 603669d3: xserver-xorg: disable xvfb by default
-> 97fd704a: tune-core2: Update qemu cpu to supported model
-> 09b69a69: rng-tools: Revert "rng-tools: move to meta-oe"
-> 3e579c30: classes: go-vendor: Handle modules from the same repo
-> 0161d08a: recipetool: Don't fail on local go modules
-> 6e00774a: classes-global/insane: Add check for "virtual/" in RPROVIDES and RDEPENDS
-> c917323a: classes/recipes: Switch to use inherit_defer
-> c56fce9e: bitbake: ast/BBHandler: Add inherit_defer support
-> 5031cf42: package.py: fix Darwin support
-> d2b44538: rng-tools: move to meta-oe
-> 61182659: bitbake: runqueue: Fix runall all bug
-> 3dc89580: autotools: don't exclude gtkdocize
-> 67e3f243: bitbake: bitbake/runqueue: rework 'bitbake -S printdiff' logic
-> c665a2c9: bitbake: ast: Fix EXPORT_FUNCTIONS bug
-> 3f415929: bitbake: bitbake: event: Inject empty lines to make code match lineno in filename
-> 8c732425: openssh: Add PACKAGECONFIG option to customize sshd mode
-> 10075b25: linux-yocto/6.1: update to v6.1.70
-> 486588e2: linux-yocto/6.6: update to v6.6.9
-> df9eb69f: linux-yocto: introduce 6.6 reference kernel
-> 4f2c4993: systemd-boot: Add recipe to compile native
-> b40a8e02: zvariant: Drop recipe
-> fdef56a5: archiver.bbclass: Drop tarfile module to improve performance
-> 3000abe2: conf/machine-sdk: declare qemu-usermode SDK_MACHINE_FEATURE
-> 64162b18: nativesdk: don't unset MACHINE_FEATURES, let machine-sdk/ set it
-> 60ce6818: nativesdk: ensure features don't get backfilled
-> df548e98: ipk: Switch to using zstd compression
-> bc8ca0ba: wic: use E2FSPROGS_FAKE_TIME and hash_seed to generate reproducible ext4 images
-> 143686fe: gpgme: disable python support (until upstream fixes 3.12 compatibility)
-> e73b3744: python3: re-enable profile guided optimisation
-> 2f56aec0: machine/arch-armv9: remove crc and sve tunes, they are mandatory
-> 26560efa: images: add core-image-initramfs-boot
-> 08369812: testimage: Drop target_dumper and most of monitor_dumper
-> 8dff7186: bitbake.conf: Add runtimedir
-> 7d881f02: oeqa: add "maturin develop" SDK test case
-> b2b2e027: oeqa: add simple 'maturin' SDK (testsdk) test case
-> 844e9104: oe-selfest: add maturn runtime (testimage) test
-> 9707dc55: recipetool: add python_maturin support
-> ca542728: classes-recipe: add python_maturin.bbclass
-> d97636a0: python3-maturin: add v1.4.0
-> 6e6bb93f: oeqa/selftest/sstatetests: re-work CDN tests, add local cache tests
-> 6ce61b43: strace: Disable bluetooth support by default
-> 47cc6288: sstate: Fix dir ownership issues in SSTATE_DIR
-> 7a203814: rust: Disable rust oe-selftest
-> ef371d1c: cve-update-nvd2-native: faster requests with API keys
-> d5a6e3b5: bitbake: toaster/tests: Refactorize tests/functional
-> 9a5c1456: devtool: modify: Make --no-extract work again
-> decf6e66: recipetool: create: Improve identification of licenses
-> 36b66553: image-uefi.conf: Add EFI_UKI_PATH variable
-> 2c59f5ad: lib/oe/patch: handle creating patches for CRLF sources
-> 463d56b9: systemtap-uprobes: removed as obsolete
-> 41ffa169: oeqa/runtime/parselogs: load ignores from disk
-> 85a2a6f6: recipetool: create_buildsys_python: add pypi support
-> 0f4fe4f7: bitbake: runqueue: Improve inter setscene task dependency handling
-> f89d9240: vte: Separate out gtk4 pieces of vte into individual packages
-> 0a39f1aa: wic: bootimg-efi: Make kernel image installation configurable
-> 89f16624: devtool: add support for git submodules
-> 07462992: cmake-qemu.bbclass: support qemu for cmake
-> 5d12c0a3: wic: rawcopy: add support for zstd decompression
-> 69ed4127: bitbake.conf: Log events by default using BB_DEFAULT_EVENTLOG
-> ff3a4892: bitbake: toaster/tests: Add UI TestCase for visualize all projects show rows
-> 6ca54117: bitbake: cooker: Add support for BB_DEFAULT_EVENTLOG
-> 5ff688fe: vscode: add minimal configuration
-> 0904c4c3: bitbake.conf: drop ${PE} and ${PR} from -f{file,macro,debug}-prefix-map
-> 0769e8ef: bitbake.conf: Drop oldincludedir
-> d217ca41: gnomebase.bbclass: Use meson as default buildsystem
-> 33cde47e: bitbake: hashserv: Allow self-service deletion
-> c1574ae4: bitbake: hashserv: Add database column query API
-> 3a2c5a6f: bitbake: hashserv: Add db-usage API
-> 8cfb94c0: bitbake: hashserv: Add become-user API
-> 1af725b2: bitbake: hashserv: Add user permissions
-> cfbb1d2c: bitbake: hashserv: Add SQLalchemy backend
-> 2484bd89: bitbake: hashserv: Add websocket connection implementation
-> 7de36b25: recipetool: Add handler to create go recipes
-> 22f8fdbe: classes: go-vendor: Add go-vendor class
-> 769abe57: rust-cross-canadian: Add riscv64 to cross-canadian hosts
-> f7830ed8: machine-sdk: Add SDK_ARCH for riscv64
-> b1116c81: image_types.bbclass: Use xz default compression preset level
-> 3681db6b: libcroco: drop recipe
-> d6134c9f: volatile-binds: Allow creation of subdirectories
-> 50c57ee3: Revert "bin_package.bbclass: Inhibit the default dependencies"
-> 9ffac3fc: recipetool: add python_hatchling support
-> 2cf13f25: lib/oe/sstatesig.py: dump locked.sigs.inc only when explicitly asked via -S lockedsigs
-> d4debbf5: recipetool/create_buildsys_python: add PEP517 support
-> be129bd0: recipetool/create_buildsys_python: prefix created recipes with python3-
-> 849d29c8: package_rpm: Allow compression mode override
-> 7cba02e8: lighttpd: modernize lighttpd.conf
-> e33267f8: systemd: add option to use stub-resolv.conf
-> 6f30e358: base-files, systemd: add nss-resolve plugin
-> a0423422: openssh: Add sshd.service
-> 15b08b82: scripts/bitbake-whatchanged: remove
-> 62739c2e: bitbake.conf: Drop DEPLOY_DIR_TAR
-
-
-Thanks for all this sorting work. This should prove very useful.
-As I'm also busy with the binary distro project, any patches to cover 
-these changes in the documentation will be welcome indeed. And once 
-again, even a raw text description will be useful too.
-Thanks again
-Cheers
-Michael.
-
--- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+> If you contributed new features to the upcoming release, or if you are
+> interested in figuring out what's new in 5.0, that would be great if you
+> could help us by submitting bits of release notes about them too.
+>
+> If you are familiar with the Sphinx / ReStructured Text format, you can
+> directly send patches against the yocto-docs "master-next" branch
+> (https://git.yoctoproject.org/yocto-docs/log/?h=master-next). However,
+> I'm also happy to accept raw text as well and format it or even
+> elaborate on it by myself.
+>
+> We may also need proper documentation for the new features, not only
+> release notes. I am thinking about documenting the new variables in
+> ref-manual/variables.rst, for example.
+> Thanks in advance
+> Cheers
+> Michael.
+>
+> --
+> Michael Opdenacker, Bootlin
+> Embedded Linux and Kernel engineering
+> https://bootlin.com
+>
+>
+> -=-=-=-=-=-=-=-=-=-=-=-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#197128): https://lists.openembedded.org/g/openembedded-core/message/197128
+> Mute This Topic: https://lists.openembedded.org/mt/104943580/1686489
+> Group Owner: openembedded-core+owner@lists.openembedded.org
+> Unsubscribe: https://lists.openembedded.org/g/openembedded-core/unsub [alex.kanavin@gmail.com]
+> -=-=-=-=-=-=-=-=-=-=-=-
+>
 
