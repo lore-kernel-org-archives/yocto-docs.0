@@ -2,83 +2,95 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E90B9C54E60
-	for <webhook@archiver.kernel.org>; Tue, 19 Mar 2024 09:27:18 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.10770.1710840429383542405
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 004CAC54E60
+	for <webhook@archiver.kernel.org>; Tue, 19 Mar 2024 09:32:09 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.10892.1710840720094125788
  for <docs@lists.yoctoproject.org>;
- Tue, 19 Mar 2024 02:27:09 -0700
+ Tue, 19 Mar 2024 02:32:00 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=AWx+fPZZ;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CA4C5FF803;
-	Tue, 19 Mar 2024 09:27:07 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bu397G20;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CFE661BF209;
+	Tue, 19 Mar 2024 09:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1710840428;
+	t=1710840718;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dUzmCvOSNaWVtHpheFl3eT12qsaenMaokcUjYDczysk=;
-	b=AWx+fPZZw/vW3Ap8Z4W6V9KQz/2IhvyelvAKjxUnn9TkEuR6nxzYDTLCbhyOOetS2zV1Cr
-	fUrrx2gMLc73EkdsqGJfZaI5UW58TPXUtTlRRv4mOdVGOpJ5FBnEW7Rc1C33GDJTKqIfYG
-	B1rBnUmhQivaHLEzbTnk3jgqssfy+nYMCf95CbSrFzf7kqXMMw59iv7aEcm/56QgWFlQ10
-	+z/0yH/IYIactCh6CnEB4BQ782m5rHuHHEiwfxgPvxqtzM1oA5giicV3LSVTkW9hzj4zQW
-	qbmSsHek/TPcxqzMQ/W6v3zi+K3cQfB1iWbeJawq2NvgMWx3DF1lKeuQWGMJBQ==
-Message-ID: <97f79f51-0fff-4c81-85bc-faf3468259cb@bootlin.com>
-Date: Tue, 19 Mar 2024 10:27:07 +0100
+	bh=FYKYFLfGDVLgi0HK6UCldXDOzGnI5g8Cp0fnfqLPKj8=;
+	b=bu397G20vGs97Of3QlBeUxIINxMcsYBabpzmfywjdZMZT6WRzkrers5o0klUVmuu7WZK7c
+	XogCFC+tuyfBigJeC8QFeYHRaWshvSHMXxpShSPJQLOG8S0lGjaw84n3biNTRkyEGGbDma
+	10fYCEavRljGY06UZkddcm7l8n/u5PVi8bu3WXKzvP8wHNtFLdOyx81XTvtBeuxo8iz+8v
+	OyjV9IqIAioahzR4UpUbAbMcLdLELdYRlLJVY8xSXLk4CC4kehYZfg220HL1twQUSCZXLP
+	zZdVQ3BqKvfrMJmNEmQO7FR4a0Si4JvpKgLstQaUqovo1rD3uFsrX9kMIBEOrQ==
+Message-ID: <2def2a3f-7c65-4618-a8a7-86928acae537@bootlin.com>
+Date: Tue, 19 Mar 2024 10:31:57 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: Alexander Kanavin <alex@linutronix.de>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH 1/3] dev-manual: improve descriptions of 'bitbake
- -S printdiff'
+Subject: Re: [docs] [PATCH 2/3] sdk-manual: correctly describe separate
+ build-sysroots tasks in direct sdk workflows
 Content-Language: en-US
 To: Alexander Kanavin <alex.kanavin@gmail.com>
 References: <20240318150211.1192651-1-alex@linutronix.de>
+ <20240318150211.1192651-2-alex@linutronix.de>
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <20240318150211.1192651-1-alex@linutronix.de>
+In-Reply-To: <20240318150211.1192651-2-alex@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 Mar 2024 09:27:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4991
+ <docs@lists.yoctoproject.org>; Tue, 19 Mar 2024 09:32:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/4992
 
-Hi Alex
-
-Many thanks for the patch!
+Hi Alex,
 
 On 3/18/24 at 16:02, Alexander Kanavin wrote:
-> Try to particularly emphasize that it can be used to find
-> out why something rebuilds when it shouldn't.
+> They were separated in
+> https://git.yoctoproject.org/poky/commit/?id=63e53fb8b60d38315015844bd3357fa1649cd639
 >
 > Signed-off-by: Alexander Kanavin <alex@linutronix.de>
 > ---
->   documentation/dev-manual/building.rst  |  7 +++----
->   documentation/dev-manual/debugging.rst | 13 ++++++++++---
->   2 files changed, 13 insertions(+), 7 deletions(-)
+>   documentation/sdk-manual/extensible.rst | 8 ++++++--
+>   1 file changed, 6 insertions(+), 2 deletions(-)
 >
-> diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
-> index 7fcac33b754..e0d0aae85d0 100644
-> --- a/documentation/dev-manual/building.rst
-> +++ b/documentation/dev-manual/building.rst
-> @@ -775,10 +775,9 @@ your tunings to best consider build times and package feed maintenance.
->         in the script for information on how to use the tool.
+> diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+> index 05dd527469e..3f6a754d881 100644
+> --- a/documentation/sdk-manual/extensible.rst
+> +++ b/documentation/sdk-manual/extensible.rst
+> @@ -76,7 +76,7 @@ Setting up the Extensible SDK environment directly in a Yocto build
+>         $ bitbake meta-ide-support
+>         $ bitbake -c populate_sysroot gtk+3
+>         # or any other target or native item that the application developer would need
+> -      $ bitbake build-sysroots
+> +      $ bitbake build-sysroots -c build_native_sysroot && bitbake build-sysroots -c build_target_sysroot
 >   
->      -  *BitBake's "-S printdiff" Option:* Using this option causes
-> -      BitBake to try to establish the closest signature match it can
-> -      (e.g. in the shared state cache) and then run ``bitbake-diffsigs``
-> -      over the matches to determine the stamps and delta where these two
-> -      stamp trees diverge.
-> +      BitBake to try to establish the most recent signature match it can
+>   Setting up the Extensible SDK from a standalone installer
+>   ---------------------------------------------------------
+> @@ -1507,8 +1507,12 @@ In this scenario, the Yocto build tooling, e.g. ``bitbake``
+>   is directly accessible to build additional items, and it
+>   can simply be executed directly::
+>   
+> +   $ bitbake curl-native
+> +   # Add newly built native items to native sysroot
+> +   $ bitbake build-sysroots -c build_native_sysroot
+>      $ bitbake mesa
+> -   $ bitbake build-sysroots
+> +   # Add newly built target items to target sysroot
+> +   $ bitbake build-sysroots -c build_target_sysroot
+>   
+>   When using a standalone installer for the Extensible SDK
+>   --------------------------------------------------------
 
 
-s/it can/it can find/ ?
-IMHO it would clarify the sentence.
-If you agree, I can make the change directly, no need for a new submission.
+Thanks for the patch!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into master-next.
 Cheers
 Michael.
 
