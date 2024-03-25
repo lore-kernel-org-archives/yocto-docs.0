@@ -2,38 +2,35 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 776A1C54E58
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 778A9CD11BF
 	for <webhook@archiver.kernel.org>; Mon, 25 Mar 2024 13:29:32 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.52095.1711373371998174274
+ by mx.groups.io with SMTP id smtpd.web10.52011.1711373369714360183
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Mar 2024 06:29:32 -0700
+ Mon, 25 Mar 2024 06:29:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YSy0fHcj;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=VNrU2BWQ;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7B53C1BF20F;
-	Mon, 25 Mar 2024 13:29:30 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 463B61BF207;
+	Mon, 25 Mar 2024 13:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711373370;
+	t=1711373368;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XR0tRL7SuRsUFTI+xWMGnuoHPsQ6pz3KvCAsGJSxZsE=;
-	b=YSy0fHcjs1mC/0R7UqPekz0pu2H159h/4D28Tq3AMPSPTqIke15OZ2MCsTbPG0qvB8Z+63
-	q0vUEgtLK8PT6HYpcmacvng1mroxubPCoF63ddwnz87eNbzEm/WBgsLYE7urAY6oZ5YYrm
-	THubciG7/JYK4Es4fxvQfIGCRW2npnQCkeJ/MfyXYD9NtYFK0QHuBmulFldd84weC4s+SU
-	byiHZcCTg4GRR4CMoh+66Apz2P37UyBGkWtFst9RGFwCnfApHD3HdFpAxvd1ZhbYEC42oZ
-	0i91MWXh0OeLfp6pVPPwZapDZJfhi7j9SkiTnQLfJT77oX67SDH1EfOE/nzf+g==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lsZZJiqUFpEMs24KmESncq6P4KW3wI9kbHGvmtMc9ks=;
+	b=VNrU2BWQyMPhO5aWkYc2qJb0MtHe4SMEKK2iUOk26OJm0J18mdy+GJ8ZvMeOWDo/lHqErT
+	ezt7yZc7mQn/eoyhh/LmLJU/8E25oV4SKN7tA6wlJQm6QkHW8NN/KfzRiVgVi6cQ1wbmXa
+	zdRnASoPRL9YNIqZUrIWq0kqhOsJbNh2jTDi5zKrWzB/F8RqqUjPnRhKLhf5A2H0Dz14Ag
+	45a1FZblBYraTc6dqitwNng7Xve+t2r3LFvdoEQtEkSEyKoWwT4k+P/RVBwktKMkmHQoam
+	tPO+ilz3UrD9LCVb1/dlrKnvAYV/8t+8rXgasF+v1+w5aWdqArZvFt0emmYbGQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [nanbield][PATCH 04/11] profile-manual: usage.rst: fix reference to bug report
-Date: Mon, 25 Mar 2024 14:29:19 +0100
-Message-Id: <20240325132926.3018186-5-michael.opdenacker@bootlin.com>
+Subject: [nanbield][PATCH 00/11] documentation backports
+Date: Mon, 25 Mar 2024 14:29:15 +0100
+Message-Id: <20240325132926.3018186-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240325132926.3018186-1-michael.opdenacker@bootlin.com>
-References: <20240325132926.3018186-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
@@ -41,34 +38,56 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 25 Mar 2024 13:29:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5011
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5008
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Allowing to remove nested parentheses in the text!
+Apply relevant patches from the "master" branch.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
----
- documentation/profile-manual/usage.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Alexander Kanavin (2):
+  sdk-manual: correctly describe separate build-sysroots tasks in direct
+    sdk workflows
+  dev-manual: improve descriptions of 'bitbake -S printdiff'
 
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index 768349512a..0d368792b5 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -131,9 +131,9 @@ the summed counts at the end of the run::
- 
-         59.836627620 seconds time elapsed
- 
--Many times such a simple-minded test doesn't yield much of
--interest, but sometimes it does (see Real-world Yocto bug (slow
--loop-mounted write speed)).
-+Such a simple-minded test doesn't always yield much of interest, but sometimes
-+it does (see the :yocto_bugs:`Slow write speed on live images with denzil
-+</show_bug.cgi?id=3049>` bug report).
- 
- Also, note that ``perf stat`` isn't restricted to a fixed set of counters
- --- basically any event listed in the output of ``perf list`` can be tallied
+BELOUARGA Mohamed (1):
+  ref-manual: add documentation of the variable SPDX_NAMESPACE_PREFIX
+
+Lee Chee Yang (1):
+  migration-guides: add release notes for 4.0.17
+
+Martin Jansa (1):
+  contributor-guide: be more specific about meta-* trees
+
+Michael Opdenacker (6):
+  manuals: add initial stylechecks with Vale
+  profile-manual: usage.rst: formatting fixes
+  manuals: use "manual page(s)"
+  profile-manual: usage.rst: fix reference to bug report
+  documentation: Makefile: remove releases.rst in "make clean"
+  profile-manual: usage.rst: further style improvements
+
+ documentation/.gitignore                      |   2 +
+ documentation/.vale.ini                       |   7 +
+ documentation/Makefile                        |  15 +-
+ documentation/README                          |  14 +
+ .../contributor-guide/submit-changes.rst      |   2 +-
+ documentation/dev-manual/building.rst         |   7 +-
+ documentation/dev-manual/debugging.rst        |  13 +-
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.17.rst | 238 ++++++
+ documentation/profile-manual/usage.rst        | 734 +++++++++---------
+ documentation/ref-manual/classes.rst          |   2 +-
+ documentation/ref-manual/variables.rst        |   7 +-
+ documentation/sdk-manual/extensible.rst       |   8 +-
+ documentation/standards.md                    |  15 +
+ .../config/vocabularies/OpenSource/accept.txt |  20 +
+ .../config/vocabularies/Yocto/accept.txt      |   5 +
+ 16 files changed, 709 insertions(+), 381 deletions(-)
+ create mode 100644 documentation/.vale.ini
+ create mode 100644 documentation/migration-guides/release-notes-4.0.17.rst
+ create mode 100644 documentation/styles/config/vocabularies/OpenSource/accept.txt
+ create mode 100644 documentation/styles/config/vocabularies/Yocto/accept.txt
+
 -- 
 2.34.1
 
