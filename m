@@ -2,36 +2,36 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DD565C54E64
-	for <webhook@archiver.kernel.org>; Mon, 25 Mar 2024 13:27:51 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.51978.1711373270623459568
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1862FCD1280
+	for <webhook@archiver.kernel.org>; Mon, 25 Mar 2024 13:27:52 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.51974.1711373269072443268
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Mar 2024 06:27:51 -0700
+ Mon, 25 Mar 2024 06:27:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=IywqdUjy;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2835360004;
-	Mon, 25 Mar 2024 13:27:49 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MshSyefW;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2A2B940006;
+	Mon, 25 Mar 2024 13:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711373269;
+	t=1711373267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nEQh6ZQiSj81aC88Q/pZVh/CUwHNLwS9if6Qjepw4ys=;
-	b=IywqdUjyodC4Mjz4rAPqvnrHdSeU/Vu+FnhCBTt2cxnBe/OnyHHMwGTevv4VkZNJqtedMv
-	9oX8vw+OVN6bO+Cu45oz/lNNvJvyfFzKSk5DIpx/WyavYSIxgODQal+ZKEDTYJnAPfsEhb
-	DtjkkTl6un8WYMseIOx811jQxEDeb0aqMxKMP9C44Eh3G3Q6Ytai3CXH5jvt5AXT3JvArl
-	XqraAwozQIgJmjgCFL8kuraxbKP+vUU/E3lYHDqOjA/ArlJYARISZie6LiuQzSidUp2KE5
-	9x9hBV+1hf+2f0S2QVBHcXMJdnlIF4NeTHNKjCvcWp1HYZZd84fGv1EceSgzZA==
+	bh=N5f1FbkEu3bxSE/sMeMvmCkuo6UZAq+EZZ9EsKQJeN4=;
+	b=MshSyefWzZgp9l/yOYntshRPdq64wFYSm2U+d+WHiB66hHzBfB3Z95vOo730EMfSa3KRlP
+	z0VeBXVgvbob6IoOy2Jm6YFxgsby+wBzyY0Ni8OEj3HPMqMIUr9+D3vCRGhCXKR1QJLLKS
+	UfiP9G4KkjiFXWamC+z1VDnEZrv2yoXN5cacORxwV35WBMhbt6I1G0AMZGYOceJGB4aLRK
+	gjYwJgTyNGlNkXUU0Iz8nzZQmxu1GReW5fWj7rjCTykKypWYVxKvX1xE8kgpENcwqPtGwH
+	97q9ZQGt+gS6gYGY25tN3ZBX2zNCX5JmSMTASFUvZtbUVFEr9re/37oxkpp/7g==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Alexander Kanavin <alex@linutronix.de>
-Subject: [kirkstone][PATCH 9/9] dev-manual: improve descriptions of 'bitbake -S printdiff'
-Date: Mon, 25 Mar 2024 14:27:37 +0100
-Message-Id: <20240325132737.3018073-10-michael.opdenacker@bootlin.com>
+	Martin Jansa <martin.jansa@gmail.com>
+Subject: [kirkstone][PATCH 6/9] contributor-guide: be more specific about meta-* trees
+Date: Mon, 25 Mar 2024 14:27:34 +0100
+Message-Id: <20240325132737.3018073-7-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240325132737.3018073-1-michael.opdenacker@bootlin.com>
 References: <20240325132737.3018073-1-michael.opdenacker@bootlin.com>
@@ -41,72 +41,36 @@ X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 25 Mar 2024 13:27:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5007
+ <docs@lists.yoctoproject.org>; Mon, 25 Mar 2024 13:27:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5004
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Alexander Kanavin <alex.kanavin@gmail.com>
+From: Martin Jansa <martin.jansa@gmail.com>
 
-Try to particularly emphasize that it can be used to find
-out why something rebuilds when it shouldn't.
+* this is often confused to apply for e.g. meta-oe as well
+  where it doesn't apply as meta-oe has own ML mentioned
+  in README.
 
-Signed-off-by: Alexander Kanavin <alex@linutronix.de>
+Signed-off-by: Martin Jansa <martin.jansa@gmail.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/building.rst  |  7 +++----
- documentation/dev-manual/debugging.rst | 13 ++++++++++---
- 2 files changed, 13 insertions(+), 7 deletions(-)
+ documentation/contributor-guide/submit-changes.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
-index 7fcac33b75..fe502690dd 100644
---- a/documentation/dev-manual/building.rst
-+++ b/documentation/dev-manual/building.rst
-@@ -775,10 +775,9 @@ your tunings to best consider build times and package feed maintenance.
-       in the script for information on how to use the tool.
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index c0f2aa7cb4..15566701f6 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -391,7 +391,7 @@ varies by component:
+    :oe_lists:`bitbake-devel </g/bitbake-devel>`
+    mailing list.
  
-    -  *BitBake's "-S printdiff" Option:* Using this option causes
--      BitBake to try to establish the closest signature match it can
--      (e.g. in the shared state cache) and then run ``bitbake-diffsigs``
--      over the matches to determine the stamps and delta where these two
--      stamp trees diverge.
-+      BitBake to try to establish the most recent signature match
-+      (e.g. in the shared state cache) and then compare matched signatures
-+      to determine the stamps and delta where these two stamp trees diverge.
+--  *"meta-\*" trees:* These trees contain Metadata. Use the
++-  *meta-poky* and *meta-yocto-bsp* trees: These trees contain Metadata. Use the
+    :yocto_lists:`poky </g/poky>` mailing list.
  
- Building Software from an External Source
- =========================================
-diff --git a/documentation/dev-manual/debugging.rst b/documentation/dev-manual/debugging.rst
-index 71b5807f5a..74f5772554 100644
---- a/documentation/dev-manual/debugging.rst
-+++ b/documentation/dev-manual/debugging.rst
-@@ -339,7 +339,10 @@ BitBake has determined by doing the following:
-    :term:`BB_BASEHASH_IGNORE_VARS`
-    information.
- 
--There is also a ``bitbake-diffsigs`` command for comparing two
-+Debugging signature construction and unexpected task executions
-+===============================================================
-+
-+There is a ``bitbake-diffsigs`` command for comparing two
- ``siginfo`` or ``sigdata`` files. This command can be helpful when
- trying to figure out what changed between two versions of a task. If you
- call ``bitbake-diffsigs`` with just one file, the command behaves like
-@@ -356,8 +359,12 @@ BitBake command-line options::
- .. note::
- 
-    Two common values for `SIGNATURE_HANDLER` are "none" and "printdiff", which
--   dump only the signature or compare the dumped signature with the cached one,
--   respectively.
-+   dump only the signature or compare the dumped signature with the most recent one,
-+   respectively. "printdiff" will try to establish the most recent
-+   signature match (e.g. in the sstate cache) and then
-+   compare the matched signatures to determine the stamps and delta
-+   where these two stamp trees diverge. This can be used to determine why
-+   tasks need to be re-run in situations where that is not expected.
- 
- Using BitBake with either of these options causes BitBake to dump out
- ``sigdata`` files in the ``stamps`` directory for every task it would
+ -  *Documentation*: For changes to the Yocto Project documentation, use the
 -- 
 2.34.1
 
