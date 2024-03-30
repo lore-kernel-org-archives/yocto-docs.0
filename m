@@ -2,35 +2,35 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6F0DCD1288
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD71DC6FD1F
 	for <webhook@archiver.kernel.org>; Sat, 30 Mar 2024 18:08:49 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.2695.1711822119436245932
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.2601.1711822119502354597
  for <docs@lists.yoctoproject.org>;
  Sat, 30 Mar 2024 11:08:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YZpfpCsg;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 198FF40003;
-	Sat, 30 Mar 2024 18:08:38 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MBLRippe;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B6BD6240002;
+	Sat, 30 Mar 2024 18:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711822118;
+	t=1711822117;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7RqGRYPs6soVNCamIVt7M94PhoVVchFlOQ1Sdf4BXso=;
-	b=YZpfpCsgRsHSXqhPodXmvGo2LjrYzwhv81xE0s+EIbjVoM6UPNTOzFbJNaP/C8So7sRMXt
-	JNEQlYnrc9sKssKzHoznP5H6MttKDD/e1kiz0OeKiKPGfvk/gntyacIh914/wgZmkJcmms
-	h/jxEnu3uVQ1uFKIW9uSAtc0Ex46G2BQdronq1d2aQnClyRqDjQHxoMfYE9DgZ4I6h964b
-	66jzUqf4euKGNqqmIHSfr+EclNRaRHsN5UFSx9yHKEgcYhbcVvR9auK1UsaMIKkVD03nM9
-	7A9GDZhpjRlzoDbdR1INU9nns1CpNxFWiVBh4eMw3hPlEDwS9XWRNMN+Wepiog==
+	bh=xPzF12NBXTOFw16dD6V080JYuhpK0QvwSx4d8pLV65A=;
+	b=MBLRippevPJ5EEfJXzhiYFj5pmxr5WXCENHDNqvtXGcLLhep+5MqtbAIN3sknWEdFaVxLe
+	wpR8QUYK6+C98zgamQMO8AIo1Ep0VUBX4iTstqAVVt1al9QmyYQjOkaAp7gxZOEwVEuWym
+	ZYnp5vvRbGJqugLiMP19wCkDqA07n5/v/bOnQ5eYkQuqpvJ5O1djmXGAPkSkXMR8NrEHaA
+	33QNaRIeGpDt9dTHJnBOJ+TNiJX/pdn3S6Cb91OYxK1rC+FlnET+0pIM+lM4X+M0z3hvIX
+	LdKMc5PqsTxZIviO9z0s9sbxLBZdWzRShu3WSPWjMeAU+XQ1TccniKaqX28hLA==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 4/4] migration-guides: add missing opening tag colon
-Date: Sat, 30 Mar 2024 19:08:29 +0100
-Message-Id: <20240330180829.1749526-4-michael.opdenacker@bootlin.com>
+Subject: [PATCH 3/4] manuals: fix incorrect double backticks
+Date: Sat, 30 Mar 2024 19:08:28 +0100
+Message-Id: <20240330180829.1749526-3-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240330180829.1749526-1-michael.opdenacker@bootlin.com>
 References: <20240330180829.1749526-1-michael.opdenacker@bootlin.com>
@@ -41,7 +41,7 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Sat, 30 Mar 2024 18:08:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5036
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5037
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
@@ -49,36 +49,36 @@ As reported by "make sphinx-lint"
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/migration-guides/migration-4.2.rst       | 2 +-
- documentation/migration-guides/release-notes-4.0.4.rst | 2 +-
+ documentation/dev-manual/layers.rst    | 2 +-
+ documentation/profile-manual/usage.rst | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/documentation/migration-guides/migration-4.2.rst b/documentation/migration-guides/migration-4.2.rst
-index 1db6fbca42..f5f12c8871 100644
---- a/documentation/migration-guides/migration-4.2.rst
-+++ b/documentation/migration-guides/migration-4.2.rst
-@@ -121,7 +121,7 @@ Removed variables
- The following variables have been removed:
+diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
+index 6e4f137e6b..91889bd0ae 100644
+--- a/documentation/dev-manual/layers.rst
++++ b/documentation/dev-manual/layers.rst
+@@ -732,7 +732,7 @@ The following list describes the available commands:
  
- -  ``SERIAL_CONSOLE``, deprecated since version 2.6, replaced by :term:`SERIAL_CONSOLES`.
---  ``PACKAGEBUILDPKGD``, a mostly internal variable in the ref:`ref-classes-package`
-+-  ``PACKAGEBUILDPKGD``, a mostly internal variable in the :ref:`ref-classes-package`
-    class was rarely used to customise packaging. If you were using this in your custom
-    recipes or bbappends, you will need to switch to using :term:`PACKAGE_PREPROCESS_FUNCS`
-    or :term:`PACKAGESPLITFUNCS` instead.
-diff --git a/documentation/migration-guides/release-notes-4.0.4.rst b/documentation/migration-guides/release-notes-4.0.4.rst
-index 611109a77e..1d6e525bbc 100644
---- a/documentation/migration-guides/release-notes-4.0.4.rst
-+++ b/documentation/migration-guides/release-notes-4.0.4.rst
-@@ -247,7 +247,7 @@ poky
+ -  ``save-build-conf``: Saves the currently active build configuration
+    (``conf/local.conf``, ``conf/bblayers.conf``) as a template into a layer.
+-   This template can later be used for setting up builds via :term:``TEMPLATECONF``.
++   This template can later be used for setting up builds via :term:`TEMPLATECONF`.
+    For information about saving and using configuration templates, see
+    ":ref:`dev-manual/custom-template-configuration-directory:creating a custom template configuration directory`".
  
- openembedded-core
+diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
+index d313f04ebb..17be149580 100644
+--- a/documentation/profile-manual/usage.rst
++++ b/documentation/profile-manual/usage.rst
+@@ -1872,7 +1872,7 @@ Practically speaking, that means you need to do the following:
  
---  Repository Location: oe_git:`/openembedded-core`
-+-  Repository Location: :oe_git:`/openembedded-core`
- -  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
- -  Tag:  :oe_git:`yocto-4.0.4 </openembedded-core/log/?h=yocto-4.0.4>`
- -  Git Revision: :oe_git:`f7766da462905ec67bf549d46b8017be36cd5b2a </openembedded-core/commit/?id=f7766da462905ec67bf549d46b8017be36cd5b2a>`
+ -  Or build a non-SDK image but include the profiling tools
+    (edit ``local.conf`` and add ``tools-profile`` to the end of
+-   :term:``EXTRA_IMAGE_FEATURES`` variable)::
++   :term:`EXTRA_IMAGE_FEATURES` variable)::
+ 
+       $ bitbake core-image-sato
+ 
 -- 
 2.34.1
 
