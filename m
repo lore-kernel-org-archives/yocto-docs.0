@@ -2,408 +2,479 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 026E3CD1288
-	for <webhook@archiver.kernel.org>; Sat, 30 Mar 2024 18:08:40 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.2694.1711822118954597928
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E7484C6FD1F
+	for <webhook@archiver.kernel.org>; Sat, 30 Mar 2024 18:08:39 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.2693.1711822118606719767
  for <docs@lists.yoctoproject.org>;
  Sat, 30 Mar 2024 11:08:39 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Rjr8MS5I;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 052B9FF805;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GlEyVotw;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5647E40007;
 	Sat, 30 Mar 2024 18:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1711822117;
+	t=1711822116;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5XW1s5o9Pz5Nn/PshDaFVv3ulQbIBy8SsJuESAQ2/V0=;
-	b=Rjr8MS5IiGRMiTdhPb3aPhvNL1xGRD940EhvCsHP3gc3D5O0dSVqGfW9K+8kFK8pDTjbgR
-	Rb+OaloOJ9gyVHfjZ+M2gizbCM1CLXPf9sJjNFjUIqcgUjV5r5Hed3htST2H/ubNm7am0h
-	M+sBjQBJk92Z8LYQINcVR8IhMfw9EmFHnMBmOLbhnLWMtbZr/VugiyYTgOLzyHoilROiSv
-	81LT6CGt90SkucCY7WH+3Y2tHfeaa+5G1ZAT6DKAfvHUHITGlWeZ8qv+iAyHowGztaRGGM
-	8rO3dZ2MWe5CCXEEQsmKiXO3etAyr1kImtbLoBb5HA4ddzJUl7/KIj8c6vWisA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=k8uBxqZpULzcIeJ8jvdTm8lIexZC1Nd6QbJ3fiaKdN8=;
+	b=GlEyVotwkyAT+GGLmIrg0KH8L61ww3Yj+U7QETRCvECsjwvpixmQQU3D1y56jNEMnzoASQ
+	vSO7yZgGq7Rk1orLH74JKGwmOvmDZG2vxpmKlyyHWl20kbYZaa+ESBZLzcEVXeX5RVWHS8
+	xiuCyNDPPb4+sojXSSZzox7hSvc5bRfk5xHf61EB1wK7tPb7IlyES/y4YKCqDhAEG12DMW
+	hMqsuzy5sdXrtCBs/Cjv1VzMm5UzDYUtCPNIaTb9eDwNS6qV0Mo5EgxoQOLABHUHF6ggme
+	CwL+Sl/OtraxU5BRkG7srhCFH31OhpaYcFHTKD7K/nb7VCjmgq59nvx25EZ4WQ==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [PATCH 2/4] manuals: remove tab characters
-Date: Sat, 30 Mar 2024 19:08:27 +0100
-Message-Id: <20240330180829.1749526-2-michael.opdenacker@bootlin.com>
+Subject: [PATCH 1/4] manuals: fix trailing spaces
+Date: Sat, 30 Mar 2024 19:08:26 +0100
+Message-Id: <20240330180829.1749526-1-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240330180829.1749526-1-michael.opdenacker@bootlin.com>
-References: <20240330180829.1749526-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 30 Mar 2024 18:08:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5035
+ <docs@lists.yoctoproject.org>; Sat, 30 Mar 2024 18:08:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5034
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-As reported by "make sphinx-lint"
+Fixing errors reported by "make sphinx-lint"
 
 Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- documentation/dev-manual/layers.rst           |  16 +--
- documentation/dev-manual/wic.rst              |  52 ++++----
- documentation/kernel-dev/advanced.rst         |   4 +-
- documentation/kernel-dev/common.rst           |   4 +-
- documentation/profile-manual/usage.rst        | 114 +++++++++---------
- documentation/ref-manual/terms.rst            |  10 +-
- documentation/sdk-manual/working-projects.rst |   6 +-
- 7 files changed, 103 insertions(+), 103 deletions(-)
+ documentation/dev-manual/init-manager.rst     |  2 +-
+ documentation/dev-manual/start.rst            |  2 +-
+ documentation/dev-manual/wic.rst              |  4 +--
+ .../migration-guides/migration-4.0.rst        | 20 ++++++------
+ .../migration-guides/release-notes-4.0.5.rst  |  2 +-
+ .../migration-guides/release-notes-4.0.rst    | 16 +++++-----
+ .../migration-guides/release-notes-4.2.rst    |  4 +--
+ documentation/overview-manual/intro.rst       |  2 +-
+ documentation/ref-manual/classes.rst          |  4 +--
+ documentation/ref-manual/tasks.rst            |  2 +-
+ documentation/ref-manual/variables.rst        | 32 +++++++++----------
+ 11 files changed, 45 insertions(+), 45 deletions(-)
 
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-index f7929e630e..6e4f137e6b 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -501,12 +501,12 @@ the "meta" layer at ``meta/recipes-bsp/formfactor``::
-    INHIBIT_DEFAULT_DEPS = "1"
+diff --git a/documentation/dev-manual/init-manager.rst b/documentation/dev-manual/init-manager.rst
+index 20d61ea830..ddce82b81f 100644
+--- a/documentation/dev-manual/init-manager.rst
++++ b/documentation/dev-manual/init-manager.rst
+@@ -121,7 +121,7 @@ increasing levels of complexity and functionality:
+    :widths: 40 20 20 20
+    :header-rows: 1
  
-    do_install() {
--	   # Install file only if it has contents
-+           # Install file only if it has contents
-            install -d ${D}${sysconfdir}/formfactor/
-            install -m 0644 ${S}/config ${D}${sysconfdir}/formfactor/
--	   if [ -s "${S}/machconfig" ]; then
--	           install -m 0644 ${S}/machconfig ${D}${sysconfdir}/formfactor/
--	   fi
-+           if [ -s "${S}/machconfig" ]; then
-+                   install -m 0644 ${S}/machconfig ${D}${sysconfdir}/formfactor/
-+           fi
-    }
+-   * - 
++   * -
+      - BusyBox init
+      - SysVinit
+      - systemd
+diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
+index 8539bc0889..386e5f5d29 100644
+--- a/documentation/dev-manual/start.rst
++++ b/documentation/dev-manual/start.rst
+@@ -619,7 +619,7 @@ containing the release you wish to use, for example
  
- In the main recipe, note the :term:`SRC_URI`
-@@ -582,10 +582,10 @@ Directory`.  Here is the main ``xserver-xf86-config`` recipe, which is named
-    ALLOW_EMPTY:${PN} = "1"
+ You will find there source archives of individual components (if you wish
+ to use them individually), and of the corresponding Poky release bundling
+-a selection of these components. 
++a selection of these components.
  
-    do_install () {
--	if test -s ${WORKDIR}/xorg.conf; then
--		install -d ${D}/${sysconfdir}/X11
--		install -m 0644 ${WORKDIR}/xorg.conf ${D}/${sysconfdir}/X11/
--	fi
-+        if test -s ${WORKDIR}/xorg.conf; then
-+                install -d ${D}/${sysconfdir}/X11
-+                install -m 0644 ${WORKDIR}/xorg.conf ${D}/${sysconfdir}/X11/
-+        fi
-    }
+ .. note::
  
- Here is the append file, which is named ``xserver-xf86-config_%.bbappend``
 diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-index aeecd0dd3e..a3880f3a1c 100644
+index 05e9cb381b..aeecd0dd3e 100644
 --- a/documentation/dev-manual/wic.rst
 +++ b/documentation/dev-manual/wic.rst
-@@ -139,20 +139,20 @@ individual images through the ``list`` command. You can use the ``list``
- command to return the available Wic images as follows::
+@@ -146,7 +146,7 @@ command to return the available Wic images as follows::
+      qemuloongarch                 		Create qcow2 image for LoongArch QEMU machines
+      directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
+      directdisk                    		Create a 'pcbios' direct disk image
+-     efi-bootdisk                  		
++     efi-bootdisk
+      mkhybridiso                   		Create a hybrid ISO image
+      directdisk-gpt                		Create a 'pcbios' direct disk image
+      systemd-bootdisk              		Create an EFI disk image with systemd-boot
+@@ -289,7 +289,7 @@ Use the following command to list the available kickstart files::
+      qemuloongarch                 		Create qcow2 image for LoongArch QEMU machines
+      directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
+      directdisk                    		Create a 'pcbios' direct disk image
+-     efi-bootdisk                  		
++     efi-bootdisk
+      mkhybridiso                   		Create a hybrid ISO image
+      directdisk-gpt                		Create a 'pcbios' direct disk image
+      systemd-bootdisk              		Create an EFI disk image with systemd-boot
+diff --git a/documentation/migration-guides/migration-4.0.rst b/documentation/migration-guides/migration-4.0.rst
+index b5bd57c312..0e9e741458 100644
+--- a/documentation/migration-guides/migration-4.0.rst
++++ b/documentation/migration-guides/migration-4.0.rst
+@@ -68,7 +68,7 @@ changes and you need to review them before committing. An example warning
+ looks like::
  
-    $ wic list images
--     genericx86                    		Create an EFI disk image for genericx86*
--     beaglebone-yocto              		Create SD card image for Beaglebone
--     qemuriscv                     		Create qcow2 image for RISC-V QEMU machines
--     mkefidisk                     		Create an EFI disk image
--     qemuloongarch                 		Create qcow2 image for LoongArch QEMU machines
--     directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
--     directdisk                    		Create a 'pcbios' direct disk image
-+     genericx86                                 Create an EFI disk image for genericx86*
-+     beaglebone-yocto                           Create SD card image for Beaglebone
-+     qemuriscv                                  Create qcow2 image for RISC-V QEMU machines
-+     mkefidisk                                  Create an EFI disk image
-+     qemuloongarch                              Create qcow2 image for LoongArch QEMU machines
-+     directdisk-multi-rootfs                    Create multi rootfs image using rootfs plugin
-+     directdisk                                 Create a 'pcbios' direct disk image
-      efi-bootdisk
--     mkhybridiso                   		Create a hybrid ISO image
--     directdisk-gpt                		Create a 'pcbios' direct disk image
--     systemd-bootdisk              		Create an EFI disk image with systemd-boot
--     sdimage-bootpart              		Create SD card image with a boot partition
--     qemux86-directdisk            		Create a qemu machine 'pcbios' direct disk image
--     directdisk-bootloader-config  		Create a 'pcbios' direct disk image with custom bootloader config
-+     mkhybridiso                                Create a hybrid ISO image
-+     directdisk-gpt                             Create a 'pcbios' direct disk image
-+     systemd-bootdisk                           Create an EFI disk image with systemd-boot
-+     sdimage-bootpart                           Create SD card image with a boot partition
-+     qemux86-directdisk                         Create a qemu machine 'pcbios' direct disk image
-+     directdisk-bootloader-config               Create a 'pcbios' direct disk image with custom bootloader config
- 
- Once you know the list of available
- Wic images, you can use ``help`` with the command to get help on a
-@@ -282,20 +282,20 @@ following two locations::
- Use the following command to list the available kickstart files::
- 
-    $ wic list images
--     genericx86                    		Create an EFI disk image for genericx86*
--     beaglebone-yocto              		Create SD card image for Beaglebone
--     qemuriscv                     		Create qcow2 image for RISC-V QEMU machines
--     mkefidisk                     		Create an EFI disk image
--     qemuloongarch                 		Create qcow2 image for LoongArch QEMU machines
--     directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
--     directdisk                    		Create a 'pcbios' direct disk image
-+     genericx86                                 Create an EFI disk image for genericx86*
-+     beaglebone-yocto                           Create SD card image for Beaglebone
-+     qemuriscv                                  Create qcow2 image for RISC-V QEMU machines
-+     mkefidisk                                  Create an EFI disk image
-+     qemuloongarch                              Create qcow2 image for LoongArch QEMU machines
-+     directdisk-multi-rootfs                    Create multi rootfs image using rootfs plugin
-+     directdisk                                 Create a 'pcbios' direct disk image
-      efi-bootdisk
--     mkhybridiso                   		Create a hybrid ISO image
--     directdisk-gpt                		Create a 'pcbios' direct disk image
--     systemd-bootdisk              		Create an EFI disk image with systemd-boot
--     sdimage-bootpart              		Create SD card image with a boot partition
--     qemux86-directdisk            		Create a qemu machine 'pcbios' direct disk image
--     directdisk-bootloader-config  		Create a 'pcbios' direct disk image with custom bootloader config
-+     mkhybridiso                                Create a hybrid ISO image
-+     directdisk-gpt                             Create a 'pcbios' direct disk image
-+     systemd-bootdisk                           Create an EFI disk image with systemd-boot
-+     sdimage-bootpart                           Create SD card image with a boot partition
-+     qemux86-directdisk                         Create a qemu machine 'pcbios' direct disk image
-+     directdisk-bootloader-config               Create a 'pcbios' direct disk image with custom bootloader config
- 
- When you use an existing file, you
- do not have to use the ``.wks`` extension. Here is an example in Raw
-diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel-dev/advanced.rst
-index bcaaaeed14..4c463503f6 100644
---- a/documentation/kernel-dev/advanced.rst
-+++ b/documentation/kernel-dev/advanced.rst
-@@ -303,8 +303,8 @@ The following listings show the ``build.scc`` file and part of the
-                         .
-                         .
-                         .
-- 	        char *dump_write = NULL, *files_source = NULL;
-- 	        int opt;
-+                char *dump_write = NULL, *files_source = NULL;
-+                int opt;
-       --
-       2.10.1
- 
-diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-index 0cee503346..5d8d0d45a9 100644
---- a/documentation/kernel-dev/common.rst
-+++ b/documentation/kernel-dev/common.rst
-@@ -1674,10 +1674,10 @@ looks much like the one provided with the ``hello-mod`` template::
-    SRC := $(shell pwd)
- 
-    all:
--   	$(MAKE) -C $(KERNEL_SRC) M=$(SRC)
-+        $(MAKE) -C $(KERNEL_SRC) M=$(SRC)
- 
-    modules_install:
--   	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules_install
-+        $(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules_install
-    ...
- 
- The important point to note here is the :term:`KERNEL_SRC` variable. The
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index 2f82137538..d313f04ebb 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -1058,13 +1058,13 @@ section::
-    name: do_fork
-    ID: 944
-    format:
--           field:unsigned short common_type;	offset:0;	size:2;	signed:0;
--           field:unsigned char common_flags;	offset:2;	size:1;	signed:0;
--           field:unsigned char common_preempt_count;	offset:3;	size:1;	signed:0;
--           field:int common_pid;	offset:4;	size:4;	signed:1;
--           field:int common_padding;	offset:8;	size:4;	signed:1;
-+           field:unsigned short common_type;    offset:0;       size:2; signed:0;
-+           field:unsigned char common_flags;    offset:2;       size:1; signed:0;
-+           field:unsigned char common_preempt_count;    offset:3;       size:1; signed:0;
-+           field:int common_pid;        offset:4;       size:4; signed:1;
-+           field:int common_padding;    offset:8;       size:4; signed:1;
- 
--           field:unsigned long __probe_ip;	offset:12;	size:4;	signed:0;
-+           field:unsigned long __probe_ip;      offset:12;      size:4; signed:0;
- 
-    print fmt: "(%lx)", REC->__probe_ip
- 
-@@ -1550,17 +1550,17 @@ like ftrace to display the event as text. The format of the
-    name: kmalloc
-    ID: 313
-    format:
--           field:unsigned short common_type;	offset:0;	size:2;	signed:0;
--           field:unsigned char common_flags;	offset:2;	size:1;	signed:0;
--           field:unsigned char common_preempt_count;	offset:3;	size:1;	signed:0;
--           field:int common_pid;	offset:4;	size:4;	signed:1;
--           field:int common_padding;	offset:8;	size:4;	signed:1;
--
--           field:unsigned long call_site;	offset:16;	size:8;	signed:0;
--           field:const void * ptr;	offset:24;	size:8;	signed:0;
--           field:size_t bytes_req;	offset:32;	size:8;	signed:0;
--           field:size_t bytes_alloc;	offset:40;	size:8;	signed:0;
--           field:gfp_t gfp_flags;	offset:48;	size:4;	signed:0;
-+           field:unsigned short common_type;    offset:0;       size:2; signed:0;
-+           field:unsigned char common_flags;    offset:2;       size:1; signed:0;
-+           field:unsigned char common_preempt_count;    offset:3;       size:1; signed:0;
-+           field:int common_pid;        offset:4;       size:4; signed:1;
-+           field:int common_padding;    offset:8;       size:4; signed:1;
+     poky/scripts/lib/devtool/upgrade.py needs further work at line 275 since it contains abort
+-    
 +
-+           field:unsigned long call_site;       offset:16;      size:8; signed:0;
-+           field:const void * ptr;      offset:24;      size:8; signed:0;
-+           field:size_t bytes_req;      offset:32;      size:8; signed:0;
-+           field:size_t bytes_alloc;    offset:40;      size:8; signed:0;
-+           field:gfp_t gfp_flags;       offset:48;      size:4; signed:0;
+ Fetching changes
+ ~~~~~~~~~~~~~~~~
  
-    print fmt: "call_site=%lx ptr=%p bytes_req=%zu bytes_alloc=%zu gfp_flags=%s", REC->call_site, REC->ptr, REC->bytes_req, REC->bytes_alloc,
-    (REC->gfp_flags) ? __print_flags(REC->gfp_flags, "|", {(unsigned long)(((( gfp_t)0x10u) | (( gfp_t)0x40u) | (( gfp_t)0x80u) | ((
-@@ -2355,29 +2355,29 @@ first part of the filenames::
-     8,32   1        0    58.516990819     0  m   N cfq3551 put_queue
+@@ -111,7 +111,7 @@ License changes
+   If they do not, by default a warning will be shown. A
+   :oe_git:`convert-spdx-licenses.py </openembedded-core/tree/scripts/contrib/convert-spdx-licenses.py>`
+   script can be used to update your recipes.
+-  
++
+ - :term:`INCOMPATIBLE_LICENSE` should now use `SPDX identifiers <https://spdx.org/licenses/>`__.
+   Additionally, wildcarding is now limited to specifically supported values -
+   see the :term:`INCOMPATIBLE_LICENSE` documentation for further information.
+@@ -121,7 +121,7 @@ License changes
+   which can cause signature issues for users. In addition the ``available_licenses()``
+   function has been removed from the :ref:`ref-classes-license` class as
+   it is no longer needed.
+-  
++
+ Removed recipes
+ ~~~~~~~~~~~~~~~
  
-    CPU0 (sdc):
--    Reads Queued:           0,        0KiB	 Writes Queued:         331,   26,284KiB
--    Read Dispatches:        0,        0KiB	 Write Dispatches:      485,   40,484KiB
--    Reads Requeued:         0		 Writes Requeued:         0
--    Reads Completed:        0,        0KiB	 Writes Completed:      511,   41,000KiB
--    Read Merges:            0,        0KiB	 Write Merges:           13,      160KiB
--    Read depth:             0        	 Write depth:             2
--    IO unplugs:            23        	 Timer unplugs:           0
-+    Reads Queued:           0,        0KiB       Writes Queued:         331,   26,284KiB
-+    Read Dispatches:        0,        0KiB       Write Dispatches:      485,   40,484KiB
-+    Reads Requeued:         0                    Writes Requeued:         0
-+    Reads Completed:        0,        0KiB       Writes Completed:      511,   41,000KiB
-+    Read Merges:            0,        0KiB       Write Merges:           13,      160KiB
-+    Read depth:             0                    Write depth:             2
-+    IO unplugs:            23                    Timer unplugs:           0
-    CPU1 (sdc):
--    Reads Queued:           0,        0KiB	 Writes Queued:         249,   15,800KiB
--    Read Dispatches:        0,        0KiB	 Write Dispatches:       42,    1,600KiB
--    Reads Requeued:         0		 Writes Requeued:         0
--    Reads Completed:        0,        0KiB	 Writes Completed:       16,    1,084KiB
--    Read Merges:            0,        0KiB	 Write Merges:           40,      276KiB
--    Read depth:             0        	 Write depth:             2
--    IO unplugs:            30        	 Timer unplugs:           1
-+    Reads Queued:           0,        0KiB       Writes Queued:         249,   15,800KiB
-+    Read Dispatches:        0,        0KiB       Write Dispatches:       42,    1,600KiB
-+    Reads Requeued:         0                    Writes Requeued:         0
-+    Reads Completed:        0,        0KiB       Writes Completed:       16,    1,084KiB
-+    Read Merges:            0,        0KiB       Write Merges:           40,      276KiB
-+    Read depth:             0                    Write depth:             2
-+    IO unplugs:            30                    Timer unplugs:           1
+@@ -136,11 +136,11 @@ The following recipes have been removed in this release:
  
-    Total (sdc):
--    Reads Queued:           0,        0KiB	 Writes Queued:         580,   42,084KiB
--    Read Dispatches:        0,        0KiB	 Write Dispatches:      527,   42,084KiB
--    Reads Requeued:         0		 Writes Requeued:         0
--    Reads Completed:        0,        0KiB	 Writes Completed:      527,   42,084KiB
--    Read Merges:            0,        0KiB	 Write Merges:           53,      436KiB
--    IO unplugs:            53        	 Timer unplugs:           1
-+    Reads Queued:           0,        0KiB       Writes Queued:         580,   42,084KiB
-+    Read Dispatches:        0,        0KiB       Write Dispatches:      527,   42,084KiB
-+    Reads Requeued:         0                    Writes Requeued:         0
-+    Reads Completed:        0,        0KiB       Writes Completed:      527,   42,084KiB
-+    Read Merges:            0,        0KiB       Write Merges:           53,      436KiB
-+    IO unplugs:            53                    Timer unplugs:           1
+ Python changes
+ ~~~~~~~~~~~~~~
+-     
++
+ - ``distutils`` has been deprecated upstream in Python 3.10 and thus the ``distutils*``
+   classes have been moved to ``meta-python``. Recipes that inherit the ``distutils*``
+   classes should be updated to inherit ``setuptools*`` equivalents instead.
+-  
++
+ - The Python package build process is now based on `wheels <https://pythonwheels.com/>`__.
+   The new Python packaging classes that should be used are
+   :ref:`ref-classes-python_flit_core`, :ref:`ref-classes-python_setuptools_build_meta`
+@@ -159,7 +159,7 @@ Prelink removed
+ Prelink has been dropped by ``glibc`` upstream in 2.36. It already caused issues with
+ binary corruption, has a number of open bugs and is of questionable benefit
+ without disabling load address randomization and PIE executables.
+-    
++
+ We disabled prelinking by default in the honister (3.4) release, but left it able
+ to be enabled if desired. However, without glibc support it cannot be maintained
+ any further, so all of the prelinking functionality has been removed in this release.
+@@ -170,7 +170,7 @@ reference(s).
+ Reproducible as standard
+ ~~~~~~~~~~~~~~~~~~~~~~~~
  
-    Throughput (R/W): 0KiB/s / 719KiB/s
-    Events (sdc): 6,592 entries
-@@ -2500,29 +2500,29 @@ And run blkparse on the host system using the device name::
-     8,32   1        0   177.266696560     0  m   N cfq1267 put_queue
+-Reproducibility is now considered as standard functionality, thus the 
++Reproducibility is now considered as standard functionality, thus the
+ ``reproducible`` class has been removed and its previous contents merged into the
+ :ref:`ref-classes-base` class. If you have references in your configuration to
+ ``reproducible`` in :term:`INHERIT`, :term:`USER_CLASSES` etc. then they should be
+@@ -212,7 +212,7 @@ and :ref:`bitbake-user-manual/bitbake-user-manual-metadata:removal (override sty
  
-    CPU0 (sdc):
--    Reads Queued:           0,        0KiB	 Writes Queued:         270,   21,708KiB
--    Read Dispatches:       59,    2,628KiB	 Write Dispatches:      495,   39,964KiB
--    Reads Requeued:         0		 Writes Requeued:         0
--    Reads Completed:       90,    2,752KiB	 Writes Completed:      543,   41,596KiB
--    Read Merges:            0,        0KiB	 Write Merges:            9,      344KiB
--    Read depth:             2        	 Write depth:             2
--    IO unplugs:            20        	 Timer unplugs:           1
-+    Reads Queued:           0,        0KiB       Writes Queued:         270,   21,708KiB
-+    Read Dispatches:       59,    2,628KiB       Write Dispatches:      495,   39,964KiB
-+    Reads Requeued:         0                    Writes Requeued:         0
-+    Reads Completed:       90,    2,752KiB       Writes Completed:      543,   41,596KiB
-+    Read Merges:            0,        0KiB       Write Merges:            9,      344KiB
-+    Read depth:             2                    Write depth:             2
-+    IO unplugs:            20                    Timer unplugs:           1
-    CPU1 (sdc):
--    Reads Queued:         688,    2,752KiB	 Writes Queued:         381,   20,652KiB
--    Read Dispatches:       31,      124KiB	 Write Dispatches:       59,    2,396KiB
--    Reads Requeued:         0		 Writes Requeued:         0
--    Reads Completed:        0,        0KiB	 Writes Completed:       11,      764KiB
--    Read Merges:          598,    2,392KiB	 Write Merges:           88,      448KiB
--    Read depth:             2        	 Write depth:             2
--    IO unplugs:            52        	 Timer unplugs:           0
-+    Reads Queued:         688,    2,752KiB       Writes Queued:         381,   20,652KiB
-+    Read Dispatches:       31,      124KiB       Write Dispatches:       59,    2,396KiB
-+    Reads Requeued:         0                    Writes Requeued:         0
-+    Reads Completed:        0,        0KiB       Writes Completed:       11,      764KiB
-+    Read Merges:          598,    2,392KiB       Write Merges:           88,      448KiB
-+    Read depth:             2                    Write depth:             2
-+    IO unplugs:            52                    Timer unplugs:           0
+ Miscellaneous changes
+ ~~~~~~~~~~~~~~~~~~~~~
+-  
++
+ - ``blacklist.bbclass`` is removed and the functionality moved to the
+   :ref:`ref-classes-base` class with a more descriptive
+   ``varflag`` variable named :term:`SKIP_RECIPE` which will use the `bb.parse.SkipRecipe()`
+@@ -252,7 +252,7 @@ Miscellaneous changes
+ - The ``cortexa72-crc`` and ``cortexa72-crc-crypto`` tunes have been removed since
+   the crc extension is now enabled by default for cortexa72. Replace any references to
+   these with ``cortexa72`` and ``cortexa72-crypto`` respectively.
+-  
++
+ - The Python development shell (previously known as ``devpyshell``) feature has been
+   renamed to ``pydevshell``. To start it you should now run::
  
-    Total (sdc):
--    Reads Queued:         688,    2,752KiB	 Writes Queued:         651,   42,360KiB
--    Read Dispatches:       90,    2,752KiB	 Write Dispatches:      554,   42,360KiB
--    Reads Requeued:         0		 Writes Requeued:         0
--    Reads Completed:       90,    2,752KiB	 Writes Completed:      554,   42,360KiB
--    Read Merges:          598,    2,392KiB	 Write Merges:           97,      792KiB
--    IO unplugs:            72        	 Timer unplugs:           1
-+    Reads Queued:         688,    2,752KiB       Writes Queued:         651,   42,360KiB
-+    Read Dispatches:       90,    2,752KiB       Write Dispatches:      554,   42,360KiB
-+    Reads Requeued:         0                    Writes Requeued:         0
-+    Reads Completed:       90,    2,752KiB       Writes Completed:      554,   42,360KiB
-+    Read Merges:          598,    2,392KiB       Write Merges:           97,      792KiB
-+    IO unplugs:            72                    Timer unplugs:           1
+@@ -261,7 +261,7 @@ Miscellaneous changes
+ - The ``packagegroups-core-full-cmdline-libs`` packagegroup is no longer produced, as
+   libraries should normally be brought in via dependencies. If you have any references
+   to this then remove them.
+-  
++
+ - The :term:`TOPDIR` variable and the current working directory are no longer modified
+   when parsing recipes. Any code depending on the previous behaviour will no longer
+   work - change any such code to explicitly use appropriate path variables instead.
+diff --git a/documentation/migration-guides/release-notes-4.0.5.rst b/documentation/migration-guides/release-notes-4.0.5.rst
+index 172b8b800d..cdfe85b750 100644
+--- a/documentation/migration-guides/release-notes-4.0.5.rst
++++ b/documentation/migration-guides/release-notes-4.0.5.rst
+@@ -83,7 +83,7 @@ Fixes in Yocto-4.0.5
+ Known Issues in Yocto-4.0.5
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
  
-    Throughput (R/W): 15KiB/s / 238KiB/s
-    Events (sdc): 9,301 entries
-diff --git a/documentation/ref-manual/terms.rst b/documentation/ref-manual/terms.rst
-index ad9c46c339..b18c4183b6 100644
---- a/documentation/ref-manual/terms.rst
-+++ b/documentation/ref-manual/terms.rst
-@@ -228,23 +228,23 @@ universal, the list includes them just in case:
+-- There are recent CVEs in key components such as openssl. They are not included in this release as it was built before the issues were known and fixes were available but these are now available on the kirkstone branch. 
++- There are recent CVEs in key components such as openssl. They are not included in this release as it was built before the issues were known and fixes were available but these are now available on the kirkstone branch.
  
-          As far as bootloaders are concerned, :term:`Initramfs` and "initrd"
-          images are still copied to RAM in the same way. That's why most
--	 most bootloaders refer to :term:`Initramfs` images as "initrd"
--	 or "init RAM disk".
-+         most bootloaders refer to :term:`Initramfs` images as "initrd"
-+         or "init RAM disk".
  
-       This kind of mechanism is typically used for two reasons:
+ Contributors to Yocto-4.0.5
+diff --git a/documentation/migration-guides/release-notes-4.0.rst b/documentation/migration-guides/release-notes-4.0.rst
+index 6eb5f807de..a5d66c0410 100644
+--- a/documentation/migration-guides/release-notes-4.0.rst
++++ b/documentation/migration-guides/release-notes-4.0.rst
+@@ -38,7 +38,7 @@ New Features / Enhancements in 4.0
  
-       -  For booting the same kernel binary on multiple systems requiring
-          different device drivers. The :term:`Initramfs` image is then customized
--	 for each type of system, to include the specific kernel modules
-+         for each type of system, to include the specific kernel modules
-          necessary to access the final root filesystem. This technique
--	 is used on all GNU / Linux distributions for desktops and servers.
-+         is used on all GNU / Linux distributions for desktops and servers.
+ - Inclusive language adjustments to some variable names - see the
+   :ref:`4.0 migration guide <migration-4.0-inclusive-language>` for details.
+-  
++
+ - New recipes:
  
-       -  For booting faster. As the root filesystem is extracted into RAM,
-          accessing the first user-space applications is very fast, compared
-          to having to initialize a block device, to access multiple blocks
-          from it, and to go through a filesystem having its own overhead.
-          For example, this allows to display a splashscreen very early,
--	 and to later take care of mounting the final root filesystem and
-+         and to later take care of mounting the final root filesystem and
-          loading less time-critical kernel drivers.
+    - ``buildtools-docs-tarball``
+@@ -114,7 +114,7 @@ New Features / Enhancements in 4.0
+ - BitBake enhancements:
  
-       This cpio archive can either be loaded to RAM by the bootloader,
-diff --git a/documentation/sdk-manual/working-projects.rst b/documentation/sdk-manual/working-projects.rst
-index b9af33393b..4236bcec24 100644
---- a/documentation/sdk-manual/working-projects.rst
-+++ b/documentation/sdk-manual/working-projects.rst
-@@ -295,12 +295,12 @@ example:
-       all: main.o module.o
-         ${CC} main.o module.o -o target_bin
-       main.o: main.c module.h
--      	${CC} -I . -c main.c
-+        ${CC} -I . -c main.c
-       module.o: module.c module.h
-         ${CC} -I . -c module.c
-       clean:
--      	rm -rf *.o
--      	rm target_bin
-+        rm -rf *.o
-+        rm target_bin
+    - Fetcher enhancements:
+-   
++
+       - New :ref:`bitbake-user-manual/bitbake-user-manual-fetching:crate fetcher (\`\`crate://\`\`)` for Rust packages
+       - Added striplevel support to unpack
+       - git: Add a warning asking users to set a branch in git urls
+@@ -127,7 +127,7 @@ New Features / Enhancements in 4.0
+       - ssh: now supports checkstatus, allows : in URLs (both required for use with sstate) and no longer requires username
+       - wget: add redirectauth parameter
+       - wget: add 30s timeout for checkstatus calls
+-   
++
+    - Show warnings for append/prepend/remove operators combined with +=/.=
+    - Add bb.warnonce() and bb.erroronce() log methods
+    - Improved setscene task display
+@@ -140,7 +140,7 @@ New Features / Enhancements in 4.0
+ -  Architecture-specific enhancements:
  
- #. *Make the Project:* Use the ``make`` command to create the binary
-    output file. Because variables are commented out in the Makefile, the
+    - ARM:
+-  
++
+       - tune-cortexa72: Enable the crc extension by default for cortexa72
+       - qemuarm64: Add tiny ktype to qemuarm64 bsp
+       - armv9a/tune: Add the support for the Neoverse N2 core
+@@ -163,7 +163,7 @@ New Features / Enhancements in 4.0
+       - linux-yocto-dev: add qemuriscv32
+       - packagegroup-core-tools-profile: Enable systemtap for riscv64
+       - qemuriscv: Use virtio-tablet-pci for mouse
+-  
++
+    - x86:
+ 
+       - kernel-yocto: conditionally enable stack protection checking on x86-64
+@@ -199,7 +199,7 @@ New Features / Enhancements in 4.0
+ - yocto-check-layer: improved README checks
+ - cve-check: add json output format
+ - cve-check: add coverage statistics on recipes with/without CVEs
+-- Added mirrors for kernel sources and uninative binaries on kernel.org 
++- Added mirrors for kernel sources and uninative binaries on kernel.org
+ - glibc and binutils recipes now use shallow mirror tarballs for faster fetching
+ - When patching fails, show more information on the fatal error
+ 
+@@ -234,7 +234,7 @@ New Features / Enhancements in 4.0
+    - Detect more known licenses in Python code
+    - Move license md5sums data into CSV files
+    - npm: Use README as license fallback
+-   
++
+ - SDK-related enhancements:
+ 
+    - Extended recipes to :ref:`ref-classes-nativesdk`: ``cargo``,
+@@ -244,7 +244,7 @@ New Features / Enhancements in 4.0
+    - Support creating per-toolchain cmake file in SDK
+ 
+ - Rust enhancements:
+-   
++
+    - New python_setuptools3_rust class to enable building python extensions in Rust
+    - classes/meson: Add optional rust definitions
+ 
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documentation/migration-guides/release-notes-4.2.rst
+index 653602f152..30049b89f6 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -35,7 +35,7 @@ New Features / Enhancements in 4.2
+ 
+    -  BitBake's UI will now ping the server regularly to ensure
+       it is still alive.
+- 
++
+ -  New variables:
+ 
+    -  :term:`VOLATILE_TMP_DIR` allows to specify
+@@ -288,7 +288,7 @@ New Features / Enhancements in 4.2
+       BitBake manual. All variables should be easy to access through the Yocto
+       Manual variable index.
+    -  Expanded the description of the :term:`BB_NUMBER_THREADS` variable.
+-      
++
+ -  Miscellaneous changes:
+ 
+    -  Supporting 64 bit dates on 32 bit platforms: several packages have been
+diff --git a/documentation/overview-manual/intro.rst b/documentation/overview-manual/intro.rst
+index a8091771f4..80446b3810 100644
+--- a/documentation/overview-manual/intro.rst
++++ b/documentation/overview-manual/intro.rst
+@@ -38,7 +38,7 @@ This manual does not give you the following:
+    procedures reside in other manuals within the Yocto Project
+    documentation set. For example, the :doc:`/dev-manual/index`
+    provides examples on how to perform
+-   various development tasks. As another example, the 
++   various development tasks. As another example, the
+    :doc:`/sdk-manual/index` manual contains detailed
+    instructions on how to install an SDK, which is used to develop
+    applications for target hardware.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index ab71cbe40c..8612128f7b 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -665,7 +665,7 @@ The padding size can be modified by setting :term:`DT_PADDING_SIZE`
+ to the desired size, in bytes.
+ 
+ See :oe_git:`devicetree.bbclass sources
+-</openembedded-core/tree/meta/classes-recipe/devicetree.bbclass>` 
++</openembedded-core/tree/meta/classes-recipe/devicetree.bbclass>`
+ for further variables controlling this class.
+ 
+ Here is an excerpt of an example ``recipes-kernel/linux/devicetree-acme.bb``
+@@ -3270,7 +3270,7 @@ The variables used by this class are:
+ -  :term:`UBOOT_FIT_KEY_REQ_ARGS`: ``openssl req`` arguments.
+ -  :term:`UBOOT_FIT_SIGN_ALG`: signature algorithm for the FIT image.
+ -  :term:`UBOOT_FIT_SIGN_NUMBITS`: size of the private key for FIT image
+-   signing.                                                  
++   signing.
+ -  :term:`UBOOT_FIT_KEY_SIGN_PKCS`: algorithm for the public key certificate
+    for FIT image signing.
+ -  :term:`UBOOT_FITIMAGE_ENABLE`: enable the generation of a U-Boot FIT image.
+diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
+index c28cd7a94a..2e4b23408d 100644
+--- a/documentation/ref-manual/tasks.rst
++++ b/documentation/ref-manual/tasks.rst
+@@ -358,7 +358,7 @@ information.
+ ``do_populate_sdk_ext``
+ -----------------------
+ 
+-Creates the file and directory structure for an installable extensible 
++Creates the file and directory structure for an installable extensible
+ SDK (eSDK). See the ":ref:`overview-manual/concepts:sdk generation`"
+ section in the Yocto Project Overview and Concepts Manual for more
+ information.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 435481c9aa..52062b63fa 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -2983,18 +2983,18 @@ system and gives an overview of their function and contents.
+ 
+    :term:`FIT_ADDRESS_CELLS`
+       Specifies the value of the ``#address-cells`` value for the
+-      description of the FIT image.  
++      description of the FIT image.
+ 
+       The default value is set to "1" by the :ref:`ref-classes-kernel-fitimage`
+-      class, which corresponds to 32 bit addresses. 
++      class, which corresponds to 32 bit addresses.
+ 
+       For platforms that need to set 64 bit addresses, for example in
+       :term:`UBOOT_LOADADDRESS` and :term:`UBOOT_ENTRYPOINT`, you need to
+-      set this value to "2", as two 32 bit values (cells) will be needed 
++      set this value to "2", as two 32 bit values (cells) will be needed
+       to represent such addresses.
+ 
+       Here is an example setting "0x400000000" as a load address::
+-    
++
+          FIT_ADDRESS_CELLS = "2"
+          UBOOT_LOADADDRESS= "0x04 0x00000000"
+ 
+@@ -3971,15 +3971,15 @@ system and gives an overview of their function and contents.
+       Specifies a space-separated list of license names (as they would
+       appear in :term:`LICENSE`) that should be excluded
+       from the build (if set globally), or from an image (if set locally
+-      in an image recipe). 
++      in an image recipe).
+ 
+       When the variable is set globally, recipes that provide no alternatives to listed
+       incompatible licenses are not built. Packages that are individually
+-      licensed with the specified incompatible licenses will be deleted. 
++      licensed with the specified incompatible licenses will be deleted.
+       Most of the time this does not allow a feasible build (because it becomes impossible
+       to satisfy build time dependencies), so the recommended way to
+       implement license restrictions is to set the variable in specific
+-      image recipes where the restrictions must apply. That way there 
++      image recipes where the restrictions must apply. That way there
+       are no build time restrictions, but the license check is still
+       performed when the image's filesystem is assembled from packages.
+ 
+@@ -4495,12 +4495,12 @@ system and gives an overview of their function and contents.
+       When kernel configuration fragments are missing for some
+       :term:`KERNEL_FEATURES` specified by layers or BSPs,
+       building and configuring the kernel stops with an error.
+-    
++
+       You can turn these errors into warnings by setting the
+       following in ``conf/local.conf``::
+ 
+          KERNEL_DANGLING_FEATURES_WARN_ONLY = "1"
+-    
++
+       You will still be warned that runtime issues may occur,
+       but at least the kernel configuration and build process will
+       be allowed to continue.
+@@ -7868,7 +7868,7 @@ system and gives an overview of their function and contents.
+       This option allows to associate `SPDX annotations
+       <https://spdx.github.io/spdx-spec/v2.3/annotations/>`__ to a recipe,
+       using the values of variables in the recipe::
+-        
++
+          ANNOTATION1 = "First annotation for recipe"
+          ANNOTATION2 = "Second annotation for recipe"
+          SPDX_CUSTOM_ANNOTATION_VARS = "ANNOTATION1 ANNOTATION2"
+@@ -7991,7 +7991,7 @@ system and gives an overview of their function and contents.
+       The name of keys used by the :ref:`ref-classes-kernel-fitimage` class
+       for signing U-Boot FIT image stored in the :term:`SPL_SIGN_KEYDIR`
+       directory. If we have for example a ``dev.key`` key and a ``dev.crt``
+-      certificate stored in the :term:`SPL_SIGN_KEYDIR` directory, you will 
++      certificate stored in the :term:`SPL_SIGN_KEYDIR` directory, you will
+       have to set :term:`SPL_SIGN_KEYNAME` to ``dev``.
+ 
+    :term:`SPLASH`
+@@ -8028,7 +8028,7 @@ system and gives an overview of their function and contents.
+ 
+           EXTRA_OECONF += "--disable-startup-msg --enable-img-fullscreen"
+ 
+-      For information on append files, see the                                                                            
++      For information on append files, see the
+       ":ref:`dev-manual/layers:appending other layers metadata with your layer`"
+       section.
+ 
+@@ -9442,10 +9442,10 @@ system and gives an overview of their function and contents.
+ 
+    :term:`UBOOT_FIT_ADDRESS_CELLS`
+       Specifies the value of the ``#address-cells`` value for the
+-      description of the U-Boot FIT image.  
++      description of the U-Boot FIT image.
+ 
+       The default value is set to "1" by the :ref:`ref-classes-uboot-sign`
+-      class, which corresponds to 32 bit addresses. 
++      class, which corresponds to 32 bit addresses.
+ 
+       For platforms that need to set 64 bit addresses in
+       :term:`UBOOT_LOADADDRESS` and :term:`UBOOT_ENTRYPOINT`, you need to
+@@ -9453,7 +9453,7 @@ system and gives an overview of their function and contents.
+       to represent such addresses.
+ 
+       Here is an example setting "0x400000000" as a load address::
+-    
++
+          UBOOT_FIT_ADDRESS_CELLS = "2"
+          UBOOT_LOADADDRESS= "0x04 0x00000000"
+ 
+@@ -9516,7 +9516,7 @@ system and gives an overview of their function and contents.
+          UBOOT_FITIMAGE_ENABLE = "1"
+ 
+       See the :ref:`ref-classes-uboot-sign` class for details.
+-      
++
+    :term:`UBOOT_LOADADDRESS`
+       Specifies the load address for the U-Boot image. During U-Boot image
+       creation, the :term:`UBOOT_LOADADDRESS` variable is passed as a
 -- 
 2.34.1
 
