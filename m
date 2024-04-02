@@ -2,22 +2,22 @@ Return-Path: <quentin.schulz@theobroma-systems.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A46D4C6FD1F
-	for <webhook@archiver.kernel.org>; Tue,  2 Apr 2024 09:58:39 +0000 (UTC)
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.102])
- by mx.groups.io with SMTP id smtpd.web10.8369.1712051911933121485
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A5F7ECD1284
+	for <webhook@archiver.kernel.org>; Tue,  2 Apr 2024 10:00:09 +0000 (UTC)
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.108])
+ by mx.groups.io with SMTP id smtpd.web10.8396.1712052007540400194
  for <docs@lists.yoctoproject.org>;
- Tue, 02 Apr 2024 02:58:32 -0700
+ Tue, 02 Apr 2024 03:00:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@theobroma-systems.com header.s=selector1 header.b=e3uTHNf4;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.7.102, mailfrom: quentin.schulz@theobroma-systems.com)
+ dkim=pass header.i=@theobroma-systems.com header.s=selector1 header.b=gBknxeOL;
+ spf=pass (domain: theobroma-systems.com, ip: 40.107.7.108, mailfrom: quentin.schulz@theobroma-systems.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lxmyELkBmmMQrTn65EDNXyrPyTWSpK3nmsNOm/H0MpgzjbePCoV4VtPX+ZsiXsxYVqykOnxcIKsRyZ4BICOKnH7+tvvSuPSnPa1G3B2fgzxYzw+VKsKAdpWUSFtZnE0T4LJQbqyc4D7rJSncNtMOOvYDP0hOJgAmqI9jF2wagvYEWtEhtkqeT9F1bKS4l524DMmp8KtrEDT1SmrvyAR8xMmzYcCVsbdeSlm677+c20Otg1AJ6/tCLZh+M6AzJrs8qa+gNfkH6RiPPhKLeE5TOu9RtjsCNSe7/326QxUfXg9LkCcjYC2kVJ6CF2wks+hf6t0aJKk3qwsrhJ+TXCaTug==
+ b=PyCXKzp1JcSdQQSjV9dTMj5m7NiWkGFprQLTCdKzri5/bL5/Dbaekg5h8wEPb9acXps7qR/XXJj/dahVXh1myBMND/p32wsR62pzV1VGhq9fmHSgs4oNF/jJq8sM56bQ03VSHlpoPmDNzXkQ80rTItr1He8xWFPaf3zMCUPPFxAE5vGfS/fXK2zRksAKP4oTs3n2UVLEXnHHcaqSyCEvUVBZeqAOKVZn+Mmhnb6dqPpHcmKReP4V2rj0kVJmBZIWSf8W619RKXDIoI+yCrXbFQ7zuEg//6cx2myFfjzXPLx4Jr6K53mNcBecaEAbj9Yj2aDqha0mw19vVTOZ/ClQkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bMgZP+JMTVpwSANY2uqIcCO083WaDCU8rAshXatTyFw=;
- b=Lgu8+LYwTDRj6DTmipQBDucHpGIQRQkoxBLO62ZToQH6Z72EeR5ZqNUUlBDFSpEN4AeqnzGRSDxTcYR0LsgYkTq536F5LzJuTkyJIZSzpCS6v8XKFA8Cphrtn1Aj28uW5ThgHT89c2SCjraPlA2q5Gjlmf6Bl9jv8hzUHLb8O+bC+GeDef3tJKhXFbDi3hKwkrGBNNkX96fi4SWMqF+b0wPwFE+DFc4EmkwldmkbV18Nuf5zC4AN74msm2VY4uryi4aLESKOlJHJpVjuNiIu68IT/ZuJtvFp4nYtqhp32lBz/NlgcWDCiidxKY+8lahZhgcO0YCa4IQSKwDG/fdGGQ==
+ bh=xE3edXS1XcQmLklPuHOqd/xs+S2DqJy0aAUQIUDnGU4=;
+ b=QMGLYbpik+LXXl3cNYH+m/rTjviQKK2vQW0TulOBqSvSl9xvz2aAGv0+PTv0s4hq1lBnelaISE4koKQHrvT/nEt1La2qQ4j2goGTP7/N/rFajpGzaT31BRTTTTpbkTu/El9xlz/JUExPzIQPYs4XT0LUYylfLkGZ6x3Ho3GydH6h1u99JgnWI+N5ZPptTmg/2Vnome8NDKom0MQn9a0Kwf6XkYalAeGaejRNNOYW4aUNhgsUq+zQ0URh3AgTPlfjtBwaFj1VP2wBWFviY2C7rtcpKvLf1KVvewAMND6HgYSF3v4gN9mf6ilpGLpsRLcKl9sWZ0KTiBpWbDIATTsqUg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
  header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
@@ -25,261 +25,128 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theobroma-systems.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bMgZP+JMTVpwSANY2uqIcCO083WaDCU8rAshXatTyFw=;
- b=e3uTHNf4IlhHFkpTUNP3pDSZ3TT9JuDhOalCOkWbhmEcS5Xa4vNzkCcoUqujpUY4Qvbd24XPaNquy+sSgzKIARJYyKLNFYmPCWl6ikFYoItlsx5FinQ2Fgs9QC+ZQPBhZZ0g+q5moqDePgQn9EQTdI1yA0gSDq3pIIIChfKDnSDK3tapegVEhuaMeNx52zoYcFQq2lpJVaXqM87RLy/yua0OaZJUza7Rg2PzE8PPan15RCs6Hmhv/LT9iaj6N5qFX8tzfBvtuTl93fnuSBwAcqrvtQmB0Rxk7gATfI2SZGNn62fHgAgQ7ZV2oa8MDdxQFkDotS+KidRhCahjGygjWg==
+ bh=xE3edXS1XcQmLklPuHOqd/xs+S2DqJy0aAUQIUDnGU4=;
+ b=gBknxeOLEBX58/mYk+gpw4s7pju7y97IDnXCoT/jf4L6mnOqrETfUBjwJCgi6YUeFGZWbVySwADVllfaPWyM/XKKAfQa6fHY6LeOk8GbqstFJjfj44HdMN0SkaO93xYRAQiFsM4yekxSOPKlksDd4jpz44CLccyiVwfpCIhMaLV9XHCZqlX9YIjR7rr0SzJbDXI7zwBOAOw6EONEIjCeta/JUacBSLhQ0NSPaoHzneGymV5SOoyESr58EWdLJ1NlTtlwNO+ubIlRw9bs1PJI/zMSpQ5/lTMHuHCjYUgu6IH4+5OXrQT25Cw/AAW7thJvHK+hEkquDh7PNfCaKuEqJw==
 Received: from DU2PR04MB8536.eurprd04.prod.outlook.com (2603:10a6:10:2d7::10)
- by AM9PR04MB8538.eurprd04.prod.outlook.com (2603:10a6:20b:435::22) with
+ by AS8PR04MB8149.eurprd04.prod.outlook.com (2603:10a6:20b:3fd::13) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
- 2024 09:58:27 +0000
+ 2024 09:59:59 +0000
 Received: from DU2PR04MB8536.eurprd04.prod.outlook.com
  ([fe80::3e70:7029:faf2:7779]) by DU2PR04MB8536.eurprd04.prod.outlook.com
  ([fe80::3e70:7029:faf2:7779%3]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
- 09:58:27 +0000
-Message-ID: <0402377f-24e2-47e6-a28e-70be1e801fe9@theobroma-systems.com>
-Date: Tue, 2 Apr 2024 11:58:25 +0200
+ 09:59:59 +0000
+Message-ID: <803f3abd-3c31-4b5f-a47a-63336f7bcd9c@theobroma-systems.com>
+Date: Tue, 2 Apr 2024 11:59:57 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 2/4] manuals: remove tab characters
+Subject: Re: [docs] [PATCH] manuals: add initial sphinx-lint support
 To: michael.opdenacker@bootlin.com, docs@lists.yoctoproject.org
-References: <20240330180829.1749526-1-michael.opdenacker@bootlin.com>
- <20240330180829.1749526-2-michael.opdenacker@bootlin.com>
+References: <20240330163609.1735506-1-michael.opdenacker@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <20240330180829.1749526-2-michael.opdenacker@bootlin.com>
+In-Reply-To: <20240330163609.1735506-1-michael.opdenacker@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: WA1P291CA0015.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:19::13) To DU2PR04MB8536.eurprd04.prod.outlook.com
+X-ClientProxiedBy: WA1P291CA0013.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:19::16) To DU2PR04MB8536.eurprd04.prod.outlook.com
  (2603:10a6:10:2d7::10)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|AM9PR04MB8538:EE_
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|AS8PR04MB8149:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	a7heyCsyTXNaAlGmAwGjJaJ+0YbnTjqT2MGlX+EXw+lh5b9CGBUE4OlRKmQoQz4RIvBjZgk6194GFV1CBr1K45Ib0cDO/T7g0j/urnDhTElKuZz0Z1WhyCJY0ywe3j5fXinenzs1WjBI8CJNzcPhiUbHhMpFpWBE3EmPgH+apBbZCMdbrQgotbx5E6h+nD7WdrRcB0ieyP6Ui0SVHkp1sXKYjJnILRXryNG1MuLHJOxNNVok5QtC9cm0MryEzuBzsDZr1bnNh2WjFydIlmFMHcGh0OSPPGLSQxv3Halp8NoleG01paQavuVGDhkXaGMngXuz+hlkcNlLBxNvp51Beu7TDSDxU+1TWP9344a0YtJYPday83sIe1I/WxJ82GoY6NruEzh3OYwaI2lMFuq05Q64HwccaJSbRqlUH/EULsWKW7n0aKqmKZbartxVN16uG0j9QM3g7lqVNYRPOGGVR4qExtVY6gDqcTboDe/W02KN1AJQnIDarDuzGtGbnPjK5iQBU5b3Y25OsbSrqYHR8ZZm9FyGYAYi6gn5Csg6/pkw6BTjm1JFisZhrVvQ8vjCqXXEVuwpgliF/LUIoJM3JVjPjfHXabChoj+d7hwIOfX/Z57TUWFtW5UZW0/w1YmVPQJ/9EXX1oNdaWHEdNov7Xgql+8tK8gfUGBP4l57x3k=
+	TjImmaqgHdc6FLEs/e2gCtox86aQqRyyhARM68UmfO2HF5TfKzqPFfuP36FDjpG32qcuDHnLOXvsvTVuDh1jhnfsPLcMKNJjISPyEh3s36ZeB4UfkUgjPQA9Xu6UtRmqAwUke2ptOrLyowyQDbIkUoVwaDcnQP8HBxhfkmjsZStetN7wsILzRIwgFoPsM5T7pqPs/awsuTUy0RoKGyMc4PZRz7DXJXbCo+WT8ePm+MEBaOViuzt1G3/Tlllls5TeQyBpqZTvPVpmx4kHGsrtUAzgQEvbsnI4/9pAKTNzeVNspid1yXMKV7xgSC9K0Gp7bFQUu67FadO++eyj467WSgbVmG3YBlUUDf3fhrZtybxZDlHTCHmeYJEn7ygE0vqcvgsf7ibBnSkf+2e09YfESZJpR1HxvJGjfsJgVM/QhKzxL/xmlFFbvLqcXEUrH5e8CH0UNcBfo7Hao/EPTeSCAIX0ne1wtkroXdFZ1B+ztLa2r6DkyQe0bHfUaDO7ICTc8Pf4Lh5xNI5GmBXoh1WK+pXFo5wdEGGD8/oUgfNKG3hJvR0GPT9P9cDfpgrhxapBTY9RZkjQqFlaLXoHmWwVxLbSuhAoeRN7eqUe/Ib7lM8Woa7CpCSUe9w2XvU04fd3fSYciaB2myBz3YJdgeSTBi0EqJIFnv7ruTXH1rGv+1c=
 X-Forefront-Antispam-Report: 
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8536.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?emJCVlk0MTdXUFJCSGhpcS9TTE94LzJ0S1NoUjZ4SWV0eFJETGpwQzErZWp6?=
- =?utf-8?B?MEFIWUwrcjVLUmh5QTBWOElWWThLVUF3UzE2VmNjMWowVDMxU29hUDlCNm9C?=
- =?utf-8?B?ZGl4V2hVcThrMXNoLzNWdm9QMXQxTElmTVc3T2YydGpsdmUxa0JNRXNhRVg3?=
- =?utf-8?B?VnFRNVZrZkdHQ2x5WG1TNUp6YUpRYXJMZzd1OXlLSkZjbS9XUUlpR0tMb3dW?=
- =?utf-8?B?ZWNqRjdMRGpUQ0g0clJscHhLMUNKd0IwdmJHWDQvNG95MUZaU3g0aEVCZjJu?=
- =?utf-8?B?R1V6TkJvemNtYko5TGQ3NW5uczRsVWxRUFpudXZJdURWN2JMN1FSN01iWitx?=
- =?utf-8?B?TW42cTd6MUY2ZmlYSDFWUVNXaUN4YjF3MG1LNVRibG1aUDNZNWdCclpXaFJS?=
- =?utf-8?B?L3dJNkNHbTNiMHRqNWE5dE9PeFZib25kU085b3pncFA5UCs5TnNWUTE0OTdD?=
- =?utf-8?B?WHA0am1IQmtsSzFUdThoSS9RTEJlUFpZaXFVbGF1VUJQNCtEbk51dG54Lzlx?=
- =?utf-8?B?MDI5NU4yRTA5azlFMU5ObFQ0ajhVdkpVdk1USGg5MTV5UjZsSDJINWdvUGV3?=
- =?utf-8?B?R09JN1ZWSGY5RmtqVUZhTXBjVUx1NU9YelloZWo1VDFhd1BJdzZZU2QrcmRZ?=
- =?utf-8?B?ZmF0SXM0UFFyUE9Jb3BnZDVadHV0NVBPYWJEV09NRng2OHU4bmJuY2hGUzJm?=
- =?utf-8?B?YVdSNjVDUmUvT09sQ2xodGpsS1VJTTVoMWNoU0FmaitrSWIrTXBXODdnblha?=
- =?utf-8?B?dnpUalBROGl1YzJUdFFUTXZjZjh1SkQ5TFN6VUNzV1hBRDVSWWJVVEErWUYv?=
- =?utf-8?B?VlBNZDMzSkhmMmRjcndZMForeFkyQXI5ZlBCTSs4SFV4dmxBRkx4NlB2eDBw?=
- =?utf-8?B?SjJVdDNTVm1KSHQ2aVNlenBST3dVNkoxQnNRV3ZCNnhkb081L3JLRVVCS0JM?=
- =?utf-8?B?ZXZsdVN5ZURWU0ZqZ28xdmVGR3lvS2t1eWFZcERaRlg4UjYwcFZvaEpObXFW?=
- =?utf-8?B?anFvbVkwZW9UL0FGZWtseGpvdm1ITmxoSlZYYTNIQkppMFlaTHNrTDUvTnRI?=
- =?utf-8?B?UjlqdGZyNVlNTDJCbUc2TnRTNzQ5YlFuUHlocStyVzNrcWg3MHMrTThEOGJm?=
- =?utf-8?B?cE5WbG1HeFdnUjBXSGNQVVhzaHlRaFBBQnpmd3NINU4vOW5BdjlETjJ0dFBJ?=
- =?utf-8?B?Y25BcW9PbGt3YlN0bXVKY1FKdWlQdUpBdmdHVDJMR3N3UmpwZlgwL1cyZU93?=
- =?utf-8?B?a1Y0eCtFK3V6Y3RnWmpST1lwZVRuN08yb2lkSmpCN0huNzJrWEVnVjcreERm?=
- =?utf-8?B?VXBJWkErdEVQWVhnOGlwN1R2Z0dudnVrVWZUV2RFRmhZMjZrdFFXWTRQc1ly?=
- =?utf-8?B?cndkWS93SHhjOC9VRTkvaFV5SFhwWlhhN0d3elRia2xCRTRkN1hDWVpDczlB?=
- =?utf-8?B?V2hSd0JocTVqa0hTUWc4ZWY3UnNQVDRwNFM1bDRtRElmV2Z2OUF0cTBpK1kw?=
- =?utf-8?B?RUV5UzhRbTVzQXQrZDdJdERTRTZ2emMrSnhlUXV0TkR0MnZpL09pYnkzMDlB?=
- =?utf-8?B?eGJEa1F6b0l4c0NvcGRJSStXMUFtODFPTjBNTXdnNUlweTJybEFqUDhaWGF4?=
- =?utf-8?B?eE9vMEhadDExMnZ3MnRxT2hhdk0wMFZ1cFBtZFgvQSt0M21uSjBMV0w4amVO?=
- =?utf-8?B?bUtJcWdyMXlpMHNLemErT3RadE9RTW1oV2hpekgxWmZOYW8wVTBaZnl5bzYy?=
- =?utf-8?B?UnRJbkhONmpYRGtSakszLzRzblZ5VWtYaHU2MlVPd3ZZRmx3emJ5UTdpWmQy?=
- =?utf-8?B?ckdHN041T3U1bTBuanc3Zkc5WUtiM3A0OU1Yd1NuRXNhcEx1UGZXMk1udWlI?=
- =?utf-8?B?MmVDUXRMMFpNYURFZlVSZ1RzMC9uNTRMS3NQSm4xZmcwaW9JWkhHc3hRT2Q0?=
- =?utf-8?B?N2dCSytMNTBkelBvR2dmc0FFeitnbzAyLzltb3JFb1BwenNKeDNBWnBHV1FU?=
- =?utf-8?B?MVN4VDVCVGZJeUkweVFRUUlwWVpIZlVRckllanV1U2MrbFVCQU9zWm8xd2ti?=
- =?utf-8?B?ZDB5U0d6Q3ZhOFlQbElFZ3RNUkFFc2crNlBCVmtsRW1RZ0xuc3UzNkUrcG1p?=
- =?utf-8?B?Z0NVSFlPem5SU3BvK3VYYjFvZ2duc3NKSjJqWlVZU1JhM3VIczBFMEV2OXJZ?=
- =?utf-8?Q?dMT/9U8zBXhxMHlO7tLckFY=3D?=
+	=?utf-8?B?OXl4K29mQ0lBYUt5NUMrU3lPL056SFhtQkt0Q2IyMFMva2dBUHRKc2QrTlJy?=
+ =?utf-8?B?WC96UzB2OTdjQ0VYSTdYb202eVdva0V5VEpiaDdFQmcrK0FvRStJMTlnWnBK?=
+ =?utf-8?B?V0FxUVZjZXFJVGNETlVmT0JFTzFoaGNVSFdYdWVNM25hWmJkQllkcmtoUE5G?=
+ =?utf-8?B?NXBvSXhFbnduNjdsOEUrQ0dMZWduZlBnSVNkTlZhb3NaNnVxalh4R3dvU2JH?=
+ =?utf-8?B?QnBhU08rVXRoK0xhbm12MFhmeW9WYkwvSWNoT1p1ZTlCdEVuUmhkUmQ2NkpI?=
+ =?utf-8?B?cXhSK1lBSmdMbUFIQ3BFQlhweUNmREszd2hxMnFsSDcwVER4M1JBYTJmcHQ1?=
+ =?utf-8?B?c2hTR0kzK0lsTVBsYXVWU0pua3BIUjhCUFN3UnB5ajhWdXB0a05DQXBXcjNp?=
+ =?utf-8?B?YWNBamcwenZpbFRjb2NpeDhlMGt2R0hxUnNkemN0ZjVpT3JpaTBJNkVrRU1X?=
+ =?utf-8?B?dVMxUjN1QWdXTm5hN1BPMVdhTHIvR3BQZC9YbTFJVlQyZGNaRjRYb2l5TXZu?=
+ =?utf-8?B?QUJTN2htSThIK1NMcDIxM1hWSzVhNGtGeVhlZWVQc2cwYlRibHRRQ05mZlIv?=
+ =?utf-8?B?WVZOMjBPOWM1RlVKYUZ2REROeHZBM2RqTE9zTGN1cGxnczdibHczbUZYMFhw?=
+ =?utf-8?B?bGMvWlhpdndBS1JBYUpnZDQ2SEZweGRaazk4aitoUjJyck5sSzNNS08zeTZM?=
+ =?utf-8?B?b0tBZEJtelh3VlpXTE9uSFFweTFncld1d2lmYzhvSkU5UFFsamxwLzd1RXVH?=
+ =?utf-8?B?RTdWUno4KzJYN01JNVRhb3ZyL1ZDOUErM1pmSjk2TjJVdGVSLzhEenF5dFQ0?=
+ =?utf-8?B?SmdnT3U1SVR0RWMwcTVKUExEQmNaQU5HVkJKYlVJSjNtUFVxWWhNRVhsYUZL?=
+ =?utf-8?B?YzBHTUY5eURhMkhXSU5TanhCSllFTVlsQ1VsT0JReTlHbXBubTFna2JKaUVq?=
+ =?utf-8?B?cXdOTXc0WDA3L2ZwYWtLNHJTZ2dTeUh6OTNjWXhDVC9sb3NuTm5zK3FRdklk?=
+ =?utf-8?B?OW1tOHJmMzNmbUNGc2FQZTlhMGJZYmdueE4reFo3dm9iaWpBU3I1eWVDZGRC?=
+ =?utf-8?B?cG81aXFaeHZIczhNN1lxSUZpbDlhZjFKQVpiMXRlSERhSVFpT1Z2VXhUeHVQ?=
+ =?utf-8?B?alRDaDRvZzFKeU5zaUt6SEtlUDFmSmR2a2lIelUxdnF2ZGFNTFo3UmxJYnA1?=
+ =?utf-8?B?MXJoSkZhemsrVTBEbHZUZ0FRVDhoM2hpY3pvTFA0eStyQTl2V1Q2eHFpYmM5?=
+ =?utf-8?B?ejdVR0lDOWJmSXRibXNQTU5OeVhwZmh6dDlhS2FkY3FjSnlPUVNIM25qMmpV?=
+ =?utf-8?B?bFRSQ09yTU1PWnljRk52ZFErekRXZG9nSVZpNzgwRzZZY3M0Nmg1c2F0c3Fp?=
+ =?utf-8?B?QThNSHJaWVVhbW5zRE1HYjU3NzFadEs0aDgrZW1kMkdvQUNWTVpMaE9QUHFS?=
+ =?utf-8?B?b21BNzdGbGNsYUw4WElHc2wyT2RVbnBHT3ZEc3BpellzWmI0RnBKT2c2aitD?=
+ =?utf-8?B?di9aVW83L2dTMmREeVVOWWlsanlBVjF6RHNGUUpBVG53elN3WGJianh4bWl5?=
+ =?utf-8?B?UUNJRVRSd1NjeGh0cFBJUmVrRjFuM1AvMCtxMDdjTWxiT1JHNlB3MUlSNGd5?=
+ =?utf-8?B?eU44MWNVZExWa1Q4VWdxT1FYTjQwbkpTMUdyRVdNUm5qZERlYklJTm1jck83?=
+ =?utf-8?B?US9sckkzTUJxQWdHd1Y1dFJucVc3bzlpdXVKcFdtbzFMS21ZQVZNb3Q2OHpI?=
+ =?utf-8?B?eWZiMjFCV1BwZGY2a1c2dG9xY1dYaXhLZVdZdjJrOWwrUVpKODY1cWpCUUxK?=
+ =?utf-8?B?NnNJalFzVWk5UWptUmZFTkVjY0RPaURDanorSG1yWm00R1haVzJwdVpKMFpm?=
+ =?utf-8?B?cTdYMzhWU2k4akRDcnNPdkFtdjAzWnRnd0FrZ3lSb01Mak1rS0YyMmk3d2dt?=
+ =?utf-8?B?anRSTitmdnkxVk1YV1VwV1JpYTBjSm5GTXcvSDlPL1VJNWVJUE5BYjh0bHZB?=
+ =?utf-8?B?R2pxSy9ESndibEFMczEvVjZpbjNHeTlINzB0aDRNZHJpbG8yQXVDQUczS1I2?=
+ =?utf-8?B?SnI2d1BUdVp2aUFLWVZGVUN5d2NWZjVucis2MndyT3ZBeTZveFV2T0VtQ1JM?=
+ =?utf-8?B?eFFYNFJZL2g3dzFmaWxkOWxPVWNFK3JyR1d2TklndVloclU2R0ZBRWFBN1Nr?=
+ =?utf-8?Q?BnW5jWEXe1wXGh+DCn89Uig=3D?=
 X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 110235e3-4bf0-49e1-d076-08dc52fb7167
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6782f585-7d57-40fa-3ad4-08dc52fba815
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8536.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 09:58:27.4241
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 09:59:59.1472
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fOfG2vOLJ1GYo2t6t14f/A+6xWGplNRD0TjVDnkDij9lrhH5XHno8ZfjNV4q5k/rougazfUjt1vAW2PTWnWQsmBb72FQwCFrx676ZV44ErcHmCPmEvGq3yg/Ey2ty6eD
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8538
+X-MS-Exchange-CrossTenant-UserPrincipalName: g5ey+QPpXPg0a+0oUk7RIUPoJUhQIcZ0PsyMKu/LVt+PJa6w0J/BYO+1D2h8iq0a6d/KHVnQk6qK1wttTDjEVl2/q4U+GxznaBsLer/z3tgS64dkooX5p4jKdrIFmEZ5
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8149
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 02 Apr 2024 09:58:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5042
+ <docs@lists.yoctoproject.org>; Tue, 02 Apr 2024 10:00:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5043
 
 Hi Michael,
 
-On 3/30/24 19:08, Michael Opdenacker via lists.yoctoproject.org wrote:
+On 3/30/24 17:36, Michael Opdenacker via lists.yoctoproject.org wrote:
 > From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 > 
-> As reported by "make sphinx-lint"
+> Makes it possible to catch errors not reported by sphinx,
+> such as idle spaces. After customization, this should be used
+> to enforce our syntax conventions, such as two spaces after a "-"
+> character to introduce a list item.
+> 
+> Just run "make sphinx-lint".
 > 
 > Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 > ---
->   documentation/dev-manual/layers.rst           |  16 +--
->   documentation/dev-manual/wic.rst              |  52 ++++----
->   documentation/kernel-dev/advanced.rst         |   4 +-
->   documentation/kernel-dev/common.rst           |   4 +-
->   documentation/profile-manual/usage.rst        | 114 +++++++++---------
->   documentation/ref-manual/terms.rst            |  10 +-
->   documentation/sdk-manual/working-projects.rst |   6 +-
->   7 files changed, 103 insertions(+), 103 deletions(-)
+>   documentation/Makefile |  3 +++
+>   documentation/README   | 14 ++++++++++++++
+>   2 files changed, 17 insertions(+)
 > 
-> diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-> index f7929e630e..6e4f137e6b 100644
-> --- a/documentation/dev-manual/layers.rst
-> +++ b/documentation/dev-manual/layers.rst
-> @@ -501,12 +501,12 @@ the "meta" layer at ``meta/recipes-bsp/formfactor``::
->      INHIBIT_DEFAULT_DEPS = "1"
+> diff --git a/documentation/Makefile b/documentation/Makefile
+> index f3b775b3ec..cacb51c036 100644
+> --- a/documentation/Makefile
+> +++ b/documentation/Makefile
+> @@ -53,6 +53,9 @@ stylecheck:
+>   	vale sync
+>   	vale $(VALEOPTS) $(VALEDOCS)
 >   
->      do_install() {
-> -	   # Install file only if it has contents
-> +           # Install file only if it has contents
->              install -d ${D}${sysconfdir}/formfactor/
->              install -m 0644 ${S}/config ${D}${sysconfdir}/formfactor/
-> -	   if [ -s "${S}/machconfig" ]; then
-> -	           install -m 0644 ${S}/machconfig ${D}${sysconfdir}/formfactor/
-> -	   fi
-> +           if [ -s "${S}/machconfig" ]; then
-> +                   install -m 0644 ${S}/machconfig ${D}${sysconfdir}/formfactor/
-> +           fi
->      }
->   
->   In the main recipe, note the :term:`SRC_URI`
-> @@ -582,10 +582,10 @@ Directory`.  Here is the main ``xserver-xf86-config`` recipe, which is named
->      ALLOW_EMPTY:${PN} = "1"
->   
->      do_install () {
-> -	if test -s ${WORKDIR}/xorg.conf; then
-> -		install -d ${D}/${sysconfdir}/X11
-> -		install -m 0644 ${WORKDIR}/xorg.conf ${D}/${sysconfdir}/X11/
-> -	fi
-> +        if test -s ${WORKDIR}/xorg.conf; then
-> +                install -d ${D}/${sysconfdir}/X11
-> +                install -m 0644 ${WORKDIR}/xorg.conf ${D}/${sysconfdir}/X11/
-> +        fi
->      }
->   
->   Here is the append file, which is named ``xserver-xf86-config_%.bbappend``
-> diff --git a/documentation/dev-manual/wic.rst b/documentation/dev-manual/wic.rst
-> index aeecd0dd3e..a3880f3a1c 100644
-> --- a/documentation/dev-manual/wic.rst
-> +++ b/documentation/dev-manual/wic.rst
-> @@ -139,20 +139,20 @@ individual images through the ``list`` command. You can use the ``list``
->   command to return the available Wic images as follows::
->   
->      $ wic list images
-> -     genericx86                    		Create an EFI disk image for genericx86*
-> -     beaglebone-yocto              		Create SD card image for Beaglebone
-> -     qemuriscv                     		Create qcow2 image for RISC-V QEMU machines
-> -     mkefidisk                     		Create an EFI disk image
-> -     qemuloongarch                 		Create qcow2 image for LoongArch QEMU machines
-> -     directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
-> -     directdisk                    		Create a 'pcbios' direct disk image
-> +     genericx86                                 Create an EFI disk image for genericx86*
-> +     beaglebone-yocto                           Create SD card image for Beaglebone
-> +     qemuriscv                                  Create qcow2 image for RISC-V QEMU machines
-> +     mkefidisk                                  Create an EFI disk image
-> +     qemuloongarch                              Create qcow2 image for LoongArch QEMU machines
-> +     directdisk-multi-rootfs                    Create multi rootfs image using rootfs plugin
-> +     directdisk                                 Create a 'pcbios' direct disk image
->        efi-bootdisk
-> -     mkhybridiso                   		Create a hybrid ISO image
-> -     directdisk-gpt                		Create a 'pcbios' direct disk image
-> -     systemd-bootdisk              		Create an EFI disk image with systemd-boot
-> -     sdimage-bootpart              		Create SD card image with a boot partition
-> -     qemux86-directdisk            		Create a qemu machine 'pcbios' direct disk image
-> -     directdisk-bootloader-config  		Create a 'pcbios' direct disk image with custom bootloader config
-> +     mkhybridiso                                Create a hybrid ISO image
-> +     directdisk-gpt                             Create a 'pcbios' direct disk image
-> +     systemd-bootdisk                           Create an EFI disk image with systemd-boot
-> +     sdimage-bootpart                           Create SD card image with a boot partition
-> +     qemux86-directdisk                         Create a qemu machine 'pcbios' direct disk image
-> +     directdisk-bootloader-config               Create a 'pcbios' direct disk image with custom bootloader config
->   
->   Once you know the list of available
->   Wic images, you can use ``help`` with the command to get help on a
-> @@ -282,20 +282,20 @@ following two locations::
->   Use the following command to list the available kickstart files::
->   
->      $ wic list images
-> -     genericx86                    		Create an EFI disk image for genericx86*
-> -     beaglebone-yocto              		Create SD card image for Beaglebone
-> -     qemuriscv                     		Create qcow2 image for RISC-V QEMU machines
-> -     mkefidisk                     		Create an EFI disk image
-> -     qemuloongarch                 		Create qcow2 image for LoongArch QEMU machines
-> -     directdisk-multi-rootfs       		Create multi rootfs image using rootfs plugin
-> -     directdisk                    		Create a 'pcbios' direct disk image
-> +     genericx86                                 Create an EFI disk image for genericx86*
-> +     beaglebone-yocto                           Create SD card image for Beaglebone
-> +     qemuriscv                                  Create qcow2 image for RISC-V QEMU machines
-> +     mkefidisk                                  Create an EFI disk image
-> +     qemuloongarch                              Create qcow2 image for LoongArch QEMU machines
-> +     directdisk-multi-rootfs                    Create multi rootfs image using rootfs plugin
-> +     directdisk                                 Create a 'pcbios' direct disk image
->        efi-bootdisk
-> -     mkhybridiso                   		Create a hybrid ISO image
-> -     directdisk-gpt                		Create a 'pcbios' direct disk image
-> -     systemd-bootdisk              		Create an EFI disk image with systemd-boot
-> -     sdimage-bootpart              		Create SD card image with a boot partition
-> -     qemux86-directdisk            		Create a qemu machine 'pcbios' direct disk image
-> -     directdisk-bootloader-config  		Create a 'pcbios' direct disk image with custom bootloader config
-> +     mkhybridiso                                Create a hybrid ISO image
-> +     directdisk-gpt                             Create a 'pcbios' direct disk image
-> +     systemd-bootdisk                           Create an EFI disk image with systemd-boot
-> +     sdimage-bootpart                           Create SD card image with a boot partition
-> +     qemux86-directdisk                         Create a qemu machine 'pcbios' direct disk image
-> +     directdisk-bootloader-config               Create a 'pcbios' direct disk image with custom bootloader config
->   
->   When you use an existing file, you
->   do not have to use the ``.wks`` extension. Here is an example in Raw
-> diff --git a/documentation/kernel-dev/advanced.rst b/documentation/kernel-dev/advanced.rst
-> index bcaaaeed14..4c463503f6 100644
-> --- a/documentation/kernel-dev/advanced.rst
-> +++ b/documentation/kernel-dev/advanced.rst
-> @@ -303,8 +303,8 @@ The following listings show the ``build.scc`` file and part of the
->                           .
->                           .
->                           .
-> - 	        char *dump_write = NULL, *files_source = NULL;
-> - 	        int opt;
-> +                char *dump_write = NULL, *files_source = NULL;
-> +                int opt;
->         --
->         2.10.1
->   
-> diff --git a/documentation/kernel-dev/common.rst b/documentation/kernel-dev/common.rst
-> index 0cee503346..5d8d0d45a9 100644
-> --- a/documentation/kernel-dev/common.rst
-> +++ b/documentation/kernel-dev/common.rst
-> @@ -1674,10 +1674,10 @@ looks much like the one provided with the ``hello-mod`` template::
->      SRC := $(shell pwd)
->   
->      all:
-> -   	$(MAKE) -C $(KERNEL_SRC) M=$(SRC)
-> +        $(MAKE) -C $(KERNEL_SRC) M=$(SRC)
->   
->      modules_install:
-> -   	$(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules_install
-> +        $(MAKE) -C $(KERNEL_SRC) M=$(SRC) modules_install
->      ...
->   
+> +sphinx-lint:
+> +	sphinx-lint
+> +
 
-I think this is actually incorrect.
-
-Makefile indentation is tab and not space, so this won't work. (This is 
-not the only piece of Makefile where this new indent shouldn't be used 
-though, so please be careful about others).
+I would pass $(SOURCEDIR) as argument as well.
 
 Cheers,
 Quentin
