@@ -2,36 +2,36 @@ Return-Path: <joaomarcos.costa@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AAAB9CD128A
-	for <webhook@archiver.kernel.org>; Wed,  3 Apr 2024 14:38:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93A34CD128A
+	for <webhook@archiver.kernel.org>; Wed,  3 Apr 2024 14:38:27 +0000 (UTC)
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.12731.1712155094506829891
+ by mx.groups.io with SMTP id smtpd.web11.12733.1712155098726477270
  for <docs@lists.yoctoproject.org>;
- Wed, 03 Apr 2024 07:38:14 -0700
+ Wed, 03 Apr 2024 07:38:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=b9oBcNgn;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=UFJhUfRJ;
  spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: joaomarcos.costa@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0510A1C0009;
-	Wed,  3 Apr 2024 14:38:12 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 43F9D1C0009;
+	Wed,  3 Apr 2024 14:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1712155093;
+	t=1712155097;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BGCZkV5PcNSB3p5iHCpjvCLrRhaUhIlZWnc+SAmKjw0=;
-	b=b9oBcNgnQ1fke4VqEUoAN5Lp11AoxQj8fTQ+baCh5puVMm+1k2LZzclutv7/i3oQrOFEP2
-	JmDMOhJAxy+r50skFfzPOAV8l3Ak22cmu/PcUOXbpxPAP6lJpfbH620bh+LhRb7JFfDJH/
-	1t46x8Q6aG8f90gS65tD1P1d9OkZ2I0vGCyQyKY3YTobLNpy1qZe8Nqo2I91HT2HL8R0NS
-	3sA6TalB0MK+1UC6kWxq5ZWc51QmEXNWYuYHXyBsmsjLMyuLyEkrTgRKT6t4wj2kfqo5IU
-	AhyjFpa1K6hSUPbg9esA/oBNyeAUXmbBbtwq4fmVRYSmeGVVhOuD4YxPtJvKrA==
+	bh=VACC+Cs4gGs6cgAf7VdRfbTS0nOf737JgVl4wqAtN0g=;
+	b=UFJhUfRJ2DkfOBprl2g/zpLD1ANuXNmROKElbhCsMjMwpbWkEaWHqz72WDIVZatZUbLc57
+	jI7/SV1joI3kkWz+TOy8D1JxKlJ3x8c7U3F7S+rPVdIKiwT9/mvse1n1hI7tFxJeI1wO+Q
+	Xe7VgzwIVHhcyjL4pq6psFJbEuH2IuIXA8h9P+nxWXaoNDpPZ3zRxXmgxRaT1VpGvwGh0y
+	PoscXA5K8I3OmDfpRRzjBsQJbpwbTCBjtHETSjKbeTdGYkyvwB3M4WiXYmPawBoj49UZh9
+	EuwMF2qpxxDlyTPr4bsHCDrfuJRO/XTwB4Or688BmZ8hooXy/yWht7KlgeW3YQ==
 From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: michael.opdenacker@bootlin.com,
 	Joao Marcos Costa <joaomarcos.costa@bootlin.com>
-Subject: [PATCH v1 1/5] migration-guides: list removed recipes
-Date: Wed,  3 Apr 2024 16:37:20 +0200
-Message-ID: <20240403143724.1956838-2-joaomarcos.costa@bootlin.com>
+Subject: [PATCH v1 3/5] migration-guides: leave Deprecated variables empty
+Date: Wed,  3 Apr 2024 16:37:22 +0200
+Message-ID: <20240403143724.1956838-4-joaomarcos.costa@bootlin.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240403143724.1956838-1-joaomarcos.costa@bootlin.com>
 References: <20240403143724.1956838-1-joaomarcos.costa@bootlin.com>
@@ -41,32 +41,29 @@ X-GND-Sasl: joaomarcos.costa@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 03 Apr 2024 14:38:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5051
+ <docs@lists.yoctoproject.org>; Wed, 03 Apr 2024 14:38:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5053
 
-Fill the 'Removed recipes' section for the upcoming release 5.0
+Only mention that no variables were deprecated in the upcoming release 5.0
 
 Signed-off-by: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
 ---
- documentation/migration-guides/migration-5.0.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ documentation/migration-guides/migration-5.0.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/documentation/migration-guides/migration-5.0.rst b/documentation/migration-guides/migration-5.0.rst
-index 227b21ba7..f7d817176 100644
+index 2c106ee13..cf55ee4c1 100644
 --- a/documentation/migration-guides/migration-5.0.rst
 +++ b/documentation/migration-guides/migration-5.0.rst
-@@ -94,6 +94,11 @@ Removed recipes
+@@ -70,7 +70,7 @@ Recipe changes
+ Deprecated variables
+ ~~~~~~~~~~~~~~~~~~~~
  
- The following recipes have been removed in this release:
+-The following variables have been deprecated:
++No variables have been deprecated in this release.
  
-+- ``libcroco``: deprecated and archived by the Gnome Project.
-+- ``linux-yocto``: version 6.1 (version 6.6 provided instead).
-+- ``zvariant``: fails to build with newer Rust
-+- ``systemtap-uprobes``: obsolete.
-+
- .. _migration-5.0-removed-classes:
+ .. _migration-5.0-removed-variables:
  
- Removed classes
 -- 
 2.43.0
 
