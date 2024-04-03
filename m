@@ -1,174 +1,291 @@
-Return-Path: <quentin.schulz@theobroma-systems.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2CAA0C6FD1F
-	for <webhook@archiver.kernel.org>; Tue,  2 Apr 2024 15:23:51 +0000 (UTC)
-Received: from EUR04-HE1-obe.outbound.protection.outlook.com (EUR04-HE1-obe.outbound.protection.outlook.com [40.107.7.130])
- by mx.groups.io with SMTP id smtpd.web11.15321.1712071424350596577
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 367BFCD11C2
+	for <webhook@archiver.kernel.org>; Wed,  3 Apr 2024 01:37:43 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by mx.groups.io with SMTP id smtpd.web11.1228.1712108259954687556
  for <docs@lists.yoctoproject.org>;
- Tue, 02 Apr 2024 08:23:45 -0700
+ Tue, 02 Apr 2024 18:37:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@theobroma-systems.com header.s=selector1 header.b=ErEHessC;
- spf=pass (domain: theobroma-systems.com, ip: 40.107.7.130, mailfrom: quentin.schulz@theobroma-systems.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=XAkzNJD+HzWT9cmPfmGrzDkgcTK3GpiuANj05Ijd8FUPSVvIqnmdvO6SRkiGSWDylkVVWRooeQqCXOubneI4oCdqxPye+AXoQ6loknTeyNCHIF0U+haLRC5vUBO+Zsfc7bY5JyEYnmbKMRVPp5rvIUTJYQYHxJXtHunX5P+S+t5f3ipLWYZAlws7dKp6lvlcDFfKdJZs3H10I4JbX5LqTcLesNAcgOXYVwIJDP9Cs6uZraOK1MC7qDEeVUp3eOU+rTjOswXf54FVk4HC7WWEFiEtlM+yag9LkYzrfSd43t1YvuR28QyWxeXNZ45ZNgNfL31LRNlXT09W11s7NEqtqA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d/QZj81K+r8Ajg0QdLNY9ZlKPm5LvyDsjzNr9EUtYak=;
- b=YUwxO7Bhlx/QUc3QMi4u9BvJmiwszfUPABxprt70AjitMW1srOQBk4OYtyk6e/VnnM38b4m7lX+6gL8EEVrX2XGmNFCxloGyLJqoouuBga2cgJNpC2zh2v2nYf0BvktPGc7MF5EmdB8bp3Op42rynIiDWJKKXmKl1/HmseaiBK/NFCPAtp8KQoMDaO9BmbbZ27HpNCTsR3TaKyLTcL6a3hh48pETJ6xojynUevJX0wTcaXdQ/Cpfv7Xp3LieJdJEshCoJls20d+UPxvbZDGfg0jklK437KIspM7qwCee+ZoJ4QohbwBsm3XWUbcXASpTVHCuYz5gEOnyPHCM6xllOw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theobroma-systems.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=d/QZj81K+r8Ajg0QdLNY9ZlKPm5LvyDsjzNr9EUtYak=;
- b=ErEHessCFzpYxguVRvUBVjTllfAC4lIboyu5JQ2R+vxlL52E73Gi8kY5EAM3VrxGtNrzVBwsjmxJXB+cVLI/rhDDftwjEvHQwHoqrQF8J4oxZ9G/8rkZpfwlEoSAXU1yke/IehD510FmdcvuwqPw1Dt+epL+leLoJl0abNwOPmQ+2ZJALtjtnXiGKsICz9YD64NDwz01bvKID+jsjY8h3cIIlN2ARdZ4WDxzxK8aiHZiEEz/kRnSsiAyGAyZXX01HMpoxHz8P6zUfMUG/nfzSrdca5iAp+2bKWzOWJpKjdQYBPJ/vYlFo2miPe+lAh4ibtHzsWq//Bm7pTdw4op0Pg==
-Received: from DU2PR04MB8536.eurprd04.prod.outlook.com (2603:10a6:10:2d7::10)
- by VI1PR04MB7198.eurprd04.prod.outlook.com (2603:10a6:800:126::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
- 2024 15:23:38 +0000
-Received: from DU2PR04MB8536.eurprd04.prod.outlook.com
- ([fe80::3e70:7029:faf2:7779]) by DU2PR04MB8536.eurprd04.prod.outlook.com
- ([fe80::3e70:7029:faf2:7779%3]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
- 15:23:38 +0000
-Message-ID: <0f9c617d-13cf-4d2e-90e8-43e661bdf21e@theobroma-systems.com>
-Date: Tue, 2 Apr 2024 17:23:36 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 2/4] manuals: remove tab characters
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-CC: docs@lists.yoctoproject.org
-References: <20240330180829.1749526-1-michael.opdenacker@bootlin.com>
- <20240330180829.1749526-2-michael.opdenacker@bootlin.com>
- <0402377f-24e2-47e6-a28e-70be1e801fe9@theobroma-systems.com>
- <90f9bf1d-1cd1-4b42-8af8-41ab7dd5ed5d@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <90f9bf1d-1cd1-4b42-8af8-41ab7dd5ed5d@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: WA0P291CA0023.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1::10) To DU2PR04MB8536.eurprd04.prod.outlook.com
- (2603:10a6:10:2d7::10)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=VwTEcqVv;
+ spf=pass (domain: intel.com, ip: 192.198.163.13, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712108260; x=1743644260;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gxrJ7ZY/vsuyxGxzPSYvQv6WQ7Rf8nfvCu6CFv596bs=;
+  b=VwTEcqVvqilErKDyIPYguLfnhA7nVo0gKuSOe3arsEfU5io1qHQRtBMT
+   MilQ1BCVajEF0Y+iOHvbhP31k9MCIqufVJv3yqrMNxk3mEfiB9o52AChK
+   YqeFii+V9h423N+owwbnAczq6cKPxcFb19SAyjXxXFQbAnnZuRud8ICbK
+   Fl27eTpyuXZgOfypYNQy/1AU6J9inBO5O/wtKuWnRNXUKHvJWwxqB2Z/Y
+   h14Ql38dJxHUOVwR0t+rkSK7M5zAMWejsIshKOxvEuk0xlJq/dz37m9iE
+   GfA2eb4wVq3oQnPxiF+eD8kELncRd6fEY3tbsyoEIuBAi5dLfy+RW7Q7N
+   g==;
+X-CSE-ConnectionGUID: aLj5oOmSQlyjT+A/YFAcbA==
+X-CSE-MsgGUID: 4iqNQ60yTVuVmDiSbAtqWQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11032"; a="10286905"
+X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
+   d="scan'208";a="10286905"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Apr 2024 18:37:39 -0700
+X-CSE-ConnectionGUID: dVFhoEKuTzyhiucxZbyhnw==
+X-CSE-MsgGUID: ECgfe24ZT8GuA8hgtDG6Kw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,176,1708416000"; 
+   d="scan'208";a="22956705"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by orviesa003.jf.intel.com with ESMTP; 02 Apr 2024 18:37:37 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH v2] migration-guides: add release notes for 4.3.4
+Date: Wed,  3 Apr 2024 09:35:16 +0800
+Message-Id: <20240403013516.3993707-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|VI1PR04MB7198:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	0covWFDQIVzgRqPvrgVCMS2c0Mhva8IcxZQ610VWwCmBbqcw07DVnNFmQ9FiL6aI7vouc4KpXadN7X9MQC3qZarjTCuaM+HXMOfQJMC9X07eEpNHKv5TI2+XzcspLEkuzGUAmCZ9bQPXh0BmbZJJ45fr4BvZmcDIMb0I+9x0akzTpRc7lhbQUouNtsQM+hxYQ1ICAtAaLVWpwmhjzA5iJVwGSoH7PB2/0NyjfsYXa8VvQBBS6RtyOqhnEc+hkqEDGk05HwiWIs4nU5EsrbklzZaPQj4L7dV3N0PRyhiIe6qhYMY/iXDwE8jMd/h3ta9LKpdd3gNTKD1spE5WrbecCrfy07FSYstxEkbWl/RomDlCm4VdBkH9Gszii0kI9QtPQBd/88gO8e1ce+a+H7U5YUNHRen5Ck+Pz5pZP5htZj7Ojtiw4habCJOgd16KKddLbeVZ4BXm13ZY7JtrlFxYMAZNM3wvFK+ACTPezFrvo3jNL4NJE01B4SCbdS7AWBuLYekn22xTzFkbKbK12XTYPG7WuX34HoSgX7ZvLUGtGzKfZ8XVbB7Vw0Pz9KDP8BzKFIC2sH0ALBt4p3Sld9j2wA6e0s/7wWoEQAYkwh1n17g=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8536.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?yX7+ZWcoHrNg2A9/fIex05j3R5s79EIw7tn07Y7kq4HKgVuI8DbI6LWwumWr?=
- =?us-ascii?Q?3U6vbLvvmMDnZGb0c3Ncm07t+7FWNJXCfZ0U+VrwTn1Bw6tVUEy9ggjJlrJM?=
- =?us-ascii?Q?Nwwu2R2MrhB2NaWJQ7g1ngs64HN+NunxemW4PaclwyBCffBQkdU7P1x6Z+oq?=
- =?us-ascii?Q?UBvZasbxOPT+f9BeleJ6n2C4k+f+uJozKrio1fkzMF57+Gqr71cymJrpkGqN?=
- =?us-ascii?Q?leKs40rI1NkK2c1gigMFRrdS70V65GhNvihRp/WUgihw+4SQz3u04RyqkieL?=
- =?us-ascii?Q?6si5ONhqS/6rDUwDUjGqkhaHEWLt5o59A8n6UFRl9uB0elqbHwjHctCUMLP2?=
- =?us-ascii?Q?UFUPgK4LRT2ezo3Z1nOG7VOI11qBA8RwKP0h4W90Xdl0RRqf40lJ0C9v8kE/?=
- =?us-ascii?Q?RwBwy3cGbdXy6nlpJuUikqTOk4ZsqGtxBf7YYYBZj8vSDDfMeHNhVeTCPBeL?=
- =?us-ascii?Q?sHZxv1Kn1zdPtyJ9Rd0sGmb4L1ZvN4UjM9oAGuFAz40sjaK0kAasTxRpawmt?=
- =?us-ascii?Q?OTUxPftqHq3AEtDOUb4mG0VxccT26veqAtzbErgzebB9BUmOY6jxpMXcwxmt?=
- =?us-ascii?Q?f6qe0IwE1kKOpsld0RHrGSJ3A3CAQkdjK+DdmiaRi2spXhVbFdopoe05aAGj?=
- =?us-ascii?Q?27pQOgO6BhWdvhGVsHdw6GK7zEihLvAX6LlJWxpzEzOnxJ8ti3l4G0QK5lFO?=
- =?us-ascii?Q?KvgEX19q4h5HiQhIMVTXQsOt38CIlCLGwUe6mm1ftPfqnUVdn9LEQZ3fIAlG?=
- =?us-ascii?Q?14IfVdo4bOScbxZUsbIPQbt15tR/W2o2zJ5Lp4zQ11DvNx5bczQ7ApXlJd2f?=
- =?us-ascii?Q?5DqF1S7tPapy7H12w+M+4anmXOGLFbd3E/+kngFkTz4/S1mdxF8viVn1PwwM?=
- =?us-ascii?Q?MFaCWwx9nkIBioQJfOKXDS+ACePSVF9C5tS6t0ve/2BnywMAb/V2+MzkAkGG?=
- =?us-ascii?Q?AnLf7dstOPZPaSxnMmfPDXX5LdKHRGGkB+YIqfcLEMok33d4QW8wzPAGhr55?=
- =?us-ascii?Q?ip6bW8aGYAiwylOw2n2mOk4z5Rc+w9tBx4GVzHmHu0BiAgln+Clj5Q3JaDHY?=
- =?us-ascii?Q?6yQrKfQsN8EIHSRU8NLksp8yOP8zxKg8MXC6xCPmXM2hTiCQFwCivM2FWv/Q?=
- =?us-ascii?Q?4qt5SxupUlzwqxU+sHVRWkY4WFqXEmM5Iuy0V8rwsNIN9eAGKImom0+MepvJ?=
- =?us-ascii?Q?8IaHYW7F2XSWVHNrfssP5Cfe1hO6JcXO6Ls96CW6g6fvP8zEyyfcDFdtgMyP?=
- =?us-ascii?Q?Anm4VxTacJ/1ar5Rfodv1I2He+x7GCLScWIdx93JyvMg/ZXB/l/K/3cmBRaA?=
- =?us-ascii?Q?Crxre+VgTFmIouLjwvGDiBxRFpx9GccUSLkZFzYA44P6Zewu+uvJ2RqpfSJR?=
- =?us-ascii?Q?5ED3EQpyxAg40F6P7wbJ8L8YybMXhcneiLW6/D5/ZxSD6vp3RC5g8vcNdcOe?=
- =?us-ascii?Q?SJIr+o+fc9s2mjhVNzhkWrwyHBpnLiY2rydmuRyKH+E4KFSKpJfwqP3dMuMP?=
- =?us-ascii?Q?E0ODY2AM+yg4zLs5NLavVXvVGOdPoWTzwnfwF9IfmWoP7hA6KBOciBLiminp?=
- =?us-ascii?Q?bXHDMIFzfTrioWv/+S+2EnD6jVoELD98QZGJt9DLzR1/+/weBQC57OIj4cqr?=
- =?us-ascii?Q?Q4afMUwkFY7cqpE55a+VkZs=3D?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7a891038-0b0b-4ae3-0c3c-08dc5328df0b
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8536.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 15:23:38.6906
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aFK/i8M56P17iUc0utlzbFN544L5NC6nr3FBU4e4fvFAyl70HV2WEcwsYdu8/uY9IrrwuKIW4HQAlq5I3SANKg0PFul5sZhIkuQYjRE43hlLQFBDSrdAF7PdIqz99Npj
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB7198
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 02 Apr 2024 15:23:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5047
+ <docs@lists.yoctoproject.org>; Wed, 03 Apr 2024 01:37:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5048
 
-Hi Michael,
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-On 4/2/24 15:33, Michael Opdenacker wrote:
-> Hi Quentin,
->=20
-> Thanks for the review!
->=20
-> On 4/2/24 at 11:58, Quentin Schulz wrote:
->>
->>> --- a/documentation/kernel-dev/common.rst
->>> +++ b/documentation/kernel-dev/common.rst
->>> @@ -1674,10 +1674,10 @@ looks much like the one provided with the=20
->>> ``hello-mod`` template::
->>> =C2=A0=C2=A0=C2=A0=C2=A0 SRC :=3D $(shell pwd)
->>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 all:
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(MAKE) -C $(KERNEL_SRC) M=3D$(SR=
-C)
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(MAKE) -C $(KERNEL_SRC) M=
-=3D$(SRC)
->>> =C2=A0 =C2=A0=C2=A0=C2=A0=C2=A0 modules_install:
->>> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(MAKE) -C $(KERNEL_SRC) M=3D$(SR=
-C) modules_install
->>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 $(MAKE) -C $(KERNEL_SRC) M=
-=3D$(SRC) modules_install
->>> =C2=A0=C2=A0=C2=A0=C2=A0 ...
->>
->> I think this is actually incorrect.
->>
->> Makefile indentation is tab and not space, so this won't work. (This=20
->> is not the only piece of Makefile where this new indent shouldn't be=20
->> used though, so please be careful about others).
->=20
->=20
-> Does this matter? If you look at=20
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+v2: add gstreamer fixed CVE
 
-Well, yes, it does matter :D
+ .../migration-guides/release-4.3.rst          |   1 +
+ .../migration-guides/release-notes-4.3.4.rst  | 206 ++++++++++++++++++
+ 2 files changed, 207 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.3.4.rst
 
-> https://docs.yoctoproject.org/kernel-dev/common.html, which was built fro=
-m the Sphinx sources which still have tabs, Sphinx replaced the tabs by spa=
-ces anyway. So, in any case, this isn't usable as an example we can copy an=
-d paste from the HTML documentation.
->=20
+diff --git a/documentation/migration-guides/release-4.3.rst b/documentation/migration-guides/release-4.3.rst
+index fa5653c46..1f07d229a 100644
+--- a/documentation/migration-guides/release-4.3.rst
++++ b/documentation/migration-guides/release-4.3.rst
+@@ -10,3 +10,4 @@ Release 4.3 (nanbield)
+    release-notes-4.3.1
+    release-notes-4.3.2
+    release-notes-4.3.3
++   release-notes-4.3.4
+diff --git a/documentation/migration-guides/release-notes-4.3.4.rst b/documentation/migration-guides/release-notes-4.3.4.rst
+new file mode 100644
+index 000000000..4c9e67f2c
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.3.4.rst
+@@ -0,0 +1,206 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-4.3.4 (Nanbield)
++----------------------------------------
++
++Security Fixes in Yocto-4.3.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  bind: Fix :cve:`2023-4408`, :cve:`2023-5517`, :cve:`2023-5679` and :cve:`2023-50387`
++-  gcc: Update :term:`CVE_STATUS` for :cve:`2023-4039` as fixed
++-  glibc: Fix :cve:`2023-6246`, :cve:`2023-6779` and :cve:`2023-6780`
++-  gnutls: Fix :cve:`2024-0553` and :cve:`2024-0567`
++-  gstreamer: Fix :cve_mitre:`2024-0444`
++-  libssh2: fix :cve:`2023-48795`
++-  libxml2: Fix :cve:`2024-25062`
++-  linux-yocto/6.1: Fix :cve:`2023-6610`, :cve:`2023-6915`, :cve:`2023-46838`, :cve:`2023-50431`, :cve:`2024-1085`, :cve:`2024-1086` and :cve:`2024-23849`
++-  linux-yocto/6.1: Ignore :cve:`2021-33630`, :cve:`2021-33631`, :cve:`2022-36402`, :cve:`2023-5717`, :cve:`2023-6200`, :cve:`2023-35827`, :cve:`2023-40791`, :cve:`2023-46343`, :cve:`2023-46813`, :cve:`2023-46862`, :cve:`2023-51042`, :cve:`2023-51043`, :cve_mitre:`2023-52340`, :cve:`2024-0562`, :cve:`2024-0565`, :cve:`2024-0582`, :cve:`2024-0584`, :cve:`2024-0607`, :cve:`2024-0639`, :cve:`2024-0641`, :cve:`2024-0646`, :cve:`2024-0775` and :cve:`2024-22705`
++-  openssl: fix :cve:`2024-0727`
++-  python3-jinja2: Fix :cve:`2024-22195`
++-  tiff: Fix :cve:`2023-6228`, :cve:`2023-52355` and :cve:`2023-52356`
++-  vim: Fix :cve:`2024-22667`
++-  wpa-supplicant: Fix :cve:`2023-52160`
++-  xserver-xorg: Fix :cve:`2023-6377`, :cve:`2023-6478`, :cve:`2023-6816`, :cve:`2024-0229`, :cve:`2024-0408`, :cve:`2024-0409`, :cve:`2024-21885` and :cve:`2024-21886`
++-  xwayland: Fix :cve:`2023-6816`, :cve:`2024-0408` and :cve:`2024-0409`
++-  zlib: Ignore :cve:`2023-6992`
++
++
++Fixes in Yocto-4.3.4
++~~~~~~~~~~~~~~~~~~~~
++
++-  allarch: Fix allarch corner case
++-  at-spi2-core: Upgrade to 2.50.1
++-  bind: Upgrade to 9.18.24
++-  build-appliance-image: Update to nanbield head revision
++-  contributor-guide: add notes for tests
++-  contributor-guide: be more specific about meta-* trees
++-  core-image-ptest: Increase disk size to 1.5G for strace ptest image
++-  cpio: Upgrade to 2.15
++-  curl: improve run-ptest
++-  curl: increase test timeouts
++-  cve-check: Log if :term:`CVE_STATUS` set but not reported for component
++-  cve-update-nvd2-native: Add an age threshold for incremental update
++-  cve-update-nvd2-native: Fix CVE configuration update
++-  cve-update-nvd2-native: Fix typo in comment
++-  cve-update-nvd2-native: Remove duplicated CVE_CHECK_DB_FILE definition
++-  cve-update-nvd2-native: Remove rejected CVE from database
++-  cve-update-nvd2-native: nvd_request_next: Improve comment
++-  cve_check: cleanup logging
++-  cve_check: handle :term:`CVE_STATUS` being set to the empty string
++-  dev-manual: Rephrase spdx creation
++-  dev-manual: improve descriptions of 'bitbake -S printdiff'
++-  dev-manual: packages: clarify shared :term:`PR` service constraint
++-  dev-manual: packages: fix capitalization
++-  dev-manual: packages: need enough free space
++-  docs: add initial stylechecks with Vale
++-  docs: correct sdk installation default path
++-  docs: document VIRTUAL-RUNTIME variables
++-  docs: suppress excess use of "following" word
++-  docs: use "manual page(s)"
++-  docs: Makefile: remove releases.rst in "make clean"
++-  externalsrc: fix task dependency for do_populate_lic
++-  glibc: Remove duplicate :term:`CVE_STATUS` for :cve:`2023-4527`
++-  glibc: stable 2.38 branch updates (2.38+gitd37c2b20a4)
++-  gnutls: Upgrade to 3.8.3
++-  gstreamer1.0: skip a test that is known to be flaky
++-  gstreamer: Upgrade to 1.22.9
++-  gtk: Set :term:`CVE_PRODUCT`
++-  kernel.bbclass: Set pkg-config variables for building modules
++-  libxml2: Upgrade to 2.11.7
++-  linux-firmware: Upgrade to 20240220
++-  linux-yocto/6.1: update to v6.1.78
++-  mdadm: Disable ptests
++-  migration-guides: add release notes for 4.3.3
++-  migration-guides: add release notes for 4.0.17
++-  migration-guides: fix release notes for 4.3.3 linux-yocto/6.1 CVE entries
++-  multilib_global.bbclass: fix parsing error with no kernel module split
++-  openssl: fix crash on aarch64 if BTI is enabled but no Crypto instructions
++-  openssl: Upgrade to 3.1.5
++-  overlayfs: add missing closing parenthesis in selftest
++-  poky.conf: bump version for 4.3.4 release
++-  profile-manual: usage.rst: fix reference to bug report
++-  profile-manual: usage.rst: formatting fixes
++-  profile-manual: usage.rst: further style improvements
++-  pseudo: Update to pull in gcc14 fix and missing statvfs64 intercept
++-  python3-jinja2: Upgrade to 3.1.3
++-  ref-manual: release-process: grammar fix
++-  ref-manual: system-requirements: update packages to build docs
++-  ref-manual: tasks: do_cleanall: recommend using '-f' instead
++-  ref-manual: tasks: do_cleansstate: recommend using '-f' instead for a shared sstate
++-  ref-manual: variables: adding multiple groups in :term:`GROUPADD_PARAM`
++-  ref-manual: variables: add documentation of the variable :term:`SPDX_NAMESPACE_PREFIX`
++-  reproducible: Fix race with externalsrc/devtool over lockfile
++-  sdk-manual: extensible: correctly describe separate build-sysroots tasks in direct sdk workflows
++-  tzdata : Upgrade to 2024a
++-  udev-extraconf: fix unmount directories containing octal-escaped chars
++-  vim: Upgrade to v9.0.2190
++-  wireless-regdb: Upgrade to 2024.01.23
++-  xserver-xorg: Upgrade to 21.1.11
++-  xwayland: Upgrade to 23.2.4
++-  yocto-uninative: Update to 4.4 for glibc 2.39
++
++
++Known Issues in Yocto-4.3.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.3.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Alex Kiernan
++-  Alexander Kanavin
++-  Alexander Sverdlin
++-  Baruch Siach
++-  BELOUARGA Mohamed
++-  Benjamin Bara
++-  Bruce Ashfield
++-  Chen Qi
++-  Claus Stovgaard
++-  Dhairya Nagodra
++-  Geoff Parker
++-  Johan Bezem
++-  Jonathan GUILLOT
++-  Julien Stephan
++-  Kai Kang
++-  Khem Raj
++-  Lee Chee Yang
++-  Luca Ceresoli
++-  Martin Jansa
++-  Michael Halstead
++-  Michael Opdenacker
++-  Munehisa Kamata
++-  Pavel Zhukov
++-  Peter Marko
++-  Priyal Doshi
++-  Richard Purdie
++-  Robert Joslyn
++-  Ross Burton
++-  Simone Weiß
++-  Soumya Sambu
++-  Steve Sakoman
++-  Tim Orling
++-  Wang Mingyu
++-  Yoann Congal
++-  Yogita Urade
++
++
++Repositories / Downloads for Yocto-4.3.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`nanbield </poky/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.4 </poky/log/?h=yocto-4.3.4>`
++-  Git Revision: :yocto_git:`7b8aa378d069ee31373f22caba3bd7fc7863f447 </poky/commit/?id=7b8aa378d069ee31373f22caba3bd7fc7863f447>`
++-  Release Artefact: poky-7b8aa378d069ee31373f22caba3bd7fc7863f447
++-  sha: 0cb14125f215cc9691cff43982e2c540a5b6018df4ed25c10933135b5bf21d0f
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.4/poky-7b8aa378d069ee31373f22caba3bd7fc7863f447.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.4/poky-7b8aa378d069ee31373f22caba3bd7fc7863f447.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`nanbield </openembedded-core/log/?h=nanbield>`
++-  Tag:  :oe_git:`yocto-4.3.4 </openembedded-core/log/?h=yocto-4.3.4>`
++-  Git Revision: :oe_git:`d0e68072d138ccc1fb5957fdc46a91871eb6a3e1 </openembedded-core/commit/?id=d0e68072d138ccc1fb5957fdc46a91871eb6a3e1>`
++-  Release Artefact: oecore-d0e68072d138ccc1fb5957fdc46a91871eb6a3e1
++-  sha: d311fe22ff296c466f9bea1cd26343baee5630bc37f3dda42f2d9d8cc99e3add
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.4/oecore-d0e68072d138ccc1fb5957fdc46a91871eb6a3e1.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.4/oecore-d0e68072d138ccc1fb5957fdc46a91871eb6a3e1.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`nanbield </meta-mingw/log/?h=nanbield>`
++-  Tag:  :yocto_git:`yocto-4.3.4 </meta-mingw/log/?h=yocto-4.3.4>`
++-  Git Revision: :yocto_git:`49617a253e09baabbf0355bc736122e9549c8ab2 </meta-mingw/commit/?id=49617a253e09baabbf0355bc736122e9549c8ab2>`
++-  Release Artefact: meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2
++-  sha: 2225115b73589cdbf1e491115221035c6a61679a92a93b2a3cf761ff87bf4ecc
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.4/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.4/meta-mingw-49617a253e09baabbf0355bc736122e9549c8ab2.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.6 </bitbake/log/?h=2.6>`
++-  Tag:  :oe_git:`yocto-4.3.4 </bitbake/log/?h=yocto-4.3.4>`
++-  Git Revision: :oe_git:`380a9ac97de5774378ded5e37d40b79b96761a0c </bitbake/commit/?id=380a9ac97de5774378ded5e37d40b79b96761a0c>`
++-  Release Artefact: bitbake-380a9ac97de5774378ded5e37d40b79b96761a0c
++-  sha: 78f579b9d29e72d09b6fb10ac62aa925104335e92d2afb3155bc9ab1994e36c1
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.3.4/bitbake-380a9ac97de5774378ded5e37d40b79b96761a0c.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.3.4/bitbake-380a9ac97de5774378ded5e37d40b79b96761a0c.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`nanbield </yocto-docs/log/?h=nanbield>`
++-  Tag: :yocto_git:`yocto-4.3.4 </yocto-docs/log/?h=yocto-4.3.4>`
++-  Git Revision: :yocto_git:`05d08b0bbaef760157c8d35a78d7405bc5ffce55 </yocto-docs/commit/?id=05d08b0bbaef760157c8d35a78d7405bc5ffce55>`
++
+-- 
+2.34.1
 
-but that's a fair point. I wasn't aware of that. I guess that makes it a
-
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-
-> What about replacing the spaces by "<tab>" here? At least, though not=20
-> syntactically correct in raw form, people would understand that a tab is=
-=20
-> needed there.
-
-Mmmmm, not sure this'll help with readability. But nothing better to=20
-suggest.
-
-FYI, we use sphinx-copybutton in our user manuals to allow easy=20
-copy-pasting, maybe something we could do for the docs as well :)
-
-Cheers,
-Quentin
 
