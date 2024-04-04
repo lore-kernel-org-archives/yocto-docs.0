@@ -1,88 +1,68 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <joaomarcos.costa@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9BBF6CD1292
-	for <webhook@archiver.kernel.org>; Thu,  4 Apr 2024 14:41:14 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.39854.1712241667171581793
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 433C6CD1284
+	for <webhook@archiver.kernel.org>; Thu,  4 Apr 2024 16:56:45 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.43817.1712249804441989132
  for <docs@lists.yoctoproject.org>;
- Thu, 04 Apr 2024 07:41:07 -0700
+ Thu, 04 Apr 2024 09:56:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KOqzjTZV;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id F412160013;
-	Thu,  4 Apr 2024 14:41:04 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Bg7GYI4F;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: joaomarcos.costa@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4230340007;
+	Thu,  4 Apr 2024 16:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1712241665;
+	t=1712249802;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xPt/zL15eWXA9e07ESQx57v+9xRSdHwQI3bCRCytT8A=;
-	b=KOqzjTZVxqd+rLQ7/U0J3b6kf34Sj1OruLMf97Y78px+tcHEn0IM9jUP4UIQ3Omr4Gn8BJ
-	ka375H5b+k0HVOrrTZYOk4bted3xxPvtLMTenmPx2zZusCC1DFcYJSCe/h0L/d0l4GsNNc
-	HyXcunkdOWy0O+53qzoBuslItvhWEzkFrKkJMZ6sN7Q4BZSia8WlJ5WlO6EcPrfCNIrfAw
-	YKQNzCq6kcmde2p3Hh6/pL53js1c2tSd+lc6w8PTWbY9rb6VZXjb0BjMjRbZ2ZgenJd+br
-	SS26UCcJoQtLOc4jygvZNUfBRuGv7n4npBftf1pJdgYltyiCsCrHiivMQV3AWA==
-Message-ID: <d47dac67-5e1f-45ad-820e-72944b31e817@bootlin.com>
-Date: Thu, 4 Apr 2024 16:41:04 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5uutSODtA2z25OEIdY4oNnSLkCOWZfr8647NqQtW6t4=;
+	b=Bg7GYI4FGv6GiIJ350AGJ4BrWUXQPq9OWEdkkyZJlUcrh8STxBZ6ke5VBTsYaZDDJlmDM9
+	XVqXRpd/hpWooBSyLfbOoNChZyrp9ilwqna0G8iQ31KtH3hiBEX0pWF4X6NWltEyO7j9rv
+	Te5C/K+KOiQj52o2VZ/VRNyHngQW60/2N7UUPHFUYA7bHOkB0YF2SWtZCKSPegAKIzExB0
+	rBxMsA8719+Unl3692EhMD69uDn7h0WhZpYxmnN/Ew8y6iwjhHoXpZWmwXY3HMgZID2l05
+	FS7soYqlQYN3Bm9ssPTFy+tSaySr6yrwUccv3J/0nlxZSphgSaWo0JulwGwBYQ==
+From: joaomarcos.costa@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: thomas.petazzoni@bootlin.com,
+	michael.opdenacker@bootlin.com,
+	Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+Subject: [PATCH v1 0/5] Document changes in WIC and Go language
+Date: Thu,  4 Apr 2024 18:56:15 +0200
+Message-ID: <20240404165620.2248838-1-joaomarcos.costa@bootlin.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v1 0/5] Update migration-guides and release-notes
-To: joaomarcos.costa@bootlin.com
-References: <20240403143724.1956838-1-joaomarcos.costa@bootlin.com>
-Content-Language: en-US
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20240403143724.1956838-1-joaomarcos.costa@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+X-GND-Sasl: joaomarcos.costa@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 04 Apr 2024 14:41:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5056
+ <docs@lists.yoctoproject.org>; Thu, 04 Apr 2024 16:56:45 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5057
 
-Hi João
+From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
 
-On 4/3/24 at 16:37, Joao Marcos Costa via lists.yoctoproject.org wrote:
-> Hello,
->
-> I started inspecting the changes since Nanbield to come out with a bit of
-> documentation for the upcoming release. Here are my first writings, and I count
-> on doing some more, as WIC enhancements, testing and scripts' enhancements, Go
-> language, etc.
->
-> Best regards,
->
-> Joao Marcos Costa (5):
->    migration-guides: list removed recipes
->    migration-guides: leave Removed classes empty
->    migration-guides: leave Deprecated variables empty
->    migration-guides: list systemd changes
->    release-notes: list systemd changes
->
->   documentation/migration-guides/migration-5.0.rst  | 15 +++++++++++++--
->   .../migration-guides/release-notes-5.0.rst        | 11 +++++++++++
->   2 files changed, 24 insertions(+), 2 deletions(-)
+Hello,
 
+This series targets the enhancements in WIC Image Creator, as well as the
+changes in Go language. The latter spread into multiple sections.
 
-Thanks for these updates!
-After fixing your author identity, everything is fine.
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Merged into master-next.
+Best regards,
 
-To other contributors, more notes are welcome, if possible against the 
-"master-next" branch to have the latest changes.
-Thanks in advance
-Michael.
+Joao Marcos Costa (5):
+  release-notes: add changes to wic
+  release-notes: add changes to Go language
+  release-notes: add Go language upgrade
+  migration: add Go language changes
+  release-notes: add create_go.py to script changes
+
+ .../migration-guides/migration-5.0.rst        |  4 ++++
+ .../migration-guides/release-notes-5.0.rst    | 22 +++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.43.0
 
 
