@@ -1,73 +1,84 @@
-Return-Path: <joaomarcos.costa@bootlin.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0280AC67861
-	for <webhook@archiver.kernel.org>; Fri,  5 Apr 2024 15:22:28 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.15246.1712330539710709238
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D9C9C67861
+	for <webhook@archiver.kernel.org>; Fri,  5 Apr 2024 16:13:58 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web11.16624.1712333631768759746
  for <docs@lists.yoctoproject.org>;
- Fri, 05 Apr 2024 08:22:20 -0700
+ Fri, 05 Apr 2024 09:13:52 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Pr7YLZC1;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: joaomarcos.costa@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 351CFE0002;
-	Fri,  5 Apr 2024 15:22:18 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=i2sfellW;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B1C04240008;
+	Fri,  5 Apr 2024 16:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1712330538;
+	t=1712333630;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yyR5uc5OcbT5pr5yoPQRmi1X14xrvinsUKQTm3/1aHc=;
-	b=Pr7YLZC1CNuyzBTV12rOVw8vhCcGi+XBH2cWOP3M3+eDDhht9I1Zfk93WX6G/535ZZC3ta
-	e0u+1GoVx7Kxpi1aOrZmvOekBe1kQLc7Gvv1fD7XtO+zg5mK0/6a7nqUzl65R/MXk05C8A
-	MiOwICXeimjJ9aadCWkn1btC6rfoAM4vNBEra6ixk750tvnOtg0erVx47XYR4mn9+kMwyV
-	os/HjhUj5ylu6fpUG/nNee/vwGEE8oMMSYMC+BEKZm3OssSMh3XQBQxG/5r9bSqI7LhIgM
-	HlMTWR7F28HkQ3MUtNgJkKlNBhyei4GbKZuI4fZFIjd9fjg0o+q4F2TyUt4r6w==
-From: joaomarcos.costa@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: thomas.petazzoni@bootlin.com,
-	michael.opdenacker@bootlin.com,
-	Joao Marcos Costa <joaomarcos.costa@bootlin.com>
-Subject: [PATCH v2 2/4] migration: add QEMU changes
-Date: Fri,  5 Apr 2024 17:22:10 +0200
-Message-ID: <20240405152211.2285650-3-joaomarcos.costa@bootlin.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240405152211.2285650-1-joaomarcos.costa@bootlin.com>
-References: <20240405152211.2285650-1-joaomarcos.costa@bootlin.com>
+	bh=19D09FAh30V9dfqEU3CIz456OVS7G0AOw3b+jSJBdn4=;
+	b=i2sfellWBq1x8G5M/JhnpOp8CGuKiJzrXPUrc3TvUkbaRwxilzeGU5KHpyZ2o10cDuuQCb
+	RKhUZwTxpAYSWM5YASfzUrkGQ3P4zNaXXgUjnt7InGfrYC7q368yZXvtLlZy7c0xPtia+f
+	1gPctr57xkrMsh1czk9ClCN7HGeriWkZ0QqvxL2BdVgMwIAm8j5BDcu7uKjkzMs1LuIt5U
+	+DB+ZFBDpxI5KeSlknMbghQC8Niw19AAcNctGNK6ZzwDaU6/mTnrsYYNWYc6SfgWt79grH
+	WHEr48BUtMiWIigPEJ7pzsmt43bjUgiZRQQR47NWQW9gQwtTLIiIL7EeNf/1PQ==
+Message-ID: <1b86662b-3cf4-4f06-9bf4-db76e64c6263@bootlin.com>
+Date: Fri, 5 Apr 2024 18:13:49 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: thomas.petazzoni@bootlin.com
+Subject: Re: [docs] [PATCH v2 0/4] Add Miscellaneous changes and QEMU changes
+To: joaomarcos.costa@bootlin.com, docs@lists.yoctoproject.org
+References: <20240405152211.2285650-1-joaomarcos.costa@bootlin.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20240405152211.2285650-1-joaomarcos.costa@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: joaomarcos.costa@bootlin.com
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 05 Apr 2024 15:22:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5085
+ <docs@lists.yoctoproject.org>; Fri, 05 Apr 2024 16:13:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5087
 
-From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
 
-Signed-off-by: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
----
- documentation/migration-guides/migration-5.0.rst | 4 ++++
- 1 file changed, 4 insertions(+)
+On 4/5/24 at 17:22, Joao Marcos Costa via lists.yoctoproject.org wrote:
+> From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+>
+> Hello,
+>
+> The first patch, concerning the removed variables, should have been sent in the
+> first series, but I overlooked that. Regarding the others, they address the
+> remaining sections and, unless I'm mistaken, the migration doc is complete.
+>
+> Best regards,
+>
+> Changes in v2:
+> - Squashed commits fixing formatting issues
+> - Removed the 5/6 patch
+>
+> Joao Marcos Costa (4):
+>    migration-guides: list removed variables
+>    migration: add QEMU changes
+>    migration: add Miscellaneous changes
+>    migration: add a second space after the items
 
-diff --git a/documentation/migration-guides/migration-5.0.rst b/documentation/migration-guides/migration-5.0.rst
-index 10c5c16ed..b8e18aa7f 100644
---- a/documentation/migration-guides/migration-5.0.rst
-+++ b/documentation/migration-guides/migration-5.0.rst
-@@ -121,6 +121,10 @@ No classes have been removed in this release.
- QEMU changes
- ~~~~~~~~~~~~
- 
-+In ``tune-core2``, the cpu models ``n270`` and ``core2duo`` are no longer
-+passed to QEMU, since its documentation recommends not using them with ``-cpu``
-+option. Therefore, from now on, ``Nehalem`` model is used instead.
-+
- .. _migration-5.0-misc-changes:
- 
- Miscellaneous changes
+
+Thanks João. I understood that your 4th commit was a mistake.
+I merged your changes into master-next, but eventually grouped them to 
+reduce the number of commits before sending a pull-request to Richard.
+
+Thanks again!
+Michael.
+
 -- 
-2.43.0
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
