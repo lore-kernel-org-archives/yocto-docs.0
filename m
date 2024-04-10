@@ -2,37 +2,40 @@ Return-Path: <joaomarcos.costa@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 734DACD11C2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F0A0CD1296
 	for <webhook@archiver.kernel.org>; Wed, 10 Apr 2024 09:11:47 +0000 (UTC)
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.162404.1712740298878113405
+ by mx.groups.io with SMTP id smtpd.web11.162405.1712740299584547990
  for <docs@lists.yoctoproject.org>;
- Wed, 10 Apr 2024 02:11:39 -0700
+ Wed, 10 Apr 2024 02:11:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JxQJ1mCN;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nVkNfztv;
  spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: joaomarcos.costa@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D2B3C1C0006;
-	Wed, 10 Apr 2024 09:11:36 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0AB751C000A;
+	Wed, 10 Apr 2024 09:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1712740297;
+	t=1712740298;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jWRoOqgLLB4WlXOhQEIt+z5cURqfSjNytoyHnNp/f6k=;
-	b=JxQJ1mCNQZdj8Enek8GvwqQl7iwxOz0EAInJsezzPracjXrrV5hW+InjDlUZulQYovo3+k
-	7Yu5Yq4faeIjdHhCEsAa3NoHlDqh2N31hTzu92xAL4Xxots2XEaUQdybvRgEIW2pp1Rfp/
-	l+TrK9oyDotbCcse4oyK9DeEiZkE6laiLx/RVYuEfcQU+/E7pD4y9SWmoPX4ZAiw0GnJA5
-	YLKD4x9S7sieaJyaDHhbMFexTKSvktfXVj8sG82hrYhjYddACCsnL+QjE+IpStOJY0F5oR
-	b50rybomqiK6MAjrZrjCBBopdyuCM4rlNPvYqibSEksg9/c+acLgZyof1nO0MA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g9GJPcFYP3kN/eNcKAvBXuOd4+JY2tnREt1ZtdzPwqc=;
+	b=nVkNfztvzMyBU+2iZME93Fjmv5PcwUM/JIsrbasKOFVOu2pqntX5+DPiWypgOp3q6R0Cyf
+	hHlDeuIczuhrQosPLjg196IRj9t0QIWZimob/a/YQAt04B2RYAP0RO4dQFhIDsflT7IjnG
+	1EIBcKTr0YeHLBVTeE4mIbpDDMWLrwb3BvXISiybPNOhYP+5JVorjpA1TlEofzgoirG7as
+	pK1Te6Uoc1TBcT+bb53LgHi8/1xT4OFcp+LWvz8v38Tn7Wug8Tfl1tO+vhr5JudvGWvC5/
+	+ylMq+fnUSOJmtK5VG0YIzZQcy2MNwseoYUALC2qT6mreRd/dfAH6HUcTckqOw==
 From: joaomarcos.costa@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: thomas.petazzoni@bootlin.com,
 	michael.opdenacker@bootlin.com,
 	Joao Marcos Costa <joaomarcos.costa@bootlin.com>
-Subject: [PATCH v1 0/2] Add updates to release-notes-5.0
-Date: Wed, 10 Apr 2024 11:11:22 +0200
-Message-ID: <20240410091124.2976089-1-joaomarcos.costa@bootlin.com>
+Subject: [PATCH v1 1/2] release-notes: add updates for 5.0
+Date: Wed, 10 Apr 2024 11:11:23 +0200
+Message-ID: <20240410091124.2976089-2-joaomarcos.costa@bootlin.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240410091124.2976089-1-joaomarcos.costa@bootlin.com>
+References: <20240410091124.2976089-1-joaomarcos.costa@bootlin.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: joaomarcos.costa@bootlin.com
@@ -40,27 +43,209 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 10 Apr 2024 09:11:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5097
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5098
 
 From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
 
-Hello,
-
-The following patches add most of the missing sections between 'New Features /
-Enhancements' and 'Known Issues', with the exception of 'Proeminent
-documentation updates'. I also updated the variables glossary to include the new
-terms mentioned in the release notes.
-
-Best regards,
-
-Joao Marcos Costa (2):
-  release-notes: add updates for 5.0
-  ref-manual/variables: add new variables for v5.0
-
+- add new core recipes section
+- add new variables
+- add arch-specific enhancements
+- add kernel-related enhancements
+- add qemu enhancements
+- add rust enhancements
+- add wic enhancements
+- add sdk-related improvements
+- add testing enhancements
+- add utility script changes
+- add packaging changes
+- add bitbake improvements
+- add miscellaneous changes
+---
  .../migration-guides/release-notes-5.0.rst    | 123 +++++++++++++++++-
- documentation/ref-manual/variables.rst        |  16 +++
- 2 files changed, 138 insertions(+), 1 deletion(-)
+ 1 file changed, 122 insertions(+), 1 deletion(-)
 
+diff --git a/documentation/migration-guides/release-notes-5.0.rst b/documentation/migration-guides/release-notes-5.0.rst
+index 0a740688f..a34821398 100644
+--- a/documentation/migration-guides/release-notes-5.0.rst
++++ b/documentation/migration-guides/release-notes-5.0.rst
+@@ -6,7 +6,7 @@ Release notes for 5.0 (scarthgap)
+ New Features / Enhancements in 5.0
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+--  Linux kernel 6.6, gcc 13.2, glibc 2.39, LLVM 18.1, and over XXX other recipe upgrades
++-  Linux kernel 6.6, gcc 13.2, glibc 2.39, LLVM 18.1, and over 300 other recipe upgrades
+ 
+ -  New variables:
+ 
+@@ -14,20 +14,108 @@ New Features / Enhancements in 5.0
+       internal CVE database for incremental update (instead of a full
+       redownload).
+ 
++   -  :term:`RPMBUILD_EXTRA_PARAMS`: support extra user-defined fields without
++      crashing the RPM package creation.
++
++   -  :term:`OPKG_MAKE_INDEX_EXTRA_PARAMS`: support extra parameters for
++      ``opkg-make-index``.
++
++   -  :term:`EFI_UKI_PATH`, :term:`EFI_UKI_DIR`: define the location of UKI
++      image in the EFI System partition.
++
+ -  Architecture-specific enhancements:
+ 
++   -  ``genericarm64``: a new ``MACHINE`` to represent a 64-bit General Arm
++      SystemReady platform.
++
++   -  Add Power8 tune to PowerPC architecture.
++
++   -  ``arch-armv9``: remove CRC and SVE tunes, since FEAT_CRC32 is now mandatory
++      and SVE/SVE2 are enabled by default in GCC's ``-march=armv9-a``.
++
+ -  Kernel-related enhancements:
+ 
++   - The default kernel is the current LTS (6.6).
++
++   - Added suport for ``genericarm64``.
++
+ -  New core recipes:
+ 
++   -  `bmaptool <https://github.com/yoctoproject/bmaptool>`__: a tool for
++      creating block maps for files and flashing images, being now under Yocto
++      Project umbrella.
++
++   -  ``core-image-initramfs-boot``: a collaborative effort for making
++      machine-readable software metadata easily available
++
++   -  `lzlib <https://www.nongnu.org/lzip/lzlib.html>`__: a data compression
++      library that provides LZMA compression and decompression functions.
++
++   -  `lzop <https://www.lzop.org/>`__: a compression utility based on LZO
++      library, that was brought back after a (now reverted) removal.
++
++   -  `python3-jsonschema-specifications <https://pypi.org/project/jsonschema-specifications/>`__:
++      the support files for JSON Schema Specifications (meta-schemas and
++      vocabularies), added as a new dependency of ``python3-jsonschema``.
++
++   -  `python3-maturin <https://github.com/pyo3/maturin>`__: a project that
++      allows building and publishing Rust crates as Python packages.
++
++   -  `python3-meson-python <https://github.com/mesonbuild/meson-python>`__: a
++      Python build backend that enables Meson build-system for Python packages.
++
++   -  `python3-pyproject-metadata <https://pypi.org/project/pyproject-metadata/>`__:
++      a class to handle PEP 621 metadata, and a dependency for
++      ``python3-meson-python``.
++
++   -  `python3-referencing <https://github.com/python-jsonschema/referencing>`__:
++      another dependency of ``python3-jsonschema``, it provides an
++      implementation of JSON reference resolution.
++
++   -  `python3-rpds-py <https://pypi.org/project/rpds-py/>`__: Python bindings
++      to the Rust rpds crate, and a runtime dependency for ``python3-referencing``.
++
++   -  `python3-sphinxcontrib-jquery <https://pypi.org/project/sphinxcontrib-jquery/>`__:
++      a Sphinx extension to include jQuery on newer Sphinx releases. Recent
++      versions of ``python3-sphinx-rtd-theme`` hardly depend on it.
++
++   -  `python3-yamllint <https://github.com/adrienverge/yamllint>`__: a linter
++      for YAML files. In U-Boot, the binman tool uses this linter to verify the
++      configs during compile time.
++
++   -  ``systemd-boot-native``: a UEFI boot manager, this time built as native to
++      provide ``ukify`` tool.
++
++   -  `utfcpp <https://github.com/nemtrif/utfcpp>`__: a C++ library to handle
++      UTF-8 encoded strings. It was added as a dependency for ``taglib`` after
++      its upgrade to v2.0.
++
++   -  `vulkan-utility-libraries <https://github.com/KhronosGroup/Vulkan-Utility-Libraries>`__:
++      a set of libraries to share code across various Vulkan repositories.
++
++   -  `vulkan-volk <https://github.com/zeux/volk>`__: a meta-loader for Vulkan,
++      needed to support building latest ``vulkan-tools``.
++
+ -  QEMU / ``runqemu`` enhancements:
+ 
+    -  QEMU has been upgraded to version 8.2.1
+ 
++   -  ``qemuboot``: support predictable network interface names.
++
++   -  ``runqemu``: match ".rootfs." in addition to "-image-" for the rootfs.
++
+ -  Rust improvements:
+ 
+    -  Rust has been upgraded to version 1.75
+ 
++   -  The Rust profiler (i.e., PGO - Profile-guided Optimization) options were
++      enabled back.
++
++   -  The Rust's ``oe-selftest`` were enabled, except for ``mips32`` whose tests
++      are skipped.
++
++   -  ``rust-cross-canadian``: added ``riscv64`` to cross-canadian hosts.
++
+ -  wic Image Creator enhancements:
+ 
+    -  Allow the imager's output file extension to match the imager's name,
+@@ -46,19 +134,50 @@ New Features / Enhancements in 5.0
+ 
+ -  SDK-related improvements:
+ 
++   -  ``nativesdk``: let :term:`MACHINE_FEATURES` be set by ``machine-sdk`` conf
++      files.
++
++   -  ``nativesdk``: prevent :term:`MACHINE_FEATURES` and :term:`DISTRO_FEATURES`
++      from being backfilled.
++
+ -  Testing:
+ 
+    -  Add an optional ``unimplemented-ptest`` QA warning to detect upstream
+       packages with tests, that do not use ptest.
+ 
++   -  ``testimage``: retrieve the ptests directory, especially for the logs,
++      upon ptest failure.
++
++   -  ``oeqa``, ``oe-selftest``: add test cases for Maturin (SDK and runtime).
++
+ -  Utility script changes:
+ 
+    -  New ``recipetool/create_go.py`` script added to support Go recipe creation
+ 
++   -  ``oe-init-build-env`` can generate a initial configuration (.vscode) for
++      VSCode and yocto.bitbake extension.
++
+ -  BitBake improvements:
+ 
++   -  Add support for :term:`BB_LOADFACTOR_MAX`, so Bitbake can stop running
++      extra tasks if the system load is too high, especially in distros where
++      ``/proc/pressure`` is disabled.
++
++   -  Add garbage collection to remove unused unihashes from the database.
++
++   -  ``taskexp_ncurses``: add ncurses version of ``taskexp``, the dependency
++      explorer originally implemented with GTK.
++
++   -  Improve ``runqueue`` performance by adding a cache mechanism in
++      ``build_taskdepdata``.
++
++   -  ``bitbake.conf``: add ``runtimedir`` to represent the path to the runtime
++      state directory (i.e., /run).
++
+ -  Packaging changes:
+ 
++   -  ``package_rpm``: the RPM package compressor's mode can now be overriden.
++
+ -  Security improvements:
+ 
+    -  Improve incremental CVE database download from NVD. Rejected CVEs are
+@@ -85,6 +204,8 @@ New Features / Enhancements in 5.0
+ 
+    -  Disable strace support of bluetooth by default.
+ 
++   -  ``openssh`` now has a Systemd service: ``sshd.service``.
++
+ Known Issues in 5.0
+ ~~~~~~~~~~~~~~~~~~~
+ 
 -- 
 2.43.0
 
