@@ -1,71 +1,85 @@
-Return-Path: <joaomarcos.costa@bootlin.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3AAF5CD11C2
-	for <webhook@archiver.kernel.org>; Wed, 10 Apr 2024 14:52:00 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.1809.1712760710528033215
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3D0FDCD1292
+	for <webhook@archiver.kernel.org>; Thu, 11 Apr 2024 07:57:55 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.12193.1712822268972882692
  for <docs@lists.yoctoproject.org>;
- Wed, 10 Apr 2024 07:51:50 -0700
+ Thu, 11 Apr 2024 00:57:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TEh7MI2x;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: joaomarcos.costa@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 523F41BF203;
-	Wed, 10 Apr 2024 14:51:48 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cYghcCyM;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A3B926000A;
+	Thu, 11 Apr 2024 07:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1712760708;
+	t=1712822267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WrXpYh7rifRr4iImbXEJWWgVFqr3qUlTXXBS7EG59jQ=;
-	b=TEh7MI2xhsUyaWKn92tc4+vIFjIHYq2oE4Gfo5wFOigwGNTBvAdeEZY6wzuAW0Ce/VWtbM
-	bgVOukegTaX64/emcn8hkVPFKXyIdIU6dK42YcjYNoqHhxOJvbQiISWfkjUXgeBWqE5FaN
-	WbYlqOuAsE1c8jg3b7rM9zRxqDbA7NGAErA/5uTGq5BanrFiCMT+o4PtFq6y9s/mopwv4M
-	s5XKKTQa/iSWWLCEhL/hgqjQ9aSo3vCX8wykg8KDVE6wgD3qe53b+GfjwHe+ZQHPT4xWcd
-	Ri76uh1SwIW8U4LMxCM+CxR7qUn8ohgmSMhVF6O4YPubSk43FOVQDLaAWVYqjg==
-From: joaomarcos.costa@bootlin.com
-To: docs@lists.yoctoproject.org
-Cc: adrian.freihofer@gmail.com,
-	michael.opdenacker@bootlin.com,
-	Joao Marcos Costa <joaomarcos.costa@bootlin.com>
-Subject: [PATCH v1] release-notes: mention cmake-qemu.bbclass
-Date: Wed, 10 Apr 2024 16:51:36 +0200
-Message-ID: <20240410145136.2994587-1-joaomarcos.costa@bootlin.com>
-X-Mailer: git-send-email 2.43.0
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/EUqIPOxUnBSHaNGGmpbRv0QCOdAY/tWXIUMkiqqVM4=;
+	b=cYghcCyM2RMioIXPCcZ8LupU+A5MUHS1u/ay0s2qQEe1kdESswhhh3DwHnHj8k0wmF5MO9
+	3Oq/Nunr607ON4lVDZyhhOe917ywqNLpYEJYspWwEIOe3KeV92DK50LvOZNeOk+rVWFDBh
+	3ULRu/4sFlJX17krUCwEDfgeGwGU0gYyhThwk9IWM7Iz9z7gNsx9PB2ACU6wnizW53VPlL
+	jhUGQM7pPiqaHE/cE9sqD5IJobDXqErMPXQJExmUPf4zluGLwx364I7WPNNT0eENXRJL/D
+	dT/fmGvjxlHqMJ6qVOph4X1SuEdBvIUuewE+eQSKhl+b6ndke9s3oBxBP9ohpA==
+Message-ID: <a4f81086-3fa6-4079-b9c9-f0e5e3bc0a65@bootlin.com>
+Date: Thu, 11 Apr 2024 09:57:46 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: adrian.freihofer@gmail.com, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v1] release-notes: mention cmake-qemu.bbclass
+To: joaomarcos.costa@bootlin.com
+References: <20240410145136.2994587-1-joaomarcos.costa@bootlin.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20240410145136.2994587-1-joaomarcos.costa@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: joaomarcos.costa@bootlin.com
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 10 Apr 2024 14:52:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5108
+ <docs@lists.yoctoproject.org>; Thu, 11 Apr 2024 07:57:55 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5109
 
-From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+Hi João
 
-Mention this new class in QEMU section.
+On 4/10/24 at 16:51, Joao Marcos Costa via lists.yoctoproject.org wrote:
+> From: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+>
+> Mention this new class in QEMU section.
+>
+> Signed-off-by: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
+> ---
+>   documentation/migration-guides/release-notes-5.0.rst | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/documentation/migration-guides/release-notes-5.0.rst b/documentation/migration-guides/release-notes-5.0.rst
+> index 1898b537a..c9d7a09c3 100644
+> --- a/documentation/migration-guides/release-notes-5.0.rst
+> +++ b/documentation/migration-guides/release-notes-5.0.rst
+> @@ -106,6 +106,9 @@ New Features / Enhancements in 5.0
+>      -  ``runqemu``: match ".rootfs." in addition to "-image-" for the root
+>         filesystem.
+>   
+> +   -  :ref:`ref-classes-cmake-qemu`: a new class allowing to execute cross-compiled
+> +      binaries using QEMU user-mode emulation.
+> +
 
-Signed-off-by: Joao Marcos Costa <joaomarcos.costa@bootlin.com>
----
- documentation/migration-guides/release-notes-5.0.rst | 3 +++
- 1 file changed, 3 insertions(+)
 
-diff --git a/documentation/migration-guides/release-notes-5.0.rst b/documentation/migration-guides/release-notes-5.0.rst
-index 1898b537a..c9d7a09c3 100644
---- a/documentation/migration-guides/release-notes-5.0.rst
-+++ b/documentation/migration-guides/release-notes-5.0.rst
-@@ -106,6 +106,9 @@ New Features / Enhancements in 5.0
-    -  ``runqemu``: match ".rootfs." in addition to "-image-" for the root
-       filesystem.
- 
-+   -  :ref:`ref-classes-cmake-qemu`: a new class allowing to execute cross-compiled
-+      binaries using QEMU user-mode emulation.
-+
- -  Rust improvements:
- 
-    -  Rust has been upgraded to version 1.75
+Thanks for this update.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into master-next.
+Michael.
+
 -- 
-2.43.0
+
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
 
