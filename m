@@ -2,72 +2,193 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F659C04FFE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E1FAC04FF8
 	for <webhook@archiver.kernel.org>; Sun, 14 Apr 2024 18:20:31 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.3488.1713118829115835049
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.3485.1713118827331202996
  for <docs@lists.yoctoproject.org>;
- Sun, 14 Apr 2024 11:20:29 -0700
+ Sun, 14 Apr 2024 11:20:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=n5PmVnu0;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6BF271BF203;
-	Sun, 14 Apr 2024 18:20:27 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=W5Sm3tsQ;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4CAA220002;
+	Sun, 14 Apr 2024 18:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713118827;
+	t=1713118825;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2ejnpPPWNIGPV0t894NbW6MGvNRbe5HDMZfjhTgo6jU=;
-	b=n5PmVnu0zw4dLhyOT5KOpKlFOsWw9JgdT2RqG9tQsoyBAyLRhpCZQlWszw0KCp0cFhzcQ+
-	YlzRrcRgIgrt9DCn3w/Nq0RNYdrwRNFXvQ/c8SMa8pcn83FxN96eV/rDJWz5eBzNbsw5oD
-	HkzM9R/CDjGjSweLKRUQLbL07wLhyWsRxcepW8GLWvXDfwQujTjxzMwkhRxl7RiqklITuj
-	xWoZApf6Ha0y96HoT1wfrzUfPikVfKZKEIbNXfyPGuEYw+XA8mOEZfkF8jiUId9AXTQU4h
-	EqLgaCPe4ffFQ8oDD0jAzWJmUGR499vstf8fmUWG13qKLW+G8icXDurfcJyrHw==
+	bh=eMPip90W1C4htiPph6ZkUXJfgIyF4/BKpEZF0HKTMMA=;
+	b=W5Sm3tsQ7ddS0Z2LZVUjU6VO9H5tEmDq4SykgUO6mg/cia2SYidh8qu7hfnLd0CfO2GBh0
+	Gc0sAAjGqEWiq9Pqcxyp7oyxyXy39KVpvEEdoAF9WwE9w8Mg5lR3Z7unGO8axyptApIlWe
+	a2IkOKYxjNedPX0+WDcX6dDDTlBAPA31f7+xJg9aEr8u96pOU5sfNwMlCFU+0mDWDfyH4T
+	oswI8VZBA+rMnpbuYYYo1hdyoxqovXCH/SMJIJpLqGj77f82fmQHignbZCsxy/34Uk/3J7
+	I6QVvrBjJTb101ygG1h8O6amAuq4T985i27KN5zi4CtRj1GfzmoGg0e3fB43qA==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Quentin Schulz <quentin.schulz@theobroma-systems.com>
-Subject: [kirkstone][PATCH 4/9] manuals: fix duplicate "stylecheck" target
-Date: Sun, 14 Apr 2024 20:20:06 +0200
-Message-Id: <20240414182011.994356-5-michael.opdenacker@bootlin.com>
+	Lee Chee Yang <chee.yang.lee@intel.com>
+Subject: [kirkstone][PATCH 1/9] release-notes-4.0.17: reorder CVEs
+Date: Sun, 14 Apr 2024 20:20:03 +0200
+Message-Id: <20240414182011.994356-2-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240414182011.994356-1-michael.opdenacker@bootlin.com>
 References: <20240414182011.994356-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Sun, 14 Apr 2024 18:20:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5128
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5125
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Reviewed-by: Quentin Schulz <quentin.schulz@theobroma-systems.com>
----
- documentation/Makefile | 4 ----
- 1 file changed, 4 deletions(-)
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-diff --git a/documentation/Makefile b/documentation/Makefile
-index e5f0effeb5..20dab5725c 100644
---- a/documentation/Makefile
-+++ b/documentation/Makefile
-@@ -53,10 +53,6 @@ stylecheck:
- 	vale sync
- 	vale $(VALEOPTS) $(VALEDOCS)
- 
--stylecheck:
--	vale sync
--	vale $(VALEOPTS) $(VALEDOCS)
--
- epub: $(PNGs)
- 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
- 
--- 
+reorder CVEs from alphabetical order to numerical order, align it
+with text based release notes.
+
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+---
+ .../migration-guides/release-notes-4.0.17.rst        | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/documentation/migration-guides/release-notes-4.0.17.rst b/docu=
+mentation/migration-guides/release-notes-4.0.17.rst
+index 1dfd10ce20..07242584b8 100644
+--- a/documentation/migration-guides/release-notes-4.0.17.rst
++++ b/documentation/migration-guides/release-notes-4.0.17.rst
+@@ -6,7 +6,7 @@ Release notes for Yocto-4.0.17 (Kirkstone)
+ Security Fixes in Yocto-4.0.17
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+=20
+--  bind: Fix :cve:`2023-4408`, :cve:`2023-50387`, :cve:`2023-50868`, :cve:=
+`2023-5517` and :cve:`2023-5679`
++-  bind: Fix :cve:`2023-4408`, :cve:`2023-5517`, :cve:`2023-5679`, :cve:`2=
+023-50868` and :cve:`2023-50387`
+ -  binutils: Fix :cve:`2023-39129` and :cve:`2023-39130`
+ -  curl: Fix :cve:`2023-46219`
+ -  curl: Ignore :cve:`2023-42915`
+@@ -18,13 +18,13 @@ Security Fixes in Yocto-4.0.17
+ -  libgit2: Fix :cve:`2024-24575` and :cve:`2024-24577`
+ -  libuv: fix :cve:`2024-24806`
+ -  libxml2: Fix for :cve:`2024-25062`
+--  linux-yocto/5.15: Fix :cve:`2022-36402`, :cve:`2022-40982`, :cve:`2022-=
+47940`, :cve:`2023-1193`, :cve:`2023-1194`, :cve:`2023-20569`, :cve:`2023-2=
+0588`, :cve:`2023-25775`, :cve:`2023-31085`, :cve:`2023-32247`, :cve:`2023-=
+32250`, :cve:`2023-32252`, :cve:`2023-32254`, :cve:`2023-32257`, :cve:`2023=
+-32258`, :cve:`2023-34324`, :cve:`2023-35827`, :cve:`2023-3772`, :cve:`2023=
+-38427`, :cve:`2023-38430`, :cve:`2023-38431`, :cve_mitre:`2023-3867`, :cve=
+:`2023-39189`, :cve:`2023-39192`, :cve:`2023-39193`, :cve:`2023-39194`, :cv=
+e:`2023-39198`, :cve:`2023-40283`, :cve:`2023-4128`, :cve:`2023-4206`, :cve=
+:`2023-4207`, :cve:`2023-4208`, :cve:`2023-4244`, :cve:`2023-4273`, :cve:`2=
+023-42752`, :cve:`2023-42753`, :cve:`2023-42754`, :cve:`2023-42755`, :cve:`=
+2023-4563`, :cve:`2023-4569`, :cve:`2023-45871`, :cve:`2023-4623`, :cve:`20=
+23-46343`, :cve:`2023-46813`, :cve:`2023-46838`, :cve:`2023-46862`, :cve:`2=
+023-4881`, :cve:`2023-4921`, :cve:`2023-51042`, :cve:`2023-5158`, :cve:`202=
+3-51779`, :cve_mitre:`2023-52340`, :cve:`2023-52429`, :cve:`2023-52435`, :c=
+ve:`2023-52436`, :cve:`2023-52438`, :cve:`2023-52439`, :cve:`2023-52441`, :=
+cve:`2023-52442`, :cve:`2023-52443`, :cve:`2023-52444`, :cve:`2023-52445`, =
+:cve:`2023-52448`, :cve:`2023-52449`, :cve:`2023-52451`, :cve:`2023-52454`,=
+ :cve:`2023-52456`, :cve:`2023-52457`, :cve:`2023-52458`, :cve:`2023-52463`=
+, :cve:`2023-52464`, :cve:`2023-5717`, :cve:`2023-6040`, :cve:`2023-6121`, =
+:cve:`2023-6176`, :cve:`2023-6546`, :cve:`2023-6606`, :cve:`2023-6622`, :cv=
+e:`2023-6817`, :cve:`2023-6915`, :cve:`2023-6931`, :cve:`2023-6932`, :cve:`=
+2024-0340`, :cve:`2024-0584`, :cve:`2024-0607`, :cve:`2024-0641`, :cve:`202=
+4-0646`, :cve:`2024-1085`, :cve:`2024-1086`, :cve:`2024-1151`, :cve:`2024-2=
+2705`, :cve:`2024-23849`, :cve:`2024-23850`, :cve:`2024-23851`, :cve:`2024-=
+24860`, :cve:`2024-26586`, :cve:`2024-26589`, :cve:`2024-26591`, :cve:`2024=
+-26592`, :cve:`2024-26593`, :cve:`2024-26594`, :cve:`2024-26597` and :cve:`=
+2024-26598`
+--  linux-yocto/5.15: Ignore :cve:`2020-27418`, :cve:`2020-36766`, :cve:`20=
+21-33630`, :cve:`2021-33631`, :cve:`2022-48619`, :cve:`2023-2430`, :cve:`20=
+23-40791`, :cve:`2023-42756`, :cve:`2023-44466`, :cve:`2023-45862`, :cve:`2=
+023-45863`, :cve:`2023-45898`, :cve:`2023-4610`, :cve:`2023-4732`, :cve:`20=
+23-5090`, :cve:`2023-51043`, :cve:`2023-5178`, :cve:`2023-51780`, :cve:`202=
+3-51781`, :cve:`2023-51782`, :cve:`2023-5197`, :cve:`2023-52433`, :cve:`202=
+3-52440`, :cve:`2023-52446`, :cve:`2023-52450`, :cve:`2023-52453`, :cve:`20=
+23-52455`, :cve:`2023-52459`, :cve:`2023-52460`, :cve:`2023-52461`, :cve:`2=
+023-52462`, :cve:`2023-5345`, :cve:`2023-5633`, :cve:`2023-5972`, :cve:`202=
+3-6111`, :cve:`2023-6200`, :cve:`2023-6531`, :cve:`2023-6679`, :cve:`2023-7=
+192`, :cve:`2024-0193`, :cve:`2024-0443`, :cve:`2024-0562`, :cve:`2024-0582=
+`, :cve:`2024-0639`, :cve:`2024-0775`, :cve:`2024-26581`, :cve:`2024-26582`=
+, :cve:`2024-26590`, :cve:`2024-26596` and :cve:`2024-26599`
+--  linux-yocto/5.10: Fix :cve:`2023-39198`, :cve:`2023-46838`, :cve:`2023-=
+51779`, :cve:`2023-51780`, :cve:`2023-51781`, :cve:`2023-51782`, :cve_mitre=
+:`2023-52340`, :cve:`2023-6040`, :cve:`2023-6121`, :cve:`2023-6606`, :cve:`=
+2023-6817`, :cve:`2023-6915`, :cve:`2023-6931`, :cve:`2023-6932`, :cve:`202=
+4-0584` and :cve:`2024-0646`
+--  linux-yocto/5.10: Ignore :cve:`2021-33630`, :cve:`2021-33631`, :cve:`20=
+22-1508`, :cve:`2022-36402`, :cve:`2022-48619`, :cve:`2023-2430`, :cve:`202=
+3-4610`, :cve:`2023-46343`, :cve:`2023-51042`, :cve:`2023-51043`, :cve:`202=
+3-5972`, :cve:`2023-6039`, :cve:`2023-6200`, :cve:`2023-6531`, :cve:`2023-6=
+546`, :cve:`2023-6622`, :cve:`2023-6679`, :cve:`2023-7192`, :cve:`2024-0193=
+`, :cve:`2024-0443`, :cve:`2024-0562`, :cve:`2024-0582`, :cve:`2024-0639`, =
+:cve:`2024-0641`, :cve:`2024-0775`, :cve:`2024-1085` and :cve:`2024-22705`
++-  linux-yocto/5.15: Fix :cve:`2022-36402`, :cve:`2022-40982`, :cve:`2022-=
+47940`, :cve:`2023-1193`, :cve:`2023-1194`, :cve:`2023-3772`, :cve_mitre:`2=
+023-3867`, :cve:`2023-4128`, :cve:`2023-4206`, :cve:`2023-4207`, :cve:`2023=
+-4208`, :cve:`2023-4244`, :cve:`2023-4273`, :cve:`2023-4563`, :cve:`2023-45=
+69`, :cve:`2023-4623`, :cve:`2023-4881`, :cve:`2023-4921`, :cve:`2023-5158`=
+, :cve:`2023-5717`, :cve:`2023-6040`, :cve:`2023-6121`, :cve:`2023-6176`, :=
+cve:`2023-6546`, :cve:`2023-6606`, :cve:`2023-6622`, :cve:`2023-6817`, :cve=
+:`2023-6915`, :cve:`2023-6931`, :cve:`2023-6932`, :cve:`2023-20569`, :cve:`=
+2023-20588`, :cve:`2023-25775`, :cve:`2023-31085`, :cve:`2023-32247`, :cve:=
+`2023-32250`, :cve:`2023-32252`, :cve:`2023-32254`, :cve:`2023-32257`, :cve=
+:`2023-32258`, :cve:`2023-34324`, :cve:`2023-35827`, :cve:`2023-38427`, :cv=
+e:`2023-38430`, :cve:`2023-38431`, :cve:`2023-39189`, :cve:`2023-39192`, :c=
+ve:`2023-39193`, :cve:`2023-39194`, :cve:`2023-39198`, :cve:`2023-40283`, :=
+cve:`2023-42752`, :cve:`2023-42753`, :cve:`2023-42754`, :cve:`2023-42755`, =
+:cve:`2023-45871`, :cve:`2023-46343`, :cve:`2023-46813`, :cve:`2023-46838`,=
+ :cve:`2023-46862`, :cve:`2023-51042`, :cve:`2023-51779`, :cve_mitre:`2023-=
+52340`, :cve:`2023-52429`, :cve:`2023-52435`, :cve:`2023-52436`, :cve:`2023=
+-52438`, :cve:`2023-52439`, :cve:`2023-52441`, :cve:`2023-52442`, :cve:`202=
+3-52443`, :cve:`2023-52444`, :cve:`2023-52445`, :cve:`2023-52448`, :cve:`20=
+23-52449`, :cve:`2023-52451`, :cve:`2023-52454`, :cve:`2023-52456`, :cve:`2=
+023-52457`, :cve:`2023-52458`, :cve:`2023-52463`, :cve:`2023-52464`, :cve:`=
+2024-0340`, :cve:`2024-0584`, :cve:`2024-0607`, :cve:`2024-0641`, :cve:`202=
+4-0646`, :cve:`2024-1085`, :cve:`2024-1086`, :cve:`2024-1151`, :cve:`2024-2=
+2705`, :cve:`2024-23849`, :cve:`2024-23850`, :cve:`2024-23851`, :cve:`2024-=
+24860`, :cve:`2024-26586`, :cve:`2024-26589`, :cve:`2024-26591`, :cve:`2024=
+-26592`, :cve:`2024-26593`, :cve:`2024-26594`, :cve:`2024-26597` and :cve:`=
+2024-26598`
++-  linux-yocto/5.15: Ignore :cve:`2020-27418`, :cve:`2020-36766`, :cve:`20=
+21-33630`, :cve:`2021-33631`, :cve:`2022-48619`, :cve:`2023-2430`, :cve:`20=
+23-4610`, :cve:`2023-4732`, :cve:`2023-5090`, :cve:`2023-5178`, :cve:`2023-=
+5197`, :cve:`2023-5345`, :cve:`2023-5633`, :cve:`2023-5972`, :cve:`2023-611=
+1`, :cve:`2023-6200`, :cve:`2023-6531`, :cve:`2023-6679`, :cve:`2023-7192`,=
+ :cve:`2023-40791`, :cve:`2023-42756`, :cve:`2023-44466`, :cve:`2023-45862`=
+, :cve:`2023-45863`, :cve:`2023-45898`, :cve:`2023-51043`, :cve:`2023-51780=
+`, :cve:`2023-51781`, :cve:`2023-51782`, :cve:`2023-52433`, :cve:`2023-5244=
+0`, :cve:`2023-52446`, :cve:`2023-52450`, :cve:`2023-52453`, :cve:`2023-524=
+55`, :cve:`2023-52459`, :cve:`2023-52460`, :cve:`2023-52461`, :cve:`2023-52=
+462`, :cve:`2024-0193`, :cve:`2024-0443`, :cve:`2024-0562`, :cve:`2024-0582=
+`, :cve:`2024-0639`, :cve:`2024-0775`, :cve:`2024-26581`, :cve:`2024-26582`=
+, :cve:`2024-26590`, :cve:`2024-26596` and :cve:`2024-26599`
++-  linux-yocto/5.10: Fix :cve:`2023-6040`, :cve:`2023-6121`, :cve:`2023-66=
+06`, :cve:`2023-6817`, :cve:`2023-6915`, :cve:`2023-6931`, :cve:`2023-6932`=
+, :cve:`2023-39198`, :cve:`2023-46838`, :cve:`2023-51779`, :cve:`2023-51780=
+`, :cve:`2023-51781`, :cve:`2023-51782`, :cve_mitre:`2023-52340`, :cve:`202=
+4-0584` and :cve:`2024-0646`
++-  linux-yocto/5.10: Ignore :cve:`2021-33630`, :cve:`2021-33631`, :cve:`20=
+22-1508`, :cve:`2022-36402`, :cve:`2022-48619`, :cve:`2023-2430`, :cve:`202=
+3-4610`, :cve:`2023-5972`, :cve:`2023-6039`, :cve:`2023-6200`, :cve:`2023-6=
+531`, :cve:`2023-6546`, :cve:`2023-6622`, :cve:`2023-6679`, :cve:`2023-7192=
+`, :cve:`2023-46343`, :cve:`2023-51042`, :cve:`2023-51043`, :cve:`2024-0193=
+`, :cve:`2024-0443`, :cve:`2024-0562`, :cve:`2024-0582`, :cve:`2024-0639`, =
+:cve:`2024-0641`, :cve:`2024-0775`, :cve:`2024-1085` and :cve:`2024-22705`
+ -  openssl: Fix :cve:`2024-0727`
+ -  python3-pycryptodome: Fix :cve:`2023-52323`
+--  qemu: Fix :cve:`2023-42467`, :cve:`2023-6693` and :cve:`2024-24474`
++-  qemu: Fix :cve:`2023-6693`, :cve:`2023-42467` and :cve:`2024-24474`
+ -  vim: Fix :cve:`2024-22667`
+ -  xwayland: Fix :cve:`2023-6377` and :cve:`2023-6478`
+=20
+--=20
 2.34.1
 
 
