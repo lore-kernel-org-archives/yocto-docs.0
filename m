@@ -1,71 +1,104 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <vincent@coelebs.dev>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC2AAC001CC
-	for <webhook@archiver.kernel.org>; Sun, 14 Apr 2024 18:20:41 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.3490.1713118831513149484
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0999C4345F
+	for <webhook@archiver.kernel.org>; Sun, 14 Apr 2024 18:46:21 +0000 (UTC)
+Received: from outbound.soverin.net (outbound.soverin.net [185.233.34.18])
+ by mx.groups.io with SMTP id smtpd.web10.3973.1713120378776317585
  for <docs@lists.yoctoproject.org>;
- Sun, 14 Apr 2024 11:20:31 -0700
+ Sun, 14 Apr 2024 11:46:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ABPdr/jY;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 829AD60004;
-	Sun, 14 Apr 2024 18:20:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713118829;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xH6+KH4oxUEqidlsRNl7c09E7OH6frUl7xyuo8HRP6A=;
-	b=ABPdr/jYssDUk99SDu8kVLdJkHR7uIbJGffIqdeEdgVto3FIzZndp4ypqFunInKbSSw6pN
-	IjOPshs7otmGC2g5kxT9I89bAe6PjRShVqZRPlDE56g7RcY0b7x2sveHWQc/yMdknKTLM5
-	hSrYpd4JuhQATdq/rI3ilFI/qtLZ+NvQlbV48pUt3hbyV3XEikQZ8wfpYtEuW4zmBHmknD
-	6XoAh64iz4xK/ZaNVjbcihb1U/LR+KGRN+NuoyL0bz7+kzNJyl/OthY8G/GqSBybJKJYoS
-	i+LoKBu3+BNLtezH2td2tj58kwmlHb07+N4tV+1Sf10+Mesi6HWEQn1hynWmdQ==
-From: michael.opdenacker@bootlin.com
+ dkim=none (message not signed); spf=pass (domain: coelebs.dev, ip: 185.233.34.18, mailfrom: vincent@coelebs.dev)
+Received: from smtp.soverin.net (c04cst-smtp-sov01.int.sover.in [10.10.4.99])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by outbound.soverin.net (Postfix) with ESMTPS id 4VHfQc1dpgz1T;
+	Sun, 14 Apr 2024 18:46:16 +0000 (UTC)
+Received: from smtp.soverin.net (smtp.soverin.net [10.10.4.99]) by soverin.net (Postfix) with ESMTPSA id 4VHfQb6DGjz3L;
+	Sun, 14 Apr 2024 18:46:15 +0000 (UTC)
+From: vincent@coelebs.dev
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Subject: [kirkstone][PATCH 7/9] manuals: fix incorrect double backticks
-Date: Sun, 14 Apr 2024 20:20:09 +0200
-Message-Id: <20240414182011.994356-8-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240414182011.994356-1-michael.opdenacker@bootlin.com>
-References: <20240414182011.994356-1-michael.opdenacker@bootlin.com>
+Cc: Vincent Kriek <vincent@coelebs.dev>
+Subject: [PATCH] ref-manual: Add "devtool extract/sync" explanation
+Date: Sun, 14 Apr 2024 20:48:05 +0200
+Message-ID: <20240414184804.12111-2-vincent@coelebs.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 14 Apr 2024 18:20:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5132
+ <docs@lists.yoctoproject.org>; Sun, 14 Apr 2024 18:46:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5134
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+From: Vincent Kriek <vincent@coelebs.dev>
 
-As reported by "make sphinx-lint"
+Documentation describing the devtool extract and devtool sync commands
+were not present. This patch adds basic explanations how the commands
+work and why you could use them.
 
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Vincent Kriek <vincent@coelebs.dev>
 ---
- documentation/profile-manual/usage.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../ref-manual/devtool-reference.rst          | 36 +++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/documentation/profile-manual/usage.rst b/documentation/profile-manual/usage.rst
-index 542bd918b9..cffb63e3f9 100644
---- a/documentation/profile-manual/usage.rst
-+++ b/documentation/profile-manual/usage.rst
-@@ -1853,7 +1853,7 @@ Practically speaking, that means you need to do the following:
- 
- -  Or build a non-SDK image but include the profiling tools
-    (edit ``local.conf`` and add ``tools-profile`` to the end of
--   :term:``EXTRA_IMAGE_FEATURES`` variable)::
-+   :term:`EXTRA_IMAGE_FEATURES` variable)::
- 
-       $ bitbake core-image-sato
- 
--- 
-2.34.1
+diff --git a/documentation/ref-manual/devtool-reference.rst b/documentati=
+on/ref-manual/devtool-reference.rst
+index 9319addc3c..fbfd038e5c 100644
+--- a/documentation/ref-manual/devtool-reference.rst
++++ b/documentation/ref-manual/devtool-reference.rst
+@@ -618,3 +618,39 @@ a match.
+=20
+ When you use the ``devtool search`` command, you must supply a keyword.
+ The command uses the keyword when searching for a match.
++
++.. _devtool-extract-source-of-recipe:
++
++Extract source of recipe
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
++
++Use the ``devtool extract`` command to extract the source of a recipe to=
+ the
++directory specified. The extract command can extract the source of a rec=
+ipe
++with patches applied to a directory on the system, not constrained to th=
+e
++devtool workspace.
++
++To extract the source of a recipe use the this command::
++
++        $ devtool extract recipe /path/to/extract/location
++
++In contrary to the ``devtool modify`` command this extracted copy will h=
+ave no
++impact on builds and can not be integrated back in to recipes by using d=
+evtool.
++
++.. _devtool-sync-extracted-source-of-recipe:
++
++Sync extracted source of recipe
++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D
++
++Use the ``devtool sync`` command to synchronize a previously extracted s=
+ource
++tree of a recipe with the latest status of the recipe.
++
++To synchronize the extracted source tree of a recipe use this command::
++
++    $ devtool sync recipe /path/to/existing/extract/location
++
++.. note::
++
++   The synchronization of ``devtool sync`` could remove work you have in=
+ your
++   checked out tree as it will set the new head of the devtool branch to=
+ the
++   latest commit specified by the recipe. The previous devtool branch wi=
+ll be
++   copied to the devtool.bak branch
+--=20
+2.44.0
 
 
