@@ -2,70 +2,91 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 50B35C4345F
-	for <webhook@archiver.kernel.org>; Sun, 14 Apr 2024 17:50:41 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.2937.1713117038272681055
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FC11C001CC
+	for <webhook@archiver.kernel.org>; Sun, 14 Apr 2024 18:20:31 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.3484.1713118826794208904
  for <docs@lists.yoctoproject.org>;
- Sun, 14 Apr 2024 10:50:38 -0700
+ Sun, 14 Apr 2024 11:20:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TB8LPPEl;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EF8DA20004;
-	Sun, 14 Apr 2024 17:50:35 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=fhgsiy8k;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A7E7D1C0002;
+	Sun, 14 Apr 2024 18:20:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713117036;
+	t=1713118824;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qvABAw6zSRVvlOEz5tPtnnPkyF7WeA6ljjdoKueUL1Y=;
-	b=TB8LPPElybu4LqQAFgB/IqMCl8D5st8OiYygOYK7NdxRudfb1ERjp3pN5H6pRO+Zwz6BUh
-	xMGg8LKn09gAnWBYKV1E46jli7bic6pilIMDXZbsY+paDZm2wfV9bcYBIiRZKP6ez+sEqO
-	WzwpZIID5lMC7RLxfidsCKxh0CIju0OXYQQDowJnv5NXHNg9bK/BwO1NKnvAfhpsNpd56N
-	lP3P7+hIcfDqawN6eSMm9pfBPqxkXXZR/MrMBFpkgrh8yoQTB2sQww/wKhLtxeDc0uDhs3
-	Oz9Ktj6gj2TaiS93SmXQYVWnrMjkWSc8Nv642NDiwos9OFyX+/iBM5SennLtUw==
-Message-ID: <62b3af1f-b5de-402f-bb71-e0936e5c39fe@bootlin.com>
-Date: Sun, 14 Apr 2024 19:50:35 +0200
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=H1IA4y2OL+vuc3Z40ImvsJrQfnpisMLyhJeK+TuhCyQ=;
+	b=fhgsiy8k4Y1fCo3JE0piAD7sMc0/Ugxrn195v3oN1zfwpL73WM3qb3sE0wQI+rwIXKY2WO
+	Eytmo7QkUx2WT6g11U8x8FhsZ620Hh6FvwmX1ZRQxGUrynN+xEQn/Q5DjPJ5UHl9+rCfk3
+	SW9fzd0CKSUUP9x1hiF1KIMcnCjQZpToIY+/JsXVGgtOiD4PNTT9Ex388r8Nrz95lrIz9w
+	o3H3tyyjhJb0kX+X2B99wISATDBW9ZljQluFoLXms97bppe0wDwQptLcZBdBTMTVNuYrM3
+	V0/qV/JuYxzy9l3Egq0BjZ0KZqgG19NTm0JDrGceeEOSzn6m2Qw83hcMTtaaPw==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [kirkstone][PATCH 0/9] documentation backports
+Date: Sun, 14 Apr 2024 20:20:02 +0200
+Message-Id: <20240414182011.994356-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Geoff Parker <geoffrey.parker@arthrex.com>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: variables: Update default
- INHERIT_DISTRO value
-To: Geoff Parker <geoffhp@gmail.com>
-References: <20240412184657.2933679-1-geoffrey.parker@arthrex.com>
-Content-Language: en-US
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20240412184657.2933679-1-geoffrey.parker@arthrex.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 14 Apr 2024 17:50:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5123
+ <docs@lists.yoctoproject.org>; Sun, 14 Apr 2024 18:20:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5124
 
-Hi Geoff
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 4/12/24 at 20:46, Geoff Parker wrote:
-> From: Geoff Parker <geoffrey.parker@arthrex.com>
->
-> Add remove-libtool and create-spdx to INHERIT_DISTRO defaults per
-> meta/conf/distro/defaultsetup.conf
->
-> Signed-off-by: Geoff Parker <geoffrey.parker@arthrex.com>
+Picking changes from the "master" branch when applicable.
 
-Good catch! Thanks for the patch.
-Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Merged into master-next.
-Cheers
-Michael.
+Jörg Sommer (1):
+  kernel-dev: join mkdir commands with -p
+
+Lee Chee Yang (1):
+  release-notes-4.0.17: reorder CVEs
+
+Michael Opdenacker (5):
+  manuals: fix duplicate "stylecheck" target
+  manuals: add initial sphinx-lint support
+  manuals: fix trailing spaces
+  manuals: fix incorrect double backticks
+  manuals: remove tab characters
+
+Quentin Schulz (2):
+  docs: conf.py: properly escape backslashes for latex_elements
+  manuals: refer to new yocto-patches mailing list wherever appropriate
+
+ documentation/Makefile                        |   5 +-
+ documentation/README                          |  14 +++
+ documentation/conf.py                         |   4 +-
+ .../contributor-guide/submit-changes.rst      |   2 +-
+ documentation/dev-manual/init-manager.rst     |   2 +-
+ documentation/dev-manual/layers.rst           |  16 +--
+ documentation/dev-manual/start.rst            |  12 +-
+ documentation/dev-manual/wic.rst              |  56 ++++-----
+ documentation/kernel-dev/advanced.rst         |   4 +-
+ documentation/kernel-dev/common.rst           |  14 +--
+ .../migration-guides/migration-4.0.rst        |  20 +--
+ .../migration-guides/release-notes-4.0.17.rst |  12 +-
+ .../migration-guides/release-notes-4.0.5.rst  |   2 +-
+ .../migration-guides/release-notes-4.0.rst    |  17 ++-
+ documentation/overview-manual/intro.rst       |   2 +-
+ documentation/profile-manual/usage.rst        | 116 +++++++++---------
+ documentation/ref-manual/classes.rst          |   2 +-
+ documentation/ref-manual/resources.rst        |   3 +
+ documentation/ref-manual/tasks.rst            |   2 +-
+ documentation/ref-manual/terms.rst            |  10 +-
+ documentation/ref-manual/variables.rst        |   2 +-
+ documentation/sdk-manual/working-projects.rst |  10 +-
+ 22 files changed, 170 insertions(+), 157 deletions(-)
 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
