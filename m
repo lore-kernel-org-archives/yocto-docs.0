@@ -2,100 +2,124 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B66C8C4345F
-	for <webhook@archiver.kernel.org>; Mon, 15 Apr 2024 15:43:48 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.24708.1713195823113666540
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C81BCC4345F
+	for <webhook@archiver.kernel.org>; Mon, 15 Apr 2024 16:08:28 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.25206.1713197305305804585
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Apr 2024 08:43:43 -0700
+ Mon, 15 Apr 2024 09:08:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pwQMeHVx;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E1EC3E0005;
-	Mon, 15 Apr 2024 15:43:40 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=W/PCOTGu;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2691860004;
+	Mon, 15 Apr 2024 16:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713195821;
+	t=1713197303;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YND7hsY4SuNo+w3/LjyuhPDzG4nwEuizajvH1Riqn1k=;
-	b=pwQMeHVx4ZGLDItG2xJtuqsA4vc8ZUd1D8Jb+KdWRF55kwSOm2UeOlJo8NAMEHktqIOA7S
-	vdllTQruPaKcnymvMvWyp/trrjioTLHL1AxIMAZ5NuWV3h72JXTiktonzKH+LgNzEhve5E
-	F1chYmGARadsFFHOlsHNfe8JJSTTL5/eoaw82zmz3UWPh6QB/2HGBUiO2c6157RgDDIdCg
-	nYFSEB6EaT8oj0zZTE7lyJ20K+1GiTXO0QeQSvp4LxpEQjBSZA8JLP5okwzW6pCAIIeaDB
-	hdzyNLRxMGr4OPDfmhNfYLlJjKysb7vbL+CAFarYniU6Vw7IEft29UF1at9Gow==
-Message-ID: <6e6756bb-baf6-4075-86e7-f542693d533e@bootlin.com>
-Date: Mon, 15 Apr 2024 17:43:40 +0200
+	bh=nQphCHycXr0TLFU1kt5/ROstXArHO2sfc0f/Fq923VE=;
+	b=W/PCOTGutFWjhrFd2Y1Hb2ebH0jPcNA/3BgAzBxcHDaaWBRXxxfFgZwNuYS0q00kXqf2U8
+	d8Yow7nWJDjnARzN8IZJ0vzPdvJ7VQ5Xa/Y/5Rmp8zhvYSZ6UsTncRT7R/yu2nfe3uBMRs
+	T+fY4D9mmoo9JshZ2KVf+QtkilKyM5j2XQAGAK5UyihAfFmYjMyltpiZcoABmrEeJ8szEI
+	NvkFtOmhNitVXCrc2XwV0jG+MnfVEb5fb8K8IcLmvPZB+hyOeGQJ7KVNipxTP77FOWsExT
+	JxlwiWiFRR3EzMJom+d22PzDcbkua38oel9Sz4TqJhGCikjg/NuOkgNOivKziA==
+Message-ID: <a9e2d8f6-9ca3-4830-87c8-013a3bd0751f@bootlin.com>
+Date: Mon, 15 Apr 2024 18:08:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [PATCH 0/9] Updates for the 5.0 release
-To: Paul Eggleton <bluelightning@bluelightning.org>
-References: <cover.1713127068.git.bluelightning@bluelightning.org>
+Subject: Re: [docs] [PATCH] ref-manual: Add "devtool extract/sync" explanation
+To: vincent@coelebs.dev
+References: <20240414184804.12111-2-vincent@coelebs.dev>
 Content-Language: en-US
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <cover.1713127068.git.bluelightning@bluelightning.org>
+In-Reply-To: <20240414184804.12111-2-vincent@coelebs.dev>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Apr 2024 15:43:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5158
+ <docs@lists.yoctoproject.org>; Mon, 15 Apr 2024 16:08:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5159
 
-Hi Paul
+Hi Vincent
 
-Many thanks for all these updates!
+Thanks for your patch!
 
-On 4/14/24 at 22:43, Paul Eggleton wrote:
-> Updates for the 5.0 release on top of master-next, including release
-> notes and migration guide, as well as adjustments for the rest of the
-> documentation. I think we are still missing a few changes but
-> unfortunately I've run out of time. Thanks to all who added content
-> ahead of me though!
+On 4/14/24 at 20:48, vincent@coelebs.dev wrote:
+> From: Vincent Kriek <vincent@coelebs.dev>
+>
+> Documentation describing the devtool extract and devtool sync commands
+> were not present. This patch adds basic explanations how the commands
+> work and why you could use them.
+>
+> Signed-off-by: Vincent Kriek <vincent@coelebs.dev>
+> ---
+>   .../ref-manual/devtool-reference.rst          | 36 +++++++++++++++++++
+>   1 file changed, 36 insertions(+)
+>
+> diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
+> index 9319addc3c..fbfd038e5c 100644
+> --- a/documentation/ref-manual/devtool-reference.rst
+> +++ b/documentation/ref-manual/devtool-reference.rst
+> @@ -618,3 +618,39 @@ a match.
+>   
+>   When you use the ``devtool search`` command, you must supply a keyword.
+>   The command uses the keyword when searching for a match.
+> +
+> +.. _devtool-extract-source-of-recipe:
+> +
+> +Extract source of recipe
+> +========================
+> +
+> +Use the ``devtool extract`` command to extract the source of a recipe to the
+> +directory specified. The extract command can extract the source of a recipe
+> +with patches applied to a directory on the system, not constrained to the
+> +devtool workspace.
+> +
+> +To extract the source of a recipe use the this command::
+> +
+> +        $ devtool extract recipe /path/to/extract/location
+> +
+> +In contrary to the ``devtool modify`` command this extracted copy will have no
+> +impact on builds and can not be integrated back in to recipes by using devtool.
+> +
+> +.. _devtool-sync-extracted-source-of-recipe:
+> +
+> +Sync extracted source of recipe
+> +===============================
+> +
+> +Use the ``devtool sync`` command to synchronize a previously extracted source
+> +tree of a recipe with the latest status of the recipe.
+> +
+> +To synchronize the extracted source tree of a recipe use this command::
+> +
+> +    $ devtool sync recipe /path/to/existing/extract/location
+> +
+> +.. note::
+> +
+> +   The synchronization of ``devtool sync`` could remove work you have in your
+> +   checked out tree as it will set the new head of the devtool branch to the
+> +   latest commit specified by the recipe. The previous devtool branch will be
+> +   copied to the devtool.bak branch
 
 
-If you're thinking about extra changes, just describe them briefly and 
-we'll see what we can do :)
+Your patch does apply, but actually, the current documentation already 
+mentions "devtool extract" and "devtool sync". See 
+https://git.yoctoproject.org/yocto-docs/tree/documentation/ref-manual/devtool-reference.rst#n224
 
->
->
-> The following changes since commit 4b839c460867d685584134dbd322cd9b20f2ae6d:
->
->    release-notes-5.0: various additions and improvements (2024-04-12 15:08:40 +0200)
->
-> are available in the Git repository at:
->
->    https://git.yoctoproject.org/poky-contrib paule/5.0-release
->    https://git.yoctoproject.org/poky-contrib/log/?h=paule/5.0-release
->
-> Paul Eggleton (9):
->    ref-manual: Add virtual-slash QA check
->    ref-manual: add new python classes
->    classes: cve_check: add note about remote patches
->    variables: add TARGET_DBGSRC_DIR
->    dev-manual: update reference to sstate-cache-management script
->    dev-manual: update custom distribution section
->    release-notes: Add CVEs, recipe upgrades and contributors for 5.0
->    migration: Extend migration guide for 5.0
->    release-notes: additional features and one known issue for 5.0
->
->   .../dev-manual/custom-distribution.rst        |  34 +-
->   documentation/dev-manual/disk-space.rst       |   2 +-
->   .../migration-guides/migration-5.0.rst        |  62 +-
->   .../migration-guides/release-notes-5.0.rst    | 635 +++++++++++++++++-
->   documentation/ref-manual/classes.rst          |  31 +
->   documentation/ref-manual/qa-checks.rst        |   8 +
->   documentation/ref-manual/variables.rst        |   4 +
->   7 files changed, 757 insertions(+), 19 deletions(-)
+You may have started from an older version of the documentation, or just 
+overlooked  such sections.
 
-For all changes, after sometimes minor tweaks
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-And merged into master-next.
-Thanks again,
+Unless I'm mistaken, you may merge your changes with the existing 
+descriptions, keeping the best of both. Could you send a new version?
+
+Thanks in advance
+Cheers
 Michael.
 
 -- 
