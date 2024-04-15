@@ -2,84 +2,197 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CAD0BC4345F
-	for <webhook@archiver.kernel.org>; Mon, 15 Apr 2024 12:40:17 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.20048.1713184808965789958
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D00D0C4345F
+	for <webhook@archiver.kernel.org>; Mon, 15 Apr 2024 12:47:47 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.20025.1713185259805706199
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Apr 2024 05:40:09 -0700
+ Mon, 15 Apr 2024 05:47:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=NDvQuzTc;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 284C0FF812;
-	Mon, 15 Apr 2024 12:40:06 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BY6WYtHX;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C112D1BF208;
+	Mon, 15 Apr 2024 12:47:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713184806;
+	t=1713185257;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=w2XXRPJYKJLtftUWvd4/Xjk37sKFoZhteXBSGv93fig=;
-	b=NDvQuzTczgWHOn355dXUO2RDpxwwZG0Oy0fGbh7Fvr3r0OZ6VD9AL/jsu0qgv0cSlSFkWU
-	BqNov52QTULcm2P01cpWC8WSs/lJsK3xtMepSyoeDN1A3w94uJK5F7VQTyuN7oEOXUdz35
-	lm4dvCcn6G9xAQ3GZllDHkxpNbBJyTiFGNBHu8wTl2i+woYtP0SsfuQpXYRfSBjpNCDtGh
-	d6EtPmwGJW3HW8BDfiRtGnK0PjXXI2dEQtSZuLEDPi0r5heg18Ju7WxMdnZEcQX1mD7ov+
-	O4q2vSwW2Y4NJPTjn1IcCuQoWzmU+vBe6F/LwrMPYfbgmuFWZtH+BsNiOJkIng==
-Message-ID: <bd7ed6b8-043d-43d0-8e65-43f585dc0725@bootlin.com>
-Date: Mon, 15 Apr 2024 14:40:05 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=PTrsUlP5AejxWuF6DHoue0bTeLgHzIXw0DCQcaBNGnM=;
+	b=BY6WYtHXohl+YtzYnj+XWRn9X2Di70CtPpCH8T2t6+z1NkMc96yCl3/ClWFwOQRC7tp1A9
+	rVcV2jblBrujqffk4qLTMWzoi29FKnLJjy1DIujvqI6YeUwhIvyauL8ZRqU8m+RrTfLdWh
+	dlmYfu3loNaJmK+KFiLwZP81LfM5Ug71bQi1+BxLwPK6CqGTI7MYjQb3oJ9mJk2HhXYqmD
+	tgTGJqgy+7dmVkGL6zpFg6CqD/Y7+tNmupW4v056rCqHNseT/ML0osurYdtWeL7cf+CfWu
+	f3DCMstL9C3AJlNCsUOlapIkVZolBOqKn/Sbbe0L6Z2Fu+lAXpq2qYrlDDUBpw==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Subject: [PATCH v2] manuals: standards.md5: add standard for project names
+Date: Mon, 15 Apr 2024 14:47:35 +0200
+Message-Id: <20240415124735.1060654-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [RFC][PATCH] manuals: standards.md5: add standard for project
- names
-To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-References: <20240415100555.1054695-1-michael.opdenacker@bootlin.com>
- <44ff31d4-4100-4f81-9421-6b8743ebbbdf@theobroma-systems.com>
- <efc44689-a0ad-4f16-b0e8-441ef17a6cd6@bootlin.com>
- <2f540686-d854-4ff0-88eb-36bd80c1cce8@theobroma-systems.com>
-Content-Language: en-US
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <2f540686-d854-4ff0-88eb-36bd80c1cce8@theobroma-systems.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Apr 2024 12:40:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5150
+ <docs@lists.yoctoproject.org>; Mon, 15 Apr 2024 12:47:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5151
 
-Hello Quentin
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-On 4/15/24 at 12:35, Quentin Schulz wrote:
-> The issue would be the same if a capital letter for the word is 
-> expected in a sentence. e.g. if a sentence starts with `perf` all 
-> lowercase, I'm assuming it is the name of some piece of SW. But if the 
-> sentence starts with Docker, is it the name of a piece of SW or an 
-> actual word?
->
->> These are the ones that can be harder to distinguish from English 
->> words. On the other hand, having all project names  (like Docker or 
->> Toaster, with the accepted exceptions) styled this way, would make 
->> the distinction clearer to readers.
->>
->
-> Mmmmm Toaster is a good example of something related to YP that is 
-> also an English word... I guess all project names highlighted would 
-> make sense then. We can always try to have some elaborate sed/grep 
-> command to find Bitbake/bitbake/bitBake instead of BitBake for example 
-> instead of relying on Vale for it.
+Set a new standard to introduce project names with single quotes,
+so that they appear in generated text with an italic font,
+to make them easier to distinguish from command names and from
+ordinary English words.
 
-Right, good catch. Then let's keep highlighting all project names, 
-unless somebody else can convince us otherwise.
+Rework and move the standard for command and file names
+to make the whole description "flow" better.
 
-Cheers
-Michael.
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
+---
+
+Changes in V2
+- Specify that uncapitalized project names should remain so
+  even at the beginning of a sentence. This follows what Wikipedia
+  seems to be doing, e.g. on https://en.wikipedia.org/wiki/Perf_(Linux)
+---
+ ...s.md5-add-standard-for-project-names.patch | 70 +++++++++++++++++++
+ documentation/standards.md                    | 33 +++++----
+ 2 files changed, 88 insertions(+), 15 deletions(-)
+ create mode 100644 documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch
+
+diff --git a/documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch b/documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch
+new file mode 100644
+index 0000000000..8b9e36dda6
+--- /dev/null
++++ b/documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch
+@@ -0,0 +1,70 @@
++From 10924847c19a69a8f7fd2acd97f84987cdfea2c8 Mon Sep 17 00:00:00 2001
++From: Michael Opdenacker <michael.opdenacker@bootlin.com>
++Date: Mon, 15 Apr 2024 11:58:54 +0200
++Subject: [RFC][PATCH] manuals: standards.md5: add standard for project names
++
++Set a new standard to introduce project names with single quotes,
++so that they appear in generated text with an italic font,
++to make them easier to distinguish from command names and from
++ordinary English words.
++
++Rework and move the standard for command and file names
++to make the whole description "flow" better.
++
++Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
++CC: Quentin Schulz <quentin.schulz@theobroma-systems.com>
++---
++ documentation/standards.md | 31 ++++++++++++++++---------------
++ 1 file changed, 16 insertions(+), 15 deletions(-)
++
++diff --git a/documentation/standards.md b/documentation/standards.md
++index e0c0cba83c..05c5afffe8 100644
++--- a/documentation/standards.md
+++++ b/documentation/standards.md
++@@ -70,27 +70,28 @@ cannot be split without infringing syntactic rules
++ or reducing readability, as well as for command output
++ which should be kept unmodified.
++ 
++-### Project names
+++### File, tool and command names
++ 
++-Project names should be capitalized in the same
++-way they are on Wikipedia, in particular:
+++File, tool, command and package names should be double tick-quoted.
+++For example, ``` ``conf/local.conf`` ``` is preferred over
+++`"conf/local.conf"`.
++ 
++-* BitBake
++-* OpenEmbedded
+++### Project names
++ 
++-There are exceptions in which such names can be used
++-in lower case:
+++Project names should be introduced with single quotes, to have them rendered
+++with an italic font and make them easier to distinguish from command names
+++(double tick-quoted) and from regular English words.
++ 
++-* When referring to a package name
++-* When referring to the corresponding command name
++-* When used in a cross-reference title. Such
++-  titles are usually in lower case.
+++They should also be capitalized in the same way they are on Wikipedia, or on
+++their own project pages if they are not described on Wikipedia.
++ 
++-### File, tool and command names
+++For example:
++ 
++-File, tool and command names should be double tick-quoted.
++-For example, ``` ``conf/local.conf`` ``` is preferred over
++-`"conf/local.conf"`.
+++* ``` `BitBake` ```
+++* ``` `ftrace` ```
+++
+++An exception is when such names are used in a section title, or in a cross-reference
+++to a section. In that case, capitalization and quotes are ignored by Sphinx.
++ 
++ ### Variables
++ 
++-- 
++2.34.1
++
+diff --git a/documentation/standards.md b/documentation/standards.md
+index e0c0cba83c..3fc5796301 100644
+--- a/documentation/standards.md
++++ b/documentation/standards.md
+@@ -70,27 +70,30 @@ cannot be split without infringing syntactic rules
+ or reducing readability, as well as for command output
+ which should be kept unmodified.
+ 
+-### Project names
++### File, tool and command names
+ 
+-Project names should be capitalized in the same
+-way they are on Wikipedia, in particular:
++File, tool, command and package names should be double tick-quoted.
++For example, ``` ``conf/local.conf`` ``` is preferred over
++`"conf/local.conf"`.
+ 
+-* BitBake
+-* OpenEmbedded
++### Project names
+ 
+-There are exceptions in which such names can be used
+-in lower case:
++Project names should be introduced with single quotes, to have them rendered
++with an italic font and make them easier to distinguish from command names
++(double tick-quoted) and from regular English words.
+ 
+-* When referring to a package name
+-* When referring to the corresponding command name
+-* When used in a cross-reference title. Such
+-  titles are usually in lower case.
++They should also be capitalized (or not) in the same way they are on Wikipedia,
++or on their own project pages if they are not described on Wikipedia. If a
++project name isn't capitalized, it should remain so even at the beginning of a
++sentence.
+ 
+-### File, tool and command names
++For example:
+ 
+-File, tool and command names should be double tick-quoted.
+-For example, ``` ``conf/local.conf`` ``` is preferred over
+-`"conf/local.conf"`.
++* ``` `BitBake` ```
++* ``` `ftrace` ```
++
++An exception is when such names are used in a section title, or in a cross-reference
++to a section. In that case, capitalization and quotes are ignored by Sphinx.
+ 
+ ### Variables
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
