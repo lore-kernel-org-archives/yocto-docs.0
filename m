@@ -2,120 +2,144 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BF07C4345F
-	for <webhook@archiver.kernel.org>; Mon, 15 Apr 2024 14:04:38 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.21891.1713189870845068338
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DC7FC4345F
+	for <webhook@archiver.kernel.org>; Mon, 15 Apr 2024 14:25:08 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.22532.1713191098001629364
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Apr 2024 07:04:31 -0700
+ Mon, 15 Apr 2024 07:24:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Sldlm68+;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 18943FF805;
-	Mon, 15 Apr 2024 14:04:27 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZLcvsQKa;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 125661BF204;
+	Mon, 15 Apr 2024 14:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713189868;
+	t=1713191095;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EFZxMW7zfhhoIyFwrq7+sVE0mHS69LismdqbHouM4hs=;
-	b=Sldlm68+LUNk8l1rBvvhvNpMAmLr7CZP5riaGS7G3P0hZmL1QmnG5na5x2IGNfHmJin/0O
-	VdDZaosPlssAMC9ztTN7j1fXgJjDdEbBN8wuK+Hff2AkjB32tcOABeuyUb9+OZDdFVeKXZ
-	i89aMjBPiCVLgcV6SIlsdsLgCwrTl14r3TwTq45WqoneFsfmMZPAVKN9zsHZNmE/dzTXBw
-	DFZtZwYEG6xeVAHTA7Sz2t2427c04cGVMGGutHApcWdMWVENQB5pNbnvz5lk7yHAm52cvE
-	yYqI3hsbzY8yzdJaXtYBDy8L04nk+5LOrfcdP0Gfp307HRFsNbM4bla07YHHdQ==
-Message-ID: <5edf723f-d382-46c2-a868-056c3c38656b@bootlin.com>
-Date: Mon, 15 Apr 2024 16:04:27 +0200
+	bh=BpU3THAm9d3aF/jl1vvkS40SV7k3YRqPEq3q4C0lFPM=;
+	b=ZLcvsQKadLd45+kdQ8pmDVuDGo77fhu+bkrtFcCt64zSHrBOJ3uKannjBOagDtRtkx6E7N
+	2J2ZNddQlDL1azgGi9rIxL9Qg6jdfQWk03goxMNQlBpOvV7ur/kNXJdMye2McG8GTDLkGY
+	FrlRLbI3e9rAQyX5DSAUthC+JZKsDQDgfWIkU3x48V7wAFVIrUDW/BBWaVg5dsI+dG8pBZ
+	Lpn+yr8TVxh5G+7kzKe/ZzrLcD+DCs6NMmHgXdq67lguV1+AX4iMR169Sjy7jcJLcpOa8H
+	JncuHy9C0vppLt9p63KAZFwj0DBk4jYMMTqvoaj+m13jbXiWWdqISmV3A6F/bw==
+Message-ID: <b29fd95b-fa84-4fd6-8eeb-5ec08f66c4e7@bootlin.com>
+Date: Mon, 15 Apr 2024 16:24:54 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Subject: Re: [PATCH 6/9] dev-manual: update custom distribution section
+Subject: Re: [PATCH 7/9] release-notes: Add CVEs, recipe upgrades and
+ contributors for 5.0
 To: Paul Eggleton <bluelightning@bluelightning.org>
 References: <cover.1713127068.git.bluelightning@bluelightning.org>
- <cb839b9d7e58ddf1927685c3fefcd2fa7e551618.1713127068.git.bluelightning@bluelightning.org>
+ <d0182baa07ca6bb009b845fcadb1f7fce81a38bd.1713127068.git.bluelightning@bluelightning.org>
 Content-Language: en-US
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 Organization: Bootlin
-In-Reply-To: <cb839b9d7e58ddf1927685c3fefcd2fa7e551618.1713127068.git.bluelightning@bluelightning.org>
+In-Reply-To: <d0182baa07ca6bb009b845fcadb1f7fce81a38bd.1713127068.git.bluelightning@bluelightning.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Apr 2024 14:04:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5153
+ <docs@lists.yoctoproject.org>; Mon, 15 Apr 2024 14:25:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5154
 
-Hi Paul,
+Hi Paul
+
+Thanks for this update!
 
 On 4/14/24 at 22:43, Paul Eggleton wrote:
-> In keeping with the addition of the motd message pointing out that
-> the poky DISTRO is a reference distribution, adjust the opening of the
-> Creating Your Own Distribution section to match. Additionally, add a
-> section on the end pointing out what users need to consider if they just
-> take a copy of the poky distribution and modify it.
+> * Add CVEs from commits
+> * Add recipe upgrades using layer index branch comparison
+> * Add contributors from commits
 >
 > Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
 > ---
->   .../dev-manual/custom-distribution.rst        | 34 ++++++++++++++++---
->   1 file changed, 30 insertions(+), 4 deletions(-)
+>   .../migration-guides/release-notes-5.0.rst    | 564 +++++++++++++++++-
+>   1 file changed, 563 insertions(+), 1 deletion(-)
 >
-> diff --git a/documentation/dev-manual/custom-distribution.rst b/documentation/dev-manual/custom-distribution.rst
-> index 47faed0d04..93a1961d17 100644
-> --- a/documentation/dev-manual/custom-distribution.rst
-> +++ b/documentation/dev-manual/custom-distribution.rst
-> @@ -4,10 +4,16 @@ Creating Your Own Distribution
->   ******************************
+> diff --git a/documentation/migration-guides/release-notes-5.0.rst b/documentation/migration-guides/release-notes-5.0.rst
+> index 7767a4229d..21de79a638 100644
+> --- a/documentation/migration-guides/release-notes-5.0.rst
+> +++ b/documentation/migration-guides/release-notes-5.0.rst
+> @@ -264,16 +264,578 @@ The following corrections have been made to the :term:`LICENSE` values set by re
+>   Security Fixes in 5.0
+>   ~~~~~~~~~~~~~~~~~~~~~
 >   
->   When you build an image using the Yocto Project and do not alter any
-> -distribution :term:`Metadata`, you are
-> -creating a Poky distribution. If you wish to gain more control over
-> -package alternative selections, compile-time options, and other
-> -low-level configurations, you can create your own distribution.
-> +distribution :term:`Metadata`, you are using the ``poky`` distribution.
-> +``poky`` is explicitly a *reference* distribution for testing and
-> +development purposes. It enables most hardware and software features
-> +so that they can be tested, but this also means that from a security
-> +point of view the attack surface is very large. Additionally, at some
-> +point it is likely that you will want to gain more control over package
-> +alternative selections, compile-time options, and other low-level
-> +configurations. For both of these reasons, if you are using the Yocto
-> +Project for production use then you are strongly encouraged to create
-> +your own distribution.
->   
->   To create your own distribution, the basic steps consist of creating
->   your own distribution layer, creating your own distribution
-> @@ -107,3 +113,23 @@ layer. The following steps provide some more detail:
->      For information on append files, see the
->      ":ref:`dev-manual/layers:appending other layers metadata with your layer`"
->      section.
-> +
-> +Copying and modifying the ``poky`` distribution
-> +===============================================
-> +
-> +Instead of creating a custom distribution from scratch as per above, you may
-> +wish to start your custom distribution configuration by copying the ``poky``
-> +distribution provided within the ``meta-poky`` layer and then modifying it.
-> +This is fine, however if you do this you should keep the following in mind:
-> +
-> +-  Every reference to ``poky`` needs to be updated in your copy so that it
-> +   will still apply. This includes override usage within files (e.g. ``:poky``)
-> +   and in directory names. This is a good opportunity to evaluate each one of
-> +   these customizations to see if they are needed for your use case.
-> +
-> +-  Unless you also intend to use them, the ``poky-tiny``, ``poky-altcfg`` and
-> +   ``poky-bleeding`` variants and any references to them can be removed.
-> +
-> +-  More generally, the ``poky`` distribution configuration enables a lot more
-> +   than you likely need for your production use case. You should evaluate *every*
-> +   configuration choice made in your copy to determine if it is needed.
+> +-  avahi: :cve:`2023-1981`, :cve:`2023-38469-2`, :cve:`2023-38470-2`, :cve:`2023-38471-2`,
+
+Oops, these last 3 don't work. For example, 
+https://nvd.nist.gov/vuln/detail/CVE-2023-38469-2 is invalid.
+
+So, I replaced those with
+
+:cve:`2023-38469`, :cve:`2023-38470`, :cve:`2023-38471`
+
+I hope that's correct, as they still point to Avahi CVEs.
 
 
-Looks good to me, though I replaced "``poky``" by "Poky" (when referring 
-to the distro name, not the string) to be consistent with the rest of 
-the documentation.
-Thanks!
+> :cve:`2023-38469`, :cve:`2023-38470`, :cve:`2023-38471`, :cve:`2023-38472`, :cve:`2023-38473`
+> +-  bind: :cve:`2023-4408`, :cve:`2023-5517`, :cve:`2023-5679`, :cve:`2023-50387`
+> +-  bluez5: :cve:`2023-45866`
+> +-  coreutils: :cve:`2024-0684`
+> +-  cups: :cve:`2023-4504`
+> +-  curl: :cve:`2023-46218`
+> +-  expat: :cve:`2024-28757`
+> +-  gcc: :cve:`2023-4039`
+> +-  glibc: :cve:`2023-5156`, :cve:`2023-0687`
+> +-  gnutls: :cve:`2024-0553`, :cve:`2024-0567`, :cve:`2024-28834`, :cve:`2024-28835`
+> +-  go: :cve:`2023-45288`
+> +-  grub: :cve:`2023-4692`, :cve:`2023-4693`
+> +-  grub2: :cve:`2023-4001` (ignored), :cve:`2024-1048` (ignored)
+> +-  libgit2: :cve:`2024-24575`, :cve:`2024-24577`
+> +-  libsndfile1: :cve:`2022-33065`
+> +-  libssh2: :cve:`2023-48795`
+> +-  libuv: :cve:`2024-24806`
+> +-  libxml2: :cve:`2023-45322` (ignored)
+> +-  linux-yocto/6.6: :cve:`2020-16119`
+> +-  openssh: :cve:`2023-48795`, :cve:`2023-51384`, :cve:`2023-51385`
+> +-  openssl: :cve:`2023-5363`, :cve:`2023-5678`, :cve:`2023-6129`, :cve:`2023-6237`, :cve:`2024-0727`
+
+
+I had to replace :cve:`2023-6237 by :cve_mitre:`2023-6237` as this was a 
+"reserved" CVE.
+
+>   
+>   Contributors to 5.0
+>   ~~~~~~~~~~~~~~~~~~~
+>   
+>   Thanks to the following people who contributed to this release:
+>   
+> +-  Adam Johnston
+> +-  Adithya Balakumar
+> +-  Adrian Freihofer
+> +-  Alassane Yattara
+> +-  Alejandro Hernandez Samaniego
+> +-  Aleksey Smirnov
+> +-  Alexander Kanavin
+> +-  Alexander Lussier-Cullen
+> +-  Alexander Sverdlin
+> +-  Alexandre Belloni
+> +-  Alexandre Truong
+> +-  Alex Bennée
+> +-  Alexis Lothoré
+> +-  Alex Kiernan
+> +-  Alex Stewart
+> +-  André Draszik
+> +-  Anibal Limon
+> +-  Anuj Mittal
+> +-  Archana Polampalli
+> +-  Arne Schwerdt
+> +-  Bartosz Golaszewski
+> +-  Baruch Siach
+> +-  baruch@tkos.co.il
+
+Removed that last line as this is the same person :)
+Thanks
 Michael.
 
 -- 
