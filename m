@@ -2,129 +2,201 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C81BCC4345F
-	for <webhook@archiver.kernel.org>; Mon, 15 Apr 2024 16:08:28 +0000 (UTC)
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.25206.1713197305305804585
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7E62EC4345F
+	for <webhook@archiver.kernel.org>; Wed, 17 Apr 2024 07:07:11 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.6930.1713337627566034797
  for <docs@lists.yoctoproject.org>;
- Mon, 15 Apr 2024 09:08:25 -0700
+ Wed, 17 Apr 2024 00:07:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=W/PCOTGu;
- spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2691860004;
-	Mon, 15 Apr 2024 16:08:23 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=FX63SX0m;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AF9CA1BF203;
+	Wed, 17 Apr 2024 07:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1713197303;
+	t=1713337625;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nQphCHycXr0TLFU1kt5/ROstXArHO2sfc0f/Fq923VE=;
-	b=W/PCOTGutFWjhrFd2Y1Hb2ebH0jPcNA/3BgAzBxcHDaaWBRXxxfFgZwNuYS0q00kXqf2U8
-	d8Yow7nWJDjnARzN8IZJ0vzPdvJ7VQ5Xa/Y/5Rmp8zhvYSZ6UsTncRT7R/yu2nfe3uBMRs
-	T+fY4D9mmoo9JshZ2KVf+QtkilKyM5j2XQAGAK5UyihAfFmYjMyltpiZcoABmrEeJ8szEI
-	NvkFtOmhNitVXCrc2XwV0jG+MnfVEb5fb8K8IcLmvPZB+hyOeGQJ7KVNipxTP77FOWsExT
-	JxlwiWiFRR3EzMJom+d22PzDcbkua38oel9Sz4TqJhGCikjg/NuOkgNOivKziA==
-Message-ID: <a9e2d8f6-9ca3-4830-87c8-013a3bd0751f@bootlin.com>
-Date: Mon, 15 Apr 2024 18:08:22 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=a6hbk5CH336BvEeghh2OTJQIgoTbrPTWXX3sMt189zk=;
+	b=FX63SX0mDvUJulZpS99sfTI63eu+faJnIJVUBfCIryrYJnqu5o+qdQpjK/sTw1ISLqwJ8O
+	LEwqA/txobIS/ezw8Aev+fVUcjuowSEvfs7xB46brd5oEcx0X+F+Rba0uIk+XNlDFlBk6X
+	5cKTPJoNJa7is+YrtLsrLeSSXQ+CVuVc5tRUrTyYw4pZzK2QhJiH/l2W7S668NV9qooWdq
+	LHtn8/2c8OwILdYwQqsPjO8bXMGV58sKpFD/NDa+FDJ/0DFZflSwBSd2obyXM3aEwnogzG
+	1yGlVrtxeeFlRqPikH34QLqe1zXIAHVXGJS8Y4AXEuOURWXcDdsi/I/miSVJUg==
+From: michael.opdenacker@bootlin.com
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Subject: [PATCH] manuals: standards.md5: add standard for project names
+Date: Wed, 17 Apr 2024 09:07:03 +0200
+Message-Id: <20240417070703.3883433-1-michael.opdenacker@bootlin.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: Add "devtool extract/sync" explanation
-To: vincent@coelebs.dev
-References: <20240414184804.12111-2-vincent@coelebs.dev>
-Content-Language: en-US
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Organization: Bootlin
-In-Reply-To: <20240414184804.12111-2-vincent@coelebs.dev>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 15 Apr 2024 16:08:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5159
+ <docs@lists.yoctoproject.org>; Wed, 17 Apr 2024 07:07:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5160
 
-Hi Vincent
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-Thanks for your patch!
+Set a new standard to introduce project names with single quotes,
+so that they appear in generated text with an italic font,
+to make them easier to distinguish from command names and from
+ordinary English words.
 
-On 4/14/24 at 20:48, vincent@coelebs.dev wrote:
-> From: Vincent Kriek <vincent@coelebs.dev>
->
-> Documentation describing the devtool extract and devtool sync commands
-> were not present. This patch adds basic explanations how the commands
-> work and why you could use them.
->
-> Signed-off-by: Vincent Kriek <vincent@coelebs.dev>
-> ---
->   .../ref-manual/devtool-reference.rst          | 36 +++++++++++++++++++
->   1 file changed, 36 insertions(+)
->
-> diff --git a/documentation/ref-manual/devtool-reference.rst b/documentation/ref-manual/devtool-reference.rst
-> index 9319addc3c..fbfd038e5c 100644
-> --- a/documentation/ref-manual/devtool-reference.rst
-> +++ b/documentation/ref-manual/devtool-reference.rst
-> @@ -618,3 +618,39 @@ a match.
->   
->   When you use the ``devtool search`` command, you must supply a keyword.
->   The command uses the keyword when searching for a match.
-> +
-> +.. _devtool-extract-source-of-recipe:
-> +
-> +Extract source of recipe
-> +========================
-> +
-> +Use the ``devtool extract`` command to extract the source of a recipe to the
-> +directory specified. The extract command can extract the source of a recipe
-> +with patches applied to a directory on the system, not constrained to the
-> +devtool workspace.
-> +
-> +To extract the source of a recipe use the this command::
-> +
-> +        $ devtool extract recipe /path/to/extract/location
-> +
-> +In contrary to the ``devtool modify`` command this extracted copy will have no
-> +impact on builds and can not be integrated back in to recipes by using devtool.
-> +
-> +.. _devtool-sync-extracted-source-of-recipe:
-> +
-> +Sync extracted source of recipe
-> +===============================
-> +
-> +Use the ``devtool sync`` command to synchronize a previously extracted source
-> +tree of a recipe with the latest status of the recipe.
-> +
-> +To synchronize the extracted source tree of a recipe use this command::
-> +
-> +    $ devtool sync recipe /path/to/existing/extract/location
-> +
-> +.. note::
-> +
-> +   The synchronization of ``devtool sync`` could remove work you have in your
-> +   checked out tree as it will set the new head of the devtool branch to the
-> +   latest commit specified by the recipe. The previous devtool branch will be
-> +   copied to the devtool.bak branch
+Rework and move the standard for command and file names
+to make the whole description "flow" better.
 
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+CC: Quentin Schulz <quentin.schulz@theobroma-systems.com>
 
-Your patch does apply, but actually, the current documentation already 
-mentions "devtool extract" and "devtool sync". See 
-https://git.yoctoproject.org/yocto-docs/tree/documentation/ref-manual/devtool-reference.rst#n224
+---
 
-You may have started from an older version of the documentation, or just 
-overlooked  such sections.
+Changes in V3
+- Mention that project names don't need single quotes
+  when they are part of a hyperlink.
 
-Unless I'm mistaken, you may merge your changes with the existing 
-descriptions, keeping the best of both. Could you send a new version?
+Changes in V2
+- Specify that uncapitalized project names should remain so
+  even at the beginning of a sentence. This follows what Wikipedia
+  seems to be doing, e.g. on https://en.wikipedia.org/wiki/Perf_(Linux)
+---
+ ...s.md5-add-standard-for-project-names.patch | 70 +++++++++++++++++++
+ documentation/standards.md                    | 33 +++++----
+ 2 files changed, 88 insertions(+), 15 deletions(-)
+ create mode 100644 documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch
 
-Thanks in advance
-Cheers
-Michael.
-
+diff --git a/documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch b/documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch
+new file mode 100644
+index 0000000000..8b9e36dda6
+--- /dev/null
++++ b/documentation/0001-manuals-standards.md5-add-standard-for-project-names.patch
+@@ -0,0 +1,70 @@
++From 10924847c19a69a8f7fd2acd97f84987cdfea2c8 Mon Sep 17 00:00:00 2001
++From: Michael Opdenacker <michael.opdenacker@bootlin.com>
++Date: Mon, 15 Apr 2024 11:58:54 +0200
++Subject: [RFC][PATCH] manuals: standards.md5: add standard for project names
++
++Set a new standard to introduce project names with single quotes,
++so that they appear in generated text with an italic font,
++to make them easier to distinguish from command names and from
++ordinary English words.
++
++Rework and move the standard for command and file names
++to make the whole description "flow" better.
++
++Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
++CC: Quentin Schulz <quentin.schulz@theobroma-systems.com>
++---
++ documentation/standards.md | 31 ++++++++++++++++---------------
++ 1 file changed, 16 insertions(+), 15 deletions(-)
++
++diff --git a/documentation/standards.md b/documentation/standards.md
++index e0c0cba83c..05c5afffe8 100644
++--- a/documentation/standards.md
+++++ b/documentation/standards.md
++@@ -70,27 +70,28 @@ cannot be split without infringing syntactic rules
++ or reducing readability, as well as for command output
++ which should be kept unmodified.
++ 
++-### Project names
+++### File, tool and command names
++ 
++-Project names should be capitalized in the same
++-way they are on Wikipedia, in particular:
+++File, tool, command and package names should be double tick-quoted.
+++For example, ``` ``conf/local.conf`` ``` is preferred over
+++`"conf/local.conf"`.
++ 
++-* BitBake
++-* OpenEmbedded
+++### Project names
++ 
++-There are exceptions in which such names can be used
++-in lower case:
+++Project names should be introduced with single quotes, to have them rendered
+++with an italic font and make them easier to distinguish from command names
+++(double tick-quoted) and from regular English words.
++ 
++-* When referring to a package name
++-* When referring to the corresponding command name
++-* When used in a cross-reference title. Such
++-  titles are usually in lower case.
+++They should also be capitalized in the same way they are on Wikipedia, or on
+++their own project pages if they are not described on Wikipedia.
++ 
++-### File, tool and command names
+++For example:
++ 
++-File, tool and command names should be double tick-quoted.
++-For example, ``` ``conf/local.conf`` ``` is preferred over
++-`"conf/local.conf"`.
+++* ``` `BitBake` ```
+++* ``` `ftrace` ```
+++
+++An exception is when such names are used in a section title, or in a cross-reference
+++to a section. In that case, capitalization and quotes are ignored by Sphinx.
++ 
++ ### Variables
++ 
++-- 
++2.34.1
++
+diff --git a/documentation/standards.md b/documentation/standards.md
+index e0c0cba83c..3fc5796301 100644
+--- a/documentation/standards.md
++++ b/documentation/standards.md
+@@ -70,27 +70,30 @@ cannot be split without infringing syntactic rules
+ or reducing readability, as well as for command output
+ which should be kept unmodified.
+ 
+-### Project names
++### File, tool and command names
+ 
+-Project names should be capitalized in the same
+-way they are on Wikipedia, in particular:
++File, tool, command and package names should be double tick-quoted.
++For example, ``` ``conf/local.conf`` ``` is preferred over
++`"conf/local.conf"`.
+ 
+-* BitBake
+-* OpenEmbedded
++### Project names
+ 
+-There are exceptions in which such names can be used
+-in lower case:
++Project names should be introduced with single quotes, to have them rendered
++with an italic font and make them easier to distinguish from command names
++(double tick-quoted) and from regular English words.
+ 
+-* When referring to a package name
+-* When referring to the corresponding command name
+-* When used in a cross-reference title. Such
+-  titles are usually in lower case.
++They should also be capitalized (or not) in the same way they are on Wikipedia,
++or on their own project pages if they are not described on Wikipedia. If a
++project name isn't capitalized, it should remain so even at the beginning of a
++sentence.
+ 
+-### File, tool and command names
++For example:
+ 
+-File, tool and command names should be double tick-quoted.
+-For example, ``` ``conf/local.conf`` ``` is preferred over
+-`"conf/local.conf"`.
++* ``` `BitBake` ```
++* ``` `ftrace` ```
++
++An exception is when such names are used in a section title, or in a cross-reference
++to a section. In that case, capitalization and quotes are ignored by Sphinx.
+ 
+ ### Variables
+ 
 -- 
-Michael Opdenacker, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
 
 
