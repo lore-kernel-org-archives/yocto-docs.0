@@ -1,96 +1,100 @@
-Return-Path: <ticotimo@gmail.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4ECF6C4345F
-	for <webhook@archiver.kernel.org>; Fri, 26 Apr 2024 23:05:40 +0000 (UTC)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
- by mx.groups.io with SMTP id smtpd.web11.316.1714172735571617918
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2046DC4345F
+	for <webhook@archiver.kernel.org>; Sat, 27 Apr 2024 05:20:02 +0000 (UTC)
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+ by mx.groups.io with SMTP id smtpd.web10.5329.1714195193345938556
  for <docs@lists.yoctoproject.org>;
- Fri, 26 Apr 2024 16:05:35 -0700
+ Fri, 26 Apr 2024 22:19:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=ar2zpwjT;
- spf=pass (domain: gmail.com, ip: 209.85.128.169, mailfrom: ticotimo@gmail.com)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-61b92a83216so31106467b3.2
-        for <docs@lists.yoctoproject.org>; Fri, 26 Apr 2024 16:05:35 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=PN/wOJDD;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.167.44, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-516d6c1e238so3590355e87.2
+        for <docs@lists.yoctoproject.org>; Fri, 26 Apr 2024 22:19:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714172734; x=1714777534; darn=lists.yoctoproject.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=eR+2BKVfIQ6asNRHHcYrJ8Y7qY80A25xbM2Npp+gBUU=;
-        b=ar2zpwjTkDqtCbh/S9i/e/8hApfaPYwuuKBJQCVnthgNLcVzsl83fKbUsNVuOw7gHW
-         5nAO2EF/vJ5T4GlBw6jXlmzqJaRzyxyU8xvhweNRfyPeYGyzbQWnegttDKSFkHA5xrHW
-         PpZHDDEqRR+jfe3+ZfUEhMmD6JhmdpvyCtVTqAqDv9ygwuB6OZxD3bBxVehFYNC7ZjD5
-         rC4MTvkay1QfeDxk05bYfznDZ7uFh4lxdBKkF0eKnThHYLZOs4b7AfHziiOpcSoZ99N3
-         SYFIdLb85jAlFX/ElP6umkhznbpytlSgnsQLyEojXjWKPGe8kXudLNqON9/Kb/Ng/TfQ
-         kRog==
+        d=linuxfoundation.org; s=google; t=1714195191; x=1714799991; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:to:from:subject:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SCx0UFm0TTk4yTWKkG0joiUq5wNVg+1g9Ji1xU2u7JA=;
+        b=PN/wOJDD+qsuXC4IVafyPgq0ScBIlX8gtCdg56MYMBRcAgffj1DwCLkV+OvZtgbntI
+         fv0JZXb0tpxcQIrmsR632jYxVidnFanXJa97ZTCGpKwRPotDf4iY8aIj9EBi+qt33BTt
+         ljdusTeIu5lF+VJINpo5wCxHu6QOWuySfz+qo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714172734; x=1714777534;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eR+2BKVfIQ6asNRHHcYrJ8Y7qY80A25xbM2Npp+gBUU=;
-        b=axLnDiupyl+I+F1YMpq1e36ULuCFrmFcBmZUYZPCQgRJZJ40VmszznOY/7FNwsSAOK
-         Wxrb/WnRO2X+IBM/saW4DQkg1mXlgv8MYQdhoQr2RhTEmZXdI2YPlo7F8k27iAy4ed2h
-         /IuFK9ksfu2DTxFziNapSV6Gy93JmNvyRSY2paTa5uV2LratfeSgWW78Z2896IG4E8Og
-         wsBVwwlOYyhDI5/uGAylCb2GlimG3PPOQtwE5lAnF3N290Mm74H+EHqVZpK+s6uenPLK
-         CJe3LUCOsBE9iBIf7YG6sW9rWe7s94RXUhQ8jhQ3tOCCEThWOZ8trFt9ChPiemoxApRF
-         BZPg==
-X-Gm-Message-State: AOJu0YwCc+GbLhMO72ftKBt6PwXSd9FVet3YVbDFOS+0ZoAEQj8P1ZHk
-	pEzoNm8RNuRvq8PAj7OgHCzSRuP+mN5JS43x5KJUXQaA13/qaKS+7CWii0tzxVtj/oM3f6RC0St
-	Bq1eBqmNa58J93FuQdUfYUsY1nRHv5/uq
-X-Google-Smtp-Source: AGHT+IFckNWQW0UcpQryX4EOMni4mu61U7lnArav4hxbUhpB4wS+Zdllxrt9jxtV8aRI5zPDoLBBEfUqd3bxiNN3egs=
-X-Received: by 2002:a05:690c:6e0b:b0:618:8b8a:b4de with SMTP id
- jb11-20020a05690c6e0b00b006188b8ab4demr4940269ywb.27.1714172734177; Fri, 26
- Apr 2024 16:05:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714195191; x=1714799991;
+        h=mime-version:user-agent:content-transfer-encoding:autocrypt
+         :references:in-reply-to:date:to:from:subject:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SCx0UFm0TTk4yTWKkG0joiUq5wNVg+1g9Ji1xU2u7JA=;
+        b=fAy2d1qrkqHNL/1U/oJhqQYSb8g/I8RTXmTnAnCxQOeM4BPYy4IL8JwAhW3n12nm/h
+         h27IN1BGCiQyE1PXYPLwaf32/4SK8KaePsZmDkt3/zZSEUAhelxKIkbs8GXHt2Tqa/bc
+         J/MR/Z0t50qI1xoBkIwP7+P5/YMr6HGl6kC2zax4f7mzZ7iIe/BqjeyY83dXaszDFYR/
+         /8WmDVdj97UjrF17G+VOAX2/lMZPavo//j1wdMaeYU8ALfwszc+NeyKPQXzw6zN+msbH
+         410JxjougPuMQWi+v/X6cQ3SeJsoo4+NCBMcphhQchn5GbVHRD5+7tJZKJkat7s4q0Q+
+         Vp8A==
+X-Forwarded-Encrypted: i=1; AJvYcCVZWv0c7Q/ZgKfzh0AT9y9TPCNaV256yT4DdICCKc1pa31h6SoGUbsYJLsf7gduqeD+8u6gp9xGgi7S8EggkWZ6UPho2WXsEEUDOgA=
+X-Gm-Message-State: AOJu0YyUCYr1TSWCDqjQR4/fWgzn7ZKt2uMVFOCLtyKv1QHl2bGFAbn8
+	kxAVxT9D3XxVHUyb6AFrxHX2XBAc7OzTMCtdZMo9Qcpa8LwaUYgWS7ANwjfcE9o=
+X-Google-Smtp-Source: AGHT+IHlIeS1wKO23oW0zlumTSxM/MtE8oy0JXcSUehlfHi8DcIZQhtaTLIQF+eXwT6aWuFjtTTPjg==
+X-Received: by 2002:a05:6512:3ba2:b0:51b:812:3c87 with SMTP id g34-20020a0565123ba200b0051b08123c87mr3241575lfv.39.1714195191154;
+        Fri, 26 Apr 2024 22:19:51 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:62fe:868f:cf55:4372? ([2001:8b0:aba:5f3c:62fe:868f:cf55:4372])
+        by smtp.gmail.com with ESMTPSA id f17-20020a05600c4e9100b004182b87aaacsm33084198wmq.14.2024.04.26.22.19.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Apr 2024 22:19:50 -0700 (PDT)
+Message-ID: <5ecc01b083d12df9b24faec4ce01b0c856aa1c6b.camel@linuxfoundation.org>
+Subject: Re: [docs] libegl1-mesa not available in Ubuntu 24.04
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: ticotimo@gmail.com, YP docs mailing list <docs@lists.yoctoproject.org>
+Date: Sat, 27 Apr 2024 06:19:49 +0100
+In-Reply-To: <CANx9H-CA+5VbUfPkqTSi_PygfXdGxOG577HQwaod=c=M_ismqw@mail.gmail.com>
+References: 
+	<CANx9H-CA+5VbUfPkqTSi_PygfXdGxOG577HQwaod=c=M_ismqw@mail.gmail.com>
+Autocrypt: addr=richard.purdie@linuxfoundation.org; prefer-encrypt=mutual; keydata=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
+ YNvg==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.0-1 
 MIME-Version: 1.0
-From: Tim Orling <ticotimo@gmail.com>
-Date: Fri, 26 Apr 2024 16:05:23 -0700
-Message-ID: <CANx9H-CA+5VbUfPkqTSi_PygfXdGxOG577HQwaod=c=M_ismqw@mail.gmail.com>
-Subject: libegl1-mesa not available in Ubuntu 24.04
-To: YP docs mailing list <docs@lists.yoctoproject.org>
-Content-Type: multipart/alternative; boundary="000000000000e787b1061707f07d"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 26 Apr 2024 23:05:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5175
+ <docs@lists.yoctoproject.org>; Sat, 27 Apr 2024 05:20:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5176
 
---000000000000e787b1061707f07d
-Content-Type: text/plain; charset="UTF-8"
+On Fri, 2024-04-26 at 16:05 -0700, Tim Orling via
+lists.yoctoproject.org wrote:
+> In the docs, we currently tell users to install libegl1-mesa:
+> https://docs.yoctoproject.org/ref-manual/system-requirements.html#ubuntu-=
+and-debian
+>=20
+> But this is no longer available on Ubuntu 24.04 (there is a libegl1-
+> mesa-dev package).
+>=20
+> I came across this while trying to create the crops/yocto-
+> dockerfiles:ubuntu-24.04 containers.
+>=20
+> https://github.com/crops/yocto-dockerfiles/pull/103
+> https://github.com/crops/yocto-dockerfiles/actions/runs/8853986259/job/24=
+316025556#step:3:128
+>=20
+> I'm not sure what the original need was for libegl1-mesa. It has been
+> in the docs since before the Sphinx refactor.
 
-In the docs, we currently tell users to install libegl1-mesa:
-https://docs.yoctoproject.org/ref-manual/system-requirements.html#ubuntu-and-debian
+The need is to have GL to build qemu against. Not sure what the new
+dependency would be?
 
-But this is no longer available on Ubuntu 24.04 (there is a
-libegl1-mesa-dev package).
+Cheers,
 
-I came across this while trying to create the
-crops/yocto-dockerfiles:ubuntu-24.04 containers.
+Richard
 
-https://github.com/crops/yocto-dockerfiles/pull/103
-https://github.com/crops/yocto-dockerfiles/actions/runs/8853986259/job/24316025556#step:3:128
 
-I'm not sure what the original need was for libegl1-mesa. It has been in
-the docs since before the Sphinx refactor.
-
---000000000000e787b1061707f07d
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr">In the docs, we currently tell users to install libegl1-me=
-sa:<div><a href=3D"https://docs.yoctoproject.org/ref-manual/system-requirem=
-ents.html#ubuntu-and-debian">https://docs.yoctoproject.org/ref-manual/syste=
-m-requirements.html#ubuntu-and-debian</a><br></div><div><br></div><div>But =
-this is no longer available on Ubuntu 24.04 (there is a libegl1-mesa-dev pa=
-ckage).</div><div><br></div><div>I came across this while trying to create =
-the crops/yocto-dockerfiles:ubuntu-24.04 containers.</div><div><br></div><d=
-iv><a href=3D"https://github.com/crops/yocto-dockerfiles/pull/103">https://=
-github.com/crops/yocto-dockerfiles/pull/103</a><br></div><div><a href=3D"ht=
-tps://github.com/crops/yocto-dockerfiles/actions/runs/8853986259/job/243160=
-25556#step:3:128">https://github.com/crops/yocto-dockerfiles/actions/runs/8=
-853986259/job/24316025556#step:3:128</a><br></div><div><br></div><div>I&#39=
-;m not sure what the original need was for libegl1-mesa. It has been in the=
- docs since before the Sphinx refactor.</div></div>
-
---000000000000e787b1061707f07d--
 
