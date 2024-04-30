@@ -1,133 +1,130 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 45790C4345F
-	for <webhook@archiver.kernel.org>; Mon, 29 Apr 2024 12:59:28 +0000 (UTC)
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
- by mx.groups.io with SMTP id smtpd.web10.20583.1714395566234251773
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 93F0DC10F16
+	for <webhook@archiver.kernel.org>; Tue, 30 Apr 2024 14:03:20 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+ by mx.groups.io with SMTP id smtpd.web10.16415.1714485790545914617
  for <docs@lists.yoctoproject.org>;
- Mon, 29 Apr 2024 05:59:26 -0700
+ Tue, 30 Apr 2024 07:03:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=KwRITUBS;
- spf=pass (domain: gmail.com, ip: 209.85.208.169, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2dac77cdf43so56383161fa.2
-        for <docs@lists.yoctoproject.org>; Mon, 29 Apr 2024 05:59:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714395564; x=1715000364; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=p5zFBvmOmN5uKsDfYxhJeyvXhskCpieuerPMiEeeJaU=;
-        b=KwRITUBS1Lf9kkSbCS5EaeVRaN7zRD21PqAwHG1vFcuZRgQ194JLLRgb3yevERTfxT
-         mHlLqdq9skTgHic1Xe81PwTzD7WoBSIDQakIH18x05jPwUBOq0eGBfBK3vOmx6ZERzLw
-         jqSXc9XA8IoSKQcJb20kowIYaDIe0+LmAryb1hkzOq0rbKP+GMUIkWhuJ0Yyvcgc2IVN
-         q1BE+LEFmKVdLGFaChv+rPB/HvtAg4QK2hdd8L5SRw6MPUD9DTDsZCZg8YhbzCd1+WK5
-         NIzlPRScMJa6jcPgKkIjJo4fiUxvyQ/y8eYkiHX4w3tAYkA7qMJGcywjgH1tuI2UW/e1
-         hmHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714395564; x=1715000364;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p5zFBvmOmN5uKsDfYxhJeyvXhskCpieuerPMiEeeJaU=;
-        b=Yp9JybPoF7QZBctNO2LVpgzit+TFBC6YUC8Rs85kjTGnIuvfarL1twlHvZZhH2D6/I
-         FMWnfKwFVwOLJdR4Ar6LN7IgTDR3SS1S/u+TdJYXSJ7uZgFch2Ebocd9rEE8D97fX6iI
-         iVJTvJss+JRnfGr4/mBOG6zWCNtSh/BKcgLXtGPgOkuGRVGdN1TSzuqYjwj/NJTT3eH0
-         PP7O3OUqD036qnyhCMrpqnA086EiO3rantPrqwI0n3gTSJSXhyi9xDTNz8MVg98yaSpz
-         UfrNkutpLTonIovGXH0VwwtbrkkprSvA8BVxBm6hdwf2ZKL9YL287+oDp4BNN5Btqtqj
-         kLeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUZU7QHbFBP9IoLaGbFqynxG79T4rKNWztuNR2Lf4hn30XRrfdVsmnYrHJCY710Gsh7h1jX90bA2oiuHlaX+CUvWc4ZPHawcWrXTTM=
-X-Gm-Message-State: AOJu0YzuORJZtS/5pC8sMLB0tWxEe9EJ2OuFYnQILQ1Ne5IUWbBkrR/B
-	eYhgdHKuC6dleenpt3bF+U56/zdosgF4JtNGhj+OvFdKa7NejBLfC6hy9J/8CQmSSHfP1dABR+3
-	mxX7Jc1p7dRaAgk/irw6FWfsAiQg=
-X-Google-Smtp-Source: AGHT+IE7f9ax4Mf5Jz+vrO2ObguEtE5Q2IfDhkfsL3ErdKSFuMqX9kVlcSO35w3cUM3M0Pxtd8/mg9tcZxSbdV7kSjU=
-X-Received: by 2002:a2e:9e07:0:b0:2de:4cb4:2601 with SMTP id
- e7-20020a2e9e07000000b002de4cb42601mr7513157ljk.43.1714395564066; Mon, 29 Apr
- 2024 05:59:24 -0700 (PDT)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=nTlftD8u;
+ spf=pass (domain: intel.com, ip: 192.198.163.11, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714485791; x=1746021791;
+  h=from:to:subject:date:message-id:in-reply-to:references:
+   mime-version:content-transfer-encoding;
+  bh=5TPn7Lf3W5H4yTR4uHCi2p+zhbhq3JiGYsBsv6bE9V8=;
+  b=nTlftD8udhnNBncNndq+BF+vaOKNc/V/0c5XRFfBxtaNiCpBUl3mUA+O
+   +ABAGGLdBAJ6HVUYIcEhf3MxsOJ6BiIHcM79M/cFlGA+ZGYr90X5S0TGX
+   X0BnCv6JRjjGDyw1AkRaNURj/pM9IiOGxocDn6jv4rvqvLgRt5yG9MzUk
+   5iIpUEC7YPcNLv8Ryq/TVxccWqdSLp1P0EV1oqjG5mfMGnkPb+JQgS/V8
+   XY86u19guo1TZ2ANLAlTESy//W0yKKh3vDL3OA1luouNC/JCUNLITJ7kV
+   n+NFkD3nYzV7xyqQ2ICwLxqS7EVztRlpGJTN9G6oqAzrWl8yYH9Rw9o9s
+   w==;
+X-CSE-ConnectionGUID: H4HsyeCnQ3iq71Kr6Gq4/w==
+X-CSE-MsgGUID: GfRwTYCLRsOSKGgoF7yfGA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="20808125"
+X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
+   d="scan'208";a="20808125"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 07:03:11 -0700
+X-CSE-ConnectionGUID: kfRd/SW3S7y9/fwKlkFzqQ==
+X-CSE-MsgGUID: aiUgqKR1R4uSQGh9GjaXjQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
+   d="scan'208";a="26558659"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by fmviesa006.fm.intel.com with ESMTP; 30 Apr 2024 07:03:10 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH 2/2] release-notes-5.0: update Repositories / Downloads section
+Date: Tue, 30 Apr 2024 22:00:17 +0800
+Message-Id: <20240430140017.1741751-2-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240430140017.1741751-1-chee.yang.lee@intel.com>
+References: <20240430140017.1741751-1-chee.yang.lee@intel.com>
 MIME-Version: 1.0
-References: <20240429093447.4163638-1-alex@linutronix.de> <55922270-61b0-4a6d-8c3d-3b4e61e68d67@bootlin.com>
-In-Reply-To: <55922270-61b0-4a6d-8c3d-3b4e61e68d67@bootlin.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Mon, 29 Apr 2024 14:59:13 +0200
-Message-ID: <CANNYZj8fjrUkh0xuHiWh6DdV7b3cGGn+PDntUvj==j_W6hFcJw@mail.gmail.com>
-Subject: Re: [docs] [PATCH] documentation/poky.yaml.in: drop mesa/sdl from
- essential host packages
-To: Michael Opdenacker <michael.opdenacker@bootlin.com>
-Cc: Alexander Kanavin <alex@linutronix.de>, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 29 Apr 2024 12:59:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5181
+ <docs@lists.yoctoproject.org>; Tue, 30 Apr 2024 14:03:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5183
 
-This should go to scarthgap and kirkstone as well, as the removal of
-host mesa/sdl dependencies pre-dates that.
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Alex
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-notes-5.0.rst    | 55 +++++++++++++++++++
+ 1 file changed, 55 insertions(+)
 
-On Mon, 29 Apr 2024 at 14:41, Michael Opdenacker
-<michael.opdenacker@bootlin.com> wrote:
->
-> Hi Alex,
->
-> On 4/29/24 at 11:34, Alexander Kanavin wrote:
-> > They used to be required for qemu graphics support, but neither is being
-> > for anything anymore.
-> >
-> > Signed-off-by: Alexander Kanavin <alex@linutronix.de>
-> > ---
-> >   documentation/poky.yaml.in | 12 ++++++------
-> >   1 file changed, 6 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-> > index 7a686ac4e..5a1b8ef59 100644
-> > --- a/documentation/poky.yaml.in
-> > +++ b/documentation/poky.yaml.in
-> > @@ -12,18 +12,18 @@ YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
-> >   YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
-> >   UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
-> >        build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
-> > -     xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev \
-> > -     python3-subunit mesa-common-dev zstd liblz4-tool file locales libacl1
-> > +     xz-utils debianutils iputils-ping python3-git python3-jinja2 \
-> > +     python3-subunit zstd liblz4-tool file locales libacl1
-> >        \n\   $ sudo locale-gen en_US.UTF-8"
-> >   FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
-> >        diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-> >        ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
-> >        python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
-> > -     python3-jinja2 SDL-devel rpcgen mesa-libGL-devel perl-FindBin perl-File-Compare \
-> > +     python3-jinja2 rpcgen perl-FindBin perl-File-Compare \
-> >        perl-File-Copy perl-locale zstd lz4 hostname glibc-langpack-en libacl"
-> >   OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
-> >        diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
-> > -     python3-pexpect xz which python3-Jinja2 Mesa-libEGL1 libSDL-devel rpcgen Mesa-dri-devel \
-> > +     python3-pexpect xz which python3-Jinja2 rpcgen \
-> >        zstd lz4 bzip2 gzip hostname libacl1
-> >        \n\   $ sudo pip3 install GitPython"
-> >   ALMALINUX_HOST_PACKAGES_ESSENTIAL : "-y epel-release
-> > @@ -33,8 +33,8 @@ ALMALINUX_HOST_PACKAGES_ESSENTIAL : "-y epel-release
-> >        \n\   $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch \
-> >        diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
-> >        socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
-> > -     python3-GitPython python3-jinja2 python3-pexpect xz which SDL-devel \
-> > -     rpcgen mesa-libGL-devel zstd lz4 cpio glibc-langpack-en libacl"
-> > +     python3-GitPython python3-jinja2 python3-pexpect xz which \
-> > +     rpcgen zstd lz4 cpio glibc-langpack-en libacl"
-> >   PIP3_HOST_PACKAGES_DOC : "$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml"
-> >   MIN_PYTHON_VERSION : "3.8.0"
-> >   MIN_TAR_VERSION : "1.28"
->
->
-> Thanks for this simplification!
-> Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Merged into master-next.
-> Michael.
->
-> --
-> Michael Opdenacker, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
->
+diff --git a/documentation/migration-guides/release-notes-5.0.rst b/documentation/migration-guides/release-notes-5.0.rst
+index 884a66771..800ba20a2 100644
+--- a/documentation/migration-guides/release-notes-5.0.rst
++++ b/documentation/migration-guides/release-notes-5.0.rst
+@@ -936,3 +936,58 @@ Thanks to the following people who contributed to this release:
+ Repositories / Downloads for Yocto-5.0
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0 </poky/log/?h=yocto-5.0>`
++-  Git Revision: :yocto_git:`fb91a49387cfb0c8d48303bb3354325ba2a05587 </poky/commit/?id=fb91a49387cfb0c8d48303bb3354325ba2a05587>`
++-  Release Artefact: poky-fb91a49387cfb0c8d48303bb3354325ba2a05587
++-  sha: 8a0dff4b677b9414ab814ed35d1880196123732ea16ab2fafa388bcc509b32ab
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0/poky-fb91a49387cfb0c8d48303bb3354325ba2a05587.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0/poky-fb91a49387cfb0c8d48303bb3354325ba2a05587.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
++-  Tag:  :oe_git:`yocto-5.0 </openembedded-core/log/?h=yocto-5.0>`
++-  Git Revision: :oe_git:`b65b4e5a8e4473d8ca43835ba17bc8bd4bdca277 </openembedded-core/commit/?id=b65b4e5a8e4473d8ca43835ba17bc8bd4bdca277>`
++-  Release Artefact: oecore-b65b4e5a8e4473d8ca43835ba17bc8bd4bdca277
++-  sha: c7fd05d1a00c70acba2540e60dce01a1bdc4701ebff9a808784960240c69261d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0/oecore-b65b4e5a8e4473d8ca43835ba17bc8bd4bdca277.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0/oecore-b65b4e5a8e4473d8ca43835ba17bc8bd4bdca277.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0 </meta-mingw/log/?h=yocto-5.0>`
++-  Git Revision: :yocto_git:`acbba477893ef87388effc4679b7f40ee49fc852 </meta-mingw/commit/?id=acbba477893ef87388effc4679b7f40ee49fc852>`
++-  Release Artefact: meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852
++-  sha: 3b7c2f475dad5130bace652b150367f587d44b391218b1364a8bbc430b48c54c
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
++-  Tag:  :oe_git:`yocto-5.0 </bitbake/log/?h=yocto-5.0>`
++-  Git Revision: :oe_git:`c86466d51e8ff14e57a734c1eec5bb651fdc73ef </bitbake/commit/?id=c86466d51e8ff14e57a734c1eec5bb651fdc73ef>`
++-  Release Artefact: bitbake-c86466d51e8ff14e57a734c1eec5bb651fdc73ef
++-  sha: 45c91294c1fa5a0044f1bb72a9bb69456bb458747114115af85c7664bf672d48
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0/bitbake-c86466d51e8ff14e57a734c1eec5bb651fdc73ef.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0/bitbake-c86466d51e8ff14e57a734c1eec5bb651fdc73ef.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
++-  Tag: :yocto_git:`yocto-5.0 </yocto-docs/log/?h=yocto-5.0>`
++-  Git Revision: :yocto_git:`0cdc0afd3332459d30cfc8f4c2e62bdcc23f5ed5 </yocto-docs/commit/?id=0cdc0afd3332459d30cfc8f4c2e62bdcc23f5ed5>`
++
+-- 
+2.34.1
+
 
