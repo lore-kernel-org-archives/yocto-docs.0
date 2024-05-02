@@ -1,126 +1,259 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <ticotimo@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A5C16C4345F
-	for <webhook@archiver.kernel.org>; Thu,  2 May 2024 16:12:57 +0000 (UTC)
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
- by mx.groups.io with SMTP id smtpd.web11.432.1714666370033218119
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B4480C4345F
+	for <webhook@archiver.kernel.org>; Thu,  2 May 2024 16:23:57 +0000 (UTC)
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+ by mx.groups.io with SMTP id smtpd.web10.10251.1714667035260326120
  for <docs@lists.yoctoproject.org>;
- Thu, 02 May 2024 09:12:50 -0700
+ Thu, 02 May 2024 09:23:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=OKqczl+8;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.208.182, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2e1fa824504so10562241fa.0
-        for <docs@lists.yoctoproject.org>; Thu, 02 May 2024 09:12:49 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=aWCmyTcw;
+ spf=pass (domain: gmail.com, ip: 209.85.128.178, mailfrom: ticotimo@gmail.com)
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-61be613d903so43251657b3.0
+        for <docs@lists.yoctoproject.org>; Thu, 02 May 2024 09:23:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1714666368; x=1715271168; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:to:from:subject:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=G13jDhdSbJZhSy/5o58zBlJrM/1nUMBx4ho+6ABs8DM=;
-        b=OKqczl+8SON9Qa7rLiM/LlHXI0cp10yWexR5yI/6VhFbB2soxi3zMbEb2X9kjzZx0y
-         +85XEuU3c+X6lh3WamjGZIvEJpvxI9kOSVUrHsuPKCSe5ks80PKYKFSFjR0EZM/XITuW
-         uxebJ3j/15VOHwK1sl37aXEDhPSA+AGZGALKs=
+        d=gmail.com; s=20230601; t=1714667034; x=1715271834; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=G5KtPBsTUIeqYyg/wEmoWNQitviID84dXhJTqcG+ObQ=;
+        b=aWCmyTcwY3b97NNYNgYeuB+RPI1zmIRLObs7jLZk4/Rej/uhabuGkguWviLSyERajT
+         B0yP7c5+rpAsUb/ECy9pyBsbkwyId4bn4Gd6f+rzlkZYdrS7eeXdw24UB2Eeg8pZB4QJ
+         dkr3L3+Z9bozC4QgIPi8prj3Ep8CoI1y3VYFKF6MoWlJLxJCyxTOA441XQNHUC8UXuCA
+         29qG9OJdwnS6lR9vBO90gKHp/Bu6fhbQ2uyv84vFajL91oylkIFv0kIAfwGXAIdZP6Yv
+         nWuTqmWL2OyVmz5Kjyp+/e/CrNarCCx1rhx35g3zbglSgCO1n9d7VvftHUQQ9hoHirCm
+         VMyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714666368; x=1715271168;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G13jDhdSbJZhSy/5o58zBlJrM/1nUMBx4ho+6ABs8DM=;
-        b=eWLSNGr8KU/eknsvNb53azjVj0WhW+Lp9xKWZsfoVU6sNOKNSsHPXv6UMtjp8oEm96
-         26B8vnAkdvseKKdHS2gvwXjc3Pll1MeMiNNtlDtP00IZEfcScsMe+v6sFrX7GV4EfytU
-         Fai2tRGfqeYxPk2uGXrDR5JRwW4Xj/YEou4IkyLj6doN9/PsF5Mk0xUxREKeZnF0mv19
-         FJw+56f7lUPsdYZVStmcC+UM/TJoWZxLHbUAqF/jdmq7SBN8WzQ9y0Gom2ykV+XmlD1G
-         ncdgdULac2xv2mfNuYNsB57/ASI0RyRJKm5aVw41tuoL4M92UU65vi1y64CJ8E4XJZCx
-         Z/8A==
-X-Gm-Message-State: AOJu0YyU+QJjQwYSwkaRF1CYFMx0hgrQvDoOW489aGa6l2xZ6tKLQVtx
-	QHgB1Mnf28TBAb6IPiulSao1bpRNAVL4QVODqJDM1rch/hmh04tq/xd/DWRQmWp7m5rJsOyIAf4
-	E/yg=
-X-Google-Smtp-Source: AGHT+IEDTIAZ3nz0GyXACAk9XVydjb4NfPUUbp55Wu/JPRSNHSSEc2N07o9itzEcW5LjPmIANB+LRQ==
-X-Received: by 2002:a05:651c:b13:b0:2df:49b:27cc with SMTP id b19-20020a05651c0b1300b002df049b27ccmr162389ljr.22.1714666368031;
-        Thu, 02 May 2024 09:12:48 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:e92c:f8cd:59ee:48e5? ([2001:8b0:aba:5f3c:e92c:f8cd:59ee:48e5])
-        by smtp.gmail.com with ESMTPSA id h12-20020a05600c314c00b0041be9cb540esm2415360wmo.18.2024.05.02.09.12.47
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 May 2024 09:12:47 -0700 (PDT)
-Message-ID: <d8403196c691ff484c374a448a4bd0fccc1ce69b.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] brief-yoctoprojectqs: Update to the correct hash
- equivalence server address
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: docs@lists.yoctoproject.org
-Date: Thu, 02 May 2024 17:12:46 +0100
-In-Reply-To: <17CBB7A6FB14731F.29540@lists.yoctoproject.org>
-References: <17CBB7A6FB14731F.29540@lists.yoctoproject.org>
-Autocrypt: addr=richard.purdie@linuxfoundation.org; prefer-encrypt=mutual; keydata=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
- YNvg==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0-1 
+        d=1e100.net; s=20230601; t=1714667034; x=1715271834;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=G5KtPBsTUIeqYyg/wEmoWNQitviID84dXhJTqcG+ObQ=;
+        b=tM2f5CMo7FcIP5sISq0ooqSAu8Ej4nZte+VK2ca1HlKrzBloNOomeLD1RSLflOa7qA
+         NtTlEjzSQqL6LwIAivetZHAKe0C1ZmVdubJOfly2c95JG5HiaEcxz5II/ChprU5hENYV
+         jM1KgRlZw7kTXLs6N+rKIia2+wozRRHy1o8ygbbegbZxJuYBtf9iaJ5axNBJjR6F6kCL
+         wqkaVE+H8JVhoDDH9SKo0UVTw32kbL6Tti/bhcbUypil3th0IObEUDibvEXE998ba6+l
+         wNW4R5e0bEqc6es5kEDkhuBho7D4L6IlxI50FZx8ZF7H9RXnKZjTp320Bk2c7BMhUket
+         ICdw==
+X-Forwarded-Encrypted: i=1; AJvYcCWFeGbUc4v0r7EN+loMyLrlqBIhbVLg3flSC3UfrOgQUjwQkbZbb9ILmviC+U6qIs5/Xm52JkBc9GSYgGVdSxj3Q/81bhtmJ5x3l+g=
+X-Gm-Message-State: AOJu0Yxar9l8IPDILfOyQU8+PPaQnJh6iqjLzUdCM5ygGrviUHTqj1NH
+	xNNziLr7RSjRlwvPi8/jEdfxKYjtM0JXNv864BPfsye3U71g5rmmilfNJ/xXD9T2K0cAEZCKRD4
+	4W9AHer5ltdQYlGr0xhHrhSq7ni4=
+X-Google-Smtp-Source: AGHT+IEAD+7WExPaWf8b8OR2hAQwU93MivOQ0EBUb5LSJhRKaR8ubyRnv4Mccd6rO7idjDkWdJ9wTURX0fu9KMZp9ZQ=
+X-Received: by 2002:a05:690c:6a06:b0:61b:97c:5ffa with SMTP id
+ ih6-20020a05690c6a0600b0061b097c5ffamr7305759ywb.22.1714667034313; Thu, 02
+ May 2024 09:23:54 -0700 (PDT)
 MIME-Version: 1.0
+References: <20240502152701.1798568-2-tim.orling@konsulko.com>
+ <CAJdd5GYyNK5qq-CKH=WHQRAZLxhJN45Nz8xYtKkO3MpYDXiBhQ@mail.gmail.com> <17CBB7F2FCD711F1.29540@lists.yoctoproject.org>
+In-Reply-To: <17CBB7F2FCD711F1.29540@lists.yoctoproject.org>
+From: Tim Orling <ticotimo@gmail.com>
+Date: Thu, 2 May 2024 09:23:43 -0700
+Message-ID: <CANx9H-CFcVq_vqF2xwyA31K9u8Q4io1xRCyFce47Ag-OSk2yJg@mail.gmail.com>
+Subject: Re: [docs] [PATCH] contributor-guide: recommend format.forceInBodyFrom
+To: ticotimo@gmail.com
+Cc: JPEWhacker@gmail.com, tim.orling@konsulko.com, docs@lists.yoctoproject.org
+Content-Type: multipart/alternative; boundary="0000000000007d0b3d06177b07d6"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 May 2024 16:12:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5203
+ <docs@lists.yoctoproject.org>; Thu, 02 May 2024 16:23:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5204
 
-On Thu, 2024-05-02 at 17:06 +0100, Richard Purdie via lists.yoctoproject.or=
-g wrote:
-> Also add a note about needing python websockets installed.
->=20
-> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> ---
-> =C2=A0documentation/brief-yoctoprojectqs/index.rst | 5 ++++-
-> =C2=A01 file changed, 4 insertions(+), 1 deletion(-)
->=20
-> diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation=
-/brief-yoctoprojectqs/index.rst
-> index 61c5cbec3..4301bfd97 100644
-> --- a/documentation/brief-yoctoprojectqs/index.rst
-> +++ b/documentation/brief-yoctoprojectqs/index.rst
-> @@ -251,11 +251,14 @@ an entire Linux distribution, including the toolcha=
-in, from source.
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 To use such mirrors, uncomment the b=
-elow lines in your ``conf/local.conf``
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 file in the :term:`Build Directory`:=
-:
-> =C2=A0
-> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BB_HASHSERVE_UPSTREAM =
-=3D "hashserv.yocto.io:8687"
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BB_HASHSERVE_UPSTREAM =
-=3D "wss://hashserv.yoctoproject.org/ws"
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SSTATE_MIRRORS ?=
-=3D "file://.* http://cdn.jsdelivr.net/yocto/sstate/all/PATH;downloadfilena=
-me=3DPATH"
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BB_HASHSERVE =3D "=
-auto"
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 BB_SIGNATURE_HANDL=
-ER =3D "OEEquivHash"
-> =C2=A0
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 The hash equivalence server needs a recen=
-t version of python
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 websockets installed to work correctly.
-> +
-> =C2=A0#. **Start the Build:** Continue with the following command to buil=
-d an OS
-> =C2=A0=C2=A0=C2=A0 image for the target, which is ``core-image-sato`` in =
-this example:
-> =C2=A0
->=20
+--0000000000007d0b3d06177b07d6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-I didn't like having the wrong thing publicly visible so I've merged
-this. If we need further changes or improvement (such as we work out
-which websockets versions we need specifically), we can add them on
-top.
+On Thu, May 2, 2024 at 9:12=E2=80=AFAM Tim Orling via lists.yoctoproject.or=
+g
+<ticotimo=3Dgmail.com@lists.yoctoproject.org> wrote:
 
-Cheers,
+>
+>
+> On Thu, May 2, 2024 at 8:38=E2=80=AFAM Joshua Watt via lists.yoctoproject=
+.org
+> <JPEWhacker=3Dgmail.com@lists.yoctoproject.org> wrote:
+>
+>> On Thu, May 2, 2024 at 9:27=E2=80=AFAM Tim Orling via lists.yoctoproject=
+.org
+>> <tim.orling=3Dkonsulko.com@lists.yoctoproject.org> wrote:
+>> >
+>> > We are seeing a lot of patches failing when the From:
+>> > line is not contained in the message body. It is probably
+>> > better to just recommend to force the in-body From: to be
+>> > present globally.
+>> >
+>> > Signed-off-by: Tim Orling <tim.orling@konsulko.com>
+>> > ---
+>> >  documentation/contributor-guide/submit-changes.rst | 5 +++++
+>> >  1 file changed, 5 insertions(+)
+>> >
+>> > diff --git a/documentation/contributor-guide/submit-changes.rst
+>> b/documentation/contributor-guide/submit-changes.rst
+>> > index 47a416b24..c292a143a 100644
+>> > --- a/documentation/contributor-guide/submit-changes.rst
+>> > +++ b/documentation/contributor-guide/submit-changes.rst
+>> > @@ -65,6 +65,11 @@ use to identify your commits::
+>> >     git config --global user.name "Ada Lovelace"
+>> >     git config --global user.email "ada.lovelace@gmail.com"
+>> >
+>> > +To ensure that your patches are formatted properly, it is also
+>> > +recommended to set::
+>> > +
+>> > +   git config --global format.forceInBodyFrom true
+>> > +
+>>
+>> This is good, but we will probably need to clarify that there is a git
+>> version dependency here. Git 2.34.1 (at least) doesn't have this
+>> option. I'm not sure when it was added. It appears that 2.34 is the
+>> version that ships with Ubuntu 22.04
+>>
+>
+> Looks like it was introduced in 2.38.0, I think?
+> https://github.com/git/git/commit/d5fc07df688ace8c5a32f66b358ebd55cdaf4d2=
+8
+>
 
-Richard
+I had to remind myself how I had git 2.43.2 (on Ubuntu 22.04):
+
+$ cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list
+deb https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ jammy main
+# deb-src https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/ jammy main
+
+
+>
+>
+>>
+>> >  Clone the Git repository for the component to modify
+>> >  ----------------------------------------------------
+>> >
+>> > --
+>> > 2.43.2
+>> >
+>> >
+>> >
+>> >
+>>
+>>
+>>
+>>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#5202):
+> https://lists.yoctoproject.org/g/docs/message/5202
+> Mute This Topic: https://lists.yoctoproject.org/mt/105864996/924729
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [
+> ticotimo@gmail.com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
+>
+
+--0000000000007d0b3d06177b07d6
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote">=
+<div dir=3D"ltr" class=3D"gmail_attr">On Thu, May 2, 2024 at 9:12=E2=80=AFA=
+M Tim Orling via <a href=3D"http://lists.yoctoproject.org">lists.yoctoproje=
+ct.org</a> &lt;ticotimo=3D<a href=3D"mailto:gmail.com@lists.yoctoproject.or=
+g">gmail.com@lists.yoctoproject.org</a>&gt; wrote:<br></div><blockquote cla=
+ss=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid =
+rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div dir=3D"ltr"><br></=
+div><br><div class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On=
+ Thu, May 2, 2024 at 8:38=E2=80=AFAM Joshua Watt via <a href=3D"http://list=
+s.yoctoproject.org" target=3D"_blank">lists.yoctoproject.org</a> &lt;JPEWha=
+cker=3D<a href=3D"mailto:gmail.com@lists.yoctoproject.org" target=3D"_blank=
+">gmail.com@lists.yoctoproject.org</a>&gt; wrote:<br></div><blockquote clas=
+s=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid r=
+gb(204,204,204);padding-left:1ex">On Thu, May 2, 2024 at 9:27=E2=80=AFAM Ti=
+m Orling via <a href=3D"http://lists.yoctoproject.org" rel=3D"noreferrer" t=
+arget=3D"_blank">lists.yoctoproject.org</a><br>
+&lt;tim.orling=3D<a href=3D"mailto:konsulko.com@lists.yoctoproject.org" tar=
+get=3D"_blank">konsulko.com@lists.yoctoproject.org</a>&gt; wrote:<br>
+&gt;<br>
+&gt; We are seeing a lot of patches failing when the From:<br>
+&gt; line is not contained in the message body. It is probably<br>
+&gt; better to just recommend to force the in-body From: to be<br>
+&gt; present globally.<br>
+&gt;<br>
+&gt; Signed-off-by: Tim Orling &lt;<a href=3D"mailto:tim.orling@konsulko.co=
+m" target=3D"_blank">tim.orling@konsulko.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 documentation/contributor-guide/submit-changes.rst | 5 +++++<br>
+&gt;=C2=A0 1 file changed, 5 insertions(+)<br>
+&gt;<br>
+&gt; diff --git a/documentation/contributor-guide/submit-changes.rst b/docu=
+mentation/contributor-guide/submit-changes.rst<br>
+&gt; index 47a416b24..c292a143a 100644<br>
+&gt; --- a/documentation/contributor-guide/submit-changes.rst<br>
+&gt; +++ b/documentation/contributor-guide/submit-changes.rst<br>
+&gt; @@ -65,6 +65,11 @@ use to identify your commits::<br>
+&gt;=C2=A0 =C2=A0 =C2=A0git config --global <a href=3D"http://user.name" re=
+l=3D"noreferrer" target=3D"_blank">user.name</a> &quot;Ada Lovelace&quot;<b=
+r>
+&gt;=C2=A0 =C2=A0 =C2=A0git config --global user.email &quot;<a href=3D"mai=
+lto:ada.lovelace@gmail.com" target=3D"_blank">ada.lovelace@gmail.com</a>&qu=
+ot;<br>
+&gt;<br>
+&gt; +To ensure that your patches are formatted properly, it is also<br>
+&gt; +recommended to set::<br>
+&gt; +<br>
+&gt; +=C2=A0 =C2=A0git config --global format.forceInBodyFrom true<br>
+&gt; +<br>
+<br>
+This is good, but we will probably need to clarify that there is a git<br>
+version dependency here. Git 2.34.1 (at least) doesn&#39;t have this<br>
+option. I&#39;m not sure when it was added. It appears that 2.34 is the<br>
+version that ships with Ubuntu 22.04<br></blockquote><div><br></div><div>Lo=
+oks like it was introduced in 2.38.0, I think?</div><div><a href=3D"https:/=
+/github.com/git/git/commit/d5fc07df688ace8c5a32f66b358ebd55cdaf4d28" target=
+=3D"_blank">https://github.com/git/git/commit/d5fc07df688ace8c5a32f66b358eb=
+d55cdaf4d28</a></div></div></div></blockquote><div><br></div><div>I had to =
+remind myself how I had git 2.43.2 (on Ubuntu 22.04):</div><div><br></div>$=
+ cat /etc/apt/sources.list.d/git-core-ubuntu-ppa-jammy.list<br>deb <a href=
+=3D"https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/">https://ppa.laun=
+chpadcontent.net/git-core/ppa/ubuntu/</a> jammy main<br><div># deb-src <a h=
+ref=3D"https://ppa.launchpadcontent.net/git-core/ppa/ubuntu/">https://ppa.l=
+aunchpadcontent.net/git-core/ppa/ubuntu/</a> jammy main</div><div>=C2=A0</d=
+iv><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bord=
+er-left:1px solid rgb(204,204,204);padding-left:1ex"><div dir=3D"ltr"><div =
+class=3D"gmail_quote"><div>=C2=A0</div><blockquote class=3D"gmail_quote" st=
+yle=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padd=
+ing-left:1ex">
+<br>
+&gt;=C2=A0 Clone the Git repository for the component to modify<br>
+&gt;=C2=A0 ----------------------------------------------------<br>
+&gt;<br>
+&gt; --<br>
+&gt; 2.43.2<br>
+&gt;<br>
+&gt;<br>
+&gt; <br>
+&gt;<br>
+<br>
+<br>
+<br>
+</blockquote></div></div>
+<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+Links: You receive all messages sent to this group.<br>
+View/Reply Online (#5202): <a href=3D"https://lists.yoctoproject.org/g/docs=
+/message/5202" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproj=
+ect.org/g/docs/message/5202</a><br>
+Mute This Topic: <a href=3D"https://lists.yoctoproject.org/mt/105864996/924=
+729" rel=3D"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/mt=
+/105864996/924729</a><br>
+Group Owner: <a href=3D"mailto:docs%2Bowner@lists.yoctoproject.org" target=
+=3D"_blank">docs+owner@lists.yoctoproject.org</a><br>
+Unsubscribe: <a href=3D"https://lists.yoctoproject.org/g/docs/unsub" rel=3D=
+"noreferrer" target=3D"_blank">https://lists.yoctoproject.org/g/docs/unsub<=
+/a> [<a href=3D"mailto:ticotimo@gmail.com" target=3D"_blank">ticotimo@gmail=
+.com</a>]<br>
+-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-<br>
+<br>
+</blockquote></div></div>
+
+--0000000000007d0b3d06177b07d6--
 
