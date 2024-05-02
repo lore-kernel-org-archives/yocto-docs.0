@@ -2,113 +2,269 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A1B6C25B74
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 086E2C04FFE
 	for <webhook@archiver.kernel.org>; Thu,  2 May 2024 06:57:34 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.7640.1714633046276422037
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.7659.1714633047863313445
  for <docs@lists.yoctoproject.org>;
- Wed, 01 May 2024 23:57:26 -0700
+ Wed, 01 May 2024 23:57:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OfFqIN+Z;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8105A1C0004;
-	Thu,  2 May 2024 06:57:24 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=EXopiGI2;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 66E48C0002;
+	Thu,  2 May 2024 06:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1714633044;
+	t=1714633046;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=B1gtOYBUA3lKoCwD8kz57inVrXqrW6VACmUVe/eFzGw=;
-	b=OfFqIN+ZKDIDe74KMRtIH8tl7HI3C+QqOugpfwrdHER0js1UBFUsVq44d/kV3tEJLstbeL
-	FTfiRb3Yn04YX8w7di/Ib6sSXG1VuNEd3p0X9e6CgX6jbFrWBVR706JFSYXAz7F9WDamV1
-	evL64Q1C/o6Q79qWzCA1cB1jkYj49KgaT1XQSRvdjjPiKAC03ROEZowVw0ow2tFbBUHrui
-	sOoEsLzEmxjGYM7GCobCVwCPup0QzV6M5XE/nuaMry3XOPzQifTmqCafPFjXyzrw1S8Gh0
-	nYiRhBISRLmSHUy4gyQfq704TqjJneucKuEEEXYCBEw3QVs0cW/BSRCEZXQO/g==
+	bh=eisunXk3R2zqEir3lAW0u0nPlDADtVjjz+v8AgBTBuc=;
+	b=EXopiGI2kZVFvLaIQ1W9R/jZFILl3HaCYUv6dhY6JmanbSCEGY6Jh5EBFCrVfzqpsGprfQ
+	vdlHhAbUPNMkpSwri1gT/Rq0/Zl1Tn5aR0AjmJlowmNAn5B9cRJkfO+9xlC7wxP7rm4ZnK
+	ZnZmLPwKfLpyggVWYAWqR1UXPCEQFYubfyFpi+vY8moEci7e9AzXCN6ZUf0uHvLM6y9b1n
+	atxL3N9AVDi94+axQ0s8CJPfZc7P7hjWBnlrkkB3UV+HbDcUDHBXUlDgiOHzky0VNL+4xJ
+	FrSvVeW9+MEWOyS+SNyySPnk3e38ftp91UXeJw1nQDAESoqtkY/DLGO1XNn1Sw==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Paul Eggleton <paul.eggleton@microsoft.com>
-Subject: [kirkstone][PATCH 2/6] dev-manual: update custom distribution section
-Date: Thu,  2 May 2024 08:57:17 +0200
-Message-Id: <20240502065721.22607-3-michael.opdenacker@bootlin.com>
+	Lee Chee Yang <chee.yang.lee@intel.com>
+Subject: [kirkstone][PATCH 5/6] migration-notes: add release notes for 4.0.18
+Date: Thu,  2 May 2024 08:57:20 +0200
+Message-Id: <20240502065721.22607-6-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240502065721.22607-1-michael.opdenacker@bootlin.com>
 References: <20240502065721.22607-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 02 May 2024 06:57:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5194
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5196
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Paul Eggleton <bluelightning@bluelightning.org>
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-In keeping with the addition of the motd message pointing out that
-the poky DISTRO is a reference distribution, adjust the opening of the
-Creating Your Own Distribution section to match. Additionally, add a
-section on the end pointing out what users need to consider if they just
-take a copy of the poky distribution and modify it.
+add release notes for 4.0.18 (rc1).
 
-Signed-off-by: Paul Eggleton <paul.eggleton@microsoft.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../dev-manual/custom-distribution.rst        | 34 ++++++++++++++++---
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.18.rst | 191 ++++++++++++++++++
+ 2 files changed, 192 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.18.rst
 
-diff --git a/documentation/dev-manual/custom-distribution.rst b/documentation/dev-manual/custom-distribution.rst
-index 47faed0d04..0bc386d606 100644
---- a/documentation/dev-manual/custom-distribution.rst
-+++ b/documentation/dev-manual/custom-distribution.rst
-@@ -4,10 +4,16 @@ Creating Your Own Distribution
- ******************************
- 
- When you build an image using the Yocto Project and do not alter any
--distribution :term:`Metadata`, you are
--creating a Poky distribution. If you wish to gain more control over
--package alternative selections, compile-time options, and other
--low-level configurations, you can create your own distribution.
-+distribution :term:`Metadata`, you are using the Poky distribution.
-+Poky is explicitly a *reference* distribution for testing and
-+development purposes. It enables most hardware and software features
-+so that they can be tested, but this also means that from a security
-+point of view the attack surface is very large. Additionally, at some
-+point it is likely that you will want to gain more control over package
-+alternative selections, compile-time options, and other low-level
-+configurations. For both of these reasons, if you are using the Yocto
-+Project for production use then you are strongly encouraged to create
-+your own distribution.
- 
- To create your own distribution, the basic steps consist of creating
- your own distribution layer, creating your own distribution
-@@ -107,3 +113,23 @@ layer. The following steps provide some more detail:
-    For information on append files, see the
-    ":ref:`dev-manual/layers:appending other layers metadata with your layer`"
-    section.
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index 685799e268..d848b3ef64 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -24,3 +24,4 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.15
+    release-notes-4.0.16
+    release-notes-4.0.17
++   release-notes-4.0.18
+diff --git a/documentation/migration-guides/release-notes-4.0.18.rst b/documentation/migration-guides/release-notes-4.0.18.rst
+new file mode 100644
+index 0000000000..fc8cd83c02
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.18.rst
+@@ -0,0 +1,191 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
 +
-+Copying and modifying the Poky distribution
-+===========================================
++Release notes for Yocto-4.0.18 (Kirkstone)
++------------------------------------------
 +
-+Instead of creating a custom distribution from scratch as per above, you may
-+wish to start your custom distribution configuration by copying the Poky
-+distribution provided within the ``meta-poky`` layer and then modifying it.
-+This is fine, however if you do this you should keep the following in mind:
++Security Fixes in Yocto-4.0.18
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+-  Every reference to Poky needs to be updated in your copy so that it
-+   will still apply. This includes override usage within files (e.g. ``:poky``)
-+   and in directory names. This is a good opportunity to evaluate each one of
-+   these customizations to see if they are needed for your use case.
++-  curl: Fix :cve:`2024-2398`
++-  expat: fix :cve:`2023-52426` and :cve:`2024-28757`
++-  libssh2: fix :cve:`2023-48795`
++-  ncurses: Fix :cve:`2023-50495`
++-  nghttp2: Fix :cve:`2024-28182` and :cve:`2023-44487`
++-  openssh: Ignore :cve:`2023-51767`
++-  openssl: Fix :cve:`2024-2511`
++-  perl: Ignore :cve:`2023-47100`
++-  python3-cryptography: Fix :cve:`2024-26130`
++-  python3-urllib3: Fix :cve:`2023-45803`
++-  qemu: Fix :cve:`2023-6683`
++-  ruby: fix :cve_mitre:`2024-27281`
++-  rust: Ignore :cve:`2024-24576`
++-  tiff: Fix :cve:`2023-52356` and :cve:`2023-6277`
++-  xserver-xorg: Fix :cve:`2024-31080` and :cve:`2024-31081`
++-  xwayland: Fix :cve:`2023-6816`, :cve:`2024-0408` and :cve:`2024-0409`
 +
-+-  Unless you also intend to use them, the ``poky-tiny``, ``poky-altcfg`` and
-+   ``poky-bleeding`` variants and any references to them can be removed.
 +
-+-  More generally, the Poky distribution configuration enables a lot more
-+   than you likely need for your production use case. You should evaluate *every*
-+   configuration choice made in your copy to determine if it is needed.
++Fixes in Yocto-4.0.18
++~~~~~~~~~~~~~~~~~~~~~
++
++-  build-appliance-image: Update to kirkstone head revision
++-  common-licenses: Backport missing license
++-  contributor-guide: add notes for tests
++-  contributor-guide: be more specific about meta-* trees
++-  cups: fix typo in :cve:`2023-32360` backport patch
++-  cve-update-nvd2-native: Add an age threshold for incremental update
++-  cve-update-nvd2-native: Fix CVE configuration update
++-  cve-update-nvd2-native: Fix typo in comment
++-  cve-update-nvd2-native: Remove duplicated CVE_CHECK_DB_FILE definition
++-  cve-update-nvd2-native: Remove rejected CVE from database
++-  cve-update-nvd2-native: nvd_request_next: Improve comment
++-  dev-manual: improve descriptions of 'bitbake -S printdiff'
++-  dev-manual: packages: fix capitalization
++-  docs: conf.py: properly escape backslashes for latex_elements
++-  gcc: Backport sanitizer fix for 32-bit ALSR
++-  glibc: Fix subscript typos for get_nscd_addresses
++-  kernel-dev: join mkdir commands with -p
++-  linux-firmware: Upgrade to 20240220
++-  manuals: add initial sphinx-lint support
++-  manuals: add initial stylechecks with Vale
++-  manuals: document VIRTUAL-RUNTIME variables
++-  manuals: fix duplicate "stylecheck" target
++-  manuals: fix incorrect double backticks
++-  manuals: fix trailing spaces
++-  manuals: refer to new yocto-patches mailing list wherever appropriate
++-  manuals: remove tab characters
++-  manuals: replace hyphens with em dashes
++-  manuals: use "manual page(s)"
++-  migration-guides: add release notes for 4.0.17
++-  poky.conf: bump version for 4.0.18
++-  profile-manual: usage.rst: fix reference to bug report
++-  profile-manual: usage.rst: formatting fixes
++-  profile-manual: usage.rst: further style improvements
++-  python3-urllib3: Upgrade to v1.26.18
++-  ref-manual: add documentation of the variable :term:`SPDX_NAMESPACE_PREFIX`
++-  ref-manual: tasks: do_cleanall: recommend using '-f' instead
++-  ref-manual: tasks: do_cleansstate: recommend using '-f' instead for a shared sstate
++-  ref-manual: variables: adding multiple groups in :term:`GROUPADD_PARAM`
++-  ref-manual: variables: correct sdk installation default path
++-  stress-ng: avoid calling sync during do_compile
++-  systemd: Fix vlan qos mapping
++-  tcl: Add a way to skip ptests
++-  tcl: skip async and event tests in run-ptest
++-  tcl: skip timing-dependent tests in run-ptest
++-  valgrind: skip intermittently failing ptest
++-  wireless-regdb: Upgrade to 2024.01.23
++-  yocto-uninative: Update to 4.4 for glibc 2.39
++
++
++Known Issues in Yocto-4.0.18
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.18
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Alex Kiernan
++-  Alex Stewart
++-  Alexander Kanavin
++-  BELOUARGA Mohamed
++-  Claus Stovgaard
++-  Colin McAllister
++-  Geoff Parker
++-  Haitao Liu
++-  Harish Sadineni
++-  Johan Bezem
++-  Jonathan GUILLOT
++-  Jörg Sommer
++-  Khem Raj
++-  Lee Chee Yang
++-  Luca Ceresoli
++-  Martin Jansa
++-  Meenali Gupta
++-  Michael Halstead
++-  Michael Opdenacker
++-  Peter Marko
++-  Quentin Schulz
++-  Ross Burton
++-  Sana Kazi
++-  Simone Weiß
++-  Soumya Sambu
++-  Steve Sakoman
++-  Tan Wen Yan
++-  Vijay Anusuri
++-  Wang Mingyu
++-  Yoann Congal
++-  Yogita Urade
++-  Zahir Hussain
++
++
++Repositories / Downloads for Yocto-4.0.18
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.18 </poky/log/?h=yocto-4.0.18>`
++-  Git Revision: :yocto_git:`31751bba1c789f15f574773a659b8017d7bcf440 </poky/commit/?id=31751bba1c789f15f574773a659b8017d7bcf440>`
++-  Release Artefact: poky-31751bba1c789f15f574773a659b8017d7bcf440
++-  sha: 72d5aa65c3c37766ebc24b212740272c1d52342468548f9c070241d3522ad2ca
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/poky-31751bba1c789f15f574773a659b8017d7bcf440.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/poky-31751bba1c789f15f574773a659b8017d7bcf440.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.18 </openembedded-core/log/?h=yocto-4.0.18>`
++-  Git Revision: :oe_git:`b7182571242dc4e23e5250a449d90348e62a6abc </openembedded-core/commit/?id=b7182571242dc4e23e5250a449d90348e62a6abc>`
++-  Release Artefact: oecore-b7182571242dc4e23e5250a449d90348e62a6abc
++-  sha: 6f257e50c10ebae673dcf61a833b3270db6d22781f02f6794a370aac839f1020
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/oecore-b7182571242dc4e23e5250a449d90348e62a6abc.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/oecore-b7182571242dc4e23e5250a449d90348e62a6abc.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.18 </meta-mingw/log/?h=yocto-4.0.18>`
++-  Git Revision: :yocto_git:`f6b38ce3c90e1600d41c2ebb41e152936a0357d7 </meta-mingw/commit/?id=f6b38ce3c90e1600d41c2ebb41e152936a0357d7>`
++-  Release Artefact: meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7
++-  sha: 7d57167c19077f4ab95623d55a24c2267a3a3fb5ed83688659b4c03586373b25
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.18 </meta-gplv2/log/?h=yocto-4.0.18>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.18 </bitbake/log/?h=yocto-4.0.18>`
++-  Git Revision: :oe_git:`40fd5f4eef7460ca67f32cfce8e229e67e1ff607 </bitbake/commit/?id=40fd5f4eef7460ca67f32cfce8e229e67e1ff607>`
++-  Release Artefact: bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607
++-  sha: 5d20a0e4c5d0fce44bd84778168714a261a30a4b83f67c88df3b8a7e7115e444
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.18 </yocto-docs/log/?h=yocto-4.0.18>`
++-  Git Revision: :yocto_git:`fd1423141e7458ba557db465c171b0b4e9063987 </yocto-docs/commit/?id=fd1423141e7458ba557db465c171b0b4e9063987>`
++
 -- 
 2.34.1
 
