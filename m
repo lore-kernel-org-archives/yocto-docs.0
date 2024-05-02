@@ -2,269 +2,220 @@ Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D007CC4345F
-	for <webhook@archiver.kernel.org>; Thu,  2 May 2024 06:55:43 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.7643.1714632934813197296
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EA8CFC4345F
+	for <webhook@archiver.kernel.org>; Thu,  2 May 2024 06:57:33 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.7661.1714633048229333408
  for <docs@lists.yoctoproject.org>;
- Wed, 01 May 2024 23:55:35 -0700
+ Wed, 01 May 2024 23:57:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Owr0P5i4;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B7075FF804;
-	Thu,  2 May 2024 06:55:32 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bPQ603Mb;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CD1EBC0004;
+	Thu,  2 May 2024 06:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1714632933;
+	t=1714633046;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eisunXk3R2zqEir3lAW0u0nPlDADtVjjz+v8AgBTBuc=;
-	b=Owr0P5i4RXNlq5uAFhtaKd/2YZvl3C4Z5yNdEEtLZvsSomtKKlqB9df4zmYFzjAsTJQhdK
-	ZUmYL0mC4vN5iUPs3FQDU9bgRSIaNMjK7mV0TWe5nUwHgT8cFwFFT8Robs5m9CGX3TIOV8
-	g9iHRDLm5xXUgagwpx9rFXWBgXl2zMTkWoU1Qqi0i740VYn5nVuuccrriAsUfBNKzLgABn
-	6vhoBALvmhEOkxmLcDB9nOwNU1UlAXC1I1+2ubmrgtTHj3tPDfIEY3RDtbr2TUncmKaStd
-	RAXP9a2TJ62LGDqaS1sMdjTzOEIhvkO2DPe91sa1XdR6ZOxz42l0BQGa+VlDWw==
+	bh=xXceQCtsBTTaNiFIn313n+h06++UuUJN0QS1QAxcou4=;
+	b=bPQ603Mbm5GcY8DEobfjAuRVjcDj3mA0e0XkTulHqVYoGOejHE7b/Hw9dWbVqJJvpJCkED
+	j1MugPU2YGOA2BjbIWSKUupIoVoIWjN5/tTUiIsiVMeTXGjtwn+3rV7BHv9V218INpqtch
+	JpZg40Q3wXBG8oqHxPXxahmz5o7w6N0/08p5TfoKRMQUL6qaK9Khz3W0eL4K+SnIWeSQUo
+	zsrDfqgrpOOAYWN+iizhlA520AoixgBl5vvOzvzO5VdHoTD9ZlIjNYkNb3bakcVxLbYIKc
+	coquMsRuWuhozTx4Bo+wRy+a2mdy7XM8zWcszzGVlnB4qRKlduQHK6Z/BKu1/Q==
 From: michael.opdenacker@bootlin.com
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [scarthgap][PATCH 3/5] migration-notes: add release notes for 4.0.18
-Date: Thu,  2 May 2024 08:55:26 +0200
-Message-Id: <20240502065528.22559-4-michael.opdenacker@bootlin.com>
+Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Subject: [kirkstone][PATCH 6/6] ref-manual: update releases.svg
+Date: Thu,  2 May 2024 08:57:21 +0200
+Message-Id: <20240502065721.22607-7-michael.opdenacker@bootlin.com>
 X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240502065528.22559-1-michael.opdenacker@bootlin.com>
-References: <20240502065528.22559-1-michael.opdenacker@bootlin.com>
+In-Reply-To: <20240502065721.22607-1-michael.opdenacker@bootlin.com>
+References: <20240502065721.22607-1-michael.opdenacker@bootlin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 May 2024 06:55:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5189
+ <docs@lists.yoctoproject.org>; Thu, 02 May 2024 06:57:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5198
 
 From: Michael Opdenacker <michael.opdenacker@bootlin.com>
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+- Make Scarthgap a current release
+- Add Styhead
 
-add release notes for 4.0.18 (rc1).
-
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
 ---
- .../migration-guides/release-4.0.rst          |   1 +
- .../migration-guides/release-notes-4.0.18.rst | 191 ++++++++++++++++++
- 2 files changed, 192 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.0.18.rst
+ documentation/ref-manual/svg/releases.svg | 99 ++++++++++++++---------
+ 1 file changed, 61 insertions(+), 38 deletions(-)
 
-diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
-index 685799e268..d848b3ef64 100644
---- a/documentation/migration-guides/release-4.0.rst
-+++ b/documentation/migration-guides/release-4.0.rst
-@@ -24,3 +24,4 @@ Release 4.0 (kirkstone)
-    release-notes-4.0.15
-    release-notes-4.0.16
-    release-notes-4.0.17
-+   release-notes-4.0.18
-diff --git a/documentation/migration-guides/release-notes-4.0.18.rst b/documentation/migration-guides/release-notes-4.0.18.rst
-new file mode 100644
-index 0000000000..fc8cd83c02
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.0.18.rst
-@@ -0,0 +1,191 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Release notes for Yocto-4.0.18 (Kirkstone)
-+------------------------------------------
-+
-+Security Fixes in Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  curl: Fix :cve:`2024-2398`
-+-  expat: fix :cve:`2023-52426` and :cve:`2024-28757`
-+-  libssh2: fix :cve:`2023-48795`
-+-  ncurses: Fix :cve:`2023-50495`
-+-  nghttp2: Fix :cve:`2024-28182` and :cve:`2023-44487`
-+-  openssh: Ignore :cve:`2023-51767`
-+-  openssl: Fix :cve:`2024-2511`
-+-  perl: Ignore :cve:`2023-47100`
-+-  python3-cryptography: Fix :cve:`2024-26130`
-+-  python3-urllib3: Fix :cve:`2023-45803`
-+-  qemu: Fix :cve:`2023-6683`
-+-  ruby: fix :cve_mitre:`2024-27281`
-+-  rust: Ignore :cve:`2024-24576`
-+-  tiff: Fix :cve:`2023-52356` and :cve:`2023-6277`
-+-  xserver-xorg: Fix :cve:`2024-31080` and :cve:`2024-31081`
-+-  xwayland: Fix :cve:`2023-6816`, :cve:`2024-0408` and :cve:`2024-0409`
-+
-+
-+Fixes in Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~
-+
-+-  build-appliance-image: Update to kirkstone head revision
-+-  common-licenses: Backport missing license
-+-  contributor-guide: add notes for tests
-+-  contributor-guide: be more specific about meta-* trees
-+-  cups: fix typo in :cve:`2023-32360` backport patch
-+-  cve-update-nvd2-native: Add an age threshold for incremental update
-+-  cve-update-nvd2-native: Fix CVE configuration update
-+-  cve-update-nvd2-native: Fix typo in comment
-+-  cve-update-nvd2-native: Remove duplicated CVE_CHECK_DB_FILE definition
-+-  cve-update-nvd2-native: Remove rejected CVE from database
-+-  cve-update-nvd2-native: nvd_request_next: Improve comment
-+-  dev-manual: improve descriptions of 'bitbake -S printdiff'
-+-  dev-manual: packages: fix capitalization
-+-  docs: conf.py: properly escape backslashes for latex_elements
-+-  gcc: Backport sanitizer fix for 32-bit ALSR
-+-  glibc: Fix subscript typos for get_nscd_addresses
-+-  kernel-dev: join mkdir commands with -p
-+-  linux-firmware: Upgrade to 20240220
-+-  manuals: add initial sphinx-lint support
-+-  manuals: add initial stylechecks with Vale
-+-  manuals: document VIRTUAL-RUNTIME variables
-+-  manuals: fix duplicate "stylecheck" target
-+-  manuals: fix incorrect double backticks
-+-  manuals: fix trailing spaces
-+-  manuals: refer to new yocto-patches mailing list wherever appropriate
-+-  manuals: remove tab characters
-+-  manuals: replace hyphens with em dashes
-+-  manuals: use "manual page(s)"
-+-  migration-guides: add release notes for 4.0.17
-+-  poky.conf: bump version for 4.0.18
-+-  profile-manual: usage.rst: fix reference to bug report
-+-  profile-manual: usage.rst: formatting fixes
-+-  profile-manual: usage.rst: further style improvements
-+-  python3-urllib3: Upgrade to v1.26.18
-+-  ref-manual: add documentation of the variable :term:`SPDX_NAMESPACE_PREFIX`
-+-  ref-manual: tasks: do_cleanall: recommend using '-f' instead
-+-  ref-manual: tasks: do_cleansstate: recommend using '-f' instead for a shared sstate
-+-  ref-manual: variables: adding multiple groups in :term:`GROUPADD_PARAM`
-+-  ref-manual: variables: correct sdk installation default path
-+-  stress-ng: avoid calling sync during do_compile
-+-  systemd: Fix vlan qos mapping
-+-  tcl: Add a way to skip ptests
-+-  tcl: skip async and event tests in run-ptest
-+-  tcl: skip timing-dependent tests in run-ptest
-+-  valgrind: skip intermittently failing ptest
-+-  wireless-regdb: Upgrade to 2024.01.23
-+-  yocto-uninative: Update to 4.4 for glibc 2.39
-+
-+
-+Known Issues in Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+
-+Contributors to Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Alex Kiernan
-+-  Alex Stewart
-+-  Alexander Kanavin
-+-  BELOUARGA Mohamed
-+-  Claus Stovgaard
-+-  Colin McAllister
-+-  Geoff Parker
-+-  Haitao Liu
-+-  Harish Sadineni
-+-  Johan Bezem
-+-  Jonathan GUILLOT
-+-  Jörg Sommer
-+-  Khem Raj
-+-  Lee Chee Yang
-+-  Luca Ceresoli
-+-  Martin Jansa
-+-  Meenali Gupta
-+-  Michael Halstead
-+-  Michael Opdenacker
-+-  Peter Marko
-+-  Quentin Schulz
-+-  Ross Burton
-+-  Sana Kazi
-+-  Simone Weiß
-+-  Soumya Sambu
-+-  Steve Sakoman
-+-  Tan Wen Yan
-+-  Vijay Anusuri
-+-  Wang Mingyu
-+-  Yoann Congal
-+-  Yogita Urade
-+-  Zahir Hussain
-+
-+
-+Repositories / Downloads for Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.18 </poky/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`31751bba1c789f15f574773a659b8017d7bcf440 </poky/commit/?id=31751bba1c789f15f574773a659b8017d7bcf440>`
-+-  Release Artefact: poky-31751bba1c789f15f574773a659b8017d7bcf440
-+-  sha: 72d5aa65c3c37766ebc24b212740272c1d52342468548f9c070241d3522ad2ca
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/poky-31751bba1c789f15f574773a659b8017d7bcf440.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/poky-31751bba1c789f15f574773a659b8017d7bcf440.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
-+-  Tag:  :oe_git:`yocto-4.0.18 </openembedded-core/log/?h=yocto-4.0.18>`
-+-  Git Revision: :oe_git:`b7182571242dc4e23e5250a449d90348e62a6abc </openembedded-core/commit/?id=b7182571242dc4e23e5250a449d90348e62a6abc>`
-+-  Release Artefact: oecore-b7182571242dc4e23e5250a449d90348e62a6abc
-+-  sha: 6f257e50c10ebae673dcf61a833b3270db6d22781f02f6794a370aac839f1020
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/oecore-b7182571242dc4e23e5250a449d90348e62a6abc.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/oecore-b7182571242dc4e23e5250a449d90348e62a6abc.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.18 </meta-mingw/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`f6b38ce3c90e1600d41c2ebb41e152936a0357d7 </meta-mingw/commit/?id=f6b38ce3c90e1600d41c2ebb41e152936a0357d7>`
-+-  Release Artefact: meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7
-+-  sha: 7d57167c19077f4ab95623d55a24c2267a3a3fb5ed83688659b4c03586373b25
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7.tar.bz2
-+
-+meta-gplv2
-+
-+-  Repository Location: :yocto_git:`/meta-gplv2`
-+-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.18 </meta-gplv2/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-+-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
-+-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
-+-  Tag:  :oe_git:`yocto-4.0.18 </bitbake/log/?h=yocto-4.0.18>`
-+-  Git Revision: :oe_git:`40fd5f4eef7460ca67f32cfce8e229e67e1ff607 </bitbake/commit/?id=40fd5f4eef7460ca67f32cfce8e229e67e1ff607>`
-+-  Release Artefact: bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607
-+-  sha: 5d20a0e4c5d0fce44bd84778168714a261a30a4b83f67c88df3b8a7e7115e444
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
-+-  Tag: :yocto_git:`yocto-4.0.18 </yocto-docs/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`fd1423141e7458ba557db465c171b0b4e9063987 </yocto-docs/commit/?id=fd1423141e7458ba557db465c171b0b4e9063987>`
-+
+diff --git a/documentation/ref-manual/svg/releases.svg b/documentation/ref-manual/svg/releases.svg
+index 198d4632b1..036aa467cc 100644
+--- a/documentation/ref-manual/svg/releases.svg
++++ b/documentation/ref-manual/svg/releases.svg
+@@ -3,8 +3,8 @@
+    version="1.1"
+    id="svg2"
+    width="2040.0006"
+-   height="624.30518"
+-   viewBox="0 0 2040.0006 624.30515"
++   height="669.30511"
++   viewBox="0 0 2040.0006 669.30509"
+    sodipodi:docname="releases.svg"
+    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+@@ -409,8 +409,8 @@
+      id="namedview4"
+      showgrid="true"
+      inkscape:zoom="1.4472045"
+-     inkscape:cx="736.24703"
+-     inkscape:cy="312.32629"
++     inkscape:cx="987.76641"
++     inkscape:cy="357.93145"
+      inkscape:window-x="1728"
+      inkscape:window-y="0"
+      inkscape:window-maximized="1"
+@@ -427,13 +427,13 @@
+        type="xygrid"
+        id="grid1257"
+        originx="-289.99936"
+-       originy="325" />
++       originy="369.99998" />
+   </sodipodi:namedview>
+   <g
+      inkscape:groupmode="layer"
+      inkscape:label="Image"
+      id="g10"
+-     transform="translate(-289.99936,325.00004)">
++     transform="translate(-289.99936,370.00003)">
+     <path
+        style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+        d="m 1080,220.00003 v -515.00007 0 0"
+@@ -669,11 +669,11 @@
+          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
+          id="tspan10317-2-9-1-4">4.2</tspan></text>
+     <g
+-       id="g1379">
++       id="g1258">
+       <rect
+          style="fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
+          id="rect917-0-0-4-4-9-4-5-38"
+-         width="140.00003"
++         width="120.00002"
+          height="45.000004"
+          x="1220"
+          y="-230.00005"
+@@ -696,53 +696,76 @@
+            id="tspan10317-2-9-1-4-6">4.3</tspan></text>
+     </g>
+     <rect
+-       style="opacity:0.75;fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
+-       id="rect917-0-0-4-4-9-4-5-3-9"
+-       width="979.99994"
++       style="opacity:0.75;fill:#241f31;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
++       id="rect917-0-0-4-4-9-4-5-3-9-2"
++       width="140"
+        height="45.000004"
+-       x="1320"
+-       y="-285.00003"
++       x="1440"
++       y="-340.00003"
+        ry="2.2558987" />
+     <text
+        xml:space="preserve"
+        style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+-       x="1373.233"
+-       y="-265.32928"
+-       id="text1185-3-55-4-0-0-0-1-1-6"><tspan
++       x="1487.233"
++       y="-320.32928"
++       id="text1185-3-55-4-0-0-0-1-1-6-4"><tspan
+          sodipodi:role="line"
+-         x="1373.233"
+-         y="-265.32928"
++         x="1487.233"
++         y="-320.32928"
+          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
+-         id="tspan957-2-8-6-3-9-7-4-2">Scarthgap</tspan><tspan
++         id="tspan957-2-8-6-3-9-7-4-2-0">Styhead</tspan><tspan
+          sodipodi:role="line"
+-         x="1373.233"
+-         y="-247.33261"
++         x="1487.233"
++         y="-302.33261"
+          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
+-         id="tspan10317-2-9-1-4-6-5">5.0</tspan></text>
+-    <rect
++         id="tspan10317-2-9-1-4-6-5-6">5.1</tspan></text>
++    <g
++       id="g1591">
++      <rect
++         style="fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
++         id="rect917-0-0-4-4-9-9"
++         width="960.00012"
++         height="45.000004"
++         x="859.99994"
++         y="-64.999992"
++         ry="2.2558987" />
++      <text
++         xml:space="preserve"
++         style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
++         x="928.49872"
++         y="-45.648258"
++         id="text1185-3-55-4-0-0-9"><tspan
++           sodipodi:role="line"
++           x="928.49872"
++           y="-45.648258"
++           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
++           id="tspan957-2-8-6-3-6">Kirkstone (LTS)</tspan><tspan
++           sodipodi:role="line"
++           x="928.49872"
++           y="-27.651579"
++           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
++           id="tspan10317-2-9-0">4.0</tspan></text>
++    </g>
++    <path
++       id="rect917-0-0-4-4-9-9-9"
+        style="fill:#333333;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:2;stroke-opacity:1"
+-       id="rect917-0-0-4-4-9-9"
+-       width="960.00012"
+-       height="45.000004"
+-       x="859.99994"
+-       y="-64.999992"
+-       ry="2.2558987" />
++       d="m 1322.3015,-285.00003 c -1.2753,0 -2.302,1.00609 -2.302,2.25586 v 40.48828 c 0,1.24977 1.0267,2.25586 2.302,2.25586 h 975.0412 c 1.2754,0 2.302,-1.00609 2.302,-2.25586 v -40.48828 c 0,-1.24977 -1.0266,-2.25586 -2.302,-2.25586 z" />
+     <text
+        xml:space="preserve"
+        style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+-       x="928.49872"
+-       y="-45.648258"
+-       id="text1185-3-55-4-0-0-9"><tspan
++       x="1390.4988"
++       y="-265.64832"
++       id="text1185-3-55-4-0-0-9-0"><tspan
+          sodipodi:role="line"
+-         x="928.49872"
+-         y="-45.648258"
++         x="1390.4988"
++         y="-265.64832"
+          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
+-         id="tspan957-2-8-6-3-6">Kirkstone (LTS)</tspan><tspan
++         id="tspan957-2-8-6-3-6-8">Scarthgap (LTS)</tspan><tspan
+          sodipodi:role="line"
+-         x="928.49872"
+-         y="-27.651579"
++         x="1390.4988"
++         y="-247.65164"
+          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans Bold';text-align:center;text-anchor:middle;fill:#fffefe;fill-opacity:1;stroke:none"
+-         id="tspan10317-2-9-0">4.0</tspan></text>
++         id="tspan10317-2-9-0-1">5.0</tspan></text>
+     <text
+        xml:space="preserve"
+        style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
 -- 
 2.34.1
 
