@@ -1,271 +1,90 @@
-Return-Path: <michael.opdenacker@bootlin.com>
+Return-Path: <tim.orling@konsulko.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 086E2C04FFE
-	for <webhook@archiver.kernel.org>; Thu,  2 May 2024 06:57:34 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.7659.1714633047863313445
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36E75C4345F
+	for <webhook@archiver.kernel.org>; Thu,  2 May 2024 15:27:37 +0000 (UTC)
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+ by mx.groups.io with SMTP id smtpd.web10.8633.1714663648156292098
  for <docs@lists.yoctoproject.org>;
- Wed, 01 May 2024 23:57:28 -0700
+ Thu, 02 May 2024 08:27:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=EXopiGI2;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: michael.opdenacker@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 66E48C0002;
-	Thu,  2 May 2024 06:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1714633046;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eisunXk3R2zqEir3lAW0u0nPlDADtVjjz+v8AgBTBuc=;
-	b=EXopiGI2kZVFvLaIQ1W9R/jZFILl3HaCYUv6dhY6JmanbSCEGY6Jh5EBFCrVfzqpsGprfQ
-	vdlHhAbUPNMkpSwri1gT/Rq0/Zl1Tn5aR0AjmJlowmNAn5B9cRJkfO+9xlC7wxP7rm4ZnK
-	ZnZmLPwKfLpyggVWYAWqR1UXPCEQFYubfyFpi+vY8moEci7e9AzXCN6ZUf0uHvLM6y9b1n
-	atxL3N9AVDi94+axQ0s8CJPfZc7P7hjWBnlrkkB3UV+HbDcUDHBXUlDgiOHzky0VNL+4xJ
-	FrSvVeW9+MEWOyS+SNyySPnk3e38ftp91UXeJw1nQDAESoqtkY/DLGO1XNn1Sw==
-From: michael.opdenacker@bootlin.com
+ dkim=pass header.i=@konsulko.com header.s=google header.b=VcSheE2d;
+ spf=pass (domain: konsulko.com, ip: 209.85.214.172, mailfrom: tim.orling@konsulko.com)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1ec41d82b8bso30922375ad.2
+        for <docs@lists.yoctoproject.org>; Thu, 02 May 2024 08:27:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=konsulko.com; s=google; t=1714663647; x=1715268447; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Pz1sIObkRQEcnvMD7b6ar3VXY4OFf8a2q2L1Gr1RiO4=;
+        b=VcSheE2dtIcpWHOcP5kxhuYFCvUbO7KtIPG6PZo3xLDYsPDiYcqSdfWmwUk4R7BoX6
+         YjCQtvw4eAAAyF8BPHKrrYcQTYW0iuadv/ZWFGcsYrCuO7sGwjTeNOZ1kAdUzY43Ps16
+         3d3DVNetmDRaLt17Rd16oksH9SkK5uGI9zsgg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714663647; x=1715268447;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Pz1sIObkRQEcnvMD7b6ar3VXY4OFf8a2q2L1Gr1RiO4=;
+        b=tu39g2fPbXfZbBawe7f0TEXvVyPcQ2y1BbaCZ1BrhZEAqD7k/akdhQ6RNUQGNi/uTI
+         y8/jggGHj9dz2c2ZBC2VtuTFM4oCnlhh+pFI2lovis6fc+TknrwrSiVh+SLabOZoLbkK
+         Ne+GoiGEFfrseJ5WQXtMeU9G+eo8YfIjYpCpWza4kOYpFEpPv/vlR269FrTYcUaalht2
+         APlwicO4q/C4DiByjY280LJkAXTp0kK55/DRtDr6zXIaStet58dHuR+UCBjmiNyUKMXX
+         mbJFtUoiWxXYCNQ+8k24U8/gR3TyvSiOTujG/k0kaa54HuS3tpph+r49kA4xnC8PhpCe
+         9Vww==
+X-Gm-Message-State: AOJu0Yymsl4KojGXtQMWQPQByvZNYavCafCqZ5nWv2/tIgTXhby6wHbY
+	FEwqZxcyoZi3lcEAkrOWElHa979rardtw91yqTv/8hr2z2j1Mj4Xf7bgwpgoo0SD7QLIVG9QC/s
+	C9V4=
+X-Google-Smtp-Source: AGHT+IHD4/ZyGYr4f2M5lhrNkfbvKuc+Az/zG+OJf5FR03pGO1TizR6jso7ryMpTBfkwpNORwATRNw==
+X-Received: by 2002:a17:902:8c8e:b0:1e3:ca5a:2d9a with SMTP id t14-20020a1709028c8e00b001e3ca5a2d9amr6219951plo.53.1714663647025;
+        Thu, 02 May 2024 08:27:27 -0700 (PDT)
+Received: from localhost ([2601:1c0:ca00:bd60:bc27:dad5:cc54:4608])
+        by smtp.gmail.com with ESMTPSA id m10-20020a170902f20a00b001e5c05b65f4sm1417268plc.169.2024.05.02.08.27.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 May 2024 08:27:26 -0700 (PDT)
+From: Tim Orling <tim.orling@konsulko.com>
 To: docs@lists.yoctoproject.org
-Cc: Michael Opdenacker <michael.opdenacker@bootlin.com>,
-	Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: [kirkstone][PATCH 5/6] migration-notes: add release notes for 4.0.18
-Date: Thu,  2 May 2024 08:57:20 +0200
-Message-Id: <20240502065721.22607-6-michael.opdenacker@bootlin.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240502065721.22607-1-michael.opdenacker@bootlin.com>
-References: <20240502065721.22607-1-michael.opdenacker@bootlin.com>
+Cc: Tim Orling <tim.orling@konsulko.com>
+Subject: [PATCH] contributor-guide: recommend format.forceInBodyFrom
+Date: Thu,  2 May 2024 08:27:02 -0700
+Message-ID: <20240502152701.1798568-2-tim.orling@konsulko.com>
+X-Mailer: git-send-email 2.43.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 02 May 2024 06:57:34 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5196
+ <docs@lists.yoctoproject.org>; Thu, 02 May 2024 15:27:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5199
 
-From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+We are seeing a lot of patches failing when the From:
+line is not contained in the message body. It is probably
+better to just recommend to force the in-body From: to be
+present globally.
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
-
-add release notes for 4.0.18 (rc1).
-
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Signed-off-by: Tim Orling <tim.orling@konsulko.com>
 ---
- .../migration-guides/release-4.0.rst          |   1 +
- .../migration-guides/release-notes-4.0.18.rst | 191 ++++++++++++++++++
- 2 files changed, 192 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-4.0.18.rst
+ documentation/contributor-guide/submit-changes.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
-index 685799e268..d848b3ef64 100644
---- a/documentation/migration-guides/release-4.0.rst
-+++ b/documentation/migration-guides/release-4.0.rst
-@@ -24,3 +24,4 @@ Release 4.0 (kirkstone)
-    release-notes-4.0.15
-    release-notes-4.0.16
-    release-notes-4.0.17
-+   release-notes-4.0.18
-diff --git a/documentation/migration-guides/release-notes-4.0.18.rst b/documentation/migration-guides/release-notes-4.0.18.rst
-new file mode 100644
-index 0000000000..fc8cd83c02
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-4.0.18.rst
-@@ -0,0 +1,191 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index 47a416b24..c292a143a 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -65,6 +65,11 @@ use to identify your commits::
+    git config --global user.name "Ada Lovelace"
+    git config --global user.email "ada.lovelace@gmail.com"
+ 
++To ensure that your patches are formatted properly, it is also
++recommended to set::
 +
-+Release notes for Yocto-4.0.18 (Kirkstone)
-+------------------------------------------
++   git config --global format.forceInBodyFrom true
 +
-+Security Fixes in Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  curl: Fix :cve:`2024-2398`
-+-  expat: fix :cve:`2023-52426` and :cve:`2024-28757`
-+-  libssh2: fix :cve:`2023-48795`
-+-  ncurses: Fix :cve:`2023-50495`
-+-  nghttp2: Fix :cve:`2024-28182` and :cve:`2023-44487`
-+-  openssh: Ignore :cve:`2023-51767`
-+-  openssl: Fix :cve:`2024-2511`
-+-  perl: Ignore :cve:`2023-47100`
-+-  python3-cryptography: Fix :cve:`2024-26130`
-+-  python3-urllib3: Fix :cve:`2023-45803`
-+-  qemu: Fix :cve:`2023-6683`
-+-  ruby: fix :cve_mitre:`2024-27281`
-+-  rust: Ignore :cve:`2024-24576`
-+-  tiff: Fix :cve:`2023-52356` and :cve:`2023-6277`
-+-  xserver-xorg: Fix :cve:`2024-31080` and :cve:`2024-31081`
-+-  xwayland: Fix :cve:`2023-6816`, :cve:`2024-0408` and :cve:`2024-0409`
-+
-+
-+Fixes in Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~
-+
-+-  build-appliance-image: Update to kirkstone head revision
-+-  common-licenses: Backport missing license
-+-  contributor-guide: add notes for tests
-+-  contributor-guide: be more specific about meta-* trees
-+-  cups: fix typo in :cve:`2023-32360` backport patch
-+-  cve-update-nvd2-native: Add an age threshold for incremental update
-+-  cve-update-nvd2-native: Fix CVE configuration update
-+-  cve-update-nvd2-native: Fix typo in comment
-+-  cve-update-nvd2-native: Remove duplicated CVE_CHECK_DB_FILE definition
-+-  cve-update-nvd2-native: Remove rejected CVE from database
-+-  cve-update-nvd2-native: nvd_request_next: Improve comment
-+-  dev-manual: improve descriptions of 'bitbake -S printdiff'
-+-  dev-manual: packages: fix capitalization
-+-  docs: conf.py: properly escape backslashes for latex_elements
-+-  gcc: Backport sanitizer fix for 32-bit ALSR
-+-  glibc: Fix subscript typos for get_nscd_addresses
-+-  kernel-dev: join mkdir commands with -p
-+-  linux-firmware: Upgrade to 20240220
-+-  manuals: add initial sphinx-lint support
-+-  manuals: add initial stylechecks with Vale
-+-  manuals: document VIRTUAL-RUNTIME variables
-+-  manuals: fix duplicate "stylecheck" target
-+-  manuals: fix incorrect double backticks
-+-  manuals: fix trailing spaces
-+-  manuals: refer to new yocto-patches mailing list wherever appropriate
-+-  manuals: remove tab characters
-+-  manuals: replace hyphens with em dashes
-+-  manuals: use "manual page(s)"
-+-  migration-guides: add release notes for 4.0.17
-+-  poky.conf: bump version for 4.0.18
-+-  profile-manual: usage.rst: fix reference to bug report
-+-  profile-manual: usage.rst: formatting fixes
-+-  profile-manual: usage.rst: further style improvements
-+-  python3-urllib3: Upgrade to v1.26.18
-+-  ref-manual: add documentation of the variable :term:`SPDX_NAMESPACE_PREFIX`
-+-  ref-manual: tasks: do_cleanall: recommend using '-f' instead
-+-  ref-manual: tasks: do_cleansstate: recommend using '-f' instead for a shared sstate
-+-  ref-manual: variables: adding multiple groups in :term:`GROUPADD_PARAM`
-+-  ref-manual: variables: correct sdk installation default path
-+-  stress-ng: avoid calling sync during do_compile
-+-  systemd: Fix vlan qos mapping
-+-  tcl: Add a way to skip ptests
-+-  tcl: skip async and event tests in run-ptest
-+-  tcl: skip timing-dependent tests in run-ptest
-+-  valgrind: skip intermittently failing ptest
-+-  wireless-regdb: Upgrade to 2024.01.23
-+-  yocto-uninative: Update to 4.4 for glibc 2.39
-+
-+
-+Known Issues in Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+
-+Contributors to Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Alex Kiernan
-+-  Alex Stewart
-+-  Alexander Kanavin
-+-  BELOUARGA Mohamed
-+-  Claus Stovgaard
-+-  Colin McAllister
-+-  Geoff Parker
-+-  Haitao Liu
-+-  Harish Sadineni
-+-  Johan Bezem
-+-  Jonathan GUILLOT
-+-  Jörg Sommer
-+-  Khem Raj
-+-  Lee Chee Yang
-+-  Luca Ceresoli
-+-  Martin Jansa
-+-  Meenali Gupta
-+-  Michael Halstead
-+-  Michael Opdenacker
-+-  Peter Marko
-+-  Quentin Schulz
-+-  Ross Burton
-+-  Sana Kazi
-+-  Simone Weiß
-+-  Soumya Sambu
-+-  Steve Sakoman
-+-  Tan Wen Yan
-+-  Vijay Anusuri
-+-  Wang Mingyu
-+-  Yoann Congal
-+-  Yogita Urade
-+-  Zahir Hussain
-+
-+
-+Repositories / Downloads for Yocto-4.0.18
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.18 </poky/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`31751bba1c789f15f574773a659b8017d7bcf440 </poky/commit/?id=31751bba1c789f15f574773a659b8017d7bcf440>`
-+-  Release Artefact: poky-31751bba1c789f15f574773a659b8017d7bcf440
-+-  sha: 72d5aa65c3c37766ebc24b212740272c1d52342468548f9c070241d3522ad2ca
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/poky-31751bba1c789f15f574773a659b8017d7bcf440.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/poky-31751bba1c789f15f574773a659b8017d7bcf440.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
-+-  Tag:  :oe_git:`yocto-4.0.18 </openembedded-core/log/?h=yocto-4.0.18>`
-+-  Git Revision: :oe_git:`b7182571242dc4e23e5250a449d90348e62a6abc </openembedded-core/commit/?id=b7182571242dc4e23e5250a449d90348e62a6abc>`
-+-  Release Artefact: oecore-b7182571242dc4e23e5250a449d90348e62a6abc
-+-  sha: 6f257e50c10ebae673dcf61a833b3270db6d22781f02f6794a370aac839f1020
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/oecore-b7182571242dc4e23e5250a449d90348e62a6abc.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/oecore-b7182571242dc4e23e5250a449d90348e62a6abc.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.18 </meta-mingw/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`f6b38ce3c90e1600d41c2ebb41e152936a0357d7 </meta-mingw/commit/?id=f6b38ce3c90e1600d41c2ebb41e152936a0357d7>`
-+-  Release Artefact: meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7
-+-  sha: 7d57167c19077f4ab95623d55a24c2267a3a3fb5ed83688659b4c03586373b25
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7.tar.bz2
-+
-+meta-gplv2
-+
-+-  Repository Location: :yocto_git:`/meta-gplv2`
-+-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
-+-  Tag:  :yocto_git:`yocto-4.0.18 </meta-gplv2/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
-+-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
-+-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
-+-  Tag:  :oe_git:`yocto-4.0.18 </bitbake/log/?h=yocto-4.0.18>`
-+-  Git Revision: :oe_git:`40fd5f4eef7460ca67f32cfce8e229e67e1ff607 </bitbake/commit/?id=40fd5f4eef7460ca67f32cfce8e229e67e1ff607>`
-+-  Release Artefact: bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607
-+-  sha: 5d20a0e4c5d0fce44bd84778168714a261a30a4b83f67c88df3b8a7e7115e444
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.18/bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.18/bitbake-40fd5f4eef7460ca67f32cfce8e229e67e1ff607.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
-+-  Tag: :yocto_git:`yocto-4.0.18 </yocto-docs/log/?h=yocto-4.0.18>`
-+-  Git Revision: :yocto_git:`fd1423141e7458ba557db465c171b0b4e9063987 </yocto-docs/commit/?id=fd1423141e7458ba557db465c171b0b4e9063987>`
-+
+ Clone the Git repository for the component to modify
+ ----------------------------------------------------
+ 
 -- 
-2.34.1
+2.43.2
 
 
