@@ -1,74 +1,87 @@
-Return-Path: <amurray@thegoodpenguin.co.uk>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87367C25B74
-	for <webhook@archiver.kernel.org>; Sat, 18 May 2024 14:13:41 +0000 (UTC)
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
- by mx.groups.io with SMTP id smtpd.web11.19561.1716041621069162706
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D402C04FFE
+	for <webhook@archiver.kernel.org>; Mon, 20 May 2024 09:17:24 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.55976.1716196640121538123
  for <docs@lists.yoctoproject.org>;
- Sat, 18 May 2024 07:13:41 -0700
+ Mon, 20 May 2024 02:17:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.s=20230601 header.b=eFabe0XY;
- spf=pass (domain: thegoodpenguin.co.uk, ip: 209.85.214.170, mailfrom: amurray@thegoodpenguin.co.uk)
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1ec69e3dbcfso38712735ad.0
-        for <docs@lists.yoctoproject.org>; Sat, 18 May 2024 07:13:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thegoodpenguin-co-uk.20230601.gappssmtp.com; s=20230601; t=1716041620; x=1716646420; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kgkqzBVt0e9+eFEAu1JW+RNCGWqm5QetmpUJmacbPlk=;
-        b=eFabe0XYMlas1uGSG6AwYrRVyIV17FEA/R+2SiTsJsKvBwcs1AJnCYh2jFERhAeA+4
-         jA525l4CbqgAnvMKoKpZmnzjjI+n7Brsxis+NR6JlIfYBNJikAFfbB5Vd848r74QNecO
-         J4aNtkgkw2OAbNf77o6MgWcXTHoEK+2YHSdrH+uJ1F/w7qc8B2qRjhBIdHWWE1ITWj5+
-         zCymXHG9y576cxUJkfE+JxVD+IW31YRnjcXox6R0HULtqooLgkti9YZeHY2k6A7jX0dd
-         Rp789HJpvmdA+2q2v8JNXwkrxX4a6D75ICuMRvDWCuMJA8ASeQgQuFh1W7lXnkcDxZVx
-         TgaQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716041620; x=1716646420;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kgkqzBVt0e9+eFEAu1JW+RNCGWqm5QetmpUJmacbPlk=;
-        b=Mr5Rp6VsaysJ292OzzTk9WrlG6HrKPmZautaEab1J7D5K2wCmYz8ke1DxgBClMa8yK
-         U9hfh0UIGrKFSsHjG+qZxBD32LH+7g13OFmNITrBsnmdt+zk2H/vRB06IIhU6W+KWlVf
-         OkqDivz/kQtZ3xfgC5zeKsveUrk81cQGYrTyIZZelZY5begFsJ/gPME+InvUGFpw7pRN
-         zFvJf3jZiQd36hSWj48hJsVn0bVxDi2P9vtU9cl/8FCt9IenB+UjW+65k9+pLZEKDmOj
-         38At6dJivwL4gacltyKly547UYzRqRWmoU4wux3fpTr9E3QqQ1tHVR2ubVMSjn25yl7F
-         GCcA==
-X-Gm-Message-State: AOJu0YzJi+fkBdUeVUUmGQYRol7+hVo2y/MV+edzuTjERznUTtHZ8UgA
-	HgMc5s+WeLOXMJjNoC1jbsx6pyv50ph1NRLyTxNNohqGH/ZKq4QlvFBMmjvagg5We7igYo/3UnE
-	NsXQQV0a2b5k4wkLuEWbXSo+cu43p3iJ509hPUA==
-X-Google-Smtp-Source: AGHT+IG9Yn+LbyXXsrMoPba0zhk3pyUlyazhnoXx2IVJtOAZ/pDTz6gMnjANeenoOMBwK1MUhALjChU1eJrab+8TCBY=
-X-Received: by 2002:a17:90a:e383:b0:2bd:460f:8ac with SMTP id
- 98e67ed59e1d1-2bd460f0971mr6273291a91.32.1716041620249; Sat, 18 May 2024
- 07:13:40 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=PxCu2JsT;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E2EE31C0004;
+	Mon, 20 May 2024 09:17:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1716196637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=et/AP6YgsTF+kenJV5N0h+RGqIupZI5TISnvxEU+zpw=;
+	b=PxCu2JsT5thPEPxKdZdXh6ePCMOplHe24CwGqUc52X94fv6Se5YEaCatEFOBrXwRV0WnAg
+	5VHuLBozU6Ycfw6ba6FiXwmI7pSF5bcta73WBKcK4EyoAJGpZlLZv/B0ososWrowI/P0TG
+	wf5KuL3Wic3qtcQhYqUG+/ttWr2VxNhvh4RpiRqQZN7PEWvoX7RnZJ6DqdNGIDIIUWW82S
+	Z4hOg7VAXb2Q+WRj0wf3csEmSBYtoseF38MmXGhhKI3VqrGbC3VqLvF6fzLtdvLLf/Ipy0
+	Z8Juii2a/YWelBr7pVKrcxG5gjr9+FxLq5wZFw2IiZWSwGLE5XLN6lBJaYk1Ig==
+Message-ID: <d86d63f5-29a7-47dd-a754-0cb612586094@bootlin.com>
+Date: Mon, 20 May 2024 11:17:14 +0200
 MIME-Version: 1.0
-References: <20240517192724.7519-1-ngalea@thegoodpenguin.co.uk>
-In-Reply-To: <20240517192724.7519-1-ngalea@thegoodpenguin.co.uk>
-From: Andrew Murray <amurray@thegoodpenguin.co.uk>
-Date: Sat, 18 May 2024 15:13:29 +0100
-Message-ID: <CALqELGx08ZepQTyioRKPV3pi-4tX+oxHvgZCYGxrH=pQwpOD9w@mail.gmail.com>
-Subject: Re: [docs] [PATCH] manuals: document NVDCVE_API_KEY variable
-To: ngalea@thegoodpenguin.co.uk
+User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [docs] [PATCH] release-notes-4.0.18: specify backported license
+To: Lee Chee Yang <chee.yang.lee@intel.com>
+References: <20240513145858.89639-1-chee.yang.lee@intel.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20240513145858.89639-1-chee.yang.lee@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 18 May 2024 14:13:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5221
+ <docs@lists.yoctoproject.org>; Mon, 20 May 2024 09:17:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5222
 
-Hi Noe,
+Hi Lee
 
-On Fri, 17 May 2024 at 20:27, Noe Galea via lists.yoctoproject.org
-<ngalea=thegoodpenguin.co.uk@lists.yoctoproject.org> wrote:
+On 5/13/24 at 20:28, Lee Chee Yang wrote:
+> From: Lee Chee Yang <chee.yang.lee@intel.com>
 >
-> Add brief documentation of NVDCVE_API_KEY variable, that was added
-> in 4.2.3, and emphasize that its use results in lower NVD API request
-> times.
+> Align with finalized text-based release notes.
 >
-> Signed-off-by: Noe Galea <ngalea@thegoodpenguin.co.uk>
+> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+> ---
+>   documentation/migration-guides/release-notes-4.0.18.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/documentation/migration-guides/release-notes-4.0.18.rst b/documentation/migration-guides/release-notes-4.0.18.rst
+> index fc8cd83c0..d5a2a7f6c 100644
+> --- a/documentation/migration-guides/release-notes-4.0.18.rst
+> +++ b/documentation/migration-guides/release-notes-4.0.18.rst
+> @@ -28,7 +28,7 @@ Fixes in Yocto-4.0.18
+>   ~~~~~~~~~~~~~~~~~~~~~
+>   
+>   -  build-appliance-image: Update to kirkstone head revision
+> --  common-licenses: Backport missing license
+> +-  common-licenses: backport LGPL-3.0-with-zeromq-exception license
+>   -  contributor-guide: add notes for tests
+>   -  contributor-guide: be more specific about meta-* trees
+>   -  cups: fix typo in :cve:`2023-32360` backport patch
 
-Reviewed-by: Andrew Murray <amurray@thegoodpenguin.co.uk>
+
+Thanks for the update!
+Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Merged into master-next.
+Cheers
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
