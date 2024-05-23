@@ -1,75 +1,127 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E0A7BC25B75
-	for <webhook@archiver.kernel.org>; Thu, 23 May 2024 08:21:09 +0000 (UTC)
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
- by mx.groups.io with SMTP id smtpd.web11.11945.1716452461190052625
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F2A0AC25B75
+	for <webhook@archiver.kernel.org>; Thu, 23 May 2024 08:38:49 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.12143.1716453524716308804
  for <docs@lists.yoctoproject.org>;
- Thu, 23 May 2024 01:21:01 -0700
+ Thu, 23 May 2024 01:38:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=DpkQUXMp;
- spf=pass (domain: gmail.com, ip: 209.85.167.46, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51f0b6b682fso8039393e87.1
-        for <docs@lists.yoctoproject.org>; Thu, 23 May 2024 01:21:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716452459; x=1717057259; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=9OLtppGzoYO+Bg0JzAHrahPmiYGZkRFGBcAIEhCB/wU=;
-        b=DpkQUXMpbGme7NtGLo1GugkevemixrxAwKOYRYKn/LdOPZhyroIettknV1pM3Uy+8F
-         DVzdqvApMZNGUympbuRlYqlADhvyNFd6iCFU/HaQNAJZcln4863BnSZiqZrx3GyfVVma
-         Xr8cZWur8F7EOxGW1AXbgtZbQ8z9mbJQnzHNGjFE9HUVxQNWRN8DqFL05F0WLdIQYd4C
-         OXJVeDUjiPERfGpxsdvNxD9a/mj8Px9NgttmWspzt6ZWZU5CHS9E7jA0KwGgf5GQTKmW
-         u9YkvB+jVWP2SZAar+IyiszZoWgATlE8pHK/h4/ywQ9dOzQZj61mIbDzDV0Zn6/AYTrm
-         WFgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716452459; x=1717057259;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9OLtppGzoYO+Bg0JzAHrahPmiYGZkRFGBcAIEhCB/wU=;
-        b=DorLWO0MYMcDpsjHbAESxz/rar/S+d5SvkGENxOqRpJPmrl3O9P5Mcy1qTfnItVfbK
-         sRPHvLpN3XmM+QgnTyMIaVaDrEjHuZSpUSQdko1qz+f5FQEQTcV0L345zRa/DW0MfYg/
-         Xa2E5OWpf61dhaIth1NCvRyuzq7QgWFrBch+y9ODLLCNxo/EtXasPSLfULMvu/JLwTV1
-         siFxPzpcTs24quQajoBreAyLjkUIbbxtg+gmlmSozAxWNL3aZlK2Q9PeXqgpXalHlIzc
-         DoyLkxjIARh3HkRZFFF558R5wccFdyT2F8Sdqu0IGobJf7aLI62jGUnQRWHEHgd+jxLu
-         zLhA==
-X-Gm-Message-State: AOJu0YxdlxNGFvf34Rhg/AuQyk2UDwBBDO3qHc2EivB049xZQmhURY9F
-	NKgYG3fQaMGu1HH84+DKlzu8bO+6b3OVq7/e35rJQEsy9LM6o/i9xDb6w+u0/yW67KnNo6N7+yC
-	7OMQzf9w9wmr9UxaFFIifecU2m0o=
-X-Google-Smtp-Source: AGHT+IEIMM+QD7S8NsiU6TBFZ1UOpCjMJdkeFWS0+ltUYD3B+vZeyJCbVV6Yadxs2jjzKFND2rJX8h65HpSJ+/ViyeE=
-X-Received: by 2002:ac2:4acd:0:b0:523:8b4b:8c99 with SMTP id
- 2adb3069b0e04-526bf921f14mr3888724e87.37.1716452459262; Thu, 23 May 2024
- 01:20:59 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ezDs/DoE;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 1710860002;
+	Thu, 23 May 2024 08:38:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1716453522;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l//rTxmvWmLLEB0GpWnJpVlRp4R4PmK2zWUrPjClXEo=;
+	b=ezDs/DoEGEnbC67x/ELpe1hWRXHiMsSPR7WZALpEvwrxsc0f2oqpLEkmp8lt3Wh9wymNTN
+	KyCF+1Zh2rfyto8WgvI15Q2diKxjrxe5DIYAUp+G3v69quJT3BKkxQqrA8SEIoczNC8GUH
+	RCdy2jdQnJ3e5mqFstWKK3pgjpkTcazHzgj3ntORiQw69ZOupt1jOsH3SwRZHAY/szRve1
+	U8Qt13rt4DHE/1p/yg6SNJYD3+uQpD3Cy3j532DkE+1IrcRhY88QRYaSUSwmGVJdxtKOda
+	8Ha+6kzeIbEKW+cpOPk1cSxob+SlZdOgYm4r7dP91IqZZ9eqPfdNy0V4NYC0PA==
+Message-ID: <dd2488e7-e201-4017-b54c-4dd1e7b68aba@bootlin.com>
+Date: Thu, 23 May 2024 10:38:41 +0200
 MIME-Version: 1.0
-References: <20240523073938.2135-1-marcus.folkesson@gmail.com>
- <CANNYZj_PsT8HBLeH51O_9jDTcLmcKx3Sfk=M8GKu898AV+Zw+Q@mail.gmail.com> <Zk72Tip24pDqVlqm@gmail.com>
-In-Reply-To: <Zk72Tip24pDqVlqm@gmail.com>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Thu, 23 May 2024 10:20:47 +0200
-Message-ID: <CANNYZj-EBbc8tvzyWH2ByaE=___eVBnF3QzMbxENOJZxA+NXvA@mail.gmail.com>
-Subject: Re: [docs] [PATCH 1/2] image-bootfiles.bbclass: new class, copy boot
- files to /boot on rfs
-To: Marcus Folkesson <marcus.folkesson@gmail.com>
+User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [docs] [PATCH 2/2] ref-manual: classes: add new image-bootfiles
+ class
+To: Marcus Folkesson <marcus.folkesson@gmail.com>
+References: <20240523073938.2135-1-marcus.folkesson@gmail.com>
+ <20240523073938.2135-2-marcus.folkesson@gmail.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <20240523073938.2135-2-marcus.folkesson@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 May 2024 08:21:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5232
+ <docs@lists.yoctoproject.org>; Thu, 23 May 2024 08:38:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5233
 
-On Thu, 23 May 2024 at 09:48, Marcus Folkesson
-<marcus.folkesson@gmail.com> wrote:
-> I think there is a win in using the same method as bootimg-partition
-> does.
-> Then it is the simple task to switch from a separate boot partition to
-> embed the boot files into the target root filesystem.
+Hi Marcus
 
-I don't know. It goes against the established practice for forming the
-rootfs. /boot folder is not special.
+Thanks for the documentation patch!
 
-Alex
+On 5/23/24 at 13:09, Marcus Folkesson wrote:
+> Describe the newly introduced image-bootfiles class.
+>
+> Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> ---
+>   documentation/ref-manual/classes.rst | 14 ++++++++++++++
+>   1 file changed, 14 insertions(+)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> index 9520d0bf7c..53b3697bee 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -1169,6 +1169,20 @@ Yocto Project Overview and Concepts Manual.
+>   
+>   .. _ref-classes-image-buildinfo:
+>   
+> +``image-bootfiles``
+> +===================
+> +
+> +The :ref:`ref-classes-image-buildinfo` class copies over files listed
+> +in :ref:`IMAGE_BOOT_FILES` to the /boot directory of the root filesystem.
+> +
+> +This can be useful if no separate boot partition is used but all boot files
+> +should be included into the rootfs image.
+> +
+> +:ref:`IMAGE_BOOT_FILES` is the same space-separated list of files used
+> +by the ``bootimg-partition`` source plugin to populate the boot partition.
+> +
+> +.. _ref-classes-image_types:
+> +
+>   ``image-buildinfo``
+>   ===================
+
+There are issues though...
+
+cd documentation
+make html
+
+reading sources... [100%] releases
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1206: 
+WARNING: Duplicate explicit target name: "ref-classes-image_types".
+looking for now-outdated files... none found
+pickling environment... done
+checking consistency... done
+preparing documents... done
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1175: 
+WARNING: undefined label: 'image_boot_files'
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1181: 
+WARNING: undefined label: 'image_boot_files'
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1211: 
+WARNING: undefined label: 'ref-classes-image_types'
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1217: 
+WARNING: undefined label: 'ref-classes-image_types'
+/home/mike/work/git/git.yoctoproject.org/yocto-docs/documentation/ref-manual/classes.rst:1234: 
+WARNING: undefined label: 'ref-classes-image_types'
+
+You should actually add the new class documentation before " .. 
+_ref-classes-image-buildinfo:" and have your own ".. 
+_ref-classes-image-bootfiles" definition.
+
+Thanks in advance. You may wait for your class to be merged before 
+submitting a V2 of the documentation (though early documentation is 
+always useful!), as I won't be able to merge the documentation changes 
+before this happens.
+Thanks again,
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
