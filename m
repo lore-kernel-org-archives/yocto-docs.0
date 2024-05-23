@@ -1,171 +1,163 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <marcus.folkesson@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 65067C25B75
-	for <webhook@archiver.kernel.org>; Thu, 23 May 2024 13:49:11 +0000 (UTC)
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (EUR03-DBA-obe.outbound.protection.outlook.com [40.107.104.119])
- by mx.groups.io with SMTP id smtpd.web11.17510.1716472143695804862
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 67FBDC41513
+	for <webhook@archiver.kernel.org>; Thu, 23 May 2024 13:50:31 +0000 (UTC)
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+ by mx.groups.io with SMTP id smtpd.web10.16030.1716472224544577538
  for <docs@lists.yoctoproject.org>;
- Thu, 23 May 2024 06:49:04 -0700
+ Thu, 23 May 2024 06:50:24 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=PUEWZ4dv;
- spf=pass (domain: cherry.de, ip: 40.107.104.119, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=M7R/wjBMyq2en4PiBXclDL7yp3fqBvqiUoRmeN3A/Q32vRnJYKPffjeW6YKTHG7SJdUVnsdhbVGV1Juo1KijodruQRFG3Z7AgQtzoc66jA6J8zvAv6ySBwLIUZVoh+BusdID3sIwx/InBPK4Bsnq/9WG8YpOgmHxNzkIlA6JRA3BekeoWlXfNBL/JHeEqlwigHJEwQA4ESM2TRHhcvN7SmfSpDlovbFs2Uszg3f8K9V0QyaGA7Z6mAQvRstsOxEE9qh9xEJQBekiZjJD66b6tl9HaGfWPUhRbGo6L6atzhrCOeytHGd0XADL+xXSjYal50DOA+YOPR9wcorGrheVtQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ygw7HgI1xxMSAexzUM+S9c4JMCZEye4FLzFs/jEDtuw=;
- b=RcJsL5i/90ROsJAShEx13GUq6Ne34BKLVH38td9VUiCrX26evLrLk1ZIM7H6d/EW6+MGPRQiKQej6305XQmAS1odG9j1otjChLukoPEKh628NIX/EfQWoVLLASsBVO/r7vMzVuSzyK2zHb3DvNI+RyD7xjZJUXV/9GSzIcw8s5HhhVteee2x7gZ1Awg7ut8HphthWyx1w/OMUH6Bh3dIH4p3QBWp87HiLaojj+lbvLvQMnuPcFa3VI5CJoPWFqnYtlRo+OnC3RPRZaetqcpu+H/bTGrsMbqWO5nU+ryDL+JJMvKj/iX6xTR8OMeEp0SOziRQMYFqltgDjuUpm36zrA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ygw7HgI1xxMSAexzUM+S9c4JMCZEye4FLzFs/jEDtuw=;
- b=PUEWZ4dvcKweu3cWe2hCvXV8INbwSAjM7g1M8BdjStePUkKwl7gn7z4+seMKn3ZgTvQDIDkwq6wB8L0m0edwdr+puLZJyYYVtfNDgx21YeKH9MZRv/i7wlD79QnOZebKpip79UwISjeyYYrfMwmKINgo4AtxWZ1S3YXlenPl+UA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AM0PR04MB6578.eurprd04.prod.outlook.com (2603:10a6:208:16e::11)
- by PAXPR04MB9350.eurprd04.prod.outlook.com (2603:10a6:102:2b7::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Thu, 23 May
- 2024 13:48:59 +0000
-Received: from AM0PR04MB6578.eurprd04.prod.outlook.com
- ([fe80::b0f9:e7f8:2613:eefd]) by AM0PR04MB6578.eurprd04.prod.outlook.com
- ([fe80::b0f9:e7f8:2613:eefd%3]) with mapi id 15.20.7587.035; Thu, 23 May 2024
- 13:48:59 +0000
-Message-ID: <26ceaa97-266a-4a43-bfd0-306f29f65e8e@cherry.de>
-Date: Thu, 23 May 2024 15:48:57 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [OE-core] [PATCH 1/2] image-bootfiles.bbclass: new class,
- copy boot files to /boot on rfs
-To: Alexander Kanavin <alex.kanavin@gmail.com>
-Cc: marcus.folkesson@gmail.com, openembedded-core@lists.openembedded.org,
- docs@lists.yoctoproject.org
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=ZGV65dkQ;
+ spf=pass (domain: gmail.com, ip: 209.85.208.41, mailfrom: marcus.folkesson@gmail.com)
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-571ba432477so13352046a12.1
+        for <docs@lists.yoctoproject.org>; Thu, 23 May 2024 06:50:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716472223; x=1717077023; darn=lists.yoctoproject.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=PDVGw9YpqamgZGNftPZhz8LiNZi5EbwKeXMmh3+FbQg=;
+        b=ZGV65dkQ9xgKWFBDycsEzCqVzG4YzKZ/pOb4iXvM1ogpPlupmNzOENolLPjQ1RBAg7
+         Yt75bi668BlTcMLE8VwOxtDfNmkxwQEQppg+kd1qHB5yT/Ip8v0syb8Q1cjZzKCiuSZ0
+         Ugs0uklbRhIl/Tn+0wBAuS4/YCvg/Xig+1QEabrt/1qZNoAKMF1Uutagr0f/nDajA/0H
+         hBHeAO2seI+GVJf2EBWH45EUdzSA5VPVXsTzji/DhsbY5QAqucrT7z3H0PeW4Ykobyy6
+         sHToULaLym809GRU5dpie0X4RYWRqHLuxN2wBgguMqVoNVF5RouC/j1THYXdlY9EfR30
+         txWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716472223; x=1717077023;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=PDVGw9YpqamgZGNftPZhz8LiNZi5EbwKeXMmh3+FbQg=;
+        b=KT3ROPanhncOAqamm44ytUUu/qiNxAyiedV2d7IQPkSSUStqCz83nBYyH6EmsIGjO6
+         njkQQBdiRSMbYofPPLTFcnBXRyvJoLwBDyHMsjollSAPF4mUXOJdV9X5GESY+uSH7GtP
+         06sLpSSK413CoDLZmSJu2IttMzVGQxpzoc16O5lBhp+MnEkNnuUgCkEwIe81g8LxXJ0w
+         8/8O8s8kSNOCavOp9FA80ThxC02fP3F5st2UI+ueDGWW6jEo/G6Y/oleuNlb+xX6ZDNf
+         wKbtU9JDMG/LASwMkGYWSQ+kfrLCbPtYEUmRgqPuJvFFhnRGBkW2FypI9wi5wBJy+aw3
+         xpbw==
+X-Forwarded-Encrypted: i=1; AJvYcCX4ThBsoXAAemzaMpxUyVwXChPf+4F6q8NvMTTXchsZiqWdeZz7rlu4VxolAug6+f3AsvJRPHh22rCqBWqzMnbmZ2kjjAQAeKGgY5s=
+X-Gm-Message-State: AOJu0YxMTbO+ULo/jGO2KY3U1AWpwvWH018r6noD/hH4Y2gNSlgA7JrA
+	et+xDCAbJZmWr4VrpUgarC4ESsdNeaKz1kInLaHJ31jVL0n/pVpi
+X-Google-Smtp-Source: AGHT+IHK66Br1ecEZZCgRVcuFNX5CB90dTjdoJhwxutI7sc/legAprAMbTtQPjY1wCalj3Qvfr2AVQ==
+X-Received: by 2002:a50:9e2e:0:b0:572:7c99:a280 with SMTP id 4fb4d7f45d1cf-578329e295cmr3354464a12.15.1716472222683;
+        Thu, 23 May 2024 06:50:22 -0700 (PDT)
+Received: from gmail.com ([85.235.16.11])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-573413b2ac3sm19779810a12.38.2024.05.23.06.50.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 06:50:22 -0700 (PDT)
+Date: Thu, 23 May 2024 15:56:33 +0200
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: openembedded-core@lists.openembedded.org, docs@lists.yoctoproject.org
+Subject: Re: [OE-core] [PATCH 2/2] ref-manual: classes: add new
+ image-bootfiles class
+Message-ID: <Zk9LEdzTFcU22mH6@gmail.com>
 References: <20240521173343.2954628-1-marcus.folkesson@gmail.com>
- <66c6fe23-dbdf-40a5-ad5b-393b4d1239f9@cherry.de>
- <CANNYZj9TnoFbUkKnyvh=WgbTBp13rf6+0jrtGJiNv9A==bNYiQ@mail.gmail.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <CANNYZj9TnoFbUkKnyvh=WgbTBp13rf6+0jrtGJiNv9A==bNYiQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: WA1P291CA0004.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:19::15) To AM0PR04MB6578.eurprd04.prod.outlook.com
- (2603:10a6:208:16e::11)
+ <20240521173343.2954628-2-marcus.folkesson@gmail.com>
+ <76a18407-d650-47a2-b8c8-f639350c3630@cherry.de>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB6578:EE_|PAXPR04MB9350:EE_
-X-MS-Office365-Filtering-Correlation-Id: e645708d-0efc-45ca-66bd-08dc7b2f1910
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|366007|1800799015|376005;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?ZSsyVkZCWHAwVmp5eUN3NFdZR0hoVU1xaEpkWm14SjN0WFRmL2pPOERYeDVU?=
- =?utf-8?B?dzRTZHYvdWVzSTR1RFhNNmIyRXp0bVlwaFh5Z1I5QTJ0aEFtd1FLYkg2WWdT?=
- =?utf-8?B?a2FMY3c0YlE5S0pGNzZ1SUVESzM0bDY1SWQ2cXkxcFJ2OFlzZ2k5TXFuOVV2?=
- =?utf-8?B?aUoyOE1HYWgydENudWNlUzlCOUUxZnZjSHUzbGxpWHd1V0FQTkg4ajMwb0JH?=
- =?utf-8?B?V2x0TnViMFRqTDAzTDlBRk1xSlcySDErcndtYmFoQXVteE14MGFjYzZ2K0kx?=
- =?utf-8?B?b1U4anduQXdjeXpsWmVSbTRua1BVZGhUMUxzVFdnWWJjcDh6KzFvVUZ1eExx?=
- =?utf-8?B?SmgzcnlYOVhWUnhLL2I0SzVlYnJJQ3dUQ1JSV0l2eENnV0dnSzhTTlM3NEd1?=
- =?utf-8?B?bnJNcVpwbDBaSXdVQkVwZm9TSnBtS2VqREtrU3E5aUVpVnYveENib29DWmlC?=
- =?utf-8?B?WGZOOW5WM1FCdWtrTHA5WERjTUFRZzU5MFUxR2tXUEV4MHl5WStiVTQ3Znds?=
- =?utf-8?B?SnBDVzRwY01KcHZjQnc2QnNiYjBGK0g0Y2VxZDJkQ2tYbi9xYThKdzZzejQv?=
- =?utf-8?B?OFNkYWZjbG1KZXRJRDMvYktic1ppZzdwNzh6UFQ4a29kN0pSTVl1ancxZi8r?=
- =?utf-8?B?Y0pVajg3UzFlUGUzY2JZNG1HR0VTQmpXV21TUUwwbHo1VHlnMDZpYWZUSjJ2?=
- =?utf-8?B?NWppcVp4V0J6TExsNWNZMlU2YzNoNFpPaVpySEFyOUdCNUNOU2E1c1FaeG1J?=
- =?utf-8?B?ZGFFV0pDNXZ4R0pHUmVKVFRNMk5kUkZ2a241WFpUcHplUTduTDhmQTB2Rkhv?=
- =?utf-8?B?ckFQZWcxREhieFZmODhqK3lBRmsxS3dzaExUNG9XQ05MVndJYzA1RUR1ZnVy?=
- =?utf-8?B?c2N4eklnVnJZZG56VlV6RzdDcjhOcmZ6OFlPbVJjSE5mOHFCVTI3NjBUUFRz?=
- =?utf-8?B?d0thN3dTaGtSaWFtNnVRTnJTU1JlT2FpaDc0aklXSURjOHJxcGwzTXMrbWNU?=
- =?utf-8?B?ZEdFbTkxY0ViTm1HK0pjQTdyY3YyT25XakV3eGp0N28zYitWajVOeFliQ0hm?=
- =?utf-8?B?YjE2SFRRMmJ6UWZaTGtDdzR6ZWJLM0ROYWNvd1N1eHJISnVaVDlGOGF1TjRr?=
- =?utf-8?B?VStnM0VxNlFYa0p2a2Q5R2tBck9kM1VWamhyZTNIUjEyTlVTRTlGalBBREdJ?=
- =?utf-8?B?VGl5N09FL2JROEFPSC8wZjMvaU1hQy9OOG5KYzhFK2ZrVlZEZXpkVzJIekhM?=
- =?utf-8?B?VndMNDFvekxDaGN6ckIrZGRmcDZOS2VNRXlOR0dKdS9lbUxyTEVSOFUzMWtI?=
- =?utf-8?B?TXdhemxuRnQrVEVkQjZHTllzMXJWb2l3eUNDeFBBUnYzaDMrODRuWEJtdTJq?=
- =?utf-8?B?VzlBWEhrQk0yVDV0ZEpJS3BZRHROeHBiNTRNTnFHRzNaU2V0bWF1eXIzVGVz?=
- =?utf-8?B?MHdMNDFJRE1pd0VoRmJrNHJJUVp3VlBENWV0T3B5SXdNdC9LZGkxQm83cTNh?=
- =?utf-8?B?M0hTaTY1RTRXT1RSY2ljcXJmSitMYWRXdXBVL0xmcExacmVsTkZWanI1SXd5?=
- =?utf-8?B?bVNyMUVLYTVjenVycUJOajlXc1piWjFxOGp1d3JMS2pYeDY0Tm12WWkvY245?=
- =?utf-8?B?NW9MVEowTVMzbVRNdFc5cTQwYXRDSUpaY1BrVmkrSEQ3b2xhK3BHS3Ivd28w?=
- =?utf-8?B?Vlkzdk8wRytwNWVDbnI5NVRIZkd4dlJTQUVKNEgxdDJCOE5VNys0TzdBPT0=?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB6578.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?YkpsYTgzQnh2dGpFNzhSbDhlbHdoazhqVmxpcEphYlcrSVdIYWFMa0ZXWkFt?=
- =?utf-8?B?MU1MblJkbEdxL2d1QjBObWtqeExDWnpCVjI0YmI1UURYZ25HMlVoeDNIS1Zr?=
- =?utf-8?B?MjFZSHdGSXMrb1VSZUFjNVdxaXJMWEFWTFBETXFkVHF5RXZsTTZVeU91aHc0?=
- =?utf-8?B?bmlUc1JWRVlsQ20xLzlJVVlydVl4MStuOEdJd2FqSjFyS1c1SHIwNGhaVzdj?=
- =?utf-8?B?RG53ZGE1d21COWtVUFVaaGgzeWNURjRFeDJxTzlOSGZKQjQxWnROcnJjSlRs?=
- =?utf-8?B?b0dEYXRZV2E1V0FPSy9tckpUbFdSU1RaMmNzTUxNeGo0dkw3SytkbGJaUDEr?=
- =?utf-8?B?eHpkR0dCWUMwZEtDUWRxTDd6ZnRDNDFaaWZWUThpV1N0QmUrZUkxK3RxVkI2?=
- =?utf-8?B?dGp1ekVXNXpveTRiWGIza1hLb3V6WlQzL28zdWtYbGhvVjY0SVRYbXk0YUNV?=
- =?utf-8?B?VDFpN2Z6MElwQkJwTXhiMVh0SU1EVkJIOWR4UVNESjRqNTZxSUVRMFVkT3FB?=
- =?utf-8?B?QWJ2c21iUUNhWVJDWnBxbW9yd25QYmJac04vNUE0NXUya3oySFNXRUREN2pi?=
- =?utf-8?B?NXVhbURDV1loRVMvdEhLbnVCenhVdDZpMUE0Z0VpQjVvTHByZ2h6U0U2QVNx?=
- =?utf-8?B?M3lkOEFlc3ZiSjVRTTI0VEMxT3FVdXk3ajdHZkNuTUV6MjNrTWlRUk9abS8w?=
- =?utf-8?B?Tk15YXUxTWwxQkZ6WEY1SnE0NWgrUFp1VEh4dGlxZExPNFdFd29BVXlZend6?=
- =?utf-8?B?bE5IaS9NZG1IdDNVeXYxSEVEb3UzcE1kQ2pIUnUrM0xNUk9XUGdPL2FkdE54?=
- =?utf-8?B?a1VycXdPUy90bU5hbENZUWJldTFtWi9PbDFWUGJIczJ0S3laQUJGR3ZxVHow?=
- =?utf-8?B?Um5kMXJOd25MM0htVy9SSEtoMmNjR3ZDN1dKVlFJWkROcDkwUEtMeHZVVXV2?=
- =?utf-8?B?YTJiZW5mcHBBeDdoM0ZyejZHcDRoNC9KK0U4Qm1pMEVZdW9YdEYyaXJqdUQx?=
- =?utf-8?B?dndvUFNkcnZiRVprRFVrWnQxK1pSZkp4b1JDclBqd29pdE9BdkVNUTRnVURu?=
- =?utf-8?B?dmZ1UWVBM202UytyN2RSUkV1K1JydE9iNGRHRHRPbkwxdlFXR29LbXErbERT?=
- =?utf-8?B?Q2p6L0hqTk5ZckhlMVdVM1k4aDJYVmtZcHZvY29lNXpnNFBwN3QwcXBrY1kv?=
- =?utf-8?B?aDB5UEFyU3VDYkZFZmVNL3NEaWxuMU1UV3g2YTdubjRoYTlnbmQ5NEpyeGdO?=
- =?utf-8?B?bDFnUkN0aTlZWURzaStxNm9vbTJBcjY5RnU4eElKUmxhVmZtT2Q0RlYyMWcx?=
- =?utf-8?B?eklNY0xQbkh6Qjh0YTI1UHZDcFV0TTlDNWNYUWJ2TmkyNVdvVUJoU282ZlpE?=
- =?utf-8?B?cjZhK25pOWgrdndIQVB0dzZGQWJXQ0sycnc2OGVzdC9ORWhjd1R4WHhxbVNN?=
- =?utf-8?B?SHBQR0xZMjRYTWQ3VWdVbXY1MksxY0piUDdpS3hOSEJ5TG82dUUvK280SkE1?=
- =?utf-8?B?QW80Ty9jSVFnRUFaUE5QYlZtbjdEOUVNSXc5eWx4YTBhU0lqaWttcjBscDZk?=
- =?utf-8?B?V3pRS1ZLU3BoNGZhZTFSSTdPUWdvMlViRzhHdDVOalRFODlTcU9JbzZmSnBm?=
- =?utf-8?B?WU16ZG10Vjk1U3BJSzlhVWhNMXc5VEhOUm5yU3dpVGtpL3FMbk1hNnlQYmR4?=
- =?utf-8?B?bVNhUWdtWG1aalVLb0pMcTBVMmxJcy9lZldrMHZaOExXRTZPbHVoWFYyblpm?=
- =?utf-8?B?QTlxbUIybTVvd1V1Q2NOR1dYamoyVEVLQkFWc1U4VW5JL0lYM2RXM1o1RGJN?=
- =?utf-8?B?NGhWY3JNUElONm1aS0RHNThKM1FyRXd3Y0NlN3VYbE43ZHRHLzJNUGh4SXFX?=
- =?utf-8?B?eVE2UXhtQklhLzJGQTdISllPVStZMUxOWHpQakZUeDQwWm01ZVJPNklSeEFE?=
- =?utf-8?B?Z0NKTWczKzNGQVllVit6TSttd09jY1h0eHdqelcvcUhSZmVueTB4TjMyRHd4?=
- =?utf-8?B?ZEwzR09uZ1poYms2VW5HUjZFa0paZDFXY29td3pFOGR1eTZnWEJRSlM1MXA3?=
- =?utf-8?B?ZVkveFpCcUMzUmhFV2xEemVjL3IyTzl5amI0bGdlRnN0MGo3WGpRQ2tXbUp1?=
- =?utf-8?B?QjRzY3Z1NXJnYXpucUJjOUZkeGdhcTRoWnltSVNVODQrbmc1ZHNwVkJMa1Mr?=
- =?utf-8?Q?xqPjB4O73XSy8itjB7eKD+A=3D?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: e645708d-0efc-45ca-66bd-08dc7b2f1910
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB6578.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2024 13:48:59.4827
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wVCbhE7yiT6pAEe2f7081/uHJW0Sp46ZkcsOwJ1ZcZCz/09c0whxKsISdX7PUQ1Il8lKchgiOOQtdNHQExm9qwsu/JSTAVJmEkiGY5D6kAg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9350
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <76a18407-d650-47a2-b8c8-f639350c3630@cherry.de>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 May 2024 13:49:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5240
+ <docs@lists.yoctoproject.org>; Thu, 23 May 2024 13:50:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5241
 
-Hi Alex,
+Hi Quentin,
 
-On 5/23/24 3:38 PM, Alexander Kanavin wrote:
-> I also have to repeat what I said in docs@ list: why do we need a
-> special mechanism for placing files into /boot? If /boot is not a
-> special partition, then it's just a folder in / and can be populated
-> from packages like any other folder.
-> 
+On Thu, May 23, 2024 at 03:33:00PM +0200, Quentin Schulz wrote:
+> Hi Markus,
+>=20
+> On 5/21/24 7:33 PM, Marcus Folkesson via lists.openembedded.org wrote:
+> > [You don't often get email from marcus.folkesson=3Dgmail.com@lists.open=
+embedded.org. Learn why this is important at https://aka.ms/LearnAboutSende=
+rIdentification ]
+> >=20
+> > Describe the newly introduced image-bootfiles class.
+> >=20
+> > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+> > ---
+> >   documentation/ref-manual/classes.rst | 14 ++++++++++++++
+> >   1 file changed, 14 insertions(+)
+> >=20
+> > diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-m=
+anual/classes.rst
+> > index 9520d0bf7c..53b3697bee 100644
+> > --- a/documentation/ref-manual/classes.rst
+> > +++ b/documentation/ref-manual/classes.rst
+> > @@ -1169,6 +1169,20 @@ Yocto Project Overview and Concepts Manual.
+> >=20
+> >   .. _ref-classes-image-buildinfo:
+> >=20
+>=20
+> This isn't the appropriate name for the reflink, we should ave
+>=20
+> .. _ref-classes-image-bootfiles:
+>=20
+> instead, to match the actual name of the class.
+>=20
+> > +``image-bootfiles``
+> > +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> > +
+> > +The :ref:`ref-classes-image-buildinfo` class copies over files listed
+>=20
+> That's not the appropriate name, it should be ref-classes-image-bootfiles
+> (it currently renders properly because the reflink is incorrect).
+>=20
+> > +in :ref:`IMAGE_BOOT_FILES` to the /boot directory of the root filesyst=
+em.
+> > +
+>=20
+> Tick quote /boot:
+> `/boot`
+> it;'s not meant to be understood as an English word.
+>=20
+> > +This can be useful if no separate boot partition is used but all boot =
+files
+>=20
+> Replace "all" with "some", it depends on the content of IMAGE_BOOT_FILES,=
+ so
+> we cannot say "all" here, it is misleading.
+>=20
+> > +should be included into the rootfs image.
+> > +
+> > +:ref:`IMAGE_BOOT_FILES` is the same space-separated list of files used
+> > +by the ``bootimg-partition`` source plugin to populate the boot partit=
+ion.
+> > +
+>=20
+> I would not mention this here, rather edit the variables glossary entry f=
+or
+> IMAGE_BOOT_FILES to mention that this is also used by image-bootfiles.
+> Also, it seems bootimg-efi plugin uses it, according to the glossary entr=
+y.
+>=20
+> > +.. _ref-classes-image_types:
+>=20
+> This isn't the appropriate name for the reflink, we should have
+>=20
+> .. _ref-classes-image-buildinfo:
+>=20
+> instead.
+>=20
+> Cheers,
+> Quentin
 
-There's renaming logic here. Which provides much more flexibility than a 
-package would. You could have a different name for each image recipe for 
-example, instead of having to use a distro, packageconfig, bbappend to 
-modify it. Is it a valid use-case we want to support /me shrugs, be we 
-already do support it in wic, so maybe that ship has sailed already.
+Thank you for all the comments, I agree with them all and will update
+the patch accordingly.
 
-Cheers,
-Quentin
+FYI, I will drop the documentation patch from this series and resend it
+once the class is ready for merging.
+It was suggested by the doc mailing list (had to resend it as I was not
+subscribed, so it is not part of this thread).
+
+
+Best regards,
+Marcus Folkesson
+
 
