@@ -1,98 +1,101 @@
-Return-Path: <tgamblin@baylibre.com>
+Return-Path: <marcus.folkesson@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2B398C25B78
-	for <webhook@archiver.kernel.org>; Tue, 21 May 2024 18:26:49 +0000 (UTC)
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
- by mx.groups.io with SMTP id smtpd.web10.3475.1716316007419063001
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87959C25B7A
+	for <webhook@archiver.kernel.org>; Thu, 23 May 2024 07:33:39 +0000 (UTC)
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+ by mx.groups.io with SMTP id smtpd.web10.9951.1716449613320670149
  for <docs@lists.yoctoproject.org>;
- Tue, 21 May 2024 11:26:47 -0700
+ Thu, 23 May 2024 00:33:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=Fr3wD1pC;
- spf=pass (domain: baylibre.com, ip: 209.85.219.46, mailfrom: tgamblin@baylibre.com)
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-6a077a861e7so32487586d6.2
-        for <docs@lists.yoctoproject.org>; Tue, 21 May 2024 11:26:47 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=QUQzcoSN;
+ spf=pass (domain: gmail.com, ip: 209.85.218.51, mailfrom: marcus.folkesson@gmail.com)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a599a298990so1141439966b.2
+        for <docs@lists.yoctoproject.org>; Thu, 23 May 2024 00:33:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716316006; x=1716920806; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GqZdWzzTcwmxgdo/B3zSW4I51znfIuN/jlqhIWpqcNc=;
-        b=Fr3wD1pCuf5npogAvgjpzt8+qs6y6EbPHqj3g3CGKzohhx6+6VY+NUJ0CWoVJ8GICx
-         e9N7XxkrEExn75/6Kg2zVzQ/rqefnT4s670umLGDfsY7BBysuu8psaxe5kx3OFGStOYC
-         0y52PVqZ3NCSZ0MEIqrPVS3ulnvwMMuOTsRw1lfulmoX6NMnPL1Oj/X7QyxUk/+zcfHa
-         UJkUdq4/pFRve0/j3u3Q9Jn7iqohsbth8PmgDVEClKVAtj0S656dCJOsgD55IPuVBhd5
-         ilHTHPVudQWM+mfYbj2S3+k674VUpO6DlAtteg3apLU2/wTVTtZ9qoIU7LQbqcM3sbaR
-         /O7A==
+        d=gmail.com; s=20230601; t=1716449611; x=1717054411; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iPMGszLmxqrgRbEUYpOB9JaWRu0yBdrakM2O5lKUkVg=;
+        b=QUQzcoSN7oURgbgO8klRgmTGbYhvtD/WlRCmYHsnmEjgkP1DecSYmqwxvdN1pKryor
+         CxuTGm9gj3eXpJC4yPNs8qg+HfRH52QghWf116Cw48Pejvpm9cEfdJGCTD2ljigK1GC4
+         RiCENaoAR68CuvDHGjsn1F0AOmst+/iycLwYyHp9KPka7rsVODtoPhbSSvM0RYWgkpOv
+         6el/owQ2c5acS/YEOJEXLmR+VKUx2eQWmevUZsUtolX1YyMYb11Wa5OwJtmaBnWhb9Nn
+         JHwt2C/qg3V7jJtzgrecdPAEMGuLs9YZrPFaIrmPKc6YHKysZ5EP7PORfK2YaxwL89e7
+         keow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716316006; x=1716920806;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GqZdWzzTcwmxgdo/B3zSW4I51znfIuN/jlqhIWpqcNc=;
-        b=k0EG7YEHLuM9Tz1Fs0wDingV8/xqiA6JVtQvSH3/140g0C50ekNzQX4uya47LZDn9U
-         1Hetxph06Bj4lLFkXltThE8gCFS7yTWOkTXwPKicijTzJUFRA5CrBgRircP9OkEJzbn9
-         kVMrwGSxvbv41puQO69X0Y95YQQ5V64/tgcG+aJO0tujAjKjMkuDxA7VsW8+w8Ts0aKS
-         l+CvhBc0q94F/XkLxQLE3oPkP3ym/A/9o2wZVa45XHZYcf6KbAGUWIAUYcHGwB7Y+E5A
-         +5hLLDE54QTPULvKl2Pthsl/+PQq7Se58VZgXmmrk6tC4NzreZhy90/QCo12OcCbvrUl
-         usRw==
-X-Gm-Message-State: AOJu0YyljNZ6/cjB/gZ0ozwgPoKfSqdlTWxGibd+O1ecDuQH2THlyvxI
-	MdrB3cGAqGlFrhn+hgyarjH/w3Cp4nyOxSywzoiG3nS6NspO878/+JuGjceK8xW6vw3iyNZdmMu
-	2
-X-Google-Smtp-Source: AGHT+IFBHZB86K3xgzM3u0hE2B7HLP2VlSqaTum2ODRAx97rQr9yWUFVb+mnnHYX65UgBZiNMzGsog==
-X-Received: by 2002:a0c:faca:0:b0:6a1:69ae:4d34 with SMTP id 6a1803df08f44-6a169ae4f5bmr275255346d6.20.1716316005836;
-        Tue, 21 May 2024 11:26:45 -0700 (PDT)
-Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6a35384037esm72870356d6.73.2024.05.21.11.26.44
-        for <docs@lists.yoctoproject.org>
+        d=1e100.net; s=20230601; t=1716449611; x=1717054411;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iPMGszLmxqrgRbEUYpOB9JaWRu0yBdrakM2O5lKUkVg=;
+        b=UqNeRGoT4h/HAVke4IZQDE+LNJD9S7Ddh5nrPWO/iZu66HDI8SQRDEjWS6BTNdYfuO
+         Yye1sdktbdoOaX/sPjNLSnWZMg9TfM6NvC9KIxHMDoUpnPhNs7p28F7P08g+nSt/YTWV
+         tra+7v/f5ERp5cgSxS8enM1L+OWV/1+xNJa8DC0i0W2LJm0c94XrHtY01TBbLMZhVqlr
+         ZN/RS6pRue/iy7MLXBk3BDG3TtIc1iFpAkYpMp23ipHR3pT0Bmw1Nwd+skdlqe9CwjkX
+         qqiNUNGqapnyJWsxrrs+NWrLv7qCDL9QDUAIFJmSy2bBvq8ijaT5uxAoEgIjIm6w2Xfi
+         NNVQ==
+X-Gm-Message-State: AOJu0YzZTQuG6Vq4dSrWC0wPcNzJ5ewpOwpfyrMVYPjvvaLn8XWKgtga
+	SQZn95sM5Y9IZbl2hy9C2zMXY1EBDeXU0/oaGqgHKripoZPqO9CPsrDSfA==
+X-Google-Smtp-Source: AGHT+IHWrFv6oRsDxFF1dcnd7oT3eUmJRXlCwiV7w3ZU/eN+5AM1lGXzTay73ME1VUATyT7nX3p+ig==
+X-Received: by 2002:a17:906:f258:b0:a59:9c4d:da38 with SMTP id a640c23a62f3a-a62280a2185mr299396066b.45.1716449610992;
+        Thu, 23 May 2024 00:33:30 -0700 (PDT)
+Received: from goliat.wlan.se.axis.com ([85.235.16.11])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a90d0e919sm1163469166b.85.2024.05.23.00.33.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 May 2024 11:26:45 -0700 (PDT)
-From: Trevor Gamblin <tgamblin@baylibre.com>
+        Thu, 23 May 2024 00:33:30 -0700 (PDT)
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [docs][PATCH] ref-manual: variables: document PYPI_PACKAGE_EXT, PYPI_SRC_URI
-Date: Tue, 21 May 2024 14:26:43 -0400
-Message-ID: <20240521182644.1895419-1-tgamblin@baylibre.com>
-X-Mailer: git-send-email 2.45.1
+Cc: Marcus Folkesson <marcus.folkesson@gmail.com>
+Subject: [PATCH 2/2] ref-manual: classes: add new image-bootfiles class
+Date: Thu, 23 May 2024 09:39:38 +0200
+Message-ID: <20240523073938.2135-2-marcus.folkesson@gmail.com>
+X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240523073938.2135-1-marcus.folkesson@gmail.com>
+References: <20240523073938.2135-1-marcus.folkesson@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 21 May 2024 18:26:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5226
+ <docs@lists.yoctoproject.org>; Thu, 23 May 2024 07:33:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5228
 
-These are variables that some Python recipes are starting to use, but
-there is no documentation for them currently in the reference manual.
+Describe the newly introduced image-bootfiles class.
 
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 ---
- documentation/ref-manual/variables.rst | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ documentation/ref-manual/classes.rst | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 3f37f42f2..09199b5c9 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -6829,6 +6829,19 @@ system and gives an overview of their function and contents.
-       explicitly if that will not match the package name (e.g. where the
-       package name has a prefix, underscores, uppercase letters etc.)
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 9520d0bf7c..53b3697bee 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1169,6 +1169,20 @@ Yocto Project Overview and Concepts Manual.
  
-+   :term:`PYPI_PACKAGE_EXT`
-+      When inheriting the :ref:`ref-classes-pypi` class, specifies the
-+      file extension to use when fetching a package from `PyPI
-+      <https://pypi.org/>`__. Default is tar.gz.
+ .. _ref-classes-image-buildinfo:
+ 
++``image-bootfiles``
++===================
 +
-+   :term:`PYPI_SRC_URI`
-+      When inheriting the :ref:`ref-classes-pypi` class, specifies the
-+      full `pythonhosted <https://files.pythonhosted.org/>`__ URI for
-+      fetching the package to be built. The default value is constructed
-+      based upon :term:`PYPI_PACKAGE`, :term:`PYPI_PACKAGE_EXT`, and
-+      :term:`PV`. Most recipes will not need to set this variable unless
-+      they are building an unstable (i.e. development) version.
++The :ref:`ref-classes-image-buildinfo` class copies over files listed
++in :ref:`IMAGE_BOOT_FILES` to the /boot directory of the root filesystem.
 +
-    :term:`PYTHON_ABI`
-       When used by recipes that inherit the :ref:`ref-classes-setuptools3`
-       class, denotes the Application Binary Interface (ABI) currently in use
++This can be useful if no separate boot partition is used but all boot files
++should be included into the rootfs image.
++
++:ref:`IMAGE_BOOT_FILES` is the same space-separated list of files used
++by the ``bootimg-partition`` source plugin to populate the boot partition.
++
++.. _ref-classes-image_types:
++
+ ``image-buildinfo``
+ ===================
+ 
 -- 
-2.45.1
+2.44.0
 
 
