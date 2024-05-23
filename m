@@ -1,95 +1,92 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <marcus.folkesson@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 58C95C25B75
-	for <webhook@archiver.kernel.org>; Thu, 23 May 2024 13:39:01 +0000 (UTC)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
- by mx.groups.io with SMTP id smtpd.web10.15703.1716471540743292776
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 58F50C25B79
+	for <webhook@archiver.kernel.org>; Thu, 23 May 2024 13:43:31 +0000 (UTC)
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
+ by mx.groups.io with SMTP id smtpd.web11.17314.1716471807619845011
  for <docs@lists.yoctoproject.org>;
- Thu, 23 May 2024 06:39:01 -0700
+ Thu, 23 May 2024 06:43:28 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=EnBIxBlp;
- spf=pass (domain: gmail.com, ip: 209.85.208.179, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2e719bab882so60986051fa.3
-        for <docs@lists.yoctoproject.org>; Thu, 23 May 2024 06:39:00 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=IQPgKUt8;
+ spf=pass (domain: gmail.com, ip: 209.85.167.52, mailfrom: marcus.folkesson@gmail.com)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-523b017a5c6so11305894e87.1
+        for <docs@lists.yoctoproject.org>; Thu, 23 May 2024 06:43:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716471539; x=1717076339; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=40/UePfIplSMm3b/oTz56Inn0ioqFS4osK7ePbrz9+8=;
-        b=EnBIxBlpr4nXEKQkrmsYjmDtVqY3QM6Rt07G7h3juBknVvOE+obD54uQB+xQDwcB+T
-         j3PjkkjAR/e5wz/L8cvhLCrdXRsZf1meR+FauPJVQyv1g1s/PLELHJCUo3E3+8X1SDXN
-         5pQ4e1qwOdn3oNVVKqSKIkNXB9WwxBBC0YFdqRFGyRdD4tMvFYj4LgB8yiS/sd3XL1ow
-         Fdtw+WrDxzJcpiAkfAtZ8cpTwSyihhhWEqyqo+5POgUFe6fvwfRUzYlGbzVaxob39g6J
-         JFZpKA/Wx4XnRkkaolJ6B2+DP86VzVof6cICdUOVWnkmqKewT6Iotsm0ctfZ3RnHlQ9a
-         6Yew==
+        d=gmail.com; s=20230601; t=1716471806; x=1717076606; darn=lists.yoctoproject.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sm5/r4uZkR9rz18pcOQ5ow12jObaD8wLPU+MrAnMlcg=;
+        b=IQPgKUt8WPaVguhy0eluInHqV69H/XYLeIGQTBeU+/FbDG0joiXjPRi61rW4XHLA2A
+         9KJFmIMU/mniBcTzgmpUDdZvDMgTLWkxU1iVWBn+dbFZlPf8IrwNwK7Mh9Ta8dhUM+ey
+         efy2O1fM32L9hp+/paYD4ZmJV2RdohRo+6+Od2fLSDnuoa7EuCWJGTRalJDUeFGTooXV
+         ANKUPSJJ5NAQ1tH2RU7B5psng5iVIpF1DsAuth4G7xjLqFltzWNpN0jPZfn4PwWiIs70
+         8xE5jQaqrT/9u5F8HMLcmuzft0izdZA1CDcy2l6ax5knZkLL+20F9voRq04FcPX9XLHM
+         tNPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716471539; x=1717076339;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=40/UePfIplSMm3b/oTz56Inn0ioqFS4osK7ePbrz9+8=;
-        b=NcSIAguBZfKkyXTa0tG4yH96h2RG/+xXJGGUuXYe9OWnx1k/3B/pzR0SabTu0aJ3BW
-         VvCmCvQgWwu7nXVsbpphmRqc1MBuuwNecj7Emy1ltaNpaxnRSNlAW+ejoR1/zRW5oLFS
-         Yd/jMy90hcuKYe1L4xklOGgtZB0kYjkydczvpEdjm5pjQWAA7n2vBYfOn7E/GV/CvFhJ
-         QJfnyIPEhDUFSco2jUsvcSqkrCsDbIW6PKrmxni09bVg603Fw29ayBO/daALbdd13DdI
-         RSd4+z7+xtV6lP7AQGZ7cHD9bfqIvH+d/zKFSiI24x/NdV7x89rp06ytlK3O/cDwKXfT
-         DPYA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDZQP+zimUZqcH7xa6hYm9OK6O+frj7Hk9ntEDkLRia7F4zurHXcChDhzdIvx/wj9Pekwu5QfbjvlyqP6POb2EcQ8qW5mbUo1ISsQ=
-X-Gm-Message-State: AOJu0YzlNTkrwyQ02JMeTSEw4fcinffKGgL2J7r39GVNlWNg1ttuTDlO
-	B5FO+zB5k821tHC0wWLBSBZQ3kF3lzFZVyEhwL3D1KhxqlBYK+PclR45B4Dx4t+WXTClEp8+6sx
-	PtOiTZK0odM0d4U0UV4FxzEMqVv8=
-X-Google-Smtp-Source: AGHT+IGNLjsJGH6CLQ2JQSgOESflmSJfy89C6qG/gGZ6q8s/L7IiFaR7kX4Ihztmbhw78aLpm9WuyI7IcUJT/HciqcU=
-X-Received: by 2002:a2e:9b55:0:b0:2dc:f188:a073 with SMTP id
- 38308e7fff4ca-2e94969dfb5mr37779121fa.35.1716471538602; Thu, 23 May 2024
- 06:38:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716471806; x=1717076606;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sm5/r4uZkR9rz18pcOQ5ow12jObaD8wLPU+MrAnMlcg=;
+        b=q8T/xs8RxepHLv+53VBYrRO9yHZMb2mKlyjBQS+lVLBJ0vKJ3qanzce68E8Yjoc4l+
+         2oOz+663yRe0IAQRtycFNzmtFsNiPw64jt00Tv8VsHDzDAt3f+ouSM1YocUZ2uxrq4KB
+         WEZV/9n5Mcpjv5vdgEwVDzPFjLp3S9C0dKL/qP7idmgPksaUnUDi6KyLPuQsKCkS8mk8
+         z9On9kxYXVyHCzM+x8tyambX6iiy6S5r4iPHkUgD85cNSz4T12n2ZJNm1bmsH1snVSoy
+         4ntj9Tbfl/NoQ6uQ8L3B4M/Hh2sk64Y4wXdRWL4XQpTPHvw99vPfaYPJTVgXAd1T2gMx
+         cgHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHaQ0zHtBr7JswnwroucGpZ8rQy9pmy3o5paYa7IOI3mO9InXZBzJaBAMN/cc/uIEk0dFzsuqq1KUGBGF0eVHQM756OUqwgerV6v4=
+X-Gm-Message-State: AOJu0YyoS9ET9V00rlXzoY65OTaZyF1W7cPKBypZfNBLZcbmZp+6GXWU
+	bD1eR6q4IJceYSQrWsV3AmTuyAH1z1NeMl7dqInxrUGhXf9rBUrV
+X-Google-Smtp-Source: AGHT+IEIsc+7zSrej0MXLECEgdyv4mhuXvBY83rwSWkJ5hPdLrzblBefzq1OGMpzLciu8ehstFp7UA==
+X-Received: by 2002:a05:6512:3e0d:b0:518:9ce1:a5bb with SMTP id 2adb3069b0e04-526c0b5dc0dmr4568580e87.54.1716471805471;
+        Thu, 23 May 2024 06:43:25 -0700 (PDT)
+Received: from gmail.com ([85.235.16.11])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5df00490cfsm780718566b.159.2024.05.23.06.43.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 06:43:25 -0700 (PDT)
+Date: Thu, 23 May 2024 15:49:30 +0200
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: openembedded-core@lists.openembedded.org, docs@lists.yoctoproject.org
+Subject: Re: [OE-core] [PATCH 1/2] image-bootfiles.bbclass: new class, copy
+ boot files to /boot on rfs
+Message-ID: <Zk9JakPbu4jT65op@gmail.com>
+References: <20240521173343.2954628-1-marcus.folkesson@gmail.com>
+ <66c6fe23-dbdf-40a5-ad5b-393b4d1239f9@cherry.de>
 MIME-Version: 1.0
-References: <20240521173343.2954628-1-marcus.folkesson@gmail.com> <66c6fe23-dbdf-40a5-ad5b-393b4d1239f9@cherry.de>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <66c6fe23-dbdf-40a5-ad5b-393b4d1239f9@cherry.de>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Thu, 23 May 2024 15:38:46 +0200
-Message-ID: <CANNYZj9TnoFbUkKnyvh=WgbTBp13rf6+0jrtGJiNv9A==bNYiQ@mail.gmail.com>
-Subject: Re: [docs] [OE-core] [PATCH 1/2] image-bootfiles.bbclass: new class,
- copy boot files to /boot on rfs
-To: quentin.schulz@cherry.de
-Cc: marcus.folkesson@gmail.com, openembedded-core@lists.openembedded.org, 
-	docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 May 2024 13:39:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5238
+ <docs@lists.yoctoproject.org>; Thu, 23 May 2024 13:43:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5239
 
-I also have to repeat what I said in docs@ list: why do we need a
-special mechanism for placing files into /boot? If /boot is not a
-special partition, then it's just a folder in / and can be populated
-from packages like any other folder.
+Hello Quentin,
 
-Alex
+First, thank you for your feedback.
 
-On Thu, 23 May 2024 at 15:26, Quentin Schulz via
-lists.yoctoproject.org
-<quentin.schulz=cherry.de@lists.yoctoproject.org> wrote:
->
+On Thu, May 23, 2024 at 03:26:36PM +0200, Quentin Schulz wrote:
 > Hi Markus,
->
+> 
 > On 5/21/24 7:33 PM, Marcus Folkesson via lists.openembedded.org wrote:
 > > [You don't often get email from marcus.folkesson=gmail.com@lists.openembedded.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
-> >
+> > 
 > > image-bootfiles class copy files listed IMAGE_BOOT_FILES
 > > to the /boot directory of the root filesystem.
-> >
+> > 
 > > This is useful when there is no explicit boot partition but all boot
 > > files should instead reside inside the root filesystem.
-> >
+> > 
 > > Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
 > > ---
 > >   meta/classes/image-bootfiles.bbclass | 69 ++++++++++++++++++++++++++++
 > >   1 file changed, 69 insertions(+)
 > >   create mode 100644 meta/classes/image-bootfiles.bbclass
-> >
+> > 
 > > diff --git a/meta/classes/image-bootfiles.bbclass b/meta/classes/image-bootfiles.bbclass
 > > new file mode 100644
 > > index 0000000000..850e14e4bb
@@ -107,10 +104,13 @@ lists.yoctoproject.org
 > > +#
 > > +# Usage: add INHERIT += "image-bootfiles" to your conf file
 > > +#
->
-> Since it's in meta/classes, I assume we can also inherit image-bootfiles
-> in an image recipe?
->
+> 
+> Since it's in meta/classes, I assume we can also inherit image-bootfiles in
+> an image recipe?
+
+Yes, that is how I do it right now.
+
+> 
 > > +
 > > +def bootfiles_populate(d):
 > > +    import re
@@ -128,19 +128,29 @@ lists.yoctoproject.org
 > > +    # list of tuples (src_name, dst_name)
 > > +    deploy_files = []
 > > +    for src_entry in re.findall(r'[\w;\-\./\*]+', boot_files):
->
+> 
 > Isn't this a more complex boot_files.split()? What do we gain from using
 > this regex? If we have malformed IMAGE_BOOT_FILES, this would actually
 > introduce some logic error:
->
->  >>> s="plop\\plip;plep plop;plap"
->  >>> re.findall(r'[\w;\-\./\*]+', s)
+
+Probably it is. The code is heavily based on the bootimg_partition [1]
+wic plugin, and this regex comes from there.
+The rationale to keep it was that it is probably well-tested already and
+I want to keep the same behavior as bootimg_partition as I want it to be
+interchangable.
+
+> 
+> >>> s="plop\\plip;plep plop;plap"
+> >>> re.findall(r'[\w;\-\./\*]+', s)
 > ['plop', 'plip;plep', 'plop;plap']
->
-> I'm pretty sure we don't want that. Instead, I would suggest to use
-> split() and iterate over that, split(';'), check for each if there's 1
-> or 2 entries, add one if it's one.
->
+> 
+> I'm pretty sure we don't want that. Instead, I would suggest to use split()
+> and iterate over that, split(';'), check for each if there's 1 or 2 entries,
+> add one if it's one.
+
+Looks better to me. Thanks
+
+> 
 > > +        if ';' in src_entry:
 > > +            dst_entry = tuple(src_entry.split(';'))
 > > +            if not dst_entry[0] or not dst_entry[1]:
@@ -177,35 +187,56 @@ lists.yoctoproject.org
 > > +        image_dst = os.path.join(boot_dir, dst)
 > > +        shutil.copyfile(image_src, image_dst)
 > > +
->
-> We literally iterate three times over the same files, I don't see a
-> reason for not merging those three for loops into one?
->
+> 
+> We literally iterate three times over the same files, I don't see a reason
+> for not merging those three for loops into one?
+
+Yes, that is probably better.
+
+> 
 > Also, I now realize that this was heavily inspired from what's in
-> scripts/lib/wic/plugins/source/bootimg-partition.py, would have been
-> nice to say so ;)
->
+> scripts/lib/wic/plugins/source/bootimg-partition.py, would have been nice to
+> say so ;)
+
+Yes it is, I have this text in the header
+
++#
++# Licensed under the MIT license, see COPYING.MIT for details
++# Inspired of bootimg-partition.py
+
+Maybe I should make it more clear?
+
+> 
 > > +python bootfiles () {
 > > +   bootfiles_populate(d),
->
+> 
 > Not entirely convinced we should have a comma after bootfiles_populate here?
->
+> 
 > More general question:
-> 1) how does this work if one has a boot partition created by wic (via
-> the plugin bootimg-partition?
-> 2) shouldn't we factor out this code here and bootimg-partition's? or
-> make bootimg-partition somehow call bootfiles IMAGE_PREPROCESS_COMMAND
-> to avoid code duplication?
->
+> 1) how does this work if one has a boot partition created by wic (via the
+> plugin bootimg-partition?
+
+The images will be copied to both the partition and /boot.
+
+> 2) shouldn't we factor out this code here and bootimg-partition's? or make
+> bootimg-partition somehow call bootfiles IMAGE_PREPROCESS_COMMAND to avoid
+> code duplication?
+
+I would love that. Not sure where to but it though, I'm still learning
+the structure of poky.
+
+I'm preparing a v2 with an indentation error and that the installation directory is configurable so
+that it does not *have* to be /boot.
+But I will probably wait one or two more daysto give people a chance to
+give their comments.
+
+> 
 > Cheers,
 > Quentin
->
-> -=-=-=-=-=-=-=-=-=-=-=-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#5236): https://lists.yoctoproject.org/g/docs/message/5236
-> Mute This Topic: https://lists.yoctoproject.org/mt/106262122/1686489
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kanavin@gmail.com]
-> -=-=-=-=-=-=-=-=-=-=-=-
->
+
+[1] https://github.com/yoctoproject/poky/blob/master/scripts/lib/wic/plugins/source/bootimg-partition.py#L71
+
+Best regards,
+Marcus Folkesson
+
 
