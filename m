@@ -1,221 +1,75 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <amurray@thegoodpenguin.co.uk>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E4F35C25B74
-	for <webhook@archiver.kernel.org>; Fri, 24 May 2024 10:26:49 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
- by mx.groups.io with SMTP id smtpd.web10.12638.1716546404724947972
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FCD8C25B74
+	for <webhook@archiver.kernel.org>; Fri, 24 May 2024 10:32:10 +0000 (UTC)
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+ by mx.groups.io with SMTP id smtpd.web10.12739.1716546725931845340
  for <docs@lists.yoctoproject.org>;
- Fri, 24 May 2024 03:26:44 -0700
+ Fri, 24 May 2024 03:32:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=Q5b7geK3;
- spf=pass (domain: intel.com, ip: 192.198.163.12, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716546405; x=1748082405;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=y24ZQHvGEr0cfV1YM0PlcqZ02LLXpUPExOEcl8+52zE=;
-  b=Q5b7geK3Zl0ad1ALm0XApIN5chcip/bTfwl6uLAKjLNVHWuZmuDzcT4t
-   NN6BBK+x4A65NIr7CPu/ezR/mR+zRLTTEa9XfFNJrTcLfdOnW/WS5rVfQ
-   Y5WI6MqMs3MCOimYqAvzT1iTDdnOe65C816ojMDX0Nn4BX0F7/Xy9VFcO
-   8dtacSiYD2yrrETphpN5RY74biUzNqNvvEhdceD3q0N3EVSFmCAzQNnO/
-   aEEV26/RrJpeXBVZWgVqPwxoccHKUrF2GpvZTt6vXK+fpQzwBFY5mOO7I
-   gCdIWYzag7clll/iV92MYvcj+q4pVvQYjDDFIMMuL2qB0qZvvIB0igbBG
-   Q==;
-X-CSE-ConnectionGUID: aLsMjJiPSm2W7KXOVJ2X5Q==
-X-CSE-MsgGUID: Z7h4R0jXRbuUnLWvgkL0nQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11081"; a="16752901"
-X-IronPort-AV: E=Sophos;i="6.08,185,1712646000"; 
-   d="scan'208";a="16752901"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2024 03:26:44 -0700
-X-CSE-ConnectionGUID: Xx0qzpN0TiqeQY9u80Z6xQ==
-X-CSE-MsgGUID: 9etX/+2kRZWpm9F06Gu4fg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,185,1712646000"; 
-   d="scan'208";a="34480232"
-Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
-  by orviesa006.jf.intel.com with ESMTP; 24 May 2024 03:26:44 -0700
-From: chee.yang.lee@intel.com
-To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] migration-notes: add release notes for 5.0.1
-Date: Fri, 24 May 2024 18:25:13 +0800
-Message-Id: <20240524102513.2361094-1-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.34.1
+ dkim=pass header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.s=20230601 header.b=WsgTgWu2;
+ spf=pass (domain: thegoodpenguin.co.uk, ip: 209.85.210.179, mailfrom: amurray@thegoodpenguin.co.uk)
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6f693fb0ab6so3837381b3a.1
+        for <docs@lists.yoctoproject.org>; Fri, 24 May 2024 03:32:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=thegoodpenguin-co-uk.20230601.gappssmtp.com; s=20230601; t=1716546725; x=1717151525; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Cf7s23ZDPwNXo/OWN9ofKITpxMt5qXfQxmdoq+SpZw8=;
+        b=WsgTgWu28FrkNJ47E53XOXzQPT8E5vKXa8CLNW7e51jxp3e8/uF7zt9Q5XEAhCLF3Y
+         E7hrJU3sqO1heH1qs2vboW/PcEellz3Ot3KFuK/K3AJpDs5B8kPz8K/XV+bMP/RTwQhf
+         dSyo0DeOJSVaPGWK+DcqTRaXFNnmwG7uiQmhoQ78LuE90OitkWbem6KhLCo8RUqg3jq0
+         Biip0v8UZahcNQVWHvqZFm3MVMCAjlydU80ogYlOezqcsocPtP9LiSq7h452Fmx10MuR
+         ZTKR3o4SXZ2zPr7OOBNL2cLdwjqLIPtwV4qtC7pWSlO65YRp7cYz/AHupMUb6LopMGhB
+         7mow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716546725; x=1717151525;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Cf7s23ZDPwNXo/OWN9ofKITpxMt5qXfQxmdoq+SpZw8=;
+        b=SW7XaTd/nZlOz4R3OjOxFzdEx+KkipV7er+cW0Oly7rKDTRu5IJ/wWMIwY5FaUqgBz
+         Rk6duTvZ0nXNo9X5LHclxAAAqP43p1SaG1c+vzyiJPKTH2qVcLRSwyNMeJ8TMQOgJvDj
+         PpFsO6RVRRVqBWzd+jtUPZtKKI6vO85tyXMHCJaUN9dA1EboRvTirXOufn/IPXGgMOuG
+         0+mPd4R3L8mA+MALt7GM3m/OW0BSErnpIQq6zNchG+dN9cas7WeITxyNzHZQueBr02M2
+         Ms3ip1K3F/9xy+pyy53qhJEfCjf7W0r1G6vr2h+xstmLxXiM1PfFGWSAg9nR/fKgBw6c
+         nfhQ==
+X-Gm-Message-State: AOJu0YyQ7psDb61fRYKHlO5K+j2CURYq0qiYoF1MWRhokd/7f6yVG/rR
+	4OgiQZFPWdr03iVDu4dSfBJLUVUsaTollF6lAdVgbCfiCIEjCpTFd3k7KpYZ1QpoX4LsY6CBbqG
+	bg0hmvuWInLgslx77GLwMXsEhcucdvkBkO5xfQg==
+X-Google-Smtp-Source: AGHT+IFZ+5PAPgTISfLcsn9vbrCBUZDg5tvmtCHO82EiYcXO/1cX/U79aarWtRtLUACA1oJbxDxmL33OXjF2896ejfI=
+X-Received: by 2002:a05:6a00:90a8:b0:6f0:bb90:26b9 with SMTP id
+ d2e1a72fcca58-6f8f2c576cdmr2300896b3a.5.1716546725277; Fri, 24 May 2024
+ 03:32:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+References: <20240524102513.2361094-1-chee.yang.lee@intel.com>
+In-Reply-To: <20240524102513.2361094-1-chee.yang.lee@intel.com>
+From: Andrew Murray <amurray@thegoodpenguin.co.uk>
+Date: Fri, 24 May 2024 11:31:54 +0100
+Message-ID: <CALqELGzHtWCj1AzFDAtuzfTbq4WgyJ1zmjNYRf6dDkxdPrEURA@mail.gmail.com>
+Subject: Re: [docs] [PATCH v2] migration-notes: add release notes for 5.0.1
+To: chee.yang.lee@intel.com
+Cc: docs@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 May 2024 10:26:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5252
+ <docs@lists.yoctoproject.org>; Fri, 24 May 2024 10:32:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5253
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+On Fri, 24 May 2024 at 11:26, Lee Chee Yang via lists.yoctoproject.org
+<chee.yang.lee=intel.com@lists.yoctoproject.org> wrote:
+>
+> From: Lee Chee Yang <chee.yang.lee@intel.com>
+>
+> add release notes for 5.0.1 (rc2).
+>
+> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+> ---
 
-add release notes for 5.0.1 (rc2).
+Reviewed-by: Andrew Murray <amurray@thegoodpenguin.co.uk>
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
----
-v2: update Contributors
-
- .../migration-guides/release-5.0.rst          |   1 +
- .../migration-guides/release-notes-5.0.1.rst  | 134 ++++++++++++++++++
- 2 files changed, 135 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-5.0.1.rst
-
-diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
-index bd19b707f..44a02ab04 100644
---- a/documentation/migration-guides/release-5.0.rst
-+++ b/documentation/migration-guides/release-5.0.rst
-@@ -7,3 +7,4 @@ Release 5.0 (scarthgap)
- 
-    migration-5.0
-    release-notes-5.0
-+   release-notes-5.0.1
-diff --git a/documentation/migration-guides/release-notes-5.0.1.rst b/documentation/migration-guides/release-notes-5.0.1.rst
-new file mode 100644
-index 000000000..a377f92c1
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-5.0.1.rst
-@@ -0,0 +1,134 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Release notes for Yocto-5.0.1 (Scarthgap)
-+-----------------------------------------
-+
-+Security Fixes in Yocto-5.0.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+
-+Fixes in Yocto-5.0.1
-+~~~~~~~~~~~~~~~~~~~~
-+
-+-  babeltrace2: upgrade 2.0.5 -> 2.0.6
-+-  bind: upgrade 9.18.24 -> 9.18.25
-+-  bitbake: cooker: Use hash client to ping upstream server
-+-  build-appliance-image: Update to scarthgap head revision (b9b47b1a392b...)
-+-  docs: add support for scarthgap 5.0 release
-+-  docs: brief-yoctoprojectqs: explicit version dependency on websockets python module
-+-  docs: brief-yoctoprojectqs: Update to the correct hash equivalence server address
-+-  documentation/poky.yaml.in: drop mesa/sdl from essential host packages
-+-  ell: upgrade 0.63 -> 0.64
-+-  gcr: upgrade 4.2.0 -> 4.2.1
-+-  icu: update 74-1 -> 74-2
-+-  libdnf: upgrade 0.73.0 -> 0.73.1
-+-  libsdl2: upgrade 2.30.0 -> 2.30.1
-+-  libx11: upgrade 1.8.7 -> 1.8.9
-+-  libxcursor: upgrade 1.2.1 -> 1.2.2
-+-  libxml2: upgrade 2.12.5 -> 2.12.6
-+-  local.conf.sample: Fix hashequivalence server address
-+-  lttng-tools: upgrade 2.13.11 -> 2.13.13
-+-  manuals: standards.md: add standard for project names
-+-  mesa: upgrade 24.0.2 -> 24.0.3
-+-  migration-notes: add release notes for 4.0.18
-+-  mpg123: upgrade 1.32.5 -> 1.32.6
-+-  pango: upgrade 1.52.0 -> 1.52.1
-+-  poky.conf: bump version for 5.0.1
-+-  python3: skip test_concurrent_futures/test_shutdown
-+-  ref-manual: update releases.svg
-+-  ref-manual: variables: add :term:`USERADD_DEPENDS`
-+-  release-notes-5.0: update Repositories / Downloads section
-+-  release-notes-5.0: update recipes changes
-+-  release-notes-5.0: update new features
-+-  rootfs-postcommands.bbclass: Only set DROPBEAR_RSAKEY_DIR once
-+-  rpm: update 4.19.1 -> 4.19.1.1
-+-  scripts/oe-setup-build: write a build environment initialization one-liner into the build directory
-+-  sstate.bbclass: Add _SSTATE_EXCLUDEDEPS_SYSROOT to vardepsexclude
-+-  systemd: sed :term:`ROOT_HOME` only if sysusers :term:`PACKAGECONFIG` is set
-+
-+
-+Known Issues in Yocto-5.0.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+
-+Contributors to Yocto-5.0.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Alexander Kanavin
-+-  Christian Bräuner Sørensen
-+-  Joshua Watt
-+-  Lee Chee Yang
-+-  Mark Hatle
-+-  Michael Glembotzki
-+-  Michael Halstead
-+-  Michael Opdenacker
-+-  Paul Eggleton
-+-  Quentin Schulz
-+-  Richard Purdie
-+-  Steve Sakoman
-+-  Trevor Gamblin
-+-  Wang Mingyu
-+
-+
-+Repositories / Downloads for Yocto-5.0.1
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.1 </poky/log/?h=yocto-5.0.1>`
-+-  Git Revision: :yocto_git:`4b07a5316ed4b858863dfdb7cab63859d46d1810 </poky/commit/?id=4b07a5316ed4b858863dfdb7cab63859d46d1810>`
-+-  Release Artefact: poky-4b07a5316ed4b858863dfdb7cab63859d46d1810
-+-  sha: 51d0c84da7dbcc8db04a674da39cfc73ea78aac22ee646ede5b6229937d4666a
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.1/poky-4b07a5316ed4b858863dfdb7cab63859d46d1810.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.1/poky-4b07a5316ed4b858863dfdb7cab63859d46d1810.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
-+-  Tag:  :oe_git:`yocto-5.0.1 </openembedded-core/log/?h=yocto-5.0.1>`
-+-  Git Revision: :oe_git:`294a7dbe44f6b7c8d3a1de8c2cc182af37c4f916 </openembedded-core/commit/?id=294a7dbe44f6b7c8d3a1de8c2cc182af37c4f916>`
-+-  Release Artefact: oecore-294a7dbe44f6b7c8d3a1de8c2cc182af37c4f916
-+-  sha: e9be51a3b1fe8a1f420483b912caf91bc429dcca303d462381876a643b73045e
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.1/oecore-294a7dbe44f6b7c8d3a1de8c2cc182af37c4f916.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.1/oecore-294a7dbe44f6b7c8d3a1de8c2cc182af37c4f916.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.1 </meta-mingw/log/?h=yocto-5.0.1>`
-+-  Git Revision: :yocto_git:`acbba477893ef87388effc4679b7f40ee49fc852 </meta-mingw/commit/?id=acbba477893ef87388effc4679b7f40ee49fc852>`
-+-  Release Artefact: meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852
-+-  sha: 3b7c2f475dad5130bace652b150367f587d44b391218b1364a8bbc430b48c54c
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.1/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.1/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
-+-  Tag:  :oe_git:`yocto-5.0.1 </bitbake/log/?h=yocto-5.0.1>`
-+-  Git Revision: :oe_git:`8f90d10f9efc9a32e13f6bd031992aece79fe7cc </bitbake/commit/?id=8f90d10f9efc9a32e13f6bd031992aece79fe7cc>`
-+-  Release Artefact: bitbake-8f90d10f9efc9a32e13f6bd031992aece79fe7cc
-+-  sha: 519f02d5de7fbfac411532161d521123814dd9cc7d6b55488b5e7a547c1a6977
-+-  Download Locations:
-+   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.1/bitbake-8f90d10f9efc9a32e13f6bd031992aece79fe7cc.tar.bz2
-+   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.1/bitbake-8f90d10f9efc9a32e13f6bd031992aece79fe7cc.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
-+-  Tag: :yocto_git:`yocto-5.0.1 </yocto-docs/log/?h=yocto-5.0.1>`
-+-  Git Revision: :yocto_git:`875dfe69e93bf8fee3b8c07818a6ac059f228a13 </yocto-docs/commit/?id=875dfe69e93bf8fee3b8c07818a6ac059f228a13>`
-+
--- 
-2.34.1
-
+Andrew Murray
 
