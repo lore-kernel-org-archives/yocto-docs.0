@@ -1,75 +1,69 @@
-Return-Path: <amurray@thegoodpenguin.co.uk>
+Return-Path: <michael.opdenacker@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FCD8C25B74
-	for <webhook@archiver.kernel.org>; Fri, 24 May 2024 10:32:10 +0000 (UTC)
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
- by mx.groups.io with SMTP id smtpd.web10.12739.1716546725931845340
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B2B3C25B7A
+	for <webhook@archiver.kernel.org>; Fri, 24 May 2024 13:05:41 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web11.15275.1716555933210124466
  for <docs@lists.yoctoproject.org>;
- Fri, 24 May 2024 03:32:05 -0700
+ Fri, 24 May 2024 06:05:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@thegoodpenguin-co-uk.20230601.gappssmtp.com header.s=20230601 header.b=WsgTgWu2;
- spf=pass (domain: thegoodpenguin.co.uk, ip: 209.85.210.179, mailfrom: amurray@thegoodpenguin.co.uk)
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-6f693fb0ab6so3837381b3a.1
-        for <docs@lists.yoctoproject.org>; Fri, 24 May 2024 03:32:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=thegoodpenguin-co-uk.20230601.gappssmtp.com; s=20230601; t=1716546725; x=1717151525; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cf7s23ZDPwNXo/OWN9ofKITpxMt5qXfQxmdoq+SpZw8=;
-        b=WsgTgWu28FrkNJ47E53XOXzQPT8E5vKXa8CLNW7e51jxp3e8/uF7zt9Q5XEAhCLF3Y
-         E7hrJU3sqO1heH1qs2vboW/PcEellz3Ot3KFuK/K3AJpDs5B8kPz8K/XV+bMP/RTwQhf
-         dSyo0DeOJSVaPGWK+DcqTRaXFNnmwG7uiQmhoQ78LuE90OitkWbem6KhLCo8RUqg3jq0
-         Biip0v8UZahcNQVWHvqZFm3MVMCAjlydU80ogYlOezqcsocPtP9LiSq7h452Fmx10MuR
-         ZTKR3o4SXZ2zPr7OOBNL2cLdwjqLIPtwV4qtC7pWSlO65YRp7cYz/AHupMUb6LopMGhB
-         7mow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716546725; x=1717151525;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Cf7s23ZDPwNXo/OWN9ofKITpxMt5qXfQxmdoq+SpZw8=;
-        b=SW7XaTd/nZlOz4R3OjOxFzdEx+KkipV7er+cW0Oly7rKDTRu5IJ/wWMIwY5FaUqgBz
-         Rk6duTvZ0nXNo9X5LHclxAAAqP43p1SaG1c+vzyiJPKTH2qVcLRSwyNMeJ8TMQOgJvDj
-         PpFsO6RVRRVqBWzd+jtUPZtKKI6vO85tyXMHCJaUN9dA1EboRvTirXOufn/IPXGgMOuG
-         0+mPd4R3L8mA+MALt7GM3m/OW0BSErnpIQq6zNchG+dN9cas7WeITxyNzHZQueBr02M2
-         Ms3ip1K3F/9xy+pyy53qhJEfCjf7W0r1G6vr2h+xstmLxXiM1PfFGWSAg9nR/fKgBw6c
-         nfhQ==
-X-Gm-Message-State: AOJu0YyQ7psDb61fRYKHlO5K+j2CURYq0qiYoF1MWRhokd/7f6yVG/rR
-	4OgiQZFPWdr03iVDu4dSfBJLUVUsaTollF6lAdVgbCfiCIEjCpTFd3k7KpYZ1QpoX4LsY6CBbqG
-	bg0hmvuWInLgslx77GLwMXsEhcucdvkBkO5xfQg==
-X-Google-Smtp-Source: AGHT+IFZ+5PAPgTISfLcsn9vbrCBUZDg5tvmtCHO82EiYcXO/1cX/U79aarWtRtLUACA1oJbxDxmL33OXjF2896ejfI=
-X-Received: by 2002:a05:6a00:90a8:b0:6f0:bb90:26b9 with SMTP id
- d2e1a72fcca58-6f8f2c576cdmr2300896b3a.5.1716546725277; Fri, 24 May 2024
- 03:32:05 -0700 (PDT)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Jc6FwKd2;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: michael.opdenacker@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 438D940007;
+	Fri, 24 May 2024 13:05:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1716555931;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+LIj7NDlYeAbPeAiyExt3l64iLmrUJTtxtej43ui89c=;
+	b=Jc6FwKd2owEgEFtQlRjRdBPvT6zzIem9y1pByQZx8Qi087keqvlxIIM+vLIbw1+QJoOnOi
+	vhtLRt51qsxUwELUW96aB9bVToaLimgKTpd41/TbtRNasbS5q6s7lQ4WiPdM7lzuF6mfrw
+	yCue+anq16G1Id5y4CK2dIY3XmED4rae1UVjViCur6NVBZdKIKFsk7zj3CJNJHbLjWB6T2
+	6yNOMLcI6NyEpMm4vtuOiokyTzjMDwqn/Av+V6SIC3A6fF02ytxB6ke/fGd9XAx63JX9P9
+	q9XqllEFCdu1kCTanMKqcATZAQY37xWCjpua+j2F92H4HW6wcZt0JFXlo8ZnDA==
+Message-ID: <54f4f562-1cbb-46ca-a85d-310c84a3991b@bootlin.com>
+Date: Fri, 24 May 2024 15:05:30 +0200
 MIME-Version: 1.0
-References: <20240524102513.2361094-1-chee.yang.lee@intel.com>
-In-Reply-To: <20240524102513.2361094-1-chee.yang.lee@intel.com>
-From: Andrew Murray <amurray@thegoodpenguin.co.uk>
-Date: Fri, 24 May 2024 11:31:54 +0100
-Message-ID: <CALqELGzHtWCj1AzFDAtuzfTbq4WgyJ1zmjNYRf6dDkxdPrEURA@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2] migration-notes: add release notes for 5.0.1
-To: chee.yang.lee@intel.com
+User-Agent: Mozilla Thunderbird
 Cc: docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [docs] [PATCH 2/3] ref-manual: introduce UNPACKDIR variable
+To: Andrew Murray <amurray@thegoodpenguin.co.uk>
+References: <20240523135628.3076018-1-michael.opdenacker@bootlin.com>
+ <20240523135628.3076018-2-michael.opdenacker@bootlin.com>
+ <CALqELGzk_0CS4LU_TEwzg1=vrNZcdnNNGOTEZH2T7hhLYM-NWQ@mail.gmail.com>
+ <cdf74200-11d6-465f-976a-f17b7b4d0ee9@bootlin.com>
+ <CALqELGw=Pov6GHa7Nz-LD-LqdHOSkCAZU8V0a_py4o7s5n7ovg@mail.gmail.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@bootlin.com>
+Organization: Bootlin
+In-Reply-To: <CALqELGw=Pov6GHa7Nz-LD-LqdHOSkCAZU8V0a_py4o7s5n7ovg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: michael.opdenacker@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 24 May 2024 10:32:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5253
+ <docs@lists.yoctoproject.org>; Fri, 24 May 2024 13:05:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5254
 
-On Fri, 24 May 2024 at 11:26, Lee Chee Yang via lists.yoctoproject.org
-<chee.yang.lee=intel.com@lists.yoctoproject.org> wrote:
->
-> From: Lee Chee Yang <chee.yang.lee@intel.com>
->
-> add release notes for 5.0.1 (rc2).
->
-> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-> ---
 
-Reviewed-by: Andrew Murray <amurray@thegoodpenguin.co.uk>
+On 5/24/24 at 12:01, Andrew Murray wrote:
+> That looks good. Feel free to add my:
+>
+> Reviewed-by: Andrew Murray <amurray@thegoodpenguin.co.uk>
 
-Andrew Murray
+
+Done. Many thanks for the review!
+Cheers
+Michael.
+
+-- 
+Michael Opdenacker, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
