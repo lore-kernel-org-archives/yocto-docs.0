@@ -1,109 +1,88 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 53DF9C25B7E
-	for <webhook@archiver.kernel.org>; Tue, 28 May 2024 15:55:33 +0000 (UTC)
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
- by mx.groups.io with SMTP id smtpd.web11.26136.1716911725557091357
+	by smtp.lore.kernel.org (Postfix) with ESMTP id EF7BDC25B78
+	for <webhook@archiver.kernel.org>; Tue, 28 May 2024 17:52:33 +0000 (UTC)
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+ by mx.groups.io with SMTP id smtpd.web10.29062.1716918748747655632
  for <docs@lists.yoctoproject.org>;
- Tue, 28 May 2024 08:55:25 -0700
+ Tue, 28 May 2024 10:52:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=iJ9B6+4Q;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.218.48, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a59a609dd3fso172703066b.0
-        for <docs@lists.yoctoproject.org>; Tue, 28 May 2024 08:55:25 -0700 (PDT)
+ dkim=pass header.i=@smile.fr header.s=google header.b=yRuvJpWn;
+ spf=pass (domain: smile.fr, ip: 209.85.221.41, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-35502a992c9so1183641f8f.3
+        for <docs@lists.yoctoproject.org>; Tue, 28 May 2024 10:52:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1716911724; x=1717516524; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=+n54fDpqUDTHN6MvVf+PV39dRYfcPHhCJtalBusmsEg=;
-        b=iJ9B6+4Q3/emhBbK85+N0swqkM2PJSV8pjufpjO8SXLVHF/JE1sAcrojAZoV6BQgZ7
-         skXMjW0EsWTu747dNKy4Zp9Kj387jmnJ4ykV+JoRHCdIHE1/eD+WzA26zpyfgvCfrNet
-         GoaSaQxsqa7UE5jZpdQDVLopl7Hfs4kSc43ag=
+        d=smile.fr; s=google; t=1716918747; x=1717523547; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Dw9syWhlP6Qvkvp9T3eGJeCUvTQMUJc9fP3VlmIuLhQ=;
+        b=yRuvJpWnIrdk+ZxmMtHDGrj3dym/R68GZzrunFVFGUNLM3J2wAcq/75mIELca6l2yv
+         92/+g61iiXsCzEBWxZK6ZEdCLIrDfEY0YomFZwBhTmnsbOMvcS3fRlt74tjyZP0SOQb/
+         KxbpYKibVNFJWgFvU8QJENrx1OWhfaew6tE5M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716911724; x=1717516524;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+n54fDpqUDTHN6MvVf+PV39dRYfcPHhCJtalBusmsEg=;
-        b=LYjD29tOoA+zyKby1uuC43kF8gAFpcGOIWSePUgopG32xWOH80wRZi3u4/iUTviNIC
-         Kjf5sxtNdkYksA+8IKbWAND1QHCbQG/R5rR6BlxwQsZqJ4rYmi6jmoWl8/6bhuY6K6Av
-         tsXT9Pu/0ptEriBDqn3O60dIuI7Cr2txe0aY89gcL7DPAgs/d4miawAMxFnCEDyyFraI
-         fQk07aCiwJ09SIqpZhNMUqWY0x2DM9qXHzhgxcp66xwWvaIq7FuoFsJtYwHp4DKNvOkS
-         p8S87sv2u4UE69YRx/CrmNnucQwzyZw4iz0RzAG2xHX+orooITfDICCzcnKagA0RiaL2
-         jWIg==
-X-Gm-Message-State: AOJu0Yz28C350sr1PJ7nPxQgIYUcmjjDvmNhxL5/nGz3MMFfCNL+REne
-	9jpg8QU630qVWxAHt7DbdkgwyeKOHry4wNX5EMY+4OSUqhYDVMOcWh8XIUNRbT0=
-X-Google-Smtp-Source: AGHT+IGopXhx6x3BP8XqmAifvAeNA1SlbpLOm3EEoRviPblphDN68Fbr00MNY3MS3C8tYT0n5X8gvA==
-X-Received: by 2002:a17:906:f9c5:b0:a59:be21:3587 with SMTP id a640c23a62f3a-a62616df14dmr1206614966b.8.1716911722892;
-        Tue, 28 May 2024 08:55:22 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:c80a:eb7f:7a2b:52fb? ([2001:8b0:aba:5f3c:c80a:eb7f:7a2b:52fb])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c817a98sm628501966b.37.2024.05.28.08.55.22
+        d=1e100.net; s=20230601; t=1716918747; x=1717523547;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Dw9syWhlP6Qvkvp9T3eGJeCUvTQMUJc9fP3VlmIuLhQ=;
+        b=uIoU0D2tTA/q8BHTdpm/lMJw/voKUst0omcRwwF2ftaHEG0mVGjDcbEDrOnno1aYqN
+         YImKMRCVjrziYCQuNX7TIWKGgMGqO1tKHknwKUIWODJ8onw9KY2xD7bUGEdEZxG43+8x
+         YZn6YTHzuyqL3Qxya+YzWACmJGODfeW4I8ygTDeagXF1eKnQleSmfWgf1PQVVLRVD3J2
+         tpsrNzmdLXWEO+aaTTls6MpmTDVAQP9co2emaVOYamGXUkWqZmj7MP3oVsVWVLijFx6H
+         7PrdcMCqTra6H2xKbPhWDA0mNw4a4iO2/7LO9sCKUs12Z8D1zt80CxROqrxjgmkx9hJv
+         cneg==
+X-Gm-Message-State: AOJu0Yy24Sl8H5E1ck/ZQWX7bEL77afhLo5bf0gKvGWXDk5eOtebUuj+
+	kM3LIfbfH8O1/svQUtsf/nKnz8frcywZFr9VzZkLL5BWTOfZk2arHek2RHNL91miTmbHnHcHHsa
+	S
+X-Google-Smtp-Source: AGHT+IFOS2U7URgftJt/JufbEGYea6MxWRM4CnWa333rnI/uuhzjW4i7z+h69LRe0HjSGIsiKlAF8Q==
+X-Received: by 2002:a5d:408d:0:b0:355:4cb:5048 with SMTP id ffacd0b85a97d-3552fe02949mr11188635f8f.43.1716918746851;
+        Tue, 28 May 2024 10:52:26 -0700 (PDT)
+Received: from P-ASN-ECS-830T8C3.local ([89.159.1.53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3557a08abd8sm12307765f8f.32.2024.05.28.10.52.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 May 2024 08:55:22 -0700 (PDT)
-Message-ID: <b3c7acd26bf495aaa4fad0efdb9e330972642c02.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH v2] migration-notes: add release notes for 5.0.1
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: michael.opdenacker@bootlin.com, chee.yang.lee@intel.com
-Cc: docs@lists.yoctoproject.org, Andrew Murray <amurray@thegoodpenguin.co.uk>
-Date: Tue, 28 May 2024 16:55:21 +0100
-In-Reply-To: <3dd82352-ed61-428b-b2d7-061a1b1f350f@bootlin.com>
-References: <20240524102513.2361094-1-chee.yang.lee@intel.com>
-	 <CALqELGzHtWCj1AzFDAtuzfTbq4WgyJ1zmjNYRf6dDkxdPrEURA@mail.gmail.com>
-	 <3dd82352-ed61-428b-b2d7-061a1b1f350f@bootlin.com>
-Autocrypt: addr=richard.purdie@linuxfoundation.org; prefer-encrypt=mutual; keydata=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
- YNvg==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.0-1 
+        Tue, 28 May 2024 10:52:26 -0700 (PDT)
+From: Yoann Congal <yoann.congal@smile.fr>
+To: docs@lists.yoctoproject.org
+Cc: Yoann Congal <yoann.congal@smile.fr>
+Subject: [master-next][PATCH] migration-5.1: add the recommended pattern for S/UNPACKDIR definition
+Date: Tue, 28 May 2024 19:52:07 +0200
+Message-Id: <20240528175207.369758-1-yoann.congal@smile.fr>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 May 2024 15:55:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5263
+ <docs@lists.yoctoproject.org>; Tue, 28 May 2024 17:52:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5264
 
-On Tue, 2024-05-28 at 17:34 +0200, Michael Opdenacker via
-lists.yoctoproject.org wrote:
-> Lee, Andrew,
->=20
-> Thank you for the patch and review!
->=20
-> On 5/24/24 at 12:31, Andrew Murray wrote:
-> > On Fri, 24 May 2024 at 11:26, Lee Chee Yang via
-> > lists.yoctoproject.org
-> > <chee.yang.lee=3Dintel.com@lists.yoctoproject.org> wrote:
-> > > From: Lee Chee Yang <chee.yang.lee@intel.com>
-> > >=20
-> > > add release notes for 5.0.1 (rc2).
-> > >=20
-> > > Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-> > > ---
-> > Reviewed-by: Andrew Murray <amurray@thegoodpenguin.co.uk>
-> >=20
-> > Andrew Murray
->=20
-> Reviewed-by: Michael Opdenacker <michael.opdenacker@bootlin.com>
-> Merged into master-next.
->=20
-> Now that 5.0.1 has been released, I removed "rc2" in the commit
-> message.
-> Lee, are you sure there was no CVE fixed by the release?
->=20
-> Happy to take an update if necessary.
+Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+---
+ documentation/migration-guides/migration-5.1.rst | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-There are CVE fixes but we can't find them as our reporting isn't
-working with the NVD issues :( Everything is therefore manual.
-
-Cheers,
-
-Richard
+diff --git a/documentation/migration-guides/migration-5.1.rst b/documentation/migration-guides/migration-5.1.rst
+index c1cc711a4..b43fecc2d 100644
+--- a/documentation/migration-guides/migration-5.1.rst
++++ b/documentation/migration-guides/migration-5.1.rst
+@@ -59,9 +59,14 @@ Previously, :term:`S` was always created but after the recent changes it is no
+ longer the case. This means the check in ``do_unpack_qa`` triggers where
+ :term:`S` is not created by a recipe while it didn't happen before. This can
+ require to add an :term:`S` definition to a recipe that only uses
+-``file://`` :term:`SRC_URI` entries. Building C files from :term:`UNPACKDIR`
+-without setting :term:`S` to point at it does not work as the debug prefix
+-mapping doesn't handle that.
++``file://`` :term:`SRC_URI` entries. To be consistent, the following pattern is
++recommended::
++
++    S = "${WORKDIR}/sources"
++    UNPACKDIR = "${S}"
++
++Building C files from :term:`UNPACKDIR` without setting :term:`S` to point at
++it does not work as the debug prefix mapping doesn't handle that.
+ 
+ ``devtool``  and ``recipetool`` have been updated to handle this and their
+ support for ``S = WORKDIR`` and ``oe-local-files`` has been removed.
 
