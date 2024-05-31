@@ -1,95 +1,128 @@
-Return-Path: <alexandre.truong@smile.fr>
+Return-Path: <reatmon@ti.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B85AC25B74
-	for <webhook@archiver.kernel.org>; Thu, 30 May 2024 13:50:16 +0000 (UTC)
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
- by mx.groups.io with SMTP id smtpd.web10.9198.1717077014372418215
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61CE3C25B75
+	for <webhook@archiver.kernel.org>; Fri, 31 May 2024 22:10:32 +0000 (UTC)
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+ by mx.groups.io with SMTP id smtpd.web11.25676.1717193426076954254
  for <docs@lists.yoctoproject.org>;
- Thu, 30 May 2024 06:50:14 -0700
+ Fri, 31 May 2024 15:10:26 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=qbKZPgHQ;
- spf=pass (domain: smile.fr, ip: 209.85.128.51, mailfrom: alexandre.truong@smile.fr)
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-421087b6f3fso9920225e9.1
-        for <docs@lists.yoctoproject.org>; Thu, 30 May 2024 06:50:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1717077012; x=1717681812; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=d7eDKqoIgdEn6mAkx4ylvLJhWlULpeu5L8UBuuTO/K0=;
-        b=qbKZPgHQ28CFVVeSwkZypT1IABTXgJ6Zj9BD1n5WW70Nzj+RcDFTozTCAD1rHdPItK
-         OiLO0hicsQ4SPKynslrGJUHptoti7drLzqmJR4CAhpJ246lNb59rVqp6dz7VIU0CTPLJ
-         WrWc/aoj2KZwXuJ6GksxAUPFzAoGTrd+xLWcE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717077012; x=1717681812;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=d7eDKqoIgdEn6mAkx4ylvLJhWlULpeu5L8UBuuTO/K0=;
-        b=TBcRDTcHd0EqIhE3rI/6uMG0fdOrYe7YYgaXL+r94SCBxGOHAr/acpwk3ovKZxqqOD
-         V0QB+tf+o3cp9gMF1RdYNEP7QmTgVtR/RgC+5KjlaRFv625uPlDoNUFBsnfw5m5ztzmj
-         DnA67JV75sf35LzuQaK2xEczuQKqIr8q0t4mAXhOZ63m8Grn0gUpzbJfXlQXxVkG3ZpO
-         wu9TXga1gdd0RcXYcUrpAk5kxfyRHxm44teqxfG5WqAZ9jsvlGZbKxey1hLAirUx68ea
-         ex0kduqqLBZ69Aofjw5NbnbcTs6ug0aoI1TAyE5O2uvjl0+1mgN5yu8wmNYCje1geuHF
-         EfTg==
-X-Gm-Message-State: AOJu0YyRdk/0RTvzOE3rnQe9ZhmjnkJArvMV+tQUILDl9xH79YSy8c6v
-	W7GLKtkcUHmAEABO5lWhDflWPB0TDktd3Ygn8KchxSlGqvNiffzvE9HLQSLSHfnUyNgbrXQIIK+
-	/
-X-Google-Smtp-Source: AGHT+IGG1ZB2zSJ7zJWbPReJt8AHYiZ13FIbAbURz2JWGZvriaFZhC5qIKZuYldqAkQN4TIiZvOdXg==
-X-Received: by 2002:a05:600c:4f53:b0:41b:f359:2b53 with SMTP id 5b1f17b1804b1-42127943a8fmr22902255e9.37.1717077007498;
-        Thu, 30 May 2024 06:50:07 -0700 (PDT)
-Received: from P-ASN-MOON.idf.intranet (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4212709d357sm25910965e9.35.2024.05.30.06.50.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 May 2024 06:50:07 -0700 (PDT)
-From: Alexandre Truong <alexandre.truong@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Alexandre Truong <alexandre.truong@smile.fr>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH] recipe style guide: add recommendation for patches without signature
-Date: Thu, 30 May 2024 15:49:50 +0200
-Message-Id: <20240530134950.14465-1-alexandre.truong@smile.fr>
-X-Mailer: git-send-email 2.34.1
+ dkim=pass header.i=@ti.com header.s=ti-com-17Q1 header.b=uGFmeDnX;
+ spf=pass (domain: ti.com, ip: 198.47.23.248, mailfrom: reatmon@ti.com)
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44VMAPoc111494
+	for <docs@lists.yoctoproject.org>; Fri, 31 May 2024 17:10:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1717193425;
+	bh=oHgvrxxtXSH8pxnWoFMH1DZ1n7nI47X0zTL9dQMytr0=;
+	h=From:To:Subject:Date;
+	b=uGFmeDnXfpxdXnlMvPXEOIme7+BiQGIjGTxtWOdWnO7Sl3gtsMD5olBicUEcU5/72
+	 HkrbqR8qiYnlehQjhBamDr6EXLfNi3xYXD1d5Y86DRPRG8jA2XMwZO7nMgqTehnFks
+	 QnKMPmbf9hSU10W0iDqQJkJpa5rH799oU8PK4bP8=
+Received: from DLEE112.ent.ti.com (dlee112.ent.ti.com [157.170.170.23])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44VMAPYQ083158
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL)
+	for <docs@lists.yoctoproject.org>; Fri, 31 May 2024 17:10:25 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE112.ent.ti.com
+ (157.170.170.23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 31
+ May 2024 17:10:25 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 31 May 2024 17:10:25 -0500
+Received: from uda0214219 (uda0214219.dhcp.ti.com [128.247.81.222])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44VMAPwt121029
+	for <docs@lists.yoctoproject.org>; Fri, 31 May 2024 17:10:25 -0500
+Received: from reatmon by uda0214219 with local (Exim 4.90_1)
+	(envelope-from <reatmon@ti.com>)
+	id 1sDAS9-00034f-3w
+	for docs@lists.yoctoproject.org; Fri, 31 May 2024 17:10:25 -0500
+From: Ryan Eatmon <reatmon@ti.com>
+To: <docs@lists.yoctoproject.org>
+Subject: [master][PATCH] docs: Document the GO_SRCURI_DESTSUFFIX variable
+Date: Fri, 31 May 2024 17:10:25 -0500
+Message-ID: <20240531221025.11778-1-reatmon@ti.com>
+X-Mailer: git-send-email 2.17.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 30 May 2024 13:50:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5267
+ <docs@lists.yoctoproject.org>; Fri, 31 May 2024 22:10:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5268
 
-From discussion [0], the presence of git version signature at the end of
-patches has been questionned. To avoid a bit more noise, the setting git
-format.signature is added to the documentation and its use is
-recommended.
+Add the needed entries for the GO_SRCURI_DESTSUFFIX variable and why it
+is needed.  Also update the go.class and 5,1 migration file with the same
+information.
 
-[0]: https://lists.openembedded.org/g/openembedded-core/topic/106323318#msg199967
-
-Signed-off-by: Alexandre Truong <alexandre.truong@smile.fr>
-Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
+Signed-off-by: Ryan Eatmon <reatmon@ti.com>
 ---
- .../contributor-guide/recipe-style-guide.rst         | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ documentation/migration-guides/migration-5.1.rst |  5 +++++
+ documentation/ref-manual/classes.rst             |  6 ++++++
+ documentation/ref-manual/variables.rst           | 12 ++++++++++++
+ 3 files changed, 23 insertions(+)
 
-diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index 08d8fb425..01419a17a 100644
---- a/documentation/contributor-guide/recipe-style-guide.rst
-+++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -409,3 +409,15 @@ This should be the header of patch that fixes :cve:`2015-8370` in GRUB2::
-    Upstream-Status: Backport [http://git.savannah.gnu.org/cgit/grub.git/commit/?id=451d80e52d851432e109771bb8febafca7a5f1f2]
-    CVE: CVE-2015-8370
-    Signed-off-by: Joe Developer <joe.developer@example.com>
+diff --git a/documentation/migration-guides/migration-5.1.rst b/documentation/migration-guides/migration-5.1.rst
+index b43fecc2d..453c9fcc0 100644
+--- a/documentation/migration-guides/migration-5.1.rst
++++ b/documentation/migration-guides/migration-5.1.rst
+@@ -94,6 +94,11 @@ See :ref:`all supported distributions <system-requirements-supported-distros>`.
+ 
+ Go language changes
+ ~~~~~~~~~~~~~~~~~~~
++The :term:`SRC_URI` for your Go module recipe must include setting the
++destsuffix parameter to :term:`GO_SRCURI_DESTSUFFIX` in order to build
++correctly with the new :term:`UNPACKDIR` methodology::
 +
-+Patch format
-+============
++   SRC_URI = "...;destsuffix=${GO_SRCURI_DESTSUFFIX}" 
+ 
+ .. _migration-5.1-systemd-changes:
+ 
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 9520d0bf7..e1854814a 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -932,6 +932,12 @@ The :ref:`ref-classes-go` class supports building Go programs. The behavior of
+ this class is controlled by the mandatory :term:`GO_IMPORT` variable, and
+ by the optional :term:`GO_INSTALL` and :term:`GO_INSTALL_FILTEROUT` ones.
+ 
++The :term:`SRC_URI` for your Go module recipe must include setting the
++destsuffix parameter to :term:`GO_SRCURI_DESTSUFFIX` in order to build
++correctly with the new :term:`UNPACKDIR` methodology::
 +
-+By default, patches created with ``git format-patch`` have a git version signature at the end.
-+To avoid having a git signature at the end of generated or updated patches,
-+you can use Git configuration settings::
++   SRC_URI = "...;destsuffix=${GO_SRCURI_DESTSUFFIX}" 
 +
-+   git config --global format.signature ""
+ To build a Go program with the Yocto Project, you can use the
+ :yocto_git:`go-helloworld_0.1.bb </poky/tree/meta/recipes-extended/go-examples/go-helloworld_0.1.bb>`
+ recipe as an example.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 07b5b6f95..9e9b5449a 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3228,6 +3228,18 @@ system and gives an overview of their function and contents.
+       packages, but it can be overridden by a recipe to filter out other
+       subdirectories if needed.
+ 
++   :term:`GO_SRCURI_DESTSUFFIX`
++      The :term:`SRC_URI` for your Go module recipe must include setting the
++      destsuffix parameter to :term:`GO_SRCURI_DESTSUFFIX` in order to build
++      correctly with the new :term:`UNPACKDIR` methodology::
 +
-+.. note::
-+   Patches generated or updated by devtool are created with no signature.
++         SRC_URI = "...;destsuffix=${GO_SRCURI_DESTSUFFIX}" 
++
++      You should not need to set GO_SRCURI_DESTSUFFIX yourself.  By default,
++      :term:`GO_SRCURI_DESTSUFFIX` is defined as::
++
++         GO_SRCURI_DESTSUFFIX = "${S}/src/${GO_IMPORT}/"
++
+    :term:`GO_WORKDIR`
+       When using Go Modules, the current working directory must be the directory
+       containing the ``go.mod`` file, or one of its subdirectories. When the
+-- 
+2.17.1
+
 
