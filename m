@@ -1,95 +1,74 @@
-Return-Path: <alexandre.truong@smile.fr>
+Return-Path: <michael@opdenacker.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AD859C25B75
-	for <webhook@archiver.kernel.org>; Thu,  6 Jun 2024 07:54:39 +0000 (UTC)
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.web10.8879.1717660473904801587
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E0873C25B75
+	for <webhook@archiver.kernel.org>; Thu,  6 Jun 2024 13:27:52 +0000 (UTC)
+Received: from sender-op-o11.zoho.eu (sender-op-o11.zoho.eu [136.143.169.11])
+ by mx.groups.io with SMTP id smtpd.web11.14439.1717680464418790711
  for <docs@lists.yoctoproject.org>;
- Thu, 06 Jun 2024 00:54:34 -0700
+ Thu, 06 Jun 2024 06:27:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=mOeMDNAR;
- spf=pass (domain: smile.fr, ip: 209.85.128.42, mailfrom: alexandre.truong@smile.fr)
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-421572bb0f0so8238845e9.0
-        for <docs@lists.yoctoproject.org>; Thu, 06 Jun 2024 00:54:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1717660472; x=1718265272; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=SZn4AOj3xaiDh6QRUkQFwusF4qqDOc7L921AVp1XH+4=;
-        b=mOeMDNARBhiS83yPlwGwT2xUUsufCMc00v8E7U9kiYb3qHnJUyTP9PgGzb8Ak4edGA
-         llcFxrQb0zVimxtJeP8GNilLj6m38/4UrwpQlK03/9J533Ap7dgW9Nw2D6CKHY6iQj2E
-         JaR7zYMO7IWh51r1b0KUTtq+0KSwxX62WiHF4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717660472; x=1718265272;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SZn4AOj3xaiDh6QRUkQFwusF4qqDOc7L921AVp1XH+4=;
-        b=FtE27X0d1q2/Oo+nAmKeG8IddstkUyNhqoOx53fFswvO492Zpab5Nsj2FEdqQ/I8Lx
-         BattoUSQyIOTxWtPe9m9OHIl++cKdZrA1gO0gf4+M84NsN6QM8e5wqVNSa/xruej8Z79
-         kdoZYbilYiY6ydPU1LxuTneEp3PZ/IB+DouBtlJIniPBoNb5slKtaBg4vOvwH/OVCIPl
-         9kM/N8wmuF/dLCIhADYcbrkouJ5512Xc5C2l5JuYnwjcRbIK3NJLXSzSg6lNY9N0QhyB
-         rChMNQxgU8Q+y7o+sYKdfIYW+qTqXhdVCW2j+jWZiqVFyy1P86QhLbQDltQnoWshVCsZ
-         RQLg==
-X-Gm-Message-State: AOJu0Yx9P+6s4esAKZJ5QCcqUY4j8gPPCKC8SK5i9aCSANw9tElNa7JG
-	ANTqdk22SzU1B0p8sc8A71VRR34nfA0mZZuAz0BPO5+0XJ3uJA9sFGVbeexNPwbgjkM468LQQke
-	m
-X-Google-Smtp-Source: AGHT+IGAXI8BOadbtw58Rp5Fy0XbTyN4h2T6XWisde0cdnXce6qocDWplN+uK9jiv2lnibA0couFug==
-X-Received: by 2002:a05:600c:4f49:b0:421:1f68:f80c with SMTP id 5b1f17b1804b1-42156340bc3mr38436185e9.25.1717660472253;
-        Thu, 06 Jun 2024 00:54:32 -0700 (PDT)
-Received: from P-ASN-MOON.idf.intranet (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215c1aa1desm12372125e9.11.2024.06.06.00.54.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 00:54:31 -0700 (PDT)
-From: Alexandre Truong <alexandre.truong@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Alexandre Truong <alexandre.truong@smile.fr>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH v2] recipe style guide: add recommendation for patches without signature
-Date: Thu,  6 Jun 2024 09:54:15 +0200
-Message-Id: <20240606075415.6666-1-alexandre.truong@smile.fr>
-X-Mailer: git-send-email 2.34.1
+ dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=michael@opdenacker.org header.s=zmail header.b=NhsUPLjf;
+ spf=pass (domain: opdenacker.org, ip: 136.143.169.11, mailfrom: michael@opdenacker.org)
+ARC-Seal: i=1; a=rsa-sha256; t=1717680461; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=fgFZbzFgqL0pQBkrtIeFR8XhVQ9RwQOJqAGV4z2iF6VR/ocIolUZ5jV2BnL3NYDSFMmHa0CwJVKIGLin9qz4IM1HAfh4xRoODl3jK7i3w/p3fG/kvAJxhMnlXlevz5lYvLJO1cyOfXOdsKYPIUuUfiN+39o/3TMVlZbCV9ms2S0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1717680461; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=+xE/2C6tjs4BOi8ts5HymXvrWXEdUEWNf1HRjm4gI3Q=; 
+	b=F4Sc8X7FlWrqIlCUz6OzujaiWJdbvGEXZHASgAFDy8IJtqzKvnaiH0x0zH05ox0v3LSpVx06xuKJxOvtU4Ua5/S4Wwj6uJlnt7aRXrAy8NLkng8ich6nulDDnrvxeBo2K1EhLnb/SlRGGPL4qVEd/WXymgsVSmXwdYP9utkDUdc=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=opdenacker.org;
+	spf=pass  smtp.mailfrom=michael@opdenacker.org;
+	dmarc=pass header.from=<michael@opdenacker.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1717680461;
+	s=zmail; d=opdenacker.org; i=michael@opdenacker.org;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=+xE/2C6tjs4BOi8ts5HymXvrWXEdUEWNf1HRjm4gI3Q=;
+	b=NhsUPLjfv691/g9y5Xe1nC0S64cmF0Wz9p+278AFT0XGsXARLQSkwczw03a1bhmd
+	nUmCxaspaGNK9qwho+ztuY4IwfMH4uyA5ChzUKeDmscix6jAUZlAs3xIX+IuDzswsww
+	BSSENLRRvNVhZlv+cIGAccbbs0qQSlE8y9eL453U=
+Received: by mx.zoho.eu with SMTPS id 1717680458866375.30904986950964;
+	Thu, 6 Jun 2024 15:27:38 +0200 (CEST)
+Message-ID: <d9f11870-8eb1-43ce-90d3-2d6f33be54e8@opdenacker.org>
+Date: Thu, 6 Jun 2024 15:27:38 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] migration-guides: add release notes for 4.0.19
+To: Lee Chee Yang <chee.yang.lee@intel.com>
+References: <20240606013102.1462801-1-chee.yang.lee@intel.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael@opdenacker.org>
+In-Reply-To: <20240606013102.1462801-1-chee.yang.lee@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 06 Jun 2024 07:54:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5273
+ <docs@lists.yoctoproject.org>; Thu, 06 Jun 2024 13:27:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5274
 
-From discussion [0], the presence of git version signature at the end of
-patches has been questionned. To avoid a bit more noise, the setting git
-format.signature is added to the documentation and its use is
-recommended.
+Hi Lee,
 
-[0]: https://lists.openembedded.org/g/openembedded-core/topic/106323318#msg199967
+Thanks for the update!
 
-Signed-off-by: Alexandre Truong <alexandre.truong@smile.fr>
-Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
----
- .../contributor-guide/recipe-style-guide.rst         | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+On 6/6/24 03:31, Lee Chee Yang wrote:
+> From: Lee Chee Yang <chee.yang.lee@intel.com>
+>
+> add release notes for 4.0.19.
+>
+> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+> ---
+>   .../migration-guides/release-4.0.rst          |   1 +
+>   .../migration-guides/release-notes-4.0.19.rst | 159 ++++++++++++++++++
+>   2 files changed, 160 insertions(+)
+>   create mode 100644 documentation/migration-guides/release-notes-4.0.19.rst
 
-diff --git a/documentation/contributor-guide/recipe-style-guide.rst b/documentation/contributor-guide/recipe-style-guide.rst
-index 08d8fb425..142c02db1 100644
---- a/documentation/contributor-guide/recipe-style-guide.rst
-+++ b/documentation/contributor-guide/recipe-style-guide.rst
-@@ -409,3 +409,15 @@ This should be the header of patch that fixes :cve:`2015-8370` in GRUB2::
-    Upstream-Status: Backport [http://git.savannah.gnu.org/cgit/grub.git/commit/?id=451d80e52d851432e109771bb8febafca7a5f1f2]
-    CVE: CVE-2015-8370
-    Signed-off-by: Joe Developer <joe.developer@example.com>
-+
-+Patch format
-+============
-+
-+By default, patches created with ``git format-patch`` have a `Git` version signature at the end.
-+To avoid having a `Git` signature at the end of generated or updated patches,
-+you can use `Git` configuration settings::
-+
-+   git config --global format.signature ""
-+
-+.. note::
-+   Patches generated or updated by ``devtool`` are created with no signature.
+Reviewed-by: Michael Opdenacker <michael@opdenacker.org>
+Cheers
+Michael.
+
 
