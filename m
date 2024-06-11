@@ -1,89 +1,89 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <michael@opdenacker.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80022C27C55
-	for <webhook@archiver.kernel.org>; Mon, 10 Jun 2024 09:41:10 +0000 (UTC)
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
- by mx.groups.io with SMTP id smtpd.web11.15579.1718012466852914756
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA3A1C25B76
+	for <webhook@archiver.kernel.org>; Tue, 11 Jun 2024 09:56:35 +0000 (UTC)
+Received: from sender-op-o19.zoho.eu (sender-op-o19.zoho.eu [136.143.169.19])
+ by mx.groups.io with SMTP id smtpd.web10.5589.1718099786063851553
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Jun 2024 02:41:07 -0700
+ Tue, 11 Jun 2024 02:56:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=bcnCWDpf;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.221.49, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-35f0aeff7a8so1972221f8f.2
-        for <docs@lists.yoctoproject.org>; Mon, 10 Jun 2024 02:41:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1718012465; x=1718617265; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=8GeubgvKhv5JGz/VHD9oJvpe2Wu1eXGUkfucOtbtYZk=;
-        b=bcnCWDpf807Yv+np+QBTsCKjgj5YHtkbuNUzcF3ziQURJy5onBNiULf2NLxtU2PNJN
-         dG20liKA03IbpdrcB6FazDNPYno/qFz3mtD3MpAQhHb67NH2V5DCScO0uP9Mc07DdjE7
-         0DbXfv4NIpoqUqanTdKqiQaRsDhPrIXrqP73A=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718012465; x=1718617265;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8GeubgvKhv5JGz/VHD9oJvpe2Wu1eXGUkfucOtbtYZk=;
-        b=dF9BtGfEHIz88wh09VSN+fnkOkbYL8B2HeFO/3kSoNlU1x2ouU61v+H9FkyY91oM5w
-         cBhgkpK2kxh+GFY4+qBpiOBSOvRCmMjoHfx4hsHZerZNbvv+kSif1oiOFjM3YowjvqMS
-         AqzbAtjBhA/8fogCTvscqc69ntTCIgYGgSTk3E4KvVnp8fMGzp51vSyZcjgev+FN+cx2
-         1F4Wiv8kuv2IeaUlTIHAhpCHyUIlhxbVZFftTJpNJNLMFwguk0bk1lSXqYDEKa0IrxYw
-         x6wXJvQrKTp2M8bwW3EEAItagUHcMbzIaWrTBno21mn6DKEQLRnO+ZZu92NbkAf0fAYp
-         svUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUshWu/1VE98Le6eRq+7uVpeyaHuSGLPyU5kTEtakUtiT7qnXrZJLEmG5x2eLH5IHu5i152d2OPLkQCCYVb62s6uwfhCzBgAl5glGM=
-X-Gm-Message-State: AOJu0Yzy3buhgcg8pD+5DdyP1O/8WEEfTIA13gOTQKr9w3HGnrwQWe9c
-	U6gdvovLqdM7ceKYoBT14UWcZ5mdLzjgmLbu5GczqFVf3hO/j/dU+k82UI6NRxg=
-X-Google-Smtp-Source: AGHT+IHQa2cW8SJEmZ0Yf51oe3VKsJ400L4RNievhKS25qtciVbmii5/wfamWdpYITWKgFc0ncxL4Q==
-X-Received: by 2002:adf:eac1:0:b0:35f:1f8a:e69a with SMTP id ffacd0b85a97d-35f1f8ae6f8mr3803654f8f.49.1718012465234;
-        Mon, 10 Jun 2024 02:41:05 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:fc3b:77d4:176b:a54? ([2001:8b0:aba:5f3c:fc3b:77d4:176b:a54])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f25599edcsm1846919f8f.90.2024.06.10.02.41.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jun 2024 02:41:04 -0700 (PDT)
-Message-ID: <83ab3186c0cef914974e272a3b86a2acbec69ac3.camel@linuxfoundation.org>
-Subject: Re: [docs] [bitbake-devel] [PATCH v2] fetch2/wget: Add user_agent
- parameter so it can be used optionally
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: alex.kanavin@gmail.com, egyszeregy@freemail.hu
-Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
-Date: Mon, 10 Jun 2024 10:41:04 +0100
-In-Reply-To: <CANNYZj9Tr6d9khKBq_qunZ-54DXDj1es=to8aSk9kkecbZqJSw@mail.gmail.com>
-References: <20240609220226.977-1-egyszeregy@freemail.hu>
-	 <CANNYZj9Tr6d9khKBq_qunZ-54DXDj1es=to8aSk9kkecbZqJSw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.0-1build2 
+ dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=michael@opdenacker.org header.s=zmail header.b=odMMzRke;
+ spf=pass (domain: opdenacker.org, ip: 136.143.169.19, mailfrom: michael@opdenacker.org)
+ARC-Seal: i=1; a=rsa-sha256; t=1718099780; cv=none; 
+	d=zohomail.eu; s=zohoarc; 
+	b=incMWbZci8+5WxrlUZEcVizLjH6XrElLb/yW5dCq/21iL0fFTa3xVUU3L0HbHhNAKoY7zkfF2dNHsmwNBRJYZFyGq/tIZlvO4EUeiLrjaLUzUYynJSZRt8DVIHDR7Pn6mRXW9qbMT8fpkGhYRoehYc3j+Sn5zD1HErKm7l3W538=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
+	t=1718099780; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=noqyL1cm0mHUdO8wdesPwU4Q58dpueqvHCqW5vehlRo=; 
+	b=gSCH9nXP4UlCxtOpsU/cQMkh/fLaz/P319YkC76LnN7/Fi84ePuWrsBvCNZ0avJx24qOovxj3UNSkkaR29eQ7DQ1fp/VK+6PLqKdlHE1kAFzqNxgSR5NHxFhU1ZAD73GvaV9i3aANNzjux9mccoA4jWbByJVhw+6d6LchxZsYuw=
+ARC-Authentication-Results: i=1; mx.zohomail.eu;
+	dkim=pass  header.i=opdenacker.org;
+	spf=pass  smtp.mailfrom=michael@opdenacker.org;
+	dmarc=pass header.from=<michael@opdenacker.org>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1718099780;
+	s=zmail; d=opdenacker.org; i=michael@opdenacker.org;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=noqyL1cm0mHUdO8wdesPwU4Q58dpueqvHCqW5vehlRo=;
+	b=odMMzRkeknToXwyfK35Vqc2m6XhNdeOtD5aQAZ8cPGRt38w5uKHbm3rzO93LVW7h
+	eyv5c34Qb+TViBLZ1+fYdV/QyTOxO6r4x3eXXq4PmTZHeCfuSIqfduMRcDh9k9+L3C6
+	2Bx7FevssyLVG2kl7hSBr+oH9htw5R3Weih4wCKM=
+Received: by mx.zoho.eu with SMTPS id 1718099775802200.60895855963338;
+	Tue, 11 Jun 2024 11:56:15 +0200 (CEST)
+Message-ID: <229777f7-7a55-4bbf-82b9-26870ce96692@opdenacker.org>
+Date: Tue, 11 Jun 2024 11:56:14 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Cc: Aleksandar Nikolic <an010@live.com>, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual: introduce CVE_CHECK_REPORT_PATCHED
+ variable
+To: Aleksandar Nikolic <aleksandar.nikolic010@gmail.com>
+References: <20240607211559.455144-1-aleksandar.nikolic010@gmail.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael@opdenacker.org>
+In-Reply-To: <20240607211559.455144-1-aleksandar.nikolic010@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 10 Jun 2024 09:41:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5291
+ <docs@lists.yoctoproject.org>; Tue, 11 Jun 2024 09:56:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5292
 
-On Mon, 2024-06-10 at 06:23 +0200, Alexander Kanavin via
-lists.yoctoproject.org wrote:
-> No. I really do not like the idea that we should pretend to be
-> Firefox. And you didn=E2=80=99t answer Ross questions properly.
+Hi Aleksandar
 
-We already do that unfortunately.
+Many thanks for the patch!
 
-I think the biggest concern I have about the patch is the variable
-name, it should be namespaced into the fetcher (BB_FETCH_USER_AGENT?).
+On 6/7/24 23:15, Aleksandar Nikolic wrote:
+> From: Aleksandar Nikolic <an010@live.com>
+>
+> Signed-off-by: Aleksandar Nikolic <an010@live.com>
+> ---
+>   documentation/ref-manual/variables.rst | 6 ++++++
+>   1 file changed, 6 insertions(+)
+>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 07b5b6f95..88c3602e6 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -1681,6 +1681,12 @@ system and gives an overview of their function and contents.
+>      :term:`CVE_CHECK_IGNORE`
+>         This variable is deprecated and should be replaced by :term:`CVE_STATUS`.
+>   
+> +   :term:`CVE_CHECK_REPORT_PATCHED`
+> +      Specifies whether or not the :ref:`ref-classes-cve-check`
+> +      class should report patched or ignored CVEs. The default is "1", but you
+> +      may wish to set it to "0" if you do not need patched or ignored CVEs in
+> +      the logs.
+> +
+>      :term:`CVE_CHECK_SHOW_WARNINGS`
+>         Specifies whether or not the :ref:`ref-classes-cve-check`
+>         class should generate warning messages on the console when unpatched
 
-I would like to see some answers to Ross' questions as well though. It
-would be good to understand what kinds of problems people are facing
-that need this.
+Reviewed-by: Michael Opdenacker <michael@opdenacker.org>
+Cheers
+Michael.
 
-The trouble is that every time we add more configuration to bitbake, it
-complicated testing and if we can see one way of working for the
-majority, it does help reduce complexity. This means adding new
-configuration and code paths does need careful thought.
-
-Cheers,
-
-Richard
 
