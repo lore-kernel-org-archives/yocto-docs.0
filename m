@@ -2,88 +2,100 @@ Return-Path: <michael@opdenacker.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA3A1C25B76
-	for <webhook@archiver.kernel.org>; Tue, 11 Jun 2024 09:56:35 +0000 (UTC)
-Received: from sender-op-o19.zoho.eu (sender-op-o19.zoho.eu [136.143.169.19])
- by mx.groups.io with SMTP id smtpd.web10.5589.1718099786063851553
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AEDE8C25B76
+	for <webhook@archiver.kernel.org>; Tue, 11 Jun 2024 12:50:56 +0000 (UTC)
+Received: from sender-op-o17.zoho.eu (sender-op-o17.zoho.eu [136.143.169.17])
+ by mx.groups.io with SMTP id smtpd.web11.8659.1718110246277544682
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Jun 2024 02:56:27 -0700
+ Tue, 11 Jun 2024 05:50:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=michael@opdenacker.org header.s=zmail header.b=odMMzRke;
- spf=pass (domain: opdenacker.org, ip: 136.143.169.19, mailfrom: michael@opdenacker.org)
-ARC-Seal: i=1; a=rsa-sha256; t=1718099780; cv=none; 
+ dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=michael@opdenacker.org header.s=zmail header.b=eJIUxiUJ;
+ spf=pass (domain: opdenacker.org, ip: 136.143.169.17, mailfrom: michael@opdenacker.org)
+ARC-Seal: i=1; a=rsa-sha256; t=1718110242; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=incMWbZci8+5WxrlUZEcVizLjH6XrElLb/yW5dCq/21iL0fFTa3xVUU3L0HbHhNAKoY7zkfF2dNHsmwNBRJYZFyGq/tIZlvO4EUeiLrjaLUzUYynJSZRt8DVIHDR7Pn6mRXW9qbMT8fpkGhYRoehYc3j+Sn5zD1HErKm7l3W538=
+	b=KKOYqbDBl2YDWayWLNtVG60om2xgxKVnUwxhdLSkFXfHXobKuRfhu6U3sETGL4lSKfIn+u9ekNkbsEnRKGMlrDziMrFaYn5qxkW7Wv6wU+JvKC6Z6nLcQ56izggyE3MVU/cGy0TIFWukd58Q+zEjWfEpa9h2u7rHho9mSSCdrHU=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1718099780; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=noqyL1cm0mHUdO8wdesPwU4Q58dpueqvHCqW5vehlRo=; 
-	b=gSCH9nXP4UlCxtOpsU/cQMkh/fLaz/P319YkC76LnN7/Fi84ePuWrsBvCNZ0avJx24qOovxj3UNSkkaR29eQ7DQ1fp/VK+6PLqKdlHE1kAFzqNxgSR5NHxFhU1ZAD73GvaV9i3aANNzjux9mccoA4jWbByJVhw+6d6LchxZsYuw=
+	t=1718110242; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=0YxAPO2SAn0qA9dbNrDxyqBhwdgswcaIQanyV9HQnfg=; 
+	b=GlJUh7QJdDE1pnYwNMBRVfHqyi8r0KXVDFPMS0Iji8INiV7M7B1bQZPFOcZD1KVomkQWELSpcH7f6FfZq7tVle8dNZgnSCt5iNF6eyQ962R+fkjqUKmnGV5d3uBrxr/MuL0PWlL48t1HJA6gAFqq8Ve1Cbci7KGxtMdNfAwSSWg=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=opdenacker.org;
 	spf=pass  smtp.mailfrom=michael@opdenacker.org;
 	dmarc=pass header.from=<michael@opdenacker.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1718099780;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1718110242;
 	s=zmail; d=opdenacker.org; i=michael@opdenacker.org;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=noqyL1cm0mHUdO8wdesPwU4Q58dpueqvHCqW5vehlRo=;
-	b=odMMzRkeknToXwyfK35Vqc2m6XhNdeOtD5aQAZ8cPGRt38w5uKHbm3rzO93LVW7h
-	eyv5c34Qb+TViBLZ1+fYdV/QyTOxO6r4x3eXXq4PmTZHeCfuSIqfduMRcDh9k9+L3C6
-	2Bx7FevssyLVG2kl7hSBr+oH9htw5R3Weih4wCKM=
-Received: by mx.zoho.eu with SMTPS id 1718099775802200.60895855963338;
-	Tue, 11 Jun 2024 11:56:15 +0200 (CEST)
-Message-ID: <229777f7-7a55-4bbf-82b9-26870ce96692@opdenacker.org>
-Date: Tue, 11 Jun 2024 11:56:14 +0200
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=0YxAPO2SAn0qA9dbNrDxyqBhwdgswcaIQanyV9HQnfg=;
+	b=eJIUxiUJsqAHaxh9BtpxaGrv9PDaVAv1ziVD+/39RuBEMWBom3kShw1WDssj1np7
+	E581mWu8A4uZ8TsTcaMuVYWBjcWx9MPlC5SeOQ44rZHtQbN9hXzvcPlek75Q0r/DE8A
+	DhBBvxuZjog9nXh2hdYyT4/gC83iIO8aPUV5O74I=
+Received: by mx.zoho.eu with SMTPS id 1718110240855340.50309963512336;
+	Tue, 11 Jun 2024 14:50:40 +0200 (CEST)
+From: michael@opdenacker.org
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael@opdenacker.org>
+Subject: [PATCH] documentation/README: refer to doc package requirements
+Date: Tue, 11 Jun 2024 14:50:26 +0200
+Message-ID: <20240611125026.22702-1-michael@opdenacker.org>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: Aleksandar Nikolic <an010@live.com>, docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: introduce CVE_CHECK_REPORT_PATCHED
- variable
-To: Aleksandar Nikolic <aleksandar.nikolic010@gmail.com>
-References: <20240607211559.455144-1-aleksandar.nikolic010@gmail.com>
-Content-Language: en-US
-From: Michael Opdenacker <michael@opdenacker.org>
-In-Reply-To: <20240607211559.455144-1-aleksandar.nikolic010@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-ZohoMailClient: External
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 11 Jun 2024 09:56:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5292
+ <docs@lists.yoctoproject.org>; Tue, 11 Jun 2024 12:50:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5293
 
-Hi Aleksandar
+From: Michael Opdenacker <michael@opdenacker.org>
 
-Many thanks for the patch!
+Refer to package requirements for building documentation
+from supported distributions. The simple instructions
+previously listed no longer work on Ubuntu 24.04, for example.
 
-On 6/7/24 23:15, Aleksandar Nikolic wrote:
-> From: Aleksandar Nikolic <an010@live.com>
->
-> Signed-off-by: Aleksandar Nikolic <an010@live.com>
-> ---
->   documentation/ref-manual/variables.rst | 6 ++++++
->   1 file changed, 6 insertions(+)
->
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 07b5b6f95..88c3602e6 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -1681,6 +1681,12 @@ system and gives an overview of their function and contents.
->      :term:`CVE_CHECK_IGNORE`
->         This variable is deprecated and should be replaced by :term:`CVE_STATUS`.
->   
-> +   :term:`CVE_CHECK_REPORT_PATCHED`
-> +      Specifies whether or not the :ref:`ref-classes-cve-check`
-> +      class should report patched or ignored CVEs. The default is "1", but you
-> +      may wish to set it to "0" if you do not need patched or ignored CVEs in
-> +      the logs.
-> +
->      :term:`CVE_CHECK_SHOW_WARNINGS`
->         Specifies whether or not the :ref:`ref-classes-cve-check`
->         class should generate warning messages on the console when unpatched
+Signed-off-by: Michael Opdenacker <michael@opdenacker.org>
+---
+ documentation/README | 29 +++--------------------------
+ 1 file changed, 3 insertions(+), 26 deletions(-)
 
-Reviewed-by: Michael Opdenacker <michael@opdenacker.org>
-Cheers
-Michael.
-
+diff --git a/documentation/README b/documentation/README
+index b60472fcbf..c888b666a8 100644
+--- a/documentation/README
++++ b/documentation/README
+@@ -108,32 +108,9 @@ generated with DocBook.
+ How to build the Yocto Project documentation
+ ============================================
+ 
+-Sphinx is written in Python. While it might work with Python2, for
+-obvious reasons, we will only support building the Yocto Project
+-documentation with Python3.
+-
+-Sphinx might be available in your Linux distro packages repositories,
+-however it is not recommended to use distro packages, as they might be
+-old versions, especially if you are using an LTS version of your
+-distro. The recommended method to install the latest versions of Sphinx
+-and of its required dependencies is to use the Python Package Index (pip).
+-
+-To install all required packages run:
+-
+- $ pip3 install sphinx sphinx_rtd_theme pyyaml
+-
+-To make sure you always have the latest versions of such packages, you
+-should regularly run the same command with an added "--upgrade" option:
+-
+- $ pip3 install --upgrade sphinx sphinx_rtd_theme pyyaml
+-
+-Also install the "inkscape" package from your distribution.
+-Inkscape is need to convert SVG graphics to PNG (for EPUB
+-export) and to PDF (for PDF export).
+-
+-Additionally install "fncychap.sty" TeX font if you want to build PDFs. Debian
+-and Ubuntu have it in "texlive-latex-extra" package while RedHat distributions
+-and OpenSUSE have it in "texlive-fncychap" package for example.
++To build the documentation, you need Sphinx and a few other packages,
++which depend on your host GNU/Linux distribution. Such packages are listed on
++https://docs.yoctoproject.org/dev/ref-manual/system-requirements.html#required-packages-for-the-build-host
+ 
+ To build the documentation locally, run:
+ 
 
