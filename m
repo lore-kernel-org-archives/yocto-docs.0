@@ -1,265 +1,218 @@
-Return-Path: <alex.kanavin@gmail.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B6C40C27C53
-	for <webhook@archiver.kernel.org>; Wed, 12 Jun 2024 07:45:09 +0000 (UTC)
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
- by mx.groups.io with SMTP id smtpd.web11.5915.1718178307935427069
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64830C27C4F
+	for <webhook@archiver.kernel.org>; Thu, 13 Jun 2024 08:38:01 +0000 (UTC)
+Received: from EUR02-DB5-obe.outbound.protection.outlook.com (EUR02-DB5-obe.outbound.protection.outlook.com [40.107.249.136])
+ by mx.groups.io with SMTP id smtpd.web11.3507.1718267874793197705
  for <docs@lists.yoctoproject.org>;
- Wed, 12 Jun 2024 00:45:08 -0700
+ Thu, 13 Jun 2024 01:37:55 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=EvLCaOZ+;
- spf=pass (domain: gmail.com, ip: 209.85.167.44, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52b7ffd9f6eso7214736e87.3
-        for <docs@lists.yoctoproject.org>; Wed, 12 Jun 2024 00:45:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718178306; x=1718783106; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xNe89HJIM67EHeH5KsYtqFanihTCiP+x0/qEZrMPc3U=;
-        b=EvLCaOZ+6nlVwYPp0VnP/dREku9gxZx9DqJW0uMpary0cFj3PhKPs4VuceOfA9E4kx
-         e8vvSynX5cTFnVPSlc8Mdba0sBnzaLrlcIPbREyzxlHRsJEOMQzRms7ZB8V293mV2uew
-         AUaqeH2l9JWDmIgMatVHDMY0OPIe68SepX/8c2z1U7D2b8z7td2Cn7me6ixVsPyCd4qd
-         1V6HQJt2j8SiU4nlBY4nZDQs4Dtww/zb52Ajryhm84PWapXLzcNUrkA9W+ogGp2p7V23
-         JMHXQGtDthqe20kbeoC9k0PzUr4vxt9QlvwnDSRX7uNCZBOm/5tJydhpTMfpRY6cGMwK
-         qExg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718178306; x=1718783106;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xNe89HJIM67EHeH5KsYtqFanihTCiP+x0/qEZrMPc3U=;
-        b=unD/q7eatp9T585UGW4GIeLi7nDhi2mrcL/jtGr9+UxRY7tDpTrYoLGlipGNIU05jx
-         fILphMYfrgmZN+YNeaZPjxQrdAw99ikGRw8v4Bpn+RH9gP2hTEB1GxiAFvHjxz/54slI
-         mZnN6pysuGYxIxVLsdtppZ7VW0aiKt0f1yS+iZYIy9tCXStjGUZJqYD1tmPYjox0QFWa
-         Lws5v7ui89mWR2Py11XcSnsIl3Csnv1zAP1kG5BzJQXuHBr3yn4A38Cdo/EmCmoMSFXw
-         BWSDcIpNohYCq1bx6nArYFi4PFVf6lI/omsMzf9a0aVI+lLjrslUre3uGIfaXlee4CPq
-         hW4A==
-X-Forwarded-Encrypted: i=1; AJvYcCXOqrxeayBHatBs/739y/qAnghxSVufegQU65aiB6uXQjymsbkCSoeO4znNOLQWLNfw44VZgbDAyAn1/gMi0YF5+b7wgscnTnveHlM=
-X-Gm-Message-State: AOJu0YzyvzNaTTCJpZVYChsJMXV4ifR+RrDUhZbl0Sn0vsdQPQ8cGPZm
-	pN/3ttPofkVCcSWwp2wsdR6vpa9mYoECxPWzrVbh+Vo/Y95EuRCOVWmy5l/PX3QMN2dP/yL7uWg
-	lvfFTrDGIZEANu2duo3X52Xe0XM0=
-X-Google-Smtp-Source: AGHT+IH+/0ksn/klYtfJPTl+cSION/HvnqxxIjEIPLr3O0qBk4KEYRuss3CRH9Df5SRtvM6+hFV650rpVIWpe84MfVg=
-X-Received: by 2002:a05:6512:e8e:b0:52b:c025:859a with SMTP id
- 2adb3069b0e04-52c9a3b8f0emr677182e87.2.1718178305555; Wed, 12 Jun 2024
- 00:45:05 -0700 (PDT)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=FegODxq1;
+ spf=pass (domain: cherry.de, ip: 40.107.249.136, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=JUdbPo4OhH180s+gvHJro90InAoo8isNndQAiXNkoTqLnu6i7IyQnHIMqyvUU+A+tjM+v/PBQf9Boi8yrHuOsytri4Mws04lcXMBIbu3kFk8cptRu75ewC+yaL+sxV/EKQJFAhyA7Uso55AOkyuA6citwYWQspN0z2tgbD13M5fRCHruRsnm07damr+aP57SN29EM/JLChelo9+gMfLQ49OhOakvz3DQ+tjlsjQVso+YX5sQMIw4U0LQRAJ1BpBRpBriQ5WvqWVfJNga1kPwXGSbN20KdZyc/CnZouTlwphemfwssPsrosqJd32DtDk+1BgkkoKH25ZEkWUj8uK7ew==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dOiywOUoadiyQ5sJisjZabg/lPOtvkRq6FBLHs5/fo0=;
+ b=XH4rwIKELLOOXcFbXnEesjenDtmC0KvfhmC2pbN4nZCIjVZIKT9SX51Nbx6vEry4seh8ftbyJr72aIwaFXTT+recGU/8GkXCczcaJrn78cPqpIMyVcmcKG6Y/HCBwpH5aFwpP0lUq5eSxcRBsNRIpZzkkKiE5vYg1sspt4PlGdvT/KOVtYGWr5M5gY5adQ2daJSm+WSvLNlQotyMk7nmT3irLk3SHD5cN31R7P7g1t5Omvq5w8dI0qGDA4sukPWiIXz9h4Q0P/My5sk89exjGH6CeLXAwlYHPsxmCwrLwAQCKg7Lv5jkIYnby6048JJKpyKKgPAChq0Qy7ILwtov/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dOiywOUoadiyQ5sJisjZabg/lPOtvkRq6FBLHs5/fo0=;
+ b=FegODxq1EGqtw8jjkXTF6cb5H16U5TtpzcUJsjfu7dVF/Uz0YGTihQMqwX7pWEuy+7spIwJ4QYmAxUxns03CbGk/s4Wwec5L8GeHTS9EuPCKZEs7unG/DySl7VXsJhORlzmsBUnN7eFiIvn4wIAlOnrO1IutxQbj3Em8V3ZyEDg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from PA4PR04MB7982.eurprd04.prod.outlook.com (2603:10a6:102:c4::9)
+ by AM0PR04MB7026.eurprd04.prod.outlook.com (2603:10a6:208:192::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.24; Thu, 13 Jun
+ 2024 08:37:51 +0000
+Received: from PA4PR04MB7982.eurprd04.prod.outlook.com
+ ([fe80::3c4:afd5:49ac:77af]) by PA4PR04MB7982.eurprd04.prod.outlook.com
+ ([fe80::3c4:afd5:49ac:77af%4]) with mapi id 15.20.7677.019; Thu, 13 Jun 2024
+ 08:37:51 +0000
+Message-ID: <6495eea0-e391-43a9-a55f-22cf78fc96a8@cherry.de>
+Date: Thu, 13 Jun 2024 10:37:49 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH] documentation/README: refer to doc package
+ requirements
+To: michael@opdenacker.org, docs@lists.yoctoproject.org
+References: <20240611125026.22702-1-michael@opdenacker.org>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20240611125026.22702-1-michael@opdenacker.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: WA2P291CA0037.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1f::17) To PA4PR04MB7982.eurprd04.prod.outlook.com
+ (2603:10a6:102:c4::9)
 MIME-Version: 1.0
-References: <20240611230649.1473-1-egyszeregy@freemail.hu>
-In-Reply-To: <20240611230649.1473-1-egyszeregy@freemail.hu>
-From: Alexander Kanavin <alex.kanavin@gmail.com>
-Date: Wed, 12 Jun 2024 09:45:05 +0200
-Message-ID: <CANNYZj8wFjFyLTbA7ug501hs=n+UZd=K9Y4YsW=qLTNf6b_K8w@mail.gmail.com>
-Subject: Re: [docs] [PATCH v3] fetch2/wget: Add user_agent parameter so it can
- be used optionally
-To: egyszeregy@freemail.hu
-Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PA4PR04MB7982:EE_|AM0PR04MB7026:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1bcab9b8-4f50-405b-e9c0-08dc8b841ca5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230034|1800799018|366010|376008;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?MndubFo0TCtlL2c1QUxzQ2dab1FtbmhuSjVIckIzTFpEdU43L08xcERmZmVv?=
+ =?utf-8?B?WFV3bHhjN1dIQytLeTBXQ1AyK29lNklNUVJFKzJKbldBbmRJTWk1dGg1dVBr?=
+ =?utf-8?B?MlRLWHhlTDNEUjRxcE5YeU1zVzJ6VXhrSHJtbjFMTURNTXN0eGZibWxLYnA1?=
+ =?utf-8?B?VXpEc3VPcnhEVWdHTXdIRUdORGVQdWFFK1U2YUVEQ09XVGpseUEyUUl0U1hY?=
+ =?utf-8?B?NXZnOXZMN1daVjFwZnplYXdyeDlwVjVxY0lOYmdqVkhKdXhEaFBMeGtlQWRv?=
+ =?utf-8?B?NlM5RDNsSEJOUmdPRFQ5U3pEelNSaHNxWGxQa2JnZGwvS0hKRnpsOFIrVEJY?=
+ =?utf-8?B?R1dWQTB3M0h3cU5DQkZhUHFqWVY1VnY1Q2p3MmU4RE1jMWh5Lzd2Y0M1Yklq?=
+ =?utf-8?B?VmNzVlE0MlVKd3MvZ25ISWszc0gwdnd6WXg4ZzZEMGVWbU0rYnU1T3I1YjBO?=
+ =?utf-8?B?NTJ4eFNaV25sb3BBaUVzUlBZcitYY3BMSTNLYzhYR3RCZEIwbHhqeGhZZXFh?=
+ =?utf-8?B?NDJJY0NFRTlvOWNYVUtmM1BXMFJ1L3Y1eWM1aEdVTk96b3BQRGt5cmQvMHR0?=
+ =?utf-8?B?aUU2bmVxWUhkaEZCZ25uVG9RQ2wrZ0VLUlZxQjZJSTBPb09OQlYrVnJtNzFz?=
+ =?utf-8?B?cjN5RGFhczYyRGE4SkcwemFzdTBVcmhkZWNrd0VhSDJzZWUzUEZhUGVDQjJR?=
+ =?utf-8?B?SzIrUmowc3k5dlA5NVVTRnBoS3gweVZTLytoeVVSZExvNTkvcDFvVlBZdGlH?=
+ =?utf-8?B?MlBoSjcySjVjY3VhVEVDL1lmR0RFTFU2RFRaOXB2Umc2SlNDSk51dDZpSXRw?=
+ =?utf-8?B?aXlzSjc2QS9UQUtnbE5wNWZncUtlWmNaT1Ayc1FjVms1OXlqNzh0cStKRHhE?=
+ =?utf-8?B?N2R1eU5ubEpDSEd2K2VGK1psbVFlL0lVSGdPMWhhK0pXU0ZZWXVLdW9QOHpI?=
+ =?utf-8?B?dWhqVVd5azdPSVNjSW5xWDNKbHY4ejA5WUU4WXZnejNvVE9DZmw2TkFmYk5O?=
+ =?utf-8?B?eU1reFE0cklKZEJDZllaYUU4ays1b2J5d2JIYUliNmJHL0tmcnJGS2ZpL2Nt?=
+ =?utf-8?B?YmZ6c1ZvdDVpSWRMNXZDOEhLZlNnQm9YakViZ2xxR0QwKzZOQU9ldGh3Zkcx?=
+ =?utf-8?B?eW1RYWVqQjVrc0R6cGlUdkFGRTFqRThEWEQ1YnZyRVVXSyt0ak1oK05uTzJE?=
+ =?utf-8?B?Y3EwcXNsdjJsQXN1VXd1dVFjMytFMGdXZS8zdGNyQkhUc1MvU1NhNUJEOWM5?=
+ =?utf-8?B?a25VWHE4eTcxT3BBQVF3eEIvS3NtSERjMGlQZE4vNml2dHVNczJRazlTWWhx?=
+ =?utf-8?B?bEt6Nm5NZjFvaUZWZkNMS0V1WEdEaElHSGlTYVB1K29JRWVtQ1lqZTNQL0dU?=
+ =?utf-8?B?ZzZaNTJKZmFPRjRNbnFqR1AzamRZSkFxQnBnblo5aDA2TUtVYXBwdG4rNTBL?=
+ =?utf-8?B?VzN1eCs5WVN5M0JZWVFkS3Bibm5zbVF6cWpwTkxNNFF2VjVoS2srMXBKMkZB?=
+ =?utf-8?B?MVVOb1VaYTd5ekh0czJFdzVuV0lxdDVCVW41bk5wTzNiRkt1aitvWVVuVDdB?=
+ =?utf-8?B?N2VSZnY3MXRzOGFsUWl0aGlrblg1OVM3VUNJN2ZsWU5VZkVjL1JjRmZaUmJz?=
+ =?utf-8?B?UCtHRi9lODlyTlR6cnBkeXdOMmNCN2MvS1lQbXZpbXZydFNqL0NRNlhFVUt6?=
+ =?utf-8?Q?b/yPx/EuKlbKdQjSzhLV?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR04MB7982.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230034)(1800799018)(366010)(376008);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?a0MvUmsxYmQ0dDdheXB6VXQ3b3RUV21YdnlDSWVPUHdON0wwQVlTNVpzaDF1?=
+ =?utf-8?B?aFBLMFlYNnczU0dUNzhtMGlKOWRTR0t5NTZWeWhHSVBJdEJVYkJoNWpaaFp1?=
+ =?utf-8?B?QVhOVk9wWE5FOEJmdnQ3cElHdzh6R2h4VEZlMzd1Q1RBNFJHS1FJT2JJY2dp?=
+ =?utf-8?B?VHFBb0NjNUNpb2hpSnpuUUxDYjJwVUR0TXdUWldvTHhsSFdpQUZGZ1l6WHFl?=
+ =?utf-8?B?RkVhV09NcjFMZFFCVk5wQVhEMWxjeXhidG9MN1JIS3BOTUl2bXNRclRZU2ZF?=
+ =?utf-8?B?NHJuLzRDNTEzZkE5REFFWDBGOXlJV0tYVTZLcWI0RkRyOUJOdW8wUzJFVWtW?=
+ =?utf-8?B?ZXhQVHVpZjBLZk5hdUdBNXA2WmF5ZHhFQVdHaVdvNVZzUEhyRlJWb2RRWHk3?=
+ =?utf-8?B?WXhHT01ZSFlRY3haTnFxY3FTay9KWkJrcHJLZzFwa0NjcStkUW54R2xPU083?=
+ =?utf-8?B?S1RhYmJpeWJSaVhHTUlYOVYvQzdXMnd3Q2VnRnpIMmxmRVExczZCdExUbGtq?=
+ =?utf-8?B?d0lUM0RPVXQ5bS9aeGJqSy9ZWWxpYkZpSUpaVUhXM0RrVkpjZEMwemZ4a2pT?=
+ =?utf-8?B?c0VNTWRQUEpmSUFtMHVJQ3l0bERsbnN0c3ZZZFAzODhXUllqZHFEc3VQdW9k?=
+ =?utf-8?B?Q0laWkZQTytwclFscDRiY0V0MnNxOGVqaEpxR1JoY3IvT0xnMm1GOCt6RmFl?=
+ =?utf-8?B?QlFXeGRDcDZSM3FkQURuV1NNdE0zdlhxdE1QNUtBalAwRmlyWEs2LzhHVy9p?=
+ =?utf-8?B?QU5mTE1pb0tURTEzc3F6bVVNa2xuWk4vSzlJOGhhUkcxaEJLYXhXWW9DRndO?=
+ =?utf-8?B?Umc0NlJZTm55MFNsalQxekk0RjlRM3o0czZ4TzdoYmhOb01pamc5bU9pUkdN?=
+ =?utf-8?B?ZzMrYXljd0dGV3dGMWpRb2EvbXloQjk4V20zVzl6S1JEaEdnZ0JUamNoWHFT?=
+ =?utf-8?B?NHFhSXp6R1lTVGFZMk43eVh3NWhxODhqU0lPWmxoMDBkSDZtMzZ5MkEveUFY?=
+ =?utf-8?B?ZHM4TmtHL09mQ1dhTHA5T3VKSndna09xdzl3akdWN05CL2FHK1QvSjFuKzZE?=
+ =?utf-8?B?Y000dU1YZk1Iam5JT0I1aWZqTFI3NlM0TE5ZZ2FvNUdGbjVta1VTSWFvOWhQ?=
+ =?utf-8?B?Wkx6ZDhtUHBJT2NvWDRqZ0hlLzB3Si80bXpTUmVUQS9UZzNqTERjeTRnanJr?=
+ =?utf-8?B?ei9RNTgwcHFadXovb2ZYTkhHbnh6WHVHQ1N5Sk5HR3JsL2N5VUIrdEFxZytu?=
+ =?utf-8?B?b1ZNL0RaVkNtYjNoQWlxaFAveU1UVjBjdVBRT3oranloYmc5TXExazl3dzlD?=
+ =?utf-8?B?b1NzN1ZiREpZYXdNRnA3YmJFcVpFSmt1N0gyT2xGR0hZbUY2a081SENUSlZE?=
+ =?utf-8?B?cC9IL1FVRk8zRkh5T1Jhd1I3YTJrUTh6M0xQaW5obkFTVXZRaWErQ2lDOTRo?=
+ =?utf-8?B?S3BURlQ4VUlDRTNRcjNwQVJFSzVpaDUvN25uWEhOVEJFckxXTDMvSVYvU0F0?=
+ =?utf-8?B?ckhTQklhbzRKMWsyTHBxQU4yc0dxL3RkOENMcjYvQjA5NkJZbzNzY2hHVjY4?=
+ =?utf-8?B?YlZmbnpsZ09KYkhKUHZvMVc0S1pUUkN5bW1EYWxVUXcwckwwM0tNajIyZmFC?=
+ =?utf-8?B?b1FTVk1DOGxwZWtKMWhSUEhRSzRYOXFrYVlVMFI4cmc1UytHOU9VZERMNExM?=
+ =?utf-8?B?TElGZTBlYjFHclkyKy9vRTZTNFp5YzdrVlVOeFFKUGsrU3FRUUxqSVpidVJ2?=
+ =?utf-8?B?enp6WnhvSlRhM3laTzJQOTBrYXA0ZTNNSGo3TnlWMW9sczhseGlzemVLVnlT?=
+ =?utf-8?B?TDFiNzA3VEJ0cjJEMFdweWVkYlh3NklGQThta0pmWjhUeUJEdndHRmdHRVhB?=
+ =?utf-8?B?SmgxTkNEYXArSFJKUWIyUnhJbFl4RG1Edjk4Ui9Sc3hMeE96bE5JYW9vSExl?=
+ =?utf-8?B?Z1lDemwvYzJKUzdtWm5pWk1XRVZxcXpYdWNrUzFtWWs0V3F5RFFLbytYWFVY?=
+ =?utf-8?B?UVV2Wm8xSWptRmNPNFZtUGMvOFErekkvOE1yQ3FWYlRhOU4xM0Z1UnBlTmpQ?=
+ =?utf-8?B?T2I0cXlXV2pJYU5ma2ROK0JneStIbHdJNTI3OGZPWkVISjF0dG13ZXhZeWFx?=
+ =?utf-8?B?VGoyeUFpMGpwRHF3ZmNrSEJtWVIrd0hUNy9WQVBWMGdtMXhSeGNHY1ZxclFI?=
+ =?utf-8?B?b0E9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1bcab9b8-4f50-405b-e9c0-08dc8b841ca5
+X-MS-Exchange-CrossTenant-AuthSource: PA4PR04MB7982.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jun 2024 08:37:51.3704
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PhOg4ex2b05WeMTDFNOsAvMVJH5ieXQSRXZw5Q3hQN/VZD2UVh3pyAV60Np1X/u8EI8xGGn0HLteUWiWSJ8Ugj8YZ5qJ//kVJAzhoa39Jko=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7026
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 12 Jun 2024 07:45:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5295
+ <docs@lists.yoctoproject.org>; Thu, 13 Jun 2024 08:38:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5296
 
-It helps to include all relevant links into the commit message, e.g.
-the issues with xilinx's PMU_ROM that you had:
-https://support.xilinx.com/s/question/0D54U00008RolRMSAZ/yocto-metaxilinxco=
-re-cannot-find-pmuromnative-url?language=3Den_US
+Hi Michael,
 
-I just tried to reproduce the locally, and there is no issue with wget:
-
-alex@alex-lx-laptop:~$ wget
-https://www.xilinx.com/bin/public/openDownload?filename=3DPMU_ROM.tar.gz
---2024-06-12 09:29:55--
-https://www.xilinx.com/bin/public/openDownload?filename=3DPMU_ROM.tar.gz
-Resolving www.xilinx.com (www.xilinx.com)... 184.25.239.57, 184.25.239.48
-Connecting to www.xilinx.com (www.xilinx.com)|184.25.239.57|:443... connect=
-ed.
-HTTP request sent, awaiting response... 302 Moved Temporarily
-Location: https://xilinx-ax-dl.entitlenow.com/dl/ul/2021/12/20/R210497260/P=
-MU_ROM.tar.gz?hash=3DoU3pGSFXZ2pq00I2gGZX-g&expires=3D1718209784&filename=
-=3DPMU_ROM.tar.gz
-[following]
---2024-06-12 09:29:56--
-https://xilinx-ax-dl.entitlenow.com/dl/ul/2021/12/20/R210497260/PMU_ROM.tar=
-.gz?hash=3DoU3pGSFXZ2pq00I2gGZX-g&expires=3D1718209784&filename=3DPMU_ROM.t=
-ar.gz
-Resolving xilinx-ax-dl.entitlenow.com (xilinx-ax-dl.entitlenow.com)...
-184.25.239.24, 184.25.239.83
-Connecting to xilinx-ax-dl.entitlenow.com
-(xilinx-ax-dl.entitlenow.com)|184.25.239.24|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: 8031 (7.8K) [application/x-gzip]
-Saving to: =E2=80=98openDownload?filename=3DPMU_ROM.tar.gz=E2=80=99
-
-openDownload?filename=3DPMU_ROM.tar.gz
-100%[=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D>]
-  7.84K  --.-KB/s    in 0s
-
-2024-06-12 09:29:57 (87.0 MB/s) -
-=E2=80=98openDownload?filename=3DPMU_ROM.tar.gz=E2=80=99 saved [8031/8031]
-
-
-The sha25sum matches what is in the recipe:
-
-alex@alex-lx-laptop:~$ sha256sum openDownload\?filename\=3DPMU_ROM.tar.gz
-f9a450ef960979463ea0a87a35fafb4a5b62d3a741de30cbcef04c8edc22a7cf
-openDownload?filename=3DPMU_ROM.tar.gz
-
-The report indicated that there was a broken redirect via amd.com
-(which does require browser user-agent), but this seems to be no
-longer happening. Can you check?
-
-All of this is to say, I'm still reluctant to support making the code
-more complex when there is no proven need for it.
-
-Alex
-
-
-On Wed, 12 Jun 2024 at 01:07, Livius via lists.yoctoproject.org
-<egyszeregy=3Dfreemail.hu@lists.yoctoproject.org> wrote:
->
-> From: Benjamin Sz=C5=91ke <egyszeregy@freemail.hu>
->
-> Add "user_agent" optional parameter for wget fetcher to able
-> to use it if HTTP servers block requests with the default wget
-> user-agent.
->
-> Signed-off-by: Benjamin Sz=C5=91ke <egyszeregy@freemail.hu>
+On 6/11/24 2:50 PM, Michael Opdenacker via lists.yoctoproject.org wrote:
+> From: Michael Opdenacker <michael@opdenacker.org>
+> 
+> Refer to package requirements for building documentation
+> from supported distributions. The simple instructions
+> previously listed no longer work on Ubuntu 24.04, for example.
+> 
+> Signed-off-by: Michael Opdenacker <michael@opdenacker.org>
 > ---
->  conf/bitbake.conf                             |  1 +
->  .../bitbake-user-manual-fetching.rst          | 23 +++++++++++++------
->  .../bitbake-user-manual-ref-variables.rst     |  5 ++++
->  lib/bb/fetch2/wget.py                         | 11 +++++----
->  4 files changed, 28 insertions(+), 12 deletions(-)
->
-> diff --git a/conf/bitbake.conf b/conf/bitbake.conf
-> index f5a5a333a..a16f72d25 100644
-> --- a/conf/bitbake.conf
-> +++ b/conf/bitbake.conf
-> @@ -44,3 +44,4 @@ TARGET_ARCH =3D "${BUILD_ARCH}"
->  TMPDIR =3D "${TOPDIR}/tmp"
->  WORKDIR =3D "${TMPDIR}/work/${PF}"
->  GITPKGV =3D "${@bb.fetch2.get_srcrev(d, 'gitpkgv_revision')}"
-> +BB_FETCH_USER_AGENT ??=3D "bitbake/${BB_VERSION}"
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/d=
-oc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> index fb4f0a23d..0ee07992f 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> @@ -221,13 +221,21 @@ HTTP/FTP wget fetcher (``http://``, ``ftp://``, ``h=
-ttps://``)
->  This fetcher obtains files from web and FTP servers. Internally, the
->  fetcher uses the wget utility.
->
-> -The executable and parameters used are specified by the
-> -``FETCHCMD_wget`` variable, which defaults to sensible values. The
-> -fetcher supports a parameter "downloadfilename" that allows the name of
-> -the downloaded file to be specified. Specifying the name of the
-> -downloaded file is useful for avoiding collisions in
-> -:term:`DL_DIR` when dealing with multiple files that
-> -have the same name.
-> +The executable and parameters used are specified by the ``FETCHCMD_wget`=
-`
-> +variable, which defaults to sensible values. The fetcher supports
-> +parameters:
-> +
-> +-  *downloadfilename:* That allows the name of the downloaded file
-> +   to be specified.
-> +
-> +-  *user_agent:* Enable to use a default ``bitbake/${BB_VERSION}`` user-=
-agent
-> +   which is defined in :term:`BB_FETCH_USER_AGENT`.
-> +
-> +Specifying the name of the downloaded file is useful for avoiding
-> +collisions in :term:`DL_DIR` when dealing with multiple files
-> +that have the same name. A few HTTP servers block requests with
-> +the default wget user-agent, in this case specifying a valid
-> +user-agent can solve this issue.
->
->  If a username and password are specified in the ``SRC_URI``, a Basic
->  Authorization header will be added to each request, including across red=
-irects.
-> @@ -239,6 +247,7 @@ Some example URLs are as follows::
->     SRC_URI =3D "http://oe.handhelds.org/not_there.aac"
->     SRC_URI =3D "ftp://oe.handhelds.org/not_there_as_well.aac"
->     SRC_URI =3D "ftp://you@oe.handhelds.org/home/you/secret.plan"
-> +   SRC_URI =3D "https://oe.handhelds.org/not_there.aac;user_agent=3D1"
->
->  .. note::
->
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rs=
-t b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> index 899e584f9..3f310bd72 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> @@ -699,6 +699,11 @@ overview of their function and contents.
->        Within an executing task, this variable holds the hash of the task=
- as
->        returned by the currently enabled signature generator.
->
-> +   :term:`BB_FETCH_USER_AGENT`
-> +      Specifies a user-agent string which BitBake uses if "user_agent"
-> +      parameter is enabled for HTTP/FTP wget fetcher. Default value can
-> +      be found in ``conf/bitbake.conf``.
-> +
->     :term:`BB_VERBOSE_LOGS`
->        Controls how verbose BitBake is during builds. If set, shell scrip=
-ts
->        echo commands and shell script output appears on standard out
-> diff --git a/lib/bb/fetch2/wget.py b/lib/bb/fetch2/wget.py
-> index 2e9211763..30a56df71 100644
-> --- a/lib/bb/fetch2/wget.py
-> +++ b/lib/bb/fetch2/wget.py
-> @@ -52,11 +52,8 @@ class WgetProgressHandler(bb.progress.LineFilterProgre=
-ssHandler):
->
->  class Wget(FetchMethod):
->      """Class to fetch urls via 'wget'"""
+>   documentation/README | 29 +++--------------------------
+>   1 file changed, 3 insertions(+), 26 deletions(-)
+> 
+> diff --git a/documentation/README b/documentation/README
+> index b60472fcbf..c888b666a8 100644
+> --- a/documentation/README
+> +++ b/documentation/README
+> @@ -108,32 +108,9 @@ generated with DocBook.
+>   How to build the Yocto Project documentation
+>   ============================================
+>   
+> -Sphinx is written in Python. While it might work with Python2, for
+> -obvious reasons, we will only support building the Yocto Project
+> -documentation with Python3.
 > -
-> -    # CDNs like CloudFlare may do a 'browser integrity test' which can f=
-ail
-> -    # with the standard wget/urllib User-Agent, so pretend to be a moder=
-n
-> -    # browser.
-> -    user_agent =3D "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:84.0) Gec=
-ko/20100101 Firefox/84.0"
-> +    def init(self, d):
-> +        self.user_agent =3D d.getVar("BB_FETCH_USER_AGENT")
->
->      def check_certs(self, d):
->          """
-> @@ -89,6 +86,10 @@ class Wget(FetchMethod):
->
->          self.basecmd =3D d.getVar("FETCHCMD_wget") or "/usr/bin/env wget=
- -t 2 -T 30"
->
-> +        is_user_agent_enabled =3D ud.parm.get("user_agent","0") =3D=3D "=
-1"
-> +        if is_user_agent_enabled:
-> +            self.basecmd +=3D f" --user-agent=3D'{self.user_agent}'"
-> +
->          if ud.type =3D=3D 'ftp' or ud.type =3D=3D 'ftps':
->              self.basecmd +=3D " --passive-ftp"
->
-> --
-> 2.45.2.windows.1
->
->
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#5294): https://lists.yoctoproject.org/g/docs/message/=
-5294
-> Mute This Topic: https://lists.yoctoproject.org/mt/106623550/1686489
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [alex.kanavin@gm=
-ail.com]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->
+> -Sphinx might be available in your Linux distro packages repositories,
+> -however it is not recommended to use distro packages, as they might be
+> -old versions, especially if you are using an LTS version of your
+> -distro. The recommended method to install the latest versions of Sphinx
+> -and of its required dependencies is to use the Python Package Index (pip).
+> -
+> -To install all required packages run:
+> -
+> - $ pip3 install sphinx sphinx_rtd_theme pyyaml
+> -
+> -To make sure you always have the latest versions of such packages, you
+> -should regularly run the same command with an added "--upgrade" option:
+> -
+> - $ pip3 install --upgrade sphinx sphinx_rtd_theme pyyaml
+> -
+> -Also install the "inkscape" package from your distribution.
+> -Inkscape is need to convert SVG graphics to PNG (for EPUB
+> -export) and to PDF (for PDF export).
+> -
+> -Additionally install "fncychap.sty" TeX font if you want to build PDFs. Debian
+> -and Ubuntu have it in "texlive-latex-extra" package while RedHat distributions
+> -and OpenSUSE have it in "texlive-fncychap" package for example.
+> +To build the documentation, you need Sphinx and a few other packages,
+> +which depend on your host GNU/Linux distribution. Such packages are listed on
+> +https://docs.yoctoproject.org/dev/ref-manual/system-requirements.html#required-packages-for-the-build-host
+>   
+
+This points to the latest commit in the master branch and not 
+necessarily the one which contains the appropriate instructions for the 
+version of the yocto-docs one currently has checked out. We could point 
+at documentation/ref-manual/system-requirements.rst and 
+PIP3_HOST_PACKAGES in documentation/poky.yaml.in though but not sure it 
+makes it easier to know what to do. A bit of a chicken and the egg 
+problem as to get a simple up-to-date instruction on how to build the 
+docs, you need the docs built.
+
+In any case, this needs fixing, so
+
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+
+Thanks!
+Quentin
 
