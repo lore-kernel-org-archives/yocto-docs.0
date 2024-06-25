@@ -2,83 +2,84 @@ Return-Path: <michael@opdenacker.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CDFE1C2BBCA
-	for <webhook@archiver.kernel.org>; Tue, 25 Jun 2024 15:32:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CDCBFC3064D
+	for <webhook@archiver.kernel.org>; Tue, 25 Jun 2024 15:45:19 +0000 (UTC)
 Received: from sender-op-o11.zoho.eu (sender-op-o11.zoho.eu [136.143.169.11])
- by mx.groups.io with SMTP id smtpd.web11.176348.1719329567327255501
+ by mx.groups.io with SMTP id smtpd.web10.177161.1719330312357888536
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Jun 2024 08:32:48 -0700
+ Tue, 25 Jun 2024 08:45:13 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=michael@opdenacker.org header.s=zmail header.b=GUZxv6/X;
+ dkim=fail reason="dkim: signature did not verify: crypto/rsa: verification error" header.i=michael@opdenacker.org header.s=zmail header.b=gSwuhRkC;
  spf=pass (domain: opdenacker.org, ip: 136.143.169.11, mailfrom: michael@opdenacker.org)
-ARC-Seal: i=1; a=rsa-sha256; t=1719329563; cv=none; 
+ARC-Seal: i=1; a=rsa-sha256; t=1719330299; cv=none; 
 	d=zohomail.eu; s=zohoarc; 
-	b=EMdjiOcgIW0x5gXERR6Nig8He8/w44r+oho5HF/eL25U2Bpy9hFr0NqSWUAGRjoUoanVWBLIUpo80Iz7yQPoRywaW/SRc0SIa4WOvkIydo5q5zDaztpMxEHkw9C0bCEAqyc3VxzihCQBfWTD+D3XeENiBydUHxhHlWT8LBv8Fn8=
+	b=Yj1zzqlqJlfWr9FTJErH3HdzSvsUZIEYpzXzyvAfdIpKh6/dIXUqHcN/cI7euIrnfvkRW1LeGCBLOJEinl5vJQ/17k1CpWZY/JUAVFP38YULuQGxb01OAYzQBpcNfvxOMcvCsKfpd7mxArfObMV9kJyj8JTyx1bJopFqP2dz6HM=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.eu; s=zohoarc; 
-	t=1719329563; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Na+SG8PE+q0nF5M8bC0x2XQG8v0Y/200cPwyDIhgR1I=; 
-	b=YVxlvsPDRY7jUiFYmFGOwYkasb0g5sObEHTG1lJPS0qS6XT5tkDiEuN4W4XPPTwl/e6rMfvE3pXYw3PjEvzbEsaps0iNz9qHH56I/snDsyuyyh3lGcbkbRW9Jt9LM5uG8B+IUD/bDaijcEHc8/GNqtuffLrAmg+3QvRPSqEzCe8=
+	t=1719330299; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=cJqPy0i8TGtJ26yFoNSgwckp+0nibnDmZ+1Lhfndo6w=; 
+	b=EJ00qY/V1bpqtyD5W0quZlK9pExA5DrNTHi8XbkGNVPWa2c1D4kbzIJafaHNGRj5wIooUzQI4OpUO9XujZ7rBy/Mfhp+bBtt2tnqx2uugtenk6QujZl+oNGTlpUKoTJ3Gz2CUt77hlC58Yg1wLamDTYcfCmx3+/wOdQ93c/a/H8=
 ARC-Authentication-Results: i=1; mx.zohomail.eu;
 	dkim=pass  header.i=opdenacker.org;
 	spf=pass  smtp.mailfrom=michael@opdenacker.org;
 	dmarc=pass header.from=<michael@opdenacker.org>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1719329563;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1719330299;
 	s=zmail; d=opdenacker.org; i=michael@opdenacker.org;
-	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:From:From:To:To:References:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=Na+SG8PE+q0nF5M8bC0x2XQG8v0Y/200cPwyDIhgR1I=;
-	b=GUZxv6/Xnrkud9/axxFZYdEGTnDnv3LF1j9N9DyNdB4fnGDQlqgWf9Zfrm3yifmh
-	bzAFC9200Kq0EyyazXik+k6WPT3+w94Nh8CHSF9RA1AJPcUqmalNmG/k7i31bhPTQ0n
-	qNoOG2in7YIt1AGuAGm1ONJaBTyg/7fAvU6aTWLw=
-Received: by mx.zoho.eu with SMTPS id 1719329561007569.1533410568619;
-	Tue, 25 Jun 2024 17:32:41 +0200 (CEST)
-Message-ID: <a5bfbf72-e3b7-4a1c-9f1a-9f50486d7547@opdenacker.org>
-Date: Tue, 25 Jun 2024 17:32:40 +0200
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=cJqPy0i8TGtJ26yFoNSgwckp+0nibnDmZ+1Lhfndo6w=;
+	b=gSwuhRkC/E16LUOEpltVSLh+71uP5hgwACwWMe/uOc9D4Cmd7YLi1f16y9uPYZ8h
+	SqXcJBPRYSZ00f2BJM37vsHeAkhPw22r8fl2pKQ/eXpOFwWPfpOCDcvM+IGj32e+zIA
+	8JsmU4KcxDFqouXX8Z+83axrwdATfcG8c6ZEmsDg=
+Received: by mx.zoho.eu with SMTPS id 171933029844177.59582708882886;
+	Tue, 25 Jun 2024 17:44:58 +0200 (CEST)
+Message-ID: <bca468ae-1df4-4ff6-9b9e-16697ace29f2@opdenacker.org>
+Date: Tue, 25 Jun 2024 17:44:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: docs@lists.yoctoproject.org, Lee Chee Yang <chee.yang.lee@intel.com>
-Subject: Re: [docs] [PATCH] migration-guides: add release notes for 4.0.19
-From: Michael Opdenacker <michael@opdenacker.org>
-To: Alexandre Belloni <alexandre.belloni@bootlin.com>
-References: <20240606013102.1462801-1-chee.yang.lee@intel.com>
- <17D66D486A5E0988.31248@lists.yoctoproject.org>
+Cc: Alexander Kanavin <alex@linutronix.de>, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual: rename RECIPE_UPDATE_EXTRA_TASKS ->
+ RECIPE_UPGRADE_EXTRA_TASKS
+To: Alexander Kanavin <alex.kanavin@gmail.com>
+References: <20240621104312.2842778-1-alex@linutronix.de>
 Content-Language: en-US
-In-Reply-To: <17D66D486A5E0988.31248@lists.yoctoproject.org>
+From: Michael Opdenacker <michael@opdenacker.org>
+In-Reply-To: <20240621104312.2842778-1-alex@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-ZohoMailClient: External
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 25 Jun 2024 15:32:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5303
+ <docs@lists.yoctoproject.org>; Tue, 25 Jun 2024 15:45:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5304
 
-Hi Alexandre,
+Hi Alex,
 
-On 6/6/24 15:27, Michael Opdenacker wrote:
-> Hi Lee,
+On 6/21/24 12:43, Alexander Kanavin wrote:
+> This follows the variable rename in oe-core.
 >
-> Thanks for the update!
+> Signed-off-by: Alexander Kanavin <alex@linutronix.de>
+> ---
+>   documentation/ref-manual/variables.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> On 6/6/24 03:31, Lee Chee Yang wrote:
->> From: Lee Chee Yang <chee.yang.lee@intel.com>
->>
->> add release notes for 4.0.19.
->>
->> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
->> ---
->>   .../migration-guides/release-4.0.rst          |   1 +
->>   .../migration-guides/release-notes-4.0.19.rst | 159 ++++++++++++++++++
->>   2 files changed, 160 insertions(+)
->>   create mode 100644 
->> documentation/migration-guides/release-notes-4.0.19.rst
->
-> Reviewed-by: Michael Opdenacker <michael@opdenacker.org>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 16b449d6b..c0cc8fb33 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -7086,7 +7086,7 @@ system and gives an overview of their function and contents.
+>         The default value is ``"${WORKDIR}/recipe-sysroot-native"``.
+>         Do not modify it.
+>   
+> -   :term:`RECIPE_UPDATE_EXTRA_TASKS`
+> +   :term:`RECIPE_UPGRADE_EXTRA_TASKS`
+>         For some recipes, after the new source has been unpacked, additional tasks
+>         may need to be run during an upgrade. A good example of this is recipes
+>         which inherit :ref:`ref-classes-cargo-update-recipe-crates`, where the
 
 
-This commit was merged into the "kirkstone" branch, but it should also 
-be added to the "scarthgap" and "master" ones. For each branch that we 
-support, the usual practice so far is to include the release notes 
-corresponding to all previous releases plus the current one.
+Thanks for the patch!
+However, I don't see the change in OE-Core yet. So, it's too early to 
+merge this one :)
 Cheers
 Michael.
 
