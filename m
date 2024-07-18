@@ -2,26 +2,26 @@ Return-Path: <foss@0leil.net>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B837AC3DA7F
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C7618C3DA6F
 	for <webhook@archiver.kernel.org>; Thu, 18 Jul 2024 13:52:21 +0000 (UTC)
-Received: from smtp-8fab.mail.infomaniak.ch (smtp-8fab.mail.infomaniak.ch [83.166.143.171])
- by mx.groups.io with SMTP id smtpd.web10.15542.1721310740663815298
+Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
+ by mx.groups.io with SMTP id smtpd.web10.15544.1721310741211949109
  for <docs@lists.yoctoproject.org>;
- Thu, 18 Jul 2024 06:52:20 -0700
+ Thu, 18 Jul 2024 06:52:21 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 83.166.143.171, mailfrom: foss+yocto@0leil.net)
+ dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.14, mailfrom: foss+yocto@0leil.net)
 Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4WPvPb04Qqz7xK;
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4WPvPb4hD1zJm7;
 	Thu, 18 Jul 2024 15:52:19 +0200 (CEST)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4WPvPZ4Z6HzQH;
-	Thu, 18 Jul 2024 15:52:18 +0200 (CEST)
+Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4WPvPb2M5tzhM;
+	Thu, 18 Jul 2024 15:52:19 +0200 (CEST)
 From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Thu, 18 Jul 2024 15:51:59 +0200
-Subject: [PATCH 1/3] doc: releases: mark mickledore as outdated
+Date: Thu, 18 Jul 2024 15:52:01 +0200
+Subject: [PATCH 3/3] doc: releases: add scarthgap
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240718-yocto-releases-v1-1-204f3e3dade4@cherry.de>
+Message-Id: <20240718-yocto-releases-v1-3-204f3e3dade4@cherry.de>
 References: <20240718-yocto-releases-v1-0-204f3e3dade4@cherry.de>
 In-Reply-To: <20240718-yocto-releases-v1-0-204f3e3dade4@cherry.de>
 To: Quentin Schulz <quentin.schulz@cherry.de>, 
@@ -33,48 +33,35 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 18 Jul 2024 13:52:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5322
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5324
 
 From: Quentin Schulz <quentin.schulz@cherry.de>
 
-Mickledore isn't maintained anymore, so let's move it to the outdated
-release manuals section.
+We missed on adding Scarthgap to the list of user manuals, so let's fix
+this oversight.
 
 Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 ---
- doc/releases.rst | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ doc/releases.rst | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
 diff --git a/doc/releases.rst b/doc/releases.rst
-index b38b1c065..1e2563de0 100644
+index a595a83b6..b271e2ad3 100644
 --- a/doc/releases.rst
 +++ b/doc/releases.rst
-@@ -4,12 +4,6 @@
+@@ -4,6 +4,12 @@
  BitBake Supported Release Manuals
  =================================
  
--*******************************
--Release Series 4.2 (mickledore)
--*******************************
--
--- :yocto_docs:`BitBake 2.4 User Manual </bitbake/2.4/>`
--
++*******************************
++Release Series 5.0 (scarthgap)
++*******************************
++
++- :yocto_docs:`BitBake 2.8 User Manual </bitbake/2.8/>`
++
  ******************************
  Release Series 4.0 (kirkstone)
  ******************************
-@@ -26,6 +20,12 @@ Release Series 3.1 (dunfell)
- BitBake Outdated Release Manuals
- ================================
- 
-+*******************************
-+Release Series 4.2 (mickledore)
-+*******************************
-+
-+- :yocto_docs:`BitBake 2.4 User Manual </bitbake/2.4/>`
-+
- *****************************
- Release Series 4.1 (langdale)
- *****************************
 
 -- 
 2.45.2
