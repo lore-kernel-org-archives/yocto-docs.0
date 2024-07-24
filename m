@@ -1,69 +1,72 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C7618C3DA6F
-	for <webhook@archiver.kernel.org>; Thu, 18 Jul 2024 13:52:21 +0000 (UTC)
-Received: from smtp-bc0e.mail.infomaniak.ch (smtp-bc0e.mail.infomaniak.ch [45.157.188.14])
- by mx.groups.io with SMTP id smtpd.web10.15544.1721310741211949109
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C444CC3DA61
+	for <webhook@archiver.kernel.org>; Wed, 24 Jul 2024 11:49:39 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web11.8644.1721821775526382112
  for <docs@lists.yoctoproject.org>;
- Thu, 18 Jul 2024 06:52:21 -0700
+ Wed, 24 Jul 2024 04:49:36 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.14, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0000.mail.infomaniak.ch (smtp-3-0000.mail.infomaniak.ch [10.4.36.107])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4WPvPb4hD1zJm7;
-	Thu, 18 Jul 2024 15:52:19 +0200 (CEST)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4WPvPb2M5tzhM;
-	Thu, 18 Jul 2024 15:52:19 +0200 (CEST)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Thu, 18 Jul 2024 15:52:01 +0200
-Subject: [PATCH 3/3] doc: releases: add scarthgap
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=IBte2baa;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=bXMuhsp0CAK9rP1/LRWFl2Y2FiMbwtYrpZQiTz9NE0o=; b=IBte2baalqTfz2XqeDhgYzf16t
+	n5e5iCS0ZPAtcWcNP9zU8iUFCzm47Guwsq7XzzfE67VC4lI23sUYlbCxjFIUsS1dhg4dp6yj+BllI
+	QSZS+NDsx3VFsE1gWEB4alLiim8pPKPRiH5Wj22zSU1/gBAF8JPisfF9AFw4zJMuU/PXoS4Fqdzzj
+	2WSbrWjQam3hSWGJ50f1aShQ8HPv6Jj9cO6yZpnVj84o2LzL/VQG7gJE7E5lkIMCjHO3VWYA86MDN
+	P2f45pbjL3wGxEKuIevX0h9DNEyrfE6qTxR6jY/HH6Fwsom9sUG10z83B8/XWu7zp6AHGCyjzd1EP
+	deCFct5w==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:55328 helo=fedora)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1sWaUv-00000000kpu-2nMk
+	for docs@lists.yoctoproject.org;
+	Wed, 24 Jul 2024 07:49:33 -0400
+Date: Wed, 24 Jul 2024 07:49:27 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: which doc would explain how to generate .debug dir with symbol
+ info?
+Message-ID: <a9269ac0-aa3d-e961-a76e-dcfe65d2444c@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240718-yocto-releases-v1-3-204f3e3dade4@cherry.de>
-References: <20240718-yocto-releases-v1-0-204f3e3dade4@cherry.de>
-In-Reply-To: <20240718-yocto-releases-v1-0-204f3e3dade4@cherry.de>
-To: Quentin Schulz <quentin.schulz@cherry.de>, 
- bitbake-devel@lists.openembedded.org, foss+yocto@0leil.net, 
- docs@lists.yoctoproject.org
-X-Mailer: b4 0.14.0
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 18 Jul 2024 13:52:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5324
+ <docs@lists.yoctoproject.org>; Wed, 24 Jul 2024 11:49:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5325
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
 
-We missed on adding Scarthgap to the list of user manuals, so let's fix
-this oversight.
+  sort of a docs question, but a colleague asked me how to configure a
+debug build so that the binary files and associated gdb symbol files
+ended up with the following corresponding pairs of content:
 
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
----
- doc/releases.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+  symbols/dir/stripped_binary_file
+  symbols/dir/.debug/same_filename_but_containing_only_symbols
 
-diff --git a/doc/releases.rst b/doc/releases.rst
-index a595a83b6..b271e2ad3 100644
---- a/doc/releases.rst
-+++ b/doc/releases.rst
-@@ -4,6 +4,12 @@
- BitBake Supported Release Manuals
- =================================
- 
-+*******************************
-+Release Series 5.0 (scarthgap)
-+*******************************
-+
-+- :yocto_docs:`BitBake 2.8 User Manual </bitbake/2.8/>`
-+
- ******************************
- Release Series 4.0 (kirkstone)
- ******************************
+i jumped over to the debugging manual but it's not clear from what is
+there how i would do this. is there a convenient table somewhere that
+maps:
 
--- 
-2.45.2
+  various debugging output structures -> options/settings to use?
 
+rday
 
