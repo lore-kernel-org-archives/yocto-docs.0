@@ -1,73 +1,64 @@
-Return-Path: <alexandre.belloni@bootlin.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64D9CC3DA4A
-	for <webhook@archiver.kernel.org>; Fri, 26 Jul 2024 21:09:38 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.4983.1722028172580708016
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 948DDC52D1F
+	for <webhook@archiver.kernel.org>; Wed, 31 Jul 2024 10:09:27 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web11.39689.1722420558334735232
  for <docs@lists.yoctoproject.org>;
- Fri, 26 Jul 2024 14:09:32 -0700
+ Wed, 31 Jul 2024 03:09:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TFaRh8Uu;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: alexandre.belloni@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 900A240002;
-	Fri, 26 Jul 2024 21:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1722028170;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=SFI0quI+hj7GiaoCjFfPhzSN8mQ0kyTHGstfVe9ve0U=;
-	b=TFaRh8Uu7JYa69sQLvESgLL1qrpo/D/5KT+PpAZdRT9SLyqbUyfFzomvAQCucXYTJTDSMJ
-	HuC2e5dcbDGPovs3TVYoruIIY0wrZlimRejl1hwJEImod0nfl9r4cidJwfNXRXzlklapOD
-	0dz3VbZE4iJFXJ2RNmiMFuQy5hkTdzg0drJiToFbquidhBoNj9AHn69+1xTNhnUdcoh7x7
-	2if4/0LI7kfEAdI71B1maldmsJpcJUYe6LNjTXgEsKhgZ+ffuDXXodX6vMAXBKRTTC//V1
-	r2yceyooe7+JItTkGzrIdHDtCD8LzXMWrAEfGySU4Azacp1I4oXV3B7onpmX0Q==
-Date: Fri, 26 Jul 2024 23:09:30 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: docs@lists.yoctoproject.org
-Subject: [master] Pull request
-Message-ID: <20240726210930273630dc@mail.local>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=x0Cc2Mpv;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=yMjCY3VWGJTZ6V907Ey4zymsXL8r/XH3myyBHxD+XVc=; b=x0Cc2MpvyNibyCJOWLYMvn4FCC
+	lI4hwLHmD3xgyqpgiUVC3TlLIBuEDr9dyj0jUqpE2yMjNi/aEv0oAcUApPpXe/Vy0tO0uprLBg0JR
+	DavJXLw/ngGbl9I6RzYFu/qrO0qj1kz628uM+sDTtqHBxEqxT5B3nGCRtwaOXbMJRe5CGoi6CTX9v
+	IgIm42XKQFrIE0l1qqTWBfyQ8Dn8bLtv7HiyHQOQwxb6Da0aCpgIUpCtVSCuQQp2JEJjtYbbgZifP
+	FEVgHt3u91ru3W3wASowG3E+FmImdFkFcZFJOYv4BH3BnUCTRjpDdRty3BBcz3har4WgQY83ralDN
+	qLo96vsA==;
+Received: from pool-174-114-102-5.cpe.net.cable.rogers.com ([174.114.102.5]:55950 helo=fedora)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1sZ6Ge-0000000EWFB-0dp3
+	for docs@lists.yoctoproject.org;
+	Wed, 31 Jul 2024 06:09:17 -0400
+Date: Wed, 31 Jul 2024 06:09:11 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: no mention of SSTATE_SKIP_CREATION in variable glossary
+Message-ID: <8cc9eab4-8419-188b-1f2c-89ec78af5550@crashcourse.ca>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 26 Jul 2024 21:09:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5330
+ <docs@lists.yoctoproject.org>; Wed, 31 Jul 2024 10:09:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5331
 
-Hello Richard,
 
-The following changes since commit 48f8eaf956e6897d714a9f628295bf0a320b3547:
+  i see no mention of the variable SSTATE_SKIP_CREATION in:
 
-  docs: modify reference from python2.py to python.py (2024-06-27 18:37:36 +0200)
+https://docs.yoctoproject.org/ref-manual/variables.html#term-S
 
-are available in the Git repository at:
+should it be there?
 
-  git://git.yoctoproject.org/yocto-docs contrib/abelloni/master-next
-
-for you to fetch changes up to 8424f7688343dfe5685e3f6ff4513d26f69430e9:
-
-  migration-guide: add release notes for 4.0.20 (2024-07-26 22:53:01 +0200)
-
-----------------------------------------------------------------
-Lee Chee Yang (1):
-      migration-guide: add release notes for 4.0.20
-
-Matthias Pritschet (1):
-      ref-manual: fix typo and move SYSROOT_DIRS example
-
- documentation/migration-guides/release-4.0.rst     |   2 +
- .../migration-guides/release-notes-4.0.20.rst      | 130 +++++++++++++++++++++
- documentation/ref-manual/variables.rst             |  48 ++++----
- 3 files changed, 156 insertions(+), 24 deletions(-)
- create mode 100644 documentation/migration-guides/release-notes-4.0.20.rst
-
--- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+rday
 
