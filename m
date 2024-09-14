@@ -1,242 +1,300 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 361FAECE579
-	for <webhook@archiver.kernel.org>; Mon,  9 Sep 2024 09:57:03 +0000 (UTC)
-Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.4])
- by mx.groups.io with SMTP id smtpd.web10.49417.1725875816042067450
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 90B50FC6187
+	for <webhook@archiver.kernel.org>; Sat, 14 Sep 2024 01:21:14 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+ by mx.groups.io with SMTP id smtpd.web11.87697.1726276864888752837
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Sep 2024 02:56:57 -0700
+ Fri, 13 Sep 2024 18:21:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=VNzDBEQY;
- spf=pass (domain: cherry.de, ip: 52.101.70.4, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ylCj3X1WIYAbOBxwOx+M+2S3L0gurGoUl7tBC/NFKysuynt1Q6Dmiu9kY/JStW5DkFi+rVd1Boj/F2Q9CZdsasM0kP7M8QFwubO7leF9PUqBYB8vOhOxU4mVUrtW7+HDcKGa/GOcqls1L7h3Dk0a3yfrN+LZzBgQ96mN6hxNesm2HpLYb2Jd75vyRfXJ6YtVHAN9MXtp3iWc+7C05FQs4DSt8EqV4krjIOPK6nfWe1HYFG4iUEUETa26b3y1vKRz6cNbssQAknJQR94iY3D5SmEr00ddqz7GPyNdzw3Orm1a+DaBxFlKyaspOTzVlsWeQHT5Jn4ZZgyvyXFJbjDAtw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ejru6XZkXV3e/OZM2LgEJJYnfdQGRbtdvfVmTAQm/xw=;
- b=XPnRYyWQqyvSjL/Vn3t9Qo3g3r9U6crzxXcNcx5DAI/ZzENFit6stVwATZiMEd8uVJHq1A3BiPptVIu/eBTlDwskn2dcrXK/Zt201RHgpmgApmxqnXTiD9gV26NH1/kD0r+I3r5qbyo5R8HcPnBMfDGrZ2r8+gJk1mA2hKzqsafBcqZ6AQSZX4zndl6/BP2pov7rpcZ6kbG3Uq+a59nmiLheQ63Fg4qYSFrZjyV1G3J+9Ixp9qXVa7IBJ8ZqyXM0b4SI2A0IGujwZfUVojr+hP7kXhkE09OeRZMJrG9QRRaOgnfbS1Prrit+wkzRiGOxUf2JDQBEqznHLj1UCDVUgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ejru6XZkXV3e/OZM2LgEJJYnfdQGRbtdvfVmTAQm/xw=;
- b=VNzDBEQY4wVi75zZdtu0rWy3bVx25xD4Lq/XE9Ua5QbaUbr7BK7V7i42C4Wp2zVFdbc+yeOO0EX6q2wx2P746gOOJ3OVHEJZ+utJx2qbmozzVeRBcimp3kfNRfhnUhSSKGBxeMGMvj6ejZRWV+aiDhPHpk3z8cqZEqVlYxdZ5u0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AM9PR04MB8906.eurprd04.prod.outlook.com (2603:10a6:20b:409::9)
- by PAWPR04MB10031.eurprd04.prod.outlook.com (2603:10a6:102:38b::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.23; Mon, 9 Sep
- 2024 09:56:47 +0000
-Received: from AM9PR04MB8906.eurprd04.prod.outlook.com
- ([fe80::d379:5378:b1:cea]) by AM9PR04MB8906.eurprd04.prod.outlook.com
- ([fe80::d379:5378:b1:cea%2]) with mapi id 15.20.7918.024; Mon, 9 Sep 2024
- 09:56:47 +0000
-Message-ID: <cfae274f-86c0-4ffa-9c8c-ffd3601ec26d@cherry.de>
-Date: Mon, 9 Sep 2024 11:56:44 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] docs: update VOLATILE_{LOG|TMP}_DIR
-To: twoerner@gmail.com, docs@lists.yoctoproject.org
-References: <20240904172748.18526-1-twoerner@gmail.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20240904172748.18526-1-twoerner@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: WA0P291CA0004.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1::14) To AM9PR04MB8906.eurprd04.prod.outlook.com
- (2603:10a6:20b:409::9)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=Pi2F2rwH;
+ spf=pass (domain: intel.com, ip: 192.198.163.9, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726276865; x=1757812865;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=ig1jWGz1OrcjwFaiuuH1FfQ4hdGFjGGP062mZwgoidA=;
+  b=Pi2F2rwHGNw3EvltfoQIdxOtxcTU74lyEfWsIHpa4wfAtXB06GW2KQm3
+   JsGkTTpiYcX3CFKHqXa4K3vBzJkyUiVsq/H9F3ohBylO9CGGBXrnIcosu
+   G+IOCCfeR/VjfzJ03+zSTWmllwUsP6bu+v3KEqVXc6RRMo+tYhSJh5zQY
+   rp4lTTpbMZu3MecaYTo59ZbD4dycc/1fX/KkbNdr7opD9DEMTeQBJXaJP
+   NK+ttBvcF3GoiM3FLzYkPKc8nLKO8ZAEgZcbkdkjYdD+tr4wzsSWGSnIA
+   +jQ6p1FP1LdYBARtB6eZ/emDyqexqLdDuSy5NUYHvWbjF96+agOMfrZBA
+   w==;
+X-CSE-ConnectionGUID: kprbt+iKQAa3WNV1wus9xw==
+X-CSE-MsgGUID: J9758KvKQcGZHrFOPm+QKg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="35865363"
+X-IronPort-AV: E=Sophos;i="6.10,227,1719903600"; 
+   d="scan'208";a="35865363"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 18:21:04 -0700
+X-CSE-ConnectionGUID: w3F6FH8pQ4mOLjSqhnoz5A==
+X-CSE-MsgGUID: AplaBjSGQ7myCzo2loW9Eg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,227,1719903600"; 
+   d="scan'208";a="68767668"
+Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
+  by orviesa007.jf.intel.com with ESMTP; 13 Sep 2024 18:21:03 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guide: add release notes for 4.0.21
+Date: Sat, 14 Sep 2024 09:20:20 +0800
+Message-Id: <20240914012020.2099102-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9PR04MB8906:EE_|PAWPR04MB10031:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55482bdc-9069-43f3-3972-08dcd0b5b798
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?SlpHaStWcHlEeCt5cVVVdTc1aVh6ajJuU0lEeHg5N2pZa2dzdHNwY2dyT3Bo?=
- =?utf-8?B?cXNJeXpFaVRTc2hPWHRDc2V2bXdIVEN1ZEttMW9iU1VYS3VwWUVxZHdyVFNt?=
- =?utf-8?B?OWwvTTNYZXVGOUdLKzRodXJWeENZSUViZXdCc2dMMDZSZTlxWDB1YTd3VCtm?=
- =?utf-8?B?R1B0cG5yVVdLaWVsdGtWZEtzWHhvN2RVRkFBUDZ4dWx2N0JTQUV1MmZmcE5C?=
- =?utf-8?B?STJJYzdmUVh0ZjVXc0E3aWNaNFEyZFJaRnFrVEdKdDVUVTdacjNjQkQ5dmhk?=
- =?utf-8?B?S0s0dFJ3OWNuTTljWWNraFJSbTYyVG8rZEZWalFOVGhqbk9vYXpXeUUvQlA2?=
- =?utf-8?B?ZjBqckFqRXUyWFJhWExJOU12OHluWmpyM1BEQXBCRXRTN080WHhTU25qdHpL?=
- =?utf-8?B?NmNRWGdQYUZHaEdJVDdrY2JIVDR2Q3dsTnVFYVhTUy91RVhUYVc2ejBBaGwx?=
- =?utf-8?B?UFlUVDM2OUhnMHpHSlAvR1FoSWgyOGNOeWF0TFdLMmNHRHgvQkpDMktib2dt?=
- =?utf-8?B?VVBsaHQ3eU9XZWhwYkhOaW5xZlVvdFRwcXA2WVhiakJhVzBNYVptK25rUWp5?=
- =?utf-8?B?U2xXaHVvVnR4R2xPL2tQUXozT0l5Nzl6NXAwT2xibGNDWmtaY04vWEsvSkpi?=
- =?utf-8?B?UlUvNFFDUjhqWU9kNWZXbGgydFlxZE53TTM1TTNDa3luc3V0aXBSU1ZVNU5L?=
- =?utf-8?B?YmxrTHZibjhuTHZTOWRXZCtvNVVGNVpoa3pzcFZaZVF0a094ZVBMakxsUXBw?=
- =?utf-8?B?LzlCVjdlbVJPUElnQU9DY0IrRkpvVHFlOTRzNTNZWjRTMyt3cDB6WmVKQ1FJ?=
- =?utf-8?B?MXhhbUY3ZFA3TFpVbjlNRXQxcXR4ZlJaakNodUVqeTlCRktkM3V3Z2VnbTg3?=
- =?utf-8?B?OGxFd25iVGlxcEpKTHh2SDk0Y21jaEdkVzhoUHB1am4xWXZIUjhRQ3ZwaERj?=
- =?utf-8?B?cmJvSmFTdnROR2ZuRWo4c21uRXhoemE5cjgrKzdQSTlvd0JZSERmTnM5VkV1?=
- =?utf-8?B?T2Ztc0ExczdUNjk3dHdmVkVwaWxEcC9KbWRIY2hUNkJlcGxrWCt0SXUxQncw?=
- =?utf-8?B?YUFsQlEvUUNOYVo0Z1pYYk9jWHpuK29LMC9OK3NySW5TMTFad0NRYnY4c3JZ?=
- =?utf-8?B?eDlTLzAvVmU2VEJGOE5ScmV5KzNZcFdSOVoxa1ZhdmJFemtkUUkyTVlUQnVW?=
- =?utf-8?B?SVRUYUFwdTR3VTFwRVpvUHhRWGJzKzl2NjZiTG1yK1NUNzFROTdqS0xZYkE4?=
- =?utf-8?B?K1BrUGlJbG01RTFvZFhFcHlhSjRpTUpUcTRUdHBXbm9nYnJ3UzVMZldTM2cr?=
- =?utf-8?B?R1JsSzVsYnFOckg5Zmlza2E3R1k5VnA5cHBIMFZBRkJzNlROak5vb2ZSRGZa?=
- =?utf-8?B?SFdaK25xOW1SbTk4UHEyV0ZWRExFcmt5b3NLOFIzekpsR2x4QWFpdG9qVWVR?=
- =?utf-8?B?bVZjWFN5R1FjL25JQjRKRTlGajZhK0tPNGRqTVBzbkRwZzlidjFINXpxdG8w?=
- =?utf-8?B?c2tvQUxQSFN4NVBLM0I5ejRDZS9rUlZvdkZ4eENQcDcwdW5yWnkrY050SkJQ?=
- =?utf-8?B?N0g2TVFLd2dqRVkvVXVjeGlmVGZFbjJMc1JTRVhzUkI3Mk96U2RMTVRmYVVm?=
- =?utf-8?B?ejduWC9ZKy9GT2lKQk10UVlBQUViYU5RWFgzYWNBaUVrU3Ixa3NUdGtGSzN0?=
- =?utf-8?B?VzFPc3pXcFIzWnlHbnFSeUJhME14dll1OFVOL0I5K2VCSS9zMy9Id1BlbE1K?=
- =?utf-8?B?VlA5eXdMemNkMk83NUltSndsV0d1cjRtcnlXeGFvNTVYb21tYVVQODZvaWFF?=
- =?utf-8?B?VFhkZGFqbE0vRnUyMy81dz09?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8906.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?VHppUVVEQ3J2R0xWUWtBbnl5WVN2ZTV1OHhhTkY1U1NFVHNJS0doZmJjbnhm?=
- =?utf-8?B?RzU1VnFsVktOcWo4OElIeDJORUNDQ2JKK2RBdkV2V0lTR3VQSm10MS95NlFM?=
- =?utf-8?B?QjV4K1ZYY3hjQ055emlWYTFtZ0E1QXVidXEyRlUxZ1VBZ0FYSmJNQmxhbUk1?=
- =?utf-8?B?bFo0TzBFdkxETUJYcGgvSGFiVlZpeWFheUFWM0JWZ0tsUHhsOHdVemszZGw2?=
- =?utf-8?B?VlYwZ3hlaHJzdUpFanRsbk5qMkVtVDdhMk5wc0k0MlMxVjg2OFdpejNEclVC?=
- =?utf-8?B?dFNzT2hYUHZjeWxEOGxyak1UYTJSa09VelJjTHdNem9hYXRuNDZyazhRSWRF?=
- =?utf-8?B?blYzVzY4SU5UVDBwZEpjOUZqOEFpbzFoWXNsZUV0UkN2M3hWbTVBT3g0MTZk?=
- =?utf-8?B?RGE3M1UvTjhSRVJZa1loRjNLcXhjNTVsQkVKQXRkb3hBNkszUG52aUFZV1Ra?=
- =?utf-8?B?SzRXWFNrVGpGdERiSTJsUmYybjhqdHdzNVJ6YWZBbTd2aG1Qa3FwbzE2bDVQ?=
- =?utf-8?B?V0lhaVVjNnNlZ0F5UEV4cmVRU2xnOG1HV1VkckxncjhWMkFlR3NBOGdDVVFN?=
- =?utf-8?B?ZzF3dlpNSUpYenZpMXVEa1BKU0twL3E1aFZmUGdDNHJ3SkNPNno3RWdsSjFm?=
- =?utf-8?B?NDB2d1B2S05zU2xHaGV2RVhDYUUxNDhFUldPSXFsSDByTnNnNnB1c2EwMkpk?=
- =?utf-8?B?MmxBdHNnWWh4YkZMTzgyc2VPUFl3TU4wbllMTGRjTTg4U001SHl3alV6aWhs?=
- =?utf-8?B?cHgwLzY5REd1NlMxaGJLVjBubnRxWElXYlE1ODR4SlpnN0JwR1pPUDJXNGRw?=
- =?utf-8?B?dVpnN2JQQUhvckZCRm1ZNnVVTW5OdDZRSnJJekgwazNUeGYzTThyRTkrNitM?=
- =?utf-8?B?djlEODRkdUNtbmVMWE0wQytSU09hTk52UzZGMmlHUjZIRkJCQ1pxc3o2R3Jl?=
- =?utf-8?B?MkgrQ01kZDZxbDh5bzgrbUdOU25wYk5YcXc2NFU1VXB0MWV0UGVnNXg1Qi9K?=
- =?utf-8?B?YTlEamtGemhWZG9OZi91RVgyRmp1MFJlWmN0NjFLZ3AreWYyaENURXJBd3RF?=
- =?utf-8?B?ZEFGQVRRaDlES0RTQnZkbS9hNXRRMHN0cFlOREllU0diYzlPZ1E0RGVFR1JT?=
- =?utf-8?B?bjlvTG1tK29yNUN2NlJYN3pjUndwU3JQZnVCNW5hV2dMWW1iVVpHK1dud0xr?=
- =?utf-8?B?ckN0SFRVVDJTMlprQmtLT1JwU25CcURsSVAyak5BUWJxaW9LejBpaFFMSERD?=
- =?utf-8?B?Y2ViVG1kQ1hZUXdXRG5IY1R4Z2h4Sm9ucUk2Y1FVQkhFUVVzNkdUelZWeG1Y?=
- =?utf-8?B?VkN2ZzBsaFBoaUs2bHVQVlZQcmN3aHNCU2JSc0lEaG5rUG1GdDNRUzU0QWRV?=
- =?utf-8?B?VTNYRUZIVVNOUTBYZ1N3RzQ3TlpIMEh1MXNQZUxOUURtUUd4RGlwNFVxdVdo?=
- =?utf-8?B?Ly91bFJYMmhmak5oNmk4UzdYVXc3aEQ2ZFFRamNvVzAyZXZUeWw4REdXQkJ1?=
- =?utf-8?B?VklDT0MvemtYclhBR1FsTW53TXBEWTV6VU03UkRtNVkyTkYwaGVGbHY1cUwy?=
- =?utf-8?B?VVBQbldjMzZNc3F4TGVhT0czd3lTK1ZpRDE2V1dPMEZFbEEvK0xCNzJpYXdq?=
- =?utf-8?B?K3g5c3F0Zi80QytXUlRCeUJNbXVtODA0SzYvRHlPN1M1b0dyYnVOQmZQdzBH?=
- =?utf-8?B?ZnljVzdMcWxPcU5xbjhRbDd3K1Z3cGZsY3lJMktvU3ZtQi85OEE2UWF2dnVz?=
- =?utf-8?B?ZTJqeEdHNmRoZTBwQWNUcVhpMWlMMEFHS29PYWx2RUFTYk1TVlI0N1VOUDE1?=
- =?utf-8?B?ZnNTY2pSdVE0UGVVYjVNVlkzT3F6bithQTBpV1JCc0tBQ2VCWmdGWG9sZFp6?=
- =?utf-8?B?a0t6VU5yam45OFpwd3lRamNTbWlkMktqVlZ6allhdFpqSWdYR0N4TGR4eVBy?=
- =?utf-8?B?V3BMWFZCQXA0RFR5eTBPYjE5NjVVNy9tZDNUWW40cFpIRnRhdTFHWi80U3FY?=
- =?utf-8?B?NHZONlIxMVZXUlV2OC8yeXVBOG50dlNSVy9RNDNoWS8xSTRkS0VPemJZdGQv?=
- =?utf-8?B?RTZYQzM5R0IvTFhuckg1SCt5UzFJUnNWa1lFZHdVdkhLM0lhOVJqdEdlV1NX?=
- =?utf-8?Q?MDSk3z3HorlaQq2OdfUAEZF1t?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55482bdc-9069-43f3-3972-08dcd0b5b798
-X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8906.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2024 09:56:46.9201
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DJncPEG96rpqyM2rjnPZj4Z/7/JXRHNPn/xH6zQX8uDx8lbZxJnkjlN4qblM2WhGei8Wx5DaFjED6OzOv1T2s4hsCZOYVsaIOI2++1R5ISY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR04MB10031
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 09 Sep 2024 09:57:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5356
+ <docs@lists.yoctoproject.org>; Sat, 14 Sep 2024 01:21:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5357
 
-Hi Trevor,
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-On 9/4/24 7:27 PM, Trevor Woerner via lists.yoctoproject.org wrote:
-> A new mechanism was introduced to handle whether or not tmp and log are
-> tmpfs-based (i.e. in RAM) or persist as real directories in the root
-> filesystem. The variables VOLATILE_LOG_DIR and VOLATILE_TMP_DIR no longer
-> exist, and PERMS files are used instead.
-> 
-> oe-core: 8d1ae67b89c4 ("bitbake.conf: drop VOLATILE_TMP_DIR, use FILESYSTEM_PERMS_TABLES instead")
-> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-> ---
->   .../migration-guides/release-notes-5.0.rst    |  2 ++
->   documentation/ref-manual/features.rst         |  4 +--
->   documentation/ref-manual/variables.rst        | 32 ++++---------------
->   3 files changed, 10 insertions(+), 28 deletions(-)
-> 
-> diff --git a/documentation/migration-guides/release-notes-5.0.rst b/documentation/migration-guides/release-notes-5.0.rst
-> index 800ba20a27b5..191debd0174a 100644
-> --- a/documentation/migration-guides/release-notes-5.0.rst
-> +++ b/documentation/migration-guides/release-notes-5.0.rst
-> @@ -335,6 +335,8 @@ New Features / Enhancements in 5.0
->      -  Add minimal VS Code configuration to avoid VS Code's indexer from choking
->         on build directories.
->   
-> +   - VOLATILE_LOG_DIR and VOLATILE_TMP_DIR were removed in favour of the
-> +     FILESYSTEM_PERMS_TABLES mechanism.
->   
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.21.rst | 166 ++++++++++++++++++
+ 2 files changed, 167 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.21.rst
 
-Maybe we could add some :term: here so people don't have to look for the 
-new variable to use in the docs and just have to click on the link?
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation=
+/migration-guides/release-4.0.rst
+index 4954ea678..03e74d1f8 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -27,4 +27,5 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.18
+    release-notes-4.0.19
+    release-notes-4.0.20
++   release-notes-4.0.21
+=20
+diff --git a/documentation/migration-guides/release-notes-4.0.21.rst b/docu=
+mentation/migration-guides/release-notes-4.0.21.rst
+new file mode 100644
+index 000000000..a12f4b247
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.21.rst
+@@ -0,0 +1,166 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-4.0.21 (Kirkstone)
++------------------------------------------
++
++Security Fixes in Yocto-4.0.21
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  bind: Fix :cve:`2024-4076`, :cve:`2024-1737`, :cve:`2024-0760` and :cve=
+:`2024-1975`
++-  apr: Fix :cve:`2023-49582`
++-  busybox: Fix :cve:`2023-42363`, :cve:`2023-42364`, :cve:`2023-42365`, :=
+cve:`2023-42366` and :cve:`2021-42380`
++-  curl: Ignore :cve:`2024-32928`
++-  curl: Fix :cve:`2024-7264`
++-  ghostscript: Fix :cve:`2024-29506`, :cve:`2024-29509` and :cve:`2024-29=
+511`
++-  go: Fix :cve:`2024-24789` and :cve:`2024-24791`
++-  gtk+3: Fix :cve:`2024-6655`
++-  libarchive: Ignore :cve:`2024-37407`
++-  libyaml: Ignore :cve:`2024-35325`, :cve:`2024-35326` and :cve:`2024-353=
+28`
++-  linux-yocto/5.15: Fix :cve:`2022-48772`, :cve:`2024-35972`, :cve:`2024-=
+35984`, :cve:`2024-35990`, :cve:`2024-35997`, :cve:`2024-36008`, :cve:`2024=
+-36270`, :cve:`2024-36489`, :cve:`2024-36897`, :cve:`2024-36938`, :cve:`202=
+4-36965`, :cve:`2024-36967`, :cve:`2024-36969`, :cve:`2024-36971`, :cve:`20=
+24-36978`, :cve:`2024-38546`, :cve:`2024-38547`, :cve:`2024-38549`, :cve:`2=
+024-38552`, :cve:`2024-38555`, :cve:`2024-38571`, :cve:`2024-38583`, :cve:`=
+2024-38591`, :cve:`2024-38597`, :cve:`2024-38598`, :cve:`2024-38600`, :cve:=
+`2024-38627`, :cve:`2024-38633`, :cve:`2024-38661`, :cve:`2024-38662`, :cve=
+:`2024-38780`, :cve:`2024-39277`, :cve:`2024-39292`, :cve:`2024-39301`, :cv=
+e:`2024-39466`, :cve:`2024-39468`, :cve:`2024-39471`, :cve:`2024-39475`, :c=
+ve:`2024-39476`, :cve:`2024-39480`, :cve:`2024-39482`, :cve:`2024-39484`, :=
+cve:`2024-39487`, :cve:`2024-39489`, :cve:`2024-39493`, :cve:`2024-39495`, =
+:cve:`2024-39506`, :cve:`2024-40902`, :cve:`2024-40911`, :cve:`2024-40912`,=
+ :cve:`2024-40932`, :cve:`2024-40934`, :cve:`2024-40954`, :cve:`2024-40956`=
+, :cve:`2024-40957`, :cve:`2024-40958`, :cve:`2024-40959`, :cve:`2024-40960=
+`, :cve:`2024-40961`, :cve:`2024-40967`, :cve:`2024-40970`, :cve:`2024-4098=
+0`, :cve:`2024-40981`, :cve:`2024-40994`, :cve:`2024-40995`, :cve:`2024-410=
+00`, :cve:`2024-41002`, :cve:`2024-41006`, :cve:`2024-41007`, :cve:`2024-41=
+046`, :cve:`2024-41049`, :cve:`2024-41055`, :cve:`2024-41064`, :cve:`2024-4=
+1070`, :cve:`2024-41073`, :cve:`2024-41087`, :cve:`2024-41089`, :cve:`2024-=
+41092`, :cve:`2024-41093`, :cve:`2024-41095`, :cve:`2024-41097`, :cve:`2024=
+-42068`, :cve:`2024-42070`, :cve:`2024-42076`, :cve:`2024-42077`, :cve:`202=
+4-42080`, :cve:`2024-42082`, :cve:`2024-42085`, :cve:`2024-42090`, :cve:`20=
+24-42093`, :cve:`2024-42094`, :cve:`2024-42101`, :cve:`2024-42102`, :cve:`2=
+024-42104`, :cve:`2024-42109`, :cve:`2024-42140`, :cve:`2024-42148`, :cve:`=
+2024-42152`, :cve:`2024-42153`, :cve:`2024-42154`, :cve:`2024-42157`, :cve:=
+`2024-42161`, :cve:`2024-42223`, :cve:`2024-42224`, :cve:`2024-42225`, :cve=
+:`2024-42229`, :cve:`2024-42232`, :cve:`2024-42236`, :cve:`2024-42244` and =
+:cve:`2024-42247`
++-  llvm: Fix :cve:`2023-46049` and :cve:`2024-31852`
++-  ofono: fix :cve:`2023-2794`
++-  orc: Fix :cve:`2024-40897`
++-  python3-certifi: Fix :cve:`2024-39689`
++-  python3-jinja2: Fix :cve:`2024-34064`
++-  python3: Fix :cve:`2024-8088`
++-  qemu: Fix :cve:`2024-7409`
++-  ruby: Fix for :cve:`2024-27282`
++-  tiff: Fix :cve:`2024-7006`
++-  vim: Fix :cve:`2024-22667`, :cve:`2024-41957`, :cve:`2024-41965` and :c=
+ve:`2024-43374`
++-  wpa-supplicant: Fix :cve:`2023-52160`
++
++
++Fixes in Yocto-4.0.21
++~~~~~~~~~~~~~~~~~~~~~
++
++-  apr: upgrade to 1.7.5
++-  bind: Upgrade to 9.18.28
++-  bitbake: data_smart: Improve performance for VariableHistory
++-  build-appliance-image: Update to kirkstone head revision
++-  cryptodev-module: Fix build for linux 5.10.220
++-  gcc-runtime: remove bashism
++-  grub: fs/fat: Don't error when mtime is 0
++-  image_types.bbclass: Use --force also with lz4,lzop
++-  libsoup: fix compile error on centos7
++-  linux-yocto/5.15: upgrade to v5.15.164
++-  lttng-modules: Upgrade to 2.13.14
++-  migration-guide: add release notes for 4.0.20
++-  orc: upgrade to 0.4.39
++-  poky.conf: bump version for 4.0.21
++-  python3-jinja2: upgrade to 3.1.4
++-  python3-pycryptodome(x): use python_setuptools_build_meta build class
++-  python3: add PACKAGECONFIG[editline]
++-  ref-manual: fix typo and move :term:`SYSROOT_DIRS` example
++-  sqlite3: CVE_ID correction for :cve:`2023-7104` as patched
++-  sqlite3: Rename patch for :cve:`2022-35737`
++-  uboot-sign: Fix index error in concat_dtb_helper() with multiple configs
++-  vim: upgrade to 9.1.0682
++-  wireless-regdb: upgrade to 2024.07.04
++
++
++Known Issues in Yocto-4.0.21
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.21
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Archana Polampalli
++-  Ashish Sharma
++-  Bruce Ashfield
++-  Deepthi Hemraj
++-  Divya Chellam
++-  Florian Amstutz
++-  Guocai He
++-  Hitendra Prajapati
++-  Hugo SIMELIERE
++-  Lee Chee Yang
++-  Leon Anavi
++-  Matthias Pritschet
++-  Ming Liu
++-  Niko Mauno
++-  Peter Marko
++-  Robert Yang
++-  Rohini Sangam
++-  Ross Burton
++-  Siddharth Doshi
++-  Soumya Sambu
++-  Steve Sakoman
++-  Vijay Anusuri
++-  Vrushti Dabhi
++-  Wang Mingyu
++-  Yogita Urade
++
++
++Repositories / Downloads for Yocto-4.0.21
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=3Dkirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.21 </poky/log/?h=3Dyocto-4.0.21>`
++-  Git Revision: :yocto_git:`4cdc553814640851cce85f84ee9c0b58646cd33b </po=
+ky/commit/?id=3D4cdc553814640851cce85f84ee9c0b58646cd33b>`
++-  Release Artefact: poky-4cdc553814640851cce85f84ee9c0b58646cd33b
++-  sha: 460e3a4ede491a9b66c5d262cd9498d5bcca1f2d880885342b08dc32b967f33d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.21/poky-4cdc=
+553814640851cce85f84ee9c0b58646cd33b.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.21/poky-4cdc55381464085=
+1cce85f84ee9c0b58646cd33b.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=3Dkirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.21 </openembedded-core/log/?h=3Dyocto-4.0.21>`
++-  Git Revision: :oe_git:`c40a3fec49942ac6d25ba33e57e801a550e252c9 </opene=
+mbedded-core/commit/?id=3Dc40a3fec49942ac6d25ba33e57e801a550e252c9>`
++-  Release Artefact: oecore-c40a3fec49942ac6d25ba33e57e801a550e252c9
++-  sha: afc2aaf312f9fb2590ae006615557ec605c98eff42bc380a1b2d6e39cfdf8930
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.21/oecore-c4=
+0a3fec49942ac6d25ba33e57e801a550e252c9.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.21/oecore-c40a3fec49942=
+ac6d25ba33e57e801a550e252c9.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=3Dkirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.21 </meta-mingw/log/?h=3Dyocto-4.0.21>`
++-  Git Revision: :yocto_git:`f6b38ce3c90e1600d41c2ebb41e152936a0357d7 </me=
+ta-mingw/commit/?id=3Df6b38ce3c90e1600d41c2ebb41e152936a0357d7>`
++-  Release Artefact: meta-mingw-f6b38ce3c90e1600d41c2ebb41e152936a0357d7
++-  sha: 7d57167c19077f4ab95623d55a24c2267a3a3fb5ed83688659b4c03586373b25
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.21/meta-ming=
+w-f6b38ce3c90e1600d41c2ebb41e152936a0357d7.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.21/meta-mingw-f6b38ce3c=
+90e1600d41c2ebb41e152936a0357d7.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=3Dkirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.21 </meta-gplv2/log/?h=3Dyocto-4.0.21>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </me=
+ta-gplv2/commit/?id=3Dd2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.21/meta-gplv=
+2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.21/meta-gplv2-d2f8b5cdb=
+285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=3D2.0>`
++-  Tag:  :oe_git:`yocto-4.0.21 </bitbake/log/?h=3Dyocto-4.0.21>`
++-  Git Revision: :oe_git:`ec2a99a077da9aa0e99e8b05e0c65dcbd45864b1 </bitba=
+ke/commit/?id=3Dec2a99a077da9aa0e99e8b05e0c65dcbd45864b1>`
++-  Release Artefact: bitbake-ec2a99a077da9aa0e99e8b05e0c65dcbd45864b1
++-  sha: 1cb102f4c8dbd067f0262072e4e629ec7cb423103111ccdde75a09fcb8f55e5f
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-4.0.21/bitbake-e=
+c2a99a077da9aa0e99e8b05e0c65dcbd45864b1.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-4.0.21/bitbake-ec2a99a077da=
+9aa0e99e8b05e0c65dcbd45864b1.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=3Dkirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.21 </yocto-docs/log/?h=3Dyocto-4.0.21>`
++-  Git Revision: :yocto_git:`512025edd9b3b6b8d0938b35bb6188c9f3b7f17d </yo=
+cto-docs/commit/?id=3D512025edd9b3b6b8d0938b35bb6188c9f3b7f17d>`
++
+--=20
+2.34.1
 
->   Known Issues in 5.0
->   ~~~~~~~~~~~~~~~~~~~
-> diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
-> index 2ea946b31d36..97c05cc2839f 100644
-> --- a/documentation/ref-manual/features.rst
-> +++ b/documentation/ref-manual/features.rst
-> @@ -323,8 +323,8 @@ The image features available for all images are:
->   
->      .. note::
->   
-> -      To make the ``/var/log`` directory on the target persistent, use the
-> -      :term:`VOLATILE_LOG_DIR` variable by setting it to "no".
-> +      To make the ``/var/log`` directory on the target persistent, remove
-> +     ``files/fs-perms-volatile-log.txt`` from :term:`FILESYSTEM_PERMS_TABLES`.
->   
->   -  *ptest-pkgs:* Installs ptest packages for all ptest-enabled recipes.
->   
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 32c9e7407dbc..994ee23e2709 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -13,7 +13,6 @@ system and gives an overview of their function and contents.
->   :term:`K <KARCH>` :term:`L <LABELS>` :term:`M <MACHINE>`
->   :term:`N <NATIVELSBSTRING>` :term:`O <OBJCOPY>` :term:`P`
->   :term:`R <RANLIB>` :term:`S` :term:`T`
-> -:term:`U <UBOOT_CONFIG>` :term:`V <VOLATILE_LOG_DIR>`
-
-I don't think this is appropriate here.
-
-Instead:
-
-:term:`U <UBOOT_CONFIG>` :term:`V <VIRTUAL-RUNTIME>`
-
->   :term:`W <WARN_QA>` :term:`X <XSERVER>`
->   
->   .. glossary::
-> @@ -2994,11 +2993,12 @@ system and gives an overview of their function and contents.
->         and users across an entire work project. It is best to do this in the
->         packages themselves but this is not always possible.
->   
-> -      By default, the OpenEmbedded build system uses the ``fs-perms.txt``,
-> -      which is located in the ``meta/files`` folder in the :term:`Source Directory`.
-> -      If you create your own file
-> -      permissions setting table, you should place it in your layer or the
-> -      distro's layer.
-> +      By default, the OpenEmbedded build system uses
-> +      ``fs-perms.txt``, ``fs-perms-volatile-log.txt``, and
-> +      ``files/fs-perms-volatile-tmp.txt`` which are located in the
-> +      ``meta/files`` folder in the :term:`Source Directory`. If you create
-> +      your own file permissions setting table, you should place it in your
-> +      layer or the distro's layer.
-
-Where in my layer? Is there any variable I need to set in order for this 
-new file to be found by BitBake? etc.
-
-Do we want to explain what the default means for the persistence of 
-which directories? The same way it was done for 
-VOLATILE_LOG_DIR/VOLATILE_TMP_DIR?
-
-Cheers,
-Quentin
 
