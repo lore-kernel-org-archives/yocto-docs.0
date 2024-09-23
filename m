@@ -1,280 +1,174 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D1F6CF9C5B
-	for <webhook@archiver.kernel.org>; Sat, 21 Sep 2024 12:45:44 +0000 (UTC)
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
- by mx.groups.io with SMTP id smtpd.web10.8821.1726922742106209866
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70FD1CF9C71
+	for <webhook@archiver.kernel.org>; Mon, 23 Sep 2024 09:32:02 +0000 (UTC)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.40])
+ by mx.groups.io with SMTP id smtpd.web11.32620.1727083920523183976
  for <docs@lists.yoctoproject.org>;
- Sat, 21 Sep 2024 05:45:42 -0700
+ Mon, 23 Sep 2024 02:32:01 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=D39JCfSt;
- spf=pass (domain: smile.fr, ip: 209.85.128.46, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42e5e758093so24827555e9.1
-        for <docs@lists.yoctoproject.org>; Sat, 21 Sep 2024 05:45:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1726922740; x=1727527540; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kg3QFD8hNijVoxMofhpDaeLq/eZhrxeEDT1+staUbsw=;
-        b=D39JCfStlF7/Hd5qQkxkt2Tcmyu1a4oLU6K2ckVvc1gQjl9Yn7Yxpank9glF+lnntT
-         IZpyTwOrA8xCtc6RdC5iD8Ue9LrKimqvETt+4NHwWktYoo06n5gxiMaO0qf4vCgkLwGO
-         Qm+SHXmIHDCKOhalwI3ycVfsg/17hhOeM/HWg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726922740; x=1727527540;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Kg3QFD8hNijVoxMofhpDaeLq/eZhrxeEDT1+staUbsw=;
-        b=AFiXYli4utRLnZeYwSsGAt835fHBoRGqICa7pMKWiXNHcTFCMVRKoH/ditCqDzqlwE
-         ZgbEV1w5DOiyTlLrHk6vgbjpb2iFi2fw1MScjWHu7oSWs706yrWfMSv/wi5dfVotPgy1
-         +Hcyk9+GGpiCwQL+wd01QE0uxYmwJCiFF5Ky1Z5PR7GHJWS+pBig1HO/sPclj23XsZ1L
-         N1ebftKuoJpwLKAp540JMWPUxcUwqplOlNZImrix5ebmE/tiwtg8vESp2TpUqlAqFzO1
-         Yih8267uwtK52YWprtMmWVcjtD55nNcHYGIrPPfNGY2HmsK+UL0H7Shz5l9Xq1hA+7/2
-         GQdQ==
-X-Gm-Message-State: AOJu0Yx/KMrTUNlU+M7AL7FeFRv3oTdvgZmGCowFRQEAnsqJRie8BHLY
-	dmf2IX5RjkuGI0dgvQcOTzG9dXZc4K3MTKIKH/AG4PVeWphbJ/2dvaJZcJHd+wI=
-X-Google-Smtp-Source: AGHT+IECeqIafbNgC+OPc74peKPT6WCC6JJ6BJ6BFzeRT/mWtTaegQMAGCsP4niNO32AGoMESjPXgw==
-X-Received: by 2002:a05:600c:1c29:b0:42c:bb75:4f86 with SMTP id 5b1f17b1804b1-42e7add501emr43847835e9.32.1726922740260;
-        Sat, 21 Sep 2024 05:45:40 -0700 (PDT)
-Received: from P-ASN-ECS-830T8C3.local (53.1.159.89.rev.sfr.net. [89.159.1.53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e7afe1437sm49274505e9.33.2024.09.21.05.45.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 21 Sep 2024 05:45:33 -0700 (PDT)
-From: Yoann Congal <yoann.congal@smile.fr>
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH] doc/user-manual: Refresh help output
-Date: Sat, 21 Sep 2024 14:44:33 +0200
-Message-Id: <20240921124433.1961318-1-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.39.5
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=mqM0vHNB;
+ spf=pass (domain: cherry.de, ip: 40.107.20.40, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=sGCS/yWuCOrqaxuJKZTsVa+vPztHECF+n7d29zm9fJSybWNDHDOdgwvI2SAXakGt6j7ATXciJIIqm+Yq0kL1waDNBQUjmATnA7hNtyuUQU42ksGnwonJYPp4T2C7cr8N0Fupl/gWeO4DaX3IhpNWNU3re979ifiz8OsaMhJNZ59iyRK2cJaU5Y7UA41Cyhcm/0kX78P4P4lkQrvrrGEl1EMGYLG7+GcpXUL+dpDPwwUbrE67Bs9inKX0lgo+VUa1ITOTvtcVVd1OFnH6sOcWrkjeurzgKnuxc2FkRNIEP/AY2CsD6VmDql/i1MZeAvjv77eIzIfWb0ycQVmpfei5jQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=M9s1vHw3AsAjtdwYtGfAe3oADiZS+tmszz4K1j9NdMg=;
+ b=JHkMqj0+LuEeAVJy1JgjWi9V2MPffXK/20KfL8DitM8/HE07qwSeoMpRe6vjdGl3s7Qyv1HGhZ2zD8FUeCaQ+08inLyoClO1Da0GOL+apmddWoroH7rN7F7l+4d3S7fhzJf614VbAMstoR93xuvE9CGfpfpyxWHpz64mw3K75+N1qFxGVEhzkBZNLC+PzJb3plMZYMflF55Ies2v1NrutT0njLKqVJL4hthLaeY5uP9MrQOMMNUo+sdKNB/3vGPPNJkGtdDYSnoneC6JYNWblZqk0MzDpTAvNNTDvpGjN39OOxn7t8O8ZIkl5khQWPYk/q+qn8e/wAajs8nJ8KAD+Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=M9s1vHw3AsAjtdwYtGfAe3oADiZS+tmszz4K1j9NdMg=;
+ b=mqM0vHNBmmFj3qWEVwvUT/sLI0NGnUBDqye6IKpn7c2++gKylY+H6BCrwxJmbTU8yEbXp0A52Uf2nD81kOXzGYut6gv4DOmxp76Ip+sMXL8C/epx5IuA9NlbrsmFnVyMPQQk7ZV6Gcq92RAuz7z2o/yuW2LM2T/WAKG9vnmoXEc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AM9PR04MB8906.eurprd04.prod.outlook.com (2603:10a6:20b:409::9)
+ by GVXPR04MB10518.eurprd04.prod.outlook.com (2603:10a6:150:1eb::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.25; Mon, 23 Sep
+ 2024 09:31:51 +0000
+Received: from AM9PR04MB8906.eurprd04.prod.outlook.com
+ ([fe80::d379:5378:b1:cea]) by AM9PR04MB8906.eurprd04.prod.outlook.com
+ ([fe80::d379:5378:b1:cea%2]) with mapi id 15.20.7918.024; Mon, 23 Sep 2024
+ 09:31:50 +0000
+Message-ID: <5eb7e737-37e9-4d6b-811e-4fc121dd6567@cherry.de>
+Date: Mon, 23 Sep 2024 11:31:49 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 1/1] bitbake: doc: suffix for BBFILE_PRIORITY
+To: simon.eu@gmail.com, bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org
+References: <20240920124020.2894006-1-simon.eu@gmail.com>
+ <20240920124020.2894006-2-simon.eu@gmail.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20240920124020.2894006-2-simon.eu@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0107.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a3::17) To AM9PR04MB8906.eurprd04.prod.outlook.com
+ (2603:10a6:20b:409::9)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8906:EE_|GVXPR04MB10518:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4cc50d5d-0ae7-49d3-9fe7-08dcdbb28da7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?S1VsSWlQSzhsTG9nY0FHVmd0Um5RdzZZd3U5UU9VT1FHTk9vbDJxUHFDS1dK?=
+ =?utf-8?B?WG1XR2FxaXV0cTVuZjR2cVJxcXVLc1ZURUJma3czUE8xc2Z4U0RFOTM3WWRK?=
+ =?utf-8?B?YXVocE5Oc21PL0VBbFB5L2JITXlheURLeXByVGxuOXc3Z3BqaXJsK2o2a2U0?=
+ =?utf-8?B?NG5Id2NJVXNtTklEZEJqU2JkaXBuRWZzWFZ0UnhlajVtTUh4Mkl6MGZzS2RU?=
+ =?utf-8?B?YWFodnBac1BkVCt1VzFqWTRyOGZOMHZySG5qeWp2OUd1djhpMmxLRmh5SGI0?=
+ =?utf-8?B?a0hBWWRIbFFTVnZVYjBXY0dlK3RMaHdPQ3RWWW9CbHhGbEhwMXF5cCtZWHI0?=
+ =?utf-8?B?WFdndkJZQ08veDlvZUJ2bDFMSGIxRnc2RTJTM1NEeG16aDBnQnBBRlBIZ1pu?=
+ =?utf-8?B?dWY2b2RmaHpNaUJZREJUM2RPSzZ4dHdEc3NUS1IvSGV1NlF2Mm44dDJmQU9S?=
+ =?utf-8?B?Qy9VTUhUNWk1OXdhQklTZk91NkduTXQwVXJGaWoxOHBGTlB1dzNDcmlZOENy?=
+ =?utf-8?B?TVNhMkd1UTA5eEFITFNpekMzUlhQNUpSL2RFQlA2UzlFallza2VqcDJpSUZa?=
+ =?utf-8?B?V2h1WE4xL1RleDR6TDlJL0dCV2FjWkNiOVNVODJ4QWl1SVpBUDdYbnhXUUNR?=
+ =?utf-8?B?aFBqODMveHdYQ0svQktTalIwK1JIMkdPSVZBUVFibVBLOFplSnlPazl1b0Zl?=
+ =?utf-8?B?U0g5U09QY041UDdmNFhVUVNDeXYxd3FlcUNlbUJsa3VSRTZZdWg3SzZvM2p6?=
+ =?utf-8?B?OEF3T0R5MG45V04vbEhQN1lOSW5OeTJCemJsdW41c0JuYVZWUjhIUjZKVXRp?=
+ =?utf-8?B?NDhuYXB2MW5FK3U1aXVZOThOU2FmSmc5L2FDdVE5NmNqM291aFpxUTB3UUx2?=
+ =?utf-8?B?ZEd0c3EyRm9UUENJcUxrb0J4cVNNbWhMVFNCMzNNSGJwa0dFVC90YXFaYW1y?=
+ =?utf-8?B?aW1vYjc4S0VEeTh3TVlsQ0ZsakVmUXhpNHJRV1d2SFM2OFlFZ1ZuK0g5dThl?=
+ =?utf-8?B?VmtlckpJek1nOE1BaGY4aWs1TkNOOEx3R29ERytLNkdpdUwrN1o5OGxZaDZH?=
+ =?utf-8?B?REF6QWVsc0hrSGN3Y1BJTVVQd2FjK0xZc2RjcFVuenlYVzh2UEFkMW5oUjBY?=
+ =?utf-8?B?TFIzRDdVNHUzNVZSemRwTXdkeGt5T1k3MnlYdzBZdy91dFFJYVNXRVpNOHRC?=
+ =?utf-8?B?UitQcHJYUDEwNXkvazRkUW4zSTNhdnRaeloxOHBGL3BHazNOMGV2L2lGUDdN?=
+ =?utf-8?B?bnZnUWlkOHR4aUIyd3BFb2puVUMzS01rZHNEQWgvOWdEeWNsU1NEVytBajN6?=
+ =?utf-8?B?STQ5THlKQ0E0WDFONWQvUVJua1pQdHBiNUduRC9uOEhjNWpVRmJGWUlLeWRE?=
+ =?utf-8?B?NFlPR24zSW1UMEFmb1NPT045aVdtZk83dWNjYWY5R0NiYm5udzhUL3QvSE5M?=
+ =?utf-8?B?RHI0T2o5ekhtQ0tlL0I3K0E2RVBpWWZtRGlYSHcrajZITkREaUJKUVVNT2dM?=
+ =?utf-8?B?Mk01SVRsMG0yVThOd2tqbEJZRG4vd0lxOWFiN08vR2ZOdkZXMjlSMGh3UUND?=
+ =?utf-8?B?R3BpcEJsejNlMzVkYkZrY3ZIWEJIVXhzZ0lRZDNwRkNsNHlBSFZzRnpTZ0RQ?=
+ =?utf-8?B?MWg0MVlzcW9sSmRjZXJ4N2xrLzZQQStNM2swajlxL0pZd2ZEdDlOUDF3d0pw?=
+ =?utf-8?B?anhHNW9lQk1mMkhmQ2hkWEhhSmtEeEN4SmpwakVsRWRueXpHK09FbXBCTXU2?=
+ =?utf-8?B?SW5sNy9FN29xbmw4THNkYlFlMkoyYUxEY2NXd0RYOUxiRjI1M1lhM1hYd0Np?=
+ =?utf-8?B?Tit3Znl2eEtMdXIxcmNPQT09?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8906.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?UlozTGRzWVlOVXI2cG5Tejh2d3NwWWZzY05mQ3hGNFJVZmZXakpKQ3MzV2VF?=
+ =?utf-8?B?LzNOeEVxak82MXl5dlJ1cUQ1Y1dGeXkvY2p5UkpOdytiTVF1KzJiL1J2ODgr?=
+ =?utf-8?B?QnhQS2dnRUNpVlBDc1FJUXNOb1BEcnB0QU1keXJKT0c0QXNEMENBOFk0dUM0?=
+ =?utf-8?B?RE9IaUpMVFg4NjI0YUE4akJXUXlWRGNBa3NZdm5wakJyVlU0ZzQzSW5GZjRl?=
+ =?utf-8?B?TUR2RWcwdlVrbXR5dDZFRlBtQ0NLT01CUEptZUVROUxkME5UTUw2TWtMbGpS?=
+ =?utf-8?B?c2hrUlg5UFQ1ZnM1N0RqQ3B0UTgraThDdHhablJZS1VzTm1OdHJjbTdKQkZo?=
+ =?utf-8?B?ekJHeGxGZGtyL1BtT2YxM3VpODlpNis4NWU1U24zRmQ2c0F1T1JRSzlLVzRq?=
+ =?utf-8?B?NnBFdURWNXlDVUZITGdoaFZaYVU0TXJZdjBKSklqeHRDZ3JRWHFyT1Y2NHVG?=
+ =?utf-8?B?ZjRRSkZXMDJHZ2pEbVdHTXR4bXdRcHpHZ1d6bDVmQnNaRnVmQjhaL0g1bUNv?=
+ =?utf-8?B?djU4TWZNL09CY3RieGoxUWVtaFJKc0o4NVE1bDBDRTZ1QmozTzhYbVZuZTZQ?=
+ =?utf-8?B?M3BkVVVlOUJ1cFV3eEVDWlFYU1lFWmhLUE9YaDZ2UWpsS0x4Q1ZMa0xBRVpw?=
+ =?utf-8?B?dmg5VytJcW8xRXhqazdqcG1aUk5aSlZpeDI1TXFyT0ZWM1BJQU5XL0gySUhU?=
+ =?utf-8?B?dHl2d1FWVUU2b3l5M1ZnMjhjdGVFK3NwWmdMb3dJSWVpeGc3TWRJSmY2MXFx?=
+ =?utf-8?B?a0hvbFhzYnd0TFNtRnFiZ2NrdjZUSTFFMnNKR2lJeUNodk1rRlpCblJObGpU?=
+ =?utf-8?B?TkI4MEp0VXJtOG9HRVcvcFdoZEgyUHdGTXl4eTk4NGZQSHhrQjQvTlNIS3cr?=
+ =?utf-8?B?ZlVKWTBTT2hMRVQ3bER0dnBGYkxZSEM0RWN6OHJSRllvd1IweEVjREkxRzdp?=
+ =?utf-8?B?UDZZZEdJU3VlcVRXS1kxZGdpZDJ0SWg4OXRsNHFGUFBFbEJySUxXTUpPT2x4?=
+ =?utf-8?B?YW1qVXA2b2tPWHB6cHBvZHhrUUxHYjJzK05vUHNWKzFmdnN0VzBNUVhMQVY5?=
+ =?utf-8?B?ZU15QmFkUWwyL0I2TTB4RnI0azBlaWNPNncyK1ROMVB5UUhQbWZoZVNobHNM?=
+ =?utf-8?B?Y3RGQzlqTW81YXVGM25mL2dJZWhPcUgvYjAzcEVGSW1ZQ2RnTk5DcU1LUGJh?=
+ =?utf-8?B?aThQWkZCck85bExVZzAxV3BTNXptMDIzbzBtU3RJQ21OQjVLcFR0NFBCSHp0?=
+ =?utf-8?B?Nms3Sk9pNDZzaU9NREdxRzNlZUJLSloyZnpzOEhJYTNWczVPaDhtS0Z6WmNv?=
+ =?utf-8?B?L1VWUEhjc2hqZDc1dlB4cDM4Q3hGeTlQb2RnVlZZOUxzcmRFVW1icTNNNDg1?=
+ =?utf-8?B?RC9rVkE4Tkp0VzlTSkhqaVhJb2lRUkFRb05VM1ZFOHVoOXNBMXpTQ3l0REJE?=
+ =?utf-8?B?bkY5WFB3YlZrazd3S09JNWxjQlY1eVFnKy85OE5FUDNkajFDbzExZlpEazlD?=
+ =?utf-8?B?TE1KR1lCWDVHZmQyOTBib25PM3gzVU9IZW9LQ1h1YkFVcU1tcTlkY1R1by95?=
+ =?utf-8?B?Qk9DbnpsL2R0YnB4bWRVUmFBZis4Y0YrbUcyT2d3eVFTRlVleTNkbEtvNDhL?=
+ =?utf-8?B?TEpJd0NxZ2RxM2dQUzQ0azBOL3lmd1dHMVIzcWtpbmkzMGhJM3drd0lBa1Z1?=
+ =?utf-8?B?Rk5kbXB4Um81YzdmcEt0QUVIR3A0cGV3eTNXbzVVQWJyNVVnNmo5SUtIZkNO?=
+ =?utf-8?B?SlYzNCtjQVVrcnUrSk9FSVdmZTdGZGV3SjROY0ZCOGNnenR4RHV1WEJUMGRs?=
+ =?utf-8?B?Rk1tZGVENnNPVlo1N09kNVhRR3ZQZlZ1WHdsRGMzV3ZTT3k3V2V3ZU83N3RT?=
+ =?utf-8?B?TC9DbFc3cGV5SEcwSEpERzZOeTNmMm1yWTEwWUZhUWo0TzBvZExjRkZKeUpm?=
+ =?utf-8?B?M0JSNy9hOWJrNXIyRDZYLzYzdnFiM1VYYXBCR3ltR2pRTDBWOUZzR1lOK2J1?=
+ =?utf-8?B?MDFDVStKamVIZWx0UzJTZE0wNzhjbmh1NWl6YjkzZU1VRTNwVnVXUXJvRm5t?=
+ =?utf-8?B?eVJGQzl0dUE1TzQybGFPaXBGODAzWlI0d0hZR0l2bWZOenR6NG5JU29DN0FI?=
+ =?utf-8?B?SHQxSkQ4dFlPTlNCMVdSODBzMVZva3F6SUhBblRTM3Y3dFF5OWdnd2tocjJr?=
+ =?utf-8?B?U1E9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4cc50d5d-0ae7-49d3-9fe7-08dcdbb28da7
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8906.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2024 09:31:50.8902
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5CHP6GnP4wczQ72+rCmaxjyBQ1tvKo/UFnaVSBLs75Cq9S8PCFHWPjwyk0577YfOwRCCEB6oEBd6AG3XnnF0eialdoQ2tGfDUZXwmm9RB0E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GVXPR04MB10518
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 21 Sep 2024 12:45:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5363
+ <docs@lists.yoctoproject.org>; Mon, 23 Sep 2024 09:32:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5364
 
-From: Yoann Congal <yoann.congal@smile.fr>
+Hi Simon,
 
-In commit 9257c48c3e36 ("Group and reorder options in bitbake help"),
-help output was changed, update the doc to match the new output.
+On 9/20/24 2:40 PM, Simon A. Eugster via lists.yoctoproject.org wrote:
+> [You don't often get email from simon.eu=gmail.com@lists.yoctoproject.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+> 
 
-Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
----
- .../bitbake-user-manual-intro.rst             | 173 ++++++++++--------
- 1 file changed, 98 insertions(+), 75 deletions(-)
+Please try to always have some commit log to explain what's going on in 
+the commit. It is useful if one does `git log` without `-p`/`--patch` or 
+if additional "metadata"/context to the code is important. E.g. here, 
+you could have said that you were confused by the use of the underscore 
+instead of the colon so you are now making this explicit.
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-index 35ffb88b0..86905f4a8 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
-@@ -349,40 +349,84 @@ Usage and syntax
- Following is the usage and syntax for BitBake::
- 
-    $ bitbake -h
--   Usage: bitbake [options] [recipename/target recipe:do_task ...]
--
--       Executes the specified task (default is 'build') for a given set of target recipes (.bb files).
--       It is assumed there is a conf/bblayers.conf available in cwd or in BBPATH which
--       will provide the layer, BBFILES and other configuration information.
--
--   Options:
--     --version             show program's version number and exit
--     -h, --help            show this help message and exit
--     -b BUILDFILE, --buildfile=BUILDFILE
--                           Execute tasks from a specific .bb recipe directly.
--                           WARNING: Does not handle any dependencies from other
--                           recipes.
--     -k, --continue        Continue as much as possible after an error. While the
--                           target that failed and anything depending on it cannot
--                           be built, as much as possible will be built before
--                           stopping.
-+   usage: bitbake [-s] [-e] [-g] [-u UI] [--version] [-h] [-f] [-c CMD]
-+                  [-C INVALIDATE_STAMP] [--runall RUNALL] [--runonly RUNONLY]
-+                  [--no-setscene] [--skip-setscene] [--setscene-only] [-n] [-p]
-+                  [-k] [-P] [-S SIGNATURE_HANDLER] [--revisions-changed]
-+                  [-b BUILDFILE] [-D] [-l DEBUG_DOMAINS] [-v] [-q]
-+                  [-w WRITEEVENTLOG] [-B BIND] [-T SERVER_TIMEOUT]
-+                  [--remote-server REMOTE_SERVER] [-m] [--token XMLRPCTOKEN]
-+                  [--observe-only] [--status-only] [--server-only] [-r PREFILE]
-+                  [-R POSTFILE] [-I EXTRA_ASSUME_PROVIDED]
-+                  [recipename/target ...]
-+   
-+   It is assumed there is a conf/bblayers.conf available in cwd or in BBPATH
-+   which will provide the layer, BBFILES and other configuration information.
-+   
-+   General options:
-+     recipename/target     Execute the specified task (default is 'build') for
-+                           these target recipes (.bb files).
-+     -s, --show-versions   Show current and preferred versions of all recipes.
-+     -e, --environment     Show the global or per-recipe environment complete
-+                           with information about where variables were
-+                           set/changed.
-+     -g, --graphviz        Save dependency tree information for the specified
-+                           targets in the dot syntax.
-+     -u UI, --ui UI        The user interface to use (knotty, ncurses, taskexp,
-+                           taskexp_ncurses or teamcity - default knotty).
-+     --version             Show programs version and exit.
-+     -h, --help            Show this help message and exit.
-+   
-+   Task control options:
-      -f, --force           Force the specified targets/task to run (invalidating
-                            any existing stamp file).
--     -c CMD, --cmd=CMD     Specify the task to execute. The exact options
-+     -c CMD, --cmd CMD     Specify the task to execute. The exact options
-                            available depend on the metadata. Some examples might
-                            be 'compile' or 'populate_sysroot' or 'listtasks' may
-                            give a list of the tasks available.
--     -C INVALIDATE_STAMP, --clear-stamp=INVALIDATE_STAMP
-+     -C INVALIDATE_STAMP, --clear-stamp INVALIDATE_STAMP
-                            Invalidate the stamp for the specified task such as
-                            'compile' and then run the default task for the
-                            specified target(s).
--     -r PREFILE, --read=PREFILE
--                           Read the specified file before bitbake.conf.
--     -R POSTFILE, --postread=POSTFILE
--                           Read the specified file after bitbake.conf.
--     -v, --verbose         Enable tracing of shell tasks (with 'set -x'). Also
--                           print bb.note(...) messages to stdout (in addition to
--                           writing them to ${T}/log.do_&lt;task&gt;).
-+     --runall RUNALL       Run the specified task for any recipe in the taskgraph
-+                           of the specified target (even if it wouldn't otherwise
-+                           have run).
-+     --runonly RUNONLY     Run only the specified task within the taskgraph of
-+                           the specified targets (and any task dependencies those
-+                           tasks may have).
-+     --no-setscene         Do not run any setscene tasks. sstate will be ignored
-+                           and everything needed, built.
-+     --skip-setscene       Skip setscene tasks if they would be executed. Tasks
-+                           previously restored from sstate will be kept, unlike
-+                           --no-setscene.
-+     --setscene-only       Only run setscene tasks, don't run any real tasks.
-+   
-+   Execution control options:
-+     -n, --dry-run         Don't execute, just go through the motions.
-+     -p, --parse-only      Quit after parsing the BB recipes.
-+     -k, --continue        Continue as much as possible after an error. While the
-+                           target that failed and anything depending on it cannot
-+                           be built, as much as possible will be built before
-+                           stopping.
-+     -P, --profile         Profile the command and save reports.
-+     -S SIGNATURE_HANDLER, --dump-signatures SIGNATURE_HANDLER
-+                           Dump out the signature construction information, with
-+                           no task execution. The SIGNATURE_HANDLER parameter is
-+                           passed to the handler. Two common values are none and
-+                           printdiff but the handler may define more/less. none
-+                           means only dump the signature, printdiff means
-+                           recursively compare the dumped signature with the most
-+                           recent one in a local build or sstate cache (can be
-+                           used to find out why tasks re-run when that is not
-+                           expected)
-+     --revisions-changed   Set the exit code depending on whether upstream
-+                           floating revisions have changed or not.
-+     -b BUILDFILE, --buildfile BUILDFILE
-+                           Execute tasks from a specific .bb recipe directly.
-+                           WARNING: Does not handle any dependencies from other
-+                           recipes.
-+   
-+   Logging/output control options:
-      -D, --debug           Increase the debug level. You can specify this more
-                            than once. -D sets the debug level to 1, where only
-                            bb.debug(1, ...) messages are printed to stdout; -DD
-@@ -392,65 +436,44 @@ Following is the usage and syntax for BitBake::
-                            -D only affects output to stdout. All debug messages
-                            are written to ${T}/log.do_taskname, regardless of the
-                            debug level.
-+     -l DEBUG_DOMAINS, --log-domains DEBUG_DOMAINS
-+                           Show debug logging for the specified logging domains.
-+     -v, --verbose         Enable tracing of shell tasks (with 'set -x'). Also
-+                           print bb.note(...) messages to stdout (in addition to
-+                           writing them to ${T}/log.do_<task>).
-      -q, --quiet           Output less log message data to the terminal. You can
-                            specify this more than once.
--     -n, --dry-run         Don't execute, just go through the motions.
--     -S SIGNATURE_HANDLER, --dump-signatures=SIGNATURE_HANDLER
--                           Dump out the signature construction information, with
--                           no task execution. The SIGNATURE_HANDLER parameter is
--                           passed to the handler. Two common values are none and
--                           printdiff but the handler may define more/less. none
--                           means only dump the signature, printdiff means compare
--                           the dumped signature with the cached one.
--     -p, --parse-only      Quit after parsing the BB recipes.
--     -s, --show-versions   Show current and preferred versions of all recipes.
--     -e, --environment     Show the global or per-recipe environment complete
--                           with information about where variables were
--                           set/changed.
--     -g, --graphviz        Save dependency tree information for the specified
--                           targets in the dot syntax.
--     -I EXTRA_ASSUME_PROVIDED, --ignore-deps=EXTRA_ASSUME_PROVIDED
--                           Assume these dependencies don't exist and are already
--                           provided (equivalent to ASSUME_PROVIDED). Useful to
--                           make dependency graphs more appealing
--     -l DEBUG_DOMAINS, --log-domains=DEBUG_DOMAINS
--                           Show debug logging for the specified logging domains
--     -P, --profile         Profile the command and save reports.
--     -u UI, --ui=UI        The user interface to use (knotty, ncurses, taskexp or
--                           teamcity - default knotty).
--     --token=XMLRPCTOKEN   Specify the connection token to be used when
--                           connecting to a remote server.
--     --revisions-changed   Set the exit code depending on whether upstream
--                           floating revisions have changed or not.
--     --server-only         Run bitbake without a UI, only starting a server
--                           (cooker) process.
--     -B BIND, --bind=BIND  The name/address for the bitbake xmlrpc server to bind
-+     -w WRITEEVENTLOG, --write-log WRITEEVENTLOG
-+                           Writes the event log of the build to a bitbake event
-+                           json file. Use '' (empty string) to assign the name
-+                           automatically.
-+   
-+   Server options:
-+     -B BIND, --bind BIND  The name/address for the bitbake xmlrpc server to bind
-                            to.
--     -T SERVER_TIMEOUT, --idle-timeout=SERVER_TIMEOUT
-+     -T SERVER_TIMEOUT, --idle-timeout SERVER_TIMEOUT
-                            Set timeout to unload bitbake server due to
-                            inactivity, set to -1 means no unload, default:
-                            Environment variable BB_SERVER_TIMEOUT.
--     --no-setscene         Do not run any setscene tasks. sstate will be ignored
--                           and everything needed, built.
--     --skip-setscene       Skip setscene tasks if they would be executed. Tasks
--                           previously restored from sstate will be kept, unlike
--                           --no-setscene
--     --setscene-only       Only run setscene tasks, don't run any real tasks.
--     --remote-server=REMOTE_SERVER
-+     --remote-server REMOTE_SERVER
-                            Connect to the specified server.
-      -m, --kill-server     Terminate any running bitbake server.
-+     --token XMLRPCTOKEN   Specify the connection token to be used when
-+                           connecting to a remote server.
-      --observe-only        Connect to a server as an observing-only client.
-      --status-only         Check the status of the remote bitbake server.
--     -w WRITEEVENTLOG, --write-log=WRITEEVENTLOG
--                           Writes the event log of the build to a bitbake event
--                           json file. Use '' (empty string) to assign the name
--                           automatically.
--     --runall=RUNALL       Run the specified task for any recipe in the taskgraph
--                           of the specified target (even if it wouldn't otherwise
--                           have run).
--     --runonly=RUNONLY     Run only the specified task within the taskgraph of
--                           the specified targets (and any task dependencies those
--                           tasks may have).
-+     --server-only         Run bitbake without a UI, only starting a server
-+                           (cooker) process.
-+   
-+   Configuration options:
-+     -r PREFILE, --read PREFILE
-+                           Read the specified file before bitbake.conf.
-+     -R POSTFILE, --postread POSTFILE
-+                           Read the specified file after bitbake.conf.
-+     -I EXTRA_ASSUME_PROVIDED, --ignore-deps EXTRA_ASSUME_PROVIDED
-+                           Assume these dependencies don't exist and are already
-+                           provided (equivalent to ASSUME_PROVIDED). Useful to
-+                           make dependency graphs more appealing.
- 
- .. _bitbake-examples:
- 
+I don't think it's warranted to send a v2 just for that, just think 
+about it for your next contribution!
+
+> Signed-off-by: Simon A. Eugster <simon.eu@gmail.com>
+
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+
+Thanks!
+Quentin
 
