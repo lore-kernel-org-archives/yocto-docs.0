@@ -1,435 +1,193 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4EDA3C369CE
-	for <webhook@archiver.kernel.org>; Thu, 26 Sep 2024 11:58:36 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
- by mx.groups.io with SMTP id smtpd.web10.40681.1727351911479545441
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B3398CF9C7D
+	for <webhook@archiver.kernel.org>; Thu, 26 Sep 2024 12:48:46 +0000 (UTC)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.65.40])
+ by mx.groups.io with SMTP id smtpd.web11.42068.1727354916902907897
  for <docs@lists.yoctoproject.org>;
- Thu, 26 Sep 2024 04:58:31 -0700
+ Thu, 26 Sep 2024 05:48:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=ap8Djwu1;
- spf=pass (domain: intel.com, ip: 192.198.163.19, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727351912; x=1758887912;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=tkpnaYUwT/JfKdeKwrQ9m1te/kzHpAfwKs6FWXEHtRs=;
-  b=ap8Djwu1DBK9tAljgZOVRIUbWFMya5NQMLK4mxOI9LKYmgC2izZgAIDY
-   hI04QnW+GfYJmnI956/2NMecQ6EgzUb0+A9jfoJigQ3c0KlOHPSfXvXVJ
-   C8WGm7eOJsUdMQ2LpwfulLFgZ686kHVRIIUWTo+GJ81S1hZFswdrWVCl+
-   gXHpXxQADtAtPqan/MaIrPOmDFLMfzBunCUj7KJW3xWSqNB+eRQHkYl0q
-   Ud12gcp4cTE2H8OxNVcVNtDw0lmo6mfz90NDc0ufbwZcWxl+FPPVU7DD0
-   eIFKHaH6a2ktgbu7iNBCN30j8Iosrs4uT4cidzzqWQiILVXvzd3rJmO/+
-   Q==;
-X-CSE-ConnectionGUID: cX366LnfQvyGkOXO2ebwRA==
-X-CSE-MsgGUID: XMkDifY+QiOFSQ8tmPGtxQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11206"; a="25947432"
-X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; 
-   d="scan'208";a="25947432"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 04:58:32 -0700
-X-CSE-ConnectionGUID: PtHZcz1pTwCea0JrCK6gmA==
-X-CSE-MsgGUID: 8vDI0e7lTaqUQ6+vC3qiAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; 
-   d="scan'208";a="76207275"
-Received: from cheeyang-desk1.png.intel.com ([172.30.130.8])
-  by fmviesa003.fm.intel.com with ESMTP; 26 Sep 2024 04:58:30 -0700
-From: chee.yang.lee@intel.com
-To: docs@lists.yoctoproject.org
-Subject: [PATCH 1/1] release-notes-5.1: update for several section
-Date: Thu, 26 Sep 2024 19:57:52 +0800
-Message-Id: <20240926115752.2412800-2-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240926115752.2412800-1-chee.yang.lee@intel.com>
-References: <20240926115752.2412800-1-chee.yang.lee@intel.com>
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=R9k7MD/A;
+ spf=pass (domain: cherry.de, ip: 52.101.65.40, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bmvoiA6LoSBebViOwSXUa4KX9eDQNLU+YljbXgzZ8kGwsGeDq5Vl5KYuSGN/6SUjQaZY0pN4VSJXqzgzDpyuHhm+whdJ6V00jsh4SZ+mUf9a94Unp5tEBo/SwXeJKeQ0fANf+diw17YEIafQ/IctEAfHtbSe8fvA3kBEd8lvT3JwDKkvRSMLbLRr3ufKIxU1y4byDdFv4+7ZD1vUOvsrvJtbbnY26olXvP0HLVp4V6P+OYwDusQ29EceuvZwdLIXOrZbtsuaVsVABOOVk8C88XTBz5xpwGPxJh2vWHChY10U+PXQWiLADY3+XK7PIB7qEbnbpInqzSrB+xI7TUNyUQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JfI0+msAcjzAIojuFki4tU00H0anEZsXXZ9BXo4MszA=;
+ b=J+NVapPJSl6cGIQJjQ8e0uR+p7N+ygMRQHgH3gAWb1SY8tf48XNHZzn8ANgGs3+sp90ErSgW/s6L9rTpxQJ1VCM6+Id549pGvDF52ppRxWGsnNHxONyTi0jqcuNlpEhTNM4RSUttbk/X9XyO4aPB+ecnzncvzjBmyZ6gf6b8tdUsUwqUDadNK7HsrhIIDMQ61LiHHV9uuU/4oiqg/UZvTn6DX/K1t1DWYSqDxPFrb6H711YZw4F1MkLcn7R8N5r3hPEyaztiPHdcCqzlJhiC7ooCeAbIgLynNAoQx1pMq3BbhEhuB0K5jIbjS+vdh+xOwvMawrpyzkb7j+dA/GuYYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JfI0+msAcjzAIojuFki4tU00H0anEZsXXZ9BXo4MszA=;
+ b=R9k7MD/AVgBTgsaA+1rV40dmYh5jHng1kYX0xPTA3h2mBim2w57CDB+SGFaklLcKpnDx64mYGXA7jT66Bt5RVcicLeutXPlxKHn4731yoo4SQsauIDEiovHGrRoq9fYivfsrK+ieNND/FEWfZrQkV1hVZnspbL4sO+ixuT0BZh8=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AM9PR04MB8906.eurprd04.prod.outlook.com (2603:10a6:20b:409::9)
+ by AM9PR04MB8226.eurprd04.prod.outlook.com (2603:10a6:20b:3ea::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.27; Thu, 26 Sep
+ 2024 12:48:29 +0000
+Received: from AM9PR04MB8906.eurprd04.prod.outlook.com
+ ([fe80::d379:5378:b1:cea]) by AM9PR04MB8906.eurprd04.prod.outlook.com
+ ([fe80::d379:5378:b1:cea%2]) with mapi id 15.20.7918.024; Thu, 26 Sep 2024
+ 12:48:29 +0000
+Message-ID: <04e2ee7d-fafe-414a-9b06-83d93680a15f@cherry.de>
+Date: Thu, 26 Sep 2024 14:48:28 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 1/4] migration/release-notes-5.1: document
+ oeqa/selftest envvars change
+To: yoann.congal@smile.fr, docs@lists.yoctoproject.org
+References: <20240925132017.3427438-1-yoann.congal@smile.fr>
+ <20240925132017.3427438-2-yoann.congal@smile.fr>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20240925132017.3427438-2-yoann.congal@smile.fr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: WA2P291CA0005.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1e::11) To AM9PR04MB8906.eurprd04.prod.outlook.com
+ (2603:10a6:20b:409::9)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM9PR04MB8906:EE_|AM9PR04MB8226:EE_
+X-MS-Office365-Filtering-Correlation-Id: dcfb37c5-de1b-43dc-67e0-08dcde298560
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?ZEtQY004bGx6VFNqRVlzY0tzRWJOYXJUZWhHN3VKK0xCMjVoSXZ3aTJIVXc1?=
+ =?utf-8?B?K3h4VGhyWC9lZFRNS2J4eXJzS0VBUjVuNkNlUisxNHVVYjZHVXRQcjhZOW5E?=
+ =?utf-8?B?MGhhRzN4NHhEenVsajh6QW03aUMrV0NzUWdhUmdsODk2d21ZazNZdzM5Wlgv?=
+ =?utf-8?B?SmhoL3hKOE85NW5MYVgzeG14d3J6TU9VZG9qMmtQZjZVb2swSldqSGZJUWhk?=
+ =?utf-8?B?VWZyN2IvMTUreTdneGRHWWN6Z1pJUFJVNXFnREozWFplYXVqemt4Tk1aVnZq?=
+ =?utf-8?B?T2xLN3p6cGJaRDRydHNjNnhpVjkzRmg3WDNCMEJXdmR6MDVJWGhuVlRvcjE1?=
+ =?utf-8?B?L0JTQWtjU1krNHhIS2JEb21SU3ZRcnhvcmlPTWRLdU5idWZwWjdhd0lNK2ZG?=
+ =?utf-8?B?eU9Jd001Uk1TVVhlemVkdVF0MWlqeTBsZEQ4OXBGK09HNjk1ZGhxbEtWV09p?=
+ =?utf-8?B?aElyMC9KVVg5c1d6TGhkSGJCNWRFNmV0K0E5VkdJNmFjbWpTNkdPckFHNlRl?=
+ =?utf-8?B?cmtFU1A2Mys4TzFscDJYbHpuOXpsWFJ1R3lvSEdDblpZQjNDWkVMaXIwZCtQ?=
+ =?utf-8?B?cUQxdm9DaVpmeU11UDVpdTlCRlh2ZmxDMWZiVEkvNUxYOFN1NlpYMEpvV05M?=
+ =?utf-8?B?cERXbGp4RE55WC82dVcyeHZQQi8rTmF6dXlid0NFU1pyaFU3bUNpSGE5Ykgv?=
+ =?utf-8?B?c1hRZHFKdlRZMFZnUDB4ZDBSWjg2VitYMmdkSm9IL0N6MW5Odi9KMGRzbEpp?=
+ =?utf-8?B?d09UaG15SENWNTRKbGEvaitGbEYxVkNNQW5aa0NoQURZRDZZakt5eDZLM1ph?=
+ =?utf-8?B?aUpiK1paVzd2eXhOeEFXVzRvUTVBbThibm1LSWVXT0VPamJmSkFTSlpPM0Z1?=
+ =?utf-8?B?Mmc3L25sWjc0WWZiUHVVUUY2SHpmMEp6TU5xam92M3NUdzZ0WFlZUlpsbC8x?=
+ =?utf-8?B?NGVsRHN3VmtQTlcwOEdFekFha0NBa2lSSWhMdVlTWWVSOEhoSFJ2Q0Z6Vlh0?=
+ =?utf-8?B?Q3dmUDVUclY5YVI1dnIxN3hOdUx1MGt4VDJwRXNSOFdOQk9pVU5Id0NxZkRv?=
+ =?utf-8?B?N3JnNUtaclFlS1d6cHhkZWc2OC8xRk9haXBra0h6MnZvanoxbG5ITkFqTGpx?=
+ =?utf-8?B?Q1BPZ3NGbVFsdEo5ZzdDVjJpZjlMdjVRTEpmelNtbWk2U3FMTWNxWHJrYVFQ?=
+ =?utf-8?B?YTJjVCtwMnJ6U0pvZjY5emRpbHBwTDhKWlpPKzBFNEFQbWxYRWU0N1c2MEhI?=
+ =?utf-8?B?N1YyelEyNXE1UGlNVlR2aHhXWlgrd3NCcEJ3TW9PTU9rWlBaT2lwTEhPLzFl?=
+ =?utf-8?B?dW02QXpSS3M3VThnZUZCN2JzSFp6cldsK1J2Nkx4TnhkU1oycTd5b0RZMjlt?=
+ =?utf-8?B?WmRwQW1QZ2FxbEo1QlBPK1BaU0pKRGtiODJLY3k4N3RETlV0SkQ1UlhoQnBk?=
+ =?utf-8?B?LzVMUFdQYUVKemZxSU54N0xrM25iSFdwVU1xdkFQZFVxajdIWWhjMGU4K2pP?=
+ =?utf-8?B?c09CNjFHUFlHd2hnUlFuaHpTSm1HS0pDWUlQQ0VFV0J1TjFXSytrRFV2dkVB?=
+ =?utf-8?B?c0FoYmxSSU8wWi80VXQzd1BvL1lYT3Q4d2l0eHRzdGFSY050R2pVZHN1MTQ3?=
+ =?utf-8?B?M0k2MGRNd3lzd2RXL2Y0K3NHN3hrczhPWWdOWjlyakJ6cTlRcmRwdEZwMGlz?=
+ =?utf-8?B?RFB4clEySVZ6cDFMVXJ4ODJMK3VndmFMWUhmdVcxSklxbVY4UHp4WG1zZHM2?=
+ =?utf-8?B?cXlwMHJmNGZkczllVU8zZTN4MHdpNzdST3h6Yi9YMEE5NktLOGdNMDRmVmk4?=
+ =?utf-8?B?blhFRGlhT1ZtU1pLd3Zrdz09?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8906.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?NjNuK3BDaWptbWNCWGw2M2Y2YXFLUTYyYkpOVk9HTXFPcXhnTFpuNlRuSGxJ?=
+ =?utf-8?B?Y0M3amxReWZNNDVHYWJVamkxOXVtclVscmlad2hTR1N4aGprS0NLZ291QUk0?=
+ =?utf-8?B?ME9mZG1UYkYxUlpkV2VnbUJMb3lZazRyZHBvWHErTVVpNU9acVJMWUROSGpm?=
+ =?utf-8?B?Z2xLZjY0RkRHRVdNdjJQbmR3a2czRTJWMnZMN2h3c2tPR1NkeVNId3VIQ3o0?=
+ =?utf-8?B?UWpxQ3dVcW4zbFVlbjBrR2ZkRFAxUTFsMnViN0NBZDJJMEJKVlpHbUxoa1Ju?=
+ =?utf-8?B?WUdlaitOQUdDczgzdTI1WGFzT3BpZVhTdkZmMDJDdG9qWjNHMHp5ZkFDd05q?=
+ =?utf-8?B?L3VPNk55UTg5cTNIM2NqcUtTUzZpZEdWdEFUSTBNN1dkWkg3MjJzZDU2TnNy?=
+ =?utf-8?B?OXNMYmN0QkRnbHk5OVRzNldnbWVEZXJDZlJ5YmdHb3JodS8yQVZIeGM4bTRi?=
+ =?utf-8?B?SkFMdjNoUHJOS1YxZ3BzUXRiM0I2cndSTytHQzRZNU1lbEU1akZ5Zkp2Ymh0?=
+ =?utf-8?B?UlIySFpMRjRleUo4WnM1MEtOcE1ac0ZNc2pnKytMcW04NTl6a1ZQQThkbmdQ?=
+ =?utf-8?B?MGFwNnlTeXhpTGJZSXNYcWYzRXUvcE9CalNhREhySW1pRDN4UjhNeFZBbHoz?=
+ =?utf-8?B?TjZ1U3FWSUhSa0FvbVREd2wxNnFkbFZzdDl0ZVN6UUpjb2NidGlGckhPKzlD?=
+ =?utf-8?B?ejZaSXZabDJ6Ny9nc004NDg5dGxMQVZFam1PZkRub3N1RUJwRkUyZTVFaHNw?=
+ =?utf-8?B?ODJPUTlGR1R6elZGTUx1OXpyNHZFR0NXWXNrNTJHdDJuYVExU0NXRm1yZGlr?=
+ =?utf-8?B?Z2pGTW9MMEdqWDh4YXpsTnNJUlA3QWQ3ZG9yM0xQN3NodXM3ZjlIUVpWb2FP?=
+ =?utf-8?B?OFovNE1leHRKR2M4bVlyTGNzdmR1RlhaeXBOZWs3d3ZwNUUvTDRIWENKNmpq?=
+ =?utf-8?B?QThSbEMxZWdDMWg1ZE5nVm1BTEQvWXFVZkRHcTBCdEpEQjYrV0t2SDA5cE1Q?=
+ =?utf-8?B?anZyRzBZTnZ5dTF2K2xNbDFGNkk0OER6TnY1NlRncWUrYU9nNlRDS0YwYjFH?=
+ =?utf-8?B?bW9uRUlLVG9wMmhLUWU3RFZkRENVa1hTSU91YW5sL1pQeDlpM1hoazVmcFFY?=
+ =?utf-8?B?MlB1YlNHR0JWckJoL0l4UmZlU2NNWVVrRGhKMzg5aHpreXZPb21PZGdZY00x?=
+ =?utf-8?B?L0Nhby9TNGhjYVZPTmg4bVYzTU1KT2o2MDdNcUg4SGlmVnpEN1AwN2ZWNDJp?=
+ =?utf-8?B?U1FpeEFwc3VDdWh6M3g4Q2tXYmVqUzZaQy9qakRUUjlsc2VpOGFkb2JhZkc2?=
+ =?utf-8?B?M0NwM1JHN0hiUGEvUVNXVnI2Mm9IdS9tNlN6UTJnWVcrdXNPMG5Uc1JaZllI?=
+ =?utf-8?B?Zy9TMStnRFhObGplOHJKdno5UDRwSVlIdEgxaWNQQ2VmcHhLSlo0VTE5ZStU?=
+ =?utf-8?B?VlVUN2N6bDdyTUt1M2lrcjlaOEdXMGRFczZJUkUvdjcyKzl6WW4rcU9saXAr?=
+ =?utf-8?B?ZVdscVZLQkJNL1gvWWZPZ1JKb2NvalhkZlRrK2lsWndsZ1Q0c09iQW5Tb3lC?=
+ =?utf-8?B?Si82emJyaUVGUjFqVFNNejNlSElRdEhRemJxN0ZDUkFUMEVLK1VxRGhOazRt?=
+ =?utf-8?B?WHB6cGtBK3BPVjN0dVNndjh5cFVWSHhVYWc4ajVaZHVBdld4aGg5WjdiSUFi?=
+ =?utf-8?B?dVVxUnlJYm1EV1FUQ2lMWkZNelRodlNkQ1laWjVrTWdoV2lVWUFWQnd2Qnor?=
+ =?utf-8?B?YTlwN1diUVhzOEdCeWphTDRuci90YTBXREJkbXphdmcranB6aGxnaEdpY3NH?=
+ =?utf-8?B?cmd0c0VycEpkR1RERG51dlJQZHVEVWxzNUV1TTBXb2xvS2FreStLd3BKTENi?=
+ =?utf-8?B?NGVVTGRwSlF5ZnVqbmorRFZFeE5iOXYyNW16cFhOZ2VjSHg5QkZDOVN5NUZw?=
+ =?utf-8?B?VlBQblZZL3ZsTk5wTjZRdkU4dFFvbkhraktaT2hIanN5RzhmUHM3M2ZZbmdS?=
+ =?utf-8?B?S2xyZG9NQXJhUFZUNDdrMEJ3dzFxdW54bU1VUDVlWXlpSHZKcnFmK2hrV3FK?=
+ =?utf-8?B?VkVzNTdzYXNQblFHMkNDZThHc2RraFdtVEVqMmZqUndUQXBtbjdUWitnVEtv?=
+ =?utf-8?B?eGFuUmNIeU1YUXZuYUF3ZE4welB1bVVhVGlmZ1RTSTdEM2ZFZWVuSUtGNzVp?=
+ =?utf-8?B?VkE9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: dcfb37c5-de1b-43dc-67e0-08dcde298560
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8906.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2024 12:48:29.3908
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3NGAmGdxnFptxgVauBvBxfKhadvUtU4RnHIOlLcKSk+WEqCYpz8+suxqSuNBzJFo+P9X7yI1iq6Y5mydT7YF9yfgA8clP/S2dMl+Mrm0qRs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8226
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 26 Sep 2024 11:58:36 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5373
+ <docs@lists.yoctoproject.org>; Thu, 26 Sep 2024 12:48:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5374
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Hi Yoann,
 
-update for these changes:-
- - license
- - recipe enable for ptests
- - new class, recipe and variable.
- - PACKAGECONFIG
- - some utility script, class and include file.
- - bitbake.
- - qemu/runqemu.
- - Contributors.
-removed wic as no significant change or improvement.
+On 9/25/24 3:20 PM, Yoann Congal via lists.yoctoproject.org wrote:
+> From: Yoann Congal <yoann.congal@smile.fr>
+> 
+> This covers the Poky commit:
+> 61186bc98a5 (oeqa/selftest: Only rewrite envvars paths that absolutely point to builddir, 2024-09-10)
+> 
+> Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+> ---
+>   documentation/migration-guides/migration-5.1.rst     | 5 +++++
+>   documentation/migration-guides/release-notes-5.1.rst | 2 ++
+>   2 files changed, 7 insertions(+)
+> 
+> diff --git a/documentation/migration-guides/migration-5.1.rst b/documentation/migration-guides/migration-5.1.rst
+> index b43fecc2d..14329c6a8 100644
+> --- a/documentation/migration-guides/migration-5.1.rst
+> +++ b/documentation/migration-guides/migration-5.1.rst
+> @@ -141,3 +141,8 @@ QEMU changes
+>   Miscellaneous changes
+>   ~~~~~~~~~~~~~~~~~~~~~
+>   
+> +   -  oeqa/selftest now only rewrite environnement variable paths that
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
----
- .../migration-guides/release-notes-5.1.rst    | 304 +++++++++++++++++-
- 1 file changed, 301 insertions(+), 3 deletions(-)
+Maybe it should be "rewrites" here? Not sure though.
 
-diff --git a/documentation/migration-guides/release-notes-5.1.rst b/documentation/migration-guides/release-notes-5.1.rst
-index 8b51f5677..a6b414c20 100644
---- a/documentation/migration-guides/release-notes-5.1.rst
-+++ b/documentation/migration-guides/release-notes-5.1.rst
-@@ -10,30 +10,92 @@ New Features / Enhancements in 5.1
- 
- -  New variables:
- 
-+   - :term:`CVE_CHECK_MANIFEST_JSON_SUFFIX`: suffix for the CVE JSON manifest file.
-+
-+   - :term:`PRSERVER_UPSTREAM`: Upstream PR service (host:port).
-+
-+   - :term:`RECIPE_UPGRADE_EXTRA_TASKS`: space-delimited list of tasks to run after the new
-+     sources have been unpacked in scripts/lib/devtool/upgrade.py ugrade() method.
-+
-+   - :term:`UNPACKDIR`: allow change of do_unpack directory.
-+
- -  Architecture-specific enhancements:
- 
- -  Kernel-related enhancements:
- 
-+  - The default kernel is the current stable (6.10), and there is also support
-+    for the latest long-term release (6.6).
-+
- -  New core recipes:
- 
-+   -  `fmt <https://fmt.dev>`__: an open-source formatting library for C++. (from meta-oe)
-+
-+   -  `xcb-util-errors <http://xcb.freedesktop.org/XcbUtil/>`__: gives human readable
-+      names to error codes and event codes
-+
- -  QEMU / ``runqemu`` enhancements:
- 
---  Rust improvements:
-+   - runqemu: :term:`QB_DRIVE_TYPE` now support for sd card (/dev/mmcblk)
- 
---  wic Image Creator enhancements:
-+-  Rust improvements:
- 
- -  SDK-related improvements:
- 
-+   -  included ``nativesdk-python3-pip`` in buildtools.
-+
- -  Testing:
- 
-    -  oeqa/selftest: Only rewrite envvars paths that absolutely point to builddir
- 
--   -  Enable ptests for ``python3-libarchive-c``
-+   -  Enable ptests for ``python3-cffi``, ``python3-idna``, ``python3-libarchive-c``,
-+      ``python3-mako``, ``python3-packaging``, ``python3-uritools`` and ``pythonn3-rpds-py``.
- 
- -  Utility script changes:
- 
-+   -  New ``cve-json-to-text`` script that converts the cve-check result from the JSON format
-+      to the TEXT format as cve-check removed text format.
-+
-+   -  New ``makefile-getvar`` script to extract value from a Makefile.
-+
-+   -  New ``pull-spdx-licenses`` script to pull SPDX license data, update license list JSON
-+      data and update license directory.
-+
-+   -  Several improvement in ``oe-build-perf-report`` report.
-+
-+   -  ``oe-debuginfod`` add parameter "-d" to store debuginfod files in project sub-directory.
-+
-+   -  ``resulttool`` support test report generation in JUnit XML format.
-+
-+
- -  BitBake improvements:
- 
-+   -  New go module fetcher (``gomod://``) for downloading module dependencies to the
-+      module cache from a module proxy.
-+
-+   -  New go module fetcher (``gomodgit://``) for downloading module dependencies to the
-+      module cache directly from a git repository.
-+
-+   -  Crate added check for latest upstream version.
-+
-+   -  Syncrpc required a minimum version of the websockets module depend on python version.
-+
-+   -  Improved bitbake-hashclient stress statistics reporting.
-+
-+   -  bitbake-hashserv added ``reuseport`` parameter to enable SO_REUSEPORT, allowing
-+      multiple servers to bind to the same port for load balancing
-+
-+   -  improved cloning speed with :term:`BB_GIT_SHALLOW` and :term:`BB_GENERATE_MIRROR_TARBALLS`.
-+
-+   -  bitbake UI now include log paths for failed task.
-+
-+   -  fetcher2 support for wget and wget2.
-+
-+   -  fetcher2 support npm package name with '@' character.
-+
-+   -  Codeparser now support shell substitution in quotes, for example::
-+
-+         var1="$(cmd1 ...)"
-+
- -  devtool improvements:
- 
-    - Fix _test_devtool_add_git_url test
-@@ -52,6 +114,52 @@ New Features / Enhancements in 5.1
- 
-    -  spriv-tools is now repeatably reproducible
- 
-+   -  Allow selection of host key types used by openssh.
-+
-+   -  New glibc task do_symlist to list exported symbols.
-+
-+   -  initramfs-framework support for force reboot in the case of fatal error.
-+
-+   -  insane class now check for patch-status and pep517-backend by default.
-+
-+   -  New ``yocto-space-optimize`` include file to allow turning off debug compiler options
-+      for a small set of recipes to reduce build on disk footprint and package/sstate sizes.
-+
-+   -  Update to SPDX license version 3.24.0
-+
-+   -  New :ref:`create-spdx-3.0` class to generate SPDX 3.0 output, :ref:`create-spdx-image-3.0`
-+      class that is used when generating images and :ref:`create-spdx-sdk-3.0` for sdk
-+      based recipes.
-+
-+   -  New :ref:`nospdx` class that allows recipes to opt out of generating SPDX.
-+
-+   -  New :ref:`Vex` class generates the minimum information that is necessary
-+      for VEX generation by an external CVE checking tool.
-+
-+   -  New :ref:`retain` class creates a tarball of the work directory for a recipe
-+      when one of its tasks fails, or any other nominated directories.
-+
-+   -  New :ref:`localpkgfeed` class create a subset of the package feed that just
-+      contain the packages depended on by this recipe.
-+
-+   -  New :term:`PACKAGECONFIG` options for individual recipes:
-+
-+      - appstream: qt6
-+      - cronie: inotify
-+      - gstreamer1.0-plugins-bad: gtk3
-+      - libsdl2: libsamplerate
-+      - mesa: tegra
-+      - openssl: hostkey-rsa hostkey-ecdsa hostkey-ed25519
-+      - pciutils: kmod zlib
-+      - piglit: wayland
-+      - pulseaudio: oss-output
-+      - python3: staticlibpython
-+      - python3-jsonschema: format-nongpl (previously "nongpl")
-+      - systemd: bpf-framework
-+      - util-linux: libmount-mountfd-support
-+
-+   -  Stop referring :term:`WORKDIR` for :term:`S` and :term:`B`.
-+
- Known Issues in 5.1
- ~~~~~~~~~~~~~~~~~~~
- 
-@@ -60,6 +168,20 @@ Recipe License changes in 5.1
- 
- The following corrections have been made to the :term:`LICENSE` values set by recipes:
- 
-+-  ``dejagnu``: update :term:`LICENSE` to ``GPL-3.0-only``.
-+-  ``gcr``: update :term:`LICENSE` to ``LGPL-2.0-only``.
-+-  ``glibc``: update :term:`LICENSE` to ``GPL-2.0-only & LGPL-2.1-or-later``.
-+-  ``gpgme``: update :term:`LICENSE` for different packages.
-+-  ``libgcrypt``: add license ``BSD-3-Clause``.
-+-  ``linux-firmware``: separate license ``Firmware-linaro`` for linaro-license package.
-+-  ``iw``: update :term:`LICENSE` to ``ISC``.
-+-  ``ppp``: add license ``RSA-MD`` .
-+-  ``tiff``: update :term:`LICENSE` to ``libtiff``.
-+-  ``unzip``: update :term:`LICENSE` to ``Info-ZIP``.
-+-  ``xz``: add :term:`LICENSE` ``PD`` for xz, xz-dev and xz-doc package.
-+-  ``zip``: update :term:`LICENSE` to ``Info-ZIP``.
-+
-+
- Security Fixes in 5.1
- ~~~~~~~~~~~~~~~~~~~~~
- 
-@@ -71,5 +193,181 @@ Contributors to 5.1
- 
- Thanks to the following people who contributed to this release:
- 
-+- Adithya Balakumar
-+- Adriaan Schmidt
-+- Adrian Freihofer
-+- Alban Bedel
-+- Alejandro Hernandez Samaniego
-+- Aleksandar Nikolic
-+- Alessandro Pecugi
-+- Alexander Kanavin
-+- Alexander Sverdlin
-+- Alexandre Belloni
-+- Alexandre Truong
-+- Alexis Lothoré
-+- Andrew Fernandes
-+- Andrew Oppelt
-+- Andrey Zhizhikin
-+- Anton Almqvist
-+- Antonin Godard
-+- Anuj Mittal
-+- Archana Polampalli
-+- Bartosz Golaszewski
-+- Benjamin Bara
-+- Benjamin Szőke
-+- Bruce Ashfield
-+- Carlos Alberto Lopez Perez
-+- Changhyeok Bae
-+- Changqing Li
-+- Chen Qi
-+- Chris Laplante
-+- Chris Spencer
-+- Christian Bräuner Sørensen
-+- Christian Lindeberg
-+- Christian Taedcke
-+- Clara Kowalsky
-+- Clément Péron
-+- Colin McAllister
-+- Corentin Lévy
-+- Daniel Klauer
-+- Daniel Semkowicz
-+- Daniil Batalov
-+- Dan McGregor
-+- Deepesh Varatharajan
-+- Deepthi Hemraj
-+- Denys Dmytriyenko
-+- Divya Chellam
-+- Dmitry Baryshkov
-+- Emil Kronborg
-+- Enguerrand de Ribaucourt
-+- Enrico Jörns
-+- Esben Haabendal
-+- Etienne Cordonnier
-+- Fabio Estevam
-+- Felix Nilsson
-+- Florian Amstutz
-+- Gassner, Tobias.ext
-+- Gauthier HADERER
-+- Guðni Már Gilbert
-+- Harish Sadineni
-+- Heiko Thole
-+- Het Patel
-+- Hongxu Jia
-+- Igor Opaniuk
-+- Intaek Hwang
-+- Iskander Amara
-+- Jaeyoon Jung
-+- Jan Vermaete
-+- Jasper Orschulko
-+- Joe Slater
-+- Johannes Schneider
-+- John Ripple
-+- Jonas Gorski
-+- Jonas Munsin
-+- Jonathan GUILLOT
-+- Jon Mason
-+- Jookia
-+- Jordan Crouse
-+- Jörg Sommer
-+- Jose Quaresma
-+- Joshua Watt
-+- Julien Stephan
-+- Kai Kang
-+- Kari Sivonen
-+- Khem Raj
-+- Kirill Yatsenko
-+- Konrad Weihmann
-+- Lee Chee Yang
-+- Lei Maohui
-+- Leon Anavi
-+- Leonard Göhrs
-+- Louis Rannou
-+- Marc Ferland
-+- Marcus Folkesson
-+- Marek Vasut
-+- Mark Hatle
-+- Markus Volk
-+- Marlon Rodriguez Garcia
-+- Marta Rybczynska
-+- Martin Hundebøll
-+- Martin Jansa
-+- Matthew Bullock
-+- Matthias Pritschet
-+- Maxin B. John
-+- Michael Glembotzki
-+- Michael Haener
-+- Michael Halstead
-+- Michael Opdenacker
-+- Michal Sieron
-+- Mikko Rapeli
-+- Mingli Yu
-+- Naveen Saini
-+- Niko Mauno
-+- Ninette Adhikari
-+- Noe Galea
-+- Ola x Nilsson
-+- Oleksandr Hnatiuk
-+- Otavio Salvador
-+- Patrick Wicki
-+- Paul Barker
-+- Paul Eggleton
-+- Paul Gerber
-+- Pedro Ferreira
-+- Peter Kjellerstedt
-+- Peter Marko
-+- Philip Lorenz
-+- Poonam Jadhav
-+- Primoz Fiser
-+- Quentin Schulz
-+- Ralph Siemsen
-+- Rasmus Villemoes
-+- Ricardo Simoes
-+- Richard Purdie
-+- Robert Joslyn
-+- Robert Kovacsics
-+- Robert Yang
-+- Ross Burton
-+- Rudolf J Streif
-+- Ryan Eatmon
-+- Sabeeh Khan
-+- Sakib Sajal
-+- Samantha Jalabert
-+- Siddharth Doshi
-+- simit.ghane
-+- Simone Weiß
-+- Soumya Sambu
-+- Sreejith Ravi
-+- Stefan Mueller-Klieser
-+- Sundeep KOKKONDA
-+- Sven Schwermer
-+- Teresa Remmet
-+- Theodore A. Roth
-+- Thomas Perrot
-+- Tim Orling
-+- Tom Hochstein
-+- Trevor Gamblin
-+- Troels Dalsgaard Hoffmeyer
-+- Tronje Krabbe
-+- Ulrich Ölmann
-+- Victor Kamensky
-+- Vijay Anusuri
-+- Vincent Kriek
-+- Vivek Puar
-+- Wadim Egorov
-+- Wang Mingyu
-+- Weisser, Pascal.ext
-+- Willy Tu
-+- Xiangyu Chen
-+- Yang-Mark Zhang
-+- Yash Shinde
-+- Yi Zhao
-+- Yoann Congal
-+- Yogita Urade
-+- Yuri D'Elia
-+- Zahir Hussain
-+- Zev Weiss
-+- Zoltan Boszormenyi
-+
-+
- Repositories / Downloads for Yocto-5.1
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
--- 
-2.34.1
+> +     absolutely point to builddir. Environnement variables containing relative
+> +     paths from tested build directory to outside of the original build
+> +     directory may need update as they won't be changed by selftest.
 
+s/environnement/environment/ for all matches in that paragraph.
+
+I'm not sure what I'm supposed to do with this information, it's very 
+vague. It's part of the migration manual so I think it would benefit 
+from being a bit more explicit, are there some precise examples we can 
+provide. If it's a finite list of variables to watch for, it's even 
+better. Otherwise a few examples would be useful? What do you think?
+
+Cheers,
+Quentin
 
