@@ -1,93 +1,91 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1DAAACE7D0D
-	for <webhook@archiver.kernel.org>; Tue,  1 Oct 2024 10:30:59 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.78241.1727778653093032485
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 328C4CEACF0
+	for <webhook@archiver.kernel.org>; Tue,  1 Oct 2024 17:23:01 +0000 (UTC)
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+ by mx.groups.io with SMTP id smtpd.web10.87564.1727803371041203608
  for <docs@lists.yoctoproject.org>;
- Tue, 01 Oct 2024 03:30:53 -0700
+ Tue, 01 Oct 2024 10:22:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QAS1jxj7;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1F8B4240004;
-	Tue,  1 Oct 2024 10:30:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1727778651;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YIaIQk7IfHzTjndyXr5nC+g33FTm45yVXtxRZBDdl/o=;
-	b=QAS1jxj7lPHkRVAqUQjw8QTVy1Y9Lu09joHGzDB+SXN1aMcDC7mBTXuCTXNfj9o8Hg2kKd
-	ixQzNvhbjxeiyAwKrS0llJiCU8y2ZtJQgqsyXsWMHPGxmEgPtn9oxMA6obTDXgNeWbYYX5
-	Rreq9BL1hLIAEpkKpc0k6Y19o/M2GShhfKV/v+Zuc5w97wWB8q3ct8OXsHErfH10/W9x71
-	AE7Csw2qIAAvQjPbi5Hr52bK1xABEIEzymd7xmqlNKyXuoxm+DfbxfvOjUsr5iAs5kz+NT
-	zEAl05jOMt/artKx+OB3/JYiTQ6/SXLwQtKHwtzt9/nKSFtzuwuOOtUG33fK9w==
-Message-ID: <18988e1b-4c41-4363-bcc0-6046c8660c0f@bootlin.com>
-Date: Tue, 1 Oct 2024 12:30:50 +0200
+ dkim=pass header.i=@smile.fr header.s=google header.b=wEj3ENHs;
+ spf=pass (domain: smile.fr, ip: 209.85.128.41, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42cba8340beso115105e9.1
+        for <docs@lists.yoctoproject.org>; Tue, 01 Oct 2024 10:22:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1727803369; x=1728408169; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=v8d0YmEYvcCDwpHzmjsLK7fzsi8BX3iE6UA8BBPn6h4=;
+        b=wEj3ENHs62AkY28/mkJSHLVOdOZ5IQ9dGawXmYE7OuO6HiBtwZC9FkaRA/OIzkVkcR
+         jNL87T3uB1jJXxnkBohl+dctJIxHqPYi9Te81xO5MypktY2JZQoN9dzG6pTMuqO1q4z5
+         26EyydFcS05dz4BQh1+9LrVo4MRom5YLEAwow=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727803369; x=1728408169;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=v8d0YmEYvcCDwpHzmjsLK7fzsi8BX3iE6UA8BBPn6h4=;
+        b=iSOtNAa7xbDzum2aqIP9krMFBEHJ1fDZlvmFKfaxCvez75t4n5PRvv0Cj+nVdi4XP7
+         AzcDCkuG/kXQDwm89tZyIUzsnTmjxVcRW83B1lAtpd7MvJJp+uKJH/ryf5s+AF221O91
+         ScJxz2iaDBB+AR/SQcVJXQBMRWOo8UOOGtvmNxYfGdoP8PsR7NhuxOMCtqnyZp9e+AM6
+         QsXrkF12lYXNgCbByGvuqOi3uO5DQazR/XLF9kSXA4rcEOoeYLrH6QbAE/9cEDmBDUiA
+         MzTeY/AR+caxaBdgoDqW+YLbUAYwcgfHT27zQ1TTS2Oj8oagbysy0IEelzpoClATneFn
+         K/0w==
+X-Gm-Message-State: AOJu0YxZKNSEtAbi6q/vgsUjSGjtnxHqHmf089NMt918LIxJmz5wnNFk
+	x4SQ7dEizVfsZxx8P4j0MFymqCD79WVIIf0ljFR0DttRMcZLED0g/B92QXp1d+YfHMPMFonvhg0
+	B
+X-Google-Smtp-Source: AGHT+IGnRMJB/MLbxPpZy5NZDgkm3pdqjTrgUU7EmnI61BzOwBtYR3IVmycdZPpDOSBuqui9IxzuiQ==
+X-Received: by 2002:a05:6000:1844:b0:37c:bafd:5624 with SMTP id ffacd0b85a97d-37cf28d67d8mr3292033f8f.25.1727803368729;
+        Tue, 01 Oct 2024 10:22:48 -0700 (PDT)
+Received: from P-ASN-ECS-830T8C3.local (53.1.159.89.rev.sfr.net. [89.159.1.53])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e96a36292sm185589715e9.32.2024.10.01.10.22.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2024 10:22:48 -0700 (PDT)
+From: Yoann Congal <yoann.congal@smile.fr>
+To: docs@lists.yoctoproject.org
+Cc: Yoann Congal <yoann.congal@smile.fr>
+Subject: [PATCH v3 0/4] Document my team's commits for 5.1
+Date: Tue,  1 Oct 2024 19:22:34 +0200
+Message-Id: <20241001172238.2872529-1-yoann.congal@smile.fr>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: Re: [docs] [PATCH v2 1/4] migration/release-notes-5.1: document
- oeqa/selftest envvars change
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: docs@lists.yoctoproject.org, yoann.congal@smile.fr
-References: <20240927220033.3941455-1-yoann.congal@smile.fr>
- <20240927220033.3941455-2-yoann.congal@smile.fr>
- <f71bb041-ad48-4294-aaf6-ab8d86b32a28@cherry.de>
- <2bde7e98-b39e-4ea2-916f-b7fb043bc84e@bootlin.com>
- <9b2a68da-8ee4-4b1e-935b-c8ae0995aa09@cherry.de>
-Content-Language: en-US
-In-Reply-To: <9b2a68da-8ee4-4b1e-935b-c8ae0995aa09@cherry.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: antonin.godard@bootlin.com
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 01 Oct 2024 10:30:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5388
+ <docs@lists.yoctoproject.org>; Tue, 01 Oct 2024 17:23:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5389
 
-On 01/10/2024 12:20, Quentin Schulz wrote:
->> Thanks for your reviews, they also help. As for selftest, I haven't seen
->> it referenced with single-tick quotes elsewhere, unless you meant double
->> ticks for code?
->>
-> 
-> I think what we discussed at the time with Michael was basically that 
-> anything that isn't an English word, or is but shouldn't be understood 
-> as one in the context (e.g. truncate as in the tool and not the English 
-> word) should be highlighted so that people don't confuse it with the 
-> English word.
-> 
-> I think this is what we meant in the standards file here: 
-> https://git.yoctoproject.org/yocto-docs/tree/documentation/standards.md#n79
+This series should cover theses patches:
+61186bc98a5 (oeqa/selftest: Only rewrite envvars paths that absolutely point to builddir, 2024-09-10)
+a19bb8c1d51 (spirv-tools: Update merged patch to backport status, 2024-09-05)
+c01e633ab91 (python3-libarchive-c: add ptest, 2024-08-02)
+47ed8ac83a6 (spirv-tools: Fix git-describe related reproducibility, 2024-08-03)
+d85a10e4985 (insane: skip unimplemented-ptest checks if disabled, 2024-07-10)
+c45d45422d6 (Revert "insane: skip unimplemented-ptest on S=WORKDIR recipes", 2024-07-09)
+0df9d22928c (recipe style guide: add recommendation for patches without signature, 2024-06-06)
+8fc967d0c7d (migration-5.1: add the recommended pattern for S/UNPACKDIR definition, 2024-05-28)
+268dfbd9491 (Revert "oeqa/selftest/devtool: fix test_devtool_add_git_style2", 2024-04-26)
+3c05286fa10 (oeqa/selftest/devtool: fix _test_devtool_add_git_url, 2024-04-26)
 
-Gotcha, single-quote it is indeed.
+(Not every commit was documentation worthy)
 
-> Note that these were rules Michael/we came up with for new contributions 
-> to the docs, because we knew updating everything to match the standards 
-> would take a long time.
-> 
-> I still remember reading every page of the docs during the migration to 
-> Sphinx and I am not ready to do this again any time soon :) So patching 
-> when stumbling upon things that don't match the standard while reading 
-> the docs and enforcing it for new contributions made sense at the time.
-> 
-> Anyway, that's process and standards, they need to make sense to the 
-> maintainer and the community, and can evolve over time, so up to you, 
-> just putting out there the history and "current" state of affairs :)
-> 
-> Since 5.1 is supposed to be out soonish, maybe something to be picky 
-> about after the release is done ;) Up to you!
+v2-> v3:
+* Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>, Thanks!
+* Reviews from Quentin Schulz, thanks!
 
-Thanks a lot for these details and historical decisions! I will keep 
-that in mind. I am okay with being picky on this, as it improves the 
-overall readability of the doc. I'm trying to do that in the release 
-note I'm editing atm.
+v1->v2: Reviews from Quentin Schulz, thanks!
 
-Cheers,
-Antonin
+Yoann Congal (4):
+  migration/release-notes-5.1: document oeqa/selftest envvars change
+  release-notes-5.1: document added python3-libarchive-c ptest
+  release-notes-5.1: document fixed _test_devtool_add_git_url test
+  release-notes-5.1: document spirv-tools reproducibility
+
+ documentation/migration-guides/migration-5.1.rst   | 14 ++++++++++++++
+ .../migration-guides/release-notes-5.1.rst         |  8 ++++++++
+ 2 files changed, 22 insertions(+)
+
 
