@@ -1,115 +1,146 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <michael.opdenacker@rootcommit.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 264ECCEE322
-	for <webhook@archiver.kernel.org>; Wed,  9 Oct 2024 15:25:02 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.19645.1728487495482463923
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A566CEE327
+	for <webhook@archiver.kernel.org>; Wed,  9 Oct 2024 15:50:52 +0000 (UTC)
+Received: from aye.elm.relay.mailchannels.net (aye.elm.relay.mailchannels.net [23.83.212.6])
+ by mx.groups.io with SMTP id smtpd.web11.20345.1728489045432907925
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Oct 2024 08:24:56 -0700
+ Wed, 09 Oct 2024 08:50:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=IQoZz/jH;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DC22924000E;
-	Wed,  9 Oct 2024 15:24:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728487494;
+ dkim=pass header.i=@rootcommit.com header.s=hostingermail-a header.b=KeU/7vM8;
+ spf=pass (domain: rootcommit.com, ip: 23.83.212.6, mailfrom: michael.opdenacker@rootcommit.com)
+X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id AFD11A44A9
+	for <docs@lists.yoctoproject.org>; Wed,  9 Oct 2024 15:50:44 +0000 (UTC)
+Received: from uk-fast-smtpout3.hostinger.io (100-101-172-178.trex-nlb.outbound.svc.cluster.local [100.101.172.178])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id E1848A4831
+	for <docs@lists.yoctoproject.org>; Wed,  9 Oct 2024 15:50:43 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1728489044; a=rsa-sha256;
+	cv=none;
+	b=Ua1SyDm+JXfK4bP7xssiZdxdfXCkioX8gHASvxDdKWYN+qR7zPMR9/eu12UvJzD8OwEp07
+	fuuanl/8Egp0PJFy5gR7wkO3CmLin+nLYcdcOctkPh7YdQGBStORhkHhjoNx84kR3BaIvS
+	K3LiLtVcMVpc+QqrYlcVcSY6LgQrl01Kw4hZNRT1Gcq2EH+urQus3dXDCQoxWODgYiF9VL
+	fBh6utFg1dBp+WucDsOAPAQb5sEomC2vNrHtzJG/9kGZw+aflT7qEagtV3jhXXJvxpZHWO
+	zP1sFXMU0hmPEubAL2wajSypjJ8THmt0lNI74krDMOvt+41irlSsMKKWkiT0zQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1728489044;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mxX4o2nHe14e80YxpDOOBdwVnkVnUkNlOJ4TzXl9VPY=;
+	b=09vcigXwYQc0koQvzqRphg1NWrkuHf9QTTNiEd4kP/Ux8VNddEIcTG747LKhIDnn+f1B02
+	c7/IDDi52Y2KoG86jvIE40Y85EVzHtnEZLvrHMq2e0yMARpuEj9TDGVGtTVa6tkPWlpF8w
+	nqktEkrVltaxAdy6Gir7GnGhFfkDxd161d5x5BQzKzT21zulDT2Te2IiXf8lCwWrufGOgG
+	7sLXJTevgKvowwet/UREOD3cnOSvsc9OsaWs6WDc4/gvJLhfybsIlX8eIPNDRflmUuOsrA
+	hKMN3Mg1V1+hIMh/u9X4UsEjM+4P/eVFoblY/CnRPRB8AIvNAhpnoDqUK52VvA==
+ARC-Authentication-Results: i=1;
+	rspamd-54f99b5bc4-5nqmh;
+	auth=pass smtp.auth=hostingeremail
+ smtp.mailfrom=michael.opdenacker@rootcommit.com
+X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
+X-MC-Relay: Neutral
+X-MailChannels-SenderId: 
+ hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
+X-MailChannels-Auth-Id: hostingeremail
+X-Tank-Abiding: 2e8421be73d25573_1728489044400_3914096810
+X-MC-Loop-Signature: 1728489044400:3727892433
+X-MC-Ingress-Time: 1728489044399
+Received: from uk-fast-smtpout3.hostinger.io (uk-fast-smtpout3.hostinger.io
+ [31.220.23.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.101.172.178 (trex/7.0.2);
+	Wed, 09 Oct 2024 15:50:44 +0000
+Message-ID: <8290e1cb-73c3-447a-aaa2-dabf4a3ecae3@rootcommit.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rootcommit.com;
+	s=hostingermail-a; t=1728489042;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Yq6kHau4JQeZ7yTJDLZxSn6MLOWJfkXNa8Us6go+RPk=;
-	b=IQoZz/jHkVBerkiyLnQWepIL5feg4xIXFPpKoJ4OFcvUrFoOqmj2XitkvqW4mlHBty3h9v
-	68Z17ETrMH3BydN753NEbRZDx9rvoPtZb2AZx91dh6s4aWVT/t0cWyAuNxRlR06W9WxxTR
-	CqXk+jUoI3vIiDPCP5AzY66lajJYbWh+S4Ww9S0TUWUqnGLM6kZp8tAFh60zp+b0lpGlls
-	ehsjDcPicyt1p3ZjXqub1ENuzSIMPzIOOex4kenuR3olvslXj+77MDWWPK4+fRKYrslg8K
-	Z8oAkCPELX384E3q/ARpEQsGuGTvNof1ptFlLdEsbEWKI3wxIt7CD7tPfExoCQ==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 09 Oct 2024 17:24:10 +0200
-Subject: [PATCH v2 02/16] ref-manual: add new vex class
+	bh=mxX4o2nHe14e80YxpDOOBdwVnkVnUkNlOJ4TzXl9VPY=;
+	b=KeU/7vM83xxS8v1qgGy+iy2MKQ4glwiGa9DHzTE1Tu8uRAzVnC2LCj4hwtj+ncFf0jw7E6
+	Cc6/wtt57lh7UC2S83j2VmhQSkSzlJLy1bEdTNTsOlRG+IX5LLWsPwDgRMyNJJLdSm3+Dd
+	BwcNl8w7S9gewnPwURZ55MQqrVvslcK5W28Tz9mJANfFNV6IcCVkootP6NXHt5N2A5upsw
+	gGZNfJJQpxissrc0KDWN1oIKmj0DRLMENSVof9xaYJNmvvryWi39da+/I1oVcoku/Rxrfy
+	FcUxQpR4megkn9l7c7bOgnDAgg2ZmDDIAzq9slURaZL+cBPV3ntVxxa2vFuiOQ==
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Cc: michael.opdenacker@rootcommit.com, ross.burton@arm.com,
+ paul.eggleton@microsoft.com
+Subject: Re: [docs] [PATCH 01/16] ref-manual: add missing CVE_CHECK manifest
+ variables
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+References: <20241009074120.866786-1-antonin.godard@bootlin.com>
+ <20241009074120.866786-2-antonin.godard@bootlin.com>
+Content-Language: en-US
+From: Michael Opdenacker <michael.opdenacker@rootcommit.com>
+Organization: Root Commit
+In-Reply-To: <20241009074120.866786-2-antonin.godard@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241009-release-note-5-1-v2-2-7d484f7e7b6f@bootlin.com>
-References: <20241009-release-note-5-1-v2-0-7d484f7e7b6f@bootlin.com>
-In-Reply-To: <20241009-release-note-5-1-v2-0-7d484f7e7b6f@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Ross Burton <ross.burton@arm.com>, 
- Paul Eggleton <paul.eggleton@microsoft.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1570;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=MZbBQR9dYMC5q2RiXWC98kG76CEujbFRo57TmtrKbGs=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnBqBDrP8hsv+LsfvBhc4DL+AFla2FWfC57JWGP
- qDMdF9tzvWJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZwagQwAKCRDRgEFAKaOo
- NjRcD/4jzZb9rbUTIdQny56ZJ+7li19A4mwVsEo5I5ED8U8+pG85VnHWplwEPHm1sPsG8MgQV+o
- ENEUVIMP60JP8i9AXNxUofiB9EHFzIaatnHBL54MtpCnXfJwlCxP322Mg7mFowTuNEkg6YhXmX6
- ev/JikFhVgjHDh0a1ps5XeOvRKWhHRLhcnG8q+vOL0oIuvPjHSGM0trVpdMziPegQHffv8F+NUY
- OnFeW2PLlVFrONyoGsDdcXZQxDxGfsbhws6sTRFlyUoMhVZ+Wim53jL52r8f9N+PFFrBeidI+2U
- qfqegD4b3NLG12a78yVt9FheH+lv22tT/N6edKN1u21AyYFwnbAUSTbzILati1Ee/FsKpqpv52R
- kwSkSKoCsoGINsKvUEWEZRVBkxZ5POP10RUMEohIHbYYkbuerc9VQj+yvRaQCrJvW0GpYHNXLYj
- kuh1oMuUPIv+V7bm2QiZiktuYvH7nt+LlCY/ihKMgKPsbqvkZRT7erpWIxdpmcEAJU+4/6Hs2pu
- 8wUHDBuSjYATYDaVtUZyBU0Mgsm3Jzpl/J5/SFCa5yHYbDMMYaTcD4djmVdlDEBK7X3UW2uyp7S
- ohz45GVyu5JG6oM+V4PGXJhLIs/9y9rhP5sbe9eit+lVZK8BKfFRCjYSgnqmnaZ5/L679+sXSHs
- aVkkis75IpZ1xow==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-Sasl: antonin.godard@bootlin.com
+Date: Wed, 09 Oct 2024 15:50:41 +0000 (UTC)
+X-CM-Envelope: MS4xfIxwvDs9fofgjD9Ts93p0FEAHsaCo7NJ2g7cLf1AtkTNqYp4fAGzhH8eCB0RA6cNhSm1HpwlOFOpp7Qb8EEAk2ovMSCkGi1cgRfVnDsRfcRrX2yGyMjm cgEe8t0Bj8JY/5nrQlY7xN0qEH1x78cAkqy8R9TN7iS/i/Of2lMnwn3vgNNOgjYLlJ7fSL/vacgmxL9ZABJ3jrRFuJ8g+VyDYC9RI2M8prXq2Ff0d2Os7FHo p8anTdIPc4YsxEI7zn1PVnVZfamvmKLQdpGMnWO1PGRsKmi8qGOwh+kM/KKjB53xGdibtkwqqiQCE0OLWH5mSwv7I9GkZPXxu75vcYX7NXebiaiIR4RQyFnY DkxvLv1MMKp4d72aT9fl3lMMG1aqtw835pY3cFNDX+DPztlz2mAeUHlLaJEadT4inu1GrSKNFdsvJxNCPfSV3xAz5GgIkBDiIDaGxJwaWYuPpWf3IjYwUGum ZLLpkkaLatwe+6jC
+X-CM-Analysis: v=2.4 cv=TcnEtgQh c=1 sm=1 tr=0 ts=6706a652 a=FxzzrTkVuG1G0rBnFVKeJA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=iGHA9ds3AAAA:8 a=P-IC7800AAAA:8 a=d70CFdQeAAAA:8 a=WWh1xRv5PYP6kJWvDfQA:9 a=QEXdDO2ut3YA:10 a=nM-MV4yxpKKO9kiQg6Ot:22 a=d3PnA9EDa4IxuAV0gXij:22 a=NcxpMcIZDGm-g932nG_k:22
+X-AuthUser: michael.opdenacker@rootcommit.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 09 Oct 2024 15:25:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5430
+ <docs@lists.yoctoproject.org>; Wed, 09 Oct 2024 15:50:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5446
 
-Add a brief description on the new vex.bbclass that is used to generate
-metadata needed by external tools to check for vulnerabilities.
+Hi Antonin
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/ref-manual/classes.rst | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+On 10/9/24 09:40, Antonin Godard via lists.yoctoproject.org wrote:
+> From: Antonin Godard <antonin.godard@bootlin.com>
+>
+> Variables that can be used for toggling creation of manifest and
+> specifying the path to the output in the deploy directory.
+>
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   documentation/ref-manual/variables.rst | 12 ++++++++++++
+>   1 file changed, 12 insertions(+)
+>
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 32c9e7407..0236c8c9c 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -1678,9 +1678,21 @@ system and gives an overview of their function and contents.
+>            variable only in certain contexts (e.g. when building for kernel
+>            and kernel module recipes).
+>   
+> +   :term:`CVE_CHECK_CREATE_MANIFEST`
+> +      Specifies whether to create a CVE manifest to place in the deploy
+> +      directory. The default is "1".
+> +
+>      :term:`CVE_CHECK_IGNORE`
+>         This variable is deprecated and should be replaced by :term:`CVE_STATUS`.
+>   
+> +   :term:`CVE_CHECK_MANIFEST_JSON`
+> +      Specifies the path to the CVE manifest in json format. See
+> +      :term:`CVE_CHECK_CREATE_MANIFEST`.
+> +
+> +   :term:`CVE_CHECK_MANIFEST_JSON_SUFFIX`
+> +      Allows to modify the json manifest suffix. See
+> +      :term:`CVE_CHECK_MANIFEST_JSON`.
+> +
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 9520d0bf7..46d77d0e5 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3489,6 +3489,31 @@ This class is enabled by default because it is inherited by the
- The :ref:`ref-classes-vala` class supports recipes that need to build software written
- using the Vala programming language.
- 
-+.. _ref-classes-vex:
-+
-+``vex``
-+========
-+
-+The :ref:`ref-classes-vex` class is used to generate metadata needed by external
-+tools to check for vulnerabilities, for example CVEs. It can be used as a
-+replacement for :ref:`ref-classes-cve-check`.
-+
-+In order to use this class, inherit the class in the ``local.conf`` file and it
-+will add the ``generate_vex`` task for every recipe::
-+
-+   INHERIT += "vex"
-+
-+If an image is built it will generate a report in :term:`DEPLOY_DIR_IMAGE` for
-+all the packages used, it will also generate a file for all recipes used in the
-+build.
-+
-+Variables use the ``CVE_CHECK`` prefix to keep compatibility with the
-+:ref:`ref-classes-cve-check` class.
-+
-+Example usage::
-+
-+   bitbake -c generate_vex openssl
-+
- .. _ref-classes-waf:
- 
- ``waf``
+
+I would use "JSON" instead of "json" in the above changes. IMHO that's a 
+more explicit way to describe a format, and except for a few cases, 
+"JSON" is more frequently used in the current docs.
+Cheers
+Michael.
 
 -- 
-2.46.0
+Michael Opdenacker
+Root Commit
+https://rootcommit.com
 
 
