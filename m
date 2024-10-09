@@ -2,38 +2,38 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 905FFCED632
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E811CED635
 	for <webhook@archiver.kernel.org>; Wed,  9 Oct 2024 07:41:38 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.10672.1728459694695600577
+ by mx.groups.io with SMTP id smtpd.web10.10669.1728459693304184837
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Oct 2024 00:41:34 -0700
+ Wed, 09 Oct 2024 00:41:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=aF8ujX0E;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BRxsRt1/;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 37D681BF20B;
-	Wed,  9 Oct 2024 07:41:33 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D56571BF208;
+	Wed,  9 Oct 2024 07:41:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728459693;
+	t=1728459692;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ZrIVDXW7VJTCRQN0fvl3AUEWAxC8HZ1pwW4q1Mzgxq8=;
-	b=aF8ujX0EO99pDI4N7rQBYSegEwncWfTDuC20z4LA0hIon6/B54Fa6jXKt88zAEeD2G1vas
-	WH8HCsmEonkn8TYVRi3pYgFlrhrSXMcf594I0uAU7KuSqojNLwOEU/RaqLdEJ3N/sOPk+z
-	Aca+fNORPcmm+NTWVhj1l2rfluE0W3qRMdzYHCRYJWEGdPyoLDaa6mlw1Fk0lAhmAKCiz6
-	0TLRkznR3rqgjdjTR2ToGpN5QBapW5Lxs1QXw370XoVlStaTScnYDX8zn8+hnu8v29di3H
-	J6baiofJqsGMlyDMr2mkpyvAx+vTRZauo1N8edmLZofvn3k64pI/iFmKFiEzmw==
+	bh=w3BM4chAtTZv10TkLjcnONRikiYgALfkAk+S1T3hYlY=;
+	b=BRxsRt1/eNz0e9+U21RaDbeGPeDbB+F2+iDVr5QPmX/akioS4AoeWKdY5L5Hzgkw8DMJvh
+	qMGtrCxC3N+1V3gvVG3KnqWZg11wD/t5YdmbGWYFq5lBMABGq5Y9r4lObfv8SnGs4kc/vU
+	MpvLGQO4nj7DG1Brx31Coyk4NsNxOXEqxbQIOAVNKg+WLaIx3tGKLr3vC4Kz5YWNTz0gME
+	h+RojFEpFieAKTkwPi6A3PIg1n4LhGEV5KiLwlSnvpBhBVcNvfxM3bFc7MgwvjZzXhwFqZ
+	szf8lN4O1mPDnFQ2ZBpISIZIPvmyXQHBWoFov3AvxHIcf+m4bgPNz8SOBcFKRQ==
 From: antonin.godard@bootlin.com
 To: docs@lists.yoctoproject.org
 Cc: ross.burton@arm.com,
 	paul.eggleton@microsoft.com,
 	thomas.petazonni@bootlin.com,
 	Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 06/16] ref-manual: drop siteconfig class
-Date: Wed,  9 Oct 2024 09:41:04 +0200
-Message-ID: <20241009074120.866786-7-antonin.godard@bootlin.com>
+Subject: [PATCH 01/16] ref-manual: add missing CVE_CHECK manifest variables
+Date: Wed,  9 Oct 2024 09:40:59 +0200
+Message-ID: <20241009074120.866786-2-antonin.godard@bootlin.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20241009074120.866786-1-antonin.godard@bootlin.com>
 References: <20241009074120.866786-1-antonin.godard@bootlin.com>
@@ -44,38 +44,44 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 09 Oct 2024 07:41:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5413
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5408
 
 From: Antonin Godard <antonin.godard@bootlin.com>
 
-Removed as it was only used by ncurses and zlib and adding minimal
-added-value for a considerable amount of added runtime.
+Variables that can be used for toggling creation of manifest and
+specifying the path to the output in the deploy directory.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/classes.rst | 9 ---------
- 1 file changed, 9 deletions(-)
+ documentation/ref-manual/variables.rst | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 14aa0f3a3..121887d1f 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -2940,15 +2940,6 @@ in the :ref:`ref-classes-setuptools3` class and inherit this class instead.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 32c9e7407..0236c8c9c 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -1678,9 +1678,21 @@ system and gives an overview of their function and contents.
+          variable only in certain contexts (e.g. when building for kernel
+          and kernel module recipes).
  
- The :ref:`ref-classes-sign_rpm` class supports generating signed RPM packages.
++   :term:`CVE_CHECK_CREATE_MANIFEST`
++      Specifies whether to create a CVE manifest to place in the deploy
++      directory. The default is "1".
++
+    :term:`CVE_CHECK_IGNORE`
+       This variable is deprecated and should be replaced by :term:`CVE_STATUS`.
  
--.. _ref-classes-siteconfig:
--
--``siteconfig``
--==============
--
--The :ref:`ref-classes-siteconfig` class provides functionality for handling site
--configuration. The class is used by the :ref:`ref-classes-autotools` class to
--accelerate the :ref:`ref-tasks-configure` task.
--
- .. _ref-classes-siteinfo:
- 
- ``siteinfo``
++   :term:`CVE_CHECK_MANIFEST_JSON`
++      Specifies the path to the CVE manifest in json format. See
++      :term:`CVE_CHECK_CREATE_MANIFEST`.
++
++   :term:`CVE_CHECK_MANIFEST_JSON_SUFFIX`
++      Allows to modify the json manifest suffix. See
++      :term:`CVE_CHECK_MANIFEST_JSON`.
++
+    :term:`CVE_CHECK_REPORT_PATCHED`
+       Specifies whether or not the :ref:`ref-classes-cve-check`
+       class should report patched or ignored CVEs. The default is "1", but you
 -- 
 2.46.0
 
