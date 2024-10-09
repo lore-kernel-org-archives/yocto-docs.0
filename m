@@ -2,61 +2,59 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A8F28CEDDAE
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF15ACEDDB1
 	for <webhook@archiver.kernel.org>; Wed,  9 Oct 2024 15:25:01 +0000 (UTC)
 Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.19655.1728487499111811287
+ by mx.groups.io with SMTP id smtpd.web10.19654.1728487498469080636
  for <docs@lists.yoctoproject.org>;
- Wed, 09 Oct 2024 08:24:59 -0700
+ Wed, 09 Oct 2024 08:24:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=NC0evJlG;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OLfaksyv;
  spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 540AD24000F;
-	Wed,  9 Oct 2024 15:24:57 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C973B240007;
+	Wed,  9 Oct 2024 15:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1728487497;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=33ZSbkHSyYxICzYA7NbycRgAUgVUP6UKoZUOdfqSyZE=;
-	b=NC0evJlG5dhkyOUEH6SsjyojQFqdd0ZaG40b7V9jZhqodihNcQao9okLIgmpDY1hFwMMTT
-	t3KNoLpENSMRUkQI/8Nd9b+fmQjHsZ85DXkT7DJkvYc4zp2AnIQtF0X+jEXzic/kH7i/y/
-	49BisC6mjM1DPBbULPj9h4B4fEJkTomRPLJLPWgHhDDmDgpei83b9Hjsl+iUZP0ANyDxeh
-	HgbSy5VSaGGarnRlMDUdyCZ1G62UAcKf+T8SNWmySDZgbIpm4XaB3E1tEcJEo2mDGm/4np
-	oBtOKSc2bQ92rnss1DqXlXEZLXztzTdpyBd3rVwjGAkQD1BDw2eQNGrhLeWDNA==
-From: antonin.godard@bootlin.com
-Date: Wed, 09 Oct 2024 17:24:23 +0200
-Subject: [PATCH v2 15/16] release-notes-5.1: update for several section
+	bh=awS1kCrkV1XVRxCulAUYpy+LCAh7c75D14nwagKc4ow=;
+	b=OLfaksyvN4fjABu7Sl5pCspXokHmdS0RIDGYhXwbagM/mT9nDdHSMKgw62+KKbZ3+0QzPf
+	9NeDY9FiX/3GfyPcZqPFuwnT5N0nQ7SLwpaUGWpqPyaddZEBWqDZG2Nc+3BL2cCCvK9fYo
+	DrcYYU518NggZahI+Ff4V25c4ApCC18/8E2W1vfPdugZ/zuTBHWleYLOoFEKXMDRC/u3Nn
+	dscbMIi+RllFN5KrPWdacKQdj1vaiwOvWU2lMOQJ/yL0R8caN+dIxt+/TpAAB6d+4Y0ktp
+	xQIRfTDFheXJLIWm6RRmoXWzKNrE0/kesjBTfgeTBLjUXY3ZhMb5NyrxQJ5g3g==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 09 Oct 2024 17:24:21 +0200
+Subject: [PATCH v2 13/16] ref-manual: merge patch-status-* to patch-status
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241009-release-note-5-1-v2-15-7d484f7e7b6f@bootlin.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241009-release-note-5-1-v2-13-7d484f7e7b6f@bootlin.com>
 References: <20241009-release-note-5-1-v2-0-7d484f7e7b6f@bootlin.com>
 In-Reply-To: <20241009-release-note-5-1-v2-0-7d484f7e7b6f@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Ross Burton <ross.burton@arm.com>, 
  Paul Eggleton <paul.eggleton@microsoft.com>, 
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Lee Chee Yang <chee.yang.lee@intel.com>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11011;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1231;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=zOHOb33WF1+uLLhNxSI1egOw4Jc1fYL1mD5VFxzsE24=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnBqBErOmtRMipqLlD13IoMiglqmDbicrQ0wd/M
- Qe5a22ixBKJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZwagRAAKCRDRgEFAKaOo
- NorHD/4psvnD60+8lbba4KudqCmtPfQ0Jk54lC+ai97CrX0gstr8DViuM9YLHKp47uTYEJ9WVk6
- BZ5t59cq5UbrM20aygka5vAvJUOhzeDof6NDEqPSSbz/tUXuESlpTiRU+wHcPC3IDp5pYZy+jFm
- /WqGeP+Yd4WONGA4mEsN/J7XFR+61WTTQ5y3KUgtRXHaLwFoywDl1Qt73d266ePhFTyaqMgfc0k
- wBPHeAqFMU3LT4XUQZYC5anAx1GoriwZxS6Z0G0W1/xTP3/lKoUKBasQru6VJCcvfjjXqzUHmr7
- giwQerg/JzA4WXGeqpH/5lKGUU+rroZZ8/ZeiVMvvT8JH0GaNNSk2OOvx+2OIK3Dnw1H1Q+ltjQ
- OJoInrMtEw4zo4oh3chAWAgEH6VJy9T9BM9JE/hMHDratvnG8XMho+1myjjmIx/LPVPWYTlVH99
- 3DqyT8LGDBnLBISZpXEhoqZOroQ5Awj7L9aybdxHqrutdn/1HfOB6KM3qAnbQ1mQKQUM3+xrAul
- jN/g80+q97S1U9gCqOvSsQAvzMtJEe/BnyajPRjW+wyMyMGpZdcG2Wk+v48OJta5Qly0t8IccJd
- mdTlEIUXg9FScKCUfI8+MCKRAI7frxU1JB7OR+VeE2cdLJsUt0F2dfWO3XFQRqsdXYIoNR2q/4u
- 6yFOPOOaSlMVbnw==
+ bh=gep1i5X738inNYKMffrTEf6G6Ja678Ykw/EK3Yt1Lgc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnBqBELqROat0ENjJnE/kE/UjyvdSDnDeyIP5lq
+ eSpWCdlOiSJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZwagRAAKCRDRgEFAKaOo
+ NvY2D/9QkYJ14QZ+DybUuZAAEKTaSkVCW+gvg0NtgTUKdgScfLK/v0B1dbPIUpape8281HibjXZ
+ IBVCDo/eFSMHXB9hH+J4M9SJUKNKQB2MznMValALHED9sP/OArWu39b5c+ck1fW4bfdRBhFSaHh
+ wdlcOaa7ktz1bLGo1pnejcwbWIi3Lfh3T4eeUknDgbbMJGAo9zH3o1KZJf/KzqK4uoAF5fh8M/X
+ J41HL/PIy7mcHrp+0VRavIvlr8fkhbzMgW3rMfU5OlusI2Kn8gX4NNxP+pPg76vhC7P2lnLmUqi
+ wKUXGN8wFU1EUpppDW42oKwf/UKl4NBNrDzzVq7XFgsls51QEEJMxCOP7Ow25+Lk9FX9SP6eA+H
+ 6p6PC6b5jYobUlJb44vS0Ec7b/1x4rcz4v7yBrFsCouVPwdtF1eSLdXaJhDbOFyJXdWeBx08tdq
+ 6sUPHrwpgS24KR7iEiDRbnSh7kJfZicXm6LXuvAzwWgpbUGXm7CoG5A5j5bUG5yXkPKZmrQ5Nc0
+ hVe25aLLhrRiK5rqtkKXVFaDRNcRWoeWTTAd0zsa5QS9lE165giw/TBegADgGyK1UTqm82hlOiq
+ iiZbJL8EddNaODJP1XLtWDjaxMVwBdS3jNJCoWe0CcmYr6UB2P+d3x3x2J3grRmT/K/viEjgz4B
+ XMgw+osklfFls8A==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
@@ -64,389 +62,34 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 09 Oct 2024 15:25:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5444
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5442
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+These are not distinct anymore and check for any patches in any layer.
 
-update for these changes:
- - license
- - recipe enable for ptests
- - new class, recipe and variable.
- - PACKAGECONFIG
- - some utility script, class and include file.
- - bitbake.
- - qemu/runqemu.
- - Contributors.
-
-removed wic as no significant change or improvement.
-
-Antonin Godard: amend and fix some typos.
-
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- .../migration-guides/release-notes-5.1.rst         | 306 ++++++++++++++++++++-
- 1 file changed, 303 insertions(+), 3 deletions(-)
+ documentation/ref-manual/classes.rst | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/documentation/migration-guides/release-notes-5.1.rst b/documentation/migration-guides/release-notes-5.1.rst
-index 074d277da..211f92553 100644
---- a/documentation/migration-guides/release-notes-5.1.rst
-+++ b/documentation/migration-guides/release-notes-5.1.rst
-@@ -10,30 +10,92 @@ New Features / Enhancements in 5.1
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 121887d1f..0fce37cfa 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1461,12 +1461,8 @@ The tests you can list with the :term:`WARN_QA` and
+ -  ``patch-fuzz:`` Checks for fuzz in patch files that may allow
+    them to apply incorrectly if the underlying code changes.
  
- -  New variables:
+--  ``patch-status-core:`` Checks that the Upstream-Status is specified
+-   and valid in the headers of patches for recipes in the OE-Core layer.
+-
+--  ``patch-status-noncore:`` Checks that the Upstream-Status is specified
+-   and valid in the headers of patches for recipes in layers other than
+-   OE-Core.
++-  ``patch-status:`` Checks that the Upstream-Status is specified and valid in
++   the headers of patches for recipes.
  
-+   - :term:`CVE_CHECK_MANIFEST_JSON_SUFFIX`: suffix for the CVE JSON manifest file.
-+
-+   - :term:`PRSERVER_UPSTREAM`: Upstream PR service (host:port).
-+
-+   - :term:`RECIPE_UPGRADE_EXTRA_TASKS`: space-delimited list of tasks to run after the new
-+     sources have been unpacked in scripts/lib/devtool/upgrade.py ugrade() method.
-+
-+   - :term:`UNPACKDIR`: allow change of do_unpack directory.
-+
- -  Architecture-specific enhancements:
- 
- -  Kernel-related enhancements:
- 
-+  - The default kernel is the current stable (6.10), and there is also support
-+    for the latest long-term release (6.6).
-+
- -  New core recipes:
- 
-+   -  `fmt <https://fmt.dev>`__: an open-source formatting library for C++. (from meta-oe)
-+
-+   -  `xcb-util-errors <http://xcb.freedesktop.org/XcbUtil/>`__: gives human readable
-+      names to error codes and event codes
-+
- -  QEMU / ``runqemu`` enhancements:
- 
---  Rust improvements:
-+   - runqemu: :term:`QB_DRIVE_TYPE` now support for sd card (/dev/mmcblk)
- 
---  wic Image Creator enhancements:
-+-  Rust improvements:
- 
- -  SDK-related improvements:
- 
-+   -  included ``nativesdk-python3-pip`` in buildtools.
-+
- -  Testing:
- 
-    -  oeqa/selftest: Only rewrite envvars paths that absolutely point to builddir
- 
--   -  Enable ptests for ``python3-libarchive-c``
-+   -  Enable ptests for ``python3-cffi``, ``python3-idna``, ``python3-libarchive-c``,
-+      ``python3-mako``, ``python3-packaging``, ``python3-uritools`` and ``python3-rpds-py``.
- 
- -  Utility script changes:
- 
-+   -  New ``cve-json-to-text`` script that converts the cve-check result from the JSON format
-+      to the TEXT format as cve-check removed text format.
-+
-+   -  New ``makefile-getvar`` script to extract value from a Makefile.
-+
-+   -  New ``pull-spdx-licenses`` script to pull SPDX license data, update license list JSON
-+      data and update license directory.
-+
-+   -  Several improvements in ``oe-build-perf-report`` report.
-+
-+   -  ``oe-debuginfod`` add parameter "-d" to store debuginfod files in project sub-directory.
-+
-+   -  ``resulttool`` support test report generation in JUnit XML format.
-+
-+
- -  BitBake improvements:
- 
-+   -  New go module fetcher (``gomod://``) for downloading module dependencies to the
-+      module cache from a module proxy.
-+
-+   -  New go module fetcher (``gomodgit://``) for downloading module dependencies to the
-+      module cache directly from a git repository.
-+
-+   -  Fetcher for rust crate: added check for latest upstream version.
-+
-+   -  Syncrpc now requires a minimum version of the websockets module depend on python version.
-+
-+   -  Improved bitbake-hashclient stress statistics reporting.
-+
-+   -  bitbake-hashserv added ``reuseport`` parameter to enable SO_REUSEPORT, allowing
-+      multiple servers to bind to the same port for load balancing
-+
-+   -  improved cloning speed with :term:`BB_GIT_SHALLOW` and :term:`BB_GENERATE_MIRROR_TARBALLS`.
-+
-+   -  bitbake UI now include log paths for failed task.
-+
-+   -  fetcher2 support for wget and wget2.
-+
-+   -  fetcher2 support npm package name with '@' character.
-+
-+   -  Codeparser now support shell substitution in quotes, for example::
-+
-+         var1="$(cmd1 ...)"
-+
- -  devtool improvements:
- 
-    - Fix ``_test_devtool_add_git_url`` test
-@@ -52,6 +114,54 @@ New Features / Enhancements in 5.1
- 
-    -  Fix reproducibility for ``spirv-tools``
- 
-+   -  Allow selection of host key types used by openssh.
-+
-+   -  New glibc task do_symlist to list exported symbols.
-+
-+   -  initramfs-framework support for force reboot in the case of fatal error.
-+
-+   -  insane class now check for patch-status and pep517-backend by default.
-+
-+   -  New ``yocto-space-optimize`` include file to allow turning off debug compiler options
-+      for a small set of recipes to reduce build on disk footprint and package/sstate sizes.
-+
-+   -  Update to SPDX license version 3.24.0
-+
-+   -  New :ref:`create-spdx-3.0` class to generate SPDX 3.0 output, :ref:`create-spdx-image-3.0`
-+      class that is used when generating images and :ref:`create-spdx-sdk-3.0` for sdk
-+      based recipes.
-+
-+   -  New :ref:`nospdx` class that allows recipes to opt out of generating SPDX.
-+
-+   -  New :ref:`Vex` class generates the minimum information that is necessary
-+      for VEX generation by an external CVE checking tool.
-+
-+   -  New :ref:`retain` class creates a tarball of the work directory for a recipe
-+      when one of its tasks fails, or any other nominated directories.
-+
-+   -  New :ref:`localpkgfeed` class in meta-selftest to create a subset of the
-+      package feed that just contain the packages depended on by this recipe.
-+
-+   -  New :term:`PACKAGECONFIG` options for individual recipes:
-+
-+      - appstream: qt6
-+      - cronie: inotify
-+      - gstreamer1.0-plugins-bad: gtk3
-+      - libsdl2: libsamplerate
-+      - mesa: tegra
-+      - openssh: hostkey-rsa hostkey-ecdsa hostkey-ed25519
-+      - pciutils: kmod zlib
-+      - piglit: wayland
-+      - pulseaudio: oss-output
-+      - python3: staticlibpython
-+      - python3-jsonschema: format-nongpl (previously "nongpl")
-+      - systemd: bpf-framework
-+      - util-linux: libmount-mountfd-support
-+
-+   -  Stop referring :term:`WORKDIR` for :term:`S` and :term:`B`: trigger
-+     :ref:`ref-classes-insane` errors when :term:`S` or :term:`B` are equal to
-+     :term:`WORKDIR`.
-+
- Known Issues in 5.1
- ~~~~~~~~~~~~~~~~~~~
- 
-@@ -60,6 +170,20 @@ Recipe License changes in 5.1
- 
- The following corrections have been made to the :term:`LICENSE` values set by recipes:
- 
-+-  ``dejagnu``: update :term:`LICENSE` to ``GPL-3.0-only``.
-+-  ``gcr``: update :term:`LICENSE` to ``LGPL-2.0-only``.
-+-  ``glibc``: update :term:`LICENSE` to ``GPL-2.0-only & LGPL-2.1-or-later``.
-+-  ``gpgme``: update :term:`LICENSE` for different packages.
-+-  ``libgcrypt``: add license ``BSD-3-Clause``.
-+-  ``linux-firmware``: separate license ``Firmware-linaro`` for linaro-license package.
-+-  ``iw``: update :term:`LICENSE` to ``ISC``.
-+-  ``ppp``: add license ``RSA-MD`` .
-+-  ``tiff``: update :term:`LICENSE` to ``libtiff``.
-+-  ``unzip``: update :term:`LICENSE` to ``Info-ZIP``.
-+-  ``xz``: add :term:`LICENSE` ``PD`` for xz, xz-dev and xz-doc package.
-+-  ``zip``: update :term:`LICENSE` to ``Info-ZIP``.
-+
-+
- Security Fixes in 5.1
- ~~~~~~~~~~~~~~~~~~~~~
- 
-@@ -71,5 +195,181 @@ Contributors to 5.1
- 
- Thanks to the following people who contributed to this release:
- 
-+- Adithya Balakumar
-+- Adriaan Schmidt
-+- Adrian Freihofer
-+- Alban Bedel
-+- Alejandro Hernandez Samaniego
-+- Aleksandar Nikolic
-+- Alessandro Pecugi
-+- Alexander Kanavin
-+- Alexander Sverdlin
-+- Alexandre Belloni
-+- Alexandre Truong
-+- Alexis Lothoré
-+- Andrew Fernandes
-+- Andrew Oppelt
-+- Andrey Zhizhikin
-+- Anton Almqvist
-+- Antonin Godard
-+- Anuj Mittal
-+- Archana Polampalli
-+- Bartosz Golaszewski
-+- Benjamin Bara
-+- Benjamin Szőke
-+- Bruce Ashfield
-+- Carlos Alberto Lopez Perez
-+- Changhyeok Bae
-+- Changqing Li
-+- Chen Qi
-+- Chris Laplante
-+- Chris Spencer
-+- Christian Bräuner Sørensen
-+- Christian Lindeberg
-+- Christian Taedcke
-+- Clara Kowalsky
-+- Clément Péron
-+- Colin McAllister
-+- Corentin Lévy
-+- Daniel Klauer
-+- Daniel Semkowicz
-+- Daniil Batalov
-+- Dan McGregor
-+- Deepesh Varatharajan
-+- Deepthi Hemraj
-+- Denys Dmytriyenko
-+- Divya Chellam
-+- Dmitry Baryshkov
-+- Emil Kronborg
-+- Enguerrand de Ribaucourt
-+- Enrico Jörns
-+- Esben Haabendal
-+- Etienne Cordonnier
-+- Fabio Estevam
-+- Felix Nilsson
-+- Florian Amstutz
-+- Gassner, Tobias.ext
-+- Gauthier HADERER
-+- Guðni Már Gilbert
-+- Harish Sadineni
-+- Heiko Thole
-+- Het Patel
-+- Hongxu Jia
-+- Igor Opaniuk
-+- Intaek Hwang
-+- Iskander Amara
-+- Jaeyoon Jung
-+- Jan Vermaete
-+- Jasper Orschulko
-+- Joe Slater
-+- Johannes Schneider
-+- John Ripple
-+- Jonas Gorski
-+- Jonas Munsin
-+- Jonathan GUILLOT
-+- Jon Mason
-+- Jookia
-+- Jordan Crouse
-+- Jörg Sommer
-+- Jose Quaresma
-+- Joshua Watt
-+- Julien Stephan
-+- Kai Kang
-+- Kari Sivonen
-+- Khem Raj
-+- Kirill Yatsenko
-+- Konrad Weihmann
-+- Lee Chee Yang
-+- Lei Maohui
-+- Leon Anavi
-+- Leonard Göhrs
-+- Louis Rannou
-+- Marc Ferland
-+- Marcus Folkesson
-+- Marek Vasut
-+- Mark Hatle
-+- Markus Volk
-+- Marlon Rodriguez Garcia
-+- Marta Rybczynska
-+- Martin Hundebøll
-+- Martin Jansa
-+- Matthew Bullock
-+- Matthias Pritschet
-+- Maxin B. John
-+- Michael Glembotzki
-+- Michael Haener
-+- Michael Halstead
-+- Michael Opdenacker
-+- Michal Sieron
-+- Mikko Rapeli
-+- Mingli Yu
-+- Naveen Saini
-+- Niko Mauno
-+- Ninette Adhikari
-+- Noe Galea
-+- Ola x Nilsson
-+- Oleksandr Hnatiuk
-+- Otavio Salvador
-+- Patrick Wicki
-+- Paul Barker
-+- Paul Eggleton
-+- Paul Gerber
-+- Pedro Ferreira
-+- Peter Kjellerstedt
-+- Peter Marko
-+- Philip Lorenz
-+- Poonam Jadhav
-+- Primoz Fiser
-+- Quentin Schulz
-+- Ralph Siemsen
-+- Rasmus Villemoes
-+- Ricardo Simoes
-+- Richard Purdie
-+- Robert Joslyn
-+- Robert Kovacsics
-+- Robert Yang
-+- Ross Burton
-+- Rudolf J Streif
-+- Ryan Eatmon
-+- Sabeeh Khan
-+- Sakib Sajal
-+- Samantha Jalabert
-+- Siddharth Doshi
-+- simit.ghane
-+- Simone Weiß
-+- Soumya Sambu
-+- Sreejith Ravi
-+- Stefan Mueller-Klieser
-+- Sundeep KOKKONDA
-+- Sven Schwermer
-+- Teresa Remmet
-+- Theodore A. Roth
-+- Thomas Perrot
-+- Tim Orling
-+- Tom Hochstein
-+- Trevor Gamblin
-+- Troels Dalsgaard Hoffmeyer
-+- Tronje Krabbe
-+- Ulrich Ölmann
-+- Victor Kamensky
-+- Vijay Anusuri
-+- Vincent Kriek
-+- Vivek Puar
-+- Wadim Egorov
-+- Wang Mingyu
-+- Weisser, Pascal.ext
-+- Willy Tu
-+- Xiangyu Chen
-+- Yang-Mark Zhang
-+- Yash Shinde
-+- Yi Zhao
-+- Yoann Congal
-+- Yogita Urade
-+- Yuri D'Elia
-+- Zahir Hussain
-+- Zev Weiss
-+- Zoltan Boszormenyi
-+
-+
- Repositories / Downloads for Yocto-5.1
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ -  ``perllocalpod:`` Checks for ``perllocal.pod`` being erroneously
+    installed and packaged by a recipe.
 
 -- 
 2.46.0
