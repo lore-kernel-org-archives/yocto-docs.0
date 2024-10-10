@@ -2,99 +2,94 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6650ECF07DD
-	for <webhook@archiver.kernel.org>; Thu, 10 Oct 2024 09:12:48 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.39148.1728551567616629120
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D069CF11D8
+	for <webhook@archiver.kernel.org>; Thu, 10 Oct 2024 12:10:59 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.41658.1728562258524910648
  for <docs@lists.yoctoproject.org>;
- Thu, 10 Oct 2024 02:12:47 -0700
+ Thu, 10 Oct 2024 05:10:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YCEy36TH;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AB4B71C0014;
-	Thu, 10 Oct 2024 09:12:44 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Jrsam0P9;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0665AFF809;
+	Thu, 10 Oct 2024 12:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728551565;
+	t=1728562257;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0CTbAQUh186g3q9RiYRF0hwsW47g+X7wu03iZeepICM=;
-	b=YCEy36THbnDoBZB0A5CzqotOlxjRkcgMGXsScAMnNQXRYLXP1aSZRm0huIQ8rdTEil3o8C
-	EirEQZ7Sk8lTv5RZmj/kNVDJ1ajZz/Zl1yZDLuC1RSdUokppsLOkxt7UCqwQbIEoYRE/Pv
-	M8Dk6kF/BewBjt6Gxrzp/Q+CdpP84pr+ex+wUmZHQJifPGU2CDgJjDxHwyF6ajw1Gr9qX7
-	MWjrsYWi146PZ+MlGsoWkAe82ng1+8jcgyV7Q6cXFLNqgDBBY9q+id64+FUFPBRsIZSbc5
-	j7ELZHgnKAK6i0u4DUd0tSisRvfTHPIgmZWQ+yrVTasTuDDUb6UMspmcmuXyKg==
-Date: Thu, 10 Oct 2024 11:12:44 +0200
+	bh=YVKTekHE93hOB8Wqt1xb1WlVvfbwl/x1DveF1yGM7jc=;
+	b=Jrsam0P9rrhZ52t79xjstjdrnVo7jEleUkbMfWdToNhzYQhM0welHfTwz/SZOkjEPoYBuL
+	w6zF6zwLUYTbEFWocPboGmx9fFxCmzfogzTkGCzIj8Pr64VcqfWdQxh971n4/cSnwDNA43
+	QNv+G4r4SxaHlWM09523viHWQhCdp/13bxxL5r+6neVjGe/mJ7xxvwLKplVU1Nt9wPTBRb
+	RnntW9OnR/eCMon277bmiLysFwvtqeeKz8mQeztCvJgDHkHQUEerCjG8t48fBd9FIDCMn9
+	qhgO3Yy0u6yc1dLnOAtCfirKBCGurG065u+lBUOMSGTiR6LkGKKXMVBLUa+B6w==
 From: Antonin Godard <antonin.godard@bootlin.com>
-To: Michael Opdenacker <michael.opdenacker@rootcommit.com>, 
-	docs@lists.yoctoproject.org
-Cc: ross.burton@arm.com, paul.eggleton@microsoft.com, 
-	Lee Chee Yang <chee.yang.lee@intel.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: Re: [docs] [PATCH 15/16] release-notes-5.1: update for several
- section
-Message-ID: <dfrj5cf4ou6pobu6b4dz2ackrz2gx7ht4xyxponnu3nrsuebtn@2awb6a77kbqc>
-References: <20241009074120.866786-1-antonin.godard@bootlin.com>
- <20241009074120.866786-16-antonin.godard@bootlin.com>
- <e6f6bc70-2dea-4e51-9288-ff11ee8e89e7@rootcommit.com>
+Date: Thu, 10 Oct 2024 14:10:29 +0200
+Subject: [PATCH v3 04/16] ref-manual: add missing nospdx class
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e6f6bc70-2dea-4e51-9288-ff11ee8e89e7@rootcommit.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241010-release-note-5-1-v3-4-2cef1a58f1ab@bootlin.com>
+References: <20241010-release-note-5-1-v3-0-2cef1a58f1ab@bootlin.com>
+In-Reply-To: <20241010-release-note-5-1-v3-0-2cef1a58f1ab@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Ross Burton <ross.burton@arm.com>, 
+ Paul Eggleton <paul.eggleton@microsoft.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=792;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=Rlm3IE48hEsW+EzB9a615bLjqQCCc/oQamIjDx4W9I0=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnB8RNTAnq8OWzHIDhmrdNCmhIXUBz88suFnj8B
+ c/x1lwI/z2JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZwfETQAKCRDRgEFAKaOo
+ Nv7ID/9Ujv2/qYzzSA633ZOLr96i/pOMq6bu0APVu3B2FD1UIVSXNal5sCNfQSDvDo15d5T80DG
+ cJDr0ecRRabtEblMbt9s4njv5vZ8f+ijsD3qIQGNuHn9SND5TXk97PabOC2NavQJBpav4vjxrD0
+ 4lO+NvcQVmmrfl2NEGWb4C1EcD35c+Qe3owHqjrlowMQ8ehRmW60R7SyiHcmdzXYNHw8cYKsPeq
+ 4YznANlNWIJndq3OuA/jecJCcDivYS32hD7L/tAB7L88oAsVdHOZpWNvZt84w1HM20ELAI7P7Ia
+ Hoz6HQ8gt3Yp7e+pl6nSJQn8qzSfWQfqsriPd4DXAReqzHdFnBHRQ+1RuNRgCmtfVzi1IP08k4c
+ O31T1quKEWoGp0ahPeHAUWQv1iobVliH6kmbzt+ztYlo3Sj/0AbjspydlnAX++rJDS5KeMqlAtB
+ WPVt/iHJ87RtExFFrlriRFJQA1BOGruQNMKyGoyRb/0HPa9fND8NIm57WEH7S82FFseQ48AWX54
+ FWEz6FDG5Hh84V+a5L3ITIooLYHsL4Gwz9YhWWS0UNv9DEBp5xmMaWc/2ZbNwL8kmHpbUZuJuE5
+ M7CYvBbEH4wTi1PFfBrYzK89oXSvRl4KcWQ9/6SSfPZMlT5HShT8/aHSeN4BD0XZAtdv5UGukWv
+ zXY1oFh4PNoMX+A==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 10 Oct 2024 09:12:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5452
+ <docs@lists.yoctoproject.org>; Thu, 10 Oct 2024 12:10:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5457
 
-Hi Michael,
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/ref-manual/classes.rst | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Thanks a lot for this review and the others, I'm currently editing a v3 that
-takes your remarks into account.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index 9f6e42725..14aa0f3a3 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -2049,6 +2049,14 @@ and the target. All common parts of the recipe are automatically shared.
+ Disables packaging tasks for those recipes and classes where packaging
+ is not needed.
+ 
++.. _ref-classes-nospdx:
++
++``nospdx``
++==========
++
++The :ref:`ref-classes-nospdx` allows a recipe to opt out of SPDX
++generation provided by :ref:`ref-classes-create-spdx`.
++
+ .. _ref-classes-npm:
+ 
+ ``npm``
 
-On 09/10/2024 16:18:13+0000, Michael Opdenacker wrote:
-> See the style guide for project names:
-> https://git.yoctoproject.org/yocto-docs/tree/documentation/standards.md#n79
-> I know that the style is not very strictly enforced in release notes. This
-> is not exactly like formal documentation.
->
-> It's up to you. It's not a big deal if you don't change these. The same
-> applies to the following lines...
+-- 
+2.46.0
 
-Even if not enforced in the release note, I believe it's a good thing to take
-the habit of following the standards… I will probably write more docs elsewhere,
-so thanks for your reviews, they're really valuable :)
-
-> > +   -  New :ref:`nospdx` class that allows recipes to opt out of generating SPDX.
->
-> Are you sure this works? Looking at your earlier patch, shouldn't it be
-> :ref:`ref-classes-nospdx` instead?
->
-> > +
-> > +   -  New :ref:`Vex` class generates the minimum information that is necessary
-> > +      for VEX generation by an external CVE checking tool.
-> > +
-> > +   -  New :ref:`retain` class creates a tarball of the work directory for a recipe
-> > +      when one of its tasks fails, or any other nominated directories.
-> > +
-> > +   -  New :ref:`localpkgfeed` class in meta-selftest to create a subset of the
-> > +      package feed that just contain the packages depended on by this recipe.
->
->
-> Same comment for the above three items.
-> That's all here ;)
-
-Actually, this is a bit misleading because I did in fact fix this in the next
-commit - otherwise no, it wouldn't work. This should've been part of the first
-one from Chee Lee Yang (amended by myself). Will do in v3.
-
-Cheers,
-Antonin
-
---
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
