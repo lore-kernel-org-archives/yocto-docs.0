@@ -1,85 +1,85 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C748D0EE15
-	for <webhook@archiver.kernel.org>; Fri, 11 Oct 2024 15:56:11 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.15481.1728662162770890406
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7AFC5D1A45B
+	for <webhook@archiver.kernel.org>; Sat, 12 Oct 2024 09:19:18 +0000 (UTC)
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+ by mx.groups.io with SMTP id smtpd.web11.7550.1728724755278958097
  for <docs@lists.yoctoproject.org>;
- Fri, 11 Oct 2024 08:56:03 -0700
+ Sat, 12 Oct 2024 02:19:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lnwdfIIk;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E180D2000A;
-	Fri, 11 Oct 2024 15:56:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728662161;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=MqZbVI7Tu5IK7ynQ3Fi2jT5K4i5XFPoiyhuBmg5VZsE=;
-	b=lnwdfIIk1z0eHs9ZPQ0OK8fzrUoDMH9nC7d6I7shRx6iT/16GuGW6PgFDxogrZbK5/R5oJ
-	PLh/deO/mvOU4F15xPQ7vv2t3wDBCYZhulTC0Mt7m1UiMQyoz4K+K8yTv2PRt42q7RvguM
-	j4TSPOSBqpe+cQ8B2lTw9+f8TD+cyBjgKFIlsyeSmDYHwEh1gZVluMAa/HC15nr2fqcY7m
-	FVv4noTljBIbKpjx6RhpHVR5YsJ9ZLKnReenyxvdx7m7ubdpb1jSsr5nvXkOMeSZmBeq67
-	/+l51nGXyQVIB4FKeV4cuWF4z1wAQQvNFqIGegPn/gQdCPR0gKr379qeV1pMLg==
-Date: Fri, 11 Oct 2024 17:56:00 +0200
-From: Antonin Godard <antonin.godard@bootlin.com>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: docs@lists.yoctoproject.org
-Subject: [master] Pull request
-Message-ID: <f6dtgbobbfxlegxjtpcnb7rfnmcv2hsfnkrbnagipoti3uegqf@6pptrkb6uhl4>
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=OeFWXpy3;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.42, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-37d49a7207cso1587868f8f.0
+        for <docs@lists.yoctoproject.org>; Sat, 12 Oct 2024 02:19:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1728724753; x=1729329553; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=QpHknmR+9I8EfRzQ5sZP0Nt5GJdlSA5dHZMMYNWi+jA=;
+        b=OeFWXpy3gu0wUPCTGIkrA/xmdXJxnZ0PGCgTTycxXQfceDYlccHf9Hwpw6JnfInC9T
+         O5bnEvm/s8fWSAiNRiwL5T20mTXGC/MHYzc1ZfkBMmJJlwtajhMN9tALxcQe/BhcgRBU
+         F6BdBytrCYJtNyr7mP5VJJPSIXtXu2DBpGMRY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728724753; x=1729329553;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QpHknmR+9I8EfRzQ5sZP0Nt5GJdlSA5dHZMMYNWi+jA=;
+        b=oyCoKlwyh4GEXWZobnAJHI4H8g8wmi50siSg9qv4VUGxyO8bxPS98cz3iLNzPydmxJ
+         k8MlKWN+pNgwOE/ujWIptFrEAPPxeP+09itGDY3fUrv7L/+32P6wlGyvqL9SVgA0KHFN
+         m8j+pDDrKhI1neppjx92enP0smaUhTedR6K5vFnqhpRNO9g0wtXxGmd7yzcRr3xDouXo
+         +NHKhdZ6muab8Cm24Xygf8NMyTobprUff7adAmtm0A4xzF7h2EZ910kkAZg7nbEu+KKY
+         mdylzsDy4jk3K1jqXQ9Z85T5vXqZVQY1KDwoMANRkE0+aNGtDlOIXG+f70JJftbWMRAB
+         JSVg==
+X-Gm-Message-State: AOJu0YwDLlDBfBcPSPGjrVLtGhjzFlmA0PmJaoxXIep5nIT6S0NrtfpZ
+	a2356T6UB84vgLXyUtkIAvn5OWTYAUaIfjYZnTgWTWcK6V0jBoRUr/Oso3IIaRS15V9iucKb4LD
+	u
+X-Google-Smtp-Source: AGHT+IHDu5nV5wpu84LjB2mwIwbrWkYE6L6C5SeRIiD8wdRBVGq02MO+8Em8luBbRpoUWnHy3fWNSw==
+X-Received: by 2002:adf:f304:0:b0:37d:4fb1:4fab with SMTP id ffacd0b85a97d-37d601d21bemr1199213f8f.57.1728724753468;
+        Sat, 12 Oct 2024 02:19:13 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:3c32:983d:58d3:a830? ([2001:8b0:aba:5f3c:3c32:983d:58d3:a830])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37d4b6a859fsm5874445f8f.2.2024.10.12.02.19.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 12 Oct 2024 02:19:13 -0700 (PDT)
+Message-ID: <3019070797186fd40c2b71959ed6b995660a790f.camel@linuxfoundation.org>
+Subject: Docs build/workers need inkscape?
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: docs <docs@lists.yoctoproject.org>, Michael Halstead
+ <mhalstead@linuxfoundation.org>, "antonin.godard"
+ <antonin.godard@bootlin.com>,  Alexandre Belloni
+ <alexandre.belloni@bootlin.com>
+Date: Sat, 12 Oct 2024 10:19:11 +0100
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 11 Oct 2024 15:56:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5472
+ <docs@lists.yoctoproject.org>; Sat, 12 Oct 2024 09:19:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5473
 
-The following changes since commit 98e7f378bc5670d23a6c2bdfcd3b7af965f7c450:
+Hi All,
 
-  release-notes-5.1: document spirv-tools reproducibility (2024-10-08 15:33:38 +0200)
+We've seeing docs build failures:
 
-are available in the Git repository at:
+https://valkyrie.yoctoproject.org//#/builders/34/builds/6
 
-  git@push.yoctoproject.org:yocto-docs master-next
+The issue is that inkscape isn't installed on the workers and isn't in
+the docs buildtools tarball either.
 
-for you to fetch changes up to 65618b0588053d2c4325d995482957b660f5e104:
+I'm reluctant to start requiring installing inkscape on all autobuilder
+workers as we try and keep the packages installed minimal for the other
+builds.
 
-  release-notes-5.1: update release note for styhead (2024-10-11 17:44:39 +0200)
+I'm wondering if we should just pre-generate those png files alongside
+the svg sources? I can send a patch doing that...
 
-----------------------------------------------------------------
-Antonin Godard (15):
-      ref-manual: add missing CVE_CHECK manifest variables
-      ref-manual: add new vex class
-      ref-manual: add new retain class and variables
-      ref-manual: add missing nospdx class
-      ref-manual: add new RECIPE_UPGRADE_EXTRA_TASKS variable
-      ref-manual: drop siteconfig class
-      ref-manual: add missing TESTIMAGE_FAILED_QA_ARTIFACTS
-      ref-manual: add missing image manifest variables
-      ref-manual: add missing EXTERNAL_KERNEL_DEVICETREE variable
-      ref-manual: drop TCLIBCAPPEND variable
-      ref-manual: add missing OPKGBUILDCMD variable
-      ref-manual: add missing variable PRSERV_UPSTREAM
-      ref-manual: merge patch-status-* to patch-status
-      ref-manual: add mission pep517-backend sanity check
-      release-notes-5.1: update release note for styhead
+Cheers,
 
-Lee Chee Yang (1):
-      release-notes-5.1: update for several section
+Richard
 
- documentation/migration-guides/migration-5.1.rst   |  63 +-
- .../migration-guides/release-notes-5.1.rst         | 976 ++++++++++++++++++++-
- documentation/ref-manual/classes.rst               |  70 +-
- documentation/ref-manual/variables.rst             | 118 ++-
- 4 files changed, 1172 insertions(+), 55 deletions(-)
 
---
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
