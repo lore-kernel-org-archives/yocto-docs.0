@@ -1,72 +1,295 @@
-Return-Path: <alexandre.belloni@bootlin.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 79EB1D1A45D
-	for <webhook@archiver.kernel.org>; Sat, 12 Oct 2024 09:28:08 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.7595.1728725286670143209
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D7137CF259B
+	for <webhook@archiver.kernel.org>; Mon, 14 Oct 2024 02:20:50 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by mx.groups.io with SMTP id smtpd.web11.45408.1728872441178597050
  for <docs@lists.yoctoproject.org>;
- Sat, 12 Oct 2024 02:28:06 -0700
+ Sun, 13 Oct 2024 19:20:41 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MTdUJk8+;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: alexandre.belloni@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AE1221C0002;
-	Sat, 12 Oct 2024 09:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728725285;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CzPurgIqJsNUUAAOHTgjk71mnqZA2wM8qAzlMgQbG/U=;
-	b=MTdUJk8+dU/6BDksWmvkCIz65j2URH2r0LEkyFz+ZqzO8cxIYhHcf7vRgzG4LX6i4sgx48
-	WH/FcL5vwBV8gCmfwXzRirirm8ivDtmAa3k0xlq4FafTH35JX+8LKDavjqQg9uTiM+E4J9
-	xJQ4/lQ+JA71Y2parvSH0dDt5wvgy/hGRhvqo5gLeHnJ1LZ8iezzeiMGP5WN9NiGDYHGWs
-	fjB4zpFuh1okoowAuwOdI2XyYqtccN1FHKWbx7A+wNZEa4HS8HTv8WAF03UEseL1CHus1G
-	lueJ5q5UXrsw+ba3/XRX4j19wAxin5uYy1BzNX+XusUt94g7odnuq8oUYB+qWg==
-Date: Sat, 12 Oct 2024 11:28:04 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Richard Purdie <richard.purdie@linuxfoundation.org>
-Cc: docs <docs@lists.yoctoproject.org>,
-	Michael Halstead <mhalstead@linuxfoundation.org>,
-	"antonin.godard" <antonin.godard@bootlin.com>
-Subject: Re: Docs build/workers need inkscape?
-Message-ID: <202410120928040e8758c6@mail.local>
-References: <3019070797186fd40c2b71959ed6b995660a790f.camel@linuxfoundation.org>
+ dkim=pass header.i=@intel.com header.s=Intel header.b=dkSJcAAB;
+ spf=pass (domain: intel.com, ip: 198.175.65.14, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1728872441; x=1760408441;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8FN8qHojHORyAM7zcJx/hqRU2CaUE4V5RqE94F521S8=;
+  b=dkSJcAABbXaGGb+HKXSJrB+4Wv9Js9WicErC1+lM0vBpTOeb4GLTeSVW
+   j2Xr6I8z952xcXNuAL9N6g93iv4v7l91TKp4jMmuSgVYUqu/J+F/ngENX
+   rBZXaCKqFms40TJ6DQkkgW0ca/D4NcxblDjzSOWFqiD7Aj6ZhXT2y2+RF
+   Il7yihoz/l7woObshkmA0wc8S/HlgtZ/p0gLeGQAV7X+wkoXVXyy6sGXP
+   dBUhPI1I/z42Pi+4pKB06eboukwWHVE51Q9L4COzOIjyAQmjNRhbZtDqo
+   YuE2l8pOOERv+rfqpCPiz0yoZEKGQ4GG+KCku4qGQortK/ljXzfcjXsQO
+   A==;
+X-CSE-ConnectionGUID: IpYAL1uoR0GgPY4pK2JhSQ==
+X-CSE-MsgGUID: WDH46AHnTtWOLSVwNkSlWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11224"; a="32002881"
+X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; 
+   d="scan'208";a="32002881"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Oct 2024 19:20:40 -0700
+X-CSE-ConnectionGUID: GGcLuwoKQQOBGOe8Vlzzdw==
+X-CSE-MsgGUID: U4j3qFH7TGGqsO/nXbFNtA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,202,1725346800"; 
+   d="scan'208";a="77085207"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by fmviesa007.fm.intel.com with ESMTP; 13 Oct 2024 19:20:39 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 5.0.4
+Date: Mon, 14 Oct 2024 10:19:02 +0800
+Message-Id: <20241014021902.591924-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3019070797186fd40c2b71959ed6b995660a790f.camel@linuxfoundation.org>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 12 Oct 2024 09:28:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5474
+ <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 02:20:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5475
 
-On 12/10/2024 10:19:11+0100, Richard Purdie wrote:
-> Hi All,
-> 
-> We've seeing docs build failures:
-> 
-> https://valkyrie.yoctoproject.org//#/builders/34/builds/6
-> 
-> The issue is that inkscape isn't installed on the workers and isn't in
-> the docs buildtools tarball either.
-> 
-> I'm reluctant to start requiring installing inkscape on all autobuilder
-> workers as we try and keep the packages installed minimal for the other
-> builds.
-> 
-> I'm wondering if we should just pre-generate those png files alongside
-> the svg sources? I can send a patch doing that...
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Antonin was suggesting using librsvg in an email you didn't receive, I'm
-going to forward it to you.
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-5.0.rst          |   1 +
+ .../migration-guides/release-notes-5.0.4.rst  | 212 ++++++++++++++++++
+ 2 files changed, 213 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.0.4.rst
 
-
+diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
+index 1d6ba7692..25c8ebc16 100644
+--- a/documentation/migration-guides/release-5.0.rst
++++ b/documentation/migration-guides/release-5.0.rst
+@@ -10,3 +10,4 @@ Release 5.0 (scarthgap)
+    release-notes-5.0.1
+    release-notes-5.0.2
+    release-notes-5.0.3
++   release-notes-5.0.4
+diff --git a/documentation/migration-guides/release-notes-5.0.4.rst b/documentation/migration-guides/release-notes-5.0.4.rst
+new file mode 100644
+index 000000000..f2aef583c
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-5.0.4.rst
+@@ -0,0 +1,212 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-5.0.4 (Scarthgap)
++-----------------------------------------
++
++Security Fixes in Yocto-5.0.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  apr: Fix :cve:`2023-49582`
++-  curl: Ignore :cve:`2024-32928`
++-  curl: Fix :cve:`2024-7264`
++-  expat: Fix :cve:`2024-45490`, :cve:`2024-45491` and :cve:`2024-45492`
++-  ffmpeg: Fix :cve:`2023-50008` and :cve:`2024-32230`
++-  libpcap: Fix :cve:`2023-7256` and :cve:`2024-8006`
++-  libyaml: Ignore :cve:`2024-35325` and :cve:`2024-35326`
++-  openssl: Fix :cve:`2024-5535` and :cve:`2024-6119`
++-  python3-certifi: Fix :cve:`2024-39689`
++-  python3-setuptools: Fix :cve:`2024-6345`
++-  python3: Fix :cve:`2024-6232`, :cve:`2024-7592`, :cve:`2024-8088` and :cve:`2024-27034`
++-  qemu: Fix :cve:`2024-4467` and :cve:`2024-7409`
++-  ruby: Fix :cve:`2024-27282`
++-  tiff: Fix :cve:`2024-7006`
++-  vim: Fix :cve:`2024-41957`, :cve:`2024-41965`, :cve:`2024-43374`, :cve:`2024-43790` and :cve:`2024-43802`
++
++
++Fixes in Yocto-5.0.4
++~~~~~~~~~~~~~~~~~~~~
++
++-  apr: drop 0007-explicitly-link-libapr-against-phtread-to-make-gold-.patch
++-  apr: upgrade to 1.7.5
++-  bind: Fix build with the `httpstats` package config enabled
++-  bitbake: data_smart: Improve performance for VariableHistory
++-  bluez5: remove redundant patch for MAX_INPUT
++-  build-appliance-image: Update to scarthgap head revision
++-  buildhistory: Fix intermittent package file list creation
++-  buildhistory: Restoring files from preserve list
++-  buildhistory: Simplify intercept call sites and drop SSTATEPOSTINSTFUNC usage
++-  busybox: Fix cut with "-s" flag
++-  create-sdpx-2.2.bbclass: Switch from exists to isfile checking debugsrc
++-  cups: upgrade to 2.4.10
++-  dejagnu: Fix :term:`LICENSE` (change to GPL-3.0-only)
++-  doc: features: describe distribution feature pni-name
++-  doc: features: remove duplicate word in distribution feature ext2
++-  expat: upgrade to 2.6.3
++-  expect-native: fix do_compile failure with gcc-14
++-  gcc: Fix spurious '/' in GLIBC_DYNAMIC_LINKER on microblaze
++-  gcr: Fix :term:`LICENSE` (change to LGPL-2.0-only)
++-  glibc: fix fortran header file conflict for arm
++-  go: upgrade to 1.22.6
++-  gstreamer1.0: disable flaky baseparser tests
++-  image_types.bbclass: Use --force also with lz4,lzop
++-  initramfs-framework: fix typos
++-  iw: Fix :term:`LICENSE` (change to ISC)
++-  libadwaita: upgrade to 1.5.2
++-  libcap-ng: update :term:`SRC_URI`
++-  libdnf: upgrade to 0.73.2
++-  libedit: Make docs generation deterministic
++-  libgfortran.inc: fix nativesdk-libgfortran dependencies
++-  librsvg: don't try to run target code at build time
++-  linux-firmware: add a package for ath12k firmware
++-  llvm: Enable libllvm for native build
++-  maintainers.inc: add maintainer for python(-setuptools, -smmap, -subunit, -testtools)
++-  mc: fix source URL
++-  migration-guide: add release notes for 4.0.20 and 5.0.3
++-  oeqa/postactions: fix exception handling
++-  oeqa/runtime/ssh: In case of failure, show exit code and handle -15 (SIGTERM)
++-  oeqa/runtime/ssh: add retry logic and sleeps to allow for slower systems
++-  oeqa/runtime/ssh: check for all errors at the end
++-  oeqa/runtime/ssh: increase the number of attempts
++-  oeqa/selftest/reproducibile: Explicitly list virtual targets
++-  oeqa/utils/postactions: transfer whole archive over ssh instead of doing individual copies
++-  openssh: add backported header file include
++-  openssl: upgrade to 3.2.3
++-  os-release: Fix VERSION_CODENAME in case it is empty
++-  poky.conf: bump version for 5.0.4
++-  populate_sdk_ext.bclass: make sure OECORE_NATIVE_SYSROOT is exported.
++-  python3-maturin: Fix cross compilation issue for armv7l, mips64, ppc
++-  python3-pycryptodome(x): use python_setuptools_build_meta build class
++-  python3: upgrade to 3.12.6
++-  python3: skip readline limited history tests
++-  qemu: backport patches to fix riscv64 build failure
++-  qemuboot: Trigger write_qemuboot_conf task on changes of kernel image realpath
++-  ref-manual: fix typo and move :term:`SYSROOT_DIRS` example
++-  ruby: Make docs generation deterministic
++-  systemd: Mitigate /var/log type mismatch issue
++-  systemd: Mitigate /var/tmp type mismatch issue
++-  tiff: Fix :term:`LICENSE` (change to libtiff)
++-  u-boot.inc: Refactor do_* steps into functions that can be overridden
++-  udev-extraconf: Add collect flag to mount
++-  unzip: Fix :term:`LICENSE` (change to Info-ZIP)
++-  util-linux: Add :term:`PACKAGECONFIG` option (libmount-mountfd-support) to mitigate rootfs remount error
++-  vim: upgrade to 9.1.0698
++-  weston-init: fix weston not starting when xwayland is enabled
++-  wireless-regdb: upgrade to 2024.07.04
++-  wpa-supplicant: upgrade to 2.11
++-  xserver-xorg: mark :cve:`2023-5574` as unpatched when xvfb enabled
++-  yocto-uninative: Update to 4.6 for glibc 2.40
++-  zip: Fix :term:`LICENSE` (change to Info-ZIP)
++
++
++Known Issues in Yocto-5.0.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-5.0.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Alban Bedel
++-  Alexander Kanavin
++-  Alexis Lothoré
++-  Archana Polampalli
++-  Ashish Sharma
++-  Bartosz Golaszewski
++-  Benjamin Szőke
++-  Changqing Li
++-  Chen Qi
++-  Colin McAllister
++-  Daniel Semkowicz
++-  Dmitry Baryshkov
++-  Gauthier HADERER
++-  Guðni Már Gilbert
++-  Jon Mason
++-  Jose Quaresma
++-  Jörg Sommer
++-  Kai Kang
++-  Khem Raj
++-  Lee Chee Yang
++-  Mark Hatle
++-  Martin Jansa
++-  Matthias Pritschet
++-  Michael Halstead
++-  Mingli Yu
++-  Niko Mauno
++-  Pedro Ferreira
++-  Peter Marko
++-  Quentin Schulz
++-  Richard Purdie
++-  Robert Yang
++-  Ross Burton
++-  Ryan Eatmon
++-  Siddharth Doshi
++-  Simone Weiß
++-  Soumya Sambu
++-  Steve Sakoman
++-  Trevor Gamblin
++-  Ulrich Ölmann
++-  Vijay Anusuri
++-  Wang Mingyu
++-  Weisser, Pascal.ext
++-  Yogita Urade
++
++
++Repositories / Downloads for Yocto-5.0.4
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.4 </poky/log/?h=yocto-5.0.4>`
++-  Git Revision: :yocto_git:`2034fc38eb4e63984d9bd6b260aa1bf95ce562e4 </poky/commit/?id=2034fc38eb4e63984d9bd6b260aa1bf95ce562e4>`
++-  Release Artefact: poky-2034fc38eb4e63984d9bd6b260aa1bf95ce562e4
++-  sha: 697ed099793d6c86d5ffe590e96f99689bd28dcb2d4451dc4585496fa4a20400
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.4/poky-2034fc38eb4e63984d9bd6b260aa1bf95ce562e4.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.4/poky-2034fc38eb4e63984d9bd6b260aa1bf95ce562e4.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
++-  Tag:  :oe_git:`yocto-5.0.4 </openembedded-core/log/?h=yocto-5.0.4>`
++-  Git Revision: :oe_git:`f888dd911529a828820799a7a1b75dfd3a44847c </openembedded-core/commit/?id=f888dd911529a828820799a7a1b75dfd3a44847c>`
++-  Release Artefact: oecore-f888dd911529a828820799a7a1b75dfd3a44847c
++-  sha: 93cb4c3c8e0f77edab20814d155847dc3452c6b083e3dd9c7a801e80a7e4d228
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.4/oecore-f888dd911529a828820799a7a1b75dfd3a44847c.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.4/oecore-f888dd911529a828820799a7a1b75dfd3a44847c.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.4 </meta-mingw/log/?h=yocto-5.0.4>`
++-  Git Revision: :yocto_git:`acbba477893ef87388effc4679b7f40ee49fc852 </meta-mingw/commit/?id=acbba477893ef87388effc4679b7f40ee49fc852>`
++-  Release Artefact: meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852
++-  sha: 3b7c2f475dad5130bace652b150367f587d44b391218b1364a8bbc430b48c54c
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.4/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.4/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
++-  Tag:  :oe_git:`yocto-5.0.4 </bitbake/log/?h=yocto-5.0.4>`
++-  Git Revision: :oe_git:`d251668d9a7a8dd25bd8767efb30d6d9ff8b1ad3 </bitbake/commit/?id=d251668d9a7a8dd25bd8767efb30d6d9ff8b1ad3>`
++-  Release Artefact: bitbake-d251668d9a7a8dd25bd8767efb30d6d9ff8b1ad3
++-  sha: d873f4d3a471d26680dc39200d8f3851a6863f15daa9bed978ba31b930f9a1c1
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.4/bitbake-d251668d9a7a8dd25bd8767efb30d6d9ff8b1ad3.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.4/bitbake-d251668d9a7a8dd25bd8767efb30d6d9ff8b1ad3.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
++-  Tag: :yocto_git:`yocto-5.0.4 </yocto-docs/log/?h=yocto-5.0.4>`
++-  Git Revision: :yocto_git:`d71081dd14a9d75ace4d1c62472374f37b4a888d </yocto-docs/commit/?id=d71081dd14a9d75ace4d1c62472374f37b4a888d>`
++
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+2.34.1
+
 
