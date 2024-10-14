@@ -2,107 +2,80 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 061C3D16274
-	for <webhook@archiver.kernel.org>; Mon, 14 Oct 2024 14:12:27 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.56096.1728915137506086995
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39B4BD16279
+	for <webhook@archiver.kernel.org>; Mon, 14 Oct 2024 14:55:47 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.57176.1728917745105864460
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Oct 2024 07:12:18 -0700
+ Mon, 14 Oct 2024 07:55:45 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dVXa5MOM;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5E8811BF206;
-	Mon, 14 Oct 2024 14:12:15 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=p1OW7Srl;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0F37FC0009;
+	Mon, 14 Oct 2024 14:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728915135;
+	t=1728917743;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=mm7+QoWKOSGNWn3B397NStTEHa7W2iuTUfRki8MPUf4=;
-	b=dVXa5MOMwej/+cFelpbtl5XZbJ70NGQzuSqigu5enpgL3ZTrWALSFvGiM+jT9y7SoJ3Prw
-	d26+6DrN2cOYdRQwb5+R0XfcLvcMg5u0tz6KdNfgC5ygG3WxsdRN3fRtYKnB+luTe+dwEr
-	L0ZeEa1QfERaTkaa+pltsrkyFP2Rk4STsXtGP3s/OlN93pCzuxmn/jOvbCiOSbDnQHLACR
-	YLicqo16/rcdm76nOWxJSoW1JJB7Apfbs/w7VdrylHpiuggDnnDQlvAyHfASfyGVZmFBBP
-	LbMsAveEVziis8Li96hq60Vg/eukpkZHiSHpTSkrrrR7cttj//6ih5sMyAVH4w==
+	 in-reply-to:in-reply-to:references:references;
+	bh=pIwRLKyl0vRE1+W8GB5tpKverfFx/vx4/e7jYo4Zx04=;
+	b=p1OW7SrlW9YSRTNOIOHcOLTmd4OfBJBQPe/tvy+q5SrFl2ZGJY1qL3oJMjyl2g8O3Mm2Oz
+	UYklPeEtTd8BKfMJmk2N58h8NRIKKkkynEqjfmLT61lpQjQNL/C7NERD0dSsvAAAaoFbJq
+	/LBQyvvHOzryKEBGTsJwaMoT+vnMpZNDDzSoGfXQWWHZPdYW7TRKNDCYUTOnmZAPBGtkQV
+	fj4qYejs4gjGsKlCMavSv+vZG0/l5Bm9aftLheeYrpyYdRwGBujla9e/aqo6I+dj9tEJZf
+	wriumvOvGgPab2O/OZlLZ/s/RjbOcCRnCZxM3bZlkp1bYcFjzyR1FrIgq8PbUw==
+Date: Mon, 14 Oct 2024 16:55:42 +0200
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 14 Oct 2024 16:11:44 +0200
-Subject: [PATCH] ref-manual: fix ordering of insane checks list
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH v3 16/16] release-notes-5.1: update release note
+ for styhead
+Message-ID: <j2olgq2jxltxlguk4vykcjwpw3geuiqbjts37gfgrl3le7dmjf@gmajrxkbabhq>
+References: <20241010-release-note-5-1-v3-0-2cef1a58f1ab@bootlin.com>
+ <20241010-release-note-5-1-v3-16-2cef1a58f1ab@bootlin.com>
+ <6aa1c0d3-e86a-405f-81af-2c68f3023bd2@cherry.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-insane-ordering-v1-1-0b51976580ba@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAJ8mDWcC/x3MTQqAIBBA4avIrBP8A6GrRAvR0WYzhkIE4t2Tl
- m/xvQEdG2GHXQxo+FCnyiv0JiBegQtKSqvBKOO00k4S98Aoa0sLcpHRGp+tdxqTg6Xuhpne/3i
- cc36LIlw7YQAAAA==
-X-Change-ID: 20241014-insane-ordering-c327f3741ed4
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1614;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=dG2yM5n+b+EVX9Mf3q5DN3Iy9iJOGaY9YnaarlB9k84=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnDSa/8Xrgl2/eTWR7nYESRw2RnfpuNKxRFjoYB
- H2ulxZoxhyJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZw0mvwAKCRDRgEFAKaOo
- NgOGEACKoPL5zbCJIkAxx3KWI6IlvncSL8K/n+ri5iugjyVAT9Nud48ks6lP/AyUr8NayDOhm67
- cu9njTWQAR1WAbbCZBAmk4MJLbDnOYsTrmT9c78ZssIbuCe8D5sr4cgRJ3wLl/UR+O0NJY81pg8
- pyH+HbzW1cTfSlpDs8WwAtAkqZQ7xUo4ct/vxcmV6MmJpt8uUabdM0yn9vpNW9Gptizkaoh7qBc
- Puz9F1ulo2ylaj/fsLfVz9I8bsE23CNZQCZNnh8FvyfWuVy496A6dfomRJ5LnI02BgZkreTeB7q
- rBoScSZt6fjlZcCK9zMOtoTZdYA22yctZoGSTOqcCPFuBFIUXgO3qKKG+DHQ2rmaiu7/d6ookBp
- 62zv8rZRTDkk8+YcZxE85LwSI1S21GObeU77/R7AD2BPJcoq+iVmH0SZY+aOp4TswQIQNxSGhTF
- 6eIpiYz+/QmV3uX1J7XL33cpC0FyLe/j21xFRUASRG6iGawkEC6arWno+gVbVfKovloDDIH/Os7
- FOtC5tciTXLaeh+4q/phMoGqsg3BZUmwyaZhsnA/7LUrQjuSHIxrtwReOyCc4rarbbLC56s0EJ3
- TTzaZ3Xi/WQZtX2ZG5vGhjleDT/N8E7IfryaG+WDnvEMzllyAE2dUd1rTu6pHqupMa0/43mGBfu
- FSa1EoR6b2Bx79g==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6aa1c0d3-e86a-405f-81af-2c68f3023bd2@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 14:12:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5486
+ <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 14:55:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5487
 
-It should be before "perllocalpod" and after "patch-status".
+Hi Quentin,
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
----
- documentation/ref-manual/classes.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks for your reviews :)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index a715be97dc3469dc3c219b78548b79e8e3e4b95f..b92f4e4f20ea8f702c90f4e3d29251b2461d07d0 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -1464,6 +1464,9 @@ The tests you can list with the :term:`WARN_QA` and
- -  ``patch-status:`` Checks that the ``Upstream-Status`` is specified and valid
-    in the headers of patches for recipes.
- 
-+-  ``pep517-backend:`` checks that a recipe inheriting
-+   :ref:`ref-classes-setuptools3` has a PEP517-compliant backend.
-+
- -  ``perllocalpod:`` Checks for ``perllocal.pod`` being erroneously
-    installed and packaged by a recipe.
- 
-@@ -1478,9 +1481,6 @@ The tests you can list with the :term:`WARN_QA` and
- 
- -  ``perms:`` Currently, this check is unused but reserved.
- 
---  ``pep517-backend:`` checks that a recipe inheriting
--   :ref:`ref-classes-setuptools3` has a PEP517-compliant backend.
--
- -  ``pkgconfig:`` Checks ``.pc`` files for any
-    :term:`TMPDIR`/:term:`WORKDIR` paths.
-    Any ``.pc`` file containing these paths is incorrect since
+On 14/10/2024 14:27:23+0000, Quentin Schulz wrote:
+> > +-  wic Image Creator changes:
+> > +
+> > +   -  Add the ``truncate`` utility in :term:`HOSTTOOLS`, needed by some wic
+> > +      commands.
+> > +
+>
+> I think we should add the package that installs `truncate` to the required
+> host tools in documentation/poky.yaml.in?
+>
+> https://pkgs.org/search/?q=truncate&on=files should help figuring out the
+> required packages for each distro. I assume it may already been pulled in by
+> other packages as a dependency, but better have it explicitly listed than
+> relying on a dependency?
 
----
-base-commit: 67a239f372ed1667c923e2f407da976627be2039
-change-id: 20241014-insane-ordering-c327f3741ed4
+I have checked for the supported distro and truncate is always part of
+coreutils, which should be shipped by default on these distro - maybe that's the
+reason it wasn't added to that list? This should not only apply for truncate but
+several programs part of HOSTTOOLS I think.
 
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
+Doesn't hurt to add it to the list though.
 
+Cheers,
+Antonin
+
+--
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
