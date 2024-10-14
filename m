@@ -2,81 +2,107 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7862D16270
-	for <webhook@archiver.kernel.org>; Mon, 14 Oct 2024 13:46:26 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.55488.1728913580700593045
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 061C3D16274
+	for <webhook@archiver.kernel.org>; Mon, 14 Oct 2024 14:12:27 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.56096.1728915137506086995
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Oct 2024 06:46:20 -0700
+ Mon, 14 Oct 2024 07:12:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BVacR6SV;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 30BEC40007;
-	Mon, 14 Oct 2024 13:46:19 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dVXa5MOM;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5E8811BF206;
+	Mon, 14 Oct 2024 14:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728913579;
+	t=1728915135;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Q13XRrkN/8Z6Iur+bBFTJGWA0gIfhTolp+8xIkXyOM0=;
-	b=BVacR6SVgA4aM0ftbz+o9O8P2GKKwSg5PN8TCDOfYgPkOGjUvZHAzbSH9xsRLmD4HeD/DH
-	aj7CGq+89tu6/+wXQf/VyPDwik82A5LST5+hGPxXlyT1gWbOYDI6BeUpBguPXlCjHxjYFc
-	gXl60NbLeGwppaqMNEMkSGNaUTI93AefAqUAOf3wkwP9RA3LuuZI7AI9vJMZ/hEjB+q0+B
-	GwEliUEIUhrt/pfUg6bFKRCTuYI4C46Oqgvj/J+nt1imMzYbCtEOcUEjtP1OlIBH0aSgBZ
-	A3FtUYgyYPXK+Qclle3qRKZWChugFSqs1pxne4k7Ys1Gvp83lJU8ip58ZQwBqQ==
-Date: Mon, 14 Oct 2024 15:46:18 +0200
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=mm7+QoWKOSGNWn3B397NStTEHa7W2iuTUfRki8MPUf4=;
+	b=dVXa5MOMwej/+cFelpbtl5XZbJ70NGQzuSqigu5enpgL3ZTrWALSFvGiM+jT9y7SoJ3Prw
+	d26+6DrN2cOYdRQwb5+R0XfcLvcMg5u0tz6KdNfgC5ygG3WxsdRN3fRtYKnB+luTe+dwEr
+	L0ZeEa1QfERaTkaa+pltsrkyFP2Rk4STsXtGP3s/OlN93pCzuxmn/jOvbCiOSbDnQHLACR
+	YLicqo16/rcdm76nOWxJSoW1JJB7Apfbs/w7VdrylHpiuggDnnDQlvAyHfASfyGVZmFBBP
+	LbMsAveEVziis8Li96hq60Vg/eukpkZHiSHpTSkrrrR7cttj//6ih5sMyAVH4w==
 From: Antonin Godard <antonin.godard@bootlin.com>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: docs@lists.yoctoproject.org, Ross Burton <ross.burton@arm.com>, 
-	Paul Eggleton <paul.eggleton@microsoft.com>, Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [docs] [PATCH v3 14/16] ref-manual: add mission pep517-backend
- sanity check
-Message-ID: <zforfl2r62hvb3fpgawr2ct5aywruhig7iw5z4cixbncwkulco@qgu3y7xu6hbq>
-References: <20241010-release-note-5-1-v3-0-2cef1a58f1ab@bootlin.com>
- <20241010-release-note-5-1-v3-14-2cef1a58f1ab@bootlin.com>
- <f34d2700-ae0f-409b-b4d9-c864de975d57@cherry.de>
+Date: Mon, 14 Oct 2024 16:11:44 +0200
+Subject: [PATCH] ref-manual: fix ordering of insane checks list
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f34d2700-ae0f-409b-b4d9-c864de975d57@cherry.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241014-insane-ordering-v1-1-0b51976580ba@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAJ8mDWcC/x3MTQqAIBBA4avIrBP8A6GrRAvR0WYzhkIE4t2Tl
+ m/xvQEdG2GHXQxo+FCnyiv0JiBegQtKSqvBKOO00k4S98Aoa0sLcpHRGp+tdxqTg6Xuhpne/3i
+ cc36LIlw7YQAAAA==
+X-Change-ID: 20241014-insane-ordering-c327f3741ed4
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1614;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=dG2yM5n+b+EVX9Mf3q5DN3Iy9iJOGaY9YnaarlB9k84=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnDSa/8Xrgl2/eTWR7nYESRw2RnfpuNKxRFjoYB
+ H2ulxZoxhyJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZw0mvwAKCRDRgEFAKaOo
+ NgOGEACKoPL5zbCJIkAxx3KWI6IlvncSL8K/n+ri5iugjyVAT9Nud48ks6lP/AyUr8NayDOhm67
+ cu9njTWQAR1WAbbCZBAmk4MJLbDnOYsTrmT9c78ZssIbuCe8D5sr4cgRJ3wLl/UR+O0NJY81pg8
+ pyH+HbzW1cTfSlpDs8WwAtAkqZQ7xUo4ct/vxcmV6MmJpt8uUabdM0yn9vpNW9Gptizkaoh7qBc
+ Puz9F1ulo2ylaj/fsLfVz9I8bsE23CNZQCZNnh8FvyfWuVy496A6dfomRJ5LnI02BgZkreTeB7q
+ rBoScSZt6fjlZcCK9zMOtoTZdYA22yctZoGSTOqcCPFuBFIUXgO3qKKG+DHQ2rmaiu7/d6ookBp
+ 62zv8rZRTDkk8+YcZxE85LwSI1S21GObeU77/R7AD2BPJcoq+iVmH0SZY+aOp4TswQIQNxSGhTF
+ 6eIpiYz+/QmV3uX1J7XL33cpC0FyLe/j21xFRUASRG6iGawkEC6arWno+gVbVfKovloDDIH/Os7
+ FOtC5tciTXLaeh+4q/phMoGqsg3BZUmwyaZhsnA/7LUrQjuSHIxrtwReOyCc4rarbbLC56s0EJ3
+ TTzaZ3Xi/WQZtX2ZG5vGhjleDT/N8E7IfryaG+WDnvEMzllyAE2dUd1rTu6pHqupMa0/43mGBfu
+ FSa1EoR6b2Bx79g==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 13:46:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5485
+ <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 14:12:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5486
 
-On 14/10/2024 14:16:07+0000, Quentin Schulz wrote:
-> Hi Antonin,
->
-> On 10/10/24 2:10 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> > New sanity check to check for PEP517-backend compliance.
-> >
-> > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> > ---
-> >   documentation/ref-manual/classes.rst | 3 +++
-> >   1 file changed, 3 insertions(+)
-> >
-> > diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-> > index cdfd1f7e3..a715be97d 100644
-> > --- a/documentation/ref-manual/classes.rst
-> > +++ b/documentation/ref-manual/classes.rst
-> > @@ -1478,6 +1478,9 @@ The tests you can list with the :term:`WARN_QA` and
-> >   -  ``perms:`` Currently, this check is unused but reserved.
-> > +-  ``pep517-backend:`` checks that a recipe inheriting
-> > +   :ref:`ref-classes-setuptools3` has a PEP517-compliant backend.
-> > +
->
-> Not sure we follow this for each entry in that list, but this one is not in
-> its proper location if we were to alphabetically order the list.
+It should be before "perllocalpod" and after "patch-status".
 
-Ha, you're right I got it wrong. Thanks, will fix.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
+---
+ documentation/ref-manual/classes.rst | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Cheers,
-Antonin
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index a715be97dc3469dc3c219b78548b79e8e3e4b95f..b92f4e4f20ea8f702c90f4e3d29251b2461d07d0 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -1464,6 +1464,9 @@ The tests you can list with the :term:`WARN_QA` and
+ -  ``patch-status:`` Checks that the ``Upstream-Status`` is specified and valid
+    in the headers of patches for recipes.
+ 
++-  ``pep517-backend:`` checks that a recipe inheriting
++   :ref:`ref-classes-setuptools3` has a PEP517-compliant backend.
++
+ -  ``perllocalpod:`` Checks for ``perllocal.pod`` being erroneously
+    installed and packaged by a recipe.
+ 
+@@ -1478,9 +1481,6 @@ The tests you can list with the :term:`WARN_QA` and
+ 
+ -  ``perms:`` Currently, this check is unused but reserved.
+ 
+--  ``pep517-backend:`` checks that a recipe inheriting
+-   :ref:`ref-classes-setuptools3` has a PEP517-compliant backend.
+-
+ -  ``pkgconfig:`` Checks ``.pc`` files for any
+    :term:`TMPDIR`/:term:`WORKDIR` paths.
+    Any ``.pc`` file containing these paths is incorrect since
 
---
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+---
+base-commit: 67a239f372ed1667c923e2f407da976627be2039
+change-id: 20241014-insane-ordering-c327f3741ed4
+
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
+
 
