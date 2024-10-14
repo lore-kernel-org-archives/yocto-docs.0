@@ -1,136 +1,85 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C26FAD16265
-	for <webhook@archiver.kernel.org>; Mon, 14 Oct 2024 13:45:06 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.55444.1728913501338043232
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B7E4D16267
+	for <webhook@archiver.kernel.org>; Mon, 14 Oct 2024 13:45:26 +0000 (UTC)
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+ by mx.groups.io with SMTP id smtpd.web11.55256.1728913518288467389
  for <docs@lists.yoctoproject.org>;
- Mon, 14 Oct 2024 06:45:01 -0700
+ Mon, 14 Oct 2024 06:45:18 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Z1bp6oss;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 89C5240012;
-	Mon, 14 Oct 2024 13:44:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1728913499;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=iOMCKQtLr2bhWH/L2ioTSOIpPDNQspQoBmr71IO7uGY=;
-	b=Z1bp6ossQA/49dA9ctYGrrA48JoXd9d+E9+ep18E73EZKKskaAoNa21nVPqyekslFg3VHI
-	hbRb7RUnm/3bTb5eocl/njUYEKX9hXtb6yTQIjOPJitit1M5t+ViN+xSTUZtkXHqkzbgiZ
-	I1wk8rYjd3xEV873Ka4SWn8sk9jXI2d+1GSH/7Mnu+GzmMDqSkdZVQNWcrYQQy0d/Wk1G/
-	AaVMf1Jl8QuxE3wsqA5T/jIZzJamKNxkzPUxJYclrjuAc8a4fANCMwrKJTR9FSA0s4T803
-	J8wGhLuldU4lSThO1I+NRUx+rAu5X4Ef1jIhbksKYVAFQZaq4fAm4TRqrfW9rw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 14 Oct 2024 15:44:46 +0200
-Subject: [PATCH] ref-manual: structure.rst: document missing tmp/ dirs
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=aDVJ5j95;
+ spf=pass (domain: gmail.com, ip: 209.85.167.49, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-539e1543ab8so4073395e87.2
+        for <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 06:45:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1728913516; x=1729518316; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=KIzwt47wFCIMspbgsZWWAmMxp9sinVCPOmI9JbQSSxY=;
+        b=aDVJ5j95wM+kjg9z3B0YPq9RO7C20Hoee+Gkpdpxo3TffjmDbqvsqRm0VPtCsSlS5f
+         qHQJjgCZi+5p9gSEqQAq9Zgl3wJVQWU36KY+IdJlcTHm0SE+Q4fJGZ3z2195tTRCpnNk
+         TiqcR4WtqcxpJMrHum7NndPuliwig290QOwcViSTUn1PM6i6lRUSgP9L9M8hl/a11fZh
+         g4EVM7r4VpM7QL3tvM/Cfa+qk1rwuvxoDkCxPjL1/XSgHZoZGPCjAhUdxIWFW8wkk/k2
+         BCZOY+MNnpE9g+vSPtL89TtB8bdXe1hQ8fWkJkV2nd0Bmq/CQpcVqzIH2uZh39pXRwYx
+         BULw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1728913516; x=1729518316;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KIzwt47wFCIMspbgsZWWAmMxp9sinVCPOmI9JbQSSxY=;
+        b=iXHIQyM6c4BH+qcEaoDrxH75gK1Hqz1beaUqgxcB99+eDcHStfFhUJYaFDkUfXkGwa
+         oiArBAxPZ29Wc76x4h5yszv2hytzWqaIv4oef73mT4KQO6gFnzcIKcOPZp4y6UzUEnEI
+         dx9rNs+NEc9UypZzm4VNuBmkpsMBeJzsKRm6JDQpTL7rxgIiPBEcH3HgCfo4gfIdVoXq
+         DrbF+vKpjj5UEcZfLOUMLl6/tpOqFPMuOrrf06udTR+UhKnGfhaXSCKYtTWhNwFBb4/e
+         QZfTOgWFJ1uN3u5CZQDZHB00gNL/amFIVYTvVu5RsPToPXMR0OY4+wH/4kdN5E6IUdNY
+         P2XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvs3ZZsMvshvRWzCa7geB7N5oGDoLSyFI/zX/nyQKf9paKFiWiacYVHrOd2JgOlk7Zqj0/@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YxnK802Rop/joqa1n2qomCo8E/Cl0hShRARhHPtQYS/Gvz1P3Py
+	FrCEiugc2860/U9STn3rGf9xSjZ4rzzzVFHQ6WJcOikJehPqhUvintKLBmXdBQGKWi3AC4IVBPu
+	AKr18cHIKjFqOO8cJnRNnfmMLrLw=
+X-Google-Smtp-Source: AGHT+IEgIz1u9LWuS37+eRa4jayzJ8AUGW/EIL1Eeuk3CNSXpzVRjsX7Nz3fVDlW5Kasd9+y6dr+7psCa586tBFKqSw=
+X-Received: by 2002:a05:6512:3e06:b0:536:a7a4:c3d4 with SMTP id
+ 2adb3069b0e04-539e571c959mr3927536e87.39.1728913516069; Mon, 14 Oct 2024
+ 06:45:16 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241014-bug-14543-v1-1-7c8519be9c9c@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAE0gDWcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxNDA0MT3aTSdF1DE1MTY11Ts7QkEwMLSwMLszQloPqCotS0zAqwWdGxtbU
- AWiHs01sAAAA=
-X-Change-ID: 20241014-bug-14543-56fb4089086f
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- "Robert P. J. Day" <rpjday@crashcourse.ca>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2851;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=fzeGMaJRzJEqfsdrBWBYt+AAJdhPrhpZVIi0+32n690=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnDSBajvKtGMUN7IfQqRf2QmlE4s6zYG2YqOEzQ
- Ao95/+mYk2JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZw0gWgAKCRDRgEFAKaOo
- NlYcD/9nXT9D8o+TcDGiM1NKhibLh0yhnbyHCalhladHCqbSUbKP791r75H7oAUkVHWFD4oi8kG
- UJQG4c4y3PqYQ8Zhsxre/OwpDAaX+wEA41hfwwoyGKaEYKOOUROJ/uEH3CaczVOcjNjwWoEWVxi
- kKBJGHrFHrc6LH1uP7gRvP7a5GHc3hI3ujnjzHeKoKXhnz1THeVTZQ+h8Rn+xPUw82a3MtkmpaB
- Ry/2pvSE9xahhTrpsRaB/MffZpLeVpfCT1LwAlYzInvG6TN/RHNzZJ2uyNYKo8ZvJZnYVNHpDmK
- hSFEiyKM347Q7qxoDHhjDPo2JSpU+X+jFMzO4/aZArecPB53JBkxHV4fEIH86An+QC/Ff4m3qyq
- dlcf5AmMDOLnROKXA6WdS9XDWKfkSTfGXyEH0PqFJDyuyU/hqeS7n7+vcew9FrARMcNae0gLqWy
- s8lcM9tinS+n7MZwx/jLmJX9E5VEa4FgrRKKy8dSiU0lRCCmCVIAbFUm3KgSQx0VnMpvkVOfjq3
- 7C6eUhKijXMVaywNaE73BRkfxHkFtj41v4o3h3YmADo2tvyNO3YG/Byw3GCtwxmUrpghJUy+uKI
- cdzF+epsMG91Xlg7BWukXA6CJAWMfBvYsHHJ8uvyHp5GeTiWFPmJX/naAselJHMAJrkqxp30zb5
- PN3KuqoGC6/Tt3Q==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-Sasl: antonin.godard@bootlin.com
+References: <3019070797186fd40c2b71959ed6b995660a790f.camel@linuxfoundation.org>
+ <6c969fd6-d6b9-41ce-9ed7-a5138414780c@cherry.de> <1d9c6e2c2cb42a4127e0eb1c1eefee9adc5de8f0.camel@linuxfoundation.org>
+ <jglhemyx5xw7c6oibghwm5lwijb7jqgqirbupjmw5vxtjm56vr@7imisregnwci>
+In-Reply-To: <jglhemyx5xw7c6oibghwm5lwijb7jqgqirbupjmw5vxtjm56vr@7imisregnwci>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Mon, 14 Oct 2024 15:45:04 +0200
+Message-ID: <CANNYZj-4zWGPuFb5GxWzfbrn9zgLpGQdBpMJhE44SOQOKm8f6w@mail.gmail.com>
+Subject: Re: [docs] Docs build/workers need inkscape?
+To: antonin.godard@bootlin.com
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, quentin.schulz@cherry.de, 
+	docs <docs@lists.yoctoproject.org>, 
+	Michael Halstead <mhalstead@linuxfoundation.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 13:45:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5483
+ <docs@lists.yoctoproject.org>; Mon, 14 Oct 2024 13:45:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5484
 
-Document `hosttools/`, `pkgdata/` and add some more information on
-`work-shared/`.
+On Mon, 14 Oct 2024 at 15:28, Antonin Godard via
+lists.yoctoproject.org
+<antonin.godard=bootlin.com@lists.yoctoproject.org> wrote:
+> I don't think it's Rust-based, I was using librsvg2-2 which provides
+> rsvg-convert, and has the following dependencies on debian/ubuntu:
+>
+>   libc6 (>= 2.34), libcairo-gobject2 (>= 1.10.0), libcairo2 (>= 1.15.12),
+>   libgcc-s1 (>= 4.2), libgdk-pixbuf-2.0-0 (>= 2.31.1), libglib2.0-0 (>= 2.50.0),
+>   libpango-1.0-0 (>= 1.45.5), libpangocairo-1.0-0 (>= 1.44.0), libxml2 (>= 2.9.0)
 
-Adresses [YOCTO #14543].
+Rust binaries don't have runtime dependencies on anything rust-based.
+It's all statically linked in.
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
----
- documentation/ref-manual/structure.rst | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+But for building them rust is very much required:
+https://packages.debian.org/source/sid/librsvg
 
-diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-index e4d8b54bb9e39ffe344d2db1798e4fe76c742f4e..d13743cc285420b4d24f022ff6134a7ca33edcb2 100644
---- a/documentation/ref-manual/structure.rst
-+++ b/documentation/ref-manual/structure.rst
-@@ -484,6 +484,30 @@ the ":ref:`sdk-manual/appendix-obtain:building an sdk installer`"
- section in the Yocto Project Application Development and the Extensible
- Software Development Kit (eSDK) manual.
- 
-+.. _structure-build-tmp-hosttools:
-+
-+``build/tmp/hosttools/``
-+~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+The OpenEmbedded build system uses this directory to create symbolic links to
-+some of host components that are allowed to be called within tasks. These are
-+basic components usually pre-installed on the :ref:`supported Linux
-+distributions <system-requirements-supported-distros>`. These components are
-+listed in the :term:`HOSTTOOLS` variable and are limited to this list to prevent
-+host contamination.
-+
-+.. _structure-build-tmp-pkgdata:
-+
-+``build/tmp/pkgdata/``
-+~~~~~~~~~~~~~~~~~~~~~~
-+
-+The OpenEmbedded build system uses this directory to store package metadata
-+generated during the :ref:`ref-tasks-packagedata` task. The files stored in this
-+directory contain information about each output package produced by the
-+OpenEmbedded build system, and are used in different ways by the build system
-+such as ":ref:`dev-manual/debugging:viewing package information with
-+\`\`oe-pkgdata-util\`\``".
-+
- .. _structure-build-tmp-sstate-control:
- 
- ``build/tmp/sstate-control/``
-@@ -657,8 +681,11 @@ Here are key subdirectories within each recipe work directory:
- 
- For efficiency, the OpenEmbedded build system creates and uses this
- directory to hold recipes that share a work directory with other
--recipes. In practice, this is only used for ``gcc`` and its variants
--(e.g. ``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth).
-+recipes. This is for example used for ``gcc`` and its variants (e.g.
-+``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth), or by the
-+:ref:`ref-classes-kernel` class to store the kernel source code and kernel build
-+artifacts as a way to make it common to out-of-tree kernel modules or other
-+kernel-dependent recipes.
- 
- .. _structure-meta:
- 
-
----
-base-commit: 67a239f372ed1667c923e2f407da976627be2039
-change-id: 20241014-bug-14543-56fb4089086f
-
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
-
+Alex
 
