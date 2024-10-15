@@ -1,170 +1,257 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <niko.mauno@vaisala.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64CEECFC28C
-	for <webhook@archiver.kernel.org>; Tue, 15 Oct 2024 11:27:10 +0000 (UTC)
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (EUR02-AM0-obe.outbound.protection.outlook.com [40.107.247.53])
- by mx.groups.io with SMTP id smtpd.web11.10958.1728991621084566095
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D0883D1D887
+	for <webhook@archiver.kernel.org>; Tue, 15 Oct 2024 16:08:19 +0000 (UTC)
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (EUR02-AM0-obe.outbound.protection.outlook.com [40.107.247.117])
+ by mx.groups.io with SMTP id smtpd.web11.685.1729008491090319796
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Oct 2024 04:27:01 -0700
+ Tue, 15 Oct 2024 09:08:12 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=CcV/mpl+;
- spf=pass (domain: cherry.de, ip: 40.107.247.53, mailfrom: quentin.schulz@cherry.de)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=FSMtacs2;
+ spf=permerror, err=parse error for token &{10 18 spf3.vaisala.com}: parse error for token &{10 18 _spf-dc57.sapsf.eu}: limit exceeded (domain: vaisala.com, ip: 40.107.247.117, mailfrom: niko.mauno@vaisala.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fD3z8NlBg486D4/TuuPcs27YX+K4gL1TN+XnArBp0paBQhUOl0jJsKFcMy8LUOPpybz1wfPNU4VOHHqjBGTgjNHPypj2IBjYo1EneSKI6h+yFVvac8msGfSDT3fdbrVtiTwcsywQzgjbPEGOVZwHYp0RiB6gK48UbIPYhYtd7v6AuUW/IQfwoYzwejiwqBpTeIOLx2XY1sLY0FJMh72ptZz3F3z+z7EFsjqekv49LUaSz+E/6ftqW3BCU/lf00V6R2/h7D45EhgOPpGifbE1XjOqd2+tLoGoZoPV885jV0cOJlbpYE5KwUrGXVN8i5atGw3MyoisE48cC9y0gNEaJw==
+ b=tBike9A9nk0V9Hw8AEaF7h3j28VFvgDvH2IkeME/64rmFPwkhcl5PM8KnpCBWv3WKYDDaMKWD+oJrWvTjZkPQ5Ld5O69OgjC2XWHXmk/5JpeaKdVGdGhTZgDeat1Q13wGPX/tezZpmTZKe2jr2+jITbUo/sB9+2unExZJ77q2TkLvR7hti5ZfH+WdvTyEARBnLoZ4Dj1EgcwlhCWnZWA6laZOIkXGqKVf3hc/iRWZtmEbP30to4oKBE/yEo4sdaC0klxwHsoDzLP3j3H62CE9dhHAQMTZHDH8weRIaBcmWEMruueMxxa1Nje9lfZUAVvc0/T6GGLef+rk+h/EvE7Yw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xHaM3uexh4oTo18arxIEUwZYuBvXutigIkyeDr/y7s8=;
- b=riOvpc8XY0tRcN4U7BUpoanEgEp/RzS2eLl+aEEA8BxhtN6AYUUrMVglI1gEsdLkPW96fTngYdAtM4SsOZyWLJE7pQUQigRu5tPhv2FubyY2x+RjMXhR9EIicbRTcAE/VlVg/Cxwck2lRhVzedWliGxl9UgiiZYxpI8wxP3O8ags2jdrycJwily8NLfCz3DocngtRYN+mdYBBCYkYvkmC4YG/OJP6LLrYrkFm6r2TIgcJcOcbVV9iBlS+56+PT6cNNaMK4dhGb7EDhstGLo92ciy2XQNfqKb3NMIIDHSYQtjShRO6Ozbhd3Gw1pxwZJISI0Gt0V1q+aW0yh/GQPEAg==
+ bh=vzQ6eP46SuHzqHlH/1HHKFaJq3gePTrIKI+BZp51GTc=;
+ b=KiaiQ8g1VZbv7MWjRUWLX24daN9msxJc3fijnRhoS9D1yCijWJmrhzDa6cb0Csd433peun5oDwhn+Hs4nHtr+A3JeHfUbMF67Svf0DDIMNtwPmrxvYAe/C8RDnpghT1sgzUTivWxHsskSV8JsrMi2ws0U/kD75STJKXsGVdO3oUvptJGAtDCpQF64ndFIQt3Lt6aGyfjTNNo7wHfXb6quFdr+XIBDL4povZ/H7dUSJmPRcu/jbmLqNR/RK7HUroihu+aH0bEAv/9SXBYuzxuSR4ptorrZIs16DV7U0OIlP0kVD+akIKrH4SmONBDd4Otq2aWZrGqhGcM3t64gKuLFA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
+ dkim=pass header.d=vaisala.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xHaM3uexh4oTo18arxIEUwZYuBvXutigIkyeDr/y7s8=;
- b=CcV/mpl+ATFPkV1k1hVeAgSqeVbbB/ev9TSJX29GTFueXiW/M3jqbS65qZX+jI2YXfTWKg46O33m/ZskBfuQAmqmFxyDtcyy478aeGOrEtjMYwSsMAex4OW3l+OG8vcltvkfZCBBIMVr4CUNKiHSZa1jyoQeUcqRf5y9uirqpIs=
+ bh=vzQ6eP46SuHzqHlH/1HHKFaJq3gePTrIKI+BZp51GTc=;
+ b=FSMtacs2ksF/Pu48JWQsE08pujGl5AQQnSEBDg2PAajpHLZOqR2Vs5Dh9Edjbv7gKgFMGa0X9ivtVhUMNL1Y68ZhFKl/cAvNhvX6krtT3N9SD9YP16l1nIz8BPHOujf1iSvarx74IQbKVM5MfIx4rKj7RyjEsMHXTpqe0x18ywKX3zO8i08HCarfdRvNantbQxZzLmmwtbKUZ5P1qxnDF1CVCsygQ2mj6C/TRd+Wg+Jm0tHdk0XtYfjpZBdF5H2Wf9+Dqe9HuKprmoYna97q5wKNidSdkyhDXuTBKtMednn4q6RK/9hIRA5gDfnh9bDu94yYw16bEYbCtMQD+ZLJew==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by VI2PR04MB10545.eurprd04.prod.outlook.com (2603:10a6:800:270::10) with
+ header.d=none;dmarc=none action=none header.from=vaisala.com;
+Received: from AS4PR06MB8447.eurprd06.prod.outlook.com (2603:10a6:20b:4e2::11)
+ by VI0PR06MB9207.eurprd06.prod.outlook.com (2603:10a6:800:245::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.26; Tue, 15 Oct
- 2024 11:26:56 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a%7]) with mapi id 15.20.8048.020; Tue, 15 Oct 2024
- 11:26:56 +0000
-Message-ID: <413ab88f-509a-47c9-8b94-171679206dd7@cherry.de>
-Date: Tue, 15 Oct 2024 13:26:55 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ref-manual: fix ordering of insane checks list
-To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20241014-insane-ordering-v1-1-0b51976580ba@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20241014-insane-ordering-v1-1-0b51976580ba@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0111.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9c::15) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Tue, 15 Oct
+ 2024 16:08:03 +0000
+Received: from AS4PR06MB8447.eurprd06.prod.outlook.com
+ ([fe80::af93:b150:b886:b2bc]) by AS4PR06MB8447.eurprd06.prod.outlook.com
+ ([fe80::af93:b150:b886:b2bc%6]) with mapi id 15.20.8048.020; Tue, 15 Oct 2024
+ 16:08:03 +0000
+From: Niko Mauno <niko.mauno@vaisala.com>
+To: docs@lists.yoctoproject.org
+CC: quentin.schulz@cherry.de,
+	Niko Mauno <niko.mauno@vaisala.com>
+Subject: [PATCHv2 2/2] docs: Replace VOLATILE_TMP_DIR with FILESYSTEM_PERMS_TABLES
+Date: Tue, 15 Oct 2024 16:07:35 +0000
+Message-ID: <20241015160735.3066914-2-niko.mauno@vaisala.com>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20241015160735.3066914-1-niko.mauno@vaisala.com>
+References: <20241015160735.3066914-1-niko.mauno@vaisala.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: GV2PEPF00003848.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:144:1:0:9:0:6) To AS4PR06MB8447.eurprd06.prod.outlook.com
+ (2603:10a6:20b:4e2::11)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|VI2PR04MB10545:EE_
-X-MS-Office365-Filtering-Correlation-Id: 55e360e7-e3af-4e0c-5f53-08dced0c46b5
+X-MS-TrafficTypeDiagnostic: AS4PR06MB8447:EE_|VI0PR06MB9207:EE_
+X-MS-Office365-Filtering-Correlation-Id: db47a8a0-72f2-488d-3340-08dced338c54
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|366016|52116014|376014|1800799024|38350700014;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?V2w4emRHWDh1UU0zV0QySE4waFJya2tXWEo2clZxUW85SzFZdXZncjlFcFlD?=
- =?utf-8?B?YUxDc0ttZ0dORFBnSFpIcTY3V21TaVhuZ0Nycmc2bU9FZkV4MGhqRVpzRmFL?=
- =?utf-8?B?VkJBZlpRMGloZGpwYldQQ1FFTDRvYXlvSTdocTM0MTRYQnQ0UHNBdGNyTGh1?=
- =?utf-8?B?bCtwaGpQbUJOV0ZMQkJ3SHFHd2tTTnRTL29qa0xVc3lRZ1p0aGZsTnBSSHJm?=
- =?utf-8?B?MVYwNG5FNjR3bU43VDJFQzBHY1k4M0c3QXJ6WHNyTTlGMXJBbVZOeVdsRkVO?=
- =?utf-8?B?S3dMWW1qdk5GNzVoTnRXVTlUQVlGWkpCRFVGT2xrQUJTVTQxOUppTkVXUXVo?=
- =?utf-8?B?eUVzYi9nZlc3Zk9ldUdobVNsRW9xZUc2dnJxWlptaXdLcmFIZHlsTUMzY00w?=
- =?utf-8?B?Y3ZtUDJpL2syd0Rqd3dKbnpxTXhnRXQvcGRyM1B0bDhtTmJtMHQyS1N2MmI4?=
- =?utf-8?B?S2g0empCVXpyWkVIMmh4d1ZpY0VNeVZLc0xTRTFSVG5DQ0FSeVdsTXM4aHFi?=
- =?utf-8?B?dnRURWVBVWhzOVhXdVNrdmNJK1l1QUc3NWdpTlNMMjFGOFRUWXB4VVhBeWlx?=
- =?utf-8?B?dzhoVk1DR3FWTkNNaTZhdmVYZXdGRVY4eDVSeWFlMzVqVDZnUmprQ3RRYWdC?=
- =?utf-8?B?VzhvSytVMFJaTmJMM2NhaFVoVVhMYjVzTmIreGtTejVmRitROUVXY2xnem9Q?=
- =?utf-8?B?RnYxZlViUjZTV0hWU09SUTMyYWtueGdycVB5WjNRZTJWVk1kbXMwWkl5Q2Fr?=
- =?utf-8?B?cjFadlhNeVlaUDZUMUZQaTFmbUZtc3NSekdmbU4vTlFTUGlJYzFkRFpHVXJO?=
- =?utf-8?B?cGJnSS9sVEJxcWFpYTZITjhLSjMzTC9qWTlNOWVLMEl0WXpGU1MyYmdyTlBr?=
- =?utf-8?B?c0VVWExKbHdYdFd6RDBRMXIrVUo4bmVWWTUwL1pxcC92MGtpdjNDY2dSWmxX?=
- =?utf-8?B?OTlyWTBFNXVtdzI3Ty90UkZiRUJzbEhReFNua2huNHZFbzJYU0Y0VDE1SHFn?=
- =?utf-8?B?NjNSeHhPR296WERtN0dOMlJCU2xpZ0dRWWNvOTdjL2UxenYwRWlkSFNjVVov?=
- =?utf-8?B?aHd5OFJrRTJHN0d4VThpbWh4eXhXdm1CK0JyRXUwVlZMOWk3RTZpTFU4UGJ0?=
- =?utf-8?B?VWdMWEg3SWh6em9rMWRPNTJZbzJpZXlzN2pBSG9rdkk4TG4vVnZQLzdJcXFX?=
- =?utf-8?B?Tm1LRjBsYWlnRE54MUpzYjR5VXE4OGdZYytxb2lqQkZZSnNkd3praHdkTVNa?=
- =?utf-8?B?Q0IrNGZiYjU2UXV0Mk03NVAvMjVQQUNybjd6clI0UHFQeGsrR0h0REsrVXg1?=
- =?utf-8?B?NTd2Tms0WDdJK3ZHcmpBZG9yenZTdldvQWx3ejV2ZUxNNVVUZ1YxUCtTWXla?=
- =?utf-8?B?OEFtYUZORHNzcHpQeHRDUjVlNCtvZVpRa29Jd0VmTS81bWRUdS9CVVIySHU1?=
- =?utf-8?B?dy9kd0xSWEdoOEEvQW5TbEVCdXRqOE9LdThlWWQrV21OTHZsQ005elVtSG9X?=
- =?utf-8?B?bUhrRUszbVpWeWtLQVc2UHNvUkRwenE3WFZCcTFFY0xzb0FldzVaZFhlaUs2?=
- =?utf-8?B?akhmQmNvTE1rSVlEUVRUTktmN1IrUGV3eTU5ekNCelloYUJyeGFwNTFyeXBx?=
- =?utf-8?B?RDhyYyttU1hvR09IZnVrQ3NETzBCS0R0YkZjZGhCVkxHSW9DZHQ1RWJOR1F5?=
- =?utf-8?B?MVZOL2ozSXNwcWw4YTBHN05CaFlRaytnMTM3OHJtWkRKdXFWTnowaCtRPT0=?=
+	=?us-ascii?Q?D6X8xCWWZnLnGOUUY5/py/3Kx/ggB99UFfhkGPDu3TFC3TucKiGb2/kQFJ4N?=
+ =?us-ascii?Q?U2wt5LB4NM8Kk7uSksXt3r9Mkcqh2AP2NsOPUmhFDGs5HInGItooPtte1aw3?=
+ =?us-ascii?Q?G7qgtg1g+DkQ7KvGfxOl2Ug7/YecLm46Gdv5eMLkFoI7ejKhXyKMmX5Y4z74?=
+ =?us-ascii?Q?Qh4uATBbvlCU5r78hSjcheN+bkZbpnUUObrUhW3DtASrfacZbrCjT2DmBBjX?=
+ =?us-ascii?Q?+8zmt91T2IA9o0Jau1coXWKKxFlnW5UFKfjoeGVBKxClZhRLFXKsvZ3Uzbfk?=
+ =?us-ascii?Q?Z/YGElVwDKTcNYn81TTdSzRMopKovsQSlpEEt/SL4+M6D3aSok4dOJQCTeDu?=
+ =?us-ascii?Q?aszHPb+AvLXAA+bZJFMMRwITFCy/OGrBgTY/C2wSlYv3aPB8Gxegu5EXMeKH?=
+ =?us-ascii?Q?UnLoDo1e9LhMg2GvdaAsnxe7Es08aDWuqdUexIQ2/KaHZiZnvqE1mi+eDXsA?=
+ =?us-ascii?Q?joqb9DDiRfZJRyu0f0oi+TeFetqOmh3MY18cX6TZppwbgxO7NRPV3SfIEMRE?=
+ =?us-ascii?Q?INSHuFse3Dl6QkF+RsZMMfLda2Na10pVCW02ZI9lp3oMzYFesVgH83vD9olW?=
+ =?us-ascii?Q?B/krJp4e4T3XA3LaVyjvlKvTOwBRvP7TBoQZMS279xeoLi4l+/lQuU0oDK7P?=
+ =?us-ascii?Q?89W5jtVvoYJ9bhLZsOtx6reE45hGbhf9C0XeEcBCMmRWBMQHsVHKCnQ66rqT?=
+ =?us-ascii?Q?5m6HDJdiev2iXG0PvcR56l7CM1u8/SZwL+GuQlmyFttFlAlduytYSM7n1UfR?=
+ =?us-ascii?Q?mkoyBZfxoV4YLPgUOPoU46mEvmN9bYC44pnlAB8GvcUJEZJ+9XqEyvQLhYPr?=
+ =?us-ascii?Q?BJWAXnxLviRKYL3+9wIJSfi7QxsccgdxkUaBoxGCyM5UhGTB++guftYBc/iQ?=
+ =?us-ascii?Q?VUyCTDmFRqbck+PzfbTfAvDh57UnGdaWAhVU6NEYfNCfg3MSgcgy59GgH0lS?=
+ =?us-ascii?Q?x2+V7x11D+ikYjUSy7QdMATmvWhTMa6TRGso13kgXQH9DBOcQe61XQ5e/AhX?=
+ =?us-ascii?Q?n9JZyhdhfa+T6zGUEo0k7NZ29og6tzJla5MZ2kd1PVMHN2ccJyc03WRK23V4?=
+ =?us-ascii?Q?nSR5lCP5L4ZNFWwX0wI9lBItWr9CWDILKonpzA2pMhpRsC4XQkV9ANY7TrTe?=
+ =?us-ascii?Q?P0wGJqMdKWAmn0EVby5hbvcAY6jIY8E1GzxzcltCbXGpb4wSCvpYPR7+79Bh?=
+ =?us-ascii?Q?3ZrkQBLwNFo1zUpQNPMqafS2eiqVPukwjflJe7fTiAQvslDs0A11o4+hY+mp?=
+ =?us-ascii?Q?s4FI4uN53fuGp3JXvmdi2vAbUw1pOhwHTwKytVzPIg=3D=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR06MB8447.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(1800799024)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?ZDArRTZqNUtyQk4rSmhsRlVaY3N5U2tRV2dZZTZYZktXWFdBVUt6OGR4ZEdS?=
- =?utf-8?B?ZFlzNHdGUGhkM2JLVkh1ZU1hLzhkT1FRUzhXanhycHRQUTN1V1VMcHVIR3dx?=
- =?utf-8?B?UElnZkJabVNOWGo0VDBuMWdQd3h2Wk5LVjB3YlhUY1M4Q2pFWDg4R0l1VEZk?=
- =?utf-8?B?Ynk1MU54NUFZVlhiNHpSWlRTU2JPdmxJN0NKNDd3aG5mY2ozWXp3NmYvalpL?=
- =?utf-8?B?b3pnY3R4Wm5QSExMSEV2K3UxNTE2Sk1uQkV6ZURubE1EUEJXVnIyemlBaThK?=
- =?utf-8?B?M3lnRnhKK05FNnViYkpyUVZ3d3hLK0hhb1RuTWRzMXNwT21xb0NSRGorelMv?=
- =?utf-8?B?OWlOaGhCcHdTSS9EZnU5UFpPdjdNcE42TkJoRlhLVnR6Ni9Va2l5aTg4NHFs?=
- =?utf-8?B?YTJnMkE3Qy9oWVE3UXRGN2NhOTdOQURuMXVEcHZIODBOYjN1V1NXK0szVVBp?=
- =?utf-8?B?TjZUMW8xZXFhd0RMRU93cnFGR3ZOTDIrOXgwNkJ1YU1wcWZkTzFSVTFXL1Ns?=
- =?utf-8?B?Vnp1RHFkT2tlOVk4dW84YWNuc2hsWFd5S2dQcXNEZGJ0TUhGbjRlbm11R3B0?=
- =?utf-8?B?SHNPUGhkNU1HMTV2dEhTNU9Pdm85TWhuRmFsZ01VS01XcUVVaFhBVVI3SnpS?=
- =?utf-8?B?UXNFam1sZWQ0Ukx5VC81eWxMYUN4Mmd3b1BJU3hhV0U4SzZrWWNHbjdIYUxl?=
- =?utf-8?B?bmkxT3VHYVcwNTVPT2EyRmFsU20vZlBXYmw4bGRyK1ZaeWV2RmZqTU1DU0Iz?=
- =?utf-8?B?SmZlTE9ObDFITzg0L0cwb2VJcks0TCtkWlBQTi80ajFiMGlzc3FWTE4zM1h4?=
- =?utf-8?B?TjlPOGhxMHRXeHlKYW45b0lWZ1ZtcTFSRXBYQlptTjhucmVtT0gyaUxhc0NU?=
- =?utf-8?B?NGo4UloyQ0ltQlJmNGcwZWo0Y05DNjJqU3dqRmxCUytFQlpHeVBreHQ0aEZQ?=
- =?utf-8?B?M1JLMEdEUk15UnBpZVBUWksxR1Y0T0lHY1hoKzRPbEEyZ2lGVkp1akN1RVZJ?=
- =?utf-8?B?N3A5U3lzV1pmaWlXU2lMa0ttWTBwZUZ5b251WUY0SEhIVjB3bkE5ZlZuMm00?=
- =?utf-8?B?VUNkLzFLQlJIbGl1OEExQXNFa0VvbjlVaW5GQVJES1lsSHNDdlpKditoV1J3?=
- =?utf-8?B?K2NRaXhqL0xOMG1uZ2FQbzRrOUZ4NUlaQUJyeDJScEhLcEtZTnlORmR2b0FT?=
- =?utf-8?B?UldVdjhNbXNhYUZjV0pFRmdvSmtmcEZlQnhuYlAxWVRubHlvMGt6Zmk2OGV3?=
- =?utf-8?B?N0M0SjgzV054N0g2M3NhMmNvLy9PNmVEUm1HWDBwMXd0RmJKOFh5dytGOUZM?=
- =?utf-8?B?eVRzY0ppOXF0VkM1MFl6ekc0SzJPT25NQmhNT3pNck5pODB0eDRiZkVxR0pT?=
- =?utf-8?B?NXhwdGhLNWZybmRZTzFiZGVscEtJbGtPRjJMOVRCWGRyNkRhWUZjOUEyNjcz?=
- =?utf-8?B?dkxpUXpNMVpmL0ZlLzVTZFY3U3FtWEV1cTRWcTFpYVhjeDNxWU8ycjZzZktG?=
- =?utf-8?B?Wk5IemVJVjlPZEl2YnBxZGZNR252dTQwWFlkTVVHUnFJTW1ITmNXdjJPaGhK?=
- =?utf-8?B?VEdkQlRqT1BqYkpHVGNHc09SMzZnTGRyYTdHUEx1UTFlcGVXZjhDajRVY0Uz?=
- =?utf-8?B?SVFIV3hGN1RCRk9RellQalBpcnhVK0lNR2lYbE9yNVhkNkppSjFUMlNuMWp4?=
- =?utf-8?B?WWljeG0vRFJCSkNqamRYT0lsT25LSUFXSEJMUzhkOTFjbUJvTkowMzArQ2wv?=
- =?utf-8?B?VUEvRit3MEtncG5qeUhpbkdtQVl2ZkVyQk1xeWtEQWNEeGZqSFcwWkxkVzhI?=
- =?utf-8?B?MGdQQXZneVlOOEhES2JmSDNyWTF0emxiMzdIdk05TmtVcm8zVUxGanVQQ0Fv?=
- =?utf-8?B?NlR5M0JoVDFuQzM4ajJUMXFJYmNMeU83T0RheE4xWlV0ZDJxZXpMK3g1b3dX?=
- =?utf-8?B?WXhndjVqMW5DY3BVeW9ZRmcyaXZ3Mmp3bFVOYmViNnRPSElOQnNwK2lNOEhB?=
- =?utf-8?B?ZXVzUndGMktCbm9YTlU4WFJMYlo2TUxVRUlTaEh5aW5DZzBoQ3JwenhUT0Rr?=
- =?utf-8?B?RkZTOHBoZmcvcjFOTGRHZndZWG9vMnE1OHc4MHhnMVBOTG5VUDJxMWVHWXEx?=
- =?utf-8?B?NEVnY2FQZkZYNExyNm1XcWxsRlU5YmpSNHEzak5BdDNOMlQrYWw2eHlKMmxB?=
- =?utf-8?B?M2c9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 55e360e7-e3af-4e0c-5f53-08dced0c46b5
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+	=?us-ascii?Q?9BSUirezmlRABn5/v+HrdNYstLLNCeUnFV3RUB2m5+OIt65Vp0h0nL8PfMb+?=
+ =?us-ascii?Q?6RTrF6OortFNdZQpjsLfxsoqJQTC1YcKSiGZ+wgfmqhJGSTJmFWJNWnAfBSQ?=
+ =?us-ascii?Q?WCnhnsV5+HWuabW3VLN4wNefB0y8pupLPH0tg4z3D2cXOlL3+Sf+BzFviRyL?=
+ =?us-ascii?Q?a2gwrfbVW5CqRHN0d25Gm8N3QsVhouZyWVWFPFVMvJxZRBtDLjx/nAiJ7GkL?=
+ =?us-ascii?Q?bJYj96SG5FXK8rPPXWvMuQ5RBSqGUf5zhyVRjgQvOTBZlGfpA7+A6lpjmoEN?=
+ =?us-ascii?Q?WiBQMIcwkdBxUPkMcyaDTuvppgMdcGm/sj5Czrv2WyphLuXA/6aEAheeIdBd?=
+ =?us-ascii?Q?cl1kkB3utddOQW/Tla7z5ec/PyvGa937FSQ+oFHMZa6yuFwI5cJSOqiYUsue?=
+ =?us-ascii?Q?mQ7gVJkZIoSLFD66B2Tv4E849Ra/eQg1yPgaXQyBwlrnD/Z/syEnVDQCD8VA?=
+ =?us-ascii?Q?nGCI0Ev/q/ajyTrQ5qOSWsoRP2iDYO0WCl4t1ondHZ0OBBqoultePQO6LFwu?=
+ =?us-ascii?Q?jH6lPWgmnPyJHFIny4DmGf4+d9+z3Tis9jDIA+Zgij6CTbXf3oKveId+Hsjq?=
+ =?us-ascii?Q?KJSGeY7pizH4Y0beerf5kMcWgXnsU7sYDLxV0OGEhUrpf1afXbPA1rbNe9K1?=
+ =?us-ascii?Q?/ThBlG25pkLhGqA7Y8IpZUp56vKv1xKOma17yPShOanCl2h6mlq/yB28cRVO?=
+ =?us-ascii?Q?1bJDdqJPJ3pdNGAZba7Cmfy8KsgXYcIWJvvzgpak6m0G5TRiiqP6WGE0qiPk?=
+ =?us-ascii?Q?OSJV3PmIh+AeGn5sZpAhV8GUbrJpDWz4wKDCn/DSFVe5HsJPUIPGmxK6WiBD?=
+ =?us-ascii?Q?IdxU0kZqepJomqKahRtvPDkGAiTkgvxLsBRnJ6aMPcOoMkCcib9HZkYj/wPG?=
+ =?us-ascii?Q?F74WEWlojLZKMHe/HyO7Pmt3AlH4oNBs33Nbm3gGVV0Ja2vDZ6os3z4q4CxK?=
+ =?us-ascii?Q?P2+5ZPGaBzZCiynIQsn6Qp4f57bXA98LG472IpGFOJkF9mLcQkCwoxrdSbj+?=
+ =?us-ascii?Q?nF3sVnxRGMGaA5p8F1UE9V0YG6D7OtoaEgKEuGUiWc0v/6tWjmz0HbK1FirV?=
+ =?us-ascii?Q?hy27v2XunjER6QW45jYEMrGFG16EzFUj1MweuEYJy5rZhonCeIImnErrxDt2?=
+ =?us-ascii?Q?/kbms3gynPR6YJCegakbWkfBvivPgQq1yu6oIDD9VO5nxdr9ZYlfWbH47ed8?=
+ =?us-ascii?Q?qUljMecEXe2eCxYNB1eq+CfuRQT9+u6JsMMSp31gR+eyob11I30MtqCHW8IW?=
+ =?us-ascii?Q?i3PdgbXVkIMJX0rLv35Fd4UgZokrw/1GerzjBe//0irOVLAfryIp+TEWrOFt?=
+ =?us-ascii?Q?apoBdZEik4/McSE57ihw7Bqq2yEh7s3p5ic00TYvnVx8yjewvqmj8p68enqg?=
+ =?us-ascii?Q?xRi/EY01KF23idevJ4UJn+oERHa/U5mSb6EWaJ/sq0Xz+PhHdeqiwVAEGqHQ?=
+ =?us-ascii?Q?/3K2EV8qgZxBy4r0KPDxpyoGNtj0ZIIsICoW87x0Q1sflvT5Vt9830RDgZaz?=
+ =?us-ascii?Q?V7CFYyWVmlvZOOkeBmrH6tbKn+ikgjVQaD91zSCGzXgTehRcKlIsb+x3Ir/D?=
+ =?us-ascii?Q?fWB6Or9Jqvth5S3NjgrL/m5SYWVtkT2cECidIHGBlxRvWPBi5Wr0AOXGIhsL?=
+ =?us-ascii?Q?Ug=3D=3D?=
+X-OriginatorOrg: vaisala.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db47a8a0-72f2-488d-3340-08dced338c54
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR06MB8447.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 11:26:56.2348
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Oct 2024 16:08:03.4154
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5CNPlqGMh62D9Pw1wPavdcvjvYF1+SVVgW9G0/+5PHXhwRE6naQeVK3P1wYz1qpEDhC71axauHx4tt73wQQGGvjl8XpR+DEtWP+Jbursvxc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB10545
+X-MS-Exchange-CrossTenant-UserPrincipalName: /SGfEjcUynj7X0prxDJ+IX/4Gnr9wHxczz//ViaLkHEvXwZZ14EEirlRUsmy4E83nIakSLwC37Su/Kcm4wYdDw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR06MB9207
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 15 Oct 2024 11:27:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5489
+ <docs@lists.yoctoproject.org>; Tue, 15 Oct 2024 16:08:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5490
 
-Hi Antonin,
+The VOLATILE_TMP_DIR variable was removed and it's functionality
+replaced with a FILESYSTEM_PERMS_TABLES entry in
+https://git.yoctoproject.org/poky/commit/?id=3D2f46b6f27dfa3a9d5ad177900fce=
+cfe64c3536f1
+("bitbake.conf: drop VOLATILE_TMP_DIR, use FILESYSTEM_PERMS_TABLES instead"=
+)
 
-On 10/14/24 4:11 PM, Antonin Godard wrote:
-> It should be before "perllocalpod" and after "patch-status".
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> Reported-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
+---
+ .../migration-guides/migration-5.1.rst        |  5 ++++
+ .../migration-guides/release-notes-4.2.rst    |  2 +-
+ documentation/ref-manual/variables.rst        | 29 ++++++-------------
+ 3 files changed, 15 insertions(+), 21 deletions(-)
 
-Looks good to me, though not all items in the list are alphabetically 
-sorted, still :)
+diff --git a/documentation/migration-guides/migration-5.1.rst b/documentati=
+on/migration-guides/migration-5.1.rst
+index f58de3156d..64944b99cd 100644
+--- a/documentation/migration-guides/migration-5.1.rst
++++ b/documentation/migration-guides/migration-5.1.rst
+@@ -122,6 +122,11 @@ The following variables have been removed:
+    ``files/fs-perms-volatile-log.txt``, which means that volatile log is
+    enabled. Users can disable the volatile log by removing the value
+    ``files/fs-perms-volatile-log.txt`` from ``FILESYSTEM_PERMS_TABLES``.
++-  ``VOLATILE_TMP_DIR``: :term:`FILESYSTEM_PERMS_TABLES` is now used inste=
+ad.
++   By default, ``FILESYSTEM_PERMS_TABLES`` now contains the value
++   ``files/fs-perms-volatile-tmp.txt``, which means that volatile tmp is
++   enabled. Users can disable the volatile tmp by removing the value
++   ``files/fs-perms-volatile-tmp.txt`` from ``FILESYSTEM_PERMS_TABLES``.
+=20
+ .. _migration-5.1-removed-recipes:
+=20
+diff --git a/documentation/migration-guides/release-notes-4.2.rst b/documen=
+tation/migration-guides/release-notes-4.2.rst
+index 30049b89f6..ac3bb9cebe 100644
+--- a/documentation/migration-guides/release-notes-4.2.rst
++++ b/documentation/migration-guides/release-notes-4.2.rst
+@@ -38,7 +38,7 @@ New Features / Enhancements in 4.2
+=20
+ -  New variables:
+=20
+-   -  :term:`VOLATILE_TMP_DIR` allows to specify
++   -  VOLATILE_TMP_DIR allows to specify
+       whether ``/tmp`` should be on persistent storage
+       or in RAM.
+=20
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
+ual/variables.rst
+index 62a225ed1b..59ecfaf016 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -2994,11 +2994,11 @@ system and gives an overview of their function and =
+contents.
+       and users across an entire work project. It is best to do this in th=
+e
+       packages themselves but this is not always possible.
+=20
+-      By default, the OpenEmbedded build system uses the ``fs-perms.txt`` =
+and
+-      ``fs-perms-volatile-log.txt`` which are located in the ``meta/files`=
+`
+-      folder in the :term:`Source Directory`. If you create your own file
+-      permission setting tables, you should place those in your layer or t=
+he
+-      distro's layer.
++      By default, the OpenEmbedded build system uses the ``fs-perms.txt``,
++      ``fs-perms-volatile-log.txt`` and ``fs-perms-volatile-tmp.txt`` whic=
+h are
++      located in the ``meta/files`` folder in the :term:`Source Directory`=
+. If
++      you create your own file permission setting tables, you should place
++      those in your layer or the distro's layer.
+=20
+       You can override the value of :term:`FILESYSTEM_PERMS_TABLES` variab=
+le
+       in the ``conf/local.conf`` file, which is found in the
+@@ -3009,11 +3009,12 @@ system and gives an overview of their function and =
+contents.
+=20
+       In order to disable the volatile log, which is enabled by default, o=
+ne
+       can remove the ``files/fs-perms-volatile-log.txt`` value from
+-      ``FILESYSTEM_PERMS_TABLES``.
++      ``FILESYSTEM_PERMS_TABLES``. Similarly, in order to disable the vola=
+tile
++      tmp, one can remove the ``files/fs-perms-volatile-tmp.txt`` value.
+=20
+       For guidance on how to create your own file permissions settings
+-      table files, examine the existing ``fs-perms.txt`` and
+-      ``fs-perms-volatile-log.txt``.
++      table files, examine the existing ``fs-perms.txt``,
++      ``fs-perms-volatile-log.txt`` and ``fs-perms-volatile-tmp.txt``.
+=20
+    :term:`FIT_ADDRESS_CELLS`
+       Specifies the value of the ``#address-cells`` value for the
+@@ -9989,18 +9990,6 @@ system and gives an overview of their function and c=
+ontents.
+=20
+          PACKAGE_INSTALL =3D "${INITRAMFS_SCRIPTS} ${VIRTUAL-RUNTIME_base-=
+utils} base-passwd"
+=20
+-   :term:`VOLATILE_TMP_DIR`
+-      Specifies the persistence of the target's ``/tmp`` directory.
+-
+-      By default, :term:`VOLATILE_TMP_DIR` is set to "yes", in which case
+-      ``/tmp`` links to a directory which resides in RAM in a ``tmpfs``
+-      filesystem.
+-
+-      If instead, you want the ``/tmp`` directory to be persistent, set th=
+e
+-      variable to "no" to make it a regular directory in the root filesyst=
+em.
+-
+-      This supports both sysvinit and systemd based systems.
+-
+    :term:`WARN_QA`
+       Specifies the quality assurance checks whose failures are reported a=
+s
+       warnings by the OpenEmbedded build system. You set this variable in
+--=20
+2.39.2
 
-configure-gettext and staticdev are not in their right place, the rest 
-looks fine I think.
-
-But progress being made, so:
-
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-
-Thanks!
-Quentin
 
