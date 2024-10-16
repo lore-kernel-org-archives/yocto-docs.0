@@ -2,98 +2,102 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 95E9AD2A523
-	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 14:29:37 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.24689.1729088975680510208
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E5BECD2A528
+	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 15:22:07 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.25678.1729092117798400149
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Oct 2024 07:29:36 -0700
+ Wed, 16 Oct 2024 08:21:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LyQ7mPqe;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6DF2C1C000A;
-	Wed, 16 Oct 2024 14:29:33 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=omoa/cXE;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 67FF4E0005;
+	Wed, 16 Oct 2024 15:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729088973;
+	t=1729092116;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fk1ofddfRvIZMGaZvUv7EZxKWAVfiZ8no48Va2M6fBk=;
-	b=LyQ7mPqe9UwCDetAE53051lmvzEXgWuKHH/FJ594Vd8R/YNLMscBBJN1J6G1CeCZEdiXCA
-	LEk1lwcBJThr41Au47u/pCcDiLUqsPttgBkdep1n2lagCQO1pC3GRnJ4SFdsjZfMT+JqQu
-	WQxXquJz9UsDpyYDUejGajtm0HorIdnSYuE1nVAr4bc8ELqXfHbMGuuUHqKw7QEFvRq+je
-	eBiCZdq/QKvEsE4IfIDwE4JVVJm8wYKkaWGhTT6nHOVCzznyvGJsw/RpUKP6o29AIfO1t1
-	ZYimAfOkCGNx0eNNpTxNffna9Pv/ODFmNJi97bfUJ1qP/PLo3IdvWUaBZz/Jfw==
+	bh=OOAtBqRBJkhWbk7gHEZNM8Zn+PB0dPhwgzeyVPEbOhY=;
+	b=omoa/cXE64uZeRvd2wIGv6FhEn1dnG8z2Nzq2//dtJ03aL6KHMKSrnnXuI0O7ojZelc2Dj
+	LySJAm7/qwm7FDgp0BCRih0Gr9jbQhscyjuimQACiSUADn6IYL2R6TjW51uVcM5dDlpxoe
+	cmxsn8Ius5ZEfL8wBerxlrUhd8uPN/5YARZuRiVKwCqbP5RVVztv92oORlR12YKjvR97UE
+	G4bn3n3fGH64Eln7A6BSiURy6EzbEZtxREAmb/OKLQHy7ydxHc0EuCxL3bsl2yq3S1d/MR
+	oWBQ4Cl8fjtwAWxDKD2rCP01vgtxjUctzX/pGh+MpG/jBKkQbauyNS2vfMwl7A==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 16 Oct 2024 16:29:33 +0200
-Message-Id: <D4XAVWDIAFOA.1S7GZQ18K19BA@bootlin.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Ross Burton"
- <Ross.Burton@arm.com>
-Subject: Re: [docs] [PATCH v2] release-notes-5.1: add beaglebone-yocto
- parselogs test oeqa failure
+Date: Wed, 16 Oct 2024 17:21:55 +0200
+Message-Id: <D4XBZZRW9BXN.1KNMZEHMOV0JW@bootlin.com>
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Robert P. J. Day"
+ <rpjday@crashcourse.ca>
+Subject: Re: [docs] [PATCH v2] ref-manual: structure.rst: document missing
+ tmp/ dirs
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
 X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20241016-5-1-parselogs-beagle-v2-1-9568ac00907f@bootlin.com>
- <00a6a241-b146-4de1-b091-9bce7cc01091@cherry.de>
-In-Reply-To: <00a6a241-b146-4de1-b091-9bce7cc01091@cherry.de>
+References: <20241016-bug-14543-v2-1-df3038344377@bootlin.com>
+ <023f8e3f-2dfd-4f99-a3c0-f3205ebf9e6e@cherry.de>
+In-Reply-To: <023f8e3f-2dfd-4f99-a3c0-f3205ebf9e6e@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 14:29:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5521
+ <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 15:22:07 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5522
 
-On Wed Oct 16, 2024 at 4:20 PM CEST, Quentin Schulz via lists.yoctoproject.=
+Hi Quentin,
+
+On Wed Oct 16, 2024 at 3:30 PM CEST, Quentin Schulz via lists.yoctoproject.=
 org wrote:
-> Hi Antonin,
+> >   For efficiency, the OpenEmbedded build system creates and uses this
+> >   directory to hold recipes that share a work directory with other
+> > -recipes. In practice, this is only used for ``gcc`` and its variants
+> > -(e.g. ``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth).
+> > +recipes. This is for example used for ``gcc`` and its variants (e.g.
+> > +``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth), or by the
+> > +:ref:`ref-classes-kernel` class to store the kernel source code and ke=
+rnel build
+> > +artifacts to make it available to out-of-tree kernel modules or other
 >
-> On 10/16/24 4:18 PM, Antonin Godard wrote:
-> > The beaglebone-yocto currently fails the parselogs runtime test. For
-> > details see: https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D15624
-> >
-> > Reported-by: Ross Burton <Ross.Burton@arm.com>
-> > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> > ---
-> > Changes in v2:
-> > - Add link to Bugzilla with `:yocto_bugs:`.
-> > - Link to v1: https://lore.kernel.org/r/20241016-5-1-parselogs-beagle-v=
-1-1-ade903beb18a@bootlin.com
-> > ---
-> >   documentation/migration-guides/release-notes-5.1.rst | 7 +++++++
-> >   1 file changed, 7 insertions(+)
-> >
-> > diff --git a/documentation/migration-guides/release-notes-5.1.rst b/doc=
-umentation/migration-guides/release-notes-5.1.rst
-> > index 0f1cb5312e1a59fdfff2df57e98b6c4a27bd589d..d6e284c1e8fef2c7dada3f1=
-5ffe3c0cecf21a981 100644
-> > --- a/documentation/migration-guides/release-notes-5.1.rst
-> > +++ b/documentation/migration-guides/release-notes-5.1.rst
-> > @@ -402,6 +402,13 @@ New Features / Enhancements in 5.1
-> >         scripts, fixing some issues seen when :term:`PACKAGECONFIG` wou=
-ld
-> >         conditionally modify it.
-> >
-> > +Known Issues in 5.1
-> > +~~~~~~~~~~~~~~~~~~~
-> > +
-> > +-  ``oeqa/runtime``: the ``beaglebone-yocto`` target fails the ``parse=
-logs``
-> > +   runtime test due to unexpected kernel error messages in the log (se=
-e
-> > +   :yocto_bugs:`bug 15624 </show_bug.cgi?id=3D15624>` on Bugzilla).
-> > +
+> s/it/them/
 >
-> Provided you tested what I wrote before sending the patch ( :) ),
+> I would also try to avoid one of the three "to" we have in the same
+> sentence, so maybe:
+>
+> """
+> or by the :ref:`ref-classes-kernel` class to make the kernel source code
+> and kernel build artifacts available to...
+> """
 
-Of course, works flawlessly :)
+Better phrasing, agreed :)
 
+> Also, I'm wondering if we shouldn't expand a bit more on the
+> "efficiency" part or what makes a recipe a candidate for using
+> work-shared? I assume this is mostly because if we were to use the
+> normal sysroot mechanism, it would be overgrown and take even more
+> storage space than currently? I honestly do not know. Also, this doesn't
+> need to be done in this commit, incremental changes are fine here :)
+
+Makes sense expanding to me too. I think reducing storage usage is one of t=
+he
+reasons, another would be to share a workdir like gcc... But mentioning it'=
+s
+rarity is a good thing IMO.
+
+Since I'd rather not forget to add this, I will try to add a note on this i=
+t in
+my v3.
+
+> With the it/them swap or the second suggestion:
+>
 > Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+>
+> Thanks!
+> Quentin
 
-Thanks!
+Thank you!
 Antonin
 
 --
