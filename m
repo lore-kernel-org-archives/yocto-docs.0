@@ -1,158 +1,240 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3938BD1AD55
-	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 13:19:17 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.22695.1729084752412006505
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D5A0D1AD5A
+	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 13:30:47 +0000 (UTC)
+Received: from EUR02-AM0-obe.outbound.protection.outlook.com (EUR02-AM0-obe.outbound.protection.outlook.com [40.107.247.88])
+ by mx.groups.io with SMTP id smtpd.web10.22922.1729085441443274883
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Oct 2024 06:19:12 -0700
+ Wed, 16 Oct 2024 06:30:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=KgjGlN5x;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 75076FF80A;
-	Wed, 16 Oct 2024 13:19:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729084750;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=4oz0G4VT8jmU71qYDrcKAs941bFPZ7sL1ERlAREL09s=;
-	b=KgjGlN5xcBmeQRHGU1CSUpT1m1ZsLflMqwPJquWjGfeUAs7ALhrwvQoQZjLSfkzuN0c4+L
-	Q8f3FeSaYDN8onnf7+fBA3Q6Z5RgtQBa55uKcO/WtQd0LQGw7PpAFwj9JB2vEuUe82ppcI
-	ZcGfrq7p+m2tOPjzduz5Hq6wWV0kYSYApZdasjQmD6L9Mpm3ETXM+IQockvTEP6kPeSG5G
-	Kws+7OSjTLRDZibrVwyY2jd8mFIUPU3Xyzt8r8Ign4HjajhlWYiLeBuDWU70eIZwgCMPf2
-	0OvIJnD3E2NLZDtsG9NRihrdhk/qAsMOXXUCt3oZXxQS2TTaTGIHiYN/la5TVg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 16 Oct 2024 15:19:00 +0200
-Subject: [PATCH] overview-manual: concepts: add details on package
- splitting
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=ff1+Lj4v;
+ spf=pass (domain: cherry.de, ip: 40.107.247.88, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=u08NmyhmUk47AIetrGPYK16VOCE6dP0onIcQMikTI9QyYKH+WSJAqmzzgsNx91jlydVVt6GgFYr5ldZJ0D6+Oq5KCZBgwqi8xw0LAaJaERNGHljDbzB9KY5Phn9Uyaqa+eJQef/MJzkptmSCnUu1tg47a+qXIJVk0sIDBVvcw0pZ1CLU68z3zyswcDmszA1zrXIPR1+Am84BC77VecqjfHeXltsY0bAE/wKkh1SCXO612zOr6IB7/LHQYAR/mMiTxAa6MNUie/71WILB/tkbHu11XWMlw+hH+khdah7IEH9xZMDxEpqPqE83OOCQzpht/6zkViHURmBA9ReppjoR2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/Z+ODcuYuWejnv8TzEvV0hFLAtJcmcr9B/ra4v2HSyc=;
+ b=Qi3fe9IoNBBDgQigE+or3urq6PI3ODUwaCSq0/um+U6NbXt3KxdtMxNXwMtF9cdzUkcbAdM5Xv8WJcgfLLvc2v2O9TwX+bAY4nrBJPzQsGLz5lBKocDYqMkohybibt11uMvsVd0mpOIDSuKDQZCOgP8LcxysBRpszDf321P+/mEo8D++8ruuLeejQanz5Ho8fIemCN3pryDUQKyzJNhGxZTNVPrn5Irn8IZVUlOzqYIRBSb4R/B8ZOMGG4EdjG2Ls+WQL/0orzng0zHbCN/fBfKJnGj77q5m8CgvMtaaPxHv1wFoo+U/Dc3iAFe/MaZXeeVP811BjUt2qffapznD8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/Z+ODcuYuWejnv8TzEvV0hFLAtJcmcr9B/ra4v2HSyc=;
+ b=ff1+Lj4vzIR7T5hfkmL3YKy//omnm+lGzvDSVXhE3BAmwhWzyPXg7Gnw40idXMAm+QGio6C2YZSWolaQBd8JbXH4yFwnDs3z+2BfArFjosuXxJHXtohgruepkUxIvpiJ7C0lgSc+KRKy7rXttl5G/4dc0rCLJN0+wBgV5BKLN/g=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by DB9PR04MB8281.eurprd04.prod.outlook.com (2603:10a6:10:25f::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.17; Wed, 16 Oct
+ 2024 13:30:37 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%7]) with mapi id 15.20.8048.020; Wed, 16 Oct 2024
+ 13:30:36 +0000
+Message-ID: <023f8e3f-2dfd-4f99-a3c0-f3205ebf9e6e@cherry.de>
+Date: Wed, 16 Oct 2024 15:30:35 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ref-manual: structure.rst: document missing tmp/ dirs
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ "Robert P. J. Day" <rpjday@crashcourse.ca>
+References: <20241016-bug-14543-v2-1-df3038344377@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20241016-bug-14543-v2-1-df3038344377@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ClientProxiedBy: FR4P281CA0381.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f7::9) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241016-bug-13225-package-split-v1-1-20681130d7eb@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAEO9D2cC/x2MWwqAIBAArxL73YJa9rpK9GG21VKUaEUQ3T3pc
- 2BmHgjkmQI0yQOeLg68bxFkmoCdzTYR8hAZlFC5FFJjf04oM6U0OmMXE4XgVj5Ql7YarBjrotc
- Qa+dp5Ps/t937fnM7p8RpAAAA
-X-Change-ID: 20241015-bug-13225-package-split-57c8dc0f96b5
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4066;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=GM3J2MYJY8vZQIp/bVQLcX782Uv6BpeqG/XXBu+two8=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnD71O1YjsFzomGXHK48e5Lou0GP2fulBhFM0r7
- WitHZVIJG6JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZw+9TgAKCRDRgEFAKaOo
- NvLCEAC27kbGgjev2dk01E34T3TxUoTtrmsw/XouNcJAjJpPo2b+jlJL5RnZmTD0t90hPX29lMX
- efMIICywyCkLZuud7DaZntZroAK6z0EM8N7yKoVq+k+5NwKoiP1TLcTnOXKUpJIqvN8yFh40skC
- rihNOOCzPcgUtw8LC0L7L7jieJTzr0Qf3Gs35d4kHK8AVhXP6NKTRus5+sAd5VlNt2M33i3zEqi
- itVv6qG+0Ecx9UDFVwC9r2NHG0Ja5CHvWrLLpEzhtetRSduuBY1vg625qjVymt3m+q9MxYTxpJS
- FCs6V0jVuISctj2fRgZgXU2gIbMtQ904ONV8tlsxeeCjG+5LNqSF/hxPan5St2Tgx282cDr5+JQ
- I9woRqOo0q269kqTBRcO+3QOG/4z35k54lDRrnPpn3NBvtXkOeqCPO9m19c9AKnIUjGc5vMxnrL
- ov4JJ5fnFzux/Y50DNvHQygToWFYun3MMwiiq5WZQ9c2z6hrWz2E/2x3VjhRbp2xYe6/vgZHyeS
- oius9gIaiWWGcmuzifnIWg7OHEzS+FTbYI2c2CrZEEoMrm4m0rj3eUZ7ELEcSFoyU666Je8uEpr
- qoUI8NkzROB6xL9opo04ACI8YQJq0dFYNUbn7aTiU3S8gsH4LJk55buJJXszmdxmL+ACe0P/k5y
- i1li2oLHjvmSdew==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-Sasl: antonin.godard@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB8281:EE_
+X-MS-Office365-Filtering-Correlation-Id: 81a3b2c4-1055-46f7-f3ee-08dcede6b80f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|10070799003;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?NVRiMU1OWEd5aWh2VHpzZXNyYi9xYmF4NFhFcGVWVmdzSTdFWFhMVGtZRkhK?=
+ =?utf-8?B?ditUN2JMRk00ZFJmWE9pSmJRS1M4eEV5Q3NHV0JRV1ZaUFdSaHdyTjRNYk1X?=
+ =?utf-8?B?U3lTdWpGak1OU3Q5K3hUc0txUlFZaXp1NktUU1FoVnZqbGRvMG1zNElaZnYx?=
+ =?utf-8?B?YTVxN0lyVzFkVENtcGRLOVlxaDN0NGoyWVFZN3JxdHhmTHZtSlV0V09QLzZI?=
+ =?utf-8?B?Z3U1am5JL2VVT05ubFA2RDM3bzhNTUd4ZkZnQVpmZ2VhdU8yNzlCWWU0NmVI?=
+ =?utf-8?B?MldtblJ4M25DSHhmZTlEYjB0YWVBck0vZVVaL0x1Znl6cUlrWE5VUUk2dEFM?=
+ =?utf-8?B?bDJzVnFvVjFCYktNM0kyN1JKMDV0WkFCeVVLdjJqV2ExaWFrUFRxUVhiRlNl?=
+ =?utf-8?B?Z3VhZXNjdHZtUWhnUHVDT1pMOHZFbWlPcUUyVDR6a0lWTkdNdW1zL2RZUXZU?=
+ =?utf-8?B?dGZnbFp3dmV5R2MrK3RWQlVZSWFPZ1U1aU5pN3cwSnNkMmFEb0Q3QzZSaDRi?=
+ =?utf-8?B?cDlja3FPNDVmQUZpNjFJcjJxZXB4QTh6ajRGWE94S25FbW9TNmxFanNKZDR5?=
+ =?utf-8?B?VVQ3U1ZHbWFlOHJTK0hleXFCSit6NUhLVHB1Z0Q0THgvZ2VGYjA1dHJYM1B1?=
+ =?utf-8?B?NUVkT0w5bklMQzRzMkVER200YTJCbWhSRzdobTZFamFTb1o0Z0kwUEczQkdF?=
+ =?utf-8?B?ZEl3WXFsdkQvNEpWaXR0anRwVHVLcU5DQWJYbHlCc25SUHp2OEpXK2dyMHF5?=
+ =?utf-8?B?T1ZuWTVZUjNaYUtzNEl5alZEcGxHb2d0YjJCUnoxTlB6YnVyYWtkVVNUZ2ph?=
+ =?utf-8?B?dnRFd0NWUzJIT1dnRlIwNWp5OEZoaExFa1EvSlE3VHFXMW5jbFJ4YjFZVHBx?=
+ =?utf-8?B?dGtUM1FVSmV5c2F4VzZFOGxsc093bGJML1FPZEdDbk0wZkx0UFF1R0FDclBQ?=
+ =?utf-8?B?SG50eHpTZzU4L0Z6RXM4UUxJN3lFZk90c3lEWmdBTG1vaGpybmU4VVEydDh6?=
+ =?utf-8?B?UHZQdDRVaTNKUDVQR28yRXI5YUJ5UVBxRHJVb0F0cFlzTzNYbkt0OXpMZVg3?=
+ =?utf-8?B?T2Zvb0hKMGNjTVdMcW82bHJDMmYxY1Rtb3F6M0REcnZNWTRTMUlJZzE5aTZi?=
+ =?utf-8?B?T0xRckhGTjZEbkVOTm5HZWsycyttQkVzZnM0TXNOV2NLMEhJMGwyYkVLa1JM?=
+ =?utf-8?B?andKMUEwS1VyWVVlL2xTbmNNVWZlYWNLOXVJeEZJOU96b015ZWpjWTNZb0ZY?=
+ =?utf-8?B?eXdLMVlpQ3YyYmwxNjBxckhZeDBYWnN2SnJMdGdpM1VUOWx3VzFTTkx3aVF0?=
+ =?utf-8?B?TGFDOG5hUFpmMkY3RjFDN1dJdFNxa2dKR0NTUWVOQktzbHlJdUFqMTJMcVdG?=
+ =?utf-8?B?WGxGT2JRbWozQ0gxREk2eWFWK0JwZEUwUlk4b0hGa1JFaUxnSFNKdzZhMW05?=
+ =?utf-8?B?Um53amZrd0ZtR085T0RSSzNSbFV1ejZzMTRINnQ4Tyt0clh6cm9weWJFQXBq?=
+ =?utf-8?B?eUR2MDdlTCtaT0lPUENOZHNyRlpQSGFGa3B4eHRWd3c0N1pwbzlFNWhSalRi?=
+ =?utf-8?B?NENYTHo5RHdHVGszRFR4Zkh0d29xbUJkYktrTDBRd1g4SGlFUVo5U0dCdVNL?=
+ =?utf-8?B?bXdOeEN0UHBSbjZjdVdVVWExYVUzWTFsajBnb3h4MjU1WWhzbUxHWG5xdTA5?=
+ =?utf-8?B?emZWdUFzL0tYRXhQemFxTklMTWJQU1h3RDJ4cU9VRTZ0aDQzR3NYbG9nPT0=?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(10070799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?VGw1NkllTXpsNmpQbVFrQjRBdThORnFHWWJoek9ibTA2dkpXRjNtc2ZWK05L?=
+ =?utf-8?B?REVBanRPWlpEYVFZNmt1N1BVZFhyZ0JNS3Ric3U1WGVOZnc0V0RKQXFjMWl1?=
+ =?utf-8?B?elVoSXE2QUZQbzdaVEJBTzRZZVlhNzh6UFFTdGZjUG1BU2RxcTY2VG8wRFVR?=
+ =?utf-8?B?SlU2bDN5b3J2YmUvc3QxcHpHMnAwWDdWL25QejdsQ0UyQWJRNGZvL1paMXZD?=
+ =?utf-8?B?Qk9RNS90UUNEU1ZMVVh6c2RtdDBhNzhPNjJiL09BU0RGZ1JlaFN1bGgwN2ZE?=
+ =?utf-8?B?U1ViSWYydzNxVE1RdmQrZy8xL1FPWElVTm9GaWNtaWdocGdxRzVqRXhUaGhL?=
+ =?utf-8?B?UFYzaDA5b0RibWJ3YmNzdVJtczNjZmtRdmkxQnYwVlNLUzZYSVlnUTdmaWh1?=
+ =?utf-8?B?Q1E3RDFrOFNibXJlNFFKYTBQYXBtclI3QlRsYVlyYkY2RWZITDFsSmdXa3pV?=
+ =?utf-8?B?U250VmZEOW53YkM4M3FhMkljZWJOTnR4YlkwL0JWdHJEcE02SlRGMzhRdVFh?=
+ =?utf-8?B?WUk3QVlDOS8zbEZaZ1lESE83bENrbnl0K3ZyT2dGZXZYV2k5TUhhKzlQVmg3?=
+ =?utf-8?B?RmNscExEUWY2TytMUi9ZZGc1ZnM4bGZTTXFReU1VNzhnbm8waUxZeTAxVmtP?=
+ =?utf-8?B?RlQ1amRTSzZKQ0xCUG93Vm05L1JiamJ1d04ycmQwdkNFYUNjS1dTWU9Pdm0z?=
+ =?utf-8?B?V2EyRmZqMVAxQk9lM25LVWpXd2NjQnQ4T21hQSs4OHl1QkcxVGx4SVFXWkdP?=
+ =?utf-8?B?MHhuQ2tOVnFDMFhlV2ExeGsxeUdjYk9NYUJrZHA3dnkrZGhPY1oybnlvaGpt?=
+ =?utf-8?B?Y2VJNkFVVGRGczFXVWNuTEhBM1FWZUlQZk5WUGZHd1NTQXY0emtlL2RjT21E?=
+ =?utf-8?B?QUtwU0lHQ2wzVHJONGRqUU5mZ2lmSWJ6M1FDRXhNUTRMNG00ZjFhdmtLMEdN?=
+ =?utf-8?B?ZXJ0VllGM3o2bDQ5NnorVkJ0Q2svZFdlTndkZWtrdlp2eXhyRmE1MkhNZVdi?=
+ =?utf-8?B?aVIyNEEzb1BxYVFGVGJlMi9mOG10QktOaEdGaWJlYWNtM3hzTnU2VWRiSC9h?=
+ =?utf-8?B?ZFFhRzZNeXdMcWxkLzlZMXZxWk5SU0lVOU0venlTTlJsc0k1WDFRbmtoUU8z?=
+ =?utf-8?B?YUFPM1k1UWtBTGFqRWQ4ZlY3M3JGUzNUc0hlRmV6NnMrWHp2U1pBMTJnc3dt?=
+ =?utf-8?B?MDY0M212b0V3NzlVNzluT0s4MjVJWC9CYVoyWVhPNkh3SllNdHdPQ1prMnFM?=
+ =?utf-8?B?SU0rbnRoT1FMR0tmbGsvazU0Qnd2c2hyYitMTW5NK2pOSzJJK1Q4Sy9iajJB?=
+ =?utf-8?B?Vm5URm5yb1pVWWhoRmVEZ3lhUkNOWmVydkNrR3UvTURxbkhOYThraGxoSDFN?=
+ =?utf-8?B?WHhOcFZCS3BWWEFSU0RlVzlVUElkTXpUUGtFK1pHc0lvNUlUL05vNk5PWGpz?=
+ =?utf-8?B?TEpNYlcyck1GRzVDUmgyL25rcnp2aWw5OWprTEY5aXJBeEpFcjl0K3FsKy9n?=
+ =?utf-8?B?ZktueWtwSGk4K2doNzBxWk5vcmdkMzJ0NVhMUHpPQS9FVGlpa3pJSFNJaUlo?=
+ =?utf-8?B?WkVDTUt2T2J2MmhPUlgxMEhiR3crOEtpZlNwS29Nd0J3dXhyNGdnZEViQmxE?=
+ =?utf-8?B?a3RUajlaTG5WZjlQMlJ5OWhlT0xLVC9WanhPQzBUNjJQWDgzSHZuTUJSY0lE?=
+ =?utf-8?B?TXBNSFFZNzJLbU83ai9uem9aSnlYQ1M3N2krSzRJSU5kZ2REWm9tcEtnTVdM?=
+ =?utf-8?B?OVFna3J3MDlFTXJ0eXJRYkI4cXRlVk5rMUZyOFZVV2tJQTB5bVhJOGttdENM?=
+ =?utf-8?B?NnBudVNNTjhzZzFzMHpDUlR5S3RUc3Z5ZDdmVVlKUWVkUU4wN3NwRDF3OFV0?=
+ =?utf-8?B?Z21KMkUvVGNiQ3Y4MkFGYVQyMzg4bjREaXhQZVBrRFI0QzNCTGtkM0RJUHl2?=
+ =?utf-8?B?MURiekwxTWRuYkxiSVpyaFF2QTZ3c2lWWFJ6OVlIemh4L2MvYTAwdjB1M3Zj?=
+ =?utf-8?B?UHdTU2haOVY0Zm9ncVgySk9CcWpaNU5pTTN6eElodmd6c0wzQm5nN1ZvZW5L?=
+ =?utf-8?B?YXRQdFRQNXY1bU55eEx2NHJ2ZmNZZll4VGJZbWgyS3JiUVQ4Tkp5MlVLUGdW?=
+ =?utf-8?B?UXV2UUdWMmVnUmUrZ1JseHVYeCtDc0pvZHY1MmJBT2xwcTUyYjEvVVFWZ2kx?=
+ =?utf-8?Q?yyRSopm6CQZpS15jp5IP5ds=3D?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 81a3b2c4-1055-46f7-f3ee-08dcede6b80f
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2024 13:30:36.7039
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: W4ClH+S/4QuMGzmhrlp57JBBSSM7RPUdrVYjMuIUPhTr2zl2FSxnUlApdg/XUXb94G/IVJhIBs2D6BUFu462AtHlwlsVUNc/NJi1sc1DZEk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8281
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 13:19:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5506
+ <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 13:30:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5507
 
-The package splitting section of the overview manual currently lacks any
-explanation of how package splitting is implemented and redirects to
-the package class, which is not really understandable for newcomers to
-the project.
+Hi Antonin,
 
-This patch adds a short explanation of what is done:
+On 10/16/24 9:27 AM, Antonin Godard wrote:
+> Document `hosttools/`, `pkgdata/` and add some more information on
+> `work-shared/`.
+> 
+> Adresses [YOCTO #14543].
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
+> ---
+> Changes in v2:
+> - hosttools: add missing "the"
+> - hosttools: Remove "pre-installed" packages and point to host
+>    requirements section instead.
+> - work-shared: s/as a way to make it common to/to make it available to/
+> - Link to v1: https://lore.kernel.org/r/20241014-bug-14543-v1-1-7c8519be9c9c@bootlin.com
+> ---
+>   documentation/ref-manual/structure.rst | 31 +++++++++++++++++++++++++++++--
+>   1 file changed, 29 insertions(+), 2 deletions(-)
+> 
+> diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
+> index e4d8b54bb9e39ffe344d2db1798e4fe76c742f4e..738d4a6a8e1bc968abd4c0dcce8e0b6cde9db4e4 100644
+> --- a/documentation/ref-manual/structure.rst
+> +++ b/documentation/ref-manual/structure.rst
+> @@ -484,6 +484,30 @@ the ":ref:`sdk-manual/appendix-obtain:building an sdk installer`"
+>   section in the Yocto Project Application Development and the Extensible
+>   Software Development Kit (eSDK) manual.
+>   
+> +.. _structure-build-tmp-hosttools:
+> +
+> +``build/tmp/hosttools/``
+> +~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +The OpenEmbedded build system uses this directory to create symbolic links to
+> +some of the host components that are allowed to be called within tasks. These
+> +are basic components listed in the :ref:`ref-manual/system-requirements:required
+> +packages for the build host` section. These components are also listed in the
+> +:term:`HOSTTOOLS` variable and are limited to this list to prevent host
+> +contamination.
+> +
+> +.. _structure-build-tmp-pkgdata:
+> +
+> +``build/tmp/pkgdata/``
+> +~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +The OpenEmbedded build system uses this directory to store package metadata
+> +generated during the :ref:`ref-tasks-packagedata` task. The files stored in this
+> +directory contain information about each output package produced by the
+> +OpenEmbedded build system, and are used in different ways by the build system
+> +such as ":ref:`dev-manual/debugging:viewing package information with
+> +\`\`oe-pkgdata-util\`\``".
+> +
+>   .. _structure-build-tmp-sstate-control:
+>   
+>   ``build/tmp/sstate-control/``
+> @@ -657,8 +681,11 @@ Here are key subdirectories within each recipe work directory:
+>   
+>   For efficiency, the OpenEmbedded build system creates and uses this
+>   directory to hold recipes that share a work directory with other
+> -recipes. In practice, this is only used for ``gcc`` and its variants
+> -(e.g. ``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth).
+> +recipes. This is for example used for ``gcc`` and its variants (e.g.
+> +``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth), or by the
+> +:ref:`ref-classes-kernel` class to store the kernel source code and kernel build
+> +artifacts to make it available to out-of-tree kernel modules or other
 
-* How the PACKAGES variable is defined.
-* How the FILES variable is defined.
-* How the two work together.
-* How to add a custom package.
+s/it/them/
 
-This should give enough details to a new user on what package splitting
-achieves and how to add a custom package.
+I would also try to avoid one of the three "to" we have in the same 
+sentence, so maybe:
 
-Adresses [YOCTO #13225]
+"""
+or by the :ref:`ref-classes-kernel` class to make the kernel source code 
+and kernel build artifacts available to...
+"""
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/overview-manual/concepts.rst | 49 +++++++++++++++++++++++++++---
- 1 file changed, 44 insertions(+), 5 deletions(-)
+Also, I'm wondering if we shouldn't expand a bit more on the 
+"efficiency" part or what makes a recipe a candidate for using 
+work-shared? I assume this is mostly because if we were to use the 
+normal sysroot mechanism, it would be overgrown and take even more 
+storage space than currently? I honestly do not know. Also, this doesn't 
+need to be done in this commit, incremental changes are fine here :)
 
-diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-index 62f2327a7e27a777f738523e7fafe62422186abb..d3e90b80d4fe1954c7aacba8f0fe243cba04c1b5 100644
---- a/documentation/overview-manual/concepts.rst
-+++ b/documentation/overview-manual/concepts.rst
-@@ -912,11 +912,50 @@ the analysis and package splitting process use several areas:
-    execute on a system and it generates code for yet another machine
-    (e.g. :ref:`ref-classes-cross-canadian` recipes).
- 
--The :term:`FILES` variable defines the
--files that go into each package in
--:term:`PACKAGES`. If you want
--details on how this is accomplished, you can look at
--:yocto_git:`package.bbclass </poky/tree/meta/classes-global/package.bbclass>`.
-+Packages for a recipe are listed in the :term:`PACKAGES` variable. The
-+:yocto_git:`meta/conf/bitbake.conf </poky/tree/meta/conf/bitbake.conf>`
-+configuration file defines the following default list of packages::
-+
-+  PACKAGES = "${PN}-src ${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale ${PACKAGE_BEFORE_PN} ${PN}"
-+
-+Each of these packages contain a default list of files defined with the
-+:term:`FILES` variable. For example, the package ``${PN}-dev`` represents the
-+development variant of the main package ``${PN}`` and its default list of file
-+contains development-oriented files only::
-+
-+  FILES:${PN}-dev = "${includedir} ${FILES_SOLIBSDEV} ${libdir}/*.la \
-+                  ${libdir}/*.o ${libdir}/pkgconfig ${datadir}/pkgconfig \
-+                  ${datadir}/aclocal ${base_libdir}/*.o \
-+                  ${libdir}/${BPN}/*.la ${base_libdir}/*.la \
-+                  ${libdir}/cmake ${datadir}/cmake"
-+
-+The paths in this list must be *absolute*, and must use the path prefixes
-+defined by the :yocto_git:`bitbake.conf </poky/tree/meta/conf/bitbake.conf>`
-+configuration file, such as ``${sysconfdir}``, ``${bindir}``, etc. They can
-+optionally use wildcards (``*`` ) to match multiple files installed in a
-+directory.
-+
-+.. note::
-+
-+   The list of files for a package is defined using the override syntax by
-+   separating :term:`FILES` and the package name by a semi-colon (``:``).
-+
-+The order of the packages in the :term:`PACKAGES` is important: during package
-+splitting, going from the first element in :term:`PACKAGES` to the last, each
-+file matching a pattern specified in the corresponding :term:`FILES` definition
-+will be included in the package and *excluded* for the remaining packages listed
-+in :term:`PACKAGES`. As a consequence, custom packages should be added using the
-+prepend operator (``=+``) to be prioritized.
-+
-+For example, to add a custom package variant of the ``${PN}`` recipe named
-+``${PN}-extra`` (name is arbitrary), one should write::
-+
-+  PACKAGES =+ "${PN}-extra"
-+
-+Alternatively, a custom package can be added to the
-+:term:`PACKAGE_BEFORE_PN` variable::
-+
-+  PACKAGE_BEFORE_PN += "${PN}-extra"
- 
- Depending on the type of packages being created (RPM, DEB, or IPK), the
- :ref:`do_package_write_* <ref-tasks-package_write_deb>`
+With the it/them swap or the second suggestion:
 
----
-base-commit: 3820a7bec0bb23bcd26bd99be2275d6d214a3a04
-change-id: 20241015-bug-13225-package-split-57c8dc0f96b5
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
-
+Thanks!
+Quentin
 
