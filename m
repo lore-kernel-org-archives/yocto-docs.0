@@ -2,308 +2,258 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 61124D1F9DA
-	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 14:10:27 +0000 (UTC)
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.52])
- by mx.groups.io with SMTP id smtpd.web10.23836.1729087822693077548
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C9D5D20694
+	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 14:13:47 +0000 (UTC)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (EUR03-AM7-obe.outbound.protection.outlook.com [40.107.105.58])
+ by mx.groups.io with SMTP id smtpd.web10.23906.1729088023941172136
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Oct 2024 07:10:23 -0700
+ Wed, 16 Oct 2024 07:13:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=cswt36/C;
- spf=pass (domain: cherry.de, ip: 40.107.22.52, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=S8QfjBeu;
+ spf=pass (domain: cherry.de, ip: 40.107.105.58, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=i/N1BJRy0Wevd1vdf7YGE1jRbFJy4xS2o6Gw/uzBzEW0C/5Qu//036HbNUx0sAw3QgGuYwXc3pbFa1I1tHnabQvWjVkIKwhJkMqKFBbYacdmo/oWGai42gZk8by5SfgPdzHoP6HtudgKasLcXAyjs64AMB7i0HkrN57xOLJk/0qKebSRqjqEh2r31WNamuD46RcuAlIMblpxHHjf23HeytJ+MOly2fFfn5ET1/ucCmGVlrP4/nIRcFhqJJkY5oHuFM7obpxw+yRBOP9QLpC0Y4Y6NB0cCmYpqIoRnJIg3HM8JMcKTUJ9N0sOTOZPLbWHrQuDpsXLXxgO8rxG302sBA==
+ b=gUH/i0n3o3SrSNAaUpqHD7clR7lLJVqiovWrzQF8trLnoaqc87drzJCKuMn8dZLY+bHxOVI3ZC/yK5zTpS+ZJpw5VbKWuBO3bTGUUww99iyQqGTNmutfhF35NTiWAXU4gtmxMucv0Untwr8gcSyc3yBXZoDnbXmIAMLUEL2HnsKFLxJj4t4RO65O5NPAiX0Tn/uoTVNElX3GN6ZdrYJ5Tjc4T5n1Uu99NTqiRbGe5DwzTw1YFUtblcfeG14QSekBwv4SjLe+4fngUDWeNsQhVOlGBbtlEJJ43THcp4ZEacrLlYBL2acb9Yx2km4ozcqXzB7As0E6XoSQAgDBz9fY4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TcAkR6+ziaDypLbvdmz2TknPvHk8qpWLIuGdQTWcthM=;
- b=LKNYxjQ4U2vLF8CM5RndWF6XRxRaDrH5k99uDl691lVcCHWpHrD6rDbbmethG8hr+1BRv9jduI1BzHNZJDSxvzHEjUH3DfbnnPpwysxIBMu++NEnYwpGH5MbmSodkCbKN2Jx6OrhsvzWMQ9qRQL/AMutA4lRm4nmJ8fwn2wGWG1YU49VMsyC8Y3ow/fXBY1JWgZl5KxcRB9V+S00yRUAOJU9unLyiDYz6NTly55KAAxzW9OkvcUI+j35RAPWRa1zlD7H/aKiFFvEBozTEZR/t0I/MBdZkfC07LnrTwVFtsdtEkAVeX3rfz9Yq4zM9RUxc1NTAeqQPDW9UgAZWnrwDg==
+ bh=mpdXwFfs0aEtJuo5n7civXqdp9jCDGfztilZYAaQzzE=;
+ b=ObyQGWRrghPy4zVlpltZFLyNMxQEzEpOgnwrm5CGcbpVJjr8ueDLTZ7LB/M+0dALDyLV1CbS1C4XQd3aFAgSTOrv9jTdoq4Fsi2vosopU0V3tpyXUM3iWyt6BtVioplgWq+W9nbeE8Ygv5JesScTdMw2h2qh6iAQHCkKirGzYFrpZPj02M0fzwyvFoTeK7KdlR+VPv3Ji273w4TFhZ4W6ISQaFEV/Fci04r8ANemTAtMeeL9Rnc21lHBc4uxsVddBlJUslksfxIvPWj+dGHfvB3xRPJTgiuNG+zEy33OcB91Ijh4gFccbxzEKVfHpjN2etcbg1ky8c+m5Aqu3HlQcw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TcAkR6+ziaDypLbvdmz2TknPvHk8qpWLIuGdQTWcthM=;
- b=cswt36/C8358H2eoQJbST9uZjgpVaZszV0mc0eXnKnnJSc+ul1+XYNavRtJn82gfD0iXtqH+84+5pssjSCmV3PbjgQBtOq/V0ukGvHXM3TSSdswzDbF8KSnMwex5bZxQ25Sl7CPq76zHhsPLMRBB/DC6SVjhZ6ZP5+5+bRvQalM=
+ bh=mpdXwFfs0aEtJuo5n7civXqdp9jCDGfztilZYAaQzzE=;
+ b=S8QfjBeueyRBjKl8Xg2JcR+QLt8nnAgaZDNN6qTudMDxeOn6PA7E32b7GX1y+ZICY3EA8FRkYyoZGoxyDJoSDJF1m8rL1ICwIwR4N2zUC1sYM/VCt9PDrW22mE95eJ2AmkAdi7WLNiRlmjFoGediK/lAvbgx6CtGUy8POXHwt4Q=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by AM8PR04MB7204.eurprd04.prod.outlook.com (2603:10a6:20b:1c4::11) with
+ by PR3PR04MB7227.eurprd04.prod.outlook.com (2603:10a6:102:82::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.18; Wed, 16 Oct
- 2024 14:10:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8048.27; Wed, 16 Oct
+ 2024 14:13:40 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%7]) with mapi id 15.20.8048.020; Wed, 16 Oct 2024
- 14:10:14 +0000
-Message-ID: <3afd2cfa-cba6-4f6a-8075-698850c703ad@cherry.de>
-Date: Wed, 16 Oct 2024 16:10:14 +0200
+ 14:13:40 +0000
+Message-ID: <afa39359-5303-448c-9925-b61375d0051f@cherry.de>
+Date: Wed, 16 Oct 2024 16:13:39 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] overview-manual: concepts: add details on package
- splitting
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20241016-bug-13225-package-split-v1-1-20681130d7eb@bootlin.com>
+Subject: Re: [PATCHv5 1/2] docs: Replace VOLATILE_LOG_DIR with
+ FILESYSTEM_PERMS_TABLES
+To: Niko Mauno <niko.mauno@vaisala.com>, docs@lists.yoctoproject.org
+Cc: antonin.godard@bootlin.com
+References: <20241016140940.3166992-1-niko.mauno@vaisala.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20241016-bug-13225-package-split-v1-1-20681130d7eb@bootlin.com>
+In-Reply-To: <20241016140940.3166992-1-niko.mauno@vaisala.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR2P281CA0016.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a::26) To AS8PR04MB8897.eurprd04.prod.outlook.com
+X-ClientProxiedBy: FR4P281CA0040.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:c7::20) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AM8PR04MB7204:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0e24ccba-453e-40b0-f481-08dcedec4182
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|PR3PR04MB7227:EE_
+X-MS-Office365-Filtering-Correlation-Id: 41876b22-bb3a-450b-52b6-08dcedecbbff
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|10070799003|376014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|10070799003|366016|1800799024;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?Q21jcGtWdmRsaXc4d3pZMkVLL3BBYXRxUXZVZHJCZ1JYR2x1dTBodDZZcDRu?=
- =?utf-8?B?UTc5YXpJVWdnQXJCU2E1NzQrWjNodXJlb1J0N0VOaDdLek16YW4xbE1iMXJZ?=
- =?utf-8?B?VEdGNmNESFhqZ0ZjWDVKdVNRVzVaaVBUOFRvY1RuVTFpYmY5ZVJXS0g2aGtJ?=
- =?utf-8?B?R2JYZlJCM3g2Y1lDeHg4enJEamM3bm1ua2JHdFBNV1g1VkpKZGFtQmlzZW5h?=
- =?utf-8?B?ZzBFa1JvRUpZbWt0TTJvRUgzM0lGZTNkWlMwenBvbUhFek5BV0JzOTBFS2hL?=
- =?utf-8?B?QTBtQjJPbHNkYkJnQTJSbG1odjNEY3NpSWhRYlZ5TkZycTRQVXpvV3N3dHF3?=
- =?utf-8?B?WC9adjBTTXdzQ2NOQXdrRHNWRExldmRsNitNSmwwcGZENW45azNSNThZbWw5?=
- =?utf-8?B?RUU1d0dKeWJKc29YdmRMS05hNldEdVpUdHBveWJUMitwellHSnpYYVVBa20w?=
- =?utf-8?B?cGtoMFZwUVg0c2tORm1DanBxTFN0cHJ5MDdnQjF3dzl5SXRDeklVck54WVlW?=
- =?utf-8?B?YnhkQ243MDVISlVFVU9rV0g5dXJDLzNWMlhiQm1MSlpoWnlVdlBZTUJPWUc4?=
- =?utf-8?B?KzdxaFRVTHdnVzNZWHRQUENIdU1HVkVFNmJObVBHcW8rTzBPRi9rdGY0NnJm?=
- =?utf-8?B?SXZ6VS9iYlRnbnlmYzMvbXZzR3gzNWthcUV4NmVDQXBYVStRZ1dyOVNhZno2?=
- =?utf-8?B?amxtYkpsT25VL2VhMFYvcDlMYkNVNlJncjduZ3FrQlNONXYxMm1kR09yMHBa?=
- =?utf-8?B?aWRpcE5JdjZNV3k3dEhMcjcreklPLzRqQk9xRDAxK0JxY1dFNDlJZkhDUmNE?=
- =?utf-8?B?V0FCbnRMeTZEUVhOM2NhSDIrSjB2aGVnY3hIWHBXTHdVbXZTaVVlRmJrMndL?=
- =?utf-8?B?K2ZSY0NvdlBPMmp5cXJYWkFhc3Z1MS80V01oajRsOVlZMy9VbWN0U01ZS3ZS?=
- =?utf-8?B?QlRZaXI2MnQ0WmJFNThvUkdVMmVuQ2JxcHIways2SjBqeDBJd0tZc0V4SWFX?=
- =?utf-8?B?bHlXZzBtMHZsMWZKdk1oMDdXRXVBRWlheHk3ejJIWmJLTEZkejUvOFE2SUlG?=
- =?utf-8?B?eTVMSERZWWJTdXFRTW5SbkZDck1jVzVlV2lEck9yd0FYdGkySVY5SjlTNi9n?=
- =?utf-8?B?Mm94Ykl0ZTZWTGFBOTFHd0UvVWZNdTZDOFg3RzhCNUR5U2Q1OUdyRlVPRStV?=
- =?utf-8?B?WnVYZldiRVdhYVJoVWlpMmZnYlNOeTc3QWNzbGVPZVR5aUZtanRjcGYxaUpV?=
- =?utf-8?B?T0h3dlZLRXpTZlRHMTVKNUNQVGhheVRHdjhKK3F6WHYzenkwYmlLY0lJaHRG?=
- =?utf-8?B?RXpEOXR6SjEyUVZDNDEzL2Q1OGI0RjBBdS9nYUFYMWFIUWZaSjNQUWtTY0Vs?=
- =?utf-8?B?TVRoZXNMQUlFaXJNeWdnZldnOFpCRGZaRmhiN1MzUU44VERKQlY1Ky90OE0v?=
- =?utf-8?B?T1Ywc3psTXpxNWtXSjl4UG5TbVNKMjB1cGFXTEgzMHNUNjJqM1ZkMEFVaHRW?=
- =?utf-8?B?U3YyNGpIUTMvRDF1S1hxQ1JRdndsRlJpYjQ2TVY4aWdiVnRkb2Y4VzZlZDB0?=
- =?utf-8?B?NFN6SEc3b1RJcWYzc1NFY1RtczZBdWZ3ekk5MWR6bnp6Vmx5SHdMNHBvMEpZ?=
- =?utf-8?Q?NGR15OT58pnxXUvmpSWyfIfViUA7EkyD/VyTJ/4lDPHI=3D?=
+	=?utf-8?B?ZGV0YU1qemREUVB1RC9TZi93ZjdReDBKR0xsTmJHeEVuWG5oWndsdUU3TGh5?=
+ =?utf-8?B?NkdCeVdyWU9sbGVPK1U1Q01YZXl0Slp5Q2l1ZDR0ekdYd0lLR2Y1ZWVPMFN6?=
+ =?utf-8?B?M2FiY1p1a3EwWjVUTjVvY1ZsK05OZDFrM0FkYnJYbHk5MENzQldIRU9NbFVP?=
+ =?utf-8?B?T1Z5VUNVanNSN0VZNzFOVVRaNFl2anhVNWZLRHNvRTVGenBMU2RpY2dQcmRP?=
+ =?utf-8?B?b24xSVhHVExmSWd2RzYwREdsZ1JQUDJieW90R0xpTENST3IwQ3FXZ0pFNkxX?=
+ =?utf-8?B?YWw2WEdzNDlnbXdoWTFpZXhMU0QvMkwzOUhmOHZTbkxlTmp0dlFLRG04TUJy?=
+ =?utf-8?B?cDdQdjI4dzlVUWYralZac3BOVnVlMHJLV3hkU3FJVG1rYkNQM1FOdk1WWGhm?=
+ =?utf-8?B?QzJ4eGtESC9yR05ROEx4dUhINzRBcTlYdzhZY25vcFJmaW5ySVBoUndSdS9Y?=
+ =?utf-8?B?VW9vSkhOVG9JVVNWUmk2Q2dJNHJkSm16VjNOL0h6Uks2d25STWlZMjNMSTNP?=
+ =?utf-8?B?QzNxWm5qR09MY2Y4OS9FVnByS2JCaStUdUVhaTBYcHhWbS8rVmlaR1RFdlpJ?=
+ =?utf-8?B?eFdXeFF3SEFoaGJ5VFY4c1F4L2x5ZWgrYnYrZVg4STc3cUkwZ3p3UkF2NUxS?=
+ =?utf-8?B?b3E1Q0k5ZURIV1prSXI3bXREcUcwUzVlK29IdG03OGRLaG8rcC9ldU5xa05x?=
+ =?utf-8?B?ZkI1Zy9CNkdTYzhXYjdLMDk1WFJqb29uTGlEdG5NVldFTE02T0hFNHV3OGZB?=
+ =?utf-8?B?YTkyaFl0L0Q1SDY5LzNjK1NMdVNOMVdZVmw0OVdMRjNoLzhTRXNMbXRRdnZK?=
+ =?utf-8?B?d2tNOGRLb0owNGpTVVVmNzBRSndhUmduY2l2NWhIVjFicEZrUFpaMzViem4z?=
+ =?utf-8?B?aXhNT0w3M3lUSTE5eGVWc0JQS0FGeVllZkwweFk5VjlSY3plZklWVUhhSnhM?=
+ =?utf-8?B?dy9rVURpNExFTXZYY1BjNmlqNWRKVXc5dVRxeXd3TnMyRG9hbHZDVUN5UjdH?=
+ =?utf-8?B?OTc1YW1uNHFULzZXVWZmdmE1NHIwRjh4YmRmNzFtamR3NHBlNjZyU09qR1pB?=
+ =?utf-8?B?WktHbGg2cFFDTDJ2S1ppZEdNRWtWMHViby8rdUs1V0IvUzhHR2QvYUJOUGsv?=
+ =?utf-8?B?MzllUmlNMUNoR0JsOHZRMjlhSllYcys0djBqK3YxU0pKOXdRY3c0S0IxTlNr?=
+ =?utf-8?B?ei92c1E0RUZsN2NrOFFOYVFqT1JNZ25TdGswc2MrSDY2TUsyeG1sR05KRkZj?=
+ =?utf-8?B?anBPTHFaOTN4ZjBnRC92VXJDM29IVEE0NzJPcVo0N25mQXIxUzVobGk5V0Vi?=
+ =?utf-8?B?WTlqM2xLL2Z5aEZoM1hNL2FCOUxadnZydC9hTjZuWFhxNEhxczBEYzBkbFdk?=
+ =?utf-8?B?ZHIyMjREQkY3dkNOeFY3RkhmSmxFVjhxa3hHWk5ybHYwSm5sK2VCc3ZoRVBl?=
+ =?utf-8?B?YzQ3R215L1BZMnpBZDNTNmhaSWlzbTlZUVcrQ1FoK2RjTWlDUFJmTldUaWFw?=
+ =?utf-8?B?eWk2VGFMUFNCY3JSYkpHWnVaVGRlaW8vS1dCbzQyNk5YWnllVHkzNzFUY1ND?=
+ =?utf-8?B?M3hxUnp1ZEdPYTdIUDh1eHRDODcwb1NvckRGam5sN01sRzJGdXVxVDk5cHZL?=
+ =?utf-8?Q?CTbUFdLjQEvUnv0XMeW+Li8SDCNioepq86FXB0V2d4lw=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(10070799003)(376014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(10070799003)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?TEl0SFZoVURGb2habTQ5MGs1TW5MM3NuYzNwbUhQcEFHODhHVXlBeXpWSDBo?=
- =?utf-8?B?Y21aNm5ZTm1WcjJ6eVJTZEd0b2FtNXZNbTlNZFN0enpzM1owSzJwTEg0TmtO?=
- =?utf-8?B?cStBd0s3ZUJyaXc1cWVCOTIxMGRpY3JHQzFNMU90TmZNb3lPeW1UeERLd2FM?=
- =?utf-8?B?dTB4Z29Kcm9GdExXV2tCN0pFTGNLOWc4Qkp6SUw4YnJaVEk1cnpqMnk2SG1U?=
- =?utf-8?B?S3hrR2tmZkZoSmFCbDNrcGVDNEw3ZGtNb3FKTElXYXZ0TGVpUFdOSGQzRmlH?=
- =?utf-8?B?N1pGaU1LMTdzS1BQUjdKSDRmaFNSRCtnMGh0eDZ1QS9MWVZXYkhmeHVCVVBn?=
- =?utf-8?B?eFdqZ2tHcHo3aytoU21KYm1mL0lLSTFZaVd6dGVhL1dnalVoVzd2MjBFMXpJ?=
- =?utf-8?B?bno0UWF5blh4OHRxcEx1NGc0RldvSzVuVG1sMS9hWk1vOTllNTdxOHplVVhO?=
- =?utf-8?B?b3FzbEhSdDd5NytOdFNaNTUrZHQzYXdRMyszdVE2UHVSenJ4Zk9Dcmh6NkxJ?=
- =?utf-8?B?MTJRV1R1L0NXQVlOT0J4SmYxM3JKOGpQd2VubkIxaWVZWWFHTFpTMDdzd2Ro?=
- =?utf-8?B?aG1uY09ZbnFxUDdEUlRaT29wQU1kcHE0U0l5TU45SlhvT0VGeHh3K29YNFVV?=
- =?utf-8?B?QTZFSnFIRW5WZW5wWXJKRG9TVlUyVG5oMzZWZk5uVU5vWkIxa29pVkhiWXR1?=
- =?utf-8?B?cUFna25DYmxWdnJsZ211SVU3bHUxTy9OUjhXd0FHQ2xyQ1JVNS9CTnEzYitw?=
- =?utf-8?B?WjRXd3B4b0YrQUV1UC9yWXQvRDZHSzhkUUZ5OExyVHlycEZQclpyVGlHb2J1?=
- =?utf-8?B?SWo1cHJZY3l1QkN5QWxhSUl1ZUtrWWVEZWUzaTNJd2xRbkp5Vmlrc3pXZGxX?=
- =?utf-8?B?R280dEdnekoyYzJrUkZKSng2R3o2YzZQVXdaZGw4NWhXRmJCa3ZSR1ZBemdw?=
- =?utf-8?B?TFZJeGlxb0h1RXJFMmE0TEZhSThHVXYyYnFnazNhOC9WM24xSC93aEFaaUZt?=
- =?utf-8?B?UU45WHhGazlCYmU3ZmwwZHB5dkU5QUFMY2pUbVFiNHpTWmwrTGpCbnFHVjRU?=
- =?utf-8?B?SFg2ejY1RWJ5cStFT0k0V2NNU1NLK1pvdXlSRUdJL3lqQTVmT0EyRGJDcmpo?=
- =?utf-8?B?NkRqa1F2aUpxSDQzWXZlRnUwYy9Bcnh2RTZaa2RmZ2V3b2JERjdMNXhrcTVR?=
- =?utf-8?B?bkoyMmptd1dWa0J5czdpcFlyTXZybVQyWGNMZms3Y3FxS0ZMUTFwVWRocEZR?=
- =?utf-8?B?eEpBZHFCNWNCaldrWnYzQzhyWW04K1UwL0NjZktPZkk1d1ZYRUpWeWJZVXYx?=
- =?utf-8?B?WmFjcmJMUWh4QVFqNkZtT3FHcm5WcDh0bndqdExmaWdzVEo2b3FJWHc4a2Vl?=
- =?utf-8?B?NWUvcTNvWk5vaVl0bmFha25DQlJSRUFXMDM3akJ4WERwSWdhM1cyclhIVitt?=
- =?utf-8?B?bnpMaE4vSmc2STlDR1dzYlc2RjdmSEdRRlVCT2pOS2ZNY1RyR25PVnkybFZl?=
- =?utf-8?B?NXJ2RHJJdE45SERWVnh5U0FzeVkwVEFVM0FqcS9mQ2tzVjhzVW42V3lYbEtI?=
- =?utf-8?B?OFV5M1lUL3lFOU9STzYwVFA2WkRFaG5jUWNoanovbklWem1RaW4rb1RDVDVh?=
- =?utf-8?B?Wld3VlRxb2xCTlNEUmVzZWhnNmpoaktoVlpkZkRqOWNRaDRLeGRaK2J0QjQy?=
- =?utf-8?B?cVBhV2JCbHhUWlcrMnVYOCtFRmorc3d3U3hVbWFPRDRsQUxad25ZbzZ4Rkt5?=
- =?utf-8?B?ZnBHT005VVVoYktxVE10djI2bDEyWCs0Sk85amUydzRxUjhpZG11d2Z4em1r?=
- =?utf-8?B?RG1hWDB2dDZwdjR0QWpoOHdxOEtwRUVMcVBIVmpvT29QRzBUTTlnQmI2UjRk?=
- =?utf-8?B?TUN2bzFyQy9SK2JLQUlzL1VTblVadjNtVWtIRkoyOHRVTDVONE5BeGdPUHFh?=
- =?utf-8?B?cG5WY1VPeTV0aVJYeE8zMFcwd1pxZ0h6Umtjdk9LVUVCN3JxT2RIc3Z0NFpi?=
- =?utf-8?B?c2J3YWhPa0xnTXJJRk9mOEZuSE9PbWJZKzNLZkEwdU40ZnNsUm1LUmFQdThQ?=
- =?utf-8?B?OU84eGVUejJob20vZlNFRVJzNVNlaktSY0FSR081RFdWRzJBc3RXWXZxQWVr?=
- =?utf-8?B?NzZDK056WmNISkljT3V4anBmVzhmaDdIbFdIREJoSjJMUElYaDlyMnBScGFx?=
- =?utf-8?Q?aINIy6vAdlulk1/pjf4ews4=3D?=
+	=?utf-8?B?amYxQSszRDljV2dVNXU4NXhvaTRBc0x4cGdTRkVHSzhYWEpjazJOeC8wZkd0?=
+ =?utf-8?B?aWwvWUZqZzZKblVvK0ZCOEg1NzhGekNkK0MxVCt5d3ltdThMSURmWGl5S3Qw?=
+ =?utf-8?B?TE45aHFod1c0bno4by94MExkWmFnTkQ1TjN2WDQ3anVoRVpsYVlxYk42Q01j?=
+ =?utf-8?B?YkVtSE1HUzBJVGZEQWI0SHBQa1hTbWt6dHRFdG0vaU9rOHJmU0pTam1RWkRl?=
+ =?utf-8?B?ekhpVXZOWUtpa2hkcUE4U3BNL1FiZUZUUWlqeTZFWmdJbm9SZWNzd3E0dHFk?=
+ =?utf-8?B?ZWtsV2xyN0F6NW8vd3IwQ2toaW0zMEJQMkQwNWJlcVNXaDV3eW9PRFdVT0l5?=
+ =?utf-8?B?ZFdTU0M1ZU8xMklNUDYzckxaKzc0OFFIVVM5ck1aUEJvZXgycEhuUVpoTS9S?=
+ =?utf-8?B?TEx6ekNDWHEvV0VUQ0x6WWwvL09sL3gvWTlBbzRqTk12WmxTdE55MDExNWc4?=
+ =?utf-8?B?dlI2aElpY21ZKzh4QVFJNHdNalowRFBHbHFHdDBBQ0tjR2VUS1NZbkViZVQy?=
+ =?utf-8?B?NkJsdUxQeVVXS3QvaXV0bnJJd0FLSGZPNEtxeHJ0cFhMUDJwKzNxMmdhdFI3?=
+ =?utf-8?B?Tm80dmpJNjkwTWhDVTVwWi9VekF3b3NhVThXY3J5aXhmWmlaeGM3MFpka2or?=
+ =?utf-8?B?SkRYZjlwdHg4UGc4Y2s4UDlCYWxkRmllYjBPNWtJNWR5RUluNkVkMnJLZkRV?=
+ =?utf-8?B?VVg0WlhaeTNZdVdIY2FYSlpReGVjMzlyMkxsZFpPNVV3ZEJ1TGlIZ2trUmRi?=
+ =?utf-8?B?MjF0L0doNTU5QUdVMGdoRkNIWHY2dlhjd2lqVjg4RitRb3pLbGdRelJ2Ynda?=
+ =?utf-8?B?a2EvdEYwT1VFVHM2encxRElhMVpod0xkWUZHUnpiOXRnNUFJMnArM2E4am1w?=
+ =?utf-8?B?VUt0SFl5V2FWV01wcnJSM0R5KzVaNVZsR1krZUZuZy9nMnlWY0NCUTUwdkZq?=
+ =?utf-8?B?dE1xck8vdmhJZFM2TzRzakJHdXlVN1Rpb1hHSlNzdU9BbGNTT3l6RDFiT3RZ?=
+ =?utf-8?B?L3lFTWZwYWhPN2VaNi8rVnJ4emxBWDZSTnpTWlQvY2VhVFpEUER3ZXJQSElm?=
+ =?utf-8?B?MFp3TVN2c24zaWpXSy9UUThPcjgyQm96KzR3dlZqb1hZYS9JNS9LWjkzc3lN?=
+ =?utf-8?B?elVTdWs3MG1uZnhzK2xpN0pYTTFCZCt2RncyQ0tONEg1NmY5MXZ6bzZsRkRD?=
+ =?utf-8?B?UlIwWkNLbTZQYXUzeDh4UnBEaStZZVBIZE0vMk14TjJzU0FkcUpUQzdiazFV?=
+ =?utf-8?B?ajkvWnEwNURqZlI0ZEdJdEx3eFI2Vm51end4dkhacXdXdVRMQllkQlNFVnRC?=
+ =?utf-8?B?VTlsRVJoRzVtV0JkOUVQekJkWnNjNVVUMHlyUU1KeVIwbllQdTBRTjRKcVU5?=
+ =?utf-8?B?TWlXMEN0bHFzU283aTBuZmVIaVA1SkVYMDE3T0x3Tk8yWUE5ejh5TW9YR3Vv?=
+ =?utf-8?B?aUxXSjdXUjFMcGhiTk1BUG1lVHJIVWpEUmRtMVFiVlJzbk56RVZ0bENaSkQ2?=
+ =?utf-8?B?cEdTVi9STW1FbS9iV1FXZHV1OUIwUWhPUXlVRGRLZXhBNzF0Sm1YS2pOZXd4?=
+ =?utf-8?B?OGlnNmE0Q1dHVkh5Sy9mcDBqOWhuSm5Ld0lGcmNXbWx6akxRZStVNGdJTTZM?=
+ =?utf-8?B?OGxHU2JSbWpWVmR3QzZORU4xTGhyZ3Jpd3lzUlV5TDM5ZUwrQjdxRmtXb3Zz?=
+ =?utf-8?B?TVhpeGhOazRIUFcyK3pZS3ljcktXYUJraWxmREV3eTN4clVnUXJnYWhaZ2Er?=
+ =?utf-8?B?TmJYdmd6YmpGSjQzbURnQ1ViWndIQS81b3A0bFN6cjJwL0JMQjhpbkh5Y09w?=
+ =?utf-8?B?TkZ4UVRHTlpqcmFUaDl3cS92SHdxRE5JbjZsTFMvVmdBQlhrWUJKUlUvSHg4?=
+ =?utf-8?B?Vno4TnE2VUF4RS9EcHJCOTgrY09OdG1BazlmWXNqdWlYdUFXb1FaWHJVNWlo?=
+ =?utf-8?B?L04yaEtZNlExN3JOR1hDWE92QWRxSkUvcVhBSjFSSnJoaUtSaE02TDRXY0xi?=
+ =?utf-8?B?dGgydmVRRlJRQ2VUYjBXYmhaaG1ldTkvTWd2cUNLb1Fhb3kzNUx2UTVBQTlO?=
+ =?utf-8?B?N3Q4b28vd2pIR1lXOXZ6YVoxWkhyZ1NUWnVXQStzbVlhTmJIYi9xRjdLQkhS?=
+ =?utf-8?B?ZHJKWmhpZ2RIcmM5VjNsanBUdmlnWGFmdHlYMHpMZFBybVdCMnJDbllnNi9R?=
+ =?utf-8?Q?JaA/hcBPPjhBWikUgtbaiYc=3D?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0e24ccba-453e-40b0-f481-08dcedec4182
+X-MS-Exchange-CrossTenant-Network-Message-Id: 41876b22-bb3a-450b-52b6-08dcedecbbff
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2024 14:10:14.8068
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Oct 2024 14:13:40.2834
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eguWepXOA0GiSM8uqsEkyzmsaUx3OWijaZO3Jjaw/a7SjMU+mgQw9V59BlAVltd9pdCWxLrrKvJUEpOxCAtWXW5pCxT/R0QTOVWkrlC0P5U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7204
+X-MS-Exchange-CrossTenant-UserPrincipalName: bUfESy8SKLxGu05BD71fcIYaKUHk6YudFcc+4SAiotjYVffOlu9Z7s1hzY1uFreW8ABxXUQFiC9IHSGZ/fs92w7LNxOatsD2WIJnRgtoWrg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3PR04MB7227
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 14:10:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5515
+ <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 14:13:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5516
 
-Hi Antonin,
+Hi Niko,
 
-On 10/16/24 3:19 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> The package splitting section of the overview manual currently lacks any
-> explanation of how package splitting is implemented and redirects to
-> the package class, which is not really understandable for newcomers to
-> the project.
+On 10/16/24 4:09 PM, Niko Mauno wrote:
+> The VOLATILE_LOG_DIR variable was removed and it's functionality
+> replaced with a FILESYSTEM_PERMS_TABLES entry in
+> https://git.yoctoproject.org/poky/commit/?id=2f8806deb7655b37d6f8d12ff54680d6acf7a298
+> ("bitbake.conf: drop VOLATILE_LOG_DIR, use FILESYSTEM_PERMS_TABLES instead")
 > 
-> This patch adds a short explanation of what is done:
-> 
-> * How the PACKAGES variable is defined.
-> * How the FILES variable is defined.
-> * How the two work together.
-> * How to add a custom package.
-> 
-> This should give enough details to a new user on what package splitting
-> achieves and how to add a custom package.
-> 
-> Adresses [YOCTO #13225]
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
 > ---
->   documentation/overview-manual/concepts.rst | 49 +++++++++++++++++++++++++++---
->   1 file changed, 44 insertions(+), 5 deletions(-)
+>   .../migration-guides/migration-5.1.rst        |  6 +++
+>   documentation/ref-manual/features.rst         |  5 ++-
+>   documentation/ref-manual/variables.rst        | 40 +++++++++----------
+>   3 files changed, 27 insertions(+), 24 deletions(-)
 > 
-> diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-> index 62f2327a7e27a777f738523e7fafe62422186abb..d3e90b80d4fe1954c7aacba8f0fe243cba04c1b5 100644
-> --- a/documentation/overview-manual/concepts.rst
-> +++ b/documentation/overview-manual/concepts.rst
-> @@ -912,11 +912,50 @@ the analysis and package splitting process use several areas:
->      execute on a system and it generates code for yet another machine
->      (e.g. :ref:`ref-classes-cross-canadian` recipes).
+> diff --git a/documentation/migration-guides/migration-5.1.rst b/documentation/migration-guides/migration-5.1.rst
+> index 298ff3e250..2b945f8165 100644
+> --- a/documentation/migration-guides/migration-5.1.rst
+> +++ b/documentation/migration-guides/migration-5.1.rst
+> @@ -117,6 +117,12 @@ Removed variables
 >   
-> -The :term:`FILES` variable defines the
-> -files that go into each package in
-> -:term:`PACKAGES`. If you want
-> -details on how this is accomplished, you can look at
-> -:yocto_git:`package.bbclass </poky/tree/meta/classes-global/package.bbclass>`.
-> +Packages for a recipe are listed in the :term:`PACKAGES` variable. The
-> +:yocto_git:`meta/conf/bitbake.conf </poky/tree/meta/conf/bitbake.conf>`
-> +configuration file defines the following default list of packages::
-> +
-> +  PACKAGES = "${PN}-src ${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale ${PACKAGE_BEFORE_PN} ${PN}"
-> +
-> +Each of these packages contain a default list of files defined with the
-> +:term:`FILES` variable. For example, the package ``${PN}-dev`` represents the
-> +development variant of the main package ``${PN}`` and its default list of file
-
-I misread the first time I read that because I thought "and its default 
-list of files contains development-oriented files" applied to "${PN}" 
-and not "${PN}-dev". I could suggest simply adding a coma:
-
-"""
-the package ``${PN}-dev`` represents the development variant of the main 
-package ``${PN}``, and its default list
-"""
-
-Just a suggestion though, could be that it's just me reading it this way :)
-
-s/file/files/ in any case.
-
-Additionally, I think PN-dev does not represent the development variant 
-of the main package, it represents the files that are useful for 
-developing an application depending on PN main package. Using "variant" 
-seems to indicate that PN-dev could be self-sufficient and potentially 
-have the same binaries/shlibs than in PN but compiled differently.
-
-> +contains development-oriented files only::
-> +
-> +  FILES:${PN}-dev = "${includedir} ${FILES_SOLIBSDEV} ${libdir}/*.la \
-> +                  ${libdir}/*.o ${libdir}/pkgconfig ${datadir}/pkgconfig \
-> +                  ${datadir}/aclocal ${base_libdir}/*.o \
-> +                  ${libdir}/${BPN}/*.la ${base_libdir}/*.la \
-> +                  ${libdir}/cmake ${datadir}/cmake"
-> +
-> +The paths in this list must be *absolute*, and must use the path prefixes
-
-There is a very important piece of information that needs to be added 
-here and a source of many newcomers' mistake: these are absolute paths 
-from the PoV of the root of the filesystem on the target, NOT from bitbake.
-
-Indeed, in do_install (and do_package, etc.) we need to prefix our paths 
-with $D (and $PKGD/$PKGDEST) when installing/packaging files, however, 
-FILES doesn't not need those, even more it should NOT have those.
-
-> +defined by the :yocto_git:`bitbake.conf </poky/tree/meta/conf/bitbake.conf>`
-
-use oe_git here instead since bitbake is maintained by OE folks.
-
-> +configuration file, such as ``${sysconfdir}``, ``${bindir}``, etc. They can
-> +optionally use wildcards (``*`` ) to match multiple files installed in a
-> +directory.
-> +
-> +.. note::
-> +
-> +   The list of files for a package is defined using the override syntax by
-> +   separating :term:`FILES` and the package name by a semi-colon (``:``).
-> +
-> +The order of the packages in the :term:`PACKAGES` is important: during package
-> +splitting, going from the first element in :term:`PACKAGES` to the last, each
-
-I would say leftmost to rightmost as we have some other variables that 
-go rightmost to leftmost (hello OVERRIDES :) ).
-
-> +file matching a pattern specified in the corresponding :term:`FILES` definition
-> +will be included in the package and *excluded* for the remaining packages listed
-> +in :term:`PACKAGES`. As a consequence, custom packages should be added using the
-
-I could suggest:
-"""
-A given file can only ever be in one package. Therefore, the first (from 
-leftmost to rightmost in :term:`PACKAGES`) package for which the given 
-file matches a path from its :term:`FILES` will contain the given file.
-"""
-
-Still a bit too complex of a sentence but couldn't come up with anything 
-better for now.
-
-> +prepend operator (``=+``) to be prioritized.
-> +
-
-I am not sure it is wise to say "prepend" operator as we have three ways 
-of prepending:
-- =+
-- =.
-- :prepend
-
-But since you explicit which one you're talking about, I guess it's 
-fine? The bitbake docs only says "=+" operator apparently: 
-https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-metadata.html#appending-and-prepending-with-spaces
-
-Also nitpicking, but it's not necessary that a package be added with =+, 
-e.g. if it should contain files that aren't matched by any other 
-path/pattern in other FILES. But doesn't hurt to say to always do it.
-
-> +For example, to add a custom package variant of the ``${PN}`` recipe named
-> +``${PN}-extra`` (name is arbitrary), one should write::
-> +
-> +  PACKAGES =+ "${PN}-extra"
-> +
-> +Alternatively, a custom package can be added to the
-> +:term:`PACKAGE_BEFORE_PN` variable::
-> +
-> +  PACKAGE_BEFORE_PN += "${PN}-extra"
+>   The following variables have been removed:
 >   
+> +-  ``VOLATILE_LOG_DIR``: :term:`FILESYSTEM_PERMS_TABLES` is now used instead.
+> +   By default, :term:`FILESYSTEM_PERMS_TABLES` now contains the value
+> +   ``files/fs-perms-volatile-log.txt``, which means that volatile log is
+> +   enabled. Users can disable the volatile log by removing the value
+> +   ``files/fs-perms-volatile-log.txt`` from :term:`FILESYSTEM_PERMS_TABLES`.
+> +
+>   .. _migration-5.1-removed-recipes:
+>   
+>   Removed recipes
+> diff --git a/documentation/ref-manual/features.rst b/documentation/ref-manual/features.rst
+> index b2ba731bb2..6e52dfce17 100644
+> --- a/documentation/ref-manual/features.rst
+> +++ b/documentation/ref-manual/features.rst
+> @@ -327,8 +327,9 @@ The image features available for all images are:
+>   
+>      .. note::
+>   
+> -      To make the ``/var/log`` directory on the target persistent, use the
+> -      :term:`VOLATILE_LOG_DIR` variable by setting it to "no".
+> +      To make the ``/var/log`` directory on the target persistent, remove the
+> +      ``files/fs-perms-volatile-log.txt`` value from
+> +      :term:`FILESYSTEM_PERMS_TABLES`.
+>   
+>   -  *ptest-pkgs:* Installs ptest packages for all ptest-enabled recipes.
+>   
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 32c9e7407d..c27a0ad7d6 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -13,7 +13,7 @@ system and gives an overview of their function and contents.
+>   :term:`K <KARCH>` :term:`L <LABELS>` :term:`M <MACHINE>`
+>   :term:`N <NATIVELSBSTRING>` :term:`O <OBJCOPY>` :term:`P`
+>   :term:`R <RANLIB>` :term:`S` :term:`T`
+> -:term:`U <UBOOT_CONFIG>` :term:`V <VOLATILE_LOG_DIR>`
+> +:term:`U <UBOOT_CONFIG>` :term:`V <VIRTUAL-RUNTIME>`
+>   :term:`W <WARN_QA>` :term:`X <XSERVER>`
+>   
+>   .. glossary::
+> @@ -2988,26 +2988,30 @@ system and gives an overview of their function and contents.
+>         :ref:`ref-tasks-patch` task as well.
+>   
+>      :term:`FILESYSTEM_PERMS_TABLES`
+> -      Allows you to define your own file permissions settings table as part
+> +      Allows you to define your own file permissions settings tables as part
+>         of your configuration for the packaging process. For example, suppose
+>         you need a consistent set of custom permissions for a set of groups
+>         and users across an entire work project. It is best to do this in the
+>         packages themselves but this is not always possible.
+>   
+> -      By default, the OpenEmbedded build system uses the ``fs-perms.txt``,
+> -      which is located in the ``meta/files`` folder in the :term:`Source Directory`.
+> -      If you create your own file
+> -      permissions setting table, you should place it in your layer or the
+> -      distro's layer.
+> +      By default, the OpenEmbedded build system uses the ``fs-perms.txt`` and
+> +      ``fs-perms-volatile-log.txt`` which are located in the ``meta/files``
+> +      folder in the :term:`Source Directory`. If you create your own permission
+> +      setting table files, you should place those in your layer.
+>   
+> -      You define the :term:`FILESYSTEM_PERMS_TABLES` variable in the
+> -      ``conf/local.conf`` file, which is found in the :term:`Build Directory`,
+> -      to point to your custom ``fs-perms.txt``. You can specify more than a
+> -      single file permissions setting table. The paths you specify to these
+> -      files must be defined within the :term:`BBPATH` variable.
+> +      You can override the value of :term:`FILESYSTEM_PERMS_TABLES` variable
+> +      in your distribution configuration file to point to your custom
+> +      permission table files. You can specify one or more file permissions
+> +      setting tables. The paths that you specify to these files must be defined
+> +      within the :term:`BBPATH` variable.
+>   
+> -      For guidance on how to create your own file permissions settings
+> -      table file, examine the existing ``fs-perms.txt``.
+> +      In order to disable the volatile log, which is enabled by default, one
+> +      can remove the ``files/fs-perms-volatile-log.txt`` value from
+> +      ``FILESYSTEM_PERMS_TABLES``.
 
-I would more recommend people to use PACKAGE_BEFORE_PN than the PACKAGES 
-=+ scheme. The reason is quite simple, most people are used to += and 
-using that instead of =+ could easily be missed by reviewers.
+missing :term: here, but maybe Antonin could fix this when applying :)
 
-The former is only required if you need to have files typically in any 
-of ${PN}-src ${PN}-dbg ${PN}-staticdev ${PN}-dev ${PN}-doc ${PN}-locale, 
-in another package.
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-That's my opinion though and both are correct (and both should be 
-mentioned!), so that would be fine to keep as is.
+@Antonin, candidate for styhead backport I believe (I see a styhead 
+branch but I don't know if you've branched off already, so mentioning 
+anyway).
 
-Cheers,
+Thanks!
 Quentin
 
