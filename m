@@ -1,147 +1,77 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <liezhi.yang@windriver.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 01D3AD206A7
-	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 07:28:05 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.17879.1729063679852560842
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6548D1AD23
+	for <webhook@archiver.kernel.org>; Wed, 16 Oct 2024 08:11:15 +0000 (UTC)
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+ by mx.groups.io with SMTP id smtpd.web11.18333.1729066267759266831
  for <docs@lists.yoctoproject.org>;
- Wed, 16 Oct 2024 00:28:00 -0700
+ Wed, 16 Oct 2024 01:11:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nq9oebD9;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7BF9E1BF20E;
-	Wed, 16 Oct 2024 07:27:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729063678;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=oU5VjPO6N4fKMw/yffCV1tJC7O1zQ6jnrdeLduG10O8=;
-	b=nq9oebD9/b7TCTvDEPpWRn3qnWS09ZpU67lHV0wGX4Uw6cGfOKJHf0qfiZLjtV3EeH24BS
-	9RQDx/MKtHAQIwoaN4lrYIn35fOMdvkarPSWugeTyVKIQdbmjlceI9SSJPB0Luekq4wv6D
-	5KB+hzHht+TLSzm2A3wO5WV26sWOd7bgIf4sLld2LhcxBO5JuRtjuWwBTOHfHMzkMV6wy/
-	YopVwzKPYDvH6HQ97ez0XmNXRBu0V+wbCmO6dpIoITBYR1UCyFJ+rC3U5co7fll4pEZC+B
-	qugxqTLWIdkGJ5M0ap5JMq+xBmO/68N+bSoRut316MddwgpcWKeRMvqIjqJCmQ==
-Date: Wed, 16 Oct 2024 09:27:56 +0200
-From: Antonin Godard <antonin.godard@bootlin.com>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: docs@lists.yoctoproject.org, 
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>, "Robert P. J. Day" <rpjday@crashcourse.ca>
-Subject: Re: [docs] [PATCH] ref-manual: structure.rst: document missing tmp/
- dirs
-Message-ID: <joc6s7y3bcw3nkif2hgaeghtjrzz4kj6nj6wkd5jegzluqsvid@x5ftns4qazij>
-References: <20241014-bug-14543-v1-1-7c8519be9c9c@bootlin.com>
- <8eb61ec2-4f53-45f4-ac08-af5aec1c997e@cherry.de>
+ dkim=none (message not signed); spf=permerror, err=parse error for token &{10 18 %{ir}.%{v}.%{d}.spf.has.pphosted.com}: invalid domain name (domain: windriver.com, ip: 205.220.166.238, mailfrom: prvs=0019814858=liezhi.yang@windriver.com)
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 49G4agvu016496
+	for <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 01:11:07 -0700
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 42a3988bhx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 01:11:07 -0700 (PDT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 16 Oct 2024 01:11:06 -0700
+Received: from ala-lpggp7.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.39 via Frontend Transport; Wed, 16 Oct 2024 01:11:06 -0700
+From: <liezhi.yang@windriver.com>
+To: <docs@lists.yoctoproject.org>
+Subject: [PATCH] release-notes-5.0.rst: NO_OUTPUT -> NO_COLOR
+Date: Wed, 16 Oct 2024 01:11:06 -0700
+Message-ID: <20241016081106.1917900-1-liezhi.yang@windriver.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8eb61ec2-4f53-45f4-ac08-af5aec1c997e@cherry.de>
-X-GND-Sasl: antonin.godard@bootlin.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: 6jzw3_lbVFDBOBZ63oye642-5x-PIpbY
+X-Authority-Analysis: v=2.4 cv=F7EFdbhN c=1 sm=1 tr=0 ts=670f751b cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=DAUX931o1VcA:10 a=t7CeM3EgAAAA:8 a=RShPybgiAAAA:8 a=BW9eQpOUXT_OX68Q8iwA:9 a=FdTzh2GWekK77mhwV6Dw:22
+ a=YLGRqFcrAwIahUk1acIU:22
+X-Proofpoint-GUID: 6jzw3_lbVFDBOBZ63oye642-5x-PIpbY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-16_06,2024-10-15_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 bulkscore=0
+ mlxlogscore=787 priorityscore=1501 impostorscore=0 suspectscore=0
+ clxscore=1011 mlxscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ adultscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.21.0-2409260000 definitions=main-2410160053
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 07:28:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5494
+ <docs@lists.yoctoproject.org>; Wed, 16 Oct 2024 08:11:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5495
 
-Hi Quentin,
+From: Robert Yang <liezhi.yang@windriver.com>
 
-Thanks for the reviews again.
+Signed-off-by: Robert Yang <liezhi.yang@windriver.com>
+---
+ documentation/migration-guides/release-notes-5.0.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 15/10/2024 13:20:19+0000, Quentin Schulz via lists.yoctoproject.org wrote:
-> Hi Antonin,
->
-> On 10/14/24 3:44 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> > Document `hosttools/`, `pkgdata/` and add some more information on
-> > `work-shared/`.
-> >
-> > Adresses [YOCTO #14543].
-> >
-> > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> > Reported-by: Robert P. J. Day <rpjday@crashcourse.ca>
-> > ---
-> >   documentation/ref-manual/structure.rst | 31 +++++++++++++++++++++++++++++--
-> >   1 file changed, 29 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/documentation/ref-manual/structure.rst b/documentation/ref-manual/structure.rst
-> > index e4d8b54bb9e39ffe344d2db1798e4fe76c742f4e..d13743cc285420b4d24f022ff6134a7ca33edcb2 100644
-> > --- a/documentation/ref-manual/structure.rst
-> > +++ b/documentation/ref-manual/structure.rst
-> > @@ -484,6 +484,30 @@ the ":ref:`sdk-manual/appendix-obtain:building an sdk installer`"
-> >   section in the Yocto Project Application Development and the Extensible
-> >   Software Development Kit (eSDK) manual.
-> > +.. _structure-build-tmp-hosttools:
-> > +
-> > +``build/tmp/hosttools/``
-> > +~~~~~~~~~~~~~~~~~~~~~~~~
-> > +
-> > +The OpenEmbedded build system uses this directory to create symbolic links to
-> > +some of host components that are allowed to be called within tasks. These are
->
-> some of the? I think we're missing a "the" here?
+diff --git a/documentation/migration-guides/release-notes-5.0.rst b/documentation/migration-guides/release-notes-5.0.rst
+index 800ba20a2..2bf78c633 100644
+--- a/documentation/migration-guides/release-notes-5.0.rst
++++ b/documentation/migration-guides/release-notes-5.0.rst
+@@ -217,7 +217,7 @@ New Features / Enhancements in 5.0
+       state directory (i.e., ``/run``).
+ 
+    -  Allow to disable colored text output through the
+-      `NO_OUTPUT <https://no-color.org/>`__ environment variable.
++      `NO_COLOR <https://no-color.org/>`__ environment variable.
+ 
+    -  ``git-make-shallow`` script: add support for Git's ``safe.bareRepository=explicit``
+       configuration setting.
+-- 
+2.25.1
 
-Ha, you're right good catch.
-
-> > +basic components usually pre-installed on the :ref:`supported Linux
-> > +distributions <system-requirements-supported-distros>`. These components are
->
-> I think this is a bit misleading as they are not necessarily preinstalled (I
-> believe?) but rather part of the minimal setup required to get Yocto
-> working, as documented in the link you provide there.
-
-I agree, iirc git is not installed by default on every distro for example. I
-will change to "basic components listed in the
-:ref:`ref-manual/system-requirements:required packages for the build host`
-section".
-
-> In any case, s/pre-installed/preinstalled/ if it were to stay.
-
-There are multiple instances of "post-installation". "pre-installation",
-"pre-intall" in the docs, so I think we keep it that way (or we don't after the
-rephrasing anyway :) ).
-
-> > +listed in the :term:`HOSTTOOLS` variable and are limited to this list to prevent
-> > +host contamination.
-> > +
-> > +.. _structure-build-tmp-pkgdata:
-> > +
-> > +``build/tmp/pkgdata/``
-> > +~~~~~~~~~~~~~~~~~~~~~~
-> > +
-> > +The OpenEmbedded build system uses this directory to store package metadata
-> > +generated during the :ref:`ref-tasks-packagedata` task. The files stored in this
-> > +directory contain information about each output package produced by the
-> > +OpenEmbedded build system, and are used in different ways by the build system
-> > +such as ":ref:`dev-manual/debugging:viewing package information with
-> > +\`\`oe-pkgdata-util\`\``".
-> > +
-> >   .. _structure-build-tmp-sstate-control:
-> >   ``build/tmp/sstate-control/``
-> > @@ -657,8 +681,11 @@ Here are key subdirectories within each recipe work directory:
-> >   For efficiency, the OpenEmbedded build system creates and uses this
-> >   directory to hold recipes that share a work directory with other
-> > -recipes. In practice, this is only used for ``gcc`` and its variants
-> > -(e.g. ``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth).
-> > +recipes. This is for example used for ``gcc`` and its variants (e.g.
-> > +``gcc-cross``, ``libgcc``, ``gcc-runtime``, and so forth), or by the
-> > +:ref:`ref-classes-kernel` class to store the kernel source code and kernel build
-> > +artifacts as a way to make it common to out-of-tree kernel modules or other
->
-> Can suggest:
-> s/as a way to make it common to/to make it available to/
-> or
-> so it's common between
->
-> But not necessarily a better wording :) Up to you!
-
-Agreed on the better wording, thanks!
-
-Cheers,
-Antonin
-
---
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
