@@ -2,177 +2,306 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A2E7ED2FFF9
-	for <webhook@archiver.kernel.org>; Fri, 18 Oct 2024 11:53:58 +0000 (UTC)
-Received: from AM0PR83CU005.outbound.protection.outlook.com (AM0PR83CU005.outbound.protection.outlook.com [52.101.69.48])
- by mx.groups.io with SMTP id smtpd.web11.20479.1729252432232121766
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BCE69D30003
+	for <webhook@archiver.kernel.org>; Fri, 18 Oct 2024 12:37:18 +0000 (UTC)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (EUR03-AM7-obe.outbound.protection.outlook.com [40.107.105.44])
+ by mx.groups.io with SMTP id smtpd.web10.20814.1729255035013851714
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Oct 2024 04:53:52 -0700
+ Fri, 18 Oct 2024 05:37:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=eBmqlDyc;
- spf=pass (domain: cherry.de, ip: 52.101.69.48, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=XUiJTB4D;
+ spf=pass (domain: cherry.de, ip: 40.107.105.44, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=om66cF3kOswmAt3Fcs6/tYkEktAk4Umur84FT7QrLmCkwtejcviAuC6uhVA7gA3kHbnsFh0cP+dcqofiYa2FaDS/h3vrR1h6MZEMYr8FIabH4xKu75ZSR+GHISLQai6ibj8P61ShD9g5TUyns/d6j5jyopOqS7Wiq+oyGdI8mirEhXQe5kNF60+nSAyWaXBjsm82TbroYSCJf2C7pDuz705qMyfK7pP31COW/yJFhPZu2Z8e14k+wCc6ToiRD5aC9QIiDuypZM/g+O6gMvB/vVe8F2KKWc/myJ5OkDpbk8/wk3ZJwz0v9mv9a87D/QP2NodYzuHrClk0juP4btp02A==
+ b=FICF3dpXmt23gMXqWrCB0IcoZSJG2nWDMeHTz2vibdy6Yu9kvjipWmvMtJc7lLLpZrUAeqHnROrVWpsU6rRrweCK9LLwmq5Mmwt6XNR6NAS9bh4TiH+npKR3y+8oM+j4Zv6eaNGv8jExOobCBdDDMDZiBP+D6Mkj96V8uvu675WpREocbLA9Ufq6rM4TzVeYdhg/r3/0gnQFpFfm63COr7aTAOI/bnTVc/E8aL0kfdDUMMzNKmfHtSfpicYTn9XqAtPBSSONHKPSD2dzHW5uLhkCqwsNUiqmwaKA+uk5ZXqt5tlK7mnn/xokG3NzdMyo1yxU51nKJ/H8kgr2FXqsxQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xk37QYG0kKg4pjeqdxTdl/nxqBip7TkNKritGZqKvQY=;
- b=EXw2KvURuZf9E9G8eBBW5j9mORgKrbhG08zB2ZyWLGJSpgqUhxGjURutC5cIAXv5+GmDnCoO36T1b5mATViTY5h23OCmo0bMT8sQFJxcaGmC4CrBQbXuDPMvk61/YNJPkOnx2FFn6Ga5F0zjje0OFD+0g7YeNMMz1IPmelFh/4F9czMmBsvRGHt9XOiFc9I56loyaXkZ8Td32lT4Q1+uy1D/09xZr9l6ZBV2KUMNCr7kgY3D6sdTS+6Ha8MdzPiwMx0EKSj9pYAps2Qj8nSmDo6yjmnOu9pl6xkUV+BEs5kwXXEvaS7RkCz5GNJcr0z2Zc9PGRuaWfJXBhLZGyCmIQ==
+ bh=AlEy11savnpKd4iP9gYIKAPB9ZhllC9ke9Q4dw0OJJM=;
+ b=oQjov196PRDQfYC5h6tNJy18ULdPl1821HhGWt0RpUoJjkR2gYL1vWYrqmF8OllmqFiv1caklHSEFP9piZdIc7iPhhruS7XqMbKDVr5KeKrwFIN+4/G/ODoGaDyJzDY+7v13SxJqi+lBV7g3B5JQpxmoe4oRnOm1I/4ics9Z3SaHzaZkiIW0YBTKNHxvgy7SNjC7Jp/FVJ3LcW9PyUin6fF5Mu6L+xzyxarhzcTeMvLZPt/bP3PiMyO2DBRIh8rKB6jgu4NPxWERNqoRrU88gcV10XuFXntEzy1ZOuw42uEHO9nSw+vPc9aF7Q9h/efHNjSr8hO/tZBVnPoECk0AmA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xk37QYG0kKg4pjeqdxTdl/nxqBip7TkNKritGZqKvQY=;
- b=eBmqlDycqFvQyo/tAy70SHyLFuMjos4TdA7iYl6H8xtOh6TZnv1mRihZIJCeEEC4u1f1aN8fa3MCYdHtt7y0CAp7ZS2DBlLyRcC+NKy5EKh+sUr3RbK1+OnqA3CH0mXdjGAd1E94plLCTu0KnFP/ScC+niqXoefZOdWCv8OLx28=
+ bh=AlEy11savnpKd4iP9gYIKAPB9ZhllC9ke9Q4dw0OJJM=;
+ b=XUiJTB4DMvWecqOmiqgrfbfSkOIt7cBxAWy4pa22oZLtRz1i4mc9tNl6L1ekQHtu3u6AR2y0Qe0tUfR6PzBUYNPyW4gBdbbkNQtYWtLNIqwGGBt4szSP5P3FAGUjhMpLKwEjTnN6TpOlDdv6uPgV9sMV4oX+Zn6gIKHwYJnjgrA=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by PAXPR04MB8351.eurprd04.prod.outlook.com (2603:10a6:102:1c4::14) with
+ by AM8PR04MB7380.eurprd04.prod.outlook.com (2603:10a6:20b:1d5::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.23; Fri, 18 Oct
- 2024 11:53:47 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.19; Fri, 18 Oct
+ 2024 12:37:11 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%7]) with mapi id 15.20.8069.016; Fri, 18 Oct 2024
- 11:53:47 +0000
-Message-ID: <82a4e314-cedc-4cb4-a8a9-bc3fd3e81c94@cherry.de>
-Date: Fri, 18 Oct 2024 13:53:47 +0200
+ 12:37:11 +0000
+Message-ID: <a12053eb-d666-4e9b-ab7b-003a3805c25c@cherry.de>
+Date: Fri, 18 Oct 2024 14:37:10 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] ref-manual: update releases.svg
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] overview-manual: concepts: add details on package
+ splitting
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20241018-update-releases-svg-v1-1-502899b5d780@bootlin.com>
+References: <20241016-bug-13225-package-split-v1-1-20681130d7eb@bootlin.com>
+ <3afd2cfa-cba6-4f6a-8075-698850c703ad@cherry.de>
+ <D4XY661A30GQ.3E4DMVXPCZRZ@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20241018-update-releases-svg-v1-1-502899b5d780@bootlin.com>
+In-Reply-To: <D4XY661A30GQ.3E4DMVXPCZRZ@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR0P281CA0095.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a9::12) To AS8PR04MB8897.eurprd04.prod.outlook.com
+X-ClientProxiedBy: VI1PR07CA0292.eurprd07.prod.outlook.com
+ (2603:10a6:800:130::20) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|PAXPR04MB8351:EE_
-X-MS-Office365-Filtering-Correlation-Id: f3c4d539-9446-4ef8-35d5-08dcef6b8671
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AM8PR04MB7380:EE_
+X-MS-Office365-Filtering-Correlation-Id: f8d7fa27-934b-48db-6a18-08dcef71961c
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?VHpScFlTVWlRRDI2QnViaVc4STZES3FJWmcvbzVFMTg4T1NxZXIxd21IVkFN?=
- =?utf-8?B?MHNkWXlISTdFdWhvSHUvY2M0aTlRdGNGYmM5UzNJZGhFMU9UTTRDdC9kd2Vk?=
- =?utf-8?B?ZVpjSkJPMkc3ZEwvM1Nva0ZLOXZITXN1ZFRwYjVSbGVLTGZwS1BsWVllcTcr?=
- =?utf-8?B?blR2TDlTVHZwTGlwZ0JqYldybVFDVG5BcFNNQjZsV0xiVU9MelBMVWdsV3d2?=
- =?utf-8?B?MjlnNHdYOXZzb3pidEl0OTV2WkRQclZOUVc5VnpqS1pXeExSOWR6RE5TcG8z?=
- =?utf-8?B?ZCszM1RuYUxOU1FFVFNHcXVyYkdXQzkwWUl1clV3VWMyRlJsV2dXQkpSeVRw?=
- =?utf-8?B?elltY1hrY0hMcVZWeFhKKzc4MTJxSGk3M1doSzRlQUlZZDk2cmd6RWdLVnY2?=
- =?utf-8?B?YXg4N1JRMkpOTVZGSDF0UHUzWUF5VmFnc2tMblF3SGNPc1lFM3hIdC9EMW00?=
- =?utf-8?B?bzZYbTVGVngzUHVPZTNFSDBlU2lNd3VBOFFleWlWblhyaWVUamZ6VlFJL0Fn?=
- =?utf-8?B?V0twMlp3clZKdDQ1WGZiT2xhV05zN0RQYldjbzA3QXRidnRxK3hwUzl1U3ds?=
- =?utf-8?B?em1ReThnSERYbEtQOE5MZi9TV3RGTXNmN0NrNTNoRmlPOFNxbUVkdFFDNHhs?=
- =?utf-8?B?R1d5TzZ2NzBQcCttakc1TFpndENKN1l5WCtNcTZaa1BhUExjTEoweXRwb3RV?=
- =?utf-8?B?S3NqVVhzcUdyN3RqZklOT2EzTUR3bGl5T0hpNWpvbFhuaWhkRWhRb2RTUklR?=
- =?utf-8?B?bHNCZEh6THUyalFBWXBoQWY0NXpWV0p0Z1h2UjUvUEdCYllqei9rdmdyY3Aw?=
- =?utf-8?B?K1FGNndhYWh5ek5GUEZ6WXppZG8rejk0U1FCeERJdlhFSVJGL1ZvVmduMG50?=
- =?utf-8?B?eDhWNi9UWUx5Q2tUSHg4Rk9nMjhERXhxbmlaUnViVEdsSlZNQW5ydmRocTM0?=
- =?utf-8?B?RHpVRW5XMC9ROGx1Uitpc3BnVmpSYUVJNEY0OEdpK2szZmpMRHRoczFOYm1t?=
- =?utf-8?B?NE9QY2hSWkNmcTVYTGlia2puZEx3NW5KYUE2NmVXZFV1R0Q4UEFvZ1h5ZzJ2?=
- =?utf-8?B?QVZ1Q3pDN0NINHk4ZVhmamoxSnNDZmNxWU1GZHlJWUpyZ0NyczUzQ2ViZDJZ?=
- =?utf-8?B?QlA4SkpJT3ozTEtZLzZweFU1cVU0U0hxeWI5ZWhvQVBPejVlN0laakZBSTVn?=
- =?utf-8?B?T0ZIS3RRR2lyWCtZeG9sQ1RDOUtoQzF4SlIvSEJUSGpKQUpOWTBYQ2NOb3ZU?=
- =?utf-8?B?aUx5YXA5NXpsWVJmOW9hSWJMUnB5TkVCd2R1d1FTWkVQdnF6KzJEV3o2WTBD?=
- =?utf-8?B?a3hWcW8rci9pcHEvSlBST3lFWjhXNDdRbXFNSEhna05tZXpWZGZUVE1sVmdz?=
- =?utf-8?B?VUxaSHN3OU5xTFdubS8xMlpKcEpJR2IySmJWSXJRMWl5elM3Ulptb0JYNmxy?=
- =?utf-8?B?czI1NFZxeHhIcThoaDJabU53OGo1VjdXdk1LV3MxOHZYdC9PL1I4cFVZK2M0?=
- =?utf-8?B?R1FNZ1pCSVNuQWRPOXZ4eFdWRFpCUWh4MVY5NjZseEdFVWtjemxpLzZQcFF5?=
- =?utf-8?B?b3QrK3h1aFAxMURwT2I5QUloeEZmcmxqSkZTQjVBd3FqaEJwbWpUbGx4eU5j?=
- =?utf-8?B?QnFNcTRTSVNVQUFxV01uT2hvVGY5VEV1TEVPVDZmVTRlT0Y0NDBEMW9JSkcv?=
- =?utf-8?B?WWhNTUtTL2dMcVc3cEp6S3NINDQycWpUNkpSd2FMSE1EbFd0MGZEdVZTV1lN?=
- =?utf-8?Q?8OIKZA3sFgti4GOEFc=3D?=
+	=?utf-8?B?cHNhMjVzTW1Bc2d4a2FPTjZiRzNlM0h0SDdqanJDVTV3enhSeTRYNC81S1p1?=
+ =?utf-8?B?UDcrNFQzQTVLT2puY0pIbEFiMlBhVFBqMDg1V3lmYVVFbWo5aGNPeTJDc0J0?=
+ =?utf-8?B?ZlB3V2s1Y2tIbklRb21xUGlDcS93MWRBL3VrVEh0ZlNITlY5ZERldVpmSTAv?=
+ =?utf-8?B?aWhrN1lwemczNXdPcXAyWVRSUFlhRnA5NEwvU1Y2UkxONWNnNnNVS2k5TEFK?=
+ =?utf-8?B?Nnc5T3Vyd0ZxellTTXhaRlh1amdRek85d2tNT2Y4VmtZeFpHZDBnb08xamU4?=
+ =?utf-8?B?Z1V4QkQ4Tyt3RUQ5ZksyczZJVXJMQmNNSWdjTVRUWFVXOW02dWtrR2JvSmtT?=
+ =?utf-8?B?UnRSMXhURzcwbFdTY0hhdG5FakJrWW5hT04vdVMvZWZ6NlRsQ0FSWTZZbGtx?=
+ =?utf-8?B?ZWNQaHpVc2VuZXdVTmVNd3c5c0I1VThURy96N1BQWGFpYzY1dWl0NGVWYU9Z?=
+ =?utf-8?B?VXJEK2xrTG9JNWtOQmdDY0YxbkZybEgxNWVpL0thT3k5eDN3ZG4zTW94SmNu?=
+ =?utf-8?B?YUc5TjNWR0tMSVNRaUF6VUgrT3FQVUFGRVNhOEhjSkRTMnZ0cHduRzJWcWJ3?=
+ =?utf-8?B?WXpqSVFMN0crcWVFQjM5L3dkVzJDSnFpVzAzWnlxU3BlVDZwdXFrbEtsbDFD?=
+ =?utf-8?B?YjdmTXh4YVRZZ2xiZ2dYemIzU3g4Mk5uSlBOeno5SExvMDFHL2QvMnMvby9s?=
+ =?utf-8?B?SVdRaDVxMjlCZTVBZXJhZ0FLN0k3OEJscjBGU3JWTlpIUmtqZElGWDFFWWZy?=
+ =?utf-8?B?dGFpRzZIT2ZxQ0VHbFpKM1V2MXAyeUZxZ1FXbkk5aTBob3F5N2lsMWgvTGhr?=
+ =?utf-8?B?ckc0ekZkb3JKamowQnVuSUxsMnp1emRQUVNsM1d0NTRUdlN6cURyRmx0ekx1?=
+ =?utf-8?B?anNnVm1Cb0t0RFRRZDZNUVFkNUkrdkMvRDdLTlhOWlRveXQ1VVNnNEhjNi95?=
+ =?utf-8?B?ZTRGRjZId2o2bS9zNUpLdW1tVHo2WmxKTnRBbDlnQ08ySTRBV2ZoR3FGRDYx?=
+ =?utf-8?B?NjdnZkVQbUxQc2dxOHNGKzQxZ2xOUGdySlBoVXNuZkh6bFA3R0dFdThka1Az?=
+ =?utf-8?B?ZlFJanp5MEJSQlNLRmNaa2ROQSt2UWJQcHhnLzg3Yk1iSjNsZlNiYThabnpn?=
+ =?utf-8?B?alE5VkdiZE5WMFJUNElQd084Zk1YMWVDM2xmWkZ1ajB1cTRiaWUvTkllUUNY?=
+ =?utf-8?B?SG1MZXlkWmg4K1dIMmFxb2NoekZHWVI2NkJpUzQ1amh5NjBOZzRFMWhNUldk?=
+ =?utf-8?B?QWRJQkN2dXBQZE10ekdsL1lVanV0VjJRQzVmUFVtWmtjRzVBTm92TjlQVldH?=
+ =?utf-8?B?bjNFM1R0b3NIK0pXQURnd2JVSjY3TWZXTEw0NjVPei9iTnY4MHF2ZmUrek9o?=
+ =?utf-8?B?YmFjYWNFWGRtZVNybzNNRUZRRWNuMFRRWjViM3hlQ2pzWVNQYURTZ21heWpl?=
+ =?utf-8?B?R0ZyQm5ncWtHbDVESzMrNkZqZ1dRZUdsVUZvSEhCRWVyS0haMEY2eHE1dCs4?=
+ =?utf-8?B?TUlWRUN6NHQ3cGV3eDhmbUpmZDBwMC9OVFFFVVZnaTVKcVFLRlV0NWM3Z3VJ?=
+ =?utf-8?B?dnpiRnQzcWpxdTE5bDlPRmU4UzF4RW9jSXROQktTWkFGL3B2TXVpZzVDNFB1?=
+ =?utf-8?B?QXV3SU9jTTNTbkxaRFgvME9lSW1xaTBZOThuZmtLWThNZ3BlR3d6TGt4TmEw?=
+ =?utf-8?Q?A6Pd45CVBAnUocqpl4x0?=
 X-Forefront-Antispam-Report: 
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?UnpWdHlDYW5HbTJ4eTV3dkFkWE5pTk1OT2duMG9kemdxaHp3TG1aUTM1blJH?=
- =?utf-8?B?bzBrZHIvbXlCZ2VGWXIrR01saTZ0alhpRVdBTlllQXNpeFdhdlEzK0hxQTQ4?=
- =?utf-8?B?aEpCS3hoYk5icXhNM2dsZFJUdzJNa3lIeW0ybFpzdDY3KzVHaHlpam1LUW5D?=
- =?utf-8?B?d2crN1JTaEdsOWlVVnErL1RhTEJsSmF4UE01QWo4N0JkUU80emNlZXZxSTQ0?=
- =?utf-8?B?UXZUY0pyaEZobktUeXhJQ1V6eVhRN1l6Q21SbGZmcWdiL3E4ZjdmSjRvTmpK?=
- =?utf-8?B?ZDV3dXl1aHc5TXVNcTRUcUJKN0ROUSs5ODZTSHFPQ3U4MU5zNTQrWGhnVXM3?=
- =?utf-8?B?SUVJQmU2UG9FZUo1ODgvcVNSVHVTYXl0eXkwaktaQ3pOZk1yaDRBRkdTZERs?=
- =?utf-8?B?RDhCT05CaG9yT2dwdWR1eDV2TUNPNDViVHhNYnJlUE5TZEZCamQ4QnNwZTY5?=
- =?utf-8?B?QTFId1ZPaXh2V3VTTVVIRytXLzJNczdKcGdFMkFNN0xaazZiMnoxcFJ6SEtq?=
- =?utf-8?B?WDZGeEttVDUwVm1scmdxSjcxR2pLN3M0azNZS3M4dVFEU3hvNUJqREp0dGF1?=
- =?utf-8?B?bzd3cG1QTmROOWV4ZTk4T1FDZmlReXFRWkRrNVYrM0pja1dXeEZHalRpSC9M?=
- =?utf-8?B?Nk0vMStVTnVwNHFiUzljMWpvNmNrZmRXenV6Rm0xb00vYzdORDIwNE5HcXgv?=
- =?utf-8?B?R1d5ZEM5YVFVSHJyeitmRzJsajNaZk9HVmtPUy8wdHN6NEJmQW44SWtTOXNm?=
- =?utf-8?B?YUtqSTVaQWtiN2x3dTN5TkZacTNHT1hHNGFjakFGY3BveSt1MVVYaWh5bU54?=
- =?utf-8?B?NXJGQUVzT3VIS3ZrUU1GNGVXTm9wck1FNnpWMHU5QytlbkcxT0c0V2lJeGJS?=
- =?utf-8?B?V3NuSTBIb3hzVXJKdTlFSytmanFZZFJnM1h2a1FOZEhOUDNzdG1IWUwvaFp2?=
- =?utf-8?B?MFR4Z2pneWVsN2tqNTBtOHZ5cmNxangzQmpVOUxVRnRSc0dweXpLZjNxTlBR?=
- =?utf-8?B?N3h6TExRV0RaS3lYcitTTFNVb2tIRlFKWEtyTzF6QzUxNG5RRjNEcVE1eCs1?=
- =?utf-8?B?YTFreHJiZ1h4azh4UTFuOWlMczlORU9pYUVIQVVsVzlTOHJKY3VPMUdDQUIx?=
- =?utf-8?B?WXpPZzVzdWQ0WTgxcVkzRDBpZ09zMHlCYXFtRTRsWkhsQnFlNlJ0WHRNZ0h2?=
- =?utf-8?B?SHo5WDJGaUtSdS9yQjl6dXplSG1kTnpBdTRvKzlDN1g5QUVVeFBKZ25QWDFH?=
- =?utf-8?B?bytYUDkvSG12WFJwQTBMcG9iVm9Yd2NNbzNwbUFLOWVHU2tUcE5YU2hHYzB0?=
- =?utf-8?B?eEczK29iVytNYlByTnZPNlV6VDYwWE1xWUdxTVIram00Ty9XbUZBNWpMbWhu?=
- =?utf-8?B?YldlYmhreUxyalJhS0txYTBNYzBPZ2I4ODJXYlB3TmkyU2RsM0tsbUozNWZ2?=
- =?utf-8?B?TjJMQktrZUp1S0lEVm1weGUwZnZkMHd4Uy9Sd1ZQdFpKT2xDZWdENWVIa0Fm?=
- =?utf-8?B?YkQzUk0xRVk4bFlDcVN2cktIUzNNMmVOWGllcXhOenZCZFJBZzRzZmxLdWlm?=
- =?utf-8?B?bElhSFZmaFUyOXlPU0RHVHRSMVNTVkYvUnJhQk0yTVZkMUdZRGxKVVlUeHRF?=
- =?utf-8?B?eFV4T2R0OC8rTXZNVzB6MmxOSzFCRUcyTXEvWHlYY3VaaHN1VnI0ZS82TlZi?=
- =?utf-8?B?UmlEZmlEeVpMQUJCeTZKK09naG5EN2RQTVd6TTVzZ2NkVFhKUnVvS0w4N2Jo?=
- =?utf-8?B?RENZaEhJU1VycWVMOS9qaHBtMzFFbUFkczRKQm5XeGxLVERuSjg0MkRiZXVH?=
- =?utf-8?B?NzZHbWNSck1DcElzekVRM1NYZ0l0WWNQUGZJSklTZlNJWlVDRGt6OFRDNmFB?=
- =?utf-8?B?V05wT3l3VERRdWNkSlV0ZjNpS0RWMXJGNU9wN1Q1VUdQVXh1OWdnR2czYk4y?=
- =?utf-8?B?MmxpTlJMNi92ZDhvaE1wMXZwcDlaWlVQVUlHeGY5eGFwNm90bzI5WUYxaTY1?=
- =?utf-8?B?cWsxQnlsVXhrenpTMHZJb0RtWGUrNlRMMk81L2RTSDlEWFM4cGtIeS91SzRa?=
- =?utf-8?B?UWRIT1dwcmUrYlJIays2STc5a3FselROcmk4UGpIVlpidW5Sa0d2MGF1Z2JK?=
- =?utf-8?B?b2FCK1FoalJpUE5PK2Q0NzA1Z0pEWE8xaHJvSnordHdLYS9oOWpNMXBabmFD?=
- =?utf-8?B?RlE9PQ==?=
+	=?utf-8?B?WDhMQ2FsbVkxMDR0RStzdkI4RGR1ZGVoZW54aTE3bGZaUit2Q2lrOVZNWmlD?=
+ =?utf-8?B?ZVFEb3h3ZW1oV0g1SEJ6UkJFbmF5b2lQb3hIMmxDTTZJRjI0eXZNaTBrZERi?=
+ =?utf-8?B?VFpJRmJPc0tFV0ZuVzA5bWR1bDI3VUZsbG1QdVEybHdtdS9PbnF0VnQ5Qm5D?=
+ =?utf-8?B?VjZQLytiWmF0Qkk2MUxzQVNJckx0QTBUMGRWWWZZZmYyMkxuTVZTWHpndVhH?=
+ =?utf-8?B?dG5iTHpIcEd0czQvdUZocHBQc2UwTHhINUs3Ky85SFhmUm1HbmdPRGY1dnBu?=
+ =?utf-8?B?TGxJZU5oYWRESUZjUjRHVnIrMThza1lXemI0N3RCdXQ2NGxSa3pMOVI5amdm?=
+ =?utf-8?B?clJmSHI3OEY5MUY1V3kvRzh2Y29DMVdpQTdIYjRlRWp4eFdLWjRON2g3b2ZF?=
+ =?utf-8?B?L0huNXVPOHdqaVNGRnM5KzA0S3JQK1FhWFVZT2tGM3lTWGhRYlV2TkQ1YVZJ?=
+ =?utf-8?B?Z2pqdkdCcEpqZlhVSzdtUUN4aGJtZkRmT1lBY216SUdkTTBhMW9ObVh5ZjVK?=
+ =?utf-8?B?ZGtoMnlFYWxTVWhGczIxdjUveEh1NFRSaDRIazI0QWhzVzllMlpOZFgvNmV5?=
+ =?utf-8?B?TjVNWFdrNGltS0xITm9ucWFrRUJYMnVyV2xZMlY3Z1hPZW9RYmtjNThvODdE?=
+ =?utf-8?B?K0F3Um5XcFpPTzNiclR3RWdLV2ZTMzBBdDRTNXRIa3hGRlZEbTVhS1VMZko5?=
+ =?utf-8?B?RDhhaXJoczlteXhYdkw4eVNJa01SeWdpalFYSTd4d1Uwbmt4emtWbkh3N0tO?=
+ =?utf-8?B?MXdqdFEwZ3c0dXhJb3A2NGhlT3o3Mm1TV0k2SktHUjA2cmZlS1NQUVdxUnVt?=
+ =?utf-8?B?MklrdHJWN095eXpHaVFoYkxzWS81YmJ1VDRDK1plSFdKbCtPbzVYVGZ6QXVX?=
+ =?utf-8?B?LzVBcDFZREV4U1ozUWl3WEcyNFptTURZdmx0YThuZHh2N01nZDVicDZTUjR3?=
+ =?utf-8?B?SWhDakppZ2V5UU55WXluWGFEZVNvZ3R5T0FlYVJaaVc5R21qRERaRy9GTnM2?=
+ =?utf-8?B?bmhIR2drdXE4Ykw5UC9kektEOW0vOEM0a2hwS0Q3cnRFM0xzNG1LSUFqZjc2?=
+ =?utf-8?B?ckFPZWpRdlpqNDR5citDZWE1QVZyaGwvaFdnV0hPN1FWcGYyTkRDcEpyNGND?=
+ =?utf-8?B?OGlCRXNGS0Jpak04cUNIYkR0c1hSNHpPTUtSLzBtVGlZTDFjQk9TeW0xK1Ra?=
+ =?utf-8?B?eWlFOWlqUUhuc2hmVGFaeVh2QitWMW9zdStZai9GajRvZWFnYnJJNUo2WUpI?=
+ =?utf-8?B?YXY4cFdoa3o1MU1GZjZJWEdkOW5uMFJDVHhyOVcvRWdCMi9OOVdoajZKaUdm?=
+ =?utf-8?B?YlloNVFkbUJWUExtb1F4UkcrcHZudmIxaTk4UHRTajRoU0F0S1ZjV1cvWDhy?=
+ =?utf-8?B?NGtTbmpqYlBFQWxUaVI3dGpYdjRZQlhUOFBzdGdRT0l0dmFqeDlaOXFvS3pW?=
+ =?utf-8?B?NjVGZDhIMktGYmxsR1NVTjVYeWdYUGErYVBWY2dEVStRZmVyREFCMDgrUkUw?=
+ =?utf-8?B?TExIejF2ZTgrR3Z0QVV3djZJR1pLTStXNHpxc2tINnBrS2ZzdEw3c0FscEVm?=
+ =?utf-8?B?NXowTkIrbnFKSUNKY1VXQThZV1hROXpUbEZQMnZzMlBtNWNqNEZyV1FzaDhj?=
+ =?utf-8?B?aWRQdUxOVC9kcjZzeTRHa3BKWnZMTG5EeGRHWlNnLzlLdlluM2NBV2JIOUpt?=
+ =?utf-8?B?Q0l4UnNqa0NlckozdkZzRDFseDFSQzF4VGUxWmJBazlSbFVqYzNrVmlkWFUw?=
+ =?utf-8?B?TU5Ra1A1dkt4eVVaTmQzQXIyWHhBTnNuWmh4cytJZXQzSmNEV0V2NnhDdmVh?=
+ =?utf-8?B?dG1aNzB3K1lqRUJMc0NzaUlueVBYRnZDMnFGdFdSbVBpY3NxcEJueHdudWQ5?=
+ =?utf-8?B?STFJMFUwYWt4ZmNvbng2K0grekcvNWprd2dINTU5V3VlVHFveUJLTW1kREM1?=
+ =?utf-8?B?ajk5QzBmVThhbndnU09zY2xqNUh4V2FhRTJyQ3U0SjIva3NXL0FsdWxWcXBT?=
+ =?utf-8?B?RGlWaHVxMFVjU2x2RFhEMStVRGMweCtXQkdCR2Era1dsYlB5R0g4ZkhLT29x?=
+ =?utf-8?B?a0xaSU9pdXZ3SFMxZFVEdWhvaVdhU1NBWGxja0ZDOTVQVFNpZzQvSEx0K21O?=
+ =?utf-8?Q?UXdT772F+FAk8QnbWXX9Tqg5S?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: f3c4d539-9446-4ef8-35d5-08dcef6b8671
+X-MS-Exchange-CrossTenant-Network-Message-Id: f8d7fa27-934b-48db-6a18-08dcef71961c
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 11:53:47.6737
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Oct 2024 12:37:10.9662
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O8q1e25QvHcP/3MvIz3B+wQuAPlm9md15tVyqJhx4m5TTFedHDbmEgXWmcvbKgLO4oJpMLVw7At3zybSOr06+RhmuoxyKlKRxpYoFyo/mRA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8351
+X-MS-Exchange-CrossTenant-UserPrincipalName: vWDpPd9Fhb0pxSY733sZoXrKF7jsf1FzJGPDXu/YVCLhw+9hc0cuAp3pjqRjGdSV85ynU9a2Bt3rEF62ONgolMDF6MdM7adThfCGhavIjmM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM8PR04MB7380
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Oct 2024 11:53:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5536
+ <docs@lists.yoctoproject.org>; Fri, 18 Oct 2024 12:37:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5537
 
 Hi Antonin,
 
-On 10/18/24 1:38 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> * Add Walnascar release.
-> * Remove dunfell, gatesgarth, hardknott, honister: these release are not
->    supported anymore. Start from kirkstone, which is still supported.
+On 10/17/24 10:44 AM, Antonin Godard wrote:
+> Hi Quentin,
+> 
+> Thanks for the great comments :)
+> 
+> On Wed Oct 16, 2024 at 4:10 PM CEST, Quentin Schulz wrote:
+>> Hi Antonin,
+>>
+>> On 10/16/24 3:19 PM, Antonin Godard via lists.yoctoproject.org wrote:
+[...]
+>> Additionally, I think PN-dev does not represent the development variant
+>> of the main package, it represents the files that are useful for
+>> developing an application depending on PN main package. Using "variant"
+>> seems to indicate that PN-dev could be self-sufficient and potentially
+>> have the same binaries/shlibs than in PN but compiled differently.
+> 
+> That's correct, 'variant' is misleading here. In the end, what about:
+> 
+> """
+> For example, the package ``${PN}-dev`` represents files useful to the
+> development of applications depending on ``${PN}``. The default list of files
+> for ``${PN}-dev``, also defined in :oe_git:`meta/conf/bitbake.conf
+> </openembedded-core/tree/meta/conf/bitbake.conf>`, is defined as follows::
+> """
 > 
 
-I think we also need to update the paragraph where this appears.
+Looks fine to me. A small nitpick here is that it's not necessarily ONLY 
+for ${PN}, e.g. if we have more than one package containing 
+binaries/shlibs. But at the same time, if a recipe has multiple of such 
+packages, it could make sense to have their counterpart in -dev, -src, 
+-dbg as well. Anyway, just a random thought but I think this is good 
+enough and not really misleading :)
 
-Indeed, we're missing the information that Scarthgap is the latest LTS 
-and is supported until 2028 (it's in the SVG though, so maybe that's 
-enough?).
+>>> +contains development-oriented files only::
+>>> +
+>>> +  FILES:${PN}-dev = "${includedir} ${FILES_SOLIBSDEV} ${libdir}/*.la \
+>>> +                  ${libdir}/*.o ${libdir}/pkgconfig ${datadir}/pkgconfig \
+>>> +                  ${datadir}/aclocal ${base_libdir}/*.o \
+>>> +                  ${libdir}/${BPN}/*.la ${base_libdir}/*.la \
+>>> +                  ${libdir}/cmake ${datadir}/cmake"
+>>> +
+>>> +The paths in this list must be *absolute*, and must use the path prefixes
+>>
+>> There is a very important piece of information that needs to be added
+>> here and a source of many newcomers' mistake: these are absolute paths
+>> from the PoV of the root of the filesystem on the target, NOT from bitbake.
+>>
+>> Indeed, in do_install (and do_package, etc.) we need to prefix our paths
+>> with $D (and $PKGD/$PKGDEST) when installing/packaging files, however,
+>> FILES doesn't not need those, even more it should NOT have those.
+> 
+> You're right, will change to:
+> 
+> """
+> The paths must use the path prefixes defined by the
+> :oe_git:`meta/conf/bitbake.conf </openembedded-core/tree/meta/conf/bitbake.conf>`
+> configuration file, such as ``${sysconfdir}``, ``${bindir}``, etc.
+> 
+> The paths in this list must be *absolute* paths from the point of view of the
+> root filesystem on the target. For example, assuming the following path is
+> added to the :term:`FILES` variable::
+> 
+>    ${sysconfdir}/foo.conf
+> 
+> In a later phase of the build system, the created package will be used to
+> install the file ``/etc/foo.conf`` on the target, since ``${sysconfdir}``
+> equals to ``/etc`` (unless explicitely overwritten).
+> """
+> 
 
-I would keep the releases that are unmaintained but newer than the last 
-LTS. The issue is that Styhead (and Walnascar) is going to be EoL before 
-Scarthgap, so are we going to update the SVG in Scarthgap when Styhead 
-is EoL? If not, then we'd be inconsistent with what we've done for 
-Kirkstone for example.
+Note sure the last paragraph makes a lot of sense in that context, I 
+would simply remove it. I realize that I may have mislead you in my 
+suggestion, it was intended to be a justification as to why I think this 
+mistakes happen often, because we often have an additional variable in 
+front of the path as one would see it on the target.
 
-Just trying to figure out what's the plan here so we can stick to it :)
+I would add a note to make it extra clear that ${D} should NOT be added 
+to it. It's implied here by "omission" but I've seen this happen too 
+many times that I would really suggest adding a note for that common 
+mistake :)
 
-It'd be nice if you have the SVG published somewhere so we can see it 
-without applying the patch locally, is this something you could do to 
-make reviewing easier?
+[...]
+
+>>> +file matching a pattern specified in the corresponding :term:`FILES` definition
+>>> +will be included in the package and *excluded* for the remaining packages listed
+>>> +in :term:`PACKAGES`. As a consequence, custom packages should be added using the
+>>
+>> I could suggest:
+>> """
+>> A given file can only ever be in one package. Therefore, the first (from
+>> leftmost to rightmost in :term:`PACKAGES`) package for which the given
+>> file matches a path from its :term:`FILES` will contain the given file.
+>> """
+>>
+>> Still a bit too complex of a sentence but couldn't come up with anything
+>> better for now.
+> 
+> How about:
+> 
+> """
+> A given file can only ever be in one package. By iterating from the
+> leftmost to rightmost package in :term:`PACKAGES`, each file matching one of the
+> pattern defined in the corresponding :term:`FILES` definition is included in the
+
+s/pattern/patterns/
+
+> package. At the end of package splitting, all the remaining files are stored in
+> the base ``${PN}`` package.
+> 
+
+Is that true? I'm pretty sure you get a warning/build failure if a file 
+is not in any package. It just happens that most common paths are in 
+FILES:${PN} but I don't think there's anything making bitbake have PN a 
+catch-all package?
+
+This would also mean it'd make no sense to have a package listed on the 
+right side of PN in PACKAGES, but that's a valid use-case for anything 
+not matching any prior FILES:. But maybe I'm misremembering :)
+
+> The result of package splitting is stored in the :term:`PKGDEST` directory, and
+> contains one directory per package.
+
+Not sure if that isn't too advanced already for something in the 
+overview-manual.
+
+I guess we could tell the user how to find out in which package a file is?
+
+oe-pkgdata-util find-path '/etc/foo.conf'
+
+should do that if I remember correctly.
+
+> """
+> 
+>>> +prepend operator (``=+``) to be prioritized.
+>>> +
+>>
+>> I am not sure it is wise to say "prepend" operator as we have three ways
+>> of prepending:
+>> - =+
+>> - =.
+>> - :prepend
+>>
+>> But since you explicit which one you're talking about, I guess it's
+>> fine? The bitbake docs only says "=+" operator apparently:
+>> https://docs.yoctoproject.org/bitbake/bitbake-user-manual/bitbake-user-manual-metadata.html#appending-and-prepending-with-spaces
+> 
+> I think using the "prepend operator" + showing it in parenthesis makes sense
+> here, as newcomers may not be aware that it is used for prepending (there is no
+> explanation on operators in this document).
+> 
+
+Fair enough.
 
 Cheers,
 Quentin
