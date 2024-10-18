@@ -1,146 +1,289 @@
-Return-Path: <michael.opdenacker@rootcommit.com>
+Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46325D3000F
-	for <webhook@archiver.kernel.org>; Fri, 18 Oct 2024 14:01:59 +0000 (UTC)
-Received: from serval.cherry.relay.mailchannels.net (serval.cherry.relay.mailchannels.net [23.83.223.163])
- by mx.groups.io with SMTP id smtpd.web11.22903.1729260116292894609
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BF41AD3F29E
+	for <webhook@archiver.kernel.org>; Fri, 18 Oct 2024 21:36:44 +0000 (UTC)
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+ by mx.groups.io with SMTP id smtpd.web10.32956.1729287396804885316
  for <docs@lists.yoctoproject.org>;
- Fri, 18 Oct 2024 07:01:56 -0700
+ Fri, 18 Oct 2024 14:36:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@rootcommit.com header.s=hostingermail-a header.b=PxUFQerR;
- spf=pass (domain: rootcommit.com, ip: 23.83.223.163, mailfrom: michael.opdenacker@rootcommit.com)
-X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 74A669065A5
-	for <docs@lists.yoctoproject.org>; Fri, 18 Oct 2024 14:01:55 +0000 (UTC)
-Received: from nl-srv-smtpout8.hostinger.io (100-101-175-207.trex-nlb.outbound.svc.cluster.local [100.101.175.207])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id C9D4E906BF0
-	for <docs@lists.yoctoproject.org>; Fri, 18 Oct 2024 14:01:54 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1729260115; a=rsa-sha256;
-	cv=none;
-	b=qiB2S1tNK9vhXjxLBoN1WqvZ5u1bHNpYDq8ZiUdImCWio1WezkFq+9LZhJbFt532ru3Y93
-	n+Wkcw7R020i2TYsEWZ3OYsqPomT5o7r8Dljz/waDtWwzg1id6EWTPNIzrQNpU45/hW70+
-	jGMyNZASe/FG1XZDaf7xFhQpljdI0MkGs/ccyIv7081QTAGu/0WU1YSw14oDFjOqS056Jo
-	OvSUP4bN5mdE0FHYSnDgpzWdMH4oxbUABjZ6PfC/7efcHvpSTuF9jDL1zy3E6ECFdhJRL6
-	AV97RltwhaGvTHN27uoZSumkEtUWwc1l1V9NNIA9DrHVwJM42lLJQwJvCtM+xw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1729260115;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0oD5hYpFC5xQEMee8/259uuTHshQ7JHlm/Vrvx6hM9Q=;
-	b=orPKpCq0hdvURipmZ288M2gUALnR9XT7668biO+aKBf90/rB2NoHviWj1JBifDGibhYw73
-	7r3/Qpz7BMs+5f5dNsmE0A+5Q+Rbb2v2Xj2EGRb053pECHkddVyXXdDO5B6nsit5L0F1Nm
-	OE2wV+3VjoDbm4qhG+rvdfgBYgz5Af3AHpAFYeK2W0ibdfHPCX2jOlAdf/bsJKZN3s3F3E
-	NzCS9h9muTpQWE3wNe6ZMIChrlJV6jCBeit3A5fmEEdsE9/2WQIjAvAoxD+d4bnVnHHgya
-	yUhKn9rt42iIp7FmcMYWPCzgj4eE3JQaOzHhYmnqRQJ9m52zIg+pckfeuOTpaA==
-ARC-Authentication-Results: i=1;
-	rspamd-6bcbdd57f8-tntgg;
-	auth=pass smtp.auth=hostingeremail
- smtp.mailfrom=michael.opdenacker@rootcommit.com
-X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
-X-MC-Relay: Neutral
-X-MailChannels-SenderId: 
- hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
-X-MailChannels-Auth-Id: hostingeremail
-X-Tank-Society: 7454d6e1512ec750_1729260115296_2412736314
-X-MC-Loop-Signature: 1729260115296:1884404183
-X-MC-Ingress-Time: 1729260115296
-Received: from nl-srv-smtpout8.hostinger.io (nl-srv-smtpout8.hostinger.io
- [45.87.82.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.101.175.207 (trex/7.0.2);
-	Fri, 18 Oct 2024 14:01:55 +0000
-Message-ID: <a6fd7c5d-661b-4558-b325-51dd19113cda@rootcommit.com>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rootcommit.com;
-	s=hostingermail-a; t=1729260112;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0oD5hYpFC5xQEMee8/259uuTHshQ7JHlm/Vrvx6hM9Q=;
-	b=PxUFQerRSvjBrsiiL3HSz02MiAfhdJM3zXI5xQpFPHGQ89EUDNDkpImvtHi5+f5Of1fZ0k
-	DvbHlr78GwSh8Yn23PojLDin4IjjNwlJRzxh7ufEtWcNfDfdOPCgcKFubTy55sbKduEozD
-	tVvaebwJUpsEs9CSFxEKkVtodVRWpmwwUxT4K+wqZ9qqIZEqxKhmEy7mMaoDuWRuIMzTBJ
-	k+Q7WbxcOiacq+01W8i7sPNVganQ065iutU0zZg0Tal/8gAOO3vSH5Uj/xJnHbn6q8dmaM
-	80XyL6Ewc9VcR11uNkxQCFzInYgLD1PXDkp7rM61wEY1Voh2v33f/jYyX8u9PQ==
+ dkim=pass header.i=@smile.fr header.s=google header.b=DgC1saKT;
+ spf=pass (domain: smile.fr, ip: 209.85.221.41, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-37d461162b8so1708535f8f.1
+        for <docs@lists.yoctoproject.org>; Fri, 18 Oct 2024 14:36:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1729287395; x=1729892195; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hwGmYEUygvD9/+dmc5JK0o6I9+kt3L9y7PenUvhO9bA=;
+        b=DgC1saKTfi50DNMTmF+iKAvbyhBWX6yQCkEIbXoSBc/hNpCy5rgRCzurG00RhCxGXv
+         KxJ5HrKsORRtoWW4LwOaqR6/fRPVue0vY4WE6nD1v2lmvFUGI6lVK2bWUcjPfUlDikt6
+         SU4XJdMlgPRCcFnRbCJScAubkZl3VKmkubMlM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729287395; x=1729892195;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hwGmYEUygvD9/+dmc5JK0o6I9+kt3L9y7PenUvhO9bA=;
+        b=T1sU4/7POjNJCOX+0vLiJCdDU1SZ7PV0Z7uba+1eh+mHXnRRebB3F/7i/SywlxOdBc
+         xkm5VqR5JYePCm/vZz1W6W7dCIoG7xYZ2Z4N1PZYpoATmWakri8ByglXYb/7XDg37qYU
+         GYHPGPcjbyzgafAq116g5mfMAboUxANFkSCZo76t4nwwAmvUDyy9Ic85asG3wEpe9X3D
+         SM6qH1g3GxtoZJNu794IFHgKqopUCR9ra6CRanABlpif2oANN62+FJiewvGTig9P2MG5
+         zcN0r77jsGodcLvqB26+zpe2Upb7wTij9KGacFypWoWNKGFdH//wUtm8RV3VCiUkWwDE
+         8cPg==
+X-Gm-Message-State: AOJu0Yy3P4jy0fV+ItSjVRU4q3/cbKA99GtzrP2v5GSXLK0kzwKY20IB
+	V27KMUFA9zKvHYTDVQ+69pYc26wza8Y8P+DjACodgG3uoN5Y1EhsuRzLSgjOFVo=
+X-Google-Smtp-Source: AGHT+IFIBZE6EK/W+dzpApSZCeeuTX1dalr5effNSHYtwve0o5XIUu+LeRd0MEn2gc8Paq+UeUbnEQ==
+X-Received: by 2002:adf:e70c:0:b0:37d:4846:3d29 with SMTP id ffacd0b85a97d-37ea2198725mr2838892f8f.28.1729287394930;
+        Fri, 18 Oct 2024 14:36:34 -0700 (PDT)
+Received: from P-ASN-ECS-830T8C3.local (53.1.159.89.rev.sfr.net. [89.159.1.53])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37ecf027c77sm2860728f8f.21.2024.10.18.14.36.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 18 Oct 2024 14:36:34 -0700 (PDT)
+From: Yoann Congal <yoann.congal@smile.fr>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Yoann Congal <yoann.congal@smile.fr>,
+	Quentin Schulz <quentin.schulz@cherry.de>
+Subject: [PATCH v2] doc/user-manual: Refresh help output
+Date: Fri, 18 Oct 2024 23:36:26 +0200
+Message-Id: <20241018213626.2102737-1-yoann.congal@smile.fr>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: michael.opdenacker@rootcommit.com,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, quentin.schulz@cherry.de,
- docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] ref-manual: update releases.svg
-To: antonin.godard@bootlin.com
-References: <20241018-update-releases-svg-v1-1-502899b5d780@bootlin.com>
- <82a4e314-cedc-4cb4-a8a9-bc3fd3e81c94@cherry.de>
-Content-Language: en-US
-From: Michael Opdenacker <michael.opdenacker@rootcommit.com>
-Organization: Root Commit
-In-Reply-To: <82a4e314-cedc-4cb4-a8a9-bc3fd3e81c94@cherry.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Date: Fri, 18 Oct 2024 14:01:52 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=VemlP0p9 c=1 sm=1 tr=0 ts=67126a50 a=MyPBOTDVLb3fNp+q2YzvzQ==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=iGHA9ds3AAAA:8 a=d70CFdQeAAAA:8 a=9i6tsIYAkzSSiruop6cA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=nM-MV4yxpKKO9kiQg6Ot:22 a=NcxpMcIZDGm-g932nG_k:22
-X-CM-Envelope: MS4xfELhed45BaQFftpxUmmBwxhd8b96Jh33RsmdN2I90D2OZ6fEtdaddn8VIIe4PtuxhuQHYd9IibD5yCVJNMKTHC3dbaA75Ahpslt0VNziqfyzdNKi7wqp 1lfPh9iSNOhyqkY75WGbazNuisC2TVfqdHOqPiUmI1VIUcNLdGLMGdBv/Ymh8s4F/PFmOwAR102sROz0aaCFFvYuG+9PzfALWwmk+ouaF2ibkGD9m1VR5L5D q5cICVPH4TjKk9IWyIoNjq60JA020Hu2g7ARh6M3Z/SQwYk1J7E5AZb8bxuBmu7slWKn9wzCqpoMdfWZqtx3JV3RPuj1gVUZS4Ma42WDx4rliYc9SwmReD+g vSEOIZ1Wap7uKepVXUoWwcpCMdy+dbG6H5Lo7z5dvZWePIQLJxVxglLsjw6ZmAT1iAkUV/elJz3pU0s0lEcZrxh7yBB69mKz96jQ636nC7/+oiAejHxamvlp 3qzdhdFg9+xGD90was2PRBY52kHSdYVNxmnDzg==
-X-AuthUser: michael.opdenacker@rootcommit.com
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 18 Oct 2024 14:01:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5538
+ <docs@lists.yoctoproject.org>; Fri, 18 Oct 2024 21:36:44 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5539
 
-Hi Antonin
+From: Yoann Congal <yoann.congal@smile.fr>
 
-Thank you for the update! I was thinking about it too :)
+In commit 9257c48c3e36 ("Group and reorder options in bitbake help"),
+help output was changed, update the doc to match the new output.
 
-On 10/18/24 13:53, Quentin Schulz via lists.yoctoproject.org wrote:
-> Hi Antonin,
->
-> On 10/18/24 1:38 PM, Antonin Godard via lists.yoctoproject.org wrote:
->> * Add Walnascar release.
->> * Remove dunfell, gatesgarth, hardknott, honister: these release are n=
-ot
->> =C2=A0=C2=A0 supported anymore. Start from kirkstone, which is still s=
-upported.
->>
->
-> I think we also need to update the paragraph where this appears.
->
-> Indeed, we're missing the information that Scarthgap is the latest LTS=20
-> and is supported until 2028 (it's in the SVG though, so maybe that's=20
-> enough?).
->
-> I would keep the releases that are unmaintained but newer than the=20
-> last LTS. The issue is that Styhead (and Walnascar) is going to be EoL=20
-> before Scarthgap, so are we going to update the SVG in Scarthgap when=20
-> Styhead is EoL? If not, then we'd be inconsistent with what we've done=20
-> for Kirkstone for example.
->
-> Just trying to figure out what's the plan here so we can stick to it :)
->
-> It'd be nice if you have the SVG published somewhere so we can see it=20
-> without applying the patch locally, is this something you could do to=20
-> make reviewing easier?
+Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+---
+v1->v2: Review from Quentin Schulz
+ * Add Reviewed-By
+ * Add a comment with the command that generated the output
+ * whitespace cleanup
+---
+ .../bitbake-user-manual-intro.rst             | 174 ++++++++++--------
+ 1 file changed, 100 insertions(+), 74 deletions(-)
 
-In addition to agreeing with Quentin, I also note that in the previous=20
-versions of the diagram, the future releases were in lighter gray, as a=20
-way to distinguish them from past ones. That's not strictly necessary as=20
-we can see their dates too, though.
-
-You could either change this or decide to color all EOL releases and=20
-future ones in light gray, which could also make sense.
-Thanks
-Michael.
-
---=20
-Michael Opdenacker
-Root Commit
-Embedded Linux Training and Consulting
-https://rootcommit.com/
-
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+index 35ffb88b0..539bb62d8 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-intro.rst
+@@ -349,40 +349,84 @@ Usage and syntax
+ Following is the usage and syntax for BitBake::
+ 
+    $ bitbake -h
+-   Usage: bitbake [options] [recipename/target recipe:do_task ...]
+-
+-       Executes the specified task (default is 'build') for a given set of target recipes (.bb files).
+-       It is assumed there is a conf/bblayers.conf available in cwd or in BBPATH which
+-       will provide the layer, BBFILES and other configuration information.
++   usage: bitbake [-s] [-e] [-g] [-u UI] [--version] [-h] [-f] [-c CMD]
++                  [-C INVALIDATE_STAMP] [--runall RUNALL] [--runonly RUNONLY]
++                  [--no-setscene] [--skip-setscene] [--setscene-only] [-n] [-p]
++                  [-k] [-P] [-S SIGNATURE_HANDLER] [--revisions-changed]
++                  [-b BUILDFILE] [-D] [-l DEBUG_DOMAINS] [-v] [-q]
++                  [-w WRITEEVENTLOG] [-B BIND] [-T SERVER_TIMEOUT]
++                  [--remote-server REMOTE_SERVER] [-m] [--token XMLRPCTOKEN]
++                  [--observe-only] [--status-only] [--server-only] [-r PREFILE]
++                  [-R POSTFILE] [-I EXTRA_ASSUME_PROVIDED]
++                  [recipename/target ...]
++
++   It is assumed there is a conf/bblayers.conf available in cwd or in BBPATH
++   which will provide the layer, BBFILES and other configuration information.
++
++   General options:
++     recipename/target     Execute the specified task (default is 'build') for
++                           these target recipes (.bb files).
++     -s, --show-versions   Show current and preferred versions of all recipes.
++     -e, --environment     Show the global or per-recipe environment complete
++                           with information about where variables were
++                           set/changed.
++     -g, --graphviz        Save dependency tree information for the specified
++                           targets in the dot syntax.
++     -u UI, --ui UI        The user interface to use (knotty, ncurses, taskexp,
++                           taskexp_ncurses or teamcity - default knotty).
++     --version             Show programs version and exit.
++     -h, --help            Show this help message and exit.
+ 
+-   Options:
+-     --version             show program's version number and exit
+-     -h, --help            show this help message and exit
+-     -b BUILDFILE, --buildfile=BUILDFILE
+-                           Execute tasks from a specific .bb recipe directly.
+-                           WARNING: Does not handle any dependencies from other
+-                           recipes.
+-     -k, --continue        Continue as much as possible after an error. While the
+-                           target that failed and anything depending on it cannot
+-                           be built, as much as possible will be built before
+-                           stopping.
++   Task control options:
+      -f, --force           Force the specified targets/task to run (invalidating
+                            any existing stamp file).
+-     -c CMD, --cmd=CMD     Specify the task to execute. The exact options
++     -c CMD, --cmd CMD     Specify the task to execute. The exact options
+                            available depend on the metadata. Some examples might
+                            be 'compile' or 'populate_sysroot' or 'listtasks' may
+                            give a list of the tasks available.
+-     -C INVALIDATE_STAMP, --clear-stamp=INVALIDATE_STAMP
++     -C INVALIDATE_STAMP, --clear-stamp INVALIDATE_STAMP
+                            Invalidate the stamp for the specified task such as
+                            'compile' and then run the default task for the
+                            specified target(s).
+-     -r PREFILE, --read=PREFILE
+-                           Read the specified file before bitbake.conf.
+-     -R POSTFILE, --postread=POSTFILE
+-                           Read the specified file after bitbake.conf.
+-     -v, --verbose         Enable tracing of shell tasks (with 'set -x'). Also
+-                           print bb.note(...) messages to stdout (in addition to
+-                           writing them to ${T}/log.do_&lt;task&gt;).
++     --runall RUNALL       Run the specified task for any recipe in the taskgraph
++                           of the specified target (even if it wouldn't otherwise
++                           have run).
++     --runonly RUNONLY     Run only the specified task within the taskgraph of
++                           the specified targets (and any task dependencies those
++                           tasks may have).
++     --no-setscene         Do not run any setscene tasks. sstate will be ignored
++                           and everything needed, built.
++     --skip-setscene       Skip setscene tasks if they would be executed. Tasks
++                           previously restored from sstate will be kept, unlike
++                           --no-setscene.
++     --setscene-only       Only run setscene tasks, don't run any real tasks.
++
++   Execution control options:
++     -n, --dry-run         Don't execute, just go through the motions.
++     -p, --parse-only      Quit after parsing the BB recipes.
++     -k, --continue        Continue as much as possible after an error. While the
++                           target that failed and anything depending on it cannot
++                           be built, as much as possible will be built before
++                           stopping.
++     -P, --profile         Profile the command and save reports.
++     -S SIGNATURE_HANDLER, --dump-signatures SIGNATURE_HANDLER
++                           Dump out the signature construction information, with
++                           no task execution. The SIGNATURE_HANDLER parameter is
++                           passed to the handler. Two common values are none and
++                           printdiff but the handler may define more/less. none
++                           means only dump the signature, printdiff means
++                           recursively compare the dumped signature with the most
++                           recent one in a local build or sstate cache (can be
++                           used to find out why tasks re-run when that is not
++                           expected)
++     --revisions-changed   Set the exit code depending on whether upstream
++                           floating revisions have changed or not.
++     -b BUILDFILE, --buildfile BUILDFILE
++                           Execute tasks from a specific .bb recipe directly.
++                           WARNING: Does not handle any dependencies from other
++                           recipes.
++
++   Logging/output control options:
+      -D, --debug           Increase the debug level. You can specify this more
+                            than once. -D sets the debug level to 1, where only
+                            bb.debug(1, ...) messages are printed to stdout; -DD
+@@ -392,65 +436,47 @@ Following is the usage and syntax for BitBake::
+                            -D only affects output to stdout. All debug messages
+                            are written to ${T}/log.do_taskname, regardless of the
+                            debug level.
++     -l DEBUG_DOMAINS, --log-domains DEBUG_DOMAINS
++                           Show debug logging for the specified logging domains.
++     -v, --verbose         Enable tracing of shell tasks (with 'set -x'). Also
++                           print bb.note(...) messages to stdout (in addition to
++                           writing them to ${T}/log.do_<task>).
+      -q, --quiet           Output less log message data to the terminal. You can
+                            specify this more than once.
+-     -n, --dry-run         Don't execute, just go through the motions.
+-     -S SIGNATURE_HANDLER, --dump-signatures=SIGNATURE_HANDLER
+-                           Dump out the signature construction information, with
+-                           no task execution. The SIGNATURE_HANDLER parameter is
+-                           passed to the handler. Two common values are none and
+-                           printdiff but the handler may define more/less. none
+-                           means only dump the signature, printdiff means compare
+-                           the dumped signature with the cached one.
+-     -p, --parse-only      Quit after parsing the BB recipes.
+-     -s, --show-versions   Show current and preferred versions of all recipes.
+-     -e, --environment     Show the global or per-recipe environment complete
+-                           with information about where variables were
+-                           set/changed.
+-     -g, --graphviz        Save dependency tree information for the specified
+-                           targets in the dot syntax.
+-     -I EXTRA_ASSUME_PROVIDED, --ignore-deps=EXTRA_ASSUME_PROVIDED
+-                           Assume these dependencies don't exist and are already
+-                           provided (equivalent to ASSUME_PROVIDED). Useful to
+-                           make dependency graphs more appealing
+-     -l DEBUG_DOMAINS, --log-domains=DEBUG_DOMAINS
+-                           Show debug logging for the specified logging domains
+-     -P, --profile         Profile the command and save reports.
+-     -u UI, --ui=UI        The user interface to use (knotty, ncurses, taskexp or
+-                           teamcity - default knotty).
+-     --token=XMLRPCTOKEN   Specify the connection token to be used when
+-                           connecting to a remote server.
+-     --revisions-changed   Set the exit code depending on whether upstream
+-                           floating revisions have changed or not.
+-     --server-only         Run bitbake without a UI, only starting a server
+-                           (cooker) process.
+-     -B BIND, --bind=BIND  The name/address for the bitbake xmlrpc server to bind
++     -w WRITEEVENTLOG, --write-log WRITEEVENTLOG
++                           Writes the event log of the build to a bitbake event
++                           json file. Use '' (empty string) to assign the name
++                           automatically.
++
++   Server options:
++     -B BIND, --bind BIND  The name/address for the bitbake xmlrpc server to bind
+                            to.
+-     -T SERVER_TIMEOUT, --idle-timeout=SERVER_TIMEOUT
++     -T SERVER_TIMEOUT, --idle-timeout SERVER_TIMEOUT
+                            Set timeout to unload bitbake server due to
+                            inactivity, set to -1 means no unload, default:
+                            Environment variable BB_SERVER_TIMEOUT.
+-     --no-setscene         Do not run any setscene tasks. sstate will be ignored
+-                           and everything needed, built.
+-     --skip-setscene       Skip setscene tasks if they would be executed. Tasks
+-                           previously restored from sstate will be kept, unlike
+-                           --no-setscene
+-     --setscene-only       Only run setscene tasks, don't run any real tasks.
+-     --remote-server=REMOTE_SERVER
++     --remote-server REMOTE_SERVER
+                            Connect to the specified server.
+      -m, --kill-server     Terminate any running bitbake server.
++     --token XMLRPCTOKEN   Specify the connection token to be used when
++                           connecting to a remote server.
+      --observe-only        Connect to a server as an observing-only client.
+      --status-only         Check the status of the remote bitbake server.
+-     -w WRITEEVENTLOG, --write-log=WRITEEVENTLOG
+-                           Writes the event log of the build to a bitbake event
+-                           json file. Use '' (empty string) to assign the name
+-                           automatically.
+-     --runall=RUNALL       Run the specified task for any recipe in the taskgraph
+-                           of the specified target (even if it wouldn't otherwise
+-                           have run).
+-     --runonly=RUNONLY     Run only the specified task within the taskgraph of
+-                           the specified targets (and any task dependencies those
+-                           tasks may have).
++     --server-only         Run bitbake without a UI, only starting a server
++                           (cooker) process.
++
++   Configuration options:
++     -r PREFILE, --read PREFILE
++                           Read the specified file before bitbake.conf.
++     -R POSTFILE, --postread POSTFILE
++                           Read the specified file after bitbake.conf.
++     -I EXTRA_ASSUME_PROVIDED, --ignore-deps EXTRA_ASSUME_PROVIDED
++                           Assume these dependencies don't exist and are already
++                           provided (equivalent to ASSUME_PROVIDED). Useful to
++                           make dependency graphs more appealing.
++
++..
++    Bitbake help output generated with "stty columns 80; bin/bitbake -h"
+ 
+ .. _bitbake-examples:
+ 
 
