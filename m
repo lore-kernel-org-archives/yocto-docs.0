@@ -2,133 +2,107 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B864D1CDC7
-	for <webhook@archiver.kernel.org>; Tue, 22 Oct 2024 09:16:44 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.14218.1729588603089414911
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B7525D1CDD5
+	for <webhook@archiver.kernel.org>; Tue, 22 Oct 2024 11:03:44 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.15729.1729595023139021711
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Oct 2024 02:16:43 -0700
+ Tue, 22 Oct 2024 04:03:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=N6E4hmXS;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 20745FF808;
-	Tue, 22 Oct 2024 09:16:40 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DRNUvCXZ;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A426060002;
+	Tue, 22 Oct 2024 11:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729588601;
+	t=1729595021;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KizBiU6IVCMecHxdAHhPkfH+1FmneZVSY5S2tw1iA1Y=;
-	b=N6E4hmXSGvVpYwTnL4257kPvnb+xEOWaMZD+T/rilcQ3nu4dhmpAB97xArhjmMTHFL87XS
-	QK/YkJv0xPmQxmkuLOKVRF/Nlj5FNP3vXO3RyhExr8ZF4/7vGtI/wDnHy6ElyRephs/pDw
-	UQoRG7SV2osH2B28yccOjdU4gquk5yUqn4GEAAGQ/+s+mAz9ZWKY39EtUpm/r4DEsFMwJz
-	oksPwQf/0mBEr+oPK4Q4lixifh/xLuPDNpTwZPdz2NlGrAZ+aJTgNfBJuEn2OTpv7IxCjR
-	fHN+PcKn5VlnMmOxmQFbXwSK7mNkN8BodRlr2x+6bAsB5h5LbeRI2AcaWvXdAA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 22 Oct 2024 11:16:40 +0200
-Message-Id: <D527ZM5T62V4.3CYI2VZRRTJDX@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Michael Opdenacker" <michael.opdenacker@rootcommit.com>, "Quentin
- Schulz" <quentin.schulz@cherry.de>
-Subject: Re: [docs] [PATCH] ref-manual: update releases.svg
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.18.2.r77.gd58065ac
-References: <20241018-update-releases-svg-v1-1-502899b5d780@bootlin.com>
- <82a4e314-cedc-4cb4-a8a9-bc3fd3e81c94@cherry.de>
- <a6fd7c5d-661b-4558-b325-51dd19113cda@rootcommit.com>
-In-Reply-To: <a6fd7c5d-661b-4558-b325-51dd19113cda@rootcommit.com>
+	bh=btH0/EtviK+UBzAZ3HC3dWJQ89jw9bQS9L5P5Pp8O3w=;
+	b=DRNUvCXZO5pd43UpfgYTy6CKxtKMC+cbyRpbdXE/uL7CGwgU3RyjTXFcJxOT1QuemHaqrj
+	cFcCvZ3yFmV5h1ffE/SLn4H4g/kVwIf77H8+XhSKQdpFPesnJSaOldciZn5euvOgZi3StZ
+	3CeYuZeq+R3wrwNVoIfJ5XvpCGCfXIlgQ3WqdctdkXtv+gz0ejm0iOHFbR2MOSy8EUuOL1
+	QEiaL0AFkSMykBkW3hmFppRCqP7t88BGnHSeG+Vt0q4CnmEGIdYWwPsfykEGg9Mb4ev0F8
+	gL/yNLBkiOyZq90r7l14QRZEoQAV9WS2CZbPzA/t3uK5p3B//1iSRVeVSQpITA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 22 Oct 2024 13:03:10 +0200
+Subject: [PATCH v2 2/2] ref-manual: release-process: refresh the current
+ LTS releases
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241022-update-releases-svg-v2-2-6e7740f9a41c@bootlin.com>
+References: <20241022-update-releases-svg-v2-0-6e7740f9a41c@bootlin.com>
+In-Reply-To: <20241022-update-releases-svg-v2-0-6e7740f9a41c@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@rootcommit.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1917;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=sxNMfQXT02maKKrdalk0BU4anF91qVCTE7GSSu6G6TI=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnF4aMNpWG7v/JQkOtq9M1TnyCptT1xnt3FwgRQ
+ ahi/QhbZgeJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZxeGjAAKCRDRgEFAKaOo
+ NqLID/9cZwi+KOi0di4xyMV6DJFUdXxJA57t9GRKlif4Zw22MEenxh1RA6fD0xCztiXlBSK6hQE
+ ED3Avw6visVU7bosnI33Cu5WRoaTqANvYzV7XFeYYQC2fGLYXZYnj3zfh1pHwuPdUEI2O3hfgpm
+ lKWkEbO6LACiB+FibUYIsN4f01MDgRtqlrOb7nvBeFV/vV3svc5rbcEAKWR0QAHSFFpv7fe49KQ
+ UbGHzM4mwBU5EYwFVrSrNGSQKW/6LguVr9TTkpI47jsldlW/GCLS7pGAEsj3UGJsO4itjisKdE3
+ +G2ZGZSavpslW4o0Dvku2HgZKrLsRNO7UjnDUEq0wfFK91YLdwVMarqTR6lcO2nc0H7+oyQdUIU
+ YIOVI8O8mIidT8RZeSvWe+W6N2c0EwbfltJmnfQjyTJlh9M+hZT3BzylXBHO58aFc/ifbd6AtWM
+ cugOBm7Q98lIS+dDa5jwGsRmAwlwfezsF4LqVE5nYRURUadxWWDlQdRQCINYNg+RFIcAJHdQJZW
+ EAUcpzgjrB+9jvMcXAhnw9apb9IfV12y6xIZN5B2DNJoaDTcGF2uSlkvFmKD2kigXPrGZf2Ea1a
+ 2RDjit4w8ucKzxGI0RV91q3klyZUepD7UbQgQaASi0OKCqfpMynU+5lR0r/4g5ZHoeRvDYw3CUo
+ lDGDvcVslsA+qMQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 09:16:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5551
+ <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 11:03:44 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5552
 
-Hi Quentin, Michael,
+Mention that Scarthgap the latest LTS in a bullet list next to
+Kirkstone. Reword the parapraph a bit to make it clearer after this
+change.
 
-Thanks for the reviews. Answering here to you both to make it easier. :)
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/ref-manual/release-process.rst | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-On Fri Oct 18, 2024 at 4:01 PM CEST, Michael Opdenacker wrote:
-> Hi Antonin
->
-> Thank you for the update! I was thinking about it too :)
->
-> On 10/18/24 13:53, Quentin Schulz via lists.yoctoproject.org wrote:
->> Hi Antonin,
->>
->> On 10/18/24 1:38 PM, Antonin Godard via lists.yoctoproject.org wrote:
->>> * Add Walnascar release.
->>> * Remove dunfell, gatesgarth, hardknott, honister: these release are no=
-t
->>> =C2=A0=C2=A0 supported anymore. Start from kirkstone, which is still su=
-pported.
->>>
->>
->> I think we also need to update the paragraph where this appears.
->>
->> Indeed, we're missing the information that Scarthgap is the latest LTS
->> and is supported until 2028 (it's in the SVG though, so maybe that's
->> enough?).
+diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+index 920794679d2256cf0f8e9677c7739e5540c4bdd4..75532addbdcd52cb0ab13ee8ffd57a70e1fc8045 100644
+--- a/documentation/ref-manual/release-process.rst
++++ b/documentation/ref-manual/release-process.rst
+@@ -103,13 +103,16 @@ have reached their End of Life (EOL) won't receive such updates.
+ 
+ This started with version 3.1 ("Dunfell"), released in April 2020, which
+ the project initially committed to supporting for two years, but this duration
+-was later extended to four years. Similarly, the following :term:`LTS` release,
+-version 4.0 ("Kirkstone"), was released two years later in May 2022 and the
+-project committed to supporting it for four years too.
++was later extended to four years.
+ 
+-Therefore, a new :term:`LTS` release is made every two years and is supported
+-for four years. This offers more stability to project users and leaves more
+-time to upgrade to the following :term:`LTS` release.
++A new :term:`LTS` release is made every two years and is supported for four
++years. This offers more stability to project users and leaves more time to
++upgrade to the following :term:`LTS` release.
++
++The currently supported :term:`LTS` releases are:
++
++-  Version 5.0 ("Scarthgap"), released in April 2024 and supported until April 2028.
++-  Version 4.0 ("Kirkstone"), released in May 2022 and supported until May 2026.
+ 
+ See :yocto_wiki:`/Stable_Release_and_LTS` for details about the management
+ of stable and :term:`LTS` releases.
 
-Agreed, I missed this!
+-- 
+2.46.1
 
->> I would keep the releases that are unmaintained but newer than the
->> last LTS.
-
-This is what I thought also. So since Dunfell is not maintained anymore I
-removed it, and the subsequent releases up to Kirkstone since they are also=
- EoL.
-
->> The issue is that Styhead (and Walnascar) is going to be EoL
->> before Scarthgap, so are we going to update the SVG in Scarthgap when
->> Styhead is EoL? If not, then we'd be inconsistent with what we've done
->> for Kirkstone for example.
->>
->> Just trying to figure out what's the plan here so we can stick to it :)
-
-My thought process was maybe a bit simpler: no matter what the release is, =
-the
-SVG should always show the current state of the releases. I was in fact pla=
-nning
-on backporting this to styhead, scarthgap and kirkstone.
-
-And when styhead is EoL, update the diagram again + backport on maintained
-branches (and styhead).
-
-I think this is what was done on Kirkstone? It seems to also be up-to-date
-compared to master.
-
->> It'd be nice if you have the SVG published somewhere so we can see it
->> without applying the patch locally, is this something you could do to
->> make reviewing easier?
-
-Sure, I will add a link in my v2, along with the paragraph changes.
-
-> In addition to agreeing with Quentin, I also note that in the previous
-> versions of the diagram, the future releases were in lighter gray, as a
-> way to distinguish them from past ones. That's not strictly necessary as
-> we can see their dates too, though.
-
-Ha, I thought it was a mistake at first! Will revert this.
-
-> You could either change this or decide to color all EOL releases and
-> future ones in light gray, which could also make sense.
-
-I think a small legend and a color difference to distinguish between future=
- and
-eol could be nice? I've prepared something on my side, will send it in my v=
-2
-soon=E2=80=A6 :)
-
-Cheers,
-Antonin
-
---
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
