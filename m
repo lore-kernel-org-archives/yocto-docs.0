@@ -2,60 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7525D1CDD5
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B5B5ED0E6FC
 	for <webhook@archiver.kernel.org>; Tue, 22 Oct 2024 11:03:44 +0000 (UTC)
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web11.15729.1729595023139021711
+ by mx.groups.io with SMTP id smtpd.web11.15730.1729595023473454541
  for <docs@lists.yoctoproject.org>;
  Tue, 22 Oct 2024 04:03:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DRNUvCXZ;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mZBTfn5F;
  spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A426060002;
-	Tue, 22 Oct 2024 11:03:41 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E9D8360005;
+	Tue, 22 Oct 2024 11:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1729595021;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=btH0/EtviK+UBzAZ3HC3dWJQ89jw9bQS9L5P5Pp8O3w=;
-	b=DRNUvCXZO5pd43UpfgYTy6CKxtKMC+cbyRpbdXE/uL7CGwgU3RyjTXFcJxOT1QuemHaqrj
-	cFcCvZ3yFmV5h1ffE/SLn4H4g/kVwIf77H8+XhSKQdpFPesnJSaOldciZn5euvOgZi3StZ
-	3CeYuZeq+R3wrwNVoIfJ5XvpCGCfXIlgQ3WqdctdkXtv+gz0ejm0iOHFbR2MOSy8EUuOL1
-	QEiaL0AFkSMykBkW3hmFppRCqP7t88BGnHSeG+Vt0q4CnmEGIdYWwPsfykEGg9Mb4ev0F8
-	gL/yNLBkiOyZq90r7l14QRZEoQAV9WS2CZbPzA/t3uK5p3B//1iSRVeVSQpITA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=hPhw9GJkIYR3xdADnFrLBUtSN8EM7v8jPXqR97E76xk=;
+	b=mZBTfn5FCPqB0r+OPxgq55nkOq9XqLJH0N3/8nN8pWBHESGO399nxOOvj+TXdZbor8IW2W
+	Mv/LZYHolyFlTVWuXXaY/VBPI2aUtIkI28ylPmDiTSbq7jYoG98KN3H97LZSLNnzaqBXP5
+	4ekGK4ChQtcx/zNP7JIzQWxPkaqwWwGUtXD63j0n9mh4i04mh5oBT/SmPH8XrZmc0zQIpe
+	9CfhFuLMQ9vNoJcJN0hfOCNxTJ4gyP83AW/LhrAEu33boXhx4AAAemwdycSYdOQuKjQbrl
+	oSqeqolU5AncxOCtRGvkRbB6B1exmMKw8FuzQ8VrEh9X+Ft2IL8QBm3rl3xh7Q==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 22 Oct 2024 13:03:10 +0200
-Subject: [PATCH v2 2/2] ref-manual: release-process: refresh the current
- LTS releases
+Subject: [PATCH v2 0/2] ref-manual: release process: update LTS section
+Date: Tue, 22 Oct 2024 13:03:08 +0200
+Message-Id: <20241022-update-releases-svg-v2-0-6e7740f9a41c@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241022-update-releases-svg-v2-2-6e7740f9a41c@bootlin.com>
-References: <20241022-update-releases-svg-v2-0-6e7740f9a41c@bootlin.com>
-In-Reply-To: <20241022-update-releases-svg-v2-0-6e7740f9a41c@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAGyGF2cC/32NQQ6CMBBFr0Jm7Zi2SiiuuIdhAWWESZCSDjYa0
+ rtbOYDL95L//g5CgUngVuwQKLKwXzKYUwFu6paRkIfMYJS5aqUtvtah2wgDzdQJCUocsafSXGx
+ FzjoHebkGevD7qN7bzBPL5sPnOIn6Z//3okaNpTK2rvtyqKxqeu+3mZez809oU0pfcc0KcLgAA
+ AA=
+X-Change-ID: 20241018-update-releases-svg-be52387ec8cc
 To: docs@lists.yoctoproject.org
 Cc: Michael Opdenacker <michael.opdenacker@rootcommit.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>, 
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1917;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1095;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=sxNMfQXT02maKKrdalk0BU4anF91qVCTE7GSSu6G6TI=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnF4aMNpWG7v/JQkOtq9M1TnyCptT1xnt3FwgRQ
- ahi/QhbZgeJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZxeGjAAKCRDRgEFAKaOo
- NqLID/9cZwi+KOi0di4xyMV6DJFUdXxJA57t9GRKlif4Zw22MEenxh1RA6fD0xCztiXlBSK6hQE
- ED3Avw6visVU7bosnI33Cu5WRoaTqANvYzV7XFeYYQC2fGLYXZYnj3zfh1pHwuPdUEI2O3hfgpm
- lKWkEbO6LACiB+FibUYIsN4f01MDgRtqlrOb7nvBeFV/vV3svc5rbcEAKWR0QAHSFFpv7fe49KQ
- UbGHzM4mwBU5EYwFVrSrNGSQKW/6LguVr9TTkpI47jsldlW/GCLS7pGAEsj3UGJsO4itjisKdE3
- +G2ZGZSavpslW4o0Dvku2HgZKrLsRNO7UjnDUEq0wfFK91YLdwVMarqTR6lcO2nc0H7+oyQdUIU
- YIOVI8O8mIidT8RZeSvWe+W6N2c0EwbfltJmnfQjyTJlh9M+hZT3BzylXBHO58aFc/ifbd6AtWM
- cugOBm7Q98lIS+dDa5jwGsRmAwlwfezsF4LqVE5nYRURUadxWWDlQdRQCINYNg+RFIcAJHdQJZW
- EAUcpzgjrB+9jvMcXAhnw9apb9IfV12y6xIZN5B2DNJoaDTcGF2uSlkvFmKD2kigXPrGZf2Ea1a
- 2RDjit4w8ucKzxGI0RV91q3klyZUepD7UbQgQaASi0OKCqfpMynU+5lR0r/4g5ZHoeRvDYw3CUo
- lDGDvcVslsA+qMQ==
+ bh=vFI6c0mwtdTz3gvQbmFfAS7MwUgZormUDJ8bbHtnKT0=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnF4aMjv0ZF2X8P51Xv7H/pe84rGTCtzFzF9/JA
+ 4dPXLCMec+JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZxeGjAAKCRDRgEFAKaOo
+ NohRD/9ae+QSNLL2APJqVdSCWn0SRidsnmfJDGR8cxWpkb4Ll+elynyUG0S3JqaS+EToR11ot1K
+ 9k5mq3WJ7KyIE+sNyJ7qCaffMiKXdc7Cp62ERiQ0SjA2ToxBOm3D8CJBzau5PG3R6kMbf9v86N6
+ LazMz/ZF7wI0XunD2V+B/anJMYuRVU+AxxyO/HJyE++9de6ApN/02SN7p2K7R33ZlmFEVTcl7bX
+ Ee4Q8Ttwp28HgfeV4n3jxGn6RyHy1fifda1QxjHXiWIKohNtBFbDSLwD+iaiHoi/5Kyhk8Ai0AC
+ 4COoyYg0bMqsYlX/pX6JmCjRkzoJy+nO/gI6fAeyiEETOZoS1YzKzvKhsM/v2ZFFW0bM37/2YJW
+ eGAXbP4GmZL0y2MC2WulQAuwxmRRBMil6wyskd/cRzjSZCT5Ff7PTSKe0M0Ig6onQnVRlSod3OT
+ 410kGDznQVT7eF2tW4NoYWaOREhqbRVOQygtlxZ70OI/MWaf8LpfNab+cGjsARjcNcIL+CTNB0d
+ CumU0BEedMZ3vQPILJqAdVS8YBlPiEEOmzcjfQ7Q6iqFItoLzEW2Hpjx4FnMb4r0DBAXgyqaqzz
+ 0q0MoeL6Qi+1iQAb+oIUI3/tVrtvCrCJI33mIHFVAxT/dLML18LQjwE50X/6DkUcCDfimciuwCz
+ gOwl1fIUq0x85zg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
@@ -63,46 +64,36 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 11:03:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5552
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5553
 
-Mention that Scarthgap the latest LTS in a bullet list next to
-Kirkstone. Reword the parapraph a bit to make it clearer after this
-change.
+Update the releases.svg file. Link to preview:
+https://lufi.bootlin.com/r/VXPQ7d5NDt#kPjQDABd0EORG6GJCMG2U0IdU1+tGuUMHvWk8GofBsM=
+
+Rewrite the paragraph above to mention the Scarthgap release.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/release-process.rst | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+Changes in v2:
+- Update release.svg with different colors for future/eol (see link
+  above).
+- Rewrite paragraph on releases and mention scarthgap. Add a list of
+  currently supported LTS releases.
+- Link to v1: https://lore.kernel.org/r/20241018-update-releases-svg-v1-1-502899b5d780@bootlin.com
 
-diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
-index 920794679d2256cf0f8e9677c7739e5540c4bdd4..75532addbdcd52cb0ab13ee8ffd57a70e1fc8045 100644
---- a/documentation/ref-manual/release-process.rst
-+++ b/documentation/ref-manual/release-process.rst
-@@ -103,13 +103,16 @@ have reached their End of Life (EOL) won't receive such updates.
- 
- This started with version 3.1 ("Dunfell"), released in April 2020, which
- the project initially committed to supporting for two years, but this duration
--was later extended to four years. Similarly, the following :term:`LTS` release,
--version 4.0 ("Kirkstone"), was released two years later in May 2022 and the
--project committed to supporting it for four years too.
-+was later extended to four years.
- 
--Therefore, a new :term:`LTS` release is made every two years and is supported
--for four years. This offers more stability to project users and leaves more
--time to upgrade to the following :term:`LTS` release.
-+A new :term:`LTS` release is made every two years and is supported for four
-+years. This offers more stability to project users and leaves more time to
-+upgrade to the following :term:`LTS` release.
-+
-+The currently supported :term:`LTS` releases are:
-+
-+-  Version 5.0 ("Scarthgap"), released in April 2024 and supported until April 2028.
-+-  Version 4.0 ("Kirkstone"), released in May 2022 and supported until May 2026.
- 
- See :yocto_wiki:`/Stable_Release_and_LTS` for details about the management
- of stable and :term:`LTS` releases.
+---
+Antonin Godard (2):
+      ref-manual: release-process: update releases.svg
+      ref-manual: release-process: refresh the current LTS releases
 
+ documentation/ref-manual/release-process.rst |  15 +-
+ documentation/ref-manual/svg/releases.svg    | 904 ++++++++++-----------------
+ 2 files changed, 352 insertions(+), 567 deletions(-)
+---
+base-commit: e4b64514673471850635a8dbbf62f34e710e276a
+change-id: 20241018-update-releases-svg-be52387ec8cc
+
+Best regards,
 -- 
-2.46.1
+Antonin Godard <antonin.godard@bootlin.com>
 
 
