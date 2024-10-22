@@ -2,45 +2,45 @@ Return-Path: <michael.opdenacker@rootcommit.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B1B0FD2CDFA
-	for <webhook@archiver.kernel.org>; Tue, 22 Oct 2024 16:14:16 +0000 (UTC)
-Received: from antelope.elm.relay.mailchannels.net (antelope.elm.relay.mailchannels.net [23.83.212.4])
- by mx.groups.io with SMTP id smtpd.web10.22643.1729613647379982870
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8503D2CDFD
+	for <webhook@archiver.kernel.org>; Tue, 22 Oct 2024 16:17:56 +0000 (UTC)
+Received: from cockroach.ash.relay.mailchannels.net (cockroach.ash.relay.mailchannels.net [23.83.222.37])
+ by mx.groups.io with SMTP id smtpd.web11.22590.1729613873342253271
  for <docs@lists.yoctoproject.org>;
- Tue, 22 Oct 2024 09:14:07 -0700
+ Tue, 22 Oct 2024 09:17:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@rootcommit.com header.s=hostingermail-a header.b=UQJjIWKY;
- spf=pass (domain: rootcommit.com, ip: 23.83.212.4, mailfrom: michael.opdenacker@rootcommit.com)
+ dkim=pass header.i=@rootcommit.com header.s=hostingermail-a header.b=KsOc0qkM;
+ spf=pass (domain: rootcommit.com, ip: 23.83.222.37, mailfrom: michael.opdenacker@rootcommit.com)
 X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
 Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id D4C462C5467
-	for <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 16:14:04 +0000 (UTC)
-Received: from fr-int-smtpout6.hostinger.io (trex-12.trex.outbound.svc.cluster.local [100.103.42.138])
+	by relay.mailchannels.net (Postfix) with ESMTP id 5EF8A86762
+	for <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 16:17:52 +0000 (UTC)
+Received: from uk-fast-smtpout10.hostinger.io (100-99-180-59.trex-nlb.outbound.svc.cluster.local [100.99.180.59])
 	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 4547E2C648B
-	for <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 16:14:04 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1729613644; a=rsa-sha256;
+	by relay.mailchannels.net (Postfix) with ESMTPA id A28F88682E
+	for <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 16:17:51 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1729613871; a=rsa-sha256;
 	cv=none;
-	b=B8qq4fGJUo8gm3RcxwsuBdVuCRzvtd5zUEAGr7em+ZRTwh5C3+F1F2l/C6nSw4LHuuJhpQ
-	DDPguQiaizGeiqTg7ltGZrHoCSf//75NGu9J6XX/RQ+7iO0Wxt855hCV2Geyn3mdENvgI1
-	MrBO8Ql4863Yere+oWy4NHqePKFeKgmSMwI15wKbxAM0G2eyWKWsGRmemFIXdgsHxv6bf9
-	tSp+6BL8p+LGlNmNPz0S1XWICiwFtALwoE1IKEvCEAeujsrddK76g8dE54Bz79LETDjJ5R
-	s5NFBy4Mpbcp1G9k14X61Cp4Z0tEkwna+p19EKGVdvYpEDj7gM+lemt5DMQ0EQ==
+	b=8AbCStY2bIYuoZh4rf67jw46F/3+h2QyLYbJekPOvk08V932tj68cZvVOWuSWiimwTO06g
+	1EdhoAew+Vo45UuUiEVd2nw48ALpqDS0eMJTRbghXCxwvGJNZx9zpMdCuBJomCO/VTSSla
+	jMAGFG56xBoiDWz7hxC1UFEG6zbZCKJgRqW54raXqk/S4k8Z+zCQzB5jvyUcRMuuwDntH0
+	IlVXL7+ywg28DEUwLSGwWLpAH+J//CbHrisx1lV8lJ9/h4YWSgbZJubysP8MUOaZry5a5h
+	TYYlKKAVvGO1cZn5mYAcV/fk25o0e/xNwLGr6aLhHEzwxMsRDTVlAE3U+Wh4HQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=mailchannels.net;
-	s=arc-2022; t=1729613644;
+	s=arc-2022; t=1729613871;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nPJp+lzxybs38BLPV1felXcoIFFl2yneT3kM1g7/IGc=;
-	b=IeYgY1t5bIvgbJzOvZJHPuFATyxK6YJup/tF5CB86EHCijill96snbWQnGON2hCKJfRh9a
-	7jq7g1orsifmGtklplQE5zzRM12B8azr90vnsT8X5KWU89Tn7gNXZeDB+BZOK87lLdPxML
-	vW6F+3mg0DcgmA/H45u0o40eJ18mJjPiurnYhqXWoAfMpiJyhepYGbQaF0WwDz0lb8VHL0
-	E7ZZ6bfGhFZuPVrP1oXSDmqQ87SApA0JeqzQIUJPZHu7yO4eZUxUU/g7se7c8rTyaOCV5a
-	NwpaD7bsZADHi6qRSNySjUh+LL3dNQ8wTA16aJ6Z0CVP51/0E60zDGhFUoITFg==
+	bh=sJVEY1UgAZMllNyOUeELxABXfnWH1PWOmb+RLJHC5Fs=;
+	b=FBwituaMwfIBaFr0EltbuGs72hzL52esT4cAFK9HaFoUYRLCpR+TpenWfTiaWmjihz/MPG
+	cZ9NBWW5jZfdYgNV+Ru2OwyH+H3/uFKRjYquyZU/EJp7lgNeC5HZfLsEToEQrL56FzVI8e
+	1iRGW4RrhqDob5Dh4hOD0TXW9Nb029SFXGO4uTbznrgru2tLeX1G26yodN3e/oc3VA/SPq
+	tUchrKTImuMq+NGGAh7mYZ6YVToInVSL8/9sNKyWSjQTAOpshgsNYNFGAtGKY7bmqFDJtV
+	BbS1lRNXY3AEEjLPq8TDd1Snshhb9E+WZgwY0UpK8RVh/Q2xeiisskM2wbByew==
 ARC-Authentication-Results: i=1;
-	rspamd-8d5b95c98-x2fdm;
+	rspamd-5855df8995-pzk2h;
 	auth=pass smtp.auth=hostingeremail
  smtp.mailfrom=michael.opdenacker@rootcommit.com
 X-Sender-Id: hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
@@ -48,68 +48,96 @@ X-MC-Relay: Neutral
 X-MailChannels-SenderId: 
  hostingeremail|x-authuser|michael.opdenacker@rootcommit.com
 X-MailChannels-Auth-Id: hostingeremail
-X-Oafish-Oafish: 6a1c7e7a62b5d365_1729613644779_591396893
-X-MC-Loop-Signature: 1729613644779:1374412883
-X-MC-Ingress-Time: 1729613644779
-Received: from fr-int-smtpout6.hostinger.io (fr-int-smtpout6.hostinger.io
- [89.116.146.60])
+X-Bubble-Well-Made: 21ee4263553bb07b_1729613872149_3886061342
+X-MC-Loop-Signature: 1729613872149:3062533016
+X-MC-Ingress-Time: 1729613872149
+Received: from uk-fast-smtpout10.hostinger.io (uk-fast-smtpout10.hostinger.io
+ [145.14.155.68])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.103.42.138 (trex/7.0.2);
-	Tue, 22 Oct 2024 16:14:04 +0000
-Message-ID: <7e5d389b-cee8-4e90-9133-0d4ff50ca5d4@rootcommit.com>
+	by 100.99.180.59 (trex/7.0.2);
+	Tue, 22 Oct 2024 16:17:52 +0000
+Message-ID: <36a47a8c-49e4-4881-b1f4-a20422260086@rootcommit.com>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rootcommit.com;
-	s=hostingermail-a; t=1729613630;
+	s=hostingermail-a; t=1729613869;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nPJp+lzxybs38BLPV1felXcoIFFl2yneT3kM1g7/IGc=;
-	b=UQJjIWKYkbuxfnKXxIaT0HUir+b1gv2Tb5Jrnl3j8mG+T5EFpUT2YiEbl+XwpM3WNallTE
-	Sq+NemhBK3tVm0clezU91ELd/KlXiM1wNVHCKNzUiDMb16Roq+IE/qc/5JUbuAoaaXAPt8
-	SmLjtJnUU4Sfk3tqOOJbRmhNfHrTMZ1QY08MahRGgmq9tOk5tY7HvLmWEdb0tqfp+3uq48
-	0aS45lHkjzu50y6BHgFDa/SYeb2hEunZkxWh8HHjiJwVKhz+4RlfRMHDkODZiZZBfcyqBC
-	6f8J4izWOkGR7Gv7h0jLqbzUH69TKkUblKo3fXrWVcHtss1qdS4PUlYuX0MRIw==
+	bh=sJVEY1UgAZMllNyOUeELxABXfnWH1PWOmb+RLJHC5Fs=;
+	b=KsOc0qkM2uQSxyA3Fq+wK7NULzPAf1//NgVhHyrGhLq7RVaoFCrj8hM5Xv964DotIdnz3J
+	h8O6DqibpEqM1XYmkA3WdQnvmkG21W76nb4OUhvveruSeO4M7icOIm6d29nyIo7rrVH9UE
+	fPSGEvQ8Ekx0qoWGw1GOzw0qoOajW0VNDMLze9vQ+FfB2+IC6gFPY4NkyfUuftmWRxrrVy
+	aDavwcxZ5FQnDzIkoFaVAtbq2KtWyxlj03LTQFczqZqfhyoo2qnM9449doaJlLhRaV9otJ
+	IiB3mdM1X5+IsNIyWGE6TtT01enhxvae02V/BgFViYEc85gAarJ32FqsZQCLHA==
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Cc: michael.opdenacker@rootcommit.com,
  Quentin Schulz <quentin.schulz@cherry.de>,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Subject: Re: [PATCH v2 0/2] ref-manual: release process: update LTS section
+Subject: Re: [PATCH v2 2/2] ref-manual: release-process: refresh the current
+ LTS releases
 To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
 References: <20241022-update-releases-svg-v2-0-6e7740f9a41c@bootlin.com>
- <D52B130IVLTK.28FJTB79L17DQ@bootlin.com>
+ <20241022-update-releases-svg-v2-2-6e7740f9a41c@bootlin.com>
 Content-Language: en-US
 From: Michael Opdenacker <michael.opdenacker@rootcommit.com>
 Organization: Root Commit
-In-Reply-To: <D52B130IVLTK.28FJTB79L17DQ@bootlin.com>
+In-Reply-To: <20241022-update-releases-svg-v2-2-6e7740f9a41c@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Date: Tue, 22 Oct 2024 16:13:49 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Z6G+H2RA c=1 sm=1 tr=0 ts=6717cf3e a=izfhc+EirUGy/1yDy2FURw==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=P-IC7800AAAA:8 a=d70CFdQeAAAA:8 a=0Do1yo1OC2sGFPRqdmoA:9 a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22 a=NcxpMcIZDGm-g932nG_k:22
-X-CM-Envelope: MS4xfEgLps7aUs/h7UubKdTY2DJS3u0Fur83qEHUpyMSFWRC6EiQzkmysgz21dSrlcXmJPv/IW3D0QP+Xhn7ZxVTUs8/l3T9jdqUWmCJ2+a+lVwCB6x3CC0p 4Wd4thO8MF+Zd3+CaU4EPJ8DZc9RnYEsPF37hvGWvGacO0xgGtAMBp8w/Al+qCO3p3I/cU1HhNaVtBJtxYdkooQ/uxoYcpZcUL8h9M6VPXSqhDuhsAmxD1sn hScRnRm11YMCw9WDGqcZGUqcx59W2hUnnKZmWONI7icYnTp4CXZjHv+eiT94mI1HwLQJyOmx0uEPB761I+SwTQJPxan0xnZkPuRzKMOnOFsQ3Ij+2Rv1O5vC RleMcMTVvGDuQek12YnUcGdBpEOEQVecMrqoEUzBJeMbJAOT1dBCLWRhJ0i2osr+4Iy0dVUzYQkPAe9jMMhssJZLKQAirocG4psZbMaCp/5Ep9odShZ9IYLU 1DuyEcxENOliDvmbyJkMb7ex0UduPsMruv5aHQ==
+Date: Tue, 22 Oct 2024 16:17:49 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=TcnEtgQh c=1 sm=1 tr=0 ts=6717d02d a=izfhc+EirUGy/1yDy2FURw==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=P-IC7800AAAA:8 a=d70CFdQeAAAA:8 a=7DBlWvntW-TTjnd45W8A:9 a=QEXdDO2ut3YA:10 a=d3PnA9EDa4IxuAV0gXij:22 a=NcxpMcIZDGm-g932nG_k:22
+X-CM-Envelope: MS4xfOYpL3npuYw0SbCX71PEXFmSNs9biro7e09avWtNN/BSQkHGqyDKTZ4DCT3A8KlQfzREykUh6i4vyk/uE2rfbxEUuh/XvcNVdt7dE9YwTQs5ESJJ/1K5 d9hRwY2hGyfKfwYB3GoWNf5B0lyryPR/fuJzWvyWLK5MZLB/4v/mt6ZiBeCizM4GEAbRFd5f4S3rXxfrXwhBUk27OCLuwn22XxRNxqoVT2OPQufGWRVWAg/o 1i26kp/z64RGZk/fk5aMM5+D1ifi3aweIrtMUff9HOFwtL9rQOyU5a8oh2XCgZ9kAFlr3kbChFhvRtb1tQ68P/SX2lyfkdIv7FlO0lEvT70UDPqyx2rpqmjP C1snasafq3PmEqEc6ch7PRNdtysuWINq4hWsjKkJ7Rg4kz06GoT2Ajp9/NU8kLV71hM2mpgLq7H0vhfpzQw/IXBdVpskDVI3of2X20/mIJv3sCNi5ymcyxpM /FTjVVZgL/ejOYdWzFcVheF6+swMbQqNqvFLAw==
 X-AuthUser: michael.opdenacker@rootcommit.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 16:14:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5568
+ <docs@lists.yoctoproject.org>; Tue, 22 Oct 2024 16:17:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5569
 
+Hi Antonin,
 
-On 10/22/24 13:39, Antonin Godard wrote:
-> On Tue Oct 22, 2024 at 1:03 PM CEST, Antonin Godard wrote:
->> Update the releases.svg file. Link to preview:
->> https://lufi.bootlin.com/r/VXPQ7d5NDt#kPjQDABd0EORG6GJCMG2U0IdU1+tGuUMHvWk8GofBsM=
-> Realizing I wrote "Current" instead of "Long Term Support" in the diagram. I will
-> fix that.
+On 10/22/24 13:03, Antonin Godard wrote:
+> Mention that Scarthgap the latest LTS in a bullet list next to
+> Kirkstone. Reword the parapraph a bit to make it clearer after this
+> change.
+>
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   documentation/ref-manual/release-process.rst | 15 +++++++++------
+>   1 file changed, 9 insertions(+), 6 deletions(-)
+>
+> diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+> index 920794679d2256cf0f8e9677c7739e5540c4bdd4..75532addbdcd52cb0ab13ee8ffd57a70e1fc8045 100644
+> --- a/documentation/ref-manual/release-process.rst
+> +++ b/documentation/ref-manual/release-process.rst
+> @@ -103,13 +103,16 @@ have reached their End of Life (EOL) won't receive such updates.
+>   
+>   This started with version 3.1 ("Dunfell"), released in April 2020, which
+>   the project initially committed to supporting for two years, but this duration
+> -was later extended to four years. Similarly, the following :term:`LTS` release,
+> -version 4.0 ("Kirkstone"), was released two years later in May 2022 and the
+> -project committed to supporting it for four years too.
+> +was later extended to four years.
+>   
+> -Therefore, a new :term:`LTS` release is made every two years and is supported
+> -for four years. This offers more stability to project users and leaves more
+> -time to upgrade to the following :term:`LTS` release.
+> +A new :term:`LTS` release is made every two years and is supported for four
+> +years. This offers more stability to project users and leaves more time to
+> +upgrade to the following :term:`LTS` release.
+> +
+> +The currently supported :term:`LTS` releases are:
+> +
+> +-  Version 5.0 ("Scarthgap"), released in April 2024 and supported until April 2028.
+> +-  Version 4.0 ("Kirkstone"), released in May 2022 and supported until May 2026.
+>   
+>   See :yocto_wiki:`/Stable_Release_and_LTS` for details about the management
+>   of stable and :term:`LTS` releases.
 
-Actually, "Current" looks good to me as "LTS" already appears next to 
-the release name.
+Looks good to me, thanks!
 
-Now that Styhead has been released, you should also change its color to 
-"Current", the same color as for Scarthgap.
-
-Thanks
-Michael.
+Reviewed-by: Michael Opdenacker <michael.opdenacker@rootcommit.com>
 
 -- 
 Michael Opdenacker
