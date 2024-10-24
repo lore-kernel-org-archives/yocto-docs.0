@@ -1,241 +1,170 @@
-Return-Path: <jdeivard@outlook.com>
+Return-Path: <niko.mauno@vaisala.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BD01CFA44E
-	for <webhook@archiver.kernel.org>; Wed, 23 Oct 2024 16:03:16 +0000 (UTC)
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.92.91.79])
- by mx.groups.io with SMTP id smtpd.web10.1245.1729699387509020693
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6AE5D0BB6A
+	for <webhook@archiver.kernel.org>; Thu, 24 Oct 2024 07:19:15 +0000 (UTC)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.129])
+ by mx.groups.io with SMTP id smtpd.web11.8852.1729754346845435053
  for <docs@lists.yoctoproject.org>;
- Wed, 23 Oct 2024 09:03:07 -0700
+ Thu, 24 Oct 2024 00:19:07 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@outlook.com header.s=selector1 header.b=VhrMEknE;
- spf=pass (domain: outlook.com, ip: 40.92.91.79, mailfrom: jdeivard@outlook.com)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@vaisala.com header.s=selector1 header.b=G7wRS3bf;
+ spf=permerror, err=parse error for token &{10 18 spf3.vaisala.com}: parse error for token &{10 18 _spf-dc57.sapsf.eu}: limit exceeded (domain: vaisala.com, ip: 40.107.22.129, mailfrom: niko.mauno@vaisala.com)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RKWOwtBg0w1YGHgJ6D56Ysy8ZYtvGc1laUSt5ut+MIfHuunjoXRWlzTcf7adhXDSV+FmRLCzdVw8bO93+qo4/RhbZuiGbFzAzMtMbQT4scKhz8rJJgGVBlOJjFnsJzv0ekCo8tQ51rOBIclagBr2vbtaSnmiBEGPsIZluaB0D2x5mEoUAgvOxL12aHmL9LW5wNZrPNSBhX9u1VvWoQxZOo5yk5i2RlW57ATkQpnpnoyljjMy4ovohNw4mEBy9oRVy29XJJ6+W68RbE5gj8/onIQ95zYmUhKzpKShg5xciuEfRuwts14QIhJxsQUgdcCOk+PyA0tDtllkn1c3U+YwUQ==
+ b=dk2j+0NyxwM7xBNqNK48pSVI55W23fnZ9VyDc39oHOmyMjL036Z8q68GJGCV528Jb5oY98lbJiMEj65UFNpTFZxBvuC8pnlwq2K5vV6F20k2R8tjXmNf58fdcCIdTFt7soV84cigJRecZCB5eYrdKpE/1HMLn6koaJRE4+jD2agx4yvEev7dDNRD2k11/GweVhy7ZOyoveRoTy/JGA17MQdPlNLwjRskz3fA5rFDtlUbKwCnb02vOukqCVFh/c2pzp7h3eP23fcE2FHnepKWKkGK7M8asJeOrSikbpUaU9v2BgXFd4f3pXEyHU+04ACxTGJ1cduoImy+32o8duUSVA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4fZgX9/xitOOk7omViqspKiw+dKiagKQQTDTIfzo0hw=;
- b=ihd9530eo4ktDEwoY+k8YmgIn6Hp/JGhNBm0JvSOUajANUX2VOfVKTsWMxbjQ+vDqNILp+JYRaGEPQUP7YpdygZzOrxifGzwOVBtW4Vra5vzk1O4q2daDNkdVCGy67vX3oxmTq2/4r7H3NWB30hbrs9pe+hiRmENFsayBplVty8GY87qi3nK7EfWey4nXt8eDpnlZr7D0srmrU22YB/frJz1WJaQLZA40z64dn8IVaI5hyFBdBLzAyJRAwLDvZ4c6kB96a2dgzRhpqDP6gzVMBacalpgSZhHt8uyCnZLePhd5G23RwX68RX0zLqS89lN88+//pi90SwNjlpSBHvmkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ bh=WaKDWtlgUOXYm6etgHa8XbL7J9jPQMFMP0piHtbObuc=;
+ b=Fyk/cIyVhjIIH0wMGRWKHVYhZyZ0rHrh4bYcPoVGBMHFS1lBgV9XyaISqTZnLCEqpRKRRNPyvfHWx8CrXiQ2hC0bbgFFyImc6Jg9ySHZG3qzDsGostemWO6zmRypDPFxFX/g32K0fHryAcEQJQvxnr2iyJ9TMLSL+bitkEHkSAoVaCA85FByWx+8u8No2evRie+RiWVdTL6yumdGZEiRrG2UMZEevfZ/CBqR0bHM2OSzyED/ziZPyPY8zTvqHbGyCJYaKtl6Ij+y+6AG6h3NFnb2zxKGKQmaVYdXQhyH0XCW9XQE8VwbIlOkd0GW4WoaJa22zt/PsEQ+o4KehhwKEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=vaisala.com; dmarc=pass action=none header.from=vaisala.com;
+ dkim=pass header.d=vaisala.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=vaisala.com;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4fZgX9/xitOOk7omViqspKiw+dKiagKQQTDTIfzo0hw=;
- b=VhrMEknErNZXe00ptbp1D6HPs2ZNfT/64mgjZEwlUJrsaDcZWIcfWRzQfognHyZDU5phW6F26pfaTZt+H8HPwU29Twob92dDRYBZkbPUf09iZprVY+ogcey0ZaUN0GdfpajQHCq+z04BvSoWUh5OzS9z9pNegzN47CRzSbjivY8aAib8dsvuTI1oNZxiARWkA6SsGgWDo9P1aejlOwlz+oArst0PlOMOKa6R7TxjBJH5NqUhVCTOUa3E/M2xO6Cf12Wz54pdOM/QTYH/7ltStUhHE2BhGAnyXpVp9hWCgZat60w1xFeu4//O9I5DETz7YuoYW/R50B54sW2qSOCe4Q==
-Received: from PAXP251MB0225.EURP251.PROD.OUTLOOK.COM (2603:10a6:102:207::16)
- by PRAP251MB0685.EURP251.PROD.OUTLOOK.COM (2603:10a6:102:290::7) with
+ bh=WaKDWtlgUOXYm6etgHa8XbL7J9jPQMFMP0piHtbObuc=;
+ b=G7wRS3bfR/iQrQBVxhGk0eDm+yFK8rqrM5xnSOMNgE3bNxGl7Nr+pq2f5d4xrpSIG0YB9TnmLh+cbZ2LuY26SGNwty67HfAXjQmA5SFX9NLKq3xUd9JaPYOKvEpppVYEqC54arTEfIxWpi/IzWWCNEEnrWT1POKOvMgnG7v1hABFblHUlh1mVe6H9G8jtj+c4//OR/sNSLqwkTbVrdX4W6a81FOg3+fSVRPxegCURtiaKEnxr6Eh9Pq7XNq3r5AtnTA8SsRDX7wHnwBVJ7NTRKz5c2vWJYHQJ9PLRL8gMDRrOMqHtEeOgi92AK2gD5DwH/beMrT/PfeZ203iEkACYg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=vaisala.com;
+Received: from AS4PR06MB8447.eurprd06.prod.outlook.com (2603:10a6:20b:4e2::11)
+ by PA1PR06MB9604.eurprd06.prod.outlook.com (2603:10a6:102:446::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8069.28; Wed, 23 Oct
- 2024 16:03:04 +0000
-Received: from PAXP251MB0225.EURP251.PROD.OUTLOOK.COM
- ([fe80::f951:7e02:93eb:d658]) by PAXP251MB0225.EURP251.PROD.OUTLOOK.COM
- ([fe80::f951:7e02:93eb:d658%4]) with mapi id 15.20.8069.019; Wed, 23 Oct 2024
- 16:03:04 +0000
-From: Johannes Deivard <jdeivard@outlook.com>
-To: "docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-Subject: BUG - Optimize WSL2 VHDX file using DiskPart
-Thread-Topic: BUG - Optimize WSL2 VHDX file using DiskPart
-Thread-Index: AQHbJWTtg1PAMy4gJECOzLRtbz1ZXA==
-Date: Wed, 23 Oct 2024 16:03:04 +0000
-Message-ID: 
- <PAXP251MB02258F3DDEC28194AE141371DF4D2@PAXP251MB0225.EURP251.PROD.OUTLOOK.COM>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXP251MB0225:EE_|PRAP251MB0685:EE_
-x-ms-office365-filtering-correlation-id: 70987cbe-5df7-48cc-2b2f-08dcf37c2d3e
-x-microsoft-antispam: 
- BCL:0;ARA:14566002|15030799003|19110799003|8062599003|8060799006|461199028|15080799006|9400799024|12050799009|7092599003|10035399004|440099028|3412199025|4302099013|102099032|1602099012;
-x-microsoft-antispam-message-info: 
-	=?iso-8859-1?Q?JhXYTGbRy5pmJKUMExW9uRL6/bIHYsEJV56GPJitNM1etwvZHYpKQaGZfd?=
- =?iso-8859-1?Q?hUQnP5U/xT8Unxoj34WAeyr0bALpHikSJmQ7+c38qoI3+jWu1bHJNqL95Y?=
- =?iso-8859-1?Q?clnonDATxxboxmajRjYQzEcHZkVgLWfANq6gdrWddtnE2Q9MTmN3R4qsNJ?=
- =?iso-8859-1?Q?sFBOtaWBGvy0hnZqVcjCZ5ZHe/Zm3/PnyBM1dlBca7SLcIlk/KYhgeS61Q?=
- =?iso-8859-1?Q?0sFt8JCgiBbVHXfhbfh26CgmtA/Dv6UAIWufTKCdpwnmMLh9O//YhnLcZC?=
- =?iso-8859-1?Q?O3P+DPhRpfULKcoU2Oi1LGz7IWW16paB1qshlRoMwzwpzISM/Sn16Jl796?=
- =?iso-8859-1?Q?bnO+HsSdyo+KESbXLHW2aYD4goqcCxW/z7WkX68Lp7xdqRZSM20JucBoTj?=
- =?iso-8859-1?Q?grExohKJn2LRTiQaNBXPD6rJL8pJ4K7S/OnAwZW3sWf9VFPw3SXmti1e0P?=
- =?iso-8859-1?Q?b+/t/Ot0a1ZkzaARf4FRS9OIrUqnPU0sVJo/KuXwV5/CKdBgbLjmBmqFzq?=
- =?iso-8859-1?Q?otrpvZ2qt9FNRV64FTqQMDyJj1YxCHSP4XACL4XeSVbqLRu5nhNVosIcd/?=
- =?iso-8859-1?Q?KddgK0fRuoWMhRUWLmabx5DM8fXztaIaZvsnLC6kTndAgWagzHQPNQ5hmg?=
- =?iso-8859-1?Q?EKTBVcMyM58DgPBsLZpYmBCge921aHaIGeF3hgYlYqHZjR/U7i5PT3NevH?=
- =?iso-8859-1?Q?0VmItJc4eNxaAk6WfJXvkkj2+ddknx5AYOLGo5YEZMi6B3h0X1YDMVUec6?=
- =?iso-8859-1?Q?HTehi+HHdKp2eqJppObHh46J4qBHFE1QtNMsY7RlunQEx49I/ib8/Ax+cf?=
- =?iso-8859-1?Q?rNj2tBNC0ru0ETRw+jLDg0/JajRAMR54EN4tNKWGT4MTpZjKnM1aamNI1S?=
- =?iso-8859-1?Q?yrakDwvIEHMFM0vTiivDRbQOE4Vv37FHcAaOGx/Td1o2VJ6Byc97zP+4yh?=
- =?iso-8859-1?Q?vlY2yBA502vH6irxofOiuhn6IcEGSYaXUnxhjkro2jvn8N1T1tmlDA=3D?=
- =?iso-8859-1?Q?=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?3LSd0bnpTT/VeJRSsFgx6JhWx3by4NR3UsYmb+GVXoXUpmCTm6A8g2OVa6?=
- =?iso-8859-1?Q?9teLFfKcZU16/l0LqsAWXtecencdUufb3XvaYHrJfMfmL894RJvkuT2M2b?=
- =?iso-8859-1?Q?H0j2FUnlUHo35AERlRwvzcV2mj15CdLI+MpyKbAILTy404Xi86HILvSmHF?=
- =?iso-8859-1?Q?KDnabTmeUedbRcLb5ihxqtL33Bkm5ul8KjcARteyplXIXMaaP4lfCQRMJO?=
- =?iso-8859-1?Q?Xr3FopcolTk8DIjvfEzNKcB51CUED2girCJDHb0JQEyOtkw1R3EZb4oNwW?=
- =?iso-8859-1?Q?4+gNPB6/fGsQT5ULEaU3MjYtL+ghww3fAqgSCeSkyb2yY3A/GGqCrnAwXq?=
- =?iso-8859-1?Q?sJfv4TdFrwPt2SevINm3ED5fPUYlwaJYsJHFHx1xwvKjs1+eEmVsLsKvVz?=
- =?iso-8859-1?Q?sw9L1hhpOj68XM5I3imwm0qDDN4oRoqVRwHfUF4uR0C/QZSMM26aMEc57o?=
- =?iso-8859-1?Q?vdW9jDixib5z7re7o+UInpn12uY/ARtbSJDPrcNsIPbIjpJmQh57GeubeN?=
- =?iso-8859-1?Q?8b36tgEfo6nWh+bSoddWiFxv8G+rcbwzENO2TAl4X3EsJEe1CBmSCZktCI?=
- =?iso-8859-1?Q?tb5PJ1G/JlWMLiUhTcWgYq5lA/UE6WVAL0rrG2CZ0FBpsRi/VFxh8twZnq?=
- =?iso-8859-1?Q?LZqSKsfIiQWJLvP4ZUAGzl4T1BrM+3Q+3YJ7BbX3Sp0hxnC3IBOKVImVbq?=
- =?iso-8859-1?Q?WLP8ofLrehyByDw+sb5RDZP4iuxwJzgJsQDFlEme0Fr439rCwxrDXzlJ6Q?=
- =?iso-8859-1?Q?53lA5rwsaiFV5K3prPvXpNaCQc1A4K6iPByiK5TZQdTSPhAIq54z1IA43c?=
- =?iso-8859-1?Q?uun7XA/ZhpkvbwIIyyiOZXPBHs8EjG3w4wpVzClIIrjwHK2OYShWz4UFax?=
- =?iso-8859-1?Q?sxPlhwm01xBDJUEFOLhiRAucPzgYhkTnfpZoqmqN2Cgq+qgJ3lwRjbe9KK?=
- =?iso-8859-1?Q?IYfAgQnwNR07jzbusyafaiJ1lnfEPPMnE8if34yubkQlZ9Unj8BMjxZ1YS?=
- =?iso-8859-1?Q?SAwMrj9ZpCkxz4OmiqDc1waZF1PbE/SNoBdH4D3C+ZxC6HHOiFKdCpDTcs?=
- =?iso-8859-1?Q?nWDO31Jy/OFDUoPe1DJqAAHw+Nv+Si6/Lb1sLbbq1y0RzVg+alQhwHa7gz?=
- =?iso-8859-1?Q?JOmLnx204nOTjK//J9o9k/eEzIshp9m2N7GngVbW4MtEutsQz5ToZ+NROW?=
- =?iso-8859-1?Q?k0vjf5//YsL3h3Bqyi+Ch4LVXeZXHrYxQ67Ye20TJqZ7WPztdE3GRvNf5g?=
- =?iso-8859-1?Q?2UmwrZolQBKjHGdqKHNg=3D=3D?=
-Content-Type: multipart/alternative;
-	boundary="_000_PAXP251MB02258F3DDEC28194AE141371DF4D2PAXP251MB0225EURP_"
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.17; Thu, 24 Oct
+ 2024 07:19:02 +0000
+Received: from AS4PR06MB8447.eurprd06.prod.outlook.com
+ ([fe80::af93:b150:b886:b2bc]) by AS4PR06MB8447.eurprd06.prod.outlook.com
+ ([fe80::af93:b150:b886:b2bc%6]) with mapi id 15.20.8093.014; Thu, 24 Oct 2024
+ 07:19:02 +0000
+From: Niko Mauno <niko.mauno@vaisala.com>
+To: docs@lists.yoctoproject.org
+CC: Niko Mauno <niko.mauno@vaisala.com>
+Subject: [PATCH] ref-manual: Sync variables letter index
+Date: Thu, 24 Oct 2024 07:18:37 +0000
+Message-ID: <20241024071837.976031-1-niko.mauno@vaisala.com>
+X-Mailer: git-send-email 2.39.2
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-ClientProxiedBy: GV2PEPF00004598.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:158:401::443) To AS4PR06MB8447.eurprd06.prod.outlook.com
+ (2603:10a6:20b:4e2::11)
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS4PR06MB8447:EE_|PA1PR06MB9604:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3067fed6-b714-47e9-e2a2-08dcf3fc22b8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|1800799024|52116014|376014|366016|38350700014;
+X-Microsoft-Antispam-Message-Info: 
+	=?us-ascii?Q?YEbkTapPrtY7vb8Z+5JNPedveWL0v8gynJXmry3Ge/KINlL//um+bni7XDUl?=
+ =?us-ascii?Q?CWETb4opVnl6oxI7jdHuZXVuNls0exu6iIHwGAcXiKo67PRtYdBG1hnK6i69?=
+ =?us-ascii?Q?qBEb1SM7+we1Fw0ejt5c63dcC8NiMO3g6iajH7i9nsOwo/LWpBDx/GBuj5OP?=
+ =?us-ascii?Q?zAWLZHvIMo7vLS4yJjFkEMi+ykyo+gLYQ/gzz2v/bQZj2lxXYO8MTtAVI0Cz?=
+ =?us-ascii?Q?0THlkHT9OHhXaXCJpJ4jc0nu3Na2az4b43bM24zRevyWpmrVAcKXIuXNRt0k?=
+ =?us-ascii?Q?tSHEBVzezcMHkif2w8fN/DI7Q1aCeSVBCelEdtIj/HXQQ4N3sH1nVoa4YvtT?=
+ =?us-ascii?Q?3FmHz1kAz7B5AQHPg77F3p0GNM9d0V0ctRgPszEyjf0+gMHqXMp8lQJO9K5r?=
+ =?us-ascii?Q?xnh4RP9awHLonnmrNdEng/6DXKXY0LWe9m+QVZKXUojz+0V3GF5erpBCgoFl?=
+ =?us-ascii?Q?vMSLyo7nJZbjnDpncnIFzNDYMjqV3PFAe4l0NzhoioiIyrNZGjPbWP1M4j7Z?=
+ =?us-ascii?Q?1wbB91qWeqjqCdu2M+wnLwLk8liXOZwt5jlxc+YHNHAnR7FDN6BNtVFW7sxo?=
+ =?us-ascii?Q?SEf9M+LJ3uMFUUlG3YUroG1DxkzyRMJ/8viJD5ct/Oj82BI+gV+REvDJvSxf?=
+ =?us-ascii?Q?ifiwZtRJQs4EJm80orJsDq/edp5QdE8Q6rDPA/By8Kpe+GvivFHNh4CXCApv?=
+ =?us-ascii?Q?nRjrptYhuYs2ecTMVE8dGuLQ7cUGwWR0EUFdxCC570zt5ng+1XmfbT3pP2LD?=
+ =?us-ascii?Q?dDVCbZeKZ1q9xna0R/zXDEn2eLCvUjuXFgOT/btwWNbvF0lgzF9KFmwcnDl9?=
+ =?us-ascii?Q?7alkncxUv3iyyzALNDGwwrJ48LQXFpRdOhQNkUNq3WP7IP7BVg2Amb4S2veZ?=
+ =?us-ascii?Q?/1OuaDbdgeOx0P7IV4dPLJMIu6Qkhm8Qap8MlnAw0pMTMZsn1aeTdXRStAPB?=
+ =?us-ascii?Q?dq+F7/gXMyomAm8zTCjiYuCOduymAvlDFMYOYC0PuPCKGrrqD+2Tb2QENFXj?=
+ =?us-ascii?Q?GX+YtrIDUrC+LInUut87AV7NVrugI7Sd0ENTbfkK/4O6lxsOcKpiQR5Z8co/?=
+ =?us-ascii?Q?opPdziyzw+iK04rIBCb+kKvZAX+Z6ZDL5iPh+q3NpKFsqrGOc/K08oQobMH6?=
+ =?us-ascii?Q?dTH97ssmBIDHAkued9uKBeUgnaV41qe7kvIj7oyXtVVS0z6nI1ltxloSy5Is?=
+ =?us-ascii?Q?EZk0eJ3Bh2nDjQNR77u2ru6TLiouLUoXfAo6F3RZCxgvlL78399Oen8lV6Sw?=
+ =?us-ascii?Q?W9Udl4kszO8QPR1aRWQoeFlHMdBWhpc+wAClGKN/8xyUhHiDkscYF5ovOdud?=
+ =?us-ascii?Q?2MfUa5PbRxc1of3EbrdtLQ2LmcPmIXVKKZhfYoLHYHZsMvG7EfuOVDEPbcif?=
+ =?us-ascii?Q?A5Jp8CI=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR06MB8447.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(366016)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?3iwAX8bYDoY0jc5azryYW0Rx7Ccogctr06hn5lPKBOhJlZ0TDnhoXrXu1Ten?=
+ =?us-ascii?Q?nqqD+NE90LvzfClVN31BWsTdE72Nj2u3SerAUEwhKiKqaM2RVRdaoOtine3u?=
+ =?us-ascii?Q?b3c++NcoCbYJ+q9izP9s9X4R0eJOsh58+eED22asrfgT53YiS1EGdVET1G4u?=
+ =?us-ascii?Q?7N/K9v3QnjsPSe3E8ghMcww31SKcVdQ9XE8z1y7nYeQ/uPM65dbMldTiFn1t?=
+ =?us-ascii?Q?R8uRGLIVS+FLsIN5HRHU2gPFHwF/SC9L3G8MkU3nCp5gGdKxzTGl653HyNm8?=
+ =?us-ascii?Q?X7yBQ2ACUhFLU6w7EnA2abO8cvYUa2Efk3SwATUrFcjWZXk7FKOFGmLrYnFd?=
+ =?us-ascii?Q?KxZ7zRLUMg34IOOUNMPjTqruzCZ6p5qjGazoud7mcR1JnXN5XLuEhXOacgSB?=
+ =?us-ascii?Q?VQWHkryMVbLUDdtSI9o+QlOyIutNAhELMqpHtJCPgItr+dBiykbK7pWkHYMW?=
+ =?us-ascii?Q?rhelWgyDuI92wNw6IycgG2D5WXRz48hapiyQrYfF5jENeWpFg32sRWJri9YF?=
+ =?us-ascii?Q?czrF6EpxRWwftDy+CmLxnLG2PO9y9rBCYfRT6Xxm+LWb8Zg5rv0Ls++cNhDT?=
+ =?us-ascii?Q?Mew41YtzDtZs9JoMLrF4+gtWwnD5I0i+H0zopHPuKATxEt+GAMJZ+4BNKkX6?=
+ =?us-ascii?Q?nx1ztHr7ZTcYwxYXSswawizu12Y9nlvbrpQlTwA13jPhmV+PvxqUQAOCjzM/?=
+ =?us-ascii?Q?3ZfPPuVsq0kUrUGsz0s4cp4oF0lBS4ANFnNGHbeCN0k3E+lLRS30uFzalMqn?=
+ =?us-ascii?Q?pSyMWYP91n3u7zBlhQkRHsBq5etAvZyoiAvYRlgdgxuOvT2y6OT7oRELwWbq?=
+ =?us-ascii?Q?CXAGox4Ag+lPzpgqWw7dPF2I2yO8KCxucPRjO0UdW5adz3+q1x1rNlWMjDvu?=
+ =?us-ascii?Q?ACEJNYdYi3PuwHu6LVzEGYuIjaHCC8nn+nVqoA0ed12Wl3AW/xTKikZzsp6c?=
+ =?us-ascii?Q?3UDXVK6Fod/Rzf26IOwNbgHUFkYNmqyrdgxfVQSeJZQ5a3zeRWSsrSYyZiMn?=
+ =?us-ascii?Q?AZSY09F4yX7HEJfi1OSEhiBsJBDWKkVG2c9XjyMHZQ5h34Kp1XlyvIloBdmD?=
+ =?us-ascii?Q?95tSTOHv+7z3AL7NRlcUrRbgFm35zTyVjTktxXMeUvqgVxBLEV3CnRzkj0uk?=
+ =?us-ascii?Q?NZYqu1ChiyJuomPsPubaKsabeGdPt+oCyUam5dKLnBH94VxrTckkpoeQyXQu?=
+ =?us-ascii?Q?3fWUdevh4z63PPiIXIrCkKGyG7HqEqm0VZpRtfa5/w1NVLZMHvXXsGtAcNAe?=
+ =?us-ascii?Q?GuA9nEpICJH6nG8dc+476YjVf7KLbyqrop0UxpR32vLG5zn2ikytQELZ9l9O?=
+ =?us-ascii?Q?U4OyFzn60vZaNmF5AEIIiQfzoxU37F3xwtmt4KIz8CGs8PyTuY2Ve5/APc4W?=
+ =?us-ascii?Q?vULBxrRYjEWXxzUz916qN/7ZKJLoAa/Q3U01Rzpvr7xryTJ3U9liHDHpJ59p?=
+ =?us-ascii?Q?hr9gL7EiLYmFR7nVzILySuK0JRzMeZO7FhR4tHlv5HVyjinziinJglHpuxCv?=
+ =?us-ascii?Q?sVQ8FhxL2P2gmzLgiGVe6LVo2QbzIBZmeUAHuZ3jKWLvVgx+I8oheDlrCQ0c?=
+ =?us-ascii?Q?dZiJ9LCctP5cslkIT7S3gKxmT2c2BsNKPWZXPmfC3YCSV7YPEt91iPCspaVP?=
+ =?us-ascii?Q?mg=3D=3D?=
+X-OriginatorOrg: vaisala.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3067fed6-b714-47e9-e2a2-08dcf3fc22b8
+X-MS-Exchange-CrossTenant-AuthSource: AS4PR06MB8447.eurprd06.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXP251MB0225.EURP251.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 70987cbe-5df7-48cc-2b2f-08dcf37c2d3e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Oct 2024 16:03:04.0227
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2024 07:19:02.0533
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PRAP251MB0685
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 6d7393e0-41f5-4c2e-9b12-4c2be5da5c57
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: HgfbYtjrSR6dA1lG00+1AF8WP4TozE2e5VuZCztlkTia6iFmwV3zJXdIcm2FH0scpViYkPS54D4M7M59MER11w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR06MB9604
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 23 Oct 2024 16:03:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5575
+ <docs@lists.yoctoproject.org>; Thu, 24 Oct 2024 07:19:15 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5576
 
---_000_PAXP251MB02258F3DDEC28194AE141371DF4D2PAXP251MB0225EURP_
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+Update variable name letter index so that each letter leads to first
+variable name entry in the list. Also add letters Q and Z to index.
 
-Hi,
+Signed-off-by: Niko Mauno <niko.mauno@vaisala.com>
+---
+ documentation/ref-manual/variables.rst | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-I would like to report that one crucial step is missing in the instructions=
- "2b. Optimize your VHDX file using DiskPart<https://docs.yoctoproject.org/=
-dev-manual/start.html?highlight=3Dwsl2#:~:text=3D2b.%20Optimize%20your%20VH=
-DX%20file%20using%20DiskPart%3A>".
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
+ual/variables.rst
+index dc7a19efef..07ed143ac5 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -8,13 +8,13 @@ This chapter lists common variables used in the OpenEmbed=
+ded build
+ system and gives an overview of their function and contents.
+=20
+ :term:`A <ABIEXTENSION>` :term:`B` :term:`C <CACHE>`
+-:term:`D` :term:`E <EFI_PROVIDER>` :term:`F <FEATURE_PACKAGES>`
+-:term:`G <GCCPIE>` :term:`H <HOMEPAGE>` :term:`I <ICECC_DISABLED>`
++:term:`D` :term:`E <EFI_PROVIDER>` :term:`F <FAKEROOT>`
++:term:`G <GCCPIE>` :term:`H <HGDIR>` :term:`I <ICECC_CLASS_DISABLE>`
+ :term:`K <KARCH>` :term:`L <LABELS>` :term:`M <MACHINE>`
+ :term:`N <NATIVELSBSTRING>` :term:`O <OBJCOPY>` :term:`P`
+-:term:`R <RANLIB>` :term:`S` :term:`T`
+-:term:`U <UBOOT_CONFIG>` :term:`V <VIRTUAL-RUNTIME>`
+-:term:`W <WARN_QA>` :term:`X <XSERVER>`
++:term:`Q <QA_EMPTY_DIRS>` :term:`R <RANLIB>` :term:`S` :term:`T`
++:term:`U <UBOOT_BINARY>` :term:`V <VIRTUAL-RUNTIME>`
++:term:`W <WARN_QA>` :term:`X <XSERVER>` :term:`Z <ZSTD_THREADS>`
+=20
+ .. glossary::
+    :sorted:
+--=20
+2.39.2
 
-The attached vdisk must be detached before diskpart is exitted, or you wont=
- be able to start WSL2 again since the VHDX file "is being used by another =
-process."
-
-The instructions for this subsection should be as follows (detach vdisk ins=
-truction added before exit):
-
-C:\WINDOWS\system32> wsl --shutdown
-C:\WINDOWS\system32> diskpart
-
-DISKPART> select vdisk file=3D"<path_to_VHDX_file>"
-DISKPART> attach vdisk readonly
-DISKPART> compact vdisk
-DISKPART> detach vdisk
-DISKPART> exit
-
-Best regards,
-Johannes Deivard
-
-
---_000_PAXP251MB02258F3DDEC28194AE141371DF4D2PAXP251MB0225EURP_
-Content-Type: text/html; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
-
-<html>
-<head>
-<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Diso-8859-=
-1">
-<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
-ttom:0;} </style>
-</head>
-<body dir=3D"ltr">
-<div class=3D"elementToProof" style=3D"text-align: left; text-indent: 0px; =
-background-color: rgb(255, 255, 255); margin: 0px; font-family: Calibri, He=
-lvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">
-Hi,</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-I would like&nbsp;to report that one crucial step is missing in the instruc=
-tions &quot;<a href=3D"https://docs.yoctoproject.org/dev-manual/start.html?=
-highlight=3Dwsl2#:~:text=3D2b.%20Optimize%20your%20VHDX%20file%20using%20Di=
-skPart%3A" id=3D"OWA3d9464ad-557f-d3ca-86f4-ccc4479c6145" class=3D"x_OWAAut=
-oLink" title=3D"https://docs.yoctoproject.org/dev-manual/start.html?highlig=
-ht=3Dwsl2#:~:text=3D2b.%20Optimize%20your%20VHDX%20file%20using%20DiskPart%=
-3A" data-ogsc=3D"" data-linkindex=3D"0" data-auth=3D"NotApplicable" style=
-=3D"margin: 0px;">2b.
- Optimize your VHDX file using DiskPart</a>&quot;.&nbsp;</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-The attached vdisk must be detached before diskpart is exitted, or you wont=
- be able to start WSL2 again since the VHDX file &quot;is being used by ano=
-ther process.&quot;</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-The instructions for this subsection should be as follows (detach vdisk ins=
-truction added before exit):</div>
-<pre style=3D"background-color: rgb(255, 255, 255); margin: 0px; padding: 1=
-2px; display: block;"><div style=3D"text-align: left; text-indent: 0px; lin=
-e-height: 1.4; white-space: pre-wrap; margin: 0px; font-family: Calibri, He=
-lvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">C:\WINDOWS\syst=
-em32&gt; wsl --shutdown=0A=
-C:\WINDOWS\system32&gt; diskpart=0A=
-=0A=
-DISKPART&gt; select vdisk file=3D&quot;&lt;path_to_VHDX_file&gt;&quot;=0A=
-DISKPART&gt; attach vdisk readonly=0A=
-DISKPART&gt; compact vdisk</div><div style=3D"text-align: left; text-indent=
-: 0px; line-height: 1.4; white-space: pre-wrap; margin: 0px; font-family: C=
-alibri, Helvetica, sans-serif; font-size: 11pt; color: rgb(0, 0, 0);">DISKP=
-ART&gt; detach vdisk=0A=
-DISKPART&gt; exit</div></pre>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-Best regards,</div>
-<div style=3D"text-align: left; text-indent: 0px; background-color: rgb(255=
-, 255, 255); margin: 0px; font-family: Calibri, Helvetica, sans-serif; font=
--size: 11pt; color: rgb(0, 0, 0);">
-Johannes Deivard</div>
-<div class=3D"elementToProof" style=3D"font-family: Calibri, Helvetica, san=
-s-serif; font-size: 11pt; color: rgb(0, 0, 0);">
-<br>
-</div>
-<div id=3D"Signature" class=3D"elementToProof" style=3D"color: inherit;"></=
-div>
-</body>
-</html>
-
---_000_PAXP251MB02258F3DDEC28194AE141371DF4D2PAXP251MB0225EURP_--
 
