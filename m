@@ -1,127 +1,96 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7860CFA47F
-	for <webhook@archiver.kernel.org>; Thu, 24 Oct 2024 10:31:06 +0000 (UTC)
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.web10.11521.1729765864586024118
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C51ACE8E8A
+	for <webhook@archiver.kernel.org>; Thu, 24 Oct 2024 14:58:28 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.16657.1729781902453458609
  for <docs@lists.yoctoproject.org>;
- Thu, 24 Oct 2024 03:31:05 -0700
+ Thu, 24 Oct 2024 07:58:22 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=NR0CsSqX;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.42, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43152b79d25so7131375e9.1
-        for <docs@lists.yoctoproject.org>; Thu, 24 Oct 2024 03:31:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1729765863; x=1730370663; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=upYlFT3tzWh52TND2cfBGm0O2VVCP18U3QvYIrbKEdQ=;
-        b=NR0CsSqX4NV7LCz9C9YGfEt80BM/iH6VRBdxoNOj+qqZFUnHV0VEwUfd+m2rFkFD8+
-         e+1YgawW18P4ottBDYCafT/j8hv48cuwEyVx+PhuShkuCHOJlWEIiND9C0j+n+6spp1e
-         fHIQSHJ8UhXZGSwdEBqc7cGMucikyO6IoeaCI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729765863; x=1730370663;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=upYlFT3tzWh52TND2cfBGm0O2VVCP18U3QvYIrbKEdQ=;
-        b=h6A5Kd8VmtKrVosHYtcGGNznPV2YwxngFrfjri3nRc/fICT2qb5A/Iu7KGORrjuhPd
-         Ke+9uJX+k3PKZ3FxdPnFSdk64PJe6mS6i0Kv4XyYa5iakTUgIGF88DpuY7XiRdKK6NUM
-         o8nDMW/ebCn7WeEDHsv3+QKa6qtyFboj4D6IHtp4qrE9lcPBdD29N3/RlYNdvL5UAqUy
-         M7lWsqTvlANWQWYzeasumJw4CO0RaPZVMj+FbfPYvuLvZYORO+3xKy1m0IvDSjElq+g+
-         H+SYi969Gb4/SimARGNHzS/HQmTFP8lnVwSlGeP6cjNcebX/cvI2MVIzSPjFq3QFGMv1
-         bdZw==
-X-Forwarded-Encrypted: i=1; AJvYcCU1VIrXHMQoz4zcPrjlnYmJpVScEm/5gZsxj/7V73bBqKkLd8pr2EVimKS5VCznyBtTwV5f@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yxgl0363SfFZ3c5phidYGzsSg72GifS0xX3Au44m1/IdeUkSXGe
-	9f/TjVOvHG4lCVn6KgYn9U4yc2azISlRskJgF+m8gKdkURmEqr1zVHor20Rn0y4=
-X-Google-Smtp-Source: AGHT+IHx8RmIO6fkuSRvBm0qJZfNELEBHNZpBaW4unRDPWjsO0cC1GGtZ+R6rvyDXKzhk/qVSqY80A==
-X-Received: by 2002:a05:600c:4ecb:b0:431:5aea:964 with SMTP id 5b1f17b1804b1-4318415c2damr45887855e9.19.1729765862847;
-        Thu, 24 Oct 2024 03:31:02 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:c08d:5245:a79b:dc4f? ([2001:8b0:aba:5f3c:c08d:5245:a79b:dc4f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43186bd6856sm41458265e9.6.2024.10.24.03.31.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Oct 2024 03:31:02 -0700 (PDT)
-Message-ID: <dcb9d19c783f9e550da815986ca64d21b2d4471d.camel@linuxfoundation.org>
-Subject: Re: [PATCH] ref-manual: faq: add q&a on class appends
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Date: Thu, 24 Oct 2024 11:31:01 +0100
-In-Reply-To: <20241024-faq-class-append-v1-1-673c675cc6aa@bootlin.com>
-References: <20241024-faq-class-append-v1-1-673c675cc6aa@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iXVnc+Fb;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 45207C0008;
+	Thu, 24 Oct 2024 14:58:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1729781900;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+CgWSrUvr/pTidcqQBN1Iti9Fr7As6z/M2FWOBINAYg=;
+	b=iXVnc+Fb+jNtVwFfigRvS9kAy7QG1kfkCxBWJmbXJp++SXgQOeObM9UOUkiCTqr6FsLUlO
+	T8DkfCPVaWfTB8LHLEiSkHTUtwx11eTrUW6+cycXv20K3YlOvedxk6bln9Cjz2Y1spt+na
+	j2umQ3hTnHAI5eMCMkN/x64WEUEx8ZEY4nFfgvYbE1J5PsMmVpFFJPdH7VpST5doho3n3l
+	y8yonPK+eEbFqSadaInLVOS3fV8GQwRVOiPI58Lm9WlJrx9g5S84mwfPRsmgc3RbPnTBqM
+	BpVngsBBJBFfMBYN4gxhBVwrCdRjkDQBZRWRD4qAId7eBuDZgaxeJDKwzSOKbg==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
-MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 24 Oct 2024 16:58:19 +0200
+Message-Id: <D544IAIYE5R3.2JGI2N1SZZ4TC@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Johannes Deivard" <jdeivard@outlook.com>, "docs@lists.yoctoproject.org"
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] BUG - Optimize WSL2 VHDX file using DiskPart
+X-Mailer: aerc 0.18.2.r87.gd0484b15
+References: <PAXP251MB02258F3DDEC28194AE141371DF4D2@PAXP251MB0225.EURP251.PROD.OUTLOOK.COM>
+In-Reply-To: <
+ <PAXP251MB02258F3DDEC28194AE141371DF4D2@PAXP251MB0225.EURP251.PROD.OUTLOOK.COM>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 24 Oct 2024 10:31:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5581
+ <docs@lists.yoctoproject.org>; Thu, 24 Oct 2024 14:58:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5582
 
-On Thu, 2024-10-24 at 11:14 +0200, Antonin Godard wrote:
-> Add the suggestion by Richard to the FAQ, with some minor rewordings and
-> additional punctuations.
->=20
-> Suggested-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
-> =C2=A0documentation/ref-manual/faq.rst | 19 +++++++++++++++++++
-> =C2=A01 file changed, 19 insertions(+)
->=20
-> diff --git a/documentation/ref-manual/faq.rst b/documentation/ref-manual/=
-faq.rst
-> index bab284bbfdefae02c284204d3c94891a8238239a..3dcb1f862e24716be703f9fd3=
-e811d2fb9ed34a0 100644
-> --- a/documentation/ref-manual/faq.rst
-> +++ b/documentation/ref-manual/faq.rst
-> @@ -259,6 +259,25 @@ Within the :term:`Build Directory`, is the ``tmp`` d=
-irectory. To remove all the
-> =C2=A0build output yet preserve any source code or downloaded files from
-> =C2=A0previous builds, simply remove the ``tmp`` directory.
-> =C2=A0
-> +Why isn't there a way to append bbclass files like bbappend for recipes?
-> +------------------------------------------------------------------------
-> +
-> +The Yocto Project has consciously chosen not to implement such functiona=
-lity.
-> +Class code is designed to be shared and reused, and expose some level of
-> +configuration to its users. We want to encourage people to share these c=
-hanges
-> +so we can build the best classes.
-> +
-> +If the ``append`` functionality was available for classes, our evidence =
-and
-> +experience suggests that people would create their custom changes in the=
-ir
-> +layer instead of sharing and discussing the issues and/or limitations th=
-ey
-> +encountered. This would lead to bizarre class interactions when new laye=
-rs are
-> +included. We therefore consciously choose to have a natural pressure to =
-share
-> +class code improvements or fixes.
-> +
-> +There are also technical considerations like which recipes a class appen=
-d would
-> +apply to and how that would fit within the layer model. These are compli=
-cations
-> +we think we can live without!
-> +
-> =C2=A0Customizing generated images
-> =C2=A0=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D
-> =C2=A0
+Hi Johannes,
 
-Looks good, thanks!
+On Wed Oct 23, 2024 at 6:03 PM CEST, Johannes Deivard wrote:
+> Hi,
+>
+> I would like to report that one crucial step is missing in the instructio=
+ns "2b. Optimize your VHDX file using DiskPart<https://docs.yoctoproject.or=
+g/dev-manual/start.html?highlight=3Dwsl2#:~:text=3D2b.%20Optimize%20your%20=
+VHDX%20file%20using%20DiskPart%3A>".
+>
+> The attached vdisk must be detached before diskpart is exitted, or you wo=
+nt be able to start WSL2 again since the VHDX file "is being used by anothe=
+r process."
+>
+> The instructions for this subsection should be as follows (detach vdisk i=
+nstruction added before exit):
+>
+> C:\WINDOWS\system32> wsl --shutdown
+> C:\WINDOWS\system32> diskpart
+>
+> DISKPART> select vdisk file=3D"<path_to_VHDX_file>"
+> DISKPART> attach vdisk readonly
+> DISKPART> compact vdisk
+> DISKPART> detach vdisk
+> DISKPART> exit
+>
+> Best regards,
+> Johannes Deivard
 
-If/as/when I see anything else which should be in there I'll try and
-note something down. We should really try and collect more of these.
+Thank you for reporting this.
+
+Although I haven't been able to reproduce the problem you describe (on a Wi=
+ndows
+VM with a sample vhdx file), I've had no issue running "detach vdisk" befor=
+e
+running "exit", and I think it is indeed a better practice anyway.
+
+Would you be able to add that line to the documentation? You can see
+instructions on how to do that at the following link:
+https://git.yoctoproject.org/yocto-docs/tree/README
 
 Cheers,
+Antonin
 
-Richard
+--
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
