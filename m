@@ -1,157 +1,100 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 69467D0C614
-	for <webhook@archiver.kernel.org>; Fri, 25 Oct 2024 14:07:48 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.12841.1729865261362176177
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CEC9D0C617
+	for <webhook@archiver.kernel.org>; Fri, 25 Oct 2024 14:16:48 +0000 (UTC)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+ by mx.groups.io with SMTP id smtpd.web11.13050.1729865801867824612
  for <docs@lists.yoctoproject.org>;
- Fri, 25 Oct 2024 07:07:41 -0700
+ Fri, 25 Oct 2024 07:16:42 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GMNHBBQa;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 392871C000B;
-	Fri, 25 Oct 2024 14:07:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1729865259;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=CklAodQaCMwplOwtIpSEx2WhkHbd+k+dUsHd3FL0xZQ=;
-	b=GMNHBBQad4l4r9fT+canwLIjcMGoBmbnTlQM/4SQJmUTcfd5gzW7jaI0ZCgJAALmwdZrJG
-	gz3tcD6tD/BIDF4RxgxAPe14GKQjIRC1DLEQ338iWKgzoRPtDi2Fzp3UG8522NCrablfbO
-	JTKfio+4m+orFWbohtuohDc13LIQXsenC94kMLj2twdJNKN4BdzyX+n8hLpLjFhEO1ksNQ
-	B3a+9gC8uCmkH3mtLj4DvGHpGjvl7iOvGeRV8hJxhmeaICNcSScHBGzwegMz0ifpdU6x/2
-	naAShbYPSzq+hy8F5I7Gk79NlhGgnI8AsopHRVtoxxRh6sU/qsyN3sfejSVwvA==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 25 Oct 2024 16:07:33 +0200
-Subject: [PATCH v2] docs: update current releases
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=N6ou1TcV;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.46, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4315839a7c9so21316515e9.3
+        for <docs@lists.yoctoproject.org>; Fri, 25 Oct 2024 07:16:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1729865800; x=1730470600; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HhL0XaAJmbQ7BVMuVhwDk44iYaQDL286mh07HhBCkWo=;
+        b=N6ou1TcV/JKPFpOKsxWht0YdV3ZeAsANcJVkMwG5uStJx/Euvl4Ya/9dcbDdSpuKYt
+         LnXP4xAkJClEwX1yTFHFHSYdZ3skBxycx8muNNWWu3glRPh9Qqa4z7L/zqYNhnq6XdO0
+         VEKumRcnlbgQ+l0Qy7kRgQZ2lvhqOCfRBL8pk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1729865800; x=1730470600;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HhL0XaAJmbQ7BVMuVhwDk44iYaQDL286mh07HhBCkWo=;
+        b=NkUr7yh7kJ2fuNGhqDAZzBT++vEKN34319iD8J22cAxECxlLfkBT3591JDs2mTPA4A
+         Y5X0VxO18TYRqV13uZOkeHwi8y0x/Ej49Sw1UHLDgBIBaDReJh+DyvlVH6cf9fzAtD7Y
+         Gc0cShH4JjAP9JbIE4Ku1djTR7vAQsgZSvX25hCcP9uexHnve9O+sZYUlz+r6et1NBt2
+         QvJh7IuhgRs+QOx1T5305xAJt56c1V74uJbmKnS/laOKjYWUse5j404beIL09ibzrZKL
+         ENL8ZoohxJ++ZvFxPO/rSiugGk0DMMqKTXyl5MdznYNVsiuOP7Wl/TaGyCUeT82Ryhhz
+         RrxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVu86voopvim+jLxm9EJ0wincxdkX3X5r//1xBuEQbLgnZEUE+3l680fycldyOmYI75cpVf@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yy7Y9XNbpVznxALU5bEOQteDfduze3KpnrHTYNJsogGDCOTMCZr
+	ML+PJ+h7Ot8TDWjj0AP2T0FJEF7FGVj2bgfoMwviN/wRaddufwJHo9XjsSwfyCQ=
+X-Google-Smtp-Source: AGHT+IFDAbu+4FC3csWYNR2xCW3YYNl3m7iAr5FPW/QtWl/qD/xuiNY0bgmjG6dj1S2LDPANJIKwQw==
+X-Received: by 2002:a7b:cb58:0:b0:426:647b:1bfc with SMTP id 5b1f17b1804b1-4318c8cd0c5mr47013905e9.30.1729865798456;
+        Fri, 25 Oct 2024 07:16:38 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:5e58:696f:3954:9f3f? ([2001:8b0:aba:5f3c:5e58:696f:3954:9f3f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4318b55df56sm48816545e9.10.2024.10.25.07.16.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Oct 2024 07:16:38 -0700 (PDT)
+Message-ID: <08d90707d7524f11e37604749c1275aa771fd073.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH v2] docs: update current releases
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Quentin Schulz
+	 <quentin.schulz@cherry.de>
+Date: Fri, 25 Oct 2024 15:16:37 +0100
+In-Reply-To: <20241025-update-switchers-v2-1-290a6c777a68@bootlin.com>
+References: <20241025-update-switchers-v2-1-290a6c777a68@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.3-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241025-update-switchers-v2-1-290a6c777a68@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIACSmG2cC/32NSw7CIBRFt9K8sRggpVVH7sN0wOcpL9HSAKKmY
- e9iF+DwnOSeu0LCSJjg1K0QsVCiMDeQuw6s1/MNGbnGILnsBZeKPRenM7L0omw9xsQGN0rrpNb
- ODNBmS8QrvbfkZWrsKeUQP9tDET/7J1YEE0yh6jlqdxiP5mxCyHea9zY8YKq1fgEXcTQDsgAAA
- A==
-X-Change-ID: 20241025-update-switchers-6d72cd2aadb6
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2943;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Iao5PuzVimdvNUleyC5iT+0r8egzo2S5xeU/UQ6Qkfw=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnG6YrrfR4OyB9gTAXqMLPTo+v4BJ6i+HlR7nhX
- y7SX0BM3HWJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZxumKwAKCRDRgEFAKaOo
- NpdMD/97IiYcTcJMJhh2YrKJQ96vRYFJccctLrd+eQjwMf4bs4aS+MbPx66/P1DSRT3P71f6bW6
- Lbsa9uXaVXIbDqotXy9nd7Hov8qVvkuE6K/35o4YaCc9iEJcEzezFy0eiAxLSAYA1fieuZpKkfx
- r3QfaIordve/aiP6II06z9imrt++NnMON5Lvf1Hn03iSN6HdNHurDCjcQ9lTPKPzntNx+mdizxv
- XBo2iTN9oit1Jfj0OfD7UkBv6KsfttXV+ovJPWy7wQtEox3SnvEczhnZORSMnzFs5wCXIX++DnI
- h8CGtZtST9rxpTH7ggqy5iCPwMkPs/RJl650ctSwCB6CYthQXQlt9YS/ADESz/Etp0ut4E8Yg7I
- mlBwzqGYFCMR9ErYee9kbYwiDSFvkwi3lGa9r3EH8s4+MFk9zs5gpHkj0OzfEi1HNkVSTpvB+lY
- jG0dd0s8Q6/+gMBBJORsbSps9QEuamcUVZJDNvOwu0GtIYwWxzV85t9yNnl/BlBGkmT4NGaPRGz
- KAz0Cz7cwbiy/GD+ygpT0wyZy+zgC1U0DSkoSM+8TRATk6DT5OlFh+xpxLxaxbQx/6WUehm9l1C
- IEHYjEn9lCXviiDx45STfqfYiP0xkaGyiK1+yyPDo3rEV/OW0vRpiJ7j7yQr3HBbK5oOo8k2QMw
- ILbe+3qfyc0ZqfA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 25 Oct 2024 14:07:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5592
+ <docs@lists.yoctoproject.org>; Fri, 25 Oct 2024 14:16:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5593
 
-Remove dunfell and nanbield which are not supported anymore.
-Add styhead as an active release.
-Set walnascar as the dev branch.
+On Fri, 2024-10-25 at 16:07 +0200, Antonin Godard via
+lists.yoctoproject.org wrote:
+> Remove dunfell and nanbield which are not supported anymore.
+> Add styhead as an active release.
+> Set walnascar as the dev branch.
+>=20
+> The switcher menu now contains:
+> - Unstable (dev)
+> - Styhead (5.1)
+> - Scarthgap (5.0.4)
+> - Kirkstone (4.0.22)
+>=20
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+> @Quentin: adding Walnascar as the devbranch does the trick and adds
+> Styhead to the switchers menu. And indeed, walnascar _is_ the current
+> dev branch, not styhead.
 
-The switcher menu now contains:
-- Unstable (dev)
-- Styhead (5.1)
-- Scarthgap (5.0.4)
-- Kirkstone (4.0.22)
+The patch looks good thanks. I just wanted to mention:
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
-@Quentin: adding Walnascar as the devbranch does the trick and adds
-Styhead to the switchers menu. And indeed, walnascar _is_ the current
-dev branch, not styhead.
----
-Changes in v2:
-- Add Walnascar as the devbranch, which adds Styhead to the switchers
-  menu.
-- Update poky.yaml.in.
-- Link to v1: https://lore.kernel.org/r/20241025-update-switchers-v1-1-5e540ead879b@bootlin.com
----
- documentation/poky.yaml.in    | 12 ++++++------
- documentation/set_versions.py |  8 +++++---
- 2 files changed, 11 insertions(+), 9 deletions(-)
+https://git.yoctoproject.org/yocto-autobuilder-helper/commit/?id=3D51d842b5=
+e0b14e5439b5c89ec314886218a62ebf
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 0c04b615eae07e722982ad8808b8d4ff228b5cb5..c770318f2be76cca3ea23a25d819ace46d157b4c 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -1,10 +1,10 @@
--DISTRO : "5.0"
--DISTRO_NAME_NO_CAP : "scarthgap"
--DISTRO_NAME : "Scarthgap"
--DISTRO_NAME_NO_CAP_MINUS_ONE : "nanbield"
-+DISTRO : "5.1"
-+DISTRO_NAME_NO_CAP : "styhead"
-+DISTRO_NAME : "Styhead"
-+DISTRO_NAME_NO_CAP_MINUS_ONE : "scarthgap"
- DISTRO_NAME_NO_CAP_LTS : "scarthgap"
--YOCTO_DOC_VERSION : "5.0"
--DISTRO_REL_TAG : "yocto-5.0"
-+YOCTO_DOC_VERSION : "5.1"
-+DISTRO_REL_TAG : "yocto-5.1"
- DOCCONF_VERSION : "dev"
- BITBAKE_SERIES : ""
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
-diff --git a/documentation/set_versions.py b/documentation/set_versions.py
-index dec078083441263cb1350532b2749f5ee222d555..376337e7b544829e7f65cb5dcacda635980ee28d 100755
---- a/documentation/set_versions.py
-+++ b/documentation/set_versions.py
-@@ -26,9 +26,9 @@ ourversion = None
- if len(sys.argv) == 2:
-     ourversion = sys.argv[1]
- 
--activereleases = ["scarthgap", "nanbield", "kirkstone", "dunfell"]
--devbranch = "styhead"
--ltsseries = ["scarthgap", "kirkstone", "dunfell"]
-+activereleases = ["styhead", "scarthgap", "kirkstone"]
-+devbranch = "walnascar"
-+ltsseries = ["scarthgap", "kirkstone"]
- 
- # used by run-docs-builds to get the default page
- if ourversion == "getlatest":
-@@ -36,6 +36,7 @@ if ourversion == "getlatest":
-     sys.exit(0)
- 
- release_series = collections.OrderedDict()
-+release_series["walnascar"] = "5.2"
- release_series["styhead"] = "5.1"
- release_series["scarthgap"] = "5.0"
- release_series["nanbield"] = "4.3"
-@@ -69,6 +70,7 @@ release_series["laverne"] = "0.9"
- 
- 
- bitbake_mapping = {
-+    "walnascar" : "2.12",
-     "styhead" : "2.10",
-     "scarthgap" : "2.8",
-     "nanbield" : "2.6",
+i.e. we do have a script in helper which we're also doing some of this
+in. I think that script goes on to generation a json file which powers
+bits of the main website.
 
----
-base-commit: afeded9939777d88bf4cb9ebf7a61aadd476642d
-change-id: 20241025-update-switchers-6d72cd2aadb6
+Could we try and converge things. The reason for adding this script was
+to get the website code somewhere more accessible so we are slowly
+making progress towards that...
 
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
+Cheers,
 
+Richard
 
