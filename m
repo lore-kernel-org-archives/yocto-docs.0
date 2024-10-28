@@ -1,165 +1,206 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA420D149C8
-	for <webhook@archiver.kernel.org>; Fri, 25 Oct 2024 16:46:41 +0000 (UTC)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
- by mx.groups.io with SMTP id smtpd.web10.280.1729874793775974006
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2D7FAD13588
+	for <webhook@archiver.kernel.org>; Mon, 28 Oct 2024 10:40:50 +0000 (UTC)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.65.53])
+ by mx.groups.io with SMTP id smtpd.web10.48799.1730112048573796613
  for <docs@lists.yoctoproject.org>;
- Fri, 25 Oct 2024 09:46:34 -0700
+ Mon, 28 Oct 2024 03:40:49 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=KqtGt+8I;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.54, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43158625112so22458865e9.3
-        for <docs@lists.yoctoproject.org>; Fri, 25 Oct 2024 09:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1729874792; x=1730479592; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=A3k8EQgYgDf7ZHRGd1Ro04cDkvg6Os0dPFYHk9kD51M=;
-        b=KqtGt+8ItNmhXG7h54VKhkH/JTBHx24rp7ejYBNGQYCxaCDA7JxEwwMw9cnizDoFhS
-         iLbfqdSSoTnTAxIqPMl6xNgPimXz99euQzwv7wumcsY48UlzykXUOacPBKz9RgEYXGnT
-         FP3XK4oNASUgXa5RC5YFovb8U8UQl6qJdCefg=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1729874792; x=1730479592;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=A3k8EQgYgDf7ZHRGd1Ro04cDkvg6Os0dPFYHk9kD51M=;
-        b=EWfFpl4YtbaJZmNlZ+SPGGtJ+dAS/lQI0ofFN2w2gdDTYptMD9YBn36FOY5Oyk/xrX
-         /NwBqAMgrBo1oX4tnxD1i0n2TnzDdQbsx731K12rPHK1QwP81B5m8QtuvRdZTLtb4hF9
-         o3VJ2hcS6rsw+ttJ3LIRXk6w5eSDr1NQ1Q2RVtnC/ZZFAvAxW/t6Iew5FJCB/y1vyYiw
-         M1uR8RqTmKbQRlBxElARZUovnc0GnMQwtNCLe9q7YQ0VlbpJMUXk9Qa6/3hGe1v+rjw4
-         SXB7JnvcCtwO1iurge3JcyeFsXw9jPUHEeP88FUse1nFEmQbNQrqxIZqW2+tuYzlMn+C
-         Bpzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUNYFZGDc3GvxUKGoh6CkkRdsFQDmX+Y7rUrh4vh9vh6hf09aPs4sPbHIDKZeuwSCfx5rI@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YzbN67dvaDxKk/EfW5kAibJVdICoMs1DJO6UdLvk+udt/C+2b4F
-	1GveG8DopemRgralw2QNsgGZvVnl730EjKnHiWW71pGYaQct+TpjWpMCBiiiBOM=
-X-Google-Smtp-Source: AGHT+IGbQZt+n2X/gspINCfB2yYs17Wyiig+8PkwYdawJ1a6J+ZYjpbb+a7WMLoUyOGEIqe/4zdXrQ==
-X-Received: by 2002:a05:600c:500a:b0:431:537d:b3b4 with SMTP id 5b1f17b1804b1-43184206669mr81712075e9.11.1729874791702;
-        Fri, 25 Oct 2024 09:46:31 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:5e58:696f:3954:9f3f? ([2001:8b0:aba:5f3c:5e58:696f:3954:9f3f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43193594ff3sm22443705e9.12.2024.10.25.09.46.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Oct 2024 09:46:31 -0700 (PDT)
-Message-ID: <8b6e063746c2fa94d2638d32e1cf7bff87a6e3c9.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH v2] docs: update current releases
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Quentin Schulz <quentin.schulz@cherry.de>, antonin.godard@bootlin.com, 
-	docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Michael Halstead
-	 <mhalstead@linuxfoundation.org>
-Date: Fri, 25 Oct 2024 17:46:30 +0100
-In-Reply-To: <52c88f7a-4f23-4663-9396-5297c0959d1d@cherry.de>
-References: <20241025-update-switchers-v2-1-290a6c777a68@bootlin.com>
-	 <08d90707d7524f11e37604749c1275aa771fd073.camel@linuxfoundation.org>
-	 <0006cdff-a101-40f4-81e5-c23540bf4df6@cherry.de>
-	 <fb85055a28b4e3f236ee1c29467d4a503539d2dc.camel@linuxfoundation.org>
-	 <52c88f7a-4f23-4663-9396-5297c0959d1d@cherry.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1 
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=DIUMd6X6;
+ spf=pass (domain: cherry.de, ip: 52.101.65.53, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=L2frMcLxUwXNVLJS3SuH4DespgdOMMLnT64Kw8xJ7auLKpUPqRGJvFR+XpTsUpMsy9kKqIYbFp09T2o4m1Xm4vdtZ51m367HIa8U7+o2xF/FHCJiCDPniLDm1eI0YhrD0MDDfnvM0vUf6LuRk85R7VUZC5SCUvWDQXZPmUQqsuRw7N1sL5FkHbflv0G4Psl4b8WXdq10r54PuB2/0L+ruvKtrUgRAJiZQ0irsACfaFp8F8DIEOItRmRkb6feIpzmaBh5ba98sgkPzS4xUUdf03ju7++xtS8SHPmsJjm7u9vglLo3FxO2Wr2GN1Iul287iGV7AHFBEWQEwBwaPpKAJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=85w9wq2nJM1qwoME5S2xrjYLW7IYUvHGYw/LuMocX5o=;
+ b=h9eLxIDvHlHTdm0xm1hnyfHBrdN6D1dZ1x4DlokF8KUmld3a4ShQGXSQmeZpPtju+L4biJNUGkTr+Q4L6A9dXnZ3Ll1MYEVvaHXazM6GCia8/Ah7wyD0TQS8PaZ/JKWHPL2rBFpeOwQuyqbDiwVLlcCOTMIKYcZxWZ5MJ0NLb3DqsTbNix163KbPZUgJhWOSzGfjLiSN5PafZCew3e98AJP8SIJbZREGGhQUU/u1DZyJGNGVuvt9arcpQWfHlYL49WkoeMBOgu7WIWs5dXaAhTkaRWkM8m4C8L5eB22qwjo0rUEmLx4YYV9k4u0vC9zvKGSpR4j4I0wfLzlcBcvvlg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=85w9wq2nJM1qwoME5S2xrjYLW7IYUvHGYw/LuMocX5o=;
+ b=DIUMd6X6rQfyzAaDIvXyn5zB4p36UR6ynfK6OVUDs/Rf1QfB1GQ909Sv8HSFk5bqVVZNUTnYU1OeyqbIb48OhgV3iY7Zkbf3i+/NfQQNYE4is/j4xPqFMCxQD4kiJnLQkhB0D6QDmqsCFVIEcZgRP1x5bhHgsdr05Fxe8E74WgE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by DB9PR04MB8092.eurprd04.prod.outlook.com (2603:10a6:10:24f::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8093.25; Mon, 28 Oct
+ 2024 10:40:44 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%7]) with mapi id 15.20.8093.025; Mon, 28 Oct 2024
+ 10:40:44 +0000
+Message-ID: <04ae83df-db00-421b-9510-e246e8bc31b5@cherry.de>
+Date: Mon, 28 Oct 2024 11:40:43 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] ref-manual: release-process: update releases.svg
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Cc: Michael Opdenacker <michael.opdenacker@rootcommit.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20241023-update-releases-svg-v3-0-a8367b5d4854@bootlin.com>
+ <20241023-update-releases-svg-v3-1-a8367b5d4854@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20241023-update-releases-svg-v3-1-a8367b5d4854@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0162.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a2::14) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB8092:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8ae1de03-af40-41c7-2fa8-08dcf73cf9b3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?TDFUZUoxMU9GaXBxWnZ4eXhIbk5KeU5veTBkRXo2aEs4dEhRN3ZaQ05QZmNP?=
+ =?utf-8?B?VG1xS3JoeEFROXNTWmJIL0g1OVlWd2FrRmpPT3FHVmFQVzV3TzZ6N2tQbEVy?=
+ =?utf-8?B?U0NjN0xIeS9vRWhvL3hISVAwTEh4R00rckpxeDlUR05sUUdFTjZLMmMzTkJx?=
+ =?utf-8?B?WXIxVVl4NFREeDZxNFhwTUZ4QnJrRnk3TU11Vkdpek5QRDVxKytGbDVjdjRW?=
+ =?utf-8?B?ZkEvaTlraXc3NWJsb1RsMG5yZzhCSHRqTDJpaUlPRmtpY0VYNXcvYUxFWnJs?=
+ =?utf-8?B?WDZBYmxoUVV2WHdUT2p0Y293T25uY2tybnUraWJDMFY5SE9hc2xOWlFUNGxI?=
+ =?utf-8?B?djJNMUJrZVY2SnhHVk42dncvcUdFc3hPWkV2RzZkVFlYWklRd1c4KzJJaWZz?=
+ =?utf-8?B?Zzk5MUJ6ZllwbzZoNFBCMEFhZ3VVOFB1RnNlcHVlRGM5ZkdQZzBlTmQ2MSsx?=
+ =?utf-8?B?ZVdKcEFPQllua1BhaEJpN0pwRzl5VjFHWXArZ01XSTN6eDIwcjZXZHFkdHVO?=
+ =?utf-8?B?bkU2M1hNcVN2dXV1b1hZeUtrMk9pUzZZN244aFhUY2JKcWpvMERkMHBxRTJQ?=
+ =?utf-8?B?Zzh1Tm5tWlY2bFViSHc5NjNBZnZtQ0FxOEwwWjI4SCsyTEFWMjlkMituLytj?=
+ =?utf-8?B?U2hBeVVQeXAxS0YvOTNYeVByVHVJR0hyeis3Ump5VnU4S09IeTc2YWE0L2R0?=
+ =?utf-8?B?T0hXalBJTWNmbHpQSzNmUUNtK2JTcjR3UmUvelFFc3ZKbitDeUxqVUJCMnht?=
+ =?utf-8?B?K2FEV1dIRWpENEpsajB1azVQNVdMYlBRcnFoQ0g1Y0lhMFMxS0ZEaW9DK0g0?=
+ =?utf-8?B?NUtZTTFCMUlISTk0YUExU3FTK3pSNkY2Umtzd3NDbFphM0YwelA4REVRU2VG?=
+ =?utf-8?B?NG84TFRhZmVZOVd3eWJxaTY3Q3JzMU9iY1czNEJ1VVkvSGNGSWNxaW45Zldl?=
+ =?utf-8?B?Qm9ZamZqRkVJUGt2dkpPeFhMMXNvZGlsd041dnM4ODE1c2xFVnNIc1k5UjZZ?=
+ =?utf-8?B?OTZLbTFVYmUzcnVjODlQWVA2UTd4QjRsUnRidXVacG5GTktCUGE0YW1nd0Ux?=
+ =?utf-8?B?VUNFZHNrMm9qWUpxaGVCV3hZczlPYk1UTjdkeHlWakxuSXZxVk1hUWNwNjY0?=
+ =?utf-8?B?c0tDSFNMUSt3aWNScHVVNEhCd29ENlcrUlRTZ1VGTFFwa1VyYk5Kb1ZjMktJ?=
+ =?utf-8?B?TEpuaUZ1YmE4bE4vZGRQU2ZMZmdtWmZqdHA3V1dob3VaSjNqRFpETFBDVjR2?=
+ =?utf-8?B?TVl4eSsxaXFrTVNmNlhuMDUxdnNRY3JMWHczU3RQWGxyODc0VnEzNGhmek5n?=
+ =?utf-8?B?WVM3SkxndnNxaWo0dVEvSWpLTEF4SC9teHRPV2ZDSUdPUUg3ZXk2TFdCcGxT?=
+ =?utf-8?B?a3NmanEzRjdCVGlTRHdWQi9oT3grQkQ4WmkxR3M5SllCWGhhbEthZVRuZUUz?=
+ =?utf-8?B?bWF5ODBZRy9oenRIUHdZQWNDNnZ5MlpaQWo3WXBwU0YxR1NEWlNuenRUMDFt?=
+ =?utf-8?B?YVVLVkdnaGZMbitkWENpY3hGS3d2VnVDRHNHbmVXZlI0eHZRWlNKenk1V3JF?=
+ =?utf-8?B?dGRjN1l0UUdHQ0p6YXp4QVB6WGFITnlaWW1tU0VwSndlRHpYMzNwZk1odUxs?=
+ =?utf-8?B?SjdONDMwODVWbUJKTS9yY1h6YktzYi9yVVRPbGRodDZ0WktHWU1ZTnc2L0lh?=
+ =?utf-8?B?Z2JjUVpOYzdNdjR6aVJvQ2VVazQ5bVY1RVR4OHVYT2ZYY3BrOFJ5M2F0djFY?=
+ =?utf-8?Q?ZiptHENUfOSS8fVjtD1rAbVabRgTOvPg5hWBro7?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?VStNMDliWmwxc3hsaU1IYkpacnV6THB6VDNLYllhVGhjYzZ6R3FFRDRXMXVo?=
+ =?utf-8?B?MXNLSlcwQWYvU3FtNndkWkJZa1RyUzBoV3l2VHhZSzJ2YWVqRWNIckRoNDk4?=
+ =?utf-8?B?VzFVTDUxTmRwYzRuTERLMzJOWGFmWUdwb1JURFRibDNISXV0azZueDYxOTVj?=
+ =?utf-8?B?ejUvZU5ITVdUSkduWmNuczRJM04zQnhpZjNjcmtyL0hlRmNhOGk5bGl5bFVx?=
+ =?utf-8?B?aFBOZFhwVXQyR0paaXhwYUcrR0xoelpUWHpweXdJL3JWOEZPazBDbXgvTjQw?=
+ =?utf-8?B?aWM2MllNNzJOeWsxanRzUmdIUHhFWCtZMkNqem5yTXFCK3ZDRFEwVEhGWXha?=
+ =?utf-8?B?VXY1U1U1eDh1M09DUDhsdENVMFM5RXF2UWxmSEJzc1RIZ1VvcHU2QVg3NUdo?=
+ =?utf-8?B?Zy8wMlN4d3FtVDlVUzVqckE5V2xqWnp5Y2hCa1ZPWEFjYVdHeWYvMmtjUll6?=
+ =?utf-8?B?czA1VkFvUFpYNmlleVY4WmVSY0FpbGNpaWdpQUxyeFBRMEl5Nzc4WDhYa25V?=
+ =?utf-8?B?SmlvYktQOTM3NGJ1eUdYbGJpQ25ET1AwR29mRGNuaXN2UEFjWXN4T2JDRTNY?=
+ =?utf-8?B?NzYxc3laT3BndmRIS1VIVEpCK1AwTEo3T3ZqcFd6QjZVYUNUZUt6RnFaRTdU?=
+ =?utf-8?B?ZEhDb0NrbTdkSkw1aXVlT0NKbm54U0F4TkFxSzZBd09mVWtjdkNqN29QODRj?=
+ =?utf-8?B?NXNtWkFWUTJidFBjSlpFa3U5MmY0VENDZC9La3ZQM2tDNG5KZVZkTGZiZkdR?=
+ =?utf-8?B?cEsrYkY2TmVkc3NpOGF6VTR0N25DM2NQUlJ3Q21sd2JTTlZPb2tOMHo2cnph?=
+ =?utf-8?B?eGZnbStVeVE1VlEwaVV1WkhDbG4yWDZoRTkwajZJS2RxZUFCcU12cWpFaVcz?=
+ =?utf-8?B?ZC95andBUXhqdSs0U2gvc0E4SWdWYzhKV3UyRU5Dc3pSaEVwSDVCa0ZmVllS?=
+ =?utf-8?B?enRIWWFWeVN5S2tKUnZFeEZVV1JuVkhkaHRxdUNkbHhGNHdCdEgvempsenZE?=
+ =?utf-8?B?WCtkWlg1Ly9oRGVjeXZDN2tNbzE1b0pkQU1FNmtIblJnVDUrZzVvTEtHVVha?=
+ =?utf-8?B?c0g1dDdqRjFuQnp5R3YrNllhV1FSbGF6YW56cVJ6OXBhTnFuSk5QN2tBdFN5?=
+ =?utf-8?B?elJSOXpnVFJOcW1kUStDZ2FrQ2NnK2wyRGlWN0t1WXhnMlFVN3hBS2VXYTNx?=
+ =?utf-8?B?aUF2SWF1M25VUmJ6SlIxOWRPNHR3TUtpWGdxR3RkQnRldkZCY2pIeVUyVHBn?=
+ =?utf-8?B?Q0xVZ09zV0xlaU1oeDJoM2plaTFqYjM4Ym1jOFVoTmhpMnlDYkxDVzNwZitG?=
+ =?utf-8?B?eVZudDlleUlZYXppamNiL0JiOHVkK09WOVMrWWE3Z1ZaaWZ6UG1hUzBHZGdE?=
+ =?utf-8?B?MXNMWmROaWhZeGZsTW1YbkEyVlM1Z0sweWQvQ2RJQzVJQlNKa0tHRnpVZTNy?=
+ =?utf-8?B?MDVTbHNZeTV5UXlTY1BuQmhLb0tLSGtLUktOOVYycEJTWkN0S2RXY2k5Y0pp?=
+ =?utf-8?B?bDBXYUtMcUVUS0VncmtCWG1KdFFmNzdRaE9IRDIwbW1UVXN4MUxHSURGaWJt?=
+ =?utf-8?B?NG5aTUdyemI3NEw1UHowTHRwTDNHbWUrNXhOblg5UGdRa0YvdWkvSGxGUnBn?=
+ =?utf-8?B?NVZlODBBK21DQkVLeEt4QjJYdnlTcVBCYnowZnZrejYwQmFudXhtRGRmZkh2?=
+ =?utf-8?B?NXNEV0tIS0s1QzZWMmdSNG9UWElQUW5WOElKRGFPTEZMSjc0eWZxOStmeUZJ?=
+ =?utf-8?B?aHJtR3cxQkpUdWlhR0NLb3FJUFQ2a0NhcWIwWmVVNnhydnpZM3ZwbnFQSysx?=
+ =?utf-8?B?VGpnUFB5cjM4YnpiVmlTMkNsVDNaeDJBMGQwUSsvRG5oUVJ4Y1A1czVTRzln?=
+ =?utf-8?B?eFBCNlAzR29HaE9pUjRIdDZHcW52QnJaWVpQQVBEZjJTR0JtRDR6N0tTYVZy?=
+ =?utf-8?B?YUJiMHdPNko3WHdmZlJEUmduYlJaanIxRHpmNFdhd1RPU3RPWXp1YWtWU0Zk?=
+ =?utf-8?B?cEZoV2Jwak5xMlpRN3l4c3pEd1RiWjNPaW4wSUQwa0hRNXlCS2xSVDI4Y2Ro?=
+ =?utf-8?B?SENJZEJSL3R4bUNHbGJyN0dqM0V1aHFLTnFtbjhJSGs1dDJlZEJmMVJYeDkz?=
+ =?utf-8?B?OGhzc3dCczJta0pIY3Q5WEhjZlhIRmJFd2VVcjJlTkNXV0lON0tNb0ZuWEpr?=
+ =?utf-8?B?Z3c9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8ae1de03-af40-41c7-2fa8-08dcf73cf9b3
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2024 10:40:44.1583
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: u6yFGLlMoBjWeWgESwoFjD5kv4ltU8qYRroDw7xHDGyWjDmTvBB8iGQBlnuEi+xg3T8gEKQ5FNCVDAEebX5qUCv0tR5mV1or3dSBNedCxFw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8092
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 25 Oct 2024 16:46:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5599
+ <docs@lists.yoctoproject.org>; Mon, 28 Oct 2024 10:40:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5600
 
-On Fri, 2024-10-25 at 16:37 +0200, Quentin Schulz wrote:
-> Hi Richard,
->=20
-> On 10/25/24 4:28 PM, Richard Purdie wrote:
-> > On Fri, 2024-10-25 at 16:24 +0200, Quentin Schulz wrote:
-> > > Hi Antonin, Richard,
-> > >=20
-> > > On 10/25/24 4:16 PM, Richard Purdie wrote:
-> > > > On Fri, 2024-10-25 at 16:07 +0200, Antonin Godard via
-> > > > lists.yoctoproject.org wrote:
-> > > > > Remove dunfell and nanbield which are not supported anymore.
-> > > > > Add styhead as an active release.
-> > > > > Set walnascar as the dev branch.
-> > > > >=20
-> > > > > The switcher menu now contains:
-> > > > > - Unstable (dev)
-> > > > > - Styhead (5.1)
-> > > > > - Scarthgap (5.0.4)
-> > > > > - Kirkstone (4.0.22)
-> > > > >=20
-> > > > > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> > > > > ---
-> > > > > @Quentin: adding Walnascar as the devbranch does the trick
-> > > > > and adds
-> > > > > Styhead to the switchers menu. And indeed, walnascar _is_ the
-> > > > > current
-> > > > > dev branch, not styhead.
-> > > >=20
-> > > > The patch looks good thanks. I just wanted to mention:
-> > > >=20
-> > > > https://git.yoctoproject.org/yocto-autobuilder-helper/commit/?id=3D=
-51d842b5e0b14e5439b5c89ec314886218a62ebf
-> > > >=20
-> > > > i.e. we do have a script in helper which we're also doing some
-> > > > of this
-> > > > in. I think that script goes on to generation a json file which
-> > > > powers
-> > > > bits of the main website.
-> > > >=20
-> > > > Could we try and converge things. The reason for adding this
-> > > > script was
-> > > > to get the website code somewhere more accessible so we are
-> > > > slowly
-> > > > making progress towards that...
-> > > >=20
-> > >=20
-> > > We should be able to build the docs with only code from yocto-
-> > > docs git
-> > > repo and without network access.
-> > >=20
-> > > One of the issues we have in the docs is that there are releases
-> > > without
-> > > tags in yocto-docs but we still have some migration
-> > > manuals/documentation for those, c.f. missing_tags in the script.
-> >=20
-> > We should probably add those. I can't remember what was blocking us
-> > on
-> > doing that...
-> >=20
->=20
-> Someone having the time and courage to figure out which commit is to
-> be tagged for each forgotten release and then tagging it :)
+Hi Antonin,
 
-af9bf61a54c059e72c807ca8061a57d6fe74c5fa yocto-3.1
-bd140f0f9988fbd55f428a8ba7a54ae68716a33a yocto-3.1.1
-17cc71a8f76e7b3245c9008646bb3961ad85261a yocto-3.1.2
-26c5549580e108c40aa7c95860d12c675596820c yocto-2.5.3
-65207b6afa6df7d82cd3482d61f10b308da6fac7 yocto-1.7
-29a30b9ace435ad0c6260e026033ac1a86314d73 yocto-1.7.1
-326a8009ca0bef0a4686510bb521010d8f58ac81 yocto-1.6
-dd281ed7ce0cdfc30b87dc6b48077a55cfe09929 yocto-1.6.1
-812bf8e2c91c4dd14a2245509ea7008a24e90835 yocto-1.6.2
-228887f330f05037524e8982394a07cfd03d660b yocto-1.5
-2e0cf7319ec72e8ccbf93b4a6602f3ab20259588 yocto-1.5.2
-e61b251da0d8225f7497b2b7a0a8c8d1510a429b yocto-1.5.3
-34d5133e8b97a8debb2458733a2b15ad3f0988d0 yocto-1.5.4
-4470f32879ea9ad21c1d4821de6a8aa5740bbc6b yocto-1.4.4
-3eb430258ba1106dedb584abbbb4fb4aeb2f09cc yocto-1.2
-f0c7f750c3eccd4401e14f7415340e9675052d4d yocto-1.1
-753e3eb80b1fa6148e12f9eb93d23f4613b6be05 yocto-1.1.1
-fc4cb441031bca79f09203f9268f0528078fb652 yocto-1.1.2
-8b6416db1e04af83ecdf57522240ac859d5d8031 yocto-1.0
+On 10/23/24 9:32 AM, Antonin Godard wrote:
+> * Add Walnascar release.
+> * Remove dunfell, gatesgarth, hardknott, honister: these release are not
+>    supported anymore. Start from kirkstone, which is still supported.
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   documentation/ref-manual/svg/releases.svg | 907 ++++++++++++------------------
+>   1 file changed, 346 insertions(+), 561 deletions(-)
+> 
+> diff --git a/documentation/ref-manual/svg/releases.svg b/documentation/ref-manual/svg/releases.svg
+> index 036aa467cc2e646e99bc407bbf0ea7ff8825f57b..b1036e066ceb65a7391cec616cb4304094728f3f 100644
+> --- a/documentation/ref-manual/svg/releases.svg
+> +++ b/documentation/ref-manual/svg/releases.svg
+> @@ -2,11 +2,14 @@
+[...]
+> +    <text
+> +       xml:space="preserve"
+> +       style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+> +       x="1659.087"
+> +       y="-3.6722763"
+> +       id="text1185-3-55-4-0-0-0-1-1-6-4-3-5-2-2"><tspan
+> +         sodipodi:role="line"
+> +         x="1659.087"
+> +         y="-3.6722763"
+> +         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
+> +         id="tspan10317-2-9-1-4-6-5-6-6-5-9-7">Current</tspan></text>
 
-It isn't so bad. In poky, "git checkout yocto-XXX", then git log
-documentation/ and see what the docs revision was.
+This is a bit dangerous as "current" keeps its meaning while time 
+passes. So building docs from years ago from a tarball will still say 
+"current" event though it isn't really supported anymore. The X axis 
+showing the dates should be enough for people to get the idea, but maybe 
+we can also add the last update date of the SVG after Current? e.g. 
+"Current (Oct. 2024)"?
 
-Around 1.0 it gets messy as the docs repo wasn't separate!
+Additionally updating that SVG for all releases might be an issue. If we 
+backport it "too far" then the release of the docs will not even be in 
+that graph anymore, which is a bit odd. Moreover, the paragraph in the 
+LTS section may become outdated as well.
 
-I didn't find them all but this should clean things up a bit. I've
-asked Michael if he can add the tags.
+A random thought I just had was to maybe treat this the same way we do 
+with the migration manuals, that is to take the source from the last 
+release/master and inject it into all earlier releases whenever we build 
+the docs through the autobuilder. We could still have an outdated 
+version if people build it from an old tarball but there's no much we 
+can do about that sadly.
+
+What do you think?
 
 Cheers,
-
-Richard
+Quentin
 
