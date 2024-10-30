@@ -1,108 +1,104 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <steve@sakoman.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2044AD6B6AD
-	for <webhook@archiver.kernel.org>; Wed, 30 Oct 2024 16:35:50 +0000 (UTC)
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
- by mx.groups.io with SMTP id smtpd.web11.19513.1730306139723612345
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3B93ED6B6B3
+	for <webhook@archiver.kernel.org>; Wed, 30 Oct 2024 17:04:20 +0000 (UTC)
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+ by mx.groups.io with SMTP id smtpd.web10.20623.1730307846316555400
  for <docs@lists.yoctoproject.org>;
- Wed, 30 Oct 2024 09:35:40 -0700
+ Wed, 30 Oct 2024 10:04:06 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Y0/hUYuW;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.47, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4316cce103dso75635e9.3
-        for <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 09:35:39 -0700 (PDT)
+ dkim=pass header.i=@sakoman-com.20230601.gappssmtp.com header.s=20230601 header.b=ZVQv6d+7;
+ spf=softfail (domain: sakoman.com, ip: 209.85.214.181, mailfrom: steve@sakoman.com)
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20c767a9c50so595675ad.1
+        for <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 10:04:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1730306138; x=1730910938; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zGxrn/+FoHaGIZy9j0BmZBOy+GafmVctF5DJFiJ3Up8=;
-        b=Y0/hUYuWHM/rAUhN+02HCw0iPzAorf0wR/xS+o0OSYILGqvL6zkbv8yk++0z+sKLO3
-         6YEBzolbs73gun3k1VXkffcZetRtCPE1Qou6yJUzRfrojVqqPeCnSd7DRJoil0I7MARN
-         NcnhHnRkV+lPV9t3SHQJcSnwrcmbLuF6rcqso=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730306138; x=1730910938;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=sakoman-com.20230601.gappssmtp.com; s=20230601; t=1730307845; x=1730912645; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=zGxrn/+FoHaGIZy9j0BmZBOy+GafmVctF5DJFiJ3Up8=;
-        b=CfirdHlwN74aeGsnGyIFEwG0fCZF32Q86XCqom40EpWAMWttPiXymeDeb3CiWpkVeX
-         An4egYYC6Lk54h6+rnht1qhJXHVyfPNBsiwNTGkFi1U5KRXNvPZRPdwrKmM96FdPKo9p
-         kaQqMKy7CfgoOqlLTaG6t70eOAAFzW/wL/rBN8CFK6RoxQCGZ6xinJ0QKKc/M/H49BJ9
-         vBM8rR+tYzcKxyW3oysOb0HXt1YcgQLLdrVARHRVcysRfgHz8j+CAr6l5h/DtGB3ZOBt
-         ac32p5E8gwCdoj1gh0hkDTEmee5ntp86j5tKfobFNQG/EzY/SwDPVdGCSuExkYBTMOyR
-         rwyg==
-X-Gm-Message-State: AOJu0Yyf74yQ0c8RgZry57w358o6z/AKZdSmp4QGhmSw9uZBMnv3jAlH
-	52zg3Z4YQ8KEQYCQgEDYbq/alLvKYDZXzNB0HyTZyW/7Nnh2odydjfw7rTV8hpmUnnQGVF6RWDG
-	IsgM=
-X-Google-Smtp-Source: AGHT+IFSC8/Sw6yg2/GPGI4I05OWjizBZl7h+2s7wtvmj2SQ7VLbyuVpcS9/JaH9BEeIETtvRji01w==
-X-Received: by 2002:a05:600c:35c2:b0:431:5533:8f0d with SMTP id 5b1f17b1804b1-4319ad26eafmr166071165e9.30.1730306137713;
-        Wed, 30 Oct 2024 09:35:37 -0700 (PDT)
-Received: from max.int.rpsys.net ([2001:8b0:aba:5f3c:65f1:8463:55dd:142d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b132fbsm15827411f8f.4.2024.10.30.09.35.37
+        bh=gXspxPi41P+7POOkfKJO/OD/z+I+Ms+MGS9yBeDeNdA=;
+        b=ZVQv6d+7oPFSSuCu06z1cjLaeB5USfIcoJz3mFRlwgv2z2+jHAKaeIW7FyQDpJmYn7
+         M7zPTdVRv6fmr7AjZCEhX8s0XgdFsnjxByfHTTQCR/KRtmTgF6l/s79cIN2nxP90x5Xy
+         YUqhplIUOfKWeV6zC2SqJUGyOybh2Bv2X4DI2ncvTFOAT5O8LWKzR/88Z7QbB62j5f0i
+         2v+sK9mpQulwvvxz6DIwkkcJX2MvFL+ZCuoXDKZcAcOrMzgahLxMl1b2w4R2pQfvHu8y
+         7C9bSkOpUPIsysgtOLn8Y+rKR2RwZXo0OXREM3rqDK/s1UcdGcZlpM/s/EoHDQBB3z85
+         P9tQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730307845; x=1730912645;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gXspxPi41P+7POOkfKJO/OD/z+I+Ms+MGS9yBeDeNdA=;
+        b=WEQwPYOUFxIizEYRnLcVeavp1NrdmZSX+COtyDs2Sep8wedPkVlJxDUGvNofRXKYaD
+         +8TkuCu+KHU1r7dwD3h3OSD1lxls0BWfkZNbYkGeQ0OYcl0i+Kyavw9DSrtKtkPSnGNY
+         AgeJ22Mq+g0xU/YRTyQ11ogQbsvxXpsXVoh8LkH5OxWOHw32ulBr14jx1tpXgmHtt5/N
+         IjiyfI5xE9XJPiRpBh7LM5a/AW1Wa1ZZd6fOUpfFsTIknzciaWOCXj4lY41Zkc5+Thmj
+         0r8tUMO7o3dg4+u4EVKcQEeK39TifqZAbjy4nLdZE+pszYt/k0RwAeJgE3wegHXNUcBq
+         8Z2A==
+X-Gm-Message-State: AOJu0YxSJmthF9Wvp3mxdtZJzI+6fffYzSYO/E0YTU49vx5GXicwtypq
+	bDPE3xZCT5bJH9UYW3h7WdgWAOc5TBlpmFib8VWVShyXH1WdS3T4Np6IaksBdEO6hCbxEW35zON
+	h
+X-Google-Smtp-Source: AGHT+IGFkKArM1nYoj3wNrwPcGj4H+9Zjp78ESSpVMkgoo3/46+SBdz65kEM7fiLIT7uLzgq3FkeXA==
+X-Received: by 2002:a17:903:234c:b0:20b:6edd:e95a with SMTP id d9443c01a7336-210c68ac4dbmr217006015ad.3.1730307845429;
+        Wed, 30 Oct 2024 10:04:05 -0700 (PDT)
+Received: from hexa.. ([98.142.47.158])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7edc89f595dsm9284135a12.59.2024.10.30.10.04.04
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 09:35:37 -0700 (PDT)
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: yocto-patches@lists.yoctoproject.org
-Cc: docs@lists.yoctoproject.org
-Subject: [yocto-autobuilder-helper] [PATCH v2] scripts/run-docs-build: Add support for installing texlive for pdf generation
-Date: Wed, 30 Oct 2024 16:35:36 +0000
-Message-ID: <20241030163536.437177-1-richard.purdie@linuxfoundation.org>
-X-Mailer: git-send-email 2.45.2
+        Wed, 30 Oct 2024 10:04:05 -0700 (PDT)
+From: Steve Sakoman <steve@sakoman.com>
+To: docs@lists.yoctoproject.org
+Subject: [yocto-docs][kirkstone 1/1] release-notes-4.0,brief-yoctoprojectqs: update BB_HASHSERVE_UPSTREAM for new infrastructure
+Date: Wed, 30 Oct 2024 10:04:00 -0700
+Message-Id: <91d6f1efc5f4dac64f73c282ed9aeab7f11ba05c.1730307770.git.steve@sakoman.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <cover.1730307770.git.steve@sakoman.com>
+References: <cover.1730307770.git.steve@sakoman.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 16:35:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5624
+ <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 17:04:20 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5625
 
-To build the latexpdf output for the docs, we need Xetex (which can handle
-international characters). Rather than require it on all autobuilder workers,
-along with dependencies, we install a copy onto NFS which the workers can
-use. The full install is 6GB so just install the pieces we've found we
-need via tlmgr on top of a small install. This script creates the install
-if it isn't present.
+Public hashserver is now at hashserv.yoctoproject.org:8686
 
-For local docs builds, we assume the user has the tools available from
-the host OS. It is unlikely most users using this script would have the
-NAS path present so this seems like a reasonable compromise.
-
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Signed-off-by: Steve Sakoman <steve@sakoman.com>
 ---
- scripts/run-docs-build | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ documentation/brief-yoctoprojectqs/index.rst         | 2 +-
+ documentation/migration-guides/release-notes-4.0.rst | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/run-docs-build b/scripts/run-docs-build
-index 2e7298e..3348378 100755
---- a/scripts/run-docs-build
-+++ b/scripts/run-docs-build
-@@ -42,6 +42,26 @@ mkdir buildtools
- ${buildtools_localpath} -y -d $builddir/buildtools
- . $builddir/buildtools/environment-setup*
+diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
+index db17437aa..df9e7eadf 100644
+--- a/documentation/brief-yoctoprojectqs/index.rst
++++ b/documentation/brief-yoctoprojectqs/index.rst
+@@ -251,7 +251,7 @@ an entire Linux distribution, including the toolchain, from source.
+       To use such mirrors, uncomment the below lines in your ``conf/local.conf``
+       file in the :term:`Build Directory`::
  
-+# To build the latexpdf output we need Xetex (which can handle international characters)
-+# Rather than require it on all autobuilder workers, along with dependencies, we install
-+# a copy onto NFS which the workers can use. The full install is 6GB so just install
-+# the pieces we've found we need via tlmgr on top of a small install. This script 
-+# creates the install if it isn't present.
-+# For local docs builds, we assume the user has the tools available.
-+if [ -e /srv/autobuilder/valkyrie.yocto.io/ ]; then
-+    textooldir=/srv/autobuilder/valkyrie.yocto.io/docs-build-tex-tools
-+    if [ ! -e ${textooldir} ]; then
-+        mkdir -p /tmp/textemp
-+        pushd /tmp/textemp
-+        wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
-+        zcat < install-tl-unx.tar.gz | tar xf -
-+        cd install-tl-*/
-+        ./install-tl --scheme=small --texdir=${textooldir} --no-interaction
-+        PATH=$PATH:${textooldir}/bin/x86_64-linux tlmgr install titlesec varwidth tabulary needspace upquote framed capt-of wrapfig fncychap gnu-freefont ctex
-+        popd
-+    PATH=$PATH:${textooldir}/bin/x86_64-linux
-+fi
-+
- # Getting the old docbook built docs from an archive. Not rebuilding them.
- docbookarchive_localpath=${sharedir}/cluster-downloads-cache/`basename ${docbookarchive_url}`
- if [ ! -e ${docbookarchive_localpath} ]; then
+-         BB_HASHSERVE_UPSTREAM = "hashserv.yocto.io:8687"
++         BB_HASHSERVE_UPSTREAM = "hashserv.yoctoproject.org:8686"
+          SSTATE_MIRRORS ?= "file://.* http://cdn.jsdelivr.net/yocto/sstate/all/PATH;downloadfilename=PATH"
+          BB_HASHSERVE = "auto"
+          BB_SIGNATURE_HANDLER = "OEEquivHash"
+diff --git a/documentation/migration-guides/release-notes-4.0.rst b/documentation/migration-guides/release-notes-4.0.rst
+index 11206072a..005a299c2 100644
+--- a/documentation/migration-guides/release-notes-4.0.rst
++++ b/documentation/migration-guides/release-notes-4.0.rst
+@@ -22,7 +22,7 @@ New Features / Enhancements in 4.0
+ 
+      BB_SIGNATURE_HANDLER = "OEEquivHash"
+      BB_HASHSERVE = "auto"
+-     BB_HASHSERVE_UPSTREAM = "hashserv.yocto.io:8687"
++     BB_HASHSERVE_UPSTREAM = "hashserv.yoctoproject.org:8686"
+      SSTATE_MIRRORS ?= "file://.* https://sstate.yoctoproject.org/all/PATH;downloadfilename=PATH"
+ 
+ - The Python package build process is now based on `wheels <https://pythonwheels.com/>`__
+-- 
+2.34.1
+
 
