@@ -2,61 +2,60 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9C87ED5CCB7
-	for <webhook@archiver.kernel.org>; Wed, 30 Oct 2024 15:00:49 +0000 (UTC)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
- by mx.groups.io with SMTP id smtpd.web10.17168.1730300443854557214
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F0ABD5CCB9
+	for <webhook@archiver.kernel.org>; Wed, 30 Oct 2024 15:01:29 +0000 (UTC)
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+ by mx.groups.io with SMTP id smtpd.web11.16994.1730300482741543492
  for <docs@lists.yoctoproject.org>;
- Wed, 30 Oct 2024 08:00:44 -0700
+ Wed, 30 Oct 2024 08:01:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Gymf5uib;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43152b79d25so60466315e9.1
-        for <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 08:00:43 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=PGxl6BFg;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.48, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-431616c23b5so6987135e9.0
+        for <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 08:01:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1730300442; x=1730905242; darn=lists.yoctoproject.org;
+        d=linuxfoundation.org; s=google; t=1730300481; x=1730905281; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
         bh=jBogyL24XsA48m4DKRHJHjRD3rIzMHABvCnBlmmACBQ=;
-        b=Gymf5uibs6q+KR0/donTJSe6PbxL2GZJ4OtHOzn8uUPcDCfIyJaZKXIl0UY5EK/lqw
-         hwhbBcb1vEeEDaS/f6cyWZfp2AN4JqPheHB8Hp5noqgeSJFbzLPx3jNUzXtu/+ly8+om
-         hs3pQDQw/quhMezfXhbox2jbt7MkgYDT/SdyQ=
+        b=PGxl6BFgm4h6y2FGZfAP8WH0K52rjF44EWiDbb7lnkikPkVS8lEmanlDamkViau3Xn
+         +LeW/7vmzCETQwK47qtYnoeM4ZW00Swx0OYvVQpEfdiAHYEgowV3gNDK/qlQTqrQwhn3
+         dB5JwGeyXoZmG3XLIB1BvqobI5crOf59RT86M=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730300442; x=1730905242;
+        d=1e100.net; s=20230601; t=1730300481; x=1730905281;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
         bh=jBogyL24XsA48m4DKRHJHjRD3rIzMHABvCnBlmmACBQ=;
-        b=YFHcNnZ1Fr6xwoDtKEEvImTApe5D0rWCCYTAKC6DTSa8Aiu0FbK22TEF8HljceItqV
-         muDSwXzn6Ubyv6iNMtj695/F5y27kynAbdr4aBm/ZouJkhMFYF+x9ia5XUAB7MlRoE9M
-         eGWaTPEC1AcMkBIfE9qwlThYPLuPw+DPQLPViCFExyfzui8hZvBpI/4Ibh2vrihB4LWb
-         po2xtWJnAtBOoSsvLjLHoswvXXhu6DkgMjuuPkoYzdnEYM3LpKc7zStXS8JFgHPGCdP/
-         z1Hpk/opNAfw0SD15NUYZ3i8YGwBfUuE/55BhVxmQMbQDpkm824Py6kzSf9KOyfEkQf2
-         EEvA==
-X-Gm-Message-State: AOJu0Yzmsr+C2/tKv8VPme+VOjCrXcitfYFBsVVMGYq7jWD+LzlEoryO
-	36fvUfeGcSmNcCk6ppTQGQdTV8u5HqEXjVj3rqgFPWut/qBCYcEv6Xss5vwgNfmH+q3K0rHWsan
-	pkxM=
-X-Google-Smtp-Source: AGHT+IGqvw29sgE/ko+KOW9vDKc9efOZ3dPf6XNzXpb8fha1C9m8DOW2tSSQ9wLqSZ47I8wMaPcv8Q==
-X-Received: by 2002:a05:600c:4510:b0:42c:c401:6d67 with SMTP id 5b1f17b1804b1-4319ac742fcmr114360285e9.6.1730300442077;
-        Wed, 30 Oct 2024 08:00:42 -0700 (PDT)
+        b=X2drwM99nAG/qxwy5DEOv3xTUOqvllvOC0to3wYVWPHbuu4m9CwG/q4tlgBmqThfR6
+         OPWWiwlVfmXTPWFgZQL2zfmAZFLBmm7Q1IQxZvu6ONM1XJk2yJNHyxlw0SmKC2Aw8GeU
+         taGfaAb6349ZElc1iukU7GSuBpQBgARU7/Nkv1c6sxJTI0Lp4G3HFZbBA6jifO9g2hIa
+         4YgWHLACPcLjGk4dVsIbPuIHdngtCtp0tSy0q9fJCPrpBO2gCGz+2D7P0t2zDVFk0qtB
+         MPe3MJSLNde8QKN4GTXx8IdSNAKra2HFB2/h3SoQwP8icV1JsCd8oGjx5oGdE6MXELxI
+         yoFA==
+X-Gm-Message-State: AOJu0YwfjeEUn1p1rAWJYRqA7b4rxfNMPXPkg79AeF96uFiUWXqbKc3y
+	RnQioXWhBn2jFdNKf+J6vpahMMW8lF91l5kcpvCpL7JwsRHRRmjj50WTtTKKH6U=
+X-Google-Smtp-Source: AGHT+IHsxkYVJZGlVcuPUwxmUNSGyPlOiYhto7GSjGpiykvlQ8mzITATjBs06bRXRa28gCBGEBFgfA==
+X-Received: by 2002:a05:600c:3c9f:b0:42c:b67b:816b with SMTP id 5b1f17b1804b1-431bd6d5a9bmr24372845e9.1.1730300480970;
+        Wed, 30 Oct 2024 08:01:20 -0700 (PDT)
 Received: from max.int.rpsys.net ([2001:8b0:aba:5f3c:65f1:8463:55dd:142d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd910357sm24402635e9.11.2024.10.30.08.00.41
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38058b70c52sm15540693f8f.74.2024.10.30.08.01.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Oct 2024 08:00:41 -0700 (PDT)
+        Wed, 30 Oct 2024 08:01:20 -0700 (PDT)
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: yocto@lists.yoctoproject.org
+To: yocto-patches@lists.yoctoproject.org
 Cc: docs@lists.yoctoproject.org
 Subject: [yocto-autobuilder-helper] [PATCH] scripts/run-docs-build: Add support for installing texlive for pdf generation
-Date: Wed, 30 Oct 2024 15:00:40 +0000
-Message-ID: <20241030150040.421769-1-richard.purdie@linuxfoundation.org>
+Date: Wed, 30 Oct 2024 15:01:18 +0000
+Message-ID: <20241030150118.421857-1-richard.purdie@linuxfoundation.org>
 X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 15:00:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5622
+ <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 15:01:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5623
 
 To build the latexpdf output for the docs, we need Xetex (which can handle
 international characters). Rather than require it on all autobuilder workers,
