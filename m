@@ -2,37 +2,37 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 009C0D5CC85
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 021DAD5CC82
 	for <webhook@archiver.kernel.org>; Wed, 30 Oct 2024 10:08:01 +0000 (UTC)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.11581.1730282878172242925
+ by mx.groups.io with SMTP id smtpd.web10.11582.1730282878319728505
  for <docs@lists.yoctoproject.org>;
  Wed, 30 Oct 2024 03:07:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CCOhMqOm;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=hgEf1hq2;
  spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8B82CFF807;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C92E4FF803;
 	Wed, 30 Oct 2024 10:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730282876;
+	t=1730282877;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tIae1MyuWMmAPVZx6V+HEOTxKPtft1L//5eQWN6OO8o=;
-	b=CCOhMqOmbECzCdJb1m0Wfhepcf7JAxz8SeHKdHiwgHL5m56iInSB0EXSX4Tg4Nftyrn5S3
-	R7rXqDXOfwbyMf+wBxF8EMLlP6Cpe8+sD0k4aQ6+8N1VZnao/Cznbvx429ptl0qKiPBzzK
-	y5Bsklho+fPQ4QE9+rP2tt2Ex1kYMXnv+YRwg6uvXme3s1CvefUNZztrcu41y+tXyx4vIZ
-	+Kqlti5n+Y+vV3TScTyz/09HGbQNdxrfHuiuB2hIv88tRNJZYTaNwQ22Ac9eTH3rJNsxbc
-	vtv8fS7Oqpqd19LorYQPjZMYuRywUL3KSlGxRJjR6z/NhxR/RkdOTwa/WsXtxw==
+	bh=lLa2odR7Tf/FW5OVohH62PrpAFP3V2q7vZumXylOF3I=;
+	b=hgEf1hq2iTNNE6keWi7aysdJ90AZWfFqKcffzV0SAB0Wks6UkOoIT2dWPGlotScknIEahS
+	smkXe/zAPVihWxIh0pzn0a7Y3LoEJQ68mFoNXRarZzv2hKFBCKG5Zv+elyfOZLvwpdUBw9
+	GjPeahvszIr94AiVnet1/vhsgkcdYyvvt/tYGg+cIjnnV2OQ29tyRaVoq3H//6pC0ETDzx
+	svoeTHXMH+J27XofQV5RpxynMzSx/synFu8ljvuDnAkGQJj7aeUgm/EssOgjfGLfaMh9yJ
+	l5mZShmo6ptwy56z23XMs//a6j0EYipoUrUwFNGpl9LeN9N2ePr+fN2Cceuzrw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 30 Oct 2024 11:07:28 +0100
-Subject: [PATCH 1/2] ref-manual: release-process: update releases.svg with
- month after "Current"
+Date: Wed, 30 Oct 2024 11:07:29 +0100
+Subject: [PATCH 2/2] ref-manual: release-process: add a reference to the
+ doc's release
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241030-update-releases-svg-v1-1-1cafebd6c6d9@bootlin.com>
+Message-Id: <20241030-update-releases-svg-v1-2-1cafebd6c6d9@bootlin.com>
 References: <20241030-update-releases-svg-v1-0-1cafebd6c6d9@bootlin.com>
 In-Reply-To: <20241030-update-releases-svg-v1-0-1cafebd6c6d9@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -40,21 +40,21 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Quentin Schulz <quentin.schulz@cherry.de>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2801;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=941;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=iEDUsZyZZVSwsdwODFQXRRQtuTadhtVxhKIw5lxE3jY=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnIgV7MH7fPgpEyBCAqUWsI6mr4FFnT5osDXN3I
- KutklzDLtyJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZyIFewAKCRDRgEFAKaOo
- NlklD/9X6vmKzvb/drzNp6Q04bOUIO43jUn2mG53dY9aJlrdywWmGTIGQJReJfrqLgTFCoWosY7
- AwT0mwB7kwP1FLkZlf8X3GC0Pw0p8gJ+CYQLwfk+zVKCvMXI+xGahuH+lJCRTN82N7Hf77crgHz
- NWmBrSPQXP/wxpawlJ60KosuBVa1GeNKmy0YHdKm8X/5m+7DA39fy+3aitMMqgzxr25y3YAghPx
- lGnqgkgg/7J7C0ORl3LAvAe+VzBLqjiYVN3mQ8PE0nvaCPzyVQ0iH3xiIfMqZWvpBtm3mYBPdsS
- 30VwD4HMUjV4Ybd91UsWOFhHw5xO8QPRGz4Evqe9ALaMTS73/O1CVqIMJUGWMmadmuD/Vk1JPwi
- jjPQq+kpisvRgd28ERRmENQQVuy1K5mF8InXb7NXR7mB0LRawEATIjoRnObddTY+bsebrLQMfMF
- nc4w5Bzdzbmp+L/KyA+G/kNx9tnrjtnoHa8nApPpIOg1EgAr3dG5gNj8oxnr1Ij41tX4q9kkCpo
- xin+cXCOzGWRqamoXh4vraYpkout9g1+SRh+FRpFqWGFV9majsQPXItANJm5K5kB5vrizMjZbt2
- QK2Sre5VXQ4VCNzP2d7jH6z6hlpgAxWcolNpwP0itwM03uPc6+9ecZTlpD9wmI/NyLgmS9ON2yC
- RHZaLi5QmbS9ITQ==
+ bh=bCh7NJd7fce3zeRUpjd86V8ZnKEMThQrd7S8z0Y6D+4=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnIgV70hbmOTxXyDaMKOONHZtWYi9SFnZAHGB12
+ vzbQxoq/BmJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZyIFewAKCRDRgEFAKaOo
+ NvrsD/9tA7labhmKjwKu0JXdgJFXqZPvphh9g/Zm+9nM64mUHL2ybFVZCkhnsqO0hlZkk75N/oK
+ X+3XE/p/HlYsvosi093tDC901u8siSp+hEnWl65zCpV0wlx8bieGRZFkTjR53anXwLsNawj/ZcT
+ 0sIinRQAyhMOODPdplyXw4kOVBkkE7ul034p8kkpMkmG04UKaXcYvF/Jousr9z/rSFeYvn7Xw1G
+ 6gOLCOKvmiIkFJtbi6VFevXZasbKNAtOclTTypeAATtQ0L7oY2wwtGLhV8/WAbvUgnVMV+N6w0A
+ F3dudQVfkkPMvzyxS5ddIYunkoFHpxNC3JDhS26kySpyFpAQ+LhNjQh6lGJ3SZgXVUK+zPPuBVf
+ mTNpOcA676/9w2cii5sETZs9HlPiwnyN2IyeQfwBvaw6oCMkVUSet2HK1Z4WbJ98U83kpvpCmgb
+ ChpOI+zwc2CLv8M9YaQ/MEaqwMjwBWPZjdmavMwatdQ0UX18NbidpH30bDIg77XrmuWhzCJlVYN
+ en1ZM/azdrzWC92qiUhqKG4EJwR1KXkfMVXhiOm4hq8DYCSwLcAKyE2Mw+OII5IDhQiMT7M5k8D
+ 0B7DdGrAhqrtwT9tstGzf3lzNYYxfS2ne0hWwAzhZpQ+lKWf247zIhnOFTBSOptSIpHY0c+tFmN
+ gBIva1mNE9QxZwg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
@@ -62,62 +62,30 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 30 Oct 2024 10:08:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5613
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5614
 
-This way we put a timestamp on the image, so that someone looking at the
-image on an old release tarball has a representation of the release "as
-of <date>".
-
-Here set "Oct. 24" as it was the last time the file was updated.
+When reading the stable releases section, we want to know for which
+release the documentation was built. Use &DISTRO_NAME; to refer to the
+current release.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/svg/releases.svg | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ documentation/ref-manual/release-process.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/documentation/ref-manual/svg/releases.svg b/documentation/ref-manual/svg/releases.svg
-index b1036e066ceb65a7391cec616cb4304094728f3f..aad50cf593f56691d9961e427921af4ef25fdee2 100644
---- a/documentation/ref-manual/svg/releases.svg
-+++ b/documentation/ref-manual/svg/releases.svg
-@@ -409,14 +409,14 @@
-      inkscape:pageopacity="0"
-      inkscape:pageshadow="2"
-      inkscape:window-width="3826"
--     inkscape:window-height="2049"
-+     inkscape:window-height="2069"
-      id="namedview4"
-      showgrid="true"
--     inkscape:zoom="1.5536106"
--     inkscape:cx="868.94361"
--     inkscape:cy="273.87815"
--     inkscape:window-x="0"
--     inkscape:window-y="80"
-+     inkscape:zoom="2.1971372"
-+     inkscape:cx="1068.2082"
-+     inkscape:cy="287.87461"
-+     inkscape:window-x="2256"
-+     inkscape:window-y="60"
-      inkscape:window-maximized="1"
-      inkscape:current-layer="g10"
-      inkscape:document-rotation="0"
-@@ -1494,14 +1494,14 @@
-     <text
-        xml:space="preserve"
-        style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
--       x="1659.087"
-+       x="1686.7159"
-        y="-3.6722763"
-        id="text1185-3-55-4-0-0-0-1-1-6-4-3-5-2-2"><tspan
-          sodipodi:role="line"
--         x="1659.087"
-+         x="1686.7159"
-          y="-3.6722763"
-          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:13.3333px;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none"
--         id="tspan10317-2-9-1-4-6-5-6-6-5-9-7">Current</tspan></text>
-+         id="tspan10317-2-9-1-4-6-5-6-6-5-9-7">Current (Oct. 24)</tspan></text>
-     <text
-        xml:space="preserve"
-        style="font-weight:bold;font-size:13.3333px;line-height:125%;font-family:'Nimbus Roman';-inkscape-font-specification:'Nimbus Roman, Bold';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#fffefe;fill-opacity:1;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+index 75532addbdcd52cb0ab13ee8ffd57a70e1fc8045..691e7d3ed90c98e43e558809828b5094670ccca3 100644
+--- a/documentation/ref-manual/release-process.rst
++++ b/documentation/ref-manual/release-process.rst
+@@ -117,6 +117,8 @@ The currently supported :term:`LTS` releases are:
+ See :yocto_wiki:`/Stable_Release_and_LTS` for details about the management
+ of stable and :term:`LTS` releases.
+ 
++This documentation was built for the &DISTRO_NAME; release.
++
+ .. image:: svg/releases.*
+    :width: 100%
+ 
 
 -- 
 2.46.1
