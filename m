@@ -1,77 +1,162 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FB2AD74957
-	for <webhook@archiver.kernel.org>; Thu, 31 Oct 2024 12:47:27 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.11659.1730378837531493479
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11C0FD767D4
+	for <webhook@archiver.kernel.org>; Thu, 31 Oct 2024 14:15:18 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web10.13521.1730384116070003071
  for <docs@lists.yoctoproject.org>;
- Thu, 31 Oct 2024 05:47:17 -0700
+ Thu, 31 Oct 2024 07:15:16 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LSOgsoRl;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 75E0440005;
-	Thu, 31 Oct 2024 12:47:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1730378835;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=UYOPKBQ+QmoyWdyOIyfUFiI8fM2kQDElbE47PT3Flbw=;
-	b=LSOgsoRlRDofIYphcJFfnbc/TC5uDg7/u0/hcdLYIRd8RVlLo2qFh/Jr2lIiOJZQMVGaJu
-	RImr51isrYYIy1GfRQMLRwUu8Fr28s3qG3KKSGLnSSAYQxz8AAFir943wd2bq/e88LQsxW
-	DNU/izs3sSzHjxt7u88xBV4DrUqpfBF0GtrTftqBEUYwHp9IrQXXnXkLfkfeslVX10WD/b
-	fdwGxtGneYb7SLp8r3A7R2QarqFcW1UCXbxyGSaJjtPviJ4OOuWX0L2zVdEb26E6cQ4SNW
-	PSdwUZ9IyMw/A8jtkbs9qiOtzCEYmRCV7m4EaEtgQJFxivLgFylih7WlQA64Pg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 31 Oct 2024 13:47:15 +0100
-Message-Id: <D5A03QT5V3OY.20S0H8FTN0JXE@bootlin.com>
-Cc: <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
-Subject: [kirkstone] Pull request
-X-Mailer: aerc 0.18.2.r87.gd0484b15
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=EvhwgfLy;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.53, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-431481433bdso8691875e9.3
+        for <docs@lists.yoctoproject.org>; Thu, 31 Oct 2024 07:15:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1730384114; x=1730988914; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NDnjLsvMEW/+R5FRlozxBhBm55vKn2wVbN6PNF0uwv8=;
+        b=EvhwgfLyr6i91t4IckSoc5woAQ3So+Tx3OVR3lKpVfm5pedHQrzzJ1XfCHSbgO0i4K
+         R5gWo9puCH5byJiync1HoEy66pCY1uZ2C1XIhdaWxOXFf69o1xksqA3Nn8KW6w11ppVi
+         tD5IJDX3LQ93bT0Llquts/KAIq+QucQibCJ/8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1730384114; x=1730988914;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NDnjLsvMEW/+R5FRlozxBhBm55vKn2wVbN6PNF0uwv8=;
+        b=Fuv4JvZocoOPiEalqDYWVX6y1BL8HVph6aw+BArbDzw+IgXr256DpXhTMnMsmlBpx9
+         FhxdWToo2XzfV2xQ+azi3eQCtHF94nSHNl7R7ZgkDXhbboHmIFJeKsalu1pvyF7WzvRC
+         GMkz0F7uDvV4+b8zU3bcpiPnteC/w6iJniprUjlPN1h2x5000Agg3YTEOFO/XEVleLw2
+         WSCLWgt8XEyAbiZQ/2wNtl5RLayuucL7LnvTc/wP0ObYyBY41/GPgdXLVB0rJvkcgau7
+         oN8BCB7CgutOeBE/2XhI6049s32xcfizrCveAi+QS9zumDG3rz/kIWD4i8OMO/BKCveb
+         lCMw==
+X-Gm-Message-State: AOJu0YwEnSySrBOq3P+Tn7OLWYVEAkV5xAm7U8NWSS4oi/eX7n7KmDJS
+	rSxFGBYkOVSuQABImEiFrsgBt5emo3rDFavYIPYc0VoqtoOaqxMecrbYzaB6J1JKpjUSvfV6GbW
+	rQS4=
+X-Google-Smtp-Source: AGHT+IE39NeWfdMGb0ux5zDImFAVcwMjbCZdi5WafGHKyLkIDn37qkFFom/KqbHcvhM8mS4IzkcetA==
+X-Received: by 2002:a05:600c:4f04:b0:42c:acb0:dda5 with SMTP id 5b1f17b1804b1-4327b6f9574mr31547705e9.1.1730384114478;
+        Thu, 31 Oct 2024 07:15:14 -0700 (PDT)
+Received: from max.int.rpsys.net ([2001:8b0:aba:5f3c:3ee1:1135:b938:d59c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-431bd9180f2sm57248485e9.19.2024.10.31.07.15.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Oct 2024 07:15:14 -0700 (PDT)
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: yocto-patches@lists.yoctoproject.org
+Cc: docs@lists.yoctoproject.org
+Subject: [yocto-autobuilder-helper] [PATCH 2/2] scripts/run-docs-build: Add support for multiple buildtools and add modified 5.1 option
+Date: Thu, 31 Oct 2024 14:15:12 +0000
+Message-ID: <20241031141512.544354-2-richard.purdie@linuxfoundation.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20241031141512.544354-1-richard.purdie@linuxfoundation.org>
+References: <20241031141512.544354-1-richard.purdie@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 31 Oct 2024 12:47:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5631
+ <docs@lists.yoctoproject.org>; Thu, 31 Oct 2024 14:15:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5633
 
-The following changes since commit f08f4c664ffd49d23c7318d88604d1c940f0298a=
-:
+Add a modified 5.1 buildtools tarball for docs builds which has support for svg -> png
+conversion using rsvg-convert.
 
-  migration-guide: add release notes for 4.0.22 (2024-10-25 09:53:10 +0200)
+Older releases need older docs buildtools. Add support for this in the build
+script for docs, installing both and choosing depending on how old the main
+release branch is. For now I've put the changeover at scarthgap, it may be
+possible to make it older. I know kirkstone fails with the new tools.
 
-are available in the Git repository at:
+Bitbake doesn't need this since it's docs work fine with both versions.
 
-  git@push.yoctoproject.org:yocto-docs kirkstone-next
+The actual docs build is done in a subshell so we can choose the environment.
+We may need to improve the selection logic in future since some branches may
+start to build with the newer tools after backports.
 
-for you to fetch changes up to 0bef2bc76d1313aec0988284d6ed550bfc887951:
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+---
+ scripts/run-docs-build | 42 ++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 34 insertions(+), 8 deletions(-)
 
-  release-notes-4.0,brief-yoctoprojectqs: update BB_HASHSERVE_UPSTREAM for =
-new infrastructure (2024-10-31 13:45:16 +0100)
-
-----------------------------------------------------------------
-Antonin Godard (4):
-      ref-manual: release-process: update releases.svg with month after "Cu=
-rrent"
-      ref-manual: release-process: add a reference to the doc's release
-      ref-manual: devtool-reference: refresh example outputs
-      ref-manual: devtool-reference: document missing commands
-
-Steve Sakoman (1):
-      release-notes-4.0,brief-yoctoprojectqs: update BB_HASHSERVE_UPSTREAM =
-for new infrastructure
-
- documentation/brief-yoctoprojectqs/index.rst       |  2 +-
- .../migration-guides/release-notes-4.0.rst         |  2 +-
- documentation/ref-manual/devtool-reference.rst     | 72 ++++++++++++++++++=
-----
- documentation/ref-manual/release-process.rst       |  2 +
- documentation/ref-manual/svg/releases.svg          | 18 +++---
- 5 files changed, 74 insertions(+), 22 deletions(-))
+diff --git a/scripts/run-docs-build b/scripts/run-docs-build
+index bf1d261..9945d6b 100755
+--- a/scripts/run-docs-build
++++ b/scripts/run-docs-build
+@@ -25,22 +25,36 @@ outputdir=$builddir/output
+ scriptdir="$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")"
+ PUBLISH=${PUBLISH:-1}
+ sharedir=`jq -r '.["BASE_SHAREDDIR"]' < $HOME/config-local.json`
+-buildtools_url=${buildtools_url:-https://downloads.yoctoproject.org/releases/yocto/yocto-4.1.2/buildtools/x86_64-buildtools-docs-nativesdk-standalone-4.1.2.sh}
++# Modified 5.1 tools image to include rsvg, switch to next released version
++buildtools_url=${buildtools_url:-https://downloads.yoctoproject.org/releases/yocto/yocto-4.1.2/buildtools/x86_64-buildtools-docs-nativesdk-standalone-5.1-modified.sh}
++buildtools_url_old=${buildtools_url_old:-https://downloads.yoctoproject.org/releases/yocto/yocto-4.1.2/buildtools/x86_64-buildtools-docs-nativesdk-standalone-4.1.2.sh}
+ docbookarchive_url=${docbookarchive_url:-https://downloads.yoctoproject.org/mirror/docbook-mirror/docbook-archives-20201105.tar.xz}
+ 
++
+ buildtools_name=`basename $buildtools_url`
+ buildtools_localpath=${sharedir}/cluster-downloads-cache/${buildtools_name}
+-
+ if [ ! -e ${buildtools_localpath} ]; then
+     mkdir -p `dirname ${buildtools_localpath}`
+     wget ${buildtools_url} -O ${buildtools_localpath}
+     chmod a+x ${buildtools_localpath}
+ fi
+-
+ cd $builddir
+ mkdir buildtools
+ ${buildtools_localpath} -y -d $builddir/buildtools
+-. $builddir/buildtools/environment-setup*
++
++
++buildtools_name_old=`basename $buildtools_url_old`
++buildtools_localpath_old=${sharedir}/cluster-downloads-cache/${buildtools_name_old}
++if [ ! -e ${buildtools_localpath_old} ]; then
++    mkdir -p `dirname ${buildtools_localpath_old}`
++    wget ${buildtools_url_old} -O ${buildtools_localpath_old}
++    chmod a+x ${buildtools_localpath_old}
++fi
++
++cd $builddir
++mkdir buildtools-old
++${buildtools_localpath_old} -y -d $builddir/buildtools-old
++
+ 
+ # To build the latexpdf output we need Xetex (which can handle international characters)
+ # Rather than require it on all autobuilder workers, along with dependencies, we install
+@@ -99,8 +113,12 @@ for branch in 1.46 $(git branch --remote --contains "$first_sphinx_commit" --for
+     git reset --hard
+     git clean -ffdx
+     git checkout origin/master releases.rst
+-    make clean
+-    SPHINXOPTS="-j auto" make publish
++
++    (
++        . $builddir/buildtools/environment-setup*
++        make clean
++        SPHINXOPTS="-j auto" make publish
++    )
+ 
+     if [ "$branch" = "master-next" ]; then
+         branch="next"
+@@ -182,8 +200,16 @@ for branch in "$ypdocsbranch" dunfell $(git branch --remote --contains "$first_s
+         esac
+     fi
+ 
+-    make clean
+-    SPHINXOPTS="-j auto" make publish
++    (
++        # Anything older than scarthgap needs the older buildtools
++        if git merge-base --is-ancestor 0cdc0afd3332459d30cfc8f4c2e62bdcc23f5ed5 HEAD; then
++            . $builddir/buildtools/environment-setup*
++        else
++            . $builddir/buildtools-old/environment-setup*
++        fi
++        make clean
++        SPHINXOPTS="-j auto" make publish
++    )
+ 
+     # Strip yocto- from tag names
+     branch=$(echo "$branch" | sed 's/yocto-//')
 
