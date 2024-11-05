@@ -1,73 +1,92 @@
-Return-Path: <u.oelmann@pengutronix.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1012FD12671
-	for <webhook@archiver.kernel.org>; Tue,  5 Nov 2024 09:36:08 +0000 (UTC)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
- by mx.groups.io with SMTP id smtpd.web10.14137.1730799359913088686
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1B24BD2B922
+	for <webhook@archiver.kernel.org>; Tue,  5 Nov 2024 13:12:39 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.17703.1730812342566942961
  for <docs@lists.yoctoproject.org>;
- Tue, 05 Nov 2024 01:36:00 -0800
+ Tue, 05 Nov 2024 05:12:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: pengutronix.de, ip: 185.203.201.7, mailfrom: u.oelmann@pengutronix.de)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1t8Fyg-0006Sq-Gs; Tue, 05 Nov 2024 10:35:58 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1t8Fyf-0027f5-2q;
-	Tue, 05 Nov 2024 10:35:57 +0100
-Received: from uol by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1t8Fyf-00FJSA-2a;
-	Tue, 05 Nov 2024 10:35:57 +0100
-From: =?utf-8?Q?Ulrich_=C3=96lmann?= <u.oelmann@pengutronix.de>
-To: "Julien Stephan" <jstephan@baylibre.com>
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v3 3/3] dev-manual: add bblock documentation
-In-Reply-To: <20241105-add-bblock-documentation-v3-3-b870ded39a2d@baylibre.com>
-	(Julien Stephan's message of "Tue, 05 Nov 2024 09:17:37 +0100")
-References: <20241105-add-bblock-documentation-v3-0-b870ded39a2d@baylibre.com>
-	<20241105-add-bblock-documentation-v3-3-b870ded39a2d@baylibre.com>
-User-Agent: mu4e 1.12.6; emacs 29.4
-Date: Tue, 05 Nov 2024 10:35:57 +0100
-Message-ID: <6rh68mqayq.fsf@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZFuf0PIc;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CDA22C0002;
+	Tue,  5 Nov 2024 13:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730812340;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uZpX1pnMNgkij2RnNijW6EwMxJIB8EEQhoLd/nWhYrI=;
+	b=ZFuf0PIcNmWLQORDsBax6lf86U2+C8AQ8l8GX/yHUUIoFubfBNtYyO1LXpNopgYQhC43gO
+	e+Dy1QQnd1Jwo/8lMnCleiult6gCRM/wMISgzbH6WwblGySgRtSWDhw393ieW98Qq7KFTZ
+	7zwbbNzA4vw3E52GM3eNMd9aovDifIWOmeYpOapH/wg3ul6zYNjQs4i6swZrwFHhTu3RJT
+	J+TPfcby/Z5dqstQ9Az8Wo67XVCeag2drZzExoTYFl1Vnb/Z9CctNzxtw93uv90licLVJO
+	ds2wQJ8eBbXOcvEvBIudHp2QXj5kiBCprKq0d4Dn6UYqNLpx0w9aaqKFtDNPNA==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: u.oelmann@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: docs@lists.yoctoproject.org
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 05 Nov 2024 14:12:19 +0100
+Message-Id: <D5E9RNX36GZW.10MSD4UHMX2LR@bootlin.com>
+Subject: Re: [docs] [PATCH v2 0/2] Add bblock documentation
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Julien Stephan" <jstephan@baylibre.com>, <docs@lists.yoctoproject.org>
+X-Mailer: aerc 0.18.2.r87.gd0484b15
+References: <20241104-add-bblock-documentation-v2-0-74a8a2cff0f8@baylibre.com>
+In-Reply-To: <20241104-add-bblock-documentation-v2-0-74a8a2cff0f8@baylibre.com>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 05 Nov 2024 09:36:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5677
+ <docs@lists.yoctoproject.org>; Tue, 05 Nov 2024 13:12:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5678
 
-On Tue, Nov 05 2024 at 09:17 +0100, "Julien Stephan" <jstephan@baylibre.com=
-> wrote:
-> bblock is a helper tool to lock/unlock tasks and recipes to specific
-> signatures. Add a documentation page for it.
+Hi Julien,
+
+On Mon Nov 4, 2024 at 4:59 PM CET, Julien Stephan wrote:
+> Hello,
+>
+> The main purpose of this series is to add some information for the user
+> the use VALE and SPHINXLINT on a subset of the documentation.
 >
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 > ---
->  documentation/dev-manual/bblock.rst    | 129 +++++++++++++++++++++++++++=
-++++++
->  documentation/dev-manual/index.rst     |   1 +
->  documentation/ref-manual/structure.rst |   8 ++
->  documentation/ref-manual/variables.rst |   3 +
->  4 files changed, 141 insertions(+)
+> Changes in v2:
+> - Fixed various typos reported by Ulrich =C3=96lmann  and Antonin Godard
+> - Split series: bblock documetnation was sent into a separate series
+> - Link to v1: https://lore.kernel.org/r/20241031-add-bblock-documentation=
+-v1-0-32b89093bbda@baylibre.com
+>
+> ---
+> Julien Stephan (2):
+>       README: add instruction to run Vale on a subset
+>       documentation: Makefile: add SPHINXLINTDOCS to specify subset to sp=
+hinx-lint
+>
+>  documentation/Makefile | 23 ++++++++++++-----------
+>  documentation/README   | 18 +++++++++++++++++-
+>  2 files changed, 29 insertions(+), 12 deletions(-)
+> ---
+> base-commit: 9563855ccd92e21fb6f8320c96a3a83e115c947e
+> change-id: 20241031-add-bblock-documentation-4a5f8cf9c6d2
+>
+> Best regards,
 
-Reviewed-by: Ulrich =C3=96lmann <u.oelmann@pengutronix.de>
+Looks good, thanks, this will be useful!
+
+For the series:
+
+Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
+Tested-by: Antonin Godard <antonin.godard@bootlin.com>
+
+Cheers,
+Antonin
+
 --=20
-Pengutronix e.K.                           | Ulrich =C3=96lmann            =
-   |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
