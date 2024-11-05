@@ -1,99 +1,129 @@
-Return-Path: <jstephan@baylibre.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AB20E6B27E
-	for <webhook@archiver.kernel.org>; Mon,  4 Nov 2024 15:59:24 +0000 (UTC)
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
- by mx.groups.io with SMTP id smtpd.web10.61218.1730735954816905506
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DA3A8D1CA14
+	for <webhook@archiver.kernel.org>; Tue,  5 Nov 2024 01:44:05 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+ by mx.groups.io with SMTP id smtpd.web11.7743.1730771039604520869
  for <docs@lists.yoctoproject.org>;
- Mon, 04 Nov 2024 07:59:15 -0800
+ Mon, 04 Nov 2024 17:43:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=MpLHz+PI;
- spf=pass (domain: baylibre.com, ip: 209.85.221.44, mailfrom: jstephan@baylibre.com)
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-37d4a5ecc44so2825288f8f.2
-        for <docs@lists.yoctoproject.org>; Mon, 04 Nov 2024 07:59:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730735953; x=1731340753; darn=lists.yoctoproject.org;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Z3xYPS4k43N3lCIhGgD+nFHt+agzmm2tM+Cy1qabH/Q=;
-        b=MpLHz+PI1aOqCQtpDItD++k91adQbMS0eqnopXO8o/LaNrMee7HcQJoImi0HlofpVq
-         YKD/j9+2IMI7KMglEGdL2mBk9nfGqp3c2YpGJbytU2R7jo7Dp5EOYwj1V1vVDx1IwpSN
-         GOGkoeJ+GEu3QBZY2W645oc36ehGMZXPvDeZKwO/zIadu37C23C34J8vKDJd2cXT+YE5
-         6G/QO6KY5Brq6ahXYtmLqS5nV21S8akMe/fNqIsLSr9Rnzg2wePwHROd6rOIvFg9/eqY
-         RvYJw6qwdQikbgGeJ3RxkQbOI8kI9SSDkwSAu19BZgp8/m7gkihJSP/vEGVmcxFb7XJz
-         viCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730735953; x=1731340753;
-        h=to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z3xYPS4k43N3lCIhGgD+nFHt+agzmm2tM+Cy1qabH/Q=;
-        b=lDFfywgwIT/IU0gKWuNODRLcCFPQTQm0zAWCwjNzKCyaBfQ+9lHqkEg+RBJ2CBX/d6
-         JcVBlAUkb3R/W/gLamZ6dKRhzVmTakbwPqfh80lpyDdjQY3f8IH6JFc9X3nE1LqznEwP
-         Z3xSZuZ3b2swONW7R5jfOwcjpNq1ahYUT1A69jk1h/TdKNaRrCJoOEjVWq2SJiBTFUV6
-         y0SiPcl1w71+sXTn6Si10HNkkxsxX0DOo/GpZRyyiJr3/BwSBhrW9yfS+3aw26Znd2Eg
-         Yx94lAnhBQ76bUzBZqzupWgLvfWurHbkqAPHAOxmKKQBgoJ3+Of7ZR2mr+tJqk27Yyc6
-         oLBg==
-X-Gm-Message-State: AOJu0YxN7YoPjye/5ptx9k+cx981vYgx7xgBklfE9kt6vzaPH3iBhmBH
-	4yCqGLWIM2SwMQrtpHGAhhZbWBGD7GkKIhpCRE4zJhIs8CzqpSv9RjVuPZdFc5QIE4hfkvrwc2B
-	YFEA=
-X-Google-Smtp-Source: AGHT+IFPI8pGrbWrGM8Pdi5uP4ITGYLPriqndREG39khJbd/qTYL7uHd4oTTz+CebUxYJWaTIUsKdw==
-X-Received: by 2002:a5d:6946:0:b0:37c:d2f0:7331 with SMTP id ffacd0b85a97d-38060fff529mr23458581f8f.0.1730735952990;
-        Mon, 04 Nov 2024 07:59:12 -0800 (PST)
-Received: from [192.168.42.0] (2a02-842a-d52e-6101-6fd0-06c4-5d68-f0a5.rev.sfr.net. [2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d49d4sm13581732f8f.34.2024.11.04.07.59.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Nov 2024 07:59:12 -0800 (PST)
-From: Julien Stephan <jstephan@baylibre.com>
-Date: Mon, 04 Nov 2024 16:59:12 +0100
-Subject: [PATCH v2 1/2] README: add instruction to run Vale on a subset
+ dkim=pass header.i=@intel.com header.s=Intel header.b=QOH+f+mV;
+ spf=pass (domain: intel.com, ip: 192.198.163.16, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1730771039; x=1762307039;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=43b/9R0hklTvgBOnXk7HIL57i64k9KvarjkwecjsRvs=;
+  b=QOH+f+mVekWyxtXrYfucGM9K3NedXytUKk2rIJjy1cJyJbNDIxdW+6mE
+   UCRYvJcZ1txJYFGUUJEQQ+hwSQmS6oPE+bjBjCLndF5io9zYtGJRnk06K
+   kGu6ba6wX+G7lXnPPD04hXKBGUoaOIjoRXaHw9HApHqqy4IRX3k2i/Trw
+   zOoXQ/4UNC7yZKzNHZ8rnkZq6uqiDQYvYB56txR9/SF8eDxjPBykPgLNH
+   nfFBDKnxlZj2CKNXxCSUv2pfgKxohdPzD710YgF9Ezo95AjoSxwuQHf8I
+   xDebxZnUZBqh2Dl1+BQfdtkCD6tgKW1jnQsRENJkpKyMBY+CZZHc3LTbN
+   g==;
+X-CSE-ConnectionGUID: N8QRnEcGSbCa2LX4HhlDfA==
+X-CSE-MsgGUID: ke6RX8r3T7OABGo8VoPrcg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11246"; a="18114518"
+X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; 
+   d="scan'208";a="18114518"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2024 17:43:59 -0800
+X-CSE-ConnectionGUID: b7fALkPESA2pvp9bpRlTqA==
+X-CSE-MsgGUID: wcuCecijQeOHn8owqN60Zg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,258,1725346800"; 
+   d="scan'208";a="83500589"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by fmviesa007.fm.intel.com with ESMTP; 04 Nov 2024 17:43:58 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] release-notes-5.1: add download section
+Date: Tue,  5 Nov 2024 09:42:04 +0800
+Message-Id: <20241105014204.2824698-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241104-add-bblock-documentation-v2-1-74a8a2cff0f8@baylibre.com>
-References: <20241104-add-bblock-documentation-v2-0-74a8a2cff0f8@baylibre.com>
-In-Reply-To: <20241104-add-bblock-documentation-v2-0-74a8a2cff0f8@baylibre.com>
-To: docs@lists.yoctoproject.org, Julien Stephan <jstephan@baylibre.com>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 04 Nov 2024 15:59:24 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5668
+ <docs@lists.yoctoproject.org>; Tue, 05 Nov 2024 01:44:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5670
 
-make stylecheck runs Vale on the whole documentation which can be long
-and reports a lot of errors/warnings. We can run Vale on a subset using
-the VALEDOCS variable, so update documentation to highlight it.
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- documentation/README | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ .../migration-guides/release-notes-5.1.rst    | 56 +++++++++++++++++++
+ 1 file changed, 56 insertions(+)
 
-diff --git a/documentation/README b/documentation/README
-index c888b666a8632a1d6f576c68e4f9ca966d79f134..8ac8d5236793774586abddfd89cf1b3daa680edc 100644
---- a/documentation/README
-+++ b/documentation/README
-@@ -142,6 +142,14 @@ To run Vale:
+diff --git a/documentation/migration-guides/release-notes-5.1.rst b/documentation/migration-guides/release-notes-5.1.rst
+index d6e284c1e..e5da4eeaf 100644
+--- a/documentation/migration-guides/release-notes-5.1.rst
++++ b/documentation/migration-guides/release-notes-5.1.rst
+@@ -1018,3 +1018,59 @@ Thanks to the following people who contributed to this release:
  
-  $ make stylecheck
- 
-+Style checking the whole documentation might take some time and generate a
-+lot of warnings/errors, thus one can run Vale on a subset of files or
-+directories:
+ Repositories / Downloads for Yocto-5.1
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+  $ make stylecheck VALEDOCS=<file>
-+  $ make stylecheck VALEDOCS="<file1> <file2>"
-+  $ make stylecheck VALEDOCS=<dir>
++poky
 +
- Link checking the Yocto Project documentation
- =============================================
- 
-
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`styhead </poky/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1 </poky/log/?h=yocto-5.1>`
++-  Git Revision: :yocto_git:`8f01ae5c7cba251ed25c80f0141a950ebc8a5f73 </poky/commit/?id=8f01ae5c7cba251ed25c80f0141a950ebc8a5f73>`
++-  Release Artefact: poky-8f01ae5c7cba251ed25c80f0141a950ebc8a5f73
++-  sha: 91f5b2bc8a2be153ac2c358aa8ad71737b4f91e83d2c3ed1aac4f5f087991769
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.1/poky-8f01ae5c7cba251ed25c80f0141a950ebc8a5f73.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.1/poky-8f01ae5c7cba251ed25c80f0141a950ebc8a5f73.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`styhead </openembedded-core/log/?h=styhead>`
++-  Tag:  :oe_git:`yocto-5.1 </openembedded-core/log/?h=yocto-5.1>`
++-  Git Revision: :oe_git:`161c5b311f1aeb8f254dca96331b31d5b67fc92d </openembedded-core/commit/?id=161c5b311f1aeb8f254dca96331b31d5b67fc92d>`
++-  Release Artefact: oecore-161c5b311f1aeb8f254dca96331b31d5b67fc92d
++-  sha: 7b8ea61a3b811556f40b0912ee22b3ef37bccead1d65fb7e1c35a47aff4ca718
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.1/oecore-161c5b311f1aeb8f254dca96331b31d5b67fc92d.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.1/oecore-161c5b311f1aeb8f254dca96331b31d5b67fc92d.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`styhead </meta-mingw/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1 </meta-mingw/log/?h=yocto-5.1>`
++-  Git Revision: :yocto_git:`4ac6cbfdce1f85294bd54bcd8b074f7ef32c378f </meta-mingw/commit/?id=4ac6cbfdce1f85294bd54bcd8b074f7ef32c378f>`
++-  Release Artefact: meta-mingw-4ac6cbfdce1f85294bd54bcd8b074f7ef32c378f
++-  sha: 7759361e141654cc84aad486ad36a9ddaf7ee47feebe2cc6dca3175f1922b7c4
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.1/meta-mingw-4ac6cbfdce1f85294bd54bcd8b074f7ef32c378f.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.1/meta-mingw-4ac6cbfdce1f85294bd54bcd8b074f7ef32c378f.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.10 </bitbake/log/?h=2.10>`
++-  Tag:  :oe_git:`yocto-5.1 </bitbake/log/?h=yocto-5.1>`
++-  Git Revision: :oe_git:`d3c84198771b7f79aa84dc73061d8ca071fe18f3 </bitbake/commit/?id=d3c84198771b7f79aa84dc73061d8ca071fe18f3>`
++-  Release Artefact: bitbake-d3c84198771b7f79aa84dc73061d8ca071fe18f3
++-  sha: 4b64120f26878a661d1aaf0b0bb5009a21614e2db0649c728cc9d4c16b1050b6
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.1/bitbake-d3c84198771b7f79aa84dc73061d8ca071fe18f3.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.1/bitbake-d3c84198771b7f79aa84dc73061d8ca071fe18f3.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`styhead </yocto-docs/log/?h=styhead>`
++-  Tag: :yocto_git:`yocto-5.1 </yocto-docs/log/?h=yocto-5.1>`
++-  Git Revision: :yocto_git:`c32b55b3403dcfd76a4694ff407d4b513e14c8f4 </yocto-docs/commit/?id=c32b55b3403dcfd76a4694ff407d4b513e14c8f4>`
++
 -- 
-2.47.0
+2.34.1
 
 
