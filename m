@@ -2,161 +2,136 @@ Return-Path: <jstephan@baylibre.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 39828D44D70
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 39E2ED44D6A
 	for <webhook@archiver.kernel.org>; Wed,  6 Nov 2024 13:54:57 +0000 (UTC)
 Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
- by mx.groups.io with SMTP id smtpd.web10.46221.1730901288854679499
+ by mx.groups.io with SMTP id smtpd.web10.46222.1730901289782537073
  for <docs@lists.yoctoproject.org>;
- Wed, 06 Nov 2024 05:54:49 -0800
+ Wed, 06 Nov 2024 05:54:50 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=xycrqm2y;
+ dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=od7wzLKn;
  spf=pass (domain: baylibre.com, ip: 209.85.221.46, mailfrom: jstephan@baylibre.com)
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3807dd08cfcso5620477f8f.1
-        for <docs@lists.yoctoproject.org>; Wed, 06 Nov 2024 05:54:48 -0800 (PST)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-37d4b0943c7so4270297f8f.1
+        for <docs@lists.yoctoproject.org>; Wed, 06 Nov 2024 05:54:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730901287; x=1731506087; darn=lists.yoctoproject.org;
-        h=to:content-transfer-encoding:mime-version:message-id:date:subject
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZJQTXgB/7yiTmaXcRgoBvIaZpfbl55tI1oRRaCdmGfI=;
-        b=xycrqm2y3iabD97CgZH+h3IBGnYBZnWn4Ph/xIgRW1HNRICB+HstI6ypXPnxnrHASd
-         fY+Xk10uwRxAmBLiV/HN6BUJsk9KtY6mOoTp0jXBYfwG7xjPgdKUIDxjLI7tIbDGohUd
-         tlglsMZ/HBFAyQG2lw1cvppcr/fDIa8oxjicQLR2p6LGirJsljEKLxqPV1lPAqhleNqf
-         0ZQr2H8Sde4t6yurWGxw96hRnL9a9Ejcs3uolI+aBzxuziDr0lADib+4WhrPmj+ToHjy
-         9Si1OWlTK/vyWIjW/mEwf5REBWWSdE28qn3VmYDFuDhhW0gBKmjdohtHowsnKOHWkdgF
-         oqaQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1730901288; x=1731506088; darn=lists.yoctoproject.org;
+        h=to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=AFK86GBRO+icOXMzWv5jRb8B1L4QDNbK6rRxaE/Xpcc=;
+        b=od7wzLKn3GFv20AIXxZWYF2rQhzz2gaOD6nnQ/yZiBQ27Wpb4k6QakGTmxoC61pOr4
+         C2rUQ541NdwoZQtSEJZQpQb6sq0HjylswePp4NsOXuT1xLcu9+kFT98t7ZuXyN4vVOJA
+         sYh2AovSa7XNhIzf0CAKvcLNiF4PcHzp1P/3UMo96aaY4sWWrt8xWxiKoGD/Ih3IQCzD
+         HSXduXVkaJyCXRO3AqLcbweRnJMLyw6cAiY02K4lcygV4np34yMHMT6L+JWHV/SIzrHj
+         z4L2LDvoYJmGGQzB1FsT0iUaVqUuqsRRUoPrfy7HX+ueDFN50STKrtA+y1nG0blQmGMs
+         nVgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730901287; x=1731506087;
-        h=to:content-transfer-encoding:mime-version:message-id:date:subject
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZJQTXgB/7yiTmaXcRgoBvIaZpfbl55tI1oRRaCdmGfI=;
-        b=jWLnKoxVlEjASp8aLdaBAwnRlMqVy/8vsSbFgdk4zCKL/tEGrkz9EE2AORnKc3zwC8
-         11sGmT4tH+DAGx+USKRIIHLjvYd5jXK+gewEHwlASIuKDqXGUCbLo8XPacSuv9ipXotr
-         XkpU8kdLboylDobAH6E/dh7Bjxj/AE1EJyoSEpsNhgho/ALjh3+5UizsamR4ABA1Jt4d
-         M2Fn04dkcv6hu31pPwoIrZM8S+jhhiiWAt9H6xSN4ZM5YR9eLsL/q2Puaa611NooUvG7
-         mMYTT3Y54wgIsXfWihjoMatU7jOld97RDTSnuL85krXrX2YGogTcazI8SVeNaFPpZuxT
-         Sz2A==
-X-Gm-Message-State: AOJu0Yx5b1MZPs0FIikSIGaZX7Fsd8Rg7sxbc1F4YoU9v46dPAjTPsti
-	hJ9TOLkKst5GvEqWTaQrKBH1rqVZv1lMRuwaAYmr8aV05Bwjq5U0SmN0MPoAdneZZ5e0PdRAGv/
-	ECXY=
-X-Google-Smtp-Source: AGHT+IGSxFknPwfHV6SP6OtdAeE503nWzWfuS1VHP8bjcIUb+O58BSVmtNE1mT1aW/yoLMAapolc0A==
-X-Received: by 2002:a05:6000:1a8a:b0:37d:5296:4b37 with SMTP id ffacd0b85a97d-381c7a5e746mr20613997f8f.24.1730901287061;
+        d=1e100.net; s=20230601; t=1730901288; x=1731506088;
+        h=to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AFK86GBRO+icOXMzWv5jRb8B1L4QDNbK6rRxaE/Xpcc=;
+        b=sgCsXeJW9iHg2k/9MmJMPpIamAMPxSWjJfl8VdNLEUVY0Eg/+uq2oQoxg8d33mkQhX
+         163PCEqLHDYcMyoM6eHXqB2U+u7H8MzSiWy67gTcPBxQaozJCSCwO9rzYA7ljHr0lwkU
+         P291Nuw2CSeqaGfsFjKKFkfGlkfC5lc86q/pt9ihn11ibBnxOBh0eO7ZAT4RAZeQCZQn
+         ALdsykf2X0xzQAc4dLLRKmkEOTr1mAWWxyAu+pmxCnaD99xnGXJF5aOTelUtOBCBR8qd
+         oLEiKMLmHhty/3OaAo2v+8d6OhzUgcXxLz7x7aJruLDrPIqWTdM1A1nWV0Ae3N/Z8IPN
+         +VYw==
+X-Gm-Message-State: AOJu0YyVZPbPPwK6vrynpLWhD885pbIH2VsCKeKyLIq634twxi1Yeb/h
+	nICmJjV9nHByPr+5TpoaAbGZbFT0p+9Bz0t+ldazmkYRNoT84GTqOUD7EKQIWnm8aTqhzw8dLpP
+	XmQs=
+X-Google-Smtp-Source: AGHT+IFiIOgi/BSRwYtxuaF9Fe5zGA650JnTI3DiwtKI3hw6m6p/1H55pkWrP9nUJ1cYXvMCrs5G1w==
+X-Received: by 2002:adf:e0d2:0:b0:37d:493c:f7b8 with SMTP id ffacd0b85a97d-380610f245dmr27424399f8f.2.1730901287921;
         Wed, 06 Nov 2024 05:54:47 -0800 (PST)
 Received: from [192.168.42.0] (2a02-842a-d52e-6101-6fd0-06c4-5d68-f0a5.rev.sfr.net. [2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113dd7fsm19402750f8f.70.2024.11.06.05.54.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c113dd7fsm19402750f8f.70.2024.11.06.05.54.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 05:54:46 -0800 (PST)
+        Wed, 06 Nov 2024 05:54:47 -0800 (PST)
 From: Julien Stephan <jstephan@baylibre.com>
-Subject: [PATCH v5 0/3] Add bblock documentation
-Date: Wed, 06 Nov 2024 14:54:44 +0100
-Message-Id: <20241106-add-bblock-documentation-v5-0-625806c6a3ce@baylibre.com>
+Date: Wed, 06 Nov 2024 14:54:46 +0100
+Subject: [PATCH v5 2/3] ref-manual: variables: add SIGGEN_LOCKEDSIGS*
+ variables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIACR1K2cC/43NQW7CMBCF4asgr3FljychZtV7VCxsz7hYQFw5a
- QRCuXsNGxBCUZf/SO+bqxi4JB7EdnUVhac0pNzXaNYrEfau/2aZqLYABaiV0dIRSe+PORwk5fB
- 74n50Yx1JdE3sQrShJRB1/lM4pvOd/trV3qdhzOVy/zTp2/Uf6KSlkgZ8Z5U13pP79O5yTL7wR
- 8gncXMneFha4YIF1VIbhYzUWAv2jWWerWbBMtXy3UYRk7EO6I2Fz1a7YGG1bASkyK0FNC/WPM9
- /h6citKcBAAA=
-X-Change-ID: 20241031-add-bblock-documentation-4a5f8cf9c6d2
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241106-add-bblock-documentation-v5-2-625806c6a3ce@baylibre.com>
+References: <20241106-add-bblock-documentation-v5-0-625806c6a3ce@baylibre.com>
+In-Reply-To: <20241106-add-bblock-documentation-v5-0-625806c6a3ce@baylibre.com>
 To: docs@lists.yoctoproject.org, Julien Stephan <jstephan@baylibre.com>
 X-Mailer: b4 0.14.2
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 06 Nov 2024 13:54:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5698
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5700
 
-Hello,
-
-The main purpose of this series is to add documentation for bblock.
-
-bblock uses internally the 3 following variables: SIGGEN_LOCKEDSIGS,
-SIGGEN_LOCKEDSIGS_TASKSIG_CHECK and SIGGEN_LOCKEDSIGS_TYPE which are not
-documentated, so adding them to the glossary.
-
-I also added "sstate" into the Yocto vocabulary to avoir error when running
-Vale.
-
-This series was built and checked with:
-
-  $ make html
-  $ make stylecheck VALEDOCS=dev-manual/bblock.rst
-  $ make sphinx-lint SPHINXLINTDOCS=dev-manual/bblock.rst
-
-I tried my best to make Vale happy, but I still have the following
-warnings:
-
- dev-manual/bblock.rst
- 1:1  warning     Try to keep the Coleman–Liau Index grade (10.29) below 9.                           Readability.ColemanLiau
- 1:1  warning     Try to keep the Flesch reading ease score (57.51) above 70.                         Readability.FleschReadingEase
- 1:1  warning     Try to keep the Flesch–Kincaid grade level (8.28) below 8.                          Readability.FleschKincaid
- 1:1  warning     Try to keep the SMOG grade (11.42) below 10.                                        Readability.SMOG
- 1:1  warning     Try to keep the LIX score (38.20) below 35.                                         Readability.LIX
- 3:1  suggestion  Use sentence-style capitalization in 'Locking and Unlocking Recipes Using ******'.  RedHat.Headings
- 29:49  suggestion  Consider wrapping this Pascal or Camel case term ('TipsAndTricks') in backticks.    RedHat.PascalCamelCase
- 39:60  suggestion  Use simple language. Consider using 'many' rather than 'multiple'.                  RedHat.SimpleWords
- 39:60  warning     'multiple' is too wordy.                                                            write-good.TooWordy
- 57:62  warning     'multiple' is too wordy.                                                            write-good.TooWordy
- 76:43  error       Use 'BitBake' instead of 'bitbake'.                                                 Vale.Terms
- 76:58  error       Use 'OpenEmbedded' instead of 'openembedded'.                                       Vale.Terms
- 76:71  warning     Use either 'or' or 'and' in 'core/tree'                                             RedHat.Slash
- 76:81  warning     Use either 'or' or 'and' in 'meta/conf'                                             RedHat.Slash
- 76:91  error       Use 'BitBake' instead of 'bitbake'.                                                 Vale.Terms
-
-About the Readability, I am not sure I can do better ^^ But anyone with
-better english skills than me can help here!
-
-About the capitalization: I decided to ignore it to keep consistency with
-all other headings of the reference manual.
-
-Suggestion and errors/warnings on lines 29 and 76 are false positive, we may need
-to add some rule to ignore these check on :oe_git: directives
-Also ignore the warning about 'multiple' as 'many' does not fit well in
-this case.
+Variables SIGGEN_LOCKEDSIGS, SIGGEN_LOCKEDSIGS_TASKSIG_CHECK and
+SIGGEN_LOCKEDSIGS_TYPES are used to lock specific tasks to specific
+signatures. They are used by bitbake -S <lockedsigs> and bblock, so add
+documentation for them.
 
 Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 ---
-Changes in v5:
-- add missing "tmp" in stamps file path in SIGGEN_LOCKEDSIGS
-  documentation
-- reword a sentence in SIGGEN_LOCKEDSIGS  documentation
-- Link to v4: https://lore.kernel.org/r/20241106-add-bblock-documentation-v4-0-9f24dfe69243@baylibre.com
+ documentation/ref-manual/variables.rst | 44 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 44 insertions(+)
 
-Changes in v4:
-- use "the sstate cache" everywhere for consistency
-- fix some typo
-- add comment to explain that bblock.conf does not exist by default
-- Link to v3: https://lore.kernel.org/r/20241105-add-bblock-documentation-v3-0-b870ded39a2d@baylibre.com
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 07ed143ac5606617c720301ac6621355a341f90a..11ad1f4dc69c849383fb259dc32342988b62abe5 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7880,6 +7880,50 @@ system and gives an overview of their function and contents.
+          might break at runtime if the interface of the recipe was changed
+          after the other had been built.
+ 
++   :term:`SIGGEN_LOCKEDSIGS`
++     The list of locked tasks, with the form::
++
++       SIGGEN_LOCKEDSIGS += "<package>:<task>:<signature>"
++
++     If ``<signature>`` exists for the specified ``<task>`` and ``<package>``
++     in the sstate cache, BitBake will use the cached output instead of
++     rebuilding the ``<task>``. If it does not exist, BitBake will build the
++     ``<task>`` and the sstate cache will be used next time.
++
++     Example::
++
++       SIGGEN_LOCKEDSIGS += "bc:do_compile:09772aa4532512baf96d433484f27234d4b7c11dd9cda0d6f56fa1b7ce6f25f0"
++
++     You can obtain the signature of all the tasks for the recipe ``bc`` using::
++
++       bitbake -S none bc
++
++     Then you can look at files in ``build/tmp/stamps/<arch>/bc`` and look for
++     files like: ``<PV>.do_compile.sigdata.09772aa4532512baf96d433484f27234d4b7c11dd9cda0d6f56fa1b7ce6f25f0``.
++
++   :term:`SIGGEN_LOCKEDSIGS_TASKSIG_CHECK`
++     Specifies the debug level of task signature check. 3 levels are supported:
++
++     * ``info``: displays a "Note" message to remind the user that a task is locked
++       and the current signature matches the locked one.
++     * ``warn``: displays a "Warning" message if a task is locked and the current
++       signature does not match the locked one.
++     * ``error``: same as warn but displays an "Error" message and aborts.
++
++   :term:`SIGGEN_LOCKEDSIGS_TYPES`
++     Allowed overrides for :term:`SIGGEN_LOCKEDSIGS`. This is mainly used
++     for architecture specific locks. A common value for
++     :term:`SIGGEN_LOCKEDSIGS_TYPES` is ``${PACKAGE_ARCHS}``::
++
++       SIGGEN_LOCKEDSIGS_TYPES += "${PACKAGE_ARCHS}"
++
++       SIGGEN_LOCKEDSIGS_core2-64 += "bc:do_compile:09772aa4532512baf96d433484f27234d4b7c11dd9cda0d6f56fa1b7ce6f25f0"
++       SIGGEN_LOCKEDSIGS_cortexa57 += "bc:do_compile:12178eb6d55ef602a8fe638e49862fd247e07b228f0f08967697b655bfe4bb61"
++
++     Here, the ``do_compile`` task from ``bc`` will be locked only for
++     ``core2-64`` and ``cortexa57`` but not for other architectures such as
++     ``mips32r2``.
++
+    :term:`SITEINFO_BITS`
+       Specifies the number of bits for the target system CPU. The value
+       should be either "32" or "64".
 
-Changes in v3:
-- Fix missing typos reported by Ulrich Olmann in v1
-- Link to v2: https://lore.kernel.org/r/20241104-add-bblock-documentation-v2-0-0704e4d59929@baylibre.com
-
-Changes in v2:
-- Fixed various typos reported by Ulrich Ölmann and Antonin Godard
-- Splited the series in two: the Readme/Makefile changes related to Vale
-  and SPHINXLINT and bblock documentation
-- Added a bblock.conf file in `documentation/ref-manual/structure.rst`
-- Link to v1: https://lore.kernel.org/r/20241031-add-bblock-documentation-v1-0-32b89093bbda@baylibre.com
-
----
-Julien Stephan (3):
-      styles: vocabularies: Yocto: add sstate
-      ref-manual: variables: add SIGGEN_LOCKEDSIGS* variables
-      dev-manual: add bblock documentation
-
- documentation/dev-manual/bblock.rst                | 129 +++++++++++++++++++++
- documentation/dev-manual/index.rst                 |   1 +
- documentation/ref-manual/structure.rst             |   9 ++
- documentation/ref-manual/variables.rst             |  47 ++++++++
- .../styles/config/vocabularies/Yocto/accept.txt    |   1 +
- 5 files changed, 187 insertions(+)
----
-base-commit: 7b40c7b73a360a1ec383c4c9f00c3e126208320b
-change-id: 20241031-add-bblock-documentation-4a5f8cf9c6d2
-
-Best regards,
 -- 
-Julien Stephan <jstephan@baylibre.com>
+2.47.0
 
 
