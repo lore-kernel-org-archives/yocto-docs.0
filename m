@@ -1,103 +1,174 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2C544D44D74
-	for <webhook@archiver.kernel.org>; Wed,  6 Nov 2024 14:05:57 +0000 (UTC)
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
- by mx.groups.io with SMTP id smtpd.web11.46248.1730901949549750947
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A6C1BD29FBB
+	for <webhook@archiver.kernel.org>; Wed,  6 Nov 2024 15:28:47 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web11.48302.1730906926894472933
  for <docs@lists.yoctoproject.org>;
- Wed, 06 Nov 2024 06:05:49 -0800
+ Wed, 06 Nov 2024 07:28:47 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=aJ65N0RS;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.43, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-431481433bdso60105645e9.3
-        for <docs@lists.yoctoproject.org>; Wed, 06 Nov 2024 06:05:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1730901948; x=1731506748; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QKPcwCGt4tw0u/hOVX5h3jUFmU7Y60hDkqQVfGsbvlU=;
-        b=aJ65N0RSekpYcsjy5H7YcdIiF/AHLZDYPibdPVTAMKrtXAJQAL/vx3CyVGLb2F3NZJ
-         2krt+VRHQuiNxARqWWBOzMYYQUw6OEB9z+g1ncDBGTlQH4/PYgr06FJ+H5ezc34rEYIx
-         a4XPmxYoVQtlEDFRJL01A2yJeTxmcJN8Hz14o=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1730901948; x=1731506748;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=QKPcwCGt4tw0u/hOVX5h3jUFmU7Y60hDkqQVfGsbvlU=;
-        b=D8ndjyufVMXVhVZv4b448OASaPUz3FDyB1vxd2RSFgvKeEylYWCb2NGypEMd1VDwHP
-         amFHiPHmEASnnShq8lYGcbbDghUMpWB0ZEZq6tivRTHvuz87eaxbakEU6+MVc8jyzUrQ
-         Wn+Kj2a+Ylxq+IFQuG8EDjepCgIqg6Tpl4csEXcwwsIz7VTgr1fB/IiEzTNU31NLxMRH
-         8BJtHSiR5lbGNLVqq0FltBkJGSfW07vdQ09JOqaGOqKZKyusvJgYrNV32OBHW1ChxYa4
-         Rn5TzTnXTkkw8TJl/IzCkZCCnBsJKGpYokIwVzFqU7KCWGAO1JCR88LV78zJ15Fctyi2
-         30BA==
-X-Forwarded-Encrypted: i=1; AJvYcCW894n6xGvCbzX2+CkM9FGXVaeBorAGb7tYWCLREG7lxUe9I044AVKMhxrdZWnA/LpItTe6@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YyLB6Gmh/fSQAFrI+Adz51kcedAot1D0PhON5j2WZF+jHyobWqd
-	Kd90wU3grOe+tfCT/BkeYkiVG6WGp3w2Rm+RSUAmUoOaX6MRcQh3JiDV75qhXHk=
-X-Google-Smtp-Source: AGHT+IG+uw+DiAQ0NJWdk1hBtTpJotzHrEJN8NCefPUwZhdpJRa5moaT7tTol7Dk+Bfnmis4Krprzw==
-X-Received: by 2002:a05:600c:1f91:b0:426:66a2:b200 with SMTP id 5b1f17b1804b1-4327b6c79f7mr218499695e9.0.1730901943091;
-        Wed, 06 Nov 2024 06:05:43 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:5f26:5175:55ad:9264? ([2001:8b0:aba:5f3c:5f26:5175:55ad:9264])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-381c10d49d4sm19224215f8f.34.2024.11.06.06.05.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Nov 2024 06:05:42 -0800 (PST)
-Message-ID: <edaf7b222f5fda8d8ad73c6962ad6ea77835ba96.camel@linuxfoundation.org>
-Subject: Re: [PATCH 0/5] Add support for PDF/Epub generation
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Michael Opdenacker
-	 <michael.opdenacker@bootlin.com>
-Date: Wed, 06 Nov 2024 14:05:41 +0000
-In-Reply-To: <20241106-pdf-xetex-v1-0-044eab7e77d3@bootlin.com>
-References: <20241106-pdf-xetex-v1-0-044eab7e77d3@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=VeQFGpnn;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 73A51E0004;
+	Wed,  6 Nov 2024 15:28:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1730906924;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XWWW0AkvQ19Vx0sXtVZA9EKic2nDOeaOi8BUsRoOifE=;
+	b=VeQFGpnn02g1zQWAFlduExUEU99tDm8aza7MiRYlxtvQ3btLah9QzwjdhS3mb9g8YGtSlr
+	qjA55LNP+pcE9gBsn0b1fO0zyXt077ArymQkQM+a3iJoTGvTonQ4HPZmI4JtlnaTOeRfce
+	qawBvDC9T5KW4KDz6Eca9VxwNKtdtve48ekRu59SL5QkPg1UfW+OMhC00fy77u3KDjtUsT
+	xRel3nlTfILwClGgvXaLZLeZ/iuR8ZPkyEKgw4PJ/pQrRJdrE3kFNIxSLwW8Vl03OB29WS
+	hwi6RX1X1zzqDti9W0sPsrwUqQ3pN7r0i3QwUpu7SA7toA+XtDa+5zSOPaax1w==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.0-1 
-MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 06 Nov 2024 16:28:43 +0100
+Message-Id: <D5F7ANGQW3NN.1G5TIUZ5AYR1H@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Julien Stephan" <jstephan@baylibre.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH v5 0/3] Add bblock documentation
+X-Mailer: aerc 0.18.2.r87.gd0484b15
+References: <20241106-add-bblock-documentation-v5-0-625806c6a3ce@baylibre.com>
+In-Reply-To: <20241106-add-bblock-documentation-v5-0-625806c6a3ce@baylibre.com>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 06 Nov 2024 14:05:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5703
+ <docs@lists.yoctoproject.org>; Wed, 06 Nov 2024 15:28:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5704
 
-On Wed, 2024-11-06 at 08:48 +0100, Antonin Godard wrote:
-> This patch series includes commits that enable PDF and Epub generation
-> during `make publish` and that includes them in the sidebar as a new
-> "Documentation Downloads" section. The files can be downloaded directly
-> from there and are displayed as a list in this page.
->=20
-> Example outputs:
->=20
-> - PDF: https://lufi.bootlin.com/r/PBq0qGTwBy#6JIczWeLiAjcwn9udqAeTaoHuZho=
-Xq6sL/vpktteg5w=3D
-> - EPub: https://lufi.bootlin.com/r/_wRND0dvKD#88YA3opgX/CJTaGT3m5GxKBMBYe=
-NfcR2VN3x7wnCU/E=3D
->=20
-> This patch series also changes the following:
->=20
-> - Don't use inkscape but rsvg-convert, a lighter tool for SVG conversion
-> =C2=A0 that can be included in a buildtools tarball.
-> - Build the PDF with xelatex instead of pdflatex, to support foreign
-> =C2=A0 characters (the pdf build is currently failing because of that).
->=20
-> On the autobuilder, the necessary was made to make texlive/xelatex and
-> so on available to the docs build (see run-docs-build).
->=20
-> The series also brings a change to switchers.js.in, to make the file
-> compatible with newer versions of Sphinx. Note: on the autobuilder, we
-> aim to build using the newer Sphinx (8.1.3).
->=20
-> I'm currently working on updating the dependency list in poky.yaml.in
-> (and where this file is used), but would like to send this series first
-> to have some feedback.
+Hi Julien,
 
-FWIW I'm really happy to see this getting sorted out! The patches seem
-reasonable to me.
+On Wed Nov 6, 2024 at 2:54 PM CET, Julien Stephan wrote:
+> Hello,
+>
+> The main purpose of this series is to add documentation for bblock.
+>
+> bblock uses internally the 3 following variables: SIGGEN_LOCKEDSIGS,
+> SIGGEN_LOCKEDSIGS_TASKSIG_CHECK and SIGGEN_LOCKEDSIGS_TYPE which are not
+> documentated, so adding them to the glossary.
+>
+> I also added "sstate" into the Yocto vocabulary to avoir error when runni=
+ng
+> Vale.
+>
+> This series was built and checked with:
+>
+>   $ make html
+>   $ make stylecheck VALEDOCS=3Ddev-manual/bblock.rst
+>   $ make sphinx-lint SPHINXLINTDOCS=3Ddev-manual/bblock.rst
+>
+> I tried my best to make Vale happy, but I still have the following
+> warnings:
+>
+>  dev-manual/bblock.rst
+>  1:1  warning     Try to keep the Coleman=E2=80=93Liau Index grade (10.29=
+) below 9.                           Readability.ColemanLiau
+>  1:1  warning     Try to keep the Flesch reading ease score (57.51) above=
+ 70.                         Readability.FleschReadingEase
+>  1:1  warning     Try to keep the Flesch=E2=80=93Kincaid grade level (8.2=
+8) below 8.                          Readability.FleschKincaid
+>  1:1  warning     Try to keep the SMOG grade (11.42) below 10.           =
+                             Readability.SMOG
+>  1:1  warning     Try to keep the LIX score (38.20) below 35.            =
+                             Readability.LIX
+>  3:1  suggestion  Use sentence-style capitalization in 'Locking and Unloc=
+king Recipes Using ******'.  RedHat.Headings
+>  29:49  suggestion  Consider wrapping this Pascal or Camel case term ('Ti=
+psAndTricks') in backticks.    RedHat.PascalCamelCase
+>  39:60  suggestion  Use simple language. Consider using 'many' rather tha=
+n 'multiple'.                  RedHat.SimpleWords
+>  39:60  warning     'multiple' is too wordy.                             =
+                               write-good.TooWordy
+>  57:62  warning     'multiple' is too wordy.                             =
+                               write-good.TooWordy
+>  76:43  error       Use 'BitBake' instead of 'bitbake'.                  =
+                               Vale.Terms
+>  76:58  error       Use 'OpenEmbedded' instead of 'openembedded'.        =
+                               Vale.Terms
+>  76:71  warning     Use either 'or' or 'and' in 'core/tree'              =
+                               RedHat.Slash
+>  76:81  warning     Use either 'or' or 'and' in 'meta/conf'              =
+                               RedHat.Slash
+>  76:91  error       Use 'BitBake' instead of 'bitbake'.                  =
+                               Vale.Terms
+>
+> About the Readability, I am not sure I can do better ^^ But anyone with
+> better english skills than me can help here!
+>
+> About the capitalization: I decided to ignore it to keep consistency with
+> all other headings of the reference manual.
+>
+> Suggestion and errors/warnings on lines 29 and 76 are false positive, we =
+may need
+> to add some rule to ignore these check on :oe_git: directives
+> Also ignore the warning about 'multiple' as 'many' does not fit well in
+> this case.
+>
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> ---
+> Changes in v5:
+> - add missing "tmp" in stamps file path in SIGGEN_LOCKEDSIGS
+>   documentation
+> - reword a sentence in SIGGEN_LOCKEDSIGS  documentation
+> - Link to v4: https://lore.kernel.org/r/20241106-add-bblock-documentation=
+-v4-0-9f24dfe69243@baylibre.com
+>
+> Changes in v4:
+> - use "the sstate cache" everywhere for consistency
+> - fix some typo
+> - add comment to explain that bblock.conf does not exist by default
+> - Link to v3: https://lore.kernel.org/r/20241105-add-bblock-documentation=
+-v3-0-b870ded39a2d@baylibre.com
+>
+> Changes in v3:
+> - Fix missing typos reported by Ulrich Olmann in v1
+> - Link to v2: https://lore.kernel.org/r/20241104-add-bblock-documentation=
+-v2-0-0704e4d59929@baylibre.com
+>
+> Changes in v2:
+> - Fixed various typos reported by Ulrich =C3=96lmann and Antonin Godard
+> - Splited the series in two: the Readme/Makefile changes related to Vale
+>   and SPHINXLINT and bblock documentation
+> - Added a bblock.conf file in `documentation/ref-manual/structure.rst`
+> - Link to v1: https://lore.kernel.org/r/20241031-add-bblock-documentation=
+-v1-0-32b89093bbda@baylibre.com
+>
+> ---
+> Julien Stephan (3):
+>       styles: vocabularies: Yocto: add sstate
+>       ref-manual: variables: add SIGGEN_LOCKEDSIGS* variables
+>       dev-manual: add bblock documentation
+>
+>  documentation/dev-manual/bblock.rst                | 129 +++++++++++++++=
+++++++
+>  documentation/dev-manual/index.rst                 |   1 +
+>  documentation/ref-manual/structure.rst             |   9 ++
+>  documentation/ref-manual/variables.rst             |  47 ++++++++
+>  .../styles/config/vocabularies/Yocto/accept.txt    |   1 +
+>  5 files changed, 187 insertions(+)
+> ---
+> base-commit: 7b40c7b73a360a1ec383c4c9f00c3e126208320b
+> change-id: 20241031-add-bblock-documentation-4a5f8cf9c6d2
+>
+> Best regards,
 
-Cheers,
+This looks good to me, for the series:
 
-Richard
+Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
+
+Thanks a lot!
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
+
 
