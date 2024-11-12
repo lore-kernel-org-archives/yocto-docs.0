@@ -2,59 +2,60 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 64B3BD32D9C
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E686D32D9A
 	for <webhook@archiver.kernel.org>; Tue, 12 Nov 2024 11:33:07 +0000 (UTC)
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.85006.1731411181351990945
+ by mx.groups.io with SMTP id smtpd.web10.84610.1731411181205991445
  for <docs@lists.yoctoproject.org>;
  Tue, 12 Nov 2024 03:33:01 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=VAl+JQ+e;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=njDl2MwP;
  spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E4391C0006;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2DD25C0002;
 	Tue, 12 Nov 2024 11:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731411180;
+	t=1731411179;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LxeIxqwEhkN7cBYjLxo/Hxm4JZ3/7uTMyNxIgkuySVE=;
-	b=VAl+JQ+eCEN/r0JWzkem7Eo+wCPPniE+mSRHJwFKrE3A/5aLi9zsvSokFFqQGcYtw+6PUt
-	FxFHewXaE1LMYySV2DfUttrAvyuirJH6d1cQmZicBo86sMO3jHBiAtc6BG+9QFsR3O/Uo7
-	kBpdbSBIRMtqpMd4OJ7nPh8DDuqNDYtj6v4GcUEm2/T0xX7vn3Xb59w7O5VYnfRKxeMvWD
-	3eY3ealaYP59KG138sdt+pgTUmtcvZjwl1ZzVN01sJhQXYO7X3ikgarap146dMA9lmdXmr
-	BlPrP9Q9NyrxgT4232AQShZsBm48yjzoSyQKY3ucx4vIq55aEBjEs+AoZBxZyQ==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=T098As3xX7i0qHFAOMlsEIXBwO56TJKt9AaDsL8rjD4=;
+	b=njDl2MwP1uucpgP1j+5NWBsTtvT7tNkYGdAHTMxQVb0EcL1XTC8LVe0cZwaqFGhUf7vPDS
+	MhuMuf6Ou2Nlnrq9M6mvjcDWBc1mx3+hEC2KFwBK2FLMYM/Ip/xm6MY+aSjEv4sAjBltO0
+	gCEP36MXW6bEuy9DECcxFn7ekIQRhfvcbO7TmH2gvNZsJd6m05Y1RlgegNKW1ZGGaL+usi
+	Q1QtdZgQpHRqqAP/kxpFoX6pTqlBMqSCB9GM5S2mdcPrHDIkZI/Z1MmSwoGIXXZ3h1CJF9
+	1kD3fl/RPwiJdkkNxE1VNIMx5vy1WryzlJGZkROqYH0s94xXBL67ALsw2ewLYA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 12 Nov 2024 12:32:54 +0100
-Subject: [PATCH v2 2/2] dev-manual: document how to provide confs from
+Subject: [PATCH v2 0/2] Document how to provide configuration from
  layer.conf
+Date: Tue, 12 Nov 2024 12:32:52 +0100
+Message-Id: <20241112-layer-confs-v2-0-22a09f1a0a8e@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241112-layer-confs-v2-2-22a09f1a0a8e@bootlin.com>
-References: <20241112-layer-confs-v2-0-22a09f1a0a8e@bootlin.com>
-In-Reply-To: <20241112-layer-confs-v2-0-22a09f1a0a8e@bootlin.com>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAOQ8M2cC/23MQQ7CIBCF4as0sxZDKZboynuYLioMdpLKNNAQm
+ 4a7i127/F/yvh0SRsIEt2aHiJkScaihTg3YaQwvFORqg5JKt7KTYh43jMJy8ElctFU9Wrwa10F
+ 9LBE9fQ7tMdSeKK0ctwPP7W/97+RWSCG9cdbrXqIy9yfzOlM4W37DUEr5Aqw7OByoAAAA
+X-Change-ID: 20241030-layer-confs-54c26ece97d3
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5568;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1309;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=FY0n7gVHoLWZ/sbdFwMPwmhjER/hW9SdF9RDhn6yLOo=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnMzzqfnIBVzUNh8gCW7/lmU+bV9zXojTi93f5D
- dst142nr62JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZzM86gAKCRDRgEFAKaOo
- Nh+BD/9hW8JozaX46E3nj5AvvTZgJ+Hle7ThZhcKnwJ2wK/U5/wmrx3FW2p/sJHz4Qjwz9d8D0k
- 8dpWtTSnI4Sb4vzjPBF2HbhDYpVFe8E/qtDY5QlSAhUIMpyHsgLSXVWIS95ILH3pbNyHyzRqTkq
- UYiDnrmufx6RAqC/iYpXJ8daxMzQGS6djNxAodX+OYScNH6LovLxa5Wz2DlgtuOwPpqYaSLV7e9
- qvm+lN2cVEVbr3KJLiMWmz9A4fatIXFRF7j7+p6XETwEg3iqNCwOveNmwMBiD5VAnAz6eGzJ7f7
- eRC1Yhy9Q8RqMHSx/kQMmR3bVNi7Yb39Ghcpj/k2IdRmxa1iTUy52SAQjayzLmjdyP6tJomAykQ
- dPGTx6iKtyY37aToVH6Ix62kbeabyYdQHuOvhl+/05gFHkCFN22t47OCv2/SsOUsNjCR4F8CluJ
- ocDptklsozzRkDG5vwvzdMNT/0LyoAHUc3JVGPcHh5WRUuHoccIaTdMPjOTvwNoMYeB/eUoRiDD
- 3ExbzO3RaqiCS2gbS8kgrqSp2jqSTmIN5aWISKHp6TIgSIipFyr+zd6xlCS6pcennZkiBPal+Ez
- /Ed7qa2OZewUvCPb7MSP5oAnAGUgDYbpw6hrSI4BcW9hngFhLwoTSW1snxmbf6eT5ZD87gnQGsh
- 68MPWdajlSX8jTg==
+ bh=5mrJdxT0EBw30yWDmsZxmHV8A0ctua+D0xt7q/fsC/4=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnMzzqJ6xS+zwIiMcZkWxc++WX22CoRkbAwCdjU
+ HammXCyAWGJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZzM86gAKCRDRgEFAKaOo
+ Nk2sEACShIlhVXkwizf6rQW6Y3GPQ+NHsPz55z/2EHoNxYjjD/cCjpk/Tn5/Qbfh9HT5HBlnkbL
+ r+s5zxM0UuLHZhENQmD9KzsEhAf1VGVLuR+AVPE7I/FMhAxzduiXqkdXlbtTgseyl6g60Ob15oD
+ Q2UtetB2/rwQB9s10v0mgl4+Bbm+OacgU+tFoRvka99uP/tNq/Wz98BBPNXN+KAaiigJQIaOuzM
+ cOwgStDMSIQfrx8ZKEgDTkZbiaixfuBUkLnQFdwkNWrg/7+3CZXHlihtUUgNNpG1RMalb1T/iPE
+ LGU5Edtj8oCiFb0ACQBiKzs9tbuzByZlmed3DUEls7lFZxAsIv4E0R+A5ugIYl1ZEPAnGznrtGG
+ 85ZQd2nJxeDdOiazVtGWvbbdzpYF+CHkgXJl4Qa2GUT7ShGb64PPOUT8tQE5V0Z8U5ROtZ3lsAN
+ cMWznXDVvbjGCd577yCB64o7eKObNC0sbmo9XsbJbpGxrnnex7W7OIgatARW00NjdgYB6QZ5l+N
+ 0nr9kp4EXp2KAYrq3ikDBgTPqY4IR/g7WtJDOltqnJroOXgB3o5rUiow3qg4r+udPtwqCCZ/ItW
+ wyxs4z4lkY6MNIJRey816v9LdL+uLlFAvh0fp8UXvJggly2/LctaYqt14bZ0b+SPMoHuKMdY6Ed
+ qyyUZ4e15Q0C/vA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
@@ -62,126 +63,42 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 12 Nov 2024 11:33:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5716
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5715
 
-Add a section on providing global level configuration from the
-layer.conf file. Since this file is parsed at an earlier stage in the
-parsing process, it's not possible to combine bb.utils.contains and
-{DISTRO,MACHINE}_FEATURES to conditionally set some configurations.
+This series documents how to provide configurations from layer.conf, be
+it unconditionally or conditionally. I wanted to reference a file in
+bitbake, so I added the :bitbake_git: new term for that.
 
-This patch documents:
-
-- First that this file can be used for providing such configuration.
-- Then demonstrate how to conditionally provide them, using a technique
-  that is currently used in meta-virtualization
-  (https://git.yoctoproject.org/meta-virtualization/tree/conf/layer.conf#n50).
-
-Fixes [YOCTO #12688].
+This is a attempt at closing
+https://bugzilla.yoctoproject.org/show_bug.cgi?id=12688.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
+Changes in v2:
+- Create an `.. attention::` block to tell users _not_ to set
+  unconditional confs from layer.conf.
+- Fix typos reported by Quentin (thanks!)
+- Add "Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>" on first
+  commit (thanks!).
+- Simplify "your layer is part of BBLAYERS" 🡒 "your layer is part of the
+  build".
+- Fix code blocks spacing (three spaces).
+- Link to v1: https://lore.kernel.org/r/20241030-layer-confs-v1-0-0f7dcf460e27@bootlin.com
+
+---
+Antonin Godard (2):
+      conf.py: add a bitbake_git extlink
+      dev-manual: document how to provide confs from layer.conf
+
+ documentation/conf.py               |  1 +
  documentation/dev-manual/layers.rst | 86 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 86 insertions(+)
+ 2 files changed, 87 insertions(+)
+---
+base-commit: 13caec1386708d8609dff5f42956d2329a074f37
+change-id: 20241030-layer-confs-54c26ece97d3
 
-diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-manual/layers.rst
-index 91889bd0ae391c7b6e62068778ae5c180c840762..e449fd43ad86c9a027e317e49b6e2f2f340a08d4 100644
---- a/documentation/dev-manual/layers.rst
-+++ b/documentation/dev-manual/layers.rst
-@@ -644,6 +644,92 @@ variable and append the layer's root name::
-    order of ``.conf`` or ``.bbclass`` files. Future versions of BitBake
-    might address this.
- 
-+Providing Global-level Configurations With Your Layer
-+-----------------------------------------------------
-+
-+When creating a layer, you may need to define configurations that should take
-+effect globally in your build environment when the layer is part of the build.
-+The ``layer.conf`` file is a :term:`configuration file` that affects the build
-+system globally, so it is a candidate for this use-case.
-+
-+.. attention::
-+
-+   Providing unconditional global level configuration from the ``layer.conf``
-+   file is *not* a good practice, and should be avoided. For this reason, the
-+   section :ref:`Conditionally Provide Global-level Configurations With Your
-+   Layer` below shows how the ``layer.conf`` file can be used to provide
-+   configurations only if a certain condition is met.
-+
-+For example, if your layer provides a Linux kernel recipe named
-+``linux-custom``, you may want to define the :term:`PREFERRED_PROVIDER` for the
-+``linux-custom`` recipe::
-+
-+  PREFERRED_PROVIDER_virtual/kernel = "linux-custom"
-+
-+This can be defined in the ``layer.conf`` file. If your layer is at the last
-+position in the :term:`BBLAYERS` list, it will take precedence over previous
-+``PREFERRED_PROVIDER_virtual/kernel`` assignments.
-+
-+Conditionally Provide Global-level Configurations With Your Layer
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+In some cases, your layer may provide global configurations only if some
-+features it provides are enabled. Since the ``layer.conf`` file is parsed at an
-+earlier stage in the parsing process, the :term:`DISTRO_FEATURES` and
-+:term:`MACHINE_FEATURES` variables are not yet available to ``layer.conf``, and
-+declaring conditional assignments based on these variables is not possible. The
-+following technique shows a way to bypass this limitation by using the
-+:term:`USER_CLASSES` variable and a conditional ``include`` command.
-+
-+In the following steps, let's assume our layer is named ``meta-mylayer`` and
-+that this layer defines a custom :ref:`distro feature <ref-features-distro>`
-+named ``mylayer-kernel``. We will set the :term:`PREFERRED_PROVIDER` variable
-+for the kernel only if our feature ``mylayer-kernel`` is part of the
-+:term:`DISTRO_FEATURES`:
-+
-+#. Create an include file in the directory
-+   ``meta-mylayer/conf/distro/include/``, for example a file named
-+   ``mylayer-kernel-provider.inc`` that sets the kernel provider to
-+   ``linux-custom``::
-+
-+      PREFERRED_PROVIDER_virtual/kernel = "linux-custom"
-+
-+#. Provide a path to this include file in your ``layer.conf``::
-+
-+      META_MYLAYER_KERNEL_PROVIDER_PATH = "${LAYERDIR}/conf/distro/include/mylayer-kernel-provider.inc"
-+
-+#. Create a new class in ``meta-mylayer/classes-global/``, for example a class
-+   ``meta-mylayer-cfg.bbclass``. Make it conditionally include the file
-+   ``mylayer-kernel-provider.inc`` defined above, using the variable
-+   ``META_MYLAYER_KERNEL_PROVIDER_PATH`` defined in ``layer.conf``::
-+
-+      require ${@bb.utils.contains('DISTRO_FEATURES', 'mylayer-kernel', '${META_MYLAYER_KERNEL_PROVIDER_PATH}', '', d)}
-+
-+   For details on the ``bb.utils.contains`` function, see its definition in
-+   :bitbake_git:`lib/bb/utils.py </tree/lib/bb/utils.py>`.
-+
-+   .. note::
-+
-+      The ``require`` command is designed to not fail if the function
-+      ``bb.utils.contains`` returns an empty string.
-+
-+#. Back to your ``layer.conf`` file, add the class ``meta-mylayer-cfg`` class to
-+   the :term:`USER_CLASSES` variable::
-+
-+      USER_CLASSES:append = " meta-mylayer-cfg"
-+
-+   This will add the class ``meta-mylayer-cfg`` to the list of classes to
-+   globally inherit. Since the ``include`` command is conditional in
-+   ``meta-mylayer-cfg.bbclass``, even though inherited the class will have no
-+   effect until the feature ``mylayer-kernel`` is enabled through
-+   :term:`DISTRO_FEATURES`.
-+
-+This technique can also be used for :ref:`Machine features
-+<ref-features-machine>` by following the same steps. Though not mandatory, it is
-+recommended to put include files for :term:`DISTRO_FEATURES` in your layer's
-+``conf/distro/include`` and the ones for :term:`MACHINE_FEATURES` in your
-+layer's ``conf/machine/include``.
-+
- Managing Layers
- ===============
- 
-
+Best regards,
 -- 
-2.46.1
+Antonin Godard <antonin.godard@bootlin.com>
 
 
