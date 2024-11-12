@@ -2,100 +2,118 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E686D32D9A
-	for <webhook@archiver.kernel.org>; Tue, 12 Nov 2024 11:33:07 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.84610.1731411181205991445
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2427AD42BAD
+	for <webhook@archiver.kernel.org>; Tue, 12 Nov 2024 16:48:59 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web11.91634.1731430136836317121
  for <docs@lists.yoctoproject.org>;
- Tue, 12 Nov 2024 03:33:01 -0800
+ Tue, 12 Nov 2024 08:48:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=njDl2MwP;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2DD25C0002;
-	Tue, 12 Nov 2024 11:32:59 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MSJHOsx3;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0FC5C20002;
+	Tue, 12 Nov 2024 16:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731411179;
+	t=1731430135;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=T098As3xX7i0qHFAOMlsEIXBwO56TJKt9AaDsL8rjD4=;
-	b=njDl2MwP1uucpgP1j+5NWBsTtvT7tNkYGdAHTMxQVb0EcL1XTC8LVe0cZwaqFGhUf7vPDS
-	MhuMuf6Ou2Nlnrq9M6mvjcDWBc1mx3+hEC2KFwBK2FLMYM/Ip/xm6MY+aSjEv4sAjBltO0
-	gCEP36MXW6bEuy9DECcxFn7ekIQRhfvcbO7TmH2gvNZsJd6m05Y1RlgegNKW1ZGGaL+usi
-	Q1QtdZgQpHRqqAP/kxpFoX6pTqlBMqSCB9GM5S2mdcPrHDIkZI/Z1MmSwoGIXXZ3h1CJF9
-	1kD3fl/RPwiJdkkNxE1VNIMx5vy1WryzlJGZkROqYH0s94xXBL67ALsw2ewLYA==
+	bh=tuy4alcM5EuUZ1GTqavEXUCpGTEh+cuukk8+KkTyV40=;
+	b=MSJHOsx3lcMLbwxUIMYtflp1dLRajkbRFNQUoqah9OJTEZHdxQMhMQ+MtHkSUFZpw/dfPn
+	dHdXEIAepCclEAaTvveJMklyNxldmK+KPdCgLAwf+pIFOIaRm9rR8CfuU4D7zc9sgG61YG
+	4m2ah+GbvRjPw8CijwHSdGpGBdLTwCXQ/CBOr/4Bx9KHhhbai4bOH0V7mu1ingd++3OgRp
+	5V8akNcbholB+o7m6f/6RuC+F6tJ3yWXwCoQNH8VFGcSvkIowr4rtgtLoHwMPCvJUM7PaC
+	B9+EnPXSjc27x2z8fnKI0pyCK3hRGZkIOws/98kwiVUJvyHzj2lnZ5DTy4JI8A==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v2 0/2] Document how to provide configuration from
- layer.conf
-Date: Tue, 12 Nov 2024 12:32:52 +0100
-Message-Id: <20241112-layer-confs-v2-0-22a09f1a0a8e@bootlin.com>
+Date: Tue, 12 Nov 2024 17:48:44 +0100
+Subject: [yocto-docs PATCH] migration-guides: 5.1: fix titles
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAOQ8M2cC/23MQQ7CIBCF4as0sxZDKZboynuYLioMdpLKNNAQm
- 4a7i127/F/yvh0SRsIEt2aHiJkScaihTg3YaQwvFORqg5JKt7KTYh43jMJy8ElctFU9Wrwa10F
- 9LBE9fQ7tMdSeKK0ctwPP7W/97+RWSCG9cdbrXqIy9yfzOlM4W37DUEr5Aqw7OByoAAAA
-X-Change-ID: 20241030-layer-confs-54c26ece97d3
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241112-release-note-5-1-fixes-v1-1-6f4eac19810c@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAOuGM2cC/x3L2wpAUBBG4VfRXJsy2yF5Fblw+DGlTXskJe9u5
+ /JrtR4yBIVRkzwUcKnp7iMkTWhce7+AdYoml7lCRBwHbOgN7PcTXLLwrDeMc0zDKEPl8rmmOB8
+ Bf4hv273vBxqdIahoAAAA
+X-Change-ID: 20241112-release-note-5-1-fixes-3edbc1b623f8
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1309;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1930;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=5mrJdxT0EBw30yWDmsZxmHV8A0ctua+D0xt7q/fsC/4=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnMzzqJ6xS+zwIiMcZkWxc++WX22CoRkbAwCdjU
- HammXCyAWGJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZzM86gAKCRDRgEFAKaOo
- Nk2sEACShIlhVXkwizf6rQW6Y3GPQ+NHsPz55z/2EHoNxYjjD/cCjpk/Tn5/Qbfh9HT5HBlnkbL
- r+s5zxM0UuLHZhENQmD9KzsEhAf1VGVLuR+AVPE7I/FMhAxzduiXqkdXlbtTgseyl6g60Ob15oD
- Q2UtetB2/rwQB9s10v0mgl4+Bbm+OacgU+tFoRvka99uP/tNq/Wz98BBPNXN+KAaiigJQIaOuzM
- cOwgStDMSIQfrx8ZKEgDTkZbiaixfuBUkLnQFdwkNWrg/7+3CZXHlihtUUgNNpG1RMalb1T/iPE
- LGU5Edtj8oCiFb0ACQBiKzs9tbuzByZlmed3DUEls7lFZxAsIv4E0R+A5ugIYl1ZEPAnGznrtGG
- 85ZQd2nJxeDdOiazVtGWvbbdzpYF+CHkgXJl4Qa2GUT7ShGb64PPOUT8tQE5V0Z8U5ROtZ3lsAN
- cMWznXDVvbjGCd577yCB64o7eKObNC0sbmo9XsbJbpGxrnnex7W7OIgatARW00NjdgYB6QZ5l+N
- 0nr9kp4EXp2KAYrq3ikDBgTPqY4IR/g7WtJDOltqnJroOXgB3o5rUiow3qg4r+udPtwqCCZ/ItW
- wyxs4z4lkY6MNIJRey816v9LdL+uLlFAvh0fp8UXvJggly2/LctaYqt14bZ0b+SPMoHuKMdY6Ed
- qyyUZ4e15Q0C/vA==
+ bh=lyER2dWI0LG7dn/w3c4kWrzHt/6luN8vCcj+XCwtnj8=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnM4b21bpxtjTSaefnhCO4AloQfEBzLf8rk4DQD
+ a5BmUgS5UeJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZzOG9gAKCRDRgEFAKaOo
+ NkPUD/9THGPlNzE8asgGEveEImiubhVkMbz8nZFSWDGTmVOZdmE3/CjXx6F9jlaD6/dbsH2alCq
+ 5nzyhAufqzLUftHapJyaKuplQB6NhXIHkLqwM2ZnxrJaoJaJJwbA/e+/OyRAr7y/jb5aaHI+2RD
+ QJGzkx6yoDtzbNSoeB8Cqd7gUm/E/B+h3Jar8CJpXtmFKiJOH2MRLNc+pLXHSi7SPky+JfF3SPI
+ PIgwhs1BQMybN7lf8KT89hfxcTs3RGaWOijBJMDwwgLbixqL66YN2RUgsS0Az1d68He7w6DrD/T
+ 4w13F0jmIiYD/GqhgSXoMax9e+D9mSm+FENfaGd3vPvUKLFW/Gftj8mZBS7j2yJmu4rrFcQ7g0Q
+ rVdB6ygylAk/Fv/V0IWNmbahuIxeCEqulKFOeF/EQ1zTToh0IZxtlMzJ1Q9PwKkOS3DCgFz2g4G
+ tlWx1yG/frpBypoHSegccGFEMX4MyJfeIGYKBWuWzlYLE6J8MFZfcGLKrrxibYHvP6Qu6RYf5RH
+ CdcWLnStugs1H5WOTvN4LShjyd0ku4x/2zN38FY/RAbmDdOw2i5a1ApdVYQPpvYk3PKE4VYcDvV
+ WlFhcaLafOf25M+zykhynpqnUPSYq2DUNgX5TYPnYLbi1AErytQ7lhr1Y0YiRNrWS6iDAdVR2Ay
+ wbky2sOYgMmr2pw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 12 Nov 2024 11:33:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5715
+ <docs@lists.yoctoproject.org>; Tue, 12 Nov 2024 16:48:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5717
 
-This series documents how to provide configurations from layer.conf, be
-it unconditionally or conditionally. I wanted to reference a file in
-bitbake, so I added the :bitbake_git: new term for that.
-
-This is a attempt at closing
-https://bugzilla.yoctoproject.org/show_bug.cgi?id=12688.
+- fix title underline
+- add anchor for workdir changes
+- supported-kernel-versions was misplaced, move it
+- "Miscellaneous changes" anchor was wrong
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Create an `.. attention::` block to tell users _not_ to set
-  unconditional confs from layer.conf.
-- Fix typos reported by Quentin (thanks!)
-- Add "Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>" on first
-  commit (thanks!).
-- Simplify "your layer is part of BBLAYERS" 🡒 "your layer is part of the
-  build".
-- Fix code blocks spacing (three spaces).
-- Link to v1: https://lore.kernel.org/r/20241030-layer-confs-v1-0-0f7dcf460e27@bootlin.com
+ documentation/migration-guides/migration-5.1.rst | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/documentation/migration-guides/migration-5.1.rst b/documentation/migration-guides/migration-5.1.rst
+index d3c28f8b34216f32b0805da7412f3e8dc109d01c..c9bb38699b4b26d76ba9a05607b4e0b969ddab28 100644
+--- a/documentation/migration-guides/migration-5.1.rst
++++ b/documentation/migration-guides/migration-5.1.rst
+@@ -4,12 +4,12 @@ Release 5.1 (styhead)
+ =====================
+ 
+ Migration notes for 5.1 (styhead)
+-------------------------------------
++---------------------------------
+ 
+ This section provides migration information for moving to the Yocto
+ Project 5.1 Release (codename "styhead") from the prior release.
+ 
+-.. _migration-5.1-supported-kernel-versions:
++.. _migration-5.1-workdir-changes:
+ 
+ :term:`WORKDIR` changes
+ ~~~~~~~~~~~~~~~~~~~~~~~
+@@ -71,6 +71,8 @@ it does not work as the debug prefix mapping doesn't handle that.
+ ``devtool``  and ``recipetool`` have been updated to handle this and their
+ support for ``S = WORKDIR`` and ``oe-local-files`` has been removed.
+ 
++.. _migration-5.1-supported-kernel-versions:
++
+ Supported kernel versions
+ ~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+@@ -189,7 +191,7 @@ The following classes have been removed in this release:
+    adding minimal added-value for a considerable amount of added runtime.
+ 
+ 
+-.. _migration-5.1-qemu-changes:
++.. _migration-5.1-misc-changes:
+ 
+ Miscellaneous changes
+ ~~~~~~~~~~~~~~~~~~~~~
 
 ---
-Antonin Godard (2):
-      conf.py: add a bitbake_git extlink
-      dev-manual: document how to provide confs from layer.conf
-
- documentation/conf.py               |  1 +
- documentation/dev-manual/layers.rst | 86 +++++++++++++++++++++++++++++++++++++
- 2 files changed, 87 insertions(+)
----
-base-commit: 13caec1386708d8609dff5f42956d2329a074f37
-change-id: 20241030-layer-confs-54c26ece97d3
+base-commit: 2849690abf94872e259e712128e90413f3b9a2f2
+change-id: 20241112-release-note-5-1-fixes-3edbc1b623f8
 
 Best regards,
 -- 
