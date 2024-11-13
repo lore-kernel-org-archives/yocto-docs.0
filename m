@@ -2,97 +2,113 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CD787D462AC
-	for <webhook@archiver.kernel.org>; Wed, 13 Nov 2024 14:23:11 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.12844.1731507782924668595
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8C5AD462B4
+	for <webhook@archiver.kernel.org>; Wed, 13 Nov 2024 14:30:41 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.13057.1731508239145120514
  for <docs@lists.yoctoproject.org>;
- Wed, 13 Nov 2024 06:23:03 -0800
+ Wed, 13 Nov 2024 06:30:39 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JAExJp12;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 715292000E;
-	Wed, 13 Nov 2024 14:23:00 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=eIPAh61O;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D3435E0003;
+	Wed, 13 Nov 2024 14:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731507780;
+	t=1731508237;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AtFe+2P5esxrJ74w+/i0H4MasvlS86nqc6Sa44F5u+8=;
-	b=JAExJp12dy72r6l8Zl25vG5Iqed/E5nR31MnJWJj3Muasf3kWNn9oLQcL2O8FRd1C6Z9sN
-	VcZekmgb+PqUVQtzX6QD8NVin6ve5XHtCEUgbnz8DLO9ngaagBnUKhRypKJuIk7qoMyRl/
-	zpWU/BVWeFHgaRex96U7xjzNDUHHgTWG1OO+7Eue5cthOWvnr9zqSOJUiS80xuA08MgHop
-	6jlzT0PNrr5iTmMrF1cXLVE/CU9mpa9oT/Zzhg+yib+YdgbPGfUgdzfehmYwQ8WAZZSEHv
-	YWHJ/1Rd7P8PFDqpc9Cl/HqkRjBCwud6JASjIygmTBxKEYSUE6H6rNXl0Ln7xw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 13 Nov 2024 15:23:00 +0100
-Message-Id: <D5L4A4YLI2UO.3VLZ0KRBPK7R1@bootlin.com>
-Subject: Re: [PATCH v2 2/2] dev-manual: document how to provide confs from
- layer.conf
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.18.2.r87.gd0484b15
-References: <20241112-layer-confs-v2-0-22a09f1a0a8e@bootlin.com>
- <20241112-layer-confs-v2-2-22a09f1a0a8e@bootlin.com>
- <e5dde215-3310-4a3f-bd10-c02137d5c1b7@cherry.de>
- <D5L4597JFNEO.3GX30FCK1IUNZ@bootlin.com>
- <b9d477cc-d0f3-4e20-9b32-53be03b62c44@cherry.de>
-In-Reply-To: <b9d477cc-d0f3-4e20-9b32-53be03b62c44@cherry.de>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=VwypoJGgAfrWsbZnayYnh1+LG8ZNnQs7swRwVEQWJGA=;
+	b=eIPAh61Oijzz+hO5v/DRDtq0UbLWd83kswGbfiIcoWgnHFfgHyVsDoNL8agvijWqTOWRru
+	TWFX4FGZj2b4IWlX6981vSgHleYlRA/XAVahh55RzMSMHzXUFbzxpJQ7IKy8sSQwc43/3i
+	lQ8aRFunMcZMSg7+wgIbFW67kerdk+mCgY1auMQhHfyRThV/7qjJtpadqucXiILaaxjZWb
+	y/vCForTNhsX9TLwkoTWvfYXt3cqXRhUqfrppR9obts2fxcAQ1mCML5+6+/bZ8qVT/vDnD
+	e0K3wlxa4QGsmEsF19+QjUTShF65OIX0hfIjLUHHfvhnLWco8xUK+2HZUEUuiw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [yocto-docs PATCH v3 0/2] Document how to provide configuration
+ from layer.conf
+Date: Wed, 13 Nov 2024 15:30:21 +0100
+Message-Id: <20241113-layer-confs-v3-0-3a84b0eb2750@bootlin.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAP23NGcC/23MQQ6CMBCF4auQrq2ZDgjiynsYF7VMZRJsTUsaC
+ eHuFjaGxOV7yffPIlJgiuJSzCJQ4sje5VEeCmF67Z4kuctbIGCloAQ56ImCNN7ZKE+VwZoMtU1
+ XiizegSx/ttrtnnfPcfRh2uJJre//TlISJNimM7aqgbC5PrwfB3ZH419iLSX8aaVwrzFrRA2tV
+ Rr0mfZ6WZYv7phhHOYAAAA=
+X-Change-ID: 20241030-layer-confs-54c26ece97d3
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1677;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=XO/Vv/HLoJNDFZwij+EpvSV+In6opctofOOZvC0vdbE=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnNLgLmWSs5aky3tpepVO0CxMp1eYUMH/zcALz1
+ VqCFD6CRRWJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZzS4CwAKCRDRgEFAKaOo
+ NpSTD/9gIMZoaAjus8b6JZWRl8xiSO79UiPTcyXDil7X9TXVe5TBJPTk8HITkYSX9clNu75qVvB
+ OUORJIcmp/tj/rjNsmlcUatdjH//CMvwn00Q2d5ysTb+hn5iEQ6WfCuclfWrfXTnX1y/oY4PPcD
+ ANWOfMQqGyQ1RcM+9xIzzaue2uixWGwpWHoX8YmdpD9qJOHXV6hzpurdYqlJ8G1j0/2KqOsFIAi
+ cDBPJLutDnjqpNGzuG4eG9SJVFX4Jm1ivclJLXlCeak1HAWtB+Hv8atM0edv3EWx4XJewM7I/P1
+ xWdfdRL/2SaJU2cOUKZzYX3D88d0jLWOlLEHKo1/6VIndYWaqtNdQCUjCTUZPdsKwAPBameZ3S/
+ FObNlDDoPAXMj3K0OXqNnuLtgckw/1426BMr7xI5ZqzCd8Dh3KCqUhpUGBbfiJCdudtyfqUP9p1
+ 6mCYRoJKKP8UKGdRh5a00V8fEXczEgi/VnlifKuU/r4P5GpnFDAjP79pNyVkN1ybOidNjAHprWS
+ /ReaFPITaVkJzp9a/AqAJQlmHC1jYI2CH2HRP0xTv7t9o/cohS3zp8Wd/83oFAZOZ2UkrCWnrF/
+ jeGo9IdKq1XdE+znuIYVWfn/aL+7F1y3HHv0ooa9Mr/c0iYwJ1TSxtVID6981nFI1pK+LVKbcVn
+ Kdhbh2L2LfPKhIA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 13 Nov 2024 14:23:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5730
+ <docs@lists.yoctoproject.org>; Wed, 13 Nov 2024 14:30:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5732
 
-On Wed Nov 13, 2024 at 3:20 PM CET, Quentin Schulz wrote:
-[...]
->>>> +
->>>> +  PREFERRED_PROVIDER_virtual/kernel =3D "linux-custom"
->>>> +
->>>> +This can be defined in the ``layer.conf`` file. If your layer is at t=
-he last
->>>> +position in the :term:`BBLAYERS` list, it will take precedence over p=
-revious
->>>> +``PREFERRED_PROVIDER_virtual/kernel`` assignments.
->>>> +
->>>
->>> Mmmmm, except if the machine configuration file sets it too with "=3D"?
->>=20
->> Also from local.conf, etc. I guess so what about:
->>=20
->> """
->> it will take precedence over previous ``PREFERRED_PROVIDER_virtual/kerne=
-l``
->> assignments (unless it is set from another :term:`configuration file` su=
-ch as
->> machine configuration files).
->> """
->>=20
->
-> another configuration file that is parsed later, such as machine or=20
-> distro configuration files.
->
-> ?
+This series documents how to provide configurations from layer.conf, be
+it unconditionally or conditionally. I wanted to reference a file in
+bitbake, so I added the :bitbake_git: new term for that.
 
-Yep, this looks good. :)
+This is a attempt at closing
+https://bugzilla.yoctoproject.org/show_bug.cgi?id=12688.
 
-> Cheers,
-> Quentin
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v3:
+- Replace attention block by warning block.
+- Create an anchor for the conditional confs section, I was getting a
+  sphinx error.
+- Rephrase the PREFERRED_PROVIDER sentence.
+- More precision on PREFERRED_PROVIDER assignments, with other conf
+  files..
+- Link to v2: https://lore.kernel.org/r/20241112-layer-confs-v2-0-22a09f1a0a8e@bootlin.com
 
-I'll send a v3 shortly. :)
+Changes in v2:
+- Create an `.. attention::` block to tell users _not_ to set
+  unconditional confs from layer.conf.
+- Fix typos reported by Quentin (thanks!)
+- Add "Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>" on first
+  commit (thanks!).
+- Simplify "your layer is part of BBLAYERS" 🡒 "your layer is part of the
+  build".
+- Fix code blocks spacing (three spaces).
+- Link to v1: https://lore.kernel.org/r/20241030-layer-confs-v1-0-0f7dcf460e27@bootlin.com
 
-Thank you,
-Antonin
+---
+Antonin Godard (2):
+      conf.py: add a bitbake_git extlink
+      dev-manual: document how to provide confs from layer.conf
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+ documentation/conf.py               |  1 +
+ documentation/dev-manual/layers.rst | 90 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 91 insertions(+)
+---
+base-commit: 13caec1386708d8609dff5f42956d2329a074f37
+change-id: 20241030-layer-confs-54c26ece97d3
+
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
 
