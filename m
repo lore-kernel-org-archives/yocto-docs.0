@@ -2,127 +2,105 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26D95D43FEF
-	for <webhook@archiver.kernel.org>; Mon, 18 Nov 2024 08:38:26 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.36712.1731919102033861734
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 24DDED43FF0
+	for <webhook@archiver.kernel.org>; Mon, 18 Nov 2024 08:46:16 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.36792.1731919573774822206
  for <docs@lists.yoctoproject.org>;
- Mon, 18 Nov 2024 00:38:22 -0800
+ Mon, 18 Nov 2024 00:46:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=npwcFB5V;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 496E0FF803;
-	Mon, 18 Nov 2024 08:38:19 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZkUWsEDn;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C311CC0009;
+	Mon, 18 Nov 2024 08:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1731919099;
+	t=1731919572;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=egqXqo8C5hWxLzFiGCYbrUOui1MyAlT+KA/6QmsZzYk=;
-	b=npwcFB5VreeiznH9TI+ICnTcsnN38YBZu0UZvBpbJauV9Fn6Zquc06KZtgdyWX2QM4xGII
-	HdCKhAT0tIOOJJesxZYur3yRbktclPJI+8AxPGZeKQpvUXpI9WD6bTgTqvaKFUrO5w1F3n
-	z5DEnPK0fMaPnfIZSmDjcdUoEGsdUyQYFl8p7R1j266LaM1QhFZAOLCbImh0vT8+yTTYwm
-	uaP3A8Ttc49VpZrXF8RXw6e3eSNVx/P2aTfjwUyvNXl84T2jwEVUaH16xHQU+7XbJ15Ebr
-	x1WDLuBFo7KMcwSqhwY/bP7qLqRArFJ//rzdsja3ykMhCdQR0RqQQAFmZrbEuw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 18 Nov 2024 09:38:19 +0100
-Message-Id: <D5P62Y94U99V.316GUHX2VCQPS@bootlin.com>
-To: <guenael.muller@smile.fr>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH] ref-manual: use standardized method accross both
- ubuntu and debian for locale install
-Cc: "Yoann Congal" <yoann.congal@smile.fr>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-References: <20241115123327.28081-1-guenael.muller@smile.fr>
-In-Reply-To: <20241115123327.28081-1-guenael.muller@smile.fr>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=qB0gyOviC5EtV79ACTuZnSUbeCGTsHRYAfJ1/s0+Was=;
+	b=ZkUWsEDnfle0CPHcnklS54QgVWplgENrafUxE9uQEr/dQimL/cYflEPuqptcfa1zXv/65M
+	URRHAX4+uM5C6fe+Iwz7K9JQ1Whc03w3cHr4MZLyoqD4CGZk1JOQgifT4gjb1Z9Sov7R+g
+	tJlAGDNumMzh++cbjH1L3oQft61FfShDkvUP237eLNpX+uMtMpCR2vYsypr2mBb90T5yIf
+	kvrjt/CmuGiaiph3xOQqp4c1Jt8Z3DfORELIofCAMrtXQA+2QSto8IzjShnMFhRzuF555Y
+	VVGb3lvdCNldnFAskvJ+auBxkOnUxW8bQuoMbDZJGiRSsKUVUF009m7y0eJkYQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Mon, 18 Nov 2024 09:46:05 +0100
+Subject: [yocto-docs PATCH] ref-manual: classes: bin_package: fix SRC_URI
+ example
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241118-fix-bin-package-v1-1-906f0148fdaa@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAMz+OmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDQ0NT3bTMCt2kzDzdgsTk7ESgdGpqirmZsXFaUmpyihJQV0FRKlAJ2MT
+ o2NpaAPLbxcBhAAAA
+X-Change-ID: 20241115-fix-bin-package-eed7633fbecd
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1582;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=kM+KUemvuR/iUq0++tNisqzcd+KWutmzaKP11dMS4nM=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnOv7THhYFF5zz46mYz4rEerf8E7saypqWO+tC+
+ y+NXJqNr+SJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZzr+0wAKCRDRgEFAKaOo
+ NuExD/92TcoDQmHWmq1jfAgNBttnNbAZQHkb/AxyJHb3JY1icex7eVXokNIVYXGs2w13M7idMkG
+ Mx2BsoRtXfGF/uLpG8cw3Uyt/12ThwMvjxHF9eYUQ9NnCAQuA3CKnNP6qca2S/GJjxrjYmhtnsq
+ ja/KDYT0uvjLZ8isxHV95RzbLRr6EBwkGMi3w03fVjQ6BHXpHYhHU6HoqijnQTk74iY7Dex0VXI
+ GsZ4MuyRvPtx4/MEufcRmmvZNBrjzStsSpvHIBtHH+rhX/msG9vE0fvZb3J3NhltyMaMwXvqvj6
+ Dods1zUbT6i9b0UVNlYOBsNdZu6za3mbCaPgFHu3jp1DI9yAgNo6BZgTIssMRVWllbzfnJDr87G
+ uFXz4/PoZE5c49zWYCjvm4do57Nyi8JSxHTCQDzFLgtqhHAAoElelGOK2o7trfl4djcjkk2rqbm
+ JNW1BtqISti+kdA9AUSxBek+Y5FyBPhFdFnbT8Ie3M3Y85VkPhufanc0xmF7vKwR5kCPzHyeiBK
+ E9ASoBA85b1GLWQ+0ILEI9BMq3WQKejljnEhDiC35uear6JzI+M2UDw7Gone0yuDjRj7toh0O0G
+ vsS64sdHB0uS15tq/G0NB2sdL6jVcAvLYas9Tu/ykfZItX83bsqbWkE11flzvk/zK2HuDo6uUhG
+ SiSkIs4GxFn4JGQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 18 Nov 2024 08:38:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5752
+ <docs@lists.yoctoproject.org>; Mon, 18 Nov 2024 08:46:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5753
 
-Hi Gu=C3=A9na=C3=ABl,
+`subdir` is the correct attribute to use for extracting the package in
+the correct directory.
 
-Thanks for the patch!
+From the bitbake doc:
 
-On Fri Nov 15, 2024 at 1:33 PM CET, Gu=C3=A9na=C3=ABl Muller via lists.yoct=
-oproject.org wrote:
-> Modify locale installation method to be standard accross all debian-based=
- distributions.
-> Pre-existing method is available only on Ubuntu, locale-gen tool has no p=
-arameter in Debian.
->
-> Signed-off-by: Gu=C3=A9na=C3=ABl Muller <guenael.muller@smile.fr>
-> Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
-> ---
->  documentation/poky.yaml.in                       | 3 +--
->  documentation/ref-manual/system-requirements.rst | 8 ++++++++
->  2 files changed, 9 insertions(+), 2 deletions(-)
->
-> diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-> index c770318f2..66f758fe8 100644
-> --- a/documentation/poky.yaml.in
-> +++ b/documentation/poky.yaml.in
-> @@ -13,8 +13,7 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/y=
-octo-&DISTRO;"
->  UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo g=
-cc \
->       build-essential chrpath socat cpio python3 python3-pip python3-pexp=
-ect \
->       xz-utils debianutils iputils-ping python3-git python3-jinja2 \
-> -     python3-subunit zstd liblz4-tool file locales libacl1
-> -     \n\   $ sudo locale-gen en_US.UTF-8"
-> +     python3-subunit zstd liblz4-tool file locales libacl1"
->  FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 =
-unzip perl patch \
->       diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath =
-\
->       ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl=
--bignum socat \
-> diff --git a/documentation/ref-manual/system-requirements.rst b/documenta=
-tion/ref-manual/system-requirements.rst
-> index 0fc92550a..5b481dd83 100644
-> --- a/documentation/ref-manual/system-requirements.rst
-> +++ b/documentation/ref-manual/system-requirements.rst
-> @@ -152,6 +152,14 @@ with a supported Ubuntu or Debian Linux distribution=
-::
-> =20
->     $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-> =20
-> +You also need to ensure you have locale ``en_US.UTF-8`` enabled::
+  subdir: Places the file (or extracts its contents) into the specified
+    subdirectory. This option is useful for unusual tarballs or other
+    archives that do not have their files already in a subdirectory within
+    the archive.
+  subpath: Limits the checkout to a specific subpath of the tree when
+    using the Git fetcher is used.
 
-s/you have locale/you have the locale/ would look a bit better IMO :)
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/ref-manual/classes.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> +   $ locale --all-locales | grep en_US.utf8
-> +
-> +If this is not the case, You can reconfigure ``locales`` package to add =
-it::
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index b92f4e4f20ea8f702c90f4e3d29251b2461d07d0..2ac94630d80386cf613222b70f7bd6323b9948f2 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -176,7 +176,7 @@ example use for this class.
+    are extracted into the subdirectory expected by the default value of
+    :term:`S`::
+ 
+-      SRC_URI = "git://example.com/downloads/somepackage.rpm;branch=main;subpath=${BP}"
++      SRC_URI = "git://example.com/downloads/somepackage.rpm;branch=main;subdir=${BP}"
+ 
+    See the ":ref:`bitbake-user-manual/bitbake-user-manual-fetching:fetchers`" section in the BitBake User Manual for
+    more information on supported BitBake Fetchers.
 
-s/You/you/
-s/You can reconfigure ``locales``/you can reconfigure the ``locales``/
+---
+base-commit: 7d5eb0cee5b2b7096969819d7d7ce569a3c92f27
+change-id: 20241115-fix-bin-package-eed7633fbecd
 
-> +    $ sudo dpkg-reconfigure locales
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
-Can you fix the indent here? It should be 3 like above.
-
-Otherwise, I could verify this with an Ubuntu docker image and a Debian doc=
-ker
-image, indeed Debian does not take arguments, I guess it assumes the locale=
-s to
-generate in a prior step. I was able to use the dpkg-reconfigure method on =
-both
-Ubuntu/Debian:
-
-Tested-by: Antonin Godard <antonin.godard@bootlin.com>
-
-Cheers,
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
