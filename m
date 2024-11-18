@@ -1,109 +1,132 @@
-Return-Path: <guenael.muller@smile.fr>
+Return-Path: <jamin_lin@aspeedtech.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90066D6DDF3
-	for <webhook@archiver.kernel.org>; Fri, 15 Nov 2024 12:33:32 +0000 (UTC)
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
- by mx.groups.io with SMTP id smtpd.web10.19833.1731674003729477621
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 61AF7D10F5C
+	for <webhook@archiver.kernel.org>; Mon, 18 Nov 2024 06:21:25 +0000 (UTC)
+Received: from TWMBX01.aspeed.com (TWMBX01.aspeed.com [211.20.114.72])
+ by mx.groups.io with SMTP id smtpd.web10.34488.1731910876136353553
  for <docs@lists.yoctoproject.org>;
- Fri, 15 Nov 2024 04:33:24 -0800
+ Sun, 17 Nov 2024 22:21:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=Gqrf2bLc;
- spf=pass (domain: smile.fr, ip: 209.85.128.67, mailfrom: guenael.muller@smile.fr)
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-431688d5127so13913855e9.0
-        for <docs@lists.yoctoproject.org>; Fri, 15 Nov 2024 04:33:23 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1731674002; x=1732278802; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jiRUAC7ypgLAcgqzN8xO8Fz1hUi3EBC/ZPcUR8zjupU=;
-        b=Gqrf2bLch8mkzumxds36HGqgzjD3/jEylTIAnrf/iRT9nLZwe8N6sK4pd1olmfNUCn
-         PmZ+A+gKwVmy3DFmEHNqIxaekrRlifw/yrudW0kwWO6o8jvYS04fHqd0+6WPzfXLLpmG
-         y/gcyZw8bTTab/DkJjsMCOz61N2sPzSDJE+GQ=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1731674002; x=1732278802;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jiRUAC7ypgLAcgqzN8xO8Fz1hUi3EBC/ZPcUR8zjupU=;
-        b=Z7wJ7UHF5ShM3a+iSmZwtXVL13xaKU2bt44GdsiKNYA66MwmVZu2+s9j1+eRQJhPta
-         rTwFtUX4MCInFzaazHaW/VrBnVQnVtiYaW739RuXcEcfO2FHVYLp+X3QWh9vywIfI68f
-         wOJ9B9Kh80ZeeGJ1mlb5g+Zd6QQStLkpzcF+8jRZGD9ndtRYNd7Q6e0UXg1ZTknQ2o1R
-         s/IVhmcwxI88b53geMRKmWCzwat0Y7a+IE4CbF/HRze8tmaogtgct6+K4ndTSiVr7AEg
-         yoW4Lem+3HzAyvwtZptaffWkSMN7EAgEgZGzfAzQsZ6VRaoMJV6A3AbaONvH8F9ngL8e
-         b3jg==
-X-Gm-Message-State: AOJu0YyKM/WBGMo0jD5w8iuJYSO+y9RujkHn2fOW+j+jAqAcJQjMu/A1
-	rrAXYg6AQ2Po9OP/O5iiATT3LlWqAUkBN0h9IeKUq5q/kaCFy8uthfSPonLfd0V2csr7psa27fB
-	td48mOQ==
-X-Google-Smtp-Source: AGHT+IERQIBjz637ibvl4K0zSX4i/nkJgY02/KQWUI7EvVoou72AdxlNpISWiTKWLIMk2J6+uBQTwQ==
-X-Received: by 2002:a5d:59c8:0:b0:382:d0b:5dc5 with SMTP id ffacd0b85a97d-382258ed412mr1822996f8f.3.1731674001936;
-        Fri, 15 Nov 2024 04:33:21 -0800 (PST)
-Received: from localhost.localdomain (29.42.84.79.rev.sfr.net. [79.84.42.29])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38224f95be0sm2145099f8f.100.2024.11.15.04.33.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Nov 2024 04:33:21 -0800 (PST)
-From: =?UTF-8?q?Gu=C3=A9na=C3=ABl=20Muller?= <guenael.muller@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: =?UTF-8?q?Gu=C3=A9na=C3=ABl=20Muller?= <guenael.muller@smile.fr>,
-	Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH] ref-manual: use standardized method accross both ubuntu and debian for locale install
-Date: Fri, 15 Nov 2024 13:33:27 +0100
-Message-Id: <20241115123327.28081-1-guenael.muller@smile.fr>
-X-Mailer: git-send-email 2.39.5
+ dkim=none (message not signed); spf=pass (domain: aspeedtech.com, ip: 211.20.114.72, mailfrom: jamin_lin@aspeedtech.com)
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Mon, 18 Nov
+ 2024 14:21:13 +0800
+Received: from localhost.localdomain (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Mon, 18 Nov 2024 14:21:13 +0800
+From: Jamin Lin <jamin_lin@aspeedtech.com>
+To: <docs@lists.yoctoproject.org>
+CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>
+Subject: [PATCH v1] ref-manual: uboot-sign: Add how to enable ATF and TEE for U-Boot FIT image
+Date: Mon, 18 Nov 2024 14:21:13 +0800
+Message-ID: <20241118062113.269253-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 15 Nov 2024 12:33:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5750
+ <docs@lists.yoctoproject.org>; Mon, 18 Nov 2024 06:21:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5751
 
-Modify locale installation method to be standard accross all debian-based distributions.
-Pre-existing method is available only on Ubuntu, locale-gen tool has no parameter in Debian.
+Add how to enable ATF and TEE for U-Boot FIT image
+and Image Tree Source generation.
 
-Signed-off-by: Guénaël Muller <guenael.muller@smile.fr>
-Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- documentation/poky.yaml.in                       | 3 +--
- documentation/ref-manual/system-requirements.rst | 8 ++++++++
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ documentation/ref-manual/classes.rst   |  7 +++++
+ documentation/ref-manual/variables.rst | 37 ++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+)
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index c770318f2..66f758fe8 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -13,8 +13,7 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
- UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
-      build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
-      xz-utils debianutils iputils-ping python3-git python3-jinja2 \
--     python3-subunit zstd liblz4-tool file locales libacl1
--     \n\   $ sudo locale-gen en_US.UTF-8"
-+     python3-subunit zstd liblz4-tool file locales libacl1"
- FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
-      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
-      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 0fc92550a..5b481dd83 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -152,6 +152,14 @@ with a supported Ubuntu or Debian Linux distribution::
- 
-    $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
- 
-+You also need to ensure you have locale ``en_US.UTF-8`` enabled::
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
+l/classes.rst
+index b92f4e4f2..82adab90f 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -3336,6 +3336,13 @@ The variables used by this class are:
+ -  :term:`UBOOT_FITIMAGE_ENABLE`: enable the generation of a U-Boot FIT im=
+age.
+ -  :term:`UBOOT_MKIMAGE_DTCOPTS`: DTC options for U-Boot ``mkimage`` when
+    rebuilding the FIT image containing the kernel.
++-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`: enable ARM Trusted Firmware(ATF=
+) image.
++-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`: path of the ATF image.
++-  :term:`UBOOT_FIT_TEE`: enable Trusted Execution Environment(TEE) image.
++-  :term:`UBOOT_FIT_TEE_IMAGE`: path of the TEE image.
++-  :term:`UBOOT_FIT_USER_IMAGE`: enable users specific image.
++-  :term:`UBOOT_FIT_CONF_USER_LOADABLES`: add user specific image in the l=
+oadable
++   property of configuration node. It is a comma-separated list of strings=
+.
+=20
+ See U-Boot's documentation for details about `verified boot
+ <https://source.denx.de/u-boot/u-boot/-/blob/master/doc/uImage.FIT/verifie=
+d-boot.txt>`__
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
+ual/variables.rst
+index 43f4d7966..c28a03da1 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -9736,6 +9736,43 @@ system and gives an overview of their function and c=
+ontents.
+=20
+       See the :ref:`ref-classes-uboot-sign` class for details.
+=20
++   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`
++      ARM Trusted Firmware(ATF) is a reference implementation of secure wo=
+rld
++      software for Arm A-Profile architectures, (Armv8-A and Armv7-A), inc=
+luding
++      an Exception Level 3 (EL3) Secure Monitor. The variable allows to ge=
+nerate
++      a U-Boot FIT image with ATF image.
 +
-+   $ locale --all-locales | grep en_US.utf8
++      Its default value is "0", so set it to "1" to enable this functional=
+ity::
 +
-+If this is not the case, You can reconfigure ``locales`` package to add it::
++         UBOOT_FIT_ARM_TRUSTED_FIRMWARE =3D "1"
 +
-+    $ sudo dpkg-reconfigure locales
++   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`
++      The path of ATF image.
 +
- .. note::
- 
-    -  If your build system has the ``oss4-dev`` package installed, you
--- 
-2.39.5
++   :term:`UBOOT_FIT_TEE`
++      A Trusted Execution Environment(TEE) is an environment for executing=
+ code,
++      in which those executing the code can have high levels of trust in t=
+he asset
++      management of that surrounding environment. The variable allows to g=
+enerate
++      a U-Boot FIT image with TEE image.
++  =20
++      Its default value is "0", so set it to "1" to enable this functional=
+ity::
++
++         UBOOT_FIT_TEE =3D "1"
++
++   :term:`UBOOT_FIT_TEE_IMAGE`
++      The path of TEE image.
++
++   :term:`UBOOT_FIT_USER_IMAGE`
++      The variable allows to generate a U-Boot FIT image with user specifi=
+c image.
++
++   :term:`UBOOT_FIT_CONF_USER_LOADABLES`
++      Add user specific image in the loadable property of configuration no=
+de. It is
++      a comma-separated list of strings.
++  =20
++      Ex::
++     =20
++         UBOOT_FIT_CONF_USER_LOADABLES =3D '\"userA\", \"userB\"'
++
+    :term:`UBOOT_LOADADDRESS`
+       Specifies the load address for the U-Boot image. During U-Boot image
+       creation, the :term:`UBOOT_LOADADDRESS` variable is passed as a
+--=20
+2.34.1
 
 
