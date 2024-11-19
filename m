@@ -2,173 +2,122 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D3DEFD44173
-	for <webhook@archiver.kernel.org>; Tue, 19 Nov 2024 15:31:40 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.24151.1732030292233254973
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F921D591A5
+	for <webhook@archiver.kernel.org>; Tue, 19 Nov 2024 16:24:01 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.25461.1732033438000659302
  for <docs@lists.yoctoproject.org>;
- Tue, 19 Nov 2024 07:31:32 -0800
+ Tue, 19 Nov 2024 08:23:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=kejuYFrt;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1FDDDE000A;
-	Tue, 19 Nov 2024 15:31:30 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZXtbkLOx;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CF246C0006;
+	Tue, 19 Nov 2024 16:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732030290;
+	t=1732033436;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=axtIuhfhBh3Ch9vQLF/6OcpEkvCio04lZ1AbBhyB0/I=;
-	b=kejuYFrtyOZOTnv81KdlOromb0vEFqfKhSkfgu+MFKtnQ1a1E6tkSfz5bFfMiurayieBcD
-	ZhsDaiFQ9SWBnoSRhtNfYN8STCWSnoPYRoRb8g8WZayw9tS71XOT0lzlJysW/3ydTwkSmw
-	WlLDEn7cvMTOvJFSjqDSfIc8KNL5R7mO/WVOIXwbjf2rLMsaViztYn6WDh9rkSu5/NtC9N
-	ejiLeE3g0LbJe/NoGBoGXkW1nnkqUolhMx2aGu35Bl0L5pYjp2aK6mp1jeBiYZ8fKtESeo
-	aL8IUkA0ykRHNeVIlo/gQoMUXrZ3hEQg/tXnF4OglXUuIS/f7eodlP/PlVYiWw==
+	bh=qddrf0Uchnav13Dxzh7504JEgaIXOJPekkfuNLc6oQQ=;
+	b=ZXtbkLOxyKgRPAM7FkKddUZgsAnBPuvROq1/Y1bBs40XT9MGIyPj6kM++OXOLzJ3wGqBBW
+	VrZ0oy8TL7L4HIG6BuMerQ6/RYlPxji2nhheNNk+ZgbuXikVtBYoyodn383aLOeCIkSctB
+	SsnRYND5p5oS/t23ZowMJrVmpMX6197oU4Pa4Jh7gqGU0Pst8BvI5xin9pSYraVQ3VfD4r
+	sjPTgloS4b5oWFIj9pCEm0bueN8aROtZKBzhFfMp1+Wz25LYuQ7Bu+UaS23a8+Uq+HDiSc
+	fSerHH4XRPV6yeGSQcz541o97hLxCddH7mmgERskmzlFjwCW9FUIL1gSkO5q1A==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 19 Nov 2024 16:31:29 +0100
-Message-Id: <D5Q9HUL65M5N.UKWNSZYA9JNQ@bootlin.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
+Date: Tue, 19 Nov 2024 17:23:55 +0100
+Message-Id: <D5QALZQ41WNU.3DHEEMS149GUY@bootlin.com>
 To: "Quentin Schulz" <quentin.schulz@cherry.de>,
  <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [yocto-docs PATCH] Update the documentation for SRCPV
+Subject: Re: [docs] [yocto-docs PATCH] ref-manual: classes: bin_package: fix
+ SRC_URI example
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
 X-Mailer: aerc 0.18.2.r87.gd0484b15
-References: <20241118-deprecated-srcpv-v1-1-bdab9da44267@bootlin.com>
- <ecb9d274-2380-4f83-880d-629b64e279b9@cherry.de>
-In-Reply-To: <ecb9d274-2380-4f83-880d-629b64e279b9@cherry.de>
+References: <20241118-fix-bin-package-v1-1-906f0148fdaa@bootlin.com>
+ <5b61d56f-b04f-4fa0-8249-83c605036726@cherry.de>
+ <D5Q8XTH54W4A.227VGN0AOS29E@bootlin.com>
+ <82c3cacd-edcc-4385-8403-3e997e2650fd@cherry.de>
+In-Reply-To: <82c3cacd-edcc-4385-8403-3e997e2650fd@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 Nov 2024 15:31:40 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5770
+ <docs@lists.yoctoproject.org>; Tue, 19 Nov 2024 16:24:01 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5771
 
 Hi Quentin,
 
-On Tue Nov 19, 2024 at 10:50 AM CET, Quentin Schulz wrote:
+On Tue Nov 19, 2024 at 4:15 PM CET, Quentin Schulz wrote:
 [...]
->>   To enable this behavior, the :term:`PV` of
->> -the recipe needs to reference
->> -:term:`SRCPV`. Here is an example::
->> +the recipe needs to include a ``+`` sign in its assignment.
->> +Here is an example::
->>  =20
->> -   PV =3D "1.2.3+git${SRCPV}"
->> +   PV =3D "1.2.3+git"
->> +
->> +:term:`Bitbake` later include the source control information in :term:`=
-PKGV` in
->> +the packaging phase.
->>  =20
->
-> s/include/includes/
->
-> s/in the packaging phase/during the package phase/ ?
-
-Agreed, looks better thanks.
-
-[...]
->>      -  :term:`PV`: The default :term:`PV`
->> -      assignment is typically adequate. It combines the
->> -      :term:`LINUX_VERSION` with the Source Control Manager (SCM) revis=
-ion
->> -      as derived from the :term:`SRCPV`
->> -      variable. The combined results are a string with the following
->> -      form::
->> -
->> -         3.19.11+git1+68a635bf8dfb64b02263c1ac80c948647cc76d5f_1+218bd8=
-d2022b9852c60d32f0d770931e3cf343e2
->> -
->> -      While lengthy, the extra verbosity in :term:`PV` helps ensure you=
- are
->> -      using the exact sources from which you intend to build.
->> +      assignment is typically adequate. It uses the value of
->> +      :term:`LINUX_VERSION`.
->>  =20
->
-> We can take this opportunity to reindent properly here?
-
-Ah yes, I didn't see that, thanks
-
-> Also, linux-yocto still appends +git to it, so I guess we should mention=
-=20
-> to add the +git here too.
-
-Indeed, will add that.
-
->>      -  :term:`COMPATIBLE_MACHINE`:
->>         A list of the machines supported by your new recipe. This variab=
-le
->> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-=
-manual/variables.rst
->> index 43f4d79663bb118f56c2e1b69fb9782357074e65..ef0d0a3c34c2985c587cbbd4=
-1ac7df8c24b2a4c4 100644
->> --- a/documentation/ref-manual/variables.rst
->> +++ b/documentation/ref-manual/variables.rst
->> @@ -209,12 +209,11 @@ system and gives an overview of their function and=
- contents.
->>            SRCREV =3D "${AUTOREV}"
->>  =20
->>         If you use the previous statement to retrieve the latest version=
- of
->> -      software, you need to be sure :term:`PV` contains
->> -      ``${``\ :term:`SRCPV`\ ``}``. For example, suppose you have a ker=
-nel
->> -      recipe that inherits the :ref:`ref-classes-kernel` class and you
->> -      use the previous statement. In this example, ``${SRCPV}`` does no=
+>>>> -      SRC_URI =3D "git://example.com/downloads/somepackage.rpm;branch=
+=3Dmain;subpath=3D${BP}"
+>>>> +      SRC_URI =3D "git://example.com/downloads/somepackage.rpm;branch=
+=3Dmain;subdir=3D${BP}"
+>>>>   =20
+>>>
+>>> This is not enough, subpath is mentioned in the note admonition just
+>>> above a few times, those need to be fixed as well.
+>>>
+>>> Additionally the wording is weird for the bin_package class.
+>>>
+>>> "class is a helper class for recipes that extract the contents of a
+>>> binary package (e.g. an RPM)"
+>>> [...]
+>>> "For RPMs and other packages that do not contain a subdirectory,"
+>>>
+>>> Maybe we should use another example of a binary package (e.g. a .deb
+>>> package) in the first sentence?
+>>>
+>>> Also I am not entirely sure what this example is supposed to show.
+>>>
+>>> SRC_URI =3D
+>>> "git://example.com/downloads/somepackage.rpm;branch=3Dmain;subpath=3D${=
+BP}"
+>>>
+>>> This is very confusing to me, is this really a somepackage.rpm **git**
+>>> repo? or was this a mix between fetching via git and unpacking an RPM?
+>>>
+>>> I'm wondering what we were supposed to show with this example. Is it
+>>> about fetching an RPM from a git repo and only extracting a part of tha=
 t
->> -      automatically get into :term:`PV`. Consequently, you need to chan=
-ge
->> -      :term:`PV` in your recipe so that it does contain ``${SRCPV}``.
->> +      software, you need to be sure :term:`PV` contains the ``+`` sign =
-so
+>>> RPM? Is that even possible? If so, we probably want a combination of
+>>> subpath and subdir? subdir for the path internal to the repo to the RPM
+>>> and subpath for the path internal to the RPM to extract?
+>>=20
+>> Actually I think I missed the point of the class description at first. I=
+t seems
+>> to document how to fetch a subpath of a git repository containing rpm fi=
+les=E2=80=A6
 >
-> I know we already have this, but maybe s/be/make/?
+> Would the content of the rpm files be extracted if they are fetched by=20
+> the git fetcher?
 
-+1
+Actually, no! I just tried. You can't just pass a path to a file inside a g=
+it
+repo to the git fetcher. You can pass the git repo URL, but the content of =
+the
+git repo won't be extracted, the git fetcher won't do that by itself.
 
->> +      :term:`bitbake` includes source control information to :term:`PKG=
-V` when
->> +      packaging the recipe. For example::
->> +
->> +        PV =3D "6.10.y+git"
->>  =20
->>         For more information see the
->>         ":ref:`dev-manual/packages:automatically incrementing a package =
-version number`"
->> @@ -5152,7 +5151,7 @@ system and gives an overview of their function and=
- contents.
->>         The :term:`LINUX_VERSION` variable is used to define :term:`PV`
->>         for the recipe::
->>  =20
->> -         PV =3D "${LINUX_VERSION}+git${SRCPV}"
->> +         PV =3D "${LINUX_VERSION}+git"
->>  =20
->>      :term:`LINUX_VERSION_EXTENSION`
->>         A string extension compiled into the version string of the Linux
->> @@ -6720,9 +6719,10 @@ system and gives an overview of their function an=
-d contents.
->>         For example, consider two recipes ``foo_1.2.bb`` and ``foo_git.b=
-b``
->>         where ``foo_git.bb`` contains the following assignment::
->>  =20
->> -         PV =3D "1.1+git${SRCPV}"
->> +         PV =3D "1.1+git${@bb.fetch2.get_srcrev(d)}"
->>  =20
+The bin_package class expects content of the rpm/tarball/else to already be
+extracted in S before installing it in D.
+
+So the fetcher should be selected with that in mind.
+
+>> Which makes me wonder: how often do you need to fetch binary from git
+>> repositories? Probably not often.
+>>=20
 >
-> Not sure why we suddenly add this inline python here instead of just=20
-> adding "+git" ?
+> Probably not, but not THAT uncommon. For example Rockchip provides the=20
+> libmali binaries mostly via deb packages (they provide "sources" but I=20
+> was unable to compile them into something that works, so....).
 
-Since the goal is to demonstrate the usage of "%" in PREFERRED_VERSION, I
-thought keeping an unpredictable value here made sense. I just took the pre=
-vious
-definition of SRCPV and replaced it here. Maybe we could replace the exampl=
-e
-with "6.10.%" to match all 6.10 kernel versions for example, if a layer
-providing the kernel gets updated regularly. What do you think?
+I would expect most git hosting service to provide HTTP link to files, so u=
+sing
+https://...<file>.rpm is probably possible in most cases?
 
 
 Antonin
