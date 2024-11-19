@@ -2,214 +2,215 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19279D6204F
-	for <webhook@archiver.kernel.org>; Tue, 19 Nov 2024 09:28:39 +0000 (UTC)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.59])
- by mx.groups.io with SMTP id smtpd.web11.17034.1732008511600474863
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 201A2D62058
+	for <webhook@archiver.kernel.org>; Tue, 19 Nov 2024 09:38:39 +0000 (UTC)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.43])
+ by mx.groups.io with SMTP id smtpd.web10.16988.1732009117698833765
  for <docs@lists.yoctoproject.org>;
- Tue, 19 Nov 2024 01:28:31 -0800
+ Tue, 19 Nov 2024 01:38:38 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=B6TsSrr2;
- spf=pass (domain: cherry.de, ip: 40.107.21.59, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=hcGGyvtV;
+ spf=pass (domain: cherry.de, ip: 40.107.20.43, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IlJOXhFvMu86nQFvb1YvvP8YxH0JkyrOMX7epAEJXKR0974GhTz3l3WzSD+t6Mmq3OOsMO5CjGJSjoYoyzU3CNu2kp4qVsLDFZVn6staNpQz/BpVkZGNOyAthfGeaXdHegYbqZTCPJJyFRs0dvghlcfWwiIyaBP4pYJxS+xdysH5NW+5qBTqcR9P06y+NcLnmBWpdOBMxOU+wC0OW566VzXdgz1Tii3O0Wd4Kv2lkG4vJxRaUbe44a9QBFB3WuveoPV6B7xFk2jIuGRsd7GFgT4WGQ4bwXHDxt/cazessM7kvIJ+/j/2u1O63146MsG9bK9OQUL/blClIZl9IOQvbA==
+ b=IzhZmneHfxlkV5NM99eNmtOex8QdM+HDb5sxFL+zf1vafDkS1aV8zDldnDbape7BRomsOfGTn/U7zuyFRpgsQN0zIr9pWsdak+/91g4wtFLMcFYVne/1y/gPZsgF5gFRrdAt/BYC+tRq8I1fG7Wr8Ho4MQm4XHEu7ophu3ELCtMOoDum+n7b7I3l+PRPg4TjG3XoyQZ1xFiZBqEiWvBvDQyuLcZ4ssZ1Ov9+oG2wQ+m0IjkEMsrl+tmv5fWnkBJLvNg7Ls+RGAM+KmTZXiUNaPb1tZKMlXA7u/tBpckDpVL4euNLABrQBqD0k2YG3C05s8mXJey1OPOqE34WBTr5RA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/oj6EozjWhfsPvVqYZTpRUBxNLfmCLyfbNFuSD3fMGE=;
- b=qWu4QvSg01qekro689UxiviMY4P9/Q+Usgl+v79eqcdUTMJDbtLAmAMmkfWlMGrrzpQp4e/wx7P3lW+uGu7DUn39+o64fZ8vOh+y1gUz9s9U1yomY/OCxPDm2GPiy4vAi4Y7fS29cGT59F14U+w30SFXFWGadoJdEBdYELXuI3vm8T5Tj9wKOZXX548AxfArxSOjHpWqfZrfWFb5Tn+Zhwari/qqoBr3UBc3E0B62YLmugw4ovYHrH5CzEn2uhR657TVjwGfUrIhm84eM/HBvSLrw3vX+W0H0IHZMbEib//+ekZxaK7fwZO776ZHo2BrNWWN4j7bt5mK/c3Qu0+H0g==
+ bh=1nTPaWo/SvqrRNoZaenWQ24eVcdkdZ97v+3tY1amJAc=;
+ b=WTNsmsPeuPfWLJe+s/YJmi2xR8uVsZKE/ZUm61J196T1tzmrHl2nZ+rd2KHViifPU1FKo2LYzw0MZZc8h91YsWy0jRc1UEQMpUIxEDHWkXtNnyOflRKfBr3PWfotDOw/n+2Jv4XXmf5GMtg5D5hVNOo3uRhdUar+NWcItaC4NnplysnSDDEMW1t8TTW4rA+fOZEv+9bOcxAlLuhCfgpD2uBgQQHrFm1E5rqVdRVHHi/x0so2mBtiktuRdT/Sstij1Z2ek5li0PVhjnDHTVctk23XtsknQsgvtmkDOKZJcGiC+AkX7b2DnbEpaBM1TQTKlfggq/UBbMrYAptWz3TWSw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/oj6EozjWhfsPvVqYZTpRUBxNLfmCLyfbNFuSD3fMGE=;
- b=B6TsSrr2qBzzGRD2GV17WtFPnKzbl00Wow6PFp5/kqC+A/Km5hipbbM69Gd3NwnFMwFKbPYLd2tliroyyukjG7t50v+fOOhC6gVD4z5QfTTpY9IimGcWUZWsH5CfwVsv99z73o4mhig6lp7eoOtT9XzD4My3KXy3YP0APoI9D3w=
+ bh=1nTPaWo/SvqrRNoZaenWQ24eVcdkdZ97v+3tY1amJAc=;
+ b=hcGGyvtV2p/iytzz57W5c4OE+wLwTjO+oPrzGjNAy7VWfARogdv/CcJvz9MDoBudDzRb+pAG3yaTZ74aphFTWk8Wm6e3FK+CLa/yNHPOpYbIdTMNv4oonPgmicrTogQ4FyRgW/Wfp3aDBXaZqWNoq6L2lxn6s9F/On/Y6Hxewrs=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by VI1PR04MB6878.eurprd04.prod.outlook.com (2603:10a6:803:12f::7) with
+ by VE1PR04MB7264.eurprd04.prod.outlook.com (2603:10a6:800:1b1::11) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.14; Tue, 19 Nov
- 2024 09:28:26 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Tue, 19 Nov
+ 2024 09:38:33 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%6]) with mapi id 15.20.8158.023; Tue, 19 Nov 2024
- 09:28:26 +0000
-Message-ID: <299a188d-c7a9-4604-a491-9efb3888e7ba@cherry.de>
-Date: Tue, 19 Nov 2024 10:28:25 +0100
+ 09:38:33 +0000
+Message-ID: <5b61d56f-b04f-4fa0-8249-83c605036726@cherry.de>
+Date: Tue, 19 Nov 2024 10:38:32 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2] ref-manual: use standardized method accross
- both ubuntu and debian for locale install
-To: antonin.godard@bootlin.com, =?UTF-8?Q?Gu=C3=A9na=C3=ABl_Muller?=
- <guenael.muller@smile.fr>, docs@lists.yoctoproject.org
-CC: Yoann Congal <yoann.congal@smile.fr>
-References: <20241118104524.25392-1-guenael.muller@smile.fr>
- <D5P93P1O12UG.NQJAUDP1T6Z8@bootlin.com>
+Subject: Re: [docs] [yocto-docs PATCH] ref-manual: classes: bin_package: fix
+ SRC_URI example
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20241118-fix-bin-package-v1-1-906f0148fdaa@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <D5P93P1O12UG.NQJAUDP1T6Z8@bootlin.com>
+In-Reply-To: <20241118-fix-bin-package-v1-1-906f0148fdaa@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: WA2P291CA0016.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:1e::12) To AS8PR04MB8897.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0068.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:49::13) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|VI1PR04MB6878:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8de4307-4491-49b2-51a1-08dd087c8546
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|VE1PR04MB7264:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6dab2a13-d9a3-4b8a-819c-08dd087def0f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?SZtV2sniQ3xNzoSBYX5BrvrwZhDQxnyGvp+M2NEDyj8J45GOSg4ZIJQVTgVI?=
- =?us-ascii?Q?m9lh9WmTdkvvRCd3WE5Ln4YRBwnXNnIo8Y4sqLOAqS5IyXzB7sW7wJ1CLNuo?=
- =?us-ascii?Q?5cr50yWNso1hVLzkI4ETJKoV/bSn7gtnwo/4xF+JGZVChWIgkx8lsZvMXwLV?=
- =?us-ascii?Q?CyxZTBhGKhSYB2nu7aaYUuEl1VBjrbGik8ny+gN9V0s4DOSvh5AUuayx9v3o?=
- =?us-ascii?Q?8Ep2uZwSMsM3s+LsBPn8wzOkfVUH+ZODxIuC/ZiAmEAIKmAAUFv7W/5kufBT?=
- =?us-ascii?Q?wymdHSqGDHxcUEj5GmW5LRGgKKcMK3/n6snY8v/P0V6xyH0bqqlmMNR/TFOU?=
- =?us-ascii?Q?nhsVT+E51BsBK3wBKpsX4C9yxDd28zXeGQG3C92lKjjsX+qkDhaLeIoyGXjz?=
- =?us-ascii?Q?NP1ZTN9HpiJTbZ5ViXTn8urZeAqtkmukb1j2EqAkHvWMBXcmrEeqkVnG/x8h?=
- =?us-ascii?Q?M3yzevbedd9Huvq95PlvULFU2DJ3HewWNnOU/+qUBXdNBgxqyKKahqmrll7M?=
- =?us-ascii?Q?p8oWTvQyVSfmzP5IhpNFcGQL3ewSVwuX/lJ0kImCNcdbduekV9hA9P95cZJN?=
- =?us-ascii?Q?Jr8IhirrzqxVNLiLfVIAIyP6TdqHzMgFtSyQhzxyGrV90VoII20/uuD8hP0I?=
- =?us-ascii?Q?MjrBg3nkO3YZPgmovNVUSamlaT9jykYYgsuYVpVBxQkszpAWg5NYVBhWiIYt?=
- =?us-ascii?Q?O9Vc/v3pJicVX9EFHbsqt9e9x4U687rjTFRF62a1omYWPARE7t6zSdI5zjOI?=
- =?us-ascii?Q?mj+NvzXn5xdm7sPSz75aOZYPzI3vSyuUurf4g13pCmtuWaVwY3VXzrBxNwtD?=
- =?us-ascii?Q?7Wz86ftHL1ZHe51B7E2z6bJ+L31NwD+RwZYFpY2WfLNhfpte+fo7qWryGISz?=
- =?us-ascii?Q?45EQW4wIaGPsLpUGQhQ+ypw/EY7yeQmh5RNm1tp3YVFTRxOTzgtag53faXdc?=
- =?us-ascii?Q?bo13h6aSZDAIFIYWEUOXjl75u3zvondteZlIu8FTdECA2QvC5iXwYqBrZWWo?=
- =?us-ascii?Q?xCxTHBaQLSKU1pz3Q3WH+hCmy2eYBBfLWo7ifdvnPWrcoMaejwv/154Kqkwb?=
- =?us-ascii?Q?cpVoU583oH5zZhv4PNAUoLyGEQVAs6ZsHUrt/Vq+Qmjrfi4U8o9pP9DElBh0?=
- =?us-ascii?Q?iTF3Z3uenMSpRtaEafUB4nX5BDXpx138j34l2rLzOjT9vz+PH3OapONVKLF8?=
- =?us-ascii?Q?i3mIJJW8sGs0ydOG1SUP8rrgVUaZSoYFloIrULp63jwx+N69XEz2eTA8x8pd?=
- =?us-ascii?Q?a3/ftCUkh9hbNM9cA9wrOP6KGrBHim2FFmhMoo+mjndHeTGaU28FQ7o03RpW?=
- =?us-ascii?Q?p5LF+lnpEgJMlG1kcqdNXESX?=
+	=?utf-8?B?dDRyaW1IZ2lkWmFoVGVGeEorTklxN0tkblRndTluUHlEMnFERU43dlozVVBl?=
+ =?utf-8?B?Z01YRmlvMnBldzZuTmt3Zzh3djF2Mm1QbW83N2hpUnZTOWxwV2g2UG1HZEdV?=
+ =?utf-8?B?S2VkL2R4ZUxCcmt1S3JjWkdKdGZNK3I1cWVpbWdYS2RDbHZySEZGWUpDVzhE?=
+ =?utf-8?B?TXVOZXNNSzZPdVR5Z2l0OVh1U24zd2FNMjFBRHVNRW9yR1Q0L1J1Nnd2Q2ly?=
+ =?utf-8?B?dG9kbElvaUlVb3BMMXF2UjNVbWMxQXZSRERqVkR5T0M2QXl0dGtGWURpbDA5?=
+ =?utf-8?B?RC9CTDM2Q2k3bzd4L2xISkljRWtNZTc4YnZKeVU2OXIrSWJlWHlnaXZjWkFl?=
+ =?utf-8?B?RkQydUJ0N2t1enhXa1cyL3VGMllHdm1nNW1WMlhDQTNZVGIxM0JBVkVTN05C?=
+ =?utf-8?B?N0pRNUtsazJZMXZBcUtwZnhaRWp5cjV5Z0ZhZEtTeGlNaFRldTJVZ2hCSHor?=
+ =?utf-8?B?dVpYVWRyVE9CbHJ6d2JpNEFON25LVWRHd0VadXJEUllFV1NyS0JzWUVnaERZ?=
+ =?utf-8?B?NkhqNGpxelIzRHZHb2lyTWdTSlZvc1FOb2xCTVF0cFhGS2dZNW1OT2g2ZGE1?=
+ =?utf-8?B?a29jeEo2VGcwbVBqYUVaeUFVUWNUZlJWeFo4VlBaSm82V3ZGbVZrVXhUVkVt?=
+ =?utf-8?B?T1djMUYzM1RDZVVjYWt1RVk4MWgxZERyczhXZXFNYnJXeVM0enZ5QzE5ZnJT?=
+ =?utf-8?B?MVlmNDVzTWJMd0diRHlISUJOU05taUZSZU9nTDY3UEE5ODNsRzlqMzJqaURl?=
+ =?utf-8?B?aWYxSHcxS1lBdjhxUG93R08zdkRxSnFQWE42RFkzbGhjalJ1NVR0ZEtPcUZv?=
+ =?utf-8?B?SGVtM3BTRk9iNUdXOEJ0Mk90QnhGVVdaME1FL3JrUk5UYi93S0tOL0hwUGlv?=
+ =?utf-8?B?T1Mvc05tM1BVR3BwVEhUWUZEd1ZBYzFnT0FPUFRIWVdUc0RpY0RhNGxsaitp?=
+ =?utf-8?B?RXg0eWVjay9Cb1FXTzNpU2MvbTBRRXgxV3JBZDBlTDc1L3dGcjAweG5KQm1H?=
+ =?utf-8?B?c09ibkZ3SC9sMUwvaHhsK1JVYkFJTFJMSFF4b1BPQ0JOYzJsdzlZYUtnWmdO?=
+ =?utf-8?B?eitPbVdCaWZlVEFJNi9XSVRoZGpMY2dQbmR2SWtwRFZXRFdOdHdnZUN6V3ll?=
+ =?utf-8?B?cS8vOWVqdkVudzhINGlNdTl3dVZCU3lQOGhRWU81TnlmcnNPL05jb0ZDTWNB?=
+ =?utf-8?B?dXFuQzk1bVZjaS81ajdHMDVLZUhWREVwVDNRZytCR21MYUZjRHpBWUhwek1L?=
+ =?utf-8?B?bUxxMjNYV29wU05iQ29FWkJ4Vktpa2Urc3UrcEZ2UDNjWGtRQ0FxZTR3U0JO?=
+ =?utf-8?B?VndOUlVsSzNqSVAzU2V6SVV3Vy9iQzdQcCtiOVdocHlwWFI2OE01V2RZZ0NN?=
+ =?utf-8?B?VjBFTWdwSU9TRWJscEhGT2hlSGxHbFZDZ2c1L0IzU1dpMDZIUGs5N0hWQWhG?=
+ =?utf-8?B?R3dKdU5nSEwvVzN0MTc2OS9nL1dibnQ4cmVqQ1RDcGRzWUNjaG5Gcm1lOEln?=
+ =?utf-8?B?c2k3b1VVWEhYeWdLcVBoQzBENlAwakhsZ0dDTnphZldkak1NSzRqbUtFZGp0?=
+ =?utf-8?B?V3JhY3pyOC83Z2FyaU9QMU9VN1UyaEJMRHJNRlVwM0FFVzBtcFN0S3h3MC9G?=
+ =?utf-8?B?WlV4ZWo0aHovNmVMMlh3K2JVblJTaGhmeHBvcjNlNUYxQUcxQlQ1eFUwRkly?=
+ =?utf-8?B?MzFQRldtdlRSQ3BnN1RHVHFWREc2R3IwRFh4RE0xZGFkdU5nUDFDazkvMjhK?=
+ =?utf-8?Q?wADpFxQIVLl91LPulo7UpfKYmVnay/hViLwQuQi?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?yh26pgDapX9H04KyQh49i0JPlrBjbGBAwMmrRPhWV09TCO2bFqFLiBghTUpf?=
- =?us-ascii?Q?ZZ+2VITArxbjpjVDyHbwKTAMkNo1iJChzzmrXqUniMf1bzVGf/9f1oGEEk6L?=
- =?us-ascii?Q?PN7EqJeNqRc/B9Ve99+d2nxnSiqbFZfNXYqMrGz5HfjJmfhWJhgx5BtqKYBX?=
- =?us-ascii?Q?dEJ/dbrwqvHNkQNnJsZlCHna9Wq4ynniK4yZgRpSNt/s1RSdRgdE+YyNq7ZI?=
- =?us-ascii?Q?WtN0RNBeCoEiTKQEi8whMacn3u5ZYpSk1P4lI65hoOtZ4tJvBHRMtFiUAHFq?=
- =?us-ascii?Q?NAtMUUOg1n/3Y9JLJbXC8SsUpigUV6G0EuLURwfTLqnrY7JmRwlTEDKWsyg+?=
- =?us-ascii?Q?DCxm/TRdMfOUyGiEvKMWfnC6KvYgXeNKrKa/2xKhpB1YvdHlXSIL4v6lmj9J?=
- =?us-ascii?Q?bthfUs+XUhZyXHeNtcpLjM896YyUJg4kKmE6KZzEF1rAl7hTg4kIDiK8Zk3i?=
- =?us-ascii?Q?dBSLWxmzRtqZq1UV0Ng+yrhMxyVVnue651mGjio/nioizHsYGpSD5QE4ydz3?=
- =?us-ascii?Q?rRWY4EII/dOzculse58BBvTlIjVnQOgXsnqECRBWEL0No2HGYj/GD/c+YaTr?=
- =?us-ascii?Q?ymETwIPbaDOJ/Gw/2E2ptC0kludUnZApdVyI29dn+DNwESdou4//H7v8OFEY?=
- =?us-ascii?Q?I6UHnznG6BFRR1Q3HOR+eBvlJuK4RZPargY7VKLUhZWR7TF4F3RkmZoaiMlv?=
- =?us-ascii?Q?TilLtfwWj8gESZcwlOpU8tBtgqImZ8xaQIrkhbWl4fGdimdmoT3i+pGMGEGs?=
- =?us-ascii?Q?LawOqxOCOEGyM43/wHigwcWoODUjL/2htjN9Ak+3BfB5mkQ7frSNz6h+TvDS?=
- =?us-ascii?Q?WZDnTzZucrf5y4ReG6WXjiT5qRLJHQmD/RrQRY/ZSeVWL4SNBpBzgMqzgAoV?=
- =?us-ascii?Q?HHe07sZMbpplTBp8bRJLwv/P6ivXHIL+cwz49TC/X7OVtdDwSN/C96rdCkp9?=
- =?us-ascii?Q?3QLJt/nFNRtgi9PACafiQ5xtb18BmH2+mmXj8iIctwSNk2YhO27vTPcDSMnN?=
- =?us-ascii?Q?1+a3lM9/weTBpF0/lNr9KZw1NsgyL/zVdO8Zv7wyB4NjicJqmoihPCpcW3JJ?=
- =?us-ascii?Q?Gg08DFA7V3cEWEf/UNk1ie+HKhoxmkgZIzhZExD/+yBB/W1kuWY0Loxdk5kp?=
- =?us-ascii?Q?5iZ9KIVVYVgjPKkUlCzCJYEVoTB1Pe2l2PAOSk6NM40FHOzQmJ0gL6531NRp?=
- =?us-ascii?Q?9WWN6CmBrJ/ySJSlLvDMqdeOMSixRWeikMyL0RX0RHw5Z7FDZXsM6FtHQrjz?=
- =?us-ascii?Q?Zm5I52TMLvLZt/IRbTXvhlzLkpVOExSXousweCyusCcQpKwMaHQUkSwt9M+D?=
- =?us-ascii?Q?PIRPooJyeQ3lK3fwXbU1RwAo7A1Xv2TWbq6XIiMPO3+8GX1MIr+5JoyuJnfw?=
- =?us-ascii?Q?dtm0vASDiICdCPJ7CyvhwhN0WV47eg5FbPLASm0kFA07e02cGzJgVk7gBKRB?=
- =?us-ascii?Q?nOQkX3Upn/nhhxErJpn+/yR/IYyD60TxNI7ufsd8U3j6vNzCfcAwVi5fYYM8?=
- =?us-ascii?Q?wHfeIAIZnlmKkDSRuL0UECkahzp2KIRc8xc4I9mpDjcpn0upeW2jxIccp5VK?=
- =?us-ascii?Q?prvr2Uv9ISOo1iSUBuHK+Itbn35hOqPuQixaDX1CZ936XfMU901M9X3NQo5v?=
- =?us-ascii?Q?lQ=3D=3D?=
+	=?utf-8?B?VVhLWWVZU1ZIWU42c1NqbmdYMnlJeWJtQlJsQnlBK2xOL3M4SktYZHl4Y0hO?=
+ =?utf-8?B?d2M1cFpLdFpvd0dkakkxRldrekpGZWdtYzJNQksxWXhwU2tpcytjQzFKQWJQ?=
+ =?utf-8?B?L3JxNVhwNHErRjdoeTVkL2gxeGk3SDVvc3pXdVkxWlh2cEwvUFhha2JqLzdK?=
+ =?utf-8?B?OHBRbEtiUWtOYXJWNXlGdWhsZC9YQ3dDYWtvbktNSnBCcU10TVdZemxDODlj?=
+ =?utf-8?B?eFRnQWRwQmhpNFRuVnJuazlseFY3bUhqV3I0MVpqdVAvNlVWeTF4YnBEZlBU?=
+ =?utf-8?B?amp3Ky9jWnlscmNCdTNSd1RRbWlTTTVyVWlocTROemExeTgveitCN1RiQ0dt?=
+ =?utf-8?B?QkM3ZVBmanRqUE5Sanc0cS9nZy9rR1BRMTUrd1NzQ3pacXdKODZvUjBsNjV6?=
+ =?utf-8?B?dWlUTm9pYWlJVVZRdWJVczJWYjZJL0xOY0dKc1JxN0YvWW1mWjFCOHZqYldY?=
+ =?utf-8?B?MDR6WlFoZWgrZThtRzFDZzc2NEZUN2s5aDF0aE9yQTFiOUtDZTlJSGFLd0FH?=
+ =?utf-8?B?Rzk4MytKK0gxbGVVVUNidVVLNFo4NERaREJVVHQ4Vkt1WTZMMEJVeXl1NTBr?=
+ =?utf-8?B?eTJGSk1wbHFPWkVpUlRCNWZkQkJxUnU5TTQ2UnRzMlByREF1WGVGdjZHZWhF?=
+ =?utf-8?B?ZUFoSDMwdXB6TEtqNUNyeUZVdXZBakNkdk9NODk4c2JDcVNzWjVIY2dhdmFI?=
+ =?utf-8?B?Tm9Eb3dXbkczZmtnYnZHWSs5NWJFZFZ1SEROczB2ZkJMdkdSZDVnaHdXTkJ5?=
+ =?utf-8?B?dTBkTUxKNkRRbmpLeEUzWDVDZ3pzbTVJa0UzZWJVck03TTlMZWM4bHBlb3pY?=
+ =?utf-8?B?RVc0YkRzUmxSUFU4am02RFpVeTFqaUxmajV0NGJYd3E2a1ZKbDFsZ3ZaNHFU?=
+ =?utf-8?B?ZnFIOERJa2hTY2xQbkt5ZEVKeWlaR3UycTZtLzZzZTB1TmRKUjJjUU9Lbmt5?=
+ =?utf-8?B?dXdQZzhGNDlLZUhFNFM2VUFXVE81VmtCMVdnUFhETkdwc1RWYkl4czVZSmEw?=
+ =?utf-8?B?UDBxaHB5MEhHc3pLUWVrSmo5UUtnZzdHdXZjRnFqWmMrOUhnQmUxMWh6Ymx5?=
+ =?utf-8?B?K2c4QTYwODVlZTdnYVdKM0ZCOWo2bVpBbEVMWDVVTkxQVFNDdUp6amFUbE5p?=
+ =?utf-8?B?Y1lwazN0UkRZWHVLTEE4dURBVFIzM3JIQmdZVTZyY2o2dWJ3Q1lSVXFoQUxj?=
+ =?utf-8?B?Mkd2azdmV2poRXdtU25LUUJ4dGsxd1hHUW5oa1VUQmphcG42bXpHTDJaTkMy?=
+ =?utf-8?B?anowa2szcEJQajVvTUNmYXNzM1pvaTdMd1JYcDZOTFp1bUhlcEJEc3k2eE1G?=
+ =?utf-8?B?UTRjVlo2Qmg1elhFOW9MYk9OajFyUk9MWjcvNFVBOU5FYkt2ZUhVUWl4aWFO?=
+ =?utf-8?B?ang3Z1J3WUViTmsxcmdQY0ZZU3NNUXJpMWJLaGtTeVk1QVcrRUhROGhtMk4r?=
+ =?utf-8?B?QkptRURMaDdyMzlvOXJrd1BXMk90bm1wMWk0ckVLQkY2ZGYzZHBpVXNRTERD?=
+ =?utf-8?B?VENRcW5DSlJjNHAwMnFLNWNkWmFHb0UrV0E2VmtRZk5sbGV4NWdiaEI0aWpl?=
+ =?utf-8?B?Z1FYMXE1TVpud09iZTNLZ1dmOXBKYXRYRWdYUTFORFhVMVBsb2g0TjVGdkJt?=
+ =?utf-8?B?MXZRUzhlR01SQzROTzIzcXh3M2libHlLMXRhN0N3ckNPTDd4eU43alNBc1Ex?=
+ =?utf-8?B?Nk1nVUc3UGVCbGw0NGtka3JXVGt5VkkzQjJkM0RTK1FITjlhU3ZrTUJyb1Fr?=
+ =?utf-8?B?YlVNZXM5dkpFemNJbmU3VUVKTlR3YXBPbUNWNW04YXRDbUd6cnZ4ZytLMGhN?=
+ =?utf-8?B?aHpJZFFDNy9NRXJCYU9HMURvSmVsWk9KTS9DcmM4aDhQWHJrQXNZSmE1bzVM?=
+ =?utf-8?B?QklKMXdLQzVMRnlFV3hPeW9xRUlGaEZaVVByZmp6YndySmg3ZmRIRWttbnNs?=
+ =?utf-8?B?R1E5bklRMlgybnRuUTV0MlNVbEI1SnRhN1BPTWo5VmRHL2tCNzhRUmt1czlE?=
+ =?utf-8?B?Q283YWNMKzdObzB6RC95MTBqSFNOaTdsdUF5cWdsdVdwYmJCOE9wZkNIZkhJ?=
+ =?utf-8?B?aVg0NWdKZnRzVHlPSm1URzYrYTN3WkNrd1Y5eHFVYXh1MmV5dVllbmVhMFBz?=
+ =?utf-8?B?UUVFUXZrVERZelRCSmpDcURYVktMR1hxTWxDcTZrNkZhTlptYVZXYUJueHJh?=
+ =?utf-8?B?SFE9PQ==?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8de4307-4491-49b2-51a1-08dd087c8546
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6dab2a13-d9a3-4b8a-819c-08dd087def0f
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 09:28:26.2750
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Nov 2024 09:38:33.2980
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: TBd6rAg9iGF8nMW/R5iwHv51EJIxWplrSmrKj9N2hV+va6NfwZMqXJU3WKBT2trfaT/EtBCCI29Ls6KAUWjqC6uhLF1VI2VJ6YrnlgKNVbU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6878
+X-MS-Exchange-CrossTenant-UserPrincipalName: XaTzrmFdSSoVFYXvRNebBKh6SFoT8lmndeH6XkY6gZNGfK8bl6MuMUd7F7ND2w4vYogqIqKF6GEg4C5WN9aEzvRqsi/LHqnZrbB4ODAQ+c8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VE1PR04MB7264
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 19 Nov 2024 09:28:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5765
+ <docs@lists.yoctoproject.org>; Tue, 19 Nov 2024 09:38:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5766
 
-Hi Anotnin, Gu=C3=A9na=C3=ABl,
+Hi Antonin,
 
-On 11/18/24 12:00 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> Hi Gu=C3=A9na=C3=ABl,
->=20
-> On Mon Nov 18, 2024 at 11:45 AM CET, Gu=C3=A9na=C3=ABl Muller wrote:
->> Modify locale installation method to be standard accross all debian-base=
-d distributions.
->> Pre-existing method is available only on Ubuntu, locale-gen tool has no =
-parameter in Debian.
->>
->> Signed-off-by: Gu=C3=A9na=C3=ABl Muller <guenael.muller@smile.fr>
->> Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
->> Tested-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->>   documentation/poky.yaml.in                       | 3 +--
->>   documentation/ref-manual/system-requirements.rst | 8 ++++++++
->>   2 files changed, 9 insertions(+), 2 deletions(-)
->>
->> diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
->> index c770318f2..66f758fe8 100644
->> --- a/documentation/poky.yaml.in
->> +++ b/documentation/poky.yaml.in
->> @@ -13,8 +13,7 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/=
-yocto-&DISTRO;"
->>   UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo=
- gcc \
->>        build-essential chrpath socat cpio python3 python3-pip python3-pe=
-xpect \
->>        xz-utils debianutils iputils-ping python3-git python3-jinja2 \
->> -     python3-subunit zstd liblz4-tool file locales libacl1
->> -     \n\   $ sudo locale-gen en_US.UTF-8"
->> +     python3-subunit zstd liblz4-tool file locales libacl1"
->>   FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python=
-3 unzip perl patch \
->>        diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpat=
-h \
->>        ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue pe=
-rl-bignum socat \
->> diff --git a/documentation/ref-manual/system-requirements.rst b/document=
-ation/ref-manual/system-requirements.rst
->> index 0fc92550a..b33518c7f 100644
->> --- a/documentation/ref-manual/system-requirements.rst
->> +++ b/documentation/ref-manual/system-requirements.rst
->> @@ -152,6 +152,14 @@ with a supported Ubuntu or Debian Linux distributio=
-n::
->>  =20
->>      $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
->>  =20
->> +You also need to ensure you have the locale ``en_US.UTF-8`` enabled::
->> +
+On 11/18/24 9:46 AM, Antonin Godard via lists.yoctoproject.org wrote:
+> `subdir` is the correct attribute to use for extracting the package in
+> the correct directory.
+> 
+>  From the bitbake doc:
+> 
+>    subdir: Places the file (or extracts its contents) into the specified
+>      subdirectory. This option is useful for unusual tarballs or other
+>      archives that do not have their files already in a subdirectory within
+>      the archive.
+>    subpath: Limits the checkout to a specific subpath of the tree when
+>      using the Git fetcher is used.
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   documentation/ref-manual/classes.rst | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+> index b92f4e4f20ea8f702c90f4e3d29251b2461d07d0..2ac94630d80386cf613222b70f7bd6323b9948f2 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -176,7 +176,7 @@ example use for this class.
+>      are extracted into the subdirectory expected by the default value of
+>      :term:`S`::
+>   
+> -      SRC_URI = "git://example.com/downloads/somepackage.rpm;branch=main;subpath=${BP}"
+> +      SRC_URI = "git://example.com/downloads/somepackage.rpm;branch=main;subdir=${BP}"
+>   
 
-I believe "the ``en_US.UTF-8`` locale" is more proper here.
+This is not enough, subpath is mentioned in the note admonition just 
+above a few times, those need to be fixed as well.
 
-On a side note, what's the actual cost of reconfiguring the locales=20
-regardless of the presence of en_US.UTF-8?
+Additionally the wording is weird for the bin_package class.
 
-My point being we could probably have this command in poky.yaml.in like=20
-it used to be?
+"class is a helper class for recipes that extract the contents of a 
+binary package (e.g. an RPM)"
+[...]
+"For RPMs and other packages that do not contain a subdirectory,"
 
->> +   $ locale --all-locales | grep en_US.utf8
->> +
->> +If this is not the case, you can reconfigure the ``locales`` package to=
- add it::
->> +
->> +   $ sudo dpkg-reconfigure locales
->> +
+Maybe we should use another example of a binary package (e.g. a .deb 
+package) in the first sentence?
 
-How does this actually generate en_US.utf8 locale if we don't explicitly=20
-add it somewhere? Are you sure it's not because your system has LANG or=20
-LC_ALL set to that locale and then calling reconfigure it regenerate it?
+Also I am not entirely sure what this example is supposed to show.
 
-Also on a side note we tell people to check if "en_US.UTF-8" locale is=20
-enabled by grepping for "en_US.utf8", is that expected? Why aren't they=20
-the same?
+SRC_URI = 
+"git://example.com/downloads/somepackage.rpm;branch=main;subpath=${BP}"
+
+This is very confusing to me, is this really a somepackage.rpm **git** 
+repo? or was this a mix between fetching via git and unpacking an RPM?
+
+I'm wondering what we were supposed to show with this example. Is it 
+about fetching an RPM from a git repo and only extracting a part of that 
+RPM? Is that even possible? If so, we probably want a combination of 
+subpath and subdir? subdir for the path internal to the repo to the RPM 
+and subpath for the path internal to the RPM to extract?
+
+Or, we should provide two examples, one for RPM downloaded from HTTP for 
+example, using subpath, and one for a directory from a git repo, using 
+subdir?
 
 Cheers,
 Quentin
