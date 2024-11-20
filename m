@@ -2,174 +2,118 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DB51ED44171
-	for <webhook@archiver.kernel.org>; Wed, 20 Nov 2024 09:30:12 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.9660.1732095009765699594
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5DC50D711AC
+	for <webhook@archiver.kernel.org>; Wed, 20 Nov 2024 15:11:05 +0000 (UTC)
+Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
+ by mx.groups.io with SMTP id smtpd.web10.15839.1732115457090044289
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Nov 2024 01:30:10 -0800
+ Wed, 20 Nov 2024 07:10:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=a4kgNOfe;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A55471C000B;
-	Wed, 20 Nov 2024 09:30:07 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MVarqjkd;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A3B2424000A;
+	Wed, 20 Nov 2024 15:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732095008;
+	t=1732115455;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=gg2N3YTQ57E/oKv4xuN+GKIcixb++bUxgChh+5uKHig=;
-	b=a4kgNOfei/wQRcP8FuTUwnQfBhshrAT+maODzUOeq2j04iWqCJqqtRidnukvopDCMG5d0G
-	QtBQf0B2v4+lcY9sD1PglFT8zLqyqRSl0yxUtlOSV7RhXD45A3x6JkM7CqKsg+1gW1VTiB
-	xFUH9GQwRNb8nvJ3EHmcDU4G4b++Uj+BhCNwUHiSgXGRiG4fAXFHWM2BPcF9U74UJgw9Qo
-	HIKv/nUaA9CW/T9z6CCu+bHcqD9zoU1OMyP0RMli1NV84aW5P2EHpbIHFS67i96yhtLxH5
-	b65w34jeQsWYSrydCIQ+r4Z7EvQf6JOtR7keR1/AsxvEet7Jks33xN7LGVVm1A==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZFpOQ/kubL+D6fHzS1vjGsaMzhkkXxQL6jptmCYXwQs=;
+	b=MVarqjkduACeZs/gjNmVVQHC4uoDGwG/RM9WJbeMV8zbihL2ZzbV5jEzrR8chiG5JPyiHs
+	xZ+NiyJrhsj7bhIcBQWj1qu76jqgSIouztV2YLAdgGcRN3s/VLlII1IY1+Xr+SYk58g6I/
+	nxyJ8/l6XmBoc6sKjoWBwoEB7ZJtQtJH6oi37R345v6MwP08ggTMLAh/8I0zfH18m5t6Dv
+	1OVIVDDr/7t2vS7kdMUj+KECP9vjmwt7NV3z5IOIv7YIQC2XMN6z2JmirnFpoA8SgFNnGH
+	O7/kmB94JGWMHSiXlDjB9cG5PENe37vj5W6VD/UFflARJem0xXVDI7wus8NnIg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 20 Nov 2024 10:30:02 +0100
-Subject: [bitbake-devel PATCH v2] doc: bitbake-user-manual: document
- inherit_defer
+Date: Wed, 20 Nov 2024 16:10:38 +0100
+Subject: [yocto-docs PATCH 5/5] poky.yaml.in: add missing locales
+ dependency
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241120-inherit-defer-v2-1-e9291b7cf59b@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIABmsPWcC/3WMQQrCMBAAv1L27Eo2lhg8+Q/poUm2ZkETSUpRS
- v9u7N3jDMysULkIV7h0KxRepEpODfShAx/HdGeU0Bi00j0RWZQUWzFj4IkL9jacvGXllT1Da16
- FJ3nvv9vQOEqdc/ns+4V+9t9pISTUxhozGjU6cleX8/yQdPT5CcO2bV+xo9rprAAAAA==
-X-Change-ID: 20241118-inherit-defer-48d3c8e0c087
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>, 
- Yoann Congal <yoann.congal@smile.fr>, 
+Message-Id: <20241120-update-doc-deps-v1-5-50e267ae4123@bootlin.com>
+References: <20241120-update-doc-deps-v1-0-50e267ae4123@bootlin.com>
+In-Reply-To: <20241120-update-doc-deps-v1-0-50e267ae4123@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4209;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1395;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=5cMxa9xG71+NMrgwj9gtATB/j3ad7mgaNasbOx5pW6Q=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnPawfaY2c/lpNh/0bvMUTWNk51EhVPz/THEa2f
- Ctvl2yibUOJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZz2sHwAKCRDRgEFAKaOo
- NtgfD/9Un3L89jLIN3Ydb1oLQzDeM+cufSG2oVrsckapt+Ltvvw4u1dtkyDqfRPdh/x6lMmwg5v
- qR2vAeG3Ny1QcMc2VXmKEeG3FvhiNit7qtDhDRHcdlrepWf48xJMhyrf9ypkr6rsIcxEwmigkT/
- so67qnm1xTO64n64jvnFfBBv8qqTtqR2/IPFHbxHOvCDe86MtSdyQPoWOqJS+2mMQ64VGHupsnC
- 3UzfFzSzmRC3mlCkoLYm3C/Ybb4U+OPMrIKZiWcEkUTM9zEQUcnkAMDH2hA2bRtxjzVAo3/mbCe
- B8XjW4cKcytplOjlo0OAJoRT4pETXzlEVBgfW3IVskee4DQeNaZoMMVsTgDl0t5+IOL2xZW/Zms
- w4irEdbHaz3jh2t2wrMqRnGCOSTWqjeFY/5ktC81GO2rkl/ugsyZLy6H02laJCn44Uyix2KuoUv
- eRYeMYtq60vSoQ1WQzieKl4NjBg1XrwaBLkyiROM6kgQ0JdglE8SkvPCM1kiE1Z/9G1MbDk1htX
- RrttF6tPK72AegIVPU3xXowMlMV0D7QhgbMVq0/vZl2ZmI5HlkC/6iAp+Sa7hZ18TkVvgb2YTMf
- 7RouNi98sVuumNswS/nInrBUTKyIQizOQo9+4HpWCHDaV0TmNZXUBMMKJ9vnvKP4hvXxM6S9UBn
- Te2drfMyMcSo1GQ==
+ bh=KTjYq2lKNiP1jaA2MUwqh6ljp87rRG4eL13qFPsstmU=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnPfv+yhUmX0SYFm0MPrTuDDsLcmA69NgWfMUee
+ REJdtIycCGJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZz37/gAKCRDRgEFAKaOo
+ NmmRD/9nbfRvZ1SLYshca9kwlpwN/mUJb+vEciuDw1oYJ4Fl6BEf3x5vunRY/Log91MU7ht4EPH
+ 7queuU9JV1OqJqdUSbBav0x28W4a4EJEg0FZDEtcJzvg+NemotDWtxKkugfJXHuO64JqVFzbLjh
+ StjogvsF5kNo/qwrymXX1x//QhCUYWCWckPQe4F308NXEldFmeDPLMrY1tU6l3CZRsQCUZJUqf0
+ AsEZFggjastdJxRAH9E8IepQ6srkASWduFk41JhbBQgvhOan2VA8iEycFrNyjOgUTF2uYrl7KU0
+ 7m6GHfyP+H3+a2hWAy7Ah5koign8vK17kjK+SbEP7vJrsUGreK0m1crGw5iSSMBzamQ/sr97k4a
+ eAcL6GpwsQOur6pCccs1FJIke92NVIj3fzfZxu+BzDoPsviUO4FwLcBW53KPrMHRUCWcS9Ovb7A
+ KCQxVDoa4dPTKaBcg+XA9qEcT5iRoUfHiIvXBQcwkNrUAqKz0KYxIZAyFG5Lz1HBhutfqVSooWz
+ KOsT9mH1n5NWADEdPWI/P4PO7lmZhVWV0nGdw8XJc+Ji4MZLqvjYEJUzFn1mxM2aaqgEFvTqbcN
+ LpKLQDQQrI5ssgcFuclBC9uj43qB7WBzEIPOFZbEtAQkM3NIyQEsbNP4pfnNtVz10Icq7Q9ltsA
+ yj6943Spq2wBBnQ==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 20 Nov 2024 09:30:12 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5773
+ <docs@lists.yoctoproject.org>; Wed, 20 Nov 2024 15:11:05 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5779
 
-This was added in 2.7.2. Since using inherit_defer is safer that inherit
-when inheriting conditionally, move the instructions about that in
-inherit_defer.
+This is a requirement for building the documentation, otherwise we get
+(on Ubuntu 24.04):
 
-Fixes [YOCTO #15640].
+    File "/usr/lib/python3.12/locale.py", line 615, in setlocale
+      return _setlocale(category, locale)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  locale.Error: unsupported locale setting
 
-Reported-by: Yoann Congal <yoann.congal@smile.fr>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Move the instructions on conditional inherits in the inherit_defer
-  section, since it is a safer call
-- Link to v1: https://lore.kernel.org/r/20241118-inherit-defer-v1-1-26866a60ab1b@bootlin.com
----
- .../bitbake-user-manual-metadata.rst               | 43 ++++++++++++++++++----
- 1 file changed, 36 insertions(+), 7 deletions(-)
+ documentation/poky.yaml.in | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-index 58975f4c88ce549a2fd27136c0cb37b636bafcdb..40a0c6f02d9c35297dbb51da465efda83d832917 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-@@ -771,6 +771,8 @@ In order for include and class files to be found by BitBake, they need
- to be located in a "classes" subdirectory that can be found in
- :term:`BBPATH`.
+diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+index d95b73c74ad7979609c6e7f4e1be5343968da743..0158203da7d4db9eadf21943d10256c6bc49a290 100644
+--- a/documentation/poky.yaml.in
++++ b/documentation/poky.yaml.in
+@@ -63,6 +63,7 @@ UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL: >-
+ UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
+   git
+   librsvg2-bin
++  locales
+   make
+   python3-saneyaml
+   python3-sphinx-rtd-theme
+@@ -135,6 +136,7 @@ FEDORA_HOST_PACKAGES_DOC: >-
+   python3-saneyaml
+   python3-sphinx-rtd-theme
+   git
++  glibc-locale-source
+   make
+   python3-pip
+   which
+@@ -203,6 +205,7 @@ OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL: GitPython
  
-+.. _ref-bitbake-user-manual-metadata-inherit:
-+
- ``inherit`` Directive
- ---------------------
+ OPENSUSE_HOST_PACKAGES_DOC: >-
+   git
++  glibc-i18ndata
+   rsvg-convert
+   make
+   python3-pip
+@@ -286,6 +289,7 @@ ALMALINUX_HOST_PACKAGES_ESSENTIAL_CMDS: |-
  
-@@ -809,19 +811,43 @@ An advantage with the inherit directive as compared to both the
- :ref:`include <bitbake-user-manual/bitbake-user-manual-metadata:\`\`include\`\` directive>` and :ref:`require <bitbake-user-manual/bitbake-user-manual-metadata:\`\`require\`\` directive>`
- directives is that you can inherit class files conditionally. You can
- accomplish this by using a variable expression after the ``inherit``
--statement. Here is an example::
-+statement.
-+
-+For inheriting classes conditionally, using the :ref:`inherit_defer
-+<ref-bitbake-user-manual-metadata-inherit-defer>` directive is advised as
-+:ref:`inherit_defer <ref-bitbake-user-manual-metadata-inherit-defer>` is
-+evaluated at the end of parsing.
-+
-+.. _ref-bitbake-user-manual-metadata-inherit-defer:
-+
-+``inherit_defer`` Directive
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+The :ref:`inherit_defer <ref-bitbake-user-manual-metadata-inherit-defer>`
-+directive works like the :ref:`inherit
-+<ref-bitbake-user-manual-metadata-inherit>` directive, except that it is only
-+evaluated at the end of parsing. Its usage is recommended when a conditional
-+expression is used.
- 
--   inherit ${VARNAME}
-+This allows conditional expressions to be evaluated "late", meaning changes to
-+the variable after the line is parsed will take effect. With the :ref:`inherit
-+<ref-bitbake-user-manual-metadata-inherit>` directive this is not the case.
-+
-+Here is an example::
-+
-+   inherit_defer ${VARNAME}
- 
- If ``VARNAME`` is
--going to be set, it needs to be set before the ``inherit`` statement is
-+going to be set, it needs to be set before the ``inherit_defer`` statement is
- parsed. One way to achieve a conditional inherit in this case is to use
- overrides::
- 
-    VARIABLE = ""
-    VARIABLE:someoverride = "myclass"
- 
--Another method is by using anonymous Python. Here is an example::
-+Another method is by using :ref:`anonymous Python
-+<bitbake-user-manual/bitbake-user-manual-metadata:Anonymous Python Functions>`.
-+Here is an example::
- 
-    python () {
-        if condition == value:
-@@ -830,11 +856,14 @@ Another method is by using anonymous Python. Here is an example::
-            d.setVar('VARIABLE', '')
-    }
- 
--Alternatively, you could use an in-line Python expression in the
-+Alternatively, you could use an inline Python expression in the
- following form::
- 
--   inherit ${@'classname' if condition else ''}
--   inherit ${@functionname(params)}
-+   inherit_defer ${@'classname' if condition else ''}
-+
-+Or::
-+
-+   inherit_defer ${@bb.utils.contains('VARIABLE', 'something', 'classname', '', d)}
- 
- In all cases, if the expression evaluates to an
- empty string, the statement does not trigger a syntax error because it
+ ALMALINUX_HOST_PACKAGES_DOC: >-
+   git
++  olibc-locale-source
+   librsvg2-tools
+   make
+   python3-pip
 
----
-base-commit: e41c70372ee83320a224d04f46768dc21e6ddd3e
-change-id: 20241118-inherit-defer-48d3c8e0c087
-
-Best regards,
 -- 
-Antonin Godard <antonin.godard@bootlin.com>
+2.46.1
 
 
