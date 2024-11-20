@@ -2,260 +2,106 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C85AD711B1
-	for <webhook@archiver.kernel.org>; Wed, 20 Nov 2024 15:11:05 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.15737.1732115456820801770
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05D6CD711C8
+	for <webhook@archiver.kernel.org>; Wed, 20 Nov 2024 16:43:16 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web11.18440.1732120987176415810
  for <docs@lists.yoctoproject.org>;
- Wed, 20 Nov 2024 07:10:57 -0800
+ Wed, 20 Nov 2024 08:43:07 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=NGB1Hw9C;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 73AE5240008;
-	Wed, 20 Nov 2024 15:10:55 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=BBQVfD72;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 521B760006;
+	Wed, 20 Nov 2024 16:43:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732115455;
+	t=1732120984;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OFgUS/Azhnckjx187M0Zzo54KYiB9XbWB64DfhKFxr8=;
-	b=NGB1Hw9CbUccAoGVPckzKYG3/M+xpzgKHAZJIFnpRXx7HZmWDuz92XtYEqjQRC2CR3VtI4
-	yGyZ2OATn0QkW3u/OzPezDV25QwcSBQ99bDikc6q3N/jMnjZcAWZRP+g157fkTsSUjnh2m
-	G/f0ld37Spp7WVEx9W7hK8ZZmndozZdOIgGm8YF1QkoPxzFBzdXBbUCEwX2gukErPd6dUv
-	dS5wFGFIqJesN3TiOmIL6YUY7loQ7cVWblHJsZD5vynxfyPj3ToXdf+8igWpV8KQXPaQDL
-	h2t/Dbt+Tr1qWNM1dcVkzUCSaSJQ3AnD3507Dgid1sfaYy+QZTwf0MlFNgQiXA==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 20 Nov 2024 16:10:37 +0100
-Subject: [yocto-docs PATCH 4/5] system-requirements.rst: add dependencies
- for pdf builds
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241120-update-doc-deps-v1-4-50e267ae4123@bootlin.com>
-References: <20241120-update-doc-deps-v1-0-50e267ae4123@bootlin.com>
-In-Reply-To: <20241120-update-doc-deps-v1-0-50e267ae4123@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6461;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=aHYTpMFKFCC+sC7eE8WJs+aUwc2wWK1SF6UQ5vEqT8o=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnPfv+O8XwaFIhS3RND2ikPgMT4jaYNzDAtPbsx
- opwoRLuTqSJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZz37/gAKCRDRgEFAKaOo
- NghPEACJyMHeEgV0tE6zcGjXKaxhVjiwr4E+6/Z7FXJ1oNYC1+Zg2v7oWZz6HfyM5eN6jwPjh/A
- pPii0xinxxV2cahCqsh+3f1H6JIElhxhyZx1Rj4UOFpZpoMRBzHmfmtKW+W+gYAYYZTvkUHN6oc
- 2/bDSbpikvPJQjx66b0R/jOWbn8vhS369Pg6F46vcJW78+9PfU4OcLtzfuPIE/4Yr7YdTlxmGFt
- /vKLaz+F6e4EM1poaZD9NMrfYWS5Q8V8aDyHdwsRH5VPViFv0Uye7/fPk7vzee2RuG4vcy7KwdP
- jZebYq8rXCRipTLqU+bJN8pR7A1X46RMI4FOI+NmR1oozX80kipd4yNylSAb6MIqV97hv046dsY
- Q8f56G7RBYYO+jg4bnUCCobsE5M9QoLsIAp6uo2NA37lyFQNQVwaQUwpwagxP6QR07zT90ueNAh
- SfgP4GTw2JdwgRFGrUScBtnpdUW0Ru78wQL8EcdNYX/41isF75sxx2Xj1Ws/0XtFjNh9zObqkvW
- EaSRK6YdwQga3ASsFLQiI4vehSN8mW08hhfRF0qJwYb++1MtVc+XO28DhQHFiZ9WtTNtJXBopny
- dPquotJppBR0eW1PfccpVeXy86css3pl43a/3/+R0W2Puqsbeh6nMuvh/iBZBTZIn6mWd7Aik+z
- LR5tHRxNz7y60Dg==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+	bh=falXTHh5RNuSVGYwFIjoxEAPsWoDSmdCPdWRU69oRyE=;
+	b=BBQVfD72uyEypVBTiEV1BvZH+iV8LCzoz67b9A8bFlJCDKDdw8/Erce3nwjl0FaHydJ+eF
+	uiPmwYWzqV3GWeEs0nAJIDgEg8w9ASECSU/vDqmUTn42snCaCLdvehj7kOiku6CGStqQOh
+	VehcL93t/WSHtsrWEp3RSjhfUB2OsBE2dmhF+AGJg0LRFk+JhaCc+YtLbshJTe7s41w+iF
+	5elwWwc2eWCsCEcpLgi5RB0J6JezSHAzeebK+D2Z1djxZCbZ0d4XBBi26G7n9nDiuLbTFk
+	/RI+9Et0rvcbzQtP4l8fYNuCNKdX9z6NLTcPBVtC6CKgO7xyAL/fz0csJwJFag==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 20 Nov 2024 17:43:03 +0100
+Message-Id: <D5R5N6X7BUEX.2BBRC9BZR37GE@bootlin.com>
+Subject: Re: [docs] [PATCH v2] ref-manual: use standardized method accross
+ both ubuntu and debian for locale install
+Cc: "Yoann Congal" <yoann.congal@smile.fr>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <quentin.schulz@cherry.de>, =?utf-8?q?Gu=C3=A9na=C3=ABl_Muller?=
+ <guenael.muller@smile.fr>, <docs@lists.yoctoproject.org>
+X-Mailer: aerc 0.18.2.r87.gd0484b15
+References: <20241118104524.25392-1-guenael.muller@smile.fr>
+ <D5P93P1O12UG.NQJAUDP1T6Z8@bootlin.com>
+ <299a188d-c7a9-4604-a491-9efb3888e7ba@cherry.de>
+In-Reply-To: <299a188d-c7a9-4604-a491-9efb3888e7ba@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 20 Nov 2024 15:11:05 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5778
+ <docs@lists.yoctoproject.org>; Wed, 20 Nov 2024 16:43:16 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5780
 
-With the recent changes from commit
-bd6265ca323fac547a197bb516dc4a9ef3897508 ("doc: Makefile: add support
-for xelatex"), the list of dependencies needs to be updated.
+Hi Gu=C3=A9na=C3=ABl, Quentin,
 
-The initial list of dependencies was made for Ubuntu/Debian, and the
-packages were translated for the other distros using pkgs.org.
+On Tue Nov 19, 2024 at 10:28 AM CET, Quentin Schulz via lists.yoctoproject.=
+org wrote:
+[...]
+>>> +You also need to ensure you have the locale ``en_US.UTF-8`` enabled::
+>>> +
+>
+> I believe "the ``en_US.UTF-8`` locale" is more proper here.
+>
+> On a side note, what's the actual cost of reconfiguring the locales=20
+> regardless of the presence of en_US.UTF-8?
+>
+> My point being we could probably have this command in poky.yaml.in like=
+=20
+> it used to be?
+>
+>>> +   $ locale --all-locales | grep en_US.utf8
+>>> +
+>>> +If this is not the case, you can reconfigure the ``locales`` package t=
+o add it::
+>>> +
+>>> +   $ sudo dpkg-reconfigure locales
+>>> +
+>
+> How does this actually generate en_US.utf8 locale if we don't explicitly=
+=20
+> add it somewhere? Are you sure it's not because your system has LANG or=
+=20
+> LC_ALL set to that locale and then calling reconfigure it regenerate it?
+>
+> Also on a side note we tell people to check if "en_US.UTF-8" locale is=20
+> enabled by grepping for "en_US.utf8", is that expected? Why aren't they=
+=20
+> the same?
 
-Add them separately from the rest of the dependencies as they pull a
-_lot_ of additional dependencies (for latex).
+Yes, "locale --all-locales" does return "en_US.utf8" while we install the
+"en_US.UTF-8" locale (different string, not sure why).
 
-Notes:
-- Fedora/OpenSUSE do not have the "lang-all" texlive collection, so
-  install all available languages.
-- AlmaLinux does not seem to provide texlive-collection-fontsextra,
-  texlive-collection-lang*, and texlive-collection-latexextra, so add a
-  warning about that.
+I seem to be able to build with both Debian/Ubuntu with this command:
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/poky.yaml.in                       | 79 +++++++++++++++++++++++-
- documentation/ref-manual/system-requirements.rst | 27 ++++++++
- 2 files changed, 105 insertions(+), 1 deletion(-)
+  LANG=3D"en_US.UTF-8" locale-gen
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index d0c8973db27340838f78f560c01d44fb67771b25..d95b73c74ad7979609c6e7f4e1be5343968da743 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -67,8 +67,17 @@ UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
-   python3-saneyaml
-   python3-sphinx-rtd-theme
-   sphinx
--  texlive-latex-extra
- 
-+UBUNTU_DEBIAN_HOST_PACKAGES_DOC_PDF: >-
-+  fonts-freefont-otf
-+  latexmk
-+  tex-gyre
-+  texlive-fonts-extra
-+  texlive-fonts-recommended
-+  texlive-lang-all
-+  texlive-latex-extra
-+  texlive-latex-recommended
-+  texlive-xetex
- 
- FEDORA_HOST_PACKAGES_ESSENTIAL: >-
-   bzip2
-@@ -131,6 +140,35 @@ FEDORA_HOST_PACKAGES_DOC: >-
-   which
-   texlive-fncychap
- 
-+FEDORA_HOST_PACKAGES_DOC_PDF: >-
-+  latexmk
-+  texlive-collection-fontsextra
-+  texlive-collection-fontsrecommended
-+  texlive-collection-langarabic
-+  texlive-collection-langchinese
-+  texlive-collection-langcjk
-+  texlive-collection-langcyrillic
-+  texlive-collection-langczechslovak
-+  texlive-collection-langenglish
-+  texlive-collection-langeuropean
-+  texlive-collection-langfrench
-+  texlive-collection-langgerman
-+  texlive-collection-langgreek
-+  texlive-collection-langitalian
-+  texlive-collection-langjapanese
-+  texlive-collection-langkorean
-+  texlive-collection-langother
-+  texlive-collection-langpolish
-+  texlive-collection-langportuguese
-+  texlive-collection-langspanish
-+  texlive-collection-latex
-+  texlive-collection-latexextra
-+  texlive-collection-latexrecommended
-+  texlive-collection-xetex
-+  texlive-gnu-freefont
-+  texlive-tex-gyre
-+  texlive-xetex
-+
- OPENSUSE_HOST_PACKAGES_ESSENTIAL: >-
-   bzip2
-   chrpath
-@@ -171,6 +209,35 @@ OPENSUSE_HOST_PACKAGES_DOC: >-
-   texlive-fncychap
-   which
- 
-+OPENSUSE_HOST_PACKAGES_DOC_PDF: >-
-+  texlive-collection-fontsextra
-+  texlive-collection-fontsrecommended
-+  texlive-collection-langarabic
-+  texlive-collection-langchinese
-+  texlive-collection-langcjk
-+  texlive-collection-langcyrillic
-+  texlive-collection-langczechslovak
-+  texlive-collection-langenglish
-+  texlive-collection-langeuropean
-+  texlive-collection-langfrench
-+  texlive-collection-langgerman
-+  texlive-collection-langgreek
-+  texlive-collection-langitalian
-+  texlive-collection-langjapanese
-+  texlive-collection-langkorean
-+  texlive-collection-langother
-+  texlive-collection-langpolish
-+  texlive-collection-langportuguese
-+  texlive-collection-langspanish
-+  texlive-collection-latex
-+  texlive-collection-latexextra
-+  texlive-collection-latexrecommended
-+  texlive-collection-xetex
-+  texlive-gnu-freefont
-+  texlive-latexmk
-+  texlive-tex-gyre
-+  texlive-xetex
-+
- ALMALINUX_HOST_PACKAGES_ESSENTIAL: >-
-   bzip2
-   ccache
-@@ -224,3 +291,13 @@ ALMALINUX_HOST_PACKAGES_DOC: >-
-   python3-pip
-   texlive-fncychap
-   which
-+
-+ALMALINUX_HOST_PACKAGES_DOC_PDF: >-
-+  latexmk
-+  texlive-collection-fontsrecommended
-+  texlive-collection-latex
-+  texlive-collection-latexrecommended
-+  texlive-collection-xetex
-+  texlive-gnu-freefont
-+  texlive-tex-gyre
-+  texlive-xetex
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 50c153ad7cc68a3ad175d6aad7f4527d9e4d219b..aa1f1958da580516b7f38fa1a325d1f03364ee66 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -184,6 +184,11 @@ Here are the packages needed to build Project documentation manuals::
- 
-    $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_DOC;
- 
-+In addition to the previous packages, here are the packages needed to build the
-+documentation in PDF format::
-+
-+   $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_DOC_PDF;
-+
- Fedora Packages
- ---------------
- 
-@@ -197,6 +202,11 @@ Here are the packages needed to build Project documentation manuals::
-    $ sudo dnf install &FEDORA_HOST_PACKAGES_DOC;
-    $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
- 
-+In addition to the previous packages, here are the packages needed to build the
-+documentation in PDF format::
-+
-+   $ sudo dnf install &FEDORA_HOST_PACKAGES_DOC_PDF;
-+
- openSUSE Packages
- -----------------
- 
-@@ -211,6 +221,11 @@ Here are the packages needed to build Project documentation manuals::
-    $ sudo zypper install &OPENSUSE_HOST_PACKAGES_DOC;
-    $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
- 
-+In addition to the previous packages, here are the packages needed to build the
-+documentation in PDF format::
-+
-+   $ sudo zypper install &OPENSUSE_HOST_PACKAGES_DOC_PDF;
-+
- 
- AlmaLinux Packages
- ------------------
-@@ -238,6 +253,18 @@ Here are the packages needed to build Project documentation manuals::
-    $ sudo dnf install &ALMALINUX_HOST_PACKAGES_DOC;
-    $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
- 
-+In addition to the previous packages, here are the packages needed to build the
-+documentation in PDF format::
-+
-+   $ sudo dnf install &ALMALINUX_HOST_PACKAGES_DOC_PDF;
-+
-+.. warning::
-+
-+   Unlike Fedora or OpenSUSE, AlmaLinux does not provide the packages
-+   ``texlive-collection-fontsextra``, ``texlive-collection-lang*`` and
-+   ``texlive-collection-latexextra``, so you may run into issues. These may be
-+   installed using `tlmgr <https://tug.org/texlive/tlmgr.html>`_.
-+
- .. _system-requirements-buildtools:
- 
- Required Git, tar, Python, make and gcc Versions
+Maybe this is a more straightforward approach, closer to what we had before=
+.
+What do you think? Gu=C3=A9na=C3=ABl would you be able to update your patch=
+ with this
+command if this works for you too?
 
--- 
-2.46.1
 
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
