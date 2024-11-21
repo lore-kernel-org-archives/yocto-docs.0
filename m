@@ -2,101 +2,89 @@ Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4BD24D6ED2B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 48ECAD6ED2F
 	for <webhook@archiver.kernel.org>; Thu, 21 Nov 2024 13:30:33 +0000 (UTC)
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
- by mx.groups.io with SMTP id smtpd.web10.10628.1732195830043954585
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+ by mx.groups.io with SMTP id smtpd.web10.10630.1732195831679586882
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Nov 2024 05:30:30 -0800
+ Thu, 21 Nov 2024 05:30:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=HwUAMJD2;
- spf=pass (domain: gmail.com, ip: 209.85.221.51, mailfrom: alex.kanavin@gmail.com)
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3824446d2bcso803821f8f.2
-        for <docs@lists.yoctoproject.org>; Thu, 21 Nov 2024 05:30:29 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=bU30kmwy;
+ spf=pass (domain: gmail.com, ip: 209.85.128.44, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4316cce103dso10432895e9.3
+        for <docs@lists.yoctoproject.org>; Thu, 21 Nov 2024 05:30:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1732195828; x=1732800628; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x8fPj8DP3GcWupGdGkXM9dF6OVFtC6EYjGK6sPTvpDg=;
-        b=HwUAMJD219dSh+UMNVZLCo1uFVhX2l9xdxKi+Cq0CMNGnGT8OHtGPpbHK7j+6dMKve
-         NY1Qvi94sPgssOYTtlhb94vwpAtIOVPfvNti9XbPPevD5JGBXAhoBwfoNy4qNQ1hUJkB
-         wjvg9mIFmxwkGSV0+z2bgbCRPnmcU0I5CTDEPi2RihH7HNwkl5HVXdX7npBfXDHCRTpd
-         dl9tKkCr9Vf8JO8KSqCMI0TQ+V312BaQwgUpWGq3is3pHCDhW8eupMYYnTSXC9g/V+oz
-         hJCVYSDIt4sLdgdweSLr5Pz1Ho1zp3/xT1iLCKAnxmF/beAhbP7j4Hqe0B+R+2mKxv3Q
-         7IQQ==
+        d=gmail.com; s=20230601; t=1732195830; x=1732800630; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=94Iqo34t19W8INK+44P9w1gcK06IqP+HvhPLSgSDIL8=;
+        b=bU30kmwy9Fhp+1rPIGw2BjXjw7W18cbRpIS+RL3eFLngAR2y03G8XwoqOoqswPSTLA
+         TDEUch7oE89/AEG/eSZC994/RRVLX18Az//D7hVuDjzwG1MG4dbX2x74Gz99TZcRAD62
+         PD8J9He0FTX/b/A6UuhMRgD0IsCtbY86J/v8yt2F7Tic7KybE6VJDMzLLnEG8jPcj5Vm
+         QdqdMBpQ7DQmEeqb+uFAdal1G2gh2FoE4hz/uw23n8PYx9+x5/UfY14mkAPHoABXpEIN
+         dHsYDakJUfRsps33P8H1KrmlBEfx3rfMgGrb+u+mNi4N1/rvjGTeS3sX13qmqBWCPyOX
+         +ZZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732195828; x=1732800628;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x8fPj8DP3GcWupGdGkXM9dF6OVFtC6EYjGK6sPTvpDg=;
-        b=bsK05+KdYnuD0en4wEgq6YLZe1WeFMInXfQxriOHeq/P2mCbEhQz0StpQ777In9BCf
-         WC/YZarlljvI1OYBpWG1FZqtqNCjlOEwG5H7/AwJ1+HQiw7WlqaxuNnE7FR/KHp1KIX6
-         MsAZH43H6INaQBSix7T8vGZPV6HfnQMj+VXnGSJqKlYhNb5cyRYQNo5dBmsdlLEXrGjd
-         r8yRN25O13CzYicmtQB5IkKsfpeUcF938PIHVOmw04rfPNBLa7o5RfRrnHPP7RKhLA7m
-         jNrs+aCURfgvbZufPPbGEnf3iJnirYUUQZYDFHIsSDUdBPvL0x5F5gF6+114GZyBMJBd
-         uvLg==
-X-Gm-Message-State: AOJu0YxIIbQW9f+ARQITZqw1ipVE41AHzaLgtWYWashZMcLloKQi1UYN
-	VnEregM+xW0kKb/RPMEG8kzargmywzDtAT79hYiPCZq9LS6rYfejKjFqOw==
-X-Google-Smtp-Source: AGHT+IEeyP7Tt7l9KHrkytN9MV1EHsYCP3Pk+L2MaDxWWYuEor/bFfvF+gV81dDuyDV2ZANQapXW1w==
-X-Received: by 2002:a5d:588d:0:b0:382:4be3:b2bf with SMTP id ffacd0b85a97d-38254b13fd8mr6192122f8f.45.1732195828221;
-        Thu, 21 Nov 2024 05:30:28 -0800 (PST)
+        d=1e100.net; s=20230601; t=1732195830; x=1732800630;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=94Iqo34t19W8INK+44P9w1gcK06IqP+HvhPLSgSDIL8=;
+        b=NPjknFMcYb2MNTKHRq5gxyZeDvowl2TrPP+zfN07628FvHLnx81avfRJCW38g9HPtD
+         ktFkm8AVqXungsSWSuhcfPEnPMzjaHmxmhpSKhcDoC+oyyEBSiTr4w8+c2KY4PEnMCB6
+         dhfDOi652rQNSFZc/7Q0c8ZlBJ7cJncPO350O94cQCtmRBJiU+EX58/+rarb1iuit8Lj
+         USblJnCUwnGQ3n9N7NQP5EkwvulXZmGnGaJc8QJpIGZotWzVhUqVoAuvBLrUKvh6crXs
+         ujlA27wM+wEvruNdTAdFyAqpznlLkLk0Cj1ZYJB6Jqwod+zA1N+pLcv6QvUF8qcRPDxd
+         IFIQ==
+X-Gm-Message-State: AOJu0Ywx9OUcGiamoY6mHVzOqV58am72+kfdSvEPyZ5/IM69rcHXFz5X
+	MZETzb3dJOvz5mZvnLMY23XW0y6k7FhaA3+Iq1OWqdSstabqv0OBZJxvBA==
+X-Gm-Gg: ASbGncv5UUei79YiSAfqKrmTMmTlzQ+stwPvG0Ssr6o4HspT4X+m6nBR67xD8dBpH1S
+	vayN+u9eziUOx6FaHTZ1pyfmmvp18vqanVI36DNrOCGAH1D6GQ8u8Qt1nVuLZOpMJX2UmJc1A0H
+	KJQgiKyt1EMGB5Wft2dh0aFChf+WngStjXHFEpRPSIlAqHdB9eTLdYyO7xv0KBtGJdZLcHWEyCC
+	qu4A2FpMSb2s7qx3C70FrkgDSSI/8Q1BXijQ1olD9C95BMxEst8rKjmpaO79ME/84rnW2ToPIaT
+	RkmQNt8fDtI=
+X-Google-Smtp-Source: AGHT+IGPPvuJTYVui+5o009pJpNM3T9Mm3/Ntaa++miYvoJpQhlzn02wY/urQIniphKIz8Cwwwx4fQ==
+X-Received: by 2002:a05:6000:18a3:b0:382:4978:2a93 with SMTP id ffacd0b85a97d-38254ade397mr6691159f8f.12.1732195829699;
+        Thu, 21 Nov 2024 05:30:29 -0800 (PST)
 Received: from Zen2.lab.linutronix.de. (drugstore.linutronix.de. [80.153.143.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825493e975sm5189415f8f.88.2024.11.21.05.30.27
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3825493e975sm5189415f8f.88.2024.11.21.05.30.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Nov 2024 05:30:27 -0800 (PST)
+        Thu, 21 Nov 2024 05:30:29 -0800 (PST)
 From: Alexander Kanavin <alex.kanavin@gmail.com>
 X-Google-Original-From: Alexander Kanavin <alex@linutronix.de>
 To: docs@lists.yoctoproject.org
 Cc: Alexander Kanavin <alex@linutronix.de>
-Subject: [PATCH v2 1/3] ref-manual: merge two separate descriptions of RECIPE_UPGRADE_EXTRA_TASKS
-Date: Thu, 21 Nov 2024 14:30:23 +0100
-Message-Id: <20241121133025.1064006-1-alex@linutronix.de>
+Subject: [PATCH v2 3/3] migration-guides: document ZSTD_COMPRESSION_LEVEL change
+Date: Thu, 21 Nov 2024 14:30:25 +0100
+Message-Id: <20241121133025.1064006-3-alex@linutronix.de>
 X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20241121133025.1064006-1-alex@linutronix.de>
+References: <20241121133025.1064006-1-alex@linutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 21 Nov 2024 13:30:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5786
-
-The second description was added due to confusion over the variable rename in oe-core.
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5788
 
 Signed-off-by: Alexander Kanavin <alex@linutronix.de>
 ---
- documentation/ref-manual/variables.rst | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ documentation/migration-guides/migration-5.2.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 43f4d7966..30887f12c 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -7130,11 +7130,6 @@ system and gives an overview of their function and contents.
-       in the ":ref:`ref-manual/devtool-reference:checking on the upgrade status of a recipe`"
-       section.
+diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
+index 73d52460f..7b35e7721 100644
+--- a/documentation/migration-guides/migration-5.2.rst
++++ b/documentation/migration-guides/migration-5.2.rst
+@@ -57,3 +57,6 @@ The following classes have been removed in this release:
  
--   :term:`RECIPE_UPGRADE_EXTRA_TASKS`
--      When upgrading a recipe with ``devtool upgrade``, the variable
--      :term:`RECIPE_UPGRADE_EXTRA_TASKS` specifies a space-delimited list of
--      tasks to run after the new sources have been unpacked.
--
-    :term:`RECIPE_SYSROOT`
-       This variable points to the directory that holds all files populated from
-       recipes specified in :term:`DEPENDS`. As the name indicates,
-@@ -7165,7 +7160,11 @@ system and gives an overview of their function and contents.
-       The default value is ``"${WORKDIR}/recipe-sysroot-native"``.
-       Do not modify it.
- 
--   :term:`RECIPE_UPDATE_EXTRA_TASKS`
-+   :term:`RECIPE_UPGRADE_EXTRA_TASKS`
-+      When upgrading a recipe with ``devtool upgrade``, the variable
-+      :term:`RECIPE_UPGRADE_EXTRA_TASKS` specifies a space-delimited list of
-+      tasks to run after the new sources have been unpacked.
+ Miscellaneous changes
+ ~~~~~~~~~~~~~~~~~~~~~
 +
-       For some recipes, after the new source has been unpacked, additional tasks
-       may need to be run during an upgrade. A good example of this is recipes
-       which inherit :ref:`ref-classes-cargo-update-recipe-crates`, where the
++-  :term:`ZSTD_COMPRESSION_LEVEL` is now a plain integer number instead of a dash-prefixed
++   command-line option (e.g. it should be set to ``3`` rather than ``-3``).
 -- 
 2.39.5
 
