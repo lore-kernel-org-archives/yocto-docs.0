@@ -1,162 +1,81 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 320D2D6ED31
-	for <webhook@archiver.kernel.org>; Thu, 21 Nov 2024 13:36:33 +0000 (UTC)
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (EUR03-DBA-obe.outbound.protection.outlook.com [40.107.104.53])
- by mx.groups.io with SMTP id smtpd.web10.10747.1732196189932877119
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9EDA7E65D32
+	for <webhook@archiver.kernel.org>; Fri, 22 Nov 2024 07:56:24 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.19251.1732262176235683237
  for <docs@lists.yoctoproject.org>;
- Thu, 21 Nov 2024 05:36:30 -0800
+ Thu, 21 Nov 2024 23:56:16 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=GELvazgP;
- spf=pass (domain: cherry.de, ip: 40.107.104.53, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=PLG9/MRhIGrwPtNChbepS1Un399rMA+dgtlSxjAg3lw6l0ax1ZPvYoF1A6kQXXGwiCJJF3+X+oBw0tEzXVNWQ4lofHV597AVEtBsEVmpAzQxMj3x2RBf3JYPlnWa0KBu1PJqwFZ+H+8i6ZncqAfiDGaeNqh9UJvnmOlwmquhK9HF2CYs6470ke18NTi6GHTnt6tQHddpjniT0mEP61ZUtwJ0bdSckxpC16TkR1QOnWb4arxInPuha/AX/T/zGqYNSt2fFiT37rkuixisQcODteDr2qLKX+oIsv4JXSgm6S6I8NfB99aC4DmrBB0F28+2H/vAbXuMiDsQuwmq2e9PTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NtUwDb0rf4ZtZYTBqxHOnplBIfVzgJGjTC+YC2nJLyQ=;
- b=TfIFj7YKuIkCU8c7hEG5+PhrbHfBPdwE0NZ+sxtRO86rr6h+VmNVNY5au4SZ8xdIRhUOURsCurJnP+X/IELb9VKtw4TC8CHLBNp6iz1kR6IIurQbaitKrCIU6JhVCBLN942/9fbTBp8mNol92F48bcx977TPxLpuYNJyCEXSu5Rlw2FXihYgaZRPGFDSrouIFPA6fGy+Mx6uEKuy3egz9aEamIk/3oseSpHRLS0lfZKhlK86Kohnhv1WWb9lZKdv0mNlTwI5w5D3LdI2SFeS5LM0LhRiEn1cIhxbLTOZY7RkhW9208w3cA027Y9xXbG9ibiudRssSxsF63zJa6uO1A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NtUwDb0rf4ZtZYTBqxHOnplBIfVzgJGjTC+YC2nJLyQ=;
- b=GELvazgP66nouJSN2Zjb9oW0iaSFib6mcIz+tHBFfNX2RzlxySUm+zQkDUg/OUOVIFjdTxBqq87q0PZYxOZGX5H2bVAO0E1JuSi8/5Z5ursM4L++oYTdCI3DfL5ivFB9L6KWRRCll7GQ9AMU9H2s/MyJL494BV5FS21pHh8aW00=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by PA4PR04MB7535.eurprd04.prod.outlook.com (2603:10a6:102:e2::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8158.23; Thu, 21 Nov
- 2024 13:36:27 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a%6]) with mapi id 15.20.8158.023; Thu, 21 Nov 2024
- 13:36:27 +0000
-Message-ID: <eed98213-3985-4f04-82df-82a4fe039eb5@cherry.de>
-Date: Thu, 21 Nov 2024 14:36:26 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v2 3/3] migration-guides: document
- ZSTD_COMPRESSION_LEVEL change
-To: alex.kanavin@gmail.com, docs@lists.yoctoproject.org
-Cc: Alexander Kanavin <alex@linutronix.de>
-References: <20241121133025.1064006-1-alex@linutronix.de>
- <20241121133025.1064006-3-alex@linutronix.de>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20241121133025.1064006-3-alex@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR4P281CA0233.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:e9::15) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|PA4PR04MB7535:EE_
-X-MS-Office365-Filtering-Correlation-Id: a69bba80-fc0b-4173-d545-08dd0a317fba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?RTRBbGx4MTMzczllS3JaVzcwdnpocFVUeXBZYmJUaDRucC9NMGhOK01NWXph?=
- =?utf-8?B?S0dRbmg2WStSaXBsZGRON2Z1TlNmcWhGaVlRV2RjNWtaekNlVFFlOGQxQU1Q?=
- =?utf-8?B?NjdvSVRvd3QyNk1OSnk3S1ZFTEdmejc3cks5SVhlcFlRUUNneU1DTkh6TmFt?=
- =?utf-8?B?Rit5WjRqWXNuczdCRVhHOFhMWkY2TnB5aDUzUGxlMWVDSkF0OEZZNEgzUXNB?=
- =?utf-8?B?K3laUjdZdnZ3ZWg1cXo0T2t0cDdSK0h1QlpnTytJS1pHeDZKMHU4a3dHTitm?=
- =?utf-8?B?ZG9ReitkbTlVRk8vUXJyRHZ5MHYza2xoNTBFZ0NuZ1lvMlBIbmZJUkhnS21K?=
- =?utf-8?B?dnh5RG9qVkNianpCZjhwQUVGUWRHUFIyMjZMaytBSTcxYjhaN01vcStyZW0r?=
- =?utf-8?B?Ukc2YVVxcnFmbnRQZTJ2dXZtM0JlWFN2MGhiQ0p4a1dyY3hiTTBvQXJJRmJD?=
- =?utf-8?B?T2E0amtGZU9la3BEcnQxZjdweGc2cHkyQ3lWQ2pWSThHTk5qNkYybDIxM1J4?=
- =?utf-8?B?YVl0K0h6OVVzNkhBYUF4d1FxZ01ocXlOVWtSMEczYUJ2SkhNM0pVUEFTdWdz?=
- =?utf-8?B?aHNmZ1RlcVNmaytIYnM5aW4xRnhPY3JHdGZlY1ZtdkFnWmR3d0l0ZUZoNkVW?=
- =?utf-8?B?Vnk5cE1pMDk5MFFyMFUzOFpIVVpvZEZnbDVRV1dZR0c5NlVFdzc0RkovN204?=
- =?utf-8?B?amJXWllqTllCNllmYXRZbVd3NStEV2xBUXNPanRTK0JQM3p1ZElsd210TGpF?=
- =?utf-8?B?d1UwT3Rham1LcnVVRHpwak1RUjBPTTZQcStJSGN5enhESWd3dnVPVHhOVnVk?=
- =?utf-8?B?Nzc3cWo4ZXQ2OXE4d2FUcjVwNzNFYytpVmFTelZOUFlSNjY5MlZrQWE1em5T?=
- =?utf-8?B?NGowOGNBSTJaQ2JYeFAzZ3l6Y0ZUYkhKK2tscGkwRVhYWGxvRTJTanpzQk1o?=
- =?utf-8?B?QXJ1SmNUUXV1VFVtWkprRzg5ZW51eEg4ZWIyTmtleHkzUTdUVXc3blVhU0RG?=
- =?utf-8?B?RE45c2xaVFhYRFlQTGQvOEJWaHpCZTBjZE4vNW9SVzMyaDhkVGxOMVJZWUQ3?=
- =?utf-8?B?UjZYOU8xNnlRRzNXZzNKVVVFaW5hUVdqQ1hTejNPZ3ErUU5KdEFtOFFCa3Ry?=
- =?utf-8?B?VmV4dWVaMXBPVGFJTTFYSFZIaE1SdDdJcDY3MllwNTUxZitxMkFRakFZUS9l?=
- =?utf-8?B?Y2VnK0xqT2xmRGRnc1V3NnloTEx3YU5yQXA0akl4dXkyMTVGZS9Db21IUjdL?=
- =?utf-8?B?MGhEOTFtSGZMcHg3QlRtZGhtSjZJdGluZXF3MGJYOGxjcjlCazZBTnRlck5w?=
- =?utf-8?B?TWlRK05qQUFZWi90QWFac3hKKzNPc1ZmRjk1K1FuRFc3eFZaY3FqMFYvd0dK?=
- =?utf-8?B?bHBPUzErbmZ4Ri9hVjRXQkpzRDhKdGNzOUlNeE13OWRtR1RoSG9wL3hEVkNM?=
- =?utf-8?B?eTMwN2psTzZPNnpuUWNGclJlV1hNWklqNGU4OCthMDYydUNCdU5nWi9SdFIy?=
- =?utf-8?B?KzNXa3dRTndTcGlDUTJ6T0J5aEpIZUxtMHM2VkFnVTJpZXAvb3ovOUNlOFZj?=
- =?utf-8?B?R2FRbUVQWmd0ZWw3MytKYk1LNFduRTk3R2tUZ3RSWjJHeEtvaXFRbUlkOWZR?=
- =?utf-8?B?Tmk5TkJ2SHpscUQ3VGJvMEFvZm13Vm5OanJJanoxZnRGQ2xVRTJteEhUTW1T?=
- =?utf-8?B?OFkxWVBqWSt2Y1kvZkpteUxiRzVBY2NRMFF3R0RYVzM3ZkttMVBEeThmMmRm?=
- =?utf-8?Q?f/ngsd93Ab3vTS19AQ=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?TTgwMWZJZDFDOU0wellqSDRDMWdvdWdsTFhlSWYvOWtuMmxjYnNVQ3lUSGVz?=
- =?utf-8?B?THR2dXY3VXdZYVppbldKeE9ZYXBlL25JbUluakpndWwxS0cxQTdwcjJzd2pW?=
- =?utf-8?B?bG50SzVQYjJqTTF6V2w1Z2FCTXJ4K3cweDk1U25iTWF4YWVwSVd0d3FyckdI?=
- =?utf-8?B?aEdHWGtBdjJoWmc1b0xQVXd3NFpsRHNpZkxPSmdrR2xvSFJ4bEVtS2FoVGd6?=
- =?utf-8?B?RmMvc3dsQ3VaWEkxdXc5RFNDS2lwUi9RWlptYU1RbmZ6aVI5eDBDOVl6MDdS?=
- =?utf-8?B?QkdoOTV2KzQyK0VsQXowOTJtUjBQc1dkM0pTNTBVNHlNTVd2eWt5MGRGMUNL?=
- =?utf-8?B?WWJ5dEtEdkE5WmkwOE5Vb3VnZEJveVR5UzdEVWpocGszUEt1eFF3d2lEL2g4?=
- =?utf-8?B?ZHNJTkZEbXY4K2hNdjdvTkhMcnorWnRRQndjc1JJb0FVaGtaSnEyQ1pZSmFl?=
- =?utf-8?B?NWFibS9hTVBtMmpFT1RHZ0RkRyt2MmFmUm1oc2o5TFRqanRtaTZMc0M0NndX?=
- =?utf-8?B?UGM2YWJCZk5EZkV5N3lwZXVsdzcwK01lT2VjN1JkSFZnV21YSUhlZGhCTzZh?=
- =?utf-8?B?MEJ0K2dRTGh4ZERNemRMYW1pakw5bmRZTnJjc3FKTnp3VTFvZXFHT2lvUlFa?=
- =?utf-8?B?V21mazBNVGx1MHdSbUV6S0ZBZkZzcDRrbGVYOWhzcll1eEI3MTFFWW4zOVBk?=
- =?utf-8?B?Y1FoREJBR3ZvN0hoZ0xPQzR1VEJSRVNOUzhSSGpSVUxHeTdPUVcyMCtZWlFV?=
- =?utf-8?B?SllZNTlWK1dnVzlUc1k5Q29jd2lIVG80Y1ZvNnNabkMyZnF5dEtONU5oSHNo?=
- =?utf-8?B?RGt3Sm1rcWJTN1Y1NkRtQnVpOFMyRU5tK0J5YUxycGI2UzJwZE5SMXZ3Sk9H?=
- =?utf-8?B?eFlON1NJYUF1OVlHQVA1c2ZIT2UxVTkyU3NqL28wSVRaZHJVdEpVRDBXWkdu?=
- =?utf-8?B?aEVna00wMXB3YytwZitQWVp0K2IxQ2dpd1QrZFF5elFjMnZXSm1XeXNCaG5I?=
- =?utf-8?B?cmwxM3pLR01LRll2MXEvYjNXeWlWeEZZdXJIaTAwRCtjN2daazhqRldhaVQ1?=
- =?utf-8?B?UExPVnp5QXZCTmNQeXh0M2RhYzdBOS9BQ2VRbW1oaERDTHNNK21LMWp3RVhp?=
- =?utf-8?B?ZmFhc1duRXh3UU01dGx0RnkxQnc5MXZFWXg2dEFLcGx6aFFYY3N1Uy9rem1z?=
- =?utf-8?B?S2dDWk90WXBzN1NYazhrQm1LTTdNOUNVS2hlcitHbnZMZS80MWdIZTVNTWxz?=
- =?utf-8?B?dTM3TW5pdGhnM2JGQTJwSjRDSEtDdE9HRytoZW0vYW93eldiZUFObGtNQXo5?=
- =?utf-8?B?ZzFYbDVlSnVsN2VUUVk4Ky9wWVlRQnlLcHZ4MFV4RnVaQUlKTEUzOGVRSWMx?=
- =?utf-8?B?Mk9vOXAxUE1YUjZydXlDWVN2SXJXOGdOUEljeGM0aENiTHVITUlNVVdvbW44?=
- =?utf-8?B?Wmo4eDhpR2cyOTJRaHlHUHVjcFhQQjhsdkdOUXErQndwOHhXd1ZUL0d3MUl0?=
- =?utf-8?B?WmdwaVBjNWdlNCtLZEltc092NjVER2ovSDRwbFFvSWpReEdLOGhJVzdRRGRB?=
- =?utf-8?B?ckFzUWdlUTVzYnE0TGZiYkV2eHNUanNVS1dsUmw4Uk5seDdnM3ZnLzJXVEd0?=
- =?utf-8?B?N1llaVYvd0FWd0JFcldMNkFGaGx2Y1JCcW5hZVJkc1NYa3pDRjV6MTI2VDZ4?=
- =?utf-8?B?YnVITHVWZ2VHNHNucm9laitnOUpoWGNOZDZPUWE3R0Fjdlc5UENrd0V6eEZE?=
- =?utf-8?B?SUIzQmQ2VmFUblc4MVU5aDYzZWtsY09iMHlESXMyWjhKZjJnVEgxTE9zM0ZV?=
- =?utf-8?B?aSthM0dKb25jd1E0RkM1SEE1SWR4eHNKTDlkM3piREdPSXRra1hTNFdRd29q?=
- =?utf-8?B?TzROVVpPV3plZlZsbHM0SmNMMlAzYmx4Yk02MUdFTkExRHgwYUZJYTZmQ0lp?=
- =?utf-8?B?QWFXMFdpOERnYlJmemU5cFNONjlySHFPdlFWWkZVZ1ZxTlV0bk9vNHFGNlRy?=
- =?utf-8?B?T3NWYUtYVGlyNGp6ZVlGaE13YWpJdVhOa1hLN2R3eXB0TFFIR1JWQjhBZmty?=
- =?utf-8?B?QUFTTGVYRTVnS2xPU2lFc2g0S0lWOUNKbE42ZTBmYk1kQmdoRHpkRXVZY0tY?=
- =?utf-8?B?d0dFaW9vMWgvQ3V1a0U0VkFrQ0R6THIraTZFV1Z1Z09BdkhTTDdFenVncTVi?=
- =?utf-8?B?Z2c9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: a69bba80-fc0b-4173-d545-08dd0a317fba
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Nov 2024 13:36:27.0183
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: az4UDJc6YkO9FL6/dm82C/2L3Nwc78BO6G8ddHEgwdkwoVowAP2XMKumOXmlrqM5AkxTkg9CvMEUoHWPJspkRiyePNe+kdmHN3swP3/NloU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB7535
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MP2a1c8M;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 361C51BF20C;
+	Fri, 22 Nov 2024 07:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1732262174;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5pgxzBiz3DL+yyY8LUqqTpX510DKWIRJFBsNyvsTYXk=;
+	b=MP2a1c8MF1WLQ6fCx0iEOszzL4xjZJ87tvQ71lv7UcSnsxv1/deQ2sQMFw/xsBc9jltoTD
+	zb3c1GTvhMjRHHZW3Mv46GKvDNOwsflBezcMFt7QLrRCi5fhZSyEIB9I9cxwJhlqfLVzPa
+	/yLbYsL3LCSIVHFnUW+kDM3Zzc/sVGGg2TKeLoZak9vRLZcUA1AlS+YChiretXUjJpi9/E
+	n3ujCsajw+vF9HyEh7woR3J6mHtuIL8NtogZeHkAFBLy0WdkMOdoS5pc2t+HvkxBNDQoA/
+	PVtydyjZPdmK53Gczq9cRCU/OBG7EG27/1kPwnjYYRBP+1M5pheWXeNFRjKPlw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 22 Nov 2024 08:56:13 +0100
+Message-Id: <D5SJOWABUU40.1KFOCU7Q8EE48@bootlin.com>
+Subject: [master] Pull request
+Cc: <docs@lists.yoctoproject.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 21 Nov 2024 13:36:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5790
+ <docs@lists.yoctoproject.org>; Fri, 22 Nov 2024 07:56:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5791
 
-Hi Alex,
+Hi Richard,
 
-On 11/21/24 2:30 PM, Alexander Kanavin via lists.yoctoproject.org wrote:
-> Signed-off-by: Alexander Kanavin <alex@linutronix.de>
+The following changes since commit 7d5eb0cee5b2b7096969819d7d7ce569a3c92f27=
+:
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+  dev-manual: bblock: use warning block instead of attention (2024-11-15 09=
+:22:57 +0100)
 
-Thanks!
-Quentin
+are available in the Git repository at:
+
+  git@push.yoctoproject.org:yocto-docs master-next
+
+for you to fetch changes up to 6dcc70c4fa780d8531c58bd7886d6f8b602c10af:
+
+  migration-guides: document ZSTD_COMPRESSION_LEVEL change (2024-11-22 08:4=
+1:49 +0100)
+
+----------------------------------------------------------------
+Alexander Kanavin (3):
+      ref-manual: merge two separate descriptions of RECIPE_UPGRADE_EXTRA_T=
+ASKS
+      ref-manual: document ZSTD_COMPRESSION_LEVEL
+      migration-guides: document ZSTD_COMPRESSION_LEVEL change
+
+Antonin Godard (1):
+      standards.md: add a section on admonitions
+
+Lee Chee Yang (1):
+      migration-guides: add release notes for 5.0.4
+
+ documentation/migration-guides/migration-5.2.rst   |   3 +
+ documentation/migration-guides/release-5.0.rst     |   1 +
+ .../migration-guides/release-notes-5.0.4.rst       | 212 +++++++++++++++++=
+++++
+ documentation/ref-manual/variables.rst             |  16 +-
+ documentation/standards.md                         |  15 ++
+ 5 files changed, 241 insertions(+), 6 deletions(-)
+ create mode 100644 documentation/migration-guides/release-notes-5.0.4.rst
 
