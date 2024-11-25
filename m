@@ -1,471 +1,310 @@
-Return-Path: <guenael.muller@smile.fr>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EDAF1E65D3A
-	for <webhook@archiver.kernel.org>; Fri, 22 Nov 2024 09:22:54 +0000 (UTC)
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
- by mx.groups.io with SMTP id smtpd.web10.20396.1732267370488337664
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CBA3ED3B7D1
+	for <webhook@archiver.kernel.org>; Mon, 25 Nov 2024 04:04:10 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+ by mx.groups.io with SMTP id smtpd.web10.11468.1732507447373522335
  for <docs@lists.yoctoproject.org>;
- Fri, 22 Nov 2024 01:22:51 -0800
+ Sun, 24 Nov 2024 20:04:07 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=YJlpojIw;
- spf=pass (domain: smile.fr, ip: 209.85.208.179, mailfrom: guenael.muller@smile.fr)
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2fb561f273eso21295771fa.2
-        for <docs@lists.yoctoproject.org>; Fri, 22 Nov 2024 01:22:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1732267369; x=1732872169; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+n0i+1T9OUOBQM1wzGU8zI+/DeBL9DIw3uR80Bfnzs=;
-        b=YJlpojIwnk2WY6YjYUeRZnC2aTJpvsDUbeMKsy1OPAXgPRrGRBU/AORpfv8MJ/FjfL
-         etbvqZ8q7LC5HbjCHHrLD3NP04gz59MLqosSesMm3Rsm2xeggUq2g2WuHgzNwKUA4C/F
-         XD00/f/JyHjx+PMcM6OshFCgNJlLvKTWszvQo=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1732267369; x=1732872169;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q+n0i+1T9OUOBQM1wzGU8zI+/DeBL9DIw3uR80Bfnzs=;
-        b=IM8s1I5+ptWg5i2E5iqsut0Zibo7EFyBwTxZr3RcVEpc3HwBitJdlLwOCMGZPFsLnw
-         Qy3FFX/HiXw1sBpsTK/v7Y6tRoZFRNLYxd6ahNO27i9HtXSAfbd5gFXq12Qz0fDm6C/m
-         KupgPzNksJ2x1i+0YEY4U+cksRNBdvDaxtQKz+2EEpNTyfKYrz4ayDCVUow196glJJ0X
-         LicT+ocluqxG0SzD1BLy0lJ3D/TXOPNP3367x78ek3QZ0okIhIkHc0ZQx3RWRweFcvGr
-         fs63NC7etRwvW46oj8C++a3TRZkD+EkCLCKvJIb7AuUHkDXXHnG4u1wD1FbFbOY68u7H
-         xiaA==
-X-Forwarded-Encrypted: i=1; AJvYcCViFa/s1vR4r84YBz+2PRz0jLzONiiVXeyam7EA6+omNwuZLhYQFuyTCM4+saMtDBNv8SrP@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yy2eess98KJ7+xRp3TmaQdQwl8MgayY3u86g+JvPU08mJncI9G0
-	nX86qta00zUSnTE9owAiCBdsbgyXkiqZkNRNcAS5M1hJ3eSo3YvhjrX4Ykh9gov3RgUfvZOAvDm
-	bEJNGmbMuaAShNdJrOn7EoKcc2zs8j4uE2T2X3A==
-X-Gm-Gg: ASbGncs3XQyMW6cRdRMdFUtmVi6/ZtTEyFKMBzcxOMdT4EbPP6bBNvQFVMLnW9vcQ8A
-	bH2LPrdnyvi/BW7cLbnIk/J4gvWPNGsdVTlGgy6AXqw/T11sHIJTrXJGSdQwjjHbi
-X-Google-Smtp-Source: AGHT+IGEQXTFDnd3z1hvaonZyNK139jXLgcNFvl0CRlx4B8CfVN+apG0t/Db1TqhGfCUs9AiiqjGBcZ+Jyx1zhFe1rA=
-X-Received: by 2002:a05:651c:2118:b0:2fb:4a63:92c0 with SMTP id
- 38308e7fff4ca-2ffa71068bemr10122151fa.14.1732267368456; Fri, 22 Nov 2024
- 01:22:48 -0800 (PST)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=UQ3/eQW1;
+ spf=pass (domain: intel.com, ip: 192.198.163.13, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1732507447; x=1764043447;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nfm1ACjl3KK48cYOfWJ/FlpCImrMKiAuWSsySJ02qxY=;
+  b=UQ3/eQW160a46FbO6SXy104umFDctoMw8Mk/+tVHzU9JwmBQOFoSWhJt
+   mXfu+rz8RxSZ61uVJWch5qPfyVP6ehjhBxjkuDnTPjwo1glxMOOcnADBe
+   w67KrjenWkM3oqIRcRK3Mq7ybP9Q8nLX03qY+OSa9w3whFu8EY8v5Ar1j
+   NAj7gJVllU0dMj8BbC+hMLwWIgzpkicwEGBFtrA/D+kCfY8N/oQjgZKAt
+   zoELr1EEtalFuWOymTGTq8bK/i6L87fAQNF7LAzGF50OMRMchE+JYf3E3
+   Sw6p+awP83UlCL6e5PKonP8redpE53QwGStFNXLYo6CkVsz+ZRyTBTNBR
+   A==;
+X-CSE-ConnectionGUID: GoLgYvSpRz6U/RfxznSseA==
+X-CSE-MsgGUID: 4eUqBpYqQKSKI1hk1to1ng==
+X-IronPort-AV: E=McAfee;i="6700,10204,11266"; a="35449741"
+X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
+   d="scan'208";a="35449741"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Nov 2024 20:04:07 -0800
+X-CSE-ConnectionGUID: Md9S72AcSzCkaeTiKFQIaA==
+X-CSE-MsgGUID: 4ly0Rx4JQo+5of6Sz/ILvg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,182,1728975600"; 
+   d="scan'208";a="91929764"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by orviesa008.jf.intel.com with ESMTP; 24 Nov 2024 20:04:06 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 5.0.5
+Date: Mon, 25 Nov 2024 12:01:57 +0800
+Message-Id: <20241125040157.1706215-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20241118104524.25392-1-guenael.muller@smile.fr>
- <D5P93P1O12UG.NQJAUDP1T6Z8@bootlin.com> <299a188d-c7a9-4604-a491-9efb3888e7ba@cherry.de>
- <D5R5N6X7BUEX.2BBRC9BZR37GE@bootlin.com>
-In-Reply-To: <D5R5N6X7BUEX.2BBRC9BZR37GE@bootlin.com>
-From: =?UTF-8?B?R3XDqW5hw6tsIE1VTExFUg==?= <guenael.muller@smile.fr>
-Date: Fri, 22 Nov 2024 10:25:27 +0100
-Message-ID: <CAEbF956c=1Bk_GnSc7hxg6btAjXUVxHDbyL=pZykaRQsANV1kA@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2] ref-manual: use standardized method accross
- both ubuntu and debian for locale install
-To: Antonin Godard <antonin.godard@bootlin.com>
-Cc: quentin.schulz@cherry.de, docs@lists.yoctoproject.org, 
-	Yoann Congal <yoann.congal@smile.fr>
-Content-Type: multipart/alternative; boundary="0000000000002746e706277ced8c"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 22 Nov 2024 09:22:54 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5793
+ <docs@lists.yoctoproject.org>; Mon, 25 Nov 2024 04:04:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5794
 
---0000000000002746e706277ced8c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Hi Quentin, Antonin,
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-5.0.rst          |   1 +
+ .../migration-guides/release-notes-5.0.5.rst  | 227 ++++++++++++++++++
+ 2 files changed, 228 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.0.5.rst
 
-On Tue, Nov 19, 2024 at 10:28=E2=80=AFAM Quentin Schulz <quentin.schulz@che=
-rry.de>
-wrote:
+diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
+index 25c8ebc16..9169188e9 100644
+--- a/documentation/migration-guides/release-5.0.rst
++++ b/documentation/migration-guides/release-5.0.rst
+@@ -11,3 +11,4 @@ Release 5.0 (scarthgap)
+    release-notes-5.0.2
+    release-notes-5.0.3
+    release-notes-5.0.4
++   release-notes-5.0.5
+diff --git a/documentation/migration-guides/release-notes-5.0.5.rst b/documentation/migration-guides/release-notes-5.0.5.rst
+new file mode 100644
+index 000000000..582e4614c
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-5.0.5.rst
+@@ -0,0 +1,227 @@
++Release notes for Yocto-5.0.5 (Scarthgap)
++-----------------------------------------
++
++Security Fixes in Yocto-5.0.5
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  ``cups``: Fix :cve_nist:`2024-47175`
++-  ``curl``: Fix :cve_nist:`2024-8096`
++-  ``gnupg``: Ignore :cve_nist:`2022-3219` (wont-fix)
++-  ``libarchive``: Fix :cve_nist:`2024-48957` and :cve_nist:`2024-48958`
++-  ``openssh``: Ignore :cve_nist:`2023-51767` (wont-fix)
++-  ``openssl``: Fix :cve_nist:`2024-9143`
++-  ``ruby``: Fix :cve_nist:`2024-41123` and :cve_mitre:`2024-41496`
++-  ``rust-llvm``: Fix :cve_nist:`2024-0151`
++-  ``rust``, ``libstd-rs``: Ignore :cve_nist:`2024-43402`
++-  ``wpa-supplicant``: Patch SAE H2E and incomplete downgrade protection for group negotiation
++-  ``wpa-supplicant``: Fix :cve_nist:`2024-3596`
++-  ``wpa-supplicant``: Ignore :cve_nist:`2024-5290`
++
++
++Fixes in Yocto-5.0.5
++~~~~~~~~~~~~~~~~~~~~
++
++-  binutils: stable 2.42 branch updates
++-  bitbake.conf: Add truncate to :term:`HOSTTOOLS`
++-  bitbake: asyncrpc: Use client timeout for websocket open timeout
++-  bitbake: bitbake: doc/user-manual: Update the :term:`BB_HASHSERVE_UPSTREAM`
++-  bitbake: gitsm: Add call_process_submodules() to remove duplicated code
++-  bitbake: gitsm: Remove downloads/tmpdir when failed
++-  bitbake: tests/fetch: Use our own mirror of mobile-broadband-provider to decouple from gnome gitlab
++-  bitbake: tests/fetch: Use our own mirror of sysprof to decouple from gnome gitlab
++-  build-appliance-image: Update to scarthgap head revision
++-  cryptodev: upgrade to 1.14
++-  cve-check: add support for cvss v4.0
++-  cve_check: Use a local copy of the database during builds
++-  dev-manual: add bblock documentation
++-  documentation: conf.py: rename :cve: role to :cve_nist:
++-  documentation: README: add instruction to run Vale on a subset
++-  documentation: Makefile: add SPHINXLINTDOCS to specify subset to sphinx-lint
++-  e2fsprogs: removed 'sed -u' option
++-  ffmpeg: Add "libswresample libavcodec" to :term:`CVE_PRODUCT`
++-  glibc: stable 2.39 branch updates.
++-  go: upgrade to 1.22.8
++-  icu: update patch Upstream-Status
++-  image.bbclass: Drop support for ImageQAFailed exceptions in image_qa
++-  image_qa: fix error handling
++-  install-buildtools: fix "test installation" step
++-  install-buildtools: remove md5 checksum validation
++-  install-buildtools: update base-url, release and installer version
++-  kernel-devsrc: remove 64 bit vdso cmd files
++-  kernel-fitimage: fix external dtb check
++-  kernel-fitimage: fix intentation
++-  lib/oe/package-manager: skip processing installed-pkgs with empty globs
++-  liba52: fix do_fetch error
++-  libpcre2: Update base uri PhilipHazel -> PCRE2Project
++-  libsdl2: Fix non-deterministic configure option for libsamplerate
++-  license: Fix directory layout issues
++-  linux-firmware: upgrade to 20240909
++-  linux-yocto/6.6: fix genericarm64 config warning
++-  linux-yocto/6.6: upgrade to v6.6.54
++-  lsb-release: fix Distro Codename shell escaping
++-  makedevs: Fix issue when rootdir of / is given
++-  makedevs: Fix matching uid/gid
++-  meta-ide-support: Mark recipe as MACHINE-specific
++-  meta-world-pkgdata: Inherit nopackages
++-  migration-guide: add release notes for 4.0.21, 4.0.22 and 5.0.4
++-  migration-guide: release-notes-4.0: update :term:`BB_HASHSERVE_UPSTREAM` for new infrastructure
++-  migration-guide: release-notes-5.0.rst: update NO_OUTPUT -> NO_COLOR
++-  orc: upgrade to 0.4.40
++-  overview-manual: concepts: add details on package splitting
++-  poky.conf: bump version for 5.0.5
++-  populate_sdk_base: inherit nopackages
++-  ptest-runner: upgrade to 2.4.5
++-  pulseaudio: correct freedesktop.org -> www.freedesktop.org :term:`SRC_URI`
++-  desktop-file-utils: correct freedesktop.org -> www.freedesktop.org :term:`SRC_URI`
++-  python3-lxml: upgrade to v5.0.2
++-  python3-setuptools: Add "python:setuptools" to :term:`CVE_PRODUCT`
++-  recipes-bsp: usbutils: Fix usb-devices command using busybox
++-  ref-manual: add missing CVE_CHECK manifest variables
++-  ref-manual: add missing :term:`EXTERNAL_KERNEL_DEVICETREE` variable
++-  ref-manual: add missing :term:`OPKGBUILDCMD` variable
++-  ref-manual: add missing :term:`TESTIMAGE_FAILED_QA_ARTIFACTS`
++-  ref-manual: devtool-reference: document missing commands
++-  ref-manual: devtool-reference: refresh example outputs
++-  ref-manual: faq: add q&a on class appends
++-  ref-manual: introduce :term:`CVE_CHECK_REPORT_PATCHED` variable
++-  ref-manual: merge patch-status-* to patch-status
++-  ref-manual: release-process: add a reference to the doc's release
++-  ref-manual: release-process: refresh the current LTS releases
++-  ref-manual: release-process: update releases.svg
++-  ref-manual: release-process: update releases.svg with month after "Current"
++-  ref-manual: structure.rst: document missing tmp/ dirs
++-  ref-manual: variables: add SIGGEN_LOCKEDSIGS* variables
++-  rootfs-postcommands.bbclass: make opkg status reproducible
++-  rpm: fix expansion of %_libdir in macros
++-  ruby: upgrade to 3.3.5
++-  runqemu: Fix detection of -serial parameter
++-  runqemu: keep generating tap devices
++-  scripts/install-buildtools: Update to 5.0.3
++-  sqlite3: upgrade to 3.45.3
++-  styles: vocabularies: Yocto: add sstate
++-  systemtap: fix systemtap-native build error on Fedora 40
++-  sysvinit: take release tarballs from github
++-  testexport: fallback for empty :term:`IMAGE_LINK_NAME`
++-  testimage: fallback for empty :term:`IMAGE_LINK_NAME`
++-  uboot-sign: fix counters in do_uboot_assemble_fitimage
++-  vim: upgrade to 9.1.0764
++-  virglrenderer: Add patch to fix -int-conversion build issue
++-  webkitgtk: upgrade to 2.44.3
++-  weston: backport patch to allow neatvnc < v0.9.0
++-  wpa-supplicant: Patch security advisory 2024-2
++-  xserver-xorg: upgrade to 21.1.14
++
++
++Known Issues in Yocto-5.0.5
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  ``oeqa/runtime``: the ``beaglebone-yocto`` target fails the parselogs runtime test due to unexpected kernel error messages in the log (see bug 15624 on Bugzilla).
++
++
++Contributors to Yocto-5.0.5
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Aditya Tayade
++-  Adrian Freihofer
++-  Aleksandar Nikolic
++-  Alexander Kanavin
++-  Antonin Godard
++-  Anuj Mittal
++-  Bruce Ashfield
++-  Claus Stovgaard
++-  Deepesh Varatharajan
++-  Deepthi Hemraj
++-  Hiago De Franco
++-  Hitendra Prajapati
++-  Jaeyoon Jung
++-  Jiaying Song
++-  Jonas Gorski
++-  Jose Quaresma
++-  Joshua Watt
++-  Julien Stephan
++-  Jörg Sommer
++-  Khem Raj
++-  Konrad Weihmann
++-  Lee Chee Yang
++-  Louis Rannou
++-  Macpaul Lin
++-  Martin Jansa
++-  Paul Barker
++-  Paul Gerber
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Purushottam Choudhary
++-  Richard Purdie
++-  Robert Yang
++-  Rohini Sangam
++-  Ross Burton
++-  Sergei Zhmylev
++-  Shunsuke Tokumoto
++-  Steve Sakoman
++-  Teresa Remmet
++-  Victor Kamensky
++-  Vijay Anusuri
++-  Wang Mingyu
++-  Yi Zhao
++-  Yogita Urade
++-  Zahir Hussain
++
++
++Repositories / Downloads for Yocto-5.0.5
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.5 </poky/log/?h=yocto-5.0.5>`
++-  Git Revision: :yocto_git:`dce4163d42f7036ea216b52b9135968d51bec4c1 </poky/commit/?id=dce4163d42f7036ea216b52b9135968d51bec4c1>`
++-  Release Artefact: poky-dce4163d42f7036ea216b52b9135968d51bec4c1
++-  sha: ad35a965a284490a962f6854ace536b8795f96514e14bf5c79f91f6d76ac25d3
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/poky-dce4163d42f7036ea216b52b9135968d51bec4c1.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/poky-dce4163d42f7036ea216b52b9135968d51bec4c1.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
++-  Tag:  :oe_git:`yocto-5.0.5 </openembedded-core/log/?h=yocto-5.0.5>`
++-  Git Revision: :oe_git:`a051a066da2874b95680d0353dfa18c1d56b2670 </openembedded-core/commit/?id=a051a066da2874b95680d0353dfa18c1d56b2670>`
++-  Release Artefact: oecore-a051a066da2874b95680d0353dfa18c1d56b2670
++-  sha: 16d252aade00161ade2692f41b2da3effeb1f41816a66db843bb1c5495125e93
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/oecore-a051a066da2874b95680d0353dfa18c1d56b2670.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/oecore-a051a066da2874b95680d0353dfa18c1d56b2670.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.5 </meta-mingw/log/?h=yocto-5.0.5>`
++-  Git Revision: :yocto_git:`acbba477893ef87388effc4679b7f40ee49fc852 </meta-mingw/commit/?id=acbba477893ef87388effc4679b7f40ee49fc852>`
++-  Release Artefact: meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852
++-  sha: 3b7c2f475dad5130bace652b150367f587d44b391218b1364a8bbc430b48c54c
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++
++bitbake
++
++-  Repository Location: :bitbake_git:`/`
++-  Branch: :bitbake_git:`2.8 </log/?h=2.8>`
++-  Tag:  :bitbake_git:`yocto-5.0.5 </log/?h=yocto-5.0.5>`
++-  Git Revision: :bitbake_git:`377eba2361850adfb8ce7e761ef9c76be287f88c </commit/?id=377eba2361850adfb8ce7e761ef9c76be287f88c>`
++-  Release Artefact: bitbake-377eba2361850adfb8ce7e761ef9c76be287f88c
++-  sha: 4a5a35098eec719bbb879706d50e552a2b709295db4055c8050ae7dda1eb2994
++-  Download Locations:
++   http://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/bitbake-377eba2361850adfb8ce7e761ef9c76be287f88c.tar.bz2
++   http://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/bitbake-377eba2361850adfb8ce7e761ef9c76be287f88c.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
++-  Tag: :yocto_git:`yocto-5.0.5 </yocto-docs/log/?h=yocto-5.0.5>`
++-  Git Revision: :yocto_git:`e882cb3e5816d081eb05cb83488f286cca70e0c6 </yocto-docs/commit/?id=e882cb3e5816d081eb05cb83488f286cca70e0c6>`
++
+-- 
+2.34.1
 
-> Hi Anotnin, Gu=C3=A9na=C3=ABl,
->
-> On 11/18/24 12:00 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> > Hi Gu=C3=A9na=C3=ABl,
-> >
-> > On Mon Nov 18, 2024 at 11:45 AM CET, Gu=C3=A9na=C3=ABl Muller wrote:
-> >> Modify locale installation method to be standard accross all
-> debian-based distributions.
-> >> Pre-existing method is available only on Ubuntu, locale-gen tool has n=
-o
-> parameter in Debian.
-> >>
-> >> Signed-off-by: Gu=C3=A9na=C3=ABl Muller <guenael.muller@smile.fr>
-> >> Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
-> >> Tested-by: Antonin Godard <antonin.godard@bootlin.com>
-> >> ---
-> >>   documentation/poky.yaml.in                       | 3 +--
-> >>   documentation/ref-manual/system-requirements.rst | 8 ++++++++
-> >>   2 files changed, 9 insertions(+), 2 deletions(-)
-> >>
-> >> diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-> >> index c770318f2..66f758fe8 100644
-> >> --- a/documentation/poky.yaml.in
-> >> +++ b/documentation/poky.yaml.in
-> >> @@ -13,8 +13,7 @@ YOCTO_RELEASE_DL_URL :
-> "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
-> >>   UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip
-> texinfo gcc \
-> >>        build-essential chrpath socat cpio python3 python3-pip
-> python3-pexpect \
-> >>        xz-utils debianutils iputils-ping python3-git python3-jinja2 \
-> >> -     python3-subunit zstd liblz4-tool file locales libacl1
-> >> -     \n\   $ sudo locale-gen en_US.UTF-8"
-> >> +     python3-subunit zstd liblz4-tool file locales libacl1"
-> >>   FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip
-> python3 unzip perl patch \
-> >>        diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo
-> chrpath \
-> >>        ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue
-> perl-bignum socat \
-> >> diff --git a/documentation/ref-manual/system-requirements.rst
-> b/documentation/ref-manual/system-requirements.rst
-> >> index 0fc92550a..b33518c7f 100644
-> >> --- a/documentation/ref-manual/system-requirements.rst
-> >> +++ b/documentation/ref-manual/system-requirements.rst
-> >> @@ -152,6 +152,14 @@ with a supported Ubuntu or Debian Linux
-> distribution::
-> >>
-> >>      $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-> >>
-> >> +You also need to ensure you have the locale ``en_US.UTF-8`` enabled::
-> >> +
->
-> I believe "the ``en_US.UTF-8`` locale" is more proper here.
->
-
-You're Right.
-
-
->
-> On a side note, what's the actual cost of reconfiguring the locales
-> regardless of the presence of en_US.UTF-8?
->
-
-It may take some time depending on how many locales are enabled. The
-command is build to generate all enabled locales, it should be technically
-possible to generate only one (it's a bash script) but as far I know there
-is no such thing in the Debian package from Debian 12.
-
-
-> My point being we could probably have this command in poky.yaml.in like
-> it used to be?
->
-
-> >> +   $ locale --all-locales | grep en_US.utf8
-> >> +
-> >> +If this is not the case, you can reconfigure the ``locales`` package
-> to add it::
-> >> +
-> >> +   $ sudo dpkg-reconfigure locales
-> >> +
->
-> How does this actually generate en_US.utf8 locale if we don't explicitly
-> add it somewhere? Are you sure it's not because your system has LANG or
-> LC_ALL set to that locale and then calling reconfigure it regenerate it?
->
-> This runs an interactive program where you have to select explicitly that
-you want to add this locale, there is no magic.
-The other solution to do similar thing is modifying `/etc/locale.gen` which
-seems not more straightforward for me.
-I tried it on both podman (container) and classic environnement and it
-works correctly.
-
-Also on a side note we tell people to check if "en_US.UTF-8" locale is
-> enabled by grepping for "en_US.utf8", is that expected? Why aren't they
-> the same?
->
-> Cheers,
-> Quentin
->
-
-
-On Wed, Nov 20, 2024 at 5:43=E2=80=AFPM Antonin Godard <antonin.godard@boot=
-lin.com>
-wrote:
-
-> Hi Gu=C3=A9na=C3=ABl, Quentin,
->
-> On Tue Nov 19, 2024 at 10:28 AM CET, Quentin Schulz via
-> lists.yoctoproject.org wrote:
-> [...]
-> >>> +You also need to ensure you have the locale ``en_US.UTF-8`` enabled:=
-:
-> >>> +
-> >
-> > I believe "the ``en_US.UTF-8`` locale" is more proper here.
-> >
-> > On a side note, what's the actual cost of reconfiguring the locales
-> > regardless of the presence of en_US.UTF-8?
-> >
-> > My point being we could probably have this command in poky.yaml.in like
-> > it used to be?
-> >
-> >>> +   $ locale --all-locales | grep en_US.utf8
-> >>> +
-> >>> +If this is not the case, you can reconfigure the ``locales`` package
-> to add it::
-> >>> +
-> >>> +   $ sudo dpkg-reconfigure locales
-> >>> +
-> >
-> > How does this actually generate en_US.utf8 locale if we don't explicitl=
-y
-> > add it somewhere? Are you sure it's not because your system has LANG or
-> > LC_ALL set to that locale and then calling reconfigure it regenerate it=
-?
-> >
-> > Also on a side note we tell people to check if "en_US.UTF-8" locale is
-> > enabled by grepping for "en_US.utf8", is that expected? Why aren't they
-> > the same?
->
-> Yes, "locale --all-locales" does return "en_US.utf8" while we install the
-> "en_US.UTF-8" locale (different string, not sure why).
->
-> I seem to be able to build with both Debian/Ubuntu with this command:
->
->   LANG=3D"en_US.UTF-8" locale-gen
->
-> Maybe this is a more straightforward approach, closer to what we had
-> before.
-> What do you think? Gu=C3=A9na=C3=ABl would you be able to update your pat=
-ch with this
-> command if this works for you too?
->
->
-How do you achieve this ? I tried this with podman container (should be the
-same with docker) and it clearly doesn't work at all:
-
-podman run -it --rm debian:12 /bin/bash
-apt update && apt install locales -y
-LANG=3D"en_US.UTF-8" locale-gen
-
-This generates zero locale whereas "dpkg-reconfigure locales" work as
-expected.
-
-
-
->
-> Antonin
->
-> --
-> Antonin Godard, Bootlin
-> Embedded Linux and Kernel engineering
-> https://bootlin.com
-
-
-
-Gu=C3=A9na=C3=ABl
-
---0000000000002746e706277ced8c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div>Hi Quentin, Antonin,<br></div><br><d=
-iv class=3D"gmail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Tue, Nov =
-19, 2024 at 10:28=E2=80=AFAM Quentin Schulz &lt;<a href=3D"mailto:quentin.s=
-chulz@cherry.de" target=3D"_blank">quentin.schulz@cherry.de</a>&gt; wrote:<=
-br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Anotnin, Gu=
-=C3=A9na=C3=ABl,<br>
-<br>
-On 11/18/24 12:00 PM, Antonin Godard via <a href=3D"http://lists.yoctoproje=
-ct.org" rel=3D"noreferrer" target=3D"_blank">lists.yoctoproject.org</a> wro=
-te:<br>
-&gt; Hi Gu=C3=A9na=C3=ABl,<br>
-&gt; <br>
-&gt; On Mon Nov 18, 2024 at 11:45 AM CET, Gu=C3=A9na=C3=ABl Muller wrote:<b=
-r>
-&gt;&gt; Modify locale installation method to be standard accross all debia=
-n-based distributions.<br>
-&gt;&gt; Pre-existing method is available only on Ubuntu, locale-gen tool h=
-as no parameter in Debian.<br>
-&gt;&gt;<br>
-&gt;&gt; Signed-off-by: Gu=C3=A9na=C3=ABl Muller &lt;<a href=3D"mailto:guen=
-ael.muller@smile.fr" target=3D"_blank">guenael.muller@smile.fr</a>&gt;<br>
-&gt;&gt; Reviewed-by: Yoann Congal &lt;<a href=3D"mailto:yoann.congal@smile=
-.fr" target=3D"_blank">yoann.congal@smile.fr</a>&gt;<br>
-&gt;&gt; Tested-by: Antonin Godard &lt;<a href=3D"mailto:antonin.godard@boo=
-tlin.com" target=3D"_blank">antonin.godard@bootlin.com</a>&gt;<br>
-&gt;&gt; ---<br>
-&gt;&gt;=C2=A0 =C2=A0documentation/<a href=3D"http://poky.yaml.in" rel=3D"n=
-oreferrer" target=3D"_blank">poky.yaml.in</a>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =
-=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0| 3 +--<br>
-&gt;&gt;=C2=A0 =C2=A0documentation/ref-manual/system-requirements.rst | 8 +=
-+++++++<br>
-&gt;&gt;=C2=A0 =C2=A02 files changed, 9 insertions(+), 2 deletions(-)<br>
-&gt;&gt;<br>
-&gt;&gt; diff --git a/documentation/<a href=3D"http://poky.yaml.in" rel=3D"=
-noreferrer" target=3D"_blank">poky.yaml.in</a> b/documentation/<a href=3D"h=
-ttp://poky.yaml.in" rel=3D"noreferrer" target=3D"_blank">poky.yaml.in</a><b=
-r>
-&gt;&gt; index c770318f2..66f758fe8 100644<br>
-&gt;&gt; --- a/documentation/<a href=3D"http://poky.yaml.in" rel=3D"norefer=
-rer" target=3D"_blank">poky.yaml.in</a><br>
-&gt;&gt; +++ b/documentation/<a href=3D"http://poky.yaml.in" rel=3D"norefer=
-rer" target=3D"_blank">poky.yaml.in</a><br>
-&gt;&gt; @@ -13,8 +13,7 @@ YOCTO_RELEASE_DL_URL : &quot;&amp;YOCTO_DL_URL;/=
-releases/yocto/yocto-&amp;DISTRO;&quot;<br>
-&gt;&gt;=C2=A0 =C2=A0UBUNTU_HOST_PACKAGES_ESSENTIAL : &quot;gawk wget git d=
-iffstat unzip texinfo gcc \<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 build-essential chrpath socat cpio pyth=
-on3 python3-pip python3-pexpect \<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 xz-utils debianutils iputils-ping pytho=
-n3-git python3-jinja2 \<br>
-&gt;&gt; -=C2=A0 =C2=A0 =C2=A0python3-subunit zstd liblz4-tool file locales=
- libacl1<br>
-&gt;&gt; -=C2=A0 =C2=A0 =C2=A0\n\=C2=A0 =C2=A0$ sudo locale-gen en_US.UTF-8=
-&quot;<br>
-&gt;&gt; +=C2=A0 =C2=A0 =C2=A0python3-subunit zstd liblz4-tool file locales=
- libacl1&quot;<br>
-&gt;&gt;=C2=A0 =C2=A0FEDORA_HOST_PACKAGES_ESSENTIAL : &quot;gawk make wget =
-tar bzip2 gzip python3 unzip perl patch \<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 diffutils diffstat git cpp gcc gcc-c++ =
-glibc-devel texinfo chrpath \<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 ccache perl-Data-Dumper perl-Text-Parse=
-Words perl-Thread-Queue perl-bignum socat \<br>
-&gt;&gt; diff --git a/documentation/ref-manual/system-requirements.rst b/do=
-cumentation/ref-manual/system-requirements.rst<br>
-&gt;&gt; index 0fc92550a..b33518c7f 100644<br>
-&gt;&gt; --- a/documentation/ref-manual/system-requirements.rst<br>
-&gt;&gt; +++ b/documentation/ref-manual/system-requirements.rst<br>
-&gt;&gt; @@ -152,6 +152,14 @@ with a supported Ubuntu or Debian Linux distr=
-ibution::<br>
-&gt;&gt;=C2=A0 =C2=A0<br>
-&gt;&gt;=C2=A0 =C2=A0 =C2=A0 $ sudo apt install &amp;UBUNTU_HOST_PACKAGES_E=
-SSENTIAL;<br>
-&gt;&gt;=C2=A0 =C2=A0<br>
-&gt;&gt; +You also need to ensure you have the locale ``en_US.UTF-8`` enabl=
-ed::<br>
-&gt;&gt; +<br>
-<br>
-I believe &quot;the ``en_US.UTF-8`` locale&quot; is more proper here.<br></=
-blockquote><div><br></div><div>You&#39;re Right.<br></div><div>=C2=A0</div>=
-<blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-=
-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-On a side note, what&#39;s the actual cost of reconfiguring the locales <br=
->
-regardless of the presence of en_US.UTF-8?<br></blockquote><div><br></div><=
-div>It
- may take some time depending on how many locales are enabled. The=20
-command is build to generate all enabled locales, it should be technically =
-possible to generate only one (it&#39;s a bash script) but as far I know th=
-ere is no such thing in the Debian package from Debian 12.<br></div><div><b=
-r></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex=
-;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-<br>
-My point being we could probably have this command in <a href=3D"http://pok=
-y.yaml.in" rel=3D"noreferrer" target=3D"_blank">poky.yaml.in</a> like <br>
-it used to be?<br></blockquote><blockquote class=3D"gmail_quote" style=3D"m=
-argin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left=
-:1ex">
-<br>
-&gt;&gt; +=C2=A0 =C2=A0$ locale --all-locales | grep en_US.utf8<br>
-&gt;&gt; +<br>
-&gt;&gt; +If this is not the case, you can reconfigure the ``locales`` pack=
-age to add it::<br>
-&gt;&gt; +<br>
-&gt;&gt; +=C2=A0 =C2=A0$ sudo dpkg-reconfigure locales<br>
-&gt;&gt; +<br>
-<br>
-How does this actually generate en_US.utf8 locale if we don&#39;t explicitl=
-y <br>
-add it somewhere? Are you sure it&#39;s not because your system has LANG or=
- <br>
-LC_ALL set to that locale and then calling reconfigure it regenerate it?<br=
->
-<br></blockquote><div>This runs an interactive program where you have to se=
-lect explicitly that you want to add this locale, there is no magic.</div><=
-div>The other solution to do similar thing is modifying `/etc/locale.gen` w=
-hich seems not more straightforward for me.</div><div>I tried it on both po=
-dman (container) and classic environnement and it works correctly.</div><di=
-v><br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0=
-.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-Also on a side note we tell people to check if &quot;en_US.UTF-8&quot; loca=
-le is <br>
-enabled by grepping for &quot;en_US.utf8&quot;, is that expected? Why aren&=
-#39;t they <br>
-the same?<br>
-<br>
-Cheers,<br>
-Quentin<br></blockquote><div><br></div><div><br></div><div><div class=3D"gm=
-ail_quote"><div dir=3D"ltr" class=3D"gmail_attr">On Wed, Nov 20, 2024 at 5:=
-43=E2=80=AFPM Antonin Godard &lt;<a href=3D"mailto:antonin.godard@bootlin.c=
-om" target=3D"_blank">antonin.godard@bootlin.com</a>&gt; wrote:<br></div><b=
-lockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-le=
-ft:1px solid rgb(204,204,204);padding-left:1ex">Hi Gu=C3=A9na=C3=ABl, Quent=
-in,<br>
-<br>
-On Tue Nov 19, 2024 at 10:28 AM CET, Quentin Schulz via <a href=3D"http://l=
-ists.yoctoproject.org" rel=3D"noreferrer" target=3D"_blank">lists.yoctoproj=
-ect.org</a> wrote:<br>
-[...]<br>
-&gt;&gt;&gt; +You also need to ensure you have the locale ``en_US.UTF-8`` e=
-nabled::<br>
-&gt;&gt;&gt; +<br>
-&gt;<br>
-&gt; I believe &quot;the ``en_US.UTF-8`` locale&quot; is more proper here.<=
-br>
-&gt;<br>
-&gt; On a side note, what&#39;s the actual cost of reconfiguring the locale=
-s <br>
-&gt; regardless of the presence of en_US.UTF-8?<br>
-&gt;<br>
-&gt; My point being we could probably have this command in <a href=3D"http:=
-//poky.yaml.in" rel=3D"noreferrer" target=3D"_blank">poky.yaml.in</a> like =
-<br>
-&gt; it used to be?<br>
-&gt;<br>
-&gt;&gt;&gt; +=C2=A0 =C2=A0$ locale --all-locales | grep en_US.utf8<br>
-&gt;&gt;&gt; +<br>
-&gt;&gt;&gt; +If this is not the case, you can reconfigure the ``locales`` =
-package to add it::<br>
-&gt;&gt;&gt; +<br>
-&gt;&gt;&gt; +=C2=A0 =C2=A0$ sudo dpkg-reconfigure locales<br>
-&gt;&gt;&gt; +<br>
-&gt;<br>
-&gt; How does this actually generate en_US.utf8 locale if we don&#39;t expl=
-icitly <br>
-&gt; add it somewhere? Are you sure it&#39;s not because your system has LA=
-NG or <br>
-&gt; LC_ALL set to that locale and then calling reconfigure it regenerate i=
-t?<br>
-&gt;<br>
-&gt; Also on a side note we tell people to check if &quot;en_US.UTF-8&quot;=
- locale is <br>
-&gt; enabled by grepping for &quot;en_US.utf8&quot;, is that expected? Why =
-aren&#39;t they <br>
-&gt; the same?<br>
-<br>
-Yes, &quot;locale --all-locales&quot; does return &quot;en_US.utf8&quot; wh=
-ile we install the<br>
-&quot;en_US.UTF-8&quot; locale (different string, not sure why).<br>
-<br>
-I seem to be able to build with both Debian/Ubuntu with this command:<br>
-<br>
-=C2=A0 LANG=3D&quot;en_US.UTF-8&quot; locale-gen<br>
-<br>
-Maybe this is a more straightforward approach, closer to what we had before=
-.<br>
-What do you think? Gu=C3=A9na=C3=ABl would you be able to update your patch=
- with this<br>
-command if this works for you too?<br>
-<br></blockquote><div><br></div><div>How do you achieve this ? I tried this=
- with podman container (should be the same with docker) and it clearly does=
-n&#39;t work at all:</div><div><br></div><div style=3D"margin-left:40px">po=
-dman run -it --rm debian:12 /bin/bash</div><div style=3D"margin-left:40px">=
-apt update &amp;&amp; apt install locales -y</div><div style=3D"margin-left=
-:40px">LANG=3D&quot;en_US.UTF-8&quot; locale-gen</div><div><br></div><div>T=
-his generates zero locale whereas &quot;dpkg-reconfigure locales&quot; work=
- as expected.<br></div><div><br></div><div>=C2=A0</div><blockquote class=3D=
-"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
-04,204,204);padding-left:1ex">
-<br>
-Antonin<br>
-<br>
--- <br>
-Antonin Godard, Bootlin<br>
-Embedded Linux and Kernel engineering<br>
-<a href=3D"https://bootlin.com" rel=3D"noreferrer" target=3D"_blank">https:=
-//bootlin.com</a></blockquote></div>=C2=A0</div></div></div><div><br></div>=
-<div>Gu=C3=A9na=C3=ABl<br></div>
-</div>
-
---0000000000002746e706277ced8c--
 
