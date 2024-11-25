@@ -2,512 +2,201 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F26DCD58D75
-	for <webhook@archiver.kernel.org>; Mon, 25 Nov 2024 17:55:25 +0000 (UTC)
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (EUR02-AM0-obe.outbound.protection.outlook.com [40.107.247.62])
- by mx.groups.io with SMTP id smtpd.web10.24846.1732557323962109248
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02FBFD58D74
+	for <webhook@archiver.kernel.org>; Mon, 25 Nov 2024 17:58:56 +0000 (UTC)
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (EUR02-VI1-obe.outbound.protection.outlook.com [40.107.241.68])
+ by mx.groups.io with SMTP id smtpd.web10.24927.1732557531260099912
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Nov 2024 09:55:25 -0800
+ Mon, 25 Nov 2024 09:58:51 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=WdAhdpIo;
- spf=pass (domain: cherry.de, ip: 40.107.247.62, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=QivkfwaX;
+ spf=pass (domain: cherry.de, ip: 40.107.241.68, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Zs4lUAWe3SwVb+U/d56ddEFMUsRhW+sTojz6RijKzl7r5x6LRO2mp3lCLZWS34AC15myniOqKPDa6mOrehcqd4qrEfhQIp6mR9Q4qoRHO73MNqk67YgyV27QtMG99muIy2xFuvM94SD/Y9gdT0G6oX0PI5Nqn0SxKIwBQ18b+8ho3/0XZJknnD9KZLlqxX0o+ETHBZUGofpgunezVGCpPfn0Ugj9Ac3qDnLaqSsP5zdJ64TRvrUNgOeTo8dCvWF6CxobATuIbuWGn1nQZgBDDccMy+q9NpaomOr0JnNbexrFjekGmZyAGBwGBOTJincwpHyELw38f5j2hE3YQuBqAQ==
+ b=Q6PygAO3FIWa6XdGT4pB7F6UDGcPTNYf3SrFBcRsQuRDTWkbUo8GDtGfxeHU/r7tLeKOLstG21CLAgSemTIIyfJHoYSL3/my1HGVYAYsmkwc+SuBaXRcomtrfjeyMy8TUM/Y3FlQ98+hDy1UgEe9by7+XHbHKSqSwmh9qPSXmFFruWpZtX+aLzV1lAegHYI6J0DV2HSDk0c1M+Ivhwrw3dRjFWOHvTYP/r7Onn5d1vq3bgXcfZCfiRNm5A/1VO7bCmqs1N3tPx1fZ+K/vALqW+yR9ZmyTcxvK9gEt8lf78uEXq/oBiJgcpvJaHQy3s4CSoT4TIPOlWRtTtzLgJiIAA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6OXDJZ8/TE5A2Oz2QXIPEBuNvzjaaVJu6UEtHWRhoFA=;
- b=sw36eORtHwDBZmo/jJq7Tqublbuh12UJxnnUeBB/aC3jwqj/2deveYbTV7SRNhVqukNY+gYyukVcoc286LPBMrbWX4AL2NrozVZQCmMRl5JyGHrDNgRt0FyiHfY33v44ICEe8jxwX5VV9bythZN3H+/XaqYeVpDXypG+nV4hyM9e+tEWwgtdbjz66unNrSj92FRaIUgVzo86bJNHoPkUu/o+q4ylU0osmSnkVvnlwLDaOqwtvHj9qU5A2k4wfZMK8zjSD4WPWxO7IElUVmGrKWgTvek6AqNz+qu4MdSDheFSQMUyg1DUehhfXKG8E4UPL/bV8xwYdZ+cruX9fdJnTg==
+ bh=Fy0JVEg27czOVIILQeQZ2P5/au5FdRG1NFBGNXltIiE=;
+ b=L6i3wTUj49QKaqsja4GUgWGnmiVBLaCEVqbB1D6XEsmxK/FpigNf0Ss8CvwoXNDbXSmwJXWpdUqTSyTfDuPdUFg29VJ33V3xlfjvgC9qqKzaLWBlw7m/8kPXLsSroayLaDHbsZoaAY1K/upjPdpyFVq+b3Z3LcW3QYyLPAyAJ46YleEAxj8FeV1iFg0BB0AdZMBnAccrCogSzDb6uF4qXOdgymxia4v0UPNtLeoZ29PiILEHrTOUtwljsG3O0vOoGhMKmwyeAZ3cYstmAIL5bUg56Vxp4Q4pjllNGh5C/5DpGnMUknlIPoxnQsBrVELTXzEJ9YsH4m1IiK0Peuih3w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6OXDJZ8/TE5A2Oz2QXIPEBuNvzjaaVJu6UEtHWRhoFA=;
- b=WdAhdpIo4J3Uw7Sd033Z/tMs7+EAyWkcDs/lSiEarBrwCpDehaiCKhKoSEGLgRheJ10tslQ9z8G2co3eiPXePjQl2bj/koOkO5L8MaaRkGDJ9qGb7bkEP0wXW9XY7iRsgR2pfCeIBSArxK01BT5GxVa7AJPV1KyrZ80xW5r5IyM=
+ bh=Fy0JVEg27czOVIILQeQZ2P5/au5FdRG1NFBGNXltIiE=;
+ b=QivkfwaXXPet18iQAys1CJNK1dJje0HeUTz/ZleVvganjA6/ZM/e0sT7f8mp0Mg8TM+cOFutoRG/akkEhNLhkKwKdb1WTAkQZFzSsBDDBPQPtFQkyNvP4sSGH6GxFI1rkrhr8e1gBJ09E8t80uDwkoFzGmSgtOd9qtxVizbcgac=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
  by PAXPR04MB9219.eurprd04.prod.outlook.com (2603:10a6:102:222::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.20; Mon, 25 Nov
- 2024 17:55:20 +0000
+ 2024 17:58:48 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%6]) with mapi id 15.20.8182.019; Mon, 25 Nov 2024
- 17:55:19 +0000
-Message-ID: <86bd7352-1a33-492d-8308-c2eeff6b4a71@cherry.de>
-Date: Mon, 25 Nov 2024 18:55:19 +0100
+ 17:58:48 +0000
+Message-ID: <2ddb847f-9290-4e65-b265-8d2bdb918831@cherry.de>
+Date: Mon, 25 Nov 2024 18:58:47 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [yocto-docs PATCH 1/5] Gather dependencies in poky.yaml.in
+Subject: Re: [docs] [yocto-docs PATCH 2/5] poky.yaml.in: replace inkscape
+ dependency by librsvg2-bin
 To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-CC: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20241120-update-doc-deps-v1-0-50e267ae4123@bootlin.com>
- <20241120-update-doc-deps-v1-1-50e267ae4123@bootlin.com>
+ <20241120-update-doc-deps-v1-2-50e267ae4123@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20241120-update-doc-deps-v1-1-50e267ae4123@bootlin.com>
+In-Reply-To: <20241120-update-doc-deps-v1-2-50e267ae4123@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: FR0P281CA0083.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1e::18) To AS8PR04MB8897.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0157.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ba::12) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|PAXPR04MB9219:EE_
-X-MS-Office365-Filtering-Correlation-Id: bb5b5f03-cf2a-4e56-3194-08dd0d7a53a5
+X-MS-Office365-Filtering-Correlation-Id: 19f089dd-db2a-442c-b999-08dd0d7acfb1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?fJWvzwO+Dl9IBmywBMzulMI6xiUAQXOP18rKdzb+E42NHTwGJHxjkOrKEYYc?=
- =?us-ascii?Q?Gc2lwX6i8FcwzJyPWRFILD+IvruLVWZNtVl923koJ8bfLvHpLB5nxuHOEbHp?=
- =?us-ascii?Q?pJXrcoEpPuvWJsHP4yzMTh6GLX142LoR95ARcWwy61cvy9Vnih96weKftsR1?=
- =?us-ascii?Q?3MV85eFo7qcmzkTBBMxDvmMb3lK+ImOvhd9CksCeJ03nYdCZ3pKEfLm3nbQE?=
- =?us-ascii?Q?VFCvNJtVL1q1ojJyXSQHyTwK+iqzlzUqfAYb2L8e5RESE3S/Fam9QvjL17aN?=
- =?us-ascii?Q?FFXJDN8mFvASjhr5PfNzr/Vqe/VEEy3QWYAU5YDmZhMNJI2DAxUqAePdp5wd?=
- =?us-ascii?Q?iLG8sJIcI9OJi1Y/ZaNUVA/pB7Ic1Fj7mZ9Uu34laGE/1h97q8Mc4yjEOhe9?=
- =?us-ascii?Q?pslsPrhJ2AHwnyPolJlLzOeoRoF61iYjgrWC407vI5xDFdRCbVWxLFXnaIBe?=
- =?us-ascii?Q?B5d4OjKufQH6hQTLr34yBALjTmxh6Kq0e7HgBfKXKrQvB6zDPXNfezkcGVkC?=
- =?us-ascii?Q?Lom7yprROarZ6aDKlB6uTHA2BKSa8m8frqY57zgEXH+zXaI9G0f0+96I/2uY?=
- =?us-ascii?Q?57kryKvL23xufU4PQ+vNn4ludfGieEw68B/tcEDOEbDJgVq924sq8cUu2eK9?=
- =?us-ascii?Q?V10gtBjVPuy30W2s8FS95fiGjlQElvpU0Btq+vxG7Kb/4Rx5iBOW3zwew0sn?=
- =?us-ascii?Q?Fg9Qea7bnh6t/u+SBpS0cK9fWKFwPMy4XQf3Kjmrt2ZtqmBT0nTQgczWqsBr?=
- =?us-ascii?Q?TWD2hQHD3LvieuESxmjxOxJBJ+igIu08AV9BcoltuN2zbUVvWBhQybroKKwg?=
- =?us-ascii?Q?cEJazso7scvwx6w0ZkDBQs2aE4/32OaQec3W+DxQdyFR7D34wOKETA35Qhf5?=
- =?us-ascii?Q?TyhabdiHYaWx+YYYRvgFOigUqCBwdpkCMmHGl2+lIa2oFWISFW7kFqWWDUZm?=
- =?us-ascii?Q?eZ/UWKdke4R5PVNxNUl+XfwN0viEyu4uVIXPbUfOpeg+xT5ukb/k3J8dfOzU?=
- =?us-ascii?Q?mO99R225/cX/lf5N4u5uTAzXh4NdIB0xAHbzYy4rCr0g9lyWLdONj7pRniCR?=
- =?us-ascii?Q?HqE2q3I7kYsVy8pc4cKPw+eyHHcKxawEbtXIWECkKusgsUG5ZTeVdFMx7TzK?=
- =?us-ascii?Q?EX6ih93KORvuE4zFDAYuf3S2ptzxEnpUY+mwTbLN/A7oCD7Tyn8VUqmZFrL4?=
- =?us-ascii?Q?+/OtV0wNRUUywpRQSfOEwmli/1DpjdL0xQoON91bKfFahdqvvWF/eaeMudc5?=
- =?us-ascii?Q?9JB7j/dkX/fIVNpYEV8U75MVhBqfoJunK3h2nJu+mc5wlZfwypQ+1VSTvqoH?=
- =?us-ascii?Q?JoM=3D?=
+	=?utf-8?B?Ynk2UElIVFcwTWxYbTJ5dEVTM3B4QzJ3Nnd1bVlXYjVHTWJyTFdtYnlLN1FO?=
+ =?utf-8?B?ODB6R1F4dTllZTFRZmFJR1lUbXcxelNtSkNVd0xoUlZXWFhjdENiUTFwUUww?=
+ =?utf-8?B?UDM2VDZtVGFuUmxsdUh4RC9xMXM3SUsyUXNybGRDYW5Bc3V0aXBOaG1EQlBE?=
+ =?utf-8?B?dFZETm1lWnEwNGV5ZFM1Wms5NHFpL2JrUEpwWS9IQ1oraWk2cWw1VEx6N2sz?=
+ =?utf-8?B?Smpmd1BEVkN4dGhtRzV0UWRXTE5VTDlGTGVBUWZqN2pjQklrZTdJNWtlNXF0?=
+ =?utf-8?B?aXBHblZhdVowdmtLS2gvd0o3NzNoRHhTRnZ4RmdXalByNkptQS96US9QY0JT?=
+ =?utf-8?B?RWw2R0ZnOUJBZ3g0SmpuTjNlV0V4MGRTV05uUy8vSSs3MkxhMmR2aXhjS21T?=
+ =?utf-8?B?R0RKdFZMdFhmQVRHdG93OS9XM1NBZXVVTThvVG1OaW5xQjNhdVJTWXRiTDg2?=
+ =?utf-8?B?Tm5hTXU2MVl6K1F0RVQ5bjRHajhQSDJXbTVyTlpIQklXRzM1N3ZkQnFBaHlz?=
+ =?utf-8?B?b2x0aGdhSFlzVkx5bzJleSthMFFXSVljemZYMVJLZytCNkllVFdEZGhaYzE5?=
+ =?utf-8?B?QUFlemQwTjFRelRiVUFtekhCTzl5WWRMTGNiVHdlc0VXak4raWl6aFJjZ1VI?=
+ =?utf-8?B?NENXeWc2UzFOWHRWWmVMNVdhcGZBK3lsQ0gzclVOcXFnbGNXcHlGSEd5TDVU?=
+ =?utf-8?B?eGs4RHNxSzhSMVhOUlZIREljSU5nejVNdHMvWWlRKytFUXU5cDJUcWtVejIw?=
+ =?utf-8?B?UDV0KzEyYzlxNXFmeWRSTHA5RGhoaWJ6eitLRXozcnVBRzJXQjR1amQ5RkhS?=
+ =?utf-8?B?cW8xYWpWWFQ1Mzh4TWRWaDRSZGhsTVNudGtNeGNPVmxNaWNZNUZ6aWFWZGU3?=
+ =?utf-8?B?VjZBY09ISlJaM3NROE5WYjQyOE04WFlSd1Bld1VJQy91YjVoalNhVFhKTnBX?=
+ =?utf-8?B?b3hwdUtoVm56dEp6WW5GT0o1VkY2bEsxQU1uU0VnUEJNS2FrYWFRWkRmbDFo?=
+ =?utf-8?B?bjhLWlJXODd6a0ZxUnk5QzdlYlEzay8xY2FMbmVWd1pMaFkyeGpGT1RIbXYx?=
+ =?utf-8?B?czJic3U4NnhtMEQ0Q1gzbUY5ZnZ5K2pmUVR3enAyMVdENnhTMGhERnpKdzE0?=
+ =?utf-8?B?eEFCWXgraTNSaTFhNDYwNDdKUzZ5elVMaFd4VXc5YXFaRCtTd29DSFprOUZV?=
+ =?utf-8?B?eW5tV0xMTGVRTzJXUTZSdS8zZThpdzVFNmdhYi9oNkFLNlZvdUNZWmw3VDgr?=
+ =?utf-8?B?TGFYV0gzbXBNQ0drb05WbmVuSGhwd0RZOWNsMityanNZazZ1UGJkYWVSTUJS?=
+ =?utf-8?B?akxWSGhzMGU1NDR0TUlOeXpiMStpeTM1M3VEcEFUeC80K3FLTG96VDlpdjl0?=
+ =?utf-8?B?NWk0bDNLUXpBQ0R5enlBYjROeHZGUm1PbVJxZ0ttQUdyNW4yNDg1TGxiV1E4?=
+ =?utf-8?B?NEoxcm5MR21DZWdBdWd3WDZWMWlVSUJqM09MSTNOdUxzelNmZG04N0Q0RVdE?=
+ =?utf-8?B?M3Z5QkRtQnJkeFl0eVVxT0NGaERBV1o4cVVSM3k0Q1lKZmdMRDgvT2VRSndr?=
+ =?utf-8?B?SzB5VS9sN2RIMVkzTlIycWcrS1FJZ2o5UGRqZXlFbnNmaWd1YlVBcWVtR1pD?=
+ =?utf-8?B?bjJOL1pPRER6WXRWRjNBN2tLaVRmMmh1MWVMMjEya3BURnVJNWFleEtONUlr?=
+ =?utf-8?B?Y2xZZ04xejQ5UjY0cGFpNWRCbW5jbDM5VS9aVm5jZmY0V082TVpFTlhDMTYz?=
+ =?utf-8?B?M0VjcktYUzNmWC9mL3JpcUFyYUUyZS9DTjNGajVUV3JuY08vanVZZDhvVjlx?=
+ =?utf-8?B?YmNCMkNUcU90N3NYbzFtQT09?=
 X-Forefront-Antispam-Report: 
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?GLxF+434vH0n7wKfwrg0LYnsaOB3Z0JAOCoMswrqAp37QJXPJY/G/uF/C70j?=
- =?us-ascii?Q?sW81L1HIYOA2sTRhsAL9GlwXawk8DKiFjgVhRyFngyFW7IWdJLpBNzAHlRCp?=
- =?us-ascii?Q?wlFVf1oogwJfcF3vJZcqftir4WZMPE2Bnw6Z9YKsBCMPnTJkTO+laAGHknzn?=
- =?us-ascii?Q?Y4MrpMGoZwMYE3lIbwpINWYAmRY8P7kNMThtfS1rRvUhVgTCHBQYPRQ7rEkc?=
- =?us-ascii?Q?XLPTJBD9UgaOBgpV35QRGpAAgy/Gy0xuAd9JF5qB6qMYW/N/jgKnz3DVM68P?=
- =?us-ascii?Q?+GGhNtqSqIN+Xk8Pz2l0V7Ox0NMTkrFqmb8M1QSNe0nWkH2pFgKglhKlkBHq?=
- =?us-ascii?Q?zuAWzS7Q1HAubpUPDbakDdSf06FS1M6a9z6i1pgHC3Qcif7nmKbbnkiqHgRL?=
- =?us-ascii?Q?s4CxwgUnggu3cY01tkVLXtMGhNYtMUFMTmdtiQ2CxtG+B4VYq4tPKDqoE23t?=
- =?us-ascii?Q?H0aJNOZHF0e0NAWe2iTOIlCN1QIkwgNzvo3LP7RS+L6i2OWgh1eB/Ukji5NM?=
- =?us-ascii?Q?TYNRim9tL4mv0S6qCO0ntz6Zy1Q8x2KONWDEleJpvqyVRuVC59ssa8kONSZ1?=
- =?us-ascii?Q?83XzWy6CIfJF1SEJbHIiwwk+BblnU3IfmC2KdzprXhW/JkTw58cWPYhgUlks?=
- =?us-ascii?Q?loel4Qe5sYQR4zmrKTxe+dghLWMkg9owSewLdvP+w448CvwJqCUlN95LzMiI?=
- =?us-ascii?Q?S0qImLXmT24DQhRkcQ9aDALdkX3w4m9YY+ngp2EuBYD6tEqBqv+kZXG7Wwcc?=
- =?us-ascii?Q?HTDjZRPUw2lJcZxUcQ5SKoKQV2codKcSyJarxI8cIFlzyOjRfdQgo+sfGDyE?=
- =?us-ascii?Q?6+QXy0/k9HD6X1JuqUDmwF5qnZK4LTIhTFZtv1CIwcFJYLBdJoEh2XztrBuq?=
- =?us-ascii?Q?JcVN1pgV6LxOnpx7qxljRjBFISd6Y0u+snq6PHDx8MK3+gfUs+MmsgsQJcte?=
- =?us-ascii?Q?afXEx3ShDJUUCXt4nTmaSaWGB9zvPN5r1w7odJVATeuUK1Tp8g7/htoXfQGk?=
- =?us-ascii?Q?+6cIeYgpNIoldaw/or2tA1g3T9ivt/2jz1eZnP/rBj1Au8vO3jE8pmI89QPc?=
- =?us-ascii?Q?dwNtapeAAN296Nalasq/kPPojpfe62R/XXHROq+uSCEwM/FZryYoWizEkllt?=
- =?us-ascii?Q?8V2DeiPUYk+gmhztIEKGbIW05/XbmaJbYiIP47NGUHBx93nMGSZaZmt9Fs3p?=
- =?us-ascii?Q?Zn79b2dgEiNYOAH2p5XsiGFRAWahHM9NTtZVMCzPvyvID+HRgQ0Qsqu+97x9?=
- =?us-ascii?Q?obxdeFZbFKESVqoxs6KRUtyeCxTCl1y6uXNGV1W4bRfWhZBay3TkazJIhCik?=
- =?us-ascii?Q?xSpv1TmwXvvhNK34y9/Pb+HHMJcV27Jod2Wq14PNQYlTSX5nHL22Swqn19TJ?=
- =?us-ascii?Q?mZTP5/JkKLvCQs1TUHzzcBJnvHsO6vW6pA20xwgCkZkHy61OaiBBV7OZ/Opl?=
- =?us-ascii?Q?YFa2CjCVGb8tNFQsSD2PbzOL557VukoTHtwu4eV9mNxSsw3nGFUCVS5HSaHI?=
- =?us-ascii?Q?eyRVy/bMtSke0pO9F2Fm0+2iSzYFyChRFZjO/2pCmzsZ98Q3FE5Y72pl1c2v?=
- =?us-ascii?Q?Dz4RItdmcYFK0IwZjgVexEDTVG//k4kCyud0cih0L+taD4yJRV0vas7vLtIB?=
- =?us-ascii?Q?TQ=3D=3D?=
+	=?utf-8?B?SzNVK3AzZEgxRW1ib2wybEZnUXYwaEI2cW9qS251dDEydGJHRnlQSzV0dGgr?=
+ =?utf-8?B?a0ZKMDZrdUx3N1U0MUNLa0dpRGxudlJwbk9nWjMrZVJKTy9QL0pCNnhuZjVr?=
+ =?utf-8?B?ZWxVcittZjdEQUkzL1RCdlM3L056VE9HU3c2T1VXcDZOSCtmK1o5RmpXd1Mv?=
+ =?utf-8?B?TllmVHFhdFZIbTZBampEVDRhQVBSbDZUd3MrTUtvNGRQdlRQamFBaGxrNmlD?=
+ =?utf-8?B?SWplMkVQRXBlN3pIMlJLWkEwMWJIc1lYZWdEb25tOGdFTy95Vi81N3ZhdUFL?=
+ =?utf-8?B?cXNkeU94UGROdllWK3VEOUpkSzJLenFlMWE2ZzBCUnpraTFIOXVXUzNFejJo?=
+ =?utf-8?B?SitLcEZQSVpNc3hOMndnaHRtS09FbUhvbHlGUjBLVE5XS09MQzRqaGVOcGsy?=
+ =?utf-8?B?RTFBYTNCVEhJMmVRZ3F2TlJQcVYrczJFSlk0czFOeEU0OVFHbzB2ZCtzbzdX?=
+ =?utf-8?B?U0RGWURpYk4vRk1CM1NNWllLSnB6dlEyQ3cydjdLN2NibFdvT3JsM2I1NGhU?=
+ =?utf-8?B?ZkZaS0F0N1FKTlJyYXI3L2NvdkI3YnNwVE1ndzJIbS8vdWMrWFRtWGZhbC9B?=
+ =?utf-8?B?YmpneTBSa2pHRFRsM1JJSUdEdElYL1g4S3BaQWdlS0t5c1FReWJiYWJ5UWxv?=
+ =?utf-8?B?RXdBUStaTHhGZGJhZHlINjlRSi9GVzhqb1A2TWZqVS8zbjhUaTFFdlJCdFJK?=
+ =?utf-8?B?d3A3cGRoR3BrYjRjWHgxWk9zWDJIOE0wQ1BEMVNFbTRqWmZoMGVObG5HSkR3?=
+ =?utf-8?B?ZEF2c21yRFpqMXhabzE3NDM3dUpzdEo3YUFodS8zdDZvcmNCYi9ySXRuVkVr?=
+ =?utf-8?B?Rndwa0s0akJ0bUg2WEhmUVJHM1RNRFZPRGlGS096R0thT25KZlF6NlBKa1J4?=
+ =?utf-8?B?TGMvcnc5MmlCaHR6UHl2cDZ1dzIvT3ZLNUJhMDBvZm9vUnhkbzN0aDFveWY5?=
+ =?utf-8?B?emJPdlpUL0p6UGdub0ZFdGtnZ3ZIOENCQVB2YkhndU1WQ2dEc2FCYktmUlYx?=
+ =?utf-8?B?SEJSY0phdWkyMDBLdXB4emF6c1lWZzROVkQ1VkJUa0dJdmtGNHVqb2hjaEFw?=
+ =?utf-8?B?S2lVbUJBdDdyUkp0eFJ6TExMSEo5KzV2RVBpSGx2aU5QZVI0c2ZUKzBtSTNh?=
+ =?utf-8?B?bDhTVVQvaUxXK1hicTBUVnlTNUFoZjZGZ3laOUN3Y1E3aWhYVytVRzFaSkFV?=
+ =?utf-8?B?aDRNbkJCRmVBOU5mR0w4LzJkTjhmV0ZOUU5WWEhWd1dlVlRXWGlkaWs2NVIr?=
+ =?utf-8?B?dGdGVCtvVjJ3MzVXREJXYzhEbEVMc0V5dGFVckNDNzBUUzIvNjREOGJVTlgw?=
+ =?utf-8?B?Yi9ETHpnNkdybGxQbnVYbUFEVmdBcmRDcVU1SlBQZVlHMHFucjhlaE9HUGRE?=
+ =?utf-8?B?bTVrMVU3aDVheDlzcjB5RVZDK0h2U1VjZHRSOVpWbWxOM0dCbGZHMm1pZEc1?=
+ =?utf-8?B?RlRwR3FSRy9YOHF4ZG84ZUZDTUMyMlF6Y3pVRmpKdlNDeGJkempUNmJhL3Fa?=
+ =?utf-8?B?U2Y1SDR5SDQyM1hlRndMSnVFMGR2bmp4V1ZVQ05Ma0VEZkhoMU1zV0daK2RJ?=
+ =?utf-8?B?YTRzb2FGalVoWlpqeUxHY1MvUjlOY2c0aXJGaWIyRUdIMmwrOTc0YU9rU0Nl?=
+ =?utf-8?B?dldSQmxtRXFzSUtwUkRkL29HNlUxYlFHeHpGUlBiWHh2VGM0QnRzNytQVnlo?=
+ =?utf-8?B?dVJ2M20vbHBFaDh3eEFONWMyRFM1VmxReWM5ckpDSWpoZVRDMjU1Y09VQVBs?=
+ =?utf-8?B?S2JQdlJlSnVEL0x4c1ZFMzhuTlJyakVRM2FScTBZcVgwNTY5RTBmVHhpeFN6?=
+ =?utf-8?B?RnFaSk9Wakt3NjNiNlVwbVRWeU9WRGVxZGFHbWtRU2xOYTY5ZWZLZjRyUDBW?=
+ =?utf-8?B?UXBLYzlaaDJQZkFmTnNRWnlhWnh0eVRJNjduZVJjVDdOa3QyRk42Y1ZwanVF?=
+ =?utf-8?B?TXREemc3WXp4eWRnY29WVWt6NnZpcENsTkdpb29KS0cxWnM3aHh1US8zZFYw?=
+ =?utf-8?B?dDhRczAwV2UvS09yOFZvL2NGcEhhb0Q3TWVNazl5SnR0Q3FsaUNOdjF2eVFq?=
+ =?utf-8?B?OGJNSXRPUmFlUERFUTdiV04rdi9PSEtHLytFUHpRR0lsSk9ENFo2WUNabmQ4?=
+ =?utf-8?B?YzUwS0JsOTkzZUxERmJ3RXgyVWFmYlo5aDhzM0ptWTczZjAxaTBWL1laUDBw?=
+ =?utf-8?B?ckE9PQ==?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: bb5b5f03-cf2a-4e56-3194-08dd0d7a53a5
+X-MS-Exchange-CrossTenant-Network-Message-Id: 19f089dd-db2a-442c-b999-08dd0d7acfb1
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 17:55:19.8338
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 17:58:47.9917
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2EqjxZE/b9Er28qkELRsL+qNTW09ABNXjSIK9jca1ZkaTgHu2X9oKKccoTMk5RehxBwpkiyWEt1OGDNDH7yTAtFoTY7ZqTdY1GGXWvtJkgM=
+X-MS-Exchange-CrossTenant-UserPrincipalName: WAHDkSAGhPREqqYZhJPmDa0KqSuqK71oCA5lOwPA89CxRpy0AiG7Lzg1Mw1F3KyCkkqvbcvSTATAeoy6918bj8Qzex0/jIciFOHVlfPKGbA=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9219
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 25 Nov 2024 17:55:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5804
+ <docs@lists.yoctoproject.org>; Mon, 25 Nov 2024 17:58:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5805
 
 Hi Antonin,
 
 On 11/20/24 4:10 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> We used to have packages here and there in system-requirements.rst for
-> each distro. Instead, gather all the dependencies in poky.yaml.in so we
-> have an overview of what we provide for each distro.
->=20
-> Use yaml ">" to list the dependencies in alphabetical order, one entry
-> per line, which makes them easier to read and compare among distros.
->=20
-> Rename UBUNTU_=E2=80=A6 variables to UBUNTU_DEBIAN_=E2=80=A6, since these=
- are used for
-> both distros.
->=20
+> inkscape used to be a requirement to convert SVG images to PNGs/PDFs,
+> but we replaced it recently by rsvg-convert.
+> 
 > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 > ---
->   documentation/brief-yoctoprojectqs/index.rst     |   2 +-
->   documentation/poky.yaml.in                       | 228 ++++++++++++++++=
-++++---
->   documentation/ref-manual/system-requirements.rst |  20 +-
->   3 files changed, 214 insertions(+), 36 deletions(-)
->=20
-> diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation=
-/brief-yoctoprojectqs/index.rst
-> index c5400e4ac8dafb9e3d1e4c14a065d02ac3e2f7a7..3d249eefaae35239b92c8a2f8=
-dedf27ec2dbdca0 100644
-> --- a/documentation/brief-yoctoprojectqs/index.rst
-> +++ b/documentation/brief-yoctoprojectqs/index.rst
-> @@ -78,7 +78,7 @@ You must install essential host packages on your build =
-host. The
->   following command installs the host packages based on an Ubuntu
->   distribution::
->  =20
-> -   $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-> +   $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL;
->  =20
->   .. note::
->  =20
+>   documentation/poky.yaml.in | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
 > diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-> index 66f758fe85fcd10291f00902639b43a1da639b0f..b840320a89bfadb259d5d9d0e=
-11f951c55e13389 100644
+> index b840320a89bfadb259d5d9d0e11f951c55e13389..d0c8973db27340838f78f560c01d44fb67771b25 100644
 > --- a/documentation/poky.yaml.in
 > +++ b/documentation/poky.yaml.in
-> @@ -1,3 +1,7 @@
-> +#
-> +# Macros used in the documentation
-> +#
-> +
->   DISTRO : "5.1"
->   DISTRO_NAME_NO_CAP : "styhead"
->   DISTRO_NAME : "Styhead"
-> @@ -10,31 +14,6 @@ BITBAKE_SERIES : ""
->   YOCTO_DL_URL : "https://downloads.yoctoproject.org/"
->   YOCTO_AB_URL : "https://autobuilder.yoctoproject.org/"
->   YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
-> -UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo g=
-cc \
-> -     build-essential chrpath socat cpio python3 python3-pip python3-pexp=
-ect \
-> -     xz-utils debianutils iputils-ping python3-git python3-jinja2 \
-> -     python3-subunit zstd liblz4-tool file locales libacl1"
-> -FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 =
-unzip perl patch \
-> -     diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath =
-\
-> -     ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl=
--bignum socat \
-> -     python3-pexpect findutils which file cpio python python3-pip xz pyt=
-hon3-GitPython \
-> -     python3-jinja2 rpcgen perl-FindBin perl-File-Compare \
-> -     perl-File-Copy perl-locale zstd lz4 hostname glibc-langpack-en liba=
-cl"
-> -OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make =
-wget python-xml \
-> -     diffstat makeinfo python-curses patch socat python3 python3-curses =
-tar python3-pip \
-> -     python3-pexpect xz which python3-Jinja2 rpcgen \
-> -     zstd lz4 bzip2 gzip hostname libacl1
-> -     \n\   $ sudo pip3 install GitPython"
-> -ALMALINUX_HOST_PACKAGES_ESSENTIAL : "-y epel-release
-> -     \n\   $ sudo yum install dnf-plugins-core
-> -     \n\   $ sudo dnf config-manager --set-enabled crb
-> -     \n\   $ sudo dnf makecache
-> -     \n\   $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzi=
-p perl patch \
-> -     diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath =
-ccache \
-> -     socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue pytho=
-n3-pip \
-> -     python3-GitPython python3-jinja2 python3-pexpect xz which \
-> -     rpcgen zstd lz4 cpio glibc-langpack-en libacl"
-> -PIP3_HOST_PACKAGES_DOC : "$ sudo pip3 install sphinx sphinx_rtd_theme py=
-yaml"
->   MIN_PYTHON_VERSION : "3.8.0"
->   MIN_TAR_VERSION : "1.28"
->   MIN_GIT_VERSION : "1.8.3.1"
-> @@ -46,3 +25,202 @@ MIN_DISK_SPACE : "90"
->   MIN_DISK_SPACE_RM_WORK : "40"
->   # RAM (Gbytes) needed to generate qemux86-64 core-image-sato on Ubuntu =
-22.04 (x86-64) on a 4 core system
->   MIN_RAM : "8"
-> +
-> +#
-> +# Dependencies
-> +#
-> +
-> +# Shared between distros
-> +PIP3_HOST_PACKAGES_DOC: sphinx sphinx_rtd_theme pyyaml
-> +
-> +UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL: >-
-> +  build-essential
-> +  chrpath
-> +  cpio
-> +  debianutils
-> +  diffstat
-> +  file
-> +  gawk
-> +  gcc
-> +  git
-> +  iputils-ping
-> +  libacl1
-> +  liblz4-tool
-> +  locales
-> +  python3
-> +  python3-git
-> +  python3-jinja2
-> +  python3-pexpect
-> +  python3-pip
-> +  python3-subunit
-> +  socat
-> +  texinfo
-> +  unzip
-> +  wget
-> +  xz-utils
-> +  zstd
-> +
-> +UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
-> +  git
-> +  inkscape
-> +  make
-> +  python3-saneyaml
-> +  python3-sphinx-rtd-theme
-> +  sphinx
-> +  texlive-latex-extra
-> +
-> +
-> +FEDORA_HOST_PACKAGES_ESSENTIAL: >-
-> +  bzip2
-> +  ccache
-> +  chrpath
-> +  cpio
-> +  cpp
-> +  diffstat
-> +  diffutils
-> +  file
-> +  findutils
-> +  gawk
-> +  gcc
-> +  gcc-c++
-> +  git
-> +  glibc-devel
-> +  glibc-langpack-en
-> +  gzip
-> +  hostname
-> +  libacl
-> +  lz4
-> +  make
-> +  patch
-> +  perl
-> +  perl-Data-Dumper
-> +  perl-File-Compare
-> +  perl-File-Copy
-> +  perl-FindBin
-> +  perl-Text-ParseWords
-> +  perl-Thread-Queue
-> +  perl-bignum
-> +  perl-locale
-> +  python
-> +  python3
-> +  python3-GitPython
-> +  python3-jinja2
-> +  python3-pexpect
-> +  python3-pip
-> +  rpcgen
-> +  socat
-> +  tar
-> +  texinfo
-> +  unzip
-> +  wget
-> +  which
-> +  xz
-> +  zstd
-> +
-> +FEDORA_HOST_PACKAGES_DOC: >-
-> +  git
-> +  make
-> +  inkscape
-> +  texlive-latex-extra
-> +  sphinx
-> +  python3-saneyaml
-> +  python3-sphinx-rtd-theme
-> +  git
-> +  make
-> +  python3-pip
-> +  which
-> +  texlive-fncychap
-> +
-> +OPENSUSE_HOST_PACKAGES_ESSENTIAL: >-
-> +  bzip2
-> +  chrpath
-> +  diffstat
-> +  gcc
-> +  gcc-c++
-> +  git
-> +  gzip
-> +  hostname
-> +  libacl1
-> +  lz4
-> +  make
-> +  makeinfo
-> +  patch
-> +  python
-> +  python-curses
-> +  python-xml
-> +  python3
-> +  python3-Jinja2
-> +  python3-curses
-> +  python3-pexpect
-> +  python3-pip
-> +  rpcgen
-> +  socat
-> +  tar
-> +  wget
-> +  which
-> +  xz
-> +  zstd
-> +
-> +OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL: GitPython
-> +
-> +OPENSUSE_HOST_PACKAGES_DOC: >-
-> +  git
-> +  inkscape
-> +  make
-> +  python3-pip
-> +  texlive-fncychap
-> +  which
-> +
-> +ALMALINUX_HOST_PACKAGES_ESSENTIAL: >-
-> +  bzip2
-> +  ccache
-> +  chrpath
-> +  cpio
-> +  cpp
-> +  diffstat
-> +  diffutils
-> +  gawk
-> +  gcc
-> +  gcc-c++
-> +  git
-> +  glibc-devel
-> +  glibc-langpack-en
-> +  gzip
-> +  libacl
-> +  lz4
-> +  make
-> +  patch
-> +  perl
-> +  perl-Data-Dumper
-> +  perl-Text-ParseWords
-> +  perl-Thread-Queue
-> +  python3
-> +  python3-GitPython
-> +  python3-jinja2
-> +  python3-pexpect
-> +  python3-pip
-> +  rpcgen
-> +  socat
-> +  tar
-> +  texinfo
-> +  unzip
-> +  wget
-> +  which
-> +  xz
-> +  zstd
-> +
-> +# note: indent below is for sphinx's code block (three spaces)
-> +ALMALINUX_HOST_PACKAGES_ESSENTIAL_CMDS: |-
-> +     $ sudo dnf install -y epel-release
-> +     $ sudo yum install dnf-plugins-core
-> +     $ sudo dnf config-manager --set-enabled crb
-> +     $ sudo dnf makecache
-> +     $ sudo dnf install &ALMALINUX_HOST_PACKAGES_ESSENTIAL;
-> +
-> +ALMALINUX_HOST_PACKAGES_DOC: >-
-> +  git
-> +  inkscape
-> +  make
-> +  python3-pip
-> +  texlive-fncychap
-> +  which
-> diff --git a/documentation/ref-manual/system-requirements.rst b/documenta=
-tion/ref-manual/system-requirements.rst
-> index b33518c7f1e0c76caa70a719e023b9c405b744e2..ca75f849d0ad10344900c7525=
-f7163726ffe5400 100644
-> --- a/documentation/ref-manual/system-requirements.rst
-> +++ b/documentation/ref-manual/system-requirements.rst
-> @@ -150,7 +150,7 @@ Ubuntu and Debian
->   Here are the packages needed to build an image on a headless system
->   with a supported Ubuntu or Debian Linux distribution::
->  =20
-> -   $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-> +   $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL;
->  =20
->   You also need to ensure you have the locale ``en_US.UTF-8`` enabled::
->  =20
-> @@ -172,8 +172,7 @@ If this is not the case, you can reconfigure the ``lo=
-cales`` package to add it::
->  =20
->   Here are the packages needed to build Project documentation manuals::
->  =20
-> -   $ sudo apt install git make inkscape texlive-latex-extra
-> -   $ sudo apt install sphinx python3-saneyaml python3-sphinx-rtd-theme
-> +   $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_DOC;
+> @@ -62,7 +62,7 @@ UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL: >-
+>   
+>   UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
+>     git
+> -  inkscape
+> +  librsvg2-bin
+>     make
+>     python3-saneyaml
+>     python3-sphinx-rtd-theme
+> @@ -120,7 +120,7 @@ FEDORA_HOST_PACKAGES_ESSENTIAL: >-
+>   FEDORA_HOST_PACKAGES_DOC: >-
+>     git
+>     make
+> -  inkscape
+> +  librsvg2-tools
+>     texlive-latex-extra
+>     sphinx
+>     python3-saneyaml
+> @@ -165,7 +165,7 @@ OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL: GitPython
+>   
+>   OPENSUSE_HOST_PACKAGES_DOC: >-
+>     git
+> -  inkscape
+> +  rsvg-convert
 
-Aren't we missing the PIP3_HOST_PACKAGES_DOC here?
+thought: maybe keep the packages alphabetically ordered?
 
-Also FYI, using pip on the system level is a very bad practice (as a=20
-matter of fact, it's not even allowed on Debian Bookworm anymore). We=20
-should probably rather document how to do this in virtual environments=20
-for example? One thing after the other though, we can start by just=20
-migrating the docs variable for now :)
+Otherwise pkgs.org agrees with this change, so
 
->  =20
->   Fedora Packages
->   ---------------
-> @@ -185,8 +184,8 @@ with a supported Fedora Linux distribution::
->  =20
->   Here are the packages needed to build Project documentation manuals::
->  =20
-> -   $ sudo dnf install git make python3-pip which inkscape texlive-fncych=
-ap
-> -   &PIP3_HOST_PACKAGES_DOC;
-> +   $ sudo dnf install &FEDORA_HOST_PACKAGES_DOC;
-> +   $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
->  =20
->   openSUSE Packages
->   -----------------
-> @@ -195,11 +194,12 @@ Here are the packages needed to build an image on a=
- headless system
->   with a supported openSUSE distribution::
->  =20
->      $ sudo zypper install &OPENSUSE_HOST_PACKAGES_ESSENTIAL;
-> +   $ sudo pip3 install &OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL;
->  =20
->   Here are the packages needed to build Project documentation manuals::
->  =20
-> -   $ sudo zypper install git make python3-pip which inkscape texlive-fnc=
-ychap
-> -   &PIP3_HOST_PACKAGES_DOC;
-> +   $ sudo zypper install &OPENSUSE_HOST_PACKAGES_DOC;
-> +   $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
->  =20
->  =20
->   AlmaLinux Packages
-> @@ -208,7 +208,7 @@ AlmaLinux Packages
->   Here are the packages needed to build an image on a headless system
->   with a supported AlmaLinux distribution::
->  =20
-> -   $ sudo dnf install &ALMALINUX_HOST_PACKAGES_ESSENTIAL;
-> +&ALMALINUX_HOST_PACKAGES_ESSENTIAL_CMDS;
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-It's a bit odd to have a different way to add the packages to install=20
-depending on the distro, couldn't we have all distros have no=20
-indentation, or all have some indentation?
-
-Cheers,
+Thanks!
 Quentin
 
