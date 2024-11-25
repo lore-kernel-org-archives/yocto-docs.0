@@ -2,206 +2,396 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E984ED58D78
-	for <webhook@archiver.kernel.org>; Mon, 25 Nov 2024 18:12:45 +0000 (UTC)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.78])
- by mx.groups.io with SMTP id smtpd.web11.25678.1732558364920902254
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1E02ED58D7A
+	for <webhook@archiver.kernel.org>; Mon, 25 Nov 2024 18:27:06 +0000 (UTC)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.51])
+ by mx.groups.io with SMTP id smtpd.web10.25681.1732559218113629580
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Nov 2024 10:12:45 -0800
+ Mon, 25 Nov 2024 10:26:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=gg9wNsbp;
- spf=pass (domain: cherry.de, ip: 40.107.21.78, mailfrom: quentin.schulz@cherry.de)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=ILQheKie;
+ spf=pass (domain: cherry.de, ip: 40.107.22.51, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UOM+mmg9yRV4PCX1lfMUCDCpeRTqg3DttD328JB1miZbw3VpWSRaOg/M6uLWfgZel73l1f65NS0JFD8eI2fnI6jYDmEA5KTUnPHwDdYuvyA40vw3uYap0QQkVByOEey5yJPboEBOo2EaypN1+33qMRpmtoJ+LBNaxT4k2+bSGWO+3O5ug4VNptXmFhL1oz0E6EYnQr80gomflIxa3jlDcW+bjI6isLSQiB9JoBiQs9jhQBKJvHgUDzhVnGvib/j5wLUOwKWR7Gto4eKjPsjyQ5e62QmczdiAuytrtllR+WfGk0cIfygPZHzM4Wnn2zf44x/PquW7iZrnjI4lcl0V3Q==
+ b=fGzrq5JOXAEopjTYG9myrthbZj8X2edqoCn6CjY5M41Hy/qp2VjIcEOvbsgDXaEg2vcgU9p/GptBWIG1phJlJakcNgvPZ99ZvPT6N4oxqPmeIXQ0ceFxl35tH6qh7H92gcM6IUHe6I84zPOlVg3x0+xCibAOl1gp2Zqgiuk4snOQ9R8ZZiuyy73GW/5qCBM8WTk1eOAPeXW0ultxWLTO1jiValcAYb6un5XTqM9xnK7vXft6ZGRfbGZmdRAHj+jOzkr94AV1hMYx8RXafmKlzqCnOL0eCPSyU3p73rQqbE6iqSV7FgNgN6KZnXjV97kJKlY9Yr6ziQ3v8Ht/J/laPg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mIonqkTZSNQJST6y6KwNjLhjwiGTqJWAalhn0zjRAhU=;
- b=PfsVI33aYkUX0jp1+e7ccAWfBNmn5bxR9ZE5ZddiifIJ4j1mzHGifSrniX4mzoVBO4rBxbMlZSFW61sDcuilDKBeKMbA4+oHUribWhVuneRcK3RctMo7kGkZBcaICOxGBkr2x3zbKcrTppUzBoxVKyt6Vl3dL4inYfEtWLqAntAu21Qbn4RY8mG6Dncp1XwjvYbNlyIsnCdQtfN8wCWjNL/bRHWuzgTcOYZxf9gIy0NIq7N83ID0rQs56L0AIwE5dC2Vqo/BhdaEtV7G0tvDjeWRnrzt5VFFCxp/sX3br3t9KMObHj3vSLErAF0YbB+e29tCqgva8VEp4uf2j/zsog==
+ bh=2IO2thHBpX+6zAp4+dVAohqHW8X3QQHeZ63T42BqYkc=;
+ b=Ul4JkdZJC/pj8zac/0T89lYhtXufdS1O5gsi6/yZMA+cHlR84sr7/K1K2mZt131jHs5hYlCxbJ/KZaslyYFNeB6Y6W1JzPF4ZRhQjB/hwnNit4NEjdRwrbdF7bkcV6py0uNFQU68JHtFm7gK8BHWVSnjqOMLi236cBdiDqWM/T5gvmHhTgOEwDFrPl32278be9Zr9h/b6/aU9Eno/TV3WL2AsQQOu8Wq0Zx/TbuoAso5wibg9L5KR5XpVe5CSg0TyhFU/WkgasCj6s5OmrbOhtUu5pcEE7b0CjZwORWvk2qDaj4mQp4NZt43DmqgfWWtGBr4EKWZoVkrWYUtIwrYGA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mIonqkTZSNQJST6y6KwNjLhjwiGTqJWAalhn0zjRAhU=;
- b=gg9wNsbpsOiJ5QdKgTgxo9g3nwUNlc38aW8WHEwgxO7njoYq1SNpefMnojRbVP62vpM5liAEGpoE3fOPdKr/Z04l/FPzo44SMt+gJ6Uu6T9Jkw0KX4/FCLChadQKfYRcFIfPI/HPQSw3crh2iYhm7oULT1yBMSa+0R+oxXoOct8=
+ bh=2IO2thHBpX+6zAp4+dVAohqHW8X3QQHeZ63T42BqYkc=;
+ b=ILQheKieH3tCLN48vsHtRhMIwiF9lQcb034YKGyov0eM0Q5gSHKynuhLIaoLPT9Wls2aY3ou0sG6WO+E2TI5iHF3agiwiOa9EkOEzgftzXZddybFtadxuh6rcCjv6PsgOgFIb60SiLw9uNXwqT9IxOlWa1PBHyT6VoXdQoTwDG4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by VI1PR04MB6941.eurprd04.prod.outlook.com (2603:10a6:803:12e::23) with
+ by DB9PR04MB9554.eurprd04.prod.outlook.com (2603:10a6:10:302::10) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.21; Mon, 25 Nov
- 2024 18:12:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8182.18; Mon, 25 Nov
+ 2024 18:26:51 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%6]) with mapi id 15.20.8182.019; Mon, 25 Nov 2024
- 18:12:41 +0000
-Message-ID: <23c7eedc-7085-4f83-8786-82b0ff193fa2@cherry.de>
-Date: Mon, 25 Nov 2024 19:12:40 +0100
+ 18:26:51 +0000
+Message-ID: <3b8d482f-93c4-4ad8-ad74-6ed8365fcede@cherry.de>
+Date: Mon, 25 Nov 2024 19:26:50 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [yocto-docs PATCH 5/5] poky.yaml.in: add missing locales
- dependency
+Subject: Re: [docs] [yocto-docs PATCH] Add scripts to build the docs in
+ containers
 To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20241120-update-doc-deps-v1-0-50e267ae4123@bootlin.com>
- <20241120-update-doc-deps-v1-5-50e267ae4123@bootlin.com>
+CC: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20241121-docs-build-dockerfiles-v1-1-3b54e1237bf5@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20241120-update-doc-deps-v1-5-50e267ae4123@bootlin.com>
+In-Reply-To: <20241121-docs-build-dockerfiles-v1-1-3b54e1237bf5@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0157.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a2::13) To AS8PR04MB8897.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: FR0P281CA0114.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a8::16) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|VI1PR04MB6941:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3f1d021a-5f32-4e5d-a23e-08dd0d7cc071
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB9554:EE_
+X-MS-Office365-Filtering-Correlation-Id: 12ab5be0-dad6-49b1-c275-08dd0d7ebb21
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?YkZqQk5KUWtUZk8yc1pEVVZyeHduUVgvUUxzVXFUNWx4YTRaeWZPRWQwZmJi?=
- =?utf-8?B?T25XTHlVTU9iTzRzTko1WDdKTGpEVkhSbXYwRkk1WURoNGY4ZlZUTDZVdVlJ?=
- =?utf-8?B?Q1Ztc2RackxsVmtSV0pNOFVyckt4QTgzTExBdHd6VCtGZEJuZ2V3cHFtLy8v?=
- =?utf-8?B?b284VGE1b1ZMbXVaTVZzeFZXcWtmSFdvNENaL05KenlFY2ZYaEFLc2ZGMEMy?=
- =?utf-8?B?akRQeisrV1E0emJTSVlaL0JCWTdSSmFFSjdxZUdUZWM0U0IvbUJoc3JFZkYv?=
- =?utf-8?B?bzhmYVQvR0ZBa3QvYnFQTzZUZTBZbnBuY3ZsamJ4eWNzWVZqYU5iUzYrUU04?=
- =?utf-8?B?Q3o4ZS83UCt2MGs2Yjc4RU5Kb3NCekVmSGpJODBydFlla0N1S2NJc1Z3NGNq?=
- =?utf-8?B?bzNvbDlTL2h4OE01WWZpdDBhTHN1Qy9SelNxQ2tvS0YrYkd3U2txYlhPOWpN?=
- =?utf-8?B?S096cGNob1oydUFmaHFoUHVXdHRCS1J5bVdlYmdYcGF4VGpWaldsQjZMYkRk?=
- =?utf-8?B?dU50LzNIUDFJaTRwem9waWlPRUZkcnlKQ1ZoUjZsVjhnZUFSQW9mcXYwV0Jh?=
- =?utf-8?B?RktoajhIcXZJVWpjOUE2eUhsRVhjSzNkSTFxbm5qbm9kY2hpWUVHdFRxWkZ5?=
- =?utf-8?B?WnViRVRsTHNWejN4ZmJBM3JlYzVQTUs5b3NsdVRwcHl1YU9ST2FkZkV5a0Vi?=
- =?utf-8?B?TFhQWEtDRWhuQndqUXNiVng1Qm52TGZBZ1hqRHhwU3JkNGF4cVRTYUxtOGl0?=
- =?utf-8?B?VVdKTC93dUhzWHdMc2N2ZGdWcVh5ZDVFTDFnUnpGWW8rNHdHaVJrbUNranpq?=
- =?utf-8?B?ZDJ2VnlGQ2ZBMStuV0VHT1dPWUJKa1pLaVE0NEJhTFpBZzVjZUw5eFZ5YjhV?=
- =?utf-8?B?czFCYUlBR3B4WUcvYlZ1SlhYZS92NTBEUEFPQXl5WVBYT2ljOG9tQW1sNW9h?=
- =?utf-8?B?eWRkVU9WK2FuR0V2aG4xU2czbUdzTVhaam1WcUNRc1VLYmxGUnc2R1hDZjR6?=
- =?utf-8?B?dTNPUTBZOGE0UzlkM3ljd2VlalFqcWhiRzQrbjF1Y1hkUWxkdXVnS3ZaRHhL?=
- =?utf-8?B?WmR0YjVJWWZYU0k0U1REUXNFRTBuTDRsem14M29GWThyS0tzOWptTDFlakhS?=
- =?utf-8?B?b0owTlY5VDVIWFdqSnNUVHd2THN4bE8yS0F4T0w3NzlGUVhlMzVHSTlSTCtW?=
- =?utf-8?B?U3VWL3IvTWRuY09GK3A3a2pBSzd3bzgreitDUHpjU05EWDd2bkNwa05tenow?=
- =?utf-8?B?bjlVUk9uajhzTExnNDZBb2U0OUFwTExPSXpMR0VxMU1TaDI2UEtueTdSUHF6?=
- =?utf-8?B?MDkvUXQwMDlyVEQwbDhIRkJrdlNSRkVseWszN3RCTys4U1g2UGx6NUN1UDZy?=
- =?utf-8?B?M0F0emhSV1FaeDhJNGk3K3JPUVlJQjV6MXUwTDVEYlNUWEl0cjBRN204Y1Z0?=
- =?utf-8?B?VlhXNHM1YklzMytVOGV2TGhyckZQbnM3SG1JUWFuRUczK1JSc3dnOGxLVHhD?=
- =?utf-8?B?c3B0L0tYenRudXBzUVpFNWhrMEhTMkNXeERLL1VMYzRhakRqeDZjRmV1aVJz?=
- =?utf-8?B?OGNiQ3l1bXVkNWhKOCt3VEJFWmRxOE0yK0JpVEF4MlBhdDE2c21BOFVuSG5t?=
- =?utf-8?B?SDgyb28wOXJlelR0cWd2c3Q0RVRqYldNWTRMRlh5VmV5Y1NaRmJuVXZiYW9V?=
- =?utf-8?B?QVRHN2NFQ1dwWTFhS1NDamdWMWx4SGx3aDl1TkU3cy9RcnpMcU13eGRscUdJ?=
- =?utf-8?B?elpMZ3ZRSUVPN0dzTHNRRlBaSXFLbzZtRFhURXIvcUtNcHYxWS9hR0l5VjM3?=
- =?utf-8?B?eEh0UXRaek55VDRvRWVydz09?=
+	=?us-ascii?Q?Z35v+3Lx5v6TwOdclEv0CSKo1wTefdrOuRdhy/hoNqA5Jg9sZGOoU69Shoy4?=
+ =?us-ascii?Q?+FC2veJNkPECNCegQqtLJSnulvFmztW5RkiYdDPIYgOMVnBrCIIg1LGPSMkH?=
+ =?us-ascii?Q?syq/KRZsRVog9HQ/YgTvahd0aoITZM3usl6crFHUzLLhxKeOrFVo20frkS2h?=
+ =?us-ascii?Q?/knPjhHhjHXsn0hLLgA3ZsU51q/9Hb+iSYv6L7gv2YR3Z6fHZ6JmHzaYXIMJ?=
+ =?us-ascii?Q?f5/F+ubulxJARQRzDy3vDpi6FkHwK7zm8z40W30KkATeEuWDHPupfknQGWRp?=
+ =?us-ascii?Q?BN1a4knX5WjTS2vV5kjTtV415T5tD/Gm32rC09ENY9otUvk/YwA+4BP9Gwjk?=
+ =?us-ascii?Q?BkIPdLalMH20BZ36Mw1OYWzZTXIJhO+FmFjXdY2OYjmUK04IGDXEfVJ5sSHM?=
+ =?us-ascii?Q?9Dbi+0882cAAalNoYFm2WDh1g/eL4ztefSiLUJNtGB5ywMkthdAVu0agzgXM?=
+ =?us-ascii?Q?YPzvPa5hTaNqHxzBoddTP5pXaI32SNknA+e3lBdZKOqQ46mh5JB8DQBnuuvI?=
+ =?us-ascii?Q?63mOHlQNoibOgjf0tYK/stBIb9Q+sMjUmmA6YLEJxJP3BkB8GWsMasX/jd+n?=
+ =?us-ascii?Q?SeSatAROV6ViQd4EcP7kZYJwcqAG8Hpds2KkFStQmLUNRBgQR/1j+oO60PaR?=
+ =?us-ascii?Q?iSmFXsUZwQonYcaY7EHtS4Ej6LyKddhTqWPzvuOmfGZ3ibjxSjYGtbaCy5Kl?=
+ =?us-ascii?Q?KGNNQkoBeYx8z79so5Vr2oplkpflIAvpeqGERnelSosXG826ub0KyLj4Jxm+?=
+ =?us-ascii?Q?xABTsH28MM5zYP2iz5UUe3EAsVKLIvxGLYoxBBqwhEyEqgumDMmtcfRpjXDr?=
+ =?us-ascii?Q?moBfxd85UWQRlc+EHS//DMzAqgQuBCsZgMtYqF5vp6PSnLwkrFsKLgxO1nUn?=
+ =?us-ascii?Q?TC7WEVyu/DjjLXWUg7XDwJATUSoRb7PNGs5DCgewBXZIyUJmhmiYD4DYGzI1?=
+ =?us-ascii?Q?JX9QNuBxi3F+MIKjzG00LAYydnU/gmQpUe1g+A9OdukPivDxo1MoQbLBK3Pa?=
+ =?us-ascii?Q?pQvT24KJ45Dv7qsybVBvVz9XoJnkKhpQXb91QPoKy5hrf+LVjX8Luk0ZUJhl?=
+ =?us-ascii?Q?QMnmctI3CFmY3ggrPPb4wS1Vv+SABvIdsvO5lOVaqsbM45dUtCLGIt74hSPe?=
+ =?us-ascii?Q?n7b6M1s6hTcVMqED8pIztV/coohT7c++3ET3mKGAYxX2F1FakAMGlhzD/ohk?=
+ =?us-ascii?Q?PMbzSzG/0io0xkjIvjGIZXfV1dpVd+1hi0LhRhCecvKyAO55ACPJtPHPvQEl?=
+ =?us-ascii?Q?SIMZfls+u9vwNl9dLkl2qEzwliz4RYJ/tKfFu72BqWxkmm/bJzaFFGlvtp5N?=
+ =?us-ascii?Q?y4Az3LRf7WqtcBZ2iNObo82eZ8JSCTSsobkUvri1twapMg=3D=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?QU1mVjgrOE5GcjF5OTNMTzcrQ2xtR1h5TDV1VDZyWm5ueTJtUGI4My9vaTRo?=
- =?utf-8?B?MGNycE9zb3NpV1IvZFEreUJxY2gxMld3OTVNVHNHTkxSUzZGdXgybExvQ3BK?=
- =?utf-8?B?WjJPeTZOOGEyYzlzMFBmaWlqWjRFZllZRzBVNlVlN0lTZTh1bWc3YUcyTGx2?=
- =?utf-8?B?RUlBWS9ldGdWZktFV3JGa29BdTdSd1JrNmR1K3IrWjQ4aVRhQUlNMlNJb2RV?=
- =?utf-8?B?Y3JYWjlDeFoxWDZWc3ZjaDZLRlFJZS9qMVhZaUw2VzlyRzhiU0I3VElTZ245?=
- =?utf-8?B?VkswU0NmU0I1S21sVzhFYjlLNndKTk5nUERZR1RUdGZhYVV1UDNENXZSNm9r?=
- =?utf-8?B?K2EvUjA0dEt0MU9scmpFV291YmZwZko4TUhRS09IelpOQVRxTUVzTEN1WGp3?=
- =?utf-8?B?WWNRcUNTL1FhaVRic3FDQVA0R21FbytTZU9IeGprTGNJK1JCUlh2N3hYeWZy?=
- =?utf-8?B?WUJCRnBuU0E1SVhPZE1CejZCeENmZWRaeU12ajZURk91dVlIeG9KODFvVWJV?=
- =?utf-8?B?MVMyazlrM3ZvRWt0cnIvTWgxRCtwR09sSWJhUjZyTVVaL2c4dTBwcDZ1QWFL?=
- =?utf-8?B?S3RUVUppd2FwTTAvanFCYkw1NEpHQWpveWN1WmswYWQ5NUlpY05kZ3lUdzhE?=
- =?utf-8?B?eHhmNkxIbWxCNGFabklvY2JTaGF0WFAzdW8xaThGdnVPaHVaRFk1SDRXeFRs?=
- =?utf-8?B?bGhWS0VVUDE2a0Q5UDlkcXVqL0FSZWJEQW9QWlpiNm1yNGFYVm1CSEpTZjk1?=
- =?utf-8?B?cEhINGt4ZUEweUdXRnpGTllOamM0Wm1QeE5YZm1MbFMzVERGM1RKWEpTdUkx?=
- =?utf-8?B?dFJqQkFkc1Rob2o3L2FpVm5hN0dTYXNaOHdiOHJ2ZHkvbHI0SWRCaTZId0lU?=
- =?utf-8?B?RHNCRnlXb24yajY5Y05aeC9ULzY0bkE4ZE5yMnk0RDVMYXE4aVhZaVlWTzdz?=
- =?utf-8?B?aU5vUDJDZGpKdGxiNFNnamNCTFdLeGNmVVNaRk9YZHJpV0JIRWRGL2xWZ1V2?=
- =?utf-8?B?OVlwWlNVQzNDVVJGR2dLaTU4OC80RjdqdmcxL2FZRk4wcjVDd2owWW5DSE1z?=
- =?utf-8?B?QzJJL1AwYmRWSjRYT0pSOFZvSUhvZkhVT282NE0rdW52OGRXT3pHRVFYREho?=
- =?utf-8?B?UzNLdXdLTDE5dlpIK3JrN0FzSlJwVDVhcEg4OUIxVm1DOGtuK3dLSkNtcjBH?=
- =?utf-8?B?cXlWS2hQMjE0ZE92ZFI1RGRPVTQ4Z2dDN2NaSXdna01heU51aEtQbUkwWGd1?=
- =?utf-8?B?RENOaE1zUjBzL2Z1SndyWFVuU0RJcUVoT3lxN0pIMzlNMGhoM1NuVGZ5bkV5?=
- =?utf-8?B?WnRCbmIzY3o5ZE5WbVdzV1RkVXc3OXlWUzlnSDBoY083S2hWSzFqRkQ4bERU?=
- =?utf-8?B?SW82WTRqa0tGZGhjRWZuYlNZRVVDc003MFhjaDZnWStkN1ZpUlBmYldUTWdE?=
- =?utf-8?B?cGFOelVvWFNPak1UYmlsVkNIWVFjeFVxNlhsUW96cXNBN3RyeE16ZDJhNFFD?=
- =?utf-8?B?Zmo0S2VOSHVObE5weEZtSlVzRUcxWEU0OExBR2tEQUlZdS9SR0NONTdxeXJs?=
- =?utf-8?B?d1NINEhrRXA4RGpBSGtNQkJxOUQ4YUxJS1VvOVRCVnZKeHB4d3ViSGxkY29J?=
- =?utf-8?B?RjVSTzg2Rkl3K2t2SjNtWXF2a1ZFUzFxTW0vZ1lmWEprSTJIYU1MOXh4ZWFC?=
- =?utf-8?B?QnRXYXRzTkFmc1VkcWY0TEEvTmpzSkY0bjZJejZWY1RBSHRGa2hDZXN1SSs2?=
- =?utf-8?B?MGI4R0c3a2JQQUR4WEJPeVl0RDNnY1FKTWNqOCsrcnlyZ2s1ZS8vWHNwWlZm?=
- =?utf-8?B?YlpXUGE0bFkxR1dyYmhrT2crckwrWThGc0wvNGxlSTBDZG82TWJ3YWFCZW1t?=
- =?utf-8?B?bVNmNytVcmxxdWRQQlR1UCtkYUliM0d3QzY4TEZHWi91Tk0zZm16VDRMaVU2?=
- =?utf-8?B?NlB5SE1jRXpvVWZrdkNZSFREMmZuc3g0RDdEeU9EUm9JYmVqSGFXN0NiUFRw?=
- =?utf-8?B?Z2h2OUp0ZHNYbkFmWWpUa1RoS3MwbXFKZEl4NWNTb2p4a09QVTdYV0g0VlR3?=
- =?utf-8?B?YW9LVGNIKzIrb0kzNkxUaGdTQys5VTJKVGZwZWQzWjB5cXkxZFNVRVN2QkVY?=
- =?utf-8?B?WlQzbWdSa2drbVM2RUNtU3FZK0w2a3NIaGF2RzRGajBsY0VvN0V3U0ZwWXQz?=
- =?utf-8?B?SWc9PQ==?=
+	=?us-ascii?Q?tqKchRE2laOCJWSTniGhnVEMf9smoOBs2ZuWISePWLQ8syrWzzxQiM4OJkHh?=
+ =?us-ascii?Q?HhK1h6+hNBPlAJCLJPIQHVTmtNjeRpP2m/jQcZpWMRL/TDJUNc9yGb8BR+GY?=
+ =?us-ascii?Q?+zCyySl7yYYf+mlG9bQrvSk+yC7AGCCG2r+nWCZoo/pC3KY1c851lwEWm2D9?=
+ =?us-ascii?Q?Q4yUDU+k2To0FunHA+Ngdh3u3qtAZ03OpEY+8maXl1x/v+umsGtwwCwTCuHI?=
+ =?us-ascii?Q?WFPS/CEzHdCGgPxPMTps0U64BwSOF7NaJR8cz3T4r5Itiq98gfw9E9m1y4ie?=
+ =?us-ascii?Q?TWnAjcJCNUoTrhZvRohmyKPI7DnxQonBdmUx+acGhD+vmIop4iJsVdUEnceK?=
+ =?us-ascii?Q?AuXhJuFD46yZVVd9rocSIIzv/VGncbKxCnvu2fHNq7GNYppu5MdzwxrvtKvm?=
+ =?us-ascii?Q?xPqYyfjNva+Uyj0NdGxKJH0lr43YfjHuv2gBWHxJZHfBOQE+d4GHJyLygncu?=
+ =?us-ascii?Q?ZJ3UzIc9S15yCS1qcUFFrqM71qA5jHpS50Tx36znOSWLhSOhiKR4864nC4Ab?=
+ =?us-ascii?Q?4NPtX6YapnJxHKuUaxFU8qmyoPHL5joggoh7LbWnVZdSoHVYIEh7ci5rVVVV?=
+ =?us-ascii?Q?+v4n52GMCqi4yO9w6I09BVZxYjHeaOEk66femQLZLd64YXriLztbNpG053xa?=
+ =?us-ascii?Q?nh38yK2tqFzvGpg9StOCZZCkcNuruMNSlM0QiGCJsWhAl61rxWZXvFoHCoQh?=
+ =?us-ascii?Q?5xmsbUc3Jl+uSoxW0WJwMivQfB46xMiW71WF6bDW0QRSPq/nq/E1o3CpxUXq?=
+ =?us-ascii?Q?r/u4Vzg9tlmyvTaHyLyNycn4YskYgaCTzEMXDEXrXAUiSMjw4/3C0ZEGWWOv?=
+ =?us-ascii?Q?I/Rsd58IIbDfeeFrruWrzYmxi/T0iOvYD1b1gUqkUuXmV5zBjhdoC8kN4iOy?=
+ =?us-ascii?Q?TEx6S1W0Tl4MWyLOr+vniwKfryyt2btRXVtBUZ1ZQdd/JQnh7flLimRm4VUZ?=
+ =?us-ascii?Q?+eKfFAK0wA9GnodxzokUvLjYrWuZ/DEdHOtX8tNs57h5F3CxOiO+JWRvWMFe?=
+ =?us-ascii?Q?Gxe3UXy6D9Ek4xvJvyke4K9oOSEFU2M//AokMCF9Ff8ZSk5GthMjAQwESwZE?=
+ =?us-ascii?Q?b5yiV/6+fwMtqAYiXmLHITZP57n4K0A6IhazMYkE+Ju8Mj6CpiioTUhPxqCc?=
+ =?us-ascii?Q?HFcXSwP5beQIcQpxocumhAvj7hYukgbqnqypmsO1BskJnlTwGUuMqWhc7gpR?=
+ =?us-ascii?Q?YlMhsJoFdKcASRSruiGX/akz7MS3CLsdezXoJGSnxGxIlrYKME2uM+gSqxDn?=
+ =?us-ascii?Q?Nkq0XdDpwJdPZDzDWfkJOA+ICq5qFKJO/dv6rseUyM9ZDHFRVgwlWcT+ZfpM?=
+ =?us-ascii?Q?sNPDGuVue/2OM+HPJsx9ZBL9SfuencwaVdej/0a9K4HQzYC16lhvKoktxiiX?=
+ =?us-ascii?Q?PwEBNnlF/oODWz+5wpX/F2EpwovLcSs3Rm0EO73eslHTERJjnvgAo2YW5FeB?=
+ =?us-ascii?Q?6WzyOwmDquDpOJypPtOniy3wZqyLXwjbtkAusxbdy2C+1AkjZDYDRi0KZWE/?=
+ =?us-ascii?Q?O5s8barFCt7FkDKcSq0xm2Zh0otPAu2u36paUO8Joe11AEeZbwe0ZKhVvpoa?=
+ =?us-ascii?Q?jBxCSFNJHTtYv1Mnqw06hX/ZdjXEHX8NssPVt+UkUasG+YjPW2joyEz98k9Q?=
+ =?us-ascii?Q?uQ=3D=3D?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3f1d021a-5f32-4e5d-a23e-08dd0d7cc071
+X-MS-Exchange-CrossTenant-Network-Message-Id: 12ab5be0-dad6-49b1-c275-08dd0d7ebb21
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 18:12:41.3366
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Nov 2024 18:26:51.4661
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5Cg7CQplHGuDHlMFoRUgekvdpO/6t4nbdA9CnGYiq4MPwX57veVGPak1p+qlEGN2MTblVqw82XKhjyl97FrCxLDbTOxp+146qT+WD7IugaY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB6941
+X-MS-Exchange-CrossTenant-UserPrincipalName: VkFjhUv1A4ozQ2v39FgyytnJmzgZ4rZ3P9489dg8sdp4CDe+qNl7jt+APdCCjPF+d4jnMkIasjd7W9q/CWfBgTBuqa8/iTMfneEsxNa/bBY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9554
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 25 Nov 2024 18:12:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5808
+ <docs@lists.yoctoproject.org>; Mon, 25 Nov 2024 18:27:06 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5809
 
 Hi Antonin,
 
-On 11/20/24 4:10 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> This is a requirement for building the documentation, otherwise we get
-> (on Ubuntu 24.04):
-> 
->      File "/usr/lib/python3.12/locale.py", line 615, in setlocale
->        return _setlocale(category, locale)
->               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
->    locale.Error: unsupported locale setting
-> 
+On 11/21/24 2:22 PM, Antonin Godard via lists.yoctoproject.org wrote:
+> Add two scripts for building a container image and building the
+> documentation in that image: build-docs-container and
+> container-build-docs.
+>=20
+> For now, the documentation/tools/dockerfiles directory contains two
+> Dockerfiles for building with Ubuntu 24.04 and Debian 12, but we could
+> extend this to the supported distros.
+>=20
+> It should be possible to build the full documentation with two commands:
+>=20
+>    ./documentation/tools/build-docs-container ubuntu-24-04
+>    ./documentation/tools/build-docs ubuntu-24-04
+>=20
+> The first command builds the container image by pulling the dependencies
+> listed in poky.yaml.in. The second command uses this image to build the
+> docs.
+>=20
+> CONTAINERCMD can be replaced by "podman" to build with podman.
+>=20
 > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 > ---
->   documentation/poky.yaml.in | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-> index d95b73c74ad7979609c6e7f4e1be5343968da743..0158203da7d4db9eadf21943d10256c6bc49a290 100644
-> --- a/documentation/poky.yaml.in
-> +++ b/documentation/poky.yaml.in
-> @@ -63,6 +63,7 @@ UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL: >-
->   UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
->     git
->     librsvg2-bin
-> +  locales
->     make
->     python3-saneyaml
->     python3-sphinx-rtd-theme
-> @@ -135,6 +136,7 @@ FEDORA_HOST_PACKAGES_DOC: >-
->     python3-saneyaml
->     python3-sphinx-rtd-theme
->     git
-> +  glibc-locale-source
->     make
->     python3-pip
->     which
-> @@ -203,6 +205,7 @@ OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL: GitPython
->   
->   OPENSUSE_HOST_PACKAGES_DOC: >-
->     git
-> +  glibc-i18ndata
->     rsvg-convert
->     make
->     python3-pip
-> @@ -286,6 +289,7 @@ ALMALINUX_HOST_PACKAGES_ESSENTIAL_CMDS: |-
->   
->   ALMALINUX_HOST_PACKAGES_DOC: >-
->     git
-> +  olibc-locale-source
+>   documentation/tools/build-docs                     | 48 +++++++++++++++=
++++++
+>   documentation/tools/build-docs-container           | 51 +++++++++++++++=
++++++++
+>   .../tools/dockerfiles/Dockerfile.debian-12         | 17 ++++++++
+>   .../tools/dockerfiles/Dockerfile.ubuntu-24-04      | 17 ++++++++
+>   4 files changed, 133 insertions(+)
+>=20
+> diff --git a/documentation/tools/build-docs b/documentation/tools/build-d=
+ocs
+> new file mode 100755
+> index 0000000000000000000000000000000000000000..2fe8aff3a9834e4f5015e04d6=
+4b7462190278004
+> --- /dev/null
+> +++ b/documentation/tools/build-docs
+> @@ -0,0 +1,48 @@
+> +#!/usr/bin/env bash
+> +#
+> +# Build the documentation in a container built by build-docs-container.
+> +#
+> +# Usage:
+> +#
+> +#   ./documentation/tools/build-docs <image> [<command>]
+> +#
+> +# Where <image> is one of the keys in
+> +# documentation/tools/build-docs-container's DEPS_KEYS_YQ.
+> +# And <command> an optional command to run, default being to run "make p=
+ublish".
+> +#
+> +# E.g.:
+> +#
+> +#   ./documentation/tools/build-docs ubuntu-24-04
+> +
+> +SCRIPT_DIR=3D$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null &&=
+ pwd)
+> +CONTAINERCMD=3D${CONTAINERCMD:-docker}
+> +
+> +DOCS_DIR=3D"$SCRIPT_DIR/../.."
+> +
+> +main ()
+> +{
+> +  local image=3D"$1"
+> +  shift
+> +  local command=3D"${*:-make -C documentation publish}"
+> +
 
-I believe this is a typo here and should read glibc-locale-source?
+Should we only require "publish" to be passed instead of make -C=20
+documentation publish? I believe this should be doable with ENTRYPOINT?
+
+> +  if [ "$CONTAINERCMD" =3D "docker" ]; then
+> +    EXTRA_ARGS_RUN=3D"--user $(id -u):$(id -g)"
+> +  elif [ "$CONTAINERCMD" =3D "podman" ]; then
+> +    # we need net access to fetch bitbake terms
+> +    EXTRA_ARGS_RUN=3D"\
+> +      --cap-add=3DNET_RAW \
+> +      --userns=3Dkeep-id"
+
+please add
+
+--security-opt label=3Ddisable
+
+here as well, for SELinux based systems such as Fedora. My understanding=20
+is that for anything that is to be used by either the host or the=20
+container should disable labeling.
+
+> +  fi
+> +
+> +  $CONTAINERCMD run \
+> +    --rm --interactive --tty \
+> +    --volume "$DOCS_DIR:/docs:rw" \
+> +    --workdir "/docs" \
+> +    $EXTRA_ARGS_RUN \
+> +    "yocto-docs-$image" \
+
+please prepend the image name with localhost/ to be sure we don't end up=20
+downloading some yocto-docs-ubuntu from docker.io for example :)
+
+> +    $command
+> +}
+> +
+> +set -eu -o pipefail
+> +
+> +main "$@"
+> diff --git a/documentation/tools/build-docs-container b/documentation/too=
+ls/build-docs-container
+> new file mode 100755
+> index 0000000000000000000000000000000000000000..8cfe0f7aa75bf5fcfbbc0e838=
+d66e0ef10f20696
+> --- /dev/null
+> +++ b/documentation/tools/build-docs-container
+> @@ -0,0 +1,51 @@
+> +#!/usr/bin/env bash
+> +#
+> +# Build a container ready to build the documentation be reading the depe=
+ndencies
+> +# listed in poky.yaml.in.
+> +#
+> +# Usage:
+> +#
+> +#   ./documentation/tools/build-docs-container <image>
+> +#
+> +# Where <image> is one of the keys in DEPS_KEYS_YQ. E.g.:
+> +#
+> +#   ./documentation/tools/build-docs-container ubuntu-24-04
+> +
+> +SCRIPT_DIR=3D$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &> /dev/null &&=
+ pwd)
+> +CONTAINERCMD=3D${CONTAINERCMD:-docker}
+> +
+> +# Keys used by yq to get the dependencies from poky.yaml.in
+> +declare -A DEPS_KEYS_YQ=3D(
+> +  [ubuntu-24-04]=3D".UBUNTU_DEBIAN_HOST_PACKAGES_DOC .UBUNTU_DEBIAN_HOST=
+_PACKAGES_DOC_PDF"
+> +  [debian-12]=3D".UBUNTU_DEBIAN_HOST_PACKAGES_DOC .UBUNTU_DEBIAN_HOST_PA=
+CKAGES_DOC_PDF"
+> +)
+> +
+> +main ()
+> +{
+> +  local image=3D"$1"
+> +
+> +  for cmd in $CONTAINERCMD yq; do
+> +    if ! which "$cmd" >/dev/null 2>&1; then
+> +      echo "The $cmd command was not found. Make sure you have $cmd inst=
+alled."
+> +      exit 1
+> +    fi
+> +  done
+> +
+> +  local dockername=3D"Dockerfile.$image"
+> +
+> +  # Put all the dependencies in the deps variable
+> +  for dep_key in ${DEPS_KEYS_YQ[$image]}; do
+> +    deps=3D"$deps $(yq --raw-output "$dep_key" "$SCRIPT_DIR/../poky.yaml=
+.in")"
+> +  done
+> +
+> +  ( cd "$SCRIPT_DIR/dockerfiles" \
+> +    && $CONTAINERCMD build \
+> +    --tag "yocto-docs-$image:latest" \
+> +    --file "$dockername" \
+> +    --build-arg DEPS=3D"$deps" \
+
+I am not sure this is future-proof. We'd be limited to the max length of=20
+parameters one can use in a terminal. What about creating a temporary=20
+file and using that temporary file from within the Dockerfile via COPY.=20
+Also, you really want COPY and not MOUNT because changes in files in=20
+MOUNT won't invalidate the layer IIRC.
+
+> +    . )
+
+Can't we just run
+
+docker build [...] -f $dockername "$SCRIPT_DIR/dockerfiles"
+
+to avoid having to cd into it in a subshell?
+
+> +}
+> +
+> +set -e -o pipefail
+> +
+
+set -u
+
+while we are at it :)
+
+> +main "$@"
+
+Question: why do we split the image creation from the running?
+
+> diff --git a/documentation/tools/dockerfiles/Dockerfile.debian-12 b/docum=
+entation/tools/dockerfiles/Dockerfile.debian-12
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..18c9c45c3ccfc5d90a09057d8=
+74512c6b9826611
+> --- /dev/null
+> +++ b/documentation/tools/dockerfiles/Dockerfile.debian-12
+> @@ -0,0 +1,17 @@
+> +FROM debian:12
+
+Would be nice to pass the version number from the shell script as well I=20
+guess?
+
+There's a trick for that one IIRC, I'd have to check how I've done that=20
+and get back to you if you're interested.
+
+> +
+> +ENV DEBIAN_FRONTEND=3Dnoninteractive
+> +
+> +ARG DEPS
+> +ENV DEPS=3D${DEPS}
+> +
+> +RUN apt-get update \
+> + && apt-get --yes --fix-broken upgrade \
+
+That should not be necessary?
+
+> + && apt-get --yes --no-install-recommends install \
+> +    ${DEPS} \
+> + && apt-get --yes autoremove \
+> + && apt-get clean
+> +
+> +RUN LANG=3D"en_US.UTF-8" locale-gen
+> +
+> +RUN git config --global --add safe.directory /docs
+> diff --git a/documentation/tools/dockerfiles/Dockerfile.ubuntu-24-04 b/do=
+cumentation/tools/dockerfiles/Dockerfile.ubuntu-24-04
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..6ac384c4f242b508027a92d2a=
+cad490da41dc374
+> --- /dev/null
+> +++ b/documentation/tools/dockerfiles/Dockerfile.ubuntu-24-04
+> @@ -0,0 +1,17 @@
+> +FROM ubuntu:24.04
+> +
+> +ENV DEBIAN_FRONTEND=3Dnoninteractive
+> +
+> +ARG DEPS
+> +ENV DEPS=3D${DEPS}
+> +
+> +RUN apt-get update \
+> + && apt-get --yes --fix-broken upgrade \
+> + && apt-get --yes --no-install-recommends install \
+> +    ${DEPS} \
+> + && apt-get --yes autoremove \
+> + && apt-get clean
+> +
+> +RUN LANG=3D"en_US.UTF-8" locale-gen
+> +
+
+I believe this is not working if I remember correctly the thread with=20
+Gu=C3=A9na=C3=ABl?
+
+Otherwise, the Dockerfile are identical, so maybe parameterizing the=20
+FROM line would be better than duplicating?
 
 Cheers,
 Quentin
