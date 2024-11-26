@@ -1,313 +1,125 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <mikko.rapeli@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E5E84D5A6D9
-	for <webhook@archiver.kernel.org>; Tue, 26 Nov 2024 03:29:19 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
- by mx.groups.io with SMTP id smtpd.web10.37657.1732591749599246151
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A800D5A6FE
+	for <webhook@archiver.kernel.org>; Tue, 26 Nov 2024 08:29:51 +0000 (UTC)
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+ by mx.groups.io with SMTP id smtpd.web11.41370.1732609781556500547
  for <docs@lists.yoctoproject.org>;
- Mon, 25 Nov 2024 19:29:09 -0800
+ Tue, 26 Nov 2024 00:29:41 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=LGvmsLnh;
- spf=pass (domain: intel.com, ip: 192.198.163.17, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1732591749; x=1764127749;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=mbBtXH6LM5GNBmD+9ziywmUyY8rlrLYDWEAKc+on7FY=;
-  b=LGvmsLnh3GCs7T2B6jpJ6Hy/bJIGiX/pe4N6B/tBUQV5hQeUckktUFm2
-   UFSRB/Y753oth0LdcPfBlGUk0uxzEmCFwWxBy+HO+ErXkk72eZ5JvvBJj
-   QtiXnUzuwbKCs+j5fFCSidBW8aeXsgjYAeCIMRvLohOQLsHJtsd24TsXk
-   +0QMcHDCF+6KpBy9YsFWT35kD+DF0TRGmyCDKP+cHS4SPIvn1u9E+SIVr
-   GMwDyO3ckZM1Z9DLJn1t19JsZeEggKuytpkSUXsZgQ1Ob/EMJU4xLnsOo
-   EdTMenDjl1gLEr+zPeGX4yl9olRp20+bxObJar1TgqwktJMgRc0w4Go2o
-   A==;
-X-CSE-ConnectionGUID: jJ5bGtQUSUaQu+z+TKf0iQ==
-X-CSE-MsgGUID: Jb308nB0TsO6qEumbOv1mQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11267"; a="32678058"
-X-IronPort-AV: E=Sophos;i="6.12,184,1728975600"; 
-   d="scan'208";a="32678058"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Nov 2024 19:29:09 -0800
-X-CSE-ConnectionGUID: 7ZQnOIoPS7KUsbbWVRUJYA==
-X-CSE-MsgGUID: 420G27ESRcK4FfpCsgbXEA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,184,1728975600"; 
-   d="scan'208";a="91094612"
-Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
-  by fmviesa006.fm.intel.com with ESMTP; 25 Nov 2024 19:29:08 -0800
-From: chee.yang.lee@intel.com
+ dkim=pass header.i=@linaro.org header.s=google header.b=JGtI1Kha;
+ spf=pass (domain: linaro.org, ip: 209.85.167.41, mailfrom: mikko.rapeli@linaro.org)
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-53dee064f00so107498e87.3
+        for <docs@lists.yoctoproject.org>; Tue, 26 Nov 2024 00:29:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1732609780; x=1733214580; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=0S3pMLZq1PVyutMzEO6J9Rt32dMsY2xTDQTwZOaIa1o=;
+        b=JGtI1KhatQyusAg83keCe2lWND64tPBMNLrg0ndK4JnljcQbUWHYeeqln3BQXBQndl
+         +fGLMlO2Ca4QgCuEv9RsrAoknX676og57ggJdPFSP9OjdIPIlQtnQ0fiXdvQSwyKG9TQ
+         GoSyG55u+Vo/IrH3718DP7frdJb8YDsIkG/UEwHUjkFn8t7Y/Dm3E4sP45uNyD/WCcqR
+         nUDzUQgMfmzRe7NU8F+07KuHzblNJfent8aFiGSPKxNW37g0FJC+yZdqulyPS/RusFs1
+         ZjQkti6yOtufjy6iRCyBbzUu0H5K3aUD58wiweylUbj+az1Y8WLFZlyZzhGIPys7+Pk+
+         8pyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1732609780; x=1733214580;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0S3pMLZq1PVyutMzEO6J9Rt32dMsY2xTDQTwZOaIa1o=;
+        b=Zco/yEAfgsIgpnO9tm2gZhS5G+K7l05F/5c6Pc6RmOA1/2yR7ojyorMylI+EXNuLp9
+         GWt6rWORnfHKIvblzw8UDOdeptVQw3iTLtYi3in8jaPJil8sRJsCMP7aCPj1BWt7sCxQ
+         uuFWNKmr3+R/ON94u2cMJOO9WgnJvtXqMctBkVeDfyIpXkOrIlOVmqgCG4gKrJn/3WVQ
+         nTfBnUjsxDsZsR9+VKUrAt9hTrHK7HbBp+RYuM7MEdou+byG+L5lSeGLRV/z5jHs64pq
+         JkRzSiyRU5VshR+ICGm9hzSlUviPuutJEh/NkiBjh9wOIMTP65+45M1PKqbjEwB1jQCD
+         fjmg==
+X-Gm-Message-State: AOJu0YxUC8SZ+udK4i2Fuha4HV+/IfxI03j4eGzpWeMN65oGMxUP7SSp
+	2iBNHzgMH4oPS0SYTgmoKYSXDc/8t1OsVPXj14cRyfnvdeI5psH403shdWOC9FRijJhNui9/PFN
+	8
+X-Gm-Gg: ASbGncvcvvwD2t5/LjNRjLpu7R27ZYvOhCcLvEvF/YkmB3XZeWe0r9yEsNvScGdeYdT
+	Hy0tIe9a5GXxbrI44ADNFnSIn1QQvU0NE+gndzWJ7CQbmiY/zirhDN4jzyo7555NvL8OLcM5eJ4
+	DeUqcwi7re5Gj5iu+y3zGj7mFGfP/5RIFYQUIoKIuOBIuDSzfEPc5siTHaZeQ2LJlXCx5aPmTTZ
+	7wmc+xYIP5ofpPBlRburfUN/NGWfEPgRoV7G1XUTAJ/HBQDTASUbH5lrgrvVP6VlT9SIjgW3TtB
+	7P/vOZ58v4MiRGczbJlUCxmBRtjXmGtN2Vb8QA==
+X-Google-Smtp-Source: AGHT+IESKDxe3Lez9jKLei4A/SDDCmzAkDPeCECTmfXGmvO18RgsTBPqE2uYem0V5V8Ay+K6HKgVpg==
+X-Received: by 2002:a05:6512:1051:b0:53d:ed45:45b3 with SMTP id 2adb3069b0e04-53ded454996mr450743e87.16.1732609779656;
+        Tue, 26 Nov 2024 00:29:39 -0800 (PST)
+Received: from localhost.localdomain (82-209-143-194.cust.bredband2.com. [82.209.143.194])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-53dd2445743sm1950145e87.1.2024.11.26.00.29.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 Nov 2024 00:29:37 -0800 (PST)
+From: Mikko Rapeli <mikko.rapeli@linaro.org>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH v2] migration-guides: add release notes for 5.0.5
-Date: Tue, 26 Nov 2024 11:26:59 +0800
-Message-Id: <20241126032659.1918004-1-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.34.1
+Cc: Mikko Rapeli <mikko.rapeli@linaro.org>
+Subject: [PATCH] variables.rst: document uki.bbclass variables
+Date: Tue, 26 Nov 2024 10:29:06 +0200
+Message-ID: <20241126082906.291040-1-mikko.rapeli@linaro.org>
+X-Mailer: git-send-email 2.45.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 26 Nov 2024 03:29:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5810
+ <docs@lists.yoctoproject.org>; Tue, 26 Nov 2024 08:29:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5811
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Documentation for the new class.
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+[YOCTO #15650]
+https://bugzilla.yoctoproject.org/show_bug.cgi?id=15650
+
+Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
 ---
-v2: http -> https
-    use extlink :yocto_bugs: for bug
+ documentation/ref-manual/variables.rst | 32 ++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
- .../migration-guides/release-5.0.rst          |   1 +
- .../migration-guides/release-notes-5.0.5.rst  | 227 ++++++++++++++++++
- 2 files changed, 228 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-5.0.5.rst
-
-diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
-index 25c8ebc16..9169188e9 100644
---- a/documentation/migration-guides/release-5.0.rst
-+++ b/documentation/migration-guides/release-5.0.rst
-@@ -11,3 +11,4 @@ Release 5.0 (scarthgap)
-    release-notes-5.0.2
-    release-notes-5.0.3
-    release-notes-5.0.4
-+   release-notes-5.0.5
-diff --git a/documentation/migration-guides/release-notes-5.0.5.rst b/documentation/migration-guides/release-notes-5.0.5.rst
-new file mode 100644
-index 000000000..c8cf9a85d
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-5.0.5.rst
-@@ -0,0 +1,227 @@
-+Release notes for Yocto-5.0.5 (Scarthgap)
-+-----------------------------------------
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index ec4d7ab73f..9dac0b2d25 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -9846,6 +9846,38 @@ system and gives an overview of their function and contents.
+       passes and uses "all" for the target during the U-Boot building
+       process.
+ 
++   :term:`UKIFY_CMD`
++      When inheriting the :ref:`ref-classes-uki` class,
++      `ukify <https://www.freedesktop.org/software/systemd/man/latest/ukify.html>`__ command to build
++      `Unified Kernel Image (UKI) <https://uapi-group.org/specifications/specs/unified_kernel_image/>`__.
++      Defaults to ``ukify build``.
 +
-+Security Fixes in Yocto-5.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++   :term:`UKI_CONFIG_FILE`
++      When inheriting the :ref:`ref-classes-uki` class,
++      an optional config file for `ukify <https://www.freedesktop.org/software/systemd/man/latest/ukify.html>`__ command.
 +
-+-  ``cups``: Fix :cve_nist:`2024-47175`
-+-  ``curl``: Fix :cve_nist:`2024-8096`
-+-  ``gnupg``: Ignore :cve_nist:`2022-3219` (wont-fix)
-+-  ``libarchive``: Fix :cve_nist:`2024-48957` and :cve_nist:`2024-48958`
-+-  ``openssh``: Ignore :cve_nist:`2023-51767` (wont-fix)
-+-  ``openssl``: Fix :cve_nist:`2024-9143`
-+-  ``ruby``: Fix :cve_nist:`2024-41123` and :cve_mitre:`2024-41496`
-+-  ``rust-llvm``: Fix :cve_nist:`2024-0151`
-+-  ``rust``, ``libstd-rs``: Ignore :cve_nist:`2024-43402`
-+-  ``wpa-supplicant``: Patch SAE H2E and incomplete downgrade protection for group negotiation
-+-  ``wpa-supplicant``: Fix :cve_nist:`2024-3596`
-+-  ``wpa-supplicant``: Ignore :cve_nist:`2024-5290`
++   :term:`UKI_FILENAME`
++      When inheriting the :ref:`ref-classes-uki` class,
++      the output file name for generated `Unified Kernel Image (UKI) <https://uapi-group.org/specifications/specs/unified_kernel_image/>`__.
++      Defaults to ``uki.efi``.
 +
++   :term:`UKI_KERNEL_FILENAME`
++      When inheriting the :ref:`ref-classes-uki` class,
++      the kernel image file name to use as input. Defaults to :term:`KERNEL_IMAGETYPE`.
 +
-+Fixes in Yocto-5.0.5
-+~~~~~~~~~~~~~~~~~~~~
++   :term:`UKI_CMDLINE`
++      When inheriting the :ref:`ref-classes-uki` class,
++      the kernel command line to use when booting the `Unified Kernel Image (UKI) <https://uapi-group.org/specifications/specs/unified_kernel_image/>`__.
++      Defaults to ``rootwait root=LABEL=root console=${KERNEL_CONSOLE}``.
 +
-+-  binutils: stable 2.42 branch updates
-+-  bitbake.conf: Add truncate to :term:`HOSTTOOLS`
-+-  bitbake: asyncrpc: Use client timeout for websocket open timeout
-+-  bitbake: bitbake: doc/user-manual: Update the :term:`BB_HASHSERVE_UPSTREAM`
-+-  bitbake: gitsm: Add call_process_submodules() to remove duplicated code
-+-  bitbake: gitsm: Remove downloads/tmpdir when failed
-+-  bitbake: tests/fetch: Use our own mirror of mobile-broadband-provider to decouple from gnome gitlab
-+-  bitbake: tests/fetch: Use our own mirror of sysprof to decouple from gnome gitlab
-+-  build-appliance-image: Update to scarthgap head revision
-+-  cryptodev: upgrade to 1.14
-+-  cve-check: add support for cvss v4.0
-+-  cve_check: Use a local copy of the database during builds
-+-  dev-manual: add bblock documentation
-+-  documentation: conf.py: rename :cve: role to :cve_nist:
-+-  documentation: README: add instruction to run Vale on a subset
-+-  documentation: Makefile: add SPHINXLINTDOCS to specify subset to sphinx-lint
-+-  e2fsprogs: removed 'sed -u' option
-+-  ffmpeg: Add "libswresample libavcodec" to :term:`CVE_PRODUCT`
-+-  glibc: stable 2.39 branch updates.
-+-  go: upgrade to 1.22.8
-+-  icu: update patch Upstream-Status
-+-  image.bbclass: Drop support for ImageQAFailed exceptions in image_qa
-+-  image_qa: fix error handling
-+-  install-buildtools: fix "test installation" step
-+-  install-buildtools: remove md5 checksum validation
-+-  install-buildtools: update base-url, release and installer version
-+-  kernel-devsrc: remove 64 bit vdso cmd files
-+-  kernel-fitimage: fix external dtb check
-+-  kernel-fitimage: fix intentation
-+-  lib/oe/package-manager: skip processing installed-pkgs with empty globs
-+-  liba52: fix do_fetch error
-+-  libpcre2: Update base uri PhilipHazel -> PCRE2Project
-+-  libsdl2: Fix non-deterministic configure option for libsamplerate
-+-  license: Fix directory layout issues
-+-  linux-firmware: upgrade to 20240909
-+-  linux-yocto/6.6: fix genericarm64 config warning
-+-  linux-yocto/6.6: upgrade to v6.6.54
-+-  lsb-release: fix Distro Codename shell escaping
-+-  makedevs: Fix issue when rootdir of / is given
-+-  makedevs: Fix matching uid/gid
-+-  meta-ide-support: Mark recipe as MACHINE-specific
-+-  meta-world-pkgdata: Inherit nopackages
-+-  migration-guide: add release notes for 4.0.21, 4.0.22 and 5.0.4
-+-  migration-guide: release-notes-4.0: update :term:`BB_HASHSERVE_UPSTREAM` for new infrastructure
-+-  migration-guide: release-notes-5.0.rst: update NO_OUTPUT -> NO_COLOR
-+-  orc: upgrade to 0.4.40
-+-  overview-manual: concepts: add details on package splitting
-+-  poky.conf: bump version for 5.0.5
-+-  populate_sdk_base: inherit nopackages
-+-  ptest-runner: upgrade to 2.4.5
-+-  pulseaudio: correct freedesktop.org -> www.freedesktop.org :term:`SRC_URI`
-+-  desktop-file-utils: correct freedesktop.org -> www.freedesktop.org :term:`SRC_URI`
-+-  python3-lxml: upgrade to v5.0.2
-+-  python3-setuptools: Add "python:setuptools" to :term:`CVE_PRODUCT`
-+-  recipes-bsp: usbutils: Fix usb-devices command using busybox
-+-  ref-manual: add missing CVE_CHECK manifest variables
-+-  ref-manual: add missing :term:`EXTERNAL_KERNEL_DEVICETREE` variable
-+-  ref-manual: add missing :term:`OPKGBUILDCMD` variable
-+-  ref-manual: add missing :term:`TESTIMAGE_FAILED_QA_ARTIFACTS`
-+-  ref-manual: devtool-reference: document missing commands
-+-  ref-manual: devtool-reference: refresh example outputs
-+-  ref-manual: faq: add q&a on class appends
-+-  ref-manual: introduce :term:`CVE_CHECK_REPORT_PATCHED` variable
-+-  ref-manual: merge patch-status-* to patch-status
-+-  ref-manual: release-process: add a reference to the doc's release
-+-  ref-manual: release-process: refresh the current LTS releases
-+-  ref-manual: release-process: update releases.svg
-+-  ref-manual: release-process: update releases.svg with month after "Current"
-+-  ref-manual: structure.rst: document missing tmp/ dirs
-+-  ref-manual: variables: add SIGGEN_LOCKEDSIGS* variables
-+-  rootfs-postcommands.bbclass: make opkg status reproducible
-+-  rpm: fix expansion of %_libdir in macros
-+-  ruby: upgrade to 3.3.5
-+-  runqemu: Fix detection of -serial parameter
-+-  runqemu: keep generating tap devices
-+-  scripts/install-buildtools: Update to 5.0.3
-+-  sqlite3: upgrade to 3.45.3
-+-  styles: vocabularies: Yocto: add sstate
-+-  systemtap: fix systemtap-native build error on Fedora 40
-+-  sysvinit: take release tarballs from github
-+-  testexport: fallback for empty :term:`IMAGE_LINK_NAME`
-+-  testimage: fallback for empty :term:`IMAGE_LINK_NAME`
-+-  uboot-sign: fix counters in do_uboot_assemble_fitimage
-+-  vim: upgrade to 9.1.0764
-+-  virglrenderer: Add patch to fix -int-conversion build issue
-+-  webkitgtk: upgrade to 2.44.3
-+-  weston: backport patch to allow neatvnc < v0.9.0
-+-  wpa-supplicant: Patch security advisory 2024-2
-+-  xserver-xorg: upgrade to 21.1.14
++   :term:`UKI_SB_KEY`
++      When inheriting the :ref:`ref-classes-uki` class,
++      optional UEFI secureboot private key to sign `Unified Kernel Image (UKI) <https://uapi-group.org/specifications/specs/unified_kernel_image/>`__.
 +
++   :term:`UKI_SB_CERT`
++      When inheriting the :ref:`ref-classes-uki` class,
++      optional UEFI secureboot certificate mathing the private key in :term:`UKI_SB_KEY`.
 +
-+Known Issues in Yocto-5.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  ``oeqa/runtime``: the ``beaglebone-yocto`` target fails the parselogs runtime test due to unexpected kernel error messages in the log (see :yocto_bugs:`bug 15624 </show_bug.cgi?id=15624>` on Bugzilla).
-+
-+
-+Contributors to Yocto-5.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  Aditya Tayade
-+-  Adrian Freihofer
-+-  Aleksandar Nikolic
-+-  Alexander Kanavin
-+-  Antonin Godard
-+-  Anuj Mittal
-+-  Bruce Ashfield
-+-  Claus Stovgaard
-+-  Deepesh Varatharajan
-+-  Deepthi Hemraj
-+-  Hiago De Franco
-+-  Hitendra Prajapati
-+-  Jaeyoon Jung
-+-  Jiaying Song
-+-  Jonas Gorski
-+-  Jose Quaresma
-+-  Joshua Watt
-+-  Julien Stephan
-+-  Jörg Sommer
-+-  Khem Raj
-+-  Konrad Weihmann
-+-  Lee Chee Yang
-+-  Louis Rannou
-+-  Macpaul Lin
-+-  Martin Jansa
-+-  Paul Barker
-+-  Paul Gerber
-+-  Peter Kjellerstedt
-+-  Peter Marko
-+-  Purushottam Choudhary
-+-  Richard Purdie
-+-  Robert Yang
-+-  Rohini Sangam
-+-  Ross Burton
-+-  Sergei Zhmylev
-+-  Shunsuke Tokumoto
-+-  Steve Sakoman
-+-  Teresa Remmet
-+-  Victor Kamensky
-+-  Vijay Anusuri
-+-  Wang Mingyu
-+-  Yi Zhao
-+-  Yogita Urade
-+-  Zahir Hussain
-+
-+
-+Repositories / Downloads for Yocto-5.0.5
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.5 </poky/log/?h=yocto-5.0.5>`
-+-  Git Revision: :yocto_git:`dce4163d42f7036ea216b52b9135968d51bec4c1 </poky/commit/?id=dce4163d42f7036ea216b52b9135968d51bec4c1>`
-+-  Release Artefact: poky-dce4163d42f7036ea216b52b9135968d51bec4c1
-+-  sha: ad35a965a284490a962f6854ace536b8795f96514e14bf5c79f91f6d76ac25d3
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/poky-dce4163d42f7036ea216b52b9135968d51bec4c1.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/poky-dce4163d42f7036ea216b52b9135968d51bec4c1.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
-+-  Tag:  :oe_git:`yocto-5.0.5 </openembedded-core/log/?h=yocto-5.0.5>`
-+-  Git Revision: :oe_git:`a051a066da2874b95680d0353dfa18c1d56b2670 </openembedded-core/commit/?id=a051a066da2874b95680d0353dfa18c1d56b2670>`
-+-  Release Artefact: oecore-a051a066da2874b95680d0353dfa18c1d56b2670
-+-  sha: 16d252aade00161ade2692f41b2da3effeb1f41816a66db843bb1c5495125e93
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/oecore-a051a066da2874b95680d0353dfa18c1d56b2670.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/oecore-a051a066da2874b95680d0353dfa18c1d56b2670.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.5 </meta-mingw/log/?h=yocto-5.0.5>`
-+-  Git Revision: :yocto_git:`acbba477893ef87388effc4679b7f40ee49fc852 </meta-mingw/commit/?id=acbba477893ef87388effc4679b7f40ee49fc852>`
-+-  Release Artefact: meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852
-+-  sha: 3b7c2f475dad5130bace652b150367f587d44b391218b1364a8bbc430b48c54c
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :bitbake_git:`/`
-+-  Branch: :bitbake_git:`2.8 </log/?h=2.8>`
-+-  Tag:  :bitbake_git:`yocto-5.0.5 </log/?h=yocto-5.0.5>`
-+-  Git Revision: :bitbake_git:`377eba2361850adfb8ce7e761ef9c76be287f88c </commit/?id=377eba2361850adfb8ce7e761ef9c76be287f88c>`
-+-  Release Artefact: bitbake-377eba2361850adfb8ce7e761ef9c76be287f88c
-+-  sha: 4a5a35098eec719bbb879706d50e552a2b709295db4055c8050ae7dda1eb2994
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.5/bitbake-377eba2361850adfb8ce7e761ef9c76be287f88c.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.5/bitbake-377eba2361850adfb8ce7e761ef9c76be287f88c.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
-+-  Tag: :yocto_git:`yocto-5.0.5 </yocto-docs/log/?h=yocto-5.0.5>`
-+-  Git Revision: :yocto_git:`e882cb3e5816d081eb05cb83488f286cca70e0c6 </yocto-docs/commit/?id=e882cb3e5816d081eb05cb83488f286cca70e0c6>`
-+
+    :term:`UNKNOWN_CONFIGURE_OPT_IGNORE`
+       Specifies a list of options that, if reported by the configure script
+       as being invalid, should not generate a warning during the
 -- 
-2.34.1
+2.43.0
 
 
