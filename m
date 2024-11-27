@@ -2,124 +2,109 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D8CA2D6ACEA
-	for <webhook@archiver.kernel.org>; Wed, 27 Nov 2024 15:20:30 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.74057.1732720823033245229
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D79F4D6ACEA
+	for <webhook@archiver.kernel.org>; Wed, 27 Nov 2024 15:24:10 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web10.74144.1732721048912121855
  for <docs@lists.yoctoproject.org>;
- Wed, 27 Nov 2024 07:20:23 -0800
+ Wed, 27 Nov 2024 07:24:09 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gHs3tZUr;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EAD854000C;
-	Wed, 27 Nov 2024 15:20:20 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LRJWuO2X;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D04151BF20C;
+	Wed, 27 Nov 2024 15:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1732720821;
+	t=1732721047;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kaTXo3AM+SxUzt6wrfUjL6KJpL4orFln/18+Mw8GYks=;
-	b=gHs3tZUrNdU50SPNb6I0yNPNv2r92rIO9U7SUbzozlglVFR3M9/BzILu+QqqDhaWR0zpPS
-	PYItcXB9Pe7I8T3dTBmhHpq+9GZhwFjoJGMN/Er90Pmks0NJrfWDbu3pkfqzm2rOK3OsJK
-	tYGEvldxNYzjAqoY9lr3coz0LkvDzqu7u3w+3pjSplSfPWlXU9AqCHhTF1PSOikS39qx1m
-	nSWNz44gdDb3ACzpoCgtmIiRURqM4NhiyNuHlHq/gpR2BJ6WvHrqgKn37FdIIYMqzpn1Nb
-	7vJGbvwCE4H0X3SENiGXI4P6yXwH7r+Md1XNZTcoMSJsLjrlf2XI/BByS3Jkag==
+	bh=dLkGxUtWGWzVxalK2+gl4MFtOZm2kTZmSrsO4baAfj4=;
+	b=LRJWuO2XwrBlWs4N9XANgvxFtZC1Ugajaj60Jf6vFdAmQ4WKbj5LFDFwDwy35X19CxYow4
+	9o/pMtUbjVfqehK5PjE6OEctX3DCLDw5XHKFBo48+MiOB1jVu6XJaRCQ4D+WF3z36MEb21
+	Ia/r/J50rd3Nc+h7p8qK0l/1mV1l+2Pe15NIckRENvzO6RPhUYiaIZ5MyUZFv4zkQi9rkT
+	MK2odnx+xkg45mvEiUT59Q7ZT9DTSmSZzDkcx5cteK/H/ahZu9p/1rY9QXw91dvfKBG9nh
+	UoUYOnzF6BSrjwCvxbcUqylcLceJIsEXBUd0mSW8DrNKJfsP1aq3eh4L0zQpeg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 27 Nov 2024 16:20:20 +0100
-Message-Id: <D5X29O37SXPR.21UIYRGZFKD1W@bootlin.com>
-Subject: Re: [docs] [yocto-docs][PATCH v2] Update the documentation for
- SRCPV
+Date: Wed, 27 Nov 2024 16:24:06 +0100
+Message-Id: <D5X2CJUWAUXK.1WD6S6Z12GTS6@bootlin.com>
+Subject: Re: [docs] [yocto-docs][PATCH v3] ref-manual: classes: fix
+ bin_package description
 Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
  <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <quentin.schulz@cherry.de>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>
 X-Mailer: aerc 0.18.2.r100.gc2048ef3
-References: <20241125-deprecated-srcpv-v2-1-89bc3afc78db@bootlin.com>
- <a8f7ee5a-0733-409e-a9eb-a5531c6eda23@cherry.de>
- <D5WTAZ2HJTBW.NLAN1YRHN9IE@bootlin.com>
- <f6b6408f-e156-4b24-9930-0335b70f45be@cherry.de>
- <D5WZNUEBWRXT.18H1Q0G3SGRE6@bootlin.com>
- <caceb002-6c62-4acd-87c3-41555e3344fc@cherry.de>
-In-Reply-To: <caceb002-6c62-4acd-87c3-41555e3344fc@cherry.de>
+References: <20241127-fix-bin-package-v3-1-ee09055000ac@bootlin.com>
+ <0b545655-dfc0-449b-8cdb-5712a0715f87@cherry.de>
+ <D5X02UDHCLWS.1H3RX1HY2T7UP@bootlin.com>
+ <0cf6ce20-4e81-4f80-8065-01558fffa52f@cherry.de>
+In-Reply-To: <0cf6ce20-4e81-4f80-8065-01558fffa52f@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 27 Nov 2024 15:20:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5837
+ <docs@lists.yoctoproject.org>; Wed, 27 Nov 2024 15:24:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5838
 
 Hi Quentin,
 
-On Wed Nov 27, 2024 at 3:08 PM CET, Quentin Schulz via lists.yoctoproject.o=
-rg wrote:
+On Wed Nov 27, 2024 at 3:15 PM CET, Quentin Schulz wrote:
 [...]
->>>>> I think we could simplify the example. The point is not necessarily t=
-o
->>>>> use % with a git-named recipe but rather that a git-named recipe is n=
-ot
->>>>> going to match "git" but the "PV" defined in the recipe. What do you =
-think?
->>>>
->>>> Ok, something like:
->>>>
->>>>     If your PV is equal to "a.b.c+git", you can match it with "a.b.c%"=
- in
->>>>     PREFERRED_VERSION?
->>>>
->>>> This makes more sense with the current state of things, and simplifies=
- the
->>>> example a bit.
->>>>
+>>>> +``${S}/usr/lib/<library>.so`` to be installed in :term:`D` correctly.
+>>>> +
 >>>
->>> """
->>> If you want to select a recipe named foo_git.bb which has :term:`PV` se=
-t
->>> to `1.2.3+git`, you can do so by setting :term:`PREFERRED_VERSION_foo`
->>> to `1.2.3%` (i.e. using simply `git` will not work as the name of the
->>> recipe isn't used, but rather its :term:`PV`).
->>> """
->>>
->>> or something like that?
->>>
->>> Is PV really extended with the git hash when there's a + in there or is
->>> it only PKGV that gets it? Basically, do you even need % character when
->>> we have a + in PV now?
->>>
->>> Not sure it's clear, lemme know if I need to rephrase my question.
+>>> It'd be nice to encourage people to use versioned shared libraries even
+>>> for binary packages but not sure how to word this here.
 >>=20
->> So yes you got it right: PV will never contain the hash, only PKGV will =
-(and
->> only during do_install iirc, so bitbake-getvar PKGV will not show the ha=
-sh).
->>=20
->> Which makes me wonder if giving the example above is any useful, since y=
-ou could
->> just set PREFERRED_VERSION_foo to "1.2.3+git".
+>> Replace by ``${S}/usr/lib/<library>.<version>.so``? and implicitly encou=
+rage it.
+>> Not sure this is the place to give written advice on that.
 >>=20
 >
-> It is useful! The point is to highlight the "version" in the filename of=
+> It's actually ``${S}/usr/lib/<library>.so.<version>`` :) But would work=
 =20
-> the recipe is not the one you should use in PREFERRED_VERSION, but=20
-> rather the value of PV. Incidentally, PV =3D version in the filename by=
-=20
-> default I believe (maybe for the git ones too?) but it is=20
-> recommended/required to set PV for git recipes. So in order to pick the=
-=20
-> git recipe, you need to use the PV set inside the git recipe and not use=
-=20
-> "git" along. I believe this is what the original author wanted this=20
-> example to transpire?
 
-I didn't think of it that way, but yes, maybe the author wanted to transpir=
-e
-this + the fact that in the hash wasn't predictable hence the "%". Or only =
-one
-or the other.
+Oops, right thanks :)
 
-In any case, I get what you mean, and I'll update the description in a v3.
+> for me. Though considering FILES:${PN} =3D "/" once inheriting this class=
+,=20
+> whether versioned or not doesn't matter to the packaging step (unlike=20
+> the default values, where .so goes to -dev package).
+>
+>>>> +.. note::
+>>>>   =20
+>>>> -      SRC_URI =3D "git://example.com/downloads/somepackage.rpm;branch=
+=3Dmain;subpath=3D${BP}"
+>>>> +   The extraction of the package passed in :term:`SRC_URI` is not han=
+dled by the
+>>>> +   :ref:`ref-classes-bin-package` class, and is done by the appropria=
+te
+>
+> s/, and is done/but rather/ ?
+
++1
+
+>>>> +   :ref:`fetcher <bitbake-user-manual/bitbake-user-manual-fetching:fe=
+tchers>`
+>>>> +   depending on the nature of the package.
+>>>
+>>> What do you mean by "depending on the nature of the package"?
+>>=20
+>> I meant the type, like RPM, tarball, deb=E2=80=A6 I can replace by "type=
+", and add a
+>> "(RPM, Deb, tarball, =E2=80=A6)" in parenthesis afterwards.
+>>=20
+>
+> I would simply remove "depending on the nature of the package", that's=20
+> already implied? Ah, or we can say depending on the file extension which=
+=20
+> I believe is how the fetcher is actually figuring out how to extract them=
+?
+
+Sure! File extension's fine to me.
 
 Thanks,
 Antonin
