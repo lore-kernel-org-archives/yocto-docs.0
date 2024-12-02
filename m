@@ -1,118 +1,128 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <guenael.muller@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ECDBD10DD7
-	for <webhook@archiver.kernel.org>; Mon,  2 Dec 2024 09:02:58 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.169424.1733130175137918654
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 89F93D7830C
+	for <webhook@archiver.kernel.org>; Mon,  2 Dec 2024 11:03:38 +0000 (UTC)
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+ by mx.groups.io with SMTP id smtpd.web11.171699.1733137413830277694
  for <docs@lists.yoctoproject.org>;
- Mon, 02 Dec 2024 01:02:55 -0800
+ Mon, 02 Dec 2024 03:03:34 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=O+yJOshf;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A014BFF802;
-	Mon,  2 Dec 2024 09:02:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733130173;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+MdGRhWo9RiWscJtE2Y9Dm8BkG0cLlTFslhAk+VFXO4=;
-	b=O+yJOshfVF6O14QhMVwiASjv+g4DDl4d62D9WnzjZSnr7k0pcBVTNKYp3oHxkYcTFrbGRg
-	+LkA9suh2NXTmXwSCIZ1O/VGiMqHA4JwBJBIruKqzJyJpnpPX5aGyC3k5kZBmonobFP4MX
-	gpRXr9qjBPowPSAw+FMJ1V31tNwUwK0R/De0ynpAhJMzhcgmAiNl14rMKpZrUS5B5cCCys
-	2NfP2V1P9/OsfqmCVs1EpqGwEjweVfCNIYLk8e0jprsqhJ0NTbfwq0Dab2Zeam8CXq4Qo7
-	a343NAoSKlyqYGkbXLDI/R+zUDygUBUXTVeUAIpQZ8d6xjariI9XB9flO5aYdg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+ dkim=pass header.i=@smile.fr header.s=google header.b=Vlv2qQfk;
+ spf=pass (domain: smile.fr, ip: 209.85.128.47, mailfrom: guenael.muller@smile.fr)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-434a90fed23so33775935e9.1
+        for <docs@lists.yoctoproject.org>; Mon, 02 Dec 2024 03:03:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=smile.fr; s=google; t=1733137412; x=1733742212; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PBvb85bWRsaA1tVdQsrDj5JQeMX5y1V94n7VAvjZ5Uk=;
+        b=Vlv2qQfkEBwtqjYI7+p/RVOt8RdlMuFWBljuXPqHpEdqy/e8lgwzIbKyXWPWm4+8p2
+         oaacMaN+6J8UNIhovNWNG8V8TBV31mQv2Y+YkM02IVVYwaDxGWnifnzozR73iJhrxx/b
+         FCxZqlBuHZYcYkIbe3jLBoQmW0CM6+ejzoCZY=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733137412; x=1733742212;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PBvb85bWRsaA1tVdQsrDj5JQeMX5y1V94n7VAvjZ5Uk=;
+        b=X8X7ztq2OXXrKW6kh9q54Lj5RAzT386/v2kXTCRB23JMYyt06Y+fj7Vtph5fF4A/YX
+         R/jMpcMdPSsOarqQTvDBZzwlgewPDfMkgKs6LXmI1mcCxLOFRImA29soWzRv9J75+ImX
+         cVhkpIKZh/81/K7vUgUxWH90D5b1l7yc2P7VFF60CgWtwrgQR33MUVNg0tagpx+kcDta
+         3/lE6mGSxonvMGTJp49xpgQmLbxSNGFbAXi+9KBUGEn6RsbZIvsUwi00OOUoWKlfl6eZ
+         uerBUBSmz4v2KYz3LCm3xk5O04fNZMrWrSiUZWnZp8+A701BqGNcioys6D8hUC/QmLKU
+         CmdA==
+X-Gm-Message-State: AOJu0Yw4J5URxLtBKmtCvwOTKoGc8oQThpx5nAac/lpsq9oV3rmtHTSq
+	X2Bm4ECMj7auFqBGAq/I/EWGxCrCfPSdo0w6xvyJDKw1luEdLLojwxyT3XeiLrNcuXBe+QNd3g8
+	D
+X-Gm-Gg: ASbGncsj0AWXFlfXwQwLYCHBxQkcac7C3spudlvaGhqp9GiJtmjLrpAQOyiOZfXshHt
+	iHAAqSIwKb5CqTNkZMoE6dDYEOzhANmVqk8sxz+7sHiolNDJ1zY7LxdJwRvGSzy4pbMM/UF7G6U
+	8GHcGJp8tQOrZ7Qp7ac6jBxAYg7lbmeNz7DoR9s8bpZgeO97oNbeypP2ijMJ9zTW3I1kvZv4RgQ
+	KlU4omffBDguOKz0KSMIFQFIFIrdmhBjs2XeRMQpO+LVQc6TG+RKDm0bUyFrXo0zOKCfnnYgj3M
+	7ZQ0YwWZejYKHRWXrxK2
+X-Google-Smtp-Source: AGHT+IEwB/2sFCKW53hOyBuyE6A69OrIR4EvJ2zXmWdX66BajC6+DKwjJe1dxLE9IVQz0OlN2AAMKw==
+X-Received: by 2002:a05:600c:1c07:b0:434:a4fe:cd71 with SMTP id 5b1f17b1804b1-434a9dc50f1mr203141865e9.12.1733137412136;
+        Mon, 02 Dec 2024 03:03:32 -0800 (PST)
+Received: from localhost.localdomain (29.42.84.79.rev.sfr.net. [79.84.42.29])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-434aa763a59sm179791645e9.11.2024.12.02.03.03.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Dec 2024 03:03:31 -0800 (PST)
+From: =?UTF-8?q?Gu=C3=A9na=C3=ABl=20Muller?= <guenael.muller@smile.fr>
+To: docs@lists.yoctoproject.org
+Cc: =?UTF-8?q?Gu=C3=A9na=C3=ABl=20Muller?= <guenael.muller@smile.fr>,
+	Yoann Congal <yoann.congal@smile.fr>,
+	Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v4] ref-manual: use standardized method accross both ubuntu and debian for locale install
+Date: Mon,  2 Dec 2024 12:01:28 +0100
+Message-Id: <20241202110128.27711-1-guenael.muller@smile.fr>
+X-Mailer: git-send-email 2.39.5
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 02 Dec 2024 10:02:53 +0100
-Message-Id: <D613DE1UW3GV.OXCJKSG2VQH6@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <michael.opdenacker@rootcommit.com>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH 3/3] dev-manual/bmaptool.rst: simplify and fix
- instructions
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20241201173801.3290796-1-michael.opdenacker@rootcommit.com>
- <20241201173801.3290796-3-michael.opdenacker@rootcommit.com>
-In-Reply-To: <20241201173801.3290796-3-michael.opdenacker@rootcommit.com>
-X-GND-Sasl: antonin.godard@bootlin.com
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 02 Dec 2024 09:02:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5863
+ <docs@lists.yoctoproject.org>; Mon, 02 Dec 2024 11:03:38 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5864
 
-Hi Michael,
+Modify locale installation method to be standard accross all debian-based distributions.
+Pre-existing method is available only on Ubuntu, locale-gen tool has no parameter in Debian.
 
-On Sun Dec 1, 2024 at 6:38 PM CET, Michael Opdenacker via lists.yoctoprojec=
-t.org wrote:
-> From: Michael Opdenacker <michael.opdenacker@rootcommit.com>
->
-> - Remove duplicate instructions
->
-> - Detail how to run bmaptool directly if you installed it on your host
->   instead of building it through the ``bmaptool-native`` recipe,
->   as running "oe-run-native bmaptool-native bmaptool ..." won't work
->   in this case.
->
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@rootcommit.com>
-> ---
->  documentation/dev-manual/bmaptool.rst | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
->
-> diff --git a/documentation/dev-manual/bmaptool.rst b/documentation/dev-ma=
-nual/bmaptool.rst
-> index 5fc46c7792..e17074b65b 100644
-> --- a/documentation/dev-manual/bmaptool.rst
-> +++ b/documentation/dev-manual/bmaptool.rst
-> @@ -44,14 +44,16 @@ any type of image. Use these steps to flash an image =
-using `bmaptool`:
->     depending on your particular setup. The following commands assume the
->     image resides in the :term:`Build Directory`'s ``deploy/images/`` are=
-a:
-> =20
-> -   -  If you have write access to the media, use this command form::
-> +   -  If needed, set permissions to get write access to the media::
-> =20
-> -         $ oe-run-native bmaptool-native bmaptool copy build-directory/t=
-mp/deploy/images/machine/image.wic /dev/sdX
-> +         $ such chmod 666 /dev/sdX
+Signed-off-by: Guénaël Muller <guenael.muller@smile.fr>
+Reviewed-by: Yoann Congal <yoann.congal@smile.fr>
+Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
+Tested-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/poky.yaml.in                      |  3 +--
+ .../ref-manual/system-requirements.rst          | 17 +++++++++++++++++
+ 2 files changed, 18 insertions(+), 2 deletions(-)
 
-I know this was already instructed before, but maybe `chmod o+w` is a bette=
-r
-practice and advice to give. What do you think?
+diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+index c770318f2..66f758fe8 100644
+--- a/documentation/poky.yaml.in
++++ b/documentation/poky.yaml.in
+@@ -13,8 +13,7 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
+ UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
+      build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
+      xz-utils debianutils iputils-ping python3-git python3-jinja2 \
+-     python3-subunit zstd liblz4-tool file locales libacl1
+-     \n\   $ sudo locale-gen en_US.UTF-8"
++     python3-subunit zstd liblz4-tool file locales libacl1"
+ FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
+      diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
+      ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index 0fc92550a..43c3c5834 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -152,8 +152,25 @@ with a supported Ubuntu or Debian Linux distribution::
+ 
+    $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
+ 
++You also need to ensure you have the ``en_US.UTF-8`` locale enabled::
++
++   $ locale --all-locales | grep en_US.utf8
++
++If this is not the case, you can reconfigure the ``locales`` package to add it
++(requires an interactive shell)::
++
++   $ sudo dpkg-reconfigure locales
++
+ .. note::
+ 
++   -  If you are not in an interactive shell, ``dpkg-reconfigure`` will
++      not work as expected. To add the locale you will need to edit
++      ``/etc/locale.gen`` file to add/uncomment the ``en_US.UTF-8`` locale.
++      A naive way to do this as root is::
++
++         $ echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
++         $ locale-gen
++
+    -  If your build system has the ``oss4-dev`` package installed, you
+       might experience QEMU build failures due to the package installing
+       its own custom ``/usr/include/linux/soundcard.h`` on the Debian
+-- 
+2.39.5
 
-Also I think this recommendation could be given after the sudo command, sin=
-ce it
-shouldn't be a problem to write to the device as root. I'm assuming the `ch=
-mod
-o+w` instruction was added here because oe-run-native doesn't run as root.
-
-> +
-> +   -  If you installed the package for `bmaptool`, you can directly run:=
-:
-> +
-> +         $ sudo bmaptool copy build-directory/tmp/deploy/images/machine/=
-image.wic /dev/sdX
-> =20
-> -   -  If you do not have write access to the media, set your permissions
-> -      first and then use the same command form::
-> +   -  Otherwise, if you built `bmaptool` with BitBake, run::
-> =20
-> -         $ sudo chmod 666 /dev/sdX
->           $ oe-run-native bmaptool-native bmaptool copy build-directory/t=
-mp/deploy/images/machine/image.wic /dev/sdX
-> =20
->  For help on the ``bmaptool`` command, use the following command::
-
-Regards,
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
