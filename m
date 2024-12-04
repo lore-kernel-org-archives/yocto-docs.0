@@ -2,59 +2,59 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B35F2E7716B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C68D3E77173
 	for <webhook@archiver.kernel.org>; Wed,  4 Dec 2024 12:23:43 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.12920.1733315022354931532
+ by mx.groups.io with SMTP id smtpd.web11.12807.1733315022214768139
  for <docs@lists.yoctoproject.org>;
  Wed, 04 Dec 2024 04:23:42 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=oHAlX8q4;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=b41W9jwj;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E0A221BF203;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 52E251BF205;
 	Wed,  4 Dec 2024 12:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733315021;
+	t=1733315020;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VfZmioT27AtVnFUnuGYc1jZVOwwpo0olQsT33QKYODg=;
-	b=oHAlX8q4XuTAqiVVoT447Gmd+61c79YBP8cIX0GaYzyw6UuiNTqiyoCHuLsge4Fbe+FvtC
-	Xh8xkxCgQ7eY07ycCa5UBI7zaPic/kFz7/LO+DLY6y7tdW73DE16Z0jDhCOExemLfqgsq0
-	gCQhl5yC7dKZG2atZDx8HhfMnDvkR5pCk9JZYYl1tkoWH98Xgo5xVJY9zNRsWhtiiARiWy
-	9V8lOOZ3a62kNXS1Fcidk/dsz1sg7/j6Y5JH3cQiMDqbWAYWWrubqrx9qRetIXM8Clal4A
-	v2YklPhmjD/+8kIlkxmVqb8+0UIA+RSBIrSNlFqgtzWNNO/ioAd05w5DvOALIg==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=FQU94UmjuDGXPxjrNXsLLUER3qDVO3MlDuJqMb9dwmc=;
+	b=b41W9jwjVRzmUSM4dTILRtO7MK7/HosLoUWuK5IX82MTdwtsyFOBbyBBIDRwiGtauvvll/
+	ExVwJvWZP5rEGNoGbMUNvSbLSL2ucjZfAM2z3BgD1sTu6Acpx68bWg8vHObzL09NXR455K
+	AClSDu6lQkPxMSVOhzAy3gzSpR9W4XJKGTXbNKvPDlMUqxzMj6XoGIpCbjQHigBxPdh+Ls
+	TDxuZBke++cuihjXcWKekrcn7Sw4VldjOB2Dcs2wBy5+LGbt35wDl59pC07V6jNYNlNsJI
+	Aps1gPUCdW2CgUJXG5NkGM+T3GU02P7c+LJD7YHzk3iWmiYx6xEafYzVH9SGKA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 04 Dec 2024 13:23:10 +0100
-Subject: [yocto-docs PATCH v2 2/6] poky.yaml.in: replace inkscape
- dependency by librsvg2-bin
+Subject: [yocto-docs PATCH v2 0/6] Update the dependencies in poky.yaml.in
+Date: Wed, 04 Dec 2024 13:23:08 +0100
+Message-Id: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241204-update-doc-deps-v2-2-1d9b4063476f@bootlin.com>
-References: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
-In-Reply-To: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAKxJUGcC/3WNQQ6CMBBFr0Jm7ZjOCBpceQ/DorSjTKKUtNhoC
+ He3snf5XvLfXyBJVElwrhaIkjVpGAvwrgI32PEuqL4wsOGaiA2+Jm9nQR8cepkSkm9a2/ueiVo
+ oqynKTd9b8doVHjTNIX62g0w/+7+VCQ02Rvh4slITHy59CPNDx70LT+jWdf0CMHgqRbAAAAA=
+X-Change-ID: 20241120-update-doc-deps-1d59abdb2119
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1344;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1903;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=gBQx50A2UoZQaB4P/cxH8kqp0Ye4bwysndQ7haWAuPI=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnUEnLtqZ4lwn+TKg+WCESnLa1c+FMqlmxqOymw
- 4Le486ZdCGJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ1BJywAKCRDRgEFAKaOo
- NjhREADAnO0zgyJ9Jq1aWoWzG0nMs+MB8Dx+z39bCr6vXq/s5jbE6XQMnJTTKAV0VW/1C/lfL8n
- FWKZMgRWqkDQX8oShgUcBBZXrvTpfLG6uWk2TzgEDqCyefz5VN96zysHO1yOVgz6YqPEuApyTSh
- eekizCfjk8+ITqiO0uYMrfPeCeIgTD+EwLEDHzzQVygLbp+LOs32QCLfe5qoDdiks8co0ThURwx
- GhH4XJs1bideYKGQQ8Xa+oLK36n1MDgGoC+2gEH/uQj3lr2sqhYfGQU3yHEksnhdpZbbiyebxbs
- IZ87Ep2DWAc4YjOLzYfaUcn6Ui1f0r1at5A5/wm2UqOSvciDLnNyfgu1jl5bXq4ncEsPG/XCdyN
- ieqmtZJH2AwnxUTfQNUJzQokhuww4OE0djjPNJrThItp236VR0J/zI2wf4dx2VUiPWTmJSdzPAn
- cJMjeNHGlICMDRcKqv9mbUyOYEt9zTbX48O+W0PSYABqPKw9s8YI28wQAUsiYVmq49KzBlCgIqI
- X7lbL+aj27x60uBQRutASSHS0ghlGJM4Dp9vZVIlWRmBfcUabbvsuLnN4ErIq5nfdwPOq6BIPol
- XqiW7IrgwXqW4nhuO0/JqLSDIV1GJmiMe9SS12ix3cAgdMN/UajBTkofQP1ZDvRkEYonh/FWC1/
- sjGHqGOqO+E/ypA==
+ bh=Hxr7WR0QBdNd4n7rOmeOFnffI+koE9irHThcdxAAn0c=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnUEnLlVgz99dGk26D74+QwaN5mgQI63VRWqSMk
+ qoNRmPrWDeJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ1BJywAKCRDRgEFAKaOo
+ NgUvEACj5fosxmRpTv+LBtJsppjwvQGs4S0WNi72sP2sgO/gZQSVWMXNmoYm2a25eSniE7IaCrE
+ XHBFfutCv5Klypt6wQ8Xt/PVauMm5jSWZuUn58IuDPuHFu2MRWm8CtQydyNCbJJbZtWqrvs6wsG
+ KKVhYnQSJhZm72IutCnkcpRWFxA4vxFmuRp88tNskLXD24uST3XdfWfKrF3AkSmq4qDn1X83qSz
+ 2T/6mJfVieOHouqpnE2tFbyPiqMDajJMQOoh3stA1NxAgUiMqAp2iUaOsr+aqzMyG8csruuE09p
+ iUbKvyd5GgPbC2rnowhw5MRr6V2h775AToL6SyJgVtpCsrJwYvFOA2OejXO1viGBTW2KKtc7bNL
+ UzqLZzxnAcSPSgZMoIPynaZc3i5XyXGi3Fd/DQZw/8c4I+0Q7/9TZUptnECuQlakNoWLfv6eT2r
+ t0AnH+ZEDWkNXuS0rcTcnp9s7raP5R4pPWp9+ntAd/z1pLUZBe0k54A1b6r3u9OhiFAtDp/kOIm
+ oY7MwtuCKByNqYf29PSa+K2JlYA7ocA4d6Eytt2GDvrZLJXJEffC/xDIhYRWP3xyOmqE706OYf6
+ QkVmrCEJDSIj4lhpQn1nieFcf669+0CoqqJs2hWskoVEkn/Jq8te0bE0bEUiwc3ZoLUNwX7JTSN
+ +GabaLJq/F/EHxA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
@@ -62,61 +62,50 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 04 Dec 2024 12:23:43 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5881
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5882
 
-inkscape used to be a requirement to convert SVG images to PNGs/PDFs,
-but we replaced it recently by rsvg-convert.
+This patch series aims at gathering the dependencies required to build
+(both the image and the documentation) in poky.yaml.in, and updating
+them with regards to recent changes (PDF, Epub addition / switch to
+rsvg-convert).
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Having all the dependencies listed in poky.yaml.in makes it easier to
+track and compare them across the different distros. Also, these can be
+reused by scripts (note: I am working on a patch that uses these
+variables to build a container image ready for building the doc).
+
+Also, add the dependencies required to build PDFs/Epub files. These were
+initially listed for an Ubuntu 22.04 docker image I was working with,
+and "translated" for other distros using https://pkgs.org.
+
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/poky.yaml.in | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+Changes in v2:
+- Fix sorting of the yaml lists.
+- Split commit for Fedora 39 addition, to backport on scarthgap.
+- Use texlive-collection-lang* to match all language texlive packages in
+  fedora and opensuse.
+- Link to v1: https://lore.kernel.org/r/20241120-update-doc-deps-v1-0-50e267ae4123@bootlin.com
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index d03809f557960d10a6b9a2753a65c80937c62e13..94849acf9942c7ebddb2ac7f8aaf5eb9d87e0c5b 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -62,7 +62,7 @@ UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL: >-
- 
- UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
-   git
--  inkscape
-+  librsvg2-bin
-   make
-   python3-saneyaml
-   python3-sphinx-rtd-theme
-@@ -119,7 +119,7 @@ FEDORA_HOST_PACKAGES_ESSENTIAL: >-
- 
- FEDORA_HOST_PACKAGES_DOC: >-
-   git
--  inkscape
-+  librsvg2-tools
-   make
-   python3-pip
-   python3-saneyaml
-@@ -163,9 +163,9 @@ OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL: GitPython
- 
- OPENSUSE_HOST_PACKAGES_DOC: >-
-   git
--  inkscape
-   make
-   python3-pip
-+  rsvg-convert
-   texlive-fncychap
-   which
- 
-@@ -209,7 +209,7 @@ ALMALINUX_HOST_PACKAGES_ESSENTIAL: >-
- 
- ALMALINUX_HOST_PACKAGES_DOC: >-
-   git
--  inkscape
-+  librsvg2-tools
-   make
-   python3-pip
-   texlive-fncychap
+---
+Antonin Godard (6):
+      Gather dependencies in poky.yaml.in
+      poky.yaml.in: replace inkscape dependency by librsvg2-bin
+      system-requirements: add fedora 39 to supported distros
+      system-requirements: update list of supported distros
+      system-requirements.rst: add dependencies for pdf builds
+      poky.yaml.in: add missing locales dependency
 
+ documentation/brief-yoctoprojectqs/index.rst     |   2 +-
+ documentation/poky.yaml.in                       | 266 ++++++++++++++++++++---
+ documentation/ref-manual/system-requirements.rst |  59 ++++-
+ 3 files changed, 292 insertions(+), 35 deletions(-)
+---
+base-commit: 30002019198a168e48537407bb928facb26af82a
+change-id: 20241120-update-doc-deps-1d59abdb2119
+
+Best regards,
 -- 
-2.46.1
+Antonin Godard <antonin.godard@bootlin.com>
 
 
