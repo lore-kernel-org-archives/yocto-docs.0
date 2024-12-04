@@ -2,109 +2,107 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B22BFE7716B
-	for <webhook@archiver.kernel.org>; Wed,  4 Dec 2024 12:19:53 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.12766.1733314784077927621
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BBEC8E7716D
+	for <webhook@archiver.kernel.org>; Wed,  4 Dec 2024 12:23:43 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.12809.1733315022841064919
  for <docs@lists.yoctoproject.org>;
- Wed, 04 Dec 2024 04:19:44 -0800
+ Wed, 04 Dec 2024 04:23:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mL376Vv1;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 60C391C0003;
-	Wed,  4 Dec 2024 12:19:41 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TIm9ybXk;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 648EA1BF20B;
+	Wed,  4 Dec 2024 12:23:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733314781;
+	t=1733315021;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XOALOwVOO1Ga3dRlZcCkNaTutESh4oDWMILkvBmbA1M=;
-	b=mL376Vv14rjCuCeXh3UTYRPSp8/TvU2LO0tHtXbxNMIrsVAImibE4xN8E6248yEujbV/nB
-	pbZr3NC9KGj1bpVeMuxxjouvUi9tTuklIxjw+19o7tnna6HHQ2pFQbXXSIv//tH9nvkV0U
-	Z1wN+wORbrafhXqtcmW1zh7YCTZH4Gb1JVCzN/yhiV8/G6REEXpIWhk1mseFFCmajwarhT
-	hOxzmkWtPlFA3yhwJj9lx4ng24whfsWGnsG8ckgpswlGJ3ed2i4gZA1Vn40BQWZr0pvvKu
-	qjCN6WfdAZZQFAINFoLTgx2dT0/VT4R2JYHLlFh3X5v0svA92i2id7RoYkydMw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 04 Dec 2024 13:19:41 +0100
-Message-Id: <D62WT5QAFUR4.22N91K2Y793BO@bootlin.com>
-Subject: Re: [docs] [PATCH v2 3/3] dev-manual/bmaptool.rst: simplify and fix
- instructions
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <michael.opdenacker@rootcommit.com>, <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20241204104432.2094236-1-michael.opdenacker@rootcommit.com>
- <20241204104432.2094236-4-michael.opdenacker@rootcommit.com>
-In-Reply-To: <20241204104432.2094236-4-michael.opdenacker@rootcommit.com>
+	bh=fiirBHE976kPrJWytAKAKwI+YZK5yDE/x5/x2fvqP2c=;
+	b=TIm9ybXki2Y0FEMqDwYW9MI7iSzzoSNIPLCZfPqyFwd5RaF1Z1HdzFKRf4UOQHHkOanMnb
+	BUedr9NmKEvVgzBIGJGaTOuWhxiEkanRFRQ3TzPyLvZOqC1Kam1iYXgQTbb38Hme4TXJy7
+	VBumwh9Xd7ZIZZL72fuQTG4vvdZBiDOTcKp8bQZbtIIexcHqJx6t2XApyozHt9MDdQ5IZ7
+	LwUBnupzFXbFjHJipxlNtsLxi/Hul3WpV4nhHCsDaLKsduwlBUotGiX09JVQOxhbf25ASd
+	KGqgqFdDtOvYfL/UohYgvdsc18LPeZtO2r5zHN3sgD/H2XNN5esm9hDHJqXbLA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 04 Dec 2024 13:23:12 +0100
+Subject: [yocto-docs PATCH v2 4/6] system-requirements: update list of
+ supported distros
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241204-update-doc-deps-v2-4-1d9b4063476f@bootlin.com>
+References: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
+In-Reply-To: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=977;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=7UsRjGMkvpS/tbPOAhfNFKzdbnlEACzzxBF/WaVSkOs=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnUEnLSuw2nu/PwSskg9ZjjQn5BIGoOskSdQdEg
+ SrwRc1AcKiJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ1BJywAKCRDRgEFAKaOo
+ NuAYD/92UI5FKaxxk6Lly8dvazlMr+CxHApp9f1ASBR1ETod1CZy4toRfDEwx9gqmMA2P4RHom8
+ gtliyQYpyHxh9o71chWRwBSClSBWTEZ38g/l7yHXHtb9XvUg5Ye6vpgsI+/qPtpW2OidGtLY1Wk
+ wXKaUTvXnSX9PHWUqZLJk0DxPySfI3kWW6EbWEy4s+md2mTyhWSuze4/iB7XM54citQNkykQ8cs
+ RgoELtPiMAdCWQA0xlEzU97qDb3fSmjMbk/vwxspKmYVZQhFZFIEr/2H/LQ1GHao9X1/SVMHFAr
+ +l/8xoPFp/MohpA4k2W8stBg1O4sGTEbLTCqFOT3/zWdGC+v1DgMsJY6b3rwihV41OVQDbk+c+c
+ LgH/jYDmURLVzRLp/pVUfld0OfCS1F4gnwHxLimRX3Kca9CxTHCFwHZ6cwICkHebcCN1XkZuffn
+ 9rq2C+kRKyKhEgN+ukbHC7YsEGe33VKsljXUF2XL+deHjgEJYgTgwg6f/fDLUm4cKB2lOczcoPJ
+ rlSSb8QqezBDoME6vIe4FUuNQmzGbs8n4opYhSxZXQoe4XkCIGItMw8XTWdtUQHlGF4TqO7tEjy
+ nzPSmxP8K4ln0iV4pU+ShrA0WuPpUSF2jx/Ue0anirvZN1khtZ7qH/OnaZOcWsBWigZDGoReoQR
+ 0S6Dt1iYrXCvAbg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 04 Dec 2024 12:19:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5880
+ <docs@lists.yoctoproject.org>; Wed, 04 Dec 2024 12:23:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5885
 
-On Wed Dec 4, 2024 at 11:44 AM CET, Michael Opdenacker via lists.yoctoproje=
-ct.org wrote:
-> From: Michael Opdenacker <michael.opdenacker@rootcommit.com>
->
-> - Remove duplicate instructions
->
-> - Detail how to run bmaptool directly if you installed it on your host
->   instead of building it through the ``bmaptool-native`` recipe,
->   as running "oe-run-native bmaptool-native bmaptool ..." won't work
->   in this case.
->
-> Signed-off-by: Michael Opdenacker <michael.opdenacker@rootcommit.com>
-> ---
->  documentation/dev-manual/bmaptool.rst | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
->
-> diff --git a/documentation/dev-manual/bmaptool.rst b/documentation/dev-ma=
-nual/bmaptool.rst
-> index 37083c9c64..93c8d3a45e 100644
-> --- a/documentation/dev-manual/bmaptool.rst
-> +++ b/documentation/dev-manual/bmaptool.rst
-> @@ -43,14 +43,16 @@ any type of image. Use these steps to flash an image =
-using `bmaptool`:
->     depending on your particular setup. The following commands assume the
->     image resides in the :term:`Build Directory`'s ``deploy/images/`` are=
-a:
-> =20
-> -   -  If you have write access to the media, use this command form::
-> +   -  If needed, set permissions to get write access to the media::
-> =20
-> -         $ oe-run-native bmaptool-native bmaptool copy build-directory/t=
-mp/deploy/images/machine/image.wic /dev/sdX
-> +         $ sudo chmod 666 /dev/sdX
+To match the list in meta-poky/conf/distro/poky.conf.
 
-I think you forgot to change to "a+w"
-Also, it wasn't moved after the sudo command?
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/ref-manual/system-requirements.rst | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Looks like the wrong patch may have slipped in? :)
+diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
+index 17ad1b741a0b92f218860d22bbc4b0927b73b865..7c7f518d9fe1f68e5b014cf31e59dc9bbe322e4c 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -62,10 +62,14 @@ supported on the following distributions:
+ 
+ -  Ubuntu 22.04 (LTS)
+ 
++-  Ubuntu 24.04 (LTS)
++
+ -  Fedora 38
+ 
+ -  Fedora 39
+ 
++-  Fedora 40
++
+ -  CentOS Stream 8
+ 
+ -  Debian GNU/Linux 11 (Bullseye)
+@@ -74,6 +78,10 @@ supported on the following distributions:
+ 
+ -  OpenSUSE Leap 15.4
+ 
++-  OpenSUSE Leap 15.5
++
++-  OpenSUSE Leap 15.6
++
+ -  AlmaLinux 8
+ 
+ -  AlmaLinux 9
 
-> -   -  If you do not have write access to the media, set your permissions
-> -      first and then use the same command form::
-> +   -  If you installed the package for `bmaptool`, you can directly run:=
-:
-> +
-> +         $ sudo bmaptool copy build-directory/tmp/deploy/images/machine/=
-image.wic /dev/sdX
-> +
-> +   -  Otherwise, if you built `bmaptool` with BitBake, run::
-> =20
-> -         $ sudo chmod 666 /dev/sdX
->           $ oe-run-native bmaptool-native bmaptool copy build-directory/t=
-mp/deploy/images/machine/image.wic /dev/sdX
-> =20
->  For help on the ``bmaptool`` command, use the following command::
+-- 
+2.46.1
 
-
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
