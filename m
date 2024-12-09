@@ -2,390 +2,181 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B0098E7717D
-	for <webhook@archiver.kernel.org>; Mon,  9 Dec 2024 17:29:13 +0000 (UTC)
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.88])
- by mx.groups.io with SMTP id smtpd.web11.107692.1733765343123885583
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AA67EE7717D
+	for <webhook@archiver.kernel.org>; Mon,  9 Dec 2024 17:30:43 +0000 (UTC)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.74])
+ by mx.groups.io with SMTP id smtpd.web11.107743.1733765440038809228
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Dec 2024 09:29:04 -0800
+ Mon, 09 Dec 2024 09:30:40 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=jv3lDvfY;
- spf=pass (domain: cherry.de, ip: 40.107.22.88, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=iUEdVlw+;
+ spf=pass (domain: cherry.de, ip: 40.107.21.74, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XZl/5UzWoQ/WuH2JA3MEzXY1xc1UaWF5ekgoijgmRvWrqo4YHVDsEBWyYcaGQlO9/t5EFzKFRF9Mdew0NS7LBHr2S6l+ng6LS1HfRNgzDPrceriTspb7fC94MI/6NvOnEt75ZgUS1Wj8h8d/06yJ4QC1dsWhjdOtRg82ZluEOA3dYcwD0T1JnXx8mNNHSrNG3fYowZU14Z7V7VGqol35QBOqjGvEwmQICBCy4mTgMFXbTl9Nh5+DptvYTozt43Wu9Vw2R3NoKXURYD69q+dqXMttvsOtbWylTt/gdOM1Reri7Dyj1ZQrQLDyBADOd7jxSZlOhQFuftohsajBsprLug==
+ b=gAhC5l7OJo1rFsHQCDGd75MSwFUctYNSQmhLsXHpXKEFlH+eSqdgXvgv9MPjidONIVkOiwRpjEGgIOQrviGHXcubRAoNgO515R9UKWZE95GhySsjyXwlgMXorx96BtOD/D1vaHaoKajlR4aXwpkJc/4xrM+0vWrnKF6plqi/V9XrMTxY0xXcgX8BynJUnjnAKHubz1u83ntJIaHKnqNTRAcNspP14fFLPzE0Iy3MDSw/7ecS3T5VdFJzuq6ANLRzhB+gWVJ9cPn9KkXq5WWNE8r8uvRJMhRS9wqPPVGvog8MpSl7hs0wt98PB8SU5eW2p62RsedqSSQNiOuguL4fdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0KCfntiTuKJ1+2MAkerIiPJoqKhW7/eJwcymQ8644UM=;
- b=JB/WGeL0n+8knNW5IV9PdRRU32qNEPpd2QMTMKHzTH+6UNN7l2JQn/iFDQBtoXnToUFvymNxEo01IoiVl4C07gPCAGLjH4Et76eummSqBbqwP+WTv899nwiJKKsabgVf59ZVwFDjJpJF84dwoWhBJNpVYhFT+BWEHg7LcmIk70ohsZayjnQhhVnorRBXHOVIq26vrVLTQULJcy79oq/a1f2ZeeMOx8teGDFNZprRFttJetjbsRMeW9HHgK0nEc9FHqeYQpNSBhENSAPWRpNhZISB8Wva/z1vTL/637TUD9wH3aq7dhPq9iCt3yKWgjcWOO6ztbigPncxT3AIPat1XA==
+ bh=PYk2CxbllpncCeary+68/n39Vpfdf+jtgMdsvk7pYk4=;
+ b=tdCAK0Q7CZOIxT02QdDriPdvlnUqCZWvYp2t4wRMQvsHC1C26ya08xcfOYjDA1WPZpQT2X5srWCNpl+Gud2YPNzIhkwVhfxZR1xtsLTnV6Wh6J2as6dxRlyAie9A5meyRcNqiTkOpl0LCJjHzcFHO1jERgCicyU8S+BjkNgBN+G3MMXPKL7OV8h044TSOefQPaC62Fj3ptbmYoKRvG2mmU9mm162ZdhaBbt3OMxi0K1EW3Oi1lHUvHw6zNLGTeXTJ63CQbiLJwX6+TBx+JHmjOMbD4V30i40BPdEPNW1nCPzPoThdSbpQIXTk68xkxaarpTEmR5lk8FylAcgVV1POA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0KCfntiTuKJ1+2MAkerIiPJoqKhW7/eJwcymQ8644UM=;
- b=jv3lDvfY0QjYkH70yIWR0EIRhvRYMkIovq8jPH9DSQF+OurQwZtRKci0tSEIeOauN4fzj32u9sduvztrHBeL2etDTs1rXOXUA7w0fpZD1UYNRwUcRdbsdi08WVbyhKJxHwhtpbqYRyWKGUaryNX5D8fF1Tgiq6NSOWqQdYqaU1I=
+ bh=PYk2CxbllpncCeary+68/n39Vpfdf+jtgMdsvk7pYk4=;
+ b=iUEdVlw+aSkne7bthZhVGdxXP9dx4v+exx5zgRTqV0mSmD29QcUEi4mq3g+bIWSCdNz7Z9knwFRiCBtgY/LdE0/0WB1WM81oUd6lSNM0wdmhKGW5lP8FpvjrpiMZ+oSEc6MU8/1oZcjIX6yaiqOUnyvZfjBXDDXXJIiZeWT93L4=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AM9PR04MB8906.eurprd04.prod.outlook.com (2603:10a6:20b:409::9)
  by AM7PR04MB6952.eurprd04.prod.outlook.com (2603:10a6:20b:107::9) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.17; Mon, 9 Dec
- 2024 17:28:59 +0000
+ 2024 17:30:37 +0000
 Received: from AM9PR04MB8906.eurprd04.prod.outlook.com
  ([fe80::d379:5378:b1:cea]) by AM9PR04MB8906.eurprd04.prod.outlook.com
  ([fe80::d379:5378:b1:cea%5]) with mapi id 15.20.8230.016; Mon, 9 Dec 2024
- 17:28:58 +0000
-Message-ID: <50f1c8ad-6726-4b14-a440-043cd7a47077@cherry.de>
-Date: Mon, 9 Dec 2024 18:28:57 +0100
+ 17:30:37 +0000
+Message-ID: <7f1b7bfb-fb9a-470a-9e83-a4342cca676e@cherry.de>
+Date: Mon, 9 Dec 2024 18:30:36 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [yocto-docs PATCH v2 5/6] system-requirements.rst: add
- dependencies for pdf builds
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Subject: Re: [yocto-docs PATCH v2 1/6] Gather dependencies in poky.yaml.in
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 References: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
- <20241204-update-doc-deps-v2-5-1d9b4063476f@bootlin.com>
- <f6b0c418-bd94-4fc2-a58d-ec7634926fe1@cherry.de>
- <D67BY6U5UGPM.B2AQ5R5NXNID@bootlin.com>
+ <20241204-update-doc-deps-v2-1-1d9b4063476f@bootlin.com>
+ <bbe9f42c-e716-44d7-8930-71a44c4c9a36@cherry.de>
+ <D67BY6ERMIWY.5WMB41MN18TJ@bootlin.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <D67BY6U5UGPM.B2AQ5R5NXNID@bootlin.com>
+In-Reply-To: <D67BY6ERMIWY.5WMB41MN18TJ@bootlin.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: FR4P281CA0355.DEUP281.PROD.OUTLOOK.COM
  (2603:10a6:d10:f4::8) To AM9PR04MB8906.eurprd04.prod.outlook.com
  (2603:10a6:20b:409::9)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM9PR04MB8906:EE_|AM7PR04MB6952:EE_
-X-MS-Office365-Filtering-Correlation-Id: e8900b54-4473-4b4a-02ff-08dd1876f6fd
+X-MS-Office365-Filtering-Correlation-Id: 8caf155f-d232-488e-defe-08dd187731ae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?R1o5Zmpla2h3b2UwNnh5NXYwYlFLZ2VyaDhJUWNGb01lK0JNRGRhL0g2S2xp?=
- =?utf-8?B?OCtHSTB4QXBOUnFXbldaeXRXWHhsRis3WXo0c1RTN3FMQkx4c0p1TXVBbmJp?=
- =?utf-8?B?d29WRkxnZWJkRmlYL0lJamFXdkNYTEZjRXUvZWRzMmV3a1hxVmM1cHVWWHFM?=
- =?utf-8?B?d3Y0RTU0eTFFQXlPVHdKcEhqRzlXWm9zcHV5WDlzeGFrcXdMVG03MG1pdXE0?=
- =?utf-8?B?NnZheDVFdVBEZytsVlY4a2Jic0JFZlVaMFNUbktSZjEzVnA5Wk9ueFlsbkcr?=
- =?utf-8?B?V3NZeHdxWVNMdjExbkNXcDdSSkY1ZlZiYk11Sm9WUHFWT1dIWVpTdVk2ZlpF?=
- =?utf-8?B?TDZHVTV4WDg2eHdIQ0FDMTY2eHcyLzRBWURERWp4TGo4Mjg4ZUI4dHpSOEx2?=
- =?utf-8?B?cGNNU1BhLzZMaDJ5dzZPek4rRWhCVnFCVFFnYkFXa3hKUWU1cGRYN3hkTkpl?=
- =?utf-8?B?K0JJMXpLdmZpN0Zaa2Zjb1dOQ2lVdERxYXlVYktJZGdZbVphalY2QjZEK216?=
- =?utf-8?B?a2k5WjloNzFkYWJ5dlVBODRBUk9XTTNxOEpRM0hQUkdsc1huKzZRMWFjUjYw?=
- =?utf-8?B?OUZQWC80N0cxL05ueVd1WjhiR0hRODRJNFNsei9OUkh2N2UvRUIxTklwUDJV?=
- =?utf-8?B?Q0R0RG9BeXZDTkpYN2cyWFRYL0l2ZVVOVk9ySzRTSUJjYy9KUE9pcE5iQ1dI?=
- =?utf-8?B?d0ZSa2dDVWpyVXIwUlV1cU94bVdxemJPT003a2NzWFdJd2ZLREY3dHBQNFAy?=
- =?utf-8?B?UGlSRldFdWk2bERST2NlOUV2ZllwZ3BjZkpWeTdjSXdkNDNWaG1rR1F3VHRa?=
- =?utf-8?B?Uko1bUVZM0QyU2ZRTDF1UTJmRWgxeWNVQjhvNFFwUXVoOENGWndTMDl2MGEy?=
- =?utf-8?B?Ry90YUxuLzI5K0NrSFR3NDVTdHRTQjlBRXgxUS9yNFZtZ2lmMXlCYVVoMGZR?=
- =?utf-8?B?bzJVZ1ovQk1CWkpnYVFxUW9DV2VXaE1ybXBJT1hkdE1VUzdYL28yektDODVa?=
- =?utf-8?B?Sm8yU25LY2EvUEgyTkxpRVZGcjNLWGRYVjBZNzZSYWhCOFd2bUg0NDJJNmVp?=
- =?utf-8?B?RTBzK1lvNXRNbGxhTStEcmoxdDFtVFhlYnFSUC8yY0ZJeGlFSEt0aWRGUHlG?=
- =?utf-8?B?RXJmQkZGUEdYUmQ1M2F2cERzb0FHc3VpSzZ5djRxODZoN3dmdEZnOWQ5ek1p?=
- =?utf-8?B?SXNmYVhyWWZtUGRsU1dPQnFTTE85RytKMmxqUDhqNkd2M3U4czlYd2liMzdr?=
- =?utf-8?B?MDk1cVJHMjluOW9JR3MzaDJYcmpDNU5hMTAzV29HZHQxNGZSaEh0TzB3T3pI?=
- =?utf-8?B?R0hoUW53SnFqN0l5MjUrODB2bGdlL3J5ejVlVE5keVFUUFQ4MThhbkFYclda?=
- =?utf-8?B?TGtINTdsVTdGR1dzSm1RYlNhem44aEIyTThwem05K3o4UVo0R21OL1Nld3RO?=
- =?utf-8?B?T1NOdGtWTkRucnQraThPMGxRT1lGWURuc0ZmWEhVR0ZxSTNvT055emZ6MzlE?=
- =?utf-8?B?N1BvUS9HcUx3ays4ZWlCb3poc2RabjVYczdzZXZsNXJrZmtCbkQrZFVJSmhm?=
- =?utf-8?B?ZUZieHFDSkZYR2NYeC9aMlV3UngwaG1udUMvMDZLZTlWL0J4dWszT0xoT2lv?=
- =?utf-8?B?ZXlrd0N1QUhmdGtPakg5NE5nQ0JzaHZZNUhOODhDc2xSdnJJb0w3M2xiZWFK?=
- =?utf-8?B?c3NLeTFleE9mUnphK3lxbEY3bVFCc2xQTks5ODNWV2NvNk9NSjl5RStHS09m?=
- =?utf-8?B?Tk04WGNCWUpsWmpyRnFVZG9tOVRuZ3V0U2E1TC9IU1E3VjhPa3FBa0lMWnNm?=
- =?utf-8?B?WmRDN1NONW9sbllZOXZrdz09?=
+	=?utf-8?B?cXltTjFtcllYRWIxOGlJdk1PZEk4QzFQMXQzeWQxM3FjSFA0QjdhV2IvSFlr?=
+ =?utf-8?B?OFd0VURiT252Si9MTThBb2hHV1ZVUDVtanpET3NtR3ZaUUMrRTFSY3pKQTRF?=
+ =?utf-8?B?eFNYK3JIV29iemhOTVc4Zk5tMXFheVpST3ZsU3R3SnE0bzVPWFJwRlVFcXgx?=
+ =?utf-8?B?Ym1qWDdEY2ZSckVIVmNZQWFKS0Z0UW9NcjVQRzhNYnBmOEEzemROTm9pZlBM?=
+ =?utf-8?B?dU12YjVVdUZmcjU0RWxZWkx0eFQxY2xtL1J6bUc3azVYVmtBZFRBR0dDWUY1?=
+ =?utf-8?B?OWgyVzF3SlhlUEZ5SkE3Tm0yTEpoUld1UG9ZWm42OVpkdXVLWjRxR2JUUk5p?=
+ =?utf-8?B?a05OcytoZ1hhV0hBNTEwYUJwZjNFb0NKaE90a3Z0VkVqbEwrZXk2OXo1K3dN?=
+ =?utf-8?B?bUxncGNGOVZVT2pnMXlySFRzS21tckNmYjJBMHVBNnFFSU1NdDB4V2RHeThK?=
+ =?utf-8?B?ckh0cTk2WkhobGNSd2pXTnZSeFB3ek1MYmJxV1BlZmFLWm13bVFMRzBzT29w?=
+ =?utf-8?B?QVNBVmNmbE5UYms5OXEycmhJSitodjJPRElNYmhReVUwdE5veWhZUmMzcExw?=
+ =?utf-8?B?Q0g4RVBVbWxtc1RYNXpHVEhKYWdKdE5UWWVpclMxaWdGd1Q5WTRYRTFDVWxi?=
+ =?utf-8?B?ajB5a1g5OFhPSDd6alFZeGt6cEtGQk56MVR3clVSSVF5Qjllb3ZDTkxVU2hj?=
+ =?utf-8?B?d2FxbDFrUERhd1dVRzNEbys2U0hTY1RmOFo1VnBBTnAyVW1ldUZlRitzS0RP?=
+ =?utf-8?B?K1BmcmswTzVXVjZtaWx1S1VTWFo0emNaS00vSlczUlhUa0NKUkcvOFZCNkd0?=
+ =?utf-8?B?YmlLVWw1QVk3dm1lcDJXUWR4aEg0N29xMGd6WDI2cEovT2NMNXVpMU9xYnc3?=
+ =?utf-8?B?Sjh5UVV2bDNjeUkrY3NDczdYNnpyaDRzd1Jxb1lIT0lKQ21TVnptaTUyTzZi?=
+ =?utf-8?B?elIxdFpadmFEbHhUMDdZL3Ruek1lSTJtcE9vNUVFR3pKQXB2TlZKSlJoZmFp?=
+ =?utf-8?B?NmtiSnk2Rk1KWWhxOC85Z25BOGpQRmNqeHNOMjl2Z3dQNUhzRTZtNGd3VTlz?=
+ =?utf-8?B?c2RmWFYyRUIrd0hPSEs4V3RsRkpjZ0l4NWMvRXYzTmZDSzZEczQ5WVU5cGtI?=
+ =?utf-8?B?eFFqeCtVUGllUHoxVTg2UjFaR2JwZlJsQUlWUE4yVythU0xldlNpU3ZSWTNs?=
+ =?utf-8?B?RkFwV3Z1WnhSbHZBZEk4dENoejhOZWpqamJCejRKQmIxWTJYTE5ObTNmSkNF?=
+ =?utf-8?B?RUFTV1g3VVhwZmJ4QU02NnJQTkZkdGdTR0xocEFSaW82c0F4aWJuOVVlcXY5?=
+ =?utf-8?B?bm81amNpR09jYTRmejY0WnF3NllETDFLYk9DLytZUDFoaEh1bTNnMWNsUXFK?=
+ =?utf-8?B?L2tlTVl2ZEIwVXdkNGxzQWUySGZVUEVqN1A2MzdRVVFkdE9ManVWQ0YxcFFn?=
+ =?utf-8?B?VU9qbUxSd3FRVERMQjY0Wm9JL0NhVk1WRmYzckFCSC96eFZ0U3p2SGdRMXRZ?=
+ =?utf-8?B?dmVtbVF2QzJzM1BSWWdTd094My8zb3h3cEF0L015aVdPamFQbVJBMndMQVB1?=
+ =?utf-8?B?MGFHQkQrdVc2RmhlOGVzbFNVWElUKzhiUk03aDJXUGN6Y1FlZk5Jbzl6UGcx?=
+ =?utf-8?B?YlYxOTJ2RkhLcVBDSW95bFFXcHNSOFArNDMrN0RIUTljNVlmbmY2UENETWEv?=
+ =?utf-8?B?MU9oQnlxOEFuRnphR1owYkkySXdXUmRPRTJhSXNJb0d3VTFNalFEU1hzaHdu?=
+ =?utf-8?Q?/XizVb2OnDfMb/bt/8=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8906.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8906.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?REtZM0g0b2h4bm9qVzJxVFFMQldvVi9PenJFZEJLYTlrWG1HVjlyYkh2UkRX?=
- =?utf-8?B?K0pMaDV3dkFQb25kSzlTZFZJb2k3SkZVZ29sMGtVSkV2RWgvY1RBWlFYTzdL?=
- =?utf-8?B?Ukw2SUl3a1hpSDVlVG9yS1loelpnTHR3VUNGUzVhVUJkS0pVRm1xS1Z5TENm?=
- =?utf-8?B?OFB1a3BySXBsbSsrUlNGVTdZY1NQTDNZd2g3L1BsYXliTkhiMlZnTWp2WWlM?=
- =?utf-8?B?K1dUYkl0OTUvM1R1RTJ2Qm9uR3hUOWNCYU5PaWtrOWN3TGl0Q0tQZmVLWXRz?=
- =?utf-8?B?aVBWdllzdTkwOTdrZGh2RTZIMmVPYkNEQ1pjU3lUVnJBSFBwZSt6MzYreUZU?=
- =?utf-8?B?aDVQSGYrMjFYUUljZGplejAydjBUSmlpMEQ4V3J5TGg0b1c1RXJkU3RZdVFi?=
- =?utf-8?B?Rml4VU1EeFR6Y3RWU1YybmFzb09TK3BmN1ptbXBOczFxckJ0TnNIK3VGbzlt?=
- =?utf-8?B?K0JKbGVSSnB1NE9seEQvejJVei94bVYxeE9pLy84QTZlVHNGUnBtSEFydXRa?=
- =?utf-8?B?dlNKZ2JuaDhnV25OazY4bTgyOHhIczA3K09iMS9kYVdnemVXMnlzcU1LRU91?=
- =?utf-8?B?cDZ5a3VCUVNYUEN5eVNCU2VqczRRZWl3OUpaaWNnLzhjdU1IRUZhMFpPMGhO?=
- =?utf-8?B?Rzd3cklOS3NsMGxEMEJ1TGJKTVlNVERnTmhVY2xvRzZ5dTZMK1R2eDlFK0U5?=
- =?utf-8?B?b1hHaHF0cHFKU3F5VGdYcDdzRkJYU3drcTd4ZWVwMG14RzNKbDVYNy94K0dY?=
- =?utf-8?B?WC9PTHlTTzVxYXdYdldzMEd6VnJuS0hNTng4NmdIMzhSVnl5Z0tvc0tpeERr?=
- =?utf-8?B?OWFvYXpzVEo3K1d4SXozTlJRK2ZES0RGaU9QMGZyaFZ0TnZMdEVTNGl6Y09F?=
- =?utf-8?B?ZExkbWRTSmwrQzI5TDIzcTROanFKV0NZVDVsdmN2UWZCb2pRSGlRV28zc1J2?=
- =?utf-8?B?UTUzc2x4Yjdqejk5bFZycGg2TVVKd2Y0eWxxMnp2YS84TGxWWUJPeEdwS21Q?=
- =?utf-8?B?S01xdExhT3FIY21ZbzNjRHBialcwTFlibWtYT29RZ29EV3dOdlFQTVVoaVZP?=
- =?utf-8?B?bXA5UmdkWm9XWVJya3BkTjlWcTBtbnlSbVlwVytiZXJxMmQ3NzFYTHc0SVpn?=
- =?utf-8?B?eG42TlZmMS9PalUyRnl6UkJuSWs3UE92QmxNVUFqZENMSG5LdTBNR2hKVkVD?=
- =?utf-8?B?bU5DMVpmbGJmeE01bW5UZVJqcEhiWVJ2SW5yYnFYRjF5NjBCaGFCYkp4RkNO?=
- =?utf-8?B?dnNGOWs3QzhKMTNHUGVXQW9yTENJbkF4Yk9WS0Rla0ZEMXhBaHhHTlo4S2Ex?=
- =?utf-8?B?QzVPdFpqNW9iUlB3WVIxQmJMWFllcWVGdkJTWlphOWQvNFRTU01yVVdJZFRB?=
- =?utf-8?B?NXNYRERmZVM5eVhhTzVMLzhQS1k0WlVqMkJ5RnRkaXlpZlBPaTBVQjJFRVJ2?=
- =?utf-8?B?aHhmYys2SGFtRlkxdjlIVlhwWGs2TGFLMFVMb29OeDJyaEVQWDE5WVQxTFkr?=
- =?utf-8?B?L0QrUERWZGxqbld6aWZqQlhDcGkwbnJTMlppRjMrYjVPM2JyMHh0elVoWkVN?=
- =?utf-8?B?MmNpdElPcUZUaFhWKzhMMmxodEE4VE5iMUJ1aWlMbm5xOWpHTGxNU2NrWlpp?=
- =?utf-8?B?RElhRVZrQW5Zck9DUkhUSHByRVI3Y2s1T2wwNHEzU1pFMkJkaTBoalRtVUdv?=
- =?utf-8?B?SUZhbm1NRUZZTnk0MVB3RXdGQ0xCV1NRaWdPNzlxKzRkVW1aa09IQzhPSUUw?=
- =?utf-8?B?Mnd1eXg3VlNKRFJnRlFvYk5GVzlKQUNtM2xSajZOQkthMCtpMHVtL1NGOGQr?=
- =?utf-8?B?ZnJnLzI5bkRvN0wxTTl4OHBlU1RmM0VPQkhYUXJIS1pqbDZRZVpyTHJ1eGpp?=
- =?utf-8?B?ei81UFl6WjlMekRkbTVKZHVkcTBOeVp2RTB4RStnb1pORmhvL0Fwcnk2bWVD?=
- =?utf-8?B?aVpTL0lMc3BhMkpaUzF1Q1NBenB6MVRXWFJjdXRYQVBFNkg5N0hTL1RiTXBI?=
- =?utf-8?B?dWFqb0VUYjZvaVdHZXRacTRzMFF0eCtvU1FENEtaa0N6aUFJT1ErZWVvcmVY?=
- =?utf-8?B?YVFGWno4eDlSSGUrdGNYMElkTHE5NElkSGNZcUVvRnByKzRPQVlwVjl2RDl4?=
- =?utf-8?B?cW5EUFM1NXpoWXRvVGExYnN5aU9SejVlc3RrVzJ4RDZaZVVzdGovajZFU25y?=
- =?utf-8?B?Tnc9PQ==?=
+	=?utf-8?B?QU93Zis4RVQ5cmo3a3ZUOHpZSmQ3Rnh4cVkzSnJpWjNqWjBXbGZFdjlVY3Rp?=
+ =?utf-8?B?Z3BPeVB1cnZhelRRWHJKSlhyRXdPTTlCeEkxUHpkL2hYUGZoQW41OTBMZkdT?=
+ =?utf-8?B?T3lqZjhmRWNrd25hMUZwUXlDWUZuRU45dUlOU3EyVmNEQUowVzdqNjBnbW55?=
+ =?utf-8?B?cGZRNlVsRTFxQjkzaHJJOG9QWDlpSmk0T3lrNjdwaGI4TE1weDZtVWZtbm1w?=
+ =?utf-8?B?ZzRzUTBKOWM5M1lhMWxxT0tYNXFxZUtlb25kMFJ2YXhQV1o4VmxuWEpoTUlq?=
+ =?utf-8?B?OWF2UEhhdHFrM0g1RTRGRVBLZmtTVTVVNDBXeUZ5RTJ2c0YrNDZRMEMwSitt?=
+ =?utf-8?B?TGJZUWJYZTVCUG5KSnRWTEVXZGRGeEJSRG11VWVsOFh1bWxxVGRVSXpqdzVS?=
+ =?utf-8?B?L0FsUVFNNjh1K2tSK0x4dmJLbVdjNnhqcVF5Q0I2bGR4RVdQNHdwQUp4SllY?=
+ =?utf-8?B?dFE5Q29LV1pFbkRXbWpSMGhkd0trWmg0MHpZWVZmOFFySGIvWlpIU3FNUlVk?=
+ =?utf-8?B?NEVkaXpmNGpING81RVExSXljWWN6cHBRMkxHZFZvL2JmZjEzR3hjaTErUThH?=
+ =?utf-8?B?SVp2bmFzSG14eG93T0dad3Q0cjdneU5Fa0NXRG9tMmU3ZndhMTJkdHhnSENv?=
+ =?utf-8?B?MmZGcld0bkhXNHdNUWdzRlFlSi9Ua3BjelpMNW9MZXpPSUxrdnhzbmpuZ1lB?=
+ =?utf-8?B?R1FBblV4d1hoWXpSNXJyMnRzbmNPcFcrSGdzT0gxblFSTVAxTmRrYW5FOElN?=
+ =?utf-8?B?bnRybkNPLzRPK0piM01wTEt4V3VIT2NKelZyRWJ2eVlLNmN1R1hxQVlydERo?=
+ =?utf-8?B?NFF5dXk0YjZrUWFZUWFpMm5SMG1EQ0ZYcklmb2R0SFF6czdpd2VzRWdSZDJO?=
+ =?utf-8?B?cURVM1dLRDcwZVdxT001aWxGWXJQUFQ2emNaMlRxdlFpK1czdWNSMkU5Uy9p?=
+ =?utf-8?B?Yld4YllUUDg2ZndvMThyK2h2b1JCb0xOYlhpN05vR2hXWmQrZnE4cVpSSFM5?=
+ =?utf-8?B?MW5DMzJhVm8zdWp0aFYvck9hNWVNL2ZYTVF0R2VkL3dBMGZsSjJydVdPejhV?=
+ =?utf-8?B?WTU3Zk9UYzM0MnkwamF0c3E4NEdWN3pNQWhmRzBUMTVxU0lPRndMSTNtUWRG?=
+ =?utf-8?B?ZjF1dkdzdWtuTUZHVkkzVSthWnpEQlNzR3pXbzc2dXFIVkJNYk1jeU1VYzJs?=
+ =?utf-8?B?MkFKUUNTbEJwV09JNURUQXNZVjJ4TzBBZ1hFbHpjS04ydGdsWUJYK1dWdVh5?=
+ =?utf-8?B?VmgxTldoUFdua1NMQS9sNjFUTzVlQk1WeXBTRnBIZndpNGY2L2Z2aURzSjk3?=
+ =?utf-8?B?Qi80cFlxS3grUnhGcEtPWWVhbXdqbUZxelVpRjBabndyR1VMWlRpOEszcXQy?=
+ =?utf-8?B?SnV0SE8rZ2wrZG1HWStMUmVXYkxXeFRhTjFKZ1J6RzBCaDBEcWY0SEtzbkQ3?=
+ =?utf-8?B?YlZvUXUwTFY1RE03UmpRMk5pUmNKZ3hYZS9PNWRUM3JWZHhLOW92TFdudTBl?=
+ =?utf-8?B?aWR3UWZDYXdLKzhSMGtlOFpIRjJCNmQvVlJnek9jRms4Vyt4R21tSFBlcWtI?=
+ =?utf-8?B?b2lBLzhIVms1dkpLcmEvRWtKTzY2a0QxRitaUThDVnBabEV1RHRoK001ZHJH?=
+ =?utf-8?B?QXdKeGJBU01BNWhLdzNZYXcveHRzTHNuRmJzVGNnckVqZnhrUXQ0UXQ2KytD?=
+ =?utf-8?B?OXNVREs4aGZqbTNNZEtibDZoRkJSVEhSOVZEbVI4S1Q4QklsdTltSEE3RDAz?=
+ =?utf-8?B?c1hYbEkrc1FHaHJ6YTMwQzRrazliUU5KeDNmTzl3amFpVG16VUgrWitWbExI?=
+ =?utf-8?B?YUxDTXYrQkZ5dTZoS1l5RVUxQ1oxNGh4TDl4aDgzZmNOazhKanJVbnJvS3J5?=
+ =?utf-8?B?bmN0YnpsK0MvQmZpa1ZJeTZxbW5WTlI4SmR0bStuQktkYzJDNXBrNmNVMStV?=
+ =?utf-8?B?MzQzUzIyTEVYbnMyTWJuZm5GejRYVS93YlN4MGwrbEltc1l5V1E2c0p4cDBP?=
+ =?utf-8?B?WjJMZHRaYWxJdXN4cmNWZkpaZHMyczRrVUlRU3ZjTWY2cUdLY2ZXL2xVaDBD?=
+ =?utf-8?B?NmViT1JqREtNUUlnZkwzNEl2T1M3elNPQ01LMFZFRkNaU0RlVFQxbnZPbDIy?=
+ =?utf-8?B?RlJrUUJSeTJ1cVJBcDVaZFJFN1BBc25vYnM5RDQ0ZkVLWno3WFVmemhKZWhJ?=
+ =?utf-8?B?ZXc9PQ==?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: e8900b54-4473-4b4a-02ff-08dd1876f6fd
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8caf155f-d232-488e-defe-08dd187731ae
 X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8906.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2024 17:28:58.7172
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Dec 2024 17:30:37.1261
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jiAYqFfTPPMiuWlQP/ldx4eAnZnHEo9MWEvgr/VdaDpGpJu77jijVMCoGiMH6o1oi7K8HeGljjGsL6dY0cD6/ttrrTirBNbhmW63F70O03k=
+X-MS-Exchange-CrossTenant-UserPrincipalName: EW16FpSM9FUAiIh2xlij4l4xWDZP90ZKTi6day94gJCTBgg0Z7tUQrLnqV70oyph9mNKP3iOVP8wS+X0BVMIFa7H6MQL7YqKkGQ3hf5q+sc=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6952
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 09 Dec 2024 17:29:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5906
+ <docs@lists.yoctoproject.org>; Mon, 09 Dec 2024 17:30:43 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5907
 
 Hi Antonin,
 
-On 12/9/24 6:02 PM, Antonin Godard via lists.yoctoproject.org wrote:
+On 12/9/24 6:02 PM, Antonin Godard wrote:
 > Hi Quentin,
 > 
-> On Fri Dec 6, 2024 at 3:00 PM CET, Quentin Schulz wrote:
->> Hi Antonin,
+> On Fri Dec 6, 2024 at 2:51 PM CET, Quentin Schulz wrote:
+> [...]
+>>> +FEDORA_HOST_PACKAGES_ESSENTIAL: >-
+>>> +  bzip2
+>>> +  ccache
 >>
->> On 12/4/24 1:23 PM, Antonin Godard wrote:
->>> With the recent changes from commit
->>> bd6265ca323fac547a197bb516dc4a9ef3897508 ("doc: Makefile: add support
->>> for xelatex"), the list of dependencies needs to be updated.
->>>
->>> The initial list of dependencies was made for Ubuntu/Debian, and the
->>> packages were translated for the other distros using pkgs.org.
->>>
->>> Add them separately from the rest of the dependencies as they pull a
->>> _lot_ of additional dependencies (for LaTeX).
->>>
->>> Notes:
->>> - Fedora/OpenSUSE do not have the "lang-all" texlive collection, so
->>>     install all available languages.
->>> - AlmaLinux does not seem to provide texlive-collection-fontsextra,
->>>     texlive-collection-lang*, and texlive-collection-latexextra, so add a
->>>     warning about that.
->>>
->>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->>> ---
->>>    documentation/poky.yaml.in                       | 47 +++++++++++++++++++++++-
->>>    documentation/ref-manual/system-requirements.rst | 27 ++++++++++++++
->>>    2 files changed, 73 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
->>> index 94849acf9942c7ebddb2ac7f8aaf5eb9d87e0c5b..25385068679a51e0f2e9e516b02b62e19e126291 100644
->>> --- a/documentation/poky.yaml.in
->>> +++ b/documentation/poky.yaml.in
->>> @@ -67,8 +67,17 @@ UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
->>>      python3-saneyaml
->>>      python3-sphinx-rtd-theme
->>>      sphinx
->>> -  texlive-latex-extra
->>>    
->>> +UBUNTU_DEBIAN_HOST_PACKAGES_DOC_PDF: >-
->>> +  fonts-freefont-otf
->>> +  latexmk
->>> +  tex-gyre
->>> +  texlive-fonts-extra
->>> +  texlive-fonts-recommended
->>> +  texlive-lang-all
->>> +  texlive-latex-extra
->>> +  texlive-latex-recommended
->>> +  texlive-xetex
->>>    
->>>    FEDORA_HOST_PACKAGES_ESSENTIAL: >-
->>>      bzip2
->>> @@ -129,6 +138,19 @@ FEDORA_HOST_PACKAGES_DOC: >-
->>>      texlive-latex-extra
->>>      which
->>>    
->>> +FEDORA_HOST_PACKAGES_DOC_PDF: >-
->>> +  latexmk
->>> +  texlive-collection-fontsextra
->>> +  texlive-collection-fontsrecommended
->>> +  texlive-collection-lang*
->>
->> Please use single quotes to surround texlive-collection-lang* otherwise
->> it may be interpreted by the shell, c.f. for me:
->>
->> ```sh
->> $ sudo dnf install texlive-collection-lang*
->> zsh: no matches found: libgpiod*
->> ```
->>
->> while `sudo dnf install 'texlive-collection-lang*'` works just fine.
->>
->> Ditto for the other occurrences later in this diff.
+>> I'm wondering if this is really required?
 > 
-> So I had issues with this in the container scripts, which is why I left it at
-> that. I initially single quoted this but it didn't work. Are you sure you can
-
-Can you tell us more about those issues with some error value/messages 
-or something?
-
-> mix non-quotes and quoted strings here? I'll give a try, might be specific to
-> the dockerfile.
+> I'm not sure either. For now, this series focuses on updating the dependencies
+> for the recent PDF additions. Optimizing this list will require more work, and
+> is related to an open bug on bugzilla
+> (https://bugzilla.yoctoproject.org/show_bug.cgi?id=14873).
+> 
+> I'm trying to get a clean base and a helper container script in to make this
+> easier for me and others to do this (adding/removing things from the list).
+> 
+> But I will definitely go back to your comments as you are indeed pointing out
+> things that might be unneeded now, indeed.
 > 
 
-"""
-$ sudo dnf install 'texlive-collection-lang*' latexmk
-Updating and loading repositories:
-Repositories loaded.
-Package "texlive-collection-langarabic-11:svn59594-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langchinese-11:svn63995-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langcjk-11:svn65824-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langcyrillic-11:svn54074-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langczechslovak-11:svn54074-73.fc41.noarch" 
-is already installed.
-Package "texlive-collection-langenglish-11:svn65496-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langeuropean-11:svn66432-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langfrench-11:svn63147-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langgerman-11:svn55706-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langgreek-11:svn65038-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langitalian-11:svn55129-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langjapanese-11:svn64603-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langkorean-11:svn54074-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langother-11:svn59564-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langpolish-11:svn54074-73.fc41.noarch" is 
-already installed.
-Package "texlive-collection-langportuguese-11:svn54074-73.fc41.noarch" 
-is already installed.
-Package "texlive-collection-langspanish-11:svn54141-73.fc41.noarch" is 
-already installed.
-Package "latexmk-4.85-2.fc41.noarch" is already installed.
-
-Nothing to do.
-"""
-
-Same for latexmk first in the list.
-
-That's for DNF5 (fedora 41 and later).
-
-DNF4 seems to be happy in a fedora 40 container as well:
-
-"""
-[root@6f0bdf8b38f2 /]# dnf install latexmk 'texlive-collection-lang*'
-Last metadata expiration check: 0:00:54 ago on Mon Dec  9 17:13:01 2024.
-Dependencies resolved.
-==============================================================================================
-  Package                                 Arch   Version 
-         Repo     Size
-==============================================================================================
-Installing:
-  latexmk                                 noarch 4.85-1.fc40 
-         updates 454 k
-  texlive-collection-langarabic           noarch 11:svn59594-71.fc40 
-         fedora  9.7 k
-  texlive-collection-langchinese          noarch 11:svn63995-71.fc40 
-         fedora   10 k
-  texlive-collection-langcjk              noarch 11:svn65824-71.fc40 
-         fedora  9.8 k
-  texlive-collection-langcyrillic         noarch 11:svn54074-71.fc40 
-         fedora   10 k
-  texlive-collection-langczechslovak      noarch 11:svn54074-71.fc40 
-         fedora  9.4 k
-  texlive-collection-langenglish          noarch 11:svn65496-71.fc40 
-         fedora   11 k
-  texlive-collection-langeuropean         noarch 11:svn66432-71.fc40 
-         fedora   11 k
-  texlive-collection-langfrench           noarch 11:svn63147-71.fc40 
-         fedora   10 k
-  texlive-collection-langgerman           noarch 11:svn55706-71.fc40 
-         fedora   10 k
-  texlive-collection-langgreek            noarch 11:svn65038-71.fc40 
-         fedora  9.6 k
-  texlive-collection-langitalian          noarch 11:svn55129-71.fc40 
-         fedora  9.6 k
-  texlive-collection-langjapanese         noarch 11:svn64603-71.fc40 
-         fedora   11 k
-  texlive-collection-langkorean           noarch 11:svn54074-71.fc40 
-         fedora  9.4 k
-  texlive-collection-langother            noarch 11:svn59564-71.fc40 
-         fedora   11 k
-  texlive-collection-langpolish           noarch 11:svn54074-71.fc40 
-         fedora  9.5 k
-  texlive-collection-langportuguese       noarch 11:svn54074-71.fc40 
-         fedora  9.4 k
-  texlive-collection-langspanish          noarch 11:svn54141-71.fc40 
-         fedora  9.4 k
-[...]
-"""
-
-and the other way around:
-
-"""
-[root@6f0bdf8b38f2 /]# dnf install 'texlive-collection-lang*' latexmk
-Last metadata expiration check: 0:00:09 ago on Mon Dec  9 17:13:01 2024.
-Dependencies resolved.
-==============================================================================================
-  Package                                 Arch   Version 
-         Repo     Size
-==============================================================================================
-Installing:
-  latexmk                                 noarch 4.85-1.fc40 
-         updates 454 k
-  texlive-collection-langarabic           noarch 11:svn59594-71.fc40 
-         fedora  9.7 k
-  texlive-collection-langchinese          noarch 11:svn63995-71.fc40 
-         fedora   10 k
-  texlive-collection-langcjk              noarch 11:svn65824-71.fc40 
-         fedora  9.8 k
-  texlive-collection-langcyrillic         noarch 11:svn54074-71.fc40 
-         fedora   10 k
-  texlive-collection-langczechslovak      noarch 11:svn54074-71.fc40 
-         fedora  9.4 k
-  texlive-collection-langenglish          noarch 11:svn65496-71.fc40 
-         fedora   11 k
-  texlive-collection-langeuropean         noarch 11:svn66432-71.fc40 
-         fedora   11 k
-  texlive-collection-langfrench           noarch 11:svn63147-71.fc40 
-         fedora   10 k
-  texlive-collection-langgerman           noarch 11:svn55706-71.fc40 
-         fedora   10 k
-  texlive-collection-langgreek            noarch 11:svn65038-71.fc40 
-         fedora  9.6 k
-  texlive-collection-langitalian          noarch 11:svn55129-71.fc40 
-         fedora  9.6 k
-  texlive-collection-langjapanese         noarch 11:svn64603-71.fc40 
-         fedora   11 k
-  texlive-collection-langkorean           noarch 11:svn54074-71.fc40 
-         fedora  9.4 k
-  texlive-collection-langother            noarch 11:svn59564-71.fc40 
-         fedora   11 k
-  texlive-collection-langpolish           noarch 11:svn54074-71.fc40 
-         fedora  9.5 k
-  texlive-collection-langportuguese       noarch 11:svn54074-71.fc40 
-         fedora  9.4 k
-  texlive-collection-langspanish          noarch 11:svn54141-71.fc40 
-         fedora  9.4 k
-[...]
-"""
+Not a blocker for this patch (or series), one thing at a time :) Just 
+wanted to raise this as I went through the list and it seemed odd to me.
 
 Cheers,
 Quentin
