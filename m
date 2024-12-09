@@ -2,222 +2,138 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8B25EE7717D
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A112E77180
 	for <webhook@archiver.kernel.org>; Mon,  9 Dec 2024 17:02:23 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.106897.1733763733195076781
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.107083.1733763734323996031
  for <docs@lists.yoctoproject.org>;
- Mon, 09 Dec 2024 09:02:13 -0800
+ Mon, 09 Dec 2024 09:02:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JTBkNjsD;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3D013C0007;
-	Mon,  9 Dec 2024 17:02:11 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QgqPV37+;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2BC3CFF80D;
+	Mon,  9 Dec 2024 17:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733763731;
+	t=1733763732;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fdQyVYVALH3REhSX1gNEu8xY8U/xI0njhUJ0vonwdyo=;
-	b=JTBkNjsD7kqkOwwx4dmi+DYt7OGbPdRpLr/+YmSWeD0J50HH5FiCySBAqiBru8Kd0V7xPM
-	js7xYDmvTdEzI0nhYLwHaeDPNyVMDt7ByTaAokzMvhE3uPZaJkYOwpQpju2o5RDOvAl8HY
-	/pzXOR7al1LCjxlSNLdxiPvc8Uo3drwf27fH7HtS+lPKIvnN6q7Uvrf0BCL8654rfBA+Rw
-	Nf1dQpelhBSExIWy3NtD9Jqy9UHD2L1aHoDf+77mwsUfK1cjZq0SjdmoANa/88ISMQyzaS
-	wtcghIeEKe0YMq+P/lKyZlUEkb1xfMvX3XjiunEq//Zr+ztd+S+P8N6DKqrMzA==
+	bh=PtdFhe3evyNdQPzRGURXy1NZ4iLrgCPUwaJg1sEhHBE=;
+	b=QgqPV37+12AOLK3jW7fkcY/d1CGh85gSGVmLyp3ISRVXQQQZFTJzYQ27bEiK8NqwwV1OcN
+	01xTfLmou9f/YQGGo3ycxa13CxuasIDgSca0//Bxu1yXRC8NkhTCikKHGDeBPNcFF6S2l8
+	Kp2ew5Ll15h9QEHTl+/s9frgAMsXKxgHBBY6BsMAswXbeTyB/wqoy4EoLf6MUr9cYSpfeB
+	VMKoIjwFqx55d0KTC5UfXSx4yzlCjArrNhprdd7PMIlfDJ+0FYNlI7/w+1ohiX3jj5G23i
+	c6VYfIzXv/5KI6LR7DMC3a777+2K6BxFHAPTcfqc4ajavylY8lCK+1N76A4PiA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Dec 2024 18:02:10 +0100
-Message-Id: <D67BY6ERMIWY.5WMB41MN18TJ@bootlin.com>
-Subject: Re: [yocto-docs PATCH v2 1/6] Gather dependencies in poky.yaml.in
+Date: Mon, 09 Dec 2024 18:02:11 +0100
+Message-Id: <D67BY6U5UGPM.B2AQ5R5NXNID@bootlin.com>
+Subject: Re: [yocto-docs PATCH v2 5/6] system-requirements.rst: add
+ dependencies for pdf builds
 Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Quentin Schulz" <quentin.schulz@cherry.de>,
  <docs@lists.yoctoproject.org>
 X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
 References: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
- <20241204-update-doc-deps-v2-1-1d9b4063476f@bootlin.com>
- <bbe9f42c-e716-44d7-8930-71a44c4c9a36@cherry.de>
-In-Reply-To: <bbe9f42c-e716-44d7-8930-71a44c4c9a36@cherry.de>
+ <20241204-update-doc-deps-v2-5-1d9b4063476f@bootlin.com>
+ <f6b0c418-bd94-4fc2-a58d-ec7634926fe1@cherry.de>
+In-Reply-To: <f6b0c418-bd94-4fc2-a58d-ec7634926fe1@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 09 Dec 2024 17:02:23 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5903
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5905
 
 Hi Quentin,
 
-On Fri Dec 6, 2024 at 2:51 PM CET, Quentin Schulz wrote:
-[...]
->> +FEDORA_HOST_PACKAGES_ESSENTIAL: >-
->> +  bzip2
->> +  ccache
+On Fri Dec 6, 2024 at 3:00 PM CET, Quentin Schulz wrote:
+> Hi Antonin,
 >
-> I'm wondering if this is really required?
-
-I'm not sure either. For now, this series focuses on updating the dependenc=
-ies
-for the recent PDF additions. Optimizing this list will require more work, =
-and
-is related to an open bug on bugzilla
-(https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D14873).
-
-I'm trying to get a clean base and a helper container script in to make thi=
-s
-easier for me and others to do this (adding/removing things from the list).
-
-But I will definitely go back to your comments as you are indeed pointing o=
-ut
-things that might be unneeded now, indeed.
-
->> +  chrpath
->> +  cpio
->> +  cpp
->> +  diffstat
->> +  diffutils
->> +  file
->> +  findutils
->> +  gawk
->> +  gcc
->> +  gcc-c++
->> +  git
->> +  glibc-devel
->> +  glibc-langpack-en
->> +  gzip
->> +  hostname
->> +  libacl
->> +  lz4
->> +  make
->> +  patch
->> +  perl
->> +  perl-Data-Dumper
->> +  perl-File-Compare
->> +  perl-File-Copy
->> +  perl-FindBin
->> +  perl-Text-ParseWords
->> +  perl-Thread-Queue
->> +  perl-bignum
->> +  perl-locale
->> +  python
->
-> I'm wondering if this is required? I guess the times we could have=20
-> python3 and python2 code mixed is over?
->
->> +  python3
->> +  python3-GitPython
->> +  python3-jinja2
->> +  python3-pexpect
->> +  python3-pip
->> +  rpcgen
->> +  socat
->> +  tar
->> +  texinfo
->> +  unzip
->> +  wget
->> +  which
->> +  xz
->> +  zstd
->> +
->> +FEDORA_HOST_PACKAGES_DOC: >-
->> +  git
->> +  inkscape
->> +  make
->> +  python3-pip
->> +  python3-saneyaml
->> +  python3-sphinx-rtd-theme
->> +  sphinx
->
-> The three packages above are supposed to be coming from pip according to=
-=20
-> the current version of the instructions.
-
-You're right, I guess I mixed things up with the Ubuntu instructions. I thi=
-nk
-initially I wanted to provide a common base for all distros but it's not a =
-good
-idea. I'll revert this and keep the same content as in the previous instruc=
-tions.
-
->> +  texlive-fncychap
+> On 12/4/24 1:23 PM, Antonin Godard wrote:
+>> With the recent changes from commit
+>> bd6265ca323fac547a197bb516dc4a9ef3897508 ("doc: Makefile: add support
+>> for xelatex"), the list of dependencies needs to be updated.
+>>=20
+>> The initial list of dependencies was made for Ubuntu/Debian, and the
+>> packages were translated for the other distros using pkgs.org.
+>>=20
+>> Add them separately from the rest of the dependencies as they pull a
+>> _lot_ of additional dependencies (for LaTeX).
+>>=20
+>> Notes:
+>> - Fedora/OpenSUSE do not have the "lang-all" texlive collection, so
+>>    install all available languages.
+>> - AlmaLinux does not seem to provide texlive-collection-fontsextra,
+>>    texlive-collection-lang*, and texlive-collection-latexextra, so add a
+>>    warning about that.
+>>=20
+>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+>> ---
+>>   documentation/poky.yaml.in                       | 47 ++++++++++++++++=
++++++++-
+>>   documentation/ref-manual/system-requirements.rst | 27 ++++++++++++++
+>>   2 files changed, 73 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
+>> index 94849acf9942c7ebddb2ac7f8aaf5eb9d87e0c5b..25385068679a51e0f2e9e516=
+b02b62e19e126291 100644
+>> --- a/documentation/poky.yaml.in
+>> +++ b/documentation/poky.yaml.in
+>> @@ -67,8 +67,17 @@ UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
+>>     python3-saneyaml
+>>     python3-sphinx-rtd-theme
+>>     sphinx
+>> -  texlive-latex-extra
+>>  =20
+>> +UBUNTU_DEBIAN_HOST_PACKAGES_DOC_PDF: >-
+>> +  fonts-freefont-otf
+>> +  latexmk
+>> +  tex-gyre
+>> +  texlive-fonts-extra
+>> +  texlive-fonts-recommended
+>> +  texlive-lang-all
 >> +  texlive-latex-extra
+>> +  texlive-latex-recommended
+>> +  texlive-xetex
+>>  =20
+>>   FEDORA_HOST_PACKAGES_ESSENTIAL: >-
+>>     bzip2
+>> @@ -129,6 +138,19 @@ FEDORA_HOST_PACKAGES_DOC: >-
+>>     texlive-latex-extra
+>>     which
+>>  =20
+>> +FEDORA_HOST_PACKAGES_DOC_PDF: >-
+>> +  latexmk
+>> +  texlive-collection-fontsextra
+>> +  texlive-collection-fontsrecommended
+>> +  texlive-collection-lang*
 >
-> This isn't currently part of the instructions.
->
->> +  which
->> +
->> +OPENSUSE_HOST_PACKAGES_ESSENTIAL: >-
->> +  bzip2
->> +  chrpath
->> +  diffstat
->> +  gcc
->> +  gcc-c++
->> +  git
->> +  gzip
->> +  hostname
->> +  libacl1
->> +  lz4
->> +  make
->> +  makeinfo
->> +  patch
->> +  python
->> +  python-curses
->
-> Ditto for python and python-curses, especialy since we have=20
-> python3-curses below.
->
->> +  python-xml
->> +  python3
->> +  python3-Jinja2
->> +  python3-curses
->> +  python3-pexpect
->> +  python3-pip
->> +  rpcgen
->> +  socat
->> +  tar
->> +  wget
->> +  which
->> +  xz
->> +  zstd
->> +
->> +OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL: GitPython
->> +
->> +OPENSUSE_HOST_PACKAGES_DOC: >-
->> +  git
->> +  inkscape
->> +  make
->> +  python3-pip
->> +  texlive-fncychap
->> +  which
->> +
->> +ALMALINUX_HOST_PACKAGES_ESSENTIAL: >-
->> +  bzip2
->> +  ccache
->
-> This is aligned with Fedora but I'm still wondering if it actually is a=
+> Please use single quotes to surround texlive-collection-lang* otherwise=
 =20
-> requirement (well, if you INHERIT ccache, yes).
+> it may be interpreted by the shell, c.f. for me:
 >
->> +  chrpath
->> +  cpio
->> +  cpp
->> +  diffstat
->> +  diffutils
->> +  gawk
->> +  gcc
->> +  gcc-c++
->> +  git
->> +  glibc-devel
->> +  glibc-langpack-en
->> +  gzip
+> ```sh
+> $ sudo dnf install texlive-collection-lang*
+> zsh: no matches found: libgpiod*
+> ```
 >
-> The original list had "install" but it's gone here, on purpose?
+> while `sudo dnf install 'texlive-collection-lang*'` works just fine.
+>
+> Ditto for the other occurrences later in this diff.
 
-No, must be a mistake from me.
+So I had issues with this in the container scripts, which is why I left it =
+at
+that. I initially single quoted this but it didn't work. Are you sure you c=
+an
+mix non-quotes and quoted strings here? I'll give a try, might be specific =
+to
+the dockerfile.
 
-
-Thanks!
+Thanks,
 Antonin
 
 --=20
