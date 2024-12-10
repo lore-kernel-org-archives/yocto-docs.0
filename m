@@ -1,403 +1,195 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A6C3E77183
-	for <webhook@archiver.kernel.org>; Tue, 10 Dec 2024 10:00:38 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.6754.1733824829284413244
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96F1FE7717F
+	for <webhook@archiver.kernel.org>; Tue, 10 Dec 2024 10:29:18 +0000 (UTC)
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (EUR02-VI1-obe.outbound.protection.outlook.com [40.107.241.56])
+ by mx.groups.io with SMTP id smtpd.web11.7201.1733826549716792534
  for <docs@lists.yoctoproject.org>;
- Tue, 10 Dec 2024 02:00:29 -0800
+ Tue, 10 Dec 2024 02:29:11 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=YRbhrymv;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A64C940008;
-	Tue, 10 Dec 2024 10:00:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733824827;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vlsIZog02Q9zjEleTAvO9s+4UM3Je72EJUfYPg3yFis=;
-	b=YRbhrymvD/K4x8jwRO5+fzwcy6fdH4DvxPGQ0Dl4MLFu//Qz2Ahlj3ucaafgkiFxczuale
-	lWMitM01HEFrfh+jF3q1Xo2mAdx+wWPQ8MRsBNomAQhNmStJ94dlaZ2hBbJtFcSw+qKyD0
-	sHFnOJJn3pQPnTPGPovRBrGoVqM8CpqtQpwIWexvvRSUgO6gK62NuJNoD5kJdiABtn/AEi
-	qxKElsYBna0wivilEyCiv2cVUiT3T/EvkbzoClKsr7w0m1b9b3h3wJsgBkYjEKFaYeG+E0
-	oiWhAaY6JPee/I+Ls5TYxIzCBzvTQH7Ow7eMGd5PP1WPgY6Z2mrcaMUHaEHPJg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 10 Dec 2024 11:00:19 +0100
-Subject: [yocto-docs PATCH v3 1/6] Gather dependencies in poky.yaml.in
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=aAevgYy7;
+ spf=pass (domain: cherry.de, ip: 40.107.241.56, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=nVYm6tSnoEFXr0OMOPn6Vvq6pXQ6TBt1OSM+ZaUhjFn1E/uP0rQ9Q0ylohtWc0LUW+qIBLXImL9uBx7BCIOLcMZMZ5S2Vuw87ZeGJL+koUuG2XaSs9xccSZqFiQ/v1kQJ2CvcznKnVjxRSw+Kj4MHSr2S72Q8FIFldkm9ZcsQcmGtmhEKkRawNv+jOWpTFfDpDjeX4cEBdzJFTZIgs7Int4mLO5ZBwCqfZrZ5glHwnnqhmQugOcF+c5yd0Ll9VezzrOXnGjcidZJZUZcW+jQS6ZcaGEvlOlZddxcyZW1tRfIRv9pE9gqsw4wjyFWdm0/DeFy6JXEM0kofPAuq9NOIA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LTJA6lXb3QaTOoaM8+Qa119urV3o91vreP3dmhecge8=;
+ b=fU71yB9nTu2yawrn+Wo0GBVNu3tW+C+GLpJg7+lJNUGFe639zCmW31ZjR7lIU/Z3ia4YjAvM7lZlrXGA9HZ8/KtlqI5cpokH6Hw2Hbvev3aC0k7SITVU/AKZTq0qVHBtbVER2nhC/9qCVZSLcEoxJyBEfZn6+7O/bTNK8UdTrdxKYxnScL/RXjXyqmMxFsxuOFsdCZME1DMdkPS8s0fHklfQ9kEMfmMFNYqZTwIyblz0uEaWnCyDuViRWADpVUvuzzKBle/exPrSyYkyrm2mstU46AnKc+uTZtnpJuHKBjWjQ6otYOQxGfPMPrYE6CpTcCOAFlJioHHmOSfQzF3pjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LTJA6lXb3QaTOoaM8+Qa119urV3o91vreP3dmhecge8=;
+ b=aAevgYy7sCJnZvoGobVR+cQ2Tgv2d+q8XrXyHmxE7xRrPkuU4c0vsjWDrb6sS3cc0o22H2vEnEVuAMlQLUqoh9IV+PEaeeCim0FnlEVCoi24hFcjf3M6OjEgYGajEyXVQs9d5pmpEiwhsPjSPfgzOW0hXjZ6f/QkHEyCwjrD4iI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by DU2PR04MB9147.eurprd04.prod.outlook.com (2603:10a6:10:2f6::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.18; Tue, 10 Dec
+ 2024 10:29:05 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%7]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
+ 10:29:05 +0000
+Message-ID: <3a2bb5a7-b384-4b92-8548-2e53cdd279eb@cherry.de>
+Date: Tue, 10 Dec 2024 11:29:03 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [yocto-docs PATCH v2 1/6] Gather dependencies in poky.yaml.in
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
+ <20241204-update-doc-deps-v2-1-1d9b4063476f@bootlin.com>
+ <bbe9f42c-e716-44d7-8930-71a44c4c9a36@cherry.de>
+ <D67XK5T2S8K8.372YF65W5YCAH@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <D67XK5T2S8K8.372YF65W5YCAH@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: WA2P291CA0006.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1e::18) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241210-update-doc-deps-v3-1-534699936ddc@bootlin.com>
-References: <20241210-update-doc-deps-v3-0-534699936ddc@bootlin.com>
-In-Reply-To: <20241210-update-doc-deps-v3-0-534699936ddc@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9434;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=qpCDEmG+/qrmhK2vLRvY0Hdww4VKaaxJ9fdP1KrjIso=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnWBE6tI5qm6mSs+jZKpbveeJ2uoQ44tC2LuHFO
- TCHDZFRSQyJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ1gROgAKCRDRgEFAKaOo
- NljPEACSNNAQfSDG2wYK+DA/KMcU+BJjCXxFRV05eOG3JWf+50rRL2zAcq/nznAs908jD5bKCWo
- 3iPW/kvjeCruTJifaLauedIwThW8Gej+0A0RWMKXOL6unqMe4bVt5VDNRIg6vOIlgYGRW6h5pvH
- P+q33orUfzvDC3HF31IfT5pZZ6oGUjsKWfXY22pZFYZSCUBpf/OxT/r7iL4unxUu8vzViMyXASi
- teP7KQzizVyd2A6Ceb/sPB6hlY01eZb21zzft1Hl99lQNnplytluEYWvWykic52mzTLLyaoBLdH
- x2OJKJBh3mFhDwjH9XyWmRVfa3wgVMsN7x5MPba5MpbYmu3PlfWDRd3wrfVb8BK+iZ+sjRewX4+
- aeHErlYnmydODj3Ax4dctoXbj10NgjMy2e/cz2ZMyybDhSwXeEJgIdupI5At292jRuHbxI0T4Xf
- 1P/cc6DO47M4RjgEw+AGTTr5p68W98k9hYow6Sjp45GoXsWZSYraYcTgfRkt0iCnep+LI473hGP
- jT0Q9Zc1dsSj+10bhvj1iJIj0/G9+K09j7e5t/8fZpjT0NdtSc1TLiUSvwBXD0f3od53dTV1DlJ
- TCaTrEagE+gpXYwyEUdK9c/RQ/BZKHKj8XbfxoB8fVCP/xMEy6I7nM4FZGXGL6rUCe4ivvxd1py
- AnB3PLCIVWZB3/A==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-Sasl: antonin.godard@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DU2PR04MB9147:EE_
+X-MS-Office365-Filtering-Correlation-Id: 11a9a1db-d3f8-40f9-dbe6-08dd190578cc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?RWhNdm5QdmEvYWNISE9aYlRrRGJWeis0K3NYTTcxaGxrMDBxUEZNVlkyUElh?=
+ =?utf-8?B?ek5tWllNbGprMzZyRmh2emRXQjd4amxXNFhLSlljWERabDcybGxvQUduMkJW?=
+ =?utf-8?B?V20rWDhDZ3NYM0VpR2JibnNFbjE4UEdqREM1ZDlBa0sydENJU1Y4U2llZktm?=
+ =?utf-8?B?ZkZLV25oSldqaFl2eWRWK2RLcUh3cDNTQ05ib2p1WmVwc2F2TURnZ01wbFk5?=
+ =?utf-8?B?ckY2YW1jR1pocyt0b2NucmF5U1NCYldrQTVaMVAzUjRIUERtSGpsWXFpZ1ZU?=
+ =?utf-8?B?KzhvWlNKdGtWaUhkaUdXcjJVY1VlY2xpOTZBT1g5Ylo0ZnowZ0dYU1ZqU21z?=
+ =?utf-8?B?MU8zdXdxLzhTQkxPeGpWeHVQYmttbUt4dTluZGZGS3ljWUVkZGdldTFsOE5K?=
+ =?utf-8?B?ZXRaQUNXNnpGVWcrYitjQklpOWNnSitxS21mdlZ1b0grODFHcjVGSUNqSDJi?=
+ =?utf-8?B?ZHQ5N1lubWRRSC81WmZwTktLYUVHY1JRWG1xTDVFa0RGSFE2dDF1NE9URWVo?=
+ =?utf-8?B?WWRUdVdSbVh1cEVqaE56U3BWMEpKaW9hUFo2NTFJVGtJYy8zRjVidDNpczRi?=
+ =?utf-8?B?N1l1V1RaVjAvT0ljMWVRaGFKWHM4Z29rampmSTB1ZFhvUGFzKzNJMmFXY1p0?=
+ =?utf-8?B?SFVJYWZsZEpqWC8wSjF5Ui9mVDFqUXlLODJHVVVJSzJCbmVzYXJ5QVFydGdr?=
+ =?utf-8?B?Sk9Rb2ZLMEhiSUF6L21hdnJCVGdsUUYyd2lGbndTRmllb3haR1JvUEZVV2Qz?=
+ =?utf-8?B?azdGSWtIT3oycGVQekM0VUE5Z3drMWVSUnJWUVlRQTdFWm9Yb1lIWEZNdjFM?=
+ =?utf-8?B?K3FwUzBSNkNxZWo4OTRtS25lNDgwM0xFNHZhdmcwaXU3YlI4RDlIOWEyVHJa?=
+ =?utf-8?B?ZnpnSWxrdTkxMEhiYlBhSkJ5UjJvMUhiOERHY3BtaHhwa0cwTThxQ3h2OGd2?=
+ =?utf-8?B?YS9uVW03RG1uVEJKYk1sTTRBdDByNSs0VDgwQ09KekprQzFJVE1Cd2l6bWti?=
+ =?utf-8?B?ZTR4Nkh1U3FXVG5OSmo4b084d3FGWEtjc2FVdGEvZHYyQlJta2xlSzY0WjJU?=
+ =?utf-8?B?MW03aDE0blkxdlVIMXo2UHZnRmR4NFp5TGJlZjNzOUVqYVBJR2VCTkViWkt1?=
+ =?utf-8?B?NHlucDRoUTNLVHV3V0liT2QwbkM1S2pjcG8yeXUrQ3ZSazVKUVFIWGhFVFln?=
+ =?utf-8?B?aU5nVnRpTjZSMmZrMm1yZkNPRXkyRTc4OERxTkFxVkM1cUxlQ3Q4MGlxRnVH?=
+ =?utf-8?B?enFjbUJvNUN2K1FESnFnOUtjQ3A3ZGNNeW1BSi83U0FtSi9WaVdHZ2hucmZx?=
+ =?utf-8?B?QStBdUhvMWxqOHhGYWFkZi95V0gzSXp1QkZ1RDkyL3FNU3ZHMXFVWDBEc3Nh?=
+ =?utf-8?B?dmZTREpyaVEyaHFCZ0Rlc2kycTlRWlJFQ2VMUHVhWkVXVGJMNzJYOWI5c3Ba?=
+ =?utf-8?B?djcrc1R2WnYyVjJuVWl6VkgwdFBMM1R0Nnl0Ukcvb0VUOWpXMmpUcXZkdStC?=
+ =?utf-8?B?c2ZydjhCTGh1bzdHNk40Znp3a0l3NWZmTXNBY3RxVS80TnJ1cGs4LzVma0dt?=
+ =?utf-8?B?N3VEUWhyaExMSG1IS2FObExHaEcxbEtKUCtTd2dlVjFEdm5QOUIrZlZPZG13?=
+ =?utf-8?B?VEQwMFY0SjFlOTBZU094dmdOaEkvYVJTTXNlOUtLeUpYN2Y1eGZDaDl6NHk4?=
+ =?utf-8?B?U0QvKzFnTkhOTnpiN3ZLY3JzSXpPZUxhRHJuWDlYcS9SaHdycEhkVnl0TFk3?=
+ =?utf-8?B?QjAveVJobVRnY1hXU3BmRW1HeVlUYjhGamlFTzAwU0Y1Wno4amJjZVlyazRW?=
+ =?utf-8?B?bytiSitQSFZxSzJJWklCdz09?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?ZVBqSzhkOXYxeU9YM014N1lQM1E2blBOR2RoN2dSZVVNSXpkWHhMODJKMnRH?=
+ =?utf-8?B?WkFDb3hEMTEweHZscFU3YS9pMm5OZU51UGlXelRDSjljaGRSN0JWSXU3MFlw?=
+ =?utf-8?B?TndHa3gwcnRPMGVHdlNhSHRXbksxRmlNODVPeWo0L2pET2phWDRMWUFSeGlh?=
+ =?utf-8?B?eW1rWStDZ1d3NjE3UmpMVnNSUWdRM0N2M1NnREVEYVNnQkZrdmJuQlZpSmtt?=
+ =?utf-8?B?eU51L0ZCSCtpL3dZWEl1RnJ6VlBaNEovUlZmeTBwMjJ1VmR6anN5MXRvS1dR?=
+ =?utf-8?B?K2l2RnBiWnFPdCt3UGhLUkFuTHBnUlA5WEgvQWI1eWp5ZmVrcWNFbHVhM2dK?=
+ =?utf-8?B?TElxV0RIaS9uNTVscXowanE2a3ZpOGdpKzlMbURGYXJ3WTVmb3dyakhMcTNS?=
+ =?utf-8?B?b1ZmM3pMakZ2NDJGLzRQeFVwaktyVG9BSEtINFRqbDU4eWxlcEttanJNVjAw?=
+ =?utf-8?B?bHhvQmJMYnVxMmFwSVVrRzg1RTBGc3VoYlYyeStyT1VsUTh3c1RuZnRIS3RI?=
+ =?utf-8?B?bUxzTHo5REx6aW5LVkU4UHNhQTBMemw5RkJNcTllVW45V2oxMDRTQ2IxYk9V?=
+ =?utf-8?B?YUZ5WDloUUlGUlJ0cUVaOFVQS0s5bzcrMWNIdkJsY0ZIUVdEempOc2tQQXZj?=
+ =?utf-8?B?NHhrL0h4RnhoNjMvblBuejBiWFplQm1ORUtSckRoOVptR3laRjVSN3RZVWVa?=
+ =?utf-8?B?UCtsbVpoaE1IQUptemYzRzQweW4xU2R1VGx3SzdSTkdGOS9FUENCNmczbWNh?=
+ =?utf-8?B?bVBJbE1Jc3ZsY0xaM2djUy9XS0JlZjloT014MDdibVRNZHl4Wml0TVRDL3Vj?=
+ =?utf-8?B?clU4bHJoczdaQkFWeVRUR3g4ODRGREUwaW9sKzkvUGp5RE93eWNNTjRIazZ5?=
+ =?utf-8?B?VGp1TENhSUJ2bVVzay91ZjVkMFNDSG5DR1U4MWlYUy9hOHhwd0NWSzY5VDZv?=
+ =?utf-8?B?aUVZVEpKeUdWRkZPV1BvajRGRXFFaWlzZ3JFWDhQMDI2M09uZ0lId3ZDOTYw?=
+ =?utf-8?B?eGNCRHJDbktNN1ZYa0Z5WWFHYXY0NXcxUDRITGdqQXJjdGM5TDFxd0dPL0E3?=
+ =?utf-8?B?M1dUSEZLb0Jwai9sSnNyMlNoUHpTbHlwSG83bFJZbXVQSldLdkFYTnJGaFdn?=
+ =?utf-8?B?bWpFZDNVclFScmxOcnJmVlVvbE1FZ0VWSHBWTERTS2ZXclJBR0lQUnJKWWRQ?=
+ =?utf-8?B?RHBxUzVyUlpJY005MkZ5ZTJWWTlPdmxHYmpTNnQ0emplaFlRRnoyOTh2MnR4?=
+ =?utf-8?B?cSthU21obC9JejBSL1AzVUJMNGdMOXpndU9NVUFoSUdtVHJySGpwa01NajQ5?=
+ =?utf-8?B?NmJsZlc4RTJmK1JockxjZlBkZjNqaDh0ZzVQdTRQOUFUbW92OUE3b0hHdmdX?=
+ =?utf-8?B?RnNLclhldVFZTytqc2JGUG91WkkvOGRrQzcyMlR6V2o5RTIxSDZkTGZTamRB?=
+ =?utf-8?B?VFlRM2NmcGU2bzZPbkFHSE10c3paOVoycm9nWUMxTDk1Z0hZRTFkRnA0bFFW?=
+ =?utf-8?B?THZYY3p2UlRxbzIwWHhneVRkU0tSZlZONnVRQ3VvZjlRRHU0azFmdVJ3UFhT?=
+ =?utf-8?B?eWVHRFAvNmI0TzZSTnZncjh1WXRzRWpHTDdMVkhWZjFUdGFhYmZ2cUJ3WEZM?=
+ =?utf-8?B?YWluNyt0Y3NVZmkxQUtDd0JIQUIzZm40cGNBTmkvTUs2RE5JT21xRTVuYk5m?=
+ =?utf-8?B?L0xyNDRwb3N2em8zTHA3MXVvQUJMTFdnc2ZPZWppR3VKVk91ZnBzQm1NWHdD?=
+ =?utf-8?B?Skg5YjYwdjJZdWdkb3NESHFsWXVqY0VBSjhUR3IyZXgraHozMVdCWVN2YVJo?=
+ =?utf-8?B?U2kyQm5SdUF4M2ZRTVBzMk9TaFVFclRiRUtPWFk1LzRHaGsyNW9udWtoNnYz?=
+ =?utf-8?B?dUpqRmNtQmRicTFPNUFDZE04MmI0bFhyaUowWCtPd1FFQUFNaExLaXRyaksv?=
+ =?utf-8?B?QmpXbklCQ0V4VzNQRWFIQTlUdHdhL3VpZXBxYkJwUW9aV3B0Y0VET25Vc25U?=
+ =?utf-8?B?bFJNeUpNYytzUFBoSHhjd0J5TUlJZHZCVXJNYTgvZVloT1pqTHNXSW94K3Rl?=
+ =?utf-8?B?ZUo5VWQzdmx1WnB3b0VPK3hkLytKVFNoS2svMnpCejcyRVk3MmRzdkx3aERx?=
+ =?utf-8?B?Y0xjeG1WQ0djdFgrd1A3enk2NWsybk1PZmo4VWFXT25rSEQ1N3FxMDR4NnNs?=
+ =?utf-8?B?Qnc9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 11a9a1db-d3f8-40f9-dbe6-08dd190578cc
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 10:29:05.1076
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: E52iMQjeW5PeN95v2eX2JOx4lIpZbjrqXGOIxz+WglovDq2MGawE/He47a0lQscP/tTUEkDh0FaplbXCpuByMAaxPOFHh8+i5c2TJZzPsZU=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9147
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 10 Dec 2024 10:00:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5911
+ <docs@lists.yoctoproject.org>; Tue, 10 Dec 2024 10:29:18 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5917
 
-We used to have packages here and there in system-requirements.rst for
-each distro. Instead, gather all the dependencies in poky.yaml.in so we
-have an overview of what we provide for each distro.
+Hi Antonin,
 
-Use yaml ">" to list the dependencies in alphabetical order, one entry
-per line, which makes them easier to read and compare among distros.
+On 12/10/24 10:58 AM, Antonin Godard wrote:
+> Hi Quentin,
+> 
+> On Fri Dec 6, 2024 at 2:51 PM CET, Quentin Schulz wrote:
+> [...]
+>>> +ALMALINUX_HOST_PACKAGES_ESSENTIAL: >-
+>>> +  bzip2
+>>> +  ccache
+>>
+>> This is aligned with Fedora but I'm still wondering if it actually is a
+>> requirement (well, if you INHERIT ccache, yes).
+>>
+>>> +  chrpath
+>>> +  cpio
+>>> +  cpp
+>>> +  diffstat
+>>> +  diffutils
+>>> +  gawk
+>>> +  gcc
+>>> +  gcc-c++
+>>> +  git
+>>> +  glibc-devel
+>>> +  glibc-langpack-en
+>>> +  gzip
+>>
+>> The original list had "install" but it's gone here, on purpose?
+> 
+> I don't think it did actually. I see the "yum install" and "dnf install"
+> commands but not the "install" package.
+> 
 
-Rename UBUNTU_… variables to UBUNTU_DEBIAN_…, since these are used for
-both distros.
+Overeager mouse selection I did to extract the package names from the 
+list and sort them I guess :)
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- documentation/brief-yoctoprojectqs/index.rst     |   2 +-
- documentation/poky.yaml.in                       | 213 ++++++++++++++++++++---
- documentation/ref-manual/system-requirements.rst |  22 ++-
- 3 files changed, 202 insertions(+), 35 deletions(-)
+Yes, doesn't seem to appear in the list today either. Sorry for the noise.
 
-diff --git a/documentation/brief-yoctoprojectqs/index.rst b/documentation/brief-yoctoprojectqs/index.rst
-index c5400e4ac8dafb9e3d1e4c14a065d02ac3e2f7a7..3d249eefaae35239b92c8a2f8dedf27ec2dbdca0 100644
---- a/documentation/brief-yoctoprojectqs/index.rst
-+++ b/documentation/brief-yoctoprojectqs/index.rst
-@@ -78,7 +78,7 @@ You must install essential host packages on your build host. The
- following command installs the host packages based on an Ubuntu
- distribution::
- 
--   $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-+   $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL;
- 
- .. note::
- 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index 66f758fe85fcd10291f00902639b43a1da639b0f..117307effb99bc9a0f7203e3f786cfca6512791b 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -1,3 +1,7 @@
-+#
-+# Macros used in the documentation
-+#
-+
- DISTRO : "5.1"
- DISTRO_NAME_NO_CAP : "styhead"
- DISTRO_NAME : "Styhead"
-@@ -10,31 +14,6 @@ BITBAKE_SERIES : ""
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
- YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
--UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
--     build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
--     xz-utils debianutils iputils-ping python3-git python3-jinja2 \
--     python3-subunit zstd liblz4-tool file locales libacl1"
--FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
--     diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
--     ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
--     python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
--     python3-jinja2 rpcgen perl-FindBin perl-File-Compare \
--     perl-File-Copy perl-locale zstd lz4 hostname glibc-langpack-en libacl"
--OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
--     diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
--     python3-pexpect xz which python3-Jinja2 rpcgen \
--     zstd lz4 bzip2 gzip hostname libacl1
--     \n\   $ sudo pip3 install GitPython"
--ALMALINUX_HOST_PACKAGES_ESSENTIAL : "-y epel-release
--     \n\   $ sudo yum install dnf-plugins-core
--     \n\   $ sudo dnf config-manager --set-enabled crb
--     \n\   $ sudo dnf makecache
--     \n\   $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch \
--     diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
--     socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
--     python3-GitPython python3-jinja2 python3-pexpect xz which \
--     rpcgen zstd lz4 cpio glibc-langpack-en libacl"
--PIP3_HOST_PACKAGES_DOC : "$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml"
- MIN_PYTHON_VERSION : "3.8.0"
- MIN_TAR_VERSION : "1.28"
- MIN_GIT_VERSION : "1.8.3.1"
-@@ -46,3 +25,187 @@ MIN_DISK_SPACE : "90"
- MIN_DISK_SPACE_RM_WORK : "40"
- # RAM (Gbytes) needed to generate qemux86-64 core-image-sato on Ubuntu 22.04 (x86-64) on a 4 core system
- MIN_RAM : "8"
-+
-+#
-+# Dependencies
-+#
-+
-+# Shared between distros
-+PIP3_HOST_PACKAGES_DOC: sphinx sphinx_rtd_theme pyyaml
-+
-+UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL: >-
-+  build-essential
-+  chrpath
-+  cpio
-+  debianutils
-+  diffstat
-+  file
-+  gawk
-+  gcc
-+  git
-+  iputils-ping
-+  libacl1
-+  liblz4-tool
-+  locales
-+  python3
-+  python3-git
-+  python3-jinja2
-+  python3-pexpect
-+  python3-pip
-+  python3-subunit
-+  socat
-+  texinfo
-+  unzip
-+  wget
-+  xz-utils
-+  zstd
-+
-+UBUNTU_DEBIAN_HOST_PACKAGES_DOC: >-
-+  git
-+  inkscape
-+  make
-+  python3-saneyaml
-+  python3-sphinx-rtd-theme
-+  sphinx
-+  texlive-latex-extra
-+
-+FEDORA_HOST_PACKAGES_ESSENTIAL: >-
-+  bzip2
-+  ccache
-+  chrpath
-+  cpio
-+  cpp
-+  diffstat
-+  diffutils
-+  file
-+  findutils
-+  gawk
-+  gcc
-+  gcc-c++
-+  git
-+  glibc-devel
-+  glibc-langpack-en
-+  gzip
-+  hostname
-+  libacl
-+  lz4
-+  make
-+  patch
-+  perl
-+  perl-Data-Dumper
-+  perl-File-Compare
-+  perl-File-Copy
-+  perl-FindBin
-+  perl-Text-ParseWords
-+  perl-Thread-Queue
-+  perl-bignum
-+  perl-locale
-+  python
-+  python3
-+  python3-GitPython
-+  python3-jinja2
-+  python3-pexpect
-+  python3-pip
-+  rpcgen
-+  socat
-+  tar
-+  texinfo
-+  unzip
-+  wget
-+  which
-+  xz
-+  zstd
-+
-+FEDORA_HOST_PACKAGES_DOC: >-
-+  git
-+  inkscape
-+  make
-+  python3-pip
-+  texlive-fncychap
-+  which
-+
-+OPENSUSE_HOST_PACKAGES_ESSENTIAL: >-
-+  bzip2
-+  chrpath
-+  diffstat
-+  gcc
-+  gcc-c++
-+  git
-+  gzip
-+  hostname
-+  libacl1
-+  lz4
-+  make
-+  makeinfo
-+  patch
-+  python
-+  python-curses
-+  python-xml
-+  python3
-+  python3-Jinja2
-+  python3-curses
-+  python3-pexpect
-+  python3-pip
-+  rpcgen
-+  socat
-+  tar
-+  wget
-+  which
-+  xz
-+  zstd
-+
-+OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL: GitPython
-+
-+OPENSUSE_HOST_PACKAGES_DOC: >-
-+  git
-+  inkscape
-+  make
-+  python3-pip
-+  texlive-fncychap
-+  which
-+
-+ALMALINUX_HOST_PACKAGES_ESSENTIAL: >-
-+  bzip2
-+  ccache
-+  chrpath
-+  cpio
-+  cpp
-+  diffstat
-+  diffutils
-+  gawk
-+  gcc
-+  gcc-c++
-+  git
-+  glibc-devel
-+  glibc-langpack-en
-+  gzip
-+  libacl
-+  lz4
-+  make
-+  patch
-+  perl
-+  perl-Data-Dumper
-+  perl-Text-ParseWords
-+  perl-Thread-Queue
-+  python3
-+  python3-GitPython
-+  python3-jinja2
-+  python3-pexpect
-+  python3-pip
-+  rpcgen
-+  socat
-+  tar
-+  texinfo
-+  unzip
-+  wget
-+  which
-+  xz
-+  zstd
-+
-+ALMALINUX_HOST_PACKAGES_DOC: >-
-+  git
-+  inkscape
-+  make
-+  python3-pip
-+  texlive-fncychap
-+  which
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 43c3c5834b1a3c7d164512a9b42b68e06eacaafa..0b40c3f5e5ae87d703d9a2d338de084ca9f93b2b 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -150,7 +150,7 @@ Ubuntu and Debian
- Here are the packages needed to build an image on a headless system
- with a supported Ubuntu or Debian Linux distribution::
- 
--   $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-+   $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_ESSENTIAL;
- 
- You also need to ensure you have the ``en_US.UTF-8`` locale enabled::
- 
-@@ -181,8 +181,7 @@ If this is not the case, you can reconfigure the ``locales`` package to add it
- 
- Here are the packages needed to build Project documentation manuals::
- 
--   $ sudo apt install git make inkscape texlive-latex-extra
--   $ sudo apt install sphinx python3-saneyaml python3-sphinx-rtd-theme
-+   $ sudo apt install &UBUNTU_DEBIAN_HOST_PACKAGES_DOC;
- 
- Fedora Packages
- ---------------
-@@ -194,8 +193,8 @@ with a supported Fedora Linux distribution::
- 
- Here are the packages needed to build Project documentation manuals::
- 
--   $ sudo dnf install git make python3-pip which inkscape texlive-fncychap
--   &PIP3_HOST_PACKAGES_DOC;
-+   $ sudo dnf install &FEDORA_HOST_PACKAGES_DOC;
-+   $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
- 
- openSUSE Packages
- -----------------
-@@ -204,11 +203,12 @@ Here are the packages needed to build an image on a headless system
- with a supported openSUSE distribution::
- 
-    $ sudo zypper install &OPENSUSE_HOST_PACKAGES_ESSENTIAL;
-+   $ sudo pip3 install &OPENSUSE_PIP3_HOST_PACKAGES_ESSENTIAL;
- 
- Here are the packages needed to build Project documentation manuals::
- 
--   $ sudo zypper install git make python3-pip which inkscape texlive-fncychap
--   &PIP3_HOST_PACKAGES_DOC;
-+   $ sudo zypper install &OPENSUSE_HOST_PACKAGES_DOC;
-+   $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
- 
- 
- AlmaLinux Packages
-@@ -217,6 +217,10 @@ AlmaLinux Packages
- Here are the packages needed to build an image on a headless system
- with a supported AlmaLinux distribution::
- 
-+   $ sudo dnf install -y epel-release
-+   $ sudo yum install dnf-plugins-core
-+   $ sudo dnf config-manager --set-enabled crb
-+   $ sudo dnf makecache
-    $ sudo dnf install &ALMALINUX_HOST_PACKAGES_ESSENTIAL;
- 
- .. note::
-@@ -234,8 +238,8 @@ with a supported AlmaLinux distribution::
- 
- Here are the packages needed to build Project documentation manuals::
- 
--   $ sudo dnf install git make python3-pip which inkscape texlive-fncychap
--   &PIP3_HOST_PACKAGES_DOC;
-+   $ sudo dnf install &ALMALINUX_HOST_PACKAGES_DOC;
-+   $ sudo pip3 install &PIP3_HOST_PACKAGES_DOC;
- 
- .. _system-requirements-buildtools:
- 
-
--- 
-2.47.1
-
+Cheers,
+Quentin
 
