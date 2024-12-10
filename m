@@ -1,439 +1,373 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8F027E7717F
-	for <webhook@archiver.kernel.org>; Tue, 10 Dec 2024 10:33:48 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.7136.1733826826909493091
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 75B9FE77180
+	for <webhook@archiver.kernel.org>; Tue, 10 Dec 2024 10:34:48 +0000 (UTC)
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (EUR05-AM6-obe.outbound.protection.outlook.com [40.107.22.67])
+ by mx.groups.io with SMTP id smtpd.web11.7243.1733826880528966195
  for <docs@lists.yoctoproject.org>;
- Tue, 10 Dec 2024 02:33:47 -0800
+ Tue, 10 Dec 2024 02:34:41 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=P2To0Qz2;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D518A1C0003;
-	Tue, 10 Dec 2024 10:33:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1733826825;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EGpGDLwiEIbLc/jFftzbkp6sagyQb17x6iZ2Am9vg1A=;
-	b=P2To0Qz2acuVv0TFeR3bYOAKVUyYf/GlnlMs7GzheSdFCZ+70eiI23yevKModF2dPnNROB
-	ZaG1KkNUi+xlL1dnN9XwdqAr7QJTljT6whZpyWXxLzRzmI0VEYbLKWAdgRaelslfC28YCH
-	tPjM0lHj2aj5ISXTaCOkNww0Ko6dkOYNYatiUFYn4psQMS+Yj+xpEzajfOzSvyCJ6BUgqj
-	DIy1ilQIxrmIYlrz+uIolnmbcYk6wuqwBSWc6WzbalfB5Ie//pAL2LStLM7a215OVllQBu
-	A4QAzEI5F6y3RGuCJ3UTe6D2qnRlUiVS9Fw/CAMhfmroYaZTcgrwBnZ0e2MW/w==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 10 Dec 2024 11:33:44 +0100
-Message-Id: <D67YBBAMD627.3JPAXWB92MIQ9@bootlin.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
-Subject: Re: [yocto-docs PATCH v2] Add scripts to build the docs in
- containers
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20241205-docs-build-dockerfiles-v2-1-047cb3245adf@bootlin.com>
- <fd8bce6e-155f-4c95-8061-bfef0d5784dc@cherry.de>
-In-Reply-To: <fd8bce6e-155f-4c95-8061-bfef0d5784dc@cherry.de>
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=kMF26ji1;
+ spf=pass (domain: cherry.de, ip: 40.107.22.67, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VrgRNHaX55jDj0D3kP4f7XvqhvIiSqmvSuz8CuWEziRUygHXFrr4AwXdNfp7YSwsma6xnEC8RsjxgG1e9h0VclrGb2HOZ5DCYoL5UxHxOmdQr8JH//uG6Ak63yy+m0gjxiYzuu60Le6iNKxMw9Wpl9MV/MLk2oWd7s1HuGCb2JFOAfXOluthf/I+AsR+W/AgwZGO//vio7uzAno3zB7fLWtq0bx5yGCycLbm4rKGl00Xer5WGqTkYIJLlZlNBrpaUmXyurbVoNIVxBbSwjI4YQEyzufQnrovtvuJs9qohSpMuUW8KjJJuQm3R1uIdMvajcdSOSYsxI+17ZIjzVd1nQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UBrl06IxR0cvnNzH/tHzhNxZE1jnZu3sr/2p6Pr3Kqg=;
+ b=uN80S4jeXxAkhLs0nbxPjP2QZs68sPjBaxc6J5cWG0ERJeW6tw8KMsHh8aBRDfPsceg5mS8Rw809t62rq8WAAvWIq01oESt5QPVlkBujODdEE3hpAGIyqcYurez2uCsFabZ/dGSu6E4Xg4SeBbkSVG0mQmt0EJ+t9fLe0yRxFZXeKGAt9Hb+Vlk9R+IIstET2/75HywjXyzkt1W+W4FGOGOjB8GvY4NBri3kmkMv3dWMpY4Z2nTb5RqTCNFw+9SyuYQxM7EE1VjgYRqA0p7PN4QbYU0G9QcBm2y5ua7dkVC4H+TY1jI23s0udUqv/ppNCvAtLENJabQ+tVEUJGKslg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=UBrl06IxR0cvnNzH/tHzhNxZE1jnZu3sr/2p6Pr3Kqg=;
+ b=kMF26ji1HxkeN6hAKwRKv5nIoNswPTSdhE93btHj/y9d30kNKfKegRzruVf0mGvGUib1Kh5YiuGYZUyjC7+PJMHASumMBp/CxHcpAgk+K0cR2moWqyEkgo2xz5gRpqR3Gzin4kPvbhXK0wG2k6tNMIa7jXcXtTc8z+f+/JmgnMM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by AM9PR04MB8161.eurprd04.prod.outlook.com (2603:10a6:20b:3e9::24) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8230.20; Tue, 10 Dec
+ 2024 10:34:33 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%7]) with mapi id 15.20.8230.016; Tue, 10 Dec 2024
+ 10:34:33 +0000
+Message-ID: <c10c5cd5-6d1d-4022-be68-5e998b22896b@cherry.de>
+Date: Tue, 10 Dec 2024 11:34:31 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [yocto-docs PATCH v2 5/6] system-requirements.rst: add
+ dependencies for pdf builds
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20241204-update-doc-deps-v2-0-1d9b4063476f@bootlin.com>
+ <20241204-update-doc-deps-v2-5-1d9b4063476f@bootlin.com>
+ <f6b0c418-bd94-4fc2-a58d-ec7634926fe1@cherry.de>
+ <D67BY6U5UGPM.B2AQ5R5NXNID@bootlin.com>
+ <50f1c8ad-6726-4b14-a440-043cd7a47077@cherry.de>
+ <D67X1HPUBY1E.1H5DBU4OXAURO@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <D67X1HPUBY1E.1H5DBU4OXAURO@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: WA2P291CA0010.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:1e::16) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AM9PR04MB8161:EE_
+X-MS-Office365-Filtering-Correlation-Id: f300ce19-eb35-446c-6e59-08dd19063c4c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?NzV2bmwza0p3cjBvWEZlQUMxbDBOU2dqc21rNytGYklWRFdua29RSjlHOHBP?=
+ =?utf-8?B?b1VQTFhJOUk1RU1rOGlUeEJLQlJieDhJNWlzOFM2YS94NnZOL2NCakFDcjQ0?=
+ =?utf-8?B?bEFQWjdNaDFydWx0WDlSaFpHOVdTRWhUNG56SWpDUGFkdnhZN1I1TVZUdlFP?=
+ =?utf-8?B?NFZZVWdNRGV5MHBCRUw2MWhwUEtJNWMrRVRSQUJ2SEVYT1Fyd3B3RE1UT3F0?=
+ =?utf-8?B?TG9oREhka0d2SlFzdzVnU1UzUStERzU5RE1DaG4vY3pFMkduaEswWUtsc09H?=
+ =?utf-8?B?RDdURXM4YUNLUEZJR3VEazZnQ21SdTJkNTlzVkxHNTM0NmRMUmFObjBtUDBN?=
+ =?utf-8?B?NWFkQ3IxdFVrY2hpeWNIYTFRc3BTMGlVd3VEOWtqNElXUzJ1WFpWNGJWNGIx?=
+ =?utf-8?B?M010NWxUUzRvZ3N6RzNoUkNrT1VmenV4aEZpTjZNaUVYZ1dEZHRjRnc5NmVw?=
+ =?utf-8?B?eEFqdUFTMG1vOVFZZHQwM0pOVnRxQzRmZ1ZBckdrTHdUc2tXVnlHNnAzUW8w?=
+ =?utf-8?B?dlRzdm5kOGJyd21iWnFmZ3dpeTRFc09SUTFJQmZ2ZEo5MEcwSUZ3ZUpLQ0hS?=
+ =?utf-8?B?enRNdW9KYi9MYlpHTitPVnNJSkZKcUFRUllRZTJLNE95NGNrczFkcFNyNDVi?=
+ =?utf-8?B?RHl6S2ZNSzJ1Zy8yOG95WTVrQXdYTGVpeUhUSGNGTjA4TFBmZnlYVG9UVjFz?=
+ =?utf-8?B?SFIxTlJ1aUpFVTdRMEFSU0h4dDdBZlZwVENEZlRmVXRvVXFHMHJtUmVGZVlh?=
+ =?utf-8?B?RVRzMnJxcFk5bWdhUTh1ZFg2L0swb252S1Q3SGtudm5oVUZNd3dJb01saWls?=
+ =?utf-8?B?UytGWFhCUFB5WExiaUtwKzg2R0VLTVl2eXhZd2lHQUI0WG84a0Ntem9GMTkv?=
+ =?utf-8?B?R216TXFtdnd6eWtrV0RXc09FVHBLMis2YUdUQmNiQ1VmMXg5ZU8yUG1tQU1Z?=
+ =?utf-8?B?ZzVyT0RMTWc0M2JvQWhZSk9oV0FBVTBtQlF5ODgyTVQrRnJQamNUVWhuWXhl?=
+ =?utf-8?B?NmJzNkhYU0JWVUNKQytpVGswdHUvOXJRWFU1R2R1RlV0OUJvUU9YLzc4eDc2?=
+ =?utf-8?B?Y3l4dmRzUlRRN2FHWDBHb3RoMGgvWkZ0UXliQk1zVmhtTTJlaThGZFJHdDFJ?=
+ =?utf-8?B?THdPNUtuQ3ZKbDNEemx6YlpJbHMyeGN5S3h5TmFPdzBBZE1EQUZLY3d0cmFY?=
+ =?utf-8?B?QUd3bmFOT25LWGxrNjB0UUhMTVBTZEVPMjBabVF0eGpZMWEwd1NCK1YzYlJY?=
+ =?utf-8?B?V0hpZ3JYdzVCY050blQ5TldGNC95UGNEUXREcS9jaFV2Y1ZwOW04UHgwSFdN?=
+ =?utf-8?B?M3VaSmx0dE1idWwvbXEybHpwemQ5MWtIOUtMVTJlaW80T2FNamk2SUNoU1VV?=
+ =?utf-8?B?RWNxajQvMjZ1eHUvbU1EbXNwaEFUZi8vZys3aU5XY0F2YTVIRXNOQTFZQm8z?=
+ =?utf-8?B?aTVFVnZtYmFhR1hiLzI4V3FjS1lnTVRZMGV2OCtJcDVtaU5ka3krbFZUdzlS?=
+ =?utf-8?B?RldiNldFNnk0ajVaRmdoamFmdEhnUG1PdE9pU0ZoMnUrM2pESTJmbXE3OFMz?=
+ =?utf-8?B?eThPRm9LcktHd0UrUCtDZ2JVSzZvS0hjZTluQU54K1NrV2hKc2E1Zmg1Wjdz?=
+ =?utf-8?B?SkcyM2dJZjRYNU90WUlaSkhEa1VRdUlydGgzT0NjQm9OY3Y3WjhHc3QvUkVT?=
+ =?utf-8?B?cU1oYms3S1hnKzV5VSthcGl6cG4vQStrSkNpV240SkxDUlZkMHBtYkR4WjF4?=
+ =?utf-8?B?RTVlOExTb1VVTmVJMGJnd3ozRC8xRDVQSUFScWhXYjlORGFZQ2VMdXlTL3Vw?=
+ =?utf-8?B?dTJSNDFWbVJINzltVlNFQT09?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?QkhscG5pRTNBWlNQT2JHSGp0U0xTT0tjbjRxcUl1VnAxcmZzWk5vNEVGaGNr?=
+ =?utf-8?B?cFpwenRjTWdlWmlWb0ROTi94TTFDVjcrQUdoN3JOMXAxYStFbkNJREkzTzBn?=
+ =?utf-8?B?UGJaYTN4L2wrZWZuaFkyc1BGZWZ1eHh6RGdDNXNVNnV1YXpIeTArWmlVYnd0?=
+ =?utf-8?B?UTluWnNrbWpiSU5wQS8wV3hsQi9oUkcxNS96bDJvZHdHRHduVEpuNDRVSHpy?=
+ =?utf-8?B?MFhPSmV1MmU3Yjhhb3RmaVlaOGlKWXZLWW9JTFhNalUwQzZpcFdTMGM3KytM?=
+ =?utf-8?B?clkzdmptUjByby91M1BQQXI4bHk4ejM5bVNSclVucGlaVUVDUkQ5ZzJpUlhw?=
+ =?utf-8?B?NldHclBhUUJOazNTeWFSZTJURDNLVHk2M0tURnpoeUhuUUUrUHBIWExqR1J3?=
+ =?utf-8?B?QmlGcU5UYlhGVjMzWit0d0JtRHpuTkNhcTB1YnhHT2tMNVEveU5WQ1JPbjlL?=
+ =?utf-8?B?VUNPUk1EYjNuKzZMeHBUMERpMnpGWTNsUnZKci81cUpUblNTclp1ZXVPaVlm?=
+ =?utf-8?B?QVprV29yQVpsdE95TmxyMW5FQXc5NEJwQjZnMWtWdkhORWpiZW9JRUYxbm9j?=
+ =?utf-8?B?YmZSYTNPcFMraldBbkFnWnF6VlJvNE01SWliME1sWVE2VExhMmg1eTRhQUph?=
+ =?utf-8?B?NnVDa1FMUmJoenlyaUh4WlpmdXQ1TVJyeGpXUUgxeHEzUmN4RTBlMURZMzIw?=
+ =?utf-8?B?bWFlaFRtWUpNTElCR2VTbnRmYmJqWFA3ZHBzemUxeUw1bmxaVHhlWVVFYk15?=
+ =?utf-8?B?dVVWSTZKZTJDaWJKYUZLL3gwaG1DQ3FyM3VrTHppa2NYd3habWRad1psL0NJ?=
+ =?utf-8?B?aWRyYTJRQWNuL0dxT29oaXJDZEZFRXV3T1dNRkxmYVJaN2srSlF4K05JVDd4?=
+ =?utf-8?B?UitWMDZNOVVvNzMrcjlreXVQaXVod1V1bWNHeUNUeUkzeHVnWjI3ekdlOWRH?=
+ =?utf-8?B?Mk1xb2N3VmhhVlZrTVV6RUFBaTFqdDYybmxFY0FaYjVNaU5QdTlFNWFpdDVs?=
+ =?utf-8?B?Wm03RTRrNGtoQTFMaGlGMjNrUjJpdi8xcDI3cWx5dXhjaUIxc2hzcnFyZ3Iw?=
+ =?utf-8?B?SWM3Y1FSRm1ROWhoa0hIWGxYMG5nODhYOVUwZ0FGNERrZEc3L2VKdVl6dFdh?=
+ =?utf-8?B?Q0lOUVFVRkFCWjJBV2dmVU1YUXQwQTc0NmxVTEhUUHRpSjlKSnlEZjJrSUpR?=
+ =?utf-8?B?VVBlY3FMSVRQWVJ5VGdUQmk4dEZsT3o2RUx6MnBsbHpSaG1pczMwSyt1OHov?=
+ =?utf-8?B?Smg3VmJGQlp4WTJPdzF1YjhFeGg5VlJ0S0xuUFVGN2FJSmsyKzRIOEJMZFRT?=
+ =?utf-8?B?eVRnOEc5V3djTW8rY2lGZ0djOWI2YzdSeVlnNHVuYmxwMmozTjVlRlpMdnpS?=
+ =?utf-8?B?VEx1NlBtUTJZd080dUxqbGlJdkZ4RmRzUi9pN0hiV1AxTHk5R1hOQUVyazY2?=
+ =?utf-8?B?MGU0MG8xRGVnWFY4blcrQ2ZDS1VMNjEwWU9zWUVjSmRoWXc3YlM4SnhLK1Ez?=
+ =?utf-8?B?T2NGZkhzaGROcUZLQVBCbFFOcTdLdXA3dHhFRTRhTzVFM001RE9MQ0N4a1R4?=
+ =?utf-8?B?U1NIa1plRjJXSEFnWm5EeS9zTERZMVhIbXFmelk2VlMyTnFZTElOTmhjSElk?=
+ =?utf-8?B?a0R2dlp4M1YyV3dxNHV5VTFaYVVGTi9GSjVjNFJDNWdTb01yUG81akxqVnA5?=
+ =?utf-8?B?OGM2b0VVeitJZTk5TGVZbFJ4dkhSQ0V1V0VZUXJKYWFNNytENGQ0dml1dkhD?=
+ =?utf-8?B?MmZSdlFSeUFaNHZGaGNVTGl2TVlXNEp5OEh6ZUxBUWs1VEpORk94K2JYeVp5?=
+ =?utf-8?B?K3NaUlRRVVZqc2VFbGxLdnMyQXpESVZQR1hGQm1nQ0dFckxTelJ4OTV2M1hz?=
+ =?utf-8?B?czg3TlFOdmFXZlQzM1NjaGU4VlVYVFU2eTVVQ280dWUxV0dtcDRMRURCcWZw?=
+ =?utf-8?B?Z2VKaForQ2pHd0RFQTNQOXMrYXppczNqVUlBQXdXZ1cwU092bmYxSzAyKzFi?=
+ =?utf-8?B?ZjZQVzhpWnRvcXQyRkNTZG1JOG11cmNBNUZoL1VpZkRCNUNibGdIakFhVTky?=
+ =?utf-8?B?VHU3Ykh2Mlg0WjRURE81NGdTSlBoQk1hM0hEdzQ2endoYUFvejg1YVhTbENV?=
+ =?utf-8?B?dXpGYnNlWDM5K1RkWDl5WHJHa3hQV3NxK3FEa0kvNzY4aXovVzhmMzBGejRz?=
+ =?utf-8?B?dWc9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: f300ce19-eb35-446c-6e59-08dd19063c4c
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Dec 2024 10:34:32.9805
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Mk3n8PTBWP92tWHzXexksVurka9j49fijCMgMxMqF03X6A8Y9pQyL+oUfN4curNVoRn0X+JmaTxusFqwOI/CvULgGgL3y4DlLmchmzM/AOQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8161
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 10 Dec 2024 10:33:48 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5918
+ <docs@lists.yoctoproject.org>; Tue, 10 Dec 2024 10:34:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5919
 
-Hi Quentin,
+Hi Antonin,
 
-On Fri Dec 6, 2024 at 3:23 PM CET, Quentin Schulz wrote:
-> Hi Antonin,
->
-> On 12/5/24 12:06 PM, Antonin Godard wrote:
->> Add two scripts for building a container image and building the
->> documentation in that image: build-docs-container and
->> container-build-docs.
->>=20
->
-> Yet there's only one left now :) (also in your commit title).
+On 12/10/24 10:33 AM, Antonin Godard wrote:
+> Hi Quentin,
+> 
+> On Mon Dec 9, 2024 at 6:28 PM CET, Quentin Schulz wrote:
+> [...]
+>>>>> +FEDORA_HOST_PACKAGES_DOC_PDF: >-
+>>>>> +  latexmk
+>>>>> +  texlive-collection-fontsextra
+>>>>> +  texlive-collection-fontsrecommended
+>>>>> +  texlive-collection-lang*
+>>>>
+>>>> Please use single quotes to surround texlive-collection-lang* otherwise
+>>>> it may be interpreted by the shell, c.f. for me:
+>>>>
+>>>> ```sh
+>>>> $ sudo dnf install texlive-collection-lang*
+>>>> zsh: no matches found: libgpiod*
+>>>> ```
+>>>>
+>>>> while `sudo dnf install 'texlive-collection-lang*'` works just fine.
+>>>>
+>>>> Ditto for the other occurrences later in this diff.
+>>>
+>>> So I had issues with this in the container scripts, which is why I left it at
+>>> that. I initially single quoted this but it didn't work. Are you sure you can
+>>
+>> Can you tell us more about those issues with some error value/messages
+>> or something?
+>>
+>>> mix non-quotes and quoted strings here? I'll give a try, might be specific to
+>>> the dockerfile.
+>>>
+>>
+>> """
+>> $ sudo dnf install 'texlive-collection-lang*' latexmk
+>> Updating and loading repositories:
+>> Repositories loaded.
+>> Package "texlive-collection-langarabic-11:svn59594-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langchinese-11:svn63995-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langcjk-11:svn65824-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langcyrillic-11:svn54074-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langczechslovak-11:svn54074-73.fc41.noarch"
+>> is already installed.
+>> Package "texlive-collection-langenglish-11:svn65496-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langeuropean-11:svn66432-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langfrench-11:svn63147-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langgerman-11:svn55706-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langgreek-11:svn65038-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langitalian-11:svn55129-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langjapanese-11:svn64603-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langkorean-11:svn54074-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langother-11:svn59564-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langpolish-11:svn54074-73.fc41.noarch" is
+>> already installed.
+>> Package "texlive-collection-langportuguese-11:svn54074-73.fc41.noarch"
+>> is already installed.
+>> Package "texlive-collection-langspanish-11:svn54141-73.fc41.noarch" is
+>> already installed.
+>> Package "latexmk-4.85-2.fc41.noarch" is already installed.
+>>
+>> Nothing to do.
+>> """
+>>
+>> Same for latexmk first in the list.
+>>
+>> That's for DNF5 (fedora 41 and later).
+>>
+>> DNF4 seems to be happy in a fedora 40 container as well:
+>>
+>> """
+>> [root@6f0bdf8b38f2 /]# dnf install latexmk 'texlive-collection-lang*'
+>> Last metadata expiration check: 0:00:54 ago on Mon Dec  9 17:13:01 2024.
+>> Dependencies resolved.
+>> ==============================================================================================
+>>    Package                                 Arch   Version
+>>           Repo     Size
+>> ==============================================================================================
+>> Installing:
+>>    latexmk                                 noarch 4.85-1.fc40
+>>           updates 454 k
+>>    texlive-collection-langarabic           noarch 11:svn59594-71.fc40
+>>           fedora  9.7 k
+>>    texlive-collection-langchinese          noarch 11:svn63995-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langcjk              noarch 11:svn65824-71.fc40
+>>           fedora  9.8 k
+>>    texlive-collection-langcyrillic         noarch 11:svn54074-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langczechslovak      noarch 11:svn54074-71.fc40
+>>           fedora  9.4 k
+>>    texlive-collection-langenglish          noarch 11:svn65496-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langeuropean         noarch 11:svn66432-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langfrench           noarch 11:svn63147-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langgerman           noarch 11:svn55706-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langgreek            noarch 11:svn65038-71.fc40
+>>           fedora  9.6 k
+>>    texlive-collection-langitalian          noarch 11:svn55129-71.fc40
+>>           fedora  9.6 k
+>>    texlive-collection-langjapanese         noarch 11:svn64603-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langkorean           noarch 11:svn54074-71.fc40
+>>           fedora  9.4 k
+>>    texlive-collection-langother            noarch 11:svn59564-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langpolish           noarch 11:svn54074-71.fc40
+>>           fedora  9.5 k
+>>    texlive-collection-langportuguese       noarch 11:svn54074-71.fc40
+>>           fedora  9.4 k
+>>    texlive-collection-langspanish          noarch 11:svn54141-71.fc40
+>>           fedora  9.4 k
+>> [...]
+>> """
+>>
+>> and the other way around:
+>>
+>> """
+>> [root@6f0bdf8b38f2 /]# dnf install 'texlive-collection-lang*' latexmk
+>> Last metadata expiration check: 0:00:09 ago on Mon Dec  9 17:13:01 2024.
+>> Dependencies resolved.
+>> ==============================================================================================
+>>    Package                                 Arch   Version
+>>           Repo     Size
+>> ==============================================================================================
+>> Installing:
+>>    latexmk                                 noarch 4.85-1.fc40
+>>           updates 454 k
+>>    texlive-collection-langarabic           noarch 11:svn59594-71.fc40
+>>           fedora  9.7 k
+>>    texlive-collection-langchinese          noarch 11:svn63995-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langcjk              noarch 11:svn65824-71.fc40
+>>           fedora  9.8 k
+>>    texlive-collection-langcyrillic         noarch 11:svn54074-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langczechslovak      noarch 11:svn54074-71.fc40
+>>           fedora  9.4 k
+>>    texlive-collection-langenglish          noarch 11:svn65496-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langeuropean         noarch 11:svn66432-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langfrench           noarch 11:svn63147-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langgerman           noarch 11:svn55706-71.fc40
+>>           fedora   10 k
+>>    texlive-collection-langgreek            noarch 11:svn65038-71.fc40
+>>           fedora  9.6 k
+>>    texlive-collection-langitalian          noarch 11:svn55129-71.fc40
+>>           fedora  9.6 k
+>>    texlive-collection-langjapanese         noarch 11:svn64603-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langkorean           noarch 11:svn54074-71.fc40
+>>           fedora  9.4 k
+>>    texlive-collection-langother            noarch 11:svn59564-71.fc40
+>>           fedora   11 k
+>>    texlive-collection-langpolish           noarch 11:svn54074-71.fc40
+>>           fedora  9.5 k
+>>    texlive-collection-langportuguese       noarch 11:svn54074-71.fc40
+>>           fedora  9.4 k
+>>    texlive-collection-langspanish          noarch 11:svn54141-71.fc40
+>>           fedora  9.4 k
+>> [...]
+>> """
+>>
+>> Cheers,
+>> Quentin
+> 
+> Thanks for taking the time to test this. I guess this works for most shells, but
+> in the context of a Dockerfile I hit this error:
+> 
+>    10.39 No match for argument: 'texlive-collection-lang*'
+>    10.45 Error: Unable to find a match: 'texlive-collection-lang*'
+> 
+> You can reproduce this by running:
+> 
+>    $ echo "'texlive-collection-lang*'" > /tmp/deps
+>    $ sudo dnf install $(cat /tmp/deps)
+> 
 
-Oops, will update in v3 :)
+OK. I guess this is because shell isn't parsing the line and just 
+interpreting it directly, so it's passing 'texlive-collection-lang*' to 
+dnf, whereas before it would pass texlive-collection-lang* because shell 
+would parse and unquote the argument?
 
->> For now, the documentation/tools/dockerfiles directory contains a
->> Dockerfile for building with Ubuntu or Debian, but we could extend this
->> to the supported distros.
->>=20
->> It should be possible to build the full documentation with two commands:
->>=20
->>    ./documentation/tools/build-docs-container ubuntu:24.04
->>=20
->> CONTAINERCMD can be replaced by "podman" to build with podman.
->>=20
->
-> I assume installing podman-docker package could help with that too. Not=
-=20
-> sure it's recommended, but I do have it installed :)
+> I was able use this instead:
+> 
+>    xargs -a /tmp/deps sudo dnf install
+> 
+> I'll use this instead in Fedora and others. xargs is installed by default in
+> base Ubuntu/Debian/Fedora containers.
+> 
 
-Didn't know about that one. But it shouldn't be required to use podman or d=
-ocker
-independently I think?
+I still think storing the full instructions in separate scripts is a 
+more maintainable and future-proof solution than this.
 
->> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->
-> It'd be nice to explicit the dependency on your other patch series here.=
-=20
-> You're the maintainer so you'll get the order right when merging but=20
-> it's a good habit to take as a contributor so maintainers are aware of=20
-> specific inter-series dependencies.
-
-You're right, I'll add this (and thanks for the tip, I overlooked that).
-
->> Changes in v2:
->> - Merge the scripts to build a container and run the container into a
->>    single script.
->> - Parametrize the FROM dockerfile instruction from the script, allowing
->>    to use a single dockerfile for multiple distros.
->> - Add a paragraph on this in the README.
->> - Copy the dependency list in a file in the container, instead of
->>    passing them in a variable (to be future-proof on command line
->>    lengths).
->> - Fix the locale-gen command in the Ubuntu/Debian dockerfile.
->> - Link to v1: https://lore.kernel.org/r/20241121-docs-build-dockerfiles-=
-v1-1-3b54e1237bf5@bootlin.com
->> ---
->>   documentation/README                               |  27 +++++
->>   documentation/tools/build-docs-container           | 119 +++++++++++++=
-++++++++
->>   .../tools/dockerfiles/Dockerfile.ubuntu-debian     |  18 ++++
->>   3 files changed, 164 insertions(+)
->>=20
->> diff --git a/documentation/README b/documentation/README
->> index 8a47fd4a3fd07d41d61a7d681d82bd13ac74527d..aebece13758005a8b913b457=
-0fee6118256f6f9b 100644
->> --- a/documentation/README
->> +++ b/documentation/README
->> @@ -128,6 +128,33 @@ dependencies in a virtual environment:
->>    $ pipenv install
->>    $ pipenv run make html
->>  =20
->> +Building the documentation in a container
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +The documentation can be built in a container with the build-docs-conta=
-iner
->> +scripts in the tools/ directory. The default container command used by =
-the
->> +script is docker, but the script also supports podman by setting the
->> +CONTAINERCMD variable in your environment:
->> +
->> +  $ export CONTAINERCMD=3Dpodman
->> +
->> +A basic usage of the script would be:
->> +
->> +  $ ./tools/build-docs-container debian:12
->> +
->> +This will the entire documentation in an Debian 12 container.
->> +
->
-> +build?
->
-> s/an/a/
->
->> +The documentation can be built in other distributions. This list can be=
- obtained
->> +by running:
->> +
->> +  $ ./tools/build-docs-container list
->> +
->> +The make target can optionally be provided to build a single documentat=
-ion type
->> +(these targets are listed in the documentation Makefile). For example, =
-to build
->
-> s;the documentation Makefile;documentation/Makefike; ?
->
->> +the documentation in HTML and EPub formats, the following command can b=
-e used:
->> +
->> +  $ ./tools/build-docs-container ubuntu:24.04 epub html
->> +
->>   Style checking the Yocto Project documentation
->>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->>  =20
->> diff --git a/documentation/tools/build-docs-container b/documentation/to=
-ols/build-docs-container
->> new file mode 100755
->> index 0000000000000000000000000000000000000000..b9578d6da49b707c4de21586=
-6b6396cfeff3d08b
->> --- /dev/null
->> +++ b/documentation/tools/build-docs-container
->> @@ -0,0 +1,119 @@
->> +#!/usr/bin/env bash
->> +#
->> +# Build a container ready to build the documentation be reading the dep=
-endencies
->> +# listed in poky.yaml.in, and start a documentation build in this conta=
-iner.
->> +#
->> +# Usage:
->> +#
->> +#   ./documentation/tools/build-docs-container <image> [<make target>]
->> +#
->> +# Where <image> is one of the keys in YQ_KEYS. E.g.:
->> +#
->> +#   ./documentation/tools/build-docs-container ubuntu:24.04 html
->> +#
->> +# Will build the docs in an Ubuntu 24.04 container in html.
->> +#
->> +# The container commands can be used by exporting CONTAINERCMD in the
->> +# environment. The default is docker, but podman can also be used.
->> +
->
-> I would move "set" commands here.
-
-Agree with this comment and the ones above
-
->> +SCRIPT_DIR=3D$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null &&=
- pwd)
->> +CONTAINERCMD=3D${CONTAINERCMD:-docker}
->> +DOCS_DIR=3D"$SCRIPT_DIR/../.."
->> +POKY_YAML_IN=3D"$SCRIPT_DIR/../poky.yaml.in"
->> +
->> +# This lists the different images we can build and the keys we pass to =
-yq to
->> +# find packages in poky.yaml.in.
->> +# The keys should be in the form of "<image>:<version>", as this will b=
-e passed
->> +# to FROM in the selected Dockerfile below.
->> +# These are common yq keys used for multiple distros.
->> +_UBUNTU_DEBIAN_YQ_KEYS=3D".UBUNTU_DEBIAN_HOST_PACKAGES_DOC .UBUNTU_DEBI=
-AN_HOST_PACKAGES_DOC_PDF"
->> +declare -A YQ_KEYS=3D(
->> +  [ubuntu:22.04]=3D"$_UBUNTU_DEBIAN_YQ_KEYS"
->> +  [ubuntu:24.04]=3D"$_UBUNTU_DEBIAN_YQ_KEYS"
->> +  [debian:12]=3D"$_UBUNTU_DEBIAN_YQ_KEYS"
->> +)
->> +
->> +# This lists the dockerfile to use for each of the distro listed in YQ_=
-KEYS
->> +# above. There should be a 1 to 1 match between the keys listed in YQ_K=
-EYS above
->> +# and the keys listed in DOCKERFILES below.
->> +declare -A DOCKERFILES=3D(
->> +  [ubuntu:22.04]=3D"Dockerfile.ubuntu-debian"
->> +  [ubuntu:24.04]=3D"Dockerfile.ubuntu-debian"
->> +  [debian:12]=3D"Dockerfile.ubuntu-debian"
->> +)
->> +
->> +main ()
->> +{
->> +  if [ "$#" -lt 1 ]; then
->> +    echo "No image provided. Provide one of: ${!YQ_KEYS[*]}"
->> +    exit 1
->> +  elif [ "$1" =3D "list" ]; then
->> +    echo -e "Available container images:\n\n${!YQ_KEYS[*]}"
->> +    exit 0
->> +  fi
->> +
->> +  local image=3D"$1"
->> +  shift
->> +  local make_targets=3D"${*:-publish}"
->> +
->> +  for cmd in $CONTAINERCMD yq; do
->> +    if ! which "$cmd" >/dev/null 2>&1; then
->> +      echo "The $cmd command was not found. Make sure you have $cmd ins=
-talled."
->> +      exit 1
->> +    fi
->> +  done
->> +
->> +  # Get the appropriate dockerfile from DOCKERFILES
->> +  dockerfile=3D"${DOCKERFILES[$image]}"
->> +
->> +  local temporary_dep_file=3D"$SCRIPT_DIR/dockerfiles/deps"
->> +  echo -n > "$temporary_dep_file" # empty the file
->> +  for dep_key in ${YQ_KEYS[$image]}; do
->> +    yq --raw-output --join-output "$dep_key" "$POKY_YAML_IN" >> "$tempo=
-rary_dep_file"
->> +    # add a white space after last element of yq command
->> +    echo -n " " >> "$temporary_dep_file"
->> +  done
->> +
->
-> Just use a temporary file, this would allow to run builds from two=20
-> different distros at the same time. mktemp should help you with that.
-
-The problem is that the source in COPY must be part of the build context, s=
-o I
-don't having a temp file in /tmp is possible. See
-https://docs.docker.com/reference/dockerfile/#adding-files-from-the-build-c=
-ontext
-
-I could use "mktemp --tmpdir=3D$SCRIPT_DIR/dockerfiles" but I don't really =
-see the
-added value.
-
->> +  # docker build doesn't accept 2 colons, so "sanitize" the name
->> +  local sanitized_dockername
->> +  sanitized_dockername=3D$(echo "$image" | tr ':.' '-')
->> +
->> +  $CONTAINERCMD build \
->> +    --tag yocto-docs-$sanitized_dockername:latest \
->> +    --build-arg ARG_FROM=3D"$image" \
->> +    --file "$SCRIPT_DIR/dockerfiles/$dockerfile" \
->> +    "$SCRIPT_DIR/dockerfiles"
->> +
->> +  # We can remove the deps file, we no longer need it
->> +  rm -f "$temporary_dep_file"
->> +
->> +  local -a args_run=3D(
->> +    --rm
->> +    --interactive
->> +    --tty
->> +    --volume=3D"$DOCS_DIR:/docs:rw"
->> +    --workdir=3D/docs
->> +    --security-opt label=3Ddisable
->> +  )
->> +
->> +  if [ "$CONTAINERCMD" =3D "docker" ]; then
->> +    args_run+=3D(
->> +      --user=3D"$(id -u)":"$(id -g)"
->> +    )
->> +  elif [ "$CONTAINERCMD" =3D "podman" ]; then
->> +    # we need net access to fetch bitbake terms
->> +    args_run+=3D(
->> +      --cap-add=3DNET_RAW
->> +      --userns=3Dkeep-id
->> +    )
->> +  fi
->> +
->> +  $CONTAINERCMD run \
->> +    "${args_run[@]}" \
->> +    yocto-docs-$sanitized_dockername \
->> +    make -C documentation $make_targets
->> +}
->> +
->> +set -eu -o pipefail
->> +
->> +main "$@"
->> diff --git a/documentation/tools/dockerfiles/Dockerfile.ubuntu-debian b/=
-documentation/tools/dockerfiles/Dockerfile.ubuntu-debian
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..3c543dc4b0e96dc9c00b2015=
-58e2ed00847339fa
->> --- /dev/null
->> +++ b/documentation/tools/dockerfiles/Dockerfile.ubuntu-debian
->> @@ -0,0 +1,18 @@
->> +ARG ARG_FROM=3Ddebian:12 # default value to avoid warning
->> +FROM $ARG_FROM
->> +
->> +ENV DEBIAN_FRONTEND=3Dnoninteractive
->> +
->> +# relative to the location of the dockerfile
->> +COPY deps /deps
->> +
->> +RUN apt-get update \
->> + && apt-get --yes --no-install-recommends install $(cat /deps) \
->> + && apt-get --yes autoremove \
->> + && apt-get clean \
->> + && rm /deps
->> +
->> +RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && locale-gen
->> +
->> +RUN git config --global --add safe.directory /docs
->> +
->>=20
->
-> So... I've had another idea.
->
-> Parsing yaml in shell, not fun.
->
-> But I don't think we **need** the instructions to be in the YAML file.
->
-> So I think we could drastically simplify all this by storing the setup=20
-> instructions in shell scripts which are included in sphinx AND use those=
-=20
-> shell scripts in the Containerfile. We actually do this for our product=
-=20
-> user manuals :)
->
-> Essentially, we would have:
->
-> $ cat documentation/host-packages-ubuntu.sh
-> sudo apt install gawk wget git diffstat unzip texinfo gcc \ [...]
->
-> In Sphinx:
->
-> .. literalinclude:: 50.literalinclude.apt.sh
->     :language: bash
->
-> In the appropriate place.
->
-> How we generate the Containerfile internally:
-> """
-> cat <<EOF > $WORKDIR/merged.sh
-> #!/bin/bash
-> set -eux
-> export DEBIAN_FRONTEND=3Dnoninteractive
-> apt-get update
-> apt-get -y install sudo
-> EOF
->
-> # Merge bash snippets we want to run (in the right order)
-> cat ../source/50.literalinclude.{apt,atf,uboot,linux,debos-prepare,\=20
-> debos-build-bookworm}.sh >> $WORKDIR/merged.sh
->
-> chmod +x $WORKDIR/merged.sh
->
-> podman run --rm --tmpfs=3D/tmp -v=3D$WORKDIR:$WORKDIR --security-opt=20
-> label=3Ddisable \  --annotation -w $WORKDIR debian:bookworm ./merged.sh
-> """
->
-> I assume we could simply use COPY in the Containerfile and include the=20
-> shell script in there and run the shell script in a single RUN. You=20
-> could then do the cleanup step in a separate layer, not optimal since=20
-> the layer will be unnecessarily big but I assume the end image is going=
-=20
-> to be smaller anyway?
->
-> The benefit is that you test **exactly** what's in the documentation.=20
-> And also you don't have to parse YAML. And it should be relatively easy=
-=20
-> to add support for new distros.
->
-> What do you think?
-
-I like this idea! Only downside I see is to have to re-run "apt get install=
-" for
-each run command, which is not really ideal IMO. I prefer caching what's al=
-ready
-been downloaded so we can re-build the doc swiftly (I imagined this script =
-to be
-used for more than verifying that what we list in the dep list is enough to
-build, and used by anyone to test their changes to the docs easily).
-
-On the other hand, running exactly what we document is a good thing. So may=
-be a
-mix between the two?
-
-For now, I guess the current solution is satisfying: we get close to what's
-documented in the documentation without having the 100% match.
-
-If you have time to send some patches to implement that I'd welcome them, t=
-hough
-:)
-
-Thanks,
-Antonin
-
---
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Cheers,
+Quentin
 
