@@ -1,274 +1,538 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 22822E77184
-	for <webhook@archiver.kernel.org>; Tue, 10 Dec 2024 15:27:30 +0000 (UTC)
-Received: from smtp-bc0c.mail.infomaniak.ch (smtp-bc0c.mail.infomaniak.ch [45.157.188.12])
- by mx.groups.io with SMTP id smtpd.web10.12917.1733844440497821821
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0952E77182
+	for <webhook@archiver.kernel.org>; Thu, 12 Dec 2024 12:29:00 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+ by mx.groups.io with SMTP id smtpd.web10.18486.1734006538273291556
  for <docs@lists.yoctoproject.org>;
- Tue, 10 Dec 2024 07:27:21 -0800
+ Thu, 12 Dec 2024 04:28:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 45.157.188.12, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0000.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246b])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Y72fG5MjXzjgg;
-	Tue, 10 Dec 2024 16:27:18 +0100 (CET)
-Received: from unknown by smtp-3-0000.mail.infomaniak.ch (Postfix) with ESMTPA id 4Y72fG2qd8zS82;
-	Tue, 10 Dec 2024 16:27:18 +0100 (CET)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Tue, 10 Dec 2024 16:26:44 +0100
-Subject: [PATCH RFC 1/2] docs: use literalinclude for system requirements
+ dkim=pass header.i=@intel.com header.s=Intel header.b=CUi7aVe1;
+ spf=pass (domain: intel.com, ip: 198.175.65.11, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734006539; x=1765542539;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=0qptbi572Qzxc4dOX3DokRFaxrw8Oh0DwTnKzZ+6DmY=;
+  b=CUi7aVe1AcAAm0K4e+XUzxv2SsUslYrHQZHbqgLsEBBVNG3HeoTMxRCV
+   UPKQKjmtW6rWbQ3ip1LMQMzUQ8jbvK8g3N/1tZ0TM679KcfULIhw6SsHX
+   5xkJBZwxdsIROiJljFNHODYLptSg5thRlxS95jrlXlNPZ4gAdiW5Ynvbc
+   4D/cIYczu14SHETevKKx0FmMjcEjNcdLFKmwqEDRuXsdHZXZLBVjgFLwF
+   h0J7M6VMQZbgVow8fEpvZsP3bwHlqZgh3RfzKG2RTkip9KroDOaAxj6tp
+   GR9kofGxzf4AqXiTGKYhviGMS9G0u1IaGGzcdGPUYu2+QmdckeV/SNdmO
+   A==;
+X-CSE-ConnectionGUID: Lfd6VJSuTRacNLViAv39YA==
+X-CSE-MsgGUID: a3f1vjnrS+SL3ToFZ/U82w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="44890241"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="44890241"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Dec 2024 04:28:58 -0800
+X-CSE-ConnectionGUID: /bsd9WukR3GyKQSIl+n0OQ==
+X-CSE-MsgGUID: m/jRP4XzR+2CyNr1/+xtfg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="133598138"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by orviesa001.jf.intel.com with ESMTP; 12 Dec 2024 04:28:56 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 5.1.1
+Date: Thu, 12 Dec 2024 20:27:25 +0800
+Message-Id: <20241212122725.361920-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241210-instructions-shell-container-v1-1-6a7cdc404ff4@cherry.de>
-References: <20241210-instructions-shell-container-v1-0-6a7cdc404ff4@cherry.de>
-In-Reply-To: <20241210-instructions-shell-container-v1-0-6a7cdc404ff4@cherry.de>
-To: Quentin Schulz <quentin.schulz@cherry.de>, docs@lists.yoctoproject.org
-X-Mailer: b4 0.14.2
-X-Infomaniak-Routing: alpha
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 10 Dec 2024 15:27:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5925
+ <docs@lists.yoctoproject.org>; Thu, 12 Dec 2024 12:29:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5927
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-The YAML variables for the host dependencies are updated by hand and
-actually only used inside code blocks.
-
-It's also slowly getting more difficult to make sense of the content of
-those variables as they are both the list of packages to install with
-the distro's package manager and sometimes additional commands, which
-all need to have the indentation of the block where the variable is used
-matched. This is impossible so we just guess it's going to be at a
-specific indentation.
-
-Instead, let's migrate all instructions into separate shell scripts that
-are then literalinclude'd into the Sphinx documentation.
-
-This allows a few things:
-- ability to run shellcheck on the scripts if we ever want to
-- manually calling the appropriate script from a supported distro to
-  build stuff (distro or bitbake/yocto stuff)
-- use this script to create containers to do CI of documentation on
-  different distros, to make sure our instructions are all up to date,
-
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- documentation/poky.yaml.in                         | 26 -------------
- documentation/ref-manual/system-requirements.rst   | 45 ++++++++++++----------
- .../tools/almalinux_host_packages_docs.sh          |  2 +
- .../tools/almalinux_host_packages_essential.sh     |  5 +++
- documentation/tools/fedora_host_packages_docs.sh   |  2 +
- .../tools/fedora_host_packages_essential.sh        |  1 +
- documentation/tools/opensuse_host_packages_docs.sh |  2 +
- .../tools/opensuse_host_packages_essential.sh      |  2 +
- documentation/tools/ubuntu_host_packages_docs.sh   |  2 +
- .../tools/ubuntu_host_packages_essential.sh        |  2 +
- 10 files changed, 42 insertions(+), 47 deletions(-)
+ .../migration-guides/release-5.1.rst          |   1 +
+ .../migration-guides/release-notes-5.1.1.rst  | 289 ++++++++++++++++++
+ 2 files changed, 290 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.1.1.rst
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index c770318f2be76cca3ea23a25d819ace46d157b4c..4f4684be4bf7f95ff0263a01136f8ee5a30f1937 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -10,32 +10,6 @@ BITBAKE_SERIES : ""
- YOCTO_DL_URL : "https://downloads.yoctoproject.org"
- YOCTO_AB_URL : "https://autobuilder.yoctoproject.org"
- YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
--UBUNTU_HOST_PACKAGES_ESSENTIAL : "gawk wget git diffstat unzip texinfo gcc \
--     build-essential chrpath socat cpio python3 python3-pip python3-pexpect \
--     xz-utils debianutils iputils-ping python3-git python3-jinja2 \
--     python3-subunit zstd liblz4-tool file locales libacl1
--     \n\   $ sudo locale-gen en_US.UTF-8"
--FEDORA_HOST_PACKAGES_ESSENTIAL : "gawk make wget tar bzip2 gzip python3 unzip perl patch \
--     diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath \
--     ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat \
--     python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython \
--     python3-jinja2 rpcgen perl-FindBin perl-File-Compare \
--     perl-File-Copy perl-locale zstd lz4 hostname glibc-langpack-en libacl"
--OPENSUSE_HOST_PACKAGES_ESSENTIAL : "python gcc gcc-c++ git chrpath make wget python-xml \
--     diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip \
--     python3-pexpect xz which python3-Jinja2 rpcgen \
--     zstd lz4 bzip2 gzip hostname libacl1
--     \n\   $ sudo pip3 install GitPython"
--ALMALINUX_HOST_PACKAGES_ESSENTIAL : "-y epel-release
--     \n\   $ sudo yum install dnf-plugins-core
--     \n\   $ sudo dnf config-manager --set-enabled crb
--     \n\   $ sudo dnf makecache
--     \n\   $ sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch \
--     diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache \
--     socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip \
--     python3-GitPython python3-jinja2 python3-pexpect xz which \
--     rpcgen zstd lz4 cpio glibc-langpack-en libacl"
--PIP3_HOST_PACKAGES_DOC : "$ sudo pip3 install sphinx sphinx_rtd_theme pyyaml"
- MIN_PYTHON_VERSION : "3.8.0"
- MIN_TAR_VERSION : "1.28"
- MIN_GIT_VERSION : "1.8.3.1"
-diff --git a/documentation/ref-manual/system-requirements.rst b/documentation/ref-manual/system-requirements.rst
-index 0fc92550a51ac62c39859acc63002ac065559e2a..0660d830ec2dc903fa4660a3ac62043661d955b1 100644
---- a/documentation/ref-manual/system-requirements.rst
-+++ b/documentation/ref-manual/system-requirements.rst
-@@ -148,9 +148,10 @@ Ubuntu and Debian
- -----------------
- 
- Here are the packages needed to build an image on a headless system
--with a supported Ubuntu or Debian Linux distribution::
-+with a supported Ubuntu or Debian Linux distribution:
- 
--   $ sudo apt install &UBUNTU_HOST_PACKAGES_ESSENTIAL;
-+   .. literalinclude:: ../tools/ubuntu_host_packages_essential.sh
-+      :language: shell
- 
- .. note::
- 
-@@ -162,45 +163,47 @@ with a supported Ubuntu or Debian Linux distribution::
-          $ sudo apt build-dep qemu
-          $ sudo apt remove oss4-dev
- 
--Here are the packages needed to build Project documentation manuals::
-+Here are the packages needed to build Project documentation manuals:
- 
--   $ sudo apt install git make inkscape texlive-latex-extra
--   $ sudo apt install sphinx python3-saneyaml python3-sphinx-rtd-theme
-+   .. literalinclude:: ../tools/ubuntu_host_packages_docs.sh
-+      :language: shell
- 
- Fedora Packages
- ---------------
- 
- Here are the packages needed to build an image on a headless system
--with a supported Fedora Linux distribution::
-+with a supported Fedora Linux distribution:
- 
--   $ sudo dnf install &FEDORA_HOST_PACKAGES_ESSENTIAL;
-+   .. literalinclude:: ../tools/fedora_host_packages_essential.sh
-+      :language: shell
- 
--Here are the packages needed to build Project documentation manuals::
-+Here are the packages needed to build Project documentation manuals:
- 
--   $ sudo dnf install git make python3-pip which inkscape texlive-fncychap
--   &PIP3_HOST_PACKAGES_DOC;
-+   .. literalinclude:: ../tools/fedora_host_packages_docs.sh
-+      :language: shell
- 
- openSUSE Packages
- -----------------
- 
- Here are the packages needed to build an image on a headless system
--with a supported openSUSE distribution::
-+with a supported openSUSE distribution:
- 
--   $ sudo zypper install &OPENSUSE_HOST_PACKAGES_ESSENTIAL;
-+   .. literalinclude:: ../tools/opensuse_host_packages_essential.sh
-+      :language: shell
- 
--Here are the packages needed to build Project documentation manuals::
--
--   $ sudo zypper install git make python3-pip which inkscape texlive-fncychap
--   &PIP3_HOST_PACKAGES_DOC;
-+Here are the packages needed to build Project documentation manuals:
- 
-+   .. literalinclude:: ../tools/opensuse_host_packages_docs.sh
-+      :language: shell
- 
- AlmaLinux Packages
- ------------------
- 
- Here are the packages needed to build an image on a headless system
--with a supported AlmaLinux distribution::
-+with a supported AlmaLinux distribution:
- 
--   $ sudo dnf install &ALMALINUX_HOST_PACKAGES_ESSENTIAL;
-+   .. literalinclude:: ../tools/almalinux_host_packages_essential.sh
-+      :language: shell
- 
- .. note::
- 
-@@ -215,10 +218,10 @@ with a supported AlmaLinux distribution::
-    -  The ``makecache`` command consumes additional Metadata from
-       ``epel-release``.
- 
--Here are the packages needed to build Project documentation manuals::
-+Here are the packages needed to build Project documentation manuals:
- 
--   $ sudo dnf install git make python3-pip which inkscape texlive-fncychap
--   &PIP3_HOST_PACKAGES_DOC;
-+   .. literalinclude:: ../tools/almalinux_host_packages_docs.sh
-+      :language: shell
- 
- .. _system-requirements-buildtools:
- 
-diff --git a/documentation/tools/almalinux_host_packages_docs.sh b/documentation/tools/almalinux_host_packages_docs.sh
+diff --git a/documentation/migration-guides/release-5.1.rst b/documentation=
+/migration-guides/release-5.1.rst
+index 768edfa2b..581bbf14a 100644
+--- a/documentation/migration-guides/release-5.1.rst
++++ b/documentation/migration-guides/release-5.1.rst
+@@ -7,3 +7,4 @@ Release 5.1 (styhead)
+=20
+    migration-5.1
+    release-notes-5.1
++   release-notes-5.1.1
+diff --git a/documentation/migration-guides/release-notes-5.1.1.rst b/docum=
+entation/migration-guides/release-notes-5.1.1.rst
 new file mode 100644
-index 0000000000000000000000000000000000000000..93ed34ce01d803e85c67e01f75dc82ed53d864f0
+index 000000000..32488a973
 --- /dev/null
-+++ b/documentation/tools/almalinux_host_packages_docs.sh
-@@ -0,0 +1,2 @@
-+sudo dnf install git make python3-pip which inkscape texlive-fncychap
-+sudo pip3 install sphinx sphinx_rtd_theme pyyaml
-diff --git a/documentation/tools/almalinux_host_packages_essential.sh b/documentation/tools/almalinux_host_packages_essential.sh
-new file mode 100644
-index 0000000000000000000000000000000000000000..d2c5168e0bb53bfe14785b2f36220917ac55282e
---- /dev/null
-+++ b/documentation/tools/almalinux_host_packages_essential.sh
-@@ -0,0 +1,5 @@
-+sudo dnf install -y epel-release
-+sudo yum install dnf-plugins-core
-+sudo dnf config-manager --set-enabled crb
-+sudo dnf makecache
-+sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache socat perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue python3-pip python3-GitPython python3-jinja2 python3-pexpect xz which rpcgen zstd lz4 cpio glibc-langpack-en libacl
-diff --git a/documentation/tools/fedora_host_packages_docs.sh b/documentation/tools/fedora_host_packages_docs.sh
-new file mode 100644
-index 0000000000000000000000000000000000000000..93ed34ce01d803e85c67e01f75dc82ed53d864f0
---- /dev/null
-+++ b/documentation/tools/fedora_host_packages_docs.sh
-@@ -0,0 +1,2 @@
-+sudo dnf install git make python3-pip which inkscape texlive-fncychap
-+sudo pip3 install sphinx sphinx_rtd_theme pyyaml
-diff --git a/documentation/tools/fedora_host_packages_essential.sh b/documentation/tools/fedora_host_packages_essential.sh
-new file mode 100644
-index 0000000000000000000000000000000000000000..448a6e5f1038838132603db0d993fb80eabf75ef
---- /dev/null
-+++ b/documentation/tools/fedora_host_packages_essential.sh
-@@ -0,0 +1 @@
-+sudo dnf install gawk make wget tar bzip2 gzip python3 unzip perl patch diffutils diffstat git cpp gcc gcc-c++ glibc-devel texinfo chrpath ccache perl-Data-Dumper perl-Text-ParseWords perl-Thread-Queue perl-bignum socat python3-pexpect findutils which file cpio python python3-pip xz python3-GitPython python3-jinja2 rpcgen perl-FindBin perl-File-Compare perl-File-Copy perl-locale zstd lz4 hostname glibc-langpack-en libacl
-diff --git a/documentation/tools/opensuse_host_packages_docs.sh b/documentation/tools/opensuse_host_packages_docs.sh
-new file mode 100644
-index 0000000000000000000000000000000000000000..90f52d576451ee0a7c481b31b7605e4a870496cd
---- /dev/null
-+++ b/documentation/tools/opensuse_host_packages_docs.sh
-@@ -0,0 +1,2 @@
-+sudo zypper install git make python3-pip which inkscape texlive-fncychap
-+sudo pip3 install sphinx sphinx_rtd_theme pyyaml
-diff --git a/documentation/tools/opensuse_host_packages_essential.sh b/documentation/tools/opensuse_host_packages_essential.sh
-new file mode 100644
-index 0000000000000000000000000000000000000000..ef24fcefd99c9ecc335c594965965bb36e43cd05
---- /dev/null
-+++ b/documentation/tools/opensuse_host_packages_essential.sh
-@@ -0,0 +1,2 @@
-+sudo zypper install python gcc gcc-c++ git chrpath make wget python-xml diffstat makeinfo python-curses patch socat python3 python3-curses tar python3-pip python3-pexpect xz which python3-Jinja2 rpcgen zstd lz4 bzip2 gzip hostname libacl1
-+sudo pip3 install GitPython
-diff --git a/documentation/tools/ubuntu_host_packages_docs.sh b/documentation/tools/ubuntu_host_packages_docs.sh
-new file mode 100644
-index 0000000000000000000000000000000000000000..1bfb256e34ba931784bcf97a60e211520c70a199
---- /dev/null
-+++ b/documentation/tools/ubuntu_host_packages_docs.sh
-@@ -0,0 +1,2 @@
-+sudo apt install git make inkscape texlive-latex-extra
-+sudo apt install sphinx python3-saneyaml python3-sphinx-rtd-theme
-diff --git a/documentation/tools/ubuntu_host_packages_essential.sh b/documentation/tools/ubuntu_host_packages_essential.sh
-new file mode 100644
-index 0000000000000000000000000000000000000000..5cab5b34068e3886fb2fb06ea66120a2ae12e3a3
---- /dev/null
-+++ b/documentation/tools/ubuntu_host_packages_essential.sh
-@@ -0,0 +1,2 @@
-+sudo apt-get install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 python3-subunit zstd liblz4-tool file locales libacl1
-+sudo locale-gen en_US.UTF-8
-
--- 
-2.47.1
++++ b/documentation/migration-guides/release-notes-5.1.1.rst
+@@ -0,0 +1,289 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-5.1.1 (Styhead)
++---------------------------------------
++
++Security Fixes in Yocto-5.1.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  go: Fix :cve_nist:`2024-34155`, :cve_nist:`2024-34156` and :cve_nist:`2=
+024-34158`
++-  linux-yocto/6.6: Fix :cve_nist:`2023-52917`, :cve_nist:`2024-46735`, :c=
+ve_nist:`2024-46737`, :cve_nist:`2024-46738`, :cve_nist:`2024-46739`, :cve_=
+nist:`2024-46740`, :cve_nist:`2024-46741`, :cve_nist:`2024-46742`, :cve_nis=
+t:`2024-46743`, :cve_nist:`2024-46744`, :cve_nist:`2024-46746`, :cve_nist:`=
+2024-46747`, :cve_nist:`2024-46749`, :cve_nist:`2024-46750`, :cve_nist:`202=
+4-46755`, :cve_nist:`2024-46756`, :cve_nist:`2024-46757`, :cve_nist:`2024-4=
+6758`, :cve_nist:`2024-46759`, :cve_nist:`2024-46760`, :cve_nist:`2024-4676=
+1`, :cve_nist:`2024-46762`, :cve_nist:`2024-46763`, :cve_nist:`2024-46765`,=
+ :cve_nist:`2024-46768`, :cve_nist:`2024-46770`, :cve_nist:`2024-46771`, :c=
+ve_nist:`2024-46773`, :cve_nist:`2024-46776`, :cve_nist:`2024-46777`, :cve_=
+nist:`2024-46780`, :cve_nist:`2024-46781`, :cve_nist:`2024-46782`, :cve_nis=
+t:`2024-46783`, :cve_nist:`2024-46784`, :cve_nist:`2024-46785`, :cve_nist:`=
+2024-46786`, :cve_nist:`2024-46787`, :cve_nist:`2024-46788`, :cve_nist:`202=
+4-46791`, :cve_nist:`2024-46794`, :cve_nist:`2024-46795`, :cve_nist:`2024-4=
+6796`, :cve_nist:`2024-46797`, :cve_nist:`2024-46798`, :cve_nist:`2024-4680=
+0`, :cve_nist:`2024-46822`, :cve_nist:`2024-46825`, :cve_nist:`2024-46826`,=
+ :cve_nist:`2024-46827`, :cve_nist:`2024-46828`, :cve_nist:`2024-46829`, :c=
+ve_nist:`2024-46830`, :cve_nist:`2024-46831`, :cve_nist:`2024-46832`, :cve_=
+nist:`2024-46835`, :cve_nist:`2024-46836`, :cve_nist:`2024-46838`, :cve_nis=
+t:`2024-46840`, :cve_nist:`2024-46843`, :cve_nist:`2024-46844`, :cve_nist:`=
+2024-46845`, :cve_nist:`2024-46846`, :cve_nist:`2024-46847`, :cve_nist:`202=
+4-46848`, :cve_nist:`2024-46849`, :cve_nist:`2024-46852`, :cve_nist:`2024-4=
+6853`, :cve_nist:`2024-46854`, :cve_nist:`2024-46855`, :cve_nist:`2024-4685=
+7`, :cve_nist:`2024-46858`, :cve_nist:`2024-46859`, :cve_nist:`2024-46860`,=
+ :cve_nist:`2024-46861`, :cve_nist:`2024-46863`, :cve_nist:`2024-46864`, :c=
+ve_nist:`2024-47663`, :cve_nist:`2024-47664`, :cve_nist:`2024-47665`, :cve_=
+nist:`2024-47666`, :cve_nist:`2024-47667`, :cve_nist:`2024-47668`, :cve_nis=
+t:`2024-47669`, :cve_nist:`2024-47670`, :cve_nist:`2024-47671`, :cve_nist:`=
+2024-47672`, :cve_nist:`2024-47673`, :cve_nist:`2024-47674`, :cve_nist:`202=
+4-47675`, :cve_nist:`2024-47678`, :cve_nist:`2024-47679`, :cve_nist:`2024-4=
+7681`, :cve_nist:`2024-47682`, :cve_nist:`2024-47683`, :cve_nist:`2024-4768=
+4`, :cve_nist:`2024-47685`, :cve_nist:`2024-47686`, :cve_nist:`2024-47688`,=
+ :cve_nist:`2024-47689`, :cve_nist:`2024-47690`, :cve_nist:`2024-47691`, :c=
+ve_nist:`2024-47692`, :cve_nist:`2024-47693`, :cve_nist:`2024-47695`, :cve_=
+nist:`2024-47696`, :cve_nist:`2024-47697`, :cve_nist:`2024-47698`, :cve_nis=
+t:`2024-47699`, :cve_nist:`2024-47700`, :cve_nist:`2024-47701`, :cve_nist:`=
+2024-47705`, :cve_nist:`2024-47706`, :cve_nist:`2024-47707`, :cve_nist:`202=
+4-47710`, :cve_nist:`2024-47712`, :cve_nist:`2024-47713`, :cve_nist:`2024-4=
+7714`, :cve_nist:`2024-47715`, :cve_nist:`2024-47716`, :cve_nist:`2024-4771=
+8`, :cve_nist:`2024-47719`, :cve_nist:`2024-47720`, :cve_nist:`2024-47723`,=
+ :cve_nist:`2024-47727`, :cve_nist:`2024-47728`, :cve_nist:`2024-47730`, :c=
+ve_nist:`2024-47731`, :cve_nist:`2024-47734`, :cve_nist:`2024-47735`, :cve_=
+nist:`2024-47737`, :cve_nist:`2024-47738`, :cve_nist:`2024-47739`, :cve_nis=
+t:`2024-47741`, :cve_nist:`2024-47742`, :cve_nist:`2024-47743`, :cve_nist:`=
+2024-47744`, :cve_nist:`2024-47745`, :cve_nist:`2024-47747`, :cve_nist:`202=
+4-47748`, :cve_nist:`2024-47749`, :cve_nist:`2024-47750`, :cve_nist:`2024-4=
+7751`, :cve_nist:`2024-47752`, :cve_nist:`2024-47753`, :cve_nist:`2024-4775=
+4`, :cve_nist:`2024-47757`, :cve_nist:`2024-49850`, :cve_nist:`2024-49851`,=
+ :cve_nist:`2024-49852`, :cve_nist:`2024-49853`, :cve_nist:`2024-49854`, :c=
+ve_nist:`2024-49855`, :cve_nist:`2024-49856`, :cve_nist:`2024-49858`, :cve_=
+nist:`2024-49859`, :cve_nist:`2024-49860`, :cve_nist:`2024-49861` and :cve_=
+nist:`2024-49862`
++-  linux-yocto/6.10: Fix :cve_nist:`2023-52917`, :cve_nist:`2024-46714`, :=
+cve_nist:`2024-46719`, :cve_nist:`2024-46720`, :cve_nist:`2024-46721`, :cve=
+_nist:`2024-46722`, :cve_nist:`2024-46723`, :cve_nist:`2024-46724`, :cve_ni=
+st:`2024-46725`, :cve_nist:`2024-46726`, :cve_nist:`2024-46727`, :cve_nist:=
+`2024-46728`, :cve_nist:`2024-46730`, :cve_nist:`2024-46731`, :cve_nist:`20=
+24-46732`, :cve_nist:`2024-46735`, :cve_nist:`2024-46737`, :cve_nist:`2024-=
+46738`, :cve_nist:`2024-46739`, :cve_nist:`2024-46740`, :cve_nist:`2024-467=
+41`, :cve_nist:`2024-46742`, :cve_nist:`2024-46743`, :cve_nist:`2024-46744`=
+, :cve_nist:`2024-46746`, :cve_nist:`2024-46747`, :cve_nist:`2024-46749`, :=
+cve_nist:`2024-46750`, :cve_nist:`2024-46751`, :cve_nist:`2024-46755`, :cve=
+_nist:`2024-46756`, :cve_nist:`2024-46757`, :cve_nist:`2024-46758`, :cve_ni=
+st:`2024-46759`, :cve_nist:`2024-46760`, :cve_nist:`2024-46761`, :cve_nist:=
+`2024-46762`, :cve_nist:`2024-46763`, :cve_nist:`2024-46765`, :cve_nist:`20=
+24-46766`, :cve_nist:`2024-46768`, :cve_nist:`2024-46769`, :cve_nist:`2024-=
+46770`, :cve_nist:`2024-46771`, :cve_nist:`2024-46772`, :cve_nist:`2024-467=
+73`, :cve_nist:`2024-46774`, :cve_nist:`2024-46775`, :cve_nist:`2024-46776`=
+, :cve_nist:`2024-46777`, :cve_nist:`2024-46778`, :cve_nist:`2024-46779`, :=
+cve_nist:`2024-46780`, :cve_nist:`2024-46781`, :cve_nist:`2024-46782`, :cve=
+_nist:`2024-46783`, :cve_nist:`2024-46784`, :cve_nist:`2024-46785`, :cve_ni=
+st:`2024-46786`, :cve_nist:`2024-46787`, :cve_nist:`2024-46788`, :cve_nist:=
+`2024-46789`, :cve_nist:`2024-46790`, :cve_nist:`2024-46791`, :cve_nist:`20=
+24-46792`, :cve_nist:`2024-46793`, :cve_nist:`2024-46794`, :cve_nist:`2024-=
+46795`, :cve_nist:`2024-46796`, :cve_nist:`2024-46797`, :cve_nist:`2024-467=
+98`, :cve_nist:`2024-46799`, :cve_nist:`2024-46800`, :cve_nist:`2024-46801`=
+, :cve_nist:`2024-46802`, :cve_nist:`2024-46803`, :cve_nist:`2024-46804`, :=
+cve_nist:`2024-46805`, :cve_nist:`2024-46806`, :cve_nist:`2024-46807`, :cve=
+_nist:`2024-46808`, :cve_nist:`2024-46809`, :cve_nist:`2024-46810`, :cve_ni=
+st:`2024-46811`, :cve_nist:`2024-46812`, :cve_nist:`2024-46813`, :cve_nist:=
+`2024-46814`, :cve_nist:`2024-46815`, :cve_nist:`2024-46816`, :cve_nist:`20=
+24-46817`, :cve_nist:`2024-46818`, :cve_nist:`2024-46819`, :cve_nist:`2024-=
+46820`, :cve_nist:`2024-46821`, :cve_nist:`2024-46822`, :cve_nist:`2024-468=
+23`, :cve_nist:`2024-46824`, :cve_nist:`2024-46825`, :cve_nist:`2024-46826`=
+, :cve_nist:`2024-46827`, :cve_nist:`2024-46828`, :cve_nist:`2024-46829`, :=
+cve_nist:`2024-46830`, :cve_nist:`2024-46831`, :cve_nist:`2024-46832`, :cve=
+_nist:`2024-46833`, :cve_nist:`2024-46834`, :cve_nist:`2024-46835`, :cve_ni=
+st:`2024-46836`, :cve_nist:`2024-46837`, :cve_nist:`2024-46838`, :cve_nist:=
+`2024-46840`, :cve_nist:`2024-46841`, :cve_nist:`2024-46842`, :cve_nist:`20=
+24-46843`, :cve_nist:`2024-46844`, :cve_nist:`2024-46845`, :cve_nist:`2024-=
+46846`, :cve_nist:`2024-46847`, :cve_nist:`2024-46848`, :cve_nist:`2024-468=
+49`, :cve_nist:`2024-46850`, :cve_nist:`2024-46851`, :cve_nist:`2024-46852`=
+, :cve_nist:`2024-46853`, :cve_nist:`2024-46854`, :cve_nist:`2024-46855`, :=
+cve_nist:`2024-46856`, :cve_nist:`2024-46857`, :cve_nist:`2024-46858`, :cve=
+_nist:`2024-46859`, :cve_nist:`2024-46860`, :cve_nist:`2024-46861`, :cve_ni=
+st:`2024-46862`, :cve_nist:`2024-46863`, :cve_nist:`2024-46864`, :cve_nist:=
+`2024-46866`, :cve_nist:`2024-46867`, :cve_nist:`2024-46868`, :cve_nist:`20=
+24-46869`, :cve_nist:`2024-46870`, :cve_nist:`2024-46871`, :cve_nist:`2024-=
+47658`, :cve_nist:`2024-47659`, :cve_nist:`2024-47660`, :cve_nist:`2024-476=
+61`, :cve_nist:`2024-47662`, :cve_nist:`2024-47663`, :cve_nist:`2024-47664`=
+, :cve_nist:`2024-47665`, :cve_nist:`2024-47666`, :cve_nist:`2024-47667`, :=
+cve_nist:`2024-47668`, :cve_nist:`2024-47669`, :cve_nist:`2024-47670`, :cve=
+_nist:`2024-47671`, :cve_nist:`2024-47672`, :cve_nist:`2024-47673`, :cve_ni=
+st:`2024-47674`, :cve_nist:`2024-47675`, :cve_nist:`2024-47676`, :cve_nist:=
+`2024-47677`, :cve_nist:`2024-47678`, :cve_nist:`2024-47679`, :cve_nist:`20=
+24-47680`, :cve_nist:`2024-47681`, :cve_nist:`2024-47682`, :cve_nist:`2024-=
+47683`, :cve_nist:`2024-47684`, :cve_nist:`2024-47685`, :cve_nist:`2024-476=
+86`, :cve_nist:`2024-47687`, :cve_nist:`2024-47688`, :cve_nist:`2024-47689`=
+, :cve_nist:`2024-47690`, :cve_nist:`2024-47691`, :cve_nist:`2024-47692`, :=
+cve_nist:`2024-47693`, :cve_nist:`2024-47695`, :cve_nist:`2024-47696`, :cve=
+_nist:`2024-47697`, :cve_nist:`2024-47698`, :cve_nist:`2024-47699`, :cve_ni=
+st:`2024-47700`, :cve_nist:`2024-47701`, :cve_nist:`2024-47702`, :cve_nist:=
+`2024-47703`, :cve_nist:`2024-47704`, :cve_nist:`2024-47705`, :cve_nist:`20=
+24-47706`, :cve_nist:`2024-47707`, :cve_nist:`2024-47710`, :cve_nist:`2024-=
+47712`, :cve_nist:`2024-47713`, :cve_nist:`2024-47714`, :cve_nist:`2024-477=
+15`, :cve_nist:`2024-47716`, :cve_nist:`2024-47717`, :cve_nist:`2024-47718`=
+, :cve_nist:`2024-47719`, :cve_nist:`2024-47720`, :cve_nist:`2024-47721`, :=
+cve_nist:`2024-47723`, :cve_nist:`2024-47724`, :cve_nist:`2024-47727`, :cve=
+_nist:`2024-47728`, :cve_nist:`2024-47730`, :cve_nist:`2024-47731`, :cve_ni=
+st:`2024-47732`, :cve_nist:`2024-47733`, :cve_nist:`2024-47734`, :cve_nist:=
+`2024-47735`, :cve_nist:`2024-47736`, :cve_nist:`2024-47737`, :cve_nist:`20=
+24-47738`, :cve_nist:`2024-47739`, :cve_nist:`2024-47741`, :cve_nist:`2024-=
+47742`, :cve_nist:`2024-47743`, :cve_nist:`2024-47744`, :cve_nist:`2024-477=
+45`, :cve_nist:`2024-47746`, :cve_nist:`2024-47747`, :cve_nist:`2024-47748`=
+, :cve_nist:`2024-47749`, :cve_nist:`2024-47750`, :cve_nist:`2024-47751`, :=
+cve_nist:`2024-47752`, :cve_nist:`2024-47753`, :cve_nist:`2024-47754`, :cve=
+_nist:`2024-47757`, :cve_nist:`2024-49850`, :cve_nist:`2024-49851`, :cve_ni=
+st:`2024-49852`, :cve_nist:`2024-49853`, :cve_nist:`2024-49854`, :cve_nist:=
+`2024-49855`, :cve_nist:`2024-49856`, :cve_nist:`2024-49858`, :cve_nist:`20=
+24-49859`, :cve_nist:`2024-49860`, :cve_nist:`2024-49861`, :cve_nist:`2024-=
+49862`, :cve_nist:`2024-49863`, :cve_nist:`2024-49864`, :cve_nist:`2024-498=
+66`, :cve_nist:`2024-49867`, :cve_nist:`2024-49868`, :cve_nist:`2024-49870`=
+, :cve_nist:`2024-49871`, :cve_nist:`2024-49874` and :cve_nist:`2024-49875`
++-  orc: Fix :cve_nist:`2024-40897` (follow-up fix)
++-  vim: Fix :cve_nist:`2024-45306` and :cve_nist:`2024-47814`
++-  wpa-supplicant: Ignore :cve_nist:`2024-5290`
++-  xserver-xorg: Fix :cve_nist:`2024-9632`
++-  xwayland: Fix :cve_nist:`2024-9632`
++
++
++Fixes in Yocto-5.1.1
++~~~~~~~~~~~~~~~~~~~~
++
++-  binutils: Add missing perl modules to :term:`RDEPENDS` for nativsdk var=
+iant
++-  binutils: Fix binutils mingw packaging
++-  bitbake.conf: Mark VOLATILE_LOG_DIR & VOLATILE_TMP_DIR as obsolete
++-  bitbake: Remove custom exception backtrace formatting
++-  bitbake: bitbake: doc/user-manual: Update the :term:`BB_HASHSERVE_UPSTR=
+EAM`
++-  bitbake: fetch2/git: Use quote from shlex, not pipes
++-  bitbake: fetch2: don't try to preserve all attributes when unpacking fi=
+les
++-  bitbake: fetch2: use persist_data context managers
++-  bitbake: fetch/wget: Increase timeout to 100s from 30s
++-  bitbake: gitsm: Add call_process_submodules() to remove duplicated code
++-  bitbake: gitsm: Remove downloads/tmpdir when failed
++-  bitbake: persist_data: close connection in SQLTable __exit__
++-  bitbake: tests/fetch: Update GoModTest and GoModGitTest
++-  bitbake: tests/fetch: Use our own mirror of mobile-broadband-provider t=
+o decouple from gnome gitlab
++-  bitbake: tests/fetch: Use our own mirror of sysprof to decouple from gn=
+ome gitlab
++-  bluez: Fix mesh builds on musl
++-  build-appliance-image: Update to styhead head revision
++-  cml1.bbclass: do_diffconfig: Don't override .config with .config.orig
++-  contributor-guide: Remove duplicated words
++-  cve-check: add field "modified" to JSON report
++-  cve-check: add support for cvss v4.0
++-  cve-check: do not skip cve status description after :
++-  cve-check: fix malformed cve status description with : characters
++-  dev-manual: add bblock documentation
++-  dev-manual: bblock: use warning block instead of attention
++-  dev-manual: document how to provide confs from layer.conf
++-  documentation: features: describe distribution feature pni-name
++-  documentation; features: remove duplicate word in distribution feature =
+ext2
++-  documentation: Makefile: add SPHINXLINTDOCS to specify subset to sphinx=
+-lint
++-  documentation: Makefile: add support for xelatex
++-  documentation: Makefile: publish pdf and epub versions too
++-  documentation: Makefile: remove inkscape, replace by rsvg-convert
++-  documentation: README: add instruction to run Vale on a subset
++-  documentation: Replace VOLATILE_LOG_DIR with :term:`FILESYSTEM_PERMS_TA=
+BLES`
++-  documentation: Replace VOLATILE_TMP_DIR with :term:`FILESYSTEM_PERMS_TA=
+BLES`
++-  documentation: add a download page for epub and pdf
++-  documentation: conf.py: add a bitbake_git extlink
++-  documentation: conf.py: rename :cve: role to :cve_nist:
++-  documentation: sphinx-static/switchers.js.in: do not refer to URL_ROOT =
+anymore
++-  documentation: styles: vocabularies: Yocto: add sstate
++-  e2fsprogs: removed 'sed -u' option
++-  efi-bootdisk.wks: Increase overhead-factor to avoid test failures
++-  ffmpeg: Add "libswresample libavcodec" to :term:`CVE_PRODUCT`
++-  ffmpeg: Disable asm optimizations on x86
++-  ffmpeg: fix packaging examples
++-  ffmpeg: nasm is x86 only, so only DEPEND if x86
++-  ffmpeg: no need for textrel :term:`INSANE_SKIP`
++-  gcc-source: Fix racing on building gcc-source-14.2.0 and lib32-gcc-sour=
+ce-14.2.0
++-  gcc: add a backport patch to fix an issue with tzdata 2024b
++-  git: upgrade to 2.46.1
++-  glib-2.0: fix glib-2.0 ptest failure when upgrading tzdata2024b
++-  glibc: Fix missing randomness in __gen_tempname
++-  glibc: stable 2.40 branch updates
++-  go: upgrade to 1.22.8
++-  groff: fix rare build race in hdtbl
++-  icu: update patch Upstream-Status
++-  image.bbclass: Drop support for ImageQAFailed exceptions in image_qa
++-  json-c: avoid ptest failure caused by valgrind
++-  kexec-tools: update :term:`COMPATIBLE_HOST` because of makedumpfile
++-  kmscube: Upgrade to latest revision (b2f97f53e0..)
++-  lib/oe/package-manager: skip processing installed-pkgs with empty globs
++-  libevdev: upgrade to 1.13.3
++-  libgfortran: fix buildpath QA issue
++-  libpam: use libdir in conditional
++-  linux-yocto/6.6: update to v6.6.54
++-  linux-yocto/6.10: bsp/genericarm64: disable ARM64_SME
++-  linux-yocto/6.10: cfg: gpio: allow to re-enable the deprecated GPIO sys=
+fs interface
++-  linux-yocto/6.10: genericarm64.cfg: enable CONFIG_DMA_CMA
++-  linux-yocto/6.10: update to v6.10.14
++-  linux-yocto: Enable l2tp drivers when ptest featuee is on
++-  lsb-release: fix Distro Codename shell escaping
++-  migration-guides/release-notes-4.0: update :term:`BB_HASHSERVE_UPSTREAM=
+` for new infrastructure
++-  migration-guides/release-notes-5.0: NO_OUTPUT -> NO_COLOR
++-  migration-guides/release-notes-5.1: add beaglebone-yocto parselogs test=
+ oeqa failure
++-  migration-guides/release-notes-5.1: document added python3-libarchive-c=
+ ptest
++-  migration-guides/release-notes-5.1: document fixed _test_devtool_add_gi=
+t_url test
++-  migration-guides/release-notes-5.1: document oeqa/selftest envvars chan=
+ge
++-  migration-guides/release-notes-5.1: document spirv-tools reproducibility
++-  migration-guides/release-notes-5.1: fix spdx bullet point
++-  migration-guides/release-notes-5.1: update for several section
++-  migration-guides/release-notes-5.1: update release note for styhead
++-  migration-guides: 5.1: fix titles
++-  migration-guides: add release notes for 4.0.21 and 4.0.22
++-  oeqa/postactions: Fix archive retrieval from target
++-  oeqa/runtime/ssh: Fix incorrect timeout fix
++-  oeqa/runtime/ssh: Rework ssh timeout
++-  oeqa/selftest/gcc: Fix kex exchange identification error
++-  oeqa/selftest: Update the :term:`BB_HASHSERVE_UPSTREAM`
++-  openssl: Fix SDK environment script to avoid unbound variable
++-  orc: upgrade to 0.4.40
++-  overview-manual: concepts: add details on package splitting
++-  ovmf-native: remove .pyc files from install
++-  package_rpm: Check if file exists before open()
++-  package_rpm: restrict rpm to 4 threads
++-  package_rpm: use zstd's default compression level
++-  poky.conf: bump version for 5.1.1
++-  pseudo: Fix envp bug and add posix_spawn wrapper
++-  python3-maturin: sort external libs in wheel files
++-  python3-setuptools: Add "python:setuptools" to :term:`CVE_PRODUCT`
++-  qemu: Fix build on musl/riscv64
++-  qemurunner: Clean up serial_lock handling
++-  ref-manual: add missing CVE_CHECK manifest variables
++-  ref-manual: add missing :term:`EXTERNAL_KERNEL_DEVICETREE` variable
++-  ref-manual: add missing :term:`OPKGBUILDCMD` variable
++-  ref-manual: add missing :term:`TESTIMAGE_FAILED_QA_ARTIFACTS`
++-  ref-manual: add missing image manifest variables
++-  ref-manual: add missing nospdx class
++-  ref-manual: add missing variable :term:`PRSERV_UPSTREAM`
++-  ref-manual: add mission pep517-backend sanity check
++-  ref-manual: add new :term:`RECIPE_UPGRADE_EXTRA_TASKS` variable
++-  ref-manual: add new retain class and variables
++-  ref-manual: add new vex class
++-  ref-manual: devtool-reference: document missing commands
++-  ref-manual: devtool-reference: refresh example outputs
++-  ref-manual: drop TCLIBCAPPEND variable
++-  ref-manual: drop siteconfig class
++-  ref-manual: faq: add q&a on class appends
++-  ref-manual: fix ordering of insane checks list
++-  ref-manual: merge patch-status-* to patch-status
++-  ref-manual: release-process: add a reference to the doc's release
++-  ref-manual: release-process: refresh the current LTS releases
++-  ref-manual: release-process: update releases.svg
++-  ref-manual: release-process: update releases.svg with month after "Curr=
+ent"
++-  ref-manual: structure.rst: document missing tmp/ dirs
++-  ref-manual: variables: add SIGGEN_LOCKEDSIGS* variables
++-  rootfs-postcommands.bbclass: make opkg status reproducible
++-  scripts/install-buildtools: Update to 5.1
++-  selftest/sstatetests: run CDN mirror check only once
++-  shadow: use update-alternatives to handle groups.1
++-  strace: download release tarballs from GitHub
++-  systemd: fix broken links for sysvinit-compatible commands
++-  tcl: skip io-13.6 test case
++-  toolchain-shar-extract.sh: exit when post-relocate-setup.sh fails
++-  tune-cortexa32: set tune feature as armv8a
++-  tzdata/tzcode-native: upgrade to 2024b
++-  uboot-sign: fix concat_dtb arguments
++-  udev-extraconf: fix network.sh script did not configure hotplugged inte=
+rfaces
++-  util-linux: Add `findmnt` to the bash completion :term:`RDEPENDS`
++-  vim: Upgrade to 9.1.0764
++-  virglrenderer: Add patch to fix -int-conversion build issue
++-  weston: Add missing runtime dependency on freerdp
++-  weston: backport patch to allow neatvnc < v0.9.0
++-  wireless-regdb: upgrade to 2024.10.07
++-  xserver-xorg: upgrade to 21.1.14
++-  xwayland: upgrade to 24.1.4
++
++
++Known Issues in Yocto-5.1.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++Contributors to Yocto-5.1.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Aditya Tayade
++-  Alban Bedel
++-  Aleksandar Nikolic
++-  Alexander Kanavin
++-  Antonin Godard
++-  Bruce Ashfield
++-  Chen Qi
++-  Chris Laplante
++-  Christian Lindeberg
++-  Claus Stovgaard
++-  Clayton Casciato
++-  Daniel McGregor
++-  Deepthi Hemraj
++-  Harish Sadineni
++-  Hiago De Franco
++-  Hongxu Jia
++-  Jagadeesh Krishnanjanappa
++-  Jinfeng Wang
++-  Jonas Gorski
++-  Jose Quaresma
++-  Joshua Watt
++-  Julien Stephan
++-  J=C3=B6rg Sommer
++-  Kai Kang
++-  Katawann
++-  Khem Raj
++-  Lee Chee Yang
++-  Markus Volk
++-  Martin Jansa
++-  Mathieu Dubois-Briand
++-  Michael Opdenacker
++-  Mikko Rapeli
++-  Niko Mauno
++-  Ola x Nilsson
++-  Pavel Zhukov
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Purushottam Choudhary
++-  Regis Dargent
++-  Richard Purdie
++-  Robert Yang
++-  Rohini Sangam
++-  Ross Burton
++-  Sergei Zhmylev
++-  Shunsuke Tokumoto
++-  Steve Sakoman
++-  Talel BELHAJSALEM
++-  Tom Hochstein
++-  Vijay Anusuri
++-  Wang Mingyu
++-  Yi Zhao
++-  Yoann Congal
++-  Zahir Hussain
++
++
++Repositories / Downloads for Yocto-5.1.1
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`styhead </poky/log/?h=3Dstyhead>`
++-  Tag:  :yocto_git:`yocto-5.1.1 </poky/log/?h=3Dyocto-5.1.1>`
++-  Git Revision: :yocto_git:`7e081bd98fdc5435e850d1df79a5e0f1e30293d0 </po=
+ky/commit/?id=3D7e081bd98fdc5435e850d1df79a5e0f1e30293d0>`
++-  Release Artefact: poky-7e081bd98fdc5435e850d1df79a5e0f1e30293d0
++-  sha: 1ae688856bcd4aa2d1a14c2659217143cc2050151a8c194b99e6b472b0a99710
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.1/poky-7e08=
+1bd98fdc5435e850d1df79a5e0f1e30293d0.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.1/poky-7e081bd98fdc543=
+5e850d1df79a5e0f1e30293d0.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`styhead </openembedded-core/log/?h=3Dstyhead>`
++-  Tag:  :oe_git:`yocto-5.1.1 </openembedded-core/log/?h=3Dyocto-5.1.1>`
++-  Git Revision: :oe_git:`b511d0146a2e8f316f4aecc90c853215674013ea </opene=
+mbedded-core/commit/?id=3Db511d0146a2e8f316f4aecc90c853215674013ea>`
++-  Release Artefact: oecore-b511d0146a2e8f316f4aecc90c853215674013ea
++-  sha: 71eb36bf898b3eb5a7a79c2f1c057755405740e82b21a57ac540cebc1337e151
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.1/oecore-b5=
+11d0146a2e8f316f4aecc90c853215674013ea.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.1/oecore-b511d0146a2e8=
+f316f4aecc90c853215674013ea.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`styhead </meta-mingw/log/?h=3Dstyhead>`
++-  Tag:  :yocto_git:`yocto-5.1.1 </meta-mingw/log/?h=3Dyocto-5.1.1>`
++-  Git Revision: :yocto_git:`77fe18d4f8ec34501045c5d92ce7e13b1bd129e9 </me=
+ta-mingw/commit/?id=3D77fe18d4f8ec34501045c5d92ce7e13b1bd129e9>`
++-  Release Artefact: meta-mingw-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9
++-  sha: 4c7f8100a3675d9863e51825def3df5b263ffc81cd57bae26eedbc156d771534
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.1/meta-ming=
+w-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.1/meta-mingw-77fe18d4f=
+8ec34501045c5d92ce7e13b1bd129e9.tar.bz2
++
++bitbake
++
++-  Repository Location: :bitbake_git:`/`
++-  Branch: :bitbake_git:`2.10 </log/?h=3D2.10>`
++-  Tag:  :bitbake_git:`yocto-5.1.1 </log/?h=3Dyocto-5.1.1>`
++-  Git Revision: :bitbake_git:`9602a684568910fd333ffce907fa020ad3661c26 </=
+commit/?id=3D9602a684568910fd333ffce907fa020ad3661c26>`
++-  Release Artefact: bitbake-9602a684568910fd333ffce907fa020ad3661c26
++-  sha: 8f5304b7a71cf7ad5dc8e5ee8bbfc041780bd402712f314d2c3c8be79c89a526
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.1/bitbake-9=
+602a684568910fd333ffce907fa020ad3661c26.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.1/bitbake-9602a6845689=
+10fd333ffce907fa020ad3661c26.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`styhead </yocto-docs/log/?h=3Dstyhead>`
++-  Tag: :yocto_git:`yocto-5.1.1 </yocto-docs/log/?h=3Dyocto-5.1.1>`
++-  Git Revision: :yocto_git:`8288c8cae7fe7303e89d8ed286de91fc26ce6cc3 </yo=
+cto-docs/commit/?id=3D8288c8cae7fe7303e89d8ed286de91fc26ce6cc3>`
++
+--=20
+2.34.1
 
 
