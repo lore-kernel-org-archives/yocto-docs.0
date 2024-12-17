@@ -2,16 +2,16 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id BB0ECE7716A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CA2E4E77184
 	for <webhook@archiver.kernel.org>; Tue, 17 Dec 2024 09:27:16 +0000 (UTC)
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.77666.1734427635546066823
+ by mx.groups.io with SMTP id smtpd.web11.77898.1734427635703907565
  for <docs@lists.yoctoproject.org>;
  Tue, 17 Dec 2024 01:27:15 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=O/nFbmLQ;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=fvtAUwMT;
  spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 19EFA1C000E;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 4B22E1C0010;
 	Tue, 17 Dec 2024 09:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1734427634;
@@ -19,41 +19,41 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=BMrQ1XrXXlBy+FJHMn1QlBS4Ks94u71kb0omhCYvTSU=;
-	b=O/nFbmLQThIpb9KQAQlOX4LsJL9xK9QnMv3zeNOvIoLi547bnPhdZet0SatWhsHQpV45yn
-	pYT6VyJaOi4wjxuN0vWGIABYBjpzzEyJuFUS7oJvuVZYnkWlvZ6Pq8o6XZSOzc9HHGzdH7
-	ui1Ev+PbWIhlFvtg0ciwwooYdQKVVltod8KudYBduzuSqmHYVBBCJn6INvQiO1aTSmwqye
-	YaCrkR4M5P5JWHBFBc0QPivzJTtsTLLGKmpUD61ytM2Qx1rqc0Cj5mfI+UaxCqqhUQ4f0G
-	RMkSPVqSsZCJbys/NqxV67vqS4NH39q5ycmxE6Tq68ajnJ2OW6kLdHXODX7FvQ==
+	bh=FLYvaujV4R/wPOZkudl/xw0jooiri2vNYLfgjtkidMM=;
+	b=fvtAUwMTd2RdIwlOezb7LcTt3Wtow/NL4ZmTYFh4BtSquSdreGm0wD8ridQDlBOj+5UgJg
+	IPnbZ50/rd1FnQkIA7YFTYX7vauNeExklb4eNxzOiLBNLJvrrb7F3yur84dn99MSbgvOi9
+	z7dv5AaLt32+JHc4TpPayTvT95mwTN+v0fys6PAIHidJbz4Jw6kQThdNAO3djeVEqIgxr7
+	buM1PgI+NbK944aUcLEk0u3MhHjUQvpBfhGmpFHrzWuETYuZZdiVCScUwDsWThbiC4eGeO
+	sGc3TkBClVexNmcJeTD3o9r0cXT0N9FsKvmdFMmmrRZRKx2ekFiPCTeIBu/VoQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 17 Dec 2024 10:27:02 +0100
-Subject: [yocto-docs PATCH 03/14] ref-manual/variables: document the
- FIRMWARE_COMPRESSION variable
+Date: Tue, 17 Dec 2024 10:27:03 +0100
+Subject: [yocto-docs PATCH 04/14] ref-manual/variables: add missing entries
+ to SDK_ARCHIVE_TYPE
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241217-release-note-5-2-updates-v1-3-b189493b1b09@bootlin.com>
+Message-Id: <20241217-release-note-5-2-updates-v1-4-b189493b1b09@bootlin.com>
 References: <20241217-release-note-5-2-updates-v1-0-b189493b1b09@bootlin.com>
 In-Reply-To: <20241217-release-note-5-2-updates-v1-0-b189493b1b09@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1211;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=784;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=jJ8y1526btv4MPn+fOMKT/AUb/UUEtJHkg20U3nbIa0=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnYUPwZ+DYUZBEC0EJtCntnHx5Fm7szDcu2H5rb
- Tt8MAQUY1GJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ2FD8AAKCRDRgEFAKaOo
- NsqYD/9vMu/twC+OoOIGl5Qs0OiY44ChaMXfqIOpYpDM+K664B07g88Xgt4wlRIeJjo7dGFQ1Gs
- hscfNE2v0kL0SEsNbWzXouWhlweYOksDgA1BMPEWiv+G3za1/Q8wUUzQMt94eF7QiE/FUrvQys+
- QpZgC5dGKStE/GLiV5HO57Jtvxp8TohtzIUO+Y9NQUuqQ7F6GoWtEihEcOYKkKSrE5PXaU9Ifzj
- U4ZOWiYtQtn4w6jbSVZscnY5PEDIEB3iRJfsqcMRIDG0AiiUfU/UdIKyTif31DfRxFcs7pHLmrb
- HRDtuXW0deMtPZGBsr/YXIwZILBQ2eNdmc+ncse+XO1dPbdjx4K6WDFZlGEOoTxrOH7zqh9kkUD
- IOjB7S1XrqGg+87VV5E+PN2hdelAJFKOLlxfrP5UTi3OGGtTnodHX0q+Xfd/z8sumx3Uqqo3NX+
- HBW7oXIKhCiLetyfEZwzcoKaJyX7RI9Q12FuomltP/9axVcs+Vqr8GtaEp7/7tf7HpctcCrsH0P
- qgl8kIKhcghRydw1k8QMps/6rprp0QoN9XtqRiNqix6d+EWEk/SMiJTEbdmpsI92XFCAjEHMqnp
- AoSfNb1kUKP6MC7UQFT8nfMTuw+6HdKM6fyOuwIAn9oPUvuxqG5ulrWhCBKdAzAXYC4uZ7WoxUY
- 7n6mo9bGlKCNm3A==
+ bh=AGhXDXDoZlVZfBkAm+13Rc1LA42UignrXD6xEncUcPI=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnYUPw65RHcFkBI9XZGY6tEFT5spuEKkS07mVm1
+ 0VXqjsIsS+JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ2FD8AAKCRDRgEFAKaOo
+ NlJlEACnaTnsGHLz4WUR5s2Cm1XVoMk2gjMP5cnkeO2m5XALie4I8Zw2Jgieqr+jfczmWjJBVii
+ yCn34EcSJxOBzI/rvMLHXZOUvaw6a76P2DQi3sYHfN4yDRaW44ROa5QAET3sbqyiyLBZOgZUiEc
+ /m5nflVGUDulY20dckdri/hB6D4wL/vR6dihMc01gi3sFnrRskytV1q+gAkVVg9je9H40RUMDLl
+ 5mcecxZ8/AJ16Xp921ym+woUySZwhFB9QZdN2k/1m4OtbkqWNFeKWY3rgqiCPQwTr375vhppP1u
+ zubGQhpQIVV2TEqjdDJdEEd3E/Ca//howFUD/nnlh3MjcHRIK+rpHUFv7fvLPNBSiwOA5Y0KjlI
+ OtlScEmG+SHRrs5HNWpQoCMvdIChaKJr2Lq45DYJc+YUmXDvzL5lQXph5xGWZjKanyginLrpsJP
+ UkbzxgSlh0NIO27wRWPCTahCPn7Q7DCKmnA3AuyErKx5h6HDU4OGIGubPkFnidlf8ERKHljUrcB
+ QDD4sSKT/YyI+ULn85CYwFqrUmFPF5u0DG8OMNr7TY557aql3Q8PQh2CYLDdnCZpcjZ6HuU3R8v
+ 2Y/OYIkAsGJb90CgSorQDE5tsc3vQX98e7i6V93U6ZyNlvQCuRZ3EgD9MH94CW/Uy8ae3T2HpBE
+ X2e15a0FBMTlOLg==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
@@ -61,32 +61,28 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 17 Dec 2024 09:27:16 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5935
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5937
 
-Added in oecore after the 20241017 update.
+Both added recently in oecore.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ documentation/ref-manual/variables.rst | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index c6d3d1bba9961704fca25921b346d5282e118db4..5875ee3e7c554ffedf4af86e61c207d10aa46ad9 100644
+index 5875ee3e7c554ffedf4af86e61c207d10aa46ad9..ada761045e9bf37cb294c0b66007a9faab995ec3 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -3039,6 +3039,12 @@ system and gives an overview of their function and contents.
-       tables, examine the existing ``fs-perms.txt``,
-       ``fs-perms-volatile-log.txt`` and ``fs-perms-volatile-tmp.txt`` files.
+@@ -7515,6 +7515,8 @@ system and gives an overview of their function and contents.
+       Specifies the type of archive to create for the SDK. Valid values:
  
-+   :term:`FIRMWARE_COMPRESSION`
-+      The :term:`FIRMWARE_COMPRESSION` allows compressing the firmware provided
-+      by the ``linux-firmare`` recipe. The default value of this variable is an
-+      empty string (no compression), and the possible values it can take are
-+      ``xz`` and ``zst``. This can allow significant disk space savings.
-+
-    :term:`FIT_ADDRESS_CELLS`
-       Specifies the value of the ``#address-cells`` value for the
-       description of the FIT image.
+       - ``tar.xz`` (default)
++      - ``tar.zst``
++      - ``7zip``
+       - ``zip``
+ 
+       Only one archive type can be specified.
 
 -- 
 2.47.1
