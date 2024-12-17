@@ -1,359 +1,166 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6E7ACE7717F
-	for <webhook@archiver.kernel.org>; Tue, 17 Dec 2024 10:31:37 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.78528.1734431493937633040
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 941D1E7717F
+	for <webhook@archiver.kernel.org>; Tue, 17 Dec 2024 10:34:17 +0000 (UTC)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.76])
+ by mx.groups.io with SMTP id smtpd.web11.78792.1734431651275311619
  for <docs@lists.yoctoproject.org>;
- Tue, 17 Dec 2024 02:31:34 -0800
+ Tue, 17 Dec 2024 02:34:11 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bWnCyEDG;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 12980240008;
-	Tue, 17 Dec 2024 10:31:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734431492;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RPHJ1xB7xif9DVksagA62zMJvODbQG7kc8ljup3+m6k=;
-	b=bWnCyEDG1G8uL41prAiEXoYtcf7eAWn3QmY6yjh/r0lgyKiHy2keTItSIrJ1MQqH/prrDN
-	z0tZvJd14/WxMcJE+bQpigUp6Uxrb5NyO2hq3dtbUPN5yIdV+aR5XotTNIIxBlxLM7dd6X
-	Pn50OG3FuM86Pbw1CMtTxeIJk3XZbyOUsBqxoBIDboE68TJBKwV42zkbte1XBxvgrd0c5U
-	CSp3jssQXs0oHzqzt5LLEczubo+6uHcH//jNqacAKf18b2Ibq0rLSHcHIwzDeTakpXNrKv
-	VSZssgMuDdG8umeBF8HCbzRHejA0oSxgwFka+swj9zKBUEVCFV3EsuFRhuCCyg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 17 Dec 2024 11:31:31 +0100
-Message-Id: <D6DWNFLPU4PT.3BJVWQZNVWNHO@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <foss@0leil.net>, "Quentin Schulz"
- <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH RFC 2/2] tools: add script for building
- documentation inside containers
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20241210-instructions-shell-container-v1-0-6a7cdc404ff4@cherry.de> <20241210-instructions-shell-container-v1-2-6a7cdc404ff4@cherry.de>
-In-Reply-To: <20241210-instructions-shell-container-v1-2-6a7cdc404ff4@cherry.de>
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=Mhwn4rA1;
+ spf=pass (domain: cherry.de, ip: 40.107.20.76, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GSffKCTwROfFmxmIMWobPfMMiwFNQrcjGCaOn3iOg92kQvRnaouiJ+UFe/+Pd5mmrrz5Z+u1EasL59Z+d1/PTwyEubz2065vbGDalJqGqEUCe1jsazbMskS38eko8DBUFcCozjx6ox+Fm7j7v6b5c5tL0AlgyLGxp6o6xg1v7jg0AK3EpeXl6utj9vC17ySsAF+bYf9gq7JjfuYVuivjzPrLfcHByKqX4NPq7e1qER5gefQCr/mzqvwmFeSqUOAaviLzCIqUQRcSpKGVpT0mUeACWbrPptOckx2Ge2nz+jISn2+wnrYD87fB5bKpTDxSV7x/w9JCYk6k/jBq/HzY1Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=rJdhOhAv2gsc69Gt9XQIFllLw2hXTaVkZsGrti7tb5E=;
+ b=VND86WC8MEN1ucyLKEfq/nkJI6YELS8EHsnJVZa9M0zlttjIgBw1Qycj2lL75XOWWAMwTnXAakK5mNVPjTodymfo/XJuB8x+qgo3Vikq4xxsRnphDpBGsF/9vsOmPmtLqWZV0ViEvfS8a63Zaqtwefp1TZAKtTd0Sezb3k4fceE2qeR3icQ0XJs0uTfk8huZpZmHCgf8qpdVjrWEtxx6262lNiQmojaWpEOxBtVWfF9vQeEBbgHmVy9bmDmhbzw//M8XNLHQ86Hj7MKifMHFiKsH8q7kDCoKtoGJlZNk3QxlIyrfqKF9s7aj33jjgdSBIIYRl94h92JSwPvrGVyo2Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=rJdhOhAv2gsc69Gt9XQIFllLw2hXTaVkZsGrti7tb5E=;
+ b=Mhwn4rA1AeIOV8DER/sGN7oGw9G4s54JVhmE2zTzzwN7gRrWe9LukX8HyQtAnTorZ1ueIdASIk49QH9LyFXlWj+hJJFULy/BKFu/YAu/uBeHwxZNqcWljlaePWbcwsyUHLuM6kxgq5bBDctMJS9MpQFdBEicc53IhGVqbK40isU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by DU2PR04MB9130.eurprd04.prod.outlook.com (2603:10a6:10:2f5::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Tue, 17 Dec
+ 2024 10:34:08 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%3]) with mapi id 15.20.8272.005; Tue, 17 Dec 2024
+ 10:34:08 +0000
+Message-ID: <9bc14f7b-fc24-4abb-9a4c-360f0a350234@cherry.de>
+Date: Tue, 17 Dec 2024 11:34:07 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [yocto-docs PATCH 04/14] ref-manual/variables: add missing
+ entries to SDK_ARCHIVE_TYPE
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20241217-release-note-5-2-updates-v1-0-b189493b1b09@bootlin.com>
+ <20241217-release-note-5-2-updates-v1-4-b189493b1b09@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20241217-release-note-5-2-updates-v1-4-b189493b1b09@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0418.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:d0::13) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DU2PR04MB9130:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1b706b29-73b3-4865-0650-08dd1e86565d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?K2pMTGpsa0NCQmNsdU5iMVNnMUdhZTgxSUZxRG1ja09uT3F3SEZxVytsbVhn?=
+ =?utf-8?B?bGgyY2xOZ3UwZGdGcWhlMDJuL0puV1JDdXN6SFo1bXY2K0lSRVJvd2prMkF3?=
+ =?utf-8?B?M2dST1d3QTE5alFHM3MwUnJqTkU5MnVUZkFVL1JLSHRZSkxEaFpKY3VOd04y?=
+ =?utf-8?B?UWgxMXVsZWI1RE5tUWVOM3dBTVU5bEY2RDZPUnZRMEN1R3E1QWhNamFrN2h5?=
+ =?utf-8?B?enRkYUgydnhQZ1NQaUdyS25HS1RoOTQ0eDdIUnR1NjZYN1JKNWZFVXlqRWVs?=
+ =?utf-8?B?S3FCUmIxQ1RDaFRYbXZQSHRLQjBra1pFTlhBSGVzUXJOSDNOTjROUEs1ek43?=
+ =?utf-8?B?cWFueWNQNG5zWmVxYVNEQVg0RlJMVm5rZzJYeFRIcm1KRUQ5V04vVHZjRFRS?=
+ =?utf-8?B?TWx5Q2trMVloNThGUXZzZDZ5Qy9YaUJsSWVlSFJIUzFRRGxsdkphRnFMNWN6?=
+ =?utf-8?B?TXZzRFlsQlBKN2dXUUFSaFd2N0J3MFN5MnNQN2Fhd3Zha0ExVmJ2eUdNbnMr?=
+ =?utf-8?B?VXNxb3VhOWYxdDFHYzA5dFpiakJjVlYxVE51dEJaQStCMDBzWEk2K0JqWmdl?=
+ =?utf-8?B?S2tVUkNMUE9waDd6bG9JVVcvOCtuYVE1ajZIbktQSUxhWEIwcDljVEhLb0Rn?=
+ =?utf-8?B?QTJsUjFYeFVRTnUyREpiQ0gvSlNNOHZ3WWljVXNsL01CK3JPdTUzSGlwREpX?=
+ =?utf-8?B?VE11UFNBdDhjNUpNUzV4R0h5ajdlMEJNZkduMWpQbDdPV2l3MEFHZlkvcHE3?=
+ =?utf-8?B?M3drNnpxbm5lUFE5V3JkM3BaREJ2N3VvUHI5U1JHajFVTlQwcEhkQUpId0wx?=
+ =?utf-8?B?MC9rTEh5T3RSY0NwQ3Z0Rmc4akZCY2FiMEpRT014RjNBendNL1dCTkI5MGNG?=
+ =?utf-8?B?VGRrTUtUbWlzVDVKN2N2QWxTb01za1pYNG55ZndEMG5wYzdvR3ZaYVF5WVA5?=
+ =?utf-8?B?Q0Q3OVFrVnFFUkZLVVlrd1JyQVJDUml2aU9JUTFjSzJON2x5UUJKTFpabVpa?=
+ =?utf-8?B?cnhnbG52bkFQa1kxOEhWTzVleXdXTSs3YWEvUm9vZHJCUnlZY2pBY3YydGFL?=
+ =?utf-8?B?UGEybldzdlg5YUluQkRsWkRINkdka0pwSUlyd1hQWExhZUVGUEhzTHYvSEVz?=
+ =?utf-8?B?WmNQbE8xcThOSHZTSnNqUitRbWNwdElmSVdrR0xDVHkrSjcreEd5VFV1ZGZ0?=
+ =?utf-8?B?MG54UUgyT2ZkekdKTkR1WmViQlY3Y2ljbWwxWktuOFkzT3lYQ2JTMWJPMGth?=
+ =?utf-8?B?SU9QWmdjUmJ5QzMrOTFOSCtwWDJTb1VYZEdjYjFkdGsrVVlYWkM4ZzNCYnZv?=
+ =?utf-8?B?SjJPSkVuNG1sSWttV2M5a29qTUIxTklvcVB0aVlvT3ptT25WME8vdTV4SzNa?=
+ =?utf-8?B?N2ZFdjBlNmVMRm16OW82WENCVm90R3dWQXRJVWVaalRDeFFGTUgzNHhMMG9C?=
+ =?utf-8?B?K1B4emxmZHJ5SGk4QmlMNUNKZ3dxeWNjamo2bjJycHNDUy95WUh4dnRlTkU4?=
+ =?utf-8?B?TG1Nc1ZST3RmNTkwSU9weXpQdWIyRW1xUCtMQmc2SXNKQmtuSFpjUFFac0dt?=
+ =?utf-8?B?eFhZOEZLNFlxdmQ3cWYwY0c2VVV6Sng2TGJaNVhaLzZYRzNtdFMxSXc4a3kr?=
+ =?utf-8?B?YjZ6RmZWSHM4MXlzN05OZVRQc3VNMDRha1dCTGdGbTcxVEF6YVgva1dNOGVN?=
+ =?utf-8?B?ejNwaU1uY1VnYXBWNld5UzlreVYwbGFVa2FxV2tXU0hjUmhzc3cwdFB2UVlB?=
+ =?utf-8?B?ZVhVZjVlN1Z4NHZyMjlPZDc1aXUwS04xZnliWXEyM0NzUlBGQVE0ZFJWaCtn?=
+ =?utf-8?B?V2dQNHBNdTBpNjV1RkovdFlaL2JKOEZCYXhmRG1SOXU4K0pkOGt6VmlqUVZL?=
+ =?utf-8?Q?05/JJFuM4Bcjk?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?Yms5VFZzY2dXaE05VFQzMVVKd2x5cUNHVllxMDF5KzNxMlNBcGdHY0tYQWlD?=
+ =?utf-8?B?T1dqTUpab01PYkN5TktiUUlCVnFIWDRBbnIvN3JPN3BTV0l5amlGV0Zpd0xR?=
+ =?utf-8?B?MytGTlRJcGN2UFRFangyeG54T0VyY0pVWVlUUFZjVzRGNlV6RVh6angzS1lt?=
+ =?utf-8?B?MVhZcVpHTDlrWGkzcnI1WEg1bFZFQ25XeG1yYVZTZ2FoZGtrY2o4b3JOcnN6?=
+ =?utf-8?B?aUpzdlcyaFp3cStmdU82UC8xcGZGcnljbXVldjg2WjMxVUhHMW81MldnWjFB?=
+ =?utf-8?B?TTJvY2pOQ3FkRTlnYU9rQzk5UFQwQ0dvVFlDZGc2b3g4WUd0TVo0NlFIaXkw?=
+ =?utf-8?B?ZElZbGRQK2U4MVRESmEzU2xhWWozWjBXa01McTk4MlcvNEZManFneGhQN044?=
+ =?utf-8?B?QXdxdFB2T2JGRWNlTUlEM1JYVnVOWkU1dnFZcnF1YUFUMEIyZktWS0pyTG1t?=
+ =?utf-8?B?MURtamlYc1pHM21KTU9NVm1JMTQ2MG45N3hEOGVqTnhka0ZTOUdyK2wwS05S?=
+ =?utf-8?B?VUVDNzVZN1VyRGJrdG45eVQwaG45UnJrUElSeTBpVWswUzF5UkQ4RjRMcmg1?=
+ =?utf-8?B?VVpFUlY0RU9kZCtnTVNVeTdnMlQwSTJIQkwvZmx5OWZIbURqaElIMmRkUS9F?=
+ =?utf-8?B?bTJRcWFIcVdyQXB5UXkzS3JpU1psOGRURU1WMjVHdkVDTFFWd2N6MHhlNThp?=
+ =?utf-8?B?MnhKMThlMkRweFpqWDNsN3B6ZCt1R3pMRUJiVHBQMFRaTSt4OXZ2VlloalZB?=
+ =?utf-8?B?Wk5CaE9NWWZvQWs2TFN3aVVPWXVrR054QUZHeWRhRndERW1MRHI2SHNSaDdo?=
+ =?utf-8?B?blZ4T1ovNHFoNUJNS2x4cXFvdmJFMTlGZCtrL3pTbUFGMVJGQnVSSzk4OXBF?=
+ =?utf-8?B?alF6SWxTNzVPdERBNU1ESElxRldrMnhUbEVyeTdGL2N3RHNkS0xwVGJyQ3NS?=
+ =?utf-8?B?QmxTWm0xUWpEMk5GM2NmNVZrRVF3SjRrYkpEUEd5MExSOU4rZVZWa1huWkxm?=
+ =?utf-8?B?U1NiN0o1NUtaMEVIeGhzR0VUWm5Pd0NYRFZ0SXRUZ0ZXWXFTTng0ME1NT3BE?=
+ =?utf-8?B?VVEycWF3VEh6WjlISUpoUDdaT1lyR24xaERrMzJIelg0ejRWUmd4WHA2L1Qv?=
+ =?utf-8?B?andoeXZlU3RKQWE5U0RYektzYVY5L0c2ZWxjakk0OS83UkhKMXAzUjlxVU5P?=
+ =?utf-8?B?WlF0RVY0d1BZN0RMOGllT0R2bHZQNWZSTm9RajRTUFBQMUJmUWpwZVdrcVZt?=
+ =?utf-8?B?Y1NhR0NEejNCLzFUMzFyZlA2a0JzbHF3VkpXRWJmNVdGVXVaUm5MTXJDaVFR?=
+ =?utf-8?B?QlM3RTlPNjZIU0NWM0kveGY5c1ZwWURDTDcyK1V6clRjemlOY2sxZDc1NkV5?=
+ =?utf-8?B?NS83QUkxc3EyT3BiTkdHWlNsTUpKVmI3QVhrbEQvekFPV2E0RHdIL1lmdFBN?=
+ =?utf-8?B?Z0lFK2h3c1pQWjMxSlRkUHZyZzdzOG9XNEp4dURuSG4waGIwZjF0QXI0bzIx?=
+ =?utf-8?B?SC9VUkRVSjFJYzBPVGxEdzNyeU1WWnQ1OXBOQ1NwRTUrRkNCUUhjdG9NR2dj?=
+ =?utf-8?B?RUFiQ3p5Wm96NWxZa2lZRTk1RkFMeG5SR0t0TzFFR1NFSkg4SEVSL1pYVFBx?=
+ =?utf-8?B?QlZvSFN2blB6M1Q5NXBTelE1YmI1UWJWd1k0aVlXRm5qbG5MclhvWnJPVXR6?=
+ =?utf-8?B?QUlycXhwU2xqMlhHOUZVSzZvbi9RcTVDSXhPWStkMTZJcjh1ZzBrSFhFcVFs?=
+ =?utf-8?B?Nm9mbXl1TmEvUFp5cXhLQk1VTVBhVHhxdWJNMUViWWVCUGdPNEdEbjVEM0l6?=
+ =?utf-8?B?K2xRVEU4NkRFOWlhVVV0VnNDR09mNFVqVmRGeXQ4SkFQLzk4cURVR091WEZH?=
+ =?utf-8?B?UFJlR04wbEhFcUY2VFVVaWZYWldTanFDZzEzZVdpOC90eDc0RHI5ZkxrdlRU?=
+ =?utf-8?B?eGZ0U0JldVROZ1JueWxOSVVISGYvUDFvTXpuMzhRRE5Ja0hLM3U2bHdVc3hQ?=
+ =?utf-8?B?TE5ydk9EM3FQbnlEZlhWcVpwZjhweWorRFE5NUNESFY3ZlJVUXViU0pVUTFo?=
+ =?utf-8?B?M3dBekVXTUxURG1yRDhkbEdsQ3BkTWQ1N0ZxUzJUK2VDajhLcWhKcWYrbEhY?=
+ =?utf-8?B?aXhOWFMvR0dZbHphdWE4dVd3NnRLL204Mk1uVUZLY2laME5HYm01V2dobGsw?=
+ =?utf-8?B?L1E9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1b706b29-73b3-4865-0650-08dd1e86565d
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2024 10:34:08.3209
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4OlZX3IpGxY2na8UfUGNJmgxyH8jmP+2nxWTjl2BqkIpkoK5m14BEMrVkNDEne6S5Ux+UmM+mULCg1MhiJiShsy9RRSe/slTkRenilYtnnY=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9130
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 17 Dec 2024 10:31:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5954
+ <docs@lists.yoctoproject.org>; Tue, 17 Dec 2024 10:34:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5955
 
-Hi Quentin,
+Hi Antonin,
 
-On Tue Dec 10, 2024 at 4:26 PM CET, Quentin Schulz wrote:
-> From: Quentin Schulz <quentin.schulz@cherry.de>
->
-> This adds a script for building a container and building the
-> documentation within that new container image.
->
-> The openSUSE instructions now require a --non-interactive flag otherwise
-> they fail to run. Sadly there doesn't seem to be a way to have this in
-> an environment variable =C3=A0-la DEBIAN_FRONTEND=3Dnoninteractive.
->
-> Note that the Ubuntu and openSUSE instructions currently do not work.
->
-> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-> ---
->  documentation/tools/Containerfile.almalinux        |   1 +
->  documentation/tools/Containerfile.apt              |  21 +++++
->  documentation/tools/Containerfile.debian           |   1 +
->  documentation/tools/Containerfile.dnf              |  19 ++++
->  documentation/tools/Containerfile.fedora           |   1 +
->  documentation/tools/Containerfile.ubuntu           |   1 +
->  documentation/tools/Containerfile.zypper           |  18 ++++
->  documentation/tools/build-docs-container           | 101 +++++++++++++++=
-++++++
->  documentation/tools/opensuse_host_packages_docs.sh |   2 +-
->  .../tools/opensuse_host_packages_essential.sh      |   2 +-
->  10 files changed, 165 insertions(+), 2 deletions(-)
->
-> diff --git a/documentation/tools/Containerfile.almalinux b/documentation/=
-tools/Containerfile.almalinux
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..7237e9b99f4132957c0ad5b11=
-fa6cefe9daaec74
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.almalinux
-> @@ -0,0 +1 @@
-> +Containerfile.dnf
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.apt b/documentation/tools/=
-Containerfile.apt
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..a601699ce4005b3bc5288990d=
-bf2e7fa235ea431
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.apt
-> @@ -0,0 +1,21 @@
-> +ARG ARG_FROM=3Ddebian:12 # default value to avoid warning
-> +FROM $ARG_FROM
-> +
-> +ARG HOST_DOCS_PACKAGES=3Dubuntu_host_packages_docs.sh
-> +
-> +ENV DEBIAN_FRONTEND=3Dnoninteractive
-> +
-> +# relative to the location of the dockerfile
-> +COPY --chmod=3D777 ${HOST_DOCS_PACKAGES} /temp/host_packages_docs.sh
-> +
-> +RUN apt-get update \
-> + && apt-get install -y sudo \
-> + && yes | /temp/host_packages_docs.sh \
-> + && apt-get --yes autoremove \
-> + && apt-get clean \
-> + && rm -rf /temp
-> +
-> +RUN git config --global --add safe.directory /docs
-> +
-> +ENTRYPOINT ["/usr/bin/env", "make", "-C", "documentation/"]
-> +CMD ["publish"]
+On 12/17/24 10:27 AM, Antonin Godard via lists.yoctoproject.org wrote:
+> Both added recently in oecore.
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 
-Are we able to override this from the command-line, with the
-build-docs-container script? I assume everything passed in "$*" below repla=
-ces
-CMD?
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-> diff --git a/documentation/tools/Containerfile.debian b/documentation/too=
-ls/Containerfile.debian
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..5a7a425197afc2928802fcad5=
-f34699b1ad3348a
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.debian
-> @@ -0,0 +1 @@
-> +Containerfile.apt
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.dnf b/documentation/tools/=
-Containerfile.dnf
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..29ea670905ac011966d7bf534=
-0c10be0660149a6
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.dnf
-> @@ -0,0 +1,19 @@
-> +ARG ARG_FROM=3Dfedora:40 # default value to avoid warning
-> +FROM $ARG_FROM
-> +
-> +ARG HOST_DOCS_PACKAGES=3Dfedora_host_packages_docs.sh
-> +
-> +# relative to the location of the dockerfile
-> +COPY --chmod=3D777 ${HOST_DOCS_PACKAGES} /temp/host_packages_docs.sh
-> +
-> +RUN dnf update -y \
-> + && dnf install -y sudo \
-> + && yes | /temp/host_packages_docs.sh \
-> + && dnf autoremove -y \
-> + && dnf clean all -y \
-> + && rm -rf /temp
-> +
-> +RUN git config --global --add safe.directory /docs
-> +
-> +ENTRYPOINT ["/usr/bin/env", "make", "-C", "documentation/"]
-> +CMD ["publish"]
-> diff --git a/documentation/tools/Containerfile.fedora b/documentation/too=
-ls/Containerfile.fedora
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..7237e9b99f4132957c0ad5b11=
-fa6cefe9daaec74
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.fedora
-> @@ -0,0 +1 @@
-> +Containerfile.dnf
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.ubuntu b/documentation/too=
-ls/Containerfile.ubuntu
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..5a7a425197afc2928802fcad5=
-f34699b1ad3348a
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.ubuntu
-> @@ -0,0 +1 @@
-> +Containerfile.apt
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.zypper b/documentation/too=
-ls/Containerfile.zypper
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..567256d65b580aab45e27a7b7=
-a386e7a8dbe107f
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.zypper
-> @@ -0,0 +1,18 @@
-> +ARG ARG_FROM=3Dopensuse/leap:15.4 # default value to avoid warning
-> +FROM $ARG_FROM
-> +
-> +ARG HOST_DOCS_PACKAGES=3Dopensuse_host_packages_docs.sh
-> +
-> +# relative to the location of the dockerfile
-> +COPY --chmod=3D777 ${HOST_DOCS_PACKAGES} /temp/host_packages_docs.sh
-> +
-> +RUN zypper update -y \
-> + && zypper install -y sudo \
-> + && yes | /temp/host_packages_docs.sh \
-> + && zypper clean --all \
-> + && rm -rf /temp
-> +
-> +RUN git config --global --add safe.directory /docs
-> +
-> +ENTRYPOINT ["/usr/bin/env", "make", "-C", "documentation/"]
-> +CMD ["publish"]
-> diff --git a/documentation/tools/build-docs-container b/documentation/too=
-ls/build-docs-container
-> new file mode 100755
-> index 0000000000000000000000000000000000000000..4a799bd8e795f1ab7d55eb991=
-16fe859aff2692c
-> --- /dev/null
-> +++ b/documentation/tools/build-docs-container
-> @@ -0,0 +1,101 @@
-> +#!/usr/bin/env bash
-> +#
-> +# Build a container ready to build the documentation be reading the depe=
-ndencies
-> +# listed in poky.yaml.in, and start a documentation build in this contai=
-ner.
-
-Needs an update, since we don't read poky.yaml.in here.
-
-> +#
-> +# Usage:
-> +#
-> +#   ./documentation/tools/build-docs-container <image> [<make target>]
-> +#
-> +# e.g.:
-> +#
-> +#   ./documentation/tools/build-docs-container ubuntu:24.04 html
-> +#
-> +# Will build the docs in an Ubuntu 24.04 container in html.
-> +#
-> +# The container engine can be selected by exporting CONTAINERCMD in the
-> +# environment. The default is docker, but podman can also be used.
-> +
-> +set -eu -o pipefail
-> +
-> +SCRIPT_DIR=3D$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && =
-pwd)
-> +CONTAINERCMD=3D${CONTAINERCMD:-docker}
-> +DOCS_DIR=3D"$SCRIPT_DIR/../.."
-> +
-> +main ()
-> +{
-> +  local image=3D"$1"
-> +  shift
-> +
-> +  OCI=3D$(which "$CONTAINERCMD")
-> +
-> +  # docker build doesn't accept 2 colons, so "sanitize" the name
-> +  local sanitized_dockername
-> +  sanitized_dockername=3D$(echo "$image" | tr ':.' '-')
-> +
-> +  local version
-> +  version=3D$(echo "$image" | awk -F: '{print $NF}')
-> +
-> +  case $image in
-> +    almalinux*)
-> +      containerfile=3DContainerfile.almalinux
-> +      host_packages_docs=3Dalmalinux_host_packages_docs.sh
-> +      ;;
-> +    debian*)
-> +      containerfile=3DContainerfile.debian
-> +      host_packages_docs=3Dubuntu_host_packages_docs.sh
-> +      ;;
-> +    fedora*)
-> +      containerfile=3DContainerfile.fedora
-> +      host_packages_docs=3Dfedora_host_packages_docs.sh
-> +      ;;
-> +    opensuse* | leap*)
-> +      image=3Dopensuse/leap:$version
-> +      containerfile=3DContainerfile.zypper
-> +      host_packages_docs=3Dopensuse_host_packages_docs.sh
-> +      ;;
-> +    ubuntu*)
-> +      containerfile=3DContainerfile.ubuntu
-> +      host_packages_docs=3Dubuntu_host_packages_docs.sh
-> +      ;;
-> +    *)
-> +      echo "$image not supported"
-> +      exit 1
-> +      ;;
-> +  esac
-> +
-> +  $OCI build \
-> +    --tag "yocto-docs-$sanitized_dockername:latest" \
-> +    --build-arg ARG_FROM=3D"docker.io/$image" \
-> +    --build-arg HOST_DOCS_PACKAGES=3D"$host_packages_docs" \
-> +    --file "$SCRIPT_DIR/$containerfile" \
-> +    "$SCRIPT_DIR/"
-> +
-> +  local -a args_run=3D(
-> +    --rm
-> +    --interactive
-> +    --tty
-> +    --volume=3D"$DOCS_DIR:/docs:rw"
-> +    --workdir=3D/docs
-> +    --security-opt label=3Ddisable
-> +  )
-> +
-> +  if [ "$OCI" =3D "docker" ]; then
-> +    args_run+=3D(
-> +      --user=3D"$(id -u)":"$(id -g)"
-> +    )
-> +  elif [ "$OCI" =3D "podman" ]; then
-> +    # we need net access to fetch bitbake terms
-> +    args_run+=3D(
-> +      --cap-add=3DNET_RAW
-> +      --userns=3Dkeep-id
-> +    )
-> +  fi
-> +
-> +  $OCI run \
-> +    "${args_run[@]}" \
-> +    "yocto-docs-$sanitized_dockername" \
-> +    "$*"
-> +}
-> +
-> +main "$@"
-> diff --git a/documentation/tools/opensuse_host_packages_docs.sh b/documen=
-tation/tools/opensuse_host_packages_docs.sh
-> index 90f52d576451ee0a7c481b31b7605e4a870496cd..18975bd8d2db93eaadc663fac=
-738e9400fd11ffb 100644
-> --- a/documentation/tools/opensuse_host_packages_docs.sh
-> +++ b/documentation/tools/opensuse_host_packages_docs.sh
-> @@ -1,2 +1,2 @@
-> -sudo zypper install git make python3-pip which inkscape texlive-fncychap
-> +sudo zypper --non-interactive install git make python3-pip which inkscap=
-e texlive-fncychap
->  sudo pip3 install sphinx sphinx_rtd_theme pyyaml
-> diff --git a/documentation/tools/opensuse_host_packages_essential.sh b/do=
-cumentation/tools/opensuse_host_packages_essential.sh
-> index ef24fcefd99c9ecc335c594965965bb36e43cd05..20d934c34b833f547463d2e63=
-5ee16db935de3dc 100644
-> --- a/documentation/tools/opensuse_host_packages_essential.sh
-> +++ b/documentation/tools/opensuse_host_packages_essential.sh
-> @@ -1,2 +1,2 @@
-> -sudo zypper install python gcc gcc-c++ git chrpath make wget python-xml =
-diffstat makeinfo python-curses patch socat python3 python3-curses tar pyth=
-on3-pip python3-pexpect xz which python3-Jinja2 rpcgen zstd lz4 bzip2 gzip =
-hostname libacl1
-> +sudo zypper --non-interactive install python gcc gcc-c++ git chrpath mak=
-e wget python-xml diffstat makeinfo python-curses patch socat python3 pytho=
-n3-curses tar python3-pip python3-pexpect xz which python3-Jinja2 rpcgen zs=
-td lz4 bzip2 gzip hostname libacl1
->  sudo pip3 install GitPython
-
-Looks good to me otherwise!
-
-With the rebase I'd take these patches :)
-
-Thanks,
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Thanks!
+Quentin
 
