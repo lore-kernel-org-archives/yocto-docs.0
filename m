@@ -2,155 +2,105 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EFF19E77183
-	for <webhook@archiver.kernel.org>; Wed, 18 Dec 2024 08:23:03 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.101002.1734510179061547566
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 52E54E77187
+	for <webhook@archiver.kernel.org>; Wed, 18 Dec 2024 09:35:44 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.101784.1734514541539220087
  for <docs@lists.yoctoproject.org>;
- Wed, 18 Dec 2024 00:22:59 -0800
+ Wed, 18 Dec 2024 01:35:41 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GtQw9njH;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 928C8FF804;
-	Wed, 18 Dec 2024 08:22:57 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mvUEB+7b;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5A2EA60009;
+	Wed, 18 Dec 2024 09:35:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734510177;
+	t=1734514539;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hhuM3hiONb75/lx6veCWqEe1Y+SKJVmAxOFMiUKrPgI=;
-	b=GtQw9njHN7mzJkZ7RTFgAhxj+WCVm78i3Wn86/d1ppQqbXXyfHHlKe2V4+LBZj8sjsALDG
-	qxUktG3XI6lj25bLQz5QWe8Auua9/DZup9KiYUgRzRQ0lyr12vQRrKSKHo+mF3gtGtYqHa
-	AsEyBC22aAk+gL5KKy+Tw9wj5+PPM4bvTvAF7ZLtPLUeg/iuu5bZ/mJ17uspS80bXQY0hW
-	9G0GS8cljHmtn3c9dwbYA8ZCDLXwMFlHCi4dXxHJgSoXPLos+MDr3EQ8Uwzd1VgxuE87Xg
-	fyj/s+Ljp4hDmed01bbdS/3eA8GsPVm6NJGpMiBPAYoj0VXXmFZ0fQYsWaay/Q==
+	bh=yr+DdpWTJF8ItELRX+j+K8LU+fu1aWe1lcjAqEfsfzY=;
+	b=mvUEB+7b72XRm5tzhKuFcaAUPQ5tcsaxlmllTve+ykEp5AFwoyyo4mBX0pGBJ1EK68s6AR
+	/SELNFSnsQcbe4dnrFTZCxgQVE08BfQE7+KTu+2BTrvCnH2+Yd10j1sWbxR1WkglMLx0se
+	rkI9/iqEZSqXKN1wgXd/HLRZZcni0gtq93/Ud1WZ3MvRAtndKwoVwELgA6SAvIVG3eGSqO
+	fL8QPy57FzZpYCThYMs4eiL9nICqXJW1I9DDd6hZkZS74QkCRWZzzgzYfcf1uzsS58I5Qc
+	z9rE9uDNapx+378DPEgNiZfBLjxLywRtiiiFYi4FGd/s4ssRQ95LUx8uNSzAKA==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 18 Dec 2024 09:22:57 +0100
-Message-Id: <D6EOJJ3SKUCA.1IGDB6USWIDKM@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>, "Quentin Schulz"
- <foss@0leil.net>, <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH RFC 2/2] tools: add script for building
- documentation inside containers
+Date: Wed, 18 Dec 2024 10:35:34 +0100
+Message-Id: <D6EQ3517THNQ.30JL51D1JWVN8@bootlin.com>
+Subject: Re: [docs] [PATCH v2 3/3] dev-manual/bmaptool.rst: simplify and fix
+ instructions
 From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Michael Opdenacker" <michael.opdenacker@rootcommit.com>,
+ <docs@lists.yoctoproject.org>
 X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20241210-instructions-shell-container-v1-0-6a7cdc404ff4@cherry.de> <20241210-instructions-shell-container-v1-2-6a7cdc404ff4@cherry.de> <D6DWNFLPU4PT.3BJVWQZNVWNHO@bootlin.com> <edd1fc18-11c2-44fd-9d2a-ae21d22ff8a0@cherry.de>
-In-Reply-To: <edd1fc18-11c2-44fd-9d2a-ae21d22ff8a0@cherry.de>
+References: <20241204104432.2094236-1-michael.opdenacker@rootcommit.com>
+ <20241204104432.2094236-4-michael.opdenacker@rootcommit.com>
+ <D62WT5QAFUR4.22N91K2Y793BO@bootlin.com>
+ <7e870aa5-9a3e-49bc-96ab-c850e31c93e5@rootcommit.com>
+In-Reply-To: <7e870aa5-9a3e-49bc-96ab-c850e31c93e5@rootcommit.com>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 18 Dec 2024 08:23:03 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5974
+ <docs@lists.yoctoproject.org>; Wed, 18 Dec 2024 09:35:44 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5975
 
-Hi Quentin,
+Hi Michael,
 
-On Tue Dec 17, 2024 at 2:50 PM CET, Quentin Schulz wrote:
-> Hi Antonin,
+On Wed Dec 4, 2024 at 2:03 PM CET, Michael Opdenacker wrote:
+> Hi Antonin
 >
-> On 12/17/24 11:31 AM, Antonin Godard wrote:
->> Hi Quentin,
->>=20
->> On Tue Dec 10, 2024 at 4:26 PM CET, Quentin Schulz wrote:
->>> From: Quentin Schulz <quentin.schulz@cherry.de>
+> On 12/4/24 13:19, Antonin Godard wrote:
+>> On Wed Dec 4, 2024 at 11:44 AM CET, Michael Opdenacker via lists.yoctopr=
+oject.org wrote:
+>>> From: Michael Opdenacker <michael.opdenacker@rootcommit.com>
 >>>
->>> This adds a script for building a container and building the
->>> documentation within that new container image.
+>>> - Remove duplicate instructions
 >>>
->>> The openSUSE instructions now require a --non-interactive flag otherwis=
-e
->>> they fail to run. Sadly there doesn't seem to be a way to have this in
->>> an environment variable =C3=A0-la DEBIAN_FRONTEND=3Dnoninteractive.
+>>> - Detail how to run bmaptool directly if you installed it on your host
+>>>    instead of building it through the ``bmaptool-native`` recipe,
+>>>    as running "oe-run-native bmaptool-native bmaptool ..." won't work
+>>>    in this case.
 >>>
->>> Note that the Ubuntu and openSUSE instructions currently do not work.
->>>
->>> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+>>> Signed-off-by: Michael Opdenacker <michael.opdenacker@rootcommit.com>
 >>> ---
->>>   documentation/tools/Containerfile.almalinux        |   1 +
->>>   documentation/tools/Containerfile.apt              |  21 +++++
->>>   documentation/tools/Containerfile.debian           |   1 +
->>>   documentation/tools/Containerfile.dnf              |  19 ++++
->>>   documentation/tools/Containerfile.fedora           |   1 +
->>>   documentation/tools/Containerfile.ubuntu           |   1 +
->>>   documentation/tools/Containerfile.zypper           |  18 ++++
->>>   documentation/tools/build-docs-container           | 101 ++++++++++++=
-+++++++++
->>>   documentation/tools/opensuse_host_packages_docs.sh |   2 +-
->>>   .../tools/opensuse_host_packages_essential.sh      |   2 +-
->>>   10 files changed, 165 insertions(+), 2 deletions(-)
+>>>   documentation/dev-manual/bmaptool.rst | 12 +++++++-----
+>>>   1 file changed, 7 insertions(+), 5 deletions(-)
 >>>
->>> diff --git a/documentation/tools/Containerfile.almalinux b/documentatio=
-n/tools/Containerfile.almalinux
->>> new file mode 120000
->>> index 0000000000000000000000000000000000000000..7237e9b99f4132957c0ad5b=
-11fa6cefe9daaec74
->>> --- /dev/null
->>> +++ b/documentation/tools/Containerfile.almalinux
->>> @@ -0,0 +1 @@
->>> +Containerfile.dnf
->>> \ No newline at end of file
->>> diff --git a/documentation/tools/Containerfile.apt b/documentation/tool=
-s/Containerfile.apt
->>> new file mode 100644
->>> index 0000000000000000000000000000000000000000..a601699ce4005b3bc528899=
-0dbf2e7fa235ea431
->>> --- /dev/null
->>> +++ b/documentation/tools/Containerfile.apt
->>> @@ -0,0 +1,21 @@
->>> +ARG ARG_FROM=3Ddebian:12 # default value to avoid warning
->>> +FROM $ARG_FROM
->>> +
->>> +ARG HOST_DOCS_PACKAGES=3Dubuntu_host_packages_docs.sh
->>> +
->>> +ENV DEBIAN_FRONTEND=3Dnoninteractive
->>> +
->>> +# relative to the location of the dockerfile
->>> +COPY --chmod=3D777 ${HOST_DOCS_PACKAGES} /temp/host_packages_docs.sh
->>> +
->>> +RUN apt-get update \
->>> + && apt-get install -y sudo \
->>> + && yes | /temp/host_packages_docs.sh \
->>> + && apt-get --yes autoremove \
->>> + && apt-get clean \
->>> + && rm -rf /temp
->>> +
->>> +RUN git config --global --add safe.directory /docs
->>> +
->>> +ENTRYPOINT ["/usr/bin/env", "make", "-C", "documentation/"]
->>> +CMD ["publish"]
->>=20
->> Are we able to override this from the command-line, with the
->> build-docs-container script? I assume everything passed in "$*" below re=
-places
->> CMD?
->>=20
+>>> diff --git a/documentation/dev-manual/bmaptool.rst b/documentation/dev-=
+manual/bmaptool.rst
+>>> index 37083c9c64..93c8d3a45e 100644
+>>> --- a/documentation/dev-manual/bmaptool.rst
+>>> +++ b/documentation/dev-manual/bmaptool.rst
+>>> @@ -43,14 +43,16 @@ any type of image. Use these steps to flash an imag=
+e using `bmaptool`:
+>>>      depending on your particular setup. The following commands assume =
+the
+>>>      image resides in the :term:`Build Directory`'s ``deploy/images/`` =
+area:
+>>>  =20
+>>> -   -  If you have write access to the media, use this command form::
+>>> +   -  If needed, set permissions to get write access to the media::
+>>>  =20
+>>> -         $ oe-run-native bmaptool-native bmaptool copy build-directory=
+/tmp/deploy/images/machine/image.wic /dev/sdX
+>>> +         $ sudo chmod 666 /dev/sdX
+>> I think you forgot to change to "a+w"
+>> Also, it wasn't moved after the sudo command?
+>>
+>> Looks like the wrong patch may have slipped in? :)
 >
-> Yes, I'm currently calling the script like that:
 >
-> ./tools/build-docs-container fedora:40 html
-> ./tools/build-docs-container fedora:40 latexpdf
->
-> or ./tools/build-docs-container fedora:40 latexpdf html (in v2, broken=20
-> in v1).
->
-> If you omit it, it'll call "publish", which is what you decided would be=
-=20
-> the default in **your** v1. We can have nothing instead which would call=
-=20
-> "all" I guess instead? Up to you.
+> Right, I messed things up by modifying the second commit.
+> A V3 is coming, thanks!
 
-"publish" is similar to all, but goes a bit further to assemble the documen=
-ts
-and gives a better representation of the final state of the docs IMO (how t=
-hey're
-actually published). I think the main advantage is the "final" directory in
-the build dir, which gathers everything in one place.
+I did not receive it the v3, not sure you sent it? Just want to check wheth=
+er
+I missed it or not.
 
-TLDR: the extra cost of running publish instead of all is low, we might as =
-well
-just run it by default :)
 
 Antonin
 
