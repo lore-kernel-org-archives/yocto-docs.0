@@ -1,114 +1,132 @@
-Return-Path: <tgamblin@baylibre.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 97460E77187
-	for <webhook@archiver.kernel.org>; Wed, 18 Dec 2024 20:06:37 +0000 (UTC)
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
- by mx.groups.io with SMTP id smtpd.web11.114637.1734552393724107723
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 11831E7718A
+	for <webhook@archiver.kernel.org>; Thu, 19 Dec 2024 08:20:02 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.125578.1734596396640320437
  for <docs@lists.yoctoproject.org>;
- Wed, 18 Dec 2024 12:06:34 -0800
+ Thu, 19 Dec 2024 00:19:57 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@baylibre-com.20230601.gappssmtp.com header.s=20230601 header.b=ix+xPCpU;
- spf=pass (domain: baylibre.com, ip: 209.85.160.180, mailfrom: tgamblin@baylibre.com)
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-467a3f1e667so38798271cf.0
-        for <docs@lists.yoctoproject.org>; Wed, 18 Dec 2024 12:06:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1734552392; x=1735157192; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OjL4ucmNYHuWfLR6u5SbrfpyTouzcWKNP00lSYhY6K8=;
-        b=ix+xPCpUe7G0mjOy+c67Im+iV5C9zxpjN9dt1dmfHEgtw0KF2WIgJay+LACSKlwAmG
-         mRPbR6iCdUyHmD/EcAbpdb6RuvtedgX16Fb1gSzCGYyFSMTngFFF/tPlN2QWwVN04k4v
-         Jaj3W9KCZB1QUGX0yxZRDFk6UWH8hbxXa8yU1i8qlX0i4ZkcXxzQoKf7ldN0/4VoZNki
-         7n3kkP2duvFxkVR48dTVBRCfUvPJqkWYdCeNyHYfYaxb9vzkTuxO8xM1AFqdBp/EfPqD
-         ONwkRZwKsV37wWJ8dz8ummDxJXrCkfWF0x/b+PXcNkiyuBTWSSkVJOEMFJ7LBpr4zrO+
-         kzAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734552392; x=1735157192;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OjL4ucmNYHuWfLR6u5SbrfpyTouzcWKNP00lSYhY6K8=;
-        b=s3KZY+ri622c+m6WfmKzGNa53sUVnP+gxqC1eH9Zlx8rC0wpgKBlJvbDzyFHviGC1W
-         SCaf/5zpEyOZ2k9L/5uz0Jxh59Sp0PVfu1ypiKCvcfnu5OolouOL11y7d0cbwAD+gqUU
-         j1qypmixfAa7N89DIJIgATfXge2/qympxHW/ctPKvumpGi92P9n42LnmBl0hmGqg55Zn
-         m23W2oYhftqHuTbBHBuJyvNIje2A3GwFE/uopPrTAadBqK9q93zP97W3pQ9tCsmgOUSW
-         bkIvd87x1IoZr7O3QUu6Ll1dvVhHNaZVnNwH5p/6qkUvq/zDOygWJmFYZulYY64BEWzt
-         WniQ==
-X-Gm-Message-State: AOJu0YyVFCr3soauNrl7McNV4sDpKQXPIYtsFryTp7FAUlBlUBQOzBYn
-	jx7Hmgg+OSHpmPRcyuyOHzx+ka8fdlsMUKPfWKlH5Q1RI+goDonORDMVG4XPqiIT1HfDXF8MePT
-	d
-X-Gm-Gg: ASbGncvdZFwLdINXazmLsgfaSxXyYHTSn0thoIWYubEOziXSNn8ggo+p8M8iA0+FH8g
-	zftgaB2NUK0ppkFDnMRnQaLfWYL8aQQIix6fKD7dUbrrUB/pmgGTleMHRcn+bdStVqtggr1GLlG
-	/v6nYnQXgSi426sx0a33lQaa64FaM5NooIq7QSOb4Zge8tI0iNS40hfmSPORo/i7mGd9IlBdfTI
-	QYe4Qi+zkhfx/ycMsesPSKnC3bZFNyAmrK+n3Thqlb4ILoOcVz9TnHm9cWo5b4yH9BfHhQs5AGM
-	i/uHOu7E1hRA6urC
-X-Google-Smtp-Source: AGHT+IFDNHmyT7Ykcbo1nJnG6qGK0olPoWHrTaGVfKNJgHB7RHWg7Sn2j4mFdelTW1yqprDDWFK+Gg==
-X-Received: by 2002:ac8:5a48:0:b0:467:65d4:7e07 with SMTP id d75a77b69052e-46908ec9ab6mr63075351cf.53.1734552392492;
-        Wed, 18 Dec 2024 12:06:32 -0800 (PST)
-Received: from localhost (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-467b2c6bb9bsm54503231cf.10.2024.12.18.12.06.31
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Dec 2024 12:06:32 -0800 (PST)
-From: Trevor Gamblin <tgamblin@baylibre.com>
-To: docs@lists.yoctoproject.org
-Subject: [docs][PATCH] reproducible-builds.rst: show how to build a single package
-Date: Wed, 18 Dec 2024 15:06:30 -0500
-Message-Id: <20241218200630.823299-1-tgamblin@baylibre.com>
-X-Mailer: git-send-email 2.39.5
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=RBXLK7Tv;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 77565C000A;
+	Thu, 19 Dec 2024 08:19:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1734596394;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cvm/aXZj3jkc5xifqFWzMdTxgslV6v7hS57pTXjOMrE=;
+	b=RBXLK7TvDydR50kwBb53c9mOqpydSy0LPzwYjCTbIVHWhywKb6eFqOgz4DSGmAYoyq620s
+	4t2QrvPuTahtzvRD5FvWaOFGe5P0sDIk9DUzAX1zbYI1iy4RAi7yLTcYt3iP5xCzDfVnlj
+	aV91Km91khVeswAA8yWLCNwhgmr8i3/xSw8zrtVe69BV6xv0RSPBGwVj7NLEXAo8+0W77L
+	IeDSa+1LQGFNgWZhUu1SvZ96itoLf8m7RXhuWj5n5MQAK2Y9MR+61FM0E5uARGQHCog+lY
+	10hxjrWKjwS0nXLJJQQaFs0tS6wu7JjtqwP7j/Yy7JPKl27NCjV100rAue5E5g==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 19 Dec 2024 09:19:53 +0100
+Message-Id: <D6FJ3QKY56CY.2M1SWSRBEEP8A@bootlin.com>
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>,
+ <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [yocto-docs PATCH] set_versions.py: use
+ backward-compatible python argument in run
+X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
+References: <20241217-capture-output-compat-v1-1-d8f147a12eea@bootlin.com>
+ <3c0405f4-6059-411a-8854-727581e37484@cherry.de>
+ <D6EOH4KNGJ45.1ZSRSG06NDDWS@bootlin.com>
+ <c1320e21-8f72-4140-ba73-46c907b95cee@cherry.de>
+In-Reply-To: <c1320e21-8f72-4140-ba73-46c907b95cee@cherry.de>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 18 Dec 2024 20:06:37 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5983
+ <docs@lists.yoctoproject.org>; Thu, 19 Dec 2024 08:20:02 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5984
 
-Add a bit to the "Can we prove the project is reproducible?" section to
-show how OEQA_REPRODUCIBLE_TEST_TARGET can be used to test a single
-package (rather than the world build), as this may be useful for
-maintainers.
+Hi Quentin,
 
-Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
----
- .../test-manual/reproducible-builds.rst       | 22 +++++++++++++------
- 1 file changed, 15 insertions(+), 7 deletions(-)
+On Wed Dec 18, 2024 at 2:39 PM CET, Quentin Schulz wrote:
+> Hi Antonin,
+>
+> On 12/18/24 9:19 AM, Antonin Godard wrote:
+>> Hi Quentin,
+>>=20
+>> On Tue Dec 17, 2024 at 12:05 PM CET, Quentin Schulz wrote:
+>>> Hi Antonin,
+>>>
+>>> On 12/17/24 11:35 AM, Antonin Godard via lists.yoctoproject.org wrote:
+>>>> Some workers on the autobuilder reported the following error:
+>>>>
+>>>>     File "./set_versions.py", line 102, in <module>
+>>>>       subprocess.run(["git", "show", "yocto-%s" % release_series[activ=
+ereleases[0]]], capture_output=3DTrue, check=3DTrue)
+>>>>     File "/usr/lib64/python3.6/subprocess.py", line 423, in run
+>>>>       with Popen(*popenargs, **kwargs) as process:
+>>>>     TypeError: __init__() got an unexpected keyword argument 'capture_=
+output'
+>>>>
+>>>> See https://valkyrie.yoctoproject.org/#/builders/34/builds/86.
+>>>>
+>>>> This is because capture_output was introduced in Python 3.7, and some =
+of
+>>>> the support distributions are still on Python 3.6. Since capture_outpu=
+t
+>>>> is essentially just setting stdout and stderr to PIPE
+>>>> (https://github.com/python/cpython/blob/3.13/Lib/subprocess.py#L547), =
+do
+>>>> it manually here to be compatible with older python versions.
+>>>>
+>>>> This is also the case for the "text" parameter, introduced in 3.7 to
+>>>> alias the universal_newlines parameter. Use "universal_newlines" to be
+>>>> backward-compatible.
+>>>>
+>>>> [ YOCTO #15687 ]
+>>>>
+>>>
+>>> Do we really want to open that can of worms?
+>>>
+>>> https://docs.yoctoproject.org/ref-manual/system-requirements.html#requi=
+red-git-tar-python-make-and-gcc-versions
+>>> clearly states the minimal supported Python version is 3.8.0 so maybe w=
+e
+>>> should just stop building the docs on those distros that are still on
+>>> old Python? I'm actually surprised building YP on AlmaLinux 8 works
+>>> then, is it because of uninative?
+>>=20
+>> We still support 3.6 on Kirkstone. The docs build uses a buildtools tarb=
+all to
+>
+> I see, so the patch should be merged at least for the branches which do=
+=20
+> still support 3.6. For the others, not necessarily. The script isn't=20
+> that big and is not that complex (in terms of Python code, the logic....=
+=20
+> is another story :) ) so maybe it's fine. Your decision as maintainer.=20
+> The diff looks sound to me (and I used it for building on openSUSE=20
+> within containers), so I guess:
 
-diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
-index 91f94a5c7..d581155eb 100644
---- a/documentation/test-manual/reproducible-builds.rst
-+++ b/documentation/test-manual/reproducible-builds.rst
-@@ -91,13 +91,21 @@ run::
- 
-    oe-selftest -r reproducible.ReproducibleTests.test_reproducible_builds
- 
--This defaults to including a ``world`` build so, if other layers are added, it would
--also run the tests for recipes in the additional layers. Different build targets
--can be defined using the :term:`OEQA_REPRODUCIBLE_TEST_TARGET` variable in ``local.conf``.
--The first build will be run using :ref:`Shared State <overview-manual/concepts:Shared State>` if
--available, the second build explicitly disables
--:ref:`Shared State <overview-manual/concepts:Shared State>` except for recipes defined in
--the :term:`OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS` variable, and builds on the
-+This defaults to including a ``world`` build so, if other layers are added, it
-+would also run the tests for recipes in the additional layers. Different build
-+targets can be defined using the :term:`OEQA_REPRODUCIBLE_TEST_TARGET` variable
-+in ``local.conf``. For example, running reproducibility tests for only the
-+``python3-numpy`` recipe can be done by setting::
-+
-+   OEQA_REPRODUCIBLE_TEST_TARGET = "python3-numpy"
-+
-+in local.conf before running the ``oe-selftest`` command shown above.
-+
-+Reproducibility builds the target list twice. The first build will be run using
-+:ref:`Shared State <overview-manual/concepts:Shared State>` if available, the
-+second build explicitly disables :ref:`Shared State
-+<overview-manual/concepts:Shared State>` except for recipes defined in the
-+:term:`OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS` variable, and builds on the
- specific host the build is running on. This means we can test reproducibility
- builds between different host distributions over time on the Autobuilder.
- 
--- 
-2.39.5
+Unfortunately I think it's not that simple - the autobuilder
+checks out the set_versions.py script from master for every branch it build=
+s
+(see the run-docs-build script on the yocto-autobuilder-helper repo).
 
+I think merging this for every branch is fine though.
+
+> Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+> Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # openSUSE Leap=20
+> 15.4-15.6
+
+Thank you!
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
