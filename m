@@ -2,117 +2,129 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 85E3DE77188
-	for <webhook@archiver.kernel.org>; Fri, 20 Dec 2024 09:06:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8E2E1E77188
+	for <webhook@archiver.kernel.org>; Fri, 20 Dec 2024 09:17:10 +0000 (UTC)
 Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web10.148565.1734685602900594520
+ by mx.groups.io with SMTP id smtpd.web10.148658.1734686226555561451
  for <docs@lists.yoctoproject.org>;
- Fri, 20 Dec 2024 01:06:43 -0800
+ Fri, 20 Dec 2024 01:17:07 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=pS33D0ye;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DMH0ST17;
  spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D5DFF1BF203;
-	Fri, 20 Dec 2024 09:06:40 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A0BB31BF20C;
+	Fri, 20 Dec 2024 09:17:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1734685601;
+	t=1734686224;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8wfpq23+29/LxjelI5eaQE/JcwSsMUhj4Z5+DClFpNM=;
-	b=pS33D0yeJ3m7NwE93aa2VIE3X+JRPr/cpyHTp0Mx7u7fjjl3Xyij+LF9EUUkK9FDsagLja
-	PfrPG09MwtJHEaCp/AG+amgZe8E2o2zC50VHbubrAkP/C4Y/LPs70JU8qd/R5cETlhFxLE
-	X/uCQWE3Y76KV9GZS19RrkwPFcgu4PEQfU7d9+WYQ8BCU6PGsaZqWzJusMSBH1ZvGyfT1j
-	2zZ7nucJk0OP32QnXGsj2EEmsOKKO5gN/EBpjSh3t1BX/f+p5OwdSb8xJ9GJh8l9GLvoJn
-	ss+520zPyqzEeMri+4x6dkHHHkxDZ4IY1iaNEtqMXLOTmrRwvLEMnQLFs8cBPA==
+	bh=h92OJq4STuoATW341vX6wmWquQR/d04mAFtJRL4g9HU=;
+	b=DMH0ST17EKHdwHw5IaqCfYjcUL9OFN6SoNM2sOtZsZzEe3s12zt9kfEjRWq85W3e9HG9M9
+	4N71JfdKOxw/GcxnUb2/GHOgdy7f3sAfyopZmKJXka0N5Gby2cRivRrVIr/orfpdOj1A3P
+	uu3zb1iMVShnsFmIU3jf0Y8hIyN2Oh/sNYdh2tKKoRJvgWj1mg5O4AqBXlpOOfOI2mhlOV
+	0EvxeDg0Co9BAY9EWObj50QVrbX+7OG2c27RtSsjtXcUzPb4GMlIKmgCBl70LB9COGSfKv
+	BqWKaok2sYs5yQ6yPirxpX7iqdHORq2UQFVvoHFetU9flH2Pfz8obTfYecHOPQ==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 20 Dec 2024 10:06:40 +0100
-Message-Id: <D6GEQ3K5UI34.3K7Z40GYRTXDN@bootlin.com>
-Subject: Re: [docs] [yocto-docs PATCH 07/14] ref-manual/classes: document
- the cython class
+Date: Fri, 20 Dec 2024 10:17:04 +0100
+Message-Id: <D6GEY2500NU7.3L242F0REPJWX@bootlin.com>
+Subject: Re: [docs] [yocto-docs PATCH 09/14] Drop support for
+ BB_DANGLINGAPPENDS_WARNONLY
 Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Quentin Schulz" <quentin.schulz@cherry.de>,
  <docs@lists.yoctoproject.org>
 X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20241217-release-note-5-2-updates-v1-0-b189493b1b09@bootlin.com> <20241217-release-note-5-2-updates-v1-7-b189493b1b09@bootlin.com> <d7746edb-c7b9-47ee-a793-43c15fbc00c4@cherry.de>
-In-Reply-To: <d7746edb-c7b9-47ee-a793-43c15fbc00c4@cherry.de>
+References: <20241217-release-note-5-2-updates-v1-0-b189493b1b09@bootlin.com> <20241217-release-note-5-2-updates-v1-9-b189493b1b09@bootlin.com> <1a101f50-7b94-4aea-bb28-b00ba0571986@cherry.de>
+In-Reply-To: <1a101f50-7b94-4aea-bb28-b00ba0571986@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 20 Dec 2024 09:06:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5992
+ <docs@lists.yoctoproject.org>; Fri, 20 Dec 2024 09:17:10 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/5993
 
 Hi Quentin,
 
-On Tue Dec 17, 2024 at 11:48 AM CET, Quentin Schulz wrote:
+On Tue Dec 17, 2024 at 3:08 PM CET, Quentin Schulz wrote:
 > Hi Antonin,
 >
 > On 12/17/24 10:27 AM, Antonin Godard via lists.yoctoproject.org wrote:
->> Small class added in oecore by commit
->> 64b6e8580842949be58f97f4dff91d1f097c4020 ("classes-recipe: add cython
->> class").
+>> Support for this variable was dropped in BitBake, see commit
+>> fca9c9e3cb6f8e9f99bf51dc5e8a8d83f4c84c69 ("cooker: Drop support for
+>> BB_DANGLINGAPPENDS_WARNONLY").
+>>=20
+>> Drop this variable here as well and rewrite the "Appending Other Layers
+>> Metadata With Your Layer" section to advise to rename the recipe and
+>> check if the bbappend is still relevant - otherwise to use BBWARN.
 >>=20
 >> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 >> ---
->>   documentation/ref-manual/classes.rst | 11 +++++++++++
->>   1 file changed, 11 insertions(+)
+>>   documentation/dev-manual/layers.rst    | 15 ++++++++++-----
+>>   documentation/ref-manual/variables.rst | 18 ------------------
+>>   2 files changed, 10 insertions(+), 23 deletions(-)
 >>=20
->> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-ma=
-nual/classes.rst
->> index 3d61d8d7a00b21fcff82a771f9718013fae36694..47f049c7435a989f30c033b7=
-b12d86482686ac77 100644
->> --- a/documentation/ref-manual/classes.rst
->> +++ b/documentation/ref-manual/classes.rst
->> @@ -614,6 +614,17 @@ You will find some more details in the
->>   ":ref:`dev-manual/vulnerabilities:checking for vulnerabilities`"
->>   section in the Development Tasks Manual.
->>  =20
->> +.. _ref-classes-cython:
+>> diff --git a/documentation/dev-manual/layers.rst b/documentation/dev-man=
+ual/layers.rst
+>> index 89c84669337c9ecdc90110fdf34b7949459a1b9f..365991c225159d051f6dc412=
+2625616b81f01ee3 100644
+>> --- a/documentation/dev-manual/layers.rst
+>> +++ b/documentation/dev-manual/layers.rst
+>> @@ -470,11 +470,16 @@ corresponding recipe file. For example, the append=
+ file
+>>   means the original recipe and append filenames are version
+>>   number-specific. If the corresponding recipe is renamed to update to a
+>>   newer version, you must also rename and possibly update the
+>> -corresponding ``.bbappend`` as well. During the build process, BitBake
+>> -displays an error on starting if it detects a ``.bbappend`` file that
+>> -does not have a corresponding recipe with a matching name. See the
+>> -:term:`BB_DANGLINGAPPENDS_WARNONLY`
+>> -variable for information on how to handle this error.
+>> +corresponding ``.bbappend`` as well.
 >> +
->> +``cython``
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +The :ref:`ref-classes-cython` class can be used by Python recipes that =
-require
->> +:oe_git:`Cython </openembedded-core/tree/meta/recipes-devtools/python/p=
-ython3-cython_3.0.11.bb>`
+>> +During the build process, BitBake displays an error on startup if it de=
+tects a
+>> +``.bbappend`` file that does not have a corresponding recipe with a mat=
+ching
+>> +name. To handle these errors, the better practice is to rename the ``.b=
+bappend``
 >
-> I'm not entirely sure this is a good idea. This will eventually change=20
-> during a version upgrade and the recipe at that version disappear and=20
-> this link be useless. Two options: no link or a link from a specific=20
-> commit so it is always there.
->
-> I am not entirely sure pointing to the Cython recipe provides anything=20
-> meaningful here so I would vote for removing the link (could be a link=20
-> to the Cython project instead?).
-
-Of course, I forgot about this.
-I will link the Cython project instead.
-
->> +as part of their build dependencies (:term:`DEPENDS`). It also improves
->> +reproducibility for these recipes by stripping potential leftovers buil=
-d paths
->> +in compilation outputs.
->> +
->
-> I'm not sure the reproducibility improvement need to be mentioned here.=
+> We usually say best practice in the docs (haven't found one occurrence=20
+> of better practice with a naive grep search). Did you mean best practice=
 =20
-> It seems to me like this could be interpreted as "if you want improved=20
-> reproducibility you can include this class even if the recipe doesn't=20
-> need Cython". If it needs Cython, I assume the leftover issues for=20
-> reproducibility are coming from Cython so it's expected we fix those?=20
-> Not sure it's very clear what I'm trying to convey here?
+> maybe?
 
-Yes, and there must other places where reproducibility is improved and the =
-docs
-doesn't mention it. I'll remove this.
+Oops, "best" it is yes :)
 
+>> +to match the original recipe version. This also gives you the opportuni=
+ty to see
+>> +if the ``.bbappend`` is still relevant for the new version of the recip=
+e.
+>> +
+>> +Another method to deal with these errors is to use the variable :term:`=
+BBMASK`,
+>> +especially in cases where modifying the ``.bbappend`` is not possible.
+>>  =20
+>
+> And another method is to make use of the % character in the filename=20
+> where possible? E.g. for minor updates (I still like my gstreamer=20
+> bbappend example since it continues to happen to me during rebases :) ),=
+=20
+> one could use someapp_3.%.bbappend.
 
-Thanks!
+Yes, that's right, I will also add this method. I'll mention matching the m=
+inor
+version only if possible, not the entire version, to avoid masking too much=
+ when
+updating. It's good to take a look at a bbappend every once and a while. :)
+
+> Otherwise looks good to me, should be part of the migration manual I
+> believe?
+
+Yes absolutely, thanks!
+
 Antonin
 
 --=20
