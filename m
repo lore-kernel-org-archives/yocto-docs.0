@@ -1,148 +1,141 @@
-Return-Path: <javier.tia@linaro.org>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15528E77188
-	for <webhook@archiver.kernel.org>; Tue, 24 Dec 2024 23:13:57 +0000 (UTC)
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
- by mx.groups.io with SMTP id smtpd.web10.42999.1735082034280515109
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF096E77188
+	for <webhook@archiver.kernel.org>; Tue, 24 Dec 2024 23:22:26 +0000 (UTC)
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+ by mx.groups.io with SMTP id smtpd.web11.42987.1735082543264572136
  for <docs@lists.yoctoproject.org>;
- Tue, 24 Dec 2024 15:13:54 -0800
+ Tue, 24 Dec 2024 15:22:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=x/JuB1nu;
- spf=pass (domain: linaro.org, ip: 209.85.219.44, mailfrom: javier.tia@linaro.org)
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6d88cb85987so45425606d6.1
-        for <docs@lists.yoctoproject.org>; Tue, 24 Dec 2024 15:13:54 -0800 (PST)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=cXz+i3kN;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.44, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3863c36a731so4084364f8f.1
+        for <docs@lists.yoctoproject.org>; Tue, 24 Dec 2024 15:22:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735082033; x=1735686833; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:subject:references:in-reply-to:message-id
-         :cc:to:from:date:mime-version:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EgA7MumFUfVGvk1D4QDSk/2imsM9AVF86tbHYPViUQ8=;
-        b=x/JuB1nuvEQN1jvJXxrwNIuBuMpPaF7Qd65aZzjxL2ZCnZ/O+Pd45fzcBA2EXfzJmh
-         kmlEL95PW04Jqfpo26inTsMVodpBvQWy3ERJO2IXhymwur4oh364CjUS3mh1YBtuddAs
-         WchMnZdBckLd+as00uO4uXaZ8vB6IYZWaimm9YQy5eV1CVwyCmXPuIjb/XPHK/Sn8z8k
-         qpZwhhe0k7Lt0SEHjowtxog7UdCPNBReD7SU5q0ILn+17BXhb8NisO4lb8wYGbWhn3i0
-         f4x9bXgbpkPrwGvLsI62xMX5pGh1WHwQx3Y6s7hV3qfxaHFTFemHfZ9T0DbUO9G4Fd+m
-         NpnQ==
+        d=linuxfoundation.org; s=google; t=1735082541; x=1735687341; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZNve/ORcEl2iRfb5orX1DmyVYLfPweVCdnFPhRS/nA4=;
+        b=cXz+i3kNB3FfsOH61caioDr/relct/QIrTKJQIQg92kwhyEaBTpwW1w63yHVXuakjz
+         WAARCx7V7k6xQZ+8loiIjfY29Fa53kVGUDwvWH/t0ydBAIiNliGkyWYh1XgqaxCtOtm4
+         TJOnmjAcKjI4Im1j9hTxx4+TG6xmsmrXD1GUk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735082033; x=1735686833;
-        h=content-transfer-encoding:subject:references:in-reply-to:message-id
-         :cc:to:from:date:mime-version:feedback-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EgA7MumFUfVGvk1D4QDSk/2imsM9AVF86tbHYPViUQ8=;
-        b=oZHcHWnWlUiDtk/zwQUwEZJvOXD3JDsa5i0HB4xuqsg29vZeJDqAnniso0rObRDTPH
-         qVnAeZb8twi2DMwYb8QAygu3MmZgAfoLzAjSIry0b/GsIvDHldr6X08jycmOQ5Ip4swD
-         aZ0it/mhd957eKwcSYwqAUPezgw8kir2ThohcYQePc0HiV5tOBaCacYFR2MVqKwhZIHq
-         C08O3Lt0htXurLxbj6ZVrmGpchgvR1aIpuZsbadIdVLSqVVklhVRTkJdCk/kwz4o0Vl5
-         hCYXewNCiFCN/gJmxL2ruQX6B0trKIfjOQlryz6dOXWhNkQOai9Opz4tREq4/KT/vjPD
-         qB4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX8Z++WwfuMg3/vsF0ErLdpYIbZuPMmBs+Z4u8nOu08wBWnniqtA3qMYrqiiZGWHx9Hzy97@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yy/wj3xAiXeeHwcrI9EKoZo+kmQYzUtj/YYoqLFr66Av9A39S2n
-	kw1VAjCfGzab/qHiDY4iCPczlBUfA+L7f6FgM8+k2CTPGpyo7msVqed5RvVhHNs=
-X-Gm-Gg: ASbGnctqQMPCAiUyCCUR8MoFBGcYdaliauPgzATWD4FduFguXRyt9ZkwpWi9rFH0O3D
-	YLSfAbJvAH5ecEjvCXNGzzv5AsQPW+5RWGMucxdAY5HlazddiDlcnXwlX/Qw36sRWIaAXngLW6Q
-	+vHNV0wlHPfBzzFw2vlHi16FvxAURInEFxSm528Cxlt18NNbf15xXz2/pdWb1/0neQ4paeLglIq
-	ohlN2vPp9oGL4M8Ut4J1MapGbU3peBNob61w0+hfthPJDk1kCDPXUY05LICfGUVXmRSSVX0w2J6
-	KRn8ZpfC0pvdj7sh7ESh3yQNMlu8pyMM9p7dGKgnpH0q6EL/
-X-Google-Smtp-Source: AGHT+IH4K+cdl22MDazIohnZ4q9FA0+dycya5f+7XXf2iBdpVDiCCaHGcVdAa+MOYQ5qAuDbqfDcgQ==
-X-Received: by 2002:a05:6214:3c9f:b0:6d8:a9a6:83ef with SMTP id 6a1803df08f44-6dd23618bb2mr314294306d6.20.1735082033335;
-        Tue, 24 Dec 2024 15:13:53 -0800 (PST)
-Received: from fauth-a1-smtp.messagingengine.com (fauth-a1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6dd181d42f0sm56756466d6.109.2024.12.24.15.13.52
+        d=1e100.net; s=20230601; t=1735082541; x=1735687341;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ZNve/ORcEl2iRfb5orX1DmyVYLfPweVCdnFPhRS/nA4=;
+        b=qhN7UZU6PmqWhuP4j1UUcVZo+WMbrl1y4JP8zh4yXc/5iKxRo1MWO/Gq3BcJ6ws3fT
+         wARzyyMKllkWOAwD6c35N9ktr4aYstUvm2BQrRC3Xgd+OZ4sNnOyYqVInGrA6awrIHq4
+         ts324csGw5XYARNFmIMPqtjwoCNmW7kYlhNlataYXQtkGFO5KqgjvEwcAy9Mjv9k0ymI
+         Y2l28LvYz9JQSU6P1UmDANEV0aAw9ikLiHNTyr4igV+ox1pQo9IdsQ5ZSil1IMxDWe/v
+         A/7nF3s1+8Zb7Q7DY5uyOcHmYoxG67m2GRzlRdOoTAbi4HdR7c0ZO35YpULgbBk1czvj
+         cyVw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8bgf+nOsqjLKujvaONCwJRFffO8kBKwjKuPddpf2L5nUykyjOQzrZ5UMP5me/EKGnJOwS@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YzvzTJvUegRX+0quNvmo4cHgSxxGPabZxOnpntuUg8ottsh/DTh
+	3BhsqAPu6iq6M8X5ZLisK+gZmSHvgxzsWEKEf/P24LNfZZJWKoOGXL54xOGaWkI=
+X-Gm-Gg: ASbGncvpbZ1gpYPf3chkTE+ELXnLifvUvRf6Gmbv36crab1rU6Z7VjjebIrjYBI4VQK
+	Qw9P+teZgIPt40+u5eFwZqvHxWKi9MJVPjEaggC7wdeuLjyKTHtDNUCUeOqbyPAGlGNo+KSFfD+
+	6cfUqm0nRhI6K5NpB8tuByLQhzdaiTfMC98kmY2DyNKWzNd78OiVUS6EYvWI218UyENH84EFXFW
+	E/y2DW8nB3TSx1pBbeJ0DODrXjytT7Jc/YivkQQ+hfN5X/BaP4TiKNMg/3zQyfwENl/X+1We4xf
+	NqmjUgSDFvOsI5XqASR48Ok1XgTv8fYuo26dHHihU0BGOA==
+X-Google-Smtp-Source: AGHT+IHaANCV6IyuvYmADa++AVitimh1fZJO8kfr7H0n9Bt9U4ixkc+yk6+B7UxT5KJSRI4yg0TAxA==
+X-Received: by 2002:a05:6000:4021:b0:385:f6b9:e762 with SMTP id ffacd0b85a97d-38a223f760bmr14921043f8f.36.1735082541356;
+        Tue, 24 Dec 2024 15:22:21 -0800 (PST)
+Received: from ?IPv6:2001:8b0:aba:5f3c:28b2:b947:41d3:af7c? ([2001:8b0:aba:5f3c:28b2:b947:41d3:af7c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b013ecsm215271265e9.16.2024.12.24.15.22.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Dec 2024 15:13:52 -0800 (PST)
-Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 3A09C1200074;
-	Tue, 24 Dec 2024 18:13:52 -0500 (EST)
-Received: from phl-imap-09 ([10.202.2.99])
-  by phl-compute-01.internal (MEProxy); Tue, 24 Dec 2024 18:13:52 -0500
-X-ME-Sender: <xms:MEBrZ6ihMPv34-TMGUzVYxgR8xoGy5t94Day7xDbxK2vwzXkOzjAtw>
-    <xme:MEBrZ7Dgx6NUZYI0QZs8JAEsvYop77F_DJoqKYczIIq9pX3TGsJF-E_tCBnPZXzMt
-    jUArIxXcpkDBCks9RQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrudduhedgtdejucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
-    necuhfhrohhmpedflfgrvhhivghrucfvihgrfdcuoehjrghvihgvrhdrthhirgeslhhinh
-    grrhhordhorhhgqeenucggtffrrghtthgvrhhnpeefjedvtdetffekfefgudeukefgudeg
-    udfggfetkeekheelieeuhefhkefgveevhfenucffohhmrghinhephihotghtohhprhhojh
-    gvtghtrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepjhgrvhhivghrodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduhe
-    dvkeekleehkeefqdefudefieegvdeliedqjhgrvhhivghrrdhtihgrpeeplhhinhgrrhho
-    rdhorhhgsehjvghtmhdrmhgvpdhnsggprhgtphhtthhopeegpdhmohguvgepshhmthhpoh
-    huthdprhgtphhtthhopehilhhirghsrdgrphgrlhhoughimhgrsheslhhinhgrrhhordho
-    rhhgpdhrtghpthhtohepmhhikhhkohdrrhgrphgvlhhisehlihhnrghrohdrohhrghdprh
-    gtphhtthhopehrihgthhgrrhgurdhpuhhrughivgeslhhinhhugihfohhunhgurghtihho
-    nhdrohhrghdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtg
-    htrdhorhhg
-X-ME-Proxy: <xmx:MEBrZyEjmQkSbfm7keA0StkF5P0Kv8jpGEfEnI3PqTubyr0mHSm5ww>
-    <xmx:MEBrZzQHE_GX_oWayXnJJr-mvAJqIFSL0D-5C0qNnil6rVLlLv1Lxg>
-    <xmx:MEBrZ3yNxrUs57fAyyixUlkm7Yt_OnVjJ_CivcFQnPb95qv-jclilA>
-    <xmx:MEBrZx5C3j8ufpym3sXVVLuXO9Qlv5tsp1vO6YyvFuDX9zcGrUWKiA>
-    <xmx:MEBrZ0ysTkt6oYkjB54ZgYr9VRjvti0p-uaXjs5fGMkGirwX3s1ZEY31>
-Feedback-ID: idd3648b2:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 0A6A8780068; Tue, 24 Dec 2024 18:13:51 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
-MIME-Version: 1.0
-Date: Tue, 24 Dec 2024 17:13:31 -0600
-From: "Javier Tia" <javier.tia@linaro.org>
-To: "Richard Purdie" <richard.purdie@linuxfoundation.org>,
- docs@lists.yoctoproject.org
-Cc: "Mikko Rapeli" <mikko.rapeli@linaro.org>,
- "Ilias Apalodimas" <ilias.apalodimas@linaro.org>
-Message-Id: <d507bfc4-a4ab-45e8-adee-6503896fc045@app.fastmail.com>
-In-Reply-To: 
- <0fc165187afd965a79989a412d16bc77271248a3.camel@linuxfoundation.org>
-References: <20241224221625.4092917-1-javier.tia@linaro.org>
- <0fc165187afd965a79989a412d16bc77271248a3.camel@linuxfoundation.org>
+        Tue, 24 Dec 2024 15:22:19 -0800 (PST)
+Message-ID: <42f3567668e35a5398dbbeefc408d71e90292463.camel@linuxfoundation.org>
 Subject: Re: [docs] [PATCH] Set max supported Python version
-Content-Type: text/plain; charset=utf-8
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Javier Tia <javier.tia@linaro.org>, docs@lists.yoctoproject.org
+Cc: Mikko Rapeli <mikko.rapeli@linaro.org>, Ilias Apalodimas
+	 <ilias.apalodimas@linaro.org>
+Date: Tue, 24 Dec 2024 23:22:17 +0000
+In-Reply-To: <d507bfc4-a4ab-45e8-adee-6503896fc045@app.fastmail.com>
+References: <20241224221625.4092917-1-javier.tia@linaro.org>
+	 <0fc165187afd965a79989a412d16bc77271248a3.camel@linuxfoundation.org>
+	 <d507bfc4-a4ab-45e8-adee-6503896fc045@app.fastmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.0-1 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 24 Dec 2024 23:13:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6027
+ <docs@lists.yoctoproject.org>; Tue, 24 Dec 2024 23:22:26 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6028
 
-Hi Richard,
+On Tue, 2024-12-24 at 17:13 -0600, Javier Tia wrote:
+> On Tue, Dec 24, 2024, at 4:54 PM, Richard Purdie wrote:
+> > On Tue, 2024-12-24 at 16:16 -0600, Javier Tia via
+> > lists.yoctoproject.org wrote:
+> > > When Bitbake is used with Python 3.13, it generates numerous
+> > > build
+> > > issues that do not occur with Python 3.12. The documentation is
+> > > clear
+> > > for the supported Linux distributions, but not for the supported
+> > > Python
+> > > versions.
+> > >=20
+> > > Signed-off-by: Javier Tia <javier.tia@linaro.org>
+> >=20
+> > Can you be specific about which version of bitbake you saw the
+> > issues
+> > with? I was hoping we had resolved most of the issues with 3.13, at
+> > least in master. We do aim to work with new versions of python but
+> > it
+> > obviously takes time to catch up and for fixes to make older
+> > versions.
+>=20
+> With Bitbake from poky master (284a08b6e40761f) and BitBake from the
+> latest master (c9906bb289dcfd9). Python 3.13.1.=20
+>=20
+> Issues:
+>=20
+> - "ERROR: ParseError in None: Not all recipes parsed, parser thread
+> killed/died? Exciting." I noticed it was solved in Yocto Bugzilla,
+> but I reopened the bug because I believe it is still not fixed.
+>=20
+> - The problem mentioned on
+> https://wiki.yoctoproject.org/wiki/Pseudo_Abort=C2=A0with several poky
+> recipes (base-files, update-rc.d, qemu, and u-boot) and other recipes
+> from other layers.
+>=20
+> Please let me know if more information is needed.
 
-On Tue, Dec 24, 2024, at 4:54 PM, Richard Purdie wrote:
-> On Tue, 2024-12-24 at 16:16 -0600, Javier Tia via lists.yoctoproject.o=
-rg wrote:
->> When Bitbake is used with Python 3.13, it generates numerous build
->> issues that do not occur with Python 3.12. The documentation is clear
->> for the supported Linux distributions, but not for the supported Pyth=
-on
->> versions.
->>=20
->> Signed-off-by: Javier Tia <javier.tia@linaro.org>
->
-> Can you be specific about which version of bitbake you saw the issues
-> with? I was hoping we had resolved most of the issues with 3.13, at
-> least in master. We do aim to work with new versions of python but it
-> obviously takes time to catch up and for fixes to make older versions.
+We have a fedora41 worker in the autobuilder cluster which has:
 
-With Bitbake from poky master (284a08b6e40761f) and BitBake from the lat=
-est master (c9906bb289dcfd9). Python 3.13.1.=20
+fedora41-vk-1:~$ python3 --version
+Python 3.13.0
 
-Issues:
+As you can see here:
 
-- "ERROR: ParseError in None: Not all recipes parsed, parser thread kill=
-ed/died? Exciting." I noticed it was solved in Yocto Bugzilla, but I reo=
-pened the bug because I believe it is still not fixed.
+https://valkyrie.yoctoproject.org/#/workers/54
 
-- The problem mentioned on https://wiki.yoctoproject.org/wiki/Pseudo_Abo=
-rt with several poky recipes (base-files, update-rc.d, qemu, and u-boot)=
- and other recipes from other layers.
+is it running builds successfully. There is therefore some difference
+in your environment and I'm not sure it is python 3.13 that is the
+cause of the problems you're seeing.
 
-Please let me know if more information is needed.
+Are there any tracebacks in bitbake-cookerdaemon.log? Which distro is
+this?=20
 
-> Cheers,
->
-> Richard
+The pseudo aborts are likely a different problem with a missing libc
+intercept or similar issue and secondary to the other problem.
 
---=20
-=C2=BB Javier Tia =E2=9C=8D
+Cheers,
+
+Richard
+
+
+
+
+
+
+
+
 
