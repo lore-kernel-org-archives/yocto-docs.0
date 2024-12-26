@@ -2,425 +2,299 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 66B31E77188
-	for <webhook@archiver.kernel.org>; Thu, 26 Dec 2024 10:42:01 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.19902.1735209711352565799
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 79A62E7718E
+	for <webhook@archiver.kernel.org>; Thu, 26 Dec 2024 14:38:32 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.22230.1735223910915566117
  for <docs@lists.yoctoproject.org>;
- Thu, 26 Dec 2024 02:41:51 -0800
+ Thu, 26 Dec 2024 06:38:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OsosgYyT;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2F41B1BF207;
-	Thu, 26 Dec 2024 10:41:49 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QSY6FaOY;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 6F3851C0009;
+	Thu, 26 Dec 2024 14:38:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1735209709;
+	t=1735223909;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hLUj6HLQfWzUUyVbbBt41g5kHQeY5z6zSELM8fubgXg=;
-	b=OsosgYyT5m1wbc5ZdstGFv15oL+Nqo7uOaS5/9bQ+dfKwCO/bvTBRYBwYOoc5gyK4/mu1h
-	YZQGBmUpyo4DuSk9XyRdAOfqFxeX/1arf9qZwdYH0jmcb4oqUx0Vv7oMsHz8j2TXCgbNij
-	rGkAxgacb/CRnuHKBjG4W9uWH/u8/8MNxmB7TOa2z2zhLU93q5a/5xpVqoJgVB0yWzN/UQ
-	uC0esmdFUwAph5Q1VCCNArRP0gAEWcp33+vL282waGBXonh4sv+FVizmJ/uwD9/2Vq9GBG
-	0dsPSkLM+ot3nOWllKbyMsSoRw59zw4AhgXT+W/bXOzx/HIVaoLbPUo+Hnebnw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 26 Dec 2024 11:41:48 +0100
-Message-Id: <D6LKI7KCD6K5.3S86QV4WB1OYF@bootlin.com>
-Subject: Re: [docs] [PATCH RFC v2 2/2] tools: add script for building
- documentation inside containers
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <foss@0leil.net>, "Quentin Schulz"
- <quentin.schulz@cherry.de>, <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20241217-instructions-shell-container-v2-0-ce687b0cfac2@cherry.de> <20241217-instructions-shell-container-v2-2-ce687b0cfac2@cherry.de>
-In-Reply-To: <20241217-instructions-shell-container-v2-2-ce687b0cfac2@cherry.de>
+	bh=pNH0TFFKCbGhgvdEYVV3xfd0ef0VE684AppvDA2RHi8=;
+	b=QSY6FaOYcfYjGKAUjSNqBG26ZuAl5nJqGUkbgE76H5qxTd8dJZDq28pMf91zM3yvrY4yL7
+	fqHieb5e5z64iTI7wHkzjiNtgR6//Opqi3Qm4PuGYz0Js8UraphMLVg/wAGuD+DKD1wSIG
+	8Q4gsOIu7UVhh7TEodve0tui0TTw66Os2ZDkStwcmft+23lfYidfJzIJcHi35poVbbcN+s
+	0K9xp7BkXUght0T2giWGNagQAv8mZt9rGIUBIjkbhsTFYNW7Iow/jdhknDwoXZSaqod7b8
+	2Mb5RZHyASDmKcWuc0/6RnFvkkY2NiejwMHaRTPEZwAFL/aoROdgS6z6tg85xQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Thu, 26 Dec 2024 15:38:08 +0100
+Subject: [PATCH 2/2] ref-manual: move runtime-testing section to the
+ test-manual
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241226-move-ptest-to-test-manual-v1-2-ef16b91c8971@bootlin.com>
+References: <20241226-move-ptest-to-test-manual-v1-0-ef16b91c8971@bootlin.com>
+In-Reply-To: <20241226-move-ptest-to-test-manual-v1-0-ef16b91c8971@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=12230;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=zs+BGvTgNkIfFf6qSJdkBhT9S0Q6Ji9sv7NElB/R8gc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnbWpkdPqvZaeC/tCqVRNIq0DBaesmP5bNtvZ3g
+ go4mmK3XH+JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ21qZAAKCRDRgEFAKaOo
+ Nr6eEACn1ueA9aR2s2rYqLl9Eo6dZcDcdujCNyAdO3SgMJ24PNC/rvz6EK+Pf5xyNohHlLLpU9b
+ JzR+/1jtTEtm4AVnDHWLOxYqYXxh249Kyas+WaEC2FOSl3+6n1QD2v4Stnd1NIEniCGlupmzqzS
+ 0XOHyLw/UIYF7tnhY26MqEHbAsCIj7AvAR+oUOAO4R4xGgk+Ki+xKKH7ewFdfO9ew89geaQbjQ8
+ DBu7uNDk8fNQ5x0X/+M8ulePv8G0IWU3j2h5H7lr9LTiq9UzwQgRYTdLBPgXxu815slIQGtWUTn
+ B8mCYF1aMLdbQ5UwNTd2vskTkh7c6iz5SwIL44TrGpAn4OL6Cwh4ky/C6a//XY+Y7VC5k0bVmhY
+ W5qoBcORZBmAYtnx+a6yley+Y4QoCooF8FjXbFwaqxkeElm4aDbDwjE1Lxz6nNEd7PSlO2Sl7u3
+ YdDnjDgrJx7UgHH4CDJSfQAdEUUk0k6PatOb9Ul4gqskmuKIFTzWQEDZ7KbQ55ltLmGIY85Lq4d
+ kvj3fxHgE13jkbMvlYWhsaBu5gTeg/jgXSZsepogeAjXu5zOjIaciTLVKkelFDId61eRUJQfwtw
+ /8YyFzQE95g5nURHDb8IyrTOqGAwBm/rrjcrSXoRlaJdYLCsTYN99+OELAhe5qejwLLrbZ5gtrz
+ fYD68P9252AbqQQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 26 Dec 2024 10:42:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6038
+ <docs@lists.yoctoproject.org>; Thu, 26 Dec 2024 14:38:32 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6039
 
-Hi Quentin,
+In the same fashion as 9e63df6cc2f2d3ecfa86009cdc180dd5ec08726a
+("ref-manual/packages: move ptest section to the test-manual"), move the
+runtime testing section of the development tasks manual to the test
+environment manual.
 
-On Tue Dec 17, 2024 at 5:08 PM CET, Quentin Schulz wrote:
-> From: Quentin Schulz <quentin.schulz@cherry.de>
->
-> This adds a script for building a container and building the
-> documentation within that new container image.
->
-> The openSUSE instructions now require a --non-interactive flag otherwise
-> they fail to run. Sadly there doesn't seem to be a way to have this in
-> an environment variable =C3=A0-la DEBIAN_FRONTEND=3Dnoninteractive.
+Add a link to it from the test-manual/intro document.
 
-Hmm, this means that we end up instructing to pass "--non-interactive" in t=
-he
-docs? That's not ideal :/ I suggested a workaround below.
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/dev-manual/index.rst                   |  1 -
+ documentation/migration-guides/migration-1.5.rst     |  4 ++--
+ documentation/ref-manual/classes.rst                 |  4 ++--
+ documentation/ref-manual/images.rst                  |  4 ++--
+ documentation/ref-manual/release-process.rst         |  4 ++--
+ documentation/ref-manual/tasks.rst                   |  8 ++++----
+ documentation/ref-manual/variables.rst               | 20 ++++++++++----------
+ documentation/test-manual/index.rst                  |  1 +
+ documentation/test-manual/intro.rst                  |  4 +++-
+ .../{dev-manual => test-manual}/runtime-testing.rst  |  4 ++--
+ 10 files changed, 28 insertions(+), 26 deletions(-)
 
-I hope there won't be too many cases where we have to do things differently=
- in
-the context of a containerfile in the future. Apart from this case I cannot
-think of anything else that could happen. Anything comes to mind for you?
+diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
+index 7afd0d820e94d56cb2145962b9b1a976c7951936..8243c0f4cb2598fedee27d3d29e5d0d5b3d1e107 100644
+--- a/documentation/dev-manual/index.rst
++++ b/documentation/dev-manual/index.rst
+@@ -39,7 +39,6 @@ Yocto Project Development Tasks Manual
+    external-scm
+    read-only-rootfs
+    build-quality
+-   runtime-testing
+    debugging
+    licenses
+    security-subjects
+diff --git a/documentation/migration-guides/migration-1.5.rst b/documentation/migration-guides/migration-1.5.rst
+index c8f3cbc1655421e43968af23faad08d4ce1bd525..da26cca63d2336ada8acda3ea22dc8d45a47bbc2 100644
+--- a/documentation/migration-guides/migration-1.5.rst
++++ b/documentation/migration-guides/migration-1.5.rst
+@@ -248,8 +248,8 @@ A new automated image testing framework has been added through the
+ framework replaces the older ``imagetest-qemu`` framework.
+ 
+ You can learn more about performing automated image tests in the
+-":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-section in the Yocto Project Development Tasks Manual.
++":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++section in the Yocto Project Test Environment Manual.
+ 
+ .. _migration-1.5-build-history:
+ 
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index e5fe44052d4b05bf1b2b3acfaf2fd368f66fb261..73c79e592af245a293610e2804d90a57fccdcf08 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -3231,8 +3231,8 @@ after it is built, you can set :term:`TESTIMAGE_AUTO`::
+    TESTIMAGE_AUTO = "1"
+ 
+ For information on how to enable, run, and create new tests, see the
+-":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-section in the Yocto Project Development Tasks Manual.
++":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++section in the Yocto Project Test Environment Manual.
+ 
+ .. _ref-classes-testsdk:
+ 
+diff --git a/documentation/ref-manual/images.rst b/documentation/ref-manual/images.rst
+index c45f9104a949f7470fe11e8e70533c7a2ee8b16e..d6bdc92f0744eae5761bf499b8a0e2bd094f1822 100644
+--- a/documentation/ref-manual/images.rst
++++ b/documentation/ref-manual/images.rst
+@@ -119,8 +119,8 @@ Here is a list of supported recipes:
+    deployed to a separate partition so that you can boot into it and use
+    it to deploy a second image to be tested. You can find more
+    information about runtime testing in the
+-   ":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-   section in the Yocto Project Development Tasks Manual.
++   ":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++   section in the Yocto Project Test Environment Manual.
+ 
+ -  ``core-image-testmaster-initramfs``: A RAM-based Initial Root
+    Filesystem (:term:`Initramfs`) image tailored for use with the
+diff --git a/documentation/ref-manual/release-process.rst b/documentation/ref-manual/release-process.rst
+index 691e7d3ed90c98e43e558809828b5094670ccca3..bde1ffbdb9e74205e330cdbac2a7279b4a1e1140 100644
+--- a/documentation/ref-manual/release-process.rst
++++ b/documentation/ref-manual/release-process.rst
+@@ -148,8 +148,8 @@ Additionally, because the test strategies are visible to you as a
+ developer, you can validate your projects. This section overviews the
+ available test infrastructure used in the Yocto Project. For information
+ on how to run available tests on your projects, see the
+-":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-section in the Yocto Project Development Tasks Manual.
++":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++section in the Yocto Project Test Environment Manual.
+ 
+ The QA/testing infrastructure is woven into the project to the point
+ where core developers take some of it for granted. The infrastructure
+diff --git a/documentation/ref-manual/tasks.rst b/documentation/ref-manual/tasks.rst
+index df751d75a34bcdba51d9838a819dc9c1d99f19e6..d2e1f4ce143c6dce2c9110a8c98d1945faf71fea 100644
+--- a/documentation/ref-manual/tasks.rst
++++ b/documentation/ref-manual/tasks.rst
+@@ -615,8 +615,8 @@ information on how the root filesystem is created.
+ 
+ Boots an image and performs runtime tests within the image. For
+ information on automatically testing images, see the
+-":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-section in the Yocto Project Development Tasks Manual.
++":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++section in the Yocto Project Test Environment Manual.
+ 
+ .. _ref-tasks-testimage_auto:
+ 
+@@ -628,8 +628,8 @@ after it has been built. This task is enabled when you set
+ :term:`TESTIMAGE_AUTO` equal to "1".
+ 
+ For information on automatically testing images, see the
+-":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-section in the Yocto Project Development Tasks Manual.
++":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++section in the Yocto Project Test Environment Manual.
+ 
+ Kernel-Related Tasks
+ ====================
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index e8db89f8c9642b1e36c574e1369093a7a2ce30a4..96a6be7d6ae23d4565d1bad2467e57dd7b1f58cd 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -9204,8 +9204,8 @@ system and gives an overview of their function and contents.
+       file.
+ 
+       For more information on testing images, see the
+-      ":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-      section in the Yocto Project Development Tasks Manual.
++      ":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++      section in the Yocto Project Test Environment Manual.
+ 
+    :term:`TEST_SERIALCONTROL_CMD`
+       For automated hardware testing, specifies the command to use to
+@@ -9276,8 +9276,8 @@ system and gives an overview of their function and contents.
+          TEST_SUITES = "test_A test_B"
+ 
+       For more information on testing images, see the
+-      ":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-      section in the Yocto Project Development Tasks Manual.
++      ":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++      section in the Yocto Project Test Environment Manual.
+ 
+    :term:`TEST_TARGET`
+       Specifies the target controller to use when running tests against a
+@@ -9295,8 +9295,8 @@ system and gives an overview of their function and contents.
+       You can provide the following arguments with :term:`TEST_TARGET`:
+ 
+       -  *"qemu":* Boots a QEMU image and runs the tests. See the
+-         ":ref:`dev-manual/runtime-testing:enabling runtime tests on qemu`" section
+-         in the Yocto Project Development Tasks Manual for more
++         ":ref:`test-manual/runtime-testing:enabling runtime tests on qemu`" section
++         in the Yocto Project Test Environment Manual for more
+          information.
+ 
+       -  *"simpleremote":* Runs the tests on target hardware that is
+@@ -9311,8 +9311,8 @@ system and gives an overview of their function and contents.
+             ``meta/lib/oeqa/controllers/simpleremote.py``.
+ 
+       For information on running tests on hardware, see the
+-      ":ref:`dev-manual/runtime-testing:enabling runtime tests on hardware`"
+-      section in the Yocto Project Development Tasks Manual.
++      ":ref:`test-manual/runtime-testing:enabling runtime tests on hardware`"
++      section in the Yocto Project Test Environment Manual.
+ 
+    :term:`TEST_TARGET_IP`
+       The IP address of your hardware under test. The :term:`TEST_TARGET_IP`
+@@ -9348,8 +9348,8 @@ system and gives an overview of their function and contents.
+ 
+       For more information
+       on enabling, running, and writing these tests, see the
+-      ":ref:`dev-manual/runtime-testing:performing automated runtime testing`"
+-      section in the Yocto Project Development Tasks Manual and the
++      ":ref:`test-manual/runtime-testing:performing automated runtime testing`"
++      section in the Yocto Project Test Environment Manual and the
+       ":ref:`ref-classes-testimage`" section.
+ 
+    :term:`TESTIMAGE_FAILED_QA_ARTIFACTS`
+diff --git a/documentation/test-manual/index.rst b/documentation/test-manual/index.rst
+index ad71f379106261af32dc925d700ed36da43d234b..d365d337ea5ba71a71707aee996444cb7d155ddc 100644
+--- a/documentation/test-manual/index.rst
++++ b/documentation/test-manual/index.rst
+@@ -13,6 +13,7 @@ Yocto Project Test Environment Manual
+    intro
+    test-process
+    ptest
++   runtime-testing
+    understand-autobuilder
+    reproducible-builds
+    yocto-project-compatible
+diff --git a/documentation/test-manual/intro.rst b/documentation/test-manual/intro.rst
+index 252d3ea731c39709b8fbe64d281722c172a282a9..1a8e938a2ea23e1b441e0b30ac4fa69229dafac6 100644
+--- a/documentation/test-manual/intro.rst
++++ b/documentation/test-manual/intro.rst
+@@ -130,7 +130,9 @@ the following types of tests:
+       $ bitbake image -c testimage
+ 
+    The tests use the :ref:`ref-classes-testimage`
+-   class and the :ref:`ref-tasks-testimage` task.
++   class and the :ref:`ref-tasks-testimage` task. See the
++   :ref:`test-manual/runtime-testing:Performing Automated Runtime Testing`
++   section of the Yocto Project Test Environment Manual for more information.
+ 
+ -  *Layer Testing:* The Autobuilder has the possibility to test whether
+    specific layers work with the test of the system. The layers tested
+diff --git a/documentation/dev-manual/runtime-testing.rst b/documentation/test-manual/runtime-testing.rst
+similarity index 99%
+rename from documentation/dev-manual/runtime-testing.rst
+rename to documentation/test-manual/runtime-testing.rst
+index 7a2b42f25af2cd6e3488d706276d52f0cc6ebae9..5cd4fb2ccf9bb3e12e31c8f754b1d1280a8930b7 100644
+--- a/documentation/dev-manual/runtime-testing.rst
++++ b/documentation/test-manual/runtime-testing.rst
+@@ -153,7 +153,7 @@ options are available:
+ 
+    If you choose "SystemdbootTarget", there are additional requirements
+    and considerations. See the
+-   ":ref:`dev-manual/runtime-testing:selecting systemdboottarget`" section, which
++   ":ref:`test-manual/runtime-testing:selecting systemdboottarget`" section, which
+    follows, for more information.
+ 
+ -  *"BeagleBoneTarget":* Choose "BeagleBoneTarget" if you are deploying
+@@ -179,7 +179,7 @@ Selecting SystemdbootTarget
+ 
+ If you did not set :term:`TEST_TARGET` to "SystemdbootTarget", then you do
+ not need any information in this section. You can skip down to the
+-":ref:`dev-manual/runtime-testing:running tests`" section.
++":ref:`test-manual/runtime-testing:running tests`" section.
+ 
+ If you did set :term:`TEST_TARGET` to "SystemdbootTarget", you also need to
+ perform a one-time setup of your controller image by doing the following:
 
-> Somehow tzdata package in Ubuntu doesn't respect
-> DEBIAN_FRONTEND=3Dnoninteractive hence why the timezone needs to be set b=
-y
-> hand.
->
-> Note that only instructions for Debian Bookworm (12), Ubuntu 22.04 and
-> 24.04, and Fedora 38, 39 and 40, currently work.
->
-> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-> ---
->  documentation/tools/Containerfile.almalinux        |   1 +
->  documentation/tools/Containerfile.apt              |  26 +++++
->  documentation/tools/Containerfile.debian           |   1 +
->  documentation/tools/Containerfile.dnf              |  25 +++++
->  documentation/tools/Containerfile.fedora           |   1 +
->  documentation/tools/Containerfile.ubuntu           |   1 +
->  documentation/tools/Containerfile.zypper           |  24 +++++
->  documentation/tools/build-docs-container           | 113 +++++++++++++++=
-++++++
->  .../tools/host_packages_scripts/opensuse_docs.sh   |   2 +-
->  .../host_packages_scripts/opensuse_docs_pdf.sh     |   2 +-
->  .../host_packages_scripts/opensuse_essential.sh    |   2 +-
->  11 files changed, 195 insertions(+), 3 deletions(-)
->
-> diff --git a/documentation/tools/Containerfile.almalinux b/documentation/=
-tools/Containerfile.almalinux
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..7237e9b99f4132957c0ad5b11=
-fa6cefe9daaec74
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.almalinux
-> @@ -0,0 +1 @@
-> +Containerfile.dnf
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.apt b/documentation/tools/=
-Containerfile.apt
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..5e30b65eb8f81a7764c00eb10=
-78dabaf59b64517
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.apt
-> @@ -0,0 +1,26 @@
-> +ARG ARG_FROM=3Ddebian:12 # default value to avoid warning
-> +FROM $ARG_FROM
-> +
-> +ARG DOCS=3Dubuntu_docs.sh
-> +ARG DOCS_PDF=3Dubuntu_docs_pdf.sh
-> +
-> +ENV DEBIAN_FRONTEND=3Dnoninteractive
-> +ARG TZ=3DEurope/Vienna
-> +
-> +# relative to the location of the dockerfile
-> +COPY --chmod=3D777 ${DOCS} /temp/host_packages_docs.sh
-> +COPY --chmod=3D777 ${DOCS_PDF} /temp/host_packages_docs_pdf.sh
-> +
-> +RUN ln -fs "/usr/share/zoneinfo/$TZ" /etc/localtime \
-> + && apt-get update \
-> + && apt-get install -y sudo \
-> + && yes | /temp/host_packages_docs.sh \
-> + && yes | /temp/host_packages_docs_pdf.sh \
-> + && apt-get --yes autoremove \
-> + && apt-get clean \
-> + && rm -rf /temp
-> +
-> +RUN git config --global --add safe.directory /docs
-> +
-> +ENTRYPOINT ["/usr/bin/env", "make", "-C", "documentation/"]
-> +CMD ["publish"]
-> diff --git a/documentation/tools/Containerfile.debian b/documentation/too=
-ls/Containerfile.debian
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..5a7a425197afc2928802fcad5=
-f34699b1ad3348a
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.debian
-> @@ -0,0 +1 @@
-> +Containerfile.apt
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.dnf b/documentation/tools/=
-Containerfile.dnf
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..3dae74445585961a6f2d29b8a=
-cde09f2456dd886
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.dnf
-> @@ -0,0 +1,25 @@
-> +ARG ARG_FROM=3Dfedora:40 # default value to avoid warning
-> +FROM $ARG_FROM
-> +
-> +ARG DOCS=3Dfedora_docs.sh
-> +ARG DOCS_PDF=3Dfedora_docs_pdf.sh
-> +ARG PIP3=3Dpip3_docs.sh
-> +
-> +# relative to the location of the dockerfile
-> +COPY --chmod=3D777 ${DOCS} /temp/host_packages_docs.sh
-> +COPY --chmod=3D777 ${DOCS_PDF} /temp/host_packages_docs_pdf.sh
-> +COPY --chmod=3D777 ${PIP3} /temp/pip3_docs.sh
-> +
-> +RUN dnf update -y \
-> + && dnf install -y sudo \
-> + && yes | /temp/host_packages_docs.sh \
-> + && yes | /temp/host_packages_docs_pdf.sh \
-> + && yes | /temp/pip3_docs.sh \
-> + && dnf autoremove -y \
-> + && dnf clean all -y \
-> + && rm -rf /temp
-> +
-> +RUN git config --global --add safe.directory /docs
-> +
-> +ENTRYPOINT ["/usr/bin/env", "make", "-C", "documentation/"]
-> +CMD ["publish"]
-> diff --git a/documentation/tools/Containerfile.fedora b/documentation/too=
-ls/Containerfile.fedora
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..7237e9b99f4132957c0ad5b11=
-fa6cefe9daaec74
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.fedora
-> @@ -0,0 +1 @@
-> +Containerfile.dnf
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.ubuntu b/documentation/too=
-ls/Containerfile.ubuntu
-> new file mode 120000
-> index 0000000000000000000000000000000000000000..5a7a425197afc2928802fcad5=
-f34699b1ad3348a
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.ubuntu
-> @@ -0,0 +1 @@
-> +Containerfile.apt
-> \ No newline at end of file
-> diff --git a/documentation/tools/Containerfile.zypper b/documentation/too=
-ls/Containerfile.zypper
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..bcda5261ae98e8df16a3bcef1=
-7a7bf204033da99
-> --- /dev/null
-> +++ b/documentation/tools/Containerfile.zypper
-> @@ -0,0 +1,24 @@
-> +ARG ARG_FROM=3Dopensuse/leap:15.4 # default value to avoid warning
-> +FROM $ARG_FROM
-> +
-> +ARG DOCS=3Dopensuse_docs.sh
-> +ARG DOCS_PDF=3Dopensuse_docs_pdf.sh
-> +ARG PIP3=3Dpip3_docs.sh
-> +
-> +# relative to the location of the dockerfile
-> +COPY --chmod=3D777 ${DOCS} /temp/host_packages_docs.sh
-> +COPY --chmod=3D777 ${DOCS_PDF} /temp/host_packages_docs_pdf.sh
-> +COPY --chmod=3D777 ${PIP3} /temp/pip3_docs.sh
+-- 
+2.47.1
 
-A bit of a hacky workaround, but maybe here run
-sed -i 's/zypper/zypper --non-interactive/ ...' on the scripts? So we don't=
- need
-to provide this option in the doc.
-
-> +
-> +RUN zypper update -y \
-> + && zypper install -y sudo \
-> + && yes | /temp/host_packages_docs.sh \
-> + && yes | /temp/host_packages_docs_pdf.sh \
-> + && yes | /temp/pip3_docs.sh \
-> + && zypper clean --all \
-> + && rm -rf /temp
-> +
-> +RUN git config --global --add safe.directory /docs
-> +
-> +ENTRYPOINT ["/usr/bin/env", "make", "-C", "documentation/"]
-> +CMD ["publish"]
-> diff --git a/documentation/tools/build-docs-container b/documentation/too=
-ls/build-docs-container
-> new file mode 100755
-> index 0000000000000000000000000000000000000000..f382af75a7e89cfcc8a6080fd=
-bc65fb68ff9ea8d
-> --- /dev/null
-> +++ b/documentation/tools/build-docs-container
-> @@ -0,0 +1,113 @@
-> +#!/usr/bin/env bash
-> +#
-> +# Build a container ready to build the documentation be reading the depe=
-ndencies
-> +# listed in shell scripts in documentation/tools/host_packages_scripts, =
-and
-> +# start a documentation build in this container.
-> +#
-> +# Usage:
-> +#
-> +#   ./documentation/tools/build-docs-container <image> [<make target>]
-> +#
-> +# e.g.:
-> +#
-> +#   ./documentation/tools/build-docs-container ubuntu:24.04 html
-> +#
-> +# Will build the docs in an Ubuntu 24.04 container in html.
-> +#
-> +# The container engine can be selected by exporting CONTAINERCMD in the
-> +# environment. The default is docker, but podman can also be used.
-> +
-> +set -eu -o pipefail
-> +
-> +SCRIPT_DIR=3D$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && =
-pwd)
-> +CONTAINERCMD=3D${CONTAINERCMD:-docker}
-> +DOCS_DIR=3D"$SCRIPT_DIR/../.."
-> +SH_DIR=3D"$SCRIPT_DIR/host_packages_scripts"
-> +
-> +main ()
-> +{
-
-I would be good to have a check here to avoid
-
-  $ ./tools/build-docs-container
-  ./tools/build-docs-container: line 29: $1: unbound variable
-
-You could probably copypaste what I did in my version of the script.
-
-> +  local image=3D"$1"
-> +  shift
-> +
-> +  OCI=3D$(which "$CONTAINERCMD")
-> +
-> +  # docker build doesn't accept 2 colons, so "sanitize" the name
-> +  local sanitized_dockername
-> +  sanitized_dockername=3D$(echo "$image" | tr ':.' '-')
-> +
-> +  local version
-> +  version=3D$(echo "$image" | awk -F: '{print $NF}')
-> +
-> +  case $image in
-> +    almalinux*)
-> +      containerfile=3DContainerfile.almalinux
-> +      docs=3Dalmalinux_docs.sh
-> +      docs_pdf=3Dalmalinux_docs_pdf.sh
-> +      pip3=3Dpip3_docs.sh
-> +      ;;
-> +    debian*)
-> +      containerfile=3DContainerfile.debian
-> +      docs=3Dubuntu_docs.sh
-> +      docs_pdf=3Dubuntu_docs_pdf.sh
-> +      ;;
-> +    fedora*)
-> +      containerfile=3DContainerfile.fedora
-> +      docs=3Dfedora_docs.sh
-> +      docs_pdf=3Dfedora_docs_pdf.sh
-> +      pip3=3Dpip3_docs.sh
-> +      ;;
-> +    opensuse* | leap*)
-> +      image=3Dopensuse/leap:$version
-> +      containerfile=3DContainerfile.zypper
-> +      docs=3Dopensuse_docs.sh
-> +      docs_pdf=3Dopensuse_docs_pdf.sh
-> +      pip3=3Dpip3_docs.sh
-> +      ;;
-> +    ubuntu*)
-> +      containerfile=3DContainerfile.ubuntu
-> +      docs=3Dubuntu_docs.sh
-> +      docs_pdf=3Dubuntu_docs_pdf.sh
-> +      ;;
-> +    *)
-> +      echo "$image not supported"
-
-Can we have a way of listing images here so a user doesn't need to read the
-script and guess which one to use?
-
-> +      exit 1
-> +      ;;
-> +  esac
-> +
-> +  $OCI build \
-> +    --tag "yocto-docs-$sanitized_dockername:latest" \
-> +    --build-arg ARG_FROM=3D"docker.io/$image" \
-> +    --build-arg DOCS=3D"$docs" \
-> +    --build-arg DOCS_PDF=3D"$docs_pdf" \
-> +    --build-arg PIP3=3D"${pip3:-}" \
-> +    --file "$SCRIPT_DIR/$containerfile" \
-> +    "$SH_DIR/"
-> +
-> +  local -a args_run=3D(
-> +    --rm
-> +    --interactive
-> +    --tty
-> +    --volume=3D"$DOCS_DIR:/docs:rw"
-> +    --workdir=3D/docs
-> +    --security-opt label=3Ddisable
-> +  )
-> +
-> +  if [ "$OCI" =3D "docker" ]; then
-> +    args_run+=3D(
-> +      --user=3D"$(id -u)":"$(id -g)"
-> +    )
-> +  elif [ "$OCI" =3D "podman" ]; then
-> +    # we need net access to fetch bitbake terms
-> +    args_run+=3D(
-> +      --cap-add=3DNET_RAW
-> +      --userns=3Dkeep-id
-> +    )
-> +  fi
-> +
-> +  $OCI run \
-> +    "${args_run[@]}" \
-> +    "yocto-docs-$sanitized_dockername" \
-> +    "$@"
-> +}
-> +
-> +main "$@"
-> diff --git a/documentation/tools/host_packages_scripts/opensuse_docs.sh b=
-/documentation/tools/host_packages_scripts/opensuse_docs.sh
-> index 7d36eb0f99668168dc4fed44d71181338bdc59a3..896ad52b5042a9679555a30e5=
-82fa32076c3a3e7 100644
-> --- a/documentation/tools/host_packages_scripts/opensuse_docs.sh
-> +++ b/documentation/tools/host_packages_scripts/opensuse_docs.sh
-> @@ -1 +1 @@
-> -sudo zypper install git glibc-i18ndata make python3-pip rsvg-convert whi=
-ch
-> +sudo zypper --non-interactive install git glibc-i18ndata make python3-pi=
-p rsvg-convert which
-> diff --git a/documentation/tools/host_packages_scripts/opensuse_docs_pdf.=
-sh b/documentation/tools/host_packages_scripts/opensuse_docs_pdf.sh
-> index ee9f07886ce1c0eac8e1d1118cda8ddc496f0139..f8a3b800d9790c0434f0c3f57=
-7ea1916a7fe1b28 100644
-> --- a/documentation/tools/host_packages_scripts/opensuse_docs_pdf.sh
-> +++ b/documentation/tools/host_packages_scripts/opensuse_docs_pdf.sh
-> @@ -1 +1 @@
-> -sudo zypper install 'texlive-collection-lang*' texlive-collection-fontse=
-xtra texlive-collection-fontsrecommended texlive-collection-latex texlive-c=
-ollection-latexextra texlive-collection-latexrecommended texlive-collection=
--xetex texlive-fncychap texlive-gnu-freefont texlive-latexmk texlive-tex-gy=
-re texlive-xetex
-> +sudo zypper --non-interactive install 'texlive-collection-lang*' texlive=
--collection-fontsextra texlive-collection-fontsrecommended texlive-collecti=
-on-latex texlive-collection-latexextra texlive-collection-latexrecommended =
-texlive-collection-xetex texlive-fncychap texlive-gnu-freefont texlive-late=
-xmk texlive-tex-gyre texlive-xetex
-> diff --git a/documentation/tools/host_packages_scripts/opensuse_essential=
-.sh b/documentation/tools/host_packages_scripts/opensuse_essential.sh
-> index a784f4a5dc05f3734177f08ed97663a04d20a978..19e85f4a736532b890fc55492=
-721cf345c2b4083 100644
-> --- a/documentation/tools/host_packages_scripts/opensuse_essential.sh
-> +++ b/documentation/tools/host_packages_scripts/opensuse_essential.sh
-> @@ -1,2 +1,2 @@
-> -sudo zypper install bzip2 chrpath diffstat gcc gcc-c++ git gzip hostname=
- libacl1 lz4 make makeinfo patch python python-curses python-xml python3 py=
-thon3-Jinja2 python3-curses python3-pexpect python3-pip rpcgen socat tar wg=
-et which xz zstd
-> +sudo zypper --non-interactive install bzip2 chrpath diffstat gcc gcc-c++=
- git gzip hostname libacl1 lz4 make makeinfo patch python python-curses pyt=
-hon-xml python3 python3-Jinja2 python3-curses python3-pexpect python3-pip r=
-pcgen socat tar wget which xz zstd
->  sudo pip3 install GitPython
-
-Thanks,
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
