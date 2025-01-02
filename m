@@ -2,184 +2,212 @@ Return-Path: <joerg.sommer@navimatix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 828F9E7718B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 812C2E77188
 	for <webhook@archiver.kernel.org>; Thu,  2 Jan 2025 14:14:49 +0000 (UTC)
 Received: from EUR02-DB5-obe.outbound.protection.outlook.com (EUR02-DB5-obe.outbound.protection.outlook.com [40.107.249.127])
  by mx.groups.io with SMTP id smtpd.web10.8820.1735827275194191679
  for <docs@lists.yoctoproject.org>;
- Thu, 02 Jan 2025 06:14:36 -0800
+ Thu, 02 Jan 2025 06:14:37 -0800
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@navimatix.de header.s=selector1 header.b=LWgGN7rh;
+ dkim=fail reason="dkim: body hash did not verify" header.i=@navimatix.de header.s=selector1 header.b=meyzAxgZ;
  spf=pass (domain: navimatix.de, ip: 40.107.249.127, mailfrom: joerg.sommer@navimatix.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iyIgUrz5OjO/yWoXelSD08bFHPgw6/jr8tJtRpfgwPh7LpUZgKDfuMlNSDBWlmnAFjE62EhHhOSHoQIM4M/KJ/yLzOUkt7eaJKJoRdcQA3XXzguU0wDZUhnNWxBk3OspGC4KQCLLC6gImHenWyuwD3IIR+hExxDTLVl56u9pquPf9z9loW+04G7uv0S+1rXv5DE2QCilWIw8Gf3RFugQpIoIUtFdvyZMIT61Rmb4BFbquq/sd6sqHKC/0tzT076910FscjfoB2JUrsAoZari8EKShfP2FrH8ruDpZKxmTy58KqOx1k4+vTQNvQ9T72c2ieIxgGxExuwDdhM4q7Zz+Q==
+ b=B9FhnVyPfbVmJX7tuZhccZArAkojZWJIvTLEgfpY0Wv1ZPlc22VQYFrwp+SGICLRhGYf6r8BH8LOApJEH0+tG4wvXxBsoNXsYcWh6L6gcA9fB8nNLBUW17RAv0dy7UP6MAhRMJzmouQBcfRgnpBrDAZfkCDjU8CxUxk0YyEhmb0//7uXiPaY9rBLWuQ0tQSSGXu/63TCeSC1rpGO2zojSdj2A+C7tLZIupqCoxqrzug58moaxcGhLFNjbkFnwoRahLFzoYb+H1XQX/tTLYeeKZyYHlTDqrtJ0TTAedisNqtel3qikLAj2bcTqxZ6JCyJcWXF3SpCfjurhlMv+d/AgA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Tde/p4vNAQGKrB6TsGUrHCgFMfSSyuV/BrqBgAVj3TI=;
- b=urFMhpvxEVSmU4Mym95z+PtzRw6+qzVZlHMb0SUQ1NcGW77pTAQjcQRfLyL0l9sBVCWK5oOG/f/NnPfmUjXbJyRSKqJRDcijp7O3j+HksucLMCyc09ZT/4WOksWKH/PG02VkSDiX7/OWsjRw8QctHMDHmWCQ0HJJ3BAcQy4AzkSpRIpR9jIQPC69FjIQD3xSPVsj12tEJJ/mEq69DNcle+DNB+4q3Sqtx3MXGRMPQYdhc8ppTY6nvmvkeSA7eP8YBmcgFkSGsY1wNysaA7d700zKxWWJue4yjuVElXrXQbTTlQO2fJ4wdCTXTXQZMOpQ6E2p1CXaJl+2Pgzi0vjhrw==
+ bh=V5TiMt1/YgWNbm9PcTNNexlWd3SyqU7LPqDPMfCPS7I=;
+ b=J8kLfvxi+Vyb9p3QH29fcC/sBhmuYPCskswRKKqadLW50kLDl7cuvBYjP+gBDWW8b/rTwiLADu2RqwL7shCHQBqdjZVh1UjkKTPCLUukFPAv7mjOazSn5YlHs7TYuyJA8Snqgu7m1WhkoFPKUPlWfZp7WB8+fLiFyb32pr9HWTpjZsoc8WgHcIfZkbc1vZ0lkpe/HmtFJOmHa63vvGn1hFAtdTWEu9N7VUJe1G84A3RpN9/w4IoUXQoT8HrdlC9MA5iaQU63Ym/W/eLnmXJtY4LR53uvKt6JFxXVB6rAGYhJ2imUl43D663/9l5Zdpajsbe6uzzWbc0uAuQb8W4D1A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=navimatix.de; dmarc=pass action=none header.from=navimatix.de;
  dkim=pass header.d=navimatix.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=navimatix.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Tde/p4vNAQGKrB6TsGUrHCgFMfSSyuV/BrqBgAVj3TI=;
- b=LWgGN7rh/jT1OSRHyaWcG/A1cwbJsdQLeEkzeh9/xv+viNG7MC7yAAmGS9ih69j0DReixs79xTxlueML/MwAkiD8f6NrUEiOyJRODq0ThJIcv0GBC0re1ofI4oMtl2UtRyvBlYXypQoaoHmCCgLPHQ9r88WldY0WPJGeD28+mUs=
+ bh=V5TiMt1/YgWNbm9PcTNNexlWd3SyqU7LPqDPMfCPS7I=;
+ b=meyzAxgZ1sikfiTf2/i0OGMa1vHoPI73troD8s8FPVVGNG7AdyjVrh8vY7ugb3VmqoJKoEn1vyF65GvuQnKhggVD6tE+67vPOP+8+h2LIpzjKFzCcCPtSsjCL3ODvvXlumZi2f2FPmiXOiuLTxyiyE8ROx8aVlfr2+4NEiD7wx8=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=navimatix.de;
 Received: from DU2PR01MB8293.eurprd01.prod.exchangelabs.com
  (2603:10a6:10:2d4::5) by DB9PR01MB8192.eurprd01.prod.exchangelabs.com
  (2603:10a6:10:2c5::24) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.13; Thu, 2 Jan
- 2025 14:14:27 +0000
+ 2025 14:14:29 +0000
 Received: from DU2PR01MB8293.eurprd01.prod.exchangelabs.com
  ([fe80::d520:1b9e:a30e:69a7]) by DU2PR01MB8293.eurprd01.prod.exchangelabs.com
  ([fe80::d520:1b9e:a30e:69a7%4]) with mapi id 15.20.8314.013; Thu, 2 Jan 2025
- 14:14:27 +0000
-Date: Thu, 2 Jan 2025 15:14:23 +0100
+ 14:14:28 +0000
+Date: Thu, 2 Jan 2025 15:14:27 +0100
 From: =?utf-8?B?SsO2cmc=?= Sommer <joerg.sommer@navimatix.de>
 To: docs@lists.yoctoproject.org, joerg.sommer@navimatix.de
 CC: =?utf-8?B?SsO2cmc=?= Sommer <joerg.sommer@navimatix.de>
-Subject: [PATCH 1/2] bitbake/doc/logging: small clean-up and name environment
-Message-ID: <9423e2349e9c4f8e5b3a9490e4539156db533e02.1735826398.git.joerg.sommer@navimatix.de>
+Subject: [PATCH 2/2] bitbake/doc/logging: convert warn.json to YAML
+Message-ID: <e4f1f8ce2293967baa2f1ed56cfda8a1f285f1b8.1735826398.git.joerg.sommer@navimatix.de>
 X-Mailer: git-send-email 2.45.2
+References: <9423e2349e9c4f8e5b3a9490e4539156db533e02.1735826398.git.joerg.sommer@navimatix.de>
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BE1P281CA0222.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:b10:88::15) To DU2PR01MB8293.eurprd01.prod.exchangelabs.com
+In-Reply-To: <9423e2349e9c4f8e5b3a9490e4539156db533e02.1735826398.git.joerg.sommer@navimatix.de>
+X-ClientProxiedBy: BE1P281CA0211.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:b10:88::16) To DU2PR01MB8293.eurprd01.prod.exchangelabs.com
  (2603:10a6:10:2d4::5)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DU2PR01MB8293:EE_|DB9PR01MB8192:EE_
-X-MS-Office365-Filtering-Correlation-Id: acd1658e-509f-45c3-bad6-08dd2b37c405
+X-MS-Office365-Filtering-Correlation-Id: 4b0b0e09-1e17-41c0-f281-08dd2b37c53f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?a88gt+XSVgXqAlGn87iz9MlkOSfnzchNchzD2r7dYuU6XJmjiSdPTjxE8Ivt?=
- =?us-ascii?Q?Jug6GBIJko6+FYpiE5F3UqS2p5tr/K+YRtj9iUkdRxSVzNjmy6BU8Szy6Q+A?=
- =?us-ascii?Q?qDR/LO5k/kNNDORdkxALRA6o4w1rsW6trvmpvPiF9/ts8z5E6gtskrflrkV+?=
- =?us-ascii?Q?TFow9kr79P65GtzqsUA65kuLLU58hCc8aGw3nEp6IY6wKvjcyMH4KJmStkib?=
- =?us-ascii?Q?wKTsW1K9UZHn419oluFf7dGU1M8megumlzY/zkit51C2bBUCVHNOBUyHkM4b?=
- =?us-ascii?Q?B7Cd+ZIt9nl+eg5slMhP3f8jvKpC/hBmkhP3+dUmV/xUL0viqTN4CCq3kxZb?=
- =?us-ascii?Q?P88XVmV3s0bWXwDe+vkzH+YHBxaosv8APeTwsuEeTYY7Eyc1FqD/XMQaTizG?=
- =?us-ascii?Q?QV9/HEwIP5rJFsfZL8cgV7bPlq4pxrwfNb92R277qku4AD8zx2b4FZUtKkUg?=
- =?us-ascii?Q?lDSMRlqMzPO74NjITWymWKrqSpzGpYGgXTTawkjVo0H3SQ+b/VGHNHSaLvni?=
- =?us-ascii?Q?zY5OyVCmqbAubbb5+afTL1BifP1Ip3htMjO2dFyZs0uc4QVYZBF4I2yFIpL7?=
- =?us-ascii?Q?CBWe1jBjw8tQwGvL9OhdZrX0ABq/gYsabyi/2yTu1TcdxP1d90xj/VTBnPWq?=
- =?us-ascii?Q?azPv5rnMm/DSevpTcI9m2mbkMq5zVs1/p9O1X1xNcJusCVWkLOGHZh8coFio?=
- =?us-ascii?Q?Z80iQMrw6dmxNBmhXlGSuktYiwgC5QxEX6EFT5UzqM1YjCskv6mZj3gVuNVx?=
- =?us-ascii?Q?RC02b9QLvYUu+LLWhhp2NGmxMINGcufV4FqrvYCoPw3R5EGy9pBO2+T5eso4?=
- =?us-ascii?Q?3RVFJ1UoSn6bV29TkQCQS7fpaX5UdU/BZ7j9nm9YP+1b5xg5X19Fu0SKKKhg?=
- =?us-ascii?Q?YH07R0nc7RWAJ58O6g3x5DNEqeVwCeahqzOzuPB1UM3HjF8xR/bVMmyHMZk/?=
- =?us-ascii?Q?H0L38Kfk4wX5Fm5IcPRFviskq8mGJNx4pA6rzR0cocMEJBQeI5P+EhGJ0qoj?=
- =?us-ascii?Q?OX5JNCvvVY7Pg/LlhZoo16UP2daOfOCmN7zrjoBfJZKPAslkRrRHuMOEWOCI?=
- =?us-ascii?Q?dbJZ9Xot+iL1RK54NJ77wzyvcz2QdK7oNfSXyKMDgUVHZ1ED6MXHZFBpSZ3n?=
- =?us-ascii?Q?M7CsySVUMcNoURwYnXXX7jZGpdnsKUyqXuuj5ypQNUHmfuZ6aOqG0PhMDBJG?=
- =?us-ascii?Q?ddei0Ig8HKk6rYEdhbWyvIYPFRdFa6p3rdxLOMhAdK7Psn5yMMh0sb/tF539?=
- =?us-ascii?Q?FjHrEz970HykfpJpetY8aJsn0lXPF98WOUF4VHGOLSfjlu5Kt0ViBPBtjRN8?=
- =?us-ascii?Q?w6g3mPvJrQ5d9JNCjPXEGB9OTUC/YV2gJXUIpQkVNUs/8HdH8/1uy9CAbdSU?=
- =?us-ascii?Q?ESdEzst5Mxf6+YcBV6PfgW86P5XZ?=
+	=?us-ascii?Q?kPxkntgJW43mi+X1V9da3FEb4Mqh+dqrgWSGAeh+o/4duAKR0aRL7qsVLOLQ?=
+ =?us-ascii?Q?UexR4zeJG7i3L/PJJLNY1LS8Opeb6lA83Y71vxDcW6TLUmHejUgFfdV80rkR?=
+ =?us-ascii?Q?e9tI1H4WHVg4Md3NvqX190o2oFoBVvDweNujQoMlW5wouCtyAUGSIwGMTvYY?=
+ =?us-ascii?Q?8AAWTyV7XAHc8IBxM56PAA76V5yKQWPnKPLnMWwjNu5KCsFzrBuo82dPsPCN?=
+ =?us-ascii?Q?VRWd2lOCvOv9/FmbxGaC/CF9HDJ/NN8JuLKfvjwXvULxW67p9TR32g8SRoas?=
+ =?us-ascii?Q?tivmqsK9t14w7jjRyVTfFC2WL64G7rRrcsoStOfCf6nOGPi3CpqkHnd2LyL/?=
+ =?us-ascii?Q?QAfHtsmbnycQ3WOe3l9XcY+QV2wkGFBDjTrIVcycq7Wc50hTIBw9ozw1NRGQ?=
+ =?us-ascii?Q?WQAKow2IJtf7pP69D5AFYwMtrXmxAAACXWZv7fb2PtHSzengHFS9Woyq60YR?=
+ =?us-ascii?Q?XXiLRG0JSsmz4Wt6F/qCvnrj74NbPX92lCjXV5mX+fLg1MBxXq/vDDuM7o1t?=
+ =?us-ascii?Q?5drCQVW+9aQgjFLZHnSgRQoDGSzPdd1Y+JcLN8W+bFl9xXF6t0hQH/BQVo9L?=
+ =?us-ascii?Q?2r49k4L6eUOpfCjyyyJcNv1Ln53z39UI9inhmPIuK7h6neIBXCzb6Ftqz/Oz?=
+ =?us-ascii?Q?dCor/vC2ZXzwlhITBEVTRskRvnsAMoviT6fiQ4GFNd52sjtihZCo7zS/Tktn?=
+ =?us-ascii?Q?CRBw3+p/4xbNejB5cJYuwUpDquvp/PV5irObZUNRvoR8H+zq2KUTSujCsEEU?=
+ =?us-ascii?Q?yVMaXwL9s/Gr6lNYCxSmQFm0A/mkoxHEow69CwDBFUMTPmwzS8FuiUGQHGvn?=
+ =?us-ascii?Q?msu6c8wRdNK6KanDilAi0m5xnUml3rXbqsBJkXD1WkcgX5uciQFcCqMfuadX?=
+ =?us-ascii?Q?yD34LSrBtAplKi+EIkoTWGqomsvj/ApOkDke951MApXLpMIBTXjKh1RoMUy3?=
+ =?us-ascii?Q?C40au/TTe5/Tt+5Tli3VGr7m62M432INWXxLH4d5Sxn3Zc8dmbqAbvJFlsae?=
+ =?us-ascii?Q?dWT9xa6TvN2bm0Vw70BbxXsjthSkdtSP6JW4wLbiifwNkjgyx1/+5jT3/yR/?=
+ =?us-ascii?Q?sLIDT5ywz2z5IQz4EGePSAN+8P2IcnvtBJquYHVNgzYI5BXpeWTqxGnZR9RU?=
+ =?us-ascii?Q?KdWmnKbWO9y6Eoog4wUTHItfJFcA65sl/feM+db80aPjQK6nKfazqctfgcRS?=
+ =?us-ascii?Q?45Qs42+ZX8hRG+9Ci3nb/oE6ESgy2mA2pU7sNW0XVQreApV7uEEFRoOiY4uo?=
+ =?us-ascii?Q?VC1F8hFPvkA8rwEumFlRgnKQ7cOgCup+OnhKXTT7rJmltTPJMIPxpeLswXJ4?=
+ =?us-ascii?Q?XU7wVJCJIfH5NRlXPRagRfhH2/0cI2hlsytXxxbnsgy7QA=3D=3D?=
 X-Forefront-Antispam-Report: 
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR01MB8293.eurprd01.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?n+3IvNIV9sWQHX8jg01IPh+aoXCt+oW1iMSkrsHhzs/QLuXJRsOlh2Ra0OVq?=
- =?us-ascii?Q?cDzaZm5WeKiKWMiziH4GLOPa4EmfqtjxURuc0PBvnSVtz84f8gRKLcsNOdeA?=
- =?us-ascii?Q?6T52y/dxeITNDGwtHcljr9xFTY8i4fS5eisht1xhnOr7CMsOEr08vP/fUuU2?=
- =?us-ascii?Q?/vS0dlHkol3d11uAsZmj6W9LI38IUf5UvCbhczQntcgYrmhW1R5qwgR0ZE4q?=
- =?us-ascii?Q?GueaA3M6Q1vufbje7jBgKwRcGEZ/ehuYwpuV5BApQ+ihJkRH8n+E8Uv/GDDR?=
- =?us-ascii?Q?IGEm6AZTCMAmGSL0DvRdTwB7T8Rv5tBuKnowgFaVB1LPhQnrYlpVHQWVPeZi?=
- =?us-ascii?Q?Y7TEuHpXTpPmZFZZqJKioSE1IMVbp3zS+Yxg8s4VKaXan4hDBCUQNmaXLz1G?=
- =?us-ascii?Q?Kb5VUNXp7+kKtbZsnoJcisG6Gh9X/G0glak2l9fKRgh8tCtWx8heFZkk9Vj1?=
- =?us-ascii?Q?cS8907zj8PL+o9ryanf7+KOnm5D75iDmdmvIB8l3y4d5XpYsaGjku6U3x5VF?=
- =?us-ascii?Q?D8b0TLKHd2AS0u5ZAsBRztmO+Lf2Zawc68Kc10BWOv1C00yNjmBQ5MIoe8Cf?=
- =?us-ascii?Q?Wo/x0Vy2D8YygIB4YDmrfW1ItuN0Uk+iRINddlUH7PiKHa0rCjbHPPsYMkSh?=
- =?us-ascii?Q?F7tSvp1mAp/dpykHeo0/oDaQrgYTlljWxbaxyMV3gq5XphnQvZ4r/r9cfSW2?=
- =?us-ascii?Q?4fLxYo00kjxqGSYKA+WhOhFeHZmy0wCeDI2hOFJzi65HgMElpKFxBXWsfTk6?=
- =?us-ascii?Q?+6vkeXum+yjfOBlyK1dln95h9nNccPHnldJ32Vlw2dV38AZcuzoNUn73sthx?=
- =?us-ascii?Q?E/KlO02CuvJLZpwqgm9FJ36X2vimNvT8wnjgDm4qlQ9M9+2hdWP/6C48HHfi?=
- =?us-ascii?Q?XK2pt5MHVVAeNyb0+H2vkO9fjjO2GLzOa0SXzcFcsYbqcdYhwUdskNIgRb6N?=
- =?us-ascii?Q?sgrOhJBaBCpp0U1kaZiBV+TJPjozVIw+9P5n4JgUTJTOgP14cTipkJpNS+yO?=
- =?us-ascii?Q?LtgRBWHJYuWkkz17LJLaO92EFNqXTwrgFUW1jEAqvi5cHXM3dyzt6XuPtvOd?=
- =?us-ascii?Q?rY88KJqCB5MPofJ61QdkbZ7HNHcMY3nlDiriu5jTcEuzRBBlivlh4wBxrCGn?=
- =?us-ascii?Q?J/7ECzeZoevYT5DM9sb2zVzH24mhSRUvvprvU1Gi3vriMzGEMC+BXissRD35?=
- =?us-ascii?Q?+ohVlnON5q6wCq9DDrKggFHYWyz34MXL0EBs8+kaEVM7tWRwIo7RaBgKyuIz?=
- =?us-ascii?Q?jOjLYoHX7kPWClY/CpnLRsqoodIyr+Dkqwfo2zV8sBHBwLCGmR864n12t2nh?=
- =?us-ascii?Q?BEiy+PzqpRx8pACGtGrWphR2G5uZ0peJlo0Q2ZwuhRI7/q1BnxfYnWegjOlx?=
- =?us-ascii?Q?jJnoHjQLYTOpIUwIiArF68PXAKAX0tk3vKtQqPh+Zyaet/ZDB0GqaJq65zlg?=
- =?us-ascii?Q?oX15PfsPAh6h/Aafk064loGWoOXk1n3xfelIuFQgEgaevvfenCgsH7lojbLd?=
- =?us-ascii?Q?NB/zGdguwM3rB/blk+cbebSabuBvcaQONebRay+BAkHzl81rn1ISBo7DBpWP?=
- =?us-ascii?Q?lK3gVEYTrhVR9LVsdxzdD2BHdbcfy61oi5NtViDO/Q6Wx8Q+m2Immey/PyCu?=
- =?us-ascii?Q?+Q=3D=3D?=
+	=?us-ascii?Q?WkJnOXduuqa+6hGoDvPpnCfr5SH7CSnRmNRrmDQ6HEkpArQkL8oRaXgp/fIx?=
+ =?us-ascii?Q?APlm8wVmhRnTP4stQiyBFPbV5v/FMkF0qMiCzxvhbgFZOoygbCb3lUVy/1Pc?=
+ =?us-ascii?Q?8khGAuvEyS0kaagQ/UDgXYPQg53ROkA0JGT/hg+6148tB9EzpwB6+Roi+3QE?=
+ =?us-ascii?Q?rbNDyrI0JedH96/i5WHO4j0flYO8cs89mKS0LBY3bMpFk7HWIsOlxWgfZ/yW?=
+ =?us-ascii?Q?121pelpNVlN9Hpj+BTPj8L/onGshQQ91UVr1FnMyNww1+nIRHAD1GP9BKVzh?=
+ =?us-ascii?Q?IntLnnJ69zB2KeISN5AsFcEtdEqpXVs6NbqCKOCrM3sTci5VStVUPPZYTZsu?=
+ =?us-ascii?Q?naMKgZngLhX6g1cIKh8XU98gVFSQgqvp29Pyf4oOu6h+QKh+quszg1HSTZzg?=
+ =?us-ascii?Q?7+KQVNzAOEWDsVUZ8lyXU/2jRcaQSr146y3ZNa1KmZovCAMyeKyykOiefCYp?=
+ =?us-ascii?Q?ZwKKKx+bMemllW6+26MfGBDhPur/ZXV8gtsKIbN3sojmUa4K6plnuKh+acWY?=
+ =?us-ascii?Q?/FzrHSHe4ktkaGgXjRnxTH6hYPHmJua5o8IMvWBmMPtMa0Gijw5QshpZLJYE?=
+ =?us-ascii?Q?zdZ6iYZ6rC9Hd1MqcNT1BzaHS59IKp2KZ5hLH67ApZeVWsrYCXG3GNFD8nA4?=
+ =?us-ascii?Q?wfxD63Y6e1GEWfi5ICvYR/kurjvveRaSkksqBRsM27BsBIqADS7We93EUe/f?=
+ =?us-ascii?Q?5POgJLKDWsHbjhLGWbO84vi0fCaGbn719ULZhJn3ruBT+46ea8/Wg6n8cvjY?=
+ =?us-ascii?Q?ec1LGOnuZJtmHJKxKO2V8cuEgHnPGH/zvz979Hg73IvTbqmzKgGdLFfgZo/A?=
+ =?us-ascii?Q?WlXN+LfBovBAJQmZKk0uVEBycb3j7BB25QU5/6pSXxBAwKRohBr90qY4yKcx?=
+ =?us-ascii?Q?Kj4VkINRvzu0b4j0XoED95vXyXrmSV13k6XiQ95IEoBiRMzsBh9UgtZXEszC?=
+ =?us-ascii?Q?ulpXQxJFLDUkpzp5TSWo/wB5u+c/XkcQgzhfhvgMOYhpW1PNZbAsB1DX7c7t?=
+ =?us-ascii?Q?Oifslzl54grqee1I1wjG0CKUsZQ0ERRAxrf7NQgrr6m8RMfspqDCBdgh5JMr?=
+ =?us-ascii?Q?+b766SgqIs8OhFLl0iL9nYhXwfcaFtjEP+DERqupi6TTbPy0cCDG0opniLr2?=
+ =?us-ascii?Q?rqiyKBTmA+5qY+cTUBh9GD/1flryJjXhrqg1aKXtf3BeRwYxmaOLHCjB16dp?=
+ =?us-ascii?Q?2PAj29bo+nLp6f3jSGzeCy3Q1J6vSr3tqIxAxZwMtRWjiC1ZFbVDuVoaybUy?=
+ =?us-ascii?Q?/gsrvjyTaTv2o62SeVeQW8R1hzeSjRazH02Nmk9IlPPxYKyCap6cNauUofpN?=
+ =?us-ascii?Q?eB4gR1BYWz56R1DirKivWw1OhgauiO2rx/BIzcuUs38vFOr5xvLhR5DS+Osl?=
+ =?us-ascii?Q?RGIHCTL4ERlPCAb1zOZgaWtJ9E1HN9wtqY//ERi8K2kqu+4HW0SiT2zHeE+p?=
+ =?us-ascii?Q?SiLfu/hXARzX+2UTwDqaCLnJfeHyB3VKL4QMvmJ7Ufg3YImTh2etKoEAFEa+?=
+ =?us-ascii?Q?bGr8mNLvh8TgXwxequx/b8oowy0HBcOx+P+D7pKkRuhisRRonaMIGN1HILzP?=
+ =?us-ascii?Q?cXs31kYeSUK7hP4IAd6JXGN3Y9zBJumuDBPgeq1CFuxiLnQJvjv3ZHHJd1YD?=
+ =?us-ascii?Q?zw=3D=3D?=
 X-OriginatorOrg: navimatix.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: acd1658e-509f-45c3-bad6-08dd2b37c405
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b0b0e09-1e17-41c0-f281-08dd2b37c53f
 X-MS-Exchange-CrossTenant-AuthSource: DU2PR01MB8293.eurprd01.prod.exchangelabs.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2025 14:14:27.0012
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jan 2025 14:14:28.9650
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: c87b4f54-b992-4813-8f3f-4a876324197f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: P2spssEm9ujZPy6iY5daCGN53KIcjVup1EXVrSalOjsv83vhstOpORroVNfyif56gSOUnWr3iu6LgHziM/3ctMpFe1RAdJH/UfiB6xPkMM0=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 8FkikPUrazcRTNRUsTAC9BG3Z/7X4upDSWnShmcBRSHiJ86V9A3wmK+K/rB0m9TSFQo9NL7IjqaJNNl4UXa6EdXomQq5mT6TnkKC719RzRw=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR01MB8192
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Thu, 02 Jan 2025 14:14:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6054
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6055
 
 From: J=F6rg Sommer <joerg.sommer@navimatix.de>
 
-The variable *BB_LOGCONFIG* is part of *BB_ENV_PASSTHROUGH_ADDITIONS* in
-/scripts/oe-buildenv-internal and can therefore be passed as environment
-variable.
+To give an example how the YAML format can be used, the example of the
+warnings logger should be converted to YAML.
 
 Signed-off-by: J=F6rg Sommer <joerg.sommer@navimatix.de>
 ---
- .../bitbake-user-manual-execution.rst                 | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ .../bitbake-user-manual-execution.rst         | 42 ++++++++-----------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
+
+
+Is the @ in front of disable_existing_loggers correct? In
+https://docs.python.org/3/library/logging.config.html#dictionary-schema-det=
+ails
+it's not given. Or can we remove the whole line? At me it works.
 
 diff --git a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.=
 rst b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-index d58fbb32ea..a1267400ab 100644
+index a1267400ab..7335359918 100644
 --- a/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
 +++ b/bitbake/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-@@ -671,7 +671,7 @@ logging configuration is merged using the following rul=
-es:
-=20
- -  Any keys defined in the ``handlers``, ``formatters``, or ``filters``,
-    will be merged into the same section in the default configuration,
--   with the user specified keys taking replacing a default one if there
-+   with the user specified keys replacing a default one if there
-    is a conflict. In practice, this means that if both the default
-    configuration and user configuration specify a handler named
-    ``myhandler``, the user defined one will replace the default. To
-@@ -707,9 +707,9 @@ or higher priority to a file called ``hashequiv.log``::
-            }
-        },
-        "formatters": {
--               "logfileFormatter": {
--                   "format": "%(name)s: %(levelname)s: %(message)s"
--               }
-+           "logfileFormatter": {
-+               "format": "%(name)s: %(levelname)s: %(message)s"
-+           }
-        },
-        "loggers": {
-            "BitBake.SigGen.HashEquiv": {
-@@ -723,7 +723,8 @@ or higher priority to a file called ``hashequiv.log``::
-        }
-    }
-=20
--Then set the :term:`BB_LOGCONFIG` variable in ``conf/local.conf``::
-+Then set the :term:`BB_LOGCONFIG` variable in the process environment when
-+calling bitbake, or set it in ``conf/local.conf``::
+@@ -728,35 +728,29 @@ calling bitbake, or set it in ``conf/local.conf``::
 =20
     BB_LOGCONFIG =3D "hashequiv.json"
 =20
+-Another example is this ``warn.json`` file to log all ``WARNING`` and
++Another example is this ``warn.yaml`` file to log all ``WARNING`` and
+ higher priority messages to a ``warn.log`` file::
+=20
+-  {
+-      "version": 1,
+-      "formatters": {
+-          "warnlogFormatter": {
+-              "()": "bb.msg.BBLogFormatter",
+-              "format": "%(levelname)s: %(message)s"
+-          }
+-      },
++  version: 1
+=20
+-      "handlers": {
+-          "warnlog": {
+-              "class": "logging.FileHandler",
+-              "formatter": "warnlogFormatter",
+-              "level": "WARNING",
+-              "filename": "warn.log"
+-          }
+-      },
++  '@disable_existing_loggers': false
+=20
+-      "loggers": {
+-          "BitBake": {
+-              "handlers": ["warnlog"]
+-          }
+-      },
++  formatters:
++    warnlogFormatter:
++      '()': bb.msg.BBLogFormatter
++      format: '%(levelname)s: %(message)s'
+=20
+-      "@disable_existing_loggers": false
+-  }
++  handlers:
++    warnlog:
++      class: logging.FileHandler
++      formatter: warnlogFormatter
++      level: WARNING
++      filename: warn.log
++
++  loggers:
++    BitBake:
++      handlers:
++        - warnlog
+=20
+ Note that BitBake's helper classes for structured logging are implemented =
+in
+ ``lib/bb/msg.py``.
 --=20
 2.45.2
 
