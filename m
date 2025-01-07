@@ -1,114 +1,207 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <mark.hatle@kernel.crashing.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C2669E77198
-	for <webhook@archiver.kernel.org>; Mon,  6 Jan 2025 09:37:10 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.56163.1736156223857700405
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CD97AE77198
+	for <webhook@archiver.kernel.org>; Tue,  7 Jan 2025 23:09:46 +0000 (UTC)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by mx.groups.io with SMTP id smtpd.web10.6295.1736291377727422779
  for <docs@lists.yoctoproject.org>;
- Mon, 06 Jan 2025 01:37:04 -0800
+ Tue, 07 Jan 2025 15:09:37 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=J8u+aPsA;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 35E68C000E;
-	Mon,  6 Jan 2025 09:37:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1736156221;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=k8w/CkDYVLHAdlcpL+riks7fMskQ20s8/Ua3tyO1Pmw=;
-	b=J8u+aPsALji1oxGGuL54EufDB7SanGLeMp756r+iHPmIUT90nMcXBSEogluFey3AF9EfA0
-	X0Ez79G5ogXOJDx9sC/Ut2qYC0BDAblyPeksBPi4GdqPfzzYjdIOR/3dViswa1KrByYWe3
-	MnJ1gMuTnJec/pATFxMyOAuQE2mWO8x6LaCG88dK2mc1B/rUK7JPf9jl/cyRsqA4cdTVc8
-	BCc1aIBNK4H5MFNn5lqFlFcusVhh19U33UNkDxVx646Aw2R0j2K/itj0ZGAZZB+4MeDkBo
-	4bWZ14Z7cx1PdCnTocKwlS3jhlqXbXOOoRaTGhhflICf/EzuUHgpDwtwoSeqEQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 06 Jan 2025 10:37:00 +0100
-Message-Id: <D6UW0L5UHG5P.1JGNQ7WKC2N6@bootlin.com>
-Subject: Re: [docs] [PATCH 1/2] doc/logging: small clean-up and name
- environment
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <joerg.sommer@navimatix.de>, <bitbake-devel@lists.openembedded.org>,
- <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <2bf2a340cbf86391ae6722739f750f9d44f550b3.1735852948.git.joerg.sommer@navimatix.de>
-In-Reply-To: <2bf2a340cbf86391ae6722739f750f9d44f550b3.1735852948.git.joerg.sommer@navimatix.de>
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=none (message not signed); spf=pass (domain: kernel.crashing.org, ip: 63.228.1.57, mailfrom: mark.hatle@kernel.crashing.org)
+Received: from kernel.crashing.org (70-99-78-136.nuveramail.net [70.99.78.136] (may be forged))
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 507N7Wt4030596;
+	Tue, 7 Jan 2025 17:07:33 -0600
+Received: from [192.168.2.133] ([192.168.2.133])
+	by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 507N7VY0009310;
+	Tue, 7 Jan 2025 17:07:31 -0600
+Message-ID: <cb8cda4b-4b71-4896-b355-d628336b11a4@kernel.crashing.org>
+Date: Tue, 7 Jan 2025 17:07:31 -0600
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: docs@lists.yoctoproject.org
+Content-Language: en-US
+Cc: antonin.godard@bootlin.com,
+        Richard Purdie <richard.purdie@linuxfoundation.org>
+From: Mark Hatle <mark.hatle@kernel.crashing.org>
+Subject: Best practices documentation for multiconfigs
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 06 Jan 2025 09:37:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6060
+ <docs@lists.yoctoproject.org>; Tue, 07 Jan 2025 23:09:46 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6062
 
-Hi J=C3=B6rg,
-
-On Thu Jan 2, 2025 at 10:23 PM CET, J=C3=B6rg Sommer via lists.yoctoproject=
-.org wrote:
-> From: J=C3=B6rg Sommer <joerg.sommer@navimatix.de>
->
-> The variable *BB_LOGCONFIG* is part of *BB_ENV_PASSTHROUGH_ADDITIONS* in
-> /scripts/oe-buildenv-internal and can therefore be passed as environment
-> variable.
->
-> Signed-off-by: J=C3=B6rg Sommer <joerg.sommer@navimatix.de>
-> ---
->  .../bitbake-user-manual-execution.rst                 | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
->
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst b/=
-doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-> index d58fbb32e..0e20d5933 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-execution.rst
-> @@ -671,7 +671,7 @@ logging configuration is merged using the following r=
-ules:
-> =20
->  -  Any keys defined in the ``handlers``, ``formatters``, or ``filters``,
->     will be merged into the same section in the default configuration,
-> -   with the user specified keys taking replacing a default one if there
-> +   with the user specified keys replacing a default one if there
->     is a conflict. In practice, this means that if both the default
->     configuration and user configuration specify a handler named
->     ``myhandler``, the user defined one will replace the default. To
-> @@ -707,9 +707,9 @@ or higher priority to a file called ``hashequiv.log``=
-::
->             }
->         },
->         "formatters": {
-> -               "logfileFormatter": {
-> -                   "format": "%(name)s: %(levelname)s: %(message)s"
-> -               }
-> +           "logfileFormatter": {
-> +               "format": "%(name)s: %(levelname)s: %(message)s"
-> +           }
->         },
->         "loggers": {
->             "BitBake.SigGen.HashEquiv": {
-> @@ -723,7 +723,8 @@ or higher priority to a file called ``hashequiv.log``=
-::
->         }
->     }
-> =20
-> -Then set the :term:`BB_LOGCONFIG` variable in ``conf/local.conf``::
-> +Then set :term:`BB_LOGCONFIG` as an environment variable when running
-> +bitbake, or set it in ``conf/local.conf``::
-
-Like in the rest of the document: s/bitbake/BitBake/
-
->
->     BB_LOGCONFIG =3D "hashequiv.json"
-> =20
+I was talking to Richard on IRC and we think that we need to start collecting 
+and documenting examples and/or best practices for multiconfig usage.  Below is 
+my question attempt at starting this.  Hopefully we can expand this to something 
+generally useful.  What follows is a bit rough, and will likely need editing...
 
 
-Antonin
+A common use for multiconfig is to use the default configuration as the regular 
+Linux build, while one or more multiconfigs can be used to build special 
+components (often baremetal firmware.)  Enabling this workflow requires us to do 
+three primary actions:
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+   1) Configure the multiconfig builds
+   2) Use multiconfig dependencies to trigger builds of necessary components
+   3) Pick up the output of the multiconfig build and bring it into a different 
+config
+
+In order to successfully do the above, the following could be considered to be 
+best practices.
+
+Configuration:
+
+All of the (user) configuration starts with the local.conf file.  A default 
+value of:
+
+TMPDIR ?= "${TOPDIR}/tmp"
+
+is used to control the location for temporary build items, where components are 
+stored and built components are deployed.  For the deployed items the settings are:
+
+DEPLOY_DIR ?= "${TMPDIR}/deploy"
+DEPLOY_DIR_IMAGE ?= "${DEPLOY_DIR}/images/${MACHINE}"
+
+
+Each multiconfig requires a separate multiconfig configuration file.
+
+See: 
+https://docs.yoctoproject.org/dev-manual/building.html#building-images-for-multiple-targets-using-multiple-configurations
+
+
+At a minimum a different TMPDIR is required for each multiconfig.  As a best 
+practice, instead of defining each TMPDIR separately, if they are defined as an 
+append (.= operation) with an expected format, later steps can use this 
+information to find the output of the build.  For example:
+
+TMPDIR .= "-${BB_CURRENT_MC}"
+
+
+This also has the side effect that if the user changes the default TMPDIR 
+location in local.conf, all of the multiconfigs will follow with the same change 
+automatically.
+
+
+For example:
+
+conf/multiconfig/baremetal-firmware.conf:
+
+TMPDIR .= "-${BB_CURRENT_MC}"
+TCLIBC = "newlib"
+
+
+and a custom recipe called 'my-firmware.bb' that uses newlib to build baremetal 
+firmware for the device.  my-firmware.bb should define a do_deploy function that 
+deploys the baremetal firmware to ${DEPLOYDIR} with a specific name, such as 
+"my-firmware.elf".
+
+
+Building:
+
+Using an 'mcdepend' a recipe in one multiconfig can trigger the build in another 
+multiconfig, such as:
+
+
+my-special-firmware.bb:
+
+do_compile[mcdepends] = "mc::baremetal-firmware:my-firmware:do_deploy"
+
+
+The above will ensure when do_compile is triggered, it further triggers the 
+multiconfig build which will deploy the built firmware.
+
+
+
+Using the output of the build:
+
+However, just because we've built the item using mcdepends, we need to use the 
+output in some way.   We can make a series of assumptions, based on the default 
+Yocto Project variables in order to get the binary for packaging.
+
+Adding a do_install task to the example above:
+
+my-special-firmware.bb:
+
+do_install() {
+    install -Dm 0644 ${TMPDIR}-baremetal-firmware/deploy/my-firmware.elf 
+${D}/lib/firmware/my-firmware.elf
+}
+
+
+Doing the above will allow the firmware binary to be transfered and packaged 
+into the Linux context and rootfs.  However, this only works if we are careful 
+to not affect TMPDIR outside of specific places, and we use the default 
+DEPLOY_DIR (or other) deployment variables.
+
+
+Suggested best practices:
+
+TMPDIR (other then the default set in bitbake.conf) is only set in local.conf by 
+the user.  This means that we should NOT manipulate TMPDIR in any way within the 
+machine or distro .conf files.
+
+A multiconfig must specify a TMPDIR, and should specify it by appending the 
+multiconfig name via "-${BB_CURRENT_MC}".
+
+All recipes should following the best practices for do_install and do_deploy.
+
+Recipes that are used to transfer the output from a multiconfig target should 
+use task[mcdepends] to trigger the build of the component, and then transfer the 
+item to the current configuration in do_install or do_deploy, assuming the value 
+of the deployed item based on the TMPDIR.
+
+Suggested that the dependency and path are specific in a variable to make it 
+easier to adjust as assumptions change, or the user has specific environment needs.
+
+
+(we should have some proper examples for this.... i.e.)
+
+conf/multiconfig/baremetal-firmware.conf:
+
+TMPDIR .= "-${BB_CURRENT_MC}"
+TCLIBC = "newlib"
+
+recipes-firmware/firmware/my-firmware.bb:
+
+do_compile() {
+    echo "testing" > ${B}/my-firmware.bin
+
+do_install() {
+    install -mD 0644 ${B}/my-firmware.bin ${D}/lib/firmware/my-firmware.bin
+}
+
+do_deploy() {
+    install -mD 0644 ${B}/my-firmware.bin ${DEPLOYDIR}/my-firmware.bin
+}
+
+recipes-firmware/firmware/my-special-firmware.bb:
+
+INHIBIT_DEFAULT_DEPS = "1"
+
+FIRMWARE_DEPENDS   ??= ""
+FIRMWARE_MCDEPENDS ??= "mc::baremetal-firmware:my-firmware:do_deploy"
+FIRMWARE_FILE      ??= "${TMPDIR}-baremetal-firmware/deploy/my-firmware.elf"
+FIRMWARE_FILE[vardepsexclude] += "TMPDIR"
+
+do_install() {
+     if [ ! -e ${FIRMWARE_FILE} ]; then
+         echo "Unable to find FIRMWARE_FILE (${FIRMWARE_FILE})"
+         exit 1
+     fi
+
+     install -Dm 0644 ${FIRMWARE_FILE} ${D}/lib/firmware/${FIRMWARE_FILE}
+}
+
+do_deploy() {
+     if [ ! -e ${FIRMWARE_FILE} ]; then
+         echo "Unable to find FIRMWARE_FILE (${FIRMWARE_FILE})"
+         exit 1
+     fi
+
+     install -Dm 0644 ${FIRMWARE_FILE} ${DEPLOYDIR}/${FIRMWARE_FILE}
+}
 
