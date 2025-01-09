@@ -2,159 +2,96 @@ Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 46D76E7719A
-	for <webhook@archiver.kernel.org>; Thu,  9 Jan 2025 21:55:45 +0000 (UTC)
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
- by mx.groups.io with SMTP id smtpd.web11.5021.1736459737242946652
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5EA91E7719A
+	for <webhook@archiver.kernel.org>; Thu,  9 Jan 2025 22:20:35 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web10.5638.1736461232889168380
  for <docs@lists.yoctoproject.org>;
- Thu, 09 Jan 2025 13:55:37 -0800
+ Thu, 09 Jan 2025 14:20:33 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=NamAoL2g;
- spf=pass (domain: gmail.com, ip: 209.85.128.42, mailfrom: adrian.freihofer@gmail.com)
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4361f65ca01so14613475e9.1
-        for <docs@lists.yoctoproject.org>; Thu, 09 Jan 2025 13:55:37 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=PVCkwPGd;
+ spf=pass (domain: gmail.com, ip: 209.85.128.53, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-436345cc17bso11518105e9.0
+        for <docs@lists.yoctoproject.org>; Thu, 09 Jan 2025 14:20:32 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736459735; x=1737064535; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ySFp61oXecks5XM9KjQBlW3hXewi39f7DWeAF1BRJHk=;
-        b=NamAoL2gd4LLeUtYycHOL0HHPDZOu1oDto5JCgXkWgNfx65pmVvHgA+Txe3REvO64U
-         otmkjaagv1kxeXPrjwQRPUhuMndhFnsYn4PEgRH/qW8p7lhP7rQ/CWhuDke0/h+fw0b7
-         UL6RjkEkv3mnIzfsK+2q0M4L7T7TgyygYwWfdzNdeE4QNrMmhoytBOhvO2HDia45xkzF
-         IOWinv7hKMVHm2VD6pR0YdvHNymM4RucV/Zn84Xw+uWsobbewUMnjzKgBbhOa43fZtxP
-         E4gYIO+0i6VBpN2WhFHmf7czuRpolgP7kJcHjU/g1emgxbgYWjqTeD3z1uFjavXV9K5h
-         KhrA==
+        d=gmail.com; s=20230601; t=1736461231; x=1737066031; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9PId356bY6gFFUNmSD8n8li+HAjEo2d73HBvadglZNI=;
+        b=PVCkwPGdwgxRQUFttI0RTace66ZvPBu2wLe2DnWT/OAggCtGebaWzXr1EDoDFb5PtG
+         1oJIM3p5fLAyRwKcShm5ki/1r6bmEJbEL5+zQogtx9XCT1ePKUES7M6bzW9mgsoYvE9a
+         blBVKbDfk7u3tu5KozkdpPqh9TP5OttZKyymQvcMrvHpFlv0VBigbaYMu4+dNs1guplV
+         JS0akuXXkBxjPJWzRWvVl7wd1mbBegGgdjWolGFQ0wV9uAhJWnAtS8Dh/6ztM7XOnr23
+         bRmnATS6sRV3QUEu//lk1xgcRe9DxNE072JRwV95uv3BNtl/QCVCOiJT9Mg9NjCj3oOY
+         BNLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736459735; x=1737064535;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ySFp61oXecks5XM9KjQBlW3hXewi39f7DWeAF1BRJHk=;
-        b=Zchq5aTRdjAsSEFK+TFh4Pax24IMD4lWSu5L9smIuUYtTnBGjPxradC+vZN1GY1/Lt
-         6cmD5BvXjw1r2mG36BnOoOnNRk/kER9jsh0LfhAEcMAA4/LPr26QsLIpqef4pcGq7o5+
-         J+GkPPjvdWUwTDTsNOoCVbBz1cvldJn7/TEr1TGgLJhUngMDtbFrKm860Rn7mXTcrL35
-         2FbqN4rCgk8I81HbcKrN98LmMcuE1lPe/FTZgEr1s1KadgJ6eeofBuaIeqZLrv7HeCJI
-         dpwNwGxCXUyjU4taZRyrL17u9X4c5h9jsrfeDx6kJVEcDU/NfJjV9Q9fP8V87jp0Ogln
-         m3nw==
-X-Forwarded-Encrypted: i=1; AJvYcCWgvCmUU9Nc7VcplJz3ydLnr0EZrBSy4L8joL6+RK5Axoc4sbcBUlHtU9UKS+/4jaYvZgOv@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yz2UzB6KG6lgHWXsFwoBXQkDs/EagD6chF9rzKKXeu+zUFNaoCH
-	/8JSsGbZ3IblUUm/bZIws8+rBvAPQXFrExK1ajtHpTxr07WYieFx
-X-Gm-Gg: ASbGncteHWF1ApVAGZLJBkLS3v5aoIhb/p2lLVeayYxU8OU56trxDFKRVVDtHoaYctM
-	RbFAZAcZhSSqQ0Uy6s+y9D+wQyBC0FjLhLArCgSDNpVjCEmMnsywA86AJGc3w+2UFqLk2v8WGe0
-	Nq4HyWM9H0VEwXQ2OK+Z0yFUWnRtKSz/Hi8z5VVmhSlTwzIK5Xkl4pV5OHBe+HgxTZCAQRAasLL
-	9jHQZ2/91/GIn6XOLObKis1BbgRPFVmiNWtyYDrxgDFls2NjeB5ymtxwtxr8yFGBSdxB+a5Cz7V
-	hL8Qh5CnqL4Df8cSzQam+VA0ht0JpI4=
-X-Google-Smtp-Source: AGHT+IHbc7LohtnVPPi5rHZA7U714i1Md/y2YEVt+za2cd+S87PTxPK2QOtxbTS+ef4211Ru/gFXoA==
-X-Received: by 2002:a05:600c:4745:b0:434:9c60:95a3 with SMTP id 5b1f17b1804b1-436e26c4218mr78801885e9.11.1736459735117;
-        Thu, 09 Jan 2025 13:55:35 -0800 (PST)
-Received: from ?IPv6:2a02:169:59a6:0:55c4:f628:91f3:4287? ([2a02:169:59a6:0:55c4:f628:91f3:4287])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fd03sm33948965e9.6.2025.01.09.13.55.33
+        d=1e100.net; s=20230601; t=1736461231; x=1737066031;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9PId356bY6gFFUNmSD8n8li+HAjEo2d73HBvadglZNI=;
+        b=cHSzcTgLaY9REk1ShnTSNJcLl9vTJQa0j2OL+voBtNR47yL4BRUDImkdeBUvo5DylL
+         VpvFd3TwRLfk/BmvGq9iVN52AvmoX2jzO7H0RBokOnCD9kGY//MK3nfa6WVm1USc3omy
+         134TVrXtWUsP9YQfiH3wO90YMj9brRrRIWP7mGSRbbX0IqppnABPVuxdcml5f6Xo0uDA
+         iNSf1iViefAM+1MXKlDIAAw6IVTBRgr0YES+KfcFRAKdsyUD3EMav8m6+ix3+YXUbiky
+         YSaJJ4qLR/olPRYH5uXTLVwdIru3XL42v8JOJl94eFzrBLabQxgCowEts+eZfYQfi4Sg
+         LtSw==
+X-Gm-Message-State: AOJu0Yw0rs++0XRYyf8hM60nyeGitOGUZgAoZ22cSICtxMMCF+75vzbD
+	SK94RKfr18E5k/i5eth57FpYTDOFPMnMZBS64J5gZLyn/zItIp94GLiMWA==
+X-Gm-Gg: ASbGncswGw1sproztL3pSd8Se2+OVPul5wMAKONWW2GSu70jX7CKcsEuc36s9AG2HIL
+	L44+yzVZPmfsH1sVThk+YWOebxc1q/X3cvQZ2qCrIYLAHb1hu6awaHxZk/FQaQ81eg40r3hf6uI
+	/fdp+hP3NDuakX1iEWynMODll/0hXXrgRIUrsFUXMUrN5j/ACoUovOa/nbksN7sRgBhzDlVq2Op
+	5T2AMDDPFNu+x2287W3PJQvBP6YwTKmPEDN/WVVIt/4MABd0iSE8/upOKUdDAfALI/lZxDRNmBQ
+	qS1L
+X-Google-Smtp-Source: AGHT+IGUCPtGqmXY751/cgGYYa5PUudbgW4qi1WnF2slyJVuwa+DNv2K3DNy4z7Km+9C9mwHFeCi5A==
+X-Received: by 2002:a05:600c:3588:b0:434:fdbc:5cf7 with SMTP id 5b1f17b1804b1-436e26f4aecmr69080685e9.27.1736461230819;
+        Thu, 09 Jan 2025 14:20:30 -0800 (PST)
+Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e4c1dc6sm2853265f8f.96.2025.01.09.14.20.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 13:55:33 -0800 (PST)
-Message-ID: <1ab8a7bfe383cf22b553d1e5c478705c070d93d1.camel@gmail.com>
-Subject: Re: [docs] [PATCH v2 0/2] Move devtool doc from extensible to dev
- manual
+        Thu, 09 Jan 2025 14:20:30 -0800 (PST)
 From: Adrian Freihofer <adrian.freihofer@gmail.com>
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, Paul Eggleton
-	 <bluelightning@bluelightning.org>
-Date: Thu, 09 Jan 2025 22:55:33 +0100
-In-Reply-To: <20250102-devtool-dev-manual-v2-0-db3fcb81b938@bootlin.com>
-References: <20250102-devtool-dev-manual-v2-0-db3fcb81b938@bootlin.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2 (3.54.2-1.fc41app1) 
+X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
+To: docs@lists.yoctoproject.org
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH v2 3/3] sdk-manual: extensible.rst: remove confusing post-install-logging
+Date: Thu,  9 Jan 2025 23:17:21 +0100
+Message-ID: <20250109222015.12658-4-adrian.freihofer@siemens.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250109222015.12658-1-adrian.freihofer@siemens.com>
+References: <20250109222015.12658-1-adrian.freihofer@siemens.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 09 Jan 2025 21:55:45 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6074
+ <docs@lists.yoctoproject.org>; Thu, 09 Jan 2025 22:20:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6078
 
-Hi Antonin
+This is a fix for 22dc5b3be3b1fbdb9447999b71f79db055271826, which has
+completely replaced debug-tweaks. But in the context of devtool ide-sdk
+and the comment in the example, the post-install-logging-image feature
+doesn't really make much sense. Therefore, remove it.
 
-Please keep the documentation of devtool ide-sdk together with the
-other commands of devtool. See also my more detailed comment here:
-https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D13417#c5
+Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+---
+ documentation/sdk-manual/extensible.rst | 1 -
+ 1 file changed, 1 deletion(-)
 
-Thank you
-Adrian
-
-On Thu, 2025-01-02 at 10:40 +0100, Antonin Godard via
-lists.yoctoproject.org wrote:
-> [ YOCTO #13417 ]
->=20
-> As described in
-> https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D13417,
-> the devtool documentation is not really coupled to the extensible
-> SDK,
-> and so documentation for it could be part of its own manual in the
-> dev-manual.
->=20
-> The first patch of the series moves the documentation from
-> sdk-manual/extensible.rst to dev-manual/index.rst. The second patch
-> removes some reference to the eSDK in the manual which no longer
-> apply
-> within this new context.
->=20
-> This series depends on:
-> https://lore.kernel.org/r/20241223-devtool-deploy-target-v1-1-ee00beb4769=
-1@bootlin.com
->=20
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
-> Changes in v2:
-> - forgot to fix some references to titles in the previous version,
-> fixed
-> =C2=A0 them in this v2.
-> - Link to v1:
-> https://lore.kernel.org/r/20241224-devtool-dev-manual-v1-0-0cc4fb584018@b=
-ootlin.com
->=20
-> ---
-> Antonin Godard (2):
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Move devtool doc from extensible to dev ma=
-nual
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev-manual/devtool: remove reference to th=
-e extensible SDK
->=20
-> =C2=A0documentation/dev-manual/devtool.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 954
-> ++++++++++++++++++++
-> =C2=A0.../figures/devtool-add-flow.png}=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | Bin
-> =C2=A0.../figures/devtool-modify-flow.png}=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | Bin
-> =C2=A0.../figures/devtool-upgrade-flow.png}=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | Bin
-> =C2=A0documentation/dev-manual/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0=C2=
-=A0 1 +
-> =C2=A0documentation/sdk-manual/extensible.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 959 +----------
-> ----------
-> =C2=A06 files changed, 960 insertions(+), 954 deletions(-)
-> ---
-> base-commit: 4b904539d05fdac123ed96c3952613fbbe612c39
-> change-id: 20241223-devtool-dev-manual-bb387251f9be
-> prerequisite-change-id: 20241223-devtool-deploy-target-
-> 27d9f6e8a250:v1
-> prerequisite-patch-id: d3a98c5a92ce8ed4945595df218769028f552057
->=20
-> Best regards,
->=20
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#6051):
-> https://lists.yoctoproject.org/g/docs/message/6051
-> Mute This Topic: https://lists.yoctoproject.org/mt/110386509/4454582
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe:
-> https://lists.yoctoproject.org/g/docs/unsub=C2=A0[adrian.freihofer@gmail.=
-com
-> ]
-> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
->=20
+diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+index 3733997fa..1cb1bb47c 100644
+--- a/documentation/sdk-manual/extensible.rst
++++ b/documentation/sdk-manual/extensible.rst
+@@ -658,7 +658,6 @@ The extensible SDK supports two different development modes.
+          allow-empty-password \
+          allow-root-login \
+          empty-root-password \
+-         post-install-logging \
+       "
+ 
+       # Remote debugging needs gdbserver on the target device
+-- 
+2.47.1
 
 
