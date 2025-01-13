@@ -2,87 +2,114 @@ Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C50B3C02180
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D6544C02183
 	for <webhook@archiver.kernel.org>; Mon, 13 Jan 2025 23:37:59 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web11.32931.1736811470006494245
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+ by mx.groups.io with SMTP id smtpd.web10.32768.1736811472862631779
  for <docs@lists.yoctoproject.org>;
- Mon, 13 Jan 2025 15:37:50 -0800
+ Mon, 13 Jan 2025 15:37:53 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=gjvloNNy;
- spf=pass (domain: gmail.com, ip: 209.85.221.41, mailfrom: adrian.freihofer@gmail.com)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-385e3621518so2489481f8f.1
-        for <docs@lists.yoctoproject.org>; Mon, 13 Jan 2025 15:37:49 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=TpKKL0Sr;
+ spf=pass (domain: gmail.com, ip: 209.85.128.43, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-435f8f29f8aso35039325e9.2
+        for <docs@lists.yoctoproject.org>; Mon, 13 Jan 2025 15:37:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736811468; x=1737416268; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I9LKaUmLbCroxEvhB/UAsxxX9fUgVwaCMfdUdJPvA4Y=;
-        b=gjvloNNyQTj5fGZI/B+Yu+AT0wmetPKVWzoFPiWFoVhLV9OSi7bwCNjvSre1EkxXBe
-         O7zjpncbO6xNkyjHxU9vkTaf9HJBVFYcxXiuIs9cWUDz0PQg09nHjYOZweUJ5Uk9Z+6s
-         nPw70mkirn6g8aiXqSbs5jj6jrG1C5TFoG4LgYr/NXJgEqMzUqkpQrzJpS7iOl5AmuTB
-         Qz0tV1gEiC3E6YM6vIijAi6MM2oFAhCAHlCubS2EuSb2lqNux9wlLvNq3zoN6osEgxMp
-         sEUp9sPqOjoHv7KHQqB99m6N5ONUfJoLkwiu5GWjm4gh1ULdhIF/YB+i3lzmP2nK0AOl
-         bxfQ==
+        d=gmail.com; s=20230601; t=1736811471; x=1737416271; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JqhyXDLF63DQEMYCKoX1WU8/kbOjoS3pZYIn83cjfoE=;
+        b=TpKKL0SrEogApvcgRe8tHqpWBcd+EWmhAhy1Iuzc1WZTnsAbhen3ICzWoxsh5htvLH
+         FUtsrgFzgPd0fzTpO0Fibhg4PfGAYKD+cdv9+xrWEY4MGD0tEeTPrFN8ycim0VuO7jzL
+         jbnBvcJOCSUBH0VXJ4Q8oqYryZ9OGUOCI/X34FhtwT4fTMhAFxqQ0oAAeJ+8/cKuE8TL
+         LvfN4A7OhyEgNx+J2FZBoDxGLcDUhd3qUl/UBv4jqxhJrbZuUnAxHrW26Am2WCDrPf56
+         LnNFEfj/kLpK+LOTgvuw04k4ztXAUNtK0HqcAb+eAEifEW/bX3xDu//BOS1pcRIxDMAR
+         uJrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736811468; x=1737416268;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I9LKaUmLbCroxEvhB/UAsxxX9fUgVwaCMfdUdJPvA4Y=;
-        b=JVAn8rR5NWKJWaoSsPaWYlRQ6rLyucSJ8c5evm3sicc1X+m8Nwykr+rEXYlspTX0QZ
-         VUpCVB7d8yaWpKHJTQ92+IadfANO/00KA2cOH3XQymGOTYAvuz3P4v0w/cj/LAoNTdz9
-         AcxHQCr9rkAC2OpoGMJigzYD/qbjoJqpnkJBS+pfuAE6MwCPKML9fOLLlc1YUm0wE4r4
-         Ob88Eo2dMI4MgpTY2FTDMxCKKZXOJJpZZbgjQGFjxlh21j187FhbTsuvT9/BPrxmzQbV
-         4mIPLMiUbrP+78ypPWY4WpbDBjjLVt7xKOtk0bNpT6YmVJ7nliy7wTg5ex5U4+xsYGa7
-         ijKw==
-X-Gm-Message-State: AOJu0YyKWVJzSEXSyXQac2cGDPJepqsF2572WZ6c13ZgG6QByaNI3F/p
-	QVIQ7iRZNYiFNue1YVI5obj94ceFDJgomNWKK82+BsEDgXPNnPytQUY8Z2TZ
-X-Gm-Gg: ASbGncvIlUsE3ka+6VuqT00j+42uOzUw/REcBdEB1RctKI+1jLLYrQBtJlgSQPXUTZk
-	Xslt/n1ze9ws9syJ3tH8o7HAWCypfBLnNQc39nrpu8mj3jO9wve5W2SVmUKLfRauWjjASJ0soFP
-	nSpWet8olX2ggoEcV7YM8XrEv4jDnQOxOf9fpMztnvVzSonQvPjAl9h1kJI8K5oaGsAqB+hKbAy
-	Pr5TtAFNAs5cN3Y9JXl2aCu1yplc/hjp0hM3Zin1HXUZ8Ame5r9iL8Lhlfe2oxKJ07ViySkNE/b
-	3kM=
-X-Google-Smtp-Source: AGHT+IEAdDxQhsu+BtQx2ZzYmQms557BsJ2Yup3aArv3czhZkPP/Crb1Ymo9qPr3p0rsNYiqdCrj+w==
-X-Received: by 2002:a05:6000:1445:b0:38a:86fe:52b5 with SMTP id ffacd0b85a97d-38a873038c5mr20759701f8f.14.1736811468123;
-        Mon, 13 Jan 2025 15:37:48 -0800 (PST)
+        d=1e100.net; s=20230601; t=1736811471; x=1737416271;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JqhyXDLF63DQEMYCKoX1WU8/kbOjoS3pZYIn83cjfoE=;
+        b=up2sUAHAuu7fXnY7tRsRSILhBiweUiZEqeV7+n1wkmQpROOtSew//lmpp0Cs/75ofq
+         uMX9dsC0FkxVp8CNgLgS0vVAk0kD1DATKSqu+4ARS+m3ZouMLw8iCdvJ9MKuYQCmgaKW
+         bFUeSAUhFvKy5Si9mno/D7p7cQMaDIvgdsVb//Ck0uFUBijc4qfohqKqvqN84Ns8ZUdY
+         +50rr4yP10h7naA2IeqSroXVDkuW4zvpADQxgb8XtyOoa9y9shSYdfzIpMCrGWMSMr1P
+         cMUaeL+/Zcf7VlOFoSFbXMo6LYwyyHkNjXIsNYUvJ8wYqt1NQrg+Y4HUNKa7tJ/qqp58
+         psVA==
+X-Gm-Message-State: AOJu0YxA/IuGXamXVg3KcD3ZoNn1SibQw/DrugirRX8JChCsWlhBpLHW
+	6LKchM2ysHZO/n6dHVqaIrbTEhuj653v1EqWl8+gwipb7nHyP47a+BkKoBiC
+X-Gm-Gg: ASbGncuTCVay3l3szlQJuTPzrfyVNrPFPwfSwApqqOSkYUrVSPzfKMkkRm7puY6GCpw
+	nzj4UBfPn+WzRzuJB2bqCxKy96QKoTsTIKoVE8JDUWwfgt1AH5epO/5R8KvlZ47o5pQ2/slGFH3
+	ymqgWzMNH7JXtjlvypq86uCX/NxYe5z5adYFUmpfZJ9r6tt4gTytETO0udSZfU8Sdk/hqOJShfI
+	Zr5V1xGmMMRlqo1wE8OkifTmsUMlVuEk1mh9DkhseHFjezX6I8hQpy5PDGsa2uQ8Mmt2NBgW79C
+	xzQ=
+X-Google-Smtp-Source: AGHT+IHVGr7d4hZj7CGN1gC0BEmdQijjWdvUu0b1HLarixvlQwfTX0JEO+MZ1k63J8iTY8WAZPNOcw==
+X-Received: by 2002:a5d:6daf:0:b0:38a:8b2c:53ac with SMTP id ffacd0b85a97d-38a8b2c550emr14636758f8f.42.1736811470901;
+        Mon, 13 Jan 2025 15:37:50 -0800 (PST)
 Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bddbf50a2sm2898727f8f.43.2025.01.13.15.37.46
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bddbf50a2sm2898727f8f.43.2025.01.13.15.37.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 15:37:47 -0800 (PST)
+        Mon, 13 Jan 2025 15:37:50 -0800 (PST)
 From: Adrian Freihofer <adrian.freihofer@gmail.com>
 X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
 To: docs@lists.yoctoproject.org
-Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
-Subject: [PATCH v3 0/3] Cover systemd.bbclass and devtool ide-sdk changes
-Date: Tue, 14 Jan 2025 00:31:15 +0100
-Message-ID: <20250113233736.4181201-1-adrian.freihofer@siemens.com>
+Cc: Adrian Freihofer <adrian.freihofer@gmail.com>,
+	Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH v3 2/3] sdk-manual: extensible.rst: update devtool ide-sdk
+Date: Tue, 14 Jan 2025 00:31:17 +0100
+Message-ID: <20250113233736.4181201-3-adrian.freihofer@siemens.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250113233736.4181201-1-adrian.freihofer@siemens.com>
+References: <20250113233736.4181201-1-adrian.freihofer@siemens.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 13 Jan 2025 23:37:59 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6094
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6096
 
-Changes in comparison to v2:
-Suggestions from https://lists.yoctoproject.org/g/docs/message/6091
+From: Adrian Freihofer <adrian.freihofer@gmail.com>
 
-These 3 patches are based on today's master-next branch. Feel free to
-squash "sdk-manual: extensible.rst: remove confusing
-post-install-logging" into "Remove debug-tweaks references" if it is
-still on master-next or keep it as a separate commit.
+Replace
+  devtool ide-sdk --debug-build-config
+by
+  devtool modify --debug-build
 
-Adrian Freihofer (3):
-  migration-guides: systemd.bbclass do not add Also services for 5.2
-  sdk-manual: extensible.rst: update devtool ide-sdk
-  sdk-manual: extensible.rst: remove confusing post-install-logging
+This change was introduced with commit
+https://git.yoctoproject.org/poky/commit/?id=1f7eb26c947dde14698ae6e2ab88f0637027f4cb
 
- .../migration-guides/migration-5.2.rst        | 20 +++++++++++++++++++
- documentation/sdk-manual/extensible.rst       |  8 ++++----
- 2 files changed, 24 insertions(+), 4 deletions(-)
+Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+---
+ documentation/sdk-manual/extensible.rst | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+index 9a50d7fc54c..3733997fac4 100644
+--- a/documentation/sdk-manual/extensible.rst
++++ b/documentation/sdk-manual/extensible.rst
+@@ -669,7 +669,8 @@ The extensible SDK supports two different development modes.
+       IMAGE_INSTALL:append = " my-recipe"
+ 
+    Assuming the BitBake environment is set up correctly and a workspace has
+-   been created for the recipe using ``devtool modify my-recipe``, the
++   been created for the recipe using ``devtool modify my-recipe`` or probably
++   even better by using ``devtool modify my-recipe --debug-build``, the
+    following command can create the SDK and the configuration for VSCode in
+    the recipe workspace::
+ 
+@@ -786,8 +787,8 @@ The extensible SDK supports two different development modes.
+    .. code-block:: sh
+ 
+       # Create the SDK
+-      devtool modify cmake-example
+-      devtool ide-sdk cmake-example core-image-minimal -c --debug-build-config --ide=none
++      devtool modify cmake-example --debug-build
++      devtool ide-sdk cmake-example core-image-minimal -c --ide=none
+ 
+       # Install the firmware on a target device or start QEMU
+       runqemu
 -- 
 2.47.1
 
