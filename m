@@ -1,103 +1,100 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 844C1C02180
-	for <webhook@archiver.kernel.org>; Mon, 13 Jan 2025 22:09:19 +0000 (UTC)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
- by mx.groups.io with SMTP id smtpd.web10.30811.1736806155956605554
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DB9DEC02185
+	for <webhook@archiver.kernel.org>; Mon, 13 Jan 2025 23:37:59 +0000 (UTC)
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+ by mx.groups.io with SMTP id smtpd.web10.32773.1736811474347219790
  for <docs@lists.yoctoproject.org>;
- Mon, 13 Jan 2025 14:09:16 -0800
+ Mon, 13 Jan 2025 15:37:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=g9Th2WvW;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.52, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-436a03197b2so33976085e9.2
-        for <docs@lists.yoctoproject.org>; Mon, 13 Jan 2025 14:09:15 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=euLk8aau;
+ spf=pass (domain: gmail.com, ip: 209.85.128.53, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43618283dedso46510155e9.3
+        for <docs@lists.yoctoproject.org>; Mon, 13 Jan 2025 15:37:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1736806154; x=1737410954; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lHOIZpo+6YpUuBSjSFikZSf0zaeDxk9sDnGSsH1f9SE=;
-        b=g9Th2WvWljJEHrrAHHXoaBUkAwvYjw+xP1vrLeP/PQFNv/Gm+29RiGhIP1rGUtV/gU
-         6kvYpWIJUkcZlXTMyovYpEqtkO33H6rhYioqV5xlOEqLaU5J+0oRHA2GQ1SiNJjmwKQn
-         zbq92Gn9mYKkYWqtgBSXWt857ceHSLhwkHaYQ=
+        d=gmail.com; s=20230601; t=1736811472; x=1737416272; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h69HiAb1DPNqbA11KfY9tg6cMYrctp7TvS57zryS2Qw=;
+        b=euLk8aaujp0IaKPkqWGm4DNOXefIc1/tlq9R96rFboXo2qMmqcSVJvfmoX2qbijMzk
+         uQOsnxcuvI2q+BoGQJ0ZA23BEmwQz5DF4oZP80UArCGgvLAwmmkDJhR1QL4R1mEAvG1H
+         zzZiRNH0fWPz2ZFwuo3I0EssmbZLpjA57y1zvzz/39YO4OgSlmOLtDYWb64QN0nQMKjs
+         d7oLXD96dkjLgha2vVXjoNeuxYETxZYjri2JyJJzWDwDl6Q5qDC5RUXzmNOKWXi7SUh/
+         xAZF4i8IdyTyMx80X2+2fqMBGAB4uvBh02cp0710CR/MBr5qo4Svc3c9niLTLAIG6Gn+
+         dW6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736806154; x=1737410954;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lHOIZpo+6YpUuBSjSFikZSf0zaeDxk9sDnGSsH1f9SE=;
-        b=aq4JxAaMsrhmHqnGkPLh5aHNqjEd2H1SBZnX16g1p9zFvOCgGkQ1fRaS4DVF5OuAIE
-         3Xgla9O9A16D7ZBZOskiDPumss1ld3XwWp0CIc+kZ/z+ut+rWr2/RqMTgJlf/1P4zZFd
-         gqqp/0iD6WVUj6rBUxRUyNp5HYUTiNHHmeVXybaMI2DvlUO8rhCx7GHDeA+ZBFn4rsoA
-         Ai6z9o9Si8VV3srZXgJsBkGP3CkUcfGqBzHaIK7Dgo5AzUQ02fgAg0i84YcU0TpKF7Xg
-         z6tz83P5eMt0hyr5l5bZkhSTOsfsFwXs0XXUVYDOxwXGb9Sv2DSxmd4yusGuvYrCVBjg
-         d5Rw==
-X-Gm-Message-State: AOJu0Yz9p5+G3U2ULU7GnGOI+iC6ENOgTe5CrRRndiEzuaotii18jceF
-	SM6uq1xgSXckLKiwWMLZJxFN37uJLcIqA2Cnz6xcsI45gkZznewBLCqKcHuPpdQ=
-X-Gm-Gg: ASbGncv2zLf7sCdLgx/AWHo7b7mZ7kewtpb3yyH0AY+on7yFHV90Nhrlm3eVIcjNMJm
-	VfUZOrC4lyJuLmRpCxRIJ+ENA5p07o/AYs4kvs4bgRS7b5X9CRoVS2j5fhDISQF5hy7LqAeRwUY
-	6zxRonPE7q1R7YRuLWIKjT7v3m3ZyE1xvtMYS7QvGb7O2fVQtdhUWhwODWrPHwHXv35Kcfgv+3f
-	uZ+ThT1W0nTPv/F3YWefxNZvyuu0CW/r4TBnsuL2CD1A3JZhKX3C4JFxg9nKF244FCPxwiZ9oUX
-	d2ny7dn0U/Ev86LOyOdBc2O3kaZpwlhdaLiSeqdRLhk=
-X-Google-Smtp-Source: AGHT+IG8EqBI9Ybd8SykhUhwoZ1DZQ5QZu0ujoMmUAueAfEcqDXdtSLwmydSUQnHXEoGvSgTOvNsrQ==
-X-Received: by 2002:a05:600c:4455:b0:434:fbcd:1382 with SMTP id 5b1f17b1804b1-436e26a80b6mr223991665e9.11.1736806154268;
-        Mon, 13 Jan 2025 14:09:14 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:2bb:f945:1ed5:d845? ([2001:8b0:aba:5f3c:2bb:f945:1ed5:d845])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e2dc14ebsm188070205e9.17.2025.01.13.14.09.11
+        d=1e100.net; s=20230601; t=1736811472; x=1737416272;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h69HiAb1DPNqbA11KfY9tg6cMYrctp7TvS57zryS2Qw=;
+        b=TKTnqALfjHA44e73fiyZkCpCR1+8Rtnvj4jZR+NyLQdxv9LsNYJ7TTRyaXtRIZO1l3
+         HMr7Kl8xePctk9UwVmaw2dyga/ZI3IC0eKQ3EwCslX5hXcVaRvB/M05AzGpmPy12L+MF
+         76ZgkFeRMq3ec6SUy7viaYcv2B4F5F/NR2BoQz4PexVHXllkFgJ5CyPnZM0pIxB656H7
+         oVIMZzjZ3CdVKGB6r7zuU7ZWjDxoFlbTT2ItxwBw5FCsXwfo+o46ynnspP2XLuad7AWs
+         XOJaXrC+z0KVriNfZCKk5djCZ6R6TNv/HhP/LJ7pE34DQzfW8excVe3FQi9NV3dcbyGR
+         6ezw==
+X-Gm-Message-State: AOJu0Yz07kMgg+jXRs5/I1d/zllxSIyZ30I/vDQWA++fsf90vpw47Qww
+	K/C9ox/Jzy5Q9h2UJBM8EKfwncdeCkxpBk/DNBcCg9fJXB/8Gqzw9bu+Zusr
+X-Gm-Gg: ASbGncvBNAzBm9RthVju3OGSiY9HBjxuNjhnZHAedUqFUCwO4Fa5/HHZ7vlyFLpvV6i
+	/9Wle5RFKH8DWTMq0SlnIwWdYzyP88H8jQZprF0zea6PFPRPXjM2ZTjj4l5/+5yiywm+iEaTimm
+	TwibwXH/hUTl9dRd9d43nFSKcMuWhKMZo+tAEE9hCUcEUwG0SLdW96P1EzaAmaavYVYKFr7J7oH
+	qbXSDtpBnbOO+aV8By/HaYpI54felwqrO9l71zlYEwrWcL+o/akbIdaj/mleydNaI+ZO1Q6oRaT
+	d2U=
+X-Google-Smtp-Source: AGHT+IHiWwHcMu9C1WEQKrAsv7wu7aZ0xlwWjWQgzPwglFzM0bt/A7iRJQv8oGIr4WDHfqzc8fnTQA==
+X-Received: by 2002:a05:6000:18ac:b0:382:3c7b:9ae with SMTP id ffacd0b85a97d-38a872de120mr21844975f8f.16.1736811472434;
+        Mon, 13 Jan 2025 15:37:52 -0800 (PST)
+Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38bddbf50a2sm2898727f8f.43.2025.01.13.15.37.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 13 Jan 2025 14:09:12 -0800 (PST)
-Message-ID: <76df28efd27f93840ce4e7a8c9e8f8af8acf8c72.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] Update autobuilder URLs to valkyrie
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: quentin.schulz@cherry.de, mhalstead@linuxfoundation.org, 
-	antonin.godard@bootlin.com
-Cc: docs@lists.yoctoproject.org, Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Date: Mon, 13 Jan 2025 22:09:10 +0000
-In-Reply-To: <3fee6045-ef55-42ac-9dfd-e3b6a07e02de@cherry.de>
-References: <20241227-update-autobuilder-link-v1-1-6c1ec14a32fd@bootlin.com>
-	 <CADfgfobhK_b+kyi2QDFbMR1=CkKziGTFdMCX1SGxkJ7VmR+i_A@mail.gmail.com>
-	 <3fee6045-ef55-42ac-9dfd-e3b6a07e02de@cherry.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.0-1 
+        Mon, 13 Jan 2025 15:37:52 -0800 (PST)
+From: Adrian Freihofer <adrian.freihofer@gmail.com>
+X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
+To: docs@lists.yoctoproject.org
+Cc: Adrian Freihofer <adrian.freihofer@gmail.com>,
+	Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH v3 3/3] sdk-manual: extensible.rst: remove confusing post-install-logging
+Date: Tue, 14 Jan 2025 00:31:18 +0100
+Message-ID: <20250113233736.4181201-4-adrian.freihofer@siemens.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250113233736.4181201-1-adrian.freihofer@siemens.com>
+References: <20250113233736.4181201-1-adrian.freihofer@siemens.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 13 Jan 2025 22:09:19 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6093
+ <docs@lists.yoctoproject.org>; Mon, 13 Jan 2025 23:37:59 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6097
 
-On Mon, 2025-01-13 at 18:05 +0100, Quentin Schulz via lists.yoctoproject.or=
-g wrote:
-> > > --=C2=A0 CentOS: :yocto_ab:`/typhoon/#/builders/reproducible-centos`
-> > > --=C2=A0 Debian: :yocto_ab:`/typhoon/#/builders/reproducible-debian`
-> > > --=C2=A0 Fedora: :yocto_ab:`/typhoon/#/builders/reproducible-fedora`
-> > > --=C2=A0 Ubuntu: :yocto_ab:`/typhoon/#/builders/reproducible-ubuntu`
-> > > +-=C2=A0 CentOS: :yocto_ab:`/#/builders/reproducible-centos`
-> > > +-=C2=A0 Debian: :yocto_ab:`/#/builders/reproducible-debian`
-> > > +-=C2=A0 Fedora: :yocto_ab:`/#/builders/reproducible-fedora`
-> > > +-=C2=A0 Ubuntu: :yocto_ab:`/#/builders/reproducible-ubuntu`
-> > >=20
->=20
-> Am I supposed to see anything at=20
-> https://valkyrie.yoctoproject.org/#/builders/reproducible-debian? I only=
-=20
-> have None in all Build requests, Build times, Success Rate... Same for=
-=20
-> all other builders.
+From: Adrian Freihofer <adrian.freihofer@gmail.com>
 
-Initially when we implemented reproducible builds, we ran then on
-multiple distros explicitly. Over time the errors subsided and we
-eventually decided it was good enough to test this on a distro at
-random. We therefore just do that now and no longer use the distro
-specific targets. They were left around just in case we needed them.
-You therefore want the plain "reproducible" target rather than the
-distro specific ones.
+This is a fix for 22dc5b3be3b1fbdb9447999b71f79db055271826, which has
+completely replaced debug-tweaks. But in the context of devtool ide-sdk
+and the comment in the example, the post-install-logging-image feature
+doesn't really make much sense. Therefore, remove it.
 
-Cheers,
+Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+---
+ documentation/sdk-manual/extensible.rst | 1 -
+ 1 file changed, 1 deletion(-)
 
-Richard
+diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+index 3733997fac4..1cb1bb47c2c 100644
+--- a/documentation/sdk-manual/extensible.rst
++++ b/documentation/sdk-manual/extensible.rst
+@@ -658,7 +658,6 @@ The extensible SDK supports two different development modes.
+          allow-empty-password \
+          allow-root-login \
+          empty-root-password \
+-         post-install-logging \
+       "
+ 
+       # Remote debugging needs gdbserver on the target device
+-- 
+2.47.1
+
 
