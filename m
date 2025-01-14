@@ -1,180 +1,296 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6821DC02183
-	for <webhook@archiver.kernel.org>; Tue, 14 Jan 2025 10:37:44 +0000 (UTC)
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.47])
- by mx.groups.io with SMTP id smtpd.web11.41853.1736851063458787636
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7FBD7E77188
+	for <webhook@archiver.kernel.org>; Tue, 14 Jan 2025 18:21:22 +0000 (UTC)
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+ by mx.groups.io with SMTP id smtpd.web11.1241.1736878874497408727
  for <docs@lists.yoctoproject.org>;
- Tue, 14 Jan 2025 02:37:43 -0800
+ Tue, 14 Jan 2025 10:21:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=AELJT8KE;
- spf=pass (domain: cherry.de, ip: 40.107.20.47, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NR6YVAAEcjjkJXSgQMwpsEEv6UxSJrM0FNccWyUTECXUk9ff//wxYEEVHmNQLv+8IeIhg89yXn0Lw+BzAajg5dTo5tMF5beSTOKV11Sbx0v6JLOOQu5dNNmvfCdGBoJz2BM/Ezy+NfXJXK8RIj6QZ9UJGSSalr0IPZ9Jo7LizPcs7WkyEgmP7453enzB7A9SfpR36Wt6KTDhXVPsv3tgpAFCkukb8X2WSInTBlVcSu8VzEqIVsxyFAZcKdDU/r/iUfHsuE3G1xdAL6NF7LYJLKp5yalX8VXom24yNMiM+YC6rAwWngxj8ksNAG2Z9CJ35zyVvNlb1nXWuscQBkH5xA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=iZJvGH3LAwlVHvo74sPA9WbMScURYdJzLmwxp8zAUTc=;
- b=DEVl24XCotOrgZQ2+4563wPz2M3+sQkciMnUMizUVNgEffz0W95DWtaCH3SL55wApWgMGV8yuUIg3ipRhkldLR/FbVn4jUzb0CK8sHRScYoIpf9eOOVVjss1Kc3e+9bEK/ClvNRATObz/ZFpX6XYN/EQ4hqwqzptHlw85/1kcEp0GCxN7xc4aaPv2W0+s4hozW2GgUFZI6Ix83sKbrGEB6zDDrWIcDMTOWuMrUgecHTUnTlv8SmLcyMSsOwwYI3J9XlwI7RB8RI92yvRPvtiVkJNAFOW371cPE7CeFAEjzzSmFB/NkG4w1Pf2+Ig9nbHTLUE59jupJyZy/2OIuxDqw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=iZJvGH3LAwlVHvo74sPA9WbMScURYdJzLmwxp8zAUTc=;
- b=AELJT8KEA33eJy/xcGD8DI2DEe4HsTImOx3+wxtKVLYoLh0VfgOyUMd5YwddXQhU8F3ACTx+gTHTxHDHqjMGOIcUXeofUlp611bvQ0m7HLPp3bpnhDSaXGCPVIhW7iRLyk7ORKLpKco5GNV7slbN9tLDcxr0/88l9AZS8FpfUuw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by DB9PR04MB9377.eurprd04.prod.outlook.com (2603:10a6:10:36b::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
- 2025 10:37:40 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a%3]) with mapi id 15.20.8335.015; Tue, 14 Jan 2025
- 10:37:40 +0000
-Message-ID: <52150661-771d-43d8-bf91-edb4f2a2d8bc@cherry.de>
-Date: Tue, 14 Jan 2025 11:37:39 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [yocto-docs PATCH v2 07/14] ref-manual/classes: document the
- cython class
-To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20241220-release-note-5-2-updates-v2-0-df29527f3fc5@bootlin.com>
- <20241220-release-note-5-2-updates-v2-7-df29527f3fc5@bootlin.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20241220-release-note-5-2-updates-v2-7-df29527f3fc5@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: FR3P281CA0203.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:a5::11) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=TR38Wzfh;
+ spf=pass (domain: gmail.com, ip: 209.85.161.49, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5f6497fbccbso35345eaf.0
+        for <docs@lists.yoctoproject.org>; Tue, 14 Jan 2025 10:21:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736878873; x=1737483673; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2N+vCWY/VABlTikXZKt5kCvqWdXNwdNiFDa36prt14k=;
+        b=TR38WzfhYeg7wS0SbIeQ0NDFXoUnS9vXArOJEm2DL6nySgzv/LGd23U1gSYKdE1hm6
+         l7jc+GOFY2SNf5bFUUVlYWW+HHdu0WLDvi9xi9lTF6vAfVVoYzo52xk/YJD8x4adV9u3
+         liHMZWekOeI5e4zOKKD8O5AMbYjLxSd/lp/jXqtq13wVkZ3oFAhU0Efknr6AkvP/L0zV
+         pXkdrOvrwEt8y7TGfBMrgOcmh+z1szsMY4TU87mKuuGwv4C9Gh4RBzjLJmUtTdwuAdn3
+         rjeWuGw5+or+kvOATmqfvez+ibfhdVPsO6HF8v9P31tQzMsLETD0VgXnEtbDUbRDkg9M
+         hx6g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736878873; x=1737483673;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2N+vCWY/VABlTikXZKt5kCvqWdXNwdNiFDa36prt14k=;
+        b=LDRIoOvsZy2emXgDhVCGI/rTucUDGEWQlz535D7deJl73tLKHH0j7xCrvyZ9JwR0zO
+         Fn+2B3w3hMRICGdSL+5c1gNUzuuL0qCAnbDfS12abpS284n1ExI1GEVO7iJJ2G9mhiFC
+         +HK1sZUXKup1hVmhjLIsVDLGCq6kEYclS0PQGhCceFOXSy6emifhHZnnKtGAQvFVuT9x
+         GFS3hiLEcQbQ6mSRYBt7F2PpegNtwflsjMm00PHu2vQLXNxx3qjTlvt6qQigG7mgt99Y
+         q3lgfprK83XAWMYiL5V0m4A6IlNxn3iks4Ox6go6XcOO0GesvdAZAVwJ/LqdC3RQiHis
+         bGKQ==
+X-Gm-Message-State: AOJu0Ywg0WeWzCQEO+qk8+UrklaowKldobICsE6niXR3q/rqZcfQw1JY
+	A7KgIazIM+z/Bq8nLc12HvpAv4LJyOvS5zgZ4snh0+v7pQ3L4WRgn8k8ASnilt/itkKRkMKmucn
+	HlQM2QzEWrIe1bpS+PNYAFRKx5ok=
+X-Gm-Gg: ASbGncvl6VftFkUb3JX8e8TwkEfHMchre93ontkdkh6XT79zj+EMR/2Nl2Fa0OJKqZp
+	lLBoMrH7LrWuyAHnJsQNIqyzeCFkJARzf1OqtVbw=
+X-Google-Smtp-Source: AGHT+IFPutyu5W/Ze8xhQL/9YIGzCchS4AdHXBPZdp9d3E+vH528y8NJZlmuWnL5rwP224ocfNM6WKLJbt6sqVjcjXU=
+X-Received: by 2002:a05:6871:5e10:b0:29e:37af:a943 with SMTP id
+ 586e51a60fabf-2ad80907cc8mr14695050fac.18.1736878873422; Tue, 14 Jan 2025
+ 10:21:13 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB9377:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2913a15c-a37a-4791-d04e-08dd34877840
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?WHRYbVpWNExrS0FEWjNFeFNnTTFwV3paYlk0YTFWZGJ4SmhVWGl2a1Y3QVRD?=
- =?utf-8?B?ZEpRR0lieGVJM3A0MEIzbUkxTkRocU5FNzlrV2JiODUxdFdJQWFiSmsybWFZ?=
- =?utf-8?B?U0hMaXhpckx1NTh2NmtBVVRKUjY4enRoTVBVbTZzQXdNU2pwU3pyNnNoR01t?=
- =?utf-8?B?N0IvZHZJc3hPVjNJY2dYdHRJWjIyMlIwNHFETnZxQm9KZ0pSbnVyM2IvNTcw?=
- =?utf-8?B?STM5eVVER1NIdTNGTHhtTU9iV0lSR1pBbUQwLzZOcXNISDFzNnRpaW4wcUVZ?=
- =?utf-8?B?dGpaVjNVcngyK0xlakw3S3FQRmt5b25NcnhXWWJRUlF0eTVKclBjUjFwQ3Bp?=
- =?utf-8?B?Lzd4TkhIN2FpcWZRb1hodDFYRytXK2tiMmI0TVk4bEVhMDZqQzJtWWJTODBv?=
- =?utf-8?B?RVFpYVRTbmpwYmFzdnIxVVFVM3Jya0tKWDR4Nk5xTGpoWWRxQXc3L1JTV2tB?=
- =?utf-8?B?Q0NkYVQzeE0yZVBVN0tjMis0ZGQ0eGxmY0VDS2REQjhDSVZpMmJNQlV0MnlX?=
- =?utf-8?B?SlVWN29ZdGZJb0k0c2g2b3BqeEozN3M4UmZKbWZCaE9VMEFaVnBZMytDV3JD?=
- =?utf-8?B?bmFBdWppSFVLTWIwaFZNQ0xQaTlNbWNTdklqYWdjcnV5M1JOd1JRKzhYaFBJ?=
- =?utf-8?B?bWN5aTFST3Nad1BpUGlpSUhkeDAxN1dZMUN2K3NhYjRXMGRsSngrbGR4di9W?=
- =?utf-8?B?eFZDYS96dGM0UjhUSGNRQkFjeTd2OExYSkRvOXZyYkhBY2wzSVo5VERGazFB?=
- =?utf-8?B?UFNHenNXMGJsWkpOYktadEpheFhjVnhYQmpSQU5nOVJKYnNOUTFDbXhWUkVV?=
- =?utf-8?B?RWxUZzFMci8rcHZROE5ad1dhL1VvR1V1M3BvTS8vMS9tcWwvcmtMaGdGMmNQ?=
- =?utf-8?B?dG5NSHBDT3M4Y0JIVC8vbVAwT0RicW5qeVp5Um5WZi90TTdRWnp2RlNBMlpt?=
- =?utf-8?B?M2UrY1oxbW1XWFQ2bmpRY050RytUdWhvSFUvWkpJRG9OQTJmOFN6K2grVS9N?=
- =?utf-8?B?eVdXR1NaR2ZnYk51UVFKOXI5SXFMVmFUMU9wajVIVitmMzJTcy9BMFRDSC95?=
- =?utf-8?B?R3VoTzZrOXg0UGNjbjVEeDNZak5ncUF2L3lkclVBWFlnNk9vVmJTQjAraWFB?=
- =?utf-8?B?aW40Zk51VEsxVzllVGZXMDIrVXRJbzFMaXFlZGVWaEdlUFNTV2V4N2kzUXZj?=
- =?utf-8?B?MnBML1A2ZVNjSW1NWXZSMTR6Y3VYUDVkMEFJSTF2U0xHbDFGMXNISVFOOEhY?=
- =?utf-8?B?NXpBcVNXcTQzazcyTGlhNHFTa0dmK296Z2pqVVhpUll4WGxWR0w3NCtPZHB3?=
- =?utf-8?B?UlRTOW9VT3VhRWlmSTBhSE5kUUxQVjlORWtGSitpR2dZVUxGU0gxcFdEZkFP?=
- =?utf-8?B?bG9UQ21sRERMSHUrckU2WFFRNXpuT1Q2WHdMa1pvaWFRY1VFdXYzdGE1SkNq?=
- =?utf-8?B?Y2xxRzZkejcvblZaRkZNMWxRbko1SWQzcHpsT2dmZ0N1WHc2TDhYRE9iY0lL?=
- =?utf-8?B?eFNlcGYyd3EvMzhsbFdLb2FuMkQxaTdUaktoVFZDVFAza1I5OTY1cTc0WEdD?=
- =?utf-8?B?aitDVWc1Zk8vMFR0UkxPekluNkNKZ25PeEVyWXJOaXZEdEg2K1JBQTNneWJl?=
- =?utf-8?B?V3p3MFhSUmthOTBYQ09CL2xCZlo4QUxnTXNhZFF0TWRvQ1pQTDF2cjQ3aW03?=
- =?utf-8?B?T3Uxbis1WldlVjRjQUNQVUUvM2c0b3FpZGQ0bHNMVUlPL2Q1WWRaQVMvTkhG?=
- =?utf-8?B?eDVITmVxRGcrcUw0UDlXeVBjOW9IamNQNXFoQlRpRHpjU0g2TVJWMWhuVGRZ?=
- =?utf-8?B?UjRCeUErQ25SalRnMThxdnBEOWkxVEhpZmkwMmxWcnRjeHQ3a2VyT0tGVFRo?=
- =?utf-8?Q?V1KndI6gY4fi3?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?YWpUZmJWcWgvRERWa1pMSFRYODk5bjFRNTA5TWY1M3pBOW5ycm1nOEVqV2RR?=
- =?utf-8?B?bEFROGhsM2RuKzFSWk5KRmdNTUZSNTRuS1I0Q1lobmY3UDhUUmJVU0w1MzZt?=
- =?utf-8?B?a3gwRUcyL2lCd2JKeHM5WkE4Y3VzZUxCaHdvVVV5NlFGanZTVXlTdUlXcHZP?=
- =?utf-8?B?NGcrdlN0TTRPZDdtR2FxREJiWmpoTDBNejNRbDFjVW5TNUhGaEczWVAzaW45?=
- =?utf-8?B?b1VOTDkvUWdQanJKQTV6bU5pb215cytaVVVFRjZSQ2VETGFFY2tFK1JDZmZQ?=
- =?utf-8?B?bTFibWlqVmxWSVdYb3dzQlJTMTBkTTdMTGI0djNzNWdsTzI2dEJWQlovTWFz?=
- =?utf-8?B?TTBpZndVblU3VzZLT2Z5ZmltWTFiZlQwNy9nRXZ3RzBpZmFJV3ZpcjBSNEFV?=
- =?utf-8?B?UVFJQTZtN2hyWDVsaC9vZmR1VE1BRyt1Wmg1bEEzdVhJcnBjdjg0Q1RiUDZm?=
- =?utf-8?B?aFlTVDdPOW05UW1hWWN5SW9PeHVIUEpqREVyOUdlUVhPa0JMTG1kSWtVclUv?=
- =?utf-8?B?Tm8vMUxzWGN4dGtDRU5iUTRxNmc5eTNDVjkwaDlLZ3VmWEJ4a3ErZjRRMXNK?=
- =?utf-8?B?VS94M3UzcXJLQXJRYzIva0tWckRRQ29OcUFVKy9IdmMvenBJQWdKYzZESU1F?=
- =?utf-8?B?c1NvR3BxK2FuZENDUGtydWFKL01RNzBCRGtpS055UE1xcFNENnhrNHM4SGQ5?=
- =?utf-8?B?aHV4blROTjJsR3FJRVJ1Z09QWXJEbTBadUE3Njd5NitEeTNRczZUdmpUOTI1?=
- =?utf-8?B?d3hTMi83cWRrWUltRFkyNzFsWUh4QzBSNHhNYWE0SmxMTmMvc1hQSTRNSmpH?=
- =?utf-8?B?MGVBN2xXRkZ1UGxsYmJZVGVjMzdpNmExL05FYmtuck13cmIyNUJSNnkwVEFz?=
- =?utf-8?B?dldWZHBkcTRzV3VWMkxmbC9RaTlPMDA4UFFsK05vRkphcU9Td3ZoMjhMbEky?=
- =?utf-8?B?NVhyd0orQk41L21uTTBIOW1NcnFGdDJyZmhNcjFwKzY1REpoSUpnQm9yMjI3?=
- =?utf-8?B?Znhka1lteUQzdnJ6VzRPdHQrU2xqU2p1ZFlyWHpEbEsrVzFFalc3SU5WV3pz?=
- =?utf-8?B?dWlyNUtvcnh4VlRWem5XVVhjaW1DY2hZdGQ0bzIvK2xDd0pGbDdoL2Naeksr?=
- =?utf-8?B?N0JDM2dPSE9lK05GcDhLVmkzUXA5L1B1bWtTSUtxUndzaG1iZVZXU2IrV3pC?=
- =?utf-8?B?YWgyaHczRlZwS0VMNjJtYVlURVZ1WXVpL290RVRVUFVEa25KajdEUWh2VWk0?=
- =?utf-8?B?Y2xQS1ZIK1hyNFpvdlFJa0duUjJ5cXlGc2g1T3lkQmdubEFLYW9hdDBsYkp3?=
- =?utf-8?B?eS9HdkV1VWs3VTIrbGFGci9IRnBFVXRvckVnZlIyTWMzMjZzZ1d3bm4zL2hP?=
- =?utf-8?B?K2lWZ2h6Rms0VUVFMDkyTmRram8yWUo5NDlCZkJuSlVURktmaStzU2doQkJP?=
- =?utf-8?B?OTdGOW5jOWhUQS9nUUVBanVVYWc4RVJlVTY5NHpZclJrdGtpMCtYUzk1UUpS?=
- =?utf-8?B?bEw2dkdncm5QTHB5Yjd1NVNrUGJNSmFPS3VBYVloZlJuQjVqQUkwekxIRTI4?=
- =?utf-8?B?dnh2d3V2SVVBUlpYY24wNnZNWDA4K1BqV21OUWliaTdWWFltaDF4enE1OUVZ?=
- =?utf-8?B?SzdlT2pvVXZKamFRSmJCSUYrT3BTd3NLOXJyd3h0c3ZIbGYybVZGUUUxZGEw?=
- =?utf-8?B?bVE3MWpTNW5qbnNGVXM1V1gwSVJqTzdUOUc4NkxyMDVVRjBpbnpielNERUdV?=
- =?utf-8?B?UkpMZkE3UU5YMTY0ay9ZUWR3Y2hZWWtXR1VoMEo0cFRyNG14ajR4V0o4VXFX?=
- =?utf-8?B?dU43QWNyaVprenloclY1OGdzaUwyM0s0SWJoZW93VVQzMU9HMlJ5cnZTd0JK?=
- =?utf-8?B?QUNzMnowVzlOLzk1QUpHbmQ3M0xNckgvVjRidG9BSDZYa1NOZlBaMkUxb0lD?=
- =?utf-8?B?dTZnS2xQQnMvR0xjS20zbngvaWJsV2tZUjhHcG5CWlVzbU03dTNnZUFnWnpI?=
- =?utf-8?B?NHJqT0FKbCt4THNxRDZldlRnMXkzZlNaMUwzZnpOMWVpMWw2QnAvQlY1eU1S?=
- =?utf-8?B?bnpiNWpzOTg1aDZDQVFTRm9JcFdQeWFJbjFKOUhkT21Cc1g4eGszaGxoZVZL?=
- =?utf-8?B?Q2F6UzFsN25rSWd5TmthaEdoWEpvZFJYc2ptYklKeVoxMHVzSnJuVkV0bVR0?=
- =?utf-8?B?Z1E9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2913a15c-a37a-4791-d04e-08dd34877840
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 10:37:40.0746
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bN6jxPDeVwLUGSnE8xYbR9U3lGNSs15VUEZlENOjg+J+yMilnT8pO+SCc3OeAfOZ9FxlSV7RreY9SdIdVj7F9AGEjbcD8n7z29/ZH7V4H8o=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9377
+References: <20250113233736.4181201-1-adrian.freihofer@siemens.com>
+ <20250113233736.4181201-3-adrian.freihofer@siemens.com> <b363d565-c568-4a15-be1f-725e24f0191a@cherry.de>
+In-Reply-To: <b363d565-c568-4a15-be1f-725e24f0191a@cherry.de>
+From: Adrian Freihofer <adrian.freihofer@gmail.com>
+Date: Tue, 14 Jan 2025 19:21:02 +0100
+X-Gm-Features: AbW1kvZa1kBsslPbvLhp2ov2xnIerG7FeF_PEGX_rTQmXwmwMczRdg7W-fSAtEs
+Message-ID: <CAB3asfiixwFwsr4Fmhct2ZsicD=6-mdDvfvz36UpJveRAo-9jw@mail.gmail.com>
+Subject: Re: [docs] [PATCH v3 2/3] sdk-manual: extensible.rst: update devtool ide-sdk
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: docs@lists.yoctoproject.org, 
+	Adrian Freihofer <adrian.freihofer@siemens.com>
+Content-Type: multipart/alternative; boundary="00000000000044b23e062baea058"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 14 Jan 2025 10:37:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6104
+ <docs@lists.yoctoproject.org>; Tue, 14 Jan 2025 18:21:22 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6105
 
-Hi Antonin,
+--00000000000044b23e062baea058
+Content-Type: text/plain; charset="UTF-8"
 
-On 12/20/24 1:16 PM, Antonin Godard wrote:
-> Small class added in oecore by commit
-> 64b6e8580842949be58f97f4dff91d1f097c4020 ("classes-recipe: add cython
-> class").
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Hi Quentin
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Am Di., 14. Jan. 2025 um 11:10 Uhr schrieb Quentin Schulz <
+quentin.schulz@cherry.de>:
 
-For your information, I have an alias to only keep the 12 first digits 
-of a commit (which is what's used in the Linux kernel for the Fixes: tag).
+> Hi Adrian, Antonin,
+>
+> On 1/14/25 12:31 AM, Adrian Freihofer via lists.yoctoproject.org wrote:
+> > From: Adrian Freihofer <adrian.freihofer@gmail.com>
+> >
+> > Replace
+> >    devtool ide-sdk --debug-build-config
+> > by
+> >    devtool modify --debug-build
+> >
+> > This change was introduced with commit
+> >
+> https://git.yoctoproject.org/poky/commit/?id=1f7eb26c947dde14698ae6e2ab88f0637027f4cb
+> >
+> > Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+> > ---
+> >   documentation/sdk-manual/extensible.rst | 7 ++++---
+> >   1 file changed, 4 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/documentation/sdk-manual/extensible.rst
+> b/documentation/sdk-manual/extensible.rst
+> > index 9a50d7fc54c..3733997fac4 100644
+> > --- a/documentation/sdk-manual/extensible.rst
+> > +++ b/documentation/sdk-manual/extensible.rst
+> > @@ -669,7 +669,8 @@ The extensible SDK supports two different
+> development modes.
+> >         IMAGE_INSTALL:append = " my-recipe"
+> >
+> >      Assuming the BitBake environment is set up correctly and a
+> workspace has
+> > -   been created for the recipe using ``devtool modify my-recipe``, the
+> > +   been created for the recipe using ``devtool modify my-recipe`` or
+> probably
+> > +   even better by using ``devtool modify my-recipe --debug-build``, the
+> >      following command can create the SDK and the configuration for
+> VSCode in
+> >      the recipe workspace::
+> >
+> > @@ -786,8 +787,8 @@ The extensible SDK supports two different
+> development modes.
+> >      .. code-block:: sh
+> >
+> >         # Create the SDK
+> > -      devtool modify cmake-example
+> > -      devtool ide-sdk cmake-example core-image-minimal -c
+> --debug-build-config --ide=none
+> > +      devtool modify cmake-example --debug-build
+> > +      devtool ide-sdk cmake-example core-image-minimal -c --ide=none
+> >
+>
+> Considering the commit log that introduced this change, I wonder if we
+> should mention this in the known issues of older releases, though I
+> guess the whole example simply doesn't work?
 
-alias gitf="git --no-pager log --abbrev=12 -1 --pretty='%h (\"%s\")'"
+Well, all examples have always worked. There is only one detail that did
+not work
+When devtool ide-sdk was called with the --debug-build option, a build
+configuration
+for the IDE should be generated that compiles with e.g. -Og instead of -O2.
+From the
+user's point of view, debugging did work, but with still optimized code. So
+there is
+definitely a better user experience now than before. But it has always
+worked
+reasonably well.
+The VSCode bitbake plugin called devtool ide-sdk without --debug-build,
+which was also
+not ideal and has now also been improved. However, this also means that the
+broken
+function was not available for UI users with older releases.
 
-You then simply call gitf 64b6e8580842949be58f97f4dff91d1f097c4020 and 
-you'd get
-64b6e8580842 ("classes-recipe: add cython class")
+>
+> Also, we should probably highlight this change in the migration manual
+> somehow?
+>
+Assuming that the feature has not been used that much so far, I would
+announce it as a
+new feature of devtool modify and mention that the same but buggy feature
+has been
+removed from devtool ide-sdk. I can send something like this going to the
+devtool section:
 
-This also highlights that this commit is not in OE-Core but in Poky :) 
-(they do not have the same commit id).
+   -  Replace the anyway broken ``--debug-build-config`` option from
+      ``devtool ide-sdk`` by a new ``--debug-build`` option of
+      ``devtool modify``. The new workflow is now::
 
-Cheers,
-Quentin
+         devtool modify my-recipe --debug-build
+         devtool ide-sdk my-recipe my-image
+
+Thank you!
+Adrian
+
+
+> What do you think?
+>
+> Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+> in any case.
+>
+> Thanks!
+> Quentin
+>
+
+--00000000000044b23e062baea058
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr"><div>Hi Quentin<br></div><br><div class=3D"gmail_quote gma=
+il_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">Am Di., 14. Jan. =
+2025 um 11:10=C2=A0Uhr schrieb Quentin Schulz &lt;<a href=3D"mailto:quentin=
+.schulz@cherry.de">quentin.schulz@cherry.de</a>&gt;:<br></div><blockquote c=
+lass=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px soli=
+d rgb(204,204,204);padding-left:1ex">Hi Adrian, Antonin,<br>
+<br>
+On 1/14/25 12:31 AM, Adrian Freihofer via <a href=3D"http://lists.yoctoproj=
+ect.org" rel=3D"noreferrer" target=3D"_blank">lists.yoctoproject.org</a> wr=
+ote:<br>
+&gt; From: Adrian Freihofer &lt;<a href=3D"mailto:adrian.freihofer@gmail.co=
+m" target=3D"_blank">adrian.freihofer@gmail.com</a>&gt;<br>
+&gt; <br>
+&gt; Replace<br>
+&gt;=C2=A0 =C2=A0 devtool ide-sdk --debug-build-config<br>
+&gt; by<br>
+&gt;=C2=A0 =C2=A0 devtool modify --debug-build<br>
+&gt; <br>
+&gt; This change was introduced with commit<br>
+&gt; <a href=3D"https://git.yoctoproject.org/poky/commit/?id=3D1f7eb26c947d=
+de14698ae6e2ab88f0637027f4cb" rel=3D"noreferrer" target=3D"_blank">https://=
+git.yoctoproject.org/poky/commit/?id=3D1f7eb26c947dde14698ae6e2ab88f0637027=
+f4cb</a><br>
+&gt; <br>
+&gt; Signed-off-by: Adrian Freihofer &lt;<a href=3D"mailto:adrian.freihofer=
+@siemens.com" target=3D"_blank">adrian.freihofer@siemens.com</a>&gt;<br>
+&gt; ---<br>
+&gt;=C2=A0 =C2=A0documentation/sdk-manual/extensible.rst | 7 ++++---<br>
+&gt;=C2=A0 =C2=A01 file changed, 4 insertions(+), 3 deletions(-)<br>
+&gt; <br>
+&gt; diff --git a/documentation/sdk-manual/extensible.rst b/documentation/s=
+dk-manual/extensible.rst<br>
+&gt; index 9a50d7fc54c..3733997fac4 100644<br>
+&gt; --- a/documentation/sdk-manual/extensible.rst<br>
+&gt; +++ b/documentation/sdk-manual/extensible.rst<br>
+&gt; @@ -669,7 +669,8 @@ The extensible SDK supports two different developm=
+ent modes.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0IMAGE_INSTALL:append =3D &quot; my-re=
+cipe&quot;<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 Assuming the BitBake environment is set up correct=
+ly and a workspace has<br>
+&gt; -=C2=A0 =C2=A0been created for the recipe using ``devtool modify my-re=
+cipe``, the<br>
+&gt; +=C2=A0 =C2=A0been created for the recipe using ``devtool modify my-re=
+cipe`` or probably<br>
+&gt; +=C2=A0 =C2=A0even better by using ``devtool modify my-recipe --debug-=
+build``, the<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 following command can create the SDK and the confi=
+guration for VSCode in<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 the recipe workspace::<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt; @@ -786,8 +787,8 @@ The extensible SDK supports two different developm=
+ent modes.<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 .. code-block:: sh<br>
+&gt;=C2=A0 =C2=A0<br>
+&gt;=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0# Create the SDK<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 devtool modify cmake-example<br>
+&gt; -=C2=A0 =C2=A0 =C2=A0 devtool ide-sdk cmake-example core-image-minimal=
+ -c --debug-build-config --ide=3Dnone<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 devtool modify cmake-example --debug-build<br>
+&gt; +=C2=A0 =C2=A0 =C2=A0 devtool ide-sdk cmake-example core-image-minimal=
+ -c --ide=3Dnone<br>
+&gt;=C2=A0 =C2=A0<br>
+<br>
+Considering the commit log that introduced this change, I wonder if we <br>
+should mention this in the known issues of older releases, though I <br>
+guess the whole example simply doesn&#39;t work?</blockquote>Well, all exam=
+ples have always worked. There is only one detail that did not work</div><d=
+iv class=3D"gmail_quote gmail_quote_container">When devtool ide-sdk was cal=
+led with the --debug-build option, a build configuration</div><div class=3D=
+"gmail_quote gmail_quote_container">for the IDE should be generated that co=
+mpiles with e.g. -Og instead of -O2. From the</div><div class=3D"gmail_quot=
+e gmail_quote_container">user&#39;s point of view, debugging did work, but =
+with still optimized code. So there is</div><div class=3D"gmail_quote gmail=
+_quote_container">definitely a better user experience now than before. But =
+it has always worked</div><div class=3D"gmail_quote gmail_quote_container">=
+reasonably well.</div><div>The VSCode bitbake plugin called devtool ide-sdk=
+ without --debug-build, which was also</div><div>not ideal and has now also=
+ been improved. However, this also means that the broken</div><div>function=
+ was not available for UI users with older releases.</div><div class=3D"gma=
+il_quote gmail_quote_container"><blockquote class=3D"gmail_quote" style=3D"=
+margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-lef=
+t:1ex">
+<br>
+Also, we should probably highlight this change in the migration manual <br>
+somehow?<br></blockquote>Assuming that the feature has not been used that m=
+uch so far, I would announce it as a</div><div class=3D"gmail_quote gmail_q=
+uote_container">new feature of devtool modify and mention that the same but=
+ buggy feature has been</div><div class=3D"gmail_quote gmail_quote_containe=
+r">removed from devtool ide-sdk. I can send something like this going to th=
+e devtool section:</div><div class=3D"gmail_quote gmail_quote_container"><b=
+r>=C2=A0 =C2=A0- =C2=A0Replace the anyway broken ``--debug-build-config`` o=
+ption from<br>=C2=A0 =C2=A0 =C2=A0 ``devtool ide-sdk`` by a new ``--debug-b=
+uild`` option of<br>=C2=A0 =C2=A0 =C2=A0 ``devtool modify``. The new workfl=
+ow is now::<br><br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0devtool modify my-reci=
+pe --debug-build<br>=C2=A0 =C2=A0 =C2=A0 =C2=A0 =C2=A0devtool ide-sdk my-re=
+cipe my-image</div><div class=3D"gmail_quote gmail_quote_container"><br></d=
+iv><div class=3D"gmail_quote gmail_quote_container">Thank you!</div><div cl=
+ass=3D"gmail_quote gmail_quote_container">Adrian<br></div><div class=3D"gma=
+il_quote gmail_quote_container"><br><blockquote class=3D"gmail_quote" style=
+=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding=
+-left:1ex">
+<br>
+What do you think?<br>
+<br>
+Reviewed-by: Quentin Schulz &lt;<a href=3D"mailto:quentin.schulz@cherry.de"=
+ target=3D"_blank">quentin.schulz@cherry.de</a>&gt;<br>
+in any case.<br>
+<br>
+Thanks!<br>
+Quentin<br>
+</blockquote></div></div>
+
+--00000000000044b23e062baea058--
 
