@@ -2,274 +2,213 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 09184C02183
-	for <webhook@archiver.kernel.org>; Wed, 15 Jan 2025 11:25:33 +0000 (UTC)
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.65.10])
- by mx.groups.io with SMTP id smtpd.web10.18620.1736940330211553102
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 061B3C02183
+	for <webhook@archiver.kernel.org>; Wed, 15 Jan 2025 11:29:23 +0000 (UTC)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (EUR05-VI1-obe.outbound.protection.outlook.com [40.107.21.72])
+ by mx.groups.io with SMTP id smtpd.web10.18659.1736940553954093962
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Jan 2025 03:25:31 -0800
+ Wed, 15 Jan 2025 03:29:14 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=aoiEH2wi;
- spf=pass (domain: cherry.de, ip: 52.101.65.10, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=hel9vQ9o;
+ spf=pass (domain: cherry.de, ip: 40.107.21.72, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BW9W75o6SjgbeFS25NrpIRQb3eTR/2LKTdjKHlzHlGQI2ZsXfdW/bHjVwaCNxwbcGtHJFVn4OFDJABLerqD+CO6bzyavdSzKQk594UeiJu2L7UyHzAiSS01Ui7gxFmF01PiDk+SDti8vowXQZX3tbtqTpeSo+C7jC60Mkciji5SZ8UJYypPdlHQal/GqgtlatGESp7tcE/gKl38NhTeoRwFeUYp3+cv0T2uTmUd/KKod9POSucxU738vYxhlupdeJ+5cRq9qVKRXU/f2W9hCp+UOkpzoy6R+IDudblJ3SxTUo9mLfVL1n6bgXylui4ZREx0ugZ+Nrv4BftuNb5iSwQ==
+ b=y286xil9Zl2RveBfLx/kN5D7Vj5m6omRx5JmjkR5mwm7L2KNy/26wCNUG13nEcud6ucQtGr5XsFfbE9teW5ad5erIPdCHC8mWLrDIYzf4apK8fvus5K2Yu6WdvutazkQmdRp2wBMycuON+/tkRotDBrPQ+5hUBQgiVmFQbHy5iIMLjC59ijXAKNS/3BhuW9GVCusLX3bM10v/hf+BKopj5/cAGODDPp6+YrF2C39GdCJFmZe0/yYR9FwYQ31PKdaPRsHDxsd2nj/NPZm6Bu9KbNOKugbfJafrOtKFBtcAZUA1Rl5jNeg0h8VfE76i7w4o9RceQHSE+/iOK/ftUfk4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eDPS6pR2Qx23NwxHXhYkogoV6Y4FDVbsAThrWGfsogI=;
- b=OvKqp2T//y6KeJud8L9GGoapOW6gQv/yykCnitZ7cnPhLEOK/XE4mAadHaGmYphI8OJtk1tsj/qN9ln6QF4V/lyFWaha3Oq9crN1wNwYPuTMCPLEhNLRG0XjliM/CzasUvXuTtm4u2BDVxDcy2iDpRnVraxSagt2UCaoxb9FXbc/wEAtbuVjnvfbutgyk3XbkmNOygppXveQre4rH+xzF13159bCAh3W39TEU5jjFl8eUT936/kCeMxC0h3c16Fiv2bJet12LSBwNVyiSpmUxms1kjYjz1ojwcmFaXDDbkSjd1uLuF6aWMM0stZlEPqF7tUptbDOLM88+eUVtrGpyA==
+ bh=lnl+bjTPwSj8u/QRqfX3sHLDNF7SUY+bcw0DYXdVIzU=;
+ b=m3FlUyfNQzGHaswZKJRmnBpYOjecAYgUx6bS0mwuwBEZYnOQpm9JKPC22C7RZjaFrHE1RY6sLjEAbIDybYIhiqgvixLfNC5+84xLhbKGwa6hqi1iOhO91j4JCJN7kuC9O/rd7PG/9ZuVJZacyMcBQtoDyvn6UrEs1g6JCttBeqS/w70Y7SWQGvEXf1+51ueuTnX7jXOzC0apxizDM7MkgxOOqv/0RMV0dpOB8q8dDIZjSLDRRwywsj8dcvY6p3+WtjHfJzipeZIHeT/5TTI1TqvMprxh4VSgCZxCaUuksd8Dz3JvnSqr8L/x8MuWz6S1C1ItfKV8UvpBGkHFGKL16A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eDPS6pR2Qx23NwxHXhYkogoV6Y4FDVbsAThrWGfsogI=;
- b=aoiEH2wixAo6MitiIfSw6QV35gojshYju2Mq2IMfvE0Io3A/+JsJcjQNYf+mWFUXuZai6McdHqEu7OihGW6OOsw0oi+rcAaazA3qPF6COU67bbghJYMrhNtyla94S0yAtcgl9raRhZJuj+T0LFmp1AFeZ4qEbHxaWjU9iEmNWS4=
+ bh=lnl+bjTPwSj8u/QRqfX3sHLDNF7SUY+bcw0DYXdVIzU=;
+ b=hel9vQ9o3mtdL3hUV+9DSpuJrv9r6N2TwoduGHfOBOJcxJ+QYzP34dJ9kdhjXSgjtZUtXJh7zBcHKxOwN4/Z7POH2rQK2E2Lwa3oW2s/ze0FylstDOeBikFjl/vKATmW6/ewGympY++PjpWBZkvs8EwNeKLG1KDEQwClR6CRarc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by AS4PR04MB9649.eurprd04.prod.outlook.com (2603:10a6:20b:4cc::5) with
+ by AM0PR04MB6882.eurprd04.prod.outlook.com (2603:10a6:208:184::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Wed, 15 Jan
- 2025 11:25:27 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Wed, 15 Jan
+ 2025 11:29:10 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%3]) with mapi id 15.20.8335.015; Wed, 15 Jan 2025
- 11:25:27 +0000
-Message-ID: <d70991c1-ba25-4f8a-af7e-76476aa3eaf3@cherry.de>
-Date: Wed, 15 Jan 2025 12:25:25 +0100
+ 11:29:10 +0000
+Message-ID: <eb09276a-c9b9-4bc2-b628-782344d42f71@cherry.de>
+Date: Wed, 15 Jan 2025 12:29:09 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v3 2/3] sdk-manual: extensible.rst: update devtool
- ide-sdk
-To: adrian.freihofer@gmail.com
-Cc: docs@lists.yoctoproject.org,
- Adrian Freihofer <adrian.freihofer@siemens.com>
-References: <20250113233736.4181201-1-adrian.freihofer@siemens.com>
- <20250113233736.4181201-3-adrian.freihofer@siemens.com>
- <b363d565-c568-4a15-be1f-725e24f0191a@cherry.de>
- <CAB3asfiixwFwsr4Fmhct2ZsicD=6-mdDvfvz36UpJveRAo-9jw@mail.gmail.com>
+Subject: Re: [docs] [PATCH v4 1/4] migration-guides: systemd.bbclass do not
+ add Also services for 5.2
+To: adrian.freihofer@gmail.com, docs@lists.yoctoproject.org
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>,
+ Antonin Godard <antonin.godard@bootlin.com>
+References: <20250114200734.4191354-1-adrian.freihofer@siemens.com>
+ <20250114200734.4191354-2-adrian.freihofer@siemens.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <CAB3asfiixwFwsr4Fmhct2ZsicD=6-mdDvfvz36UpJveRAo-9jw@mail.gmail.com>
+In-Reply-To: <20250114200734.4191354-2-adrian.freihofer@siemens.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: VI1PR0202CA0029.eurprd02.prod.outlook.com
- (2603:10a6:803:14::42) To AS8PR04MB8897.eurprd04.prod.outlook.com
+X-ClientProxiedBy: FR3P281CA0150.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:95::19) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AS4PR04MB9649:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12cea806-a49c-413b-38e7-08dd35574fc9
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AM0PR04MB6882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0c93185d-2562-44ff-bb3a-08dd3557d497
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|10070799003|366016|376014|1800799024|7053199007;
+	BCL:0;ARA:13230040|366016|10070799003|1800799024|376014|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?eXROTXVMWS9pMWVDVDZFRm9IRDYweHdRZjRMdjNIN1ZGSUdJdm42TkZrVTVX?=
- =?utf-8?B?Zmh0V1dLaE50bGtVMWdTaXpxaGorNmpXdEhqbHZEaU1lMVhkQ2dYYWxhUVhS?=
- =?utf-8?B?cmVxWVNQNDB4elVzYTZnMnVsREltVWhRL0dDN0x0dnJtSkNKQXI0THp6N2pP?=
- =?utf-8?B?ZWxSa2xmemh3QUo2Z1M0USsxazhjRTY3VFIxVXQ4dEJtejE2QUt3a1JkRnFy?=
- =?utf-8?B?Sm9FQVVmbEFzWGJ5dnh2YTI0VnI1b210Q3dkR0hYa0YrU283U1pteTdYbnFV?=
- =?utf-8?B?NXFYY2hvK2hibklseW9BT2pQcTZSTEJMNmtkQ2VxUkV4aFhiZkIzYy92eGc3?=
- =?utf-8?B?OFA0Q3lnYmt3Vzk1YXJGQldpU05qeDdmb2VuUG1JVGkzOVA0QkdrZDB4WFZR?=
- =?utf-8?B?Sk9wK3dTVjR5VnhGK3JsajVwdVMvcmJ0dW4xZVBiMFdRQ1VwRFFtc2E2b1JV?=
- =?utf-8?B?RmduQmQxZXlydmNJSTVSMG5MekZpTllZTC9JNDVJL0llTWoxZVoyRlBsYmw5?=
- =?utf-8?B?T2Q0WmY5VFc3V1o4RVRlZC9zSUFKQUNuR2xJRlBJZEtQTlg0ekQ5eUtrRHRM?=
- =?utf-8?B?WU9aZnJTOFo1aFZ2YWkyNDRrV29LclVSQ3NlbXVXYkI3TjJSY3cvUVNBcVdq?=
- =?utf-8?B?Vk15Q1c5a1BJcENYdXU3Smx2aFo4NlVHUzVZVzVYdGhNNnZPUk05TTVlZkdu?=
- =?utf-8?B?QlJtaWJ3aGVtYVNVbEFtUGN1eDE4QytRS0Fmd3pvdW9MVXhwL1ljbmVZeDRC?=
- =?utf-8?B?Q1IxMEJTTmhuejFRSXJEUnE0c2lZRUpqcGgxdmFiWkxKRkVQcFYyS3pCb3kr?=
- =?utf-8?B?bjNNVkExeWYyaXN5cjczc3Z3Tmh3YnBZWUp4NTdnYkpZRlNjYnEwQ1V4U0Ns?=
- =?utf-8?B?QWZMd3VKbCtFa0l2NkpUVjhtQlhlS3NDZzVCQnRhTVZPVXJlNUNQSUhMWW1m?=
- =?utf-8?B?Qkl6RUNwR1VTR1Mrc0pSU2xXOTQxbDBzQmxMc2xSTjVCbURqelE0dG9KelhD?=
- =?utf-8?B?SFEyNnA2TTVxb09zaStTZklDZ2V6S2pSZi9MUzJrMW9RQVdqc0VhaHkvYklM?=
- =?utf-8?B?eTZEM1RXb2lJa3BhYStwNkNIYllobHlxK0JKU29NMUlkRVJhM25ueGtCQnBj?=
- =?utf-8?B?djZPUjZ6SHFURlNxVHpsZTBYWHZ3aHR0TlgyOHRGQjR3Yk9nTHk4eGE3VXox?=
- =?utf-8?B?S2prYWxCdmNTcHFlVlREVloyWlNubm5BNkY1a0IvYWdXOUZ3a2gwUThoQkZa?=
- =?utf-8?B?YmNWVWJUeE1iNis4S3NqTXAvSGtJSjRVN3ljQlRsUXFXVkJJT2Q1aXpDLy9w?=
- =?utf-8?B?M1VEMUxQUTZlYTZsa0xnQ3FlNzhneThab0VqbFRxYUpURytiVTRnOGNBWmZv?=
- =?utf-8?B?eFFmdEc0QmNRSE5lcGJQVzA3VDBGUURqZXRCYTZRa00vdndBQnRucTBhTGZ4?=
- =?utf-8?B?ckJWUUZQTG55S1UxT0JkMjVUL2xmUUNtcG1ySmpVUzJLanpUWjlzTXVaMGx0?=
- =?utf-8?B?MWEwSDdHdFhJRTRjNmFBNEdqVW5EZ2hZelRpeHRKdC8rd1NXMnl1YUkrQkgy?=
- =?utf-8?B?YTJYQTRUZXR0UXJlYmw1M0RZQmZKODJBL1FLM3puYWs0djB0bHlwenU2WnVr?=
- =?utf-8?B?Zm92VFNweHB4Y2xvWWtkcTVoRmFqT3RlMklZcVhJVEc0U1NTQVU0bTJ1L2RI?=
- =?utf-8?B?WndRMzZjWjlDOWhJYm9ma3dWb2dvMEdIakxRWE02bkM5bkE2NEpRSGNhMFNC?=
- =?utf-8?B?UjZhOU1sV25mRGVXUjBmQWRSdWc3UC9MTjhvcGdWdEc0MVE4WXhOVnFUcDZi?=
- =?utf-8?B?L3oxc3JQckFuYlRaSnhjUT09?=
+	=?utf-8?B?SS9IUjB1U2NXNGNqcE15cGs5dUt5RHFTOFdxc0FqSUM0Uldmc2h0cHhiV05k?=
+ =?utf-8?B?QnIyaGJlWFFCRHRUMW5HUEMxM1R1V1krMVFzcWtYQm9BS05KRXBXTjJhRDZT?=
+ =?utf-8?B?dVR1Zm4vUFhFb21waHdzbmYyczBaRVZhWTdIZ0tzZDM0NHZuS1BmVG1QVFI3?=
+ =?utf-8?B?K1R5Vk1OdmRRMWxlbDdFbW9KZUtDUlRDM3BmVkJCUFdBZ3J5WHRVcUw1cTZ5?=
+ =?utf-8?B?UndFdVJ4Z3RVa0JmUkFSWTcwaW8wKzU1cmtyTW5uenpMVFoyenFQZ09UNTE5?=
+ =?utf-8?B?dVZ5OFZnbUk0OFZxU2hxOE1KRDNLK2o5R0RFRUdwRU1YVElHZ3RZdG9uUWhI?=
+ =?utf-8?B?QjdvaUQrZ2IvTzJpZnh0L3Q4QWFndlVDUHAwb3dkY1RRc0JqakxRd3BSOWVO?=
+ =?utf-8?B?a1NLUGVaNEVlT0drOG1odlE2N2J3QUhlNFU3Zlp2bDU2clFDOHo5NUxnMGpm?=
+ =?utf-8?B?NFMvZ2M1SW1CRkt1RXp5cEg1YzZzdW85M1BpbW1zb1JoMVRjREk4b3dRSUdu?=
+ =?utf-8?B?Tk5GS2lBeUZtamVxaUdwS0tDYXVIeklsNUphNm1ubDFnMmhPRy9VRWxoK09S?=
+ =?utf-8?B?WExYMzU2T2xLVDlJQ1dSdUh6U3dIRm9DQysyNDBCUG94MXdScDMvcGZ4QlhV?=
+ =?utf-8?B?cWlhb3RORGI2aE84TWVmS0MrRGkvRjdUK0twc0VwN084ZXZVTUZWSUt3VTNI?=
+ =?utf-8?B?aUNZbnM4UW54QmZGL0lhQXN6N0VIVVZBOXJXanVDR0R5citqOUNFeDBKU0FT?=
+ =?utf-8?B?WUp3NUFHTWhGa3FiTkNpOXdnbEliL1ZzYUFkZUFaUXNPaFpmSlJqOUVqV0Zm?=
+ =?utf-8?B?RU5qS05VUGlOSURvb0ZUTTg3UDhYblhPZDUvMjNDdHZOb3Z1ZEZwWk4vWGdI?=
+ =?utf-8?B?R1Z4czRZajZzblFxU1liWUxlcW1oekVHT2ZaZ2R2ZCs5RzdkVHV4U3l6MXdz?=
+ =?utf-8?B?ZUtFSjlsaUhVYzFYR3I5RVRqMW52b3FHcS9yZkthcUVSaERwaWhLckZDQVZy?=
+ =?utf-8?B?NmVIN1RtOXY4UG5jM0F1NzBqaW83NXY1Y3o0WUdSSXFyOHo5T0hmMFFwU1Js?=
+ =?utf-8?B?YXZVVCtJNEhwclNpL09SKzg2OU5pM3hBV2hPME9ZVUpWZzM3NXF1VWNDYzg3?=
+ =?utf-8?B?bTJJSVJOaGVtaDdDczFibjM5SjZWVS91Mk1HSTRlbWpNWGdDOXFpVWRSSTcx?=
+ =?utf-8?B?MG41SHFIV3pKV0hjMEJ1d1RxWm9mT1h0a0dENVRCeXlyZ1N0Z0xHNWN0aHQw?=
+ =?utf-8?B?bDQ1OWkrVmlwNUFzTWdNR1YwNjF2YXdOZFdaa1MrMkliZGR5eGtjY01yQTdX?=
+ =?utf-8?B?ZkFtWGZvaG1YYVRvVGZpZms3RDlvRHIvQzZ1S2wrcmt5VnZ3bmJjTDVlWmtU?=
+ =?utf-8?B?QnYvKzBycklmZ0RzRlZYTzRYV3dId084dndmUnAyazlqaTlNbmRRRXZYTXly?=
+ =?utf-8?B?bFE5UUlZdm02bzB5YlBqKzRHSFcwMm84WDFBcXpSSFhwcGovaDZ5bkQ3UjZB?=
+ =?utf-8?B?WnRiRlFIdnN4ZkhmT2pNcGl1NmtVQVpzNVFDZEpTdVoxVzRnblpFQ0dYVTZ2?=
+ =?utf-8?B?cTlOaGErOVN6Q1RVUnFaN0FrY0J1OGF1eGIxY1pDVUZNVXRZaTd2akp1YlRh?=
+ =?utf-8?B?SlE1cGZMcjVRL01zSDZHLzMzWlRZeXhwS2Zkb0tqSXMwRDZxTjBFU2pHM010?=
+ =?utf-8?B?K291MXNJZXZna0ErRXk3SFFuMXZ6ZEtqOUxEZ2drbmg1Q3FtUjYxazV4SlI3?=
+ =?utf-8?B?Nk5lSVBYSUxuUkJ5QjgvQzhWcWdKTHhtbHpESzd1WjBVR09RcUVoQWw3bWg4?=
+ =?utf-8?B?OUEzQ3RKeHRMZldWKytndz09?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(10070799003)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?RUtMakVnRXVXKzcrSGJWN3NSc2FLRVFSUVRSTm03Mk5vMWdkVWFrZTlzRll2?=
- =?utf-8?B?NlFHaXlobUVSYlphczRQMHFjQ2hJSk9xazNJL1B1cGNXNFdLdTBOb2EzT0hM?=
- =?utf-8?B?OGwrcEROdFFyUFhSREdOd3k4UGkrdVZkOFRvYlNFRk0rSUFLUlVhRHVhei9t?=
- =?utf-8?B?NXErU1loelBFMXR0TklhRTBtblFBZ0xVY2MzNkRDUThPbTlLTEhzc0FLalp1?=
- =?utf-8?B?SzUyYzJtZVVURjllb0tPL3BlRkgxbk1JSW5OYkJVeHZ2NUd1eHhsVWwvUEZo?=
- =?utf-8?B?bHJBVmQycmhWVU5RbGgycDNKcDlBdHAyK1VjUDBkdG4wNFRJOHk5bk1sYmZF?=
- =?utf-8?B?TFdyZFFQUTkvcDZ2Wk9WTkIzUDhEblEyem53SWZsZWF2SFI0WlpFems5dFZT?=
- =?utf-8?B?RTNmRENYZlNWZlEyN2x0NE1iZ0VacU1KemdpQ3hZYmMwOTFnR3huZWd6empO?=
- =?utf-8?B?ZHQ4TUcxSXpOQVZiejk5LzVPVFRFV2owTTZJWTAyNTlXN0ZRZnlHWlU2UjBH?=
- =?utf-8?B?L2xFZFlxY3QrN0V3MERnY21XSXhwWWRrRVIwUDFpU1JYRG1DT2RhS3E5K2Fx?=
- =?utf-8?B?V3A1K1ZSeU1NcHZkVU1CK0E5YWhNQVZoUlJwbVRuUXpFT2h3MWxwQ3dBeE5U?=
- =?utf-8?B?Q0RhUE8zRGx1QWNBTUdzdHBncVlIdDhSZ0hJNjJLNzBySnhXRXc4VWpXS1o5?=
- =?utf-8?B?bFBSektlWVJONHVEUzhJSnpNajlDaEZLdEF1ZW9iSW1pa0NHeXVDUWRNTWxR?=
- =?utf-8?B?ZDJLVTBrUXY5OFd6WStwemdhSzRTVG5VdVUyaVpBMEpQY3NwanplTHRtcEI5?=
- =?utf-8?B?WncyRFVvR1BlZG1TNzZsQ21manhCUit1cHNBSmxZSkE1MXVpU1dLNk1zNFBF?=
- =?utf-8?B?cXV2MmMyMW9zWURWVHNBY3VKYnVZZ3hVOVRUQmlWeWdSK1p6YWZ1M2pMSktF?=
- =?utf-8?B?Q1hwTW9XWnRGSDhHd3daOFhKbXl4azNuM0oxU280eDlvd3p1ODI0WStCN0VX?=
- =?utf-8?B?bU5VUzQ1SERMYmg3ck5XejFKVTdCZTVZdzBzcFh6REZPajZEb2t5SnpRRzNY?=
- =?utf-8?B?UGJ5WWRoWWhyM2dzeUlYMXp2Wnpud0wzYVlOWkZXbVQwTGx4U0R6SWhzZFdL?=
- =?utf-8?B?b1FvL3dYSlplRlpLNTNydkFVMzIxbmgza0sveXhJUng1WTloWk9GWk1ybktu?=
- =?utf-8?B?TGwwc2FETG8zR285aldaYnA0YlFRZVhCbENWZ29OSm8vb0czcEtKTXRQeStx?=
- =?utf-8?B?Q1ptV2lGbzB3dkdMams3eWphT1U0Q3RueGRFMzYra3ZtUEZpVmIveDd5RTNO?=
- =?utf-8?B?dVRQa2VLQ3hSRDNNSlZCeS8rSmhXNzA5bHN0RFAzQlIvdGlLUlhNTC9zZXpF?=
- =?utf-8?B?NDRvT3N0NGkxeG16aDhVcHpFZmUzSHhTY2l5M0V3Y1FnNGlyL1p3dGllWG5p?=
- =?utf-8?B?SVM5cC9UZHJPZEk2QXJFZmhvZUI0SnRZZEhyMFFXYW4wcFhqYU1VNVdDVTJK?=
- =?utf-8?B?TnplSHM5ZHBkODM1V2k2TDBVTVVVUDcrd0czSWNrT1gzc3RsQzZtUnRIa2R2?=
- =?utf-8?B?N1pXNDkrYXVjMGdzQUN6TnBRY0hONlpYVkFpc01NYUdZYjRLekpWSjBPOWU1?=
- =?utf-8?B?NllmcitMOWU1bWNoa0V1SVpwNlQ1Tmo1OWFXcFJ2Y3V5Y044WDFVZ0t4QWUw?=
- =?utf-8?B?cVFuUllmcnpBbDZYblRacFRmMjlTbWVUVG1WcXd4czdQVjhUZ2dLZEEvK1hJ?=
- =?utf-8?B?OWtINUJUbE5vTnpxVCtTTjhUM2Z4d1dISXBSOHJ1THdEZGhnK2JYTHhTbkY0?=
- =?utf-8?B?eFVObzNRM0tsaXRCY0xuOW9NeDFaL2EzV2x2NUdHTzZXMEwvMkRnMWZaOVlC?=
- =?utf-8?B?Z0p4VTZKZW50RWFmclRuMFRzM1g3UnBCVzhhV0tmeVlLNDQ5Z1BxNFByck5G?=
- =?utf-8?B?ZUQ0TUpiQmg5MkMzZTdCS0gzMnlWa09xNjZlbnFpS2FhMlpjUllKdFFFRWVH?=
- =?utf-8?B?b2gzdEFzcUVXWnFMMkIvZk1TMk4rTEl5NTZ0alFtZS9XMDU5ZUlLZ3ZHd1V4?=
- =?utf-8?B?ZSt6aXpsVks3dlBPQTdneW1BcmN0bzVjL0IvZlBwWi9ndXdXZWlmY0dGa2hB?=
- =?utf-8?B?UTcwcVlCdTlUV0dtKzVsN0JHSTBHTHZ0dm9wdGJaMHZDQWFzN3pJOVBZUFBQ?=
- =?utf-8?Q?Mk0soTYwxsmCIGP6MiEqmlw=3D?=
+	=?utf-8?B?bUFhQlFkM3JMdFpWb2EvVGFJU3RBMUVKamNUOXFDTzkrMUZDdWNNRXlkKzZD?=
+ =?utf-8?B?cU90bmQ1VjJNQnl4REFBekpFNnJ1ZTVkekw1akY4Q282YW14TllDcWtIb1VZ?=
+ =?utf-8?B?RGhJTmV5UTI2QVdGaDZkVGV1amJuYmlyUjRpODROZ212S09ILzdjenp2TDlx?=
+ =?utf-8?B?dTZuL290dUJkR1FGRW0vclNnUmRIMU5ndUUyZUtYM0pwSmlrODRpTkpOdDFV?=
+ =?utf-8?B?MzBXQnNHQ0s5ZUZtQUFMMDZYWGwwTU82U0hRY1ljSEsycjJUU2s3Vk1jU252?=
+ =?utf-8?B?NU0ycktLWklVTStkRmFmdGlLbWU0enpFRkp6VWt6aXMvSzY1SHBRRFhiQURG?=
+ =?utf-8?B?VzdLT0hVY1ZZazBNTzJxUDBVSjdpRjhCUmpxMjdURGs1RTBDN2U1S3FFai9Z?=
+ =?utf-8?B?aURJSlRaV3dpZEQ0THZMcjNkMDdOMHJRU1QxZFpGNUpORVVtcHAyQjhPTTNz?=
+ =?utf-8?B?ZEt0SFRaQVdCMnozRjhDYVpxL1NBaTYySmd4eWZPVTRhU2dFcnN0ek0wZHpG?=
+ =?utf-8?B?ZXFiVStnSEJ1UVRpaFVtdkpLVWwrZFVjTm1aU1EvVEVaSUNJOW9XbGlPWHJ0?=
+ =?utf-8?B?RVVzWGQ2dWFjbzd3a2pFUVNLcGVQOU04TFcvalo5SkhLRmU4NDhpM1RvelNt?=
+ =?utf-8?B?VjFOVVdTcExIa2JHcmpEcVBTZWhaOGNDRWlIcnI2U29XM2c1ZldMdDk5YmZ0?=
+ =?utf-8?B?SURmdGh3WFduM1pXdk9TRG1NYTFuYmZ2K0xkekFiQzB6bkdsZTdkRVM4MGdy?=
+ =?utf-8?B?M00xQUVNMEEzN3pqd3lRVnl0YmJzSjN3Q3pUUGxtRVpTUVpBZUo3Y1phRGhW?=
+ =?utf-8?B?ckVsWHBReVF4U1g4aC9wdGNoTHVhU2xjQ1Fpdmx2V1RNQXVNSE9JaEtJYkpE?=
+ =?utf-8?B?RHg0WnlGeC9GbTVPTVRiLzduM0xPZm02L0VRTW1DWVBOakxFVktNbThjZDBV?=
+ =?utf-8?B?MFNqd2c0T2ZrMXhtU0xBdzJLRGxBRkZBS0tUSmhZZVo4Ykd2aTdnTXJsaUhQ?=
+ =?utf-8?B?TGYyRldPK1ZnVk5jbmllZzB1aUduWWh5WVdRek8weFZCR3ZleVRkaFR3MnN0?=
+ =?utf-8?B?TTRTVU9TME15MG1RYU5Zekc3NkRINk1OMkFJWmdia0czbzRtRXBnMCtLQXYw?=
+ =?utf-8?B?MklLYUpHZkpzNldJSlozNTJiRHZzMWRHYXp5VHRUTnNjeldDdnRLU01FV3ZF?=
+ =?utf-8?B?U3hLYnhoZm9wVHc0czZuanJJMzdGU3g4V0NRbHFBMUNFbmJ4SUk3RE9MQ2Y5?=
+ =?utf-8?B?L0xNUmpINlZ4ZjBXNnRpS2Y0bUVCMGE4NUdZYjNoWnZRMzEzOGg4cDhNb0VM?=
+ =?utf-8?B?bTEycExjcU5ERUpXTFVlMUNHcFkxMVEyQjJ1V1A4NXppcjVpZktuQVFYTlFL?=
+ =?utf-8?B?Ti9mbm90Vk1jczRmcXZZRXBrUTJUUzd2cG5rOXZUN1lCRUlpSHZpZjJYU293?=
+ =?utf-8?B?LzJjTG15UnhEZllDRStBeDVobTM2YUlmd0RNeXlRWjhIZEgrYjRRN2Z4OENH?=
+ =?utf-8?B?SGdZUTlvRFlaZ0VMSnRxNzlxdjE0Z1c3d253TGZtMGlBNERKbWJ6VmQrSkd1?=
+ =?utf-8?B?QXRIZFRHOWM1YjFTcXRKL3BOOHI4dldtcTdhY2I4eU9wc3E0d0lRa2ZyU3BI?=
+ =?utf-8?B?a25yb2kyVHZDNzFha2YwYXJDV21nQUlXTFRZeW1jSjhydUhBTHJiNGcxUkFq?=
+ =?utf-8?B?K2ZIc1p4cGFIUHRYbHFXTHc4NExrNDdDTkVMS2hQL1ZTc2p0NnFKSnRRODlY?=
+ =?utf-8?B?RTN5eUJuejFibHlrKzlTV0oyOFpWdzdKNEs1L0RTb05KUjB3VEhjaGk1RVdX?=
+ =?utf-8?B?WEV1K0lvWVFKblZ6Z3VCUkh4eGE3T0xuVXJRa094bnZJdmFVek94U2ZrT2E4?=
+ =?utf-8?B?QXAva05Ha1JrUlorUllXT0VFSkduaDlDTVpGUURHSllEU0JpMmFpNnlIVmhP?=
+ =?utf-8?B?eXJCLzJsWlBJekhkMWRxSkhmb2Npdm1vMjRnZ28wSGhYbU9wYkNhdGhVQTJO?=
+ =?utf-8?B?bW5NSHdrMklBdW95eEI3aTRyOWsxZlltUXZnM1UwK2NMaXByM3NXanF1dkZW?=
+ =?utf-8?B?S3RwMjhjNmZPbkV5MVhBVGFQZFlWY0dMcE5jMi9TUTB2MnBIK1E3T0hMVUUw?=
+ =?utf-8?B?eU1XZ3FmZUhoamRQdE81Smltb0pjOHJLVVErRUhiVjNLZ3pqeTN1b2U4VWxz?=
+ =?utf-8?Q?nA0MXivUYX1SbponDzpXMLE=3D?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12cea806-a49c-413b-38e7-08dd35574fc9
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0c93185d-2562-44ff-bb3a-08dd3557d497
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 11:25:27.4780
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 11:29:10.2864
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: F9kzMILIM8O3cYRTS1uljeLaW4NIOZeUuMRx9+NCwiQECZ9CWx4YNSrfDF9m2nSVUOaCHdZBC45tCIiHXTwsyz9/kSoPiBXi8K1DTmq1Eok=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR04MB9649
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5jZpVeYc5US/urf9ZxptWFDSHDIblCn1nMPce1yjGNsibsxQGLTV03FMACIudGkkXJYoxrjgCaXOuPkJYTAYYGD+l1JUCdt73tdVk4rMTvQ=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6882
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 15 Jan 2025 11:25:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6114
+ <docs@lists.yoctoproject.org>; Wed, 15 Jan 2025 11:29:23 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6115
 
 Hi Adrian,
 
-On 1/14/25 7:21 PM, Adrian Freihofer via lists.yoctoproject.org wrote:
-> Hi Quentin
+On 1/14/25 9:07 PM, Adrian Freihofer via lists.yoctoproject.org wrote:
+> From: Adrian Freihofer <adrian.freihofer@gmail.com>
 > 
-> Am Di., 14. Jan. 2025 um 11:10 Uhr schrieb Quentin Schulz <
-> quentin.schulz@cherry.de>:
+> Covers the changes introduced by commit
+> https://git.yoctoproject.org/poky/commit/?id=efa5f65c2214239ed7aaf7bd8998683e755c5660
 > 
->> Hi Adrian, Antonin,
->>
->> On 1/14/25 12:31 AM, Adrian Freihofer via lists.yoctoproject.org wrote:
->>> From: Adrian Freihofer <adrian.freihofer@gmail.com>
->>>
->>> Replace
->>>     devtool ide-sdk --debug-build-config
->>> by
->>>     devtool modify --debug-build
->>>
->>> This change was introduced with commit
->>>
->> https://git.yoctoproject.org/poky/commit/?id=1f7eb26c947dde14698ae6e2ab88f0637027f4cb
->>>
->>> Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
->>> ---
->>>    documentation/sdk-manual/extensible.rst | 7 ++++---
->>>    1 file changed, 4 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/documentation/sdk-manual/extensible.rst
->> b/documentation/sdk-manual/extensible.rst
->>> index 9a50d7fc54c..3733997fac4 100644
->>> --- a/documentation/sdk-manual/extensible.rst
->>> +++ b/documentation/sdk-manual/extensible.rst
->>> @@ -669,7 +669,8 @@ The extensible SDK supports two different
->> development modes.
->>>          IMAGE_INSTALL:append = " my-recipe"
->>>
->>>       Assuming the BitBake environment is set up correctly and a
->> workspace has
->>> -   been created for the recipe using ``devtool modify my-recipe``, the
->>> +   been created for the recipe using ``devtool modify my-recipe`` or
->> probably
->>> +   even better by using ``devtool modify my-recipe --debug-build``, the
->>>       following command can create the SDK and the configuration for
->> VSCode in
->>>       the recipe workspace::
->>>
->>> @@ -786,8 +787,8 @@ The extensible SDK supports two different
->> development modes.
->>>       .. code-block:: sh
->>>
->>>          # Create the SDK
->>> -      devtool modify cmake-example
->>> -      devtool ide-sdk cmake-example core-image-minimal -c
->> --debug-build-config --ide=none
->>> +      devtool modify cmake-example --debug-build
->>> +      devtool ide-sdk cmake-example core-image-minimal -c --ide=none
->>>
->>
->> Considering the commit log that introduced this change, I wonder if we
->> should mention this in the known issues of older releases, though I
->> guess the whole example simply doesn't work?
+> Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+> Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   .../migration-guides/migration-5.2.rst        | 20 +++++++++++++++++++
+>   1 file changed, 20 insertions(+)
 > 
-> Well, all examples have always worked. There is only one detail that did
-> not work
-> When devtool ide-sdk was called with the --debug-build option, a build
-> configuration
-> for the IDE should be generated that compiles with e.g. -Og instead of -O2.
->  From the
-> user's point of view, debugging did work, but with still optimized code. So
-> there is
-> definitely a better user experience now than before. But it has always
-> worked
-> reasonably well.
-> The VSCode bitbake plugin called devtool ide-sdk without --debug-build,
-> which was also
-> not ideal and has now also been improved. However, this also means that the
-> broken
-> function was not available for UI users with older releases.
-> 
+> diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
+> index cb70e19da0c..c317587ee5a 100644
+> --- a/documentation/migration-guides/migration-5.2.rst
+> +++ b/documentation/migration-guides/migration-5.2.rst
+> @@ -74,6 +74,26 @@ systemd changes
+>      As a consequence, the ``systemd`` recipe no longer contains the ``usrmerge``
+>      :term:`PACKAGECONFIG` option as it is now implied by default.
+>   
+> +-  ``systemd.bbclass``: If a ``systemd`` service file had referred to other service
+> +   files by starting them via
+> +   `Also <https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#Also=>`__,
+> +   the other service files were automatically added to the :term:`FILES` variable of
+> +   the same package. Example:
+> +
+> +   a.service contains::
+> +
+> +      [Install]
+> +      Also=b.service
+> +
+> +   If ``a.service`` is packaged in package ``A``, ``b.service`` is automatically
+> +   packaged into package ``A`` as well. This happens even if ``b.service`` is
+> +   explicitly added to package ``B`` using :term:`FILES` and
+> +   :term:`SYSTEMD_SERVICE` variables.
+ > +   This prevents such services from being packaged into different 
+packages.
 
-Ok, thanks for the explanation.
+I believe there's some misleading use of the present tense?
 
->>
->> Also, we should probably highlight this change in the migration manual
->> somehow?
->>
-> Assuming that the feature has not been used that much so far, I would
+This behavior is fixed no?
 
-Well, I don't think we have telemetry in there so who knows if it isn't 
-already widely used :)
+So I would suggest the following:
 
-> announce it as a
-> new feature of devtool modify and mention that the same but buggy feature
-> has been
-> removed from devtool ide-sdk. I can send something like this going to the
-> devtool section:
-> 
->     -  Replace the anyway broken ``--debug-build-config`` option from
->        ``devtool ide-sdk`` by a new ``--debug-build`` option of
->        ``devtool modify``. The new workflow is now::
-> 
->           devtool modify my-recipe --debug-build
->           devtool ide-sdk my-recipe my-image
-> 
+"""
+If ``a.service`` is packaged in package ``A``, ``b.service`` was 
+automatically
+packaged into package ``A`` as well. This happened even if ``b.service`` was
+explicitly added to package ``B`` using :term:`FILES` and
+:term:`SYSTEMD_SERVICE` variables.
+This prevented such services from being packaged into different packages.
+"""
 
-I would put this into the migration manual for the upcoming release 
-which explains that it changed. The issue is not documenting the change 
-in the documentation part itself, that doesn't matter much, but rather 
-that something is required on the user side to debug builds.
-
-Considering that devtool ide-sdk will fail if --debug-build-config is 
-passed, I guess it's not THAT big of a deal because it'll prompt users 
-to check for a solution, but highlighting it in the migration manual 
-could help a few users avoid having to look for the new way to do it (or 
-debug their setup/ask for help on the ML).
+Does this make sense?
 
 Cheers,
 Quentin
