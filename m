@@ -1,356 +1,306 @@
-Return-Path: <adrian.freihofer@gmail.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35573C02183
-	for <webhook@archiver.kernel.org>; Tue, 14 Jan 2025 21:26:04 +0000 (UTC)
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
- by mx.groups.io with SMTP id smtpd.web11.6036.1736889961357099128
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2A8C3C02180
+	for <webhook@archiver.kernel.org>; Wed, 15 Jan 2025 07:29:57 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+ by mx.groups.io with SMTP id smtpd.web11.15912.1736926194174026764
  for <docs@lists.yoctoproject.org>;
- Tue, 14 Jan 2025 13:26:01 -0800
+ Tue, 14 Jan 2025 23:29:54 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=BUnm6VpB;
- spf=pass (domain: gmail.com, ip: 209.85.128.49, mailfrom: adrian.freihofer@gmail.com)
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-436202dd7f6so68520895e9.0
-        for <docs@lists.yoctoproject.org>; Tue, 14 Jan 2025 13:26:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736889959; x=1737494759; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IrWduTC27pMrKletn0Q0FOAEy4FFV4Mj9B7Elo3YJdY=;
-        b=BUnm6VpBYyjxhZty79nlyMy1PKxKFBzH3DIC94NbT/sU3rdZbwMhpWs2P1ZHKHoYou
-         6cRACAwvDjATtKu3bdxtnF/0xjUzoaQnAh+EUdLByv/zzRqHzwosgubTD6g2fFaLNi60
-         iwCVuFVquYIOWWUZW/fWnjvxymySR6j66r9VaNzRnwJ6X/0QvYZKsxrfPdWtRUGjPaqj
-         hjMGuQONTeTfgGqPAdZDZ0xe5ZatP+wsMcLb7+BD3uMkC5pEgPR28+056jiNcVNK4SCY
-         DCoxdGvrrsI1MrC8yZeH5gBYFEGjj8PLF4Mot1oR5W6OwdasXkLejIfvvCXySc6+aq1F
-         8CkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736889959; x=1737494759;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IrWduTC27pMrKletn0Q0FOAEy4FFV4Mj9B7Elo3YJdY=;
-        b=WrlSqBqSS5EFn+LYOb55vfRob+Q6CDmB+69JkAXPC663y1VbGcIVuWT+99hQ+2LANN
-         q7dkgjcerzzLBAu0thqUugZgQ0qGpQ2wsBS1Ufrg8zWID6sqgHpovsGi5C2f4V6WEW1M
-         whk/5sJq+375GXlDA1jtYC0TzymVtTqdH8OUwnKdpj37rzQuovQZHtDcbPIBb28F3XK6
-         tTcTlloaiGZ6RWsfCNCCHAD3+1sUHWekM8zaJ+WqcTWjG+m+YUHQ8/JpxyUsigDimki7
-         o+NNByP6ybAj0tkX/Fx8cKZRYRFXcv9HLkDiCyoCYoiDYaN73F3aMhvMfG8J0pQtbuMf
-         M87Q==
-X-Gm-Message-State: AOJu0Yw0fAe88paVFAqzgRhGs+ecDuCWCObcNioJFL+oKFedqkFb7sun
-	poPZ1CZU+zij9ZCsUkqlMUqM2EN9+XF8llaz6fIkjfHgkM/eR9R+z0TIkA==
-X-Gm-Gg: ASbGncvpJ3tYqt3Nj4QqltxFV0v0q/38dwyyHWtbJcWL87tmwT5Dfg1QvcoDKWRvv6L
-	bLogHcUILaOn9o/8EWkRiMktP1b3ubQ7RA4duon2XXYVO5Iw70FurV/PEW3y9nOQsNdyYrBbTCp
-	XbWeKCFzyGfQtEPYjfR47hXxA62A9TaQfvj0B9F2iXwiXPBqQBAupM7qWz7DxIk9ZW11Tuaao8j
-	Vn1mK1YtK7MKjRMt18QA8GME4R1bN5eZywtgpQr2DB08XZwwlhKMmIZQntO5Xg6b0hSFyCvfoWw
-	1jU=
-X-Google-Smtp-Source: AGHT+IH/7LvyACN6LwJKNe/726wdGMUnqDO/phR+tFHCYuZr5BqJIQKveCE2AHzHwniKmmVHVAGWgg==
-X-Received: by 2002:a05:6000:1ac6:b0:38b:da34:5915 with SMTP id ffacd0b85a97d-38bda34591bmr9939034f8f.23.1736889958859;
-        Tue, 14 Jan 2025 13:25:58 -0800 (PST)
-Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38be66b01c7sm617105f8f.22.2025.01.14.13.25.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 13:25:57 -0800 (PST)
-From: Adrian Freihofer <adrian.freihofer@gmail.com>
-X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
+ dkim=pass header.i=@intel.com header.s=Intel header.b=QiTGCKCs;
+ spf=pass (domain: intel.com, ip: 198.175.65.19, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736926194; x=1768462194;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=/+JAeIO2h9JxDdx6x2eHVQnTN3tsLsIVj4HOvOhX9IU=;
+  b=QiTGCKCscR2YsyZH1/hgHPEZcAvdiOcC1SI3WZvTQ0osEQ61V7nMt5Xj
+   /wq8THNiO9CU87bIorh3mlOUN/rFhk3YY3zWmqShEV/4rq3oPEQww8Uhq
+   ODot2AT5lbbi76HdrBNdywOl3NkTi5eL4LiocTRoDUPK2WS27byaAMAyh
+   zOPfGaT+yjurvptjiXQ5CDHap9XGjDrBixV7kr9vSKRwQQnmNXrRoe8Ff
+   JWnvuZ1eD1KS1g6XQ8MxqNYzBIEpArsfrkpd6WSup5uHIdS5Iby7TCUo8
+   Isx0geXrT6Z/FBYLDF689ziKAEBaxOD7y65ZhzeA30o61OR7sNYWMTTXx
+   w==;
+X-CSE-ConnectionGUID: Gto39x02S+yl+3ygWeNpxA==
+X-CSE-MsgGUID: B0fo49FSTAKaafyGvft5iQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="37127438"
+X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
+   d="scan'208";a="37127438"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 23:29:53 -0800
+X-CSE-ConnectionGUID: D8wMvABPSDSfpzJfiQ+h8g==
+X-CSE-MsgGUID: ci8JJHZHQdK5d5DwdEjK1A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="109668224"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by fmviesa005.fm.intel.com with ESMTP; 14 Jan 2025 23:29:52 -0800
+From: chee.yang.lee@intel.com
 To: docs@lists.yoctoproject.org
-Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
-Subject: [PATCH] sdk-manual: extensible.rst: devtool ide-sdk improve
-Date: Tue, 14 Jan 2025 22:25:45 +0100
-Message-ID: <20250114212545.5950-1-adrian.freihofer@siemens.com>
-X-Mailer: git-send-email 2.47.1
+Subject: [PATCH] migration-guides: add release notes for 5.0.6
+Date: Wed, 15 Jan 2025 15:28:34 +0800
+Message-Id: <20250115072834.3563904-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 14 Jan 2025 21:26:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6111
+ <docs@lists.yoctoproject.org>; Wed, 15 Jan 2025 07:29:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6112
 
-The devtool ide-sdk section is reformulated to be independent of the
-eSDK installer. In fact, ide-sdk does not even support the execution
-of an installer-based setup.
-It should be clarified that devtool ide-sdk starts the SDK directly
-from the bitbake environment. It is therefore an alternative to
-bitbake -c populate_sdk_ext and installing an SDK installer.
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-A warning is added that explains some workarounds for some nasty
-behavior of VSCode when running it in a bitbake environment.
-
-Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- documentation/sdk-manual/extensible.rst | 192 +++++++++++++++++-------
- 1 file changed, 137 insertions(+), 55 deletions(-)
+ .../migration-guides/release-5.0.rst          |   1 +
+ .../migration-guides/release-notes-5.0.6.rst  | 223 ++++++++++++++++++
+ 2 files changed, 224 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.0.6.rst
 
-diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
-index 1cb1bb47c2c..73ce509c3bb 100644
---- a/documentation/sdk-manual/extensible.rst
-+++ b/documentation/sdk-manual/extensible.rst
-@@ -622,28 +622,85 @@ command:
-       decide you do not want to proceed with your work. If you do use this
-       command, realize that the source tree is preserved.
- 
--``devtool ide-sdk`` configures IDEs for the extensible SDK
------------------------------------------------------------
-+``devtool ide-sdk`` configures IDEs and bootstraps SDKs
-+-------------------------------------------------------
- 
--``devtool ide-sdk`` automatically configures IDEs to use the extensible SDK.
--To make sure that all parts of the extensible SDK required by the generated
--IDE configuration are available, ``devtool ide-sdk`` uses BitBake in the
--background to bootstrap the extensible SDK.
-+``devtool ide-sdk`` is supposed to configure IDEs for working on the source
-+code of one or more recipes.
-+Depending on the programming language, and the build system used by the recipe,
-+the tools required for cross-development and remote debugging are different.
-+A C/C++ project usually uses CMake or Meson.
-+A Python project uses setuptools or one of its successors.
-+A Rust project uses Cargo.
-+Also, the IDE plugins needed for the integration of a build system with the
-+IDE and the corresponding settings are usually specific to these buildsystems.
-+To hide all these details from the user, ``devtool ide-sdk`` does two things:
+diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
+index 9169188e9..4f92c4940 100644
+--- a/documentation/migration-guides/release-5.0.rst
++++ b/documentation/migration-guides/release-5.0.rst
+@@ -12,3 +12,4 @@ Release 5.0 (scarthgap)
+    release-notes-5.0.3
+    release-notes-5.0.4
+    release-notes-5.0.5
++   release-notes-5.0.6
+diff --git a/documentation/migration-guides/release-notes-5.0.6.rst b/documentation/migration-guides/release-notes-5.0.6.rst
+new file mode 100644
+index 000000000..b6f42198a
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-5.0.6.rst
+@@ -0,0 +1,223 @@
++Release notes for Yocto-5.0.6 (Scarthgap)
++-----------------------------------------
 +
-+-  It generates any kind of SDK needed for cross-development and remote
-+   debugging of the specified recipes.
++Security Fixes in Yocto-5.0.6
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+-  It generates the configuration for the IDE (and the IDE plugins) for using
-+   the cross-toolchain and remote debugging tools provided by the SDK directly
-+   from the IDE.
++-  acpica: Fix :cve_nist:`2024-24856`
++-  curl: Fix :cve_nist:`2024-9681`
++-  dropbear: Fix :cve_nist:`2023-48795`
++-  expat: Fix :cve_nist:`2024-50602`
++-  ffmpeg: Fix :cve_nist:`2023-49501`, :cve_nist:`2023-49528`, :cve_nist:`2023-50007`,
++   :cve_nist:`2024-7055` and :cve_mitre:`2024-28661`
++-  glib-2.0: Fix :cve_nist:`2024-52533`
++-  ghostscript: Fix :cve_nist:`2024-46951`, :cve_nist:`2024-46952`, :cve_nist:`2024-46953`,
++   :cve_nist:`2024-46954`, :cve_nist:`2024-46955` and :cve_nist:`2024-46956`
++-  gstreamer1.0: Ignore :cve_nist:`2024-0444`
++-  libpam: Fix :cve_nist:`2024-10041`
++-  libsndfile: Fix :cve_nist:`2024-50612`
++-  libsoup: Fix :cve_nist:`2024-52530`, :cve_nist:`2024-52531` and :cve_nist:`2024-52532`
++-  ovmf: Fix :cve_nist:`2024-1298` and :cve_nist:`2024-38796`
++-  python3-zipp: Fix :cve_nist:`2024-5569`
++-  qemu: Fix :cve_nist:`2024-4693`, :cve_nist:`2024-6505` and :cve_nist:`2024-7730`
++-  qemu: Ignore :cve_nist:`2024-6505`
 +
-+For supported build systems the configurations generated by ``devtool ide-sdk``
-+combine the advantages of the ``devtool modify`` based workflow
-+(see :ref:`using_devtool`) with the advantages of the simple Environment Setup
-+script based workflow (see :ref:`running_the_ext_sdk_env`) provided by Yocto's
-+SDK or eSDK:
 +
-+-  The source code of the recipe is in the workspace created by
-+   ``devtool modify`` or ``devtool add``.
-+   Using ``devtool build``, ``devtool build-image``,
-+   ``devtool deploy-target`` or ``bitbake`` is possible.
-+   Also ``devtool ide-sdk`` can be used to update the SDK and the IDE
-+   configuration at any time.
++Fixes in Yocto-5.0.6
++~~~~~~~~~~~~~~~~~~~~
 +
-+-  ``devtool ide-sdk`` aims to support multiple programming languages and
-+   multiple IDEs natively. "Natively" means that the IDE is configured to call
-+   the build tool (e.g. CMake or Meson) directly. This has several advantages.
-+   First of all, it is usually much faster to call for example ``cmake`` than
-+   ``devtool build``.
-+   It also allows to benefit from the very good integration that IDEs like
-+   VSCode offer for tools like CMAke or GDB.
-+   
-+   However, supporting many programming languages and multiple
-+   IDEs is quite an elaborate and constantly evolving thing. Support for IDEs
-+   is therefore implemented as plugins. Plugins can also be provided by
-+   optional layers.
- 
--The extensible SDK supports two different development modes.
--``devtool ide-sdk`` supports both of them:
-+So much about the introduction to the default mode of ``devtool sdk-ide`` which
-+is called the "modified" mode because it uses the workspace created by
-+``devtool modify`` and the per recipe sysroots of bitbake.
++-  binutils: Add missing perl modules to :term:`RDEPENDS` for nativesdk variant
++-  binutils: stable 2.42 branch update
++-  bitbake: Remove custom exception backtrace formatting
++-  bitbake: fetch2/git: Use quote from shlex, not pipes
++-  bitbake: fetch2: use persist_data context managers
++-  bitbake: fetch/wget: Increase timeout to 100s from 30s
++-  bitbake: persist_data: close connection in SQLTable __exit__
++-  bitbake: runqueue: Fix performance of multiconfigs with large overlap
++-  bitbake: runqueue: Fix scenetask processing performance issue
++-  bitbake: runqueue: Optimise setscene loop processing
++-  build-appliance-image: Update to scarthgap head revision
++-  builder: set :term:`CVE_PRODUCT`
++-  cmake: Fix sporadic issues when determining compiler internals
++-  cml1: do_diffconfig: Don't override .config with .config.orig
++-  contributor-guide: Remove duplicated words
++-  dev-manual: bblock: use warning block instead of attention
++-  dev-manual: document how to provide confs from layer.conf
++-  dnf: drop python3-iniparse from :term:`DEPENDS` and :term:`RDEPENDS`
++-  do_package/sstate/sstatesig: Change timestamp clamping to hash output only
++-  doc: Makefile: add support for xelatex
++-  doc: Makefile: publish pdf and epub versions too
++-  doc: Makefile: remove inkscape, replace by rsvg-convert
++-  doc: add a download page for epub and pdf
++-  doc: conf.py: add a bitbake_git extlink
++-  doc: standards.md: add a section on admonitions
++-  doc: sphinx-static: switchers.js.in: do not refer to URL_ROOT anymore
++-  dropbear: backport fix for concurrent channel open/close
++-  enchant2: fix do_fetch error
++-  expat: upgrade to 2.6.4
++-  gcc: backport patch to fix an issue with tzdata 2024b
++-  ghostscript: upgrade to 10.04.0
++-  glibc: stable 2.39 branch updates
++-  groff: fix rare build race in hdtbl
++-  libgcrypt: Fix building error with '-O2' in sysroot path
++-  libpam: drop cracklib from :term:`DEPENDS`
++-  libxml-parser-perl: fix do_fetch error
++-  llvm: reduce size of -dbg package
++-  lttng-ust: backport patch to fix cmake-multiple-shared-libraries build error
++-  migration-guides: add release notes for 4.0.23 and 5.0.5
++-  ninja: fix build with python 3.13
++-  oeqa/runtime/ssh: Fix incorrect timeout fix
++-  oeqa/runtime/ssh: Rework ssh timeout
++-  oeqa/utils/gitarchive: Return tag name and improve exclude handling
++-  package_rpm: Check if file exists before open()
++-  package_rpm: restrict rpm to 4 threads
++-  package_rpm: use zstd's default compression level
++-  poky.conf: bump version for 5.0.6
++-  pseudo: Fix envp bug and add posix_spawn wrapper
++-  python3-poetry-core: drop python3-six from :term:`RDEPENDS`
++-  python3-requests: upgrade to 2.32.2
++-  python3-urllib3: upgrade to 2.2.2
++-  qemu: upgrade to 8.2.7
++-  qemurunner: Clean up serial_lock handling
++-  ref-manual: classes: fix bin_package description
++-  resulttool: Add --logfile-archive option to store mode
++-  resulttool: Allow store to filter to specific revisions
++-  resulttool: Clean up repoducible build logs
++-  resulttool: Fix passthrough of --all files in store mode
++-  resulttool: Handle ltp rawlogs as well as ptest
++-  resulttool: Improve repo layout for oeselftest results
++-  resulttool: Trim the precision of duration information
++-  resulttool: Use single space indentation in json output
++-  rootfs: Ensure run-postinsts is not uninstalled for read-only-rootfs-delayed-postinsts
++-  rxvt-unicode.inc: disable the terminfo installation by setting TIC to :
++-  sanity: check for working user namespaces
++-  scripts/install-buildtools: Update to 5.0.5
++-  selftest/reproducible: Clean up pathnames
++-  selftest/reproducible: Drop rawlogs
++-  shared-mime-info: drop itstool-native from :term:`DEPENDS`
++-  strace: download release tarballs from GitHub
++-  systemd-boot: drop intltool-native from :term:`DEPENDS`
++-  systemd: drop intltool-native from :term:`DEPENDS`
++-  systemd: upgrade to 255.13
++-  sysvinit: backport patch for fixing one issue of pidof
++-  tcl: skip io-13.6 test case
++-  toolchain-shar-extract.sh: exit when post-relocate-setup.sh fails
++-  tune-cortexa32: set tune feature as armv8a
++-  tzcode-native: upgrade to 2024b
++-  tzdata: upgrade to 2024b
++-  uboot-sign: fix concat_dtb arguments
++-  udev-extraconf: fix network.sh script did not configure hotplugged interfaces
++-  webkitgtk: fix erroneous use of unsuported DEBUG_LEVELFLAG variable
++-  wireless-regdb: upgrade to 2024.10.07
 +
-+For some recipes and use cases, this default behavior of ``devtool ide-sdk``
-+with full devtool and bitbake integration might not be suitable.
-+To offer full feature parity with the SDK and the eSDK, ``devtool ide-sdk`` has
-+a second mode called "shared" mode.
-+If ``devtool ide-sdk`` is called with the ``--mode=shared`` option, it
-+bootstraps an SDK directly from the bitbake environment, which offers the same
-+Environment Setup script as described in :ref:`running_the_ext_sdk_env`.
-+In addition to the (e)SDK installer-based setup, the IDE gets configured
-+to use the shared sysroots and the tools from the SDK.
-+``devtool ide-sdk --mode=shared`` is basically a wrapper for the setup of the
-+extensible SDK as described in :ref:`setting_up_ext_sdk_in_build`.
 +
-+The use of ``devtool ide-sdk`` is an alternative to using one of the SDK
-+installers.
-+``devtool ide-sdk`` allows the creation of SDKs that offer all the
-+functionality of the SDK and the eSDK installers. Compared to the installers,
-+however, the SDK created with ``devtool ide-sdk`` is much more flexible.
-+For example, it is very easy to change the :term:`MACHINE` in the
-+``local.conf`` file, update the layer meta data and then regenerate the SDK.
++Known Issues in Yocto-5.0.6
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+Let's take a look at an example of how to use ``devtool ide-sdk`` in each of
-+the two modes:
- 
- #. *Modified mode*:
- 
--   By default ``devtool ide-sdk`` generates IDE configurations for recipes in
--   workspaces created by ``devtool modify`` or ``devtool add`` as described in
--   :ref:`using_devtool`.  This mode creates IDE configurations with support for
--   advanced features, such as deploying the binaries to the remote target
--   device and performing remote debugging sessions. The generated IDE
--   configurations use the per recipe sysroots as Bitbake does internally.
--
--   In order to use the tool, a few settings are needed. As a starting example,
--   the following lines of code can be added to the ``local.conf`` file::
-+   In order to use the ``devtool ide-sdk``, a few settings are needed. As a
-+   starting example, the following lines of code can be added to the
-+   ``local.conf`` file::
- 
-       # Build the companion debug file system
-       IMAGE_GEN_DEBUGFS = "1"
-@@ -675,9 +732,10 @@ The extensible SDK supports two different development modes.
- 
-       $ devtool ide-sdk my-recipe core-image-minimal --target root@192.168.7.2
- 
--   The command requires an image recipe (``core-image-minimal`` for this example)
--   that is used to create the SDK. This firmware image should also be installed
--   on the target device.  It is possible to pass multiple package recipes.
-+   The command requires an image recipe (``core-image-minimal`` for this
-+   example) that is used to create the SDK.
-+   This firmware image should also be installed on the target device.
-+   It is possible to pass multiple package recipes.
-    ``devtool ide-sdk`` tries to create an IDE configuration for all package
-    recipes.
- 
-@@ -702,23 +760,53 @@ The extensible SDK supports two different development modes.
-       running on the target device, it is essential that the image built by
-       ``devtool ide-sdk`` is running on the target device.
- 
--   ``devtool ide-sdk`` aims to support multiple programming languages and
--   multiple IDEs natively. "Natively" means that the IDE is configured to call
--   the build tool (e.g. CMake or Meson) directly. This has several advantages.
--   First of all, it is much faster than ``devtool build``, but it also allows
--   to use the very good integration of tools like CMake or GDB in VSCode and
--   other IDEs. However, supporting many programming languages and multiple
--   IDEs is quite an elaborate and constantly evolving thing. Support for IDEs
--   is therefore implemented as plugins. Plugins can also be provided by
--   optional layers.
--
-    The default IDE is VSCode. Some hints about using VSCode:
- 
--   -  To work on the source code of a recipe an instance of VSCode is started in
--      the recipe's workspace. Example::
-+   -  VSCode can be used to work on the bitbake recipes as well as for the work
-+      on the application source code. Usually there is one instance of VSCode
-+      running in the folder where the bitbake recipes are. This instance has
-+      the
-+      `Yocto Project BitBake plugin <https://marketplace.visualstudio.com/items?itemName=yocto-project.yocto-bitbake>`_
-+      running.
++- N/A
 +
-+      .. warning::
 +
-+         Some VSCode plugins (Python, BitBake and others) need a reasonable
-+         configuration to work as expected. Otherwise, some plugins try to
-+         index the build directory of BitBake, which keeps your system quite
-+         busy until an out of memory exception stops this nonsense.
-+         Other plugins, such as the BitBake plugin, do not behave as expected.
++Contributors to Yocto-5.0.6
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+         To work around such issues, the ``oe-init-build-env`` script creates
-+         an initial ``.vscode/settings.json`` file if ``code`` can be found
-+         and the ``.vscode`` folder does not yet exist.
-+         It is best to run ``oe-init-build-env`` once before starting VSCode.
-+         An alternative approach is to use a build folder outside the layers,
-+         e.g. ``oe-init-build-env ../build``.
++Thanks to the following people who contributed to this release:
 +
-+      The BitBake plugin also offers to create devtool workspaces and run
-+      ``devtool ide-sdk`` with a few mouse clicks.
-+      Of course, issuing commands in the terminal works as well.
++-  Aleksandar Nikolic
++-  Alexander Kanavin
++-  Antonin Godard
++-  Archana Polampalli
++-  Bin Lan
++-  Changqing Li
++-  Chen Qi
++-  Chris Laplante
++-  Clayton Casciato
++-  Deepthi Hemraj
++-  Divya Chellam
++-  Florian Kreutzer
++-  Gassner, Tobias.ext
++-  Guðni Már Gilbert
++-  Harish Sadineni
++-  Hitendra Prajapati
++-  Hongxu Jia
++-  Jagadeesh Krishnanjanappa
++-  Jiaying Song
++-  Jinfeng Wang
++-  Joshua Watt
++-  Lee Chee Yang
++-  Markus Volk
++-  Michael Opdenacker
++-  Pavel Zhukov
++-  Peter Marko
++-  Philip Lorenz
++-  Randy MacLeod
++-  Regis Dargent
++-  Richard Purdie
++-  Robert Yang
++-  Ross Burton
++-  Soumya Sambu
++-  Steve Sakoman
++-  Talel BELHAJSALEM
++-  Trevor Gamblin
++-  Vijay Anusuri
++-  Wang Mingyu
++-  Yogita Urade
 +
-+   -  To work on the source code of a recipe another instance of VSCode is
-+      started in the recipe's workspace. Example::
- 
-          code build/workspace/sources/my-recipe
- 
-+      This instance of VSCode uses plugins that are useful for the development
-+      of the application. ``devtool ide-sdk`` generates the necessary
-+      ``extensions.json``, ``settings.json``, ``tasks.json``and ``launch.json``
-+      configuration files for all the involved plugins.
 +
-+      When the workspace folder is opened in VSCode for the first time, a
-+      pop-up message recommends installing the required plugins.
-+      After accepting the installation of the plugins, working with the source
-+      code or some debugging tasks should work as usual with VSCode.
++Repositories / Downloads for Yocto-5.0.6
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +
-+      Starting the VSCode instances in the recipe workspace folders can also be
-+      done by a mouse click on the recipe workspaces in the first VSCode
-+      instance.
++poky
 +
-    -  To work with CMake press ``Ctrl + Shift + p``, type ``cmake``. This will
-       show some possible commands like selecting a CMake preset, compiling or
-       running CTest.
-@@ -731,10 +819,9 @@ The extensible SDK supports two different development modes.
-       show some possible commands like compiling or executing the unit tests.
- 
-       A note on running cross-compiled unit tests on the host: Meson enables
--      support for QEMU user-mode by default. It is expected that the execution
--      of the unit tests from the IDE will work easily without any additional
--      steps, provided that the code is suitable for execution on the host
--      machine.
-+      support for QEMU user mode by default. It is expected that the execution
-+      of the unit tests from the IDE will work without any additional steps,
-+      given that the code is suitable for the execution on the host machine.
- 
-    -  For the deployment to the target device, just press ``Ctrl + Shift + p``,
-       type ``task``.  Select ``install && deploy-target``.
-@@ -745,23 +832,23 @@ The extensible SDK supports two different development modes.
-       selected.  After selecting one of the generated configurations, press the
-       "play" button.
- 
--      Starting a remote debugging session automatically initiates the deployment
--      to the target device. If this is not desired, the
-+      Starting a remote debugging session automatically initiates the
-+      deployment to the target device. If this is not desired, the
-       ``"dependsOn": ["install && deploy-target...]`` parameter of the tasks
-       with ``"label": "gdbserver start...`` can be removed from the
-       ``tasks.json`` file.
- 
--      VSCode supports GDB with many different setups and configurations for many
--      different use cases.  However, most of these setups have some limitations
--      when it comes to cross-development, support only a few target
-+      VSCode supports GDB with many different setups and configurations for
-+      many different use cases.  However, most of these setups have some
-+      limitations when it comes to cross-development, support only a few target
-       architectures or require a high performance target device. Therefore
-       ``devtool ide-sdk`` supports the classic, generic setup with GDB on the
-       development host and gdbserver on the target device.
- 
-       Roughly summarized, this means:
- 
--      -  The binaries are copied via SSH to the remote target device by a script
--         referred by ``tasks.json``.
-+      -  The binaries are copied via SSH to the remote target device by a
-+         script referred by ``tasks.json``.
- 
-       -  gdbserver is started on the remote target device via SSH by a script
-          referred by ``tasks.json``.
-@@ -863,16 +950,9 @@ The extensible SDK supports two different development modes.
- 
- #. *Shared sysroots mode*
- 
--   For some recipes and use cases a per-recipe sysroot based SDK is not
--   suitable.  Optionally ``devtool ide-sdk`` configures the IDE to use the
--   toolchain provided by the extensible SDK as described in
--   :ref:`running_the_ext_sdk_env`. ``devtool ide-sdk --mode=shared`` is
--   basically a wrapper for the setup of the extensible SDK as described in
--   :ref:`setting_up_ext_sdk_in_build`. The IDE gets a configuration to use the
--   shared sysroots.
--
--   Creating a SDK with shared sysroots that contains all the dependencies needed
--   to work with ``my-recipe`` is possible with the following example command::
-+   Creating a SDK with shared sysroots that contains all the dependencies
-+   needed to work with ``my-recipe`` is possible with the following example
-+   command::
- 
-       $ devtool ide-sdk --mode=shared my-recipe
- 
-@@ -886,12 +966,14 @@ The extensible SDK supports two different development modes.
-       echo "project(foo VERSION 1.0)" > kit-test/CMakeLists.txt
-       code kit-test
- 
--   If there is a CMake project in the workspace, cross-compilation is supported:
-+   If there is a CMake project in the workspace, cross-compilation is
-+   supported:
- 
-    - Press ``Ctrl + Shift + P``, type ``CMake: Scan for Kits``
-    - Press ``Ctrl + Shift + P``, type ``CMake: Select a Kit``
- 
--   Finally most of the features provided by CMake and the IDE should be available.
-+   Finally most of the features provided by CMake and the IDE should be
-+   available.
- 
-    Other IDEs than VSCode are supported as well. However,
-    ``devtool ide-sdk --mode=shared --ide=none my-recipe`` is currently
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.6 </poky/log/?h=yocto-5.0.6>`
++-  Git Revision: :yocto_git:`2541a8171f91812a4b16e7dc4da0d77d2318a256 </poky/commit/?id=2541a8171f91812a4b16e7dc4da0d77d2318a256>`
++-  Release Artefact: poky-2541a8171f91812a4b16e7dc4da0d77d2318a256
++-  sha: b77157596ae75d163387a08a317397a57ab8fa6cf4725f28e344fae3f69cca4d
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.6/poky-2541a8171f91812a4b16e7dc4da0d77d2318a256.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.6/poky-2541a8171f91812a4b16e7dc4da0d77d2318a256.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
++-  Tag:  :oe_git:`yocto-5.0.6 </openembedded-core/log/?h=yocto-5.0.6>`
++-  Git Revision: :oe_git:`336eec6808710f260a5336ca8ca98139a80ccb14 </openembedded-core/commit/?id=336eec6808710f260a5336ca8ca98139a80ccb14>`
++-  Release Artefact: oecore-336eec6808710f260a5336ca8ca98139a80ccb14
++-  sha: 38c4fa7e7e88c28361c012dd5baabe373e2ec3c8aba6194146768b146192cceb
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.6/oecore-336eec6808710f260a5336ca8ca98139a80ccb14.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.6/oecore-336eec6808710f260a5336ca8ca98139a80ccb14.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.6 </meta-mingw/log/?h=yocto-5.0.6>`
++-  Git Revision: :yocto_git:`acbba477893ef87388effc4679b7f40ee49fc852 </meta-mingw/commit/?id=acbba477893ef87388effc4679b7f40ee49fc852>`
++-  Release Artefact: meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852
++-  sha: 3b7c2f475dad5130bace652b150367f587d44b391218b1364a8bbc430b48c54c
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.6/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.6/meta-mingw-acbba477893ef87388effc4679b7f40ee49fc852.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
++-  Tag:  :oe_git:`yocto-5.0.6 </bitbake/log/?h=yocto-5.0.6>`
++-  Git Revision: :oe_git:`f40a3a477d5241b697bf2fb030dd804c1ff5839f </bitbake/commit/?id=f40a3a477d5241b697bf2fb030dd804c1ff5839f>`
++-  Release Artefact: bitbake-f40a3a477d5241b697bf2fb030dd804c1ff5839f
++-  sha: dbfc056c7408a5547f624799621ab1261a05685112e0922a88007723b1edbc87
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.6/bitbake-f40a3a477d5241b697bf2fb030dd804c1ff5839f.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.6/bitbake-f40a3a477d5241b697bf2fb030dd804c1ff5839f.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
++-  Tag: :yocto_git:`yocto-5.0.6 </yocto-docs/log/?h=yocto-5.0.6>`
++-  Git Revision: :yocto_git:`TBD </yocto-docs/commit/?id=TBD>`
++
 -- 
-2.47.1
+2.34.1
 
 
