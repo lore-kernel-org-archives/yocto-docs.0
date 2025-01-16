@@ -1,265 +1,192 @@
-Return-Path: <mark.hatle@kernel.crashing.org>
+Return-Path: <mhalstead@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F07CEE77188
-	for <webhook@archiver.kernel.org>; Thu, 16 Jan 2025 03:34:27 +0000 (UTC)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by mx.groups.io with SMTP id smtpd.web10.40572.1736998462986990789
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F3BA4E77188
+	for <webhook@archiver.kernel.org>; Thu, 16 Jan 2025 07:24:58 +0000 (UTC)
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+ by mx.groups.io with SMTP id smtpd.web10.43291.1737012295211876220
  for <docs@lists.yoctoproject.org>;
- Wed, 15 Jan 2025 19:34:23 -0800
+ Wed, 15 Jan 2025 23:24:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: kernel.crashing.org, ip: 63.228.1.57, mailfrom: mark.hatle@kernel.crashing.org)
-Received: from kernel.crashing.org (70-99-78-136.nuveramail.net [70.99.78.136] (may be forged))
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 50G3WDdA019472;
-	Wed, 15 Jan 2025 21:32:13 -0600
-Received: from [192.168.2.133] ([192.168.2.133])
-	by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 50G3WB7X030261;
-	Wed, 15 Jan 2025 21:32:11 -0600
-Message-ID: <63473258-dd3a-42b6-9a2a-1e45e624ae74@kernel.crashing.org>
-Date: Wed, 15 Jan 2025 21:32:11 -0600
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=eOxf0X9j;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.167.50, mailfrom: mhalstead@linuxfoundation.org)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-53e3778bffdso726546e87.0
+        for <docs@lists.yoctoproject.org>; Wed, 15 Jan 2025 23:24:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1737012293; x=1737617093; darn=lists.yoctoproject.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iI0nBXAWlORzNmTGUy2yorD7SqPr9SeF/r8fWWuenzQ=;
+        b=eOxf0X9jnf/c9MPYNFqpgj8r0PJPBmTPZpoMyQ1KlRZbOaFgnJ/I4K+fmsTx5OBMMz
+         QTkqdfDf+bE2lLB9EukbyFbQYzrTUZLAbOF6/Rw82eWa+xhogNzpoQHNhcq06i6ancSU
+         3kQTlbXbB2Pgn3ubRfvV+TsDPCa4dQKP5Z2RQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737012293; x=1737617093;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iI0nBXAWlORzNmTGUy2yorD7SqPr9SeF/r8fWWuenzQ=;
+        b=dfaTdsZZnDM0CF3lS0cRNDXjM9iuLvoDFSZDlTFbqhTCtIkw2rJuaHGoXl6bBuATsT
+         lFtj+oeL3bdXt40Y6PqgjM7EL5TtAESUMKwWLDsaplfIO00pcyB5Cdpgtf5eA/Bg3lJ9
+         /EmgF5iGqqLBpZMXSjJxTCU/Jg8MEkJt49wRxJBwrmt7olS5jGlQYdOSXtVCG4xS1SE+
+         pXFIiTwwpND0L3p6y9WGRCrewhyNCcvX0DFxUuQWu5Zq2d/OIxS1wVeqOZx4MXP0iaXm
+         7Pbh4JqBLx0H6iLCajzTno7dMZPQtDnrWMFJnOs9yeqldnrL1TT6w2Q6SQT2gBtpeffU
+         WAuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnkCqLZYH30fh3N6clq8GcoeHEAdGmpkDOa31Fv2EcvXw0IjF4RpvYZG61Wg6CXPNiakhx@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YxXQPLfMsm+Z7PXTaU3q4BvLW9BaOZQrn404Ly9zKeRyHFoBAH6
+	3V3n3XAZQZoymvG7aJ+bFleVwdASL+LSawTtgzwZts2O7AI7PlDsblTqDayDQieDTzh5topfXRK
+	Rt62aiUwkNi66b5rXKOvCW/hybts9HH+D5EGCjw==
+X-Gm-Gg: ASbGncuY7//F+G6lvrRomWxGfjQxlyS6v2IY+f7U/bu1fbrFqfWhMbS/4moLkUbuEfI
+	MD+/mWSd8D89Mc42ywOyV8uaA/oHa2zTRbRAtwIeqArXGVdJW+lHcX/bCYQAdXSG7uPmHbxGA
+X-Google-Smtp-Source: AGHT+IGhQ+gctIGiDHn79pC23W4mFQsNESow+bw0rb9ycxjGBXIgg+4TMnzvrKNfhJqCBZutfAhopRxI5xjoqiXjBBg=
+X-Received: by 2002:a05:6512:159e:b0:542:98bb:5674 with SMTP id
+ 2adb3069b0e04-54298bb57famr6141492e87.33.1737012293030; Wed, 15 Jan 2025
+ 23:24:53 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] Best practices documentation for multiconfigs
-Content-Language: en-US
-To: Quentin Schulz <quentin.schulz@cherry.de>, antonin.godard@bootlin.com,
-        docs@lists.yoctoproject.org
-Cc: Richard Purdie <richard.purdie@linuxfoundation.org>
-References: <cb8cda4b-4b71-4896-b355-d628336b11a4@kernel.crashing.org>
- <D6WSSTWDW44E.3VZKMQHM8HZLN@bootlin.com>
- <fa26c3be-81a4-4927-9941-42b07f53cf18@cherry.de>
-From: Mark Hatle <mark.hatle@kernel.crashing.org>
-In-Reply-To: <fa26c3be-81a4-4927-9941-42b07f53cf18@cherry.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20241227-update-autobuilder-link-v1-1-6c1ec14a32fd@bootlin.com>
+ <CADfgfobhK_b+kyi2QDFbMR1=CkKziGTFdMCX1SGxkJ7VmR+i_A@mail.gmail.com>
+ <3fee6045-ef55-42ac-9dfd-e3b6a07e02de@cherry.de> <76df28efd27f93840ce4e7a8c9e8f8af8acf8c72.camel@linuxfoundation.org>
+ <7ccefc90-b4c1-462c-a542-1b56e1a82580@cherry.de>
+In-Reply-To: <7ccefc90-b4c1-462c-a542-1b56e1a82580@cherry.de>
+From: Michael Halstead <mhalstead@linuxfoundation.org>
+Date: Wed, 15 Jan 2025 21:24:41 -1000
+X-Gm-Features: AbW1kvY2zi_MJRcX23ee3D_iDggM0vWoWNeRPC2JrrDdR4e-tC3UfShHQ9VNEYQ
+Message-ID: <CADfgfoacojrmdjz_akb-JNjtkAeEuW7=q36_vNCv94Zeec+new@mail.gmail.com>
+Subject: Re: [docs] [PATCH] Update autobuilder URLs to valkyrie
+To: antonin.godard@bootlin.com
+Cc: Richard Purdie <richard.purdie@linuxfoundation.org>, 
+	Quentin Schulz <quentin.schulz@cherry.de>, docs@lists.yoctoproject.org, 
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Content-Type: multipart/alternative; boundary="000000000000b26c0e062bcdb089"
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 16 Jan 2025 03:34:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6118
+ <docs@lists.yoctoproject.org>; Thu, 16 Jan 2025 07:24:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6119
 
+--000000000000b26c0e062bcdb089
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+The changes are complete. https://autobuilder.yoctoproject.org/valkyrie/#/
+and https://autobuilder.yoctoproject.org/typhoon/#/ are both running now.
 
-On 1/14/25 3:52 AM, Quentin Schulz wrote:
-> Hi Antonin, Mark,
-> 
-> On 1/8/25 4:31 PM, Antonin Godard via lists.yoctoproject.org wrote:
->> Hi Mark,
->>
->> Thanks for this. I can help with formatting as well as where to put this bit of
->> documentation.
->>
->> I already created a bug for this, you can add yourself to CC if you want to
->> track it: https://bugzilla.yoctoproject.org/show_bug.cgi?id=15709.
->>
->> First thought: compared to what we currently have [1], your doc seems to bring
->> better details on multiconfigs. I'm thinking we could merge both to have a
->> complete document on multiconfigs (and also make it its own document instead of
->> a "Building" subsection).
->>
->> Other comments below.
->>
->> [1]: https://docs.yoctoproject.org/dev-manual/building.html#building-images-for-multiple-targets-using-multiple-configurations
->>
->> On Wed Jan 8, 2025 at 12:07 AM CET, Mark Hatle wrote:
->>> I was talking to Richard on IRC and we think that we need to start collecting
->>> and documenting examples and/or best practices for multiconfig usage.  Below is
->>> my question attempt at starting this.  Hopefully we can expand this to something
->>> generally useful.  What follows is a bit rough, and will likely need editing...
->>>
->>>
->>> A common use for multiconfig is to use the default configuration as the regular
->>> Linux build, while one or more multiconfigs can be used to build special
->>> components (often baremetal firmware.)  Enabling this workflow requires us to do
->>> three primary actions:
->>>
->>>      1) Configure the multiconfig builds
->>>      2) Use multiconfig dependencies to trigger builds of necessary components
->>>      3) Pick up the output of the multiconfig build and bring it into a different
->>> config
->>>
->>> In order to successfully do the above, the following could be considered to be
->>> best practices.
->>>
->>> Configuration:
->>>
->>> All of the (user) configuration starts with the local.conf file.  A default
->>> value of:
->>>
->>> TMPDIR ?= "${TOPDIR}/tmp"
->>>
->>> is used to control the location for temporary build items, where components are
->>> stored and built components are deployed.  For the deployed items the settings are:
->>>
->>> DEPLOY_DIR ?= "${TMPDIR}/deploy"
->>> DEPLOY_DIR_IMAGE ?= "${DEPLOY_DIR}/images/${MACHINE}"
->>>
->>>
->>> Each multiconfig requires a separate multiconfig configuration file.
->>>
->>> See:
->>> https://docs.yoctoproject.org/dev-manual/building.html#building-images-for-multiple-targets-using-multiple-configurations
->>>
->>>
->>> At a minimum a different TMPDIR is required for each multiconfig.  As a best
->>> practice, instead of defining each TMPDIR separately, if they are defined as an
->>> append (.= operation) with an expected format, later steps can use this
->>> information to find the output of the build.  For example:
->>>
->>> TMPDIR .= "-${BB_CURRENT_MC}"
->>>
->>>
->>> This also has the side effect that if the user changes the default TMPDIR
->>> location in local.conf, all of the multiconfigs will follow with the same change
->>> automatically.
->>>
->>>
->>> For example:
->>>
->>> conf/multiconfig/baremetal-firmware.conf:
->>>
->>> TMPDIR .= "-${BB_CURRENT_MC}"
->>
->> I assumed the `:append` override to be better practice in configuration files.
->>
->>> TCLIBC = "newlib"
->>>
->>>
->>> and a custom recipe called 'my-firmware.bb' that uses newlib to build baremetal
->>> firmware for the device.  my-firmware.bb should define a do_deploy function that
->>> deploys the baremetal firmware to ${DEPLOYDIR} with a specific name, such as
->>> "my-firmware.elf".
->>>
->>>
->>> Building:
->>>
->>> Using an 'mcdepend' a recipe in one multiconfig can trigger the build in another
->>> multiconfig, such as:
->>>
->>>
->>> my-special-firmware.bb:
->>>
->>> do_compile[mcdepends] = "mc::baremetal-firmware:my-firmware:do_deploy"
->>>
->>>
->>> The above will ensure when do_compile is triggered, it further triggers the
->>> multiconfig build which will deploy the built firmware.
->>
->> Yes and actually this is lacking in the current documentation: this is the
->> way to add a dependency on a multiconfig from the default ("" empty string)
->> config, which is a common use-case of multiconfigs I believe.
->>
->>>
->>>
->>>
->>> Using the output of the build:
->>>
->>> However, just because we've built the item using mcdepends, we need to use the
->>> output in some way.   We can make a series of assumptions, based on the default
->>> Yocto Project variables in order to get the binary for packaging.
->>>
->>> Adding a do_install task to the example above:
->>>
->>> my-special-firmware.bb:
->>>
->>> do_install() {
->>>       install -Dm 0644 ${TMPDIR}-baremetal-firmware/deploy/my-firmware.elf
->>> ${D}/lib/firmware/my-firmware.elf
->>> }
->>
->> In my-firmware.bb, is deploying to DEPLOYDIR (defined as "${WORKDIR}/deploy-my-firmware"
->> for the recipe) enough for my-special-firmware to pick up the firmware in
->> baremetal-firmware's DEPLOY_DIR ("${TMPDIR}-baremetal-firmware/deploy") here?
->> Shouldn't it pick it up in baremetal-firmware's DEPLOY_DIR_IMAGE instead?
->>
-> 
-> I believe the hardcoded path is missing the intermediate
-> images/<machine>/ directories as the deploy.bbclass installs in
-> DEPLOY_DIR_IMAGE, which is where the deploy bbclass stores the sstate
-> output of the deploy task. This is the default according to bitbake.conf.
-> 
->>>
->>>
->>> Doing the above will allow the firmware binary to be transfered and packaged
->>> into the Linux context and rootfs.  However, this only works if we are careful
->>> to not affect TMPDIR outside of specific places, and we use the default
->>> DEPLOY_DIR (or other) deployment variables.
->>>
->>>
->>> Suggested best practices:
->>>
->>> TMPDIR (other then the default set in bitbake.conf) is only set in local.conf by
->>> the user.  This means that we should NOT manipulate TMPDIR in any way within the
->>> machine or distro .conf files.
->>>
->>> A multiconfig must specify a TMPDIR, and should specify it by appending the
->>> multiconfig name via "-${BB_CURRENT_MC}".
->>>
->>> All recipes should following the best practices for do_install and do_deploy.
->>>
->>> Recipes that are used to transfer the output from a multiconfig target should
->>> use task[mcdepends] to trigger the build of the component, and then transfer the
->>> item to the current configuration in do_install or do_deploy, assuming the value
->>> of the deployed item based on the TMPDIR.
->>>
->>> Suggested that the dependency and path are specific in a variable to make it
->>> easier to adjust as assumptions change, or the user has specific environment needs.
->>
->> Not sure I got this sentence, could you explain what you meant here?
->>
->>>
->>> (we should have some proper examples for this.... i.e.)
->>>
->>> conf/multiconfig/baremetal-firmware.conf:
->>>
->>> TMPDIR .= "-${BB_CURRENT_MC}"
->>> TCLIBC = "newlib"
->>>
->>> recipes-firmware/firmware/my-firmware.bb:
->>>
->>> do_compile() {
->>>       echo "testing" > ${B}/my-firmware.bin
->>>
->>> do_install() {
->>>       install -mD 0644 ${B}/my-firmware.bin ${D}/lib/firmware/my-firmware.bin
->>> }
->>>
->>> do_deploy() {
->>>       install -mD 0644 ${B}/my-firmware.bin ${DEPLOYDIR}/my-firmware.bin
->>> }
->>>
->>> recipes-firmware/firmware/my-special-firmware.bb:
->>>
->>> INHIBIT_DEFAULT_DEPS = "1"
->>>
->>> FIRMWARE_DEPENDS   ??= ""
-> 
-> Considering it's empty and the example does nothing in compile task, I
-> suggest to remove it to not confuse people on whether this is necessary.
-> Or provide an actual valid example that requires the recipe using the
-> built firmware to do something with it in compile task.
-> 
->>> FIRMWARE_MCDEPENDS ??= "mc::baremetal-firmware:my-firmware:do_deploy"
->>> FIRMWARE_FILE      ??= "${TMPDIR}-baremetal-firmware/deploy/my-firmware.elf"
->>> FIRMWARE_FILE[vardepsexclude] += "TMPDIR"
->>>
-> 
-> This vardepsexclude varflags would need to be explained.
+On Tue, Jan 14, 2025 at 12:13=E2=80=AFAM Quentin Schulz <quentin.schulz@che=
+rry.de>
+wrote:
 
-If the path changes, the recipe is invalidated.  We want the invalidation to 
-happen based on the dependencies, not the magic directory that TMPDIR is.  (By 
-default TOPDIR is excluded, which is a component of TMPDIR.  However, if the 
-user changes TMPDIR to something else then it's no longer excluded and the full 
-path in FIRMWARE_FILE is hashed and triggers a 'rebuild'.
-
-> I would suggest (if we haven't already done it) to have a minimal
-> multiconfig example in poky that we build regularly and whose content
-> could be duplicated (explicitly) in the docs like we have for baremetal
-> hello, kernel modules, etc... so we avoid having the docs have outdated
-> examples in the future.
-> 
-> Otherwise sounds like a good plan!
-> 
+> Hi Richard, Antonin,
+>
+> On 1/13/25 11:09 PM, Richard Purdie wrote:
+> > On Mon, 2025-01-13 at 18:05 +0100, Quentin Schulz via
+> lists.yoctoproject.org wrote:
+> >>>> --  CentOS: :yocto_ab:`/typhoon/#/builders/reproducible-centos`
+> >>>> --  Debian: :yocto_ab:`/typhoon/#/builders/reproducible-debian`
+> >>>> --  Fedora: :yocto_ab:`/typhoon/#/builders/reproducible-fedora`
+> >>>> --  Ubuntu: :yocto_ab:`/typhoon/#/builders/reproducible-ubuntu`
+> >>>> +-  CentOS: :yocto_ab:`/#/builders/reproducible-centos`
+> >>>> +-  Debian: :yocto_ab:`/#/builders/reproducible-debian`
+> >>>> +-  Fedora: :yocto_ab:`/#/builders/reproducible-fedora`
+> >>>> +-  Ubuntu: :yocto_ab:`/#/builders/reproducible-ubuntu`
+> >>>>
+> >>
+> >> Am I supposed to see anything at
+> >> https://valkyrie.yoctoproject.org/#/builders/reproducible-debian? I
+> only
+> >> have None in all Build requests, Build times, Success Rate... Same for
+> >> all other builders.
+> >
+> > Initially when we implemented reproducible builds, we ran then on
+> > multiple distros explicitly. Over time the errors subsided and we
+> > eventually decided it was good enough to test this on a distro at
+> > random. We therefore just do that now and no longer use the distro
+> > specific targets. They were left around just in case we needed them.
+> > You therefore want the plain "reproducible" target rather than the
+> > distro specific ones.
+> >
+>
+> Thanks for the info, we need to update the docs to reflect that change
+> then, otherwise it looks like we're not doing reproducible builds at all
+> anymore :)
+>
 > Cheers,
 > Quentin
+>
+
+
+--=20
+Michael Halstead
+Linux Foundation / Yocto Project
+Systems Operations Engineer
+
+--000000000000b26c0e062bcdb089
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"ltr">The changes are complete. <a href=3D"https://autobuilder.y=
+octoproject.org/valkyrie/#/">https://autobuilder.yoctoproject.org/valkyrie/=
+#/</a> and <a href=3D"https://autobuilder.yoctoproject.org/typhoon/#/">http=
+s://autobuilder.yoctoproject.org/typhoon/#/</a> are both running now.=C2=A0=
+</div><br><div class=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr"=
+ class=3D"gmail_attr">On Tue, Jan 14, 2025 at 12:13=E2=80=AFAM Quentin Schu=
+lz &lt;<a href=3D"mailto:quentin.schulz@cherry.de">quentin.schulz@cherry.de=
+</a>&gt; wrote:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:=
+0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">=
+Hi Richard, Antonin,<br>
+<br>
+On 1/13/25 11:09 PM, Richard Purdie wrote:<br>
+&gt; On Mon, 2025-01-13 at 18:05 +0100, Quentin Schulz via <a href=3D"http:=
+//lists.yoctoproject.org" rel=3D"noreferrer" target=3D"_blank">lists.yoctop=
+roject.org</a> wrote:<br>
+&gt;&gt;&gt;&gt; --=C2=A0 CentOS: :yocto_ab:`/typhoon/#/builders/reproducib=
+le-centos`<br>
+&gt;&gt;&gt;&gt; --=C2=A0 Debian: :yocto_ab:`/typhoon/#/builders/reproducib=
+le-debian`<br>
+&gt;&gt;&gt;&gt; --=C2=A0 Fedora: :yocto_ab:`/typhoon/#/builders/reproducib=
+le-fedora`<br>
+&gt;&gt;&gt;&gt; --=C2=A0 Ubuntu: :yocto_ab:`/typhoon/#/builders/reproducib=
+le-ubuntu`<br>
+&gt;&gt;&gt;&gt; +-=C2=A0 CentOS: :yocto_ab:`/#/builders/reproducible-cento=
+s`<br>
+&gt;&gt;&gt;&gt; +-=C2=A0 Debian: :yocto_ab:`/#/builders/reproducible-debia=
+n`<br>
+&gt;&gt;&gt;&gt; +-=C2=A0 Fedora: :yocto_ab:`/#/builders/reproducible-fedor=
+a`<br>
+&gt;&gt;&gt;&gt; +-=C2=A0 Ubuntu: :yocto_ab:`/#/builders/reproducible-ubunt=
+u`<br>
+&gt;&gt;&gt;&gt;<br>
+&gt;&gt;<br>
+&gt;&gt; Am I supposed to see anything at<br>
+&gt;&gt; <a href=3D"https://valkyrie.yoctoproject.org/#/builders/reproducib=
+le-debian" rel=3D"noreferrer" target=3D"_blank">https://valkyrie.yoctoproje=
+ct.org/#/builders/reproducible-debian</a>? I only<br>
+&gt;&gt; have None in all Build requests, Build times, Success Rate... Same=
+ for<br>
+&gt;&gt; all other builders.<br>
+&gt; <br>
+&gt; Initially when we implemented reproducible builds, we ran then on<br>
+&gt; multiple distros explicitly. Over time the errors subsided and we<br>
+&gt; eventually decided it was good enough to test this on a distro at<br>
+&gt; random. We therefore just do that now and no longer use the distro<br>
+&gt; specific targets. They were left around just in case we needed them.<b=
+r>
+&gt; You therefore want the plain &quot;reproducible&quot; target rather th=
+an the<br>
+&gt; distro specific ones.<br>
+&gt; <br>
+<br>
+Thanks for the info, we need to update the docs to reflect that change <br>
+then, otherwise it looks like we&#39;re not doing reproducible builds at al=
+l <br>
+anymore :)<br>
+<br>
+Cheers,<br>
+Quentin<br>
+</blockquote></div><div><br clear=3D"all"></div><div><br></div><span class=
+=3D"gmail_signature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_s=
+ignature"><div dir=3D"ltr">Michael Halstead<div>Linux Foundation / Yocto Pr=
+oject</div><div>Systems Operations Engineer</div></div></div>
+
+--000000000000b26c0e062bcdb089--
 
