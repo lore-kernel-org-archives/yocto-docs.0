@@ -2,148 +2,206 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35AEAC02185
-	for <webhook@archiver.kernel.org>; Fri, 17 Jan 2025 10:46:18 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.8073.1737110772553863147
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4CF2EC02183
+	for <webhook@archiver.kernel.org>; Fri, 17 Jan 2025 11:01:48 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.8279.1737111703294436529
  for <docs@lists.yoctoproject.org>;
- Fri, 17 Jan 2025 02:46:13 -0800
+ Fri, 17 Jan 2025 03:01:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OG7yeOs+;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8C7F4C0008;
-	Fri, 17 Jan 2025 10:46:10 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=K9PlFMwC;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 32A7440005;
+	Fri, 17 Jan 2025 11:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1737110770;
+	t=1737111701;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RL59j9NIllEP4/U0P9LbW3rB0zqvw9iGB2Ler7zB2NU=;
-	b=OG7yeOs+FXImO0iLCYTmsPIP1Z1eIlWFCxVzYU8SXckB5rdE7DwTZc5OmgiWdzxZ7Wu2QX
-	HZZB0NlEzF9h3NyPiM4b2yoSHBwFNSnOldViAG2Re5khKD7t54gD9p6D7M/C3IRtPzAiVx
-	Lr1YdS3oBQNmd4MMcIFc71BNy1Drrcx6imHQZUOCazu4O9Ab5lcbi38Vgfvam8251Hz/v+
-	1oaaB/h7w8JSFS9PBeW2LELaSxP/gYOOTyonVAN84S+IJ3jMyvOCwlnnLl+yW9UqEqhRae
-	s+6AbPhf+57YsW1Ou6f6mYxVUv+cnBa5O735LaPS+xHddsN9izm4I22PlObIYg==
+	bh=Hb2H0+jeaXDgoTq7GjIxD48rgc3NQdK6MmX7BcnikZU=;
+	b=K9PlFMwCm78JhzeorDN+RTh992d04QXQZ6s2C8p7uUDN26xCt/XMbfDgPb9aD0ORqvZ1h6
+	jsXyuD3b4kxHDOcuPNkIRpDSw19NKGaG5GpZCQibAsUZw76QGwI4KlLdReW9qMIqb68inD
+	8VI4hyw0+fTs0iA5kYEY3e5H3hV4pD1kT23tK/U+2KoJ2rQnyez3HldkO2jyxONsNLVzZB
+	hWfiZZyAn+VjAHuUco02G3+NMc+JTOmpYv+OEwy3M31w4Ji2rT3xRGjf/E6/1ws2zUEr6X
+	IqO0+hyZEas4qPxBVqrIrFtPlnDC76MMfsP4g539KhJmViqIGE6CSDYY4V1KGg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 17 Jan 2025 11:46:10 +0100
-Message-Id: <D74ADJ3114PX.PP5KW6UZKD31@bootlin.com>
-Subject: Re: [docs] [PATCH] ref-manual: Describe grub-efi-cfg overrides and
- GRUB_TITLE
+Date: Fri, 17 Jan 2025 12:01:40 +0100
+Message-Id: <D74APENZ2FY4.2W3AXB39KKQ1D@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <simon.eu@gmail.com>, <docs@lists.yoctoproject.org>
+To: "Quentin Schulz" <foss@0leil.net>,
+ <bitbake-devel@lists.openembedded.org>, <docs@lists.yoctoproject.org>
+Subject: Re: [bitbake-devel] [PATCH v2] add basic support for b4
+ contribution workflow
+Cc: "Quentin Schulz" <quentin.schulz@cherry.de>
 X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20250115080758.27000-1-simon.eu@gmail.com>
-In-Reply-To: <20250115080758.27000-1-simon.eu@gmail.com>
+References: <20250117-b4-support-v2-1-7178f61d49e4@cherry.de>
+In-Reply-To: <20250117-b4-support-v2-1-7178f61d49e4@cherry.de>
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 17 Jan 2025 10:46:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6128
+ <docs@lists.yoctoproject.org>; Fri, 17 Jan 2025 11:01:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6129
 
-Hi Simon,
-
-On Wed Jan 15, 2025 at 9:07 AM CET, Simon A. Eugster via lists.yoctoproject=
-.org wrote:
-> This patch describes how to use overrides for grub-efi-cfg because that
-> is otherwise only clear after reading the .bbclass file. It also adds
-> a description for GRUB_TITLE.
+On Fri Jan 17, 2025 at 11:44 AM CET, Quentin Schulz wrote:
+> From: Quentin Schulz <quentin.schulz@cherry.de>
+>
+> b4[1] is a very nice tool for mail-based contribution. A config[2] file
+> exists to set up a few defaults. We can use it to set the Cc recipients
+> to always add, in our case the mailing list.
+>
+> This also adds a wrapper script that is called by b4 to figure out which
+> addresses to put as Cc recipients. Considering that patches to the doc/
+> directory also need to be sent to the yocto-docs mailing list, this
+> wrapper handles that. A limitation of the script (lsdiff actually) is
+> that it doesn't know how to handle empty files, but those should be
+> of rather rare occurrences.
+>
+> While the wrapper script should be enough by itself to add the bitbake
+> mailing list to the Cc recipients, one still needs to manually run b4
+> prep --auto-to-cc for that to happen. Therefore, let's add an explicit
+> send-series-cc so that at least that mailing list is always there.
+>
+> Because we currently do not have anything to check for patch validity,
+> remove requirement for b4 prep --check to be run before sending a patch
+> series, via disable-needs-checking in prep-pre-flight-checks.
+>
+> [1] https://pypi.org/project/b4/
+> [2] https://b4.docs.kernel.org/en/latest/config.html
+>
+> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
 > ---
->  documentation/ref-manual/classes.rst | 17 ++++++++++++++++-
->  1 file changed, 16 insertions(+), 1 deletion(-)
+> This adds a basic config file for b4 to avoid to have to add the mailing
+> list by hand.
+> For documentation patches, the additional mailing list will be added
+> when running b4 prep --check, as is required for each new series managed
+> by b4.
 >
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 761be7b545..460f94b232 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -987,10 +987,14 @@ introspection. This functionality is only enabled i=
-f the
->  The :ref:`ref-classes-grub-efi` class provides ``grub-efi``-specific fun=
-ctions for
->  building bootable images.
-> =20
-> -This class supports several variables:
-> +This class supports several variables.
-> +The label specific override names are ``grub_LABEL``.
+> Note that b4 supports patchwork, c.f.
+> https://b4.docs.kernel.org/en/latest/config.html#patchwork-integration-se=
+ttings
+> though I have no clue what it does with it as I am no maintainer, but
+> maybe something worth having a look at if some maintainer of this repo
+> wants to use b4 to merge stuff?
 
-"...are defined as ``grub_LABEL``"?
+I'll add my configuration here, maybe someone or myself can add some doc fo=
+r it
+later, here or elsewhere.
 
-> +To specificy an override for the label ``mylabel``, the override name is=
- ``grub_mylabel``,
+configuration I use:
 
-s/specificy/specify/
+[b4]
+  pw-url =3D https://patchwork.yoctoproject.org/
+  pw-key =3D <redacted>
+  pw-project =3D docs
+  pw-review-state =3D under-review
+  pw-accept-state =3D accepted
+  pw-discard-state =3D rejected
 
-Also please wrap the lines to 80 chars, as recommended by our standards.md =
-file.
+For `pw-project`, it comes from the project name on patchwork, e.g.:
 
-> +for example ``APPEND:grub_mylabel =3D my-appends``.
+  https://patchwork.yoctoproject.org/project/docs/list
+                                             ^^^^
 
-You are missing quotes in this example, it should be ``APPEND:grub_mylabel =
-=3D "my-appends"``.
+The pw-key can be obtained from the user's personal settings.
 
-I think it would also make sense to give this example after the bullet list=
-. I
-would move the text starting from "The label specific override names..." to=
- the
-APPEND example, after the bullet list. And you keep your real life example =
-with
-the factory.
+Then `b4 {am,shazam}` will automatically set the state to under-review.
 
+`b4 ty -d` will reject the patch. Sometimes I use `b4 ty --pw-set-state
+superseded -d ...` when I know another version of the patch/series was sent=
+.
+
+Finally `b4 ty -a` will also set the accepted state along the generation of
+thank-you file.
+
+And overall it's much easier than clicking buttons on patchwork :)
+
+> ---
+> Changes in v2:
+> - add b4-wrapper for auto-detecting patches that are to be sent to the
+>   docs mailing list as well,
+> - disable forced b4 prep --check for each b4-managed series,
+> - Link to v1: https://lore.kernel.org/r/20240524-b4-support-v1-1-0c4334c3=
+6cc7@cherry.de
+> ---
+>  .b4-config    |  4 ++++
+>  b4-wrapper.py | 38 ++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 42 insertions(+)
 >
->  -  :term:`INITRD`: Indicates list of filesystem images to
->     concatenate and use as an initial RAM disk (initrd) (optional).
-> +   Can be specified for each ``LABEL``.
->
->  -  :term:`ROOTFS`: Indicates a filesystem image to include
->     as the root filesystem (optional).
-> @@ -1004,6 +1008,9 @@ This class supports several variables:
->  -  :term:`APPEND`: An override list of append strings for
->     each ``LABEL``.
->
-> +-  :term:`GRUB_TITLE`: A custom title for each ```LABEL``.
-
-In addition to adding the variable here, you also need to add its definitio=
-n to
-documentation/ref-manual/variables.rst, otherwise you cannot make a
-cross-reference to it here. Mind that the variables.rst file had the variab=
-les
-alphabetically ordered.
-
-> +   Defaults to ``LABEL`` if it is not defined.
+> diff --git a/.b4-config b/.b4-config
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..0b699f204c414099f2118ffdb=
+c9f7b24454e4a4e
+> --- /dev/null
+> +++ b/.b4-config
+> @@ -0,0 +1,4 @@
+> +[b4]
+> +  send-series-cc =3D bitbake-devel@lists.openembedded.org
+> +  send-auto-cc-cmd =3D ./b4-wrapper.py send-auto-cc-cmd
+> +  prep-pre-flight-checks =3D disable-needs-checking
+> diff --git a/b4-wrapper.py b/b4-wrapper.py
+> new file mode 100755
+> index 0000000000000000000000000000000000000000..ddc2597bc0374fa5124a83be9=
+4eeab52df6f38d3
+> --- /dev/null
+> +++ b/b4-wrapper.py
+> @@ -0,0 +1,38 @@
+> +#!/usr/bin/env python3
+> +#
+> +# This script is to be called by b4:
+> +# - through b4.send-auto-cc-cmd with "send-auto-cc-cmd" as first argumen=
+t,
+> +#
+> +# When send-auto-cc-cmd is passed:
+> +#
+> +#  This returns the list of Cc recipients for a patch.
+> +#
+> +# This script takes as stdin a patch.
 > +
->  -  :term:`GRUB_OPTS`: Additional options to add to the
->     configuration (optional). Options are delimited using semi-colon
->     characters (``;``).
-> @@ -1011,6 +1018,14 @@ This class supports several variables:
->  -  :term:`GRUB_TIMEOUT`: Timeout before executing
->     the default ``LABEL`` (optional).
+> +import subprocess
+> +import sys
+> +
+> +cmd =3D sys.argv[1]
+> +if cmd !=3D "send-auto-cc-cmd":
+> +    sys.exit(-1)
+> +
+> +patch =3D sys.stdin.read()
+> +
+> +if subprocess.call(["which", "lsdiff"], stdout=3Dsubprocess.DEVNULL) !=
+=3D 0:
+> +    print("lsdiff missing from host, please install patchutils")
+> +    sys.exit(-1)
+> +
+> +print("bitbake-devel@lists.openembedded.org")
+> +
+> +files =3D subprocess.check_output(["lsdiff", "--strip-match=3D1", "--str=
+ip=3D1", "--include=3Ddoc/*"],
+> +                                input=3Dpatch, text=3DTrue)
+> +if len(files):
+> +    print("docs@lists.yoctoproject.org")
+> +else:
+> +# Handle patches made with --no-prefix
+> +    files =3D subprocess.check_output(["lsdiff", "--include=3Ddoc/*"],
+> +                                    input=3Dpatch, text=3DTrue)
+> +    if len(files):
+> +        print("docs@lists.yoctoproject.org")
+> +
+> +sys.exit(0)
 >
-> +For the label ``factory``, a custom GRUB menu entry titled "Factory Inst=
-all" with the additional parameter ``factory=3Dyes``
-> +can be achieved as follows::
-> +
-> +  LABELS:append =3D "factory"
-
-I think you need a space after the quote here:
-
-  LABELS:append =3D " factory"
-
-> +  APPEND:grub_factory =3D "factory=3Dyes"
-> +  GRUB_TITLE:grub_factory =3D "Factory Install"
-> +
-> +
-
-Unneeded extra newline here
-
->  .. _ref-classes-gsettings:
+> ---
+> base-commit: 0329a7e3ac694737f2d2c1861f65492551360663
+> change-id: 20240524-b4-support-e9855fc54d40
 >
->  ``gsettings``
+> Best regards,
 
-Thank you,
+Thanks for the script Quentin!
+
+I was thinking, for eocore we could even extend the list of cc from
+meta/conf/distro/include/maintainers.inc.
+
 Antonin
 
 --=20
