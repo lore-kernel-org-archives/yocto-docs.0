@@ -1,272 +1,205 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C9E2DC02185
-	for <webhook@archiver.kernel.org>; Fri, 17 Jan 2025 12:39:28 +0000 (UTC)
-Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.3])
- by mx.groups.io with SMTP id smtpd.web11.9770.1737117565062331548
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 03E92C02183
+	for <webhook@archiver.kernel.org>; Fri, 17 Jan 2025 13:12:59 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.10250.1737119574659358922
  for <docs@lists.yoctoproject.org>;
- Fri, 17 Jan 2025 04:39:25 -0800
+ Fri, 17 Jan 2025 05:12:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=Un4dmLgQ;
- spf=pass (domain: cherry.de, ip: 52.101.70.3, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Xs07sB35cDvO4DFyf+XgwuRthWhflYZFXWx5uCW8YiNmnofh0Si/LqLYmWJztN7Mc51DjcgRJuqEYmLSF8/+ke8iel0hdNbsH0rlFQ3bzWYNR8gNmH9ylj8J5IIaPy88h9IErtu+E4+0WDj9eQTgnIDYhX6R4qIK/1HrEkIc/pSLW0I1Loru2Wjm/1bFBrMeVxwgZEribzj+69ZVL7mg95kVMSQ+28eqsoYKmrML9MFDzqWzNIA9USFRTK18i5QXI1/JmUwFuhYzBvnGmKx08Vgp66T+wIo8kZNghh/nH+194ICConCkdLw0Pi36RYKJ3SWNN8iUm6M9rWlx59rUfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3uuTVcle6me1l9pI7nPpzQ7q0rOKNegxP545BJ1NxVA=;
- b=Q2p0qINRja9IUSwCAoopPDwCoEKx/MrZv8X9MoTUy9YCRyqdNeYlNpT5960uFDz38RkqwfMFDAqBoLByJ6qS3I8enk8BTqhwuiXcPxUBv7NjTaObluPakmdl4v3dKRi5t6SVYg6DRIRouPwyRpywmsrsb08xI4+V8oBw0v03DtEiXGHmRfQp3lQbw0L2NsQ0kfBi8SapnT83J6NKe7vDc5qkafuCeg6225PX9UIHW7ktPrEiIrL30KSHGGhCxhyuAyxf9dfmTKMPdYWSno6Ybxs08ZFJXNuKFSPVAJBWHg7Aq6Dhs4tGVAcOyg1z3sZ5ivcdjS4U98WJsBbr5fLxJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3uuTVcle6me1l9pI7nPpzQ7q0rOKNegxP545BJ1NxVA=;
- b=Un4dmLgQxJQIZHi3l9fYD3Nz6m7SXhoRyr0Ut01fD6GHQbae1YUthcII1DKUU++7nOk9D6ZkrH5PZnNVV6L906vk3qzlh2yUUs9/HYIRoFxJQz2xoXXVDoqdc79P3Ynz3QgsmXDdTXcBYNG5cGYCDyjWLrrTR1A1U5iBO5luYr0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by VI0PR04MB10782.eurprd04.prod.outlook.com (2603:10a6:800:25d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Fri, 17 Jan
- 2025 12:39:20 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a%3]) with mapi id 15.20.8335.015; Fri, 17 Jan 2025
- 12:39:20 +0000
-Message-ID: <dfb89130-58d7-4385-aa57-ec67795b8a3d@cherry.de>
-Date: Fri, 17 Jan 2025 13:39:19 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] add basic support for b4 contribution workflow
-To: Quentin Schulz <foss+yocto@0leil.net>,
- bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org
-References: <20250117-b4-support-v2-1-7178f61d49e4@cherry.de>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20250117-b4-support-v2-1-7178f61d49e4@cherry.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: FR0P281CA0016.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:15::21) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|VI0PR04MB10782:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6a17a249-d70f-4d47-c2b6-08dd36f3f6d8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?U1hlclNXcXJLSkJyZzJRdVZvT1g5YnV2Y2xzd0ZrbEMvbVdvRGZmNlAzR2Qw?=
- =?utf-8?B?ZTJpY0h3WWpvbTVIdEN3aTBzTHFiSVZTdm5NWFg3Ty8wdE5MR1E3YjB6aVRS?=
- =?utf-8?B?TFZWT2M0d0paZnhzQ3cxVjlZNVhTRlR5c0p1ZmxHVWh0VGNRdlpnUngxcnM5?=
- =?utf-8?B?VytoYjhZMDd6MDNnUzdXa3NydU1VZ0FEa05wTUNLeWVKR3RBQVdiNzl3SFJ1?=
- =?utf-8?B?NXlheFZsOGsyd1NVaURZUVVycWVLeHRSNHJYOFExZm93N1lRSWl3ZTllSlBH?=
- =?utf-8?B?anpYMFg3U3RjcXlHVnVWYzAzd2FORlhhMmY2M3pnRERWcmtzQ1VscVlFTWx0?=
- =?utf-8?B?S3JBYTgwcnI1bzVFcFNmUkFYVlF1UmlDUWlEbUxJcWZtYS9HdVVIZi9ORjN4?=
- =?utf-8?B?aFgzdE1FUGZaVzBwN1BzZk5SQ0tMNWlsVkVqeFFhR2FGdkNEWFVPQ1UwRzZM?=
- =?utf-8?B?TWh3ZU9KdW1HZG9FNEJiVVdGM3JRUXRtTEdyN1M5KzlDMDdQQ3VRdEdjNVVI?=
- =?utf-8?B?MWMwZStmWTZTNENMd090MFBqZUNCWnZZeDk1WCtWaUhpRkRZOVI4QVFyakdF?=
- =?utf-8?B?Z1BIa2NLS2ZkM3I4d1pwY1JXdXdCdUpvWGNiQ2UyQnp0eEc4RkdRTVIxSUtr?=
- =?utf-8?B?M0llanJ6ajFJZUJ3ZlpwQTFUZ1dYdkk0MCtza3lWN0NsT2hyWlJBTDNkbm5S?=
- =?utf-8?B?U3B0Njl3ZWl6ZVluUG9OTEM2OEZtNWhwUGJlenJIbzU0ZVZIOHpOL1IxaGVq?=
- =?utf-8?B?K3JROU42Q3RwWUlvdFhGREtrMTBDTG5vaU1nQ0VGcDF4TnE2SzR2M29HQmlV?=
- =?utf-8?B?a3IxeGxKRUdaRDk0a0VXSXQvVkdSUlFlemUzUHdlM2wzRkkxaFdQdDVlcEdt?=
- =?utf-8?B?Wm5QVW1pcXhlbFIveXptUmlSSlo1dWlRTWFjdFpnZWxtVjNyRU5wekhXRGwy?=
- =?utf-8?B?Yk1KbXI1NHN0RitlY0h1K01zclp3R2dKbldQWmdEWURDQWtIT1RHcjJaNk1W?=
- =?utf-8?B?SjBxSFppNkg4T2VPNGZnRlRZcnJCakhXbFFrVVkwaGg5SXJaRnAyRmlNVitQ?=
- =?utf-8?B?OUdBUDVncmNnMHBha2ZOT1JzdWJkVlJRQmsrOE9nM1BLR29GMkRjQzFPNW9X?=
- =?utf-8?B?SkI3L2ZBelVWSStyLzdxNktUOFk5TGFUY2NPblAzZllVaDBGOHY0QlRGK3Bi?=
- =?utf-8?B?MzhEaEthWlBYalNMcS9ZSDg1aitKMGpQRHBkOU1xWTRNdlpmU3VHRWtIU0ZM?=
- =?utf-8?B?a0UySzM4TDJPcThYelNUWko4NjJJcG90Ym5PdEhNV0RYOGZMek1ZaFJIUjc1?=
- =?utf-8?B?YUJoVGZsSU5ta2lyRWI3d24xUlk1am5XN1JBOGhRVTExaEhCaEEvTXh1STcw?=
- =?utf-8?B?UVE3bmZLOEU0VmxZZXBjODNGWmFraDRZRWx0QjZxNmRIN2E0MFlNQk5NdWdQ?=
- =?utf-8?B?bUFkSzNlSUVPQkZkNW41c2Q4M0VyYkE2MXhJQzdEQUFEdzF4R21rSDV3SDhU?=
- =?utf-8?B?UnBDY3NKUXRqdXZXLzRQTXFyVDNia1k1c2xaNjlnNi83Y2lIWVVLcDZ5T3lZ?=
- =?utf-8?B?SDZ3NE5HR1dtWUxJdkFkSE12a3UyM2RIVFNSTFhzc2Z6SkY3MEgyRGZvRktj?=
- =?utf-8?B?a2NyYUdDekY3YVNVUWt0RCtkYVNvallTVUw5MGsrbnJGTTVVMU52Smk2Q0hG?=
- =?utf-8?B?a2VZb2N5b2RLWWdZQkNCbDdsUFJOMGsrd2cyQXRBTS9tc08rQSsvRVkxbUVy?=
- =?utf-8?B?N2tta1JvcmZYVnArYitrOEFCVWNrLzhDRG4zdnU1VmhzUmdvaDJnZHJpM3B6?=
- =?utf-8?B?R0tSWDQybWZUeGtOaGFkdz09?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?cWMvU0hiSFZwMDMraXhOTmtIeWNVK0lwRW5nTmxWMjNnd3BiWFI0VitSdHZI?=
- =?utf-8?B?SzFPYXQ0VHAyUEZvUnAzdlRXVHA1djN0b09vQndEcVo2NW9hTFlvNnJXUFlH?=
- =?utf-8?B?Y3cxdDR4a0kzL1dPRWo0ZC96eXVHblcrL1h0QkNmQkxIbVZITFN5TjhDM3dB?=
- =?utf-8?B?UjhYU3VTa1FQSk4xYWVDL2dEcUFXd3krbFFNdnE4NmlQVFRKRWxReEpKTy82?=
- =?utf-8?B?MnBFa1Qxa2ZTLzE4bFF1NkpHNmYwTGxiOWxlK2FwNjBkdjlERmlzL1J0ZHpF?=
- =?utf-8?B?eHZDaVlmL010eG8wU1lsb1ozZGRWRDd1MzVncUgwUU5qcGRQeG5qNUp3cUVI?=
- =?utf-8?B?Z1lhT1ZrRDNUTnFXMGt6M2NRZm1udHFhN1c0bkRJQTZZM0Iwa3JvbTZKd1ZK?=
- =?utf-8?B?clBMelc0RStJNitHWWZNYjNhSWtva09tV2dDOFF6SGwvSHQ0TnJSdzJyME5X?=
- =?utf-8?B?RVNIdFJJK1lDMVFTV0FWZ0JSNjJOZGtYc1JoK0dZaEtQeXJiT1kwdXJLOGo3?=
- =?utf-8?B?dVVoWXNMbC9YcU1vWVZ3Z0lzZDhSMUNKUXhIY0h6TEhOZStKaEhlWGk2UFFs?=
- =?utf-8?B?UnNFNVA0Ykc5Um44dHZGaVdhTFg3MmtuTUd0ZWJiWkNBY0JCb2lBWVBJMTBD?=
- =?utf-8?B?eFQ1dGo5RWtIcTQxSWlINVlHSUc1bVNOUWV4emhoRU1WbUJVOEFWNWZZU096?=
- =?utf-8?B?dmhVblVkV1JaUm05VFpZRVpZbmJSckphZEdxbzA2a2ZuUEF5WFVQelJNZTNl?=
- =?utf-8?B?YzhaTDVRSEk2bHdZT1BYZzgzODl0a21nQW1aVENQamUvdjZhTTdsMmdyL2gx?=
- =?utf-8?B?S1MwQk1uVFNMQjRheTZ6QXU1L2FsYVk5Qml2WkE1LzAyYWc2c0JGWk96NUFN?=
- =?utf-8?B?eVgxQ01vNkFGVmo4M3RKK0lDWHd3enpiUG0wVXFXM2FGalNmQ1RWZHRkSHhn?=
- =?utf-8?B?UHh4RkpDVDdJSGFFQzhaRlBhZUNDczBlTE52eVVXQzdVYTJlWGQzS1NFMEhB?=
- =?utf-8?B?RmNiU1R0MFhsaVQwQ1FIOUJETml6eTZJT3pTVkh1cXNEL3FEaCt6bytZWkhD?=
- =?utf-8?B?MnVTa3dzWFRBSHA3WGtRamtoeXM1cjJ6NzkraGtLdDc2ZHJJRHFDQ09WbU5j?=
- =?utf-8?B?ejF5QkcweGhYWXExS2lyNDRKYW50L1lwRXlnRVkzL0F0VUhwTHpwZ1MvRGhI?=
- =?utf-8?B?T1RGN2EweGY2MDM1ZS9RR2NTZTZndWlDRG5ySjJtaDFJSGloNVBiVTBaZjhJ?=
- =?utf-8?B?dFZ5WU03Vk1aSHVIcEtSbENXdkdOUlZ6bDVsZ3lveVBuc2ZDTVpEcTJXNDZD?=
- =?utf-8?B?Q0FkRTVhY2RjbHpNajNjdmhjMkRPWWc3akpicHR1eFFUc1R5cDhubmErNUNx?=
- =?utf-8?B?czJ4Y2ZSUkpBWVZlRUJMMkxZamU4OWdsNTVZSnZ0ay9KUkI5NFpVdkNjYzho?=
- =?utf-8?B?eEZrNElCZzlCU2ZISzhIZFk3M3lLazd1OUd5bWViRDNHS0ZRQ1M5WU8vQXdI?=
- =?utf-8?B?NEhSY3F3dVhVSStxdkhzSDViTVhDR3FGdVhqS0diR1VHMWpaTmJNMVd1TG9a?=
- =?utf-8?B?WjNjamMyRVIvejBua3Y1QkUwWnpoeE1MbEF4dTZsQlUwWXErUCswRndKS0xQ?=
- =?utf-8?B?WjRnUGpwVVdHMUlTMlR3WmxiNkdjWFV5QkJjSTJmN3gzSEVLRG53SWlzVnBx?=
- =?utf-8?B?YmpwREREVWo2dEF3K09vVGpOQWJLTVdOVDV1K01kc0JGcE9aYjVYMHJ2d1or?=
- =?utf-8?B?bHZpTHBOVUtkTHdGVzNpalpXVklXakpScnRRMU5sT3E1OW9kNVI5M0VRNC9I?=
- =?utf-8?B?K3VqdzBNVlZBak1OOXRWejJKN3lyV2tkSHNwcC9zV2tnMnVRdkpWNnBQY2Vk?=
- =?utf-8?B?aFhZSyt6d1BobWZBUE5ZWEptbzRzVDRpcjhhcEIyS1QvZjVxYVViNnNzZDRq?=
- =?utf-8?B?ZWZaM05JYjRMeGFoUTJyRjNFS1lsRXFmbWZ1UjZhNUVTVzl1bG9BSmNKU1I4?=
- =?utf-8?B?UzR2bmswaFNtZXdXczVwaFNxRjAvMk1rWFdCMTNXU0xMUkxQaVF5cGk0ajZh?=
- =?utf-8?B?Y3puU2NTTlJBRTBtdXBxTEtZbXZaRU53SWRuSHpIcWhTYmg3OGl2WGIzRExT?=
- =?utf-8?B?alQxQ3o0TGw3Nk12c29ZaEJiVU5XaDBXeEwzYWZlMnRPM0ViaUIzVThpRTE4?=
- =?utf-8?B?RkE9PQ==?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a17a249-d70f-4d47-c2b6-08dd36f3f6d8
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 12:39:20.4619
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nKOZuV/FqFQb+VFwh06+tXZ4O7T0B2wYKoeX9YSKVno+vhaC5qfP/IAorguiIOaY7hwGJBXwrkwOeBS9Smq803nu4TkpNGnHJnQM9EE8LEk=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR04MB10782
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dIxeqr/b;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 008A560004;
+	Fri, 17 Jan 2025 13:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1737119572;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2ooDakEjTR/4TlyqNZyhwPWzRZNOxkfOYs29gVdibzE=;
+	b=dIxeqr/bTIPOAq5fYCL8l+8k9xtqQS7Y1GxMspSrv18GexhV3X3kSS3cRZwpzps8Fkalpz
+	I4Dk7MZkXYJFvVScI7NPfmOBb2NgJPhWtn1A5h31bneSz9z/0cwzQ5umy79hyK2HmhfpQ6
+	ERvj/w2iGm6P4ACXe7154LB/3l2xMDdnPOqnb6GlHKWlyHQPAaddQTFm6ntGsee0uKId9u
+	5MSYuGhe/iVzGjpJ3CDGjFx6nSazOpSeOK38nr/hxsX/RSqJcCfNLVtpczBlFxVfovKerU
+	aFJzw2f27sWkZf4nMmAUfY8+PcVDofvNUDvN1he2NxMJBbIzSnmv+N95f/v31A==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 17 Jan 2025 14:12:51 +0100
+Message-Id: <D74DHUEMFRQU.3CMMHW4WB4JJ4@bootlin.com>
+Subject: Re: [docs] [PATCH] ref-manual: add documentation for the barebox
+ class
+Cc: <yocto@pengutronix.de>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: =?utf-8?q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>,
+ <docs@lists.yoctoproject.org>
+X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
+References: <20250116111456.1167518-1-ejo@pengutronix.de>
+In-Reply-To: <20250116111456.1167518-1-ejo@pengutronix.de>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 17 Jan 2025 12:39:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6134
+ <docs@lists.yoctoproject.org>; Fri, 17 Jan 2025 13:12:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6135
 
-On 1/17/25 11:44 AM, Quentin Schulz wrote:
-> From: Quentin Schulz <quentin.schulz@cherry.de>
-> 
-> b4[1] is a very nice tool for mail-based contribution. A config[2] file
-> exists to set up a few defaults. We can use it to set the Cc recipients
-> to always add, in our case the mailing list.
-> 
-> This also adds a wrapper script that is called by b4 to figure out which
-> addresses to put as Cc recipients. Considering that patches to the doc/
-> directory also need to be sent to the yocto-docs mailing list, this
-> wrapper handles that. A limitation of the script (lsdiff actually) is
-> that it doesn't know how to handle empty files, but those should be
-> of rather rare occurrences.
-> 
-> While the wrapper script should be enough by itself to add the bitbake
-> mailing list to the Cc recipients, one still needs to manually run b4
-> prep --auto-to-cc for that to happen. Therefore, let's add an explicit
-> send-series-cc so that at least that mailing list is always there.
-> 
-> Because we currently do not have anything to check for patch validity,
-> remove requirement for b4 prep --check to be run before sending a patch
-> series, via disable-needs-checking in prep-pre-flight-checks.
-> 
-> [1] https://pypi.org/project/b4/
-> [2] https://b4.docs.kernel.org/en/latest/config.html
-> 
-> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Hi Enrico,
+
+On Thu Jan 16, 2025 at 12:14 PM CET, Enrico J=C3=B6rns wrote:
+> From: Enrico Joerns <ejo@pengutronix.de>
+>
+> This adds the initial documentation for the newly added barebox.bbclass
+> to the Reference Manual's class list.
+> It also adds the two most notable variables to the variable list.
+>
+> Signed-off-by: Enrico Joerns <ejo@pengutronix.de>
 > ---
-> This adds a basic config file for b4 to avoid to have to add the mailing
-> list by hand.
-> For documentation patches, the additional mailing list will be added
-> when running b4 prep --check, as is required for each new series managed
-> by b4.
-> 
-> Note that b4 supports patchwork, c.f.
-> https://b4.docs.kernel.org/en/latest/config.html#patchwork-integration-settings
-> though I have no clue what it does with it as I am no maintainer, but
-> maybe something worth having a look at if some maintainer of this repo
-> wants to use b4 to merge stuff?
-> ---
-> Changes in v2:
-> - add b4-wrapper for auto-detecting patches that are to be sent to the
->    docs mailing list as well,
-> - disable forced b4 prep --check for each b4-managed series,
-> - Link to v1: https://lore.kernel.org/r/20240524-b4-support-v1-1-0c4334c36cc7@cherry.de
-> ---
->   .b4-config    |  4 ++++
->   b4-wrapper.py | 38 ++++++++++++++++++++++++++++++++++++++
->   2 files changed, 42 insertions(+)
-> 
-> diff --git a/.b4-config b/.b4-config
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..0b699f204c414099f2118ffdbc9f7b24454e4a4e
-> --- /dev/null
-> +++ b/.b4-config
-> @@ -0,0 +1,4 @@
-> +[b4]
-> +  send-series-cc = bitbake-devel@lists.openembedded.org
-> +  send-auto-cc-cmd = ./b4-wrapper.py send-auto-cc-cmd
-> +  prep-pre-flight-checks = disable-needs-checking
-> diff --git a/b4-wrapper.py b/b4-wrapper.py
-> new file mode 100755
-> index 0000000000000000000000000000000000000000..ddc2597bc0374fa5124a83be94eeab52df6f38d3
-> --- /dev/null
-> +++ b/b4-wrapper.py
-> @@ -0,0 +1,38 @@
-> +#!/usr/bin/env python3
-> +#
+>  documentation/ref-manual/classes.rst   | 36 ++++++++++++++++++++++++++
+>  documentation/ref-manual/variables.rst | 13 ++++++++++
+>  2 files changed, 49 insertions(+)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+> index 22c4301a4..c11c0a529 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -128,6 +128,42 @@ It's useful to have some idea of how the tasks defin=
+ed by the
+>  -  :ref:`ref-tasks-install` --- runs ``make install`` and
+>     passes in ``${``\ :term:`D`\ ``}`` as ``DESTDIR``.
+> =20
+> +.. _ref-classes-barebox:
+> +
+> +``barebox``
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +The :ref:`ref-classes-barebox` class manages building the barebox bootlo=
+ader.
 
-Forgot to add an SPDX-License-Identifier here, I can send a v3 for that 
-or simply pick between MIT and GPL-2.0-only and GPL-2.0-or-later which 
-seem to be the most common licenses for python scripts in our projects, 
-I don't have a personal preference :)
-For now, will wait for feedback first!
+s/barebox/BareBox/? or Barebox
+We try to capitalize project names.
 
-Cheers,
-Quentin
+> +
+> +If a file named ``defconfig`` is included in the :term:`SRC_URI`, it wil=
+l be
+> +copied to ``.config`` in the build directory and used as the barebox
+> +configuration.
+> +Instead of providing a ``defconfig`` file, you can set :term:`BAREBOX_CO=
+NFIG`
+> +to a defconfig provided by the barebox source tree.
+> +If neither ``defconfig`` nor :term:`BAREBOX_CONFIG` is specified, the cl=
+ass
+> +will raise an error.
+> +
+> +The :ref:`ref-classes-barebox` class supports config fragments and inter=
+nally
+> +includes the :ref:`ref-classes-cml1` class to provide kconfig support fo=
+r
 
-> +# This script is to be called by b4:
-> +# - through b4.send-auto-cc-cmd with "send-auto-cc-cmd" as first argument,
-> +#
-> +# When send-auto-cc-cmd is passed:
-> +#
-> +#  This returns the list of Cc recipients for a patch.
-> +#
-> +# This script takes as stdin a patch.
-> +
-> +import subprocess
-> +import sys
-> +
-> +cmd = sys.argv[1]
-> +if cmd != "send-auto-cc-cmd":
-> +    sys.exit(-1)
-> +
-> +patch = sys.stdin.read()
-> +
-> +if subprocess.call(["which", "lsdiff"], stdout=subprocess.DEVNULL) != 0:
-> +    print("lsdiff missing from host, please install patchutils")
-> +    sys.exit(-1)
-> +
-> +print("bitbake-devel@lists.openembedded.org")
-> +
-> +files = subprocess.check_output(["lsdiff", "--strip-match=1", "--strip=1", "--include=doc/*"],
-> +                                input=patch, text=True)
-> +if len(files):
-> +    print("docs@lists.yoctoproject.org")
-> +else:
-> +# Handle patches made with --no-prefix
-> +    files = subprocess.check_output(["lsdiff", "--include=doc/*"],
-> +                                    input=patch, text=True)
-> +    if len(files):
-> +        print("docs@lists.yoctoproject.org")
-> +
-> +sys.exit(0)
-> 
-> ---
-> base-commit: 0329a7e3ac694737f2d2c1861f65492551360663
-> change-id: 20240524-b4-support-e9855fc54d40
-> 
-> Best regards,
+Maybe link to https://docs.kernel.org/kbuild/kconfig-language.html here? So=
+me
+people might not know what this is referring to. This would be done like so=
+:
 
+  ...provide `Kconfig <https://docs.kernel.org/kbuild/kconfig-language.html=
+>`__
+  support...
+
+> +barebox, enabling tasks such as :ref:`ref-tasks-menuconfig` and
+> +:ref:`ref-tasks-diffconfig`.
+> +
+> +The generated barebox binaries are deployed to
+> +:term:`DEPLOY_DIR_IMAGE` as well as installed to ``BAREBOX_INSTALL_PATH`=
+`
+> +(``/boot`` by default) making them part of the recipe=E2=80=99s base pac=
+kage.
+> +This setup supports both using the barebox binaries as independent artif=
+acts
+> +and installing them into a rootfs.
+> +:term:`BAREBOX_BINARY` can be used to select a distinct binary to deploy=
+ and
+> +install.
+> +If ``barebox`` is set as the :term:`EFI_PROVIDER`, the class will levera=
+ge
+> +``conf/image-uefi.conf`` to define the default installation paths and na=
+ming
+
+:oe_git:`conf/image-uefi.conf </openembedded-core/tree/meta/conf/image-uefi=
+.conf>`
+instead of
+``conf/image-uefi.conf``
+
+> +conventions.
+> +
+> +The compiled-in barebox environment can be extended by adding environmen=
+t files
+> +to the ``BAREBOX_ENV_DIR``.
+
+:term:`BAREBOX_ENV_DIR` and some documentation for it in variables.rst? Sin=
+ce
+it's defined with ??=3D. But not sure it would be frequently overriden.
+
+Same remark for BAREBOX_FIRMWARE_DIR.
+
+> +The ``BAREBOX_FIRMWARE_DIR`` variable allows you to specify the firmware=
+ blob
+> +search directory, enabling loading of additional firmware like TF-A or O=
+P-TEE.
+> +
+>  .. _ref-classes-base:
+> =20
+>  ``base``
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index 702a6caf8..f29f38588 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -293,6 +293,19 @@ system and gives an overview of their function and c=
+ontents.
+>        :term:`PACKAGE_EXCLUDE` variables for related
+>        information.
+> =20
+> +   :term:`BAREBOX_BINARY`
+> +      The barebox build system can build multiple barebox binaries at on=
+ce.
+> +      By default, all built binaries will be deployed and installed unde=
+r their
+> +      original name.
+> +      If only a specific binary should be deployed/installed, its name c=
+an
+> +      be specified in :term:`BAREBOX_BINARY`.
+
+Maybe specify the default value, or give an example of what this variable c=
+an
+contain?
+
+> +
+> +   :term:`BAREBOX_CONFIG`
+> +      Specifies the name of the barebox defconfig to build.
+> +      The name must be a defconfig file known to the barebox build envir=
+onment.
+> +      For more information on how to provide a barebox configuration, se=
+e the
+> +      :ref:`ref-classes-barebox` class.
+
+At least specify that it's empty by default?
+
+> +
+>     :term:`BASE_LIB`
+>        The library directory name for the CPU or Application Binary
+>        Interface (ABI) tune. The :term:`BASE_LIB` applies only in the Mul=
+tilib
+
+
+Thank you for taking time to document this,
+
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
