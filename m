@@ -1,72 +1,162 @@
-Return-Path: <foss@0leil.net>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A8A0C02182
-	for <webhook@archiver.kernel.org>; Thu, 23 Jan 2025 14:33:41 +0000 (UTC)
-Received: from smtp-8fa8.mail.infomaniak.ch (smtp-8fa8.mail.infomaniak.ch [83.166.143.168])
- by mx.groups.io with SMTP id smtpd.web10.11561.1737642814765797813
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AF99BC02182
+	for <webhook@archiver.kernel.org>; Thu, 23 Jan 2025 15:32:11 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web10.13026.1737646326295895793
  for <docs@lists.yoctoproject.org>;
- Thu, 23 Jan 2025 06:33:35 -0800
+ Thu, 23 Jan 2025 07:32:06 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: 0leil.net, ip: 83.166.143.168, mailfrom: foss+yocto@0leil.net)
-Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Yf3Mw71V2zRDT;
-	Thu, 23 Jan 2025 15:33:32 +0100 (CET)
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Yf3Mw4mWyzlrm;
-	Thu, 23 Jan 2025 15:33:32 +0100 (CET)
-From: Quentin Schulz <foss+yocto@0leil.net>
-Date: Thu, 23 Jan 2025 15:33:24 +0100
-Subject: [PATCH] ref-manual: variables: fix spurious parenthesis
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250123-spurious-parenthesis-v1-1-8bfe09dbe895@cherry.de>
-X-B4-Tracking: v=1; b=H4sIADNTkmcC/x3MOwqAMBBF0a3I1AaS+EHciliIeeo0McyoCOLeD
- ZanuPchhTCU+uIhwcXKe8xwZUHzNsUVhkM2eesb63xlNJ3C+6kmTYJ4bFBWE9oFtqpt6OAop0m
- w8P1vh/F9P5gky9lmAAAA
-X-Change-ID: 20250123-spurious-parenthesis-d6fe0340d8e1
-To: docs@lists.yoctoproject.org
-Cc: Quentin Schulz <quentin.schulz@cherry.de>
-X-Mailer: b4 0.14.2
-X-Infomaniak-Routing: alpha
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Yoql4y0L;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id C6FF1FF802;
+	Thu, 23 Jan 2025 15:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1737646324;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5l6buU8n/20hOzzmX+biQ9qVEg+XXJZ1eqmtAhmG0VU=;
+	b=Yoql4y0LnsW8IOd0/TkoNmg5sIB3od9nhTzrlef12BBESKMODBs3zD72g0KjA3cMj850Xs
+	KMGOB8medNC+beqQZ8PxKLO3ajKsnjGKZm9EoRiNDezMyst2sHTjPl5RoXhpsbsWViIBba
+	R3OhA+kDsUOh4iilPJscW4i33tKumuB7Ta0DZIPlxxzlQ9KeQlcM07nQvgXiSvDu0WvMHe
+	t0p6K/LWOcgd3K2q6VnhE99DoKNg1ufuYuAEh656mMbfWMlC8OtyvtF7BmmdI1S1+raXKu
+	xj5BUN+cJ1eyOalX1zfJza9/ZzZ/dja1upxrDszZK8TkrIB5cc6vX0s1K5PsVA==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 Jan 2025 16:32:03 +0100
+Message-Id: <D79K7OUHYIKF.NURW1CBQTH14@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <simon.eu@gmail.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH] ref-manual: Describe grub-efi-cfg overrides and
+ GRUB_TITLE
+X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
+References: <20250115080758.27000-1-simon.eu@gmail.com>
+ <20250121111836.47434-1-simon.eu@gmail.com>
+In-Reply-To: <20250121111836.47434-1-simon.eu@gmail.com>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 23 Jan 2025 14:33:41 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6160
+ <docs@lists.yoctoproject.org>; Thu, 23 Jan 2025 15:32:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6161
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+Hi Simon,
 
-There's no opening parenthesis, so let's remove the spurious closing
-parenthesis.
+Please send new versions of the patch in a separate email thread, and inclu=
+de
+the version in the Subject. See the contributor guide for more details on h=
+ow to
+do that:
+https://docs.yoctoproject.org/contributor-guide/submit-changes.html#taking-=
+patch-review-into-account
 
-Fixes: ea638e85316d ("ref-manual/variables: document the KERNEL_CONSOLE variable")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
----
- documentation/ref-manual/variables.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Please, also make sure to include your Signed-off-by in your patches. The
+contributor guide goes over that too.
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 702a6caf8723b04a12092f88f70d93c255bbbc10..e4256344f404e12cb748c280f16ecdf48570d1bb 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4602,7 +4602,7 @@ system and gives an overview of their function and contents.
- 
-      The default value of this variable is extracted from the first console
-      device and setting in :term:`SERIAL_CONSOLES`. If nothing is found in
--     :term:`SERIAL_CONSOLES`, the default value is set to ``ttyS0,115200``).
-+     :term:`SERIAL_CONSOLES`, the default value is set to ``ttyS0,115200``.
- 
-      For more information, see the `Kernel command-line documentation
-      <https://www.kernel.org/doc/html/latest/admin-guide/kernel-parameters.html>`__.
+On Tue Jan 21, 2025 at 12:18 PM CET, Simon A. Eugster via lists.yoctoprojec=
+t.org wrote:
+> This patch describes how to use overrides for grub-efi-cfg because that
+> is otherwise only clear after reading the .bbclass file. It also adds
+> a description for GRUB_TITLE.
+> ---
+>  documentation/ref-manual/classes.rst   | 18 +++++++++++++++++-
+>  documentation/ref-manual/variables.rst |  6 ++++++
+>  2 files changed, 23 insertions(+), 1 deletion(-)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+> index 761be7b545..df6092f082 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -987,10 +987,11 @@ introspection. This functionality is only enabled i=
+f the
+>  The :ref:`ref-classes-grub-efi` class provides ``grub-efi``-specific fun=
+ctions for
+>  building bootable images.
+> =20
+> -This class supports several variables:
+> +This class supports several variables.
 
----
-base-commit: 8bd2bc3c00ca80f4c000a2a8d618a9f8ea3aa54b
-change-id: 20250123-spurious-parenthesis-d6fe0340d8e1
+You can leave the colon here.
 
-Best regards,
--- 
-Quentin Schulz <quentin.schulz@cherry.de>
+> =20
+>  -  :term:`INITRD`: Indicates list of filesystem images to
+>     concatenate and use as an initial RAM disk (initrd) (optional).
+> +   Can be specified for each ``LABEL``.
+> =20
+>  -  :term:`ROOTFS`: Indicates a filesystem image to include
+>     as the root filesystem (optional).
+> @@ -1004,6 +1005,9 @@ This class supports several variables:
+>  -  :term:`APPEND`: An override list of append strings for
+>     each ``LABEL``.
+> =20
+> +-  :term:`GRUB_TITLE`: A custom title for each ```LABEL``.
+> +   Defaults to ``LABEL`` if it is not defined.
+> +
+>  -  :term:`GRUB_OPTS`: Additional options to add to the
+>     configuration (optional). Options are delimited using semi-colon
+>     characters (``;``).
+> @@ -1011,6 +1015,18 @@ This class supports several variables:
+>  -  :term:`GRUB_TIMEOUT`: Timeout before executing
+>     the default ``LABEL`` (optional).
+> =20
+> +Each ``LABEL`` defined in the ``LABELS`` variable creates a GRUB boot en=
+try,
+> +and some variables can be defined individually per ``LABEL``. The label
+> +specific override names are defined as ``grub_LABEL``.
+> +
+> +For example, for a label ``factory``, the override name would be
+> +``grub_factory``. A custom GRUB menu entry titled "Factory Install" with=
+ the
+> +additional parameter ``factory=3Dyes`` can be achieved as follows::
+> +
+> +  LABELS:append =3D " factory"
+> +  APPEND:grub_factory =3D "factory=3Dyes"
+> +  GRUB_TITLE:grub_factory =3D "Factory Install"
 
+Our standards.md file recommends three spaces for code block indentation, c=
+an
+you fix this?
+
+> +
+>  .. _ref-classes-gsettings:
+> =20
+>  ``gsettings``
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index 0c5c7aab97..9061c206a7 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -3320,6 +3320,12 @@ system and gives an overview of their function and=
+ contents.
+>        :ref:`ref-classes-grub-efi` class for more information
+>        on how this variable is used.
+> =20
+> +   :term:`GRUB_TITLE`
+> +      Specifies custom titles for GRUB labels defined in  :ref:`LABELS`.=
+ See
+> +      the :ref:`ref-classes-grub-efi` class for more information on how =
+this
+> +      variable is used.
+> +
+> +
+
+Extra newline, can you remove it?
+
+>     :term:`GTKIMMODULES_PACKAGES`
+>        When inheriting the :ref:`ref-classes-gtk-immodules-cache` class,
+>        this variable specifies the packages that contain the GTK+ input
+
+
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
