@@ -2,59 +2,57 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7C836C0218C
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 84795C02190
 	for <webhook@archiver.kernel.org>; Mon, 27 Jan 2025 09:58:39 +0000 (UTC)
 Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
- by mx.groups.io with SMTP id smtpd.web10.48498.1737971914322536397
+ by mx.groups.io with SMTP id smtpd.web11.48226.1737971913868044951
  for <docs@lists.yoctoproject.org>;
  Mon, 27 Jan 2025 01:58:34 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lrTJvsH1;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=SRnPICai;
  spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id EB6CE6000A;
-	Mon, 27 Jan 2025 09:58:31 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 75BBB60017;
+	Mon, 27 Jan 2025 09:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1737971912;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=/52rwfvykSotTuXQNqsJjOEM5IZFqcydsUEDK064RzQ=;
-	b=lrTJvsH1sYPpeHMmPLyc42rXVTdPNN5ev73EJo5IDDdEw+TMVz0mWAQ8dVGRHUUJ714B1j
-	d2r+V/dpNvL9PL5frgAVvPDmoDu+8u5PC7hHxeIwCPmoZitYctxAZggpuBUV+55eRc9UNo
-	lyRR1C7sEl0UE/0r77ugewxx8XZBANrBX+HC2Voje+ZnoADq7wdsM+CW8oWIliOWHtU7XK
-	bF0UhyyGnpagjv+LbJUXUJM0TD1efBSROPvrot/3CSWhfgEalhK+pk1WMgNBiD91Q6iA2q
-	ET1xoZ5WQUygSw6dvpeEcTq20iS7U/8dmJCsg3YRZNv8h+18w2GnzQ6bzKvZgw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3khD7R8/Dwn98sVBvqUOarLjk4elhFod9mU1IWpWCsc=;
+	b=SRnPICaidTYIjkYnxBr898LxCh2YuLXXDza0r6CgBPPLG8wEDLvO2S8CVilqJW+HflEpYm
+	EERGh3YYUPumIHkprBrWyu1zuY/5tsQDTfgZ3aF2G4MRrX0sqU9zc2B+IIy9D5BUOMG2uL
+	o5Dj1AdxJdGsP9mBEgLsnMIE4VZ4E8qx1GpNS5Y0N4aJZoREL0RDxl2DIxLAuRI/zL0Fdc
+	LwzsU+uYPZxVGdsTrHP7XAJcKJB/d1jcS67an00KbLfiUiQrFGLx7RJurN1DOnu5TOG9xe
+	ekL4ZrXRVSACsQOJv7DF58HNRhRXIbF6tR2wj9T57WXgJOHgoE65gpZ7TygKMA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [yocto-docs][PATCH v3 0/2] Move devtool doc from extensible to dev
- manual
-Date: Mon, 27 Jan 2025 10:58:21 +0100
-Message-Id: <20250127-devtool-dev-manual-v3-0-0e7ed17cfde4@bootlin.com>
+Date: Mon, 27 Jan 2025 10:58:23 +0100
+Subject: [yocto-docs][PATCH v3 2/2] dev-manual/devtool: remove reference to
+ the extensible SDK
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAL1Yl2cC/23N3wqCMBQG8FeRXbfYP2l21XtEF26e5UBdbXMU4
- rs3DQnCq8P3wfl9EwrgLQR0LibkIdlg3ZADPxRIt/VwB2ybnBEjTFDGOG4gRee65eK+Hsa6w0p
- xeWIlNZUClB8fHox9rej19s0enmO2469sbYjOv9fhRJd22xB7G4ligonWwqhSCkLlRTkXOzsct
- evRAia2ISWhhO0iLCON4kYrSVXF/5B5nj/WN4uYEAEAAA==
-X-Change-ID: 20241223-devtool-dev-manual-bb387251f9be
+Message-Id: <20250127-devtool-dev-manual-v3-2-0e7ed17cfde4@bootlin.com>
+References: <20250127-devtool-dev-manual-v3-0-0e7ed17cfde4@bootlin.com>
+In-Reply-To: <20250127-devtool-dev-manual-v3-0-0e7ed17cfde4@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2256;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3032;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=T3p+8hiYDSBXgea2UFF63lpxdU1MrNnmZxq9jdVVzjg=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnl1jHg+IKfyyCG49IxwQJSCbwdzB2Si4k/0oWO
- wwTsUdRN0aJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ5dYxwAKCRDRgEFAKaOo
- Nm6TEACH4OZLA5bilTDzOgypfORnh6lgfiy2ZYkEglKgXP4lczvGU+U1QT1bpPk3cjKIrwLFipC
- lHACHI2AfpEmko0c4m/zTF8hyKLpiSWUx8v6TqYpp0PFRzx05V4Tfw/aQGZLd1W9777Tln/CHoT
- ft9MTuy7dPceYJu/9H8Bekhi7EAlOgR0PE+lTI+S9SVBUq6FYgezRu3MGiYbEcwjlQ/9jhneOJB
- bzT4D5tfR7gHYgfoknwAqNMx0SDZQ7aJ9adIxulqTMj09n2dx7vIK+nyz7REwp45Fewv9G0NCLI
- Gk/15FkrZtjCvqA2n+vSlDtYRkBcS23FG+OBb55YLeBgpI93g/zfiuLyAgckkQn9wiRUka1pNG+
- cpQp3a48p+5YqA6lboJ0ir1xPaDnvJZKxXpQWUj0fgj75CaUy79hpUSXfQz/yjZ4pUtj53WQB9x
- V7FNma6ym/WjhtTeMHacrHGvcmPjazw9mfc53VRRSYi3+aBmdR8PpD/hIFpJhSY9qp1FIAQOSqJ
- QauMJ+kdneIlSM7OLV0rHjdOpTvV05cx0qBRUyWP4mainpf/zrdZlsV60hf8aXz7JEzXDsSUPSk
- g5dqFbnvWr7NdPOdgMc0/npgjwEkonszjw0xQIrfxEe+ORfB/essTBKJ+5DJy4BiCB4gomUWfpK
- DUt5nAjJK1ovtZg==
+ bh=A40iDqO2OISQ2YEF1c8npywAOvqbva1dG74pH7BxOF8=;
+ b=owEBbAKT/ZANAwAIAdGAQUApo6g2AcsmYgBnl1jHzWe8b2ecO68W+VunC0VUgj031r5GJGRZJ
+ U6JLrVNrc+JAjIEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ5dYxwAKCRDRgEFAKaOo
+ NgnWD/jhLtBr7gUYuQUxpWEElGLt6BZyLSApJ6b0YdO1qsJCTrp4AcCbFpVoa8msjgnDGue7kul
+ 1KVsftothnzUCe/E9+jScfiSRUbg62TK/kQkQnoEU4aAXumrD1TjNqCnRbLLluJJsi9MR36gDCg
+ 7cYMqIXdSdcR0JALOsO+Xenkm+TGa2myuX0HGW/M3mAuIPdsakBMmJM+3ZrGdBe5ZCOo9gIfWaT
+ a3z9y/tA21tDeZx2Z5qCSSQuq+3jOZkLtqdHoNbBQJjorhIyeE7wUF8fmvcSKBHjuV4PVeLxLK6
+ OhwQto+GTeFTlqXneV+QOpMIDJgnKWdyKaqCjxnySw4bnppB15BM/1PuXE4+3dYM1HjNdfsDvc9
+ BCXf+viDI3jYL0EK4805UqvJFcgoyuGaNSMgrKtA4tW5AHbvsz0rYaUUutYqg8LRZBn7zu/PmoI
+ hlJBiW3YorhtskB7TbUjlT+J/cGw9+phI4amE33W9eQDPx4W/VoHDHhR1xstUCHSatqvtGLFSbc
+ l5MyNdxI+ZivcukUfekTudDNaxocL0G2UJvtqP4K4NnYAj2r9Zyu83ISX7SLfUzDdkoJsyXpmsy
+ aNXT2TpR5xAC7eNc1o/V2UE31/GIAxua+mubXXfdJC4W6JAoB2bhdjYku4yIDGuPI0L1UPiBaMu
+ uJlj9j+vu4mSJ
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-Sasl: antonin.godard@bootlin.com
@@ -62,56 +60,69 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 27 Jan 2025 09:58:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6191
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6189
 
-As described in https://bugzilla.yoctoproject.org/show_bug.cgi?id=13417,
-the devtool documentation is not really coupled to the extensible SDK,
-and so documentation for it could be part of its own manual in the
-dev-manual.
+There were leftover references to the extensible SDK after moving the
+devtool documentation from the Extensible SDK document to its own
+devtool document.
 
-The first patch of the series moves the documentation from
-sdk-manual/extensible.rst to dev-manual/devtool.rst. The second patch
-removes some reference to the eSDK in the manual which no longer apply
-within this new context.
+This patch follows the bulk move to make it clear what was modified in
+the document.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v3:
-- Also move the ide-sdk section of the extensible document, after
-  rebasing on Adrian's changes to this section to make it non-related to
-  the extensible sdk directly.
-- Link to v2: https://lore.kernel.org/r/20250102-devtool-dev-manual-v2-0-db3fcb81b938@bootlin.com
+ documentation/dev-manual/devtool.rst | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-Changes in v2:
-- forgot to fix some references to titles in the previous version, fixed
-  them in this v2.
-- Link to v1: https://lore.kernel.org/r/20241224-devtool-dev-manual-v1-0-0cc4fb584018@bootlin.com
+diff --git a/documentation/dev-manual/devtool.rst b/documentation/dev-manual/devtool.rst
+index 2e3de7a0961a7a09b9c2a6217152f97636099a93..2f17d5093048d97e1679a06978a2c22400ee01e3 100644
+--- a/documentation/dev-manual/devtool.rst
++++ b/documentation/dev-manual/devtool.rst
+@@ -1046,7 +1046,8 @@ mind:
+ 
+ -  The environment in which Make runs is set up with various standard
+    variables for compilation (e.g. :term:`CC`, :term:`CXX`, and so forth) in a
+-   similar manner to the environment set up by the SDK's environment
++   similar manner to the environment set up by an :ref:`SDK
++   <overview-manual/concepts:Application Development SDK>`'s environment
+    setup script. One easy way to see these variables is to run the
+    ``devtool build`` command on the recipe and then look in
+    ``oe-logs/run.do_compile``. Towards the top of this file, there is
+@@ -1132,9 +1133,6 @@ these behaviors ensure the reproducibility and integrity of the build.
+       ``devtool add`` does not receive the other parts, which results in
+       several "command not found" errors.
+ 
+-   -  In order to support adding Node.js modules, a ``nodejs`` recipe
+-      must be part of your SDK.
+-
+ As mentioned earlier, you can also add Node.js modules directly from a
+ repository or local source tree. To add modules this way, use
+ ``devtool add`` in the following form::
+@@ -1242,10 +1240,8 @@ Recipes often need to use files provided by other recipes on the
+ :term:`Build Host`. For example,
+ an application linking to a common library needs access to the library
+ itself and its associated headers. The way this access is accomplished
+-within the extensible SDK is through the sysroot. There is one sysroot per
+-"machine" for which the SDK is being built. In practical terms, this
+-means there is a sysroot for the target machine, and a sysroot for
+-the build host.
++is through the :term:`Sysroot`. There is a sysroot for the target machine, and a
++sysroot for the build host.
+ 
+ Recipes should never write files directly into the sysroot. Instead,
+ files should be installed into standard locations during the
+@@ -1259,8 +1255,7 @@ remain free from stale files.
+ Packaging
+ ---------
+ 
+-Packaging is not always particularly relevant within the extensible SDK.
+-However, if you examine how build output gets into the final image on
++If you examine how build output gets into the final image on
+ the target device, it is important to understand packaging because the
+ contents of the image are expressed in terms of packages and not
+ recipes.
 
----
-Antonin Godard (2):
-      Move devtool doc from extensible to dev manual
-      dev-manual/devtool: remove reference to the extensible SDK
-
- documentation/dev-manual/devtool.rst               | 1322 +++++++++++++++++++
- .../figures/devtool-add-flow.png}                  |  Bin
- .../figures/devtool-modify-flow.png}               |  Bin
- .../figures/devtool-upgrade-flow.png}              |  Bin
- documentation/dev-manual/index.rst                 |    1 +
- documentation/dev-manual/new-recipe.rst            |    2 +-
- documentation/dev-manual/upgrading-recipes.rst     |    2 +-
- documentation/migration-guides/migration-2.1.rst   |    2 +-
- documentation/overview-manual/concepts.rst         |    2 +-
- documentation/ref-manual/devtool-reference.rst     |    2 +-
- documentation/ref-manual/variables.rst             |    2 +-
- documentation/sdk-manual/extensible.rst            | 1323 +-------------------
- documentation/what-i-wish-id-known.rst             |    2 +-
- 13 files changed, 1333 insertions(+), 1327 deletions(-)
----
-base-commit: 287817f33688d61f7a71c056bfa5c645edb4fc4e
-change-id: 20241223-devtool-dev-manual-bb387251f9be
-
-Best regards,
 -- 
-Antonin Godard <antonin.godard@bootlin.com>
+2.47.0.2.g7caf9f4c55.dirty
 
 
