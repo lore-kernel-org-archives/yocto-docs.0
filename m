@@ -2,137 +2,86 @@ Return-Path: <simon.eu@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 247E3C0218A
-	for <webhook@archiver.kernel.org>; Tue, 28 Jan 2025 10:23:17 +0000 (UTC)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
- by mx.groups.io with SMTP id smtpd.web11.14690.1738059793607026683
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77B00C0218D
+	for <webhook@archiver.kernel.org>; Tue, 28 Jan 2025 11:37:57 +0000 (UTC)
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+ by mx.groups.io with SMTP id smtpd.web10.15641.1738064263143829421
  for <docs@lists.yoctoproject.org>;
- Tue, 28 Jan 2025 02:23:13 -0800
+ Tue, 28 Jan 2025 03:37:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=JKYgcvHG;
- spf=pass (domain: gmail.com, ip: 209.85.128.52, mailfrom: simon.eu@gmail.com)
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-437a92d7b96so55713495e9.2
-        for <docs@lists.yoctoproject.org>; Tue, 28 Jan 2025 02:23:13 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=dkA4h6SX;
+ spf=pass (domain: gmail.com, ip: 209.85.221.46, mailfrom: simon.eu@gmail.com)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3862d6d5765so3262191f8f.3
+        for <docs@lists.yoctoproject.org>; Tue, 28 Jan 2025 03:37:42 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738059792; x=1738664592; darn=lists.yoctoproject.org;
+        d=gmail.com; s=20230601; t=1738064261; x=1738669061; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=c0tEmaijhLOuY1IybJiwl0ftTCp+xb0b1cNVAQQUqYI=;
-        b=JKYgcvHGN2BBRuSFZJc84AVXsMq2txFsLbx2haVribZpGnffLZ7kC+YPTZi0DQC4yM
-         HGwRR0S75hHba9q4e0+Glqs6sfTvwP/j/NUsenJ+KR2nj1x4dlXf20vwq66IrbbSqHh/
-         a6s4NhD+XFzvIDBAWzFBf3FgoZQymh7Jqk7Dgy0caQfCIqNruEwpCeyPNBV4S2KJQWEY
-         mBL0oII7z9dPsD7r+C2ZpJa4P+WUQh55FKXF3YtW3GEivEFFYTMck39intn+TeQJPQmd
-         +eVXKS8NhgAXPyawBdIZA51U02iZmqto6BavFDIt7KbU1YTlpE7FZITw8GB0ZXB4JOQt
-         MP7g==
+        bh=uus84HZobQ/URsooTdPAVcz3oUCCZKKEq4PWcdsCVxI=;
+        b=dkA4h6SX5gZxWxzKcmw3EpIMQy5u+NxNz9njL8Ie3GqPz/jAXJZbrpItNW8A5MrPUv
+         5sfrg2vKGzYu9VtINDqxqbZjnR4WJAVwZyM1iOcKR8disW5I1MTWHwUUrAJednmfvxPj
+         WMOgSja3CHRl8jidcVU0pWNJgfyaaUkQt70d3HSSQ/8oulolu3mqQW0FBpLMJv+QG5bv
+         HI+ckOF7G+SBI/rE+7RbYmEtH6JjUs2tDnD35p7gS2KoeVDg5dfz/GX0VC7U5JDXdu35
+         o7BQzOs3pYWEJcyd/zJYcEPeRJ92lXCT+qxXdrQ3MPCDc5EFHijpPgqwJNA1qmBmfIbE
+         OGGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738059792; x=1738664592;
+        d=1e100.net; s=20230601; t=1738064261; x=1738669061;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=c0tEmaijhLOuY1IybJiwl0ftTCp+xb0b1cNVAQQUqYI=;
-        b=S5diSnQrzavDxtsMRRl99f/gsmjmjmB1sOKd0rzqPVXGCZ8NEQkP5RxhoKeb9nfSta
-         0DCyT/vPcuMyXNh+xYnOeZdbwCNv2tyQ+3r7uxn7fwuu+m4TUQhNzpeoMNXMQtNvg65V
-         dpjdizk9YxQgsIqX6tx9xOvzcOUWcHSbS6UcUAOHUddn9Nkup9ZJivOSSb73ZgFyzstu
-         bjiBK6/5WM6iNYWpA2M1pFE1JYfbDWeIr0pyFZpHSC5S0Du4nu2OgyknWkSPGzsxh/Gb
-         Ncu2rQOmGgxdR0yRsbLuqwP+2BAH5tA7rAmVlk17comekM1gP6egASUOJ42l5LPXQSaQ
-         GhLg==
-X-Gm-Message-State: AOJu0YyfPHooqBTgMOWfhuEWHs30xcb9It+RN55uubFue8JOij7Kkd8X
-	iUG8R2iOPfrl4KSR4Gsnf4P9MK/KjXPIgBoJvPzCt9FTInlY7QPI8Rb7IA==
-X-Gm-Gg: ASbGnctZ1UQSzn+Lqw/m8bTyuYpK2ARKgsemqe5JrN3z6jqdppJofzCxjBmUPBoUha0
-	J9IrtQhVBABJOXefEu8SOrAl6uQuXK90aBDRHsra/pSjkANR2xe/bV4xn+ZYFrGaCrmDr5iqSdV
-	K0Mr3RZZ7dljwLE57T3GA82l7RWcmoS5ydnXubpF9tg+kzzXzI7fC624/aBwvCuPBvtdfUIl4p9
-	yAv0+CU4NOiDNxvXJpYUI7F7PGy8Q47/GQfBfOh2npz9Dn71VXgpiIr2b+yGNQJuvvzBTavIn0z
-	M/+TAvVNW3fRLOiTPSI=
-X-Google-Smtp-Source: AGHT+IGCIQ6hz3TSQngpT7XOSb/iOVhrM7x33PCGH/OABeVZxsMtiWQuFG4Vc5IoliaLKW2BDtndRw==
-X-Received: by 2002:a05:600c:c87:b0:434:ff30:a159 with SMTP id 5b1f17b1804b1-438912d54b1mr442440855e9.0.1738059791330;
-        Tue, 28 Jan 2025 02:23:11 -0800 (PST)
+        bh=uus84HZobQ/URsooTdPAVcz3oUCCZKKEq4PWcdsCVxI=;
+        b=M8JUrfBSTYRDvplSEDGZWFE/7V9DSucdFinfDpTUEX61oT15wvH6LoXNevnuoQn+3Y
+         Xb+73W1SIPZbBatkGKgKnEXLmwiFXiJdGDr0wFrTRuNYxGFKGIlkb2mDbNBmAXVcVC4d
+         G2DLgpCU8OkJP6l8UVWAkNfAoLj74vaR1nkHMw4eXgqdEdZpzYOBHs0Rqe4+cn4FHs2s
+         beSI59FmLDgnFgEH3zQ934ISKGhJI0z1mQglloYPNTtQZl8qRmjpKdQ3bXyI8Jcch8Uo
+         yCIy6M+GIqku8USrLJDOE+rhDWZMoJXt5EY6n+3jYE7A4EEGnqKEWRJjEFJMVLOojSr7
+         XK/g==
+X-Gm-Message-State: AOJu0YyxFBhZR8XUWLLYPbwbOcRi4Re545SHpwsMaWt6wDMJHDtkn94g
+	CdM1ewM2Cc/GdshW2SNOEf0sNCbn4ieYDTtS9S0aXC7cLV0Y/sNVoVxiSA==
+X-Gm-Gg: ASbGncuxuPOfVZhmUPCX/pzAz3tam8VQpkyOXORTq0ezbUyx7vh23L1XKfuSs5RmAxR
+	AjNKkV49FJShenV74Iga/Aumd4TJDQ1DHiiVJV2Lh1khDKUFiCmJT60FnlRmwasJ6uzlfJRDQjy
+	yTueHefBGWmIHeoNgbl+YFZx89LISaqWL7Q6iUGrYoAAjEJnRQo27jajvuIhxiBU4iB9MLWhXzH
+	rrx+LSKHEy/C0bHaZ8K0RSOOwlyA3cxWsceXJIWB0LOjnmd7h2Ge0oz3rpGXE3QNQPq/KuSS1G9
+	eg1AqwHrK9uJMxsb0sI=
+X-Google-Smtp-Source: AGHT+IH/oOx/jtxFJxyxGNU/FAczGjvxvUbcdl3GfVjm4/OcB5SuM3j7GI/fjV8Mlj/gj5BMbd8HIA==
+X-Received: by 2002:adf:a3ce:0:b0:387:86cf:4e87 with SMTP id ffacd0b85a97d-38bf5685126mr34550173f8f.15.1738064260717;
+        Tue, 28 Jan 2025 03:37:40 -0800 (PST)
 Received: from simon-T14-4TB.. ([46.140.188.244])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-438bd4856d8sm164266975e9.11.2025.01.28.02.23.10
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38c2a188689sm13828584f8f.48.2025.01.28.03.37.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Jan 2025 02:23:10 -0800 (PST)
+        Tue, 28 Jan 2025 03:37:40 -0800 (PST)
 From: "Simon A. Eugster" <simon.eu@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: antonin.godard@bootlin.com,
-	"Simon A. Eugster" <simon.eu@gmail.com>
-Subject: [PATCH v3] ref-manual: Describe grub-efi-cfg overrides and GRUB_TITLE
-Date: Tue, 28 Jan 2025 11:23:08 +0100
-Message-ID: <20250128102308.42435-1-simon.eu@gmail.com>
+Cc: "Simon A. Eugster" <simon.eu@gmail.com>
+Subject: [PATCH] documentation: Fix typo in standards.md
+Date: Tue, 28 Jan 2025 12:37:35 +0100
+Message-ID: <20250128113735.52229-1-simon.eu@gmail.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Jan 2025 10:23:17 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6206
-
-This patch describes how to use overrides for grub-efi-cfg because that
-is otherwise only clear after reading the .bbclass file. It also adds
-a description for GRUB_TITLE.
+ <docs@lists.yoctoproject.org>; Tue, 28 Jan 2025 11:37:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6207
 
 Signed-off-by: Simon A. Eugster <simon.eu@gmail.com>
 ---
- documentation/ref-manual/classes.rst   | 16 ++++++++++++++++
- documentation/ref-manual/variables.rst |  5 +++++
- 2 files changed, 21 insertions(+)
+ documentation/standards.md | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 761be7b545..1d64ac2f28 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -991,6 +991,7 @@ This class supports several variables:
+diff --git a/documentation/standards.md b/documentation/standards.md
+index bc403e393e..1ef999cc79 100644
+--- a/documentation/standards.md
++++ b/documentation/standards.md
+@@ -1,6 +1,6 @@
+ # Standards for contributing to Yocto Project documentation
  
- -  :term:`INITRD`: Indicates list of filesystem images to
-    concatenate and use as an initial RAM disk (initrd) (optional).
-+   Can be specified for each ``LABEL``.
+-This document attemps to standardize the way the Yocto Project
++This document attempts to standardize the way the Yocto Project
+ documentation is created.
  
- -  :term:`ROOTFS`: Indicates a filesystem image to include
-    as the root filesystem (optional).
-@@ -1004,6 +1005,9 @@ This class supports several variables:
- -  :term:`APPEND`: An override list of append strings for
-    each ``LABEL``.
- 
-+-  :term:`GRUB_TITLE`: A custom title for each ```LABEL``.
-+   Defaults to ``LABEL`` if it is not defined.
-+
- -  :term:`GRUB_OPTS`: Additional options to add to the
-    configuration (optional). Options are delimited using semi-colon
-    characters (``;``).
-@@ -1011,6 +1015,18 @@ This class supports several variables:
- -  :term:`GRUB_TIMEOUT`: Timeout before executing
-    the default ``LABEL`` (optional).
- 
-+Each ``LABEL`` defined in the :term:``LABELS`` variable creates a GRUB boot
-+entry, and some variables can be defined individually per ``LABEL``. The label
-+specific override names are defined as ``grub_LABEL``.
-+
-+For example, for a label ``factory``, the override name would be
-+``grub_factory``. A custom GRUB menu entry titled "Factory Install" with the
-+additional parameter ``factory=yes`` can be achieved as follows::
-+
-+   LABELS:append = " factory"
-+   APPEND:grub_factory = "factory=yes"
-+   GRUB_TITLE:grub_factory = "Factory Install"
-+
- .. _ref-classes-gsettings:
- 
- ``gsettings``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 0c5c7aab97..4eb11abede 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3320,6 +3320,11 @@ system and gives an overview of their function and contents.
-       :ref:`ref-classes-grub-efi` class for more information
-       on how this variable is used.
- 
-+   :term:`GRUB_TITLE`
-+      Specifies custom titles for GRUB labels defined in  :term:`LABELS`. See
-+      the :ref:`ref-classes-grub-efi` class for more information on how this
-+      variable is used.
-+
-    :term:`GTKIMMODULES_PACKAGES`
-       When inheriting the :ref:`ref-classes-gtk-immodules-cache` class,
-       this variable specifies the packages that contain the GTK+ input
+ It is currently a work in progress.
 -- 
 2.43.0
 
