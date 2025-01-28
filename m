@@ -1,139 +1,146 @@
-Return-Path: <simon.eu@gmail.com>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A7BEC0218D
-	for <webhook@archiver.kernel.org>; Tue, 28 Jan 2025 07:54:06 +0000 (UTC)
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
- by mx.groups.io with SMTP id smtpd.web11.12931.1738050832454917658
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7A64CC02190
+	for <webhook@archiver.kernel.org>; Tue, 28 Jan 2025 08:20:36 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.13222.1738052429671970319
  for <docs@lists.yoctoproject.org>;
- Mon, 27 Jan 2025 23:53:52 -0800
+ Tue, 28 Jan 2025 00:20:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=AtD1SU8g;
- spf=pass (domain: gmail.com, ip: 209.85.208.53, mailfrom: simon.eu@gmail.com)
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5d3d14336f0so9085714a12.3
-        for <docs@lists.yoctoproject.org>; Mon, 27 Jan 2025 23:53:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738050830; x=1738655630; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QWeBxSC2oBo/xFr0vLJq6rcR1I2O9HfNnWc9irniwb4=;
-        b=AtD1SU8gznx8sIyCMTF/tHmpGPSNs4qduJq3n22O8psmk4omNMmjDyCFvKLS3pXuYU
-         v5BBvt/z+6bf/+Xq+IL3DK2yfVKglzNvEodvwloMRIQHRPt5A+4HVaYbA4N4n1G5dcdQ
-         zuHSXxd0FPnUz59VZo5/Mi75RgvCfizQoYfyokZLxNBz6vGbSHh7QHq2KlkghrCmGJlv
-         zXjCgT0g30dZf5jUzaC2wcs11w5VbhrTVW9DQSB7GgRtdH9uFfJ3K8MOwFZTlWlRpBTH
-         l+bRimKleUuuSGzT/grJk93QhgpTdb9qzLkYvbCtd4bLZ18l98aDeyEMpG8Dm9SKyVBd
-         BHcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738050830; x=1738655630;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QWeBxSC2oBo/xFr0vLJq6rcR1I2O9HfNnWc9irniwb4=;
-        b=sP8TJ1EjzkQxG9FVFEgUPkOqrZ5EdKsb93v0OmtEI2Dd2DoEzDnujtq1Ou1qGPvMcv
-         WG6W/URCv0Lw9ygq7O2Bfc2kdrGeSoWEDihMIIH6bnAytwol+7mA3SGE6cqQBFlohh/Z
-         wMTpe82buUYNdtirW8PsXEnPjVgVZj+yWQs4ksVVe+iUw27vBayIq2CyyI/MyyEZYnn5
-         D/Dj5t85eOK9YXJ5V2v85akHlnzvPUKH4Q62YCinIkwIpqY7q2GFU9r7rePgPbuzaN8Y
-         ggPrzgApSHYuHO8F8RkHsXxAQ7QpUlQvqhmYfJenTAFUPUtGqd3EklOTKPngLa0eHRyE
-         +i/A==
-X-Gm-Message-State: AOJu0YwTM2kqG99PfIPUvD+f7ySpBo0/KQL7c+V4ZoWOwdHJKq2hHHOk
-	t0zfxKm1pe/SC9n0aHKn/DS8d32WkO/tDNdM127ZJ3or+I21uSrlSrj0OA==
-X-Gm-Gg: ASbGncu8yxsDYeL9YYz6DFMqKMbPc3Urunxb4aefiX3b7MVBnWFmamJsSlS0ox0niak
-	bxftyDjym0pLhGCfcKWUVd9DMgy2C41/hJ+qYQhusWaz90C4KU+LD9oskZ9TTxQZ05vTBQSIZTA
-	+anZLMWh4qTbftbTqhrgjDyhpN1dcUS1NSWbZQyaTG4xs3lgpVKACvG0ZjJDoKse5dCjp6udlhZ
-	2t9VbEHeQ7f1+ISwSuAf+oY7OSTJokFmjNOeUfxoxDv/1CT822HQS8jWFJ5+Cjz5beoYnrj6LON
-	qEc5C1lTXL1JC0XG3ug=
-X-Google-Smtp-Source: AGHT+IExEWVs/yj8NoHHTA0yaaNRcepSZLiwogvv8Q332oQbnbg0y4Uo63RqjMcPjo7LiUkH6Sc52g==
-X-Received: by 2002:a05:6402:2711:b0:5d9:f042:dab with SMTP id 4fb4d7f45d1cf-5db7d318cd3mr44742178a12.18.1738050830237;
-        Mon, 27 Jan 2025 23:53:50 -0800 (PST)
-Received: from simon-T14-4TB.. ([46.140.188.244])
-        by smtp.googlemail.com with ESMTPSA id 4fb4d7f45d1cf-5dc1862838esm6726054a12.19.2025.01.27.23.53.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Jan 2025 23:53:48 -0800 (PST)
-From: "Simon A. Eugster" <simon.eu@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: antonin.godard@bootlin.com,
-	"Simon A. Eugster" <simon.eu@gmail.com>
-Subject: [PATCH v2] ref-manual: Describe grub-efi-cfg overrides and GRUB_TITLE
-Date: Tue, 28 Jan 2025 08:53:28 +0100
-Message-ID: <20250128075328.20912-1-simon.eu@gmail.com>
-X-Mailer: git-send-email 2.43.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=XPj1UFjb;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 8C92F1C0002;
+	Tue, 28 Jan 2025 08:20:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1738052427;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fguLfINWCU1sONlCmnlJwgKAukVNNibO+BrR3TeRLWI=;
+	b=XPj1UFjbBiLIhUw/iMUaHNwqNCgvukV0E3l8Kyuhf2AoRPkmDYBjWqH5Uz/C50f2VS/kle
+	Hu288Vx3ZWf9SuktxQWQOsB2fFdupRLa257twhUgRl2ZbcQ7rtPZ0y3RkFlUiP7Eb73PKD
+	3fzsY5lCDPbEIkwQ/5wM87i2c550uSrDYvD3/aFLIMtYgmkiMgWbg28zdsglOmJMwxHv6D
+	H8HKCyugWZETtYCRXj40Ay61lz1X5Vyx+hxDAbD1CFALqcpgqkUha3aepKHgSLFVn2H9bp
+	M3sPrLhySVzDX4SoEkBRcfaL0JYj/URNodeOLbufhe21PyO4dyVpKzXbBddlkQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Jan 2025 09:20:27 +0100
+Message-Id: <D7DK5YLXCDJ3.31RLRC7EGPYS4@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Simon A. Eugster" <simon.eu@gmail.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [PATCH v2] ref-manual: Describe grub-efi-cfg overrides and
+ GRUB_TITLE
+X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
+References: <20250128075328.20912-1-simon.eu@gmail.com>
+In-Reply-To: <20250128075328.20912-1-simon.eu@gmail.com>
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 28 Jan 2025 07:54:06 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6202
+ <docs@lists.yoctoproject.org>; Tue, 28 Jan 2025 08:20:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6203
 
-This patch describes how to use overrides for grub-efi-cfg because that
-is otherwise only clear after reading the .bbclass file. It also adds
-a description for GRUB_TITLE.
+Hi Simon,
 
-Signed-off-by: Simon A. Eugster <simon.eu@gmail.com>
----
- documentation/ref-manual/classes.rst   | 16 ++++++++++++++++
- documentation/ref-manual/variables.rst |  5 +++++
- 2 files changed, 21 insertions(+)
+On Tue Jan 28, 2025 at 8:53 AM CET, Simon A. Eugster wrote:
+> This patch describes how to use overrides for grub-efi-cfg because that
+> is otherwise only clear after reading the .bbclass file. It also adds
+> a description for GRUB_TITLE.
+>
+> Signed-off-by: Simon A. Eugster <simon.eu@gmail.com>
+> ---
+>  documentation/ref-manual/classes.rst   | 16 ++++++++++++++++
+>  documentation/ref-manual/variables.rst |  5 +++++
+>  2 files changed, 21 insertions(+)
+>
+> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
+ual/classes.rst
+> index 761be7b545..1de362e864 100644
+> --- a/documentation/ref-manual/classes.rst
+> +++ b/documentation/ref-manual/classes.rst
+> @@ -991,6 +991,7 @@ This class supports several variables:
+> =20
+>  -  :term:`INITRD`: Indicates list of filesystem images to
+>     concatenate and use as an initial RAM disk (initrd) (optional).
+> +   Can be specified for each ``LABEL``.
+> =20
+>  -  :term:`ROOTFS`: Indicates a filesystem image to include
+>     as the root filesystem (optional).
+> @@ -1004,6 +1005,9 @@ This class supports several variables:
+>  -  :term:`APPEND`: An override list of append strings for
+>     each ``LABEL``.
+> =20
+> +-  :term:`GRUB_TITLE`: A custom title for each ```LABEL``.
+> +   Defaults to ``LABEL`` if it is not defined.
+> +
+>  -  :term:`GRUB_OPTS`: Additional options to add to the
+>     configuration (optional). Options are delimited using semi-colon
+>     characters (``;``).
+> @@ -1011,6 +1015,18 @@ This class supports several variables:
+>  -  :term:`GRUB_TIMEOUT`: Timeout before executing
+>     the default ``LABEL`` (optional).
+> =20
+> +Each ``LABEL`` defined in the ``LABELS`` variable creates a GRUB boot en=
+try,
+> +and some variables can be defined individually per ``LABEL``. The label
+> +specific override names are defined as ``grub_LABEL``.
+> +
+> +For example, for a label ``factory``, the override name would be
+> +``grub_factory``. A custom GRUB menu entry titled "Factory Install" with=
+ the
+> +additional parameter ``factory=3Dyes`` can be achieved as follows::
+> +
+> +   LABELS:append =3D " factory"
+> +   APPEND:grub_factory =3D "factory=3Dyes"
+> +   GRUB_TITLE:grub_factory =3D "Factory Install"
+> +
+>  .. _ref-classes-gsettings:
+> =20
+>  ``gsettings``
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
+anual/variables.rst
+> index 0c5c7aab97..16ffbf0e85 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -3320,6 +3320,11 @@ system and gives an overview of their function and=
+ contents.
+>        :ref:`ref-classes-grub-efi` class for more information
+>        on how this variable is used.
+> =20
+> +   :term:`GRUB_TITLE`
+> +      Specifies custom titles for GRUB labels defined in  :ref:`LABELS`.=
+ See
 
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 761be7b545..1de362e864 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -991,6 +991,7 @@ This class supports several variables:
- 
- -  :term:`INITRD`: Indicates list of filesystem images to
-    concatenate and use as an initial RAM disk (initrd) (optional).
-+   Can be specified for each ``LABEL``.
- 
- -  :term:`ROOTFS`: Indicates a filesystem image to include
-    as the root filesystem (optional).
-@@ -1004,6 +1005,9 @@ This class supports several variables:
- -  :term:`APPEND`: An override list of append strings for
-    each ``LABEL``.
- 
-+-  :term:`GRUB_TITLE`: A custom title for each ```LABEL``.
-+   Defaults to ``LABEL`` if it is not defined.
-+
- -  :term:`GRUB_OPTS`: Additional options to add to the
-    configuration (optional). Options are delimited using semi-colon
-    characters (``;``).
-@@ -1011,6 +1015,18 @@ This class supports several variables:
- -  :term:`GRUB_TIMEOUT`: Timeout before executing
-    the default ``LABEL`` (optional).
- 
-+Each ``LABEL`` defined in the ``LABELS`` variable creates a GRUB boot entry,
-+and some variables can be defined individually per ``LABEL``. The label
-+specific override names are defined as ``grub_LABEL``.
-+
-+For example, for a label ``factory``, the override name would be
-+``grub_factory``. A custom GRUB menu entry titled "Factory Install" with the
-+additional parameter ``factory=yes`` can be achieved as follows::
-+
-+   LABELS:append = " factory"
-+   APPEND:grub_factory = "factory=yes"
-+   GRUB_TITLE:grub_factory = "Factory Install"
-+
- .. _ref-classes-gsettings:
- 
- ``gsettings``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 0c5c7aab97..16ffbf0e85 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3320,6 +3320,11 @@ system and gives an overview of their function and contents.
-       :ref:`ref-classes-grub-efi` class for more information
-       on how this variable is used.
- 
-+   :term:`GRUB_TITLE`
-+      Specifies custom titles for GRUB labels defined in  :ref:`LABELS`. See
-+      the :ref:`ref-classes-grub-efi` class for more information on how this
-+      variable is used.
-+
-    :term:`GTKIMMODULES_PACKAGES`
-       When inheriting the :ref:`ref-classes-gtk-immodules-cache` class,
-       this variable specifies the packages that contain the GTK+ input
--- 
-2.43.0
+Here you make a :ref: to LABELS, but like GRUB_TITLE, it needs to be added =
+to
+variables.rst, otherwise it produces a compile error. You would also use :t=
+erm:,
+not :ref:.
 
+Can you add documentation for it?
+
+Since "LABELS" by its own does not refer to Grub, just make sure to start t=
+he
+description with:
+
+"""
+When inheriting the :ref:`ref-classes-grub-efi` class, ...
+"""
+
+So someone reading the description knows in which context it's used.
+
+If you do, please also use :term: in the class description above.
+
+Thanks for the separate mail/Signed-off-by!
+
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
