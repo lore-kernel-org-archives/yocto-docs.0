@@ -2,140 +2,131 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 72F2DC0218D
-	for <webhook@archiver.kernel.org>; Wed, 29 Jan 2025 10:06:55 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.9484.1738145211059625880
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78A52C0218D
+	for <webhook@archiver.kernel.org>; Wed, 29 Jan 2025 10:26:35 +0000 (UTC)
+Received: from relay0.mail.gandi.net (relay0.mail.gandi.net [217.70.178.220])
+ by mx.groups.io with SMTP id smtpd.web11.9565.1738146386436476274
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Jan 2025 02:06:51 -0800
+ Wed, 29 Jan 2025 02:26:26 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=fV+8TTDK;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id E9A1343156;
-	Wed, 29 Jan 2025 10:06:48 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bELgLN6h;
+ spf=pass (domain: bootlin.com, ip: 217.70.178.220, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 877A344081;
+	Wed, 29 Jan 2025 10:26:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738145209;
+	t=1738146384;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wZs+JUSXdM2qViVQ+wPvY9lWpQhK6NFWXM8zvE3u8TI=;
-	b=fV+8TTDKbrbcFk0STiC9HtLRLf9i1BhHzO9zwPPospqCbfBAeEjyhe/RGMpEArJ7xCGZfg
-	TyHlw3DCxLJpvNSboLGQaLQgX1qtzGr7RHMUj/QLlhzAvpc1XRKnSF6kRt8LqLa9imy/5r
-	MvWRU71FGUKhj8n8FwasCLAlo0XjSGV2/tZecR2uqXfKIBPy2IW877z/oOsR8ifIkqdvXH
-	0TJ9fW8ghaxmgQcb8f0l+aky29xB8tdR5FHeHbvWzJEunig8NzkN8Oy/7BDEClP2T1fNAH
-	5Z5PmR67/5J24SxSOQ7DabauO0C3uYHuerWQ3mQDttEHMvY893ERD/L+zXpHEg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jan 2025 11:06:48 +0100
-Message-Id: <D7EH1XIIFP1V.1E5Q88E740ECO@bootlin.com>
-Subject: Re: [PATCH v3] ref-manual: Describe grub-efi-cfg overrides and
- GRUB_TITLE
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Simon A. Eugster" <simon.eu@gmail.com>, <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20250128102308.42435-1-simon.eu@gmail.com>
-In-Reply-To: <20250128102308.42435-1-simon.eu@gmail.com>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WraRbABKnXx1CgavqJVX7HKo49JyjtL33jCN8y63Y/0=;
+	b=bELgLN6hxO1PKDy2FDmwBj4n4OOy2MjR6sb3s7762ntgL1SkMyb1gD1w3lvtw1+Ojvtglk
+	+obuk49NqHUMsd+Bxd6ZXp1IwRUVBIpE8iwjqtW+Wy1i3FlRsUk28KrxkjrHFBRZn1HfjB
+	muNRrna5399IFVQz8cdfausgy+TlTJjyxLHsC0QENSLUQ3O75cQ0B6VSxKCvJ/ImdJNacC
+	g2TLhd4ZbiB6eygoToPLVyEcvjx4xgU3bq2wnbuV5O3ioGmUz1r1vDBy0G1hiSBZtdCyrR
+	3ZEKlAe+s3fABA5j5uShXJNDXU1Uc9V0MApMxlONAI1fAkzDcLVp7Kh+tAyHAw==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 29 Jan 2025 11:25:58 +0100
+Subject: [yocto-docs][PATCH] migration-5.2: Add entries for virtual
+ provider and multiconfig changes
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250129-migration-5-2-updates-v1-1-98416a476828@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIADUCmmcC/x2MywqAIBAAfyX23IJuGNSvRAfNzfbQA60Iwn9PO
+ g7MzAuJo3CCvnoh8i1J9q2AriuYFrsFRvGFgRQZpanDVUK0Z7HQIOF1eHtywsm1unGKnG8MlPa
+ IPMvzf4cx5w9rzhIWZwAAAA==
+X-Change-ID: 20250129-migration-5-2-updates-cb613b02bd35
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Richard Purdie <richard.purdie@linuxfoundation.org>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2411;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=aIxODHvVxUDLBhx3CYAZ8UV94QPy/saafkCmX6VTej8=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnmgJQlPqJE3dqSvdig3n0M1p+wr2eXPDdxqyfl
+ j2XmGqeuuSJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ5oCUAAKCRDRgEFAKaOo
+ NsfiD/wMi77zqGEYqjfzb8SPVg3twLgAIXRIl7AkNoMicOyzebPr1VmhK1Slb1+ogwn3KUq45By
+ +P5sbEdlhqa/HL8ZvyKjCSFyDEeegfOBgtQPGQ7q7sx9ECgbGf8AAx33APvPuZb6BtwH3EsMiS2
+ 253/ZTDeJTi+EQ0dRrgNm/OCV51MRFrNkbF1BK2+3qPD6w5DCbLtpDsiQvZpNMB/E8xaPJitcSO
+ XySYZrMcERVycjXscmkcV2DNiGEeBfI9oupYGqu6fyuSnGxWrat5aiwS4UNnWeSIzbRN9+4AhDs
+ VPotkYmv0+GxpLMkvHDGHapasQFJoQRwfo0NhKlCIS0X/RpxYtnMLc0hbDdG1+7ejrCrj/McXie
+ hyJi89UhkS5C9pJ/wTofNDxzPLD5BgQYZYXr/09W9kExqN/TTFk3siyIYZBgihkLVOx/VeahyrV
+ F2ay5PR+FskqnuOXsb//y4b3yLMd/cfy9luhf1tgVCnbj69pHb1ywj1Q+l9JXdAuEuuAIzPEEhA
+ oMd3iQRjbD45s1WmzS1AQJvjLe50WAfsu7eKStGFzHSknpsLRCrDpsLAEB11D/w5cl0dp4sTCSD
+ Z1wPTlyYIkOXa9hQvwFmplkZfl7b1tBbx8V6o96nPaIFg21uikBR/SbOTMQeq70JtXAupE0uNDl
+ +NeoY/QE/MfJt6Q==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkuffhvffofhgjsehtqhertdertdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkefhvedvudelhedvkeegudfftdfhkeffgfevtdfhieduudeljeevheeguefftefgnecuffhomhgrihhnpegsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepshhimhhonhdrvghusehgmhgrihhlrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgfeiheetkeeiffeludeiveeugeeufeetheeihfetudegfeehiefgtdehffevvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdihohgtthhophhrohhjvggtthdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhli
+ hhnrdgtohhmpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 29 Jan 2025 10:06:55 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6208
+ <docs@lists.yoctoproject.org>; Wed, 29 Jan 2025 10:26:35 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6209
 
-Hi Simon,
+Add some information to the migration guide about two important potentially
+breaking changes in 5.2.
 
-On Tue Jan 28, 2025 at 11:23 AM CET, Simon A. Eugster wrote:
-> This patch describes how to use overrides for grub-efi-cfg because that
-> is otherwise only clear after reading the .bbclass file. It also adds
-> a description for GRUB_TITLE.
->
-> Signed-off-by: Simon A. Eugster <simon.eu@gmail.com>
-> ---
->  documentation/ref-manual/classes.rst   | 16 ++++++++++++++++
->  documentation/ref-manual/variables.rst |  5 +++++
->  2 files changed, 21 insertions(+)
->
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 761be7b545..1d64ac2f28 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -991,6 +991,7 @@ This class supports several variables:
-> =20
->  -  :term:`INITRD`: Indicates list of filesystem images to
->     concatenate and use as an initial RAM disk (initrd) (optional).
-> +   Can be specified for each ``LABEL``.
-> =20
->  -  :term:`ROOTFS`: Indicates a filesystem image to include
->     as the root filesystem (optional).
-> @@ -1004,6 +1005,9 @@ This class supports several variables:
->  -  :term:`APPEND`: An override list of append strings for
->     each ``LABEL``.
-> =20
-> +-  :term:`GRUB_TITLE`: A custom title for each ```LABEL``.
-> +   Defaults to ``LABEL`` if it is not defined.
-> +
->  -  :term:`GRUB_OPTS`: Additional options to add to the
->     configuration (optional). Options are delimited using semi-colon
->     characters (``;``).
-> @@ -1011,6 +1015,18 @@ This class supports several variables:
->  -  :term:`GRUB_TIMEOUT`: Timeout before executing
->     the default ``LABEL`` (optional).
-> =20
-> +Each ``LABEL`` defined in the :term:``LABELS`` variable creates a GRUB b=
-oot
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Notes:
+* original patch by Richard Purdie:
+  https://lore.kernel.org/r/20250126111850.2609298-1-richard.purdie@linuxfoundation.org
+  This patch is just reformatting/typo fixes.
+* The BB_CURRENT_MC should ideally be documented, but that will come at
+  a later point with
+  https://bugzilla.yoctoproject.org/show_bug.cgi?id=15709.
+---
+ documentation/migration-guides/migration-5.2.rst | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-:term:``LABELS`` is incorrect, it should be enclosed with single backticks =
-only.
+diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
+index e9de6910e..245c22f28 100644
+--- a/documentation/migration-guides/migration-5.2.rst
++++ b/documentation/migration-guides/migration-5.2.rst
+@@ -94,6 +94,29 @@ systemd changes
+    not for socket files).
+    Now all service files must be explicitly added to :term:`FILES`.
+ 
++Multiconfig changes
++~~~~~~~~~~~~~~~~~~~
++
++-  The value of ``BB_CURRENT_MC`` was changed from ``default`` to an empty string
++   for the default multiconfig configuration to avoid needing to map the values
++   within BitBake. This was already not happening in some cases so this fixes
++   some obscure bugs.
++
++Virtual toolchain provider changes
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Support was added for virtual providers on a per-recipe basis for specific
++   key toolchain providers listed in ``BB_VIRTUAL_RECIPE_PROVIDERS``. As part of
++   that support, the ``cross`` providers were simplified to remove the triplet
++   prefix and generalise the naming, so for example::
++
++      virtual/${TARGET_PREFIX}-binutils -> virtual/cross-bintuils
++      virtual/${TARGET_PREFIX}-gcc -> virtual/cross-cc
++      virtual/${TARGET_PREFIX}-g++ -> virtual/cross-c++
++      virtual/${TARGET_PREFIX}-compilerlibs -> virtual/compilerlibs
++      virtual/${SDK_PREFIX}-binutils -> virtual/nativesdk-cross-binutils
++      virtual/${SDK_PREFIX}-gcc -> virtual/nativesdk-cross-cc
++
+ Recipe changes
+ ~~~~~~~~~~~~~~
+ 
 
-Regards,
-Antonin
+---
+base-commit: e6745669cc26de8f61d5d1ccdd5a95b552eece97
+change-id: 20250129-migration-5-2-updates-cb613b02bd35
 
-> +entry, and some variables can be defined individually per ``LABEL``. The=
- label
-> +specific override names are defined as ``grub_LABEL``.
-> +
-> +For example, for a label ``factory``, the override name would be
-> +``grub_factory``. A custom GRUB menu entry titled "Factory Install" with=
- the
-> +additional parameter ``factory=3Dyes`` can be achieved as follows::
-> +
-> +   LABELS:append =3D " factory"
-> +   APPEND:grub_factory =3D "factory=3Dyes"
-> +   GRUB_TITLE:grub_factory =3D "Factory Install"
-> +
->  .. _ref-classes-gsettings:
-> =20
->  ``gsettings``
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
-anual/variables.rst
-> index 0c5c7aab97..4eb11abede 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -3320,6 +3320,11 @@ system and gives an overview of their function and=
- contents.
->        :ref:`ref-classes-grub-efi` class for more information
->        on how this variable is used.
-> =20
-> +   :term:`GRUB_TITLE`
-> +      Specifies custom titles for GRUB labels defined in  :term:`LABELS`=
-. See
-> +      the :ref:`ref-classes-grub-efi` class for more information on how =
-this
-> +      variable is used.
-> +
->     :term:`GTKIMMODULES_PACKAGES`
->        When inheriting the :ref:`ref-classes-gtk-immodules-cache` class,
->        this variable specifies the packages that contain the GTK+ input
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
-
---
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
