@@ -1,132 +1,105 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <zboszor@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78A52C0218D
-	for <webhook@archiver.kernel.org>; Wed, 29 Jan 2025 10:26:35 +0000 (UTC)
-Received: from relay0.mail.gandi.net (relay0.mail.gandi.net [217.70.178.220])
- by mx.groups.io with SMTP id smtpd.web11.9565.1738146386436476274
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E8788C0218D
+	for <webhook@archiver.kernel.org>; Wed, 29 Jan 2025 14:18:56 +0000 (UTC)
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+ by mx.groups.io with SMTP id smtpd.web11.13354.1738160334708705268
  for <docs@lists.yoctoproject.org>;
- Wed, 29 Jan 2025 02:26:26 -0800
+ Wed, 29 Jan 2025 06:18:55 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=bELgLN6h;
- spf=pass (domain: bootlin.com, ip: 217.70.178.220, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 877A344081;
-	Wed, 29 Jan 2025 10:26:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738146384;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WraRbABKnXx1CgavqJVX7HKo49JyjtL33jCN8y63Y/0=;
-	b=bELgLN6hxO1PKDy2FDmwBj4n4OOy2MjR6sb3s7762ntgL1SkMyb1gD1w3lvtw1+Ojvtglk
-	+obuk49NqHUMsd+Bxd6ZXp1IwRUVBIpE8iwjqtW+Wy1i3FlRsUk28KrxkjrHFBRZn1HfjB
-	muNRrna5399IFVQz8cdfausgy+TlTJjyxLHsC0QENSLUQ3O75cQ0B6VSxKCvJ/ImdJNacC
-	g2TLhd4ZbiB6eygoToPLVyEcvjx4xgU3bq2wnbuV5O3ioGmUz1r1vDBy0G1hiSBZtdCyrR
-	3ZEKlAe+s3fABA5j5uShXJNDXU1Uc9V0MApMxlONAI1fAkzDcLVp7Kh+tAyHAw==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 29 Jan 2025 11:25:58 +0100
-Subject: [yocto-docs][PATCH] migration-5.2: Add entries for virtual
- provider and multiconfig changes
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250129-migration-5-2-updates-v1-1-98416a476828@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIADUCmmcC/x2MywqAIBAAfyX23IJuGNSvRAfNzfbQA60Iwn9PO
- g7MzAuJo3CCvnoh8i1J9q2AriuYFrsFRvGFgRQZpanDVUK0Z7HQIOF1eHtywsm1unGKnG8MlPa
- IPMvzf4cx5w9rzhIWZwAAAA==
-X-Change-ID: 20250129-migration-5-2-updates-cb613b02bd35
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=izUrYuVs;
+ spf=pass (domain: gmail.com, ip: 209.85.221.52, mailfrom: zboszor@gmail.com)
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-385d7f19f20so3496578f8f.1
+        for <docs@lists.yoctoproject.org>; Wed, 29 Jan 2025 06:18:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738160333; x=1738765133; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jwKUMquFKcShHer9rv6F0hFbMTfL0wwg+puiaYa1gyk=;
+        b=izUrYuVseCKjGezqsQnxeps4sHKxlG+QU5XNchoc7ztnjEJ8a2GVXCBdXP2XbOVpr+
+         ZptKBybWwZdM7MC/Q4pHGNH6x9NVjpZ9NFgvaHXMq2Hm0cdFMW93mRdjF2Bwk8Fsms5U
+         FrrZBwSwnwAWlHcEhS2qkhFyjxQ7q9sofPF0T4YNEg/AdpFzzc9TXA46+iEcbwOVJ87S
+         TwGLcwCV+f9hA1qrv9N1MesMLjAFor4+L7lVoPmO/W9ZqpPEUcL8CJMo5z2f8xBegO6T
+         CdIgog5mZ2leV7WyKCThv+bY+fWAROqnLtEpoxpabUtqvPcPgakGYChEzPrniRBnXP2z
+         tCsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738160333; x=1738765133;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jwKUMquFKcShHer9rv6F0hFbMTfL0wwg+puiaYa1gyk=;
+        b=ZbpoVhfRAPyy7Alik2faIImD/1yLQyx0nFgOLcclxvJUDxy1Y3vST4j2ODcT69T8mx
+         iaB/G689pFZgyfN8tQbffH8pf16ltNfucOqSMaBrCYdBtl9Ii0pdTdKAp6eDAvQH2wGE
+         VcSS7EMYtdyZplC49hFLezCZSUdGiykaHX9cCUfQArwjVqSiL9Stx5Ej9fjzSYsod6z8
+         ONFAaypYPPpCUDhZBvnHCaUJGMt/vQOuZhxJ5gJ7xuywFSJX/x2WG4YD7pQMXKk8AzON
+         9zN6U1ZkrVHzQl2sv55tCmYqHQGiEAn7Slg/KHddXM2CoNhWvyqqzxbKkk1lGu0wL/JZ
+         4fUA==
+X-Gm-Message-State: AOJu0YxFzxn7n0VF/cnMGDsTlRhx6DcvP9WO3FadAwZ2CE0R5l9VUHZS
+	IXRa2vCzK4c9iHpOhueJzZU28EHMgrmu1zMwFm4LzDreMQmMRxNVArdX7g==
+X-Gm-Gg: ASbGncuBwpWfiFgvC28CKbPRT44qobeY4yZvb3SI48uFVfm6RNaP59csCU86KfMffzf
+	Cu4yGlpASq9BuFS3hanqIjq8k0VIyNiy11ABuTDyWNQlgTLSTEaw94UDFmWzwr70qKtk+Hq5SGu
+	5O0wff1hoh0LR3s0U2QXUZOdaEmqHjo4JAhr+PWOwqamu7KrVJ3qeXcb2pNojG7FszYSUpOv+ub
+	tKN3zYx/eXGqEHGE/3di6nSV3IhsgVY2HB/OE4gWwfsdWANuW033oo7EMYw6Tgc4MWjdTzHScqh
+	OPng+kVoaQhizOjTIyG92nNLFDYiweJIX+FqB5Uic/noRg==
+X-Google-Smtp-Source: AGHT+IE8SJRYjP/WIMorjxR5R9s78jdsLFu0K7iUfDZjoqxWy0VBV3a/HcJ+/1Es0dSnrY2uFJQ2Ng==
+X-Received: by 2002:a5d:5847:0:b0:385:d7f9:f166 with SMTP id ffacd0b85a97d-38c5194b0f3mr2569821f8f.17.1738160332549;
+        Wed, 29 Jan 2025 06:18:52 -0800 (PST)
+Received: from localhost.lan (dsl51B7D2F9.fixip.t-online.hu. [81.183.210.249])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38c2a188976sm16967662f8f.47.2025.01.29.06.18.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Jan 2025 06:18:52 -0800 (PST)
+From: =?UTF-8?q?Zolt=C3=A1n=20B=C3=B6sz=C3=B6rm=C3=A9nyi?= <zboszor@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Richard Purdie <richard.purdie@linuxfoundation.org>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2411;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=aIxODHvVxUDLBhx3CYAZ8UV94QPy/saafkCmX6VTej8=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnmgJQlPqJE3dqSvdig3n0M1p+wr2eXPDdxqyfl
- j2XmGqeuuSJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ5oCUAAKCRDRgEFAKaOo
- NsfiD/wMi77zqGEYqjfzb8SPVg3twLgAIXRIl7AkNoMicOyzebPr1VmhK1Slb1+ogwn3KUq45By
- +P5sbEdlhqa/HL8ZvyKjCSFyDEeegfOBgtQPGQ7q7sx9ECgbGf8AAx33APvPuZb6BtwH3EsMiS2
- 253/ZTDeJTi+EQ0dRrgNm/OCV51MRFrNkbF1BK2+3qPD6w5DCbLtpDsiQvZpNMB/E8xaPJitcSO
- XySYZrMcERVycjXscmkcV2DNiGEeBfI9oupYGqu6fyuSnGxWrat5aiwS4UNnWeSIzbRN9+4AhDs
- VPotkYmv0+GxpLMkvHDGHapasQFJoQRwfo0NhKlCIS0X/RpxYtnMLc0hbDdG1+7ejrCrj/McXie
- hyJi89UhkS5C9pJ/wTofNDxzPLD5BgQYZYXr/09W9kExqN/TTFk3siyIYZBgihkLVOx/VeahyrV
- F2ay5PR+FskqnuOXsb//y4b3yLMd/cfy9luhf1tgVCnbj69pHb1ywj1Q+l9JXdAuEuuAIzPEEhA
- oMd3iQRjbD45s1WmzS1AQJvjLe50WAfsu7eKStGFzHSknpsLRCrDpsLAEB11D/w5cl0dp4sTCSD
- Z1wPTlyYIkOXa9hQvwFmplkZfl7b1tBbx8V6o96nPaIFg21uikBR/SbOTMQeq70JtXAupE0uNDl
- +NeoY/QE/MfJt6Q==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvjeegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgfeiheetkeeiffeludeiveeugeeufeetheeihfetudegfeehiefgtdehffevvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdihohgtthhophhrohhjvggtthdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhli
- hhnrdgtohhmpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
-X-GND-Sasl: antonin.godard@bootlin.com
+Cc: Alexander Kanavin <alex.kanavin@gmail.com>,
+	=?UTF-8?q?Zolt=C3=A1n=20B=C3=B6sz=C3=B6rm=C3=A9nyi?= <zboszor@gmail.com>
+Subject: [PATCH 1/2] dev-manual/packages: add information about signing changes
+Date: Wed, 29 Jan 2025 15:18:48 +0100
+Message-ID: <20250129141849.838672-1-zboszor@gmail.com>
+X-Mailer: git-send-email 2.48.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 29 Jan 2025 10:26:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6209
+ <docs@lists.yoctoproject.org>; Wed, 29 Jan 2025 14:18:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6210
 
-Add some information to the migration guide about two important potentially
-breaking changes in 5.2.
-
-Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Signed-off-by: Zoltán Böszörményi <zboszor@gmail.com>
 ---
-Notes:
-* original patch by Richard Purdie:
-  https://lore.kernel.org/r/20250126111850.2609298-1-richard.purdie@linuxfoundation.org
-  This patch is just reformatting/typo fixes.
-* The BB_CURRENT_MC should ideally be documented, but that will come at
-  a later point with
-  https://bugzilla.yoctoproject.org/show_bug.cgi?id=15709.
----
- documentation/migration-guides/migration-5.2.rst | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ documentation/dev-manual/packages.rst | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
-index e9de6910e..245c22f28 100644
---- a/documentation/migration-guides/migration-5.2.rst
-+++ b/documentation/migration-guides/migration-5.2.rst
-@@ -94,6 +94,29 @@ systemd changes
-    not for socket files).
-    Now all service files must be explicitly added to :term:`FILES`.
+diff --git a/documentation/dev-manual/packages.rst b/documentation/dev-manual/packages.rst
+index 4ba2dcae3..dba07a2c6 100644
+--- a/documentation/dev-manual/packages.rst
++++ b/documentation/dev-manual/packages.rst
+@@ -819,9 +819,19 @@ to use signed package feeds (repositories) when doing a build.
+ Signing RPM Packages
+ --------------------
  
-+Multiconfig changes
-+~~~~~~~~~~~~~~~~~~~
+-To enable signing RPM packages, you must set up the following
+-configurations in either your ``local.config`` or ``distro.config``
+-file::
++To enable signing RPM packages, you must modify the RPM package
++configuration to include support for OpenPGP signing. That may
++be done either in a recipe addendum called ``rpm_%.bbappend``:
 +
-+-  The value of ``BB_CURRENT_MC`` was changed from ``default`` to an empty string
-+   for the default multiconfig configuration to avoid needing to map the values
-+   within BitBake. This was already not happening in some cases so this fixes
-+   some obscure bugs.
++   PACKAGECONFIG:append = " sequoia"
 +
-+Virtual toolchain provider changes
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++or in either your ``local.config`` or ``distro.config`` file:
 +
-+-  Support was added for virtual providers on a per-recipe basis for specific
-+   key toolchain providers listed in ``BB_VIRTUAL_RECIPE_PROVIDERS``. As part of
-+   that support, the ``cross`` providers were simplified to remove the triplet
-+   prefix and generalise the naming, so for example::
++   PACKAGECONFIG:append:pn-rpm-native = " sequoia"
++   PACKAGECONFIG:append:pn-rpm = " sequoia"
 +
-+      virtual/${TARGET_PREFIX}-binutils -> virtual/cross-bintuils
-+      virtual/${TARGET_PREFIX}-gcc -> virtual/cross-cc
-+      virtual/${TARGET_PREFIX}-g++ -> virtual/cross-c++
-+      virtual/${TARGET_PREFIX}-compilerlibs -> virtual/compilerlibs
-+      virtual/${SDK_PREFIX}-binutils -> virtual/nativesdk-cross-binutils
-+      virtual/${SDK_PREFIX}-gcc -> virtual/nativesdk-cross-cc
-+
- Recipe changes
- ~~~~~~~~~~~~~~
++You must also set up the following configurations in either your
++``local.config`` or ``distro.config`` file::
  
-
----
-base-commit: e6745669cc26de8f61d5d1ccdd5a95b552eece97
-change-id: 20250129-migration-5-2-updates-cb613b02bd35
-
-Best regards,
+    # Inherit sign_rpm.bbclass to enable signing functionality
+    INHERIT += " sign_rpm"
 -- 
-Antonin Godard <antonin.godard@bootlin.com>
+2.48.1
 
 
