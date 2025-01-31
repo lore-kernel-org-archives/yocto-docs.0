@@ -2,159 +2,103 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7FA0C0218D
-	for <webhook@archiver.kernel.org>; Fri, 31 Jan 2025 10:31:30 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.16104.1738319481132285961
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DF41BC0218D
+	for <webhook@archiver.kernel.org>; Fri, 31 Jan 2025 11:14:30 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.17002.1738322067605460395
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Jan 2025 02:31:21 -0800
+ Fri, 31 Jan 2025 03:14:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MEAyzhJl;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0B3DA4427B;
-	Fri, 31 Jan 2025 10:31:18 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=hXrOgmlO;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E9FF1440CB;
+	Fri, 31 Jan 2025 11:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738319479;
+	t=1738322066;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6gHynhezsebRaGWjYMzJpcyyI3K5HTysPnMBIqeV9Mw=;
-	b=MEAyzhJlBmgWsz+d3KdOmp3k/LqPtF4VNKIze7NRGah8NrrfbC4wK/KblRT75k3dIY5Hoo
-	kAawQ4B7d618XwKidz5wADWvQtc259BKUg+s8MUnVgnVrdzMLxyxeERIUuH989R16LbfhC
-	KHICzhxZbJBpBRYJDtgKE1FQUmqeSaSTsOf3Q/Kfqu/vRnPa177v41V2sFkeRVVVi1lJXq
-	t4hLGNKbBE6Q3F0wSGednr/g/5mknVcc+0GEl3CfdBksgSlGaeZtxK20CVvMj9knsWH45Z
-	VGH2UaW8j2J//ozmWF4BJ3G8KkzWZt4XeYuobCRiMz2O7eKQRYPDNh6YdK8QnA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 31 Jan 2025 11:31:18 +0100
-Message-Id: <D7G6TS1RMDBT.30D86G3JTP7ZY@bootlin.com>
-Subject: Re: [docs] [yocto-docs][PATCH] migration-5.2: Add entries for
- virtual provider and multiconfig changes
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Richard Purdie"
- <richard.purdie@linuxfoundation.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.18.2-100-gc2048ef30452-dirty
-References: <20250129-migration-5-2-updates-v1-1-98416a476828@bootlin.com>
- <e7ba99fe-b117-47b8-a298-29e88f240504@cherry.de>
-In-Reply-To: <e7ba99fe-b117-47b8-a298-29e88f240504@cherry.de>
+	bh=uvK77Lxg8CYOBQGX2xqYqibajnwDeyPjMko40bK0tvQ=;
+	b=hXrOgmlOsBw0GaiyMtgH38T3I48Nw70OHt5yFQ5I4QbdxxROvq1+dho+bQeiaZdjeVSLou
+	CUiv2mYzkN1HvT2JfvH5XVA7MCQDlSAjXWqQRjMndWBHOM5xjMZx7pwVME/jPQb21YeWs/
+	0mD+Li2o6rEFa4g/mDSYSkWC707BuwA404tJGBKWmuyOCN4v83xFJER3HrmBiTDXupE3N4
+	yoZDKJtMqCaarM1hCR9+72ukRrQbcLqwHoqnuGXei4PhOQtKIHDnRPPxgEReRQgpxq/M7M
+	8IjzPvT1UAsK9DbCibG0G4Q2Nx7BFAxh1s6TYYM2/Eyja09HmgVNyxok2Z+q9A==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 31 Jan 2025 12:14:15 +0100
+Subject: [yocto-docs][PATCH v2 1/2] migration-5.2: document BB_CURRENT_MC
+ default value change
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250131-migration-5-2-updates-v2-1-4ce688a74bfd@bootlin.com>
+References: <20250131-migration-5-2-updates-v2-0-4ce688a74bfd@bootlin.com>
+In-Reply-To: <20250131-migration-5-2-updates-v2-0-4ce688a74bfd@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1313;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=VbH8l8H+YDXAdo2x7Btu7iMxrUSBHs0JGFipsu5QAgk=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnnLCR7SH7OimSaFWPJIvTM7F1TVNejB5dAZ0cI
+ BUtSNuTqL2JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ5ywkQAKCRDRgEFAKaOo
+ NrUKD/9/U7tuPzDyNSr0ARu/77LOvtunZM/fQOoQdEQ+UEn0pc8q0M/iLHoTX4ptPzwfAIO/ViM
+ KxhOLNGUtrzI8AeDVSLxnfaAgg/7nNKkGbC8QpaX7TTvCkVzCvW3RoykGpWgeE6H18+8AWfGdc7
+ VGUoUDi97V+SBahw8rmX7BhL59kpNtEmaU8j2bSzutO693qchHTjFcHXMptiK/AWxMEXm0zFdSh
+ M9g8QmHxY1sailsFxnSbfWvw2m+04q96fWIPrDOOeneuSrHBvo/FprNGOICjo4HkWdMOJ7904T2
+ 3vFABdVAOBfRpO7m9wHeV2lzjYZolA3FJvW5K9cTz6ttAcsRUj56VvuvoqbfN2vYsdGh8nwyvCj
+ y7zOPBGOLRa1a8mmoy686QRRax46raW+dI3PzQgcOKOCXjSIwJ0sxBhp2KMU38VWSWoaP8LuOML
+ R1/doHmhsDnUhXJmrM37ffkxLbeslHulFndG1MzsLlO0gysW8R4pGuIU3aFlSeNGORQIwOE62T5
+ Dz8bbs4buMYgFQSO/HBNZsvsiyt4b+FQpgOAnRMkhG3DtLwvMX0ov77zdm+80ceDCA9EV5h6+PV
+ sEFCYjemxtqjQDY2mkqxHrvOitgFi4QyHoFrQtI6sRXFKTv5V7zUeCuSommVqAGtj1lO00WBGe1
+ cSkSue1kdmbWacQ==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekheefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeekfeeivdehffehfedvgeevffdvkefgleelleevtdegtdegtdeuhfegleehudehvdenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdhkvghrnhgvlhdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguohgtsheslhhishhts
- hdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdekiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 31 Jan 2025 10:31:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6224
+ <docs@lists.yoctoproject.org>; Fri, 31 Jan 2025 11:14:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6226
 
-Hi Quentin,
+After commit 0fa0d8d764bb ("cooker/cache: Drop mc 'default' string
+value") in Bitbake, the default value of BB_CURRENT_MC was changed from
+"default" to an empty string. Document it.
 
-On Thu Jan 30, 2025 at 5:05 PM CET, Quentin Schulz wrote:
-> Hi Antonin,
->
-> On 1/29/25 11:25 AM, Antonin Godard via lists.yoctoproject.org wrote:
->> Add some information to the migration guide about two important potentia=
-lly
->> breaking changes in 5.2.
->>=20
->> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
->> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->> Notes:
->> * original patch by Richard Purdie:
->>    https://lore.kernel.org/r/20250126111850.2609298-1-richard.purdie@lin=
-uxfoundation.org
->>    This patch is just reformatting/typo fixes.
->> * The BB_CURRENT_MC should ideally be documented, but that will come at
->>    a later point with
->>    https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D15709.
->> ---
->>   documentation/migration-guides/migration-5.2.rst | 23 ++++++++++++++++=
-+++++++
->>   1 file changed, 23 insertions(+)
->>=20
->> diff --git a/documentation/migration-guides/migration-5.2.rst b/document=
-ation/migration-guides/migration-5.2.rst
->> index e9de6910e..245c22f28 100644
->> --- a/documentation/migration-guides/migration-5.2.rst
->> +++ b/documentation/migration-guides/migration-5.2.rst
->> @@ -94,6 +94,29 @@ systemd changes
->>      not for socket files).
->>      Now all service files must be explicitly added to :term:`FILES`.
->>  =20
->> +Multiconfig changes
->> +~~~~~~~~~~~~~~~~~~~
->> +
->> +-  The value of ``BB_CURRENT_MC`` was changed from ``default`` to an em=
-pty string
->> +   for the default multiconfig configuration to avoid needing to map th=
-e values
->> +   within BitBake. This was already not happening in some cases so this=
- fixes
->> +   some obscure bugs.
->> +
->> +Virtual toolchain provider changes
->> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->> +
->> +-  Support was added for virtual providers on a per-recipe basis for sp=
-ecific
->> +   key toolchain providers listed in ``BB_VIRTUAL_RECIPE_PROVIDERS``. A=
-s part of
->> +   that support, the ``cross`` providers were simplified to remove the =
-triplet
->> +   prefix and generalise the naming, so for example::
->> +
->> +      virtual/${TARGET_PREFIX}-binutils -> virtual/cross-bintuils
->> +      virtual/${TARGET_PREFIX}-gcc -> virtual/cross-cc
->> +      virtual/${TARGET_PREFIX}-g++ -> virtual/cross-c++
->> +      virtual/${TARGET_PREFIX}-compilerlibs -> virtual/compilerlibs
->> +      virtual/${SDK_PREFIX}-binutils -> virtual/nativesdk-cross-binutil=
-s
->> +      virtual/${SDK_PREFIX}-gcc -> virtual/nativesdk-cross-cc
->> +
->
-> This is in the migration manual so we need to explicit what the user=20
-> needs to do.
+Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/migration-guides/migration-5.2.rst | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-I don't know if there is a definite rule, but I will try to add more exampl=
-es
-here so hopefully it gives a clear overview of what should be replaced.
+diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
+index e9de6910e..a60e3e9a8 100644
+--- a/documentation/migration-guides/migration-5.2.rst
++++ b/documentation/migration-guides/migration-5.2.rst
+@@ -94,6 +94,17 @@ systemd changes
+    not for socket files).
+    Now all service files must be explicitly added to :term:`FILES`.
+ 
++Multiconfig changes
++~~~~~~~~~~~~~~~~~~~
++
++The value of ``BB_CURRENT_MC`` was changed from ``default`` to an empty string
++for the default multiconfig configuration to avoid needing to map the values
++within BitBake. This was already not happening in some cases so this fixes
++some obscure bugs.
++
++Any logic based on ``BB_CURRENT_MC`` equalling to ``default`` by default should
++be changed to be equal to an empty string.
++
+ Recipe changes
+ ~~~~~~~~~~~~~~
+ 
 
-> What needs to be done wrt BB_CURRENT_MC change?
+-- 
+2.47.0
 
-I would assume that any logic based on BB_CURRENT_MC =3D=3D "default" shoul=
-d be
-changed, like what's done in ff469ab2e865 ("bitbake.conf: Handle empty
-BB_CURRENT_MC") on OE-Core.
-
-I will suggest to do that in the v2.
-
-> For the removal of TARGET_PREFIX/SDK_PREFIX, I assume a simple tree-wide:
->
-> sed 's;virtual/\${TARGET_PREFIX}binutils;virtual/cross-bintuils;'
->
-> should do the trick?
-
-In the docs, we don't have any reference to virtual/XXX<something> where XX=
-X is
-HOST_PREFIX, SDK_PREFIX, or TARGET_PREFIX. So no changes to be done here at
-least.
-
-> Also, all of the above didn't have a dash after ${SDK_PREFIX} or=20
-> ${TARGET_PREFIX}.
-
-Indeed, good catch, will fix in v2.
-
-Thanks,
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
