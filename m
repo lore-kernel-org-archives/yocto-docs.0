@@ -1,153 +1,419 @@
-Return-Path: <simon.eu@gmail.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0D1AFC0218F
-	for <webhook@archiver.kernel.org>; Fri, 31 Jan 2025 15:16:22 +0000 (UTC)
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
- by mx.groups.io with SMTP id smtpd.web10.21496.1738336573153121740
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7F4E2C02193
+	for <webhook@archiver.kernel.org>; Mon,  3 Feb 2025 06:39:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+ by mx.groups.io with SMTP id smtpd.web11.82305.1738564786015427190
  for <docs@lists.yoctoproject.org>;
- Fri, 31 Jan 2025 07:16:13 -0800
+ Sun, 02 Feb 2025 22:39:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=l5U0/zAq;
- spf=pass (domain: gmail.com, ip: 209.85.216.45, mailfrom: simon.eu@gmail.com)
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ef760a1001so3566384a91.0
-        for <docs@lists.yoctoproject.org>; Fri, 31 Jan 2025 07:16:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738336572; x=1738941372; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=kzxpMQs09LT32JHMi3/HHYA6nIwfkqbfM29Fc/gbON8=;
-        b=l5U0/zAqBK0ERYndgNObgRWMegxzaqeZ4Lfv0iIOpcVRhkIvfb9xD4D4x80H1IUgK4
-         hATFz8Qx3FwR6tY6slLri+qdAkMLPOk2UOZYTZjPc1kvvmENbsi7jQOa7cyZoJDeFtZv
-         iLb8r0+XQlPZz1/jyMvrtblE0ez2dyz1c4Chi7GYF4H7/wz/vPF78wg5wTRwStRgrdcx
-         GKKyvqUJDfWwnySeHPsiluneZ1meX3CQN5UjQeuLDEu5jBq1dU45Bt65GA9JersmKFYv
-         PTvrfpTZICzou7xW3jphUjeqdaq1LsScarOMP0c1sHReWaBaCMWTa6HeJ02y5aug1+p5
-         duhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738336572; x=1738941372;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kzxpMQs09LT32JHMi3/HHYA6nIwfkqbfM29Fc/gbON8=;
-        b=FjmMu33fIvw84z2ZJmErQjrcUsw7jreiDvfmhoDomtE/VilEUzz3FRWWpVVqs7KFgs
-         zLqa5BgOURvYRvNYvCE16StC1zktXfdqY0FXkFefPNuintEkXii44/5zqRyHorUYPXG8
-         /G7jD93ZMOoTJrCnBsJ1y8hZC19nPwKMwkqF7bbcPqW2WQFYYGMWZPnE0RHvtTgtMJ0Y
-         G/nwK4LdGONQbOIDWS1HK8fmOE5w5TLx4cr7KadTsKFvpwuE6Azm+bhlFXlw+KjMeGGE
-         bwv0w3rIcgUms1qyLXqesQnO3YZXDK7RtnI1IVVd08b/3dy30tOXVnEhKhXZvZCW/gTF
-         2wfw==
-X-Gm-Message-State: AOJu0YwpNNYoN7fhp1RP6KptQjo5Hx12srhsQU0rtnrUq/S88zQuf5W3
-	ySQaRrbS8CXdazfV5zE70W4r+c/Nwg3lQtbIjnYND+KATMMXTbW0feipptImjNIfsbjxb7DcOPm
-	y1hCXF+5PH18ZwfeMjmipFxZDWKM=
-X-Gm-Gg: ASbGnctEV3w4nH0NdKGS8sLPQ/fb2D8GTSW3RohcAKhoTyULxhHkWZoErCt1MlXWF/g
-	/UwoAdQIU9qrTxfZvWPUZ75N1HIi/1VJ2/q2pqft9UyZpf3jS0rxNQny9bwNI50oGmMSHsEfIdw
-	==
-X-Google-Smtp-Source: AGHT+IE+T9cfvJrlQYyvUlQhG22DLHO7tUXkaUDzTjhrTAQwH7XbwK5NoT6FpIBp65uQXdOI3A1jM7vpWV/RBopEUt8=
-X-Received: by 2002:a17:90b:5245:b0:2ee:ee77:2263 with SMTP id
- 98e67ed59e1d1-2f83abaf3f2mr18371824a91.7.1738336572374; Fri, 31 Jan 2025
- 07:16:12 -0800 (PST)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=ngBtbzfK;
+ spf=pass (domain: intel.com, ip: 192.198.163.14, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1738564786; x=1770100786;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=mHfA5ftX9DNV9Hc3EnA26FyzHz2FxhHktqa1owvYDwU=;
+  b=ngBtbzfKXzDrOW99NCMIIZ0yPf53wo3Z2V/TA4xU840TQkZC/REW2AVj
+   0vfx1TQvraX6SUJikcA1B6FlwfL42LVUCqIAETwBJKSoXhzZhz5pAR4uL
+   xyD8Rtg7sWcWpS7Ngaxdr6d8ZHRigYJAUcmr9wKVcdn4RD63xW5DHPn4A
+   VhNbvnbX8A11NZYOZqJxsV8055wEWMPzYHP3lpW8qiwhD8VbaktExGvcx
+   gZ2XijjnNIO9lorBXYXvVOuQ4g6EqclSOEvviHgSZHuxbc8KbK9/nD+/1
+   ITfbmZzzFZUNE4QKC8jc0njpOwS0A2y9BjYLwoqHnYXupQxI6u2KGGa0F
+   A==;
+X-CSE-ConnectionGUID: wpTNeA19TAeiLZsmL5b3eQ==
+X-CSE-MsgGUID: ol65hq1KS+S7urILsjHR7g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11334"; a="39310421"
+X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
+   d="scan'208";a="39310421"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2025 22:39:45 -0800
+X-CSE-ConnectionGUID: WKKrM4NJQfu/nA0G6lTnEQ==
+X-CSE-MsgGUID: 78DkLOcDSqmNmQJ5ow7M3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,255,1732608000"; 
+   d="scan'208";a="110105903"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by fmviesa007.fm.intel.com with ESMTP; 02 Feb 2025 22:39:44 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH 1/2] migration-guides: add release notes for 5.1.2
+Date: Mon,  3 Feb 2025 14:38:32 +0800
+Message-Id: <20250203063833.2270772-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20250128102308.42435-1-simon.eu@gmail.com> <fd45d304-a3bd-498f-816f-cc80313a9091@cherry.de>
- <CAO8d5BY-jFbyOjcfHuS1KxDVzyn2FgQNtM9G0x5sB646OtHYqA@mail.gmail.com>
- <548d78ed-f820-46f1-80aa-10815c53a6f1@cherry.de> <CAO8d5BbLuK5uvfrk1p_Fj6sYyK9wxtXV_ad+kCdAtTq=GWsy1Q@mail.gmail.com>
- <f6c77a80-b4c0-423c-abf7-d29c5a6cdf4d@cherry.de>
-In-Reply-To: <f6c77a80-b4c0-423c-abf7-d29c5a6cdf4d@cherry.de>
-From: Simon Eugster <simon.eu@gmail.com>
-Date: Fri, 31 Jan 2025 16:16:00 +0100
-X-Gm-Features: AWEUYZkG5auMDun8sREV08DeA3yu7FTBlmTQORn7_ukagovEGYeTkHxv-89FVWc
-Message-ID: <CAO8d5BZnm_NEofGVUp9NOFsFcFf321SLbe8nHSaKSxqctvmdAg@mail.gmail.com>
-Subject: Re: [docs] [PATCH v3] ref-manual: Describe grub-efi-cfg overrides and GRUB_TITLE
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: docs@lists.yoctoproject.org
-Content-Type: multipart/alternative; boundary="000000000000e58496062d02055c"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 31 Jan 2025 15:16:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6237
+ <docs@lists.yoctoproject.org>; Mon, 03 Feb 2025 06:39:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6238
 
---000000000000e58496062d02055c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-Hi Quentin,
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-5.1.rst          |   1 +
+ .../migration-guides/release-notes-5.1.2.rst  | 336 ++++++++++++++++++
+ 2 files changed, 337 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.1.2.rst
 
-On Fri, Jan 31, 2025 at 4:09=E2=80=AFPM Quentin Schulz <quentin.schulz@cher=
-ry.de>
-wrote:
+diff --git a/documentation/migration-guides/release-5.1.rst b/documentation/migration-guides/release-5.1.rst
+index 581bbf14a..f7e8332e1 100644
+--- a/documentation/migration-guides/release-5.1.rst
++++ b/documentation/migration-guides/release-5.1.rst
+@@ -8,3 +8,4 @@ Release 5.1 (styhead)
+    migration-5.1
+    release-notes-5.1
+    release-notes-5.1.1
++   release-notes-5.1.2
+diff --git a/documentation/migration-guides/release-notes-5.1.2.rst b/documentation/migration-guides/release-notes-5.1.2.rst
+new file mode 100644
+index 000000000..8f3cf9eb5
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-5.1.2.rst
+@@ -0,0 +1,336 @@
++Release notes for Yocto-5.1.2 (Styhead)
++---------------------------------------
++
++Security Fixes in Yocto-5.1.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  binutils: Fix :cve_nist:`2024-53589`
++-  curl: Fix :cve_nist:`2024-9681`
++-  ghostscript: Fix :cve_nist:`2024-46951`, :cve_nist:`2024-46952`, :cve_nist:`2024-46953`,
++   :cve_nist:`2024-46954`, :cve_nist:`2024-46955` and :cve_nist:`2024-46956`
++-  gstreamer1.0: Fix :cve_nist:`2024-47606`
++-  gstreamer1.0-plugins-base: Fix :cve_nist:`2024-47538`, :cve_nist:`2024-47541`,
++   :cve_nist:`2024-47542`, :cve_nist:`2024-47600`, :cve_nist:`2024-47607`, :cve_nist:`2024-47615`
++   and :cve_nist:`2024-47835`
++-  gstreamer1.0-plugins-good: Fix :cve_nist:`2024-47537`, :cve_nist:`2024-47539`,
++   :cve_nist:`2024-47540`, :cve_nist:`2024-47543`, :cve_nist:`2024-47544`, :cve_nist:`2024-47545`,
++   :cve_nist:`2024-47546`, :cve_nist:`2024-47596`, :cve_nist:`2024-47597`, :cve_nist:`2024-47598`,
++   :cve_nist:`2024-47599`, :cve_nist:`2024-47601`, :cve_nist:`2024-47602`, :cve_nist:`2024-47603`,
++   :cve_nist:`2024-47606`, :cve_nist:`2024-47613`, :cve_nist:`2024-47774`, :cve_nist:`2024-47775`,
++   :cve_nist:`2024-47776`, :cve_nist:`2024-47777`, :cve_nist:`2024-47778` and :cve_nist:`2024-47834`
++-  gstreamer1.0-rtsp-server: Fix :cve_nist:`2024-44331`
++-  libarchive: Fix :cve_nist:`2024-48957` and :cve_nist:`2024-48958`
++-  libexpat: Fix :cve_nist:`2024-50602`
++-  libsndfile1: Fix :cve_nist:`2024-50612`
++-  linux-yocto/6.6: Fix :cve_nist:`2024-27059`, :cve_nist:`2024-47704`, :cve_nist:`2024-49863`,
++   :cve_nist:`2024-49864`, :cve_nist:`2024-49866`, :cve_nist:`2024-49867`, :cve_nist:`2024-49868`,
++   :cve_nist:`2024-49870`, :cve_nist:`2024-49871`, :cve_nist:`2024-49874`, :cve_nist:`2024-49875`,
++   :cve_nist:`2024-49877`, :cve_nist:`2024-49878`, :cve_nist:`2024-49879`, :cve_nist:`2024-49881`,
++   :cve_nist:`2024-49882`, :cve_nist:`2024-49883`, :cve_nist:`2024-49884`, :cve_nist:`2024-49886`,
++   :cve_nist:`2024-49889`, :cve_nist:`2024-49890`, :cve_nist:`2024-49892`, :cve_nist:`2024-49894`,
++   :cve_nist:`2024-49895`, :cve_nist:`2024-49896`, :cve_nist:`2024-49900`, :cve_nist:`2024-49901`,
++   :cve_nist:`2024-49902`, :cve_nist:`2024-49903`, :cve_nist:`2024-49905`, :cve_nist:`2024-49907`,
++   :cve_nist:`2024-49912`, :cve_nist:`2024-49913`, :cve_nist:`2024-49924`, :cve_nist:`2024-49925`,
++   :cve_nist:`2024-49927`, :cve_nist:`2024-49929`, :cve_nist:`2024-49930`, :cve_nist:`2024-49931`,
++   :cve_nist:`2024-49933`, :cve_nist:`2024-49935`, :cve_nist:`2024-49936`, :cve_nist:`2024-49937`,
++   :cve_nist:`2024-49938`, :cve_nist:`2024-49939`, :cve_nist:`2024-49944`, :cve_nist:`2024-49946`,
++   :cve_nist:`2024-49947`, :cve_nist:`2024-49948`, :cve_nist:`2024-49949`, :cve_nist:`2024-49950`,
++   :cve_nist:`2024-49951`, :cve_nist:`2024-49952`, :cve_nist:`2024-49953`, :cve_nist:`2024-49954`,
++   :cve_nist:`2024-49955`, :cve_nist:`2024-49957`, :cve_nist:`2024-49958`, :cve_nist:`2024-49959`,
++   :cve_nist:`2024-49960`, :cve_nist:`2024-49961`, :cve_nist:`2024-49962`, :cve_nist:`2024-49963`,
++   :cve_nist:`2024-49965`, :cve_nist:`2024-49966`, :cve_nist:`2024-49969`, :cve_nist:`2024-49973`,
++   :cve_nist:`2024-49975`, :cve_nist:`2024-49976`, :cve_nist:`2024-49977`, :cve_nist:`2024-49978`,
++   :cve_nist:`2024-49980`, :cve_nist:`2024-49981`, :cve_nist:`2024-49982`, :cve_nist:`2024-49983`,
++   :cve_nist:`2024-49985`, :cve_nist:`2024-49986`, :cve_nist:`2024-49987`, :cve_nist:`2024-49988`,
++   :cve_nist:`2024-49989`, :cve_nist:`2024-49991`, :cve_nist:`2024-49992`, :cve_nist:`2024-49995`,
++   :cve_nist:`2024-49996`, :cve_nist:`2024-49997`, :cve_nist:`2024-50000`, :cve_nist:`2024-50001`,
++   :cve_nist:`2024-50002`, :cve_nist:`2024-50003`, :cve_nist:`2024-50005`, :cve_nist:`2024-50006`,
++   :cve_nist:`2024-50007`, :cve_nist:`2024-50008`, :cve_nist:`2024-50012`, :cve_nist:`2024-50013`,
++   :cve_nist:`2024-50015`, :cve_nist:`2024-50016`, :cve_nist:`2024-50019`, :cve_nist:`2024-50022`,
++   :cve_nist:`2024-50023`, :cve_nist:`2024-50024`, :cve_nist:`2024-50026`, :cve_nist:`2024-50029`,
++   :cve_nist:`2024-50031`, :cve_nist:`2024-50032`, :cve_nist:`2024-50033`, :cve_nist:`2024-50035`,
++   :cve_nist:`2024-50036`, :cve_nist:`2024-50038`, :cve_nist:`2024-50039`, :cve_nist:`2024-50040`,
++   :cve_nist:`2024-50041`, :cve_nist:`2024-50044`, :cve_nist:`2024-50045`, :cve_nist:`2024-50046`,
++   :cve_nist:`2024-50047`, :cve_nist:`2024-50048`, :cve_nist:`2024-50049`, :cve_nist:`2024-50055`,
++   :cve_nist:`2024-50057`, :cve_nist:`2024-50058`, :cve_nist:`2024-50059`, :cve_nist:`2024-50060`,
++   :cve_nist:`2024-50061`, :cve_nist:`2024-50062`, :cve_nist:`2024-50063`, :cve_nist:`2024-50064`,
++   :cve_nist:`2024-50065`, :cve_nist:`2024-50066`, :cve_nist:`2024-50069`, :cve_nist:`2024-50070`,
++   :cve_nist:`2024-50072`, :cve_nist:`2024-50073`, :cve_nist:`2024-50074`, :cve_nist:`2024-50075`,
++   :cve_nist:`2024-50076`, :cve_nist:`2024-50077`, :cve_nist:`2024-50078`, :cve_nist:`2024-50080`,
++   :cve_nist:`2024-50082`, :cve_nist:`2024-50083`, :cve_nist:`2024-50084`, :cve_nist:`2024-50085`,
++   :cve_nist:`2024-50086`, :cve_nist:`2024-50087`, :cve_nist:`2024-50088`, :cve_nist:`2024-50093`,
++   :cve_nist:`2024-50095`, :cve_nist:`2024-50096`, :cve_nist:`2024-50098`, :cve_nist:`2024-50099`,
++   :cve_nist:`2024-50101`, :cve_nist:`2024-50103`, :cve_nist:`2024-50108`, :cve_nist:`2024-50110`,
++   :cve_nist:`2024-50111`, :cve_nist:`2024-50112`, :cve_nist:`2024-50115`, :cve_nist:`2024-50116`,
++   :cve_nist:`2024-50117`, :cve_nist:`2024-50120`, :cve_nist:`2024-50121`, :cve_nist:`2024-50124`,
++   :cve_nist:`2024-50125`, :cve_nist:`2024-50126`, :cve_nist:`2024-50127`, :cve_nist:`2024-50128`,
++   :cve_nist:`2024-50130`, :cve_nist:`2024-50131`, :cve_nist:`2024-50133`, :cve_nist:`2024-50134`,
++   :cve_nist:`2024-50135`, :cve_nist:`2024-50136`, :cve_nist:`2024-50139`, :cve_nist:`2024-50140`,
++   :cve_nist:`2024-50141`, :cve_nist:`2024-50142`, :cve_nist:`2024-50143`, :cve_nist:`2024-50145`,
++   :cve_nist:`2024-50147`, :cve_nist:`2024-50148`, :cve_nist:`2024-50150`, :cve_nist:`2024-50151`,
++   :cve_nist:`2024-50152`, :cve_nist:`2024-50153`, :cve_nist:`2024-50154`, :cve_nist:`2024-50155`,
++   :cve_nist:`2024-50156`, :cve_nist:`2024-50158`, :cve_nist:`2024-50159`, :cve_nist:`2024-50160`,
++   :cve_nist:`2024-50162`, :cve_nist:`2024-50163`, :cve_nist:`2024-50164`, :cve_nist:`2024-50166`,
++   :cve_nist:`2024-50167`, :cve_nist:`2024-50168`, :cve_nist:`2024-50169`, :cve_nist:`2024-50170`,
++   :cve_nist:`2024-50171`, :cve_nist:`2024-50172`, :cve_nist:`2024-50175`, :cve_nist:`2024-50176`,
++   :cve_nist:`2024-50179`, :cve_nist:`2024-50180`, :cve_nist:`2024-50181`, :cve_nist:`2024-50182`,
++   :cve_nist:`2024-50183`, :cve_nist:`2024-50184`, :cve_nist:`2024-50185`, :cve_nist:`2024-50186`,
++   :cve_nist:`2024-50187`, :cve_nist:`2024-50188`, :cve_nist:`2024-50189`, :cve_nist:`2024-50191`,
++   :cve_nist:`2024-50192`, :cve_nist:`2024-50193`, :cve_nist:`2024-50194`, :cve_nist:`2024-50195`,
++   :cve_nist:`2024-50196`, :cve_nist:`2024-50198`, :cve_nist:`2024-50201`, :cve_nist:`2024-50202`,
++   :cve_nist:`2024-50205`, :cve_nist:`2024-50208`, :cve_nist:`2024-50209`, :cve_nist:`2024-50211`,
++   :cve_nist:`2024-50215`, :cve_nist:`2024-50222`, :cve_nist:`2024-50223`, :cve_nist:`2024-50224`,
++   :cve_nist:`2024-50226`, :cve_nist:`2024-50229`, :cve_nist:`2024-50230`, :cve_nist:`2024-50231`,
++   :cve_nist:`2024-50232`, :cve_nist:`2024-50233`, :cve_nist:`2024-50234`, :cve_nist:`2024-50235`,
++   :cve_nist:`2024-50236`, :cve_nist:`2024-50237`, :cve_nist:`2024-50239`, :cve_nist:`2024-50240`,
++   :cve_nist:`2024-50242`, :cve_nist:`2024-50243`, :cve_nist:`2024-50244`, :cve_nist:`2024-50245`,
++   :cve_nist:`2024-50246`, :cve_nist:`2024-50247`, :cve_nist:`2024-50248`, :cve_nist:`2024-50249`,
++   :cve_nist:`2024-50250`, :cve_nist:`2024-50251`, :cve_nist:`2024-50252`, :cve_nist:`2024-50255`,
++   :cve_nist:`2024-50256`, :cve_nist:`2024-50257`, :cve_nist:`2024-50258`, :cve_nist:`2024-50259`,
++   :cve_nist:`2024-50261`, :cve_nist:`2024-50262`, :cve_nist:`2024-50264`, :cve_nist:`2024-50265`,
++   :cve_nist:`2024-50267`, :cve_nist:`2024-50268`, :cve_nist:`2024-50269`, :cve_nist:`2024-50271`,
++   :cve_nist:`2024-50272`, :cve_nist:`2024-50273`, :cve_nist:`2024-50275`, :cve_nist:`2024-50276`,
++   :cve_nist:`2024-50278`, :cve_nist:`2024-50279`, :cve_nist:`2024-50282`, :cve_nist:`2024-50283`,
++   :cve_nist:`2024-50284`, :cve_nist:`2024-50285`, :cve_nist:`2024-50286`, :cve_nist:`2024-50287`,
++   :cve_nist:`2024-50292`, :cve_nist:`2024-50296`, :cve_nist:`2024-50298`, :cve_nist:`2024-50299`,
++   :cve_nist:`2024-50300`, :cve_nist:`2024-50301`, :cve_nist:`2024-50302`, :cve_nist:`2024-53042`,
++   :cve_nist:`2024-53043`, :cve_nist:`2024-53046`, :cve_nist:`2024-53047`, :cve_nist:`2024-53052`,
++   :cve_nist:`2024-53055`, :cve_nist:`2024-53057`, :cve_nist:`2024-53058`, :cve_nist:`2024-53059`,
++   :cve_nist:`2024-53060`, :cve_nist:`2024-53061`, :cve_nist:`2024-53063`, :cve_nist:`2024-53066`,
++   :cve_nist:`2024-53068`, :cve_nist:`2024-53072`, :cve_nist:`2024-53076`, :cve_nist:`2024-53079`,
++   :cve_nist:`2024-53081`, :cve_nist:`2024-53082`, :cve_nist:`2024-53083`, :cve_nist:`2024-53088`,
++   :cve_nist:`2024-53091`, :cve_nist:`2024-53093`, :cve_nist:`2024-53094`, :cve_nist:`2024-53096`,
++   :cve_nist:`2024-53099`, :cve_nist:`2024-53100`, :cve_nist:`2024-53101`, :cve_nist:`2024-53103`,
++   :cve_nist:`2024-53108`, :cve_nist:`2024-53109`, :cve_nist:`2024-53110`, :cve_nist:`2024-53112`,
++   :cve_nist:`2024-53113`, :cve_nist:`2024-53119`, :cve_nist:`2024-53120`, :cve_nist:`2024-53121`,
++   :cve_nist:`2024-53122`, :cve_nist:`2024-53123`, :cve_nist:`2024-53126`, :cve_nist:`2024-53127`,
++   :cve_nist:`2024-53129`, :cve_nist:`2024-53130`, :cve_nist:`2024-53131`, :cve_nist:`2024-53134`,
++   :cve_nist:`2024-53135`, :cve_nist:`2024-53138`, :cve_nist:`2024-53139`, :cve_nist:`2024-53140`,
++   :cve_nist:`2024-53141`, :cve_nist:`2024-53142`, :cve_nist:`2024-53145`, :cve_nist:`2024-53146`,
++   :cve_nist:`2024-53150`, :cve_nist:`2024-53151`, :cve_nist:`2024-53154`, :cve_nist:`2024-53155`,
++   :cve_nist:`2024-53156`, :cve_nist:`2024-53157`, :cve_nist:`2024-53165`, :cve_nist:`2024-53166`,
++   :cve_nist:`2024-53171`, :cve_nist:`2024-53173`, :cve_nist:`2024-53180`, :cve_nist:`2024-53188`,
++   :cve_nist:`2024-53200`, :cve_nist:`2024-53202`, :cve_nist:`2024-53208`, :cve_nist:`2024-53210`,
++   :cve_nist:`2024-53213`, :cve_nist:`2024-53226`, :cve_nist:`2024-53227`, :cve_nist:`2024-53230`,
++   :cve_nist:`2024-53231`, :cve_nist:`2024-53237`, :cve_nist:`2024-54683`, :cve_nist:`2024-55916`,
++   :cve_nist:`2024-56369`, :cve_nist:`2024-56538`, :cve_nist:`2024-56551`, :cve_nist:`2024-56567`,
++   :cve_nist:`2024-56572`, :cve_nist:`2024-56574`, :cve_nist:`2024-56577`, :cve_nist:`2024-56578`,
++   :cve_nist:`2024-56579`, :cve_nist:`2024-56581`, :cve_nist:`2024-56593`, :cve_nist:`2024-56595`,
++   :cve_nist:`2024-56596`, :cve_nist:`2024-56598`, :cve_nist:`2024-56600`, :cve_nist:`2024-56601`,
++   :cve_nist:`2024-56602`, :cve_nist:`2024-56603`, :cve_nist:`2024-56604`, :cve_nist:`2024-56605`,
++   :cve_nist:`2024-56606`, :cve_nist:`2024-56611`, :cve_nist:`2024-56613`, :cve_nist:`2024-56614`,
++   :cve_nist:`2024-56615`, :cve_nist:`2024-56617`, :cve_nist:`2024-56622`, :cve_nist:`2024-56623`,
++   :cve_nist:`2024-56626`, :cve_nist:`2024-56627`, :cve_nist:`2024-56629`, :cve_nist:`2024-56631`,
++   :cve_nist:`2024-56634`, :cve_nist:`2024-56640`, :cve_nist:`2024-56642`, :cve_nist:`2024-56643`,
++   :cve_nist:`2024-56648`, :cve_nist:`2024-56649`, :cve_nist:`2024-56650`, :cve_nist:`2024-56651`,
++   :cve_nist:`2024-56653`, :cve_nist:`2024-56654`, :cve_nist:`2024-56657`, :cve_nist:`2024-56658`,
++   :cve_nist:`2024-56659`, :cve_nist:`2024-56660`, :cve_nist:`2024-56662`, :cve_nist:`2024-56663`,
++   :cve_nist:`2024-56664`, :cve_nist:`2024-56667`, :cve_nist:`2024-56670`, :cve_nist:`2024-56672`,
++   :cve_nist:`2024-56675`, :cve_nist:`2024-56688`, :cve_nist:`2024-56689`, :cve_nist:`2024-56692`,
++   :cve_nist:`2024-56694`, :cve_nist:`2024-56704`, :cve_nist:`2024-56708`, :cve_nist:`2024-56710`,
++   :cve_nist:`2024-56715`, :cve_nist:`2024-56716`, :cve_nist:`2024-56717`, :cve_nist:`2024-56718`,
++   :cve_nist:`2024-56720`, :cve_nist:`2024-56722`, :cve_nist:`2024-56723`, :cve_nist:`2024-56724`,
++   :cve_nist:`2024-56725`, :cve_nist:`2024-56726`, :cve_nist:`2024-56727`, :cve_nist:`2024-56728`,
++   :cve_nist:`2024-56729`, :cve_nist:`2024-56739`, :cve_nist:`2024-56741`, :cve_nist:`2024-56744`,
++   :cve_nist:`2024-56745`, :cve_nist:`2024-56746`, :cve_nist:`2024-56747`, :cve_nist:`2024-56748`,
++   :cve_nist:`2024-56751`, :cve_nist:`2024-56752`, :cve_nist:`2024-56754`, :cve_nist:`2024-56755`,
++   :cve_nist:`2024-56756`, :cve_nist:`2024-56760`, :cve_nist:`2024-56763`, :cve_nist:`2024-56765`,
++   :cve_nist:`2024-56767`, :cve_nist:`2024-56769`, :cve_nist:`2024-56770`, :cve_nist:`2024-56774`,
++   :cve_nist:`2024-56776`, :cve_nist:`2024-56777`, :cve_nist:`2024-56778`, :cve_nist:`2024-56779`,
++   :cve_nist:`2024-56780`, :cve_nist:`2024-56781`, :cve_nist:`2024-56783`, :cve_nist:`2024-56785`,
++   :cve_nist:`2024-56786`, :cve_nist:`2024-56787` and :cve_nist:`2024-57807`
++-  qemu: Fix :cve_nist:`2024-6505`
++-  rust: Ignore :cve_nist:`2024-43402`
++
++
++Fixes in Yocto-5.1.2
++~~~~~~~~~~~~~~~~~~~~
++
++-  binutils: stable 2.43.1 branch update
++-  bitbake: runqueue: Fix performance of multiconfigs with large overlap
++-  bitbake: runqueue: Fix scenetask processing performance issue
++-  bitbake: runqueue: Optimise setscene loop processing
++-  build-appliance-image: Update to styhead head revision
++-  builder: set :term:`CVE_PRODUCT`
++-  buildtools-docs-tarball: Add rsvg so we can handle svg files in docs
++-  connman: Fix restart script
++-  contributor-guide: submit-changes.rst: suggest to remove the git signature
++-  cve-update-nvd2-native: Handle :term:`BB_NO_NETWORK` and missing db
++-  cve-update-nvd2-native: Tweak to work better with NFS :term:`DL_DIR`
++-  dev-manual: bmaptool.rst: correct command for bmaptool-native
++-  dev-manual: bmaptool.rst: simplify and fix instructions
++-  dev-manual: fix styling of references to bmaptool
++-  dnf: drop python3-iniparse from :term:`DEPENDS` and :term:`RDEPENDS`
++-  do_package/sstate/sstatesig: Change timestamp clamping to hash output only
++-  docs: Gather dependencies in poky.yaml.in
++-  docs: Update the documentation for :term:`SRCPV`
++-  docs: standards.md: add a section on admonitions
++-  docs: update current releases
++-  expat: upgrade to 2.6.4
++-  gcc: Fix c++: tweak for Wrange-loop-construct
++-  ghostscript: upgrade 10.04.0
++-  glibc: stable 2.40 branch updates.
++-  groff: Fix race issues for parallel build
++-  gstreamer1.0-libav: explicitly disable documentation
++-  gstreamer1.0: run ptests in parallel
++-  gstreamer1.0: upgrade to 1.24.10
++-  linux-yocto/6.6: bsp/genericarm64: disable ARM64_SME
++-  linux-yocto/6.6: genericarm64.cfg: enable CONFIG_DMA_CMA
++-  linux-yocto/6.6: update to v6.6.69
++-  lttng-modules: fix sched_stat_runtime changed in Linux 6.6.66
++-  migration-guides: add release notes for 4.0.23, 5.0.4, 5.0.5 and 5.1.1
++-  oeqa/ssh: Improve performance and log sizes
++-  oeqa/utils/gitarchive: Return tag name and improve exclude handling
++-  poky.conf: add new tested distros
++-  poky.conf: bump version for 5.1.2
++-  poky.yaml.in: add missing locales dependency
++-  poky.yaml.in: replace inkscape dependency by librsvg2-bin
++-  populate_sdk_ext: write_local_conf add shutil import
++-  python3-poetry-core: drop python3-six from :term:`RDEPENDS`
++-  python3: upgrade to 3.12.8
++-  ref-manual: SSTATE_MIRRORS/SOURCE_MIRROR_URL: add instructions for mirror authentication
++-  ref-manual: classes: fix bin_package description
++-  ref-manual: devtool-reference: add warning note on deploy-target and shared objects
++-  ref-manual: merge two separate descriptions of :term:`RECIPE_UPGRADE_EXTRA_TASKS`
++-  ref-manual: move runtime-testing section to the test-manual
++-  ref-manual: packages: move ptest section to the test-manual
++-  ref-manual: qa-checks: remove patch-status-core/patch-status-noncore
++-  ref-manual: use standardized method accross both ubuntu and debian for locale install
++-  reproducible-builds.rst: show how to build a single package
++-  resulttool: Add --logfile-archive option to store mode
++-  resulttool: Allow store to filter to specific revisions
++-  resulttool: Clean up repoducible build logs
++-  resulttool: Fix passthrough of --all files in store mode
++-  resulttool: Handle ltp rawlogs as well as ptest
++-  resulttool: Improve repo layout for oeselftest results
++-  resulttool: Trim the precision of duration information
++-  resulttool: Use single space indentation in json output
++-  rxvt-unicode.inc: disable the terminfo installation by setting TIC to :
++-  selftest/reproducible: Clean up pathnames
++-  selftest/reproducible: Drop rawlogs
++-  shadow: use update-alternatives to handle su.1 and nologin.8
++-  system-requirements.rst: add dependencies for pdf builds
++-  system-requirements: add fedora 39 to supported distros
++-  system-requirements: update list of supported distros
++-  systemd-boot: drop intltool-native from :term:`DEPENDS`
++-  systemd: drop intltool-native from :term:`DEPENDS`
++
++
++Known Issues in Yocto-5.1.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-5.1.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Thanks to the following people who contributed to this release:
++
++-  Alexander Kanavin
++-  Antonin Godard
++-  Bruce Ashfield
++-  Changqing Li
++-  Deepthi Hemraj
++-  Guénaël Muller
++-  Guðni Már Gilbert
++-  Hitendra Prajapati
++-  Lee Chee Yang
++-  Mark Hatle
++-  Michael Nazzareno Trimarchi
++-  Michael Opdenacker
++-  Peter Marko
++-  Richard Purdie
++-  Robert Yang
++-  Ross Burton
++-  Sid-Ali
++-  Steve Sakoman
++-  Sunil Dora
++-  Trevor Gamblin
++-  Wang Mingyu
++-  Xiangyu Chen
++-  Yash Shinde
++
++
++Repositories / Downloads for Yocto-5.1.2
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++yocto-autobuilder
++
++-  Repository Location: :yocto_git:`/yocto-autobuilder`
++-  Branch: :yocto_git:`styhead </yocto-autobuilder/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1.2 </yocto-autobuilder/log/?h=yocto-5.1.2>`
++-  Git Revision: :yocto_git:`384d37a957a7f90abe04fe320cf0919c5a8f22ef </yocto-autobuilder/commit/?id=384d37a957a7f90abe04fe320cf0919c5a8f22ef>`
++-  Release Artefact: yocto-autobuilder-helper-384d37a957a7f90abe04fe320cf0919c5a8f22ef
++-  sha: 5c1f96d7d968380464e230cf55bdd417d360b1a2e6b14ce6538c4be1e49845da
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/yocto-autobuilder-helper-384d37a957a7f90abe04fe320cf0919c5a8f22ef.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/yocto-autobuilder-helper-384d37a957a7f90abe04fe320cf0919c5a8f22ef.tar.bz2
++
++yocto-autobuilder
++
++-  Repository Location: :yocto_git:`/yocto-autobuilder`
++-  Branch: :yocto_git:`styhead </yocto-autobuilder/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1.2 </yocto-autobuilder/log/?h=yocto-5.1.2>`
++-  Git Revision: :yocto_git:`15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1 </yocto-autobuilder/commit/?id=15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1>`
++-  Release Artefact: yocto-autobuilder-helper-15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1
++-  sha: f7ec63be7925f38ef9439082684860b312f991728f264d45a3e32efed0baa5f1
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/yocto-autobuilder-helper-15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/yocto-autobuilder-helper-15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1.tar.bz2
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`styhead </poky/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1.2 </poky/log/?h=yocto-5.1.2>`
++-  Git Revision: :yocto_git:`ff9ca74e170480578fcdb1f7bcd897f0e69e46a5 </poky/commit/?id=ff9ca74e170480578fcdb1f7bcd897f0e69e46a5>`
++-  Release Artefact: poky-ff9ca74e170480578fcdb1f7bcd897f0e69e46a5
++-  sha: 3c8d5504ebc988a6427e31d3a9e84e74f16f84b7e9b0884f77be6bd6231b7fef
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/poky-ff9ca74e170480578fcdb1f7bcd897f0e69e46a5.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/poky-ff9ca74e170480578fcdb1f7bcd897f0e69e46a5.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`styhead </openembedded-core/log/?h=styhead>`
++-  Tag:  :oe_git:`yocto-5.1.2 </openembedded-core/log/?h=yocto-5.1.2>`
++-  Git Revision: :oe_git:`62dfe689246d648f9970a5476716e486b1a33765 </openembedded-core/commit/?id=62dfe689246d648f9970a5476716e486b1a33765>`
++-  Release Artefact: oecore-62dfe689246d648f9970a5476716e486b1a33765
++-  sha: 8118c0260e673dbf9f3d7cd0a6d8364fc337f3e8ff75f0c449be88d2157e78fb
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/oecore-62dfe689246d648f9970a5476716e486b1a33765.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/oecore-62dfe689246d648f9970a5476716e486b1a33765.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`styhead </meta-mingw/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1.2 </meta-mingw/log/?h=yocto-5.1.2>`
++-  Git Revision: :yocto_git:`77fe18d4f8ec34501045c5d92ce7e13b1bd129e9 </meta-mingw/commit/?id=77fe18d4f8ec34501045c5d92ce7e13b1bd129e9>`
++-  Release Artefact: meta-mingw-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9
++-  sha: 4c7f8100a3675d9863e51825def3df5b263ffc81cd57bae26eedbc156d771534
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/meta-mingw-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/meta-mingw-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.10 </bitbake/log/?h=2.10>`
++-  Tag:  :oe_git:`yocto-5.1.2 </bitbake/log/?h=yocto-5.1.2>`
++-  Git Revision: :oe_git:`1452e74cc4ddfaadc6537a049877a66cec253c8d </bitbake/commit/?id=1452e74cc4ddfaadc6537a049877a66cec253c8d>`
++-  Release Artefact: bitbake-1452e74cc4ddfaadc6537a049877a66cec253c8d
++-  sha: 26538d0b8ab907d962623707697bfc6826615239a724b1805e0c3acbd74fdcaa
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/bitbake-1452e74cc4ddfaadc6537a049877a66cec253c8d.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/bitbake-1452e74cc4ddfaadc6537a049877a66cec253c8d.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`styhead </yocto-docs/log/?h=styhead>`
++-  Tag: :yocto_git:`yocto-5.1.2 </yocto-docs/log/?h=yocto-5.1.2>`
++-  Git Revision: :yocto_git:`8ac3e2eb1dd4149b24af03666813dc6d94df466d </yocto-docs/commit/?id=8ac3e2eb1dd4149b24af03666813dc6d94df466d>`
++
+-- 
+2.34.1
 
-> Hi Simon,
->
-> On 1/31/25 4:05 PM, Simon Eugster wrote:
-> > Hi Quentin,
-> >
-> > Ok, I see! That makes sense. So find found the grub.cfg file in the bui=
-ld
-> > directory at
-> > work/intel_corei7_64-poky-linux/IMAGENAME/1.0/IMAGENAME-1.0/grub_live.c=
-fg
-> > and now it is on modified. So I ran the build again after changing the
-> > variable, and it was updated.
-> >
-> > Was this a valid test now? :)
-> >
->
-> It should indeed, and I now have more questions than I started with :)
->
-> Will try to find time to figure out what's going on on my own.
->
-
-Let me know if I can test something else on my side too.
-Also, I have added GRUB_TITLE to grub-bootconf.bb if that is relevant for
-your case:
-
-do_configure[vardeps] +=3D "APPEND ROOT GRUB_TITLE"
-
-(Thinking about it, INITRD should probably also be in this list, right?
-
-Have a good week-end!
-Simon
-
---000000000000e58496062d02055c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><div>Hi Quentin,</div></div><br><div clas=
-s=3D"gmail_quote gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_att=
-r">On Fri, Jan 31, 2025 at 4:09=E2=80=AFPM Quentin Schulz &lt;<a href=3D"ma=
-ilto:quentin.schulz@cherry.de">quentin.schulz@cherry.de</a>&gt; wrote:<br><=
-/div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;bo=
-rder-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Simon,<br>
-<br>
-On 1/31/25 4:05 PM, Simon Eugster wrote:<br>
-&gt; Hi Quentin,<br>
-&gt; <br>
-&gt; Ok, I see! That makes sense. So find found the grub.cfg file in the bu=
-ild<br>
-&gt; directory at<br>
-&gt; work/intel_corei7_64-poky-linux/IMAGENAME/1.0/IMAGENAME-1.0/grub_live.=
-cfg<br>
-&gt; and now it is on modified. So I ran the build again after changing the=
-<br>
-&gt; variable, and it was updated.<br>
-&gt; <br>
-&gt; Was this a valid test now? :)<br>
-&gt; <br>
-<br>
-It should indeed, and I now have more questions than I started with :)<br>
-<br>
-Will try to find time to figure out what&#39;s going on on my own.<br></blo=
-ckquote><div><br></div><div>Let me know if I can test something else on my =
-side too.</div><div>Also, I have added GRUB_TITLE to <a href=3D"http://grub=
--bootconf.bb">grub-bootconf.bb</a> if that is relevant for your case:</div>=
-<div><div style=3D"background-color:rgb(255,255,255);color:rgb(8,8,8)"><pre=
- style=3D"font-family:&quot;JetBrains Mono&quot;,monospace;font-size:9.8pt"=
-><span style=3D"color:rgb(135,16,148);font-style:italic">do_configure</span=
->[<span style=3D"color:rgb(6,125,23)">vardeps</span>] +=3D <span style=3D"c=
-olor:rgb(6,125,23)">&quot;APPEND ROOT GRUB_TITLE&quot;<br></span></pre></di=
-v></div><div>(Thinking about it, INITRD should probably also be in this lis=
-t, right?</div><div><br></div><div>Have a good week-end!<br></div><div>Simo=
-n</div></div></div>
-
---000000000000e58496062d02055c--
 
