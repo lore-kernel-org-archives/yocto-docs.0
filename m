@@ -1,76 +1,519 @@
-Return-Path: <othacehe@gnu.org>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 18020C02194
-	for <webhook@archiver.kernel.org>; Tue,  4 Feb 2025 10:28:57 +0000 (UTC)
-Received: from eggs.gnu.org (eggs.gnu.org [209.51.188.92])
- by mx.groups.io with SMTP id smtpd.web11.113138.1738664933319784462
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02542C02196
+	for <webhook@archiver.kernel.org>; Tue,  4 Feb 2025 13:28:58 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.115755.1738675727939450487
  for <docs@lists.yoctoproject.org>;
- Tue, 04 Feb 2025 02:28:53 -0800
+ Tue, 04 Feb 2025 05:28:48 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gnu.org header.s=fencepost-gnu-org header.b=JEXo7zsK;
- spf=pass (domain: gnu.org, ip: 209.51.188.92, mailfrom: othacehe@gnu.org)
-Received: from fencepost.gnu.org ([2001:470:142:3::e])
-	by eggs.gnu.org with esmtps (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.90_1)
-	(envelope-from <othacehe@gnu.org>)
-	id 1tfGAm-0000Ja-AQ
-	for docs@lists.yoctoproject.org; Tue, 04 Feb 2025 05:28:52 -0500
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=gnu.org;
-	s=fencepost-gnu-org; h=MIME-Version:Date:Subject:To:From:in-reply-to:
-	references; bh=KgUdA2KJl6fhPWqNyZdRz3WdS/8pPsDuMvXtKIWJR6Q=; b=JEXo7zsKWl9A2q
-	iAQ1rt/T+/6RIMb5i/7ITwTk2I8JIBUbF7RC47UEZjih6XxjJ+YGHkLU9l8m52pDmACzfD1SzOM/P
-	iFB1Qx62DXKT0b5pHi5znD3xs4+/xBsTTp7CovyXInj5LhPtTscpQqqIi/PqTM6ZE0Dvl/iIz7xbf
-	dFEoKa5OQV6jv36qONJPsaDr+WLf8exW543b/Tgtrvw6rNfvhmdcDXoDqQv0MPeKHTnz1nuoA+H1P
-	Cjpm+OfjJGcCnlFRNmlf7gG6Ilzm4vXYZyJe1+RrgkmgftzGfuMWLITK3FDW6KX4egfXlPYWwS2tq
-	RsiaAxaxXUVNQthnyYYg==;
-From: Mathieu Othacehe <othacehe@gnu.org>
-To: docs@lists.yoctoproject.org
-Cc: Mathieu Othacehe <othacehe@gnu.org>
-Subject: [PATCH] profile-manual: Document the PACKAGE_KEEP_SECTIONS variable.
-Date: Tue,  4 Feb 2025 11:28:47 +0100
-Message-ID: <20250204102847.27201-1-othacehe@gnu.org>
-X-Mailer: git-send-email 2.47.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ezYLfHhL;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 955C7442E9;
+	Tue,  4 Feb 2025 13:28:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1738675726;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mbnsHTkQR5GcLkOZDkOfTBtHMX1lwWvcdo3ZTtUZzp0=;
+	b=ezYLfHhLtzHJiR9nOxjB7x5dKbel/inqOMpCuyS5akdz+0apYr5UnIdyJAWDRsQEJaSczu
+	m7t2OmYMazkFOTCDZL59m/vuyHxfLU+hz2Apga6JzbsgDtzue++Okn8D93tcw5l2jBvMzK
+	CqAMQOBJs01i7T5+gpdW+ZyowQN6ftQzDP1zMhlCDiFT+/f+hrGLKhQsrCG8JwBMNB2Dul
+	LmArBQ4+OnlvuqZEtnRlAbapqmZIi1IDvyG3jlkO12U2kzl9CM8pFr/3qpmX1RTJRy0rUh
+	mixU0UcEMg9Yy5aJODXTbxitxh+0Wu3zauHTnWOoZ+edZk3xNHjEmI3w07c+hQ==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 04 Feb 2025 14:28:45 +0100
+Message-Id: <D7JP3TG5R3BZ.2V4GNSBN5KUQ7@bootlin.com>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <chee.yang.lee@intel.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH 1/2] migration-guides: add release notes for
+ 5.1.2
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250203063833.2270772-1-chee.yang.lee@intel.com>
+In-Reply-To: <20250203063833.2270772-1-chee.yang.lee@intel.com>
+X-GND-State: clean
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdeigecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpegggfgtfffkhffvuffofhgjsehtqhertdertdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheplefhudeuvdeltdektefhudekleekudefveeujeelgeejieeuhfdvjeehueefueelnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdphigrmhhlrdhinhdpkhgvrhhnvghlrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppeejjedrvddthedrvddvrdehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepjeejrddvtdehrddvvddrhedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheptghhvggvrdihrghnghdrlhgvvgesihhnthgvlhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 04 Feb 2025 10:28:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6243
+ <docs@lists.yoctoproject.org>; Tue, 04 Feb 2025 13:28:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6244
 
-Document the 'PACKAGE_KEEP_SECTIONS' variable that can be used to keep some
-specific ELF sections while stripping binaries and libraries.
+Hi chee,
 
-That one can then be used to keep the .debug_frame section around for
-example, this way:
+On Mon Feb 3, 2025 at 7:38 AM CET, Lee Chee Yang via lists.yoctoproject.org=
+ wrote:
+> From: Lee Chee Yang <chee.yang.lee@intel.com>
+>
+> Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+> ---
+>  .../migration-guides/release-5.1.rst          |   1 +
+>  .../migration-guides/release-notes-5.1.2.rst  | 336 ++++++++++++++++++
+>  2 files changed, 337 insertions(+)
+>  create mode 100644 documentation/migration-guides/release-notes-5.1.2.rs=
+t
+>
+> diff --git a/documentation/migration-guides/release-5.1.rst b/documentati=
+on/migration-guides/release-5.1.rst
+> index 581bbf14a..f7e8332e1 100644
+> --- a/documentation/migration-guides/release-5.1.rst
+> +++ b/documentation/migration-guides/release-5.1.rst
+> @@ -8,3 +8,4 @@ Release 5.1 (styhead)
+>     migration-5.1
+>     release-notes-5.1
+>     release-notes-5.1.1
+> +   release-notes-5.1.2
+> diff --git a/documentation/migration-guides/release-notes-5.1.2.rst b/doc=
+umentation/migration-guides/release-notes-5.1.2.rst
+> new file mode 100644
+> index 000000000..8f3cf9eb5
+> --- /dev/null
+> +++ b/documentation/migration-guides/release-notes-5.1.2.rst
+> @@ -0,0 +1,336 @@
+> +Release notes for Yocto-5.1.2 (Styhead)
+> +---------------------------------------
+> +
+> +Security Fixes in Yocto-5.1.2
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +-  binutils: Fix :cve_nist:`2024-53589`
+> +-  curl: Fix :cve_nist:`2024-9681`
+> +-  ghostscript: Fix :cve_nist:`2024-46951`, :cve_nist:`2024-46952`, :cve=
+_nist:`2024-46953`,
+> +   :cve_nist:`2024-46954`, :cve_nist:`2024-46955` and :cve_nist:`2024-46=
+956`
+> +-  gstreamer1.0: Fix :cve_nist:`2024-47606`
+> +-  gstreamer1.0-plugins-base: Fix :cve_nist:`2024-47538`, :cve_nist:`202=
+4-47541`,
+> +   :cve_nist:`2024-47542`, :cve_nist:`2024-47600`, :cve_nist:`2024-47607=
+`, :cve_nist:`2024-47615`
+> +   and :cve_nist:`2024-47835`
+> +-  gstreamer1.0-plugins-good: Fix :cve_nist:`2024-47537`, :cve_nist:`202=
+4-47539`,
+> +   :cve_nist:`2024-47540`, :cve_nist:`2024-47543`, :cve_nist:`2024-47544=
+`, :cve_nist:`2024-47545`,
+> +   :cve_nist:`2024-47546`, :cve_nist:`2024-47596`, :cve_nist:`2024-47597=
+`, :cve_nist:`2024-47598`,
+> +   :cve_nist:`2024-47599`, :cve_nist:`2024-47601`, :cve_nist:`2024-47602=
+`, :cve_nist:`2024-47603`,
+> +   :cve_nist:`2024-47606`, :cve_nist:`2024-47613`, :cve_nist:`2024-47774=
+`, :cve_nist:`2024-47775`,
+> +   :cve_nist:`2024-47776`, :cve_nist:`2024-47777`, :cve_nist:`2024-47778=
+` and :cve_nist:`2024-47834`
+> +-  gstreamer1.0-rtsp-server: Fix :cve_nist:`2024-44331`
+> +-  libarchive: Fix :cve_nist:`2024-48957` and :cve_nist:`2024-48958`
+> +-  libexpat: Fix :cve_nist:`2024-50602`
+> +-  libsndfile1: Fix :cve_nist:`2024-50612`
+> +-  linux-yocto/6.6: Fix :cve_nist:`2024-27059`, :cve_nist:`2024-47704`, =
+:cve_nist:`2024-49863`,
+> +   :cve_nist:`2024-49864`, :cve_nist:`2024-49866`, :cve_nist:`2024-49867=
+`, :cve_nist:`2024-49868`,
+> +   :cve_nist:`2024-49870`, :cve_nist:`2024-49871`, :cve_nist:`2024-49874=
+`, :cve_nist:`2024-49875`,
+> +   :cve_nist:`2024-49877`, :cve_nist:`2024-49878`, :cve_nist:`2024-49879=
+`, :cve_nist:`2024-49881`,
+> +   :cve_nist:`2024-49882`, :cve_nist:`2024-49883`, :cve_nist:`2024-49884=
+`, :cve_nist:`2024-49886`,
+> +   :cve_nist:`2024-49889`, :cve_nist:`2024-49890`, :cve_nist:`2024-49892=
+`, :cve_nist:`2024-49894`,
+> +   :cve_nist:`2024-49895`, :cve_nist:`2024-49896`, :cve_nist:`2024-49900=
+`, :cve_nist:`2024-49901`,
+> +   :cve_nist:`2024-49902`, :cve_nist:`2024-49903`, :cve_nist:`2024-49905=
+`, :cve_nist:`2024-49907`,
+> +   :cve_nist:`2024-49912`, :cve_nist:`2024-49913`, :cve_nist:`2024-49924=
+`, :cve_nist:`2024-49925`,
+> +   :cve_nist:`2024-49927`, :cve_nist:`2024-49929`, :cve_nist:`2024-49930=
+`, :cve_nist:`2024-49931`,
+> +   :cve_nist:`2024-49933`, :cve_nist:`2024-49935`, :cve_nist:`2024-49936=
+`, :cve_nist:`2024-49937`,
+> +   :cve_nist:`2024-49938`, :cve_nist:`2024-49939`, :cve_nist:`2024-49944=
+`, :cve_nist:`2024-49946`,
+> +   :cve_nist:`2024-49947`, :cve_nist:`2024-49948`, :cve_nist:`2024-49949=
+`, :cve_nist:`2024-49950`,
+> +   :cve_nist:`2024-49951`, :cve_nist:`2024-49952`, :cve_nist:`2024-49953=
+`, :cve_nist:`2024-49954`,
+> +   :cve_nist:`2024-49955`, :cve_nist:`2024-49957`, :cve_nist:`2024-49958=
+`, :cve_nist:`2024-49959`,
+> +   :cve_nist:`2024-49960`, :cve_nist:`2024-49961`, :cve_nist:`2024-49962=
+`, :cve_nist:`2024-49963`,
+> +   :cve_nist:`2024-49965`, :cve_nist:`2024-49966`, :cve_nist:`2024-49969=
+`, :cve_nist:`2024-49973`,
+> +   :cve_nist:`2024-49975`, :cve_nist:`2024-49976`, :cve_nist:`2024-49977=
+`, :cve_nist:`2024-49978`,
+> +   :cve_nist:`2024-49980`, :cve_nist:`2024-49981`, :cve_nist:`2024-49982=
+`, :cve_nist:`2024-49983`,
+> +   :cve_nist:`2024-49985`, :cve_nist:`2024-49986`, :cve_nist:`2024-49987=
+`, :cve_nist:`2024-49988`,
+> +   :cve_nist:`2024-49989`, :cve_nist:`2024-49991`, :cve_nist:`2024-49992=
+`, :cve_nist:`2024-49995`,
+> +   :cve_nist:`2024-49996`, :cve_nist:`2024-49997`, :cve_nist:`2024-50000=
+`, :cve_nist:`2024-50001`,
+> +   :cve_nist:`2024-50002`, :cve_nist:`2024-50003`, :cve_nist:`2024-50005=
+`, :cve_nist:`2024-50006`,
+> +   :cve_nist:`2024-50007`, :cve_nist:`2024-50008`, :cve_nist:`2024-50012=
+`, :cve_nist:`2024-50013`,
+> +   :cve_nist:`2024-50015`, :cve_nist:`2024-50016`, :cve_nist:`2024-50019=
+`, :cve_nist:`2024-50022`,
+> +   :cve_nist:`2024-50023`, :cve_nist:`2024-50024`, :cve_nist:`2024-50026=
+`, :cve_nist:`2024-50029`,
+> +   :cve_nist:`2024-50031`, :cve_nist:`2024-50032`, :cve_nist:`2024-50033=
+`, :cve_nist:`2024-50035`,
+> +   :cve_nist:`2024-50036`, :cve_nist:`2024-50038`, :cve_nist:`2024-50039=
+`, :cve_nist:`2024-50040`,
+> +   :cve_nist:`2024-50041`, :cve_nist:`2024-50044`, :cve_nist:`2024-50045=
+`, :cve_nist:`2024-50046`,
+> +   :cve_nist:`2024-50047`, :cve_nist:`2024-50048`, :cve_nist:`2024-50049=
+`, :cve_nist:`2024-50055`,
+> +   :cve_nist:`2024-50057`, :cve_nist:`2024-50058`, :cve_nist:`2024-50059=
+`, :cve_nist:`2024-50060`,
+> +   :cve_nist:`2024-50061`, :cve_nist:`2024-50062`, :cve_nist:`2024-50063=
+`, :cve_nist:`2024-50064`,
+> +   :cve_nist:`2024-50065`, :cve_nist:`2024-50066`, :cve_nist:`2024-50069=
+`, :cve_nist:`2024-50070`,
+> +   :cve_nist:`2024-50072`, :cve_nist:`2024-50073`, :cve_nist:`2024-50074=
+`, :cve_nist:`2024-50075`,
+> +   :cve_nist:`2024-50076`, :cve_nist:`2024-50077`, :cve_nist:`2024-50078=
+`, :cve_nist:`2024-50080`,
+> +   :cve_nist:`2024-50082`, :cve_nist:`2024-50083`, :cve_nist:`2024-50084=
+`, :cve_nist:`2024-50085`,
+> +   :cve_nist:`2024-50086`, :cve_nist:`2024-50087`, :cve_nist:`2024-50088=
+`, :cve_nist:`2024-50093`,
+> +   :cve_nist:`2024-50095`, :cve_nist:`2024-50096`, :cve_nist:`2024-50098=
+`, :cve_nist:`2024-50099`,
+> +   :cve_nist:`2024-50101`, :cve_nist:`2024-50103`, :cve_nist:`2024-50108=
+`, :cve_nist:`2024-50110`,
+> +   :cve_nist:`2024-50111`, :cve_nist:`2024-50112`, :cve_nist:`2024-50115=
+`, :cve_nist:`2024-50116`,
+> +   :cve_nist:`2024-50117`, :cve_nist:`2024-50120`, :cve_nist:`2024-50121=
+`, :cve_nist:`2024-50124`,
+> +   :cve_nist:`2024-50125`, :cve_nist:`2024-50126`, :cve_nist:`2024-50127=
+`, :cve_nist:`2024-50128`,
+> +   :cve_nist:`2024-50130`, :cve_nist:`2024-50131`, :cve_nist:`2024-50133=
+`, :cve_nist:`2024-50134`,
+> +   :cve_nist:`2024-50135`, :cve_nist:`2024-50136`, :cve_nist:`2024-50139=
+`, :cve_nist:`2024-50140`,
+> +   :cve_nist:`2024-50141`, :cve_nist:`2024-50142`, :cve_nist:`2024-50143=
+`, :cve_nist:`2024-50145`,
+> +   :cve_nist:`2024-50147`, :cve_nist:`2024-50148`, :cve_nist:`2024-50150=
+`, :cve_nist:`2024-50151`,
+> +   :cve_nist:`2024-50152`, :cve_nist:`2024-50153`, :cve_nist:`2024-50154=
+`, :cve_nist:`2024-50155`,
+> +   :cve_nist:`2024-50156`, :cve_nist:`2024-50158`, :cve_nist:`2024-50159=
+`, :cve_nist:`2024-50160`,
+> +   :cve_nist:`2024-50162`, :cve_nist:`2024-50163`, :cve_nist:`2024-50164=
+`, :cve_nist:`2024-50166`,
+> +   :cve_nist:`2024-50167`, :cve_nist:`2024-50168`, :cve_nist:`2024-50169=
+`, :cve_nist:`2024-50170`,
+> +   :cve_nist:`2024-50171`, :cve_nist:`2024-50172`, :cve_nist:`2024-50175=
+`, :cve_nist:`2024-50176`,
+> +   :cve_nist:`2024-50179`, :cve_nist:`2024-50180`, :cve_nist:`2024-50181=
+`, :cve_nist:`2024-50182`,
+> +   :cve_nist:`2024-50183`, :cve_nist:`2024-50184`, :cve_nist:`2024-50185=
+`, :cve_nist:`2024-50186`,
+> +   :cve_nist:`2024-50187`, :cve_nist:`2024-50188`, :cve_nist:`2024-50189=
+`, :cve_nist:`2024-50191`,
+> +   :cve_nist:`2024-50192`, :cve_nist:`2024-50193`, :cve_nist:`2024-50194=
+`, :cve_nist:`2024-50195`,
+> +   :cve_nist:`2024-50196`, :cve_nist:`2024-50198`, :cve_nist:`2024-50201=
+`, :cve_nist:`2024-50202`,
+> +   :cve_nist:`2024-50205`, :cve_nist:`2024-50208`, :cve_nist:`2024-50209=
+`, :cve_nist:`2024-50211`,
+> +   :cve_nist:`2024-50215`, :cve_nist:`2024-50222`, :cve_nist:`2024-50223=
+`, :cve_nist:`2024-50224`,
+> +   :cve_nist:`2024-50226`, :cve_nist:`2024-50229`, :cve_nist:`2024-50230=
+`, :cve_nist:`2024-50231`,
+> +   :cve_nist:`2024-50232`, :cve_nist:`2024-50233`, :cve_nist:`2024-50234=
+`, :cve_nist:`2024-50235`,
+> +   :cve_nist:`2024-50236`, :cve_nist:`2024-50237`, :cve_nist:`2024-50239=
+`, :cve_nist:`2024-50240`,
+> +   :cve_nist:`2024-50242`, :cve_nist:`2024-50243`, :cve_nist:`2024-50244=
+`, :cve_nist:`2024-50245`,
+> +   :cve_nist:`2024-50246`, :cve_nist:`2024-50247`, :cve_nist:`2024-50248=
+`, :cve_nist:`2024-50249`,
+> +   :cve_nist:`2024-50250`, :cve_nist:`2024-50251`, :cve_nist:`2024-50252=
+`, :cve_nist:`2024-50255`,
+> +   :cve_nist:`2024-50256`, :cve_nist:`2024-50257`, :cve_nist:`2024-50258=
+`, :cve_nist:`2024-50259`,
+> +   :cve_nist:`2024-50261`, :cve_nist:`2024-50262`, :cve_nist:`2024-50264=
+`, :cve_nist:`2024-50265`,
+> +   :cve_nist:`2024-50267`, :cve_nist:`2024-50268`, :cve_nist:`2024-50269=
+`, :cve_nist:`2024-50271`,
+> +   :cve_nist:`2024-50272`, :cve_nist:`2024-50273`, :cve_nist:`2024-50275=
+`, :cve_nist:`2024-50276`,
+> +   :cve_nist:`2024-50278`, :cve_nist:`2024-50279`, :cve_nist:`2024-50282=
+`, :cve_nist:`2024-50283`,
+> +   :cve_nist:`2024-50284`, :cve_nist:`2024-50285`, :cve_nist:`2024-50286=
+`, :cve_nist:`2024-50287`,
+> +   :cve_nist:`2024-50292`, :cve_nist:`2024-50296`, :cve_nist:`2024-50298=
+`, :cve_nist:`2024-50299`,
+> +   :cve_nist:`2024-50300`, :cve_nist:`2024-50301`, :cve_nist:`2024-50302=
+`, :cve_nist:`2024-53042`,
+> +   :cve_nist:`2024-53043`, :cve_nist:`2024-53046`, :cve_nist:`2024-53047=
+`, :cve_nist:`2024-53052`,
+> +   :cve_nist:`2024-53055`, :cve_nist:`2024-53057`, :cve_nist:`2024-53058=
+`, :cve_nist:`2024-53059`,
+> +   :cve_nist:`2024-53060`, :cve_nist:`2024-53061`, :cve_nist:`2024-53063=
+`, :cve_nist:`2024-53066`,
+> +   :cve_nist:`2024-53068`, :cve_nist:`2024-53072`, :cve_nist:`2024-53076=
+`, :cve_nist:`2024-53079`,
+> +   :cve_nist:`2024-53081`, :cve_nist:`2024-53082`, :cve_nist:`2024-53083=
+`, :cve_nist:`2024-53088`,
+> +   :cve_nist:`2024-53091`, :cve_nist:`2024-53093`, :cve_nist:`2024-53094=
+`, :cve_nist:`2024-53096`,
+> +   :cve_nist:`2024-53099`, :cve_nist:`2024-53100`, :cve_nist:`2024-53101=
+`, :cve_nist:`2024-53103`,
+> +   :cve_nist:`2024-53108`, :cve_nist:`2024-53109`, :cve_nist:`2024-53110=
+`, :cve_nist:`2024-53112`,
+> +   :cve_nist:`2024-53113`, :cve_nist:`2024-53119`, :cve_nist:`2024-53120=
+`, :cve_nist:`2024-53121`,
+> +   :cve_nist:`2024-53122`, :cve_nist:`2024-53123`, :cve_nist:`2024-53126=
+`, :cve_nist:`2024-53127`,
+> +   :cve_nist:`2024-53129`, :cve_nist:`2024-53130`, :cve_nist:`2024-53131=
+`, :cve_nist:`2024-53134`,
+> +   :cve_nist:`2024-53135`, :cve_nist:`2024-53138`, :cve_nist:`2024-53139=
+`, :cve_nist:`2024-53140`,
+> +   :cve_nist:`2024-53141`, :cve_nist:`2024-53142`, :cve_nist:`2024-53145=
+`, :cve_nist:`2024-53146`,
+> +   :cve_nist:`2024-53150`, :cve_nist:`2024-53151`, :cve_nist:`2024-53154=
+`, :cve_nist:`2024-53155`,
+> +   :cve_nist:`2024-53156`, :cve_nist:`2024-53157`, :cve_nist:`2024-53165=
+`, :cve_nist:`2024-53166`,
+> +   :cve_nist:`2024-53171`, :cve_nist:`2024-53173`, :cve_nist:`2024-53180=
+`, :cve_nist:`2024-53188`,
+> +   :cve_nist:`2024-53200`, :cve_nist:`2024-53202`, :cve_nist:`2024-53208=
+`, :cve_nist:`2024-53210`,
+> +   :cve_nist:`2024-53213`, :cve_nist:`2024-53226`, :cve_nist:`2024-53227=
+`, :cve_nist:`2024-53230`,
+> +   :cve_nist:`2024-53231`, :cve_nist:`2024-53237`, :cve_nist:`2024-54683=
+`, :cve_nist:`2024-55916`,
+> +   :cve_nist:`2024-56369`, :cve_nist:`2024-56538`, :cve_nist:`2024-56551=
+`, :cve_nist:`2024-56567`,
+> +   :cve_nist:`2024-56572`, :cve_nist:`2024-56574`, :cve_nist:`2024-56577=
+`, :cve_nist:`2024-56578`,
+> +   :cve_nist:`2024-56579`, :cve_nist:`2024-56581`, :cve_nist:`2024-56593=
+`, :cve_nist:`2024-56595`,
+> +   :cve_nist:`2024-56596`, :cve_nist:`2024-56598`, :cve_nist:`2024-56600=
+`, :cve_nist:`2024-56601`,
+> +   :cve_nist:`2024-56602`, :cve_nist:`2024-56603`, :cve_nist:`2024-56604=
+`, :cve_nist:`2024-56605`,
+> +   :cve_nist:`2024-56606`, :cve_nist:`2024-56611`, :cve_nist:`2024-56613=
+`, :cve_nist:`2024-56614`,
+> +   :cve_nist:`2024-56615`, :cve_nist:`2024-56617`, :cve_nist:`2024-56622=
+`, :cve_nist:`2024-56623`,
+> +   :cve_nist:`2024-56626`, :cve_nist:`2024-56627`, :cve_nist:`2024-56629=
+`, :cve_nist:`2024-56631`,
+> +   :cve_nist:`2024-56634`, :cve_nist:`2024-56640`, :cve_nist:`2024-56642=
+`, :cve_nist:`2024-56643`,
+> +   :cve_nist:`2024-56648`, :cve_nist:`2024-56649`, :cve_nist:`2024-56650=
+`, :cve_nist:`2024-56651`,
+> +   :cve_nist:`2024-56653`, :cve_nist:`2024-56654`, :cve_nist:`2024-56657=
+`, :cve_nist:`2024-56658`,
+> +   :cve_nist:`2024-56659`, :cve_nist:`2024-56660`, :cve_nist:`2024-56662=
+`, :cve_nist:`2024-56663`,
+> +   :cve_nist:`2024-56664`, :cve_nist:`2024-56667`, :cve_nist:`2024-56670=
+`, :cve_nist:`2024-56672`,
+> +   :cve_nist:`2024-56675`, :cve_nist:`2024-56688`, :cve_nist:`2024-56689=
+`, :cve_nist:`2024-56692`,
+> +   :cve_nist:`2024-56694`, :cve_nist:`2024-56704`, :cve_nist:`2024-56708=
+`, :cve_nist:`2024-56710`,
+> +   :cve_nist:`2024-56715`, :cve_nist:`2024-56716`, :cve_nist:`2024-56717=
+`, :cve_nist:`2024-56718`,
+> +   :cve_nist:`2024-56720`, :cve_nist:`2024-56722`, :cve_nist:`2024-56723=
+`, :cve_nist:`2024-56724`,
+> +   :cve_nist:`2024-56725`, :cve_nist:`2024-56726`, :cve_nist:`2024-56727=
+`, :cve_nist:`2024-56728`,
+> +   :cve_nist:`2024-56729`, :cve_nist:`2024-56739`, :cve_nist:`2024-56741=
+`, :cve_nist:`2024-56744`,
+> +   :cve_nist:`2024-56745`, :cve_nist:`2024-56746`, :cve_nist:`2024-56747=
+`, :cve_nist:`2024-56748`,
+> +   :cve_nist:`2024-56751`, :cve_nist:`2024-56752`, :cve_nist:`2024-56754=
+`, :cve_nist:`2024-56755`,
+> +   :cve_nist:`2024-56756`, :cve_nist:`2024-56760`, :cve_nist:`2024-56763=
+`, :cve_nist:`2024-56765`,
+> +   :cve_nist:`2024-56767`, :cve_nist:`2024-56769`, :cve_nist:`2024-56770=
+`, :cve_nist:`2024-56774`,
+> +   :cve_nist:`2024-56776`, :cve_nist:`2024-56777`, :cve_nist:`2024-56778=
+`, :cve_nist:`2024-56779`,
+> +   :cve_nist:`2024-56780`, :cve_nist:`2024-56781`, :cve_nist:`2024-56783=
+`, :cve_nist:`2024-56785`,
+> +   :cve_nist:`2024-56786`, :cve_nist:`2024-56787` and :cve_nist:`2024-57=
+807`
+> +-  qemu: Fix :cve_nist:`2024-6505`
+> +-  rust: Ignore :cve_nist:`2024-43402`
+> +
+> +
+> +Fixes in Yocto-5.1.2
+> +~~~~~~~~~~~~~~~~~~~~
+> +
+> +-  binutils: stable 2.43.1 branch update
+> +-  bitbake: runqueue: Fix performance of multiconfigs with large overlap
+> +-  bitbake: runqueue: Fix scenetask processing performance issue
+> +-  bitbake: runqueue: Optimise setscene loop processing
+> +-  build-appliance-image: Update to styhead head revision
+> +-  builder: set :term:`CVE_PRODUCT`
+> +-  buildtools-docs-tarball: Add rsvg so we can handle svg files in docs
+> +-  connman: Fix restart script
+> +-  contributor-guide: submit-changes.rst: suggest to remove the git sign=
+ature
+> +-  cve-update-nvd2-native: Handle :term:`BB_NO_NETWORK` and missing db
+> +-  cve-update-nvd2-native: Tweak to work better with NFS :term:`DL_DIR`
+> +-  dev-manual: bmaptool.rst: correct command for bmaptool-native
+> +-  dev-manual: bmaptool.rst: simplify and fix instructions
+> +-  dev-manual: fix styling of references to bmaptool
+> +-  dnf: drop python3-iniparse from :term:`DEPENDS` and :term:`RDEPENDS`
+> +-  do_package/sstate/sstatesig: Change timestamp clamping to hash output=
+ only
+> +-  docs: Gather dependencies in poky.yaml.in
+> +-  docs: Update the documentation for :term:`SRCPV`
+> +-  docs: standards.md: add a section on admonitions
+> +-  docs: update current releases
+> +-  expat: upgrade to 2.6.4
+> +-  gcc: Fix c++: tweak for Wrange-loop-construct
+> +-  ghostscript: upgrade 10.04.0
+> +-  glibc: stable 2.40 branch updates.
+> +-  groff: Fix race issues for parallel build
+> +-  gstreamer1.0-libav: explicitly disable documentation
+> +-  gstreamer1.0: run ptests in parallel
+> +-  gstreamer1.0: upgrade to 1.24.10
+> +-  linux-yocto/6.6: bsp/genericarm64: disable ARM64_SME
+> +-  linux-yocto/6.6: genericarm64.cfg: enable CONFIG_DMA_CMA
+> +-  linux-yocto/6.6: update to v6.6.69
+> +-  lttng-modules: fix sched_stat_runtime changed in Linux 6.6.66
+> +-  migration-guides: add release notes for 4.0.23, 5.0.4, 5.0.5 and 5.1.=
+1
+> +-  oeqa/ssh: Improve performance and log sizes
+> +-  oeqa/utils/gitarchive: Return tag name and improve exclude handling
+> +-  poky.conf: add new tested distros
+> +-  poky.conf: bump version for 5.1.2
+> +-  poky.yaml.in: add missing locales dependency
+> +-  poky.yaml.in: replace inkscape dependency by librsvg2-bin
+> +-  populate_sdk_ext: write_local_conf add shutil import
+> +-  python3-poetry-core: drop python3-six from :term:`RDEPENDS`
+> +-  python3: upgrade to 3.12.8
+> +-  ref-manual: SSTATE_MIRRORS/SOURCE_MIRROR_URL: add instructions for mi=
+rror authentication
+> +-  ref-manual: classes: fix bin_package description
+> +-  ref-manual: devtool-reference: add warning note on deploy-target and =
+shared objects
+> +-  ref-manual: merge two separate descriptions of :term:`RECIPE_UPGRADE_=
+EXTRA_TASKS`
+> +-  ref-manual: move runtime-testing section to the test-manual
+> +-  ref-manual: packages: move ptest section to the test-manual
+> +-  ref-manual: qa-checks: remove patch-status-core/patch-status-noncore
+> +-  ref-manual: use standardized method accross both ubuntu and debian fo=
+r locale install
+> +-  reproducible-builds.rst: show how to build a single package
+> +-  resulttool: Add --logfile-archive option to store mode
+> +-  resulttool: Allow store to filter to specific revisions
+> +-  resulttool: Clean up repoducible build logs
+> +-  resulttool: Fix passthrough of --all files in store mode
+> +-  resulttool: Handle ltp rawlogs as well as ptest
+> +-  resulttool: Improve repo layout for oeselftest results
+> +-  resulttool: Trim the precision of duration information
+> +-  resulttool: Use single space indentation in json output
+> +-  rxvt-unicode.inc: disable the terminfo installation by setting TIC to=
+ :
+> +-  selftest/reproducible: Clean up pathnames
+> +-  selftest/reproducible: Drop rawlogs
+> +-  shadow: use update-alternatives to handle su.1 and nologin.8
+> +-  system-requirements.rst: add dependencies for pdf builds
+> +-  system-requirements: add fedora 39 to supported distros
+> +-  system-requirements: update list of supported distros
+> +-  systemd-boot: drop intltool-native from :term:`DEPENDS`
+> +-  systemd: drop intltool-native from :term:`DEPENDS`
+> +
+> +
+> +Known Issues in Yocto-5.1.2
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +- N/A
+> +
+> +
+> +Contributors to Yocto-5.1.2
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +Thanks to the following people who contributed to this release:
+> +
+> +-  Alexander Kanavin
+> +-  Antonin Godard
+> +-  Bruce Ashfield
+> +-  Changqing Li
+> +-  Deepthi Hemraj
+> +-  Gu=C3=A9na=C3=ABl Muller
+> +-  Gu=C3=B0ni M=C3=A1r Gilbert
+> +-  Hitendra Prajapati
+> +-  Lee Chee Yang
+> +-  Mark Hatle
+> +-  Michael Nazzareno Trimarchi
+> +-  Michael Opdenacker
+> +-  Peter Marko
+> +-  Richard Purdie
+> +-  Robert Yang
+> +-  Ross Burton
+> +-  Sid-Ali
+> +-  Steve Sakoman
+> +-  Sunil Dora
+> +-  Trevor Gamblin
+> +-  Wang Mingyu
+> +-  Xiangyu Chen
+> +-  Yash Shinde
+> +
+> +
+> +Repositories / Downloads for Yocto-5.1.2
+> +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> +
+> +yocto-autobuilder
+> +
+> +-  Repository Location: :yocto_git:`/yocto-autobuilder`
+> +-  Branch: :yocto_git:`styhead </yocto-autobuilder/log/?h=3Dstyhead>`
+> +-  Tag:  :yocto_git:`yocto-5.1.2 </yocto-autobuilder/log/?h=3Dyocto-5.1.=
+2>`
+> +-  Git Revision: :yocto_git:`384d37a957a7f90abe04fe320cf0919c5a8f22ef </=
+yocto-autobuilder/commit/?id=3D384d37a957a7f90abe04fe320cf0919c5a8f22ef>`
+> +-  Release Artefact: yocto-autobuilder-helper-384d37a957a7f90abe04fe320c=
+f0919c5a8f22ef
+> +-  sha: 5c1f96d7d968380464e230cf55bdd417d360b1a2e6b14ce6538c4be1e49845da
+> +-  Download Locations:
+> +   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/yocto-a=
+utobuilder-helper-384d37a957a7f90abe04fe320cf0919c5a8f22ef.tar.bz2
+> +   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/yocto-autobuilder-=
+helper-384d37a957a7f90abe04fe320cf0919c5a8f22ef.tar.bz2
+> +
+> +yocto-autobuilder
 
-PACKAGE_KEEP_SECTIONS = ".debug_frame"
+Should be yocto-autobuilder-helper, I think.
 
-By using libunwind + minidebuginfo, that provides a way for users to get
-debug_frame based backtraces on target.
+> +
+> +-  Repository Location: :yocto_git:`/yocto-autobuilder`
 
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
----
- documentation/profile-manual/intro.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+Same here, and below (except the revision/download urls).
 
-diff --git a/documentation/profile-manual/intro.rst b/documentation/profile-manual/intro.rst
-index 317912552..a7243c1ca 100644
---- a/documentation/profile-manual/intro.rst
-+++ b/documentation/profile-manual/intro.rst
-@@ -75,3 +75,9 @@ Additionally, in order to generate the right type of debug info, we also need to
- set :term:`PACKAGE_DEBUG_SPLIT_STYLE` in the ``local.conf`` file::
- 
-    PACKAGE_DEBUG_SPLIT_STYLE = 'debug-file-directory'
-+
-+When you are building a stripped image, you can also keep some specific ELF
-+sections in the image by setting :term:`PACKAGE_KEEP_SECTIONS` in the
-+``local.conf`` file::
-+
-+   PACKAGE_KEEP_SECTIONS = ".debug_frame"
--- 
-2.47.1
+> +-  Branch: :yocto_git:`styhead </yocto-autobuilder/log/?h=3Dstyhead>`
+> +-  Tag:  :yocto_git:`yocto-5.1.2 </yocto-autobuilder/log/?h=3Dyocto-5.1.=
+2>`
+> +-  Git Revision: :yocto_git:`15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1 </=
+yocto-autobuilder/commit/?id=3D15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1>`
+> +-  Release Artefact: yocto-autobuilder-helper-15cc4a50f19c32eb2ea59a53ac=
+cc69c1f1c2c0e1
+> +-  sha: f7ec63be7925f38ef9439082684860b312f991728f264d45a3e32efed0baa5f1
+> +-  Download Locations:
+> +   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.2/yocto-a=
+utobuilder-helper-15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1.tar.bz2
+> +   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.2/yocto-autobuilder-=
+helper-15cc4a50f19c32eb2ea59a53accc69c1f1c2c0e1.tar.bz2
 
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
