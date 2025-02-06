@@ -1,111 +1,84 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <Pascal.Weisser.ext@karlstorz.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 59A88C0219C
-	for <webhook@archiver.kernel.org>; Thu,  6 Feb 2025 13:18:35 +0000 (UTC)
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
- by mx.groups.io with SMTP id smtpd.web10.40483.1738847908278449468
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3DF32C02196
+	for <webhook@archiver.kernel.org>; Thu,  6 Feb 2025 13:20:25 +0000 (UTC)
+Received: from mx07-0040c702.pphosted.com (mx07-0040c702.pphosted.com [205.220.184.135])
+ by mx.groups.io with SMTP id smtpd.web11.40770.1738848016770720457
  for <docs@lists.yoctoproject.org>;
- Thu, 06 Feb 2025 05:18:28 -0800
+ Thu, 06 Feb 2025 05:20:17 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=K5Wz/OZx;
- spf=pass (domain: smile.fr, ip: 209.85.218.47, mailfrom: yoann.congal@smile.fr)
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-ab737e5674bso173381566b.1
-        for <docs@lists.yoctoproject.org>; Thu, 06 Feb 2025 05:18:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1738847906; x=1739452706; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mTKhopSaVB3vrcGBZnza1DCHhdCiWhGIPMQGDNM9k8g=;
-        b=K5Wz/OZx44iBytLQ552KX/r5RyJXEc9Vwtip+CRLqVhYWNUiGZ6gq4I1SrO7j7IGBR
-         83Otc9NtiYI8AhnYp7Wa4n3Y9ED4qUrGI3b8Qgvc1HuYqib82wL0QkHybWeqDuXzKv4O
-         7A/TFya1/elygz38yeYpEKYKLLCpmydEaCkCY=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738847906; x=1739452706;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mTKhopSaVB3vrcGBZnza1DCHhdCiWhGIPMQGDNM9k8g=;
-        b=SSpGTlSUKIxzuuBYLoctRWHsfnHNvkrTKLhtgLdP6QEmdpvwOxRGbPwnHadU81eID5
-         rNuO3Y4pSWH6mlDxWqWXTJYrBHMSxJHXf32DES3eDCnCGS3EySxFOv+tXHB9z7Sy4C4e
-         gVDCOA5OqQa3gNnEVEvrCylnQavHYcVhzINg/n8eaUZ/Rb9tJ1Ct95PJujQ73DIvxMka
-         29/sxz+F/mdY6J/Or3/c1yPmm/xlE/vq268tjiOIaNzALzbCwi7mmR+9scuNsJTtZLJX
-         KeVGOjw2fL7jzmLpM3lxqyRwXFOO/jDIG0oMt+f585BDPBbICCBPqPTt215pCTeaouo2
-         xgVA==
-X-Gm-Message-State: AOJu0YyNDA9dafMFNtHIRcViz/Aq5q2vvOf+BjWq8k2l+OUl+Omh44LY
-	vV8Ndm4XkKpqbYnHj4lAMnLj+8K4XejVJ3OoH1t7EyZ3wmF5tdrqK8JYMjZGDZDZlpqubQGgjOg
-	F
-X-Gm-Gg: ASbGnctgC3dvUUn4SITX5n8rRVivaToKonuT4LWZ443I5Hq8tg8i+EBDARnOXnD1FBo
-	AY7F4M/WZLYQ3Vw5cu6fgWPU2Kzqoofm+cr0jQlEs0hdMKiaXiwU+O0MNYEyYL8Zg+MDVT55otb
-	1AKkP2oWipURjLIDHfCIePzGcwlTlqadu4PC5x9Q5CZpVHhVerN/a4paQwMpvdc7h69DWLLAJGl
-	jVqCiIrOyXjPMbFlUYX9q5wmxbEf6jw/R2VUmPwRPn7ML40KQHp4oP6JW0ni2qbIxV8WYlDXdce
-	0IludOyfIw1eXKy6SygwWqeLhWdo9e29MPJFLxzDDJpIigDrrKuorv+WoplPAPgUywlAG7VK5JD
-	u8sX9ukKrzkgKNCxA2zxGBncmA1oJ
-X-Google-Smtp-Source: AGHT+IGVW/c6QKcpNdT0LqWfO3uj650wU7jqpT27UYPvMAXLPm6ag4jHFcqTXkz9nbv4fIYidEED7A==
-X-Received: by 2002:a17:907:9688:b0:aa6:7a81:3077 with SMTP id a640c23a62f3a-ab75e322c85mr780382266b.54.1738847906481;
-        Thu, 06 Feb 2025 05:18:26 -0800 (PST)
-Received: from P-ASN-ECS-830T8C3.idf.intranet (static-css-ccs-204145.business.bouyguestelecom.com. [176.157.204.145])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dcf1b815c8sm898568a12.42.2025.02.06.05.18.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 05:18:25 -0800 (PST)
-From: Yoann Congal <yoann.congal@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Yoann Congal <yoann.congal@smile.fr>,
-	Guillaume Swaenepoel <guillaume.swaenepoel@smile.fr>
-Subject: [PATCH 2/3] reproducible-builds: change/add titles in the "How" section
-Date: Thu,  6 Feb 2025 14:18:10 +0100
-Message-Id: <20250206131811.86935-2-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250206131811.86935-1-yoann.congal@smile.fr>
-References: <20250206131811.86935-1-yoann.congal@smile.fr>
+ dkim=pass header.i=@karlstorz.com header.s=S-DKIM-20210427 header.b=WmSXLQi9;
+ spf=permerror, err=parse error for token &{10 18 %{ir}.%{v}.%{d}.spf.has.pphosted.com}: invalid domain name (domain: karlstorz.com, ip: 205.220.184.135, mailfrom: pascal.weisser.ext@karlstorz.com)
+Received: from pps.filterd (m0267679.ppops.net [127.0.0.1])
+	by mx07-0040c702.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 516BKVeB020710
+	for <docs@lists.yoctoproject.org>; Thu, 6 Feb 2025 13:20:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=karlstorz.com;
+	 h=cc:content-transfer-encoding:content-type:date:from
+	:message-id:mime-version:subject:to; s=S-DKIM-20210427; bh=v9dCh
+	6hbLTaU21JALCdGqq2y4zst4SSMzNJvCRorPKM=; b=WmSXLQi9Rimdl2K9sZ86X
+	UURrFYEyQ9XLNM5LKgY0RgVlBAoqqBApvwiUtS3AuoFOPBE4ZwG73+rgrlEEaK7K
+	WaQJlMrVnRnXfFc63ZXgtTIv8FOBXQb/9LeBe3aD1+Gd5YoDjYg1yt/8OYc89JwN
+	QSPz1pMCJ9kin5XemO+XK4JHNfG8H8rNtULgTGifkWu5Aof9JQy/330axankIp4A
+	iBDXIdBfJbG9RvW3/35/UaKYyGThglu0ZqYBIZuBDJOFBi8kJ9QqFCyZxDJzoMVw
+	OEwSwNsB1L33hZzAd5boyw9lIPyxLUeBdNHcDFM2YwlRbyLmURpSE1zjI6eZyVu5
+	g==
+Received: from tut-ex22-pv.kstg.corp (62-134-76-232.business.static.de.bt.net [62.134.76.232])
+	by mx07-0040c702.pphosted.com (PPS) with ESMTPS id 44mv18rs6y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <docs@lists.yoctoproject.org>; Thu, 06 Feb 2025 13:20:14 +0000 (GMT)
+Received: from TUT-EX22-PV.KSTG.corp (10.0.10.226) by TUT-EX22-PV.KSTG.corp
+ (10.0.10.226) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.14; Thu, 6 Feb
+ 2025 14:20:14 +0100
+Received: from tutn-bpfb5m3.kstg.corp (10.0.10.41) by
+ InternalSMTPRelay.KSTG.corp (10.0.10.226) with Microsoft SMTP Server id
+ 15.2.1544.14 via Frontend Transport; Thu, 6 Feb 2025 14:20:13 +0100
+From: "Weisser, Pascal" <pascal.weisser.ext@karlstorz.com>
+To: <docs@lists.yoctoproject.org>
+CC: "Weisser, Pascal" <pascal.weisser.ext@karlstorz.com>
+Subject: [PATCH] ref-manual: Add missing variable IMAGE_ROOTFS_MAXSIZE
+Date: Thu, 6 Feb 2025 14:20:12 +0100
+Message-ID: <20250206132012.359126-1-pascal.weisser.ext@karlstorz.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-GUID: 3ZI_UiEORuW2kJqGtzBRaqxQBFuYtwvv
+X-Proofpoint-ORIG-GUID: 3ZI_UiEORuW2kJqGtzBRaqxQBFuYtwvv
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-06_03,2025-02-05_03,2024-11-22_01
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 06 Feb 2025 13:18:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6259
+ <docs@lists.yoctoproject.org>; Thu, 06 Feb 2025 13:20:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6261
 
-From: Yoann Congal <yoann.congal@smile.fr>
+This patch adds the missing documentation of variable IMAGE_ROOTFS_MAXSIZE
+to the reference manual.
 
-This is preparation work for the following commit.
-
-Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
-Reviewed-by: Guillaume Swaenepoel <guillaume.swaenepoel@smile.fr>
+Signed-off-by: Weisser, Pascal <pascal.weisser.ext@karlstorz.com>
 ---
- documentation/test-manual/reproducible-builds.rst | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ documentation/ref-manual/variables.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
-index aaf2e4541..b9f671d68 100644
---- a/documentation/test-manual/reproducible-builds.rst
-+++ b/documentation/test-manual/reproducible-builds.rst
-@@ -122,9 +122,12 @@ The project's current reproducibility status can be seen at
- You can also check the reproducibility status on the Autobuilder:
- :yocto_ab:`/valkyrie/#/builders/reproducible`.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 47d4e814f..c80696b64 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3984,6 +3984,9 @@ system and gives an overview of their function and contents.
  
--===============================
--Can I test my layer or recipes?
--===============================
-+===================================
-+How can I test my layer or recipes?
-+===================================
+          IMAGE_ROOTFS_EXTRA_SPACE = "41943040"
+ 
++   :term:`IMAGE_ROOTFS_MAXSIZE`
++       Defines the maximum size in Kbytes for the generated image.
 +
-+With world build
-+~~~~~~~~~~~~~~~~
- 
- Once again, you can run a ``world`` test using the
- :ref:`oe-selftest <ref-manual/release-process:Testing and Quality Assurance>`
-@@ -132,6 +135,9 @@ command provided above. This functionality is implemented
- in :oe_git:`meta/lib/oeqa/selftest/cases/reproducible.py
- </openembedded-core/tree/meta/lib/oeqa/selftest/cases/reproducible.py>`.
- 
-+Subclassing the test
-+~~~~~~~~~~~~~~~~~~~~
-+
- You could subclass the test and change ``targets`` to a different target.
- 
- You may also change ``sstate_targets`` which would allow you to "pre-cache" some
+    :term:`IMAGE_ROOTFS_SIZE`
+       Defines the size in Kbytes for the generated image. The OpenEmbedded
+       build system determines the final size for the generated image using
+-- 
+2.48.1
+
 
