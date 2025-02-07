@@ -1,113 +1,170 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DE251C02196
-	for <webhook@archiver.kernel.org>; Fri,  7 Feb 2025 08:28:10 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.64770.1738916888415665186
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 08B05C02196
+	for <webhook@archiver.kernel.org>; Fri,  7 Feb 2025 08:48:51 +0000 (UTC)
+Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.9])
+ by mx.groups.io with SMTP id smtpd.web10.64984.1738918121909994135
  for <docs@lists.yoctoproject.org>;
- Fri, 07 Feb 2025 00:28:08 -0800
+ Fri, 07 Feb 2025 00:48:43 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MWKSgcd2;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 864D5442FA;
-	Fri,  7 Feb 2025 08:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738916886;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=XChg3ibBzpgK+hDe9elUzCcYuVJ9YQAHokFKjOK6S4Y=;
-	b=MWKSgcd2nBM+6/by2B8qDrd3c/saQAYOtNFSeAeGcIqvH7EsmyIqwlpZVOi+u+gBZPAsbq
-	w+kjNBbXSaRhbtYIBeIQHng3S6Y7q5Dp/s7N+zmAOzXvYIGs8Xw4T4LcoA+SLMJ6bHlywD
-	S/kH60mvxCbnZKjvWyI1HKg7lSGINQ73zvw8tXTb353kpjdkzhNIWuboGPLcYna8JhvglJ
-	f11/3JrHXDHrv4XqMzjgeWmhOnnyIiRckba9K52lrJvkvK5kCa7FtzunZDn4LJwmtq/nc6
-	jWX3Jn/ie+TFC5WfDwyLe2QPLFF7158mKjsBVMQNjyEuXAIF0VBnO9ePZm36+g==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v3 0/2] migration-5.2: Add entries for virtual provider and
- multiconfig changes
-Date: Fri, 07 Feb 2025 09:27:42 +0100
-Message-Id: <20250207-migration-5-2-updates-v3-0-9571efbb1cd0@bootlin.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=g3+39zdw;
+ spf=pass (domain: cherry.de, ip: 52.101.70.9, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WlCxT58FoTTmLwl/uwQi1V/MJv9U3mZvXIrIz1ci/udJkUod5vhlfNkmsG7dTO/Tju+/6YlCoIQ6658idtioqbJXaHRdKG5Xu6IQqItja+1taHqf+9ZQ0qIxYp5PxM08gc8AzYSGzz2ZDYnxdBgrtv17PUKT0DT1+gl9T5ZL7mpqjbvc95j/6a+gR7C6hPe/yF6d1466UckyCE3qq4m//pVkiyd0FvwFEhY8Sm4cR3rkWp1gKNAXN5GCxsKANvb+raGZ6xFWB2buUc+Seuooy3F4kecVVNbhEffA92q8ay/8QB7gTUOsBu/sqdwYEcyprGA3m8hfr3QfA4KrNmEZrw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F0AKPSylLBBVvBxqhvi/BLeNlCBgCgNeffAHgtJStvs=;
+ b=yknvE6LJOqEfZ9nPhO7EowcAVahERYSdZiZgO+wFr5QA38EOEBMdE3aEIG0MPaxUL0D/sOOfiGuNPfFo8zTJymTrB4nmPV8FvXMGQ1u18ZJqV5I6gyJmFT9Ee2Wck7ATuUquDgMX7k3hivYf9H7hB1JtTG46KrocJ6FXjl6K9vIp3sPiv2/IVT7qYY7nF6ty1ckTeu53+8Fvrl+3BfSjXJ3bhmbbhgVU+vwx/qBQuYw4mw9C7jEjhrVIudyhCjkd/V30JYHyc76+tcW1vBegLYCZ8IKdAL79K2Gm0AH+7apzYzXkg/SEadQYKQ3EsHQjBpYb/2wXKd9DbeOZwFK7/A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F0AKPSylLBBVvBxqhvi/BLeNlCBgCgNeffAHgtJStvs=;
+ b=g3+39zdwpzJX0gXa/A47QjfQ6wonI0T15fk/yqAEi4A+k4a8JT2UrTlJMG50I0kHcLTgaTFAj6B4i9tcRTlXyWUdpwnKcHM0GgBu04mymZ+kP4cNEpghsAYcjg+wuicNljQc836abkiHQVfVlJ5hjvehFv0bVQY+bbEl+LeT8cM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by DB9PR04MB9354.eurprd04.prod.outlook.com (2603:10a6:10:36c::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Fri, 7 Feb
+ 2025 08:48:38 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%3]) with mapi id 15.20.8398.021; Fri, 7 Feb 2025
+ 08:48:38 +0000
+Message-ID: <13409a47-542e-4cad-a973-a0cb7ebd7c88@cherry.de>
+Date: Fri, 7 Feb 2025 09:48:37 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] migration-5.2: document BB_CURRENT_MC default
+ value change
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20250207-migration-5-2-updates-v3-0-9571efbb1cd0@bootlin.com>
+ <20250207-migration-5-2-updates-v3-1-9571efbb1cd0@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20250207-migration-5-2-updates-v3-1-9571efbb1cd0@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAP7DpWcC/4XNSw6CMBCA4auYrh3TB5TiynsYF30BTYSStjYaw
- t0trHRhXP6TmW8WFG1wNqLzYUHBZhedn0qw4wHpQU69BWdKI4ppjQltYXR9kKlsQQ0UHrORyUb
- QihOmMFWG1ajczsF27rm711vpwcXkw2t/k8k2/SdmAgRaUREuq4YLKi7K+3R300n7EW1mph8OI
- 78cChgqbbkQsqlUZ76ddV3faa4MiQQBAAA=
-X-Change-ID: 20250129-migration-5-2-updates-cb613b02bd35
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1535;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=6AYI8zIR73Dx3Drjb83pKOOAsjUASV9IXBGlaCl3GnM=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnpcQVila2ODlsEkVCQBLfbPFXH+pOcCv0BQWqt
- ccfUye190aJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ6XEFQAKCRDRgEFAKaOo
- NsjfEACETP2QsRwaqBAqrbYVi8n7Y/a8sP6Z2DRZ9nZGC0v4KCDzsFeErknYlcfGlm5tIhrCS5J
- YJZ/t1D+qcVY4YdpA0NisQl7I0ampB/4ZDawGlQEoAEY4ZUvprFLgrl3rgoYA4Vi1gKZzp+4k+r
- ME389hx3Lq+c65Mh/88IoSUX+gMtSK2easCUK9w1hSZ/18qJoeR3mJgJ0dmi+dvV9f0SD/zu+QW
- +ZniJmoNuqtwiafT01zhC3HIFSbZ5LttDHtpatvM5LUNY+xP5QdWdae5rFBOVxP7peb+T9Y19Yu
- L3QGiTNQCffreRh+6OSA8hkVFFtx12RLmh2PzHpArkdibIpUonMHFquFUsaUow3wdu//agvv5Ar
- 2IOZdGVSlTsIeRJaOQxmKdrIowdg7U/4gPRDp3kRS9ciBLHQGdCqkV8Uw95IDx1jGyYEgl8TFlm
- JnmvymoQPnQv4HNNE2etdleOuVIbFdimSMjwv/AhhhGXogQYI5D76XVQFUYq3w9HSD68cZTQK5m
- DhReAFLCy+bs6/Cm5zoSws1WO/DZAL5Q/8dhmaAY0ga0BrMbEWm9SFfmJ+8r6qMzYEDWJs2nrKA
- q2e060xMOmHqfNjhVJA69ZX1ZCyPs7fMc09QJwKsz6jObgessB6B/DVbzz1xxe2UGcvacHgyvJD
- bg99p+1h6yTlC7A==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeejlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepuefggfeuuedvvefhvdehffejuddujeevhfeiueeftddvgfekudegfeetkeeuffdvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdphihotghtohhprhhojhgvtghtrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrr
- hihrdguvgdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
+X-ClientProxiedBy: VI1PR0102CA0028.eurprd01.prod.exchangelabs.com
+ (2603:10a6:802::41) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB9354:EE_
+X-MS-Office365-Filtering-Correlation-Id: 73da289e-7ed2-4c5e-25f4-08dd47543717
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|366016|1800799024|10070799003|376014|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?eGJvRERZYkNZSWtqOUhBcFZRRCtLdGp5SXpiZDRXTmVxeEx3eWhJdy81TFo1?=
+ =?utf-8?B?ZzJBR3RqajUxVSt1M25zOForUSt3aUNGZkVXOU1Ud2dHQW9rS3U0QWNQOWcz?=
+ =?utf-8?B?c09VN2c2VGpWL1JicHE3SytqMHlDYlJNeXQxKy95NEIxSjVxa0ZLQVpDanM3?=
+ =?utf-8?B?N082aTZ5cGgzTXZhcHBwOEhlTWVsZTUxN3VUM2xic0VSREUzTkpNclovNUJS?=
+ =?utf-8?B?VnJack5adU8xcXN1VDZTWDcydlpQZTFBQTlNS1ExcjRJOXcvSjZZZWppWG9i?=
+ =?utf-8?B?M1lnekpLUVVXQlpwTXJycU9YWVlmNmQ2elRUVlpyWmxCNG9zbzJNMmwrUTFK?=
+ =?utf-8?B?b2dPK1JDRWthUkRRNVlwUEJLSEc4ekJROUZxR3VWa21NQWtYY1VzTmxSZE10?=
+ =?utf-8?B?MmV0MDhHUlorZ245M05kUUxHSGpzR1Fabi8yVEJwZ3E4bnBEU25NTytBM1VG?=
+ =?utf-8?B?c2xseWoyNnJnNGxiTHc1d3JXVHlHeVlnQ2lqYjZ4bWpOaVR2emhnUE0yOFpN?=
+ =?utf-8?B?Vmpid1F0RlVCTlVjNHpSd2d3a01hWDRGd3AwWFR6WUhveUZqdWV5a2dGSmh6?=
+ =?utf-8?B?UkR4ZjA2ek9VblRSNVRpUDdnUHB0MmxSTTRHbEpjSUx4N1pBOXRSUnlVM3Zo?=
+ =?utf-8?B?MHJqMlZyTHhYS1hodmFaelB6SDBYRkdmZ3lTZHZUa1BOdjBXM21hK3lBbTJB?=
+ =?utf-8?B?blgzbDA1QTBJcEJ2TFk4WFF2cERGOWdaamdvU0FSRWFoVnd4eW9UZi9sM255?=
+ =?utf-8?B?d0lkT3crRWRVTE1ac0ZTaFk1Q0pqT1laeFlsTVRZRmNDUEJvWnc4eUhmdFZN?=
+ =?utf-8?B?MjRkVDQrd2NZNlNzRTdndkt2dVNicEpLTnFFSXJHMDA0K0kvb3ZxTHdqS20r?=
+ =?utf-8?B?d2ZWRlh0TVpGeVZtUzJZZEhxWThLV01VSzE2d3FWUU45WUVIZEswcTVUamN4?=
+ =?utf-8?B?cVhWdldhWW1wTjRtdWtHTkdUVCtMUmo3OTZvbVNTdkFBbFNSeFdzY0lnWnpZ?=
+ =?utf-8?B?UmhKWCtIK2Y3SHNmNEF4RGdScEluTHo1UG1PZmxoNVFKdThtR2duTVhnZXVi?=
+ =?utf-8?B?dUZpOEgvNUV3VHhOcjlMQVVvSmQ1YXZCZk9GcHZFNnFMRmwyNVRxNVdoT1Z6?=
+ =?utf-8?B?a2FpY1dtK0hWdi80Q3R3MFE1WkNnb1hUZy83ZTBUaytac3J1YnhYdDZNUW1C?=
+ =?utf-8?B?V0NrRHZHUkFCZlF5L3RDVlB1bTAyVXAybFV2MGJwL29TVGZJOGl4SHZrbjBE?=
+ =?utf-8?B?MnFVVEdoeTdFYTdJWktZaXNaTm1COHZOMGd1K2RobFpOZ2NLWlQ3T1M3eVFi?=
+ =?utf-8?B?ai91c0VMQjdWMW9kY0g5UVIrcTFvWml3TWNCTE1LUGJwdzRpMjdXWms2eWVi?=
+ =?utf-8?B?TFJqR3VUNzZGVnNOUjNpUDNMNGJJU05GbnZEZjFhUkd0aWNtR3FoSHVIaTRO?=
+ =?utf-8?B?aFBvQkx6UGZ3Z2YyK2JFaFdUMFVPNkZpSC9lY1c1SkZjM1NRaGJkQkJDVXgz?=
+ =?utf-8?B?ZUNmaWdCS3FaVWRxL2FCMGwwNkhFMDRIVXhoamZrZmZlMVllZ3Q2R0E0cDdW?=
+ =?utf-8?B?c25YWExCTXdkNmJlRmYvbUVuSnJIN3YwZVovQ21aYzlBYUVDd1ZzMGN5cWYz?=
+ =?utf-8?B?aThWbzBFWmttVDlZUGIzbUNuYjZlaTltR1BZSTRYTzBzMzVYV3BncGkvekV4?=
+ =?utf-8?B?UDU2cUFldXBiZW41NGxQaGFvdVJ1ODJEMFpEclExUlJiUEN3NGE1QVNoc2JZ?=
+ =?utf-8?B?TXJ6WVNKVmpDWWhlRzgxTW9VWU1QazF0dGpvaXA1SW9nbjIxdURHcjcvbUhu?=
+ =?utf-8?B?YlVGYUZuS0gxYlhKUFdDdlJodVdUWU9aTFA5aFlwWXRHTVNSMWhIM2FjVmJB?=
+ =?utf-8?Q?fZ9oLhqJpGFrb?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(10070799003)(376014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?WkVKZzdJVytWbWFXOEtPZUN1cmpxdnp5bHBnRnJYUHR0YWVxVkhkNVVZQ1Ux?=
+ =?utf-8?B?Z0xEWnpORkNzSHVxa0E1VUtOd1paWnMxbUhFRmk3d3dBMmE2SW90Ky9Sc3dm?=
+ =?utf-8?B?N296U3dFN1MrSWpYTVMrMXU0RDA3dkhkdnUrbmdVSlRuVE9ob3ZrZUVXMU5s?=
+ =?utf-8?B?NmV4MmtRbTlCeWVCVDZXdlduYVI5ZlpuVWdDVzY0OEs3SmNoNnUybnZvWkRw?=
+ =?utf-8?B?TWU1LzJITkVkN0tFdC9WMU1nbk12L0poTGFlcGlqUGQ1RHEycldjNGdMMnZy?=
+ =?utf-8?B?Rnhzak1mZDRHOFhpOEtwN1h2cG5lZ2NnR1VzODhiUWs0S09UNFJMbnZtMFlU?=
+ =?utf-8?B?ZVRoUGowU24wTytMZUpyQkVrK2FvTytWcEsyNmxNclMrKytQUW9DaS95bHVQ?=
+ =?utf-8?B?WWQrY0RjUjk5bEJOV2dMbndRU2lienRzWEwraWRMVldicXBSZ3ZFVE9LWmJE?=
+ =?utf-8?B?L0UzazBvSi84ZDErRUY1ajlCSUxKeFpOcmt1TVlMTm9Ta2dWS3A2bEROWVgw?=
+ =?utf-8?B?SGI1SW4rK2ltcnJoSUdacThnK3VVQXBZdkZ0c0VVZFdvM3JUY1lVYjRHQmJy?=
+ =?utf-8?B?WUtzUy9LRHZKaGlxdzlYYUxIcmwxeUk1ZkwxemJYMjRRODluYUVydERyT2xG?=
+ =?utf-8?B?Nzg2WjF0dVltdXp6M0x0T0k3SUVzb1ZpallxTEl4VmM3YXljVnZ1WDFrWEhl?=
+ =?utf-8?B?K2FaNmhZQmc1K3d3SFdJU2cwbmhEZzQ5WnlQcmNPaFRoRDBRanNETGJtOGlw?=
+ =?utf-8?B?KytOTXFBUGJNV21PWEVOT1B0MHFxZzh4NWp2em9jVm1sNVNHK2hrSFhkSjV2?=
+ =?utf-8?B?MUREMXdoTmFrNkU2ZVlwSVdWaXZEbi9LSjVVc2xsanFEOXJuQWpnWnNNUldk?=
+ =?utf-8?B?RU1xM3pVam5nSkZZdUZvNFkxR1NQSk1lOFVkdzVIWUcrNzZnSEJiTUNxVUVS?=
+ =?utf-8?B?bklaWlorM3NsRGE0ZFh3REdOL1dXYWh0WW9kUk8ybm9HSWQyVE9rYnZiZTZI?=
+ =?utf-8?B?VlFmRjFPSHNiTEdBeHNzMmRLeHg2Y2hDbk5vRUUzcW1BMkxTVVhTSFJBN2dQ?=
+ =?utf-8?B?eFVHaThOY2lEVHVUYkNIb1NzV3J2cUF4WjhsUjNPR0JjYkFzZ2JLQjB4WnhH?=
+ =?utf-8?B?TmFpOXJrVndNdGVpTlBzZ1U0dXZMczRoUG03OU13L2JTUW1oTEpxQmVjY1A4?=
+ =?utf-8?B?Y3FMb3U4ZytzcE5SWXBJa0dpdm9JbkVRd3NPMHNYeGVOSDcxenZxNEpzb0Vk?=
+ =?utf-8?B?clVwQkxKUWR2ZDdBWXZ3dXdCd1o4RWJEUUh0M3pOM1pEd05HRFl4Z01lLzRM?=
+ =?utf-8?B?NDJ2NHBWSHl1NFZOTVZyZUZYOTJuMk10anZWVmxTTnZ0MVd3UTJ0MHREYXZ4?=
+ =?utf-8?B?MEZnNlY1OXVoZEt2c1pLMjRmaitvVzVMNFh4NU9mS3NOb29mWnBtQll4cnJ2?=
+ =?utf-8?B?STc1RDQrT1VmNkR5djJQSnk2elFscUVvU0hWY1hERW5FdSswL213K3ZEUGFu?=
+ =?utf-8?B?VVJlL2pPY1hNdFVoZnJPSG1PRjIrZXZvWXRqblBzOEVKekUvaDRidDc4MElU?=
+ =?utf-8?B?QVU3OG4vWHh6Zk1JTjRyb2Fvb0ZvK3hNS09OV3REWlk2K0tZb1BMam0vTmNi?=
+ =?utf-8?B?SzJXQy9UaFFOV2xBb0h2azZXeGhjVXdtL3oySlR5ZHV0YlRINVAxQ3MxMjhY?=
+ =?utf-8?B?aStITUdyWFZZWUtLMHFuQWhTTlZNeWFwOElCM0NVaTBrWldYTmNMc1NmRU5G?=
+ =?utf-8?B?L1QwdFRxdm5BRUtXY3NYMGNhWXdTdE1nd0k4TXk0cHVxVWFCWW41SlNLbHBi?=
+ =?utf-8?B?cWppWjB4WjNMazFpVzhFVmhaREwxT01TR3ZsRlhHeW9OUktuRFJjb0tBUWc3?=
+ =?utf-8?B?cFBpeFZyZmszK2M4VmZoT1NVdjY2Mms5TjF6eDRSL3VwdGRxdVJBUlFnWTVD?=
+ =?utf-8?B?QjJWRzZHRkhPd0I5WGREL3gvU2Y1TkFqWjE3RFk2QTZzcU1sWER5NTBrY3pM?=
+ =?utf-8?B?ZjZSd1A0NG8yTTJJNjg4VkU5Q0o0L0tKWHBvbDBBTENsZVhzemk3RUdLRTRQ?=
+ =?utf-8?B?UFlSMlkwakp5eWV4azRRcUx0S0NIZGd5OHpUK0JFeXBEMUVYejYySUg5dVFQ?=
+ =?utf-8?B?bVpzd3ZSYnFMQ2NQVmhRTnMrK2tES3ByMGh5RHE2QlF4TDFYWmhXald5eHVB?=
+ =?utf-8?Q?Xg1GwwKGuy5kGJwKNdsWiAI=3D?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 73da289e-7ed2-4c5e-25f4-08dd47543717
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 08:48:38.5023
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 1Z1fM0pKincLYTIH5cntieuyFrbT8A5X0ZX7BVp7QwA3WnPuqbPtEqCktBBbx6AER36nREeGadaS49W/Cr0eWPfDrC5w9wjekI+ThEsUa5Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9354
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Feb 2025 08:28:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6274
+ <docs@lists.yoctoproject.org>; Fri, 07 Feb 2025 08:48:51 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6275
 
-Notes:
-* original patch by Richard Purdie:
-  https://lore.kernel.org/r/20250126111850.2609298-1-richard.purdie@linuxfoundation.org
-  This patch is just reformatting/typo fixes.
-* The BB_CURRENT_MC should ideally be documented, but that will come at
-  a later point with
-  https://bugzilla.yoctoproject.org/show_bug.cgi?id=15709.
+Hi Antonin,
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
-Changes in v3:
-- Review by Quentin:
-  - Rephrase virtual provider change to state that the examples are not
-    complete and link to breaking commit to show more examples.
-- Link to v2: https://lore.kernel.org/r/20250131-migration-5-2-updates-v2-0-4ce688a74bfd@bootlin.com
+On 2/7/25 9:27 AM, Antonin Godard wrote:
+> After commit 0fa0d8d764bb ("cooker/cache: Drop mc 'default' string
+> value") in Bitbake, the default value of BB_CURRENT_MC was changed from
+> "default" to an empty string. Document it.
+> 
+> Signed-off-by: Richard Purdie <richard.purdie@linuxfoundation.org>
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 
-Changes in v2:
-- Split BB_CURRENT_MC and virtual changes in two commits
-- Review from Quentin (thanks!):
-  - virtual changes:
-    - Add more examples to instruct how a user should migrate
-    - remove spurious "-" in example
-  - BB_CURRENT_MC:
-    - suggest to update logic based on BB_CURRENT_MC
-- Link to v1: https://lore.kernel.org/r/20250129-migration-5-2-updates-v1-1-98416a476828@bootlin.com
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
----
-Antonin Godard (2):
-      migration-5.2: document BB_CURRENT_MC default value change
-      migration-5.2: add virtual provider change
-
- documentation/migration-guides/migration-5.2.rst | 46 ++++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
----
-base-commit: e6745669cc26de8f61d5d1ccdd5a95b552eece97
-change-id: 20250129-migration-5-2-updates-cb613b02bd35
-
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
-
+Thanks!
+Quentin
 
