@@ -2,428 +2,131 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 32A89C021A1
-	for <webhook@archiver.kernel.org>; Fri,  7 Feb 2025 16:29:04 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.73795.1738945738286796083
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5FFF8C0219B
+	for <webhook@archiver.kernel.org>; Fri,  7 Feb 2025 16:41:44 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.74069.1738946496680217779
  for <docs@lists.yoctoproject.org>;
- Fri, 07 Feb 2025 08:28:58 -0800
+ Fri, 07 Feb 2025 08:41:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=O1ckZIvb;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A1D2C4431F;
-	Fri,  7 Feb 2025 16:28:56 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dPP8KiWE;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B9546443DB;
+	Fri,  7 Feb 2025 16:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738945736;
+	t=1738946494;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lAF6tYPyewFSiX1nvq+ikRtEOO2pV4pk1j4B/FJBo0E=;
-	b=O1ckZIvbk+gFy4qeA+syWb7TbPzr8Hh3dOuyZUtTircGkSm47E2mbP2iLfebOzpObq5/PA
-	9KdM9pJ1ZDoxiugGb8A/FQl52OwEW8l/Po8QmEaZofvZ9I+mDIINkUAjVDJGTtTmAh8rsL
-	BesvA+36yyG1US9tSMY4AM8HeHdn8DYA687y7GaSO63pLIsEge3gDo97suspAymreXRMhd
-	Tm+6X0cFAx86//HaDjog2thlBCCIurRzvlZHWKPR1FJQPYRWr0XZ/vM5xhoKldG+fExyVm
-	gTL6lB92EYC6sEBip0O15BTUSE0wGyIIChMPEsH9xlNivznNNOTo8ygBkR0lvA==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=LJMdNTe3IYrjSVfcGH1kUUZ+3mFmlUDTlFb/zf5XzY8=;
+	b=dPP8KiWEtA7axofQbsVT3LFLMWOpL7r4m6wtZ+dLl05+inQJ7o8NjZC7HAAIRPxUDTy2pO
+	ZpX44CWwUuI+H3xd4pUP/KdMKUdeUvIW/4J1LTdEbBfSDu75znT8MiXXR86MeszH7wgrhG
+	YBs03Gr8UjZgWnWYqMtxTsvTtcMBhZQ+GcugPyfF3x6+G/aERz7dGG1N9BqvK48G1Em6Sl
+	VxShMBV9HtYU+haukXIShV/svx+52qVCqONiDM6toH9/SyoQauIRvDjpwcXP/eOy1g74LZ
+	qIkR4UMLnstFiu1OHyNKDZ8l4S2R4zmKcKx4MJDLB3Xa86/Dw2rDAMlS4QT7oQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 07 Feb 2025 17:28:51 +0100
-Subject: [PATCH 1/6] dev-manual: move multiconfig documentation to its own
- document
+Date: Fri, 07 Feb 2025 17:41:27 +0100
+Subject: [PATCH] Add favicon for the documentation html
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250207-multiconfig-doc-v1-1-f63cdab1fad9@bootlin.com>
-References: <20250207-multiconfig-doc-v1-0-f63cdab1fad9@bootlin.com>
-In-Reply-To: <20250207-multiconfig-doc-v1-0-f63cdab1fad9@bootlin.com>
+Message-Id: <20250207-favicon-v1-1-d7ce8c097c87@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIALY3pmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDIyNz3bTEsszk/Dxd89Qk48Tk5DTzNMsUJaDqgqLUtMwKsEnRsbW1AGg
+ X8wdZAAAA
+X-Change-ID: 20241227-favicon-7eb3accf7f9d
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=16372;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2795;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=nvE3D5UonpVfMFkuPMMRtXeg5j6950QgJrM63QzwxlY=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnpjTHEf1UsTkxhvhhFwBAokVhVXIa+s2uafMWB
- fBPx9Ek3AqJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ6Y0xwAKCRDRgEFAKaOo
- Ng+GD/9w1wHJcvGH8hd/DmceHj9YQqAD4FwsWh18C5ps1u0LlOUGw7UKz7V6UIJyyFKAHG30AeZ
- ++Z1DKkISzS+OUX97UofG4py4P7XpoYW7KdZPp0uAKKWl1Wg4g0Ov9arHZozxnxpsGuK/L7xLoN
- Wb5NNEbEzTE6ujz4t5MReDrQIlMAWpsW1ENhITcoBGHxvcqb+4jON3rSaXT4FvGCkcuSODC9t4M
- XuFQEViz2Q42om+eSDUcZPbIDEhEWjeKCVCPxNlW6ygP1D/d7yoD+CJztS6K6mWFIpdECIewmyb
- frzw2AK09tDiZ4YgfGSrtveCeg2KB+6kVviZcBj05GBiL/9HhJP25agnd1uHBZ+Uc3D9I09y7pP
- Whv31/Yh030JEnnQkjby8MuBlNjE3erLLA7TX/Ey3n4ED1qtg6kNFwGAEF1ypdoij/6f/201iE4
- P67t69vPUWbjdFSpfBWNq49edgX6xdDloIbdXprrW+NTojbVsqzSmcGIzMdFhpyHH2NyDYYCRIo
- vdkm2KufNgrFX1xHzb+RISjPYKl1rWejMXxhQjsChCj3JBJjdMD0164D/nWInRX/0vJIfyN5Tiz
- Fzr7dsuFjW5UJnU4dZUSji6g+bnu3iFd/bbSEnKH8kPwGPj0WAJoktVT13M3CP1EXU+3qOSZXV3
- n0D+m/pqMWivUBw==
+ bh=MJgbtImz5vYJnE0RqdcX64sPLp604JhkeJDJQXwnKFc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnpje+tsO9JJE4J+3vC8nIA+344cS+mmDNtHwp2
+ b9bNGhd0T+JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ6Y3vgAKCRDRgEFAKaOo
+ Nlw7EACkhuEDcvtv2075pAqdXbZJmcUi67+kVubu/qlg0ya5eo2hQ+vVg7FL9v9Su/UXBM3cbZA
+ fN0RbC2JzE8flj7Z8fIdwgTk7YIPVctHGZV1Bo67+cSy8qM9L8sSjmPZOQAF3YxjYehojdBmp5L
+ C6BeYkkAAYLjHtwkOZ2J3QefsrkG3Ei7XguqUVnsiflrFgFiegFsM18hHrJm4UslV4vkJ16qVFW
+ rC2OH2wh/W10U03hB4RyBU53dL0LOJmXw3HIehivqN1zOUtH4bcyZLAYDzScafo2MOkWj7PZz7J
+ QJH8Ti7BX0YK3k07eDtyJG3QY+aKSwq8uh6Hk1uhXjpamAszeCLEQbLVHdrdSpiNrHPDR2safbi
+ uxyVysoL8HHoQsTIfrM7bXL6EeRyr05gu/udRayjWNdu/iby8G7Yy2tX3I4Vx14eHP+NEtzPPtF
+ 7p2sY9XqOWfyfEF/7uxv7o4+0xSQGYnlQ2dwGLNlsNepxadWiGmHDKuOeX3AkF4bJWFFc8UAhOZ
+ UbE3GUzS6wYFJIrbaW7jWuNh/miCcPXs51++RYJLWDSZCBs0GlyhpBof/TY2fC4Vzh3r0o/u+cm
+ vRlY1CfIt7xkfLRIY2bs6i1DN0ri4dQfFX311Xg1v0/7J5QdUAZ3ghk7cKFoHg6Ta4D3DV7lP+u
+ RCol0SL8vAzpdTw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeigeeuhfefgeehfffgueeiteehieelfeehjeektefgkeeuheeuleduvdelgffhnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoo
- hhtlhhinhdrtghomh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleejlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepueduudehgefggeduueduheefueeltdegvedvjefgueefgfetuedthfeuuefhudejnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpshhphhhinhigqdguohgtrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhni
+ hessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Feb 2025 16:29:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6303
+ <docs@lists.yoctoproject.org>; Fri, 07 Feb 2025 16:41:44 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6308
 
-In preparation of more section and examples to multiconfig, move the
-section about it in building.rst into its own document.
+Import the favicon from https://www.yoctoproject.org/, convert it to
+16x16 (as per the Sphinx documentation) to make a 1291B image of the
+Yocto logo.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/dev-manual/building.rst    | 156 +-----------------------------
- documentation/dev-manual/index.rst       |   1 +
- documentation/dev-manual/multiconfig.rst | 160 +++++++++++++++++++++++++++++++
- 3 files changed, 163 insertions(+), 154 deletions(-)
+Sphinx doc: https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-html_favicon
+---
+ documentation/conf.py                   |   1 +
+ documentation/sphinx-static/favicon.ico | Bin 0 -> 1291 bytes
+ 2 files changed, 1 insertion(+)
 
-diff --git a/documentation/dev-manual/building.rst b/documentation/dev-manual/building.rst
-index 4770a5a18..62b5e6b2e 100644
---- a/documentation/dev-manual/building.rst
-+++ b/documentation/dev-manual/building.rst
-@@ -113,160 +113,8 @@ The following figure and list overviews the build process:
- Building Images for Multiple Targets Using Multiple Configurations
- ==================================================================
+diff --git a/documentation/conf.py b/documentation/conf.py
+index b0e7c91eb..477e75112 100644
+--- a/documentation/conf.py
++++ b/documentation/conf.py
+@@ -136,6 +136,7 @@ except ImportError:
+     sys.exit(1)
  
--You can use a single ``bitbake`` command to build multiple images or
--packages for different targets where each image or package requires a
--different configuration (multiple configuration builds). The builds, in
--this scenario, are sometimes referred to as "multiconfigs", and this
--section uses that term throughout.
--
--This section describes how to set up for multiple configuration builds
--and how to account for cross-build dependencies between the
--multiconfigs.
--
--Setting Up and Running a Multiple Configuration Build
-------------------------------------------------------
--
--To accomplish a multiple configuration build, you must define each
--target's configuration separately using a parallel configuration file in
--the :term:`Build Directory` or configuration directory within a layer, and you
--must follow a required file hierarchy. Additionally, you must enable the
--multiple configuration builds in your ``local.conf`` file.
--
--Follow these steps to set up and execute multiple configuration builds:
--
---  *Create Separate Configuration Files*: You need to create a single
--   configuration file for each build target (each multiconfig).
--   The configuration definitions are implementation dependent but often
--   each configuration file will define the machine and the
--   temporary directory BitBake uses for the build. Whether the same
--   temporary directory (:term:`TMPDIR`) can be shared will depend on what is
--   similar and what is different between the configurations. Multiple MACHINE
--   targets can share the same (:term:`TMPDIR`) as long as the rest of the
--   configuration is the same, multiple :term:`DISTRO` settings would need separate
--   (:term:`TMPDIR`) directories.
--
--   For example, consider a scenario with two different multiconfigs for the same
--   :term:`MACHINE`: "qemux86" built
--   for two distributions such as "poky" and "poky-lsb". In this case,
--   you would need to use the different :term:`TMPDIR`.
--
--   Here is an example showing the minimal statements needed in a
--   configuration file for a "qemux86" target whose temporary build
--   directory is ``tmpmultix86``::
--
--      MACHINE = "qemux86"
--      TMPDIR = "${TOPDIR}/tmpmultix86"
--
--   The location for these multiconfig configuration files is specific.
--   They must reside in the current :term:`Build Directory` in a sub-directory of
--   ``conf`` named ``multiconfig`` or within a layer's ``conf`` directory
--   under a directory named ``multiconfig``. Here is an example that defines
--   two configuration files for the "x86" and "arm" multiconfigs:
--
--   .. image:: figures/multiconfig_files.png
--      :align: center
--      :width: 50%
--
--   The usual :term:`BBPATH` search path is used to locate multiconfig files in
--   a similar way to other conf files.
--
---  *Add the BitBake Multi-configuration Variable to the Local
--   Configuration File*: Use the
--   :term:`BBMULTICONFIG`
--   variable in your ``conf/local.conf`` configuration file to specify
--   each multiconfig. Continuing with the example from the previous
--   figure, the :term:`BBMULTICONFIG` variable needs to enable two
--   multiconfigs: "x86" and "arm" by specifying each configuration file::
--
--      BBMULTICONFIG = "x86 arm"
--
--   .. note::
--
--      A "default" configuration already exists by definition. This
--      configuration is named: "" (i.e. empty string) and is defined by
--      the variables coming from your ``local.conf``
--      file. Consequently, the previous example actually adds two
--      additional configurations to your build: "arm" and "x86" along
--      with "".
--
---  *Launch BitBake*: Use the following BitBake command form to launch
--   the multiple configuration build::
--
--      $ bitbake [mc:multiconfigname:]target [[[mc:multiconfigname:]target] ... ]
--
--   For the example in this section, the following command applies::
--
--      $ bitbake mc:x86:core-image-minimal mc:arm:core-image-sato mc::core-image-base
--
--   The previous BitBake command builds a ``core-image-minimal`` image
--   that is configured through the ``x86.conf`` configuration file, a
--   ``core-image-sato`` image that is configured through the ``arm.conf``
--   configuration file and a ``core-image-base`` that is configured
--   through your ``local.conf`` configuration file.
--
--.. note::
--
--   Support for multiple configuration builds in the Yocto Project &DISTRO;
--   (&DISTRO_NAME;) Release does not include Shared State (sstate)
--   optimizations. Consequently, if a build uses the same object twice
--   in, for example, two different :term:`TMPDIR`
--   directories, the build either loads from an existing sstate cache for
--   that build at the start or builds the object fresh.
--
--Enabling Multiple Configuration Build Dependencies
----------------------------------------------------
--
--Sometimes dependencies can exist between targets (multiconfigs) in a
--multiple configuration build. For example, suppose that in order to
--build a ``core-image-sato`` image for an "x86" multiconfig, the root
--filesystem of an "arm" multiconfig must exist. This dependency is
--essentially that the
--:ref:`ref-tasks-image` task in the
--``core-image-sato`` recipe depends on the completion of the
--:ref:`ref-tasks-rootfs` task of the
--``core-image-minimal`` recipe.
--
--To enable dependencies in a multiple configuration build, you must
--declare the dependencies in the recipe using the following statement
--form::
--
--   task_or_package[mcdepends] = "mc:from_multiconfig:to_multiconfig:recipe_name:task_on_which_to_depend"
--
--To better show how to use this statement, consider the example scenario
--from the first paragraph of this section. The following statement needs
--to be added to the recipe that builds the ``core-image-sato`` image::
--
--   do_image[mcdepends] = "mc:x86:arm:core-image-minimal:do_rootfs"
--
--In this example, the `from_multiconfig` is "x86". The `to_multiconfig` is "arm". The
--task on which the :ref:`ref-tasks-image` task in the recipe depends is the
--:ref:`ref-tasks-rootfs` task from the ``core-image-minimal`` recipe associated
--with the "arm" multiconfig.
--
--Once you set up this dependency, you can build the "x86" multiconfig
--using a BitBake command as follows::
--
--   $ bitbake mc:x86:core-image-sato
--
--This command executes all the tasks needed to create the
--``core-image-sato`` image for the "x86" multiconfig. Because of the
--dependency, BitBake also executes through the :ref:`ref-tasks-rootfs` task for the
--"arm" multiconfig build.
--
--Having a recipe depend on the root filesystem of another build might not
--seem that useful. Consider this change to the statement in the
--``core-image-sato`` recipe::
--
--   do_image[mcdepends] = "mc:x86:arm:core-image-minimal:do_image"
--
--In this case, BitBake must
--create the ``core-image-minimal`` image for the "arm" build since the
--"x86" build depends on it.
--
--Because "x86" and "arm" are enabled for multiple configuration builds
--and have separate configuration files, BitBake places the artifacts for
--each build in the respective temporary build directories (i.e.
--:term:`TMPDIR`).
-+See the :ref:`dev-manual/multiconfig` section of the Yocto Project Development
-+Tasks Manual.
+ html_logo = 'sphinx-static/YoctoProject_Logo_RGB.jpg'
++html_favicon = 'sphinx-static/favicon.ico'
  
- Building an Initial RAM Filesystem (Initramfs) Image
- ====================================================
-diff --git a/documentation/dev-manual/index.rst b/documentation/dev-manual/index.rst
-index 760108f60..63736e0ab 100644
---- a/documentation/dev-manual/index.rst
-+++ b/documentation/dev-manual/index.rst
-@@ -20,6 +20,7 @@ Yocto Project Development Tasks Manual
-    development-shell
-    python-development-shell
-    building
-+   multiconfig
-    speeding-up-build
-    libraries
-    prebuilt-libraries
-diff --git a/documentation/dev-manual/multiconfig.rst b/documentation/dev-manual/multiconfig.rst
+ # Add any paths that contain custom static files (such as style sheets) here,
+ # relative to this directory. They are copied after the builtin static files,
+diff --git a/documentation/sphinx-static/favicon.ico b/documentation/sphinx-static/favicon.ico
 new file mode 100644
-index 000000000..8464f80c3
---- /dev/null
-+++ b/documentation/dev-manual/multiconfig.rst
-@@ -0,0 +1,160 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Building Images for Multiple Targets Using Multiple Configurations
-+******************************************************************
-+
-+You can use a single ``bitbake`` command to build multiple images or
-+packages for different targets where each image or package requires a
-+different configuration (multiple configuration builds). The builds, in
-+this scenario, are sometimes referred to as "multiconfigs", and this
-+section uses that term throughout.
-+
-+This section describes how to set up for multiple configuration builds
-+and how to account for cross-build dependencies between the
-+multiconfigs.
-+
-+Setting Up and Running a Multiple Configuration Build
-+=====================================================
-+
-+To accomplish a multiple configuration build, you must define each
-+target's configuration separately using a parallel configuration file in
-+the :term:`Build Directory` or configuration directory within a layer, and you
-+must follow a required file hierarchy. Additionally, you must enable the
-+multiple configuration builds in your ``local.conf`` file.
-+
-+Follow these steps to set up and execute multiple configuration builds:
-+
-+-  *Create Separate Configuration Files*: You need to create a single
-+   configuration file for each build target (each multiconfig).
-+   The configuration definitions are implementation dependent but often
-+   each configuration file will define the machine and the
-+   temporary directory BitBake uses for the build. Whether the same
-+   temporary directory (:term:`TMPDIR`) can be shared will depend on what is
-+   similar and what is different between the configurations. Multiple MACHINE
-+   targets can share the same (:term:`TMPDIR`) as long as the rest of the
-+   configuration is the same, multiple :term:`DISTRO` settings would need separate
-+   (:term:`TMPDIR`) directories.
-+
-+   For example, consider a scenario with two different multiconfigs for the same
-+   :term:`MACHINE`: "qemux86" built
-+   for two distributions such as "poky" and "poky-lsb". In this case,
-+   you would need to use the different :term:`TMPDIR`.
-+
-+   Here is an example showing the minimal statements needed in a
-+   configuration file for a "qemux86" target whose temporary build
-+   directory is ``tmpmultix86``::
-+
-+      MACHINE = "qemux86"
-+      TMPDIR = "${TOPDIR}/tmpmultix86"
-+
-+   The location for these multiconfig configuration files is specific.
-+   They must reside in the current :term:`Build Directory` in a sub-directory of
-+   ``conf`` named ``multiconfig`` or within a layer's ``conf`` directory
-+   under a directory named ``multiconfig``. Here is an example that defines
-+   two configuration files for the "x86" and "arm" multiconfigs:
-+
-+   .. image:: figures/multiconfig_files.png
-+      :align: center
-+      :width: 50%
-+
-+   The usual :term:`BBPATH` search path is used to locate multiconfig files in
-+   a similar way to other conf files.
-+
-+-  *Add the BitBake Multi-configuration Variable to the Local
-+   Configuration File*: Use the
-+   :term:`BBMULTICONFIG`
-+   variable in your ``conf/local.conf`` configuration file to specify
-+   each multiconfig. Continuing with the example from the previous
-+   figure, the :term:`BBMULTICONFIG` variable needs to enable two
-+   multiconfigs: "x86" and "arm" by specifying each configuration file::
-+
-+      BBMULTICONFIG = "x86 arm"
-+
-+   .. note::
-+
-+      A "default" configuration already exists by definition. This
-+      configuration is named: "" (i.e. empty string) and is defined by
-+      the variables coming from your ``local.conf``
-+      file. Consequently, the previous example actually adds two
-+      additional configurations to your build: "arm" and "x86" along
-+      with "".
-+
-+-  *Launch BitBake*: Use the following BitBake command form to launch
-+   the multiple configuration build::
-+
-+      $ bitbake [mc:multiconfigname:]target [[[mc:multiconfigname:]target] ... ]
-+
-+   For the example in this section, the following command applies::
-+
-+      $ bitbake mc:x86:core-image-minimal mc:arm:core-image-sato mc::core-image-base
-+
-+   The previous BitBake command builds a ``core-image-minimal`` image
-+   that is configured through the ``x86.conf`` configuration file, a
-+   ``core-image-sato`` image that is configured through the ``arm.conf``
-+   configuration file and a ``core-image-base`` that is configured
-+   through your ``local.conf`` configuration file.
-+
-+.. note::
-+
-+   Support for multiple configuration builds in the Yocto Project &DISTRO;
-+   (&DISTRO_NAME;) Release does not include Shared State (sstate)
-+   optimizations. Consequently, if a build uses the same object twice
-+   in, for example, two different :term:`TMPDIR`
-+   directories, the build either loads from an existing sstate cache for
-+   that build at the start or builds the object fresh.
-+
-+Enabling Multiple Configuration Build Dependencies
-+==================================================
-+
-+Sometimes dependencies can exist between targets (multiconfigs) in a
-+multiple configuration build. For example, suppose that in order to
-+build a ``core-image-sato`` image for an "x86" multiconfig, the root
-+filesystem of an "arm" multiconfig must exist. This dependency is
-+essentially that the
-+:ref:`ref-tasks-image` task in the
-+``core-image-sato`` recipe depends on the completion of the
-+:ref:`ref-tasks-rootfs` task of the
-+``core-image-minimal`` recipe.
-+
-+To enable dependencies in a multiple configuration build, you must
-+declare the dependencies in the recipe using the following statement
-+form::
-+
-+   task_or_package[mcdepends] = "mc:from_multiconfig:to_multiconfig:recipe_name:task_on_which_to_depend"
-+
-+To better show how to use this statement, consider the example scenario
-+from the first paragraph of this section. The following statement needs
-+to be added to the recipe that builds the ``core-image-sato`` image::
-+
-+   do_image[mcdepends] = "mc:x86:arm:core-image-minimal:do_rootfs"
-+
-+In this example, the `from_multiconfig` is "x86". The `to_multiconfig` is "arm". The
-+task on which the :ref:`ref-tasks-image` task in the recipe depends is the
-+:ref:`ref-tasks-rootfs` task from the ``core-image-minimal`` recipe associated
-+with the "arm" multiconfig.
-+
-+Once you set up this dependency, you can build the "x86" multiconfig
-+using a BitBake command as follows::
-+
-+   $ bitbake mc:x86:core-image-sato
-+
-+This command executes all the tasks needed to create the
-+``core-image-sato`` image for the "x86" multiconfig. Because of the
-+dependency, BitBake also executes through the :ref:`ref-tasks-rootfs` task for the
-+"arm" multiconfig build.
-+
-+Having a recipe depend on the root filesystem of another build might not
-+seem that useful. Consider this change to the statement in the
-+``core-image-sato`` recipe::
-+
-+   do_image[mcdepends] = "mc:x86:arm:core-image-minimal:do_image"
-+
-+In this case, BitBake must
-+create the ``core-image-minimal`` image for the "arm" build since the
-+"x86" build depends on it.
-+
-+Because "x86" and "arm" are enabled for multiple configuration builds
-+and have separate configuration files, BitBake places the artifacts for
-+each build in the respective temporary build directories (i.e.
-+:term:`TMPDIR`).
-+
+index 0000000000000000000000000000000000000000..85a921e3ef368a361f06b60a4e43382fd3ac31a3
+GIT binary patch
+literal 1291
+zcmeAS@N?(olHy`uVBq!ia0vp^0wB!61SBU+%rIkMV7ihT;hE;?sl~tn6ys!IVB}<A
+zgsNjiVhcgpAUP>0+XKj!Mq+C~*&x%67?~JEfOHiQ3o}8?1nJFeX91hv2V~y?Vj}}1
+zQ!4`_D+6-{Lvt%*ATncM13HeKfdwdQU}R*-I1$2TWMXDuSO66_G%#RXfH0K_$_Dw4
+z8Ho+#0!?FPWCq&_G?ys1GcrNks0DN|6O_FQ<ai+Xf8+lH1_3WOPd5fepb#U-;QzN7
+zoEcb|Sy)(@S%CyAD=Qm24+lFC@N;u>@(A(^2?_EG3JQzKhzpBIi3$ozC`w4l%F4^j
+z3yUkMD9NeF$jQrr3}FOnWoKjO<KW<v6A=`VBN_ZZz#zy0jAH?2MkNL&K}Kdl#{Wkc
+z#DReVbw0!s3{1>y>_7=s0R|=pHYO%UR;V}wFpybT*#w0c6xl@_l?<H%lYq)ZKt4qQ
+zU{eLrO=Vydbo_sdfd^<AlOVGogFVApo7!BjyH`$~6?5Zp-xVa~dufWxp|eV*Qf$lD
+zepS5kpMj+?&Uw+Lm(x|AYTeIIVwH*$+4JXO566s|@ykqH*gxKx%8<VF{CU0uJ2b^+
+zx$jV1^XBMz4jZkgjMch2v8LZ7H*dCT%MF$|$7wG!(NbN<TYjhdCja+cv-lqVzj^bH
+zSOd_}%*9TgAsieWw;%dH0LIs2PZ!4!jfu6B3_GM8McVG4S@Z5~TDap)4l^Z=rnko~
+z#T_~3cKU=_R&sLs)Us}F$CwS*&F1=E3%Rw#v`T%6fR3;M*S%FQ-t7^&m-)pb&e-7n
+z|9kd(es->V4YaC7z=`9zOx&xlybKqL^Y`Dk?)$v`R%z_<LV=HB3#Pm)+wG&4JZstc
+z=a1(YA2XZnyD}upL~7k@A*Vc9zeP26^G`qBc3bzkjR@D(tgR_Vl{RvmiXRSLm>d;2
+z<zRw=4BzUjSr#&J>#rY8GL+z{+p~Z96egvr<J#;D0xSnN>G)peYHiZ!YD>Ja?eB*l
+z8mEQSd-h&ruw>YfVZz1Gq0#jyX`_dV(9N8%%UepU?&g@)ufKNY_UiZd_UqQ%`uF3N
+z?cZG%3XAT)e_vv?NoV@$r*-@7XZoagIvwJ(m!G$<{@HKSg@;%l%<-ONGW%@KZMKHE
+z^~WWgpSbL}t-nuqf6as4q5+OO-gF0DFAWX7T3Tx&<-0uCHPCOrTTS^9b>=FDib4w+
+zzSB=P1+6@iWO#a$#@;Oqf)}dqovo}<5n6fubz9<=sI?y})~tHvt1*w!spEO&B8_dg
+z-&WY<%}U#T+t&VB>BQh4Hs`&U1_1-XZvN_3Rg>pyw_iReA>DtxXQP9{hxIqZ85mA%
+g>go6&&U`?=+2PJU{*%Ftz$jtxboFyt=akR{06~jz1poj5
 
+literal 0
+HcmV?d00001
+
+---
+base-commit: e2b6ee590a3a790b41636077e702724c9869d7f5
+change-id: 20241227-favicon-7eb3accf7f9d
+
+Best regards,
 -- 
-2.47.0
+Antonin Godard <antonin.godard@bootlin.com>
 
 
