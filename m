@@ -2,176 +2,103 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89D80C02194
-	for <webhook@archiver.kernel.org>; Fri,  7 Feb 2025 15:13:53 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.71623.1738941231426890706
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 936B0C0219D
+	for <webhook@archiver.kernel.org>; Fri,  7 Feb 2025 15:28:33 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.72001.1738942111826439130
  for <docs@lists.yoctoproject.org>;
- Fri, 07 Feb 2025 07:13:51 -0800
+ Fri, 07 Feb 2025 07:28:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Zjw/UBwu;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3B55143308;
-	Fri,  7 Feb 2025 15:13:49 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jrQLSEaY;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0586C204CC;
+	Fri,  7 Feb 2025 15:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738941229;
+	t=1738942110;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWHHXlYcKkF43n5OILNpUBOhzus/A0IWF3yMgiU1Uqs=;
-	b=Zjw/UBwu97EPcqTW8mLKbj+Wi2a+vCVPWyR/sADZo283QNeCZa2kSG2P/ISub9Sj7uffye
-	l0BrLNRK0Vz0SHtIAFeKpdB16M8Kx88oRNM3Kx847tIsjPgkAM7aclK2ML0WrYzQ6iTLd4
-	ayRiPJIFP2EIkT/PR3HabWik+DumsVTEGA6icB6FBBOzX4jN04mh7xw3ksWqBIoQEV6G9D
-	14fUX7qmkJRqtvBkUP6v3vV5wFGePeiImQPdBGTuS1ojUuJtBMPH1WcNVa3PzFILH050NC
-	Bp6L7KR015krzYm8BaWvIcTWu65Zjx6ypJHfX6BPbHvv3P6QD1YXJXJuWW0siA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Fri, 07 Feb 2025 16:13:48 +0100
-Message-Id: <D7MB7W6Z9TY9.2RE95OPANJY1D@bootlin.com>
-Subject: Re: [docs] [PATCH v2] add basic b4 config file
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>, "Richard Purdie"
- <richard.purdie@linuxfoundation.org>, "Quentin Schulz" <foss@0leil.net>,
- <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250205-b4-support-v2-1-b0ffa83bdefb@cherry.de>
- <D7M3GM34KQS7.2FXQ9D5DD967T@bootlin.com>
- <4d4eec55-641f-40ea-b332-f24569682ed9@cherry.de>
- <1f9d3cd9c29beb5dd645eae977e34046e277b1b6.camel@linuxfoundation.org>
- <D7M55FM70177.BPEH6BEQMQOU@bootlin.com>
- <f404f281-6a3e-442d-b2f8-ca29940d0c3c@cherry.de>
- <D7M69TH319AM.QRQACZ44XTFN@bootlin.com>
- <6d6e092b-4f28-43b2-82b4-2e17edcab003@cherry.de>
-In-Reply-To: <6d6e092b-4f28-43b2-82b4-2e17edcab003@cherry.de>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=j1/qlujQTXJ4PqKdzOkRa7Hv0qmS7rAJ9LpidVcxYDY=;
+	b=jrQLSEaYbiEdESvJrIRQdljH4xQ6YzkD9uVLx2/g4aWzPXpD3/G7tWmlEzylaHLZjocOt5
+	iipKNFByvW9bsIcv6oRm9IvIxbk5dgzVQe+3hiVoBPC8Dw5FtmrWuh/iN+sWsxIba8CmYD
+	cTxtUCrhNM4hpFwR3B6ejYgNEFcwQd7DR4rEq05KYqMFwh1QipEghXNysPSmKx+M7Kjl1/
+	nBk2v7BLT1tp6g3UWj6RwycTFKInEHbw/+qzMjSZrFibO5o8tquLan4CKaenJyNDtgSOcP
+	EbuPzzQDdKc0fhktjtMrHrazPLy3ahdLV+ImY48tUdn80/MV8iLza72Gq5fK4Q==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 07 Feb 2025 16:28:26 +0100
+Subject: [PATCH] doc: bitbake-user-manual-ref-variables: document
+ BB_CURRENT_MC
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250207-doc-bbcurrentmc-v1-1-a95c50bf350a@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAJkmpmcC/x3MQQqAIBBG4avErBNUCqGrRIvSv5pFGmNFEN09a
+ fkt3nsoQxiZuuohwcWZUywwdUV+HeMCxaGYrLatttqpkLyaJn+KIB6bV4BzBk1rXdBUql0w8/0
+ f++F9P8vSL99hAAAA
+X-Change-ID: 20250207-doc-bbcurrentmc-ee771e4527d0
+To: bitbake-devel@lists.openembedded.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1398;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=Z7sVlstnjlMLLQ2hFzW5JawLg8NrZm2xBOMKHIyeCmA=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnpiadVz7+WauEwEzTOOlMjxvd6NGMX/hN/d/7t
+ lDjruZ6ZEeJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ6YmnQAKCRDRgEFAKaOo
+ NlMtD/9A06b+BPTfMFkdOf7tp5dFo29VqzZ7MNjLjweQSXJVMIOtLiEVUn7PNyiCudurwUwbJb1
+ 8w2dNwHZRHrY6+rObrmcIRg/7hWvFGz+1ejTg8V5W8Q0m44oZ5emT9oEbO+5kCNDkCPY1ood1FU
+ 7gjeU4JmLQAysEhQ43kYZFxLQE07t0J0HAG5B7MlAZG1YfMD8/CqiYd/tyKeIJZ/ihIkppTalKW
+ O1eEF++M9bANLPWeyqVXgFffs12D9py07/MYVON+cinmaFC2/qrKsAXFV4G99VOc/tdKYonmjTP
+ LChywKdgguVRmWYygwjtRP1GWjop+96Xd/sopQcBYX1jbvXpUEPEz21/fbtWPXPIh8bkiupXSPF
+ cwOBFMQpDZBelyjswUZmu5pJhbJbRlnSPR4oxMzYqiRXtGQV5H7tQNA0CB3bCryRUHf22/3P4HD
+ qs9DvnaP+wl6ydq0vqTOm3DffiU/bwOIfeHiyqrB4/R5LfIYXlCQaV7774WpijyCGO4wVF0Rdf9
+ pfXiIf55pTLMTQS014b61CbEPCBLvD5pEn/W55wcr0VwZm1biUfAbu2DRlXpzjrBTzpiV9VsqYi
+ nr5SUt4/sgGkpaRJq1/xdfzlNeVTfn/kRT0xEhRE6g61vCeGd1Z0i9iHDESC0OxNUfKfPwOnke2
+ 8xRyUdsgxjl6jHg==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedthfeludekkeehgeekfeegtdekkedugeeijedvieejgfetteegfefhtdeivdfhgfenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdhophgvnhgvmhgsvgguuggvugdrohhrghdpsgegqdifrhgrphhpvghrqdhpohhkhidrphihpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegth
- hgvrhhrhidruggvpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepfhhoshhssedtlhgvihhlrdhnvghtpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleeigecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudeijeeltdeiueetffevteelueffiedvffejgfethefgheelieetheeiueeikeeunecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepsghithgsrghkvgdquggvvhgvlheslhhishhtshdrohhpvghnvghmsggvugguvggurdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgur
+ ghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Feb 2025 15:13:53 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6298
+ <docs@lists.yoctoproject.org>; Fri, 07 Feb 2025 15:28:33 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6299
 
-Hi Quentin,
+Document the BB_CURRENT_MC variable, which holds the name of the current
+multiconfig build a task is being run under.
 
-On Fri Feb 7, 2025 at 12:35 PM CET, Quentin Schulz wrote:
-> On 2/7/25 12:21 PM, Antonin Godard wrote:
->> Hi Quentin,
->>=20
->> On Fri Feb 7, 2025 at 11:48 AM CET, Quentin Schulz wrote:
->>> Hi Antonin,
->>>
->>> On 2/7/25 11:28 AM, Antonin Godard wrote:
->>>> On Fri Feb 7, 2025 at 10:53 AM CET, Richard Purdie wrote:
->>>>> On Fri, 2025-02-07 at 10:26 +0100, Quentin Schulz via
->>>>> lists.yoctoproject.org wrote:
->>>>>> At the same time, I've done some shady stuff with b4 for poky where =
-I
->>>>>> check (rather **guess**) if the current patch is the last patch in a
->>>>>> series. c.f.
->>>>>> https://git.openembedded.org/openembedded-core/tree/scripts/b4-wrapp=
-er-poky.py#n44
->>>>>>
->>>>>>> In any case we might also use your container scripts for this
->>>>>>> (which I will get
->>>>>>> to soon hopefully!).
->>>>>>>
->>>>>>
->>>>>> That itself may be adding a lot of time to the test since we need to
->>>>>> compile the container first. Additionally, remember that absolutely
->>>>>> NO
->>>>>> message should be output to stdout or stderr by the script otherwise
->>>>>> the
->>>>>> check is understood as a fail. I'm wondering if we couldn't add
->>>>>> support
->>>>>> for a PIPE between b4 and the scripts so that we can ask it to print
->>>>>> stuff (e.g. "please be patient, this may take a while" and maybe eve=
-n
->>>>>> print some progress). For example, I briefly added some WIP support
->>>>>> for
->>>>>> patchtest as prep-perpatch-cmd in OE-Core, but it takes a long time
->>>>>> before returning something, not very user-friendly :/
->>>>>
->>>>> My view is that any preflight checks should be relatively fast. We
->>>>> could ask someone setup an autobuilder in a container and run the who=
-le
->>>>> AB test matrix but that would be unfair and crazy! :)
->>>>>
->>>>> I'm fine with having two levels of checks but I do think we need
->>>>> something relatively quick by default else nobody will use it.
->>>>
->>>> After a clean build, for me it takes ~10 to 15 seconds to build the do=
-cumentation
->>>> in html format. Most of the time is taken to index everything, so the =
-output
->>>> format doesn't really matter.
->>>>
->>>> So, quite a long build from my perspective. Not sure there's much we c=
-an do
->>>> about it, though.
->>>>
->>>
->>> Also, on which PC are you building that? Some people may compile on muc=
-h
->>> less powerful PCs for example.
->>=20
->> You're right, I'd say I have a quite powerful PC, so I would imagine tha=
-t number
->> could be at least doubled on a slow computer.
->>=20
->> I think in the case where Sphinx isn't installed the script could point =
-towards
->> instructions on how to install.
->
-> We'd need more than just Sphinx to be safe, but then we'd need to=20
-> maintain this list of Python packages somehow and test their imports.=20
-> Same for external dependencies (librsvg and the likes).
->
->> On top of that, the script could also print something like: "if you don'=
-t want
->> to run preflight checks, set 'prep-pre-flight-checks' to include
->> 'disable-needs-checking' locally with <command/instruction>".
->>=20
->
-> I would advise against it, I don't think it makes a lot of sense to=20
-> modify the .b4-config in the repo especially since b4 will refuse=20
-> sending patches if your local git is dirty. They can simply ignore the=20
-> "you didn't run b4 prep --check" message if they want to. This is how it=
-=20
-> looks when you have a prep-perpatch-check-cmd but haven't run it yet:
->
-> $ b4 send --no-sign
-> Converted the branch to 3 messages
-> ---
-> Some pre-flight checks are failing:
->    - Run local checks : b4 prep --check
-> ---
-> Press Enter to ignore and send anyway or Ctrl-C to abort and fix
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Ah ok, yes, this is enough I guess.
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index ad219b531..858de6347 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -127,6 +127,11 @@ overview of their function and contents.
+       Contains the name of the currently running task. The name does not
+       include the ``do_`` prefix.
+ 
++   :term:`BB_CURRENT_MC`
++      Contains the name of the current multiconfig a task is being run under.
++      The name is taken from the multiconfig configuration file (a file
++      ``mc1.conf`` would make this variable equal to ``mc1``).
++
+    :term:`BB_DEFAULT_TASK`
+       The default task to use when none is specified (e.g. with the ``-c``
+       command line option). The task name specified should not include the
 
->> And so, with these two messages here, a user which sends a contribution =
-and who
->> didn't compile the docs at all can choose to either take the time to do =
-so, or
->> ignore and send the patch. What do you think?
->>=20
->
-> We could document properly in the docs contribution section and/or in=20
-> the git repo README what the expectations are wrt running the checks?
+---
+base-commit: 8843860010c97cc10ff69205d209634639b6c5cd
+change-id: 20250207-doc-bbcurrentmc-ee771e4527d0
 
-Yes, I think we can document it. The contributor guide sound like a good op=
-tion
-to me.
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
