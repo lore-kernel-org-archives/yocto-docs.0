@@ -2,100 +2,95 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 045AAC0219C
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0CF2DC0219B
 	for <webhook@archiver.kernel.org>; Fri,  7 Feb 2025 16:29:04 +0000 (UTC)
 Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.73794.1738945738245425545
+ by mx.groups.io with SMTP id smtpd.web11.73796.1738945738309247752
  for <docs@lists.yoctoproject.org>;
  Fri, 07 Feb 2025 08:28:58 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LPFXvXF3;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WD5tMQzS;
  spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id A8C2444338;
-	Fri,  7 Feb 2025 16:28:55 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D4E0F44339;
+	Fri,  7 Feb 2025 16:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1738945736;
+	t=1738945737;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2EcxpaFiy54vwd2m0AQHfQbxv+ib1OBmSZn5TFVrlNE=;
-	b=LPFXvXF3G+AQlumaBBYupLyDDEj0a4/yMdisvJ2OYW33CKG91MltF5VGnkAPqqfmlGfj00
-	GzHsDd2M6qdxr7TMOk9tuXWPJfj6rnZyS5qE8Kl34f7zMV1NcVymqt1JW01KyjaOKglgBm
-	dzn3b2qE63gwY01JmKGnEczd+c0eLHFhjWmsaL26lIolfgEkWjmz5XaHjhWzzHC+RLVwHJ
-	ksJ4YtYC2WPTfWfJgBj5Glos/KGRwPMDyT3IXad+VJ4JpQBhIAjF3z98IJOcBNWhJZNiUk
-	MUJL8OpGFXvmGcXpXxcj/cA2DT3LcKQ+EAu6hMG28qmQh4crz/+kSeTuquhUNA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kvMVaWTl+ElqUpjf+YiZfefmM1ZbbGqad6OV3Zlrpqo=;
+	b=WD5tMQzSeVynTDLfqz+NODvBg2fU2jNWwt//a3QEtBcihGa2Ecmo+MM6SmpYRUsPWjV24a
+	sZnhvNqEbHMdZG2kodZAnX7/h/e4ed0WbIsSz2wiNX5ei9l2vNdF9ugZZ/V2XBqYVB+0ZS
+	s72rG3eC738dtEhiqpHrnhRRwiZRmxQ5WjY50F20U2O3JHVuLEoXhGPcTJmCGb5+LIw1Te
+	RBmdn+YfVgpaPGqIRxJQjPTHDQlbvWa89NfUJjvg+o9KSH3tRCxUbU+15rbyG3fDEkM29G
+	UM9k6Ysk9zKzvnv0eJlLFzR2+ZiAAA8UocFb9pAJFaa0WCaN/rjgSjibk6yDDw==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/6] Improve multiconfig documentation
-Date: Fri, 07 Feb 2025 17:28:50 +0100
-Message-Id: <20250207-multiconfig-doc-v1-0-f63cdab1fad9@bootlin.com>
+Date: Fri, 07 Feb 2025 17:28:52 +0100
+Subject: [PATCH 2/6] variables.rst: add a reference to BB_CURRENT_MC from
+ bbdocs
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAMI0pmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDQyNL3dzSnJLM5Py8tMx03ZT8ZN1kY3NjE6NEs8QkS0MloK6CotS0zAq
- widGxtbUAJ/dZK2EAAAA=
-X-Change-ID: 20250129-multiconfig-doc-c37342a6ab91
+Message-Id: <20250207-multiconfig-doc-v1-2-f63cdab1fad9@bootlin.com>
+References: <20250207-multiconfig-doc-v1-0-f63cdab1fad9@bootlin.com>
+In-Reply-To: <20250207-multiconfig-doc-v1-0-f63cdab1fad9@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Mark Hatle <mark.hatle@kernel.crashing.org>
+ Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1265;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=847;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=NMx2rkZkWZa9S+0ZizFpPlAAYSLD+kNKuCZTFOpdF/0=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnpjTGVcl7rTDlx71w9tSpVAd7g0MaVutNHCReO
- pwB2dEtMtaJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ6Y0xgAKCRDRgEFAKaOo
- NkqED/9mNMMpxxHxmjH4dlnVUKvHWh9JiHCi5/whxVzUf8Wuc5+TYXwIWJbyB8P6Trh8hqyXXNf
- ztVCpQDlJxX/qRhYHOhaMLDvRBxswz9vBoAoRj8d2j9hsuTLLYVGrOn7vIEL30yMw2i/rUZh+Wn
- 8CnvLJzhS5l3oDHyAAM8B+f3hBCFkXi/NhnllB0Qv+8Ux4Sl0f9jz0mMvLxgurcJNguaXhobmNf
- yRUuAvEY7JKNjAqDwbC7n9u3KdlYomurMrlZuV3SA6JmZQzG7ZXCFSEiGL5lspT49eTirZ9X2Up
- tBjY2yVX/+J+8ULZ/+1/JkxhbIjuepxAQqqlfckd/zBvUbxYRIMNHDfMZns4jMph6DoXo6hy+pO
- Zk7swG3BYyMwcnPGBHfP87Nb6rf8TwCdkc8KCO7OyqDLURG1t3EQ3PbsagFqD61MTzDTWgX2ETl
- Ld39BUKIePPLsBsx2nQExHQzCwhILpiOnWYhTtTTRm+IGnrD2rr4oyeqg/hF9HubTWJSzEv3M1i
- K4BgP/YWkLHquCcjR8UbNm2vpLuRNujorCaD9F+VRiwuK22Ktf6r4fkrP/+2lvL4PJ15fn4KU4o
- kGi0noGoTMYluQ+e/fDU4k0Fh+vRJFTq2rkhNFKOLUieWCCUqMEi5Et3bIkuwC9Pwu0hK+EfEVi
- fTe1fNccYodvKzA==
+ bh=RYSloyBLGtr9c/1aoXZmtiBHTMSYZkiSgPmJzS8NhD0=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnpjTHZQkTJOLLxGCOYt4aJJPVAfBbf4GhGlKNb
+ AKogJDrfeGJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ6Y0xwAKCRDRgEFAKaOo
+ NhdCEAC+Qt0PfnRuyJVXJKQtjW63Uz4aXnlXOG/+ZUP/hOtXR9sfwv3boFwu2ztcMsyFgW5mxuR
+ lNVzTpjxWrj6agZBK8Pquh4lq47khJwZ5ZyoYFSq9ZHjaHtKAHEB7TSNjUieoSffBU0lC1fZKF8
+ ei6vAZdwtx1SIlR/PXZszsyjTVifHMV4LyvjsE5i10rXbOUisEv3kIdDkNvQ3COrlztQxGgGh7e
+ bibB9kEM0BJXE26Idt+9VQQTaV2OYfy2CTc0HkgY28pK732i143Mt+GlWD4fe8hVaoksHPzMy+w
+ 9sZMT+5N4qAUMy08Z9islt7h9G8081Qjj/w/J/SDVbWirlg5Xk8DAok0FXqHF1Cn3AQ7uRn1oyl
+ gln8UywsNFc23/H99cvD7j07aV1R9w4WLngQRAA4YGey7zi7Wy1onL3eIJGk/bvyYQU1+Qjamu8
+ OMxzyh4FAu3/3/MQ0ie33f+oCmstEwq7E5l+KvrLyu0Kfpkz8jxNRz6nYjw0ZncRTZxPqtsHXgH
+ fB4yBAlroDN5e5pFpJ3rLBbbmxiVYcEQ+BKUaOo6p1X83OSjLyfAGelSfgYec6xDwJjBlsKUR0E
+ cUXkm9hVZgqlL4NzghSvStqIKP945eRWsIxnPzZVFbmI27qT0KhA3NT7CxqMIJ1rP1ESb08GLnr
+ 2ZQZ3IRW8vgGkWw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepuddvfeekffetleeuvdfghfejgeffudevgeffgffhjeetjeekvdfgueevtddujeeknecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtl
- hhinhdrtghomhdprhgtphhtthhopehmrghrkhdrhhgrthhlvgeskhgvrhhnvghlrdgtrhgrshhhihhnghdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleejiecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeigeeuhfefgeehfffgueeiteehieelfeehjeektefgkeeuheeuleduvdelgffhnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoo
+ hhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 07 Feb 2025 16:29:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6301
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6302
 
-This series moves the multiconfig doc to its own document in the dev
-manual, and adds 2 sections to improve it.
-
-It also adds BB_CURRENT_MC to variables.rst, and fixes previous
-references of that variable in the doc.
+BB_CURRENT_MC is documented in the Bitbake user manual. Add a reference
+to it here.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (6):
-      dev-manual: move multiconfig documentation to its own document
-      variables.rst: add a reference to BB_CURRENT_MC from bbdocs
-      migration-5.2: fix references to BB_CURRENT_MC
-      dev-manual/multiconfig: rename to use Multiconfig term
-      dev-manual/multiconfig: improve the current doc
-      dev-manual/multiconfig: add suggested best practices and baremetal sections
+ documentation/ref-manual/variables.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
- documentation/dev-manual/building.rst            | 156 +------------
- documentation/dev-manual/index.rst               |   1 +
- documentation/dev-manual/multiconfig.rst         | 279 +++++++++++++++++++++++
- documentation/migration-guides/migration-5.2.rst |   4 +-
- documentation/ref-manual/variables.rst           |   3 +
- 5 files changed, 287 insertions(+), 156 deletions(-)
----
-base-commit: e2b6ee590a3a790b41636077e702724c9869d7f5
-change-id: 20250129-multiconfig-doc-c37342a6ab91
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index adbef69d8..a402815b6 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -390,6 +390,9 @@ system and gives an overview of their function and contents.
+    :term:`BB_CURRENTTASK`
+       See :term:`bitbake:BB_CURRENTTASK` in the BitBake manual.
+ 
++   :term:`BB_CURRENT_MC`
++      See :term:`bitbake:BB_CURRENT_MC` in the BitBake manual.
++
+    :term:`BB_DEFAULT_TASK`
+       See :term:`bitbake:BB_DEFAULT_TASK` in the BitBake manual.
+ 
 
-Best regards,
 -- 
-Antonin Godard <antonin.godard@bootlin.com>
+2.47.0
 
 
