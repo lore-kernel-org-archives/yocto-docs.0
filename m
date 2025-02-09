@@ -2,49 +2,49 @@ Return-Path: <yoann.congal@smile.fr>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F2447C021A1
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E84B0C0219B
 	for <webhook@archiver.kernel.org>; Sun,  9 Feb 2025 23:33:02 +0000 (UTC)
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
- by mx.groups.io with SMTP id smtpd.web10.39927.1739143973311446655
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+ by mx.groups.io with SMTP id smtpd.web11.39778.1739143973681752909
  for <docs@lists.yoctoproject.org>;
  Sun, 09 Feb 2025 15:32:53 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=HnOYT+6f;
- spf=pass (domain: smile.fr, ip: 209.85.128.53, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43690d4605dso25206855e9.0
+ dkim=pass header.i=@smile.fr header.s=google header.b=2B8nTsYI;
+ spf=pass (domain: smile.fr, ip: 209.85.128.46, mailfrom: yoann.congal@smile.fr)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43618283dedso37164375e9.3
         for <docs@lists.yoctoproject.org>; Sun, 09 Feb 2025 15:32:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1739143971; x=1739748771; darn=lists.yoctoproject.org;
+        d=smile.fr; s=google; t=1739143972; x=1739748772; darn=lists.yoctoproject.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DzGWfUFZxvb3Rr5bT7Y5Q5ZnDb1QDkBlrLwFD7QemKU=;
-        b=HnOYT+6f87glTfkMFUaZpMG2Bvs7PozBAsDa1YP4QobNVUCFnYwadti6oWN6JvPwnW
-         DaTJRbH49c7BazJOJ9ZwEUpP7ERJ0V/acebmxx1+Pz1oQXkXrUsnQdc/qh+bi2vKX6Ox
-         ZEZGjz3ahNd261FxI5niXKYUVVkrQB7flyN40=
+        bh=te5YlT/KS4ltbg6hJaPPj4SJjgnJ87vbNLJfwZU+dFo=;
+        b=2B8nTsYIRMhsVukOmmqPcwADLu5P0iS93DJJdasTYkx0W0fpOAvHfnpE1XAK2vE3mZ
+         qGLUKALfRDemoFQsbVSp4uMBqMTyVJvbjZcEAzcm5YT0eqRP+p0prO9nFnr8ZSj78lQY
+         Rr3826d91Pr7G4GX75zUEPFNvQDR3yiKYb7/4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739143971; x=1739748771;
+        d=1e100.net; s=20230601; t=1739143972; x=1739748772;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DzGWfUFZxvb3Rr5bT7Y5Q5ZnDb1QDkBlrLwFD7QemKU=;
-        b=phif5h5mgC8s4HUuKemIMgNGE3Wb32HwvrkadEcqnX0VF/H9qzz4Hre5+2iAbcUbHK
-         YnX453Z+xhTW1eDUhH41pa8SFqgtq8NyNYo+VW5GPymEbu2x2fSoNEDY/XsiT2+j7e+T
-         MvJpXOTmO2X+CQHdw3cRcTwpeJg6sjasdk63OJJyZuZ9yMncATsSw9ZJ5v+EEAWiHUfi
-         Hf7SpuGt/IU4uyZhVwOEdfLaMe9IRFzSbHz2oS5KsMgQX9vbq3l2zd8ZeEZyn3/P3VUP
-         MQGcaVjAy1oOK1ctD/wzYen1GY2vbagnf8fp4fFkjhRSiZmkhJLmoZKL/eBn5m6vp35e
-         Z0NA==
-X-Gm-Message-State: AOJu0YwI6rwNfLVy0ACDpXRysqrO/y1lj6hwXlZ1sCNGxmKsV611fgRa
-	cm1rEwSaQDvFhschLT2xRfdhQX8/NcRv4fn3wVVv9uZqsYtgRUnBeKPUntX51/vpQYJ3CZx9on0
-	l
-X-Gm-Gg: ASbGncsPjq4G+/tTqrJ8hcx6K7oXLM0xay8z8wh9FYTutKK5ESt05yTnogQomc54tZp
-	oO86WIJ5hwgzOtSWjZusKIvkDGVfqTCK1hGqYNrSjzum4xw1UV0b73NhwgZXilEK0v+aglwQ/r7
-	Nv8UEdTxikSFqbB+Pld9z34aEzYyV49p1n+ILO4nm/CV99PRXPHnEuRl+9apCdDYdTdWpZRP2cI
-	SC+g9hYVq04QnXDzRWtRjd7Doth9fFy+a6k5YEVS3mVSke5ON2DLK2myoMjU2FhtdNoO/+TXdWi
-	lxdPbf9P7cRRfor1WSBHYTi/AMOirZgFs8yJLSW+fiJvyKPrD+OBZ3PDeckZEPN23n+neL25q9W
-	+A9jBoBrrZDK0xE56Gsu3dA==
-X-Google-Smtp-Source: AGHT+IEYAW4UrgvtQXU82q/UPxxzMdDJO/B3pEHhvIjLLBmVIVcqnwUbkv0qI1eCzm8xlRbETuRvLA==
-X-Received: by 2002:a05:600c:3b8e:b0:434:f925:f5c9 with SMTP id 5b1f17b1804b1-4392497d8ebmr87118205e9.6.1739143971441;
+        bh=te5YlT/KS4ltbg6hJaPPj4SJjgnJ87vbNLJfwZU+dFo=;
+        b=QTI5yoXu2bpxXzvvRn8BQmC0WHVYtqFGsNd7tRyDNIaUU1zatSTIrXi2L2cRu4+rt4
+         /aDMrjUzg2GU+gn04Ie+QLj/cwae4h2uC60pYVXJ/Ndq2eNequ0aN33kIafVWrQrYReE
+         TmD5dEVBYkgEp05Dh0CcM7I0lQ/yGkLI4u1uUaXq6GVfTwBiSfdkRiGN3Yz5LQzvov0h
+         vsXjHOus45qlzKR6D36lIKj1O9LXL378vwLp6WTJ+n5ZXlbvfVpkt5gzTOXgvVZiv6Ox
+         1JdYn94d6k1sRVS2Fi1+lBh+bjLqfAdlZ6POlQCoziCV/pc+rSmEGTIFh8cP4fYv8QhA
+         Q3OQ==
+X-Gm-Message-State: AOJu0YzFpnYH82lUX+/nWYplZGpPqNsqyzx8ZlzzYCKsVY6mYQU1xJQy
+	pllx3EIjdda7HqpccfkQMH9G3bST6wszieJinFH2rUDpo/S7fi7zrVGClduLXy1+LA6a4J/aqQe
+	n
+X-Gm-Gg: ASbGncuJRaiqPH/bax93K/hhv8WZRbF5+xiz8rY/6k9Jvq1135socwk0rqUTXxaoNfi
+	sMfQy3/GuzvkH5dJ3s8j8w0Od1KS8JOMSwoligzrjvptglh9k1gFS/EKeHwbJcUhVdDl4lBqQG+
+	zMFepme08Louf+Vmg0uv0gZL4pdxL53ZfAre1k5nr3glGIx8x3tfQacRQdUVsQ7beaJHNwNaaqO
+	W8TAIqWuMJBS4ARLXqlfkM6VIJVdqgbAbGK5sHnZ2Mb0Y26X4QaPyNKA2MSLpJB71gcS7eYPYNJ
+	Vu+xk3pfaF7iqQ1OO2tHTuO82Rmt2nxEIQ8l53uvfN5Bn/lNZBL1gverKbLb41Sm7IJFeJCvcZc
+	CJsLtB1IBXCD+BSEVicWTRg==
+X-Google-Smtp-Source: AGHT+IFnSL3rBELhRBRoKsjOzxl6JCOu0UM7odwUePX1VnS64GiqtrLtzdPCCcNeXJXrtnrJwNnQZw==
+X-Received: by 2002:a7b:c001:0:b0:434:f5c0:3288 with SMTP id 5b1f17b1804b1-439250df455mr90971105e9.29.1739143971914;
         Sun, 09 Feb 2025 15:32:51 -0800 (PST)
 Received: from P-ASN-ECS-830T8C3.home (2a01cb000deef000367a1a7f22add27b.ipv6.abo.wanadoo.fr. [2a01:cb00:dee:f000:367a:1a7f:22ad:d27b])
         by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4394376118esm17027895e9.40.2025.02.09.15.32.51
@@ -53,9 +53,9 @@ Received: from P-ASN-ECS-830T8C3.home (2a01cb000deef000367a1a7f22add27b.ipv6.abo
 From: Yoann Congal <yoann.congal@smile.fr>
 To: docs@lists.yoctoproject.org
 Cc: Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH v3 3/4] reproducible-builds: add a "How to" section with OEQA* variables
-Date: Mon, 10 Feb 2025 00:32:44 +0100
-Message-Id: <20250209233245.1397155-3-yoann.congal@smile.fr>
+Subject: [PATCH v3 4/4] release-notes-5.2: Add new variable OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
+Date: Mon, 10 Feb 2025 00:32:45 +0100
+Message-Id: <20250209233245.1397155-4-yoann.congal@smile.fr>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250209233245.1397155-1-yoann.congal@smile.fr>
 References: <20250209233245.1397155-1-yoann.congal@smile.fr>
@@ -65,52 +65,30 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Sun, 09 Feb 2025 23:33:02 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6315
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6316
 
 From: Yoann Congal <yoann.congal@smile.fr>
 
-Shows an example of the new variable OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
-and still mention OEQA_REPRODUCIBLE_TEST_TARGET/SSTATE_TARGETS that were
-shown earlier.
-
 Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
 ---
-v2->v3: Quentin's review
-* Double tick quote variable in title
-* Removed Guillaume Reviewed-by (given privately)
-
-v1->v2: Quentin's review
-* tick-quote variable in title
-* a set of recipeS
-* 3 spaces to align a code block (not 4)
+v2->v3: Antonin's Review:
+* Add OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS ot release-notes-5.2
 ---
- .../test-manual/reproducible-builds.rst        | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ documentation/migration-guides/release-notes-5.2.rst | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/documentation/test-manual/reproducible-builds.rst b/documentation/test-manual/reproducible-builds.rst
-index b9f671d68..95308330e 100644
---- a/documentation/test-manual/reproducible-builds.rst
-+++ b/documentation/test-manual/reproducible-builds.rst
-@@ -145,3 +145,21 @@ set of recipes before the test, meaning they are excluded from reproducibility
- testing. As a practical example, you could set ``sstate_targets`` to
- ``core-image-sato``, then setting ``targets`` to ``core-image-sato-sdk`` would
- run reproducibility tests only on the targets belonging only to ``core-image-sato-sdk``.
-+
-+Using ``OEQA_REPRODUCIBLE_TEST_*`` variables
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+If you want to test the reproducibility of a set of recipes, you can define
-+:term:`OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS`, in your local.conf::
-+
-+   OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS = "my-recipe"
-+
-+This will test the reproducibility of ``my-recipe`` but will use the
-+:ref:`Shared State <overview-manual/concepts:Shared State>` for most its
-+dependencies.
-+
-+You can have finer control on the test with:
-+
-+- :term:`OEQA_REPRODUCIBLE_TEST_TARGET`: lists recipes to be built,
-+- :term:`OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS`: lists recipes that will
-+  be built using :ref:`Shared State <overview-manual/concepts:Shared State>`.
+diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
+index b0e538700..069e34be5 100644
+--- a/documentation/migration-guides/release-notes-5.2.rst
++++ b/documentation/migration-guides/release-notes-5.2.rst
+@@ -17,6 +17,9 @@ New Features / Enhancements in |yocto-ver|
+    -  ``linux-firmware``: Add the :term:`FIRMWARE_COMPRESSION` variable which
+       allows compression the firmwares provided by the ``linux-firmware`` recipe.
+       Possible values are ``xz`` and ``zst``.
++   -  reproducibility: Add the :term:`OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS`
++      variable which enables a reproducibility test on a single recipe (without
++      the dependencies). See :doc:`/test-manual/reproducible-builds`.
+ 
+ -  Kernel-related changes:
+ 
 
