@@ -2,332 +2,219 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EEE6EC0219D
-	for <webhook@archiver.kernel.org>; Tue, 11 Feb 2025 12:08:29 +0000 (UTC)
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (EUR05-DB8-obe.outbound.protection.outlook.com [40.107.20.63])
- by mx.groups.io with SMTP id smtpd.web11.10747.1739275701271291824
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B262C0219B
+	for <webhook@archiver.kernel.org>; Tue, 11 Feb 2025 13:57:30 +0000 (UTC)
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (DB3PR0202CU003.outbound.protection.outlook.com [52.101.65.23])
+ by mx.groups.io with SMTP id smtpd.web11.12994.1739282245117073744
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Feb 2025 04:08:22 -0800
+ Tue, 11 Feb 2025 05:57:26 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@cherry.de header.s=selector1 header.b=R/ZPGb9F;
- spf=pass (domain: cherry.de, ip: 40.107.20.63, mailfrom: quentin.schulz@cherry.de)
+ dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=UqG1hAhn;
+ spf=pass (domain: cherry.de, ip: 52.101.65.23, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SqT85Hdi4UTcKrJZaMb5wYv8XcR1MCAdw+Z7qOKOE1l2fDEzyhF2sZKuDT8/5NzPfJeIRSxtTdbQ0vI61hrpnTs1dJE9Sv9BAnjPNxciaEiR8vdAYZUcNnN0NzuEAMwkoGf2QWIZQbO4tSlHODubAuE2Iv9WRsdp8LAxMU/FIugnqyW2tUEtYFx34QsAo1ZzCanlfbVdxHLaqZI8PezoMxLqmq2guSOQ4+ApmWInsyH9CI1+v6aoIW/hcfnaA5m8pmElXDu7PF9QgQi3/DAQMtrQACiVDE9BxQ/LWAqgWL0KUrsP5uj23iDKcPFcZXG6J6Sr8EWHeV9eYoqHXOr3hQ==
+ b=y3zIYZdLuHVFs67RXsD7fWEEcbpOwXjo33hmkQd+QNkHeEJ6fFe1nlKG6nDgfRnr45dLHoOZ2AVxaFayCnd4ByTFZS/3vlva9XYr6zjjnCp/BuHTN6WF3piFIqZHqUWZRy1bGiW9+TwRSEFtaztZM1EZILlOpUjY7KSogYPRY2Tu0f6ELxXOtqX1rWowRNWRR4Vi/wjFeeC+z0VcIvXR/+OH6V1SIOrXEtuTyriEZd0R0TWENS/5JYje0YdmmJcQyMaPt0L/WU/AncvLj1Nr5YwmAAfK0F0YCVQKHTg6LX+rqWaEXWMw5lUdGz5bvFTL8psGPwnwE9+ZOeveU9yJSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ecENR+Nw0ChZOpBht0bL9ITxjbMzFCKnqhLrsPssxZ0=;
- b=x97o3i0spC1hHOZvzrUtsnDVQOC3KmIGvIXj809lmUyeeOPMa02B3jfuYfan4LEeNDOcp/nL5W13s/OUlgASyfZD4KsYxRn3yRXR1H1tj+FrTAOg5bRE6VyO21o+kIiV+NrchfyHxe47iWhi8EH4jRIvoDL7njRHBw4Ku8S0WHQtxRK/HHaKjgeI5NZx8KYejUeVR60TUmfPCEuaGDEYDD8tHGnvph1TwRTbTqqwxpzlYVLrF8EIMhb5TuW6j08/uvdnPqlK2O86LxIlJ55NjN5rL2vVjku0DV/NcVpf6DdYsTabQL0Uoc7bxXb7fM42yiJUN0xcJMlVefG9CGN/hQ==
+ bh=3I9qQrPihnqmpAY9rNM5XbtlJqQQHLm3Gros7IIkipY=;
+ b=ksSjFE5egMUSndw4OvimXzhfVmZM18p81B42X25njRJ5HpCckFQ47Rs9RQfK66LYGyPbeJx0oacY0RwGZVtaKQYjQn+QQqyajPdnsCuzYMr0L7Lq6Kh6SgSQ75/BG2a1i77EpRamtgNEeiVX0Sh/yV/C1IZLxA7ycSpD5atG89MNCOYjMkKSl2CfX1gtQJIhW66ymvsD+1lr1c3p4ON8VvHCd/w4OxJjRnUbuCp6b/dFZ3NeBBMrAbfZOgYKsoS19v9/OM44NOI6H572ej2bGvQUM/56UK1xEWqAUIi+MKbi6ifKu/5H/A4Yp/wY3JYK6Nfm61KOeYWb9dQDnBDdiA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ecENR+Nw0ChZOpBht0bL9ITxjbMzFCKnqhLrsPssxZ0=;
- b=R/ZPGb9F6Q9OkWZ7edmFlXu/GOt8zIoPBKrNrPVhixS+gLGBvcp4AEZDP5IXq6I7ROo5KwsZOIk0eZq0bb8idNNgipuwkaee8cYG7rEn5npms9vnsOJ3iDmpVVgvTXdnCiM2X/yiH7abdGiQgA0gOcdUx7Mmgc+rchO8M73zC1E=
+ bh=3I9qQrPihnqmpAY9rNM5XbtlJqQQHLm3Gros7IIkipY=;
+ b=UqG1hAhnmY6J7kdZtBAEUsSXjXY6OPWTlNpXM3cKdaFla2poouqcL8K35IAjts7rOkny7uSr9QV49AqiqZ9gB6OKN6xcOdUsW8pqvZBCa72tQcs+WpiaGrjGBJ5irdPnUcvhzllEeNpWoBj7L7J+KmUsXoGz0PUYOi0VnP42dik=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by PA4PR04MB8045.eurprd04.prod.outlook.com (2603:10a6:102:bb::16) with
+ by DB9PR04MB8138.eurprd04.prod.outlook.com (2603:10a6:10:25c::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Tue, 11 Feb
- 2025 12:08:17 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Tue, 11 Feb
+ 2025 13:57:21 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%5]) with mapi id 15.20.8422.012; Tue, 11 Feb 2025
- 12:08:17 +0000
-Message-ID: <5474982a-b6ee-49f5-aff8-47ea3da5c22b@cherry.de>
-Date: Tue, 11 Feb 2025 13:08:15 +0100
+ 13:57:21 +0000
+Message-ID: <56bf748d-4f6d-4b94-80e3-5625a9948e41@cherry.de>
+Date: Tue, 11 Feb 2025 14:57:20 +0100
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 6/6] dev-manual/multiconfig: add suggested best
- practices and baremetal sections
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- Mark Hatle <mark.hatle@kernel.crashing.org>
-References: <20250207-multiconfig-doc-v1-0-f63cdab1fad9@bootlin.com>
- <20250207-multiconfig-doc-v1-6-f63cdab1fad9@bootlin.com>
+Subject: Re: [docs] [PATCH v3 1/4] ref-manual/variables: document
+ OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
+To: Yoann Congal <yoann.congal@smile.fr>
+CC: docs@lists.yoctoproject.org
+References: <20250209233245.1397155-1-yoann.congal@smile.fr>
+ <8b15c9fd-f33e-4b58-b306-e66822093887@cherry.de>
+ <CAMSfU+6LtcGJGaEqPvHRk6Wo754=sO-P+qnvXE3FzpXuKRi4dw@mail.gmail.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20250207-multiconfig-doc-v1-6-f63cdab1fad9@bootlin.com>
+In-Reply-To: <CAMSfU+6LtcGJGaEqPvHRk6Wo754=sO-P+qnvXE3FzpXuKRi4dw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-X-ClientProxiedBy: VI1PR04CA0131.eurprd04.prod.outlook.com
- (2603:10a6:803:f0::29) To AS8PR04MB8897.eurprd04.prod.outlook.com
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: VI1P189CA0015.EURP189.PROD.OUTLOOK.COM
+ (2603:10a6:802:2a::28) To AS8PR04MB8897.eurprd04.prod.outlook.com
  (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|PA4PR04MB8045:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48a54873-043c-43a9-370c-08dd4a94c492
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB8138:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0db4d002-dda6-4c15-7f9b-08dd4aa4016f
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|376014|366016|10070799003|1800799024|7053199007;
+	BCL:0;ARA:13230040|1800799024|366016|376014|10070799003|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?WVJvNXN4RzMvZ0E5eUhIaG9GNjR0Ri9mU1FFd2hrSTR6NXVEdXkvL0hQQVY5?=
- =?utf-8?B?a09RUEk1OWVPc0lmNmpDcGRFZ2h3M1pIMERCbUhrWVR0RzR1NWgzTlF2c2Ju?=
- =?utf-8?B?dkI2blJwdnZaWFN3R3p4WGVBNko4djgrYVZRbStXY3d1bi9ndVp1d0R3Q3F6?=
- =?utf-8?B?ZFJ6RDZaOG1KNTJ0YjVvK0pITUlMUHRTVy9iOUdFUWh2UG1iR2JQakdqUHJj?=
- =?utf-8?B?LzdDRDhWYUtuZGdydlVDS0tjUXdlOTZCNUZiSGRQeU1kNzF5YjhzSUptSUVY?=
- =?utf-8?B?dmxDZVJJRk5lcEdlVVpHWUVUV0wxdnRzSzduZGRISUpjb1BlMjE4Q2xyWnRk?=
- =?utf-8?B?eXozTVU2MExXS01YMnp6bTJ5STJkNGMrcWlQVTRpeG8xaS94OU5wZmpDUXZ3?=
- =?utf-8?B?T3FEYW1vclE1Nkw0bkpSR2pCcXJNMGJUSUVmVVN3Z2NIdWtkOUpVbGZiZzUw?=
- =?utf-8?B?a1lvcm94cFJlNm1ndGR3UUdMcENrbFY5djBxVmJVaVMyUWdJK3lUZkcrMXJC?=
- =?utf-8?B?cWI3bURaMzluZ1Vqck9XRTd4L0o2Qk5lcFNqK0JuY2dpeXR4L0M0U052SFBJ?=
- =?utf-8?B?a1RzcHpoOUU2cTJhOS9XWTY4TEk2SlNHU2FzRXZqSFJtaVR0dy8rMVFCWkJU?=
- =?utf-8?B?ZWp2WUwvbWNFaXgzZ3RHbXpyUzkxc3NkcGMrQjVEMXRyOEVUenJGSVREZ0F6?=
- =?utf-8?B?RVMvTVRXM2NTM0QxL2xvM3cvc08yakN2aTdVVG0yY1Z2RFp1WktJYnUzSXdY?=
- =?utf-8?B?VFVVYlZHR2VoZXUvZGROMlZ6K05TZ1J6UXJlaC9EUUdnVXhLSkV2Sk5za1ZE?=
- =?utf-8?B?V2ZvWW5YLzViRVVwWmxTanRqK2FwN0k5dENOeGRDU1ZWVWxaazlIRW9QSURD?=
- =?utf-8?B?d2MzaStLbko1V1dLUjJwOWcvdUVjTEJRN2hQbU1hL1p3RWhaTGVSbmRtbWlt?=
- =?utf-8?B?NDZlOTlkV0hiZGg4MzF2WGpaSFRHWnI3VVhTd0p2eWhBSWJkMDFFc29FdDF1?=
- =?utf-8?B?KzhJYVkzeHJaVU1VYlpuLzBKUUVJOGh2Z3F5UVNPVTVseU0zOFdUL01DZ3Fx?=
- =?utf-8?B?NVA1WVh2TVVxNW42NEk5RVZaWE5uYUQ5K1o4V2FMZTVxQjNyek9qUWJaVE0v?=
- =?utf-8?B?MXM3RXZuWEttN3dpOHMzcjVWbjhDcTlXM0tCK2lVUEFtdHNKUnlORDBHS1gy?=
- =?utf-8?B?QXBEYTVCbGtES1d0ZFdhM3d5Rm5vTXdpNDZkYnlMZDErNVVDZGtqRU9QWlVQ?=
- =?utf-8?B?bjFzeEdVRTRwQlRKSkdSdEZpMWZWTldQWXB4N0djbVViQVp0MGtaa1Z4M1pz?=
- =?utf-8?B?SUVNVEg0SktCMHR5dnkvU3NPbnpUcTgvWVhEaDFBd0Y0NmpKeno3cXQ0SDdh?=
- =?utf-8?B?RXdMdytESFd0NUFjVkxBU1VFcDhlNmwvdFYrNDhDQWEycjA1NEVhUVJjaVgw?=
- =?utf-8?B?TERSa2pkbDFnek5mVzdNNVdDY2RBVGtjd1pGa2ZCV2xBR1p0RDF6LzN2Y3lt?=
- =?utf-8?B?bVQ5RTVhVkdpQUZuSW5BakRmRVZPdHBpS0xpYUl4ZE50TlBHNVo3K3ozSUMv?=
- =?utf-8?B?OWk4L3JXVFZpQVRRNzJDQ0JnUFNqeDlXRFhYc0ZsZWNUa0JlTUdZelMxNjZr?=
- =?utf-8?B?bTkzR29oc0NEUGdqaURqVHZBVjlxbndIM2EveEZSalFNSUhnQkJjWTViV0Vu?=
- =?utf-8?B?WGhGbzduSDBVcVQrL2N3aUFQOGZkVEdiYTI2UXpDYVl4SnM0ZVhHai95MzFJ?=
- =?utf-8?B?Qmo4Ym1pRHcrT09ldExYRmtFNm5aK3NvQW9talhzWjNkRHBDdEkxODRoZ3cr?=
- =?utf-8?B?bkMreXAvKytPczMzUytxQT09?=
+	=?us-ascii?Q?u7HjcY17FBV6nwF4MHEru5bPneZITghYhuvipSQhWG9V99IiR7zVJ5nJTBbh?=
+ =?us-ascii?Q?FLqFwSwmBhXFZIVDjppGx2+fSmG3BDRsUVNbFQ4YRx7ChypWmtZ4koJYiSCK?=
+ =?us-ascii?Q?vVBPdQ32+OhpaW3KDTFETGakUrSfRo8jNGPOd2lA52JippmBB5o8uziZoVEN?=
+ =?us-ascii?Q?kgFEmee+1nJe3ejClQzztXyYiaTuUsMRr/aJzAHtd3QrfLX2vNRQpQMl2Eec?=
+ =?us-ascii?Q?qxStlRq82nwJrCxTXCH/GGwm1GpYIfXF6bu+kRelL8Exo/xH3hdCsgk9NPa9?=
+ =?us-ascii?Q?BBiz3BctY0DtYTFw4E33W93CSI+urRAS1a4Rk5TWZPjf+GvdPKhQsklXrw4j?=
+ =?us-ascii?Q?7+OKJAXJXKqDQb+3/zcr3JL8yYJ2iKrmKx9awzuE7pdpvbO4+vYn2sad2yDw?=
+ =?us-ascii?Q?e5TXfBc6h3NUSj2dtEOlQTgLIZdLFgq8d/GiQAAdnoyskxc39Lr0g3PQCS73?=
+ =?us-ascii?Q?n7PNNbbj6YPoIkTR0y5Zv3ezG8vXY5xDt6gU5MoT39a67Xy9eRDDmskk9kx/?=
+ =?us-ascii?Q?XCxHXYyCYbfRzFihZnZ3o19qGhdsdJ3LzNR/COSAahMDmXH/5p+P4NsGz7Le?=
+ =?us-ascii?Q?ntcYXmG20j7loTmnpRE1CWIo2TXDI2NpuqLmfuSwRfk9Ig+Uy4pBtEcQavgL?=
+ =?us-ascii?Q?IFQF0yzPDqU3hSl6JYuL9BYlFFLratI7vrOnk3igYhGHiRIdXnD8SYXcvAul?=
+ =?us-ascii?Q?w0unshUcdob54MEGlMBWqcYHMD8jpReXrhqRj7dJfB2WOlMLrUDiG7GKbFHH?=
+ =?us-ascii?Q?yT+UqrAQZNwtKWxzx16rWjkyWiNk3wR+inFT6gk+GCL+n5+Yzh/U8L5SePul?=
+ =?us-ascii?Q?ht910aMSMDE/JxNuTer/pbpzklqJw9WT5iWOJfaMwdcvAnTeLEXwz47+YfDf?=
+ =?us-ascii?Q?1UTg8V+FjScHSL2pzStM6kgOzCZKN4FY9bTe96wlhOPRbhuRPZ9zf0xeMQyJ?=
+ =?us-ascii?Q?vI126qkxBXjLqIJDq3G5J+fH33co6Sz6vJAwNTIzz0AKUNQ8OnB/Ayy//LcT?=
+ =?us-ascii?Q?AQF7DsvnIasM7LWOhx62xG82c1/gq2k3jNvN/OxIT2oWQ39rYn5TI/JfSFBg?=
+ =?us-ascii?Q?pwIt9KNfK/nFJkJRmgxIYp0UucgaxWFmBdzbySZP0IVfo3xFalVls7BtL38I?=
+ =?us-ascii?Q?ZwHtU2QM0pIy8j+wcHD4IfEk5l+CgKfDzedegpQNQGcRDNHp1F50qguH/p+x?=
+ =?us-ascii?Q?N4xyqMVr/N3rkoztrGaWNecFZ+D0/2HUrmn5cbdQoSr29EvNd13veR/L6gCL?=
+ =?us-ascii?Q?zCDpqZdpgftMsGJCSkdllkTC9C8FcXG3PWB8tw0gvWYqncw6mfPTaMxcHZ3P?=
+ =?us-ascii?Q?S4zKaUOVo64cD1uDi3umybzVUPJ56GkVtY3eEFBrvMcHJA=3D=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(10070799003)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?utf-8?B?eWEzTWhSclVrZ0xmY2Urc2tnY1JXV1FZYTR6TlZDckhtTjJRaGlGOHM0SllL?=
- =?utf-8?B?ZzEvU3pFaDJFNWV2VEM4SEVkeXZJMFZjeVNiMHpENjk2Mlk4WnBjQmw5M0Q3?=
- =?utf-8?B?TkM4NE9rN2dRTHEwek1LY0VtSWcxWnIwYnBpTFY4WEpIazVoenVtenB0VEVk?=
- =?utf-8?B?b2llZDBFSzkrMVVZdDd1b3Uvalc3ZHlDdUd0cVNpTWJ5dWJUOWIvVEd1VGpr?=
- =?utf-8?B?WWRMK3lRdHkrQU1ySkVNR1pvZ3Zab00xTUxtblJNbjdUb01qRG5xdStNVFRI?=
- =?utf-8?B?K2dqNU4wTUlSdDdHSVQyN1c2UFJTY3dRY29mR3dvZ2V3SEkrVzFIdGVhdzdY?=
- =?utf-8?B?QkdCOG5Qb2hLUXlOdlp6cVN1blpZOEpJZ2VQT0pwUXQzSDg3WFA2WFRHSFNY?=
- =?utf-8?B?VEh1Y0YwQ3llZEdySWo3bG5zOU95WGUvQm4yeWE1NEhJZlQyeXlFYXRVZEho?=
- =?utf-8?B?Nk50MnZYNjRoUXZZdkZMYVAvaTBrakdlYTU0U0liOHd6ZWFPMWxiZWJZS2Zp?=
- =?utf-8?B?VHhDVGxnYy9kNEpWTHQxckVxZlJ5d0ptSDIyNUlyak1LRk5hSjFlbnc0Q3Vh?=
- =?utf-8?B?Wm5ZaE5HVk9vVjVLNitOV1JuSWFvQytxRzRHcUQvb2YyeEtQczhERWYxV1ZY?=
- =?utf-8?B?dlpSMFZEcGtPaldxeWZiaXhwcG1Rc3Bud253c0FZTkM0ZCtOUjFpVGRmZXhT?=
- =?utf-8?B?UFhKeURIQkVRUm4wb2hzOHFOc09QMmpTS01reFBCYThsRk05eFFBazhTakpV?=
- =?utf-8?B?TFUzS2prT0w5SmVMWEI0OEkraXJjMURtVjZaTnkxU3locTJWRktzNmQ5OGZw?=
- =?utf-8?B?Q1JjeElLN0FzZXRSUlROYmUzTHV5MVRIU0JPaEhiRnB6dVVjUXVvU01oOE5W?=
- =?utf-8?B?czMvYlVhbjFGb1pteE0rRWkzc3N4aThMdEZiQjd5MzMyOFk4MlFkOGZlWWU0?=
- =?utf-8?B?VFlzNFZ5QnhWcGZ2OHF0UEFldnEwVFQydmdKY1dPOFkxZ0k0WCsyTzVEZXNY?=
- =?utf-8?B?MjZyakFZUFl5QU1KeVY1Uzdzdk9tblZDVTIrSWVwcUg0LzBEeU5OblN6cjg1?=
- =?utf-8?B?UmJab1ZSdWhUSGZNaVhtYnhDd01CdjRybEU5cGg0N1R5QTFKRExLc252ZEVv?=
- =?utf-8?B?OHhZemtOUWRPbW5FeTQ5OXdyWUZCT28vTzd0RXFKa05Sd2R1VGM1cHpnRFEx?=
- =?utf-8?B?RWVlcEgvNURjQXU3OEE2MTQ2U0x4Y25TV1JmMHp3S2NrS25QWXZpb0lEanNO?=
- =?utf-8?B?RDkyUFFFVmV6SWo2MC8zZ3hNaHJzS3VRMDdoZTQ0TG5sL1VjL1Fyb0NrUTFC?=
- =?utf-8?B?a25JellhdjlJblkrQUU1bXJUeUVmeTlzaFU0WENYdE5JMk9DcmRNOFozTUVX?=
- =?utf-8?B?WStjQWcrdzd0UXpXNnRIM0MwS2JhWkhoZ2hhbHdHUkJrUGhqM0VkeEtTVERQ?=
- =?utf-8?B?eHFkL3k5NEE3UVFKSFBYeFlNcnYyenFEWlBFbVJ0MS9jbWNMcG8yQk15akpu?=
- =?utf-8?B?azZCQkN3RVVnK3dub1lpNzNrY0lsaDFzV3BQTWN5WWdualFTUjVCM3l5dUdC?=
- =?utf-8?B?Ni9uWVRhRWViSVBEV1RkaTlsbHBGZWZNMERaU2xWb3FDMURmSTRLaHJXQi93?=
- =?utf-8?B?Ym5jVEMycEVaamZtdEJjZWtXUThZd1hpRkhQUDRxQyt0N3hkUzZMczZ3ZFND?=
- =?utf-8?B?WE42M3dqaUVJQmZMQ0FuTmpQU1VrUi9WdUFGbGRIZ3dvZFc1N1lIT0twaTlS?=
- =?utf-8?B?SXVacUZ3N2RjamJ2Vi9iQ3BZL0dKUEg1cm9iOUMzSVEwUFlmaDdGRUhVdGJH?=
- =?utf-8?B?TjVSaDYrVmIvL3VxMktYdUNHTmdLRFZvMDJiZ2Fwend1S0ZiSCt6c0ZaWE1Q?=
- =?utf-8?B?SnozVVBuU2VkMC9HRUdNUkNOQTFTL3h4ZXZpdlpkY0xwOWE5aUp4c2VvS0Na?=
- =?utf-8?B?c3R6NGsvY1drYUNLUUJ1aG9HSUNZdkhGWjZjcnE1aGxJUkE1dis1Vzd3UXh0?=
- =?utf-8?B?c2JHNE1OejM1K0xodmkzd3BHNThqNmFkcDdJYVk0VjJkZXdsRUFYeVljTUtI?=
- =?utf-8?B?bi9oVHpFMXIvZFZoVEFEVE9wdHUvd2tZK05GYzJTOE1PMHRyV2RFcmtEenA1?=
- =?utf-8?B?R1FJekp5MlBFTEhzRWUrd243SlM5aHBqNXc2TVlyM1cxSERrMTkzeldGd0h2?=
- =?utf-8?Q?lh6L/KVYoSbH8a8/U9cDrBI=3D?=
+	=?us-ascii?Q?EcC3PrHBDMUBBW9Ies9ekzns3/Qtrkz2yK2SITCzpbs9LTdqhupl6/iMiIpV?=
+ =?us-ascii?Q?uklb0CUYAmNXRPHh8hugGWKv58/QP+R9btiUpx2UBnZYSPm5oIsvjtTD5IRd?=
+ =?us-ascii?Q?85m6GljefubwkzbF9UB0N4ozb/0bsPYH1LOeqKhkwEAMGVlUqBQ7pp5EfkvA?=
+ =?us-ascii?Q?wQeuWritX+0x3kjiGb5Sj8O9oFYDVBKNrzw8lZPIibwQNUvzJQJzYwTi/+Mo?=
+ =?us-ascii?Q?L3gseWFeTPYc2581ZD711Iz+BSlEkJd5Szu0HyW+lvZe8iOUn52cxB7asYGc?=
+ =?us-ascii?Q?WL+4UThmhEO3B7405lyjCHQbGouMzoDfsN30CVng1MqEpBPnYnmHFiO6mns7?=
+ =?us-ascii?Q?fbgUKanNj2kiz9BnYQikyOKUnqadJRH7JGb4t5BFVjvhi1GRhVKkF8E0vizc?=
+ =?us-ascii?Q?GkxWdd+e1jEFnwSeOcfI8eBxiARYzl4iNA9K1TaaDbldyHRfk2Ei2T5Rl7W6?=
+ =?us-ascii?Q?DM8lKmuVzGypC/ujijZumW9DfsOpSI2ioGH1tzj4LeHCnd2MWd30wa9+68uH?=
+ =?us-ascii?Q?HjWE+srB4sJuuOiG4wixkLQOYCMaYU4Kzwc2qpoWDTO941w9kfkUYDiKqayo?=
+ =?us-ascii?Q?tpuAWQvJkZu3pVrD0qLJ1r1TbuelQhcfw0aknyjDwOTd7vQB/l+DZ8klnXta?=
+ =?us-ascii?Q?3uR5wAbxpnka7aON46byVHEoSsik4oYVuaWDt7sxRQZ4TXI0yFGmX17lrH4O?=
+ =?us-ascii?Q?6XpNRYLxNagGOgK9/Fu1fx6mmJkbG1PhBz/YJS3FmfwLdv4vObQRQX2VYp1M?=
+ =?us-ascii?Q?dRMlTCr43K4HoQZCSARn5wnzUkxXcYnWlv3+iQiWw7w0+CYjBM4P1fWBycZD?=
+ =?us-ascii?Q?Zrp8XrIJXC+p2g5LjSdGmonimp0EaHuxtlKTAmOZ2sxF4Z5eqWOjVCNNIzOu?=
+ =?us-ascii?Q?Ec5SkfnpAW3ENzFmknDssgv0M0vRDB85Ok2HmFvMzCFvHzDGoqNsoGle5hj3?=
+ =?us-ascii?Q?hTbanykiVVW2Vgzfmh9sYHUTaCWvxi40VG1ZZQ2ed8JOfn9MFsmMwtCYgI/e?=
+ =?us-ascii?Q?rJ+5pNSOnKpDjm9lahg0FNOiZgv1wfZur7bWNQFZVNBj7cP0JYh3UP+EV2/1?=
+ =?us-ascii?Q?OsUATpsGtH977p87GG4aZwlS9/Z7FxlkCmFowb4KFT2nUccv2WcCvZndINZv?=
+ =?us-ascii?Q?el5DMBCQ3O/dHPxSL3SnpKBepUxOgQq65hBJyiuJF63vhvtGoZFkuZg+XKpC?=
+ =?us-ascii?Q?9K42MZ0P1yvjQvyJPMAsAHeW005K6kcRdt6Uaug+32j29idFN3RysP7fRR2G?=
+ =?us-ascii?Q?liZ737FeWztAGZ6xeV5D8wgtXuSrRuiArKNrtDIh4r9nOND+hscVME8+jWoa?=
+ =?us-ascii?Q?zjYsSTF3OF/q5Uk/S2WyueZ5DgfZROxMUTbIjuzu1KDawQ0ukuhZAHBAbn5f?=
+ =?us-ascii?Q?QLCESMJ/seJeOfqN0DreDBEZEC7oTqZj0xZCqtzTOKLw4JLRDVgaEprJ7V1P?=
+ =?us-ascii?Q?yiDc4P9n1kKwcGJAVv6i7CjA2tvMXKyr3cC/T15LwWahsLPRnDaDV5pkbwDf?=
+ =?us-ascii?Q?N8fJxnHklm29lI5wn3hS/9eqLahM/v1fPeiyeggPxdULvHKv6wLWfrKfTRPw?=
+ =?us-ascii?Q?pXjeFC9DmhHxxAHruE1rEQScpAVRgtl0xbRdmS2QnXpeRQ8ZhMD6dkqWCLyH?=
+ =?us-ascii?Q?E1nzwqJIH4AIm8H3khwBopA=3D?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48a54873-043c-43a9-370c-08dd4a94c492
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0db4d002-dda6-4c15-7f9b-08dd4aa4016f
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2025 12:08:17.1815
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2025 13:57:21.7281
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: IJv6uJS7vLe9yugqfAm9O1fAkzrC6ZvC6tYu4M7UdfvS9a6CXu6rWYP7dK4+Dvbk6DcSwH+Tmy6abPGV16mAaHru/nk7slWGERcM3fXzuDA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR04MB8045
+X-MS-Exchange-CrossTenant-UserPrincipalName: YVwhpqdNIRobxd1DORjn1iOICoXcbUXXx6Nt23t+XRHSXHb59jNaugIC4+hktCrlBuSzgEgs/139wUwu8qXYpVNoJjVI3V1viHxnH8HKE4c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8138
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 11 Feb 2025 12:08:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6333
+ <docs@lists.yoctoproject.org>; Tue, 11 Feb 2025 13:57:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6334
 
-Hi Antonin,
+Hi Yoann,
 
-On 2/7/25 5:28 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> After the suggestions from Mark Hatle on the list
-> (https://lists.yoctoproject.org/g/docs/topic/110487932), add two
-> sections to the multiconfig doc:
-> 
-> - Suggested best practices: suggestion for better design of multiconfig
->    builds.
-> 
-> - Common use case: baremetal build.
-> 
->    This section applies the guidelines from the first sections and apply
->    it to a real-life example of how to use multiconfig. This one to build
->    some baremetal firmware alongside a regular Linux build.
-> 
-> Suggested-by: Mark Hatle <mark.hatle@kernel.crashing.org>
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
->   documentation/dev-manual/multiconfig.rst | 106 +++++++++++++++++++++++++++++++
->   1 file changed, 106 insertions(+)
-> 
-> diff --git a/documentation/dev-manual/multiconfig.rst b/documentation/dev-manual/multiconfig.rst
-> index 27442a042..9560ce5a0 100644
-> --- a/documentation/dev-manual/multiconfig.rst
-> +++ b/documentation/dev-manual/multiconfig.rst
-> @@ -171,3 +171,109 @@ and have separate configuration files, BitBake places the artifacts for
->   each build in the respective temporary build directories (i.e.
->   :term:`TMPDIR`).
->   
-> +Suggested best practices
-> +========================
-> +
-> +-  :term:`TMPDIR` (other then the default set in bitbake.conf) is only set in
+On 2/11/25 11:35 AM, Yoann Congal wrote:
+> Le lun. 10 f=C3=A9vr. 2025 =C3=A0 18:37, Quentin Schulz <quentin.schulz@c=
+herry.de> a
+> =C3=A9crit :
+>=20
+>> Hi Yoann,
+>>
+>> On 2/10/25 12:32 AM, Yoann Congal via lists.yoctoproject.org wrote:
+>>> From: Yoann Congal <yoann.congal@smile.fr>
+>>>
+>>> This documents the variable used in the "automate testing a single
+>>> recipe's reproducibility" feature [YOCTO #15701]
+>>>
+>>> Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
+>>> ---
+>>> v2->v3: Quentin's review:
+>>> * s/target/target(s)/
+>>> * Removed Guillaume Reviewed-by (given privately)
+>>> ---
+>>>    documentation/ref-manual/variables.rst | 5 +++++
+>>>    1 file changed, 5 insertions(+)
+>>>
+>>> diff --git a/documentation/ref-manual/variables.rst
+>> b/documentation/ref-manual/variables.rst
+>>> index adbef69d8..2f1937632 100644
+>>> --- a/documentation/ref-manual/variables.rst
+>>> +++ b/documentation/ref-manual/variables.rst
+>>> @@ -5807,6 +5807,11 @@ system and gives an overview of their function
+>> and contents.
+>>>          For additional information on how this variable is used, see t=
+he
+>>>          initialization script.
+>>>
+>>> +   :term:`OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS`
+>>> +      Set build target(s) for build reproducibility testing but activa=
+te
+>>> +      :ref:`shared state <overview-manual/concepts:shared state cache>=
+`
+>> build
+>>> +      for most dependencies. See
+>> :doc:`/test-manual/reproducible-builds`.
+>>> +
+>>
+>> What do you mean by "most dependencies"?
+>>
+>> The code I glanced at in OE-Core seems to indicate it adds all DEPENDS
+>> from each leaf recipe to the list of targets to build with sstate-cache
+>> (the same way it's done for OEQA_REPRODUCIBLE_TEST_SSTATE_TARGETS).
+>>
+>=20
+> Sadly, DEPENDS is not all the dependencies of a recipe. Some dependencies
+> are added via
+> do_task[depends] =3D "recipe:do_task2"
+> Those don't appear in DEPENDS but are built anyway.
+>=20
+> Look at PACKAGE_DEPENDS for example:
+> https://git.yoctoproject.org/poky/tree/meta/classes-global/package.bbclas=
+s#n232
+> There are other instances.
+>=20
+> I plan to improve the reproducibility test to include all of those with a
+> suggestion from Richard, and then, going back to the doc and removing thi=
+s
+> "most" among other changes...
+>=20
 
-s/then/than/
+I can't believe how much I'm learning from reviewing patches for the=20
+docs. I hope people understand that and we get more people reviewing and=20
+sending patches to the ML :)
 
-and tick quote bitbake.conf
+I missed the [depends] thingy and was totally unaware of the other ones.=20
+Can you then make it explicit which dependencies we're talking about?=20
+i.e. the ones explicitly listed in DEPENDS (which may not be all=20
+dependencies, c.f. [depends] varflags, PACKAGE_DEPENDS and other=20
+implementations).
 
-> +   ``local.conf`` by the user. This means that we should **not** manipulate
-> +   :term:`TMPDIR` in any way within the Machine or Distro :term:`configuration
-> +   file`.
-> +
-> +-  A multiconfig should specify a :term:`TMPDIR`, and should specify it by
-> +   appending the multiconfig name via :term:`BB_CURRENT_MC`.
-> +
-
-Provide the example you gave in the previous patch.
-
-> +-  Recipes that are used to transfer the output from a multiconfig build should
-
-+to another
-
-i.e.
-
-from a multiconfig build to another
-
-?
-
-> +   use ``task[mcdepends]`` to trigger the build of the component, and then
-
-maybe use do_task[mcdepends] here?
-
-> +   transfer the item to the current configuration in :ref:`ref-tasks-install`
-> +   :ref:`ref-tasks-deploy`, assuming the value of the deployed item based on
-> +   :term:`TMPDIR`.
-> +
-
-Please provide an example with fictitious recipes and tasks?
-
-There's also a missing word between the install and deploy task refs.
-
-> +-  Firmware recipes can set the :term:`INHIBIT_DEFAULT_DEPS` variable to ``1``
-> +   if they don't rely on default dependencies such as the standard C library.
-> +
-> +Common use case: building baremetal firmware alongside a Linux build
-> +====================================================================
-> +
-> +A common use for multiconfig is to use the default configuration as the regular
-> +Linux build, while one or more multiconfigs can be used to build special
-> +components, such as baremetal firmware. This section details how one can achieve
-> +this scenario.
-> +
-> +Adding a multiconfig configuration file and recipe for a baremetal firmware
-> +---------------------------------------------------------------------------
-> +
-> +As described in :ref:`dev-manual/multiconfig:Setting Up and Running a Multiple
-> +Configuration Build`, each multiconfig will require a separate
-> +:term:`Configuration File`. In our case, we will make a separate temporary
-> +directory for our baremetal firmware build configuration.
-> +
-> +For example, we will define a new ``conf/multiconfig/baremetal-firmware.conf``
-> +as follows::
-> +
-> +   TMPDIR .= "-${BB_CURRENT_MC}"
-> +   TCLIBC = "newlib"
-> +
-> +The ``baremetal-firmware.conf`` configure a separate :term:`TMPDIR` for holding
-> +binaries compiled with the `newlib <https://sourceware.org/newlib/>`__ toolchain
-> +(see :term:`TCLIBC`).
-> +
-> +We then create a recipe ``my-firmware.bb`` that defines how the baremetal
-> +firmware is built. The recipe should contain enough information for the
-> +:term:`OpenEmbedded build system` to properly compile the firmware with our
-> +toolchain. The building tasks may vary depending on the nature of the firmware.
-> +However, the recipe should define a :ref:`ref-classes-deploy` task that deploys
-> +the output into the :term:`DEPLOYDIR` directory. We will consider in the
-> +following that the file is named ``my-firmware.elf``.
-> +
-> +Building the firmware
-> +---------------------
-> +
-> +The firmware can be built with BitBake with the following command::
-> +
-> +   $ bitbake mc:baremetal-firmware:my-firmware
-> +
-> +However, we would prefer for ``my-firmware`` to be automatically built when
-> +triggering a normal Linux build.
-> +
-> +Using an ``mcdepend``, a recipe belonging to the Linux build can trigger the
-> +build of ``my-firmware``. For example, let's consider that our Linux build needs
-> +to assemble a "special" firmware that uses the output of our ``my-firmware``
-> +recipe - let's call it ``my-parent-firmware.bb``. Then, we should specify this
-> +dependency in ``my-parent-firmware.bb`` with::
-> +
-> +   do_compile[mcdepends] = "mc::baremetal-firmware:my-firmware:do_deploy"
-> +
-> +The above will ensure that when the :ref:`ref-tasks-compile` task of
-> +``my-parent-firmware`` is triggered, the :ref:`ref-tasks-deploy` task of
-> +``my-firmware`` will already have run successfully.
-> +
-> +Using the output of ``my-firmware``
-> +-----------------------------------
-> +
-> +After we have deployed ``my-firmware`` by using ``mcdepends``, we need to use
-> +the output in some way. We can make a series of assumptions, based on the
-> +default Yocto Project variables in order to get the binary for packaging.
-> +
-> +First, we can set the following in ``my-parent-firmware.bb``::
-> +
-> +   FIRMWARE_FILE ??= "${TMPDIR}-baremetal-firmware/deploy/images/<machine>/my-firmware.elf"
-> +   FIRMWARE_FILE[vardepsexclude] += "TMPDIR"
-> +
-> +The first assignment stores the value of the path to the firmware built and
-> +deployed by the ``my-firmware.bb`` recipe. The second assignment excludes the
-> +:term:`TMPDIR` variable from being part of ``FIRMWARE_FILE``'s dependencies -
-> +meaning that changing the value of :term:`TMPDIR` (for example, changing the
-> +host on which the firmware is built) will not invalidate the :ref:`shared state
-> +cache <overview-manual/concepts:shared state cache>`.
-> +
-> +Additionally, ``<machine>`` should be replaced by the machine for which we are
-
-s/machine/:term:`MACHINE`/ ?
-
-> +building in the Linux context.
-> +
-
-In the baremetal-firmware context rather?
-
-> +We can add an :ref:`ref-tasks-install` task to the ``my-parent-firmware``::
-
-We can +then ?
-
-s/an/a/ ?
-
-Coming from the embedded industry, I find an example using "main SoC" vs 
-"companion microcontroller" on the same board drawing a better picture 
-than "baremetal firmware" vs "Linux build" especially since we don't 
-specify here they could be for different architectures (so implied they 
-are for the same).
-
-Other use cases I've seen for multiconfig is rootfs within another 
-rootfs, or building a recovery image for a system and putting in on the 
-same disk image as the normal rootfs, or building an initramfs with 
-another init system than the one used for the main rootfs. We don't have 
-to list them all, just sharing here for reference :)
+Thanks for the explanation and pointer, much appreciated!
 
 Cheers,
 Quentin
