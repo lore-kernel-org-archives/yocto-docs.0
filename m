@@ -1,280 +1,150 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4DAFAC0219B
-	for <webhook@archiver.kernel.org>; Tue, 11 Feb 2025 23:49:32 +0000 (UTC)
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
- by mx.groups.io with SMTP id smtpd.web10.3069.1739317765246785694
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 00F20C02198
+	for <webhook@archiver.kernel.org>; Wed, 12 Feb 2025 08:52:05 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.10656.1739350292071726827
  for <docs@lists.yoctoproject.org>;
- Tue, 11 Feb 2025 15:49:25 -0800
+ Wed, 12 Feb 2025 00:51:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=lxVDIEQg;
- spf=pass (domain: smile.fr, ip: 209.85.128.54, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-43934d6b155so1633385e9.1
-        for <docs@lists.yoctoproject.org>; Tue, 11 Feb 2025 15:49:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1739317764; x=1739922564; darn=lists.yoctoproject.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vXPqrd1KYQOgUjMZjZ3OWsIvDmNG+VIA6v4Y979AZqQ=;
-        b=lxVDIEQgh/pYPk4Qa6cwCJwEKzxdy4MquSgdzq3buWaMWaXEe3Ni1MICKGNT3OEGir
-         2arpXz8fykw2f3nehFR8/2G6OuXxSZCU8sOwOJhI26B4l4lrRqdhoTxDWxZS0YEI1ehA
-         g5mhRWsR9IceEUHmuPK8yKWTk3twE13jmYTC0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739317764; x=1739922564;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vXPqrd1KYQOgUjMZjZ3OWsIvDmNG+VIA6v4Y979AZqQ=;
-        b=LWmMJgSqmdfn6E93ciRSBGupq6L24n3UtGjT9Tm/6P2yYbpcRGv3P9ErDqdsBYYja1
-         SQRuEt01W+ztn22F07AateDI0O6+5ftDtCjb7Dl8FJ5nL49Qjbqoa/5gjF5KMUYco3Cv
-         95I7707aGDQvIUEYDmO6hrFL1WjHaTKSITsNqUPpBm6eylXNQYbigPXKjV0HNAbQ6gpk
-         cbeF1EE/yiYcP/5tq9M5w07lFf5+DVYBYthPlGwEQJYdMDnD3fJV1G7mvS7LubBFhm0N
-         Bme46G0aDjw33GrcsADLG2iewUUVpqHZydUmbnWlHG3k7jp542Nu+Bre9h1AERsfzMTp
-         jFyA==
-X-Gm-Message-State: AOJu0Yx9wG6bf5SpsGBPovzYWoa4ZTcmVwx8ECsTTND5ieR+8rT3grTZ
-	0FGteBzR7+D/Qty71elwinhLzC89M17VfAUtBTXhQcc5jlJP8CoST3Xs9JIBqL1dGY24QSPKEKn
-	77L/IjzpZvSk7SpuPFaE/gEjc//4W28fg9z5w3Q==
-X-Gm-Gg: ASbGncuNbTmQe3ogyByjANsfaUWviklYUhh7YDPTKXYXJ64E1rB6yo4eVI9hSkg3+Lw
-	Wgnb97FoFZr18v0znETfEwXnbblkJdYVVOid8chyxplFfG9eM4J2s52ko8NzunJ22HxnbxkfI
-X-Google-Smtp-Source: AGHT+IGTWst9vjzR6ZchRE6IfFHP4d4nXmkbALwlQ/kM7Kg0hrkJ9xcyQpeD+A/jUVXFXRdfQzASS7g13ZIojNe2ME4=
-X-Received: by 2002:a05:600c:198c:b0:434:ffb2:f9cf with SMTP id
- 5b1f17b1804b1-439583d1484mr6044795e9.14.1739317763489; Tue, 11 Feb 2025
- 15:49:23 -0800 (PST)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lpdxw2Tp;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B3D8A43410;
+	Wed, 12 Feb 2025 08:51:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739350290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=byaqcJnGFgYwL7oLugXi3aE1LDguMjOW9ts/CWrm9lA=;
+	b=lpdxw2Tp24skY7afHJsZHmgyjgbrP+uE2/DaO0IxqXX97JyKnYbaVSopRH+DqTUKn+tTcf
+	d73iKNAjRhR7jHxIpYV6OsbzlE3/HBJmGTscHtfTd8et2XeIH7LvkDW3VOSbGRLkspGZV8
+	OqC7zySsTO5kmmJc4ZQnshPmTt2ooyRW/0fZXIxACYgQ8qFCdNIFfWaP2plQW/QjDZflMO
+	tC/pxhg4eKkQz01yol3+R0aZvnKYSbWqmTrMuWXBCCeflUNsSM0/CK5lHUfezN7GbK4lzm
+	dqyW2CWpuLgjusNLOrjRQnnV2odn8dWIRWNcyvTCGVBFoYr+3iAzi6w9IYYajg==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Wed, 12 Feb 2025 09:50:53 +0100
+Subject: [PATCH] contributor-guide/submit-changes: add policy on AI
+ generated code
 MIME-Version: 1.0
-References: <20250206215711.154194-1-yoann.congal@smile.fr>
- <20250206215711.154194-3-yoann.congal@smile.fr> <52281efc-eeae-4b9a-a0a8-6b42f83a9d7a@cherry.de>
- <4508019a-f5b8-4a55-abc9-b757045ecdea@smile.fr> <b6b28fff-bcdf-4694-91e0-117f9b9ff957@cherry.de>
-In-Reply-To: <b6b28fff-bcdf-4694-91e0-117f9b9ff957@cherry.de>
-From: Yoann Congal <yoann.congal@smile.fr>
-Date: Wed, 12 Feb 2025 00:48:56 +0100
-X-Gm-Features: AWEUYZneqRVjnaiJ9HrH4vRaxrxAz_ty8i7AWVB0LHe_OZaJuT-cwxcN1vaxvow
-Message-ID: <CAMSfU+4fKoVMZ7ouvRLbib280ueOv9uW9wDvJYS9yZ0naf0DiQ@mail.gmail.com>
-Subject: Re: [docs] [PATCH v2 3/3] reproducible-builds: add a "How to" section
- with OEQA* variables
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: docs@lists.yoctoproject.org, 
-	Guillaume Swaenepoel <guillaume.swaenepoel@smile.fr>
-Content-Type: multipart/alternative; boundary="00000000000071d6d9062de6799c"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250212-ai-policy-v1-1-c9cc7510e317@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAOxgrGcC/x3MQQqAIBBA0avIrBOcAYO6SrQQG2sgVBSiCO+et
+ Hzw+S9ULsIVZvVC4UuqpNiBgwJ/uLizlq0byJA1hKSd6JxO8Y/2NI2IhIEsQu9z4SD3/1rW1j6
+ m0ZxbWwAAAA==
+X-Change-ID: 20250212-ai-policy-c2961121f251
+To: docs@lists.yoctoproject.org
+Cc: tsc <tsc@lists.openembedded.org>, 
+ Yocto TSC <tsc@lists.yoctoproject.org>, 
+ Richard Purdie <richard.purdie@linuxfoundation.org>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3488;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=Q9dWzEzdSKy5ZUJL9/B0trrqI5yDByQYKKKn2+n6xXk=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnrGERAUAuyWMUlJCueg67K67BssPLFKpqeB3Q5
+ YSJu455cCeJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ6xhEQAKCRDRgEFAKaOo
+ NiFrD/48CzLFuINDyZuX2gQSfOCm12BMLjneeo8/LyZ61j7KKo2BCWBnw/rBIz5xofWZgVoJnys
+ ilxpV+CEUNJJEE7OAzXvXOjvs3F0asth5W+3Qgexdnq35Q+uoOFnT+uIM2snXe5heFfRor1JvPs
+ fGPGBdX3XuKiOqRSvwppVFiXBC9jpdaU4YnsX7kSpYnCPqQcsBryDgchfI9+Zs3g1Hbs1TYK8qE
+ 74Q6ulCVairTrzUtNeNVvbbmo5a4FnObdFypdoDLexmVv9neyo3HeLsnJ9qESHHKlxs++aUHG/4
+ 3tKR/RKFRe6z78XY2d95JcwYgWgkgW78o1Jl7W2WWtYfYXJIsVzXNdShAuYaFdweq3uUoJjK2l1
+ eHdRnIYo+5ienATlV+pdUFQp8TAyFulpjk2jy2ipCAt3ZzpGTi1EoIAb7sh6YzuEqDwVF93hv1R
+ zssl1WAQ0E4i2YySXEEnsfzhkAOXRVcwQzBFSTCGG0MPERt8U0eyEwtkA7or4Hfr94hjAfJvQY8
+ prp0pGEfbITZqIdN/VziRsESMkpZnXJaqW5lrrszIuRD7CJ7YujETs+2D13hJURQasflG6IfFRM
+ vghP3gDk0X33KvWgQy2/jD2vqiAEcpqGD6HsehbNEEkJs/bCrPCvy81iv/WD75BLQqg/LH8qjsX
+ +LZ6jtsnDWNWjTA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdegfeeggecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffefuddtgffhtdefleehvdfhteetgffhteeiffdtjefhgfehgeduvdfffeejffetnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdplhhinhhugihfohhunhgurghtihhonhdrohhrghdpuggvvhgvlhhophgvrhgtvghrthhifhhitggrthgvrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeipdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhot
+ hhlihhnrdgtohhmpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehtshgtsehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehtshgtsehlihhsthhsrdhophgvnhgvmhgsvgguuggvugdrohhrgh
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 11 Feb 2025 23:49:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6349
+ <docs@lists.yoctoproject.org>; Wed, 12 Feb 2025 08:52:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6350
 
---00000000000071d6d9062de6799c
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Based on message by Richard Purdie on the yocto-docs list:
+https://lists.yoctoproject.org/g/docs/message/6300
 
-Le lun. 10 f=C3=A9vr. 2025 =C3=A0 17:39, Quentin Schulz <quentin.schulz@che=
-rry.de> a
-=C3=A9crit :
+Re-formatted for the Yocto Project documentation syntax.
 
-> Hi Yoann,
->
-> On 2/9/25 11:59 PM, Yoann Congal wrote:
-> >
-> >
-> > Le 07/02/2025 =C3=A0 10:13, Quentin Schulz a =C3=A9crit :
-> >> Hi Yoann,
-> >>
-> >> On 2/6/25 10:57 PM, Yoann Congal via lists.yoctoproject.org wrote:
-> >>> From: Yoann Congal <yoann.congal@smile.fr>
-> >>>
-> >>> Shows an example of the new variable
-> OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
-> >>> and still mention OEQA_REPRODUCIBLE_TEST_TARGET/SSTATE_TARGETS that
-> were
-> >>> shown earlier.
-> >>>
-> >>> Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
-> >>> Reviewed-by: Guillaume Swaenepoel <guillaume.swaenepoel@smile.fr>
-> >>> ---
-> >>> v1->v2: Quentin's review
-> >>> * tick-quote variable in title
-> >>> * a set of recipeS
-> >>> * 3 spaces to align a code block (not 4)
-> >>> ---
-> >>>    .../test-manual/reproducible-builds.rst        | 18
-> ++++++++++++++++++
-> >>>    1 file changed, 18 insertions(+)
-> >>>
-> >>> diff --git a/documentation/test-manual/reproducible-builds.rst b/
-> >>> documentation/test-manual/reproducible-builds.rst
-> >>> index b9f671d68..77c15d6e2 100644
-> >>> --- a/documentation/test-manual/reproducible-builds.rst
-> >>> +++ b/documentation/test-manual/reproducible-builds.rst
-> >>> @@ -145,3 +145,21 @@ set of recipes before the test, meaning they are
-> >>> excluded from reproducibility
-> >>>    testing. As a practical example, you could set ``sstate_targets`` =
-to
-> >>>    ``core-image-sato``, then setting ``targets`` to ``core-image-sato=
--
-> >>> sdk`` would
-> >>>    run reproducibility tests only on the targets belonging only to
-> >>> ``core-image-sato-sdk``.
-> >>> +
-> >>> +Using `OEQA_REPRODUCIBLE_TEST_*` variables
-> >>
-> >> Sorry, I meant double-tick quoting, the same way we do for the classes
-> >> in documentation/ref-manual/classes.rst, c.f.
-> >
-> > I'll fix in v3.
-> >
-> >> ``allarch``
-> >> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> >>
-> >> My grep-fu didn't return anything with :term: in titles, so I guess
-> >> that's why we're going with double-quotes typically?
-> >
-> > That does ring a bell:
-> >
-> https://git.yoctoproject.org/yocto-docs/commit/?id=3Db9e19a00a3aac05a2cdd=
-35b61dfae6d5a1a9c648
-> > ...but in this case the linkage works (but the link is rendered as blac=
-k
->
-> Ahah! Thanks for the pointer :)
->
-> > wheras the rest of the title is blue, looks a bit weird IMHO).
-> > Also, since I don't point a single variable but the whole
-> > OEQA_REPRODUCIBLE_TEST_* group, I'd rather leave it with double quotes.
-> >
->
-> We actually do have a bunch of those already:
->
-> :term:`SYSROOT_DIRS* <SYSROOT_DIRS>` variables.
-> See the :term:`SYSROOT_* <SYSROOT_DESTDIR>` variables
-> :term:`module_conf_* <module_conf>` variable.
->
-> etc.
->
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ documentation/contributor-guide/submit-changes.rst | 49 ++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
 
-I've missed this review for v4, I've sent v5 with it.
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index 85ca987df..0675aac98 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -832,3 +832,52 @@ Other layers may have similar testing branches but there is no formal
+ requirement or standard for these so please check the documentation for the
+ layers you are contributing to.
+ 
++Acceptance of AI Generated Code
++===============================
++
++The Yocto Project and OpenEmbedded follow the guidance of the Linux Foundation
++in regards to the use of generative AI tools. See:
++https://www.linuxfoundation.org/legal/generative-ai.
++
++All of the existing guidelines in this document are expected to be followed,
++including in the :doc:`recipe-style-guide`, and contributing the changes with
++additional requirements to the items in section
++:ref:`contributor-guide/submit-changes:Implement and commit changes`.
++
++All AI Generated Code must be labeled as such in the commit message,
++prior to your ``Signed-off-by`` line. It is also strongly recommended,
++that any patches or code within the commit also have a comment or other
++indication that this code was AI generated.
++
++For example, here is a properly formatted commit message::
++
++   component: Add the ability to ...
++
++   AI-Generated: Uses GitHub Copilot
++
++   Signed-off-by: Your Name <your.name@domain>
++
++The ``Signed-off-by`` line must be written by you, and not the AI helper.
++As a reminder, when contributing a change, your ``Signed-off-by`` line is
++required and the stipulations in the `Developer's Statement of Origin
++1.1 <https://developercertificate.org/>`__ still apply.
++
++Additionally, you must stipulate AI contributions conform to the Linux
++Foundation policy, specifically:
++
++#. Contributors should ensure that the terms and conditions of the generative AI
++   tool do not place any contractual restrictions on how the tool's output can
++   be used that are inconsistent with the project's open source software
++   license, the project's intellectual property policies, or the Open Source
++   Definition.
++
++#. If any pre-existing copyrighted materials (including pre-existing open
++   source code) authored or owned by third parties are included in the AI tool's
++   output, prior to contributing such output to the project, the Contributor
++   should confirm that they have permission from the third party
++   owners -- such as the form of an open source license or public domain
++   declaration that complies with the project's licensing policies -- to use and
++   modify such pre-existing materials and contribute them to the project.
++   Additionally, the contributor should provide notice and attribution of such
++   third party rights, along with information about the applicable license
++   terms, with their contribution.
 
-Thanks!
+---
+base-commit: 6eda443c7fcfeecebd6b44b96a1587c4bb093a34
+change-id: 20250212-ai-policy-c2961121f251
 
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
-> Cheers,
-> Quentin
->
-
-
---=20
-Yoann Congal
-Smile ECS - Tech expert
-
---00000000000071d6d9062de6799c
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-<div dir=3D"ltr"><div dir=3D"ltr"><br></div><br><div class=3D"gmail_quote g=
-mail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">Le=C2=A0lun. 10=
- f=C3=A9vr. 2025 =C3=A0=C2=A017:39, Quentin Schulz &lt;<a href=3D"mailto:qu=
-entin.schulz@cherry.de">quentin.schulz@cherry.de</a>&gt; a =C3=A9crit=C2=A0=
-:<br></div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.=
-8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">Hi Yoann,<br>
-<br>
-On 2/9/25 11:59 PM, Yoann Congal wrote:<br>
-&gt; <br>
-&gt; <br>
-&gt; Le 07/02/2025 =C3=A0 10:13, Quentin Schulz a =C3=A9crit=C2=A0:<br>
-&gt;&gt; Hi Yoann,<br>
-&gt;&gt;<br>
-&gt;&gt; On 2/6/25 10:57 PM, Yoann Congal via <a href=3D"http://lists.yocto=
-project.org" rel=3D"noreferrer" target=3D"_blank">lists.yoctoproject.org</a=
-> wrote:<br>
-&gt;&gt;&gt; From: Yoann Congal &lt;<a href=3D"mailto:yoann.congal@smile.fr=
-" target=3D"_blank">yoann.congal@smile.fr</a>&gt;<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Shows an example of the new variable OEQA_REPRODUCIBLE_TEST_LE=
-AF_TARGETS<br>
-&gt;&gt;&gt; and still mention OEQA_REPRODUCIBLE_TEST_TARGET/SSTATE_TARGETS=
- that were<br>
-&gt;&gt;&gt; shown earlier.<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; Signed-off-by: Yoann Congal &lt;<a href=3D"mailto:yoann.congal=
-@smile.fr" target=3D"_blank">yoann.congal@smile.fr</a>&gt;<br>
-&gt;&gt;&gt; Reviewed-by: Guillaume Swaenepoel &lt;<a href=3D"mailto:guilla=
-ume.swaenepoel@smile.fr" target=3D"_blank">guillaume.swaenepoel@smile.fr</a=
->&gt;<br>
-&gt;&gt;&gt; ---<br>
-&gt;&gt;&gt; v1-&gt;v2: Quentin&#39;s review<br>
-&gt;&gt;&gt; * tick-quote variable in title<br>
-&gt;&gt;&gt; * a set of recipeS<br>
-&gt;&gt;&gt; * 3 spaces to align a code block (not 4)<br>
-&gt;&gt;&gt; ---<br>
-&gt;&gt;&gt;=C2=A0 =C2=A0 .../test-manual/reproducible-builds.rst=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 18 ++++++++++++++++++<br>
-&gt;&gt;&gt;=C2=A0 =C2=A0 1 file changed, 18 insertions(+)<br>
-&gt;&gt;&gt;<br>
-&gt;&gt;&gt; diff --git a/documentation/test-manual/reproducible-builds.rst=
- b/<br>
-&gt;&gt;&gt; documentation/test-manual/reproducible-builds.rst<br>
-&gt;&gt;&gt; index b9f671d68..77c15d6e2 100644<br>
-&gt;&gt;&gt; --- a/documentation/test-manual/reproducible-builds.rst<br>
-&gt;&gt;&gt; +++ b/documentation/test-manual/reproducible-builds.rst<br>
-&gt;&gt;&gt; @@ -145,3 +145,21 @@ set of recipes before the test, meaning t=
-hey are<br>
-&gt;&gt;&gt; excluded from reproducibility<br>
-&gt;&gt;&gt;=C2=A0 =C2=A0 testing. As a practical example, you could set ``=
-sstate_targets`` to<br>
-&gt;&gt;&gt;=C2=A0 =C2=A0 ``core-image-sato``, then setting ``targets`` to =
-``core-image-sato-<br>
-&gt;&gt;&gt; sdk`` would<br>
-&gt;&gt;&gt;=C2=A0 =C2=A0 run reproducibility tests only on the targets bel=
-onging only to<br>
-&gt;&gt;&gt; ``core-image-sato-sdk``.<br>
-&gt;&gt;&gt; +<br>
-&gt;&gt;&gt; +Using `OEQA_REPRODUCIBLE_TEST_*` variables<br>
-&gt;&gt;<br>
-&gt;&gt; Sorry, I meant double-tick quoting, the same way we do for the cla=
-sses<br>
-&gt;&gt; in documentation/ref-manual/classes.rst, c.f.<br>
-&gt; <br>
-&gt; I&#39;ll fix in v3.<br>
-&gt; <br>
-&gt;&gt; ``allarch``<br>
-&gt;&gt; =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D<br>
-&gt;&gt;<br>
-&gt;&gt; My grep-fu didn&#39;t return anything with :term: in titles, so I =
-guess<br>
-&gt;&gt; that&#39;s why we&#39;re going with double-quotes typically?<br>
-&gt; <br>
-&gt; That does ring a bell:<br>
-&gt; <a href=3D"https://git.yoctoproject.org/yocto-docs/commit/?id=3Db9e19a=
-00a3aac05a2cdd35b61dfae6d5a1a9c648" rel=3D"noreferrer" target=3D"_blank">ht=
-tps://git.yoctoproject.org/yocto-docs/commit/?id=3Db9e19a00a3aac05a2cdd35b6=
-1dfae6d5a1a9c648</a><br>
-&gt; ...but in this case the linkage works (but the link is rendered as bla=
-ck<br>
-<br>
-Ahah! Thanks for the pointer :)<br>
-<br>
-&gt; wheras the rest of the title is blue, looks a bit weird IMHO).<br>
-&gt; Also, since I don&#39;t point a single variable but the whole<br>
-&gt; OEQA_REPRODUCIBLE_TEST_* group, I&#39;d rather leave it with double qu=
-otes.<br>
-&gt; <br>
-<br>
-We actually do have a bunch of those already:<br>
-<br>
-:term:`SYSROOT_DIRS* &lt;SYSROOT_DIRS&gt;` variables.<br>
-See the :term:`SYSROOT_* &lt;SYSROOT_DESTDIR&gt;` variables<br>
-:term:`module_conf_* &lt;module_conf&gt;` variable.<br>
-<br>
-etc.<br></blockquote><div><br></div><div>I&#39;ve missed this review for v4=
-, I&#39;ve sent v5 with it.</div><div><br></div><div>Thanks!</div><div>=C2=
-=A0</div><blockquote class=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8e=
-x;border-left:1px solid rgb(204,204,204);padding-left:1ex">
-Cheers,<br>
-Quentin<br>
-</blockquote></div><div><br clear=3D"all"></div><br><span class=3D"gmail_si=
-gnature_prefix">-- </span><br><div dir=3D"ltr" class=3D"gmail_signature"><d=
-iv dir=3D"ltr"><font face=3D"Raleway, regular">Yoann Congal</font><div><fon=
-t face=3D"Raleway, regular">Smile ECS - Tech expert<br></font></div></div><=
-/div></div>
-
---00000000000071d6d9062de6799c--
 
