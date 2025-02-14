@@ -2,34 +2,34 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 82751C02198
-	for <webhook@archiver.kernel.org>; Fri, 14 Feb 2025 13:27:29 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.20851.1739539645828184930
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64E23C02198
+	for <webhook@archiver.kernel.org>; Fri, 14 Feb 2025 13:27:39 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web10.20814.1739539651461731765
  for <docs@lists.yoctoproject.org>;
- Fri, 14 Feb 2025 05:27:26 -0800
+ Fri, 14 Feb 2025 05:27:31 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=E10yvtIK;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B19584419D;
-	Fri, 14 Feb 2025 13:27:23 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=lf3wPpZr;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5D58344261;
+	Fri, 14 Feb 2025 13:27:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739539644;
+	t=1739539649;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=VJFy5C6Dq/vcO8TpHI75jWhupSPmAZ0HyHsgzsaR9+4=;
-	b=E10yvtIKff2SmZTc0I8tQopFJLjM0nTBqRvQxVBiFYMogcHLWGDKIFgNkO25ey6v5yxckq
-	XjvVJsaQFUzpkgOU9wgDO9t05IgzJdnfuTy4Z3fPQ3ufj5yg2QaM36+G8/ufrmP3TXZ4n+
-	TpLNoFdiGh4wEFL56tJyGAlXW9jsMZUkA4iOAK+0qJeSKg58ffj9iX4uO6tYtPFzA4Mg92
-	JlZ7lU0tr6PNpLyQK5Ik1m4GM1MxA+cpazzZe3NJjEzIYQ6CsmY6qa7rk28rYgBurqXB0M
-	mLDKTVg2LLUyqdZ+hsPJGPXJzXuu+f3hWwehB1cvX5jIHNwSCg+5dKIIfW4IvA==
+	bh=3WCTqw7jrFurAthV3x04v7RDyXfJjwBPXdpKA8ieVuE=;
+	b=lf3wPpZrZjNuUk1Sof2m4lhlvn2+86vRZFmW1nqYHYKHpGryXRtIMqJ83YccdBYtQ0A+ME
+	4Vd0JRkoDMdwULi7nU9wzKnrGrH+3r1Y6q2MvvoAlxR6W36LB/4wD72m/6dHct4ZqyYDVA
+	vJFC0yQ+NkiCmChhPDYqvu3XjtswKMjM/8iRF1ZCki6VprYg2ap5PNWU6ne+8oNQRkHI/u
+	mc7G30h1Y9/vzs7D46MqeyPLbydZYCtV4nkmogLCu2WUlgWdRkZevL8gOp1e2bArlZ5ID7
+	c3tr66YKPTvWcRFwTK1mjeVTt8pVFyYsWGZMpJ62h6QO6187sDHSWhPxCgLzUQ==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 14 Feb 2025 14:27:23 +0100
-Message-Id: <D7S7C80PBNHK.33ZUOM45EJ53K@bootlin.com>
-Subject: [styhead] Pull request
+Date: Fri, 14 Feb 2025 14:27:28 +0100
+Message-Id: <D7S7CAFK06LP.2CBJHHSCG6HOO@bootlin.com>
+Subject: [kirkstone] Pull request
 Cc: <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
@@ -40,41 +40,32 @@ X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 14 Feb 2025 13:27:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6368
+ <docs@lists.yoctoproject.org>; Fri, 14 Feb 2025 13:27:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6370
 
-The following changes since commit a61a3a32fad3b28dd69dda36ef8f4bcf5c3d0b0b=
+The following changes since commit c6dce0c77481dee7b0a0fcdc803f755ceccef234=
 :
 
-  migration-guides: add release notes for 5.1.2 (2025-02-07 10:01:02 +0100)
+  migration-guides: add release notes for 4.0.24 (2025-02-04 15:56:24 +0100=
+)
 
 are available in the Git repository at:
 
-  git@push.yoctoproject.org:yocto-docs styhead-next
+  git@push.yoctoproject.org:yocto-docs kirkstone-next
 
-for you to fetch changes up to fd9c744d6e73a5719e61a3c0063b1602ca386e91:
+for you to fetch changes up to 73119a723b48a4038479591f0443c5acb3d21337:
 
-  migration-guides: add release notes for 5.0.7 (2025-02-14 09:01:21 +0100)
+  Add favicon for the documentation html (2025-02-14 09:02:18 +0100)
 
 ----------------------------------------------------------------
-Adrian Freihofer (1):
-      sdk-manual: extensible.rst: update devtool ide-sdk
-
 Antonin Godard (2):
       contributor-guide/submit-changes: add policy on AI generated code
       Add favicon for the documentation html
 
-Lee Chee Yang (1):
-      migration-guides: add release notes for 5.0.7
-
  documentation/conf.py                              |   1 +
- documentation/contributor-guide/submit-changes.rst |  49 +++
- documentation/migration-guides/release-5.0.rst     |   2 +
- .../migration-guides/release-notes-5.0.7.rst       | 331 +++++++++++++++++=
+ documentation/contributor-guide/submit-changes.rst |  49 +++++++++++++++++=
 ++++
- documentation/sdk-manual/extensible.rst            |   7 +-
  documentation/sphinx-static/favicon.ico            | Bin 0 -> 1291 bytes
- 6 files changed, 387 insertions(+), 3 deletions(-)
- create mode 100644 documentation/migration-guides/release-notes-5.0.7.rst
+ 3 files changed, 50 insertions(+)
  create mode 100644 documentation/sphinx-static/favicon.ico
 
