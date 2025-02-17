@@ -1,97 +1,120 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78E9AC021AA
-	for <webhook@archiver.kernel.org>; Mon, 17 Feb 2025 14:48:00 +0000 (UTC)
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
- by mx.groups.io with SMTP id smtpd.web10.53210.1739803679530982129
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 632FFC021A9
+	for <webhook@archiver.kernel.org>; Mon, 17 Feb 2025 14:50:40 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.53279.1739803835784472584
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Feb 2025 06:47:59 -0800
+ Mon, 17 Feb 2025 06:50:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Gp1oskWK;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.52, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-439714a799aso19256935e9.2
-        for <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 06:47:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1739803678; x=1740408478; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yoPO0b/gcpT0ADALg/JjTYpgqu6p+hzcXhriURAPFwM=;
-        b=Gp1oskWKz691/cgzFNl/bGkuDaWUpc5pAk0rbkGXMgzgvm1E2tnl5zYqM87/ejQOm6
-         cPZwsjDtP/2e72QJ6cPBP9udESq8gs6bd24mXXt7sVVzu06A6O+YAK7A5MNgoQ1hA/pN
-         Ae2PhRls1mG++jfeNGcItiziD3l+XJj8XPZ18=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739803678; x=1740408478;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=yoPO0b/gcpT0ADALg/JjTYpgqu6p+hzcXhriURAPFwM=;
-        b=aEeeGt6deYNJHbp2Cwhq2YEVnsrDr4XERa/0YDibH4eUaWPwmszBnRNtRECLL53Puv
-         FTVt9U2AyDPUZQECkoQc7s24dHvxOd6TnAEDfLKbcsIrkrl+BECqWv83nhTZm9M+mgS/
-         T1Yxx7xkBXysrElL2qVenJ4Lr+gSLN5SGzVVx1D5IVbmmC5DRV0WSONG0mWCiYSveN5K
-         ZKZFKJl0rUxsj5oZo5qSgIvMVZRBeGRjOC5lOBHlD5t/9KBEZoTtOW4522wbZyD74iPu
-         1DMa2Efu3D+KxQDD7u8+RFFWExdaRg6S3ZoPeZJDKoiCsGd88y26ojUzMUwMbeKZY2Mo
-         +PZA==
-X-Gm-Message-State: AOJu0YwH3hvHlC6E4Jqq2g1gKdRhaOClecgvFxyqTYoe3BfE6wIzZ/Tk
-	CpmyUpEkn8maE3Rq77xQTWN99tXOyT0F0MdbKrT3Uye2uwDLLB8S/82dcA5gX1A=
-X-Gm-Gg: ASbGncsTloR/1ETLP8Ae6oxXYEnjQj12BobGS+hQL/9jvsr5EpTeZnpfYaJV9RbMKVL
-	oYxSHrrz6r2sWCpw6xJMhXwcGwkOtyO9HXln+Z7WaT498E8B4RKKmlRhcaPtMbuymsZkG2RO5+a
-	RuRhcncjFx6lplSTvepH712riiunNc5NMljpuKTO/U4bsY9DEUUuj+ACKD58grMPO8fXAp2duf4
-	iozdL4ETjmGQFf/mNaKgR24drth2SV3cFc1davbSVe/x56VGwiyBOhx4miG+ZJnDvPrO4aoQ+NS
-	2PGEVRSsWF5ivzMDfpjhE+FrdtM8K2ngpQZGOV6183u673I/NDNYTODxG0B6nWuTVfkf7pnsi5T
-	DqC3d
-X-Google-Smtp-Source: AGHT+IHPaKwMvQbNytFVuDFx44k3jFXT+P9bsSSV6t0vZgUpFXjwf+ReVN0AcLNCRrE+onOcHVrB9Q==
-X-Received: by 2002:a05:600c:4f03:b0:438:a240:c63 with SMTP id 5b1f17b1804b1-4396e6978f1mr74953035e9.2.1739803677903;
-        Mon, 17 Feb 2025 06:47:57 -0800 (PST)
-Received: from ?IPv6:2001:8b0:aba:5f3c:12f2:fcaa:2c32:45fc? ([2001:8b0:aba:5f3c:12f2:fcaa:2c32:45fc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439617fc885sm122890205e9.9.2025.02.17.06.47.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 06:47:56 -0800 (PST)
-Message-ID: <74453d28c603c2c23074b52cdcab879df1990155.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH v3 0/2] Document the PACKAGE_KEEP_DEBUG_FRAME
- variable
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: othacehe@gnu.org, Antonin Godard <antonin.godard@bootlin.com>
-Cc: docs@lists.yoctoproject.org, Ross Burton <ross.burton@arm.com>
-Date: Mon, 17 Feb 2025 14:47:56 +0000
-In-Reply-To: <87v7t8swvn.fsf@gnu.org>
-References: <20250211161239.5396-1-othacehe@gnu.org>
-		<D7ULJGLDCLNM.2F5SN59SUVGYR@bootlin.com> <87v7t8swvn.fsf@gnu.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.0-1 
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TWsezrhe;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B3C1543313;
+	Mon, 17 Feb 2025 14:50:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739803834;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Xyhd3/xbRWCLmQxXAml0DkvDIv3BvsSYaz3c4n5b01o=;
+	b=TWsezrheRMmkuaEi4yx4NP93O5HegWzVTiaI962NZm0MghNHh0F9eb8/20j3fRjCmObDxK
+	aTZhp0+NA0UWx1ivz95QTRb8xFVRgtM0SvBVfBOlrj+k326IWk4RHG/j4jHq+XZUyUSz7C
+	MbirsHXybH1tKUMlirgif8+Lu7/2gERCC3DArM/JhP9pnLqsPUTfsQ2F7jsn049lU2b/2D
+	Udp1HRh3fSliGfZ652BMGAGlFWEVxo67EEuAMXavN/+qd/FSqEzSUAaxjCiBdWGhOJSmvP
+	f31KoNSGHqUVuVDNaDaID1ObnzzI81Nse/Zm5teSIiHU/73oqo+p6E/2jjly1w==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH v3 0/6] Improve multiconfig documentation
+Date: Mon, 17 Feb 2025 15:50:19 +0100
+Message-Id: <20250217-multiconfig-doc-v3-0-027a9fb282c3@bootlin.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKtMs2cC/2XNTQ6CMBCG4auYrq1ppwLBlfcwLvoLk0BrWmw0h
+ LtbcKNh+X7JPDOTZCPaRC6HmUSbMWHwJcTxQHQvfWcpmtIEGFSMQ0vH5zChDt5hR03QVItGnEH
+ WUrWclKtHtA5fm3i7l+4xTSG+tweZr+vXAtbsrMwpo64W2kjFnTTtVYUwDehPOoxk1TL8CFzsB
+ VgFUEZUnFdaNf/Csiwf1jh4RvIAAAA=
+X-Change-ID: 20250129-multiconfig-doc-c37342a6ab91
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Quentin Schulz <quentin.schulz@cherry.de>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2086;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=qPpP+dinbBavGxiTi6qzrV5rzUTU3D+Cb1G5o3PsioE=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBns0y4uGvsVmUWZkgDg5rP7rMZnqDU8TM5LbeBU
+ 4YreyFlQ7qJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ7NMuAAKCRDRgEFAKaOo
+ NnoRD/9+B+yX60uPNzKzUx2CXKyDWt+hK3uBmn5dG/qPN8IGsdsH5l6f0eOZUEKXWGLUR7qTBLH
+ BArznPmNaDk4OFKzR5mksYPO6pRPUKnGsLtwHVZm1Y+JX6a6J2boRdRKGZCl6Jvches00DRIVQ3
+ Jedd8LcsYkj0uFOWemAMybkSF9MPZiNUexuv3PDVqV8EVGyIkaLxIwTptbfd4v/LxY3SDmZgJeu
+ CnmQpY0lwJPYUX3RsCl7zK9i2n6xGoIdjiPh9t9BxdOfiTU4pLFiQYSDxdly3mGR1DCDL6/h6dK
+ upWfnqpN6McS8n7S7Q+jqTfnm4wanIfglPGedHmf1PzoVfEdasKhjfH1hRhC2zIl+RhfWoksnS+
+ EhxjAfA/h1V8tHiaDkL0Sddq+h57X93ckXkbQzaDusAoUxGbHoeWzFLw79aCPv/hodQSaL2Jjy8
+ YPPT5hzJ94ms3+NtQ6AuTMjBxoYCJ69OaQABQaWFyumrw8/KX2BSJVmDFFctOPmCXoFlUajuVyP
+ X4lHWyT1lvzL7kdpYyZAXuoRFU7zqITbewKZtrNAKFzehozjFCNytQWC/0l+HjQH9ZP9563xh+3
+ NM77ZBqtyKDG4STbLaxXEJ1TwYqRzowfc9v78URg2aSiaFWEAy8Kh3EV4/g9P/PrrRaTpm6EXSH
+ LSNIx1P694RdX2g==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdehkeeikecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepgeekkeeghefhvdfhfeejuefgudduveefgeefieekkeeghfffueeljedvjeekiefhnecuffhomhgrihhnpehophgvnhgvmhgsvgguuggvugdrohhrghdpkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegthhgvrhhrhidruggvpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtt
+ hdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 14:48:00 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6393
+ <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 14:50:40 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6394
 
-On Mon, 2025-02-17 at 11:12 +0100, Mathieu Othacehe via
-lists.yoctoproject.org wrote:
->=20
-> Hello Antonin,
->=20
-> > > poky:
-> > > https://git.yoctoproject.org/poky/commit/?h=3Dmaster-next&id=3D104482=
-00b63bdc45b39504ebcddd85b5f274f0c4
-> >=20
-> > This link does not work for me. Could you give me a new link with
-> > your
-> > commits, on master? I couldn't find them.
->=20
-> Not sure why that one broke, here's a new one:
->=20
-> https://git.yoctoproject.org/poky/commit/?h=3Dmaster-next&id=3Ddf2c9e8840=
-66aafb0dfb60521a4809c5ba4cfd5d
+This series moves the multiconfig doc to its own document in the dev
+manual, and adds 2 sections to improve it.
 
-The patch hasn't merged yet, it was queued in master-next which
-rebases, hence the ID changes. There are some concerns about the patch,
-I'm working on trying to get some feedback about it.
+It also adds BB_CURRENT_MC to variables.rst, and fixes previous
+references of that variable in the doc.
 
-Cheers,
+This series depends on the following series that adds the BB_CURRENT_MC
+doc in bitbake: https://lists.openembedded.org/g/bitbake-devel/message/17185.
 
-Richard
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v3:
+- Various typos and suggestions by Quentin (thanks!)
+- Link to v2: https://lore.kernel.org/r/20250213-multiconfig-doc-v2-0-f2bd35115cb7@bootlin.com
+
+Changes in v2:
+- reviews from Quentin (thanks!)
+  - add dependency on bitbake series
+  - fix first commit's bad reference, replace with a :doc:
+  - fix some typos
+  - add example install and deploy tasks in the suggested best practices
+  - mention that the baremetal scenario could also apply to a main Soc
+    with companion microcontroller + add a note on overriding MACHINE or
+    not
+- Link to v1: https://lore.kernel.org/r/20250207-multiconfig-doc-v1-0-f63cdab1fad9@bootlin.com
+
+---
+Antonin Godard (6):
+      dev-manual: move multiconfig documentation to its own document
+      variables.rst: add a reference to BB_CURRENT_MC from bbdocs
+      migration-5.2: fix references to BB_CURRENT_MC
+      dev-manual/multiconfig: rename to use Multiconfig term
+      dev-manual/multiconfig: improve the current doc
+      dev-manual/multiconfig: add suggested best practices and baremetal sections
+
+ documentation/dev-manual/building.rst            | 156 +-----------
+ documentation/dev-manual/index.rst               |   1 +
+ documentation/dev-manual/multiconfig.rst         | 312 +++++++++++++++++++++++
+ documentation/migration-guides/migration-5.2.rst |   4 +-
+ documentation/ref-manual/variables.rst           |   3 +
+ 5 files changed, 320 insertions(+), 156 deletions(-)
+---
+base-commit: 6eda443c7fcfeecebd6b44b96a1587c4bb093a34
+change-id: 20250129-multiconfig-doc-c37342a6ab91
+
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
+
 
