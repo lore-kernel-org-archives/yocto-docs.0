@@ -2,69 +2,63 @@ Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 73807C021A9
-	for <webhook@archiver.kernel.org>; Mon, 17 Feb 2025 14:39:10 +0000 (UTC)
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
- by mx.groups.io with SMTP id smtpd.web11.52793.1739803141129852762
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 78E9AC021AA
+	for <webhook@archiver.kernel.org>; Mon, 17 Feb 2025 14:48:00 +0000 (UTC)
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+ by mx.groups.io with SMTP id smtpd.web10.53210.1739803679530982129
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Feb 2025 06:39:01 -0800
+ Mon, 17 Feb 2025 06:47:59 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=GXjnWWko;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.48, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-438a3216fc2so46341895e9.1
-        for <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 06:39:00 -0800 (PST)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Gp1oskWK;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.52, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-439714a799aso19256935e9.2
+        for <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 06:47:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1739803139; x=1740407939; darn=lists.yoctoproject.org;
+        d=linuxfoundation.org; s=google; t=1739803678; x=1740408478; darn=lists.yoctoproject.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ViUhqonXNEy+cf3n0jLZ9asoo9iUUSbxnKNdqZehVzU=;
-        b=GXjnWWkoEssmTpAxka86zc1TPuWUoTDuirwxiNAtWr6OqJ+vc2gThzeO5bVgUPOST1
-         r/GyHQA7IyRdVr///2z8pDdxpKNsG/4dPo8By4rmGyoHuT+r8P9pFqVqBel3s3kW5fie
-         WVaodN6Noxez4cAv615+Gtw88Nr0qiqixKTek=
+        bh=yoPO0b/gcpT0ADALg/JjTYpgqu6p+hzcXhriURAPFwM=;
+        b=Gp1oskWKz691/cgzFNl/bGkuDaWUpc5pAk0rbkGXMgzgvm1E2tnl5zYqM87/ejQOm6
+         cPZwsjDtP/2e72QJ6cPBP9udESq8gs6bd24mXXt7sVVzu06A6O+YAK7A5MNgoQ1hA/pN
+         Ae2PhRls1mG++jfeNGcItiziD3l+XJj8XPZ18=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739803139; x=1740407939;
+        d=1e100.net; s=20230601; t=1739803678; x=1740408478;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ViUhqonXNEy+cf3n0jLZ9asoo9iUUSbxnKNdqZehVzU=;
-        b=mmPU7jfFk79Ps9vZsx/EvvGNoUwP5POySO8P6xFBt0agxAlkrnSPpBFhSG3wcs6dCQ
-         4K+H6kJsgoZX6gUXeyVK2pBwIXjZPBFrUxFJzrh4QOSs2nEDjvG/nR0miQ+NKeuBkeNh
-         flGRpN0FePKOoOU2V3I0TMtgFkdaRhTYNs7Aj092eEeslUx+cgOR74QEiwjc2kHCQVF7
-         el4YMwzegFPTeqClqepgiDMT+ecfspnqnWKKXQB3/d6854XJi0pIkk3bhVtuinzPNPoZ
-         sZM1vopKDWiYC/eUdx9ZPzXQ1ncMOIyW5AGOFEbtkuACfDa4+N4gZ/pI8xgdxC53wi3j
-         Yprg==
-X-Forwarded-Encrypted: i=1; AJvYcCX9oVU9czQBV7c40dxgtHSR7dIop6tbJ7tXRddGLbyve5fg3/Bh6gA36yK2EN/ZqjKbkEDM@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YxSIf1vLYOh6vDlk8x6TFMnfRM+J/4UvkXjXLv9iEwJIbC2DJWs
-	pA5KQAA0gDUReQBxfQSBRzOcaB0vJXQDTUYmfuOzkiZz5F89q3xT3r+vLEvqia0=
-X-Gm-Gg: ASbGncstWUOVmP0wUUb6WwvYU4swOofD4QJrL5vdiB99C40hRB1w0S5pIB2f59PU7RG
-	913IYYacyPhog8M+fMn4t13ZMka+krjPVmHgto+X9Zyn3ppQdOOVVK5Ysro3Rxxn2QplEF+WT/W
-	mkGeuvB3x4lckD0I32Xi0CPKYSAINlAqs8le1pg+T1d2ZCy4m4ncbrWtIqgSvd9BBfGjeWrmkQd
-	iZ+KWE+1yEFwsBrDZFCq0CJWZ+yQyXhaVhyRpW41oqNyFGUagkyWPhwsgJgorld7SmVxhBpbE51
-	CPoT9AJFJek5y2wkR6FrK6KVEOR8iydAlsWzVJIrxPtF0Rvh9oHkjHC6diuppDtw3diUyrSgQ3N
-	3hXgh
-X-Google-Smtp-Source: AGHT+IFB000lwHoWNb+asTLFdtwb1uJ5w6Vi4AcmwH+RAvbss5e+M4RZskqJ6E0fu+7ldBYppEmz9g==
-X-Received: by 2002:a05:600c:1d95:b0:439:8829:aa69 with SMTP id 5b1f17b1804b1-4398829abd0mr21856175e9.17.1739803139531;
-        Mon, 17 Feb 2025 06:38:59 -0800 (PST)
+        bh=yoPO0b/gcpT0ADALg/JjTYpgqu6p+hzcXhriURAPFwM=;
+        b=aEeeGt6deYNJHbp2Cwhq2YEVnsrDr4XERa/0YDibH4eUaWPwmszBnRNtRECLL53Puv
+         FTVt9U2AyDPUZQECkoQc7s24dHvxOd6TnAEDfLKbcsIrkrl+BECqWv83nhTZm9M+mgS/
+         T1Yxx7xkBXysrElL2qVenJ4Lr+gSLN5SGzVVx1D5IVbmmC5DRV0WSONG0mWCiYSveN5K
+         ZKZFKJl0rUxsj5oZo5qSgIvMVZRBeGRjOC5lOBHlD5t/9KBEZoTtOW4522wbZyD74iPu
+         1DMa2Efu3D+KxQDD7u8+RFFWExdaRg6S3ZoPeZJDKoiCsGd88y26ojUzMUwMbeKZY2Mo
+         +PZA==
+X-Gm-Message-State: AOJu0YwH3hvHlC6E4Jqq2g1gKdRhaOClecgvFxyqTYoe3BfE6wIzZ/Tk
+	CpmyUpEkn8maE3Rq77xQTWN99tXOyT0F0MdbKrT3Uye2uwDLLB8S/82dcA5gX1A=
+X-Gm-Gg: ASbGncsTloR/1ETLP8Ae6oxXYEnjQj12BobGS+hQL/9jvsr5EpTeZnpfYaJV9RbMKVL
+	oYxSHrrz6r2sWCpw6xJMhXwcGwkOtyO9HXln+Z7WaT498E8B4RKKmlRhcaPtMbuymsZkG2RO5+a
+	RuRhcncjFx6lplSTvepH712riiunNc5NMljpuKTO/U4bsY9DEUUuj+ACKD58grMPO8fXAp2duf4
+	iozdL4ETjmGQFf/mNaKgR24drth2SV3cFc1davbSVe/x56VGwiyBOhx4miG+ZJnDvPrO4aoQ+NS
+	2PGEVRSsWF5ivzMDfpjhE+FrdtM8K2ngpQZGOV6183u673I/NDNYTODxG0B6nWuTVfkf7pnsi5T
+	DqC3d
+X-Google-Smtp-Source: AGHT+IHPaKwMvQbNytFVuDFx44k3jFXT+P9bsSSV6t0vZgUpFXjwf+ReVN0AcLNCRrE+onOcHVrB9Q==
+X-Received: by 2002:a05:600c:4f03:b0:438:a240:c63 with SMTP id 5b1f17b1804b1-4396e6978f1mr74953035e9.2.1739803677903;
+        Mon, 17 Feb 2025 06:47:57 -0800 (PST)
 Received: from ?IPv6:2001:8b0:aba:5f3c:12f2:fcaa:2c32:45fc? ([2001:8b0:aba:5f3c:12f2:fcaa:2c32:45fc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439872b5a46sm22675995e9.32.2025.02.17.06.38.58
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-439617fc885sm122890205e9.9.2025.02.17.06.47.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 06:38:58 -0800 (PST)
-Message-ID: <f597acbb816a2eabe39971f5f6765610420967fb.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH] contributor-guide/submit-changes: add policy on
- AI generated code
+        Mon, 17 Feb 2025 06:47:56 -0800 (PST)
+Message-ID: <74453d28c603c2c23074b52cdcab879df1990155.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH v3 0/2] Document the PACKAGE_KEEP_DEBUG_FRAME
+ variable
 From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: antonin.godard@bootlin.com, Quentin Schulz <quentin.schulz@cherry.de>, 
-	docs@lists.yoctoproject.org
-Cc: tsc <tsc@lists.openembedded.org>, Yocto TSC
- <tsc@lists.yoctoproject.org>,  Thomas Petazzoni
- <thomas.petazzoni@bootlin.com>
-Date: Mon, 17 Feb 2025 14:38:58 +0000
-In-Reply-To: <D7USP7RNYI68.2YJEYK482TX3C@bootlin.com>
-References: <20250212-ai-policy-v1-1-c9cc7510e317@bootlin.com>
-	 <178a6b27-d616-4fd0-b675-ba4f2767656b@cherry.de>
-	 <3bf717794dcd19ba91262b1037daf6c6118f1725.camel@linuxfoundation.org>
-	 <D7USP7RNYI68.2YJEYK482TX3C@bootlin.com>
+To: othacehe@gnu.org, Antonin Godard <antonin.godard@bootlin.com>
+Cc: docs@lists.yoctoproject.org, Ross Burton <ross.burton@arm.com>
+Date: Mon, 17 Feb 2025 14:47:56 +0000
+In-Reply-To: <87v7t8swvn.fsf@gnu.org>
+References: <20250211161239.5396-1-othacehe@gnu.org>
+		<D7ULJGLDCLNM.2F5SN59SUVGYR@bootlin.com> <87v7t8swvn.fsf@gnu.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.54.0-1 
@@ -72,56 +66,30 @@ MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 14:39:10 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6392
+ <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 14:48:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6393
 
-On Mon, 2025-02-17 at 15:37 +0100, Antonin Godard via
-lists.openembedded.org wrote:
-> Hi Richard,
+On Mon, 2025-02-17 at 11:12 +0100, Mathieu Othacehe via
+lists.yoctoproject.org wrote:
 >=20
-> On Mon Feb 17, 2025 at 3:30 PM CET, Richard Purdie wrote:
-> > On Mon, 2025-02-17 at 12:20 +0100, Quentin Schulz wrote:
-> > > > +indication that this code was AI generated.
-> > > > +
-> > > > +For example, here is a properly formatted commit message::
-> > > > +
-> > > > +=C2=A0=C2=A0 component: Add the ability to ...
-> > > > +
-> > > > +=C2=A0=C2=A0 AI-Generated: Uses GitHub Copilot
-> > > > +
-> > > > +=C2=A0=C2=A0 Signed-off-by: Your Name <your.name@domain>
-> > > > +
-> > > > +The ``Signed-off-by`` line must be written by you, and not the
-> > > > AI helper.
-> > > > +As a reminder, when contributing a change, your ``Signed-off-
-> > > > by`` line is
-> > > > +required and the stipulations in the `Developer's Statement of
-> > > > Origin
-> > > > +1.1 <https://developercertificate.org/>`__ still apply.
-> > > > +
-> > > > +Additionally, you must stipulate AI contributions conform to
-> > > > the Linux
-> > > > +Foundation policy, specifically:
-> > > > +
-> > >=20
-> > > This is exactly the content of the link provided above. I'm not
-> > > sure we=20
-> > > should duplicate it? E.g. it could be updated and we could then
-> > > have=20
-> > > conflicting instructions there. Should we say which one takes
-> > > precedence=20
-> > > when there can be a conflict?
+> Hello Antonin,
+>=20
+> > > poky:
+> > > https://git.yoctoproject.org/poky/commit/?h=3Dmaster-next&id=3D104482=
+00b63bdc45b39504ebcddd85b5f274f0c4
 > >=20
-> > It was deliberately duplicated so that if it changes we know what
-> > it
-> > said previously. This version here is definitive.
+> > This link does not work for me. Could you give me a new link with
+> > your
+> > commits, on master? I couldn't find them.
 >=20
-> I'm not sure if your comment applies to the entire patch, or just the
-> bullet points. What should I leave as-is?
+> Not sure why that one broke, here's a new one:
+>=20
+> https://git.yoctoproject.org/poky/commit/?h=3Dmaster-next&id=3Ddf2c9e8840=
+66aafb0dfb60521a4809c5ba4cfd5d
 
-I meant that we'd deliberately duplicated the two bullet points from
-the original document/link and that we'd want to continue to do that. I
-was giving a reason for the duplication to Quentin.
+The patch hasn't merged yet, it was queued in master-next which
+rebases, hence the ID changes. There are some concerns about the patch,
+I'm working on trying to get some feedback about it.
 
 Cheers,
 
