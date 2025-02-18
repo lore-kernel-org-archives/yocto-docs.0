@@ -1,113 +1,136 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D02DC021A9
-	for <webhook@archiver.kernel.org>; Mon, 17 Feb 2025 22:06:35 +0000 (UTC)
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
- by mx.groups.io with SMTP id smtpd.web11.5931.1739829994007545311
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEB46C021A9
+	for <webhook@archiver.kernel.org>; Tue, 18 Feb 2025 09:12:19 +0000 (UTC)
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.15641.1739869928659439999
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Feb 2025 14:06:34 -0800
+ Tue, 18 Feb 2025 01:12:08 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=lf0Mz2es;
- spf=pass (domain: smile.fr, ip: 209.85.221.45, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-38de1a5f039so4674369f8f.2
-        for <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 14:06:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1739829992; x=1740434792; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hntcLj3lxsMzAkSDPSSMZaeGGgCUlrL7e1g7Rfwghsc=;
-        b=lf0Mz2eseM0uE5oGuVNzwXmuGnXlziBQWBQRTUDUxr0CaObRVED7Oo4ZARDdPVaoSs
-         UEJV2brkiMg7HKN9mxRi9pJ08R92xIEIwbG691jJSBUGuOOrlin0BQw/G8aMnnB+7gEO
-         BU23XvgyLyWA/lwf6Q+154CKI8hC1WPoA63ss=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739829992; x=1740434792;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hntcLj3lxsMzAkSDPSSMZaeGGgCUlrL7e1g7Rfwghsc=;
-        b=kkCs1ycN3a87n7auYdkZcb3TB80cTr9Th6r4M5EJc0Ohn0+eqqkXUxatrgPR4470jV
-         vUpPQB+dkAIOg/S8dR8TFj25MZpyPJNGTg9yDI1K/8UFBMF3ET1ya+C6KGKP+XQ6tnXZ
-         ocFPV20mnSdrDsTns5zgWID7DZDJgoEDjE/HWnxSugX+lhZZooPir7gNhtWSWrI17tMI
-         DPs7JTcR01R3ZhmS2NwsM1bwOLSdf74fda2zAJX53LV0zvU/6pktBDQCzw5iY3xMFNd0
-         HKZA6PgUtF6TF6icufjJl1bN+LJ7RQ1AcuyRC/hRcLfJ2FnYc41xMwWKewTgLoJxnQNv
-         7S3A==
-X-Gm-Message-State: AOJu0Yzbb3FD25aF7nNKJHUHE0JevL85S9NsbzAs4pMOCUFSsVq0B/GU
-	7mPQXxx49BP513rx6lcII/u5ZkDTMveSUJseIQ2woNcywJaCSM6YABqdLlr637iM6ZiAiULPAY+
-	o
-X-Gm-Gg: ASbGncuFBaxokD6Txv8YEDPm9NpoVrDTnnTs2/9jtkhiC3SCtHjD500qOQzglAoGmOm
-	pvBsoy+j497X3ojSyAURePsy2BzXouv3EPQcZDI0uiFQL0tBavdLInpSZF4ZloPwhoWYnIJey/8
-	Ri0QUgScBN/Cb2d4ZbNmN4SaEa8FW0TtdQGOJ+eXdB6NoU9Editnz9LCgLP57chPdK4YRweeVlU
-	WPjmjFfVdrjSw0s7rZtfZC5RwEJmFWvVXVwycvnxuj5BSaJH3WFboGdZQfZ0/u1DqqbdPRmoAU8
-	q/IzAfbgs7Qmj1zlZRVltOpotUjMDRfW5l0LkoEeQaZeIq13WKZeMPNexSXS9rvIlxC4ox07K5M
-	D6VVt9+RagM72ikeU5YLMnUg=
-X-Google-Smtp-Source: AGHT+IFqC9gO21jbySYB+B5sLHs5JF0M924bfALt51TiD9e3wW24T92BYZSFUuha9yiRC9uBHWAoHw==
-X-Received: by 2002:a5d:64e6:0:b0:38d:c9da:d0d7 with SMTP id ffacd0b85a97d-38f33f125ebmr9722806f8f.2.1739829992102;
-        Mon, 17 Feb 2025 14:06:32 -0800 (PST)
-Received: from P-ASN-ECS-830T8C3.local (2a01cb000deef000fa5d724a12d076e5.ipv6.abo.wanadoo.fr. [2a01:cb00:dee:f000:fa5d:724a:12d0:76e5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259f7987sm13033958f8f.87.2025.02.17.14.06.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 14:06:31 -0800 (PST)
-From: Yoann Congal <yoann.congal@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Yoann Congal <yoann.congal@smile.fr>,
-	Guillaume Swaenepoel <guillaume.swaenepoel@smile.fr>,
-	Quentin Schulz <quentin.schulz@cherry.de>
-Subject: [PATCH v6 4/4] release-notes-5.2: Add new variable OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
-Date: Mon, 17 Feb 2025 23:06:18 +0100
-Message-Id: <20250217220618.1999362-4-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250217220618.1999362-1-yoann.congal@smile.fr>
-References: <20250217220618.1999362-1-yoann.congal@smile.fr>
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=njh2zkkf;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 09D49432B1;
+	Tue, 18 Feb 2025 09:12:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1739869927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=snHiUnNU2ZrUYXpLj4lOTs7YRXOqfYF3vMon4MnoNso=;
+	b=njh2zkkf15XsI+lwhtTzoCu7DDEfb1hJHnPLbSYYP7bftT4oYvKXRq35z84tEUDtJtOMCO
+	UuOTAkH6vLC4wquAQdIgyRZ527+6KKPEOvAqku/iE50UfhpWcFo3pqrqzFxQrIhADtD5ud
+	q5S1W/FS+CIODLDxBu4pFBKJCw/P7D58mpR+Gh/sXNdLoB+V8f3+Gj5tpHsO0Uwc8FFm5I
+	i1SYLQ/TCWgkqDQQ/ApUDUBZja71TtYQrYopvHVYsHVVEqOPnSpDWK4POIDPiw7yxhW8NU
+	MrabRiX//AE4vzNfiWu9hweF1dMmcPFnNLdfAWr7KZtjIYJTuCUALjia89G+0A==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 18 Feb 2025 10:12:01 +0100
+Subject: [PATCH 6/6] ref-manual/variables: improve the UNPACKDIR
+ documentation
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250218-overview-figures-v1-6-75d23b5e7a88@bootlin.com>
+References: <20250218-overview-figures-v1-0-75d23b5e7a88@bootlin.com>
+In-Reply-To: <20250218-overview-figures-v1-0-75d23b5e7a88@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2753;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=5owgBRaWnzahcZCHJIGDi/LeNiP5DYHkNDemyov7FvA=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBntE7j5ibsajhYViEX55yiqIp5CVIuNMKHXZsU9
+ rTsKVevr/CJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ7RO4wAKCRDRgEFAKaOo
+ NorIEACFzBYw0Nnn/97YM+r4xF/bQEQa1tzmghPYeH3sJbcSzfPjk5aJT9Y3mgwuO05d79fRxsN
+ 4N1lqzG56D0aQamSK6SlQvF+tW4Hp2JZOAU0ytOHQkCIrFrzok1RWWXMgCKtzLfqWF+77kt78Zk
+ uBTNTZ8rVTpzyxJvp/Vbz/189vt6WmIFaX8m9Oq3Zy3ZAwVKmeWUcfuntRxSRNpLIC7UVDuI2qQ
+ alLlD0QlEO0zke+hKE3Kwozwi59tmZhEJ2udi2t+9QsgKVcdvE1xYyUnh1N3YQRGWE3uKjFerYk
+ jeMsk2vonvx86Kk0p9yuii+HBCvNaN5uw0v3vLUu7uohStTp3sgo3acUW9gj3/HHcP5AyYcwXqP
+ 4v+0fNN7fIGhPQkfJnjxzmY1nZ9MpNyhEwto+/2g9w/qNiVNSG/PHLbRcLRPqDhENtrWTKa5Xnz
+ +3adXQPQD3DvK8XHXIWmSkIj3/rg/wqj77digwbKgTlnNKXRtbORkUih2kgWIo9QfPzdMDKlW7k
+ LR3pzfzaboxasdoSrDCHyq4eRQQaGPjz2MRKtmPQlhkaSjWUDuLYVufuP+1nrR3/c9JtkVN24P4
+ I1yNPdIrv8pkRvWBBMwCdbwqICrZqTgFS7XXwbXoxuBgv6tKrzQzV6xqAT1b9yGstGMFniYfEIp
+ D+Jek/kgeH6S/dw==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeitdeludcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepheeigeeuhfefgeehfffgueeiteehieelfeehjeektefgkeeuheeuleduvdelgffhnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoo
+ hhtlhhinhdrtghomh
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 17 Feb 2025 22:06:35 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6409
+ <docs@lists.yoctoproject.org>; Tue, 18 Feb 2025 09:12:19 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6416
 
-From: Yoann Congal <yoann.congal@smile.fr>
+It was clear why UNPACKDIR was introduced at first, and what is the
+recommended way of setting S and UNPACKDIR for a clean separation of the
+source code and WORKDIR. Add documentation for this in the reference
+manual.
 
-Add mention of OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS to release-notes-5.2
-so users can use it after upgrading.
-
-Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
-Reviewed-by: Guillaume Swaenepoel <guillaume.swaenepoel@smile.fr>
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-v5->v6:
-Quentin's review
-* s/to/so/
-* Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de> (Thanks)
+ documentation/ref-manual/variables.rst | 39 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 38 insertions(+), 1 deletion(-)
 
-v3->v4:
-* Quentin's review:
-  * s/single recipe/recipes/
-  * link to sstate
-* Reviewed-by: Guillaume
-
-v2->v3: Antonin's Review:
-* Add OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS ot release-notes-5.2
----
- documentation/migration-guides/release-notes-5.2.rst | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
-index b0e538700..417b202cd 100644
---- a/documentation/migration-guides/release-notes-5.2.rst
-+++ b/documentation/migration-guides/release-notes-5.2.rst
-@@ -17,6 +17,10 @@ New Features / Enhancements in |yocto-ver|
-    -  ``linux-firmware``: Add the :term:`FIRMWARE_COMPRESSION` variable which
-       allows compression the firmwares provided by the ``linux-firmware`` recipe.
-       Possible values are ``xz`` and ``zst``.
-+   -  reproducibility: Add the :term:`OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS`
-+      variable which enables a reproducibility test on recipes using
-+      :ref:`Shared State <overview-manual/concepts:Shared State>` for the
-+      dependencies. See :doc:`/test-manual/reproducible-builds`.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index adbef69d8f39d33be87c5db6688a807156540410..d970fc21f69fe35830a9d6b5a28da7cb257c0709 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -10035,9 +10035,46 @@ system and gives an overview of their function and contents.
  
- -  Kernel-related changes:
+    :term:`UNPACKDIR`
+       This variable, used by the :ref:`ref-classes-base` class,
+-      specifies where fetches sources should be unpacked by the
++      specifies where fetched sources should be unpacked by the
+       :ref:`ref-tasks-unpack` task.
  
++      Although the default value of this directory is
++      ``${WORKDIR}/sources-unpack``, the recommended way of setting
++      :term:`UNPACKDIR` and :term:`S` is::
++
++         S = "${WORKDIR}/sources"
++         UNPACKDIR = "${S}"
++
++      This allows the source code to be safely unpacked and patched in a
++      separate directory.
++
++      .. note::
++
++         In some cases, the :term:`UNPACKDIR` directory only holds the sources
++         temporarily. When the first directory after :term:`WORKDIR` in the
++         :term:`S` variable is matched in :term:`UNPACKDIR`, the directory
++         in :term:`UNPACKDIR` is moved to the :term:`WORKDIR` directory.
++
++         For example, let's represent the :term:`UNPACKDIR` directory
++         for the ``foobar`` recipe after extraction as follows::
++
++            ${WORKDIR}/sources-unpack/foobar-1.0.0/...
++
++         And the variable :term:`S` for this recipe defined as::
++
++            S = "${WORKDIR}/${BP}"
++
++         Where :term:`BP` expands to ``foobar-1.0.0``.
++
++         Since the first directory of :term:`S` after :term:`WORKDIR`
++         (``foobar-1.0.0``) matches the directory ``foobar-1.0.0`` under
++         ``sources-unpack``, the latter is moved to the :term:`WORKDIR`
++         directory. The final location of the source code will then be
++         ``${WORKDIR}/foobar-1.0.0``.
++
++         This behavior was added for compatibility for recipes that do not set
++         the :term:`UNPACKDIR` and :term:`S` variable in the recommended way.
++
+    :term:`UPDATERCPN`
+       For recipes inheriting the
+       :ref:`ref-classes-update-rc.d` class, :term:`UPDATERCPN`
+
+-- 
+2.47.0
+
 
