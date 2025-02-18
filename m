@@ -1,215 +1,173 @@
-Return-Path: <rybczynska@gmail.com>
+Return-Path: <mark.hatle@kernel.crashing.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 21062C021AA
-	for <webhook@archiver.kernel.org>; Tue, 18 Feb 2025 15:55:52 +0000 (UTC)
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
- by mx.groups.io with SMTP id smtpd.web11.22781.1739894144390068043
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 05AFCC021AA
+	for <webhook@archiver.kernel.org>; Tue, 18 Feb 2025 17:29:37 +0000 (UTC)
+Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
+ by mx.groups.io with SMTP id smtpd.web10.1713.1739899776329147297
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Feb 2025 07:55:44 -0800
+ Tue, 18 Feb 2025 09:29:36 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=Tt28lXkM;
- spf=pass (domain: gmail.com, ip: 209.85.221.54, mailfrom: rybczynska@gmail.com)
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-38f378498c9so3012952f8f.1
-        for <docs@lists.yoctoproject.org>; Tue, 18 Feb 2025 07:55:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739894142; x=1740498942; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dxJkJrYEn4i1EjMKt9rGqSyEGjnCFcze/FYZ5Y9Acz8=;
-        b=Tt28lXkMsoozjK05Hae5dmdvzL7PZ/1VbT2neHurE6RNfMEP+EePywi8vIgyDJW4D1
-         K9oMuQWIs0iXeptgNfRnec+TcIGAtfY9ZmNqQwwO3YDgYbFSJ6vCiMopyHzYIJQOasG9
-         QLKjYpi5QMeFRXO7/PLMih8uhMDaedh5vb+foqVuqynCnqk0m1Ho60uEpRapzzpI9Y3p
-         5s76yUip9l6xDmd2u22S/zl185MoyuR7PGkADchrnUPA7rIF5VdiyND06/yAFlhQIkFN
-         j+Yxd2xV2hrupKC1S2ghK7BY6oiYCPnTQccvMjKA1IEMCsaYwJBvn9g+QEbty2eVh0b4
-         lzgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739894142; x=1740498942;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dxJkJrYEn4i1EjMKt9rGqSyEGjnCFcze/FYZ5Y9Acz8=;
-        b=XmVWJWAtp588YV5J7pQZK+oTmeKqgizDhY1n3egoOC1hBR+/sh/xx2EwyTuilPSC7b
-         GCQYKEEao7agUzlntWl5JLk640ZQsI48olS564uQDHt3SiflO7gqDUW0SttNwexWgWPS
-         p3Z/NHrLdYWAShDFFxdFAUZh1eGVDxufrt9l9ztxhsW/ExktmtpsPg9ZM1xykDmg4NGq
-         U87/3zqEaHgZxz6PSc7nyXEreJkhI23HdiHfTGDlEaFt4BYVV3yEV4I+VFA2d42aztsi
-         0KjBsiQOLQiOglW62ggKZzK8CYaFf/UAnsUe7QWEqUOliHXCsWQi66ofXiIjlJmLM9dU
-         uXeQ==
-X-Gm-Message-State: AOJu0YwxJTanPZnVgiXy9Hf8AYwxr9xRX8mm3p4eTpRCnxVifuGqdxN8
-	7M/DhIwL+ss9EJJ8XfpucaFidJowAZaKBxBfF3Y5KUCdBcSGceLqXHNTSQ==
-X-Gm-Gg: ASbGncvTUM9ORhuYYnVgwnl4X9rtLh4JX4pvISw6xObmUxMSGwX+WSVv7Po5qr90fbs
-	h2T+bygC88xhgebvZWX8zQ3j4u6G63znVAKIfuA7Ps+A0/uhJuyMVEiSzohSpNg3EPMnBWbDCZu
-	xE68GW+fp65IMNK1ClWkYNYK4BZ+SsrYcZEcg9BAjx/5qLL/Dd788+uALffl0Egg5ocZf1LyahN
-	qpas46H8teGR/FV44H7pO4RdQ+m/EHx+KyMEenuMn8n26kUW8zj0zy50B1eIdb5B/eyR+DqzVUa
-	nlo1UwZfH3bXSx2wYNWQXN5lblU=
-X-Google-Smtp-Source: AGHT+IHzaFeO/Hir2E1ERqmxwbFOEgWBp7blmLmHXQ5/IzwE64UDpemZz6mG2coAArADfLn4zamfJg==
-X-Received: by 2002:a5d:6481:0:b0:38d:d299:7097 with SMTP id ffacd0b85a97d-38f33f12527mr16308706f8f.5.1739894141995;
-        Tue, 18 Feb 2025 07:55:41 -0800 (PST)
-Received: from voyage.lan ([2a0d:3341:cd51:2e10:d277:cf7f:82d1:a7d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f259f8273sm15017422f8f.89.2025.02.18.07.55.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Feb 2025 07:55:41 -0800 (PST)
-From: Marta Rybczynska <rybczynska@gmail.com>
-X-Google-Original-From: Marta Rybczynska <marta.rybczynska@ygreky.com>
-To: docs@lists.yoctoproject.org
-Cc: Marta Rybczynska <marta.rybczynska@ygreky.com>
-Subject: [PATCH] vulnerabilities/classes: remove references to cve-check text format
-Date: Tue, 18 Feb 2025 16:55:29 +0100
-Message-ID: <20250218155529.60917-1-marta.rybczynska@ygreky.com>
-X-Mailer: git-send-email 2.45.2
+ dkim=none (message not signed); spf=pass (domain: kernel.crashing.org, ip: 63.228.1.57, mailfrom: mark.hatle@kernel.crashing.org)
+Received: from kernel.crashing.org (70-99-78-136.nuveramail.net [70.99.78.136] (may be forged))
+	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 51IHNPMw001959;
+	Tue, 18 Feb 2025 11:23:26 -0600
+Received: from [192.168.2.30] ([192.168.2.30])
+	by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 51IHNODr008264;
+	Tue, 18 Feb 2025 11:23:24 -0600
+Message-ID: <8edb616e-f349-4a66-920c-5508868ec180@kernel.crashing.org>
+Date: Tue, 18 Feb 2025 11:23:24 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH] contributor-guide/submit-changes: add policy on AI
+ generated code
+Content-Language: en-US
+To: quentin.schulz@cherry.de, antonin.godard@bootlin.com,
+        docs@lists.yoctoproject.org
+Cc: tsc <tsc@lists.openembedded.org>, Yocto TSC <tsc@lists.yoctoproject.org>,
+        Richard Purdie <richard.purdie@linuxfoundation.org>,
+        Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20250212-ai-policy-v1-1-c9cc7510e317@bootlin.com>
+ <178a6b27-d616-4fd0-b675-ba4f2767656b@cherry.de>
+From: Mark Hatle <mark.hatle@kernel.crashing.org>
+In-Reply-To: <178a6b27-d616-4fd0-b675-ba4f2767656b@cherry.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Feb 2025 15:55:52 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6417
+ <docs@lists.yoctoproject.org>; Tue, 18 Feb 2025 17:29:37 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6418
 
-The text format has been removed, so also remove references and examples
-using this format. Replace with examples with the JSON format.
 
-Signed-off-by: Marta Rybczynska <marta.rybczynska@ygreky.com>
----
- documentation/dev-manual/vulnerabilities.rst | 96 ++++++++++++++------
- documentation/ref-manual/classes.rst         |  2 +-
- 2 files changed, 69 insertions(+), 29 deletions(-)
 
-diff --git a/documentation/dev-manual/vulnerabilities.rst b/documentation/dev-manual/vulnerabilities.rst
-index 983d4ad3c..d901ff975 100644
---- a/documentation/dev-manual/vulnerabilities.rst
-+++ b/documentation/dev-manual/vulnerabilities.rst
-@@ -66,37 +66,77 @@ found in ``build/tmp/deploy/cve``.
- 
- For example the CVE check report for the ``flex-native`` recipe looks like::
- 
--   $ cat poky/build/tmp/deploy/cve/flex-native
--   LAYER: meta
--   PACKAGE NAME: flex-native
--   PACKAGE VERSION: 2.6.4
--   CVE: CVE-2016-6354
--   CVE STATUS: Patched
--   CVE SUMMARY: Heap-based buffer overflow in the yy_get_next_buffer function in Flex before 2.6.1 might allow context-dependent attackers to cause a denial of service or possibly execute arbitrary code via vectors involving num_to_read.
--   CVSS v2 BASE SCORE: 7.5
--   CVSS v3 BASE SCORE: 9.8
--   VECTOR: NETWORK
--   MORE INFORMATION: https://nvd.nist.gov/vuln/detail/CVE-2016-6354
--
--   LAYER: meta
--   PACKAGE NAME: flex-native
--   PACKAGE VERSION: 2.6.4
--   CVE: CVE-2019-6293
--   CVE STATUS: Ignored
--   CVE SUMMARY: An issue was discovered in the function mark_beginning_as_normal in nfa.c in flex 2.6.4. There is a stack exhaustion problem caused by the mark_beginning_as_normal function making recursive calls to itself in certain scenarios involving lots of '*' characters. Remote attackers could leverage this vulnerability to cause a denial-of-service.
--   CVSS v2 BASE SCORE: 4.3
--   CVSS v3 BASE SCORE: 5.5
--   VECTOR: NETWORK
--   MORE INFORMATION: https://nvd.nist.gov/vuln/detail/CVE-2019-6293
-+   $ cat ./tmp/deploy/cve/flex-native_cve.json
-+   {
-+     "version": "1",
-+     "package": [
-+       {
-+         "name": "flex-native",
-+         "layer": "meta",
-+         "version": "2.6.4",
-+         "products": [
-+           {
-+             "product": "flex",
-+             "cvesInRecord": "No"
-+           },
-+           {
-+             "product": "flex",
-+             "cvesInRecord": "Yes"
-+           }
-+         ],
-+         "issue": [
-+           {
-+             "id": "CVE-2006-0459",
-+             "status": "Patched",
-+             "link": "https://nvd.nist.gov/vuln/detail/CVE-2006-0459",
-+             "summary": "flex.skl in Will Estes and John Millaway Fast Lexical Analyzer Generator (flex) before 2.5.33 does not allocate enough memory for grammars containing (1) REJECT statements or (2) trailing context rules, which causes flex to generate code that contains a buffer overflow that might allow context-dependent attackers to execute arbitrary code.",
-+             "scorev2": "7.5",
-+             "scorev3": "0.0",
-+             "scorev4": "0.0",
-+             "modified": "2024-11-21T00:06Z",
-+             "vector": "NETWORK",
-+             "vectorString": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
-+             "detail": "version-not-in-range"
-+           },
-+           {
-+             "id": "CVE-2016-6354",
-+             "status": "Patched",
-+             "link": "https://nvd.nist.gov/vuln/detail/CVE-2016-6354",
-+             "summary": "Heap-based buffer overflow in the yy_get_next_buffer function in Flex before 2.6.1 might allow context-dependent attackers to cause a denial of service or possibly execute arbitrary code via vectors involving num_to_read.",
-+             "scorev2": "7.5",
-+             "scorev3": "9.8",
-+             "scorev4": "0.0",
-+             "modified": "2024-11-21T02:55Z",
-+             "vector": "NETWORK",
-+             "vectorString": "AV:N/AC:L/Au:N/C:P/I:P/A:P",
-+             "detail": "version-not-in-range"
-+           },
-+           {
-+             "id": "CVE-2019-6293",
-+             "status": "Ignored",
-+             "link": "https://nvd.nist.gov/vuln/detail/CVE-2019-6293",
-+             "summary": "An issue was discovered in the function mark_beginning_as_normal in nfa.c in flex 2.6.4. There is a stack exhaustion problem caused by the mark_beginning_as_normal function making recursive calls to itself in certain scenarios involving lots of '*' characters. Remote attackers could leverage this vulnerability to cause a denial-of-service.",
-+             "scorev2": "4.3",
-+             "scorev3": "5.5",
-+             "scorev4": "0.0",
-+             "modified": "2024-11-21T04:46Z",
-+             "vector": "NETWORK",
-+             "vectorString": "AV:N/AC:M/Au:N/C:N/I:N/A:P",
-+             "detail": "upstream-wontfix",
-+             "description": "there is stack exhaustion but no bug and it is building the parser, not running it, effectively similar to a compiler ICE. Upstream no plans to address this."
-+           }
-+         ]
-+       }
-+     ]
-+   }
- 
- For images, a summary of all recipes included in the image and their CVEs is also
--generated in textual and JSON formats. These ``.cve`` and ``.json`` reports can be found
-+generated in the JSON format. These ``.json`` reports can be found
- in the ``tmp/deploy/images`` directory for each compiled image.
- 
- At build time CVE check will also throw warnings about ``Unpatched`` CVEs::
- 
--   WARNING: flex-2.6.4-r0 do_cve_check: Found unpatched CVE (CVE-2019-6293), for more information check /poky/build/tmp/work/core2-64-poky-linux/flex/2.6.4-r0/temp/cve.log
--   WARNING: libarchive-3.5.1-r0 do_cve_check: Found unpatched CVE (CVE-2021-36976), for more information check /poky/build/tmp/work/core2-64-poky-linux/libarchive/3.5.1-r0/temp/cve.log
-+   WARNING: qemu-native-9.2.0-r0 do_cve_check: Found unpatched CVE (CVE-2023-1386)
- 
- It is also possible to check the CVE status of individual packages as follows::
- 
-@@ -115,10 +155,10 @@ upstream `NIST CVE database <https://nvd.nist.gov/>`__.
- 
- The variable supports using vendor and product names like this::
- 
--   CVE_PRODUCT = "flex_project:flex"
-+   CVE_PRODUCT = "flex_project:flex westes:flex"
- 
--In this example the vendor name used in the CVE database is ``flex_project`` and the
--product is ``flex``. With this setting the ``flex`` recipe only maps to this specific
-+In this example we have two possible vendors names,  ``flex_project`` and ``westes``,
-+with the product name ``flex``. With this setting the ``flex`` recipe only maps to this specific
- product and not products from other vendors with same name ``flex``.
- 
- Similarly, when the recipe version :term:`PV` is not compatible with software versions used by
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
-index 8763e9e17..b93279ff6 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -600,7 +600,7 @@ You can also look for vulnerabilities in specific packages by passing
- ``-c cve_check`` to BitBake.
- 
- After building the software with Bitbake, CVE check output reports are available in ``tmp/deploy/cve``
--and image specific summaries in ``tmp/deploy/images/*.cve`` or ``tmp/deploy/images/*.json`` files.
-+and image specific summaries in ``tmp/deploy/images/*.json`` files.
- 
- When building, the CVE checker will emit build time warnings for any detected
- issues which are in the state ``Unpatched``, meaning that CVE issue seems to affect the software component
--- 
-2.45.2
+On 2/17/25 5:20 AM, Quentin Schulz via lists.openembedded.org wrote:
+> HI Antonin,
+> 
+> On 2/12/25 9:50 AM, Antonin Godard via lists.yoctoproject.org wrote:
+>> Based on message by Richard Purdie on the yocto-docs list:
+>> https://lists.yoctoproject.org/g/docs/message/6300
+>>
+>> Re-formatted for the Yocto Project documentation syntax.
+>>
+>> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+>> ---
+>>    documentation/contributor-guide/submit-changes.rst | 49 ++++++++++++++++++++++
+>>    1 file changed, 49 insertions(+)
+>>
+>> diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+>> index 85ca987df..0675aac98 100644
+>> --- a/documentation/contributor-guide/submit-changes.rst
+>> +++ b/documentation/contributor-guide/submit-changes.rst
+>> @@ -832,3 +832,52 @@ Other layers may have similar testing branches but there is no formal
+>>    requirement or standard for these so please check the documentation for the
+>>    layers you are contributing to.
+>>    
+>> +Acceptance of AI Generated Code
+>> +===============================
+>> +
+>> +The Yocto Project and OpenEmbedded follow the guidance of the Linux Foundation
+>> +in regards to the use of generative AI tools. See:
+>> +https://www.linuxfoundation.org/legal/generative-ai.
+>> +
+>> +All of the existing guidelines in this document are expected to be followed,
+> 
+> s/in this document/in the document linked above/ ?
+> 
+> Since "this document" could be interpreted as the Yocto Docs, especially
+> if shared in PDF/ePUB forms.
 
+"this document", as in the 'contributor-guide', the document the user is 
+currently reading as a whole,not just this section.
+
+We only reference the generative-ai link.  We do NOT want to be beholden to an 
+outside document, but we may reference it.
+
+This matches what we've done with the kernel's developer statement of origin. 
+We reference it and quote the relevant text we expect someone to follow.
+
+> 
+>> +including in the :doc:`recipe-style-guide`, and contributing the changes with
+>> +additional requirements to the items in section
+>> +:ref:`contributor-guide/submit-changes:Implement and commit changes`.
+>> +
+>> +All AI Generated Code must be labeled as such in the commit message,
+>> +prior to your ``Signed-off-by`` line. It is also strongly recommended,
+> 
+> s/,//
+> 
+>> +that any patches or code within the commit also have a comment or other
+> 
+> s/patches/patch/
+> 
+> s/also// (redundant with "also strongly recommended" at the beginning of
+> the sentence; or maybe start the sentence with "Additionally" or
+> "Moreover" or "In addition")
+
+
+Original text was 'It is recommended,"   This was changed to "It is also 
+strongly recommended," to put clear emphasis that while not required, people 
+will be looking for, and expecting this information.  Must/Require, 
+Should/Recommended, etc are language I'm used to using from other standards 
+documents.
+
+
+>> +indication that this code was AI generated.
+>> +
+>> +For example, here is a properly formatted commit message::
+>> +
+>> +   component: Add the ability to ...
+>> +
+>> +   AI-Generated: Uses GitHub Copilot
+>> +
+>> +   Signed-off-by: Your Name <your.name@domain>
+>> +
+>> +The ``Signed-off-by`` line must be written by you, and not the AI helper.
+>> +As a reminder, when contributing a change, your ``Signed-off-by`` line is
+>> +required and the stipulations in the `Developer's Statement of Origin
+>> +1.1 <https://developercertificate.org/>`__ still apply.
+>> +
+>> +Additionally, you must stipulate AI contributions conform to the Linux
+>> +Foundation policy, specifically:
+>> +
+> 
+> This is exactly the content of the link provided above. I'm not sure we
+> should duplicate it? E.g. it could be updated and we could then have
+> conflicting instructions there. Should we say which one takes precedence
+> when there can be a conflict?
+
+I believe Richard already covered this in his comments, but we absolute want a 
+copy of anything we depend on from an outside source.
+
+Only what is written in our contribution guide is required.  By making a copy, 
+we ensure that if the outside source changes their recommendations, we are _NOT_ 
+affected and our users are _NOT_ affected unless we specifically make changes.
+
+--Mark
+
+>> +#. Contributors should ensure that the terms and conditions of the generative AI
+>> +   tool do not place any contractual restrictions on how the tool's output can
+>> +   be used that are inconsistent with the project's open source software
+>> +   license, the project's intellectual property policies, or the Open Source
+>> +   Definition.
+>> +
+> 
+> There's a link in the original link, provide it here too
+> 
+> `Open Source Definition<https://opensource.org/osd/>`__
+> 
+> Cheers,
+> Quentin
+> 
+> 
+> 
+> -=-=-=-=-=-=-=-=-=-=-=-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#612): https://lists.openembedded.org/g/tsc/message/612
+> Mute This Topic: https://lists.openembedded.org/mt/111235974/3616948
+> Group Owner: tsc+owner@lists.openembedded.org
+> Unsubscribe: https://lists.openembedded.org/g/tsc/unsub [mark.hatle@kernel.crashing.org]
+> -=-=-=-=-=-=-=-=-=-=-=-
+> 
 
