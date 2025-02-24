@@ -1,208 +1,150 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 26963C021A6
-	for <webhook@archiver.kernel.org>; Mon, 24 Feb 2025 10:53:46 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.86183.1740394419374898548
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7083EC021A4
+	for <webhook@archiver.kernel.org>; Mon, 24 Feb 2025 22:14:09 +0000 (UTC)
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+ by mx.groups.io with SMTP id smtpd.web10.102529.1740435244160072358
  for <docs@lists.yoctoproject.org>;
- Mon, 24 Feb 2025 02:53:39 -0800
+ Mon, 24 Feb 2025 14:14:04 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ba6vaiIa;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 637E844295;
-	Mon, 24 Feb 2025 10:53:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740394417;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=r3TTJoOKzWxagCtWHZShIBJ64n4tn3P87lO+4gUhwh0=;
-	b=Ba6vaiIaOPlH2QXpbRgfdbx3WXzhcICMwy3H1gpV7L7KmuJvVixy0XbOfkMSA57Vcpv7xg
-	2zuZfFO4e5e6XwTNKvxG/FZR2ZJ4V5S/pohJPBAUz+SwP1EWj08TbmQn+XtiOi3H6sGz6g
-	VYrLfKEZfQY8n0/KyuPRfB0d5/oJ2Z1/3PBJ8MTAG/EfKGqJjznJ8WwUv9IFShCk4BpoV1
-	/lQku1XjuWjtOB40nJgCZbN71GVB/F1n74xXgrXTvAHJBa1DoSryEwFlyhTJHPFVQ1Y+Qh
-	NpMxloki98qiNaHG/RYaDQvpjlxGToJyXPIDhtvd8nQ0Ikg+si7o06bEo9gtvQ==
-Mime-Version: 1.0
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=mORaK1bJ;
+ spf=pass (domain: gmail.com, ip: 209.85.221.53, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-38f31f7731fso2410916f8f.0
+        for <docs@lists.yoctoproject.org>; Mon, 24 Feb 2025 14:14:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740435242; x=1741040042; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mfZgeUyjhF7XjJ7z59dzg1MtDp4rekuiQwhagD+JMEU=;
+        b=mORaK1bJMXAcz4DsSyIOX54PV539n1hzfNNBFwBH3eLC5ADpzYvHezBXRfRJz6kIKH
+         fbugYB+9DzWpoWs3b+wrUavbbrBRwx9MjIxJ+heAiGohWaYiQ9RhvMFQcu9stcCTOESR
+         e3FRWi+HyuSxrZ16pBDVDFh7vEJdzB+cgxQFy5qc0kXYAiWGRp+5cXBfGUaPwUyPWmn1
+         nNlENVkzVjZByQp3rFKyJmSI9WRTUFBlKsKmPUwKj7n1mfDcMnCjpWE05CM5+8BSpLVs
+         Qla1020ue7WZUfJZoazI3ZtyqWUgObdxZADSD/pQNYckUnsBm1PIz1qa9crHDBzJISDC
+         Cf/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740435242; x=1741040042;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mfZgeUyjhF7XjJ7z59dzg1MtDp4rekuiQwhagD+JMEU=;
+        b=WRuIgzu1Fx4FRGrwr256UlbzJBtJmmWSTPLLu9JZY1Oywo+13sjqDT1XOFd5LVa2C9
+         gN8UCS4AgXoLig5YZsyjEMWDGo3W02Ur5KcvNTYLG67EfbYW0gfXxAh7GxCtdg8jMEpL
+         ipRTHj6XKYtyE30M54gceNsy7inwIq2Ypz/Dc5rtklWKBoaq1bJLsfeq4qecvVkfF4/G
+         7SSdKTgbiPbHAJRwY2dsdzxIsd/pVCY+7tzT4/6OBjDCNN7LUMX5Id3RpNvuaBtRM5ZQ
+         +oxUHqoU2rci7xEBk1jfR2YCoC07YB+zYsiVUoJrjtdppAGmek3uq03h5D3vhuBN+/MG
+         EYMg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHlHBN2nxzU3lkq2Jlj2jpKWhZcrWQOq+wZ5W+gLHwR77sToVRfIfpQCyFAd1ncBmZiill@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YxuwSEsu9RYrrdMVG0O9mTRb7DxzzQ5e2GBr5Nmdl1YwN8ct4FY
+	jjHUI3A6jvFpTPsW7J36KJ66BJ60ZbnfzKlXHF3b3Ue4IQ2t+xO1
+X-Gm-Gg: ASbGncuTU7fIkXmLL5qjjE9LpXzEXVN0oRRvNcG/XRPnKGblnOEJKOo9yr/Ev42DSjh
+	8rKbzet9n+2ZEadogztEBD6Y7Zf0pVup+ajnp2e2k7WZwi4oBZbs18Eeg2e6fsJLwjLEyR4Lkz8
+	yxHwIkB6uwEQuCelM0hi7YcXMzZSAVn6bE6yVhN2gh7G0dShDHqqnMLqNB5NQNhXR4lNndXpo6M
+	8F0hfR1lSdBY1yoFT12iYdEPeGT3WXE+itIqAnhEcuVeh1FuC9tKiZYLaKV4T2mwqZahVSHh0hL
+	Aph7mgRVOskEFsC98dHkAa6drld1oE3guWQfWYzf3xr4/ZSETxk7tUrJ769rO57cTEPwbCeo6C4
+	=
+X-Google-Smtp-Source: AGHT+IG9ie7fqKNGJWF7Y+kt49uc2UgicuRafQ2V42xQkc4m9sIgaFPPKe6p8VC1C1BzAEmH3Y53Ww==
+X-Received: by 2002:a05:6000:186c:b0:38d:eaee:3b32 with SMTP id ffacd0b85a97d-38f6e977bb1mr11520142f8f.26.1740435242237;
+        Mon, 24 Feb 2025 14:14:02 -0800 (PST)
+Received: from ?IPv6:2a02:169:59a6:0:55c4:f628:91f3:4287? ([2a02:169:59a6:0:55c4:f628:91f3:4287])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8e7114sm244154f8f.74.2025.02.24.14.14.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 24 Feb 2025 14:14:01 -0800 (PST)
+Message-ID: <ddf80337ae8f7d5d3c8fda38bbc48a68c384be1a.camel@gmail.com>
+Subject: Re: [docs] [PATCH v2 1/2] ref-manual: cover UBOOT_ENV variables
+From: Adrian Freihofer <adrian.freihofer@gmail.com>
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Date: Mon, 24 Feb 2025 23:14:01 +0100
+In-Reply-To: <D80L3KLEZTJ9.T3ONJF2WKEGK@bootlin.com>
+References: <20250224082729.3325776-1-adrian.freihofer@siemens.com>
+	 <D80L3KLEZTJ9.T3ONJF2WKEGK@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 24 Feb 2025 11:53:37 +0100
-Message-Id: <D80MBXN4BSZF.2OK87WROBFBJP@bootlin.com>
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
-Subject: Re: [docs] [PATCH 6/6] ref-manual/variables: improve the UNPACKDIR
- documentation
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250218-overview-figures-v1-0-75d23b5e7a88@bootlin.com>
- <20250218-overview-figures-v1-6-75d23b5e7a88@bootlin.com>
- <f4db28cd-1701-49ba-8c90-938128fe61df@cherry.de>
-In-Reply-To: <f4db28cd-1701-49ba-8c90-938128fe61df@cherry.de>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejkeehkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkfevhffvuffofhgjsehtqhertdertdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheplefgueeihfejvedtteeviefgvedvvdeijedttefhueejjeejffehhfeftddtvdfgnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpohhpvghnvghmsggvugguvggurdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegthhgvrhhrhidruggvpdhrtghpthhtohepughot
- ghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41app1) 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 24 Feb 2025 10:53:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6440
+ <docs@lists.yoctoproject.org>; Mon, 24 Feb 2025 22:14:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6441
 
-Hi Quentin,
+Hi Antonin
 
-On Thu Feb 20, 2025 at 5:41 PM CET, Quentin Schulz wrote:
-> Hi Antonin,
->
-> On 2/18/25 10:12 AM, Antonin Godard via lists.yoctoproject.org wrote:
->> It was clear why UNPACKDIR was introduced at first, and what is the
->> recommended way of setting S and UNPACKDIR for a clean separation of the
->> source code and WORKDIR. Add documentation for this in the reference
->> manual.
->>=20
->> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->>   documentation/ref-manual/variables.rst | 39 ++++++++++++++++++++++++++=
-+++++++-
->>   1 file changed, 38 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-=
-manual/variables.rst
->> index adbef69d8f39d33be87c5db6688a807156540410..d970fc21f69fe35830a9d6b5=
-a28da7cb257c0709 100644
->> --- a/documentation/ref-manual/variables.rst
->> +++ b/documentation/ref-manual/variables.rst
->> @@ -10035,9 +10035,46 @@ system and gives an overview of their function =
-and contents.
->>  =20
->>      :term:`UNPACKDIR`
->>         This variable, used by the :ref:`ref-classes-base` class,
->> -      specifies where fetches sources should be unpacked by the
->> +      specifies where fetched sources should be unpacked by the
->>         :ref:`ref-tasks-unpack` task.
->>  =20
->> +      Although the default value of this directory is
->> +      ``${WORKDIR}/sources-unpack``, the recommended way of setting
->> +      :term:`UNPACKDIR` and :term:`S` is::
->> +
->> +         S =3D "${WORKDIR}/sources"
->> +         UNPACKDIR =3D "${S}"
->> +
->
-> Mmmm I think this is an issue, because we then show a non-recommended=20
-> configuration in the SVG in the previous patches where UNPACKDIR !=3D S.
+I will just send a v3 which fixes all your findings, except this one
+needs clarification:
 
-I'd rather show the default definitions in the figures, because there's no
-guarantee that a recipe will define UNPACKDIR and S that way.
+snip
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=C2=A0 Adding a script ``boot.cmd`` as=
+ an uImage to ``/boot``::
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 UBO=
+OT_ENV =3D "boot"
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 UBO=
+OT_ENV_SUFFIX =3D "scr"
+>=20
+> Or shouldn't you set UBOOT_ENV_SRC_SUFFIX to "cmd" here too? I'm a
+> little
+> confused as why you refer to boot.cmd yet "cmd" is not defined here.
 
-It also feels weird to me that a recommended approach is not the default, b=
-ut it
-is probably related to backward compatiblity, that would be my guess.
+UBOOT_ENV_SRC_SUFFIX ?=3D "cmd" is the default.
 
->> +      This allows the source code to be safely unpacked and patched in =
-a
->> +      separate directory.
->> +
->
-> I think I know where you want to go with this, but the first time I read=
-=20
-> this I didn't understand it. UNPACKDIR =3D S in the example above, why=20
-> does this say the source code is unpacked and patched (implying two=20
-> steps/stages) in a separate directory then?
+I have spent many hours trying to understand the code that handles the
+UBOOT_ENV* variables. It's super complicated. In uboot.inc, there is:
 
-I wanted to say that the code is unpacked and patched in the same directory=
-, but
-separate from the WORKDIR. I should probably rephrase or remove this senten=
-ce to
-avoid adding confusion.
+do_compile () {
+if [ -n "${UBOOT_ENV}" ] && [ "${UBOOT_ENV_SUFFIX}" =3D "scr" ]; then
+${UBOOT_MKIMAGE} -C none -A ${UBOOT_ARCH} -T script \
+-d ${UNPACKDIR}/${UBOOT_ENV_SRC} ${B}/${UBOOT_ENV_BINARY}
+fi
+}
 
-> I think this is because we used to put everything from the fetcher into
-> WORKDIR and there were unexpected leftovers between builds and UNPACKDIR=
-=20
-> now is a separate directory for the fetcher to put everything it does=20
-> in, instead of WORKDIR?
+do_install () {
+if [ -n "${UBOOT_ENV}" ]; then
+install -m 644 ${B}/${UBOOT_ENV_BINARY} \
+${D}/boot/${UBOOT_ENV_IMAGE}
+fi
+}
 
-Yes, I think that's it.
+Depending on the file ending respectively the UBOOT_ENV_SUFFIX
+variable, something different happens: Either
+ * a script which can be loaded by U-Boot's source command
+   or
+ * an image including a script which can be handled by U-Boot's load
+   command
+   ends up in /boot.
 
-> I'm not sure we need to document how messed up it was in the past rather=
-=20
-> just what this does now?
+In u-boot-config.bbclass there are more variables defined:
+ * Documented variables:
+   UBOOT_ENV_SUFFIX ?=3D "txt"
+   UBOOT_ENV ?=3D ""
+   UBOOT_ENV_SRC_SUFFIX ?=3D "cmd"
+ * Variables which are considered as internal and hence not documented
+   on purpose:
+   UBOOT_ENV_SRC ?=3D "${UBOOT_ENV}.${UBOOT_ENV_SRC_SUFFIX}"
+   UBOOT_ENV_BINARY ?=3D "${UBOOT_ENV}.${UBOOT_ENV_SUFFIX}"
+   ...two more...
 
-So I guess we can go with the sentence removal. However I think we'd probab=
-ly
-want to keep the recommended assignment.
+So my patch tries to keep it as simple as possible but still cover the
+2 relevant use cases. To make it more clear, I added:
+"It defaults to ``cmd``."
+to the UBOOT_ENV_SRC_SUFFIX section.
 
->> +      .. note::
->> +
->> +         In some cases, the :term:`UNPACKDIR` directory only holds the =
-sources
->> +         temporarily. When the first directory after :term:`WORKDIR` in=
- the
->> +         :term:`S` variable is matched in :term:`UNPACKDIR`, the direct=
-ory
->> +         in :term:`UNPACKDIR` is moved to the :term:`WORKDIR` directory=
-.
->> +
->> +         For example, let's represent the :term:`UNPACKDIR` directory
->> +         for the ``foobar`` recipe after extraction as follows::
->> +
->> +            ${WORKDIR}/sources-unpack/foobar-1.0.0/...
->> +
->> +         And the variable :term:`S` for this recipe defined as::
->> +
->> +            S =3D "${WORKDIR}/${BP}"
->> +
->> +         Where :term:`BP` expands to ``foobar-1.0.0``.
->> +
->> +         Since the first directory of :term:`S` after :term:`WORKDIR`
->> +         (``foobar-1.0.0``) matches the directory ``foobar-1.0.0`` unde=
-r
->> +         ``sources-unpack``, the latter is moved to the :term:`WORKDIR`
->> +         directory. The final location of the source code will then be
->> +         ``${WORKDIR}/foobar-1.0.0``.
->> +
->> +         This behavior was added for compatibility for recipes that do =
-not set
->> +         the :term:`UNPACKDIR` and :term:`S` variable in the recommende=
-d way.
->> +
->
-> I've read this 5 times now, it may be too late for my brain today but I=
-=20
-> am not sure I got it :)
->
-> Let me try to reword it just to make sure I understood/got it right?
->
-> If UNPACKDIR differs from S, but the name of the directory (dirA) where=
-=20
-> sources are unpacked in UNPACKDIR matches the basename of the directory=
-=20
-> used for S, then the content of UNPACKDIR/dirA is moved into S?
+I hope this makes it more understandable without a need for dropping
+all these details on the users.
 
-That's it. And it is a pain to describe textually. I'd take any recommendat=
-ions
-for improving it.
 
-> If that's right, what really happens? Is UNPACKDIR variable modified to=
-=20
-> point to S once the move is done? When is this happening?
+Note: It was even much more complicated when the kernel-
+fitimage.bbclass was in use as well. The kernel-fitimage.bbclass is now
+decoupled which simplifies (or maybe I should say fixes) it quite a
+bit.
 
-No, UNPACKDIR isn't modified. This move is repeated at the end of the do_un=
-pack
-task, each time. See:
-https://git.openembedded.org/openembedded-core/tree/meta/classes-global/bas=
-e.bbclass#n158
+>=20
+snip
 
-I may consider removing that note entirely depending on how useful it is to
-document a backwards-compatibility behavior.
+Thank you for the review!
+Adrian
 
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
 
