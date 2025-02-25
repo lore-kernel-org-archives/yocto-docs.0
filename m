@@ -2,121 +2,157 @@ Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B434CC021B2
-	for <webhook@archiver.kernel.org>; Tue, 25 Feb 2025 22:22:04 +0000 (UTC)
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
- by mx.groups.io with SMTP id smtpd.web10.891.1740522118265548592
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D49C6C021B2
+	for <webhook@archiver.kernel.org>; Tue, 25 Feb 2025 22:24:54 +0000 (UTC)
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+ by mx.groups.io with SMTP id smtpd.web10.945.1740522293651637891
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Feb 2025 14:21:58 -0800
+ Tue, 25 Feb 2025 14:24:53 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=FxqUjWyi;
- spf=pass (domain: gmail.com, ip: 209.85.221.41, mailfrom: adrian.freihofer@gmail.com)
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-38f3913569fso146872f8f.1
-        for <docs@lists.yoctoproject.org>; Tue, 25 Feb 2025 14:21:58 -0800 (PST)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=MAI3Z1SU;
+ spf=pass (domain: gmail.com, ip: 209.85.218.45, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-abbdc4a0b5aso54753866b.0
+        for <docs@lists.yoctoproject.org>; Tue, 25 Feb 2025 14:24:53 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740522116; x=1741126916; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XdXNpCkqKw231oAon/iYyYwoV9tbOEqMBdWOkIzSzzI=;
-        b=FxqUjWyiuLJ25csjPIwnfhO6uF5VJQE4gt8ArmSr+E4FyjHW1oY0j8xfJUFZMM5w/e
-         9uWthIeSv9luDIT/16mBauiRXWOD9w79PkemR2e0Mqbu+mDhnp5IaDKet7K/fsKmb1Yh
-         9knQwcj4Qkuqp8fAUY/Oy8D38Ri8k74VBkflFq5jYbhLp6ndpMyrDMsyk0fzTc8jbnPh
-         KlhEit62KHBHH7PZjzEcrpYOX1kZ9SqhhSt01cryq6Udz1Y7r1hmhWp3zxByGHFmFfjj
-         xO2q0FGp++kdZyJq1kW5XjJUfPYGALXJc7f7WKfoQMHa8je37PIo3mpQYJ7rTY7X8DLT
-         oWIQ==
+        d=gmail.com; s=20230601; t=1740522292; x=1741127092; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jK3/huLF4x9GIwZR6fLEudcjZQpWcoV0PF1l1+59G78=;
+        b=MAI3Z1SUFi/jUv/mmMFY3s2dqw5ZGO2Tr6CguI9q0Sog2WltNGagR55I/qy+G2IIcW
+         R4TfHDO87fe0W0JCt/CmU7DZu9G73ji+xBO/aCimkwW9ZwDa5wBK4cfcoSO3X0W19pog
+         mKcBLSzEDwjnWWiQLujQuJaCE8NyL57JoiO/nGQbW89BQudeQHPAVtkYG1+3MLX1JzTq
+         mAs50AHXeWqpDhzoomPRrbPQQfK0rjBEQ5/bKYdwYTfURlhFebYqisZzoS9FidC0FNpo
+         z/12eyZ3UJbxUZIOMnQpxn7+tFCrcXYDYKKlNNaRmHC752znqVFFR5fbxuidpts84uGf
+         seKQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740522116; x=1741126916;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XdXNpCkqKw231oAon/iYyYwoV9tbOEqMBdWOkIzSzzI=;
-        b=EmTqCaDWXsbXG0wiud5Qt/mORIAX3vFq8pRvxnO+3T7jr4zUNZHi6/B+XhjI8Axo4+
-         B5XFTDbiNmap61MIP8oMIKcmBRRSD8UIQ4lp2TwKcwr+6MC3fD+28lbmVK3ilsl4PJgF
-         yBxx9sq91UW1tgm6A+X4t179dxgItx4RaXplRraTNNXw7eTILTw0snhlu2xuSURkK6TP
-         7efXZJdlDrYyU69whyO3cfNa1xwiUwCYnG8lomxxJmXIonbHp/nZvKowX7/ZewP52Lrq
-         C/g5enu/LyPpDYy2tvJ68BCBYS+yV6sfqrnTBl+Qt10GESvqGq0+83TCVavKkOABjmFS
-         bQRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUIW6wp3Pb+9LIU8zkDvgQrGu8cEGCZlioFn6gHA6j5jUD1X4vT261R+djq4rCiw+YLPOnf@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YycIk34lOUHYacZ715qB1v0GnsTvKxUsO387B8k7vbB5vNz1hck
-	si4vGv+Z0Mra9odK08Ps/ZpfmADaNkMJOcbfz2GFL1G3eRpfhwFd
-X-Gm-Gg: ASbGnct3DM7e9+yHHTTrzAPiSShtuZj2oJ7WS1Qx9k9Npgb2Ds30h1tNeFaUf3agJAi
-	HXJtg01lLaybnMAqsjbYnKNuEN0zzBTgBiyS//h7nNyj5hG5JsJu6rMfsWFPuDG5Vilre4+icLt
-	auWqkiwwNBMQ4j7z4ySA4mKUYn4uKYpzgaGb21PNOer99xeK9nmgha3j4q9V1rSXNZqnoptNzGr
-	z5Ax23zUksgmsFEjHxQNZHFQNO6Sys96pTe2aPDBGpjOT/S1lEP/ckOREFdx8r4wcORNw/89+3i
-	1KfELpPr3vrPutpcLvSs/sJZLp+9kB4k4TmI10oV6ne3DTjF4uPCvzLGEY/PFnjhNq3NLfbMl5c
-	=
-X-Google-Smtp-Source: AGHT+IH5xNZ6hv1/y3yyLjzgvsOCMm6giIxUCswNrf0ejGQQHUVfkV9a0w6UpvoMp5hxYCU4T5Xgdg==
-X-Received: by 2002:a5d:47c3:0:b0:38d:d59c:c9d6 with SMTP id ffacd0b85a97d-38f61611400mr20070234f8f.21.1740522116469;
-        Tue, 25 Feb 2025 14:21:56 -0800 (PST)
-Received: from ?IPv6:2a02:169:59a6:0:55c4:f628:91f3:4287? ([2a02:169:59a6:0:55c4:f628:91f3:4287])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390cd8fcfc6sm3663036f8f.94.2025.02.25.14.21.55
+        d=1e100.net; s=20230601; t=1740522292; x=1741127092;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jK3/huLF4x9GIwZR6fLEudcjZQpWcoV0PF1l1+59G78=;
+        b=PtUMMZMPNI50d98Gr5BS0mqzNEqrCXiZKT3VVmUZnFM+J3qvccizKFxpK52bAJOyNp
+         cE3dENYnL8TxnV94Ow5qecWifIhdGkx0R2eu4J0uVrQLiw9jofRcFiHhNIkzOIajtGwq
+         D0HA3F2HdBBPxwGwXK+rDB2x5xQvhzU1IgU+s93sjuKDFO9dabuVVWnJRoV0S5gBvrUt
+         OLmEl0MZ4U1P41F+kKmkrPrPMNK5izAhI8aJjb4buQKjG4OjIW0hBiX6qAwKprf6i+ha
+         KA20sIPFuSzs2A4Lek4hFCaRmCY55Ler2QtFMdNAD+z0DBIlHfKlyTrKeNWQZpA81YnW
+         lCQQ==
+X-Gm-Message-State: AOJu0YwkDi5fZMz0L924AzPofAkA3iewL+Z0YRvk9mT06a6MEuYuYlyb
+	dflxyfr6G9ZTCH8I+sE6ZX/gyZKUWp7DTjdk1unhHZSrYStEuV712Y5WfTGg
+X-Gm-Gg: ASbGncsvSJDEzIRlaamwRvWNIUJ+S7AqqV+UUL1bHz1NZVUytWCmx+i4fX9c7J+ww8p
+	v9U7XltygZtR/ABRmNFpHp8q3SCRZhpgjBAC3m2GvuLFtFgUGXoQMysui3L/CAAYYBbkm3X17do
+	7hRdN8qUxDWjJKdLAVx1W5AjeOdiq0IVyFUJyJQxWEOTPjcETXox+DGMyThwDBvowjkqNalkHzO
+	xcDTWa7exrUGiwADUzlEcp0G+vOJLc+1HaZvsxAymHRc9hOROQBbZWdDmzoA8jI3U9jZGY3HOM7
+	X3UZ4Ucub+9laiG5jhNiOuNaLgexErWrd7HWHGb077f06pVU
+X-Google-Smtp-Source: AGHT+IHMihw9KyRCrjercIu4B6SVv9DIf0lPSSK/RgTWA3EC4CmOEAS9YamkO0O7ZMXA9rETkkaL4Q==
+X-Received: by 2002:a17:906:3151:b0:ab6:504a:4c03 with SMTP id a640c23a62f3a-abc0b037859mr1449128266b.24.1740522291398;
+        Tue, 25 Feb 2025 14:24:51 -0800 (PST)
+Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abed1cdbfb4sm212193466b.27.2025.02.25.14.24.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Feb 2025 14:21:55 -0800 (PST)
-Message-ID: <0f3f57c6b4da915afadad816529c40390d0de1f5.camel@gmail.com>
-Subject: Re: [docs] [PATCH v3] ref-manual: cover UBOOT_ENV variables
+        Tue, 25 Feb 2025 14:24:50 -0800 (PST)
 From: Adrian Freihofer <adrian.freihofer@gmail.com>
-To: Quentin Schulz <quentin.schulz@cherry.de>, docs@lists.yoctoproject.org
+X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
+To: docs@lists.yoctoproject.org
 Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
-Date: Tue, 25 Feb 2025 23:21:55 +0100
-In-Reply-To: <e919d911-0930-42c0-aa89-40f668b26fed@cherry.de>
-References: <20250224221630.3331182-1-adrian.freihofer@siemens.com>
-	 <e919d911-0930-42c0-aa89-40f668b26fed@cherry.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41app1) 
+Subject: [PATCH v4] ref-manual: cover UBOOT_ENV variables
+Date: Tue, 25 Feb 2025 23:24:42 +0100
+Message-ID: <20250225222442.3347665-1-adrian.freihofer@siemens.com>
+X-Mailer: git-send-email 2.47.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 25 Feb 2025 22:22:04 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6455
+ <docs@lists.yoctoproject.org>; Tue, 25 Feb 2025 22:24:54 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6456
 
-Hi Quentin
+Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+---
+ documentation/ref-manual/variables.rst | 63 ++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-Thank you for the re-view. I fixed all the findings with v4.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index adbef69d8f3..a3d59390cd1 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3180,6 +3180,31 @@ system and gives an overview of their function and contents.
+       The default value for this variable is set to "2048"
+       by the :ref:`ref-classes-kernel-fitimage` class.
+ 
++   :term:`FIT_UBOOT_ENV`
++      This variable allows to add a U-Boot script as a text file to the
++      FIT image. Such a script can be sourced from the U-Boot shell.
++
++      When inheriting the :ref:`ref-classes-kernel-fitimage` class a
++      script file should be included in the :term:`SRC_URI` of the Linux
++      kernel recipe.
++
++      Example:
++
++      -  Add a script ``boot.cmd`` to the Linux kernel recipe::
++
++            FIT_UBOOT_ENV = "boot.cmd"
++            SRC_URI += "file://${FIT_UBOOT_ENV}"
++
++      -  Use the script file from the U-Boot shell. The name of the script in
++         FIT image is ``bootscr-${FIT_UBOOT_ENV}``. This example loads the FIT
++         image from a TFTP server::
++
++            tftp $loadaddr $fit_tftp_path
++            source $loadaddr#bootscr-boot.cmd
++
++      More information can be found in the official U-Boot documentation:
++      `U-Boot source command <https://docs.u-boot.org/en/latest/usage/cmd/source.html#fit-image.f>`__
++
+    :term:`FONT_EXTRA_RDEPENDS`
+       When inheriting the :ref:`ref-classes-fontcache` class,
+       this variable specifies the runtime dependencies for font packages.
+@@ -9791,6 +9816,44 @@ system and gives an overview of their function and contents.
+       :ref:`ref-classes-uboot-config` and :ref:`ref-classes-uboot-sign`
+       classes.
+ 
++   :term:`UBOOT_ENV`
++      This variable allows to add additional environment variables or a script
++      to be installed together with U-Boot.
++      This file, typically ``uEnv.txt`` or ``boot.cmd``, is installed in
++      ``/boot`` as well as copied to the :term:`DEPLOYDIR` directory.
++
++      For machine configurations needing one of these files a ``.bbappend``
++      file should include it in the :term:`SRC_URI` of the U-Boot recipe.
++
++      If the variable :term:`UBOOT_ENV_SUFFIX` is set to ``scr`` the script is
++      packaged as a uImage (``mkimage -T script..``) otherwise it gets
++      installed verbatim.
++
++      Some examples:
++
++      -  Adding a script ``boot.cmd`` as a uImage to ``/boot``::
++
++            UBOOT_ENV = "boot"
++            UBOOT_ENV_SUFFIX = "scr"
++            SRC_URI += "file://${UBOOT_ENV_SRC}"
++
++      -  Adding a script ``uEnv.txt`` as a plain text file to ``/boot``::
++
++            UBOOT_ENV = "uEnv"
++            UBOOT_ENV_SUFFIX = "txt"
++            SRC_URI += "file://${UBOOT_ENV_BINARY}"
++
++   :term:`UBOOT_ENV_SRC_SUFFIX`
++      If :term:`UBOOT_ENV_SUFFIX` is set to ``scr`` this is the suffix of the
++      plain text script file as it is specified in the :term:`SRC_URI` of the
++      U-Boot recipe. It defaults to ``cmd``.
++
++   :term:`UBOOT_ENV_SUFFIX`
++      If this variable is set to ``scr`` the script referred to by
++      :term:`UBOOT_ENV` gets packaged as a uImage before it gets installed.
++      The default is ``txt`` which means the script is installed as-is, with
++      no modification.
++
+    :term:`UBOOT_FIT_ADDRESS_CELLS`
+       Specifies the value of the ``#address-cells`` value for the
+       description of the U-Boot FIT image.
+-- 
+2.47.1
 
-Just a comment about that section which is also changed acc. your
-suggestion now.
-
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 UBO=
-OT_ENV =3D "boot"
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 UBO=
-OT_ENV_SUFFIX =3D "scr"
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SRC=
-_URI +=3D
-> > "file://${UBOOT_ENV}.${UBOOT_ENV_SRC_SUFFIX}"
-> > +
->=20
-> Isn't that UBOOT_ENV_SRC directly? I think it'd make sense to use=20
-> variables made specifically for that instead of replacing it with its
-> content. Best practice and all :)
-
-Yes, it is. But not sure if referring to more variables is helpful from
-a user's perspective. Technically it does not matter how the SRC_URI
-gets defined.
-
->=20
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -=C2=A0 Adding a script ``uEnv.txt`` as=
- a plain text file to
-> > ``/boot``::
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 UBO=
-OT_ENV =3D "uEnv"
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 UBO=
-OT_ENV_SUFFIX =3D "txt"
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SRC=
-_URI +=3D "file://${UBOOT_ENV}.${UBOOT_ENV_SUFFIX}"
->=20
-> Isn't that UBOOT_ENV_BINARY directly? I think it'd make sense to use=20
-> variables made specifically for that instead of replacing it with its
-> content. Best practice and all :)
-
-Yes, it is. Here it's even more confusing, because having a variable
-named ..BINARY referring to a txt file looks odd to me.
-
-But lets follow the best practice, it's fine for me.
-
-Adrian
 
