@@ -1,77 +1,95 @@
-Return-Path: <lgo@pengutronix.de>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E49AC282C8
-	for <webhook@archiver.kernel.org>; Thu, 27 Feb 2025 09:09:08 +0000 (UTC)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
- by mx.groups.io with SMTP id smtpd.web10.6939.1740647344050852360
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 77D44C021BE
+	for <webhook@archiver.kernel.org>; Thu, 27 Feb 2025 09:42:28 +0000 (UTC)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+ by mx.groups.io with SMTP id smtpd.web11.7316.1740649339183530095
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Feb 2025 01:09:04 -0800
+ Thu, 27 Feb 2025 01:42:19 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: pengutronix.de, ip: 185.203.201.7, mailfrom: lgo@pengutronix.de)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <lgo@pengutronix.de>)
-	id 1tnZt8-0002IT-28; Thu, 27 Feb 2025 10:09:02 +0100
-Received: from dude03.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::39])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <lgo@pengutronix.de>)
-	id 1tnZt7-0036DH-1k;
-	Thu, 27 Feb 2025 10:09:01 +0100
-Received: from lgo by dude03.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <lgo@pengutronix.de>)
-	id 1tnZt7-006qel-1V;
-	Thu, 27 Feb 2025 10:09:01 +0100
-From: =?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
-To: bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org,
-	yocto@pengutronix.de,
-	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>
-Subject: [PATCH v2 4/5] tests: fetch: add status test for the GitHub release artifact fetcher
-Date: Thu, 27 Feb 2025 10:08:52 +0100
-Message-Id: <20250227090853.1632280-5-l.goehrs@pengutronix.de>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250227090853.1632280-1-l.goehrs@pengutronix.de>
-References: <20250227090853.1632280-1-l.goehrs@pengutronix.de>
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=HVolQbNe;
+ spf=pass (domain: gmail.com, ip: 209.85.222.178, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7be49f6b331so74332685a.1
+        for <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 01:42:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740649338; x=1741254138; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UAPef1XjUMfGMD3Tu86xo+MmA2j+0VM9HXNODX+7UP4=;
+        b=HVolQbNeBEwzFB2aFPcoftu3lT5d+nsYHSreIiBodqKSK4kLcTjS4BYIGbJ12ps/ph
+         MYQQUdksxOPWpqGVM3u0oYQyKDrxmjg0EAfL5F5QEv8XDjBbcawMjpEgTDKY4Kc4qvEv
+         etXvPbSfTqH4DfJ5DIw8qIewEXztSjzlsCf+FAXksJ6tro+nZwxScxi6u9y6WvjAONfR
+         jR1C/dDSguYpoqrsfRlttIiYSnjRMsrPVSjZaxuxNzeSOZJkzFGIp6O/aH5Qf8MOlgPm
+         sTnJduRrtBr7BYmHcCwu8OInK29az/Ca+on47TSP1vvId3lJozVVbb7adMtZM3G1JMu8
+         mh9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740649338; x=1741254138;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UAPef1XjUMfGMD3Tu86xo+MmA2j+0VM9HXNODX+7UP4=;
+        b=oUee+CO4ayOq/qtOwoUuExn5T/EsacTG6RsOBqrjgpG0xk60XmMSPkhcUCVkvO812Z
+         jZtLTKIbtCgHuBHie5pKgwtSCGbrLz3iDoDl3yf+lxy2oL5Dr5D2NNx5N4qJXPf5yKDu
+         ZvWhCa48UBnfmUvlXDZNwj9cjdE6w/CaG/D6pp+uyrvbzhRTfqzKUbwVZmXKuOQgKAfJ
+         TfqPww1PPUhun20yn4/QkTHxB9cHaZusZdBPbGrgOg08sueVO160cKQ7CVwkVaOubBb/
+         Chf4OQRI/I24pmWDoVq/oTzKrlO0MzY//BPLxPkw00+0qwGdyo0X7MJSCOD0MCWu6naA
+         xVEg==
+X-Forwarded-Encrypted: i=1; AJvYcCU6AUkHtYUXNJkmYD20j8cgX0ZQGVRzPggYeEiJ8tYM5lZQoDaumnhi2VxxH9f0SPutHmHO@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YyVXwdFo9atb4VI/L3lcXgQM6WFGFeRrOetJ2N1L+C8DmbRb96D
+	1QngGrifAF/pFZ1HrPTe5oHThvnobOs/+0rU8lVvPSlmYqm/3M9EzYItABwxWcwxM6peuhVt+eW
+	2a0Yl3VK9dPZ8R/R3rKfGc33g648=
+X-Gm-Gg: ASbGncsZNuGBf1C/CeFxZuVTHcnOFSgGLP5GRawaHc7pDb3J2dBal6eMkyukNWz6wlL
+	+lr3GE5mRVHnMYYbgVLk4LczWYWsZDXZb/vUQx/UzGgt7CWFIpiwqZxVoQsK5AxneOtSzas3LTE
+	VaojkCx8A=
+X-Google-Smtp-Source: AGHT+IFv0kG/zK4EejGDlvsaaRLsDps3FoLFc1E4rk7OgqhM8S3ooxdM85e5BJaaIQ5JVVn7U8ZJbGlN7DuG/hhjgkk=
+X-Received: by 2002:a05:620a:2414:b0:7c0:cb96:831e with SMTP id
+ af79cd13be357-7c0cf8ea13bmr3177939285a.27.1740649338084; Thu, 27 Feb 2025
+ 01:42:18 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: lgo@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: docs@lists.yoctoproject.org
+References: <20250227090853.1632280-1-l.goehrs@pengutronix.de> <20250227090853.1632280-3-l.goehrs@pengutronix.de>
+In-Reply-To: <20250227090853.1632280-3-l.goehrs@pengutronix.de>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Thu, 27 Feb 2025 10:42:05 +0100
+X-Gm-Features: AQ5f1JobGgv5dKmgARRP8VawGzQD6FSxHOnS1QDSsOD0mAIC3Amr6i1oj2ws8Lw
+Message-ID: <CANNYZj_8DU=8eFrbjEBPhupuu13KG7a19V9z_zcj+WPhWAQ_ig@mail.gmail.com>
+Subject: Re: [docs] [PATCH v2 2/5] fetch2/github_release_artifact: fetcher for
+ (private) release artifacts
+To: lgo@pengutronix.de
+Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org, 
+	yocto@pengutronix.de, =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 09:09:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6460
+ <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 09:42:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6464
 
-This re-uses the same URL that is already used by the download test of the
-same fetcher.
+On Thu, 27 Feb 2025 at 10:09, Leonard G=C3=B6hrs via lists.yoctoproject.org
+<lgo=3Dpengutronix.de@lists.yoctoproject.org> wrote:
 
-Signed-off-by: Leonard Göhrs <l.goehrs@pengutronix.de>
----
- lib/bb/tests/fetch.py | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> Authentication is provided using tokens, for example by configuring them
+> in the `local.conf`=C2=B9:
+>
+>   $ grep TOKEN build/conf/local.conf
+>   GH_TOKEN =3D "github_pat_123456789abc...
+>
+> The token may also be provided using an environment variable,
+> e.g. for CI builds:
+>
+>   $ export BB_ENV_PASSTHROUGH_ADDITIONS=3D"GH_TOKEN"
+>   $ export GH_TOKEN=3D"github_pat_123456789abc...
+>   $ bitbake rauc
 
-diff --git a/lib/bb/tests/fetch.py b/lib/bb/tests/fetch.py
-index 6b23bae5b..eed685ffd 100644
---- a/lib/bb/tests/fetch.py
-+++ b/lib/bb/tests/fetch.py
-@@ -1606,7 +1606,8 @@ class FetchCheckStatusTest(FetcherTest):
-                       "https://downloads.yoctoproject.org/releases/opkg/opkg-0.3.0.tar.gz",
-                       "ftp://sourceware.org/pub/libffi/libffi-1.20.tar.gz",
-                       # GitHub releases are hosted on Amazon S3, which doesn't support HEAD
--                      "https://github.com/kergoth/tslib/releases/download/1.1/tslib-1.1.tar.xz"
-+                      "https://github.com/kergoth/tslib/releases/download/1.1/tslib-1.1.tar.xz",
-+                      "ghra://github.com/kergoth/tslib/1.1/tslib-1.1.tar.xz"
-                       ]
- 
-     @skipIfNoNetwork()
--- 
-2.39.5
+Unfortunately I have to say no again. These still put the secret token
+into a bitbake variable, and are therefore not any more secure than
+just putting the token directly into a recipe. I have to restate: you
+need to find a way for wget to pick up the needed token and produce a
+header directly from netrc or similar file that is managed outside of
+layer/bitbake metadata, so that bitbake never even sees it.
 
+Alex
 
