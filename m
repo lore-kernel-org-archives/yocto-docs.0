@@ -1,66 +1,117 @@
-Return-Path: <ross.burton@arm.com>
+Return-Path: <alex.kanavin@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1276DC19F2E
-	for <webhook@archiver.kernel.org>; Thu, 27 Feb 2025 14:34:30 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by mx.groups.io with SMTP id smtpd.web10.11848.1740666863881482141
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A808C282C1
+	for <webhook@archiver.kernel.org>; Thu, 27 Feb 2025 16:33:41 +0000 (UTC)
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+ by mx.groups.io with SMTP id smtpd.web11.15128.1740674011963811076
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Feb 2025 06:34:24 -0800
+ Thu, 27 Feb 2025 08:33:32 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B92482BCA
-	for <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 06:34:38 -0800 (PST)
-Received: from cesw-amp-gbt-1s-m12830-04.lab.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C76753F673
-	for <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 06:34:22 -0800 (PST)
-From: Ross Burton <ross.burton@arm.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] release-notes-5.2.rst: add information about autotools changes
-Date: Thu, 27 Feb 2025 14:34:18 +0000
-Message-ID: <20250227143418.3523136-1-ross.burton@arm.com>
-X-Mailer: git-send-email 2.43.0
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=D5Gu382N;
+ spf=pass (domain: gmail.com, ip: 209.85.222.181, mailfrom: alex.kanavin@gmail.com)
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c0a26b1c67so119415685a.3
+        for <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 08:33:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740674011; x=1741278811; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QE28vjjgYjL/+MmbXoLSoUdnR2YkulslPNxMaDhrwk8=;
+        b=D5Gu382NzkLv3V5rcsBHyjqwxjtYBF1nIx6KPLBAOxrKbZacdxf4RdTRZRLEOYuUyP
+         zyXfRxOQ16N6KXg3pY1bcrIacydToo2ICYkGk74eaUEQKEmAve/leA/cSp8PB33RO+Ys
+         Y+K8sTD1xtQB+TOegC7BSJ7Y5ftY9TXm/ftJ1OGDRKwJQghC05RwKrelCgh6x9s7HKf5
+         mvVDRk7JdvPd6sHN0+BAZyLyet/1YjJ/zlz1wZxG7sKubaAGauGIdbMwVhYHd40sr5rn
+         xn30SdaGTiPpZShq1LVKQeHEhSSXz//zhi9chm2+9svKl1JyCHhxNIXwELzbdlKUZUVK
+         YeIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740674011; x=1741278811;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QE28vjjgYjL/+MmbXoLSoUdnR2YkulslPNxMaDhrwk8=;
+        b=oY9wn+hzMMWs+IDr5HDxA0P/mqbR0CFZlE0Er5EuDRcro4SjJIVhh4Yu+j7jZa+4UT
+         fWupzyyQxUgYjNdjwiZUxzIPoZ06RHcAO6MOpBUloFfsNheFHBO5Q3wy/3+zOvjV9nFY
+         gznMmMMt00ijrgbPz/qixThX18ImBrEQsWm/3vUdZvNAvDaaGWDzSRZQf3XOPgAAPy5K
+         U7dPdJONIYg5HaVr0g+gDazXQibLoCH80BcDPwYA0IgEgBC/ykJFuRNnsQLwNzD8Hdz4
+         DXTXhDVsVciN5PBxueK3381ZCSUEeTiAlViM7MKAzejoQWI7X6gGWQA3s0CgHfaykjZ3
+         A2Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCU3iYWAipgZnDtM+9BMM7HrFCiJMKjMQmOcTq4/yz7hap1UJGIPnVNxUjLEMNKfdJl7ahnJ@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YzZskn0v3FZPliLEKR/af5DG0bGzG8bnGleldfh8bYpjUg9roRp
+	2eIHA+PwkobePwQv99AVMehGpe3IESkKgxm8HkSqi7AMW5TJnV5XpX6ko+qRkVfIqIUAE7lBclu
+	JhGh4jAvj25+W/L5d6nDBr1gYiA8=
+X-Gm-Gg: ASbGncsaS1NtOEXP187ph1hELElYH5znbjVBh+I2EtWW9MiFtc8lVp2ff5hKhaMBxMH
+	Rz4tp/2BSACFNQ57HLAN8PY9HRYkzpCHwwfpZrqqSljA+fUP0Yn4OxPn1NMQOcdLC5BqvCPwVAv
+	yYqLiZMEs=
+X-Google-Smtp-Source: AGHT+IEIQy//btD372hpqfVILd/aIU5NVFxn/Zh0qVYHFZqMVD6CAAYyp9Umz32EgRsGCRWCpIaWht5x+/04o16HP4M=
+X-Received: by 2002:a05:620a:2991:b0:7c0:b3cd:9bc6 with SMTP id
+ af79cd13be357-7c23be1186dmr1656554385a.18.1740674010430; Thu, 27 Feb 2025
+ 08:33:30 -0800 (PST)
 MIME-Version: 1.0
+References: <20250227090853.1632280-1-l.goehrs@pengutronix.de>
+ <20250227090853.1632280-3-l.goehrs@pengutronix.de> <CANNYZj_8DU=8eFrbjEBPhupuu13KG7a19V9z_zcj+WPhWAQ_ig@mail.gmail.com>
+ <c800a81e-d6cd-414b-a0bb-e011ca257bf9@pengutronix.de>
+In-Reply-To: <c800a81e-d6cd-414b-a0bb-e011ca257bf9@pengutronix.de>
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Thu, 27 Feb 2025 17:33:19 +0100
+X-Gm-Features: AQ5f1Jpn6mLGBWbZ-cmb3CB4d1-hLXdZn5E-0gip7JBrTpaPd4jPWsWLv-sPaOI
+Message-ID: <CANNYZj-2zn4LxP_4Bco4hWGVBG_3=waEAsvxPnWSC35-E6fSWA@mail.gmail.com>
+Subject: Re: [bitbake-devel] [docs] [PATCH v2 2/5] fetch2/github_release_artifact:
+ fetcher for (private) release artifacts
+To: =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>
+Cc: lgo@pengutronix.de, bitbake-devel@lists.openembedded.org, 
+	docs@lists.yoctoproject.org, yocto@pengutronix.de
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 14:34:30 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6466
+ <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 16:33:41 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6467
 
-Signed-off-by: Ross Burton <ross.burton@arm.com>
----
- documentation/migration-guides/release-notes-5.2.rst | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+On Thu, 27 Feb 2025 at 11:37, Leonard G=C3=B6hrs <l.goehrs@pengutronix.de> =
+wrote:
+> I've had a look at the `.netrc` / `.wgetrc` documentation and it looks
+> like it possible to provide custom headers in the `.wgetrc`, but it do no=
+t
+> see a way to specify which hosts they should be sent to.
+>
+> We could add a mechanism to `wget.py` that searches for a per-host
+> `.wgetrc` and maybe allow overrides via a `SRC_URI`-Parameter.
+> But I don't really like the idea. One misconfiguration would mean silentl=
+y
+> sending the GitHub token Authentication header on _every_ request to any =
+host.
 
-diff --git a/documentation/migration-guides/release-notes-5.2.rst b/docum=
-entation/migration-guides/release-notes-5.2.rst
-index 417b202cd..75d860aff 100644
---- a/documentation/migration-guides/release-notes-5.2.rst
-+++ b/documentation/migration-guides/release-notes-5.2.rst
-@@ -299,6 +299,16 @@ New Features / Enhancements in |yocto-ver|
-       currently prints warning message for every unpatched CVE the
-       :ref:`ref-classes-cve-check` class finds.
-=20
-+-  :ref:`ref-classes-autotools` changes:
-+
-+   - Changes to how ``aclocal`` is invoked means that ``ACLOCALDIR`` and
-+     ``ACLOCALEXTRAPATH`` are no longer used.
-+
-+   - Directories containing m4 files are no longer found automatically a=
-nd
-+     passed to ``autoreconf``. If a recipe fails to configure because it=
- cannot find
-+     m4 macros, then usually the solution is to set ``EXTRA_AUTORECONF +=
-=3D "-I
-+     path/to/m4"`` in the recipe.
-+
- -  New :term:`PACKAGECONFIG` options for individual recipes:
-=20
-       -  ``perf``: ``zstd``
---=20
-2.43.0
+You can't make the argument that attacker gaining access to protected
+artifacts is not a big deal; if it isn't then why are they protected?
+Just publish them openly, without those pesky tokens.
 
+You similarly can't make assumption that people will handle those
+personal tokens with care; they won't. They'll put them into layers or
+otherwise share them, against everything documentation says, because
+it's convenient.
+
+AZ_SAS and username/password support in https fetchers are both bad
+precedents, and should be removed. The correct precedent is set in the
+git fetcher, and with the recent changes to npm fetcher: bitbake is
+not allowed to see secrets, period. Bitbake was never designed to
+handle sensitive data, and it can easily leak into for example logs,
+which are then published in CI for everyone to see.
+
+What could help is wget picking up additional settings from a
+wgetrc-like file specified with a command line parameter. Can you
+check wget source code to see if /etc/wgetrc and ~/.wgetrc are both
+hardcoded, or is there additional parametrization possible? Raising
+this with upstream would be also appreciated, perhaps you can propose
+a patch. Then we can think of how to provide those custom settings
+from a fetcher.
+
+Please also see the discussion around npm authentication we've
+recently had, as it has many of the same arguments and approaches
+discussed, and we were able to arrive at something that satisfies all
+sides.
+
+Alex
 
