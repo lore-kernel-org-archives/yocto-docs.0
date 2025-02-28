@@ -1,255 +1,249 @@
-Return-Path: <ross.burton@arm.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 15D8BC197BF
-	for <webhook@archiver.kernel.org>; Thu, 27 Feb 2025 20:40:14 +0000 (UTC)
-Received: from AS8PR03CU001.outbound.protection.outlook.com (AS8PR03CU001.outbound.protection.outlook.com [52.101.71.38])
- by mx.groups.io with SMTP id smtpd.web11.227.1740688806698194538
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80F39C19776
+	for <webhook@archiver.kernel.org>; Fri, 28 Feb 2025 04:59:36 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+ by mx.groups.io with SMTP id smtpd.web11.9070.1740718770167505593
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Feb 2025 12:40:07 -0800
+ Thu, 27 Feb 2025 20:59:30 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@arm.com header.s=selector1 header.b=EEl8Sdn1;
- dkim=pass header.i=@arm.com header.s=selector1 header.b=EEl8Sdn1;
- spf=pass (domain: arm.com, ip: 52.101.71.38, mailfrom: ross.burton@arm.com)
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=ioqrmEwp+mUv7rbOimMrVafdUv9OQNtVtA5AH5kwIdBQQ2V/3ysgxQYN8qK2/ThsIkA7zEwPLB47OKfXdgSh7i+YNO+e3d9xUlS8MtsP7syJ6xLA009rCgTe5uo30/y38Q+cCWzTWUg8mbtm1+YUNeX4Tf3JmprM+1Ul7/MnocYc1DsS8Wgi6aZfsmoYuQ2BjHkacjwkYeg0uoWs007ipixD8daXPSrzAV6GQ/jNJFFH4LG42cvf89/RUOqNQ8IJP4k5wFXBtu3CIB7q3eG05GrV6FYv2e1um4WbXN81e4qbuy+Q31YQ/WXSVHXeElD+0SGbFZKSUtFxVAHR35alEQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zE5S/Q2rOGpqlYAKQw6icZ6PyVi8Fz/z0NjMrry5fac=;
- b=kzNr6Fs7UAN1TxdJ5RBsB9s5Gii6nonI0wddaVwwlQZfZ1s43/gbQZGVcKAMTOsGcSU61xUDjZHY7Cb8XaWZxtE5ifndYvRs1OLihMqqzxsHnMsxSERv7BPzEs3ODkFOfZ82gxqf9VoSVmVeTdoi0ahqTLJ7qKlsK4aX3ApnsfdlB1DZo71Yq4XsBeE9AHqBRxWxOZep/UfGgHQga3E31oQX5UUoy00lGClnWszyDg0xWn9wcJVOyd4kkrPYhUgu6wOKSFQ/thuWsF5BiTy938Z2fVf8pfheNNJcuyX1Ov8gEZvE1V6cWkvknf/55Ina/8YNezP27iP7bCKODtmGBQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 63.35.35.123) smtp.rcpttodomain=lists.yoctoproject.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zE5S/Q2rOGpqlYAKQw6icZ6PyVi8Fz/z0NjMrry5fac=;
- b=EEl8Sdn1P7Q8XBV3byzgtmxcX1/qWQ33EP7CqkSht4eQyzDG4Yj4VXVLT3umZhKCmBmp0/nysj7zAYEtENtOcHUTE6Eil1zhjkM/6jaAaJpOksp2zfD8vlQVn6H6yaQ3O4EZHDkfAEuiXw717EVFCfa0nBr/HB9SKCWG85VpkSU=
-Received: from DB9PR06CA0016.eurprd06.prod.outlook.com (2603:10a6:10:1db::21)
- by AS8PR08MB6663.eurprd08.prod.outlook.com (2603:10a6:20b:39b::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.23; Thu, 27 Feb
- 2025 20:40:01 +0000
-Received: from DB1PEPF000509FE.eurprd03.prod.outlook.com
- (2603:10a6:10:1db:cafe::5d) by DB9PR06CA0016.outlook.office365.com
- (2603:10a6:10:1db::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.21 via Frontend Transport; Thu,
- 27 Feb 2025 20:40:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
- pr=C
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- DB1PEPF000509FE.mail.protection.outlook.com (10.167.242.40) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8489.16
- via Frontend Transport; Thu, 27 Feb 2025 20:39:59 +0000
-Received: ("Tessian outbound c3a902884497:v585"); Thu, 27 Feb 2025 20:39:51 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: 5335d4b71edf9a5a
-X-TessianGatewayMetadata: 2Xi1+UipjYQl1p7t5dpFLD5y7ZBW50usEOgPlDFLGkCe0woxIqjZ0mGmmF8sXWfySXwC2p5mPW7Km6zioS63dQrNxBKljflK8L24jUUjOIt8UMZoF7EiSv2+unbjtUNoTpUOkLRqyZCCXjmn5CmDj8lrQS73oSNk4SYv0yUakO4=
-X-CR-MTA-TID: 64aa7808
-Received: from Lf0f78e25704c.1
-	by 64aa7808-outbound-1.mta.getcheckrecipient.com id 58FC334F-8C90-4B25-B5E3-B22E3193CA18.1;
-	Thu, 27 Feb 2025 20:39:40 +0000
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id Lf0f78e25704c.1
-    (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-    Thu, 27 Feb 2025 20:39:32 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HtKh34m9WS124BlhcoU4j1a/oZ/Sc0YcC3JAGWq0q1yTpInUP7DB/Ar+WipkslYCQztVgkNuSiVcyyQ0I1fJDaJSSGYxA9xWKpmTPIHRz0faUnXD3gs8YN00G4JsLjPnt/XRl8KRnvlZ3RdQaqhOAV8U+yp1lTCFqXvuKEfMtzntt0LT7ya4N63Rsq5P8igblzKg4AfApbAwYjRfYrXN4zAnir2JhNYEafkI7ht7qu3AmHdi+jHY7mfXva4cPu5r5awpu4g5LQjsxVLVhH9SV1R77tmWnnsiizfoWtTQLfBnyxthARK/tkY4iVfDn8u25R4O2gNfgX9lNUaNfxl96g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=zE5S/Q2rOGpqlYAKQw6icZ6PyVi8Fz/z0NjMrry5fac=;
- b=bFOL8V+6G1kHx/E9eP6hpJ8XxCgyYJu9c2723DLGz/6YMJEiJdzjGxEfprHtJn7VDRcNsykEQgjrN74gkk2W6M2bZ+OmxX6KQKxNkTB9KKnuj1SRG1tihs0h5hwUsjnxltn4u3cri2QGpfdXbZHVKyWmBNbgJDohWffLPbb3sX4ve1rs18OQIVoo4WMy3bzauCU4V+7DiJ/+NiVRYzSe5iUAbfoJfh/cXPQK4/xP+2UW+Hzz+U3tjvAcY3xE7DmDkNqvFz83qhlu9tMHl1CSa90xEKsVSNOP533cD0IrF2+yF4ggmf6oSrA/HIZs5/o/vK71u5ZTzGrxNNgnMmIJqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=zE5S/Q2rOGpqlYAKQw6icZ6PyVi8Fz/z0NjMrry5fac=;
- b=EEl8Sdn1P7Q8XBV3byzgtmxcX1/qWQ33EP7CqkSht4eQyzDG4Yj4VXVLT3umZhKCmBmp0/nysj7zAYEtENtOcHUTE6Eil1zhjkM/6jaAaJpOksp2zfD8vlQVn6H6yaQ3O4EZHDkfAEuiXw717EVFCfa0nBr/HB9SKCWG85VpkSU=
-Received: from PA4PR08MB7411.eurprd08.prod.outlook.com (2603:10a6:102:2a3::12)
- by DU0PR08MB7809.eurprd08.prod.outlook.com (2603:10a6:10:3b7::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Thu, 27 Feb
- 2025 20:39:30 +0000
-Received: from PA4PR08MB7411.eurprd08.prod.outlook.com
- ([fe80::9206:40ba:ef7e:729e]) by PA4PR08MB7411.eurprd08.prod.outlook.com
- ([fe80::9206:40ba:ef7e:729e%5]) with mapi id 15.20.8466.024; Thu, 27 Feb 2025
- 20:39:30 +0000
-From: Ross Burton <Ross.Burton@arm.com>
-To: "stefan-koch@siemens.com" <stefan-koch@siemens.com>
-CC: "bitbake-devel@lists.openembedded.org"
-	<bitbake-devel@lists.openembedded.org>, "docs@lists.yoctoproject.org"
-	<docs@lists.yoctoproject.org>, "simon.sudler@siemens.com"
-	<simon.sudler@siemens.com>, "jan.kiszka@siemens.com"
-	<jan.kiszka@siemens.com>, "alex.kanavin@gmail.com" <alex.kanavin@gmail.com>,
-	Richard Purdie <richard.purdie@linuxfoundation.org>,
-	"quentin.schulz@cherry.de" <quentin.schulz@cherry.de>
-Subject: Re: [bitbake-devel] [PATCH v4 1/4] fetch2/git: Add support for fast
- initial shallow fetch
-Thread-Topic: [bitbake-devel] [PATCH v4 1/4] fetch2/git: Add support for fast
- initial shallow fetch
-Thread-Index: AQHbhIW0GmgvEAVZwE+ji7Oro2bNubNbpk2A
-Date: Thu, 27 Feb 2025 20:39:29 +0000
-Message-ID: <80041E02-3798-4BAD-86C3-D27381F6179C@arm.com>
-References: <20250221172602.527924-1-stefan-koch@siemens.com>
-In-Reply-To: <20250221172602.527924-1-stefan-koch@siemens.com>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-mailer: Apple Mail (2.3826.300.87.4.3)
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-x-ms-traffictypediagnostic: 
-	PA4PR08MB7411:EE_|DU0PR08MB7809:EE_|DB1PEPF000509FE:EE_|AS8PR08MB6663:EE_
-X-MS-Office365-Filtering-Correlation-Id: b0258c2c-4607-48c1-97c1-08dd576ee795
-x-checkrecipientrouted: true
-nodisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted: 
- BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
-X-Microsoft-Antispam-Message-Info-Original: 
- =?utf-8?B?MmxYbCs0ZFlJODl4UFZnZXM5ZlhrY0I3OElMQlplY0ZuT0k1SnM0K3lwVERr?=
- =?utf-8?B?akQ2bmNMYnYvMFcvUzBqdjNONjRJMlJ1cmhEUzdEYzZNYWRXMEVwVGQxOTZC?=
- =?utf-8?B?NTd1NGNiZEJpZWxCbmxUcHJwY2p6eGVYMk9NcUJ0aGt6K1l5Uml2d3BhemJY?=
- =?utf-8?B?ZTI5b0laVHdNc3AzSmdsV0IvREhsMlF4OTJPRnlZVkg5RXZRanhCN2VPbThj?=
- =?utf-8?B?VnFHd0l3RVZLV0JwRDZkYXUyWG9qTkdjcTFEajFxN1BnUVNjbjR3MG1welFr?=
- =?utf-8?B?OHMya1hwSW1RTDBBa1BPSFVSSnBvTEZTaW1yRVQyRnEvdk1LdjRCZWs1OHVp?=
- =?utf-8?B?aGVJblpCTExJS1Q1YVZQS09wQ0ZsUEpTTTE0UERucjh3UmxlWjVXTDZCUm8x?=
- =?utf-8?B?QUszR2M2c3pxQjhTTzJYM240VVB3MGpPQ2piZGx2TjhvTDgzTnZUd2M0bi9N?=
- =?utf-8?B?bCtXNHdpWDNLK05uSjBnUDRucFRJUFBxVkxHNnpreUNFYnU1RCtFMWpVKzZO?=
- =?utf-8?B?ZVRJL3BscjFzTVBuSjkwV0pTd2ZYWmtwa1JxRHROSXlzNTMwRHhnV21rNENQ?=
- =?utf-8?B?cFo0QkVtelJwU0NaNU43aDhVQXVscFlOYWFqZ1ZmdkNRNzU3cmw0V2pKcjFZ?=
- =?utf-8?B?ZDZwM0ZLcGJxendpcWd3Q0k1NU5XaHhHZlMwcWp6WVhTMTFwT0ZNOUx4MXJl?=
- =?utf-8?B?VitlOVNScE82cjNqOEFjdHFqbGlmOUgzQTFPK1E1eXcxR3R0QzZOMVNMNFBY?=
- =?utf-8?B?UXF5bTk2UUIvejhIUVNHTWgvcG1VM1c4YXBNY091WTM1aEhFZlJoYTE1bitk?=
- =?utf-8?B?d1Bzb0VDZWYyaG82Q0g1endKZDlrcVN3eUJKb3JHdUxGdVY2eGY0NDIyVW5K?=
- =?utf-8?B?ZEF2OVdiVS8xd2RTL2IzK25tMUJRTW1QUStQbFhWRUpwV2xjN2g5eVE1T1BY?=
- =?utf-8?B?cGwyRGZtbHl0T29VODZGVG51RVY0N2hPb1dLMTVDYXNRZ1lKdWNxdFN1UVlI?=
- =?utf-8?B?QjFJTklwQnZNdjk5NUw2NERITDJmZCtNbEJyV2N2UTNEdERoSTV6N1BMc1ZL?=
- =?utf-8?B?NjB3eU1vVWJ0N0MvQnBRRThhTWFHcmZGZXdPSmZCc1M1dTBkZFpGZDB5eUdl?=
- =?utf-8?B?clNmN3A5aHVLcXRrVi84dEJMZk9tUlJ1TUlRU0JaWWN3ZzRHcmFBaXlBN3FN?=
- =?utf-8?B?WjNOcUthYXRoekNaZ2UxZUsvclUrWkVpcWFzV2x2aldhWlUydlU5SjZrV0Fm?=
- =?utf-8?B?WjRIdDF4Z2NtLytvbGF4aXRhajBKZWFEbDFJNXJIOTU3cTY0NWF3T2s2WUVW?=
- =?utf-8?B?dm9wVEZNd29rYlFxWGFPQXN3M2MzVzNFdTRpTUVlN0NrS2txczJFNXNJa013?=
- =?utf-8?B?eGdqWW8wd3Zad3pFYldrQStkcDA5bmplUlp2bm5NWGsyTmN5OUlabUtjeDRu?=
- =?utf-8?B?b0cxTDVlRmVVeWxadDBFNi84VERadk5NRjg0ZGZOQzM1djZzcEovd1E1SWZs?=
- =?utf-8?B?aG1RY2dXS2dpRmxldUxuNHp4SmJKaG9TelhSNVV6RkJtOCtLdjFSK2xEa2NS?=
- =?utf-8?B?OHkyTTBGRTg5ek9CSFpiaGxmOURKa0ZhZkZmN1Z1QVRIVG85clUzcjlORnds?=
- =?utf-8?B?SDBTTUpBLzBXci9JdkVadWI5WnJDZkdmT2pYMG9POTZlU1JsVFdLNFR1Mlh3?=
- =?utf-8?B?YndMVjBzQUxYMTdQRTFpeXdZYm9waFpIZnlsU2R1Q0RodDZtbkxlU2NZN3F2?=
- =?utf-8?B?SUFwaGhqME5kcVBtcUs0bFNnOUVWd2t3YjVFdlhQamd3NHI0eUZzb0ZnRitV?=
- =?utf-8?B?LzNFbEpPaUFVMndkTURaUXhnWEtqc0NSbGlDL2EwY3NkdzBNMFFxZTU5VXI1?=
- =?utf-8?B?VXNCbXZHanVKVDYybWx0Y1VPVk1uOWRZMjdJcTVGNkRSa29BNDNFb0lqbE9E?=
- =?utf-8?Q?9URO8Q09OxP/QqmuOpwMQW1Cu0619t37?=
-X-Forefront-Antispam-Report-Untrusted: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PA4PR08MB7411.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <6C8805464C5B7B46B0684CD086AC017A@eurprd08.prod.outlook.com>
-Content-Transfer-Encoding: base64
+ dkim=pass header.i=@intel.com header.s=Intel header.b=RcPAw0iK;
+ spf=pass (domain: intel.com, ip: 192.198.163.12, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740718770; x=1772254770;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sA0YkIjFOgrbWkslCEkp6WEm9JEfFaKMHJ2Xyhu4vr0=;
+  b=RcPAw0iKDrJCD0/ixOckvkTGGNAg+4PZwmD4245KeubYj3sHKEV4UNFA
+   paPOwDsY2AkM1A7KiLOivj1MmgtuhsK9/l9YS7u2+5ICexA++k0gfKJu5
+   5gay422SWLFGdQcXhyCAhnF3oll6s0DxkS+LzgDQuGpxcauOwZl8nPmaP
+   nOhTQAPZVdKaM+M6Y2akb1rj813CunigxhaF3Q4NGtpGRm/aCC76pWFUn
+   V82I7Tb9ZXW3gZuvz10MaaXT83OGIj6nKYCjhrRkU0VfqL1DcBeALI35N
+   1z6oG15Ek4iLYRO/wAQDGxbUYWPhgDubvdpYYpAZwTVt6gr1B5KqmGKtC
+   A==;
+X-CSE-ConnectionGUID: 9Q0ueGMdTP2sqBV5vOsH/w==
+X-CSE-MsgGUID: 6rE6BTERTgOTwJAS3gEh0Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11358"; a="45554686"
+X-IronPort-AV: E=Sophos;i="6.13,321,1732608000"; 
+   d="scan'208";a="45554686"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 20:59:29 -0800
+X-CSE-ConnectionGUID: Mvob0ngyRECtYhydAl6jSA==
+X-CSE-MsgGUID: kIa79OuYQb+KRwR/PxEjoA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,321,1732608000"; 
+   d="scan'208";a="122246220"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by orviesa004.jf.intel.com with ESMTP; 27 Feb 2025 20:59:28 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 4.0.25
+Date: Fri, 28 Feb 2025 12:58:26 +0800
+Message-Id: <20250228045826.1904323-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU0PR08MB7809
-Original-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-X-EOPAttributedMessage: 0
-X-MS-Exchange-SkipListedInternetSender: 
- ip=[2603:10a6:102:2a3::12];domain=PA4PR08MB7411.eurprd08.prod.outlook.com
-X-MS-Exchange-Transport-CrossTenantHeadersStripped: 
- DB1PEPF000509FE.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs: 
-	6a907ef3-9a89-4095-a7c3-08dd576ed5ba
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230040|36860700013|376014|14060799003|35042699022|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info: 
-	=?utf-8?B?WVpuY0lZZlVOYUZWUDJld3dCTysreU54eUpFamFlazRPcnJFd3FDckhPZWln?=
- =?utf-8?B?THlkQkk3T3VkNmJEQzhJZnhjSllrRDhqcWR0d2dHWW5nM3BKdzl0WXVHbmFG?=
- =?utf-8?B?b2dzZDV2dkl3Z1B0MXUvdzlrMEdlMHNZQmk1aHVRa0JlRU9IZytYbkZWbVo1?=
- =?utf-8?B?Z0dGZVlEa0ZnaGZwcDFmNkdKdWE3aWxEc1oxKzNTdmpKZUxIVDFTYndvZk9v?=
- =?utf-8?B?dVRxUndVSUd2QWp1U2U5TW00Zm9BYndqVTJndFVYaGF0TmU1czBZaE0yV1Bx?=
- =?utf-8?B?Q0l5WlFaREMzL2h3dVorVUZONlhWYzlZQ2loQlhXL1NGQ0xybG9XTU55YzVs?=
- =?utf-8?B?NE1GTWZTaDhNM2RDa0NZbGlTUzNxMExqRXBtd2RJZi9YRTAyblRyZzduTXVE?=
- =?utf-8?B?ZnJRUGRHdnh1WWZERmlUWHoyL3lDeCsxTTYzMUxUQ25pQnQ3YXNBeVNLcVIr?=
- =?utf-8?B?cG1HWlRoc2Z4WjZaTVhuT1VId1pBUXA3OFpML3FyaHBPb1VzbW4zbUE2eGF5?=
- =?utf-8?B?RjJRdUVFWHlGM0NpUHBrZVlORlhIK28yblhuSUlaaGVrUW94bXJyR3gzalBs?=
- =?utf-8?B?a3FzN0NTdDZUS2EyWk9qZHFKWHk0WmxFdGkrQmZzZGJ2ZDVNbHBOQWloZHA1?=
- =?utf-8?B?U29UcHZJMUtiZDVvQXpiYWdGZzBBczU5MTA4R1BzUVRCOFh3ZEdoUmlCYUpX?=
- =?utf-8?B?K3lndDZoekU3RXRlbXo5ZnNXaVZBbzQ3aE5zV1l5YXVYOUExb3g2cmJwYisv?=
- =?utf-8?B?cXFDMERkM2ZOSFBFc0p1eDFKaTNiMUUyWkpRYUZySnhOSmoxZ1d6NGh5aDRC?=
- =?utf-8?B?NzhJMUdLSTNodERwdUFFejllZ0kwdmVGZ3AvbExwdW5TYVhzT3d5MDhOeUtz?=
- =?utf-8?B?U1NuK0lCbWRLemJLQTFZeGpOMjFmaEZCL0tpZzF1WXRjOVQzaWswcEthUW45?=
- =?utf-8?B?MHJ5VjVxNGNxSjJUallzWG9WM0pheWhIY1pzL0pYNUFBVDQvM2drTzN0NnRa?=
- =?utf-8?B?RHRFMmxUeElJbmRERE0xMCszNEcyZjBSTDVYNjdjNi9QZDVxc1lPY0FuVitk?=
- =?utf-8?B?bjZGLzN2WTU4VW9TTVRQU05GdDMrWVJwaFFRaExFS0xvc3Q0RW9aYnNWUkxL?=
- =?utf-8?B?SnIrNTVhSEliZGVBM2gzQks0dGQvYTFqNzZwRnB4dTUxL3dtcnhhQ2NhNUVk?=
- =?utf-8?B?UmFSZFhJYTBkcmE5dFVIZEdWQVhaTHRqY2lxblg1U1RvMFJxMjV0ak9jTWdw?=
- =?utf-8?B?MGozUCs2eE1NYU95elRYaXpnRmNmczlGdlRCY0ZqVjZ2Rys3b2hsNVNaZFNH?=
- =?utf-8?B?em1xcHRoYzJSbDdFbWUvOWhBcUlrQ25LeHlIa2d4bUZINVdNOGlJdlQ0SFJp?=
- =?utf-8?B?YXVyY3ppMkxCNFJONk4yWmtEUmt0U2dBUDNEaktOT2JBOVJHQjdzcVBmTlZu?=
- =?utf-8?B?WGhiTjJYbWlnVE03eG40NTZJQ0RYSEhRVzRidzFueG1oVEpaUmJSWER5bFZr?=
- =?utf-8?B?QndMWjMwUjQ2T0NNdlVKYm9lYnBCYUVKbGcrTnQ1OEgzSVJZRGlRNTQ2V0VU?=
- =?utf-8?B?K1BGUWJkZUY2QXlWb2UxK3hqdXQ3ZCtqRzJLRVloRmFjZzdMaEVUNHRNR1Zl?=
- =?utf-8?B?Vk1mOUI2a1JKRkhuV3BadFlTaEdFTGtidXZZRGNSV0RSZzdHenczZ2FkU0I3?=
- =?utf-8?B?eDFiUVhIU2dtbnJpc0JCWDVlUlVlcDBoUVQzdlRpMXdyLzdBTExUWEJ2UVQr?=
- =?utf-8?B?azZxeTAyeUtqLzBIbCtPMS9DWGZCVG9qNzNuZ1F2NGptcDU2dnN4Qmo3L0Ex?=
- =?utf-8?B?aXBnSCtRc2hwbTQ2OEhBaHVTRXJzNGZjdlZ1QXQ2cUs0eVJYYWQ3Y0V4bW0x?=
- =?utf-8?B?UlplNk1DSytGZUVUdVRxMWNsUzNXWUVEVDhGWXF1N0x0L0R6V1BqMjYrbk1S?=
- =?utf-8?B?QUVUbXFRNzc4UitBSE1sNWlTZGFEUDF5dEt0WmlHamxIdzhBVnBraEwyRG9v?=
- =?utf-8?Q?GEqmrvC2fsPCLQweazh2d5PxvQ7tDw=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:64aa7808-outbound-1.mta.getcheckrecipient.com;CAT:NONE;SFS:(13230040)(36860700013)(376014)(14060799003)(35042699022)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2025 20:39:59.8744
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b0258c2c-4607-48c1-97c1-08dd576ee795
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource: 
-	DB1PEPF000509FE.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6663
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Feb 2025 20:40:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6468
+ <docs@lists.yoctoproject.org>; Fri, 28 Feb 2025 04:59:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6469
 
-T24gMjEgRmViIDIwMjUsIGF0IDE3OjI1LCBLb2NoLCBTdGVmYW4gdmlhIGxpc3RzLm9wZW5lbWJl
-ZGRlZC5vcmcgPHN0ZWZhbi1rb2NoPXNpZW1lbnMuY29tQGxpc3RzLm9wZW5lbWJlZGRlZC5vcmc+
-IHdyb3RlOg0KPiArICAgICAgICB1ZC5zaGFsbG93X3NraXBfZmFzdCA9IGQuZ2V0VmFyKCJCQl9H
-SVRfU0hBTExPV19TS0lQX0ZBU1QiKSA9PSAiMSINCg0KV2h5IHdvdWxkIHdlIG5lZWQgYSB3YXkg
-X2Zyb20gYSByZWNpcGVfIHRvIHNheSDigJxldmVuIHRob3VnaCBJIGFza2VkIGZvciBhIHNoYWxs
-b3cgY2xvbmUsIGRvbuKAmXQgYWN0dWFsbHkgZG8gYSBzaGFsbG93IGNsb25l4oCdPyAgSWYgYSBy
-ZWNpcGUgZG9lc27igJl0IHdhbnQgdG8gZG8gYSBzaGFsbG93IGNsb25lLCBpdCBjYW4gbm90IHNl
-dCBCQl9HSVRfU0hBTExPVz0xLg0KDQo+ICsgICAgQGNvbnRleHRtYW5hZ2VyDQo+ICsgICAgZGVm
-IGNyZWF0ZV9hdG9taWMoc2VsZiwgZmlsZW5hbWUpOg0KPiArICAgICAgICAiIiJDcmVhdGUgYXMg
-YSB0ZW1wIGZpbGUgYW5kIG1vdmUgYXRvbWljYWxseSBpbnRvIHBvc2l0aW9uIHRvIGF2b2lkIHJh
-Y2VzIiIiDQo+ICsgICAgICAgIGZkLCB0ZmlsZSA9IHRlbXBmaWxlLm1rc3RlbXAoZGlyPW9zLnBh
-dGguZGlybmFtZShmaWxlbmFtZSkpDQo+ICsgICAgICAgIHRyeToNCj4gKyAgICAgICAgICAgIHlp
-ZWxkIHRmaWxlDQo+ICsgICAgICAgICAgICB1bWFzayA9IG9zLnVtYXNrKDBvNjY2KQ0KPiArICAg
-ICAgICAgICAgb3MudW1hc2sodW1hc2spDQo+ICsgICAgICAgICAgICBvcy5jaG1vZCh0ZmlsZSwg
-KDBvNjY2ICYgfnVtYXNrKSkNCj4gKyAgICAgICAgICAgIG9zLnJlbmFtZSh0ZmlsZSwgZmlsZW5h
-bWUpDQo+ICsgICAgICAgIGZpbmFsbHk6DQo+ICsgICAgICAgICAgICBvcy5jbG9zZShmZCkNCg0K
-SSByZWFsaXNlIHlvdeKAmXJlIGp1c3QgbW92aW5nIGNvZGUsIGJ1dCBhdG9taWNhbGx5IGNyZWF0
-aW5nIGFuIGVtcHR5IGZpbGUgc2VlbXMgcHJldHR5IHBvaW50bGVzcy4NCg0KPiArICAgICAgICAg
-ICAgIyBXaGVuIHNraXBwaW5nIGZhc3QgaW5pdGlhbCBzaGFsbG93IG9yIHRoZSBmYXN0IGluaXRh
-bCBzaGFsbG93IGNsb25lIGZhaWxlZDoNCj4gKyAgICAgICAgICAgICMgVHJ5IGFnYWluIHdpdGgg
-YW4gaW5pdGlhbCByZWd1bGFyIGNsb25lDQo+ICsgICAgICAgICAgICBpZiBub3Qgc2hhbGxvd19m
-YXN0X3N0YXRlOg0KPiArICAgICAgICAgICAgICAgIHVkLnNoYWxsb3dfc2tpcF9mYXN0ID0gVHJ1
-ZQ0KPiArICAgICAgICAgICAgICAgIHJ1bmZldGNoY21kKGNsb25lX2NtZCwgZCwgbG9nPXByb2dy
-ZXNzaGFuZGxlcikNCg0KQXQgdGhpcyBwb2ludCB3aHkgY2Fu4oCZdCB5b3UganVzdCBzZXQgdWQu
-c2hhbGxvdz1GYWxzZSBpbnN0ZWFkIG9mIG5lZWRpbmcgYSBzZXBhcmF0ZSBza2lwIHZhcmlhYmxl
-Pw0KDQpSb3Nz
+From: Lee Chee Yang <chee.yang.lee@intel.com>
+
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.25.rst | 167 ++++++++++++++++++
+ 2 files changed, 168 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.25.rst
+
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index a1aa41973..e4e619d17 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -31,3 +31,4 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.22
+    release-notes-4.0.23
+    release-notes-4.0.24
++   release-notes-4.0.25
+diff --git a/documentation/migration-guides/release-notes-4.0.25.rst b/documentation/migration-guides/release-notes-4.0.25.rst
+new file mode 100644
+index 000000000..e52f57913
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.25.rst
+@@ -0,0 +1,167 @@
++Release notes for Yocto-4.0.25 (Kirkstone)
++------------------------------------------
++
++Security Fixes in Yocto-4.0.25
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  avahi: Fix :cve_nist:`2024-52616`
++-  binutils: Fix :cve_nist:`2024-53589`
++-  gdb: Fix :cve_nist:`2024-53589`
++-  go: Fix :cve_nist:`2024-34155`, :cve_nist:`2024-34156`, :cve_nist:`2024-34158` and
++   :cve_nist:`2024-45336`
++-  gstreamer1.0: Ignore :cve_nist:`2024-47537`, :cve_nist:`2024-47539`, :cve_nist:`2024-47540`,
++   :cve_nist:`2024-47543`, :cve_nist:`2024-47544`, :cve_nist:`2024-47545`, :cve_nist:`2024-47538`,
++   :cve_nist:`2024-47541`, :cve_nist:`2024-47542`, :cve_nist:`2024-47600`, :cve_nist:`2024-47607`,
++   :cve_nist:`2024-47615`, :cve_nist:`2024-47835`, :cve_nist:`2024-47546`, :cve_nist:`2024-47596`,
++   :cve_nist:`2024-47597`, :cve_nist:`2024-47598`, :cve_nist:`2024-47599`, :cve_nist:`2024-47601`,
++   :cve_nist:`2024-47777`, :cve_nist:`2024-47778`, :cve_nist:`2024-47834`, :cve_nist:`2024-47602`,
++   :cve_nist:`2024-47603`, :cve_nist:`2024-47613`, :cve_nist:`2024-47774`, :cve_nist:`2024-47775`
++   and :cve_nist:`2024-47776`
++-  linux-yocto/5.15: Fix :cve_nist:`2024-36476`, :cve_nist:`2024-55916`, :cve_nist:`2024-56369`,
++   :cve_nist:`2024-56626`, :cve_nist:`2024-56627`, :cve_nist:`2024-56715`, :cve_nist:`2024-56716`,
++   :cve_nist:`2024-57802`, :cve_nist:`2024-57807`, :cve_nist:`2024-57841`, :cve_nist:`2024-57890`,
++   :cve_nist:`2024-57896`, :cve_nist:`2024-57900`, :cve_nist:`2024-57910`, :cve_nist:`2024-57911`,
++   :cve_nist:`2024-57938`, :cve_nist:`2024-57951`, :cve_nist:`2025-21631`, :cve_nist:`2025-21665`,
++   :cve_nist:`2025-21666`, :cve_nist:`2025-21669`, :cve_nist:`2025-21680`, :cve_nist:`2025-21683`,
++   :cve_nist:`2025-21694`, :cve_nist:`2025-21697` and :cve_nist:`2025-21699`
++-  ofono: Fix :cve_nist:`2024-7539`, :cve_nist:`2024-7540`, :cve_nist:`2024-7541`,
++   :cve_nist:`2024-7542`, :cve_nist:`2024-7543`, :cve_nist:`2024-7544`, :cve_nist:`2024-7545`,
++   :cve_nist:`2024-7546` and :cve_nist:`2024-7547`
++-  openssl: Fix :cve_nist:`2024-13176`
++-  rsync: Fix :cve_nist:`2024-12084`, :cve_nist:`2024-12085`, :cve_nist:`2024-12086`,
++   :cve_nist:`2024-12087`, :cve_nist:`2024-12088` and :cve_nist:`2024-12747`
++-  ruby: Fix :cve_nist:`2024-49761`
++-  socat: Fix :cve_nist:`2024-54661`
++-  vte: Fix :cve_nist:`2024-37535`
++-  wget: Fix :cve_nist:`2024-10524`
++
++
++Fixes in Yocto-4.0.25
++~~~~~~~~~~~~~~~~~~~~~
++
++-  bitbake: tests/fetch: Fix git shallow test failure with git >= 2.48
++-  build-appliance-image: Update to kirkstone head revision
++-  classes-global/insane: Look up all runtime providers for file-rdeps
++-  classes/nativesdk: also override :term:`TUNE_PKGARCH`
++-  classes/qemu: use tune to select QEMU_EXTRAOPTIONS, not package architecture
++-  cmake: apply parallel build settings to ptest tasks
++-  dev-manual/building: document the initramfs-framework recipe
++-  docs: Update autobuilder URLs to valkyrie
++-  documentation: Fix typo in standards.md
++-  glibc: Suppress GCC -Os warning on user2netname for sunrpc
++-  glibc: stable 2.35 branch updates
++-  lib/packagedata.py: Add API to iterate over rprovides
++-  linux-yocto/5.15: upgrade to v5.15.178
++-  migration-guides: add release notes for 4.0.24
++-  openssl: upgrade to 3.0.16
++-  poky.conf: bump version for 4.0.25
++-  python3: Treat UID/GID overflow as failure
++-  rsync: Delete pedantic errors re-ordering patch
++-  rsync: upgrade to 3.2.7
++-  rust-common.bbclass: soft assignment for RUSTLIB path
++-  scripts/install-buildtools: Update to 4.0.23
++-  test-manual/reproducible-builds: fix reproducible links
++
++
++Known Issues in Yocto-4.0.25
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.25
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Aleksandar Nikolic
++-  Alexander Kanavin
++-  Antonin Godard
++-  Archana Polampalli
++-  Bruce Ashfield
++-  Deepesh Varatharajan
++-  Divya Chellam
++-  Joshua Watt
++-  Khem Raj
++-  Lee Chee Yang
++-  Nikhil R
++-  Pedro Ferreira
++-  Peter Marko
++-  Praveen Kumar
++-  Richard Purdie
++-  Ross Burton
++-  Simon A. Eugster
++-  Steve Sakoman
++-  Yash Shinde
++-  Yogita Urade
++-  Zhang Peng
++
++
++Repositories / Downloads for Yocto-4.0.25
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.25 </poky/log/?h=yocto-4.0.25>`
++-  Git Revision: :yocto_git:`b5aa03f336c121269551f9e7baed4c677c76bb39 </poky/commit/?id=b5aa03f336c121269551f9e7baed4c677c76bb39>`
++-  Release Artefact: poky-b5aa03f336c121269551f9e7baed4c677c76bb39
++-  sha: 7afbcb25f0dd89a4fb6dd4c5945061705ef9ce79a6863806278603273c2b3b4a
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.25/poky-b5aa03f336c121269551f9e7baed4c677c76bb39.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.25/poky-b5aa03f336c121269551f9e7baed4c677c76bb39.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.25 </openembedded-core/log/?h=yocto-4.0.25>`
++-  Git Revision: :oe_git:`5a794fd244f7fdeb426bd5e3def6b4effc0e8c62 </openembedded-core/commit/?id=5a794fd244f7fdeb426bd5e3def6b4effc0e8c62>`
++-  Release Artefact: oecore-5a794fd244f7fdeb426bd5e3def6b4effc0e8c62
++-  sha: 8fc93109693e5f4702b3fe0633b6be833605291b3d595dc8bdeb6379f40cd2de
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.25/oecore-5a794fd244f7fdeb426bd5e3def6b4effc0e8c62.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.25/oecore-5a794fd244f7fdeb426bd5e3def6b4effc0e8c62.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.25 </meta-mingw/log/?h=yocto-4.0.25>`
++-  Git Revision: :yocto_git:`87c22abb1f11be430caf4372e6b833dc7d77564e </meta-mingw/commit/?id=87c22abb1f11be430caf4372e6b833dc7d77564e>`
++-  Release Artefact: meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e
++-  sha: f0bc4873e2e0319fb9d6d6ab9b98eb3f89664d4339a167d2db6a787dd12bc1a8
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.25/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.25/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.25 </meta-gplv2/log/?h=yocto-4.0.25>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.25/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.25/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.25 </bitbake/log/?h=yocto-4.0.25>`
++-  Git Revision: :oe_git:`e71f1ce53cf3b8320caa481ae62d1ce2900c4670 </bitbake/commit/?id=e71f1ce53cf3b8320caa481ae62d1ce2900c4670>`
++-  Release Artefact: bitbake-e71f1ce53cf3b8320caa481ae62d1ce2900c4670
++-  sha: 007eef35174586c85b233f4ec91578956fe21e0236f7ca2c3f90f9d034f94b5b
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.25/bitbake-e71f1ce53cf3b8320caa481ae62d1ce2900c4670.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.25/bitbake-e71f1ce53cf3b8320caa481ae62d1ce2900c4670.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.25 </yocto-docs/log/?h=yocto-4.0.25>`
++-  Git Revision: :yocto_git:`c6dce0c77481dee7b0a0fcdc803f755ceccef234 </yocto-docs/commit/?id=c6dce0c77481dee7b0a0fcdc803f755ceccef234>`
++
+-- 
+2.34.1
+
 
