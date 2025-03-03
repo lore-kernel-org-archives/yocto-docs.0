@@ -2,65 +2,98 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 118BFC282C5
-	for <webhook@archiver.kernel.org>; Mon,  3 Mar 2025 09:32:14 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.49693.1740994328539578032
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 22828C282C6
+	for <webhook@archiver.kernel.org>; Mon,  3 Mar 2025 09:42:04 +0000 (UTC)
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+ by mx.groups.io with SMTP id smtpd.web11.49489.1740994919849644866
  for <docs@lists.yoctoproject.org>;
- Mon, 03 Mar 2025 01:32:08 -0800
+ Mon, 03 Mar 2025 01:42:00 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=eZmEm6/T;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7FF61432F4;
-	Mon,  3 Mar 2025 09:32:06 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QlK91XVw;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AAE6643400;
+	Mon,  3 Mar 2025 09:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740994326;
+	t=1740994918;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Cxkqiq03cE1RchunDKYMRPMZk81lc8FvBc2BL3dHAz0=;
-	b=eZmEm6/TbINdVbPJ/Bwws4Tz7olsx3aIwQwvH/wVVDl2/BS9KHNRZTyf6Z0WHbPn3TBtr9
-	TyQbN4sAyAssiPh0bnlfugQYv5O+LKUxQL7bria2MQDpkM8bjvyWKvbkUJJo5OrfHE6+e/
-	3y3OD3CED5HMMrFeoW/3CsuAqx7tHRBDicAxOrPoq02C1hRQE9lcT/r07joHDw7o/YrYlq
-	JripprSY7tkaQb3Fs4CnqOWTqaIpVqlWQRyS/eqrgAne0YLHsFPcQFIEuDvhRRR8L6oFPr
-	RUqgJ0kYwQ2lfL2pQOcTMQcjqp93ilvSju4UpjDVlQm58XcV4oHTmSaJbPL28Q==
-From: Antonin Godard <antonin.godard@bootlin.com>
-To: docs@lists.yoctoproject.org,
-	"Weisser, Pascal" <pascal.weisser.ext@karlstorz.com>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Antonin Godard <antonin.godard@bootlin.com>
-Subject: Re: [PATCH v4] ref-manual: Add missing variable IMAGE_ROOTFS_MAXSIZE
-Date: Mon,  3 Mar 2025 10:31:30 +0100
-Message-ID: <174099426451.179139.10819449851857283301.b4-ty@bootlin.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250207095540.186588-1-pascal.weisser.ext@karlstorz.com>
-References: <20250207095540.186588-1-pascal.weisser.ext@karlstorz.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	bh=XMNrO637E1PBi0ssk2veiZk9KXYzBSfi9B3hL3NbKqQ=;
+	b=QlK91XVw6K7wxKCwUoqtVfNgHAt/uVvL7oj6WR9ovavHyp4yFCv7dwnPB2G5g2oxsBtrdU
+	OKVXIuWw8orCuu2qj5dRN2SXqqgSptDuSBrGzkLqdhkV+SKS0ITUqHl0MQBKWDVNGKgBPc
+	aSgYAI5oqBrcW2uKXrhpdi7ZABlYkEZ8cU/Nfw0yxic/W6vhHparXfVZMWe3iWxX448WZj
+	cnocbxiRnOpQ0LdczFuZ6+wAiOKdOpAhlIMhzBes3Koaz/XdK3aUCdnK44N5BU+w0FV9Xw
+	FImvhhnPIDehk9tGdXLMOOe7fycltdq1NymAjr94Q45+TWSt9BRPzfC+Y53W3Q==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 03 Mar 2025 10:41:57 +0100
+Message-Id: <D86J6VLG4A33.1ZMP03TCPVK7O@bootlin.com>
+Subject: Re: [docs] [PATCH] release-notes-5.2.rst: add information about
+ autotools changes
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: <ross.burton@arm.com>, <docs@lists.yoctoproject.org>
+X-Mailer: aerc 0.20.1-0-g2ecb8770224a
+References: <20250227143418.3523136-1-ross.burton@arm.com>
+In-Reply-To: <20250227143418.3523136-1-ross.burton@arm.com>
 X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeejjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekffeuhfdtjeetheettedthfeijedtgfejhfelueevhedtvdelhfetieehteelnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehtrghhohhmrgdrhhhomhgvpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehprghstggrlhdrfigvihhsshgvrhdrvgigtheskhgrrhhlshhtohhriidrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiio
- hhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
+X-GND-Score: 0
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeejlecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpegggfgtfffkuffhvffofhgjsehtqhertdertdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptdekkeffffefheettdettdeugedvvdelfeffkeetgfdtiedukeehudfhhfeltdevnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehrohhsshdrsghurhhtohhnsegrrhhmrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 03 Mar 2025 09:32:14 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6471
+ <docs@lists.yoctoproject.org>; Mon, 03 Mar 2025 09:42:04 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6474
 
+Hi Ross,
 
-On Fri, 07 Feb 2025 10:55:40 +0100, Weisser, Pascal wrote:
-> This patch adds the missing documentation of variable IMAGE_ROOTFS_MAXSIZE
-> to the reference manual.
+On Thu Feb 27, 2025 at 3:34 PM CET, Ross Burton via lists.yoctoproject.org =
+wrote:
+> Signed-off-by: Ross Burton <ross.burton@arm.com>
+> ---
+>  documentation/migration-guides/release-notes-5.2.rst | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+>
+> diff --git a/documentation/migration-guides/release-notes-5.2.rst b/docum=
+entation/migration-guides/release-notes-5.2.rst
+> index 417b202cd..75d860aff 100644
+> --- a/documentation/migration-guides/release-notes-5.2.rst
+> +++ b/documentation/migration-guides/release-notes-5.2.rst
+> @@ -299,6 +299,16 @@ New Features / Enhancements in |yocto-ver|
+>        currently prints warning message for every unpatched CVE the
+>        :ref:`ref-classes-cve-check` class finds.
+> =20
+> +-  :ref:`ref-classes-autotools` changes:
+> +
+> +   - Changes to how ``aclocal`` is invoked means that ``ACLOCALDIR`` and
+> +     ``ACLOCALEXTRAPATH`` are no longer used.
 
-Applied, thanks!
+Nit: this bullet and the next would need to be indented by 2.
 
-[1/1] ref-manual: Add missing variable IMAGE_ROOTFS_MAXSIZE
-      commit: 1dcc8cf7c49da449b324a7bd6bb22effe1d53d70
+> +
+> +   - Directories containing m4 files are no longer found automatically a=
+nd
+> +     passed to ``autoreconf``. If a recipe fails to configure because it=
+ cannot find
+> +     m4 macros, then usually the solution is to set ``EXTRA_AUTORECONF +=
+=3D "-I
+> +     path/to/m4"`` in the recipe.
+> +
+>  -  New :term:`PACKAGECONFIG` options for individual recipes:
+> =20
+>        -  ``perf``: ``zstd``
 
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
+I think this would fit better in the migration guide since this is potentia=
+lly a
+breaking change (documentation/migration-guides/migration-5.2.rst).
+
+Thanks,
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
