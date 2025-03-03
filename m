@@ -2,142 +2,127 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2BD03C282CD
-	for <webhook@archiver.kernel.org>; Mon,  3 Mar 2025 09:53:44 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.49980.1740995622128354355
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8D55BC282C5
+	for <webhook@archiver.kernel.org>; Mon,  3 Mar 2025 11:16:34 +0000 (UTC)
+Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
+ by mx.groups.io with SMTP id smtpd.web10.51141.1741000587476327120
  for <docs@lists.yoctoproject.org>;
- Mon, 03 Mar 2025 01:53:42 -0800
+ Mon, 03 Mar 2025 03:16:27 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=EUTz5MnM;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 84C14432FB;
-	Mon,  3 Mar 2025 09:53:39 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=a9wHxcdN;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 333B444197;
+	Mon,  3 Mar 2025 11:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740995620;
+	t=1741000585;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=5KrtG4B5v3do51d0olaYrDSJRmohu7qOqT6/rBJE4oc=;
-	b=EUTz5MnMb/Ypr9m4K9e2B0KxFlNzdqeZBqT08pQDbXUCeRp7qe1YwpaBO4fTP6B2OflLlD
-	G1YjZI5C6FOrWupg/BAkE3ynXfrzAg8OvkQvHLsOAzMDeMf+nts1PlYhFjZEofmvYXiG/7
-	ZV/khm7ULYkxZznhhZRzn9lr4gMQFtFtatDVE7+uRukSuYsSTsYmr6mEP+ymKH7P7U6ZyC
-	peeLIGqrW1dVcvlmdnHMioaMbmIgymVyxql3TJjrk6Pu9CLkrfgXNfX0ji2ogp8hWGKeAf
-	qv5FGccx4VpGnr/P2N9qbV9PAOTS/n05eeqXPRpt1EKRvk7W0bFyxgpNoPrNPg==
+	bh=+idPEnb4NOCkTqC3GKf98ha1/G7N0cfc3Uo5RfEOdwI=;
+	b=a9wHxcdNEaYcaX51NpSNbIaReAZvXgIG8++AuhrAa6dOVFMMPa+7Rayzc5BX8bX/bqubpn
+	t2GEN6Y0jEZZVlfH4PCz6mZCzFbHtc3inxFQd6qnoUWnAy8RCB+zg25rRDGXwv5JFMylMs
+	PWX1+LcOCgrv5kBTRj/BvrRMq6R6foCi6bZ4ffb7l8/z2WnR1gSTroROdE1TEfOai+x+OB
+	9TpflWrouJI7JiytU0o+rr6QmQ/eiQIke0x1txa14wyax/TBEMw87ecisahLBwYWSKzKnG
+	x4A25RxUXk8Z8k3YudZFiR3+2WKppC+UqobybYny8l91WKc5lxd4kFre2Ydzxg==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Mar 2025 10:53:39 +0100
-Message-Id: <D86JFU1QJHTY.78XB8P642EP5@bootlin.com>
-Subject: Re: [docs] [PATCH] ref-manual: variable FIT_SIGN_INDIVIDUAL
- mix-and-match attacks
-Cc: <marex@denx.de>, <rogerio.borin@toradex.com>, <L.Anderweit@phytec.de>,
- <quaresma.jose@gmail.com>, <quentin.schulz@cherry.de>,
- <richard.purdie@linuxfoundation.org>, <seanga2@gmail.com>, "Adrian
- Freihofer" <adrian.freihofer@siemens.com>
+Date: Mon, 03 Mar 2025 12:16:24 +0100
+Message-Id: <D86L777M38EM.38AIIV3XEFCYI@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: <adrian.freihofer@gmail.com>, <docs@lists.yoctoproject.org>
+Subject: Re: [docs] [PATCH v2] ref-manual: variable FIT_SIGN_INDIVIDUAL
+ mix-and-match attacks
+Cc: <marex@denx.de>, "Adrian Freihofer" <adrian.freihofer@siemens.com>
 X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250224231156.3335643-1-adrian.freihofer@siemens.com>
-In-Reply-To: <20250224231156.3335643-1-adrian.freihofer@siemens.com>
+References: <20250225213737.3343894-1-adrian.freihofer@siemens.com>
+In-Reply-To: <20250225213737.3343894-1-adrian.freihofer@siemens.com>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeekudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffuvefhvffofhgjsehtqhertdertdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudduleegveevtedtjeejgfduteegtdegvdfggfduuefgteelfeeikeehffehffeknecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpohhpvghnvghmsggvugguvggurdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedutddprhgtphhtthhopegrughrihgrnhdrfhhrvghihhhofhgvrhesghhmrghilhdrtghomhdprhgtphhtthhop
- eguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepmhgrrhgvgiesuggvnhigrdguvgdprhgtphhtthhopehrohhgvghrihhordgsohhrihhnsehtohhrrgguvgigrdgtohhmpdhrtghpthhtohepnfdrtehnuggvrhifvghithesphhhhihtvggtrdguvgdprhgtphhtthhopehquhgrrhgvshhmrgdrjhhoshgvsehgmhgrihhlrdgtohhmpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegthhgvrhhrhidruggvpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeelkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepggfgtgffkffhvffuvefofhgjsehtqhertdertdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhephfevheehhfegjeekgeduueeigfduueduvddtvedvjedtfeevieduiefhhefgvdeknecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegrughrihgrnhdrfhhrvghihhhofhgvrhesghhmrghilhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhpr
+ hhojhgvtghtrdhorhhgpdhrtghpthhtohepmhgrrhgvgiesuggvnhigrdguvgdprhgtphhtthhopegrughrihgrnhdrfhhrvghihhhofhgvrhesshhivghmvghnshdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 03 Mar 2025 09:53:44 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6475
+ <docs@lists.yoctoproject.org>; Mon, 03 Mar 2025 11:16:34 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6476
 
 Hi Adrian,
 
-On Tue Feb 25, 2025 at 12:11 AM CET, Adrian Freihofer via lists.yoctoprojec=
+On Tue Feb 25, 2025 at 10:37 PM CET, Adrian Freihofer via lists.yoctoprojec=
 t.org wrote:
-> Add a warning to the documentation of the FIT_SIGN_INDIVIDUAL variable.
+> Incorporate the lessons learned from a regression introduced with commit
+> 29d32063ac0abb1017756f62f94aec22ce305b60 and fixed with commit
+> d63dba2f98edf89558647e336b19d805b00f4d98 into the documentation.
 >
-> This is a conclusion of this discussion:
-> https://lists.openembedded.org/g/openembedded-core/topic/111218371
+> The use of the variable FIT_SIGN_INDIVIDUAL is explicitly discouraged.
+> It is also noted that this variable may be removed. It is important that
+> we try to simplify the implementation of the FIT screen as much as
+> possible. Adding appropriate notes to the documentation is a first step
+> towards this direction.
 >
 > Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
 > ---
->  documentation/ref-manual/variables.rst | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
+>  documentation/ref-manual/variables.rst | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
 >
 > diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
 anual/variables.rst
-> index b432488a012..de7f0a3b292 100644
+> index b432488a012..645bb1453d1 100644
 > --- a/documentation/ref-manual/variables.rst
 > +++ b/documentation/ref-manual/variables.rst
-> @@ -3175,6 +3175,27 @@ system and gives an overview of their function and=
+> @@ -3173,7 +3173,18 @@ system and gives an overview of their function and=
  contents.
+>        intending to verify signatures in another context than booting via
+>        U-Boot.
 > =20
->        This variable is set to "0" by default.
-> =20
-> +      .. note::
-> +
-> +         Setting this variable to =E2=80=9C0=E2=80=9D is recommended for=
- several reasons in
+> -      This variable is set to "0" by default.
+> +      If :term:`UBOOT_SIGN_ENABLE` is set to =E2=80=9C1=E2=80=9D and :te=
+rm:`FIT_SIGN_INDIVIDUAL`
 
-We usually use regular quote here ("") not =E2=80=9C=E2=80=9D and Sphinx do=
-es the magic.
+s/=E2=80=9C=E2=80=9D/""/, Sphinx will handle the quotes
 
-I would also remove "in particular" but that's my taste.
+> +      is left at its default value of =E2=80=9C0=E2=80=9D, only the conf=
+igurations are signed.
+> +      However, the configuration signatures include the hashes of the re=
+ferenced
+> +      image nodes. This means that the entire FIT image is appropriately=
+ signed.
 
-> +         particular:
-> +
-> +         -  If :term:`UBOOT_SIGN_ENABLE` is set to =E2=80=9C1=E2=80=9D, =
-all image artifacts
-> +            contained in the FIT image are signed correctly. This is bec=
-ause
-> +            the hashes of the image nodes are signed via the correspondi=
-ng
+s/image nodes/nodes/? a node can be anything (kernel, device tree...)
 
-"of the image nodes" I'd say even all kind of nodes right?
-
-Proposal for rephrasing:
+I feel that "the entire FIT image is appropriately signed" is a bit of a
+shortcut. Instead I would suggest something like:
 
 """
-This is because the kernel, device tree and ramdisk image nodes hashes are
-contained in the configuration nodes which is also signed.
+This means that the integrity of the entire FIT image is ensured because ea=
+ch
+hash is compared against a runtime-computed hash for each node.
 """
 
-> +            configuration nodes. Signing the individual image nodes is
-> +            therefore redundant as long as the configuration nodes are p=
-roperly
-
-You imply that there are multiple configuration nodes then? Or only one tha=
-t
-contains the hashes? Unclear to me
-
-> +            signed.
 > +
-> +         -  Allowing to removing the image nodes from the context of the=
- FIT
-> +            image comes with a risk of mix-and-match attacks. This means=
- that
-> +            an attacker could combine different signed images which toge=
-ther
-> +            have a vulnerability and allow an attack on the device.
-
-Not sure I see how this is related to FIT_SIGN_INDIVIDUAL... I don't see ho=
-w
-this is unsafe since the configuration node is signed and contains the hash=
-es
-of the different nodes.
-
+> +      If :term:`UBOOT_SIGN_ENABLE` is set to =E2=80=9C1=E2=80=9D and :te=
+rm:`FIT_SIGN_INDIVIDUAL`
+> +      is set to =E2=80=9C1=E2=80=9D, then the FIT image is signed twice,=
+ which is redundant.
+> +      As this leads to additional complexity without providing any obvio=
+us
+> +      advantage, this feature will likely be removed in a future version=
+.
 > +
-> +         -  Not sure if this feature will be maintained for the long ter=
-m.
-> +            It adds complexity for a not obvious benefit. This can be se=
-en as a
-> +            problem, especially in a security context.
-> +
+> +      Signing only the image nodes is intentionally not implemented by O=
+E-core,
+
+s/OE-core/:term:`OpenEmbedded-Core (OE-Core)`/
+
+> +      as it is vulnerable to mix-and-match attacks.
+> =20
 >     :term:`FIT_SIGN_NUMBITS`
 >        Size of the private key used in the FIT image, in number of bits.
->        The default value for this variable is set to "2048"
+
+Thanks this is a lot clearer to me than the previous version.
 
 Antonin
 
