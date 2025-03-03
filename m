@@ -2,122 +2,75 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 90C6BC282C5
-	for <webhook@archiver.kernel.org>; Mon,  3 Mar 2025 08:10:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12903C282CD
+	for <webhook@archiver.kernel.org>; Mon,  3 Mar 2025 09:32:14 +0000 (UTC)
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.48702.1740989426341784683
+ by mx.groups.io with SMTP id smtpd.web11.49377.1740994328887590125
  for <docs@lists.yoctoproject.org>;
- Mon, 03 Mar 2025 00:10:27 -0800
+ Mon, 03 Mar 2025 01:32:09 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=g77YEU2E;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=TnPgJkXX;
  spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2E33C44327;
-	Mon,  3 Mar 2025 08:10:24 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3F22C432FD;
+	Mon,  3 Mar 2025 09:32:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740989424;
+	t=1740994327;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=aYimXQgVn4Gg0410vDLGdpQbrVz/j0DBOoCbNm1Dyj8=;
-	b=g77YEU2EC7JO1rw6tDJU+VUx0WDGJSCI68IdFQm/HeBw5t2leFY0XnVIWB8/HnLl/eGJW/
-	HDDj9lnNvcTaJroqJOvXLFCYMz90dWuYG8+hsrGufo9GmxlNLX1v7eftbsUttNlNMtuZ9C
-	VL5hoemRZbR2BXShaPKdHWsxphKLyR7UKBa7UPpa5IVrgPiKkd780KaJvYnFTFFjk+bdMC
-	JdkJegl6RCVF4tUhLMj3xcIdWJ0DN/0/ifuWziMUgTPr4hRVscWMPEO9UdBcSp6DRpMYgs
-	Z2gExOu//XRTqqKTyL79UtYsPtXgp3rCgX5/sejMn5DG6Xu3TEp3fU3KytfIQA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 03 Mar 2025 09:10:23 +0100
-Message-Id: <D86H8RV7JZRF.28W6GBPN0PDI6@bootlin.com>
-Subject: Re: [bitbake-devel] [PATCH v2 5/5] doc: document the GitHub Release
- Artifact fetcher and GH_TOKEN
-Cc: <docs@lists.yoctoproject.org>, <yocto@pengutronix.de>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: =?utf-8?q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- <bitbake-devel@lists.openembedded.org>
-X-Mailer: aerc 0.20.1-0-g2ecb8770224a
-References: <20250227090853.1632280-1-l.goehrs@pengutronix.de>
- <20250227090853.1632280-6-l.goehrs@pengutronix.de>
-In-Reply-To: <20250227090853.1632280-6-l.goehrs@pengutronix.de>
+	bh=rRK2ChjLX1RhvD/2XcyhJhd4GThmhr1hl//LG8wkrqQ=;
+	b=TnPgJkXXTP9j83BOjxJJNeMzrCamv+PknCQLotKkhWfDvSfyx5zQt/hxS2nAdyzPb7cnqS
+	8togjDvVkCfcjFxeSgvdrQMsffF55oZNJpQVV1HjJeKAvb40+6MRXgiR8/7+KXxNWPSwQZ
+	Y60mzNeOUFDvSzJxdA2CdNQaow1p1hfCnrLRVvCvYhwwVHddcgXmVBAO+cT0upBHdUBCA4
+	SlvK347PpNEm71rGq2fqao+/QP7I4ahi2Uxl9wRlbU55x1p5j2Bvc/Vit0qxD9J083vEjU
+	2lH/jStVNI8tNwpJKA6K9b6Bqb/YognPIhIaGgOTadmYyYLYFImx09awqoNYPQ==
+From: Antonin Godard <antonin.godard@bootlin.com>
+To: docs@lists.yoctoproject.org,
+	Yoann Congal <yoann.congal@smile.fr>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Antonin Godard <antonin.godard@bootlin.com>,
+	Guillaume Swaenepoel <guillaume.swaenepoel@smile.fr>,
+	Quentin Schulz <quentin.schulz@cherry.de>
+Subject: Re: [PATCH v6 1/4] ref-manual/variables: document OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
+Date: Mon,  3 Mar 2025 10:31:32 +0100
+Message-ID: <174099426450.179139.5512695442983532436.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250217220618.1999362-1-yoann.congal@smile.fr>
+References: <20250217220618.1999362-1-yoann.congal@smile.fr>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeeiudcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucenucfjughrpegggfgtfffkufevhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedvhedtteetheefgfejleeiledvieevleduffejgeeufedujeeufeefjeefveegudenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehlrdhgohgvhhhrshesphgvnhhguhhtrhhonhhigidruggvpdhrtghpthhtohepsghithgsrghkvgdquggvvhgvlheslhhishhtshdrohhpvghnvghmsggvugguvggurdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdiho
- hgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopeihohgtthhosehpvghnghhuthhrohhnihigrdguvg
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdelkeejjecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepudekffeuhfdtjeetheettedthfeijedtgfejhfelueevhedtvdelhfetieehteelnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehtrghhohhmrgdrhhhomhgvpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeeipdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopeihohgrnhhnrdgtohhnghgrlhesshhmihhlvgdrfhhrpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnr
+ dgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepghhuihhllhgruhhmvgdrshifrggvnhgvphhovghlsehsmhhilhgvrdhfrhdprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvg
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 03 Mar 2025 08:10:33 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6470
+ <docs@lists.yoctoproject.org>; Mon, 03 Mar 2025 09:32:14 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6473
 
-Hi Leonard,
 
-On Thu Feb 27, 2025 at 10:08 AM CET, Leonard G=C3=B6hrs wrote:
-> The fetcher is quite niche, as it is only required when working with
-> private GitHub repositories (public releases have a stable public downloa=
-d
-> URL and do not need any authentication).
->
-> Hence it is only documented like a niche feature.
->
-> Signed-off-by: Leonard G=C3=B6hrs <l.goehrs@pengutronix.de>
-> ---
->  .../bitbake-user-manual-fetching.rst                |  2 ++
->  .../bitbake-user-manual-ref-variables.rst           | 13 +++++++++++++
->  2 files changed, 15 insertions(+)
->
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst b/d=
-oc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> index fb4f0a23d..2f5224482 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-fetching.rst
-> @@ -842,6 +842,8 @@ Fetch submodules also exist for the following:
-> =20
->  -  Trees using Git Annex (``gitannex://``)
-> =20
-> +-  Private GitHub Release Artifacts (``ghra://``)
-> +
->  No documentation currently exists for these lesser used fetcher
->  submodules. However, you might find the code helpful and readable.
-> =20
-> diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rs=
-t b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> index 858de6347..228443e0b 100644
-> --- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> +++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
-> @@ -1083,6 +1083,19 @@ overview of their function and contents.
->        layer containing the recipe file. Code can use this to identify wh=
-ich
->        layer a recipe is from.
-> =20
-> +   :term:`GH_TOKEN`
-> +      GitHub Access Token. When using the
-> +      :ref:`GitHub Release Artifact fetcher <bitbake-user-manual/bitbake=
--user-manual-fetching:fetchers>`
-> +      This variable can be defined to be used by the fetcher to authenti=
-cate
-> +      and gain access to non-public release artifacts::
-> +
-> +         GH_TOKEN =3D "github_pat_..."
-> +
-> +      Alternatively, the token can be specified in :term:`SRC_URI` with =
-the ``token``
-> +      parameter::
-> +
-> +         SRC_URI =3D "ghra://github.com...;token=3Dgithub_pat_..."
-> +
->     :term:`GITDIR`
->        The directory in which a local copy of a Git repository is stored
->        when it is cloned.
+On Mon, 17 Feb 2025 23:06:15 +0100, Yoann Congal wrote:
+> This documents the variable used in the "automate testing a single
+> recipe's reproducibility" feature [YOCTO #15701]
+> 
+> 
 
-Reviewed-by: Antonin Godard <antonin.godard@bootlin.com>
+Applied, thanks!
 
-Thank you for the changes!
-Antonin
+[1/4] ref-manual/variables: document OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
+      commit: 417b423ea3d2ba9903d21d930c1982ff2ac6f596
+[2/4] reproducible-builds: change/add titles in the "How" section
+      commit: 0ff459c273704a281419a44ae5670068ac47f1b9
+[3/4] reproducible-builds: add a "How to" section with OEQA* variables
+      commit: 78cf8b1ff1cdfbc863033f267da8fb60419b50fc
+[4/4] release-notes-5.2: Add new variable OEQA_REPRODUCIBLE_TEST_LEAF_TARGETS
+      commit: eec44e4daf414be414e9fd0471b0381b980d6fab
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
