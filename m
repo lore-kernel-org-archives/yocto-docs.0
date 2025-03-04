@@ -1,145 +1,170 @@
-Return-Path: <ross.burton@arm.com>
+Return-Path: <jamin_lin@aspeedtech.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8A591C282D2
-	for <webhook@archiver.kernel.org>; Mon,  3 Mar 2025 17:20:28 +0000 (UTC)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
- by mx.groups.io with SMTP id smtpd.web11.460.1741022426602482407
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D4E32C021B8
+	for <webhook@archiver.kernel.org>; Tue,  4 Mar 2025 08:38:52 +0000 (UTC)
+Received: from TWMBX01.aspeed.com (TWMBX01.aspeed.com [211.20.114.72])
+ by mx.groups.io with SMTP id smtpd.web11.17876.1741077526195374832
  for <docs@lists.yoctoproject.org>;
- Mon, 03 Mar 2025 09:20:26 -0800
+ Tue, 04 Mar 2025 00:38:46 -0800
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: arm.com, ip: 217.140.110.172, mailfrom: ross.burton@arm.com)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2CA251007
-	for <docs@lists.yoctoproject.org>; Mon,  3 Mar 2025 09:20:40 -0800 (PST)
-Received: from cesw-amp-gbt-1s-m12830-04.lab.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C51B53F673
-	for <docs@lists.yoctoproject.org>; Mon,  3 Mar 2025 09:20:25 -0800 (PST)
-From: Ross Burton <ross.burton@arm.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH v2 1/2] Remove all mention of core-image-lsb
-Date: Mon,  3 Mar 2025 17:20:21 +0000
-Message-ID: <20250303172022.775243-1-ross.burton@arm.com>
+ dkim=none (message not signed); spf=pass (domain: aspeedtech.com, ip: 211.20.114.72, mailfrom: jamin_lin@aspeedtech.com)
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 4 Mar
+ 2025 16:38:43 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Tue, 4 Mar 2025 16:38:43 +0800
+From: Jamin Lin <jamin_lin@aspeedtech.com>
+To: <docs@lists.yoctoproject.org>
+CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>
+Subject: [PATCH v2] ref-manual: uboot-sign: Add how to enable ATF, TEE and User defined snippet ITS for U-Boot FIT image
+Date: Tue, 4 Mar 2025 16:38:42 +0800
+Message-ID: <20250304083842.2828763-1-jamin_lin@aspeedtech.com>
 X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 03 Mar 2025 17:20:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6490
+ <docs@lists.yoctoproject.org>; Tue, 04 Mar 2025 08:38:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6492
 
-core-image-lsb was removed in 2019[1], so remove all of the  incredibly
-obsolete references in the documentation.
+Add how to enable ATF, TEE and User defined ITS for U-Boot FIT image genera=
+tion.
 
-[1] oe-core fb064356af615d67d85b65942103bf943d84d290
-
-Signed-off-by: Ross Burton <ross.burton@arm.com>
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- .../dev-manual/customizing-images.rst         | 17 +++++++--------
- documentation/dev-manual/qemu.rst             | 11 +++++-----
- documentation/ref-manual/images.rst           | 21 -------------------
- 3 files changed, 13 insertions(+), 36 deletions(-)
+ documentation/ref-manual/classes.rst   |  8 +++
+ documentation/ref-manual/variables.rst | 72 ++++++++++++++++++++++++++
+ 2 files changed, 80 insertions(+)
 
-diff --git a/documentation/dev-manual/customizing-images.rst b/documentat=
-ion/dev-manual/customizing-images.rst
-index 634825944..6eed9ef56 100644
---- a/documentation/dev-manual/customizing-images.rst
-+++ b/documentation/dev-manual/customizing-images.rst
-@@ -79,15 +79,14 @@ recipe that are enabled with :term:`IMAGE_FEATURES`. =
-The value of
- :term:`EXTRA_IMAGE_FEATURES` is added to :term:`IMAGE_FEATURES` within
- ``meta/conf/bitbake.conf``.
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
+l/classes.rst
+index b93279ff6..d1669ed87 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -3401,6 +3401,14 @@ The variables used by this class are:
+ -  :term:`UBOOT_FITIMAGE_ENABLE`: enable the generation of a U-Boot FIT im=
+age.
+ -  :term:`UBOOT_MKIMAGE_DTCOPTS`: DTC options for U-Boot ``mkimage`` when
+    rebuilding the FIT image containing the kernel.
++-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`: enable the ARM Trusted Firmware=
+ (ATF) image.
++-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`: specifie the path to the =
+ATF image.
++-  :term:`UBOOT_FIT_TEE`: enable the Trusted Execution Environment (TEE) i=
+mage.
++-  :term:`UBOOT_FIT_TEE_IMAGE`: specifie the path to the TEE image.
++-  :term:`UBOOT_FIT_USER_SETTINGS`: add a user-specific snippet to the ITS=
+. Users can
++   include their custom ITS snippet in this variable.
++-  :term:`UBOOT_FIT_CONF_USER_LOADABLES`: adds a user-defined image to the=
+ loadable
++   property of the configuration node. It should be a comma-separated list=
+ of strings.
 =20
--To illustrate how you can use these variables to modify your image,
--consider an example that selects the SSH server. The Yocto Project ships
--with two SSH servers you can use with your images: Dropbear and OpenSSH.
--Dropbear is a minimal SSH server appropriate for resource-constrained
--environments, while OpenSSH is a well-known standard SSH server
--implementation. By default, the ``core-image-sato`` image is configured
--to use Dropbear. The ``core-image-full-cmdline`` and ``core-image-lsb``
--images both include OpenSSH. The ``core-image-minimal`` image does not
--contain an SSH server.
-+To illustrate how you can use these variables to modify your image, cons=
-ider an
-+example that selects the SSH server. The Yocto Project ships with two SS=
-H
-+servers you can use with your images: Dropbear and OpenSSH. Dropbear is =
-a
-+minimal SSH server appropriate for resource-constrained environments, wh=
-ile
-+OpenSSH is a well-known standard SSH server implementation. By default, =
-the
-+``core-image-sato`` image is configured to use Dropbear. The
-+``core-image-full-cmdline`` image includes OpenSSH. The ``core-image-min=
-imal``
-+image does not contain an SSH server.
+ See U-Boot's documentation for details about `verified boot
+ <https://source.denx.de/u-boot/u-boot/-/blob/master/doc/uImage.FIT/verifie=
+d-boot.txt>`__
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
+ual/variables.rst
+index 60984cc8f..dbbaac56d 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -9884,6 +9884,78 @@ system and gives an overview of their function and c=
+ontents.
 =20
- You can customize your image and change these defaults. Edit the
- :term:`IMAGE_FEATURES` variable in your recipe or use the
-diff --git a/documentation/dev-manual/qemu.rst b/documentation/dev-manual=
-/qemu.rst
-index 19f3e40d6..9014d75f4 100644
---- a/documentation/dev-manual/qemu.rst
-+++ b/documentation/dev-manual/qemu.rst
-@@ -280,12 +280,11 @@ present, the toolchain is also automatically used.
-       networking.
+       See the :ref:`ref-classes-uboot-sign` class for details.
 =20
-    -  SSH servers are available in some QEMU images. The ``core-image-sa=
-to``
--      QEMU image has a Dropbear secure shell (SSH) server that runs with
--      the root password disabled. The ``core-image-full-cmdline`` and
--      ``core-image-lsb`` QEMU images have OpenSSH instead of Dropbear.
--      Including these SSH servers allow you to use standard ``ssh`` and
--      ``scp`` commands. The ``core-image-minimal`` QEMU image, however,
--      contains no SSH server.
-+      QEMU image has a Dropbear secure shell (SSH) server that runs with=
- the
-+      root password disabled. The ``core-image-full-cmdline`` QEMU image=
- has
-+      OpenSSH instead of Dropbear. Including these SSH servers allow you=
- to use
-+      standard ``ssh`` and ``scp`` commands. The ``core-image-minimal`` =
-QEMU
-+      image, however, contains no SSH server.
-=20
-    -  You can use a provided, user-space NFS server to boot the QEMU
-       session using a local copy of the root filesystem on the host. In
-diff --git a/documentation/ref-manual/images.rst b/documentation/ref-manu=
-al/images.rst
-index d6bdc92f0..c9d898926 100644
---- a/documentation/ref-manual/images.rst
-+++ b/documentation/ref-manual/images.rst
-@@ -51,27 +51,6 @@ Here is a list of supported recipes:
- -  ``core-image-full-cmdline``: A console-only image with more
-    full-featured Linux system functionality installed.
-=20
---  ``core-image-lsb``: An image that conforms to the Linux Standard Base
--   (LSB) specification. This image requires a distribution configuration
--   that enables LSB compliance (e.g. ``poky-lsb``). If you build
--   ``core-image-lsb`` without that configuration, the image will not be
--   LSB-compliant.
--
---  ``core-image-lsb-dev``: A ``core-image-lsb`` image that is suitable
--   for development work using the host. The image includes headers and
--   libraries you can use in a host development environment. This image
--   requires a distribution configuration that enables LSB compliance
--   (e.g. ``poky-lsb``). If you build ``core-image-lsb-dev`` without that
--   configuration, the image will not be LSB-compliant.
--
---  ``core-image-lsb-sdk``: A ``core-image-lsb`` that includes everything
--   in the cross-toolchain but also includes development headers and
--   libraries to form a complete standalone SDK. This image requires a
--   distribution configuration that enables LSB compliance (e.g.
--   ``poky-lsb``). If you build ``core-image-lsb-sdk`` without that
--   configuration, the image will not be LSB-compliant. This image is
--   suitable for development using the target.
--
- -  ``core-image-minimal``: A small image just capable of allowing a
-    device to boot.
-=20
++   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`
++      ARM Trusted Firmware (ATF) is a reference implementation of secure w=
+orld
++      software for Arm A-Profile architectures (Armv8-A and Armv7-A), incl=
+uding
++      an Exception Level 3 (EL3) Secure Monitor. This variable enables the
++      generation of a U-Boot FIT image with an ATF image.
++
++      Its default value is "0", so set it to "1" to enable this functional=
+ity::
++
++         UBOOT_FIT_ARM_TRUSTED_FIRMWARE =3D "1"
++
++   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`
++      Specifies the path to the ATF image. Its default value is "bl31.bin"
++
++         UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE ?=3D "bl31.bin"
++
++   :term:`UBOOT_FIT_TEE`
++      A Trusted Execution Environment (TEE) is a secure environment for ex=
+ecuting
++      code, ensuring high levels of trust in asset management within the
++      surrounding system. This variable enables the generation of a U-Boot=
+ FIT
++      image with a TEE image.
++
++      Its default value is "0", so set it to "1" to enable this functional=
+ity::
++
++         UBOOT_FIT_TEE =3D "1"
++
++   :term:`UBOOT_FIT_TEE_IMAGE`
++      Specifies the path to the TEE image. Its default value is "tee-raw.b=
+in"::
++
++         UBOOT_FIT_TEE_IMAGE ?=3D "tee-raw.bin"
++
++   :term:`UBOOT_FIT_USER_SETTINGS`
++      Add a user-specific snippet to the ITS. Users can include their cust=
+om ITS
++      snippet in this variable.
++
++      Ex::
++
++         UBOOT_FIT_FWA_ITS =3D '\
++             fwa {\n\
++                 description =3D \"FW A\";\n\
++                 data =3D /incbin/(\"fwa.bin\");\n\
++                 type =3D \"fwtype\";\n\
++                 arch =3D \"fwarch\";\n\
++                 os =3D \"fwos\";\n\
++                 load =3D <0xb2000000>;\n\
++                 entry =3D <0xb2000000>;\n\
++                 compression =3D \"none\";\n\
++             };\n\
++         '
++
++         UBOOT_FIT_USER_SETTINGS =3D "${UBOOT_FIT_FWA_ITS}"
++
++       The generated Image Tree Source (ITS):
++
++         fwa {
++             description =3D "FW A";
++             data =3D /incbin/("fwa.bin");
++             type =3D "fwtype";
++             arch =3D "fwarch";
++             os =3D "fwos";
++             load =3D <0xb2000000>;
++             entry =3D <0xb2000000>;
++             compression =3D "none";
++         };
++
++   :term:`UBOOT_FIT_CONF_USER_LOADABLES`
++      Adds a user-defined image to the loadable property of the configurat=
+ion node.
++      It should be a comma-separated list of strings.
++
++      Ex::
++
++         UBOOT_FIT_CONF_USER_LOADABLES =3D '\"fwa\", \"fwb\"'
++
+    :term:`UBOOT_LOADADDRESS`
+       Specifies the load address for the U-Boot image. During U-Boot image
+       creation, the :term:`UBOOT_LOADADDRESS` variable is passed as a
 --=20
-2.43.0
+2.34.1
 
 
