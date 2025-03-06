@@ -1,183 +1,115 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D5D9C19F32
-	for <webhook@archiver.kernel.org>; Wed,  5 Mar 2025 08:40:51 +0000 (UTC)
-Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.9169.1741164044447213063
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 44C13C282D1
+	for <webhook@archiver.kernel.org>; Thu,  6 Mar 2025 11:11:52 +0000 (UTC)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+ by mx.groups.io with SMTP id smtpd.web11.10468.1741259504359137327
  for <docs@lists.yoctoproject.org>;
- Wed, 05 Mar 2025 00:40:44 -0800
+ Thu, 06 Mar 2025 03:11:44 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=MhcbQ+xu;
- spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4AF45443F0;
-	Wed,  5 Mar 2025 08:40:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741164042;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=rLjHQ7kNT8383LxmC19ryM9ppSSvfQETfeNak1aUzSU=;
-	b=MhcbQ+xuW2KF7659ItQIEvbMfaURlWQT3Orxqw9MqFlO2kzS3gx6gaxrgAuZXWrKJgLRtR
-	VX8P1rlhzM6/JIPHPwo85FcQoGMYj7kuafmQDAQ8h+2xGcJnWC5c2llRo+w1b3o7fqyUoL
-	z366KUO1hSBIf6EgavZBkcFhL917CstMI4C6vNIJrAVKJaBxZah/ACP8Sj+IjqIvWD1eV2
-	5Cj/Nhg++0kGmHhe4NWUMjYM2AGRnIos20qkPCGg+i0pWxGAZXEnsbDVEzR8Xhn4cqvQDC
-	O0IQOnhvyBiwcTkDGMqkmiDQ21UVXe3HqPTzri+WQhtFT62+6YpwEEyu5tDF+g==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Wed, 05 Mar 2025 09:40:18 +0100
-Subject: [PATCH v2] ref-manual/variables: document KMETA* and KCONF_AUDIT*
- variables
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=U0h3V+wM;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.46, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43bd87f7c2eso2917125e9.3
+        for <docs@lists.yoctoproject.org>; Thu, 06 Mar 2025 03:11:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1741259502; x=1741864302; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UjsvzOZUNjx1E4QknaLeHz++p50xmtteXdMqw9FgxNo=;
+        b=U0h3V+wMSAGM3s3Jj89aIhdaVJBsGJROWIL8PZmgIEBXopE7/M1x+fXf3NDm8HZuO+
+         4DRlTe1JJwva3/Er3b0fd3zS7UNezp6V69hNYskRwsxKm6mI6yGJtI9mEobNA/7ZtXH3
+         fI81eBjJpv9vV+yvHsH3+Nhf28XXNWddGirNk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741259502; x=1741864302;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UjsvzOZUNjx1E4QknaLeHz++p50xmtteXdMqw9FgxNo=;
+        b=fYuPh8gf9k8jNNbDtELyTdqhCJfseROc9hUWjtp8Z443I0zG9fjiIxLSwEOPfzDoVI
+         G9klZD/un1pUlbc+7Ye4ld/fEBaDXoEfNmb5iSJOYvMTn6WyxlIdQX4F/mkLG4R33xkr
+         HrEIKlFMGHhqnJkoTtK9VCi8h1QrwroiEvUqVW0hitrG84jDod1WKFdiawYj+n42MGY2
+         RoG/g9NcyXp0j8ym6IirKXXy1pJ7S7ulJi1FuvPrsMDMpP9ryyUHvknglcXhmqlRzBKH
+         Ir/kZnGSKJnnaA1CJnrnGQUaf11+SIKsLaP9YXNQW+RVwFkqJQwDC7VGymEdUWUJw9cH
+         7DmQ==
+X-Gm-Message-State: AOJu0YxRjcVs3rgMXAcqCWV2UTkQ8g+uXwJAfIoeFWDx5ZCThhtUjsGa
+	qgkPTav0usLlIIFovHyKNS5x7aSEaLEgkDLgwlhlAVS4ERFAncPDorI4ykJj5AI=
+X-Gm-Gg: ASbGncumUdO1aA+1wjxRhlzmtTA32Uq0OZtqPF216ce8TWX3NUrybZ/xVvbYTFMvBMy
+	vpur/cTdsI6Ahe9oDJdXrf15ReM76+Lu6xlkk0wzwySrgAd/ikGZvyDNRRx90zJoTxJu37G4yCb
+	btYNQPfpZ3ZB+8bUfxhEEiRcB03gU1adifB1BP87Ra0C0cxWIzc5JVezw344ix3fnNtREQlkWeB
+	mcdztP4qXFPJKS5PPudO9IxscPmhZc4oqIoIFYKfWAYooSqH+naUMLXa+vrJj+M5dkJZuCtg43/
+	LP/+ZAIoHni1fS/SASAk/D2MKeD6N1ZR7UZB2th148LDSv3vGWxWarIiPYc9QdhYoCr56Hb0pWX
+	uzGq34qQinpjv0Meb4HTJsltK00sDBbLF5Q==
+X-Google-Smtp-Source: AGHT+IFLEj8BUBJdOYs204gt3pC6D2qlnCWbQJywM6pngNUlcsMTEwzkk227/gQ07JLe/ysNUlg6sA==
+X-Received: by 2002:a05:6000:2108:b0:391:2ab1:d4c2 with SMTP id ffacd0b85a97d-3912ab1d7cemr1354686f8f.37.1741259502439;
+        Thu, 06 Mar 2025 03:11:42 -0800 (PST)
+Received: from ?IPv6:2001:8b0:aba:5f3c:e869:4c46:3bba:1ea9? ([2001:8b0:aba:5f3c:e869:4c46:3bba:1ea9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c1037bfsm1718499f8f.96.2025.03.06.03.11.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 03:11:41 -0800 (PST)
+Message-ID: <a147420295a67f1db7be369e6ad45b2fb2bb086c.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH v2 0/5] fetch2/github_release_artifact: fetcher
+ for (private) release artifacts
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: lgo@pengutronix.de, bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org, yocto@pengutronix.de
+Date: Thu, 06 Mar 2025 11:11:40 +0000
+In-Reply-To: <20250227090853.1632280-1-l.goehrs@pengutronix.de>
+References: <20250227090853.1632280-1-l.goehrs@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250305-kmeta-audit-vars-v2-1-aa6bb0d514e4@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAPENyGcC/32NTQ6CMBBGr0Jm7ZgyBP9W3sOwKO0gE4WStjYa0
- rtbOYDL95LvfSsE9sIBLtUKnpMEcXMB2lVgRj3fGcUWBlLUKqIWHxNHjfplJWLSPuCJDnowg2I
- +aiizxfMg7y156wqPEqLzn+0h1T/7J5ZqrNE2Z9swtU2v1LV3Lj5l3hs3QZdz/gJigBMysgAAA
- A==
-X-Change-ID: 20250225-kmeta-audit-vars-826afcf0ee7a
-To: docs@lists.yoctoproject.org
-Cc: Bruce Ashfield <bruce.ashfield@gmail.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5135;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Qu6jUCx5I9pTQCzIg1d4ZncLVL5a3LN8mHLOeUQWTeM=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnyA4K3OYSd5fVR0OIIPf+CC0rH1qdkmKlpdIgB
- F5kVMSZWw2JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ8gOCgAKCRDRgEFAKaOo
- Nkm1D/9eHH5W8qcStKnqX7f/FX+Jk6hFe8Vyoic3CivP9D2msqzPU9gHEsXb7mzjAME7r0h3ugb
- V0Brh0mBSER8RbtLWxO5JE9ppjGOYPc1eX7yklnut0Bbw7qzr1Vz9XKue+GLLtshLZMngPgt5N0
- FvJ5B2LfmtXYfVNYa+UvpgoNp2Cv7fNU7sWUmL9c0DVkOpzm3bc3cjBlYh9mTWPg+iWjgb5NPL0
- Dd5UYQW8L71BTnIgsofcX3fLcC534SKrnA0Q/28YUtL3nhxNkOprq5PNgHG7YzPoNpsDeEaFdON
- W74xxq+CCEM60DJZrejWvF/Wa/Dw0StqjdaMyQxOncVt+0jC7zWzRxmOxthvAOpJoLWobJQVbGt
- qeWF0SXFG8j0yje5JsAELqxDK3je+KQtKIcxoq7Xu4YlVP61umkRqZx+aSlYCz3pWAJWC9zvVAi
- qUhKk2Q/APmSmRtgnE9YJIF7B01rTBbhSD3rqCRjeszXzuK5NBdyhp2NdXzd0rEwyftFwbsEMyG
- y/upfl97kqh4PfnZHojd4M8g6xILT90sRsP64oP3oBKT+7mzmzChcF3SvS+H6Xvuaf3i9yYJXZH
- N7Sa4iL4NOZQ8IHi0Eg/frslMnUxEjKZ4WSREXloIGWPuXCOnN/Dn34Ri5OSrx+/Hl3NVUbnpp/
- VedkQcOME096kIQ==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: phishing
-X-GND-Score: 300
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddutdegfeehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecundfrhhhishhhihhnghdqvghnqdhmihhstgculdeftddtmdenucfjughrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefghfetueelgfefvddthffftdfhudeufeelteefteffueegleefleffgeekieegteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhshihmsgholhgpfihhhidrphihnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepsghruhgtvgdrrghshhhfihgvlhgusehgmhgrihhlrdgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhli
- hhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 05 Mar 2025 08:40:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6499
+ <docs@lists.yoctoproject.org>; Thu, 06 Mar 2025 11:11:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6500
 
-Document the variables used to control the outcome of the kernel
-configuration auditing done by the kernel-yocto bbclass.
+On Thu, 2025-02-27 at 10:08 +0100, Leonard G=C3=B6hrs via lists.yoctoprojec=
+t.org wrote:
+> This fetcher enables downloading artifacts attached to GitHub releases
+> in private repositories.
+>=20
+> Authentication is provided using tokens via the `GH_TOKEN` variable
+> or a `token=3D` URI parameter.
+>=20
+> Changes from v1:
+>=20
+> =C2=A0 - Provide examples on how to provide the `GH_TOKEN` more securely =
+than
+> =C2=A0=C2=A0=C2=A0 just hardcoding it in the recipe in the commit message=
+.
+> =C2=A0=C2=A0=C2=A0 E.g. via the `local.conf` or environment variables.
+> =C2=A0 - Indent the code example in the documentation `.rst` using three
+> =C2=A0=C2=A0=C2=A0 spaces instead of two.
+> =C2=A0 - Document the `token=3D` URI parameter along with the `GH_TOKEN`
+> =C2=A0=C2=A0=C2=A0 variable.
+>=20
+> Thanks to Alexander Kanavin and Antonin Godard for their review feedback
+> so far.
 
-[YOCTO #13835]
+I'm torn on this. I am leaning towards merging it however I realised
+there are a few issues. Firstly, it is failing during testing on=20
+Ubuntu 20.04 workers:
 
-Acked-by: Bruce Ashfield <bruce.ashfield@gmail.com>
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
-Changes in v2:
-- Typos and suggestions from Quentin Schulz (thank you!)
-- Link to v1: https://lore.kernel.org/r/20250225-kmeta-audit-vars-v1-1-d39d3e253b00@bootlin.com
----
- documentation/ref-manual/variables.rst | 68 ++++++++++++++++++++++++++++++++++
- 1 file changed, 68 insertions(+)
+https://autobuilder.yoctoproject.org/valkyrie/#/builders/54/builds/1129
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 60984cc8f34cb7529968f7ba45cc918bcccd0710..0e5c8fefaf3b145555dd0d236be32fe6d4ff7179 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4572,6 +4572,60 @@ system and gives an overview of their function and contents.
-       ":ref:`kernel-dev/common:using an "in-tree" \`\`defconfig\`\` file`"
-       section in the Yocto Project Linux Kernel Development Manual.
- 
-+   :term:`KCONF_AUDIT_LEVEL`
-+      When inheriting the :ref:`ref-classes-kernel-yocto` class and when the
-+      :term:`KMETA_AUDIT` variable is set to a non-empty string, the
-+      :term:`KCONF_AUDIT_LEVEL` variable specifies whether to report Kernel
-+      configuration values that are different from the user-specified value. Its
-+      value is a positive integer (default: 1):
-+
-+      -  0: no reporting is done.
-+
-+      -  1: report the problems as warnings and trigger an error if
-+         :term:`KMETA_AUDIT_WERROR` is set.
-+
-+      -  2: if the :ref:`ref-tasks-kernel_configme` has failed to generate a
-+         ``.config`` file, print the content of the ``merge_config_build.log``
-+         file containing the errors, instead of just providing the path to
-+         that file.
-+
-+      For more details see the :ref:`ref-classes-kernel-yocto` class and the
-+      :yocto_git:`symbol_why.py </yocto-kernel-tools/tree/tools/symbol_why.py>`
-+      script in :yocto_git:`yocto-kernel-tools </yocto-kernel-tools>`.
-+
-+   :term:`KCONF_BSP_AUDIT_LEVEL`
-+      When inheriting the :ref:`ref-classes-kernel-yocto` class and when the
-+      :term:`KMETA_AUDIT` variable is set to a non-empty string, the
-+      :term:`KCONF_BSP_AUDIT_LEVEL` variable can be set to report:
-+
-+      #.  User-specified Kernel configurations that did not make it into the final
-+          Kernel configuration.
-+
-+      #.  Configurations defined in multiple input files with differing values.
-+
-+      Its value is a positive integer (default: 0):
-+
-+      -  0: no reporting is done.
-+
-+      -  1: reporting of configuration options that did not make it in the
-+         final configuration is done and is not limited to the current
-+         architecture (``ARCH``) in use.
-+
-+      -  2: reporting of configuration options that did not make it in the
-+         final configuration is done and is strictly limited to the current
-+         architecture (``ARCH``) in use.
-+
-+      -  3: report the problems found when this variable equals 2, and also
-+         report configurations options defined in multiple input files with
-+         differing values.
-+
-+      For value 1, 2 and 3 an error is produced if :term:`KMETA_AUDIT_WERROR`
-+      is set.
-+
-+      For more details see the :ref:`ref-classes-kernel-yocto` class and the
-+      :yocto_git:`symbol_why.py </yocto-kernel-tools/tree/tools/symbol_why.py>`
-+      script in :yocto_git:`yocto-kernel-tools </yocto-kernel-tools>`.
-+
-    :term:`KCONFIG_MODE`
-       When used with the :ref:`ref-classes-kernel-yocto`
-       class, specifies the kernel configuration values to use for options
-@@ -4976,6 +5030,20 @@ system and gives an overview of their function and contents.
-       However, the OpenEmbedded build system understands the machine as
-       "core2-32-intel-common".
- 
-+   :term:`KMETA_AUDIT`
-+      When inheriting the :ref:`ref-classes-kernel-yocto` class, the
-+      :term:`KMETA_AUDIT` variable enables or disables auditing of Linux Kernel
-+      configuration. The default value for this variable is "yes", and auditing
-+      is enabled. Set this variable to an empty string to disable auditing.
-+
-+   :term:`KMETA_AUDIT_WERROR`
-+      When inheriting the :ref:`ref-classes-kernel-yocto` class and when the
-+      :term:`KMETA_AUDIT` and the :term:`KMETA_AUDIT_WERROR` variables are set
-+      to non-empty strings, produce an error if Linux kernel configuration
-+      problems were detected, instead of warnings only. For more details on the
-+      Linux Kernel configuration auditing feature, see :term:`KCONF_AUDIT_LEVEL`
-+      and :term:`KCONF_BSP_AUDIT_LEVEL`.
-+
-    :term:`KTYPE`
-       Defines the kernel type to be used in assembling the configuration.
-       The linux-yocto recipes define "standard", "tiny", and "preempt-rt"
+Secondly, it adds support for putting the tokens in SRC_URI urls. I'm
+not in favour of this since it encourages people to write them in
+recipes where it is all too easy to unintentionally share them. I do
+not think we should enable this.
 
----
-base-commit: 36fb1e9e5099aa0d858d5478530143e9bac39588
-change-id: 20250225-kmeta-audit-vars-826afcf0ee7a
+Finally, the naming of the variable, GH_TOKEN is not in keeping with
+the rest of the codebase. It needs to be prefixed so something like
+BB_FETCH_GHRA_TOKEN which makes it clear it is bitbake, the fetcher and
+the GHRA fetcher.
 
-Best regards,
--- 
-Antonin Godard <antonin.godard@bootlin.com>
+Cheers,
+
+Richard
+
 
 
