@@ -1,306 +1,242 @@
-Return-Path: <jamin_lin@aspeedtech.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CE14C19F32
-	for <webhook@archiver.kernel.org>; Fri,  7 Mar 2025 08:21:57 +0000 (UTC)
-Received: from APC01-SG2-obe.outbound.protection.outlook.com (APC01-SG2-obe.outbound.protection.outlook.com [40.107.215.100])
- by mx.groups.io with SMTP id smtpd.web11.6704.1741335706439567273
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B41FCC19F32
+	for <webhook@archiver.kernel.org>; Fri,  7 Mar 2025 08:37:27 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+ by mx.groups.io with SMTP id smtpd.web10.6943.1741336642758706575
  for <docs@lists.yoctoproject.org>;
- Fri, 07 Mar 2025 00:21:47 -0800
+ Fri, 07 Mar 2025 00:37:23 -0800
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@aspeedtech.com header.s=selector2 header.b=QVolhyS1;
- spf=pass (domain: aspeedtech.com, ip: 40.107.215.100, mailfrom: jamin_lin@aspeedtech.com)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WR36rSs1k59TsqqUpQYpwNCaG5xwV6icDq9ov+57CWFJapoQCNB+2Ddq4FDDlHhByxO6T7u8aMXKXGNdYqFQbI4MSU+eK7MTBo2tOkv3AynTejdverBJgB+oJW8XfFuKPUieBmRrI5PcL0180t1pDyi/TcmsPG5h0RjOPqEojMHmumv2mnjvRMznnK3QNlgcEzyRk5NHRIL7O2bbO9Q7fbFH9U7gf9pFORsFEwuNttD5NMojPysJ05t+ssUVJnm3Kk32V5RtT1AlRbgW7UeT07VTkBSZhhLJRoFAJo9w+4hMWXUDKXIQX7bKjYuOdCnhKQ+WTDdZqO9LRsVqGh6+tQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=1mLHIEuSyqzUuF28nr9ZnUrrwdlkRdeiX+fbSx0POj0=;
- b=CpnxcGTP5wFdNm9xjXz7To7r7ayYOGSPCdAmoL7q9Mzy7MDLICgkC+iJq7ZXgWk02BebHKPCTgIHuPQj1UKBUZ7x2aoTa3ZDRjyPtZYd/bj+TBfin4gOVehB6xDTh9hM1b6ZYkMcFGTZa9jFtl81rLeEgkJ92YCx2ATgYHBn8yOWSq4Si5PegpNVATv//QDWFbsielf+nkJWRvQMsdBDL1G1Qvkqhu30myBuKzKJNYFimfwytS+/7HPtO0w4+pXO66jGpj2qV5HHmMY/FfaJtAEF1Sw2sBF8BlRHI56va41hzA5pvo7+cX5lOWe4CC7HA0tN49rcFGKTkr6WR/NF5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
- header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=1mLHIEuSyqzUuF28nr9ZnUrrwdlkRdeiX+fbSx0POj0=;
- b=QVolhyS1TrwTXGOjFK8piOi+Dp2Wz4/gfWxvByndq+9NB3lApd1kwNZU8z2KbhcOcKLUC2eVirR3BJgA3fYM/d+BLDLEM4MEr4soURAiyABrgsFs6j1Fy0bKeJxFw/mjPB5WfGoVgpxq9bcZTRJHEfwjSk7nyFIMjDkDi0FPp6U/DiYDQF4hpIi3cY6gw4Yz9TRW9vGKqhy/niyX+e/u+hqASsKkTWLfbd2rikCzHYaAHkcxBdBhPGTZ6BTzF/UZ23gUb0HiYt2diSQvio6bB7yqzPeOXzzB2/HeaguSL4VKloArLRoOZzfNsBh1Q1Waena8yNPDQM+/eZjVPuT4lQ==
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
- SI6PR06MB7194.apcprd06.prod.outlook.com (2603:1096:4:252::10) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8511.17; Fri, 7 Mar 2025 08:21:39 +0000
-Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
- ([fe80::705a:352a:7564:8e56%6]) with mapi id 15.20.8511.017; Fri, 7 Mar 2025
- 08:21:37 +0000
-From: Jamin Lin <jamin_lin@aspeedtech.com>
-To: "quentin.schulz@cherry.de" <quentin.schulz@cherry.de>,
-	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>
-CC: Troy Lee <troy_lee@aspeedtech.com>
-Subject: RE: [docs] [PATCH v2] ref-manual: uboot-sign: Add how to enable ATF,
- TEE and User defined snippet ITS for U-Boot FIT image
-Thread-Topic: [docs] [PATCH v2] ref-manual: uboot-sign: Add how to enable ATF,
- TEE and User defined snippet ITS for U-Boot FIT image
-Thread-Index: AQHbjODaGJmt+xBC7EiHy6Dj4i+Q/7NjAICAgARYAbA=
-Date: Fri, 7 Mar 2025 08:21:37 +0000
-Message-ID: 
- <SI2PR06MB5041E142C47DBC40EE3CEB35FCD52@SI2PR06MB5041.apcprd06.prod.outlook.com>
-References: <20250304083842.2828763-1-jamin_lin@aspeedtech.com>
- <2cf86512-efc1-47f3-96aa-0d1e7892a55a@cherry.de>
-In-Reply-To: <2cf86512-efc1-47f3-96aa-0d1e7892a55a@cherry.de>
-Accept-Language: zh-TW, en-US
-Content-Language: zh-TW
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=aspeedtech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|SI6PR06MB7194:EE_
-x-ms-office365-filtering-correlation-id: 6c359fc6-a74b-4e81-51c3-08dd5d51145f
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info: 
- =?utf-8?B?VjFXSWJ5WWhLNWxRVHBVWTBaOVdMZGdEZWh4dkdhYndIcER2Z1B1S0lUeTVt?=
- =?utf-8?B?bXE5ZHR2NTNkYXZhUDdQbmlvajV0dmxvT2hTV1d3ZUEwY1NwYTJvT3YxZEFr?=
- =?utf-8?B?c2RaU2dRQU5BZTNpc09qcFY3YlJSUkpYbmY2NzZweVRsNkpOdVJuY1NaTklV?=
- =?utf-8?B?UEttTXh3Mmg2K05OMkpodE5ram05cUI2ZEZFaWhCQ1VQbFJabnpGdTFzbEFP?=
- =?utf-8?B?TGhUOWMzaFhsRTl2eFdRSmxwNCtVbjI3Q3plOHpvNm5Eczg2QSswRjVUZHBj?=
- =?utf-8?B?a1JNcVBYYStlZGFrUGRsWHpnRG5SeC9Rd2hrWUJnTDVHUm9LdjhRSTgzQ1c0?=
- =?utf-8?B?WStjSVY4ZHZRdDgvWEVEMEQ3ZTRoc05rWnJGWXdOSlVsOEppMkhnZWhtNWg1?=
- =?utf-8?B?ckMvTWo1KzBLdUJieU15RFprRnhORjA0UXNJZHdCN21UbkFZMGdoRUVsT0NZ?=
- =?utf-8?B?aEtIQUtwSzI5OFlTNU9CaTZrOWJnRmxML21kL0IrNUhraVRqSGRnODUxdlFX?=
- =?utf-8?B?TzF3VTJBNUVNRUxmYzRLUDAzVjRrZlNpZ3VpN1E3cGt6OGsxQUZjS1luOCtH?=
- =?utf-8?B?NytGbVpBMFgzSnE4RkRueTlLL2hUM1BiZGh6YzhDVHZaZE1uM1JmS3B4Sm9B?=
- =?utf-8?B?VkxBUk1LVnB3eUFRM2pzMnFEd281Rnc3YlRDVVhaSHNxRzZDOE1FL1RWRHFq?=
- =?utf-8?B?eWI0dmtjUHNFaWhzbi9nMGovanN5YTdHWlhVWDU0RFpITUtKQkpDRnBiT1Jv?=
- =?utf-8?B?RCtFMU11MEQvQUs1ejFRbDE0Uk11QzA1bDZWVjJtcXBhMHNoSnZickFmQUJJ?=
- =?utf-8?B?M3V3aEZBU2Y3RlpoRnhXbURCb0RuMmVTUllzblcxUnNHb0xWNUdjQXhycTB0?=
- =?utf-8?B?MWFKK1hUdVdkQzNMRWs5a2gvcHE0a3E5NnIyb2k4OWVuMElBTUJpZjZvV2NM?=
- =?utf-8?B?LzVrUDFBdXU4M1pWc284R3cyeUNsR2o5QndoVHR3K1FPbDdOZE1XbFlwMVhz?=
- =?utf-8?B?Q1NqcGQ2MTVwVFJDUm4vMmFkYmNpRGJQZ3hBWFpyaDlJMnZBSTcxTUhFUHBa?=
- =?utf-8?B?Uk9ZUUhXSHFIbnV0WGlOeUM2TTAzb0hwNFFvcDMraDhmK1EzbGhub0dsOTR5?=
- =?utf-8?B?eU5WcVFSUEJxMHRHY1FWdVFhSkNjdGV0NW5relRxTlhYZGFENk50UldxUnI5?=
- =?utf-8?B?d2FkZ2pTWmpha21aSG1KNDZJQTN1TDlmcVd4US92RDUvQU41SjJLTWkrUVlt?=
- =?utf-8?B?aDdvbXQxZVlSZzN0MGpyK2dvVk9WZmJ0b21yZklvNnFzUm42aHNrazAwellG?=
- =?utf-8?B?NWFDcUZrd3BJcFRrV2VuOEVHS1NsTDZ3dEJWOEdJVmtkR3B0amw4QTJTQytp?=
- =?utf-8?B?TW0wVlRvZFJXMjlLbGZickpNOUFOVEd6UmlFSDlqM1RqcDI5NUIzMjA0ejBW?=
- =?utf-8?B?SkJiYjJKZjNKanZUV2N5SUVkMWZUZzRxSnUwa09ncWY0UktaeVNkZFg5RkV2?=
- =?utf-8?B?TFR6aUxjcEE1QlQzVmRENEMwTkhGMkFKOXN5S1BCbG5pVDVwcCtXSmZXVkp6?=
- =?utf-8?B?aVlIUmlqajVtMXA0NEs0ZFVNNWl6S1gwN1BZWVphUUptQTJQNis0V01PaG5s?=
- =?utf-8?B?R0gyRzNPUjB5NHo2RUp2ZHNnMWdrSVMvNU5XcmthRDhQYUFubXBFN01HSW9K?=
- =?utf-8?B?MXJNWTVsSkFodkgzOXZIaThNUlBLaVgzMGhMNVdaOW9udE9pYzF2QWxnQUh2?=
- =?utf-8?B?YnNpM3FnbzhhSURpRTVZazFxK1FrT0ovL2w3UTFZZTdPUGhUZXZMM25SMnJS?=
- =?utf-8?B?QWl2TVVMSzJSRW96aFhjUEoyaEJSemYxQU1wMGxyaFhtTlBkYUZmTFB5Um90?=
- =?utf-8?Q?af8MPX8dpNuGv?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:zh-tw;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5041.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?utf-8?B?SVcyYTh6bi9JL1Q1czk0WnZaTEJDNlBpWUdPUGVISEYzd3lTL1cxQ2UzSjRn?=
- =?utf-8?B?VjF0L3FCUG5jM1VqYVF0c2xnRHpNUFpnOS9lZEEwU0JCLzBYR2J4bGV4eWIr?=
- =?utf-8?B?aFp3K05nenU0Y0RVdWRRaE53UXpneWxSUm1FTWhZeEZ3NnBMRkR6T2hUSjZW?=
- =?utf-8?B?TkVRbFNMTHNrZDFqdGdFUHVyUlNmVGlwMURNdnhuNWRSN09xVFBBeFhxeHE4?=
- =?utf-8?B?cmFvRkNWRldzM2hvTmtuSnMySjFXdkRNUWxJUmhBTWFucGFFdm5vZ1E4dzVO?=
- =?utf-8?B?TDhlaWRhSlZVdUR0ZWNhcHlleU5McGpaajZTaXF0dU80MVk5SDJMdCthNmo5?=
- =?utf-8?B?bU1ZdElXSmJVMSs0ZXpuUG54dzcwa01yY1pxdEVOSFVLNkxoZ1pCc0c3S0V0?=
- =?utf-8?B?NnlKdlpqSkV2VjJCOUZZcGcrSWdZL2lsM3B4S3RyTHJIdk9tYlMrVTZQTmNI?=
- =?utf-8?B?ZW1RSDdJTmJKU2N1bERlVXFRVEdCZ0IzZ0Npb2I4TEhUUGZGWldhQkFJV3Rv?=
- =?utf-8?B?c05DaHIrYmNRTk1XMStDcGlWWWRBbGFtUTQwWG9wa2doOVBnRnViT2VtcjIx?=
- =?utf-8?B?eGF4TFFhNTd3c3VhaWlKbDRGTG1yQ0MxOW05UzhYWXBXSjVLc0dPUThEVWcx?=
- =?utf-8?B?VTRtOC9jRWtEeUxaUHZ5cThxZ1E4andzRUJQeDIvdWlOemVEV2dpQU1DdWJM?=
- =?utf-8?B?dTRnaTRWaTFuWmdmRTJibHZnTGJSa1J5NC9oN0kvWHE5cndOcGVTandCQnJM?=
- =?utf-8?B?dWJQUWFxcDloTW5tZHpzb1kxdXBqRnJOZUFwMUdQRTBxZ1czYis2bStic0JU?=
- =?utf-8?B?RnR6VTgydkdCaE13eW0rVG5aTFhnMGFPUzdSb0ladE9rSU5wajZNYUxVQlV2?=
- =?utf-8?B?YWJqWlFHSjFTcmJXL2lVNVF1VjRxR28ycnJyc1QyM0F5RXIvTFZmVklkNVJW?=
- =?utf-8?B?WWZGcDc3dUpqcVVxYW50TzVZNzAxeDlLd21ydDRlUFhuNFBQa2ZINzVwcnJv?=
- =?utf-8?B?eUJIN3JjWjNMMUYvSDVzQVJMeGpiQTJSRlhNMTY4VTgyaUZGYUtQcDMxSEVO?=
- =?utf-8?B?Mks2djlUSlVPbjY0dU5SYmtNWEtYbEZ3ZkNOdTdTT3VFSzBhYWtaNFcreWRO?=
- =?utf-8?B?dytyakVnV0tVS2hZU1dkd3pZZERZT1dobjUvenozZWs4SElsSnZmZ2pPOWVv?=
- =?utf-8?B?cVArUnArYUVUR0Q0RTMyNHJXalBnR1E0cHJkcnhtNUREcE9HUWNUUWdLeENN?=
- =?utf-8?B?eFhzVmJCUVdIaStJT29kTllVT1VySlZtTC85VGM5YTBWUzJhVmN3VzV6L043?=
- =?utf-8?B?K0hpbjBpQlJPOFVaeUdNa2xKM1dQald3eVlUOHpDcEU5TFUrYWtSZm1JaVRB?=
- =?utf-8?B?aURBMiswOUJwVk95b0ovNUhYT3VoTDIwdDNGV0dsQkNFQmFKS2xSbEVSN1VB?=
- =?utf-8?B?MmV5ZkhCRmNoY3V0VTh6MkpiSHorbHlRa0JtcDMwOWpMdVZXSi8wY2NhdzZv?=
- =?utf-8?B?Vm16N2lVY0loZys0ck52WkQwRTB2RC85SktpaVZDb0ZhRDdOeDgzcEU5cEtO?=
- =?utf-8?B?QXQ3cjE0N0tZcWRiQ1ZHdGRmbkdXYkplUGFxamFwR3NCN2crV1B5QkpQVmho?=
- =?utf-8?B?R3NMRUJLcVpUT0NlSldWaXI2NnRlY2I5SzJlWUN2UmwyYlRXcXFaLzE2K0x4?=
- =?utf-8?B?RlRvUnlqRWRSbjhZT0ZPZmp3SHhhWllpblhtOW9YMndkUkxOK3M0QnlTMnRL?=
- =?utf-8?B?OStJSWN5VEluNS91NDRzWFlGdUp4cEo2ZzlIemFsd3d3VkR6emV3SlZoeFFy?=
- =?utf-8?B?d2d1TDR0THplZ3ZOZHBXaHFVZ3lySUNBZ3I0MklrU0xGblFRVi9jMUdlODVV?=
- =?utf-8?B?OFFya0xkTmhtQTR5bUdFTlRKS3NBeUd5NVVpa1JwN294RlczK2l0TDhjd0x6?=
- =?utf-8?B?U0VIdzN4TS9ibHFNcVdxTDR2ZERZdEtvV3hjYXB5ZjJjRzVEM0pxa1NXTTVv?=
- =?utf-8?B?S1dldW1ONzhWbUFZTEQvc3BiY1NOcnVDUGJ4dVdCTTltQ2diUEp6MzF1THhz?=
- =?utf-8?B?NjdmYkFuSlFvRldHQ0JwZzU1d3BDUzJHUnBoUjR3Z2V5bGRvSlZ0bzFqMGpw?=
- =?utf-8?Q?X4xaenFLETENjL6R+qWKpiFCm?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+ dkim=pass header.i=@intel.com header.s=Intel header.b=HXvXVcdR;
+ spf=pass (domain: intel.com, ip: 198.175.65.14, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741336643; x=1772872643;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Ilw4eMU1gevYLBiuNHIyT4iCn+afcPjWP00q4WpVN2Q=;
+  b=HXvXVcdRCwARQCbCQom6CzrARAdv1coc0qjN686IJ2QhosHVLUhteAoa
+   S67vT/eTwpc9QS/aX4tc/O404h7hj4ML0KVlZ4WYpbzlVc8wCaiGlyota
+   HQzAPZ/cj6YFKnEDq0mTnP7vOqhDYLANJwT6YwtyZoDkWXrtp+x97D8Ve
+   UVvdGbq7KHfTplNGcvnUpeMV7+r7pSUnW2Vk0Lz650LFCOwV5CYuIXcD0
+   sx5zgX52hJh8bFm+BinF2a2RPLSHItb4Rf1EZ0pvvJk1VgCa91sEq8gxV
+   BJGAEFxPnyAQ6q+6IM95I/tIru/KeWBMFBavP5ng3bXsVwG5b4qPUaxCW
+   A==;
+X-CSE-ConnectionGUID: wcF5eKQLREuJWQfP/o5Jug==
+X-CSE-MsgGUID: /Qq6qUEKTrqqFGiTtV29LQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11365"; a="46157032"
+X-IronPort-AV: E=Sophos;i="6.14,228,1736841600"; 
+   d="scan'208";a="46157032"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Mar 2025 00:37:22 -0800
+X-CSE-ConnectionGUID: 7OJFo97eSHerbYgeARnIIg==
+X-CSE-MsgGUID: uhKnhcQ1T6OLabiIrTE8iw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,228,1736841600"; 
+   d="scan'208";a="142496569"
+Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
+  by fmviesa002.fm.intel.com with ESMTP; 07 Mar 2025 00:37:21 -0800
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 5.1.3
+Date: Fri,  7 Mar 2025 16:36:22 +0800
+Message-Id: <20250307083622.3220786-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-X-OriginatorOrg: aspeedtech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6c359fc6-a74b-4e81-51c3-08dd5d51145f
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2025 08:21:37.1633
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: b1+fdOuV9XaDWoKWZQ72mQ2/kqFZA+kYtAxH4zg80laL/KQdSFdWAWQz8TYEUG9OGnKf+srK6M0w6PH1Qgo41Kgr4x6Op5odon3AgDHLD1E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SI6PR06MB7194
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 07 Mar 2025 08:21:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6504
+ <docs@lists.yoctoproject.org>; Fri, 07 Mar 2025 08:37:27 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6505
 
-SGkgUXVlbnRpbg0KDQo+IA0KPiBIaSBKYW1pbiwNCj4gDQo+IE9uIDMvNC8yNSA5OjM4IEFNLCBK
-YW1pbiBMaW4gdmlhIGxpc3RzLnlvY3RvcHJvamVjdC5vcmcgd3JvdGU6DQo+ID4gQWRkIGhvdyB0
-byBlbmFibGUgQVRGLCBURUUgYW5kIFVzZXIgZGVmaW5lZCBJVFMgZm9yIFUtQm9vdCBGSVQgaW1h
-Z2UNCj4gZ2VuZXJhdGlvbi4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEphbWluIExpbiA8amFt
-aW5fbGluQGFzcGVlZHRlY2guY29tPg0KPiA+IC0tLQ0KPiA+ICAgZG9jdW1lbnRhdGlvbi9yZWYt
-bWFudWFsL2NsYXNzZXMucnN0ICAgfCAgOCArKysNCj4gPiAgIGRvY3VtZW50YXRpb24vcmVmLW1h
-bnVhbC92YXJpYWJsZXMucnN0IHwgNzINCj4gKysrKysrKysrKysrKysrKysrKysrKysrKysNCj4g
-PiAgIDIgZmlsZXMgY2hhbmdlZCwgODAgaW5zZXJ0aW9ucygrKQ0KPiA+DQo+ID4gZGlmZiAtLWdp
-dCBhL2RvY3VtZW50YXRpb24vcmVmLW1hbnVhbC9jbGFzc2VzLnJzdA0KPiA+IGIvZG9jdW1lbnRh
-dGlvbi9yZWYtbWFudWFsL2NsYXNzZXMucnN0DQo+ID4gaW5kZXggYjkzMjc5ZmY2Li5kMTY2OWVk
-ODcgMTAwNjQ0DQo+ID4gLS0tIGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL2NsYXNzZXMucnN0
-DQo+ID4gKysrIGIvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL2NsYXNzZXMucnN0DQo+ID4gQEAg
-LTM0MDEsNiArMzQwMSwxNCBAQCBUaGUgdmFyaWFibGVzIHVzZWQgYnkgdGhpcyBjbGFzcyBhcmU6
-DQo+ID4gICAtICA6dGVybTpgVUJPT1RfRklUSU1BR0VfRU5BQkxFYDogZW5hYmxlIHRoZSBnZW5l
-cmF0aW9uIG9mIGEgVS1Cb290DQo+IEZJVCBpbWFnZS4NCj4gPiAgIC0gIDp0ZXJtOmBVQk9PVF9N
-S0lNQUdFX0RUQ09QVFNgOiBEVEMgb3B0aW9ucyBmb3IgVS1Cb290DQo+IGBgbWtpbWFnZWBgIHdo
-ZW4NCj4gPiAgICAgIHJlYnVpbGRpbmcgdGhlIEZJVCBpbWFnZSBjb250YWluaW5nIHRoZSBrZXJu
-ZWwuDQo+ID4gKy0gIDp0ZXJtOmBVQk9PVF9GSVRfQVJNX1RSVVNURURfRklSTVdBUkVgOiBlbmFi
-bGUgdGhlIEFSTQ0KPiBUcnVzdGVkIEZpcm13YXJlIChBVEYpIGltYWdlLg0KPiANCj4gSSB3b3Vs
-ZCByYXRoZXIgc3VnZ2VzdDoNCj4gDQo+IGluY2x1ZGUgdGhlIEFSTSBUcnVzdGVkIEZpcm13YXJl
-IChBVEYpIGltYWdlIGluIHRoZSBVLUJvb3QgRklUIGltYWdlLg0KPiANCj4gRnVubmlseSBlbm91
-Z2ggQVRGIGlzIHRoZSBvbGQgbmFtZSwgaXQgc2hvdWxkIG5vdyBiZSBjYWxsZWQgVHJ1c3RlZA0K
-PiBGaXJtd2FyZS1BLCBzaG9ydGVuZWQgdG8gVEYtQS4NCj4gaHR0cHM6Ly90cnVzdGVkZmlybXdh
-cmUtYS5yZWFkdGhlZG9jcy5pby9lbi9sYXRlc3QvaW5kZXguaHRtbA0KPiANCj4gPiArLSAgOnRl
-cm06YFVCT09UX0ZJVF9BUk1fVFJVU1RFRF9GSVJNV0FSRV9JTUFHRWA6IHNwZWNpZmllIHRoZQ0K
-PiBwYXRoIHRvIHRoZSBBVEYgaW1hZ2UuDQo+IA0KPiBzL3NwZWNpZmllL3NwZWNpZmllcy8NCj4g
-DQo+IFBsZWFzZSBhbHNvIHJlaXRlcmF0ZSB3aGF0IEFURiBzdGFuZHMgZm9yIChBUk0gVHJ1c3Rl
-ZCBGaXJtd2FyZSkgYW5kL29yIHVzZQ0KPiB0aGUgbmV3IG5hbWUgYXMgd2VsbC4gSSB0aGluayBp
-dCdzIGEgZ29vZCBpZGVhIHRvIHRyeSB0byBub3QgdXNlIG9ubHkNCj4gYWJicmV2aWF0aW9ucy4N
-Cj4gDQo+ID4gKy0gIDp0ZXJtOmBVQk9PVF9GSVRfVEVFYDogZW5hYmxlIHRoZSBUcnVzdGVkIEV4
-ZWN1dGlvbiBFbnZpcm9ubWVudCAoVEVFKQ0KPiBpbWFnZS4NCj4gDQo+IEkgd291bGQgcmF0aGVy
-IHN1Z2dlc3Q6DQo+IA0KPiBpbmNsdWRlIHRoZSBUcnVzdGVkIEV4ZWN1dGlvbiBFbnZpcm9ubWVu
-dCAoVEVFKSBpbWFnZSBpbiB0aGUgVS1Cb290IEZJVA0KPiBpbWFnZS4NCj4gDQo+ID4gKy0gIDp0
-ZXJtOmBVQk9PVF9GSVRfVEVFX0lNQUdFYDogc3BlY2lmaWUgdGhlIHBhdGggdG8gdGhlIFRFRSBp
-bWFnZS4NCj4gDQo+IHMvc3BlY2lmaWUvc3BlY2lmaWVzLw0KPiANCj4gUGxlYXNlIGFsc28gcmVp
-dGVyYXRlIHdoYXQgVEVFIHN0YW5kcyBmb3IgKFRlZSBFeGVjdXRpb24gRW52aXJvbm1lbnQpLiBJ
-IHRoaW5rDQo+IGl0J3MgYSBnb29kIGlkZWEgdG8gdHJ5IHRvIG5vdCB1c2Ugb25seSBhYmJyZXZp
-YXRpb25zLg0KPiANCj4gDQo+ID4gKy0gIDp0ZXJtOmBVQk9PVF9GSVRfVVNFUl9TRVRUSU5HU2A6
-IGFkZCBhIHVzZXItc3BlY2lmaWMgc25pcHBldCB0byB0aGUNCj4gSVRTLiBVc2VycyBjYW4NCj4g
-PiArICAgaW5jbHVkZSB0aGVpciBjdXN0b20gSVRTIHNuaXBwZXQgaW4gdGhpcyB2YXJpYWJsZS4N
-Cj4gDQo+IHMvYWRkL2FkZHMvDQo+IA0KPiBJZiBJJ20gbm90IG1pc3Rha2VuLCB0aGlzIGlzIHRv
-IGJlIGluc2VydGVkIGluIHRoZSAvaW1hZ2VzIG5vZGUsIGJlZm9yZQ0KPiB0aGUgL2NvbmZpZ3Vy
-YXRpb25zIG5vZGUuDQo+IA0KPiA+ICstICA6dGVybTpgVUJPT1RfRklUX0NPTkZfVVNFUl9MT0FE
-QUJMRVNgOiBhZGRzIGEgdXNlci1kZWZpbmVkDQo+IGltYWdlIHRvIHRoZSBsb2FkYWJsZQ0KPiAN
-Cj4gcy9hIHVzZXItZGVmaW5lZCBpbWFnZS9vbmUgb3IgbW9yZSB1c2VyLWRlZmluZWQgaW1hZ2Vz
-Lw0KPiANCj4gcy9sb2FkYWJsZS9sb2FkYWJsZXMvDQo+IA0KPiA+ICsgICBwcm9wZXJ0eSBvZiB0
-aGUgY29uZmlndXJhdGlvbiBub2RlLiBJdCBzaG91bGQgYmUgYSBjb21tYS1zZXBhcmF0ZWQgbGlz
-dA0KPiBvZiBzdHJpbmdzLg0KPiA+DQo+IA0KPiBJIGJlbGlldmUgdGhlIHN0cmluZ3Mgc2hvdWxk
-IGJlIHN1cnJvdW5kZWQgZWFjaCBieSBxdW90ZXMgYXMgd2VsbD8NCj4gDQo+ID4gICBTZWUgVS1C
-b290J3MgZG9jdW1lbnRhdGlvbiBmb3IgZGV0YWlscyBhYm91dCBgdmVyaWZpZWQgYm9vdA0KPiA+
-DQo+IDxodHRwczovL3NvdXJjZS5kZW54LmRlL3UtYm9vdC91LWJvb3QvLS9ibG9iL21hc3Rlci9k
-b2MvdUltYWdlLkZJVC92ZXJpZmllZC0NCj4gYm9vdC50eHQ+YF9fDQo+ID4gZGlmZiAtLWdpdCBh
-L2RvY3VtZW50YXRpb24vcmVmLW1hbnVhbC92YXJpYWJsZXMucnN0DQo+IGIvZG9jdW1lbnRhdGlv
-bi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QNCj4gPiBpbmRleCA2MDk4NGNjOGYuLmRiYmFhYzU2
-ZCAxMDA2NDQNCj4gPiAtLS0gYS9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvdmFyaWFibGVzLnJz
-dA0KPiA+ICsrKyBiL2RvY3VtZW50YXRpb24vcmVmLW1hbnVhbC92YXJpYWJsZXMucnN0DQo+ID4g
-QEAgLTk4ODQsNiArOTg4NCw3OCBAQCBzeXN0ZW0gYW5kIGdpdmVzIGFuIG92ZXJ2aWV3IG9mIHRo
-ZWlyIGZ1bmN0aW9uDQo+IGFuZCBjb250ZW50cy4NCj4gPg0KPiA+ICAgICAgICAgU2VlIHRoZSA6
-cmVmOmByZWYtY2xhc3Nlcy11Ym9vdC1zaWduYCBjbGFzcyBmb3IgZGV0YWlscy4NCj4gPg0KPiA+
-ICsgICA6dGVybTpgVUJPT1RfRklUX0FSTV9UUlVTVEVEX0ZJUk1XQVJFYA0KPiANCj4gUGxlYXNl
-IG9yZGVyIHRoaXMgYWxwaGFiZXRpY2FsbHksIHNvIGJlZm9yZSBVQk9PVF9GSVRfREVTQy4NCj4g
-DQo+ID4gKyAgICAgIEFSTSBUcnVzdGVkIEZpcm13YXJlIChBVEYpIGlzIGEgcmVmZXJlbmNlIGlt
-cGxlbWVudGF0aW9uIG9mDQo+IHNlY3VyZSB3b3JsZA0KPiANCj4gSSB3b3VsZCByZWNvbW1lbmQg
-YWxzbyBtZW50aW9uaW5nIHRoZSBuZXcgbmFtZSAoVHJ1c3RlZCBGaXJtd2FyZS1BIGFrYQ0KPiBU
-Ri1BKS4NCj4gDQo+IEFkZGl0aW9uYWxseSwgcHJvdmlkZSBhIGxpbmsgdG8gdGhlIHByb2plY3Qs
-IGUuZy4NCj4gaHR0cHM6Ly93d3cudHJ1c3RlZGZpcm13YXJlLm9yZy9wcm9qZWN0cy90Zi1hDQo+
-IA0KPiA+ICsgICAgICBzb2Z0d2FyZSBmb3IgQXJtIEEtUHJvZmlsZSBhcmNoaXRlY3R1cmVzIChB
-cm12OC1BIGFuZCBBcm12Ny1BKSwNCj4gaW5jbHVkaW5nDQo+ID4gKyAgICAgIGFuIEV4Y2VwdGlv
-biBMZXZlbCAzIChFTDMpIFNlY3VyZSBNb25pdG9yLiBUaGlzIHZhcmlhYmxlIGVuYWJsZXMgdGhl
-DQo+ID4gKyAgICAgIGdlbmVyYXRpb24gb2YgYSBVLUJvb3QgRklUIGltYWdlIHdpdGggYW4gQVRG
-IGltYWdlLg0KPiA+ICsNCj4gPiArICAgICAgSXRzIGRlZmF1bHQgdmFsdWUgaXMgIjAiLCBzbyBz
-ZXQgaXQgdG8gIjEiIHRvIGVuYWJsZSB0aGlzIGZ1bmN0aW9uYWxpdHk6Og0KPiA+ICsNCj4gPiAr
-ICAgICAgICAgVUJPT1RfRklUX0FSTV9UUlVTVEVEX0ZJUk1XQVJFID0gIjEiDQo+ID4gKw0KPiA+
-ICsgICA6dGVybTpgVUJPT1RfRklUX0FSTV9UUlVTVEVEX0ZJUk1XQVJFX0lNQUdFYA0KPiA+ICsg
-ICAgICBTcGVjaWZpZXMgdGhlIHBhdGggdG8gdGhlIEFURiBpbWFnZS4gSXRzIGRlZmF1bHQgdmFs
-dWUgaXMgImJsMzEuYmluIg0KPiA+ICsNCj4gDQo+IE1pc3NpbmcgdGhlIGRvdWJsZSBjb2xvbiBo
-ZXJlIHRvIG1ha2UgdGhlIGxpbmUgYmVsb3cgYSBjb2RlLWJsb2NrLg0KPiANCj4gUGxlYXNlIGFs
-c28gcmVpdGVyYXRlIHdoYXQgQVRGIHN0YW5kcyBmb3IgYW5kIHByb3ZpZGUgdGhlIG5ldyBuYW1l
-ICh3aXRoDQo+IGl0cyBhYmJyZXZpYXRpb24gYXMgd2VsbCkuDQo+IA0KPiA+ICsgICAgICAgICBV
-Qk9PVF9GSVRfQVJNX1RSVVNURURfRklSTVdBUkVfSU1BR0UgPz0gImJsMzEuYmluIg0KPiA+ICsN
-Cj4gPiArICAgOnRlcm06YFVCT09UX0ZJVF9URUVgDQo+IA0KPiBQbGVhc2Ugb3JkZXIgdGhpcyBh
-bHBoYWJldGljYWxseSwgc28gYmVmb3JlIFVCT09UX0ZJVElNQUdFX0VOQUJMRS4NCj4gDQo+ID4g
-KyAgICAgIEEgVHJ1c3RlZCBFeGVjdXRpb24gRW52aXJvbm1lbnQgKFRFRSkgaXMgYSBzZWN1cmUg
-ZW52aXJvbm1lbnQgZm9yDQo+IGV4ZWN1dGluZw0KPiA+ICsgICAgICBjb2RlLCBlbnN1cmluZyBo
-aWdoIGxldmVscyBvZiB0cnVzdCBpbiBhc3NldCBtYW5hZ2VtZW50IHdpdGhpbiB0aGUNCj4gPiAr
-ICAgICAgc3Vycm91bmRpbmcgc3lzdGVtLiBUaGlzIHZhcmlhYmxlIGVuYWJsZXMgdGhlIGdlbmVy
-YXRpb24gb2YgYQ0KPiBVLUJvb3QgRklUDQo+ID4gKyAgICAgIGltYWdlIHdpdGggYSBURUUgaW1h
-Z2UuDQo+ID4gKw0KPiA+ICsgICAgICBJdHMgZGVmYXVsdCB2YWx1ZSBpcyAiMCIsIHNvIHNldCBp
-dCB0byAiMSIgdG8gZW5hYmxlIHRoaXMgZnVuY3Rpb25hbGl0eTo6DQo+ID4gKw0KPiA+ICsgICAg
-ICAgICBVQk9PVF9GSVRfVEVFID0gIjEiDQo+ID4gKw0KPiA+ICsgICA6dGVybTpgVUJPT1RfRklU
-X1RFRV9JTUFHRWANCj4gPiArICAgICAgU3BlY2lmaWVzIHRoZSBwYXRoIHRvIHRoZSBURUUgaW1h
-Z2UuIEl0cyBkZWZhdWx0IHZhbHVlIGlzDQo+ICJ0ZWUtcmF3LmJpbiI6Og0KPiANCj4gUGxlYXNl
-IHJlaXRlcmF0ZSB3aGF0IFRFRSBzdGFuZHMgZm9yLg0KPiANCj4gPiArDQo+ID4gKyAgICAgICAg
-IFVCT09UX0ZJVF9URUVfSU1BR0UgPz0gInRlZS1yYXcuYmluIg0KPiA+ICsNCj4gPiArICAgOnRl
-cm06YFVCT09UX0ZJVF9VU0VSX1NFVFRJTkdTYA0KPiA+ICsgICAgICBBZGQgYSB1c2VyLXNwZWNp
-ZmljIHNuaXBwZXQgdG8gdGhlIElUUy4gVXNlcnMgY2FuIGluY2x1ZGUgdGhlaXINCj4gY3VzdG9t
-IElUUw0KPiANCj4gUGxlYXNlIG1lbnRpb24gaXQncyBmb3IgVS1Cb290IElUUyBhbmQgc3BlY2lm
-aWNhbGx5IHRvIGFkZCB0byB0aGUNCj4gL2ltYWdlcyBub2RlLg0KPiANCj4gUGxlYXNlIHNwZWNp
-Znkgd2hhdCBJVFMgc3RhbmRzIGZvci4NCj4gDQo+IFlvdSBjb3VsZCBhbHNvIHByb3ZpZGUgYSBs
-aW5rIHRvIHRoZSBzcGVjcywgYy5mLg0KPiBodHRwczovL2ZpdHNwZWMub3Nmdy5mb3VuZGF0aW9u
-Lw0KPiANCj4gPiArICAgICAgc25pcHBldCBpbiB0aGlzIHZhcmlhYmxlLg0KPiA+ICsNCj4gPiAr
-ICAgICAgRXg6Og0KPiANCj4gcy9zbmlwcGV0IGluIHRoaXMgdmFyaWFibGUuL3NuaXBwZXQgaW4g
-dGhpcyB2YXJpYWJsZSwgZS5nLjo6Lw0KPiANCj4gPiArDQo+ID4gKyAgICAgICAgIFVCT09UX0ZJ
-VF9GV0FfSVRTID0gJ1wNCj4gPiArICAgICAgICAgICAgIGZ3YSB7XG5cDQo+ID4gKyAgICAgICAg
-ICAgICAgICAgZGVzY3JpcHRpb24gPSBcIkZXIEFcIjtcblwNCj4gPiArICAgICAgICAgICAgICAg
-ICBkYXRhID0gL2luY2Jpbi8oXCJmd2EuYmluXCIpO1xuXA0KPiA+ICsgICAgICAgICAgICAgICAg
-IHR5cGUgPSBcImZ3dHlwZVwiO1xuXA0KPiA+ICsgICAgICAgICAgICAgICAgIGFyY2ggPSBcImZ3
-YXJjaFwiO1xuXA0KPiA+ICsgICAgICAgICAgICAgICAgIG9zID0gXCJmd29zXCI7XG5cDQo+ID4g
-KyAgICAgICAgICAgICAgICAgbG9hZCA9IDwweGIyMDAwMDAwPjtcblwNCj4gPiArICAgICAgICAg
-ICAgICAgICBlbnRyeSA9IDwweGIyMDAwMDAwPjtcblwNCj4gPiArICAgICAgICAgICAgICAgICBj
-b21wcmVzc2lvbiA9IFwibm9uZVwiO1xuXA0KPiA+ICsgICAgICAgICAgICAgfTtcblwNCj4gPiAr
-ICAgICAgICAgJw0KPiA+ICsNCj4gDQo+IHF1ZXN0aW9uOiBhcmUgdGhlIFxuIG5lY2Vzc2FyeT8g
-SWYgc28sIHdlIHNob3VsZCBkb2N1bWVudCBpdCB0aGF0DQo+IG5ld2xpbmVzIGFyZSBzdHJpcHBl
-ZCBhbmQgaWYgdGhleSBuZWVkIHRvIGJlIGFkZGVkLCB0aGV5IG5lZWQgdG8gYmUNCj4gZXhwbGlj
-aXRseSBhZGRlZCwgdmlhIFxuLg0KPiANCj4gPiArICAgICAgICAgVUJPT1RfRklUX1VTRVJfU0VU
-VElOR1MgPSAiJHtVQk9PVF9GSVRfRldBX0lUU30iDQo+ID4gKw0KPiA+ICsgICAgICAgVGhlIGdl
-bmVyYXRlZCBJbWFnZSBUcmVlIFNvdXJjZSAoSVRTKToNCj4gDQo+IE1pc3Npbmcgc2Vjb25kIGNv
-bG9uIHRvIG1ha2UgdGhlIGJlbG93IGEgY29kZSBibG9jay4NCj4gDQo+ID4gKw0KPiA+ICsgICAg
-ICAgICBmd2Egew0KPiA+ICsgICAgICAgICAgICAgZGVzY3JpcHRpb24gPSAiRlcgQSI7DQo+ID4g
-KyAgICAgICAgICAgICBkYXRhID0gL2luY2Jpbi8oImZ3YS5iaW4iKTsNCj4gPiArICAgICAgICAg
-ICAgIHR5cGUgPSAiZnd0eXBlIjsNCj4gPiArICAgICAgICAgICAgIGFyY2ggPSAiZndhcmNoIjsN
-Cj4gPiArICAgICAgICAgICAgIG9zID0gImZ3b3MiOw0KPiA+ICsgICAgICAgICAgICAgbG9hZCA9
-IDwweGIyMDAwMDAwPjsNCj4gPiArICAgICAgICAgICAgIGVudHJ5ID0gPDB4YjIwMDAwMDA+Ow0K
-PiA+ICsgICAgICAgICAgICAgY29tcHJlc3Npb24gPSAibm9uZSI7DQo+ID4gKyAgICAgICAgIH07
-DQo+ID4gKw0KPiANCj4gVGhpcyBpcyBub3QgcHJvcGVybHkgYWxpZ25lZC4gSXQgc2hvdWxkIGJl
-IHRocmVlIHdoaXRlc3BhY2VzIGNvbXBhcmVkIHRvDQo+IHRoZSBwYXJhZ3JhcGggaXQncyByYXR0
-YWNoZWQgdG8gKGkuZS4gd2hlcmUgVCBjaGFyYWN0ZXIgaW4gIlRoZQ0KPiBnZW5lcmF0ZWQgSW1h
-Z2UgVHJlZSBTb3VyY2UiIGlzKS4NCj4gDQo+IEkgYW0gbm90IGVudGlyZWx5IHN1cmUgd2hhdCBz
-aG91bGQgYmUgdW5kZXJzdG9vZCBmcm9tIHRoaXMgZXhhbXBsZQ0KPiB0aG91Z2g/IE1heWJlIHBy
-b3ZpZGUgYSBmdWxsIGR1bW15IElUUyB3aXRob3V0IHRoaXMgdmFyaWFibGUgc2V0IGFuZA0KPiB0
-aGVuIHdpdGggdGhlIHZhcmlhYmxlIHNldCBhbmQgc2hvdyB0aGUgY2hhbmdlcz8NCj4gDQo+ID4g
-KyAgIDp0ZXJtOmBVQk9PVF9GSVRfQ09ORl9VU0VSX0xPQURBQkxFU2ANCj4gDQo+IFBsZWFzZSBv
-cmRlciB0aGlzIGFscGhhYmV0aWNhbGx5LCBzbyBiZWZvcmUgVUJPT1RfRklUX1VTRVJfU0VUVElO
-R1MuDQo+IA0KPiA+ICsgICAgICBBZGRzIGEgdXNlci1kZWZpbmVkIGltYWdlIHRvIHRoZSBsb2Fk
-YWJsZSBwcm9wZXJ0eSBvZiB0aGUNCj4gY29uZmlndXJhdGlvbiBub2RlLg0KPiANCj4gcy9sb2Fk
-YWJsZS9gYGxvYWRhYmxlc2BgLw0KPiANCj4gcy9vZiB0aGUgY29uZmlndXJhdGlvbiBub2RlL29m
-IHRoZSBjb25maWd1cmF0aW9uIG5vZGUgb2YgdGhlIFUtQm9vdA0KPiBJbWFnZSBUcmVlIFNvdXJj
-ZSAoSVRTKS8NCj4gDQo+ID4gKyAgICAgIEl0IHNob3VsZCBiZSBhIGNvbW1hLXNlcGFyYXRlZCBs
-aXN0IG9mIHN0cmluZ3MuDQo+ID4gKw0KPiA+ICsgICAgICBFeDo6DQo+ID4gKw0KPiANCj4gcy9J
-dCBzaG91bGQgYmUgYSBjb21tYS1zZXBhcmF0ZWQgbGlzdCBvZiBzdHJpbmdzLi9JdCBzaG91bGQg
-YmUgYQ0KPiBjb21tYS1zZXBhcmF0ZWQgbGlzdCBvZiBzdHJpbmdzLCBlLmcuOjovDQo+IA0KPiBJ
-IGJlbGlldmUgZWFjaCBzdHJpbmcgbmVlZHMgdG8gYmUgc3Vycm91bmRlZCBieSBxdW90ZXMgdG9v
-IChsaWtlIGluIHlvdXINCj4gZXhhbXBsZSk/IElmIHRoYXQgcmVhbGx5IGlzIHRoZSBjYXNlLCB0
-aGVuIHdlIHNob3VsZCBtZW50aW9uIGl0IGFzIHdlbGwuDQo+IA0KDQpUaGFua3MgZm9yIHlvdXIg
-cmV2aWV3IGFuZCBhbGwgeW91ciBzdWdnZXN0aW9ucy4NCkkgcmUtc2VuZCB2MyBwYXRjaCBoZXJl
-LCBodHRwczovL3BhdGNod29yay55b2N0b3Byb2plY3Qub3JnL3Byb2plY3QvZG9jcy9wYXRjaC8y
-MDI1MDMwNzA4MTQyMi43MTg2OTktMS1qYW1pbl9saW5AYXNwZWVkdGVjaC5jb20vDQpUaGFua3Mt
-SmFtaW4NCg0KPiBMb29raW5nIGdvb2Qgb3RoZXJ3aXNlIQ0KPiANCj4gQ2hlZXJzLA0KPiBRdWVu
-dGluDQo=
+From: Lee Chee Yang <chee.yang.lee@intel.com>
+
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-5.1.rst          |   1 +
+ .../migration-guides/release-notes-5.1.3.rst  | 160 ++++++++++++++++++
+ 2 files changed, 161 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.1.3.rst
+
+diff --git a/documentation/migration-guides/release-5.1.rst b/documentation/migration-guides/release-5.1.rst
+index f7e8332e1..57def68e2 100644
+--- a/documentation/migration-guides/release-5.1.rst
++++ b/documentation/migration-guides/release-5.1.rst
+@@ -9,3 +9,4 @@ Release 5.1 (styhead)
+    release-notes-5.1
+    release-notes-5.1.1
+    release-notes-5.1.2
++   release-notes-5.1.3
+diff --git a/documentation/migration-guides/release-notes-5.1.3.rst b/documentation/migration-guides/release-notes-5.1.3.rst
+new file mode 100644
+index 000000000..641cb8d50
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-5.1.3.rst
+@@ -0,0 +1,160 @@
++Release notes for Yocto-5.1.3 (Styhead)
++---------------------------------------
++
++Security Fixes in Yocto-5.1.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  go: Fix :cve_nist:`2024-45336`, :cve_nist:`2024-45341` and :cve_nist:`2025-22866`
++-  linux-yocto/6.6: Fix :cve_nist:`2024-36476`, :cve_nist:`2024-53179`, :cve_nist:`2024-56582`,
++   :cve_nist:`2024-56703`, :cve_nist:`2024-57801`, :cve_nist:`2024-57802`, :cve_nist:`2024-57841`,
++   :cve_nist:`2024-57882`, :cve_nist:`2024-57887`, :cve_nist:`2024-57890`, :cve_nist:`2024-57892`,
++   :cve_nist:`2024-57895`, :cve_nist:`2024-57896`, :cve_nist:`2024-57900`, :cve_nist:`2024-57901`,
++   :cve_nist:`2024-57902`, :cve_nist:`2024-57906`, :cve_nist:`2024-57907`, :cve_nist:`2024-57908`,
++   :cve_nist:`2024-57910`, :cve_nist:`2024-57911`, :cve_nist:`2024-57912`, :cve_nist:`2024-57913`,
++   :cve_nist:`2024-57916`, :cve_nist:`2024-57922`, :cve_nist:`2024-57925`, :cve_nist:`2024-57926`,
++   :cve_nist:`2024-57933`, :cve_nist:`2024-57938`, :cve_nist:`2024-57939`, :cve_nist:`2024-57940`,
++   :cve_nist:`2024-57949`, :cve_nist:`2024-57951`, :cve_nist:`2025-21631`, :cve_nist:`2025-21636`,
++   :cve_nist:`2025-21637`, :cve_nist:`2025-21638`, :cve_nist:`2025-21639`, :cve_nist:`2025-21640`,
++   :cve_nist:`2025-21642`, :cve_nist:`2025-21652`, :cve_nist:`2025-21658`, :cve_nist:`2025-21665`,
++   :cve_nist:`2025-21666`, :cve_nist:`2025-21667`, :cve_nist:`2025-21669`, :cve_nist:`2025-21670`,
++   :cve_nist:`2025-21671`, :cve_nist:`2025-21673`, :cve_nist:`2025-21674`, :cve_nist:`2025-21675`,
++   :cve_nist:`2025-21676`, :cve_nist:`2025-21680`, :cve_nist:`2025-21681`, :cve_nist:`2025-21683`,
++   :cve_nist:`2025-21684`, :cve_nist:`2025-21687`, :cve_nist:`2025-21689`, :cve_nist:`2025-21690`,
++   :cve_nist:`2025-21692`, :cve_nist:`2025-21694`, :cve_nist:`2025-21697` and :cve_nist:`2025-21699`
++-  pyhton3: Fix CVE-2024-12254, :cve_nist:`2025-0938` and 3 other vulnerabilities (gh-80222, gh-119511
++   and gh-126108).
++-  socat: Fix :cve_nist:`2024-54661`
++-  vim: Fix :cve_nist:`2025-22134` and :cve_nist:`2025-24014`
++
++
++Fixes in Yocto-5.1.3
++~~~~~~~~~~~~~~~~~~~~
++
++-  bitbake: bblayers/query: Fix using "removeprefix" string method
++-  bitbake: cooker: Make cooker 'skiplist' per-multiconfig/mc
++-  bitbake: tests/fetch: Fix git shallow test failure with git >= 2.48
++-  boost: fix do_fetch error
++-  build-appliance-image: Update to styhead head revision
++-  classes/nativesdk: also override :term:`TUNE_PKGARCH`
++-  classes/qemu: use tune to select QEMU_EXTRAOPTIONS, not package architecture
++-  cmake: apply parallel build settings to ptest tasks
++-  contributor-guide/submit-changes: add policy on AI generated code
++-  cve-check: fix cvesInRecord
++-  cve-check: restore :term:`CVE_CHECK_SHOW_WARNINGS` functionality
++-  dev-manual/building: document the initramfs-framework recipe
++-  devtool: ide-sdk recommend :term:`DEBUG_BUILD`
++-  devtool: ide-sdk remove the plugin from eSDK installer
++-  devtool: ide-sdk sort cmake preset
++-  devtool: modify support debug-builds
++-  docs: Add favicon for the documentation html
++-  docs: Fix typo in standards.md
++-  docs: Update autobuilder URLs to valkyrie
++-  enchant2: correct :term:`SRC_URI` and other uris
++-  go: upgrade to 1.22.12
++-  libnsl2: set :term:`CVE_PRODUCT`
++-  libxml-parser-perl: correct :term:`SRC_URI`
++-  linux-yocto/6.6: update to v6.6.75
++-  linux: Modify kernel configuration to fix runqlat issue
++-  lrzsz: update :term:`SRC_URI` to avoid redirect
++-  migration-guides: add release notes for 4.0.24, 5.0.6, 5.0.7 and 5.1.2
++-  oe-selftest: devtool ide-sdk use modify debug-build
++-  oeqa/gitarchive: Fix syntax warning
++-  poky.conf: bump version for 5.1.3
++-  python3: upgrade 3.12.9
++-  ref-manual/faq: add q&a on systemd as default
++-  resulttool/store: Fix permissions of logarchive
++-  rust-target-config: Fix TARGET_C_INT_WIDTH with correct size
++-  scripts/install-buildtools: Update to 5.1.2
++-  sdk-manual: extensible.rst: devtool ide-sdk improve
++-  sdk-manual: extensible.rst: update devtool ide-sdk
++-  systemd: set :term:`CVE_PRODUCT`
++-  test-manual/ptest: link to common framework ptest classes
++-  test-manual/reproducible-builds: fix reproducible links
++-  vim: Upgrade 9.1.1043
++
++
++Known Issues in Yocto-5.1.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-5.1.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  Adrian Freihofer
++-  Aleksandar Nikolic
++-  Alexander Kanavin
++-  Antonin Godard
++-  Bruce Ashfield
++-  Chris Laplante
++-  Divya Chellam
++-  Harish Sadineni
++-  Jiaying Song
++-  Joerg Schmidt
++-  Lee Chee Yang
++-  Mikko Rapeli
++-  Peter Marko
++-  Richard Purdie
++-  Ross Burton
++-  Simon A. Eugster
++-  Steve Sakoman
++
++Repositories / Downloads for Yocto-5.1.3
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`styhead </poky/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1.3 </poky/log/?h=yocto-5.1.3>`
++-  Git Revision: :yocto_git:`11a8dec6e29ac0b2fd942c0fc00dd7fc30658841 </poky/commit/?id=11a8dec6e29ac0b2fd942c0fc00dd7fc30658841>`
++-  Release Artefact: poky-11a8dec6e29ac0b2fd942c0fc00dd7fc30658841
++-  sha: 9ebcacaab53058fd97b06134e06b5883df3c7ddb25dae43a2f3809c4f65d24b5
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.3/poky-11a8dec6e29ac0b2fd942c0fc00dd7fc30658841.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.3/poky-11a8dec6e29ac0b2fd942c0fc00dd7fc30658841.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`styhead </openembedded-core/log/?h=styhead>`
++-  Tag:  :oe_git:`yocto-5.1.3 </openembedded-core/log/?h=yocto-5.1.3>`
++-  Git Revision: :oe_git:`35ffa0ed523ba95f069dff5b7df3f819ef031015 </openembedded-core/commit/?id=35ffa0ed523ba95f069dff5b7df3f819ef031015>`
++-  Release Artefact: oecore-35ffa0ed523ba95f069dff5b7df3f819ef031015
++-  sha: 67efedf0afa9ac9e4664f02923a4c5c2429f2f1be697e39f9cbffb9e3f2d9d2c
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.3/oecore-35ffa0ed523ba95f069dff5b7df3f819ef031015.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.3/oecore-35ffa0ed523ba95f069dff5b7df3f819ef031015.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`styhead </meta-mingw/log/?h=styhead>`
++-  Tag:  :yocto_git:`yocto-5.1.3 </meta-mingw/log/?h=yocto-5.1.3>`
++-  Git Revision: :yocto_git:`77fe18d4f8ec34501045c5d92ce7e13b1bd129e9 </meta-mingw/commit/?id=77fe18d4f8ec34501045c5d92ce7e13b1bd129e9>`
++-  Release Artefact: meta-mingw-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9
++-  sha: 4c7f8100a3675d9863e51825def3df5b263ffc81cd57bae26eedbc156d771534
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.3/meta-mingw-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.3/meta-mingw-77fe18d4f8ec34501045c5d92ce7e13b1bd129e9.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.10 </bitbake/log/?h=2.10>`
++-  Tag:  :oe_git:`yocto-5.1.3 </bitbake/log/?h=yocto-5.1.3>`
++-  Git Revision: :oe_git:`58e5c70a0572ff5994dc181694e05cd5d3ddaf66 </bitbake/commit/?id=58e5c70a0572ff5994dc181694e05cd5d3ddaf66>`
++-  Release Artefact: bitbake-58e5c70a0572ff5994dc181694e05cd5d3ddaf66
++-  sha: 8b1d8aa3de6ca8c520f1b528e342e06de0cff918a11d77862c499185a9ba8fec
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.1.3/bitbake-58e5c70a0572ff5994dc181694e05cd5d3ddaf66.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.1.3/bitbake-58e5c70a0572ff5994dc181694e05cd5d3ddaf66.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`styhead </yocto-docs/log/?h=styhead>`
++-  Tag: :yocto_git:`yocto-5.1.3 </yocto-docs/log/?h=yocto-5.1.3>`
++-  Git Revision: :yocto_git:`fd9c744d6e73a5719e61a3c0063b1602ca386e91 </yocto-docs/commit/?id=fd9c744d6e73a5719e61a3c0063b1602ca386e91>`
++
+-- 
+2.34.1
+
 
