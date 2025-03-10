@@ -1,127 +1,162 @@
-Return-Path: <adrian.freihofer@gmail.com>
+Return-Path: <raj.khem@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B13B9C282DE
-	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 20:56:39 +0000 (UTC)
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
- by mx.groups.io with SMTP id smtpd.web10.49731.1741640190757907854
+	by smtp.lore.kernel.org (Postfix) with ESMTP id AE0B6C28B30
+	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 21:00:09 +0000 (UTC)
+Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+ by mx.groups.io with SMTP id smtpd.web10.49833.1741640408715149518
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Mar 2025 13:56:31 -0700
+ Mon, 10 Mar 2025 14:00:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=REc8mui/;
- spf=pass (domain: gmail.com, ip: 209.85.221.54, mailfrom: adrian.freihofer@gmail.com)
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3914a5def6bso919706f8f.1
-        for <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 13:56:30 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=kBzTsdGg;
+ spf=pass (domain: gmail.com, ip: 209.85.167.169, mailfrom: raj.khem@gmail.com)
+Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3f34101f68eso1063006b6e.0
+        for <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 14:00:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741640189; x=1742244989; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2RXJBZgWaUzGkyIXBLNwDWihJrhbsgwD5Nyah+vvOTM=;
-        b=REc8mui/fC6NHP2Hzbgr8JNltnTAd+FZxGWyLjsDbUvyO8x2hiFmUlADxBvIe+YyGm
-         irdiI1MxzBuLeEnHpK5S69+QRyz9SLR0VmHKF3wvmoQ+ijrcKKw1B7eFrrqUat11WhH0
-         qsa6MITwihCUfeJPEXfgaALPm0YGNE+h3sl8L7dSihkRyLUuwEfnetyZj6MHG76/U8ki
-         wp6k3XGSSYkcw7F40U3LkwjphgUB3dJncbSIXOZidvXyRZzeaZ6LqKqZYmn2mKch+gKS
-         HL6hyJTm8+vGRe8JxrykEo2O/aqgHbBbnFpKVGoT1bJOFeGUFh526FH1DRluY3Q68826
-         QVlQ==
+        d=gmail.com; s=20230601; t=1741640408; x=1742245208; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Y4jOyaz9MPFyFFarqrl2gDM/ltlDfx8D6ynxF45PWh4=;
+        b=kBzTsdGgIcc/cG6smZjgEYdosg/1UekxeH/1rBUIzUBt/lbT+E8VbNHGpNHmb7OjC1
+         B6FKTlOHLRGG25tum57FSWTfe93sW8UoDxGfIzP0eSl5JMF/754jlyOFE/8ASw3SeyV5
+         XEdstcl9fESq9KpIRk6r9tHr2AUygK0TcBa+A2z9nHcBb69ejHxoZsjMvu3P9AmM95Hw
+         1lvgNpVu0RiVXZfmOQYXoJEcJn9IHRZx5RKANdgtLn6qubdAHSkwoPpqotCjZn/Acra4
+         IQnM6se/7kUW+9VfyXKOSksrnj3+P01EIeyHkzrzHbRj1sQYeY3CQE3wF2eCYQvXl7D2
+         ke0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741640189; x=1742244989;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2RXJBZgWaUzGkyIXBLNwDWihJrhbsgwD5Nyah+vvOTM=;
-        b=UUSkEpCrqlDl2R7QBpEqe2cbJHqrKNQk45jZfhU6XN5pTDwHfjQ84mkIYUjAUjp0iP
-         vD8uUy1riXMhE7sM6Y0and4HoYqok31FXO1HWAGgslFSBglpKCyBHpwf6vTH5IM/TKHF
-         sO39b7pt0tiEMya0WxhRfGIHXRjbrNw/47iNurRiuRKTTIzKkC+eV+qzWttVJ/eYQgZm
-         loT8tkzSc0tkDNpqbugcIa3Chp5MzfA4DugwHP0r5dHK20Yf8s1WZKauS40LzPgXR4qE
-         DuFcGisKvyl6e+wG7STxqDu3yTMOgpiHtJJZ2lTkjHLgdGsj/xLtRlqABlr5FQd9wdJo
-         INaA==
-X-Gm-Message-State: AOJu0YzP8N5aGSMd4ufrfTKPZ081xRzvJ9KTficHCpe9A3bQOtwr37Py
-	FjY4qc4C3S/kFbcxq1Yw2tn4dY0krfY3cwM0MQm/vbIRwRMycl7n+mIZcQ==
-X-Gm-Gg: ASbGnctw3yJyEtPT+A79fIlua1/ChtmbVyxUeYUt+ntg9E/PJkMwOtKII7bevTu31oX
-	zcCTVUKEFAWKUIXdgRapyUjpcBW8EIC4/bG8pM5rgd0V6juWvcTCeIMzfHDoFVSyaVbSFgPsqpY
-	qpmso+htprphJD+a/I5yJ7ogvhftS3vuUNr/BxyGGGE40WxmuzY4F63sBM1L0LfcnIujUKFZMez
-	CIp5yMa0zb6Dk9zhlb1UWEJongg/VwnQCE268xTc1taIlk6367gZlI6CH3Xb3Wxas/vPYyCi8Ie
-	xS4KatumYV1vdyBlYewn2MBPD1x5T7w6SaOwpz9/e+0LDuWJ9z2Jr9kEh6DzpVVW5PhQ
-X-Google-Smtp-Source: AGHT+IEY/NCtAsg4xPhe9/ylXaUWKoMXa4bFJbtUMnhkeR3pBjW8CJaXnE5zhUSfGes1QPm/2/9hCg==
-X-Received: by 2002:a5d:6d0c:0:b0:391:9b2:f48d with SMTP id ffacd0b85a97d-39132d89abdmr12794599f8f.33.1741640188732;
-        Mon, 10 Mar 2025 13:56:28 -0700 (PDT)
-Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0e2f4fsm15905216f8f.77.2025.03.10.13.56.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 13:56:28 -0700 (PDT)
-From: Adrian Freihofer <adrian.freihofer@gmail.com>
-X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
-To: docs@lists.yoctoproject.org
-Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
-Subject: [PATCH v4] ref-manual: variable FIT_SIGN_INDIVIDUAL mix-and-match attacks
-Date: Mon, 10 Mar 2025 21:56:19 +0100
-Message-ID: <20250310205619.8884-1-adrian.freihofer@siemens.com>
-X-Mailer: git-send-email 2.48.1
+        d=1e100.net; s=20230601; t=1741640408; x=1742245208;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Y4jOyaz9MPFyFFarqrl2gDM/ltlDfx8D6ynxF45PWh4=;
+        b=v3d8FugIfdNuAcziIy6q725rijxXTAAlFsAITMlaaDok+T08I+4ibDGmVgrPrSy7BA
+         x7dXLqW28acTm+gt1AzMRf+GO6enYCtJ+2fc9dSsHLlzs6Lq5aIsIALqzsj76VmGsAEZ
+         aghbVWXwDxFfJ/AUeE2UxNkTpCTLEbcHXIt1BfkDUymZRck2L9DhjCe76SQkfafY7gVH
+         1iAjHvUIca/ArLaMoBmpCrTNhNuomCNp5cD/8UUcTRXTH2FyuS8NKv6xQjMY1BuGg24V
+         AVs1N3k04iTwI6aFIg3wO2DCk6psYy2n5ynNomoL8uHn8OzmjDrQaVRv0QDHpD9H4U1E
+         pTiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXKYRv3acHFGzsKjo2lU/9ZZXf5XpS8QHPrv0bQNj/0C7EcGRvh/ztkdqZ4sq+PnaETO7yn@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YyHu2VCdQo2b3s3kSVJ7BQWeHbxEfrCnyhFhXLahj+XWJhpWjNv
+	eLPd6qjpBQ/NBEAvaIMgA9uiVu2TWyCL22SnlgHNNO2zAzTYwXsTksOuZOqSEVEyhrIIgTfKcdz
+	ToMSk0+AJefFQs15NTIoEAA417aA=
+X-Gm-Gg: ASbGncsW3FbmyWxjh05NQlu0lm88W+a84kMtIcKCP8t07ZuYeVP1pBKwkGg/RSkcWwC
+	byZrD1rVuu2Eg7625p1u/gsSUDr/e1VjgglRAdjhGyZVOrICil8BxwnMsyYVkZP2PPJYgW17pN6
+	ohgmvdB3yfjfX29TuhpQD2mwOjEKZaHj9p4HudoW4dgH6s5y0WXFJM0DU=
+X-Google-Smtp-Source: AGHT+IFYZ3FVaT/cEQ//H5m/E65Lm0T6c3fBTwYCSLk9lfIx4xmtyxpDGAZsYOb6xPISLASjTd58SE5md6fQPAFmlAk=
+X-Received: by 2002:a05:6808:1922:b0:3f6:8fa2:1c51 with SMTP id
+ 5614622812f47-3f697b69d1dmr6694304b6e.19.1741640407761; Mon, 10 Mar 2025
+ 14:00:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20250307120055.1816436-1-l.goehrs@pengutronix.de> <00f1f0d807758da4bf11c78de652f6d4b6ad1863.camel@linuxfoundation.org>
+In-Reply-To: <00f1f0d807758da4bf11c78de652f6d4b6ad1863.camel@linuxfoundation.org>
+From: Khem Raj <raj.khem@gmail.com>
+Date: Mon, 10 Mar 2025 13:59:41 -0700
+X-Gm-Features: AQ5f1JrJJvzaMxtghOwuAxyHWIKUJdwWZq_pmchPqCw1skfJ1c7BBhZw2NjdhYA
+Message-ID: <CAMKF1sr-86m+4zWfek+yg4tXrv3H2H4c6T+MbMUPM+2s3PPaxA@mail.gmail.com>
+Subject: Re: [docs] [PATCH v3 0/5] fetch2/github_release_artifact: fetcher for
+ (private) release artifacts
+To: richard.purdie@linuxfoundation.org
+Cc: lgo@pengutronix.de, bitbake-devel@lists.openembedded.org, 
+	docs@lists.yoctoproject.org, yocto@pengutronix.de
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 20:56:39 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6525
+ <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 21:00:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6526
 
-Incorporate the lessons learned from a regression introduced with commit
-  OE-Core rev: 259bfa86f384206f0d0a96a5b84887186c5f689e
-               u-boot: kernel-fitimage: Fix dependency loop if
-               UBOOT_SIGN_ENABLE and UBOOT_ENV enabled
-and fixed with commit
-  OE-Core rev: 0106e5efab99c8016836a2ab71e2327ce58a9a9d
-               u-boot: kernel-fitimage: Restore FIT_SIGN_INDIVIDUAL="1"
-               behavior
-into the documentation.
+On Mon, Mar 10, 2025 at 9:53=E2=80=AFAM Richard Purdie via
+lists.yoctoproject.org
+<richard.purdie=3Dlinuxfoundation.org@lists.yoctoproject.org> wrote:
+>
+> On Fri, 2025-03-07 at 13:00 +0100, Leonard G=C3=B6hrs via lists.yoctoproj=
+ect.org wrote:
+> > This fetcher enables downloading artifacts attached to GitHub releases
+> > in private repositories.
+> >
+> > Authentication is provided using tokens via the `BB_FETCH_GHRA_TOKEN`
+> > variable.
+> >
+> > Changes from v1 to v2:
+> >
+> >   - Provide examples on how to provide the `GH_TOKEN` more securely tha=
+n
+> >     just hardcoding it in the recipe in the commit message.
+> >     E.g. via the `local.conf` or environment variables.
+> >   - Indent the code example in the documentation `.rst` using three
+> >     spaces instead of two.
+> >   - Document the `token=3D` URI parameter along with the `GH_TOKEN`
+> >     variable.
+> >
+> > Changes from v2 to v3:
+> >
+> >   - Rename `FetchData.headers` to `FetchData.http_headers` and do not s=
+et
+> >     a default. Use `getattr` with a default instead.
+> >   - Rename the token variable from `GH_TOKEN` (the de-facto default in
+> >     GitHub actions) to `BB_FETCH_GHRA_TOKEN` (makes it more obvious whe=
+re
+> >     the variable is used).
+> >   - Remove support for supplying the GitHub token as SRC_URI parameter
+> >     to make it less likely that they are accidentally leaked, when e.g.
+> >     sharing the recipe.
+> >   - Do not use `dict_a | dict_b` to merge the header dicts,
+> >     as that feature is not available in Python 3.8 used on Ubuntu 20.04=
+.
+> >     Use `dict(**dict_a, **dict_b)` instead.
+> >   - Explicitly state in the documentation that access tokens should hav=
+e
+> >     minimal scope.
+> >
+> > Alexander Kanavin and Peter Marko have voiced some security concerns ab=
+out
+> > the token handling in bitbake variables that have not been adressed in
+> > this v3.
+> >
+> > The security of the current solution should be on par or better than
+> > what we have for `http` URLs that include basic auth usernames and
+> > passwords. I consider this acceptable.
+> >
+> > A generic way to store these kinds of fetcher secrets outside of the
+> > normal bitbake variables would be desirable though.
+>
+> I've been giving this patchset a lot of thought. I'm a bit concerned
+> about creating a new "fetcher" namespace for something that is fairly
+> niche, particularly when as Peter points out, the same thing can be
+> achieved with a bbclass.
+>
+> If there were no other way to do this, I think I'd be leaning to taking
+> the patches but since there is another way which isn't too difficult, I
+> think that we should promote that approach instead.
 
-The use of the variable FIT_SIGN_INDIVIDUAL is explicitly discouraged.
-It is also noted that this variable may be removed. It is important that
-we try to simplify the implementation of the FIT image as much as
-possible. Adding appropriate notes to the documentation is a first step
-towards this direction.
+I think, the bbclass abstraction approach would also make it expandable
+to other git infra's which might be used in private settings e.g. github et=
+c.
+so if it was possible, I would incline towards the bbclass approach.
 
-Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
----
- documentation/ref-manual/variables.rst | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
-
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 861b04eaab1..aa8a894bfd2 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -3174,9 +3174,27 @@ system and gives an overview of their function and contents.
-       class will sign the kernel, dtb and ramdisk images individually in addition
-       to signing the FIT image itself. This could be useful if you are
-       intending to verify signatures in another context than booting via
--      U-Boot.
-+      U-Boot. This variable is set to "0" by default.
- 
--      This variable is set to "0" by default.
-+      If :term:`UBOOT_SIGN_ENABLE` is set to "1" and :term:`FIT_SIGN_INDIVIDUAL`
-+      is left at its default value of "0", only the configurations are signed.
-+      However, the configuration signatures include the hashes of the referenced
-+      nodes. This means that the integrity of the entire FIT image is ensured
-+      because each hash is compared against a runtime-computed hash for each
-+      node.
-+      Further information can be found in the U-Boot documentation:
-+      `U-Boot fit signature <https://docs.u-boot.org/en/latest/usage/fit/signature.html>`__
-+      and more specifically at:
-+      `U-Boot signed configurations <https://docs.u-boot.org/en/latest/usage/fit/signature.html#signed-configurations>`__.
-+
-+      If :term:`UBOOT_SIGN_ENABLE` is set to "1" and :term:`FIT_SIGN_INDIVIDUAL`
-+      is set to "1", then the FIT image is signed twice, which is redundant.
-+      As this leads to additional complexity without providing any obvious
-+      advantage, this feature will likely be removed in a future version.
-+
-+      Signing only the image nodes is intentionally not implemented by
-+      :term:`OpenEmbedded-Core (OE-Core)`, as it is vulnerable to mix-and-match
-+      attacks.
- 
-    :term:`FIT_SIGN_NUMBITS`
-       Size of the private key used in the FIT image, in number of bits.
--- 
-2.48.1
-
+>
+> One of the reasons for this is that by merging the new fetcher, it
+> would complicate potential future changes to the wget fetcher and I'd
+> prefer not to further limit our options there if we can help it.
+>
+> Unless I see other people saying they need this new fetcher, I'm
+> therefore likely going to decline it in favour of the bbclass approach.
+>
+> Cheers,
+>
+> Richard
+>
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+> Links: You receive all messages sent to this group.
+> View/Reply Online (#6524): https://lists.yoctoproject.org/g/docs/message/=
+6524
+> Mute This Topic: https://lists.yoctoproject.org/mt/111566036/1997914
+> Group Owner: docs+owner@lists.yoctoproject.org
+> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [raj.khem@gmail.=
+com]
+> -=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-=3D-
+>
 
