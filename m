@@ -2,127 +2,61 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B79F5C28B2E
-	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 11:21:46 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.35253.1741605698357879606
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46D29C282DE
+	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 13:20:57 +0000 (UTC)
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+ by mx.groups.io with SMTP id smtpd.web10.37479.1741612854540499738
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Mar 2025 04:21:38 -0700
+ Mon, 10 Mar 2025 06:20:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ImkyaRPk;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 40B1D44219;
-	Mon, 10 Mar 2025 11:21:35 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Kac2nv5o;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.195, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 08D3320486;
+	Mon, 10 Mar 2025 13:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1741605696;
+	t=1741612853;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0f5Q58Osn+OcFIcGzdkjPo26yDJ0tKWkMjGoc6qjCuA=;
-	b=ImkyaRPk8GS9RALv49/SeS3LTvTP8kOff6KCpyI0yyH1fKa8NtWWxoOky71AEY3Ax8BS/9
-	g4IXUByYf+546yLJaiUEp8Rkj5XKqm6IaEBfRBzmx+0Lm4ql5qEo39Wj/NQ8hVUwtmQEGL
-	md2teMQ3yuRPzeFamrSNiXWMvdtpugPQiw0bv4y88Ig6T4diHOl6HupayVJQL7twcz47oN
-	as+3ubO6rK9Mg2rn6utSV/6zLA9zmsQLL6xYI8jLFDF9sZRZ11dt8uGJy/ISoj9VykF+y3
-	5J36P72U0KHLH50jUF6Kp28iii7O12M3RxWkd7pLN6cSpp4awnsyp2TxHrzZ0A==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TKA41RkzHcD47VSKILA0it0gIH+fMOmdD+C88/wOi/w=;
+	b=Kac2nv5oxRPQZgCe7CQ5sU6Z1pYuoYfLBHGtmeRiiPlBZQ8Sg//6Z54/jzsw8UpLCnLwoQ
+	v/b6K13YRRz8if86qlcZe8MnwJ6mAYhSFi/CWttZk0LwEeJkN56penTUghwP2OELwnwFcS
+	ThrqQJN9A+ruJbiu30Kext1wwYnWs2cEerpXMyExuR7WF3Er8mv9EzeHEsBHD592M6E01A
+	Q2ftf1H8IGpw950vzJyzsBsI0haOyk92wDNh4qbZbZFXAdTJuaB63qDH9r+p8Oxg5IBEX4
+	4Y4hy8ndvr70h0+QtiqvBaoyIxaKEDdZqjksNIvnk8n5XmLguJRX64ZnofE9qQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 10 Mar 2025 12:21:17 +0100
-Subject: [PATCH] doc: bitbake-user-manual-metadata: document the
- include_all directive
+To: docs@lists.yoctoproject.org,
+	chee.yang.lee@intel.com
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Antonin Godard <antonin.godard@bootlin.com>
+Subject: Re: [PATCH] migration-guides: add release notes for 5.1.3
+Date: Mon, 10 Mar 2025 14:20:02 +0100
+Message-ID: <174161278504.647951.12604991164433778296.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250307083622.3220786-1-chee.yang.lee@intel.com>
+References: <20250307083622.3220786-1-chee.yang.lee@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250310-include-all-v1-1-76843785384d@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIACzLzmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDY0MD3cy85JzSlFTdxJwc3VRDMyOzRLOUJBNjMyWgjoKi1LTMCrBp0bG
- 1tQByywVPXQAAAA==
-X-Change-ID: 20250310-include-all-e1626a6db436
-To: bitbake-devel@lists.openembedded.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2270;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=tOH+YsXWs0VLo7SPzg+B23ppchKO3+Oy7KQGkLf7Yts=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBnzss/qkpe2RdWbRF9jZlWbRBoI26jBfZmOjHti
- gvnOXv1LMyJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ87LPwAKCRDRgEFAKaOo
- NvgcEACi/0XWgb1wTSMPGQqvRSEIjIsxPClu6E/Dbn53sWTvLdYI2veEC5QmsaoUn2DCQw4PPmS
- uSquNBSLJhShvXoaN66OxQ1SBXOo7A4Z2OJA9CC7wgFATEnpcttpXRWf0zkJbm6r5XabIsAALww
- T0A+uZiTzEQJ15wUqDSprZEXmEiHA1ysOO46FnjZQJosm3GPc01XZRcNx3BIv3Avx4yg3HHht2q
- P5IH3iH+urFA6vhc7mO+QN2K2z6LlP1E3oxVBmR5kJddTAZ9SXvwd6IK3EzgQq04fJI6weF1MYt
- OX/InPmI9IGY5XKrQvcPYVrwT0yPPMQv+FeebljcyNbolMrz24oSSRdqGHBLxhyac+TQG5dVLoC
- 2/UbnIVh+a0yHtHId0eb6hHxMyt4+XaiLgg10aQDKX1CX/hmDHcDdTmaxgVaRp+FUJ7acoAar1/
- NrUj2aw4RkTEylhe1FvsiScVIpph4wFXWuVHBPhXraVvvP7Q7ztohqZPYj2rqbxw4M1DKxFLEsP
- EMVP2AOagZe0roGEo+RUfv7xZproq4TzXRYhxWRgNOg9B5dq9Ek+N4Gp/h4cLXyytFx4WD9otjj
- 6JFoK4X10M8FOQZC3Fs9ORa+frUMYC3pxllAqaMBYMbos35XjZgCXzoMJhcJNqQBunQ5ngPRnRg
- 2v7FMgBaGP2Omxw==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+Content-Transfer-Encoding: 8bit
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudelvdduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeduieejledtieeuteffveetleeuffeivdffjefgteehgfehleeiteehieeuieekueenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopegsihhtsggrkhgvqdguvghvvghlsehlihhsthhsr
- dhophgvnhgvmhgsvgguuggvugdrohhrghdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduudelgeeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedukeffuefhtdejteehteettdfhieejtdfgjefhleeuveehtddvlefhteeiheetleenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghlohepthgrhhhomhgrrdhhohhmvgdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheptghhvggvrdihrghnghdrlhgvvgesihhnthgvlhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtl
+ hhinhdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 11:21:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6517
+ <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 13:20:57 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6520
 
-From: Antonin Godard <antonin.godard@bootlin.com>
 
-Document the include_all directive, which can be used to include
-multiple files present in the same location in different layers.
+Applied, thanks!
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- .../bitbake-user-manual-metadata.rst          | 27 +++++++++++++++++++
- 1 file changed, 27 insertions(+)
-
-diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-index 2680c6ac2..415fbf6d6 100644
---- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-+++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
-@@ -900,6 +900,33 @@ definitions::
-    of include . Doing so makes sure that an error is produced if the file cannot
-    be found.
- 
-+``include_all`` Directive
-+-------------------------
-+
-+The ``include_all`` directive works like the :ref:`include
-+<bitbake-user-manual/bitbake-user-manual-metadata:\`\`include\`\` directive>`
-+directive but will include all of the files that match the specified path in
-+the enabled layers (layers part of :term:`BBLAYERS`).
-+
-+For example, let's say a ``maintainers.inc`` file is present in different layers
-+and is conventionally placed in the ``conf/distro/include`` directory of each
-+layer. In that case the ``include_all`` directive can be used to include
-+the ``maintainers.inc`` file for all of these layers::
-+
-+   include_all conf/distro/include/maintainers.inc
-+
-+In other words, the ``maintainers.inc`` file for each layer is included through
-+the :ref:`include <bitbake-user-manual/bitbake-user-manual-metadata:\`\`include\`\` directive>`
-+directive.
-+
-+BitBake will iterate through the colon-separated :term:`BBPATH` list to look for
-+matching files to include, from left to right. As a consequence, matching files
-+are included in that order.
-+
-+As the ``include_all`` directive uses the :ref:`include
-+<bitbake-user-manual/bitbake-user-manual-metadata:\`\`include\`\` directive>`
-+directive in the background, no error is produced if no files are matched.
-+
- .. _require-inclusion:
- 
- ``require`` Directive
-
----
-base-commit: d5562e007c7c64e8613a118ab9a6c73ed2063263
-change-id: 20250310-include-all-e1626a6db436
+[1/1] migration-guides: add release notes for 5.1.3
+      commit: e608902ffae3af5ab0c5308b0550e49a790482f0
 
 Best regards,
 -- 
 Antonin Godard <antonin.godard@bootlin.com>
-
 
