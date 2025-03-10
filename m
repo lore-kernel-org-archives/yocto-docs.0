@@ -1,145 +1,127 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <adrian.freihofer@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 87755C282DE
-	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 16:54:08 +0000 (UTC)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
- by mx.groups.io with SMTP id smtpd.web10.43511.1741625638206696466
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B13B9C282DE
+	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 20:56:39 +0000 (UTC)
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+ by mx.groups.io with SMTP id smtpd.web10.49731.1741640190757907854
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Mar 2025 09:53:58 -0700
+ Mon, 10 Mar 2025 13:56:31 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ZxBpp8Ie;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43bc4b16135so26691025e9.1
-        for <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 09:53:57 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=REc8mui/;
+ spf=pass (domain: gmail.com, ip: 209.85.221.54, mailfrom: adrian.freihofer@gmail.com)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-3914a5def6bso919706f8f.1
+        for <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 13:56:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1741625636; x=1742230436; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cqH5RNA4+V94Yf+slqd6ff0/PyqOJrqIrolyj3RDlUI=;
-        b=ZxBpp8IeOiWo/nrfBiusfsu3Oh4JZQX7QumL0DInd++rMeIJxOVxO+0Vl8fhIAvzF+
-         G306URPl6czoLrUUQM5E0RQ/8Y/oPa5XAnqibJQJmqzGC01K2TAtBMNRUxGeVIgc50TC
-         YxFErUVkByy5ci3VNerQzNg+oeq3w4cWudxXk=
+        d=gmail.com; s=20230601; t=1741640189; x=1742244989; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2RXJBZgWaUzGkyIXBLNwDWihJrhbsgwD5Nyah+vvOTM=;
+        b=REc8mui/fC6NHP2Hzbgr8JNltnTAd+FZxGWyLjsDbUvyO8x2hiFmUlADxBvIe+YyGm
+         irdiI1MxzBuLeEnHpK5S69+QRyz9SLR0VmHKF3wvmoQ+ijrcKKw1B7eFrrqUat11WhH0
+         qsa6MITwihCUfeJPEXfgaALPm0YGNE+h3sl8L7dSihkRyLUuwEfnetyZj6MHG76/U8ki
+         wp6k3XGSSYkcw7F40U3LkwjphgUB3dJncbSIXOZidvXyRZzeaZ6LqKqZYmn2mKch+gKS
+         HL6hyJTm8+vGRe8JxrykEo2O/aqgHbBbnFpKVGoT1bJOFeGUFh526FH1DRluY3Q68826
+         QVlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741625636; x=1742230436;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cqH5RNA4+V94Yf+slqd6ff0/PyqOJrqIrolyj3RDlUI=;
-        b=f8j/RMp1PQfoSDQum3nNjk4o3n+0MU8pqRSkkM9t1xJYQNbKAYcZFTRAg6eq8HIO/W
-         09lFdm27Je/jbYzH16z26R/4FjidMxwXRZQweY36lkmgdT7Txc3q55d/YzhRZDGkzbmD
-         8eAKuBSMTqu0Il/cg9yTAxriLE0UTnwxn25n3JVDOZCabl8Ie+By4lm8DGauSm7+eKha
-         u8k0MDRXTEVDhgBxwXnl6MOTvWeeg8L4phVO4ptNxJqf9Y5tbNuWMz6yslbFQsBZMMYY
-         7JqsCG+AeEcu08uEuO/4PODTlgeYpyYjwPthY8JD5F4ih44S+e9Om6A8KxVNGGX947+p
-         vPMg==
-X-Gm-Message-State: AOJu0Yylac8Kcb7KK8qW47pqcfLSpX8mWKtMRjdF4iHBs0+ng0/eq3yI
-	3ifEjUGokjGzze42MwCUYOzpoRslrQuWNJegK1bA4ET6Qems1zMUdjK5HsJeneY=
-X-Gm-Gg: ASbGnctZUdhhxCIsutVOKKd97cP55Va+o6+970eexI0v6xWpw2DI63dRWAhFwJde96S
-	7VXSkZKBmxVAS96GHe/e2ZtU0IiTNpCFqvi7qyQhhKL64KRTkbWAcykSihYQk13fa+7r5U/1XXh
-	eTzuwQfImjPPwO9bJMChSYlN3dz2vNkeBNMdekNTSyXTxTKi4rqLHmQN0lvuV/sxMFca1ueJIiB
-	bGnEJ3pDVbm1jP/aLeS9q8ri2nYk/rMjCBor/0k3Dj9KFlr4mLuF14p/yFAyz18NbvdbS6NGvk2
-	ywhYTCAqm5+JbCffMEzqWird2Y0oK+lZfV39tElQNtD6ak51xYnfiUSrfDUnyckl7nYVYxaJgo8
-	Rw6mytxvmVMltW+tav7TjDUHIXYO6/Xd8WA==
-X-Google-Smtp-Source: AGHT+IH7k0pUVMChV4dgJBu/w6RS3tmdrUsRSIHeRkxuZOP2NnWorui25zcp3EXAKCLR69wDMzo/7g==
-X-Received: by 2002:a05:600c:35d1:b0:43b:da2b:762d with SMTP id 5b1f17b1804b1-43c601d90c8mr98594345e9.7.1741625636611;
-        Mon, 10 Mar 2025 09:53:56 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:3d30:def0:6e8d:cbc8? ([2001:8b0:aba:5f3c:3d30:def0:6e8d:cbc8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0193bfsm15714390f8f.55.2025.03.10.09.53.55
+        d=1e100.net; s=20230601; t=1741640189; x=1742244989;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2RXJBZgWaUzGkyIXBLNwDWihJrhbsgwD5Nyah+vvOTM=;
+        b=UUSkEpCrqlDl2R7QBpEqe2cbJHqrKNQk45jZfhU6XN5pTDwHfjQ84mkIYUjAUjp0iP
+         vD8uUy1riXMhE7sM6Y0and4HoYqok31FXO1HWAGgslFSBglpKCyBHpwf6vTH5IM/TKHF
+         sO39b7pt0tiEMya0WxhRfGIHXRjbrNw/47iNurRiuRKTTIzKkC+eV+qzWttVJ/eYQgZm
+         loT8tkzSc0tkDNpqbugcIa3Chp5MzfA4DugwHP0r5dHK20Yf8s1WZKauS40LzPgXR4qE
+         DuFcGisKvyl6e+wG7STxqDu3yTMOgpiHtJJZ2lTkjHLgdGsj/xLtRlqABlr5FQd9wdJo
+         INaA==
+X-Gm-Message-State: AOJu0YzP8N5aGSMd4ufrfTKPZ081xRzvJ9KTficHCpe9A3bQOtwr37Py
+	FjY4qc4C3S/kFbcxq1Yw2tn4dY0krfY3cwM0MQm/vbIRwRMycl7n+mIZcQ==
+X-Gm-Gg: ASbGnctw3yJyEtPT+A79fIlua1/ChtmbVyxUeYUt+ntg9E/PJkMwOtKII7bevTu31oX
+	zcCTVUKEFAWKUIXdgRapyUjpcBW8EIC4/bG8pM5rgd0V6juWvcTCeIMzfHDoFVSyaVbSFgPsqpY
+	qpmso+htprphJD+a/I5yJ7ogvhftS3vuUNr/BxyGGGE40WxmuzY4F63sBM1L0LfcnIujUKFZMez
+	CIp5yMa0zb6Dk9zhlb1UWEJongg/VwnQCE268xTc1taIlk6367gZlI6CH3Xb3Wxas/vPYyCi8Ie
+	xS4KatumYV1vdyBlYewn2MBPD1x5T7w6SaOwpz9/e+0LDuWJ9z2Jr9kEh6DzpVVW5PhQ
+X-Google-Smtp-Source: AGHT+IEY/NCtAsg4xPhe9/ylXaUWKoMXa4bFJbtUMnhkeR3pBjW8CJaXnE5zhUSfGes1QPm/2/9hCg==
+X-Received: by 2002:a5d:6d0c:0:b0:391:9b2:f48d with SMTP id ffacd0b85a97d-39132d89abdmr12794599f8f.33.1741640188732;
+        Mon, 10 Mar 2025 13:56:28 -0700 (PDT)
+Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0e2f4fsm15905216f8f.77.2025.03.10.13.56.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 09:53:56 -0700 (PDT)
-Message-ID: <00f1f0d807758da4bf11c78de652f6d4b6ad1863.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH v3 0/5] fetch2/github_release_artifact: fetcher
- for (private) release artifacts
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: lgo@pengutronix.de, bitbake-devel@lists.openembedded.org
-Cc: docs@lists.yoctoproject.org, yocto@pengutronix.de
-Date: Mon, 10 Mar 2025 16:53:55 +0000
-In-Reply-To: <20250307120055.1816436-1-l.goehrs@pengutronix.de>
-References: <20250307120055.1816436-1-l.goehrs@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.2-0ubuntu1 
+        Mon, 10 Mar 2025 13:56:28 -0700 (PDT)
+From: Adrian Freihofer <adrian.freihofer@gmail.com>
+X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
+To: docs@lists.yoctoproject.org
+Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: [PATCH v4] ref-manual: variable FIT_SIGN_INDIVIDUAL mix-and-match attacks
+Date: Mon, 10 Mar 2025 21:56:19 +0100
+Message-ID: <20250310205619.8884-1-adrian.freihofer@siemens.com>
+X-Mailer: git-send-email 2.48.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 16:54:08 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6524
+ <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 20:56:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6525
 
-On Fri, 2025-03-07 at 13:00 +0100, Leonard G=C3=B6hrs via lists.yoctoprojec=
-t.org wrote:
-> This fetcher enables downloading artifacts attached to GitHub releases
-> in private repositories.
->=20
-> Authentication is provided using tokens via the `BB_FETCH_GHRA_TOKEN`
-> variable.
->=20
-> Changes from v1 to v2:
->=20
-> =C2=A0 - Provide examples on how to provide the `GH_TOKEN` more securely =
-than
-> =C2=A0=C2=A0=C2=A0 just hardcoding it in the recipe in the commit message=
-.
-> =C2=A0=C2=A0=C2=A0 E.g. via the `local.conf` or environment variables.
-> =C2=A0 - Indent the code example in the documentation `.rst` using three
-> =C2=A0=C2=A0=C2=A0 spaces instead of two.
-> =C2=A0 - Document the `token=3D` URI parameter along with the `GH_TOKEN`
-> =C2=A0=C2=A0=C2=A0 variable.
->=20
-> Changes from v2 to v3:
->=20
-> =C2=A0 - Rename `FetchData.headers` to `FetchData.http_headers` and do no=
-t set
-> =C2=A0=C2=A0=C2=A0 a default. Use `getattr` with a default instead.
-> =C2=A0 - Rename the token variable from `GH_TOKEN` (the de-facto default =
-in
-> =C2=A0=C2=A0=C2=A0 GitHub actions) to `BB_FETCH_GHRA_TOKEN` (makes it mor=
-e obvious where
-> =C2=A0=C2=A0=C2=A0 the variable is used).
-> =C2=A0 - Remove support for supplying the GitHub token as SRC_URI paramet=
-er
-> =C2=A0=C2=A0=C2=A0 to make it less likely that they are accidentally leak=
-ed, when e.g.
-> =C2=A0=C2=A0=C2=A0 sharing the recipe.
-> =C2=A0 - Do not use `dict_a | dict_b` to merge the header dicts,
-> =C2=A0=C2=A0=C2=A0 as that feature is not available in Python 3.8 used on=
- Ubuntu 20.04.
-> =C2=A0=C2=A0=C2=A0 Use `dict(**dict_a, **dict_b)` instead.
-> =C2=A0 - Explicitly state in the documentation that access tokens should =
-have
-> =C2=A0=C2=A0=C2=A0 minimal scope.
->=20
-> Alexander Kanavin and Peter Marko have voiced some security concerns abou=
-t
-> the token handling in bitbake variables that have not been adressed in
-> this v3.
->=20
-> The security of the current solution should be on par or better than
-> what we have for `http` URLs that include basic auth usernames and
-> passwords. I consider this acceptable.
->=20
-> A generic way to store these kinds of fetcher secrets outside of the
-> normal bitbake variables would be desirable though.
+Incorporate the lessons learned from a regression introduced with commit
+  OE-Core rev: 259bfa86f384206f0d0a96a5b84887186c5f689e
+               u-boot: kernel-fitimage: Fix dependency loop if
+               UBOOT_SIGN_ENABLE and UBOOT_ENV enabled
+and fixed with commit
+  OE-Core rev: 0106e5efab99c8016836a2ab71e2327ce58a9a9d
+               u-boot: kernel-fitimage: Restore FIT_SIGN_INDIVIDUAL="1"
+               behavior
+into the documentation.
 
-I've been giving this patchset a lot of thought. I'm a bit concerned
-about creating a new "fetcher" namespace for something that is fairly
-niche, particularly when as Peter points out, the same thing can be
-achieved with a bbclass.
+The use of the variable FIT_SIGN_INDIVIDUAL is explicitly discouraged.
+It is also noted that this variable may be removed. It is important that
+we try to simplify the implementation of the FIT image as much as
+possible. Adding appropriate notes to the documentation is a first step
+towards this direction.
 
-If there were no other way to do this, I think I'd be leaning to taking
-the patches but since there is another way which isn't too difficult, I
-think that we should promote that approach instead.
+Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+---
+ documentation/ref-manual/variables.rst | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-One of the reasons for this is that by merging the new fetcher, it
-would complicate potential future changes to the wget fetcher and I'd
-prefer not to further limit our options there if we can help it.
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 861b04eaab1..aa8a894bfd2 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3174,9 +3174,27 @@ system and gives an overview of their function and contents.
+       class will sign the kernel, dtb and ramdisk images individually in addition
+       to signing the FIT image itself. This could be useful if you are
+       intending to verify signatures in another context than booting via
+-      U-Boot.
++      U-Boot. This variable is set to "0" by default.
+ 
+-      This variable is set to "0" by default.
++      If :term:`UBOOT_SIGN_ENABLE` is set to "1" and :term:`FIT_SIGN_INDIVIDUAL`
++      is left at its default value of "0", only the configurations are signed.
++      However, the configuration signatures include the hashes of the referenced
++      nodes. This means that the integrity of the entire FIT image is ensured
++      because each hash is compared against a runtime-computed hash for each
++      node.
++      Further information can be found in the U-Boot documentation:
++      `U-Boot fit signature <https://docs.u-boot.org/en/latest/usage/fit/signature.html>`__
++      and more specifically at:
++      `U-Boot signed configurations <https://docs.u-boot.org/en/latest/usage/fit/signature.html#signed-configurations>`__.
++
++      If :term:`UBOOT_SIGN_ENABLE` is set to "1" and :term:`FIT_SIGN_INDIVIDUAL`
++      is set to "1", then the FIT image is signed twice, which is redundant.
++      As this leads to additional complexity without providing any obvious
++      advantage, this feature will likely be removed in a future version.
++
++      Signing only the image nodes is intentionally not implemented by
++      :term:`OpenEmbedded-Core (OE-Core)`, as it is vulnerable to mix-and-match
++      attacks.
+ 
+    :term:`FIT_SIGN_NUMBITS`
+       Size of the private key used in the FIT image, in number of bits.
+-- 
+2.48.1
 
-Unless I see other people saying they need this new fetcher, I'm
-therefore likely going to decline it in favour of the bbclass approach.
-
-Cheers,
-
-Richard
 
