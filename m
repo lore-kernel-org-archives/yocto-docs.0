@@ -1,108 +1,145 @@
-Return-Path: <mikko.rapeli@linaro.org>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 215D1C282DE
-	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 15:31:38 +0000 (UTC)
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
- by mx.groups.io with SMTP id smtpd.web10.41254.1741620691649134993
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 87755C282DE
+	for <webhook@archiver.kernel.org>; Mon, 10 Mar 2025 16:54:08 +0000 (UTC)
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+ by mx.groups.io with SMTP id smtpd.web10.43511.1741625638206696466
  for <docs@lists.yoctoproject.org>;
- Mon, 10 Mar 2025 08:31:32 -0700
+ Mon, 10 Mar 2025 09:53:58 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=fSvz1kyR;
- spf=pass (domain: linaro.org, ip: 209.85.167.41, mailfrom: mikko.rapeli@linaro.org)
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5499b18d704so2027100e87.0
-        for <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 08:31:31 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ZxBpp8Ie;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.44, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-43bc4b16135so26691025e9.1
+        for <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 09:53:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1741620689; x=1742225489; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1j2MnOnNngy3z98H4b7BI89EUZL8JJrgvAYbb1II2pw=;
-        b=fSvz1kyRx3H5q/FQLRaJ2lkxfXCfb6pAwlINUeGf9jcIHE6pDxwOlu5/qIbSEMhKZy
-         mlRyRRYgLe5foJ4Oyx+byHY1xdlKtVO6HmCOlDSlksSgEQaGB9savxHqMZn8fnsvPL47
-         82TRv2e0Sehb5g4OYBT1SMw+KuJhVFJIQKU94BGInBYR8x/guY6QcPfntyvMfkhRpmBL
-         I8UoKGFB2710Iny+ybskqGIe/hK8ZtVEySac1HbQz+PzPVExXl0/JUe8axr+NCXhnZMQ
-         0ErsgjL5dpR5arPX+CK120vFGE6ZFM/Opx8Bt00MlWpfkDoqIiXouFZPKQ8Zea9BoFj2
-         142Q==
+        d=linuxfoundation.org; s=google; t=1741625636; x=1742230436; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cqH5RNA4+V94Yf+slqd6ff0/PyqOJrqIrolyj3RDlUI=;
+        b=ZxBpp8IeOiWo/nrfBiusfsu3Oh4JZQX7QumL0DInd++rMeIJxOVxO+0Vl8fhIAvzF+
+         G306URPl6czoLrUUQM5E0RQ/8Y/oPa5XAnqibJQJmqzGC01K2TAtBMNRUxGeVIgc50TC
+         YxFErUVkByy5ci3VNerQzNg+oeq3w4cWudxXk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741620690; x=1742225490;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1j2MnOnNngy3z98H4b7BI89EUZL8JJrgvAYbb1II2pw=;
-        b=g1RnqAZq4Y8PjQURNBwdrn+PmA7BgTBjPPTCxSL76LYAmrf6KGqxVMV1BFC1Fihogt
-         2OU7MsmEKPInngu+JWasyBt6TUn5y1IcbmrHWd2LyGMgn9ROoesyn9xcS7Gcujc8O8s9
-         iBhOej4/laXr6lTFufrGbtXE+zpzsqCafUppDIWtOa5bfNSW1eckSwJIusnhcpyIMJmD
-         TV5jmUA2PLWMqvZ5AlAE7SA6qh+g66LfdMkxGTyfxUpI9sib9o+8aHV+Dyj9fRqpuEoD
-         guy5Yg/XmhYnjeVqcDf27uWvWKSbKVB6sOT9niM95JniJhA0ln5J3CygPXI9bv1KW+9q
-         b4Aw==
-X-Gm-Message-State: AOJu0YxzlEIx/hjPV3G1FT0K0HGCwi2qnNPsj2LGe0kCGd41mV0s0CAi
-	hRWlBtDrbjOWMlPYY+nmpIIdrXmVTHlNtO1+ulPX8v7qoUC0B84lr5S81btCRPJ4jCMun/DBqPE
-	q8Ss=
-X-Gm-Gg: ASbGncs2XTRnYX5HuvAVjWrI0hR2EbPMWK52QACEjhmLh3Ume/qCIufE2ny+D/UrvcT
-	JGVPrF7Zj6xfnXCoQa8Ns6yk3AWVMvkoNmHQhyJ1UQgVxZO+6proxKetlm3UByklr8IoYAefXH+
-	2csj9JsFgI6tpKey3e7Wu85PrkPyS/DbfjW0NtAGD8OYi0RJxBBqVgfVd0OsWlqN0hxxAyM5ror
-	ChMrXcFBC49qHyqVvQRkbVfFruzzYAs1EFOWhcROGIEMTbNhEswnrH1+6JHgC0qFgFGECgv4m8n
-	H9nR+v0ECC0kgIIm9xGN7mLX3BzGhHfW3yOarvypxzYrSG1+oGAQZ+aWxQVHvQmry6HcTxlHOiO
-	pyNpPlQvEkSh72w==
-X-Google-Smtp-Source: AGHT+IG9j00RdxlfQHR/GzYxfrfNQ29pJEeAYIMX2Bxycu30oPXq2A/hqQahlxsRgCDfnh/EXiL5Ow==
-X-Received: by 2002:a05:6512:2391:b0:549:58d5:f899 with SMTP id 2adb3069b0e04-54990eadc5cmr4905806e87.37.1741620689442;
-        Mon, 10 Mar 2025 08:31:29 -0700 (PDT)
-Received: from localhost.localdomain (78-27-76-97.bb.dnainternet.fi. [78.27.76.97])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5498ae58a7bsm1494136e87.72.2025.03.10.08.31.28
+        d=1e100.net; s=20230601; t=1741625636; x=1742230436;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cqH5RNA4+V94Yf+slqd6ff0/PyqOJrqIrolyj3RDlUI=;
+        b=f8j/RMp1PQfoSDQum3nNjk4o3n+0MU8pqRSkkM9t1xJYQNbKAYcZFTRAg6eq8HIO/W
+         09lFdm27Je/jbYzH16z26R/4FjidMxwXRZQweY36lkmgdT7Txc3q55d/YzhRZDGkzbmD
+         8eAKuBSMTqu0Il/cg9yTAxriLE0UTnwxn25n3JVDOZCabl8Ie+By4lm8DGauSm7+eKha
+         u8k0MDRXTEVDhgBxwXnl6MOTvWeeg8L4phVO4ptNxJqf9Y5tbNuWMz6yslbFQsBZMMYY
+         7JqsCG+AeEcu08uEuO/4PODTlgeYpyYjwPthY8JD5F4ih44S+e9Om6A8KxVNGGX947+p
+         vPMg==
+X-Gm-Message-State: AOJu0Yylac8Kcb7KK8qW47pqcfLSpX8mWKtMRjdF4iHBs0+ng0/eq3yI
+	3ifEjUGokjGzze42MwCUYOzpoRslrQuWNJegK1bA4ET6Qems1zMUdjK5HsJeneY=
+X-Gm-Gg: ASbGnctZUdhhxCIsutVOKKd97cP55Va+o6+970eexI0v6xWpw2DI63dRWAhFwJde96S
+	7VXSkZKBmxVAS96GHe/e2ZtU0IiTNpCFqvi7qyQhhKL64KRTkbWAcykSihYQk13fa+7r5U/1XXh
+	eTzuwQfImjPPwO9bJMChSYlN3dz2vNkeBNMdekNTSyXTxTKi4rqLHmQN0lvuV/sxMFca1ueJIiB
+	bGnEJ3pDVbm1jP/aLeS9q8ri2nYk/rMjCBor/0k3Dj9KFlr4mLuF14p/yFAyz18NbvdbS6NGvk2
+	ywhYTCAqm5+JbCffMEzqWird2Y0oK+lZfV39tElQNtD6ak51xYnfiUSrfDUnyckl7nYVYxaJgo8
+	Rw6mytxvmVMltW+tav7TjDUHIXYO6/Xd8WA==
+X-Google-Smtp-Source: AGHT+IH7k0pUVMChV4dgJBu/w6RS3tmdrUsRSIHeRkxuZOP2NnWorui25zcp3EXAKCLR69wDMzo/7g==
+X-Received: by 2002:a05:600c:35d1:b0:43b:da2b:762d with SMTP id 5b1f17b1804b1-43c601d90c8mr98594345e9.7.1741625636611;
+        Mon, 10 Mar 2025 09:53:56 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:3d30:def0:6e8d:cbc8? ([2001:8b0:aba:5f3c:3d30:def0:6e8d:cbc8])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c0193bfsm15714390f8f.55.2025.03.10.09.53.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 08:31:28 -0700 (PDT)
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
-To: docs@lists.yoctoproject.org
-Cc: Mikko Rapeli <mikko.rapeli@linaro.org>
-Subject: [PATCH] sbom.rst: how to disable SPDX generation
-Date: Mon, 10 Mar 2025 17:31:08 +0200
-Message-ID: <20250310153108.40579-1-mikko.rapeli@linaro.org>
-X-Mailer: git-send-email 2.47.1
+        Mon, 10 Mar 2025 09:53:56 -0700 (PDT)
+Message-ID: <00f1f0d807758da4bf11c78de652f6d4b6ad1863.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH v3 0/5] fetch2/github_release_artifact: fetcher
+ for (private) release artifacts
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: lgo@pengutronix.de, bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org, yocto@pengutronix.de
+Date: Mon, 10 Mar 2025 16:53:55 +0000
+In-Reply-To: <20250307120055.1816436-1-l.goehrs@pengutronix.de>
+References: <20250307120055.1816436-1-l.goehrs@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.2-0ubuntu1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 15:31:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6523
+ <docs@lists.yoctoproject.org>; Mon, 10 Mar 2025 16:54:08 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6524
 
-Generating SPDX is enabled by default in poky but
-it can take a lot of build time resources so document
-how to disable it.
+On Fri, 2025-03-07 at 13:00 +0100, Leonard G=C3=B6hrs via lists.yoctoprojec=
+t.org wrote:
+> This fetcher enables downloading artifacts attached to GitHub releases
+> in private repositories.
+>=20
+> Authentication is provided using tokens via the `BB_FETCH_GHRA_TOKEN`
+> variable.
+>=20
+> Changes from v1 to v2:
+>=20
+> =C2=A0 - Provide examples on how to provide the `GH_TOKEN` more securely =
+than
+> =C2=A0=C2=A0=C2=A0 just hardcoding it in the recipe in the commit message=
+.
+> =C2=A0=C2=A0=C2=A0 E.g. via the `local.conf` or environment variables.
+> =C2=A0 - Indent the code example in the documentation `.rst` using three
+> =C2=A0=C2=A0=C2=A0 spaces instead of two.
+> =C2=A0 - Document the `token=3D` URI parameter along with the `GH_TOKEN`
+> =C2=A0=C2=A0=C2=A0 variable.
+>=20
+> Changes from v2 to v3:
+>=20
+> =C2=A0 - Rename `FetchData.headers` to `FetchData.http_headers` and do no=
+t set
+> =C2=A0=C2=A0=C2=A0 a default. Use `getattr` with a default instead.
+> =C2=A0 - Rename the token variable from `GH_TOKEN` (the de-facto default =
+in
+> =C2=A0=C2=A0=C2=A0 GitHub actions) to `BB_FETCH_GHRA_TOKEN` (makes it mor=
+e obvious where
+> =C2=A0=C2=A0=C2=A0 the variable is used).
+> =C2=A0 - Remove support for supplying the GitHub token as SRC_URI paramet=
+er
+> =C2=A0=C2=A0=C2=A0 to make it less likely that they are accidentally leak=
+ed, when e.g.
+> =C2=A0=C2=A0=C2=A0 sharing the recipe.
+> =C2=A0 - Do not use `dict_a | dict_b` to merge the header dicts,
+> =C2=A0=C2=A0=C2=A0 as that feature is not available in Python 3.8 used on=
+ Ubuntu 20.04.
+> =C2=A0=C2=A0=C2=A0 Use `dict(**dict_a, **dict_b)` instead.
+> =C2=A0 - Explicitly state in the documentation that access tokens should =
+have
+> =C2=A0=C2=A0=C2=A0 minimal scope.
+>=20
+> Alexander Kanavin and Peter Marko have voiced some security concerns abou=
+t
+> the token handling in bitbake variables that have not been adressed in
+> this v3.
+>=20
+> The security of the current solution should be on par or better than
+> what we have for `http` URLs that include basic auth usernames and
+> passwords. I consider this acceptable.
+>=20
+> A generic way to store these kinds of fetcher secrets outside of the
+> normal bitbake variables would be desirable though.
 
-Signed-off-by: Mikko Rapeli <mikko.rapeli@linaro.org>
----
- documentation/dev-manual/sbom.rst | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+I've been giving this patchset a lot of thought. I'm a bit concerned
+about creating a new "fetcher" namespace for something that is fairly
+niche, particularly when as Peter points out, the same thing can be
+achieved with a bbclass.
 
-diff --git a/documentation/dev-manual/sbom.rst b/documentation/dev-manual/sbom.rst
-index b72bad1554..f5a706bc14 100644
---- a/documentation/dev-manual/sbom.rst
-+++ b/documentation/dev-manual/sbom.rst
-@@ -24,12 +24,18 @@ users can read in standardized format.
- :term:`SBOM` information is also critical to performing vulnerability exposure
- assessments, as all the components used in the Software Supply Chain are listed.
- 
--The OpenEmbedded build system doesn't generate such information by default.
--To make this happen, you must inherit the
--:ref:`ref-classes-create-spdx` class from a configuration file::
-+The OpenEmbedded build system doesn't generate such information by default,
-+though ``poky`` reference distribution has it enabled out of the box.
-+
-+To enable it, inherit the :ref:`ref-classes-create-spdx` class from a configuration file::
- 
-    INHERIT += "create-spdx"
- 
-+In ``poky`` reference distribution, :term:`SPDX` generation does consume some build time
-+resources and thus if needed it can be disabled with:
-+
-+   INHERIT:remove = "create-spdx"
-+
- Upon building an image, you will then get:
- 
- -  :term:`SPDX` output in JSON format as an ``IMAGE-MACHINE.spdx.json`` file in
--- 
-2.43.0
+If there were no other way to do this, I think I'd be leaning to taking
+the patches but since there is another way which isn't too difficult, I
+think that we should promote that approach instead.
 
+One of the reasons for this is that by merging the new fetcher, it
+would complicate potential future changes to the wget fetcher and I'd
+prefer not to further limit our options there if we can help it.
+
+Unless I see other people saying they need this new fetcher, I'm
+therefore likely going to decline it in favour of the bbclass approach.
+
+Cheers,
+
+Richard
 
