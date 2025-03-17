@@ -2,58 +2,58 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4C41BC3DA4A
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5C808C35FFA
 	for <webhook@archiver.kernel.org>; Mon, 17 Mar 2025 09:06:38 +0000 (UTC)
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.47827.1742202393340852167
+ by mx.groups.io with SMTP id smtpd.web11.47917.1742202394163545863
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Mar 2025 02:06:33 -0700
+ Mon, 17 Mar 2025 02:06:34 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LM2/F5C6;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=eihaXPBx;
  spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D3AE843289;
-	Mon, 17 Mar 2025 09:06:31 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B10F243297;
+	Mon, 17 Mar 2025 09:06:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742202391;
+	t=1742202392;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AkA2Ke2DwxUAWPDEY/NulmKRyXTk39o/k4VE2hMPrwY=;
-	b=LM2/F5C6fe0Am4rsn4k8aHmlPgZ7ktbeM9h3jSq7xS7D80YfA3/h++UgTQl3T4Odlehp4B
-	bb9xAaOc+eINYSio5kR5KEQ2Xfnggqg1U/gVJcnVrBMHUFn2vZwOF2tqlF8nhSb0wMp4g7
-	Ue+RsmhTnnxAVZZr5p8DiPlhbDT0W5NaA80ogRxdEnM7GXRolrW3hns4qm4QB652O7Gmz9
-	pZbrQdTtipdbaY8I5Xg/PIQy/LW0o7VZBhcseO0KeyQ9s70akGUX03rFkTrmwTBIFp1FGO
-	BxMdVpknJcaIJnzV+1D8O9hVJJzEOXy9J4TV5xWdimjx8PLPUfbJADSOq6T0Ag==
+	bh=2TfSRkEo2IrvhFarmArpvZFjBGWWnKRkf5pyWZSnCtY=;
+	b=eihaXPBxCGTpITypwOlsEwVAgG7T5jz5ML0MtMq13kHvG9efMGungfXWRErlf4MiFfsHuw
+	MNyJzdMl3B2aGJ/iw/uen/zmceQe1GxCqq9UFm15aFoFbBoARNJ2e1hG/QRIS0xnPGE9T4
+	0fqhKuIhdf0mRDf6OqeG/1l2uaqc3PrbMnrj91rKsh/P7EWsnubc0TYLG1VXytL4WGIsMl
+	B0fIpX+oeWw5noh4yOjJPGnDkXZZ7pzl25panQKPL4mptQFloeiqky8bNsPSiQ1wv8dIAX
+	hq+e+dIbyKDtg76uTCc5MlSsbX7oz4GrJ8TRN9euMs81q9LisW6IpSu367/Xfg==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 17 Mar 2025 10:06:08 +0100
-Subject: [PATCH 02/11] ref-manual/variables.rst: WATCHDOG_TIMEOUT: fix
- recipe name
+Date: Mon, 17 Mar 2025 10:06:12 +0100
+Subject: [PATCH 06/11] ref-manual/variables.rst: document the
+ MESON_INSTALL_TAGS
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250317-release-note-5-2-updates-v1-2-82b0a4182aff@bootlin.com>
+Message-Id: <20250317-release-note-5-2-updates-v1-6-82b0a4182aff@bootlin.com>
 References: <20250317-release-note-5-2-updates-v1-0-82b0a4182aff@bootlin.com>
 In-Reply-To: <20250317-release-note-5-2-updates-v1-0-82b0a4182aff@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1056;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1055;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=bSAzenfajdWDx0YQtBVGK3wPDE8yEgMY/Ed47I4JMjQ=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn1+YVIniQqzOgPFLFt2FrZComUUdFuDamcCyrA
- 3MnFlEDFDOJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ9fmFQAKCRDRgEFAKaOo
- NpG5D/97FaMsOneVz7FSMscBtiJU6m+otOWQEY1G8no/gUJqdspfNXT/qLsEweBzvyfuz3+vuX7
- 3DKAIybvf6znbemlpYo1TX2M4FjVSATaW58YrdkyEWOo8iBmN9bv+DXGK+WyMSzRLPR7jwsS+6u
- rc6MRgjWbMa1/VsCuR3EgNLVvKYpQcCOoA0vyCJUoiNIcBYyfw7XRQ2dhtKebop2lLepFmmuWa6
- EY0ZeILyQ1ckX+3y+fx5LoxE03doqpn6ql4TrVrkcg5GxrUw4Uq8uD5idUdxffeu7BwZTfNic/U
- hCOL95FhJusLgm0o4/orakHsDdwBMu9q86v3ETZH2lf+kf0w9zoRYKL7pko5N2CRzMT/rWirkK1
- OrLZKntEky/315OQ6kW6nEWPqLsp87sWb6X9FYDmpSBjlmbi+n6GxElE4iQuiaR/ogqMFNQqa2i
- kDRzI2jSBQX9TJOiP4SicoSvRros9t7FoXlYhkXk/3JyAPx7xgT6pqqwz+qiP55pCLy91Y5WNMt
- DxYqb6PCEFNVr8RFuNaSiRDvGLzVmli2ExvW02lvd3VsFfmojiG8Lt6YyTQcs9O0hSZiRx/TYrj
- n5VbUdIfpnSQY0WXRQdjAAdQJCN7nDxctoYVZfPpz5brVojvjoPrV7+7zdQyRJp1kLUmmsg+I5M
- SPxbf6+voaxC4Eg==
+ bh=koDuZQrp8FHCvqWlJqXCqTfwKpQBEv8CDcBxrDicHHc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn1+YWVdbNQvuAtJMig5xJRim+b/6ABMim7fq4w
+ XiL3tNRsfmJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ9fmFgAKCRDRgEFAKaOo
+ NhcWD/4hxaVIFdudXTIcQnvQsRx+6E3JdnfAANLWqR7BOupsT8EJK2dtAR7WrL/rdMczeLBOt89
+ 0wTUX5bmiCrF8CzRL6vlpSx7RYVy8aZLKcaH8uh0ZDQjnOO2XHJZSHoggsxekV/AHZbnMzv8BD9
+ DM5L78+wojwSH37bHpUZ1ANyzvxTNx6idUTA78WfFiDmorJjODe3Vq39bHB5BsZmUJStwHiRxvQ
+ Ujwr/qrN9kItIiMGd8x1CLrpbHqJRFyOzJCZlymKtRgK+e2061GWKLUYzUVMRLXZ5K+kqQTFQZe
+ W6pA98szxI/huHBYsto8oty6yKkudTaNBP4ZFiTfs2OBUQfVdB6gMnNYBNTbF7N3OjCWrQJQpI3
+ 9KhJgqQ/iw+WM//4fjtA0LaYHOplH8BE0AmTzNhrMiwyBKdtVmjCeD9899AQGcp+qR0Grip3NvA
+ wlWj68gku+aF+2QQd3g6QmjCQWTSv01ugV+xr7D0YYiwI1Pl/VyOEE48fMT9lP0EThAen9CBb35
+ 1lmwNwY/fIciKziO7mKI4vbFuhFAtzy8SCNMfFoMdWVh2rfg6PyhRu1qiAWev3QUBCCT/JB+XeU
+ keJZL7Qqdzk4gIvXhKqbIbtv5sQ7J1tNy+q/Qi/ieFE1DdhPeQv/y4yu1N0UPW0vNlnp0F2+c/b
+ WoVrH2modbyUm2g==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
@@ -65,31 +65,31 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 17 Mar 2025 09:06:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6563
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6567
 
-This variable affects the watchdog-config recipe, not the watchdog
-recipe.
+This variable can be used to add install tags to the 'meson install'
+command.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ documentation/ref-manual/variables.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index b697a4e2d..d839c9702 100644
+index 21c196488..0aa3a9b11 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -10454,8 +10454,8 @@ system and gives an overview of their function and contents.
-       ":ref:`ref-classes-insane`" section.
+@@ -5579,6 +5579,10 @@ system and gives an overview of their function and contents.
+       you to specify the inclusion of debugging symbols and the compiler
+       optimizations (none, performance or size).
  
-    :term:`WATCHDOG_TIMEOUT`
--      Specifies the timeout in seconds used by the ``watchdog`` recipe and
--      also by ``systemd`` during reboot. The default is 60 seconds.
-+      Specifies the timeout in seconds used by the ``watchdog-config`` recipe
-+      and also by ``systemd`` during reboot. The default is 60 seconds.
- 
-    :term:`WIC_SECTOR_SIZE`
-       The variable :term:`WIC_SECTOR_SIZE` controls the sector size of Wic
++   :term:`MESON_INSTALL_TAGS`
++      A variable for the :ref:`ref-classes-meson` class, allowing to specify
++      install tags (``--tags`` argument of the ``meson install`` command).
++
+    :term:`MESON_TARGET`
+       A variable for the :ref:`ref-classes-meson` class, allowing to choose
+       a Meson target to build in :ref:`ref-tasks-compile`.  Otherwise, the
 
 -- 
 2.47.0
