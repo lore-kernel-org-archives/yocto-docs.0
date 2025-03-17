@@ -2,95 +2,127 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 83BDFC35FFC
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 933D2C36001
 	for <webhook@archiver.kernel.org>; Mon, 17 Mar 2025 09:06:38 +0000 (UTC)
 Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web11.47914.1742202393415199153
+ by mx.groups.io with SMTP id smtpd.web11.47913.1742202393293013265
  for <docs@lists.yoctoproject.org>;
  Mon, 17 Mar 2025 02:06:33 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mfBECLjn;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ZzSc9zLi;
  spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 0FB5143290;
-	Mon, 17 Mar 2025 09:06:32 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A022943277;
+	Mon, 17 Mar 2025 09:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742202392;
+	t=1742202391;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=o8/Qz3x6JTZUFVPEr/JPI2Akl1HqeU49CK+aOJhHxuU=;
-	b=mfBECLjnoAoHfZB4d5g9F/XZxIKBn2pA5duA+XcrEv+ygkYrnChCOpasGKWQG/AHkSSGRi
-	MX3EV2TiqJOez1jrQpb5pOPwwDXCr76F6JcOYtmjTGZhiZrOP6Qh6xibl7fRCCeE7iD2s7
-	VEr5wSTXpXFSs+Lsjaq+v2iV19ycay2NcjV7DQGSjKLRrsPl4ifIqbMEu4XntN66j0gVl6
-	Tpvvzym98de85rCPecZ1bP5/KdcoUIiqa2QbB4bOM2H9EoLO59lgp/C/7z/u04N9L/CaNo
-	aSXUbIYWzsodZzf4AfPZIU9+pYQD3FJ+FseUIssf5UH1Nw9WEjgPsx/IIOollQ==
+	bh=5SiiwRhhPce3e49ARkTjnl+PpFnZ8LjRnyQx66RFv20=;
+	b=ZzSc9zLiNr/4FLI9iUJEsboDpQ+LUMsz4SPyVqr7DSsVHXAYHNerRtbI/zXSEoKoXJbb/L
+	6Fcf3Q01R9viptBCNc1vcFp0upMyF0LVBvEKffi7mD0MsZS5WlFxKExiYo/y8WcnFLVW/O
+	+BrJKas4FJ3OGXx6dB56iSulncgxMVdYE3gZoCsZKyqZ9JZB4oY44uExf8H/dHIFuJX2bb
+	+p8DbW25MbA1gqhM9J9ShWAe7nZU4NpjrMIfsKxDn/yTeDBcGBHQ+xiP1ZlC3sz7Nxu2Pr
+	/7h3PkPZKdcb2ZBxvfAsQ+FH02/vtnoxLmI//WJdeJyz+kmOGc4g/60q6peOuQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Mon, 17 Mar 2025 10:06:09 +0100
-Subject: [PATCH 03/11] ref-manual/variables.rst: document the
- WATCHDOG_RUNTIME_SEC variable
+Date: Mon, 17 Mar 2025 10:06:07 +0100
+Subject: [PATCH 01/11] ref-manual/classes.rst: document the
+ ptest-python-pytest class and variables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250317-release-note-5-2-updates-v1-3-82b0a4182aff@bootlin.com>
+Message-Id: <20250317-release-note-5-2-updates-v1-1-82b0a4182aff@bootlin.com>
 References: <20250317-release-note-5-2-updates-v1-0-82b0a4182aff@bootlin.com>
 In-Reply-To: <20250317-release-note-5-2-updates-v1-0-82b0a4182aff@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1062;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2563;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=fGQfjaVjkAXdpOsQDBjD+T+Ngyc+yhhmG3ysQh94tq4=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn1+YV8sMlR4CU6teWy6ywoix8jt3D1AWLn4mPg
- nnv+mgrTieJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ9fmFQAKCRDRgEFAKaOo
- NgKGD/9kafx0Z165Dm05urMO6kYW6LDEAzJMyn6VEiAM9HwGLPAawgNvz1TbSKZ26j6cWMYQon0
- pU1HMa/c56mTgFOVjdvx6+yeP5Kl3wdVQaBxfIf6IK4jmoTcKo2A2clX7ePOEh5yjCbEywnTv0e
- YquB+rnn3rqPU+9qQ07jdqL9E4srYQXyGfYBVQXN32RIqDr0Y6aQSXefiu6JfEHd1Sz0acGMLM/
- R7L8YiWMHhBs5g+x0YjWZMs7e29PHGxGLGd9cYbyFhq0kajN5MCD6V0o/qU4yLbhvaTp0+mzSq3
- J7R/17x6Tnr0q225u75OlQhegi7Bl8ty+Fn7lSdiOkaTcnRG+MEjfhrx4QQVgBmfbZHqM7Pc9gE
- qxIuuaOOKJdLcjOWclN1eTbfAWis1C3ZIonQ9oOnCI3iMJ9Pn2+G2+740xqpGg597PxVpm829ed
- vkQ4qHOdgtpBDwvE5lwYhY8WubhOwRHU5gv+099ZqVwgeRvGGAeoDe7dl2ViuqXaQp3ySNAUVhn
- 6tS/H2JyankmlHrxUU4NbwVC77RwTn9KOAXJ0l/l6xTsmYnYLHCX6Nh6rNAcSw+rrkiwzfkXHdj
- xdzRa3YFb7oFyFgvwIuZypiy8uTmHjAupc/CtXGBsRgJTWV024dsQCjl8S+fh4gboIS4hzeLCfh
- bbpsadls6Vc7F2g==
+ bh=z0uunkhlLUu7NEyI+jgQBWRivYkZvqfdUsJWczVaYoo=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn1+YVd52Y7cqjAp7K7w/cA2z0t+Q8qLuUe5aV+
+ 2fIh2JSs4uJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ9fmFQAKCRDRgEFAKaOo
+ Nn0sD/9ICQkfOSXE2LGR1YG0f3rErbMBlO5keBmQ1qaqsu8dCIC6+t2IsH4+Ize/PTaA7cfq5y+
+ IzFf0AuWs6vuk/on0/SXM39ntqI3aaE56qZ4AclTRtdXG7FFO/DHQpp+1BSHZOzmwRV77G9L6D0
+ XI2NRxjtEyjsXU+E7MA1iZ7TO9daEqEz7Kad0mG/VdhZxRDWK/uA4221r+Y6amqRmL0NV2wYyzb
+ LhScGkr+G3HTBjTcvPudUGjfNH2dhwxEi/MbByRPy/3fQzIMBc2ZRnXr3FlEd8RLHgwAVVCK388
+ h2j1ZaCaqaXXph07vR69jCGdmfvCvKk7e3murc7i2BAAlmDZFfpTealmJssd1x0ywpJAbAqUkvE
+ UpWuUuWVNMI5k5N65WFw7td4KWHFgyI7asKeAnGDrQga1W+1Ug4R21J8ZgDV2vbhPwAcr+uCDLk
+ Ddw+hSe20snSYwUyp1wLn4pMCyi0Gzsg50aSLKIYfm/8No+T/dk/RFv0hu3kbDhMaG8rgqoWWVA
+ qeIkLZaKGSKFSF80RwhN+qiEyRtxBMa8K5LT1Cw1rIdnyVMrE9wa4xBthmJNFYtbb1pWjkaE1hr
+ 7pJpUt8yLFNry/iRZfKCnG8GjMwX/lh0SUj/jFS9oPohlTpn/syMa6lLEdT1usPLcI6MK6uadJw
+ f2yEvkdn5PGBT5w==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeeludduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegso
- hhothhlihhnrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddufeeludduucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehhffftddvhfegveetleekvdefueejheekueekudejjeffudfgvdehvdffudfgjeenucffohhmrghinhepphihthgvshhtrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhop
+ ehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Mon, 17 Mar 2025 09:06:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6564
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6562
 
-This variable controls the RuntimeWatchdogSec option in
-/etc/systemd/system.conf.
+Add documentation for the ptest-python-pytest class, and the
+PTEST_PYTEST_DIR variable which can be overriden.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 5 +++++
- 1 file changed, 5 insertions(+)
+ documentation/ref-manual/classes.rst   | 15 +++++++++++++++
+ documentation/ref-manual/variables.rst | 10 ++++++++++
+ 2 files changed, 25 insertions(+)
 
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manual/classes.rst
+index b93279ff6..047ca5d7f 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -2707,6 +2707,21 @@ For information on setting up and running ptests, see the
+ ":ref:`test-manual/ptest:testing packages with ptest`"
+ section in the Yocto Project Development Tasks Manual.
+ 
++.. _ref-classes-ptest-python-pytest:
++
++``ptest-python-pytest``
++=======================
++
++The :ref:`ref-classes-ptest-python-pytest` class can be used in Python-based
++recipes to automatically configure the :ref:`ref-classes-ptest` class for Python
++packages leveraging the `pytest <https://docs.pytest.org>`__ unit test framework.
++
++Within the recipe, the :term:`PTEST_PYTEST_DIR` variable can be overridden to
++specify the path to the directory containing the tests (default value:
++``tests``). Test contained in this directory are installed in :term:`D` by the
++:ref:`ref-tasks-install_ptest_base` task, as well as a specific ``run-ptest``
++script for this task.
++
+ .. _ref-classes-python3-dir:
+ 
+ ``python3-dir``
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index d839c9702..60cc8e9af 100644
+index 861b04eaa..b697a4e2d 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -10453,6 +10453,11 @@ system and gives an overview of their function and contents.
-       can control with this variable, see the
-       ":ref:`ref-classes-insane`" section.
+@@ -7088,6 +7088,16 @@ system and gives an overview of their function and contents.
+       at build time should be done by adding "ptest" to (or removing it
+       from) :term:`DISTRO_FEATURES`.
  
-+   :term:`WATCHDOG_RUNTIME_SEC`
-+      For the ``systemd`` recipe, this controls the value of the
-+      ``RuntimeWatchdogSec`` option in ``/etc/systemd/system.conf``. The default
-+      value is an empty string.
++   :term:`PTEST_PYTEST_DIR`
++      Within the :ref:`ref-classes-ptest-python-pytest` class, the
++      :term:`PTEST_PYTEST_DIR` variable represents the path within the source
++      tree of a Python package holding the unit tests to be tested with the
++      `pytest <https://docs.pytest.org>`__ framework. The default value for this
++      variable is ``tests``.
 +
-    :term:`WATCHDOG_TIMEOUT`
-       Specifies the timeout in seconds used by the ``watchdog-config`` recipe
-       and also by ``systemd`` during reboot. The default is 60 seconds.
++      For more information, see
++      the :ref:`ref-classes-ptest-python-pytest` class documentation.
++
+    :term:`PV`
+       The version of the recipe. The version is normally extracted from the
+       recipe filename. For example, if the recipe is named
 
 -- 
 2.47.0
