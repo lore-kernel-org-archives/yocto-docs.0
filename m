@@ -1,135 +1,265 @@
-Return-Path: <adrian.freihofer@gmail.com>
+Return-Path: <jamin_lin@aspeedtech.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C344EC282EC
-	for <webhook@archiver.kernel.org>; Mon, 17 Mar 2025 17:35:21 +0000 (UTC)
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
- by mx.groups.io with SMTP id smtpd.web11.59314.1742232917919929209
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76AA4C282EC
+	for <webhook@archiver.kernel.org>; Tue, 18 Mar 2025 03:10:50 +0000 (UTC)
+Received: from TWMBX01.aspeed.com (TWMBX01.aspeed.com [211.20.114.72])
+ by mx.groups.io with SMTP id smtpd.web10.3281.1742267443000702109
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Mar 2025 10:35:18 -0700
+ Mon, 17 Mar 2025 20:10:43 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=JCFcfSw3;
- spf=pass (domain: gmail.com, ip: 209.85.128.47, mailfrom: adrian.freihofer@gmail.com)
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-43d0782d787so16606495e9.0
-        for <docs@lists.yoctoproject.org>; Mon, 17 Mar 2025 10:35:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742232916; x=1742837716; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7iKLs9pDRWmxT3aMBgmLdeYpz6mTULhDahFgHye8CSU=;
-        b=JCFcfSw33CS7KBnymZVXku+mqcmYgqsKVVkk45txNgg75r1FV5v9Jtcv/Wu14AfktK
-         uRxLbR/U9xMgTCDoUo8LxrrHdjzmvK8SEOAFALMolv+520KY4beYR0Mo4Ur5HWjKyUzt
-         1HqvS1xvsr/5BE/+XusabfyYxiJI1EDrG482rKTx/G/KnaC8DKShLFQGVgqGMHDJWLPj
-         u6vtNtvM7+W6xgf1y7UXQGv1aU08HhW3nlmVAzRAzSRcwE5bVvqCrjaHKY9xg9nGxjSa
-         CYAW66gr141vmDrlWa+agRr88vhM+rKboz4tFJIt3sC+qFIZzOckBFg9n8sED8voyTiN
-         Dh8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742232916; x=1742837716;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7iKLs9pDRWmxT3aMBgmLdeYpz6mTULhDahFgHye8CSU=;
-        b=aIXNaLHR5ljGbk/GSjgEV7svDz7uCwdxJXjD2nHHV/aTfHIcvh4CN5r2MTUMgBEaTF
-         R+PidOYt+GDG3OlYwSjpgab6QdWTKI+EMdeBzWuFFSGUzwmAvdo/YIV3f7eqy46YhoOg
-         +u0ozcTTDOb2z846wN+xEp24MEli4chIXydPI1ES9d3nHddeylsuT+8UHNSZRng1OHZ4
-         5Z642CofixFC99nPTigMXoauxrtTfmyf3F/eb3p3OtKX55TtF71VJ6U9bkSrFabz23x+
-         lRLPJeHT6ErrHERY545kDOL3szQH7rTPX10YxnZ4NFmrcweHy0R3+OvTWBKXhTS5JAi7
-         jKIA==
-X-Gm-Message-State: AOJu0YzfEZsdV/uZCMM3sBQhXisUqJB4d0Od3rcGDvV8JFYw3qg26cST
-	UcU2/jl2A/7t1j/Du5eHubTduAWBbpZtTTOpUbQPJm8Xkc9C0mUVSm/c7Q==
-X-Gm-Gg: ASbGncsH47E0dlzwQjM5wjuw98OuKnLraiEuzzu7yi+URReRZsOTMYaSDZYAkctK2cx
-	3lo8LBCeKCxLGjcsQ7f4E8fsQ0R3S7dD+0Qp/qLitglp4aMmTF2BlDPLUFiEiMoUaKThNrhLw6C
-	sEBCB1W8ZfLmKkavOnv1mZSqcpP9+cmjEF2E+qaRDYGNseQR09A83unMlyBsrv/WrAQBI4M+J/e
-	ADc4URCbzBZuVlihlCuaS1eFnzrVBOOO5bKUcncKTYW1zvBZHKBpNdPyHzcMIjVT+BC6eBUJbf/
-	k0rEfKcogp8NtsXKOArdNPYvYHcRTa3arFqB7RsTqbzCaqkP9bmbgOS1eVRF74/a2Zg=
-X-Google-Smtp-Source: AGHT+IFvmOvwcpJdGH5Ac99zliT5M1S4ymsLSWVVtvv8+PG+XCsilr3a9GQQdpR91loh2GCPso2xpQ==
-X-Received: by 2002:a05:600c:3146:b0:43c:ea1a:720c with SMTP id 5b1f17b1804b1-43d1ecb1019mr128472845e9.18.1742232915590;
-        Mon, 17 Mar 2025 10:35:15 -0700 (PDT)
-Received: from wsadrian16.fritz.box ([2a02:169:59a6:0:55c4:f628:91f3:4287])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d1fe609a2sm110171665e9.30.2025.03.17.10.35.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Mar 2025 10:35:14 -0700 (PDT)
-From: Adrian Freihofer <adrian.freihofer@gmail.com>
-X-Google-Original-From: Adrian Freihofer <adrian.freihofer@siemens.com>
-To: docs@lists.yoctoproject.org
-Cc: Adrian Freihofer <adrian.freihofer@siemens.com>
-Subject: [PATCH v6] ref-manual: variable FIT_SIGN_INDIVIDUAL mix-and-match attacks
-Date: Mon, 17 Mar 2025 18:35:01 +0100
-Message-ID: <20250317173501.965049-1-adrian.freihofer@siemens.com>
-X-Mailer: git-send-email 2.48.1
+ dkim=none (message not signed); spf=pass (domain: aspeedtech.com, ip: 211.20.114.72, mailfrom: jamin_lin@aspeedtech.com)
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 18 Mar
+ 2025 11:10:40 +0800
+Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
+ Transport; Tue, 18 Mar 2025 11:10:40 +0800
+From: Jamin Lin <jamin_lin@aspeedtech.com>
+To: <docs@lists.yoctoproject.org>
+CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>
+Subject: [PATCH v7] ref-manual: uboot-sign: Add how to enable ATF, TEE and User defined snippet ITS for U-Boot FIT image
+Date: Tue, 18 Mar 2025 11:10:40 +0800
+Message-ID: <20250318031040.307730-1-jamin_lin@aspeedtech.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 17 Mar 2025 17:35:21 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6584
+ <docs@lists.yoctoproject.org>; Tue, 18 Mar 2025 03:10:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6585
 
-Incorporate the lessons learned from a regression introduced with commit
-  OE-Core rev: 259bfa86f384206f0d0a96a5b84887186c5f689e
-               u-boot: kernel-fitimage: Fix dependency loop if
-               UBOOT_SIGN_ENABLE and UBOOT_ENV enabled
-and fixed with commit
-  OE-Core rev: 0106e5efab99c8016836a2ab71e2327ce58a9a9d
-               u-boot: kernel-fitimage: Restore FIT_SIGN_INDIVIDUAL="1"
-               behavior
-into the documentation.
+Add how to enable ATF, TEE and User defined ITS for U-Boot FIT image genera=
+tion.
 
-The use of the variable FIT_SIGN_INDIVIDUAL is explicitly discouraged.
-
-Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
+Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
 ---
- documentation/ref-manual/variables.rst | 34 +++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 6 deletions(-)
+ documentation/ref-manual/classes.rst   |  13 +++
+ documentation/ref-manual/variables.rst | 138 +++++++++++++++++++++++++
+ 2 files changed, 151 insertions(+)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 861b04eaab1..5b5eaccc2a1 100644
+diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
+l/classes.rst
+index b93279ff6..6797927fe 100644
+--- a/documentation/ref-manual/classes.rst
++++ b/documentation/ref-manual/classes.rst
+@@ -3401,6 +3401,19 @@ The variables used by this class are:
+ -  :term:`UBOOT_FITIMAGE_ENABLE`: enable the generation of a U-Boot FIT im=
+age.
+ -  :term:`UBOOT_MKIMAGE_DTCOPTS`: DTC options for U-Boot ``mkimage`` when
+    rebuilding the FIT image containing the kernel.
++-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`: include the Trusted Firmware-A
++   (TF-A) binary in the U-Boot FIT image.
++-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`: specifies the path to the
++   Trusted Firmware-A (TF-A) binary.
++-  :term:`UBOOT_FIT_TEE`: include the Trusted Execution Environment (TEE)
++   binary in the U-Boot FIT image.
++-  :term:`UBOOT_FIT_TEE_IMAGE`: specifies the path to the Trusted Executio=
+n
++   Environment (TEE) binary.
++-  :term:`UBOOT_FIT_USER_SETTINGS`: adds a user-specific snippet to the U-=
+Boot
++   Image Tree Source (ITS). Users can include their custom U-Boot Image Tr=
+ee
++   Source (ITS) snippet in this variable.
++-  :term:`UBOOT_FIT_CONF_USER_LOADABLES`: adds one or more user-defined im=
+ages
++   to the ``loadables`` property of the configuration node.
+=20
+ See U-Boot's documentation for details about `verified boot
+ <https://source.denx.de/u-boot/u-boot/-/blob/master/doc/uImage.FIT/verifie=
+d-boot.txt>`__
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
+ual/variables.rst
+index 861b04eaa..1eb33f249 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -3170,13 +3170,35 @@ system and gives an overview of their function and contents.
-       :ref:`ref-classes-kernel-fitimage` class.
- 
-    :term:`FIT_SIGN_INDIVIDUAL`
--      If set to "1", then the :ref:`ref-classes-kernel-fitimage`
--      class will sign the kernel, dtb and ramdisk images individually in addition
--      to signing the FIT image itself. This could be useful if you are
--      intending to verify signatures in another context than booting via
--      U-Boot.
-+      If set to "1", the :ref:`ref-classes-kernel-fitimage` class signs each
-+      image node individually, including the kernel, DTB, RAM disk, and any
-+      other image types present in the FIT image, in addition to signing the
-+      configuration nodes.
-+      This can be useful if you need to verify signatures outside of the
-+      U-Boot boot process. By default, this variable is set to "0".
- 
--      This variable is set to "0" by default.
-+      If :term:`UBOOT_SIGN_ENABLE` is set to "1" and
-+      :term:`FIT_SIGN_INDIVIDUAL` remains at its default value of "0", only the
-+      configuration nodes are signed. Since configuration nodes include hashes
-+      of their referenced image nodes, the integrity of the entire FIT image is
-+      ensured as long as the image nodes are loaded via the configuration nodes
-+      and the hashes of the image nodes are checked. That's usually the case.
+@@ -9949,6 +9949,45 @@ system and gives an overview of their function and c=
+ontents.
+=20
+       See `more details about #address-cells <https://elinux.org/Device_Tr=
+ee_Usage#How_Addressing_Works>`__.
+=20
++   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`
++      `Trusted Firmware-A (TF-A) <https://www.trustedfirmware.org/projects=
+/tf-a>`__
++      is a reference implementation of secure world software for Arm A-Pro=
+file
++      architectures (Armv8-A and Armv7-A), including an Exception Level 3 =
+(EL3)
++      Secure Monitor. This variable enables the generation of a U-Boot FIT
++      image with a Trusted Firmware-A (TF-A) binary.
 +
-+      Enabling :term:`FIT_SIGN_INDIVIDUAL` typically increases complexity for
-+      little benefit. There might be exceptions such as image nodes that are
-+      not referenced by any configuration node or loaded directly for whatever
-+      reason.
-+      For most use cases, setting this variable to "0" provides sufficient
-+      security.
++      Its default value is "0", so set it to "1" to enable this functional=
+ity::
 +
-+      For further details, refer to the official U-Boot documentation:
-+      `U-Boot fit signature <https://docs.u-boot.org/en/latest/usage/fit/signature.html>`__
-+      and more specifically at:
-+      `U-Boot signed configurations <https://docs.u-boot.org/en/latest/usage/fit/signature.html#signed-configurations>`__.
++         UBOOT_FIT_ARM_TRUSTED_FIRMWARE =3D "1"
 +
-+      Signing only the image nodes is intentionally not implemented by
-+      :term:`OpenEmbedded-Core (OE-Core)`, as it is vulnerable to mix-and-match
-+      attacks.
- 
-    :term:`FIT_SIGN_NUMBITS`
-       Size of the private key used in the FIT image, in number of bits.
--- 
-2.48.1
++   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`
++      Specifies the path to the Trusted Firmware-A (TF-A) binary. Its defa=
+ult
++      value is "bl31.bin"::
++
++         UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE ?=3D "bl31.bin"
++
++      If a relative path is provided, the file is expected to be relative =
+to
++      U-Boot's :term:`B` directory. An absolute path can be provided too,
++      e.g.::
++
++         UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE ?=3D "${DEPLOY_DIR_IMAGE}/bl=
+31.bin"
++
++      If the Trusted Firmware-A (TF-A) binary is built in a separate recip=
+e,
++      you must add the necessary dependency in a U-Boot ``.bbappend`` file=
+. The
++      recipe name for Trusted Firmware-A (TF-A) binary is
++      ``trusted-firmware-a``, which comes from the
++      :yocto_git:`meta-arm </meta-arm>` layer::
++
++         do_compile[depends] +=3D "trusted-firmware-a:do_deploy"
++
++   :term:`UBOOT_FIT_CONF_USER_LOADABLES`
++      Adds one or more user-defined images to the ``loadables`` property o=
+f the
++      configuration node of the U-Boot Image Tree Source (ITS). This varia=
+ble
++      is handled by the local shell in the recipe so appropriate escaping
++      should be done, e.g. escaping quotes.::
++
++         UBOOT_FIT_CONF_USER_LOADABLES =3D '\"fwa\", \"fwb\"'
++
+    :term:`UBOOT_FIT_DESC`
+       Specifies the description string encoded into a U-Boot fitImage. The=
+ default
+       value is set by the :ref:`ref-classes-uboot-sign` class as follows::
+@@ -9997,6 +10036,105 @@ system and gives an overview of their function and=
+ contents.
+       of bits. The default value for this variable is set to "2048"
+       by the :ref:`ref-classes-uboot-sign` class.
+=20
++   :term:`UBOOT_FIT_TEE`
++      A Trusted Execution Environment (TEE) is a secure environment for
++      executing code, ensuring high levels of trust in asset management wi=
+thin
++      the surrounding system. This variable enables the generation of a U-=
+Boot
++      FIT image with a Trusted Execution Environment (TEE) binary.
++
++      Its default value is "0", so set it to "1" to enable this functional=
+ity::
++
++         UBOOT_FIT_TEE =3D "1"
++
++   :term:`UBOOT_FIT_TEE_IMAGE`
++      Specifies the path to the Trusted Execution Environment (TEE) binary=
+. Its
++      default value is "tee-raw.bin"::
++
++         UBOOT_FIT_TEE_IMAGE ?=3D "tee-raw.bin"
++
++      If a relative path is provided, the file is expected to be relative =
+to=20
++      U-Boot's :term:`B` directory. An absolute path can be provided too,
++      e.g.::
++
++         UBOOT_FIT_TEE_IMAGE ?=3D "${DEPLOY_DIR_IMAGE}/tee-raw.bin"
++
++      If the Trusted Execution Environment (TEE) binary is built in a sepa=
+rate
++      recipe, you must add the necessary dependency in a U-Boot ``.bbappen=
+d``
++      file. The recipe name for Trusted Execution Environment (TEE) binary=
+ is
++      ``optee-os``, which comes from the :yocto_git:`meta-arm </meta-arm>`
++      layer::
++
++         do_compile[depends] +=3D "optee-os:do_deploy"
++
++   :term:`UBOOT_FIT_USER_SETTINGS`
++      Add a user-specific snippet to the U-Boot Image Tree Source (ITS). T=
+his
++      variable allows the user to add one or more user-defined ``/images``=
+ node
++      to the U-Boot Image Tree Source (ITS). For more details, please refe=
+r to
++      https://fitspec.osfw.foundation/\ .
++
++      The original content of the U-Boot Image Tree Source (ITS) is as
++      follows::
++
++         images {
++             uboot {
++                 description =3D "U-Boot image";
++                 data =3D /incbin/("u-boot-nodtb.bin");
++                 type =3D "standalone";
++                 os =3D "u-boot";
++                 arch =3D "";
++                 compression =3D "none";
++                 load =3D <0x80000000>;
++                 entry =3D <0x80000000>;
++             };
++         };
++
++      Users can include their custom ITS snippet in this variable, e.g.::
++
++         UBOOT_FIT_FWA_ITS =3D '\
++             fwa {\n\
++                 description =3D \"FW A\";\n\
++                 data =3D /incbin/(\"fwa.bin\");\n\
++                 type =3D \"firmware\";\n\
++                 arch =3D \"\";\n\
++                 os =3D \"\";\n\
++                 load =3D <0xb2000000>;\n\
++                 entry =3D <0xb2000000>;\n\
++                 compression =3D \"none\";\n\
++             };\n\
++         '
++
++         UBOOT_FIT_USER_SETTINGS =3D "${UBOOT_FIT_FWA_ITS}"
++
++      This variable is handled by the local shell in the recipe so appropr=
+iate
++      escaping should be done, e.g. escaping quotes and adding newlines wi=
+th
++      ``\n``.
++
++      The generated content of the U-Boot Image Tree Source (ITS) is as
++      follows::
++
++         images {
++             uboot {
++                 description =3D "U-Boot image";
++                 data =3D /incbin/("u-boot-nodtb.bin");
++                 type =3D "standalone";
++                 os =3D "u-boot";
++                 arch =3D "";
++                 compression =3D "none";
++                 load =3D <0x80000000>;
++                 entry =3D <0x80000000>;
++             };
++             fwa {
++                 description =3D "FW A";
++                 data =3D /incbin/("fwa.bin");
++                 type =3D "firmware";
++                 arch =3D "";
++                 os =3D "";
++                 load =3D <0xb2000000>;
++                 entry =3D <0xb2000000>;
++                 compression =3D "none";
++             };
++         };
++
+    :term:`UBOOT_FITIMAGE_ENABLE`
+       This variable allows to generate a FIT image for U-Boot, which is on=
+e
+       of the ways to implement a verified boot process.
+--=20
+2.34.1
 
 
