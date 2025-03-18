@@ -2,264 +2,324 @@ Return-Path: <jamin_lin@aspeedtech.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 76AA4C282EC
-	for <webhook@archiver.kernel.org>; Tue, 18 Mar 2025 03:10:50 +0000 (UTC)
-Received: from TWMBX01.aspeed.com (TWMBX01.aspeed.com [211.20.114.72])
- by mx.groups.io with SMTP id smtpd.web10.3281.1742267443000702109
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7D738C282EC
+	for <webhook@archiver.kernel.org>; Tue, 18 Mar 2025 03:14:50 +0000 (UTC)
+Received: from APC01-SG2-obe.outbound.protection.outlook.com (APC01-SG2-obe.outbound.protection.outlook.com [40.107.215.114])
+ by mx.groups.io with SMTP id smtpd.web11.3361.1742267683763684710
  for <docs@lists.yoctoproject.org>;
- Mon, 17 Mar 2025 20:10:43 -0700
+ Mon, 17 Mar 2025 20:14:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: aspeedtech.com, ip: 211.20.114.72, mailfrom: jamin_lin@aspeedtech.com)
-Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1258.12; Tue, 18 Mar
- 2025 11:10:40 +0800
-Received: from mail.aspeedtech.com (192.168.10.10) by TWMBX01.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server id 15.2.1258.12 via Frontend
- Transport; Tue, 18 Mar 2025 11:10:40 +0800
+ dkim=pass header.i=@aspeedtech.com header.s=selector2 header.b=hZ+8b7V7;
+ spf=pass (domain: aspeedtech.com, ip: 40.107.215.114, mailfrom: jamin_lin@aspeedtech.com)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vcUJaO5T0gDKUNFbF5zWSZptFq40/sVaA7ZQTu2BeFhu85htAEUL/EEF5lJCtty1uqFxp7coVHCkjQTl//CaFyo/P4JDndfVCOBuH0NjPKq3fIQu0RFdCvionQ5uQjFUNdZF1I3HoH4O+2N+op5cMYwNpYATqN09pA5hzsJ6fL1LJMyr3pnmaMUxKuN0zDm8lMvicqSpAlcvU+Y7FQB4VMeAMy87oSNmtT5Io9iLuRGjZXDfKngHKiGBKqFl7/fCC/DGn8i8IGfomvyM4wmtXJHLLdSYFt/A/7AT9nuEaHV9hDOuYQGxLv0Zs/+01+PdI8/qMH7kjpDrMpF1VK53xQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wKp0hQLFV0yotB8F0hZ/6p08c4ZfyONhHsUIHh9lDmw=;
+ b=CKBU55BjKxhSa5V/c8z/KqhxE6SwOlkg1ql+yfzzpwAD0I9Fx7lF9dNvmZVwYzQOJoQfgjrC6LUz8su5tn92qPlK4bPidRa7LvqOKmTsy+T9aEnGJNBcBiGq8wRhep5JM3++Xuw2fi6ke345T92MlIGg0c31VWpM5UfvzGa0d39QBsl9FUo9eFK8/6Q6tgDtaZq/cgpTYzhwV800KBiPZMJywUmt2OwCDYWO5FIG0hq1TMhaGBJ8anQEYhWm+GzrwKGb++sO6wYimk6hMj43jNHB5PKXZkoo1FwBzfx96vlyT6RDJJejTRhNtJlztE98iX4tAvCiLBFwBZxFG3GVlw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wKp0hQLFV0yotB8F0hZ/6p08c4ZfyONhHsUIHh9lDmw=;
+ b=hZ+8b7V7u1H6pZkeN0CndQyuEcH/TaGFu8oE9o3Mu497Mz7RQb2zDG0buDOidVQ2Wg9iOw4arBvK5QqYdrcjj6sNGfaWimj4jBLExNaa2gAPl6F5SQ8Tc3h3hAa+jotL7XopH2ZRivwOHMGj2icZ61K16VwKuWXiGdtnuSRDPxO/rHnkaut+IJgGzq4BHUJ3QscXyzE9lZplBUZVpP+8Fv/Lc2EBP8zTJp+HsiqSZWrpc2XguMLgVE7+vayrmI4QO3wkC68wp2CoZz1NPVCRLzW5XJJPJzt8+3i47jomc0TSf4KFPZ8uRokI9LAlbutQNa8/2OYEn6kpL85K7vw1jw==
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com (2603:1096:4:1a4::6) by
+ SEZPR06MB5544.apcprd06.prod.outlook.com (2603:1096:101:ca::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8534.33; Tue, 18 Mar 2025 03:14:35 +0000
+Received: from SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56]) by SI2PR06MB5041.apcprd06.prod.outlook.com
+ ([fe80::705a:352a:7564:8e56%6]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
+ 03:14:35 +0000
 From: Jamin Lin <jamin_lin@aspeedtech.com>
-To: <docs@lists.yoctoproject.org>
-CC: <troy_lee@aspeedtech.com>, <jamin_lin@aspeedtech.com>
-Subject: [PATCH v7] ref-manual: uboot-sign: Add how to enable ATF, TEE and User defined snippet ITS for U-Boot FIT image
-Date: Tue, 18 Mar 2025 11:10:40 +0800
-Message-ID: <20250318031040.307730-1-jamin_lin@aspeedtech.com>
-X-Mailer: git-send-email 2.43.0
+To: "quentin.schulz@cherry.de" <quentin.schulz@cherry.de>,
+	"docs@lists.yoctoproject.org" <docs@lists.yoctoproject.org>, Antonin Godard
+	<antonin.godard@bootlin.com>
+CC: Troy Lee <troy_lee@aspeedtech.com>
+Subject: RE: [docs] [PATCH v6] ref-manual: uboot-sign: Add how to enable ATF,
+ TEE and User defined snippet ITS for U-Boot FIT image
+Thread-Topic: [docs] [PATCH v6] ref-manual: uboot-sign: Add how to enable ATF,
+ TEE and User defined snippet ITS for U-Boot FIT image
+Thread-Index: AQHblIb9Y9ZGyvyPyE6hXVHVqisujbN3OEAAgAEFzHA=
+Date: Tue, 18 Mar 2025 03:14:35 +0000
+Message-ID: 
+ <SI2PR06MB5041834069868C3ACCE12D95FCDE2@SI2PR06MB5041.apcprd06.prod.outlook.com>
+References: <20250314021535.1677985-1-jamin_lin@aspeedtech.com>
+ <acc19cf6-4a72-41c8-9039-4897e179a0fd@cherry.de>
+In-Reply-To: <acc19cf6-4a72-41c8-9039-4897e179a0fd@cherry.de>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SI2PR06MB5041:EE_|SEZPR06MB5544:EE_
+x-ms-office365-filtering-correlation-id: 3418f471-86c5-4a2e-ef10-08dd65cb02e2
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info: 
+ =?utf-8?B?QXBEUDhPWEN3d1hlazc4cng1c0dJSU1GdVAzRmZDZ2FFVlBHU2l6NFhRcER0?=
+ =?utf-8?B?b0Rlb3JDZ056bTVoUklBeWc4U3JOK0lVYlcxSEc3NisxclhZVlg3MFY5OGJT?=
+ =?utf-8?B?UHJTSy9ZZGlTdENZSFR2NDdCOFppTFNsUmkyKy9SL0lGMGQreFZINHhDSnJY?=
+ =?utf-8?B?REJzMEg2anA0dTR6WWpKOXRzNDd4Qll4NGVRTnZQUURqMkc5WDlmS3JjcmtB?=
+ =?utf-8?B?dThwNjNmOGxaMWRDc2p5NUduQ3ZpcmtqR1VUWlE0Mi9DOVlXYTRqZWRpeExz?=
+ =?utf-8?B?dFlXekUvMktNeTg3ZzVkcVpUK2ZPMGlQdjg0ZzdvT0xCNjRBcXd4QVh4eUFq?=
+ =?utf-8?B?WkpIdG4yaTA5Rm5EU0dNaFQrODFaS0xqajJUeGlpVXpHSzlCWTJCZSt4b1lr?=
+ =?utf-8?B?WklYQ2s2UnhCb3FjTlVuNmNGVnc4UFVtNlVkaW5HWjFnbDd3NVEveXY0MUZa?=
+ =?utf-8?B?VHFDd25MWnQzcVRMZWkvL0VQQzlxaVVQeFFDMVlzTm5teDEreWZ1V1pIZFlH?=
+ =?utf-8?B?bTRsZ0NHbER3ajMyM0p3eWxhN2J4V3N0dDltUE1NV1M1U1dUMEZOVUluTHFx?=
+ =?utf-8?B?c1c4dmxDQkI1OU5RK09qanE2amR3akV3YXJTclBvTENTYUVzcFRwWThveDEx?=
+ =?utf-8?B?Z3V1NG45WGJvem05eWtpZVdxTGlrNEIxc2hHcStoYXoyQUNTOWtMRmkyVmhK?=
+ =?utf-8?B?eG5WMm41bDBIZEN2ZUR5OTR3TlBYdFdYcEY1VldJeTllTERPK2tTZU1Za3lL?=
+ =?utf-8?B?cmcvK09oWXhIcEE1RnIrZmd2UGRkV2NER1p3Y1B1Z2xKekwrTldDWVhJTjRD?=
+ =?utf-8?B?dENBNFBMek1IZEQzVU53eWNKUklrTVQwblZsYThtdmliYmNES1ROeTdyR01V?=
+ =?utf-8?B?WVF4OHlLRC83SVJWR1hoZG9TeXVHdEN5SXpoQ29wMXY1NWNJVEVDUUt5MXNU?=
+ =?utf-8?B?OUxlS04zS0h6ak8xRlR5c1J1M1pPSDRWL1h2QjFPZlZoekZNUlNPRlQ5NGtM?=
+ =?utf-8?B?d1B5SzhkY2NmQyswcGcyTDRiRWFBZ0R3aUIyMERvTXd2K3ZhM2tOMEZLSXht?=
+ =?utf-8?B?VDUrRmdZN2ZHcEVtd2cwUnhNbWtxYzdURkxwYk1RRnYvd2h0QXhPS3BoQnBL?=
+ =?utf-8?B?TWlTK2dHMzlpVlpsd0tpVzJCV3RLWmxQZU1zY1M4T0NERHA0aVNSVk12TDM4?=
+ =?utf-8?B?NkZkaWZpQlBVV1Q0KzhtT1BpKy9mdFBsWWZvNHVrYWtKZ2RKeDJDYU5lYVlr?=
+ =?utf-8?B?ZGFxZHloZnBITHNKRGRYMWpCVmZPa0VRZ29UdFlzS1FVUmhCZGxZMG85V0Zx?=
+ =?utf-8?B?UkZPT1BaUE15aHczaCszYnJadUFqbGx1MVpTcFF5eThyWk56eGlqU3pteXVD?=
+ =?utf-8?B?N3Uwdzl0b1czSVBmWlpJRi9IQytWRUxmZGRPZExQUC9iVG8vOG1zcnJOdkh6?=
+ =?utf-8?B?VGx5RnV5Q3lrUGpjejhpYVhFV3NqUW5VeFR2SUZFaXBPNkZQOHlTMzhBRmNY?=
+ =?utf-8?B?VGQ0bnpSNC9RWEFYMStPZWdRTUdNbVVHbjBDenNtRzdGMVFraTFTdk5Hczh0?=
+ =?utf-8?B?RFdaaWpxQlNvK0RxQkRuVVNyZ3B5eWREbzltdHU3UWJuWG9CS1hTWTB4Vm9F?=
+ =?utf-8?B?TXJOR1NTeWlWNkFrV2pKWk45Y1g3bzZOS05OallqZ1lEYkNGZVdyOHdDRFlV?=
+ =?utf-8?B?NElwUitzUG05Y0NaM3NmVjZKMVpkellBbERRRlFaTVhwQ1Q0dXp3SVBEdytX?=
+ =?utf-8?B?MXRFY0hvb3lJMXVva3lWTkJGeXhvVFE5cWx2YlpScWIwSEdOSEEyekpvNlI0?=
+ =?utf-8?B?Y0Y3eTdzazh2Y2VNREJGcW8rb3dIbUpxWGQ5NTZhRVZabGVzVTduUE91MGxR?=
+ =?utf-8?Q?2+AHuL4rR5Is+?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:zh-tw;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SI2PR06MB5041.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?utf-8?B?WEE0aFZFYWJ6NGNhK0NackloZVMzZXE1akUxRkhYUmdqQ3NNbll2VHpDY2Z2?=
+ =?utf-8?B?U0VBNlRVRHlLYk45a2Y1ckdLNmo3UXI1UFA3b3pIK2JWV0tETWRnVDVNWWlO?=
+ =?utf-8?B?NXJ5V2NLc3Nqd3diOXppdUx2RlBuY3RnRVpEU3BmUlRvVS9VZFk2RklYTEgv?=
+ =?utf-8?B?ZTV4ZmlwbWZ0MEdnMTZxMnpCRk1hUkxSS1RCOGJyY0hOSGxZQStwNFF4OFpt?=
+ =?utf-8?B?S3E4VFI4VFZiaGR0TmhIeVVIbWZBV0hYTGV1Z3JxZG9pdXNDZ2ZvbzFiQzNu?=
+ =?utf-8?B?cHV0QkIvSi8rMW9sZlM1aVhrdWMrV0loK0h2NkRHQno4SzhmRWFVcTdHenR2?=
+ =?utf-8?B?QTFpclp3MFFsQUhyaXc1bU1maTZXUjBzY2U5NUV1R3RKckJGU09QamZEenZp?=
+ =?utf-8?B?ZUhieUxFcmFJMFpKeCtveElEaXl1alNzUmVaUDhub29wWnVXbUlyVENnZjF0?=
+ =?utf-8?B?VVFnQWtUaTNpRjhxUWtoazliWTN3NU0rNnc1SGR4UlhZL0RKTXV0enhMVWds?=
+ =?utf-8?B?UzF6RFIyQUxIRjhnUWE1bGErRFByK0QvUHVmSkMveWM1NG1USnpIY2lzYXZD?=
+ =?utf-8?B?WjBNY1RoaS9sRHpkYzNNSnVKb21DQnlkMSs5elJPd1NYVFJwVzB2bUhCUXFM?=
+ =?utf-8?B?NUJPVFo4TlZ6SUc3SjRGbWZ4UnVIVzJLUElWRUlIMXl6OTZlaHhxL3VZdHlU?=
+ =?utf-8?B?OXh5SVhJVVhzNXZQdVJEMlJ0TTZIN2ZySnhPNnVNV0VXNC90K2kza05OS1FF?=
+ =?utf-8?B?L3BQZnVlTEc1SEp5K0IwaXJSajN4NEtqUWM4VzhUc1NXVlVDRWZXamUyV3hi?=
+ =?utf-8?B?Vmc4d1BlWG1oNCtwT1JacnNyREcwQ3c3Zk1qdzJTeFYxR3IzYmhzV1plVlRK?=
+ =?utf-8?B?a2lpRzl3UGU5TVQyaWx6UGIrZ1lhNVpvU0srNnFXa3FLNDgvdFc3WHVTekJE?=
+ =?utf-8?B?elZmWHI0V2RqVG9UVXFhb3ZicGtEYlhjY3ZJL3BQcHhqS0tXTWtOcEQwNXQ1?=
+ =?utf-8?B?R3R2UTAva1NWMzkxNG1SZXZ2dUh3ZEVybVZWV2ptTDBhWElqOVFxUVoycWp0?=
+ =?utf-8?B?a2hralc4dTNIRnFqbHNwNEhqYVVuMTc0N3pjMytlbDByZUZxZSszbzN4czRN?=
+ =?utf-8?B?MnRZUG1BUnNUQVF5bklGc25Jc1d1REJ3bnM2Z0hQSmNDRkJmSnRmWndRRHJz?=
+ =?utf-8?B?OGVjOGZTZ1c3UE8xSlBrOGFjalpOMGx2d1B1YmxVc3pNRmtrdFNCNG5DU2hy?=
+ =?utf-8?B?SmsyM25hL0p5VWNQMk5HQXJaRTlLMklLdUpZeTM1aHVsdXU3OW02cjlvQU5n?=
+ =?utf-8?B?cDM1YnVKS25ySWg4TlRULzdKMUw4VklReXpueURPY28rZ0h2dU43ZnNMMGRo?=
+ =?utf-8?B?WC82NkZhQXdJcFNUUEhkTWphR0VNMWdPVEJId2RRdHZ2a0ovVkhCVXFVeG12?=
+ =?utf-8?B?SmFZS1VkNXhSVHVaUHpycSt5dlpDRitUL1VtZVV1TzgvNXBmZitVYSswaDFj?=
+ =?utf-8?B?akNHbmFBRXp3NmQ2VE4vbVRyazVGQTQrS1dveXR2c2RwcnI0OWRLY2VSRjFi?=
+ =?utf-8?B?dEpuaWtCWWtQU1cwVG5XZ3ZlRDBGck5ZbXBycjJyUXR6U0RtbnFmUFVzT2k0?=
+ =?utf-8?B?ZDNNMDAxSzRSOHdlN21QU3l0a3hpdHRDbE0yaVNwQ09TQlBSLzBRdlJXcE03?=
+ =?utf-8?B?dnNUN2ZVa1NaWDd6alRuNUxadmpGbFRCeVZ0UXp6Ni8vZkw4aDdXRC9PTlRz?=
+ =?utf-8?B?RGNLemJpall1Y0hQc2xuZFFIWFM5NmQyNCtpZFlBd0hteHFCVjFDQ2M0UDdj?=
+ =?utf-8?B?WmdQMHFjWUoyMXhhanBoazJHZk5mYlU5YW5scTNxZ1hoV2JYaHFYTStUVmRB?=
+ =?utf-8?B?OGZMN25xZzQzOGFoV1pBWkNLUXZ1Wk1FcnpCVHY3eWYzRzVaQnM4WU4wcUU4?=
+ =?utf-8?B?bDlWa2xwWks5Ujd6NVltQkFFdVEraFNjYTZnclUrL3JsVDBxUHVhWG9STXpJ?=
+ =?utf-8?B?a2cvREJWYVBPdVBzZDdkRll4VDN6ZVZMOW9mZ1V5eFhQc252eXRITXJBaGJG?=
+ =?utf-8?B?NkhCVTRRalBSWCsyU0pTc3RMT05ZMnhTbFJWazZaRjBhU091VjZGTDg0b1U3?=
+ =?utf-8?Q?f1HX6FVv53c3O5ZoBYjanOF/Z?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
+X-OriginatorOrg: aspeedtech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SI2PR06MB5041.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3418f471-86c5-4a2e-ef10-08dd65cb02e2
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2025 03:14:35.7368
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: uRGMpXjvjc8DWR+fF70l9xB7ViTgCBc9mf6i9hxvsD8taAeq+daWgAMMYu/8YlJmNftXmFEjR3bMHZpV4QDw8xtCOUdMhED2He4gCBaUvZ4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZPR06MB5544
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Mar 2025 03:10:50 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6585
+ <docs@lists.yoctoproject.org>; Tue, 18 Mar 2025 03:14:50 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6586
 
-Add how to enable ATF, TEE and User defined ITS for U-Boot FIT image genera=
-tion.
-
-Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
----
- documentation/ref-manual/classes.rst   |  13 +++
- documentation/ref-manual/variables.rst | 138 +++++++++++++++++++++++++
- 2 files changed, 151 insertions(+)
-
-diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-manua=
-l/classes.rst
-index b93279ff6..6797927fe 100644
---- a/documentation/ref-manual/classes.rst
-+++ b/documentation/ref-manual/classes.rst
-@@ -3401,6 +3401,19 @@ The variables used by this class are:
- -  :term:`UBOOT_FITIMAGE_ENABLE`: enable the generation of a U-Boot FIT im=
-age.
- -  :term:`UBOOT_MKIMAGE_DTCOPTS`: DTC options for U-Boot ``mkimage`` when
-    rebuilding the FIT image containing the kernel.
-+-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`: include the Trusted Firmware-A
-+   (TF-A) binary in the U-Boot FIT image.
-+-  :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`: specifies the path to the
-+   Trusted Firmware-A (TF-A) binary.
-+-  :term:`UBOOT_FIT_TEE`: include the Trusted Execution Environment (TEE)
-+   binary in the U-Boot FIT image.
-+-  :term:`UBOOT_FIT_TEE_IMAGE`: specifies the path to the Trusted Executio=
-n
-+   Environment (TEE) binary.
-+-  :term:`UBOOT_FIT_USER_SETTINGS`: adds a user-specific snippet to the U-=
-Boot
-+   Image Tree Source (ITS). Users can include their custom U-Boot Image Tr=
-ee
-+   Source (ITS) snippet in this variable.
-+-  :term:`UBOOT_FIT_CONF_USER_LOADABLES`: adds one or more user-defined im=
-ages
-+   to the ``loadables`` property of the configuration node.
-=20
- See U-Boot's documentation for details about `verified boot
- <https://source.denx.de/u-boot/u-boot/-/blob/master/doc/uImage.FIT/verifie=
-d-boot.txt>`__
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-man=
-ual/variables.rst
-index 861b04eaa..1eb33f249 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -9949,6 +9949,45 @@ system and gives an overview of their function and c=
-ontents.
-=20
-       See `more details about #address-cells <https://elinux.org/Device_Tr=
-ee_Usage#How_Addressing_Works>`__.
-=20
-+   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE`
-+      `Trusted Firmware-A (TF-A) <https://www.trustedfirmware.org/projects=
-/tf-a>`__
-+      is a reference implementation of secure world software for Arm A-Pro=
-file
-+      architectures (Armv8-A and Armv7-A), including an Exception Level 3 =
-(EL3)
-+      Secure Monitor. This variable enables the generation of a U-Boot FIT
-+      image with a Trusted Firmware-A (TF-A) binary.
-+
-+      Its default value is "0", so set it to "1" to enable this functional=
-ity::
-+
-+         UBOOT_FIT_ARM_TRUSTED_FIRMWARE =3D "1"
-+
-+   :term:`UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE`
-+      Specifies the path to the Trusted Firmware-A (TF-A) binary. Its defa=
-ult
-+      value is "bl31.bin"::
-+
-+         UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE ?=3D "bl31.bin"
-+
-+      If a relative path is provided, the file is expected to be relative =
-to
-+      U-Boot's :term:`B` directory. An absolute path can be provided too,
-+      e.g.::
-+
-+         UBOOT_FIT_ARM_TRUSTED_FIRMWARE_IMAGE ?=3D "${DEPLOY_DIR_IMAGE}/bl=
-31.bin"
-+
-+      If the Trusted Firmware-A (TF-A) binary is built in a separate recip=
-e,
-+      you must add the necessary dependency in a U-Boot ``.bbappend`` file=
-. The
-+      recipe name for Trusted Firmware-A (TF-A) binary is
-+      ``trusted-firmware-a``, which comes from the
-+      :yocto_git:`meta-arm </meta-arm>` layer::
-+
-+         do_compile[depends] +=3D "trusted-firmware-a:do_deploy"
-+
-+   :term:`UBOOT_FIT_CONF_USER_LOADABLES`
-+      Adds one or more user-defined images to the ``loadables`` property o=
-f the
-+      configuration node of the U-Boot Image Tree Source (ITS). This varia=
-ble
-+      is handled by the local shell in the recipe so appropriate escaping
-+      should be done, e.g. escaping quotes.::
-+
-+         UBOOT_FIT_CONF_USER_LOADABLES =3D '\"fwa\", \"fwb\"'
-+
-    :term:`UBOOT_FIT_DESC`
-       Specifies the description string encoded into a U-Boot fitImage. The=
- default
-       value is set by the :ref:`ref-classes-uboot-sign` class as follows::
-@@ -9997,6 +10036,105 @@ system and gives an overview of their function and=
- contents.
-       of bits. The default value for this variable is set to "2048"
-       by the :ref:`ref-classes-uboot-sign` class.
-=20
-+   :term:`UBOOT_FIT_TEE`
-+      A Trusted Execution Environment (TEE) is a secure environment for
-+      executing code, ensuring high levels of trust in asset management wi=
-thin
-+      the surrounding system. This variable enables the generation of a U-=
-Boot
-+      FIT image with a Trusted Execution Environment (TEE) binary.
-+
-+      Its default value is "0", so set it to "1" to enable this functional=
-ity::
-+
-+         UBOOT_FIT_TEE =3D "1"
-+
-+   :term:`UBOOT_FIT_TEE_IMAGE`
-+      Specifies the path to the Trusted Execution Environment (TEE) binary=
-. Its
-+      default value is "tee-raw.bin"::
-+
-+         UBOOT_FIT_TEE_IMAGE ?=3D "tee-raw.bin"
-+
-+      If a relative path is provided, the file is expected to be relative =
-to=20
-+      U-Boot's :term:`B` directory. An absolute path can be provided too,
-+      e.g.::
-+
-+         UBOOT_FIT_TEE_IMAGE ?=3D "${DEPLOY_DIR_IMAGE}/tee-raw.bin"
-+
-+      If the Trusted Execution Environment (TEE) binary is built in a sepa=
-rate
-+      recipe, you must add the necessary dependency in a U-Boot ``.bbappen=
-d``
-+      file. The recipe name for Trusted Execution Environment (TEE) binary=
- is
-+      ``optee-os``, which comes from the :yocto_git:`meta-arm </meta-arm>`
-+      layer::
-+
-+         do_compile[depends] +=3D "optee-os:do_deploy"
-+
-+   :term:`UBOOT_FIT_USER_SETTINGS`
-+      Add a user-specific snippet to the U-Boot Image Tree Source (ITS). T=
-his
-+      variable allows the user to add one or more user-defined ``/images``=
- node
-+      to the U-Boot Image Tree Source (ITS). For more details, please refe=
-r to
-+      https://fitspec.osfw.foundation/\ .
-+
-+      The original content of the U-Boot Image Tree Source (ITS) is as
-+      follows::
-+
-+         images {
-+             uboot {
-+                 description =3D "U-Boot image";
-+                 data =3D /incbin/("u-boot-nodtb.bin");
-+                 type =3D "standalone";
-+                 os =3D "u-boot";
-+                 arch =3D "";
-+                 compression =3D "none";
-+                 load =3D <0x80000000>;
-+                 entry =3D <0x80000000>;
-+             };
-+         };
-+
-+      Users can include their custom ITS snippet in this variable, e.g.::
-+
-+         UBOOT_FIT_FWA_ITS =3D '\
-+             fwa {\n\
-+                 description =3D \"FW A\";\n\
-+                 data =3D /incbin/(\"fwa.bin\");\n\
-+                 type =3D \"firmware\";\n\
-+                 arch =3D \"\";\n\
-+                 os =3D \"\";\n\
-+                 load =3D <0xb2000000>;\n\
-+                 entry =3D <0xb2000000>;\n\
-+                 compression =3D \"none\";\n\
-+             };\n\
-+         '
-+
-+         UBOOT_FIT_USER_SETTINGS =3D "${UBOOT_FIT_FWA_ITS}"
-+
-+      This variable is handled by the local shell in the recipe so appropr=
-iate
-+      escaping should be done, e.g. escaping quotes and adding newlines wi=
-th
-+      ``\n``.
-+
-+      The generated content of the U-Boot Image Tree Source (ITS) is as
-+      follows::
-+
-+         images {
-+             uboot {
-+                 description =3D "U-Boot image";
-+                 data =3D /incbin/("u-boot-nodtb.bin");
-+                 type =3D "standalone";
-+                 os =3D "u-boot";
-+                 arch =3D "";
-+                 compression =3D "none";
-+                 load =3D <0x80000000>;
-+                 entry =3D <0x80000000>;
-+             };
-+             fwa {
-+                 description =3D "FW A";
-+                 data =3D /incbin/("fwa.bin");
-+                 type =3D "firmware";
-+                 arch =3D "";
-+                 os =3D "";
-+                 load =3D <0xb2000000>;
-+                 entry =3D <0xb2000000>;
-+                 compression =3D "none";
-+             };
-+         };
-+
-    :term:`UBOOT_FITIMAGE_ENABLE`
-       This variable allows to generate a FIT image for U-Boot, which is on=
-e
-       of the ways to implement a verified boot process.
---=20
-2.34.1
-
+SGkgUXVlbnRpbiwgQW50b25pbg0KDQpUaGFua3MgZm9yIHlvdXIgc3VnZ2VzdGlvbnMgYW5kIHJl
+dmlldy4NCkkgcmUtc2VuZCB2NyBoZXJlLCBodHRwczovL3BhdGNod29yay55b2N0b3Byb2plY3Qu
+b3JnL3Byb2plY3QvZG9jcy9wYXRjaC8yMDI1MDMxODAzMTA0MC4zMDc3MzAtMS1qYW1pbl9saW5A
+YXNwZWVkdGVjaC5jb20vIA0KDQpUaGFua3MtSmFtaW4NCiANCj4gT24gMy8xNC8yNSAzOjE1IEFN
+LCBKYW1pbiBMaW4gdmlhIGxpc3RzLnlvY3RvcHJvamVjdC5vcmcgd3JvdGU6DQo+ID4gQWRkIGhv
+dyB0byBlbmFibGUgQVRGLCBURUUgYW5kIFVzZXIgZGVmaW5lZCBJVFMgZm9yIFUtQm9vdCBGSVQg
+aW1hZ2UNCj4gZ2VuZXJhdGlvbi4NCj4gPg0KPiA+IFNpZ25lZC1vZmYtYnk6IEphbWluIExpbiA8
+amFtaW5fbGluQGFzcGVlZHRlY2guY29tPg0KPiA+IC0tLQ0KPiA+ICAgZG9jdW1lbnRhdGlvbi9y
+ZWYtbWFudWFsL2NsYXNzZXMucnN0ICAgfCAgMTQgKysrDQo+ID4gICBkb2N1bWVudGF0aW9uL3Jl
+Zi1tYW51YWwvdmFyaWFibGVzLnJzdCB8IDEzNw0KPiArKysrKysrKysrKysrKysrKysrKysrKysr
+DQo+ID4gICAyIGZpbGVzIGNoYW5nZWQsIDE1MSBpbnNlcnRpb25zKCspDQo+ID4NCj4gPiBkaWZm
+IC0tZ2l0IGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL2NsYXNzZXMucnN0DQo+ID4gYi9kb2N1
+bWVudGF0aW9uL3JlZi1tYW51YWwvY2xhc3Nlcy5yc3QNCj4gPiBpbmRleCBiOTMyNzlmZjYuLjBh
+NzNhOTU2ZSAxMDA2NDQNCj4gPiAtLS0gYS9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvY2xhc3Nl
+cy5yc3QNCj4gPiArKysgYi9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvY2xhc3Nlcy5yc3QNCj4g
+PiBAQCAtMzQwMSw2ICszNDAxLDIwIEBAIFRoZSB2YXJpYWJsZXMgdXNlZCBieSB0aGlzIGNsYXNz
+IGFyZToNCj4gPiAgIC0gIDp0ZXJtOmBVQk9PVF9GSVRJTUFHRV9FTkFCTEVgOiBlbmFibGUgdGhl
+IGdlbmVyYXRpb24gb2YgYSBVLUJvb3QNCj4gRklUIGltYWdlLg0KPiA+ICAgLSAgOnRlcm06YFVC
+T09UX01LSU1BR0VfRFRDT1BUU2A6IERUQyBvcHRpb25zIGZvciBVLUJvb3QNCj4gYGBta2ltYWdl
+YGAgd2hlbg0KPiA+ICAgICAgcmVidWlsZGluZyB0aGUgRklUIGltYWdlIGNvbnRhaW5pbmcgdGhl
+IGtlcm5lbC4NCj4gPiArLSAgOnRlcm06YFVCT09UX0ZJVF9BUk1fVFJVU1RFRF9GSVJNV0FSRWA6
+IGluY2x1ZGUgdGhlIFRydXN0ZWQNCj4gRmlybXdhcmUtQQ0KPiA+ICsgICAoVEYtQSkgYmluYXJ5
+IGluIHRoZSBVLUJvb3QgRklUIGJpbmFyeS4NCj4gPiArLSAgOnRlcm06YFVCT09UX0ZJVF9BUk1f
+VFJVU1RFRF9GSVJNV0FSRV9JTUFHRWA6IHNwZWNpZmllcyB0aGUNCj4gcGF0aCB0byB0aGUNCj4g
+PiArICAgVHJ1c3RlZCBGaXJtd2FyZS1BIChURi1BKSBiaW5hcnkuDQo+ID4gKy0gIDp0ZXJtOmBV
+Qk9PVF9GSVRfVEVFYDogaW5jbHVkZSB0aGUgVHJ1c3RlZCBFeGVjdXRpb24gRW52aXJvbm1lbnQN
+Cj4gKFRFRSkNCj4gPiArICAgYmluYXJ5IGluIHRoZSBVLUJvb3QgRklUIGJpbmFyeS4NCj4gPiAr
+LSAgOnRlcm06YFVCT09UX0ZJVF9URUVfSU1BR0VgOiBzcGVjaWZpZXMgdGhlIHBhdGggdG8gdGhl
+IFRydXN0ZWQNCj4gRXhlY3V0aW9uDQo+ID4gKyAgIEVudmlyb25tZW50IChURUUpIGJpbmFyeS4N
+Cj4gPiArLSAgOnRlcm06YFVCT09UX0ZJVF9VU0VSX1NFVFRJTkdTYDogYWRkcyBhIHVzZXItc3Bl
+Y2lmaWMgc25pcHBldCB0byB0aGUNCj4gSVRTLg0KPiA+ICsgICBVc2VycyBjYW4gaW5jbHVkZSB0
+aGVpciBjdXN0b20gSVRTIHNuaXBwZXQgaW4gdGhpcyB2YXJpYWJsZS4NCj4gPiArLSAgOnRlcm06
+YFVCT09UX0ZJVF9DT05GX1VTRVJfTE9BREFCTEVTYDogYWRkcyBvbmUgb3IgbW9yZQ0KPiB1c2Vy
+LWRlZmluZWQgaW1hZ2VzDQo+ID4gKyAgIHRvIHRoZSBgYGxvYWRhYmxlc2BgIHByb3BlcnR5IG9m
+IHRoZSBjb25maWd1cmF0aW9uIG5vZGUuIEl0IHNob3VsZCBiZSBhDQo+ID4gKyAgIGNvbW1hLXNl
+cGFyYXRlZCBsaXN0IG9mIHN0cmluZ3MgYW5kIGVhY2ggc3RyaW5nIG5lZWRzIHRvIGJlIHN1cnJv
+dW5kZWQNCj4gYnkNCj4gPiArICAgcXVvdGVzIHRvby4NCj4gPg0KPiANCj4gU29ycnkgZm9yIG1p
+c2xlYWRpbmcgeW91LCBJIG1lYW50IHRvIHNheToNCj4gDQo+IFRGLUEgYmluYXJ5DQo+IFRFRSBi
+aW5hcnkNCj4gRklUIGltYWdlIChvciBzaW1wbHkgRklUPykNCj4gDQo+ID4gICBTZWUgVS1Cb290
+J3MgZG9jdW1lbnRhdGlvbiBmb3IgZGV0YWlscyBhYm91dCBgdmVyaWZpZWQgYm9vdA0KPiA+DQo+
+ID4gPGh0dHBzOi8vc291cmNlLmRlbnguZGUvdS1ib290L3UtYm9vdC8tL2Jsb2IvbWFzdGVyL2Rv
+Yy91SW1hZ2UuRklUL3Zlcg0KPiA+IGlmaWVkLWJvb3QudHh0PmBfXyBkaWZmIC0tZ2l0IGEvZG9j
+dW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QNCj4gPiBiL2RvY3VtZW50YXRpb24v
+cmVmLW1hbnVhbC92YXJpYWJsZXMucnN0DQo+ID4gaW5kZXggODYxYjA0ZWFhLi40YTgwNDllMTQg
+MTAwNjQ0DQo+ID4gLS0tIGEvZG9jdW1lbnRhdGlvbi9yZWYtbWFudWFsL3ZhcmlhYmxlcy5yc3QN
+Cj4gPiArKysgYi9kb2N1bWVudGF0aW9uL3JlZi1tYW51YWwvdmFyaWFibGVzLnJzdA0KPiA+IEBA
+IC05OTQ5LDYgKzk5NDksNDUgQEAgc3lzdGVtIGFuZCBnaXZlcyBhbiBvdmVydmlldyBvZiB0aGVp
+ciBmdW5jdGlvbg0KPiBhbmQgY29udGVudHMuDQo+ID4NCj4gPiAgICAgICAgIFNlZSBgbW9yZSBk
+ZXRhaWxzIGFib3V0ICNhZGRyZXNzLWNlbGxzDQo+IDxodHRwczovL2VsaW51eC5vcmcvRGV2aWNl
+X1RyZWVfVXNhZ2UjSG93X0FkZHJlc3NpbmdfV29ya3M+YF9fLg0KPiA+DQo+ID4gKyAgIDp0ZXJt
+OmBVQk9PVF9GSVRfQVJNX1RSVVNURURfRklSTVdBUkVgDQo+ID4gKyAgICAgIGBUcnVzdGVkIEZp
+cm13YXJlLUEgKFRGLUEpDQo+IDxodHRwczovL3d3dy50cnVzdGVkZmlybXdhcmUub3JnL3Byb2pl
+Y3RzL3RmLWE+YF9fDQo+ID4gKyAgICAgIGlzIGEgcmVmZXJlbmNlIGltcGxlbWVudGF0aW9uIG9m
+IHNlY3VyZSB3b3JsZCBzb2Z0d2FyZSBmb3IgQXJtDQo+IEEtUHJvZmlsZQ0KPiA+ICsgICAgICBh
+cmNoaXRlY3R1cmVzIChBcm12OC1BIGFuZCBBcm12Ny1BKSwgaW5jbHVkaW5nIGFuIEV4Y2VwdGlv
+biBMZXZlbA0KPiAzIChFTDMpDQo+ID4gKyAgICAgIFNlY3VyZSBNb25pdG9yLiBUaGlzIHZhcmlh
+YmxlIGVuYWJsZXMgdGhlIGdlbmVyYXRpb24gb2YgYSBVLUJvb3QgRklUDQo+ID4gKyAgICAgIGJp
+bmFyeSB3aXRoIGFuIFRydXN0ZWQgRmlybXdhcmUtQSAoVEYtQSkgYmluYXJ5Lg0KPiA+ICsNCj4g
+DQo+IHMvYW4vYS8NCj4gDQo+ID4gKyAgICAgIEl0cyBkZWZhdWx0IHZhbHVlIGlzICIwIiwgc28g
+c2V0IGl0IHRvICIxIiB0byBlbmFibGUgdGhpcyBmdW5jdGlvbmFsaXR5OjoNCj4gPiArDQo+ID4g
+KyAgICAgICAgIFVCT09UX0ZJVF9BUk1fVFJVU1RFRF9GSVJNV0FSRSA9ICIxIg0KPiA+ICsNCj4g
+PiArICAgOnRlcm06YFVCT09UX0ZJVF9BUk1fVFJVU1RFRF9GSVJNV0FSRV9JTUFHRWANCj4gPiAr
+ICAgICAgU3BlY2lmaWVzIHRoZSBwYXRoIHRvIHRoZSBUcnVzdGVkIEZpcm13YXJlLUEgKFRGLUEp
+IGJpbmFyeS4gSXRzDQo+IGRlZmF1bHQNCj4gPiArICAgICAgdmFsdWUgaXMgImJsMzEuYmluIjo6
+DQo+ID4gKw0KPiA+ICsgICAgICAgICBVQk9PVF9GSVRfQVJNX1RSVVNURURfRklSTVdBUkVfSU1B
+R0UgPz0gImJsMzEuYmluIg0KPiA+ICsNCj4gPiArICAgICAgSWYgYSByZWxhdGl2ZSBwYXRoIGlz
+IHByb3ZpZGVkLCB0aGUgZmlsZSBpcyBleHBlY3RlZCB0byBiZSByZWxhdGl2ZSB0bw0KPiA+ICsg
+ICAgICBVLUJvb3QncyA6dGVybTpgQmAgZGlyZWN0b3J5LiBBbiBhYnNvbHV0ZSBwYXRoIGNhbiBi
+ZSBwcm92aWRlZCB0b28sDQo+ID4gKyAgICAgIGUuZy46Og0KPiA+ICsNCj4gPiArICAgICAgICAg
+VUJPT1RfRklUX0FSTV9UUlVTVEVEX0ZJUk1XQVJFX0lNQUdFID89DQo+ICIke0RFUExPWV9ESVJf
+SU1BR0V9L2JsMzEuYmluIg0KPiA+ICsNCj4gPiArICAgICAgSWYgdGhlIFRydXN0ZWQgRmlybXdh
+cmUtQSAoVEYtQSkgYmluYXJ5IGlzIGJ1aWx0IGluIGEgc2VwYXJhdGUgcmVjaXBlLA0KPiA+ICsg
+ICAgICB5b3UgbXVzdCBhZGQgdGhlIG5lY2Vzc2FyeSBkZXBlbmRlbmN5IGluIGEgVS1Cb290IGBg
+LmJiYXBwZW5kYGANCj4gZmlsZS4gVGhlDQo+ID4gKyAgICAgIHJlY2lwZSBuYW1lIGZvciBUcnVz
+dGVkIEZpcm13YXJlLUEgKFRGLUEpIGJpbmFyeSBpcw0KPiA+ICsgICAgICBgYHRydXN0ZWQtZmly
+bXdhcmUtYWBgLCB3aGljaCBjb21lcyBmcm9tIHRoZQ0KPiA+ICsgICAgICA6eW9jdG9fZ2l0OmBt
+ZXRhLWFybSA8L21ldGEtYXJtPmAgbGF5ZXI6Og0KPiA+ICsNCj4gPiArICAgICAgICAgZG9fY29t
+cGlsZVtkZXBlbmRzXSArPSAidHJ1c3RlZC1maXJtd2FyZS1hOmRvX2RlcGxveSINCj4gPiArDQo+
+ID4gKyAgIDp0ZXJtOmBVQk9PVF9GSVRfQ09ORl9VU0VSX0xPQURBQkxFU2ANCj4gPiArICAgICAg
+QWRkcyBvbmUgb3IgbW9yZSB1c2VyLWRlZmluZWQgaW1hZ2VzIHRvIHRoZSBgYGxvYWRhYmxlc2Bg
+IHByb3BlcnR5DQo+IG9mIHRoZQ0KPiA+ICsgICAgICBjb25maWd1cmF0aW9uIG5vZGUgb2YgdGhl
+IFUtQm9vdCBJbWFnZSBUcmVlIFNvdXJjZSAoSVRTKS4gSXQgc2hvdWxkDQo+IGJlIGENCj4gPiAr
+ICAgICAgY29tbWEtc2VwYXJhdGVkIGxpc3Qgb2Ygc3RyaW5ncyBhbmQgZWFjaCBzdHJpbmcgbmVl
+ZHMgdG8gYmUNCj4gc3Vycm91bmRlZCBieQ0KPiA+ICsgICAgICBxdW90ZXMgdG9vLCBlLmcuOjoN
+Cj4gPiArDQo+IA0KPiBJIGd1ZXNzIHdlIGNhbiBzYXkgdGhhdCB0aGlzIHZhcmlhYmxlIGlzIGhh
+bmRsZWQgYnkgdGhlIGxvY2FsIHNoZWxsIGluIHRoZSByZWNpcGUNCj4gc28gYXBwcm9wcmlhdGUg
+ZXNjYXBpbmcgc2hvdWxkIGJlIGRvbmUsIGUuZy4gZXNjYXBpbmcgcXVvdGVzLg0KPiANCj4gPiAr
+ICAgICAgICAgVUJPT1RfRklUX0NPTkZfVVNFUl9MT0FEQUJMRVMgPSAnXCJmd2FcIiwgXCJmd2Jc
+IicNCj4gPiArDQo+ID4gICAgICA6dGVybTpgVUJPT1RfRklUX0RFU0NgDQo+ID4gICAgICAgICBT
+cGVjaWZpZXMgdGhlIGRlc2NyaXB0aW9uIHN0cmluZyBlbmNvZGVkIGludG8gYSBVLUJvb3QgZml0
+SW1hZ2UuDQo+IFRoZSBkZWZhdWx0DQo+ID4gICAgICAgICB2YWx1ZSBpcyBzZXQgYnkgdGhlIDpy
+ZWY6YHJlZi1jbGFzc2VzLXVib290LXNpZ25gIGNsYXNzIGFzIGZvbGxvd3M6Og0KPiA+IEBAIC05
+OTk3LDYgKzEwMDM2LDEwNCBAQCBzeXN0ZW0gYW5kIGdpdmVzIGFuIG92ZXJ2aWV3IG9mIHRoZWly
+IGZ1bmN0aW9uDQo+IGFuZCBjb250ZW50cy4NCj4gPiAgICAgICAgIG9mIGJpdHMuIFRoZSBkZWZh
+dWx0IHZhbHVlIGZvciB0aGlzIHZhcmlhYmxlIGlzIHNldCB0byAiMjA0OCINCj4gPiAgICAgICAg
+IGJ5IHRoZSA6cmVmOmByZWYtY2xhc3Nlcy11Ym9vdC1zaWduYCBjbGFzcy4NCj4gPg0KPiA+ICsg
+ICA6dGVybTpgVUJPT1RfRklUX1RFRWANCj4gPiArICAgICAgQSBUcnVzdGVkIEV4ZWN1dGlvbiBF
+bnZpcm9ubWVudCAoVEVFKSBpcyBhIHNlY3VyZSBlbnZpcm9ubWVudCBmb3INCj4gPiArICAgICAg
+ZXhlY3V0aW5nIGNvZGUsIGVuc3VyaW5nIGhpZ2ggbGV2ZWxzIG9mIHRydXN0IGluIGFzc2V0IG1h
+bmFnZW1lbnQNCj4gd2l0aGluDQo+ID4gKyAgICAgIHRoZSBzdXJyb3VuZGluZyBzeXN0ZW0uIFRo
+aXMgdmFyaWFibGUgZW5hYmxlcyB0aGUgZ2VuZXJhdGlvbiBvZiBhDQo+IFUtQm9vdA0KPiA+ICsg
+ICAgICBGSVQgYmluYXJ5IHdpdGggYSBUcnVzdGVkIEV4ZWN1dGlvbiBFbnZpcm9ubWVudCAoVEVF
+KSBiaW5hcnkuDQo+ID4gKw0KPiA+ICsgICAgICBJdHMgZGVmYXVsdCB2YWx1ZSBpcyAiMCIsIHNv
+IHNldCBpdCB0byAiMSIgdG8gZW5hYmxlIHRoaXMgZnVuY3Rpb25hbGl0eTo6DQo+ID4gKw0KPiA+
+ICsgICAgICAgICBVQk9PVF9GSVRfVEVFID0gIjEiDQo+ID4gKw0KPiA+ICsgICA6dGVybTpgVUJP
+T1RfRklUX1RFRV9JTUFHRWANCj4gPiArICAgICAgU3BlY2lmaWVzIHRoZSBwYXRoIHRvIHRoZSBU
+cnVzdGVkIEV4ZWN1dGlvbiBFbnZpcm9ubWVudCAoVEVFKSBiaW5hcnkuDQo+IEl0cw0KPiA+ICsg
+ICAgICBkZWZhdWx0IHZhbHVlIGlzICJ0ZWUtcmF3LmJpbiI6Og0KPiA+ICsNCj4gPiArICAgICAg
+ICAgVUJPT1RfRklUX1RFRV9JTUFHRSA/PSAidGVlLXJhdy5iaW4iDQo+ID4gKw0KPiA+ICsgICAg
+ICBJZiBhIHJlbGF0aXZlIHBhdGggaXMgcHJvdmlkZWQsIHRoZSBmaWxlIGlzIGV4cGVjdGVkIHRv
+IGJlIHJlbGF0aXZlIHRvDQo+ID4gKyAgICAgIFUtQm9vdCdzIDp0ZXJtOmBCYCBkaXJlY3Rvcnku
+IEFuIGFic29sdXRlIHBhdGggY2FuIGJlIHByb3ZpZGVkIHRvbywNCj4gPiArICAgICAgZS5nLjo6
+DQo+ID4gKw0KPiA+ICsgICAgICAgICBVQk9PVF9GSVRfVEVFX0lNQUdFID89DQo+ICIke0RFUExP
+WV9ESVJfSU1BR0V9L3RlZS1yYXcuYmluIg0KPiA+ICsNCj4gPiArICAgICAgSWYgdGhlIFRydXN0
+ZWQgRXhlY3V0aW9uIEVudmlyb25tZW50IChURUUpIGJpbmFyeSBpcyBidWlsdCBpbiBhDQo+IHNl
+cGFyYXRlDQo+ID4gKyAgICAgIHJlY2lwZSwgeW91IG11c3QgYWRkIHRoZSBuZWNlc3NhcnkgZGVw
+ZW5kZW5jeSBpbiBhIFUtQm9vdA0KPiBgYC5iYmFwcGVuZGBgDQo+ID4gKyAgICAgIGZpbGUuIFRo
+ZSByZWNpcGUgbmFtZSBmb3IgVHJ1c3RlZCBFeGVjdXRpb24gRW52aXJvbm1lbnQgKFRFRSkNCj4g
+YmluYXJ5IGlzDQo+ID4gKyAgICAgIGBgb3B0ZWUtb3NgYCwgd2hpY2ggY29tZXMgZnJvbSB0aGUg
+OnlvY3RvX2dpdDpgbWV0YS1hcm0NCj4gPC9tZXRhLWFybT5gDQo+ID4gKyAgICAgIGxheWVyOjoN
+Cj4gPiArDQo+ID4gKyAgICAgICAgIGRvX2NvbXBpbGVbZGVwZW5kc10gKz0gIm9wdGVlLW9zOmRv
+X2RlcGxveSINCj4gPiArDQo+ID4gKyAgIDp0ZXJtOmBVQk9PVF9GSVRfVVNFUl9TRVRUSU5HU2AN
+Cj4gPiArICAgICAgQWRkIGEgdXNlci1zcGVjaWZpYyBzbmlwcGV0IHRvIHRoZSBVLUJvb3QgSW1h
+Z2UgVHJlZSBTb3VyY2UgKElUUykuDQo+IFRoaXMNCj4gPiArICAgICAgdmFyaWFibGUgYWxsb3dz
+IHRoZSB1c2VyIHRvIGFkZCBvbmUgb3IgbW9yZSB1c2VyLWRlZmluZWQNCj4gYGAvaW1hZ2VzYGAg
+bm9kZQ0KPiA+ICsgICAgICB0byB0aGUgVS1Cb290IEltYWdlIFRyZWUgU291cmNlIChJVFMpLiBG
+b3IgbW9yZSBkZXRhaWxzLCBwbGVhc2UgcmVmZXINCj4gdG8NCj4gPiArICAgICAgaHR0cHM6Ly9m
+aXRzcGVjLm9zZncuZm91bmRhdGlvbi9cIC4NCj4gPiArDQo+ID4gKyAgICAgIFRoZSBvcmlnaW5h
+bCBjb250ZW50IG9mIHRoZSBVLUJvb3QgSW1hZ2UgVHJlZSBTb3VyY2UgKElUUykgaXMgYXMNCj4g
+PiArICAgICAgZm9sbG93czo6DQo+ID4gKw0KPiA+ICsgICAgICAgICBpbWFnZXMgew0KPiA+ICsg
+ICAgICAgICAgICAgdWJvb3Qgew0KPiA+ICsgICAgICAgICAgICAgICAgIGRlc2NyaXB0aW9uID0g
+IlUtQm9vdCBpbWFnZSI7DQo+ID4gKyAgICAgICAgICAgICAgICAgZGF0YSA9IC9pbmNiaW4vKCJ1
+LWJvb3Qtbm9kdGIuYmluIik7DQo+ID4gKyAgICAgICAgICAgICAgICAgdHlwZSA9ICJzdGFuZGFs
+b25lIjsNCj4gPiArICAgICAgICAgICAgICAgICBvcyA9ICJ1LWJvb3QiOw0KPiA+ICsgICAgICAg
+ICAgICAgICAgIGFyY2ggPSAiIjsNCj4gPiArICAgICAgICAgICAgICAgICBjb21wcmVzc2lvbiA9
+ICJub25lIjsNCj4gPiArICAgICAgICAgICAgICAgICBsb2FkID0gPDB4ODAwMDAwMDA+Ow0KPiA+
+ICsgICAgICAgICAgICAgICAgIGVudHJ5ID0gPDB4ODAwMDAwMDA+Ow0KPiA+ICsgICAgICAgICAg
+ICAgfTsNCj4gPiArICAgICAgICAgfTsNCj4gPiArDQo+ID4gKyAgICAgIFVzZXJzIGNhbiBpbmNs
+dWRlIHRoZWlyIGN1c3RvbSBJVFMgc25pcHBldCBpbiB0aGlzIHZhcmlhYmxlLCBlLmcuOjoNCj4g
+PiArDQo+ID4gKyAgICAgICAgIFVCT09UX0ZJVF9GV0FfSVRTID0gJ1wNCj4gPiArICAgICAgICAg
+ICAgIGZ3YSB7XG5cDQo+ID4gKyAgICAgICAgICAgICAgICAgZGVzY3JpcHRpb24gPSBcIkZXIEFc
+IjtcblwNCj4gPiArICAgICAgICAgICAgICAgICBkYXRhID0gL2luY2Jpbi8oXCJmd2EuYmluXCIp
+O1xuXA0KPiA+ICsgICAgICAgICAgICAgICAgIHR5cGUgPSBcImZpcm13YXJlXCI7XG5cDQo+ID4g
+KyAgICAgICAgICAgICAgICAgYXJjaCA9IFwiXCI7XG5cDQo+ID4gKyAgICAgICAgICAgICAgICAg
+b3MgPSBcIlwiO1xuXA0KPiA+ICsgICAgICAgICAgICAgICAgIGxvYWQgPSA8MHhiMjAwMDAwMD47
+XG5cDQo+ID4gKyAgICAgICAgICAgICAgICAgZW50cnkgPSA8MHhiMjAwMDAwMD47XG5cDQo+ID4g
+KyAgICAgICAgICAgICAgICAgY29tcHJlc3Npb24gPSBcIm5vbmVcIjtcblwNCj4gPiArICAgICAg
+ICAgICAgIH07XG5cDQo+ID4gKyAgICAgICAgICcNCj4gPiArDQo+ID4gKyAgICAgICAgIFVCT09U
+X0ZJVF9VU0VSX1NFVFRJTkdTID0gIiR7VUJPT1RfRklUX0ZXQV9JVFN9Ig0KPiA+ICsNCj4gPiAr
+ICAgICAgTmV3bGluZXMgYXJlIHN0cmlwcGVkLCBhbmQgaWYgdGhleSBuZWVkIHRvIGJlIGluY2x1
+ZGVkLCB0aGV5IG11c3QgYmUNCj4gPiArICAgICAgZXhwbGljaXRseSBhZGRlZCB1c2luZyBgYFxu
+YGAuDQo+IA0KPiBJIGd1ZXNzIHdlIGNhbiBzYXkgdGhhdCB0aGlzIHZhcmlhYmxlIGlzIGhhbmRs
+ZWQgYnkgdGhlIGxvY2FsIHNoZWxsIGluIHRoZSByZWNpcGUNCj4gc28gYXBwcm9wcmlhdGUgZXNj
+YXBpbmcgc2hvdWxkIGJlIGRvbmUsIGUuZy4gZXNjYXBpbmcgcXVvdGVzIGFuZCBhZGRpbmcNCj4g
+bmV3bGluZXMgd2l0aCBcbi4NCj4gDQo+IEkgdGhpbmsgdGhpcyBtZWFucyB0aGF0IG5ld2xpbmUg
+YXJlbid0IGFjdHVhbGx5IHN0cmlwcGVkLCBpdCdzIG9ubHkgYmVjYXVzZSBhDQo+IG11bHRpbGlu
+ZSB2YXJpYWJsZSBpbiBCaXRCYWtlIG5lZWRzIHRvIGhhdmUgZWFjaCBsaW5lIGVuZGluZyB3aXRo
+IGEgYmFja3NsYXNoLA0KPiB3aGljaCBtZWFucyB0aGV5J3JlIHRoZW4gY29uY2F0ZW5hdGVkIGJh
+Y2sgdG8gYSBzaW5nbGUtbGluZSBzdHJpbmcgYnV0DQo+IGJlY2F1c2UgdGhlIHJlY2lwZSB1c2Vz
+IHRoYXQgdmFyaWFibGUgaW4gbG9jYWwgc2hlbGwsIHdlIGNhbiBwdXQgXG4gdGhlcmUgdG8NCj4g
+YWN0dWFsbHkgaW5jbHVkZSBuZXdsaW5lcy4NCj4gDQo+IE90aGVyd2lzZSB0aGlzIGxvb2tzIGdv
+b2QgdG8gbWUsIHBsZWFzZSByZXBsYWNlICJGSVQgYmluYXJ5IiB3aXRoICJGSVQgaW1hZ2UiDQo+
+IChvciBzaW1wbHkgIkZJVCI/KSwgdGhlIGFuL2EgdHlwbyBsaXN0ZWQgaW4gdGhpcyBtYWlsIGFu
+ZCBtZW50aW9uICh3aXRoIHRoZQ0KPiB3b3JkaW5nIG9mIHlvdXIgY2hvaWNlKSB0aGF0IHRob3Nl
+IGFyZSBleHBhbmRlZCBieSB0aGUgbG9jYWwgc2hlbGwgaW4gdGhlIHJlY2lwZQ0KPiBzbyB0aGVp
+ciBjb250ZW50IG5lZWRzIHRvIGJlIHByb3Blcmx5IGVzY2FwZWQuDQo+IA0KPiBDaGVlcnMsDQo+
+IFF1ZW50aW4NCg==
 
