@@ -1,378 +1,198 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CA3F6C282EC
-	for <webhook@archiver.kernel.org>; Tue, 18 Mar 2025 08:47:13 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web10.6982.1742287631399585398
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53B6DC282EC
+	for <webhook@archiver.kernel.org>; Tue, 18 Mar 2025 10:56:54 +0000 (UTC)
+Received: from AS8PR04CU009.outbound.protection.outlook.com (AS8PR04CU009.outbound.protection.outlook.com [52.101.70.1])
+ by mx.groups.io with SMTP id smtpd.web10.8973.1742295412813177139
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Mar 2025 01:47:12 -0700
+ Tue, 18 Mar 2025 03:56:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CMcZXaho;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6370541CF9;
-	Tue, 18 Mar 2025 08:47:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742287629;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=U/+KslZrb83dcOGTNpS64OZBXRgcaoXLE1AEwQpI9Og=;
-	b=CMcZXahoZq6Ql3cauB92Y6rISWv1QlNnaqt6eEFNcMaCEsvVZIQLeUDTNhFzudXArwO36y
-	ZL4rRmanlontT6ETFsmbQCm0Klp/ktXXwx6WpRqEgxdbl46viCzLcGVuMsVIWEPWD4Cqik
-	eQg25L0iEk3LhFTwdjFUJcyPt9qatr0BCj0e6FHMOtcEu65pmstC674cedRNJLERGVnXyd
-	OIpJcb83PmsUNch4TpxOg5pVDjbKxAREnIxs3eclj+pcoNJF6l2G/6zOKQzU5IW7ZFvHO0
-	67zdabQMWCyVwLzK+U9h0DT4nVIb3CpdJyVNJe/yK9ZWIPW2zsdEsZc8CLBonA==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 18 Mar 2025 09:47:09 +0100
-Message-Id: <D8J9F39E75YT.3LPYH2XMZM9T1@bootlin.com>
-Subject: Re: [PATCH 11/11] migration-guides/release-notes-5.2: update for
- upcoming 5.2 release
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Antonin Godard" <antonin.godard@bootlin.com>,
- <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.20.1-30-g1e234577c2bf-dirty
-References: <20250317-release-note-5-2-updates-v1-0-82b0a4182aff@bootlin.com> <20250317-release-note-5-2-updates-v1-11-82b0a4182aff@bootlin.com>
-In-Reply-To: <20250317-release-note-5-2-updates-v1-11-82b0a4182aff@bootlin.com>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeduleekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeegleejfefgvdfhtdffiedvkeegleelvddtieetgfefffetueduheeltdeuudfhudenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhphihtvghsthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrh
- ihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=I2iN/svJ;
+ spf=pass (domain: cherry.de, ip: 52.101.70.1, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lbV/hoF19emhLqh2TWmVvnK55ehJQ3kpe20cqhgvCeqNQE0T3dgO57OWhZXnIMZE7LKzf93SQUkOwZ/ZTw7AX7t1SxryPJ43kJFHrLei4NEcTL9fj8/6MGEUgQBtD6DgwTW5l41kQoE9kgQKL8IdUrgPba/twvrcBSPADuT1F73kbv59mNBz6XZrWBbwqkF78Hk1lTUdxuO5KjYyeECl70EYgLfJR7xwVUzzNOvJBHVeQI3rvTdoHzz1ZVXYGZhuOwk3vooxcnMH2v8xdbYG+3HwBS6tBZ2fUhuZX9sE/weEOWVNe0Ti/X/ydQPG1euv5jr1LaWVndYKwdCpdRu1Ow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=i4oKK8jISb4dsID29kR+t5yHaQHr+7rJen82fap4Yf0=;
+ b=tGE9QRrbambjUvC7v2g9Hp1NEpGCngHPZ5bzSwc7jOYmTWZyErSZdhP81xRk4ZEqHTItmISy8Thvj7v8qLYxpisD5jPLkVSw/1MvoeGeXIqadezj7BvxGKVyTQwE9+TdTB1DDdfJGlSTRdOr8JqkjYQiaQKfLG6Atsq4vMoYaW4Zs6nsJvqfQmEm5MrdXA5Oasd/GwDJWJV1JqPb1OFbMKDFqmCgdFzg8CcZVzJFOWKNDKrsxw9zj8CAZX1xTCJHTqqI0B1YGW9wCuf8KWDbodZcemw29FdQ+wuNQzWZz60i8LwK1lTjXTysMwVzTBxuUUDpfh1zMBSQOb/c+PYKgA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=i4oKK8jISb4dsID29kR+t5yHaQHr+7rJen82fap4Yf0=;
+ b=I2iN/svJ8ekDT3BcOWPBEfHwG2VcJzjWv+mmGIP7fBxnyBH9WzbY+8JSha+KH5wRDzfSfC8LlJmJml3tnwuA8mWAWzIQA/zI27CVtxjns7ty6jEREuBGn3yXA2SMYHtOsT/jIs4h6UTsw2NLHfUoYu50gtfqEt34XcQAV722UKQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by DB9PR04MB9258.eurprd04.prod.outlook.com (2603:10a6:10:372::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
+ 2025 10:56:48 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%6]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
+ 10:56:48 +0000
+Message-ID: <f7fa065f-8a8a-4768-9c63-fdcaca4602af@cherry.de>
+Date: Tue, 18 Mar 2025 11:56:47 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH] contributor-guide/submit-changes: encourage patch
+ version changelogs
+To: twoerner@gmail.com, docs@lists.yoctoproject.org
+References: <20250318035605.1221-1-twoerner@gmail.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20250318035605.1221-1-twoerner@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR5P281CA0017.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:f1::9) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB9258:EE_
+X-MS-Office365-Filtering-Correlation-Id: 954ec4dd-6188-479b-edf0-08dd660b946c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?RFE5VjVyc2ZIektkUUJybFhzc3RoNi83TnhBd2syUXlPSGx0T0RUb3l0a1hR?=
+ =?utf-8?B?NUwzMG5IaUpMdnBmb0VYYXFIWXRkNStYN1QvR1UvOUJBVENkR1g1Y0hjeklv?=
+ =?utf-8?B?ZUtZUnBaaVlRRHJzc1R5Q1B4dlZKRkF2QU9wNWIwZGFJUEhhUHdRV1Z3dGhz?=
+ =?utf-8?B?S1BhVjA3d0ttWXlTdHJRN1Y1dnUvNlA4aXFGK3R0TW1LQTVGZEVQekozTlNy?=
+ =?utf-8?B?enc3VitPMW85L0pJakx2eW5DMEhZRmI1eUlJNEYwTFlnYy8weEZmMEgwQWJN?=
+ =?utf-8?B?KzVTbTJQTnd3R2ZpZUt3dVhGTUg1N0JJLzZ4WmIzSThrU2dXandnckhpWW5q?=
+ =?utf-8?B?bVJGcW9JRjh0WkZkdG0rc1hpMk9XR0NXamFEOXVHYk10aVhKY0JyTHpwanNZ?=
+ =?utf-8?B?VWtzeHBmdXFadzNxRzZTYWQ4Y2w1MHVHUWFTbUFteUlWQlV2eHdpVEcyOFNv?=
+ =?utf-8?B?Zzk0aWtydm5OY0hWUHJvSlpmdzlMUHFpaDBhc3lMaUk1SGwvUGRacm5VSk5T?=
+ =?utf-8?B?Z0NuN240QVJvcEJKNG83WjZFZzJDN2s5WitpOUQxS1BpQkJJcmlQT29QOHdL?=
+ =?utf-8?B?eU9CKytwbzg2RERSdUZldTI0emM2YzkxYnBYWjdxRW1YUkJLWDdWWFVpSVg2?=
+ =?utf-8?B?NTU3cDYyZGpOSnhrcHJjNXBySHIwQXFEczh4aUZVQzd6cmxkWW5uVUtvSG1Q?=
+ =?utf-8?B?MnlRajdVSVhMSkowMlJUTkRhRy9PSEdjT2NqV2hNZDV5U0VLa29XK1FaRHVB?=
+ =?utf-8?B?WWwxTHBRc1BWeTNBa3BteEFCMmUzM1NBSDJtL1lYS1pYMDJkVlpnZGx3cWRu?=
+ =?utf-8?B?ZUlLMk1oYU5aTk9wS09VaTh2cXpxZGVIMFZ2ZFpZWGxlUE1oV0I1MzRiN3ll?=
+ =?utf-8?B?alRrRnJlRlh2cFJHRThiVWljTUs0UFNxWlRsT0NZdVZVVkZwdHlqM3JZUHFJ?=
+ =?utf-8?B?aHU3c1VqMTBsaXF3WmhqQytaY2g3N2RwdVhTSlk1RWpNZm5tVXRYNTZPeDAy?=
+ =?utf-8?B?Tkt4NzdRVE9yT2wxNXpwWWhPWmM4Z0hYWUxQWkc3VndGNnNsblZJb3ArMlRB?=
+ =?utf-8?B?dzZOSnZqd29sQ2RGb1p6ZHhNeU94TDl2SlN4U0VxUFB4UXpucDRsVWJST2RR?=
+ =?utf-8?B?TWtXL2NXSlJiSFJjNmNIOXBrNlJTbUN2L29teEd6Vm1pbnkydnJ1MnV3TlVP?=
+ =?utf-8?B?c25kN1lQZEpWdmxwcTlDdFBzQWlCNjhBeW1kK2V1eDdWR2UyWUJMZkQ0bXNX?=
+ =?utf-8?B?bVQxS05jWDF1VVFXaEZSVnRBcTJhUzF1YmtCaTdvdUNjTkxaYTllaVVGV2RS?=
+ =?utf-8?B?SUd3bHQrc01IRWltZURRRm5ENDljU2lvM0pURDRzQVRrSTRwOVZ6NEdKWmVi?=
+ =?utf-8?B?dmJ5TnBIZVRGL3liQStYRFg0NE9BTDlzMnhOMXRBNkl3dFpZRDQvN1B0Y2Z0?=
+ =?utf-8?B?MG40akp6QkFCblJWdmdIVHd6Wkw4Mk5MRDkzSzgyR0NFN0lWSUVoMS8vUEd5?=
+ =?utf-8?B?N3JFTHZYSWg4bVFSbGJsYjUraUI0SVFmaVVLdS9yK1JSUVM2b1JoYXVwQXo2?=
+ =?utf-8?B?aHh6Q3Y0UGQyRUNPU25va2pjMVJFdlJINVhaN2pIMlBkbGN0THM2V3htTHRn?=
+ =?utf-8?B?dG5SQm1helliYmRlTitiSi84S3BrYTl2di9QbDlseEdsQlBXRTVxSHlGSDVq?=
+ =?utf-8?B?WVE1STcyWnVHbnM3OUxvaE9MbWsrWFpoc2xqWXYxQ2N5bUJIWUVuYUJRYSta?=
+ =?utf-8?B?S1NwYUlGcU80NFBNUzQ4MG5ZRXRnMGVHSkxYRkd1YnFQN2hDSStqK2x3NG1L?=
+ =?utf-8?B?UHpHSUhXMU5ySC8wcm5TaXB4SlExTXlveHN3MTY0WTRucFJtWlcyZmFHZTJY?=
+ =?utf-8?Q?e5K7HbxaNYgt1?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?MDY4Q0pua01ubjMzT1RRaHVEK2NkR2d4V1FCdVZLd2d5QmM2enlOa2JQeFNB?=
+ =?utf-8?B?V3VOT3Y1eisrajE4MFp2TWhlb3Z0L2FrMlFaVWtGQytSTnRjTnZFY3YrYUtT?=
+ =?utf-8?B?elROZ3M2UzFqcXZLbldCcTdQeEJrZmJ6MmRQRDA1Q2x6L0VpbW5OVXBFSDF3?=
+ =?utf-8?B?L042SGt1NE1Eb2JoMGFkMEFTTTZzWFlYWkZTUzM1Wi9uRUdQSGd1Qlk1aEtk?=
+ =?utf-8?B?WXd3QVd1RWJPUmVzUkpCSUVWb0VXYlpkeFBPYllYblpDbnliYmxwd2x3ZlNw?=
+ =?utf-8?B?citPdEt5MyttenM5dkNkZVZyY1UxTnhna3F1Z2NyZ2FuTTZJMFpqUjkxZ2I3?=
+ =?utf-8?B?U1RlUHZSTmtSbCtNQTBRR0w4Wm9vUzVzS0lQOS91bndEc3FhME9ueUNxbkxr?=
+ =?utf-8?B?VG9zZUREM1FpTjNzTDl6eXNDNTgvWm1GbHB6Qi9uQVlBNVk2b3h4VTBJU0Qz?=
+ =?utf-8?B?Tmw3UkVKT3ROTzdUdkwwc0lTWkpOaG00enp3OVQzaXkxYnBlYTRad3hRUGdv?=
+ =?utf-8?B?V0NPRjdzRTFkeE1qcDd3dzJybGhLdVJyMkhoWEdKelJxVEx0RFlBaFY3bS9o?=
+ =?utf-8?B?dGJKSjd2SFUyaVZsQmN2V2Q2WVMreldSTWorOG9WUk55UkxIL3dsdzNjZU9k?=
+ =?utf-8?B?ZDc2TDBzcE5EQjlaU3U2dFp6ak05NUZYak14RzJUZEVNMXZRQXNQQTNrUExL?=
+ =?utf-8?B?NUZ1V0syV09RSTVJUmljL2wwY2EwZkJtUERVL2FYZ21GK1JXK2VsWEJXMnd2?=
+ =?utf-8?B?NUZ0bjY3eGxKOUdTOXMrMFlmdXg0VFFhbVNyMmxtOEE3M2M1bGEyMmtybHEw?=
+ =?utf-8?B?VFhpclhSdUM0bjcwNkpLcXc3b3VQT0VwVGQ2bTdNeW1uY2svUjh6UmJBSWdu?=
+ =?utf-8?B?QXRLUlMyVTlnYi80bUZqZnBYWk5tODBVclQvY21TNi9xSHBHa1BsazZlWVBx?=
+ =?utf-8?B?a3poL1BxMGtXc1pFV2FqdFU0YUhRZ2YrQ3dTTzJxR1lSR2JrTHVaelFPbkdJ?=
+ =?utf-8?B?ZVVOdWU3MVhTM3o3N01IWHVxbm1KdGtCSG1hbHg4dHJEeXZjdUlXTkdxMHF4?=
+ =?utf-8?B?cUFFZUZsT1k1K0h0Y2JoOS9iNER3QlBpSlNTL0R0Wi9TU28xUkJrOXJ2UGFG?=
+ =?utf-8?B?U3FjTm44QUswVm9EOEVUNnhKdkNBL1NHVXE0VGRkL01FZEo1Uy9zWGxjd1RJ?=
+ =?utf-8?B?U25JcnMzRHhYeSs0ck1KMGtFRHh6UUNtRGd1d3htZ05zWnpNR2VTcHVXTVln?=
+ =?utf-8?B?Yi9HRTNmbWVTd2o2V2xGQm1BYnIyYlh2L3Z2YnptMFltWnZ4eEtvWVJ0N0hv?=
+ =?utf-8?B?NFRqTktqUXo5ZER5aFl3YWdzSnViUnBHRnU1aUpaeUp5N3FXVzdkMVNDaFRJ?=
+ =?utf-8?B?ckl6OHByVzY3UWZHcFRjWmNkZEdoYmUvak8wWmlhcnc3SkxpcVRDWUdrYitX?=
+ =?utf-8?B?ZVpvUnNNVjcxT1dKMlBHd3lNaXpQeFFhcnF6YXZqOTJUSEJjdElMUFgzSDVp?=
+ =?utf-8?B?MURtdDk5emFqanRVYTRTWWNUQTlBUzBFMy9xU2llMEJvNEl1WDJtUDBwak9J?=
+ =?utf-8?B?WFFvdGgxU1hzeFV5Z29PenlGY0l0SlA2NHVWYm8zbG5ndTdFdkloUmFqaEZj?=
+ =?utf-8?B?L3drU3pGRCtrZHZJZGlSdWRkZTNlUHNFZ3B0L2ZQa25wSHRSYlpUbWRrTnhW?=
+ =?utf-8?B?MjI4ZE5ubmpXcEVQTlVWdTBDMS85UTdCZnRCMXFBS3JmTWVTb1YwdW5jbHQ0?=
+ =?utf-8?B?N2tROWhORW1OSmZzNmVsQnR2UDN2bUdpR1I1MEVkem94ek4ycjNGTE9wSlAx?=
+ =?utf-8?B?N1FjdzFuOVZ6UGJPT0dQb05OTWR5eHVBeGtnM3NTNVRwVEVQbkdBV3l4cXc1?=
+ =?utf-8?B?czBYZlpjR3V4eTBSeGQ4aW45L3RyS2ZxemY2Nk5XeHlhZ24xOWZEa2xxVE95?=
+ =?utf-8?B?cHFnRDJIOWVCc08yWUt2TkJDcnRJSUFRQlNqRk1ZaFEweHF2d1BFYzB1OCsy?=
+ =?utf-8?B?QVlnR01td2xOZVhCN3lEUGZBSzdBQkRpRWNRYkVzMVJXQWJPeTJZYzBEMlZI?=
+ =?utf-8?B?NGtieEk1SDc2UTVldUtMNFRoTmJBOUJpTzljMTY1MTdjUURiMlhXQWhoWnNR?=
+ =?utf-8?B?QUNTcVlvRll5RFhyRDBrS00vL1VzM05RVTRySGZ5YVd2RzRUVEJOUCtMU3Fm?=
+ =?utf-8?B?OFE9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 954ec4dd-6188-479b-edf0-08dd660b946c
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Mar 2025 10:56:48.7709
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bCS1uX2VsvvMcx3Ay+QgzBpz2xqn/xRqGELC8HsFb0AGkUc5UKhkW+NVFiGLtwac7Ez4nOp6qb4XaTzqaZjZSDnhKUM/NOZJDJViDAY8R9A=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9258
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Mar 2025 08:47:13 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6591
+ <docs@lists.yoctoproject.org>; Tue, 18 Mar 2025 10:56:54 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6592
 
-Hi Antonin,
+Hi Trevor,
 
-On Mon Mar 17, 2025 at 10:06 AM CET, Antonin Godard wrote:
-[...]
->     -  Import ``makedumpfile`` from meta-openembedded, as the ``kexec-too=
-ls``
->        recipe :term:`RDEPENDS` on it.
-> @@ -69,6 +123,30 @@ New Features / Enhancements in |yocto-ver|
->        </meta-openembedded>`, a recipe for hardware identification and
->        configuration data, needed by ``libdisplay-info``.
-> =20
-> +   -  The ``cve-update-db-native`` was restored from kirkstone and can b=
-e used
-> +      to update the CVE National Vulnerability Database (NVD). Add suppo=
-rt for
-> +      the FKIE-CAD (https://github.com/fkie-cad/nvd-json-data-feeds) CVE=
- source
-> +      for it.
+On 3/18/25 4:56 AM, Trevor Woerner via lists.yoctoproject.org wrote:
+> Add a section after the 'git format-patch' information encouraging developers
+> to add patch version changelogs to their patch updates.
+> 
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
+> ---
+>   .../contributor-guide/submit-changes.rst      | 32 +++++++++++++++++++
+>   1 file changed, 32 insertions(+)
+> 
+> diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+> index 0675aac984cf..5ade6ba5cdef 100644
+> --- a/documentation/contributor-guide/submit-changes.rst
+> +++ b/documentation/contributor-guide/submit-changes.rst
+> @@ -776,6 +776,38 @@ argument to ``git format-patch`` with a version number::
+>   
+>      git format-patch -v2 <ref-branch>
+>   
 > +
-> +   -  The ``rpm-sequoia-crypto-policy`` to ship a crypto policy file for=
- the
-> +      ``rpm-sequoia`` recipe.
-
-Messed up the alignment starting from here...
-
-> +  -  The ``libsass`` and ``sassc`` for the C/C++ port of the Sass CSS
-> +     pre-compiler, required by the ``libadwaita`` recipe.
-> +
-> +  -  ``python3-roman-numerals-py``: module providing utilities for worki=
-ng with
-> +     well-formed Roman numerals. ``python3-sphinx`` relies on this recip=
-e.
-> +
-> +  -  The ``fastfloat`` recipe, a header-only library for fast number par=
-sing.
-> +     This will be a dependency for the ``vte`` recipe in later versions.
-> +
-> +  -  The ``avahi-libnss-mdns`` was renamed from ``libnss-mdns``.
-> +
-> +  -  The ``cargo-c`` was renamed from ``cargo-c-native``.
-> +
-> +  -  The ``tcl8`` recipe was added to support the failing build of ``exp=
-ect``.
-> +     The ``tcl`` recipe (version 9) remains the main recipe for this com=
-ponent.
+> +After generating updated patches (v2, v3, and so on) via ``git
+> +format-patch``, ideally developers will add a patch version changelog
+> +to each patch that describes what has changed between each revision of
+> +the patch. Add patch version changelogs after the ``---`` marker in the
+> +patch, indicating that this information is part of this patch, but is not
+> +suitable for inclusion in the commit message (i.e. the git history) itself.
+> +Providing a patch version changelog makes it easier for maintainers and
+> +reviewers to succinctly understand what changed in all versions of the
+> +patch, without having to consult alternate sources of information, such as
+> +searching through messages on a mailing list. For example::
 > +
 
-...up to there. Will fix in v2.
+If you're looking at this from a maintainer perspective, maybe consider 
+using b4.
 
->  -  New core classes:
-> =20
->     -  New :ref:`ref-classes-uki` class for building Unified Kernel Image=
-s (UKI).
-> @@ -79,12 +157,23 @@ New Features / Enhancements in |yocto-ver|
->        this class. This class also strips potential build paths in the co=
-mpilation
->        output for reproducibility.
-> =20
-> +   -  New :ref:`ref-classes-ptest-python-pytest` class to automatically
-> +      configure :ref:`ref-classes-ptest` for Python packages using the `=
-pytest
-> +      <https://docs.pytest.org>`__ unit test framework.
-> +
->  -  Architecture-specific changes:
-> =20
->     -  ``tune-cortexa32``: set tune feature to ``armv8a``.
-> =20
-> +   -  Add the ``loongarch64`` architecture for the ``grub2`` and ``llvm`=
-`
-> +      recipes. It was also added to build with ``musl`` as the toolchain=
-.
-> +
->  -  QEMU / ``runqemu`` changes:
-> =20
-> +   -  ``qemu/machine``: change the  ``QEMU_EXTRAOPTIONS_${TUNE_PKGARCH}`=
-` syntax
-> +      in QEMU machine definitions to ``QEMU_EXTRAOPTIONS:tune-${TUNE_PKG=
-ARCH}``
-> +      to follow the same patterns as other QEMU-related variables.
-> +
->  -  Documentation changes:
-> =20
->     -  Use ``rsvg`` as a replacement of ``inkscape`` to convert svg files=
- in the
-> @@ -93,6 +182,10 @@ New Features / Enhancements in |yocto-ver|
->     -  The ``cve`` role was replaced by ``cve_nist`` to avoid a conflict =
-with
->        more recent version of Sphinx.
-> =20
-> +   -  New documentation on the multiconfig feature: :doc:`/dev-manual/mu=
-lticonfig`.
-> +
-> +   -  New documentation on ``bblock``: :doc:`/dev-manual/bblock`.
-> +
->  -  Go changes:
-> =20
->     -  The :ref:`ref-classes-go-mod` class now sets an internal variable
-> @@ -116,6 +209,9 @@ New Features / Enhancements in |yocto-ver|
->     -  Add the variable :term:`WIC_SECTOR_SIZE` to control the sector siz=
-e of Wic
->        images.
-> =20
-> +   -  ``bootimg-efi``: Support "+" symbol in filenames passed in
-> +      :term:`IMAGE_EFI_BOOT_FILES`.
-> +
->  -  SDK-related changes:
-> =20
->     -  Add support for ZST-compression through :term:`SDK_ARCHIVE_TYPE`, =
-by
-> @@ -126,6 +222,11 @@ New Features / Enhancements in |yocto-ver|
-> =20
->     -  Enable ``ipv6``, ``acl``, and ``xattr`` in :term:`DISTRO_FEATURES_=
-NATIVESDK`.
-> =20
-> +   -  Toolchain SDKs (``meta-toolchain``) now properly supports the ``us=
-rmerge``
-> +      feature (part of :term:`DISTRO_FEATURES`).
-> +
-> +   -  The ``pipefail`` shell option is now added to the SDK installer sc=
-ript.
-> +
->  -  Testing-related changes:
-> =20
->     -  ``oeqa/postactions``: Fix archive retrieval from target.
-> @@ -144,8 +245,12 @@ New Features / Enhancements in |yocto-ver|
-> =20
->     -  ``oeqa/selftest``: add a test for bitbake "-e" and "-getvar" diffe=
-rence.
-> =20
-> +   -  ``oeqa/selftest``: Fix failure when configuration contains ``BBLAY=
-ERS:append``
-> +
->     -  ``oeqa/ssh``: improve performance and log sizes when handling larg=
-e files.
-> =20
-> +   -  ``oeqa/poisoning``: fix and improve gcc include poisoning tests.
-> +
->  -  Utility script changes:
-> =20
->     -  The ``patchreview.py`` script now uses the ``check_upstream_status=
-`` from
-> @@ -172,19 +277,42 @@ New Features / Enhancements in |yocto-ver|
->           :term:`CHECKLAYER_REQUIRED_TESTS` to get the list of QA checks =
-to verify
->           when running the ``yocto-check-layer`` script.
-> =20
-> +   -  New ``oe-image-files-spdx`` script utility directory under
-> +      ``scripts/contrib`` to that processes the SPDX 3.0.1 output from a=
- build
-> +      and lists all the files on the root file system with their checksu=
-ms.
-> +
->  -  BitBake changes:
-> =20
-> -   -  ``fetch2``: do not preserve ownership when unpacking.
-> +   -  Add a new ``include_all`` directive, which can be used to include =
-multiple
-> +      files present in the same location in different layers.
-> +
-> +   -  Fetcher related changes (``fetch2``):
-> +
-> +      -  Do not preserve ownership when unpacking.
-> +
-> +      -  switch from Sqlite ``persist_data`` to a standard cache file
-> +         for checksums, and drop ``persist_data``.
-> +
-> +      -  add support for GitHub codespaces by adding the
-> +         ``GITHUB_TOKEN`` to the list of variables exported during ``git=
-``
-> +         invocations.
-> =20
-> -   -  ``fetch2``: switch from Sqlite ``persist_data`` to a standard cach=
-e file
-> -      for checksums, and drop ``persist_data``.
-> +      -  set User-Agent to 'bitbake/version' instead of a "fake
-> +         mozilla" user agent.
-> =20
-> -   -  ``fetch2``: add support for GitHub codespaces by adding the
-> -      ``GITHUB_TOKEN`` to the list of variables exported during ``git``
-> -      invocations.
-> +      -  ``wget``: handle HTTP 308 Permanent Redirect.
-> =20
-> -   -  ``fetch2``: set User-Agent to 'bitbake/version' instead of a "fake
-> -      mozilla" user agent.
-> +      -  ``wget``: increase timeout to 100s from 30s to match CDN worst
-> +         response time.
-> +
-> +      -  Add support for fast initial shallow fetch. The fetcher will pr=
-efer an
-> +         initial shallow clone, but will re-utilize an existing bare clo=
-ne if
-> +         there is one. If the remote server does not allow shallow fetch=
-es, the
-> +         fetcher falls back to a bare clone. This improves the data tran=
-sfer
-> +         size on the initial fetch of a repository, eliminates the need =
-to use
-> +         an HTTPS tarball :term:`SRC_URI` to reduce data transfer, and a=
-llows
-> +         SSH-based authentication when using non-public repos, so additi=
-onal
-> +         HTTPS tokens may not be required.
-> =20
->     -  ``compress``: use ``lz4`` instead of ``lz4c``, as ``lz4c`` as been
->        considered deprecrated since 2018.
-> @@ -192,14 +320,13 @@ New Features / Enhancements in |yocto-ver|
->     -  ``server/process``: decrease idle/main loop frequency, as it is id=
-le and
->        main loops have socket select calls to know when to execute.
-> =20
-> -   -  ``bitbake-worker``: improve bytearray truncation performance when =
-large
-> -       amounts of data are being transferred from the cooker to the work=
-er.
-> +   -  ``bitbake-worker``:
-> =20
-> -   -  ``bitbake-worker/cooker``: increase the default pipe size from 64K=
-B to
-> -      512KB for better efficiency when transferring large amounts of dat=
-a.
-> +      -  improve bytearray truncation performance when large
-> +         amounts of data are being transferred from the cooker to the wo=
-rker.
-> =20
-> -   -  ``fetch/wget``: increase timeout to 100s from 30s to match CDN wor=
-st
-> -      response time.
-> +      -  ``cooker``: increase the default pipe size from 64KB to
-> +         512KB for better efficiency when transferring large amounts of =
-data.
-> =20
->     -  ``bitbake-getvar``: catch ``NoProvider`` exception to improve erro=
-r
->        readability when a recipe is not found with ``--recipe``.
-> @@ -219,6 +346,18 @@ New Features / Enhancements in |yocto-ver|
->     -  ``knotty`` now hints the user if :term:`MACHINE` was not set in
->        the ``local.conf`` file.
-> =20
-> +   -  ``utils``: add Go mod h1 checksum support, specific to Go modules.=
- Use
-> +      with ``goh1``.
-> +
-> +   -  The parser now catches empty variable name assignments such as::
-> +
-> +         +=3D "value"
-> +
-> +      The previous code would have assigned ``value`` to the variable na=
-med ``+``.
-> +
-> +   -  ``hashserv``: Add the ``gc-mark-stream`` command for batch hash ma=
-rking.
-> +
-> +
->  -  Packaging changes:
-> =20
->     -  ``systemd``: extract dependencies from ``.note.dlopen`` ELF segmen=
-ts, to
-> @@ -235,13 +374,18 @@ New Features / Enhancements in |yocto-ver|
-> =20
->  -  LLVM related changes:
-> =20
-> +   -  Set ``LLVM_HOST_TRIPLE`` for cross-compilation, which is recommend=
-ed when
-> +      cross-compiling Llvm.
-> +
->  -  SPDX-related changes:
-> =20
-> -   -  SPDX 3.0: Find local sources when searching for debug sources.
-> +   -  SPDX 3.0:
-> =20
-> -   -  SPDX 3.0: Map ``gitsm`` URIs to ``git``.
-> +      -  Find local sources when searching for debug sources.
-> =20
-> -   -  SPDX 3.0: Link license and build by alias instead of SPDX ID.
-> +      -  Map ``gitsm`` URIs to ``git``.
-> +
-> +      -  Link license and build by alias instead of SPDX ID.
-> =20
->     -  Fix SPDX tasks not running when code changes (use of ``file-checks=
-ums``).
-> =20
-> @@ -256,6 +400,14 @@ New Features / Enhancements in |yocto-ver|
->        ``devtool modify my-recipe --debug-build`` followed by
->        ``devtool ide-sdk my-recipe my-image``.
-> =20
-> +   -  ``create-spdx``: support line numbers for :term:`NO_GENERIC_LICENS=
-E`
-> +      license types.
-> +
-> +   -  ``spdx30``: Adds a "contains" relationship that relates the root f=
-ile
-> +      system package to the files contained in it. If a package provides=
- a file
-> +      with a matching hash and path, it will be linked, otherwise a new =
-File
-> +      element will be created.
-> +
->  -  Patchtest-related changes:
-> =20
->     -  Refactor pattern definitions in a ``patterns`` module.
-> @@ -299,6 +451,8 @@ New Features / Enhancements in |yocto-ver|
->        currently prints warning message for every unpatched CVE the
->        :ref:`ref-classes-cve-check` class finds.
-> =20
-> +   -  Allow choosing the CVE feed with :term:`NVD_DB_VERSION`.
-> +
->  -  New :term:`PACKAGECONFIG` options for individual recipes:
-> =20
->        -  ``perf``: ``zstd``
-> @@ -308,15 +462,61 @@ New Features / Enhancements in |yocto-ver|
->        -  ``libpam``: ``selinux``
->        -  ``libsecret``: ``pam``
->        -  ``rpm``: ``sequoia``
-> +      -  ``systemd``: ``apparmor``, ``fido``, ``mountfsd``, ``nsresource=
-d``
-> +      -  ``ovmf``: ``debug``
+For reviewing stuff, I sometimes do
 
-Also here, will fix in v2.
+b4 diff -v 1 2 -- <lore.kernel.org URL to v2>
 
-Antonin
+and that helps.
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+This is orthogonal to this patch though but just wanted to mention it :)
+
+Cheers,
+Quentin
 
