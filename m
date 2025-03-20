@@ -1,145 +1,95 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <javier.tia@linaro.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 86E9CC282EC
-	for <webhook@archiver.kernel.org>; Tue, 18 Mar 2025 14:39:25 +0000 (UTC)
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.13620.1742308763505581640
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3FD4FC35FFA
+	for <webhook@archiver.kernel.org>; Thu, 20 Mar 2025 00:34:36 +0000 (UTC)
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+ by mx.groups.io with SMTP id smtpd.web10.1998.1742430849861929088
  for <docs@lists.yoctoproject.org>;
- Tue, 18 Mar 2025 07:39:23 -0700
+ Wed, 19 Mar 2025 17:34:10 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mN3z1pt8;
- spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 27D56442CA;
-	Tue, 18 Mar 2025 14:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742308761;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=QViCRFxKrclhievBhfCMTdBm0rSNesao8ZmAZk1jpwM=;
-	b=mN3z1pt8P2JTN+p1I5qT+Mt1PXoR00Cr7g0Kozprv7mvoLv7yQd2u5XMieqaFySAcku9nO
-	BQki8nHYYKPobs1MjUgtKXPpJcBX5JSfRQShAT8IGUBipLznGPDXh3TCrg3WqPyNM6iODc
-	Zsj+u6+N48c+7+9i/r0IGuv0mlv74VWK3BVg7IUhXiJGNXoEmCTTac1ugPhTye2kbqyQd1
-	8ErB2d+XmepEyJL6M0C/gj/g29Q76M1Yir0HEknEbuxVOpWpU4RN44UH47lD7vDv6o8c6A
-	+XvwR7h6jGMyB5+pdbzcV2JjsOjshJVZ5pslCejbuu2dDTtw+uz8iENfFw9OTg==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 18 Mar 2025 15:39:13 +0100
-Subject: [PATCH v5] migration-guides/release-notes-5.2: add known issue on
- stalled NVD
+ dkim=pass header.i=@linaro.org header.s=google header.b=vegaJyr8;
+ spf=pass (domain: linaro.org, ip: 209.85.222.46, mailfrom: javier.tia@linaro.org)
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-86d377306ddso87850241.2
+        for <docs@lists.yoctoproject.org>; Wed, 19 Mar 2025 17:34:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1742430849; x=1743035649; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=y59giNKtwyBUQBtmmF9ISweqvTgmhAj61z+4ZJqKxaA=;
+        b=vegaJyr8RKPpGw4PlExc9L2O/gw8R6hqvMNUvwiC7JxdS4DmlxEi5/9c7p6VDTs0lw
+         aZ8qalPMmXSZaRxrff4ZSktQ18SnusVCtuSakTh5HkEA8FF2N1kHnjyK1mi90/EyKrzF
+         K9r+9myCsjigbGziJlM4mEjDtN/3n8NKNn/l5p8ilCSHzM15tUW27cHe3psCTH1W1mxn
+         P4E/tiDknXSlHKWBkZpMUXhfCm4mnPcPBwSPyKn+CEWSVK0vCgMc32ekJEjMZVWS2xv0
+         pNvTVjxrqkEfdLkFMgRiZiN/MPo29n4XgvDazJ9C87NfsHL07d6BvkC0KqfOrZwuyx/T
+         vL5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742430849; x=1743035649;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=y59giNKtwyBUQBtmmF9ISweqvTgmhAj61z+4ZJqKxaA=;
+        b=ESKLI6VT+gpbk+7mYJEEKUffbbx9G0zjoqYIDRPFKUDASEF3VZB1Xe0B3LGwAIBnwc
+         PaRPRcUvZqmV/j3v5Skp4TZPy8acLy7DvVuPD9gvYNtgVEE/xlNvvCBIjUTt/V3Q6fMB
+         5rttPOXvyHTB2N9bJyQUE1UjlgQm2A/HV+oJHdRFTg67TX1Rj3Gk+dMz0mTM0JfMRRem
+         C0qyI8y5QZI2EpXK2cRTSRcEgxb5Cjj4jsuETix9xLmpAMFS0Mn+MADcyOQ3V1tdFsDd
+         809CygxNiEvwkdED91KSjV7i6mhTTD0nHa6dkFda5+FpSfBqIVbyV48XidC4JaWaLtsv
+         VXbw==
+X-Gm-Message-State: AOJu0YxQdVMwe1z7NM9CBdkHUkDnjHISFRnsFZNp2T7Xm/pm+NNCIgg1
+	WbXs+88gbufRMrShSGwtJh0AKrYb0COzXsd8N8YFPny2c0i350GRrTqNmGS90og=
+X-Gm-Gg: ASbGncsa1ersucZwVjNOBlMXJiGK3sH8036Tu0XxNdlOdNEJ0fl89RPOUzKLh7RVQEn
+	TwPbcgK8Aor6fr5alUn5g+tHrRFNWDrdOuFaVkA97ehx3Gjwn7B+a3db5L11RHxNUv1aICqepjt
+	gvrtfrnUjp+GzZa8KYiWKm2LK6i0/Rw9uJEzesOZ8dXJj55U35IP8S8akSzlSlFHTR5y+hH7Eu2
+	Y4li0rnBpLq0TDA5pjRWQ/ztwhmijGUXXFOwyVYBn95c8nWcWEgV6NpUgZTJMzIiGbk+fDFxcb7
+	dvkOT8Zvk+QC/9uDCgifAhQ/jnuEco01NBm9vLILOrgg0rjySyTovnrfGESEU16rE7vKLHS6
+X-Google-Smtp-Source: AGHT+IFX3e5zE4cUr99LyZRS8dRiK35Vea/WOVKXYczCyLRcA/DmP0sJ+cRW8kb4EO+SlV3wHxXebw==
+X-Received: by 2002:a05:6102:161f:b0:4bb:eb4a:f9ec with SMTP id ada2fe7eead31-4c4ec8111d0mr3491502137.16.1742430848888;
+        Wed, 19 Mar 2025 17:34:08 -0700 (PDT)
+Received: from localhost.localdomain ([170.246.157.153])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-86d90d68da8sm2676704241.6.2025.03.19.17.34.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Mar 2025 17:34:08 -0700 (PDT)
+From: Javier Tia <javier.tia@linaro.org>
+To: bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org,
+	Mikko Rapeli <mikko.rapeli@linaro.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Subject: [PATCH] doc: Mention `if [[ somecondition ]]` is not supported
+Date: Wed, 19 Mar 2025 18:33:58 -0600
+Message-ID: <20250320003358.977774-1-javier.tia@linaro.org>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250318-nvd-stalled-v5-1-49a981fe421a@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAJCF2WcC/33M0Q6CIBiG4VtxHEcD/lDpqPtoHSD8JJtJE8dqz
- XsPPdLZOvy+7Xk/JOLgMZJz8SEDJh996POQh4KYVvd3pN7mTQQTkgHntE+WxlF3HVqKVslK1Qq
- Z1CSL54DOv5ba9ZZ36+MYhvcST3x+f3cSp5w6qMFa4wB4eWlCGDvfH014kLmUxB8tZm2hFrJB7
- Rjfa1hr2GrImiOqpqy0qqTZ69NaV1t9ylqgbqTUmjnDtnqapi+1dwzgYgEAAA==
-X-Change-ID: 20250311-nvd-stalled-ed957989e05a
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Marta Rybczynska <rybczynska@gmail.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3075;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=INQ+WwqRs/88Xam3fW8VbD+sOZRzpMHgGbJllAZQdeY=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn2YWYvC8++kprhZ49gMcRh/AsT8bNjOolzcg9G
- d/idN5r+IKJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ9mFmAAKCRDRgEFAKaOo
- NlERD/46GCHlHvk9Y0bfBCVxqmMBxdjFpi0fNik1CF34q//mUCZ8eTj68iOxl+s9jNID2ClFNuQ
- RS3FW/9+XufdbUdSHfqIs4fDto0J1yty9cWuMDI3da8kL+JVzypvZ6wIAvZrNgSElCuGCajop0D
- ebWmxKG0uPDMpfOolyBy4SphPSWGBEm+fWGm8qrH+fdJKtw1uNKdlF2ortNzv/see5y7r1TJfbT
- SvXrWon6nEK7xHeD7v6guCNXduK7su56EI0Js+hgW64vPzlvsoO/qYguqGLNogg9NREQ+RcYpZs
- kh8cdFLMg3TS8h6VLwvRpymie+/V3222/zp3MKiOdQ1z7+CBGaTD2CAHWajErsQcEoEEMOr5Ikp
- sGs+UAji1PRgDJDo6EMeDCJnwHVL1toa5df0hE6mNfAahrD+A1JD8O5zgyy1B3dZvGyNUtl+Q9Q
- Idx5nuLGM0TnpxEjaU33MWuHNbVrymW9TD6nI94VK5il0HIsRV8yvT3cb1Yfrnh8mIf/5pmp0iP
- dqmuMM9wFkBlBOxO6qkAanX3nP1qv0uDXM8TfJxjimnP5RVAJ8/7xMveykWcsugDcp7hl3VDG4z
- 4GaCy9rraBJDEtKIzoXr6kdxSmUl7HK/jIvg22xeucOPbLkjcQXitL7S7u6B+DTWBWVBj+PJj9a
- DzZhFgU7UagraNQ==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: clean
-X-GND-Score: -106
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugedvjedtucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenfghrlhcuvffnffculddqiedmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeetnhhtohhnihhnucfiohgurghrugcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepveektdejffdtgfefuedvfeevhfeiffdtjeejvdetgedtjeekteegledtkefguddvnecuffhomhgrihhnpehophgvnhgvmhgsvgguuggvugdrohhrghdpkhgvrhhnvghlrdhorhhgpdhnihhsthdrghhovhdptghvvgdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehrhigstgiihihnshhkrgesghhmrghilhdrtghomhdprhgtp
- hhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
-X-GND-Sasl: antonin.godard@bootlin.com
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 18 Mar 2025 14:39:25 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6594
+ <docs@lists.yoctoproject.org>; Thu, 20 Mar 2025 00:34:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6595
 
-Add an entry to the known issue as the NVD is not up-to-date, the
-impact on current CVE reports and future plans for the Yocto Project.
+I keep forgetting using `if [[ somecondition ]]` is not supported.
 
-Follows the discussion on:
-https://lists.openembedded.org/g/openembedded-core/message/212446
-
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Signed-off-by: Javier Tia <javier.tia@linaro.org>
 ---
-Changes in v5:
-- Rephrase first paragraph to be more precise on what exactly the
-  problem is with the NVD database.
-- Reviews by Marta (thank you!):
-  - Rephrase the second paragraph.
-  - Remove the last one.
-- Link to v4: https://lore.kernel.org/r/20250317-nvd-stalled-v4-1-2eab55aa0fc0@bootlin.com
+ doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Changes in v4:
-- Review by Quentin Schulz (thank you!):
-  - Be more precise about what solution the YP team will try to solve.
-  - Remove CVE Project potential candidate.
-- Link to v3: https://lore.kernel.org/r/20250313-nvd-stalled-v3-1-1ee9b67a975c@bootlin.com
-
-Changes in v3:
-- Suggested by Marta (thank you!):
-  - Add what users can do at the moment.
-  - Simplify the sentence regarding the CVE Project.
-- Link to v2: https://lore.kernel.org/r/20250311-nvd-stalled-v2-1-fd3825beaf01@bootlin.com
-
-Changes in v2:
-- Typos and suggestions from Quentin Schulz (thank you!)
-- Link to v1: https://lore.kernel.org/r/20250311-nvd-stalled-v1-1-f383ddcf3316@bootlin.com
----
- .../migration-guides/release-notes-5.2.rst      | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
-index 417b202cd..d7115230d 100644
---- a/documentation/migration-guides/release-notes-5.2.rst
-+++ b/documentation/migration-guides/release-notes-5.2.rst
-@@ -402,6 +402,23 @@ New Features / Enhancements in |yocto-ver|
- Known Issues in |yocto-ver|
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+index 415fbf6d6..5474e154f 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+@@ -1381,6 +1381,10 @@ To make use of this technique, you need the following things in place:
+    To call your modified version of the function as defined in your recipe,
+    call it as ``do_foo``.
  
-+-  The :ref:`ref-classes-cve-check` class is based on the `National
-+   Vulnerability Database <https://nvd.nist.gov/>`__ (NVD). Since the beginning
-+   of 2024, the maintainers of this database have stopped annotating CVEs with
-+   the affected CPEs. This prevents the :ref:`ref-classes-cve-check` class to
-+   properly report CVEs as CPEs are used to match Yocto recipes with CVEs
-+   affecting them. As a result, the current CVE reports may look good but the
-+   reality is that some vulnerabilities are just not reported.
++   .. note::
 +
-+   During that time, users may look up the 'CVE database
-+   <https://www.cve.org/>'__ for entries concerning software they use, or follow
-+   release notes of such projects closely.
++      Conditional expression using ``[[ somecondition ]]`` is not supported.
 +
-+   Please note, that the :ref:`ref-classes-cve-check` tool has always been a
-+   helper tool, and users are advised to always review the final result. Results
-+   of an automatic scan may not take into account configuration options,
-+   compiler options and other factors.
-+
- Recipe License changes in |yocto-ver|
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
-
----
-base-commit: e608902ffae3af5ab0c5308b0550e49a790482f0
-change-id: 20250311-nvd-stalled-ed957989e05a
-
-Best regards,
+ With these conditions met, your single recipe can freely choose between
+ the original function as defined in the class file and the modified
+ function in your recipe. If you do not set up these conditions, you are
 -- 
-Antonin Godard <antonin.godard@bootlin.com>
+2.49.0
 
 
