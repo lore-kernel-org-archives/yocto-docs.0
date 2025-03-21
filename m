@@ -1,120 +1,98 @@
-Return-Path: <twoerner@gmail.com>
+Return-Path: <paulg@kernel.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4D5ABC36000
-	for <webhook@archiver.kernel.org>; Fri, 21 Mar 2025 16:54:31 +0000 (UTC)
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
- by mx.groups.io with SMTP id smtpd.web10.4729.1742576068034134491
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 64500C36000
+	for <webhook@archiver.kernel.org>; Fri, 21 Mar 2025 19:27:17 +0000 (UTC)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+ by mx.groups.io with SMTP id smtpd.web10.2019.1742585234115378432
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Mar 2025 09:54:28 -0700
+ Fri, 21 Mar 2025 12:27:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=TjXYf5UX;
- spf=pass (domain: gmail.com, ip: 209.85.222.181, mailfrom: twoerner@gmail.com)
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7c5b2472969so210227285a.1
-        for <docs@lists.yoctoproject.org>; Fri, 21 Mar 2025 09:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742576067; x=1743180867; darn=lists.yoctoproject.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AMEdDNvn0qaZEKPGQjW2ax3B0WZvPqLh94BQ7SD+e7Y=;
-        b=TjXYf5UXjRXuWzUvSoGcLEKqP5nvOx0Zpe04y544U132xX0s/65XU3q1+tPsD3MCB2
-         JfVHPcn6MpGYxODheGomJcj4Uih9xI1dLoUIWmsEwrqgIJkSPKHPtiDgCsSJx1Cp73fh
-         oUEnLLgGakagU8Kh0BZVA2jgT/8aPdkIDNunpjHSLVcxHz8zX96toRT+ML6zjsohFF5+
-         j+vlbS00uiFnXEJb9DqLtuOV7g1ThDwcfmLwvcXFqgxbOhqPgcywlBCdCcx912EXdN72
-         rpuz661vTu2MnyW1UmNdCFEXpcx8MO3V8mLrVRop86Mq978JTKrsA2ApSeBoMhy0hvuT
-         vtJg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742576067; x=1743180867;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AMEdDNvn0qaZEKPGQjW2ax3B0WZvPqLh94BQ7SD+e7Y=;
-        b=Omfzpv9PtARVvQrjlUls4o9DHL2AndYMWksFmhqhjGsuU80FlsYPwiNBFw7Yu04uvo
-         IgxMvLuU8njP1nDh3jOTvchht1ECcpOoJH40h//XM0LTVCxYvLRGCCaEL7IFKggc4Vkr
-         /ULz6Fb9p6wv93xB78zNmiMWBHjI4doQ8rayf+aQancbnMhp6qzZ6MWHwnN0+vyeBdZ/
-         PNbn2H94WkZV5HSrT7/7yvezxnHv0qN3nk8RXuw3sUT95mdSk4otOu5G50X4qxj8MgZx
-         JML6W+vk7f9JEGHPoWZr0Laf1OK74YTU/4DLxC/djxDv3JzkGu9MYpobSE3nxFKvA1kx
-         YTiw==
-X-Gm-Message-State: AOJu0Yx5KWzeRvXDwelXas+izM/raqSnpD3qdZBygkrTYWmReBkioZWz
-	PlUjGdZ9GRC828/ZKZWF8FY71NO8s8y8xi1Q55K48Lfc3VKUIvqB1QCc4Q==
-X-Gm-Gg: ASbGncuLPRICUvIAC89CM32RJ+c/G1UN400NW/cu+0RUSpY0IlVMP9pzVux9nd5PUGv
-	8gM0Zve2lPfeV6lnwAbKr4bdQoe+Z0hjqKg5rMz8uYH2UxmWJJOQNfmNx745QdL7NnHm+iRmy1T
-	s8FFrZ730GptlzHqRPK1uxN2F1Afjlw2L4/XT4by4LfRFldwEMT6jCD7UkWXPwqa/lf8A6azm4K
-	lrGH9EObovI4gcdKzDY/mf7a9MHdF9n5OFq9m34/kkoWao/fck6MTCP1ABDuSQWSAW/amtKpcX6
-	CZ86ljLMA0buiRxzyn1bh4V5kSpB6Hc+DgXBVah1zEar6q2jY4eh/5a0Vtx8G0hF7tZedjjA
-X-Google-Smtp-Source: AGHT+IEnMj4Tq78s9jWPkdHks7z4nFpiE5A9f6pyfvBDlLzvXkFNb8d26C6fyt4jdiPVj2ICKPegiQ==
-X-Received: by 2002:a05:620a:28c5:b0:7c5:49d6:733a with SMTP id af79cd13be357-7c5ba1840admr563161785a.21.1742576066859;
-        Fri, 21 Mar 2025 09:54:26 -0700 (PDT)
-Received: from localhost (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c5b92d7ca1sm149876585a.47.2025.03.21.09.54.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Mar 2025 09:54:26 -0700 (PDT)
-Date: Fri, 21 Mar 2025 12:54:24 -0400
-From: Trevor Woerner <twoerner@gmail.com>
-To: Quentin Schulz <quentin.schulz@cherry.de>
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH] contributor-guide/submit-changes: encourage patch
- version changelogs
-Message-ID: <20250321165424.GB12580@localhost>
-References: <20250318035605.1221-1-twoerner@gmail.com>
- <f7fa065f-8a8a-4768-9c63-fdcaca4602af@cherry.de>
+ dkim=fail reason="dkim: body hash did not verify" header.i=@kernel.org header.s=k20201202 header.b=fANFSMrG;
+ spf=pass (domain: kernel.org, ip: 147.75.193.91, mailfrom: paulg@kernel.org)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id D5509A49555
+	for <docs@lists.yoctoproject.org>; Fri, 21 Mar 2025 19:21:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E42C4CEE3
+	for <docs@lists.yoctoproject.org>; Fri, 21 Mar 2025 19:27:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742585232;
+	bh=806hy/sQre0pjqTz3o9svXY9tBj8kCemmNekzntMDoc=;
+	h=From:To:Subject:Date:From;
+	b=fANFSMrGoYvlZCqon00Q+h+BQQBIZgMZ/gtcTSjy1p7ocvMJrSwIi0dgfd+B/sjHz
+	 ekcMTTZSF5ZNkFqswHGO4PtYazB3w7k6SSVJTXlXexyn+b5jZKTTPdZWzKYpWAS2/K
+	 ms+BE2R7ZoZX7iBDj97VOIAZ0UADFPhCUya2W3/eIwhZFGp0g+fB+sVRbzpV0Q+87b
+	 j0XV07YzMIiS9c0Emh59Nn5bvFa79amCLh5YGaYQyieGEDNXkoxSN/O/y2gh7DtvWL
+	 Dx+2A50bEg+W9rngjTk6J9ukvQYF2vipW+m7GDVcXh+RCw34msYy93l2lh8O3rojtL
+	 skMd/85hOB1Tg==
+From: paulg@kernel.org
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] requirements: move Ubuntu-20.04 into unsupported category due to python
+Date: Fri, 21 Mar 2025 15:27:11 -0400
+Message-Id: <20250321192711.3061486-1-paulg@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <f7fa065f-8a8a-4768-9c63-fdcaca4602af@cherry.de>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 21 Mar 2025 16:54:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6604
+ <docs@lists.yoctoproject.org>; Fri, 21 Mar 2025 19:27:17 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6605
 
-On Tue 2025-03-18 @ 11:56:47 AM, Quentin Schulz wrote:
-> Hi Trevor,
-> 
-> On 3/18/25 4:56 AM, Trevor Woerner via lists.yoctoproject.org wrote:
-> > Add a section after the 'git format-patch' information encouraging developers
-> > to add patch version changelogs to their patch updates.
-> > 
-> > Signed-off-by: Trevor Woerner <twoerner@gmail.com>
-> > ---
-> >   .../contributor-guide/submit-changes.rst      | 32 +++++++++++++++++++
-> >   1 file changed, 32 insertions(+)
-> > 
-> > diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
-> > index 0675aac984cf..5ade6ba5cdef 100644
-> > --- a/documentation/contributor-guide/submit-changes.rst
-> > +++ b/documentation/contributor-guide/submit-changes.rst
-> > @@ -776,6 +776,38 @@ argument to ``git format-patch`` with a version number::
-> >      git format-patch -v2 <ref-branch>
-> > +
-> > +After generating updated patches (v2, v3, and so on) via ``git
-> > +format-patch``, ideally developers will add a patch version changelog
-> > +to each patch that describes what has changed between each revision of
-> > +the patch. Add patch version changelogs after the ``---`` marker in the
-> > +patch, indicating that this information is part of this patch, but is not
-> > +suitable for inclusion in the commit message (i.e. the git history) itself.
-> > +Providing a patch version changelog makes it easier for maintainers and
-> > +reviewers to succinctly understand what changed in all versions of the
-> > +patch, without having to consult alternate sources of information, such as
-> > +searching through messages on a mailing list. For example::
-> > +
-> 
-> If you're looking at this from a maintainer perspective, maybe consider
-> using b4.
-> 
-> For reviewing stuff, I sometimes do
-> 
-> b4 diff -v 1 2 -- <lore.kernel.org URL to v2>
-> 
-> and that helps.
-> 
-> This is orthogonal to this patch though but just wanted to mention it :)
+From: Paul Gortmaker <paul.gortmaker@kernel.org>
 
-Thanks for the reminder! I've been meaning to force myself to start using b4.
-We're pretty lucky that our repositories are hosted on lore.kernel.org. We
-even have our own lore repository at work internally, so b4 would be useful
-there too.
+Bitbake commit 0d2e682d00df ("bitbake: lib/bb: Bump minimum python
+version requirement to 3.9" -- poky commit 67566c7410e1) means that
+Ubuntu 20.04 is no longer supported out-of-the-box as detailed further
+in the respective commit log.
+
+While it is true that it can still be used with buildtools, that can
+also be said for nearly every other unsupported distro out there,
+including Ubuntu 18.04 that we listed as unsupported some years ago.
+Hence continuing to list it as supported with the new python requirement
+in place does not make sense.
+
+So we move it alongside of the 18.04 entry, into the "possibly tested,
+but you get what you get" category.  And add an explicit mention of the
+buildtools, so people have a thread to pull on.
+
+Signed-off-by: Paul Gortmaker <paulg@kernel.org>
+
+diff --git a/documentation/ref-manual/system-requirements.rst b/documenta=
+tion/ref-manual/system-requirements.rst
+index 93b95a7fb251..3d0d26e2f08b 100644
+--- a/documentation/ref-manual/system-requirements.rst
++++ b/documentation/ref-manual/system-requirements.rst
+@@ -58,8 +58,6 @@ Supported Linux Distributions
+ Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project i=
+s
+ supported on the following distributions:
+=20
+--  Ubuntu 20.04 (LTS)
+-
+ -  Ubuntu 22.04 (LTS)
+=20
+ -  Ubuntu 24.04 (LTS)
+@@ -93,11 +91,15 @@ organizations publishing them no longer make updates =
+publicly available:
+=20
+ -  Ubuntu 18.04 (LTS)
+=20
++-  Ubuntu 20.04 (LTS)
++
+ -  Ubuntu 23.04
+=20
+ Note that the Yocto Project doesn't have access to private updates
+ that some of these versions may have. Therefore, our testing has
+-limited value if you have access to such updates.
++limited value if you have access to such updates.  Also, buildtools
++may have to be used on older releases in order to get current enough
++tools, such as python.
+=20
+ Finally, here are the distribution versions which were previously
+ tested on former revisions of "&DISTRO_NAME;", but no longer are:
+--=20
+2.25.1
+
 
