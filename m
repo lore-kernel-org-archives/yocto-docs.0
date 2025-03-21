@@ -2,70 +2,85 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 78DC6C36002
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 76494C35FFF
 	for <webhook@archiver.kernel.org>; Fri, 21 Mar 2025 10:40:29 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.18442.1742553621126567737
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+ by mx.groups.io with SMTP id smtpd.web11.18441.1742553619488419977
  for <docs@lists.yoctoproject.org>;
- Fri, 21 Mar 2025 03:40:21 -0700
+ Fri, 21 Mar 2025 03:40:19 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=QdREHhk6;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 2B7FD44154;
-	Fri, 21 Mar 2025 10:40:19 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=HsooRt6f;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 0241044264;
+	Fri, 21 Mar 2025 10:40:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742553619;
+	t=1742553618;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=qgslYyMn6Kfkdckk58of03cUkkDR1N+ZNT0eMBl5O+w=;
-	b=QdREHhk6iZRtOkaj4/rI89LaqUb4vB1rs0eo5DMJUwHHCNBzeXa+F80VfU9PoNg1cRC8QU
-	kgf+572f6ZwG+iWXBm/TwOOQKF5ROwVgFOYwUzPjwyv+mKmW2jQjXKZeV6an9WUb6ysAD1
-	E8ucrPM8KJo8NDguY2GNzlSzlCHEhNf9ENwRO1rwcSWOlFB1ZMT2PX261rJzgMzrlrfWv9
-	w5xSbTU02d1rJkqLK9e8JKpW0Tt8ghDETIBFe+HiHtQcCIEcF0LzxPzjOotzgF1jvZ7BkA
-	U4/ZFSyCqlcvpqOdr4tjT1AVROO/LlgaYo2xiuMnQU+bSV1gsz72GYcWt+QyGg==
+	bh=txcNY3JL1lOZTpinbnja4xnFwf2axSwIy5jwKj2IAPs=;
+	b=HsooRt6f7nGoBWSCYfGOTF+gejyFbhBN9sFsSz8m+z0jCon/SctXt0SnWs9hY6/ItZ9sPQ
+	/r8CGIwJc76+PMqi/uDvsTe7QLcyCMFIuPhshiI6ifvtK3v6hhzakJ/NpoMQBIXUnzXPBe
+	W+FBgY7rFeuHDfo0J4xNCgJACfwoS1zssCHU7snTiHiot5f9RfZfOgtXkX7EhwJzwE8cFj
+	VNAwYO4elug9gvHglUHN5gDymonzfQZCCHzyaZYw0n9PPisBC3npR/otsMoKF+hc9+aEZ3
+	DN9u9CDxGRDc8MyfQcxGT6tdlF1nhRmnS8of/eeQsCO3XU2PEOZgs50VRnMhkw==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Fri, 21 Mar 2025 11:40:18 +0100
-Message-Id: <D8LVPD6948YU.15S76NWMFJUJO@bootlin.com>
-Subject: [styhead] Pull request
+Date: Fri, 21 Mar 2025 11:40:17 +0100
+Message-Id: <D8LVPCNFVU31.16B79NQN5W7U7@bootlin.com>
+Subject: [master] Pull request
 Cc: <docs@lists.yoctoproject.org>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
 To: "Richard Purdie" <richard.purdie@linuxfoundation.org>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduhedtkeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeejleeutdfhffdtkeevfeevffdtvefffeeuudeuveevhfeuudfhudelgfetveeunecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduhedtkeekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepkeejleeutdfhffdtkeevfeevffdtvefffeeuudeuveevhfeuudfhudelgfetveeunecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtoheprhhitghhrghrugdrphhurhguihgvsehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 21 Mar 2025 10:40:29 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6598
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6597
 
-The following changes since commit f0324b8f14881227336f84325cdebd0518e17796=
+The following changes since commit e608902ffae3af5ab0c5308b0550e49a790482f0=
 :
 
-  ref-manual: remove OE_IMPORTS (2025-03-07 11:58:05 +0100)
+  migration-guides: add release notes for 5.1.3 (2025-03-07 11:24:14 +0100)
 
 are available in the Git repository at:
 
-  git@push.yoctoproject.org:yocto-docs styhead-next
+  git@push.yoctoproject.org:yocto-docs master-next
 
-for you to fetch changes up to 85e738e4c0e62f69699fff4bb0482ee3e3121496:
+for you to fetch changes up to 55a20a4d887c153d27ebb985b0e19ba595ab0d87:
 
-  overview-manual/concepts: add UNPACKDIR in the directory description (202=
-5-03-20 16:40:47 +0100)
+  ref-manual: uboot-sign: Add how to enable ATF, TEE and User defined snipp=
+et ITS for U-Boot FIT image (2025-03-20 16:36:21 +0100)
 
 ----------------------------------------------------------------
-Antonin Godard (6):
+Adrian Freihofer (2):
+      migration-guides: cover FIT_UBOOT_ENV
+      ref-manual: variable FIT_SIGN_INDIVIDUAL mix-and-match attacks
+
+Antonin Godard (7):
       overview-manual: convert source-fetching.png to svg and fix UNPACKDIR
       overview-manual: convert patching.png to svg
       overview-manual: convert configuration-compile-autoreconf.png to svg
       overview-manual: convert analysis-for-package-splitting.png to svg
       overview-manual/concepts: remove PR from the build dir list
       overview-manual/concepts: add UNPACKDIR in the directory description
+      migration-guides/release-notes-5.2: add known issue on stalled NVD
 
+Jamin Lin (1):
+      ref-manual: uboot-sign: Add how to enable ATF, TEE and User defined s=
+nippet ITS for U-Boot FIT image
+
+Ross Burton (1):
+      dev-manual: remove qemu machine name list in runqemu invocation
+
+ documentation/dev-manual/qemu.rst                  |    3 -
+ documentation/migration-guides/migration-5.2.rst   |    8 +
+ .../migration-guides/release-notes-5.2.rst         |   17 +
  documentation/overview-manual/concepts.rst         |   24 +-
  .../figures/analysis-for-package-splitting.png     |  Bin 68434 -> 0 bytes
  .../figures/configuration-compile-autoreconf.png   |  Bin 70877 -> 0 bytes
@@ -76,7 +91,9 @@ Antonin Godard (6):
  .../svg/configuration-compile-autoreconf.svg       | 1497 ++++++++++++++++
  documentation/overview-manual/svg/patching.svg     | 1224 +++++++++++++
  .../overview-manual/svg/source-fetching.svg        | 1094 ++++++++++++
- 9 files changed, 5689 insertions(+), 12 deletions(-)
+ documentation/ref-manual/classes.rst               |   13 +
+ documentation/ref-manual/variables.rst             |  174 +-
+ 14 files changed, 5894 insertions(+), 22 deletions(-)
  delete mode 100644 documentation/overview-manual/figures/analysis-for-pack=
 age-splitting.png
  delete mode 100644 documentation/overview-manual/figures/configuration-com=
