@@ -1,93 +1,104 @@
-Return-Path: <yoann.congal@smile.fr>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A566EC36008
-	for <webhook@archiver.kernel.org>; Sat, 22 Mar 2025 22:53:51 +0000 (UTC)
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
- by mx.groups.io with SMTP id smtpd.web11.6372.1742684029612228413
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C293C36002
+	for <webhook@archiver.kernel.org>; Mon, 24 Mar 2025 08:03:31 +0000 (UTC)
+Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+ by mx.groups.io with SMTP id smtpd.web11.33997.1742803403243410392
  for <docs@lists.yoctoproject.org>;
- Sat, 22 Mar 2025 15:53:49 -0700
+ Mon, 24 Mar 2025 01:03:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@smile.fr header.s=google header.b=twQMrbhX;
- spf=pass (domain: smile.fr, ip: 209.85.221.51, mailfrom: yoann.congal@smile.fr)
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-391342fc1f6so2617194f8f.1
-        for <docs@lists.yoctoproject.org>; Sat, 22 Mar 2025 15:53:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=smile.fr; s=google; t=1742684028; x=1743288828; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nglams2utXO22ETdNaCCJf2vjVFHlUXvY/+4H6MiUbg=;
-        b=twQMrbhXZy0CfbY9bWnf5T7xJJoeYTs67dS1kBOzsafxh4HqHjx0hqaTMKaW6eTbDK
-         7mfDAB5OXgQpJjBIo6G5/e9LfkXx7aPtIjYqjuIQTB1JTX0uBY8PKYDukBOmvdlofBeD
-         dDU5XLXe1gKUmymIaHAumf6HQTFDIarPE3cM8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742684028; x=1743288828;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nglams2utXO22ETdNaCCJf2vjVFHlUXvY/+4H6MiUbg=;
-        b=tk4C55fuUd6MY1iVBlIQTXwm/UZJQpSo7jAicCoD4KwULmbXNSLjI6AYjNeOoBeupX
-         incG95a8OpKS6P0CZzTERTLkv6/gkifdCAetchFpB0U5M95ULHKFO5I0jiOGOOeFF4i6
-         URlRLMPENtyl1iieMrHJwM6j34JluRLUWqPIKz43gfvtKx23I9LZrN0i0XKaEsf1FnfA
-         Znb/w9A5dWjWywqL8zM4xGCDL1SzvK661YsTGynieu7WCQ5yI9agXKjRn3GH61awUQq8
-         hxCQyTD6T/7eg3uGDsXZNqPj/9CdJ/6zxI4UIyI6w7Tg7P5scD9q7tvYXswpExU4Tu8z
-         U8+Q==
-X-Gm-Message-State: AOJu0YxOse41tpS4gCfnTO/O9FfxY3ddbSzP5U9RXOdWtZUAOl/4GkPC
-	CKbmBA+9ik1aVOjGoLTRCt5sX/kzaoL0YNG1yXmoP25Z5yvL3B6T4hjKXnfW/3m2Y8gviwT6wLL
-	F
-X-Gm-Gg: ASbGnctn45co+eRIH9m8PVEe+XUMzrDGrK9IhkSE7/9pTYStYx8pRhFZc15SjIHbqHg
-	I1b6cE4kXXebW5fl7jLfPGFCNR9p1LPP/nNWvYoin8fESGKZ4zaQV+1wrXoi0c6/AlT+qY5RsXK
-	VsJjxJeXQcx0PAPscFf6LPV25xmewaT241MLd9J4oeVDBh/44OAvn+vg4nZFF1x3iiT5rEk5t8Y
-	R5oQFcMSUTNryrwgSVKhIvu7O2NtxAj29CRwVHa/KdRSSldLIQPukAzApaEuSyVNvZQxEwd7qiQ
-	ToNmW2QAzkt1HiIjmsykfIq5ze5MwkdED1uNxsjgFlsLTuCo4UlHCA9NwQrELFiGAho0CktT4Xd
-	1TqlW+AJDo1Kxg+p8UOGbsXgNDpWaL1o0Bb5L0o5+Tq/MANV1GYK0
-X-Google-Smtp-Source: AGHT+IGtexr3GZS3IXK3VK4jPaZxG7dc7dJ9umeQis6iQ1GO9Q362c43F4nPlembO8GXKD6AQPG2WQ==
-X-Received: by 2002:a05:6000:184b:b0:38d:e584:81ea with SMTP id ffacd0b85a97d-3997f940541mr7274448f8f.45.1742684027651;
-        Sat, 22 Mar 2025 15:53:47 -0700 (PDT)
-Received: from P-ASN-ECS-830T8C3.local (2a01cb000deef000f0da383060e5e6f8.ipv6.abo.wanadoo.fr. [2a01:cb00:dee:f000:f0da:3830:60e5:e6f8])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3997f9b26a6sm6105406f8f.44.2025.03.22.15.53.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 22 Mar 2025 15:53:47 -0700 (PDT)
-From: Yoann Congal <yoann.congal@smile.fr>
-To: docs@lists.yoctoproject.org
-Cc: Yoann Congal <yoann.congal@smile.fr>
-Subject: [PATCH] poky.yaml.in: Raise minimum GCC version to 10.1
-Date: Sat, 22 Mar 2025 23:53:37 +0100
-Message-Id: <20250322225337.3981680-1-yoann.congal@smile.fr>
-X-Mailer: git-send-email 2.39.5
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=e35bDQc0;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 42D66442D7;
+	Mon, 24 Mar 2025 08:03:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1742803401;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X+Zsz9aBv/RvYTKTbTgMULWYwEuqeGJEsXVaFcn5wBM=;
+	b=e35bDQc0kJ4yF6DnZwnAqRrxWZAA/YtvrZHjtykLSNUBd5UkfdaTz8+qUl2vBiSDMo8U17
+	e26az5fYk7oFg1n9ZeSOJ+t+GL1E32wgt+7q5EVx304bGB/0TJzPE4fwSvjYx+m+8OUE33
+	VBHZEkJqOz2crH3U4dDo6eiJ5zUddpU5ONwcW97Cx46HP4NdHNnoC542h6CMmp7zpFBB6f
+	y4RgUZx4uNPnECKsaAroEKdRrx3rExtlz6LA/4eSk5SIf0jtNoRdLY2s4CAFj+siuW2L3K
+	r1JbdwhpBBcY04nJVeDjCCcp5PEMV35xXbgdB36vVXN9ktnKSVukxyS9iRkfRg==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 24 Mar 2025 09:03:20 +0100
+Message-Id: <D8OC8T5JH1E1.1BY5JO1ZMJZUT@bootlin.com>
+Subject: Re: [docs] [PATCH] contributor-guide/submit-changes: encourage
+ patch version changelogs
+Cc: <docs@lists.yoctoproject.org>
+From: "Antonin Godard" <antonin.godard@bootlin.com>
+To: "Trevor Woerner" <twoerner@gmail.com>, "Antonin Godard"
+ <antonin.godard@bootlin.com>
+X-Mailer: aerc 0.20.1-42-gf66bdccc6922-dirty
+References: <20250318035605.1221-1-twoerner@gmail.com>
+ <D8J8L9OJVWQU.2W2AYKHMLC149@bootlin.com> <20250321165129.GA12580@localhost>
+In-Reply-To: <20250321165129.GA12580@localhost>
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduheelvdehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedvhedtteetheefgfejleeiledvieevleduffejgeeufedujeeufeefjeefveegudenucffohhmrghinhepsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehtfihovghrnhgvrhesghhmrghilhdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhis
+ hhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 22 Mar 2025 22:53:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6606
+ <docs@lists.yoctoproject.org>; Mon, 24 Mar 2025 08:03:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6607
 
-From: Yoann Congal <yoann.congal@smile.fr>
+Hi Trevor,
 
-Since OE-Core commit 19004950ad56 ("sanity: Check if the C++ toolchain supports --std=gnu++20"),
-host GCC must support "--std=gnu++20" for a Yocto build.
-This option is available from 10.1.
+On Fri Mar 21, 2025 at 5:51 PM CET, Trevor Woerner wrote:
+[...]
+>> > +   ---
+>> > +   changes in v4:
+>> > +   - provide a clearer commit message
+>> > +   - fix spelling mistakes
+>> > +
+>> > +   changes in v3:
+>> > +   - replace func() to use other_func() instead
+>> > +
+>> > +   changes in v2:
+>> > +   - added
+>>=20
+>> "added return value check for func"?
+>> to give a more concrete example
+>
+> It's not uncommon for the v1 series to have N patches, and the v2 series =
+to
+> have >N patches; in which case one or more patches were added in v2. This
+> isn't a really bad commit log where the author forgets to say what they a=
+dded,
+> it's a message saying "this patch was added in v2".
 
-This is related to [YOCTO #15804].
+Oh ok, I didn't understand what you wanted to show when reading the example=
+. I
+think for the sake of the example we could be a little more verbose, and wr=
+ite
+something like: "added patch '<title of the new patch>' to the series". Aga=
+in,
+it's just to give clear examples to users of what this changelog could cont=
+ain.
+What do you think?
 
-Signed-off-by: Yoann Congal <yoann.congal@smile.fr>
----
- documentation/poky.yaml.in | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> I think it would also be nice to also instrict to give the link to the p=
+revious
+>> patch but that might go a bit too far if done manually each time.
+>
+> That's not something I've seen often, but it could be community-specific.
 
-diff --git a/documentation/poky.yaml.in b/documentation/poky.yaml.in
-index c93b78066..518e8917c 100644
---- a/documentation/poky.yaml.in
-+++ b/documentation/poky.yaml.in
-@@ -16,7 +16,7 @@ YOCTO_RELEASE_DL_URL : "&YOCTO_DL_URL;/releases/yocto/yocto-&DISTRO;"
- MIN_PYTHON_VERSION : "3.8.0"
- MIN_TAR_VERSION : "1.28"
- MIN_GIT_VERSION : "1.8.3.1"
--MIN_GCC_VERSION : "8.0"
-+MIN_GCC_VERSION : "10.1"
- MIN_MAKE_VERSION : "4.0"
- # Disk space (Gbytes) needed to generate qemux86-64 core-image-sato on Ubuntu 22.04 (x86-64), rounded up from 87
- MIN_DISK_SPACE : "90"
+Actually, b4 is doing this for me automatically. :)
+
+Thanks,
+Antonin
+
+--=20
+Antonin Godard, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
