@@ -2,92 +2,118 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C6C2BC36008
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D8B69C36010
 	for <webhook@archiver.kernel.org>; Tue, 25 Mar 2025 09:21:20 +0000 (UTC)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web11.61368.1742894479302489921
+ by mx.groups.io with SMTP id smtpd.web10.61726.1742894477568470194
  for <docs@lists.yoctoproject.org>;
- Tue, 25 Mar 2025 02:21:19 -0700
+ Tue, 25 Mar 2025 02:21:17 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=D9hbQ3Zg;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=cSD+r2a4;
  spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 4E96E432B8;
-	Tue, 25 Mar 2025 09:21:17 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 94EC64328B;
+	Tue, 25 Mar 2025 09:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742894477;
+	t=1742894475;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/U3U+3CDwOoVUGo8XiPXoItnB1eLogUaZoIFx6JI424=;
-	b=D9hbQ3ZggwtR0/rMLdSa5puv8DLZJZ/B9bVELdyiLNEHvWJNsi+dTTE3MmrT1kliNpySzC
-	ghxDClNeX/twp0VVloQDrlzwkpD6nIvL2SzbwAl/mh0Eb0agCbMVkxTfo9auOJVO19DiBp
-	no2Zo9JVD3rL5s8DTL3s44izSmS0CsECoMeJXDGfnOW/5Iivfm4NgGH0FmmdeAs38iYsKQ
-	OvsCY49O2pt0Nl55XtVX2E+KYwrExo05xHlcWhvvEyy5a0y1w5Q8lE4aLfIiszEfjKUV7N
-	8Rlc6VBe/5RAsy733r1NJsQKktl8fe7BjZJwMnhaHbjrvlXP9FeWVyhfkSTm4w==
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iEGoMS/ddvsOSLEIi1bHwdMrGzaXoCCe5JN+6WIWKds=;
+	b=cSD+r2a41efLItDzhxcVY+z6ndqCJ8Jigp9tnWhr5YdRZ5jlxk1y0DpDd8VYwCxoApp0xV
+	Ap5Vuc+LOdYmjifVwF6o+2yqcjy6iVibGI9DDyXBegCud6s48xunfNAxIIPm5Pt7WHW9dL
+	HC1BZIjsnbGacwBtL5wp5li/BHsNOnb5Ok24NcNtzrEUGHxNAa8p7LiRDZNbjXFHbl2X3N
+	wLfB7Bsms3fLQHavSxW9dPnF0gfV5nQTiVBMnHgnu4ur8nWDxXb3Kd92DpVxJESbeFGX3N
+	DPMEnONAk9S2/HOLyXW0LAQxXCoVMOGJk7iCGYbTL0pzwfAy+Y2wEs9mXaM92Q==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 25 Mar 2025 10:20:54 +0100
-Subject: [PATCH v2 10/12] ref-manual/variables.rst: add a link for
- BB_USE_HOME_NPMRC
+Subject: [PATCH v2 00/12] Updates for upcoming 5.2 release
+Date: Tue, 25 Mar 2025 10:20:44 +0100
+Message-Id: <20250325-release-note-5-2-updates-v2-0-19f050d61da3@bootlin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250325-release-note-5-2-updates-v2-10-19f050d61da3@bootlin.com>
-References: <20250325-release-note-5-2-updates-v2-0-19f050d61da3@bootlin.com>
-In-Reply-To: <20250325-release-note-5-2-updates-v2-0-19f050d61da3@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAGx14mcC/3WNQQ6CMBBFr0K6dkw72ACuuIdhUeggk2BL2ko0h
+ Ltbce3yveS/v4lIgSmKa7GJQCtH9i4DngoxTMbdCdhmFihRS0QNgWYykcD5RKAB4blYkyiCLbH
+ RymLZVLXI8yXQyK8jfesyTxyTD+/jaVVf+4uWqvofXRVIqLGX5qJqNOPY9t6nmd158A/R7fv+A
+ aJxmXfCAAAA
+X-Change-ID: 20250225-release-note-5-2-updates-d32951d23978
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=798;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2359;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=eZTdoxL7azmT4KDjSchLGfdSDPNMKvPnTkmav45GJQY=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn4nWLbTnxs0SJVLUo1wV611exeJ2scjstA93wx
- RDNjNrnd8eJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+J1iwAKCRDRgEFAKaOo
- NrruEACpSVDTH1O8QqIcZjSq4L7ujdfR456e/qxt58cgpuyXnLgK8TX3V55DnuFPJV101nvC4EX
- fvw40Yqaq/yxcDm3qugXSRAit788hmzLRg5l9YXmQTH2bDsZCPOJj++5IXx70+0+G30J9/TzInK
- EhtdfaYNFEk0T1NmZ/exqQVQz6QyIclaevSTCQueiWEE3cPSo7NOKjrXiFkwVODXl7vd97AqRrZ
- kcdhewAlyc/e1e/B6qpchKHPSbu7p495GwIkE5FP0PcCj+043nUK2w+cwddj4DARpEChpgEuMjG
- 3v5t2drIsi+LcvqumXatFwds61tZ/2lZlIMPCdCqx5e6wpnHaWX/EmYCKsPIPsD7Y8WTNFQmjX8
- wDmfTHPQlZAxXWOZcAaXbOODXd4wczeD6NswyaQnfRCPeWAR9VthAcogbo63lh0bLUe6mdhyIxo
- D7mE1R/WQDaL/v2gmWXngaRLn/n9jJtTfKJjhP8qPxp/TwZMOpdHytjWXJ7IdeFL9XMaz9kXn3H
- vL8up4j24XNPrWP+8UuIJqWU9uX+7VAzvpmSiAnXoCB4+9Xq1JMbeuszhVLZ3DZqlIJjOmWXDOs
- VB8vo9W6wVQpaml38av2e8gxmsyelC64s65F3K5PZ7P+YRrfuPt1PhaudGCp8hp9Ak8e030AQB4
- /S5ICRpE5Ps2QEQ==
+ bh=KVlFyRZ9AB5jsmettXs3mVprjBK43SnbzwMyNF5T1Ck=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn4nWKNAQkbzq5c5V9TxmHIkSGGtmJK4mfM6QyA
+ q9Ib2qBEwyJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+J1igAKCRDRgEFAKaOo
+ NqEUD/92dPr9acasjCAK/cSFiaemazoU6x+5IWlxe0m6BFOaKsauuuWWGTOsMjtvqLpfPqA2o6/
+ KIP1tpPg9Dsd/gHcaeOhrCB+8iBrVlbhSF9tscTTay9v3Md6jiG/hzNIDNvc5nsuy8Ujt6qPY+l
+ Z6Wp5E4qY/9uHZE0P+6hZDf0ti0YYhe2ywg0wQUIfw5iS1CY+wOgQ4VQG0yDqmrKRC8ixD0KaSE
+ KZRJ5nSDYyIldq5ecZj8TolrDXxhpp5JJ2HurNS7StdOyhMhlsZ2kSID31RQFNmVSILZYTBubma
+ FhUOxWaoUMEjYabtYIQSU0G394jF4bB/iiCfN/sP1hbb1qbl4Kucmr34KIqs1bU/quv/iBu5RtI
+ MOYbHGhF+7bZQx7WrMmQuHHd5q/AvgHTD1CA+lNo7gQmWQH7KSKUiY+7kYwneKXizFq4JA0rVDP
+ QIskuKeeMLd1PxhE7y/uETpSImGF9EGKIVbb6sb9hlZZ1ICyoxDjUw3p+H/sZ1imUdES8VFcoJn
+ IiXiMhJzr3e4SQyhFVgiE+gs5rsPgOrPLQ4OSYTvPGaW6C68Nu7cPNv0JBe4v6qRBtYlVL37e+8
+ qa0zsnNZt/iw5c3+uGDyAiN9Yt0pOJHubd4lZlBk77Cde8wdrQKyjnrrxEKV6eOGmMnsgZcgmeJ
+ 98h7fGHqwjAAbuA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduiedvvdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduiedvvdejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtudeuhfelveehueevudefgedvtdfffeevleefuedtjeeuteelgeelvefftdejteenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Tue, 25 Mar 2025 09:21:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6623
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6613
 
-Documented in the BitBake manual.
+First series of patches documents the missing or deprecated bits of
+documentation.
+
+The last two patches update the release note and migration guide for
+5.2.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 3 +++
- 1 file changed, 3 insertions(+)
+Changes in v2:
+- New patch "ref-manual/variables.rst: document autotools class related
+  variables".
+- Add an item in the migration guide on recipe inheriting autotools now
+  requiring a configure script.
+- Add minimum Python version required on the host in the release note.
+- Mention that users can choose the NVD database source in the beginning
+  of the release note (thanks Marta for the suggestion).
+- Various additions to the release note after documenting a bit more
+  commits from Poky's master branch.
+- Fix some indentation issues in the release note.
+- Link to v1: https://lore.kernel.org/r/20250317-release-note-5-2-updates-v1-0-82b0a4182aff@bootlin.com
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index e9e8a6933..dace40f59 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -711,6 +711,9 @@ system and gives an overview of their function and contents.
-    :term:`BB_TASKHASH`
-       See :term:`bitbake:BB_TASKHASH` in the BitBake manual.
- 
-+   :term:`BB_USE_HOME_NPMRC`
-+      See :term:`bitbake:BB_USE_HOME_NPMRC` in the BitBake manual.
-+
-    :term:`BB_VERBOSE_LOGS`
-       See :term:`bitbake:BB_VERBOSE_LOGS` in the BitBake manual.
- 
+---
+Antonin Godard (12):
+      ref-manual/classes.rst: document the ptest-python-pytest class and variables
+      ref-manual/variables.rst: WATCHDOG_TIMEOUT: fix recipe name
+      ref-manual/variables.rst: document the WATCHDOG_RUNTIME_SEC variable
+      ref-manual/variables.rst: document the MOUNT_GROUP variable
+      ref-manual/features.rst: drop ld-is-gold
+      ref-manual/variables.rst: document the MESON_INSTALL_TAGS
+      ref-manual/variables.rst: document the NVD_DB_VERSION variable
+      ref-manual/variables.rst: document autotools class related variables
+      migration-guides/migration-5.2.rst: add information about autotools changes
+      ref-manual/variables.rst: add a link for BB_USE_HOME_NPMRC
+      migration-guides/migration-5.2: update for upcoming 5.2 release
+      migration-guides/release-notes-5.2: update for upcoming 5.2 release
 
+ documentation/migration-guides/migration-5.2.rst   |  57 ++++
+ .../migration-guides/release-notes-5.2.rst         | 354 ++++++++++++++++++---
+ documentation/ref-manual/classes.rst               |  15 +
+ documentation/ref-manual/features.rst              |   3 -
+ documentation/ref-manual/variables.rst             |  60 +++-
+ 5 files changed, 448 insertions(+), 41 deletions(-)
+---
+base-commit: ee6b3698da044e290dbc4fbb852f3cc37638e689
+change-id: 20250225-release-note-5-2-updates-d32951d23978
+
+Best regards,
 -- 
-2.47.0
+Antonin Godard <antonin.godard@bootlin.com>
 
 
