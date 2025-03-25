@@ -2,111 +2,75 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3C38DC36002
-	for <webhook@archiver.kernel.org>; Mon, 24 Mar 2025 08:11:31 +0000 (UTC)
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
- by mx.groups.io with SMTP id smtpd.web11.34068.1742803886632193612
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4E3ABC36008
+	for <webhook@archiver.kernel.org>; Tue, 25 Mar 2025 09:01:09 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web10.61514.1742893265516050020
  for <docs@lists.yoctoproject.org>;
- Mon, 24 Mar 2025 01:11:26 -0700
+ Tue, 25 Mar 2025 02:01:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=jm48oxHX;
- spf=pass (domain: bootlin.com, ip: 217.70.183.201, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 815CF44434;
-	Mon, 24 Mar 2025 08:11:24 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CBBBh6Do;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 711164436B;
+	Tue, 25 Mar 2025 09:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1742803884;
+	t=1742893263;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=tNRrCZGHOmszyep8p7f9ez0xQ1fSIQNAR9Gf5JkrRK0=;
-	b=jm48oxHXevQbTc+csOXRB+wu0eexUN4llTTpyxumDsqr1Fuh7J33VGr9ADtzcWfPtIl4hB
-	kWl02AZCs2nG24n9cnaqvAksBSzIqxGWrVwFaSiXEvVksBTIGMk4/Hu4viZ30xzf9Ixrdi
-	GMck8nbKSP23XLbv6KmdeqfbbsWeBaXHcloFX4l5x2Ta+VgZLcTAG2dqbK+IZP6/7UIQUn
-	RVTRJp+2lQw7Ap5Xl7jfmuzoQT98D3kxTZgI7dJmgSzPS5Y6XzgGf0ByjYzqWwIMRRgW8H
-	UlsRmj3I+KXbmBUk2jxBMaLDpGOgEoujON7ryNtvAAXNu/v6xQp2cNcN6xqseg==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 24 Mar 2025 09:11:23 +0100
-Message-Id: <D8OCEZ6BIJBN.36VNEE4M3EGL5@bootlin.com>
-Subject: Re: [docs] [PATCH] requirements: move Ubuntu-20.04 into unsupported
- category due to python
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <paulg@kernel.org>, <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.20.1-42-gf66bdccc6922-dirty
-References: <20250321192711.3061486-1-paulg@kernel.org>
-In-Reply-To: <20250321192711.3061486-1-paulg@kernel.org>
+	bh=c1mNh7sukkenj5YrqeqfkKsuRt2GluiYGfBMTWlv+dA=;
+	b=CBBBh6DotaBsdPccxNV6SOohMQBkeKs5Kk/UfCV2P6FQhLkzCUhR01ALcKdMz4q03/avHo
+	d1V2JtN6TBG1ffLj5D53gOQxlhiPMxNxax8WPO/B+3aEfB8PweTtBm8MeRNkATB8LeusRz
+	kvK4qgNnoO0p8N4k9J7RTmQZiIr2/WwBu6AjAhcapvPIUR4mWnyQRCgLy4B419iwCnGMc/
+	/6S7l0Qds3QlKWGXQ2QhQxfdNezL62dcktdRpT4p1d7Y62lnpl6l/ywv36l+SJuwAgZFlD
+	3lJZGtpGPIOoKjVBW4LY+AfGiDL5/gtrMrEz5Rpp5TGbC7UARr4/R1hbTiOwgA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+To: docs@lists.yoctoproject.org,
+	Adrian Freihofer <adrian.freihofer@gmail.com>
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Antonin Godard <antonin.godard@bootlin.com>,
+	Adrian Freihofer <adrian.freihofer@siemens.com>
+Subject: Re: [PATCH v6] ref-manual: variable FIT_SIGN_INDIVIDUAL mix-and-match attacks
+Date: Tue, 25 Mar 2025 10:00:18 +0100
+Message-ID: <174289319827.1738162.7384102844759967122.b4-ty@bootlin.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250317173501.965049-1-adrian.freihofer@siemens.com>
+References: <20250317173501.965049-1-adrian.freihofer@siemens.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduheelvdeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedtkeekfffffeehtedttedtueegvddvleefffektefgtdeiudekheduhffhledtveenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopedvpdhrtghpthhtohepphgruhhlgheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduiedvvdefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfgggtgfesthekredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpedukeffuefhtdejteehteettdfhieejtdfgjefhleeuveehtddvlefhteeiheetleenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghlohepthgrhhhomhgrrdhhohhmvgdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohephedprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprggurhhirghnrdhfrhgvihhhohhfvghrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegso
+ hhothhlihhnrdgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprggurhhirghnrdhfrhgvihhhohhfvghrsehsihgvmhgvnhhsrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 24 Mar 2025 08:11:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6608
+ <docs@lists.yoctoproject.org>; Tue, 25 Mar 2025 09:01:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6609
 
-Hi,
 
-On Fri Mar 21, 2025 at 8:27 PM CET, Paul Gortmaker via lists.yoctoproject.o=
-rg wrote:
-> From: Paul Gortmaker <paul.gortmaker@kernel.org>
->
-> Bitbake commit 0d2e682d00df ("bitbake: lib/bb: Bump minimum python
-> version requirement to 3.9" -- poky commit 67566c7410e1) means that
-> Ubuntu 20.04 is no longer supported out-of-the-box as detailed further
-> in the respective commit log.
->
-> While it is true that it can still be used with buildtools, that can
-> also be said for nearly every other unsupported distro out there,
-> including Ubuntu 18.04 that we listed as unsupported some years ago.
-> Hence continuing to list it as supported with the new python requirement
-> in place does not make sense.
->
-> So we move it alongside of the 18.04 entry, into the "possibly tested,
-> but you get what you get" category.  And add an explicit mention of the
-> buildtools, so people have a thread to pull on.
->
-> Signed-off-by: Paul Gortmaker <paulg@kernel.org>
->
-> diff --git a/documentation/ref-manual/system-requirements.rst b/documenta=
-tion/ref-manual/system-requirements.rst
-> index 93b95a7fb251..3d0d26e2f08b 100644
-> --- a/documentation/ref-manual/system-requirements.rst
-> +++ b/documentation/ref-manual/system-requirements.rst
-> @@ -58,8 +58,6 @@ Supported Linux Distributions
->  Currently, the &DISTRO; release ("&DISTRO_NAME;") of the Yocto Project i=
-s
->  supported on the following distributions:
-> =20
-> --  Ubuntu 20.04 (LTS)
-> -
->  -  Ubuntu 22.04 (LTS)
-> =20
->  -  Ubuntu 24.04 (LTS)
-> @@ -93,11 +91,15 @@ organizations publishing them no longer make updates =
-publicly available:
-> =20
->  -  Ubuntu 18.04 (LTS)
-> =20
-> +-  Ubuntu 20.04 (LTS)
-> +
->  -  Ubuntu 23.04
-> =20
->  Note that the Yocto Project doesn't have access to private updates
->  that some of these versions may have. Therefore, our testing has
-> -limited value if you have access to such updates.
-> +limited value if you have access to such updates.  Also, buildtools
+On Mon, 17 Mar 2025 18:35:01 +0100, Adrian Freihofer wrote:
+> Incorporate the lessons learned from a regression introduced with commit
+>   OE-Core rev: 259bfa86f384206f0d0a96a5b84887186c5f689e
+>                u-boot: kernel-fitimage: Fix dependency loop if
+>                UBOOT_SIGN_ENABLE and UBOOT_ENV enabled
+> and fixed with commit
+>   OE-Core rev: 0106e5efab99c8016836a2ab71e2327ce58a9a9d
+>                u-boot: kernel-fitimage: Restore FIT_SIGN_INDIVIDUAL="1"
+>                behavior
+> into the documentation.
+> 
+> [...]
 
-s/buildtools/:term:`buildtools`/, so users are hinted towards what this is.
+Applied, thanks!
 
-I can make that change before merging if that's ok to you.
+[1/1] ref-manual: variable FIT_SIGN_INDIVIDUAL mix-and-match attacks
+      commit: d34e1d4e3f229bcd6560fe7df544869b0cd9875f
 
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Best regards,
+-- 
+Antonin Godard <antonin.godard@bootlin.com>
 
