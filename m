@@ -2,107 +2,153 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6D82DC36011
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B8B5C3600C
 	for <webhook@archiver.kernel.org>; Wed, 26 Mar 2025 13:21:49 +0000 (UTC)
 Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
- by mx.groups.io with SMTP id smtpd.web10.22219.1742995308302472686
+ by mx.groups.io with SMTP id smtpd.web11.22292.1742995308282294687
  for <docs@lists.yoctoproject.org>;
  Wed, 26 Mar 2025 06:21:48 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=DmMs9waV;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=JD4UjUIK;
  spf=pass (domain: bootlin.com, ip: 217.70.183.199, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1195C44399;
-	Wed, 26 Mar 2025 13:21:45 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id B312B443A1;
+	Wed, 26 Mar 2025 13:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1742995306;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kwfxSlAP8V+QrkgY5UgjyjZkzy49weH2YfJ9oRAYFTM=;
-	b=DmMs9waVGjAm0/SidpbauAXUpk+vVeyfZRh6sQwTHQdlenUya8riNVXTD3VoIpdcTDeF3B
-	qKxSiE5Hs9ZV0Y5BespNFA47a1ZsXvHp5rmtB56QtxM2/yJykz4r90pL7LMLPWMylXeVCh
-	wyJb8/jzSDDALLbdAXUjXYiXtbGKUNsEP61BDRE6rsurqhdTy9FWP1erWYf/OgBOJ+yjBx
-	Hy6CbOdLBSCGxRZLHty88VqMzBCKgqDCH/NIH89INnJASwuz5/X7k9Tp+Zq4MWsQ1PYfFR
-	+geClLmrdyv9qkhUWxgUosBua0eoe+Fy/LM3ZcIzfbmDRtboE2yRyu3E5inaaA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vyGdM6qZn6gQJbInVdjoLmKXQ7RHZ+HlH9KFtfydELE=;
+	b=JD4UjUIK2DkFUF5iwba5q+IesiAouM4d8dZfot5Kt5XE9Jop7yxPwCqn4ttZib9aCxvy8K
+	DhXVYG/xILtnNe8blJgP/6sKYHcueSOMiOwIeNWypmzFT85XVOqsPfOKsKHqRiPDx4+6rc
+	kos7WD06fEckaZSH6ScDiVHHHKNoFP0xDUSFs5opL/Lz7XH7Fxlt/rSbRXkx9+HlYCXOgs
+	ugxZ6UUFnnmucXTdKqXYo2EgDfD2xITrMclx32TTsXx22qM6xJixIrh2HDjTxi8hHIVqAc
+	zHnltR1aJpabKfvZenJf+rJ0oWP5KMOFFIKfc7HT47d7F3UCLlD1fJ4Rl69ynA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v2 0/6] Document missing toolchain related variables
-Date: Wed, 26 Mar 2025 14:21:36 +0100
-Message-Id: <20250326-cc-vars-v2-0-36b80c64c4a9@bootlin.com>
+Date: Wed, 26 Mar 2025 14:21:38 +0100
+Subject: [PATCH v2 2/6] ref-manual/variables.rst: add manpage links for
+ toolchain variables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAGD/42cC/2XMQQrCMBCF4auUWTuSTk0LrrxH6SJNpnZAE0lKU
- ErubuzW5f94fDskjsIJrs0OkbMkCb4GnRqwq/F3RnG1gRRp1bUDWovZxIRM1pEaetOZHur7FXm
- R9yGNU+1V0hbi54Bz+1v/jdyiQtLsZuMWp/TlNoewPcSfbXjCVEr5AlNETk+gAAAA
-X-Change-ID: 20250317-cc-vars-e2cd2076a3a6
+Message-Id: <20250326-cc-vars-v2-2-36b80c64c4a9@bootlin.com>
+References: <20250326-cc-vars-v2-0-36b80c64c4a9@bootlin.com>
+In-Reply-To: <20250326-cc-vars-v2-0-36b80c64c4a9@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>, 
- Quentin Schulz <quentin.schulz@cherry.de>
+ Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1552;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3525;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=K9IJX7v9VTmcNEPzT/ymFsC49Nyz+CsQYQVcMqUTPRg=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn4/9px5MlcY80aQuZuBkmB4ju2zSPhEOCiAg+F
- ZJ8ykWJjyOJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+P/aQAKCRDRgEFAKaOo
- NmmZD/41ce5Pu1bZHuag7+RXGTTJYYcoSafFF1/4gY0GOlhR0Z1LRG40hshqH7wI8tJ+JLrTki7
- JBUWqGjhWr5unEvqufLmDs1SCV1e7nyzr18P6Lo/wuwrCvnuzjKX71RpbmpU4MEcTudvNU3Mh/7
- ywxL9I3hmZg/iVgjkKlEJ5wX1RPiLgBe2yofnMIv86v8lBhzUDjeeaGVWL/+B4t9VOE49uoJwqW
- mhcA5Ob7+0EkE08zQoz+v83D3fIUIEyWvSobszL5MFnFA8KXL74U0yFTb57QWW30FUn5p3aJwIE
- PXp3/HCsUCaRnjR27pB1OlEzZgzWg3rv9cHYBLydm+EbJLOA7Q5qYjQWypMt/01b143Wt0EDLwM
- Kb0E1ucEajTBPJteFRMYI4iy809Rp080l32maxISCdCdyfvvBkIfVsxBfrmuZ8+EuuErKE6m8rM
- BzAn4HyOQhoQzRjEjPQEit9+mH2h0r2PRDzIeqwwqYKY/CvO7Z9bFUELcswRocGBSAZgzQRy4JF
- BPUqzkh3aY1GBw8xLwWjKVF1OrH0dzVwZMnvSaPM6xH1TKe8xPLbl/3qzdgjFGxNybYkm0cUbzJ
- euCpiYw8SgYPhC8/jrvsc5vTvtcSYIBA7q9By3SLkSchzIcxpEnWvjev2eRb1uPANU5Sgj/9N87
- i5GeWgNksSSzugA==
+ bh=/SOAnkBBzSRLjr2cDfp6WCzPbx0bsOlaW9OXtQoAZdc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn4/9p5NHtU/hQ4Z4P+fxnsC1BeaTTVcncWspzD
+ eV4lnZGVUiJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+P/aQAKCRDRgEFAKaOo
+ NuiIEACJGvFvfPl43fZX790TN++gTfrtrioM9sXfC/xTPhv2p/WcX9JSTtiH9p7Au/A2dUZK3GK
+ K2+16aweFLI7PvmOnEunHhSq7SeY4ushS5FVRCSWih/d7pugzBHGMaivlAr9iUEtUVG2Di7cZmy
+ 11TLej7uiAdrSnOP946S+nEbVwHfHSD8a0kkABR3eJN2MYjPbqrypoTe2COPD1rGKKx1Mcv40g3
+ md7OkijSAgJTIHpw7HkpQv9K5rF2CHk3EOZxScGZpv0tgxGW4lvc7uouXDw0FAErTojsY6Tgj9/
+ dXVrw9Fc8/4ITnJjDWbYuYpucwHdvL/3N6k5L8MKAhZddaOquosLiBN/iZ7stjQUU9K5ZZwXuv3
+ F+JiTOFAlQILU3EpJDovWNgYDeUHjsblNQrDz4pGV+hSCIwEBXx/r7uMnyELTufRfcJG0ApIu/C
+ rqs8HN6toNdIo8UmII9b9UYFYIzmvp5uohGUS8F7PSB6e5fiSzR+fje+/06Ck9j8ihcSAfH1VCJ
+ WmrHXMEtBA8hHi3prmi0GKgDh2/bOONnKjwPMt28wI7vd9v3d9EluaVo5wQRH+iDqGFxXOKvyvk
+ JjSUDxp/H3r72w4TV1BO2IO0L/mmgtLhla+VEUIG5R0RgxA3D8kg/6iQciqhnPfz3XjJgMs3rik
+ 6lJJK8maO7E7npw==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieehieefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeetieefveejtefhgeekkeefteejgfetvdevgfejudfgveelfeffjeehkeefffehieenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdhkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrr
- hihrdguvgdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieehieefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhpr
+ hhojhgvtghtrdhorhhg
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Wed, 26 Mar 2025 13:21:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6634
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6636
 
-Document a bunch a toolchain related variables. These follow a naming
-scheme to make them easier to deduce from the name. Try clearing this
-out for users reading the documentation.
-
-Fixes https://bugzilla.yoctoproject.org/show_bug.cgi?id=15719.
+Use the :manpage: role to provide links to common toolchain utilities.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v2:
-- Add a patch to define a manpage url, for giving manpage links in the
-  docs.
-- Reformulate the BUILD_* definitions to explicitely say that we are not
-  supposed to set these variables or use them directly in recipes.
-- Link to v1: https://lore.kernel.org/r/20250317-cc-vars-v1-0-25edbadfd054@bootlin.com
+ documentation/ref-manual/variables.rst | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
----
-Antonin Godard (6):
-      documentation/conf.py: define a manpage url
-      ref-manual/variables.rst: add manpage links for toolchain variables
-      ref-manual/variables.rst: add missing documentation for BUILD_* variables
-      ref-manual/variables.rst: document missing SDK_*_ARCH variables
-      ref-manual/variables.rst: document HOST_*_ARCH variables
-      ref-manual/variables.rst: HOST_CC_ARCH: fix wrong SDK reference
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 2b31bc7b0..ccb4e0de2 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -143,7 +143,7 @@ system and gives an overview of their function and contents.
+       information on how this variable is used.
+ 
+    :term:`AR`
+-      The minimal command and arguments used to run ``ar``.
++      The minimal command and arguments used to run :manpage:`ar`.
+ 
+    :term:`ARCHIVER_MODE`
+       When used with the :ref:`ref-classes-archiver` class,
+@@ -165,7 +165,7 @@ system and gives an overview of their function and contents.
+       ``meta/classes/archiver.bbclass`` file in the :term:`Source Directory`.
+ 
+    :term:`AS`
+-      Minimal command and arguments needed to run the assembler.
++      Minimal command and arguments needed to run the :manpage:`assembler <as>`.
+ 
+    :term:`ASSUME_PROVIDED`
+       Lists recipe names (:term:`PN` values) BitBake does not
+@@ -5164,7 +5164,7 @@ system and gives an overview of their function and contents.
+       ``LAYERVERSION_mylayer``).
+ 
+    :term:`LD`
+-      The minimal command and arguments used to run the linker.
++      The minimal command and arguments used to run the :manpage:`linker <ld>`.
+ 
+    :term:`LDFLAGS`
+       Specifies the flags to pass to the linker. This variable is exported
+@@ -5770,7 +5770,7 @@ system and gives an overview of their function and contents.
+       variable is set.
+ 
+    :term:`NM`
+-      The minimal command and arguments to run ``nm``.
++      The minimal command and arguments to run :manpage:`nm`.
+ 
+    :term:`NO_GENERIC_LICENSE`
+       Avoids QA errors when you use a non-common, non-CLOSED license in a
+@@ -5859,10 +5859,10 @@ system and gives an overview of their function and contents.
+           NVDCVE_API_KEY = "fe753&7a2-1427-347d-23ff-b2e2b7ca5f3"
+ 
+    :term:`OBJCOPY`
+-      The minimal command and arguments to run ``objcopy``.
++      The minimal command and arguments to run :manpage:`objcopy`.
+ 
+    :term:`OBJDUMP`
+-      The minimal command and arguments to run ``objdump``.
++      The minimal command and arguments to run :manpage:`objdump`.
+ 
+    :term:`OE_BINCONFIG_EXTRA_MANGLE`
+       When inheriting the :ref:`ref-classes-binconfig` class,
+@@ -7173,7 +7173,7 @@ system and gives an overview of their function and contents.
+          QA_EMPTY_DIRS_RECOMMENDATION:/dev = "but all devices must be created at runtime"
+ 
+    :term:`RANLIB`
+-      The minimal command and arguments to run ``ranlib``.
++      The minimal command and arguments to run :manpage:`ranlib`.
+ 
+    :term:`RCONFLICTS`
+       The list of packages that conflict with packages. Note that packages
+@@ -8913,8 +8913,8 @@ system and gives an overview of their function and contents.
+       places stamps. The default directory is ``${TMPDIR}/stamps``.
+ 
+    :term:`STRIP`
+-      The minimal command and arguments to run ``strip``, which is used to
+-      strip symbols.
++      The minimal command and arguments to run :manpage:`strip`, which is used
++      to strip symbols.
+ 
+    :term:`SUMMARY`
+       The short (72 characters or less) summary of the binary package for
 
- documentation/conf.py                      |   3 +
- documentation/overview-manual/concepts.rst |   2 +-
- documentation/overview-manual/yp-intro.rst |   2 +-
- documentation/ref-manual/variables.rst     | 288 +++++++++++++++++++++++++----
- 4 files changed, 260 insertions(+), 35 deletions(-)
----
-base-commit: ee6b3698da044e290dbc4fbb852f3cc37638e689
-change-id: 20250317-cc-vars-e2cd2076a3a6
-
-Best regards,
 -- 
-Antonin Godard <antonin.godard@bootlin.com>
+2.47.0
 
 
