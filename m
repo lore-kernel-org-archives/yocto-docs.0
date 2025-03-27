@@ -2,37 +2,37 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00089C36012
-	for <webhook@archiver.kernel.org>; Thu, 27 Mar 2025 09:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F41FC36014
+	for <webhook@archiver.kernel.org>; Thu, 27 Mar 2025 09:07:58 +0000 (UTC)
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.45526.1743066476971029091
+ by mx.groups.io with SMTP id smtpd.web11.45527.1743066477427589820
  for <docs@lists.yoctoproject.org>;
  Thu, 27 Mar 2025 02:07:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=CsILpI/t;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ETXMh1o7;
  spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6ECB943302;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id E59AB432FB;
 	Thu, 27 Mar 2025 09:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1743066475;
+	t=1743066476;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=+7SwiEWIoo8wUDFc0c+x/qzLIq3n1fTEk8eu1b1OjEs=;
-	b=CsILpI/tA7flpHSQrzLLb8LTh4A6xHl/ECaJGDyMefcvhM2qtW9ANAz2awpgR3umaOctvm
-	zZ+AmX/q4M8jNQ5mIcsG7upFTYOG+XZ7XI+RDscz3eTjgdV5rQ+bzDz2QqnYUhhtqTYyud
-	3thvh09qhx2IdZpC/MMN1ney+Vr1tFqVd7Qs9P3o+qVmikULl4aZqvtyyAsNkItQ6kBue+
-	U1PeVmOEg98l39xS4Fnb+moLG8i8kuJY3RDdGlwt6umh0V0MOg2CquKVF2Czd3kGGgTQhn
-	/HLzc8pVaCDUjxA+bnu3chQI4JTRerFFnVv45CtfeMsc4O3AIBXSgGIJK8vFqg==
+	bh=hGXF7rNfO0dq9z3gY0ip3d3ZRvCLdoGpY1yEEVdI9l4=;
+	b=ETXMh1o7iO9w1IRNVUvzN8NJSz8vg43d/lCdqBTK5gpgv1CGxlKAsyRJ+JzlrCPhEtv0an
+	QoXg9oNz8WQjboCI8nqJQDI+IjRz/LTWNIbwIB7KYys7ecOdfkGeVP1Uv5CLSIewf7Zgre
+	fjUrvUruW0qMbFI/Z5LwHu80lChP0Rcnv5NJ2lwZ37HVxiFGB+cYChu5IIqOdKSEl1rie+
+	jJzwL6tPp6CaPR7xo7CT81Q9nAf8aYTnn7CdPNY8MDeqnBPbSrWFuZF6phA5Lk2hUp0qUB
+	qjmnWe9d8Xjn1d8jdwOflTE4ZBmAi6EfSfk7vhzG5UOnEh7PdkXDjBgtsFkw+w==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Thu, 27 Mar 2025 10:07:29 +0100
-Subject: [PATCH v3 4/6] ref-manual/variables.rst: document missing
- SDK_*_ARCH variables
+Date: Thu, 27 Mar 2025 10:07:31 +0100
+Subject: [PATCH v3 6/6] ref-manual/variables.rst: HOST_CC_ARCH: fix wrong
+ SDK reference
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250327-cc-vars-v3-4-742dbddce008@bootlin.com>
+Message-Id: <20250327-cc-vars-v3-6-742dbddce008@bootlin.com>
 References: <20250327-cc-vars-v3-0-742dbddce008@bootlin.com>
 In-Reply-To: <20250327-cc-vars-v3-0-742dbddce008@bootlin.com>
 To: docs@lists.yoctoproject.org
@@ -40,81 +40,57 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2227;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1007;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=hZgO6vQMUrR0WG9nf0JHcb0/1ZMY/FLRGqAnbs8ccRw=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5RVpPXeu2g4bjeRezD+Jm4ISP/OA81oLawHDH
- /MWpjBRk52JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+UVaQAKCRDRgEFAKaOo
- Nj+IEACVS04SWWwRuXK1bmYRb2VEdEyl2Y83C3D6i4hRaWTLqeBKj9O8qMo7zA9WTF59qRYZUAp
- ECHBLqFclKKM1jdOvufwrWZCxuUqr76HwQIEH6cayJPSblmc9uOurpkc8qN6PaYLJmfQU8Eb0Mb
- fUKDFoiSvqdIi0PqBa9cqh3Jpdx1832sXL2wb/0F7LbE/mUoalHbhNYdRLxc75sJZbzrIrcE5UV
- vNagt6yIRnqivfQ6JQSpxvC3dmp7MdWkg3Edl6SSxyYz9NeuMSgPM2ieWC3yME/UBtLyUG25Jtr
- BX0QiYp+1B9wv3GH2Uh7LKU9oOFndbIg0FxjV8K0gTLbhH0VhIhI7BwN+Th2Y/xyAwi129YkQdc
- g9rNrCnm5thMB/JcK5XOx1Jm88rEXZSj7/dMCGogkWUGHU+e0H3f2HaFmwtWmeuo4x3g00E/PpC
- 4OZzhGonXcNUFdn2ZcK9bzcYouvxHNKbVfHvmJeyn2W7X30n5Ej3PVQrCs931suo4DyrTl1uboN
- P9q2t6vN2IXrkPzRMJ/jCCKgOqLjeYO3I8uSXFaHnPygtm7Qj+Ed7CB3DNveMLH+DbRT84qAtg+
- FYBZ/BtQRpKJ1Y2VDDu+NmuJBbbZmBnvOz0rDsfK+aj2zz65o+BAIfT6ypbzntO+TMAT4+nprPF
- AjMrfi6QwyjxS/w==
+ bh=tSUOJPK1aKpFp/pQ8ZXRZoYk8/kGk1Y1NEoaH1Qp9zQ=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5RVqWNo5RhF6Ei9NXEdybz0bf0z117rlbvuot
+ cxv0QiOkISJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+UVagAKCRDRgEFAKaOo
+ NiDWD/94OpE7xOrH9OCaJEg3WV2pIqVkb49mUAlOOPsTbETXXs/FrkEmEDrnWcqdGf/KWM/c8No
+ GJ70lPZ1i7+skctBvVFkmipb8CxEcsXE804DzKJ9Uc5TvaU/3l2B3dJ3GQvKciLHHo75o/o1bDr
+ O1BvNfohPs33/z+druPIzwOcrRAHdawDmTK43ITtyuffZDrd6gnXk7ar2GCthANBT7AFmA1z5Tt
+ HmxoP0muMZjA7jQQSFVKNYGGVcwTvRaCycKQ9OXthSTeSVxL8Kdbja2tC5eoS3fKnEKqzISsSc9
+ lA/dMQ/Nij3l7f+SWsHoDN2NSJ4078xYa6avKZUpsOXnRenTAZaoUYEYcXJF+y3wbpR63l8UQ+S
+ vHK8GtLE6xxM+ZKzxkU5UOhVIw7VaXm+TXMhPEaNF1kCDAKZyW41tRou6BbPTRPgaWqyge6sfqi
+ dgWypBcrlLPIB5t+bGvc2p6IhieRkyIEK5kIyg9PqTn3hD8FsQeKTkPeAYqE8nB6+tCBuEMykMf
+ 07Rx/J+bAelxuEJ/09yvCHXdsp5oHiUwgcYphUyryXmln3fRlb6QhpL96S0/iq00ZJHqxIjA8dK
+ E4C3cVm87luSzSoS4yqqXf14p3SBfbA1SLe7W2H+9UzFLmBkyoo4W9Z09hUSvAqLA9Z0JfLVWL5
+ nAy2sWUpFgMVb/g==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieektddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhli
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieektddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgepgeenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhli
  hhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Mar 2025 09:07:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6650
+ <docs@lists.yoctoproject.org>; Thu, 27 Mar 2025 09:07:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6652
 
-These variables control the flags for the assembler, compiler and linker
-when building for nativesdk recipes.
+When building for nativesdk recipes, HOST_CC_ARCH equals SDK_CC_ARCH,
+not BUILDSDK_CC_ARCH which doesn't exist.
 
 Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/ref-manual/variables.rst | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ documentation/ref-manual/variables.rst | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 0516c1816..4cb416bd0 100644
+index c3ed1a106..65dac9aa9 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -7920,11 +7920,21 @@ system and gives an overview of their function and contents.
+@@ -3700,8 +3700,7 @@ system and gives an overview of their function and contents.
+       -  :term:`BUILD_CC_ARCH` when building for the build host (i.e.
+          ``-native``)
  
-       Only one archive type can be specified.
+-      -  ``BUILDSDK_CC_ARCH`` when building for an SDK (i.e.
+-         ``nativesdk-``)
++      -  :term:`SDK_CC_ARCH` when building for an SDK (i.e. ``nativesdk-``)
  
-+   :term:`SDK_AS_ARCH`
-+      Specifies architecture-specific assembler flags when building
-+      :ref:`ref-classes-nativesdk` recipes. By default, the value of
-+      :term:`SDK_AS_ARCH` equals the one of :term:`BUILD_AS_ARCH`.
-+
-    :term:`SDK_BUILDINFO_FILE`
-       When using the :ref:`ref-classes-image-buildinfo` class,
-       specifies the file in the SDK to write the build information into. The
-       default value is "``/buildinfo``".
- 
-+   :term:`SDK_CC_ARCH`
-+      Specifies the architecture-specific C compiler flags when building
-+      :ref:`ref-classes-nativesdk` recipes. By default, the value of
-+      :term:`SDK_CC_ARCH` equals the one of :term:`BUILD_CC_ARCH`.
-+
-    :term:`SDK_CUSTOM_TEMPLATECONF`
-       When building the extensible SDK, if :term:`SDK_CUSTOM_TEMPLATECONF` is set to
-       "1" and a ``conf/templateconf.cfg`` file exists in the :term:`Build Directory`
-@@ -8006,6 +8016,11 @@ system and gives an overview of their function and contents.
-       :term:`SDK_EXT_TYPE` is set to "minimal", and defaults to "1" if
-       :term:`SDK_EXT_TYPE` is set to "full".
- 
-+   :term:`SDK_LD_ARCH`
-+      Specifies architecture-specific linker flags when building
-+      :ref:`ref-classes-nativesdk` recipes. By default, the value of
-+      :term:`SDK_LD_ARCH` equals the one of :term:`BUILD_LD_ARCH`.
-+
-    :term:`SDK_NAME`
-       The base name for SDK output files. The default value (as set in
-       ``meta-poky/conf/distro/poky.conf``) is derived from the
+    :term:`HOST_LD_ARCH`
+       Specifies architecture-specific linker flags.
 
 -- 
 2.47.0
