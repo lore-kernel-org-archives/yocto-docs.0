@@ -2,116 +2,128 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E80C3C3600E
-	for <webhook@archiver.kernel.org>; Thu, 27 Mar 2025 09:07:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0FC80C36017
+	for <webhook@archiver.kernel.org>; Thu, 27 Mar 2025 09:07:58 +0000 (UTC)
 Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.45523.1743066476462893166
+ by mx.groups.io with SMTP id smtpd.web10.45789.1743066477164818133
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Mar 2025 02:07:56 -0700
+ Thu, 27 Mar 2025 02:07:57 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=ISJ+QjuI;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=mO7N7oAt;
  spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 47AD8432F9;
-	Thu, 27 Mar 2025 09:07:54 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AC4E443305;
+	Thu, 27 Mar 2025 09:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1743066474;
+	t=1743066475;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=P/EVbynh9qwsKubGUdL0mK9lF//Wg9Iy07tc+LCvyZs=;
-	b=ISJ+QjuIYLkZNkwh71Ejp5nIXD0Nmwu54vTGwlwQ/9Ak6vhXHxrUTPOeeBFXDM4CdlqX1K
-	I59EwWHyoi7ZCFXue8yOHJLM4F8KtkRPmWEHISWeAxvEzx+k0IGUbBFy6YLIF4IW/XcruL
-	2uSIQLHZL018jkVMhSonZ9QSOBZqKmKOdKiRrY2BDLywnSFi87nnCEeU66Ax/ffZCkrGBf
-	4ZW/mxofsMOPD+zuEfMarJoC4eA6iUy6olDa4GdBecQ2rcU7MkSQreo90SfdnEibZIBuxG
-	NZlQmOA5jD5/hxKIOt/bOWuEfyZKkF9zOMJM0o/Zn5YWaZP+zOxQz340aydUYA==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uT/EiwlgzbOvu4bJfcCn/bSJk8HwvX+ooobDaKTpAJU=;
+	b=mO7N7oAtaA00RxkFSIBQZpEUe80zQJ+CRIDUfclSnu30/PXow0acANLK835jDrpffVrAlj
+	59ljHZUvF45P5xW65nTD3PYZPBEG2EFXVnBxpXtZ55NcdoPN8iBHFroJkM/L5UD1rfD3cF
+	lQJ3Ik66JM+mZUqiwWF/CuPGFuLazrev/lpX0gYuXnIQg1FmdrCEZT+IYzaQlofeJOS/Ts
+	L1mRscy9o3+nS7Qn1MXZszXN6ACv2KwRmjnMgBc+JM7wMPw8RLxsvlw9wChBup18iE6yVp
+	ycij+jkf9fo7WKHPi3pe+nKqyvVWFAM319+w9uFDJUkveUiO0nicK8STJrHrJQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH v3 0/6] Document missing toolchain related variables
-Date: Thu, 27 Mar 2025 10:07:25 +0100
-Message-Id: <20250327-cc-vars-v3-0-742dbddce008@bootlin.com>
+Date: Thu, 27 Mar 2025 10:07:30 +0100
+Subject: [PATCH v3 5/6] ref-manual/variables.rst: document HOST_*_ARCH
+ variables
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAE4V5WcC/2WMQQ6CMBBFr0K6tqZMoagr72FclOkgkyglLWk0h
- Ltb2Khx+X7+e7OIFJiiOBWzCJQ4sh8y6F0hsLfDjSS7zAIU1EqXjUSUyYYoCdCBaozV1oj8HgN
- 1/NxKl2vmnuPkw2sLp3Jd/xuplEpCTa61rnOqrs6t99Odhz36h1grCb5MMB8TsqlNe1BoKqzs8
- ddcluUNi0wgBdoAAAA=
-X-Change-ID: 20250317-cc-vars-e2cd2076a3a6
+Message-Id: <20250327-cc-vars-v3-5-742dbddce008@bootlin.com>
+References: <20250327-cc-vars-v3-0-742dbddce008@bootlin.com>
+In-Reply-To: <20250327-cc-vars-v3-0-742dbddce008@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>, 
  Quentin Schulz <quentin.schulz@cherry.de>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1937;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2041;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=kdFL+VcKW9LRlBCsBBhKlelCVqYtae9XzygwQCqrBMs=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5RVp1rhbtztAJzhTSHbhdLZlpT1D1HHS0pzHQ
- I3EIz7jGaKJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+UVaQAKCRDRgEFAKaOo
- NjswD/9+eaqQ0TdYIC+wANqwhfQBRfkelQ13GesmbnTCKz5L9WRVnDB48f44aj25vrBQeYWG9bX
- 1M/nRMQvxhu8OurOmQIugTWGuuP6aUgkN2T6epjKTwOzBgVNYcw/54FCW6P6wLkdJGS34h4Pf1s
- cb5OHCJDxG8wiqEQFHHelzs82n5XHiw/wq+0QGkAa6IGYmcf2UGapkf+z1aI7l/upCruzIQAAbM
- p2zYmU/wzHOHUqA2W4+xI1SxBISfxnDr8URGMn7nwSiJShsDzBNagyzak+hIO4mw0wXTqYFYgK7
- 8oVT57v9b9sXFoKm8OgUX1WSb6zAcoaFfSHb6fYvbHnCbUwR/wpEdYrxqhFpyeoFlMvgu6+/wP2
- mPG+jAdFoNTOPHwAQ1ZlvHVT79XnrMnWP7/d21wgQSqWlDFU6+ef+2zVKSRJ/9Qc5shx0rVm9TG
- FI4Sj1nR/s3VDIl/bsDlV6CLNmot9/tqk91mkdt0s9ZJR/ypA3bE1rwADwe+rGd2ZGFfQYJad1t
- tQYpvpTFvBZmGphR43tjIhF5GSZd1ek+P8urI4A+WR48kGzJEJYp0W7D7py1dYHM5SI3UxWGW24
- Z5+MmErOLgE2adT/NfDmx+b7XpwNJnu6WAOFI5X9RFYwxAH4JIdtGD30uh6vVvJHH4PXNWfEyLi
- SSrhK+akaFaD6PQ==
+ bh=J1Vr4B5X5KceuASvfzYZGkvXTJZQms1lJPT7Dl41Ixc=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5RVpLtKlWCYDdFpasMLamzpzNRqB2kLgQKe1z
+ uG22BsY9dyJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+UVaQAKCRDRgEFAKaOo
+ NhMqD/9IgPEPHSZeWc70xA/KNF1Awx2M4JKWaQDDtAUyrYOeBeFE6H+Obrwy9bQNBGsqrmAETqE
+ 1weZjAiQvUikIO6rxKKex+0wQnGKhk3l4FaiNc2q50JmguRQF9dd8K4yWN1xS+QxSkWBdZgFR5M
+ XYHKBnfmWB7As+k1Bya5lkGC3lcZxgrkXxDgEE3KVLjl0m3dj99PN7lfZM2ezOhmU+IRJtBCTrG
+ KRlYoPNCnVqlKvmwqwIl1wbsoajuup+OQ6fLyhbExUjW7rFwtOtJLvdf2LTf+xfbPZrclHUpVpf
+ WlDemAPy8Rstd7ytYg3UFVAU7KOFysA+LXhW0l7/UP6KfKB90ShUv38RMEQEyW7Nv3q1qiy1EA/
+ 9g6JTPLdDxUBuvYynYUM/rB+Uv3ZjTzCUJG5ydyuWTkpl7RQSsGTsBT6FOif/9IMUKPiv5VOX+u
+ +++ijBpiz10nKjkwGK8mw+vmC1YcyePZOMnl1K+1ueBYIwvpTIdoejaMSGuYP6gAjlRjKM4Jxai
+ cVgkp0D9QPYkXFcS/dlw7p/s0RKs3RMfQRm3ZYInpCvDJ8WhIgFdyWlpIAOTYJ9sn6s+D1jsYpW
+ z3gkyHFVkFNw6P/gMmt66KTvws1TutMTq6irrBis2K5Rr2nO631fFCZEGnA6K97PHfzDb7kOSCW
+ on1oxriLlziY3aA==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieektddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeetieefveejtefhgeekkeefteejgfetvdevgfejudfgveelfeffjeehkeefffehieenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdhkvghrnhgvlhdrohhrghenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvt
- ghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduieektddvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhli
+ hhnrdgtohhmpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Mar 2025 09:07:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6648
+ <docs@lists.yoctoproject.org>; Thu, 27 Mar 2025 09:07:58 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6651
 
-Document a bunch a toolchain related variables. These follow a naming
-scheme to make them easier to deduce from the name. Try clearing this
-out for users reading the documentation.
+These variables control the flags for the assembler, compiler and
+linker, but depend on the context.
 
-Fixes https://bugzilla.yoctoproject.org/show_bug.cgi?id=15719.
-
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Changes in v3:
-- Review by Quentin (thank you!):
-  - Include section number for manpage links.
-  - For BUILD_* variables, be more precise about the fact that we should
-    not override it from recipes but we can sometimes use them to refer
-    to a host tool from a target recipe context.
-- Link to v2: https://lore.kernel.org/r/20250326-cc-vars-v2-0-36b80c64c4a9@bootlin.com
+ documentation/ref-manual/variables.rst | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-Changes in v2:
-- Add a patch to define a manpage url, for giving manpage links in the
-  docs.
-- Reformulate the BUILD_* definitions to explicitely say that we are not
-  supposed to set these variables or use them directly in recipes.
-- Link to v1: https://lore.kernel.org/r/20250317-cc-vars-v1-0-25edbadfd054@bootlin.com
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 4cb416bd0..c3ed1a106 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -3673,6 +3673,20 @@ system and gives an overview of their function and contents.
+       - mips
+       - mipsel
+ 
++   :term:`HOST_AS_ARCH`
++      Specifies architecture-specific assembler flags.
++
++      Default initialization for :term:`HOST_AS_ARCH` varies depending on what
++      is being built:
++
++      -  :term:`TARGET_AS_ARCH` when building for the
++         target
++
++      -  :term:`BUILD_AS_ARCH` when building for the build host (i.e.
++         ``-native``)
++
++      -  :term:`SDK_AS_ARCH` when building for an SDK (i.e. ``nativesdk-``)
++
+    :term:`HOST_CC_ARCH`
+       Specifies architecture-specific compiler flags that are passed to the
+       C compiler.
+@@ -3689,6 +3703,19 @@ system and gives an overview of their function and contents.
+       -  ``BUILDSDK_CC_ARCH`` when building for an SDK (i.e.
+          ``nativesdk-``)
+ 
++   :term:`HOST_LD_ARCH`
++      Specifies architecture-specific linker flags.
++
++      Default initialization for :term:`HOST_LD_ARCH` varies depending on what
++      is being built:
++
++      -  :term:`TARGET_LD_ARCH` when building for the target
++
++      -  :term:`BUILD_LD_ARCH` when building for the build host (i.e.
++         ``-native``)
++
++      -  :term:`SDK_LD_ARCH` when building for an SDK (i.e. ``nativesdk-``)
++
+    :term:`HOST_OS`
+       Specifies the name of the target operating system, which is normally
+       the same as the :term:`TARGET_OS`. The variable can
 
----
-Antonin Godard (6):
-      documentation/conf.py: define a manpage url
-      ref-manual/variables.rst: add manpage links for toolchain variables
-      ref-manual/variables.rst: add missing documentation for BUILD_* variables
-      ref-manual/variables.rst: document missing SDK_*_ARCH variables
-      ref-manual/variables.rst: document HOST_*_ARCH variables
-      ref-manual/variables.rst: HOST_CC_ARCH: fix wrong SDK reference
-
- documentation/conf.py                      |   3 +
- documentation/overview-manual/concepts.rst |   2 +-
- documentation/overview-manual/yp-intro.rst |   2 +-
- documentation/ref-manual/variables.rst     | 319 ++++++++++++++++++++++++++---
- 4 files changed, 291 insertions(+), 35 deletions(-)
----
-base-commit: ee6b3698da044e290dbc4fbb852f3cc37638e689
-change-id: 20250317-cc-vars-e2cd2076a3a6
-
-Best regards,
 -- 
-Antonin Godard <antonin.godard@bootlin.com>
+2.47.0
 
 
