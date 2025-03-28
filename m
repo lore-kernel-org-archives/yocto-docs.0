@@ -1,133 +1,288 @@
-Return-Path: <mark.hatle@kernel.crashing.org>
+Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA235C3600B
-	for <webhook@archiver.kernel.org>; Thu, 27 Mar 2025 15:36:20 +0000 (UTC)
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
- by mx.groups.io with SMTP id smtpd.web11.52866.1743089774451983224
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9D843C36013
+	for <webhook@archiver.kernel.org>; Fri, 28 Mar 2025 13:07:36 +0000 (UTC)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+ by mx.groups.io with SMTP id smtpd.web10.10714.1743167255973912280
  for <docs@lists.yoctoproject.org>;
- Thu, 27 Mar 2025 08:36:14 -0700
+ Fri, 28 Mar 2025 06:07:36 -0700
 Authentication-Results: mx.groups.io;
- dkim=none (message not signed); spf=pass (domain: kernel.crashing.org, ip: 63.228.1.57, mailfrom: mark.hatle@kernel.crashing.org)
-Received: from kernel.crashing.org (70-99-78-136.nuveramail.net [70.99.78.136] (may be forged))
-	by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 52RFZA9f002731;
-	Thu, 27 Mar 2025 10:35:10 -0500
-Received: from [192.168.2.109] ([192.168.2.109])
-	by kernel.crashing.org (8.14.7/8.14.7) with ESMTP id 52RFZ8DX025409;
-	Thu, 27 Mar 2025 10:35:09 -0500
-Message-ID: <670f3cce-9919-4418-a2c6-e96bc3fbe58f@kernel.crashing.org>
-Date: Thu, 27 Mar 2025 10:35:08 -0500
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=dvY0YPlC;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 575D9441A5;
+	Fri, 28 Mar 2025 13:07:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1743167254;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g9M1XdbWh2yjAOA6/RQpDbRie+cO/s0ZrMGof3UMogc=;
+	b=dvY0YPlCLQOsPP7XYMfrVArLttwKBvV/4fS8ePDf1M+yABw8XqJ/gPL6XQPvn7SuRqe9pt
+	gsInuk7ycN3Vvb68qmdJJKkQCJxtXBSR/eIXvhnPnyAzPvB3xL3ft+s1GMmokubAJlT1xM
+	i96KthCGVC4/Wah2zv0ErLzQtRHX0/XYhOky2khe9blj4prDP/zGYNiO/n6xZ4fYW0qREZ
+	z5dNIafq2tFLmejAgsTVQZXF80BCaPPLC1ej6KJLlFesXdoAT6bKiLKiHdljN5ckttv2iH
+	3/PW9qASHUYI7q064G+6M3hNOz8zNABX+5baB6+kZQTnboDEf1Hu1wY3FOR+KA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Fri, 28 Mar 2025 14:07:04 +0100
+Subject: [PATCH 01/11] migration-guides/release-notes-5.2.rst: add the list
+ of contributors
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH v3 1/6] documentation/conf.py: define a manpage url
-Content-Language: en-US
-To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20250327-cc-vars-v3-0-742dbddce008@bootlin.com>
- <20250327-cc-vars-v3-1-742dbddce008@bootlin.com>
-From: Mark Hatle <mark.hatle@kernel.crashing.org>
-In-Reply-To: <20250327-cc-vars-v3-1-742dbddce008@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250328-release-note-5-2-updates-2-v1-1-c913513e9140@bootlin.com>
+References: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
+In-Reply-To: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4664;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=icNEtyTojs6wapdA1Pma05QEWKpVHAm2qzz+JjcNUlk=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5p8Ub6XqEID/ZEHajiFDNcsvuns3aQx6LgRE8
+ 6niVYYYBWaJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+afFAAKCRDRgEFAKaOo
+ Nq32EACJKAaD2XZ5aC9+lyCX3uXakAdKWP0/IO5HLcMf9JxmJqvwti6/z5anNp4EtprawyUgDbU
+ 64kXoBI38tJ+6oQMs5sTaLn4WgpE7z4yIz0RlCSi5UYM8JY7t3QGDxioD3l4esOPLWz/8nUB0d6
+ ZMSb07xovGtgYN2qz15TTLVlf8onRNGJEveUbvukTpx2xiAgH7jvLKJ/SgjFx5Q7gP83uoGVlRX
+ SFHMd0YM7HpmanU6Vvc/7lEdnwuzgZgGqJsftQo9sh8e1Cho1QbLQTD50lvLIk6/eGFH8j35JlD
+ 7Snri17GhB8a9G2Qr+Zk24zVrY/gh8DR5Rmix+8zL1xyr8ThuPFzI0IzqEU2WGJiJHCcj+5I6WQ
+ XkWveRW4UDIT4r0nDOc6XGvJ3DvN4kyxw+WP2ntQITtBQYS2rM24tAHUe5SZ34l/QDvAXO6ZNUf
+ PW0diYcyUnEvRRRaFsG5VGiXmnzx4GE0k5XGdhHUrj2PQbClKBLu5oduObDGoa4SiFIJzyfqgr5
+ AKT9BrIQbPOX0eXcWAEql1GWpoXtQug9bB2ESGUfYICjJT05OTXUmJstuc9f16YwcT0pHEVacC/
+ EbPGnPrY+nP+um6rv8fRSfqB5Q3kR1h0Z3dUxeceFufGGzaG2RTtLIAjjNO1HAC7Bzq/KOtityn
+ JmiWrfbLNxYO9sw==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujedufeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpefhveeileeitdeufeefvdegueeijeeigfeujeffgfevgeefleduveffieeggeeifeenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeejtgehtgemiegruggvmeejleegkeemgedtheelpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegso
+ hhothhlihhnrdgtohhm
+X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 27 Mar 2025 15:36:20 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6654
+ <docs@lists.yoctoproject.org>; Fri, 28 Mar 2025 13:07:36 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6655
 
-I'm going to be a bit pedantic below, I'm not sure it matters at this point but 
-I want to clarify one thing.
+Obtained by running:
 
-On 3/27/25 4:07 AM, Antonin Godard via lists.yoctoproject.org wrote:
-> By defining the manpages_url we can use the :manpage: role in the
-> documentation for providing links to manpages. See:
-> https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-manpages_url
-> 
-> Replace existing manpages links to use this role.
-> 
-> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> ---
->   documentation/conf.py                      | 3 +++
->   documentation/overview-manual/concepts.rst | 2 +-
->   documentation/overview-manual/yp-intro.rst | 2 +-
->   documentation/ref-manual/variables.rst     | 4 ++--
->   4 files changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/documentation/conf.py b/documentation/conf.py
-> index 477e75112a..0352bbef20 100644
-> --- a/documentation/conf.py
-> +++ b/documentation/conf.py
-> @@ -111,6 +111,9 @@ extlinks = {
->       'wikipedia': ('https://en.wikipedia.org/wiki/%s', None),
->   }
->   
-> +# To able to use :manpage:`<something>` in the docs.
-> +manpages_url = 'https://manpages.debian.org/{path}'
-> +
->   # Intersphinx config to use cross reference with BitBake user manual
->   intersphinx_mapping = {
->       'bitbake': ('https://docs.yoctoproject.org/bitbake/' + bitbake_version, None)
-> diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
-> index e4d806f98f..416c28f0d9 100644
-> --- a/documentation/overview-manual/concepts.rst
-> +++ b/documentation/overview-manual/concepts.rst
-> @@ -2204,7 +2204,7 @@ require root privileges, the fact that some earlier steps ran in a fake
->   root environment does not cause problems.
->   
->   The capability to run tasks in a fake root environment is known as
-> -"`fakeroot <http://man.he.net/man1/fakeroot>`__", which is derived from
-> +":manpage:`fakeroot <fakeroot(1)>`", which is derived from
->   the BitBake keyword/variable flag that requests a fake root environment
->   for a task.
->   
-> diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
-> index 4a27e12e01..11e6d99e32 100644
-> --- a/documentation/overview-manual/yp-intro.rst
-> +++ b/documentation/overview-manual/yp-intro.rst
-> @@ -400,7 +400,7 @@ Yocto Project:
->      Autobuilder :doc:`here </test-manual/understand-autobuilder>`.
->   
->   -  *Pseudo:* Pseudo is the Yocto Project implementation of
-> -   `fakeroot <http://man.he.net/man1/fakeroot>`__, which is used to run
-> +   :manpage:`fakeroot <fakeroot(1)>`, which is used to run
->      commands in an environment that seemingly has root privileges.
+  git log --format=%an yocto-5.1..walnascar | sort | uniq
 
+On the Poky repository.
 
-psuedo is an implementation of three separate items:
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+ .../migration-guides/release-notes-5.2.rst         | 193 +++++++++++++++++++++
+ 1 file changed, 193 insertions(+)
 
-fakeroot
-fakechroot
-fakepasswd (which was never a debian tool or widely used - it emulates 
-/etc/passwd and /etc/group that do not match the running system)
+diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
+index a8e6e2b6e..923d3809a 100644
+--- a/documentation/migration-guides/release-notes-5.2.rst
++++ b/documentation/migration-guides/release-notes-5.2.rst
+@@ -715,5 +715,198 @@ Recipe Upgrades in |yocto-ver|
+ Contributors to |yocto-ver|
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ 
++Thanks to the following people who contributed to this release:
++
++-  Aditya Tayade
++-  Adrian Freihofer
++-  Alban Bedel
++-  Aleksandar Nikolic
++-  Alessio Cascone
++-  Alexander Hirsch
++-  Alexander Kanavin
++-  Alexander Sverdlin
++-  Alexander van Gessel
++-  Alexander Yurkov
++-  Alexandre Marques
++-  Alexis Cellier
++-  Alex Kiernan
++-  Andrej Valek
++-  Angelo Ribeiro
++-  Antonin Godard
++-  Archana Polampalli
++-  Artur Kowalski
++-  Awais Belal
++-  Balaji Pothunoori
++-  Bartosz Golaszewski
++-  Bastian Germann
++-  Bastian Krause
++-  Bastien JAUNY
++-  BELHADJ SALEM Talel
++-  Benjamin Bara
++-  Benjamin Grossschartner
++-  Benjamin Szőke
++-  Bin Lan
++-  Bruce Ashfield
++-  Changhyeok Bae
++-  Changqing Li
++-  Chen Qi
++-  Chris Laplante
++-  Christian Lindeberg
++-  Christian Taedcke
++-  Christos Gavros
++-  Claus Stovgaard
++-  Clayton Casciato
++-  Colin McAllister
++-  Daniel Ammann
++-  Daniel McGregor
++-  Dan McGregor
++-  Deepesh Varatharajan
++-  Deepthi Hemraj
++-  Denis OSTERLAND-HEIM
++-  Denys Dmytriyenko
++-  Derek Straka
++-  Divya Chellam
++-  Dmitry Baryshkov
++-  Enrico Jörns
++-  Enrico Scholz
++-  Eric Meyers
++-  Esben Haabendal
++-  Etienne Cordonnier
++-  Fabio Berton
++-  Fabio Estevam
++-  Gaël PORTAY
++-  Georgi, Tom
++-  Guðni Már Gilbert
++-  Guénaël Muller
++-  Harish Sadineni
++-  Haseeb Ashraf
++-  Hiago De Franco
++-  Hongxu Jia
++-  Igor Opaniuk
++-  Jagadeesh Krishnanjanappa
++-  Jamin Lin
++-  Jason Schonberg
++-  Jean-Pierre Geslin
++-  Jermain Horsman
++-  Jesse Riemens
++-  Jiaying Song
++-  Jinfeng Wang
++-  João Henrique Ferreira de Freitas
++-  Joerg Schmidt
++-  Jonas Gorski
++-  Jon Mason
++-  Jörg Sommer
++-  Jose Quaresma
++-  Joshua Watt
++-  Julien Stephan
++-  Justin Bronder
++-  Kai Kang
++-  Katariina Lounento
++-  Katawann
++-  Kevin Hao
++-  Khem Raj
++-  Koen Kooi
++-  Lee Chee Yang
++-  Lei Maohui
++-  Lei YU
++-  Leon Anavi
++-  Louis Rannou
++-  Maik Otto
++-  Makarios Christakis
++-  Marc Ferland
++-  Marco Felsch
++-  Marek Vasut
++-  Mark Hatle
++-  Markus Volk
++-  Marta Rybczynska
++-  Martin Jansa
++-  Mathieu Dubois-Briand
++-  Matthias Schiffer
++-  Maxin John
++-  Michael Estner
++-  Michael Halstead
++-  Michael Nazzareno Trimarchi
++-  Michael Opdenacker
++-  Michelle Lin
++-  Mikko Rapeli
++-  Ming Liu
++-  Moritz Haase
++-  Nick Owens
++-  Nicolas Dechesne
++-  Nikolai Merinov
++-  Niko Mauno
++-  Ninette Adhikari
++-  Ola x Nilsson
++-  Oleksandr Hnatiuk
++-  Oliver Kästner
++-  Omri Sarig
++-  Pascal Eberhard
++-  Patrik Nordvall
++-  Paul Barker
++-  Pavel Zhukov
++-  Pedro Ferreira
++-  Peter Bergin
++-  Peter Delevoryas
++-  Peter Kjellerstedt
++-  Peter Marko
++-  Peter Tatrai
++-  Philip Lorenz
++-  Priyal Doshi
++-  Purushottam Choudhary
++-  Quentin Schulz
++-  Ralph Siemsen
++-  Randy MacLeod
++-  Ranjitsinh Rathod
++-  Rasmus Villemoes
++-  Regis Dargent
++-  Ricardo Salveti
++-  Richard Purdie
++-  Robert Yang
++-  Rohini Sangam
++-  Roland Hieber
++-  Ross Burton
++-  Ryan Eatmon
++-  Savvas Etairidis
++-  Sean Nyekjaer
++-  Sebastian Zenker
++-  Sergei Zhmylev
++-  Shunsuke Tokumoto
++-  Sid-Ali
++-  Simon A. Eugster
++-  Simone Weiß
++-  Slawomir Stepien
++-  Sofiane HAMAM
++-  Stefan Gloor
++-  Stefan Herbrechtsmeier
++-  Stefan Koch
++-  Stefan Mueller-Klieser
++-  Steve Sakoman
++-  Sunil Dora
++-  Sven Kalmbach
++-  Talel BELHAJSALEM
++-  Thomas Perrot
++-  Thomas Roos
++-  Tim Orling
++-  Tom Hochstein
++-  Trevor Gamblin
++-  Ulrich Ölmann
++-  Valeria Petrov
++-  Victor J. Hansen
++-  Victor Kamensky
++-  Vijay Anusuri
++-  Vince Chang
++-  Vivek Puar
++-  Vyacheslav Yurkov
++-  Walter Schweizer
++-  Wang Mingyu
++-  Weisser, Pascal
++-  Xiangyu Chen
++-  Xiaotian Wu
++-  Yash Shinde
++-  Yi Zhao
++-  Yoann Congal
++-  Yogita Urade
++-  Zoltán Böszörményi
++
+ Repositories / Downloads for Yocto-|yocto-ver|
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
---Mark
+-- 
+2.47.0
 
->      During a build, it can be necessary to perform operations that
-> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-> index 41bda5d0d6..4e675b6bfb 100644
-> --- a/documentation/ref-manual/variables.rst
-> +++ b/documentation/ref-manual/variables.rst
-> @@ -4514,8 +4514,8 @@ system and gives an overview of their function and contents.
->   
->         The value in :term:`INITSCRIPT_PARAMS` is passed through to the
->         ``update-rc.d`` command. For more information on valid parameters,
-> -      please see the ``update-rc.d`` manual page at
-> -      https://manpages.debian.org/buster/init-system-helpers/update-rc.d.8.en.html
-> +      please see the ``update-rc.d`` manual page at :manpage:`update-rc.d
-> +      <update-rc.d(8)>`.
->   
->      :term:`INSANE_SKIP`
->         Specifies the QA checks to skip for a specific package within a
-> 
-> 
-> 
-> -=-=-=-=-=-=-=-=-=-=-=-
-> Links: You receive all messages sent to this group.
-> View/Reply Online (#6647): https://lists.yoctoproject.org/g/docs/message/6647
-> Mute This Topic: https://lists.yoctoproject.org/mt/111933087/3616948
-> Group Owner: docs+owner@lists.yoctoproject.org
-> Unsubscribe: https://lists.yoctoproject.org/g/docs/unsub [mark.hatle@kernel.crashing.org]
-> -=-=-=-=-=-=-=-=-=-=-=-
-> 
 
