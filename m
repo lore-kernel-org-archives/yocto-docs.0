@@ -1,134 +1,104 @@
-Return-Path: <richard.purdie@linuxfoundation.org>
+Return-Path: <gavrosc@yahoo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 051D1C28B20
-	for <webhook@archiver.kernel.org>; Fri, 28 Mar 2025 16:47:32 +0000 (UTC)
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
- by mx.groups.io with SMTP id smtpd.web11.635.1743180445477486671
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 5F28AC28B20
+	for <webhook@archiver.kernel.org>; Fri, 28 Mar 2025 20:53:24 +0000 (UTC)
+Received: from sonic307-2.consmr.mail.bf2.yahoo.com (sonic307-2.consmr.mail.bf2.yahoo.com [74.6.134.41])
+ by mx.groups.io with SMTP id smtpd.web10.332.1743195194620460013
  for <docs@lists.yoctoproject.org>;
- Fri, 28 Mar 2025 09:47:25 -0700
+ Fri, 28 Mar 2025 13:53:14 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linuxfoundation.org header.s=google header.b=Ifcy/Bv7;
- spf=pass (domain: linuxfoundation.org, ip: 209.85.128.53, mailfrom: richard.purdie@linuxfoundation.org)
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-43690d4605dso16744625e9.0
-        for <docs@lists.yoctoproject.org>; Fri, 28 Mar 2025 09:47:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1743180443; x=1743785243; darn=lists.yoctoproject.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FTJNxhvmyUFtzH/2wTNpTUxlfb8Xd2Rw0f0Vk6PVoAE=;
-        b=Ifcy/Bv7NT6l728btZSDYtMEDw0ktxJmFItfXyyIlyI9ihVLy6k0Kgbn3TB37nvzBQ
-         HZwC+qpz6iOaDs9q8UMoBtvMyQL86Oh2Zy3TzdZ2E8s7QsCs9nBtf9GDMRdUQlHQbLQ5
-         3/9yNn+ob/K8IcCPinMJdbLebiw5Nlwhp5sJ4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743180443; x=1743785243;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FTJNxhvmyUFtzH/2wTNpTUxlfb8Xd2Rw0f0Vk6PVoAE=;
-        b=krq5uUXryoQTYm2AWQLMCQ213EBSn0KrI2ZI7HnA/Xi3Q279ZG5lz9y7cgmUI0JCmy
-         hq4FwziAt8aumD9ksQdig5WfCuTwRpDadbP3UnwpSGnAF0hN1Cf1LRC/TqfvljbX+ugF
-         WLbm9t1C3/thuSxrVpsAJiRaXUxWYmjbjse6hp5IT6kaKt5ICyXJn+5FYenQy/WXBYn8
-         7BYngyzgHfQVRvlz6HC8xow6FDAV2I9pT1Deu6ydTYyk/iaKsst4ucNPTnpsVfXwwTXn
-         V/1EIZoucrW35RThvmHfT6CfS+xk5StUTNp7g8Oh70761ZdAlWeNJszguJ8AthBlnLzn
-         oxRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSFHYDAo4v0lOwrViqJJHII484ZUpNL3r6MXw2hVsf9uKthikDQ5S8uE1//oOemxX86hnC@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0Yx5OgEbohX129XQwne5d2L2hEJ5I1+ZY+zrM24U+NwmYDXJYw0L
-	GWbecVcB03QSpMLcYRU/3DW6KqWYzok8A7/+VW+pTg3K/S9cuoOcDwdMFbDiqhs=
-X-Gm-Gg: ASbGncuhGvearMVrKqD0dyvIT2T/Po3OCJOY0gRcPnw/qK8SnchWo4lfQXlWheMY/pm
-	W2FVFqy0vd28YvYy8eLbW8WwlJhZUIBodMKZIiy8RNLgrPoaliacuFNMBuwLpsnUgxdcBvWtKeT
-	sovxELT/C30F5YvghzXwY3FLN7zLwvOldnu3DjLCGMYNigBbW4POI/oOnH2de7nte57L0yTSmOJ
-	m7thu6aETTLovXXluTm4mBlj3VVXidEev1ahN6SSaMBC0LNDFRQY5WNhtn4RtK2x5VXtdKKCDYk
-	fl3uaCRTfw3ZqS/N7uFmAtm6IWMeAsnzvIEjnac3WoFMj+H+UwKCmlK+u2tkc/YlDgD2L42koff
-	G/5NrAZfrmfVPF266WUaNNz863vrWhPboOpXCJXqrWQUo
-X-Google-Smtp-Source: AGHT+IE3fBD4tduddAmfthQjJaEn5/ynnv+vbO6pUh8dJhn/2aB/Q60QIziHdFY4vhsoQ/0RTJAM/g==
-X-Received: by 2002:a05:600c:1d1f:b0:43d:ea:51d2 with SMTP id 5b1f17b1804b1-43db6246ff4mr1796205e9.14.1743180443436;
-        Fri, 28 Mar 2025 09:47:23 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:8d57:ea33:89bd:8b22? ([2001:8b0:aba:5f3c:8d57:ea33:89bd:8b22])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39c0b66aeaasm3142145f8f.53.2025.03.28.09.47.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Mar 2025 09:47:22 -0700 (PDT)
-Message-ID: <69ce733f89c726b7e673d399f215b8b6020deb15.camel@linuxfoundation.org>
-Subject: Re: [docs] [PATCH 11/11]
- migration-guides/{migration,release-note}-5.2: update for 5.2 release
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: quentin.schulz@cherry.de, antonin.godard@bootlin.com, 
-	docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-Date: Fri, 28 Mar 2025 16:47:22 +0000
-In-Reply-To: <83f27b97-7352-469b-a6d2-975a32f59335@cherry.de>
-References: 
-	<20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
-	 <20250328-release-note-5-2-updates-2-v1-11-c913513e9140@bootlin.com>
-	 <83f27b97-7352-469b-a6d2-975a32f59335@cherry.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.0-1 
+ dkim=pass header.i=@yahoo.com header.s=s2048 header.b=QA6vhkVF;
+ spf=neutral (domain: yahoo.com, ip: 74.6.134.41, mailfrom: gavrosc@yahoo.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743195193; bh=b+uhTAf6b4uPf7YdCp48Pm4iKUurFxlz3bdOyQ/JMJQ=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=QA6vhkVFk1TrC42FYy7W6pVY8jUa6DxX3RVbLfR1n8zQaPdZz//jRFT1iqVFSPNO64hyJ08Ce0jwHaDIrjzQwROCHJdsyxgGreQ+YAaEw7HHzzz7DUtOk6BSff0p/cRcB8cW7KTppnOHIsKOvlwE+BxzvFQsaOZUKRV35SJFbgyh6o0ir/dp89kwBmN95uSyxFgk0bJB3fGtpivSHq+prNwQEvajDso+75tUmr86ldcYgIev91nGkjHwsA+8IkT1EP19lyM+hpWyQfQAWV226Aoei5stkPlaD5+14dYL9N4EbK5DE4AKaHaTQEMXLzr4yRMASy1Jde2+ZDdUbY8eqw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1743195193; bh=oE3Rp/fvnIVWj5Fuvp9ugFNpFiKIQgeeT3eaQGidHa5=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=KBqNttFCcdI/NI4SUJqlTv3+ARTx82Apz5yICnBzaq+LYPGgNUp9jpjIub7Px0UgiNN3txGx8DgbaecnsXlgGei4TYNJQFCK2XC2FSRvX5Pyr/YsEssfyDC9MZ4D2qXpcJG9vGDWoHeOIl6pbYwiwNGcf//m9O3yg6iyvSZc9VYmsbnG/lpXuRBMOwnEJQ1mN3euTOCsnHB9sF71i0/UWe1R/CZRGDaMRXDiL8Csj57k3m1o2u9LlXZfVOJKYYG5s8KU9tbYjVVpbPSbcTHqX/I8OHgEQWzrJiVsk9U5cHLl5MFWJR7bYjyZSEEekDnLFbFDTIOUSx7v4ITqpbUviA==
+X-YMail-OSG: RVJqRgwVM1lEfKUkuK2WeTxwFkwllDe49sjPtgB4dOfm_.rCfkHYP2TN5GZU3nN
+ _dmug5YTPubtOI4eTYmiImCmbwTAUd6pL1aaEtnZuyudjdtLiRwKPoJBc3Ed2CoI5pHehObvjAyG
+ mVRpGu5E8k_FEPULPFDaaD6rwrpgy4pa0ENixInBCpkGJKRdf1GZRFnrqCxPS43N7UI4tqL40C2O
+ LtgZ2qj3HN9ft5avy8Umft.ImE8gQerzA2b.7y.CdDzC8iuYDQm2pRGSooy8Nb5cooNOldFjdM.O
+ KZ.CkGj_6cTAAy66SuiCbvT8nM7MHe5lEIvZ8cGH8hNf_1nPOsjQU0vNBxSPvMwmwn9isUfaJI3D
+ aRC17FX976bdE7XdY7HIL9k0pPi81ZMDfxMrLvJ.flAaH6ytYUyNSP.MdMpKGvj5cTaoyIAgR2no
+ XZNb.0zZQC4mn7dL4Vxlyj833Gix.yUCKJzJqgpJ6VCHg0csOSNciRdn7KAankV9h_Qe_c0tJsBz
+ lcWvfLtm7_WJF_EaZgSKWdmn2tVHxkMiUbbO9J9Q9SPo1QAy22zzkvI1nskDmr9MydKAH9Cu9SAT
+ U60Ccby2kexPVe5CIGD_xODaTXVPJJFSFSV5kLhCbUVpFovSTfECaodPoxLwAhXV3XPExU_HcJn_
+ yWzQ_3BvehhIvanof2h6POlNH5BmOWFdbUJeYdHtqEX.zHv_zmpmmGdWOzhKcShV4yWM3zK48gkb
+ TT8X7W4lbXpA5tY_Y6ekSg1anJXNXkMgEAkBVEmtltPq8yGmgRXWv3tpyRVzcshLByoPoJeG5_ft
+ 22HSU6j.gf6r5KOAheoJsTchakvAprGKtcz_fzejZECRt7B77Wye6HhAm7k327uNFW6KYR5BC3Yw
+ Ciz3z5mVqlX_318FNwecdiPUKlPh8YIlRe6teVgVwxr7ncpw89cIYcYjxQjKqIFCde_weivl_awj
+ MukxhqI.PCt2FXHvSj4lQO_NCBxB2K6JMqf_gM.P0YEMDGv.NAOJQ2X9U_M5BOhqvAY0HC8oV6Qn
+ y6JVOsa1LufqoeVYa9VWeFvEW5LFBcLtTF3YxB386MxdsNPZ57QA0OIB0QHmc4SgAR0b2PN8wCh1
+ BixsOmhJClKr3t9vy_O7wENULSdLDW5yBS0kUcW7fXDvi1JZaSD2IsJdr1N6SVaFMrBqpcJyDdVX
+ ew5eftZkOM97t4nCaQEYyFoNizc9oJuGNnW77RbrVxUMU1dimJdJu.men4Qx2NIGcrlZnrwLNUGM
+ WJEsuoxHsiMRLkJrVkJKsfdg88DQENKayN7VOP2d3ZOQ4.wXXnLl.Ld4T2bNsEj89QA6xnfrQtjA
+ gW6L5KDvf_G2iTLF3mI3UPyBoXmJQNTmqUx52qtSUTiigpqjY6kkHXNZkov8I9nlJs8zvtny5zqO
+ odE4oLb.2r2a1tnp_eCO5LF8c6pd_cYxYs1BAuuW9o3WAQJI2dalC6SrstyiuCMOTJMImOXCFkib
+ pSCZIUg4djJiXgbjsvWvwS4jdYDVGwUUXZwNCM5CWe0jANdRQO.Z1Rm0zbQ7xz3BUdHQCWj0b.DJ
+ 9vyw0VLUw7qbMkvljftUAwxWUFCj1QIBDesl0gIXU7urKpDLAl7TcFbXT5B2jxgWek0_j4mlihZW
+ NxvgcRknMtChKFfnophtZe0EEPzUZzLHa5WF4OA5s.GRSJitLG4rp9L5.uduizq4Zg7HX0Kk5op8
+ awRXERaoi.9RudMuYbYln0hFYTUEifBNLJ9Y83aorQGY8XKuH1DtqNl97GoaXEEXvVeSo3XpjosE
+ hElDhv7Xa_vV.2OkQYv.dZhffV1KcHN.636MwsyBJAJtz31DT93EQvbYdCt432VxAz7wHmiiMkPu
+ fEv65ivMajOqC749y4Hxxrdn1.1IJl53aKqlw1CRn_sKgkWGsQ6FjlXO0bnPWJADnmMtqPyfRi8k
+ lPIQBydZlFbLZACCPwW0TnWJWUjBI0Jw.PwiHglZlgw28ku7eX5VJmzV2GOaIzKi.b2B0KgQzW2s
+ .XCB502jTeCACiEFD_1KhhJbL0QTgl1tv9tkW_On4VeMdPJoZZZANB6nkWB_wMrQYuxCF161BMU1
+ tzBDgPXOyleJfGC5h20lZf50Y1aA52GXwO7lWDbC01xevotEvn8BdCv0sy2dckpzYEEU2ZCuqPFm
+ sgMLUQEV8FOhtUnaE_pCN_F7u0psOaQT5PxfYMvpjr5Ph_3RxJ4.XhSjkzYFx8M8kfydxH4yjYXb
+ 2ZmiXzMTEaXlLDhcz05R7C_2FMOJLyJLgOb.JNUA8q7CoiMyqKw.1sflrMnE-
+X-Sonic-MF: <gavrosc@yahoo.com>
+X-Sonic-ID: 2d3f2e48-1dd3-4f54-9779-1bafa1ed2f7f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.bf2.yahoo.com with HTTP; Fri, 28 Mar 2025 20:53:13 +0000
+Received: by hermes--production-ir2-54ff696c44-cj5g9 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 6b931475e34f83f1e2ee03ffdb27e0ac;
+          Fri, 28 Mar 2025 20:53:10 +0000 (UTC)
+From: Christos Gavros <gavrosc@yahoo.com>
+To: docs@lists.yoctoproject.org
+Cc: Christos Gavros <gavrosc@yahoo.com>,
+	Yoann Congal <yoann.congal@smile.fr>,
+	Randy MacLeod <randy.macleod@windriver.com>,
+	Antonin Godard <antonin.godard@bootlin.com>
+Subject: [PATCH] ref-manual/variables.rst: document the INITRAMFS_MAXSIZE variable
+Date: Fri, 28 Mar 2025 21:52:13 +0100
+Message-Id: <20250328205213.93625-1-gavrosc@yahoo.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+References: <20250328205213.93625-1-gavrosc.ref@yahoo.com>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 28 Mar 2025 16:47:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6680
+ <docs@lists.yoctoproject.org>; Fri, 28 Mar 2025 20:53:24 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6681
 
-On Fri, 2025-03-28 at 17:03 +0100, Quentin Schulz via lists.yoctoproject.or=
-g wrote:
-> Hi Antonin,
->=20
-> On 3/28/25 2:07 PM, Antonin Godard via lists.yoctoproject.org wrote:
-> > Document changes between 0e91a1dabf27 ("adwaita-icon-theme: upgrade 47.=
-0
-> > -> 48.0") up to b3c21a23ad3a ("migration-guides/release-notes-5.2:
-> > update for upcoming 5.2 release") in Poky.
-> >=20
-> > Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
-> > ---
-> > =C2=A0 documentation/migration-guides/migration-5.2.rst=C2=A0=C2=A0 | 2=
-6 ++++++++++++++++++++++
-> > =C2=A0 .../migration-guides/release-notes-5.2.rst=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 22 ++++++++++++++++++
-> > =C2=A0 2 files changed, 48 insertions(+)
-> >=20
-> > diff --git a/documentation/migration-guides/migration-5.2.rst b/documen=
-tation/migration-guides/migration-5.2.rst
-> > index 59a2782f2..c54f054c7 100644
-> > --- a/documentation/migration-guides/migration-5.2.rst
-> > +++ b/documentation/migration-guides/migration-5.2.rst
-> > @@ -178,6 +178,32 @@ This should now be replaced by::
-> > =C2=A0=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0 UBOOT_ENTRYPOINT ?=3D "0x20008000"
-> > =C2=A0=20
-> > +
-> > +Git fetcher: support for multiple revisions per URL removed
-> > +~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> > +
-> > +The support for having multiple Git revisions per URL in :term:`SRC_UR=
-I` was
-> > +removed from BitBake, which means the following syntax is not supporte=
-d
-> > +anymore::
-> > +
-> > +=C2=A0=C2=A0 SRC_URI =3D "git://some.host/somepath;branch=3DbranchX,br=
-anchY;name=3DnameX,nameY"
-> > +=C2=A0=C2=A0 SRCREV_nameX =3D "xxxxxxxxxxxxxxxxxxxx"
-> > +=C2=A0=C2=A0 SRCREV_nameY =3D "yyyyyyyyyyyyyyyyyyyy"
-> > +
-> > +This was rarely used in the core repositories, and this removal simpli=
-fies the
-> > +code logic in several places.
-> > +
->=20
-> Can we suggest the user how to transition away from that? What was this=
-=20
-> even supposed to do?
+This variable specifies the maximum allowed size
+of the initramfs image in bytes.
+Fixes [YOCTO #15797]
 
-It would only have ever been useful with bare clones where there wasn't
-a checkout. The only user I know of used to be the kernel recipe but
-that no longer does this.
+CC: Yoann Congal <yoann.congal@smile.fr>
+CC: Randy MacLeod <randy.macleod@windriver.com>
+CC: Antonin Godard <antonin.godard@bootlin.com>
+Signed-off-by: Christos Gavros <gavrosc@yahoo.com>
+---
+ documentation/ref-manual/variables.rst | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Cheers,
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 62e339ed8..c9c042096 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -4474,6 +4474,13 @@ system and gives an overview of their function and contents.
+       See the :term:`MACHINE` variable for additional
+       information.
+ 
++   :term:`INITRAMFS_MAXSIZE`
++      Specifies the maximum allowed size of the initramfs image in bytes.
++      The build will fail in case the initramfs image size is bigger than
++      the value of this variable.
++      There is a week default value assignment (INITRAMFS_MAXSIZE ??= "131072" ) 
++      in bitbake.conf.
++
+    :term:`INITRAMFS_MULTICONFIG`
+       Defines the multiconfig to create a multiconfig dependency to be used by
+       the :ref:`ref-classes-kernel` class.
+-- 
+2.34.1
 
-Richard
 
