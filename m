@@ -1,1262 +1,249 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AE914C36016
-	for <webhook@archiver.kernel.org>; Fri, 28 Mar 2025 13:07:46 +0000 (UTC)
-Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web11.10702.1743167256529910231
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0984C28B20
+	for <webhook@archiver.kernel.org>; Fri, 28 Mar 2025 13:22:06 +0000 (UTC)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (EUR03-AM7-obe.outbound.protection.outlook.com [40.107.105.71])
+ by mx.groups.io with SMTP id smtpd.web11.10973.1743168124470739158
  for <docs@lists.yoctoproject.org>;
- Fri, 28 Mar 2025 06:07:36 -0700
+ Fri, 28 Mar 2025 06:22:05 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WcWAmz2w;
- spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 85779441A7;
-	Fri, 28 Mar 2025 13:07:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1743167254;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5GuNZLATThRQzulN50+LRjfAr1/b259TB3QaO5KHfPY=;
-	b=WcWAmz2wVRQ1Nn5EeqWiTSV3PQrTnqqdASw3SncQThO1S8HXiE34JXqGnbkdkOFN1qb8a3
-	nMjPb1ujgNq+VFEZBQhnRS2m/1wlX4imKzuI2MZe+EWyJyKVWcOupiKgO5+CiC5JaAOcWM
-	uQ9jm8znRc/70RKZQsxkVmN+3i9aTRQfLZH9crpRIrzarS99xmwwWiq+U6fKqOM/yp8oMk
-	SqS+ubEz5aEeoMEH69aqaE1Bc3ZeWa8c40/5omstgKb8vmruppX7gHeEfSq9AgKz4cLJx0
-	kT0uuY1eepdxRfXIkPyaOnemtxHmf9Ns5LDB6P5Ni0qFTiFxIqOcEoM4RTEvzA==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 28 Mar 2025 14:07:05 +0100
-Subject: [PATCH 02/11] migration-guides/release-notes-5.2.rst: add recipe
- upgrades
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=IS81LQOL;
+ spf=pass (domain: cherry.de, ip: 40.107.105.71, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kq50DNNJf55Qj3AKXDIIWuY6p4GpEKd8/CxHWGMeeL0s4anRO98cmblum79G5b6NcU6BuSWjFPfCdd2abIiE5+VMDpg+9fUDHvKhKkE58DDTTLTkfdE8l8zICgXM/97j4iT6pDks0RO8OszlMoWjoEvnY42qKB7TcfYPLGyBm82qi3tAM07JJJB2Yg/uIcgi6lY/PTOymu6HhEZyS2rdTrntekFe3Q1DFLt2CwcDB/NheRoeDudSkvCNzwoXKRUpANPL8hjQ3/c1MgtdjEiE4b8dQ55eZh8XHVfLeTLyUcXZT/fRYTU8dOzABoHs4dzLnDafy4DebjNpuYU74R7W2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=29pncHSh7UN/y2WhG33IeuyjXuZIMalBBG6nyuillOY=;
+ b=zSZeNOu+DEYq6626ZtQXI45RVfVJTlstTti0oIbTSHMz+60AEVrhTn9tXQoakOMn3JfEpBBgvOq1X9uyttATr1QXMbCMRSXgtYZMecXR91FsXNnq6H5STf5zgmdN3HeC1XimbTtci8eGuJBnJltrFq4Uu2ZaEHePwO9k9QkdGBCk3jEnY2NMZ/xDBMSdJ7nrkpKGaRHcdhekroXt7RQZLqUyRgLPRWKruIdN+xCDQAPlp1q6EeU8kyiRqS5zhFxG1AkoVFdymCa3btDHas9QXScI0TMQghA5We0lxP8qEmevo3ccRHRXWAn1/0hSwmRZMAjhTAh6C5b4PvtsgO24kQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=29pncHSh7UN/y2WhG33IeuyjXuZIMalBBG6nyuillOY=;
+ b=IS81LQOLKpnvkgSEg4Oe3CeHNftwAqeF9pxpPWcSP0DiACXqUHFQoE4no9qvZV6pNlsDDUHCW8v50x0eXzdYHm6uGlh3jtlaud460NwM+PBWE5ay+wIukyJVtQ+57isBLmtIHcObLnyIBlagBkxvm3qr0Be/apmIc8KFaUMyzRU=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by DB9PR04MB8361.eurprd04.prod.outlook.com (2603:10a6:10:24d::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Fri, 28 Mar
+ 2025 13:21:59 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%6]) with mapi id 15.20.8534.043; Fri, 28 Mar 2025
+ 13:21:59 +0000
+Message-ID: <4b0ed17f-5d47-48b8-80a7-55e88369459b@cherry.de>
+Date: Fri, 28 Mar 2025 14:21:58 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH v3 1/6] documentation/conf.py: define a manpage url
+To: antonin.godard@bootlin.com, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20250327-cc-vars-v3-0-742dbddce008@bootlin.com>
+ <20250327-cc-vars-v3-1-742dbddce008@bootlin.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <20250327-cc-vars-v3-1-742dbddce008@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+X-ClientProxiedBy: FR4P281CA0342.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ea::20) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250328-release-note-5-2-updates-2-v1-2-c913513e9140@bootlin.com>
-References: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
-In-Reply-To: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=22991;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=Kjv1JGtxbtp5QsgsP+cAu1cSt3cbd2Ng+JAjQGWVgqA=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5p8USBpJtUl7mP7mR5NhgHfel/5ZPF5ssY/GO
- sJ7n8nh5imJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+afFAAKCRDRgEFAKaOo
- NjccEACydXs9pwVGo0mYJ71l5mnoRim4eye1QMCdXZb0A3DI1pHUD7tXRKiylkd2AFY5hU+sMsT
- 2q9KtkUerssAVZXE735cpSj/FBUJhvt6s+lEQkm6IJaGAH9bl/Mg2Pi7Zk3B3MIeYH9SiDpRX0E
- dnvTZh+/XFfMOtxtKuXc7bzSZwx4aEfLBtlaNN12paG4fWPKUzTzaUkBZDh9LzhJ+pU58WQ+qdF
- e+wkY3vAKKz6YroiF7xmXs/wSrvVXFCwcyj4sGESxrlLPB/WlzOmtINFTkbyrN9Lmb4UHv4r9DG
- gofgaKjv0AKor7DaNDgmEedAw+4A0ZsG6wi8PEEBK6NxTklEofinjFVdFEVDp3j5h/zyI7+AF8I
- TQIzW+0oRH8vvmeQLipQw+ANF4IUIKkR40EdkmSdsQVJvD9puPxkP0Vjb1xKHXP5CGJGEMtYyNI
- uMQEb3XN3iUUtCIKkg88yHD24rHRkzgLsX8V4P44nluyAa8FlkVGYJXaUGDr1HTcNyJI4qB6BV4
- EPhqTa4hgXLusJeZblOWRXedJHaukVtB3OtQ9rwtSp5KlwJ22bOh/NvwYqk7XjV1JF28ghqmp5p
- O4gNTvjk2pZwMaeL54reP9gAOEeBg8b9kOSRbhkjlIWTeNDJK2D4eXdPuPoATG1UM5JH86smPmE
- LmJ+KUeYRqO05aA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddujedufeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthekredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeekueetueeitdekteeuuefhjeeugfejtdduudduueduudffffejgeevvdejlefgleenucffohhmrghinhepohhpvghnvghmsggvugguvggurdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehleenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemjegthegtmeeirgguvgemjeelgeekmeegtdehledphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdpr
- hgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB8361:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2690d8ef-4ce5-477a-adb7-08dd6dfb84d4
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230040|366016|1800799024|376014|13003099007|7053199007;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?ZUdjTHRaZDFjQk01Q1RyT05rbytMNmpWb1BOaXd2QldwWUx3b1ltNGtwRDU2?=
+ =?utf-8?B?RXRoMFgrOTJ1VFl6cXkvVkZNYzE3MzUxQjZzQnQrakRJczFTaStVK25GZHNk?=
+ =?utf-8?B?bjJya0lHa3Faa3NJTE5zQXNaT0NkUmxDblZpZW1IaVBOS05EaXFWbGl2LzlN?=
+ =?utf-8?B?aVFpd1JqcWVPVEhseXRudlAxRGxLenB5clA3WEFXaitVMU5YcnBHQkVRbjVR?=
+ =?utf-8?B?ZnBwOUY3ZlV2YUMwazZQZENuSGM4VE5rNjkzOXdKeTNzaWFKTGM1WkVJNlR2?=
+ =?utf-8?B?UnVjMncwTmN1NG0zVDRwM2p2TndycFV4VEtkVUk0VkJsMzdWQklOb0Q3RDc5?=
+ =?utf-8?B?Tzd0QlZNekJlTVhFN3R3TnF5T3BRSkhMKzVQZ1JLNXM5ZmFxa0g5d2VxN3Zw?=
+ =?utf-8?B?YlFCa1pBZkVuY3puUXErbXJqYmZJVVZoNi8rRmNpaktDM2ljMWhIcUZidy90?=
+ =?utf-8?B?MzUzWXdXcS8yakVOV3FZWS9LeUlhQXd6bXB2YkJHRnEzY0JrbkdSNjdLMUJ5?=
+ =?utf-8?B?RTlhRklFWUw4MVNqNEhMS1VTMXVCNENQS0xCdUgzZXhYaGxSdmRLMFNNN2tq?=
+ =?utf-8?B?OTBwTFlPOEpHYTFCajArUkdrdWVWUzRjMXFMKzhkRVE2S1JMUmNBVnNjMzJZ?=
+ =?utf-8?B?bkJPbk0rSFo5bGZUUUhBcFRWQzlWeXFPOS90K0RaK0VzWkJONkpyUjNnbitT?=
+ =?utf-8?B?RVkrdTRqYXBXNk1zM2YxOTBFYWdsTnJHZkEwUmErWTRRT2xGeDZvUld6TFlQ?=
+ =?utf-8?B?RlBneXJ5Ti85L0Q3TzJyRkVWQWpHbTRvRlM5QURWZ3N4OUNPQXVDemZyak1T?=
+ =?utf-8?B?UFF6S3pKdmJJLytkME1Rc1ZBR3RONmJIdkd6RlR4bTFRNzJUL1pSaUVFS1pz?=
+ =?utf-8?B?MUt5dHhDTkZZeTlZTE1xZHo2SStnSS9HbGxKNE9nYlRQMjYwM09kbUQxTUJN?=
+ =?utf-8?B?K2lDTXNUQjZOVWplZkUwUHBlbEdCTDFFb0ZlK2p0YWlTVUNjUGhHdHN1VC9R?=
+ =?utf-8?B?WHFKOG02R1RKUWVoM0dFUVRkVG1OME9vY0syY2dJaG53bFdENHBYMW9WMVlI?=
+ =?utf-8?B?cEhTQy8rTk00S2xXUGJYS0Y2bk5uY1JWVld3VE1nQ2hkcHJwcEkwbHNKWU1a?=
+ =?utf-8?B?N3Fha1NqSGY5dWZhdFlObWNYd3JyVHpuSGZEZ01zV1krdXhvclFUd2M5ZU1s?=
+ =?utf-8?B?LzJ0M0tWRzNLRG14d1VCR2R2MUxpeVU1SlJjUVc0TURSK3dGS1VIdzlGRDZ2?=
+ =?utf-8?B?Q1l5a2pXT1doMUhPOXM0c2h5UGtRcEc4Wk44RWhkNjY2MTJ5ZWhuM0pQL3Rv?=
+ =?utf-8?B?c0Ywamcremx0SFdSTTdPSXUrVEFyM3RHUk4zZUJTNkdON01pWm1BZ2QyL1g2?=
+ =?utf-8?B?d3ZIeEs0WTAwV3dCelVyb053cDdRLzNGeFg0VUpOZWZnTWJPQkI1UVBZUzNR?=
+ =?utf-8?B?QW90Njk0cHFhYXVuQkRxa29kV2NaRzdFM1dNMkRiTWlNTTRiYlVWNkMyL04v?=
+ =?utf-8?B?UWF5WERlOUYrVEwwQ0RVK0t6VFY2Wk1SVy91c3plLzhrNUlvSmxTdktHcVJQ?=
+ =?utf-8?B?QmN2VnhMNmlwdlpMZ3hCaDRqZVU4RHQ0allaYmowK0plWS9vNDJOOVNBbHlX?=
+ =?utf-8?B?YmVEQWZzb1V6UFIvZXNUWFRKeHQ3MllQay82M3BVejhnV0JKWkJGL3N3bzIw?=
+ =?utf-8?B?dExUZUJCSmlUSEZxYmVwYTJkVzAwcFd4VXVlb2JPM2I5VER3QVBlTnNxNUhS?=
+ =?utf-8?B?Z0hTd3RiOVExdnlFRklmT1o5bElGVStvOFBxNUVGakZQU2o4T2VGUW1jdHpE?=
+ =?utf-8?B?NlpxNTR5NVBiNnRvblBhUT09?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?VTZ0VkFVYTNFV01IZGFIeGUzeWcrbmZ2ajhPWk5wZThabVhidFI1RFMzUUdO?=
+ =?utf-8?B?S3pXY3VCTmVoUk9FQjY2L0l0UTg1RmpDZUxpVS9GdTJPN0V1M3NKMjR0Mmd5?=
+ =?utf-8?B?MzAxMzVMUENQaU4zWXdvYkgzL0tSaHZzQWRPMEZTRWhzOUF2TmxFOUVITzFq?=
+ =?utf-8?B?L2xLTmRReXVFT1hMd0diYXVnNVhVcm5tTEF2NzZ5dklJeTErS25ZTEkyVXlh?=
+ =?utf-8?B?LzJQZkVFdTdyVm8zcHozMkhudi85REg5eE9MTzJiMDZqNHdYWjdTWXhrc1c2?=
+ =?utf-8?B?Q1lhdGRvNDZSc3drYTJXbEVBVStJNFJ1TWpWdFRGYjdrWk9HM1FzdFBxelRp?=
+ =?utf-8?B?RTE5WHhUTGZzZ3R3cWFqeDNTeGFpdVF3SkEwUmNtZEZWT3prcEdQRHFDUUtZ?=
+ =?utf-8?B?aDExWGx0Uzd3c0FKbHRnZzJ0Sk13TllrWWRwcGNNaEljTTg2Z1lJeFVVYU5h?=
+ =?utf-8?B?bnMyeHNoT1FEbTlvWVZNdjZBMjhGamk5cWRtOSt1YUlpMWxKRmhzZTlPNUhr?=
+ =?utf-8?B?YkhrazRSSnJFL2tMY2xNMzFaWUZBcFFBcFlVcjFnNFhYbFc4WnVTNDQveVJn?=
+ =?utf-8?B?azYyaUo1ZU90QmZWM2hDMzhNK3hWbldVUWFoTk1GY2dXMTdEdHB0Ulk2ZXFz?=
+ =?utf-8?B?bU5KLyt2dEF4bi9zOEtoUjl5MEpmaHRtcnhpMDhJczVSV3l0V1NIVEx6UG5z?=
+ =?utf-8?B?dFRMSXZYd2Zra2hyY0NZVjR5MU5GdHBTTFpTU2ZNSzJ0MFh5ekFhbGtzM1M1?=
+ =?utf-8?B?RGxjeXQxaEV6RW9tcW1uYmROQmMvTWdWblNmeGNzWi84MmFIbEhRWDhlT0lD?=
+ =?utf-8?B?YlBNeTdqdmYzN21jc1hzN25YNy9uNHMza3pJb0xnb0lldnZDdUhPMFZ2Y2dH?=
+ =?utf-8?B?NDMwb2NrZmZkQXFOTTNsSStmMmN5NWpJSTZidUE3bi9VVjBrVFpJNGcvMEVu?=
+ =?utf-8?B?ZEwvSXpiT3ZnVVR4ajE5cGFOMUc3WjBzMzRjMFh0VG1WU2ZweVFuWldOUkJk?=
+ =?utf-8?B?NFBIWEJPSFYxSjdyWHBWc1Fockh4ZFgrSWE0ZXpreWtod3NOWWcvSDcyeXo2?=
+ =?utf-8?B?UEdqRmZDN3QvK3h5ay9HVk5TdTk5SGJXa2RLcXhqSWxJcER6VWpxTmxOVVVp?=
+ =?utf-8?B?cXdRZ0VqK21oRlNzaXArWmZxV3ZRNFJKTkNsNllWVnRBWnhyQ0tzYlRmUEZa?=
+ =?utf-8?B?K1RPTDE2bnVzNUUzTTNnU290MGtSdGYrS05PY0xmdnA4a29qMCtrbm9DVlF0?=
+ =?utf-8?B?elBabTZTYTQyUFRnYmczRHNiQmkwSWNDamJGOEQ1TmcxcE5rSTVyRzFka3R4?=
+ =?utf-8?B?a3BiMUVVKzFYZUdIZlZxWDc1Z2VnSDVNd2pabERjYVBWMVlrREw1NFN4djZZ?=
+ =?utf-8?B?Y0Nka2JrUU1jUlhJZDFXSExBbVJTMlMwcGt0YzVGZ1dwanZiNlVYbVppUjJy?=
+ =?utf-8?B?eU1OajBUeXhyMG1QQmNIRmY0WkVYaHhwNWl2RC9RUFdlR3pPdFU1dWliWm1C?=
+ =?utf-8?B?aE0wK0s5ZGtyd01oR243cXBQdU9ya2ZGenI5TDFKbEQ4Z0ZrNEdlWEdPaExn?=
+ =?utf-8?B?azh4NVJ3Si9oSkVzdUR3dXpmT0duNDJHMm1qZThacStUYlBXd1FkMjRaQWFF?=
+ =?utf-8?B?SzRBR2ZTdlRVaktCRm9VekE4MjVFTk5wcUhVVmZnTDd4dnM2bGcwSGJQdWdw?=
+ =?utf-8?B?UEFaSENmNm1hVkJmV1BQYWJPTmZQREgvQXdtTlN3MUQzSlJHZE9udkp3MDM0?=
+ =?utf-8?B?bVlzVHZCdnZLL0o4ZURXeHlMb0VmTTZaazhDWkpKRlp1dVFQb2taNmoycnpj?=
+ =?utf-8?B?QXNxdktHVUpuK1hndUlUNW1qR3RHaHk2WDU3UTV4VkFIektvcmZxdWNxSDho?=
+ =?utf-8?B?UlkzZFRCZzdnc0ZEelZ6UmFlQnJKd1JEeU5qYWxZdnhZNXdrWk9ORVg1ME1y?=
+ =?utf-8?B?dHhiRlE0dlhiNnhvWkpiYVhISEU3YXhidUh4VGxPb3pjSUhyWitEOXI5MlI5?=
+ =?utf-8?B?WmViSjNBbVR2Z1BMUFRPeVJnT0dkTE92UmV3bFRhVGJLT3NiQ0ZDano5cWhX?=
+ =?utf-8?B?TmxUdjZWN3ozNlhBdVdGWUxtUGpqaGtqaVd2Y1VmSUg3U20yUUVOR05jWVY0?=
+ =?utf-8?B?TkcyRGJmcXJVc1ZOeFVkSDV2VmIwblVCbkVsWExnaWllREFnNmZVS3lBc3Jt?=
+ =?utf-8?B?OGc9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2690d8ef-4ce5-477a-adb7-08dd6dfb84d4
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2025 13:21:59.0830
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 2EBupJ2zakYJpWmSLop3rWXVZkwEBDu0jB4L3rVHFSAQ1+aOIZ3PK6S2gMNwkcrxPIQbo54sFcwozxmC989xlRsO6iCJBCql6BLnpw5Qn44=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8361
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 28 Mar 2025 13:07:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6660
+ <docs@lists.yoctoproject.org>; Fri, 28 Mar 2025 13:22:06 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6667
 
-Extracted from layers.openembedded.org branch comparison tool.
+Hi Antonin,
 
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
- .../migration-guides/release-notes-5.2.rst         | 1170 ++++++++++++++++++++
- 1 file changed, 1170 insertions(+)
+On 3/27/25 10:07 AM, Antonin Godard via lists.yoctoproject.org wrote:
+> By defining the manpages_url we can use the :manpage: role in the
+> documentation for providing links to manpages. See:
+> https://www.sphinx-doc.org/en/master/usage/configuration.html#confval-manpages_url
+> 
+> Replace existing manpages links to use this role.
+> 
+> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+> ---
+>   documentation/conf.py                      | 3 +++
+>   documentation/overview-manual/concepts.rst | 2 +-
+>   documentation/overview-manual/yp-intro.rst | 2 +-
+>   documentation/ref-manual/variables.rst     | 4 ++--
+>   4 files changed, 7 insertions(+), 4 deletions(-)
+> 
+> diff --git a/documentation/conf.py b/documentation/conf.py
+> index 477e75112a..0352bbef20 100644
+> --- a/documentation/conf.py
+> +++ b/documentation/conf.py
+> @@ -111,6 +111,9 @@ extlinks = {
+>       'wikipedia': ('https://en.wikipedia.org/wiki/%25s', None),
+>   }
+>   
+> +# To able to use :manpage:`<something>` in the docs.
 
-diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
-index 923d3809a..081100870 100644
---- a/documentation/migration-guides/release-notes-5.2.rst
-+++ b/documentation/migration-guides/release-notes-5.2.rst
-@@ -712,6 +712,1176 @@ Security Fixes in |yocto-ver|
- Recipe Upgrades in |yocto-ver|
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
-+.. list-table::
-+   :widths: 20 40 40
-+   :header-rows: 1
-+
-+   * - Recipe
-+     - Previous version
-+     - New version
-+   * - ``adwaita-icon-theme``
-+     - 46.2
-+     - 48.0
-+   * - ``alsa-lib``
-+     - 1.2.12
-+     - 1.2.13
-+   * - ``alsa-ucm-conf``
-+     - 1.2.12
-+     - 1.2.13
-+   * - ``alsa-utils``
-+     - 1.2.12
-+     - 1.2.13
-+   * - ``appstream``
-+     - 1.0.3
-+     - 1.0.4
-+   * - ``at-spi2-core``
-+     - 2.52.0
-+     - 2.56.0
-+   * - ``autoconf-archive``
-+     - 2023.02.20
-+     - 2024.10.16
-+   * - ``babeltrace2``
-+     - 2.0.6
-+     - 2.1.0
-+   * - ``base-passwd``
-+     - 3.6.4
-+     - 3.6.6
-+   * - ``bash``
-+     - 5.2.32
-+     - 5.2.37
-+   * - ``bash-completion``
-+     - 2.14.0
-+     - 2.16.0
-+   * - ``bc``
-+     - 1.07.1
-+     - 1.08.1
-+   * - ``bind``
-+     - 9.20.1
-+     - 9.20.6
-+   * - ``binutils``
-+     - 2.43.1
-+     - 2.44
-+   * - ``binutils-cross``
-+     - 2.43.1
-+     - 2.44
-+   * - ``binutils-cross-canadian``
-+     - 2.43.1
-+     - 2.44
-+   * - ``binutils-crosssdk``
-+     - 2.43.1
-+     - 2.44
-+   * - ``binutils-testsuite``
-+     - 2.43.1
-+     - 2.44
-+   * - ``bluez5``
-+     - 5.78
-+     - 5.79
-+   * - ``boost``
-+     - 1.86.0
-+     - 1.87.0
-+   * - ``boost-build-native``
-+     - 1.86.0
-+     - 1.87.0
-+   * - ``btrfs-tools``
-+     - 6.10.1
-+     - 6.13
-+   * - ``build-appliance-image``
-+     - 15.0.0 (6a5ba188b79e…)
-+     - 15.0.0 (2fe7f46e1779…)
-+   * - ``busybox``
-+     - 1.36.1
-+     - 1.37.0
-+   * - ``busybox-inittab``
-+     - 1.36.1
-+     - 1.37.0
-+   * - ``ca-certificates``
-+     - 20240203
-+     - 20241223
-+   * - ``cairo``
-+     - 1.18.2
-+     - 1.18.4
-+   * - ``cargo``
-+     - 1.79.0
-+     - 1.84.1
-+   * - ``ccache``
-+     - 4.10.2
-+     - 4.11
-+   * - ``chrpath``
-+     - 0.16
-+     - 0.18
-+   * - ``cmake``
-+     - 3.30.2
-+     - 3.31.6
-+   * - ``cmake-native``
-+     - 3.30.2
-+     - 3.31.6
-+   * - ``connman``
-+     - 1.42
-+     - 1.43
-+   * - ``coreutils``
-+     - 9.5
-+     - 9.6
-+   * - ``cracklib``
-+     - 2.10.2
-+     - 2.10.3
-+   * - ``createrepo-c``
-+     - 1.1.4
-+     - 1.2.0
-+   * - ``cross-localedef-native``
-+     - 2.40+git
-+     - 2.41+git
-+   * - ``cups``
-+     - 2.4.10
-+     - 2.4.11
-+   * - ``curl``
-+     - 8.9.1
-+     - 8.12.1
-+   * - ``dbus``
-+     - 1.14.10
-+     - 1.16.2
-+   * - ``dbus-glib``
-+     - 0.112
-+     - 0.114
-+   * - ``debianutils``
-+     - 5.20
-+     - 5.21
-+   * - ``debugedit``
-+     - 5.0
-+     - 5.1
-+   * - ``desktop-file-utils``
-+     - 0.27
-+     - 0.28
-+   * - ``dhcpcd``
-+     - 10.0.10
-+     - 10.2.2
-+   * - ``diffoscope``
-+     - 277
-+     - 289
-+   * - ``diffstat``
-+     - 1.66
-+     - 1.67
-+   * - ``diffutils``
-+     - 3.10
-+     - 3.11
-+   * - ``dnf``
-+     - 4.21.1
-+     - 4.22.0
-+   * - ``dropbear``
-+     - 2024.85
-+     - 2024.86
-+   * - ``dtc``
-+     - 1.7.0
-+     - 1.7.2
-+   * - ``ed``
-+     - 1.20.2
-+     - 1.21
-+   * - ``efivar``
-+     - 39+39+git
-+     - 39
-+   * - ``elfutils``
-+     - 0.191
-+     - 0.192
-+   * - ``ell``
-+     - 0.68
-+     - 0.74
-+   * - ``epiphany``
-+     - 46.3
-+     - 48.0
-+   * - ``erofs-utils``
-+     - 1.8.1
-+     - 1.8.5
-+   * - ``ethtool``
-+     - 6.10
-+     - 6.11
-+   * - ``expat``
-+     - 2.6.4
-+     - 2.7.0
-+   * - ``ffmpeg``
-+     - 7.0.2
-+     - 7.1.1
-+   * - ``file``
-+     - 5.45
-+     - 5.46
-+   * - ``fmt``
-+     - 11.0.2
-+     - 11.1.4
-+   * - ``fribidi``
-+     - 1.0.15
-+     - 1.0.16
-+   * - ``gawk``
-+     - 5.3.0
-+     - 5.3.1
-+   * - ``gcr``
-+     - 4.3.0
-+     - 4.3.1
-+   * - ``gdb``
-+     - 15.1
-+     - 16.2
-+   * - ``gdb-cross``
-+     - 15.1
-+     - 16.2
-+   * - ``gdb-cross-canadian``
-+     - 15.1
-+     - 16.2
-+   * - ``gettext``
-+     - 0.22.5
-+     - 0.23.1
-+   * - ``gettext-minimal-native``
-+     - 0.22.5
-+     - 0.23.1
-+   * - ``ghostscript``
-+     - 10.04.0
-+     - 10.05.0
-+   * - ``gi-docgen``
-+     - 2024.1
-+     - 2025.3
-+   * - ``git``
-+     - 2.46.1
-+     - 2.49.0
-+   * - ``glib-2``
-+     - .0 2.80.4
-+     - 2.84.0
-+   * - ``glib-2``
-+     - .0-initial 2.80.4
-+     - 2.84.0
-+   * - ``glibc``
-+     - 2.40+git
-+     - 2.41+git
-+   * - ``glibc-locale``
-+     - 2.40+git
-+     - 2.41+git
-+   * - ``glibc-mtrace``
-+     - 2.40+git
-+     - 2.41+git
-+   * - ``glibc-scripts``
-+     - 2.40+git
-+     - 2.41+git
-+   * - ``glibc-testsuite``
-+     - 2.40+git
-+     - 2.41+git
-+   * - ``glibc-y2038-tests``
-+     - 2.40+git
-+     - 2.41+git
-+   * - ``glslang``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``gnu-efi``
-+     - 3.0.18
-+     - 4.0.0
-+   * - ``gnupg``
-+     - 2.5.0
-+     - 2.5.5
-+   * - ``gnutls``
-+     - 3.8.6
-+     - 3.8.9
-+   * - ``go``
-+     - 1.22.12
-+     - 1.24.1
-+   * - ``go-binary-native``
-+     - 1.22.12
-+     - 1.24.1
-+   * - ``go-cross-canadian``
-+     - 1.22.12
-+     - 1.24.1
-+   * - ``go-cross-core2-32``
-+     - 1.22.12
-+     - 1.24.1
-+   * - ``go-crosssdk``
-+     - 1.22.12
-+     - 1.24.1
-+   * - ``go-helloworld``
-+     - 0.1 (39e772fc2670…)
-+     - 0.1 (d7b0ac127859…)
-+   * - ``go-runtime``
-+     - 1.22.12
-+     - 1.24.1
-+   * - ``gobject-introspection``
-+     - 1.80.1
-+     - 1.84.0
-+   * - ``gpgme``
-+     - 1.23.2
-+     - 1.24.2
-+   * - ``gsettings-desktop-schemas``
-+     - 46.1
-+     - 48.0
-+   * - ``gst-devtools``
-+     - 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-libav 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-plugins-bad 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-plugins-base 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-plugins-good 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-plugins-ugly 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-python 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-rtsp-server 1.24.10
-+     - 1.24.12
-+   * - ``gstreamer1``
-+     - .0-vaapi 1.24.10
-+     - 1.24.12
-+   * - ``gtk4``
-+     - 4.14.5
-+     - 4.18.1
-+   * - ``harfbuzz``
-+     - 9.0.0
-+     - 10.4.0
-+   * - ``hwlatdetect``
-+     - 2.7
-+     - 2.8
-+   * - ``i2c-tools``
-+     - 4.3
-+     - 4.4
-+   * - ``icu``
-+     - 75-1
-+     - 76-1
-+   * - ``ifupdown``
-+     - 0.8.43
-+     - 0.8.44
-+   * - ``igt-gpu-tools``
-+     - 1.28
-+     - 1.30
-+   * - ``inetutils``
-+     - 2.5
-+     - 2.6
-+   * - ``init-system-helpers``
-+     - 1.66
-+     - 1.68
-+   * - ``iproute2``
-+     - 6.10.0
-+     - 6.13.0
-+   * - ``iptables``
-+     - 1.8.10
-+     - 1.8.11
-+   * - ``iputils``
-+     - 20240117
-+     - 20240905
-+   * - ``iso-codes``
-+     - 4.16.0
-+     - 4.17.0
-+   * - ``json-c``
-+     - 0.17
-+     - 0.18
-+   * - ``json-glib``
-+     - 1.8.0
-+     - 1.10.6
-+   * - ``kbd``
-+     - 2.6.4
-+     - 2.7.1
-+   * - ``kern-tools-native``
-+     - 0.3+git (7160ebe8b865…)
-+     - 0.3+git (bfca22a52ec5…)
-+   * - ``kexec-tools``
-+     - 2.0.29
-+     - 2.0.30
-+   * - ``kmod``
-+     - 33
-+     - 34.1
-+   * - ``kmscube``
-+     - 0.0.1+git (b2f97f53e01e…)
-+     - 0.0.1+git (311eaaaa473d…)
-+   * - ``less``
-+     - 661
-+     - 668
-+   * - ``libadwaita``
-+     - 1.5.3
-+     - 1.7.0
-+   * - ``libarchive``
-+     - 3.7.4
-+     - 3.7.8
-+   * - ``libassuan``
-+     - 3.0.1
-+     - 3.0.2
-+   * - ``libcap``
-+     - 2.70
-+     - 2.75
-+   * - ``libdnf``
-+     - 0.73.3
-+     - 0.73.4
-+   * - ``libdrm``
-+     - 2.4.123
-+     - 2.4.124
-+   * - ``libedit``
-+     - 20240808-3.1
-+     - 20250104-3.1
-+   * - ``libexif``
-+     - 0.6.24
-+     - 0.6.25
-+   * - ``libffi``
-+     - 3.4.6
-+     - 3.4.7
-+   * - ``libgit2``
-+     - 1.8.1
-+     - 1.9.0
-+   * - ``libgpg-error``
-+     - 1.50
-+     - 1.51
-+   * - ``libical``
-+     - 3.0.18
-+     - 3.0.20
-+   * - ``libice``
-+     - 1.1.1
-+     - 1.1.2
-+   * - ``libidn2``
-+     - 2.3.7
-+     - 2.3.8
-+   * - ``libinput``
-+     - 1.26.1
-+     - 1.27.1
-+   * - ``libjitterentropy``
-+     - 3.5.0
-+     - 3.6.2
-+   * - ``libmatchbox``
-+     - 1.12
-+     - 1.13
-+   * - ``libnl``
-+     - 3.10.0
-+     - 3.11.0
-+   * - ``libnotify``
-+     - 0.8.3
-+     - 0.8.4
-+   * - ``libpam``
-+     - 1.6.1
-+     - 1.7.0
-+   * - ``libpcre2``
-+     - 10.44
-+     - 10.45
-+   * - ``libpipeline``
-+     - 1.5.7
-+     - 1.5.8
-+   * - ``libpng``
-+     - 1.6.43
-+     - 1.6.47
-+   * - ``libportal``
-+     - 0.7.1
-+     - 0.9.1
-+   * - ``libproxy``
-+     - 0.5.8
-+     - 0.5.9
-+   * - ``librepo``
-+     - 1.18.1
-+     - 1.19.0
-+   * - ``librsvg``
-+     - 2.58.2
-+     - 2.59.2
-+   * - ``libsdl2``
-+     - 2.30.7
-+     - 2.32.2
-+   * - ``libseccomp``
-+     - 2.5.5
-+     - 2.6.0
-+   * - ``libsecret``
-+     - 0.21.4
-+     - 0.21.6
-+   * - ``libslirp``
-+     - 4.8.0
-+     - 4.9.0
-+   * - ``libsm``
-+     - 1.2.4
-+     - 1.2.6
-+   * - ``libsolv``
-+     - 0.7.30
-+     - 0.7.31
-+   * - ``libsoup``
-+     - 3.6.0
-+     - 3.6.4
-+   * - ``libssh2``
-+     - 1.11.0
-+     - 1.11.1
-+   * - ``libstd-rs``
-+     - 1.79.0
-+     - 1.84.1
-+   * - ``libtest-warnings-perl``
-+     - 0.033
-+     - 0.038
-+   * - ``libtirpc``
-+     - 1.3.5
-+     - 1.3.6
-+   * - ``libtool``
-+     - 2.5.2
-+     - 2.5.4
-+   * - ``libtool-cross``
-+     - 2.5.2
-+     - 2.5.4
-+   * - ``libtool-native``
-+     - 2.5.2
-+     - 2.5.4
-+   * - ``libtraceevent``
-+     - 1.8.3
-+     - 1.8.4
-+   * - ``libtry-tiny-perl``
-+     - 0.31
-+     - 0.32
-+   * - ``libubootenv``
-+     - 0.3.5
-+     - 0.3.6
-+   * - ``libunistring``
-+     - 1.2
-+     - 1.3
-+   * - ``liburcu``
-+     - 0.14.1
-+     - 0.15.1
-+   * - ``libuv``
-+     - 1.48.0
-+     - 1.50.0
-+   * - ``libwebp``
-+     - 1.4.0
-+     - 1.5.0
-+   * - ``libwpe``
-+     - 1.16.0
-+     - 1.16.2
-+   * - ``libx11``
-+     - 1.8.10
-+     - 1.8.12
-+   * - ``libxau``
-+     - 1.0.11
-+     - 1.0.12
-+   * - ``libxcrypt``
-+     - 4.4.36
-+     - 4.4.38
-+   * - ``libxcrypt-compat``
-+     - 4.4.36
-+     - 4.4.38
-+   * - ``libxcursor``
-+     - 1.2.2
-+     - 1.2.3
-+   * - ``libxcvt``
-+     - 0.1.2
-+     - 0.1.3
-+   * - ``libxi``
-+     - 1.8.1
-+     - 1.8.2
-+   * - ``libxkbcommon``
-+     - 1.7.0
-+     - 1.8.1
-+   * - ``libxmlb``
-+     - 0.3.19
-+     - 0.3.22
-+   * - ``libxrender``
-+     - 0.9.11
-+     - 0.9.12
-+   * - ``libxshmfence``
-+     - 1.3.2
-+     - 1.3.3
-+   * - ``libxslt``
-+     - 1.1.42
-+     - 1.1.43
-+   * - ``libxt``
-+     - 1.3.0
-+     - 1.3.1
-+   * - ``libxv``
-+     - 1.0.12
-+     - 1.0.13
-+   * - ``libxxf86vm``
-+     - 1.1.5
-+     - 1.1.6
-+   * - ``lighttpd``
-+     - 1.4.76
-+     - 1.4.77
-+   * - ``linux-firmware``
-+     - 20240909
-+     - 20250311
-+   * - ``linux-libc-headers``
-+     - 6.10
-+     - 6.12
-+   * - ``linux-yocto``
-+     - 6.6.75+git, 6.10.14+git
-+     - 6.12.19+git
-+   * - ``linux-yocto-dev``
-+     - 6.11+git
-+     - 6.14+git
-+   * - ``linux-yocto-rt``
-+     - 6.6.75+git, 6.10.14+git
-+     - 6.12.19+git
-+   * - ``linux-yocto-tiny``
-+     - 6.6.75+git, 6.10.14+git
-+     - 6.12.19+git
-+   * - ``llvm``
-+     - 18.1.8
-+     - 20.1.0
-+   * - ``log4cplus``
-+     - 2.1.1
-+     - 2.1.2
-+   * - ``lsof``
-+     - 4.99.3
-+     - 4.99.4
-+   * - ``ltp``
-+     - 20240524
-+     - 20250130
-+   * - ``lttng-modules``
-+     - 2.13.14
-+     - 2.13.17
-+   * - ``lzip``
-+     - 1.24.1
-+     - 1.25
-+   * - ``lzlib``
-+     - 1.14
-+     - 1.15
-+   * - ``man-db``
-+     - 2.12.1
-+     - 2.13.0
-+   * - ``man-pages``
-+     - 6.9.1
-+     - 6.13
-+   * - ``mc``
-+     - 4.8.32
-+     - 4.8.33
-+   * - ``mesa-demos``
-+     - 8.5.0
-+     - 9.0.0
-+   * - ``meson``
-+     - 1.5.1
-+     - 1.7.0
-+   * - ``minicom``
-+     - 2.9
-+     - 2.10
-+   * - ``mmc-utils``
-+     - 0.1+git (123fd8b2ac39…)
-+     - 0.1+git (2aef4cd9a84d…)
-+   * - ``mpg123``
-+     - 1.32.7
-+     - 1.32.10
-+   * - ``msmtp``
-+     - 1.8.26
-+     - 1.8.28
-+   * - ``mtd-utils``
-+     - 2.2.0
-+     - 2.3.0
-+   * - ``mtools``
-+     - 4.0.44
-+     - 4.0.48
-+   * - ``musl``
-+     - 1.2.5+git (dd1e63c3638d…)
-+     - 1.2.5+git (c47ad25ea3b4…)
-+   * - ``nativesdk-libtool``
-+     - 2.5.2
-+     - 2.5.4
-+   * - ``netbase``
-+     - 6.4
-+     - 6.5
-+   * - ``nettle``
-+     - 3.10
-+     - 3.10.1
-+   * - ``nfs-utils``
-+     - 2.6.4
-+     - 2.8.2
-+   * - ``nghttp2``
-+     - 1.63.0
-+     - 1.65.0
-+   * - ``npth``
-+     - 1.7
-+     - 1.8
-+   * - ``numactl``
-+     - 2.0.18
-+     - 2.0.19
-+   * - ``ofono``
-+     - 2.10
-+     - 2.15
-+   * - ``opensbi``
-+     - 1.5.1
-+     - 1.6
-+   * - ``openssh``
-+     - 9.8p1
-+     - 9.9p2
-+   * - ``openssl``
-+     - 3.3.1
-+     - 3.4.1
-+   * - ``orc``
-+     - 0.4.40
-+     - 0.4.41
-+   * - ``ovmf``
-+     - edk2-stable202402
-+     - edk2-stable202411
-+   * - ``pango``
-+     - 1.54.0
-+     - 1.56.2
-+   * - ``piglit``
-+     - 1.0+gitr (c11c9374c144…)
-+     - 1.0+gitr (fc8179d31904…)
-+   * - ``pixman``
-+     - 0.42.2
-+     - 0.44.2
-+   * - ``pkgconf``
-+     - 2.3.0
-+     - 2.4.3
-+   * - ``ppp``
-+     - 2.5.0
-+     - 2.5.2
-+   * - ``procps``
-+     - 4.0.4
-+     - 4.0.5
-+   * - ``psplash``
-+     - 0.1+git (ecc191375669…)
-+     - 0.1+git (1f64c654129f…)
-+   * - ``ptest-runner``
-+     - 2.4.5+git
-+     - 2.4.5.1
-+   * - ``puzzles``
-+     - 0.0+git (1c1899ee1c4e…)
-+     - 0.0+git (7da464122232…)
-+   * - ``python3``
-+     - 3.12.9
-+     - 3.13.2
-+   * - ``python3-attrs``
-+     - 24.2.0
-+     - 25.3.0
-+   * - ``python3-babel``
-+     - 2.16.0
-+     - 2.17.0
-+   * - ``python3-bcrypt``
-+     - 4.2.0
-+     - 4.3.0
-+   * - ``python3-beartype``
-+     - 0.18.5
-+     - 0.20.0
-+   * - ``python3-build``
-+     - 1.2.1
-+     - 1.2.2
-+   * - ``python3-certifi``
-+     - 2024.8.30
-+     - 2025.1.31
-+   * - ``python3-cffi``
-+     - 1.17.0
-+     - 1.17.1
-+   * - ``python3-click``
-+     - 8.1.7
-+     - 8.1.8
-+   * - ``python3-cryptography``
-+     - 42.0.8
-+     - 44.0.2
-+   * - ``python3-cryptography-vectors``
-+     - 42.0.8
-+     - 44.0.2
-+   * - ``python3-cython``
-+     - 3.0.11
-+     - 3.0.12
-+   * - ``python3-dbus``
-+     - 1.3.2
-+     - 1.4.0
-+   * - ``python3-dbusmock``
-+     - 0.32.1
-+     - 0.33.0
-+   * - ``python3-dtc``
-+     - 1.7.0
-+     - 1.7.2
-+   * - ``python3-dtschema``
-+     - 2024.5
-+     - 2025.2
-+   * - ``python3-flit-core``
-+     - 3.9.0
-+     - 3.11.0
-+   * - ``python3-gitdb``
-+     - 4.0.11
-+     - 4.0.12
-+   * - ``python3-hatchling``
-+     - 1.25.0
-+     - 1.27.0
-+   * - ``python3-hypothesis``
-+     - 6.111.2
-+     - 6.129.2
-+   * - ``python3-idna``
-+     - 3.8
-+     - 3.10
-+   * - ``python3-jinja2``
-+     - 3.1.4
-+     - 3.1.6
-+   * - ``python3-jsonschema-specifications``
-+     - 2023.12.1
-+     - 2024.10.1
-+   * - ``python3-license-expression``
-+     - 30.3.1
-+     - 30.4.1
-+   * - ``python3-lxml``
-+     - 5.3.0
-+     - 5.3.1
-+   * - ``python3-mako``
-+     - 1.3.5
-+     - 1.3.9
-+   * - ``python3-markdown``
-+     - 3.6
-+     - 3.7
-+   * - ``python3-markupsafe``
-+     - 2.1.5
-+     - 3.0.2
-+   * - ``python3-maturin``
-+     - 1.7.1
-+     - 1.8.3
-+   * - ``python3-meson-python``
-+     - 0.16.0
-+     - 0.17.1
-+   * - ``python3-more-itertools``
-+     - 10.4.0
-+     - 10.6.0
-+   * - ``python3-numpy``
-+     - 1.26.4
-+     - 2.2.3
-+   * - ``python3-packaging``
-+     - 24.1
-+     - 24.2
-+   * - ``python3-pip``
-+     - 24.2
-+     - 25.0.1
-+   * - ``python3-poetry-core``
-+     - 1.9.0
-+     - 2.1.1
-+   * - ``python3-psutil``
-+     - 6.0.0
-+     - 7.0.0
-+   * - ``python3-pyasn1``
-+     - 0.6.0
-+     - 0.6.1
-+   * - ``python3-pycairo``
-+     - 1.26.1
-+     - 1.27.0
-+   * - ``python3-pycryptodome``
-+     - 3.20.0
-+     - 3.22.0
-+   * - ``python3-pycryptodomex``
-+     - 3.20.0
-+     - 3.22.0
-+   * - ``python3-pyelftools``
-+     - 0.31
-+     - 0.32
-+   * - ``python3-pygments``
-+     - 2.18.0
-+     - 2.19.1
-+   * - ``python3-pygobject``
-+     - 3.48.2
-+     - 3.52.2
-+   * - ``python3-pyopenssl``
-+     - 24.2.1
-+     - 25.0.0
-+   * - ``python3-pyparsing``
-+     - 3.1.4
-+     - 3.2.1
-+   * - ``python3-pyproject-hooks``
-+     - 1.0.0
-+     - 1.2.0
-+   * - ``python3-pyproject-metadata``
-+     - 0.8.0
-+     - 0.9.1
-+   * - ``python3-pytest``
-+     - 8.3.2
-+     - 8.3.5
-+   * - ``python3-pytest-subtests``
-+     - 0.13.1
-+     - 0.14.1
-+   * - ``python3-pytz``
-+     - 2024.1
-+     - 2025.1
-+   * - ``python3-rdflib``
-+     - 7.0.0
-+     - 7.1.3
-+   * - ``python3-referencing``
-+     - 0.35.1
-+     - 0.36.2
-+   * - ``python3-rpds-py``
-+     - 0.20.0
-+     - 0.22.3
-+   * - ``python3-ruamel-yaml``
-+     - 0.18.6
-+     - 0.18.10
-+   * - ``python3-scons``
-+     - 4.8.0
-+     - 4.9.0
-+   * - ``python3-setuptools``
-+     - 72.1.0
-+     - 76.0.0
-+   * - ``python3-setuptools-rust``
-+     - 1.10.1
-+     - 1.11.0
-+   * - ``python3-setuptools-scm``
-+     - 8.1.0
-+     - 8.2.0
-+   * - ``python3-six``
-+     - 1.16.0
-+     - 1.17.0
-+   * - ``python3-spdx-tools``
-+     - 0.8.2
-+     - 0.8.3
-+   * - ``python3-sphinx``
-+     - 8.0.2
-+     - 8.2.1
-+   * - ``python3-sphinx-rtd-theme``
-+     - 2.0.0
-+     - 3.0.2
-+   * - ``python3-trove-classifiers``
-+     - 2024.7.2
-+     - 2025.3.13.13
-+   * - ``python3-typogrify``
-+     - 2.0.7
-+     - 2.1.0
-+   * - ``python3-urllib3``
-+     - 2.2.2
-+     - 2.3.0
-+   * - ``python3-websockets``
-+     - 13.0.1
-+     - 15.0.1
-+   * - ``python3-wheel``
-+     - 0.44.0
-+     - 0.45.1
-+   * - ``python3-xmltodict``
-+     - 0.13.0
-+     - 0.14.2
-+   * - ``python3-yamllint``
-+     - 1.35.1
-+     - 1.36.0
-+   * - ``python3-zipp``
-+     - 3.20.1
-+     - 3.21.0
-+   * - ``qemu``
-+     - 9.0.2
-+     - 9.2.0
-+   * - ``qemu-native``
-+     - 9.0.2
-+     - 9.2.0
-+   * - ``qemu-system-native``
-+     - 9.0.2
-+     - 9.2.0
-+   * - ``re2c``
-+     - 3.1
-+     - 4.1
-+   * - ``repo``
-+     - 2.46
-+     - 2.52
-+   * - ``rpm``
-+     - 4.19.1.1
-+     - 4.20.0
-+   * - ``rsync``
-+     - 3.3.0
-+     - 3.4.1
-+   * - ``rt-tests``
-+     - 2.7
-+     - 2.8
-+   * - ``ruby``
-+     - 3.3.4
-+     - 3.4.2
-+   * - ``rust``
-+     - 1.79.0
-+     - 1.84.1
-+   * - ``rust-cross-canadian``
-+     - 1.79.0
-+     - 1.84.1
-+   * - ``rust-llvm``
-+     - 1.79.0
-+     - 1.84.1
-+   * - ``screen``
-+     - 4.9.1
-+     - 5.0.0
-+   * - ``seatd``
-+     - 0.8.0
-+     - 0.9.1
-+   * - ``shaderc``
-+     - 2024.1
-+     - 2024.3
-+   * - ``shadow``
-+     - 4.16.0
-+     - 4.17.3
-+   * - ``socat``
-+     - 1.8.0.0
-+     - 1.8.0.3
-+   * - ``spirv-headers``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``spirv-tools``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``sqlite3``
-+     - 3.46.1
-+     - 3.48.0
-+   * - ``strace``
-+     - 6.10
-+     - 6.12
-+   * - ``stress-ng``
-+     - 0.18.02
-+     - 0.18.11
-+   * - ``subversion``
-+     - 1.14.3
-+     - 1.14.5
-+   * - ``sudo``
-+     - 1.9.15p5
-+     - 1.9.16p2
-+   * - ``swig``
-+     - 4.2.1
-+     - 4.3.0
-+   * - ``sysklogd``
-+     - 2.6.1
-+     - 2.7.1
-+   * - ``sysstat``
-+     - 12.7.6
-+     - 12.7.7
-+   * - ``systemd``
-+     - 256.5
-+     - 257.4
-+   * - ``systemd-boot``
-+     - 256.5
-+     - 257.4
-+   * - ``systemd-boot-native``
-+     - 256.5
-+     - 257.4
-+   * - ``systemd-systemctl-native``
-+     - 1.0
-+     - 257.4
-+   * - ``systemtap``
-+     - 5.1
-+     - 5.2
-+   * - ``systemtap-native``
-+     - 5.1
-+     - 5.2
-+   * - ``sysvinit``
-+     - 3.04
-+     - 3.14
-+   * - ``tcl``
-+     - 8.6.14
-+     - 9.0.1
-+   * - ``texinfo``
-+     - 7.1
-+     - 7.2
-+   * - ``tiff``
-+     - 4.6.0
-+     - 4.7.0
-+   * - ``ttyrun``
-+     - 2.34.0
-+     - 2.37.0
-+   * - ``u-boot``
-+     - 2024.07
-+     - 2025.01
-+   * - ``u-boot-tools``
-+     - 2024.07
-+     - 2025.01
-+   * - ``usbutils``
-+     - 017
-+     - 018
-+   * - ``utfcpp``
-+     - 4.0.5
-+     - 4.0.6
-+   * - ``util-linux``
-+     - 2.40.2
-+     - 2.40.4
-+   * - ``util-linux-libuuid``
-+     - 2.40.2
-+     - 2.40.4
-+   * - ``util-macros``
-+     - 1.20.1
-+     - 1.20.2
-+   * - ``vala``
-+     - 0.56.17
-+     - 0.56.18
-+   * - ``valgrind``
-+     - 3.23.0
-+     - 3.24.0
-+   * - ``vim``
-+     - 9.1.1043
-+     - 9.1.1198
-+   * - ``vim-tiny``
-+     - 9.1.1043
-+     - 9.1.1198
-+   * - ``virglrenderer``
-+     - 1.0.1
-+     - 1.1.0
-+   * - ``vte``
-+     - 0.76.3
-+     - 0.78.2
-+   * - ``vulkan-headers``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``vulkan-loader``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``vulkan-samples``
-+     - git (fdce530c0295…)
-+     - git (8547ce1022a1…)
-+   * - ``vulkan-tools``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``vulkan-utility-libraries``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``vulkan-validation-layers``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``vulkan-volk``
-+     - 1.3.290.0
-+     - 1.4.309.0
-+   * - ``wayland-protocols``
-+     - 1.37
-+     - 1.41
-+   * - ``webkitgtk``
-+     - 2.44.3
-+     - 2.48.0
-+   * - ``weston``
-+     - 13.0.3
-+     - 14.0.1
-+   * - ``wget``
-+     - 1.24.5
-+     - 1.25.0
-+   * - ``wireless-regdb``
-+     - 2024.10.07
-+     - 2025.02.20
-+   * - ``wpebackend-fdo``
-+     - 1.14.2
-+     - 1.16.0
-+   * - ``xauth``
-+     - 1.1.3
-+     - 1.1.4
-+   * - ``xcb-util-cursor``
-+     - 0.1.4
-+     - 0.1.5
-+   * - ``xf86-input-evdev``
-+     - 2.10.6
-+     - 2.11.0
-+   * - ``xf86-input-libinput``
-+     - 1.4.0
-+     - 1.5.0
-+   * - ``xf86-input-synaptics``
-+     - 1.9.2
-+     - 1.10.0
-+   * - ``xf86-video-fbdev``
-+     - 0.5.0
-+     - 0.5.1
-+   * - ``xhost``
-+     - 1.0.9
-+     - 1.0.10
-+   * - ``xinit``
-+     - 1.4.2
-+     - 1.4.4
-+   * - ``xkeyboard-config``
-+     - 2.42
-+     - 2.44
-+   * - ``xprop``
-+     - 1.2.7
-+     - 1.2.8
-+   * - ``xrandr``
-+     - 1.5.2
-+     - 1.5.3
-+   * - ``xtrans``
-+     - 1.5.0
-+     - 1.6.0
-+   * - ``xxhash``
-+     - 0.8.2
-+     - 0.8.3
-+   * - ``xz``
-+     - 5.6.2
-+     - 5.6.4
-+   * - ``zstd``
-+     - 1.5.6
-+     - 1.5.
-+       7
-+
- Contributors to |yocto-ver|
- ~~~~~~~~~~~~~~~~~~~~~~~~~~~
- 
+s/To able/To be able/
 
--- 
-2.47.0
+> +manpages_url = 'https://manpages.debian.org/{path}'
+> +
+>   # Intersphinx config to use cross reference with BitBake user manual
+>   intersphinx_mapping = {
+>       'bitbake': ('https://docs.yoctoproject.org/bitbake/' + bitbake_version, None)
+> diff --git a/documentation/overview-manual/concepts.rst b/documentation/overview-manual/concepts.rst
+> index e4d806f98f..416c28f0d9 100644
+> --- a/documentation/overview-manual/concepts.rst
+> +++ b/documentation/overview-manual/concepts.rst
+> @@ -2204,7 +2204,7 @@ require root privileges, the fact that some earlier steps ran in a fake
+>   root environment does not cause problems.
+>   
+>   The capability to run tasks in a fake root environment is known as
+> -"`fakeroot <http://man.he.net/man1/fakeroot>`__", which is derived from
+> +":manpage:`fakeroot <fakeroot(1)>`", which is derived from
+>   the BitBake keyword/variable flag that requests a fake root environment
+>   for a task.
+>   
+> diff --git a/documentation/overview-manual/yp-intro.rst b/documentation/overview-manual/yp-intro.rst
+> index 4a27e12e01..11e6d99e32 100644
+> --- a/documentation/overview-manual/yp-intro.rst
+> +++ b/documentation/overview-manual/yp-intro.rst
+> @@ -400,7 +400,7 @@ Yocto Project:
+>      Autobuilder :doc:`here </test-manual/understand-autobuilder>`.
+>   
+>   -  *Pseudo:* Pseudo is the Yocto Project implementation of
+> -   `fakeroot <http://man.he.net/man1/fakeroot>`__, which is used to run
+> +   :manpage:`fakeroot <fakeroot(1)>`, which is used to run
+>      commands in an environment that seemingly has root privileges.
+>   
+>      During a build, it can be necessary to perform operations that
+> diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+> index 41bda5d0d6..4e675b6bfb 100644
+> --- a/documentation/ref-manual/variables.rst
+> +++ b/documentation/ref-manual/variables.rst
+> @@ -4514,8 +4514,8 @@ system and gives an overview of their function and contents.
+>   
+>         The value in :term:`INITSCRIPT_PARAMS` is passed through to the
+>         ``update-rc.d`` command. For more information on valid parameters,
+> -      please see the ``update-rc.d`` manual page at
+> -      https://manpages.debian.org/buster/init-system-helpers/update-rc.d.8.en.html
+> +      please see the ``update-rc.d`` manual page at :manpage:`update-rc.d
+> +      <update-rc.d(8)>`.
+>   
 
+This will render oddly no? I haven't compiled it but I assume something like
+
+"""
+please see the update-rc.d manual page at update-rc.d.
+"""
+?
+
+If that's the case, maybe simply have:
+
+:manpage:`the update-rc.d manual page<update-rc.d(8)>`.
+
+? What do you think?
+
+Please consider having a separate patch (not necessarily in this series) 
+addressing Mark's feedback on fakeroot.
+
+Looks good to me otherwise, with some change for the update-rc.d paragraph:
+
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+
+Thanks!
+Quentin
 
