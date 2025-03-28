@@ -2,16 +2,16 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C188DC3601B
+	by smtp.lore.kernel.org (Postfix) with ESMTP id C3CC1C3601E
 	for <webhook@archiver.kernel.org>; Fri, 28 Mar 2025 13:07:46 +0000 (UTC)
 Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
- by mx.groups.io with SMTP id smtpd.web10.10717.1743167256562656100
+ by mx.groups.io with SMTP id smtpd.web10.10719.1743167256754295468
  for <docs@lists.yoctoproject.org>;
- Fri, 28 Mar 2025 06:07:36 -0700
+ Fri, 28 Mar 2025 06:07:37 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=GL7WALDx;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nnX3uGcn;
  spf=pass (domain: bootlin.com, ip: 217.70.183.194, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 25425441A3;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 5238C441AC;
 	Fri, 28 Mar 2025 13:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1743167255;
@@ -19,41 +19,41 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FiOef6VFt4dBYp+15X+x6Cai/i5sqjlS4QnCjjoLN4k=;
-	b=GL7WALDxvguf4FxqH5RAhUw77IkUojsbYUiqlV/zD1mqE4/bCvzUXWf/cRHOQz1j1StXz+
-	QkJ6iXG77Vc8QZywtekfFuiwf2vxULu+8c3g+lgcftuBy83Jdp2LUyXKA8s6ttKtjNSY/l
-	tPyVm3Xw1SLEOVOv37KEif91lPjugxPgtfE2HNHoRMmwh1fP9c4xnMAR31p8+sNZGDHRYz
-	eGBX5Stxsvv4XGShCpukaAJgKdWuFM9GOxwL0ccLRcTOTGVo1N2DcNU0wkGXFwKl7vOMOx
-	PdTCTheMrwIh5maj+YecdwMcVHhmRem8vfwr8g1x+euYGn+HPQn0Hw0p5aIWtw==
+	bh=nhL3ex8p8tO/IN+9jxkjJUcpoHfWhvVwTUrOSSuuiNI=;
+	b=nnX3uGcn1HS9J0eYb1OxEJwjN552nj0Hmxnwa/yTIEEzKqUO7BJhXV9KrqVSE6xAqgaptX
+	Aw6MTZOjXdyOkQAqkG3K6NeJ9+FotOvRaHi4X3fTNbPhyLNpNNITPEYJmsZxraAcsesosB
+	/Aj95nszAZHPiDVj018enz9sk3u6SvBP1otMkqoKZxYA45XPmFQnt1gMu/YKglrJcFraZ9
+	7FCEPIoroOsB+xT2201+jOr64yjisltwK6Vuc9OQGDKmQ3HwARVHeaL1yt+Ih09zyrrBAl
+	xzq06bmNOhxIAB9EL+ePK7VJk4j15GTdbH2UMlXqE5tKQrn1Qp63204QcU9dmQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 28 Mar 2025 14:07:08 +0100
-Subject: [PATCH 05/11] migration-guides/release-notes-5.2.rst: add an entry
- for addfragments
+Date: Fri, 28 Mar 2025 14:07:09 +0100
+Subject: [PATCH 06/11] migration-guides/migration-5.2.rst: final update for
+ 5.2
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250328-release-note-5-2-updates-2-v1-5-c913513e9140@bootlin.com>
+Message-Id: <20250328-release-note-5-2-updates-2-v1-6-c913513e9140@bootlin.com>
 References: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
 In-Reply-To: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
 To: docs@lists.yoctoproject.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1151;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1585;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=454t9ISmgOOFmH/UDMBKJikmEyoSuHyBkGnNtc56EOA=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5p8Vsk71TmT8PsIBvh6LsHdkYT1/naCNQC8M1
- pv/b4udsN6JAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+afFQAKCRDRgEFAKaOo
- Nm1+D/kBhHizTCLbi+ZMFzPh7rNDh1M4LM1j+GUOKqZ8g+YaOuS6WqGknlqh/5OYcSQEsXrwAU2
- NF3Gj9yj7uPsMMNzzLtZJvrRwrhuD52KGEMRLWUPkGia+XP3F6CjOhEzE2vGTemk3gMW7vOfLpG
- RbLxBkHmwBYza6TbZFZIH2fLTjezyVFldfSvMz4Zj/URkvSPardKEVzN13AqHb7ZZnpy+qA0CoM
- QBQG7lm7Dm4a7Wv9MKtYOf6dlXZ6k/OdT28ZNtQ3wdP5fWL5JJXq/oHkLNAu5C3xdEBH0rbYhoh
- V/J7CskjnTXuEWp+yy1RCg4GaPvvh/KpgAOK/rP9T86Gl5gZuCt5YVWHl1Ifd07ood0A4nlpDx2
- i91TFUs2UgSQv0zioM9JFopOduqxjAOuliosmKV71pwjJXbFjcNzqKL5nTrSfp+JQ2NkzylUpdh
- /KuMDF1El5D7BpAFy2FGdI+q/QfxSynKNnQy01M5Hdogt5eB5yAD+ck0lUja/q/YYpEWvMU5egO
- l2d3L6mbLK1Z4Z9uAAFZtM4ZBPRMAfqxehtwIAlTQyDA4C8bUaDmKU/JLfuNjiqM6rg/t6X4NNs
- fLvOOedD92peSRMx8kAGMEW4U+aZ/Cnu9pimCKkrE/3NSZEae3tAyGYlOYA+5eB4XPmNwPYs/UF
- V8ztVFCef9Sbznw==
+ bh=rZcgx8bVICm1utvTx7ZHyLUQ0w0QJwvbCSZdJRCrQ04=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn5p8Vru6sEpVbrFd+WbA3tDNsa8aXdi6UWOnuy
+ 2XjZmApiXaJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ+afFQAKCRDRgEFAKaOo
+ NgppD/0Zkpk39GkaIccFWHR3KtjSSCFyGyFfuzXphHq9I8NZKKr+IYAURD55Jay98cxjj6VwoH4
+ ERprlBx+/4d2Ek7GXa+KW6d6QOOlyf2Uo19JvDInxyRg0zN8/gvmFM/2Gb5etacJwDKFrusmrm+
+ 39GmW/l/ZzicG9UhsEZjUF4y3YhxXmHHhA0v8fdQ1ShRINHpN9fRbcL3KHjNYbvUXdg81KTV7eD
+ ymZ4Ec+lROJid244C27K4vTJ0cPE2WIdEzAIixu68Q9T1NdIcSwOHyO7r4HftOaPkBskkyQAg58
+ pli8ecz/HA+p6NcZ1zY5Bfsm1dWJhtFkBtjPbHyb3ipSi5I84r5lnGEUG0+umbzmYD8Wgb/zKn4
+ XHMT4ZjRGIn0Y5ai16sKElGnJfi0XsHZ8BudMiCHJtPNrvahf9tzPeYJKchY5w7+nN0UBuIwsp5
+ 74Ga3I41SfC4P7+6BLsrwf3Rs1R7Em2UmSCUCVs1oRihmc2X7DQdUdnZLXOaxcHjT8lY+KT+hPz
+ 8/kQsOwS/gqn/hUVkOnCzGcbPP9RCNAnfU4MFKkYkIThXG0J83lfGYlqVzIcpPDLL72+Cj9mXrk
+ jo7StEOqnKt7Qc5EfZzlIR+WQtLuZpGkPTgql4sotSxPL8bF4rcMztI5ef218UjwPHgHf5+NV3m
+ dq9+MgF8rw90q+Q==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
@@ -65,33 +65,51 @@ List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 28 Mar 2025 13:07:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6659
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6661
 
-This should be clearly mentioned in the BitBake section as it is an
-valuable addition to 5.2.
+- Add new/removed supported distributions.
+- Set the oldest supported kernel.
+- Remove empty sections.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- documentation/migration-guides/release-notes-5.2.rst | 6 ++++++
- 1 file changed, 6 insertions(+)
+ documentation/migration-guides/migration-5.2.rst | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
-index d583f3e9d..cbef0d686 100644
---- a/documentation/migration-guides/release-notes-5.2.rst
-+++ b/documentation/migration-guides/release-notes-5.2.rst
-@@ -302,6 +302,12 @@ New Features / Enhancements in |yocto-ver|
+diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
+index b5df4412e..59a2782f2 100644
+--- a/documentation/migration-guides/migration-5.2.rst
++++ b/documentation/migration-guides/migration-5.2.rst
+@@ -39,7 +39,7 @@ section of the Yocto Project Reference Manual.
+ Supported kernel versions
+ ~~~~~~~~~~~~~~~~~~~~~~~~~
  
- -  BitBake changes:
+-The :term:`OLDEST_KERNEL` setting is XXX in this release, meaning that
++The :term:`OLDEST_KERNEL` setting is 5.15 in this release, meaning that
+ out the box, older kernels are not supported. See :ref:`4.3 migration notes
+ <migration-4.3-supported-kernel-versions>` for details.
  
-+   -  Add a new concept of configuration fragment, which allows providing
-+      configuration snippets contained in layers in a structured and controlled
-+      way. For more information, see the
-+      :ref:`bitbake:bitbake-user-manual/bitbake-user-manual-metadata:\`\`addfragments\`\`
-+      Directive` section of the BitBake User Manual.
+@@ -49,12 +49,17 @@ Supported distributions
+ Compared to the previous releases, running BitBake is supported on new
+ GNU/Linux distributions:
+ 
++-  Fedora 41
++-  CentOS Stream 9
 +
-    -  Add a new ``include_all`` directive, which can be used to include multiple
-       files present in the same location in different layers.
+ On the other hand, some earlier distributions are no longer supported:
  
+-See :ref:`all supported distributions <system-requirements-supported-distros>`.
++-  CentOS Stream 8
++-  Fedora 38
++-  OpenSUSE Leap 15.4
++-  Ubuntu 20.04
+ 
+-Go language changes
+-~~~~~~~~~~~~~~~~~~~
++See :ref:`all supported distributions <system-requirements-supported-distros>`.
+ 
+ Rust language changes
+ ~~~~~~~~~~~~~~~~~~~~~
 
 -- 
 2.47.0
