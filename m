@@ -1,318 +1,204 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0F18CC28B20
-	for <webhook@archiver.kernel.org>; Wed,  2 Apr 2025 04:11:27 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
- by mx.groups.io with SMTP id smtpd.web10.403.1743567085739790230
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2AA58C28B20
+	for <webhook@archiver.kernel.org>; Wed,  2 Apr 2025 09:15:49 +0000 (UTC)
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (EUR03-DBA-obe.outbound.protection.outlook.com [40.107.104.61])
+ by mx.groups.io with SMTP id smtpd.web10.3955.1743585339892032101
  for <docs@lists.yoctoproject.org>;
- Tue, 01 Apr 2025 21:11:26 -0700
+ Wed, 02 Apr 2025 02:15:40 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=kotTKnY8;
- spf=pass (domain: intel.com, ip: 192.198.163.9, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1743567087; x=1775103087;
-  h=from:to:subject:date:message-id:in-reply-to:references:
-   mime-version:content-transfer-encoding;
-  bh=Qj2rR1TWm8+7137EMy71JHb+WJU1Z4eLgOUBNqh6ClM=;
-  b=kotTKnY87LVb54Upe4qN6wqnz1YZF3DdJELW7DiTaYv87pb0vhHmFSpY
-   AwvVfSImliS56fL5kXpgpBaWcMnIcM/0Io6q42CWoY102J5cwJYnV6hDb
-   c+0LR3wzFB4NYkrjEBGAn6e+nl/yTXce+nCfFArodUZE59yhT6W87uxGK
-   v1is12dVoeYrDzl04FDL4FiKvSdtA5TB3XnuIHRZgGThHae+do2/7cyDh
-   Rr1WjDMzrhCUHeof4ExqF0lIhu9umj067I/3JX/raDG+dJQlGA0S77YzM
-   iltpTh96yhPWCd9gnyocKn7SGapuMA34wNVOZ5wftL2drjrc9/CgDZEgG
-   A==;
-X-CSE-ConnectionGUID: LLkQbqyFRD2grWMDKvpCqg==
-X-CSE-MsgGUID: hjjg7V0KQkWd/6GjS4wOiw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11391"; a="55542113"
-X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; 
-   d="scan'208";a="55542113"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Apr 2025 21:11:27 -0700
-X-CSE-ConnectionGUID: rK1vlCK6SsqxTF32OHoSJw==
-X-CSE-MsgGUID: xs9C58ChQ3WWfoKXqR4Zig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,295,1736841600"; 
-   d="scan'208";a="126396547"
-Received: from cheeyang-desk1.png.intel.com ([10.107.249.127])
-  by fmviesa006.fm.intel.com with ESMTP; 01 Apr 2025 21:11:26 -0700
-From: chee.yang.lee@intel.com
-To: docs@lists.yoctoproject.org
-Subject: [PATCH 2/2] migration-guides: add release notes for 5.0.8
-Date: Wed,  2 Apr 2025 12:10:36 +0800
-Message-Id: <20250402041036.1025002-2-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250402041036.1025002-1-chee.yang.lee@intel.com>
-References: <20250402041036.1025002-1-chee.yang.lee@intel.com>
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=oPBR+5zH;
+ spf=pass (domain: cherry.de, ip: 40.107.104.61, mailfrom: quentin.schulz@cherry.de)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WcuBGQbvnbKX3wAmSyJAzV0XR+tmcY37tcQondZNRwR8IqsCLbFmanh1YT7cjw+C6/+qwqmRzQ3ey2HO/82PUDL1dxdUK5cXiwXrw/q8ZciA7rS+ZlAtWzDqnLIodhLoRWwVQh7zDUUnNarLCCdcQi9VaPAVwyqIVuQTx0eOEp/bK/jH70RoURmQ4di0uQthJa0YEa98fwAm1GGU4Jv3wYzkQs/d1vkqGkfV7ADzjLefhm95f+ithubDVRu/LAAei5nGSpQX8ph351e2RuJ9doi6d0hac5Y8KTYqTcr8NnbpJBX7xdQq9JTTWoaW0AbZCkgW4SrG1UzJ77wcZD5y+w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=20Vq5F3gUqptb2+cg59drgW2mFcWLmr/KaINGCzCKsE=;
+ b=g3pM/8079UqfZ8bdl/PeiteRjBqxcgQ1FmtMdt19MjTL6ZSESI/TNxOTX7YjugK9X6a+3GlcTNRBUpFNaDsYBUKm/K88i6d/9GzGjMzzihLiY750Lm+LJibSmNnBk6mO71PO4zDzWOZoqWHucs0x8fw8+Ci91wN0o5onPIGgqvkZ9t5DiK46HjbKz5XQBAg4ROnGkq6qcJ/ZsDQb8jzxOhKyHzrUtHvVC5Zk5WJBpLum+H7kZwqwDiAZEHJYjqqA1ho5hDk6y6YIbWpBAYU4oO9sNrgHYTieW5LOWGJX1gE0DAcEk0lTYrXAhmiPdUMdZo3C4o76ALtTlbpqJ9rLOg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=20Vq5F3gUqptb2+cg59drgW2mFcWLmr/KaINGCzCKsE=;
+ b=oPBR+5zHLg4LoCanAtTpD3Oubo1HoVcavc0U+QdQd9EwGtYTx6iyH3+0djGP81Tbt2Fpa+CJU6MoVDVDZc12tIXsfEf3JMiJysen5NhELkcjgbWUdVxI4hchpy6zYSxCcdTpXa9pWw+NksrvePvmduW9BaoHZlxbmCyl2JpHBAg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by GV1PR04MB10394.eurprd04.prod.outlook.com (2603:10a6:150:1c6::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.54; Wed, 2 Apr
+ 2025 09:15:33 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::35f6:bc7d:633:369a%6]) with mapi id 15.20.8534.052; Wed, 2 Apr 2025
+ 09:15:33 +0000
+Message-ID: <91b88e04-a330-4ebc-8694-e971d1471ec0@cherry.de>
+Date: Wed, 2 Apr 2025 11:15:31 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH] ref-manual/variables.rst: document the
+ INITRAMFS_MAXSIZE variable
+To: gavrosc@yahoo.com, docs@lists.yoctoproject.org
+References: <8404.1743413076577523364@lists.yoctoproject.org>
+ <16450.1743536598761017631@lists.yoctoproject.org>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <16450.1743536598761017631@lists.yoctoproject.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR4P281CA0137.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b8::17) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|GV1PR04MB10394:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2a995b98-2a74-4ae0-a175-08dd71c6ec15
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: 
+	=?utf-8?B?Vk5HUE5wNXJ0dzlmREJSNGxoUUFPS2RmMThrK0orWFBVMVAyYk5KWHZXODEx?=
+ =?utf-8?B?UEJFYXN0Wnd4Q2Y2N0VZeG9qU212TmRJRmpzRWQvcFVoTTVvNU56eitWMGVB?=
+ =?utf-8?B?YUZ4ZFNjTStidmNqaHRUL0hSNWxSZkhmWmV0Wk15TWFRSzltd3NaeTZ2WGha?=
+ =?utf-8?B?SFZoUjk1SUVCTDFRSVhVNkcvcUFkWWdvbWJuUlhoaXJLTTQyTytiNDdjSWtG?=
+ =?utf-8?B?YVFITVpXT0oxa1BDZ01aT3g2Uk9Rek1nS0RFbzQ1K253N0lIeEN5eFpKTjBF?=
+ =?utf-8?B?ZzUwaHYvTHoxck1nT25tbmNOQkZsKytXbStpWkxva3hrdVZ2WmtVU3h2YjVq?=
+ =?utf-8?B?VVgrNHZnT0dwTVQ2V01PZ3BadVVFOW8wcHphOTI3NVFscHNhZE12dUR0L2RM?=
+ =?utf-8?B?SjV2NGtvVlFPQ0JiMlhvWFljbVZQMEZVSXdHMlNHS3hsejVXUEdpejg0ZVNr?=
+ =?utf-8?B?dzVSTUZFUEhaTmRCSFRqenA0L0VqVE83Mk54WlZBS1NFdVN5Z0F5N0FwQk9D?=
+ =?utf-8?B?SlFQL1BJUXZlL3RLbmR1WGZuM0FyMDhMZEZMelQ4ankyc1BqdFpKSzFFQUMw?=
+ =?utf-8?B?QWg5Zzg4WVBsZ1ZWWGQ3Y29RMDdHa3lkRkdhUmZaRlJpWTBwam1oNjZNWU90?=
+ =?utf-8?B?K2V3NUVRTzRyWHFPTFF0cDNwc2gvOEpXVXUyeVJVUjNHcndudEpaMzZjVVha?=
+ =?utf-8?B?NnBoZlkvY2NtZXpOUWlkeXFpaTZvYmVKZzN6S0ZkeS9oUnpPV1NHYnlzK2F3?=
+ =?utf-8?B?L3JxcW1kUlorY1FZVSttN0lieFhDNkJrTXViN1RxNzBuL0txMFdnT3VaK0FM?=
+ =?utf-8?B?T3dzeEJVdE5FY3FJSDBOL1BVcXYxNEtlTnNGVE80YUNZdGpWTFcya3BUaitq?=
+ =?utf-8?B?M1V1UDFiTitPd2Fhb1NVR3BSNkRVU0kvcEFPdlpGNEJwelVuMDhuOXEyVFJ0?=
+ =?utf-8?B?NHB0YUprak1KRk91UjI3SVZnUDR5ODdVUU54WWtXSGtjUEkwTk9GMzAyVmIr?=
+ =?utf-8?B?eHQyOUd3WitNa1BCTlh6cFdYbHQrMUhaQ3NuL2dHaXFZcmJ5WnpYM0VIOWpn?=
+ =?utf-8?B?Q21HVXpwM2RFaVdjSXI2Q0dBQmJnZDVWWldiTjhFcmFmUkZUZU5NOEY1MmlU?=
+ =?utf-8?B?RG5mZXlzRVJPcktsTW9WTFBRNXFOVU5aVUZONmdIUHNtSEdTbjJqeVA0VTZ3?=
+ =?utf-8?B?TkNMK2MyczRvU0dGNmtJWDlQU2RiYmlOR3pHNjlGVW1kK1RCYlJpQXNqODg1?=
+ =?utf-8?B?ajhndDVyNzJNMERjbHdLck5RRW9SdFh4M3dXT05pS09XdGpJbVdzMktRemZR?=
+ =?utf-8?B?T1pab3haMDFMNG5KZ25lbEgydEkvZjVmb0t4U0U4Z1FJT21LWC93M2lTMisr?=
+ =?utf-8?B?TjFUemJyUHlGcXg3a0M3WFNIY2p5K29aZFVEZVJHUTFTUGI1NENjOEhjWU0x?=
+ =?utf-8?B?Z0RteWtIN1Q3Vm01Z2RkMnhTcjd6d1VDWnhFdlNBVDZ6b09XUEpnOGpETW9z?=
+ =?utf-8?B?cVdLNEZUL3lPZktaK1RqVnpmM0FNMnM0ckllR0NMUkhYMkhRc2ZpUGN5TGpm?=
+ =?utf-8?B?Z3U4WlV0TUsxaUVIQzNaMWN5dkZTM01MU01jVGd1TkVWby9SZS9oeEFqRXVE?=
+ =?utf-8?B?UER3cHNaTFgvdWxON1VPcFExVXpyQmNpeDErQzBGaWFndzNwUFRLWW5tNmQ3?=
+ =?utf-8?B?Y3cwTFo5TVRXcDV2STJXYUVvQVI3ZzF5cTZBNldaa2hHVjBvaitpTjlhOTFr?=
+ =?utf-8?B?WEJ5SDdMT1AvelVaaE9Kbzh2ZlF5SGxBTDl4VGYvcmllci84ZGUybEc5Ujkx?=
+ =?utf-8?B?QWpYcGMvWnpXRkZ3Qzl1dUdFYnRXdXlidVU1ZTljSm5WNUVVcTNSS0xrMkRi?=
+ =?utf-8?B?c3M4eXhUbTc0TFhXMEgzb2VRWFNKZkwvRkNiWnpYUDl5dlJST05XSklPQm5o?=
+ =?utf-8?Q?JInWuc+kDOQ=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?utf-8?B?WER3N0ZUelVCMldXL2hibEhuV0ZFbGx5MHJKOGo5VGJVZlRycytRdEhEVGhu?=
+ =?utf-8?B?MU9ac1poNmcyOWNtS3J1dmpHTVg1eTNCTGZUaXU5ZGNHSnc4Ym92U2hHTEtx?=
+ =?utf-8?B?a0NyWldWeS9UcHJnbk9aT3h1VkpXNnp4eGNvWmxVVGRWQ21VMGd0STl4Y0FQ?=
+ =?utf-8?B?RWl0WnQvVGZJaU9xVDl5bmRtajVuZk85aDdFNkVVTml3TzJNUVVseWpXQnRS?=
+ =?utf-8?B?RFBDRFZJbnlwUlJJKzU3YkZYQVdUREE0RUR3ek05TXVSOHQrMlQ2UVAxdHVI?=
+ =?utf-8?B?c1NqdDI2RUI1NnhxcTRraUh2QnVzVVU5MTNOZlJqVmNyRUpPejNzTk9ieGNw?=
+ =?utf-8?B?UTJvVG5MUHdadC9KeEJ0blVyVjNqd2p2dUpwMTJyckVCSG1hQVBQbkwzNEt2?=
+ =?utf-8?B?NnozVkhIck16K05leHZjOWNrZlF3RmNhMWUydnk1eWlXb0RNRVdVclI2RWda?=
+ =?utf-8?B?Zjd2WksxZnlmdGlsWWRqd3JkbjFUb3FpcEZDRTh4RUxxcjd6eHRIVmcrOWZU?=
+ =?utf-8?B?ZjlsUTJOQmFOalhxLzFQRXhlZm5KSGpka1A1ajMySkZSVStib0x3VzZNbDlY?=
+ =?utf-8?B?SU5MUktrRFZhazFEKzZXSTFrcmhCSmttNnBhNlg0U001QklyeTVGZkZUSmdw?=
+ =?utf-8?B?ZExaTUZRdWlBRFFYTGdUZzlCaUZNUXJZdHU5RytUUHVGWlQ3RWZMMEVURGFL?=
+ =?utf-8?B?UkZLUmd5aDZjMWNhK1dTZTRLZzNxd1BhR055Y0s1TThRVG8xSHkwaGhnbFVF?=
+ =?utf-8?B?eW1sTmJnMi9hZ2hQRmp4b2pmQXJhanRiV09aN2RXa3p4YzhqSFlMZkdYVVdG?=
+ =?utf-8?B?Y0lkWE9lUFNuaUZqVUY5ak5VUmhYSnFxeW9hcWdJS0U5MUpOWGNaYnlPOThq?=
+ =?utf-8?B?Q0xjVlh6SHlXRGNKQlNZQ1NiSm5mYjVhWTc2YWhCTzJPNFJ4clVnakRWYUZV?=
+ =?utf-8?B?N1Buc2JzZzdURzZBU3lzeGl1dERQc3cxMGwzaE5aQjZaV1dkN2oyaU1HTDFr?=
+ =?utf-8?B?ZkVER3BLaU5Mb3JsMkNsbEZXMHZlT2xkNUt3a1Jxc01zNmtjeTY2dG0xYzB4?=
+ =?utf-8?B?L3IyTjBCT2ZnYk5CQ1VtOTVsRVZhVndZS2tndUMyL2JOUnVSOGZlUnpZcjRV?=
+ =?utf-8?B?L1FjR0MvTmlieGgwRnloNnBwYTBYODIxc1haOE5TRzNaMkYvQWhtYWZvczR2?=
+ =?utf-8?B?L0wwU1VNN3JPY3E3NFdGZytUK1hKM0VwWFhqUTgwNlc5RXVPclNxNndaV2Fz?=
+ =?utf-8?B?Ukx6aEdmWkVYd01sMU50WkMwRFFSWUd6eGVSL0UwT05tZjJvOTg0V0U5MVR4?=
+ =?utf-8?B?M3ZvTnoxcHR0cXowTnV4WG8ycHhJSHZjK01kaTBXWisvMUFNQkZNbHk1SWJW?=
+ =?utf-8?B?akNjZGJjNEdiNWdzaXlSc0l5dG5FallWdm1DcS9ZNkhhUzdvdGlFTXRWRDBE?=
+ =?utf-8?B?MEtSMWdRWlRyWDV1SEpiUU1BUEJwMTdTN2syOFBkeDdJUzEvQWtzeXdqaTBv?=
+ =?utf-8?B?Sk9vNnNpeFFKTFB5R0FTbXptYTJnVTd1TmlCbG5Qd2N4cXJ2andoMmRScjg1?=
+ =?utf-8?B?NkNadW1VbE5qbDVhcEVTRE1DYk8wYmUzR2ZSVDVCcTEzY0xncWw3djBpTTJr?=
+ =?utf-8?B?U21YRmNRMEFXV2dFWE5DMkZlL3JKKzJPUms0ZjlFajVodGgrb2NkdU5WWUFK?=
+ =?utf-8?B?WE56bnZtd1J4bm5uMkdYNzA4OTJHR1AxWmd2MmpmZHZJeWUzaDZzSlBFSDc3?=
+ =?utf-8?B?eEFnRjdvWGVCK1ZsbTB4Yjc5UnU2TTNlZzh2KzVaa1d1T2hTaThwWnRwek81?=
+ =?utf-8?B?L3B3UGFVWUp0K1hVblFvMElBWVRRRnpMT0Q5MXRmS2x1bzhjTllFUUt6WjM0?=
+ =?utf-8?B?OXVKVGhnemZ1dG1WOENjTlQ2YWduV3ZIVW5LdGFqMjVTcHNaaWJ5ZnNDS3Jp?=
+ =?utf-8?B?TElHRjJLREUyL1FrQ2FDSnpHZmQ4ZDRhOG5YdWorR21iVVlTNVpHVlBPMjFo?=
+ =?utf-8?B?OC9EWno2VEZIMWFmMGN3T3VEek5sRFU5eHBxcDRxSGpJK2FBVFZUMjZiWkZo?=
+ =?utf-8?B?dWtNSlBZQTVWeW9VVTJ0UU5uWG9Tdjk2aUpDU0tuT1FOeTF6QU5JVysyYm5w?=
+ =?utf-8?B?ajAyZ0tXdHJoNHRJV3oyTG45SjViME1rUXd2NE51MUZJb3VMSHU1ci9JY1Jn?=
+ =?utf-8?B?SXc9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a995b98-2a74-4ae0-a175-08dd71c6ec15
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2025 09:15:33.6673
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: CMtLVMA8miiirKSg3k0Y+fOjP/0YiRTljVvO45Tiy1JkPv0nuc12YK4Oq54o7+kz8Ilj4X6Z/6dmyH9pdWIM0YjgyvBbiWMh5fE2jMQBi0Y=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10394
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 02 Apr 2025 04:11:27 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6695
+ <docs@lists.yoctoproject.org>; Wed, 02 Apr 2025 09:15:49 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6696
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Hi Christos,
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
----
- .../migration-guides/release-5.0.rst          |   2 +-
- .../migration-guides/release-notes-5.0.8.rst  | 232 ++++++++++++++++++
- 2 files changed, 233 insertions(+), 1 deletion(-)
- create mode 100644 documentation/migration-guides/release-notes-5.0.8.rst
+On 4/1/25 9:43 PM, Christos Gavros via lists.yoctoproject.org wrote:
+> hi Quentin,
+> 
+> when you write "compression is enabled", do you mean that the variable "INITRAMFS_FSTYPES" is set to one of the compression formats (by default is set to cpio.gz)?
 
-diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
-index 920e05f12..528963ec2 100644
---- a/documentation/migration-guides/release-5.0.rst
-+++ b/documentation/migration-guides/release-5.0.rst
-@@ -14,4 +14,4 @@ Release 5.0 (scarthgap)
-    release-notes-5.0.5
-    release-notes-5.0.6
-    release-notes-5.0.7
--
-+   release-notes-5.0.8
-diff --git a/documentation/migration-guides/release-notes-5.0.8.rst b/documentation/migration-guides/release-notes-5.0.8.rst
-new file mode 100644
-index 000000000..c025223dc
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-5.0.8.rst
-@@ -0,0 +1,232 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
-+
-+Release notes for Yocto-5.0.8 (Scarthgap)
-+-----------------------------------------
-+
-+Security Fixes in Yocto-5.0.8
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  binutils: Fix :cve_mitre:`2025-0840`
-+-  curl: Ignore :cve_mitre:`2025-0725`
-+-  elfutils: Fix :cve_mitre:`2025-1352`, :cve_mitre:`2025-1365` and :cve_mitre:`2025-1372`
-+-  ffmpeg: Fix :cve_mitre:`2024-35365`, :cve_mitre:`2024-35369`, :cve_mitre:`2024-36613`,
-+   :cve_mitre:`2024-36616`, :cve_mitre:`2024-36617`, :cve_mitre:`2024-36618`,
-+   :cve_mitre:`2024-36619`, :cve_mitre:`2025-0518`, :cve_mitre:`2025-22919`, :cve_mitre:`2025-22921`
-+   and :cve_mitre:`2025-25473`
-+-  glibc: Fix :cve_mitre:`2025-0395`
-+-  gnutls: Fix :cve_mitre:`2024-12243`
-+-  go: Fix :cve_mitre:`2024-45336`, :cve_mitre:`2024-45341` and :cve_mitre:`2025-22866`
-+-  gstreamer1.0-rtsp-server: Fix :cve_mitre:`2024-44331`
-+-  libcap: Fix :cve_mitre:`2025-1390`
-+-  libtasn1: Fix :cve_mitre:`2024-12133`
-+-  libxml2: Fix :cve_mitre:`2024-56171` and :cve_mitre:`2025-24928`
-+-  linux-yocto/6.6: Fix :cve_mitre:`2024-36476`, :cve_mitre:`2024-53179`, :cve_mitre:`2024-56582`,
-+   :cve_mitre:`2024-56703`, :cve_mitre:`2024-57801`, :cve_mitre:`2024-57802`,
-+   :cve_mitre:`2024-57841`, :cve_mitre:`2024-57882`, :cve_mitre:`2024-57887`,
-+   :cve_mitre:`2024-57890`, :cve_mitre:`2024-57892`, :cve_mitre:`2024-57895`,
-+   :cve_mitre:`2024-57896`, :cve_mitre:`2024-57900`, :cve_mitre:`2024-57901`,
-+   :cve_mitre:`2024-57902`, :cve_mitre:`2024-57906`, :cve_mitre:`2024-57907`,
-+   :cve_mitre:`2024-57908`, :cve_mitre:`2024-57910`, :cve_mitre:`2024-57911`,
-+   :cve_mitre:`2024-57912`, :cve_mitre:`2024-57913`, :cve_mitre:`2024-57916`,
-+   :cve_mitre:`2024-57922`, :cve_mitre:`2024-57925`, :cve_mitre:`2024-57926`,
-+   :cve_mitre:`2024-57933`, :cve_mitre:`2024-57938`, :cve_mitre:`2024-57939`,
-+   :cve_mitre:`2024-57940`, :cve_mitre:`2024-57949`, :cve_mitre:`2024-57951`,
-+   :cve_mitre:`2025-21631`, :cve_mitre:`2025-21636`, :cve_mitre:`2025-21637`,
-+   :cve_mitre:`2025-21638`, :cve_mitre:`2025-21639`, :cve_mitre:`2025-21640`,
-+   :cve_mitre:`2025-21642`, :cve_mitre:`2025-21652`, :cve_mitre:`2025-21658`,
-+   :cve_mitre:`2025-21665`, :cve_mitre:`2025-21666`, :cve_mitre:`2025-21667`,
-+   :cve_mitre:`2025-21669`, :cve_mitre:`2025-21670`, :cve_mitre:`2025-21671`,
-+   :cve_mitre:`2025-21673`, :cve_mitre:`2025-21674`, :cve_mitre:`2025-21675`,
-+   :cve_mitre:`2025-21676`, :cve_mitre:`2025-21680`, :cve_mitre:`2025-21681`,
-+   :cve_mitre:`2025-21683`, :cve_mitre:`2025-21684`, :cve_mitre:`2025-21687`,
-+   :cve_mitre:`2025-21689`, :cve_mitre:`2025-21690`, :cve_mitre:`2025-21692`,
-+   :cve_mitre:`2025-21694`, :cve_mitre:`2025-21697` and :cve_mitre:`2025-21699`
-+-  openssh: Fix :cve_mitre:`2025-26466`
-+-  openssl: Fix :cve_mitre:`2024-9143`, :cve_mitre:`2024-12797` and :cve_mitre:`2024-13176`
-+-  pyhton3: Fix :cve_mitre:`2024-12254` and :cve_mitre:`2025-0938`
-+-  subversion: Ignore :cve_mitre:`2024-45720`
-+-  u-boot: Fix :cve_mitre:`2024-57254`, :cve_mitre:`2024-57255`, :cve_mitre:`2024-57256`,
-+   :cve_mitre:`2024-57257`, :cve_mitre:`2024-57258` and :cve_mitre:`2024-57259`
-+-  vim: Fix :cve_mitre:`2025-22134` and :cve_mitre:`2025-24014`
-+-  xwayland: Fix :cve_mitre:`2024-9632`, :cve_mitre:`2025-26594`, :cve_mitre:`2025-26595`,
-+   :cve_mitre:`2025-26596`, :cve_mitre:`2025-26597`, :cve_mitre:`2025-26598`,
-+   :cve_mitre:`2025-26599`, :cve_mitre:`2025-26600` and :cve_mitre:`2025-26601`
-+
-+
-+Fixes in Yocto-5.0.8
-+~~~~~~~~~~~~~~~~~~~~
-+
-+-  base-files: Drop /bin/sh dependency
-+-  bind: upgrade to 9.18.33
-+-  binutils: File name too long causing failure to open temporary head file in dlltool
-+-  binutils: stable 2.42 branch update
-+-  bitbake: bblayers/query: Fix using "removeprefix" string method
-+-  bitbake: bitbake-diffsigs: fix handling when finding only a single sigfile
-+-  bitbake: data_smart.py: clear expand_cache in _setvar_update_overridevars
-+-  bitbake: data_smart.py: remove unnecessary ? from __expand_var_regexp__
-+-  bitbake: data_smart.py: simple clean up
-+-  build-appliance-image: Update to scarthgap head revision
-+-  ccache.conf: Add include_file_ctime to sloppiness
-+-  cmake: apply parallel build settings to ptest tasks
-+-  contributor-guide/submit-changes: add policy on AI generated code
-+-  dev-manual/building: document the initramfs-framework recipe
-+-  devtool: ide-sdk recommend :term:`DEBUG_BUILD`
-+-  devtool: ide-sdk remove the plugin from eSDK installer
-+-  devtool: ide-sdk sort cmake preset
-+-  devtool: modify support debug-builds
-+-  docs: Add favicon for the documentation html
-+-  docs: Fix typo in standards.md
-+-  docs: Remove all mention of core-image-lsb
-+-  docs: vulnerabilities/classes: remove references to cve-check text format
-+-  files: Amend overlayfs unit descriptions with path information
-+-  files: overlayfs-create-dirs: Improve mount unit dependency
-+-  glibc: stable 2.39 branch updates
-+-  gnupg: upgrade to 2.4.5
-+-  go: upgrade 1.22.12
-+-  icu: remove host references in nativesdk to fix reproducibility
-+-  libtasn1: upgrade to 4.20.0
-+-  libxml2: upgrade to 2.12.10
-+-  linux-yocto/6.6: upgrade to v6.6.75
-+-  meta: Enable '-o pipefail' for the SDK installer
-+-  migration-guides: add release notes for 4.0.24, 4.0.25 and 5.0.7
-+-  oe-selftest: devtool ide-sdk use modify debug-build
-+-  oeqa/sdk/context: fix for gtk3 test failure during do_testsdk
-+-  oeqa/selftest/rust: skip on all MIPS platforms
-+-  openssl: upgrade to 3.2.4
-+-  pkg-config-native: pick additional search paths from $EXTRA_NATIVE_PKGCONFIG_PATH
-+-  poky.conf: add ubuntu2404 to :term:`SANITY_TESTED_DISTROS`
-+-  poky.conf: bump version for 5.0.8
-+-  ppp: Revert lock path to /var/lock
-+-  python3-setuptools-scm: respect GIT_CEILING_DIRECTORIES
-+-  python3: upgrade to 3.12.9
-+-  qemu: Do not define sched_attr with glibc >= 2.41
-+-  ref-manual/faq: add q&a on systemd as default
-+-  ref-manual: Add missing variable :term:`IMAGE_ROOTFS_MAXSIZE`
-+-  ref-manual: don't refer to poky-lsb
-+-  ref-manual: remove OE_IMPORTS
-+-  rust-common.bbclass: soft assignment for RUSTLIB path
-+-  rust: fix for rust multilib sdk configuration
-+-  rust: remove redundant cargo config file
-+-  scripts/install-buildtools: Update to 5.0.7
-+-  sdk-manual: extensible.rst: devtool ide-sdk improve
-+-  sdk-manual: extensible.rst: update devtool ide-sdk
-+-  selftest/rust: correctly form the PATH environment variable
-+-  systemd: add libpcre2 as :term:`RRECOMMENDS` if pcre2 is enabled
-+-  systemd: upgrade to 255.17
-+-  test-manual/ptest: link to common framework ptest classes
-+-  tzcode-native: Fix compiler setting from 2023d version
-+-  tzdata/tzcode-native: upgrade to 2025a
-+-  u-boot: kernel-fitimage: Fix dependency loop if :term:`UBOOT_SIGN_ENABLE` and UBOOT_ENV enabled
-+-  u-boot: kernel-fitimage: Restore FIT_SIGN_INDIVIDUAL="1" behavior
-+-  uboot-config: fix devtool modify with kernel-fitimage
-+-  vim: upgrade to 9.1.1043
-+
-+
-+Known Issues in Yocto-5.0.8
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+-  N/A
-+
-+Contributors to Yocto-5.0.8
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Thanks to the following people who contributed to this release:
-+
-+-  Adrian Freihofer
-+-  Aleksandar Nikolic
-+-  Alessio Cascone
-+-  Alexander Kanavin
-+-  Alexis Cellier
-+-  Antonin Godard
-+-  Archana Polampalli
-+-  Bruce Ashfield
-+-  Chen Qi
-+-  Deepesh Varatharajan
-+-  Divya Chellam
-+-  Enrico Jörns
-+-  Esben Haabendal
-+-  Etienne Cordonnier
-+-  Fabio Berton
-+-  Guðni Már Gilbert
-+-  Harish Sadineni
-+-  Hitendra Prajapati
-+-  Hongxu Jia
-+-  Jiaying Song
-+-  Joerg Schmidt
-+-  Johannes Schneider
-+-  Khem Raj
-+-  Lee Chee Yang
-+-  Marek Vasut
-+-  Marta Rybczynska
-+-  Moritz Haase
-+-  Oleksandr Hnatiuk
-+-  Pedro Ferreira
-+-  Peter Marko
-+-  Poonam Jadhav
-+-  Priyal Doshi
-+-  Ross Burton
-+-  Simon A. Eugster
-+-  Steve Sakoman
-+-  Vijay Anusuri
-+-  Wang Mingyu
-+-  Weisser, Pascal
-+
-+
-+Repositories / Downloads for Yocto-5.0.8
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.8 </poky/log/?h=yocto-5.0.8>`
-+-  Git Revision: :yocto_git:`dc4827b3660bc1a03a2bc3b0672615b50e9137ff </poky/commit/?id=dc4827b3660bc1a03a2bc3b0672615b50e9137ff>`
-+-  Release Artefact: poky-dc4827b3660bc1a03a2bc3b0672615b50e9137ff
-+-  sha: ace7264e16e18ed02ef0ad2935fa10b5fad2c4de38b2356f4192b38ef2184504
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.8/poky-dc4827b3660bc1a03a2bc3b0672615b50e9137ff.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.8/poky-dc4827b3660bc1a03a2bc3b0672615b50e9137ff.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
-+-  Tag:  :oe_git:`yocto-5.0.8 </openembedded-core/log/?h=yocto-5.0.8>`
-+-  Git Revision: :oe_git:`cd2b6080a4c0f2ed2c9939ec0b87763aef595048 </openembedded-core/commit/?id=cd2b6080a4c0f2ed2c9939ec0b87763aef595048>`
-+-  Release Artefact: oecore-cd2b6080a4c0f2ed2c9939ec0b87763aef595048
-+-  sha: 14c7cd5c62a96ceb9c2141164ea0f087fdbaed99ca3e9a722977a3f12d6381f6
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.8/oecore-cd2b6080a4c0f2ed2c9939ec0b87763aef595048.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.8/oecore-cd2b6080a4c0f2ed2c9939ec0b87763aef595048.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.8 </meta-mingw/log/?h=yocto-5.0.8>`
-+-  Git Revision: :yocto_git:`bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f </meta-mingw/commit/?id=bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f>`
-+-  Release Artefact: meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f
-+-  sha: ab073def6487f237ac125d239b3739bf02415270959546b6b287778664f0ae65
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.8/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.8/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
-+-  Tag:  :oe_git:`yocto-5.0.8 </bitbake/log/?h=yocto-5.0.8>`
-+-  Git Revision: :oe_git:`7375d32e8c1af20c51abec4eb3b072b4ca58b239 </bitbake/commit/?id=7375d32e8c1af20c51abec4eb3b072b4ca58b239>`
-+-  Release Artefact: bitbake-7375d32e8c1af20c51abec4eb3b072b4ca58b239
-+-  sha: 13dffbc162c5b6e2c95fa72936a430b9a542d52d81d502a5d0afc592fbf4a16b
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.8/bitbake-7375d32e8c1af20c51abec4eb3b072b4ca58b239.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.8/bitbake-7375d32e8c1af20c51abec4eb3b072b4ca58b239.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
-+-  Tag: :yocto_git:`yocto-5.0.8 </yocto-docs/log/?h=yocto-5.0.8>`
-+-  Git Revision: :yocto_git:`7d3cce5b962ca9f73b29affceb7ebc6710627739 </yocto-docs/commit/?id=7d3cce5b962ca9f73b29affceb7ebc6710627739>`
-+
--- 
-2.34.1
+I mean if the compressed (so not .cpio) size is used or uncompressed 
+(.cpio).
 
+You may want max size for the compressed size as this is likely the 
+space it's going to take on the storage medium. You probably are more 
+interested in the uncompressed size (even for a compressed image!) 
+because that's the space it's going to take in RAM at runtime.
+
+If I'm not mistaken, even if the initramfs is compressed on the storage 
+medium, the kernel will uncompress it in RAM before using it.
+
+> If so , then i think that "INITRAMFS_MAXSIZE" applies the compressed image.
+> 
+
+Reading the introducing commit 155ba626b46bf71acde6c24402fce1682da53b90 
+in OE-Core, it seems like this was done for limiting the size in RAM.
+
+Reading the code (meta/classes-recipe/image.bbclass:get_rootfs_size()), 
+it's the size of the IMAGE_ROOTFS directory accounting for an overhead 
+factor (IMAGE_OVERHEAD_FACTOR) and alignment (IMAGE_ROOTFS_ALIGNMENT). 
+IMAGE_OVERHEAD_FACTOR variable is explained in code 
+(meta/conf/bitbake.conf) as some free space for "stuff" to happen at 
+boot. I am not entirely sure this is necessary for the initramfs (but it 
+for sure is for rootfs stored on a storage medium). Then this computed 
+size is compared to the value of INITRAMFS_MAXSIZE. So then it means 
+this is the uncompressed size we're checking.
+
+What I don't understand is the
+
+"""
+# Check the initramfs size against INITRAMFS_MAXSIZE (if set)
+if image_fstypes == initramfs_fstypes != ''  and initramfs_maxsize:
+"""
+
+check... Why do we care that IMAGE_FSTYPES is equal to INITRAMFS_FSTYPES 
+in order to check for the initramfs size? What happens when you have 
+setups with an initramfs AND a rootfs on another medium (e.g. typical 
+setup for PC distros, or when secureboot is involved (initramfs checking 
+the rootfs + switch_root))?
+
+Cheers,
+Quentin
 
