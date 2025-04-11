@@ -2,16 +2,16 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9466BC369B2
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 94FADC369B5
 	for <webhook@archiver.kernel.org>; Fri, 11 Apr 2025 14:46:31 +0000 (UTC)
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web11.28136.1744382786835727505
+ by mx.groups.io with SMTP id smtpd.web11.28138.1744382787038055628
  for <docs@lists.yoctoproject.org>;
  Fri, 11 Apr 2025 07:46:27 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=OhD2x7CR;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=nCRY03bY;
  spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3DAF943AD8;
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 7E1EB43AE3;
 	Fri, 11 Apr 2025 14:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	t=1744382785;
@@ -19,19 +19,20 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=7HgWkrwlh2QCUVhJmIOOKjK7AOyN1p3yrnV+FqgKpBw=;
-	b=OhD2x7CR6xeNGFOcNwbEwjN1g+O0jSuK+N8hGDepNfqPo+g9zExeJokHGYJ7gZM8gtdSjd
-	4SkcmZ9xjEb6jFxo23YmuOABgz2WrUQh3FULoSLW4wsdMMvkMDBmG4Ef4lhKrgGrlbp0uz
-	zMlRAUjIer1+eeix0CVLNZpbspsSs7+/zEf/wzgjoCJvLGpQCPa8pTntO6ExX79Zai/dvC
-	0vMUjmORp9rdrzqkYYMt/+38mLmF6DWz0plmHeiIbdMsIyDzHS7ZQBWtYMEVX1j0X6t/ec
-	Kjpn1Z1wHShITF4dlPUDpFiIiUd4TUGyhGlkh7sXiBNxxsqJi5WplQM6r4V0aw==
+	bh=stGLYBQOncJCwK8p30Ugeaub3H185haJsTzpGl4uv3M=;
+	b=nCRY03bY+nOFoTHg1eBw0eyUj2qJ4TtDcqS2nXi7JsFHNtQWIHUSAtgqlG6qON0guwYnW0
+	56F2EERkCHwt/++3KEa4t1dkAEWRkoKdmS7lqrKFOhCou6gp6RLLjWOrZA+iVp+cBpi9qg
+	ZddG0I6VT33H96Z0zmcVdAHJZgX2koWJvBnV0vzqfd8RdnvcSTH1ELDu6S7oK4oDkMRDaw
+	TCiyR6vxBFMNb5ihk5BjY1mBvtrV7jvoImC/0VafQ3k5ka2x6CQoD9NdnoSzFNSI+tzKTC
+	ISW142MdP99AyzByBfj11pKKnaGN/ovEaSRsipXlCSxE9sXn769bqgBSWejFDQ==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Fri, 11 Apr 2025 16:46:09 +0200
-Subject: [PATCH 1/2] runqueue: decrease the verbosity of pressure messages
+Date: Fri, 11 Apr 2025 16:46:10 +0200
+Subject: [PATCH 2/2] doc: bitbake-user-manual-ref-variables: improve
+ BB_PRESSURE_* doc
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250411-bb-pressure-improvements-v1-1-7d9e3593167f@bootlin.com>
+Message-Id: <20250411-bb-pressure-improvements-v1-2-7d9e3593167f@bootlin.com>
 References: <20250411-bb-pressure-improvements-v1-0-7d9e3593167f@bootlin.com>
 In-Reply-To: <20250411-bb-pressure-improvements-v1-0-7d9e3593167f@bootlin.com>
 To: bitbake-devel@lists.openembedded.org
@@ -39,57 +40,123 @@ Cc: docs@lists.yoctoproject.org,
  Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1675;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4336;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=MbhiDgyrFjcyzeQUDmOpy7/oUOXQTxiteJW1UVjYNiU=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn+StAN537DGPUPE1maH1Zth1dAaBbGypjj3JJN
- EQZDWlL+8eJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ/krQAAKCRDRgEFAKaOo
- NmCsD/9j4nKYfkcrbZToZPjdBuxumSvq7Y6oFhBUPX/51p0LjyfRTLJ1sH1SV+wMjdkwu0KAzkH
- LwOLxRlfmp9OeekdRAdZIDXY6ddrrgSskIoZvWtTfJMyeLgKKOZAWce/AKkraAbmPvH03o2/8YQ
- kLmaNPi0v+RsEJOZglEiG9U/xmJnQ8GhqXog1dyMyUK4e+IoBqLyybLRQ+z6DdVJS/LDEhk/JCH
- lzXxLqITDblrcUOuuZTnxvgljXBtWkMww25kfaWsy9D4nso+wNVU4W4xFmfUJfx2dK8ANQRsxub
- XwVKFME3AhLRL92TKNjB7oPzVDeZUXDpN3fmrpbx1OP0Mk5/Arez7udbWBbjL4nV10wSjEitGOz
- 5TJDsGZ3DYkkYufc+4wVmN8o8loEtS4r0SHKljGJodEAhiVmzSUVmTJKgzr7wnDpNLqHYdnpjks
- O0T00SuKAdyug9s9L4dNlOajtq7Mej0XOVV68oLYfTaZ2PwqXk6EPb2781QnVbmD4COQI/GCe7W
- S2LXgmKeNYOJITUVkhV+AzNKcSNWwvc1KUr34FR+LLfgrfBKiim5/gNcDFV1uL2oTfC82UkFfq2
- Mj8Q1rK0F/LF/+OL8/v9Mt/hQ/0472z+494XTd8u106zFdczQOcI8r3A0gtpiuUaM7GpivdopG6
- in3eA1vFzzcXO8w==
+ bh=yYHTERhxMrOc4ddXV7n5nDtMuMy5thO0duT7XafwEFs=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn+StAtk/Y5uSixr1DEGz2WVLs6Q5/fr7/bKfsd
+ uO2tR7o33CJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ/krQAAKCRDRgEFAKaOo
+ NkEpD/4pkycbQ/DzhLNUYBXimt6+PYYMeG1CRSn2b2AjIKQTPAEj8pGpwiWV77QJjrAALNaaCn3
+ OAAMeiJBfiI4zKBR3zI96yyI3v3gb2zkcetruCU8nHNTEbahqnJJghkaOCIEd1yxlBm/GO8T1dA
+ onEHeCg6OYA9QbR9WTioehS2yOIq8JU8JNDZrL7PPANrS5C6zttKKFW7Pv6B0MkC9cpxlsRMW/2
+ 9ZuoDoHPJ7UfY8EgXhSHypOGaGR74pukM/zDpenYeCHayoXQ/DBRi86E3K7l4fAvel+J63+rhEz
+ m9Rk5Oj1xrlnjube+49f1VQ/WTZGYrbkMwb1d0qHntIbDVgkuJ2z4amvnE15wReH5eCPT6piGBX
+ xpueaGnrH71+qOygxMYL3XDXHC/fiPcxK7UwDOSsPRNL7sgHWyx9BgCjaCINv+PL5WT1/vW5d8u
+ Um3eKNElhm7KnUKNsmZSNlPq0iVDgRq/5r41LwSghA2qoK0oA/4wKq3V+H2RS8OQ53EOjihpcz1
+ vzawru+j16PdyBcrVvnaULLmq9vz4rWfiBmTiyz2XJh5+5/NK9bBWzmsyoKNZ1rJOG0PFBB/IHy
+ 1AaunT0U1FrfMPJo11xy3U6h0lAZCThqWpaTOhQ9HvpYkFB/9ujYyx2lYCmIdhkTQru0TfJ73KS
+ sb0HNrPDaqghH7w==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvuddvtdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmeeisgelleemvghfheegmedvtdgrfeemiehfgedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmeeisgelleemvghfheegmedvtdgrfeemiehfgedvpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegsihhtsggrkhgvqdguvghvvghlsehlihhsthhsrdhophgvnhgvmhgsvgguuggvugdrohhrghdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpv
- ghtrgiiiihonhhisegsohhothhlihhnrdgtohhmpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvuddvtdekucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeigeetleehkeeggefhiedvveetfeetjedvledvffelgeehgeellefhiedutdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvddphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepsghithgsrghkvgdquggvvhgvlheslhhishhtshdrohhpvghnvghmsggvugguvggurdhorhhgpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdro
+ hhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 11 Apr 2025 14:46:31 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6736
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6737
 
-By default all the pressure changes are printed on the console and
-generate a lot of spam to users using the BB_PRESSURE_* variables.
-Decrease the default verbosity to bb.debug (level 1, so can be seen with
--D).
+The current default value for BB_PRESSURE_MAX_CPU is 500, which is
+really low. Provide a value of 15000 which limits the load average
+without being extremely slow either.
+
+Provide similar values for BB_PRESSURE_MAX_IO and
+BB_PRESSURE_MAX_MEMORY. Mention that these should be adjusted depending
+on the need.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
- lib/bb/runqueue.py | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../bitbake-user-manual-ref-variables.rst          | 37 +++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 5 deletions(-)
 
-diff --git a/lib/bb/runqueue.py b/lib/bb/runqueue.py
-index 8fadc8338..adfe3c7a1 100644
---- a/lib/bb/runqueue.py
-+++ b/lib/bb/runqueue.py
-@@ -219,7 +219,7 @@ class RunQueueScheduler(object):
-             pressure_state = (exceeds_cpu_pressure, exceeds_io_pressure, exceeds_memory_pressure)
-             pressure_values = (round(cpu_pressure,1), self.rq.max_cpu_pressure, round(io_pressure,1), self.rq.max_io_pressure, round(memory_pressure,1), self.rq.max_memory_pressure)
-             if hasattr(self, "pressure_state") and pressure_state != self.pressure_state:
--                bb.note("Pressure status changed to CPU: %s, IO: %s, Mem: %s (CPU: %s/%s, IO: %s/%s, Mem: %s/%s) - using %s/%s bitbake threads" % (pressure_state + pressure_values + (len(self.rq.runq_running.difference(self.rq.runq_complete)), self.rq.number_tasks)))
-+                bb.debug(1, "Pressure status changed to CPU: %s, IO: %s, Mem: %s (CPU: %s/%s, IO: %s/%s, Mem: %s/%s) - using %s/%s bitbake threads" % (pressure_state + pressure_values + (len(self.rq.runq_running.difference(self.rq.runq_complete)), self.rq.number_tasks)))
-             self.pressure_state = pressure_state
-             return (exceeds_cpu_pressure or exceeds_io_pressure or exceeds_memory_pressure)
-         elif self.rq.max_loadfactor:
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+index 477443e22..3364e57a8 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-ref-variables.rst
+@@ -533,11 +533,18 @@ overview of their function and contents.
+       version 4.20 expose under ``/proc/pressure``. The threshold represents
+       the difference in "total" pressure from the previous second. The
+       minimum value is 1.0 (extremely slow builds) and the maximum is
+-      1000000 (a pressure value unlikely to ever be reached).
++      1000000 (a pressure value unlikely to ever be reached). See
++      https://docs.kernel.org/accounting/psi.html for more information.
+ 
+-      This threshold can be set in ``conf/local.conf`` as::
++      A default value to limit the CPU pressure to be set in ``conf/local.conf``
++      could be::
++
++         BB_PRESSURE_MAX_CPU = "15000"
++
++      Multiple values should be tested on the build host to determine what suits
++      best, depending on the need for performances versus load average during
++      the build.
+ 
+-         BB_PRESSURE_MAX_CPU = "500"
+ 
+    :term:`BB_PRESSURE_MAX_IO`
+       Specifies a maximum I/O pressure threshold, above which BitBake's
+@@ -549,12 +556,22 @@ overview of their function and contents.
+       version 4.20 expose under ``/proc/pressure``. The threshold represents
+       the difference in "total" pressure from the previous second. The
+       minimum value is 1.0 (extremely slow builds) and the maximum is
+-      1000000 (a pressure value unlikely to ever be reached).
++      1000000 (a pressure value unlikely to ever be reached). See
++      https://docs.kernel.org/accounting/psi.html for more information.
+ 
+       At this point in time, experiments show that IO pressure tends to
+       be short-lived and regulating just the CPU with
+       :term:`BB_PRESSURE_MAX_CPU` can help to reduce it.
+ 
++      A default value to limit the I/O pressure to be set in ``conf/local.conf``
++      could be::
++
++         BB_PRESSURE_MAX_IO = "15000"
++
++      Multiple values should be tested on the build host to determine what suits
++      best, depending on the need for performances versus I/O usage during the
++      build.
++
+    :term:`BB_PRESSURE_MAX_MEMORY`
+ 
+       Specifies a maximum memory pressure threshold, above which BitBake's
+@@ -566,7 +583,8 @@ overview of their function and contents.
+       version 4.20 expose under ``/proc/pressure``. The threshold represents
+       the difference in "total" pressure from the previous second. The
+       minimum value is 1.0 (extremely slow builds) and the maximum is
+-      1000000 (a pressure value unlikely to ever be reached).
++      1000000 (a pressure value unlikely to ever be reached). See
++      https://docs.kernel.org/accounting/psi.html for more information.
+ 
+       Memory pressure is experienced when time is spent swapping,
+       refaulting pages from the page cache or performing direct reclaim.
+@@ -574,6 +592,15 @@ overview of their function and contents.
+       might be useful as a last resort to prevent OOM errors if they are
+       occurring during builds.
+ 
++      A default value to limit the memory pressure to be set in
++      ``conf/local.conf`` could be::
++
++         BB_PRESSURE_MAX_MEMORY = "15000"
++
++      Multiple values should be tested on the build host to determine what suits
++      best, depending on the need for performances versus memory consumption
++      during the build.
++
+    :term:`BB_RUNFMT`
+       Specifies the name of the executable script files (i.e. run files)
+       saved into ``${``\ :term:`T`\ ``}``. By default, the
 
 -- 
 2.47.0
