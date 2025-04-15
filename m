@@ -1,132 +1,181 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <ypa.takayasu.ito@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 19053C369AB
-	for <webhook@archiver.kernel.org>; Tue, 15 Apr 2025 13:52:09 +0000 (UTC)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
- by mx.groups.io with SMTP id smtpd.web11.20653.1744725128023592028
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F687C369AB
+	for <webhook@archiver.kernel.org>; Tue, 15 Apr 2025 22:34:39 +0000 (UTC)
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
+ by mx.groups.io with SMTP id smtpd.web11.6888.1744756469290891074
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Apr 2025 06:52:08 -0700
+ Tue, 15 Apr 2025 15:34:29 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LDNhAU1D;
- spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id D7B6643A21;
-	Tue, 15 Apr 2025 13:52:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744725126;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=dRGWcFoWnu73rjvHf+W4Yf+SavhbPo54DgmkYnTgh9M=;
-	b=LDNhAU1DCx+JiOsoH31GVAI4eNAIlDhUClRbHE3MoWiQfaPH9YEQTxs6i/ks5DiWD0Bgy0
-	VG0jnOY4ZT9vOctZ00wKPR7OqoiIQj3rLZMCCy1/twiFqk+m0yyBBwtByiR849hdpxK5as
-	lmukgL2S69YJsyVkzKxifivnZVcC0ok/YnLbMpqFGuSGo1JxEyoLc7tkafunN+zv2GpaEd
-	hLeV8fEg3ZdiwOwKWJtWIyqmRo6j9RVubRhtRi9uL/IbEKTnZPnwpUAjLyWU2phbyYPiGe
-	q3aiofQTSmXp0M9eGMNXWN+NiCuYbD4bXCqxqzRHn4oSWB3YpYd+loSFfWMOVA==
-From: Antonin Godard <antonin.godard@bootlin.com>
-Date: Tue, 15 Apr 2025 15:52:00 +0200
-Subject: [PATCH v2] migration-guides/{migration,release-notes}-5.2.rst:
- notes for systemd pni-names
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=ZNKXYAON;
+ spf=pass (domain: gmail.com, ip: 209.85.214.196, mailfrom: ypa.takayasu.ito@gmail.com)
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-223f4c06e9fso1202825ad.1
+        for <docs@lists.yoctoproject.org>; Tue, 15 Apr 2025 15:34:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744756469; x=1745361269; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tMTvJTfj8PSFd1CWl5QyL50E9BgzatwTr34u+ewJM3Y=;
+        b=ZNKXYAONerWH/m0prWwkU46IFExroh55QXpO7D443kUzou6bheHafLolDLCTDHupxN
+         HK0yQc4Ik5GvgpGASLlcs1l7WFyg+f+Jt5GvtA9F8YpxaUrAeQa1jaVMRCEt+zKQRuYY
+         6pvGzWYC9S4RkGdYlaKPIF25J8Lq3M0qy6E239xhUWnYf5Lspr3tQrv9J9+eRy038rHv
+         7bx271t3adbYxfoIQFEhtSPXOnkdTvKUX6ORqftybzP/7SoPHgOCqf8MqgpR6gAUmTNC
+         CaUydhUHLt0D0YyL0r/KpaxumarXmp8WfXcC/HJbk4+E+0vd0wTn/hyvbhyHsKSe5qfo
+         VbSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744756469; x=1745361269;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tMTvJTfj8PSFd1CWl5QyL50E9BgzatwTr34u+ewJM3Y=;
+        b=FSMLnSGnZkTFnlYLI1QJcovzbq5vgkwmKXIgjRGvuVqQxHWCwwpgt/CHJXmATW4pVl
+         Dqf2N/FhRlpCuykWrpDy1pAzRobJt/+3gm6/dGNHIuL8AO+bTHPb06h1+5Erzx7XHxGX
+         B2jesCDevq74SSiuL4Y72i76Kp0wAZ8jqNqQTJp1t1M2Hv6OWQaMz3Utnc26JNb4uPr9
+         Ac9hSwETPhKg3cDlP3B9TInCZ4BrE+OtY1CK408taCWrIggFlnXd2Lz0xvDCXOz186KY
+         SxZx24sw185QOjGL+JXj6oKENGFA+V71nBcEAZQMTmsl1dGZ5RvH8lFgPE4p6w+k+Mod
+         T33Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWgTENOOEhpa5Mi5pMDBZokgOyoEfAZJH20QQxOt4nU7Xxh+9TwAb5AehGnfXiwq8H8KP0i@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0Yx5JYS3PzJtGCsvfZFvtyT1ZN9qVAD+/DR7pD7SdpYYVval4/ai
+	wuQPLAluadHU2HKi9JM3bwcXIciwwSiPI2crWZSRLLrSDRIt+TA8+FxI3ruO
+X-Gm-Gg: ASbGnctJAGuEptmT+vgU6AIOTnvQFrMdvVwrKGGogPahtdICh3Rnro//q+IOfIo5LDF
+	D2o/zl8a6q3xOQB6hsHOoUgF0mzh8Ba59IfEFjJRCwJJZJk0uOlewZZyLYttvZLX2dfQLpN9stn
+	Lrlxcs/B0py4V7lrnZ9QXFySRghuPo1vwn4KenssRjZ0JlLXcfxBdaLXPj1BOAUPiQjwIVRxtYz
+	82yj7w3OlKu/T5CurWW4SbCpW3wD5dw79NI6f8TwN/87nJbeTnEGUYlWAUFD9T3Z/wi9vVG/8i0
+	51YRTM7bU9Z7KTfNEhbjiEYVYlrNT5id5TdMrLMKVHfvCJjov+j+gDjJ1vJI03PhLUMrWZIAR5M
+	zPF4paVfeitKQHTAqNJv7uBxH37o8q2U=
+X-Google-Smtp-Source: AGHT+IGdQgmzOJ754iwJx4QnE9O1DXLG5og12ClYWa765SG5rIkYyzzOJw/hcJWjlH8XEI+IrP4d4Q==
+X-Received: by 2002:a17:902:f646:b0:221:89e6:ccb6 with SMTP id d9443c01a7336-22c30d8a7c8mr22310065ad.25.1744756468489;
+        Tue, 15 Apr 2025 15:34:28 -0700 (PDT)
+Received: from ?IPV6:2400:2412:6a60:8500:44d3:5fb4:bb45:e203? ([2400:2412:6a60:8500:44d3:5fb4:bb45:e203])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fa5d83sm504295ad.125.2025.04.15.15.34.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 15 Apr 2025 15:34:28 -0700 (PDT)
+Message-ID: <a9fd9bfb-dee9-4e94-8a95-d5673a9fd18c@gmail.com>
+Date: Wed, 16 Apr 2025 07:34:23 +0900
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250415-systemd-migration-note-v2-1-f23b14bd62a5@bootlin.com>
-X-B4-Tracking: v=1; b=H4sIAH9k/mcC/4WNQQ6CMBBFr0Jm7RhaioIr72FYQDvAJNKStmkkh
- LtbuYDL9/P/+zsE8kwBHsUOnhIHdjaDvBSg595OhGwygyxlXSpRY9hCpMXgwpPvY26jdZGwulH
- TVlqTkQ3k8epp5M8pfnWZZw7R+e38SeKX/lUmgQKlGluiu5ZDq56Dc/HN9qrdAt1xHF/hefXNv
- gAAAA==
-X-Change-ID: 20250415-systemd-migration-note-36e893cced28
-To: docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- =?utf-8?q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>, 
- Antonin Godard <antonin.godard@bootlin.com>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2746;
- i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=hIeAJVk7y7omt4pusrwuIxBRoK2L7yXuLCKPfxu/P8Y=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn/mSFdF2mT+b1EZ10FkGErCeqpf1tJgnxE1qTR
- ZitwzIImzWJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ/5khQAKCRDRgEFAKaOo
- Nu2IEACtjxSubO0/Ep6zbZqXjS5bPBT2zncxQjjKfwTVoDcrtJPi7xTJYWDdk2YeC5Wwc+aqEkq
- VdOTiYXynzpn+DsYmsfwR4mRN9rc0iV8qjjoA/+Br0+RpeP2kbPP8jFF/J1ZGacMbzCceyYA69F
- /dQT9Jo7zE1uvH8R3OwhXTs/oLiSZZVBpC463+cgDbbnXZfCnkBK3ykAYLV0gLHCLmvSpU0V0BA
- RC3nutY9Dig91ZKtMajPBF7KrecBZKvcAD5nXY5GIypgIM9amChhmwAcMwhj+23bOEWGqdAE6Jf
- kfDXgkl8DWzZD9F8Yz92sqbN9a5+4no0C7vxq7GUx9YWkMKvW76DFHNK2/9cLzL8pnjXzS+0/Ed
- gnxTcWns1BwZgJ3ECCgnxrF8AvkMdjP2xX2QtbDIdQQcvNDER6nr4w2XdYVKWEHxKv8tycImQku
- jQD5Ix+2zJ0GG4fekgTxfE3LnrDzwiQzv5w6+WUej5kq2V5J5FPIEK7GZ1tyCxvU7rEQYd+vUbQ
- QmFP5Ds5u1yKcSBspfD32wMa/xWlbHH6Uo71PhoVL05hrVDfxlWU9x8LdFNb2o+kJPAWohWCATe
- GGMXEn2AHKSGT5uqup3TydoOA9W6LisePUFaw/9NWl8sRgGyqZOhEt8sUcWjtokG/XxD+BNSwiD
- 6lvtKdiiTGgJDYA==
-X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
- fpr=8648725188DD401BB9A0D3FFD180414029A3A836
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdefieehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkvfevofesthekredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeejkeefteegfeeifeelheekheeivdehiefgvedvheegleeljefgtefgvddtgffhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhfrhgvvgguvghskhhtohhprdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvddphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepvghjohesphgvnhhguhhtrhhonhhigidruggvpdhrt
- ghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
-X-GND-Sasl: antonin.godard@bootlin.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [docs] [PATCH 04/11] migration-guides/release-notes-5.2.rst: add
+ security fixes
+To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+References: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
+ <20250328-release-note-5-2-updates-2-v1-4-c913513e9140@bootlin.com>
+ <5fc0d33e-4ba5-4f8d-80c2-c5c87be79680@gmail.com>
+ <D976ZCV50JQR.3B8GAANQILPQ1@bootlin.com>
+From: Takayasu Ito <ypa.takayasu.ito@gmail.com>
+Content-Language: en-US
+In-Reply-To: <D976ZCV50JQR.3B8GAANQILPQ1@bootlin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 15 Apr 2025 13:52:09 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6750
+ <docs@lists.yoctoproject.org>; Tue, 15 Apr 2025 22:34:39 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6751
 
-Add a note to the migration guide regarding the pni-names behavior
-change.
+Hi Antonin,
 
-Suggested-by: Enrico Jörns <ejo@pengutronix.de>
-Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
----
-Changes in v2:
-- Add missing "not" in migration note (thanks to Daniel Ammann).
-- Link to v1: https://lore.kernel.org/r/20250415-systemd-migration-note-v1-1-24f9ee7c2b94@bootlin.com
----
- documentation/migration-guides/migration-5.2.rst     | 7 +++++++
- documentation/migration-guides/release-notes-5.2.rst | 7 ++++---
- 2 files changed, 11 insertions(+), 3 deletions(-)
+I could not post the patch because I did not have the development environment with me due to machine trouble.
 
-diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
-index 6b7d02d65..9e9f466ad 100644
---- a/documentation/migration-guides/migration-5.2.rst
-+++ b/documentation/migration-guides/migration-5.2.rst
-@@ -104,6 +104,13 @@ systemd changes
-    ``journald.conf`` to "persistent". The ``/var/log/journal`` directory is now
-    used for logging instead of ``/run/log``.
- 
-+-  If ``pni-names`` is not in the :term:`DISTRO_FEATURES`, the `Predictable
-+   Network Interface names <https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/>`__
-+   systemd feature will now be disabled. Previously the feature was still
-+   enabled even if ``pni-names`` was not part of :term:`DISTRO_FEATURES`. Make
-+   sure to add the feature to :term:`DISTRO_FEATURES` if you want to keep this
-+   systemd behavior.
-+
- Multiconfig changes
- ~~~~~~~~~~~~~~~~~~~
- 
-diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
-index ac9c6319a..0ac276c1e 100644
---- a/documentation/migration-guides/release-notes-5.2.rst
-+++ b/documentation/migration-guides/release-notes-5.2.rst
-@@ -523,9 +523,10 @@ New Features / Enhancements in |yocto-ver|
-          ``${libdir}`` if the ``set-time-epoch`` :term:`PACKAGECONFIG` config is
-          set.
- 
--      -  really disable Predictable Network Interface names if the ``pni-names``
--         feature is not part of :term:`DISTRO_FEATURES`. Previously it was only
--         really disable for QEMU machines.
-+      -  really disable `Predictable Network Interface names
-+         <https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/>`__
-+         if the ``pni-names`` feature is not part of :term:`DISTRO_FEATURES`.
-+         Previously it was only really disabled for QEMU machines.
- 
-       -  split ``networkd`` into its own package named ``systemd-networkd``.
- 
+On 2025/04/15 20:56, Antonin Godard wrote:
+> Hi Takayasu,
+> 
+> On Sat Apr 12, 2025 at 6:38 PM CEST, Takayasu Ito wrote:
+>> Hi all.
+>>
+>> * CVEs that have been fixed but are not on the list
+>>
+>> < +   * -  ``gstreamer1.0``
+>> < +     - :cve_nist:`2024-47606`
+>> < +   * -  ``gstreamer1.0-plugins-base``
+>> < +     - :cve_nist:`2024-47538`, :cve_nist:`2024-47541`, :cve_nist:`2024-47542`,  :cve_nist:`2024-47600`,
+>> :cve_nist:`2024-47607`, :cve_nist:`2024-47615`, :cve_nist:`2024-47835`
+>> < +   * -  ``gstreamer1.0-plugins-good``
+>> < +     - :cve_nist:`2024-47537`, :cve_nist:`2024-47539`, :cve_nist:`2024-47540`, :cve_nist:`2024-47543`,
+>> :cve_nist:`2024-47544`, :cve_nist:`2024-47545`, :cve_nist:`2024-47546`, :cve_nist:`2024-47596`, :cve_nist:`2024-47597`,
+>> :cve_nist:`2024-47598`, :cve_nist:`2024-47599`, :cve_nist:`2024-47601`, :cve_nist:`2024-47602`, :cve_nist:`2024-47603`,
+>> :cve_nist:`2024-47606`, :cve_nist:`2024-47613`, :cve_nist:`2024-47774`, :cve_nist:`2024-47775`, :cve_nist:`2024-47776`,
+>> :cve_nist:`2024-47777`, :cve_nist:`2024-47778`, :cve_nist:`2024-47834`
+>> see https://gstreamer.freedesktop.org/security/
+>>
+>> < +   * - ``openssh``
+>> < +     - :cve_nist:`2025-26465`, :cve_nist:`2025-26466`
+>> see https://www.openssh.com/txt/release-9.9p2
+>>
+>> < +   * - ``socat``
+>> < +     - :cve_nist:`2024-54661`
+>> see http://www.dest-unreach.org/socat/
+>>
+>> * CVEs already fixed in previous releases
+>>
+>>   > +   * - ``libssh2``
+>>   > +     - :cve_nist:`2023-48795`
+>>
+>> The patch for CVE-2023-28795, which is no longer needed due to libssh2 upgrading to 1.11.1, was committed on 2024/01/24 and has
+>> already been fixed at the time of the scarthgap release, so we do not consider it necessary to post it to this list of fixes.
+>> see:
+>> https://git.yoctoproject.org/poky/commit/meta/recipes-support/libssh2/libssh2?h=walnascar&id=3adac25f899054b7d1d8c14458a1a4cd310abbd7
+>>
+>>
+>> * CVE numbers that should be changed in ascending order
+>>
+>>   > +   * - ``expat``
+>>   > +     - :cve_nist:`2024-50602`, :cve_nist:`2024-8176`
+>> < +   * - ``expat``
+>> < +     - :cve_nist:`2024-8176`, :cve_nist:`2024-50602`
+>>
+>>
+>>   > +   * - ``grub``
+>>   > +     - :cve_nist:`2024-45781`, :cve_nist:`2024-45782`, :cve_nist:`2024-56737`, :cve_nist:`2024-45780`,
+>> :cve_nist:`2024-45783`, :cve_nist:`2025-0624`, :cve_nist:`2024-45774`, :cve_nist:`2024-45775`, :cve_nist:`2025-0622`,
+>> :cve_nist:`2024-45776`, :cve_nist:`2024-45777`, :cve_nist:`2025-0690`, :cve_nist:`2025-1118`, :cve_nist:`2024-45778`,
+>> :cve_nist:`2024-45779`, :cve_nist:`2025-0677`, :cve_nist:`2025-0684`, :cve_nist:`2025-0685`, :cve_nist:`2025-0686`,
+>> :cve_nist:`2025-0689`, :cve_nist:`2025-0678`, :cve_nist:`2025-1125`
+>> < +   * - ``grub``
+>> < +     - :cve_nist:`2024-45774`, :cve_nist:`2024-45775`, :cve_nist:`2024-45776`, :cve_nist:`2024-45777`,
+>> :cve_nist:`2024-45778`, :cve_nist:`2024-45779`, :cve_nist:`2024-45780`, :cve_nist:`2024-45781`, :cve_nist:`2024-45782`,
+>> :cve_nist:`2024-45783`, :cve_nist:`2024-56737`, :cve_nist:`2025-0622`, :cve_nist:`2025-0624`, :cve_nist:`2025-0677`,
+>> :cve_nist:`2025-0678`, :cve_nist:`2025-0684`, :cve_nist:`2025-0685`, :cve_nist:`2025-0686`, :cve_nist:`2025-0689`,
+>> :cve_nist:`2025-0690`, :cve_nist:`2025-1118`, :cve_nist:`2025-1125`
+>>
+>>   > +   * - ``libarchive``
+>>   > +     - :cve_nist:`2024-57970`, :cve_nist:`2025-25724`, :cve_nist:`2025-1632`
+>> < +   * - ``libarchive``
+>> < +     - :cve_nist:`2024-57970`, :cve_nist:`2025-1632`, :cve_nist:`2025-25724`
+>>
+>>   > +   * - ``libxml2``
+>>   > +     - :cve_nist:`2025-24928`, :cve_nist:`2024-56171`
+>> < +   * - ``libxml2``
+>> < +     - :cve_nist:`2024-56171`, :cve_nist:`2025-24928`
+>>
+>>   > +   * - ``tiff``
+>>   > +     - :cve_nist:`2023-52356`, :cve_nist:`2023-6228`, :cve_nist:`2023-6277`
+>> < +   * - ``tiff``
+>> < +     - :cve_nist:`2023-6277`, :cve_nist:`2023-52356`, :cve_nist:`2023-6228`
+>>
+>>   > +   * - ``vim``
+>>   > +     - :cve_nist:`2024-45306`, :cve_nist:`2024-47814`, :cve_nist:`2025-22134`, :cve_nist:`2025-24014`,
+>> :cve_nist:`2025-26603`, :cve_nist:`2025-1215`, :cve_nist:`2025-27423`, :cve_nist:`2025-29768`
+>> < +   * - ``vim``
+>> < +     - :cve_nist:`2024-45306`, :cve_nist:`2024-47814`, :cve_nist:`2025-1215`, :cve_nist:`2025-22134`, :cve_nist:`2025-24014`,
+>> :cve_nist:`2025-26603`, :cve_nist:`2025-27423`, :cve_nist:`2025-29768`
+> 
+> Thanks!
+> 
+> Can you please send a patch on the mailing list with these additions? So that
+> you take credit for the changes. Please also describe how you came up with this
+> list.
+> 
+> Regards,
+> Antonin
+> 
 
----
-base-commit: 1ed64dbdf4a60b000305cdc2c67dc24f4bc97ef7
-change-id: 20250415-systemd-migration-note-36e893cced28
-
-Best regards,
---
-Antonin Godard <antonin.godard@bootlin.com>
+-- 
+Takayasu Ito
+Yocto Project Ambassador
+ypa.takayasu.ito@gmail.com
 
 
