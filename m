@@ -2,100 +2,131 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F300FC369AB
-	for <webhook@archiver.kernel.org>; Tue, 15 Apr 2025 13:49:38 +0000 (UTC)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web11.20599.1744724976828905795
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 19053C369AB
+	for <webhook@archiver.kernel.org>; Tue, 15 Apr 2025 13:52:09 +0000 (UTC)
+Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+ by mx.groups.io with SMTP id smtpd.web11.20653.1744725128023592028
  for <docs@lists.yoctoproject.org>;
- Tue, 15 Apr 2025 06:49:37 -0700
+ Tue, 15 Apr 2025 06:52:08 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=b9r3gW3K;
- spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 7D31343927;
-	Tue, 15 Apr 2025 13:49:34 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=LDNhAU1D;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.197, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D7B6643A21;
+	Tue, 15 Apr 2025 13:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744724974;
+	t=1744725126;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EF7DlxwC606EgqaybIDuu6G3413gJ56lhcO61EWGeO8=;
-	b=b9r3gW3K8tuEQtenwNebCQqc0Tqh806QjC0xXlRqkVnbpWr4yV3CavTXsKUf48NNS65OUx
-	43vqdJLSxYcJKSXx/rKH+P5Dc/5wdS4pCwqSQBW9KzN6+zJE4Q9wd6zvnQcnbMC/5XoJzA
-	WIhZLqHYbQqJAGnBIZr4whQW99daxNEOHZP6UZkuLxkBKaS7+dvY6JMsSZrXPe2pIy4Zc5
-	1d9R+sabI4t8aGZpkur1oIA3e/5d7JUCZkFLJy8Fh8r0DJhoXcGqYAHkYRW69Gm/SQFxOk
-	VZpK/Unw1DjhPnRlOhm21UzKfX7VsmipbLq8D5QiATdB8n4lNNnhemBfuJIV4A==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 15 Apr 2025 15:49:34 +0200
-Message-Id: <D979DW160AWA.3BNSCK8AIH7I0@bootlin.com>
-Subject: Re: [docs] [PATCH]
- migration-guides/{migration,release-notes}-5.2.rst: notes for systemd
- pni-names
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>,
- =?utf-8?q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Daniel Ammann" <daniel.ammann@bytesatwork.ch>,
- <docs@lists.yoctoproject.org>
-X-Mailer: aerc 0.20.1-57-gc9a57f76bf52-dirty
-References: <20250415-systemd-migration-note-v1-1-24f9ee7c2b94@bootlin.com>
- <235677f5-9ad7-4653-b23d-7a57c5cd8812@bytesatwork.ch>
-In-Reply-To: <235677f5-9ad7-4653-b23d-7a57c5cd8812@bytesatwork.ch>
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=dRGWcFoWnu73rjvHf+W4Yf+SavhbPo54DgmkYnTgh9M=;
+	b=LDNhAU1DCx+JiOsoH31GVAI4eNAIlDhUClRbHE3MoWiQfaPH9YEQTxs6i/ks5DiWD0Bgy0
+	VG0jnOY4ZT9vOctZ00wKPR7OqoiIQj3rLZMCCy1/twiFqk+m0yyBBwtByiR849hdpxK5as
+	lmukgL2S69YJsyVkzKxifivnZVcC0ok/YnLbMpqFGuSGo1JxEyoLc7tkafunN+zv2GpaEd
+	hLeV8fEg3ZdiwOwKWJtWIyqmRo6j9RVubRhtRi9uL/IbEKTnZPnwpUAjLyWU2phbyYPiGe
+	q3aiofQTSmXp0M9eGMNXWN+NiCuYbD4bXCqxqzRHn4oSWB3YpYd+loSFfWMOVA==
+From: Antonin Godard <antonin.godard@bootlin.com>
+Date: Tue, 15 Apr 2025 15:52:00 +0200
+Subject: [PATCH v2] migration-guides/{migration,release-notes}-5.2.rst:
+ notes for systemd pni-names
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20250415-systemd-migration-note-v2-1-f23b14bd62a5@bootlin.com>
+X-B4-Tracking: v=1; b=H4sIAH9k/mcC/4WNQQ6CMBBFr0Jm7RhaioIr72FYQDvAJNKStmkkh
+ LtbuYDL9/P/+zsE8kwBHsUOnhIHdjaDvBSg595OhGwygyxlXSpRY9hCpMXgwpPvY26jdZGwulH
+ TVlqTkQ3k8epp5M8pfnWZZw7R+e38SeKX/lUmgQKlGluiu5ZDq56Dc/HN9qrdAt1xHF/hefXNv
+ gAAAA==
+X-Change-ID: 20250415-systemd-migration-note-36e893cced28
+To: docs@lists.yoctoproject.org
+Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ =?utf-8?q?Enrico_J=C3=B6rns?= <ejo@pengutronix.de>, 
+ Antonin Godard <antonin.godard@bootlin.com>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2746;
+ i=antonin.godard@bootlin.com; h=from:subject:message-id;
+ bh=hIeAJVk7y7omt4pusrwuIxBRoK2L7yXuLCKPfxu/P8Y=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBn/mSFdF2mT+b1EZ10FkGErCeqpf1tJgnxE1qTR
+ ZitwzIImzWJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCZ/5khQAKCRDRgEFAKaOo
+ Nu2IEACtjxSubO0/Ep6zbZqXjS5bPBT2zncxQjjKfwTVoDcrtJPi7xTJYWDdk2YeC5Wwc+aqEkq
+ VdOTiYXynzpn+DsYmsfwR4mRN9rc0iV8qjjoA/+Br0+RpeP2kbPP8jFF/J1ZGacMbzCceyYA69F
+ /dQT9Jo7zE1uvH8R3OwhXTs/oLiSZZVBpC463+cgDbbnXZfCnkBK3ykAYLV0gLHCLmvSpU0V0BA
+ RC3nutY9Dig91ZKtMajPBF7KrecBZKvcAD5nXY5GIypgIM9amChhmwAcMwhj+23bOEWGqdAE6Jf
+ kfDXgkl8DWzZD9F8Yz92sqbN9a5+4no0C7vxq7GUx9YWkMKvW76DFHNK2/9cLzL8pnjXzS+0/Ed
+ gnxTcWns1BwZgJ3ECCgnxrF8AvkMdjP2xX2QtbDIdQQcvNDER6nr4w2XdYVKWEHxKv8tycImQku
+ jQD5Ix+2zJ0GG4fekgTxfE3LnrDzwiQzv5w6+WUej5kq2V5J5FPIEK7GZ1tyCxvU7rEQYd+vUbQ
+ QmFP5Ds5u1yKcSBspfD32wMa/xWlbHH6Uo71PhoVL05hrVDfxlWU9x8LdFNb2o+kJPAWohWCATe
+ GGMXEn2AHKSGT5uqup3TydoOA9W6LisePUFaw/9NWl8sRgGyqZOhEt8sUcWjtokG/XxD+BNSwiD
+ 6lvtKdiiTGgJDYA==
+X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
+ fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdefieeiucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvofhfjgesthhqredtredtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgfeiueekteelgfdthfetvdeigeetieffheetteduudduieehteeggedvheetueenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdhfrhgvvgguvghskhhtohhprdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvddphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtohepuggrnhhivghlrdgrmhhmrghnnhessgihthgvshgrthifohhrkhdrtghhpdhrtghpthhto
- hepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopegvjhhosehpvghnghhuthhrohhnihigrdguvg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvvdefieehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkvfevofesthekredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeejkeefteegfeeifeelheekheeivdehiefgvedvheegleeljefgtefgvddtgffhjeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgpdhfrhgvvgguvghskhhtohhprdhorhhgnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemiegsleelmegvfhehgeemvddtrgefmeeifhegvddphhgvlhhopegluddvjedrtddruddrudgnpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeegpdhrtghpthhtoheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhrtghpthhtohepvghjohesphgvnhhguhhtrhhonhhigidruggvpdhrt
+ ghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomh
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 15 Apr 2025 13:49:38 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6749
+ <docs@lists.yoctoproject.org>; Tue, 15 Apr 2025 13:52:09 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6750
 
-Hi Daniel,
+Add a note to the migration guide regarding the pni-names behavior
+change.
 
-On Tue Apr 15, 2025 at 3:18 PM CEST, Daniel Ammann wrote:
-> Hello Antonin
->
-> On 4/15/25 14:41, Antonin Godard via lists.yoctoproject.org wrote:
->> Add a note to the migration guide regarding the pni-names behavior
->> change.
->>=20
->> Suggested-by: Enrico J=C3=B6rns <ejo@pengutronix.de>
->> Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
->> ---
->>   documentation/migration-guides/migration-5.2.rst     | 7 +++++++
->>   documentation/migration-guides/release-notes-5.2.rst | 7 ++++---
->>   2 files changed, 11 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/documentation/migration-guides/migration-5.2.rst b/document=
-ation/migration-guides/migration-5.2.rst
->> index 6b7d02d65..9df04d291 100644
->> --- a/documentation/migration-guides/migration-5.2.rst
->> +++ b/documentation/migration-guides/migration-5.2.rst
->> @@ -104,6 +104,13 @@ systemd changes
->>      ``journald.conf`` to "persistent". The ``/var/log/journal`` directo=
-ry is now
->>      used for logging instead of ``/run/log``.
->>  =20
->> +-  If ``pni-names`` is not in the :term:`DISTRO_FEATURES`, the `Predict=
-able
->> +   Network Interface names <https://www.freedesktop.org/wiki/Software/s=
-ystemd/PredictableNetworkInterfaceNames/>`__
->> +   systemd feature will now be disabled. Previously the feature was sti=
-ll
->> +   enabled even if ``pni-names`` was part of :term:`DISTRO_FEATURES`. M=
-ake
->
-> Shouldn't this be "was *not* part of"?
+Suggested-by: Enrico Jörns <ejo@pengutronix.de>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+---
+Changes in v2:
+- Add missing "not" in migration note (thanks to Daniel Ammann).
+- Link to v1: https://lore.kernel.org/r/20250415-systemd-migration-note-v1-1-24f9ee7c2b94@bootlin.com
+---
+ documentation/migration-guides/migration-5.2.rst     | 7 +++++++
+ documentation/migration-guides/release-notes-5.2.rst | 7 ++++---
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-Well spotted, thanks.
+diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
+index 6b7d02d65..9e9f466ad 100644
+--- a/documentation/migration-guides/migration-5.2.rst
++++ b/documentation/migration-guides/migration-5.2.rst
+@@ -104,6 +104,13 @@ systemd changes
+    ``journald.conf`` to "persistent". The ``/var/log/journal`` directory is now
+    used for logging instead of ``/run/log``.
+ 
++-  If ``pni-names`` is not in the :term:`DISTRO_FEATURES`, the `Predictable
++   Network Interface names <https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/>`__
++   systemd feature will now be disabled. Previously the feature was still
++   enabled even if ``pni-names`` was not part of :term:`DISTRO_FEATURES`. Make
++   sure to add the feature to :term:`DISTRO_FEATURES` if you want to keep this
++   systemd behavior.
++
+ Multiconfig changes
+ ~~~~~~~~~~~~~~~~~~~
+ 
+diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
+index ac9c6319a..0ac276c1e 100644
+--- a/documentation/migration-guides/release-notes-5.2.rst
++++ b/documentation/migration-guides/release-notes-5.2.rst
+@@ -523,9 +523,10 @@ New Features / Enhancements in |yocto-ver|
+          ``${libdir}`` if the ``set-time-epoch`` :term:`PACKAGECONFIG` config is
+          set.
+ 
+-      -  really disable Predictable Network Interface names if the ``pni-names``
+-         feature is not part of :term:`DISTRO_FEATURES`. Previously it was only
+-         really disable for QEMU machines.
++      -  really disable `Predictable Network Interface names
++         <https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/>`__
++         if the ``pni-names`` feature is not part of :term:`DISTRO_FEATURES`.
++         Previously it was only really disabled for QEMU machines.
+ 
+       -  split ``networkd`` into its own package named ``systemd-networkd``.
+ 
 
-Antonin
+---
+base-commit: 1ed64dbdf4a60b000305cdc2c67dc24f4bc97ef7
+change-id: 20250415-systemd-migration-note-36e893cced28
 
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Best regards,
+--
+Antonin Godard <antonin.godard@bootlin.com>
+
 
