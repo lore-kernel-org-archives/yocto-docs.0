@@ -2,97 +2,99 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29816C369CA
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 53EDDC369D1
 	for <webhook@archiver.kernel.org>; Fri, 18 Apr 2025 15:16:01 +0000 (UTC)
 Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
- by mx.groups.io with SMTP id smtpd.web10.14031.1744989354005393314
+ by mx.groups.io with SMTP id smtpd.web10.14034.1744989354276402467
  for <docs@lists.yoctoproject.org>;
  Fri, 18 Apr 2025 08:15:54 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=iithHi43;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=S3bBG85/;
  spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 480F7433E9;
-	Fri, 18 Apr 2025 15:15:51 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id D417143AD3;
+	Fri, 18 Apr 2025 15:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1744989351;
+	t=1744989353;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=kTWrFMC+B0p05oNLpO1PO6yAkieX8hMuxkef8uMMIQE=;
-	b=iithHi43ooDARNxDtc0lxiI1Rhkb2IHtKzv24yWxn3qZjyuTCJ3ePTBDyGBcNhuwZyjWI0
-	DAJqkEaMRBXKn2OrAHkaNGPBhUw3Mqx4FfGuTbu2gv9AR/rNW6HC+Bxdr1f9IlYZ+NIxft
-	2hFO6v+GQStrz4QG2VFQGkFDmHWbs6nNxVdtFcL+flLBleh54Sg0eymln2svyxYVnZxn03
-	0UKJ/nAdAOxL4JGLJmi/6tOAAWgCCfZKsFg5ybADLbPfhEs1JK8mG20cC2FA6ccMy4klnC
-	GDPVnODkL8lG5aJVHOjiE8b9sMhj50SnDownjnzLtSJKLC/mFSFtgOeTvI0Svw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=pg//qKQ8pVUjeihUArsDkip4fImMKoFr+dKm4YCyO9E=;
+	b=S3bBG85/gcY8i/KSHNhRJfONNrEWcjpT1hu52GK+eIpDwpu/uRmbsylFg0dnXVj6AKlmy+
+	DvPqFHyAtjBfDv3QjD2EgbuOawbrAA08dIT9Rhsy9HiWTBt01WnCD273CNcilHFu5iwnIs
+	CKLHPw3mV2MTMSIU8Hp6c3T9/BCKAOgmWxPHTgUVcVYBoNivDRp/5ducM9pGh6PaIZkEWl
+	EuA2t2/dz69Qs8U3S6HTL27xRc87Su2iwLE0Hh84C8XCEutn7GvBoi+tIZs4eIex1MZF3E
+	71fQFOPj6OMnMo5mkTy/Z4rV0jCJ1Sz3arKmEJQeHIb9mwEVlkqUhdc2DGuhxA==
 From: Antonin Godard <antonin.godard@bootlin.com>
-Subject: [PATCH 0/4] Document library functions
-Date: Fri, 18 Apr 2025 17:15:24 +0200
-Message-Id: <20250418-library-functions-v1-0-3bbb836149d7@bootlin.com>
+Date: Fri, 18 Apr 2025 17:15:28 +0200
+Subject: [PATCH 4/4] doc: bitbake-user-manual-metadata: provide link to new
+ doc
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIxsAmgC/x2M0QpAMBRAf2XdZytjE35FHjYubml0h2j5d8vjq
- XNOhIBMGKAVERgvCrT5BCoTMCzWzyhpTAxFXphcq1qu5NjyI6fTD0eSg6yaWpVGO2cbDanbGSe
- 6/2fXv+8H5TyXqmMAAAA=
-X-Change-ID: 20250418-library-functions-6981354bba94
+Message-Id: <20250418-library-functions-v1-4-3bbb836149d7@bootlin.com>
+References: <20250418-library-functions-v1-0-3bbb836149d7@bootlin.com>
+In-Reply-To: <20250418-library-functions-v1-0-3bbb836149d7@bootlin.com>
 To: bitbake-devel@lists.openembedded.org
 Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
  docs@lists.yoctoproject.org, Antonin Godard <antonin.godard@bootlin.com>
 X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1154;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1234;
  i=antonin.godard@bootlin.com; h=from:subject:message-id;
- bh=uLOW55xpkH+oE4S07hvuyJP9gSjhVWL6B1P2ktnkpGI=;
- b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBoAmymdV5NVyJVBZTsPscQnpTRGtJsYAdKqrT39
- w6I7JAN+cSJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaAJspgAKCRDRgEFAKaOo
- NpQoD/9qWFapFysgQgWHOtGDKnUreCfIh7W+v3Vr/qVkWXmK+PUIneMH1Tmkn9461TqjeAYPuQi
- uTntcuqXHWZIGvi16akjHBNYcAc3qUZdCTESc1AaxJ7cv8kXj+33BJoEhzw/+bRUbIEvhJdWUN5
- EI62VcBWyE+U6T670CAGuNGy8oPT5s6VF2+AxrPCl8pxCW369fU2LfaFdw26k8exc7kkNRxDHwp
- rM7OW/BT/tDZdXEK9VGmq9JIu8zB7o+HXGHmCFlGGwL8VBGzM+b4IOamdMUdxAcgnXel7qWCnVy
- kS78A13VtvFmVTSgqUk+RKULeqKaBcJkKYSPdhDowY/i8lad/pRugiVMLgzeNNGkDLgGOj+t9xV
- 9bLvFo2j8aytJteu+tAyyzl4Qo25so9C3JDr7BK8YGw5N/ZX6+U0+ocPl2cRrGehgCnsTmDaXRs
- 2nCMvJLJaVpyJqJqAFvdJ2HHylzqmkF9MY6myPnDLBZxjmUmnjJ7mZ1Bt6RYQ2ki9QfO6DtLdqz
- 0T07CcQIbF1KeY5FbkcUGGRPr5IRdVRgM1dUsjx6x4V1k6mC4oSMc/N2yzfP0SnNwZrcls3b9Dn
- dhqVZ+H6LvFiD5cagcM9jtqnuyquyR6KBAGHn+12hj1bxGE/2OGb88UQRShMIXr6lEhdiJcB00t
- 4CIixK4otKSEuDg==
+ bh=fdBF0xq3ECE6Qses/aPhdhDLa6AtSnKyUStBjq4FIAA=;
+ b=owEBbQKS/ZANAwAIAdGAQUApo6g2AcsmYgBoAmynLryvbbmuGQcMtdYz3bhluEeu35Cd6Yb5l
+ eUK/rE+VJiJAjMEAAEIAB0WIQSGSHJRiN1AG7mg0//RgEFAKaOoNgUCaAJspwAKCRDRgEFAKaOo
+ Nt1kD/9nHNrgmIebm4BeA6Qbjyk+rRI0a65aUGBcF1n5OplAAnRKQ5cB9t2ND1qGJdVSasmPHLC
+ yq3HXndo5yd3EXjydLLubX3l5qlL1Qad6SHgiITDqiKPng9ugnS3eVF/soP+4ZY6Xik6AaTHOHj
+ /DxKL4ui3OSnS2NMnWcqoV+/Ao2+FXzXIBo1Mm5MF0zPcRZVebdh78mAwpePlii1fJZOUBiVVV/
+ jM1MaKYittbSegARBHPwyxYcJspBxfJ7/xLM5Y+ww44MF0fuaLkWuLkcUHm/yZKayEFlsiM7AWt
+ AREluYQnkXLRxClDUFnvTS2q3LBmM7B89g9xOYScofPG53d3FCGIJaaY34+ACTleTezw+3hENgQ
+ dSMDirTOhlEnzWpmjdaGK1SwXpOeNYEKyZ/pEn6rttfEV43WPD3unRS9sLS0JfjCm9v6fEekJTs
+ RYRN3Xp4jjZJ3PCq65DGqVRhywJ0T34xMc7wWJB+EMLbMJNV81hSSu4TdcZPP6N+RjaDa5e9iPk
+ q0jxbU/IVyIJhI2V4bdYhKQ2U5kQhqI9oIgnG4G34I/h3DH6EHP4SirTve4X5kWYd6QuB1u/dyb
+ f8S7tEGHEfOEJoV8Aaw5fdEijN6Itav0yuu023A19kmnIsP9pOQzoyr19iPkIKknnTvg7hWWcHF
+ ZRgII4WiIVqN75w==
 X-Developer-Key: i=antonin.godard@bootlin.com; a=openpgp;
  fpr=8648725188DD401BB9A0D3FFD180414029A3A836
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedvgeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhufffkfggtgfgvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeduvdefkeffteeluedvgffhjeegffduveegfffghfejteejkedvgfeuvedtudejkeenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvt
- ghtrdhorhhgpdhrtghpthhtohepsghithgsrghkvgdquggvvhgvlheslhhishhtshdrohhpvghnvghmsggvugguvggurdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvfedvgeelucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhfffugggtgffkfhgjvfevofesthejredtredtjeenucfhrhhomheptehnthhonhhinhcuifhouggrrhguuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeehieeguefhfeegheffgfeuieetheeileefheejkeetgfekueehueeluddvlefghfenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehpdhhvghloheplgduvdejrddtrddurddungdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepgedprhgtphhtthhopegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdprhgtphhtthhopehthhhomhgrshdrphgvthgriiiiohhnihessghoohhtlhhinhdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhoj
+ hgvtghtrdhorhhgpdhrtghpthhtohepsghithgsrghkvgdquggvvhgvlheslhhishhtshdrohhpvghnvghmsggvugguvggurdhorhhg
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
  <docs@lists.yoctoproject.org>; Fri, 18 Apr 2025 15:16:01 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6760
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6763
 
-Use the Sphinx autodoc extensions to document the functions from lib/.
-For now logging utilities and bb.utils functions are automatically
-documented. Some syntax a formatting needed to be done for the doc to
-render properly.
+Replace the now obsolete paragraph of the "Other Functions" section by
+a link to the new "Library Functions" document.
 
 Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
 ---
-Antonin Godard (4):
-      utils: format and improve docstrings
-      lib/bb: format and improve logging docstrings
-      doc: add a new Library Functions document
-      doc: bitbake-user-manual-metadata: provide link to new doc
+ doc/bitbake-user-manual/bitbake-user-manual-metadata.rst | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
- .../bitbake-user-manual-library-functions.rst      |  59 ++
- .../bitbake-user-manual-metadata.rst               |   7 +-
- doc/conf.py                                        |   7 +
- doc/index.rst                                      |   1 +
- lib/bb/__init__.py                                 |  76 ++-
- lib/bb/utils.py                                    | 601 ++++++++++++++++-----
- 6 files changed, 592 insertions(+), 159 deletions(-)
----
-base-commit: 24772dd2ae6c0cd11540a260f15065f906fb0997
-change-id: 20250418-library-functions-6981354bba94
+diff --git a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+index db1749178..a27b7758d 100644
+--- a/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
++++ b/doc/bitbake-user-manual/bitbake-user-manual-metadata.rst
+@@ -2074,11 +2074,8 @@ access. Here is a list of available operations:
+ Other Functions
+ ---------------
+ 
+-You can find many other functions that can be called from Python by
+-looking at the source code of the ``bb`` module, which is in
+-``bitbake/lib/bb``. For example, ``bitbake/lib/bb/utils.py`` includes
+-the commonly used functions ``bb.utils.contains()`` and
+-``bb.utils.mkdirhier()``, which come with docstrings.
++Other functions are documented in the
++:doc:`/bitbake-user-manual/bitbake-user-manual-library-functions` document.
+ 
+ Extending Python Library Code
+ -----------------------------
 
-Best regards,
---
-Antonin Godard <antonin.godard@bootlin.com>
+-- 
+2.47.0
 
 
