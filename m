@@ -1,130 +1,345 @@
-Return-Path: <ypa.takayasu.ito@gmail.com>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7BC9C369C2
-	for <webhook@archiver.kernel.org>; Sun, 20 Apr 2025 15:27:32 +0000 (UTC)
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
- by mx.groups.io with SMTP id smtpd.web10.10944.1745162851629777003
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0D1BC369C2
+	for <webhook@archiver.kernel.org>; Tue, 22 Apr 2025 06:51:12 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by mx.groups.io with SMTP id smtpd.web11.34150.1745304670755610020
  for <docs@lists.yoctoproject.org>;
- Sun, 20 Apr 2025 08:27:31 -0700
+ Mon, 21 Apr 2025 23:51:11 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=TIuxBL49;
- spf=pass (domain: gmail.com, ip: 209.85.214.193, mailfrom: ypa.takayasu.ito@gmail.com)
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-2260c91576aso28343355ad.3
-        for <docs@lists.yoctoproject.org>; Sun, 20 Apr 2025 08:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1745162851; x=1745767651; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dJlVTwXMRZa/CFwDtAwYBrZHno7pKuezPhh42DW1SVo=;
-        b=TIuxBL49z61vvOO++8jQI/mhB85MTDAvCNcinsJkJfgqXGhwB7Wnt0fmt0ea8fpJ5r
-         X1sg9Se+H6iVD4sam8Q0qkgf4pv1Gs42Zv20R6TboYtkPA5gGn5PR9bX/OBE5M8OJUC3
-         uizghnq2Q1xJz8PXfo3X2BfQtBL8HtqTmp8ULTjFeb1lAzcD9Bo4re4jnYdbi1X1yzoE
-         suLlCv/RN227iYlmU5lQqkem51YeF8tMh1O41EzmQsy54gkIr2gKKTM0JiRwZlaOm2LA
-         qaTZgSh+KQ76Y081cWTJem+ErkmpRhb5qXptWE//b5bP1hDR+N5hnuYGxe2lBInRG5nd
-         KfGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745162851; x=1745767651;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dJlVTwXMRZa/CFwDtAwYBrZHno7pKuezPhh42DW1SVo=;
-        b=Q2CFPNY5IbCYaLmVjJ1U/QOhSRSMRqCJr8VTNq0ud0Yl/77z4RWwl9+FVqMViOWANg
-         6YzVYl/mx+43ncrJBWrATdZghPSR31j8VExMU/a3N07Nv3+IQPk9GZ4TkGKYjw+PlkNE
-         rL4voDTw8l4BHc08+V5wUduQsgp8BOdpySfi3elqz9ZRM48s2ZkoowqPcQOwDfWrSQ96
-         /EOloqgTVILB0kzhwXynGXOkPqv3Oit1XlPlEvq4yrRIxYks8jcnRVBgg0WsjkERIImc
-         uw5f9VuLslmH2xlJIDQSMGPPBlh+8Tm1ptnol4WSK2Jq4ZdSbwlOmg1KA4I6BbbUyf0U
-         GsTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+60TMp9mQc0DXu8uUU7qy4QIVU61isbnJxRNHSXS0VlbgUusYBbWAKIQKpQK23wmw0nYn@lists.yoctoproject.org
-X-Gm-Message-State: AOJu0YxoEf4N41CNEhSFwTDwPPEGf8/4BePf06T+1BiXOCTaZIMkyeMY
-	sbRDk+BKB2hgB/ZrhWx4LbQbS8f32a6JEDP+FHyGiovtO5zb+yft
-X-Gm-Gg: ASbGncvUB3tXxzX37kZu/bF8V3gf6rB6QbQP8lIN4BHVr/UVVa14XpoRjWxv8/y149H
-	kDX7LJg5Qlx/tk0RmBuPZ3OY+mEvBJZh8GWfP3o8+5FyVRHE9GdExsEhI1Qx1mBgYDyh2zRhWzR
-	9xkBDUQ08nyPgKvoyWmk5iTlv8fOSA9/Cn2w+wY/x8iyrr/IJ277VJc0s3TFpKWLQN29Sv9pgfM
-	H0myzYYeKQ4rUbb1C21yeJMxwubd5uwbCuFREoiLKmusEJ4u7i491EO4O21Nh2F7La9rAszzLIX
-	eU4j23+sjK+LxlyzChaI5lQQ9nKK1O5romproKHELZXGP3RrwxZJgcONeVbdZqLYfO+KFXYIp7s
-	nU9cNSRIJanhBf81KY5SSzo64vHWRTfUfbepIcuI0Rw==
-X-Google-Smtp-Source: AGHT+IEpVMDBkEPDldTBwvdMEYw9K/o/jdM7FRdSBmX5lsfjhqYc+PA1PN48CqJkBknMkklMeIkWpA==
-X-Received: by 2002:a17:902:e944:b0:220:ca08:8986 with SMTP id d9443c01a7336-22c535a177fmr168844685ad.22.1745162850887;
-        Sun, 20 Apr 2025 08:27:30 -0700 (PDT)
-Received: from ?IPV6:2400:2412:6a60:8500:d05c:f0ec:fe7c:a104? ([2400:2412:6a60:8500:d05c:f0ec:fe7c:a104])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c50eb48ebsm48987575ad.122.2025.04.20.08.27.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 20 Apr 2025 08:27:30 -0700 (PDT)
-Message-ID: <267b150e-0dd9-43de-8cdf-25324dd78e03@gmail.com>
-Date: Mon, 21 Apr 2025 00:27:28 +0900
+ dkim=pass header.i=@intel.com header.s=Intel header.b=fgtt27uJ;
+ spf=pass (domain: intel.com, ip: 198.175.65.16, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1745304671; x=1776840671;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bofg3pBlSwZqMNSkiTQhOfY7rF0U7xg67/OB1Ejnmrk=;
+  b=fgtt27uJN28b/X5k++7jWkWNla43YnnnmmaJoRiTUO9JBToW7zLPrPYc
+   3u8jE1PKU/18elgVgx/OKo6j4rD7T3J1dSyj6dMSZYk4DSa7wcE8CRtRl
+   sHQx00FEvHnHgeMhN/A9nkNBw2UnKpuxZSnftbMJHnHfHRWCDyKsf2th+
+   j21nKbuD819+2zXU3rlZXEltNQPD7uAp2t1XXZ3mY/EMt1Yt7hBzap8N7
+   tos8rdF6qVx3iGh0yVfrzLAI2eDG7SYspjKak5vU2n343jemvIOwoDsCz
+   v4Lg8z14/WBlHCSJcJT3LhlgU2XTYTmIPlnb5XGlxxBvQU/BPJjJEQmOQ
+   A==;
+X-CSE-ConnectionGUID: +PbER3UNRCChKMGik8O5eg==
+X-CSE-MsgGUID: UPejRDkmRJy/BDioq1/FEQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11410"; a="46950265"
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="46950265"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Apr 2025 23:51:11 -0700
+X-CSE-ConnectionGUID: NzUUZ+jpTFmIgE2sdY5BRQ==
+X-CSE-MsgGUID: WiygVl13RT2UhkzyCHnIkw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,230,1739865600"; 
+   d="scan'208";a="136006152"
+Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
+  by fmviesa003.fm.intel.com with ESMTP; 21 Apr 2025 23:51:10 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 4.0.26
+Date: Tue, 22 Apr 2025 14:51:08 +0800
+Message-ID: <20250422065108.2281911-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH 04/11] migration-guides/release-notes-5.2.rst: add
- security fixes
-To: Antonin Godard <antonin.godard@bootlin.com>, docs@lists.yoctoproject.org
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
-References: <20250328-release-note-5-2-updates-2-v1-0-c913513e9140@bootlin.com>
- <20250328-release-note-5-2-updates-2-v1-4-c913513e9140@bootlin.com>
- <5fc0d33e-4ba5-4f8d-80c2-c5c87be79680@gmail.com>
- <D976ZCV50JQR.3B8GAANQILPQ1@bootlin.com>
- <a9fd9bfb-dee9-4e94-8a95-d5673a9fd18c@gmail.com>
- <D97VVLZXMTW9.P853JF4BXI1F@bootlin.com>
-From: Takayasu Ito <ypa.takayasu.ito@gmail.com>
-Content-Language: en-US
-In-Reply-To: <D97VVLZXMTW9.P853JF4BXI1F@bootlin.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sun, 20 Apr 2025 15:27:32 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6764
+ <docs@lists.yoctoproject.org>; Tue, 22 Apr 2025 06:51:12 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6765
 
-Hi Antonin,
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-The decision is based on the upstream release notes and accompanying information.
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-4.0.rst          |   1 +
+ .../migration-guides/release-notes-4.0.26.rst | 263 ++++++++++++++++++
+ 2 files changed, 264 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-4.0.26.rst
 
-As for gstreamer, three update commits have been made.
-
-gstreamer1.0: upgrade 1.24.6 -> 1.24.9
-https://git.yoctoproject.org/poky/commit/meta/recipes-multimedia/gstreamer?h=walnascar&id=0770b0 ecea8accb0edb9137595b2c7e0b94bb69b
-
-gstreamer1.0: upgrade 1.24.9 -> 1.24.10
-https://git.yoctoproject.org/poky/commit/?h=walnascar&id=d84 bc502cc610cbda9bf19e0320537287bf8a674
-
-gstreamer1.0: upgrade 1.24.10 -> 1.24.12
-https://git.yoctoproject.org/poky/commit/?h=walnascar&id= 925d5f1c725ceeb36c180b38a22dfdedd0dfc220
-
-Release information for these updates is found at
-https://gstreamer.freedesktop.org/news/
-
-In it, it is stated that the security fixe is included in the 1.24.9 and 1.24.10 releases.
-
-The details are confirmed at
-https://gstreamer.freedesktop.org/security/
-
-We can confirm that GStreamer-SA-2024-0004 through GStreamer-SA-2024-0030 were addressed in this release of walnascar.
-
-
-
-On 2025/04/16 16:27, Antonin Godard wrote:
-> Hi Takayasu,
-> 
-> On Wed Apr 16, 2025 at 12:34 AM CEST, Takayasu Ito wrote:
->> Hi Antonin,
->>
->> I could not post the patch because I did not have the development environment with me due to machine trouble.
-> 
-> Okay, that's fine.
-> 
-> Could you please explain how you obtained these results?
-> It's not straightforward for me to assert the validity of your changes. I would
-> just need a way to reproduce the results you obtained. cve-check, maybe?
-> 
-> Antonin
-> 
-
+diff --git a/documentation/migration-guides/release-4.0.rst b/documentation/migration-guides/release-4.0.rst
+index e4e619d17..7c13a33d7 100644
+--- a/documentation/migration-guides/release-4.0.rst
++++ b/documentation/migration-guides/release-4.0.rst
+@@ -32,3 +32,4 @@ Release 4.0 (kirkstone)
+    release-notes-4.0.23
+    release-notes-4.0.24
+    release-notes-4.0.25
++   release-notes-4.0.26
+diff --git a/documentation/migration-guides/release-notes-4.0.26.rst b/documentation/migration-guides/release-notes-4.0.26.rst
+new file mode 100644
+index 000000000..42ff28c6a
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-4.0.26.rst
+@@ -0,0 +1,263 @@
++Release notes for Yocto-4.0.26 (Kirkstone)
++------------------------------------------
++
++Security Fixes in Yocto-4.0.26
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++
++-  bind: Fix :cve_nist:`2024-11187` and :cve_nist:`2024-12705`
++-  binutils: Fix :cve_nist:`2025-0840`
++-  elfutils: Fix :cve_nist:`2025-1352` and :cve_nist:`2025-1372`
++-  ffmpeg: Fix CVE-2024-28661, :cve_nist:`2024-35369`, :cve_nist:`2024-36613`, :cve_nist:`2024-36616`,
++   :cve_nist:`2024-36617`, :cve_nist:`2024-36618`, :cve_nist:`2025-0518` and :cve_nist:`2025-25473`
++-  ffmpeg: Ignore :cve_nist:`2023-46407`, :cve_nist:`2023-47470`, :cve_nist:`2024-7272`,
++   :cve_nist:`2024-22860`, :cve_nist:`2024-22861` and :cve_nist:`2024-22862`
++-  freetype: Fix :cve_nist:`2025-27363`
++-  gnutls: Fix :cve_nist:`2024-12243`
++-  grub: Fix :cve_nist:`2024-45774`, :cve_nist:`2024-45775`, :cve_nist:`2024-45776`,
++   :cve_nist:`2024-45777`, :cve_nist:`2024-45778`, :cve_nist:`2024-45779`, :cve_nist:`2024-45780`,
++   :cve_nist:`2024-45781`, :cve_nist:`2024-45782`, :cve_nist:`2024-45783`, :cve_nist:`2024-56737`,
++   :cve_nist:`2025-0622`, :cve_nist:`2025-0624`, :cve_nist:`2025-0677`, :cve_nist:`2025-0684`,
++   :cve_nist:`2025-0685`, :cve_nist:`2025-0686`, :cve_nist:`2025-0689`, :cve_nist:`2025-0678`,
++   :cve_nist:`2025-0690`, :cve_nist:`2025-1118` and :cve_nist:`2025-1125`
++-  gstreamer1.0-rtsp-server: fix :cve_nist:`2024-44331`
++-  libarchive: Fix :cve_nist:`2025-25724`
++-  libarchive: Ignore :cve_nist:`2025-1632`
++-  libcap: Fix :cve_nist:`2025-1390`
++-  linux-yocto/5.10: Fix :cve_nist:`2024-36476`, :cve_nist:`2024-43098`, :cve_nist:`2024-47143`,
++   :cve_nist:`2024-48881`, :cve_nist:`2024-50051`, :cve_nist:`2024-50074`, :cve_nist:`2024-50082`,
++   :cve_nist:`2024-50083`, :cve_nist:`2024-50099`, :cve_nist:`2024-50115`, :cve_nist:`2024-50116`,
++   :cve_nist:`2024-50117`, :cve_nist:`2024-50142`, :cve_nist:`2024-50148`, :cve_nist:`2024-50150`,
++   :cve_nist:`2024-50151`, :cve_nist:`2024-50167`, :cve_nist:`2024-50168`, :cve_nist:`2024-50171`,
++   :cve_nist:`2024-50185`, :cve_nist:`2024-50192`, :cve_nist:`2024-50193`, :cve_nist:`2024-50194`,
++   :cve_nist:`2024-50195`, :cve_nist:`2024-50198`, :cve_nist:`2024-50201`, :cve_nist:`2024-50202`,
++   :cve_nist:`2024-50205`, :cve_nist:`2024-50208`, :cve_nist:`2024-50209`, :cve_nist:`2024-50229`,
++   :cve_nist:`2024-50230`, :cve_nist:`2024-50233`, :cve_nist:`2024-50234`, :cve_nist:`2024-50236`,
++   :cve_nist:`2024-50237`, :cve_nist:`2024-50251`, :cve_nist:`2024-50262`, :cve_nist:`2024-50264`,
++   :cve_nist:`2024-50265`, :cve_nist:`2024-50267`, :cve_nist:`2024-50268`, :cve_nist:`2024-50269`,
++   :cve_nist:`2024-50273`, :cve_nist:`2024-50278`, :cve_nist:`2024-50279`, :cve_nist:`2024-50282`,
++   :cve_nist:`2024-50287`, :cve_nist:`2024-50292`, :cve_nist:`2024-50296`, :cve_nist:`2024-50299`,
++   :cve_nist:`2024-50301`, :cve_nist:`2024-50302`, :cve_nist:`2024-53042`, :cve_nist:`2024-53052`,
++   :cve_nist:`2024-53057`, :cve_nist:`2024-53059`, :cve_nist:`2024-53060`, :cve_nist:`2024-53061`,
++   :cve_nist:`2024-53063`, :cve_nist:`2024-53066`, :cve_nist:`2024-53096`, :cve_nist:`2024-53097`,
++   :cve_nist:`2024-53101`, :cve_nist:`2024-53103`, :cve_nist:`2024-53104`, :cve_nist:`2024-53145`,
++   :cve_nist:`2024-53146`, :cve_nist:`2024-53150`, :cve_nist:`2024-53155`, :cve_nist:`2024-53156`,
++   :cve_nist:`2024-53157`, :cve_nist:`2024-53161`, :cve_nist:`2024-53165`, :cve_nist:`2024-53171`,
++   :cve_nist:`2024-53173`, :cve_nist:`2024-53174`, :cve_nist:`2024-53194`, :cve_nist:`2024-53197`,
++   :cve_nist:`2024-53217`, :cve_nist:`2024-53226`, :cve_nist:`2024-53227`, :cve_nist:`2024-53237`,
++   :cve_nist:`2024-53239`, :cve_nist:`2024-55916`, :cve_nist:`2024-56548`, :cve_nist:`2024-56558`,
++   :cve_nist:`2024-56567`, :cve_nist:`2024-56568`, :cve_nist:`2024-56569`, :cve_nist:`2024-56572`,
++   :cve_nist:`2024-56574`, :cve_nist:`2024-56581`, :cve_nist:`2024-56587`, :cve_nist:`2024-56593`,
++   :cve_nist:`2024-56595`, :cve_nist:`2024-56596`, :cve_nist:`2024-56598`, :cve_nist:`2024-56600`,
++   :cve_nist:`2024-56601`, :cve_nist:`2024-56602`, :cve_nist:`2024-56603`, :cve_nist:`2024-56605`,
++   :cve_nist:`2024-56606`, :cve_nist:`2024-56615`, :cve_nist:`2024-56619`, :cve_nist:`2024-56623`,
++   :cve_nist:`2024-56629`, :cve_nist:`2024-56634`, :cve_nist:`2024-56642`, :cve_nist:`2024-56643`,
++   :cve_nist:`2024-56648`, :cve_nist:`2024-56650`, :cve_nist:`2024-56659`, :cve_nist:`2024-56662`,
++   :cve_nist:`2024-56670`, :cve_nist:`2024-56688`, :cve_nist:`2024-56698`, :cve_nist:`2024-56704`,
++   :cve_nist:`2024-56716`, :cve_nist:`2024-56720`, :cve_nist:`2024-56723`, :cve_nist:`2024-56724`,
++   :cve_nist:`2024-56728`, :cve_nist:`2024-56739`, :cve_nist:`2024-56746`, :cve_nist:`2024-56747`,
++   :cve_nist:`2024-56748`, :cve_nist:`2024-56754`, :cve_nist:`2024-56756`, :cve_nist:`2024-56770`,
++   :cve_nist:`2024-56779`, :cve_nist:`2024-56780`, :cve_nist:`2024-56781`, :cve_nist:`2024-56785`,
++   :cve_nist:`2024-57802`, :cve_nist:`2024-57807`, :cve_nist:`2024-57850`, :cve_nist:`2024-57874`,
++   :cve_nist:`2024-57890`, :cve_nist:`2024-57896`, :cve_nist:`2024-57900`, :cve_nist:`2024-57901`,
++   :cve_nist:`2024-57902`, :cve_nist:`2024-57910`, :cve_nist:`2024-57911`, :cve_nist:`2024-57913`,
++   :cve_nist:`2024-57922`, :cve_nist:`2024-57938`, :cve_nist:`2024-57939`, :cve_nist:`2024-57946`,
++   :cve_nist:`2024-57951`, :cve_nist:`2025-21638`, :cve_nist:`2025-21687`, :cve_nist:`2025-21689`,
++   :cve_nist:`2025-21692`, :cve_nist:`2025-21694`, :cve_nist:`2025-21697` and :cve_nist:`2025-21699`
++-  linux-yocto/5.15: Fix :cve_nist:`2024-57979`, :cve_nist:`2024-58034`, :cve_nist:`2024-58052`,
++   :cve_nist:`2024-58055`, :cve_nist:`2024-58058`, :cve_nist:`2024-58063`, :cve_nist:`2024-58069`,
++   :cve_nist:`2024-58071`, :cve_nist:`2024-58076`, :cve_nist:`2024-58083`, :cve_nist:`2025-21700`,
++   :cve_nist:`2025-21703`, :cve_nist:`2025-21715`, :cve_nist:`2025-21722`, :cve_nist:`2025-21727`,
++   :cve_nist:`2025-21731`, :cve_nist:`2025-21753`, :cve_nist:`2025-21756`, :cve_nist:`2025-21760`,
++   :cve_nist:`2025-21761`, :cve_nist:`2025-21762`, :cve_nist:`2025-21763`, :cve_nist:`2025-21764`,
++   :cve_nist:`2025-21796`, :cve_nist:`2025-21811`, :cve_nist:`2025-21887`, :cve_nist:`2025-21898`,
++   :cve_nist:`2025-21904`, :cve_nist:`2025-21905`, :cve_nist:`2025-21912`, :cve_nist:`2025-21917`,
++   :cve_nist:`2025-21919`, :cve_nist:`2025-21920`, :cve_nist:`2025-21922`, :cve_nist:`2025-21934`,
++   :cve_nist:`2025-21943`, :cve_nist:`2025-21948` and :cve_nist:`2025-21951`
++-  libpcre2: Ignore :cve_nist:`2022-1586`
++-  libtasn1: Fix :cve_nist:`2024-12133`
++-  libxml2: Fix :cve_nist:`2022-49043`, :cve_nist:`2024-56171`, :cve_nist:`2025-24928` and
++   :cve_nist:`2025-27113`
++-  libxslt: Fix :cve_nist:`2024-55549` and :cve_nist:`2025-24855`
++-  llvm: Fix :cve_nist:`2024-0151`
++-  mpg123: Fix :cve_nist:`2024-10573`
++-  openssh: Fix :cve_nist:`2025-26465`
++-  ovmf: Revert Fix for CVE-2023-45236 :cve_nist:`2023-45237`
++-  perl: Ignore :cve_nist:`2023-47038`
++-  puzzles: Ignore :cve_nist:`2024-13769`, :cve_nist:`2024-13770` and :cve_nist:`2025-0837`
++-  python3: Fix :cve_nist:`2025-0938`
++-  ruby: Fix :cve_nist:`2024-41946`, :cve_nist:`2025-27219` and :cve_nist:`2025-27220`
++-  subversion: Ignore :cve_nist:`2024-45720`
++-  systemd: Fix :cve_nist:`2022-3821`, :cve_nist:`2022-4415`, :cve_nist:`2022-45873` and
++   :cve_nist:`2023-7008`
++-  tiff: mark :cve_nist:`2023-30774` as patched with existing patch
++-  u-boot: Fix :cve_nist:`2022-2347`, :cve_nist:`2022-30767`, :cve_nist:`2022-30790`,
++   :cve_nist:`2024-57254`, :cve_nist:`2024-57255`, :cve_nist:`2024-57256`, :cve_nist:`2024-57257`,
++   :cve_nist:`2024-57258` and :cve_nist:`2024-57259`
++-  vim: Fix :cve_nist:`2025-1215`, :cve_nist:`2025-22134`, :cve_nist:`2025-24014`,
++   :cve_nist:`2025-26603`, :cve_nist:`2025-27423` and :cve_nist:`2025-29768`
++-  xserver-xorg: Fix :cve_nist:`2022-49737`, :cve_nist:`2025-26594`, :cve_nist:`2025-26595`,
++   :cve_nist:`2025-26596`, :cve_nist:`2025-26597`, :cve_nist:`2025-26598`, :cve_nist:`2025-26599`,
++   :cve_nist:`2025-26600` and :cve_nist:`2025-26601`
++-  xwayland: Fix :cve_nist:`2022-49737`, :cve_nist:`2024-9632`, :cve_nist:`2024-21885`,
++   :cve_nist:`2024-21886`, :cve_nist:`2024-31080`, :cve_nist:`2024-31081`, :cve_nist:`2024-31083`,
++   :cve_nist:`2025-26594`, :cve_nist:`2025-26595`, :cve_nist:`2025-26596`, :cve_nist:`2025-26597`,
++   :cve_nist:`2025-26598`, :cve_nist:`2025-26599`, :cve_nist:`2025-26600` and :cve_nist:`2025-26601`
++-  zlib: Fix :cve_nist:`2014-9485`
++
++
++
++Fixes in Yocto-4.0.26
++~~~~~~~~~~~~~~~~~~~~~
++
++-  bind: Upgrade to 9.18.33
++-  bitbake: cache: bump cache version
++-  bitbake: siggen.py: Improve taskhash reproducibility
++-  boost: fix do_fetch error
++-  build-appliance-image: Update to kirkstone head revision
++-  contributor-guide/submit-changes: add policy on AI generated code
++-  cve-update-nvd2-native: handle missing vulnStatus
++-  docs: Add favicon for the documentation html
++-  docs: Remove all mention of core-image-lsb
++-  libtasn1: upgrade to 4.20.0
++-  libxcrypt-compat: Remove libcrypt.so to fix conflict with libcrypt
++-  libxml2: fix compilation of explicit child axis in pattern
++-  linux-yocto/5.10: update to v5.10.234
++-  linux-yocto/5.15: update to v5.15.179
++-  mesa: Fix missing GLES3 headers in SDK sysroot
++-  mesa: Update :term:`SRC_URI`
++-  meta: Enable '-o pipefail' for the SDK installer
++-  migration-guides: add release notes for 4.0.25
++-  poky.conf: add ubuntu2404 to :term:`SANITY_TESTED_DISTROS`
++-  poky.conf: bump version for 4.0.26
++-  procps: replaced one use of fputs(3) with a write(2) call
++-  ref-manual: don't refer to poky-lsb
++-  scripts/install-buildtools: Update to 4.0.24
++-  scritps/runqemu: Ensure we only have two serial ports
++-  systemd: upgrade to 250.14
++-  tzcode-native: Fix compiler setting from 2023d version
++-  tzcode: Update :term:`SRC_URI`
++-  tzdata/tzcode-native: upgrade 2025a
++-  vim: Upgrade to 9.1.1198
++-  virglrenderer: fix do_fetch error
++-  vulnerabilities/classes: remove references to cve-check text format
++-  xz: Update :term:`SRC_URI`
++-  yocto-uninative: Update to 4.7 for glibc 2.41
++
++
++Known Issues in Yocto-4.0.26
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++
++Contributors to Yocto-4.0.26
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Thanks to the following people who contributed to this release:
++
++-  Aleksandar Nikolic
++-  Alessio Cascone
++-  Antonin Godard
++-  Archana Polampalli
++-  Ashish Sharma
++-  Bruce Ashfield
++-  Carlos Dominguez
++-  Deepesh Varatharajan
++-  Divya Chellam
++-  Guocai He
++-  Hitendra Prajapati
++-  Hongxu Jia
++-  Jiaying Song
++-  Johannes Kauffmann
++-  Kai Kang
++-  Lee Chee Yang
++-  Libo Chen
++-  Marta Rybczynska
++-  Michael Halstead
++-  Mingli Yu
++-  Moritz Haase
++-  Narpat Mali
++-  Paulo Neves
++-  Peter Marko
++-  Priyal Doshi
++-  Richard Purdie
++-  Robert Yang
++-  Ross Burton
++-  Sakib Sajal
++-  Steve Sakoman
++-  Vijay Anusuri
++-  Yogita Urade
++-  Zhang Peng
++
++
++Repositories / Downloads for Yocto-4.0.26
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`kirkstone </poky/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.26 </poky/log/?h=yocto-4.0.26>`
++-  Git Revision: :yocto_git:`d70d287a77d5026b698ac237ab865b2dafd36bb8 </poky/commit/?id=d70d287a77d5026b698ac237ab865b2dafd36bb8>`
++-  Release Artefact: poky-d70d287a77d5026b698ac237ab865b2dafd36bb8
++-  sha: 3ebfadb8bff4c1ca12b3cf3e4ef6e3ac2ce52b73570266daa98436c9959249f2
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.26/poky-d70d287a77d5026b698ac237ab865b2dafd36bb8.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.26/poky-d70d287a77d5026b698ac237ab865b2dafd36bb8.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`kirkstone </openembedded-core/log/?h=kirkstone>`
++-  Tag:  :oe_git:`yocto-4.0.26 </openembedded-core/log/?h=yocto-4.0.26>`
++-  Git Revision: :oe_git:`1efbe1004bc82e7c14c1e8bd4ce644f5015c3346 </openembedded-core/commit/?id=1efbe1004bc82e7c14c1e8bd4ce644f5015c3346>`
++-  Release Artefact: oecore-1efbe1004bc82e7c14c1e8bd4ce644f5015c3346
++-  sha: d3805e034dabd0865dbf55488b2c16d4ea0351d37aa826f0054a6bfdde5a8be9
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.26/oecore-1efbe1004bc82e7c14c1e8bd4ce644f5015c3346.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.26/oecore-1efbe1004bc82e7c14c1e8bd4ce644f5015c3346.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`kirkstone </meta-mingw/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.26 </meta-mingw/log/?h=yocto-4.0.26>`
++-  Git Revision: :yocto_git:`87c22abb1f11be430caf4372e6b833dc7d77564e </meta-mingw/commit/?id=87c22abb1f11be430caf4372e6b833dc7d77564e>`
++-  Release Artefact: meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e
++-  sha: f0bc4873e2e0319fb9d6d6ab9b98eb3f89664d4339a167d2db6a787dd12bc1a8
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.26/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.26/meta-mingw-87c22abb1f11be430caf4372e6b833dc7d77564e.tar.bz2
++
++meta-gplv2
++
++-  Repository Location: :yocto_git:`/meta-gplv2`
++-  Branch: :yocto_git:`kirkstone </meta-gplv2/log/?h=kirkstone>`
++-  Tag:  :yocto_git:`yocto-4.0.26 </meta-gplv2/log/?h=yocto-4.0.26>`
++-  Git Revision: :yocto_git:`d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a </meta-gplv2/commit/?id=d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a>`
++-  Release Artefact: meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a
++-  sha: c386f59f8a672747dc3d0be1d4234b6039273d0e57933eb87caa20f56b9cca6d
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.26/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.26/meta-gplv2-d2f8b5cdb285b72a4ed93450f6703ca27aa42e8a.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.0 </bitbake/log/?h=2.0>`
++-  Tag:  :oe_git:`yocto-4.0.26 </bitbake/log/?h=yocto-4.0.26>`
++-  Git Revision: :oe_git:`046871d9fd76efdca7b72718b328d8f545523f7e </bitbake/commit/?id=046871d9fd76efdca7b72718b328d8f545523f7e>`
++-  Release Artefact: bitbake-046871d9fd76efdca7b72718b328d8f545523f7e
++-  sha: e9df0a9f5921b583b539188d66b23f120e1751000e7822e76c3391d5c76ee21a
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-4.0.26/bitbake-046871d9fd76efdca7b72718b328d8f545523f7e.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-4.0.26/bitbake-046871d9fd76efdca7b72718b328d8f545523f7e.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`kirkstone </yocto-docs/log/?h=kirkstone>`
++-  Tag: :yocto_git:`yocto-4.0.26 </yocto-docs/log/?h=yocto-4.0.26>`
++-  Git Revision: :yocto_git:`9b4c36f7b02dd4bedfec90206744a1e90e37733c </yocto-docs/commit/?id=9b4c36f7b02dd4bedfec90206744a1e90e37733c>`
++
 -- 
-Takayasu Ito
-Yocto Project Ambassador
-ypa.takayasu.ito@gmail.com
+2.43.0
 
 
