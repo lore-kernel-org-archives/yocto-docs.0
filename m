@@ -1,92 +1,92 @@
-Return-Path: <mikko.rapeli@linaro.org>
+Return-Path: <ejo@pengutronix.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 00BBEC369DC
-	for <webhook@archiver.kernel.org>; Tue, 29 Apr 2025 14:10:08 +0000 (UTC)
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
- by mx.groups.io with SMTP id smtpd.web11.20904.1745935798689617208
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2FC41C369DC
+	for <webhook@archiver.kernel.org>; Tue, 29 Apr 2025 18:13:11 +0000 (UTC)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+ by mx.groups.io with SMTP id smtpd.web11.1114.1745950389206632994
  for <docs@lists.yoctoproject.org>;
- Tue, 29 Apr 2025 07:09:59 -0700
+ Tue, 29 Apr 2025 11:13:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@linaro.org header.s=google header.b=SmPZLxpF;
- spf=pass (domain: linaro.org, ip: 209.85.167.42, mailfrom: mikko.rapeli@linaro.org)
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-549b116321aso7327968e87.3
-        for <docs@lists.yoctoproject.org>; Tue, 29 Apr 2025 07:09:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1745935797; x=1746540597; darn=lists.yoctoproject.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rn7f/ICrQ63FQxQ5lE43fQOloV4dgwHDy9ZCVGipy/4=;
-        b=SmPZLxpFT8+MNApWuo6xAK4tWCtwoyIbmFS0EijtU+Z+eplxRvbAHjKOy6ov+gdmfL
-         LZvLNfudfJgUWSIcm9JYUJfUgLHCupITrcKAqmYNhgmzhHrZnEHNRBxV524s2kQdIS5R
-         yT09G7NSWBARxpKhMoy5XW8x1OeyQUprKodXEUEZUmJem23vIQknWmRHAH3CWkA3Xlqu
-         bmJ+DcKLKQlXGFITxFtFeTzwozuHpYS9tMNOhkpbflqeswWtUBqcXMEjIVDY1lQYGWi9
-         RLEINfkao1tdXe2+mCnqJby4WRSaQHBIXN/KD77kCxhaF1eDxXYHJ2HSz7AOJ+oaCnzq
-         64aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1745935797; x=1746540597;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rn7f/ICrQ63FQxQ5lE43fQOloV4dgwHDy9ZCVGipy/4=;
-        b=j9pOUDXiHBpvv97PPS8sNCPPPn0azXuDKH07yoI9nVNj5tK24Y+ue149hvhIy2tbP1
-         XDbYdaAkbl6o4cgVOi1eJl5LvJPZn2gfcD5ysDI7vesbXEIBF+sDlNBEA0Oe/rmJvGyk
-         5t+LQfQuCXsFessF48RGg+UJSMQb8MxwNboeTvmBO2MGIAzX+3/YMXm5dqErDcIIRLpW
-         DIAk3lZ6iWUcLR0lfvCnAnaQok9DwLBRIQrymWVZg3MMY7K0wj9WKYLtsYoeGo9hj2IO
-         wfOYIFJQmJV5D3bfUWNzl506vRA19dpqh2oChJ7/rWzWTnK+gDo683LNvh+UAXNNRIdc
-         o+rA==
-X-Gm-Message-State: AOJu0Yx/qhmJ8NWf+XwVymQ8q3OFiXhcTHtJGeJ+97DjEQvmyWPyGLc4
-	fEi3E9RlyEdYdDCsN0yYR0tKT0YADXUGNh9LV5L4ZTZjxDHu6x9tCrCTk05jClg=
-X-Gm-Gg: ASbGncu4rjRiCRIak2NUjpx/3njZIYgZRsSaBrKwl4KkNx6xi/PvztIhzt18XwgfaY3
-	fPznjcYJWIriFa5GGQCrlmJoa+oguxLa4MuRHAMbCLxgqaaWKgwfHk0PWnImeCeTMvw27X9bEfo
-	qYdr9icGTLLlmyiajgbtKt1/QOtxm0f0JyJdCBV1FWXN0V7+m/zPLLAsp3zZHYF/yQAkvkfOuKV
-	sjLsFds0qIXdMiBwKll2Og/9m1AOssZdUihoPxSHVtbJy2QrrldJIrufnuQZWgk7x3ngguFuePA
-	uUONct/RFGKOvXwvz0cOi3yWSw/54Jlz0mJiMp8oAMxnRGNW7bD1LLdmhCmtO9iOlbC42SnhaA=
-	=
-X-Google-Smtp-Source: AGHT+IG2buGL78PvU+Op9kaF8Y5aSB0QQkUtDBRblhQAmcX/+sGlFiNspynRI0PsGK9DKgiII7iLsA==
-X-Received: by 2002:a05:6512:2387:b0:54b:117c:8ef3 with SMTP id 2adb3069b0e04-54e90012c8emr3639478e87.54.1745935796789;
-        Tue, 29 Apr 2025 07:09:56 -0700 (PDT)
-Received: from nuoska (87-100-218-141.bb.dnainternet.fi. [87.100.218.141])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54e7cca8c9dsm1884575e87.168.2025.04.29.07.09.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Apr 2025 07:09:56 -0700 (PDT)
-Date: Tue, 29 Apr 2025 17:09:54 +0300
-From: Mikko Rapeli <mikko.rapeli@linaro.org>
-To: gavrosc@yahoo.com
-Cc: docs@lists.yoctoproject.org
-Subject: Re: [docs] [PATCH v2] ref-manual/variables.rst: document the
- INITRAMFS_MAXSIZE variable
-Message-ID: <aBDdsv0R-PWd_MIZ@nuoska>
-References: <aBBxHNAS4Jj1G0C_@nuoska>
- <5570.1745932688799782566@lists.yoctoproject.org>
+ dkim=none (message not signed); spf=pass (domain: pengutronix.de, ip: 185.203.201.7, mailfrom: ejo@pengutronix.de)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ejo@pengutronix.de>)
+	id 1u9pS7-0006zS-Aj; Tue, 29 Apr 2025 20:13:07 +0200
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ejo@pengutronix.de>)
+	id 1u9pS7-000IrC-0T;
+	Tue, 29 Apr 2025 20:13:07 +0200
+Received: from ejo by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ejo@pengutronix.de>)
+	id 1u9pS7-00BziQ-0C;
+	Tue, 29 Apr 2025 20:13:07 +0200
+From: =?UTF-8?q?Enrico=20J=C3=B6rns?= <ejo@pengutronix.de>
+To: docs@lists.yoctoproject.org
+Cc: yocto@pengutronix.de
+Subject: [PATCH] ref-manual/variables.rst: update ROOT_HOME documentation
+Date: Tue, 29 Apr 2025 20:12:55 +0200
+Message-Id: <20250429181255.2858778-1-ejo@pengutronix.de>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5570.1745932688799782566@lists.yoctoproject.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ejo@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: docs@lists.yoctoproject.org
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 29 Apr 2025 14:10:07 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6789
+ <docs@lists.yoctoproject.org>; Tue, 29 Apr 2025 18:13:11 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6790
 
-Hi,
+* Since scarthgap [1], the default will be overridden when using
+  'systemd' as INIT_MANAGER. Reflect this in the documentation.
+* The distro configuration is probably the better place for
+  customization, thus at least mention this together with the
+  local.conf.
+* While at it, drop the probably redundant description on how to
+  override weak default variables.
+  The example on how to set "/root" is still given indirectly, anyway.
 
-On Tue, Apr 29, 2025 at 06:15:08AM -0700, Christos Gavros via Lists.Yoctoproject.Org wrote:
-> hi Mikko
-> 
-> thank you for the comment.
-> 
-> I thought this is covered from this sentence " Thus, ``INITRAMFS_MAXSIZE`` is compared with the result of the above calculations and is independent of the final image type. "
-> but apparently it didnt! What do you wish to add more?
+[1] ebafe463 ("systemd: upgrade to 255.1")
 
-I don't object to your change or even want to change it.
+Signed-off-by: Enrico Jörns <ejo@pengutronix.de>
+---
+ documentation/ref-manual/variables.rst | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-I just think the overall situation with initrd size limit may not be
-well described in documentation. It's more than just INITRAMFS_MAXSIZE
-which is now well documented with your change. Thanks!
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index d17f81036..4527d15e4 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -7761,17 +7761,12 @@ system and gives an overview of their function and contents.
+          prefer to have a read-only root filesystem and prefer to keep
+          writeable data in one place.
+ 
+-      You can override the default by setting the variable in any layer or
+-      in the ``local.conf`` file. Because the default is set using a "weak"
+-      assignment (i.e. "??="), you can use either of the following forms to
+-      define your override::
++      When setting ``INIT_MANAGER = systemd``, the default will be set to::
+ 
+-         ROOT_HOME = "/root"
+          ROOT_HOME ?= "/root"
+ 
+-      These
+-      override examples use ``/root``, which is probably the most commonly
+-      used override.
++      You can also override the default by setting the variable in your distro
++      configuration or in the ``local.conf`` file.
+ 
+    :term:`ROOTFS`
+       Indicates a filesystem image to include as the root filesystem.
+-- 
+2.39.5
 
-Cheers,
-
--Mikko
 
