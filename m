@@ -1,158 +1,288 @@
-Return-Path: <quentin.schulz@cherry.de>
+Return-Path: <chee.yang.lee@intel.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id F0D78C369D9
-	for <webhook@archiver.kernel.org>; Wed, 30 Apr 2025 10:21:49 +0000 (UTC)
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (EUR02-DB5-obe.outbound.protection.outlook.com [40.107.249.63])
- by mx.groups.io with SMTP id smtpd.web10.13427.1746008509497813433
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F268C3ABA9
+	for <webhook@archiver.kernel.org>; Fri,  2 May 2025 07:24:47 +0000 (UTC)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+ by mx.groups.io with SMTP id smtpd.web11.14064.1746170686185445787
  for <docs@lists.yoctoproject.org>;
- Wed, 30 Apr 2025 03:21:49 -0700
+ Fri, 02 May 2025 00:24:46 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=mpKQGI+k;
- spf=pass (domain: cherry.de, ip: 40.107.249.63, mailfrom: quentin.schulz@cherry.de)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fdJJdO0f2/onJaAJCCTlJTST8zKWJ2AluJZyuWj40KHWq4hmee3ZnWmO3q3V2s4zY3KkEBCGETAtnvpy/O9G6mYH8L/ZNR9XbVerkrGHCTJ3TJtVfgmLarYW/5XeY/tPct6MBgT6jNnZro5kzN4+zJlhkvyRSjO0jcBU1SObDXdAQIaQjvelOJUj57Wzq58Y2ZlI2Ig+IYPwAsDJ5bgiTgEBpJZ9D9m3iGfSJ7aaTMZfTBcAUbWkKad+E0TRh+u1GLI2EGtTXsB1/rOjyUHF9YXiNyMydTOo87Pfe2zG5O+soStS+qNse7ipAe+IILMYKcuBHB5W1fagx+D/5/VQDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5ErUqXZGLxUbE0coaqmpmMn7KViThpUai+iKaLtnQ2A=;
- b=rHr/14/+xhK8O5StrMDffXW0T2lhCp7wJM8yDIVmcXjdlrIPPari720BsPQyx/AE1v6a/GEO6AFpK8z2O4vIAE3iko7eF9Tbu5qmuU6/FKx9j9tHZzjGp9IQt+RxlgBpClWoXGsityd5S6WpB+mnzVUitmjjhlFEKUmnS3jX4ssc7H9EHSe9UP5OibwtJCNKK1oKJfyCP78y+3S+y1N+tYFLVzKl9CeofaF1gvUiR/SephwmShKffve+mluDFEWUFp9ccu0JgyTziLfTHQP2+Y9oMEqpeMB6/NOlM9s9qi0YfD4c3/SkKAs5N7N1gt08duAqwL1BkvgmYtwY7qIOmw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
- dkim=pass header.d=cherry.de; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5ErUqXZGLxUbE0coaqmpmMn7KViThpUai+iKaLtnQ2A=;
- b=mpKQGI+k20vh/4MQvb7lLhwpsziUeO0e8Um3DiThpxsk++Z+pEi//2iXhH8C/Ry5P2VCWZuUQ/xEMb0qJmJFdH3QpKFccrSjrpcPAmPgbk6gJvweV7PqeA6rqT2NZYoBbt/i088/RSHV0m33ajAo2r7RPVzpyTuzwdFpk90mGXE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=cherry.de;
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by AS8PR04MB7688.eurprd04.prod.outlook.com (2603:10a6:20b:29d::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Wed, 30 Apr
- 2025 10:21:46 +0000
-Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
- ([fe80::35f6:bc7d:633:369a%5]) with mapi id 15.20.8699.019; Wed, 30 Apr 2025
- 10:21:46 +0000
-Message-ID: <18f2832f-e367-4e52-8884-2367ff8c65c3@cherry.de>
-Date: Wed, 30 Apr 2025 12:21:45 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] ref-manual/variables.rst: update ROOT_HOME
- documentation
-To: ejo@pengutronix.de, docs@lists.yoctoproject.org
-CC: yocto@pengutronix.de
-References: <20250429181255.2858778-1-ejo@pengutronix.de>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20250429181255.2858778-1-ejo@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: FR4P281CA0058.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cc::8) To AS8PR04MB8897.eurprd04.prod.outlook.com
- (2603:10a6:20b:42c::20)
+ dkim=pass header.i=@intel.com header.s=Intel header.b=QFXPbzCa;
+ spf=pass (domain: intel.com, ip: 198.175.65.16, mailfrom: chee.yang.lee@intel.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746170686; x=1777706686;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nK7wk/zdVlw3qpPbxe1456oYEHRF2//GkS70srxIoFs=;
+  b=QFXPbzCau0O9HqiIm5sNLuKRfkPvKbxVrix8C42MJeMdgoKCvLiVB5yl
+   FQtO+mltBF7bayrvftt73WFqsnBL0q6YvflZxAHR0pyZ/CMtPgOwqthTj
+   w1RxpltbcAjMh2+GjpZ2TRHUHQllPU4yctel0i9NrcSbz2LVkC2DaupnB
+   uisoBIftXy0cDT/3XxjgIgDN0wsT+ArMn3Qo/DMUhlABP9PmUSi6ePkoG
+   QkzFTQCAoLV5ttutqI4W452AV8Gmop+OCsmjvtuZKcqMeFY+uVKoZoyxc
+   3VtBUXBHV7IH9qRIcWZqNKM7q/RZvm5mubWiVUTWrD8tzdoi48W7YUM2q
+   A==;
+X-CSE-ConnectionGUID: /Xgwh5W0TJGtUhcUwHZ2pw==
+X-CSE-MsgGUID: DBCm4nGdTSW9vb0+PZ7+mQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47938206"
+X-IronPort-AV: E=Sophos;i="6.15,255,1739865600"; 
+   d="scan'208";a="47938206"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 00:24:45 -0700
+X-CSE-ConnectionGUID: 9G5w7Oe1RsyAB3ZjrSw6PA==
+X-CSE-MsgGUID: wd8SJxf9SI2ReVkqgWrL2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,255,1739865600"; 
+   d="scan'208";a="139726350"
+Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
+  by fmviesa004.fm.intel.com with ESMTP; 02 May 2025 00:24:43 -0700
+From: chee.yang.lee@intel.com
+To: docs@lists.yoctoproject.org
+Subject: [PATCH] migration-guides: add release notes for 5.0.9
+Date: Fri,  2 May 2025 15:24:44 +0800
+Message-ID: <20250502072444.3764883-1-chee.yang.lee@intel.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AS8PR04MB7688:EE_
-X-MS-Office365-Filtering-Correlation-Id: 68d95180-f678-4ca2-f40b-08dd87d0cf5c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?JlTcfz9RdBq0+V7F/ORBcbbFbQX5CA2yqFJfKqwjUEcwRqaZSmmGZjcCvsx6?=
- =?us-ascii?Q?tjGafmgOA2n2ZlewVAf83b7u7LKumGNxepyIcdXUrM5FBOZq++JDsAKEGyOz?=
- =?us-ascii?Q?LMr9yu+Denf8Y1My8rLpxzmRTzx9mn5DPg3WuIriQaZudHJtwxOQSCmzjemu?=
- =?us-ascii?Q?kHUcxPWOYuzh404uvJfvcjuRvGLrLwaPhWXghCGw/iqghuVXUf8c1x014YHI?=
- =?us-ascii?Q?1MWQc2fdHI3MAO6jnQYOdmh8r7YyD2ROK8l81aXNnHAmT1vEWI8ozNUe15Gp?=
- =?us-ascii?Q?Lx/IZ/ZhXOQ+/p5nfGu/wZG9GqrypE/kwS4Kccmcjj+MNyVAzfxKuPeHb0fa?=
- =?us-ascii?Q?xnhKx6tlwqsveQIXsqCGxWE3BTtGxf52WTTVyy/tYQfiCqo7OXOSkU6q8iVc?=
- =?us-ascii?Q?TWp9w3JgaUa+hE1Ob2aGrq3AvmPn9j70nkhrZNlkCqeQkQel3ajxaFWErrgN?=
- =?us-ascii?Q?GGq+O3E6YUhGpzlcLCIKw0FPjJ0vSazAn5UD4F6SjLuuOrjnIbajDTJLz6sG?=
- =?us-ascii?Q?tMosQ0uE90kjQLZtyvAAIzZVOCh2QtRhk0+Ymn+XNbzqPbkFYBsIhNZEp9Gk?=
- =?us-ascii?Q?SzKwk7inhSmY47woGsI/X9OdCluekUeepVOCzaMtJDx2jvMrckX7GqZ8tWMt?=
- =?us-ascii?Q?uv8vqcovevj9jGxWohxJ1ikmggbXedTUOhiSKemAR/3ekCJmifpMbbc5mgXP?=
- =?us-ascii?Q?Wd5B7taFdS5d5j7CzyuFSReQPymDkmCsxc9VBSyr806Kj05ysCSf+/C8ZVcY?=
- =?us-ascii?Q?cCXsRAiIUsYTnS58JgbOP4Jh4mAgEuQ8IbZlnRK3u2IJA9Y2FC706+BG9dX4?=
- =?us-ascii?Q?RCY+XsA4nGaaP2ai7CxG9hlvwbTvM6gQKZECgADKnffICp9yHtYkWyhbHf3H?=
- =?us-ascii?Q?u8fTsGbDM3nMghwpcw9rEDu7tPNa/rc9zUBBmEmO5YmTpfLKILW+X50w0P+3?=
- =?us-ascii?Q?wUWn43RwBLlzi++SGa0MelL0im1nUb2gaKPCXqUm7fRC0o6UsVWcSmNNBK72?=
- =?us-ascii?Q?UIDJoaGaQ/Vu2ltNysxq0kPSUY9qILgfOYOV2vwpCUXLMYjXy7IXgoDGUiFL?=
- =?us-ascii?Q?skUzl4VzE7EVNfZOcHe6ZUdb13OxQArTox86jc0maNhUiIuhMEklpswAW1xH?=
- =?us-ascii?Q?ekndYV79whYiahy7xSLtRV55gofI4pCSehyuMUScpmzMKmWJLCkWlzm1aaYo?=
- =?us-ascii?Q?YKN+UzU1hAgaK2ZaHOQ4tdyFVVh7BNzW9EzrcWBWyyiGkofRE4WVvTKnfO7K?=
- =?us-ascii?Q?gE6rAaLlyB6rKHTBCux6qDKVz5rKQqb6XuXfA1E9tyYJ8hP11PkRuEWTSLnp?=
- =?us-ascii?Q?uPnKT142OOOOET7WlPLwOzWNVYt7Blcc2uOSpSDjCBZ0gWnAnE+bUL+7QNrd?=
- =?us-ascii?Q?ucn1RGy0D+OK1XJGg2rP/bNlnf9/BDklDjCvzYvzPqjTx2+yFYrxwN3NpOXG?=
- =?us-ascii?Q?Jg6ZBkKKNNM=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?LIJp7tK67zfXiLiRZYCor0ifbxBCVDsCZgIVfnGJj1I5P91Y2VSCcD4vp9gf?=
- =?us-ascii?Q?gfS6DR861cf9iZ8KJNFmOATrur39OUV+YG2KC4GIrr0zDdkVjgDgP3SHnKUC?=
- =?us-ascii?Q?EBCMOT1RxAYb9vdFhcQMEbTNmsdpseSo89xCR9xGY+9o8nuu/GaHwc3VDAwW?=
- =?us-ascii?Q?YS7B/ijWP6s/MxmrzLwl2VgLMLoFcYcQdF/7Ff8lgI+wFP5XgwKGY0Plxa3A?=
- =?us-ascii?Q?3ulPvjhBXSTDB4+2I0Wbdip4FwcGuyvF8OzBkdwblaqvXBUWHRd5Gs3urtFw?=
- =?us-ascii?Q?m0BLvfmDVy+jUPs3Vtu5tF7yuT5pLqqAFioUybEiMrTpXwysweUkUrYQeIrG?=
- =?us-ascii?Q?rOnWzua86WZM6QtoS38dWk/IybNQInoKsfZn+eYxuYOqCHaccyvUIIMvzomo?=
- =?us-ascii?Q?hnK6kaRXKVLNDlKvtYUUBlXZtfZs6NXfKGHKDlAUngGvD8jWZVDr/BJVUlaq?=
- =?us-ascii?Q?zlBU9LXs6px2/o8toMj7sFp+rXk5uL5ejHIshtPHVec+ACTVWkNOiADVqJD5?=
- =?us-ascii?Q?y5AwKEihW151ano4+pASFn7Nm4Uc/g5eQotmB5b0iS2SWMvHxjNAfTjkJxgX?=
- =?us-ascii?Q?XH2O2UjdpHioAaQHFVoN4yquL4yZm7NzvZqcLxWqqnqQRh702LgABwqxiTtb?=
- =?us-ascii?Q?TDP5rrg44REkz276Go/ehl2S348gNlz0vftPg9maqKwgVsoRpXS9pcyKhZuS?=
- =?us-ascii?Q?Q97wm6EtjpToZd1YOL5Utthm7XfdSOA5ejTOXJBsVSkyhfz/uWrQnc86efKZ?=
- =?us-ascii?Q?c7EAoWgjpa1J7TNfVK/NYCrz0oEwvajqR7kCjC/0du1pa8vp6sY3qoKqoHro?=
- =?us-ascii?Q?LwQi6gUb1mtWwmQ+EORM8r627S8PnvSZpvJDz+DkJMm4dK0PuBmg1x7DDo8S?=
- =?us-ascii?Q?C/TM+zQ1NQhu1+a6L8QRlQ7wW7VRmrClwn6dIQiU/fmQMXVtru5eISo/PVTQ?=
- =?us-ascii?Q?G56LceFU9EKvIjh2/bjDTXncKygL1FIuH8E2IheJQ1plbBhWGiW6JBSOCFwW?=
- =?us-ascii?Q?jnfblE0g58Fre1FZuTy1aCVKkHHnf3UmYa3wQ5QfanUdHU+JB0PTTGE9zU+k?=
- =?us-ascii?Q?ACkA5iCLcdHjtco/ZoMjQa7XAPipv6UY3ORTDK08yw57rEkMnUACXV2kvrFb?=
- =?us-ascii?Q?WN4GgnQFlFCympbiBCfGUYvdlgBLb4Njxv+C67TWEhqs906WY7tJfy5PAgy7?=
- =?us-ascii?Q?OCdHExDUNj0YrQnHne7m6yywIXEt4dNJV8y4jDDS75FjOhl1XlMQ7i9wziis?=
- =?us-ascii?Q?fatLDBtBEsYWZvvqUA/90ZMxi2hWxThwa9UNcB6UMTiR8/pu5Xd6QFCJ5cRW?=
- =?us-ascii?Q?znsw+L563vIhADYxszzUVy0nifOZbZW/5d5JSVTj/UOa+ZSklcvy7xqEHnmQ?=
- =?us-ascii?Q?lfucMZ1luX9tlA1mO8lhnceD/gPj/JxfffagS1VUhCfcOmJR73BbtsgyIawE?=
- =?us-ascii?Q?TCK17JdfSPmikWDefGojEw//zeqOFyPhVUwW0+f0OlorriI0sTxkJN8YZk51?=
- =?us-ascii?Q?Po0Kzsjp7asDJzujiUD5UGDDC+U+e8rpPup5MRBPZ40nDbMZAmQ0JzxIhuv8?=
- =?us-ascii?Q?c+gcQj5vAMx/bYXarnsXhLAB/UA7NWhoEfUt7eSL2HRkF1Ii0KTSLfi6d1fK?=
- =?us-ascii?Q?dQ=3D=3D?=
-X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 68d95180-f678-4ca2-f40b-08dd87d0cf5c
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Apr 2025 10:21:45.9639
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ummxHQODxVGNo7qlPzFzQdlMfGHWS9us13N8Gyms6IVLzQzKuVNMqAfJJQMNf0Jw4UD+jVdYKJc3OvdlMwDfElYSjCmkrjJRr43GYfUq+ls=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7688
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 30 Apr 2025 10:21:49 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6792
+ <docs@lists.yoctoproject.org>; Fri, 02 May 2025 07:24:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6793
 
-Hi Enrico,
+From: Lee Chee Yang <chee.yang.lee@intel.com>
 
-On 4/29/25 8:12 PM, Enrico J=C3=B6rns via lists.yoctoproject.org wrote:
-> * Since scarthgap [1], the default will be overridden when using
->    'systemd' as INIT_MANAGER. Reflect this in the documentation.
-> * The distro configuration is probably the better place for
->    customization, thus at least mention this together with the
->    local.conf.
-> * While at it, drop the probably redundant description on how to
->    override weak default variables.
->    The example on how to set "/root" is still given indirectly, anyway.
->=20
-> [1] ebafe463 ("systemd: upgrade to 255.1")
->=20
-> Signed-off-by: Enrico J=C3=B6rns <ejo@pengutronix.de>
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ .../migration-guides/release-5.0.rst          |   1 +
+ .../migration-guides/release-notes-5.0.9.rst  | 206 ++++++++++++++++++
+ 2 files changed, 207 insertions(+)
+ create mode 100644 documentation/migration-guides/release-notes-5.0.9.rst
 
-Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
+index 528963ec2..3eb7349c7 100644
+--- a/documentation/migration-guides/release-5.0.rst
++++ b/documentation/migration-guides/release-5.0.rst
+@@ -15,3 +15,4 @@ Release 5.0 (scarthgap)
+    release-notes-5.0.6
+    release-notes-5.0.7
+    release-notes-5.0.8
++   release-notes-5.0.9
+diff --git a/documentation/migration-guides/release-notes-5.0.9.rst b/documentation/migration-guides/release-notes-5.0.9.rst
+new file mode 100644
+index 000000000..81b853cf3
+--- /dev/null
++++ b/documentation/migration-guides/release-notes-5.0.9.rst
+@@ -0,0 +1,206 @@
++.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
++
++Release notes for Yocto-5.0.9 (Scarthgap)
++-----------------------------------------
++
++Security Fixes in Yocto-5.0.9
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++-  binutils: Fix :cve_nist:`2024-57360`, :cve_nist:`2025-1176`, :cve_nist:`2025-1178` and
++   :cve_nist:`2025-1181`
++-  expat: Fix :cve_nist:`2024-8176`
++-  freetype: Fix :cve_nist:`2025-27363`
++-  ghostscript: Fix :cve_nist:`2025-27830`, :cve_nist:`2025-27831`, :cve_nist:`2025-27832`,
++   :cve_nist:`2025-27833`, :cve_nist:`2025-27833`, :cve_nist:`2025-27834`, :cve_nist:`2025-27835`
++   and :cve_nist:`2025-27836`
++-  go: fix :cve_nist:`2025-22870` and :cve_nist:`2025-22871`
++-  grub: Fix :cve_nist:`2024-45781`, :cve_nist:`2024-45774`, :cve_nist:`2024-45775`,
++   :cve_nist:`2024-45776`, :cve_nist:`2024-45777`, :cve_nist:`2024-45778`, :cve_nist:`2024-45779`,
++   :cve_nist:`2024-45780`, :cve_nist:`2024-45782`, :cve_nist:`2024-45783`, :cve_nist:`2024-56737`,
++   :cve_nist:`2025-0622`, :cve_nist:`2025-0624`, :cve_nist:`2025-0677`, :cve_nist:`2025-0678`,
++   :cve_nist:`2025-0684`, :cve_nist:`2025-0685`, :cve_nist:`2025-0686`, :cve_nist:`2025-0689`,
++   :cve_nist:`2025-0690`, :cve_nist:`2025-1118` and :cve_nist:`2025-1125`
++-  libarchive: Fix :cve_nist:`2024-20696`, :cve_nist:`2024-48957`, :cve_nist:`2024-48958`,
++   :cve_nist:`2025-1632` and :cve_nist:`2025-25724`
++-  libxslt: Fix :cve_nist:`2024-24855` and :cve_nist:`2024-55549`
++-  linux-yocto/6.6: Fix :cve_nist:`2024-54458`, :cve_nist:`2024-57834`, :cve_nist:`2024-57973`,
++   :cve_nist:`2024-57978`, :cve_nist:`2024-57979`, :cve_nist:`2024-57980`, :cve_nist:`2024-57981`,
++   :cve_nist:`2024-57984`, :cve_nist:`2024-57996`, :cve_nist:`2024-57997`, :cve_nist:`2024-58002`,
++   :cve_nist:`2024-58005`, :cve_nist:`2024-58007`, :cve_nist:`2024-58010`, :cve_nist:`2024-58011`,
++   :cve_nist:`2024-58013`, :cve_nist:`2024-58017`, :cve_nist:`2024-58020`, :cve_nist:`2024-58034`,
++   :cve_nist:`2024-58052`, :cve_nist:`2024-58055`, :cve_nist:`2024-58058`, :cve_nist:`2024-58063`,
++   :cve_nist:`2024-58068`, :cve_nist:`2024-58069`, :cve_nist:`2024-58070`, :cve_nist:`2024-58071`,
++   :cve_nist:`2024-58076`, :cve_nist:`2024-58080`, :cve_nist:`2024-58083`, :cve_nist:`2024-58088`,
++   :cve_nist:`2025-21700`, :cve_nist:`2025-21703`, :cve_nist:`2025-21707`, :cve_nist:`2025-21711`,
++   :cve_nist:`2025-21715`, :cve_nist:`2025-21716`, :cve_nist:`2025-21718`, :cve_nist:`2025-21726`,
++   :cve_nist:`2025-21727`, :cve_nist:`2025-21731`, :cve_nist:`2025-21735`, :cve_nist:`2025-21736`,
++   :cve_nist:`2025-21741`, :cve_nist:`2025-21742`, :cve_nist:`2025-21743`, :cve_nist:`2025-21744`,
++   :cve_nist:`2025-21745`, :cve_nist:`2025-21748`, :cve_nist:`2025-21749`, :cve_nist:`2025-21753`,
++   :cve_nist:`2025-21756`, :cve_nist:`2025-21759`, :cve_nist:`2025-21760`, :cve_nist:`2025-21761`,
++   :cve_nist:`2025-21762`, :cve_nist:`2025-21763`, :cve_nist:`2025-21764`, :cve_nist:`2025-21773`,
++   :cve_nist:`2025-21775`, :cve_nist:`2025-21776`, :cve_nist:`2025-21779`, :cve_nist:`2025-21780`,
++   :cve_nist:`2025-21782`, :cve_nist:`2025-21783`, :cve_nist:`2025-21785`, :cve_nist:`2025-21787`,
++   :cve_nist:`2025-21789`, :cve_nist:`2025-21790`, :cve_nist:`2025-21791`, :cve_nist:`2025-21792`,
++   :cve_nist:`2025-21793`, :cve_nist:`2025-21796`, :cve_nist:`2025-21811`, :cve_nist:`2025-21812`,
++   :cve_nist:`2025-21814`, :cve_nist:`2025-21820`, :cve_nist:`2025-21844`, :cve_nist:`2025-21846`,
++   :cve_nist:`2025-21847`, :cve_nist:`2025-21848`, :cve_nist:`2025-21853`, :cve_nist:`2025-21854`,
++   :cve_nist:`2025-21855`, :cve_nist:`2025-21856`, :cve_nist:`2025-21857`, :cve_nist:`2025-21858`,
++   :cve_nist:`2025-21859`, :cve_nist:`2025-21862`, :cve_nist:`2025-21863`, :cve_nist:`2025-21864`,
++   :cve_nist:`2025-21865`, :cve_nist:`2025-21866`, :cve_nist:`2025-21867`, :cve_nist:`2025-21887`,
++   :cve_nist:`2025-21891`, :cve_nist:`2025-21898`, :cve_nist:`2025-21904`, :cve_nist:`2025-21905`,
++   :cve_nist:`2025-21908`, :cve_nist:`2025-21912`, :cve_nist:`2025-21915`, :cve_nist:`2025-21917`,
++   :cve_nist:`2025-21918`, :cve_nist:`2025-21919`, :cve_nist:`2025-21920`, :cve_nist:`2025-21922`,
++   :cve_nist:`2025-21928`, :cve_nist:`2025-21934`, :cve_nist:`2025-21936`, :cve_nist:`2025-21937`,
++   :cve_nist:`2025-21941`, :cve_nist:`2025-21943`, :cve_nist:`2025-21945`, :cve_nist:`2025-21947`,
++   :cve_nist:`2025-21948`, :cve_nist:`2025-21951`, :cve_nist:`2025-21957`, :cve_nist:`2025-21959`,
++   :cve_nist:`2025-21962`, :cve_nist:`2025-21963`, :cve_nist:`2025-21964`, :cve_nist:`2025-21966`,
++   :cve_nist:`2025-21967`, :cve_nist:`2025-21968`, :cve_nist:`2025-21969`, :cve_nist:`2025-21979`,
++   :cve_nist:`2025-21980`, :cve_nist:`2025-21981`, :cve_nist:`2025-21991` and :cve_nist:`2025-21993`
++-  mpg123: Fix :cve_nist:`2024-10573`
++-  ofono: Fix :cve_nist:`2024-7537`
++-  openssh: Fix :cve_nist:`2025-26465`
++-  puzzles: Ignore :cve_nist:`2024-13769`, :cve_nist:`2024-13770` and :cve_nist:`2025-0837`
++-  qemu: Ignore :cve_nist:`2023-1386`
++-  ruby: Fix :cve_nist:`2025-27219` and :cve_nist:`2025-27220`
++-  rust-cross-canadian: Ignore :cve_nist:`2024-43402`
++-  vim: Fix :cve_nist:`2025-1215`, :cve_nist:`2025-26603`, :cve_nist:`2025-27423` and
++   :cve_nist:`2025-29768`
++-  xserver-xorg: Fix :cve_nist:`2025-26594`, :cve_nist:`2025-26595`, :cve_nist:`2025-26596`,
++   :cve_nist:`2025-26597`, :cve_nist:`2025-26598`, :cve_nist:`2025-26599`, :cve_nist:`2025-26600`
++   and :cve_nist:`2025-26601`
++-  xz: Fix :cve_nist:`2025-31115`
++
++
++Fixes in Yocto-5.0.9
++~~~~~~~~~~~~~~~~~~~~
++
++-  babeltrace2: extend to nativesdk
++-  babeltrace: extend to nativesdk
++-  bitbake: event/utils: Avoid deadlock from lock_timeout() and recursive events
++-  bitbake: utils: Add signal blocking for lock_timeout
++-  bitbake: utils: Print information about lock issue before exiting
++-  bitbake: utils: Tweak lock_timeout logic
++-  build-appliance-image: Update to scarthgap head revision
++-  cve-check.bbclass: Mitigate symlink related error
++-  cve-update-nvd2-native: add workaround for json5 style list
++-  cve-update-nvd2-native: handle missing vulnStatus
++-  gcc: remove paths to sysroot from configargs.h and checksum-options for gcc-cross-canadian
++-  gcc: unify cleanup of include-fixed, apply to cross-canadian
++-  ghostscript: upgrade to 10.05.0
++-  grub: backport strlcpy function
++-  grub: drop obsolete CVE statuses
++-  icu: Adjust ICU_DATA_DIR path on big endian targets
++-  kernel-arch: add macro-prefix-map in KERNEL_CC
++-  libarchive: upgrade to 3.7.9
++-  libxslt: upgrade to 1.1.43
++-  linux-yocto/6.6: update to v6.6.84
++-  mc: set ac_cv_path_ZIP to avoid buildpaths QA issues
++-  mpg123: upgrade to 1.32.10
++-  nativesdk-libtool: sanitize the script, remove buildpaths
++-  openssl: rewrite ptest installation
++-  overview-manual/concepts: remove :term:`PR` from the build dir list
++-  patch.py: set commituser and commitemail for addNote
++-  poky.conf: bump version for 5.0.9
++-  vim: Upgrade to 9.1.1198
++-  xserver-xf86-config: add a configuration fragment to disable screen blanking
++-  xserver-xf86-config: remove obsolete configuration files
++-  xserver-xorg: upgrade to 21.1.16
++-  xz: upgrade to 5.4.7
++-  yocto-uninative: Update to 4.7 for glibc 2.41
++
++
++Known Issues in Yocto-5.0.9
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++- N/A
++
++Contributors to Yocto-5.0.9
++~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++Thanks to the following people who contributed to this release:
++
++-  Antonin Godard
++-  Archana Polampalli
++-  Ashish Sharma
++-  Bruce Ashfield
++-  Changqing Li
++-  Denys Dmytriyenko
++-  Divya Chellam
++-  Hitendra Prajapati
++-  Madhu Marri
++-  Makarios Christakis
++-  Martin Jansa
++-  Michael Halstead
++-  Niko Mauno
++-  Oleksandr Hnatiuk
++-  Peter Marko
++-  Richard Purdie
++-  Ross Burton
++-  Sana Kazi
++-  Stefan Mueller-Klieser
++-  Steve Sakoman
++-  Vijay Anusuri
++-  Virendra Thakur
++-  Vishwas Udupa
++-  Wang Mingyu
++-  Zhang Peng
++
++
++Repositories / Downloads for Yocto-5.0.9
++~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++
++poky
++
++-  Repository Location: :yocto_git:`/poky`
++-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.9 </poky/log/?h=yocto-5.0.9>`
++-  Git Revision: :yocto_git:`bab0f9f62af9af580744948dd3240f648a99879a </poky/commit/?id=bab0f9f62af9af580744948dd3240f648a99879a>`
++-  Release Artefact: poky-bab0f9f62af9af580744948dd3240f648a99879a
++-  sha: ee6811d9fb6c4913e19d6e3569f1edc8ccd793779b237520596506446a6b4531
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/poky-bab0f9f62af9af580744948dd3240f648a99879a.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/poky-bab0f9f62af9af580744948dd3240f648a99879a.tar.bz2
++
++openembedded-core
++
++-  Repository Location: :oe_git:`/openembedded-core`
++-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
++-  Tag:  :oe_git:`yocto-5.0.9 </openembedded-core/log/?h=yocto-5.0.9>`
++-  Git Revision: :oe_git:`04038ecd1edd6592b826665a2b787387bb7074fa </openembedded-core/commit/?id=04038ecd1edd6592b826665a2b787387bb7074fa>`
++-  Release Artefact: oecore-04038ecd1edd6592b826665a2b787387bb7074fa
++-  sha: 6e201a4b486dfbdfcb7e96d83b962a205ec4764db6ad0e34bd623db18910eddb
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/oecore-04038ecd1edd6592b826665a2b787387bb7074fa.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/oecore-04038ecd1edd6592b826665a2b787387bb7074fa.tar.bz2
++
++meta-mingw
++
++-  Repository Location: :yocto_git:`/meta-mingw`
++-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
++-  Tag:  :yocto_git:`yocto-5.0.9 </meta-mingw/log/?h=yocto-5.0.9>`
++-  Git Revision: :yocto_git:`bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f </meta-mingw/commit/?id=bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f>`
++-  Release Artefact: meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f
++-  sha: ab073def6487f237ac125d239b3739bf02415270959546b6b287778664f0ae65
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
++
++bitbake
++
++-  Repository Location: :oe_git:`/bitbake`
++-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
++-  Tag:  :oe_git:`yocto-5.0.9 </bitbake/log/?h=yocto-5.0.9>`
++-  Git Revision: :oe_git:`696c2c1ef095f8b11c7d2eff36fae50f58c62e5e </bitbake/commit/?id=696c2c1ef095f8b11c7d2eff36fae50f58c62e5e>`
++-  Release Artefact: bitbake-696c2c1ef095f8b11c7d2eff36fae50f58c62e5e
++-  sha: fc83f879cd6dd14b9b7eba0161fec23ecc191fed0fb00556ba729dceef6c145f
++-  Download Locations:
++   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/bitbake-696c2c1ef095f8b11c7d2eff36fae50f58c62e5e.tar.bz2
++   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/bitbake-696c2c1ef095f8b11c7d2eff36fae50f58c62e5e.tar.bz2
++
++yocto-docs
++
++-  Repository Location: :yocto_git:`/yocto-docs`
++-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
++-  Tag: :yocto_git:`yocto-5.0.9 </yocto-docs/log/?h=yocto-5.0.9>`
++-  Git Revision: :yocto_git:`56db4fd81f6235428bef9e46a61c11ca0ba89733 </yocto-docs/commit/?id=56db4fd81f6235428bef9e46a61c11ca0ba89733>`
++
+-- 
+2.43.0
 
-Thanks!
-Quentin
 
