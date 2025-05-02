@@ -1,288 +1,126 @@
-Return-Path: <chee.yang.lee@intel.com>
+Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1F268C3ABA9
-	for <webhook@archiver.kernel.org>; Fri,  2 May 2025 07:24:47 +0000 (UTC)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
- by mx.groups.io with SMTP id smtpd.web11.14064.1746170686185445787
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 45931C3ABAA
+	for <webhook@archiver.kernel.org>; Fri,  2 May 2025 17:22:00 +0000 (UTC)
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+ by mx.groups.io with SMTP id smtpd.web10.24761.1746206513185777671
  for <docs@lists.yoctoproject.org>;
- Fri, 02 May 2025 00:24:46 -0700
+ Fri, 02 May 2025 10:21:53 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@intel.com header.s=Intel header.b=QFXPbzCa;
- spf=pass (domain: intel.com, ip: 198.175.65.16, mailfrom: chee.yang.lee@intel.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746170686; x=1777706686;
-  h=from:to:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=nK7wk/zdVlw3qpPbxe1456oYEHRF2//GkS70srxIoFs=;
-  b=QFXPbzCau0O9HqiIm5sNLuKRfkPvKbxVrix8C42MJeMdgoKCvLiVB5yl
-   FQtO+mltBF7bayrvftt73WFqsnBL0q6YvflZxAHR0pyZ/CMtPgOwqthTj
-   w1RxpltbcAjMh2+GjpZ2TRHUHQllPU4yctel0i9NrcSbz2LVkC2DaupnB
-   uisoBIftXy0cDT/3XxjgIgDN0wsT+ArMn3Qo/DMUhlABP9PmUSi6ePkoG
-   QkzFTQCAoLV5ttutqI4W452AV8Gmop+OCsmjvtuZKcqMeFY+uVKoZoyxc
-   3VtBUXBHV7IH9qRIcWZqNKM7q/RZvm5mubWiVUTWrD8tzdoi48W7YUM2q
-   A==;
-X-CSE-ConnectionGUID: /Xgwh5W0TJGtUhcUwHZ2pw==
-X-CSE-MsgGUID: DBCm4nGdTSW9vb0+PZ7+mQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11420"; a="47938206"
-X-IronPort-AV: E=Sophos;i="6.15,255,1739865600"; 
-   d="scan'208";a="47938206"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2025 00:24:45 -0700
-X-CSE-ConnectionGUID: 9G5w7Oe1RsyAB3ZjrSw6PA==
-X-CSE-MsgGUID: wd8SJxf9SI2ReVkqgWrL2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,255,1739865600"; 
-   d="scan'208";a="139726350"
-Received: from cheeyang-desk4.png.intel.com ([10.107.249.123])
-  by fmviesa004.fm.intel.com with ESMTP; 02 May 2025 00:24:43 -0700
-From: chee.yang.lee@intel.com
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=N0biLKhC;
+ spf=pass (domain: gmail.com, ip: 209.85.222.173, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c5675dec99so263570885a.0
+        for <docs@lists.yoctoproject.org>; Fri, 02 May 2025 10:21:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746206511; x=1746811311; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=t5vVHtsIEbQSLYVvYkYVMAwk7fq0YieKFJXg9hk91SU=;
+        b=N0biLKhC3haeXBHvPEVElFeyzqWa/xbPZW9qKlEOHl7Eq1yTmmMcQQRO2dDNfhksO9
+         Mq8xkRtm8987bQwxukOl6cbPILDtfR5w1njwTE65TcNNg7631XAZ2wh1vZRbDIZi5pir
+         /8xaFHG/r7hjA9bbxQDQNtxhG1PhY+6nKU8F7f2qOlvmWjdaBIDcuSLnRm6IsZL2q4Q7
+         eYPCthUNo8f0l4kxcREg6zEDBPbMizN16UKkdOyb48OQsS3R02RVzbKy1ShUh0VnnPoB
+         LRZx7vrGHVTNWnsiiC8Y/dZ3sDz4F2qoJIwnKpzm82uzQpnVfpRb8P1wRmn/ctsKnaiS
+         l4ew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746206511; x=1746811311;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=t5vVHtsIEbQSLYVvYkYVMAwk7fq0YieKFJXg9hk91SU=;
+        b=mD/t+dKIi31clUnXkje+JPaLIh9OOow/VJe715bOupHe3DpItIg+XJ0XyJTlkiPjzG
+         H60eCzlrCZXno3vcCNVRtgG3tZTqw9IxOCTTgTbS/UvV3wtbswFRD+tb28LODN2yRdaB
+         yLfdGkdVqTjrPf2Jtstn7+FW0ui7adGRzKoZNykE5i1qSntgVw84AmlAYqWMiCCqg7a9
+         eor5JObtxT4F7qctkBKTTgzV3o+W2fTSpzHgB5XKdGVOn71Mp7WF+HG80GdLWTHpwueY
+         C59xRHw/cWyPeY2JMXmaMEMRK89UWWaI9EfV0HmrXW2MEczmxUTuZdsFBmdqmjFXHl8o
+         wIOg==
+X-Gm-Message-State: AOJu0YyWTVG7P6nm5gECbiUZSQJ+Zh5WlyMepCGcjfsCNAf83vu1ADPP
+	NmnA5laq8Kf/zpnpuuwpo/HRkelxHIaYFH47Cf1xdQ0Rd0OJxmF1N5NBmA==
+X-Gm-Gg: ASbGncthW2kkgNkXH4xqP0ryrHzEuFaXEM1c0QtIC94i+5C0/VPyq9IJC+kOsiSJZ+O
+	Vpq9GFDvm4Lgwry9C1g4S++GIniWzL0Z+L++RIJQgpvzt0nEfZ5PUE4a5zUgcq9UWHLf9LYjEO1
+	ccF2Knv7cPNyUUxLYGpPCXZF0FNkVm/FsJcuzdfiTlpKfHLBx1nt60bbL1K0MhhNAEhWjePdhI1
+	Gnrg4+RYHPVuNRCsKa1vaz4MyBzuHuLE8dY9SU3cvW0Os93oW/0P0W1wjhttYW06Nvzsik74x35
+	JlLaBOy60z2O6vBMIpUhPASfzGf3emP41rJjXQhprysDxlngxf/Sx0RLBC4LRQS1y0NOpJKSbQv
+	oXvl78CjX
+X-Google-Smtp-Source: AGHT+IHD86C1CU2Hyg3SvEsACQAkJVKHb60OV6PZJPVQDopM+eLAC8TfZJeXyxRAh4QOs0Ey7X1bdA==
+X-Received: by 2002:a05:620a:26a7:b0:7c9:269f:b661 with SMTP id af79cd13be357-7cad5b5c1bdmr538004985a.32.1746206511441;
+        Fri, 02 May 2025 10:21:51 -0700 (PDT)
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cad23b5f51sm211328785a.11.2025.05.02.10.21.50
+        for <docs@lists.yoctoproject.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 02 May 2025 10:21:50 -0700 (PDT)
+From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Subject: [PATCH] migration-guides: add release notes for 5.0.9
-Date: Fri,  2 May 2025 15:24:44 +0800
-Message-ID: <20250502072444.3764883-1-chee.yang.lee@intel.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH v2] contributor-guide/submit-changes: encourage patch version changelogs
+Date: Fri,  2 May 2025 13:21:43 -0400
+Message-ID: <20250502172143.31713-1-twoerner@gmail.com>
+X-Mailer: git-send-email 2.44.0.501.g19981daefd7c
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 02 May 2025 07:24:47 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6793
+ <docs@lists.yoctoproject.org>; Fri, 02 May 2025 17:22:00 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6794
 
-From: Lee Chee Yang <chee.yang.lee@intel.com>
+Add a section after the 'git format-patch' information encouraging developers
+to add patch version changelogs to their patch updates.
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- .../migration-guides/release-5.0.rst          |   1 +
- .../migration-guides/release-notes-5.0.9.rst  | 206 ++++++++++++++++++
- 2 files changed, 207 insertions(+)
- create mode 100644 documentation/migration-guides/release-notes-5.0.9.rst
+changes in v2:
+- clarify SoB line
+- clarify "this patch was added in v2" line
+---
+ .../contributor-guide/submit-changes.rst      | 32 +++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/documentation/migration-guides/release-5.0.rst b/documentation/migration-guides/release-5.0.rst
-index 528963ec2..3eb7349c7 100644
---- a/documentation/migration-guides/release-5.0.rst
-+++ b/documentation/migration-guides/release-5.0.rst
-@@ -15,3 +15,4 @@ Release 5.0 (scarthgap)
-    release-notes-5.0.6
-    release-notes-5.0.7
-    release-notes-5.0.8
-+   release-notes-5.0.9
-diff --git a/documentation/migration-guides/release-notes-5.0.9.rst b/documentation/migration-guides/release-notes-5.0.9.rst
-new file mode 100644
-index 000000000..81b853cf3
---- /dev/null
-+++ b/documentation/migration-guides/release-notes-5.0.9.rst
-@@ -0,0 +1,206 @@
-+.. SPDX-License-Identifier: CC-BY-SA-2.0-UK
+diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+index 0675aac984cf..6d5d69d7cfb4 100644
+--- a/documentation/contributor-guide/submit-changes.rst
++++ b/documentation/contributor-guide/submit-changes.rst
+@@ -776,6 +776,38 @@ argument to ``git format-patch`` with a version number::
+ 
+    git format-patch -v2 <ref-branch>
+ 
 +
-+Release notes for Yocto-5.0.9 (Scarthgap)
-+-----------------------------------------
++After generating updated patches (v2, v3, and so on) via ``git
++format-patch``, ideally developers will add a patch version changelog
++to each patch that describes what has changed between each revision of
++the patch. Add patch version changelogs after the ``---`` marker in the
++patch, indicating that this information is part of this patch, but is not
++suitable for inclusion in the commit message (i.e. the git history) itself.
++Providing a patch version changelog makes it easier for maintainers and
++reviewers to succinctly understand what changed in all versions of the
++patch, without having to consult alternate sources of information, such as
++searching through messages on a mailing list. For example::
 +
-+Security Fixes in Yocto-5.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
++   <patch title>
 +
-+-  binutils: Fix :cve_nist:`2024-57360`, :cve_nist:`2025-1176`, :cve_nist:`2025-1178` and
-+   :cve_nist:`2025-1181`
-+-  expat: Fix :cve_nist:`2024-8176`
-+-  freetype: Fix :cve_nist:`2025-27363`
-+-  ghostscript: Fix :cve_nist:`2025-27830`, :cve_nist:`2025-27831`, :cve_nist:`2025-27832`,
-+   :cve_nist:`2025-27833`, :cve_nist:`2025-27833`, :cve_nist:`2025-27834`, :cve_nist:`2025-27835`
-+   and :cve_nist:`2025-27836`
-+-  go: fix :cve_nist:`2025-22870` and :cve_nist:`2025-22871`
-+-  grub: Fix :cve_nist:`2024-45781`, :cve_nist:`2024-45774`, :cve_nist:`2024-45775`,
-+   :cve_nist:`2024-45776`, :cve_nist:`2024-45777`, :cve_nist:`2024-45778`, :cve_nist:`2024-45779`,
-+   :cve_nist:`2024-45780`, :cve_nist:`2024-45782`, :cve_nist:`2024-45783`, :cve_nist:`2024-56737`,
-+   :cve_nist:`2025-0622`, :cve_nist:`2025-0624`, :cve_nist:`2025-0677`, :cve_nist:`2025-0678`,
-+   :cve_nist:`2025-0684`, :cve_nist:`2025-0685`, :cve_nist:`2025-0686`, :cve_nist:`2025-0689`,
-+   :cve_nist:`2025-0690`, :cve_nist:`2025-1118` and :cve_nist:`2025-1125`
-+-  libarchive: Fix :cve_nist:`2024-20696`, :cve_nist:`2024-48957`, :cve_nist:`2024-48958`,
-+   :cve_nist:`2025-1632` and :cve_nist:`2025-25724`
-+-  libxslt: Fix :cve_nist:`2024-24855` and :cve_nist:`2024-55549`
-+-  linux-yocto/6.6: Fix :cve_nist:`2024-54458`, :cve_nist:`2024-57834`, :cve_nist:`2024-57973`,
-+   :cve_nist:`2024-57978`, :cve_nist:`2024-57979`, :cve_nist:`2024-57980`, :cve_nist:`2024-57981`,
-+   :cve_nist:`2024-57984`, :cve_nist:`2024-57996`, :cve_nist:`2024-57997`, :cve_nist:`2024-58002`,
-+   :cve_nist:`2024-58005`, :cve_nist:`2024-58007`, :cve_nist:`2024-58010`, :cve_nist:`2024-58011`,
-+   :cve_nist:`2024-58013`, :cve_nist:`2024-58017`, :cve_nist:`2024-58020`, :cve_nist:`2024-58034`,
-+   :cve_nist:`2024-58052`, :cve_nist:`2024-58055`, :cve_nist:`2024-58058`, :cve_nist:`2024-58063`,
-+   :cve_nist:`2024-58068`, :cve_nist:`2024-58069`, :cve_nist:`2024-58070`, :cve_nist:`2024-58071`,
-+   :cve_nist:`2024-58076`, :cve_nist:`2024-58080`, :cve_nist:`2024-58083`, :cve_nist:`2024-58088`,
-+   :cve_nist:`2025-21700`, :cve_nist:`2025-21703`, :cve_nist:`2025-21707`, :cve_nist:`2025-21711`,
-+   :cve_nist:`2025-21715`, :cve_nist:`2025-21716`, :cve_nist:`2025-21718`, :cve_nist:`2025-21726`,
-+   :cve_nist:`2025-21727`, :cve_nist:`2025-21731`, :cve_nist:`2025-21735`, :cve_nist:`2025-21736`,
-+   :cve_nist:`2025-21741`, :cve_nist:`2025-21742`, :cve_nist:`2025-21743`, :cve_nist:`2025-21744`,
-+   :cve_nist:`2025-21745`, :cve_nist:`2025-21748`, :cve_nist:`2025-21749`, :cve_nist:`2025-21753`,
-+   :cve_nist:`2025-21756`, :cve_nist:`2025-21759`, :cve_nist:`2025-21760`, :cve_nist:`2025-21761`,
-+   :cve_nist:`2025-21762`, :cve_nist:`2025-21763`, :cve_nist:`2025-21764`, :cve_nist:`2025-21773`,
-+   :cve_nist:`2025-21775`, :cve_nist:`2025-21776`, :cve_nist:`2025-21779`, :cve_nist:`2025-21780`,
-+   :cve_nist:`2025-21782`, :cve_nist:`2025-21783`, :cve_nist:`2025-21785`, :cve_nist:`2025-21787`,
-+   :cve_nist:`2025-21789`, :cve_nist:`2025-21790`, :cve_nist:`2025-21791`, :cve_nist:`2025-21792`,
-+   :cve_nist:`2025-21793`, :cve_nist:`2025-21796`, :cve_nist:`2025-21811`, :cve_nist:`2025-21812`,
-+   :cve_nist:`2025-21814`, :cve_nist:`2025-21820`, :cve_nist:`2025-21844`, :cve_nist:`2025-21846`,
-+   :cve_nist:`2025-21847`, :cve_nist:`2025-21848`, :cve_nist:`2025-21853`, :cve_nist:`2025-21854`,
-+   :cve_nist:`2025-21855`, :cve_nist:`2025-21856`, :cve_nist:`2025-21857`, :cve_nist:`2025-21858`,
-+   :cve_nist:`2025-21859`, :cve_nist:`2025-21862`, :cve_nist:`2025-21863`, :cve_nist:`2025-21864`,
-+   :cve_nist:`2025-21865`, :cve_nist:`2025-21866`, :cve_nist:`2025-21867`, :cve_nist:`2025-21887`,
-+   :cve_nist:`2025-21891`, :cve_nist:`2025-21898`, :cve_nist:`2025-21904`, :cve_nist:`2025-21905`,
-+   :cve_nist:`2025-21908`, :cve_nist:`2025-21912`, :cve_nist:`2025-21915`, :cve_nist:`2025-21917`,
-+   :cve_nist:`2025-21918`, :cve_nist:`2025-21919`, :cve_nist:`2025-21920`, :cve_nist:`2025-21922`,
-+   :cve_nist:`2025-21928`, :cve_nist:`2025-21934`, :cve_nist:`2025-21936`, :cve_nist:`2025-21937`,
-+   :cve_nist:`2025-21941`, :cve_nist:`2025-21943`, :cve_nist:`2025-21945`, :cve_nist:`2025-21947`,
-+   :cve_nist:`2025-21948`, :cve_nist:`2025-21951`, :cve_nist:`2025-21957`, :cve_nist:`2025-21959`,
-+   :cve_nist:`2025-21962`, :cve_nist:`2025-21963`, :cve_nist:`2025-21964`, :cve_nist:`2025-21966`,
-+   :cve_nist:`2025-21967`, :cve_nist:`2025-21968`, :cve_nist:`2025-21969`, :cve_nist:`2025-21979`,
-+   :cve_nist:`2025-21980`, :cve_nist:`2025-21981`, :cve_nist:`2025-21991` and :cve_nist:`2025-21993`
-+-  mpg123: Fix :cve_nist:`2024-10573`
-+-  ofono: Fix :cve_nist:`2024-7537`
-+-  openssh: Fix :cve_nist:`2025-26465`
-+-  puzzles: Ignore :cve_nist:`2024-13769`, :cve_nist:`2024-13770` and :cve_nist:`2025-0837`
-+-  qemu: Ignore :cve_nist:`2023-1386`
-+-  ruby: Fix :cve_nist:`2025-27219` and :cve_nist:`2025-27220`
-+-  rust-cross-canadian: Ignore :cve_nist:`2024-43402`
-+-  vim: Fix :cve_nist:`2025-1215`, :cve_nist:`2025-26603`, :cve_nist:`2025-27423` and
-+   :cve_nist:`2025-29768`
-+-  xserver-xorg: Fix :cve_nist:`2025-26594`, :cve_nist:`2025-26595`, :cve_nist:`2025-26596`,
-+   :cve_nist:`2025-26597`, :cve_nist:`2025-26598`, :cve_nist:`2025-26599`, :cve_nist:`2025-26600`
-+   and :cve_nist:`2025-26601`
-+-  xz: Fix :cve_nist:`2025-31115`
++   <commit message>
 +
++   <Signed-off-by/other trailers>
++   ---
++   changes in v4:
++   - provide a clearer commit message
++   - fix spelling mistakes
 +
-+Fixes in Yocto-5.0.9
-+~~~~~~~~~~~~~~~~~~~~
++   changes in v3:
++   - replace func() to use other_func() instead
 +
-+-  babeltrace2: extend to nativesdk
-+-  babeltrace: extend to nativesdk
-+-  bitbake: event/utils: Avoid deadlock from lock_timeout() and recursive events
-+-  bitbake: utils: Add signal blocking for lock_timeout
-+-  bitbake: utils: Print information about lock issue before exiting
-+-  bitbake: utils: Tweak lock_timeout logic
-+-  build-appliance-image: Update to scarthgap head revision
-+-  cve-check.bbclass: Mitigate symlink related error
-+-  cve-update-nvd2-native: add workaround for json5 style list
-+-  cve-update-nvd2-native: handle missing vulnStatus
-+-  gcc: remove paths to sysroot from configargs.h and checksum-options for gcc-cross-canadian
-+-  gcc: unify cleanup of include-fixed, apply to cross-canadian
-+-  ghostscript: upgrade to 10.05.0
-+-  grub: backport strlcpy function
-+-  grub: drop obsolete CVE statuses
-+-  icu: Adjust ICU_DATA_DIR path on big endian targets
-+-  kernel-arch: add macro-prefix-map in KERNEL_CC
-+-  libarchive: upgrade to 3.7.9
-+-  libxslt: upgrade to 1.1.43
-+-  linux-yocto/6.6: update to v6.6.84
-+-  mc: set ac_cv_path_ZIP to avoid buildpaths QA issues
-+-  mpg123: upgrade to 1.32.10
-+-  nativesdk-libtool: sanitize the script, remove buildpaths
-+-  openssl: rewrite ptest installation
-+-  overview-manual/concepts: remove :term:`PR` from the build dir list
-+-  patch.py: set commituser and commitemail for addNote
-+-  poky.conf: bump version for 5.0.9
-+-  vim: Upgrade to 9.1.1198
-+-  xserver-xf86-config: add a configuration fragment to disable screen blanking
-+-  xserver-xf86-config: remove obsolete configuration files
-+-  xserver-xorg: upgrade to 21.1.16
-+-  xz: upgrade to 5.4.7
-+-  yocto-uninative: Update to 4.7 for glibc 2.41
++   changes in v2:
++   - this patch was added in v2
++   ---
++   <diffstat output>
 +
++   <unified diff>
 +
-+Known Issues in Yocto-5.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+- N/A
-+
-+Contributors to Yocto-5.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Thanks to the following people who contributed to this release:
-+
-+-  Antonin Godard
-+-  Archana Polampalli
-+-  Ashish Sharma
-+-  Bruce Ashfield
-+-  Changqing Li
-+-  Denys Dmytriyenko
-+-  Divya Chellam
-+-  Hitendra Prajapati
-+-  Madhu Marri
-+-  Makarios Christakis
-+-  Martin Jansa
-+-  Michael Halstead
-+-  Niko Mauno
-+-  Oleksandr Hnatiuk
-+-  Peter Marko
-+-  Richard Purdie
-+-  Ross Burton
-+-  Sana Kazi
-+-  Stefan Mueller-Klieser
-+-  Steve Sakoman
-+-  Vijay Anusuri
-+-  Virendra Thakur
-+-  Vishwas Udupa
-+-  Wang Mingyu
-+-  Zhang Peng
-+
-+
-+Repositories / Downloads for Yocto-5.0.9
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+poky
-+
-+-  Repository Location: :yocto_git:`/poky`
-+-  Branch: :yocto_git:`scarthgap </poky/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.9 </poky/log/?h=yocto-5.0.9>`
-+-  Git Revision: :yocto_git:`bab0f9f62af9af580744948dd3240f648a99879a </poky/commit/?id=bab0f9f62af9af580744948dd3240f648a99879a>`
-+-  Release Artefact: poky-bab0f9f62af9af580744948dd3240f648a99879a
-+-  sha: ee6811d9fb6c4913e19d6e3569f1edc8ccd793779b237520596506446a6b4531
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/poky-bab0f9f62af9af580744948dd3240f648a99879a.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/poky-bab0f9f62af9af580744948dd3240f648a99879a.tar.bz2
-+
-+openembedded-core
-+
-+-  Repository Location: :oe_git:`/openembedded-core`
-+-  Branch: :oe_git:`scarthgap </openembedded-core/log/?h=scarthgap>`
-+-  Tag:  :oe_git:`yocto-5.0.9 </openembedded-core/log/?h=yocto-5.0.9>`
-+-  Git Revision: :oe_git:`04038ecd1edd6592b826665a2b787387bb7074fa </openembedded-core/commit/?id=04038ecd1edd6592b826665a2b787387bb7074fa>`
-+-  Release Artefact: oecore-04038ecd1edd6592b826665a2b787387bb7074fa
-+-  sha: 6e201a4b486dfbdfcb7e96d83b962a205ec4764db6ad0e34bd623db18910eddb
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/oecore-04038ecd1edd6592b826665a2b787387bb7074fa.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/oecore-04038ecd1edd6592b826665a2b787387bb7074fa.tar.bz2
-+
-+meta-mingw
-+
-+-  Repository Location: :yocto_git:`/meta-mingw`
-+-  Branch: :yocto_git:`scarthgap </meta-mingw/log/?h=scarthgap>`
-+-  Tag:  :yocto_git:`yocto-5.0.9 </meta-mingw/log/?h=yocto-5.0.9>`
-+-  Git Revision: :yocto_git:`bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f </meta-mingw/commit/?id=bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f>`
-+-  Release Artefact: meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f
-+-  sha: ab073def6487f237ac125d239b3739bf02415270959546b6b287778664f0ae65
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/meta-mingw-bd9fef71ec005be3c3a6d7f8b99d8116daf70c4f.tar.bz2
-+
-+bitbake
-+
-+-  Repository Location: :oe_git:`/bitbake`
-+-  Branch: :oe_git:`2.8 </bitbake/log/?h=2.8>`
-+-  Tag:  :oe_git:`yocto-5.0.9 </bitbake/log/?h=yocto-5.0.9>`
-+-  Git Revision: :oe_git:`696c2c1ef095f8b11c7d2eff36fae50f58c62e5e </bitbake/commit/?id=696c2c1ef095f8b11c7d2eff36fae50f58c62e5e>`
-+-  Release Artefact: bitbake-696c2c1ef095f8b11c7d2eff36fae50f58c62e5e
-+-  sha: fc83f879cd6dd14b9b7eba0161fec23ecc191fed0fb00556ba729dceef6c145f
-+-  Download Locations:
-+   https://downloads.yoctoproject.org/releases/yocto/yocto-5.0.9/bitbake-696c2c1ef095f8b11c7d2eff36fae50f58c62e5e.tar.bz2
-+   https://mirrors.kernel.org/yocto/yocto/yocto-5.0.9/bitbake-696c2c1ef095f8b11c7d2eff36fae50f58c62e5e.tar.bz2
-+
-+yocto-docs
-+
-+-  Repository Location: :yocto_git:`/yocto-docs`
-+-  Branch: :yocto_git:`scarthgap </yocto-docs/log/?h=scarthgap>`
-+-  Tag: :yocto_git:`yocto-5.0.9 </yocto-docs/log/?h=yocto-5.0.9>`
-+-  Git Revision: :yocto_git:`56db4fd81f6235428bef9e46a61c11ca0ba89733 </yocto-docs/commit/?id=56db4fd81f6235428bef9e46a61c11ca0ba89733>`
-+
+ Lastly please ensure that you also test your revised changes. In particular
+ please don't just edit the patch file written out by ``git format-patch`` and
+ resend it.
 -- 
-2.43.0
+2.44.0.501.g19981daefd7c
 
 
