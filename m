@@ -2,257 +2,225 @@ Return-Path: <quentin.schulz@cherry.de>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 02B7EC3ABB0
-	for <webhook@archiver.kernel.org>; Mon,  5 May 2025 09:11:46 +0000 (UTC)
-Received: from OSPPR02CU001.outbound.protection.outlook.com (OSPPR02CU001.outbound.protection.outlook.com [40.107.159.12])
- by mx.groups.io with SMTP id smtpd.web10.46004.1746436296113067763
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0BB25C3ABB0
+	for <webhook@archiver.kernel.org>; Mon,  5 May 2025 09:15:56 +0000 (UTC)
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (EUR03-DBA-obe.outbound.protection.outlook.com [40.107.104.79])
+ by mx.groups.io with SMTP id smtpd.web10.46036.1746436547369309070
  for <docs@lists.yoctoproject.org>;
- Mon, 05 May 2025 02:11:37 -0700
+ Mon, 05 May 2025 02:15:47 -0700
 Authentication-Results: mx.groups.io;
- dkim=fail reason="dkim: body hash did not verify" header.i=@cherry.de header.s=selector1 header.b=ZQsC7Xqf;
- spf=pass (domain: cherry.de, ip: 40.107.159.12, mailfrom: quentin.schulz@cherry.de)
+ dkim=pass header.i=@cherry.de header.s=selector1 header.b=KpOtNCzv;
+ spf=pass (domain: cherry.de, ip: 40.107.104.79, mailfrom: quentin.schulz@cherry.de)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SvfS1Cm0Oqm9rRWPeO2TelMp8hY5/IcBP7iCTm8ktFdVW0iOBQCYMRT7gCEPwWCGQOlxILnJWT7ddmfdIJpNOQCcIYBv2rjKkLCIMpCqDIdJh5S1pMXGP6i8RPpZ8DvpXHGIZgdTfXhSsieUXY5A+p71q3BAOWZATeV0ezwdp2HvwAdw4dJhXQVIpKLn5WbKruu4fq5azIQIkk5L7oQWDD+qQIk3KTc26mfivcnjFmawi5PIDCpUgyykFih6fZtSHhOMChS+tmQjmZP5UVRRjxb7f7ybbJkia3S9+2V5Hf75IqlO+2kpyWd+7TYlj5lpiFHi0LpOJOURcFD4i495hA==
+ b=fEHuH4nC7SWl1rhuxnkFGBzP6mi9ZbC/FpLU1cGDBF+je5yswokQsZNJ0CZNLNqe2FzC3HZ7BZiw1SG4ABF52sfsSHkxVg40QzRVLBWkNR/hNNf8780ZXE3GS0cqM1ZWQ8CWBj8xhj2c7buwr9gcaUCu11BvldwsYvNSOa6vs4cv7VmIC8zKD3i07PyxeZ27rwBIKH1aqMiIZFYzaVLfE39UUXbQPIBCIkTYd/+HNBw0qGq67UTachLngpSRzqmC9LF1bNGax+uxLD/Bo5crF/LvKKicqGyaNyot/qH96y5rl/3hdbARwXQP5/hb9OtAmAGgxV4v085z0S/wToo7+g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=5DrBd4Vjg6SO4X3AzE++SxRXC1mEEqHnBsTBWjDOGOI=;
- b=OEVZUaI/ywhjMhcZ5sbxHBAPqBzUh1BwcyYBSmwke+i+nDxH7jzXm7P49orDmQRRx/fbTE0iPfV8eARDoVt8aK72unw4R/QHNmG0NqtNI+gjohGO+nfv/ke8py6ZTSQe/MF+5ADTKJeVSe8fFzEtycq3Nofoz/wU4FSHrQfd6gm/wS3LZniLv75hhoD8V37RHwqOZhrhG7fWwzPYmhuJTkiuYICY67X+nP6RbyrXE+b5VCMHSeH2kEXVVAdAsQ1QSBSl65U1yoUJDPhcnGCMhRRpGl9Xe0RZEFChD2JbftpDyss71vbsAtd2ouNRjS/O8KmdUi0c8fZdVtlXRJgn0w==
+ bh=NSnMnn8+t0BQiy9rE3g55MllF/AwpYspNNXqIdrwxI0=;
+ b=VdIRUsbrmhmUPxfmYr7j3ra+EpX5wJqVCmH0jEur9xX4qiGx2U9lAzr9icyrrrZCRs3LONXmqLynfxzJBhcsR2iXsCobS4MnHZ+sU4aguZf1ucoSvCXfmOWRalE57rCJnMz32BlYFTeVcr3jvcLDLtecC6NQHnYgBclbC+0htBleueObhvDsOx4NY4dQzBXB8NXBUbZ5L1p92d+lkOalhLX1ET7zZKG+SZo5Wn4jovVCw05sYCR1vWcfb9yYG/6cvOsO0WAAl/rOSyEfEMxNvc+UooFPimYAyUtHpui2oyzcEMAadG++25IYZTPi80Cwud+TSAZ5akwgTluOytH4AA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
  dkim=pass header.d=cherry.de; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=5DrBd4Vjg6SO4X3AzE++SxRXC1mEEqHnBsTBWjDOGOI=;
- b=ZQsC7XqfnJa0mhOMt0vKZ81jl1ldhUYJYPYaU4zXvf+o1yZKkr05AY0Oe05lC2w0IREsA+/bdb/rfNmanpF/ZIWcoUo0S6czs8STnyaMtQjyFSAX0gMhHwnxwg3yCZGqeZQk96hk7Gzfen2TM727qG0GelWSQRs6qNFVUxVZxFs=
+ bh=NSnMnn8+t0BQiy9rE3g55MllF/AwpYspNNXqIdrwxI0=;
+ b=KpOtNCzviGj42W07BPhTkb61CJvxNniTboHIL0ByHS94HltZ9QZvLLFXh0AzCTwGYe/bPB2Aq92TJhuVy27LQTfSy8EdSrTmFHyzCDUnUE7e8S8KKEk1+zJwMDg55SbTKHXgYVZNSXFvWD44c7cj0P5lWtvB03lAjxw/bc7P4uE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=cherry.de;
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
- by DB9PR04MB9497.eurprd04.prod.outlook.com (2603:10a6:10:373::12) with
+ by DBAPR04MB7366.eurprd04.prod.outlook.com (2603:10a6:10:1a0::23) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Mon, 5 May
- 2025 09:11:29 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Mon, 5 May
+ 2025 09:15:43 +0000
 Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a]) by AS8PR04MB8897.eurprd04.prod.outlook.com
  ([fe80::35f6:bc7d:633:369a%4]) with mapi id 15.20.8699.022; Mon, 5 May 2025
- 09:11:29 +0000
-Message-ID: <5484b251-9bd5-4de3-abb0-b3567ffd5631@cherry.de>
-Date: Mon, 5 May 2025 11:11:28 +0200
+ 09:15:43 +0000
+Message-ID: <64ca45a4-b09c-4e48-a61d-824ce577d3c3@cherry.de>
+Date: Mon, 5 May 2025 11:15:42 +0200
 User-Agent: Mozilla Thunderbird
-Subject: Re: [docs] [PATCH] conf.py: tweak SearchLanguage to be
- hyphen-friendly
-To: ejo@pengutronix.de, docs@lists.yoctoproject.org
-CC: yocto@pengutronix.de
-References: <20250502203501.3364973-1-ejo@pengutronix.de>
+Subject: Re: [docs] [PATCH v2] contributor-guide/submit-changes: encourage
+ patch version changelogs
+To: twoerner@gmail.com, docs@lists.yoctoproject.org
+References: <20250502172143.31713-1-twoerner@gmail.com>
 Content-Language: en-US
 From: Quentin Schulz <quentin.schulz@cherry.de>
-In-Reply-To: <20250502203501.3364973-1-ejo@pengutronix.de>
+In-Reply-To: <20250502172143.31713-1-twoerner@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: FRYP281CA0005.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10::15)
- To AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR0P281CA0109.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a8::9) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DB9PR04MB9497:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3c1fe9c6-dad7-4bca-d293-08dd8bb4d243
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|DBAPR04MB7366:EE_
+X-MS-Office365-Filtering-Correlation-Id: 146e7efd-fd0f-4611-58ce-08dd8bb569ae
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
 X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?mcaEEs+c9/rY8GyMAI0VUieX/GyhIy18Aq6Q+/Z0EGYC8I8nhPPYDkb6AY5d?=
- =?us-ascii?Q?JAO31a1OZWEH+MdMrvqItwbIvR8iRCBdq3wU/2iz0FK4XO23fbsw4gS4heO+?=
- =?us-ascii?Q?pcoL9+uycdfTYhKgD3LA/Qx5iYjCtNvq4GAGaH9gctGkXgfKNB0NwgLg/EKo?=
- =?us-ascii?Q?iRGgmytNi1xr7SAMhoeNgyLBPJStEJPHklUPB2RHeKimoORzTz9nrlFbhDLJ?=
- =?us-ascii?Q?4YVPNugDIZOhGP0BcSo6/dZms/E1XWIKHx3bdgp+DmUTfAn5qIkWAfy5r1R6?=
- =?us-ascii?Q?rC32YCdLdqXb1k5TgWtDhqIMu8DPDIlXa4JQszY6QCvbfI9zf9CEK0A2T7+9?=
- =?us-ascii?Q?Vdl8uVJlfz3X9FOeXkHeN6ofeVtdLsARu+dkUil6fdV7hUwWOqb4GX88mBdd?=
- =?us-ascii?Q?krE6kP5QJCGSH/mbZKKCyUCm8m7VgZ+1ijxuiH6s3jKmI84A//OQmuNgXNvp?=
- =?us-ascii?Q?GEZFGUIe/FBhuAjYIlANm+DwEefWRJhNGHxwOzjudkHJ2Mlsa5SyUiU0oHik?=
- =?us-ascii?Q?sjRo32eDYHEq/kJouNGbLSfv5Gcm9M+Oupay3USDzGIbXBw1UYLKpxDVyBGB?=
- =?us-ascii?Q?wdhLvdwjAG2DoqPc20AGFq9WhMxktv6hvutrnlEcyzSFgv6Pv9NN42enNQlD?=
- =?us-ascii?Q?KgcKA1Ephpy+C9ESEpnFafbNt1KlZucV5SARSUtGGZMRKfmFRkruCbdlCLWb?=
- =?us-ascii?Q?jAkSEYmx6Mncig5RaE1oelG+RgpR06vxNeJKxIKlwtkeIotRtNpyooIFhqMy?=
- =?us-ascii?Q?gtEjVitF03l8dk0hRUhdoMg79KlXKaZgwRetlR8Uk+a6693Y/6UiqZl5n4iG?=
- =?us-ascii?Q?Ky2H91ffXaBQ8DSX96cSyOg6J7dVU7B+chYLL2DPXMeZvoVr/2i3mKZspq5Z?=
- =?us-ascii?Q?g7Qk7rmLgVfGzfNNb7dcD6vne/OHehKrXpfnaW6TItgi2vOyeI3noJrW0lDi?=
- =?us-ascii?Q?CRuQ+xbyVrZF5jsR/9kUQIrFESX/Jg1EO7EnfjWrI/37nlXhQtZ26a7zgaIo?=
- =?us-ascii?Q?IJwRxwmrCjVj/98TSr8bcC+bsbv8TgeLdzeHMGykj1dwiYwYIp8ZXZwTSJ5r?=
- =?us-ascii?Q?yTvJ6kAhkTv9IZBV3KePs7Ehq6WLbI+HhxYVDSrZ9w8Sc6RM34kzCsPSHFbP?=
- =?us-ascii?Q?ZN8vt2HU/Ri039fNRwmJjBTCBRxnxlbyoi8/DH8eL/Rz0dhdShndisWKRRqi?=
- =?us-ascii?Q?Sg+Mt/PPcm9eY3q6LJ2+HiXj0k69vAX5/X1HC5Wq0mgb5QY6K8yJ53cTusjJ?=
- =?us-ascii?Q?Wkn7UnAQ1XOd3JtXXwxq76t1EeMOr5Y69uimOBxy43e8bpqbj0hTpgh97Lzz?=
- =?us-ascii?Q?hnQnCuBSR/1lOY3fqkbju4TFBRS/Xg9MBEIv0FN6SuPQmrZ3lhinM6G0mMdH?=
- =?us-ascii?Q?mXVzTlG3ih+WS+D46qZ4P/heFLAdynW/bc0E4FE1rIQTkoqCRdcbuMQ4/miY?=
- =?us-ascii?Q?rwjbXOQrTc4=3D?=
+	=?utf-8?B?Yk82NC91SWR3YlRXY21wTURXY2wvUnV4SUZ6bTR0ZC90c0o0dzAzSHBFZkJ1?=
+ =?utf-8?B?bzZJMk9FRGJEVncvaVpLVDFpancrY0NKQTFxYklPK0dJVFE2YVlZVk1DMGd4?=
+ =?utf-8?B?TGl3NmxuWDVZVnlCMDdiRXhZMm9pS1BxT29yeDVodFUxalVNekNJdGJDdEUx?=
+ =?utf-8?B?Z3RvZGppdExuWGpRbUFLR1FuSitvSkl1OFhrbU5JUjR1NjllWTMyTENaK21B?=
+ =?utf-8?B?elN5QVVxelBWbmVXaVlGYldCclZTaEhIUW5UOWQ4bkZDVUphamtPalhIS0RU?=
+ =?utf-8?B?endNRityUUFQWFR3WnRHWk5DdnFPS3cwc0xmTFN5Wlh3dGZkc2NqUFNzWDVi?=
+ =?utf-8?B?R0hkNVo5eFhxMVRacXZMU0FrSW9seFRJYXRjWUhNdWNpa1JXNkY2M2xxdHpN?=
+ =?utf-8?B?aC84WGhremYraWt6UjBXN2FXWWVoZzVqT3lqdGZyVjJMRzRtZHp2NW16UmRo?=
+ =?utf-8?B?cnlGVHJLQUVCOUhNME9ScThaVjVLM0w5cXhQdkFRZzFiKzhJYmF3elBPVzIz?=
+ =?utf-8?B?cklrZUhLMjZoSzEwUm5VMnVUMlVzLzNkR3pvQXhsdWVuTnNjTHgrNEEyMWQ2?=
+ =?utf-8?B?TXNjRm1tcXRqb0JJaUVaeHRTV0FIWkZQcm9IYnJLZVkvZU9NWWwvbG5GcEYr?=
+ =?utf-8?B?OExFU2EvT1U5QWh1UTlodExvQXJKdGFIVWNQMVo3VUFDa1YvUm1MMmtqdzVu?=
+ =?utf-8?B?aSt0QWNiZkNUOWtCMDlsSDZPaWJ2cVA4QTgvald6N3FGZ3RjQUxxZDdJVE5x?=
+ =?utf-8?B?cWdZeWNCcm56enJwY2RYcndISitMd1ZDanRVZlZKMm4rZUo2Ny83ZHlLMTht?=
+ =?utf-8?B?QW5lZ2g5eGplMUdZblBFSXN5dVFWQ3BtbVI4ckVtSjlkTkVHSElYaW54OW4w?=
+ =?utf-8?B?OGl2aTBJN2N6ZnRRMHRSc09mcTVTRkNEQXhEanZ2WU5EVm1PMUQzeHRVd2xU?=
+ =?utf-8?B?SUFjdXcrMjVhTkZ0TDIrR1hENTY1WHpqMTBpaW9sLzFMd0sveGMrYTlVeWxn?=
+ =?utf-8?B?TnJVVmtGRFc2bUs5VEQzRHRSMjZWTW0rUjZZalkrUUVZc1lPRFNBVEVBTFdC?=
+ =?utf-8?B?bDFjcVc5WUZQellseFNZcTBzdlp5Zkh3NXBETkk1VTJKTXErZFVtM1oyNWdE?=
+ =?utf-8?B?ZUJMbWNlUjhPeHJPNEY0cGdXeUQzRmJyWGJXWEdBUThyK2hnaC96UTZ6VkN5?=
+ =?utf-8?B?NU9ZWGVIMHBYcnZBVWp1dFhtWGIxQ1U4UHdLdG83ZHRNTFVRNXBQL1liTmhl?=
+ =?utf-8?B?MzUxRG9Fd0s0NnJCbU94TkMrbW1ZSk03ZUR1bTVwUVJXemJ3eTdUL2YydXpL?=
+ =?utf-8?B?WnNOTlc2aU01WjBLK3lNN1NXZmhCWE9EYWdhdEU1Y2FneElJTkpHUFJjWmdC?=
+ =?utf-8?B?MElqdm9pUng0dVBXUjFtUDV2WU5yZ1BNT1pta3hxUEZGeVRWMndyeVN4eTNh?=
+ =?utf-8?B?d3pILzJubitXdzd2aGNRL0NpMUF3WkFaRmFXTlUycHU1TzQrRFF2S0hPZGxL?=
+ =?utf-8?B?dmFjQ05GNXJZZHN6dnlaZ3hNMjRlZFhhaHhTZGdlQ2RIbTZzSVNJaFZ4L2Js?=
+ =?utf-8?B?Z2lPSEZDZ0pIeDhISjRtTXI5alVjZC9xVHdkWWZybVkzdWJVaVVxM0NuU2ND?=
+ =?utf-8?B?Kys2ejVkMURWbDhmR3hCSDJZcUlwSUZHQzFYLzlydEVldXo2REJmcXlmNFND?=
+ =?utf-8?B?VnFQQS9vS0dCdG5xdnRMd1VGNDYxT2tqbWIwcGxOQ1FoRmpVZW53STJDa2xD?=
+ =?utf-8?B?Y3RZaTVoVHUrVWR4dzVLdEI0dHhLYStpeTNOQ1gwWDduYnV0Uk9BQkxQQkFv?=
+ =?utf-8?B?YTFQRGF4b01RWWgwYk9nT29rTVJoTlc2VlBQeE9qcFB2NVp1NldQbnIwOC82?=
+ =?utf-8?B?eFhpbnkxcS9XNm0ySHhrNytPeXgvc2RsNG54bTVXTWFlSkxyZ2dtQW9OcG1T?=
+ =?utf-8?Q?4wHPq+XW3t0=3D?=
 X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?V5aGrM41U1KbB4CrP5GGJiJd8cxcGXUbpNAXIRi6aJc63rjcHweoHGMoNrt/?=
- =?us-ascii?Q?vpH2TzXWNts5OeZuQnRjYDqWX3ZjqpS2un7+4PZ8qzZ4ZYAE2D/h6K9QfbZp?=
- =?us-ascii?Q?Y8tBZaE/pnAp2WATVYCwS0sOsY8biw2f+DU3yJwgY9LMRJ2Jh/AHzhdTZN05?=
- =?us-ascii?Q?t8itCOviXyseaAX2/4deFfgK5qjdLTIpdW4H7TWFBoejP69cRZTQMJMVfz8m?=
- =?us-ascii?Q?JQsOBMi8xvtXh61t0OYJ12zPGwor85ceZY3JnR4LtQQdU3caZPsmFI7pNQfH?=
- =?us-ascii?Q?x8XLGEBbCzJNBDmhw0Mzdc0NzhYhFlWeMS+1m/zf7VXyP4HzODzTJEzXPrRm?=
- =?us-ascii?Q?iWodqYBcA8YuZ1Sky8Y9zxIp7ImZatI1WSRxGfVZI0QMlWygV1bNVhsiE8/g?=
- =?us-ascii?Q?tKmi71iBJKQICRbQjoG1L47mQ4YCqOZwmn1g2Q4uWhSmiM8Kx/owbtZ1yYRk?=
- =?us-ascii?Q?IgTbx3z+jcOXaqlv7xTfYGeWB3R+A1Uaz2/C6DMKvfpzuD/RPX4yVjMptDdg?=
- =?us-ascii?Q?oGABUOsuWMhzQG+NlDeGvb6lmJxWmzpPVegnq6Uy5m5FMgwieisUDjS7vSMD?=
- =?us-ascii?Q?K3538vUX2VUOFjAoaBs2Bj9hcNEWwQfAQalZ7NZ1tTqn74LCWYlqlIhOgYg7?=
- =?us-ascii?Q?EwhYeWzDNT/C5vos5pRfuBmEVQq3hMZBKU2NAGKD/O7fWzryqB34/r1YVP5J?=
- =?us-ascii?Q?qDfGpmWmWwUK1qGgkPlZRsLWQOaMuulUyKuGPnZ6RwQaO52Ti5RTcB2+ErdM?=
- =?us-ascii?Q?7kj2A+D5wj3zrFd3c/PU/UYKSpkHp+Jk3ZHtSqTrxum4pz/wy7lQ2mbzNmcg?=
- =?us-ascii?Q?nlZVCluGnf6Y5hyRkCbXZyqz5cT5hC/7x7Gd0Xk4d1sDyAbWaQ6BGvZLmLDW?=
- =?us-ascii?Q?wMHbzmjduDXYh7Nnzr0MXl5pWwjkGJZOEh/SYzMHrt6QoGT4wUnih2mRuCnk?=
- =?us-ascii?Q?8z5Gi80SpGQ7t6awnZ/wur6zSVVf7fCkpopSn4X4pMl6CokjROXdhKEgw4/W?=
- =?us-ascii?Q?WgEnYxZ/lb0GCcYytbsC/3StX/D38Ftq1A7K4Vd3GloK7Pgm14LNr2WYzia6?=
- =?us-ascii?Q?4rGbCFjmccHifLuVUuJZnkXecoPKx5SMq2UTSSJ6Hk3bXIKsaAQky0FE+V6f?=
- =?us-ascii?Q?V6QDtlGMNI3cyia4YqZdQxVuC7SREe7qGh1r4ybdVNpp5q1AJO/D9prlxKfr?=
- =?us-ascii?Q?UHVkru8d9xBW8S9TeC0UwDxZqyoUVDMNlaSjUErPZQr7WiTFZuwcrGtUwuBq?=
- =?us-ascii?Q?LrNJ5M5+7peJn6REty+NrfN+d8oiflgUyZwXXeqz3OwD6+iYsEXLKaCcladN?=
- =?us-ascii?Q?3/slKN2BJa99Z3VnFnr+TWBcugJt3iGDqDVmxpkfjONDMimmPGKVWbvUjWAr?=
- =?us-ascii?Q?vaRj/pnD7KxiAEH/SBXHX4Y/eFYqrendbzSRIt8tbf+gfPqNJBw4Igd6ugFf?=
- =?us-ascii?Q?PMnXJ09MvT1LTIblnYi5yNtJKuYPOwMGAO8pYX1qyijxBcwa0jX63S2Kf2AT?=
- =?us-ascii?Q?te+lwVs8YAl6zNNo2n0iZxanFu32NhdQp3MzkXciYAoSMmutwiQlrkDUY1T9?=
- =?us-ascii?Q?B94j8EsHSV/AxiF9rdSMJGg2PYJpHaml1IgYPThXJYuaWnv2ngDdYz9w2wvQ?=
- =?us-ascii?Q?yw=3D=3D?=
+	=?utf-8?B?MWpMVnMzcGpDbDdITXBnSy92SFBoOTlRWjBYd2FqNHFtd2hLcEJNbVJvdGIy?=
+ =?utf-8?B?UU5vNGdhRHVSOXZBS09RbGZNWVBwQWNUa2VkdkdNV0JGZVRITllodFE0a2NX?=
+ =?utf-8?B?RVhneFBoUEJRVWEvRnVtbE9BcCtKcVppTy8zUHNSOFBmemgxR2FqSjhQKzdB?=
+ =?utf-8?B?eTB0VnN4Q3NqcE5COEtGckMxTkcwZERTbHBGb2lQYUZ2RlRJdWpkM05XRWtu?=
+ =?utf-8?B?VXZIN1gyZ1d3QlJOTTYraTdsVlFPRm5hRHlsZVJpcnE5YWRPY1ZKeVhoODJw?=
+ =?utf-8?B?bG8yajlPTmRFLzVxTVkzbkJ5NlNDVGZMbUkxY1d2b0RtbStVRDhqVXVjcTBy?=
+ =?utf-8?B?b0ZSMmNtSEhmNHBHdlg4UENYRnlFaUFBeWdHYXFuZVV0dFh0Slg3bnZZRlZM?=
+ =?utf-8?B?WjBIQTVNN3Y4Wm4xbFRkNVhXTWhidFo4UzA4ZWhHT2Yyd3NTTjEzMG10V3Uy?=
+ =?utf-8?B?Z3hqelEvSFI2dEkwYVZvemtQMFcwQmpvS01TSmdoZXlTN1NiMmhJS2hYZ0hw?=
+ =?utf-8?B?WlBDOHdaL0phS1RpL0NRR0NiMUs4cUE5N0h4STYrUTA1Y3Q4TVVoZ2VzYW4x?=
+ =?utf-8?B?U25najdqdm1US2Y3ZlF0V2FQd3hvU3pKdmxhUktpTWM5N1dTR014V3NVTjE4?=
+ =?utf-8?B?VmZFaWVGU3Y5M1VvcU5zT2h6SW5ITTA2Q21kUFYzYTB6c3pKK1lBRm9GUUQ2?=
+ =?utf-8?B?Q3U0N2d4bitFNlFRUC9MaloycXBGbkZhd29kQXZWUG5CbzdIbnphZjJJdElD?=
+ =?utf-8?B?c1Z0WmNyQ0RtZmVvRS8rYWpmMVp0eW1aMEVDdTZ5SWZkL0J0TkVsZTdkemdT?=
+ =?utf-8?B?UWMvZGhXbXhVVitwOWYzT1dPcC9UUzVYeENqeGwzcDdUU1R4Sys2Sk1oaW1D?=
+ =?utf-8?B?UmhFUmNGMS9xWnI1NFZuWE05ZEJ2VmZmWUlnQzVWRTg4eTI1SG9ZSDVBVi9S?=
+ =?utf-8?B?dVBubVBsTkRvYU5TZitXWFpLWTd0TWVVS045d2RlNFlDM1Zkakp0bUJjbzNZ?=
+ =?utf-8?B?NHF1anRnUVcxWTBCaXRyMm9hUmxOSDJmcTBZanZ2ZXVOWm1NZks2Qks1bWlQ?=
+ =?utf-8?B?RmdaVW80Z1VxZS9QZ0V3VGpiUEgrdFh0LzB1c29XWFg4VzlRYk5jQlJ1aFFj?=
+ =?utf-8?B?YlRhd2JqTHdlMWFqb0ljaXIyN1V1RVVxeUxpTmpWeTdwOWlnWTJ2RVFHSUpH?=
+ =?utf-8?B?aHJHWTVrOXJyaVhiL0N4ZXVIU29JbGRCUjBQcktFSm1PYk9SQ1A1OEYzUmsv?=
+ =?utf-8?B?ZmdNVm5GZVJ6N0FPYzhXd01pNE1wUEFTT0R1NGh3MlFjS0hFMkNSMnVLency?=
+ =?utf-8?B?dTRPcU1icytacnlya0xTZXEyS1JlQlpLQm9HanpBZEVNMEVJck5YYW5RWFdK?=
+ =?utf-8?B?NlJRSlIvRlh5aFluM1d2bDUzM3BVVUQ5ekNUdjl3MEhLa2tqT09JbXlicmlv?=
+ =?utf-8?B?Qkp1QndTZUVxVjdOMWxXdEFqR0VOUk1iOG41YjNCTWNPWjdZa1AvUzVjSmlC?=
+ =?utf-8?B?eUpHeitxTHY4Vmhpd3h3SmdUVS9CUGNTRkV3MktmNVBSK2lmTGoxOVg0MU54?=
+ =?utf-8?B?Nmd5TFhBcFpGbGI2WHZEMDZqSDdvc0tTVFZRa2NocG9LM1Vwb3k4NTVoZ0hB?=
+ =?utf-8?B?NUNyOUZVczJPdDVySlp5VE92NnFJeFNHWHBpTXdzRlNCZTZGMFBveFZtR2x2?=
+ =?utf-8?B?YzNsdDNJblp1Z0ZlTzlONnpjdzJiVU9iL3hOazlNMmpCcTQ4UmxDS3RhTEVJ?=
+ =?utf-8?B?dDNWcmVCdWJKaVM1a3Nrd0hnOE00bWpaclZxZVZ0Ym9ZVzZCSUQwVkVFcFVM?=
+ =?utf-8?B?aFE4SjAxWjdMQkttdmh2V3J0dVFRbGlLdW5YcGEwNzdKeFVvUXNtWnJkZ2Fu?=
+ =?utf-8?B?MmxaRjVvVVBRbHBkMnQwMGMvMkFuZys4TXUrMUZFbGNNU3g2Skkxb3pUOVA2?=
+ =?utf-8?B?c3lYQTEvNGx1bWEyVFJtNHpuN1NzeDJZK3Q3SmwwVUdKbitJQ1N0SEY3Z3E5?=
+ =?utf-8?B?RTNoNUhqb3NmOU5TRExnSUZlbklNUHBFMTIxTjJCRWZ0QVpQVEYwRXl6YnBh?=
+ =?utf-8?B?STF6S29IUS8xZGdEVHpwd0I5QklCY0N0WDJRL2VRY3BHMlJhMnE0dGk5NGJv?=
+ =?utf-8?B?bmN4UXVIQjlCeTN3RE9MNUF6Yy9iRHdHQkRIVEFmZVowWlBxYU9aN1lCZTcx?=
+ =?utf-8?B?a0E9PQ==?=
 X-OriginatorOrg: cherry.de
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3c1fe9c6-dad7-4bca-d293-08dd8bb4d243
+X-MS-Exchange-CrossTenant-Network-Message-Id: 146e7efd-fd0f-4611-58ce-08dd8bb569ae
 X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2025 09:11:29.5620
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2025 09:15:43.6112
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 0d+DyHfpGEDD6Jo1MqqVjdUPSoCB9WK66aPTHDDpKysDX81sCQVAaOtDcfuKXuHxt9K1O/PsKyY8HOjKtX4cvGbwuo830gP39lK5Fa3mpK0=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9497
+X-MS-Exchange-CrossTenant-UserPrincipalName: Usli6ligkfQF1lNrIP8c7nSDpGlMoyyh/OdmNQYJ5kggnS8fzh4r9X4NCe2j0PmaSgfLNYPzTLE+uzNhVH60HbONyH1WVpOhLnwrYOYytew=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7366
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 05 May 2025 09:11:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6796
+ <docs@lists.yoctoproject.org>; Mon, 05 May 2025 09:15:56 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6797
 
-Hi Enrico,
+Hi Trevor,
 
-On 5/2/25 10:35 PM, Enrico J=C3=B6rns via lists.yoctoproject.org wrote:
-> This modifies the default indexer split() and js splitQuery()
-> methods to support searching for words with hyphens.
->=20
-> While this might not be an ideal, rock-solid, or fully future-proof
-> solution, it at least allows searching for strings that include hyphens,
-> such as 'bitbake-layers', 'send-error-report', or 'oe-core'.
->=20
-> Below is a bit more detailed explanation of the two modifications done:
->=20
-> 1) The default split regex in the sphinx-doc SearchLanguage class is:
->=20
->     | _word_re =3D re.compile(r'\w+')
->=20
->     which we simply extend to include hyphens '-'.
->=20
->     This will result in a searchindex.js that contains words with hyphens=
-,
->     too.
->=20
-> 2) The 'searchtool.js' code notes for its splitQuery() implementation:
->=20
->     | /**
->     |  * Default splitQuery function. Can be overridden in ``sphinx.searc=
-h`` with a
->     |  * custom function per language.
->     |  *
->     |  * The regular expression works by splitting the string on consecut=
-ive characters
->     |  * that are not Unicode letters, numbers, underscores, or emoji cha=
-racters.
->     |  * This is the same as ``\W+`` in Python, preserving the surrogate =
-pair area.
->     |  */
->     | if (typeof splitQuery =3D=3D=3D "undefined") {
->     |   var splitQuery =3D (query) =3D> query
->     |       .split(/[^\p{Letter}\p{Number}_\p{Emoji_Presentation}]+/gu)
->     |       .filter(term =3D> term)  // remove remaining empty strings
->     | }
->=20
->     The hook for this is documented in the sphinx-docs 'SearchLanguage'
->     class.
->=20
->     |    .. attribute:: js_splitter_code
->     |
->     |       Return splitter function of JavaScript version.  The function=
- should be
->     |       named as ``splitQuery``.  And it should take a string and ret=
-urn list of
->     |       strings.
->     |
->     |       .. versionadded:: 3.0
->=20
->     We use this to define a simplified splitQuery() function with a split
->     argument that splits on empty spaces only.
->=20
-> [YOCTO #14534]
->=20
-> Signed-off-by: Enrico J=C3=B6rns <ejo@pengutronix.de>
+On 5/2/25 7:21 PM, Trevor Woerner via lists.yoctoproject.org wrote:
+> Add a section after the 'git format-patch' information encouraging developers
+> to add patch version changelogs to their patch updates.
+> 
+> Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 > ---
->   documentation/conf.py | 21 +++++++++++++++++++++
->   1 file changed, 21 insertions(+)
->=20
-> diff --git a/documentation/conf.py b/documentation/conf.py
-> index 2aceeb8e7..02397cd20 100644
-> --- a/documentation/conf.py
-> +++ b/documentation/conf.py
-> @@ -13,6 +13,7 @@
->   # documentation root, use os.path.abspath to make it absolute, like sho=
-wn here.
->   #
->   import os
-> +import re
->   import sys
->   import datetime
->   try:
-> @@ -173,6 +174,26 @@ latex_elements =3D {
->       'preamble': '\\usepackage[UTF8]{ctex}\n\\setcounter{tocdepth}{2}',
->   }
->  =20
+> changes in v2:
+> - clarify SoB line
+> - clarify "this patch was added in v2" line
+> ---
+>   .../contributor-guide/submit-changes.rst      | 32 +++++++++++++++++++
+>   1 file changed, 32 insertions(+)
+> 
+> diff --git a/documentation/contributor-guide/submit-changes.rst b/documentation/contributor-guide/submit-changes.rst
+> index 0675aac984cf..6d5d69d7cfb4 100644
+> --- a/documentation/contributor-guide/submit-changes.rst
+> +++ b/documentation/contributor-guide/submit-changes.rst
+> @@ -776,6 +776,38 @@ argument to ``git format-patch`` with a version number::
+>   
+>      git format-patch -v2 <ref-branch>
+>   
 > +
-> +from sphinx.search import SearchLanguage
-> +from sphinx.search import languages
-> +class DashFriendlySearchLanguage(SearchLanguage):
+> +After generating updated patches (v2, v3, and so on) via ``git
+> +format-patch``, ideally developers will add a patch version changelog
+> +to each patch that describes what has changed between each revision of
 
-Could you extend SearchEnglish instead, which is I believe what we=20
-should be using today?
+This is a bit different from what `b4` tool does by default, which is 
+that it stores the changelog of the whole series in the cover letter 
+instead of per-patch. They aren't incompatible per-se as you can add the 
+per-patch changelog and b4 will happily take it, but it's a bit of a 
+different workflow :)
 
-> +    lang =3D 'en'
+Anyway, nothing specific to b4 in the docs right now, so a "problem" for 
+later :)
+
+> +the patch. Add patch version changelogs after the ``---`` marker in the
+> +patch, indicating that this information is part of this patch, but is not
+> +suitable for inclusion in the commit message (i.e. the git history) itself.
+> +Providing a patch version changelog makes it easier for maintainers and
+> +reviewers to succinctly understand what changed in all versions of the
+> +patch, without having to consult alternate sources of information, such as
+> +searching through messages on a mailing list. For example::
+> +
+> +   <patch title>
+> +
+> +   <commit message>
+> +
+> +   <Signed-off-by/other trailers>
+> +   ---
+> +   changes in v4:
+> +   - provide a clearer commit message
+> +   - fix spelling mistakes
+> +
+> +   changes in v3:
+> +   - replace func() to use other_func() instead
+> +
+> +   changes in v2:
+> +   - this patch was added in v2
+> +   ---
+> +   <diffstat output>
+> +
+> +   <unified diff>
 > +
 
-This would then be redundant.
+Looks good to me,
 
-> +    # Accept words that can include hyphens
-> +    _word_re =3D re.compile(r'[\w-]+')
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
 
-I would recommend to have the dash as first character in case we ever=20
-want to expand this regex to avoid inadvertently making it a range, c.f.=20
-https://docs.python.org/3/library/re.html#module-re [] section. Or=20
-simply escape it so it's explicit what we're expecting from it :)
-
-> +
-> +    def split(self, input: str) -> list[str]:
-> +        return self._word_re.findall(input)
-> +
-
-This is already what the split method from SearchLanguage does,=20
-therefore no need to override it.
-
-> +    js_splitter_code =3D """
-> +function splitQuery(query) {
-> +    return query.split(/\\s+/g).filter(term =3D> term.length > 0);
-
-Why not simply add '-' to the default splitQuery as in=20
-sphinx/themes/basic/static/searchtools.js so we keep as close as=20
-possible to the original behavior, just with the added dash?
-
-Cheers,
+Thanks!
 Quentin
 
