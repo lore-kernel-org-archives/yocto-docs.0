@@ -1,170 +1,106 @@
-Return-Path: <twoerner@gmail.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5761C3ABBE
-	for <webhook@archiver.kernel.org>; Tue,  6 May 2025 18:03:26 +0000 (UTC)
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
- by mx.groups.io with SMTP id smtpd.web11.83160.1746554604232038538
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B8AFCC3ABC6
+	for <webhook@archiver.kernel.org>; Wed,  7 May 2025 08:05:31 +0000 (UTC)
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+ by mx.groups.io with SMTP id smtpd.web10.3495.1746605129942155558
  for <docs@lists.yoctoproject.org>;
- Tue, 06 May 2025 11:03:24 -0700
+ Wed, 07 May 2025 01:05:30 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=NwiuhK9C;
- spf=pass (domain: gmail.com, ip: 209.85.214.176, mailfrom: twoerner@gmail.com)
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2241053582dso93644225ad.1
-        for <docs@lists.yoctoproject.org>; Tue, 06 May 2025 11:03:24 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=ZjP9W6vA;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.221.44, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-39129fc51f8so4398280f8f.0
+        for <docs@lists.yoctoproject.org>; Wed, 07 May 2025 01:05:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746554603; x=1747159403; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=At5Shc3auzfB/h3dS/DhZGh9sCb1ivm06f4mR1IF4UU=;
-        b=NwiuhK9CpCIPN9iHrSwdWPQoa5CDXMfUeKhrhe0jpwUyXixRjd0YiQLWX7pJX6IE3q
-         ACr0ntZEROifPNjJAKd8ARQThYuH/Ht1V/Qpu79gCUFfKdkk/e6dS/pecF521HzofWY1
-         OlRD0v8KPfni9TeZRuJLE0/+xF4BkJJzVISpq8u6N9WTLSIXMOxXLnjpeJRW2/j1MeUI
-         Rg6lLfVdUKPyWp+Zzj8HrdgHodlZxGt036n2FSf2qIr1H12Rf0BD0p1bdbzerJNJ6Y+y
-         YR34WLbqKeFYJK8zmNSuzNQiWlvwAXSh/BiyHzAz8jip9iovSsW7knmMmkMp2bmtArFT
-         izYQ==
+        d=linuxfoundation.org; s=google; t=1746605128; x=1747209928; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Day+EK2xEDEhSzQ81X2qNA2flrsfzHM2rDpR7hSvd9s=;
+        b=ZjP9W6vAJeWIlazWyZzK+sy2ZSh/R1q4fiaiEprbbU/LNEU82h+Bctt9P0f8TmFOH3
+         Omb6L/XgFSJvUtI6Dg9lQavNN4Et0yaeKoc9YL4QCLm5xFS8IonVTDuBk55aSlaU4ctd
+         OsvvrdQhZCNVKdkRaOdQ8Ab5W1yF4vMc+PYGQ=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746554603; x=1747159403;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=At5Shc3auzfB/h3dS/DhZGh9sCb1ivm06f4mR1IF4UU=;
-        b=L1g/erWagG4149deHK92BPJwXJ1UdJUq6yOxb4MgLpJpSwLhE2In++bP/s0PZ8ghi1
-         aXV46sdrMTkSkF279MQxHnceLYky2NBqz3znLJxWwUtXt6Jy+iOcLR5TMQSB40wXy8c2
-         vuMQMxsV8sTCwbT/V94rZdqcpZxi1LkUcOkimPhf9TsnnxYZHu32GaFYBXAmkpAMHR7g
-         uBqMo5t8LASG0mw+FMqn0lGN2igJ0R/nuKAprST8uWpPY4rqd0SNePlyxCnt5QDIOqz1
-         TxmpUU/9TagWfjenh6ZGGpSZJRaseH1Qd+08x+4L10dDaZOBUET5t+hSUEZ+NwfLokXr
-         SOPw==
-X-Gm-Message-State: AOJu0Yx8DODrh55w1nWpCGyAgZbaQ/fM+l0AP5Ptf54v95r4cbpS2Prn
-	Ti/wFlF8VHwc1fK4EDvvTr7LiESy1iELOdqRMSSJ58RP+GWvE29HCbXjgw==
-X-Gm-Gg: ASbGncu07cj7snRDVFZo03AkZCYBo6jxJc37zMdIF/+qZHPpXCmohgo9aAOn8nA/XB9
-	YulYZvPsWfVLCOk1fezpmFAInHoLFO2Vr9lyK2SNFz73bRPDBsVK3jc+ApenHXyIaMlg99GNfGr
-	G/OtgrlperapJpZTGUhtgRtRxqt2BrwfE3b7+aIAXp8t+5bzTGY6O6LOPry5VhXZNZo0Cr003gp
-	MP73koalloqt/NXrTnnp7rVwFjT7uOTJuV87P0o0RJFpWlaFCZJ4Oo66xh79+4/bNBoFbzBtOsi
-	FuJyCtLykw9mc3H9QW+14R50O35+XFClTUwJmt5kV4MrTvd1Lji9n4t6cEoX8cmzDeoVskCv94+
-	VHz7lATsy
-X-Google-Smtp-Source: AGHT+IG3YavmAXnAqWf5cOd/oyZrO3/WS/Hynq06K+1oeWPHEOddb3qYFHTORjPmT07uyy9rqTwQ+A==
-X-Received: by 2002:a05:622a:4c13:b0:477:6f28:8c16 with SMTP id d75a77b69052e-4922556049bmr1798061cf.6.1746554592427;
-        Tue, 06 May 2025 11:03:12 -0700 (PDT)
-Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4922174cc55sm747671cf.39.2025.05.06.11.03.10
-        for <docs@lists.yoctoproject.org>
+        d=1e100.net; s=20230601; t=1746605128; x=1747209928;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Day+EK2xEDEhSzQ81X2qNA2flrsfzHM2rDpR7hSvd9s=;
+        b=wVzxiURCmqjqGsiuMRndEkxyCWqy0lvCQ/lvIPO/canNmmmKeGMoDnm3/TESdvYs+N
+         S6SlTcFXd/zzXa5dpMpHuER5b2ExPNgftmrtOGqDmRMoVksHKYblbrx6QFnXO9WGcOMm
+         AGPGFKzd0nqlcjbNv38zxE/+D8A6DXz/tJqcPm4JPz4ouHGj0AGyae22l1y8orW0FTJ2
+         MUyd+U+a52FNuPmPKuYoIf4ihIfnRNEkU67cleSN3v6zBkTLva249CExQxfyr+L1az+J
+         DfsWQ7wPEnf2RYQeyaoQGIQN3fxv1lBubyGCSSoZ6GnzpDIDdu2V16FnJ0FSGJfCx1/d
+         h6Ww==
+X-Forwarded-Encrypted: i=1; AJvYcCWJykNsfql1v6ibYfUz91hokxgnAj0Jfs+J7dadz2PqQO42zRjXG+9cYhu2veOk4ZBhQSCC@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YwZTkWGfvR0Bj9Wkgee41tfwVA+uPWc/WF+ZGPw18x4OQls2wxV
+	+41CkQnZ85ZHcPrFgnrJzvM6nvILWzsE/qhzy2dmgLNEHLg+PFRIjVbBNsAjgGM=
+X-Gm-Gg: ASbGncu+8oyLZYisD3act4gyAU9V/PDOw0CTrMvdwa05afwNerSZdEypqX+QYywRKjN
+	1PA0s1iZpFFRqBcOLJDm7f5b+Lrx/+1okQ4oNw6DEfXgzfT7Ikt04p/0/S2KVa0gA2jRKzgd4RC
+	5/SDm+Ye09XLl6thga+OAwYIiuRpw/GYDo1OZk+7Yjh8k/xQfmOsvL5vEefnHSqqUQXg6/iy+ia
+	+i6AOywDfki5RDima+p6h3XLlPn57AWpcOTEtQKaPTSFZ2bv9x3EqALbgfjVLE1l+1eIbvhoWf/
+	TeRGjUduYEfS4AxS9V3W9oRGa41ELNcV/7Ct4OJoO60nAupWgo6BcnmSD3Ttb0bpZ8S75sDxA9j
+	IdV2MhH/jm1f6fwbZGiGSbZj9HcQmSlVg7mDHMA==
+X-Google-Smtp-Source: AGHT+IFE72pwQieGQRgLZdRNuYF1DuXO0AcvLeF+NBHTqy0VF5euV+m1ozYJA2zIbDd/LKpSsH3bEg==
+X-Received: by 2002:a5d:64e8:0:b0:39c:1257:ccae with SMTP id ffacd0b85a97d-3a0b4a1c722mr1756042f8f.57.1746605127753;
+        Wed, 07 May 2025 01:05:27 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:12c3:1543:c9e5:5d2? ([2001:8b0:aba:5f3c:12c3:1543:c9e5:5d2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b0ffb1sm16026375f8f.73.2025.05.07.01.05.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 May 2025 11:03:11 -0700 (PDT)
-From: Trevor Woerner <twoerner@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH] sphinx-lint: various fixes
-Date: Tue,  6 May 2025 14:03:01 -0400
-Message-ID: <20250506180301.32610-1-twoerner@gmail.com>
-X-Mailer: git-send-email 2.44.0.501.g19981daefd7c
+        Wed, 07 May 2025 01:05:26 -0700 (PDT)
+Message-ID: <4ea9b9dcda4e5482050f472b03b69bdaf062d532.camel@linuxfoundation.org>
+Subject: Re: [bitbake-devel] [PATCH] bitbake: fetch: Add support for
+ remapping URL's
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Sawas Etairidis <setairidis@gmail.com>
+Cc: bitbake-devel@lists.openembedded.org, docs@lists.yoctoproject.org, 
+ Savvas Etairidis <falital@hotmail.com>
+Date: Wed, 07 May 2025 09:05:26 +0100
+In-Reply-To: <CAKJXz6d061e5h-_7vV6iWVj90gFvKqnKC=yRQqWaobqjvzfLgg@mail.gmail.com>
+References: <20250505185755.1952-1-falital@hotmail.com>
+	 <292ee69d270d71860a7ebada65e4f6aeeca01d13.camel@linuxfoundation.org>
+	 <CAKJXz6d061e5h-_7vV6iWVj90gFvKqnKC=yRQqWaobqjvzfLgg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 06 May 2025 18:03:26 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6800
+ <docs@lists.yoctoproject.org>; Wed, 07 May 2025 08:05:31 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6801
 
-A 'make sphinx-lint' pass found the following issues:
-	trailing-whitespace
-	missing-space-after-literal
-	role-with-double-backticks
-	missing-space-before-role (role missing opening tag colon)
+Hi Savvas,
 
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
----
- documentation/dev-manual/devtool.rst                 | 2 +-
- documentation/dev-manual/start.rst                   | 4 ++--
- documentation/migration-guides/migration-5.2.rst     | 2 +-
- documentation/migration-guides/release-notes-5.2.rst | 4 ++--
- documentation/ref-manual/variables.rst               | 4 ++--
- 5 files changed, 8 insertions(+), 8 deletions(-)
+On Wed, 2025-05-07 at 09:28 +0200, Sawas Etairidis wrote:
+> I think it would be better to not modify how PREMIRRORS and MIRRORS
+> work since users already depend on them and expect them to work on
+> specific way.
+> Like this you can add extra rules to rewrite the source code url and
+> then use=C2=A0 PREMIRRORS and MIRRORS if they exists.
+> I could instead provide an example how someone could have the same
+> result using PREMIRRORS if you think it is not worth having this as
+> standalone feature.
 
-diff --git a/documentation/dev-manual/devtool.rst b/documentation/dev-manual/devtool.rst
-index 2f17d5093048..c82dc9c3334a 100644
---- a/documentation/dev-manual/devtool.rst
-+++ b/documentation/dev-manual/devtool.rst
-@@ -552,7 +552,7 @@ the two modes:
- 
-       This instance of VSCode uses plugins that are useful for the development
-       of the application. ``devtool ide-sdk`` generates the necessary
--      ``extensions.json``, ``settings.json``, ``tasks.json``and ``launch.json``
-+      ``extensions.json``, ``settings.json``, ``tasks.json`` and ``launch.json``
-       configuration files for all the involved plugins.
- 
-       When the source code folder present in the workspace folder is opened in
-diff --git a/documentation/dev-manual/start.rst b/documentation/dev-manual/start.rst
-index 0f015d434041..21d3dce58c14 100644
---- a/documentation/dev-manual/start.rst
-+++ b/documentation/dev-manual/start.rst
-@@ -860,7 +860,7 @@ Initializing the Build Environment
- Before you can use Yocto you need to setup the build environment.
- From within the ``poky`` directory, source the :ref:`ref-manual/structure:\`\`oe-init-build-env\`\`` environment
- setup script to define Yocto Project's build environment on your build host::
--    
--    $ source oe-init-build-env 
-+
-+    $ source oe-init-build-env
- 
- Note, that this step will have to be repeated every time you open a new shell.
-diff --git a/documentation/migration-guides/migration-5.2.rst b/documentation/migration-guides/migration-5.2.rst
-index 9e9f466ade1e..77a11fe27047 100644
---- a/documentation/migration-guides/migration-5.2.rst
-+++ b/documentation/migration-guides/migration-5.2.rst
-@@ -83,7 +83,7 @@ systemd changes
-    files by starting them via
-    `Also <https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#Also=>`__,
-    the other service files were automatically added to the :term:`FILES` variable of
--   the same package. Example: 
-+   the same package. Example:
- 
-    a.service contains::
- 
-diff --git a/documentation/migration-guides/release-notes-5.2.rst b/documentation/migration-guides/release-notes-5.2.rst
-index 03f454bfc080..f0223b5f7290 100644
---- a/documentation/migration-guides/release-notes-5.2.rst
-+++ b/documentation/migration-guides/release-notes-5.2.rst
-@@ -25,7 +25,7 @@ New Features / Enhancements in |yocto-ver|
-       :ref:`Shared State <overview-manual/concepts:Shared State>` for the
-       dependencies. See :doc:`/test-manual/reproducible-builds`.
- 
--   -  ``systemd``: Add term:`WATCHDOG_RUNTIME_SEC`: for controlling the
-+   -  ``systemd``: Add :term:`WATCHDOG_RUNTIME_SEC`: for controlling the
-       ``RuntimeWatchdogSec`` option in ``/etc/systemd/system.conf``.
- 
-    -  :term:`FIT_UBOOT_ENV` to allow including a u-boot script as a text in a
-@@ -671,7 +671,7 @@ New Features / Enhancements in |yocto-ver|
-    -  New ``bbverbnote`` log utility which can be used to print on the console
-       (equivalent to the ``bb.verbnote`` Python implementation).
- 
--   -  :ref:``ref-classes-grub-efi``: Add :term:`GRUB_TITLE` variable to set
-+   -  :ref:`ref-classes-grub-efi`: Add :term:`GRUB_TITLE` variable to set
-       custom GRUB titles.
- 
-    -  ``gawk``: Enable high precision arithmetic support by default (``mpfr``
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index d17f81036b7d..6a7c265d6b60 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -6131,7 +6131,7 @@ system and gives an overview of their function and contents.
-       By default, no API key is used, which results in larger delays between API
-       requests and limits the number of queries to the public rate limits posted
-       at the `NVD developer's page <https://nvd.nist.gov/developers/start-here>`__.
--      
-+
-       NVD API keys can be requested through the
-       `Request an API Key <https://nvd.nist.gov/developers/request-an-api-key>`__
-       page. You can set this variable to the NVD API key in your ``local.conf`` file.
-@@ -10404,7 +10404,7 @@ system and gives an overview of their function and contents.
- 
-          UBOOT_FIT_TEE_IMAGE ?= "tee-raw.bin"
- 
--      If a relative path is provided, the file is expected to be relative to 
-+      If a relative path is provided, the file is expected to be relative to
-       U-Boot's :term:`B` directory. An absolute path can be provided too,
-       e.g.::
- 
--- 
-2.44.0.501.g19981daefd7c
+Looking at the bug in question
+(https://bugzilla.yoctoproject.org/show_bug.cgi?id=3D10699), the issue is
+filed against the layer index and the issue in question was more about
+allowing layers to list their mirror urls so that we could canonicalise
+different urls.
 
+Your patch is against bitbake itself and it is unclear if we need that
+support in bitbake itself to solve that bug which was targetting a
+layer index change if I understand correctly.
+
+There is already some discussion about changing the way
+PREMIRRORS/MIRRORS work for other issues and given that, I'm reluctant
+to add new code paths that add complexity and do things in a different
+way. I've been hoping rather than adding complexity, we could try and
+simplify whilst still maintaining the different use cases we need.
+
+Cheers,
+
+Richard
 
