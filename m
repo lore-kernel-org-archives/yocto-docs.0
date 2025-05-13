@@ -2,116 +2,117 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 13867C3ABC9
-	for <webhook@archiver.kernel.org>; Tue, 13 May 2025 08:17:11 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.70974.1747124228434938863
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 191AEC3ABC9
+	for <webhook@archiver.kernel.org>; Tue, 13 May 2025 08:28:21 +0000 (UTC)
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+ by mx.groups.io with SMTP id smtpd.web10.71116.1747124889621960212
  for <docs@lists.yoctoproject.org>;
- Tue, 13 May 2025 01:17:08 -0700
+ Tue, 13 May 2025 01:28:09 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=PVfVHD2P;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3FA7A4326A;
-	Tue, 13 May 2025 08:17:06 +0000 (UTC)
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gFwW559E;
+ spf=pass (domain: bootlin.com, ip: 217.70.183.196, mailfrom: antonin.godard@bootlin.com)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 273C243ACE;
+	Tue, 13 May 2025 08:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747124226;
+	t=1747124887;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=YlZsPiJRf/A3xZIrB9/z4w4Xcpdnsfa6wdDprsvIM4k=;
-	b=PVfVHD2PuGHFNLqH8Sw8sf9bok5a8dtoAOd3ivNwihFqGimTg8L6mL6hESwFPD8MGdWQXS
-	38Q84cxRTMaqIFa3HGF9DfG1k+5Y1HMy2F9iLg0HWT5KSAGsybmAZ/phcfJm1zISl9BaGH
-	jKK4vZDVg/YosX+prT54xGy7k+gIwU/PDe0wdNCRcNjKzPb+hhE+Zw/XEXeI8sjYddKbJY
-	Y5XPXO/e4XFtMNP2gH4Ux1A6moi0igGejMhP24iQBJqQiaQ/AyeagP2lCHjFcnFrAXu4YT
-	H+k5u/zx5qOgMKKtuGwadjkZBOinDyvlDPbaoLB0pyzGtOkXFnsNLoszMFU3BA==
+	bh=F/3UYsb/o34iwWxk7f8duk+DfZRjQ42IJrVgH/F5KRY=;
+	b=gFwW559E4Ided73VWSFRAzkGGPkEws/ls+bY1e/eFzI3M6jeaD91mBPmDgYCJpmi2AQOCl
+	Sbck4Ly+EVthDMAqCX5MRGTB5NaLFwL88XdtTB+U3MfbpzD0n0hd52ZGYBnxhkKQ2TImab
+	8vYljxWd9gTQxmCyllxI2lgwhra4js/tBgAXhzw/ENJgmjUTes9vQtW0wdjeZLZeDzkiEw
+	g/6bvKvc2EA6uR82YWmZ99RMmEfzicKbhurnGq5cqWGam2TgiH7TS6yHqIUbLK0TcLOfj/
+	2Lur8xGCRZfyhu+RI1xR2PUzIuk0nrCcdvuzXKp/M6z6slf/LkEE6IY9elwjlQ==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 13 May 2025 10:17:05 +0200
-Message-Id: <D9UVUL1RJXK9.HT6YMHKRHD36@bootlin.com>
-Subject: Re: [docs] [PATCH] sphinx-lint: various fixes
-Cc: <docs@lists.yoctoproject.org>
+Date: Tue, 13 May 2025 10:28:06 +0200
+Message-Id: <D9UW30Q030G2.22VWR1SASAWG8@bootlin.com>
+Subject: Re: [docs] [PATCH 1/2] poky.yaml: introduce DISTRO_LATEST_TAG
+Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <twoerner@gmail.com>, "Quentin Schulz" <quentin.schulz@cherry.de>
-References: <20250506180301.32610-1-twoerner@gmail.com>
- <d7d0d319-581a-486b-bffb-7ddf0f771d9b@cherry.de>
- <20250512210330.GB25174@localhost>
-In-Reply-To: <20250512210330.GB25174@localhost>
+To: "Quentin Schulz" <quentin.schulz@cherry.de>,
+ <docs@lists.yoctoproject.org>
+References: <20250409-fix-distro-dead-links-v1-0-616b62185d04@bootlin.com>
+ <20250409-fix-distro-dead-links-v1-1-616b62185d04@bootlin.com>
+ <e2d275ee-5657-4dc5-a831-1edb565f85f3@cherry.de>
+ <D97WADVD9D0D.3PPCH5GX3DOL0@bootlin.com>
+ <0f03eef3-4de5-4276-b692-0fd18571ddbe@cherry.de>
+ <D98QDOH9EM5M.2LNH55O8DZ8IC@bootlin.com>
+ <62fb508b-741f-458b-ab7a-2ceed64a95be@cherry.de>
+ <D9DWY617J6W5.1G9WMLH95TIIF@bootlin.com>
+ <caeb301c-abfe-4220-b24b-1073f43efc3a@cherry.de>
+In-Reply-To: <caeb301c-abfe-4220-b24b-1073f43efc3a@cherry.de>
 X-GND-State: clean
 X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdefieefucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepfffgkeeiueefieevkeekveejteevleekjeeigfefiefhgefhgefhuddvjeduvddvnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehtfihovghrnhgvrhesghhmrghilhdrtghomhdprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtp
- hhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdefieegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepfffgkeeiueefieevkeekveejteevleekjeeigfefiefhgefhgefhuddvjeduvddvnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvt
+ ghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 May 2025 08:17:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6814
+ <docs@lists.yoctoproject.org>; Tue, 13 May 2025 08:28:21 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6815
 
-On Mon May 12, 2025 at 11:03 PM CEST, Trevor Woerner via lists.yoctoproject=
-.org wrote:
-> On Mon 2025-05-12 @ 09:50:07 AM, Quentin Schulz wrote:
->> Hi Trevor,
->>=20
->> On 5/6/25 8:03 PM, Trevor Woerner via lists.yoctoproject.org wrote:
->> > A 'make sphinx-lint' pass found the following issues:
->> > 	trailing-whitespace
->> > 	missing-space-after-literal
->> > 	role-with-double-backticks
->> > 	missing-space-before-role (role missing opening tag colon)
->> >=20
->>=20
->> I'll let Antonin confirm but I assume it would be a good idea to have
->> separate commits so we could easily backport them to earlier releases? O=
-r
->> maybe you/someone can run sphinx-lint on older releases and send patches=
- for
->> those too?
+On Wed Apr 23, 2025 at 11:56 AM CEST, Quentin Schulz wrote:
+> Hi Antonin,
 >
-> okay, waiting on Antonin
-
-Ultimately the best approach would be to run sphinx-lint on each branch, be=
-cause
-we might miss some lint warnings by simply backporting this patch.
-
-Do you want to take care of it?
-
+> On 4/23/25 11:33 AM, Antonin Godard wrote:
+> [...]
+>>> I don't think we should be using &DISTRO; anymore? Most of the time we
+>>> don't want to be printing .999 on the landing page of
+>>> docs.yoctoproject.org! For the dev page, that's different.
 >>=20
->> The changes look fine (and necessary) to me :)
->>=20
->> Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
->>=20
->> [...]
->>=20
->> > diff --git a/documentation/dev-manual/start.rst b/documentation/dev-ma=
-nual/start.rst
->> > index 0f015d434041..21d3dce58c14 100644
->> > --- a/documentation/dev-manual/start.rst
->> > +++ b/documentation/dev-manual/start.rst
->> > @@ -860,7 +860,7 @@ Initializing the Build Environment
->> >   Before you can use Yocto you need to setup the build environment.
->> >   From within the ``poky`` directory, source the :ref:`ref-manual/stru=
-cture:\`\`oe-init-build-env\`\`` environment
->> >   setup script to define Yocto Project's build environment on your bui=
-ld host::
->> > -
->> > -    $ source oe-init-build-env
->> > +
->> > +    $ source oe-init-build-env
->>=20
->> You could also remove one whitespace before the $ to respect the
->> "code-blocks are aligned by three whitespaces" rule we have (and which s=
-eems
->> to not be part of our documentation/standards.md :) ).
+>> I would like to agree, but at the same time, wouldn't it be confusing to=
+ have a
+>> real tag (e.g. 5.1.8) when reading for the latest tip of the branch? It =
+would be
 >
-> ok
+> Does it matter? We should only be doing bug fixing and ideally without=20
+> breaking backward compatibility in a given release branch.
+> Again, the development (master) branch is a different story here.
+>
+>> somewhat accurate, but not _stricty_ accurate as to which version of the=
+ doc you
+>> are actually reading (the latest tip).
+>>=20
+>
+> The issue is that this tag simply doesn't exist so we should absolutely=
+=20
+> never use it when code is involved, as the instructions will simply not=
+=20
+> work.
 
-I can do it when applying your patch on master-next if that's ok to you, th=
-at's
-an easy enough change. :)
+Right, so the code parts of the docs should be adapted to use DISTRO_LATEST=
+_TAG,
+but I still think using DISTRO in the textual parts is useful to distinguis=
+h a
+branch tip version of the docs and a tagged version of the docs.
 
-Thanks!
+>> I'm trying to think of a way to make it clear that 999 represent the bra=
+nch's
+>> tip.
+>>=20
+>
+> I'm failing to see how it is relevant to the user that the docs are=20
+> built from the branch's tip instead of the tag?
+
+There might be a reason that goes beyond my work on the docs, but it is kin=
+d of
+useful to me to monitor changes as we go, or just to provides up-to-date li=
+nks
+to people.
+
+It is questionable that this should be the default landing page though.
+
+> BTW, it seems like once you're on a tagged release, you cannot go back=20
+> to the .999 from the dropdown menu, is that intended?
+
+Sounds like a bug to me!
+
+Thanks,
 Antonin
 
 --=20
