@@ -1,73 +1,112 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 56D56C3ABC3
-	for <webhook@archiver.kernel.org>; Tue, 13 May 2025 09:02:11 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web11.72027.1747126926445779890
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6B7CFC3ABC3
+	for <webhook@archiver.kernel.org>; Tue, 13 May 2025 13:14:42 +0000 (UTC)
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
+ by mx.groups.io with SMTP id smtpd.web10.75731.1747142081425973467
  for <docs@lists.yoctoproject.org>;
- Tue, 13 May 2025 02:02:06 -0700
+ Tue, 13 May 2025 06:14:41 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=gVZkpjbD;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 544E342E7E;
-	Tue, 13 May 2025 09:02:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747126924;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lqCnP/So33COpWo362IGvQv2NRPI5F1PvqR/Mv9tK6o=;
-	b=gVZkpjbDFMKGg5aEp5PuEFGjSJ8cBqDM56PFoFUUMMtNp7LyA+0D5Wlx9jhFCuZopFOyT/
-	v5CiPzsQLfkiogn27J+01/zgr5wpafWPGRkPo3LhHWuqQrlW/TTDBa5NLgUUWj/V3yBwly
-	WcUFXcGLrLXv/q4ef7AHak305Cm2lhYDA35i25kxl/49uLY25VIFHvkPPHGl4LI8M1d8Qk
-	NEmkmsVy4EdmIojUtGZMF1ksx9kNwps96K/+zCmEpOyqBQDsU5+w8JPRNPlaQnn1bmbqoF
-	CsaHaAY23GD5u8PZ6gdhLzPG0qN7zpMnx1AawUmbO8Pu8tlD0j/ALqh2frEHuw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 13 May 2025 11:02:04 +0200
-Message-Id: <D9UWT0MHK7VY.TMVHYR7ZUTUX@bootlin.com>
-Subject: Re: [docs] [PATCH v2] ref-manual/variables.rst: document the
- INITRAMFS_MAXSIZE variable
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <gavrosc@yahoo.com>, <docs@lists.yoctoproject.org>
-References: <D9U1JLD1015R.24479GHMULBH7@bootlin.com>
- <1013.1747081006592263512@lists.yoctoproject.org>
-In-Reply-To: <1013.1747081006592263512@lists.yoctoproject.org>
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdefjedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptddtudfggfelvdejiefhgeevvddutdeggeegjeffhfdtkedtvdeiuefgvedtuedunecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopehgrghvrhhoshgtseihrghhohhordgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrgh
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=TZc0pFZe;
+ spf=pass (domain: gmail.com, ip: 209.85.222.178, mailfrom: twoerner@gmail.com)
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7cd0a7b672bso242582485a.2
+        for <docs@lists.yoctoproject.org>; Tue, 13 May 2025 06:14:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747142080; x=1747746880; darn=lists.yoctoproject.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ru5/p4xSqncwd5pRzLEJL3l5uEpEEoHRcLzNgHmYMBM=;
+        b=TZc0pFZexkBnKrf7QaghneDauEvm2yba5avZSxZPN0PaayDOkyBafzFbMAcVsIaqcg
+         7nMFQ3NHf+Q++skxTr4/UKr9JWiJ9XFXUzqdx1lp1e3hlfHOWGHFYlH1kUQahjqxtDLt
+         iFLWoPaO7pxApkbeamhcJdntZSmFUdCvDz9h1rhwAzrIoSjKV2MU1FtWTihKZLZ4fSNP
+         5FhxVjph9esMwLdzQfz2vWQSFtIN7HDIFlAKUSTeZOiKg87+UggMuUnvyCRUNEKoqBB/
+         LDRt2QyPmqzQGBMnP0f0w+IvUgTNxy9gD2OYfMmQwK//uPX0dsw8f7rH7AEH7mDWoKqI
+         0bVA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747142080; x=1747746880;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ru5/p4xSqncwd5pRzLEJL3l5uEpEEoHRcLzNgHmYMBM=;
+        b=i6oJNPWxs6pQvqWWVQSbc16vR1R76ihbdvCWKwRiSSxm5Yx87hFmsvcra04QwvndQ8
+         BGMy0AAo2NYto4tEQJZRCjzEKYvyPSDc1iSLfD29mv8T2Hdpch54gjk5v2l/d7tROKZH
+         EwSFj8JvAaPNv+wHZxa3EAb7fTCaln+gcfIqdK5dWQ4JyDi6pCN3VQQcrUk3zowfyiuU
+         tO/35wPFmwkmNGLf4Zj6B27Z7PdorwEfL4+Vdi8QrQHTvY5EBbOmJwen6MwzvQGdbm9N
+         F4zaRHcKThpBB6V9Ge5NenUH9J/Q3pcq8QcvZ/BbPVAwG0/2bU4GP6OWUry+M1hkWUbu
+         G8rQ==
+X-Gm-Message-State: AOJu0Ywiyw0D4u4FVwUFy3b+A0ZNii5i1GYqwbb5YAiGcPCMW7/AJruz
+	Ls0ntlorFuCjC6695eCcFyykNmquLxtYoOt6tjNDaaipW3Jhy3pxWayblQ==
+X-Gm-Gg: ASbGncuLu+RHsrDiFrsszfNg2nGiYxLMyxg/PHnDtdT0jaVXxgGfFSmctDU/w+7T2P2
+	zWwefzl4c35Grtyt5jOEcvpa77/oOaylYJ1WVXc48jxI8ojAQtiwEds1OsIiQmWkqAt0Hz9OttN
+	1VJTILdZyZIi80f9wxKtuaKipVBlI3IJ7uh96IlTf1aex4iClf746W5A/RaewbjvfMOGhxJ2M/x
+	Cgi17xNKp6N/Kwzn0qrGR7xMlgYmglm9DJigRHfz66+C/yXeU1GkLC7xhDge3/XwbMzFd7Mrwpy
+	vv723fAE+dnzRF1r2oZBMGuNgnO+0NPxQEesDElCNki0vWtz17nUxB52ag9FwKCfMxHp2k26+/R
+	gkAEvGAax0hsfCw==
+X-Google-Smtp-Source: AGHT+IHefnP73qSjMxOgzkQHLe6ndGGb9eDUeWQwTxN9CPsmjSJy0eDs8tybEUBl4ei40pYxL7qquw==
+X-Received: by 2002:a05:620a:4490:b0:7c5:54d8:3d43 with SMTP id af79cd13be357-7cd0115008bmr2784333385a.58.1747142080231;
+        Tue, 13 May 2025 06:14:40 -0700 (PDT)
+Received: from localhost (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd00fdc779sm709259285a.76.2025.05.13.06.14.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 May 2025 06:14:37 -0700 (PDT)
+Date: Tue, 13 May 2025 09:14:35 -0400
+From: Trevor Woerner <twoerner@gmail.com>
+To: Quentin Schulz <quentin.schulz@cherry.de>
+Cc: docs@lists.yoctoproject.org
+Subject: Re: [docs] [PATCH] ref-manual/variables.rst: document
+ WIC_CREATE_EXTRA_ARGS
+Message-ID: <20250513131435.GA31516@localhost>
+References: <20250506172300.19220-1-twoerner@gmail.com>
+ <8ebddc9e-300b-4e82-8ff7-20328f06d7a1@cherry.de>
+ <20250512210120.GA25174@localhost>
+ <788da1ca-6e56-41ed-8814-4771710bfb69@cherry.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <788da1ca-6e56-41ed-8814-4771710bfb69@cherry.de>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Tue, 13 May 2025 09:02:11 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6816
+ <docs@lists.yoctoproject.org>; Tue, 13 May 2025 13:14:42 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6817
 
-On Mon May 12, 2025 at 10:16 PM CEST, Christos Gavros via lists.yoctoprojec=
-t.org wrote:
-> hi Antonin,
->
-> I guess it makes sense what you are suggesting.
-> I will make all the fixes based on your comments.
->
-> You mean a new patch for IMAGE_ROOTFS_MAXSIZE ( and not for IMAGE_ROOTFS_=
-SIZE), right?
+On Tue 2025-05-13 @ 09:59:58 AM, Quentin Schulz wrote:
+> Hi Trevor,
+> 
+> On 5/12/25 11:01 PM, Trevor Woerner wrote:
+> > On Mon 2025-05-12 @ 09:31:27 AM, Quentin Schulz wrote:
+> > > Hi Trevor,
+> > > 
+> > > On 5/6/25 7:23 PM, Trevor Woerner via lists.yoctoproject.org wrote:
+> 
+> [...]
+> 
+> > > > +      image recipe. As part of this process the Wic bbclass will call the
+> > > 
+> > > There's no wic bbclass.
+> > 
+> > I know. That's why I didn't write "wic.bbclass". I wrote, generically, the Wic
+> > bbclass.
+> > 
+> > > I think you meant to say image_types_wic bbclass? It
+> > > would be nice to provide a :ref: there but we actually do not have the class
+> > > explained yet so cannot do a :ref:`ref-classes-image_types_wic` like we
+> > > could for image_types.
+> > 
+> > I didn't want to give a specific name and wanted to write something that would
+> > be immune from changes in the bbclass's name. Also, layers might implement
+> > their own bbclass that uses wic, so I wanted to include those as well.
+> > 
+> 
+> If they have their own bbclass that uses wic, they wouldn't necessarily be
+> using WIC_CREATE_EXTRA_ARGS as this variable is specific to
+> image_types_wic.bbclass, we also already list the name of some classes so it
+> isn't a new problem.
 
-Yes exactly, IMAGE_ROOTFS_MAXSIZE not IMAGE_ROOTFS_SIZE.
-
->
-> Also I will prepare a v3 for INITRAMFS_MAXSIZE.
-
-Thanks!
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+I'll just rewrite the part to avoid mentioning the bbclass. How the command is
+invoked is irrelevant.
 
