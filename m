@@ -2,52 +2,52 @@ Return-Path: <gavrosc@yahoo.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9CECCC2D0CD
-	for <webhook@archiver.kernel.org>; Sat, 17 May 2025 14:48:58 +0000 (UTC)
-Received: from sonic312-20.consmr.mail.bf2.yahoo.com (sonic312-20.consmr.mail.bf2.yahoo.com [74.6.128.82])
- by mx.groups.io with SMTP id smtpd.web10.12979.1747493331479371634
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 984ECC2D0CD
+	for <webhook@archiver.kernel.org>; Sat, 17 May 2025 14:50:28 +0000 (UTC)
+Received: from sonic305-2.consmr.mail.bf2.yahoo.com (sonic305-2.consmr.mail.bf2.yahoo.com [74.6.133.41])
+ by mx.groups.io with SMTP id smtpd.web11.13275.1747493425639846157
  for <docs@lists.yoctoproject.org>;
- Sat, 17 May 2025 07:48:51 -0700
+ Sat, 17 May 2025 07:50:25 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@yahoo.com header.s=s2048 header.b=cWp6MQmM;
- spf=neutral (domain: yahoo.com, ip: 74.6.128.82, mailfrom: gavrosc@yahoo.com)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747493330; bh=pU0FVn23eQMwdruwRYM16xwGD3yQioz/mIVXzTTSK1E=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=cWp6MQmM8Fuz/JGpvfwnOC1MLJz83jiwfJ5yCnCt8DTsbA4lWbz8kmVdV29BllSyKtWKTbpqspguwxzBN6MrDKkb60FxJX91rUiJrQjEk1jZBFgJc8e1tif1bHpQZmBpySDlnhirv8gww96TqJlkpbdQCgDLb/M2fzPgnAn0QIOY7BvO1ZPjuTW2+1V0axhxWPVn6TKAzeGdgI4n83kbrxIIBDr7x9GrQNtfyHUkEWpWu2WGu4CaTWrvHLqHmbUV1tPfen4xg8L+Tlo/eQG3JN7JfZ0ShBBD6kptTf6Wxnk5crD+3hB1gz1WtXWohvYlSiCQcMEo8lFYlZmyc/Zsng==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747493330; bh=4jbo4h8b5yJNOY6JWSwMrUpZBmQ1beYq8RRMzXKe1nD=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=BzGV06RUDYv7RmkH5p4oKi4c5lgvwolcVxq5aEsJwo9nhkcrzpOftfap2x6VHh7FGj1zVt0lIvn2BU/jq5+soNHCxvDrkRElBtNcEk+axo6Mom3dQFdRi2uFR/m4tKh9w1zotoEFmUQZLwXNfjZU0imQxmW4t4oYe2JnI2a2/hbh3JVCqtfNj84jjzqVWdnTrJRR8HM4OiKNK1xJehH2HcSceD7nLeraWQn624NSjmuC4HjxVFNMTZ1/Hfcd+7uv4gvbv1UAkJ38foiABC0CVXVGwg6m1BfPY9u9+7z9ljsoblTBGMOcQobECQOLPMVuZYttwKjTnYGE/27QRXY4pw==
-X-YMail-OSG: E0dbTpkVM1nL_8aWyqkUpRc.dbu_uJoNL5rFn1DHXP2UBFplTmn_cxIz1WYcywl
- q92lzqLykCefqZSnpVOO7dNSRohLy3HdVqKKwi1qgfm7..QnzQtGzSptevadoUgEn9WIx4nN5f92
- vgU4oziV7gDsDkwhjwNwKs9F9eqTQX_.Y25hRGGay7MnqkUw6XE.NYaM1ikHqOHsHkmtP_FGBuZl
- DTL36RHB7Y19WAuz1N6fbXkTDkExyd2q48aHR1bRIoCqPcVjx__WlvlMcBb.g.PAnfC6DIyYHvUG
- 5YQLF8_utm6PS_JtMFV.OZ5ASMcB.VYpXtqGzxonZtE2bvgFtOFFY9pIDNQDiGNGotL9zT.72GLa
- 5jHbAd1749y6qjrx_3O4RuIfkeS4FAj2edHBPHA2cb2v7woFfISW_NuaDAomo.frnObm_lVJQV4U
- Gm8rs2C1qCiy8Qe1FWVOxraakGKhzIvvhguPZIxNdv9ecpc5WFLD3BoJ.ziFTjfF6nocWlX4EuUJ
- rUo8yl0jQJZ59x_E_IAhT.w0oH_VO7_q1_IxUVoG0dkV9SyIqFIY.sAcP2RIH9rwl6EpG7AwXFDQ
- AalH7iWM1nsfBqaV0ygo2KAYxnEK_ViUcetgeOSSHBTPmxJS9sfAtvFT47ypvkncJHvJFUlL_Ro2
- SuogUgiLxTJSf9laVkNtm7QGcFwZlTKmfVzOURzeOArV5570LT6AIH48FjfdV9ZseSCGxDCYlwjO
- xmkMReMWWDLVjYwahpjjovhtGCi4fTzSyHKTbQ63V6GwRtVzvznzioWVPOCC.r2Enkqw7JQIDnOY
- .pH2XX96Rc1vDPOap6xjgJAyZt1LcZwcCPD0mK5oXoU90zTd9PqHnqfRU8PMxxzRX4Zkk2ONai.o
- 21LRG1WdXNe_LVdWEFGIagTpdse3uobKDtMFWD.erUxivKAFR7lZ0oVBwj0_b2XNSb5kyv53iCOs
- dQIj7wab5U1K1hQg5JPA_cl2Yky0xKGDBV5V9g5DaNaDn8iV1Z4BajSwLbf_437ptYZ9OkbBTseM
- PNwyDBHlFSNhXrrXb5no8R8wi9NtXEvKU6RCyGBBEnU3jYXRw5SwMFtUQ2QqEGNjfVxaJtA26J9_
- IagBpVebQAvMoTJQqlgkONTQjZnkq05M.l5O7C4eSLVe9HV9WlpE3kMo6LEZa8Mgfzx3iKPPmzVs
- jCnmSonqoO1QYFESqKEW5zaV5bXPQy7GwyxAhl7d9pMYBVX6ErqtUfRIckVnBN619pMwmz5yyNPW
- BTx10ZmJCztRRK8n2yV6ajtPeJV9g9th7T9Sv1gKXbXDwpFSbMjb2nAnjeV337KGeqbk_lBqP5co
- nUmbqqpkU5zc3mNifjSe_9tootVUGCub1TtFkczSOAwAmyxMqrC3mFvwC_b4NikkIFAs5SDaWWGu
- Z.0j2qpOSbRu6Wxv.5JaEwFaNYgXukcyknf91sWwdm7mz_yaVY4SrgsWgnhdtWju039Ip.rttKkC
- 5TTCu1fBdCdd.1Yy9wI5T51hIiIXwuoXph.FCib3ISQmcDHY8B8bFsn6BjvotSOnN8svMj_5Hj2n
- kIxjfY4MOmexbngGTBth3_pLYMKQ55k3D4pjYbmVODS6sp82lFnLMsnb4jJ6pMbOUmyv2Z5HFRdA
- 8VbWWqOxThvtrPdRG1BiaAFFIkrkB6hnuf13aRf.GPwAeAsk8HfzRgSZpxKL3M_4.zo7REB017pp
- asre0BLFcauqkf4jdE1c7hsN0AUVw96AnzCMh23xAwjxHL.EeVI86qYllA6RA0SxV18ViCs5VFPt
- lwijpWknMiWviL5WQ5UgP9DuTIEQrnD252YvAs0G9Bi3WCZo_eIt.dWCIdIAlOH7yYRSbUzj8K7c
- CmdbeCCvd9h0DBLgVu6f1XFHtbNpw4tmHwoAxydAtzkcIxB8pWdqN0t0NmIYRZwG4p3MOeIBDr7Z
- ObL2YngfFyZpLhGMwqbuQ5o0fJBdvtpwwlTI.NSlQ4XCArA86fhZl58472YLS4Qfj56rwXb0BE1D
- oXwrVx0.aV1tty7yDiRoBD8FxereGcc9AV3q1sO1fwR1g5ez3lew6qFoGgl8OblIshzyOPfqz5PJ
- kU26y1Gf8WE1irIKN3oRMfEv7G9bFjWbBusbRPxtFzbyXZ3dJayC9EQi5h239oG.eMV6eBtyKUyx
- qPeRGFQn2TaVq7Hw4FH2_z12wqAxgh9w-
+ dkim=pass header.i=@yahoo.com header.s=s2048 header.b=dlodcesZ;
+ spf=neutral (domain: yahoo.com, ip: 74.6.133.41, mailfrom: gavrosc@yahoo.com)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747493424; bh=ho1jeZYH3TLjagII0PNnyGt0Jai2sTH06SFc8qqUAfc=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=dlodcesZS92LB8Jw4dmzMgazYvWO7E9BwB0UMnPe3HcPydI2CPfSMLz5OwIk17xHkAFbi7/3OEROUmCMwAO7zzaICbfbCrG9nBvntnRUBajc//sSRbjHu8W/wyGoi0mYCOAwm88xXkJFnVTAcyqt8ssoPLdOdol9XZPZ+PipHoxnptydEEguB1sxNps7YsEEWL7+XW5UVQSoN5TEA33hf+FWcu0V/nIcWoE3t5HoKLFFoQyc+8PcSFNAAiumt0Bp4CCZLZqysGZjnMf6+tL/5tO5jzFXRSNMbaJVBjx2FOw32hL9D6hewDJzAvByx2D9jJM5ihoUWaSdl2I8++wjyw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1747493424; bh=1S5uJkrymp5F8eQFVhxmneXmFCZzoIPViE/JptYEJgW=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=J2XoeOjqQqjgS3EnYOM78KK02lIG19adcUUD+rPPTTHkttUr4EFGeKuSSfYmvKeqKncUfdYhdtAuAgivVCp+sbFn6xKjw1CmV1q8Q/vlFl78RVYYGcxvDnMvlqNMIg4DYJwUA67oTWrSe67D+364bW+kx8bNN1NB4wl2qoY7PfFh5WtWxUSQCGXqSiTe9lQw1uSQyS56TC4ibTWQX6UDPoY4tyhTaHoYGx5JDM/6XCDEQFz95SE0o5ranR8MdTt0XNS/UWGx516zP52XQJk7QF22/JEe5gJBkTF487QJYY8lLok0Ck9dX8vt5CYEBuB/j0p6i2NpjsW/sYzltTk2ug==
+X-YMail-OSG: 9DuFERIVM1l7EM4ZNaILZezUS7nRxAsGdhqTGqfMZtS76BkimQU7tDAxl08nXPk
+ cehlRLIeKFiA4GG_WV_GOPXe.zj75ZBbjQ02k8TCIsfeMie.HowlThTFpimJGp6rkBq01KSuHfSG
+ gQNGGyzCpqs6QvxBGdFHeLb3BxbIEpuwOcBUVI7XK5sfF0EnH60W5OCVIrYr04dV9c9nuPIDQ4zE
+ XFcAnUZqf6nXNbowA8UQ7qmSj2Sdeuy693JHLWeDG3vvb5aej0pbX4q.xWUW5futl2HgeWVGEihD
+ R_9jr9moz.mHXlY1wRhjSjK_cTnElw2bRajFA4Ddq1M4ivOGNfhijhnkVKv6aMmfelAq_3xuugY9
+ TwWFqKjTgCS5JDmhKr6F6xBkrqjizlDaqghcbi5clczZUkUbRWnvvaJ.Bt7gNbGk0h9a7SgtZrXq
+ NDzQZo6QJyZ6fPXcK1n7LHM2uoROM_27leGoyqJftOCUxlGEFJnTWEPA4iaGX32RvoV1Y9L2VRxI
+ rUIbFH7P8hNeR17QVparUgFJkPzb9y9PuYy4K0D9yD6hM3TB.TlKpr2z_Pb.gHGEmgIkQZoHtNg3
+ PL9smA6M7KMeXc95ztH1huvBbrsa8IMJaKPfj7s2DbPAbLgcviuy9UCLezLoFIe50mE0Y_TqUn5a
+ 5bFDSV7.jsZ6QH.xfOWA0WW5w3hhqeH6NE19sB6KKEtiSsK1T1lBLbH1Jh1kM_cSLS3F91VVtppp
+ Z8uqTwamCQ5hY3W29FnzQQLKIaDshQVpqc4hAGqnHQMgEDxzXLjfppjvWq3KjOUHML6CIFFSGMyW
+ 3Nymd2xLrjtL_GMyLanqYLIoxlzBltSlREK8.Fpvy0lwga4sRPIODggHWD8yXaQ5AJwUCeFSi_te
+ _3QvDJedo_RkUfXMfpDMgMFshiycyTeAbEDtJrCqvqImx6TCP5x376zWn7AWvMfMDkElrCHSzrwm
+ .EOnXIJiYuU1vNKNcubhxZnoozI1T.Nh7q5.z43jA8KYncyc2.Ce0uzCHkhUyVZ_xA7lx.Siem4a
+ ZeSg7u5lxC8uPg4zu9DXyatxETJ4o3GjX_cm3tVpYvfxXfvAUBvx4ghG2Qy2yc1Xqc7z3VxwC5LW
+ asuZQVioaB1biA70iXaow6Lr05BSPlg7P_1R5IWfnWY7470Ufjb30D6NFa4SPGPShiy7H0lTipSL
+ contELarg0auDMj7.dPLDVzi_b8olltQEn67sSgbL683cexpRYy3x.LDsdey7bIdO1tpw64kCaN8
+ YvKfg_yYHL9CF5dZ48KwE3..JD2lxSg4rJNXAXEhUoiygORKdO449pRzkaINc7ol4.xPX77E0gw.
+ mq1DEBHCbnlUUvko.2_L0NHLMGNlIbEViRvnT2QSE9sa4KVYalRU8WxhXEevPYzfjWaDpweyednU
+ nkzqUixKV4M4XSkZkzeSIpB8MBPkZXuM5G7EoIB11sbQilYC98RJTsLtSmYvj1JW_CWECL2prq3e
+ uHY33HxTgGtipDwhu6Pr2GoGm6ozfZ3xkeiChWpoUGcAfAOxSkvO7Fvi1ErGzw6Apxzlyjsph.hQ
+ 5Zi4eFw7cqjUF1v.FIEtoZgUt.M8nIK8cRvMNbAYjn7lcu6bpo3L9G2uHccyJIOWmCAxJo34sW_a
+ Mhvk87dYDGO.SsFOOE1Tu.ihPdSjmrcMuVYcPqBGoEuCwFzk88v2DgtNKgZ3TCnVB6wflT7YyIzq
+ bvyv.cByQ5tn2DbXCOR6umy97AbrcLIEfAJoejDFHZ43dH_8IpFeNEZ7MRDJ7_mCxmHgS_aLlFi9
+ Yg0UOqUJY4JKgBf20Rwab5n9dIQ4x.Z0XYond9HG0WtDRigMxzq0xkm3nOR4UY.FKXuukzJL5_F8
+ EIMQgNRyOkHQe8HkpOwrrr.QVuWGjsPKAGSt3uDEYu2CK8N3gpDvc46.Pps2X91.K2OImPzsDhnp
+ onMWrflZ0dwK2.QLqDU.pT6enEZHTnl.M7sOS282qDg61kAPjUd3Whbb28cOitfOkKGE1dGwu1FN
+ etjgrXnN8YLmXub56htO0heImcg3PHpfZYeMpX121uznqsHihtLRo.rlbuCidmswZMczg0v77EMn
+ ou1MNS8ZJLys7_Z4P3dub5grGftdE5L_XCz9aDj_wjKa9i3woaOOjsrWrE2JPWiPyy8G21mgv_IQ
+ 7Pnoa_.jepmTkj3YNvuiWKtUKVJ6fEazEODFi
 X-Sonic-MF: <gavrosc@yahoo.com>
-X-Sonic-ID: 6c257fb6-3f47-4fec-a859-729e775dcf57
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic312.consmr.mail.bf2.yahoo.com with HTTP; Sat, 17 May 2025 14:48:50 +0000
-Received: by hermes--production-ir2-858bd4ff7b-jwnh6 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 7e4bd75b9ffd5a8dd565b9683fa3ab7c;
-          Sat, 17 May 2025 14:48:48 +0000 (UTC)
+X-Sonic-ID: d0ee0afa-26e3-4a94-a8e9-c23dcba0946e
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic305.consmr.mail.bf2.yahoo.com with HTTP; Sat, 17 May 2025 14:50:24 +0000
+Received: by hermes--production-ir2-858bd4ff7b-rjtcv (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 163d91a17e5c6e097f48046693010453;
+          Sat, 17 May 2025 14:50:22 +0000 (UTC)
 From: Christos Gavros <gavrosc@yahoo.com>
 To: docs@lists.yoctoproject.org
 Cc: Christos Gavros <gavrosc@yahoo.com>,
@@ -55,21 +55,22 @@ Cc: Christos Gavros <gavrosc@yahoo.com>,
 	Randy MacLeod <randy.macleod@windriver.com>,
 	Antonin Godard <antonin.godard@bootlin.com>,
 	Quentin Schulz <quentin.schulz@cherry.de>
-Subject: [PATCH] ref-manual/variables.rst: document the IMAGE_ROOTFS_MAXSIZE variable
-Date: Sat, 17 May 2025 16:48:45 +0200
-Message-Id: <20250517144845.5384-1-gavrosc@yahoo.com>
+Subject: [PATCH v3] ref-manual/variables.rst: document the INITRAMFS_MAXSIZE variable
+Date: Sat, 17 May 2025 16:49:59 +0200
+Message-Id: <20250517144959.5403-1-gavrosc@yahoo.com>
 X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-References: <20250517144845.5384-1-gavrosc.ref@yahoo.com>
+References: <20250517144959.5403-1-gavrosc.ref@yahoo.com>
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 17 May 2025 14:48:58 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6833
+ <docs@lists.yoctoproject.org>; Sat, 17 May 2025 14:50:28 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6834
 
 This variable specifies the maximum allowed size
-of the generated image in kilobytes.
+of the initramfs image in kilobytes.
+Fixes [YOCTO #15797]
 
 CC: Yoann Congal <yoann.congal@smile.fr>
 CC: Randy MacLeod <randy.macleod@windriver.com>
@@ -77,50 +78,40 @@ CC: Antonin Godard <antonin.godard@bootlin.com>
 CC: Quentin Schulz <quentin.schulz@cherry.de>
 Signed-off-by: Christos Gavros <gavrosc@yahoo.com>
 ---
- documentation/ref-manual/variables.rst | 30 +++++++++++++++++++++++---
- 1 file changed, 27 insertions(+), 3 deletions(-)
+v2->v3
+* the text is wrapped in less than 80 characters
+* the syntax for hyperinks is used for variables
+* the syntax for path of bitbake.conf is changed
+* the calculation steps are moved in IMAGE_ROOTFS_MAXSIZE variable
+---
+ documentation/ref-manual/variables.rst | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
 diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index d17f81036..75c74bc0e 100644
+index d17f81036..33934c8ff 100644
 --- a/documentation/ref-manual/variables.rst
 +++ b/documentation/ref-manual/variables.rst
-@@ -4299,9 +4299,33 @@ system and gives an overview of their function and contents.
-          IMAGE_ROOTFS_EXTRA_SPACE = "41943040"
+@@ -4708,6 +4708,20 @@ system and gives an overview of their function and contents.
+       See the :term:`MACHINE` variable for additional
+       information.
  
-    :term:`IMAGE_ROOTFS_MAXSIZE`
--      Defines the maximum size in Kbytes for the generated image. If the
--      generated image size is above that, the build will fail. It's a good
--      idea to set this variable for images that need to fit on a limited
-+      Defines the maximum allowed size of the generated image in kilobytes.
-+      The build will fail if the generated image size exceeds this value.
++   :term:`INITRAMFS_MAXSIZE`
++      Defines the maximum allowed size of the initramfs image in kilobytes.
++      The build will fail if the initramfs image size exceeds this value.
 +
-+      The generated image size undergoes several calculation steps before being
-+      compared to :term:`IMAGE_ROOTFS_MAXSIZE`.
-+      In the first step, the size of the directory pointed to by :term:`IMAGE_ROOTFS`
-+      is calculated.
-+      In the second step, the result from the first step is multiplied
-+      by :term:`IMAGE_OVERHEAD_FACTOR`.
-+      In the third step, the result from the second step is compared with
-+      :term:`IMAGE_ROOTFS_SIZE`. The larger value of these is added to
-+      :term:`IMAGE_ROOTFS_EXTRA_SPACE`.
-+      In the fourth step, the result from the third step is checked for
-+      a decimal part. If it has one, it is rounded up to the next integer.
-+      If it does not, it is simply converted into an integer.
-+      In the fifth step, the :term:`IMAGE_ROOTFS_ALIGNMENT` is added to the result
-+      from the fourth step and "1" is subtracted.
-+      In the sixth step, the remainder of the division between the result
-+      from the fifth step and :term:`IMAGE_ROOTFS_ALIGNMENT` is subtracted from the
-+      result of the fifth step. In this way, the result from the fourth step is
-+      rounded up to the nearest multiple of :term:`IMAGE_ROOTFS_ALIGNMENT`.
++      The initramfs image size undergoes several calculation steps before being
++      compared to :term:`INITRAMFS_MAXSIZE`.
++      These steps are the same as those used for :term:`IMAGE_ROOTFS_MAXSIZE`
++      and are described in detail in that entry.
 +
-+      Thus, if the :term:`IMAGE_ROOTFS_MAXSIZE` is set, is compared with the result
-+      of the above calculations and is independent of the final image type.
-+      No default value is set for :term:`IMAGE_ROOTFS_MAXSIZE`.
++      Thus, :term:`INITRAMFS_MAXSIZE` is compared with the result of the calculations
++      and is independent of the final image type.
++      A default value for :term:`INITRAMFS_MAXSIZE` is set in
++      :oe_git:`meta/conf/bitbake.conf </openembedded-core/tree/meta/conf/bitbake.conf>`.
 +
-+      It's a good idea to set this variable for images that need to fit on a limited
-       space (e.g. SD card, a fixed-size partition, ...).
- 
-    :term:`IMAGE_ROOTFS_SIZE`
+    :term:`INITRAMFS_MULTICONFIG`
+       Defines the multiconfig to create a multiconfig dependency to be used by
+       the :ref:`ref-classes-kernel` class.
 -- 
 2.34.1
 
