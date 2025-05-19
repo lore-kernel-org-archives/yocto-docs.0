@@ -1,135 +1,103 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <alperyasinak1@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 62AC7C2D0CD
-	for <webhook@archiver.kernel.org>; Mon, 19 May 2025 08:51:22 +0000 (UTC)
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
- by mx.groups.io with SMTP id smtpd.web10.46740.1747644675586462236
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D56F9C2D0CD
+	for <webhook@archiver.kernel.org>; Mon, 19 May 2025 10:05:52 +0000 (UTC)
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+ by mx.groups.io with SMTP id smtpd.web10.47822.1747649151397600748
  for <docs@lists.yoctoproject.org>;
- Mon, 19 May 2025 01:51:16 -0700
+ Mon, 19 May 2025 03:05:51 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Ka7KgI/k;
- spf=pass (domain: bootlin.com, ip: 217.70.183.193, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id DE31A43301;
-	Mon, 19 May 2025 08:51:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747644673;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Gicw+EPdd0yXNCtIp/2k/zljCXYAmgZFQqQAzudaIKw=;
-	b=Ka7KgI/k41DBoqtLRRhgf/TOTHg5bUo11XR3pyyx2gerJlU8b/PFVb4kH2vXCbe4ZNTBy8
-	E0Bzk7xuJcpviyGtb3uLETx8VSUmYjQsvfyhmovp9qkWZBLPsJgff/lubkRMp1Hld+Wsu5
-	vrot7N9bDnOJ1Grj6e964cDinXwbgeUSNjDyCyxpMhUsbry39tqJrWj3NHNWCbRF9lZYkc
-	m0NPURLZ1i5y7BsfLQM/mNYyQSW1zhQWEtTAaz82HCwAnap8ZEm2ec6DvFM6alC+T9vHR2
-	Lnn2whrXIoA7UsNBA0+DDs/OyCr6VEgazD+s1zeE4lxzfWywutwWjnArIptxVw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 May 2025 10:51:12 +0200
-Message-Id: <DA00BYY3P9AL.3HV8STH1PXTJA@bootlin.com>
-Subject: Re: [OE-core] [PATCH v3 22/22] release-notes: drop references to
- kernel-fitimage.bbclass
-Cc: <marex@denx.de>, "docs" <docs@lists.yoctoproject.org>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <quentin.schulz@cherry.de>, <adrian.freihofer@siemens.com>,
- <openembedded-core@lists.openembedded.org>
-References: <20250514185225.162998-1-adrian.freihofer@siemens.com>
- <20250514185225.162998-23-adrian.freihofer@siemens.com>
- <22cdbc6e-7b9f-4f46-b000-39ea4867457b@cherry.de>
-In-Reply-To: <22cdbc6e-7b9f-4f46-b000-39ea4867457b@cherry.de>
-X-GND-State: clean
-X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefvddtleehucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuvefhvfhfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffkeehtdefvdeuveegfeffhfdvgeevgeeugfegudfhhfefkedvheekfeeujeevleenucffohhmrghinhepohhpvghnvghmsggvugguvggurdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefhedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeehpdhrtghpthhtohepqhhuvghnthhinhdrshgthhhulhiisegthhgvrhhrhidruggvpdhrtghpthhtoheprggurhhirghnrdhfrhgvihhhohhfvghrsehsihgvmhgvnhhsrdgtohhmpdhrtghpthhtohepohhpvghnv
- ghmsggvugguvgguqdgtohhrvgeslhhishhtshdrohhpvghnvghmsggvugguvggurdhorhhgpdhrtghpthhtohepmhgrrhgvgiesuggvnhigrdguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
-X-GND-Sasl: antonin.godard@bootlin.com
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=nM6R24V1;
+ spf=pass (domain: gmail.com, ip: 209.85.167.48, mailfrom: alperyasinak1@gmail.com)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-551f0072119so1114946e87.0
+        for <docs@lists.yoctoproject.org>; Mon, 19 May 2025 03:05:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747649149; x=1748253949; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Yz/69KI47wZN03KD/++yc81x1YkZGawSTWOW11IOYcY=;
+        b=nM6R24V1Szn+6zMpC7yAw3fenXHxSuvYV2lFxTwffvK7nlpfhWc+1W6tOkEm6Pj8ws
+         J4uEsINYm63LEB68eQg8/n/1SPRQJpHfFqdMoF6NyEF39ibxMjOlhKyo5o3xge92ibEs
+         xNM8dJrsdsW0MS/twtcxn0DF3K0Bf7Y929KxamGAxgGhmecy3E94IX8E2P2wjkm0W+Nc
+         gH88WqYhlxq4D7us+mlZyopqr5ZytTb9EhKmzp/jRGWqGmj2tlo4IkbDC9YtE88Tis7v
+         qn8i2BdOznzbDNVEAxXNX5cSDqjwF12a8vj1dBsp78DRGrnTB0tczDM+ZYRZKsSBqOZT
+         /SXQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747649149; x=1748253949;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Yz/69KI47wZN03KD/++yc81x1YkZGawSTWOW11IOYcY=;
+        b=WPeOyzbPAytdvVCGnLBUQgBsBotdHXemeecW/0au+efx7erQzJBe0Y2uUGVbuKXDbu
+         VzxCTCD1CWfV0ETDyhukgZTTohOT3F9DuoIAnLYWBVaaedVvsVjQiy9adV+THk2w+evZ
+         eGAtkpcSQ/2tGaVREPzVicNa5gBwGzpqkWuOtvZJlVhDBaGdQh5LSCDKeOFVA3LaQ3jf
+         z8Dppgmf0wig0W14T4JIpi0WadTeYuCeIDx8hlpfIj9JeBGk9153Ip4jEXzNC5gaFHFD
+         Dj1PnhmF6LutkcGcdzKVLDX9LybfWvJte+ME4ILTw2nZu9WRCBxlAfQqVlHedAgye5qo
+         yiFg==
+X-Gm-Message-State: AOJu0Ywsc72aedZIQW68oolbfN+NiuMFQGRD7xtrtd3j/Qfw0p1aH86g
+	nHVKXrUcDei8Rx4ubJ2k39s7Vx1FtqFoAwRkKilOEuAC9BrJOlRZBhvAIFjO1ll+
+X-Gm-Gg: ASbGnctwYBqTu4Z9EdoZF8J2SavTGjOyRpLEWxxTLL2PPTeahAawU0hLD16exGAPtwv
+	unday9bQnXj4B35jKVrUKp3WIk0TWsBbkBtNel4n0sheQvwdkynURBEFfiMhBw6Dn5+VxBqnTs+
+	aWPCRcrugC9D2LWYQ9+X1PHIhUlqfExRHWZv+Mq+N+OFoLdSAN44wrDGEkVbVd+ktudbonnJa8L
+	jwLcMUzOQsTuR9a26fMFLSTlVG7PSQEgwsubyHD09iCiXzm8Tp2Xr3Tk7+kXr79AdvH2aES2Vl/
+	QKtNgQ5nnz8JVKDtREN7VV0dQ/pQiZpEl9WL9Ndg0DSGjsn3AUXPFPRFg2HsLWFW1QU3
+X-Google-Smtp-Source: AGHT+IHJKpKh3n6CfjDovQrKi5xbd84DEYKUEIa7VJBtC2zC3brSJ5Rm9k5agccx95xDXFFTyuWRwA==
+X-Received: by 2002:a05:6512:660e:b0:54a:c4af:15 with SMTP id 2adb3069b0e04-550e7506c32mr2977352e87.19.1747649148865;
+        Mon, 19 May 2025 03:05:48 -0700 (PDT)
+Received: from localhost.localdomain ([176.33.69.152])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-550e6f1640esm1784204e87.40.2025.05.19.03.05.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 May 2025 03:05:46 -0700 (PDT)
+From: Alper Ak <alperyasinak1@gmail.com>
+To: docs@lists.yoctoproject.org
+Cc: Alper Ak <alperyasinak1@gmail.com>
+Subject: [PATCH v2] ref-manual/variables.rst: document INHIBIT_AUTOTOOLS_DEPS
+Date: Mon, 19 May 2025 13:05:34 +0300
+Message-ID: <20250519100534.44168-1-alperyasinak1@gmail.com>
+X-Mailer: git-send-email 2.43.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Mon, 19 May 2025 08:51:22 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6837
+ <docs@lists.yoctoproject.org>; Mon, 19 May 2025 10:05:52 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6838
 
-On Thu May 15, 2025 at 3:06 PM CEST, Quentin Schulz via lists.openembedded.=
-org wrote:
-> This needs to go through yocto-docs ML and git repo.
->
-> Cc docs
->
-> On 5/14/25 8:51 PM, Adrian Freihofer via lists.openembedded.org wrote:
->> From: Adrian Freihofer <adrian.freihofer@siemens.com>
->>=20
->> This commit drops references to the kernel-fitimage.bbclass to prevent
->> from build errors when the label is no longer available.
->>=20
->> Signed-off-by: Adrian Freihofer <adrian.freihofer@siemens.com>
->> ---
->>   documentation/migration-guides/release-notes-5.1.rst | 2 +-
->>   documentation/migration-guides/release-notes-5.2.rst | 4 ++--
->>   2 files changed, 3 insertions(+), 3 deletions(-)
->>=20
->> diff --git a/documentation/migration-guides/release-notes-5.1.rst b/docu=
-mentation/migration-guides/release-notes-5.1.rst
->> index 267934a71ed..bab0c145814 100644
->> --- a/documentation/migration-guides/release-notes-5.1.rst
->> +++ b/documentation/migration-guides/release-notes-5.1.rst
->> @@ -377,7 +377,7 @@ New Features / Enhancements in 5.1
->>         :term:`SIGGEN_EXCLUDERECIPES_ABISAFE` and does not trigger a reb=
-uild on a
->>         change for dependent tasks.
->>  =20
->> -   -  In :ref:`ref-classes-kernel-fitimage`, the existence of
->> +   -  In ``kernel-fitimage``, the existence of
->>         :term:`EXTERNAL_KERNEL_DEVICETREE` is checked more thoroughly to=
- avoid
->>         false positives.
->>  =20
->> diff --git a/documentation/migration-guides/release-notes-5.2.rst b/docu=
-mentation/migration-guides/release-notes-5.2.rst
->> index dd541a7e3a4..42c6d60f9b8 100644
->> --- a/documentation/migration-guides/release-notes-5.2.rst
->> +++ b/documentation/migration-guides/release-notes-5.2.rst
->> @@ -29,7 +29,7 @@ New Features / Enhancements in |yocto-ver|
->>         ``RuntimeWatchdogSec`` option in ``/etc/systemd/system.conf``.
->>  =20
->>      -  :term:`FIT_UBOOT_ENV` to allow including a u-boot script as a te=
-xt in a
->> -      fit image. See the :ref:`ref-classes-kernel-fitimage` for more in=
-formation.
->> +      fit image. See the ``kernel-fitimage`` for more information.
->>  =20
->>      -  :ref:`ref-classes-meson`: :term:`MESON_INSTALL_TAGS` to allow pa=
-ssing
->>         install tags (``--tags``) to the ``meson install`` command durin=
-g the
->> @@ -684,7 +684,7 @@ New Features / Enhancements in |yocto-ver|
->>         command-line tool was added to the different Yocto Project and O=
-penEmbedded
->>         repositories.
->>  =20
->> -   -  :ref:`ref-classes-kernel-fitimage`: handle :doc:`multiconfig
->> +   -  ``kernel-fitimage``: handle :doc:`multiconfig
->>         </dev-manual/multiconfig>` dependency when
->>         :term:`INITRAMFS_MULTICONFIG` is set.
->>  =20
->
-> Please write some word for the migration manual to 5.3 (Antonin, can you=
-=20
-> add some placeholder like we did for 5.2?) so people know how to go from=
-=20
-> 5.2 kernel fitimage creation to 5.3+ kernel fitimage creation.
+Fix [YOCTO #15756]
 
-These are in master-next on yocto-docs at the moment. They'll be merged soo=
-n
-but in the meantime checkout from the master-next branch.
+Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
+---
+ documentation/ref-manual/variables.rst | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Thanks,
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
+index 643a3e7ae..1a3c52045 100644
+--- a/documentation/ref-manual/variables.rst
++++ b/documentation/ref-manual/variables.rst
+@@ -4487,6 +4487,20 @@ system and gives an overview of their function and contents.
+ 
+          INHERIT_DISTRO ?= "debian devshell sstate license remove-libtool create-spdx"
+ 
++   :term:`INHIBIT_AUTOTOOLS_DEPS`
++      Prevents the :ref:`ref-classes-autotools` class from automatically adding its default build-time dependencies.
++
++      When a recipe inherits the :ref:`ref-classes-autotools` class, several native cross tools such as
++      ``autoconf-native``, ``automake-native``, ``libtool-native``, ``libtool-cross``
++      are added to :term:`DEPENDS` to support the autotools build process.
++
++      To prevent the build system from adding these dependencies automatically, set the
++      :term:`INHIBIT_AUTOTOOLS_DEPS` variable as follows::
++
++         INHIBIT_AUTOTOOLS_DEPS = "1"
++
++      By default, the value of :term:`INHIBIT_AUTOTOOLS_DEPS` is empty.
++
+    :term:`INHIBIT_DEFAULT_DEPS`
+       Prevents the default dependencies, namely the C compiler and standard
+       C library (libc), from being added to :term:`DEPENDS`.
+-- 
+2.43.0
 
 
