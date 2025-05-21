@@ -1,106 +1,121 @@
-Return-Path: <alperyasinak1@gmail.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 80900C2D0CD
-	for <webhook@archiver.kernel.org>; Wed, 21 May 2025 10:16:57 +0000 (UTC)
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
- by mx.groups.io with SMTP id smtpd.web11.7840.1747822607722989280
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 71610C2D0CD
+	for <webhook@archiver.kernel.org>; Wed, 21 May 2025 10:22:47 +0000 (UTC)
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+ by mx.groups.io with SMTP id smtpd.web11.7948.1747822960871873406
  for <docs@lists.yoctoproject.org>;
- Wed, 21 May 2025 03:16:48 -0700
+ Wed, 21 May 2025 03:22:41 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=V/ciJDqS;
- spf=pass (domain: gmail.com, ip: 209.85.208.171, mailfrom: alperyasinak1@gmail.com)
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-30db1bd3bddso60541081fa.3
-        for <docs@lists.yoctoproject.org>; Wed, 21 May 2025 03:16:47 -0700 (PDT)
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=HXH1rxPr;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.46, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-445b11306abso24003545e9.3
+        for <docs@lists.yoctoproject.org>; Wed, 21 May 2025 03:22:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747822605; x=1748427405; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Evj3lOm29Wv3hU2ZsdWVyHQ2OhX/Y3JOsFgcFlO1uNM=;
-        b=V/ciJDqSV7+zrRKTM0CxQS48FgZ7ldAbIVohXMiAhCbvhbJqKGm404A8ZETlKbKttK
-         bnacGvm2KUfasCJPiM/vcyLRWZDKkuttogKtE28Cpwn4Z3I1MpiR/zOTmtzgisekX1CP
-         KMiwv2Xy7EM0iCNjKan8eB76hoTY7bqMeLvp+M+eTkvyECsiQkPYiN+HH7EJEAu/XaMa
-         SP3pnyeHJXI8Jekl1W/e5kITSeVwIKBb3r+4MM76wEfJVX0q+f/L6sNJY/0lTOy0eeC4
-         FWpr7p6RI7BGoIa7Sdt8DUs9CAnBOy/4hPcvkW9XDAlFoFiJ/gdnxPut+Mlm5wv80Tfn
-         kw9A==
+        d=linuxfoundation.org; s=google; t=1747822959; x=1748427759; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fr0qgxFtgANCgJz6YuSJ5X2seDhaVg65bi9vHc4T0yA=;
+        b=HXH1rxPrPCAnb18z01Ewh30lOMEUkpBGrUFiGQNDHMzAsA4YxeeMOgbzkZIlPDZaYK
+         Phuwwrinw9MUpPgK1SQzj91YTRpcCUY4zrUYedqE+b6GedWVEZedQ2Rstf2Hcf70PrxS
+         faPpFc/0ZBUMWSQJrZsUIt7Ea020r2vd6ov6Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747822605; x=1748427405;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Evj3lOm29Wv3hU2ZsdWVyHQ2OhX/Y3JOsFgcFlO1uNM=;
-        b=RZlpXN6397V0j94vjvGxiRpG2M80uwLAkHX8bHKziCoBMWHS/fVQ6FL//0+Nwdk/Rq
-         65aKukW+6tG1KoVJT+Hl5hYz9FUZj5JasUkqbx8DUTprj1WAaknHFg5iX8gwW98pOTDQ
-         I+eweAPo23Cvs+VS6yQUKLDJC1k2DOcn/P6USawHiDdFNi/N8EQ716GTeNMdITnbw/gN
-         vQ0jpzoSC8Vm58lATVjIIg6Ewv+Phmo6U0WZeX2p8cSuX/0oVrpolzf/b1HrqWWYxhoM
-         U8S3vukDHHOWtCu1g4U4BJ82BdEo+kBXKK/lprVY1Ba+EZOedzyzIZT8r1l9ExnoAKf1
-         FBWw==
-X-Gm-Message-State: AOJu0YweqDjUaH3ISC0oYk4r21FqjithPPz5O9kE1hybsomjUKOe+JSl
-	aXHaKntHaEjPO2tn3CB3JD4LpijTwOfc1WD3nXTdFUEJW27r7wa630erKnQcSs2x
-X-Gm-Gg: ASbGnctp/uN7kzfz0np4I6QAbuKMfWR7Nx3dh0yktSmKxPme/iJmDP4r5xyOBxXMtWO
-	BVist/0bkgBB+imIRzdfT3OjXQXviSZz5/1eeuk/ztkvpcZDNUjqsnUTA8G887h/XvL/ImbNSMG
-	bRS+PWmQ/m62gtqk4oQ7K4BRHGOQrWShIGk5olWf5exCQc3rd5qQQX6JbC0ntQ+zfVR+nov2vDj
-	A6WK1MBQTv94ZtLOUsI1dLMH3hCc2bjVm4nAo4VoVjBbycjGYla0NwJTruWfZufK5Om1liHw+vV
-	ZkZWK9yzciySttmeJpQUV+0LO0CZK6/cTINOAlQSUkLXY+lCnHTUS6LEc9Zcy6wZ81VN
-X-Google-Smtp-Source: AGHT+IENO/xp4wMrs6FGnvH545fso7wWQ02DfE+zGzst4L7NCUJY9azVIwBK7QXeerMilRycbhyfJw==
-X-Received: by 2002:a05:651c:4087:b0:329:799:5eb8 with SMTP id 38308e7fff4ca-32907995f3dmr39863281fa.36.1747822604969;
-        Wed, 21 May 2025 03:16:44 -0700 (PDT)
-Received: from localhost.localdomain ([176.33.69.152])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-328084ca1fesm28725701fa.31.2025.05.21.03.16.43
+        d=1e100.net; s=20230601; t=1747822959; x=1748427759;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fr0qgxFtgANCgJz6YuSJ5X2seDhaVg65bi9vHc4T0yA=;
+        b=bf4LSAELKy5z6IMEvIY++UIwUQD8bOBLI7RhhcB4JvDmIT/4iRxzkS54LtgR9SnX2c
+         BAub0AJ/qB/RIKYSVdcQlH8B5Sbg7jLAwegc8gFO9YtJNtdMdZw113w71XZlm27bQXpC
+         gpsrMLwULZGEzFcjRFOdzeLmt0gs442/VoVENTp40JLmSkUwjWkhiF9wMWwA0AmqQbEi
+         H0UVW1Q8jlCXxnGZwML+ZwhA+t+jNVriJgLUb19XOfpj3gOJmm+NbHdYMW/IW9zZr2gN
+         hk+5/jwI/xOPtpCqhLs9rHCwW2eXblKiIGVm9Rvhp+EM5s6F8eVV2/XgPlRj614ZxDaP
+         uIeA==
+X-Gm-Message-State: AOJu0YwexjLBbO68V0XSS3WZTQtjHcv3WawiWHfAGLQSZdMRdFJb2dw0
+	SEO/5KIpcAizMdJocHyZaNDhwp0F7A9/XX9Uxz3bAUSSfi/gg/xgx71Xin9ku+/84ek=
+X-Gm-Gg: ASbGnctsdfW0fCstn1+6kwDV4WS1cBzrTOemr7e+WwjNbZk2vZ9r+UCcX7RnS5hPHlg
+	ctbhNeK0bwh3HmR27/NUTvPufBOL97hE+rNyyv2jNIRQr3bZ8aIAhrvAWYcPpJFHhpnDkOQw1mt
+	zBWjKtIB1t2YJFi9dVCXKLxLRcBFnJ6WeRXnoV/eWwJxVYszbBGHg7eWdpI+/gmPOLHeBoxGXlC
+	VFg5ZUGGdHwr13SljhCJedYH1OKTt2Hw73omW9jDYk1ae4BaqAhtmxuK1EytKsgc12zdkIRHMNJ
+	cKz+wrTZaN3nRtkYwvjMJoPROW44L7842kOHLihZrcQHxurdDRhyEqD8jogZU5dfxSBit0+hVTc
+	U8b/aEaER5UWOVRbQbss6azUD1A2MiYfKdGmewR5K
+X-Google-Smtp-Source: AGHT+IH5fRtbxG5qDmROjyHBC+8DxQMjfIdy5IWHw3YMo13usNlX0NmGheRU8PuIsSjQO1FmvPo4Tg==
+X-Received: by 2002:a05:600c:c059:10b0:43c:f6c6:578c with SMTP id 5b1f17b1804b1-442ff571262mr123818355e9.15.1747822958568;
+        Wed, 21 May 2025 03:22:38 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:b5da:39cf:fb42:2a73? ([2001:8b0:aba:5f3c:b5da:39cf:fb42:2a73])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f78aef8asm65916035e9.29.2025.05.21.03.22.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 May 2025 03:16:44 -0700 (PDT)
-From: Alper Ak <alperyasinak1@gmail.com>
-To: docs@lists.yoctoproject.org
-Cc: Alper Ak <alperyasinak1@gmail.com>
-Subject: [PATCH] ref-manual/variables.rst: document INHIBIT_DEFAULT_RUST_DEPS
-Date: Wed, 21 May 2025 13:16:29 +0300
-Message-ID: <20250521101629.38006-1-alperyasinak1@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Wed, 21 May 2025 03:22:37 -0700 (PDT)
+Message-ID: <e8c25ab66dd3f0c393c727b6eacc1301f51e23df.camel@linuxfoundation.org>
+Subject: Re: [PATCH 1/1] fetch2: Ensure a valid symlink in `PREMIRRORS` case
+ when using shallow cloning
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: Stefan Koch <stefan-koch@siemens.com>, 
+	bitbake-devel@lists.openembedded.org
+Cc: docs@lists.yoctoproject.org, liezhi.yang@windriver.com, 
+	niqingliang2003@gmail.com, alex.kanavin@gmail.com,
+ quentin.schulz@cherry.de, 	simon.sudler@siemens.com, jan.kiszka@siemens.com
+Date: Wed, 21 May 2025 11:22:36 +0100
+In-Reply-To: <20250521091153.2445853-2-stefan-koch@siemens.com>
+References: <20250521091153.2445853-1-stefan-koch@siemens.com>
+	 <20250521091153.2445853-2-stefan-koch@siemens.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.0-1 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Wed, 21 May 2025 10:16:57 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6859
+ <docs@lists.yoctoproject.org>; Wed, 21 May 2025 10:22:47 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6860
 
-Fix [YOCTO #15755]
+On Wed, 2025-05-21 at 11:11 +0200, Stefan Koch wrote:
+> - Since `ud.path` contains in that case the `PREMIRRORS` prefix path,
+> =C2=A0 this change ensures that a correct symlink is set up.
+>=20
+> Signed-off-by: Stefan Koch <stefan-koch@siemens.com>
+> ---
+> =C2=A0lib/bb/fetch2/__init__.py | 5 +++++
+> =C2=A01 file changed, 5 insertions(+)
+>=20
+> diff --git a/lib/bb/fetch2/__init__.py b/lib/bb/fetch2/__init__.py
+> index 2de4f4f8c..7459adb00 100644
+> --- a/lib/bb/fetch2/__init__.py
+> +++ b/lib/bb/fetch2/__init__.py
+> @@ -1117,7 +1117,12 @@ def try_mirror_url(fetch, origud, ud, ld,
+> check =3D False):
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 origud.method.build_mirror=
+_data(origud, ld)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+return origud.localpath
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # Otherwise the result i=
+s a local file:// and we symlink to
+> it
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # This could also be a link t=
+o a shallow archive
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ensure_symlink(ud.localp=
+ath, origud.localpath)
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # When using shallow mode, ad=
+d a symlink to the original
+> fullshallow
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 # path to ensure a valid syml=
+ink even in the `PREMIRRORS`
+> case
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if ud.shallow and not os.path=
+.exists(origud.fullshallow):
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ensur=
+e_symlink(ud.localpath, origud.fullshallow)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 update_stamp(origud, ld)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return ud.localpath
 
-Signed-off-by: Alper Ak <alperyasinak1@gmail.com>
----
- documentation/ref-manual/variables.rst | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+FWIW this looks/sounds like the right fix to me. Is there a test case
+we should add?
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 643a3e7ae..d74ad508c 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -4496,6 +4496,23 @@ system and gives an overview of their function and contents.
-       Set the variable to "1" to prevent the default dependencies from
-       being added.
- 
-+   :term:`INHIBIT_DEFAULT_RUST_DEPS`
-+      Prevents the :ref:`ref-classes-rust` class from automatically adding
-+      its default build-time dependencies.
-+
-+      When a recipe inherits the :ref:`ref-classes-rust` class, several
-+      tools such as ``rust-native`` and ``${RUSTLIB_DEP}`` (only added when cross-compiling) are added
-+      to :term:`DEPENDS` to support the ``rust`` build process.
-+
-+      To prevent the build system from adding these dependencies automatically,
-+      set the :term:`INHIBIT_DEFAULT_RUST_DEPS` variable as follows::
-+
-+         INHIBIT_DEFAULT_RUST_DEPS = "1"
-+
-+      By default, the value of :term:`INHIBIT_DEFAULT_RUST_DEPS` is empty. Setting
-+      it to "0" does not disable inhibition. Only the empty string will disable
-+      inhibition.
-+
-    :term:`INHIBIT_PACKAGE_DEBUG_SPLIT`
-       Prevents the OpenEmbedded build system from splitting out debug
-       information during packaging. By default, the build system splits out
--- 
-2.43.0
+Cheers,
 
+Richard
 
