@@ -2,125 +2,98 @@ Return-Path: <antonin.godard@bootlin.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A7281C54E90
-	for <webhook@archiver.kernel.org>; Thu, 22 May 2025 09:35:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 80487C54E65
+	for <webhook@archiver.kernel.org>; Thu, 22 May 2025 09:39:48 +0000 (UTC)
 Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
- by mx.groups.io with SMTP id smtpd.web10.19974.1747906494808546113
+ by mx.groups.io with SMTP id smtpd.web11.20256.1747906784233482167
  for <docs@lists.yoctoproject.org>;
- Thu, 22 May 2025 02:34:55 -0700
+ Thu, 22 May 2025 02:39:44 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=Rtolg3hY;
+ dkim=pass header.i=@bootlin.com header.s=gm1 header.b=eBhK/vIx;
  spf=pass (domain: bootlin.com, ip: 217.70.183.200, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id C9AD643201;
-	Thu, 22 May 2025 09:34:52 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CE84243229;
+	Thu, 22 May 2025 09:39:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747906493;
+	t=1747906782;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q6Dmp3KvaN2Rg7bGe1WYgtEtFveNjX9wZGm+70UYgxU=;
-	b=Rtolg3hYiCFJ1ZQH7STwbz1pVjdvt+Pi8TxxpVayZ+BSwS/7dm7KyhePrAvMQUchaO2NR9
-	FNg8M/Cz8AuD9V/bDTemDb7CQ19lTL91mg3MG75wSyvXXyGeyK4/YkyDJuo8b32+ELHyGW
-	tsNfFPC5GBaW8axvqBCLBcOrJ2AIGOkGAC6sUBV/QID6sejBC50/MJAPhrSmn5WWFo7xPm
-	Nsj4mP1aeTQeFCgkwR3b9Fa/sLv0k15QZlJiYWPDvuTq7eN4PfEbX0L8ngGCw8MzI+2m77
-	Ks0/ZCVmhvkNke/A7+5FhdF4DJo+vdivHsNZkwLvPjhA4EBdpZk/0aW7VL+IIQ==
+	bh=63/JanNzLwotTbyyg1DKetzqUWLRdihjQj65V06XfWU=;
+	b=eBhK/vIxc4qL7d8yi+p216GRQWnUzJ4K4odLS8pgFdXBy2XW3aXy/9tR2bjq6HG5EZiQCJ
+	CF3YBSjHE++D1gJFfj+KcygkAKmo/YKC7zRi/hhlHgV3AgwXJ4O6QAsuSzg7rIyg4KsCRC
+	tncVbrMOKXHFRooX486sOQgWDLx/z6j1g2lp/BZl+IkdrATnfSrcjUWsARBpk+77L/cgg9
+	BaOTxZH0AtqM6+Xb/n+RreX84X23fyaljHWDLwECf/liLXVx62OW0SfC+c7CzfW8eQi+Xm
+	wHDK5r/KQnH2uwxvqb/4T+rEmBKJ2A0TGWy4I0Unqyx3GE1MgZZi2jzRKfZhAw==
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 22 May 2025 11:34:52 +0200
-Message-Id: <DA2L51D2Z4RJ.2MJEUG0QTSSXN@bootlin.com>
-Subject: Re: [docs] [PATCH v1] ref-manual: uboot-sign: Support firmware
- property in FIT config
-Cc: <troy_lee@aspeedtech.com>
+Date: Thu, 22 May 2025 11:39:42 +0200
+Message-Id: <DA2L8QNZB47I.27YDS1YIT9KMZ@bootlin.com>
+Subject: Re: [docs] [PATCH] ref-manual/variables.rst: document
+ SSTATE_SKIP_CREATION
 From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: <jamin_lin@aspeedtech.com>, <docs@lists.yoctoproject.org>
-References: <20250520095457.3642012-1-jamin_lin@aspeedtech.com>
-In-Reply-To: <20250520095457.3642012-1-jamin_lin@aspeedtech.com>
+To: <ecordonnier@snap.com>, <docs@lists.yoctoproject.org>
+References: <20250520123955.2341427-1-ecordonnier@snap.com>
+In-Reply-To: <20250520123955.2341427-1-ecordonnier@snap.com>
 X-GND-State: clean
 X-GND-Score: 0
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdehiedvucdltddurdegfedvrddttddmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuvefhvfhfjgesthhqredttddtjeenucfhrhhomhepfdetnhhtohhnihhnucfiohgurghrugdfuceorghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeffgfekieeufeeiveekkeevjeetveelkeejiefgfeeihfeghfeghfduvdejuddvvdenucffohhmrghinhephihotghtohhprhhojhgvtghtrdhorhhgpdgsohhothhlihhnrdgtohhmnecukfhppedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefhedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomheprghnthhonhhinhdrghhouggrrhgusegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeefpdhrtghpthhtohepjhgrmhhinhgplhhinhesrghsphgvvgguthgvtghhrdgtohhmpdhrtghpthhtohepughotghssehlihhsthhsrdihohgtthhophhrohhjvggtthdrohhrghdprhgtp
- hhtthhopehtrhhohigplhgvvgesrghsphgvvgguthgvtghhrdgtohhm
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdehieefucdltddurdegfedvrddttddmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecunecujfgurhepggfgtgffkffuhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnheptddtudfggfelvdejiefhgeevvddutdeggeegjeffhfdtkedtvdeiuefgvedtuedunecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepvddprhgtphhtthhopegvtghorhguohhnnhhivghrsehsnhgrphdrtghomhdprhgtphhtthhopeguohgtsheslhhishhtshdrhihotghtohhprhhojhgvtghtrdhorhhg
 X-GND-Sasl: antonin.godard@bootlin.com
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 22 May 2025 09:35:18 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6873
+ <docs@lists.yoctoproject.org>; Thu, 22 May 2025 09:39:48 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6874
 
 Hi,
 
-On Tue May 20, 2025 at 11:54 AM CEST, Jamin Lin via lists.yoctoproject.org =
-wrote:
-> Add documentation for the UBOOT_FIT_CONF_FIRMWARE variable, which allows
-> users to specify an image to be assigned to the "firmware" property of
-> the FIT configuration node. This explicitly defines the primary image
-> to boot, instead of relying on the first entry in the "loadables" list.
+Some suggestions and formatting related suggestions below.
+
+On Tue May 20, 2025 at 2:39 PM CEST, Etienne Cordonnier via lists.yoctoproj=
+ect.org wrote:
+> From: Etienne Cordonnier <ecordonnier@snap.com>
 >
-> Signed-off-by: Jamin Lin <jamin_lin@aspeedtech.com>
+> Signed-off-by: Etienne Cordonnier <ecordonnier@snap.com>
 > ---
->  documentation/ref-manual/classes.rst   | 2 ++
->  documentation/ref-manual/variables.rst | 8 ++++++++
->  2 files changed, 10 insertions(+)
+>  documentation/ref-manual/variables.rst | 6 ++++++
+>  1 file changed, 6 insertions(+)
 >
-> diff --git a/documentation/ref-manual/classes.rst b/documentation/ref-man=
-ual/classes.rst
-> index 5187033f7..54a98bf24 100644
-> --- a/documentation/ref-manual/classes.rst
-> +++ b/documentation/ref-manual/classes.rst
-> @@ -3426,6 +3426,8 @@ The variables used by this class are:
->  -  :term:`UBOOT_FIT_USER_SETTINGS`: adds a user-specific snippet to the =
-U-Boot
->     Image Tree Source (ITS). Users can include their custom U-Boot Image =
-Tree
->     Source (ITS) snippet in this variable.
-> +-  :term:`UBOOT_FIT_CONF_FIRMWARE`: adds one image to the ``firmware`` p=
-roperty
-> +   of the configuration node.
->  -  :term:`UBOOT_FIT_CONF_USER_LOADABLES`: adds one or more user-defined =
-images
->     to the ``loadables`` property of the configuration node.
-> =20
 > diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-m=
 anual/variables.rst
-> index 643a3e7ae..b430fa51f 100644
+> index 643a3e7ae..7d8e257b9 100644
 > --- a/documentation/ref-manual/variables.rst
 > +++ b/documentation/ref-manual/variables.rst
-> @@ -10327,6 +10327,14 @@ system and gives an overview of their function a=
-nd contents.
+> @@ -9049,6 +9049,12 @@ system and gives an overview of their function and=
+ contents.
 > =20
->           do_compile[depends] +=3D "trusted-firmware-a:do_deploy"
+>        For details on the process, see the :ref:`ref-classes-staging` cla=
+ss.
 > =20
-> +   :term:`UBOOT_FIT_CONF_FIRMWARE`
-> +      Adds one image to the ``firmware`` property of the configuration n=
-ode
-> +      of the U-Boot Image Tree Source (ITS). Sets the firmware property =
-to select
-> +      the image to boot first. If not set, the first entry in "loadables=
-" is used
-> +      instead.::
+> +   :term:`SSTATE_SKIP_CREATION`
+> +      SSTATE_SKIP_CREATION variable will be used to skip creation of
 
-Extra "." here.
+s/SSTATE_SKIP_CREATION/The :term:`SSTATE_SKIP_CREATION` variable/
+s/will be/can be/
+s/to skip creation/to skip the creation/
 
-When you write:
+> +      sstate tarball files. It makes sense e.g. for image creation tasks=
+ as
 
-"""
-The first entry in "loadables" is used instead
-"""
+s/sstate/:ref:`shared state <overview-manual/concepts:shared state cache>`/
 
-It's not really clear to me what it is used for.
-Used to boot?
+> +      tarring images and keeping them in sstate would consume a lot of
+> +      disk space.
 
-> +
-> +         UBOOT_FIT_CONF_FIRMWARE =3D "fwa"
-> +
->     :term:`UBOOT_FIT_CONF_USER_LOADABLES`
->        Adds one or more user-defined images to the ``loadables`` property=
- of the
->        configuration node of the U-Boot Image Tree Source (ITS). This var=
-iable
+An example would be nice, such as:
 
+   SSTATE_SKIP_CREATION:task-image-complete =3D "1"
 
+>     :term:`STAGING_BASE_LIBDIR_NATIVE`
+>        Specifies the path to the ``/lib`` subdirectory of the sysroot
+>        directory for the build host.
+
+Thanks,
 Antonin
 
 --=20
