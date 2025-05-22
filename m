@@ -1,177 +1,144 @@
-Return-Path: <antonin.godard@bootlin.com>
+Return-Path: <richard.purdie@linuxfoundation.org>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DA707C54E65
-	for <webhook@archiver.kernel.org>; Thu, 22 May 2025 09:51:28 +0000 (UTC)
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
- by mx.groups.io with SMTP id smtpd.web10.20203.1747907482757892770
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 0A848C54E65
+	for <webhook@archiver.kernel.org>; Thu, 22 May 2025 10:36:29 +0000 (UTC)
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+ by mx.groups.io with SMTP id smtpd.web11.21011.1747910182971004124
  for <docs@lists.yoctoproject.org>;
- Thu, 22 May 2025 02:51:23 -0700
+ Thu, 22 May 2025 03:36:23 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@bootlin.com header.s=gm1 header.b=WY7GhPC/;
- spf=pass (domain: bootlin.com, ip: 217.70.183.198, mailfrom: antonin.godard@bootlin.com)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BC57942E76;
-	Thu, 22 May 2025 09:51:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1747907481;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aaVThjtekUZyQqs5nfMiK5nD8tXux0Zy0pnmukeKacg=;
-	b=WY7GhPC/0n/dogbq4YPRkKQ/vgXCSf+4c5IX1MLhOEJ7P2SGqlevhimKhYh0InCl/0p0E8
-	tdEtkAdhZWpEZkU5FEGiimo4v8JlLZ/vPaVodJCkFNXpY9lkceCChu6/oytqCqcS3VMuiT
-	cjuf+Oyfqy3D/pvNPwaLZd2I4NbibEvV7uBpSc/Y1DZxfX4tVjOjem7a0FiMZsKp9MlwqY
-	AOBOWgLLLxyFwVsREHhkauasxyhqttPtcydM+pG9P0tfp5k8/oIoBdW1iXbV9WOj8ahkqQ
-	Mk9LbM4uT54rja0d+ENw/sN2Gd0K+gsIju3c4YBVW8Dq9V0PPxaiKZmwD/0CxQ==
-Mime-Version: 1.0
+ dkim=pass header.i=@linuxfoundation.org header.s=google header.b=RrWN2Oui;
+ spf=pass (domain: linuxfoundation.org, ip: 209.85.128.42, mailfrom: richard.purdie@linuxfoundation.org)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-442d146a1aaso77933045e9.1
+        for <docs@lists.yoctoproject.org>; Thu, 22 May 2025 03:36:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1747910181; x=1748514981; darn=lists.yoctoproject.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aTFzuzAoRW9V6IAGgeUYg9/aDNzsrfrhxBeOdg/bG8w=;
+        b=RrWN2Oui1cmjwZyiJmqejrfNCA1xULo6Euad1x3ePTIikQz1a/F9Y+3ZFAoDy+L8+u
+         zxieB7+gz/zp8h0EyK5sl9ZuE/hWWb286nC9Tx9+DgvxpdfuKbIabvKriMInHFJkCBew
+         RI1HJNYRYpOGqkMJcQ9/IqHMkYH5ZiXQV609Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747910181; x=1748514981;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aTFzuzAoRW9V6IAGgeUYg9/aDNzsrfrhxBeOdg/bG8w=;
+        b=lT6MDFuMg2+QG4pGQmkBikyedNYsniqsvqAHDwvlMoaCMxYnodT2KorHVny50w+Aum
+         72yJD4T9uFKhGse+qAiuphpjEv5qB9WQnRfJTNg3o+SkawFbiN78pfu+HG+rXBfzz+iT
+         7csuA9Cpw7cl3pgkSRlF2q3FJqBVsgypPz2WyG5jv9ON+vJ20jQGzbWTKCvy+HvWY299
+         +GovssRpD1MlRutSok8vnaQUs9Z1pUe89+MdP0ZdN1YVC3hqUZ1onkj8VKnAg8BHDQdR
+         4QelsSCXTLlg2wp9ubMRD+qvF/bcgKMr4dRtViJ+MnhPGR0gttyMQAnYJtFm7PiEEUsn
+         3ZmA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqO9CNQnuuUHcHrSIBTmrHHZEb6wsz9/vY5s3y6rnshJgvL/CTcDpf3QhAezpVz1GlJYiz@lists.yoctoproject.org
+X-Gm-Message-State: AOJu0YxgjsOFyeqRa+91wpbVbEEUBmY5Qa60uRFxsmtM7fQ4R9sJPdUn
+	sWelEPKy0iQLDWZrvFwbN/M2Ri22rDGPo/U8xt0JpzJi6pfjhNgc8bDcMUOTkg+iKvuopJpofFk
+	KuZRj
+X-Gm-Gg: ASbGncs++TRspwh+XslPKMFPqLqCU14YvDT34GC6e+ztE+CsAL7sh0lKBsXlfrUIEWz
+	YlWKOjEM16e3/Q4emhwpTN25wg+Qwu1HwhSalO/hxu2bN6noEuNO0jlmGgHpz5BMHZDmWaqD9vH
+	x+mcZsBG788r9X7K4zmJCc+8zoWByN+8gcjcoZUIukPEGVIENjXR944+/vEKr/hkHeoQpx+ZGm3
+	gYNTjeZWAA8wEKWv22PeGR+9gsMZPrlUxsds4VmN9XXoNt+cE6BssQ8ZhdeSRs/8Ka45ScXjsMV
+	l5Xe0zpJWR2gzeXJNa4elBq3pOZnlfj5lfihihbpaIe68GlQUw56DA9GNLQ/yrNxiv7Xf+vC87F
+	M3XKr+jrCFau+7HahPN3P9JYuWPLEqGRBsOjSwRR2
+X-Google-Smtp-Source: AGHT+IFY+GfuYSe+gbMnhxk2mV9nminZ+8cFhYjuPujSImtgtl+uXKTUXwD2YH50EfY+h82x72rNBw==
+X-Received: by 2002:a05:600c:1e1c:b0:43c:fffc:7855 with SMTP id 5b1f17b1804b1-442feffb6damr267699175e9.15.1747910181050;
+        Thu, 22 May 2025 03:36:21 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:f7cf:689b:6e57:f0de? ([2001:8b0:aba:5f3c:f7cf:689b:6e57:f0de])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f73d4a3csm102996615e9.22.2025.05.22.03.36.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 May 2025 03:36:20 -0700 (PDT)
+Message-ID: <50b432ab211b1634c09e693ea23dfec1872ca383.camel@linuxfoundation.org>
+Subject: Re: [docs] [PATCH] ref-manual/variables.rst: document
+ SSTATE_SKIP_CREATION
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: antonin.godard@bootlin.com, ecordonnier@snap.com, 
+	docs@lists.yoctoproject.org
+Date: Thu, 22 May 2025 11:36:19 +0100
+In-Reply-To: <DA2L8QNZB47I.27YDS1YIT9KMZ@bootlin.com>
+References: <20250520123955.2341427-1-ecordonnier@snap.com>
+	 <DA2L8QNZB47I.27YDS1YIT9KMZ@bootlin.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 22 May 2025 11:51:20 +0200
-Message-Id: <DA2LHN94PLKU.HE3O9BEEA64K@bootlin.com>
-Subject: Re: [docs] [PATCH 1/2] poky.yaml: introduce DISTRO_LATEST_TAG
-Cc: "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>
-From: "Antonin Godard" <antonin.godard@bootlin.com>
-To: "Quentin Schulz" <quentin.schulz@cherry.de>,
- <docs@lists.yoctoproject.org>
-References: <20250409-fix-distro-dead-links-v1-0-616b62185d04@bootlin.com>
- <20250409-fix-distro-dead-links-v1-1-616b62185d04@bootlin.com>
- <e2d275ee-5657-4dc5-a831-1edb565f85f3@cherry.de>
- <D97WADVD9D0D.3PPCH5GX3DOL0@bootlin.com>
- <0f03eef3-4de5-4276-b692-0fd18571ddbe@cherry.de>
- <D98QDOH9EM5M.2LNH55O8DZ8IC@bootlin.com>
- <62fb508b-741f-458b-ab7a-2ceed64a95be@cherry.de>
- <D9DWY617J6W5.1G9WMLH95TIIF@bootlin.com>
- <caeb301c-abfe-4220-b24b-1073f43efc3a@cherry.de>
- <D9UW30Q030G2.22VWR1SASAWG8@bootlin.com>
- <33eef3df-3f24-4b8e-be45-3552d43252af@cherry.de>
-In-Reply-To: <33eef3df-3f24-4b8e-be45-3552d43252af@cherry.de>
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddtgdehieehucdltddurdegfedvrddttddmucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpegggfgtfffkufevhffvfhgjsehtqhertddttdejnecuhfhrohhmpedftehnthhonhhinhcuifhouggrrhgufdcuoegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepfffgkeeiueefieevkeekveejteevleekjeeigfefiefhgefhgefhuddvjeduvddvnecuffhomhgrihhnpeihohgtthhophhrohhjvggtthdrohhrghdpsghoohhtlhhinhdrtghomhenucfkphepvdgrtddumegtsgdugeemheehieemjegrtddtmedujegtvdemfeekjegrmehfieehmeehvdefheenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpedvrgdtudemtggsudegmeehheeimeejrgdttdemudejtgdvmeefkeejrgemfheiheemhedvfeehpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpegrnhhtohhnihhnrdhgohgurghrugessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfedprhgtphhtthhopehquhgvnhhtihhnrdhstghhuhhliiestghhvghrrhihrdguvgdprhgtphhtthhopeguohgtsheslhhishhtshdrh
- ihotghtohhprhhojhgvtghtrdhorhhgpdhrtghpthhtohepthhhohhmrghsrdhpvghtrgiiiihonhhisegsohhothhlihhnrdgtohhm
-X-GND-Sasl: antonin.godard@bootlin.com
+User-Agent: Evolution 3.56.0-1 
+MIME-Version: 1.0
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Thu, 22 May 2025 09:51:28 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6876
+ <docs@lists.yoctoproject.org>; Thu, 22 May 2025 10:36:29 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6877
 
-On Thu May 15, 2025 at 9:50 AM CEST, Quentin Schulz wrote:
-> Hi Antonin,
->
-> On 5/13/25 10:28 AM, Antonin Godard wrote:
->> On Wed Apr 23, 2025 at 11:56 AM CEST, Quentin Schulz wrote:
->>> Hi Antonin,
->>>
->>> On 4/23/25 11:33 AM, Antonin Godard wrote:
->>> [...]
->>>>> I don't think we should be using &DISTRO; anymore? Most of the time w=
-e
->>>>> don't want to be printing .999 on the landing page of
->>>>> docs.yoctoproject.org! For the dev page, that's different.
->>>>
->>>> I would like to agree, but at the same time, wouldn't it be confusing =
-to have a
->>>> real tag (e.g. 5.1.8) when reading for the latest tip of the branch? I=
-t would be
->>>
->>> Does it matter? We should only be doing bug fixing and ideally without
->>> breaking backward compatibility in a given release branch.
->>> Again, the development (master) branch is a different story here.
->>>
->>>> somewhat accurate, but not _stricty_ accurate as to which version of t=
-he doc you
->>>> are actually reading (the latest tip).
->>>>
->>>
->>> The issue is that this tag simply doesn't exist so we should absolutely
->>> never use it when code is involved, as the instructions will simply not
->>> work.
->>=20
->> Right, so the code parts of the docs should be adapted to use DISTRO_LAT=
-EST_TAG,
->> but I still think using DISTRO in the textual parts is useful to disting=
-uish a
->> branch tip version of the docs and a tagged version of the docs.
->>=20
->
-> I don't see the benefit. But we can start by fixing the code blocks to=20
-> not use DISTRO and postpone the rest of the discussion for another time=
-=20
-> :) Progress is still progress even if it's not perfect now.
->
->>>> I'm trying to think of a way to make it clear that 999 represent the b=
-ranch's
->>>> tip.
->>>>
->>>
->>> I'm failing to see how it is relevant to the user that the docs are
->>> built from the branch's tip instead of the tag?
->>=20
->> There might be a reason that goes beyond my work on the docs, but it is =
-kind of
->> useful to me to monitor changes as we go, or just to provides up-to-date=
- links
->> to people.
->>=20
->> It is questionable that this should be the default landing page though.
->>=20
->
-> Ah, this I disagree with :) And I think this is the reason why we have=20
-> this in the first place.
+On Thu, 2025-05-22 at 11:39 +0200, Antonin Godard via lists.yoctoproject.or=
+g wrote:
+> Hi,
+>=20
+> Some suggestions and formatting related suggestions below.
+>=20
+> On Tue May 20, 2025 at 2:39 PM CEST, Etienne Cordonnier via lists.yoctopr=
+oject.org wrote:
+> > From: Etienne Cordonnier <ecordonnier@snap.com>
+> >=20
+> > Signed-off-by: Etienne Cordonnier <ecordonnier@snap.com>
+> > ---
+> > =C2=A0documentation/ref-manual/variables.rst | 6 ++++++
+> > =C2=A01 file changed, 6 insertions(+)
+> >=20
+> > diff --git a/documentation/ref-manual/variables.rst b/documentation/ref=
+-manual/variables.rst
+> > index 643a3e7ae..7d8e257b9 100644
+> > --- a/documentation/ref-manual/variables.rst
+> > +++ b/documentation/ref-manual/variables.rst
+> > @@ -9049,6 +9049,12 @@ system and gives an overview of their function a=
+nd contents.
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 For details on the process, see th=
+e :ref:`ref-classes-staging` class.
+> > =C2=A0
+> > +=C2=A0=C2=A0 :term:`SSTATE_SKIP_CREATION`
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 SSTATE_SKIP_CREATION variable will be u=
+sed to skip creation of
+>=20
+> s/SSTATE_SKIP_CREATION/The :term:`SSTATE_SKIP_CREATION` variable/
+> s/will be/can be/
+> s/to skip creation/to skip the creation/
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sstate tarball files. It makes sense e.=
+g. for image creation tasks as
+>=20
+> s/sstate/:ref:`shared state <overview-manual/concepts:shared state cache>=
+`/
+>=20
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tarring images and keeping them in ssta=
+te would consume a lot of
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 disk space.
+>=20
+> An example would be nice, such as:
+>=20
+> =C2=A0=C2=A0 SSTATE_SKIP_CREATION:task-image-complete =3D "1"
+>=20
+> > =C2=A0=C2=A0=C2=A0 :term:`STAGING_BASE_LIBDIR_NATIVE`
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Specifies the path to the ``/lib``=
+ subdirectory of the sysroot
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 directory for the build host.
 
-I think we agree actually, I also think it is a good default for the reason=
-s you
-stated below. Maybe I wasn't very clear about that. :)
+I've really not wanted this one documented in the past as I've not
+wanted people using it. The reason is the implications of it. I see the
+use has grown in OE-Core to multiple classes now :(.
 
-> There is a very simple reason for that. We never have (or at least had,=
-=20
-> I don't know if this has changed) the docs ready for the release before=
-=20
-> the release is tagged (including the docs). This means if we were to=20
-> always show the latest tag we would be missing information, even for the=
-=20
-> tagged release (e.g. recipe version bumps, cves fixed, known issues, etc.=
-)!
->
-> Even more so, we want to avoid having to wait ~1+ month for the next=20
-> release if there are important fixes in the documentation (e.g.=20
-> misleading information). This we can only achieve by using the tip of=20
-> the branch and not the release. This also apply to outdated releases=20
-> which will never receive a new tag but we may still want to patch=20
-> documentation (e.g. links have gone bad, misleading info, etc.).
->
->>> BTW, it seems like once you're on a tagged release, you cannot go back
->>> to the .999 from the dropdown menu, is that intended?
->>=20
->> Sounds like a bug to me!
->>=20
->
-> I vaguely remember discussing this years ago. I think the issue is how=20
-> to represent this in the menu? Should we really have
->
-> scarthgap (5.0.9)
-> scarthgap (dev)
->
-> for each release?
+If we do add a doc, I'd suggest adding something along the lines of:
 
-I don't think it's necessary to do so for each release, but only for the cu=
-rrent
-stable release, as is done today. So I think the only real bug here is that=
- we
-don't see "Walnascar (5.2.999)" in the list as it should be.
+"""
+In general it is not recommended to use this variable as missing sstate
+artefacts adversely impact the build, particularly for entries in the
+middle of dependency chains. The case it can make sense is where the
+size and time costs of the artefact are similar to just running the
+tasks. This generally only applies to end artefact output like images.
+"""
 
-I don't really like renaming from "Walnascar (5.2.999)" to "Walnascar (dev)=
-" (if
-that's what you implied). I would rather put "latest" instead.
+Cheers,
 
-Antonin
-
---=20
-Antonin Godard, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+Richard
 
