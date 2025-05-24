@@ -1,107 +1,91 @@
-Return-Path: <ecordonnier@snap.com>
+Return-Path: <twoerner@gmail.com>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0B0D0C54ED0
-	for <webhook@archiver.kernel.org>; Fri, 23 May 2025 14:34:51 +0000 (UTC)
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
- by mx.groups.io with SMTP id smtpd.web10.49475.1748010883209290830
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3A292C54ED1
+	for <webhook@archiver.kernel.org>; Sat, 24 May 2025 01:06:30 +0000 (UTC)
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+ by mx.groups.io with SMTP id smtpd.web10.1652.1748048780201695797
  for <docs@lists.yoctoproject.org>;
- Fri, 23 May 2025 07:34:43 -0700
+ Fri, 23 May 2025 18:06:20 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@snap.com header.s=google header.b=ZkBEg4ac;
- spf=pass (domain: snapchat.com, ip: 209.85.218.50, mailfrom: ecordonnier@snapchat.com)
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ad56829fabdso917214866b.1
-        for <docs@lists.yoctoproject.org>; Fri, 23 May 2025 07:34:42 -0700 (PDT)
+ dkim=pass header.i=@gmail.com header.s=20230601 header.b=VhfDPtGx;
+ spf=pass (domain: gmail.com, ip: 209.85.160.171, mailfrom: twoerner@gmail.com)
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4766cb762b6so5275821cf.0
+        for <docs@lists.yoctoproject.org>; Fri, 23 May 2025 18:06:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=snap.com; s=google; t=1748010881; x=1748615681; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+1yF1Hjn2kGLEJUJ2zbLbMXrbzpsFotuKHFDOpC7Ncs=;
-        b=ZkBEg4acfjcxiI+svXeJA1cCibWYwj82JceMLzWPCOrlGgB7ysL7Dl8YuxmXHrGLeZ
-         EtzRfrlRznl77Ha6mvt9Pu7QNS8/gTUVQ89zrfQ36NEznHm6WlZeQzz1YPvFAx18uiS7
-         6YXfjiJt/RyFWF2zQ0nMvKxLGZmqHuUa1creU=
+        d=gmail.com; s=20230601; t=1748048778; x=1748653578; darn=lists.yoctoproject.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=f+U0j7R/5YOhelDs/USCZlNE+xd6hayQzCRISpHz/lk=;
+        b=VhfDPtGxf/6WNc4XK1NJpZF9dCyM+f8cR0HINg4419zsJvki5We5KM0RlWmfcvZ/df
+         OlOONVILgmG1UNXV4Bjy6P7BBTVGeW696ydRAbxnJZpXgZKfR+uxaa+3gIMTJAPZUa0F
+         kzfZLzgXaOAXDP8RitPcHxIjCDNdazI2yofGNd4AOa1AjpjjSfaFgUevpxANOIt2W7Fi
+         gQHqJk/8/vDPncq32kFCHN16VevA0nhzSaTtKQsLtmx+QEFpVepGXL0MggSQxfA4QZ5o
+         ds/INadzvBlLmgUfmp4R/r5PC3OklQcopzShB8/sbnw28mywG4pgKlQyD91Cb7QzDcAk
+         Nh6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748010881; x=1748615681;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+1yF1Hjn2kGLEJUJ2zbLbMXrbzpsFotuKHFDOpC7Ncs=;
-        b=VmndBqMLsFO+g5GL1KNzzr7X2J4/sndPZ/iDJwzzvU0cakBS13VxOPYi5BalsLI0M5
-         3MUsZbu+PVh4bl7Qd96XEp1rUhN9jDvwJrN8hTBGjAZf8TSwavw/P3BrQC1TYHL+aE8n
-         0PBNRCPOqCGmZoVpkaV0iVJ58IJz3eKIYKBPw0EZzJbcTTGZR5rCbF1fj0NPt52MC2KT
-         Juerx8J+qqNCehQLqSddON4ugxXqMnFfGHuBLbDsvwrWRbS+K1VeGn7OahzyMb60a7fF
-         f8CAlwuZNexGsn70f4jshMPKoqewCm3gDhANrJw9yTLu/3juLX1upSqQCa3I3GU1HJvT
-         qNAg==
-X-Gm-Message-State: AOJu0Yyjd7a9LVtBrHhnByhUFwX9j0CKXYGHXlJ8KoNB4sCr81K0i27S
-	vc+TJC5YYXB2ZvryrleuzWv/xUPdD1r2xYqM8TynX9zHN67KWa6fUIkcdQMTvp48BkStxE0Oywg
-	kwArIY24=
-X-Gm-Gg: ASbGncuf9ETwv3y1/kn1bFxkDHjpB/QkfFgqedZkvA4E2hx5/vLE+uzVW2e3Tu5+Iz5
-	UiIaIfvoKL8SV/A15kU+lJeiUXqRo2GBFDBWwGQM/1Xph1wqpoYwhizPXNoom42dYdyGZ0l+4YH
-	0gykuQmEspekYigwDVXuSJ0yZHskoUQgSBnoRGzm5wRWF1cIXybpYTAnwgGAdDOuprX1Dsz3Xss
-	TlP7Uwa+9vSAnpqOHwNydhC/rUBh8Sz0+OdhGaup3PHmZuWLBTeJtlDMRN9gaZZb+U2d7yQc63D
-	BodlTBXjR/UUz2MEJxWmYoDT/LG1zmklQA8rh8ZRFWi+N+I/O955kU/ApLPH4ls=
-X-Google-Smtp-Source: AGHT+IEYHwTEVCOLCtWpoXoWWGJ4NMRDjsoxsNMBHJBsQEIL7rIfXIqXAKXNAcUqDjDUokVWqXyFwA==
-X-Received: by 2002:a17:906:9fc4:b0:ad5:3746:5906 with SMTP id a640c23a62f3a-ad7085589a5mr294269466b.49.1748010880793;
-        Fri, 23 May 2025 07:34:40 -0700 (PDT)
-Received: from lj8k2dq3.sc-core.net ([85.237.126.22])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad52d275d9fsm1234632766b.74.2025.05.23.07.34.40
+        d=1e100.net; s=20230601; t=1748048778; x=1748653578;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f+U0j7R/5YOhelDs/USCZlNE+xd6hayQzCRISpHz/lk=;
+        b=XwN8Y/CXRgqq+Tfz/h5pWr7t+HhqP50EAhr2OEdMRZeu5d24Mo99BIGpJb2Hqxxh8M
+         EV4v0C/S1jgyOxATcUetcIPIsVUyX/w3Cq7n4k7XFhbNdH0ZLOOX5VmL3bzvNEpa9tSk
+         y8FN0PM5GG8GM8YbyRyJmpIZingCw8fGmHcwJj7DPqx4JWITztjzAUtf+8JjUrPqklP+
+         /oo8qJTMkcEiuQQD8yX3dBe5npm9gM8ESHXy0hG4tdko5TK8JCJeeYn7tBQp2XwFHQAB
+         4vhmshlGPNrRwj9s+srbnusCaOqT0KxZA80umFmF0xOeM5MVQyeenWkZ4bD6MSZblg0i
+         Pkcw==
+X-Gm-Message-State: AOJu0YymRpbSkNr0dN8Rzhx8XYpSXgK41BgFuGc833RgKzZNjIkCsaHk
+	pEDvGvl9DmZH4lM5zfC4G3ObRf3OQisNMD/kVxf9HvVXXM7a/SoODlJ0TUFwhA==
+X-Gm-Gg: ASbGncvyLeXsLQRfp2VhJ/7qV8jjeBzMAlM6y8/o9ufFbeBgTrRvuULRokAJ3sbAq4Z
+	A5QFbJfv6bBOZNht6rjDJJmYl5i5uQecif+RQ9i+4aldj2rSOq73eq7SRdvXykCeGDQn3sMBtJk
+	1nygpsBQnZkEcVAUP3nC/l3UqhFMulaoyl30/Tqs7Vs4sKNF8QVcRY1JF4CJZMo01V/ImMx20uW
+	zLAYsmsTH4XO9yhArVvuescYF2fAy+QEm3ZcVM+77Mav7DYfKoAzs4LfJ1926WUNGgoFQ3jvwlk
+	azzeu849Yddm2wTD11eivqsVzLR/+0swn6EBDVSe3dHPNexGPziNiTZQ9hOHGKXjOjVQg8EpK+w
+	o4nAKwoOL1uL0+KMq53Q=
+X-Google-Smtp-Source: AGHT+IEeQt2BbyspUMg4cntA7zBf7KpufBUV8wv/hnjRgDceNqLosyzVDsa4YnFf9H+v89H+Hcohig==
+X-Received: by 2002:a05:622a:4113:b0:49b:eb1d:18aa with SMTP id d75a77b69052e-49f33175128mr23619241cf.6.1748048778483;
+        Fri, 23 May 2025 18:06:18 -0700 (PDT)
+Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd468e3fe2sm1257624985a.113.2025.05.23.18.06.17
+        for <docs@lists.yoctoproject.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 May 2025 07:34:40 -0700 (PDT)
-From: ecordonnier@snap.com
+        Fri, 23 May 2025 18:06:17 -0700 (PDT)
+From: Trevor Woerner <twoerner@gmail.com>
 To: docs@lists.yoctoproject.org
-Cc: Etienne Cordonnier <ecordonnier@snap.com>
-Subject: [docs][PATCH v3] ref-manual/variables.rst: document SSTATE_SKIP_CREATION
-Date: Fri, 23 May 2025 16:34:29 +0200
-Message-ID: <20250523143430.194305-1-ecordonnier@snap.com>
-X-Mailer: git-send-email 2.43.0
+Subject: [PATCH 1/3] sphinx-lint: trailing whitespace
+Date: Fri, 23 May 2025 21:06:07 -0400
+Message-ID: <20250524010609.40569-1-twoerner@gmail.com>
+X-Mailer: git-send-email 2.44.0.501.g19981daefd7c
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Fri, 23 May 2025 14:34:51 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6890
+ <docs@lists.yoctoproject.org>; Sat, 24 May 2025 01:06:30 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6891
 
-From: Etienne Cordonnier <ecordonnier@snap.com>
+Fix all instances of trailing-whitespace as reported by 'make sphinx-lint'.
 
-Signed-off-by: Etienne Cordonnier <ecordonnier@snap.com>
+Signed-off-by: Trevor Woerner <twoerner@gmail.com>
 ---
- documentation/ref-manual/variables.rst | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ documentation/sdk-manual/extensible.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 643a3e7ae8f..e2ec4e97599 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -9049,6 +9049,26 @@ system and gives an overview of their function and contents.
- 
-       For details on the process, see the :ref:`ref-classes-staging` class.
- 
-+   :term:`SSTATE_SKIP_CREATION`
-+      The :term:`SSTATE_SKIP_CREATION` variable can be used to skip the
-+      creation of :ref:`shared state <overview-manual/concepts:shared state cache>`
-+      tarball files. It makes sense e.g. for image creation tasks as tarring images
-+      and keeping them in sstate would consume a lot of disk space.
+diff --git a/documentation/sdk-manual/extensible.rst b/documentation/sdk-manual/extensible.rst
+index d8d3858bfee2..a7546e728849 100644
+--- a/documentation/sdk-manual/extensible.rst
++++ b/documentation/sdk-manual/extensible.rst
+@@ -669,7 +669,7 @@ SDK or eSDK:
+    ``devtool build``.
+    It also allows to benefit from the very good integration that IDEs like
+    VSCode offer for tools like CMake or GDB.
+-   
 +
-+      In general it is not recommended to use this variable as missing sstate
-+      artefacts adversely impact the build, particularly for entries in the
-+      middle of dependency chains. The case it can make sense is where the
-+      size and time costs of the artefact are similar to just running the
-+      tasks. This generally only applies to end artefact output like images.
-+
-+      The syntax to disable it for one task is::
-+
-+         SSTATE_SKIP_CREATION:task-image-complete = "1"
-+
-+      The syntax to disable it for the whole recipe is::
-+
-+         SSTATE_SKIP_CREATION = "1"
-+
-    :term:`STAGING_BASE_LIBDIR_NATIVE`
-       Specifies the path to the ``/lib`` subdirectory of the sysroot
-       directory for the build host.
+    However, supporting many programming languages and multiple
+    IDEs is quite an elaborate and constantly evolving thing. Support for IDEs
+    is therefore implemented as plugins. Plugins can also be provided by
 -- 
-2.43.0
+2.44.0.501.g19981daefd7c
 
 
