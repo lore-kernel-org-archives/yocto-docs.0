@@ -1,95 +1,78 @@
-Return-Path: <twoerner@gmail.com>
+Return-Path: <rpjday@crashcourse.ca>
 X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 	aws-us-west-2-korg-lkml-1.web.codeaurora.org
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9A13AC54ED1
-	for <webhook@archiver.kernel.org>; Sat, 24 May 2025 20:06:46 +0000 (UTC)
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
- by mx.groups.io with SMTP id smtpd.web11.13629.1748117199985377129
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 2EAA4C54FB3
+	for <webhook@archiver.kernel.org>; Sun, 25 May 2025 15:00:25 +0000 (UTC)
+Received: from cpanel10.indieserve.net (cpanel10.indieserve.net [199.212.143.9])
+ by mx.groups.io with SMTP id smtpd.web10.10555.1748185215247911046
  for <docs@lists.yoctoproject.org>;
- Sat, 24 May 2025 13:06:40 -0700
+ Sun, 25 May 2025 08:00:15 -0700
 Authentication-Results: mx.groups.io;
- dkim=pass header.i=@gmail.com header.s=20230601 header.b=k8pCYGzv;
- spf=pass (domain: gmail.com, ip: 209.85.222.173, mailfrom: twoerner@gmail.com)
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7c597760323so87831385a.3
-        for <docs@lists.yoctoproject.org>; Sat, 24 May 2025 13:06:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1748117198; x=1748721998; darn=lists.yoctoproject.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Sh1B5LAyCSnmp6kp6F2NvQAejLYnkB/uFmyY9uK8LUc=;
-        b=k8pCYGzvZu3Plo+5m5d65mdE3R6EYhyG82cvbkK9ox/Z3lyBGxLuCDb3R0kW8KUX6H
-         VdSrb4Bh4fveWzzwrLfXQPzAuEk7S1pLKyOysI79qlCPR6pmqlbYHbV7aAHZj1v4WBCE
-         Ubu1J4yzmPYrFqsLJIqGf4tm7TutR5yHojq07DxZzWPU2Pr6IYJClr/TPI4p87ncIulw
-         mQDsnxtXCdLo/V1EApIPibZwPuVPl5D6PLnLTS90R/syF3Zdnd4UucNCscXteEuqgwPq
-         cMdIlObY8p9gQVSFCJLHM6P/zguYtKiJZca2gy53s5Prm2I/ECnST8cJ1BbkspH6lK5c
-         CtkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1748117198; x=1748721998;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Sh1B5LAyCSnmp6kp6F2NvQAejLYnkB/uFmyY9uK8LUc=;
-        b=Y7UPNxkTvD7pTHqkJyMF22KE6iTwebVOE/XCULmSJ5wMyZhLcMx+HfuLpFk8W2FIel
-         16fGnNLj7Gxi8kU2tudLoXlIKBBo8nUUhVprAiIlT65zq4bWe452lWUF03HWe5w9PfgX
-         IEqOLaeoehBJUfD6AC958+GllZeZL/ZmYVz/5sWtdbnWcOrh5qFmSfkHKouisUf5gR+t
-         gWIMB5LB8iLa44AVGmYrLW8ysRWVSTmYOFRI8pCMcCg9BuCoPiDnfKyDKgrDFcDJhP8t
-         949hkAxACiB7nf5E84gQy2RuiHemCuqr2STZ4ZuFB5BFkeUXfrxiWuxmyJXhxp0iRwhs
-         NUQg==
-X-Gm-Message-State: AOJu0YyZjQwQVRJE808EMjLrHCgjKNmHMgTypB42Eigj2QUTs6AqOzx+
-	WB3qgieEYUelCVmy+SupEKXSEQLFcsOfJ6p69M3MM+CXF205FyeClWPCIlKt8w==
-X-Gm-Gg: ASbGnctNIO+iBewzPrGAP3TbvqRu0lBh6uVsEpW9xYftYYat6F9tPkq2xlDDACx9jtt
-	YoZyLzdbT0UY8yeOfV7qf+pzN8m7172DW2YuBuOU0PNzDzECTBxV160gKh0Obhv6SNHxqmf2KyE
-	IGNjr03B+dkHerqalqKdacK6tk/cV+gR//g5kQUWjj/b1vXcPWnZ8PR3CM2YiQA5qZuc8yrMYRJ
-	u7HvAlaRhnw+ARRVYTuJpbcHbw5OQc2nAwoUXlUlG/KAdod60lQXXM31SyZv1STBmzL9U/TWSMc
-	LGM1JGIe9bjioWc3sHPXha/XyEue51nxmOM53fO8Fjf5usJG2M8GeTUsz07+waNAxpy5fAn/6fM
-	5XkxmyTo3/4oJx2dIuos=
-X-Google-Smtp-Source: AGHT+IE0/TFLTHwcvuTKbMzhfiXjtY+khtF7dH4PhSKDREBViF7DDdhVWzv4YzA8qXsbz2BdZ3VNZg==
-X-Received: by 2002:a05:620a:3945:b0:7c5:4194:bbcc with SMTP id af79cd13be357-7ceecbe43famr532701085a.29.1748117198474;
-        Sat, 24 May 2025 13:06:38 -0700 (PDT)
-Received: from localhost.localdomain (pppoe-209-91-167-254.vianet.ca. [209.91.167.254])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd467edc16sm1364274685a.50.2025.05.24.13.06.36
-        for <docs@lists.yoctoproject.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 May 2025 13:06:37 -0700 (PDT)
-From: Trevor Woerner <twoerner@gmail.com>
-To: docs@lists.yoctoproject.org
-Subject: [PATCH][kirkstone 2/3] sphinx-lint: role missing opening tag colon
-Date: Sat, 24 May 2025 16:06:29 -0400
-Message-ID: <20250524200630.4299-2-twoerner@gmail.com>
-X-Mailer: git-send-email 2.44.0.501.g19981daefd7c
-In-Reply-To: <20250524200630.4299-1-twoerner@gmail.com>
-References: <20250524200630.4299-1-twoerner@gmail.com>
+ dkim=pass header.i=@crashcourse.ca header.s=default header.b=iC+WerRs;
+ spf=pass (domain: crashcourse.ca, ip: 199.212.143.9, mailfrom: rpjday@crashcourse.ca)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=crashcourse.ca; s=default; h=Content-Type:MIME-Version:Message-ID:Subject:
+	To:From:Date:Sender:Reply-To:Cc:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ffFEbMDUM2eUUfHqj/y0AJd+u7TJImSgeauYBeMGmn4=; b=iC+WerRsXrtnAI5ShETYfaOyaB
+	UkYwOtsT1EhdppfYGh/B9ke65HDQAl0VZHp+eOiJYT61WZHyxgwQsJrRXDpdko3TGXghzQPfaB9IY
+	k0XSI8i4SNncbkAVe9sR3KgeLtNmHcyHqnss6msFrK3yWrzzffsvfY6A5LrCfitX4oZENWoVeui9o
+	xDvagHp4zn20qmCIih7m83Dtjeo8Qffse0S/skja5K1t99xa5aNtP2++DmutPtts4BsiKmNnK1dav
+	eHEvZ59PjR5+PeBipEU97EePz/IvGde5HLgVOTsgqcgcgdexZId68czXluF0RCJwr/08jv6chJjkf
+	Wg2z/ZZw==;
+Received: from pool-174-115-41-146.cpe.net.cable.rogers.com ([174.115.41.146]:56832 helo=asus)
+	by cpanel10.indieserve.net with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.98.1)
+	(envelope-from <rpjday@crashcourse.ca>)
+	id 1uJCpY-00000006tcv-1sGi
+	for docs@lists.yoctoproject.org;
+	Sun, 25 May 2025 11:00:12 -0400
+Date: Sun, 25 May 2025 10:59:54 -0400 (EDT)
+From: "Robert P. J. Day" <rpjday@crashcourse.ca>
+To: YP docs mailing list <docs@lists.yoctoproject.org>
+Subject: Pedantic comments on "Yocto Project Quick Build"
+Message-ID: <64b9bec1-0aa4-9e4b-06ed-445eda4d60a7@crashcourse.ca>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel10.indieserve.net
+X-AntiAbuse: Original Domain - lists.yoctoproject.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - crashcourse.ca
+X-Get-Message-Sender-Via: cpanel10.indieserve.net: authenticated_id: rpjday+crashcourse.ca/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: cpanel10.indieserve.net: rpjday@crashcourse.ca
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 List-Id: <docs.lists.yoctoproject.org>
 X-Webhook-Received: from li982-79.members.linode.com [45.33.32.79] by
  aws-us-west-2-korg-lkml-1.web.codeaurora.org with HTTPS for
- <docs@lists.yoctoproject.org>; Sat, 24 May 2025 20:06:46 -0000
-X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6900
+ <docs@lists.yoctoproject.org>; Sun, 25 May 2025 15:00:25 -0000
+X-Groupsio-URL: https://lists.yoctoproject.org/g/docs/message/6902
 
-Fix all instances missing-space-before-role as reported by 'make sphinx-lint'.
 
-Signed-off-by: Trevor Woerner <twoerner@gmail.com>
----
- documentation/ref-manual/variables.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I was going to submit a patch but I wasn't sure about one or two of
+the changes so I'll just publish my comments and someone can decide
+what is worth tweaking and how.
 
-diff --git a/documentation/ref-manual/variables.rst b/documentation/ref-manual/variables.rst
-index 83fda05fc665..019285f360af 100644
---- a/documentation/ref-manual/variables.rst
-+++ b/documentation/ref-manual/variables.rst
-@@ -8909,7 +8909,7 @@ system and gives an overview of their function and contents.
-       :doc:`/sdk-manual/index` manual.
- 
-       Note that this variable applies to building an SDK, not an eSDK,
--      in which case the term:`TOOLCHAIN_HOST_TASK_ESDK` setting should be
-+      in which case the :term:`TOOLCHAIN_HOST_TASK_ESDK` setting should be
-       used instead.
- 
-    :term:`TOOLCHAIN_HOST_TASK_ESDK`
--- 
-2.44.0.501.g19981daefd7c
+All of this is in the secton:
+
+https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html#compatible-linux-distribution
+
+1) Bullet list has both a first- and second-level bullet point on the
+same line, because the source file defines an empty top-level list
+item (first item in the sublist)
+
+2) Is Git 1.8.3.1 still supported? Man, that's ancient.
+
+3) "If your build host does not meet any of these three listed version
+requirements ..."  There's five version requirements there, not three.
+
+  That's it for now.
+
+rday
 
 
